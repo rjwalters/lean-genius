@@ -37,7 +37,8 @@
       "The `UnitDiskPoly` structure elegantly bundles the roots and their disk containment proofs, avoiding the need to work with the polynomial ring directly and instead treating the polynomial through its root factorization $p(z) = \\prod(z - z_i)$."
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
     ]
   },
   "sections": [

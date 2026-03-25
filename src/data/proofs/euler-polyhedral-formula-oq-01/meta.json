@@ -87,7 +87,7 @@
       "startLine": 54,
       "endLine": 178,
       "summary": "SpanningBuild inductive type with single/addTreeEdge/addCycleEdge constructors. Proves euler_spanning: V-E+F=2 by structural induction. buildPlanarGraph constructs graphs with v vertices and k cycle edges. Verified for tetrahedron (4V,6E,4F), cube (8V,12E,6F), octahedron (6V,12E,8F).",
-      "mathContext": "SpanningBuild inductive type with single/addTreeEdge/addCycleEdge constructors. Proves euler_spanning: V-E+F=2 by structural induction. buildPlanarGraph constructs graphs with v vertices and k cycle e"
+      "mathContext": "SpanningBuild inductive type with single/addTreeEdge/addCycleEdge constructors. Proves euler_spanning: V-E+F=2 by structural induction. buildPlanarGraph constructs graphs with v vertices and k cycle edges. Verified for tetrahedron (4V,6E,4F), cube (8V,12E,6F), octahedron (6V,12E,8F)."
     },
     {
       "id": "part2-degeneracy",
@@ -143,7 +143,7 @@
       "startLine": 616,
       "endLine": 903,
       "summary": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate. Also: DegeneracyBuild ordering, kempe_prerequisite for Five Color Theorem.",
-      "mathContext": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_col"
+      "mathContext": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate."
     }
   ],
   "conclusion": {

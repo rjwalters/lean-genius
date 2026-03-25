@@ -89,7 +89,7 @@
       "summary": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonicalization.",
       "startLine": 38,
       "endLine": 53,
-      "mathContext": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonica"
+      "mathContext": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonicalization."
     },
     {
       "id": "denominator-drop",
@@ -97,7 +97,7 @@
       "summary": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction (smallest b with drop, via Nat.find with sorry for van Doorn's existence theorem).",
       "startLine": 54,
       "endLine": 73,
-      "mathContext": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction (smallest b with drop, via Nat.find with sorry"
+      "mathContext": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction (smallest b with drop, via Nat.find with sorry for van Doorn's existence theorem)."
     },
     {
       "id": "erdos-question",
@@ -113,7 +113,7 @@
       "summary": "Four axioms capture van Doorn's results: van_doorn_main (YES), van_doorn_upper_bound (< 4.374a), van_doorn_lower_bound (> a + 0.54 log a), van_doorn_explicit (powers-of-3 construction). The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith.",
       "startLine": 86,
       "endLine": 114,
-      "mathContext": "Four axioms capture van Doorn's results: van_doorn_main (YES), van_doorn_upper_bound (< 4.374a), van_doorn_lower_bound (> a + 0.54 log a), van_doorn_explicit (powers-of-3 construction). The theorem b_"
+      "mathContext": "Four axioms capture van Doorn's results: van_doorn_main (YES), van_doorn_upper_bound (< 4.374a), van_doorn_lower_bound (> a + 0.54 log a), van_doorn_explicit (powers-of-3 construction). The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith."
     },
     {
       "id": "example",
@@ -121,7 +121,7 @@
       "summary": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The bound b_of_3_bound has one sorry for the noncomputable harmonicDenom.",
       "startLine": 115,
       "endLine": 144,
-      "mathContext": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The bound b_of_3_bound has one sorry for the nonc"
+      "mathContext": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The bound b_of_3_bound has one sorry for the noncomputable harmonicDenom."
     },
     {
       "id": "finer-bounds",
@@ -129,7 +129,7 @@
       "summary": "Axiomatizes van_doorn_infinitely_many_small (b(a) < a + 0.61 log a infinitely often). Defines three open conjectures as Prop: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic).",
       "startLine": 145,
       "endLine": 164,
-      "mathContext": "Axiomatizes van_doorn_infinitely_many_small (b(a) < a + 0.61 log a infinitely often). Defines three open conjectures as Prop: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConje"
+      "mathContext": "Axiomatizes van_doorn_infinitely_many_small (b(a) < a + 0.61 log a infinitely often). Defines three open conjectures as Prop: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic)."
     },
     {
       "id": "prime-factorization",
@@ -137,7 +137,7 @@
       "summary": "Defines lcmRange(a,b) = lcm of [a,b]. Axiomatizes denom_divides_lcm. Defines HasNewPrimeFactor for detecting new primes at b+1. Axiomatizes powers_of_3_key: van Doorn's construction near 3ᵏ always works.",
       "startLine": 165,
       "endLine": 184,
-      "mathContext": "Defines lcmRange(a,b) = lcm of [a,b]. Axiomatizes denom_divides_lcm. Defines HasNewPrimeFactor for detecting new primes at b+1. Axiomatizes powers_of_3_key: van Doorn's construction near 3ᵏ always wor"
+      "mathContext": "Defines lcmRange(a,b) = lcm of [a,b]. Axiomatizes denom_divides_lcm. Defines HasNewPrimeFactor for detecting new primes at b+1. Axiomatizes powers_of_3_key: van Doorn's construction near 3ᵏ always works."
     },
     {
       "id": "oeis",
@@ -169,7 +169,7 @@
       "summary": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 265 lines with 6 axioms, 2 sorries, and 3 genuine proofs.",
       "startLine": 230,
       "endLine": 265,
-      "mathContext": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 265 lines with 6 "
+      "mathContext": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 265 lines with 6 axioms, 2 sorries, and 3 genuine proofs."
     }
   ],
   "conclusion": {

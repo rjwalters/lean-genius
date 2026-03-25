@@ -54,7 +54,10 @@
       "The 89-year gap between Plemelj's claim (1908) and Bolibrukh's counterexample (1989) is one of the longest delayed corrections in 20th-century mathematics, illustrating how subtle the reducible case is"
     ],
     "prerequisites": [
-      "Complex analysis"
+      "Complex analysis (Riemann surfaces, analytic continuation)",
+      "Differential equations (Fuchsian equations, regular singular points)",
+      "Group theory (monodromy groups, linear representations)",
+      "Algebraic geometry (vector bundles, connections)"
     ]
   },
   "sections": [
@@ -186,6 +189,14 @@
       "year": "1857",
       "venue": "Abhandlungen der Königlichen Gesellschaft der Wissenschaften zu Göttingen 7, 3–22",
       "note": "Riemann's investigation of hypergeometric equations and their monodromy — the origin of the Riemann-Hilbert problem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert21_monodromy",
+      "type": "core",
+      "description": "Existence of Fuchsian systems with prescribed monodromy",
+      "leanType": "MonodromyRep rho -> exists system, Fuchsian system and monodromy system = rho"
     }
   ]
 }

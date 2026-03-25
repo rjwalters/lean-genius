@@ -215,5 +215,13 @@
       "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
       "type": "paper"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nine_point_circle_def",
+      "type": "core",
+      "description": "Definitions for the nine-point circle and its relationship to incircle/excircles",
+      "leanType": "ninePointCircle : Triangle -> Circle"
+    }
   ]
 }

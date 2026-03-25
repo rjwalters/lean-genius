@@ -76,7 +76,9 @@
       "**Connection to trisection impossibility**: The theorem requires constructing angle trisectors (cubic field extensions), explaining why the ancient Greeks never found it"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (angle trisection, triangle properties)",
+      "Trigonometry (angle identities, trigonometric proofs)",
+      "Symmetry (equilateral triangles, rotational invariance)"
     ]
   },
   "sections": [
@@ -243,6 +245,14 @@
       "year": "1998",
       "venue": "Les Relations entre les Mathématiques et la Physique Théorique, IHÉS",
       "note": "Elegant proof using the group of affine transformations"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "morley_theorem",
+      "type": "core",
+      "description": "The triangle formed by adjacent angle trisectors is equilateral",
+      "leanType": "Triangle ABC -> trisector_triangle ABC is equilateral"
     }
   ]
 }

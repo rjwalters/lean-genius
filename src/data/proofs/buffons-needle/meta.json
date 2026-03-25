@@ -56,7 +56,10 @@
       "The Lean formalization uses `field_simp` and `ring` to handle the algebraic manipulation $\\ell/(\\pi d/2) = 2\\ell/(\\pi d)$, which is the step where the geometric computation becomes the clean formula"
     ],
     "prerequisites": [
-      "Probability theory"
+      "Probability theory (geometric probability, random variables)",
+      "Trigonometry (sine function, integration)",
+      "Integral geometry (Crofton's formula, measure on lines)",
+      "Real analysis (Lebesgue measure, expectation)"
     ]
   },
   "sections": [
@@ -65,35 +68,40 @@
       "title": "The Physical Setup",
       "startLine": 52,
       "endLine": 69,
-      "summary": "Defines needle length ℓ > 0, line spacing d > 0, and the short needle constraint ℓ ≤ d. Introduces the two uniform random variables: angle θ ∈ [0,π) and distance x ∈ [0,d/2] from needle center to nearest line, exploiting the symmetry that only the nearest line matters."
+      "summary": "Defines needle length ℓ > 0, line spacing d > 0, and the short needle constraint ℓ ≤ d. Introduces the two uniform random variables: angle θ ∈ [0,π) and distance x ∈ [0,d/2] from needle center to nearest line, exploiting the symmetry that only the nearest line matters.",
+      "mathContext": "The sample space is the rectangle $\\Omega = [0, \\pi) \\times [0, d/2]$ with the uniform (Lebesgue) measure. The angle $\\theta$ ranges over $[0, \\pi)$ rather than $[0, 2\\pi)$ because the needle is symmetric end-to-end. The distance $x$ ranges over $[0, d/2]$ because the nearest line is at most $d/2$ away (by the pigeonhole principle applied to the midpoint)."
     },
     {
       "id": "crossing-condition",
       "title": "The Crossing Condition",
       "startLine": 70,
       "endLine": 87,
-      "summary": "Defines the geometric crossing predicate: the needle crosses a line iff x ≤ (ℓ/2)sin(θ). The perpendicular projection of half the needle, (ℓ/2)sin(θ), must exceed the distance x to the nearest line. The crossing region in the (x,θ)-plane is the area under the curve x = (ℓ/2)sin(θ)."
+      "summary": "Defines the geometric crossing predicate: the needle crosses a line iff x ≤ (ℓ/2)sin(θ). The perpendicular projection of half the needle, (ℓ/2)sin(θ), must exceed the distance x to the nearest line. The crossing region in the (x,θ)-plane is the area under the curve x = (ℓ/2)sin(θ).",
+      "mathContext": "The needle crosses a line iff $x \\leq \\frac{\\ell}{2}\\sin\\theta$. The perpendicular reach of the needle from its center is $(\\ell/2)\\sin\\theta$: when $\\theta = 0$ (parallel to lines), reach is 0; when $\\theta = \\pi/2$ (perpendicular), reach is maximal at $\\ell/2 \\leq d/2$."
     },
     {
       "id": "key-integral",
       "title": "The Key Integral",
       "startLine": 88,
       "endLine": 115,
-      "summary": "The computational heart: proves ∫₀^π sin(θ) dθ = 2 using Mathlib's integral_sin, then scales to show the crossing region area equals ℓ. The sample space area is πd/2. The ratio ℓ/(πd/2) = 2ℓ/(πd) gives the probability."
+      "summary": "The computational heart: proves ∫₀^π sin(θ) dθ = 2 using Mathlib's integral_sin, then scales to show the crossing region area equals ℓ. The sample space area is πd/2. The ratio ℓ/(πd/2) = 2ℓ/(πd) gives the probability.",
+      "mathContext": "The crossing region area: $\\int_0^{\\pi} \\frac{\\ell}{2}\\sin\\theta\\, d\\theta = \\frac{\\ell}{2} \\cdot [-\\cos\\theta]_0^{\\pi} = \\frac{\\ell}{2} \\cdot (1 - (-1)) = \\ell$. The total sample space area: $\\pi \\cdot d/2 = \\pi d/2$. The probability: $P = \\ell / (\\pi d/2) = 2\\ell/(\\pi d)$."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 116,
       "endLine": 146,
-      "summary": "Buffon's Needle Theorem (Wiedijk #99): P(crossing) = 2ℓ/(πd). Assembles the integral computation and area ratio into the final formula. Uses field_simp and ring for the algebraic simplification."
+      "summary": "Buffon's Needle Theorem (Wiedijk #99): P(crossing) = 2ℓ/(πd). Assembles the integral computation and area ratio into the final formula. Uses field_simp and ring for the algebraic simplification.",
+      "mathContext": "$P(\\text{crossing}) = \\frac{2\\ell}{\\pi d}$ for $0 < \\ell \\leq d$. Special cases: $\\ell = d \\Rightarrow P = 2/\\pi \\approx 0.6366$; $\\ell = d/2 \\Rightarrow P = 1/\\pi \\approx 0.3183$."
     },
     {
       "id": "pi-estimation",
       "title": "Connection to Pi Estimation",
       "startLine": 147,
       "endLine": 266,
-      "summary": "Derives the Monte Carlo estimator: from P = 2ℓ/(πd), solving for π gives π = 2ℓ/(Pd). With n drops and k crossings (P ≈ k/n), we get π ≈ 2ℓn/(kd). Historical note on Lazzarini's suspect 1901 experiment claiming 6-digit accuracy."
+      "summary": "Derives the Monte Carlo estimator: from P = 2ℓ/(πd), solving for π gives π = 2ℓ/(Pd). With n drops and k crossings (P ≈ k/n), we get π ≈ 2ℓn/(kd). Historical note on Lazzarini's suspect 1901 experiment claiming 6-digit accuracy.",
+      "mathContext": "From $P = 2\\ell/(\\pi d)$, solving for $\\pi$: $\\pi = 2\\ell/(Pd)$. With $n$ drops and $k$ crossings ($\\hat{P} = k/n$), the estimator is $\\hat{\\pi} = 2\\ell n/(kd)$. By the law of large numbers, $\\hat{\\pi} \\to \\pi$ as $n \\to \\infty$. The variance of $\\hat{P}$ is $P(1-P)/n$, so the standard error of $\\hat{\\pi}$ is $O(1/\\sqrt{n})$."
     }
   ],
   "conclusion": {
@@ -172,6 +180,21 @@
       "targetId": "buffons-needle-oq-02",
       "relationship": "extended-by",
       "description": "Extends Buffon's needle to 3 dimensions: a needle dropped among parallel planes spaced $d$ apart has expected crossing count $L/(2d)$ — answering the open question about higher-dimensional generalizations"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Calculus underlies the key integral $\\int_0^\\pi \\sin\\theta\\, d\\theta = [-\\cos\\theta]_0^\\pi = 2$ that is the computational heart of Buffon's result. Without FTC, the geometric probability would require Archimedes-style exhaustion methods"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Monte Carlo $\\pi$ estimator $\\hat{\\pi} = 2\\ell n/(kd)$ converges to $\\pi$ by the law of large numbers, with error governed by the Central Limit Theorem: $\\hat{\\pi} - \\pi$ is approximately $N(0, \\sigma^2/n)$ where $\\sigma^2 = P(1-P) \\cdot (2\\ell/(Pd))^2$. The CLT quantifies the convergence rate of this earliest Monte Carlo method"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The geometric setup of Buffon's needle uses the intermediate value theorem implicitly: the needle crosses a line iff the perpendicular distance from its center to the nearest line is less than $(\\ell/2)\\sin\\theta$, and IVT ensures this crossing threshold varies continuously with the angle"
     }
   ],
   "leanFile": {
@@ -195,5 +218,13 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "buffon_probability",
+      "type": "core",
+      "description": "Probability a needle of length L crosses parallel lines distance D apart is 2L/(pi*D)",
+      "leanType": "L <= D -> P(needle crosses line) = 2 * L / (pi * D)"
+    }
+  ]
 }

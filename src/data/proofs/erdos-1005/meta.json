@@ -54,7 +54,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace.",
-      "mathContext": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and e"
+      "mathContext": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace."
     },
     {
       "id": "farey-fractions",
@@ -70,7 +70,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`). Non-transitivity is the key structural feature.",
-      "mathContext": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`). Non-transitivity "
+      "mathContext": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`)."
     },
     {
       "id": "consecutive-runs",
@@ -118,7 +118,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound.",
-      "mathContext": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper b"
+      "mathContext": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound."
     },
     {
       "id": "geometric",
@@ -126,7 +126,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Maps Farey fractions to lattice points via `toPoint`. Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain theory.",
-      "mathContext": "Maps Farey fractions to lattice points via `toPoint`. Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain "
+      "mathContext": "Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain theory."
     },
     {
       "id": "bounds-gap",

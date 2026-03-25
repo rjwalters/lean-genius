@@ -66,7 +66,7 @@
       "startLine": 30,
       "endLine": 49,
       "summary": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance.",
-      "mathContext": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets),"
+      "mathContext": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance."
     },
     {
       "id": "sec-931-computations",
@@ -90,7 +90,7 @@
       "startLine": 104,
       "endLine": 148,
       "summary": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share prime factors {2,3,5}. All verified by native_decide and omega.",
-      "mathContext": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share pr"
+      "mathContext": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share prime factors {2,3,5}. All verified by native_decide and omega."
     },
     {
       "id": "sec-931-properties",
@@ -106,7 +106,7 @@
       "startLine": 193,
       "endLine": 207,
       "summary": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number arguments.",
-      "mathContext": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number"
+      "mathContext": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number arguments."
     },
     {
       "id": "sec-931-bertrand",
@@ -114,7 +114,7 @@
       "startLine": 208,
       "endLine": 277,
       "summary": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors. (4) If the first product has a large prime factor, SamePrimeFactors transfers it to bound q ≤ n₂+k₂ via Prime.dvd_finset_prod_iff.",
-      "mathContext": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combine"
+      "mathContext": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors."
     },
     {
       "id": "sec-931-prime-between-axiom",
@@ -122,7 +122,7 @@
       "startLine": 278,
       "endLine": 300,
       "summary": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values.",
-      "mathContext": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically im"
+      "mathContext": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values."
     }
   ],
   "conclusion": {

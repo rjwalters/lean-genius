@@ -137,8 +137,8 @@
       "In 2023, Ne'Kiya Jackson and Calcea Johnson (high school students) presented a trigonometric proof of the Pythagorean theorem without circular reasoning — historically thought impossible since trigonometric identities presuppose $a^2 + b^2 = c^2$. Can their approach (using the law of sines and infinite geometric series) be formalized in Lean?",
       "The formalization uses `EuclideanSpace ℝ (Fin 2)` which is coordinatized $\\mathbb{R}^2$. Can we formalize a synthetic proof using Tarski's axioms for geometry (points, betweenness, congruence) without coordinates, matching Euclid's original geometric argument more closely?",
       "The generalized Pythagorean theorem (`pythagorean_sum`) holds for finitely many mutually orthogonal vectors. Can we formalize Parseval's identity — the infinite-dimensional analog $\\|f\\|^2 = \\sum_{n=0}^{\\infty} |\\langle f, e_n \\rangle|^2$ for orthonormal bases in separable Hilbert spaces?",
-      "Pythagorean triples $(a,b,c)$ with $a^2 + b^2 = c^2$ are parameterized by $a = m^2-n^2$, $b = 2mn$, $c = m^2+n^2$. Can we formalize that this parameterization is complete (every primitive triple has this form) and connect it to the norm form $N(m+ni) = m^2+n^2$ in the Gaussian integers $\\mathbb{Z}[i]$?",
-      "The Pythagorean theorem fails in non-Euclidean geometries: $\\cosh c = \\cosh a \\cosh b$ (hyperbolic) and $\\cos c = \\cos a \\cos b$ (spherical). Can we formalize these analogs and show they reduce to $c^2 = a^2 + b^2$ in the flat limit (curvature → 0)?"
+      "**Partially addressed** by `pythagorean-triples`: The parameterization $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ is formalized via Mathlib. Further extended by `pythagorean-triples-oq-01` which studies the density of primitive triples. Remaining gap: connecting to the Gaussian integer norm $N(m + ni) = m^2 + n^2$ and proving the parameterization is complete (every primitive triple has this form).",
+      "**Addressed** by `pythagorean-theorem-oq-03`: Formalizes the non-Euclidean analogs — the hyperbolic Pythagorean theorem $\\cosh c = \\cosh a \\cdot \\cosh b$ and the spherical version $\\cos c = \\cos a \\cdot \\cos b$. Remaining gap: proving these reduce to $c^2 = a^2 + b^2$ in the flat limit (curvature $\\to 0$) via Taylor expansion."
     ]
   },
   "references": [
@@ -299,6 +299,11 @@
       "targetId": "fourier-series",
       "relationship": "related",
       "description": "Parseval's identity $\\|f\\|^2 = \\sum_{n=-\\infty}^{\\infty} |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for $L^2$ functions: the Fourier coefficients $\\{\\hat{f}(n)\\}$ form an orthonormal basis, and the energy splits by orthogonality exactly as $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The generalized `pythagorean_sum` in this formalization is the finite-dimensional precursor to Parseval's identity"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem ($AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ for cyclic quadrilaterals) generalizes the Pythagorean theorem: when the cyclic quadrilateral degenerates to a triangle inscribed in a semicircle (with hypotenuse as diameter), Ptolemy's relation reduces to $a^2 + b^2 = c^2$. This makes the Pythagorean theorem a special case of a broader result about cyclic geometry"
     }
   ],
   "leanFile": {
@@ -314,6 +319,48 @@
     "lineCount": 214,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 2
-  }
+    "definitionCount": 2,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 3,
+    "mainTheorems": [
+      {
+        "name": "pythagorean_theorem",
+        "type": "original",
+        "description": "For perpendicular vectors v ⊥ w: ||v + w||² = ||v||² + ||w||²",
+        "leanType": "(v w : Vec2) → v ⊥ w → ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2"
+      },
+      {
+        "name": "pythagorean_converse",
+        "type": "original",
+        "description": "If ||v + w||² = ||v||² + ||w||², then v ⊥ w",
+        "leanType": "(v w : Vec2) → ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 → v ⊥ w"
+      },
+      {
+        "name": "pythagorean_sum",
+        "type": "original",
+        "description": "Generalized Pythagorean theorem for finitely many pairwise orthogonal vectors",
+        "leanType": "{ι : Type*} → [DecidableEq ι] → {s : Finset ι} → {v : ι → Vec2} → pairwise_perp → ‖∑ i in s, v i‖^2 = ∑ i in s, ‖v i‖^2"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "pythagorean_theorem",
+      "type": "core",
+      "description": "For perpendicular vectors v and w: ||v + w||^2 = ||v||^2 + ||w||^2",
+      "leanType": "(v w : Vec2) -> v perp w -> norm(v + w)^2 = norm(v)^2 + norm(w)^2"
+    },
+    {
+      "name": "pythagorean_converse",
+      "type": "synthesis",
+      "description": "If ||v + w||^2 = ||v||^2 + ||w||^2, then v is perpendicular to w",
+      "leanType": "(v w : Vec2) -> norm(v + w)^2 = norm(v)^2 + norm(w)^2 -> v perp w"
+    },
+    {
+      "name": "pythagorean_sum",
+      "type": "key",
+      "description": "Generalized Pythagorean theorem for finitely many pairwise orthogonal vectors",
+      "leanType": "{s : Finset i} -> {v : i -> Vec2} -> pairwise_perp -> norm(sum v)^2 = sum(norm(v i)^2)"
+    }
+  ]
 }

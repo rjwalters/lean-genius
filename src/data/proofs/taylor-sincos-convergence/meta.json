@@ -246,5 +246,13 @@
     "axiomCount": 2,
     "theoremCount": 29,
     "definitionCount": 4
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "sin_taylor",
+      "type": "core",
+      "description": "Taylor series for sin(x) converges for all x",
+      "leanType": "HasSum (fun n => (-1)^n * x^(2*n+1) / (2*n+1)!) (Real.sin x)"
+    }
+  ]
 }

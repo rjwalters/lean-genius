@@ -83,7 +83,7 @@
       "startLine": 1,
       "endLine": 4,
       "summary": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (∑ notation), and Mathlib.Tactic.",
-      "mathContext": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.F"
+      "mathContext": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (∑ notation), and Mathlib.Tactic."
     },
     {
       "id": "module-docstring",
@@ -91,7 +91,7 @@
       "startLine": 6,
       "endLine": 50,
       "summary": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recurrence mirrors Pascal's identity.",
-      "mathContext": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recu"
+      "mathContext": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recurrence mirrors Pascal's identity."
     },
     {
       "id": "part1-multinomial-theorem",
@@ -107,7 +107,7 @@
       "startLine": 71,
       "endLine": 103,
       "summary": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)), multinomial_eq_binomial (2-element case equals binomial coefficient), multinomial_pos (all multinomials are positive).",
-      "mathContext": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)"
+      "mathContext": "Four properties: multinomial_spec (factorial formula: ∏k(i)!"
     },
     {
       "id": "part3-sum-identity",
@@ -131,7 +131,7 @@
       "startLine": 133,
       "endLine": 163,
       "summary": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction. Both delegate to Finset.sum_pow_eq_sum_piAntidiag to show the structure is captured.",
-      "mathContext": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction"
+      "mathContext": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction. Both delegate to Finset.sum_pow_eq_sum_piAntidiag to show the structure is captured."
     },
     {
       "id": "part6-bool-form",
@@ -139,7 +139,7 @@
       "startLine": 164,
       "endLine": 193,
       "summary": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then using sum_pair/prod_pair and h.symm.trans. binomial_from_multinomial_2vars: Direct consequence showing binomial follows from multinomial.",
-      "mathContext": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then usi"
+      "mathContext": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then using sum_pair/prod_pair and h.symm.trans."
     },
     {
       "id": "part7-examples",

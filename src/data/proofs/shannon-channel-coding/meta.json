@@ -177,5 +177,13 @@
       "venue": "Wiley, 2nd edition",
       "note": "Standard graduate textbook for information theory including all of Shannon's coding theorems"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "shannon_capacity",
+      "type": "core",
+      "description": "Reliable communication is possible at rates below channel capacity C, impossible above",
+      "leanType": "rate < capacity channel -> exists code, error_prob code < epsilon"
+    }
   ]
 }

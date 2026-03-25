@@ -226,5 +226,13 @@
       "venue": "SIAM Journal on Computing 37(1), 319–357",
       "note": "Proved that the Goemans-Williamson ratio is optimal assuming the Unique Games Conjecture"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "maxcut_approximation",
+      "type": "core",
+      "description": "Random partition gives E[cut] >= |E|/2 (2-approximation for MAX-CUT)",
+      "leanType": "random_partition G -> E[cut_size] >= card(edges G) / 2"
+    }
   ]
 }

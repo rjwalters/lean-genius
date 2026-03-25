@@ -234,6 +234,36 @@
     "lineCount": 127,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 0
-  }
+    "definitionCount": 0,
+    "substantiveTheoremCount": 2,
+    "trivialSpecializations": 5,
+    "mainTheorems": [
+      {
+        "name": "unbounded_primes",
+        "type": "original",
+        "description": "For every n, there exists a prime p > n (Euclid's proof via n!+1)",
+        "leanType": "∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n"
+      },
+      {
+        "name": "no_largest_prime",
+        "type": "bridge",
+        "description": "There is no largest prime (contrapositive of unbounded_primes)",
+        "leanType": "¬∃ p : ℕ, Nat.Prime p ∧ ∀ q : ℕ, Nat.Prime q → q ≤ p"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "unbounded_primes",
+      "type": "core",
+      "description": "For every n, there exists a prime p > n (Euclid's proof via n!+1)",
+      "leanType": "forall n : Nat, exists p : Nat, Nat.Prime p and p > n"
+    },
+    {
+      "name": "no_largest_prime",
+      "type": "bridge",
+      "description": "There is no largest prime (contrapositive of unbounded_primes)",
+      "leanType": "not (exists p : Nat, Nat.Prime p and forall q : Nat, Nat.Prime q -> q <= p)"
+    }
+  ]
 }

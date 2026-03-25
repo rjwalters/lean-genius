@@ -68,7 +68,9 @@
       "The formalization bridges discrete combinatorics (sign changes in coefficient lists) with continuous analysis (intermediate value theorem, Rolle's theorem), illustrating how Lean handles both paradigms within a single proof"
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (roots, factorization)",
+      "Real analysis (intermediate value theorem, continuity)",
+      "Combinatorics (sign changes, variations)"
     ]
   },
   "sections": [
@@ -230,6 +232,14 @@
       "year": "1999",
       "venue": "American Mathematical Monthly 106(9), 854–856",
       "note": "Elementary proof of Descartes's rule using only polynomial division and induction, avoiding Rolle's theorem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "descartes_rule",
+      "type": "core",
+      "description": "Number of positive roots <= number of sign changes in coefficients, with same parity",
+      "leanType": "positive_roots p <= sign_changes(coefficients p) and (sign_changes - positive_roots) % 2 = 0"
     }
   ]
 }

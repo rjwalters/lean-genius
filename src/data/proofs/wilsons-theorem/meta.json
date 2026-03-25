@@ -242,5 +242,19 @@
       "venue": "Springer GTM 84, 2nd edition",
       "note": "Presents Wilson's theorem in the context of the multiplicative group structure of Z/nZ, with generalizations to composite moduli and connections to quadratic residues"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "wilson_theorem",
+      "type": "core",
+      "description": "(p-1)! = -1 (mod p) for prime p",
+      "leanType": "Nat.Prime p -> (p - 1)! % p = p - 1"
+    },
+    {
+      "name": "wilson_converse",
+      "type": "key",
+      "description": "If (n-1)! = -1 (mod n), then n is prime",
+      "leanType": "(n - 1)! % n = n - 1 -> Nat.Prime n"
+    }
   ]
 }

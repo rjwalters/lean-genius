@@ -81,7 +81,7 @@
       "summary": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). Axiomatizes `additive_rat_mul` for ℚ-linearity.",
       "startLine": 40,
       "endLine": 78,
-      "mathContext": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x),"
+      "mathContext": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). Axiomatizes `additive_rat_mul` for ℚ-linearity."
     },
     {
       "id": "continuous-additive",
@@ -89,7 +89,7 @@
       "summary": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem) and `monotone_additive_is_linear` (regularity condition).",
       "startLine": 79,
       "endLine": 104,
-      "mathContext": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem) and `monotone_additive_is_linear` (regularity condition)"
+      "mathContext": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem) and `monotone_additive_is_linear` (regularity condition)."
     },
     {
       "id": "discontinuous-additive",
@@ -105,7 +105,7 @@
       "summary": "Defines `difference f h x = f(x+h) - f(x)` with `Δ[h]` notation. Defines `hasContinuousDifferences f` as ∀ h > 0, Continuous (Δ[h] f). Proves `continuous_has_continuous_differences` (sub+comp) and `additive_difference_const` (ring: Δ_h φ = φ(h)).",
       "startLine": 121,
       "endLine": 150,
-      "mathContext": "Defines `difference f h x = f(x+h) - f(x)` with `Δ[h]` notation. Defines `hasContinuousDifferences f` as ∀ h > 0, Continuous (Δ[h] f). Proves `continuous_has_continuous_differences` (sub+comp) and `ad"
+      "mathContext": "Defines `difference f h x = f(x+h) - f(x)` with `Δ[h]` notation. Defines `hasContinuousDifferences f` as ∀ h > 0, Continuous (Δ[h] f). Proves `continuous_has_continuous_differences` (sub+comp) and `additive_difference_const` (ring: Δ_h φ = φ(h))."
     },
     {
       "id": "de-bruijn-theorem",
@@ -113,7 +113,7 @@
       "summary": "Defines `hasDeBruijnDecomposition f := ∃ (g φ), Continuous g ∧ IsAdditive φ ∧ f = g + φ`. Axiomatizes `de_bruijn_theorem` (the main result). Derives `erdos_907 := de_bruijn_theorem f` (one-line proof).",
       "startLine": 151,
       "endLine": 170,
-      "mathContext": "Defines `hasDeBruijnDecomposition f := ∃ (g φ), Continuous g ∧ IsAdditive φ ∧ f = g + φ`. Axiomatizes `de_bruijn_theorem` (the main result). Derives `erdos_907 := de_bruijn_theorem f` (one-line proof)"
+      "mathContext": "Defines `hasDeBruijnDecomposition f := ∃ (g φ), Continuous g ∧ IsAdditive φ ∧ f = g + φ`. Axiomatizes `de_bruijn_theorem` (the main result). Derives `erdos_907 := de_bruijn_theorem f` (one-line proof)."
     },
     {
       "id": "decomposition-properties",
@@ -121,7 +121,7 @@
       "summary": "Axiomatizes `decomposition_unique` (unique mod linear: g₁ = g₂ + cx). Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear).",
       "startLine": 171,
       "endLine": 198,
-      "mathContext": "Axiomatizes `decomposition_unique` (unique mod linear: g₁ = g₂ + cx). Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuou"
+      "mathContext": "Axiomatizes `decomposition_unique` (unique mod linear: g₁ = g₂ + cx). Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear)."
     },
     {
       "id": "examples",
@@ -137,7 +137,7 @@
       "summary": "Axiomatizes two extensions: `bounded_differences_linear_growth` (bounded Δ_h implies at most linear growth) and `measurable_differences_decomposition` (measurable Δ_h implies measurable + additive decomposition).",
       "startLine": 226,
       "endLine": 242,
-      "mathContext": "Axiomatizes two extensions: `bounded_differences_linear_growth` (bounded Δ_h implies at most linear growth) and `measurable_differences_decomposition` (measurable Δ_h implies measurable + additive dec"
+      "mathContext": "Axiomatizes two extensions: `bounded_differences_linear_growth` (bounded Δ_h implies at most linear growth) and `measurable_differences_decomposition` (measurable Δ_h implies measurable + additive decomposition)."
     },
     {
       "id": "related",
@@ -153,7 +153,7 @@
       "summary": "The proved summary theorem `erdos_907_summary` packages: (1) de Bruijn's theorem, (2) continuous → continuous differences, (3) additive → constant differences. Proved as conjunction of the three results.",
       "startLine": 255,
       "endLine": 272,
-      "mathContext": "The proved summary theorem `erdos_907_summary` packages: (1) de Bruijn's theorem, (2) continuous → continuous differences, (3) additive → constant differences. Proved as conjunction of the three resul"
+      "mathContext": "The proved summary theorem `erdos_907_summary` packages: (1) de Bruijn's theorem, (2) continuous → continuous differences, (3) additive → constant differences. Proved as conjunction of the three results."
     }
   ],
   "conclusion": {

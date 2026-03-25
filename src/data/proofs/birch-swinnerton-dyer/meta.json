@@ -663,12 +663,14 @@
   ],
   "conclusion": {
     "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 7894 lines across 70 parts with 248 theorems/lemmas, 143 definitions, 96 structures, and 102 axiom declarations (+ 3 structure-encoded assumptions = 105 total). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), function field BSD (Tate), descent theory, Hida families, random matrix theory, BSD over totally real fields (Yuan-Zhang-Zhang), Nekovář's Selmer complexes, anticyclotomic Iwasawa theory (Castella), and computational algorithms (Cremona database). The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
-    "implications": "A proof of BSD would have profound consequences: it would provide an algorithm for computing the rank of any elliptic curve (via L-function computation), resolve the congruent number problem completely, establish finiteness of the Shafarevich-Tate group, and represent a landmark in the Langlands program connecting arithmetic and automorphic forms.",
+    "implications": "A proof of BSD would have profound consequences across number theory and beyond.\n\n**1. Algorithmic rank computation**: BSD would yield an algorithm for computing the rank of any elliptic curve $E/\\mathbb{Q}$: compute $L(E,s)$ numerically near $s=1$ and determine the order of vanishing. Currently, descent methods give upper bounds but not exact ranks, and the rank problem is not known to be decidable.\n\n**2. Congruent number problem**: A positive integer $n$ is a congruent number (area of a right triangle with rational sides) iff the curve $E_n: y^2 = x^3 - n^2 x$ has positive rank. BSD combined with Tunnell's theorem (1983) would give a complete characterization: $n$ is congruent iff $n$ is not a counterexample to a simple parity condition on the number of representations by ternary quadratic forms. This would resolve a problem studied since antiquity.\n\n**3. Finiteness of Sha**: Strong BSD implies the Shafarevich-Tate group $\\text{III}(E/\\mathbb{Q})$ is always finite — a foundational question in arithmetic geometry. The order of $\\text{III}$ appears in the leading term of $L(E,s)$ at $s=1$.\n\n**4. Langlands program**: BSD is a key instance of the broader Langlands philosophy connecting automorphic forms to Galois representations. The modularity theorem (Wiles-BCDT) establishes that $L(E,s)$ equals the L-function of a modular form, confirming one direction of this connection. A proof of BSD would demonstrate that this link extends to controlling arithmetic invariants (rank, $\\text{III}$) purely from automorphic data.\n\n**5. Bloch-Kato generalization**: BSD is the motivic weight-1 case of the Bloch-Kato conjecture, which predicts $\\text{ord}_{s=n} L(M,s)$ for general motives $M$ and integer points $n$. Progress on BSD would illuminate the general conjecture.\n\n**6. Arithmetic statistics**: Bhargava-Shankar (2015) proved that the average rank of elliptic curves over $\\mathbb{Q}$ is bounded (at most $7/6$), and Bhargava-Skinner-Zhang (2014) showed a positive proportion satisfy BSD. These results, axiomatized in this formalization, represent the strongest statistical evidence for the conjecture.",
     "openQuestions": [
-      "Is the Shafarevich-Tate group always finite? (Implied by strong BSD, wide open in general)",
-      "Can Kolyvagin's Euler system method be extended to rank >= 2?",
-      "What is the connection between BSD and the Bloch-Kato conjecture for general motives?",
-      "Can p-adic methods (Iwasawa theory) provide progress toward higher rank cases?"
+      "Is the Shafarevich-Tate group $\\text{III}(E/\\mathbb{Q})$ always finite? This is implied by strong BSD but remains wide open in general. Finiteness is known for rank $\\leq 1$ (Kolyvagin). Can Lean formalize the known finiteness results?",
+      "Can Kolyvagin's Euler system method be extended beyond rank 1? The Euler system approach proves BSD for $\\text{ord}_{s=1} L(E,s) \\leq 1$ but breaks down for higher ranks. Kato's Euler system and the Skinner-Urban approach offer partial extensions — can these be axiomatized?",
+      "Can the 21 axioms be reduced? The Mordell-Weil theorem is being formalized in Mathlib (`FintypeRatPoint`), and the Hasse bound may become a Mathlib theorem. Which axioms are closest to elimination via ongoing Mathlib development?",
+      "Can p-adic BSD (Mazur-Tate-Teitelbaum) be formalized? The $p$-adic L-function $L_p(E,s)$ satisfies an analog of BSD where the $p$-adic regulator replaces the classical regulator. The exceptional zero phenomenon at supersingular primes connects to Iwasawa theory",
+      "The average rank question: Bhargava-Shankar proved $\\text{avg}(\\text{rank}) \\leq 7/6$ and conjectured $\\text{avg}(\\text{rank}) = 1/2$. Can the Bhargava-Shankar counting methods (parametrizing 2-Selmer elements by binary quartic forms) be formalized?",
+      "Can BSD be verified for specific curves of rank $\\geq 2$ in Lean? The curve 389a ($y^2 + y = x^3 + x^2 - 2x$) has rank 2 and is the first curve where $L''(E,1) \\neq 0$ was verified numerically (by Buhler-Gross-Zagier). Formalizing this verification would extend beyond the rank $\\leq 1$ cases"
     ]
   },
   "leanFile": {
@@ -793,6 +795,14 @@
       "year": "2014",
       "venue": "Inventiones Mathematicae 195(1), 1–277",
       "note": "Proved the other divisibility of the Iwasawa Main Conjecture for elliptic curves with good ordinary reduction, completing the p-adic approach to BSD rank 0/1"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bsd_conjecture",
+      "type": "core",
+      "description": "Millennium Prize: rank of E(Q) equals order of vanishing of L(E,s) at s=1",
+      "leanType": "EllipticCurve E -> rank E(Q) = ord_{s=1} L(E,s)"
     }
   ]
 }

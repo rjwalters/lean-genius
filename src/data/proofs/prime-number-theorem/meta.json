@@ -316,6 +316,59 @@
     "lineCount": 463,
     "axiomCount": 13,
     "theoremCount": 15,
-    "definitionCount": 9
-  }
+    "definitionCount": 9,
+    "substantiveTheoremCount": 5,
+    "mainTheorems": [
+      {
+        "name": "all_formulations_equiv",
+        "type": "bridge",
+        "description": "All four PNT formulations (ratio, equivalence, error, Li) are equivalent",
+        "leanType": "PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv ∧ ..."
+      },
+      {
+        "name": "prime_asymptotic",
+        "type": "wrapper",
+        "description": "π(x) ~ x/ln(x) in the equivalence formulation",
+        "leanType": "PrimeNumberTheorem_Equiv"
+      },
+      {
+        "name": "prime_li_asymptotic",
+        "type": "wrapper",
+        "description": "π(x) ~ Li(x) in the logarithmic integral formulation",
+        "leanType": "PrimeNumberTheorem_Li"
+      },
+      {
+        "name": "prime_density_tends_to_zero",
+        "type": "wrapper",
+        "description": "The density of primes π(x)/x tends to 0",
+        "leanType": "Tendsto (fun x => primePi x / x) atTop (nhds 0)"
+      },
+      {
+        "name": "pnt_rh_error",
+        "type": "wrapper",
+        "description": "Under RH, the error |π(x) - Li(x)| = O(√x ln x)",
+        "leanType": "RiemannHypothesis → |primePi x - logIntegral x| = O(√x · ln x)"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "all_formulations_equiv",
+      "type": "bridge",
+      "description": "All four PNT formulations (ratio, equivalence, error, Li) are equivalent",
+      "leanType": "PNT_Ratio <-> PNT_Equiv and PNT_Error and PNT_Li"
+    },
+    {
+      "name": "prime_asymptotic",
+      "type": "core",
+      "description": "pi(x) ~ x/ln(x) as x -> infinity",
+      "leanType": "PrimeNumberTheorem_Equiv"
+    },
+    {
+      "name": "pnt_rh_error",
+      "type": "synthesis",
+      "description": "Under RH, |pi(x) - Li(x)| = O(sqrt(x) ln x) (von Koch)",
+      "leanType": "RiemannHypothesis -> |primePi x - logIntegral x| = O(sqrt(x) * ln(x))"
+    }
+  ]
 }

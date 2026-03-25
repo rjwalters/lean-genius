@@ -80,7 +80,7 @@
       "summary": "Defines `Graph n = SimpleGraph (Fin n)`, `maxEdges n = \\binom{n}{2}$, and two random graph models: $G(n,m)$ (exactly $m$ edges) and $G(n,p)$ (each edge independently with probability $p$). Relates them via `expectedEdges n p = p \\cdot \\binom{n}{2}$.",
       "startLine": 32,
       "endLine": 53,
-      "mathContext": "Defines `Graph n = SimpleGraph (Fin n)`, `maxEdges n = \\binom{n}{2}$, and two random graph models: $G(n,m)$ (exactly $m$ edges) and $G(n,p)$ (each edge independently with probability $p$). Relates the"
+      "mathContext": "Defines `Graph n = SimpleGraph (Fin n)`, `maxEdges n = \\binom{n}{2}$, and two random graph models: $G(n,m)$ (exactly $m$ edges) and $G(n,p)$ (each edge independently with probability $p$). Relates them via `expectedEdges n p = p \\cdot \\binom{n}{2}$."
     },
     {
       "id": "paths",
@@ -96,7 +96,7 @@
       "summary": "Defines `WithHighProbability P` and `WhpInSparseRandom c P`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N: \\Pr_{G(n, \\lfloor cn \\rfloor)}[P(G)] > 1 - \\varepsilon$. Includes `probHasProperty` (sorry — requires measure theory).",
       "startLine": 76,
       "endLine": 94,
-      "mathContext": "Defines `WithHighProbability P` and `WhpInSparseRandom c P`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N: \\Pr_{G(n, \\lfloor cn \\rfloor)}[P(G)] > 1 - \\varepsilon$. Includes `probHasProper"
+      "mathContext": "Defines `WithHighProbability P` and `WhpInSparseRandom c P`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N: \\Pr_{G(n, \\lfloor cn \\rfloor)}[P(G)] > 1 - \\varepsilon$."
     },
     {
       "id": "giant-component",
@@ -112,7 +112,7 @@
       "summary": "Defines `pathLengthFunction c` with four axioms: $\\lim_{c \\to 1/2^+} f(c) = 0$, $\\lim_{c \\to \\infty} f(c) = 1$, $f$ monotone increasing, $0 < f(c) < 1$ for $c > 1/2$. Uses `Filter.Tendsto` and `nhdsWithin`.",
       "startLine": 117,
       "endLine": 144,
-      "mathContext": "Defines `pathLengthFunction c` with four axioms: $\\lim_{c \\to 1/2^+} f(c) = 0$, $\\lim_{c \\to \\infty} f(c) = 1$, $f$ monotone increasing, $0 < f(c) < 1$ for $c > 1/2$. Uses `Filter.Tendsto` and `nhdsWi"
+      "mathContext": "Defines `pathLengthFunction c` with four axioms: $\\lim_{c \\to 1/2^+} f(c) = 0$, $\\lim_{c \\to \\infty} f(c) = 1$, $f$ monotone increasing, $0 < f(c) < 1$ for $c > 1/2$."
     },
     {
       "id": "aks-theorem",
@@ -120,7 +120,7 @@
       "summary": "Axiomatizes `aks_theorem`: $G(n, cn)$ has whp path $\\geq \\lfloor f(c)n \\rfloor$ for $c > 1/2$. States tightness (`aks_tight`) and `large_c_almost_hamiltonian` ($c > 10 \\Rightarrow f(c) > 0.99$, sorry).",
       "startLine": 145,
       "endLine": 166,
-      "mathContext": "Axiomatizes `aks_theorem`: $G(n, cn)$ has whp path $\\geq \\lfloor f(c)n \\rfloor$ for $c > 1/2$. States tightness (`aks_tight`) and `large_c_almost_hamiltonian` ($c > 10 \\Rightarrow f(c) > 0.99$, sorry)"
+      "mathContext": "Axiomatizes `aks_theorem`: $G(n, cn)$ has whp path $\\geq \\lfloor f(c)n \\rfloor$ for $c > 1/2$. States tightness (`aks_tight`) and `large_c_almost_hamiltonian` ($c > 10 \\Rightarrow f(c) > 0.99$, sorry)."
     },
     {
       "id": "special-cases",
@@ -144,7 +144,7 @@
       "summary": "Defines `IsHamiltonianPath` (path visiting all $n$ vertices). Axiomatizes `komlos_szemeredi_hamiltonian`: for $m \\geq (\\log n / 2) \\cdot n$, Hamiltonian path exists with high probability. Sharp threshold at $p \\sim (\\log n)/(2n)$.",
       "startLine": 200,
       "endLine": 223,
-      "mathContext": "Defines `IsHamiltonianPath` (path visiting all $n$ vertices). Axiomatizes `komlos_szemeredi_hamiltonian`: for $m \\geq (\\log n / 2) \\cdot n$, Hamiltonian path exists with high probability. Sharp thresh"
+      "mathContext": "Defines `IsHamiltonianPath` (path visiting all $n$ vertices). Axiomatizes `komlos_szemeredi_hamiltonian`: for $m \\geq (\\log n / 2) \\cdot n$, Hamiltonian path exists with high probability. Sharp threshold at $p \\sim (\\log n)/(2n)$."
     },
     {
       "id": "techniques",
@@ -152,7 +152,7 @@
       "summary": "Axiomatizes three AKS tools: `dfs_path_finding` (DFS finds longest path), `random_graph_expansion` ($|N(S) \\setminus S| \\geq |S|/2$ for $|S| \\leq n/2$ whp), and `rotation_extension` (Pósa's rotate-or-extend dichotomy).",
       "startLine": 224,
       "endLine": 246,
-      "mathContext": "Axiomatizes three AKS tools: `dfs_path_finding` (DFS finds longest path), `random_graph_expansion` ($|N(S) \\setminus S| \\geq |S|/2$ for $|S| \\leq n/2$ whp), and `rotation_extension` (Pósa's rotate-or-"
+      "mathContext": "Axiomatizes three AKS tools: `dfs_path_finding` (DFS finds longest path), `random_graph_expansion` ($|N(S) \\setminus S| \\geq |S|/2$ for $|S| \\leq n/2$ whp), and `rotation_extension` (Pósa's rotate-or-extend dichotomy)."
     },
     {
       "id": "main-result",
@@ -160,7 +160,7 @@
       "summary": "Defines `ErdosConjecture900` and proves `erdos_900`: witnesses $f = \\text{pathLengthFunction}$ with $\\langle \\text{f\\_limit\\_at\\_half}, \\text{f\\_limit\\_at\\_infinity}, \\text{aks\\_theorem} \\rangle$. Verified proof (no sorry in the main theorem).",
       "startLine": 247,
       "endLine": 285,
-      "mathContext": "Defines `ErdosConjecture900` and proves `erdos_900`: witnesses $f = \\text{pathLengthFunction}$ with $\\langle \\text{f\\_limit\\_at\\_half}, \\text{f\\_limit\\_at\\_infinity}, \\text{aks\\_theorem} \\rangle$. Ver"
+      "mathContext": "Defines `ErdosConjecture900` and proves `erdos_900`: witnesses $f = \\text{pathLengthFunction}$ with $\\langle \\text{f\\_limit\\_at\\_half}, \\text{f\\_limit\\_at\\_infinity}, \\text{aks\\_theorem} \\rangle$. Verified proof (no sorry in the main theorem)."
     }
   ],
   "conclusion": {

@@ -102,7 +102,7 @@
       "summary": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\log n\\}|}{x} \\to \\frac{1}{2}$)",
       "startLine": 58,
       "endLine": 73,
-      "mathContext": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\$\\log n$| < \\varepsilon \\cdot \\log\\$\\log n$$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\$\\log n$\\}|}{x} \\to \\frac{1}{2}$)"
+      "mathContext": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\log n\\}|}{x} \\to \\frac{1}{2}$)"
     },
     {
       "id": "crt-bound",
@@ -110,7 +110,7 @@
       "summary": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k$",
       "startLine": 74,
       "endLine": 89,
-      "mathContext": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k"
+      "mathContext": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k$"
     },
     {
       "id": "main-question",
@@ -174,7 +174,7 @@
       "summary": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$",
       "startLine": 205,
       "endLine": 227,
-      "mathContext": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\ra"
+      "mathContext": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$"
     }
   ],
   "conclusion": {

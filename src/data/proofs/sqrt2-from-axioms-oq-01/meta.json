@@ -58,7 +58,9 @@
       "**Prime vs irreducible distinction**: In general rings, \"prime\" (Euclid's criterion: p | ab → p | a or p | b) and \"irreducible\" (only trivial factorizations) are different properties. They coincide for ℕ (and all UFDs), but this proof reveals that it is the *prime* property—not irreducibility—that drives irrationality arguments"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Real analysis (field axioms, order axioms)",
+      "Constructive mathematics (explicit constructions vs existence)",
+      "Number theory (irrationality proofs, algebraic numbers)"
     ]
   },
   "sections": [
@@ -140,7 +142,7 @@
       "startLine": 304,
       "endLine": 365,
       "summary": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for non-prime radicands like √6",
-      "mathContext": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for "
+      "mathContext": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for non-prime radicands like √6"
     }
   ],
   "conclusion": {

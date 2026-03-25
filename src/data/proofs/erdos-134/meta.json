@@ -133,7 +133,7 @@
       "summary": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requiring paths of length ≤ 2 between all pairs, and edgeCount.",
       "startLine": 47,
       "endLine": 100,
-      "mathContext": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requir"
+      "mathContext": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requiring paths of length ≤ 2 between all pairs, and edgeCount."
     },
     {
       "id": "graph-extension",
@@ -141,7 +141,7 @@
       "summary": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, and edge budget constraints in a single existential.",
       "startLine": 101,
       "endLine": 129,
-      "mathContext": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, "
+      "mathContext": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, and edge budget constraints in a single existential."
     },
     {
       "id": "main-conjecture",
@@ -149,7 +149,7 @@
       "summary": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the budget.",
       "startLine": 130,
       "endLine": 148,
-      "mathContext": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the bu"
+      "mathContext": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the budget."
     },
     {
       "id": "historical-results",
@@ -181,7 +181,7 @@
       "summary": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization is key for probabilistic proofs.",
       "startLine": 227,
       "endLine": 246,
-      "mathContext": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization i"
+      "mathContext": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization is key for probabilistic proofs."
     },
     {
       "id": "summary",
@@ -189,7 +189,7 @@
       "summary": "Proves erdos_134_solved (conjecture follows from Alon, one-line proof) and erdos_134_main (conjunction of qualitative conjecture and quantitative O(n^{2-ε}) bound, proved by destructuring alon_theorem with obtain).",
       "startLine": 247,
       "endLine": 295,
-      "mathContext": "Proves erdos_134_solved (conjecture follows from Alon, one-line proof) and erdos_134_main (conjunction of qualitative conjecture and quantitative O(n^{2-ε}) bound, proved by destructuring alon_theorem"
+      "mathContext": "Proves erdos_134_solved (conjecture follows from Alon, one-line proof) and erdos_134_main (conjunction of qualitative conjecture and quantitative O(n^{2-ε}) bound, proved by destructuring alon_theorem with obtain)."
     }
   ],
   "conclusion": {

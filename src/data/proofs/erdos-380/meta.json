@@ -150,17 +150,27 @@
     {
       "targetId": "erdos-452",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analytic-number-theory, intervals, number-theory, prime-factors"
+      "description": "Erdős #452 concerns greatest prime factors in intervals — both problems study how $P(n)$ behaves across consecutive integers, with #380 focusing on the squared-factor condition and #452 on extremal values"
     },
     {
       "targetId": "erdos-1106",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+      "description": "Erdős #1106 studies prime factor distribution — connects through the shared analytic framework of sieve methods and smooth number estimates needed to control $P(n)$ in short intervals"
     },
     {
       "targetId": "erdos-368",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+      "description": "Erdős #368 is a closely related problem on prime factorization of consecutive products — both problems arise from Erdős's systematic study of multiplicative properties of interval products $\\prod_{m=u}^{v} m$"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "foundational",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) directly constrains bad intervals: short bad intervals $[u,v]$ with $v < 2u$ must be prime-free, so they have length at most the maximal prime gap below $2u$"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "PNT governs the distribution of primes that constrain bad interval structure. The Erdős-Graham lower bound $B(x) > x^{1-o(1)}$ and the GPF-square asymptotics both rely on prime density estimates from PNT"
     }
   ]
 }

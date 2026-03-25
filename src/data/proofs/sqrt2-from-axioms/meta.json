@@ -54,7 +54,9 @@
       "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Axiomatic real analysis (ordered field axioms, completeness)",
+      "Elementary number theory (divisibility, parity)",
+      "Logic (proof by contradiction, existence proofs)"
     ]
   },
   "sections": [
@@ -142,6 +144,14 @@
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
       "note": "The classic proof of irrationality of √2 from the unique factorization of integers"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sqrt2_exists",
+      "type": "core",
+      "description": "Existence of sqrt(2) from field axioms and completeness",
+      "leanType": "exists x : R, x > 0 and x * x = 2"
     }
   ]
 }

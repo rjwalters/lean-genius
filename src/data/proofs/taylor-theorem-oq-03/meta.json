@@ -120,7 +120,7 @@
       "startLine": 96,
       "endLine": 157,
       "summary": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze theorem.",
-      "mathContext": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze "
+      "mathContext": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze theorem."
     },
     {
       "id": "convergence",
@@ -128,7 +128,7 @@
       "startLine": 158,
       "endLine": 199,
       "summary": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term.",
-      "mathContext": "Convergence: $S_n(x) \\to e^x$ as $n \\to \\infty$, yielding the identity $e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$ by uniqueness of limits (partial sums converge to both $e^x$ and the infinite series)."
+      "mathContext": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term."
     },
     {
       "id": "euler-computation",
@@ -144,7 +144,7 @@
       "startLine": 240,
       "endLine": 268,
       "summary": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp and (x-xi)^n <= x^n.",
-      "mathContext": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp "
+      "mathContext": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp and (x-xi)^n <= x^n."
     }
   ],
   "conclusion": {

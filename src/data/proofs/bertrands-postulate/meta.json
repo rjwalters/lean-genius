@@ -233,5 +233,25 @@
       "venue": "Proceedings of the Japan Academy 28(4), 177–181",
       "note": "Strengthened Bertrand: for n > 25, there is always a prime between n and 6n/5, reducing the gap ratio from 2 to 1.2"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bertrand_postulate",
+      "type": "wrapper",
+      "description": "Bertrand's postulate: for n ≥ 1, ∃ prime p with n < p ≤ 2n",
+      "leanType": "(n : ℕ) → 0 < n → ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n"
+    },
+    {
+      "name": "prime_gap_bounded",
+      "type": "original",
+      "description": "Prime gaps are bounded: the next prime after p is at most 2p",
+      "leanType": "(p : ℕ) → Nat.Prime p → ∃ q, Nat.Prime q ∧ p < q ∧ q ≤ 2 * p"
+    },
+    {
+      "name": "primes_infinite_via_bertrand",
+      "type": "original",
+      "description": "Infinitude of primes as a corollary of Bertrand's postulate",
+      "leanType": "∀ n : ℕ, ∃ p, Nat.Prime p ∧ p > n"
+    }
   ]
 }

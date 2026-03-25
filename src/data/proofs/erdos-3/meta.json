@@ -87,7 +87,7 @@
       "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
       "startLine": 33,
       "endLine": 58,
-      "mathContext": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum vi"
+      "mathContext": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable)."
     },
     {
       "id": "roth-number",
@@ -95,7 +95,7 @@
       "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
       "startLine": 59,
       "endLine": 70,
-      "mathContext": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = "
+      "mathContext": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$."
     },
     {
       "id": "conjecture",
@@ -111,7 +111,7 @@
       "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
       "startLine": 82,
       "endLine": 114,
-      "mathContext": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Len"
+      "mathContext": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$)."
     },
     {
       "id": "gap",
@@ -119,7 +119,7 @@
       "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
       "startLine": 115,
       "endLine": 135,
-      "mathContext": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjectu"
+      "mathContext": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation)."
     },
     {
       "id": "constructions",

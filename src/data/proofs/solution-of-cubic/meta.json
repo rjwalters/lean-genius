@@ -79,7 +79,9 @@
       "**Omega Primitivity**: Proving ω ≠ 1 requires extracting sin(2π/3) = √3/2 from the complex exponential — the most technically demanding proof in the file, using `exp_mul_I` and `positivity`."
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (depressed cubic, resolvent equations)",
+      "Complex analysis (cube roots, Cardano's formula)",
+      "History of mathematics (Tartaglia, Cardano, Ferrari)"
     ]
   },
   "leanFile": {
@@ -223,6 +225,14 @@
       "year": "1985",
       "venue": "Springer",
       "note": "Detailed historical account of the dramatic priority dispute between Cardano and Tartaglia over the cubic formula"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cardano_formula",
+      "type": "core",
+      "description": "Cardano's formula for roots of depressed cubic t^3 + pt + q = 0",
+      "leanType": "t^3 + p*t + q = 0 -> t = cbrt(-q/2 + sqrt(q^2/4 + p^3/27)) + cbrt(-q/2 - sqrt(q^2/4 + p^3/27))"
     }
   ]
 }

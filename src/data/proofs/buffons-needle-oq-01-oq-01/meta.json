@@ -89,7 +89,9 @@
       "This resolves the open question in BuffonsNoodle.lean: the axiomatic smooth case can be replaced by this concrete proof"
     ],
     "prerequisites": [
-      "Probability theory"
+      "Probability theory (geometric probability, Crofton's formula)",
+      "Integral geometry (kinematic formula, measure on lines)",
+      "Real analysis (integration on manifolds)"
     ]
   },
   "sections": [
@@ -195,7 +197,7 @@
     ],
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 2
   }

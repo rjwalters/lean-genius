@@ -75,7 +75,7 @@
       "startLine": 38,
       "endLine": 60,
       "summary": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is open.",
-      "mathContext": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is op"
+      "mathContext": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is open."
     },
     {
       "id": "existence-prime-power-orders",
@@ -91,7 +91,7 @@
       "startLine": 75,
       "endLine": 87,
       "summary": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10.",
-      "mathContext": "Axiomatized: Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
+      "mathContext": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
     },
     {
       "id": "bruck-ryser-theorem",
@@ -99,7 +99,7 @@
       "startLine": 88,
       "endLine": 104,
       "summary": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22.",
-      "mathContext": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders in"
+      "mathContext": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22."
     },
     {
       "id": "lam-order-10",
@@ -139,7 +139,7 @@
       "startLine": 169,
       "endLine": 187,
       "summary": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists.",
-      "mathContext": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 pla"
+      "mathContext": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists."
     }
   ],
   "conclusion": {

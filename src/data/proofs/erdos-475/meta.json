@@ -101,7 +101,7 @@
       "startLine": 47,
       "endLine": 60,
       "summary": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$.",
-      "mathContext": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjec"
+      "mathContext": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$."
     },
     {
       "id": "small-cases",
@@ -109,7 +109,7 @@
       "startLine": 69,
       "endLine": 78,
       "summary": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and theoretical reductions.",
-      "mathContext": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and th"
+      "mathContext": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom."
     },
     {
       "id": "large-cases",
@@ -117,7 +117,7 @@
       "startLine": 87,
       "endLine": 99,
       "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice.",
-      "mathContext": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the"
+      "mathContext": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice."
     },
     {
       "id": "logarithmic",
@@ -133,7 +133,7 @@
       "startLine": 128,
       "endLine": 132,
       "summary": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$.",
-      "mathContext": "Axiomatized: Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$."
+      "mathContext": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$."
     },
     {
       "id": "alspach",
@@ -141,7 +141,7 @@
       "startLine": 141,
       "endLine": 149,
       "summary": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions.",
-      "mathContext": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by"
+      "mathContext": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions."
     },
     {
       "id": "constructive",
@@ -149,7 +149,7 @@
       "startLine": 158,
       "endLine": 170,
       "summary": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive proof.",
-      "mathContext": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive "
+      "mathContext": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive proof."
     },
     {
       "id": "summary",
@@ -157,7 +157,7 @@
       "startLine": 192,
       "endLine": 209,
       "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN.",
-      "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ rem"
+      "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN."
     }
   ],
   "conclusion": {

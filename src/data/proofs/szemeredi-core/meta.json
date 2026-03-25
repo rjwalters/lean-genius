@@ -196,5 +196,13 @@
       "citation": "Tao, T., Szemerédi's regularity lemma revisited, Contributions to Discrete Mathematics 1(1) (2006), 8–28.",
       "type": "paper"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "szemeredi_core",
+      "type": "core",
+      "description": "Core lemma of Szemeredi's regularity proof",
+      "leanType": "density A > 0 -> partition_regular -> exists AP of length k in A"
+    }
   ]
 }

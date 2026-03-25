@@ -65,7 +65,9 @@
       "The Riemann series theorem shows that rearranging conditionally convergent series can give ANY result - so manipulations must be carefully justified."
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (divergent series, Cesaro summation)",
+      "Analytic number theory (Riemann zeta function, analytic continuation)",
+      "Regularization methods (Abel summation, Ramanujan summation)"
     ]
   },
   "sections": [
@@ -196,6 +198,14 @@
       "year": "1949",
       "venue": "Oxford University Press",
       "note": "Rigorous treatment of summability methods that give meaning to divergent series like Ramanujan's"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ramanujan_sum",
+      "type": "core",
+      "description": "The Ramanujan/zeta regularization: 1+2+3+... 'equals' -1/12",
+      "leanType": "riemannZeta (-1) = -1/12"
     }
   ]
 }

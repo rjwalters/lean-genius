@@ -241,5 +241,13 @@
       "relationship": "thematic",
       "description": "Both are foundational results about planar geometric/combinatorial structures: the four-color theorem concerns graph coloring on the plane, while Desargues's theorem concerns projective configurations — both involve deep structural analysis"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "desargues_theorem",
+      "type": "core",
+      "description": "If two triangles are in perspective from a point, they are in perspective from a line",
+      "leanType": "perspective_from_point T1 T2 O -> perspective_from_line T1 T2"
+    }
   ]
 }

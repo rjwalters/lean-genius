@@ -102,7 +102,7 @@
       "startLine": 36,
       "endLine": 52,
       "summary": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduces notation `R(s, t)`.",
-      "mathContext": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduce"
+      "mathContext": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$."
     },
     {
       "id": "section-2",
@@ -110,7 +110,7 @@
       "startLine": 53,
       "endLine": 123,
       "summary": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors.",
-      "mathContext": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` p"
+      "mathContext": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors."
     },
     {
       "id": "section-3",
@@ -150,7 +150,7 @@
       "startLine": 198,
       "endLine": 233,
       "summary": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$.",
-      "mathContext": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the s"
+      "mathContext": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$."
     },
     {
       "id": "section-8",
@@ -158,7 +158,7 @@
       "startLine": 234,
       "endLine": 285,
       "summary": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem.",
-      "mathContext": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is "
+      "mathContext": "`logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem."
     }
   ],
   "conclusion": {

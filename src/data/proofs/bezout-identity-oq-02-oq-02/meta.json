@@ -94,7 +94,7 @@
       "startLine": 3,
       "endLine": 52,
       "summary": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime.",
-      "mathContext": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime"
+      "mathContext": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime."
     },
     {
       "id": "euclids-ring",
@@ -110,7 +110,7 @@
       "startLine": 82,
       "endLine": 136,
       "summary": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_coprime_iff: complete equivalence. euclids_lemma_isbezout: applies both.",
-      "mathContext": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_c"
+      "mathContext": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_coprime_iff: complete equivalence. euclids_lemma_isbezout: applies both."
     },
     {
       "id": "euclidean-version",

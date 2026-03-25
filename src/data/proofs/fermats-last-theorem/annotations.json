@@ -17,7 +17,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Imports `FLT.Basic` (the predicate $\\text{FermatLastTheoremFor}(n)$: $\\forall a,b,c \\in \\mathbb{Z} \\setminus \\{0\\},\\; a^n + b^n \\neq c^n$), `FLT.Four` (Fermat's descent proof of the $n=4$ case via $x^4+y^4 \\neq z^2$), and `FLT.Three` (Euler's proof of $n=3$ via the Eisenstein integers $\\mathbb{Z}[\\omega]$)."
   },
   {
     "id": "ann-flt-history",

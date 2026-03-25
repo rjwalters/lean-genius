@@ -38,7 +38,8 @@
       "**Sieve-theoretic approach**: Tao's proof uses the Selberg sieve to control the number of integers with prescribed totient value ranges, converting the combinatorial problem into an analytic one about the distribution of $\\varphi$-values"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Analysis (asymptotic estimates, generating functions)",
+      "Number theory (prime distribution, arithmetic functions)"
     ]
   },
   "sections": [
@@ -56,7 +57,7 @@
       "startLine": 20,
       "endLine": 32,
       "summary": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing totient}\\}$.",
-      "mathContext": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing tot"
+      "mathContext": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing totient}\\}$."
     },
     {
       "id": "prime-counting",

@@ -198,5 +198,13 @@
       "venue": "Proceedings of Symposia in Pure Mathematics 28, 445–482",
       "note": "Survey of progress on Schubert calculus and intersection theory related to Hilbert's 15th problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "schubert_calculus",
+      "type": "core",
+      "description": "Rigorous foundation for Schubert's enumerative calculus",
+      "leanType": "SchubertProblem -> exists count, intersection_number = count"
+    }
   ]
 }

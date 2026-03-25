@@ -68,7 +68,8 @@
       "Perfect squares ($1, 4, 9, 16, ...$) have all primes appearing to even multiplicity—that's why their square roots are rational."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Elementary number theory (divisibility, prime factorization)",
+      "Logic (proof by contradiction, well-ordering)"
     ]
   },
   "sections": [
@@ -221,5 +222,13 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "sqrt2_irrational",
+      "type": "core",
+      "description": "The square root of 2 is irrational",
+      "leanType": "Irrational (Real.sqrt 2)"
+    }
+  ]
 }

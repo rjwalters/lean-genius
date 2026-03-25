@@ -203,5 +203,13 @@
       "venue": "MAA Carus Mathematical Monographs 26",
       "note": "Modern treatment of quadratic forms including the four-square theorem from the perspective of lattices, quaternions, and the Hurwitz integers"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lagrange_four_squares",
+      "type": "core",
+      "description": "Every natural number is a sum of four squares",
+      "leanType": "(n : Nat) -> exists a b c d : Int, n = a^2 + b^2 + c^2 + d^2"
+    }
   ]
 }

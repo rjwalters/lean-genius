@@ -93,7 +93,7 @@
       "startLine": 42,
       "endLine": 59,
       "summary": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle` ($f(e^{i\\theta})$).",
-      "mathContext": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle`"
+      "mathContext": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle` ($f(e^{i\\theta})$)."
     },
     {
       "id": "scaling",
@@ -109,7 +109,7 @@
       "startLine": 79,
       "endLine": 87,
       "summary": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the exact constant.",
-      "mathContext": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the ex"
+      "mathContext": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability."
     },
     {
       "id": "erdos-question",
@@ -141,7 +141,7 @@
       "startLine": 148,
       "endLine": 164,
       "summary": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms.",
-      "mathContext": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L"
+      "mathContext": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms."
     },
     {
       "id": "littlewood",
@@ -149,7 +149,7 @@
       "startLine": 170,
       "endLine": 183,
       "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$).",
-      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\app"
+      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
     },
     {
       "id": "bounds",
@@ -157,7 +157,7 @@
       "startLine": 189,
       "endLine": 203,
       "summary": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: chaining for upper, second moment for lower.",
-      "mathContext": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: ch"
+      "mathContext": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.)."
     },
     {
       "id": "related",

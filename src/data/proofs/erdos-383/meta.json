@@ -88,7 +88,7 @@
       "summary": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p.",
       "startLine": 34,
       "endLine": 52,
-      "mathContext": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` con"
+      "mathContext": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p."
     },
     {
       "id": "product",
@@ -104,7 +104,7 @@
       "summary": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p².",
       "startLine": 82,
       "endLine": 104,
-      "mathContext": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good si"
+      "mathContext": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p²."
     },
     {
       "id": "conjecture",
@@ -120,7 +120,7 @@
       "summary": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). Axiomatizes `positive_density_smooth`: √n-smooth numbers have positive asymptotic density.",
       "startLine": 122,
       "endLine": 138,
-      "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). Axiomatizes `positive_density_smooth`: √n-smooth numbers have positi"
+      "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). Axiomatizes `positive_density_smooth`: √n-smooth numbers have positive asymptotic density."
     },
     {
       "id": "problem382",
@@ -128,7 +128,7 @@
       "summary": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382.",
       "startLine": 139,
       "endLine": 151,
-      "mathContext": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the"
+      "mathContext": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382."
     },
     {
       "id": "smooth",
@@ -136,7 +136,7 @@
       "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u).",
       "startLine": 152,
       "endLine": 175,
-      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x"
+      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u)."
     },
     {
       "id": "heuristic",

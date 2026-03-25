@@ -81,7 +81,7 @@
       "summary": "Imports `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `Matrix.cramer`, `mulVec_cramer`, `mul_adjugate`) and `Mathlib.Tactic` for proof automation. The module docstring explains the general identity $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ and the classical formula $x_i = \\det(A_i)/\\det(A)$.",
       "startLine": 1,
       "endLine": 51,
-      "mathContext": "Imports `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `Matrix.cramer`, `mulVec_cramer`, `mul_adjugate`) and `Mathlib.Tactic` for proof automation. The module docstring explains the general identi"
+      "mathContext": "The module docstring explains the general identity $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ and the classical formula $x_i = \\det(A_i)/\\det(A)$."
     },
     {
       "id": "setup",
@@ -89,7 +89,7 @@
       "summary": "Opens the `CramersRule` namespace, declares universe-polymorphic variables: $n$ with `DecidableEq` and `Fintype` (enabling finite sums for the Leibniz determinant formula $\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma)\\prod_i A_{i,\\sigma(i)}$), and $R$ as a `CommRing` (providing $+$, $\\times$, $0$, $1$, $-$).",
       "startLine": 52,
       "endLine": 58,
-      "mathContext": "Opens the `CramersRule` namespace, declares universe-polymorphic variables: $n$ with `DecidableEq` and `Fintype` (enabling finite sums for the Leibniz determinant formula $\\det(A) = \\sum_{\\sigma \\in S"
+      "mathContext": "Opens the `CramersRule` namespace, declares universe-polymorphic variables: $n$ with `DecidableEq` and `Fintype` (enabling finite sums for the Leibniz determinant formula $\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma)\\prod_i A_{i,\\sigma(i)}$), and $R$ as a `CommRing` (providing $+$, $\\times$, $0$, $1$, $-$)."
     },
     {
       "id": "cramer-map",
@@ -129,7 +129,7 @@
       "summary": "Proves additivity ($\\text{cramer}(A,b+c) = \\text{cramer}(A,b) + \\text{cramer}(A,c)$), homogeneity ($\\text{cramer}(A,rb) = r \\cdot \\text{cramer}(A,b)$), and zero-preservation using Mathlib's `LinearMap` API.",
       "startLine": 122,
       "endLine": 140,
-      "mathContext": "Proves additivity ($\\text{cramer}(A,b+c) = \\text{cramer}(A,b) + \\text{cramer}(A,c)$), homogeneity ($\\text{cramer}(A,rb) = r \\cdot \\text{cramer}(A,b)$), and zero-preservation using Mathlib's `LinearMap"
+      "mathContext": "Proves additivity ($\\text{cramer}(A,b+c) = \\text{cramer}(A,b) + \\text{cramer}(A,c)$), homogeneity ($\\text{cramer}(A,rb) = r \\cdot \\text{cramer}(A,b)$), and zero-preservation using Mathlib's `LinearMap` API."
     },
     {
       "id": "example-2x2",
@@ -243,6 +243,14 @@
       "year": "1968",
       "venue": "Mathematics of Computation",
       "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cramers_rule",
+      "type": "core",
+      "description": "x_i = det(A_i)/det(A) where A_i replaces column i of A with b",
+      "leanType": "det A != 0 -> A.mulVec x = b -> x i = det (A.updateColumn i b) / det A"
     }
   ]
 }

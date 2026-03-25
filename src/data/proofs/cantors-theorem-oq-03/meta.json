@@ -77,6 +77,11 @@
       "The diagonal argument works on ANY structure with a fixed-point-free endomorphism: successor on ℕ gives non-enumerability of ℕ→ℕ, while negation on Bool gives Cantor's original result",
       "König ⟹ Coordinate ⟹ Lawvere: the hierarchy is proved by specialization — König with constant types gives Coordinate, Coordinate with uniform g gives Lawvere",
       "König's inequality Σ κᵢ < Π λᵢ is exactly the heterogeneous diagonal: the column at index i maps κᵢ elements into λᵢ > κᵢ, guaranteeing a dodge. Cantor's κ < 2^κ is the case κᵢ = 1, λᵢ = 2"
+    ],
+    "prerequisites": [
+      "Set theory (power sets, cardinality, injections/surjections)",
+      "Cardinal arithmetic (cardinal exponentiation, cofinality)",
+      "Mathematical logic (diagonal arguments, fixed-point theorems)"
     ]
   },
   "sections": [

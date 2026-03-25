@@ -200,5 +200,13 @@
       "venue": "Cambridge University Press",
       "note": "Historical context of the Leibniz-Gregory-Madhava series and its predecessors in Indian mathematics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "leibniz_formula",
+      "type": "core",
+      "description": "pi/4 = 1 - 1/3 + 1/5 - 1/7 + ... (Leibniz series)",
+      "leanType": "HasSum (fun n => (-1)^n / (2*n+1)) (Real.pi / 4)"
+    }
   ]
 }

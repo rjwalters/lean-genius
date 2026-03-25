@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-03-24",
-    "status": "axiomatized",
+    "status": "formalized",
     "tags": [
       "algebra",
       "galois-theory",
@@ -24,7 +24,7 @@
       "Proofs/InverseGaloisA5.lean",
       "Proofs/AbelRuffiniOQ04OQ01.lean"
     ],
-    "badge": "axiom",
+    "badge": "formalized",
     "sorries": 1,
     "axiomCount": 0,
     "prerequisites": [
@@ -32,12 +32,12 @@
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Imports InverseGaloisA5.lean (1 axiom: three_dvd_gal_card) and AbelRuffiniOQ04OQ01.lean (2 axioms: three_dvd_gal_card, gal_has_odd_perm) for the census theorem.",
+    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem now sorry-free via imports of InverseGaloisA5.lean (1 axiom: Dedekind) and AbelRuffiniOQ04OQ01.lean (2 axioms: Dedekind). Commutator theorem [S5,S5]=A5 fully proved.",
     "leanFile": {
-      "lineCount": 591,
-      "theoremCount": 39,
+      "lineCount": 723,
+      "theoremCount": 47,
       "lemmaCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "axiomCount": 0,
       "sorryCount": 1,
       "imports": [
@@ -46,7 +46,7 @@
         "Proofs.InverseGaloisA5",
         "Proofs.AbelRuffiniOQ04OQ01"
       ],
-      "note": "Key results: sn_solvable_iff (Sn solvable iff n<=4), a5_simple, a5_commutator_eq_top (A5 is perfect), finrank_over_fixed_field ([K:K^H]=|H|), finrank_fixed_field_over_base ([K^H:F]=[G:H]), cayley_card (Cayley embedding), inverse_galois_conjecture (open problem). Census of 18+ explicitly realized groups."
+      "note": "Key results: sn_solvable_iff, an_solvable_iff, a5_simple, a5_commutator_eq_top, s5_commutator_eq_alternating ([S5,S5]=A5), finrank_over_fixed_field, finrank_fixed_field_over_base, cayley_card, nonsolvable_realized_orders (sorry-free census), inverse_galois_conjecture (open). Census of 18+ explicitly realized groups."
     },
     "relatedProblems": [
       {
@@ -54,7 +54,7 @@
         "relationship": "Parent entry stating the Inverse Galois Problem and axiomatizing Shafarevich's theorem for solvable groups"
       }
     ],
-    "lineCount": 591,
+    "lineCount": 723,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -172,6 +172,22 @@
       "endLine": 448,
       "summary": "Cayley's theorem (`cayley_card`): every finite group $G$ embeds into $S_{|G|}$ via the left-regular representation $g \\mapsto (x \\mapsto gx)$. Proof uses `MulAction.toPermHom` with injectivity from the identity element. Followed by `#check` verification of all key results.",
       "mathContext": "Cayley's theorem ($G \\hookrightarrow S_{|G|}$) implies that realizing all symmetric groups over $\\mathbb{Q}$ is a necessary condition for the Inverse Galois Problem. However, it is not sufficient: embedding $G \\hookrightarrow S_n$ does not automatically yield a Galois extension with group $G$ (one needs $G$ as a quotient, not just a subgroup, of a realizable group)."
+    },
+    {
+      "id": "alternating-solvability",
+      "title": "Alternating Group Solvability Characterization",
+      "startLine": 449,
+      "endLine": 482,
+      "summary": "Proves A_n is not solvable for n >= 5 via the exact sequence 1 -> A_n -> S_n -> C_2 -> 1. Proves the biconditional: A_n is solvable iff n <= 4.",
+      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Proof via $1 \\to A_n \\to S_n \\to C_2 \\to 1$: solvability of $A_n$ and $C_2$ would force solvability of $S_n$."
+    },
+    {
+      "id": "quotient-realizability",
+      "title": "Quotient Realizability via FTGT",
+      "startLine": 483,
+      "endLine": 591,
+      "summary": "Proves the fundamental structural theorem: every quotient of a realized Galois group is realized. Given K/F Galois with Gal(K/F) = G and normal H, the fixed field K^H is Galois over F with Gal(K^H/F) isomorphic to G/H.",
+      "mathContext": "FTGT quotient realizability: $\\text{Gal}(K/F) = G, H \\trianglelefteq G \\Rightarrow \\text{Gal}(K^H/F) \\cong G/H$. Consequence: realizing $G$ automatically realizes all quotients $G/H$."
     }
   ],
   "conclusion": {

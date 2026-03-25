@@ -172,5 +172,13 @@
       "venue": "Cambridge University Press, Vol. I",
       "note": "The famous proof that 1+1=2 (Proposition *110.643) — several hundred pages of logical foundations to establish basic arithmetic"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "one_plus_one",
+      "type": "core",
+      "description": "1 + 1 = 2 proved from Peano axioms / type-theoretic foundations",
+      "leanType": "1 + 1 = 2"
+    }
   ]
 }

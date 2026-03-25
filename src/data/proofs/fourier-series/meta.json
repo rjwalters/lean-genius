@@ -93,7 +93,9 @@
       "**Uniqueness from completeness**: If $f$ and $g$ have the same Fourier coefficients, their Fourier series converge to the same limit, so $f = g$ in $L^2$. The proof uses `HasSum.unique`."
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (integration, L^2 spaces, convergence)",
+      "Linear algebra (inner product spaces, orthogonality, projections)",
+      "Trigonometry (periodic functions, trigonometric identities)"
     ]
   },
   "sections": [
@@ -255,6 +257,20 @@
       "year": "1966",
       "venue": "Acta Mathematica 116, pp. 135-157",
       "note": "Proved pointwise convergence of Fourier series for L² functions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fourier_convergence",
+      "type": "core",
+      "description": "L2 convergence of Fourier series for square-integrable functions",
+      "leanType": "f in L2 -> Tendsto (fun N => norm(f - S_N f)) atTop (nhds 0)"
+    },
+    {
+      "name": "parseval_theorem",
+      "type": "key",
+      "description": "Parseval's theorem: ||f||^2 = sum |c_n|^2",
+      "leanType": "integral |f|^2 = sum n, |fourierCoeff f n|^2"
     }
   ]
 }

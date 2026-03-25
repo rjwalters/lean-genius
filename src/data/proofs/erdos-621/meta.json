@@ -58,7 +58,7 @@
       "summary": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleSparse` (at most one edge per triangle).",
       "startLine": 35,
       "endLine": 59,
-      "mathContext": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleS"
+      "mathContext": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleSparse` (at most one edge per triangle)."
     },
     {
       "id": "structural-lemmas",
@@ -66,7 +66,7 @@
       "summary": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges to $E(G)$ (`triangle_edges_in_graph`).",
       "startLine": 60,
       "endLine": 83,
-      "mathContext": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges"
+      "mathContext": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges to $E(G)$ (`triangle_edges_in_graph`)."
     },
     {
       "id": "tau1-alpha1",
@@ -74,7 +74,7 @@
       "summary": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse subsets of $E(G)$ (via `Finset.sup'`). Well-definedness relies on the structural lemmas from Part II.",
       "startLine": 84,
       "endLine": 107,
-      "mathContext": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse sub"
+      "mathContext": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse subsets of $E(G)$ (via `Finset.sup'`). Well-definedness relies on the structural lemmas from Part II."
     },
     {
       "id": "bipartite-removal",
@@ -90,7 +90,7 @@
       "summary": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all triangles.",
       "startLine": 121,
       "endLine": 145,
-      "mathContext": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all t"
+      "mathContext": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all triangles."
     },
     {
       "id": "main-conjecture",
@@ -98,7 +98,7 @@
       "summary": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows from Norin-Sun via $\\tau_1 \\le \\tau_B$ and `linarith`.",
       "startLine": 146,
       "endLine": 170,
-      "mathContext": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows f"
+      "mathContext": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows from Norin-Sun via $\\tau_1 \\le \\tau_B$ and `linarith`."
     },
     {
       "id": "triangle-free",
@@ -106,7 +106,7 @@
       "summary": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$ for triangle-free $G$) and derives `triangle_free_egt`.",
       "startLine": 171,
       "endLine": 230,
-      "mathContext": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$"
+      "mathContext": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$ for triangle-free $G$) and derives `triangle_free_egt`."
     },
     {
       "id": "bounds",

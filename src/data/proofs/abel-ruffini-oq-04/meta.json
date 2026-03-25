@@ -111,6 +111,11 @@
       "targetId": "kummer-theorem",
       "relationship": "foundational",
       "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their Galois groups are solvable — connecting the algebraic notion of radical solvability to the group-theoretic notion of solvability"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "extended-by",
+      "description": "Completes the proof chain with a concrete witness: proves Gal(x^5 - 4x + 2 / Q) = S_5 and that this specific polynomial is unsolvable by radicals, instantiating the abstract group-theoretic chain proved here"
     }
   ],
   "overview": {
@@ -200,7 +205,7 @@
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
       "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
       "Formalize Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable",
-      "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction",
+      "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction — note that the companion entry abel-ruffini-oq-04-oq-01 already provides a concrete *unsolvable* quintic (x⁵ - 4x + 2 with Gal = S₅), so the solvable counterpart would complete the picture",
       "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
       "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini",
       "Formalize the Bring-Jerrard reduction: every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations, and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the impossibility is specifically about the four arithmetic radicals, not about closed-form solutions in general"

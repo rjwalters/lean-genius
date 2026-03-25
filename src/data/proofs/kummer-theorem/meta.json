@@ -200,5 +200,13 @@
       "venue": "Journal für die reine und angewandte Mathematik 44, 93–146",
       "note": "Contains Kummer's theorem on the p-adic valuation of binomial coefficients in terms of carries in base-p addition"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kummer_theorem",
+      "type": "core",
+      "description": "The p-adic valuation of C(m+n,m) equals the number of carries when adding m and n in base p",
+      "leanType": "padic_val p (choose (m+n) m) = carries p m n"
+    }
   ]
 }

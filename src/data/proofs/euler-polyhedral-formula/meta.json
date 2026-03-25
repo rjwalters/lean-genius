@@ -186,6 +186,27 @@
       "year": "1976",
       "venue": "Cambridge University Press",
       "note": "Famous philosophical analysis of the history and proof of Euler's formula, using it to illustrate the nature of mathematical discovery"
+    },
+    {
+      "authors": "Richeson, David S.",
+      "title": "Euler's Gem: The Polyhedron Formula and the Birth of Topology",
+      "year": "2008",
+      "venue": "Princeton University Press",
+      "note": "Comprehensive history of Euler's formula from its discovery through its role in founding topology. Covers Descartes' anticipation, Euler's proof, Cauchy's rigorous version, and the generalization to the Euler characteristic of surfaces and manifolds"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Recherches sur les polyèdres",
+      "year": "1813",
+      "venue": "Journal de l'École Polytechnique, vol. 9, pp. 68–86",
+      "note": "First rigorous proof of Euler's formula, using the method of removing faces one at a time while tracking V - E + F. This 'shelling' argument became the standard proof technique and established the formula's topological (rather than merely geometric) nature"
+    },
+    {
+      "authors": "Cromwell, Peter R.",
+      "title": "Polyhedra",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Detailed mathematical treatment of polyhedra including multiple proofs of Euler's formula, its generalizations to non-convex polyhedra and higher-dimensional polytopes, and connections to graph planarity via Kuratowski's theorem"
     }
   ],
   "crossReferences": [
@@ -203,6 +224,26 @@
       "targetId": "platonic-solids",
       "relationship": "related",
       "description": "Euler's formula constrains the possible regular polyhedra: combining $V - E + F = 2$ with regularity conditions ($p$ faces meet at each vertex, each face has $q$ edges) yields only 5 solutions — the Platonic solids."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Both are 'Euler formulas' connecting fundamental mathematical objects. Euler's identity $e^{i\\pi} + 1 = 0$ bridges analysis and algebra; the polyhedral formula $V - E + F = 2$ bridges combinatorics and topology. Both reveal deep structural constraints — the identity relates five fundamental constants, the polyhedral formula constrains the combinatorics of surfaces."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees every polynomial of degree $n$ has $n$ roots in $\\mathbb{C}$, which is equivalent to the fact that $\\mathbb{C}$ has Euler characteristic 0 (as a Riemann surface). The Euler characteristic $\\chi = V - E + F$ generalizes from polyhedra to all surfaces: $\\chi(S^2) = 2$ (Euler's formula), $\\chi(\\mathbb{T}^2) = 0$ (torus), $\\chi(S_g) = 2 - 2g$ (genus $g$). FTA's root count is constrained by $\\chi$ via the Riemann-Hurwitz formula."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and Euler's polyhedral formula both connect geometry to combinatorics/analysis. The Gauss-Bonnet theorem unifies them: for a surface $S$, $\\int_S K\\,dA = 2\\pi\\chi(S)$, where $K$ is Gaussian curvature and $\\chi$ is the Euler characteristic. For the sphere, $\\chi = 2$ gives $\\int K\\,dA = 4\\pi$ — recovering the surface area $4\\pi r^2$. Euler's discrete formula $V - E + F = 2$ is the combinatorial version."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "Both are graph-theoretic results where simple counting constraints force global structure. Euler's formula constrains edge/face/vertex counts of planar graphs (average degree $< 6$); the friendship theorem forces a universal vertex from a local common-neighbor condition. The friendship theorem's spectral proof uses eigenvalue analysis that parallels spectral approaches to the Euler characteristic."
     }
   ],
   "leanFile": {
@@ -225,5 +266,13 @@
     "axiomCount": 1,
     "theoremCount": 65,
     "definitionCount": 27
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_formula",
+      "type": "core",
+      "description": "V - E + F = 2 for convex polyhedra",
+      "leanType": "convex_polyhedron P -> vertices P - edges P + faces P = 2"
+    }
+  ]
 }

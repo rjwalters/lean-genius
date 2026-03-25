@@ -55,7 +55,7 @@
       "summary": "Imports Mathlib modules for ODEs (`ODE.Gronwall`, `ODE.PicardLindelof`), calculus (`ContDiff`, `Deriv`), topology (`MetricSpace`, `PathConnected`, `Bornology`), polynomials (`Polynomial.Basic`, `MvPolynomial`), linear algebra (`Matrix`, `Eigenspace`), and set cardinality (`Set.Card`). Opens `Topology`, `BigOperators`, `Set`, `Filter`, `Polynomial`, and `MvPolynomial` scopes.",
       "startLine": 1,
       "endLine": 84,
-      "mathContext": "Imports Mathlib modules for ODEs (`ODE.Gronwall`, `ODE.PicardLindelof`), calculus (`ContDiff`, `Deriv`), topology (`MetricSpace`, `PathConnected`, `Bornology`), polynomials (`Polynomial.Basic`, `MvPol"
+      "mathContext": "Imports Mathlib modules for ODEs (`ODE.Gronwall`, `ODE.PicardLindelof`), calculus (`ContDiff`, `Deriv`), topology (`MetricSpace`, `PathConnected`, `Bornology`), polynomials (`Polynomial.Basic`, `MvPolynomial`), linear algebra (`Matrix`, `Eigenspace`), and set cardinality (`Set.Card`)."
     },
     {
       "id": "polynomial-vector-fields",
@@ -63,7 +63,7 @@
       "summary": "Defines `Plane` as `EuclideanSpace \\mathbb{R} (\\text{Fin}\\; 2)$, `VectorField` as $\\mathbb{R}^2 \\to \\mathbb{R}^2$, and `PolynomialVectorField n` as a structure with two `MvPolynomial (Fin 2) \\mathbb{R}` components $P, Q$ satisfying `totalDegree \\leq n$. Provides `eval` and `toVectorField` functions.",
       "startLine": 85,
       "endLine": 113,
-      "mathContext": "Defines `Plane` as `EuclideanSpace \\mathbb{R} (\\text{Fin}\\; 2)$, `VectorField` as $\\mathbb{R}^2 \\to \\mathbb{R}^2$, and `PolynomialVectorField n` as a structure with two `MvPolynomial (Fin 2) \\mathbb{R"
+      "mathContext": "Defines `Plane` as `EuclideanSpace \\mathbb{R} (\\text{Fin}\\; 2)$, `VectorField` as $\\mathbb{R}^2 \\to \\mathbb{R}^2$, and `PolynomialVectorField n` as a structure with two `MvPolynomial (Fin 2) \\mathbb{R}` components $P, Q$ satisfying `totalDegree \\leq n$."
     },
     {
       "id": "trajectories",
@@ -71,7 +71,7 @@
       "summary": "Defines `Trajectory F` as a $C^1$ curve $\\gamma: \\mathbb{R} \\to \\mathbb{R}^2$ satisfying $\\gamma'(t) = F(\\gamma(t))$. Defines `isPeriodic` ($\\exists T > 0, \\gamma(t+T) = \\gamma(t)$), `minimalPeriod`, `orbit` (the image $\\gamma(\\mathbb{R})$), and `isPeriodicOrbit`.",
       "startLine": 114,
       "endLine": 143,
-      "mathContext": "Defines `Trajectory F` as a $C^1$ curve $\\gamma: \\mathbb{R} \\to \\mathbb{R}^2$ satisfying $\\gamma'(t) = F(\\gamma(t))$. Defines `isPeriodic` ($\\exists T > 0, \\gamma(t+T) = \\gamma(t)$), `minimalPeriod`, "
+      "mathContext": "Defines `Trajectory F` as a $C^1$ curve $\\gamma: \\mathbb{R} \\to \\mathbb{R}^2$ satisfying $\\gamma'(t) = F(\\gamma(t))$. Defines `isPeriodic` ($\\exists T > 0, \\gamma(t+T) = \\gamma(t)$), `minimalPeriod`, `orbit` (the image $\\gamma(\\mathbb{R})$), and `isPeriodicOrbit`."
     },
     {
       "id": "limit-cycles",
@@ -79,7 +79,7 @@
       "summary": "Defines `isIsolatedPeriodicOrbit` (periodic orbit with an $\\varepsilon$-neighborhood containing no other periodic orbits), `isLimitCycle` (synonym), `limitCycles F` (the set of all limit cycles), and counting predicates `hasAtMostLimitCycles` and `hasExactlyLimitCycles` using `Set.ncard`.",
       "startLine": 144,
       "endLine": 174,
-      "mathContext": "Defines `isIsolatedPeriodicOrbit` (periodic orbit with an $\\varepsilon$-neighborhood containing no other periodic orbits), `isLimitCycle` (synonym), `limitCycles F` (the set of all limit cycles), and "
+      "mathContext": "Defines `isIsolatedPeriodicOrbit` (periodic orbit with an $\\varepsilon$-neighborhood containing no other periodic orbits), `isLimitCycle` (synonym), `limitCycles F` (the set of all limit cycles), and counting predicates `hasAtMostLimitCycles` and `hasExactlyLimitCycles` using `Set.ncard`."
     },
     {
       "id": "hilbert-number",
@@ -87,7 +87,7 @@
       "summary": "Defines $H(n) = \\sup_F |\\{\\text{limit cycles of } F\\}|$ as `HilbertNumber n := \\iSup (F : PolynomialVectorField n), (limitCycles F.toVectorField).ncard` valued in $\\mathbb{N}_{\\infty}$. Proves `HilbertNumber_ge_iff`: $k \\leq H(n) \\iff \\exists F$ with $\\geq k$ limit cycles.",
       "startLine": 175,
       "endLine": 207,
-      "mathContext": "Defines $H(n) = \\sup_F |\\{\\text{limit cycles of } F\\}|$ as `HilbertNumber n := \\iSup (F : PolynomialVectorField n), (limitCycles F.toVectorField).ncard` valued in $\\mathbb{N}_{\\infty}$. Proves `Hilber"
+      "mathContext": "Defines $H(n) = \\sup_F |\\{\\text{limit cycles of } F\\}|$ as `HilbertNumber n := \\iSup (F : PolynomialVectorField n), (limitCycles F.toVectorField).ncard` valued in $\\mathbb{N}_{\\infty}$. Proves `HilbertNumber_ge_iff`: $k \\leq H(n) \\iff \\exists F$ with $\\geq k$ limit cycles."
     },
     {
       "id": "main-conjecture",
@@ -103,7 +103,7 @@
       "summary": "Defines `LinearVectorField` with matrix representation, converts to `PolynomialVectorField 1` via `toPolynomialVectorField`. Axiomatizes that linear systems have no limit cycles (`linear_no_limit_cycles_axiom`) based on eigenvalue phase portrait analysis (nodes, saddles, foci, centers). Proves `H1_eq_zero : HilbertNumber 1 = 0`.",
       "startLine": 224,
       "endLine": 307,
-      "mathContext": "Defines `LinearVectorField` with matrix representation, converts to `PolynomialVectorField 1` via `toPolynomialVectorField`. Axiomatizes that linear systems have no limit cycles (`linear_no_limit_cycl"
+      "mathContext": "Defines `LinearVectorField` with matrix representation, converts to `PolynomialVectorField 1` via `toPolynomialVectorField`. Axiomatizes that linear systems have no limit cycles (`linear_no_limit_cycles_axiom`) based on eigenvalue phase portrait analysis (nodes, saddles, foci, centers)."
     },
     {
       "id": "lower-bounds",
@@ -111,7 +111,7 @@
       "summary": "Axiomatizes `H2_ge_4` (Shi Songling 1980, '(3,1) distribution' of limit cycles in a quadratic system) and `H3_ge_13` (cubic systems with $\\geq 13$ limit cycles). These are constructive results requiring computer-assisted verification.",
       "startLine": 308,
       "endLine": 353,
-      "mathContext": "Axiomatizes `H2_ge_4` (Shi Songling 1980, '(3,1) distribution' of limit cycles in a quadratic system) and `H3_ge_13` (cubic systems with $\\geq 13$ limit cycles). These are constructive results requiri"
+      "mathContext": "Axiomatizes `H2_ge_4` (Shi Songling 1980, '(3,1) distribution' of limit cycles in a quadratic system) and `H3_ge_13` (cubic systems with $\\geq 13$ limit cycles)."
     },
     {
       "id": "finiteness",
@@ -119,7 +119,7 @@
       "summary": "Axiomatizes `Ecalle_Ilyashenko`: $\\forall n, \\exists k: H(n) = k$. The 1991-92 independent proofs by Ecalle (resurgent functions) and Ilyashenko (Dulac map asymptotics) fixed gaps in Dulac's 1923 claim, each exceeding 500 pages. Gives finiteness but **no effective bound**.",
       "startLine": 354,
       "endLine": 390,
-      "mathContext": "Axiomatizes `Ecalle_Ilyashenko`: $\\forall n, \\exists k: H(n) = k$. The 1991-92 independent proofs by Ecalle (resurgent functions) and Ilyashenko (Dulac map asymptotics) fixed gaps in Dulac's 1923 clai"
+      "mathContext": "Axiomatizes `Ecalle_Ilyashenko`: $\\forall n, \\exists k: H(n) = k$."
     },
     {
       "id": "poincare-bendixson",
@@ -127,7 +127,7 @@
       "summary": "Defines `omegaLimitSet` ($\\bigcap_T \\overline{\\gamma([T,\\infty))}$), `isEquilibrium`, `equilibria`. Axiomatizes the **Poincare-Bendixson theorem**: if $\\omega(\\gamma)$ is bounded and contains no equilibria, it is a periodic orbit. Also axiomatizes that limit cycles arise as $\\omega$-limits of spiraling trajectories.",
       "startLine": 391,
       "endLine": 458,
-      "mathContext": "Defines `omegaLimitSet` ($\\bigcap_T \\overline{\\gamma([T,\\infty))}$), `isEquilibrium`, `equilibria`. Axiomatizes the **Poincare-Bendixson theorem**: if $\\omega(\\gamma)$ is bounded and contains no equil"
+      "mathContext": "Defines `omegaLimitSet` ($\\bigcap_T \\overline{\\gamma([T,\\infty))}$), `isEquilibrium`, `equilibria`. Axiomatizes the **Poincare-Bendixson theorem**: if $\\omega(\\gamma)$ is bounded and contains no equilibria, it is a periodic orbit. Also axiomatizes that limit cycles arise as $\\omega$-limits of spiraling trajectories."
     },
     {
       "id": "related-problems",
@@ -135,7 +135,7 @@
       "summary": "Defines `Hilbert16_PartA` (topology of real algebraic curve ovals), `Smale13` (same as Hilbert 16 Main Conjecture). Axiomatizes Hopf bifurcation: a one-parameter family of quadratic systems transitions from 0 to 1 limit cycle at a critical parameter value. The summary theorem synthesizes all known results.",
       "startLine": 459,
       "endLine": 565,
-      "mathContext": "Defines `Hilbert16_PartA` (topology of real algebraic curve ovals), `Smale13` (same as Hilbert 16 Main Conjecture). Axiomatizes Hopf bifurcation: a one-parameter family of quadratic systems transition"
+      "mathContext": "Defines `Hilbert16_PartA` (topology of real algebraic curve ovals), `Smale13` (same as Hilbert 16 Main Conjecture). Axiomatizes Hopf bifurcation: a one-parameter family of quadratic systems transitions from 0 to 1 limit cycle at a critical parameter value."
     }
   ],
   "conclusion": {
@@ -222,6 +222,14 @@
       "year": "2008",
       "venue": "American Mathematical Society, Graduate Studies in Mathematics 86",
       "note": "Modern treatment of limit cycles and Hilbert's 16th problem on planar polynomial vector fields"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert16_limit_cycles",
+      "type": "core",
+      "description": "Upper bound on limit cycles of polynomial vector fields",
+      "leanType": "PolynomialVectorField degree n -> exists H, num_limit_cycles <= H(n)"
     }
   ]
 }

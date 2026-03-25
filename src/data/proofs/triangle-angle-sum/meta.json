@@ -62,7 +62,8 @@
       "**Angular defect and curvature**: The quantity $\\pi - (\\alpha + \\beta + \\gamma)$ is the *angular defect*, which equals the integral of Gaussian curvature over the triangle (Gauss-Bonnet theorem). For Euclidean space, curvature is zero, so the defect is zero — recovering our theorem"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (parallel lines, alternate interior angles)",
+      "Axiomatic geometry (Euclid's postulates, Hilbert's axioms)"
     ]
   },
   "sections": [
@@ -186,6 +187,14 @@
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
       "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4π (Descartes's theorem), a polyhedral analog of the triangle angle sum."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "triangle_angle_sum",
+      "type": "core",
+      "description": "Sum of interior angles of a triangle equals pi (180 degrees)",
+      "leanType": "Triangle ABC -> angle A + angle B + angle C = pi"
     }
   ]
 }

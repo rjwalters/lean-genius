@@ -130,7 +130,7 @@
       "startLine": 25,
       "endLine": 34,
       "summary": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation. Opens `Nat` and `Filter` namespaces.",
-      "mathContext": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation. Opens `Na"
+      "mathContext": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation."
     },
     {
       "id": "nth-prime",
@@ -138,7 +138,7 @@
       "startLine": 35,
       "endLine": 58,
       "summary": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`). Establishes `nthPrime_prime` (all values are prime) and `nthPrime_strictMono` (strict monotonicity).",
-      "mathContext": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`). Establishes `nthPrime_prime` (all values are prime) and `nthPr"
+      "mathContext": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`)."
     },
     {
       "id": "function-f",
@@ -146,7 +146,7 @@
       "startLine": 59,
       "endLine": 84,
       "summary": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$. Provides alternative `f'` using `Finset.inf'` and states their equivalence (`f_eq_f'`, sorry).",
-      "mathContext": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$. Provides alternative `f'` using `Finset.inf'` and states their equival"
+      "mathContext": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$."
     },
     {
       "id": "deviation",
@@ -154,7 +154,7 @@
       "startLine": 85,
       "endLine": 100,
       "summary": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$.",
-      "mathContext": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows t"
+      "mathContext": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$."
     },
     {
       "id": "symmetric-analysis",
@@ -162,7 +162,7 @@
       "startLine": 101,
       "endLine": 119,
       "summary": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ (sorry). Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity.",
-      "mathContext": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ (sorry). Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by str"
+      "mathContext": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ (sorry). Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity."
     },
     {
       "id": "pomerance",
@@ -170,7 +170,7 @@
       "startLine": 120,
       "endLine": 138,
       "summary": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry).",
-      "mathContext": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite,"
+      "mathContext": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry)."
     },
     {
       "id": "conjecture",
@@ -186,7 +186,7 @@
       "startLine": 159,
       "endLine": 175,
       "summary": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. States `gap_deviation_connection` linking gaps to deviations (sorry).",
-      "mathContext": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. States `gap_deviation_c"
+      "mathContext": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$."
     },
     {
       "id": "examples",
@@ -210,7 +210,7 @@
       "startLine": 205,
       "endLine": 220,
       "summary": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$. These formalize what a proof or disproof would require.",
-      "mathContext": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$. These formalize what a proof or disproof would requi"
+      "mathContext": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$."
     },
     {
       "id": "prime-graph",
@@ -218,7 +218,7 @@
       "startLine": 221,
       "endLine": 274,
       "summary": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?",
-      "mathContext": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expres"
+      "mathContext": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?"
     }
   ],
   "conclusion": {

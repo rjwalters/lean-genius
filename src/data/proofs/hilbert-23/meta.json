@@ -62,7 +62,9 @@
       "The field remains active: optimal transport, machine learning, materials science"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (function spaces, convergence)",
+      "Calculus of variations (Euler-Lagrange equations, direct methods)",
+      "Partial differential equations (existence and regularity theory)"
     ]
   },
   "sections": [
@@ -174,6 +176,14 @@
       "year": "1996",
       "venue": "Springer, Grundlehren der mathematischen Wissenschaften 310–311",
       "note": "Comprehensive treatment of the calculus of variations including the direct method and regularity theory — the subject of Hilbert's 23rd problem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "calculus_of_variations",
+      "type": "core",
+      "description": "Development of the calculus of variations and direct methods",
+      "leanType": "Functional J -> exists u, minimizes J u"
     }
   ]
 }

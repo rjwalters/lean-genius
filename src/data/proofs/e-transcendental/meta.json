@@ -210,5 +210,13 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "e_transcendental",
+      "type": "core",
+      "description": "Euler's number e is transcendental over Q",
+      "leanType": "Transcendental Q (Real.exp 1)"
+    }
+  ]
 }

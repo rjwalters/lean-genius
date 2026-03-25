@@ -100,7 +100,7 @@
       "summary": "Defines `PlaneColoring := ℂ → Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blue), and `IsValidColoring` combining both constraints.",
       "startLine": 28,
       "endLine": 65,
-      "mathContext": "Defines `PlaneColoring := ℂ → Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blu"
+      "mathContext": "Defines `PlaneColoring := ℂ → Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blue), and `IsValidColoring` combining both constraints."
     },
     {
       "id": "achievable",
@@ -116,7 +116,7 @@
       "summary": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem.",
       "startLine": 82,
       "endLine": 106,
-      "mathContext": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `"
+      "mathContext": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem."
     },
     {
       "id": "unitgraph",
@@ -124,7 +124,7 @@
       "summary": "Constructs `UnitDistanceGraph : SimpleGraph ℂ` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an independent set in this graph.",
       "startLine": 107,
       "endLine": 129,
-      "mathContext": "Constructs `UnitDistanceGraph : SimpleGraph ℂ` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an i"
+      "mathContext": "Constructs `UnitDistanceGraph : SimpleGraph ℂ` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an independent set in this graph."
     },
     {
       "id": "vanderwaerden",
@@ -132,7 +132,7 @@
       "summary": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution.",
       "startLine": 130,
       "endLine": 147,
-      "mathContext": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction ha"
+      "mathContext": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution."
     },
     {
       "id": "constructions",

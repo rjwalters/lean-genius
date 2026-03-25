@@ -290,5 +290,19 @@
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "cantor_diagonal",
+      "type": "core",
+      "description": "The reals are uncountable: no surjection from N to R exists",
+      "leanType": "not (exists f : Nat -> R, Function.Surjective f)"
+    },
+    {
+      "name": "power_set_larger",
+      "type": "key",
+      "description": "For any set A, |A| < |P(A)| (no surjection A -> P(A))",
+      "leanType": "not (exists f : A -> Set A, Function.Surjective f)"
+    }
+  ]
 }

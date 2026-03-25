@@ -164,7 +164,7 @@
       "startLine": 8850,
       "endLine": 8920,
       "summary": "Survey of proven cases: divisors (Lefschetz 1,1 theorem, 1924), curves and surfaces, abelian varieties of CM type (Deligne), products of elliptic curves, K3 surfaces, varieties of dimension ≤ 3 in codimension 1. Each case uses different techniques.",
-      "mathContext": "Survey of proven cases: divisors (Lefschetz 1,1 theorem, 1924), curves and surfaces, abelian varieties of CM type (Deligne), products of elliptic curves, K3 surfaces, varieties of dimension ≤ 3 in cod"
+      "mathContext": "Survey of proven cases: divisors (Lefschetz 1,1 theorem, 1924), curves and surfaces, abelian varieties of CM type (Deligne), products of elliptic curves, K3 surfaces, varieties of dimension ≤ 3 in codimension 1. Each case uses different techniques."
     },
     {
       "id": "tate-conjecture",
@@ -180,7 +180,7 @@
       "startLine": 10113,
       "endLine": 10332,
       "summary": "Kontsevich's homological mirror symmetry: D^b(Coh(X)) ≅ D^b(Fuk(Y)) for mirror pairs. Fourier-Mukai transforms preserve Hodge structures. Bridgeland stability conditions. The mirror of a Hodge class is a Lagrangian cycle — providing a potential physical approach to the Hodge Conjecture.",
-      "mathContext": "Kontsevich's homological mirror symmetry: D^b(Coh(X)) ≅ D^b(Fuk(Y)) for mirror pairs. Fourier-Mukai transforms preserve Hodge structures. Bridgeland stability conditions. The mirror of a Hodge class i"
+      "mathContext": "Kontsevich's homological mirror symmetry: D^b(Coh(X)) ≅ D^b(Fuk(Y)) for mirror pairs. Fourier-Mukai transforms preserve Hodge structures. Bridgeland stability conditions. The mirror of a Hodge class is a Lagrangian cycle — providing a potential physical approach to the Hodge Conjecture."
     },
     {
       "id": "non-abelian-hodge",
@@ -188,7 +188,7 @@
       "startLine": 10333,
       "endLine": 10517,
       "summary": "Simpson's non-abelian Hodge correspondence: a diffeomorphism between the moduli of flat connections and the moduli of Higgs bundles. The Hitchin fibration provides an integrable system structure. The P=W conjecture (now theorem) identifies the perverse and weight filtrations.",
-      "mathContext": "Simpson's non-abelian Hodge correspondence: a diffeomorphism between the moduli of flat connections and the moduli of Higgs bundles. The Hitchin fibration provides an integrable system structure. The "
+      "mathContext": "Simpson's non-abelian Hodge correspondence: a diffeomorphism between the moduli of flat connections and the moduli of Higgs bundles. The Hitchin fibration provides an integrable system structure. The P=W conjecture (now theorem) identifies the perverse and weight filtrations."
     }
   ],
   "crossReferences": [
@@ -265,5 +265,13 @@
       "ComplexConjugate",
       "DirectSum"
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "hodge_conjecture",
+      "type": "core",
+      "description": "Millennium Prize: Every Hodge class on a projective variety is algebraic",
+      "leanType": "Projective X -> HodgeClass alpha -> exists Z algebraic_cycle, class(Z) = alpha"
+    }
+  ]
 }

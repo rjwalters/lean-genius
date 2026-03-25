@@ -56,7 +56,9 @@
       "**Template for modern transcendence theory**: The proof technique of constructing auxiliary functions and deriving integer/analytic contradictions was extended by Gelfond-Schneider (1934, Hilbert's 7th) and Baker (1966, linear forms in logarithms)"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Complex analysis (entire functions, exponential function)",
+      "Algebraic number theory (algebraic integers, minimal polynomials)",
+      "Transcendence theory (Liouville's theorem, auxiliary functions)"
     ]
   },
   "sections": [
@@ -66,7 +68,7 @@
       "startLine": 1,
       "endLine": 108,
       "summary": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67.",
-      "mathContext": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof ou"
+      "mathContext": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67."
     },
     {
       "id": "definitions-background",
@@ -90,7 +92,7 @@
       "startLine": 160,
       "endLine": 206,
       "summary": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials).",
-      "mathContext": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly ind"
+      "mathContext": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials)."
     },
     {
       "id": "fundamental-corollaries",
@@ -114,7 +116,7 @@
       "startLine": 319,
       "endLine": 353,
       "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture.",
-      "mathContext": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? De"
+      "mathContext": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
     },
     {
       "id": "proof-techniques",
@@ -122,7 +124,7 @@
       "startLine": 354,
       "endLine": 374,
       "summary": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction.",
-      "mathContext": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = "
+      "mathContext": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction."
     }
   ],
   "conclusion": {
@@ -219,6 +221,20 @@
       "year": "1885",
       "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
       "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hermite_lindemann",
+      "type": "core",
+      "description": "If a is a nonzero algebraic number, then e^a is transcendental",
+      "leanType": "IsAlgebraic Q a -> a != 0 -> Transcendental Q (Real.exp a)"
+    },
+    {
+      "name": "pi_transcendental",
+      "type": "key",
+      "description": "Pi is transcendental (corollary: e^(i*pi) = -1 with i*pi algebraic would contradict HL)",
+      "leanType": "Transcendental Q Real.pi"
     }
   ]
 }

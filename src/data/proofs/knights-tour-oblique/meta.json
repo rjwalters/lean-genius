@@ -154,5 +154,13 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "knights_tour_exists",
+      "type": "core",
+      "description": "Existence of knight's tour on generalized boards with oblique moves",
+      "leanType": "board_size >= threshold -> exists tour, is_hamiltonian_path tour"
+    }
+  ]
 }

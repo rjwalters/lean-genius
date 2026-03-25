@@ -77,7 +77,7 @@
       "startLine": 32,
       "endLine": 66,
       "summary": "Defines TuckerLabeling (label function with {±1, ±2} range proof) and AntipodalTuckerLabeling (adds involution σ with σ² = id and λ(σ(v)) = -λ(v)). Defines isComplementary predicate with decidability, symmetry, and the key theorem that v and σ(v) are always complementary.",
-      "mathContext": "Defines TuckerLabeling (label function with {±1, ±2} range proof) and AntipodalTuckerLabeling (adds involution σ with σ² = id and λ(σ(v)) = -λ(v)). Defines isComplementary predicate with decidability,"
+      "mathContext": "Defines TuckerLabeling (label function with {±1, ±2} range proof) and AntipodalTuckerLabeling (adds involution σ with σ² = id and λ(σ(v)) = -λ(v)). Defines isComplementary predicate with decidability, symmetry, and the key theorem that v and σ(v) are always complementary."
     },
     {
       "id": "pairs",
@@ -93,7 +93,7 @@
       "startLine": 83,
       "endLine": 107,
       "summary": "Defines TriangulatedComplex with vertex assignment (T → Fin 3 → V) and symmetric, irreflexive adjacency. Defines hasComplementaryEdge for triangles (exists i ≠ j with complementary vertices) with decidability.",
-      "mathContext": "Defines TriangulatedComplex with vertex assignment (T → Fin 3 → V) and symmetric, irreflexive adjacency. Defines hasComplementaryEdge for triangles (exists i ≠ j with complementary vertices) with deci"
+      "mathContext": "Defines TriangulatedComplex with vertex assignment (T → Fin 3 → V) and symmetric, irreflexive adjacency. Defines hasComplementaryEdge for triangles (exists i ≠ j with complementary vertices) with decidability."
     },
     {
       "id": "boundary",
@@ -109,7 +109,7 @@
       "startLine": 119,
       "endLine": 163,
       "summary": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The sorry remains — requires formal edge-sharing properties.",
-      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). Th"
+      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The sorry remains — requires formal edge-sharing properties."
     },
     {
       "id": "tucker-2d",
@@ -125,7 +125,7 @@
       "startLine": 188,
       "endLine": 214,
       "summary": "Documents the constructive path-following algorithm: start at boundary complementary edge, trace through adjacent triangles (max degree 2 in Tucker graph), terminate at interior dead-end. Describes the key invariant: no revisits since each triangle has at most 2 complementary edges.",
-      "mathContext": "Documents the constructive path-following algorithm: start at boundary complementary edge, trace through adjacent triangles (max degree 2 in Tucker graph), terminate at interior dead-end. Describes th"
+      "mathContext": "Documents the constructive path-following algorithm: start at boundary complementary edge, trace through adjacent triangles (max degree 2 in Tucker graph), terminate at interior dead-end. Describes the key invariant: no revisits since each triangle has at most 2 complementary edges."
     },
     {
       "id": "example",
@@ -133,7 +133,7 @@
       "startLine": 215,
       "endLine": 249,
       "summary": "Provides a minimal 5-vertex, 3-triangle example illustrating complementary edge counting. Shows that non-antipodal triangulations can have even boundary count, emphasizing the necessity of the antipodal structure for the parity argument.",
-      "mathContext": "Provides a minimal 5-vertex, 3-triangle example illustrating complementary edge counting. Shows that non-antipodal triangulations can have even boundary count, emphasizing the necessity of the antipod"
+      "mathContext": "Provides a minimal 5-vertex, 3-triangle example illustrating complementary edge counting. Shows that non-antipodal triangulations can have even boundary count, emphasizing the necessity of the antipodal structure for the parity argument."
     },
     {
       "id": "handshaking",
@@ -141,7 +141,7 @@
       "startLine": 306,
       "endLine": 434,
       "summary": "Proves even_card_odd_degree_vertices: any finite SimpleGraph has an even number of odd-degree vertices. Uses Finset induction + omega for modular arithmetic. Derives from Mathlib handshaking lemma (sum_degrees_eq_twice_card_edges). Then proves tucker_parity_from_graph: a strengthened Tucker parity principle that eliminates the handshaking hypothesis — only 2 hypotheses needed (interior degree correspondence + boundary oddness) instead of 3.",
-      "mathContext": "Proves even_card_odd_degree_vertices: any finite SimpleGraph has an even number of odd-degree vertices. Uses Finset induction + omega for modular arithmetic. Derives from Mathlib handshaking lemma (su"
+      "mathContext": "Proves even_card_odd_degree_vertices: any finite SimpleGraph has an even number of odd-degree vertices. Uses Finset induction + omega for modular arithmetic. Derives from Mathlib handshaking lemma (sum_degrees_eq_twice_card_edges)."
     }
   ],
   "conclusion": {

@@ -89,7 +89,7 @@
       "startLine": 143,
       "endLine": 263,
       "summary": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdot c \\leq \\sum \\text{gap}(n)$, so gapProportion$(N,c) \\geq 1 - (\\text{avg gap})/c$. Choosing $c_0 = 2/\\varepsilon + 1$ gives the result. Reduces axiom count from 5 to 4.",
-      "mathContext": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdo"
+      "mathContext": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdot c \\leq \\sum \\text{gap}(n)$, so gapProportion$(N,c) \\geq 1 - (\\text{avg gap})/c$. Choosing $c_0 = 2/\\varepsilon + 1$ gives the result. Reduces axiom count from 5 to 4."
     },
     {
       "id": "cramer-model",

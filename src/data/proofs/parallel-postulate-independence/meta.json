@@ -51,7 +51,9 @@
       "Physical space's geometry is an empirical question — Einstein's general relativity uses non-Euclidean spacetime"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Axiomatic geometry (Euclid's postulates, Hilbert's axioms)",
+      "Non-Euclidean geometry (hyperbolic and elliptic models)",
+      "Mathematical logic (consistency, independence, models)"
     ]
   },
   "sections": [
@@ -157,6 +159,14 @@
       "year": "2008",
       "venue": "W.H. Freeman, 4th edition",
       "note": "Comprehensive treatment of the parallel postulate's history and the development of non-Euclidean geometry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "parallel_postulate_independent",
+      "type": "core",
+      "description": "The parallel postulate is independent of the other Euclidean axioms",
+      "leanType": "Consistent (EuclidAxioms without P5) -> not (Provable (EuclidAxioms without P5) P5)"
     }
   ]
 }

@@ -198,5 +198,13 @@
       "relationship": "thematic",
       "description": "Both concern geometric configurations analyzed via combinatorial structure: Pascal's hexagon theorem uses projective geometry, while the Konigsberg problem abstracts geography into graph theory — both pioneered the use of structural abstraction in geometry"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_circuit",
+      "type": "core",
+      "description": "A connected graph has an Euler circuit iff every vertex has even degree",
+      "leanType": "Connected G -> (has_euler_circuit G <-> forall v, Even (degree v))"
+    }
   ]
 }

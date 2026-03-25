@@ -186,5 +186,13 @@
       "relationship": "technique",
       "description": "Newton's method for polynomial root approximation underlies the Newton-Puiseux algorithm: the Newton polygon identifies leading exponents, and Newton's iterative refinement constructs successive terms of the Puiseux expansion — the same inductive step principle applied to fractional power series"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "puiseux_expansion",
+      "type": "core",
+      "description": "Algebraic functions have fractional power series (Puiseux series) expansions",
+      "leanType": "algebraic_function f -> exists puiseux_series, converges_to puiseux_series f"
+    }
   ]
 }

@@ -91,7 +91,7 @@
       "summary": "Defines the core objects: $\\text{Icc1n}(n) = \\{1,\\ldots,n\\}$, $\\text{nonemptySubsets}(A) = \\mathcal{P}(A) \\setminus \\{\\emptyset\\}$, $\\Sigma(A) = \\text{subsetSums}(A)$, `DivisibilityFree` (antichain in $(\\mathbb{N},\\mid)$), and `ValidSubset` combining membership and antichain constraints.",
       "startLine": 37,
       "endLine": 61,
-      "mathContext": "Defines the core objects: $\\text{Icc1n}(n) = \\{1,\\ldots,n\\}$, $\\text{nonemptySubsets}(A) = \\mathcal{P}(A) \\setminus \\{\\emptyset\\}$, $\\Sigma(A) = \\text{subsetSums}(A)$, `DivisibilityFree` (antichain in"
+      "mathContext": "Defines the core objects: $\\text{Icc1n}(n) = \\{1,\\ldots,n\\}$, $\\text{nonemptySubsets}(A) = \\mathcal{P}(A) \\setminus \\{\\emptyset\\}$, $\\Sigma(A) = \\text{subsetSums}(A)$, `DivisibilityFree` (antichain in $(\\mathbb{N},\\mid)$), and `ValidSubset` combining membership and antichain constraints."
     },
     {
       "id": "optimization",
@@ -107,7 +107,7 @@
       "summary": "Three constructions: (1) Greedy gives $|A| \\geq \\log_3 n - 1$. (2) Sándor's $A = \\{2^i + m \\cdot 2^m\\}$ gives $|A| = m \\sim \\log_2 n$. (3) ELRSS $A = [2^{m-1}, 2^m - 1]$ gives $|A| > \\log_2 n - 1$ with distinct sums.",
       "startLine": 76,
       "endLine": 103,
-      "mathContext": "Three constructions: (1) Greedy gives $|A| \\geq \\log_3 n - 1$. (2) Sándor's $A = \\{2^i + m \\cdot 2^m\\}$ gives $|A| = m \\sim \\log_2 n$. (3) ELRSS $A = [2^{m-1}, 2^m - 1]$ gives $|A| > \\log_2 n - 1$ wit"
+      "mathContext": "Three constructions: (1) Greedy gives $|A| \\geq \\log_3 n - 1$. (2) Sándor's $A = \\{2^i + m \\cdot 2^m\\}$ gives $|A| = m \\sim \\log_2 n$. (3) ELRSS $A = [2^{m-1}, 2^m - 1]$ gives $|A| > \\log_2 n - 1$ with distinct sums."
     },
     {
       "id": "upper-bounds",
@@ -115,7 +115,7 @@
       "summary": "Establishes the upper bound chain: `DivisibilityFree` $\\Rightarrow$ `DistinctSubsetSums` $\\Rightarrow$ $|A| \\leq \\log_2(\\sigma(A)) + 1$ $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. Includes the only fully proved lemma (`sum_bound`) and the conjectured $\\log_2 n + O(1)$ bound.",
       "startLine": 104,
       "endLine": 139,
-      "mathContext": "Establishes the upper bound chain: `DivisibilityFree` $\\Rightarrow$ `DistinctSubsetSums` $\\Rightarrow$ $|A| \\leq \\log_2(\\sigma(A)) + 1$ $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + "
+      "mathContext": "Establishes the upper bound chain: `DivisibilityFree` $\\Rightarrow$ `DistinctSubsetSums` $\\Rightarrow$ $|A| \\leq \\log_2(\\sigma(A)) + 1$ $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. Includes the only fully proved lemma (`sum_bound`) and the conjectured $\\log_2 n + O(1)$ bound."
     },
     {
       "id": "the-answer",
@@ -139,7 +139,7 @@
       "summary": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$).",
       "startLine": 171,
       "endLine": 184,
-      "mathContext": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log "
+      "mathContext": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$)."
     },
     {
       "id": "main-results",
@@ -147,7 +147,7 @@
       "summary": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as the canonical SOLVED marker.",
       "startLine": 185,
       "endLine": 216,
-      "mathContext": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as"
+      "mathContext": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$."
     }
   ],
   "conclusion": {

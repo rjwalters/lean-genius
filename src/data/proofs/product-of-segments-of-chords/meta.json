@@ -61,7 +61,9 @@
       "The converse is also true: if PA * PB = PC * PD for two lines through P, the four points are concyclic"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (circles, chords, similar triangles)",
+      "Elementary algebra (proportion, cross-multiplication)",
+      "Trigonometry (inscribed angle theorem)"
     ]
   },
   "sections": [
@@ -182,6 +184,14 @@
       "year": "~300 BCE",
       "venue": "Alexandria",
       "note": "The power of a point theorem: if two chords intersect inside a circle, the products of their segments are equal"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "intersecting_chords",
+      "type": "core",
+      "description": "If two chords intersect inside a circle, the products of their segments are equal: PA*PB = PC*PD",
+      "leanType": "chords_intersect_at P -> PA * PB = PC * PD"
     }
   ]
 }

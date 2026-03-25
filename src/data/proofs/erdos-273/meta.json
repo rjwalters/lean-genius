@@ -160,11 +160,38 @@
       "Mathlib"
     ],
     "opens": [],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 303,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "mainTheorems": [
+      {
+        "name": "selfridge_example",
+        "type": "original",
+        "description": "Constructs the Selfridge covering system using primes {3,5,7,13,19,37,73} with moduli p−1, proving every integer is covered"
+      },
+      {
+        "name": "covering_reciprocal_sum",
+        "type": "original",
+        "description": "For any covering system, the sum of reciprocals of moduli is ≥ 1 (necessary condition via pigeonhole on residue classes)"
+      },
+      {
+        "name": "easyPrimes_all_prime",
+        "type": "original",
+        "description": "All elements of the easyPrimes list are prime, verified by decide"
+      },
+      {
+        "name": "easyPrimes_reciprocal_sum_lt_one",
+        "type": "original",
+        "description": "The reciprocal sum 1/(p−1) over candidate primes p ≥ 5 with (p−1)|360 is < 1, obstructing coverage"
+      },
+      {
+        "name": "max_single_density",
+        "type": "original",
+        "description": "Upper bound on coverage density achievable by any single residue class mod (p−1) for p ≥ 5"
+      }
+    ]
   },
   "crossReferences": [
     {

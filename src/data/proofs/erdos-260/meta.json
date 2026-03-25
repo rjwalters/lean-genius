@@ -86,7 +86,7 @@
       "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
       "startLine": 39,
       "endLine": 58,
-      "mathContext": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn"
+      "mathContext": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$)."
     },
     {
       "id": "series-def",
@@ -118,7 +118,7 @@
       "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
       "startLine": 115,
       "endLine": 153,
-      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by comp"
+      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition)."
     },
     {
       "id": "conjecture",
@@ -126,7 +126,7 @@
       "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
       "startLine": 154,
       "endLine": 180,
-      "mathContext": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) "
+      "mathContext": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like."
     },
     {
       "id": "summary",

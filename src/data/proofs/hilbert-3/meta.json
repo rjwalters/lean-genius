@@ -95,7 +95,7 @@
       "startLine": 103,
       "endLine": 149,
       "summary": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvariant` function. A simplified model of $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$.",
-      "mathContext": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvar"
+      "mathContext": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvariant` function. A simplified model of $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$."
     },
     {
       "id": "scissors",
@@ -111,7 +111,7 @@
       "startLine": 170,
       "endLine": 233,
       "summary": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` (contrapositive via `intro/apply/exact`).",
-      "mathContext": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` ("
+      "mathContext": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` (contrapositive via `intro/apply/exact`)."
     },
     {
       "id": "cube",
@@ -119,7 +119,7 @@
       "startLine": 234,
       "endLine": 280,
       "summary": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$). Uses `List.mem_map` and `Finset.mem_toList`.",
-      "mathContext": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q"
+      "mathContext": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$)."
     },
     {
       "id": "tetrahedron",
@@ -127,7 +127,7 @@
       "startLine": 281,
       "endLine": 329,
       "summary": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is rational-multiple-of-$\\pi$, contradicting Niven.",
-      "mathContext": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is "
+      "mathContext": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is rational-multiple-of-$\\pi$, contradicting Niven."
     },
     {
       "id": "main-result",
@@ -135,7 +135,7 @@
       "startLine": 330,
       "endLine": 372,
       "summary": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$. The `h_equal_volume : True` emphasizes volume is irrelevant.",
-      "mathContext": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$. The `h_eq"
+      "mathContext": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$."
     },
     {
       "id": "sydler",
@@ -151,7 +151,7 @@
       "startLine": 402,
       "endLine": 470,
       "summary": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample.",
-      "mathContext": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexam"
+      "mathContext": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample."
     },
     {
       "id": "history",
@@ -219,6 +219,14 @@
       "year": "1900",
       "venue": "Mathematische Annalen 55, 465–478",
       "note": "First solution to a Hilbert problem — proved via the Dehn invariant that a regular tetrahedron cannot be cut and reassembled into a cube"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dehn_theorem",
+      "type": "core",
+      "description": "Hilbert's 3rd: a regular tetrahedron and cube of equal volume are not scissors-congruent",
+      "leanType": "not (scissors_congruent regular_tetrahedron (cube_of_equal_volume))"
     }
   ]
 }

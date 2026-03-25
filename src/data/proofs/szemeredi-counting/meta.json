@@ -198,5 +198,13 @@
       "key": "Sze78",
       "citation": "E. Szemerédi, Regular partitions of graphs, Problèmes combinatoires et théorie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399–401."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "counting_lemma",
+      "type": "core",
+      "description": "The counting lemma: epsilon-regular pairs embed expected subgraph counts",
+      "leanType": "epsilon_regular pair -> triangle_count pair >= expected - error"
+    }
   ]
 }

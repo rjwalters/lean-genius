@@ -88,7 +88,9 @@
       "**Constructive boundary**: 1D is constructive via IVT; n >= 2 needs Brouwer degree or homology (non-constructive)"
     ],
     "prerequisites": [
-      "Point-set topology"
+      "Algebraic topology (fundamental group, covering spaces)",
+      "Point-set topology (compactness, connectedness)",
+      "Homological algebra (singular homology, exact sequences)"
     ]
   },
   "sections": [
@@ -198,7 +200,7 @@
     ],
     "namespace": "BorsukUlamOQ03",
     "lineCount": 5169,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 233,
     "definitionCount": 35
   },

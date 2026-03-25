@@ -53,7 +53,9 @@
       "Foundation for Galois theory: the Galois group of a polynomial *permutes its roots* while fixing all coefficients — which are symmetric functions of roots by Vieta — so the Galois group embeds into the symmetric group Sₙ, making Vieta's formulas the conceptual basis for studying solvability by radicals"
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (roots, factored form, coefficients)",
+      "Symmetric polynomials (elementary symmetric functions)",
+      "Ring theory (polynomial rings over fields)"
     ]
   },
   "sections": [
@@ -163,6 +165,20 @@
       "year": "1615",
       "venue": "Paris (published posthumously)",
       "note": "Introduced the symmetric function relations between roots and coefficients of a polynomial — Vieta's formulas"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "vieta_sum",
+      "type": "core",
+      "description": "Sum of roots equals -a_{n-1}/a_n (coefficient of x^{n-1})",
+      "leanType": "(p : Polynomial R) -> sum(roots p) = -p.coeff(p.natDegree - 1) / p.leadingCoeff"
+    },
+    {
+      "name": "vieta_product",
+      "type": "key",
+      "description": "Product of roots equals (-1)^n * a_0/a_n (constant term ratio)",
+      "leanType": "(p : Polynomial R) -> prod(roots p) = (-1)^p.natDegree * p.coeff 0 / p.leadingCoeff"
     }
   ]
 }

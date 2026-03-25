@@ -208,5 +208,13 @@
       "venue": "Dover Publications (translation of 1953 Russian original)",
       "note": "First rigorous axiomatic characterization of Shannon entropy: the unique function satisfying continuity, maximality for uniform distributions, and the grouping axiom"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "entropy_maximum",
+      "type": "core",
+      "description": "Entropy is maximized by the uniform distribution",
+      "leanType": "entropy X <= log(card support) with equality iff X is uniform"
+    }
   ]
 }

@@ -58,7 +58,9 @@
       "**Conjugation as norm recovery**: The identity $q\\bar{q} = N(q)$ (with zero imaginary part) shows the norm is intrinsic to the quaternion algebra. This parallels $z\\bar{z} = |z|^2$ for complex numbers and is the foundation of the theory of composition algebras (Hurwitz, 1898)."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (primes, quadratic residues, Gaussian integers)",
+      "Abstract algebra (norms in Z[i], unique factorization)",
+      "Combinatorics (involutions, Zagier's one-sentence proof)"
     ]
   },
   "sections": [
@@ -122,6 +124,26 @@
       "targetId": "lagrange-four-squares",
       "relationship": "related",
       "description": "Companion formalization focusing on the algebraic connection (quaternion norm) and the contrast between conditional two-squares and universal four-squares."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Quadratic reciprocity determines which primes $p$ satisfy $-1 \\equiv x^2 \\pmod{p}$, which is the first step in Fermat's two-squares criterion ($p = x^2 + y^2$ iff $p \\equiv 1 \\pmod{4}$). The four-squares universality avoids this condition: Lagrange's theorem holds for ALL primes, bypassing the quadratic residue analysis that limits the two-squares case"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi$ governs the multiplicative structure of $\\mathbb{Z}/n\\mathbb{Z}$ that the descent argument exploits: finding $a, b$ with $p \\mid 1 + a^2 + b^2$ uses the fact that $\\mathbb{Z}/p\\mathbb{Z}$ has $(p+1)/2$ quadratic residues (including 0), so $\\{a^2\\}$ and $\\{-1 - b^2\\}$ must overlap by pigeonhole"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders (the group theory result) shares its author with Lagrange's four squares theorem (the number theory result). Both were proved by Joseph-Louis Lagrange: the subgroup theorem in 1770-71, and the four squares theorem in 1770. The group-theoretic result underpins the descent argument via subgroup index calculations"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ is the geometric root of sum-of-squares representation: a Gaussian integer $a + bi$ has norm $|a+bi|^2 = a^2 + b^2$, and $n = a^2 + b^2$ iff $n$ is the norm of some Gaussian integer. Lagrange's four squares extends this to quaternion norms: $n = a^2 + b^2 + c^2 + d^2$ iff $n$ is the norm of a Lipschitz quaternion integer"
     }
   ],
   "conclusion": {

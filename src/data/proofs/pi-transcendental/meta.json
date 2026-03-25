@@ -67,7 +67,7 @@
       "startLine": 1,
       "endLine": 43,
       "summary": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynomial` namespaces.",
-      "mathContext": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynom"
+      "mathContext": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynomial` namespaces."
     },
     {
       "id": "definitions-background",
@@ -75,7 +75,7 @@
       "startLine": 44,
       "endLine": 63,
       "summary": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's identity $e^{i\\pi} = -1$ via Lindemann-Weierstrass.",
-      "mathContext": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's id"
+      "mathContext": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's identity $e^{i\\pi} = -1$ via Lindemann-Weierstrass."
     },
     {
       "id": "key-properties",
@@ -91,7 +91,7 @@
       "startLine": 75,
       "endLine": 114,
       "summary": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via Euler's identity.",
-      "mathContext": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via"
+      "mathContext": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via Euler's identity."
     },
     {
       "id": "main-axioms",
@@ -107,7 +107,7 @@
       "startLine": 145,
       "endLine": 184,
       "summary": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$). These are the key ingredients for the contraposition argument.",
-      "mathContext": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$). These are the key ingredients for the contrapos"
+      "mathContext": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$)."
     },
     {
       "id": "corollaries",
@@ -115,7 +115,7 @@
       "startLine": 185,
       "endLine": 237,
       "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments.",
-      "mathContext": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial c"
+      "mathContext": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments."
     },
     {
       "id": "squaring-circle",
@@ -123,7 +123,7 @@
       "startLine": 238,
       "endLine": 289,
       "summary": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot be constructed by ruler and compass.",
-      "mathContext": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot b"
+      "mathContext": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot be constructed by ruler and compass."
     },
     {
       "id": "connections",
@@ -131,7 +131,7 @@
       "startLine": 290,
       "endLine": 319,
       "summary": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?",
-      "mathContext": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: "
+      "mathContext": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
     },
     {
       "id": "computation-significance",
@@ -139,7 +139,7 @@
       "startLine": 320,
       "endLine": 374,
       "summary": "Discusses computation of $\\pi$ (Leibniz, Machin, Ramanujan, Chudnovsky) and its physical appearances in circle geometry, Heisenberg uncertainty, Coulomb's law, and Einstein's field equations. Notes the philosophical significance: the simplest curved figure has transcendental complexity.",
-      "mathContext": "Discusses computation of $\\pi$ (Leibniz, Machin, Ramanujan, Chudnovsky) and its physical appearances in circle geometry, Heisenberg uncertainty, Coulomb's law, and Einstein's field equations. Notes th"
+      "mathContext": "Discusses computation of $\\pi$ (Leibniz, Machin, Ramanujan, Chudnovsky) and its physical appearances in circle geometry, Heisenberg uncertainty, Coulomb's law, and Einstein's field equations."
     }
   ],
   "conclusion": {
@@ -210,5 +210,19 @@
     "axiomCount": 8,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "pi_transcendental",
+      "type": "core",
+      "description": "Pi is transcendental over Q",
+      "leanType": "Transcendental Q Real.pi"
+    },
+    {
+      "name": "squaring_circle_impossible",
+      "type": "key",
+      "description": "Squaring the circle is impossible (corollary of pi's transcendence)",
+      "leanType": "not (Constructible Real.pi)"
+    }
+  ]
 }

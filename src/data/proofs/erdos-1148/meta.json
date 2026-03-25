@@ -111,7 +111,7 @@
       "startLine": 40,
       "endLine": 58,
       "summary": "Defines the `Representation` structure packaging $(x,y,z)$ with proof of $x^2 + y^2 = z^2 + n$ and bounds, plus `IsRepresentable` (bound $= n$) and `IsRepresentableWith` (arbitrary bound) predicates using `Nonempty`.",
-      "mathContext": "Defines the `Representation` structure packaging $(x,y,z)$ with proof of $x^2 + y^2 = z^2 + n$ and bounds, plus `IsRepresentable` (bound $= n$) and `IsRepresentableWith` (arbitrary bound) predicates u"
+      "mathContext": "Defines the `Representation` structure packaging $(x,y,z)$ with proof of $x^2 + y^2 = z^2 + n$ and bounds, plus `IsRepresentable` (bound $= n$) and `IsRepresentableWith` (arbitrary bound) predicates using `Nonempty`."
     },
     {
       "id": "basic-representable",
@@ -127,7 +127,7 @@
       "startLine": 76,
       "endLine": 94,
       "summary": "Proves $\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$ and the corollary that strict representability implies relaxed representability for any $b \\geq n$.",
-      "mathContext": "Proves $\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$ and the corollary that strict representability implies relaxed representability for any $"
+      "mathContext": "Proves $\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$ and the corollary that strict representability implies relaxed representability for any $b \\geq n$."
     },
     {
       "id": "odd-obstruction",
@@ -151,7 +151,7 @@
       "startLine": 145,
       "endLine": 175,
       "summary": "Defines `checkRepresentable n b` as a Boolean brute-force search over $\\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$. Proves soundness ($\\text{true} \\Rightarrow \\text{IsRepresentableWith}$) and completeness ($\\text{IsRepresentableWith} \\Rightarrow \\text{true}$) via `List.any` and `Nat.sqrt` properties.",
-      "mathContext": "Defines `checkRepresentable n b` as a Boolean brute-force search over $\\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$. Proves soundness ($\\text{true} \\Rightarrow \\text{IsRepresentableWith}$) and completenes"
+      "mathContext": "Defines `checkRepresentable n b` as a Boolean brute-force search over $\\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$. Proves soundness ($\\text{true} \\Rightarrow \\text{IsRepresentableWith}$) and completeness ($\\text{IsRepresentableWith} \\Rightarrow \\text{true}$) via `List.any` and `Nat.sqrt` properties."
     },
     {
       "id": "non-representable",
@@ -159,7 +159,7 @@
       "startLine": 176,
       "endLine": 189,
       "summary": "Proves $\\neg\\text{IsRepresentable}(3)$ by exhaustive enumeration: with $x, y, z \\in \\{0, 1\\}$ (since $2^2 = 4 > 3$), $\\max(x^2 + y^2) = 2 < 3 = \\min(z^2 + 3)$, so no solution exists. Uses `interval_cases`.",
-      "mathContext": "Proves $\\neg\\text{IsRepresentable}(3)$ by exhaustive enumeration: with $x, y, z \\in \\{0, 1\\}$ (since $2^2 = 4 > 3$), $\\max(x^2 + y^2) = 2 < 3 = \\min(z^2 + 3)$, so no solution exists. Uses `interval_ca"
+      "mathContext": "Proves $\\neg\\text{IsRepresentable}(3)$ by exhaustive enumeration: with $x, y, z \\in \\{0, 1\\}$ (since $2^2 = 4 > 3$), $\\max(x^2 + y^2) = 2 < 3 = \\min(z^2 + 3)$, so no solution exists."
     },
     {
       "id": "conjecture",
@@ -167,7 +167,7 @@
       "startLine": 190,
       "endLine": 240,
       "summary": "Axiomatizes the main conjecture $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\text{IsRepresentable}(n)$. Proves component bounds $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$ via `Nat.le_sqrt`, formalizing the $O(n^{3/2})$ search space.",
-      "mathContext": "Axiomatizes the main conjecture $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\text{IsRepresentable}(n)$. Proves component bounds $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$ via `Nat.le_sqrt`, formalizing the $O(n^"
+      "mathContext": "Axiomatizes the main conjecture $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\text{IsRepresentable}(n)$. Proves component bounds $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$ via `Nat.le_sqrt`, formalizing the $O(n^{3/2})$ search space."
     },
     {
       "id": "structural-equivalences",
@@ -175,7 +175,7 @@
       "startLine": 241,
       "endLine": 355,
       "summary": "Proves the key equivalence: $\\text{IsRepresentable}(n) \\iff \\exists z \\leq \\sqrt{n},\\; n + z^2$ is a sum of two squares bounded by $n$. Defines `nonRepresentable N` as the finite set of non-representable integers up to $N$, and proves the conjecture implies finiteness of exceptions.",
-      "mathContext": "Proves the key equivalence: $\\text{IsRepresentable}(n) \\iff \\exists z \\leq \\sqrt{n},\\; n + z^2$ is a sum of two squares bounded by $n$. Defines `nonRepresentable N` as the finite set of non-representa"
+      "mathContext": "Proves the key equivalence: $\\text{IsRepresentable}(n) \\iff \\exists z \\leq \\sqrt{n},\\; n + z^2$ is a sum of two squares bounded by $n$. Defines `nonRepresentable N` as the finite set of non-representable integers up to $N$, and proves the conjecture implies finiteness of exceptions."
     }
   ],
   "conclusion": {
@@ -198,11 +198,6 @@
       "targetId": "pythagorean-triples",
       "relationship": "foundation",
       "description": "The equation x² + y² = z² + n generalizes Pythagorean triples (n = 0 case), and representability analysis builds on similar structural insights"
-    },
-    {
-      "targetId": "sum-of-squares",
-      "relationship": "technique",
-      "description": "The Fermat–Euler theorem on sums of two squares is the key theoretical tool for the structural equivalence proved in this formalization"
     }
   ],
   "leanFile": {

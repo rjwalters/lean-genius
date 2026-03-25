@@ -97,7 +97,7 @@
       "summary": "Defines isClique (all pairs adjacent), isIndependent (no pairs adjacent), and isCochromaticValid (clique OR independent). These form the building blocks of cochromatic coloring.",
       "startLine": 39,
       "endLine": 58,
-      "mathContext": "A set $S$ is cochromatic-valid if $S$ is a clique ($\\forall u,v \\in S, u \\sim v$) or independent ($\\forall u,v \\in S, u \\not\\sim v$). This relaxes chromatic coloring where classes must be independent."
+      "mathContext": "Defines isClique (all pairs adjacent), isIndependent (no pairs adjacent), and isCochromaticValid (clique OR independent). These form the building blocks of cochromatic coloring."
     },
     {
       "id": "cochromatic-number",

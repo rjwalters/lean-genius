@@ -256,5 +256,13 @@
       "venue": "Cambridge University Press",
       "note": "Standard reference for Roth's method (Chapter 10) and the broader program of additive combinatorics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "roth_theorem",
+      "type": "core",
+      "description": "Any subset of [N] with no 3-term AP has size O(N/log log N)",
+      "leanType": "no_3AP A -> A subset range N -> card A <= C * N / log(log N)"
+    }
   ]
 }

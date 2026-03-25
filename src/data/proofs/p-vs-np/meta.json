@@ -232,7 +232,7 @@
       "summary": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exist.",
       "startLine": 866,
       "endLine": 900,
-      "mathContext": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exis"
+      "mathContext": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exist."
     },
     {
       "id": "summary-export",
@@ -315,6 +315,14 @@
       "year": "2009",
       "venue": "Cambridge University Press",
       "note": "Comprehensive textbook covering P vs NP, circuit complexity, and the barriers (relativization, natural proofs, algebrization) to resolving the question"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "p_vs_np",
+      "type": "core",
+      "description": "Millennium Prize: Is P equal to NP?",
+      "leanType": "P = NP or P != NP (independent of current axioms)"
     }
   ]
 }

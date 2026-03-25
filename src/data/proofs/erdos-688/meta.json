@@ -36,7 +36,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open.",
-      "mathContext": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and note"
+      "mathContext": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open."
     },
     {
       "id": "imports",
@@ -52,7 +52,7 @@
       "startLine": 27,
       "endLine": 50,
       "summary": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$.",
-      "mathContext": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $"
+      "mathContext": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$."
     },
     {
       "id": "main-conjecture",
@@ -84,7 +84,7 @@
       "startLine": 82,
       "endLine": 88,
       "summary": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$.",
-      "mathContext": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) "
+      "mathContext": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$."
     },
     {
       "id": "structural-properties",
@@ -116,7 +116,8 @@
       "**Connected cluster**: Problems #687, #688, #689 form a family studying covering by prime congruence classes with different range restrictions"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Analysis (asymptotic estimates, generating functions)",
+      "Number theory (prime distribution, arithmetic functions)"
     ]
   },
   "conclusion": {

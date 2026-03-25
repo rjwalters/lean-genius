@@ -91,7 +91,7 @@
       "summary": "Module docstring presenting Erdős Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespace.",
       "startLine": 1,
       "endLine": 35,
-      "mathContext": "Module docstring presenting Erdős Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespac"
+      "mathContext": "Module docstring presenting Erdős Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespace."
     },
     {
       "id": "definitions",
@@ -99,7 +99,7 @@
       "summary": "Defines `UniformHypergraph`, `completeHypergraph`, `disjointEdges` via `Disjoint`, `PairwiseDisjoint` for $k$-matchings, `EdgeColoring` as $c : K_n^{(r)} \\to \\text{Fin}\\, t$, and `colorClass` $C_i = c^{-1}(i)$.",
       "startLine": 36,
       "endLine": 54,
-      "mathContext": "Defines `UniformHypergraph`, `completeHypergraph`, `disjointEdges` via `Disjoint`, `PairwiseDisjoint` for $k$-matchings, `EdgeColoring` as $c : K_n^{(r)} \\to \\text{Fin}\\, t$, and `colorClass` $C_i = c"
+      "mathContext": "Defines `UniformHypergraph`, `completeHypergraph`, `disjointEdges` via `Disjoint`, `PairwiseDisjoint` for $k$-matchings, `EdgeColoring` as $c : K_n^{(r)} \\to \\text{Fin}\\, t$, and `colorClass` $C_i = c^{-1}(i)$."
     },
     {
       "id": "kneser-hypergraph",
@@ -107,7 +107,7 @@
       "summary": "Defines `KneserHypergraph` structure with vertices ($r$-subsets), edges ($k$-tuples of pairwise disjoint $r$-sets), uniformity and inclusion constraints. Axiomatizes `chromaticNumber` $\\chi(KG^r(n,k))$.",
       "startLine": 55,
       "endLine": 73,
-      "mathContext": "Defines `KneserHypergraph` structure with vertices ($r$-subsets), edges ($k$-tuples of pairwise disjoint $r$-sets), uniformity and inclusion constraints. Axiomatizes `chromaticNumber` $\\chi(KG^r(n,k))"
+      "mathContext": "Defines `KneserHypergraph` structure with vertices ($r$-subsets), edges ($k$-tuples of pairwise disjoint $r$-sets), uniformity and inclusion constraints. Axiomatizes `chromaticNumber` $\\chi(KG^r(n,k))$."
     },
     {
       "id": "main-theorem",
@@ -115,7 +115,7 @@
       "summary": "Defines `threshold k r t` $= kr + (t-1)(k-1)$. Axiomatizes `alon_frankl_lovasz_1986`: $n \\geq n_0 \\implies$ monochromatic $k$-matching in every $t$-coloring. Also `kneser_hypergraph_chromatic_number`: $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.",
       "startLine": 74,
       "endLine": 94,
-      "mathContext": "Defines `threshold k r t` $= kr + (t-1)(k-1)$. Axiomatizes `alon_frankl_lovasz_1986`: $n \\geq n_0 \\implies$ monochromatic $k$-matching in every $t$-coloring. Also `kneser_hypergraph_chromatic_number`:"
+      "mathContext": "Defines `threshold k r t` $= kr + (t-1)(k-1)$. Axiomatizes `alon_frankl_lovasz_1986`: $n \\geq n_0 \\implies$ monochromatic $k$-matching in every $t$-coloring. Also `kneser_hypergraph_chromatic_number`: $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$."
     },
     {
       "id": "tightness",
@@ -123,7 +123,7 @@
       "summary": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold.",
       "startLine": 95,
       "endLine": 113,
-      "mathContext": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of"
+      "mathContext": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold."
     },
     {
       "id": "kneser-conjecture",

@@ -59,7 +59,7 @@
       "summary": "Sidon's 1932 question to Erdős: is there an explicit $A \\subseteq \\mathbb{N}$ with $A+A=\\mathbb{N}$ and $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$? JPSZ (2024) answered YES with explicit construction. The Aristotle header records 4 proved theorems and 1 negated theorem (`basis_size_lower_bound` is FALSE).",
       "startLine": 1,
       "endLine": 80,
-      "mathContext": "Sidon's 1932 question to Erdős: is there an explicit $A \\subseteq \\mathbb{N}$ with $A+A=\\mathbb{N}$ and $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$? JPSZ (2024) answered YES with explicit co"
+      "mathContext": "Sidon's 1932 question to Erdős: is there an explicit $A \\subseteq \\mathbb{N}$ with $A+A=\\mathbb{N}$ and $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$? The Aristotle header records 4 proved theorems and 1 negated theorem (`basis_size_lower_bound` is FALSE)."
     },
     {
       "id": "basic-definitions",
@@ -67,7 +67,7 @@
       "summary": "Core definitions: `Sumset A B = {a+b : a ∈ A, b ∈ B}` with notation `+ₛ`; `Doubling A = A +ₛ A`; `representationCount A n = |{(a,b) : a+b=n}|`; `orderedRepCount A n = |{(a,b) : a ≤ b, a+b=n}|`. All `noncomputable` (use `Set.ncard`).",
       "startLine": 81,
       "endLine": 98,
-      "mathContext": "Core definitions: `Sumset A B = {a+b : a ∈ A, b ∈ B}` with notation `+ₛ`; `Doubling A = A +ₛ A`; `representationCount A n = |{(a,b) : a+b=n}|`; `orderedRepCount A n = |{(a,b) : a ≤ b, a+b=n}|`. All `n"
+      "mathContext": "Core definitions: `Sumset A B = {a+b : a ∈ A, b ∈ B}` with notation `+ₛ`; `Doubling A = A +ₛ A`; `representationCount A n = |{(a,b) : a+b=n}|`; `orderedRepCount A n = |{(a,b) : a ≤ b, a+b=n}|`. All `noncomputable` (use `Set.ncard`)."
     },
     {
       "id": "additive-basis",
@@ -75,7 +75,7 @@
       "summary": "`IsAdditiveBasis A` := `Doubling A = Set.univ` ($A+A = \\mathbb{N}$); `CoversAll A` := $\\forall n, n \\in A+A$. `additive_basis_iff`: these are equivalent (Lean-verified by `ext n; simp; intro h n; rw [h]; trivial`).",
       "startLine": 99,
       "endLine": 117,
-      "mathContext": "`IsAdditiveBasis A` := `Doubling A = Set.univ` ($A+A = \\mathbb{N}$); `CoversAll A` := $\\forall n, n \\in A+A$. `additive_basis_iff`: these are equivalent (Lean-verified by `ext n; simp; intro h n; rw ["
+      "mathContext": "`IsAdditiveBasis A` := `Doubling A = Set.univ` ($A+A = \\mathbb{N}$); `CoversAll A` := $\\forall n, n \\in A+A$."
     },
     {
       "id": "economical-condition",
@@ -83,7 +83,7 @@
       "summary": "`IsEconomical A`: $\\forall \\varepsilon > 0$, `Tendsto (r_A(n)/n^ε) atTop (nhds 0)`; `IsEconomical'`: $\\forall \\varepsilon, C > 0, \\exists N_0 : r_A(n) < C \\cdot n^\\varepsilon$ for $n \\geq N_0$. `economical_equiv : IsEconomical ↔ IsEconomical'` (Aristotle-proved via filter limit theory).",
       "startLine": 118,
       "endLine": 150,
-      "mathContext": "`IsEconomical A`: $\\forall \\varepsilon > 0$, `Tendsto (r_A(n)/n^ε) atTop (nhds 0)`; `IsEconomical'`: $\\forall \\varepsilon, C > 0, \\exists N_0 : r_A(n) < C \\cdot n^\\varepsilon$ for $n \\geq N_0$. `econo"
+      "mathContext": "`IsEconomical A`: $\\forall \\varepsilon > 0$, `Tendsto (r_A(n)/n^ε) atTop (nhds 0)`; `IsEconomical'`: $\\forall \\varepsilon, C > 0, \\exists N_0 : r_A(n) < C \\cdot n^\\varepsilon$ for $n \\geq N_0$."
     },
     {
       "id": "probabilistic-existence",
@@ -91,7 +91,7 @@
       "summary": "`Erdos29Statement`: $\\exists A$, basis and economical. `axiom erdos_probabilistic_existence`: proved by Erdős's probabilistic method (include $n \\in A$ with prob $n^{-1/2+o(1)}$). Axiom because Aristotle failed to load it.",
       "startLine": 151,
       "endLine": 159,
-      "mathContext": "`Erdos29Statement`: $\\exists A$, basis and economical. `axiom erdos_probabilistic_existence`: proved by Erdős's probabilistic method (include $n \\in A$ with prob $n^{-1/2+o(1)}$). Axiom because Aristo"
+      "mathContext": "`Erdos29Statement`: $\\exists A$, basis and economical. `axiom erdos_probabilistic_existence`: proved by Erdős's probabilistic method (include $n \\in A$ with prob $n^{-1/2+o(1)}$). Axiom because Aristotle failed to load it."
     },
     {
       "id": "jpsz-construction",
@@ -99,7 +99,7 @@
       "summary": "`axiom JPSZ_set : Set ℕ` (computable), `JPSZ_is_basis`, `JPSZ_is_economical`; `erdos_29_solved : Erdos29Statement` (Lean-proved as `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩`). Properties: density 0, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$.",
       "startLine": 160,
       "endLine": 204,
-      "mathContext": "`axiom JPSZ_set : Set ℕ` (computable), `JPSZ_is_basis`, `JPSZ_is_economical`; `erdos_29_solved : Erdos29Statement` (Lean-proved as `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩`). Properties: density"
+      "mathContext": "`axiom JPSZ_set : Set ℕ` (computable), `JPSZ_is_basis`, `JPSZ_is_economical`; `erdos_29_solved : Erdos29Statement` (Lean-proved as `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩`). Properties: density 0, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$."
     },
     {
       "id": "comparisons",
@@ -107,7 +107,7 @@
       "summary": "`univ_is_basis`: $\\mathbb{N}+\\mathbb{N} = \\mathbb{N}$ (trivial, $n = 0+n$). `univ_not_economical`: $r_\\mathbb{N}(n) = n+1$, and $(n+1)/n^{1/2} \\to \\infty$ (Aristotle-proved). `squares_not_basis`: 3 is not a sum of two squares (`interval_cases`). All Aristotle-verified.",
       "startLine": 205,
       "endLine": 245,
-      "mathContext": "`univ_is_basis`: $\\mathbb{N}+\\mathbb{N} = \\mathbb{N}$ (trivial, $n = 0+n$). `univ_not_economical`: $r_\\mathbb{N}(n) = n+1$, and $(n+1)/n^{1/2} \\to \\infty$ (Aristotle-proved). `squares_not_basis`: 3 is"
+      "mathContext": "`univ_is_basis`: $\\mathbb{N}+\\mathbb{N} = \\mathbb{N}$ (trivial, $n = 0+n$). `univ_not_economical`: $r_\\mathbb{N}(n) = n+1$, and $(n+1)/n^{1/2} \\to \\infty$ (Aristotle-proved)."
     },
     {
       "id": "sidon-sets",
@@ -115,7 +115,7 @@
       "summary": "`IsSidon A`: `orderedRepCount A n ≤ 1`. `sidon_not_basis`: 76-line Lean proof that $0,1,3,5 \\in A$ and $2,4,6 \\notin A$ must hold, but $6 = 1+5 = 3+3$ gives `orderedRepCount A 6 ≥ 2` — contradiction. Aristotle-verified. Sidon sets have $|A \\cap [1,N]| = O(\\sqrt{N})$, too sparse for a basis.",
       "startLine": 246,
       "endLine": 323,
-      "mathContext": "`IsSidon A`: `orderedRepCount A n ≤ 1`. `sidon_not_basis`: 76-line Lean proof that $0,1,3,5 \\in A$ and $2,4,6 \\notin A$ must hold, but $6 = 1+5 = 3+3$ gives `orderedRepCount A 6 ≥ 2` — contradiction. "
+      "mathContext": "`sidon_not_basis`: 76-line Lean proof that $0,1,3,5 \\in A$ and $2,4,6 \\notin A$ must hold, but $6 = 1+5 = 3+3$ gives `orderedRepCount A 6 ≥ 2` — contradiction. Sidon sets have $|A \\cap [1,N]| = O(\\sqrt{N})$, too sparse for a basis."
     },
     {
       "id": "explicit-class",
@@ -123,7 +123,7 @@
       "summary": "`class ExplicitSet (A : Set ℕ)` with `membership_decidable : DecidablePred (· ∈ A)`. `JPSZ_explicit : ExplicitSet JPSZ_set`. Erdős's proof: $\\exists A$ (no algorithm). JPSZ: here is $A$ with computable membership — key distinction formalizing 'constructive'.",
       "startLine": 329,
       "endLine": 357,
-      "mathContext": "`class ExplicitSet (A : Set ℕ)` with `membership_decidable : DecidablePred (· ∈ A)`. `JPSZ_explicit : ExplicitSet JPSZ_set`. Erdős's proof: $\\exists A$ (no algorithm). JPSZ: here is $A$ with computabl"
+      "mathContext": "Erdős's proof: $\\exists A$ (no algorithm). JPSZ: here is $A$ with computable membership — key distinction formalizing 'constructive'."
     },
     {
       "id": "lower-bounds",
@@ -131,7 +131,7 @@
       "summary": "`basis_size_lower_bound` (claimed: $|A \\cap [1,N]| \\geq \\sqrt{N}$) is **FALSE** — Aristotle built counterexample `CounterexampleA = {0,1} ∪ {n ≥ 3}`, a basis with $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. Theorem remains as `sorry`. `JPSZ_size_optimal`: $|\\text{JPSZ} \\cap [1,N]| \\leq C\\sqrt{N \\log N}$.",
       "startLine": 358,
       "endLine": 422,
-      "mathContext": "`basis_size_lower_bound` (claimed: $|A \\cap [1,N]| \\geq \\sqrt{N}$) is **FALSE** — Aristotle built counterexample `CounterexampleA = {0,1} ∪ {n ≥ 3}`, a basis with $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $"
+      "mathContext": "`basis_size_lower_bound` (claimed: $|A \\cap [1,N]| \\geq \\sqrt{N}$) is **FALSE** — Aristotle built counterexample `CounterexampleA = {0,1} ∪ {n ≥ 3}`, a basis with $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. Theorem remains as `sorry`. `JPSZ_size_optimal`: $|\\text{JPSZ} \\cap [1,N]| \\leq C\\sqrt{N \\log N}$."
     },
     {
       "id": "summary",
@@ -139,7 +139,7 @@
       "summary": "1932: Sidon asks; ~1950s: Erdős proves existence; 2024: JPSZ explicit construction. JPSZ properties: `ExplicitSet`, $A+A=\\mathbb{N}$, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$. Verified theorems: 4 Aristotle-proved, 1 Aristotle-negated (false lower bound).",
       "startLine": 423,
       "endLine": 454,
-      "mathContext": "1932: Sidon asks; ~1950s: Erdős proves existence; 2024: JPSZ explicit construction. JPSZ properties: `ExplicitSet`, $A+A=\\mathbb{N}$, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, $|A \\cap [1,N]| \\leq C\\sqrt{N "
+      "mathContext": "1932: Sidon asks; ~1950s: Erdős proves existence; 2024: JPSZ explicit construction. JPSZ properties: `ExplicitSet`, $A+A=\\mathbb{N}$, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$. Verified theorems: 4 Aristotle-proved, 1 Aristotle-negated (false lower bound)."
     }
   ],
   "conclusion": {

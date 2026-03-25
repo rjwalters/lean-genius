@@ -247,7 +247,29 @@
     "theoremCount": 12,
     "substantiveTheoremCount": 2,
     "sorryTheorems": 10,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "mainTheorems": [
+      {
+        "name": "EHP_false_for_r_gt_1",
+        "type": "original",
+        "description": "Disproves the Erdős–Herzog–Piranian conjecture for r > 1: constructs monic polynomials with all roots in the unit disk whose lemniscate diameter exceeds 2"
+      },
+      {
+        "name": "erdos_1048",
+        "type": "synthesis",
+        "description": "Main result: ¬ EHPConjecture, resolving Problem #1048 negatively (direct alias for EHP_false_for_r_gt_1)"
+      },
+      {
+        "name": "zn_diameter",
+        "type": "original",
+        "description": "The diameter of the lemniscate {|zⁿ - 1| < c} for roots of unity, providing explicit diameter calculations"
+      },
+      {
+        "name": "pommerenke_insight",
+        "type": "original",
+        "description": "Pommerenke's key observation: for r > 1, the lemniscate of zⁿ − rⁿ has diameter exceeding 2 for large n"
+      }
+    ]
   },
   "references": [
     {

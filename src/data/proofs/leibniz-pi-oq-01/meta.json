@@ -55,7 +55,9 @@
       "**Optimal tradeoff**: The 'best' arctangent formula minimizes max(1/m_i²) across all arguments while maintaining Σ c_i·arctan(1/m_i) = π/4"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (Taylor series, convergence of alternating series)",
+      "Calculus (integration, arctangent derivative)",
+      "Number theory (pi approximation, convergence rates)"
     ]
   },
   "sections": [

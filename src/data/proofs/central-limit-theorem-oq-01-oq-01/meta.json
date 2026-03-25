@@ -82,7 +82,7 @@
       "startLine": 1,
       "endLine": 38,
       "summary": "File header documenting the Gnedenko-Kolmogorov theorem formalization, imports from Mathlib, opens `Filter`, `Topology`, and `Real` namespaces, sets `maxHeartbeats 400000`, and enters `noncomputable section` within the `DomainOfAttraction` namespace.",
-      "mathContext": "File header documenting the Gnedenko-Kolmogorov theorem formalization, imports from Mathlib, opens `Filter`, `Topology`, and `Real` namespaces, sets `maxHeartbeats 400000`, and enters `noncomputable s"
+      "mathContext": "File header documenting the Gnedenko-Kolmogorov theorem formalization, imports from Mathlib, opens `Filter`, `Topology`, and `Real` namespaces, sets `maxHeartbeats 400000`, and enters `noncomputable section` within the `DomainOfAttraction` namespace."
     },
     {
       "id": "slowly-varying",
@@ -98,7 +98,7 @@
       "startLine": 102,
       "endLine": 140,
       "summary": "Defines `RegularlyVarying f α` as $f(cx)/f(x) \\to c^\\alpha$ for all $c > 0$. Proves the equivalence $SV \\iff RV(0)$ and that $|x|^\\alpha$ is regularly varying using the identity $|cx|^\\alpha / |x|^\\alpha = c^\\alpha$.",
-      "mathContext": "Defines `RegularlyVarying f α` as $f(cx)/f(x) \\to c^\\alpha$ for all $c > 0$. Proves the equivalence $SV \\iff RV(0)$ and that $|x|^\\alpha$ is regularly varying using the identity $|cx|^\\alpha / |x|^\\al"
+      "mathContext": "Defines `RegularlyVarying f α` as $f(cx)/f(x) \\to c^\\alpha$ for all $c > 0$. Proves the equivalence $SV \\iff RV(0)$ and that $|x|^\\alpha$ is regularly varying using the identity $|cx|^\\alpha / |x|^\\alpha = c^\\alpha$."
     },
     {
       "id": "tail-balance",
@@ -106,7 +106,7 @@
       "startLine": 141,
       "endLine": 173,
       "summary": "Defines the `TailBalance` structure bundling right/left tail functions, stability index $\\alpha \\in (0, 2]$, slowly varying $L$, weights $p, q \\geq 0$ with $p + q > 0$, and filter convergence hypotheses for both tails: $\\text{rightTail}(x) / (x^{-\\alpha} L(x)) \\to p$.",
-      "mathContext": "Defines the `TailBalance` structure bundling right/left tail functions, stability index $\\alpha \\in (0, 2]$, slowly varying $L$, weights $p, q \\geq 0$ with $p + q > 0$, and filter convergence hypothes"
+      "mathContext": "Defines the `TailBalance` structure bundling right/left tail functions, stability index $\\alpha \\in (0, 2]$, slowly varying $L$, weights $p, q \\geq 0$ with $p + q > 0$, and filter convergence hypotheses for both tails: $\\text{rightTail}(x) / (x^{-\\alpha} L(x)) \\to p$."
     },
     {
       "id": "domain-of-attraction",
@@ -130,7 +130,7 @@
       "startLine": 288,
       "endLine": 315,
       "summary": "Axiomatizes Potter's bound ($L(y)/L(x) \\leq C \\cdot \\max((y/x)^\\delta, (y/x)^{-\\delta})$) and Karamata's integral theorem ($\\int_1^x t^{\\rho} L(t) dt \\sim x^{\\rho+1} L(x) / (\\rho+1)$), two foundational results in Karamata theory that require measure-theoretic machinery.",
-      "mathContext": "Axiomatizes Potter's bound ($L(y)/L(x) \\leq C \\cdot \\max((y/x)^\\delta, (y/x)^{-\\delta})$) and Karamata's integral theorem ($\\int_1^x t^{\\rho} L(t) dt \\sim x^{\\rho+1} L(x) / (\\rho+1)$), two foundationa"
+      "mathContext": "Axiomatizes Potter's bound ($L(y)/L(x) \\leq C \\cdot \\max((y/x)^\\delta, (y/x)^{-\\delta})$) and Karamata's integral theorem ($\\int_1^x t^{\\rho} L(t) dt \\sim x^{\\rho+1} L(x) / (\\rho+1)$), two foundational results in Karamata theory that require measure-theoretic machinery."
     },
     {
       "id": "stable-properties",
@@ -138,7 +138,7 @@
       "startLine": 316,
       "endLine": 357,
       "summary": "Proves the stable self-similarity identity $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ via the cancellation $(n^{1/\\alpha})^\\alpha = n$, and the classical CLT as a corollary: constant characteristic function with finite variance lies in the Gaussian domain of attraction ($\\alpha = 2$).",
-      "mathContext": "Proves the stable self-similarity identity $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ via the cancellation $(n^{1/\\alpha})^\\alpha = n$, and the classical CLT as a corollary: constant charact"
+      "mathContext": "Proves the stable self-similarity identity $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ via the cancellation $(n^{1/\\alpha})^\\alpha = n$, and the classical CLT as a corollary: constant characteristic function with finite variance lies in the Gaussian domain of attraction ($\\alpha = 2$)."
     },
     {
       "id": "sv-additional",
@@ -146,7 +146,7 @@
       "startLine": 358,
       "endLine": 466,
       "summary": "Proves closure under inversion ($1/L$), division ($L_1/L_2$), asymptotic equivalence transfer, composition properties, and natural number powers ($L^n$). Also establishes that slowly varying functions are eventually nonzero. Each proof reduces to the basic product and limit machinery.",
-      "mathContext": "Proves closure under inversion ($1/L$), division ($L_1/L_2$), asymptotic equivalence transfer, composition properties, and natural number powers ($L^n$). Also establishes that slowly varying functions"
+      "mathContext": "Proves closure under inversion ($1/L$), division ($L_1/L_2$), asymptotic equivalence transfer, composition properties, and natural number powers ($L^n$)."
     },
     {
       "id": "rv-properties",
@@ -154,7 +154,7 @@
       "startLine": 467,
       "endLine": 521,
       "summary": "Proves index arithmetic for regularly varying functions: $RV(\\alpha) \\cdot RV(\\beta) = RV(\\alpha + \\beta)$, $1/RV(\\alpha) = RV(-\\alpha)$, $RV(\\alpha)/RV(\\beta) = RV(\\alpha - \\beta)$. These algebraic rules reduce questions about regular variation to slowly varying functions via the representation theorem.",
-      "mathContext": "Proves index arithmetic for regularly varying functions: $RV(\\alpha) \\cdot RV(\\beta) = RV(\\alpha + \\beta)$, $1/RV(\\alpha) = RV(-\\alpha)$, $RV(\\alpha)/RV(\\beta) = RV(\\alpha - \\beta)$. These algebraic r"
+      "mathContext": "Proves index arithmetic for regularly varying functions: $RV(\\alpha) \\cdot RV(\\beta) = RV(\\alpha + \\beta)$, $1/RV(\\alpha) = RV(-\\alpha)$, $RV(\\alpha)/RV(\\beta) = RV(\\alpha - \\beta)$. These algebraic rules reduce questions about regular variation to slowly varying functions via the representation theorem."
     },
     {
       "id": "stable-charfun",
@@ -162,7 +162,7 @@
       "startLine": 522,
       "endLine": 560,
       "summary": "Proves properties of `stableCharFun`: evaluation at zero ($e^{-0} = 1$), norm bound ($|e^{-|t|^\\alpha}| \\leq 1$), continuity (via composition of continuous functions), and evenness ($e^{-|{-t}|^\\alpha} = e^{-|t|^\\alpha}$).",
-      "mathContext": "Proves properties of `stableCharFun`: evaluation at zero ($e^{-0} = 1$), norm bound ($|e^{-|t|^\\alpha}| \\leq 1$), continuity (via composition of continuous functions), and evenness ($e^{-|{-t}|^\\alpha"
+      "mathContext": "Proves properties of `stableCharFun`: evaluation at zero ($e^{-0} = 1$), norm bound ($|e^{-|t|^\\alpha}| \\leq 1$), continuity (via composition of continuous functions), and evenness ($e^{-|{-t}|^\\alpha} = e^{-|t|^\\alpha}$)."
     },
     {
       "id": "da-structural",
@@ -170,7 +170,7 @@
       "startLine": 561,
       "endLine": 579,
       "summary": "Proves that normalizing sequences in the domain of attraction must diverge ($a_n \\to \\infty$), and that finite variance implies membership in the Gaussian ($\\alpha = 2$) domain of attraction — connecting the general theory back to the classical CLT.",
-      "mathContext": "Proves that normalizing sequences in the domain of attraction must diverge ($a_n \\to \\infty$), and that finite variance implies membership in the Gaussian ($\\alpha = 2$) domain of attraction — connect"
+      "mathContext": "Proves that normalizing sequences in the domain of attraction must diverge ($a_n \\to \\infty$), and that finite variance implies membership in the Gaussian ($\\alpha = 2$) domain of attraction — connecting the general theory back to the classical CLT."
     },
     {
       "id": "tb-properties",
@@ -178,7 +178,7 @@
       "startLine": 580,
       "endLine": 612,
       "summary": "Derives structural properties of `TailBalance`: the ratios $p/(p+q)$ and $q/(p+q)$ lie in $[0, 1]$ and sum to $1$, symmetric tails ($p = q$) imply $\\beta = 0$ (symmetric stable limit), and the stability index satisfies $0 < \\alpha \\leq 2$.",
-      "mathContext": "Derives structural properties of `TailBalance`: the ratios $p/(p+q)$ and $q/(p+q)$ lie in $[0, 1]$ and sum to $1$, symmetric tails ($p = q$) imply $\\beta = 0$ (symmetric stable limit), and the stabili"
+      "mathContext": "Derives structural properties of `TailBalance`: the ratios $p/(p+q)$ and $q/(p+q)$ lie in $[0, 1]$ and sum to $1$, symmetric tails ($p = q$) imply $\\beta = 0$ (symmetric stable limit), and the stability index satisfies $0 < \\alpha \\leq 2$."
     },
     {
       "id": "representation",
@@ -194,7 +194,7 @@
       "startLine": 726,
       "endLine": 757,
       "summary": "Axiomatizes two deep results: (1) uniform convergence of $L(cx)/L(x) \\to 1$ on compact $c$-intervals (the Uniform Convergence Theorem), and (2) the power bound $x^{-\\epsilon} \\leq L(x) \\leq x^\\epsilon$ eventually for any $\\epsilon > 0$ (slowly varying functions grow slower than any power).",
-      "mathContext": "Axiomatizes two deep results: (1) uniform convergence of $L(cx)/L(x) \\to 1$ on compact $c$-intervals (the Uniform Convergence Theorem), and (2) the power bound $x^{-\\epsilon} \\leq L(x) \\leq x^\\epsilon"
+      "mathContext": "Axiomatizes two deep results: (1) uniform convergence of $L(cx)/L(x) \\to 1$ on compact $c$-intervals (the Uniform Convergence Theorem), and (2) the power bound $x^{-\\epsilon} \\leq L(x) \\leq x^\\epsilon$ eventually for any $\\epsilon > 0$ (slowly varying functions grow slower than any power)."
     },
     {
       "id": "pareto-cauchy",
@@ -202,7 +202,7 @@
       "startLine": 758,
       "endLine": 1041,
       "summary": "Defines `paretoTail α x = x^{-α}` for $x \\geq 1$, proves it is regularly varying with index $-\\alpha$, constructs normalization sequences $a_n = n^{1/\\alpha}$, and builds `TailBalance` instances for Pareto ($p=1, q=0$, one-sided) and symmetric Cauchy ($\\alpha=1, p=q=1/2$). Uses the axiomatized forward direction to prove both lie in the domain of attraction of their respective stable laws.",
-      "mathContext": "Defines `paretoTail α x = x^{-α}` for $x \\geq 1$, proves it is regularly varying with index $-\\alpha$, constructs normalization sequences $a_n = n^{1/\\alpha}$, and builds `TailBalance` instances for P"
+      "mathContext": "Defines `paretoTail α x = x^{-α}` for $x \\geq 1$, proves it is regularly varying with index $-\\alpha$, constructs normalization sequences $a_n = n^{1/\\alpha}$, and builds `TailBalance` instances for Pareto ($p=1, q=0$, one-sided) and symmetric Cauchy ($\\alpha=1, p=q=1/2$). Uses the axiomatized forward direction to prove both lie in the domain of attraction of their respective stable laws."
     },
     {
       "id": "sv-examples",
@@ -210,7 +210,7 @@
       "startLine": 1042,
       "endLine": 1115,
       "summary": "Proves $\\log(x + a)$ is slowly varying for $a \\geq 1$ via the decomposition $\\log(cx+a)/\\log(x+a) = 1 + \\log((cx+a)/(x+a))/\\log(x+a)$, where the correction term has bounded numerator and diverging denominator. Combined with the $|L|^p$ closure, obtains $|\\log(x+a)|^\\beta \\in SV$ for any $\\beta \\neq 0$.",
-      "mathContext": "Proves $\\log(x + a)$ is slowly varying for $a \\geq 1$ via the decomposition $\\log(cx+a)/\\log(x+a) = 1 + \\log((cx+a)/(x+a))/\\log(x+a)$, where the correction term has bounded numerator and diverging den"
+      "mathContext": "Proves $\\log(x + a)$ is slowly varying for $a \\geq 1$ via the decomposition $\\log(cx+a)/\\log(x+a) = 1 + \\log((cx+a)/(x+a))/\\log(x+a)$, where the correction term has bounded numerator and diverging denominator. Combined with the $|L|^p$ closure, obtains $|\\log(x+a)|^\\beta \\in SV$ for any $\\beta \\neq 0$."
     },
     {
       "id": "verification",
@@ -218,7 +218,7 @@
       "startLine": 1116,
       "endLine": 1130,
       "summary": "Final verification section with `#check` commands confirming type signatures of all major definitions and theorems: `SlowlyVarying`, `RegularlyVarying`, `TailBalance`, `InDomainOfAttraction`, the three parts of Gnedenko-Kolmogorov, the representation theorem, and the concrete Pareto/Cauchy instances.",
-      "mathContext": "Final verification section with `#check` commands confirming type signatures of all major definitions and theorems: `SlowlyVarying`, `RegularlyVarying`, `TailBalance`, `InDomainOfAttraction`, the thre"
+      "mathContext": "Final verification section with `#check` commands confirming type signatures of all major definitions and theorems: `SlowlyVarying`, `RegularlyVarying`, `TailBalance`, `InDomainOfAttraction`, the three parts of Gnedenko-Kolmogorov, the representation theorem, and the concrete Pareto/Cauchy instances."
     }
   ],
   "conclusion": {

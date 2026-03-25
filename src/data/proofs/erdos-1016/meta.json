@@ -39,7 +39,10 @@
       "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (cycle structure, permutations)",
+      "Combinatorics (degree conditions, Ore's theorem)",
+      "Combinatorics (extremal graph theory, Ramsey theory)",
+      "Graph theory (Hamiltonian cycles, Eulerian paths)"
     ]
   },
   "sections": [
@@ -49,7 +52,7 @@
       "startLine": 1,
       "endLine": 28,
       "summary": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modules.",
-      "mathContext": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modul"
+      "mathContext": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modules."
     },
     {
       "id": "pancyclic-definition",
@@ -65,7 +68,7 @@
       "startLine": 36,
       "endLine": 49,
       "summary": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$. These are the two key quantities in the problem's bounds.",
-      "mathContext": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$. These are the two key q"
+      "mathContext": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$."
     },
     {
       "id": "main-conjecture",
@@ -73,7 +76,7 @@
       "startLine": 50,
       "endLine": 64,
       "summary": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$. The weaker question asks whether the correction to the logarithmic term diverges.",
-      "mathContext": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$. The weaker question asks whether the correction "
+      "mathContext": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$."
     },
     {
       "id": "lower-bound",

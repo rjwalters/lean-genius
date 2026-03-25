@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 44,
       "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Classical)",
-      "mathContext": "For prime p and k, m ≥ 2, let r(k,m,p) be the minimal r such that r, r+1, ..., r+m-1 are all kth power residues modulo p. Let Λ(k,m) = lim sup_{p→∞} r(k,m,p). Questions: 1. Is Λ(k,2) finite for all k?"
+      "mathContext": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Classical)"
     },
     {
       "id": "definitions",
@@ -99,7 +99,7 @@
       "startLine": 239,
       "endLine": 258,
       "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly.",
-      "mathContext": "Verified: Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
+      "mathContext": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
     },
     {
       "id": "m3-case",
@@ -123,7 +123,7 @@
       "startLine": 312,
       "endLine": 335,
       "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often.",
-      "mathContext": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely o"
+      "mathContext": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often."
     },
     {
       "id": "growth",
@@ -139,7 +139,7 @@
       "startLine": 541,
       "endLine": 634,
       "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib.",
-      "mathContext": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized."
+      "mathContext": "FLT: $r^{p-1} \\equiv 1 \\pmod{p}$ via ZMod.pow_card_sub_one_eq_one. Euler criterion: $r = x^2 \\Rightarrow r^{(p-1)/2} = 1$ proved forward; backward axiomatized. Legendre symbol multiplicativity from Mathlib."
     }
   ],
   "conclusion": {

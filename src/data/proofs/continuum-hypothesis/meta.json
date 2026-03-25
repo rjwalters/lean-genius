@@ -56,7 +56,9 @@
       "Cohen's forcing technique, invented for this problem, became the central tool of modern set theory and enabled hundreds of subsequent independence results"
     ],
     "prerequisites": [
-      "Mathematical prerequisites vary by topic"
+      "Set theory (ZFC axioms, ordinals, cardinals)",
+      "Mathematical logic (models, consistency, independence proofs)",
+      "Forcing (generic extensions, Cohen's method)"
     ]
   },
   "sections": [
@@ -65,35 +67,40 @@
       "title": "Module Header and Setup",
       "startLine": 1,
       "endLine": 49,
-      "summary": "Lean 4 imports, ZFC axiom framework, and problem description for the independence of CH."
+      "summary": "Lean 4 imports, ZFC axiom framework, and problem description for the independence of CH.",
+      "mathContext": "The Continuum Hypothesis: $2^{\\aleph_0} = \\aleph_1$, equivalently $|\\mathbb{R}| = \\aleph_1$. Hilbert's first problem (1900). The formalization uses Mathlib's `Cardinal` type and `Cardinal.aleph` for the aleph hierarchy."
     },
     {
       "id": "cardinals",
       "title": "Cardinals and the Continuum",
       "startLine": 50,
       "endLine": 105,
-      "summary": "Continuum, aleph-one, and the CH statement."
+      "summary": "Continuum, aleph-one, and the CH statement.",
+      "mathContext": "The continuum $\\mathfrak{c} = 2^{\\aleph_0} = |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}|$. Cantor's theorem: $|S| < |\\mathcal{P}(S)|$, so $\\aleph_0 < 2^{\\aleph_0}$. CH asserts there is no cardinal $\\kappa$ with $\\aleph_0 < \\kappa < 2^{\\aleph_0}$, i.e., the first uncountable cardinal $\\aleph_1$ equals the continuum."
     },
     {
       "id": "godel",
       "title": "Godel's Constructible Universe",
       "startLine": 143,
       "endLine": 185,
-      "summary": "The inner model L where CH holds."
+      "summary": "The inner model L where CH holds.",
+      "mathContext": "Gödel's constructible universe $L = \\bigcup_{\\alpha \\in \\text{Ord}} L_\\alpha$, built by iterating definable power sets: $L_0 = \\emptyset$, $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$, $L_\\lambda = \\bigcup_{\\alpha < \\lambda} L_\\alpha$ for limit $\\lambda$. $L$ is the minimal inner model of ZFC, and $L \\models \\text{CH}$ because the definability constraint restricts $\\mathcal{P}(\\omega) \\cap L$ to $\\aleph_1$-many sets."
     },
     {
       "id": "cohen",
       "title": "Cohen's Forcing",
       "startLine": 185,
       "endLine": 225,
-      "summary": "Forcing extensions where CH fails."
+      "summary": "Forcing extensions where CH fails.",
+      "mathContext": "Cohen forcing adds $\\aleph_2$-many new subsets of $\\mathbb{N}$ to a ground model $M$, producing $M[G]$ where $2^{\\aleph_0} \\geq \\aleph_2 > \\aleph_1$, violating CH. The forcing poset is $\\text{Fn}(\\aleph_2 \\times \\omega, 2)$ — finite partial functions from $\\aleph_2 \\times \\omega$ to $\\{0,1\\}$. Each generic filter $G$ encodes $\\aleph_2$-many distinct reals."
     },
     {
       "id": "independence",
       "title": "The Independence Theorem",
       "startLine": 225,
       "endLine": 366,
-      "summary": "Main result: CH is independent of ZFC."
+      "summary": "Main result: CH is independent of ZFC.",
+      "mathContext": "$\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{CH})$ (Gödel, 1940) and $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\neg\\text{CH})$ (Cohen, 1963). Therefore CH is independent of ZFC: it can be neither proved nor refuted from the standard axioms. This resolved Hilbert's first problem — but not by deciding CH's truth value."
     }
   ],
   "conclusion": {
@@ -169,6 +176,20 @@
       "year": "1963",
       "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
       "note": "Proved CH is independent of ZFC using the method of forcing — won the Fields Medal in 1966"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ch_independent",
+      "type": "core",
+      "description": "The continuum hypothesis is independent of ZFC (Godel + Cohen)",
+      "leanType": "Consistent ZFC -> not (Provable ZFC CH) and not (Provable ZFC (not CH))"
+    },
+    {
+      "name": "ch_statement",
+      "type": "key",
+      "description": "CH: there is no cardinal strictly between aleph_0 and 2^aleph_0",
+      "leanType": "not (exists kappa, aleph_0 < kappa and kappa < 2^aleph_0)"
     }
   ]
 }

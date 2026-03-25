@@ -108,7 +108,7 @@
       "startLine": 40,
       "endLine": 53,
       "summary": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$.",
-      "mathContext": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residue"
+      "mathContext": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$."
     },
     {
       "id": "ratio-set-identity",
@@ -132,7 +132,7 @@
       "startLine": 76,
       "endLine": 84,
       "summary": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$.",
-      "mathContext": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P"
+      "mathContext": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$."
     },
     {
       "id": "heuristic-motivation",
@@ -140,7 +140,7 @@
       "startLine": 85,
       "endLine": 100,
       "summary": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
-      "mathContext": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random element"
+      "mathContext": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
     {
       "id": "average-results",

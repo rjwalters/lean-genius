@@ -48,7 +48,9 @@
       "The `native_decide` tactic enables verification of specific Collatz trajectories (like 27's 111-step path) by compiling the recursive computation to native code — turning the proof assistant into an efficient trajectory checker"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (modular arithmetic, binary representations)",
+      "Dynamical systems (orbit structure, attractors)",
+      "Computability theory (undecidability, Turing machines)"
     ]
   },
   "sections": [
@@ -150,6 +152,14 @@
       "year": "2022",
       "venue": "Forum of Mathematics, Pi 10, e12",
       "note": "Proved that almost all positive integers eventually reach a value close to 1 under the Collatz map — the strongest known result toward the conjecture"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "collatz_conjecture",
+      "type": "core",
+      "description": "Every positive integer eventually reaches 1 under the Collatz map",
+      "leanType": "(n : Nat) -> 0 < n -> exists k, collatz^k n = 1"
     }
   ]
 }

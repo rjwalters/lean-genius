@@ -115,7 +115,7 @@
       "startLine": 48,
       "endLine": 72,
       "summary": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$.",
-      "mathContext": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dich"
+      "mathContext": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$."
     },
     {
       "id": "m-function",
@@ -139,7 +139,7 @@
       "startLine": 102,
       "endLine": 125,
       "summary": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof).",
-      "mathContext": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár"
+      "mathContext": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof)."
     },
     {
       "id": "upper-bounds",
@@ -155,7 +155,7 @@
       "startLine": 138,
       "endLine": 152,
       "summary": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$.",
-      "mathContext": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$"
+      "mathContext": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$."
     },
     {
       "id": "constructions",

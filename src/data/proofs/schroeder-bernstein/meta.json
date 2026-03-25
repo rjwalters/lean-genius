@@ -241,5 +241,13 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "schroeder_bernstein",
+      "type": "core",
+      "description": "If f: A -> B and g: B -> A are injections, then there exists a bijection A <-> B",
+      "leanType": "Function.Injective f -> Function.Injective g -> exists h : A equiv B, Function.Bijective h"
+    }
+  ]
 }

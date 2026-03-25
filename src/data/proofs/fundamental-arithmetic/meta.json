@@ -66,7 +66,9 @@
       "The **Finsupp representation** `Nat.factorization` maps each prime to its exponent, giving $n \\mapsto (p \\mapsto v_p(n))$ — this is often more convenient than the list representation for multiplicative arithmetic"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Elementary number theory (divisibility, primes, GCD)",
+      "Mathematical logic (existence and uniqueness proofs)",
+      "Well-ordering (strong induction, descent arguments)"
     ]
   },
   "sections": [
@@ -208,5 +210,19 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "fundamental_theorem_arithmetic",
+      "type": "core",
+      "description": "Every integer > 1 has a unique prime factorization",
+      "leanType": "(n : Nat) -> 1 < n -> exists! (factors : Multiset Nat), (forall p in factors, Nat.Prime p) and factors.prod = n"
+    },
+    {
+      "name": "unique_factorization",
+      "type": "key",
+      "description": "Nat is a unique factorization domain",
+      "leanType": "UniqueFactorizationMonoid Nat"
+    }
+  ]
 }

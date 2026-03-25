@@ -72,7 +72,9 @@
       "The 246 bound is tight for the 50-tuple approach — improving requires either larger k-tuples or new sieve techniques"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Analytic number theory (L-functions, zero-free regions)",
+      "Sieve methods (Maynard-Tao sieve, admissible tuples)",
+      "Probability (random sieve weights, optimization)"
     ]
   },
   "sections": [
@@ -98,7 +100,7 @@
       "startLine": 59,
       "endLine": 101,
       "summary": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate composites in [48,52].",
-      "mathContext": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate compos"
+      "mathContext": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate composites in [48,52]."
     },
     {
       "id": "diameter",
@@ -106,7 +108,7 @@
       "startLine": 102,
       "endLine": 123,
       "summary": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new API: no explicit Nonempty arg).",
-      "mathContext": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new "
+      "mathContext": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new API: no explicit Nonempty arg)."
     },
     {
       "id": "lower-bound",
@@ -122,7 +124,7 @@
       "startLine": 138,
       "endLine": 175,
       "summary": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. admissible_50_tuple_large_spread: explicit pair ≥246 apart.",
-      "mathContext": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. ad"
+      "mathContext": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. admissible_50_tuple_large_spread: explicit pair ≥246 apart."
     },
     {
       "id": "consequences",
@@ -130,7 +132,7 @@
       "startLine": 176,
       "endLine": 216,
       "summary": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tuple: the complete characterization theorem.",
-      "mathContext": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tup"
+      "mathContext": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tuple: the complete characterization theorem."
     },
     {
       "id": "synthesis",
@@ -138,7 +140,7 @@
       "startLine": 217,
       "endLine": 279,
       "summary": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is both achievable (infinitely many prime gaps ≤ 246) and sieve-optimal (minimum diameter for admissible 50-tuples is exactly 246).",
-      "mathContext": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is b"
+      "mathContext": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D."
     }
   ],
   "conclusion": {

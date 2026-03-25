@@ -64,7 +64,9 @@
       "Easton's theorem (1970) shows the independence is maximal: for regular cardinals, the power function can be essentially any non-decreasing function satisfying König's cofinality constraint — making CH just one point in a vast landscape of consistent set theories"
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Set theory (countable and uncountable sets, cardinality)",
+      "Mathematical logic (diagonal arguments, Cantor's theorem)",
+      "Topology (completeness of real numbers, Baire category)"
     ]
   },
   "sections": [
@@ -127,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯ and to establish the fundamental bounds ℵ₀ < ℵ₁ ≤ 2^ℵ₀.",
-    "implications": "But it reaches its fundamental limit when asked whether any cardinality lies *between* ℵ₀ and 2^ℵ₀. The Continuum Hypothesis — that no such intermediate cardinal exists — is provably independent of ZFC (Gödel-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
+    "implications": "**1. Independence from ZFC**: The Continuum Hypothesis is the first and most famous example of a natural mathematical statement independent of the standard axioms. Gödel (1940) showed CH is consistent with ZFC by constructing the constructible universe $L$, where CH holds. Cohen (1963) showed $\\neg$CH is consistent by introducing the method of forcing, constructing models where $2^{\\aleph_0} = \\aleph_2$ or any regular cardinal $\\geq \\aleph_1$. Together, CH is independent of ZFC — neither provable nor refutable.\n\n**2. Set-theoretic pluralism**: The independence of CH led to a fundamental philosophical question: is there a 'correct' answer to CH, or are there genuinely different mathematical universes? The multiverse view (Hamkins) holds that different set-theoretic universes are equally real; the universe view (Woodin, early period) holds that there is a definite truth about CH that stronger axioms might reveal.\n\n**3. Forcing and modern set theory**: Cohen's method of forcing, developed to prove $\\neg$CH consistent, became the most powerful technique in modern set theory. Forcing has been used to prove the independence of hundreds of combinatorial principles and to construct models with exotic properties. It is the set-theoretic analog of Galois's group theory: a general framework that transforms individual impossibility results into a systematic theory.\n\n**4. Cardinal arithmetic**: CH is equivalent to $2^{\\aleph_0} = \\aleph_1$. The Generalized Continuum Hypothesis (GCH: $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$) is also independent of ZFC. Easton's theorem (1970) shows that the function $\\alpha \\mapsto 2^{\\aleph_\\alpha}$ can be essentially arbitrary on regular cardinals — any non-decreasing function with $\\text{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$ is consistent with ZFC.\n\n**5. Connections to analysis**: CH has concrete consequences in real analysis. Under CH, there exist pathological objects like Sierpiński sets (uncountable sets meeting every Lebesgue null set in a countable set) and Luzin sets (uncountable sets meeting every meager set in a countable set). Under $\\neg$CH with Martin's Axiom, these cannot exist. The independence of CH thus implies that certain questions about the real line are undecidable in ZFC.",
     "openQuestions": [
       "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀? (The Continuum Hypothesis — independent of ZFC)",
       "Is the Continuum Hypothesis decided by large cardinal axioms?",
@@ -159,6 +161,16 @@
       "targetId": "schroeder-bernstein",
       "relationship": "foundational",
       "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH is formulated: ℵ₀ < 2^ℵ₀ uses the strict ordering of cardinals"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "The dedicated Continuum Hypothesis entry formalizing the statement $2^{\\aleph_0} = \\aleph_1$ and its independence from ZFC. This entry (OQ-01 of Cantor diagonalization) approaches CH from the perspective of the diagonal argument's limitations"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results that transformed mathematics: Abel-Ruffini showed no radical formula solves the general quintic (1824), while Gödel-Cohen showed no ZFC proof decides CH (1940/1963). Both revealed that certain natural questions have no answer within a given formal framework, inaugurating the study of impossibility and independence"
     }
   ],
   "references": [

@@ -123,19 +123,9 @@
   },
   "crossReferences": [
     {
-      "targetId": "sidon-sets",
-      "relationship": "specialization",
-      "description": "Sidon (B_2) sets are the zero-collision case; almost-Sidon relaxes to one collision, gaining a factor of 2/√3"
-    },
-    {
       "targetId": "erdos-840",
       "relationship": "related",
       "description": "Problem #840 studies the general k-collision case; #864 is the special case k = 1"
-    },
-    {
-      "targetId": "erdos-turan-conjecture",
-      "relationship": "related",
-      "description": "The Erdős-Turán conjecture on Sidon sets provides the baseline √N bound that almost-Sidon exceeds"
     }
   ],
   "leanFile": {

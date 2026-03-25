@@ -190,5 +190,13 @@
       "venue": "Paris: Imprimerie Royale",
       "note": "Rigorous foundation for L'Hôpital's rule via the generalized Mean Value Theorem (Cauchy MVT), placing the 18th-century result on firm analytical ground"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lhopital_rule",
+      "type": "core",
+      "description": "If f/g -> 0/0 and f'/g' -> L, then f/g -> L",
+      "leanType": "Tendsto f x (nhds 0) -> Tendsto g x (nhds 0) -> Tendsto (f'/g') x (nhds L) -> Tendsto (f/g) x (nhds L)"
+    }
   ]
 }

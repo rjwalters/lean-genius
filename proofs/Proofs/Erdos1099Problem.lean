@@ -364,9 +364,13 @@ For any α > 1, liminf_{n→∞} h_α(n) is finite.
 
 This resolves Erdős Problem #1099 in the affirmative.
 -/
-axiom vose_liminf_bounded (α : ℝ) (hα : α > 1) :
+theorem vose_liminf_bounded (α : ℝ) (hα : α > 1) :
     ∃ (bound : ℝ), ∀ ε > 0,
-      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε
+      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε := by
+  obtain ⟨bound, _, seq, hpos, hbound⟩ := vose_bounded_sequence α hα
+  refine ⟨bound, fun ε hε => ⟨seq 0, ?_, ?_⟩⟩
+  · have := hpos 0; omega
+  · linarith [hbound 0]
 
 /--
 **Main theorem: Erdős Problem #1099 SOLVED**
@@ -502,11 +506,41 @@ Sorted divisors of 2^k = [1, 2, 4, ..., 2^k] by sort uniqueness.
 All consecutive divisor ratios = 2, so h_α(2^k) = k·(2-1)^α = k.
 -/
 
+/-- List.range n is strictly sorted. -/
+private theorem list_range_pairwise_lt : ∀ (n : ℕ), (List.range n).Pairwise (· < ·) := by
+  intro n; induction n with
+  | zero => exact List.Pairwise.nil
+  | succ n ih =>
+    rw [List.range_succ, List.pairwise_append]
+    refine ⟨ih, ?_, fun a ha b hb => ?_⟩
+    · exact .cons (by simp) .nil
+    · simp only [List.mem_range] at ha
+      simp only [List.mem_singleton] at hb
+      subst hb; exact ha
+
 /-- Sorted divisors of 2^k are [2^0, 2^1, ..., 2^k].
-Proof: both lists are sorted permutations of the same multiset. -/
+Both lists are sorted, nodup, with the same elements → equal. -/
 private theorem sortedDivisors_two_pow (k : ℕ) :
     sortedDivisors (2 ^ k) = (List.range (k + 1)).map (HPow.hPow 2) := by
-  sorry -- sort uniqueness via Nat.divisors_prime_pow + Perm.eq_of_pairwise
+  have hnd₁ := sortedDivisors_nodup (2 ^ k)
+  have hnd₂ : ((List.range (k + 1)).map (HPow.hPow 2)).Nodup := by
+    apply List.Nodup.map
+    · exact Nat.pow_right_injective (by norm_num : 1 < 2)
+    · exact List.nodup_range
+  have hmem : ∀ x, x ∈ sortedDivisors (2 ^ k) ↔
+      x ∈ (List.range (k + 1)).map (HPow.hPow 2) := by
+    intro x
+    simp only [sortedDivisors, Finset.mem_sort,
+               Nat.divisors_prime_pow (by norm_num : Nat.Prime 2),
+               Finset.mem_map, Function.Embedding.coeFn_mk, Finset.mem_range,
+               List.mem_map, List.mem_range]
+  have hperm := (List.perm_ext_iff_of_nodup hnd₁ hnd₂).mpr hmem
+  have hs₂ : ((List.range (k + 1)).map (HPow.hPow 2)).Pairwise (· ≤ ·) := by
+    rw [List.pairwise_map]
+    exact (list_range_pairwise_lt (k + 1)).imp
+      (fun hab => Nat.pow_le_pow_right (by omega) (le_of_lt hab))
+  exact hperm.eq_of_pairwise (fun _ _ _ _ h1 h2 => le_antisymm h1 h2)
+    (sortedDivisors_sorted (2 ^ k)) hs₂
 
 /-- The consecutive divisor ratios of 2^k consist of k copies of 2.
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/

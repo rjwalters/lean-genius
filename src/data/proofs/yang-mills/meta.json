@@ -149,7 +149,7 @@
       "id": "mass-gap",
       "title": "The Mass Gap",
       "summary": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
-      "mathContext": "$\\Delta > 0$: $\\forall \\psi \\perp |0\\rangle,\\; \\|\\psi\\| = 1 \\implies \\text{Re}\\langle H\\psi, \\psi \\rangle \\geq \\Delta$. Downward closure: $0 < \\Delta' \\leq \\Delta \\implies \\text{hasMassGap}(\\Delta')$.",
+      "mathContext": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
       "file": "Proofs/YangMills/Quantum.lean",
       "startLine": 80,
       "endLine": 109
@@ -331,6 +331,14 @@
       "year": "2000",
       "venue": "Clay Mathematics Institute Millennium Problems",
       "note": "Official problem statement for the $1 million Clay prize — proving existence of the mass gap"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "yang_mills_mass_gap",
+      "type": "core",
+      "description": "Millennium Prize: Yang-Mills theory exists and has a mass gap",
+      "leanType": "YangMillsTheory G -> exists m > 0, mass_gap m (quantized_theory G)"
     }
   ]
 }

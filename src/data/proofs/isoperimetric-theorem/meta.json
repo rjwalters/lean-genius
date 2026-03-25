@@ -51,7 +51,10 @@
       "The **Sobolev inequality** $\\|f\\|_{L^{n/(n-1)}} \\le C_n \\|\\nabla f\\|_{L^1}$ is a functional-analytic reformulation via the co-area formula, connecting geometry to PDE theory"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Real analysis (integration, convexity)",
+      "Geometry (area, perimeter, curves in the plane)",
+      "Calculus of variations (extremal problems, Lagrange multipliers)",
+      "Fourier analysis (Fourier series, Parseval's theorem)"
     ]
   },
   "crossReferences": [
@@ -113,7 +116,7 @@
       "startLine": 1,
       "endLine": 78,
       "summary": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status. Imports Mathlib's trigonometric constants, measure theory, and tactic library.",
-      "mathContext": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and sta"
+      "mathContext": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status."
     },
     {
       "id": "curve-definitions",
@@ -121,7 +124,7 @@
       "startLine": 81,
       "endLine": 134,
       "summary": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area.",
-      "mathContext": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of c"
+      "mathContext": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area."
     },
     {
       "id": "isoperimetric-ratio",
@@ -129,7 +132,7 @@
       "startLine": 140,
       "endLine": 182,
       "summary": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`).",
-      "mathContext": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_"
+      "mathContext": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`)."
     },
     {
       "id": "main-theorem",
@@ -137,7 +140,7 @@
       "startLine": 188,
       "endLine": 233,
       "summary": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fourier analysis, or Brunn-Minkowski).",
-      "mathContext": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fouri"
+      "mathContext": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary."
     },
     {
       "id": "equality-case",
@@ -169,7 +172,7 @@
       "startLine": 404,
       "endLine": 449,
       "summary": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport.",
-      "mathContext": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and o"
+      "mathContext": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport."
     }
   ],
   "conclusion": {
@@ -213,5 +216,19 @@
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 14
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "isoperimetric_inequality",
+      "type": "core",
+      "description": "Among all closed curves of length L, the circle encloses the maximum area: A <= L^2/(4*pi)",
+      "leanType": "ClosedCurve gamma -> length gamma = L -> area_enclosed gamma <= L^2 / (4 * pi)"
+    },
+    {
+      "name": "isoperimetric_equality",
+      "type": "key",
+      "description": "Equality holds iff the curve is a circle",
+      "leanType": "area_enclosed gamma = L^2 / (4 * pi) <-> is_circle gamma"
+    }
+  ]
 }

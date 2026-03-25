@@ -99,7 +99,7 @@
       "summary": "charFun (characteristic function), conv2 (2-fold via Finset.filter on Finset.product), conv3 (3-fold via triple product), convH (axiom for general h-fold), sumConv2 and sumConv3 (cumulative sums via Finset.sum over Finset.range).",
       "startLine": 29,
       "endLine": 63,
-      "mathContext": "charFun (characteristic function), conv2 (2-fold via Finset.filter on Finset.product), conv3 (3-fold via triple product), convH (axiom for general h-fold), sumConv2 and sumConv3 (cumulative sums via F"
+      "mathContext": "charFun (characteristic function), conv2 (2-fold via Finset.filter on Finset.product), conv3 (3-fold via triple product), convH (axiom for general h-fold), sumConv2 and sumConv3 (cumulative sums via Finset.sum over Finset.range)."
     },
     {
       "id": "linear-growth",
@@ -107,7 +107,7 @@
       "summary": "IsLinearBounded (cN + O(1) via exists M, forall N, |f(N) - cN| <= M), IsLinearLittleO (cN + o(N^alpha) with parametric exponent), IsLinearVaughan (cN + o(N^{1/4}/(log N)^{1/2}) using Real.sqrt and Real.log). Forms strict hierarchy: O(1) subset o(N^{1/4}/sqrt(log N)) subset o(N^{1/4}).",
       "startLine": 64,
       "endLine": 81,
-      "mathContext": "IsLinearBounded (cN + O(1) via exists M, forall N, |f(N) - cN| <= M), IsLinearLittleO (cN + o(N^alpha) with parametric exponent), IsLinearVaughan (cN + o(N^{1/4}/(log N)^{1/2}) using Real.sqrt and Rea"
+      "mathContext": "IsLinearBounded (cN + O(1) via exists M, forall N, |f(N) - cN| <= M), IsLinearLittleO (cN + o(N^alpha) with parametric exponent), IsLinearVaughan (cN + o(N^{1/4}/(log N)^{1/2}) using Real.sqrt and Real.log). Forms strict hierarchy: O(1) subset o(N^{1/4}/sqrt(log N)) subset o(N^{1/4})."
     },
     {
       "id": "erdos-fuchs",
@@ -115,7 +115,7 @@
       "summary": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #764 generalizes.",
       "startLine": 82,
       "endLine": 103,
-      "mathContext": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #7"
+      "mathContext": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #764 generalizes."
     },
     {
       "id": "vaughan-theorem",
@@ -123,7 +123,7 @@
       "summary": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for all h >= 2.",
       "startLine": 104,
       "endLine": 132,
-      "mathContext": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for al"
+      "mathContext": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for all h >= 2."
     },
     {
       "id": "error-bounds",
@@ -131,7 +131,7 @@
       "summary": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation.",
       "startLine": 133,
       "endLine": 152,
-      "mathContext": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation"
+      "mathContext": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation."
     },
     {
       "id": "examples",
@@ -147,7 +147,7 @@
       "summary": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4.",
       "startLine": 163,
       "endLine": 182,
-      "mathContext": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any a"
+      "mathContext": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4."
     },
     {
       "id": "summary",
@@ -155,7 +155,7 @@
       "summary": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) into a single triple conjunction.",
       "startLine": 183,
       "endLine": 208,
-      "mathContext": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) "
+      "mathContext": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) into a single triple conjunction."
     }
   ],
   "conclusion": {
@@ -187,17 +187,22 @@
     {
       "targetId": "erdos-763",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+      "description": "Erdős #763 studies the 2-fold convolution case — the Erdős-Fuchs theorem (1956) proves $r_2(n) = cn + O(1)$ is impossible, the direct predecessor to the 3-fold impossibility in this problem. Vaughan extended this from 2-fold to arbitrary h-fold"
     },
     {
       "targetId": "erdos-1136",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+      "description": "Erdős #1136 is a solved problem in additive combinatorics — the common theme of understanding how additive structure constrains representation counts connects both problems through the Erdős-Fuchs framework"
     },
     {
       "targetId": "erdos-1179",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+      "description": "Erdős #1179 concerns additive combinatorics — relates through the shared study of how representation functions of additive sets must oscillate, a universal phenomenon across different convolution orders"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets (B₂ sets) are precisely the sets where $r_2(n) \\leq 1$ — the extreme case of bounded representation. Erdős #764 shows that even achieving $r_h(n) = cn + O(1)$ is impossible, while Sidon sets aim for $r_2(n) \\leq 1$, connecting both problems through the spectrum of representation regularity"
     }
   ]
 }

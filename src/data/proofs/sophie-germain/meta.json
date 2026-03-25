@@ -182,5 +182,13 @@
       "venue": "Historia Mathematica 37(4), 641–692",
       "note": "Revealed Germain's much more ambitious program for proving FLT than previously known"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sophie_germain_identity",
+      "type": "core",
+      "description": "Sophie Germain identity: a^4 + 4b^4 = (a^2+2b^2+2ab)(a^2+2b^2-2ab)",
+      "leanType": "a^4 + 4*b^4 = (a^2 + 2*b^2 + 2*a*b) * (a^2 + 2*b^2 - 2*a*b)"
+    }
   ]
 }

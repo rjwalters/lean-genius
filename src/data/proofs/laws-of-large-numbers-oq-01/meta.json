@@ -75,9 +75,9 @@
       "Cauchy distribution (no finite moments at all) is the canonical LLN failure: by 1-stability, the sample mean's distribution is Cauchy(0,1) for ALL n"
     ],
     "prerequisites": [
-      "Probability theory (i.i.d. random variables, expectation, variance)",
-      "Measure theory (integrability, convergence in measure, a.s. convergence)",
-      "Chebyshev's inequality and its limitations"
+      "Probability theory (independence, expectation, variance)",
+      "Measure theory (almost sure convergence, Borel-Cantelli)",
+      "Analysis (Chebyshev inequality, moment bounds)"
     ]
   },
   "sections": [
@@ -127,7 +127,7 @@
       "startLine": 191,
       "endLine": 229,
       "summary": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary).",
-      "mathContext": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_on"
+      "mathContext": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary)."
     },
     {
       "id": "lp-distributions",
@@ -143,7 +143,7 @@
       "startLine": 288,
       "endLine": 403,
       "summary": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite_mean_only via integrability arguments.",
-      "mathContext": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite"
+      "mathContext": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite_mean_only via integrability arguments."
     }
   ],
   "conclusion": {
@@ -183,6 +183,16 @@
       "targetId": "central-limit-theorem",
       "relationship": "related",
       "description": "The CLT provides the rate of convergence (normal approximation) for finite-variance distributions; for heavy tails with α ∈ (1,2), the Stable CLT replaces the normal with an α-stable law"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The Gnedenko-Kolmogorov domain of attraction theory characterizes what happens when variance is infinite — exactly the regime where the classical LLN fails and this open question arises"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "application",
+      "description": "Buffon's needle uses the LLN to estimate π via repeated experiments; heavy-tailed variants of this problem would require the generalized convergence theory studied here"
     }
   ],
   "references": [

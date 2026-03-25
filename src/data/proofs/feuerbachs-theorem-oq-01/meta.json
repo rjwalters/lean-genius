@@ -76,7 +76,9 @@
       "Triangle inequalities ($s-a > 0$, etc.) are proved indirectly from Heron's formula and area positivity, avoiding any direct geometric argument. This is needed for the excircle denominators $(s-a)$, $(s-b)$, $(s-c)$ which appear when dividing out to obtain $|NI_k|^2$."
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (triangle centers, radical axes)",
+      "Circle geometry (tangent lines, power of a point)",
+      "Complex numbers (representation of geometric transformations)"
     ]
   },
   "sections": [

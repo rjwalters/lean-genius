@@ -64,6 +64,11 @@
       "**Cross-case contradiction for injectivity**: If reachable $a_1$ and non-reachable $a_2$ mapped to the same $b$, then $g(f(a_1)) = a_2$ by the preimage equation, but $g(f(a_1))$ is reachable by closure — contradiction.",
       "**Decomposition drives surjectivity**: For $b$ not in $f(S)$, the element $g(b)$ cannot be reachable. If it were in the base set, $g(b)$ would not be in range of $g$ (contradiction). If $g(b) = g(f(a'))$ for reachable $a'$, then $b = f(a')$ by injectivity (contradiction).",
       "**Lean 4 computability**: The `noncomputable` tag on the bijection is a Lean 4 artifact (extracting from `Multiset` quotients), not a mathematical limitation. The orbit classification itself requires only `DecidableEq` and `Fintype`."
+    ],
+    "prerequisites": [
+      "Set theory (injections, surjections, bijections)",
+      "Constructive mathematics (decidability, excluded middle)",
+      "Finite type theory (Fintype, decidable equality)"
     ]
   },
   "sections": [

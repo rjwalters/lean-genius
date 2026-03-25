@@ -71,7 +71,9 @@
       "**60 Pascal lines**: The $6!/(2 \\cdot 6) = 60$ hexagon orderings yield 60 Pascal lines forming a configuration with 20 Steiner points, 60 Kirkman points, and 15 Plücker lines"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Projective geometry (conics, collinearity, duality)",
+      "Algebraic geometry (Bezout's theorem, cubic curves)",
+      "Synthetic geometry (cross-ratio, perspectivity)"
     ]
   },
   "sections": [
@@ -215,6 +217,14 @@
       "year": "1640",
       "venue": "Paris",
       "note": "Statement of Pascal's mystic hexagram theorem: opposite sides of a hexagon inscribed in a conic meet in three collinear points — discovered at age 16"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pascal_hexagon",
+      "type": "core",
+      "description": "If a hexagon is inscribed in a conic, the three intersection points of opposite sides are collinear",
+      "leanType": "inscribed_in_conic hexagon -> collinear (opposite_intersections hexagon)"
     }
   ]
 }

@@ -62,7 +62,8 @@
       "A single general theorem subsumes infinitely many specific irrationality results: $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[4]{2}$, and all others."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (unique prime factorization, rational root theorem)",
+      "Algebra (polynomial roots, field extensions)"
     ]
   },
   "sections": [
@@ -127,11 +128,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "irrationality-sqrt2",
-      "relationship": "generalizes",
-      "description": "Generalizes the irrationality of √2 to nth roots: ⁿ√k is irrational unless k is a perfect nth power."
-    },
-    {
       "targetId": "abel-ruffini",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a cyclic Galois quotient, and Abel-Ruffini's impossibility at degree 5 arises because the composition of cyclic quotients cannot build the non-solvable group $S_5$"
@@ -167,6 +163,14 @@
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
       "note": "Contains the standard proof that n-th roots of non-perfect-powers are irrational, using unique factorization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nth_root_irrational",
+      "type": "core",
+      "description": "The nth root of a positive integer is irrational unless it is a perfect nth power",
+      "leanType": "(n k : Nat) -> 1 < n -> not (exists m, k = m^n) -> Irrational (k^(1/n : R))"
     }
   ]
 }

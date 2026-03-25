@@ -119,7 +119,7 @@
       "summary": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors.",
       "startLine": 43,
       "endLine": 81,
-      "mathContext": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is"
+      "mathContext": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors."
     },
     {
       "id": "examples",
@@ -127,7 +127,7 @@
       "summary": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$.",
       "startLine": 82,
       "endLine": 118,
-      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key"
+      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$."
     },
     {
       "id": "sequences",
@@ -135,7 +135,7 @@
       "summary": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| : \\text{isValidGPFSeq}\\, n\\, \\text{seq}\\}$.",
       "startLine": 119,
       "endLine": 148,
-      "mathContext": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| :"
+      "mathContext": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| : \\text{isValidGPFSeq}\\, n\\, \\text{seq}\\}$."
     },
     {
       "id": "example-sequences",
@@ -143,7 +143,7 @@
       "summary": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$. Each is verified by rewriting GPF values and using `omega`.",
       "startLine": 149,
       "endLine": 199,
-      "mathContext": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$. Each is verified by rewriting GPF values and using `ome"
+      "mathContext": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$."
     },
     {
       "id": "lower-bounds",
@@ -167,7 +167,7 @@
       "summary": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both directions into a $\\Theta$-bound, proved by extracting and repacking the axiomatized constants.",
       "startLine": 242,
       "endLine": 279,
-      "mathContext": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both"
+      "mathContext": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both directions into a $\\Theta$-bound, proved by extracting and repacking the axiomatized constants."
     },
     {
       "id": "constant",
@@ -175,7 +175,7 @@
       "summary": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ via `nlinarith`.",
       "startLine": 280,
       "endLine": 310,
-      "mathContext": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ vi"
+      "mathContext": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ via `nlinarith`."
     },
     {
       "id": "construction",
@@ -183,7 +183,7 @@
       "summary": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Smaller primes allow larger powers, enabling the increasing-value condition. Defines `primePowerSequence` as a concrete example.",
       "startLine": 311,
       "endLine": 335,
-      "mathContext": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Smaller primes allow larger powers, enabling "
+      "mathContext": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Defines `primePowerSequence` as a concrete example."
     },
     {
       "id": "related-functions",
@@ -199,7 +199,7 @@
       "summary": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, 10, 27, 64]$.",
       "startLine": 354,
       "endLine": 399,
-      "mathContext": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, "
+      "mathContext": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, 10, 27, 64]$."
     }
   ],
   "conclusion": {
@@ -226,8 +226,8 @@
     ],
     "namespace": "Erdos648",
     "lineCount": 399,
-    "axiomCount": 18,
-    "theoremCount": 39,
+    "axiomCount": 3,
+    "theoremCount": 33,
     "definitionCount": 9
   },
   "references": [

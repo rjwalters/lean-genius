@@ -183,5 +183,13 @@
       "venue": "Leipzig: Gerhard Fleischer, Articles 52–93",
       "note": "Proved the existence of primitive roots modulo primes and prime powers"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "primitive_root_exists",
+      "type": "core",
+      "description": "There exists a primitive root modulo p for any prime p",
+      "leanType": "Nat.Prime p -> exists g, orderOf (g : ZMod p) = p - 1"
+    }
   ]
 }

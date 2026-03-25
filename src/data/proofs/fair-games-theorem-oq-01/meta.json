@@ -66,11 +66,9 @@
       "The harmonic property E[T|k] = 1 + (E[T|k-1] + E[T|k+1])/2 connects ruin times to discrete harmonic functions and potential theory"
     ],
     "prerequisites": [
-      "Martingale theory and the Optional Stopping Theorem",
-      "Random walks and Gambler's Ruin",
-      "Stopping times and absorbing barriers",
-      "Characteristic functions and spectral analysis of Markov chains",
-      "Discrete harmonic functions and potential theory"
+      "Probability theory (martingales, optional stopping)",
+      "Measure theory (conditional expectation, filtrations)",
+      "Game theory (fair games, expected value)"
     ]
   },
   "sections": [
@@ -133,6 +131,16 @@
       "targetId": "ballot-problem",
       "relationship": "related",
       "description": "The ballot problem studies first-passage times of random walks, which are stopping times for the martingale of cumulative votes"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The CLT governs the distribution of cumulative winnings in fair games; ruin time distributions connect to the tail behavior of random walks"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "foundational",
+      "description": "The LLN ensures that average winnings converge to zero in fair games, while this entry studies the distribution of the stopping time (ruin) before convergence"
     }
   ],
   "conclusion": {

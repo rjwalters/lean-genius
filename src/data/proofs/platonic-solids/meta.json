@@ -139,7 +139,27 @@
     "lineCount": 419,
     "axiomCount": 0,
     "theoremCount": 24,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "mainTheorems": [
+      {
+        "name": "platonic_classification",
+        "type": "original",
+        "description": "Complete classification: {p,q} with p,q ≥ 3 satisfies 1/p+1/q > 1/2 iff (p,q) is one of the 5 Platonic pairs",
+        "leanType": "(p q : ℕ) → 3 ≤ p → 3 ≤ q → (p - 2) * (q - 2) < 4 ↔ (p,q) ∈ validPairs"
+      },
+      {
+        "name": "number_of_platonic_solids",
+        "type": "original",
+        "description": "There are exactly 5 Platonic solids",
+        "leanType": "validPairs.card = 5"
+      },
+      {
+        "name": "platonic_solids_all_distinct",
+        "type": "original",
+        "description": "All 5 Platonic solids have distinct Schläfli symbols",
+        "leanType": "tetrahedron ≠ cube ∧ tetrahedron ≠ octahedron ∧ ..."
+      }
+    ]
   },
   "references": [
     {
@@ -155,6 +175,27 @@
       "year": "1973",
       "venue": "Dover Publications, 3rd edition",
       "note": "Definitive treatment of regular polyhedra and their higher-dimensional generalizations"
+    },
+    {
+      "authors": "Cromwell, Peter R.",
+      "title": "Polyhedra",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of polyhedra from Euclid through modern classification, including Platonic solids, Archimedean solids, and their symmetry groups"
+    },
+    {
+      "authors": "Klein, Felix",
+      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
+      "year": "1884",
+      "venue": "Teubner, Leipzig",
+      "note": "Classified the rotation groups of Platonic solids as A₄ (tetrahedron), S₄ (cube/octahedron), A₅ (dodecahedron/icosahedron) and connected the icosahedral group to quintic equations"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The classification of Platonic solids is #44 on Wiedijk's list of 100 well-known theorems"
     }
   ],
   "crossReferences": [
@@ -182,6 +223,14 @@
       "targetId": "triangle-angle-sum",
       "relationship": "foundational",
       "description": "The angle sum property (180 degrees for planar triangles) constrains face geometry. For Platonic solids, the angle defect at each vertex (360 minus the sum of face angles) must be positive, directly yielding the finiteness of regular polyhedra"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "platonic_classification",
+      "type": "core",
+      "description": "There are exactly 5 Platonic solids: tetrahedron, cube, octahedron, dodecahedron, icosahedron",
+      "leanType": "PlatonicSolid P -> P in {tetrahedron, cube, octahedron, dodecahedron, icosahedron}"
     }
   ]
 }

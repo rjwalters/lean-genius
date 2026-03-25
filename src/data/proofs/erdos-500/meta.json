@@ -73,7 +73,8 @@
       "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (set systems, sunflower lemma)",
+      "Hypergraph theory (Turán-type problems, colorings)"
     ]
   },
   "sections": [
@@ -91,7 +92,7 @@
       "startLine": 26,
       "endLine": 56,
       "summary": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms.",
-      "mathContext": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with ac"
+      "mathContext": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms."
     },
     {
       "id": "turan-density",

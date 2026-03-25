@@ -54,7 +54,9 @@
       "**Hardy-Littlewood conjecture**: The number of twin primes up to $N$ is asymptotically $2C_2 N/(\\ln N)^2$ where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin prime constant — this uses the same sieving ideas as the $6k \\pm 1$ structure"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Analytic number theory (prime gaps, sieve methods)",
+      "Elementary number theory (prime distribution, twin primes)",
+      "Computational number theory (primality testing)"
     ]
   },
   "sections": [
@@ -152,6 +154,14 @@
       "year": "2014",
       "venue": "Annals of Mathematics 179(3), 1121–1174",
       "note": "Proved the first finite bound on prime gaps — a major step toward the twin prime conjecture"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "twin_prime_conjecture",
+      "type": "core",
+      "description": "There are infinitely many pairs of primes differing by 2",
+      "leanType": "Set.Infinite {p | Nat.Prime p and Nat.Prime (p + 2)}"
     }
   ]
 }

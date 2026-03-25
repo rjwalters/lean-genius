@@ -80,7 +80,7 @@
       "summary": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as the minimum embedding dimension via `Nat.find`.",
       "startLine": 41,
       "endLine": 56,
-      "mathContext": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as "
+      "mathContext": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as the minimum embedding dimension via `Nat.find`."
     },
     {
       "id": "min-edge-function",
@@ -112,7 +112,7 @@
       "summary": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` and verified monotonicity for $d = 1..5$.",
       "startLine": 128,
       "endLine": 186,
-      "mathContext": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` "
+      "mathContext": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` and verified monotonicity for $d = 1..5$."
     },
     {
       "id": "conjectures",
@@ -128,7 +128,7 @@
       "summary": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isolate the $i$-th and $j$-th terms. Corollary: $\\dim(K_n) \\le n$.",
       "startLine": 190,
       "endLine": 265,
-      "mathContext": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isol"
+      "mathContext": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isolate the $i$-th and $j$-th terms. Corollary: $\\dim(K_n) \\le n$."
     },
     {
       "id": "irrefl-embedding",
@@ -144,7 +144,7 @@
       "summary": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{2} \\ge d$.",
       "startLine": 318,
       "endLine": 377,
-      "mathContext": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{"
+      "mathContext": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{2} \\ge d$."
     },
     {
       "id": "growth-rate",
@@ -152,7 +152,7 @@
       "summary": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved via $\\binom{d+2}{2} - \\binom{d+1}{2} = d+1$).",
       "startLine": 330,
       "endLine": 371,
-      "mathContext": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved vi"
+      "mathContext": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved via $\\binom{d+2}{2} - \\binom{d+1}{2} = d+1$)."
     },
     {
       "id": "deficiency",
@@ -160,7 +160,7 @@
       "summary": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$. Confirms $d = 4$ is the unique anomaly for $d \\le 5$ via `interval_cases`.",
       "startLine": 375,
       "endLine": 1337,
-      "mathContext": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for "
+      "mathContext": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$. Confirms $d = 4$ is the unique anomaly for $d \\le 5$ via `interval_cases`."
     }
   ],
   "overview": {

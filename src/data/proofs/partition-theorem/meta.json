@@ -205,5 +205,13 @@
       "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications 2",
       "note": "Standard reference for partition theory including generating functions, identities, and asymptotics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_partition",
+      "type": "core",
+      "description": "The number of partitions into odd parts equals the number into distinct parts",
+      "leanType": "card (odd_partitions n) = card (distinct_partitions n)"
+    }
   ]
 }

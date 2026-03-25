@@ -62,7 +62,8 @@
       "**Foundation for Polynomial GCD:** The Factor and Remainder Theorems underpin the Euclidean algorithm for polynomials: $\\gcd(p, q)$ is computed by repeated division, and common roots correspond to common factors. This extends to resultants, Bézout's theorem on curve intersections, and the Chinese Remainder Theorem for $R[x]/(f_1) \\times \\cdots \\times R[x]/(f_k)$."
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (division algorithm, roots)",
+      "Ring theory (ideals, quotient rings, evaluation homomorphisms)"
     ]
   },
   "sections": [
@@ -208,6 +209,11 @@
       "targetId": "lagrange-theorem",
       "relationship": "related",
       "description": "Lagrange's theorem on subgroup orders and the Factor Theorem both concern divisibility structures. More directly, Lagrange interpolation reconstructs a polynomial from its values at $n+1$ points — the existence and uniqueness of the interpolant follows from the Factor Theorem's degree-counting argument"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Descartes' Rule of Signs bounds the number of positive real roots by the number of sign changes in coefficients — a refinement of the Factor Theorem's corollary that a degree-$n$ polynomial has at most $n$ roots. Both results originate from Descartes' *La Géométrie* (1637), where the Factor Theorem was first clearly stated"
     }
   ],
   "references": [
@@ -245,6 +251,20 @@
       "year": "2015",
       "venue": "Springer UTM, 4th edition",
       "note": "Extends the Factor Theorem to the multivariate setting via Hilbert's Nullstellensatz and Gröbner bases — the computational algebra perspective on polynomial root-finding and factorization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "factor_theorem",
+      "type": "core",
+      "description": "(x - a) divides p(x) iff p(a) = 0",
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → (X - C a) ∣ p ↔ p.eval a = 0"
+    },
+    {
+      "name": "remainder_theorem",
+      "type": "key",
+      "description": "The remainder of p(x) / (x - a) is p(a)",
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → p %ₘ (X - C a) = C (p.eval a)"
     }
   ]
 }

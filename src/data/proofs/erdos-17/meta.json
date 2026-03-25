@@ -84,7 +84,7 @@
       "summary": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of all cluster primes)",
       "startLine": 49,
       "endLine": 68,
-      "mathContext": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of "
+      "mathContext": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of all cluster primes)"
     },
     {
       "id": "small-primes",
@@ -116,7 +116,7 @@
       "summary": "Axiomatizes two key results: Blecksmith-Erdős-Selfridge (1999) bound π_cluster(x) ≪ x/(log x)^A for all A > 0, and Elsholtz (2003) improved bound with double-logarithmic exponential decay. Includes the noncomputable counting function `clusterPrimeCount`",
       "startLine": 133,
       "endLine": 159,
-      "mathContext": "Axiomatizes two key results: Blecksmith-Erdős-Selfridge (1999) bound π_cluster(x) ≪ x/(log x)^A for all A > 0, and Elsholtz (2003) improved bound with double-logarithmic exponential decay. Includes th"
+      "mathContext": "Axiomatizes two key results: Blecksmith-Erdős-Selfridge (1999) bound π_cluster(x) ≪ x/(log x)^A for all A > 0, and Elsholtz (2003) improved bound with double-logarithmic exponential decay. Includes the noncomputable counting function `clusterPrimeCount`"
     },
     {
       "id": "density",
@@ -124,7 +124,7 @@
       "summary": "Two consequences: cluster primes have natural density 0 among all primes (via Filter.Tendsto), and they are rarer than primes in any arithmetic progression a mod d (comparison with Dirichlet density 1/φ(d))",
       "startLine": 160,
       "endLine": 177,
-      "mathContext": "Two consequences: cluster primes have natural density 0 among all primes (via Filter.Tendsto), and they are rarer than primes in any arithmetic progression a mod d (comparison with Dirichlet density 1"
+      "mathContext": "Two consequences: cluster primes have natural density 0 among all primes (via Filter.Tendsto), and they are rarer than primes in any arithmetic progression a mod d (comparison with Dirichlet density 1/φ(d))"
     },
     {
       "id": "prime-gaps",

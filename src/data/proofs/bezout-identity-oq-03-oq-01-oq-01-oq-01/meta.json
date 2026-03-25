@@ -133,11 +133,6 @@
       "description": "Grandparent: the 2-fold CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ. This entry provides the abstract algebra framework."
     },
     {
-      "targetId": "chinese-remainder-non-coprime-oq-02",
-      "relationship": "related",
-      "description": "The non-coprime CRT for Euclidean domains with the ideal bridge IsCoprime ↔ Ideal.span coprime."
-    },
-    {
       "targetId": "bezout-identity",
       "relationship": "extends",
       "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the ideal CRT is the direct generalization of $\\gcd(m,n) = 1 \\Leftrightarrow \\exists a,b: am + bn = 1$."

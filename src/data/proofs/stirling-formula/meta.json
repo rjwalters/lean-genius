@@ -197,5 +197,13 @@
     "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 1
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "stirling_approximation",
+      "type": "core",
+      "description": "n! ~ sqrt(2*pi*n) * (n/e)^n as n -> infinity",
+      "leanType": "Tendsto (fun n => n! / (Real.sqrt(2*pi*n) * (n/e)^n)) atTop (nhds 1)"
+    }
+  ]
 }

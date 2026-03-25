@@ -199,5 +199,13 @@
       "venue": "Alexandria",
       "note": "Parametrization of Pythagorean triples: (m²-n², 2mn, m²+n²) for m > n > 0 coprime with opposite parity"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pythagorean_triple_parametrization",
+      "type": "core",
+      "description": "All primitive Pythagorean triples are of the form (m^2-n^2, 2mn, m^2+n^2)",
+      "leanType": "primitive_triple a b c -> exists m n, a = m^2 - n^2 and b = 2*m*n and c = m^2 + n^2"
+    }
   ]
 }

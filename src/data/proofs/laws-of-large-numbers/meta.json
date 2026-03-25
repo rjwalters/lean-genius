@@ -263,5 +263,19 @@
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 3
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "weak_lln",
+      "type": "core",
+      "description": "Sample average converges in probability to the expected value",
+      "leanType": "[IID X] -> E[X] = mu -> Tendsto (fun n => (sum X_i / n)) atTop (Measure.ae (nhds mu))"
+    },
+    {
+      "name": "strong_lln",
+      "type": "key",
+      "description": "Sample average converges almost surely to the expected value",
+      "leanType": "[IID X] -> E[X] = mu -> ae (fun omega => Tendsto (fun n => sum X_i(omega) / n) atTop (nhds mu))"
+    }
+  ]
 }

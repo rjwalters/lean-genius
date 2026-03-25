@@ -220,6 +220,43 @@
       "year": "1973",
       "venue": "Springer GTM 7",
       "note": "Modern proof of Dirichlet's theorem using character theory and L-functions"
+    },
+    {
+      "authors": "Davenport, Harold",
+      "title": "Multiplicative Number Theory",
+      "year": "1980",
+      "venue": "Springer GTM 74, 2nd edition (revised by H.L. Montgomery)",
+      "note": "Standard graduate reference for analytic number theory including Dirichlet's theorem, L-functions, the prime number theorem for arithmetic progressions, and Siegel's theorem on exceptional zeros"
+    },
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer UTM",
+      "note": "Accessible undergraduate treatment of Dirichlet's theorem with complete proofs of character orthogonality, L(1,χ) ≠ 0 for nonprincipal characters, and the resulting equidistribution of primes in residue classes"
+    },
+    {
+      "authors": "Iwaniec, Henryk; Kowalski, Emmanuel",
+      "title": "Analytic Number Theory",
+      "year": "2004",
+      "venue": "AMS Colloquium Publications 53",
+      "note": "Comprehensive modern reference covering Dirichlet L-functions, the Generalized Riemann Hypothesis for L(s,χ), Siegel-Walfisz theorem, and the Bombieri-Vinogradov theorem — the quantitative refinements of Dirichlet's equidistribution that underlie the bounded prime gaps theorem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dirichlet_arithmetic_progression",
+      "type": "core",
+      "description": "There are infinitely many primes in any arithmetic progression a, a+d, a+2d, ... with gcd(a,d)=1",
+      "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dirichlet_arithmetic_progression",
+      "type": "core",
+      "description": "There are infinitely many primes in any arithmetic progression a, a+d, a+2d, ... with gcd(a,d)=1",
+      "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
     }
   ]
 }

@@ -92,7 +92,7 @@
       "summary": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial segments.",
       "startLine": 68,
       "endLine": 108,
-      "mathContext": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial s"
+      "mathContext": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial segments."
     },
     {
       "id": "a1-characterization",
@@ -100,7 +100,7 @@
       "summary": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{log₂3} ≈ k^{1.585}.",
       "startLine": 109,
       "endLine": 157,
-      "mathContext": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{"
+      "mathContext": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{log₂3} ≈ k^{1.585}."
     },
     {
       "id": "odlyzko-stanley",
@@ -116,7 +116,7 @@
       "summary": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these rates) and Lindhurst's conjecture that A(4) has quadratic-log growth.",
       "startLine": 180,
       "endLine": 228,
-      "mathContext": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these"
+      "mathContext": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these rates) and Lindhurst's conjecture that A(4) has quadratic-log growth."
     },
     {
       "id": "upper-bounds",
@@ -140,7 +140,7 @@
       "summary": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey theory.",
       "startLine": 285,
       "endLine": 313,
-      "mathContext": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey the"
+      "mathContext": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey theory."
     },
     {
       "id": "main-results",
@@ -148,7 +148,7 @@
       "summary": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open dichotomy conjecture.",
       "startLine": 314,
       "endLine": 364,
-      "mathContext": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open"
+      "mathContext": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open dichotomy conjecture."
     }
   ],
   "conclusion": {

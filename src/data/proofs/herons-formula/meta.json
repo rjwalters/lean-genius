@@ -50,7 +50,9 @@
       "**Algebraic proof by `ring`**: The key algebraic identity reducing Heron's product to the expanded form is closed entirely by Lean's `ring` tactic, demonstrating the power of verified algebraic computation"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (triangles, area formulas)",
+      "Algebra (algebraic manipulation, square roots)",
+      "Trigonometry (law of cosines, area = ab sin C / 2)"
     ]
   },
   "sections": [
@@ -60,7 +62,7 @@
       "startLine": 1,
       "endLine": 47,
       "summary": "Imports Mathlib modules for Euclidean geometry (`Triangle`, `Angle.Sphere`), trigonometric functions (`sin`), and the Wiedijk Archive proof (`Archive.Wiedijk100Theorems.HeronsFormula`). The docstring explains the formula $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ and its Mathlib dependencies.",
-      "mathContext": "Imports Mathlib modules for Euclidean geometry (`Triangle`, `Angle.Sphere`), trigonometric functions (`sin`), and the Wiedijk Archive proof (`Archive.Wiedijk100Theorems.HeronsFormula`). The docstring "
+      "mathContext": "Imports Mathlib modules for Euclidean geometry (`Triangle`, `Angle.Sphere`), trigonometric functions (`sin`), and the Wiedijk Archive proof (`Archive.Wiedijk100Theorems.HeronsFormula`). The docstring explains the formula $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ and its Mathlib dependencies."
     },
     {
       "id": "setup",
@@ -76,7 +78,7 @@
       "startLine": 58,
       "endLine": 105,
       "summary": "States and proves $\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces via `Theorems100.heron`. The theorem requires only that $p_1 \\neq p_2$ and $p_3 \\neq p_2$ (non-degeneracy).",
-      "mathContext": "States and proves $\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces via `Theorems100.heron`. The theorem requires only that $p_1 \\neq p_2$ and $p_3 \\ne"
+      "mathContext": "States and proves $\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces via `Theorems100.heron`. The theorem requires only that $p_1 \\neq p_2$ and $p_3 \\neq p_2$ (non-degeneracy)."
     },
     {
       "id": "definitions",
@@ -84,7 +86,7 @@
       "startLine": 106,
       "endLine": 130,
       "summary": "Defines `semiperimeter(a,b,c) = (a+b+c)/2` and `heron_product(a,b,c) = s(s-a)(s-b)(s-c)` as noncomputable real-valued functions. Explains why each factor $s-a = (b+c-a)/2$ is non-negative by the triangle inequality.",
-      "mathContext": "Defines `semiperimeter(a,b,c) = (a+b+c)/2` and `heron_product(a,b,c) = s(s-a)(s-b)(s-c)` as noncomputable real-valued functions. Explains why each factor $s-a = (b+c-a)/2$ is non-negative by the trian"
+      "mathContext": "Defines `semiperimeter(a,b,c) = (a+b+c)/2` and `heron_product(a,b,c) = s(s-a)(s-b)(s-c)` as noncomputable real-valued functions. Explains why each factor $s-a = (b+c-a)/2$ is non-negative by the triangle inequality."
     },
     {
       "id": "algebraic",
@@ -100,7 +102,7 @@
       "startLine": 152,
       "endLine": 216,
       "summary": "Verifies Heron's formula for three classic triangles: the **3-4-5** right triangle (area 6), the **equilateral** triangle with side 2 (area $\\sqrt{3}$), and the **5-12-13** right triangle (area 30). Uses `norm_num` for computation and `sqrt_sq` for square root simplification.",
-      "mathContext": "Verifies Heron's formula for three classic triangles: the **3-4-5** right triangle (area 6), the **equilateral** triangle with side 2 (area $\\sqrt{3}$), and the **5-12-13** right triangle (area 30). U"
+      "mathContext": "Verifies Heron's formula for three classic triangles: the **3-4-5** right triangle (area 6), the **equilateral** triangle with side 2 (area $\\sqrt{3}$), and the **5-12-13** right triangle (area 30)."
     },
     {
       "id": "triangle-inequality",
@@ -108,7 +110,7 @@
       "startLine": 217,
       "endLine": 243,
       "summary": "Proves that $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles satisfying the strict triangle inequality $a < b+c$, $b < a+c$, $c < a+b$. Each of the four factors is shown positive by `linarith`, then combined via `mul_nonneg`.",
-      "mathContext": "Proves that $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles satisfying the strict triangle inequality $a < b+c$, $b < a+c$, $c < a+b$. Each of the four factors is shown positive by `linarith`, then comb"
+      "mathContext": "Proves that $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles satisfying the strict triangle inequality $a < b+c$, $b < a+c$, $c < a+b$."
     },
     {
       "id": "applications",
@@ -183,6 +185,14 @@
       "year": "1921",
       "venue": "Oxford University Press (Dover reprint 1981)",
       "note": "Historical analysis of Heron's formula including the proof from Metrica"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "heron_formula",
+      "type": "core",
+      "description": "Area of triangle = sqrt(s(s-a)(s-b)(s-c)) where s = (a+b+c)/2",
+      "leanType": "area = Real.sqrt (s * (s-a) * (s-b) * (s-c)) where s = (a+b+c)/2"
     }
   ]
 }

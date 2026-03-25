@@ -90,7 +90,7 @@
       "summary": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Connectivity.Subgraph`, `SimpleGraph.Maps` for graph infrastructure, and `Data.Fintype.Card` for finite cardinality. Opens the `SimpleGraph` and `Finset` namespaces within `Erdos580`.",
       "startLine": 26,
       "endLine": 34,
-      "mathContext": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Connectivity.Subgraph`, `SimpleGraph.Maps` for graph infrastructure, and `Data.Fintype.Card` for finite cardinality. Opens the `SimpleGraph` and `Fi"
+      "mathContext": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Connectivity.Subgraph`, `SimpleGraph.Maps` for graph infrastructure, and `Data.Fintype.Card` for finite cardinality. Opens the `SimpleGraph` and `Finset` namespaces within `Erdos580`."
     },
     {
       "id": "graph-definitions",
@@ -98,7 +98,7 @@
       "summary": "Defines `vertexDegree G v` as $|N_G(v)|$ via `neighborFinset`, `highDegreeVertices G k` as the Finset of vertices with degree $\\geq k$, and `numVertices V` as `Fintype.card V`. These form the vocabulary for stating the LKS degree condition.",
       "startLine": 35,
       "endLine": 61,
-      "mathContext": "Defines `vertexDegree G v` as $|N_G(v)|$ via `neighborFinset`, `highDegreeVertices G k` as the Finset of vertices with degree $\\geq k$, and `numVertices V` as `Fintype.card V`. These form the vocabula"
+      "mathContext": "Defines `vertexDegree G v` as $|N_G(v)|$ via `neighborFinset`, `highDegreeVertices G k` as the Finset of vertices with degree $\\geq k$, and `numVertices V` as `Fintype.card V`."
     },
     {
       "id": "trees",
@@ -106,7 +106,7 @@
       "summary": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on $k$ vertices is $k^{k-2}$.",
       "startLine": 62,
       "endLine": 89,
-      "mathContext": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on "
+      "mathContext": "Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on $k$ vertices is $k^{k-2}$."
     },
     {
       "id": "embedding",
@@ -114,7 +114,7 @@
       "summary": "Defines `TreeEmbeds T G` as existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, and `ContainsAllTreesUpTo G k` requiring all trees of size $\\leq k$ to embed. These predicates capture the graph-theoretic notion of subgraph isomorphism for trees.",
       "startLine": 90,
       "endLine": 111,
-      "mathContext": "Defines `TreeEmbeds T G` as existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, and `ContainsAllTreesUpTo G k` requiring all trees of size $\\leq k$ to embed. These predicates ca"
+      "mathContext": "Defines `TreeEmbeds T G` as existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, and `ContainsAllTreesUpTo G k` requiring all trees of size $\\leq k$ to embed."
     },
     {
       "id": "lks-condition",
@@ -122,7 +122,7 @@
       "summary": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Komlós-Sós generalization.",
       "startLine": 112,
       "endLine": 133,
-      "mathContext": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Koml"
+      "mathContext": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Komlós-Sós generalization."
     },
     {
       "id": "main-conjecture",
@@ -130,7 +130,7 @@
       "summary": "States `LKSConjecture` (the full $(n/2, n/2, n/2)$ conjecture) and `KomlosSosConjecture` (the generalization with independent parameter $k$) as Lean propositions quantifying over all finite types $V$ and simple graphs $G$.",
       "startLine": 134,
       "endLine": 158,
-      "mathContext": "States `LKSConjecture` (the full $(n/2, n/2, n/2)$ conjecture) and `KomlosSosConjecture` (the generalization with independent parameter $k$) as Lean propositions quantifying over all finite types $V$ "
+      "mathContext": "States `LKSConjecture` (the full $(n/2, n/2, n/2)$ conjecture) and `KomlosSosConjecture` (the generalization with independent parameter $k$) as Lean propositions quantifying over all finite types $V$ and simple graphs $G$."
     },
     {
       "id": "partial-results",
@@ -138,7 +138,7 @@
       "summary": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof.",
       "startLine": 159,
       "endLine": 196,
-      "mathContext": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establ"
+      "mathContext": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof."
     },
     {
       "id": "special-cases",
@@ -146,7 +146,7 @@
       "summary": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed). These represent the 'easy' end of the tree difficulty spectrum where greedy arguments suffice.",
       "startLine": 197,
       "endLine": 222,
-      "mathContext": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed). These represent the 'easy' end of the tree difficulty spec"
+      "mathContext": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed)."
     },
     {
       "id": "tightness",
@@ -154,7 +154,7 @@
       "summary": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp.",
       "startLine": 223,
       "endLine": 237,
-      "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ thr"
+      "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp."
     },
     {
       "id": "summary",

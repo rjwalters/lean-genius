@@ -249,5 +249,25 @@
       "venue": "American Scientist, Vol. 94, No. 3, pp. 200-205",
       "note": "Investigates the historical accuracy of the Gauss schoolboy anecdote, tracing over 100 versions of the story and showing how details have been embellished over two centuries"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gauss_sum",
+      "type": "original",
+      "description": "Gauss formula: Σ_{i=0}^{n} i = n(n+1)/2",
+      "leanType": "(n : ℕ) → ∑ i ∈ Finset.range (n + 1), i = n * (n + 1) / 2"
+    },
+    {
+      "name": "arithmetic_series_sum",
+      "type": "original",
+      "description": "General arithmetic series: Σ_{i=0}^{n-1} (a + id) = n·a + d·n(n-1)/2",
+      "leanType": "(a d n : ℕ) → ∑ i ∈ Finset.range n, (a + i * d) = n * a + d * (n * (n - 1) / 2)"
+    },
+    {
+      "name": "gauss_100",
+      "type": "application",
+      "description": "Gauss's famous calculation: 1 + 2 + ... + 100 = 5050",
+      "leanType": "∑ i ∈ Finset.range 101, i = 5050"
+    }
   ]
 }

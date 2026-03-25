@@ -184,7 +184,7 @@
       "startLine": 122,
       "endLine": 170,
       "summary": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat.",
-      "mathContext": "$\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ when $\\Phi_n(x)$ is irreducible over $\\mathbb{Q}$, with $|(\\mathbb{Z}/n\\mathbb{Z})^{\\times}| = \\varphi(n)$."
+      "mathContext": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat."
     },
     {
       "id": "s3-realization",
@@ -331,6 +331,14 @@
       "year": "1892",
       "venue": "Journal fuer die reine und angewandte Mathematik 110, 104-129",
       "note": "Proved S_n and A_n are realizable over Q via Hilbert irreducibility, establishing the first systematic results on the Inverse Galois Problem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "inverse_galois_sn",
+      "type": "core",
+      "description": "Every symmetric group S_n occurs as a Galois group over Q",
+      "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) ≅ Perm (Fin n)"
     }
   ]
 }

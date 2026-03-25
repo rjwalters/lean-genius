@@ -78,7 +78,7 @@
       "summary": "Defines `diameter G` (maximum shortest-path distance, sorry), `minDegree G` via $\\min_{v} \\deg(v)$ computed as `Finset.univ.image degree |>.min'`, `IsKFree G r` (no $K_r$ subgraph), and `IsTriangleFree G` ($K_3$-free).",
       "startLine": 34,
       "endLine": 50,
-      "mathContext": "Defines `diameter G` (maximum shortest-path distance, sorry), `minDegree G` via $\\min_{v} \\deg(v)$ computed as `Finset.univ.image degree |>.min'`, `IsKFree G r` (no $K_r$ subgraph), and `IsTriangleFre"
+      "mathContext": "Defines `diameter G` (maximum shortest-path distance, sorry), `minDegree G` via $\\min_{v} \\deg(v)$ computed as `Finset.univ.image degree |>.min'`, `IsKFree G r` (no $K_r$ subgraph), and `IsTriangleFree G` ($K_3$-free)."
     },
     {
       "id": "basic-bound",
@@ -94,7 +94,7 @@
       "summary": "Defines $\\alpha_{2r} = 2(r-1)(3r+2)/(2r^2-1)$ and divisibility condition $(r-1)(3r+2) \\mid d$. States `OriginalConjecture1 r`: $K_{2r}$-free $\\implies D \\le \\alpha_{2r} \\cdot n/d + O(1)$. **DISPROVED** for $r \\ge 2$.",
       "startLine": 62,
       "endLine": 82,
-      "mathContext": "Defines $\\alpha_{2r} = 2(r-1)(3r+2)/(2r^2-1)$ and divisibility condition $(r-1)(3r+2) \\mid d$. States `OriginalConjecture1 r`: $K_{2r}$-free $\\implies D \\le \\alpha_{2r} \\cdot n/d + O(1)$. **DISPROVED*"
+      "mathContext": "Defines $\\alpha_{2r} = 2(r-1)(3r+2)/(2r^2-1)$ and divisibility condition $(r-1)(3r+2) \\mid d$. States `OriginalConjecture1 r`: $K_{2r}$-free $\\implies D \\le \\alpha_{2r} \\cdot n/d + O(1)$. **DISPROVED** for $r \\ge 2$."
     },
     {
       "id": "original-conjecture2",
@@ -110,7 +110,7 @@
       "summary": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_conjecture1_false` for $r \\ge 2$.",
       "startLine": 104,
       "endLine": 124,
-      "mathContext": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_con"
+      "mathContext": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_conjecture1_false` for $r \\ge 2$."
     },
     {
       "id": "base-case",
@@ -126,7 +126,7 @@
       "summary": "Defines `amended_alpha k = 3 - 2/k` and `AmendedConjecture k`: $K_{k+1}$-free $\\implies D \\le (3-2/k) \\cdot n/d + O(1)$. Proves `amended_k2` ($k=2$: coefficient 2), `amended_k3` ($k=3$: $7/3$). States `amended_limit`: $(3-2/k) \\to 3$ as $k \\to \\infty$.",
       "startLine": 141,
       "endLine": 172,
-      "mathContext": "Defines `amended_alpha k = 3 - 2/k` and `AmendedConjecture k`: $K_{k+1}$-free $\\implies D \\le (3-2/k) \\cdot n/d + O(1)$. Proves `amended_k2` ($k=2$: coefficient 2), `amended_k3` ($k=3$: $7/3$). States"
+      "mathContext": "Defines `amended_alpha k = 3 - 2/k` and `AmendedConjecture k`: $K_{k+1}$-free $\\implies D \\le (3-2/k) \\cdot n/d + O(1)$. Proves `amended_k2` ($k=2$: coefficient 2), `amended_k3` ($k=3$: $7/3$). States `amended_limit`: $(3-2/k) \\to 3$ as $k \\to \\infty$."
     },
     {
       "id": "verified-cases",
@@ -134,7 +134,7 @@
       "summary": "Axiomatizes `amended_k3_colorable` ($k=3$, 3-colorable) and `amended_k4_colorable` ($k=4$, 4-colorable). Axiomatizes `cambie_jooken_counterexample`: $K_4$-free graph violating amended bound WITHOUT colorability, showing the assumption is necessary.",
       "startLine": 173,
       "endLine": 204,
-      "mathContext": "Axiomatizes `amended_k3_colorable` ($k=3$, 3-colorable) and `amended_k4_colorable` ($k=4$, 4-colorable). Axiomatizes `cambie_jooken_counterexample`: $K_4$-free graph violating amended bound WITHOUT co"
+      "mathContext": "Axiomatizes `amended_k3_colorable` ($k=3$, 3-colorable) and `amended_k4_colorable` ($k=4$, 4-colorable). Axiomatizes `cambie_jooken_counterexample`: $K_4$-free graph violating amended bound WITHOUT colorability, showing the assumption is necessary."
     },
     {
       "id": "special-graphs",
@@ -142,7 +142,7 @@
       "summary": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). Proves `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem.",
       "startLine": 205,
       "endLine": 242,
-      "mathContext": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). Proves `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\"
+      "mathContext": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). Proves `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem."
     },
     {
       "id": "main-status",
@@ -150,7 +150,7 @@
       "summary": "Proves `erdos_612_status`: (1) OriginalConjecture1(1) holds, (2) $\\neg$OriginalConjecture1($r$) for $r \\ge 2$, (3) triangle-free bound exists. Uses `conjecture1_base_case`, `original_conjecture1_false`, and `triangle_free_diameter`.",
       "startLine": 243,
       "endLine": 268,
-      "mathContext": "Proves `erdos_612_status`: (1) OriginalConjecture1(1) holds, (2) $\\neg$OriginalConjecture1($r$) for $r \\ge 2$, (3) triangle-free bound exists. Uses `conjecture1_base_case`, `original_conjecture1_false"
+      "mathContext": "Proves `erdos_612_status`: (1) OriginalConjecture1(1) holds, (2) $\\neg$OriginalConjecture1($r$) for $r \\ge 2$, (3) triangle-free bound exists."
     }
   ],
   "conclusion": {

@@ -81,7 +81,7 @@
       "startLine": 35,
       "endLine": 58,
       "summary": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices).",
-      "mathContext": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)"
+      "mathContext": "Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)."
     },
     {
       "id": "sec-834-transversal",
@@ -137,7 +137,7 @@
       "startLine": 154,
       "endLine": 197,
       "summary": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence.",
-      "mathContext": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's unive"
+      "mathContext": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence."
     }
   ],
   "conclusion": {

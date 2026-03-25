@@ -80,7 +80,7 @@
       "summary": "Sets up the graph-theoretic framework: `Graph V` as an alias for `SimpleGraph V`, `edgeSet` as the set of adjacent pairs, and `edgeCount` via `G.edgeFinset.card`. All definitions are noncomputable due to decidability requirements.",
       "startLine": 28,
       "endLine": 45,
-      "mathContext": "Sets up the graph-theoretic framework: `Graph V` as an alias for `SimpleGraph V`, `edgeSet` as the set of adjacent pairs, and `edgeCount` via `G.edgeFinset.card`. All definitions are noncomputable due"
+      "mathContext": "Sets up the graph-theoretic framework: `Graph V` as an alias for `SimpleGraph V`, `edgeSet` as the set of adjacent pairs, and `edgeCount` via `G.edgeFinset.card`. All definitions are noncomputable due to decidability requirements."
     },
     {
       "id": "cliques-independent",
@@ -88,7 +88,7 @@
       "summary": "Defines `IsClique` and `IsIndependent` as universal quantifications over subset pairs. The extremal numbers `cliqueNumber` (ω) and `independenceNumber` (α) are defined via `iSup` over finsets, returning values in `ℕ∞`.",
       "startLine": 46,
       "endLine": 67,
-      "mathContext": "Defines `IsClique` and `IsIndependent` as universal quantifications over subset pairs. The extremal numbers `cliqueNumber` (ω) and `independenceNumber` (α) are defined via `iSup` over finsets, returni"
+      "mathContext": "Defines `IsClique` and `IsIndependent` as universal quantifications over subset pairs. The extremal numbers `cliqueNumber` (ω) and `independenceNumber` (α) are defined via `iSup` over finsets, returning values in `ℕ∞`."
     },
     {
       "id": "ramsey-graphs",
@@ -104,7 +104,7 @@
       "summary": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a subset achieving exactly m edges.",
       "startLine": 88,
       "endLine": 109,
-      "mathContext": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a sub"
+      "mathContext": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a subset achieving exactly m edges."
     },
     {
       "id": "edge-count-range",
@@ -120,7 +120,7 @@
       "summary": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original result).",
       "startLine": 127,
       "endLine": 154,
-      "mathContext": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original resu"
+      "mathContext": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original result)."
     },
     {
       "id": "erdos-szemeredi",
@@ -136,7 +136,7 @@
       "summary": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the key KSSS technique.",
       "startLine": 173,
       "endLine": 195,
-      "mathContext": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the ke"
+      "mathContext": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the key KSSS technique."
     },
     {
       "id": "ksss-theorem",
@@ -152,7 +152,7 @@
       "summary": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss_optimality` and Ramsey number connections.",
       "startLine": 264,
       "endLine": 298,
-      "mathContext": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss"
+      "mathContext": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss_optimality` and Ramsey number connections."
     }
   ],
   "conclusion": {
