@@ -113,42 +113,42 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix meta.json assumptions field: change from 'gvCanon_membership and gvCanon_self_inverse (2 sorries)' to accurately identify the 2 sorry locations as canonCrossN_preserved (line 1982) and gvCanon_self_inverse (line 1989). Note that gvCanon_membership is fully proved.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite conclusion.summary to accurately describe lgv_lemma_rxr as a proved theorem with transitive sorry dependency, not 'axiomatized'. Describe the ~95% completion level.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix annotation ann-lgv-main-theorem: change 'The axiom gv_involution_cancellation asserts' to 'The theorem gv_involution_cancellation proves'. gv_involution_cancellation is a theorem, not an axiom.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Add annotations for the GV involution construction (lines 736-1797): wellFormed condition, northThenEast paths, canonical crossing selection, tailSwapPath, and prefix preservation lemmas.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Add missing mathlibDependencies: Finset.sum_involution (key cancellation tool), Fintype.card_pi (product factorization), Matrix.det_transpose (Leibniz formula column form).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "enricher",
       "description": "Fix section boundaries: remove overlap between gv-involution-construction and lgv-lemma, add coverage for lines 600-648 and 1886-2091.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
