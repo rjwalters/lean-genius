@@ -2,7 +2,7 @@
   "id": "birch-swinnerton-dyer",
   "title": "Birch and Swinnerton-Dyer Conjecture",
   "slug": "birch-swinnerton-dyer",
-  "description": "One of the seven Millennium Prize Problems. The rank of an elliptic curve equals the order of vanishing of its L-function at s=1.",
+  "description": "One of the seven Millennium Prize Problems ($1,000,000 Clay prize). The weak BSD conjecture states $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$, connecting the algebraic rank of an elliptic curve (from Mordell-Weil) with the analytic rank of its L-function. This 7437-line formalization in 70 parts covers the conjecture statement, proven cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), Koblitz correspondence (fully proved in both directions), Selmer groups, Iwasawa theory, Tunnell's theorem, the Bloch-Kato generalization, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and BSD verification for curves 37a and 389a.",
   "meta": {
     "author": "Birch & Swinnerton-Dyer (1965)",
     "date": "1965",
@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 21,
-    "assumptions": "21 axiom(s). No sorries.",
+    "assumptions": "21 axiom declarations encoding: (1) Mordell-Weil theorem and torsion structure, (2) L-function analytic continuation and functional equation, (3) modularity theorem (Wiles-BCDT), (4) Hasse bound $a_p^2 \\leq 4p$, (5) BSD conjecture statements (weak and strong), (6) proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1, Coates-Wiles CM), (7) Gross-Zagier formula, (8) parity conjecture (Dokchitsers), (9) L-values for specific curves. No sorries. Substantial algebraic content is fully proved: discriminant/c4 formulas, Koblitz correspondence (both directions), j-invariant classification, point doubling, Hadamard bound, root number parity consequences.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -195,6 +195,36 @@
       "targetId": "yang-mills",
       "relationship": "related",
       "description": "Fellow Millennium Prize Problem concerning the existence of a mass gap in quantum Yang-Mills theory. Both BSD and Yang-Mills involve non-perturbative phenomena in their respective domains (arithmetic geometry / quantum field theory) that resist existing proof techniques"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Prime Number Theorem is the prototype for analytic number theory results about the distribution of primes — the same Euler product and L-function machinery that underpins PNT (via the Riemann zeta function $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$) generalizes to the elliptic curve L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ at the heart of BSD"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the complex exponential to algebra — the same complex analysis underpins L-functions, analytic continuation, and the functional equation $\\Lambda(E, 2-s) = w(E)\\Lambda(E,s)$ that is essential for defining the analytic rank in BSD"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ is directly used in the Koblitz correspondence proof: `triangle_to_point_y_ne_zero` shows $Y \\neq 0$ by contradiction — if $a^2 = b^2$ then $c^2 = 2a^2$, contradicting Mathlib's `irrational_sqrt_two`. A classical irrationality result providing a key lemma for modern arithmetic geometry"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic infrastructure throughout BSD: the Mordell-Weil group structure $E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T$, Mazur's classification of torsion subgroups, Selmer group ranks, and the computation of Tamagawa numbers from Kodaira types all rely on finite group theory"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are landmark results connecting algebra to group theory via Galois-theoretic ideas. Abel-Ruffini shows polynomial solvability reduces to group solvability ($S_5$ not solvable); BSD connects elliptic curve arithmetic to L-functions via the Langlands program. The modularity theorem (Wiles 1995) — essential for BSD — was proved using Galois representations, the same framework that underlies Abel-Ruffini"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions introduced Dirichlet L-functions $L(s, \\chi)$ — the first generalization of the Riemann zeta function to 'twisted' L-functions. The elliptic curve L-function $L(E,s)$ in BSD is a further generalization to degree-2 L-functions, and the Langlands program unifies both as automorphic L-functions"
     }
   ],
   "sections": [
@@ -612,21 +642,21 @@
     {
       "id": "nekovar-selmer",
       "title": "Part LXVIII: Nekovář's Selmer Complexes and p-adic Heights",
-      "startLine": 7437,
-      "endLine": 7437,
+      "startLine": 7069,
+      "endLine": 7177,
       "summary": "SelmerComplex structure: derived-category formulation of BSD. BSD formula = Euler characteristic. PadicHeightPairing: non-degeneracy ↔ p-adic BSD. Tamagawa Number Conjecture (Bloch-Kato-Fontaine-Perrin-Riou) as ultimate BSD generalization. Hierarchy: class number formula ⊂ BSD ⊂ Bloch-Kato ⊂ equivariant TNC."
     },
     {
       "id": "anticyclotomic",
       "title": "Part LXIX: Anticyclotomic Iwasawa Theory and Heegner Points",
-      "startLine": 7437,
-      "endLine": 7437,
+      "startLine": 7178,
+      "endLine": 7264,
       "summary": "AnticyclotomicData structure. Bertolini-Darmon (2005): anticyclotomic p-adic L-functions, rank 0. Cornut-Vatsal non-vanishing: Heegner points non-torsion for most characters. Castella (2022): anticyclotomic IMC. BigHeegnerPoint structure (Howard 2004). ± decomposition of Selmer."
     },
     {
       "id": "bsd-algorithms",
       "title": "Part LXX: BSD Algorithms and Effective Methods",
-      "startLine": 7437,
+      "startLine": 7265,
       "endLine": 7437,
       "summary": "DokchitserAlgorithm: L(E,s) to arbitrary precision in Õ(N^{1/2}). TateAlgorithm: Kodaira types and Tamagawa numbers (exact). CremonaEntry: database of 3+ million curves verified. LMFDB scope. Heegner point algorithm for rank 1 generators. 9 imaginary quadratic fields with class number 1."
     }
@@ -700,6 +730,69 @@
       "year": "2009",
       "venue": "Springer GTM 106, 2nd edition",
       "note": "Standard graduate text covering the BSD conjecture and its partial results"
+    },
+    {
+      "authors": "Gross, Benedict H.; Zagier, Don B.",
+      "title": "Heegner points and derivatives of L-series",
+      "year": "1986",
+      "venue": "Inventiones Mathematicae 84, 225–320",
+      "note": "The celebrated formula $L'(E,1) = c \\cdot \\hat{h}(P_K)$ relating the L-function derivative to the height of Heegner points — a cornerstone of the rank 1 case of BSD"
+    },
+    {
+      "authors": "Kolyvagin, Victor A.",
+      "title": "Euler systems",
+      "year": "1990",
+      "venue": "The Grothendieck Festschrift, vol. II, Birkhäuser, 435–483",
+      "note": "Introduced Euler systems to prove BSD for rank 0 and rank 1: if $L(E,1) \\neq 0$ then rank = 0 and III is finite; combined with Gross-Zagier, if $L'(E,1) \\neq 0$ then rank = 1"
+    },
+    {
+      "authors": "Coates, John; Wiles, Andrew",
+      "title": "On the conjecture of Birch and Swinnerton-Dyer",
+      "year": "1977",
+      "venue": "Inventiones Mathematicae 39, 223–251",
+      "note": "First major progress on BSD: proved the rank 0 case for elliptic curves with complex multiplication when $L(E,1) \\neq 0$"
+    },
+    {
+      "authors": "Breuil, Christophe; Conrad, Brian; Diamond, Fred; Taylor, Richard",
+      "title": "On the modularity of elliptic curves over Q",
+      "year": "2001",
+      "venue": "Journal of the American Mathematical Society 14(4), 843–939",
+      "note": "Completed the modularity theorem for all elliptic curves over $\\mathbb{Q}$, extending Wiles's semistable case. Essential for BSD: ensures $L(E,s)$ has analytic continuation"
+    },
+    {
+      "authors": "Bhargava, Manjul; Shankar, Arul",
+      "title": "Binary quartic forms having bounded invariants, and the boundedness of the average rank of elliptic curves",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), 191–242",
+      "note": "Proved the average rank of elliptic curves over $\\mathbb{Q}$ is at most 7/6, providing strong statistical evidence for BSD. Used parametrization of 2-Selmer elements by binary quartic forms"
+    },
+    {
+      "authors": "Tunnell, Jerrold B.",
+      "title": "A classical Diophantine problem and modular forms of weight 3/2",
+      "year": "1983",
+      "venue": "Inventiones Mathematicae 72, 323–334",
+      "note": "Reduced the ancient congruent number problem to counting representations by ternary quadratic forms, conditional on BSD. Forward direction unconditional via theta series and Shimura correspondence"
+    },
+    {
+      "authors": "Wiles, Andrew",
+      "title": "Modular elliptic curves and Fermat's Last Theorem",
+      "year": "1995",
+      "venue": "Annals of Mathematics 141(3), 443–551",
+      "note": "Proved the modularity of semistable elliptic curves over $\\mathbb{Q}$, famously establishing Fermat's Last Theorem as a corollary. The modularity theorem is a prerequisite for BSD: it ensures $L(E,s)$ has analytic continuation to $s = 1$"
+    },
+    {
+      "authors": "Kato, Kazuya",
+      "title": "p-adic Hodge theory and values of zeta functions of modular forms",
+      "year": "2004",
+      "venue": "Astérisque 295, 117–290",
+      "note": "Proved one divisibility of the Iwasawa Main Conjecture for elliptic curves (analytic divides algebraic), providing a p-adic approach to BSD independent of Kolyvagin's Euler systems"
+    },
+    {
+      "authors": "Skinner, Christopher; Urban, Eric",
+      "title": "The Iwasawa Main Conjectures for GL₂",
+      "year": "2014",
+      "venue": "Inventiones Mathematicae 195(1), 1–277",
+      "note": "Proved the other divisibility of the Iwasawa Main Conjecture for elliptic curves with good ordinary reduction, completing the p-adic approach to BSD rank 0/1"
     }
   ]
 }
