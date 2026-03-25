@@ -214,5 +214,37 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "g_gt_k_plus_one",
+      "type": "core",
+      "description": "g(k) > k + 1 for all k — the Erdős-Selfridge function always exceeds k+1, proved from the definition",
+      "leanType": "(k : ℕ) → g k > k + 1"
+    },
+    {
+      "name": "g_is_k_rough",
+      "type": "core",
+      "description": "C(g(k), k) is k-rough — the defining property, proved from the minimality of g(k)",
+      "leanType": "(k : ℕ) → binomIsKRough (g k) k"
+    },
+    {
+      "name": "ees_lower_bound",
+      "type": "axiom",
+      "description": "Ecklund-Erdős-Selfridge lower bound: g(k) ≥ k^{1+c} for some c > 0 (1974)",
+      "leanType": "∃ c > 0, ∀ k ≥ 2, g k ≥ k^(1+c)"
+    },
+    {
+      "name": "ees_upper_bound",
+      "type": "axiom",
+      "description": "Ecklund-Erdős-Selfridge upper bound: g(k) ≤ exp((1+o(1))k) (1974)",
+      "leanType": "∀ ε > 0, ∃ K, ∀ k ≥ K, g k ≤ exp((1+ε)*k)"
+    },
+    {
+      "name": "konyagin_lower_bound",
+      "type": "axiom",
+      "description": "Konyagin's improved lower bound: g(k) ≥ exp(c·(log k)²) via Rankin's method (1999)",
+      "leanType": "∃ c > 0, ∀ k ≥ 2, g k ≥ exp(c * (log k)^2)"
+    }
+  ]
 }
