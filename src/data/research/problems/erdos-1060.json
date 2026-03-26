@@ -29,18 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All 3 sorries eliminated (3→0). 2 axioms remain (OPEN conjectures).",
+    "progressSummary": "PROGRESS: 0 sorries, 2 axioms (open conjectures). Proved f(n) ≤ √n bound (4 new theorems).",
     "builtItems": [
       "sigma_mul_coprime (Erdos1060Problem.lean:57): σ multiplicativity via ArithmeticFunction bridge",
       "f_eq_f (Erdos1060Problem.lean:142): Set.ncard = Finset.card for f(n)",
       "mem_A327153_iff (Erdos1060Problem.lean:247): OEIS A327153 membership for n>0",
-      "sigma_prime fix (Erdos1060Problem.lean:46): explicit sum_insert proof"
+      "sigma_prime fix (Erdos1060Problem.lean:46): explicit sum_insert proof",
+      "sigma_ge_self (Erdos1060Problem.lean:110): σ(k) ≥ k",
+      "g_ge_sq (Erdos1060Problem.lean:123): g(k) ≥ k²",
+      "solution_le_sqrt (Erdos1060Problem.lean:325): k ≤ √n for solutions",
+      "f_le_sqrt (Erdos1060Problem.lean:337): f(n) ≤ √n bound"
     ],
     "insights": [
       "sigma_mul_coprime proved via bridge to ArithmeticFunction.isMultiplicative_sigma",
       "f_eq_f bridges Set.ncard and Finset.card via Set.ncard_coe_finset",
       "mem_A327153_iff requires n > 0 (unprovable for n=0 since f(0)=1 but no k>0 with g(k)=0)",
-      "Mathlib v4.26: Nat.Coprime.divisors_mul removed, sigma_isMultiplicative renamed"
+      "Mathlib v4.26: Nat.Coprime.divisors_mul removed, sigma_isMultiplicative renamed",
+      "sigma_ge_self proved: σ(k) ≥ k for k > 0 (k divides itself)",
+      "f_le_sqrt proved: f(n) ≤ √n via g(k) ≥ k², improving trivial f(n) ≤ n"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,8 +74,8 @@
     {
       "path": "Proofs/Erdos1060Problem.lean",
       "filename": "Erdos1060Problem.lean",
-      "lineCount": 305,
-      "theoremCount": 12,
+      "lineCount": 349,
+      "theoremCount": 16,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
