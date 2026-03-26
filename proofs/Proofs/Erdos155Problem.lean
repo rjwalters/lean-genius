@@ -51,11 +51,36 @@ axiom maxSidon_optimal (N : ℕ) (S : Finset ℕ)
 
 /- ## Monotonicity -/
 
-/-- F is monotone nondecreasing: F(N) ≤ F(N+1). -/
-axiom maxSidon_monotone (N : ℕ) : maxSidonSize N ≤ maxSidonSize (N + 1)
+/-- F is monotone nondecreasing: F(N) ≤ F(N+1).
+    Proof: any Sidon subset of {1,...,N} is also a Sidon subset of {1,...,N+1}. -/
+theorem maxSidon_monotone (N : ℕ) : maxSidonSize N ≤ maxSidonSize (N + 1) := by
+  obtain ⟨S, hsidon, hrange, hcard⟩ := maxSidon_achievable N
+  calc maxSidonSize N = S.card := hcard.symm
+    _ ≤ maxSidonSize (N + 1) :=
+        maxSidon_optimal (N + 1) S hsidon (fun x hx => ⟨(hrange x hx).1, by omega⟩)
 
-/-- F increases by at most 1 in each step: F(N+1) ≤ F(N) + 1. -/
-axiom maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1
+/-- F increases by at most 1 in each step: F(N+1) ≤ F(N) + 1.
+    Proof: removing N+1 from an optimal (N+1)-set gives a valid N-set. -/
+theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 := by
+  obtain ⟨S, hsidon, hrange, hcard⟩ := maxSidon_achievable (N + 1)
+  -- S' = S without the element N+1
+  set S' := S.erase (N + 1) with hS'_def
+  -- S' is Sidon (subset of Sidon set)
+  have hS'_sidon : IsSidonSet S' := by
+    intro a b c d ha hb hc hd hab hcd heq
+    exact hsidon a b c d (Finset.erase_subset _ _ ha) (Finset.erase_subset _ _ hb)
+      (Finset.erase_subset _ _ hc) (Finset.erase_subset _ _ hd) hab hcd heq
+  -- S' ⊆ {1,...,N}
+  have hS'_range : ∀ x ∈ S', 1 ≤ x ∧ x ≤ N := fun x hx =>
+    ⟨(hrange x (Finset.erase_subset _ _ hx)).1,
+     Nat.lt_of_le_of_ne (hrange x (Finset.erase_subset _ _ hx)).2 (Finset.ne_of_mem_erase hx) |>.le⟩
+  -- |S'| ≤ F(N), and |S| ≤ |S'| + 1
+  have h1 := maxSidon_optimal N S' hS'_sidon hS'_range
+  have h2 : S.card ≤ S'.card + 1 := by
+    by_cases h : N + 1 ∈ S
+    · simp [hS'_def, Finset.card_erase_of_mem h]; omega
+    · simp [hS'_def, Finset.erase_eq_of_not_mem h]
+  linarith
 
 /- ## Asymptotic Bounds -/
 
