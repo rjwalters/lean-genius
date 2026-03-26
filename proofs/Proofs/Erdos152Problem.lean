@@ -129,12 +129,17 @@ a + b with a ≤ b are distinct. -/
 axiom sidon_sumset_size (A : Finset ℕ) (hS : IsSidonFinset A) :
   (sumsetFinset A).card = A.card * (A.card + 1) / 2
 
-/-- The sumset A + A is contained in [min A + min A, max A + max A],
-an interval of length at most 2 · max A. For Sidon sets of size n
-with elements in [1, N], we need N ≥ n² - n + 1. -/
+/-- For a Sidon set of size n, the maximum element satisfies
+max ≥ n(n-1)/2 + 1. This follows from the fact that all n(n-1)/2
+differences a_j - a_i (i < j) must be distinct positive integers,
+so they occupy at least the range [1, n(n-1)/2], giving
+max - min ≥ n(n-1)/2.
+
+Note: the bound n²-n+1 that previously appeared here is too strong;
+{1,2,5} is a Sidon set of size 3 with max = 5 < 7 = 3²-3+1. -/
 axiom sidon_set_range_lower_bound (A : Finset ℕ) (hS : IsSidonFinset A)
-    (hA : A.card = n) :
-  ∃ a_max : ℕ, a_max ∈ A ∧ a_max ≥ n * n - n + 1
+    (hA : A.card = n) (hn : n ≥ 1) :
+  ∃ a_max : ℕ, a_max ∈ A ∧ a_max ≥ n * (n - 1) / 2 + 1
 
 /-
 ## Section VI: Related Results
