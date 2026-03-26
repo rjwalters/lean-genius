@@ -1,0 +1,215 @@
+{
+  "id": "erdos-1084-oq-01",
+  "title": "Erdos #1084 OQ-01: f_3(n) = 6n - Theta(n^{2/3})",
+  "slug": "erdos-1084-oq-01",
+  "description": "Is f_3(n) = 6n - Theta(n^{2/3})? Formalization of the Erdos conjecture on the correction term for unit-distance pairs among separated points in 3D, with proved kissing-number upper bounds and isoperimetric exponent analysis.",
+  "meta": {
+    "erdosNumber": 1084,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "unit-distances",
+      "combinatorial-geometry",
+      "packing",
+      "open",
+      "kissing-number",
+      "isoperimetric"
+    ],
+    "proofRepoPath": "Proofs/Erdos1084OQ01.lean",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1084",
+    "erdosUrl": "https://erdosproblems.com/1084",
+    "axiomCount": 9,
+    "assumptions": "9 axiom declarations: kissingNumber (definition), kissing_1d (tau(1)=2), kissing_2d (tau(2)=6), kissing_3d (tau(3)=12), degree_le_kissing (degree bound from kissing number), degree_sum_eq_twice_pairs (handshaking lemma), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
+    "lineCount": 533,
+    "badge": "axiom",
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 30,
+      "endLine": 58,
+      "summary": "Defines `SepConfig d n` (points in $\\mathbb{R}^d$ with pairwise distance $\\ge 1$), `unitPairs` (edge count of unit-distance graph), and `unitDegree` (number of unit-distance neighbors of a point).",
+      "mathContext": "$\\text{unitPairs}(C) = |\\{(i,j) : i < j,\\, \\|p_i - p_j\\| = 1\\}|$, $\\deg(i) = |\\{j \\ne i : \\|p_i - p_j\\| = 1\\}|$."
+    },
+    {
+      "id": "one-dimensional",
+      "title": "One-Dimensional Case: $f_1(n) = n-1$ (Machine-Verified)",
+      "startLine": 59,
+      "endLine": 264,
+      "summary": "Complete machine-verified proof that $f_1(n) = n - 1$: upper bound via left-endpoint injection, achievability via consecutive integers $\\{0,1,\\ldots,n-1\\}$, triangle lemma ($|x-y|=|x-z|=1 \\Rightarrow |y-z|=2$), and degree bound ($\\leq 2$ unit neighbors in 1D).",
+      "mathContext": "Proved: $f_1(n) = n - 1$. Each point has at most 2 unit neighbors (one on each side). The left-endpoint injection maps each unit pair to a distinct non-maximal point."
+    },
+    {
+      "id": "kissing-bounds",
+      "title": "Kissing Number and Degree Bounds",
+      "startLine": 265,
+      "endLine": 367,
+      "summary": "Axiomatizes the kissing number $\\tau(d)$ with known values $\\tau(1)=2$, $\\tau(2)=6$, $\\tau(3)=12$. Proves the handshaking bound: $\\text{unitPairs} \\leq \\tau(d) \\cdot n / 2$. Derives $f_2(n) \\leq 3n$ and $f_3(n) \\leq 6n$.",
+      "mathContext": "$2 \\cdot \\text{pairs} = \\sum_i \\deg(i) \\leq \\tau(d) \\cdot n$, giving $f_d(n) \\leq \\tau(d) \\cdot n / 2$."
+    },
+    {
+      "id": "3d-lower-bound",
+      "title": "3D Lower Bound: FCC Clusters",
+      "startLine": 368,
+      "endLine": 391,
+      "summary": "Axiomatizes the FCC lattice cluster lower bound: there exist 3D separated configurations achieving $\\geq 6n - c \\cdot n^{2/3}$ unit pairs. Interior FCC points have degree 12; $\\Theta(n^{2/3})$ boundary points lose contacts.",
+      "mathContext": "$\\exists c > 0,\\, \\forall n \\geq 2,\\, \\exists C : f_3(n) \\geq 6n - c \\cdot n^{2/3}$."
+    },
+    {
+      "id": "central-conjecture",
+      "title": "The Erdos Conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$",
+      "startLine": 392,
+      "endLine": 425,
+      "summary": "Combines the FCC lower bound with the Bezdek-Reid upper bound ($f_3(n) < 6n - 0.926 n^{2/3}$) to formally state the conjecture. The theorem `erdos_1084_oq01` is proved from these two axioms.",
+      "mathContext": "$6n - c_1 n^{2/3} \\leq f_3(n) < 6n - c_2 n^{2/3}$ for constants $0 < c_2 \\leq c_1$."
+    },
+    {
+      "id": "isoperimetric-exponent",
+      "title": "Isoperimetric Exponent Analysis",
+      "startLine": 426,
+      "endLine": 487,
+      "summary": "Defines the isoperimetric exponent $(d-1)/d$ and proves: it equals $1/2$ for $d=2$ and $2/3$ for $d=3$; it is positive and $< 1$ for $d \\geq 2$; it is strictly increasing in $d$. This connects the 2D and 3D correction terms to the universal isoperimetric scaling.",
+      "mathContext": "$\\alpha(d) = (d-1)/d$: correction $\\Theta(n^{\\alpha(d)})$ from surface-to-volume ratio."
+    },
+    {
+      "id": "2d-connections",
+      "title": "Connecting 2D Results",
+      "startLine": 488,
+      "endLine": 505,
+      "summary": "Harborth's formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (axiomatized). Proved: $\\sqrt{12n-3} \\leq \\sqrt{12n} = 2\\sqrt{3} \\cdot \\sqrt{n}$, confirming the $n^{1/2}$ scaling consistent with $\\alpha(2) = 1/2$.",
+      "mathContext": "$\\sqrt{12n-3} \\sim 2\\sqrt{3} \\cdot n^{1/2}$, matching exponent $(d-1)/d = 1/2$ for $d=2$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This formalization addresses the central open question from Erdos Problem #1084: whether the correction term in f_3(n) is exactly Theta(n^{2/3}). The upper bound f_3(n) < 6n - 0.926*n^{2/3} was proved by Bezdek and Reid (2013) using the isoperimetric method for finite sphere packings. The conjectured matching lower bound f_3(n) >= 6n - c*n^{2/3} would follow from exhibiting FCC lattice clusters with the right contact count. The exponent 2/3 = (d-1)/d for d=3 reflects the surface-to-volume ratio: a ball of volume n in R^3 has surface area Theta(n^{2/3}), and boundary spheres in an FCC cluster lose contacts compared to the 12-contact interior arrangement.",
+    "problemStatement": "Is f_3(n) = 6n - Theta(n^{2/3})? That is, does the maximum number of unit-distance pairs among n separated points in R^3 have a correction term of order n^{2/3} below the leading term 6n?",
+    "text": "Formalization of the Erdos conjecture on the correction term for unit-distance pairs among separated points in 3D, with proved kissing-number upper bounds, 1D theory, and isoperimetric exponent analysis.",
+    "proofStrategy": "The formalization builds from the ground up: (1) Complete machine-verified 1D theory (f_1(n) = n-1). (2) Kissing number framework relating degree bounds to pair counts via double-counting. (3) Proved upper bounds f_2(n) <= 3n and f_3(n) <= 6n from kissing numbers tau(2)=6, tau(3)=12. (4) The central conjecture decomposed into FCC lower bound + Bezdek-Reid upper bound. (5) Isoperimetric exponent analysis connecting the 2D and 3D correction terms.",
+    "keyInsights": [
+      "**Kissing number controls leading coefficient**: f_d(n) <= tau(d)*n/2 by double-counting. tau(3) = 12 gives f_3(n) <= 6n",
+      "**Isoperimetric exponent (d-1)/d**: The correction term n^{2/3} for d=3 matches the surface-to-volume ratio, just as n^{1/2} in Harborth's 2D formula matches alpha(2) = 1/2",
+      "**FCC boundary deficit**: Interior FCC points have 12 contacts, boundary points lose O(1) contacts. With Theta(n^{2/3}) boundary points, deficit is Theta(n^{2/3})",
+      "**Bezdek-Reid isoperimetric method**: Proves f_3(n) < 6n - 0.926*n^{2/3} by bounding the surface area of finite sphere packings",
+      "**Complete 1D theory**: f_1(n) = n-1 proved constructively with left-endpoint injection and consecutive-integer construction"
+    ],
+    "prerequisites": [
+      "Euclidean geometry: distance in R^d, inner product spaces",
+      "Combinatorial geometry: kissing numbers, sphere packing, FCC lattice",
+      "Graph theory: degree bounds, handshaking lemma, double-counting",
+      "Isoperimetric inequalities: surface-to-volume scaling"
+    ]
+  },
+  "conclusion": {
+    "summary": "The formalization establishes the framework for the Erdos conjecture f_3(n) = 6n - Theta(n^{2/3}). The complete 1D theory is machine-verified (0 sorry). The 2D and 3D upper bounds f_2(n) <= 3n and f_3(n) <= 6n are proved from kissing number axioms via double-counting. The central conjecture is decomposed into two parts (FCC lower bound + Bezdek-Reid upper bound) and formally proved from these axioms. The isoperimetric exponent analysis reveals the universal pattern: correction term Theta(n^{(d-1)/d}).",
+    "implications": "A proof of the FCC lower bound axiom would resolve the Erdos conjecture for d=3. The isoperimetric exponent framework suggests that for general d, f_d(n) = tau(d)*n/2 - Theta(n^{(d-1)/d}), connecting unit-distance problems to the fine structure of finite sphere packings.",
+    "openQuestions": [
+      "Can the FCC cluster lower bound f_3(n) >= 6n - c*n^{2/3} be proved in Lean?",
+      "What are the exact constants c_1, c_2 in the 3D Theta(n^{2/3}) correction?",
+      "Does the isoperimetric exponent pattern f_d(n) = tau(d)*n/2 - Theta(n^{(d-1)/d}) hold for all d >= 2?",
+      "Can the degree_sum_eq_twice_pairs axiom (handshaking lemma) be fully proved in Lean?",
+      "Can the kissing number axioms tau(1)=2, tau(2)=6, tau(3)=12 be proved from Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "extends",
+      "description": "Extends the base Erdos #1084 formalization with the 3D conjecture, kissing number framework, and isoperimetric analysis"
+    },
+    {
+      "targetId": "kepler-conjecture",
+      "relationship": "related",
+      "description": "The FCC lower bound relies on the Kepler conjecture: FCC packing density governs the leading coefficient and contact structure"
+    },
+    {
+      "targetId": "erdos-1083",
+      "relationship": "companion",
+      "description": "Companion problem on minimum distinct distances, sharing the dimension-indexed extremal function structure"
+    }
+  ],
+  "references": [
+    {
+      "citation": "Bezdek, K. and Reid, S. (2013). Contact graphs of unit sphere packings revisited. Journal of Geometry, 104(1), 57-83.",
+      "note": "Proves f_3(n) < 6n - 0.926*n^{2/3} using the isoperimetric method for finite sphere packings."
+    },
+    {
+      "citation": "Schutte, K. and van der Waerden, B. L. (1953). Das Problem der dreizehn Kugeln. Mathematische Annalen, 125, 325-334.",
+      "note": "Proves the kissing number tau(3) = 12, resolving the Newton-Gregory dispute and establishing f_3(n) ~ 6n."
+    },
+    {
+      "citation": "Harborth, H. (1974). Losung zu Problem 664A. Elemente der Mathematik, 29, 14-15.",
+      "note": "Proves the exact formula f_2(n) = floor(3n - sqrt(12n-3)), achieving correction term Theta(sqrt(n)) = Theta(n^{1/2})."
+    },
+    {
+      "citation": "Erdos, P. (1975). On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4), 99-108.",
+      "note": "States the conjecture f_3(n) = 6n - Theta(n^{2/3}) and the general isoperimetric pattern."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 533,
+    "axiomCount": 9,
+    "theoremCount": 16,
+    "substantiveTheoremCount": 16,
+    "sorryTheorems": 0,
+    "definitionCount": 5
+  },
+  "mainTheorems": [
+    {
+      "name": "f1_upper",
+      "type": "proved",
+      "description": "For any 1D separated config on n points, unitPairs <= n-1 (via left-endpoint injection)"
+    },
+    {
+      "name": "f1_achieve",
+      "type": "proved",
+      "description": "The consecutive integer configuration {0,...,n-1} achieves exactly n-1 unit pairs"
+    },
+    {
+      "name": "pairs_le_kissing_bound",
+      "type": "proved",
+      "description": "2 * unitPairs <= tau(d) * n for any separated config (from kissing number + handshaking)"
+    },
+    {
+      "name": "f2_upper_3n",
+      "type": "proved",
+      "description": "unitPairs <= 3n for any 2D separated config (from tau(2) = 6)"
+    },
+    {
+      "name": "f3_upper_6n",
+      "type": "proved",
+      "description": "unitPairs <= 6n for any 3D separated config (from tau(3) = 12)"
+    },
+    {
+      "name": "erdos_1084_oq01",
+      "type": "proved",
+      "description": "f_3(n) = 6n - Theta(n^{2/3}): lower bound from FCC clusters, upper bound from Bezdek-Reid"
+    },
+    {
+      "name": "iso_exponent_monotone",
+      "type": "proved",
+      "description": "The isoperimetric exponent (d-1)/d is strictly increasing in d"
+    },
+    {
+      "name": "bezdek_reid",
+      "type": "axiom",
+      "description": "f_3(n) < 6n - 0.926*n^{2/3} (Bezdek-Reid 2013)"
+    },
+    {
+      "name": "harborth_formula",
+      "type": "axiom",
+      "description": "f_2(n) = floor(3n - sqrt(12n-3)) (Harborth 1974)"
+    }
+  ]
+}
