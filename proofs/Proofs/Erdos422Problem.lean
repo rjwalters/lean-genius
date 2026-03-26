@@ -21,49 +21,78 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Tactic
 
-/- ## Definition -/
+/- ## Computable Definition -/
 
-/-- The Erdős–Hofstadter recursive sequence. Defined partially since
-    well-definedness for all n is unknown. -/
-noncomputable def hofstadterF : ℕ → ℕ
-  | 0 => 0  -- not used; sequence starts at 1
-  | 1 => 1
-  | 2 => 1
-  | n + 3 => hofstadterF (n + 3 - hofstadterF (n + 2)) +
-              hofstadterF (n + 3 - hofstadterF (n + 1))
+/-- Compute the Hofstadter sequence values f(0), f(1), ..., f(n) as a list.
+    f(0) = 0 (sentinel), f(1) = f(2) = 1, and for k ≥ 3:
+    f(k) = f(k - f(k-1)) + f(k - f(k-2)).
+    Out-of-bounds lookups default to 0, making this total. -/
+def hofstadterFList : ℕ → List ℕ
+  | 0 => [0]
+  | 1 => [0, 1]
+  | 2 => [0, 1, 1]
+  | n + 3 =>
+      let prev := hofstadterFList (n + 2)
+      let k := n + 3
+      let fk1 := prev.getD (k - 1) 0
+      let fk2 := prev.getD (k - 2) 0
+      let v1 := prev.getD (k - fk1) 0
+      let v2 := prev.getD (k - fk2) 0
+      prev ++ [v1 + v2]
 
-/-- The sequence is well-defined at n if the recursive indices stay positive. -/
+/-- The Hofstadter sequence from Erdős Problem #422 (OEIS A005185).
+    Total computable function agreeing with the recursion when well-defined. -/
+def hofstadterF (n : ℕ) : ℕ := (hofstadterFList n).getD n 0
+
+/- ## Proved Initial Values -/
+
+theorem hofstadterF_one : hofstadterF 1 = 1 := by native_decide
+theorem hofstadterF_two : hofstadterF 2 = 1 := by native_decide
+theorem hofstadterF_three : hofstadterF 3 = 2 := by native_decide
+theorem hofstadterF_four : hofstadterF 4 = 3 := by native_decide
+theorem hofstadterF_five : hofstadterF 5 = 3 := by native_decide
+theorem hofstadterF_six : hofstadterF 6 = 4 := by native_decide
+
+/-- The first six values of the Hofstadter sequence match OEIS A005185.
+    Proved from the computable definition. -/
+theorem initial_values :
+    hofstadterF 1 = 1 ∧ hofstadterF 2 = 1 ∧
+    hofstadterF 3 = 2 ∧ hofstadterF 4 = 3 ∧
+    hofstadterF 5 = 3 ∧ hofstadterF 6 = 4 :=
+  ⟨hofstadterF_one, hofstadterF_two, hofstadterF_three,
+   hofstadterF_four, hofstadterF_five, hofstadterF_six⟩
+
+/- ## Well-Definedness -/
+
+/-- The recursion is well-defined at index k if the recursive lookups
+    stay within the previously computed range. -/
+def WellDefinedAt (k : ℕ) : Prop :=
+  k ≥ 3 → hofstadterF (k - 1) ≥ 1 ∧ hofstadterF (k - 1) < k ∧
+           hofstadterF (k - 2) ≥ 1 ∧ hofstadterF (k - 2) < k
+
+/-- The sequence is well-defined up to index n. -/
 def IsWellDefined (n : ℕ) : Prop :=
-  ∀ k ≤ n, k ≥ 3 → hofstadterF (k - 1) < k ∧ hofstadterF (k - 2) < k
+  ∀ k, k ≤ n → WellDefinedAt k
 
-/- ## Main Questions -/
+/- ## Open Questions -/
 
-/-- **Well-Definedness**: is f(n) well-defined for all n? -/
-axiom erdos_422_well_defined :
-  ∀ n : ℕ, IsWellDefined n
+/-- **Well-Definedness** (OPEN): Is the recursion well-defined for all n?
+    It is not known whether the recursive indices always stay in bounds. -/
+axiom erdos_422_well_defined : ∀ n : ℕ, IsWellDefined n
 
-/-- **Missing Integers**: does f miss infinitely many positive integers? -/
+/-- **Missing Integers** (OPEN): Does f miss infinitely many positive integers? -/
 axiom erdos_422_misses_infinitely :
   Set.Infinite {m : ℕ | m > 0 ∧ ∀ n, hofstadterF n ≠ m}
 
-/-- **Surjectivity Question**: is f surjective on positive integers? -/
-axiom erdos_422_surjectivity :
+/-- **Non-Surjectivity** (OPEN): Is f non-surjective on positive integers? -/
+axiom erdos_422_not_surjective :
   ¬Function.Surjective (fun n : ℕ => hofstadterF (n + 1))
 
-/-- **Growth Rate**: what is the asymptotic behavior of f(n)? -/
+/-- **Growth Rate** (OPEN): f(n) grows at most linearly. -/
 axiom erdos_422_growth :
   ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       (hofstadterF n : ℝ) ≤ (1 + ε) * n
-
-/- ## Known Values -/
-
-/-- The first few values: f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3,
-    f(5) = 3, f(6) = 4, ... (OEIS A005185). -/
-axiom initial_values :
-  hofstadterF 1 = 1 ∧ hofstadterF 2 = 1 ∧
-  hofstadterF 3 = 2 ∧ hofstadterF 4 = 3 ∧
-  hofstadterF 5 = 3 ∧ hofstadterF 6 = 4
 
 /- ## Observations -/
 
