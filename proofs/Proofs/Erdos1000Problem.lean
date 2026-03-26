@@ -19,8 +19,8 @@
   - Erdős (1964): φ_A(k)/n_k cannot converge to 0; dichotomy: liminf=0 ⟹ limsup=1
   - Haight: Cesàro average CAN vanish, resolving the problem
 
-  Axiom count: 4 (erdos_no_zero_limit, erdos_dichotomy,
-    cassels_liminf_zero, haight_resolution)
+  Axiom count: 3 (erdos_no_zero_limit, erdos_dichotomy, haight_resolution)
+  Proved: cassels_liminf_zero (derived from haight_resolution — convergence implies liminf=0)
   Proved: naturalSeq_phiA_eq_totient (filter condition ↔ coprimality + Icc/range bridge)
   Proved: phiA_ge_totient (φ_A(k) ≥ φ(n_k) — coprime elements always pass the filter)
   Proved: densityRatio_ge_totient_ratio (ρ_A(k) ≥ φ(n_k)/n_k)
@@ -528,15 +528,7 @@ axiom erdos_dichotomy (A : IncreasingSeq) :
     (∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε) →
     (∀ ε > 0, ∃ᶠ k in atTop, 1 - ε < densityRatio A k)
 
-/- ## Part VII: Cassels' Result (1950) -/
-
-/-- Cassels' theorem: There exists a sequence A such that
-    the liminf of the Cesàro average is 0.
-    Constructed via continued fraction convergents. -/
-axiom cassels_liminf_zero :
-    ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε
-
-/- ## Part VIII: Haight's Resolution -/
+/- ## Part VII: Haight's Resolution -/
 
 /-- Haight's Theorem (resolves Erdős' Problem #1000):
     There exists a sequence A such that the Cesàro average converges to 0.
@@ -544,6 +536,20 @@ axiom cassels_liminf_zero :
     the average to zero while individual terms oscillate.
     This contradicts Erdős' conjecture that no such sequence exists. -/
 axiom haight_resolution : ∃ A : IncreasingSeq, VanishingAverage A
+
+/- ## Part VIII: Cassels' Result (1950) — Proved -/
+
+/-- Cassels' theorem: There exists a sequence A such that
+    the liminf of the Cesàro average is 0.
+
+    Originally proved by Cassels via continued fraction convergents.
+    Here we derive it as a corollary of Haight's stronger result
+    (haight_resolution): convergence to 0 implies the liminf is 0.
+    This reduces the axiom count by 1, from 4 to 3. -/
+theorem cassels_liminf_zero :
+    ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε := by
+  obtain ⟨A, hA⟩ := haight_resolution
+  exact ⟨A, fun ε hε => (hA (Iio_mem_nhds hε)).frequently⟩
 
 /- ## Part IX: Corollaries -/
 
