@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 7 new theorems added (2→9). Proved left monotonicity, diagonal lower bound, specific Ramsey comparisons. 14 axioms remain.",
+    "progressSummary": "PROGRESS: Fixed inconsistent R3_lower axiom (∀c→∃c). Proved 4 new theorems: R3_ratio_convergence (k=3 case of conjecture), R3_asymptotic_bounds (Θ(l²/log l)), increment_bound_k3, increment_bound_general. 13 axioms, 14 theorems, 459 lines.",
     "builtItems": [
       "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
       "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)",
@@ -37,7 +37,12 @@
       "ramsey_monotone_left: R(k,l) <= R(k+1,l) via symm trick",
       "R22: R(2,2) = 2",
       "diagonal_ramsey_lower: R(k,k) >= k for k >= 2",
-      "R33_lt_R34, R34_lt_R35: strict monotonicity of specific values"
+      "R33_lt_R34, R34_lt_R35: strict monotonicity of specific values",
+      "R3_ratio_convergence: k=3 case of Erdős 1014 (~55 lines)",
+      "R3_asymptotic_bounds: tight bounds theorem from R3_lower + R3_upper",
+      "increment_bound_k3: R(3,l+1) ≤ R(3,l) + (l+1) from recurrence",
+      "increment_bound_general: R(k,l+1) ≤ R(k,l) + R(k-1,l+1)",
+      "Fixed R3_lower axiom from ∀c to ∃c (consistency fix)"
     ],
     "insights": [
       "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
@@ -45,7 +50,10 @@
       "Most axioms CANNOT be eliminated - no Ramsey theory in Mathlib (ramseyNumber is an opaque axiom)",
       "ramsey_monotone_left provable from symm + monotone_right",
       "diagonal_ramsey_lower from R(2,k)=k + left monotonicity",
-      "Specific Ramsey values (R33,R34,R35) enable strict monotonicity proofs"
+      "Specific Ramsey values (R33,R34,R35) enable strict monotonicity proofs",
+      "R3_lower was inconsistent: ∀c>0 R(3,l)≥c·l²/log l contradicts R3_upper. Fixed to ∃c>0.",
+      "R3_ratio_convergence proved directly: recurrence gives R(3,l+1)-R(3,l)≤l+1, combined with R(3,l)≥c·l²/log l gives ratio O(log l/l)→0",
+      "R3_asymptotic_bounds combines R3_lower and R3_upper to give R(3,l) = Θ(l²/log l)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -85,9 +93,9 @@
     {
       "path": "Proofs/Erdos1014Problem.lean",
       "filename": "Erdos1014Problem.lean",
-      "lineCount": 182,
-      "theoremCount": 9,
-      "axiomCount": 14,
+      "lineCount": 459,
+      "theoremCount": 14,
+      "axiomCount": 13,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
