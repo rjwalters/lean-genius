@@ -73,14 +73,17 @@ The minimum number of colors needed for a cochromatic coloring.
 -/
 axiom cochromaticNumber (G : SimpleGraph V) : ℕ
 
-/--
-**Properties of cochromatic number:**
--/
-axiom cochromaticNumber_pos (G : SimpleGraph V) [Nonempty V] :
-  cochromaticNumber G ≥ 1
+/-- ζ(G) ≥ 1 for nonempty graphs.
+Property of abstract cochromatic number; not used in proofs below. -/
+def cochromaticNumber_pos_prop : Prop :=
+  ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
+    cochromaticNumber G ≥ 1
 
-axiom cochromaticNumber_bound (G : SimpleGraph V) :
-  cochromaticNumber G ≤ Fintype.card V
+/-- ζ(G) ≤ |V|.
+Property of abstract cochromatic number; not used in proofs below. -/
+def cochromaticNumber_bound_prop : Prop :=
+  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    cochromaticNumber G ≤ Fintype.card V
 
 /--
 **Relationship to chromatic number:**
@@ -89,8 +92,11 @@ Thus ζ(G) ≤ χ(G) always.
 -/
 axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
-axiom cochromatic_le_chromatic (G : SimpleGraph V) :
-  cochromaticNumber G ≤ chromaticNumber G
+/-- ζ(G) ≤ χ(G).
+Property of abstract functions; not used in proofs below. -/
+def cochromatic_le_chromatic_prop : Prop :=
+  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    cochromaticNumber G ≤ chromaticNumber G
 
 /-
 ## Part III: Surfaces and Genus
@@ -118,15 +124,13 @@ def isEmbeddableOn (G : SimpleGraph V) (S : OrientableSurface) : Prop :=
   -- Axiomatized; actual embedding theory is complex
   True
 
-/--
-**Euler's Formula for Surfaces:**
-For a graph embedded on S_n:
-|V| - |E| + |F| = 2 - 2n
--/
-axiom euler_formula_genus (G : SimpleGraph V) (n : ℕ)
-    (hEmbed : isEmbeddableOn G ⟨n⟩)
-    (vertices edges faces : ℕ) :
-  (vertices : ℤ) - edges + faces = 2 - 2 * n
+/-- Euler's formula for surfaces: |V| - |E| + |F| = 2 - 2n.
+Deep topological result; not used in proofs below. -/
+def euler_formula_genus_prop : Prop :=
+  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) (n : ℕ),
+    isEmbeddableOn G ⟨n⟩ →
+    ∀ vertices edges faces : ℕ,
+      (vertices : ℤ) - edges + faces = 2 - 2 * n
 
 /-
 ## Part IV: The Maximum Cochromatic Number
@@ -138,17 +142,17 @@ The maximum value of ζ(G) over all graphs G embeddable on S_n.
 -/
 axiom maxCochromaticNumber (n : ℕ) : ℕ
 
-/--
-**Properties of z(S_n):**
--/
-axiom maxCochromatic_realizes (n : ℕ) :
-  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+/-- z(S_n) is realized by some graph.
+Property of abstract function; not used in proofs below. -/
+def maxCochromatic_realizes_prop : Prop :=
+  ∀ n : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     isEmbeddableOn G ⟨n⟩ ∧ cochromaticNumber G = maxCochromaticNumber n
 
-axiom maxCochromatic_upper (n : ℕ)
-    (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    (hEmbed : isEmbeddableOn G ⟨n⟩) :
-  cochromaticNumber G ≤ maxCochromaticNumber n
+/-- z(S_n) is an upper bound for all embeddable graphs.
+Property of abstract function; not used in proofs below. -/
+def maxCochromatic_upper_prop : Prop :=
+  ∀ (n : ℕ) (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    isEmbeddableOn G ⟨n⟩ → cochromaticNumber G ≤ maxCochromaticNumber n
 
 /-
 ## Part V: The Main Question
@@ -190,13 +194,9 @@ axiom gimbel_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (maxCochromaticNumber n : ℝ) ≥ c * Real.sqrt n / Real.log n
 
-/--
-**Gimbel's Upper Bound (1986):**
-z(S_n) ≪ √n
-
-All graphs embeddable on S_n have cochromatic number at most C · √n.
--/
-axiom gimbel_upper_bound :
+/-- Gimbel's upper bound (1986): z(S_n) ≪ √n.
+Superseded by Gimbel-Thomassen; not used in proofs below. -/
+def gimbel_upper_bound_prop : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     (maxCochromaticNumber n : ℝ) ≤ C * Real.sqrt n
 
@@ -227,37 +227,26 @@ theorem erdos759_answer : erdos759Question := gimbel_thomassen_theorem
 ## Part VIII: Related Results
 -/
 
-/--
-**Chromatic Number on Surfaces:**
-The maximum chromatic number of graphs embeddable on S_n is
-the Heawood number H(n) = ⌊(7 + √(1 + 48n)) / 2⌋ for n ≥ 1.
-For planar graphs (n = 0), it's 4 (4-color theorem).
--/
+/-- The Heawood number H(n). Abstract function; not used in proofs below. -/
 axiom heawood_number (n : ℕ) : ℕ
 
-axiom heawood_bound (n : ℕ) (hn : n ≥ 1)
-    (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    (hEmbed : isEmbeddableOn G ⟨n⟩) :
-  chromaticNumber G ≤ heawood_number n
+/-- Heawood bound: χ(G) ≤ H(n) for graphs on S_n.
+Deep result (Map Color Theorem); not used in proofs below. -/
+def heawood_bound_prop : Prop :=
+  ∀ (n : ℕ), n ≥ 1 →
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      isEmbeddableOn G ⟨n⟩ → chromaticNumber G ≤ heawood_number n
 
-/--
-**Ringel-Youngs Theorem:**
-The Heawood bound is achieved for all n ≥ 1.
-K_{H(n)} can be embedded on S_n.
--/
-axiom ringel_youngs (n : ℕ) (hn : n ≥ 1) :
-  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-    isEmbeddableOn G ⟨n⟩ ∧ chromaticNumber G = heawood_number n
+/-- Ringel-Youngs theorem: Heawood bound is tight.
+Deep result; not used in proofs below. -/
+def ringel_youngs_prop : Prop :=
+  ∀ (n : ℕ), n ≥ 1 →
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      isEmbeddableOn G ⟨n⟩ ∧ chromaticNumber G = heawood_number n
 
-/--
-**Girth and Cochromatic Number:**
-Graphs with high girth (no short cycles) have low chromatic number
-but potentially high cochromatic number.
--/
-axiom high_girth_cochromatic :
-  -- For fixed genus, high girth forces small chromatic number
-  -- but cochromatic number can still grow
-  True
+/-- Girth and cochromatic number: high girth forces small χ but ζ can still grow.
+Trivially stated as True. -/
+theorem high_girth_cochromatic : True := trivial
 
 /-
 ## Part IX: Connection to Graph Structure
@@ -271,12 +260,9 @@ axiom high_girth_cochromatic :
 - The upper bound uses structural properties of surface embeddings
 -/
 
-/--
-**Planar Case (n = 0):**
-For planar graphs, z(S_0) = constant (bounded).
-This is because planar graphs have bounded chromatic number (4).
--/
-axiom planar_cochromatic_bounded :
+/-- Planar cochromatic number is bounded.
+Property of abstract functions; not used in proofs below. -/
+def planar_cochromatic_bounded_prop : Prop :=
   ∃ C : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     isEmbeddableOn G sphere → cochromaticNumber G ≤ C
 
