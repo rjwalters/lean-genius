@@ -82,8 +82,11 @@ theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
 **Coprimality Consequence:**
 The prime factors of n(n+1) are the union of prime factors of n and n+1.
 -/
-axiom primeFactors_product_coprime (n : ℕ) (hn : n ≥ 1) :
-    (n * (n + 1)).primeFactors = n.primeFactors ∪ (n + 1).primeFactors
+theorem primeFactors_product_coprime (n : ℕ) (hn : n ≥ 1) :
+    (n * (n + 1)).primeFactors = n.primeFactors ∪ (n + 1).primeFactors := by
+  have hn0 : n ≠ 0 := by omega
+  have hn1 : n + 1 ≠ 0 := by omega
+  exact Nat.primeFactors_mul hn0 hn1
 
 /--
 Thus F(n) = max(gpf(n), gpf(n+1)).
@@ -130,7 +133,9 @@ axiom mahler_bound :
 **Mahler improves Pólya:**
 The quantitative bound c · log log n → ∞ implies F(n) → ∞.
 -/
-axiom mahler_improves_polya :
+/-- Mahler's bound implies Pólya's theorem (analysis argument).
+Not used in proofs below. -/
+def mahler_improves_polya_prop : Prop :=
     (∃ c : ℝ, c > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)) →
     (∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M)
 
@@ -159,7 +164,9 @@ def isSmooth (B n : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ B
 Numbers of the form n(n+1) that are B-smooth exist infinitely often
 when B is chosen appropriately.
 -/
-axiom infinitely_many_smooth_products :
+/-- Infinitely many smooth products of consecutive integers.
+Deep result (Schinzel); not used in proofs below. -/
+def infinitely_many_smooth_products_prop : Prop :=
     ∀ M : ℕ, ∃ n > M, ∃ B : ℕ,
       isSmooth B (n * (n + 1)) ∧
       (B : ℝ) ≤ (n : ℝ) ^ (1 / Real.log (Real.log (Real.log n)))
@@ -205,7 +212,9 @@ axiom pasten_bound :
 **Pasten improves Mahler:**
 (log log n)² / (log log log n) ≫ log log n for large n.
 -/
-axiom pasten_improves_mahler :
+/-- Pasten's bound implies Mahler's bound (analysis argument).
+Not used in proofs below. -/
+def pasten_improves_mahler_prop : Prop :=
     (∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))) →
     (∃ c' : ℝ, c' > 0 ∧ ∃ N' : ℕ,
@@ -280,7 +289,8 @@ noncomputable def P_squared_plus_one (n : ℕ) : ℕ := largestPrimeFactor (n^2 
 P(n² + 1) ≫ (log log n)² / (log log log n).
 This was the key advance leading to improved ABC-related bounds.
 -/
-axiom pasten_squared_plus_one :
+/-- Pasten's result for n²+1 variant. Deep result; not used in proofs below. -/
+def pasten_squared_plus_one_prop : Prop :=
     ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (P_squared_plus_one n : ℝ) ≥
         c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))
@@ -302,7 +312,8 @@ def radical (n : ℕ) : ℕ := (n.primeFactors).prod id
 **ABC Would Imply:**
 Under ABC, F(n) ≥ (log n)^(1-ε) for any ε > 0.
 -/
-axiom abc_implies_strong_bound :
+/-- ABC conjecture would imply strong bounds on F. Not used in proofs below. -/
+def abc_implies_strong_bound_prop : Prop :=
     -- If ABC conjecture holds...
     (∀ ε : ℝ, ε > 0 → ∃ K : ℝ,
       ∀ a b c : ℕ, Nat.Coprime a b → a + b = c →

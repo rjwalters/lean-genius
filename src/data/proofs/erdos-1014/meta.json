@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1014",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "axiomCount": 14,
-    "lineCount": 134,
-    "assumptions": "14 axiom(s): 1 definition (ramseyNumber), 13 mathematical hypotheses. 2 former axioms proved as theorems: diagonal_ramsey_upper (from Erdős-Szekeres bound) and ratio_equiv_difference (from real analysis + monotonicity + positivity).",
+    "axiomCount": 13,
+    "lineCount": 307,
+    "assumptions": "13 axiom(s): 1 definition (ramseyNumber), 12 mathematical hypotheses. 3 former axioms proved as theorems: diagonal_ramsey_upper (from Erdős-Szekeres bound), ratio_equiv_difference (from real analysis + monotonicity + positivity), and ratio_from_asymptotics (from growth ratio convergence via squeeze theorem and Filter.Tendsto).",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -167,18 +167,22 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
     "lineCount": 134,
-    "axiomCount": 14,
-    "theoremCount": 2,
+    "axiomCount": 13,
+    "theoremCount": 3,
     "definitionCount": 0,
-    "substantiveTheoremCount": 2,
+    "substantiveTheoremCount": 3,
     "mainTheorems": [
+      {
+        "name": "ratio_from_asymptotics",
+        "type": "core",
+        "description": "Proves that if R(k,l) ~ c·l^(k-1)/(log l)^(k-2), then R(k,l+1)/R(k,l) → 1. Uses growth ratio convergence: decompose the quotient into three factors each close to 1, bounded via squeeze theorem on ((l+1)/l)^a·(log l/log(l+1))^b → 1",
+        "leanType": "(k : ℕ) → k ≥ 3 → (asymptotic hypothesis) → ∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(k,l+1)/R(k,l) - 1| < ε"
+      },
       {
         "name": "ratio_equiv_difference",
         "type": "core",

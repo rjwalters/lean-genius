@@ -16,25 +16,28 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T09:56:05.235Z",
+    "phase": "ACT",
+    "since": "2026-03-26T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "9 axioms (down from 11). Proved maxSidon_monotone and maxSidon_step.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+    "nextAction": "Convert maxSidonSize to def, prove more axioms"
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved maxSidon_monotone and maxSidon_step (11→9 axioms). Both derived from maxSidon_achievable+maxSidon_optimal.",
+    "builtItems": [
+      "maxSidon_monotone: any Sidon subset of {1,...,N} is valid for {1,...,N+1}",
+      "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1"
+    ],
+    "insights": [
+      "maxSidon_monotone trivially follows from containment: {1,...,N}⊆{1,...,N+1}",
+      "maxSidon_step uses Finset.erase and Nat.lt_of_le_of_ne for the N+1 exclusion"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #155 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #154\n- Problem #156\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n- ESS94\n- Er94b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Convert maxSidonSize from axiom to noncomputable def using Finset.sup",
+      "Prove small_values for F(1)=1 from the definition"
+    ]
   },
   "tags": [
     "erdos"
@@ -50,7 +53,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T09:56:05.235Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-03-27T00:15:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

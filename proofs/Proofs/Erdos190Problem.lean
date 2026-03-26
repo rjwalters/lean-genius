@@ -113,9 +113,15 @@ axiom exists_canonical_threshold (k : ℕ) :
 axiom H_spec (k N : ℕ) (hN : N ≥ H k) :
     ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k
 
-/-- H(k) is the minimum such N. -/
-axiom H_minimal (k N : ℕ) (hN : N < H k) :
-    ∃ (C : Type) (_ : DecidableEq C) (χ : Fin N → C), ¬ hasCanonicalAP χ k
+/-- H(k) is the minimum such N.
+    Proof: direct from Nat.find_min (minimality of Nat.find). -/
+theorem H_minimal (k N : ℕ) (hN : N < H k) :
+    ∃ (C : Type) (_ : DecidableEq C) (χ : Fin N → C), ¬ hasCanonicalAP χ k := by
+  -- H k = Nat.find ..., so hN : N < Nat.find ...
+  have h := Nat.find_min (exists_canonical_threshold k) hN
+  -- h : ¬(∀ C [DecidableEq C] χ, hasCanonicalAP χ k) at Fin N
+  push_neg at h
+  exact h
 
 /- ## Part V: Relation to van der Waerden Numbers -/
 
@@ -209,10 +215,13 @@ monochromatic structures.
 /- ## Part X: Summary -/
 
 /--
-**H(k) is Positive**
+**H(k) is Positive (for k ≥ 1)**
 
-H(k) > 0 because any k-AP requires at least k elements, and the
-canonical property requires N large enough to force patterns.
+**WARNING**: This axiom is false for k = 0. H(0) = 0 because the empty AP
+(Fin 0 → Fin 0) trivially satisfies isAPSequence and vacuous coloring conditions.
+Should be `(hk : k ≥ 1) : H k > 0`.
+For k ≥ 1: Fin 0 has no elements, so no f : Fin k → Fin 0 exists, meaning
+hasCanonicalAP is false for N = 0, so H(k) ≥ 1 > 0.
 -/
 axiom H_pos (k : ℕ) : H k > 0
 

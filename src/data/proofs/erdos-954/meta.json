@@ -55,9 +55,9 @@
       "IsB2Sequence: Sidon set definition for connection to Problem #28",
       "repCount_mono_k: monotonicity R_k(n) ≤ R_{k+1}(n) (proved)"
     ],
-    "axiomCount": 4,
-    "lineCount": 187,
-    "assumptions": "4 axioms: erdos_954_weak_conjecture, erdos_954_strong_conjecture, rosen_not_b2, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 230,
+    "assumptions": "3 axioms: erdos_954_weak_conjecture (OPEN), erdos_954_strong_conjecture (OPEN), rosen_not_b2 (provable). erdos_turan_context proved (trivially true for any infinite sequence).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -149,9 +149,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 187,
-    "axiomCount": 4,
-    "theoremCount": 17,
+    "lineCount": 230,
+    "axiomCount": 3,
+    "theoremCount": 18,
     "definitionCount": 9
   },
   "references": [

@@ -514,11 +514,41 @@ def VanishingAverage (A : IncreasingSeq) : Prop :=
 def DensityToZero (A : IncreasingSeq) : Prop :=
   Tendsto (densityRatio A) atTop (𝓝 0)
 
+/- ## Part V-B: Special Cases of No-Zero-Limit -/
+
+/-- If a sequence contains infinitely many prime terms (∀ k, ∃ k' > k with n_{k'} prime),
+    then the density ratio cannot converge to 0.
+    Proof: at prime indices, ρ ≥ 1/2 (from densityRatio_ge_of_prime), so ρ → 0
+    would require ρ < 1/2 eventually, a contradiction. -/
+theorem not_density_zero_of_infinitely_many_primes (A : IncreasingSeq)
+    (h_primes : ∀ k, ∃ k', k < k' ∧ Nat.Prime (A.seq k')) :
+    ¬ DensityToZero A := by
+  intro h
+  -- DensityToZero means ρ → 0, so eventually ρ < 1/2
+  have h12 := (tendsto_order.mp h).2 (1 / 2) (by norm_num : (0 : ℝ) < 1 / 2)
+  obtain ⟨K, hK⟩ := eventually_atTop.mp h12
+  -- Find a prime index k' > K
+  obtain ⟨k', hk'K, hk'_prime⟩ := h_primes K
+  -- densityRatio ≥ 1/2 at prime index
+  have hge := densityRatio_ge_of_prime A k' hk'_prime
+  -- densityRatio < 1/2 at the same index (since k' > K ≥ K)
+  have hlt := hK k' (le_of_lt hk'K)
+  linarith
+
+/-- The natural sequence (1, 2, 3, ...) does not have density → 0.
+    Contains infinitely many primes, so not_density_zero_of_infinitely_many_primes applies. -/
+theorem naturalSeq_not_density_zero : ¬ DensityToZero naturalSeq :=
+  not_density_zero_of_infinitely_many_primes naturalSeq (fun k => by
+    obtain ⟨p, hp_prime, hp_ge⟩ := Nat.exists_infinite_primes (k + 2)
+    exact ⟨p - 1, by omega, by simp [naturalSeq]; omega⟩)
+
 /- ## Part VI: Erdős' Results (1964) -/
 
 /-- Erdős' No-Zero-Limit Theorem: The density ratio ρ_A(k) = φ_A(k)/n_k
-    cannot converge to 0 for any sequence A.
-    Proof sketch: φ_A(k) ≥ φ(n_k) ≥ c·n_k/log log n_k → ∞ (Mertens). -/
+    cannot converge to 0 for any sequence A. This is stronger than
+    not_density_zero_of_infinitely_many_primes: it works even for
+    sequences with no prime terms (e.g., composite numbers only).
+    Proof requires Erdős' 1964 double-counting argument. -/
 axiom erdos_no_zero_limit (A : IncreasingSeq) : ¬ DensityToZero A
 
 /-- Erdős' Dichotomy: If the density ratio gets arbitrarily close to 0,

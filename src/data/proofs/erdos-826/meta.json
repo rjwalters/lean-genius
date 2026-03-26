@@ -40,23 +40,23 @@
     ],
     "originalContributions": [
       "tau definition: divisor function via σ 0",
-      "average_order_tau axiom: average order is log(x)",
-      "max_order_tau axiom: maximum order bound",
+      "average_order_tau proposition: average order is log(x) (deep result, stated not assumed)",
+      "max_order_tau proposition: maximum order bound (deep result, stated not assumed)",
       "linearBoundCondition definition: τ(n+k) ≤ Ck",
       "goodStartingPoints definition: set of n satisfying the bound",
       "erdos_826_conjecture definition: the open problem",
-      "erdos_826_statement axiom: equivalence with formal-conjectures form",
+      "erdos_826_statement theorem: equivalence with formal-conjectures form (proved by unfolding)",
       "erdos_248_weaker definition: the weaker problem",
       "erdos_826_implies_248 theorem: implication between problems",
       "fewDivisorsAt1 definition: constraint at k=1",
-      "prime_satisfies_bound axiom: primes have τ = 2",
+      "prime_satisfies_bound theorem: primes have τ = 2 (proved from Mathlib)",
       "heuristicCriticalRange definition: critical range for heuristic",
       "hasControlledDivisors definition: smooth number connection",
       "erdos_826_main theorem: well-definedness and implications"
     ],
-    "axiomCount": 4,
-    "lineCount": 307,
-    "assumptions": "4 axioms: average_order_tau, max_order_tau, erdos_826_statement, and 1 more. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 316,
+    "assumptions": "0 axioms. Open conjecture stated as a definition. Background facts (average/max order of τ) stated as propositions. erdos_826_statement and prime_satisfies_bound proved from Mathlib."
   },
   "overview": {
     "historicalContext": "Erdős Problem #826 was posed by Paul Erdős in 1974 (referenced as [Er74b]). It asks a fundamental question about the growth of the divisor function τ(n) = σ₀(n) along arithmetic shifts: can we find infinitely many starting points n where τ(n+k) grows at most linearly in k? The problem is described as a stronger form of Erdős Problem #248.\n\nThe divisor function τ(n) counts the number of positive divisors of n. Its average order is log(n), established by Dirichlet's divisor problem, while its maximum order is much larger — roughly 2^{log(n)/log(log(n))} — achieved by highly composite numbers. The interplay between typical and extremal behavior is central to understanding this problem.\n\nTerence Tao has noted that Problem #826 appears difficult. The challenge lies in simultaneously controlling divisor counts across all shifts k ≥ 1 from a single starting point. While the constraint becomes easier for large k (since Ck grows), the constraint at k = 1 is extremely restrictive: it requires τ(n+1) ≤ C, meaning n+1 must have very few divisors. Standard sieve methods and analytic number theory techniques have not yet yielded a resolution.",
@@ -180,10 +180,10 @@
       "Nat"
     ],
     "namespace": "Erdos826",
-    "lineCount": 307,
-    "axiomCount": 4,
-    "theoremCount": 2,
-    "definitionCount": 9
+    "lineCount": 320,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 10
   },
   "crossReferences": [
     {

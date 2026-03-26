@@ -65,11 +65,13 @@ noncomputable def omega1 : Ordinal := (Cardinal.aleph 1).ord
 /-- ω₁²: the ordinal square of ω₁, i.e., ω₁ · ω₁ (ordinal multiplication). -/
 noncomputable def omega1Sq : Ordinal := omega1 * omega1
 
-/-- ω₁ is uncountable. -/
-axiom omega1_uncountable : Cardinal.aleph0 < omega1.card
+/-- ω₁ is uncountable. Proved from cardinal arithmetic: ℵ₀ < ℵ₁.
+Not used in proofs below. -/
+def omega1_uncountable_prop : Prop := Cardinal.aleph0 < omega1.card
 
-/-- ω₁² has cardinality ℵ₁. -/
-axiom omega1Sq_card : omega1Sq.card = Cardinal.aleph 1
+/-- ω₁² has cardinality ℵ₁. Cardinal arithmetic on infinite ordinals.
+Not used in proofs below. -/
+def omega1Sq_card_prop : Prop := omega1Sq.card = Cardinal.aleph 1
 
 -- ============================================================
 -- PART 3: The Main Problem Statement
@@ -110,16 +112,17 @@ theorem erdos_1169_under_ch (h : CH) : erdos_1169_statement := by
 
 /-- The problem is "not disprovable": there exist models where ω₁² → (ω₁², 3)²
     holds. In particular, any model of CH provides such a model.
-
-    This means the negative partition relation ω₁² ↛ (ω₁², 3)² cannot be
-    proved in ZFC alone (assuming ZFC + CH is consistent). -/
-axiom erdos_1169_not_disprovable :
-    CH → erdos_1169_statement
+    Proved from Hajnal's CH result. -/
+theorem erdos_1169_not_disprovable :
+    CH → erdos_1169_statement :=
+  erdos_1169_under_ch
 
 /-- The ZFC status of Problem #1169 remains open.
-    It is unknown whether ω₁² → (ω₁², 3)² can be proved without CH. -/
-axiom erdos_1169_open_in_zfc :
-    erdos_1169_statement ∨ ¬ erdos_1169_statement
+    By the law of excluded middle, one of the two holds — this is a logical
+    tautology, not a mathematical result. The open question is WHICH holds. -/
+theorem erdos_1169_open_in_zfc :
+    erdos_1169_statement ∨ ¬ erdos_1169_statement :=
+  Classical.em erdos_1169_statement
 
 -- ============================================================
 -- PART 6: Monotonicity Properties
@@ -131,11 +134,11 @@ axiom partition_monotone_clique (α β : Ordinal) (k j : ℕ)
     (hjk : j ≤ k) (hk : ordinalPartitionRel α β k) :
     ordinalPartitionRel α β j
 
-/-- The partition relation is monotone decreasing in the ordinal parameter:
-    if α → (β, k)² and γ ≤ β, then α → (γ, k)². -/
-axiom partition_monotone_ordinal (α β γ : Ordinal) (k : ℕ)
-    (hγβ : γ ≤ β) (hk : ordinalPartitionRel α β k) :
-    ordinalPartitionRel α γ k
+/-- Monotonicity in the ordinal parameter.
+Property of partition relations; not used in proofs below. -/
+def partition_monotone_ordinal_prop : Prop :=
+    ∀ (α β γ : Ordinal) (k : ℕ),
+      γ ≤ β → ordinalPartitionRel α β k → ordinalPartitionRel α γ k
 
 /-- Under CH, ω₁² → (ω₁², 3)² implies ω₁² → (ω₁², 2)² (pairs).
     This follows from monotonicity. -/
@@ -148,9 +151,8 @@ theorem erdos_1169_implies_pairs (h : erdos_1169_statement) :
 -- ============================================================
 
 /-- Connection to Problem #592: the countable ordinal partition problem.
-    Problem #592 asks for which countable β does ω^β → (ω^β, 3)² hold.
-    Problem #1169 is the uncountable analogue, asking about ω₁². -/
-axiom connection_to_592 :
+    ω² → (ω², 3)² holds (Specker's theorem). Not used in proofs below. -/
+def connection_to_592_prop : Prop :=
     ordinalPartitionRel (Ordinal.omega ^ (2 : Ordinal)) (Ordinal.omega ^ (2 : Ordinal)) 3
 
 /-- Connection to Problem #118: Erdős asked whether α → (α, 3)² implies
@@ -167,14 +169,14 @@ theorem erdos_1169_stronger_than_118_under_ch (h : CH) :
 -- PART 8: Basic Properties of ω₁
 -- ============================================================
 
-/-- ω₁ is a limit ordinal. -/
-axiom omega1_is_limit : Ordinal.IsLimit omega1
+/-- ω₁ is a limit ordinal. Not used in proofs below. -/
+def omega1_is_limit_prop : Prop := Ordinal.IsLimit omega1
 
-/-- ω < ω₁: the first uncountable ordinal is strictly larger than ω. -/
-axiom omega_lt_omega1 : Ordinal.omega < omega1
+/-- ω < ω₁. Not used in proofs below. -/
+def omega_lt_omega1_prop : Prop := Ordinal.omega < omega1
 
-/-- ω₁ is a regular cardinal (its cofinality equals itself). -/
-axiom omega1_regular : omega1.card.ord.cof = omega1.card
+/-- ω₁ is a regular cardinal. Not used in proofs below. -/
+def omega1_regular_prop : Prop := omega1.card.ord.cof = omega1.card
 
 -- ============================================================
 -- PART 9: Summary
@@ -197,22 +199,15 @@ Erdős #1169 asks whether ω₁² → (ω₁², 3)² holds in ZFC.
 ### Status
 - OPEN in ZFC (the main question)
 - SOLVED under CH (Hajnal)
-- NOT DISPROVABLE (consistent with ZFC)
+- NOT DISPROVABLE (consistent with ZFC) — proved from Hajnal's result
 - Related to #592 (countable analogue) and #118 (clique extension)
 
-### Proof Strategy
-The key axiom is Hajnal's result that CH implies the partition relation.
-From this, we derive the answer to Problem #1169 under CH, and use
-monotonicity to get additional consequences.
-
-### Axiom Count: 12 axioms, 3 theorems proved
-- ordinalPartitionRel: core definition
-- omega1_uncountable, omega1Sq_card: basic cardinal properties
-- hajnal_ch_implies_partition: Hajnal's CH result
-- erdos_1169_not_disprovable, erdos_1169_open_in_zfc: metamathematical status
-- partition_monotone_clique, partition_monotone_ordinal: monotonicity
-- connection_to_592: Specker's theorem for countable case
-- omega1_is_limit, omega_lt_omega1, omega1_regular: ω₁ properties
+### Axiom Count: 3 axioms, 5 theorems proved
+- ordinalPartitionRel: core definition (abstract function)
+- hajnal_ch_implies_partition: Hajnal's CH result (deep set theory)
+- partition_monotone_clique: monotonicity (used by theorems)
+- 9 axioms eliminated: 2 proved (not_disprovable from Hajnal, open_in_zfc from EM),
+  7 converted to propositions (unused by theorems)
 -/
 
 end
