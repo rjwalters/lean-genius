@@ -74,13 +74,39 @@ theorem delta_ne_one : ∃ p ∈ CentralBinomPairs, p.2 ≠ p.1 + 1 := by
 axiom kummer_central_divisibility (p n : ℕ) (hp : Nat.Prime p) (hle : p ≤ 2 * n) :
   p ∣ centralBinom n ↔ ∃ k : ℕ, (n / p ^ k) % p ≥ (p + 1) / 2
 
-/-- C(2n, n) is always even for n ≥ 1. -/
-axiom two_divides_central (n : ℕ) (hn : n ≥ 1) : 2 ∣ centralBinom n
+/-- C(2n, n) is always even for n ≥ 1.
+    Proof: By Pascal's rule, C(2n, n) = C(2n-1, n-1) + C(2n-1, n).
+    By symmetry, C(2n-1, n) = C(2n-1, n-1). So C(2n, n) = 2·C(2n-1, n-1). -/
+theorem two_divides_central (n : ℕ) (hn : n ≥ 1) : 2 ∣ centralBinom n := by
+  unfold centralBinom
+  have key : Nat.choose (2 * n) n = 2 * Nat.choose (2 * n - 1) (n - 1) := by
+    have h1 := Nat.choose_succ_succ (2 * n - 1) (n - 1)
+    rw [show 2 * n - 1 + 1 = 2 * n from by omega,
+        show n - 1 + 1 = n from by omega] at h1
+    have hsymm : Nat.choose (2 * n - 1) n = Nat.choose (2 * n - 1) (n - 1) := by
+      rw [Nat.choose_symm (show n ≤ 2 * n - 1 by omega)]
+      congr 1; omega
+    rw [hsymm] at h1; linarith
+  rw [key]; exact dvd_mul_right 2 _
 
-/-- A prime p > 2n cannot divide C(2n, n) since C(2n, n) < p for
-    n small enough, or the prime simply exceeds the factorial range. -/
-axiom large_prime_not_dividing (p n : ℕ) (hp : Nat.Prime p) (hgt : p > 2 * n) :
-  ¬(p ∣ centralBinom n)
+/-- A prime p > 2n cannot divide C(2n, n).
+    Proof: p > 2n implies p ∤ (2n)! (by Nat.Prime.dvd_factorial).
+    Since C(2n,n) * n! * n! = (2n)!, and p is prime with p ∤ (2n)!,
+    we get p ∤ C(2n,n). -/
+theorem large_prime_not_dividing (p n : ℕ) (hp : Nat.Prime p) (hgt : p > 2 * n) :
+    ¬(p ∣ centralBinom n) := by
+  unfold centralBinom
+  intro hdvd
+  -- C(2n, n) * n! * (2n - n)! = (2n)!
+  have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  -- p | C(2n,n) implies p | C(2n,n) * n! * n!
+  have hdvd_prod : p ∣ Nat.choose (2 * n) n * n.factorial * (2 * n - n).factorial := by
+    exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hdvd _) _
+  rw [show 2 * n - n = n from by omega, hfact] at hdvd_prod
+  -- But p ∤ (2n)! since p > 2n
+  have hnotdvd : ¬(p ∣ (2 * n).factorial) := by
+    rw [hp.dvd_factorial]; omega
+  exact hnotdvd hdvd_prod
 
 /-- Primes in (n, 2n] always divide C(2n, n) (Bertrand-related). -/
 axiom middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p ≤ 2 * n) :
