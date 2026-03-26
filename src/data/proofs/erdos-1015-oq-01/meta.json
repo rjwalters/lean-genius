@@ -47,16 +47,6 @@
       "relationship": "thematic",
       "description": "Erdős #1017 studies edge clique partition numbers, complementing #1015's vertex-disjoint monochromatic clique partitions.",
       "targetId": "erdos-1017"
-    },
-    {
-      "relationship": "uses",
-      "description": "The Erdős-Szekeres upper bound $R(t,t) \\leq 4^t$ provides the crude upper bound $f(t) < 4^t$ and underpins the asymptotic $f(t)^{1/t} \\to 4$.",
-      "targetId": "erdos-szekeres"
-    },
-    {
-      "relationship": "uses",
-      "description": "Erdős's 1947 probabilistic argument gives the lower bound $R(t,t) \\geq 2^{t/2}$, which chains through BES to yield the exponential lower bound $f(t) \\geq 2^{(t-2)/2}$.",
-      "targetId": "prob-method-expectation"
     }
   ],
   "sections": [
@@ -126,7 +116,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "The function $f(t)$ — the minimum leftover when partitioning 2-colored complete graphs into vertex-disjoint monochromatic $K_t$'s — arose from Erdős's program of understanding Ramsey-type partition problems. The earliest result is Moon's 1966 paper 'Disjoint triangles in chromatic graphs,' which proved $f(3) = 4$ by an elegant case analysis of 2-colored complete graphs. Moon showed that for any sufficiently large 2-colored $K_n$, one can partition all but at most 4 vertices into monochromatic triangles, and that 4 is best possible.\n\nThe breakthrough came in 1975 when Stefan Burr, Paul Erdős, and Joel Spencer proved the exact structure theorem: $f(t) = R(t, t{-}1) + x$ with $0 \\leq x < t$, reducing the problem to determining a single remainder modulo $t$. Their proof uses a greedy extraction argument: repeatedly remove monochromatic $K_t$'s until the remainder has fewer than $R(t, t{-}1)$ vertices, at which point a monochromatic $K_t$ may not exist. The BES formula was a significant advance because it connected the partition problem to off-diagonal Ramsey numbers, a well-studied quantity.\n\nThe off-diagonal Ramsey numbers needed for instantiation have their own rich history. $R(4,3) = 9$ was determined by Greenwood and Gleason in their seminal 1955 paper 'Combinatorial relations and chromatic graphs,' which used the Paley graph on 8 vertices (a self-complementary graph based on quadratic residues modulo 8) for the lower bound. $R(5,4) = 25$ was settled forty years later by McKay and Radziszowski (1995) through a combination of computational enumeration and theoretical bounds — a major achievement in computational Ramsey theory.\n\nDetermining the BES remainder $x$ for $t \\geq 4$ requires analyzing extremal 2-colorings of complete graphs for monochromatic $K_t$ packings — a combinatorial challenge that remains open. Even for $t = 4$, where the window is just $\\{9, 10, 11, 12\\}$, no proof or computation has pinned down the exact value.",
+    "historicalContext": "The function $f(t)$ was introduced by Erdős in the context of Ramsey-theoretic partition problems. Given any 2-coloring of the complete graph $K_n$, one seeks to cover as many vertices as possible by vertex-disjoint monochromatic copies of $K_t$; $f(t)$ is the worst-case minimum leftover. Moon (1966) proved $f(3) = 4$ — the triangle case — using direct combinatorial arguments: in any 2-coloring of $K_n$, the uncovered vertices in an optimal monochromatic triangle packing number at most 4.\n\nThe breakthrough came from Burr, Erdős, and Spencer (1975) in their seminal paper 'Ramsey theorems for multiple copies of graphs.' They proved the exact decomposition $f(t) = R(t, t-1) + x$ with $0 \\leq x < t$, reducing the problem to computing a single remainder. This was remarkable because it linked the partition function $f(t)$ directly to off-diagonal Ramsey numbers $R(t, t-1)$, connecting two seemingly independent branches of extremal combinatorics.\n\nThe required Ramsey number inputs have their own rich history. $R(4,3) = 9$ was determined by Greenwood and Gleason (1955) using the Paley graph on $\\mathbb{F}_8$ (a self-complementary strongly regular graph providing the lower bound $R(4,3) > 8$). $R(5,4) = 25$ was established computationally by McKay and Radziszowski (1995), requiring sophisticated enumeration of critical colorings of $K_{24}$ combined with theoretical bounds. The off-diagonal probabilistic lower bound $R(t, t-1) \\geq 2^{(t-2)/2}$ traces to Erdős's revolutionary 1947 paper — the first application of the probabilistic method to combinatorics — via the chain $R(t, t-1) \\geq R(t-1, t-1) \\geq 2^{(t-2)/2}$.\n\nDetermining the exact BES remainder $x$ for $t \\geq 4$ remains open. The difficulty is fundamentally combinatorial: one must analyze worst-case 2-colorings of $K_n$ to determine how efficiently monochromatic $K_t$-packings can cover vertices. For $t = 4$, this involves the structure of Ramsey-critical graphs for $R(4,3) = 9$, a problem that resists both probabilistic and algebraic methods.",
     "problemStatement": "What are the exact values of f(t) for small t ≥ 4? By the BES formula, f(t) = R(t, t-1) + x with 0 ≤ x < t, so the problem reduces to computing the remainder x. For t = 4: f(4) ∈ {9, 10, 11, 12}. For t = 5: f(5) ∈ {25, 26, 27, 28, 29}.",
     "text": "Computes BES windows for f(4) and f(5) using known Ramsey numbers, proves exponential growth f(t) ≥ 2^{(t-2)/2}, and answers Erdős's questions: f(t)^{1/t} → 4 ≠ 1 and f(t) ≠ O(t). The exact BES remainders for t ≥ 4 remain open.",
     "proofStrategy": "The proof has four layers. (1) Axiomatize the BES formula and known Ramsey values. (2) Derive tight bounds on f(4) and f(5) by instantiating BES at t = 4,5 with R(4,3) = 9, R(5,4) = 25. (3) Prove exponential growth by chaining BES with the Erdős probabilistic bound. (4) Answer Erdős's questions using limit uniqueness in Hausdorff spaces (for the root limit) and the axiomatized superlinearity.",
@@ -145,7 +135,7 @@
   },
   "conclusion": {
     "summary": "This formalization computes tight BES windows for f(4) and f(5), proves exponential growth, and resolves both of Erdős's questions about f(t). All 25 theorems are fully proved from 12 axioms encoding known Ramsey-theoretic results. The exact values of f(4) and f(5) remain open — the BES remainder x is the sole unknown.",
-    "implications": "The BES window analysis demonstrates a general pattern: for any $t$, knowing $R(t, t{-}1)$ pins $f(t)$ to at most $t$ values. Progress on off-diagonal Ramsey numbers directly narrows these windows.\n\n**Connection to the Ramsey number frontier**: The next case, $f(6)$, requires $R(6,5)$, which is currently only bounded: $43 \\leq R(6,5) \\leq 87$. Even the midpoint would give $f(6) \\in \\{65, \\ldots, 70\\}$ (approximately), but the wide uncertainty in $R(6,5)$ means the BES window for $f(6)$ cannot yet be precisely stated. Progress on $R(6,5)$ — one of the major open problems in computational Ramsey theory — would directly enable the $f(6)$ computation.\n\n**Exponential growth and the probabilistic method**: The lower bound $f(t) \\geq 2^{(t-2)/2}$ chains through Erdős's 1947 probabilistic argument, the first application of the probabilistic method. This connection shows that the partition problem inherits the exponential character of Ramsey numbers — a theme running through Erdős's combinatorial program.\n\n**Topological use of Hausdorff uniqueness**: The proof that $f(t)^{1/t} \\not\\to 1$ uses `tendsto_nhds_unique` from Mathlib's topology library — a rare instance of topological reasoning in a combinatorial proof. The Hausdorff property of $\\mathbb{R}$ (which guarantees limit uniqueness) bridges the gap between the asymptotic axiom $f(t)^{1/t} \\to 4$ and the negative answer to Erdős's question.",
+    "implications": "The BES window analysis demonstrates a general pattern: for any t, knowing R(t, t-1) pins f(t) to at most t values. Progress on off-diagonal Ramsey numbers directly narrows these windows. The exponential lower bound f(t) ≥ 2^{(t-2)/2} rules out subexponential growth, showing the Ramsey-theoretic nature of the problem is essential.",
     "openQuestions": [
       "What is the exact BES remainder x for f(4)? Determining whether f(4) = 9, 10, 11, or 12 requires analyzing extremal 2-colorings of K_n for monochromatic K₄ packings.",
       "What is the exact BES remainder x for f(5)? R(5,4) = 25 gives f(5) ∈ {25,...,29}.",
@@ -166,50 +156,43 @@
       "authors": "Burr, Stefan A.; Erdős, Paul; Spencer, Joel H.",
       "title": "Ramsey theorems for multiple copies of graphs",
       "year": "1975",
-      "venue": "Journal of Graph Theory, vol. 1, pp. 347–363",
-      "note": "Primary source for the BES formula f(t) = R(t, t-1) + x with 0 ≤ x < t, the structural result underpinning this entire formalization"
+      "venue": "Transactions of the American Mathematical Society, 209, pp. 87–99",
+      "note": "Primary source for the BES formula f(t) = R(t, t-1) + x with 0 ≤ x < t. Proves the decomposition for general clique partition functions using Ramsey-theoretic arguments"
     },
     {
       "authors": "Moon, John W.",
       "title": "Disjoint triangles in chromatic graphs",
       "year": "1966",
-      "venue": "Mathematische Zeitschrift, vol. 93, pp. 165–166",
-      "note": "Proved f(3) = 4 — the earliest exact value and the reference point for BES consistency verification"
+      "venue": "Mathematics of Computation, 20(96), pp. 450–451",
+      "note": "Proved f(3) = 4 — the triangle case of the leftover function — nine years before the general BES formula. The proof uses direct analysis of vertex-disjoint monochromatic triangle packings"
     },
     {
       "authors": "Greenwood, Robert E.; Gleason, Andrew M.",
       "title": "Combinatorial relations and chromatic graphs",
       "year": "1955",
-      "venue": "Canadian Journal of Mathematics, vol. 7, pp. 1–7",
-      "note": "Determined R(4,3) = 9 using the Paley graph on 8 vertices, enabling the f(4) ∈ {9,10,11,12} computation"
+      "venue": "Canadian Journal of Mathematics, 7, pp. 1–7",
+      "note": "Determined R(4,3) = 9 using the Paley graph on F₈ for the lower bound and exhaustive analysis for the upper bound. Also established R(3,3) = 6 and R(4,4) = 18"
     },
     {
       "authors": "McKay, Brendan D.; Radziszowski, Stanisław P.",
       "title": "R(4,5) = 25",
       "year": "1995",
-      "venue": "Journal of Graph Theory, vol. 19, no. 3, pp. 309–322",
-      "note": "Computational determination of R(5,4) = 25, enabling the f(5) ∈ {25,...,29} computation"
+      "venue": "Journal of Graph Theory, 19(3), pp. 309–322",
+      "note": "Determined R(5,4) = 25 by computational enumeration of critical colorings combined with theoretical bounds — the key Ramsey input for the f(5) computation"
     },
     {
       "authors": "Radziszowski, Stanisław P.",
       "title": "Small Ramsey Numbers",
       "year": "2021",
-      "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS1",
-      "note": "Comprehensive dynamic survey of known Ramsey number values and bounds — the authoritative reference for all Ramsey values used in this formalization"
+      "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS1 (revision 16)",
+      "note": "Comprehensive dynamic survey cataloguing all known exact Ramsey numbers and best bounds. Primary reference for R(3,2), R(4,3), R(5,4), and off-diagonal bounds"
     },
     {
       "authors": "Erdős, Paul",
       "title": "Some remarks on the theory of graphs",
       "year": "1947",
-      "venue": "Bulletin of the American Mathematical Society, vol. 53, pp. 292–294",
-      "note": "First application of the probabilistic method: proves R(t,t) ≥ 2^{t/2}, which via BES gives the exponential lower bound f(t) ≥ 2^{(t-2)/2}"
-    },
-    {
-      "authors": "Erdős, Paul; Szekeres, George",
-      "title": "A combinatorial problem in geometry",
-      "year": "1935",
-      "venue": "Compositio Mathematica, vol. 2, pp. 463–470",
-      "note": "Proved the Ramsey bound R(s,t) ≤ C(s+t-2, s-1), giving R(t,t) ≤ 4^t. Combined with BES, this yields f(t) < 4^t and the root limit f(t)^{1/t} → 4"
+      "venue": "Bulletin of the American Mathematical Society, 53, pp. 292–294",
+      "note": "The foundational probabilistic method paper. Proved R(k,k) ≥ 2^{k/2} using a random coloring argument — the source of the exponential lower bound f(t) ≥ 2^{(t-2)/2} used in this formalization"
     }
   ]
 }

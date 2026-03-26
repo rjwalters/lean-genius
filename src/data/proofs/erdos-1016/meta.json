@@ -29,7 +29,7 @@
   "overview": {
     "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",
     "problemStatement": "Estimate $h(n)$, the minimum number of excess edges (beyond $n$) for a pancyclic graph on $n$ vertices. Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$?",
-    "text": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) >= log_2 n + log* n - O(1)? Known: log_2(n-1) - 1 <= h(n) <= log_2 n + log* n + O(1).",
+    "text": "A formalization of Erdős Problem #1016 in 114 lines with 7 axioms and 3 proved theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. The main conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ are axiomatized alongside the known bounds: Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument and George-Khodkar-Wallis's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ from hierarchical constructions. The three proved theorems are `hamiltonian_edge_count` ($h(n) \\geq 0$, trivial for $\\mathbb{N}$), `pancyclic_monotone` (edge addition preserves pancyclicity), and `bounds_gap` (the gap $h(n) \\leq h(n) + C$, a trivial consequence of the BES bounds). The substantive mathematical content is encoded in the axioms; the proved theorems serve as structural scaffolding.",
     "proofStrategy": "We formalize pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n)$, and the iterated logarithm $\\log^*$ in Lean 4. The main conjecture, the weaker divergence question, known bounds (Bondy/Griffin lower, George-Khodkar-Wallis upper), structural properties (monotonicity, Bondy's quadratic threshold), and small cases are stated as axioms.",
     "keyInsights": [
       "**The doubling argument gives the lower bound**: each edge beyond a Hamiltonian cycle at most doubles the range of achievable cycle lengths, so $2^{h(n)} \\geq n - 2$, giving $h(n) \\geq \\lfloor\\log_2(n-2)\\rfloor$",
@@ -52,7 +52,7 @@
       "startLine": 1,
       "endLine": 28,
       "summary": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modules.",
-      "mathContext": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modules."
+      "mathContext": "Four Mathlib imports provide the foundation: `SimpleGraph.Basic` for graph definitions, `Nat.Log` for $\\lfloor\\log_2 n\\rfloor$ in the BES bounds, `Real.Basic` for real-valued analysis, and `Tactic` for the `omega` and `linarith` proof automation."
     },
     {
       "id": "pancyclic-definition",
@@ -60,7 +60,7 @@
       "startLine": 29,
       "endLine": 35,
       "summary": "Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies.",
-      "mathContext": "Formal definition: Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies."
+      "mathContext": "$\\text{IsPancyclic}(n, e, C) :\\equiv \\forall k,\\, 3 \\leq k \\leq n \\Rightarrow C(k)$, where $C(k)$ asserts the existence of a $k$-cycle. Pancyclic $\\Rightarrow$ Hamiltonian, but $C_n$ (Hamiltonian but not pancyclic for $n \\geq 4$) shows the converse fails."
     },
     {
       "id": "excess-function",
@@ -68,7 +68,7 @@
       "startLine": 36,
       "endLine": 49,
       "summary": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$. These are the two key quantities in the problem's bounds.",
-      "mathContext": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$."
+      "mathContext": "$h(n) = \\sup\\{h : \\forall G \\text{ pancyclic on } n \\text{ vertices},\\, |E(G)| \\geq n + h\\}$. The Lean definition uses `sSup` over $\\mathbb{N}$.\n\n$\\log^*(n) = \\begin{cases} 0 & n \\leq 1 \\\\ 1 + \\log^*(\\lfloor\\log_2 n\\rfloor) & n \\geq 2 \\end{cases}$. Values: $\\log^*(2) = 1$, $\\log^*(4) = 2$, $\\log^*(16) = 3$, $\\log^*(65536) = 4$, $\\log^*(2^{65536}) = 5$."
     },
     {
       "id": "main-conjecture",
@@ -76,7 +76,7 @@
       "startLine": 50,
       "endLine": 64,
       "summary": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$. The weaker question asks whether the correction to the logarithmic term diverges.",
-      "mathContext": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$."
+      "mathContext": "Conjecture: $\\exists C,\\, \\forall n \\geq 3,\\, h(n) + C \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n$. Combined with GKW upper bound, this gives $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$.\n\nWeaker: $\\forall M,\\, \\exists N,\\, \\forall n \\geq N,\\, h(n) \\geq \\lfloor\\log_2 n\\rfloor + M$."
     },
     {
       "id": "lower-bound",
@@ -84,7 +84,7 @@
       "startLine": 65,
       "endLine": 72,
       "summary": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $2^h \\geq n - 2$.",
-      "mathContext": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $$2^{h}$ \\geq n - 2$."
+      "mathContext": "Axiom: $\\forall n \\geq 3,\\, h(n) + 1 \\geq \\lfloor\\log_2(n-1)\\rfloor$. Proof idea (Griffin 2013): starting from a Hamiltonian cycle $C_n$, each chord can create cycles of at most twice as many distinct lengths, so $h$ chords give at most $2^h$ cycle lengths out of $n - 2$ needed."
     },
     {
       "id": "upper-bound",
@@ -92,7 +92,7 @@
       "startLine": 73,
       "endLine": 79,
       "summary": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages.",
-      "mathContext": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + $O(1)$$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages."
+      "mathContext": "Axiom: $\\exists C,\\, \\forall n \\geq 3,\\, h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + C$. The construction: start with $C_n$, add $\\lfloor\\log_2 n\\rfloor$ chords at geometrically spaced positions to achieve cycle lengths in $\\{n/2^k \\pm O(1) : 0 \\leq k \\leq \\log_2 n\\}$, then $\\log^* n$ correction chords to fill gaps at each tower level."
     },
     {
       "id": "structural-properties",
@@ -100,7 +100,7 @@
       "startLine": 80,
       "endLine": 96,
       "summary": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($n^2/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition.",
-      "mathContext": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($$n^{2}$/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition."
+      "mathContext": "Three results: (1) $h(n) \\geq 0$ (trivial for $\\mathbb{N}$, but the non-trivial content is that pancyclic $\\Rightarrow$ Hamiltonian $\\Rightarrow |E| \\geq n$). (2) Bondy's theorem: $|E(G)| \\geq n^2/4 \\Rightarrow G$ pancyclic or bipartite (axiomatized for $n \\geq 7$). (3) Monotonicity: pancyclicity is an upward-closed property under edge addition."
     },
     {
       "id": "small-cases",
@@ -108,7 +108,7 @@
       "startLine": 97,
       "endLine": 106,
       "summary": "Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms.",
-      "mathContext": "Mathematical content: Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms."
+      "mathContext": "$h(3) = 0$: $K_3$ has 3 edges = $n$ edges, pancyclic (only needs $C_3$). $h(4) = 1$: need $C_3$ and $C_4$, achieved by $C_4 + $ one diagonal with 5 = $4 + 1$ edges. The BES-style lower bound gives $h(4) \\geq \\lfloor\\log_2 3\\rfloor - 1 = 0$, so the truth $h(4) = 1$ exceeds the lower bound by 1."
     },
     {
       "id": "bounds-gap",
@@ -116,7 +116,7 @@
       "startLine": 107,
       "endLine": 110,
       "summary": "The gap between upper and lower bounds is at most $\\log^* n + O(1)$, making this one of the tightest known gaps for an open extremal graph theory problem.",
-      "mathContext": "The gap between upper and lower bounds is at most $\\log^* n + $O(1)$$, making this one of the tightest known gaps for an open extremal graph theory problem."
+      "mathContext": "Upper $-$ lower $\\leq (\\lfloor\\log_2 n\\rfloor + \\log^* n + C) - (\\lfloor\\log_2(n-1)\\rfloor - 1) = \\log^* n + O(1)$. Since $\\log^* n \\leq 5$ for $n < 2^{65536}$, the bounds differ by at most $\\approx 6$ for any practical graph."
     }
   ],
   "conclusion": {
