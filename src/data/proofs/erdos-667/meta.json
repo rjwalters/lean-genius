@@ -16,7 +16,7 @@
       "clique-numbers"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 667,
     "erdosUrl": "https://erdosproblems.com/667",
     "erdosProblemStatus": "open",
@@ -58,7 +58,7 @@
       "Extremal graph theory: Turán-type density conditions",
       "Combinatorics: binomial coefficients C(n,k)"
     ],
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses (reduced from 15 by proving cliqueGuarantee_pos). See the Lean source for details.",
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses (reduced from 15 by proving cliqueGuarantee_pos), 5 sorries (monotonicity, bounds, boundary values). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
