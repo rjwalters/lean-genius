@@ -1,65 +1,122 @@
 {
   "slug": "erdos-1000-wip-01",
-  "title": "Complete Erdős #1000: Generalized Totients and Diophantine Approximation (Work in Progress)",
+  "title": "Complete Erd\u0151s #1000: Generalized Totients and Diophantine Approximation (Work in Progress)",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Prove one or more of the 4 axioms in Erdos1000Problem.lean: erdos_no_zero_limit, erdos_dichotomy, cassels_liminf_zero, haight_resolution",
-    "plain": "The existing formalization of Erdős #1000 has 4 deep axioms about generalized totients and Cesàro averages. Goal: reduce the axiom count by proving structural results.",
-    "whyMatters": ["Connects totient theory to Cesàro summation", "Illustrates pointwise vs averaged convergence gap"]
+    "plain": "The existing formalization of Erd\u0151s #1000 has 4 deep axioms about generalized totients and Ces\u00e0ro averages. Goal: reduce the axiom count by proving structural results.",
+    "whyMatters": [
+      "Connects totient theory to Ces\u00e0ro summation",
+      "Illustrates pointwise vs averaged convergence gap"
+    ]
   },
   "knownResults": {
     "proven": [
-      "phiA_ge_totient: φ_A(k) ≥ φ(n_k)",
-      "densityRatio_ge_totient_ratio: ρ_A(k) ≥ φ(n_k)/n_k",
-      "phiA_add_used: φ_A(k) + used_sum = n_k (complement formula)",
-      "used_sum_le: used ≤ n_k - φ(n_k)",
+      "phiA_ge_totient: \u03c6_A(k) \u2265 \u03c6(n_k)",
+      "densityRatio_ge_totient_ratio: \u03c1_A(k) \u2265 \u03c6(n_k)/n_k",
+      "phiA_add_used: \u03c6_A(k) + used_sum = n_k (complement formula)",
+      "used_sum_le: used \u2264 n_k - \u03c6(n_k)",
       "used_card_le: at most k used divisors",
-      "phiA_pos: φ_A(k) ≥ 1",
-      "densityRatio_pos: ρ_A(k) > 0",
-      "densityRatio_complement: ρ_A(k) = 1 - used/n_k",
-      "densityRatio_ge_of_prime: ρ ≥ 1/2 when n_k prime"
+      "phiA_pos: \u03c6_A(k) \u2265 1",
+      "densityRatio_pos: \u03c1_A(k) > 0",
+      "densityRatio_complement: \u03c1_A(k) = 1 - used/n_k",
+      "densityRatio_ge_of_prime: \u03c1 \u2265 1/2 when n_k prime",
+      "cassels_liminf_zero: PROVED \u2014 liminf of Ces\u00e0ro average can be 0 (derived from haight_resolution via Filter.Eventually.frequently)"
     ],
-    "open": ["erdos_no_zero_limit", "erdos_dichotomy", "cassels_liminf_zero", "haight_resolution"],
-    "goal": "Prove erdos_no_zero_limit — now within reach using complement formula + counting argument"
+    "open": [
+      "erdos_no_zero_limit",
+      "erdos_dichotomy",
+      "haight_resolution"
+    ],
+    "goal": "Prove erdos_no_zero_limit \u2014 the remaining hardest axiom"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
-    "iteration": 2,
-    "focus": "Built complement formula infrastructure. erdos_no_zero_limit needs double-counting argument.",
-    "blockers": ["erdos_no_zero_limit requires Erdős' 1964 counting argument: bounding Σ_{k<N} used_sum(k)/n_k via order-switching and divisor density. Non-trivial to formalize."],
-    "nextAction": "Formalize the double-counting argument: switch summation order in Σ_k Σ_{j<k,n_j|n_k} φ(n_j)/n_k, bound via harmonic sum, derive contradiction",
+    "iteration": 3,
+    "focus": "Proved cassels_liminf_zero from haight_resolution (4\u21923 axioms). Remaining 3 axioms are deep results.",
+    "blockers": [
+      "erdos_no_zero_limit requires Erd\u0151s' 1964 counting argument: bounding \u03a3_{k<N} used_sum(k)/n_k via order-switching and divisor density. Non-trivial to formalize."
+    ],
+    "nextAction": "Formalize the double-counting argument: switch summation order in \u03a3_k \u03a3_{j<k,n_j|n_k} \u03c6(n_j)/n_k, bound via harmonic sum, derive contradiction",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 built 7 new theorems — complement formula, used-divisor bounds, positivity, prime case. 4 axioms remain. erdos_no_zero_limit is closest to proof via complement formula + counting argument.",
+    "progressSummary": "PROGRESS: Session 3 proved cassels_liminf_zero as corollary of haight_resolution (convergence\u2192liminf=0 via Filter.Eventually.frequently). Axiom count reduced from 4 to 3. Three deep axioms remain.",
     "builtItems": [
-      {"name": "phiA_ge_totient", "type": "theorem", "description": "φ_A(k) ≥ φ(n_k) for any increasing sequence"},
-      {"name": "densityRatio_ge_totient_ratio", "type": "theorem", "description": "ρ_A(k) ≥ φ(n_k)/n_k"},
-      {"name": "coprime_range_subset_phiA_filter", "type": "lemma", "description": "Coprime elements form subset of phiA filter"},
-      {"name": "phiA_add_used", "type": "theorem", "description": "φ_A(k) + Σ_{used e|n_k} φ(e) = n_k — complement of decomposition"},
-      {"name": "used_sum_le", "type": "theorem", "description": "Used φ-sum ≤ n_k − φ(n_k), since n_k is always unused"},
-      {"name": "used_card_le", "type": "theorem", "description": "At most k divisors are used (injective map to range k)"},
-      {"name": "phiA_pos", "type": "theorem", "description": "φ_A(k) ≥ 1 for all k (from totient positivity)"},
-      {"name": "densityRatio_pos", "type": "theorem", "description": "ρ_A(k) > 0 for all k"},
-      {"name": "densityRatio_complement", "type": "theorem", "description": "ρ_A(k) = 1 − used_sum/n_k in ℝ"},
-      {"name": "densityRatio_ge_of_prime", "type": "theorem", "description": "ρ_A(k) ≥ 1/2 when n_k is prime"}
+      {
+        "name": "phiA_ge_totient",
+        "type": "theorem",
+        "description": "\u03c6_A(k) \u2265 \u03c6(n_k) for any increasing sequence"
+      },
+      {
+        "name": "densityRatio_ge_totient_ratio",
+        "type": "theorem",
+        "description": "\u03c1_A(k) \u2265 \u03c6(n_k)/n_k"
+      },
+      {
+        "name": "coprime_range_subset_phiA_filter",
+        "type": "lemma",
+        "description": "Coprime elements form subset of phiA filter"
+      },
+      {
+        "name": "phiA_add_used",
+        "type": "theorem",
+        "description": "\u03c6_A(k) + \u03a3_{used e|n_k} \u03c6(e) = n_k \u2014 complement of decomposition"
+      },
+      {
+        "name": "used_sum_le",
+        "type": "theorem",
+        "description": "Used \u03c6-sum \u2264 n_k \u2212 \u03c6(n_k), since n_k is always unused"
+      },
+      {
+        "name": "used_card_le",
+        "type": "theorem",
+        "description": "At most k divisors are used (injective map to range k)"
+      },
+      {
+        "name": "phiA_pos",
+        "type": "theorem",
+        "description": "\u03c6_A(k) \u2265 1 for all k (from totient positivity)"
+      },
+      {
+        "name": "densityRatio_pos",
+        "type": "theorem",
+        "description": "\u03c1_A(k) > 0 for all k"
+      },
+      {
+        "name": "densityRatio_complement",
+        "type": "theorem",
+        "description": "\u03c1_A(k) = 1 \u2212 used_sum/n_k in \u211d"
+      },
+      {
+        "name": "densityRatio_ge_of_prime",
+        "type": "theorem",
+        "description": "\u03c1_A(k) \u2265 1/2 when n_k is prime"
+      },
+      {
+        "name": "cassels_liminf_zero",
+        "type": "theorem (was axiom)",
+        "description": "Proved from haight_resolution: Tendsto\u2192Eventually\u2192Frequently"
+      }
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
-      "Lower bound alone insufficient for erdos_no_zero_limit since φ(n)/n → 0 along primorials",
-      "Complement formula ρ = 1 - used/n reframes the problem: for ρ → 0, used divisors must capture almost all φ-weight",
-      "erdos_no_zero_limit proof strategy: double-count Σ_k used_sum(k)/n_k by switching summation order, bound inner sum by n_{N-1}/n_j, get harmonic-type bound contradicting →1",
-      "When n_k is prime, only {1,n_k} are divisors; n_k is unused, so ρ ≥ (p-1)/p ≥ 1/2",
-      "At most k of n_k's divisors can be 'used' — each maps to a unique j < k via injectivity of A",
-      "Mathlib v4.26.0 API: sum_filter_add_sum_filter_not, Nat.totient_pos, Nat.totient_prime all available"
+      "Lower bound alone insufficient for erdos_no_zero_limit since \u03c6(n)/n \u2192 0 along primorials",
+      "Complement formula \u03c1 = 1 - used/n reframes the problem: for \u03c1 \u2192 0, used divisors must capture almost all \u03c6-weight",
+      "erdos_no_zero_limit proof strategy: double-count \u03a3_k used_sum(k)/n_k by switching summation order, bound inner sum by n_{N-1}/n_j, get harmonic-type bound contradicting \u21921",
+      "When n_k is prime, only {1,n_k} are divisors; n_k is unused, so \u03c1 \u2265 (p-1)/p \u2265 1/2",
+      "At most k of n_k's divisors can be 'used' \u2014 each maps to a unique j < k via injectivity of A",
+      "Mathlib v4.26.0 API: sum_filter_add_sum_filter_not, Nat.totient_pos, Nat.totient_prime all available",
+      "cassels_liminf_zero is logically weaker than haight_resolution: convergence to 0 implies liminf=0, but not conversely",
+      "Filter.Eventually.frequently (with atTop.NeBot) converts eventually-holds to frequently-holds \u2014 the key bridge"
     ],
     "mathlibGaps": [
       "No gaps: Nat.totient, Finset.sum_filter_add_sum_filter_not, card_image_le all sufficient",
@@ -67,7 +124,7 @@
     ],
     "nextSteps": [
       "Formalize erdos_no_zero_limit via complement formula + double-counting argument",
-      "Key intermediate: bound Σ_{j<N} φ(n_j) · |{k>j : n_j | n_k}| / n_k using harmonic sum",
+      "Key intermediate: bound \u03a3_{j<N} \u03c6(n_j) \u00b7 |{k>j : n_j | n_k}| / n_k using harmonic sum",
       "Alternative: prove for special cases first (lacunary sequences, sequences with infinitely many primes)",
       "cassels_liminf_zero: still requires explicit continued fraction construction"
     ]
@@ -88,11 +145,15 @@
   ],
   "references": {
     "papers": [],
-    "urls": ["https://erdosproblems.com/1000"],
-    "mathlib": ["Mathlib.Data.Nat.Totient"]
+    "urls": [
+      "https://erdosproblems.com/1000"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Totient"
+    ]
   },
   "started": "2026-03-24T00:48:59.900Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-03-26T23:00:00Z",
   "significance": 7,
   "tractability": 6
 }
