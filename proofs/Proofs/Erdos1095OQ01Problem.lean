@@ -115,6 +115,57 @@ theorem choose_4_2 : choose 4 2 = 6 := by decide
 theorem choose_5_2 : choose 5 2 = 10 := by decide
 
 /-
+# Part 5a: Concrete values of g(k)
+
+We compute g(1) = 3 and g(2) = 6 from the axioms.
+-/
+
+/-- AllPrimesExceed is vacuously true for k < 2 (no primes ≤ 1). -/
+private theorem allPrimesExceed_of_lt_two (m : ℕ) (k : ℕ) (hk : k < 2) :
+    AllPrimesExceed m k :=
+  fun p hp hpk _ => absurd (lt_of_le_of_lt hpk hk) (not_lt.mpr hp.two_le)
+
+/-- g(1) = 3: for k=1, AllPrimesExceed is vacuously true (no primes ≤ 1),
+    so g(1) is the smallest n > 2, which is 3. -/
+theorem gFunc_one : gFunc 1 = 3 := by
+  apply le_antisymm
+  · -- g(1) ≤ 3: n=3 > 1+1 and AllPrimesExceed (C(3,1)) 1 holds vacuously
+    exact gFunc_minimal 1 3 (by omega) (allPrimesExceed_of_lt_two _ 1 (by omega))
+  · -- g(1) ≥ 3: from g(1) > 1+1 = 2
+    have := gFunc_gt 1; omega
+
+/-- 2 divides C(4,2) = 6, so AllPrimesExceed fails for n=4, k=2. -/
+private theorem not_allPrimesExceed_choose_4_2 : ¬AllPrimesExceed (choose 4 2) 2 :=
+  not_allPrimesExceed_of_prime_dvd Nat.prime_two le_rfl (by decide)
+
+/-- 2 divides C(5,2) = 10, so AllPrimesExceed fails for n=5, k=2. -/
+private theorem not_allPrimesExceed_choose_5_2 : ¬AllPrimesExceed (choose 5 2) 2 :=
+  not_allPrimesExceed_of_prime_dvd Nat.prime_two le_rfl (by decide)
+
+/-- AllPrimesExceed (C(6,2)) 2: C(6,2) = 15 = 3·5, and 2 ∤ 15. -/
+private theorem allPrimesExceed_choose_6_2 : AllPrimesExceed (choose 6 2) 2 := by
+  intro p hp hpk hpdvd
+  -- p is prime and p ≤ 2, so p = 2
+  have hp2 : p = 2 := le_antisymm hpk hp.two_le
+  subst hp2
+  -- 2 ∤ 15
+  exact absurd hpdvd (by decide)
+
+/-- g(2) = 6: the smallest n > 3 with C(n,2) having no prime factor ≤ 2.
+    n=4: C(4,2)=6, 2|6 → fails. n=5: C(5,2)=10, 2|10 → fails.
+    n=6: C(6,2)=15, 2∤15 → succeeds. -/
+theorem gFunc_two : gFunc 2 = 6 := by
+  apply le_antisymm
+  · -- g(2) ≤ 6
+    exact gFunc_minimal 2 6 (by omega) allPrimesExceed_choose_6_2
+  · -- g(2) ≥ 6: g(2) > 3, and g(2) ≠ 4, g(2) ≠ 5
+    have hgt := gFunc_gt 2  -- g(2) > 3
+    -- Rule out g(2) = 4 and g(2) = 5
+    suffices h : gFunc 2 ≠ 4 ∧ gFunc 2 ≠ 5 by omega
+    exact ⟨fun h4 => not_allPrimesExceed_choose_4_2 (h4 ▸ gFunc_spec 2),
+           fun h5 => not_allPrimesExceed_choose_5_2 (h5 ▸ gFunc_spec 2)⟩
+
+/-
 # Part 6: Structural properties of g(k)
 -/
 
@@ -146,6 +197,10 @@ OPEN CONJECTURE (informal):
   ∃ c : ℝ, c > 0 ∧ Filter.Tendsto (fun k => Real.log (gFunc k) / (k / Real.log k))
     Filter.atTop (nhds c)
 -/
+
+/-- Concrete values: g(1) = 3 and g(2) = 6 (proved above from axioms). -/
+example : gFunc 1 = 3 := gFunc_one
+example : gFunc 2 = 6 := gFunc_two
 
 /-- Main statement: g(k) exists and is well-defined for all k. -/
 def ErdosProblem1095OQ01 : Prop :=
