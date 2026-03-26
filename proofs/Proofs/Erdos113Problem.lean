@@ -54,13 +54,15 @@ The parameter k encodes the forbidden subgraph abstractly.
 -/
 axiom extremalNumber : ℕ → ℕ → ℕ
 
-/-- The extremal number is monotonic in n. -/
-axiom extremal_mono (k n m : ℕ) (h : n ≤ m) :
-    extremalNumber n k ≤ extremalNumber m k
+/-- The extremal number is monotonic in n.
+Property of the abstract extremal number function; not used in proofs below. -/
+def extremal_mono_prop : Prop :=
+    ∀ k n m : ℕ, n ≤ m → extremalNumber n k ≤ extremalNumber m k
 
-/-- ex(n, k) ≤ n(n-1)/2 (at most all edges). -/
-axiom extremal_trivial_upper (n k : ℕ) :
-    extremalNumber n k ≤ n * (n - 1) / 2
+/-- ex(n, k) ≤ n(n-1)/2 (at most all edges).
+Property of the abstract extremal number function; not used in proofs below. -/
+def extremal_trivial_upper_prop : Prop :=
+    ∀ n k : ℕ, extremalNumber n k ≤ n * (n - 1) / 2
 
 /-
 ## Part II: Graph Degeneracy
@@ -78,15 +80,20 @@ k-degeneracy is axiomatized for a graph encoded by parameter g.
 -/
 axiom isDegenerate : ℕ → ℕ → Prop
 
-/-- Every graph is k-degenerate for some k. -/
-axiom degenerate_exists (g : ℕ) : ∃ k, isDegenerate g k
+/-- Every graph is k-degenerate for some k.
+Property of the abstract degeneracy predicate; not used in proofs below. -/
+def degenerate_exists_prop : Prop :=
+    ∀ g : ℕ, ∃ k, isDegenerate g k
 
-/-- If g is k-degenerate and k ≤ m, then g is m-degenerate. -/
-axiom degenerate_mono (g k m : ℕ) : isDegenerate g k → k ≤ m → isDegenerate g m
+/-- If g is k-degenerate and k ≤ m, then g is m-degenerate.
+Property of the abstract degeneracy predicate; not used in proofs below. -/
+def degenerate_mono_prop : Prop :=
+    ∀ g k m : ℕ, isDegenerate g k → k ≤ m → isDegenerate g m
 
-/-- 2-degenerate means no induced subgraph has min degree ≥ 3. -/
-axiom two_degenerate_char (g : ℕ) :
-    isDegenerate g 2 ↔ ∀ S : ℕ, S > 0 → ∃ v : ℕ, True  -- Axiomatized characterization
+/-- 2-degenerate means no induced subgraph has min degree ≥ 3.
+Property of the abstract degeneracy predicate; not used in proofs below. -/
+def two_degenerate_char_prop : Prop :=
+    ∀ g : ℕ, isDegenerate g 2 ↔ ∀ S : ℕ, S > 0 → ∃ v : ℕ, True
 
 /-
 ## Part III: Bipartite Graphs
@@ -98,13 +105,15 @@ axiom isBipartite : ℕ → Prop
 /-- The complete bipartite graph K_{s,t} (encoded as s + t). -/
 def completeBipartiteCode (s t : ℕ) : ℕ := s * 1000 + t
 
-/-- K_{s,t} is bipartite. -/
-axiom completeBipartite_is_bipartite (s t : ℕ) :
-    isBipartite (completeBipartiteCode s t)
+/-- K_{s,t} is bipartite.
+Property of the abstract bipartite predicate; not used in proofs below. -/
+def completeBipartite_is_bipartite_prop : Prop :=
+    ∀ s t : ℕ, isBipartite (completeBipartiteCode s t)
 
-/-- K_{s,t} has degeneracy min(s,t). -/
-axiom completeBipartite_degeneracy (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
-    isDegenerate (completeBipartiteCode s t) (min s t)
+/-- K_{s,t} has degeneracy min(s,t).
+Property of abstract functions; not used in proofs below. -/
+def completeBipartite_degeneracy_prop : Prop :=
+    ∀ s t : ℕ, s ≥ 1 → t ≥ 1 → isDegenerate (completeBipartiteCode s t) (min s t)
 
 /-
 ## Part IV: The Kővári-Sós-Turán Theorem
@@ -117,13 +126,16 @@ The fundamental upper bound for bipartite forbidden subgraphs.
 ex(n; K_{s,t}) ≤ (1/2)(t-1)^{1/s} · n^{2-1/s} + (s-1)n/2
 
 For t ≥ s ≥ 1.
+Deep result from extremal graph theory; not used in proofs below.
 -/
-axiom kovari_sos_turan (n s t : ℕ) (hs : s ≥ 1) (hst : t ≥ s) :
+def kovari_sos_turan_prop : Prop :=
+    ∀ n s t : ℕ, s ≥ 1 → t ≥ s →
     ∃ C : ℝ, C > 0 ∧
       (extremalNumber n (completeBipartiteCode s t) : ℝ) ≤ C * (n : ℝ).rpow (2 - 1/s)
 
-/-- For K_{2,2} = C_4: ex(n; C_4) = O(n^{3/2}). -/
-axiom c4_extremal :
+/-- For K_{2,2} = C_4: ex(n; C_4) = O(n^{3/2}).
+Deep result; not used in proofs below. -/
+def c4_extremal_prop : Prop :=
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ,
       (extremalNumber n (completeBipartiteCode 2 2) : ℝ) ≤ C * (n : ℝ).rpow (3/2)
 
@@ -137,9 +149,16 @@ def AsympLe (f g : ℕ → ℝ) : Prop :=
 
 notation:50 f " ≪ " g => AsympLe f g
 
-/-- Asymptotic comparison is transitive (if exponents compare correctly). -/
-axiom asymp_trans_exponent (f : ℕ → ℝ) (α β : ℝ) (hαβ : α < β) :
-    (f ≪ (fun n => (n : ℝ).rpow α)) → (f ≪ (fun n => (n : ℝ).rpow β))
+/-- Asymptotic comparison is transitive (if exponents compare correctly).
+Proved from rpow monotonicity: 1 ≤ n → α ≤ β → n^α ≤ n^β. -/
+theorem asymp_trans_exponent (f : ℕ → ℝ) (α β : ℝ) (hαβ : α < β) :
+    (f ≪ (fun n => (n : ℝ).rpow α)) → (f ≪ (fun n => (n : ℝ).rpow β)) := by
+  intro ⟨C, hC, n₀, hf⟩
+  refine ⟨C, hC, max n₀ 1, fun n hn => ?_⟩
+  have hn₀ : n₀ ≤ n := (le_max_left n₀ 1).trans hn
+  have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (le_max_right n₀ 1).trans hn
+  exact (hf n hn₀).trans (mul_le_mul_of_nonneg_left
+    (Real.rpow_le_rpow_of_exponent_le hn1 hαβ.le) hC.le)
 
 /-
 ## Part VI: The Erdős-Simonovits Conjecture
@@ -227,19 +246,24 @@ theorem janzer_beats_threshold (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/6) :
 /--
 **Füredi's Theorem (1996):**
 Tight bounds for ex(n; K_{s,t}) when t is large relative to s.
+Deep result; not used in proofs below.
 -/
-axiom furedi_tight (s t : ℕ) (hs : s ≥ 2) (hst : t ≥ s) :
+def furedi_tight_prop : Prop :=
+    ∀ s t : ℕ, s ≥ 2 → t ≥ s →
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       ∀ n : ℕ, c₁ * (n : ℝ).rpow (2 - 1/s) ≤ extremalNumber n (completeBipartiteCode s t) ∧
                (extremalNumber n (completeBipartiteCode s t) : ℝ) ≤ c₂ * (n : ℝ).rpow (2 - 1/s)
 
-/-- Erdős Problem #146: Zarankiewicz problem asks for exact values of ex(n; K_{s,t}). -/
-axiom erdos_146_zarankiewicz (s t : ℕ) :
-    ∀ n : ℕ, ∃ z : ℕ, z = extremalNumber n (completeBipartiteCode s t)
+/-- Erdős Problem #146: Zarankiewicz problem asks for exact values of ex(n; K_{s,t}).
+Trivially true: the extremal number always exists. -/
+theorem erdos_146_zarankiewicz (s t : ℕ) :
+    ∀ n : ℕ, ∃ z : ℕ, z = extremalNumber n (completeBipartiteCode s t) :=
+  fun _ => ⟨_, rfl⟩
 
-/-- Erdős Problem #147: Turán exponent exists for bipartite graphs. -/
-axiom erdos_147_turan_exponent (g : ℕ) :
-    isBipartite g → ∃ r : ℝ, 1 ≤ r ∧ r ≤ 2 ∧
+/-- Erdős Problem #147: Turán exponent exists for bipartite graphs.
+Deep conjecture; not used in proofs below. -/
+def erdos_147_turan_exponent_prop : Prop :=
+    ∀ g : ℕ, isBipartite g → ∃ r : ℝ, 1 ≤ r ∧ r ≤ 2 ∧
       (fun n => (extremalNumber n g : ℝ)) ≪ (fun n => (n : ℝ).rpow r)
 
 /-

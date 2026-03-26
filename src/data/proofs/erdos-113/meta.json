@@ -53,9 +53,9 @@
       "Janzer's 3-regular bipartite counterexample theorem",
       "Main theorem: ¬ErdosSimonovitsConjecture"
     ],
-    "axiomCount": 21,
-    "lineCount": 271,
-    "assumptions": "21 axioms: extremalNumber, extremal_mono, extremal_trivial_upper, and 18 more. See Lean source for complete statements.",
+    "axiomCount": 8,
+    "lineCount": 295,
+    "assumptions": "8 axioms: 4 abstract function declarations (extremalNumber, isDegenerate, isBipartite, isRegular) + 4 deep results (forward_direction, backward_false, regular3_not_2degenerate, janzer_counterexample). 13 axioms eliminated: 11 converted to propositions (unused by theorems), asymp_trans_exponent proved from rpow monotonicity, erdos_146_zarankiewicz proved trivially.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -243,9 +243,9 @@
       "Real"
     ],
     "namespace": "Erdos113",
-    "lineCount": 271,
-    "axiomCount": 21,
-    "theoremCount": 3,
-    "definitionCount": 3
+    "lineCount": 295,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 14
   }
 }
