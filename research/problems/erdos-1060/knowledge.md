@@ -83,6 +83,29 @@ Back to the problem
 - File is now in good shape: 0 sorries, well-structured
 - Consider adding more supporting lemmas (e.g., bounds on f for specific n)
 
+### Session 2026-03-26 (Session 2) - Trivial Upper Bound and Properties
+
+**Mode**: REVISIT
+**Outcome**: progress (3 new theorems)
+
+#### What I Did
+- Proved `f_le_n`: **trivial upper bound f(n) ≤ n** for n > 0. Uses f_eq_f' bridge, Finset.card_filter_le, and Nat.card_Icc. This establishes the baseline that the open conjectures dramatically improve upon.
+- Proved `g_pos`: g(k) > 0 for k > 0. Direct from Nat.mul_pos and sigma_pos.
+- Proved `g_gt_k`: g(k) > k for k ≥ 2. Key step: σ(k) ≥ k+1 because {1,k} ⊆ divisors(k) with 1 ≠ k. Uses Finset.sum_le_sum_of_subset_of_nonneg (same pattern as sigma1_ge_succ in Erdos413Problem.lean).
+- Renumbered Part sections (V-VIII) for consistency.
+
+#### Key Findings
+- The pattern `sum_le_sum_of_subset_of_nonneg` + `sum_pair` is well-established in the codebase (cf. Erdos413Problem.lean:445-460)
+- The `card_filter_le` + `Nat.card_Icc; omega` pattern matches Erdos1000Problem.lean:62-64 exactly
+- Problem is now essentially complete: 0 sorries, 2 OPEN conjecture axioms, 15 theorems
+
+#### Files Modified
+- `proofs/Proofs/Erdos1060Problem.lean` (3 new theorems: f_le_n, g_pos, g_gt_k)
+
+#### Next Steps
+- Problem is complete — 2 axioms are the open conjectures themselves
+- No further work needed unless the conjectures are resolved
+
 ---
 
 *Generated from erdosproblems.com on 2026-01-15*

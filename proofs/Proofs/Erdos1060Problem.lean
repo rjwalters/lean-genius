@@ -208,7 +208,53 @@ theorem f_of_zero : f 0 = 1 := by
   rw [h_eq, Set.ncard_singleton]
 
 /-
-## Part V: Upper Bound Conjectures (OPEN)
+## Part V: Trivial Upper Bound
+-/
+
+/--
+**Trivial Upper Bound:** f(n) ≤ n for n > 0.
+
+Since every solution k to g(k) = n satisfies 1 ≤ k ≤ n, there are at most n solutions.
+The open conjectures (Part VI) ask for dramatically better bounds.
+-/
+theorem f_le_n (n : ℕ) (hn : n > 0) : f n ≤ n := by
+  rw [f_eq_f' n hn]
+  unfold f'
+  calc ((Finset.Icc 1 n).filter (fun k => g k = n)).card
+      ≤ (Finset.Icc 1 n).card := Finset.card_filter_le _ _
+    _ = n := by rw [Nat.card_Icc]; omega
+
+/--
+g is positive for positive inputs: g(k) > 0 when k > 0.
+-/
+theorem g_pos (k : ℕ) (hk : 0 < k) : 0 < g k := by
+  unfold g
+  exact Nat.mul_pos hk (sigma_pos k hk)
+
+/--
+g is strictly greater than k for k ≥ 2, since σ(k) ≥ k + 1 (both 1 and k divide k).
+-/
+theorem g_gt_k (k : ℕ) (hk : k ≥ 2) : g k > k := by
+  unfold g
+  -- σ(k) ≥ k + 1 since {1, k} ⊆ divisors(k) and 1 ≠ k
+  have h1 : 1 ∈ k.divisors := Nat.mem_divisors.mpr ⟨one_dvd k, by omega⟩
+  have hk_div : k ∈ k.divisors := Nat.mem_divisors.mpr ⟨dvd_refl k, by omega⟩
+  have hne : (1 : ℕ) ≠ k := by omega
+  have h_sub : {1, k} ⊆ k.divisors := by
+    intro x hx; simp at hx; rcases hx with rfl | rfl <;> assumption
+  have h_sum : sigma k ≥ k + 1 := by
+    unfold sigma
+    calc k.divisors.sum id
+        ≥ ({1, k} : Finset ℕ).sum id :=
+          Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => Nat.zero_le _)
+      _ = 1 + k := by rw [Finset.sum_pair hne]; simp [id]
+      _ = k + 1 := by ring
+  calc k * sigma k ≥ k * (k + 1) := Nat.mul_le_mul_left k h_sum
+    _ = k * k + k := by ring
+    _ > k := by nlinarith
+
+/-
+## Part VI: Upper Bound Conjectures (OPEN)
 -/
 
 /--
@@ -234,7 +280,7 @@ axiom erdos_1060_strong_conjecture :
       (f n : ℝ) ≤ (Real.log n) ^ C
 
 /-
-## Part VI: OEIS Connection
+## Part VII: OEIS Connection
 -/
 
 /--
@@ -264,7 +310,7 @@ theorem mem_A327153_iff (n : ℕ) (hn : n > 0) :
       ⟨hk_pos, hgk ▸ k_le_g k hk_pos⟩, hgk⟩⟩
 
 /-
-## Part VII: Examples and Computations
+## Part VIII: Examples and Computations
 -/
 
 /--
