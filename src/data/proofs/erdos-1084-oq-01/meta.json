@@ -20,8 +20,8 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1084",
     "erdosUrl": "https://erdosproblems.com/1084",
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations: kissingNumber (definition), kissing_1d (tau(1)=2), kissing_2d (tau(2)=6), kissing_3d (tau(3)=12), degree_le_kissing (degree bound from kissing number), degree_sum_eq_twice_pairs (handshaking lemma), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
+    "axiomCount": 8,
+    "assumptions": "8 axiom declarations: kissingNumber (definition), kissing_1d (tau(1)=2), kissing_2d (tau(2)=6), kissing_3d (tau(3)=12), degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, degree_sum_eq_twice_pairs (handshaking lemma, previously axiom), f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
     "lineCount": 533,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
@@ -110,7 +110,6 @@
       "Can the FCC cluster lower bound f_3(n) >= 6n - c*n^{2/3} be proved in Lean?",
       "What are the exact constants c_1, c_2 in the 3D Theta(n^{2/3}) correction?",
       "Does the isoperimetric exponent pattern f_d(n) = tau(d)*n/2 - Theta(n^{(d-1)/d}) hold for all d >= 2?",
-      "Can the degree_sum_eq_twice_pairs axiom (handshaking lemma) be fully proved in Lean?",
       "Can the kissing number axioms tau(1)=2, tau(2)=6, tau(3)=12 be proved from Mathlib?"
     ]
   },
@@ -158,9 +157,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 533,
-    "axiomCount": 9,
-    "theoremCount": 16,
+    "lineCount": 593,
+    "axiomCount": 8,
+    "theoremCount": 17,
     "substantiveTheoremCount": 16,
     "sorryTheorems": 0,
     "definitionCount": 5
