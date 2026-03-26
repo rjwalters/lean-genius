@@ -41,7 +41,8 @@ def coprimeResidues (n : ℕ) : Finset ℕ :=
 noncomputable def sortedCoprimes (n : ℕ) : List ℕ := (coprimeResidues n).sort (· ≤ ·)
 
 theorem sortedCoprimes_sorted (n : ℕ) : (sortedCoprimes n).Pairwise (· < ·) := by
-  sorry -- Follows from Finset.sort properties
+  simp only [sortedCoprimes]
+  exact (coprimeResidues n).sort_pairwise_lt
 
 theorem sortedCoprimes_mem (n : ℕ) (a : ℕ) :
     a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n := by
@@ -83,7 +84,11 @@ axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
 
 /-- The first missing gap: smallest positive even integer not in gapSet(n). -/
 noncomputable def firstMissingGap (n : ℕ) : ℕ :=
-  2 * Nat.find (⟨n, by sorry⟩ : ∃ m, 2 * m ∉ gapSet n)
+  2 * Nat.find (⟨(gapSet n).sup id + 1, by
+    intro h
+    have := Finset.le_sup h
+    simp only [id] at this
+    omega⟩ : ∃ m, 2 * m ∉ gapSet n)
 
 theorem firstMissingGap_even (_k : ℕ) (_hk : 2 ≤ _k) :
     2 ∣ firstMissingGap (primorial _k) :=
@@ -91,7 +96,8 @@ theorem firstMissingGap_even (_k : ℕ) (_hk : 2 ≤ _k) :
 
 theorem firstMissingGap_missing (k : ℕ) (_hk : 2 ≤ k) :
     firstMissingGap (primorial k) ∉ gapSet (primorial k) := by
-  sorry -- Follows from Nat.find_spec once existence witness is established
+  unfold firstMissingGap
+  exact Nat.find_spec _
 
 /-- Lacampagne–Selfridge computation: for nₖ = 30030 (k=6),
     not all even integers up to the maximal gap appear -/
