@@ -196,13 +196,19 @@ So R(3;k) grows faster than any exponential c^k but slower than k!.
 noncomputable def kthRootR3k (k : ℕ) : ℝ :=
   (R3k k : ℝ) ^ (1 / k : ℝ)
 
-/-- Lower bound on k-th root: at least 380^{1/5} ≈ 3.28 -/
+/-- Lower bound on k-th root: at least c > 1 for all k ≥ 1.
+    Follows from R3k_exponential_lower: R(3;k) ≥ c^k ⟹ R(3;k)^{1/k} ≥ c.
+    Note: the stronger c > 380^{1/5} ≈ 3.28 only holds for large k.
+    The previous version claimed c > 3, which contradicts R(3;1) = 3. -/
 axiom kthRoot_lower :
-  ∃ c : ℝ, c > 3 ∧ ∀ k : ℕ, k ≥ 1 → kthRootR3k k ≥ c
+  ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → kthRootR3k k ≥ c
 
-/-- Upper bound on k-th root: at most (k!)^{1/k} ~ k/e (Stirling) -/
+/-- Upper bound on k-th root: R(3;k)^{1/k} ≤ (e·k! + C)^{1/k} for some C > 0.
+    Follows from R3k_factorial_upper: R(3;k) ≤ e·k! + C.
+    The previous version omitted C, making it false at k=1 (R(3;1)=3 > e≈2.718). -/
 axiom kthRoot_upper :
-  ∀ k : ℕ, k ≥ 1 → kthRootR3k k ≤ (Real.exp 1 * k.factorial : ℝ) ^ (1 / k : ℝ)
+  ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 1 →
+    kthRootR3k k ≤ (Real.exp 1 * k.factorial + C : ℝ) ^ (1 / k : ℝ)
 
 /-- The main open question: does lim R(3;k)^{1/k} exist and what is it? -/
 def ErdosProblem183 : Prop :=
