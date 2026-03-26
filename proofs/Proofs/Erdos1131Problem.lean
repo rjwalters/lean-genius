@@ -374,7 +374,19 @@ private lemma two_cos_mul_sin (a b : ℝ) :
 private lemma integral_sin_mul (k : ℕ) (hk : k ≥ 1) :
     ∫ θ in (0 : ℝ)..Real.pi, Real.sin ((↑k : ℝ) * θ) =
     (1 - Real.cos ((↑k : ℝ) * Real.pi)) / (↑k : ℝ) := by
-  sorry -- FTC: needs API fix for hasDerivAt_cos, integral_eq_sub_of_hasDerivAt
+  have hk_pos : (0 : ℝ) < ↑k := Nat.cast_pos.mpr (by omega)
+  -- Antiderivative F(θ) = -(1/k)·cos(kθ), F'(θ) = sin(kθ) via chain rule
+  have hd : ∀ x ∈ Set.uIcc 0 Real.pi,
+      HasDerivAt (fun θ => -(1 / (↑k : ℝ)) * Real.cos ((↑k : ℝ) * θ))
+        (Real.sin ((↑k : ℝ) * x)) x := by
+    intro x _
+    have h1 := (Real.hasDerivAt_cos ((↑k : ℝ) * x)).comp x
+      ((hasDerivAt_id x).const_mul (↑k : ℝ))
+    have h2 := h1.const_mul (-(1 / (↑k : ℝ)))
+    convert h2 using 1; field_simp; ring
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hd
+    ((Real.continuous_sin.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _)]
+  simp [Real.cos_zero]; field_simp; ring
 
 /-- cos(m·π) = (-1)^m for natural m. -/
 private lemma cos_nat_mul_pi (m : ℕ) : Real.cos ((↑m : ℝ) * Real.pi) = (-1) ^ m := by
@@ -389,14 +401,44 @@ Product-to-sum decomposes into two sin integrals evaluated via `integral_sin_mul
 private lemma integral_cos_mul_sin (j : ℕ) (hj : j ≥ 1) :
     ∫ θ in (0 : ℝ)..Real.pi, Real.cos (2 * (↑j : ℝ) * θ) * Real.sin θ =
     -(2 : ℝ) / (4 * (↑j : ℝ) ^ 2 - 1) := by
-  sorry -- Product-to-sum + integral_sin_mul: needs API fix for continuous_sin
+  have hj_pos : (0 : ℝ) < ↑j := Nat.cast_pos.mpr (by omega)
+  -- Product-to-sum: cos(2jθ)sin(θ) = (1/2)[sin((2j+1)θ) - sin((2j-1)θ)]
+  have hpts : ∀ θ : ℝ, Real.cos (2 * ↑j * θ) * Real.sin θ =
+      (1/2) * (Real.sin ((2 * ↑j + 1) * θ) - Real.sin ((2 * ↑j - 1) * θ)) := by
+    intro θ
+    have := two_cos_mul_sin (2 * ↑j * θ) θ
+    linarith [this]
+  -- Rewrite integrand and split
+  simp_rw [hpts]
+  rw [intervalIntegral.integral_const_mul]
+  -- Apply integral_sin_mul to each term
+  have h1 : (2 * ↑j + 1 : ℝ) = ↑(2 * j + 1 : ℕ) := by push_cast; ring
+  have h2 : (2 * ↑j - 1 : ℝ) = ↑(2 * j - 1 : ℕ) := by push_cast; omega
+  rw [intervalIntegral.integral_sub
+    ((Real.continuous_sin.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _)
+    ((Real.continuous_sin.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _)]
+  rw [show (2 * (↑j : ℝ) + 1) = ↑(2 * j + 1 : ℕ) from by push_cast; ring]
+  rw [show (2 * (↑j : ℝ) - 1) = ↑(2 * j - 1 : ℕ) from by push_cast; omega]
+  rw [integral_sin_mul (2 * j + 1) (by omega), integral_sin_mul (2 * j - 1) (by omega)]
+  -- Both 2j+1 and 2j-1 are odd, so cos(mπ) = (-1)^m = -1
+  rw [cos_nat_mul_pi, cos_nat_mul_pi]
+  have h_odd1 : (-1 : ℝ) ^ (2 * j + 1) = -1 := by
+    rw [pow_add, pow_mul, neg_one_sq, one_pow, pow_one]
+  have h_odd2 : (-1 : ℝ) ^ (2 * j - 1) = -1 := by
+    rw [show 2 * j - 1 = 2 * (j - 1) + 1 from by omega]
+    rw [pow_add, pow_mul, neg_one_sq, one_pow, pow_one]
+  rw [h_odd1, h_odd2]
+  -- Arithmetic: (1/2) * (2/(2j+1) - 2/(2j-1)) = -2/(4j²-1)
+  field_simp; ring
 
 /-- Change of variables: ∫₋₁¹ f(x) dx = ∫_0^π f(cos θ) sin θ dθ.
-Applies Mathlib's substitution with φ = cos, φ' = -sin. -/
+Proof: integral_comp_mul_deriv with φ = cos, φ' = -sin gives
+∫₀^π f(cosθ)(-sinθ) = ∫_{cos0}^{cosπ} f = ∫₁^(-1) f = -∫₋₁¹ f.
+Negate both sides and use ∫ f·sinθ = -∫ f·(-sinθ). -/
 private lemma integral_cos_substitution {f : ℝ → ℝ} (hf : Continuous f) :
     ∫ x in (-1 : ℝ)..1, f x =
     ∫ θ in (0 : ℝ)..Real.pi, f (Real.cos θ) * Real.sin θ := by
-  sorry -- Change of variables: needs API fix for hasDerivAt_cos, continuous_sin
+  sorry -- Substitution: integral_comp_mul_deriv + orientation
 
 /-- ∫₋₁¹ cos²(j·arccos x) dx = 1 - 1/(4j²-1) for j ≥ 1.
 

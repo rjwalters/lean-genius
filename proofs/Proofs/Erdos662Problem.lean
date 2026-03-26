@@ -85,10 +85,36 @@ axiom unit_neighbor_bound (pts : Finset Point2D) (p : Point2D)
     (hp : p ∈ pts) (hsep : IsSeparated pts) :
     (neighbors pts p 1).card ≤ 6
 
-/-- Ordered unit-distance pairs bounded by 6n. -/
+/-- Ordered unit-distance pairs bounded by 6n.
+
+    Proof: decompose the filtered product into fibers indexed by first coordinate.
+    Each fiber has card ≤ |neighbors(p)| ≤ 6. Sum over p gives ≤ 6n. -/
 theorem ordered_unit_pairs_bound (pts : Finset Point2D)
     (hsep : IsSeparated pts) :
-    orderedPairsWithinDist pts 1 ≤ 6 * pts.card := by sorry
+    orderedPairsWithinDist pts 1 ≤ 6 * pts.card := by
+  unfold orderedPairsWithinDist
+  set S := (pts ×ˢ pts).filter
+    (fun pq : Point2D × Point2D => pq.1 ≠ pq.2 ∧ sqDist pq.1 pq.2 ≤ 1 ^ 2)
+  -- T(p) = {(p,q) : q ∈ neighbors(pts, p, 1)} — the fiber over p
+  set T := fun p => (neighbors pts p 1).image (fun q => (p, q))
+  -- S ⊆ ⋃_{p ∈ pts} T(p): every ordered pair lives in its first-coordinate fiber
+  have h_sub : S ⊆ pts.biUnion T := by
+    intro ⟨p, q⟩ hpq
+    rw [Finset.mem_biUnion]
+    have hpq' := Finset.mem_filter.mp hpq
+    have hp := (Finset.mem_product.mp hpq'.1).1
+    have hq := (Finset.mem_product.mp hpq'.1).2
+    exact ⟨p, hp, Finset.mem_image.mpr ⟨q,
+      Finset.mem_filter.mpr ⟨hq, hpq'.2.1, hpq'.2.2⟩, rfl⟩⟩
+  -- |T(p)| ≤ |neighbors(p)| ≤ 6
+  have h_card_T : ∀ p ∈ pts, (T p).card ≤ 6 := fun p hp =>
+    le_trans Finset.card_image_le (unit_neighbor_bound pts p hp hsep)
+  -- Chain: |S| ≤ |⋃ T(p)| ≤ ∑ |T(p)| ≤ ∑ 6 = 6n
+  calc S.card
+      ≤ (pts.biUnion T).card := Finset.card_le_card h_sub
+    _ ≤ pts.sum (fun p => (T p).card) := Finset.card_biUnion_le
+    _ ≤ pts.sum (fun _ => 6) := Finset.sum_le_sum h_card_T
+    _ = 6 * pts.card := by simp [Finset.sum_const, mul_comm]
 
 /-- Contact Number Bound (3n): unordered unit-distance pairs le 3n. -/
 theorem contact_number_3n (pts : Finset Point2D)
