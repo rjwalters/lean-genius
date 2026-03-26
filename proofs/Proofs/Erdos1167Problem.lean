@@ -287,4 +287,66 @@ theorem erdos_rado_weakened (κ : Cardinal.{u}) (hκ : ℵ₀ ≤ κ) :
   apply partition_monotone_target (erdos_rado_theorem κ hκ)
   exact Order.le_succ κ
 
+/-
+## Section 5: Provable Cases of the Infinite Ramsey Theorem
+
+The r ≤ 1 cases of the infinite Ramsey theorem follow from first
+principles without the full axiom. For r = 0, ∅ is the unique
+0-element subset, so any coloring is trivially monochromatic.
+For r = 1, the infinite pigeonhole principle applies: coloring ℵ₀
+elements with finitely many colors forces at least one color class
+to be infinite.
+
+This demonstrates that the infinite_ramsey axiom is only needed
+for the non-trivial case r ≥ 2, where Ramsey-style arguments
+involving transfinite recursion are required.
+-/
+
+-- Infinite Ramsey for r = 0: trivially true since ∅ is the unique
+-- 0-element subset, making any set vacuously monochromatic
+theorem infinite_ramsey_zero (k : ℕ) :
+    PartitionRelation ℵ₀ ℵ₀ 0 ↑k := by
+  intro α hα β hβ f
+  by_cases hne : Nonempty β
+  · -- β nonempty: the color of ∅ determines the monochromatic color
+    let s0 : RSubset α 0 := ⟨∅, Finset.card_empty⟩
+    exact ⟨f s0, Set.univ, fun s _ =>
+      congr_arg f (Subtype.ext (Finset.card_eq_zero.mp s.2)), by simp [hα]⟩
+  · -- β empty: no coloring from a nonempty type to ∅ exists, vacuously true
+    exact absurd (⟨f ⟨∅, Finset.card_empty⟩⟩ : Nonempty β) hne
+
+-- Infinite Ramsey for r = 1: the infinite pigeonhole principle
+-- Coloring ℵ₀ elements with k ≥ 1 colors forces an infinite color class
+theorem infinite_ramsey_one (k : ℕ) (hk : k ≥ 1) :
+    PartitionRelation ℵ₀ ℵ₀ 1 ↑k := by
+  intro α hα β hβ f
+  -- Map each element to the color of its singleton subset
+  let g : α → β := fun x => f ⟨{x}, Finset.card_singleton x⟩
+  -- α is infinite (ℵ₀ elements)
+  haveI hInfα : Infinite α := by
+    by_contra h
+    simp only [not_infinite] at h
+    exact absurd (Cardinal.lt_aleph0_iff_finite.mpr h)
+      (not_lt.mpr (le_of_eq hα.symm))
+  -- β is finite (k elements)
+  haveI hFinβ : Finite β := Cardinal.lt_aleph0_iff_finite.mp
+    (hβ ▸ Cardinal.nat_lt_aleph0 k)
+  -- By infinite pigeonhole, some fiber of g is infinite
+  obtain ⟨c, hc⟩ := Finite.exists_infinite_fiber g
+  -- The infinite fiber g⁻¹{c} is our monochromatic set
+  refine ⟨c, g ⁻¹' {c}, fun s hs => ?_, ?_⟩
+  · -- Monochromatic: every 1-element subset from the fiber has color c
+    obtain ⟨x, hx⟩ := Finset.card_eq_one.mp s.2
+    -- x ∈ g⁻¹{c} since {x} ⊆ g⁻¹{c}
+    have hxH : x ∈ g ⁻¹' {c} := hs (by simp [hx])
+    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hxH
+    -- f(s) = f({x}) = g(x) = c
+    rw [show s = ⟨{x}, Finset.card_singleton x⟩ from Subtype.ext hx]
+    exact hxH
+  · -- The fiber has cardinality ≥ ℵ₀
+    by_contra hlt
+    simp only [not_le] at hlt
+    haveI := Cardinal.lt_aleph0_iff_finite.mp hlt
+    exact hc (Set.toFinite _)
+
 end Erdos1167

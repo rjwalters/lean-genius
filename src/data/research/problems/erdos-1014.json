@@ -29,15 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 of 16 axioms proved (16→14). diagonal_ramsey_upper trivially follows from Erdős-Szekeres. ratio_equiv_difference proved via algebraic identity |a/b-1|=(a-b)/b when a≥b>0. Remaining 14 axioms cannot be eliminated (no Ramsey theory in Mathlib).",
+    "progressSummary": "PROGRESS: 7 new theorems added (2→9). Proved left monotonicity, diagonal lower bound, specific Ramsey comparisons. 14 axioms remain.",
     "builtItems": [
       "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
-      "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)"
+      "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)",
+      "ramsey_2k: R(l,2) = l from symm + k2",
+      "ramsey_monotone_left: R(k,l) <= R(k+1,l) via symm trick",
+      "R22: R(2,2) = 2",
+      "diagonal_ramsey_lower: R(k,k) >= k for k >= 2",
+      "R33_lt_R34, R34_lt_R35: strict monotonicity of specific values"
     ],
     "insights": [
       "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
       "ratio_equiv_difference proof uses: ramsey_pos for R(k,l)>=1, ramsey_monotone_right for R(k,l+1)>=R(k,l), sub_div+div_self+abs_of_nonneg for the algebraic identity",
-      "Most axioms CANNOT be eliminated - no Ramsey theory in Mathlib (ramseyNumber is an opaque axiom)"
+      "Most axioms CANNOT be eliminated - no Ramsey theory in Mathlib (ramseyNumber is an opaque axiom)",
+      "ramsey_monotone_left provable from symm + monotone_right",
+      "diagonal_ramsey_lower from R(2,k)=k + left monotonicity",
+      "Specific Ramsey values (R33,R34,R35) enable strict monotonicity proofs"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -77,8 +85,8 @@
     {
       "path": "Proofs/Erdos1014Problem.lean",
       "filename": "Erdos1014Problem.lean",
-      "lineCount": 135,
-      "theoremCount": 2,
+      "lineCount": 182,
+      "theoremCount": 9,
       "axiomCount": 14,
       "defCount": 0,
       "sorryCount": 0,

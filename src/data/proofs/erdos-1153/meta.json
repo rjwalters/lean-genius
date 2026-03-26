@@ -1,0 +1,149 @@
+{
+  "id": "erdos-1153",
+  "title": "Erdős Problem #1153: Lebesgue Constants of Lagrange Interpolation",
+  "slug": "erdos-1153",
+  "description": "For any subinterval [a,b] of [-1,1], the maximum of the Lebesgue function λ(x) = Σ|lₖ(x)| over any n interpolation nodes exceeds (2/π - o(1))log n. Proved by Bernstein (1931) for the full interval; sharp constant 2/π established by Erdős (1961).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1153",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1153Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "polynomials",
+      "interpolation",
+      "approximation-theory",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1153,
+    "erdosUrl": "https://erdosproblems.com/1153",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SpecialFunctions.Log",
+        "description": "Real logarithm function Real.log",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "SpecialFunctions.Trigonometric",
+        "description": "Real.pi constant for the 2/π Lebesgue constant",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "Core tactic library",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "lagrangeBasis",
+      "lebesgueFunction",
+      "NodesInInterval",
+      "DistinctNodes",
+      "lagrangeBasis_other",
+      "lagrangeBasis_self",
+      "lebesgueFunction_nonneg",
+      "lebesgueFunction_at_node",
+      "lebesgueFunction_at_node_eq",
+      "erdos_1153",
+      "erdos_1153_full_interval",
+      "chebyshev_lebesgue_upper"
+    ],
+    "axiomCount": 2,
+    "lineCount": 160,
+    "assumptions": "2 axiom(s): erdos_1153 (the logarithmic lower bound, proved by Bernstein/Erdős), chebyshev_lebesgue_upper (matching upper bound via Chebyshev nodes)."
+  },
+  "overview": {
+    "historicalContext": "The Lebesgue constant measures the worst-case error amplification in polynomial interpolation. Bernstein (1931) showed that for any choice of interpolation nodes in [-1,1], the Lebesgue constant must grow at least logarithmically in the number of nodes. Erdős (1961) sharpened this to (2/π)log n - O(1), matching the lower bound achieved by Chebyshev polynomial roots. Problem #1153 asks whether this logarithmic lower bound persists on arbitrary subintervals [a,b] of [-1,1], which was answered affirmatively.",
+    "problemStatement": "**Erdős Problem #1153** ([Va99, 2.44]):\n\nFor $x_1,\\ldots,x_n \\in [-1,1]$, let $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$ be the Lagrange basis polynomials and $\\lambda(x) = \\sum_k |l_k(x)|$ the Lebesgue function. Is it true that for any fixed $-1 \\leq a < b \\leq 1$,\n$$\\max_{x \\in [a,b]} \\lambda(x) > \\left(\\frac{2}{\\pi} - o(1)\\right) \\log n?$$\n\n**Status**: Proved (yes).",
+    "text": "For any subinterval [a,b] of [-1,1], the maximum of the Lebesgue function over any n interpolation nodes exceeds (2/π - o(1))log n. The constant 2/π is optimal, achieved by Chebyshev polynomial roots.",
+    "proofStrategy": "The formalization defines Lagrange basis polynomials as finite products and the Lebesgue function as their absolute value sum. The Kronecker delta property (lₖ(xⱼ) = δₖⱼ) is fully proved from the definitions. The main theorem is stated in asymptotic form: for any ε > 0 and subinterval, for sufficiently large n, the Lebesgue function exceeds (2/π - ε)log n. Tightness via Chebyshev nodes is stated as a matching upper bound axiom.",
+    "keyInsights": [
+      "**Lagrange interpolation and condition number**: The Lebesgue function λ(x) measures how much interpolation can amplify errors. It bounds the ratio of interpolation error to best polynomial approximation error.",
+      "**Universal logarithmic growth**: No matter how cleverly nodes are placed in [-1,1], the Lebesgue function must grow at least as (2/π)log n. This is a fundamental limitation of polynomial interpolation.",
+      "**Chebyshev optimality**: The roots of Chebyshev polynomials achieve the optimal constant 2/π, making them the best possible interpolation nodes.",
+      "**Subinterval universality**: The logarithmic growth cannot be avoided even on small subintervals — the phenomenon is truly local, not just global."
+    ],
+    "prerequisites": [
+      "Real analysis (continuity, compactness)",
+      "Polynomial interpolation (Lagrange basis)",
+      "Approximation theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 42,
+      "endLine": 68,
+      "summary": "Defines lagrangeBasis (Lagrange basis polynomial via finite product), lebesgueFunction (sum of absolute values), NodesInInterval (nodes in [-1,1]), and DistinctNodes (injectivity)."
+    },
+    {
+      "id": "lagrange-properties",
+      "title": "Lagrange Basis Properties",
+      "startLine": 69,
+      "endLine": 93,
+      "summary": "Proves the Kronecker delta property: lₖ(xⱼ) = 0 for j ≠ k (zero factor in product) and lₖ(xₖ) = 1 (all factors cancel for distinct nodes)."
+    },
+    {
+      "id": "lebesgue-properties",
+      "title": "Lebesgue Function Properties",
+      "startLine": 94,
+      "endLine": 126,
+      "summary": "Proves nonnegativity, the lower bound λ(xₖ) ≥ 1 at nodes, and the exact value λ(xₖ) = 1 at nodes for distinct node sets."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result and Tightness",
+      "startLine": 127,
+      "endLine": 160,
+      "summary": "States the main theorem (logarithmic lower bound with constant 2/π on arbitrary subintervals) and the matching Chebyshev upper bound as axioms. Proves the full-interval corollary."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1153 in 160 lines of Lean 4 code with 2 axioms and 6 theorems. The Lagrange basis Kronecker delta property is fully proved, and the Lebesgue function is shown to equal 1 at interpolation nodes. The main result and Chebyshev tightness are axiomatized.",
+    "implications": "The 2/π constant represents a fundamental barrier in polynomial interpolation theory. No node placement strategy can avoid logarithmic growth of the Lebesgue constant, and Chebyshev nodes are provably optimal.",
+    "openQuestions": [
+      "Can the Bernstein/Erdős lower bound proof be fully formalized in Lean 4?",
+      "What is the exact rate of convergence of the o(1) term in the subinterval version?",
+      "How does the Lebesgue function behave for other node distributions (equidistant, Fekete points)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1153",
+    "lineCount": 160,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 4
+  },
+  "references": [
+    "Bernstein (1931): On the distribution of zeros of Lagrange interpolation polynomials",
+    "Erdős (1961): Problems and results on the theory of interpolation, II [Er61c]",
+    "[Va99, 2.44]: Vaughan's survey of Erdős problems in analysis",
+    "https://erdosproblems.com/1153"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1129",
+      "relationship": "related",
+      "description": "Related Erdős problem on interpolation and Lebesgue constants"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Related Erdős problem on polynomial interpolation"
+    }
+  ]
+}

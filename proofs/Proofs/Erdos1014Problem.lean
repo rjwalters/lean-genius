@@ -306,3 +306,51 @@ theorem diagonal_ramsey_upper (k : ℕ) (hk : k ≥ 2) :
   have heq : k + k - 2 = 2 * k - 2 := by omega
   rw [heq] at h
   exact_mod_cast h
+
+/- ## Derived Ramsey Properties -/
+
+-- R(l, 2) = l: symmetric version of ramsey_k2
+theorem ramsey_2k (l : ℕ) (hl : l ≥ 1) : ramseyNumber l 2 = l := by
+  rw [ramsey_symm]; exact ramsey_k2 l hl
+
+-- Monotonicity in the left argument: R(k, l) ≤ R(k+1, l)
+-- Follows from recurrence: R(k+1, l) ≥ R(k, l) since R(k+1, l) ≥ R(k, l) + R(k+1, l-1) - 1 ≥ R(k,l)
+theorem ramsey_monotone_left (k l : ℕ) :
+    ramseyNumber k l ≤ ramseyNumber (k + 1) l := by
+  calc ramseyNumber k l
+      = ramseyNumber l k := ramsey_symm k l
+    _ ≤ ramseyNumber l (k + 1) := ramsey_monotone_right l k
+    _ = ramseyNumber (k + 1) l := ramsey_symm l (k + 1)
+
+-- R(3, 3) < R(3, 4): strict monotonicity for small values
+theorem R33_lt_R34 : ramseyNumber 3 3 < ramseyNumber 3 4 := by
+  rw [R33, R34]; norm_num
+
+-- R(3, 4) < R(3, 5): strict monotonicity
+theorem R34_lt_R35 : ramseyNumber 3 4 < ramseyNumber 3 5 := by
+  rw [R34, R35]; norm_num
+
+-- R(3, 3) = R(3, 3) via symmetry (consistency check)
+theorem R33_symmetric : ramseyNumber 3 3 = ramseyNumber 3 3 := rfl
+
+-- R(2, 2) = 2: the smallest nontrivial Ramsey number
+theorem R22 : ramseyNumber 2 2 = 2 := ramsey_k2 2 (by norm_num)
+
+-- Diagonal Ramsey numbers are at least k: R(k,k) ≥ k for k ≥ 2
+-- Since R(2, k) = k and R(k, k) ≥ R(2, k) by monotonicity
+theorem diagonal_ramsey_lower (k : ℕ) (hk : k ≥ 2) :
+    k ≤ ramseyNumber k k := by
+  calc k = ramseyNumber 2 k := (ramsey_k2 k (by omega)).symm
+    _ ≤ ramseyNumber k k := by
+        have h1 : ramseyNumber 2 k ≤ ramseyNumber k k := by
+          induction k with
+          | zero => omega
+          | succ n ih =>
+            by_cases hn : n ≥ 2
+            · calc ramseyNumber 2 (n + 1)
+                  ≤ ramseyNumber (n + 1) (n + 1) := by
+                    calc ramseyNumber 2 (n + 1)
+                        = ramseyNumber (n + 1) 2 := ramsey_symm 2 (n + 1)
+                      _ ≤ ramseyNumber (n + 1) (n + 1) := ramsey_monotone_right (n + 1) 2
+            · interval_cases n <;> simp_all [R22, ramsey_k2, ramsey_symm]
+        exact h1

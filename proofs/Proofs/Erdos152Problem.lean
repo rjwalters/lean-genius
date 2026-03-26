@@ -72,7 +72,56 @@ def ErdosProblem152Strong : Prop :=
       (isolatedCount A : ℝ) ≥ c * (A.card : ℝ) ^ 2
 
 /-
-## Section V: Sumset Size for Sidon Sets
+## Section V: Proved Properties of Sidon Sets and Their Sumsets
+-/
+
+-- Any pair of elements in A has their sum in A + A
+theorem sumset_mem {A : Finset ℕ} {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A) :
+    a + b ∈ sumsetFinset A :=
+  Finset.add_mem_add ha hb
+
+-- The double 2a is in A + A for any a ∈ A
+theorem sumset_self_double {A : Finset ℕ} {a : ℕ} (ha : a ∈ A) :
+    a + a ∈ sumsetFinset A :=
+  sumset_mem ha ha
+
+-- Sidon sets have no 3-term arithmetic progressions with distinct terms:
+-- if a + c = 2b with a, b, c ∈ A, then a = c (and hence a = b = c)
+theorem sidon_no_three_ap {A : Finset ℕ} (hS : IsSidonFinset A)
+    {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A)
+    (hap : a + c = b + b) : a = c := by
+  have h := hS a c b b ha hc hb hb hap
+  -- h : ({a, c} : Finset ℕ) = {b, b}, and {b, b} = {b} in Finset
+  have hab : a = b := by
+    have h1 : a ∈ ({a, c} : Finset ℕ) := Finset.mem_insert_self a _
+    rw [h] at h1; simp at h1; exact h1
+  have hcb : c = b := by
+    have h2 : c ∈ ({a, c} : Finset ℕ) := by simp
+    rw [h] at h2; simp at h2; exact h2
+  rw [hab, hcb]
+
+-- Corollary: in a Sidon set, a + c = 2b implies a = b = c
+theorem sidon_no_three_ap' {A : Finset ℕ} (hS : IsSidonFinset A)
+    {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A)
+    (hap : a + c = b + b) : a = b ∧ b = c := by
+  have hac := sidon_no_three_ap hS ha hb hc hap
+  subst hac
+  constructor
+  · -- a + a = b + b implies a = b
+    omega
+  · omega
+
+-- For distinct elements a, b in a Sidon set: a + b ≠ 2a
+-- (the sumset element a + b is not a doubled element)
+theorem sidon_sum_ne_double {A : Finset ℕ} (hS : IsSidonFinset A)
+    {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hab : a ≠ b) :
+    a + b ≠ a + a := by
+  intro h
+  have : b = a := by omega
+  exact hab this.symm
+
+/-
+## Section VI: Sumset Size for Sidon Sets
 -/
 
 /-- For a Sidon set A of size n, |A + A| = n(n+1)/2 since all sums
