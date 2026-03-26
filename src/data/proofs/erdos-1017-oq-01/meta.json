@@ -25,9 +25,9 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-25",
     "mathlib_version": "4.26.0",
-    "axiomCount": 10,
-    "lineCount": 309,
-    "assumptions": "10 axioms: EGP theorem, K_{a,b} triangle-free, K_{a,b} edge count, triangle-free partition = edges, dense contains triangle, Győri-Keszegh triangles, K₄-free partition number, Lovász covering, clique partition ≤ vertices, supersaturation.",
+    "axiomCount": 9,
+    "lineCount": 498,
+    "assumptions": "9 axioms: EGP theorem, K_{a,b} edge count, triangle-free partition = edges, dense contains triangle, Gyori-Keszegh triangles, K_4-free partition number, Lovasz covering, clique partition <= vertices, supersaturation. K_{a,b} triangle-free is PROVED.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.IsClique",
