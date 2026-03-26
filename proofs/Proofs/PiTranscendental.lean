@@ -186,11 +186,12 @@ theorem I_algebraic : IsAlgebraic ℤ Complex.I := by
 -- PART 6: Corollaries
 -- ============================================================
 
-/-- **Axiom: π is irrational**
+/-- **π is irrational** (formerly axiom, now proved from Mathlib)
 
-    Transcendental implies irrational: if π = p/q for integers p, q, then
-    π would be algebraic (root of q·X - p = 0), contradicting transcendence. -/
-axiom pi_irrational_axiom : Irrational Real.pi
+    Mathlib provides `irrational_pi` directly. This also follows from transcendence:
+    if π = p/q for integers p, q, then π would be algebraic (root of q·X - p = 0),
+    contradicting transcendence. -/
+theorem pi_irrational_axiom : Irrational Real.pi := irrational_pi
 
 /-- π is irrational (weaker than transcendental, but follows from it) -/
 theorem pi_irrational : Irrational Real.pi := pi_irrational_axiom

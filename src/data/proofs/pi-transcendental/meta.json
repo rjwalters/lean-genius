@@ -38,9 +38,9 @@
       "Connection to constructibility with ruler and compass"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 8,
-    "lineCount": 380,
-    "assumptions": "8 axioms: lindemann_theorem, pi_transcendental, pi_irrational_axiom, and 5 more. See Lean source for complete statements.",
+    "axiomCount": 7,
+    "lineCount": 381,
+    "assumptions": "7 axioms: lindemann_theorem, pi_transcendental, two_pi_transcendental_axiom, and 4 more. pi_irrational_axiom proved from Mathlib's irrational_pi.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -206,9 +206,9 @@
       "Polynomial"
     ],
     "namespace": null,
-    "lineCount": 380,
-    "axiomCount": 8,
-    "theoremCount": 11,
+    "lineCount": 381,
+    "axiomCount": 7,
+    "theoremCount": 12,
     "definitionCount": 0
   },
   "mainTheorems": [
