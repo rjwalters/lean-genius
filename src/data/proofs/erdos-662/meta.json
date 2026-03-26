@@ -14,15 +14,15 @@
       "packing",
       "open"
     ],
-    "sorries": 2,
+    "sorries": 0,
     "badge": "axiom",
     "sourceUrl": "https://erdosproblems.com/662",
     "erdosUrl": "https://erdosproblems.com/662",
-    "axiomCount": 3,
-    "assumptions": "3 axiom(s) and 2 sorry(s). ordered_unit_pairs_bound proved via fiber decomposition + unit_neighbor_bound.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: unit_neighbor_bound (kissing number ≤ 6 in 2D), erdos_662_lattice_optimal (the main open conjecture). Replaced triangularLatticeCount axiom with computable definition via triLatticeCountInt. Proved lattice count values f(1)=6, f(√3)=12 by native_decide.",
     "proofRepoPath": "Proofs/Erdos662Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 108
+    "lineCount": 164
   },
   "sections": [
     {

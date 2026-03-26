@@ -52,9 +52,22 @@ noncomputable def pairsWithinDist (pts : Finset Point2D) (t : ℝ) : ℕ :=
 noncomputable def triLatticePoint (a b : ℤ) : Point2D :=
   (↑a + ↑b / 2, ↑b * Real.sqrt 3 / 2)
 
-/-- f(t): the number of nonzero lattice points at distance le t from the
-    origin in the triangular lattice. -/
-axiom triangularLatticeCount : ℝ → ℕ
+/-- The triangular lattice norm: a² + ab + b² (equals squared Euclidean
+    distance for lattice point (a,b) from the origin). -/
+def triLatticeNorm (a b : ℤ) : ℤ := a ^ 2 + a * b + b ^ 2
+
+/-- Computable count of nonzero lattice points with norm ≤ T.
+    The range [-T, T] × [-T, T] suffices since a² + ab + b² ≥ max(a², b²/2)
+    for all a, b. -/
+def triLatticeCountInt (T : ℕ) : ℕ :=
+  (((Finset.Icc (-(T : ℤ)) T) ×ˢ (Finset.Icc (-(T : ℤ)) T)).filter
+    fun ab : ℤ × ℤ => ab ≠ (0, 0) ∧ triLatticeNorm ab.1 ab.2 ≤ T).card
+
+/-- f(t): the number of nonzero lattice points at distance ≤ t from the origin
+    in the triangular lattice. Since all lattice norms a² + ab + b² are integers,
+    f(t) = triLatticeCountInt ⌊t²⌋₊. -/
+noncomputable def triangularLatticeCount (t : ℝ) : ℕ :=
+  triLatticeCountInt (Nat.floor (t ^ 2))
 
 -- ## Known Lattice Values
 
@@ -70,13 +83,30 @@ theorem triLattice_sqDist (a b : ℤ) :
     rw [div_pow, mul_pow, h3]; ring
   rw [key]; ring
 
+/-- The integer count at threshold 1 is 6: points (±1,0), (0,±1), (1,−1), (−1,1). -/
+theorem triLatticeCountInt_one : triLatticeCountInt 1 = 6 := by native_decide
+
+/-- The integer count at threshold 3 is 12: 6 nearest + 6 second-shell. -/
+theorem triLatticeCountInt_three : triLatticeCountInt 3 = 12 := by native_decide
+
 /-- The 6 nearest neighbors in the triangular lattice at distance 1. -/
 theorem triLattice_nearest_neighbors :
-    triangularLatticeCount 1 = 6 := by sorry
+    triangularLatticeCount 1 = 6 := by
+  unfold triangularLatticeCount
+  norm_num
+  exact triLatticeCountInt_one
 
-/-- The 12 points within distance sqrt 3. -/
+/-- The 12 points within distance √3. -/
 theorem triLattice_second_shell :
-    triangularLatticeCount (Real.sqrt 3) = 12 := by sorry
+    triangularLatticeCount (Real.sqrt 3) = 12 := by
+  unfold triangularLatticeCount
+  have hsq : (Real.sqrt 3) ^ 2 = 3 := Real.sq_sqrt (by norm_num : (3 : ℝ) ≥ 0)
+  rw [hsq]
+  have hfl : Nat.floor (3 : ℝ) = 3 := by
+    rw [Nat.floor_eq_iff (by norm_num : (0 : ℝ) ≤ 3)]
+    constructor <;> norm_num
+  rw [hfl]
+  exact triLatticeCountInt_three
 
 -- ## Contact Number Bound (t = 1 case)
 
