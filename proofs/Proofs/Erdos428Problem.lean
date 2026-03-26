@@ -55,12 +55,36 @@ def ErdosProblem428Limsup : Prop :=
     Filter.limsup (fun n => primeDensityRatio A n) Filter.atTop > 0
 
 /-- The liminf version implies the limsup version.
-    Note: Filter.liminf_le_limsup requires IsBoundedUnder (bounded above)
-    which needs a PNT-like argument for the density ratio. -/
+
+    Proof: From liminf > 0, extract ε > 0 with eventually ε ≤ f.
+    Show limsup ≥ ε via IsCoboundedUnder (f ≥ 0) + le_limsup_of_le.
+    This avoids needing IsBoundedUnder (· ≤ ·) for liminf_le_limsup. -/
 theorem liminf_implies_limsup :
     ErdosProblem428 → ErdosProblem428Limsup := by
   intro ⟨A, hfreq, hliminf⟩
-  exact ⟨A, hfreq, lt_of_lt_of_le hliminf (by sorry)⟩
+  refine ⟨A, hfreq, ?_⟩
+  set f := fun n => primeDensityRatio A n with hf_def
+  -- f is bounded below by 0 (needed for eventually_lt_of_lt_liminf)
+  have hbdd_below : Filter.IsBoundedUnder (· ≥ ·) Filter.atTop f := by
+    refine ⟨0, ?_⟩
+    simp only [Filter.eventually_map]
+    exact Filter.eventually_of_forall (fun n => primeDensityRatio_nonneg A n)
+  -- IsCoboundedUnder: any eventual upper bound for f is ≥ 0 (since f ≥ 0)
+  have hcobdd : Filter.IsCoboundedUnder (· ≤ ·) Filter.atTop f := by
+    use 0
+    intro a ha
+    simp only [Filter.eventually_map] at ha
+    obtain ⟨n, h1, h2⟩ := ((Filter.eventually_of_forall
+      (fun n => primeDensityRatio_nonneg A n)).and ha).exists
+    linarith
+  -- Extract ε = liminf/2 > 0 with eventually ε ≤ f
+  set ε := Filter.liminf f Filter.atTop / 2
+  have hε_pos : 0 < ε := div_pos hliminf (by norm_num : (0:ℝ) < 2)
+  have h_ev : ∀ᶠ n in Filter.atTop, ε ≤ f n :=
+    (Filter.eventually_lt_of_lt_liminf (show ε < Filter.liminf f Filter.atTop by linarith)
+      hbdd_below).mono (fun _ h => le_of_lt h)
+  -- ε ≤ limsup via le_limsup_of_le (uses IsCoboundedUnder, not IsBoundedUnder)
+  linarith [Filter.le_limsup_of_le hcobdd h_ev]
 
 -- ## Prime k-Tuple Conjecture
 
