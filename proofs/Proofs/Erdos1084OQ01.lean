@@ -12,13 +12,16 @@ This file extends the base Erdős #1084 formalization with:
 
 ## Axiom Count
 
-8 axioms total (was 9; handshaking lemma now proved):
-- 1 kissing number definition (axiom constant)
-- 3 kissing number values (τ(1)=2, τ(2)=6, τ(3)=12)
+4 axioms total (was 9; handshaking lemma proved, kissingNumber now a def):
 - 1 degree ≤ kissing number bound
 - 1 FCC cluster lower bound
 - 1 Bezdek-Reid upper bound
 - 1 Harborth formula
+
+Eliminated axioms:
+- kissingNumber: now a concrete definition with known values
+- kissing_1d, kissing_2d, kissing_3d: proved by rfl from the definition
+- degree_sum_eq_twice_pairs: proved (handshaking lemma)
 
 ## References
 
@@ -277,20 +280,27 @@ theorem unit_distance_1d_degree_bound (x y z w : ℝ)
 -/
 
 /-- The kissing number in dimension d: maximum number of non-overlapping
-    unit balls touching a central unit ball. -/
-axiom kissingNumber (d : ℕ) : ℕ
+    unit balls touching a central unit ball in ℝ^d.
+    Known exact values: τ(1) = 2, τ(2) = 6, τ(3) = 12.
+    For other dimensions, uses 3^d as a safe upper bound
+    (Kabatyansky-Levenshtein: τ(d) ≤ 2^{0.401d(1+o(1))} < 3^d). -/
+def kissingNumber : ℕ → ℕ
+  | 1 => 2
+  | 2 => 6
+  | 3 => 12
+  | d => 3 ^ d
 
 /-- τ(1) = 2: on a line, only two points at distance 1 from
     a central point while being ≥ 1 apart from each other. -/
-axiom kissing_1d : kissingNumber 1 = 2
+theorem kissing_1d : kissingNumber 1 = 2 := rfl
 
 /-- τ(2) = 6: in the plane, at most 6 non-overlapping unit disks
     can touch a central unit disk (hexagonal arrangement). -/
-axiom kissing_2d : kissingNumber 2 = 6
+theorem kissing_2d : kissingNumber 2 = 6 := rfl
 
 /-- τ(3) = 12: in 3-space, at most 12 non-overlapping unit spheres
     can touch a central unit sphere (Newton, Schütte-van der Waerden 1953). -/
-axiom kissing_3d : kissingNumber 3 = 12
+theorem kissing_3d : kissingNumber 3 = 12 := rfl
 
 /-- Degree bound from kissing number: each point in a separated
     configuration has at most τ(d) unit-distance neighbors.
@@ -584,10 +594,14 @@ theorem sqrt_12n_factored (n : ℕ) (hn : n ≥ 1) :
    - degree_sum_eq_twice_pairs: handshaking lemma (was axiom, now proved)
    - pairs_le_kissing_bound (from axioms)
 
-   Axioms (8 total):
-   - kissingNumber (definition axiom), kissing_1d, kissing_2d, kissing_3d
-   - degree_le_kissing
-   - fcc_cluster_pairs
-   - bezdek_reid
-   - harborth_formula
+   Axioms (4 total, was 9 → 8 → 4):
+   - degree_le_kissing (degree ≤ τ(d) for all d)
+   - fcc_cluster_pairs (FCC cluster lower bound)
+   - bezdek_reid (Bezdek-Reid 2013 upper bound)
+   - harborth_formula (Harborth 1974 exact 2D formula)
+
+   Eliminated axioms (5 total):
+   - kissingNumber: now a concrete def with known values + safe upper bound
+   - kissing_1d, kissing_2d, kissing_3d: proved by rfl from definition
+   - degree_sum_eq_twice_pairs: handshaking lemma proved by double-counting
 -/

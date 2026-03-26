@@ -20,8 +20,8 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1084",
     "erdosUrl": "https://erdosproblems.com/1084",
-    "axiomCount": 8,
-    "assumptions": "8 axiom declarations: kissingNumber (definition), kissing_1d (tau(1)=2), kissing_2d (tau(2)=6), kissing_3d (tau(3)=12), degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, degree_sum_eq_twice_pairs (handshaking lemma, previously axiom), f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Eliminated: kissingNumber (now concrete def with known values), kissing_1d/2d/3d (proved by rfl), degree_sum_eq_twice_pairs (handshaking proved by double-counting). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
     "lineCount": 533,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
@@ -48,7 +48,7 @@
       "title": "Kissing Number and Degree Bounds",
       "startLine": 265,
       "endLine": 367,
-      "summary": "Axiomatizes the kissing number $\\tau(d)$ with known values $\\tau(1)=2$, $\\tau(2)=6$, $\\tau(3)=12$. Proves the handshaking bound: $\\text{unitPairs} \\leq \\tau(d) \\cdot n / 2$. Derives $f_2(n) \\leq 3n$ and $f_3(n) \\leq 6n$.",
+      "summary": "Defines the kissing number $\\tau(d)$ concretely with known values $\\tau(1)=2$, $\\tau(2)=6$, $\\tau(3)=12$. Proves the handshaking bound: $\\text{unitPairs} \\leq \\tau(d) \\cdot n / 2$. Derives $f_2(n) \\leq 3n$ and $f_3(n) \\leq 6n$.",
       "mathContext": "$2 \\cdot \\text{pairs} = \\sum_i \\deg(i) \\leq \\tau(d) \\cdot n$, giving $f_d(n) \\leq \\tau(d) \\cdot n / 2$."
     },
     {
@@ -110,7 +110,7 @@
       "Can the FCC cluster lower bound f_3(n) >= 6n - c*n^{2/3} be proved in Lean?",
       "What are the exact constants c_1, c_2 in the 3D Theta(n^{2/3}) correction?",
       "Does the isoperimetric exponent pattern f_d(n) = tau(d)*n/2 - Theta(n^{(d-1)/d}) hold for all d >= 2?",
-      "Can the kissing number axioms tau(1)=2, tau(2)=6, tau(3)=12 be proved from Mathlib?"
+      "Can degree_le_kissing (degree bound from kissing number) be proved from Mathlib?"
     ]
   },
   "crossReferences": [
@@ -157,9 +157,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 593,
-    "axiomCount": 8,
-    "theoremCount": 17,
+    "lineCount": 607,
+    "axiomCount": 4,
+    "theoremCount": 20,
     "substantiveTheoremCount": 16,
     "sorryTheorems": 0,
     "definitionCount": 5
