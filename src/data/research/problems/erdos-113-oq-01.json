@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated 13 of 21 axioms (21→8). Proved asymp_trans_exponent and erdos_146_zarankiewicz. Converted 11 unused axioms to propositions.",
+    "builtItems": [
+      "Proved asymp_trans_exponent from Mathlib rpow_le_rpow_of_exponent_le",
+      "Proved erdos_146_zarankiewicz trivially (⟨_, rfl⟩)",
+      "Converted 11 unused axiom propositions to def Prop"
+    ],
+    "insights": [
+      "13 axioms eliminated (21→8): 11 unused props→def Prop, asymp_trans_exponent proved from rpow_le_rpow_of_exponent_le, erdos_146_zarankiewicz proved trivially",
+      "Remaining 8 axioms are essential: 4 abstract function declarations (extremalNumber, isDegenerate, isBipartite, isRegular) and 4 deep results (forward_direction, backward_false, regular3_not_2degenerate, janzer_counterexample)",
+      "asymp_trans_exponent: if f ≪ n^α and α < β, then f ≪ n^β — follows from rpow monotonicity for base ≥ 1"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
