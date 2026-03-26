@@ -2,210 +2,109 @@
   {
     "id": "ann-e1085-header",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 1,
-      "endLine": 29
-    },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #1085**: The Unit Distance Problem\n\n**Question**: Let f_d(n) be the max unit distance pairs among n points in ℝ^d. Estimate f_d(n).\n\n**Status by Dimension**:\n- d = 2: n^{1+o(1)} ≤ f_2(n) ≤ O(n^{4/3}) [Gap OPEN]\n- d = 3: n^{4/3} log log n ≪ f_3(n) ≪ n^{3/2} [Partially OPEN]\n- d = 4: EXACT formula (Brass 1997)\n- d ≥ 6 even: EXACT formulas (Swanepoel 2009)\n- d ≥ 5 odd: (p-1)/(2p)·n² ± O(n^{4/3})\n\nOne of the most famous problems in combinatorial geometry.",
-    "mathContext": "The d=2 case has been open since Erdős's 1946 paper. The gap between n^{1+o(1)} and n^{4/3} is one of the longest-standing open problems in discrete geometry.",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Problem Statement and Historical Summary",
+    "content": "The header documents Erdős Problem #1085 across all dimensions. The problem asks for $f_d(n)$, the maximum number of unit-distance pairs among $n$ points in $\\mathbb{R}^d$. The dimension-by-dimension breakdown reveals a striking dichotomy: for $d \\geq 4$ the answer is known to order $n^2$, while for $d = 2, 3$ the correct exponent remains open. The 2D case has been open for 80 years, making it one of the most famous problems in combinatorial geometry.",
+    "mathContext": "$f_d(n) = \\max_{P \\subset \\mathbb{R}^d, |P|=n} |\\{\\{p,q\\} : \\|p - q\\| = 1\\}|$. Known: $f_2(n) = \\Theta(n^{1+?})$, $f_d(n) \\sim \\frac{p-1}{2p} n^2$ for $d \\geq 4$ where $p = \\lfloor d/2 \\rfloor$.",
     "significance": "key",
-    "relatedConcepts": [
-      "unit-distance",
-      "combinatorial-geometry",
-      "erdos-1946"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["unit-distance graph", "combinatorial geometry", "extremal function", "Szemerédi-Trotter theorem"],
+    "prerequisites": ["Euclidean distance", "asymptotic notation"]
   },
   {
-    "id": "ann-e1085-definitions",
+    "id": "ann-e1085-point-config",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 55,
-      "endLine": 82
-    },
+    "range": { "startLine": 52, "endLine": 54 },
     "type": "definition",
-    "title": "Core Definitions",
-    "content": "**PointConfig d n**: n points in ℝ^d\n  Fin n → EuclideanSpace ℝ (Fin d)\n\n**distinctPairs n**: Set of ordered pairs (i,j) with i < j\n\n**unitDistanceCount P**: Count pairs at distance exactly 1\n  |{(i,j) : dist(P(i), P(j)) = 1}|\n\n**axiom maxUnitDistances d n**: The maximum f_d(n)\n\n**axiom maxUnitDistances_spec**: Achieved by some configuration\n**axiom maxUnitDistances_bound**: Upper bound for all configs",
-    "mathContext": "Using EuclideanSpace from Mathlib provides proper distance computation. The function f_d(n) is the central object of study.",
+    "title": "Point Configuration in $\\mathbb{R}^d$",
+    "content": "Defines `PointConfig d n` as a function from `Fin n` to `EuclideanSpace ℝ (Fin d)`, representing $n$ points in $d$-dimensional Euclidean space. This is the base type for all unit-distance counting. Using Mathlib's `EuclideanSpace` provides access to the `dist` function and inner product space structure needed for distance computations.",
+    "mathContext": "$P : \\{1, \\ldots, n\\} \\to \\mathbb{R}^d$, a labeled $n$-point configuration.",
     "significance": "key",
-    "relatedConcepts": [
-      "euclidean-space",
-      "distance",
-      "maximum"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["Euclidean space", "finite point set", "labelled configuration"],
+    "prerequisites": ["EuclideanSpace from Mathlib", "Fin type"]
   },
   {
-    "id": "ann-e1085-trivial",
+    "id": "ann-e1085-distinct-pairs",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 90,
-      "endLine": 97
-    },
-    "type": "concept",
-    "title": "Trivial Bounds",
-    "content": "**axiom trivial_upper_bound**:\n  f_d(n) ≤ n(n-1)/2 = C(n,2)\n\nAt most every pair can be unit distance.\n\n**axiom linear_lower_bound**:\n  f_d(n) ≥ n - 1 for d ≥ 1, n ≥ 2\n\nPlace n points at consecutive integers on a line.",
-    "mathContext": "The trivial bounds show f_d(n) = Θ(n) at minimum and O(n²) at maximum. The interesting question is the exact exponent.",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Distinct Pairs Index Set",
+    "content": "Defines the set of ordered pairs $(i, j)$ with $i < j$, used to enumerate unordered pairs without double-counting. This canonical indexing ensures each pair $\\{i, j\\}$ is counted exactly once. The `Finset.filter` over `Finset.univ` selects exactly $\\binom{n}{2}$ pairs from $\\text{Fin}(n) \\times \\text{Fin}(n)$.",
+    "mathContext": "$\\text{distinctPairs}(n) = \\{(i,j) \\in \\text{Fin}(n)^2 : i < j\\}$, with $|\\text{distinctPairs}(n)| = \\binom{n}{2}$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "trivial-bound",
-      "linear",
-      "quadratic"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["binomial coefficient", "unordered pairs", "graph edges"],
+    "prerequisites": ["Finset.filter", "Fin ordering"]
   },
   {
-    "id": "ann-e1085-d2",
+    "id": "ann-e1085-unit-count",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 106,
-      "endLine": 130
-    },
-    "type": "concept",
-    "title": "Dimension 2 (Classical - OPEN)",
-    "content": "**axiom erdos_1946_lower_d2**:\n  f_2(n) > n^{1 + c/log log n} for some c > 0\n\nErdős's 1946 grid-like construction.\n\n**axiom sst_1984_upper_d2**:\n  f_2(n) = O(n^{4/3})\n\nSpencer-Szemerédi-Trotter used the crossing number inequality.\n\n**def erdos_1085_2d_conjecture**: f_2(n) = O(n^{1+o(1)})\n\n**axiom erdos_1085_2d_open**: The 2D conjecture remains OPEN!\n\nThe gap between n^{1+o(1)} and n^{4/3} has persisted since 1946.",
-    "mathContext": "This is perhaps the most famous open problem in discrete geometry. The SST upper bound improved Erdős's original O(n^{3/2}).",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "Unit-Distance Count",
+    "content": "Counts the number of pairs at distance exactly 1 in a configuration by filtering `distinctPairs` for those with `dist (P p.1) (P p.2) = 1`. This is the edge count of the unit-distance graph $G_1(P)$. The function is `noncomputable` because equality of real-valued distances involves non-decidable equality in Lean's constructive logic.",
+    "mathContext": "$\\text{unitDistanceCount}(P) = |\\{(i,j) : i < j,\\, \\|P(i) - P(j)\\| = 1\\}|$",
     "significance": "key",
-    "relatedConcepts": [
-      "erdos-1946",
-      "sst-1984",
-      "crossing-number"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["unit-distance graph", "contact number", "distance multiset"],
+    "prerequisites": ["dist function", "Finset.filter", "noncomputable definition"]
   },
   {
-    "id": "ann-e1085-d3",
+    "id": "ann-e1085-max-axiom",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 138,
-      "endLine": 160
-    },
+    "range": { "startLine": 67, "endLine": 71 },
     "type": "concept",
-    "title": "Dimension 3 (Partially OPEN)",
-    "content": "**axiom erdos_1960_lower_d3**:\n  f_3(n) = Ω(n^{4/3} log log n)\n\nGeneralizes 2D using spherical caps.\n\n**axiom cegsw_1990_upper_d3**:\n  f_3(n) = O(n^{3/2} β(n))\n\nwhere β is inverse Ackermann (very slow growing).\n\n**def erdos_1085_3d_open_question**: Is f_3(n) = O(n^{4/3} log log n)?\n\n**axiom erdos_1085_3d_open**: This remains OPEN.",
-    "mathContext": "The 3D case has a similar gap to 2D but with different exponents. The CEGSW bound uses sophisticated computational geometry.",
+    "title": "Axiom: Maximum Unit Distances $f_d(n)$",
+    "content": "The central object is axiomatized: `maxUnitDistances d n` represents $f_d(n) = \\max_P \\text{unitDistanceCount}(P)$ over all $n$-point configurations in $\\mathbb{R}^d$. Axiomatization is necessary because the supremum over an uncountable space of configurations cannot be directly computed in Lean. The axiom count of 1 reflects that all other results in this file are definitions or comments, not proved theorems.",
+    "mathContext": "$f_d(n) = \\max\\{\\text{unitDistanceCount}(P) : P \\in (\\mathbb{R}^d)^n\\}$",
     "significance": "key",
-    "relatedConcepts": [
-      "erdos-1960",
-      "cegsw-1990",
-      "inverse-ackermann"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["extremal function", "supremum", "Turán-type problem"],
+    "prerequisites": ["axiom keyword in Lean", "optimization over configurations"]
   },
   {
-    "id": "ann-e1085-d4plus",
+    "id": "ann-e1085-2d-conjecture",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 169,
-      "endLine": 187
-    },
+    "range": { "startLine": 79, "endLine": 84 },
     "type": "concept",
-    "title": "Dimension ≥ 4 (Essentially Solved)",
-    "content": "**def lenzCoefficient d**: (p-1)/(2p) where p = ⌊d/2⌋\n\n**axiom lenz_lower_d4**: Lenz construction gives\n  f_d(n) ≥ (p-1)/(2p)·n² - O(1)\n\nPlace n/2 points on each of two orthogonal unit circles.\n\n**axiom erdos_stone_upper_d4**: Erdős-Stone gives\n  f_d(n) ≤ ((p-1)/(2p) + o(1))·n²\n\nFor d ≥ 4: f_d(n) ≈ (p-1)/(2p)·n²",
-    "mathContext": "The Lenz construction is elegant: orthogonal circles in ℝ^d give near-optimal unit distance counts.",
+    "title": "The 2D Conjecture: $f_2(n) = n^{1+o(1)}$",
+    "content": "Formalizes Erdős's conjecture that $f_2(n)$ is at most $n^{1+o(1)}$, meaning the lower bound $n^{1+c/\\log\\log n}$ is essentially tight. If true, this would mean the Spencer-Szemerédi-Trotter $O(n^{4/3})$ upper bound is far from optimal. The formalization encodes this via an explicit constant $C$ and the double-logarithmic denominator. This has been open since Erdős's 1946 paper — one of the longest-standing problems in discrete geometry.",
+    "mathContext": "$\\exists C > 0 : f_2(n) \\leq C \\cdot n^{1+c/\\log\\log n}$ — equivalently, $f_2(n) = n^{1+o(1)}$.",
     "significance": "key",
-    "relatedConcepts": [
-      "lenz-construction",
-      "erdos-stone",
-      "orthogonal-circles"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["Erdős unit distance conjecture", "crossing number inequality", "polynomial method"],
+    "prerequisites": ["Nat.log", "asymptotic notation"]
   },
   {
-    "id": "ann-e1085-exact",
+    "id": "ann-e1085-3d",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 195,
-      "endLine": 213
-    },
+    "range": { "startLine": 86, "endLine": 95 },
     "type": "concept",
-    "title": "Exact Results (d ≥ 4)",
-    "content": "**axiom brass_1997_d4**: EXACT for d = 4\n  f_4(n) = ⌊n²/4⌋ + n - ⌊n/2⌋ - 1 for n ≥ 3\n\n**axiom swanepoel_2009_even**: EXACT for even d ≥ 6\n  f_d(n) = (p-1)/(2p)·n² + O(n)\n\n**axiom erdos_pach_1990_odd**: For odd d ≥ 5\n  f_d(n) = (p-1)/(2p)·n² ± O(n^{4/3})\n\nThe high-dimensional cases are completely resolved!",
-    "mathContext": "Brass and Swanepoel gave exact closed-form expressions. The odd-dimensional case has a larger error term but is still tight.",
+    "title": "Dimension 3: The Partially Open Case",
+    "content": "The 3D case sits between the fully open 2D case and the resolved high-dimensional cases. The lower bound $\\Omega(n^{4/3} \\log\\log n)$ (Erdős 1960) uses spherical-cap constructions generalizing the 2D grid. The upper bound $O(n^{3/2} \\beta(n))$ (Clarkson et al. 1990) involves the inverse Ackermann function $\\beta(n)$ from Davenport-Schinzel sequence theory. The open question is whether the lower bound is tight.",
+    "mathContext": "$n^{4/3} \\log\\log n \\ll f_3(n) \\ll n^{3/2} \\beta(n)$, where $\\beta(n)$ is the inverse Ackermann function.",
     "significance": "key",
-    "relatedConcepts": [
-      "brass-1997",
-      "swanepoel-2009",
-      "erdos-pach-1990"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["Davenport-Schinzel sequences", "inverse Ackermann function", "spherical cap construction"],
+    "prerequisites": ["Nat.sqrt", "Nat.log"]
   },
   {
-    "id": "ann-e1085-examples",
+    "id": "ann-e1085-lenz",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 219,
-      "endLine": 230
-    },
-    "type": "concept",
-    "title": "Small Examples",
-    "content": "**axiom example_d2_n3**: f_2(3) = 3\n  Equilateral triangle.\n\n**axiom example_d2_n4**: f_2(4) = 5\n  NOT the square (which gives 4)!\n\n**axiom example_d2_n5**: f_2(5) = 7\n\n**axiom example_d3_n4**: f_3(4) = 6\n  Regular tetrahedron with edge 1.",
-    "mathContext": "The optimal 4-point configuration in 2D is surprising: it beats the square. Small cases often have non-obvious optima.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "small-cases",
-      "equilateral",
-      "tetrahedron"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e1085-connections",
-    "proofId": "erdos-1085",
-    "range": {
-      "startLine": 241,
-      "endLine": 249
-    },
-    "type": "concept",
-    "title": "Connections",
-    "content": "**axiom crossing_number_connection**:\n  f_2(n)² ≤ O(n³)\n\nThe unit distance graph has crossing number related to f_2(n).\n\n**axiom incidence_bound**:\n  f_2(n) ≤ n²\n\nRelates to point-circle incidences where all circles have radius 1.",
-    "mathContext": "The SST upper bound comes from crossing number arguments. Incidence geometry provides another perspective on the problem.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "crossing-number",
-      "incidence-geometry",
-      "unit-circles"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e1085-verified",
-    "proofId": "erdos-1085",
-    "range": {
-      "startLine": 267,
-      "endLine": 274
-    },
-    "type": "concept",
-    "title": "High Dimensions Solved",
-    "content": "**axiom high_dim_solved**:\nFor d ≥ 4, ∃ C such that ∀ n ≥ 1:\n  (p-1)/(2p)·n² - C ≤ f_d(n) ≤ (p-1)/(2p)·n² + Cn²/10\n\n**Follows from**:\n1. Lower: Lenz construction (lenz_lower_d4)\n2. Upper: Erdős-Stone theorem (erdos_stone_upper_d4)\n\nThe high-dimensional case (d ≥ 4) is essentially solved, with f_d(n) ≈ (p-1)/(2p)·n² where p = ⌊d/2⌋.",
-    "mathContext": "This axiom captures the resolution of the high-dimensional case by combining Lenz's construction with the Erdős-Stone theorem.",
+    "range": { "startLine": 104, "endLine": 108 },
+    "type": "definition",
+    "title": "Lenz Construction and Coefficient",
+    "content": "The Lenz construction achieves near-optimal unit distances for $d \\geq 4$: place $n/p$ points on each of $p = \\lfloor d/2 \\rfloor$ orthogonal unit circles in $\\mathbb{R}^d$. Every point on one circle is at distance $\\sqrt{2}$ from every point on another (since the circles are orthogonal with radius 1). Scaling makes these unit distances, giving $\\sim \\frac{p-1}{2p} n^2$ pairs. The `lenzCoefficient` computes $(p-1)/(2p)$ as a rational number. This construction is remarkably simple yet optimal for $d \\geq 4$.",
+    "mathContext": "$\\text{lenzCoefficient}(d) = \\frac{\\lfloor d/2 \\rfloor - 1}{2 \\lfloor d/2 \\rfloor}$. For $d = 4$: $1/4$; for $d = 6$: $1/3$.",
     "significance": "key",
-    "relatedConcepts": [
-      "high-dimensional",
-      "lenz-construction",
-      "erdos-stone"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["orthogonal circles", "product construction", "Turán graph", "Erdős-Stone theorem"],
+    "prerequisites": ["orthogonal subspaces", "rational arithmetic"]
   },
   {
     "id": "ann-e1085-summary",
     "proofId": "erdos-1085",
-    "range": {
-      "startLine": 251,
-      "endLine": 265
-    },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Erdős Problem #1085: PARTIALLY SOLVED**\n\n**OPEN (d = 2)**: Gap between n^{1+o(1)} and n^{4/3} since 1946!\n**OPEN (d = 3)**: Gap between n^{4/3} log log n and n^{3/2}\n**SOLVED (d = 4)**: Exact formula (Brass 1997)\n**SOLVED (d ≥ 6 even)**: Exact formulas (Swanepoel 2009)\n**SOLVED (d ≥ 5 odd)**: Tight to n^{4/3} (Erdős-Pach 1990)\n\n**Verified**: high_dim_solved theorem ✓\n\n**Main Open Question**: Is f_2(n) = n^{1+o(1)}?",
-    "mathContext": "The low-dimensional cases (d=2,3) remain the frontier. The 80-year-old gap in d=2 is one of the most stubborn in combinatorics.",
+    "range": { "startLine": 110, "endLine": 126 },
+    "type": "context",
+    "title": "Summary: Status by Dimension",
+    "content": "The summary crystallizes the dimension-by-dimension status of Problem #1085. The parity phenomenon for $d \\geq 4$ is particularly striking: even dimensions have exact formulas (Brass for $d = 4$, Swanepoel for $d \\geq 6$), while odd dimensions have $O(n^{4/3})$ error terms (Erdős-Pach 1990). This parity arises because the Lenz construction on $p$ circles is exactly optimized when $d = 2p$ (even), but has slack when $d = 2p + 1$ (odd). The main open question — is $f_2(n) = n^{1+o(1)}$? — has resisted all known techniques for 80 years.",
+    "mathContext": "$d \\geq 4$: $f_d(n) = \\frac{p-1}{2p} n^2 + o(n^2)$. $d = 2$: $n^{1+o(1)} \\leq f_2(n) \\leq O(n^{4/3})$ — OPEN.",
     "significance": "key",
-    "relatedConcepts": [
-      "problem-status",
-      "partially-solved",
-      "open-questions"
-    ],
-    "prerequisites": []
+    "relatedConcepts": ["even-odd parity", "problem classification", "open problems in combinatorics"],
+    "prerequisites": ["asymptotic analysis", "extremal graph theory"]
   }
 ]
