@@ -39,15 +39,15 @@
     ],
     "dateAdded": "2025-12-28",
     "wiedijkNumber": 46,
-    "axiomCount": 9,
-    "lineCount": 344,
+    "axiomCount": 6,
+    "lineCount": 360,
     "prerequisites": [
       "Complex numbers and polynomial evaluation",
       "Cubic equation solution (Cardano's formula)",
       "Quadratic formula for complex coefficients",
       "Completing the square and factorization techniques"
     ],
-    "assumptions": "9 axioms: depressed_quartic_forward, depressed_quartic_backward, ferrari_factorization_forward, and 6 more. See Lean source for complete statements.",
+    "assumptions": "6 axioms: ferrari_factorization_forward, ferrari_factorization_backward, quartic_has_four_roots, biquadratic_forward, biquadratic_backward, ferrari_roots_verify. 3 axioms proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -190,9 +190,9 @@
       "Complex"
     ],
     "namespace": "GeneralQuartic",
-    "lineCount": 344,
-    "axiomCount": 9,
-    "theoremCount": 6,
+    "lineCount": 360,
+    "axiomCount": 6,
+    "theoremCount": 9,
     "definitionCount": 5
   },
   "mainTheorems": [

@@ -71,8 +71,13 @@ def lemniscateBoundary (f : ℂ[X]) (c : ℝ) : Set ℂ :=
 Lemniscates are closed and (for non-constant polynomials) compact.
 -/
 
-/-- Lemniscates are closed sets -/
-axiom lemniscate_isClosed (f : ℂ[X]) (c : ℝ) : IsClosed (lemniscate f c)
+/-- Lemniscates are closed sets.
+    Proof: {z | ‖f.eval z‖ ≤ c} is the preimage of Iic c under the continuous
+    function z ↦ ‖f.eval z‖. -/
+theorem lemniscate_isClosed (f : ℂ[X]) (c : ℝ) : IsClosed (lemniscate f c) := by
+  unfold lemniscate
+  apply isClosed_le _ continuous_const
+  fun_prop
 
 /-- For positive degree polynomials, lemniscates are bounded (hence compact) -/
 axiom lemniscate_isBounded (f : ℂ[X]) (hf : f.natDegree > 0) (c : ℝ) (hc : c > 0) :
@@ -252,9 +257,11 @@ def maxNonConvexComponents (d : ℕ) : ℕ :=
   -- This is defined abstractly; the exact value is unknown
   d  -- Placeholder upper bound (at most d components total)
 
-/-- For degree ≥ 4, at least one non-convex component can occur -/
-axiom nonconvex_exists_degree_ge_4 :
-    ∀ d ≥ 4, maxNonConvexComponents d ≥ 1
+/-- For degree ≥ 4, at least one non-convex component can occur.
+    (Trivially true since maxNonConvexComponents d = d by definition.) -/
+theorem nonconvex_exists_degree_ge_4 :
+    ∀ d ≥ 4, maxNonConvexComponents d ≥ 1 := by
+  intro d hd; unfold maxNonConvexComponents; omega
 
 /-- Goodman's open question: characterize maxNonConvexComponents precisely -/
 def goodmanOpenQuestion : Prop :=

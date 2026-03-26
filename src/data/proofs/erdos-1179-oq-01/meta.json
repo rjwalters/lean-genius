@@ -7,7 +7,7 @@
     "author": "Open Question (Erdős #1179)",
     "sourceUrl": "https://erdosproblems.com/1179",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
     "tags": [
       "erdos",
@@ -15,18 +15,19 @@
       "additive-combinatorics",
       "probability",
       "analysis",
-      "open-question"
+      "open-question",
+      "fourier-analysis"
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 1,
-    "theoremCount": 11,
-    "definitionCount": 5,
-    "lineCount": 286,
+    "badge": "formalized",
+    "sorries": 5,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 7,
+    "lineCount": 414,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "open-question",
-    "assumptions": "One axiom: fourier_error_bound (corrected Fourier analysis bound for reprCount deviations in ℤ/pℤ via character sums, with proper 2^k/p scaling factor and k-1 exponent for 0∈A). The erdos_renyi_decay theorem is now PROVED from this axiom via geometric decay of |cos(π/p)|^k. All foundational representation count lemmas (partition identity, monotonicity, coverage growth, singleton bound, base cases) are fully proved with zero sorries.",
+    "assumptions": "Zero axioms. Five sorries remain in the Fourier analysis infrastructure: (1) reprCount_fourier_expansion (the core Fourier inversion identity on Z/pZ via character orthogonality and subset product identity), (2) norm_one_add_omegap_pow (|1+omega^m| = 2|cos(pi*m/p)|), (3) abs_cos_mul_pi_div_le (|cos(pi*m/p)| <= cos(pi/p) for m in {1,...,p-1}), (4) fourier_product_bound (product of character factors bounded by 2^k*cos(pi/p)^(k-1)), (5) fourier_error_bound assembly (combining Fourier expansion with product bounds via triangle inequality). All foundational lemmas and erdos_renyi_decay are fully proved.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

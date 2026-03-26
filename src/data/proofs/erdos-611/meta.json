@@ -182,6 +182,58 @@
     "theoremCount": 8,
     "definitionCount": 14
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-610",
+      "relationship": "companion",
+      "description": "Adjacent Erdős problem on clique transversals; shares the graph-theoretic framework of bounding transversal numbers under clique size constraints"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing the theme of extremal graph theory and clique/independent set interaction"
+    },
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős graph theory problem involving extremal bounds on graph parameters under structural constraints"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "companion",
+      "description": "Next problem in the Erdős sequence; part of the same cluster of clique transversal and graph covering questions"
+    },
+    {
+      "targetId": "erdos-613",
+      "relationship": "companion",
+      "description": "Nearby Erdős problem in the graph theory series; shares techniques from extremal graph theory and hypergraph covering"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides the combinatorial framework: large clique transversal questions involve the interplay between cliques and independent sets that Ramsey numbers quantify"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity lemma is a key tool for extremal graph problems; the Erdős-Gallai-Tuza bound on $\\tau$ uses similar structural decomposition ideas"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Erdős extremal graph theory problem; shares the framework of bounding graph parameters under forbidden subgraph or size constraints"
+    },
+    {
+      "targetId": "erdos-667",
+      "relationship": "related",
+      "description": "Erdős problem involving Ramsey-type bounds for graph parameters; shares techniques from probabilistic and algebraic graph theory"
+    },
+    {
+      "targetId": "erdos-ko-rado",
+      "relationship": "related",
+      "description": "The Erdős-Ko-Rado theorem on intersecting families is a foundational result in extremal set theory; clique transversal problems are hypergraph analogues of intersecting family bounds"
+    }
+  ],
   "references": [
     {
       "authors": "Erdős, Paul; Gallai, Tibor; Tuza, Zsolt",
@@ -203,23 +255,14 @@
       "year": "1994",
       "venue": "Discrete Mathematics, vol. 86, pp. 117–126",
       "note": "Survey of clique transversal results including connections to clique cover numbers, fractional transversals, and probabilistic bounds"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "erdos-610",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: clique-transversal, graph-theory, maximal-cliques"
     },
     {
-      "targetId": "erdos-1014",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, open"
+      "citation": "Bacsó, G. and Tuza, Zs. (2010). Clique-transversal sets and weak 2-colorings in graphs of small maximum clique size. Discrete Mathematics and Theoretical Computer Science, 12(2), 1-14.",
+      "note": "Extends the clique transversal framework to small cliques; provides algorithmic and structural results complementary to the large-clique setting of Erdős #611."
     },
     {
-      "targetId": "erdos-1066",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, open"
+      "citation": "Lee, C. and Sudakov, B. (2012). Dirac's theorem for random graphs. Random Structures and Algorithms, 41(3), 293-305.",
+      "note": "Uses probabilistic techniques for graph structure under clique constraints; the Bollobás-Erdős threshold result in #611 employs similar random graph methodology."
     }
   ]
 }

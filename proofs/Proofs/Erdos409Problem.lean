@@ -144,12 +144,24 @@ axiom erdos_409_same_prime :
     {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
 
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
-    For each prime p, the natural density of {n : ∃ k, iterate(n) = p}. -/
-axiom erdos_409_density :
+    Note: The formalization only states the trivial existence of a value in [0,1].
+    The full question asks for the actual density value and whether it is positive. -/
+theorem erdos_409_density :
   ∀ p : ℕ, p.Prime →
-    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 -- density exists in [0,1]
+    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 :=
+  fun _ _ => ⟨0, le_refl 0, by norm_num⟩
 
 /- ## Basic Properties -/
+
+/-- Fixed points of totientPlusOne are exactly the primes:
+    totientPlusOne n = n ↔ n is prime (for n > 1).
+    Forward: if not prime, iterate_decreasing gives strict decrease.
+    Backward: φ(p) + 1 = (p-1) + 1 = p for prime p. -/
+theorem totientPlusOne_eq_self_iff_prime (n : ℕ) (hn : n > 1) :
+    totientPlusOne n = n ↔ n.Prime := by
+  constructor
+  · intro h; by_contra hnp; exact absurd h (ne_of_gt (iterate_decreasing n hn hnp))
+  · intro hp; unfold totientPlusOne; rw [hp.totient]; omega
 
 /-- Helper: totientIterate n 0 = n (zero iterations is identity). -/
 theorem totientIterate_zero (n : ℕ) : totientIterate n 0 = n := rfl
@@ -265,7 +277,27 @@ theorem two_fixed_point : totientPlusOne 2 = 2 := by
 theorem four_to_three : totientPlusOne 4 = 3 := by
   native_decide
 
-/-- F(n) = 1 infinitely often: whenever φ(n) + 1 is prime,
-    which happens infinitely often. -/
-axiom one_iteration_infinite :
-  {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite
+/-- F(n) = 1 infinitely often: the set {n > 1 | φ(n)+1 prime} is infinite.
+    Proof: for every odd prime p, φ(2p) = φ(2)·φ(p) = 1·(p−1), so
+    φ(2p)+1 = p is prime. Since odd primes are infinite, so is this set. -/
+theorem one_iteration_infinite :
+    {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite := by
+  -- The set of odd primes {p prime | p ≠ 2} is infinite
+  have h_odd_inf : (setOf Nat.Prime \ {2}).Infinite :=
+    Nat.infinite_setOf_prime.diff (Set.finite_singleton 2)
+  -- Map odd primes to our target set via p ↦ 2p (injective on ℕ)
+  apply Set.Infinite.mono _
+    (Set.Infinite.image (2 * ·) h_odd_inf (fun a _ b _ h => by omega))
+  -- Show {2p | p odd prime} ⊆ {n > 1 | (totientPlusOne n).Prime}
+  rintro n ⟨p, hp_mem, rfl⟩
+  have hp : p.Prime := (Set.mem_diff _).mp hp_mem |>.1
+  have hp2 : p ≠ 2 := fun h =>
+    (Set.mem_diff _).mp hp_mem |>.2 (Set.mem_singleton_iff.mpr h)
+  refine ⟨by omega, ?_⟩
+  -- Key computation: totientPlusOne (2*p) = p
+  suffices h : totientPlusOne (2 * p) = p from h ▸ hp
+  unfold totientPlusOne
+  have hcop : Nat.Coprime 2 p :=
+    Nat.coprime_two_left.mpr (hp.odd_of_ne_two hp2)
+  rw [Nat.totient_mul hcop, Nat.totient_prime Nat.prime_two, Nat.totient_prime hp]
+  have := hp.two_le; omega

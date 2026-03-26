@@ -98,3 +98,31 @@ theorem leastPrimeFactor_le_sqrt (n : ℕ) (hn : 2 ≤ n) (hc : ¬n.Prime) :
     rwa [Real.sqrt_eq_rpow] at h
   rw [← Real.sqrt_sq (Nat.cast_nonneg (n.minFac))]
   exact Real.sqrt_le_sqrt (by exact_mod_cast hsq)
+
+/- ## Sum properties -/
+
+/-- The composite sum is non-negative. -/
+theorem compositeSum_nonneg (x : ℕ) : 0 ≤ compositeSum x := by
+  unfold compositeSum
+  apply Finset.sum_nonneg
+  intro n _
+  split_ifs with h
+  · exact le_refl 0
+  · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- The composite sum is monotonically non-decreasing. -/
+theorem compositeSum_mono {x y : ℕ} (hxy : x ≤ y) : compositeSum x ≤ compositeSum y := by
+  unfold compositeSum
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro n hn; simp only [Finset.mem_Icc] at *; omega
+  · intro n _ _
+    split_ifs with h
+    · exact le_refl 0
+    · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- The interval sum is non-negative. -/
+theorem intervalSum_nonneg (a b : ℕ) : 0 ≤ intervalSum a b := by
+  unfold intervalSum
+  apply Finset.sum_nonneg
+  intro n _
+  exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)

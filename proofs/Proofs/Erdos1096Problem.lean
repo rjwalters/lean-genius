@@ -25,12 +25,7 @@ References:
 - Erdős-Joó-Schnitzer [EJS96]: refinements for q < φ
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Set Nat Real
 
@@ -94,24 +89,81 @@ have absolute value < 1.
 -/
 
 /-- Pisot-Vijayaraghavan number predicate.
-    Axiomatized because the full definition requires algebraic number theory. -/
-axiom IsPisot (q : ℝ) : Prop
+    A real algebraic integer θ > 1 is a Pisot number if it is a root of
+    a monic integer polynomial whose other complex roots all have absolute
+    value strictly less than 1.
+
+    Previously axiomatized; now defined concretely using polynomial roots. -/
+def IsPisot (q : ℝ) : Prop :=
+  1 < q ∧ ∃ p : Polynomial ℤ, p.Monic ∧
+    (Polynomial.aeval q p = 0) ∧
+    (∀ z : ℂ, (p.map (algebraMap ℤ ℂ)).IsRoot z →
+      z ≠ (algebraMap ℝ ℂ q) → Complex.abs z < 1)
 
 /-- The smallest Pisot-Vijayaraghavan number q₀ ≈ 1.3247,
-    the real root of x³ - x - 1 = 0. -/
-axiom smallestPisot : ℝ
+    the unique real root > 1 of x³ - x - 1 = 0.
+    Existence: f(1) = -1 < 0, f(2) = 5 > 0, so by IVT there is a root in (1,2).
+    Uniqueness: f is strictly increasing on (1,∞) since f'(x) = 3x² - 1 > 2 > 0. -/
+noncomputable def smallestPisot : ℝ :=
+  Classical.choose (show ∃ q : ℝ, 1 < q ∧ q < 2 ∧ q ^ 3 = q + 1 by
+    -- By IVT: f(x) = x³ - x - 1 satisfies f(1) = -1 < 0 and f(2) = 5 > 0
+    have h_cont : Continuous (fun x : ℝ => x ^ 3 - x - 1) := by fun_prop
+    have h_f1 : (1 : ℝ) ^ 3 - 1 - 1 = -1 := by norm_num
+    have h_f2 : (2 : ℝ) ^ 3 - 2 - 1 = 5 := by norm_num
+    obtain ⟨c, hc_mem, hc_eq⟩ := intermediate_value_zero_of_neg_of_pos
+      (show (1 : ℝ) ≤ 2 from by norm_num)
+      (h_cont.continuousOn)
+      (by linarith) (by linarith)
+    exact ⟨c, by linarith [hc_mem.1], by linarith [hc_mem.2],
+      by linarith [hc_eq]⟩)
 
-axiom smallestPisot_value : 1.324 < smallestPisot ∧ smallestPisot < 1.325
+private lemma smallestPisot_spec :
+    1 < smallestPisot ∧ smallestPisot < 2 ∧ smallestPisot ^ 3 = smallestPisot + 1 :=
+  Classical.choose_spec _
 
-axiom smallestPisot_is_pisot : IsPisot smallestPisot
+/-- The smallest Pisot number lies in (1.324, 1.325). -/
+theorem smallestPisot_value : 1.324 < smallestPisot ∧ smallestPisot < 1.325 := by
+  -- From smallestPisot_spec we know q³ = q + 1 and 1 < q < 2.
+  -- Evaluate: 1.324³ = 2.321... < 1.324 + 1 = 2.324 ✓
+  --           1.325³ = 2.327... > 1.325 + 1 = 2.325 ✓
+  -- So the root lies in (1.324, 1.325).
+  obtain ⟨hgt1, hlt2, hcubic⟩ := smallestPisot_spec
+  constructor
+  · -- 1.324 < q: show f(1.324) < 0, i.e., 1.324³ - 1.324 - 1 < 0
+    by_contra h
+    push_neg at h
+    -- If q ≤ 1.324 then q³ ≤ 1.324³ < 2.324 = 1.324 + 1 ≤ q + 1
+    -- But q³ = q + 1, contradiction
+    sorry
+  · -- q < 1.325: show f(1.325) > 0
+    sorry
 
+/-- The smallest Pisot number satisfies its defining polynomial. -/
+theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
+  obtain ⟨hgt1, _, hcubic⟩ := smallestPisot_spec
+  refine ⟨hgt1, ?_⟩
+  -- The polynomial is X³ - X - 1
+  use Polynomial.X ^ 3 - Polynomial.X - 1
+  refine ⟨?_, ?_, ?_⟩
+  · -- Monic: X³ - X - 1 has leading coefficient 1
+    sorry
+  · -- smallestPisot is a root
+    simp only [Polynomial.aeval_sub, Polynomial.aeval_pow, Polynomial.aeval_X,
+      Polynomial.aeval_one, map_one]
+    linarith [hcubic]
+  · -- Other complex roots have |z| < 1
+    -- x³ - x - 1 = (x - q₀)(x² + q₀x + q₀² - 1)
+    -- Discriminant of x² + q₀x + (q₀²-1) = q₀² - 4(q₀²-1) = 4 - 3q₀²
+    -- For q₀ ≈ 1.3247: 4 - 3(1.3247)² ≈ 4 - 5.27 < 0, so complex conjugate roots
+    -- |z|² = q₀² - 1 < 1 iff q₀² < 2 iff q₀ < √2 ≈ 1.414 ✓
+    sorry
+
+/-- Siegel's theorem: q₀ is the smallest Pisot-Vijayaraghavan number. -/
 axiom smallestPisot_minimal :
     ∀ q : ℝ, IsPisot q → q ≥ smallestPisot
 
 /-- The golden ratio φ = (1 + √5)/2 ≈ 1.618 is also a Pisot number. -/
 noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
-
-axiom goldenRatio_is_pisot : IsPisot goldenRatio
 
 /-- The golden ratio satisfies φ > 1. -/
 theorem goldenRatio_gt_one : 1 < goldenRatio := by
@@ -128,6 +180,26 @@ theorem goldenRatio_lt_two : goldenRatio < 2 := by
     have hsq : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
     nlinarith [sq_nonneg (Real.sqrt 5 - 3)]
   linarith
+
+/-- The golden ratio is a Pisot number.
+    Proof: X² - X - 1 is the minimal polynomial of φ.
+    Its other root is (1-√5)/2, with absolute value (√5-1)/2 < 1. -/
+theorem goldenRatio_is_pisot : IsPisot goldenRatio := by
+  refine ⟨goldenRatio_gt_one, ?_⟩
+  -- Polynomial X² - X - 1
+  use Polynomial.X ^ 2 - Polynomial.X - 1
+  refine ⟨?_, ?_, ?_⟩
+  · -- Monic
+    sorry
+  · -- φ is a root: φ² - φ - 1 = 0
+    simp only [Polynomial.aeval_sub, Polynomial.aeval_pow, Polynomial.aeval_X,
+      Polynomial.aeval_one, map_one]
+    unfold goldenRatio
+    have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num : (5:ℝ) ≥ 0)
+    nlinarith
+  · -- Other roots have |z| < 1
+    -- The other root is (1-√5)/2. |(1-√5)/2| = (√5-1)/2 < 1 since √5 < 3.
+    sorry
 
 /- ## Part IV: The Erdős-Joó-Komornik Results (1990)
 -/

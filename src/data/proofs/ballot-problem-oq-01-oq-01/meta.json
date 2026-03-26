@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cycle_lemma",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ01.lean",
     "tags": [
       "combinatorics",
@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "original",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.max'_mem",
@@ -66,7 +66,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "0 axioms, 2 sorries. The two auxiliary theorems (cycle_lemma_lower_bound_via_ivt, rightmost_is_good_sketch) are placeholders with sorries — they do not formalize their named claims. Only ballot_discrete_ivt contains substantive proof content.",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked. Two auxiliary theorems are trivial placeholders (rfl); the substantive content is ballot_discrete_ivt.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

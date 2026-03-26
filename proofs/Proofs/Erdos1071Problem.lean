@@ -125,6 +125,77 @@ theorem disjoint_implies_endpoint_disjoint (s t : UnitSegment) :
   exfalso
   exact Set.disjoint_iff.mp h ⟨hp.1, hp.2⟩
 
+/- Part 4b: Euclidean Distance Properties -/
+
+/-- Euclidean distance is symmetric -/
+theorem euclidDist_symm (p q : ℝ × ℝ) : euclidDist p q = euclidDist q p := by
+  unfold euclidDist; congr 1; ring
+
+/-- Euclidean distance is non-negative -/
+theorem euclidDist_nonneg (p q : ℝ × ℝ) : 0 ≤ euclidDist p q :=
+  Real.sqrt_nonneg _
+
+/-- Distance from a point to itself is 0 -/
+theorem euclidDist_self (p : ℝ × ℝ) : euclidDist p p = 0 := by
+  unfold euclidDist
+  have : (p.1 - p.1) ^ 2 + (p.2 - p.2) ^ 2 = 0 := by ring
+  rw [this, Real.sqrt_zero]
+
+/-- A unit segment's endpoints are distinct -/
+theorem UnitSegment.endpoints_ne (s : UnitSegment) : s.x1 ≠ s.x2 := by
+  intro h; have := s.unit_length; rw [h, euclidDist_self] at this; linarith
+
+/- Part 4c: Convexity of the Unit Square -/
+
+/-- The unit square [0,1]² is convex: convex combinations stay inside -/
+theorem unitSquare_convex {p q : ℝ × ℝ} (hp : InUnitSquare p) (hq : InUnitSquare q)
+    {t : ℝ} (h0 : 0 ≤ t) (h1 : t ≤ 1) :
+    InUnitSquare ((1 - t) * p.1 + t * q.1, (1 - t) * p.2 + t * q.2) := by
+  obtain ⟨hp1, hp2, hp3, hp4⟩ := hp
+  obtain ⟨hq1, hq2, hq3, hq4⟩ := hq
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> nlinarith
+
+/-- All points on a segment between two unit-square points are in [0,1]² -/
+theorem segment_in_square_all_points {p q : ℝ × ℝ}
+    (hp : InUnitSquare p) (hq : InUnitSquare q) :
+    ∀ r ∈ segmentSet p q, InUnitSquare r := by
+  intro r ⟨t, h0, h1, hrfl⟩; rw [hrfl]; exact unitSquare_convex hp hq h0 h1
+
+/-- SegmentInSquare implies all points on the segment are in the square -/
+theorem packing_segment_all_in_square (s : UnitSegment) (h : SegmentInSquare s) :
+    ∀ r ∈ segmentSet s.x1 s.x2, InUnitSquare r :=
+  segment_in_square_all_points h.1 h.2
+
+/- Part 4d: Concrete Constructions -/
+
+/-- The horizontal segment from (0, 1/2) to (1, 1/2) -/
+noncomputable def horizontalMidSegment : UnitSegment where
+  x1 := (0, 1/2)
+  x2 := (1, 1/2)
+  unit_length := by
+    unfold euclidDist
+    have : ((0 : ℝ) - 1) ^ 2 + ((1 : ℝ) / 2 - 1 / 2) ^ 2 = 1 := by ring
+    rw [this, Real.sqrt_one]
+
+/-- The horizontal mid-segment is in the unit square -/
+theorem horizontalMidSegment_in_square : SegmentInSquare horizontalMidSegment := by
+  dsimp [SegmentInSquare, InUnitSquare, horizontalMidSegment]
+  refine ⟨⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩⟩ <;> norm_num
+
+/-- A singleton set is a valid packing -/
+theorem packing_singleton (s : UnitSegment) (h : SegmentInSquare s) :
+    IsPacking {s} := by
+  constructor
+  · intro t ht; rwa [Set.mem_singleton_iff.mp ht]
+  · intro a ha b hb hab
+    exact absurd ((Set.mem_singleton_iff.mp ha).symm.trans (Set.mem_singleton_iff.mp hb)) hab
+
+/-- There exists a non-empty packing (witness: horizontal mid-segment) -/
+theorem exists_nonempty_packing :
+    ∃ S : Set UnitSegment, IsPacking S ∧ S.Nonempty :=
+  ⟨{horizontalMidSegment}, packing_singleton _ horizontalMidSegment_in_square,
+   Set.singleton_nonempty _⟩
+
 /-
 # Part 5: Danzer's Result (SOLVED)
 -/

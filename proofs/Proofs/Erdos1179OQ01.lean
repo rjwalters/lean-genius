@@ -19,16 +19,7 @@ References:
 - [ErHa76] Erdős, Hall (1976)
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1179OQ01
 
@@ -176,6 +167,121 @@ theorem bounded_implies_sublinear (gEps : ℝ → ℕ → ℕ) (ε : ℝ)
     _ ≤ δ * Real.logb 2 ↑N := by nlinarith
 
 /-
+## Part V-A: Fourier infrastructure for ℤ/pℤ
+
+We develop the minimal discrete Fourier analysis on ℤ/pℤ needed for the
+error bound. The key identity: for A ⊆ ℤ/pℤ of size k,
+
+  F_A(g) = (1/p) ∑_{j=0}^{p-1} ω^{-jg} · ∏_{a∈A} (1 + ω^{ja})
+
+where ω = exp(2πi/p). The j=0 term gives 2^k/p; bounding the j≠0 terms
+gives the error bound.
+
+Infrastructure adapted from RothTheorem.lean's Fourier analysis section.
+-/
+
+/-- Primitive p-th root of unity ω = exp(2πi/p). -/
+private noncomputable def ωp (p : ℕ) : ℂ :=
+  Complex.exp (2 * ↑Real.pi * Complex.I / ↑p)
+
+/-- ω^p = 1: the root of unity has order dividing p. -/
+private lemma ωp_pow_eq_one (p : ℕ) [NeZero p] : ωp p ^ p = 1 := by
+  simp only [ωp, ← Complex.exp_nat_mul]
+  have hp : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne p)
+  rw [show (↑p : ℂ) * (2 * ↑Real.pi * Complex.I / ↑p) =
+      2 * ↑Real.pi * Complex.I from by field_simp]
+  exact Complex.exp_two_pi_mul_I
+
+/-- |ω^n| = 1: every power of ω lies on the unit circle. -/
+private lemma ωp_pow_norm (p n : ℕ) [NeZero p] : ‖ωp p ^ n‖ = 1 := by
+  rw [norm_pow]
+  suffices h : ‖ωp p‖ = 1 by rw [h, one_pow]
+  simp only [ωp, Complex.norm_exp]
+  have : (2 * ↑Real.pi * Complex.I / (↑p : ℂ)).re = 0 := by
+    rw [show (2 : ℂ) * ↑Real.pi * Complex.I / ↑p =
+        ↑(2 * Real.pi / (p : ℝ)) * Complex.I from by push_cast; ring]
+    simp [Complex.mul_re, Complex.I_re, Complex.I_im]
+  rw [this, Real.exp_zero]
+
+/-- ω ≠ 0 (it lies on the unit circle). -/
+private lemma ωp_ne_zero (p : ℕ) [NeZero p] : ωp p ≠ 0 := by
+  intro h; have := ωp_pow_norm p 1; simp [h] at this
+
+/-- The additive character ψ_p(x) = ω^{val(x)} on ℤ/pℤ. -/
+private noncomputable def ψp {p : ℕ} (x : ZMod p) : ℂ :=
+  ωp p ^ ZMod.val x
+
+/-- ψ has norm 1. -/
+private lemma ψp_norm {p : ℕ} [NeZero p] (x : ZMod p) : ‖ψp x‖ = 1 :=
+  ωp_pow_norm p (ZMod.val x)
+
+/-- ψ(0) = 1. -/
+private lemma ψp_zero {p : ℕ} [NeZero p] : ψp (0 : ZMod p) = 1 := by
+  simp [ψp, ZMod.val_zero]
+
+/-- Fourier expansion of reprCount.
+    reprCount A g = (1/p) ∑_j ω^{val(-j·g)} · ∏_{a∈A} (1 + ω^{val(j·a)})
+
+    Proof outline:
+    1. reprCount A g = #{S ⊆ A : ∑S = g}
+    2. By character orthogonality: δ(∑S = g) = (1/p)∑_j ω^{j(g-∑S)}
+    3. Swap sums and use subset product identity (Mathlib's prod_add):
+       ∑_{S⊆A} ∏_{a∈S} ω^{ja} = ∏_{a∈A} (1 + ω^{ja})
+    4. Rearrange to get the stated formula. -/
+private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
+    (A : Finset (ZMod p)) (g : ZMod p) :
+    (reprCount A g : ℂ) =
+      (1 / (p : ℂ)) * ∑ j : ZMod p,
+        (ωp p) ^ ZMod.val (-j * g) *
+          ∏ a ∈ A, (1 + (ωp p) ^ ZMod.val (j * a)) := by
+  sorry
+
+/-- For j = 0 in ℤ/pℤ, the Fourier term equals 2^|A|. -/
+private lemma fourier_j_zero_term {p : ℕ} [NeZero p]
+    (A : Finset (ZMod p)) (g : ZMod p) :
+    (ωp p) ^ ZMod.val (-(0 : ZMod p) * g) *
+      ∏ a ∈ A, (1 + (ωp p) ^ ZMod.val ((0 : ZMod p) * a)) =
+    ↑(2 ^ A.card) := by
+  simp only [zero_mul, neg_zero, ZMod.val_zero, pow_zero, one_mul]
+  rw [show (1 : ℂ) + 1 = 2 from by norm_num]
+  rw [Finset.prod_const, ← Nat.cast_ofNat, ← Nat.cast_pow]
+  simp [nsmul_eq_mul]
+
+/-- For nonzero j and nonzero a in ℤ/pℤ (p prime), val(j*a) ∈ {1,...,p-1}.
+    This means ω^{val(j*a)} is a nontrivial root of unity. -/
+private lemma val_mul_nonzero {p : ℕ} (hp : Nat.Prime p)
+    (j a : ZMod p) (hj : j ≠ 0) (ha : a ≠ 0) :
+    ZMod.val (j * a) ≠ 0 := by
+  intro h
+  rw [ZMod.val_eq_zero] at h
+  have := mul_eq_zero.mp h
+  rcases this with rfl | rfl <;> contradiction
+
+/-- |1 + ω^m| = 2|cos(πm/p)| for any m.
+    Uses the identity |1 + e^{iθ}| = 2|cos(θ/2)|. -/
+private lemma norm_one_add_ωp_pow (p m : ℕ) [NeZero p] :
+    ‖(1 : ℂ) + ωp p ^ m‖ = 2 * |Real.cos (↑m * Real.pi / ↑p)| := by
+  sorry
+
+/-- For m ∈ {1,...,p-1}: |cos(πm/p)| ≤ cos(π/p).
+    This follows from cos being strictly decreasing on [0,π] and the
+    symmetry |cos(π-x)| = |cos(x)|. -/
+private lemma abs_cos_mul_pi_div_le {p : ℕ} (hp : Nat.Prime p)
+    (m : ℕ) (hm_pos : 0 < m) (hm_lt : m < p) :
+    |Real.cos (↑m * Real.pi / ↑p)| ≤ Real.cos (Real.pi / ↑p) := by
+  sorry
+
+/-- Product bound: for j ≠ 0, ∏_{a∈A} |1 + ω^{val(ja)}| ≤ 2^k · cos(π/p)^{k-1}.
+    At most one element a ∈ A can be zero (giving factor 2);
+    all nonzero elements give factor ≤ 2cos(π/p). -/
+private lemma fourier_product_bound {p : ℕ} (hp : Nat.Prime p)
+    (A : Finset (ZMod p)) (k : ℕ) (hAk : A.card = k) (hk : 1 ≤ k)
+    (j : ZMod p) (hj : j ≠ 0) :
+    ∏ a ∈ A, ‖(1 : ℂ) + ωp p ^ ZMod.val (j * a)‖ ≤
+      (2 : ℝ) ^ k * |Real.cos (Real.pi / ↑p)| ^ (k - 1) := by
+  sorry
+
+/-
 ## Part VI: Fourier analysis connection
 -/
 
@@ -212,11 +318,33 @@ private lemma abs_cos_pi_div_prime_lt_one (p : ℕ) (hp : Nat.Prime p) :
 
     **Note**: The original axiom (without 2^k/p factor) was mathematically
     false. Counterexample: A = {1,2} in ℤ/3ℤ gives error 2/3 but the old
-    bound was (3-1)·cos(π/3)² = 1/2 < 2/3. -/
-axiom fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k) :
+    bound was (3-1)·cos(π/3)² = 1/2 < 2/3.
+
+    Proof: From the Fourier expansion (reprCount_fourier_expansion),
+    extract the j=0 term (= 2^k/p), bound the remaining p-1 terms
+    using triangle inequality and the product bound
+    (fourier_product_bound). -/
+theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k) :
   ∀ A : Finset (ZMod p), A.card = k →
     ∀ g : ZMod p, |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p| ≤
-      (↑p - 1 : ℝ) * |Real.cos (Real.pi / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p)
+      (↑p - 1 : ℝ) * |Real.cos (Real.pi / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p) := by
+  intro A hAk g
+  haveI : NeZero p := ⟨hp.ne_zero⟩
+  have hp_pos : (0 : ℝ) < ↑p := Nat.cast_pos.mpr hp.pos
+  -- Step 1: Fourier expansion in ℂ
+  have hfourier := reprCount_fourier_expansion hp A g
+  -- Step 2: The error (reprCount - 2^k/p) in ℂ equals (1/p) times the
+  -- sum over nonzero characters j ≠ 0
+  -- Step 3: |error|_ℝ ≤ |error|_ℂ ≤ (1/p) ∑_{j≠0} |product|
+  -- Step 4: Each |product| ≤ 2^k · cos(π/p)^(k-1) by fourier_product_bound
+  -- Step 5: (p-1) terms gives the final bound
+  -- Full assembly from the helper lemmas:
+  have h_prod_bound := fun j (hj : j ≠ (0 : ZMod p)) =>
+    fourier_product_bound hp A k hAk hk j hj
+  -- The remainder of this proof assembles the Fourier expansion,
+  -- triangle inequality, and product bounds. Each individual step
+  -- is routine real/complex analysis once the key lemmas are established.
+  sorry
 
 /-- For k ≥ clog₂ p + C, the Fourier error decays to at most ε · 2^k/p.
     This is the core of the Erdős-Rényi (1965) approach.

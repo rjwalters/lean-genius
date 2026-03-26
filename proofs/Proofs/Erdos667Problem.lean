@@ -23,12 +23,7 @@ Reference: [Er97f], https://erdosproblems.com/667
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Rat.Defs
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Tactic
+import Mathlib
 
 open Finset SimpleGraph
 
@@ -60,22 +55,35 @@ H(n; p, q) is the largest m such that every n-vertex graph with the
 
 /-- H(n; p, q): the largest clique size guaranteed in any n-vertex graph
     satisfying the (p,q)-density condition.
-    Axiomatized as the precise Ramsey-type extremal function. -/
-axiom cliqueGuarantee : ℕ → ℕ → ℕ → ℕ
+    Defined as: sup {m ≤ n | every n-vertex graph with (p,q)-density has an m-clique}.
+
+    Previously axiomatized; now defined concretely using sSup.
+    Uses Classical.dec for decidability of graph predicates. -/
+open scoped Classical in
+noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
+  sSup {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+    HasDensity G p q → ¬G.CliqueFree m}
 
 -- Notation: H(n; p, q) = cliqueGuarantee n p q
 
 /-- H is monotone in n: more vertices can only help. -/
-axiom cliqueGuarantee_mono_n (p q n : ℕ) :
-    cliqueGuarantee n p q ≤ cliqueGuarantee (n + 1) p q
+theorem cliqueGuarantee_mono_n (p q n : ℕ) :
+    cliqueGuarantee n p q ≤ cliqueGuarantee (n + 1) p q := by
+  sorry
 
-/-- H is monotone in q: more edges per p-set yields larger cliques. -/
-axiom cliqueGuarantee_mono_q (n p q : ℕ) :
-    cliqueGuarantee n p q ≤ cliqueGuarantee n p (q + 1)
+/-- H is monotone in q: more edges per p-set yields larger cliques.
+    Proof: HasDensity G p (q+1) implies HasDensity G p q, so the density
+    condition for q+1 is strictly more restrictive. Universal quantification
+    over a smaller class of graphs makes it easier to guarantee larger cliques. -/
+theorem cliqueGuarantee_mono_q (n p q : ℕ) :
+    cliqueGuarantee n p q ≤ cliqueGuarantee n p (q + 1) := by
+  sorry
 
-/-- H(n; p, q) ≤ n: cannot guarantee a clique larger than the graph. -/
-axiom cliqueGuarantee_le_n (n p q : ℕ) :
-    cliqueGuarantee n p q ≤ n
+/-- H(n; p, q) ≤ n: cannot guarantee a clique larger than the graph.
+    Follows directly from the m ≤ n constraint in the sSup definition. -/
+theorem cliqueGuarantee_le_n (n p q : ℕ) :
+    cliqueGuarantee n p q ≤ n := by
+  sorry
 
 /-
 ## Part III: Boundary Values
@@ -84,14 +92,19 @@ The function c(p,q) has known values at the endpoints.
 -/
 
 /-- When q = C(p-1, 2) + 1, every p-set is a clique, forcing G to be complete.
-    Hence H(n; p, q) = n. -/
-axiom cliqueGuarantee_max (n p : ℕ) (hp : 2 ≤ p) :
-    cliqueGuarantee n p (Nat.choose (p - 1) 2 + 1) = n
+    Hence H(n; p, q) = n.
+    Proof: C(p-1,2)+1 edges in a p-set exceeds the maximum for non-complete
+    graphs, forcing all p-sets (hence all pairs) to be adjacent. -/
+theorem cliqueGuarantee_max (n p : ℕ) (hp : 2 ≤ p) :
+    cliqueGuarantee n p (Nat.choose (p - 1) 2 + 1) = n := by
+  sorry
 
-/-- When q = 0, there is no constraint, so H(n; p, 0) = 1 trivially
-    (every graph has at least one vertex, forming a trivial clique). -/
-axiom cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
-    cliqueGuarantee n p 0 = 1
+/-- When q = 0, there is no constraint, so H(n; p, 0) = 1 trivially.
+    Every graph has at least one vertex (when n ≥ 1), forming a trivial 1-clique.
+    The empty graph on n vertices shows we can't guarantee 2-cliques. -/
+theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
+    cliqueGuarantee n p 0 = 1 := by
+  sorry
 
 /-- Extended monotonicity: H(n; p, q1) ≤ H(n; p, q2) for q1 ≤ q2. -/
 theorem cliqueGuarantee_mono_q_general (n p q1 q2 : ℕ) (h : q1 ≤ q2) :

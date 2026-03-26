@@ -12,11 +12,10 @@ This file extends the base Erdős #1084 formalization with:
 
 ## Axiom Count
 
-9 axioms total:
+8 axioms total (was 9; handshaking lemma now proved):
 - 1 kissing number definition (axiom constant)
 - 3 kissing number values (τ(1)=2, τ(2)=6, τ(3)=12)
 - 1 degree ≤ kissing number bound
-- 1 double-counting identity (sum of degrees = 2 × pairs)
 - 1 FCC cluster lower bound
 - 1 Bezdek-Reid upper bound
 - 1 Harborth formula
@@ -319,11 +318,72 @@ axiom degree_le_kissing (d n : ℕ) (C : SepConfig d n) (i : Fin n) :
     equals twice the number of unit-distance pairs.
 
     Each edge {i,j} contributes 1 to deg(i) and 1 to deg(j).
-    This is a standard graph theory identity, axiomatized here
-    because the formal proof requires careful manipulation of
-    Finset sums over filtered products. -/
-axiom degree_sum_eq_twice_pairs (d n : ℕ) (C : SepConfig d n) :
-  (Finset.univ.sum fun i => unitDegree C i) = 2 * unitPairs C
+    Proved by partitioning ordered pairs into i < j and j < i halves,
+    showing they have equal cardinality via the swap map and dist_comm. -/
+theorem degree_sum_eq_twice_pairs (d n : ℕ) (C : SepConfig d n) :
+    (Finset.univ.sum fun i => unitDegree C i) = 2 * unitPairs C := by
+  simp only [unitDegree, unitPairs]
+  -- Remove the redundant j ≠ i condition (dist(p_i, p_i) = 0 ≠ 1)
+  have hred : ∀ i : Fin n,
+      (Finset.filter (fun j => j ≠ i ∧ dist (C.points i) (C.points j) = 1) Finset.univ) =
+      (Finset.filter (fun j => dist (C.points i) (C.points j) = 1) Finset.univ) := by
+    intro i; ext j; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨And.right, fun h => ⟨fun he => by subst he; simp [dist_self] at h, h⟩⟩
+  simp_rw [hred]; clear hred
+  -- Define the ordered-pair and half-ordered-pair sets
+  set S := Finset.univ.filter (fun p : Fin n × Fin n =>
+    dist (C.points p.1) (C.points p.2) = 1) with hS_def
+  set T := Finset.univ.filter (fun p : Fin n × Fin n =>
+    p.1 < p.2 ∧ dist (C.points p.1) (C.points p.2) = 1) with hT_def
+  -- Step 1: ∑ i, fiber(i).card = S.card (sum of row sizes = total)
+  have h1 : (∑ i : Fin n,
+      (Finset.filter (fun j => dist (C.points i) (C.points j) = 1) Finset.univ).card) =
+      S.card := by
+    rw [← Finset.card_sigma]
+    apply Finset.card_bij (fun (p : (i : Fin n) × Fin n) _ => (p.1, p.2))
+    · intro ⟨i, j⟩ hm
+      simp only [Finset.mem_sigma, Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢
+      exact hm.2
+    · intro ⟨i₁, j₁⟩ _ ⟨i₂, j₂⟩ _ h
+      simp only [Prod.mk.injEq] at h
+      exact Sigma.ext h.1 (heq_of_eq h.2)
+    · intro ⟨i, j⟩ hm
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm
+      exact ⟨⟨i, j⟩, by simp [Finset.mem_sigma, Finset.mem_filter, hm], rfl⟩
+  -- Step 2: S.card = 2 * T.card (partition into i < j and j < i halves)
+  have h2 : S.card = 2 * T.card := by
+    set T' := Finset.univ.filter (fun p : Fin n × Fin n =>
+      p.2 < p.1 ∧ dist (C.points p.1) (C.points p.2) = 1)
+    -- S = T ∪ T'
+    have hunion : S = T ∪ T' := by
+      ext ⟨i, j⟩
+      simp only [S, T, T', Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+      constructor
+      · intro hd
+        rcases lt_trichotomy i j with hij | hij | hij
+        · left; exact ⟨hij, hd⟩
+        · exfalso; subst hij; simp [dist_self] at hd
+        · right; exact ⟨hij, hd⟩
+      · rintro (⟨_, hd⟩ | ⟨_, hd⟩) <;> exact hd
+    -- T and T' are disjoint
+    have hdisj : Disjoint T T' := by
+      rw [Finset.disjoint_filter]
+      intro p _ ⟨h1, _⟩ ⟨h2, _⟩
+      exact absurd h1 (not_lt.mpr (le_of_lt h2))
+    -- |T'| = |T| via the swap map (i,j) ↦ (j,i)
+    have hcard : T'.card = T.card := by
+      apply Finset.card_bij (fun (p : Fin n × Fin n) _ => (p.2, p.1))
+      · intro ⟨i, j⟩ hp
+        simp only [T', T, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+        exact ⟨hp.1, by rw [dist_comm]; exact hp.2⟩
+      · intro ⟨a, b⟩ _ ⟨c, d'⟩ _ h
+        simp only [Prod.mk.injEq] at h
+        exact Prod.ext h.2 h.1
+      · intro ⟨i, j⟩ hp
+        simp only [T, T', Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+        exact ⟨(j, i), ⟨hp.1, by rw [dist_comm]; exact hp.2⟩, by simp⟩
+    rw [hunion, Finset.card_union_of_disjoint hdisj, hcard, two_mul]
+  linarith
 
 /-- Upper bound on unit pairs from kissing number: pairs ≤ τ(d)·n/2.
 
@@ -521,12 +581,12 @@ theorem sqrt_12n_factored (n : ℕ) (hn : n ≥ 1) :
    - iso_exponent_2d, iso_exponent_3d, iso_exponent_pos,
      iso_exponent_lt_one, iso_exponent_monotone
    - harborth_correction_order, sqrt_12n_factored
+   - degree_sum_eq_twice_pairs: handshaking lemma (was axiom, now proved)
    - pairs_le_kissing_bound (from axioms)
 
-   Axioms (9 total):
+   Axioms (8 total):
    - kissingNumber (definition axiom), kissing_1d, kissing_2d, kissing_3d
    - degree_le_kissing
-   - degree_sum_eq_twice_pairs
    - fcc_cluster_pairs
    - bezdek_reid
    - harborth_formula

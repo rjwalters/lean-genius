@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-24T00:48:59.905Z",
-    "iteration": 2,
-    "focus": "Golden ratio infrastructure + import/noncomputable fixes",
+    "iteration": 3,
+    "focus": "9 axioms, 6 sorries. IsPisot and smallestPisot now concrete.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove the 6 remaining sorries",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,26 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: All 14 axioms confirmed as genuinely necessary (deep algebraic number theory). No quick wins.",
+    "progressSummary": "PROGRESS: 5 axioms eliminated (14→9). IsPisot now concrete def, smallestPisot defined via IVT.",
     "builtItems": [
       "goldenRatio_gt_one theorem in Erdos1096Problem.lean (proved: phi > 1)",
       "goldenRatio_lt_two theorem in Erdos1096Problem.lean (proved: phi < 2)",
       "goldenRatio_no_gap_property theorem (derived from axioms)",
       "goldenRatio_gap_bound theorem (derived from axioms + bounds)",
-      "goldenRatio_persistent_gaps theorem (Bugeaud characterization applied to phi)"
+      "goldenRatio_persistent_gaps theorem (Bugeaud characterization applied to phi)",
+      "IsPisot: concrete definition via polynomial roots (was axiom)",
+      "smallestPisot: concrete definition via Classical.choose + IVT (was axiom)",
+      "smallestPisot_spec: lemma extracting properties from the definition",
+      "goldenRatio_gt_one/lt_two: moved before goldenRatio_is_pisot"
     ],
     "insights": [
       "All 14 axioms are necessary: function definitions (qSequence, IsPisot, smallestPisot, qSequenceM) + deep results (EJK1990, Bugeaud1996, EJS1996)",
       "Golden ratio bounds (1 < phi < 2) enable applying gap_universal_bound and bugeaud_characterization axioms",
       "Import Mathlib.Data.Set.Finite is broken in current Mathlib 4.26.0 - replaced with Mathlib.Tactic",
       "gap and gapM definitions need noncomputable annotation since they use axiomatized qSequence/qSequenceM",
-      "Confirmed: all 14 axioms are genuinely deep results (Pisot numbers, gap properties, Bugeaud characterization)"
+      "Confirmed: all 14 axioms are genuinely deep results (Pisot numbers, gap properties, Bugeaud characterization)",
+      "IsPisot can be defined concretely: 1<q + monic int polynomial vanishing at q + all other complex roots have |z|<1",
+      "smallestPisot defined as real root of x³-x-1=0 via IVT (f(1)=-1<0, f(2)=5>0)",
+      "goldenRatio_is_pisot provable: X²-X-1 is the polynomial, other root (1-√5)/2 has |·|<1 since √5<3"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Consider replacing qSequence axiom with constructive definition using Set.enumerateCountable",
-      "Could define IsPisot concretely if Mathlib has MinimalPolynomial + algebraic conjugate infrastructure",
-      "Potential to prove density_near_one from QRepresentable definition for q near 1"
+      "Prove smallestPisot_value sorries using monotonicity of x³-x-1",
+      "Prove monic lemmas for X³-X-1 and X²-X-1 polynomials",
+      "Prove conjugate root bounds for smallestPisot and goldenRatio",
+      "Consider replacing qSequence axiom with constructive definition"
     ]
   },
   "tags": [
@@ -71,18 +79,18 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.904Z",
-  "lastUpdate": "2026-03-24T17:20:00Z",
+  "lastUpdate": "2026-03-26T20:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1096Problem.lean",
       "filename": "Erdos1096Problem.lean",
-      "lineCount": 233,
-      "theoremCount": 10,
-      "axiomCount": 14,
-      "defCount": 7,
-      "sorryCount": 0,
+      "lineCount": 304,
+      "theoremCount": 14,
+      "axiomCount": 9,
+      "defCount": 9,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1096Problem.lean"
     }
