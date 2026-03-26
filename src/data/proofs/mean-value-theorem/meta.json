@@ -167,11 +167,39 @@
   },
   "references": [
     {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Theorie des fonctions analytiques",
+      "year": "1797",
+      "venue": "Paris: Imprimerie de la Republique",
+      "note": "First statement and proof of the general Mean Value Theorem, developed as part of Lagrange's program to base calculus on algebraic function expansions rather than infinitesimals. Chapter 6 derives MVT from the auxiliary-function technique that remains standard today"
+    },
+    {
       "authors": "Cauchy, Augustin-Louis",
-      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "title": "Resume des lecons donnees a l'Ecole royale polytechnique sur le calcul infinitesimal",
       "year": "1823",
       "venue": "Paris: Debure",
-      "note": "Contains the first rigorous statement and proof of the mean value theorem for derivatives"
+      "note": "Contains the first rigorous epsilon-delta proof of the mean value theorem and its generalization to two functions (Cauchy's MVT), which is the key lemma for L'Hopital's rule"
+    },
+    {
+      "authors": "Rolle, Michel",
+      "title": "Demonstration d'une methode pour resoudre les egalitez de tous les degrez",
+      "year": "1691",
+      "venue": "Paris: Jean Cusson",
+      "note": "States and proves the special case f(a) = f(b) implies f'(c) = 0 for polynomials. Rolle originally used this result to critique calculus; the rigorous version for general differentiable functions came later via Cauchy's analysis"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill, 3rd edition",
+      "note": "Chapter 5 presents the standard modern treatment: Rolle's theorem (Theorem 5.8), MVT (Theorem 5.10), and Cauchy's generalization (Theorem 5.9), all derived from the extreme value theorem. The chain Rolle -> MVT -> L'Hopital -> Taylor is the backbone of Part I"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus",
+      "year": "2008",
+      "venue": "Publish or Perish, 4th edition",
+      "note": "Chapter 11 develops MVT with extensive geometric motivation and uses it to prove the fundamental theorem of calculus. Spivak emphasizes that MVT is the only tool that connects local derivative information to global behavior of functions"
     }
   ],
   "crossReferences": [
@@ -214,6 +242,16 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlling exponential approximation errors is essential"
+    },
+    {
+      "targetId": "lhopital",
+      "relationship": "foundational",
+      "description": "L'Hopital's rule is a direct corollary of Cauchy's MVT: for $f(a) = g(a) = 0$ with $g'(x) \\neq 0$ near $a$, applying Cauchy's MVT on $[a, x]$ gives $f(x)/g(x) = f'(c)/g'(c)$ for some $c$ between $a$ and $x$. As $x \\to a$, $c \\to a$ too, yielding $\\lim f(x)/g(x) = \\lim f'(x)/g'(x)$. Without Cauchy's MVT, there is no clean path to L'Hopital's rule"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ relies on MVT-type estimates to control the error in the trapezoidal approximation of $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx$. The Euler-Maclaurin formula, which refines this, uses higher-order MVT (Taylor remainder) at each step"
     }
   ],
   "leanFile": {
