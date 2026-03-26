@@ -90,39 +90,45 @@ noncomputable def depressionCoeffs (a b c d : ℂ) : ℂ × ℂ × ℂ :=
   let r := d - a * c / 4 + a^2 * b / 16 - 3 * a^4 / 256
   (p, q, r)
 
-/-! ## Axiom Catalog
+/-! ## Proved Results and Remaining Axioms
 
-The following axioms capture proof gaps that require extensive algebraic computation or
-connections to other theorems (e.g., Fundamental Theorem of Algebra). These represent
-mathematically sound statements whose formal verification is deferred. -/
+The depressed quartic forward/backward transformations and the resolvent cubic existence
+have been fully proved. The remaining axioms capture Ferrari's factorization and the
+biquadratic special case, which require more intricate algebraic manipulation. -/
 
-/-- **Axiom: Depressed Quartic Forward**
-The substitution y = x - a/4 transforms the general quartic x^4 + ax^3 + bx^2 + cx + d = 0
+/-- **Depressed Quartic Forward** (formerly axiom, now proved)
+The substitution y = x + a/4 transforms the general quartic x^4 + ax^3 + bx^2 + cx + d = 0
 into the depressed form y^4 + py^2 + qy + r = 0. This direction shows that if x is a root
 of the original quartic, then y = x + a/4 is a root of the depressed quartic.
 
-This involves expanding (y - a/4)^4 + a(y - a/4)^3 + b(y - a/4)^2 + c(y - a/4) + d
-and verifying that the y^3 coefficient vanishes and collecting terms gives the claimed
-coefficients p, q, r. The computation is routine but lengthy. -/
-axiom depressed_quartic_forward (a b c d x : ℂ)
+The proof is by the polynomial identity: expanding (x + a/4)^4 + p(x + a/4)^2 + q(x + a/4) + r
+yields exactly x^4 + ax^3 + bx^2 + cx + d, so the result follows from h. -/
+theorem depressed_quartic_forward (a b c d x : ℂ)
     (h : x^4 + a * x^3 + b * x^2 + c * x + d = 0) :
     let shift := a / 4
     let y := x + shift
     let p := b - 3 * a^2 / 8
     let q := c - a * b / 2 + a^3 / 8
     let r := d - a * c / 4 + a^2 * b / 16 - 3 * a^4 / 256
-    y^4 + p * y^2 + q * y + r = 0
+    y^4 + p * y^2 + q * y + r = 0 := by
+  simp only []
+  linear_combination h
 
-/-- **Axiom: Depressed Quartic Backward**
+/-- **Depressed Quartic Backward** (formerly axiom, now proved)
 The inverse direction: if y is a root of the depressed quartic, then x = y - a/4
-is a root of the original quartic. This is the converse transformation. -/
-axiom depressed_quartic_backward (a b c d y : ℂ)
+is a root of the original quartic. This is the converse transformation.
+
+By the same polynomial identity: (y - a/4)^4 + a(y - a/4)^3 + b(y - a/4)^2 + c(y - a/4) + d
+equals y^4 + py^2 + qy + r, so the result follows from h. -/
+theorem depressed_quartic_backward (a b c d y : ℂ)
     (h : let p := b - 3 * a^2 / 8
          let q := c - a * b / 2 + a^3 / 8
          let r := d - a * c / 4 + a^2 * b / 16 - 3 * a^4 / 256
          y^4 + p * y^2 + q * y + r = 0) :
     let x := y - a / 4
-    x^4 + a * x^3 + b * x^2 + c * x + d = 0
+    x^4 + a * x^3 + b * x^2 + c * x + d = 0 := by
+  simp only [] at h ⊢
+  linear_combination h
 
 /-- **Axiom: Ferrari Factorization Forward**
 If y is a root of the depressed quartic and m is a root of the resolvent cubic,
@@ -145,11 +151,21 @@ axiom ferrari_factorization_backward (p q r m α β y : ℂ)
     (h : (y^2 + p/2 + m - α * y + β = 0) ∨ (y^2 + p/2 + m + α * y - β = 0)) :
     y^4 + p * y^2 + q * y + r = 0
 
-/-- **Axiom: Resolvent Cubic Has Root**
+/-- **Resolvent Cubic Has Root** (formerly axiom, now proved)
 By the Fundamental Theorem of Algebra, every polynomial of degree >= 1 over ℂ has a root.
-Since the resolvent cubic has degree 3, it has a root. -/
-axiom resolvent_cubic_has_root (p q r : ℂ) :
-    ∃ m : ℂ, (resolventCubic p q r).eval m = 0
+Since the resolvent cubic has degree 3 (leading coefficient 8 ≠ 0), it has a root. -/
+theorem resolvent_cubic_has_root (p q r : ℂ) :
+    ∃ m : ℂ, (resolventCubic p q r).eval m = 0 := by
+  -- The coefficient of X^3 is 8 ≠ 0
+  have hcoeff : (resolventCubic p q r).coeff 3 ≠ 0 := by
+    simp only [resolventCubic, Polynomial.coeff_add, Polynomial.coeff_C_mul,
+               Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_X]
+    norm_num
+  -- Therefore degree ≠ 0, and by FTA (ℂ is algebraically closed) there exists a root
+  suffices hdeg : (resolventCubic p q r).degree ≠ 0 from
+    IsAlgClosed.exists_root _ hdeg
+  intro h0
+  exact hcoeff (by rw [Polynomial.eq_C_of_degree_le_zero (le_of_eq h0)]; simp [Polynomial.coeff_C])
 
 /-- **Axiom: Quartic Has Four Roots**
 By the Fundamental Theorem of Algebra, a degree 4 polynomial over ℂ has exactly 4 roots
