@@ -144,10 +144,14 @@ axiom erdos_409_same_prime :
     {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
 
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
-    For each prime p, the natural density of {n : ∃ k, iterate(n) = p}. -/
-axiom erdos_409_density :
+    For each prime p, the natural density of {n : ∃ k, iterate(n) = p}.
+    As stated, this is trivially satisfiable (α = 0 works).
+    The deeper open question is whether the density is positive for some p. -/
+theorem erdos_409_density :
   ∀ p : ℕ, p.Prime →
-    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 -- density exists in [0,1]
+    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 := by
+  intro _p _hp
+  exact ⟨0, le_refl 0, zero_le_one⟩
 
 /- ## Basic Properties -/
 
@@ -253,6 +257,25 @@ theorem sigma_growing :
             Finset.sum_le_sum_of_subset_of_nonneg hpair (fun _ _ _ => Nat.zero_le _)
          _ = 1 + n := hpair_sum
   omega
+
+/- ## Structural Properties -/
+
+/-- Every prime is a fixed point of the totient-plus-one map.
+    Since φ(p) = p - 1 for primes, φ(p) + 1 = p. -/
+theorem prime_fixed_point :
+    ∀ p : ℕ, p.Prime → totientPlusOne p = p := by
+  intro p hp
+  unfold totientPlusOne
+  rw [Nat.totient_prime hp]
+  omega
+
+/-- The iteration from 1 reaches 2 in one step: φ(1) + 1 = 2. -/
+theorem one_to_two : totientPlusOne 1 = 2 := by
+  native_decide
+
+/-- The iteration from n=6 reaches 3: φ(6)+1 = 2+1 = 3. -/
+theorem six_to_three : totientPlusOne 6 = 3 := by
+  native_decide
 
 /- ## Small Cases -/
 
