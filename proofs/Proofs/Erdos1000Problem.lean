@@ -400,88 +400,109 @@ theorem phiA_ge_totient' (A : IncreasingSeq) (k : ℕ) :
   exact ⟨⟨dvd_refl _, (A.pos k).ne'⟩,
     fun j hj => Nat.ne_of_gt (A.strictMono (by omega))⟩
 
-/- ## Part IV-D: Complement Formula and Structural Bounds -/
+/- ## Part IV-D: Complement Formula and Used-Divisor Bounds -/
 
-/-- **Complement Formula**: φ_A(k) + Σ_{used} φ(e) = n_k.
-    Splits the identity Σ_{e|n} φ(e) = n into "unused" part (= φ_A(k))
-    and "used" part (divisors appearing as earlier sequence terms).
-    Dual view of phiA_decomposition: instead of summing over unused divisors,
-    we see φ_A as the deficit from total after removing used divisors. -/
-theorem phiA_add_used (A : IncreasingSeq) (k : ℕ) :
-    phiA A k + ((A.seq k).divisors.filter
-      (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).sum Nat.totient = A.seq k := by
+/-- The sum of totients over "used" divisors of n_k —
+    those that appear as a previous term A.seq j for some j < k. -/
+noncomputable def usedSum (A : IncreasingSeq) (k : ℕ) : ℕ :=
+  ((A.seq k).divisors.filter
+    (fun e => ∃ j : ℕ, j < k ∧ e = A.seq j)).sum Nat.totient
+
+/-- Complement formula: φ_A(k) + usedSum(k) = n_k.
+    The unused and used divisors partition all divisors of n_k,
+    and ∑_{e | n} φ(e) = n (Gauss' identity). -/
+theorem phiA_add_usedSum (A : IncreasingSeq) (k : ℕ) :
+    phiA A k + usedSum A k = A.seq k := by
   rw [phiA_decomposition]
-  have h := Finset.sum_filter_add_sum_filter_not
-    (A.seq k).divisors (fun e => ∀ j : ℕ, j < k → e ≠ A.seq j) Nat.totient
-  linarith [Nat.sum_totient (A.seq k)]
+  unfold usedSum
+  -- The unused and used filters partition the divisors
+  have hpart : (A.seq k).divisors.filter (fun e => ∀ j, j < k → e ≠ A.seq j)
+             ∪ (A.seq k).divisors.filter (fun e => ∃ j, j < k ∧ e = A.seq j)
+             = (A.seq k).divisors := by
+    ext e; simp only [mem_union, mem_filter, Nat.mem_divisors]
+    constructor
+    · rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h
+    · intro h
+      by_cases hex : ∃ j, j < k ∧ e = A.seq j
+      · right; exact ⟨h, hex⟩
+      · left; push_neg at hex; exact ⟨h, hex⟩
+  have hdisj : Disjoint
+    ((A.seq k).divisors.filter (fun e => ∀ j, j < k → e ≠ A.seq j))
+    ((A.seq k).divisors.filter (fun e => ∃ j, j < k ∧ e = A.seq j)) := by
+    rw [Finset.disjoint_filter]
+    intro e _ h1 ⟨j, hj, heq⟩
+    exact h1 j hj heq
+  rw [← Finset.sum_union hdisj, hpart, Nat.sum_totient]
 
-/-- The used-divisor φ-sum ≤ n_k − φ(n_k), since n_k itself is always unused
-    (being strictly greater than all previous terms) and contributes φ(n_k). -/
-theorem used_sum_le (A : IncreasingSeq) (k : ℕ) :
-    ((A.seq k).divisors.filter
-      (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).sum Nat.totient
-    ≤ A.seq k - Nat.totient (A.seq k) := by
-  have h_add := phiA_add_used A k
-  have h_ge := phiA_ge_totient A k
+/-- usedSum(k) ≤ n_k - φ_A(k). Direct from the complement formula. -/
+theorem usedSum_le (A : IncreasingSeq) (k : ℕ) :
+    usedSum A k ≤ A.seq k - phiA A k :=
+  Nat.le_sub_of_add_le (by linarith [phiA_add_usedSum A k])
+
+/-- φ_A(k) ≥ 1 for all k: n_k is always an unused divisor with φ(n_k) ≥ 1. -/
+theorem phiA_pos (A : IncreasingSeq) (k : ℕ) :
+    1 ≤ phiA A k := by
+  have := phiA_ge_totient A k
+  have := Nat.totient_pos (A.pos k)
   omega
 
-/-- At most k divisors of n_k are "used" at step k: each used divisor
-    equals A.seq j for some j < k, so the used set injects into {0,...,k-1}. -/
-theorem used_card_le (A : IncreasingSeq) (k : ℕ) :
-    ((A.seq k).divisors.filter
-      (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).card ≤ k := by
-  calc ((A.seq k).divisors.filter
-        (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).card
-      ≤ ((range k).image A.seq).card := by
-        apply Finset.card_le_card
-        intro e he
-        rw [mem_filter] at he
-        rw [mem_image]
-        have ⟨_, hused⟩ := he
-        push_neg at hused
-        obtain ⟨j, hj, heq⟩ := hused
-        exact ⟨j, mem_range.mpr hj, heq.symm⟩
-    _ ≤ (range k).card := Finset.card_image_le
-    _ = k := card_range k
-
-/-- φ_A(k) ≥ 1 for all k, since n_k is always unused and φ(n_k) ≥ 1. -/
-theorem phiA_pos (A : IncreasingSeq) (k : ℕ) : 0 < phiA A k := by
-  calc 0 < Nat.totient (A.seq k) := Nat.totient_pos.mpr (A.pos k)
-    _ ≤ phiA A k := phiA_ge_totient A k
-
-/-- The density ratio is strictly positive for all k. -/
-theorem densityRatio_pos (A : IncreasingSeq) (k : ℕ) : 0 < densityRatio A k := by
+/-- ρ_A(k) > 0 for all k. -/
+theorem densityRatio_pos (A : IncreasingSeq) (k : ℕ) :
+    0 < densityRatio A k := by
   unfold densityRatio
-  exact div_pos (by exact_mod_cast phiA_pos A k) (by exact_mod_cast A.pos k)
+  apply div_pos
+  · exact Nat.cast_pos.mpr (phiA_pos A k)
+  · exact Nat.cast_pos.mpr (A.pos k)
 
-/-- **Density Ratio Complement**: ρ_A(k) = 1 − (used φ-sum)/n_k.
-    For ρ_A(k) to approach 0, the used divisors must capture almost all
-    of n_k's divisor-totient sum — a severe structural constraint. -/
+/-- The density ratio via the complement formula:
+    ρ_A(k) = 1 - usedSum(k) / n_k. -/
 theorem densityRatio_complement (A : IncreasingSeq) (k : ℕ) :
-    densityRatio A k = 1 - (((A.seq k).divisors.filter
-      (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).sum Nat.totient : ℝ) / (A.seq k : ℝ) := by
+    densityRatio A k = 1 - (usedSum A k : ℝ) / (A.seq k : ℝ) := by
   unfold densityRatio
-  set n := A.seq k
-  set used := (n.divisors.filter (fun e => ¬∀ j : ℕ, j < k → e ≠ A.seq j)).sum Nat.totient
-  have hpos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (A.pos k)
-  have hR : (↑(phiA A k) : ℝ) + ↑used = ↑n := by exact_mod_cast phiA_add_used A k
-  have key : (↑(phiA A k) : ℝ) / ↑n + ↑used / ↑n = 1 := by
-    rw [div_add_div_same, hR, div_self hpos.ne']
-  linarith
+  have hn : (A.seq k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (A.pos k).ne'
+  rw [eq_sub_iff_add_eq, div_add_div_same, ← Nat.cast_add, phiA_add_usedSum]
+  exact div_self hn
 
-/-- When n_k is prime, ρ_A(k) ≥ 1/2. A prime n_k has only divisors {1, n_k},
-    and n_k is always unused, so at most φ(1) = 1 is lost to used divisors. -/
+/-- At most k divisors of n_k can be "used" — each maps to a unique j < k
+    via the injectivity of the sequence A. -/
+theorem usedDivisors_card_le (A : IncreasingSeq) (k : ℕ) :
+    ((A.seq k).divisors.filter (fun e => ∃ j, j < k ∧ e = A.seq j)).card ≤ k := by
+  -- Each used divisor maps to some j < k, and different divisors map to different j's
+  -- because A is injective (strictly monotone)
+  let f : ℕ → ℕ := fun e =>
+    if h : ∃ j, j < k ∧ e = A.seq j then h.choose else 0
+  have hf : ∀ e ∈ (A.seq k).divisors.filter (fun e => ∃ j, j < k ∧ e = A.seq j),
+      f e ∈ Finset.range k := by
+    intro e he
+    simp only [mem_filter] at he
+    simp only [f, dif_pos he.2, Finset.mem_range]
+    exact he.2.choose_spec.1
+  have hinj : Set.InjOn f ↑((A.seq k).divisors.filter (fun e => ∃ j, j < k ∧ e = A.seq j)) := by
+    intro e₁ he₁ e₂ he₂ heq
+    simp only [Finset.coe_filter, Set.mem_sep_iff] at he₁ he₂
+    simp only [f, dif_pos he₁.2, dif_pos he₂.2] at heq
+    have h1 := he₁.2.choose_spec.2
+    have h2 := he₂.2.choose_spec.2
+    rw [h1, h2, heq]
+  calc ((A.seq k).divisors.filter _).card
+      ≤ (Finset.range k).card := Finset.card_le_card_of_injOn f hf hinj
+    _ = k := Finset.card_range k
+
+/-- When n_k is prime, ρ_A(k) ≥ 1/2.
+    A prime p has only divisors {1, p}. Since p = n_k > n_j for j < k,
+    p is unused. At worst 1 is used, giving φ_A(k) ≥ φ(p) = p-1,
+    so ρ ≥ (p-1)/p ≥ 1/2. -/
 theorem densityRatio_ge_of_prime (A : IncreasingSeq) (k : ℕ)
-    (hp : Nat.Prime (A.seq k)) : 1 / 2 ≤ densityRatio A k := by
-  have h2 : 2 ≤ A.seq k := hp.two_le
-  calc (1 : ℝ) / 2
-      ≤ (↑(A.seq k) - 1) / ↑(A.seq k) := by
-        rw [div_le_div_iff (by norm_num : (0 : ℝ) < 2)
-            (Nat.cast_pos.mpr (A.pos k))]
-        nlinarith [show (2 : ℝ) ≤ ↑(A.seq k) from by exact_mod_cast h2]
-    _ = (↑(Nat.totient (A.seq k)) : ℝ) / ↑(A.seq k) := by
-        congr 1; rw [Nat.totient_prime hp, Nat.cast_sub (by omega)]
-    _ ≤ densityRatio A k := densityRatio_ge_totient_ratio A k
+    (hp : Nat.Prime (A.seq k)) :
+    1 / 2 ≤ densityRatio A k := by
+  have hge := densityRatio_ge_totient_ratio A k
+  have htot : Nat.totient (A.seq k) = A.seq k - 1 := Nat.totient_prime hp
+  rw [htot] at hge
+  have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
+  have hn_ge2 : (2 : ℝ) ≤ A.seq k := by exact_mod_cast hp.two_le
+  calc (1 : ℝ) / 2 ≤ (↑(A.seq k) - 1) / ↑(A.seq k) := by
+        rw [div_le_div_iff (by norm_num) hn_pos]; nlinarith
+    _ ≤ densityRatio A k := hge
 
 /- ## Part V: Main Predicates -/
 
