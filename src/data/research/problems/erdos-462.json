@@ -29,14 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved ALL 6 minFac-based axioms (7→1 axioms). Only compositeSum_asymptotic remains (deep analytic NT).",
+    "progressSummary": "PROGRESS: Added 3 structural lemmas (compositeSum_nonneg, compositeSum_mono, intervalSum_nonneg). File now has 9 theorems + 1 deep axiom (compositeSum_asymptotic).",
     "builtItems": [
       "Proved leastPrimeFactor_prime via Nat.minFac_prime",
       "Proved leastPrimeFactor_dvd via Nat.minFac_dvd",
       "Proved leastPrimeFactor_le via Nat.minFac_le_of_dvd",
       "Proved leastPrimeFactor_prime_self via Nat.Prime.minFac_eq",
       "Proved leastPrimeFactor_ge_two via minFac_prime + Prime.two_le",
-      "Proved leastPrimeFactor_le_sqrt via minFac_sq_le_self + Real.sqrt_le_sqrt"
+      "Proved leastPrimeFactor_le_sqrt via minFac_sq_le_self + Real.sqrt_le_sqrt",
+      "compositeSum_nonneg: proved composite sum is non-negative",
+      "compositeSum_mono: proved composite sum is monotonically non-decreasing",
+      "intervalSum_nonneg: proved interval sum is non-negative"
     ],
     "insights": [
       "All minFac axioms follow trivially from Mathlib: unfold leastPrimeFactor, simp away the ≤1 guard, then apply the Nat.minFac lemma",
@@ -69,8 +72,8 @@
     {
       "path": "Proofs/Erdos462Problem.lean",
       "filename": "Erdos462Problem.lean",
-      "lineCount": 101,
-      "theoremCount": 6,
+      "lineCount": 128,
+      "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,

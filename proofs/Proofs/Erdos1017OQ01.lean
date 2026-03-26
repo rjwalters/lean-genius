@@ -22,24 +22,24 @@ Can f(n,k) < floor(n^2/4) when k > n^2/4 and the graph contains K_4 or larger cl
 The K_4-free case is resolved by Gyori-Keszegh (2017): if G is K_4-free with
 floor(n^2/4) + m edges, it contains m edge-disjoint triangles, giving f = floor(n^2/4) - m.
 
-## What This File Proves (10 axioms -> 8 axioms)
+## What This File Proves (9 axioms -> 6 axioms)
 - completeBipartite_cliqueFree: K_{a,b} is triangle-free (PROVED)
-- completeBipartite_edgeCount: K_{a,b} has a*b edges (PROVED)
+- completeBipartite_edgeCount: K_{a,b} has a*b edges (PROVED via edge bijection)
 - turanBound quadratic identity: n^2/4 = n/2 * (n - n/2) (PROVED)
 - turanBound monotonicity, small values (PROVED)
 - k4free_improves: K_4-free dense graphs improve on floor(n^2/4) (PROVED from axioms)
 - cliquePartitionNum_le_turan: cp(G) <= floor(n^2/4) (PROVED from EGP axiom)
 - egp_tight_example: cp(K_{k,k}) = k^2 (PROVED from axioms)
+- lovasz_covering: Trivial existence bound (PROVED)
+- supersaturation_triangles: Trivial existence bound (PROVED)
 
-## Remaining Axioms (8)
+## Remaining Axioms (6)
 - egp_theorem: EGP bound (deep combinatorial theorem)
 - triangleFree_cliquePartition_eq_edges: cp(G) = |E| for triangle-free G
 - dense_contains_triangle: Turan's theorem consequence
 - gyori_keszegh_triangles: K_4-free edge-disjoint triangle packing
 - k4free_partition_number: K_4-free partition formula
-- lovasz_covering: Lovasz covering bound
 - cliquePartition_le_vertices: trivial bound
-- supersaturation_triangles: Razborov flag algebra result
 
 ## Proof Techniques
 - Greedy triangle extraction + Turan bound on remainder
@@ -254,9 +254,43 @@ theorem completeBipartite_cliqueFree (a b : ℕ) :
 /-- K_{a,b} has exactly a*b edges (PROVED).
 
     Each edge connects some (inl i) to some (inr j), giving a*b pairs.
-    We prove this by constructing the edgeFinset explicitly and counting. -/
-axiom completeBipartite_edgeCount (a b : ℕ) :
-    (completeBipartite a b).edgeFinset.card = a * b
+    We prove this by showing edgeFinset = image of Fin a × Fin b under
+    the canonical edge map, then using injectivity to count. -/
+theorem completeBipartite_edgeCount (a b : ℕ) :
+    (completeBipartite a b).edgeFinset.card = a * b := by
+  -- Step 1: The edge map (i, j) ↦ s(inl i, inr j) is injective
+  have h_inj : Function.Injective
+      (fun p : Fin a × Fin b => s((Sum.inl p.1 : Fin a ⊕ Fin b), Sum.inr p.2)) := by
+    intro ⟨i₁, j₁⟩ ⟨i₂, j₂⟩ h
+    rcases Sym2.eq_iff.mp h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Prod.ext (Sum.inl_injective h1) (Sum.inr_injective h2)
+    · exact Sum.noConfusion h1
+  -- Step 2: edgeFinset = image of the product under the edge map
+  have h_eq : (completeBipartite a b).edgeFinset =
+      (Finset.univ : Finset (Fin a × Fin b)).image
+        (fun p => s((Sum.inl p.1 : Fin a ⊕ Fin b), Sum.inr p.2)) := by
+    ext e
+    constructor
+    · -- e ∈ edgeFinset → e in image
+      intro he; revert he
+      refine Sym2.ind (fun u v => ?_) e
+      simp only [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet,
+        Finset.mem_image, Finset.mem_univ, true_and]
+      intro hadj
+      cases u with
+      | inl i => cases v with
+        | inl j => simp [completeBipartite] at hadj
+        | inr j => exact ⟨⟨i, j⟩, rfl⟩
+      | inr i => cases v with
+        | inl j => exact ⟨⟨j, i⟩, Sym2.eq_swap⟩
+        | inr j => simp [completeBipartite] at hadj
+    · -- e in image → e ∈ edgeFinset
+      simp only [Finset.mem_image, Finset.mem_univ, true_and]
+      rintro ⟨⟨i, j⟩, rfl⟩
+      simp [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet, completeBipartite]
+  -- Step 3: Conclude via card_image_of_injective
+  rw [h_eq, Finset.card_image_of_injective _ h_inj]
+  simp [Fintype.card_prod]
 
 /-- Triangle-free graphs require one clique per edge in any partition:
     cp(G) = |E(G)| when G has no triangles.
@@ -384,11 +418,12 @@ PART VII: LOVASZ COVERING BOUND (1968)
     covered (not necessarily partitioned) by at most n(n-1)/2 - k + t cliques,
     where k = |E(G)| and t depends on the triangle structure.
 
-    This is weaker than a partition bound but provides a related estimate.
-    The gap between covering and partition numbers is not well understood. -/
-axiom lovasz_covering (G : SimpleGraph V) [DecidableRel G.Adj] :
+    Note: The formalization only states the trivial existence bound.
+    The full result with the k and t parameters would be stronger. -/
+theorem lovasz_covering (G : SimpleGraph V) [DecidableRel G.Adj] :
     ∃ (cover_size : ℕ),
-      cover_size ≤ Fintype.card V * (Fintype.card V - 1) / 2
+      cover_size ≤ Fintype.card V * (Fintype.card V - 1) / 2 :=
+  ⟨0, Nat.zero_le _⟩
 
 /-
 ====================================================================
@@ -403,10 +438,14 @@ axiom cliquePartition_le_vertices (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 /-- **Supersaturation**: When k > floor(n^2/4) + m, the graph contains
     at least c*m^2 triangles (Razborov 2010, flag algebras).
-    More triangles = more potential savings for clique partitions. -/
-axiom supersaturation_triangles (G : SimpleGraph V) [DecidableRel G.Adj]
+    More triangles = more potential savings for clique partitions.
+
+    Note: The formalization only states the trivial existence bound.
+    The full Razborov result gives a quadratic lower bound on triangle count. -/
+theorem supersaturation_triangles (G : SimpleGraph V) [DecidableRel G.Adj]
     (m : ℕ) (hm : G.edgeFinset.card ≥ turanBound (Fintype.card V) + m) :
-    ∃ (tri_count : ℕ), tri_count ≥ m
+    ∃ (tri_count : ℕ), tri_count ≥ m :=
+  ⟨m, le_refl m⟩
 
 /-
 ====================================================================
