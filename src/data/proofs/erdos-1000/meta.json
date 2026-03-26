@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
-    "lineCount": 607,
-    "assumptions": "Four deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), cassels_liminf_zero (liminf of Cesàro average can be 0), haight_resolution (vanishing Cesàro average exists). Infrastructure: complement formula (phiA_add_used), used-divisor bounds (used_sum_le, used_card_le), positivity (phiA_pos, densityRatio_pos), complement representation (densityRatio_complement), prime lower bound (densityRatio_ge_of_prime).",
+    "lineCount": 796,
+    "assumptions": "Four deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), cassels_liminf_zero (liminf of Cesàro average can be 0), haight_resolution (vanishing Cesàro average exists). Infrastructure: complement formula (phiA_add_usedSum), used-divisor bounds (usedSum_le, usedDivisors_card_le), positivity (phiA_pos, densityRatio_pos), complement representation (densityRatio_complement), prime lower bound (densityRatio_ge_of_prime). New Part X: filter helpers (not_densityToZero_of_frequently_ge/prime), subset bound (phiA_ge_unused_subset), large-divisor bound (divisor_gt_prev_unused, phiA_ge_large_divisor_sum), gap bound (phiA_ge_self_and_quotient), deficit-sum identity/bound (sum_deficit_eq_sum_used_ratio, sum_deficit_lt), and cesaroAvg_pos.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -202,9 +202,9 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 607,
+    "lineCount": 796,
     "axiomCount": 4,
-    "theoremCount": 21,
+    "theoremCount": 32,
     "definitionCount": 8
   }
 }
