@@ -57,11 +57,15 @@
       "mem_A327153_iff theorem: OEIS A327153 membership for n > 0",
       "f_le_n theorem: trivial upper bound f(n) ≤ n for n > 0",
       "g_pos theorem: g(k) > 0 for k > 0",
-      "g_gt_k theorem: g(k) > k for k ≥ 2 (σ(k) ≥ k+1)"
+      "g_gt_k theorem: g(k) > k for k ≥ 2 (σ(k) ≥ k+1)",
+      "sigma_ge_self theorem: σ(k) ≥ k for k > 0",
+      "g_ge_sq theorem: g(k) ≥ k² for k > 0",
+      "solution_le_sqrt theorem: solutions satisfy k ≤ √n",
+      "f_le_sqrt theorem: f(n) ≤ √n — proved upper bound"
     ],
     "axiomCount": 2,
-    "lineCount": 353,
-    "assumptions": "2 axiom(s) (open conjectures). All supporting lemmas fully proved."
+    "lineCount": 395,
+    "assumptions": "2 axiom(s) (open conjectures). All supporting lemmas fully proved. Proved bound: f(n) ≤ √n."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1060**\n\nThis problem appears as B11 in Richard Guy's collection 'Unsolved Problems in Number Theory' [Gu04], attributed to Erdős.\n\n**Key History:**\n- The problem concerns the multiplicative Diophantine equation k·σ(k) = n\n- Related to understanding the structure of the divisor function σ\n- Connected to OEIS sequence A327153\n\n**Mathematical Setting:**\nThe sum of divisors function σ(k) = Σ_{d|k} d is one of the most fundamental arithmetic functions. The product k·σ(k) combines multiplicative and additive structure in a subtle way.",
@@ -74,7 +78,8 @@
       "**Multiplicativity:** σ is multiplicative, but g(k) = k·σ(k) is not",
       "**Growth Rates:** Weak conjecture: f(n) = n^{o(1/log log n)}; Strong: f(n) = (log n)^{O(1)}",
       "**OEIS A327153:** Records values of n for which k·σ(k) = n has a solution",
-      "**Density Question:** How sparse are the values in the range of g?"
+      "**Density Question:** How sparse are the values in the range of g?",
+      "**Square Root Bound (Proved):** f(n) ≤ √n since σ(k) ≥ k implies g(k) ≥ k², so solutions satisfy k ≤ √n"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -150,9 +155,17 @@
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete verified examples using native_decide",
-      "startLine": 315,
-      "endLine": 353,
+      "startLine": 324,
+      "endLine": 360,
       "mathContext": "Verified: $g(2) = 6$, $g(3) = 12$, $g(5) = 30$, $g(6) = 72$, $g(7) = 56$. For primes $p$: $g(p) = p(p+1)$, giving infinitely many values in the range."
+    },
+    {
+      "id": "sqrt-bound",
+      "title": "The Square Root Bound",
+      "summary": "Proved f(n) ≤ √n for n > 0",
+      "startLine": 362,
+      "endLine": 394,
+      "mathContext": "Since $\\sigma(k) \\geq k$ for $k > 0$ (as $k | k$), we have $g(k) = k \\cdot \\sigma(k) \\geq k^2$. Hence any solution $k$ to $g(k) = n$ satisfies $k \\leq \\sqrt{n}$, giving the bound $f(n) \\leq \\sqrt{n}$. This is a concrete proved bound, intermediate between the trivial $f(n) \\leq n$ and the open conjectures $f(n) \\leq n^{o(1/\\log\\log n)}$ and $f(n) \\leq (\\log n)^{O(1)}$."
     }
   ],
   "crossReferences": [
@@ -202,9 +215,9 @@
       "Finset"
     ],
     "namespace": "Erdos1060",
-    "lineCount": 353,
+    "lineCount": 395,
     "axiomCount": 2,
-    "theoremCount": 15,
-    "definitionCount": 5
+    "theoremCount": 19,
+    "definitionCount": 6
   }
 }

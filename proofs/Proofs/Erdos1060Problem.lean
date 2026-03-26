@@ -106,11 +106,23 @@ theorem sigma_pos (k : ℕ) (hk : 0 < k) : 1 ≤ sigma k := by
   calc 1 ≤ id k := hk
     _ ≤ k.divisors.sum id := Finset.single_le_sum (fun _ _ => Nat.zero_le _) this
 
+/-- σ(k) ≥ k for k > 0, since k divides k and contributes k to the sum. -/
+theorem sigma_ge_self (k : ℕ) (hk : 0 < k) : k ≤ sigma k := by
+  unfold sigma
+  have : k ∈ k.divisors := Nat.mem_divisors.mpr ⟨dvd_refl k, hk.ne'⟩
+  calc k = id k := rfl
+    _ ≤ k.divisors.sum id := Finset.single_le_sum (fun _ _ => Nat.zero_le _) this
+
 /-- k ≤ g(k) for k > 0, since g(k) = k · σ(k) ≥ k · 1 = k. -/
 theorem k_le_g (k : ℕ) (hk : 0 < k) : k ≤ g k := by
   unfold g
   calc k = k * 1 := (mul_one k).symm
     _ ≤ k * sigma k := Nat.mul_le_mul_left k (sigma_pos k hk)
+
+/-- g(k) ≥ k² for k > 0, since g(k) = k · σ(k) ≥ k · k. -/
+theorem g_ge_sq (k : ℕ) (hk : 0 < k) : k * k ≤ g k := by
+  unfold g
+  exact Nat.mul_le_mul_left k (sigma_ge_self k hk)
 
 /--
 The solution set is finite for any n > 0.
@@ -346,5 +358,38 @@ Examples:
 -/
 example : g 5 = 30 := by simp [g, sigma]; native_decide
 example : g 7 = 56 := by simp [g, sigma]; native_decide
+
+/-
+## Part IX: The Square Root Bound
+-/
+
+/--
+Every solution k to g(k) = n satisfies k ≤ √n.
+Since σ(k) ≥ k, we have g(k) = k·σ(k) ≥ k², so k ≤ √n.
+This improves the trivial bound k ≤ n from solutionSet_finite.
+-/
+theorem solution_le_sqrt (n k : ℕ) (hk_pos : 0 < k) (hk : g k = n) :
+    k ≤ Nat.sqrt n := by
+  rw [Nat.le_sqrt]
+  calc k * k ≤ g k := g_ge_sq k hk_pos
+    _ = n := hk
+
+/--
+f(n) ≤ √n for n > 0.
+This is a concrete, proved upper bound on the counting function,
+in contrast to the axiomatized conjectures f(n) ≤ n^{o(1/log log n)}
+and f(n) ≤ (log n)^{O(1)}.
+-/
+theorem f_le_sqrt (n : ℕ) (hn : n > 0) : f n ≤ Nat.sqrt n := by
+  rw [f_eq_f' n hn]; unfold f'
+  calc ((Finset.Icc 1 n).filter (fun k => g k = n)).card
+    ≤ (Finset.Icc 1 (Nat.sqrt n)).card := by
+        apply Finset.card_le_card
+        intro k hk
+        rw [Finset.mem_filter, Finset.mem_Icc] at hk
+        rw [Finset.mem_Icc]
+        exact ⟨hk.1.1, solution_le_sqrt n k hk.1.1 hk.2⟩
+    _ ≤ Nat.sqrt n := by
+        simp only [Finset.card_Icc]; omega
 
 end Erdos1060
