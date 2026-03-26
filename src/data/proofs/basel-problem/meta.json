@@ -248,89 +248,59 @@
   ],
   "crossReferences": [
     {
-      "targetId": "harmonic-divergence",
-      "relationship": "contrasts",
-      "description": "The harmonic series ∑ 1/n diverges (p = 1), while the Basel series ∑ 1/n² converges (p = 2). The boundary between convergence and divergence at p = 1 is a fundamental fact in analysis."
-    },
-    {
-      "targetId": "riemann-hypothesis",
-      "relationship": "foundational",
-      "description": "The Basel identity ζ(2) = π²/6 is the simplest special value of the Riemann zeta function. The Riemann Hypothesis concerns the zeros of this same function, connecting the Basel problem to the deepest unsolved problem in mathematics."
-    },
-    {
-      "targetId": "fourier-series",
-      "relationship": "technique",
-      "description": "The modern rigorous proof of the Basel identity uses Parseval's theorem from Fourier analysis: applying it to f(x) = x on [-π, π] directly yields ∑ 1/n² = π²/6."
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Both are crown jewels of Euler's mathematical legacy. Euler's identity e^(iπ) + 1 = 0 connects the same fundamental constants (e, π, i) that appear in the analytic continuation of the zeta function."
-    },
-    {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "Basel's answer ζ(2) = π²/6 involves the same transcendental π — Lindemann's transcendence proof (1882) implies that ζ(2) is transcendental, a fact now known for all even zeta values"
-    },
-    {
-      "targetId": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euler's proof of the infinitude of primes uses the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function whose value at s=2 is the Basel problem"
-    },
-    {
       "targetId": "basel-problem-oq-01",
       "relationship": "extended-by",
-      "description": "Explores the open question of whether $\\zeta(5)$ is irrational — extending the Basel problem's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational (1978) but $\\zeta(5)$ remains unknown"
-    },
-    {
-      "targetId": "leibniz-pi",
-      "relationship": "complementary",
-      "description": "Leibniz's formula $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ and Basel's $\\sum 1/n^2 = \\pi^2/6$ are both series evaluations producing $\\pi$. Leibniz's series (a Dirichlet L-function $L(1, \\chi_4)$) converges conditionally, while Basel's $\\zeta(2)$ converges absolutely — the two represent different families of special values: Dirichlet L-values vs Riemann zeta values"
-    },
-    {
-      "targetId": "geometric-series",
-      "relationship": "foundational",
-      "description": "The geometric series $\\sum r^n = 1/(1-r)$ for $|r| < 1$ is the simplest convergent series with closed form. The Basel series $\\sum 1/n^2$ is the next level — a power series with closed form involving $\\pi$. Both exemplify the paradigm of exact summation, but while geometric series sum by elementary algebra, Basel requires analytic methods (Bernoulli polynomials, Fourier theory)"
-    },
-    {
-      "targetId": "taylor-theorem",
-      "relationship": "technique",
-      "description": "Euler's original proof compares the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ with the infinite product $\\prod(1 - x^2/n^2\\pi^2)$. The Taylor expansion provides the $x^2$ coefficient $-1/6$ that, matched against the product expansion, yields the Basel identity. Taylor's theorem thus provides one half of the input to Euler's proof"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "extends",
-      "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the complex plane — the same function whose value $\\zeta(2) = \\pi^2/6$ is the Basel identity. Riemann's 1859 memoir showed that the distribution of primes is encoded in the zeros of $\\zeta(s)$, transforming Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ from a curiosity into the central tool of analytic number theory. Basel was the first hint that $\\zeta$ carries deep arithmetic information"
+      "description": "Explores irrationality of $\\zeta(5)$ — extending Basel's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational but $\\zeta(5)$ remains unknown"
     },
     {
       "targetId": "basel-problem-oq-02",
       "relationship": "extended-by",
-      "description": "Explores whether all odd zeta values $\\zeta(2k+1)$ are transcendental — the natural next question after the Basel identity proves $\\zeta(2) = \\pi^2/6$ is transcendental (as a rational multiple of $\\pi^2$). Proves even zeta transcendence from the Lindemann axiom"
+      "description": "Explores transcendence of odd zeta values $\\zeta(2k+1)$ — the natural next question after Basel proves $\\zeta(2)$ is transcendental"
     },
     {
-      "targetId": "hermite-lindemann",
+      "targetId": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "$\\sum 1/n$ diverges ($p=1$) while $\\sum 1/n^2$ converges ($p=2$) — the boundary between convergence and divergence at $p=1$"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "foundational",
+      "description": "$\\zeta(2) = \\pi^2/6$ is the simplest special value of the Riemann zeta function, connecting Basel to the deepest unsolved problem in mathematics"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "technique",
+      "description": "The modern proof uses Parseval's theorem: applying it to $f(x) = x$ on $[-\\pi, \\pi]$ directly yields $\\sum 1/n^2 = \\pi^2/6$"
+    },
+    {
+      "targetId": "pi-transcendental",
       "relationship": "related",
-      "description": "The Hermite-Lindemann theorem ($\\alpha$ algebraic and nonzero $\\Rightarrow e^\\alpha$ transcendental) implies $\\pi$ is transcendental (since $e^{i\\pi} = -1$ is algebraic). This immediately gives that $\\zeta(2) = \\pi^2/6$ is transcendental — in fact, all even zeta values $\\zeta(2k) = \\text{rational} \\times \\pi^{2k}$ are transcendental by the same argument. The odd zeta values lack this structural guarantee, which is why their arithmetic nature remains mysterious"
+      "description": "Lindemann's transcendence of $\\pi$ (1882) implies $\\zeta(2) = \\pi^2/6$ is transcendental — known for all even zeta values"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof uses the Euler product $\\zeta(s) = \\prod_p(1-p^{-s})^{-1}$ — the same zeta function whose value at $s=2$ is the Basel identity"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "complementary",
+      "description": "Leibniz's $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ and Basel's $\\sum 1/n^2 = \\pi^2/6$ are both series producing $\\pi$ — Dirichlet L-values vs Riemann zeta values"
     },
     {
       "targetId": "vietas-formulas",
       "relationship": "technique",
-      "description": "Euler's original Basel proof is essentially Vieta's formulas applied to an infinite product: just as Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots, Euler's factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ expresses the Taylor coefficient $-1/6$ of $x^2$ as the sum of 'roots' $-1/n^2\\pi^2$, yielding $\\sum 1/n^2\\pi^2 = 1/6$. Newton's identities (power sums from elementary symmetric functions) then generalize this to extract $\\zeta(4), \\zeta(6), \\ldots$ from higher coefficients"
+      "description": "Euler's proof applies Vieta's formulas to the infinite product $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$, matching the $x^2$ coefficient to get $\\sum 1/n^2\\pi^2 = 1/6$"
     },
     {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "FTA guarantees every polynomial over $\\mathbb{C}$ factors into linear terms — the finite-dimensional version of the Weierstrass factorization theorem that justifies Euler's infinite product $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$. The analogy between finite polynomial roots and the zeros $\\{n\\pi\\}$ of $\\sin(x)$ was Euler's key insight; Weierstrass (1876) made this rigorous by showing that entire functions of finite order factor over their zeros (with convergence-producing exponential factors)"
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "PNT is proved by analyzing $\\zeta(s)$ in the complex plane — Basel was the first hint that $\\zeta$ carries deep arithmetic information"
     },
     {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient function $\\varphi(n)$ counts integers coprime to $n$, and the probability that two random positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2$ — a striking connection between the Basel identity and coprimality. The Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$ that produces this coprime probability is the multiplicative analog of $\\sum n^{-s}$, and the totient function satisfies $\\sum_{d|n} \\varphi(d) = n$, a Dirichlet convolution identity equivalent to $\\zeta(s) \\cdot \\sum \\varphi(n) n^{-s} = \\zeta(s-1)$"
-    },
-    {
-      "targetId": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Faulhaber's formulas express finite power sums $\\sum_{i=1}^{n} i^k$ using Bernoulli polynomials: $\\sum_{i=1}^{n} i^k = (B_{k+1}(n+1) - B_{k+1}(0))/(k+1)$. The same Bernoulli numbers $B_{2k}$ that govern these finite sums also appear in Euler's formula $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}/(2k)!$ for infinite reciprocal power sums — the Basel identity $\\zeta(2) = \\pi^2/6$ uses $B_2 = 1/6$. Both results arise from the generating function $t/(e^t - 1) = \\sum B_n t^n/n!$, connecting finite combinatorial identities (Wiedijk #77) to infinite analytic ones (Wiedijk #14)"
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "$\\sum r^n = 1/(1-r)$ is the simplest closed-form series. Basel's $\\sum 1/n^2 = \\pi^2/6$ is the next level, requiring analytic methods"
     }
   ],
   "leanFile": {
