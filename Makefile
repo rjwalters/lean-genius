@@ -137,6 +137,15 @@ status-aristotle:
 	@echo ""
 	./scripts/aristotle/aristotle-agent.sh --status
 
+pin:  ## Pin all agents to an account (usage: make pin ACCT=robb-int)
+	./scripts/agents/pin-account.sh pin $(ACCT)
+
+unpin:  ## Unpin agents (resume load balancing)
+	./scripts/agents/pin-account.sh unpin
+
+accounts:  ## Show account pin status
+	./scripts/agents/pin-account.sh status
+
 # ============================================================================
 # Sync targets
 # ============================================================================
