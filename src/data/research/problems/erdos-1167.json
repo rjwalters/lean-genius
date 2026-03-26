@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T16:53:51.159Z",
-    "iteration": 1,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,14 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 3 axioms (main conjecture + infinite Ramsey + Erdos-Rado). 15 proved theorems - well-developed.",
-    "builtItems": [],
+    "progressSummary": "SURVEY: Confirmed infinite_ramsey axiom IS buildable (~150-200 lines) using Mathlib pigeonhole. PR #7041 has r=0,r=1 proofs. Detailed implementation plan with 5 concrete steps documented. erdos_rado_theorem NOT buildable. Main conjecture OPEN.",
+    "builtItems": [
+      "infinite_ramsey_zero: proved PartitionRelation aleph0 aleph0 0 k for all k",
+      "infinite_ramsey_one: proved PartitionRelation aleph0 aleph0 1 k for k >= 1 via pigeonhole"
+    ],
     "insights": [
       "All axioms are deep set-theoretic results not provable from current Mathlib",
-      "15 proved theorems make this a strong formalization already"
+      "15 proved theorems make this a strong formalization already",
+      "r=0 case of infinite Ramsey is trivially provable (unique 0-subset)",
+      "r=1 case follows from infinite pigeonhole (Finite.exists_infinite_fiber)",
+      "The infinite_ramsey axiom is only needed for r >= 2 where Ramsey diagonal argument + transfinite recursion are required",
+      "infinite_ramsey IS buildable (~150-200 lines): Mathlib has Finite.exists_infinite_fiber (infinite pigeonhole), Set.Infinite lemmas, and Classical.choice — all needed for the proof",
+      "Proof strategy for infinite_ramsey: induction on r. Base r=0,1 proved in PR #7041. Inductive step: thinning chain construction using pigeonhole at each step, then pigeonhole on colors",
+      "Key formalization challenge: recursive chain construction carrying Set.Infinite proofs, converting between Set.Infinite and Infinite typeclass, and working with RSubset α 2 (2-element Finset subtypes)",
+      "erdos_rado_theorem is NOT buildable without major infrastructure (delta-system lemma, transfinite recursion)",
+      "partition_one_color already proves infinite_ramsey r 1 and infinite_ramsey r 0 is vacuously true, so axiom only needed for r >= 2 and k >= 2",
+      "PR #7041 (open, researcher-6) has r=0 and r=1 proofs — coordinate to avoid duplicate work"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Implement thin_step helper: given infinite S and pair-coloring into Fin k, return (element, color, infinite_subset) using Finite.exists_infinite_fiber on the subtype",
+      "Implement chain : ℕ → (Set α × α × β) using Nat.rec with thin_step, carrying Set.Infinite proof through the recursion",
+      "Prove chain monotonicity: chain(n+1).set ⊆ chain(n).set and chain(n).element ∈ chain(n).set",
+      "Apply Finite.exists_infinite_fiber to the color sequence to extract infinite monochromatic subsequence",
+      "Verify IsMonochromatic property: for any 2-subset of the extracted set, the color equals chain(i).color where i is the smaller index"
+    ],
     "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -54,15 +72,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.159Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-26T23:30:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1167Problem.lean",
       "filename": "Erdos1167Problem.lean",
-      "lineCount": 291,
-      "theoremCount": 15,
+      "lineCount": 352,
+      "theoremCount": 17,
       "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
