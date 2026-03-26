@@ -49,13 +49,58 @@ def DisjointDiffs (A B : Finset ℕ) : Prop :=
 /- ## Basic Properties -/
 
 /-- A Sidon set in {1,...,N} has size at most ~√(2N).
-    By difference counting: all A.card*(A.card-1) ordered nonzero differences
-    are distinct and lie in {-(N-1),...,-1, 1,...,N-1} (2*(N-1) elements).
-    Note: the previous bound A.card² ≤ 2N+1 was incorrect
-    (counterexample: {1,2,5,7} ⊂ [1,7] has |A|²=16 > 15=2·7+1). -/
-axiom sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
+    Proof: map ordered distinct pairs (a,b) to a+N-b ∈ {1,...,2N-1}\{N}.
+    Injective by Sidon, target has 2(N-1) elements. -/
+theorem sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
     (hs : IsSidonSet A) (hi : InInterval A N) :
-  A.card * (A.card - 1) ≤ 2 * (N - 1)
+    A.card * (A.card - 1) ≤ 2 * (N - 1) := by
+  rw [← Finset.card_offDiag]
+  -- Map (a, b) with a ≠ b to a + N - b ∈ {1,...,2N-1} \ {N}
+  set f : ℕ × ℕ → ℕ := fun p => p.1 + N - p.2 with hf_def
+  set T := (Finset.Icc 1 (2 * N - 1)).erase N with hT_def
+  -- f maps A.offDiag into T
+  have h_maps : ∀ p ∈ A.offDiag, f p ∈ T := by
+    intro ⟨a, b⟩ hab
+    simp only [Finset.mem_offDiag] at hab
+    obtain ⟨ha, hb, hne⟩ := hab
+    obtain ⟨ha1, haN⟩ := hi a ha
+    obtain ⟨hb1, hbN⟩ := hi b hb
+    simp only [hT_def, hf_def, Finset.mem_erase, Finset.mem_Icc]
+    exact ⟨by omega, by omega, by omega⟩
+  -- f is injective on A.offDiag (key: uses Sidon property)
+  have h_inj : Set.InjOn f ↑A.offDiag := by
+    intro ⟨a₁, b₁⟩ h1 ⟨a₂, b₂⟩ h2 heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h1 h2
+    obtain ⟨ha1, hb1, hne1⟩ := h1
+    obtain ⟨ha2, hb2, hne2⟩ := h2
+    simp only [hf_def] at heq
+    -- a₁+N-b₁ = a₂+N-b₂ implies a₁+b₂ = a₂+b₁
+    have hsum : a₁ + b₂ = a₂ + b₁ := by
+      have := (hi a₁ ha1).1; have := (hi b₁ hb1).2
+      have := (hi a₂ ha2).1; have := (hi b₂ hb2).2
+      omega
+    -- By Sidon: {a₁, b₂} = {a₂, b₁}
+    have hsidon := hs a₁ ha1 b₂ hb2 a₂ ha2 b₁ hb1 hsum
+    -- a₁ ∈ {a₂, b₁}
+    have ha₁_mem : a₁ ∈ ({a₂, b₁} : Finset ℕ) := hsidon ▸ Finset.mem_insert_self a₁ {b₂}
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
+    rcases ha₁_mem with rfl | rfl
+    · -- a₁ = a₂, so b₁ = b₂
+      exact Prod.ext rfl (by omega)
+    · -- a₁ = b₁, contradicts hne1
+      exact absurd rfl hne1
+  -- T has at most 2*(N-1) elements
+  have h_card : T.card ≤ 2 * (N - 1) := by
+    simp only [hT_def]
+    have hN_mem : N ∈ Finset.Icc 1 (2 * N - 1) := Finset.mem_Icc.mpr ⟨hn, by omega⟩
+    rw [Finset.card_erase_of_mem hN_mem]
+    simp only [Finset.card_Icc]
+    omega
+  -- Combine
+  calc A.offDiag.card
+      = (A.offDiag.image f).card := (Finset.card_image_of_injOn h_inj).symm
+    _ ≤ T.card := Finset.card_le_card (Finset.image_subset_iff.mpr h_maps)
+    _ ≤ 2 * (N - 1) := h_card
 
 /-- 0 is always in A − A: pick any a ∈ A, then a - a = 0. -/
 theorem zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :

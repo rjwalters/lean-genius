@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Assessed 5 axioms. sidon_size_bound is provable (standard counting). sedov_M2/M3 are published results. ErdosProblem42/constructive are open.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved sidon_size_bound (5→4 axioms). Uses offDiag injection into ℕ Icc.",
+    "builtItems": [
+      "sidon_size_bound (Erdos42Problem.lean:56): proved via offDiag injection + Finset.card_le_card_of_injOn"
+    ],
     "insights": [
       "sidon_size_bound is provable: for Sidon A⊆[1,N], the map (a,b)↦(a:ℤ)-(b:ℤ) is injective on off-diagonal A×A pairs (by Sidon + Finset.pair analysis), image ⊆ [-N+1,N-1]\\{0}, giving |A|(|A|-1) ≤ 2(N-1)",
-      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results"
+      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results",
+      "sidon_size_bound proved from Mathlib: injection (a,b)↦a+N-b into {1,...,2N-1}\\{N}, injective by Sidon, target has 2(N-1) elements"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -182,9 +185,9 @@
     {
       "path": "Proofs/Erdos42Problem.lean",
       "filename": "Erdos42Problem.lean",
-      "lineCount": 132,
-      "theoremCount": 2,
-      "axiomCount": 5,
+      "lineCount": 176,
+      "theoremCount": 5,
+      "axiomCount": 4,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
