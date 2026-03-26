@@ -144,12 +144,24 @@ axiom erdos_409_same_prime :
     {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
 
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
-    For each prime p, the natural density of {n : ∃ k, iterate(n) = p}. -/
-axiom erdos_409_density :
+    Note: The formalization only states the trivial existence of a value in [0,1].
+    The full question asks for the actual density value and whether it is positive. -/
+theorem erdos_409_density :
   ∀ p : ℕ, p.Prime →
-    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 -- density exists in [0,1]
+    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 :=
+  fun _ _ => ⟨0, le_refl 0, by norm_num⟩
 
 /- ## Basic Properties -/
+
+/-- Fixed points of totientPlusOne are exactly the primes:
+    totientPlusOne n = n ↔ n is prime (for n > 1).
+    Forward: if not prime, iterate_decreasing gives strict decrease.
+    Backward: φ(p) + 1 = (p-1) + 1 = p for prime p. -/
+theorem totientPlusOne_eq_self_iff_prime (n : ℕ) (hn : n > 1) :
+    totientPlusOne n = n ↔ n.Prime := by
+  constructor
+  · intro h; by_contra hnp; exact absurd h (ne_of_gt (iterate_decreasing n hn hnp))
+  · intro hp; unfold totientPlusOne; rw [hp.totient]; omega
 
 /-- Helper: totientIterate n 0 = n (zero iterations is identity). -/
 theorem totientIterate_zero (n : ℕ) : totientIterate n 0 = n := rfl
