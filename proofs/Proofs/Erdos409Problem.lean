@@ -144,10 +144,12 @@ axiom erdos_409_same_prime :
     {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
 
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
-    For each prime p, the natural density of {n : ∃ k, iterate(n) = p}. -/
-axiom erdos_409_density :
+    As formalized, this just states the trivial fact that a value in [0,1]
+    exists. The actual density question would require a formal notion of
+    natural density; this placeholder is provable without it. -/
+theorem erdos_409_density :
   ∀ p : ℕ, p.Prime →
-    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 -- density exists in [0,1]
+    ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 := fun _ _ => ⟨0, le_refl 0, by norm_num⟩
 
 /- ## Basic Properties -/
 
@@ -265,7 +267,30 @@ theorem two_fixed_point : totientPlusOne 2 = 2 := by
 theorem four_to_three : totientPlusOne 4 = 3 := by
   native_decide
 
-/-- F(n) = 1 infinitely often: whenever φ(n) + 1 is prime,
-    which happens infinitely often. -/
-axiom one_iteration_infinite :
-  {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite
+/-- F(n) = 1 infinitely often: for any odd prime p ≥ 3, φ(2p) + 1 = p.
+    Since φ is multiplicative and gcd(2, p) = 1 for odd p,
+    φ(2p) = φ(2)·φ(p) = 1·(p−1) = p−1, so φ(2p) + 1 = p (prime).
+    There are infinitely many such primes, so the set is infinite. -/
+theorem one_iteration_infinite :
+  {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  -- A finite subset of ℕ is bounded above
+  have ⟨N, hN⟩ := hfin.bddAbove
+  -- Find a prime p ≥ max(N+1, 3) — guaranteed odd since p ≥ 3
+  obtain ⟨p, hle, hp⟩ := Nat.exists_infinite_primes (max (N + 1) 3)
+  have hge3 : 3 ≤ p := le_trans (le_max_right _ _) hle
+  -- Show 2p is in our set: φ(2p) + 1 = p (prime)
+  have hmem : 2 * p ∈ {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime} := by
+    refine ⟨by omega, ?_⟩
+    unfold totientPlusOne
+    -- gcd(2, p) = 1 since p is prime and p ≥ 3 ≠ 2
+    have h2 : Nat.Prime 2 := by decide
+    have hcop : Nat.Coprime 2 p := h2.coprime_iff_not_dvd.mpr (fun h2p => by
+      have := hp.eq_one_or_self_of_dvd 2 h2p; omega)
+    -- φ(2p) = φ(2)·φ(p) = (2−1)·(p−1) = 1·(p−1) = p−1
+    rw [Nat.totient_mul hcop, Nat.totient_prime h2, Nat.totient_prime hp,
+      show (2 : ℕ) - 1 = 1 from rfl, one_mul, Nat.sub_add_cancel hp.pos]
+    exact hp
+  -- But 2p > N, contradicting the upper bound
+  exact absurd (hN hmem) (by have := le_trans (le_max_left _ _) hle; omega)
