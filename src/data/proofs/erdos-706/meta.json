@@ -86,10 +86,11 @@
       "Related to #508 (Hadwiger-Nelson), #704 (higher dimensions), #705 (girth constraints)"
     ],
     "prerequisites": [
-      "Combinatorial geometry (incidence bounds, configurations)",
-      "Combinatorics (Brooks' theorem, greedy coloring)",
-      "Discrete geometry (point-line incidences, arrangements)",
-      "Graph theory (chromatic number, coloring algorithms)"
+      "Chromatic number: $\\chi(G) = $ minimum colors for a proper vertex coloring; $\\chi \\ge n/\\alpha$",
+      "Hadwiger-Nelson problem: $4 \\le \\chi(\\mathbb{R}^2, \\{1\\}) \\le 7$; de Grey (2018) proved $\\chi \\ge 5$",
+      "Distance graphs: $G_A$ has vertex set $\\mathbb{R}^2$, edges between points at distance in $A \\subset \\mathbb{R}_{>0}$",
+      "Frankl-Wilson intersection theorem: yields exponential bounds on chromatic number for higher-dimensional distance graphs",
+      "Kővári-Sós-Turán theorem: bounds edges in $C_4$-free graphs, constraining independence number of distance graphs"
     ]
   },
   "sections": [
@@ -179,17 +180,52 @@
     {
       "targetId": "erdos-130",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry, open"
+      "description": "Chromatic number in combinatorial geometry — both study how geometric distance constraints force high chromatic number in the plane"
     },
     {
       "targetId": "erdos-101",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+      "description": "Combinatorial geometry problem — shares the framework of extremal questions about point configurations in Euclidean space"
     },
     {
       "targetId": "erdos-1066",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+      "description": "Unit distance graph independence number — the dual question: instead of chromatic number (minimum colors), studies the maximum independent set in distance-defined graphs"
+    },
+    {
+      "targetId": "erdos-1070",
+      "relationship": "companion",
+      "description": "Independence number of unit distance graphs and Hadwiger-Nelson — directly related: $\\chi(G) \\ge n/\\alpha(G)$, so independence bounds constrain chromatic number"
+    },
+    {
+      "targetId": "erdos-1085",
+      "relationship": "related",
+      "description": "The unit distance problem counts edges in the distance graph; #706 asks about its chromatic number. Both study the structure of $G_A$ for distance set $A$"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Unit distances among separated points — studies the edge count of distance graphs in $\\mathbb{R}^d$, complementary to the chromatic number studied in #706"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Chromatic number and girth — Erdős's probabilistic proof of high chromatic number with high girth is a key technique for constructing distance graphs with large $\\chi$"
+    },
+    {
+      "targetId": "erdos-1007",
+      "relationship": "related",
+      "description": "Graph dimension and unit distance embedding — both connect graph parameters (chromatic number, dimension) to the geometry of distance configurations"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Chromatic number and minimum degree of critical graphs — structural graph theory relevant to understanding why distance graphs have high chromatic number"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Triangle-free graphs and chromatic number — distance graphs in the plane often lack short cycles, connecting to the chromatic number of sparse graphs"
     }
   ]
 }
