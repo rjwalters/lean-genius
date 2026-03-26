@@ -261,7 +261,36 @@ private lemma val_mul_nonzero {p : ℕ} (hp : Nat.Prime p)
     Uses the identity |1 + e^{iθ}| = 2|cos(θ/2)|. -/
 private lemma norm_one_add_ωp_pow (p m : ℕ) [NeZero p] :
     ‖(1 : ℂ) + ωp p ^ m‖ = 2 * |Real.cos (↑m * Real.pi / ↑p)| := by
-  sorry
+  have hp_ne : (p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne p)
+  set α := (↑m : ℝ) * π / ↑p with hα_def
+  -- ωp p ^ m = exp(2αi)
+  have hωm : ωp p ^ m = Complex.exp (↑(2 * α) * Complex.I) := by
+    simp only [ωp, ← Complex.exp_nat_mul, α]
+    congr 1; push_cast; ring
+  rw [hωm]
+  set w := Complex.exp (↑(2 * α) * Complex.I) with hw_def
+  have hw_re : w.re = Real.cos (2 * α) := Complex.exp_ofReal_mul_I_re (2 * α)
+  have hw_im : w.im = Real.sin (2 * α) := Complex.exp_ofReal_mul_I_im (2 * α)
+  -- Both sides nonneg
+  have h_nn₁ : 0 ≤ ‖(1 : ℂ) + w‖ := norm_nonneg _
+  have h_nn₂ : 0 ≤ 2 * |Real.cos α| := by positivity
+  -- Suffices: squares are equal (then take sqrt)
+  suffices key : ‖(1 : ℂ) + w‖ ^ 2 = (2 * |Real.cos α|) ^ 2 by
+    have := congr_arg Real.sqrt key
+    rwa [Real.sqrt_sq h_nn₁, Real.sqrt_sq h_nn₂] at this
+  -- LHS² = normSq(1+w) = (1+cos 2α)² + sin²(2α)
+  have h_lhs : ‖(1 : ℂ) + w‖ ^ 2 =
+      (1 + Real.cos (2 * α)) ^ 2 + Real.sin (2 * α) ^ 2 := by
+    rw [Complex.norm_eq_abs, Complex.sq_abs]
+    simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re,
+      Complex.add_im, Complex.one_im, hw_re, hw_im]
+    ring
+  -- RHS² = 4cos²α
+  rw [h_lhs, mul_pow, sq_abs]
+  -- Goal: (1+cos 2α)² + sin²(2α) = 2² * cos²α
+  -- From Pythagoras: sin²(2α) + cos²(2α) = 1
+  -- From double angle: cos(2α) = 2cos²α - 1
+  nlinarith [Real.sin_sq_add_cos_sq (2 * α), Real.cos_two_mul α]
 
 /-- For m ∈ {1,...,p-1}: |cos(πm/p)| ≤ cos(π/p).
     This follows from cos being strictly decreasing on [0,π] and the
@@ -269,7 +298,36 @@ private lemma norm_one_add_ωp_pow (p m : ℕ) [NeZero p] :
 private lemma abs_cos_mul_pi_div_le {p : ℕ} (hp : Nat.Prime p)
     (m : ℕ) (hm_pos : 0 < m) (hm_lt : m < p) :
     |Real.cos (↑m * Real.pi / ↑p)| ≤ Real.cos (Real.pi / ↑p) := by
-  sorry
+  have hp_pos : (0 : ℝ) < ↑p := Nat.cast_pos.mpr hp.pos
+  set x := (↑m : ℝ) * π / ↑p with hx_def
+  set x₁ := π / ↑p with hx₁_def
+  -- x₁ ∈ (0, π]
+  have hx₁_pos : 0 < x₁ := div_pos Real.pi_pos hp_pos
+  have hx₁_le_pi : x₁ ≤ π := div_le_self Real.pi_pos.le (by exact_mod_cast hp.one_le)
+  -- x = m · x₁, so x₁ ≤ x
+  have hx_eq : x = ↑m * x₁ := by simp only [hx_def, hx₁_def]; ring
+  have hx_ge : x₁ ≤ x := by
+    rw [hx_eq]; nlinarith [show (1 : ℝ) ≤ ↑m from by exact_mod_cast hm_pos]
+  -- x ≤ π - x₁ (since m ≤ p - 1)
+  have hx_le : x ≤ π - x₁ := by
+    rw [hx_eq]
+    have hm_le : (↑m : ℝ) ≤ ↑p - 1 := by
+      have := Nat.lt_iff_le_pred hp.pos |>.mp hm_lt; exact_mod_cast this
+    have h_rw : π - x₁ = (↑p - 1) * x₁ := by simp only [hx₁_def]; field_simp
+    rw [h_rw]; nlinarith [hx₁_pos]
+  -- x ∈ [0, π]
+  have hx_nn : 0 ≤ x := by linarith
+  have hx_le_pi : x ≤ π := by linarith
+  -- cos x ≤ cos x₁ (cos is antitone on [0, π] and x₁ ≤ x)
+  have h_upper : Real.cos x ≤ Real.cos x₁ :=
+    Real.strictAntiOn_cos.antitoneOn
+      ⟨hx₁_pos.le, hx₁_le_pi⟩ ⟨hx_nn, hx_le_pi⟩ hx_ge
+  -- -cos x₁ ≤ cos x (from cos(π - x₁) = -cos x₁ ≤ cos x since x ≤ π - x₁)
+  have h_lower : -Real.cos x₁ ≤ Real.cos x := by
+    rw [← Real.cos_pi_sub]
+    exact Real.strictAntiOn_cos.antitoneOn
+      ⟨hx_nn, hx_le_pi⟩ ⟨by linarith, by linarith⟩ hx_le
+  exact abs_le.mpr ⟨h_lower, h_upper⟩
 
 /-- Product bound: for j ≠ 0, ∏_{a∈A} |1 + ω^{val(ja)}| ≤ 2^k · cos(π/p)^{k-1}.
     At most one element a ∈ A can be zero (giving factor 2);
@@ -279,7 +337,60 @@ private lemma fourier_product_bound {p : ℕ} (hp : Nat.Prime p)
     (j : ZMod p) (hj : j ≠ 0) :
     ∏ a ∈ A, ‖(1 : ℂ) + ωp p ^ ZMod.val (j * a)‖ ≤
       (2 : ℝ) ^ k * |Real.cos (Real.pi / ↑p)| ^ (k - 1) := by
-  sorry
+  haveI : NeZero p := ⟨hp.ne_zero⟩
+  -- Rewrite each factor: ‖1+ω^{val(ja)}‖ = 2|cos(π·val(ja)/p)|
+  have h_eq : ∀ a ∈ A,
+      ‖(1 : ℂ) + ωp p ^ ZMod.val (j * a)‖ =
+        2 * |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)| :=
+    fun a _ => norm_one_add_ωp_pow p (ZMod.val (j * a))
+  rw [Finset.prod_congr rfl h_eq]
+  -- Split: ∏(2 * |cos|) = 2^k * ∏|cos|
+  have h_split : ∏ a ∈ A, ((2 : ℝ) * |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)|) =
+      (2 : ℝ) ^ k * ∏ a ∈ A, |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)| := by
+    rw [← Finset.prod_mul_distrib, Finset.prod_const, hAk]
+  rw [h_split]
+  -- Suffices: ∏|cos(π·val(ja)/p)| ≤ |cos(π/p)|^{k-1}
+  apply mul_le_mul_of_nonneg_left _ (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) k)
+  -- Helper: each |cos| factor is ≤ 1
+  have hcos_le_one : ∀ a ∈ A,
+      |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)| ≤ 1 := fun a _ => abs_cos_le_one _
+  -- Helper: for a ≠ 0, the factor is ≤ |cos(π/p)|
+  have hcos_bound : ∀ a ∈ A, a ≠ 0 →
+      |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)| ≤ |Real.cos (π / ↑p)| := by
+    intro a _ ha_ne
+    have hv_pos : 0 < ZMod.val (j * a) :=
+      Nat.pos_of_ne_zero (val_mul_nonzero hp j a hj ha_ne)
+    calc |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)|
+        ≤ Real.cos (π / ↑p) := abs_cos_mul_pi_div_le hp _ hv_pos (ZMod.val_lt _)
+      _ ≤ |Real.cos (π / ↑p)| := le_abs_self _
+  have hcos_nn : 0 ≤ |Real.cos (π / ↑p)| := abs_nonneg _
+  have hcos_abs_le : |Real.cos (π / ↑p)| ≤ 1 := abs_cos_le_one _
+  by_cases h0 : (0 : ZMod p) ∈ A
+  · -- Case: 0 ∈ A. Split product at a = 0.
+    rw [← Finset.mul_prod_erase A _ h0]
+    -- Factor at a = 0: val(j·0) = 0, cos(0) = 1, |1| = 1
+    simp only [mul_zero, ZMod.val_zero, Nat.cast_zero, zero_mul, zero_div, Real.cos_zero,
+      abs_one, one_mul]
+    -- Remaining k-1 factors, each ≤ |cos(π/p)|
+    have hcard : (A.erase 0).card = k - 1 := by
+      rw [Finset.card_erase_of_mem h0, hAk]
+    calc ∏ a ∈ A.erase 0, |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)|
+        ≤ ∏ _a ∈ A.erase 0, |Real.cos (π / ↑p)| := by
+          apply Finset.prod_le_prod (fun a _ => abs_nonneg _)
+          intro a ha
+          exact hcos_bound a (Finset.mem_of_mem_erase ha) (Finset.ne_of_mem_erase ha)
+      _ = |Real.cos (π / ↑p)| ^ (A.erase 0).card := Finset.prod_const _
+      _ = |Real.cos (π / ↑p)| ^ (k - 1) := by rw [hcard]
+  · -- Case: 0 ∉ A. All factors have a ≠ 0.
+    calc ∏ a ∈ A, |Real.cos (↑(ZMod.val (j * a)) * π / ↑p)|
+        ≤ ∏ _a ∈ A, |Real.cos (π / ↑p)| := by
+          apply Finset.prod_le_prod (fun a _ => abs_nonneg _)
+          intro a ha
+          exact hcos_bound a ha (fun h => h0 (h ▸ ha))
+      _ = |Real.cos (π / ↑p)| ^ A.card := Finset.prod_const _
+      _ = |Real.cos (π / ↑p)| ^ k := by rw [hAk]
+      _ ≤ |Real.cos (π / ↑p)| ^ (k - 1) :=
+          pow_le_pow_of_le_one hcos_nn hcos_abs_le (by omega)
 
 /-
 ## Part VI: Fourier analysis connection

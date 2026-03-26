@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-25T00:00:00Z",
-    "iteration": 2,
-    "focus": "0 axioms, 5 sorries. Fourier infrastructure in place, needs completion.",
+    "iteration": 3,
+    "focus": "0 axioms, 2 sorries (down from 5). Proved norm_one_add_ωp_pow, abs_cos_mul_pi_div_le, fourier_product_bound.",
     "blockers": [],
-    "nextAction": "Prove the 5 remaining sorries to achieve fully verified proof",
+    "nextAction": "Prove reprCount_fourier_expansion (character orthogonality) and fourier_error_bound (assembly)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated last axiom (1→0). Added Fourier infrastructure (ωp, character theory, product bounds). 5 sorries remain as Aristotle targets.",
+    "progressSummary": "PROGRESS: Proved 3 Fourier lemmas (5→2 sorries). norm_one_add_ωp_pow uses cos double angle. abs_cos_mul_pi_div_le uses strictAntiOn_cos. fourier_product_bound splits by 0∈A cases.",
     "builtItems": [
       "abs_cos_pi_div_prime_lt_one: |cos(pi/p)| < 1 via strict antitonicity of cos on [0,pi]",
       "erdos_renyi_decay: proved from fourier_error_bound via exists_pow_lt_of_lt_one + pow_le_pow_of_le_one",
@@ -37,7 +37,10 @@
       "ωp_pow_eq_one: proved ω^p=1 via Complex.exp_two_pi_mul_I",
       "ωp_pow_norm: proved ‖ω^n‖=1 via purely imaginary exponent",
       "val_mul_nonzero: proved val(j*a)≠0 for j,a≠0 in Z/pZ (p prime)",
-      "fourier_j_zero_term: j=0 Fourier term = 2^|A|"
+      "fourier_j_zero_term: j=0 Fourier term = 2^|A|",
+      "norm_one_add_ωp_pow: ‖1+ω^m‖=2|cos(πm/p)| via normSq + cos double angle + sqrt",
+      "abs_cos_mul_pi_div_le: |cos(πm/p)|≤cos(π/p) via strictAntiOn_cos antitoneOn + cos_pi_sub symmetry",
+      "fourier_product_bound: ∏|1+ω^{val(ja)}|≤2^k·cos(π/p)^{k-1} by splitting 0∈A case + Finset.prod_le_prod"
     ],
     "insights": [
       "fourier_error_bound axiom was FALSE: missing 2^k/p factor. Counterexample A={1,2} in Z/3Z gives error 2/3 > old bound 1/2",
@@ -46,16 +49,16 @@
       "|cos(pi/p)| < 1 proved via Real.strictAntiOn_cos on [0,pi]: cos(pi/p) < cos(0)=1 and cos(pi/p) > cos(pi)=-1",
       "Mathlib prod_add provides subset product identity needed for Fourier expansion: ∏(f+g) = ∑_{T⊆S}(∏_T f)(∏_{S\\T} g)",
       "RothTheorem.lean char_orthogonality can be adapted: it proves ∑_{r:ZMod N} ψ(r·c) = N·δ(c=0)",
-      "Converting axiom→sorry is valuable: 0 axioms means no logical assumptions, and sorries are Aristotle targets"
+      "Converting axiom→sorry is valuable: 0 axioms means no logical assumptions, and sorries are Aristotle targets",
+      "norm_one_add_ωp_pow proved by squaring both sides: ‖1+exp(2αi)‖²=(1+cos2α)²+sin²2α=4cos²α=(2|cosα|)², then sqrt",
+      "fourier_product_bound has two cases: 0∈A (factor out the a=0 term giving 1, rest bounded) and 0∉A (all bounded, use pow_le_pow_of_le_one)"
     ],
     "mathlibGaps": [
       "Discrete Fourier analysis on Z/pZ (character groups, orthogonality) needed to prove fourier_error_bound"
     ],
     "nextSteps": [
-      "Prove reprCount_fourier_expansion using character orthogonality + prod_add",
-      "Prove norm_one_add_ωp_pow: |1+ω^m| = 2|cos(πm/p)| from |1+e^{iθ}|=2|cos(θ/2)|",
-      "Prove abs_cos_mul_pi_div_le: |cos(πm/p)|≤cos(π/p) for m∈{1,...,p-1}",
-      "Prove fourier_product_bound and assemble fourier_error_bound"
+      "Prove reprCount_fourier_expansion: needs character orthogonality δ(∑S=g)=(1/p)∑_j ω^{j(∑S-g)} + Finset.prod_add subset product identity",
+      "Prove fourier_error_bound: assembly from reprCount_fourier_expansion + fourier_product_bound via triangle inequality"
     ]
   },
   "tags": [
@@ -78,18 +81,18 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.907Z",
-  "lastUpdate": "2026-03-26T19:30:00Z",
+  "lastUpdate": "2026-03-26T23:45:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1179Problem.lean",
       "filename": "Erdos1179Problem.lean",
-      "lineCount": 414,
-      "theoremCount": 23,
+      "lineCount": 525,
+      "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 5,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179Problem.lean"
     }
