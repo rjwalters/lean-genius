@@ -217,13 +217,19 @@ monochromatic structures.
 /--
 **H(k) is Positive (for k ≥ 1)**
 
-**WARNING**: This axiom is false for k = 0. H(0) = 0 because the empty AP
-(Fin 0 → Fin 0) trivially satisfies isAPSequence and vacuous coloring conditions.
-Should be `(hk : k ≥ 1) : H k > 0`.
-For k ≥ 1: Fin 0 has no elements, so no f : Fin k → Fin 0 exists, meaning
-hasCanonicalAP is false for N = 0, so H(k) ≥ 1 > 0.
+For k ≥ 1: hasCanonicalAP χ k requires f : Fin k → Fin N, which doesn't
+exist for N = 0 (since Fin 0 is empty but Fin k is nonempty). So H(k) ≥ 1.
+Note: H(0) = 0 since the empty AP trivially satisfies the condition.
 -/
-axiom H_pos (k : ℕ) : H k > 0
+theorem H_pos (k : ℕ) (hk : k ≥ 1) : H k > 0 := by
+  by_contra h
+  push_neg at h
+  have hH0 : H k = 0 := by omega
+  have hspec := Nat.find_spec (exists_canonical_threshold k)
+  rw [hH0] at hspec
+  have hfalse := hspec Bool Fin.elim0
+  obtain ⟨f, _, _⟩ := hfalse
+  exact Fin.elim0 (f ⟨0, by omega⟩)
 
 /--
 **Erdős Problem #190: Summary**
@@ -244,8 +250,8 @@ Determining whether the growth rate is super-exponential in a
 strong sense (faster than k^k).
 -/
 theorem erdos_190_summary :
-    -- H(k) exists and is positive
-    (∀ k, H k > 0) ∧
+    -- H(k) is positive for k ≥ 1
+    (∀ k, k ≥ 1 → H k > 0) ∧
     -- H(k)^{1/k} → ∞
     (∀ M : ℕ, ∃ K, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) > M) ∧
     -- H(k) ≤ W(k) for k ≥ 3

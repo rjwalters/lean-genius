@@ -24,14 +24,16 @@
     "nextAction": "Prove H_spec (needs monotonicity argument), fix H_pos condition"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved H_minimal from Nat.find_min (11→10 axioms). Found H_pos incorrect: false for k=0 since H(0)=0.",
+    "progressSummary": "PROGRESS: Proved H_pos (10→9 axioms). Fixed false axiom (was missing k≥1 hypothesis).",
     "builtItems": [
-      "H_minimal: proved directly from Nat.find_min + push_neg"
+      "H_minimal: proved directly from Nat.find_min + push_neg",
+      "H_pos (Erdos190Problem.lean:226): theorem with k≥1 hypothesis, fixed false axiom"
     ],
     "insights": [
       "H_pos is FALSE for k=0: H(0)=0 because empty AP (Fin 0) trivially satisfies hasCanonicalAP",
       "H_spec is provable via restriction: χ → χ∘Fin.castLE transfers canonical AP from Fin(H k) to Fin N",
-      "H_minimal is a direct consequence of Nat.find minimality"
+      "H_minimal is a direct consequence of Nat.find minimality",
+      "H_pos proved: H(k)>0 for k≥1 via Fin 0 emptiness — Fin.elim0 eliminates impossible Fin k → Fin 0"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -61,9 +63,9 @@
     {
       "path": "Proofs/Erdos190Problem.lean",
       "filename": "Erdos190Problem.lean",
-      "lineCount": 251,
-      "theoremCount": 2,
-      "axiomCount": 11,
+      "lineCount": 265,
+      "theoremCount": 4,
+      "axiomCount": 9,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
