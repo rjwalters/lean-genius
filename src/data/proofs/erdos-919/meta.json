@@ -51,16 +51,16 @@
       "Erdős-Hajnal construction on ω₁²",
       "Generalization framework for cardinal parameters"
     ],
-    "axiomCount": 2,
-    "lineCount": 313,
-    "assumptions": "2 axioms: erdosHajnal_chromatic (χ = ℵ₁, deep lower bound), partialConstruction (graph on ω₂² with χ = ℵ₂ and small subgraphs having χ ≤ ℵ₁). Upper bound for erdosHajnal_chromatic proved via second-coordinate coloring. erdosHajnal_subgraph and babai_theorem fully proved.",
-    "theoremCount": 16
+    "axiomCount": 1,
+    "lineCount": 496,
+    "assumptions": "1 axiom: partialConstruction (graph on ω₂² with χ = ℵ₂ and small subgraphs having χ ≤ ℵ₁). erdosHajnal_chromatic (χ = ℵ₁) now PROVED via double pigeonhole argument with 8 new infrastructure lemmas. erdosHajnal_subgraph and babai_theorem fully proved.",
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
     "problemStatement": "Two questions about graphs on ordinal products:\n\n1. Is there a graph $G$ on vertex set $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ such that every subgraph whose vertices have lesser order type has $\\chi \\leq \\aleph_0$?\n\n2. What if we instead ask for $\\chi(G) = \\aleph_1$?\n\n**Known:** Erdős-Hajnal constructed $G$ on $\\omega_1^2$ with $\\chi(G) = \\aleph_1$ and smaller subgraphs having $\\chi \\leq \\aleph_0$.",
     "text": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
-    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and introduces chromatic numbers for infinite graphs. We axiomatize the Erdős-Hajnal construction showing such a graph exists on ω₁². The main questions ask whether similar constructions exist at higher cardinal levels.\n\nKey technical elements include:\n1. Order type of subsets of ordinal products\n2. Induced subgraphs with their chromatic properties\n3. The gap between ℵ₀ and ℵ₁ bounds in partial results",
+    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and proves the Erdős-Hajnal construction has chromatic number exactly ℵ₁. The upper bound uses second-coordinate coloring; the lower bound (χ ≥ ℵ₁) is proved via a double pigeonhole argument:\n1. For each row α, some color has an uncountable fiber (pigeonhole on row)\n2. Some color is dominant for uncountably many rows (pigeonhole on colors)\n3. Two such rows yield a monochromatic adjacent pair via cofinality of uncountable subsets of ω₁\n\nKey infrastructure: cardinal pigeonhole for uncountable→countable maps, countability of initial segments of ω₁ (via typein/card_type), cofinality of uncountable subsets.",
     "keyInsights": [
       "**Ordinal Products**: ω₁² = ω₁ × ω₁ has rich structure; vertices can be compared by lexicographic order, enabling order-type constraints",
       "**Babai's Failure**: The Erdős-Hajnal graph shows that chromatic constraints don't propagate from smaller to larger subgraphs at uncountable cardinals",
@@ -155,6 +155,7 @@
       "Mathlib.SetTheory.Ordinal.Arithmetic",
       "Mathlib.SetTheory.Cardinal.Ordinal",
       "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Order",
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Order.InitialSeg"
     ],
@@ -164,9 +165,9 @@
       "Set"
     ],
     "namespace": "Erdos919",
-    "lineCount": 246,
-    "axiomCount": 4,
-    "theoremCount": 6,
+    "lineCount": 496,
+    "axiomCount": 1,
+    "theoremCount": 25,
     "definitionCount": 15
   },
   "crossReferences": [

@@ -31,6 +31,7 @@ Adapted from erdosproblems.com (Apache 2.0 License)
 import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
+import Mathlib.SetTheory.Cardinal.Order
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.InitialSeg
 
@@ -155,16 +156,198 @@ private theorem le_aleph0_of_lt_aleph1 {κ : Cardinal} (h : κ < ℵ₁) : κ �
       aleph_succ, aleph_zero] at h
   exact Order.lt_succ_iff.mp h
 
+/-
+# Part 4a: Infrastructure for Chromatic Number Lower Bound
+
+We prove χ(E-H graph) = ℵ₁ via a double pigeonhole argument. The key steps:
+1. Cardinal pigeonhole: uncountable domain + countable codomain → uncountable fiber
+2. Initial segments of ω₁ are countable (so uncountable sets are cofinal)
+3. Double pigeonhole on rows then colors gives a monochromatic edge
+-/
+
+/-- ℵ₀ < ℵ₁: used throughout the lower bound proof -/
+private theorem aleph0_lt_aleph1 : (ℵ₀ : Cardinal) < ℵ₁ := by
+  have : aleph 0 < aleph 1 := aleph_lt_aleph.mpr (by norm_num)
+  rwa [aleph_zero] at this
+
+/-- ℵ₁ = Order.succ ℵ₀ -/
+private theorem aleph1_eq_succ_aleph0 : (ℵ₁ : Cardinal) = Order.succ ℵ₀ := by
+  show aleph 1 = Order.succ (aleph 0)
+  rw [show (1 : Ordinal) = Order.succ 0 by rw [Order.succ_eq_add_one, zero_add],
+      aleph_succ]
+
+/-- ω₁.ToType is uncountable: ℵ₀ < #(ω₁.ToType) -/
+private theorem mk_omega1_ToType_gt_aleph0 : ℵ₀ < Cardinal.mk omega1.ToType := by
+  rw [mk_omega1_ToType]; exact aleph0_lt_aleph1
+
+/-- Cardinal pigeonhole for uncountable → countable maps:
+    If f : A → B with #A > ℵ₀ and #B ≤ ℵ₀, then some fiber has cardinality > ℵ₀. -/
+private theorem exists_uncountable_fiber {A B : Type} (f : A → B)
+    (hA : ℵ₀ < Cardinal.mk A) (hB : Cardinal.mk B ≤ ℵ₀) :
+    ∃ b : B, ℵ₀ < Cardinal.mk (f ⁻¹' {b}) := by
+  by_contra hall
+  push_neg at hall
+  -- All fibers have cardinality ≤ ℵ₀
+  have hle : Cardinal.mk A ≤ Cardinal.mk B * ℵ₀ :=
+    mk_le_mk_mul_of_mk_preimage_le f hall
+  -- #B * ℵ₀ ≤ ℵ₀ * ℵ₀ = ℵ₀
+  have hmul : Cardinal.mk B * ℵ₀ ≤ ℵ₀ := by
+    calc Cardinal.mk B * ℵ₀ ≤ ℵ₀ * ℵ₀ := mul_le_mul_right' hB ℵ₀
+      _ = ℵ₀ := mul_eq_self le_rfl
+  exact absurd (lt_of_lt_of_le hA (le_trans hle hmul)) (lt_irrefl _)
+
+/-- Initial segments of omega1.ToType below any element are countable.
+    Uses: typein gives ordinal of element, which is < omega1, so its card < ℵ₁. -/
+private theorem mk_Iio_omega1_le_aleph0 (a : omega1.ToType) :
+    Cardinal.mk {x : omega1.ToType | x < a} ≤ ℵ₀ := by
+  -- The ordinal of a in omega1.ToType is < omega1
+  have hlt : Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a < omega1 :=
+    Ordinal.typein_lt_type _ a
+  -- card(typein a) = #{x | x < a}  (by definition of typein + card_type)
+  have hcard : (Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a).card =
+      Cardinal.mk {x : omega1.ToType | x < a} :=
+    Ordinal.card_type (Subrel (· < ·) {x : omega1.ToType | x < a})
+  -- typein a < omega1 = (aleph 1).ord, so card(typein a) < aleph 1 = ℵ₁
+  have hcard_lt : (Ordinal.typein (· < · : omega1.ToType → omega1.ToType → Prop) a).card < ℵ₁ := by
+    rw [show (ℵ₁ : Cardinal) = aleph 1 from rfl]
+    exact Cardinal.lt_ord.mp (by rwa [Cardinal.ord_aleph] at hlt)
+  rw [← hcard]
+  exact le_aleph0_of_lt_aleph1 hcard_lt
+
+/-- Uncountable subsets of omega1.ToType are cofinal: for any a, there exists s > a in S. -/
+private theorem uncountable_cofinal (S : Set omega1.ToType)
+    (hS : ℵ₀ < Cardinal.mk S) (a : omega1.ToType) :
+    ∃ s, s ∈ S ∧ a < s := by
+  -- If S ⊆ {x | x ≤ a} = {x | ¬(a < x)}, then #S ≤ #{x | x ≤ a}
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ s, s ∈ S → ¬(a < s), i.e., ∀ s ∈ S, s ≤ a
+  -- So S ⊆ {x | x ≤ a} = {x | x < a} ∪ {a}
+  have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega1.ToType | x ≤ a} := by
+    apply Cardinal.mk_subtype_mono
+    intro x hx
+    exact le_of_not_lt (hall x hx)
+  -- #{x | x ≤ a} ≤ #{x | x < a} + 1 ≤ ℵ₀ + 1 = ℵ₀
+  have hiio : Cardinal.mk {x : omega1.ToType | x < a} ≤ ℵ₀ := mk_Iio_omega1_le_aleph0 a
+  have hiic : Cardinal.mk {x : omega1.ToType | x ≤ a} ≤ ℵ₀ := by
+    -- {x | x ≤ a} = {x | x < a} ∪ {a}, and {a} has card 1
+    have : {x : omega1.ToType | x ≤ a} ⊆ {x | x < a} ∪ {a} := by
+      intro x hx
+      rcases lt_or_eq_of_le hx with h | h
+      · exact Or.inl h
+      · exact Or.inr h
+    calc Cardinal.mk {x : omega1.ToType | x ≤ a}
+        ≤ Cardinal.mk ({x : omega1.ToType | x < a} ∪ {a} : Set _) :=
+          Cardinal.mk_subtype_mono this
+      _ ≤ Cardinal.mk {x : omega1.ToType | x < a} + Cardinal.mk ({a} : Set _) :=
+          Cardinal.mk_union_le _ _
+      _ ≤ ℵ₀ + 1 := by
+          apply add_le_add hiio
+          rw [Cardinal.mk_singleton]
+      _ = ℵ₀ := Cardinal.add_one_of_aleph0_le le_rfl
+  exact absurd (lt_of_lt_of_le hS (le_trans hle hiic)) (lt_irrefl _)
+
+/-- Nonempty from uncountable: #S > ℵ₀ implies S is nonempty -/
+private theorem nonempty_of_uncountable {α : Type} {S : Set α}
+    (h : ℵ₀ < Cardinal.mk S) : S.Nonempty := by
+  rw [Set.nonempty_iff_ne_empty]
+  intro he
+  rw [he, Cardinal.mk_emptyCollection] at h
+  exact absurd h (not_lt.mpr (Cardinal.zero_le _))
+
+/-- Two distinct elements exist in an uncountable set -/
+private theorem exists_two_distinct {α : Type} [LinearOrder α] {S : Set α}
+    (h : ℵ₀ < Cardinal.mk S) :
+    ∃ a₁ a₂, a₁ ∈ S ∧ a₂ ∈ S ∧ a₁ < a₂ := by
+  -- #S > ℵ₀ ≥ 2, so S has at least 2 elements
+  have hne := nonempty_of_uncountable h
+  obtain ⟨x, hx⟩ := hne
+  -- S \ {x} is still uncountable (removing one element from an uncountable set)
+  have hS' : S.Nonempty := ⟨x, hx⟩
+  -- #(S \ {x}) = #S - 1, but for uncountable sets, #S - 1 = #S > ℵ₀
+  -- Simpler: #S > 1 since #S > ℵ₀ ≥ 1
+  have h1 : (1 : Cardinal) < Cardinal.mk S := lt_trans one_lt_aleph0 h
+  rw [Cardinal.one_lt_iff_nontrivial] at h1
+  obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ := h1.exists_pair_ne
+  simp only [Subtype.mk.injEq] at hab
+  rcases lt_or_gt_of_ne hab with h | h
+  · exact ⟨a, b, ha, hb, h⟩
+  · exact ⟨b, a, hb, ha, h⟩
+
+/-- The E-H graph cannot be properly colored with countably many colors.
+    Proof by double pigeonhole:
+    1. Each row has a "dominant" color with uncountable fiber
+    2. Some color is dominant for uncountably many rows
+    3. Two such rows give a monochromatic adjacent pair via cofinality -/
+private theorem erdosHajnal_not_countably_colorable
+    (C : Type) (hC : Cardinal.mk C ≤ ℵ₀)
+    (f : omega1Squared → C)
+    (hf : ∀ x y, erdosHajnalGraph.adj x y → f x ≠ f y) :
+    False := by
+  -- Abbreviation for the vertex type
+  set T := omega1.ToType
+  have hTunc : ℵ₀ < Cardinal.mk T := mk_omega1_ToType_gt_aleph0
+  -- Step 1: For each row α, some color has an uncountable fiber
+  have hrow : ∀ α : T, ∃ c : C, ℵ₀ < Cardinal.mk (Set.preimage (fun β : T => f (α, β)) {c}) :=
+    fun α => exists_uncountable_fiber (fun β => f (α, β)) hTunc hC
+  -- Step 2: Define dominant color for each row via Choice
+  let domColor : T → C := fun α => (hrow α).choose
+  have hdom_spec : ∀ α : T,
+      ℵ₀ < Cardinal.mk (Set.preimage (fun β : T => f (α, β)) {domColor α}) :=
+    fun α => (hrow α).choose_spec
+  -- Step 3: Pigeonhole on dominant colors — some color c₀ is dominant for uncountably many rows
+  obtain ⟨c₀, hc₀⟩ := exists_uncountable_fiber domColor hTunc hC
+  -- The set of rows where domColor = c₀
+  set Rows := domColor ⁻¹' {c₀} with hRows_def
+  -- Rows is a subset of T, and its subtype has cardinality > ℵ₀
+  -- Convert to Set for easier manipulation
+  have hRowsSet : ℵ₀ < Cardinal.mk {α : T | domColor α = c₀} := by
+    convert hc₀ using 1
+  -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
+  obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct hRowsSet
+  -- Both rows have uncountable c₀-fibers
+  have hα₁_dom : domColor α₁ = c₀ := hα₁
+  have hα₂_dom : domColor α₂ = c₀ := hα₂
+  -- The c₀-fiber in row α₁: {β | f(α₁, β) = c₀} is uncountable
+  have hfiber₁ : ℵ₀ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
+    have := hdom_spec α₁; rw [hα₁_dom] at this
+    convert this using 1
+  -- The c₀-fiber in row α₂ is nonempty (since uncountable)
+  have hfiber₂ : ℵ₀ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
+    have := hdom_spec α₂; rw [hα₂_dom] at this
+    convert this using 1
+  -- Pick any β₂ from the c₀-fiber of row α₂
+  obtain ⟨β₂, hβ₂⟩ := nonempty_of_uncountable hfiber₂
+  -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁
+  obtain ⟨β₁, hβ₁, hlt_β⟩ := uncountable_cofinal {β : T | f (α₁, β) = c₀} hfiber₁ β₂
+  -- Step 6: (α₁, β₁) and (α₂, β₂) are adjacent: α₁ < α₂ and β₂ < β₁
+  have hadj : erdosHajnalGraph.adj (α₁, β₁) (α₂, β₂) := by
+    left; exact ⟨hlt_α, hlt_β⟩
+  -- But both have color c₀ — contradiction with proper coloring
+  have hcolor₁ : f (α₁, β₁) = c₀ := hβ₁
+  have hcolor₂ : f (α₂, β₂) = c₀ := hβ₂
+  exact hf _ _ hadj (by rw [hcolor₁, hcolor₂])
+
 /-- The E-H graph has chromatic number ℵ₁.
     Upper bound: color by second coordinate (proved as isColorable_erdosHajnal_aleph1).
     Lower bound: any ℵ₀-coloring yields a contradiction via double pigeonhole —
     for each row α, some color has an uncountable fiber in ω₁. By pigeonhole again,
     two rows α₁ < α₂ share the same "dominant color" c₀ with uncountable fibers.
     Since initial segments of ω₁ are countable, we find β₁ > β₂ in the respective
-    fibers, giving an adjacent monochromatic pair — contradiction.
-    The lower bound requires substantial cardinal/ordinal infrastructure
-    (cardinal pigeonhole, initial-segment cardinality bounds, cofinality of ω₁). -/
-axiom erdosHajnal_chromatic : chromaticNumber erdosHajnalGraph = ℵ₁
+    fibers, giving an adjacent monochromatic pair — contradiction. -/
+theorem erdosHajnal_chromatic : chromaticNumber erdosHajnalGraph = ℵ₁ := by
+  apply le_antisymm
+  · -- Upper bound: χ ≤ ℵ₁ via second-coordinate coloring
+    exact csInf_le (OrderBot.bddBelow _) isColorable_erdosHajnal_aleph1
+  · -- Lower bound: ℵ₁ ≤ χ, i.e., for any κ-coloring, ℵ₁ ≤ κ
+    apply le_csInf (colorable_nonempty erdosHajnalGraph)
+    intro κ ⟨C, hCk, f, hf⟩
+    -- If κ < ℵ₁, then κ ≤ ℵ₀, so the coloring is countable → contradiction
+    by_contra hlt
+    push_neg at hlt
+    have hle : κ ≤ ℵ₀ := le_aleph0_of_lt_aleph1 hlt
+    rw [← hCk] at hle
+    exact erdosHajnal_not_countably_colorable C hle f hf
 
 /-- Every subgraph on fewer than ℵ₁ vertices has chromatic number ≤ ℵ₀.
     Proof: |S| < ℵ₁ implies |S| ≤ ℵ₀. Identity coloring uses |S| colors,
