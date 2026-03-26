@@ -133,30 +133,65 @@
     }
   ],
   "conclusion": {
-    "summary": "The Product of Segments of Chords theorem is verified using Mathlib's Euclidean geometry infrastructure. We connect it to the power of a point concept and prove the main result along with special cases and the converse.",
-    "implications": "This theorem is fundamental to circle geometry and has many applications:\n\n**1. Geometric constructions**\nFinding circle centers and constructing tangents.\n\n**2. Lens design**\nOptical path calculations through curved surfaces.\n\n**3. Proof techniques**\nFoundation for proving many other circle theorems.\n\n**4. Coordinate geometry**\nComputing intersections of circles and lines.",
+    "summary": "This 541-line formalization of the Product of Segments of Chords theorem (Wiedijk #55) takes the algebraic approach to Euclid III.35, using Vieta's formulas rather than Euclid's original similar-triangle argument. The proof factors through the power of a point invariant $\\text{pow}(P) = \\|P - O\\|^2 - r^2$: every chord through P yields the same segment product $|\\text{pow}(P)|$, so any two chords give equal products. The formalization includes the center special case ($PA \\cdot PB = r^2$), the axiomatized converse (equal products imply concyclicity), and numerical verification via `norm_num`.",
+    "implications": "**Theoretical Significance:**\n\n**1. Power of a point** -- Steiner's unification (1826) shows this theorem is one of four manifestations of the power invariant: intersecting chords, two secants, secant-tangent, and two tangents. The radical axis of two circles (locus of equal powers) is a fundamental tool in inversive and projective geometry.\n\n**2. Inversive geometry** -- The power of a point is preserved under inversion: if $P'$ is the image of $P$ under inversion in a circle $\\omega$, then $\\text{pow}_{\\omega}(P) \\cdot \\text{pow}_{\\omega}(P') = r_{\\omega}^4$. This makes the theorem central to the theory of Mobius transformations.\n\n**3. Proof techniques** -- The converse provides a powerful concyclicity criterion: to show four points are concyclic, show that two lines through their intersection point satisfy $PA \\cdot PB = PC \\cdot PD$. This is widely used in olympiad geometry.\n\n**4. Computational geometry** -- The power function $P \\mapsto \\|P - O\\|^2 - r^2$ determines whether a point is inside, on, or outside a circle, and is used in Delaunay triangulation algorithms (a point is inside the circumcircle iff its power is negative).",
     "openQuestions": [
-      "How does this theorem generalize to spheres in 3D?",
-      "What is the relationship to inversive geometry and Mobius transformations?",
-      "How can this be extended to non-Euclidean geometries?",
-      "What are efficient algorithms for computing the power of a point in computational geometry?"
+      "Generalization to 3D: for a sphere with center O and radius r, is the product PA * PB = |d^2 - r^2| still invariant for all secant lines through P? (Yes, by the same algebraic argument, since the inner product expansion is dimension-independent.)",
+      "Can the converse (currently axiomatized) be proved algebraically within the formalization, avoiding the synthetic circumcircle argument?",
+      "How does the power of a point relate to the determinant criterion for concyclicity: four points are concyclic iff the 4x4 determinant with rows (x_i^2 + y_i^2, x_i, y_i, 1) vanishes?",
+      "What is the connection to algebraic geometry: the power function defines a quadratic form, and the radical axis is the linear locus where two quadratic forms agree -- can this be formalized using Mathlib's algebraic geometry?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ptolemys-theorem",
       "relationship": "related",
-      "description": "Ptolemy's theorem on cyclic quadrilaterals — both are fundamental results about circles relating products of distances"
+      "description": "Ptolemy's theorem ($AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ for cyclic quadrilateral $ABCD$) and the intersecting chords theorem are both consequences of the power of a point. Ptolemy's inequality characterizes when four points are concyclic, while the intersecting chords theorem provides an equivalent criterion via segment products"
     },
     {
       "targetId": "cevas-theorem",
       "relationship": "related",
-      "description": "Ceva's theorem on concurrent cevians — related triangle-circle geometry using similar ratio arguments"
+      "description": "Both theorems relate products of segment ratios in geometric configurations. Ceva's theorem ($\\frac{AF}{FB} \\cdot \\frac{BD}{DC} \\cdot \\frac{CE}{EA} = 1$ for concurrent cevians) uses similar ratio arguments, and the trigonometric form of Ceva's theorem connects to inscribed angles in circles"
     },
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "Circle area formalization using the same Mathlib Euclidean geometry infrastructure"
+      "description": "Both formalizations build on Mathlib's Euclidean inner product space infrastructure. The area formula $A = \\pi r^2$ and the power $\\text{pow}(P) = d^2 - r^2$ both express geometric properties of circles in terms of the radius $r$ and Euclidean distance"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem underlies the power of a point: $\\text{pow}(P) = \\|P - O\\|^2 - r^2$ uses the squared Euclidean distance $\\|P - O\\|^2 = (x_P - x_O)^2 + (y_P - y_O)^2$, which is the Pythagorean theorem applied to the displacement vector. The norm-squared expansion in the algebraic proof is essentially repeated application of the Pythagorean identity"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "The algebraic proof directly uses Vieta's formulas: the chord-circle intersection yields a quadratic $t^2 + 2bt + c = 0$ whose root product $t_1 t_2 = c$ equals the power of the point. This is the $n = 2$ case of Vieta's formulas: the constant term of a monic quadratic equals the product of its roots"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines generalizes the Pythagorean theorem to arbitrary triangles, just as the power of a point generalizes the intersecting chords theorem to arbitrary point positions. Both use the inner product structure of the Euclidean plane: $\\|A - B\\|^2 = \\|A\\|^2 - 2\\langle A, B\\rangle + \\|B\\|^2$ appears in both proofs"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "Feuerbach's theorem (the nine-point circle is internally tangent to the incircle) is proved using the power of a point: the tangency condition is equivalent to the power of the incenter with respect to the nine-point circle equaling $(r_9 - r_I)^2$, where $r_9$ and $r_I$ are the respective radii"
+    },
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "thematic",
+      "description": "Both are classical results in projective/Euclidean geometry formalized using Mathlib's geometric infrastructure. Desargues' theorem concerns perspectivity of triangles; the intersecting chords theorem concerns circle invariants. Both can be stated and proved within the framework of projective geometry, where circles become conics"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "thematic",
+      "description": "Both are among the oldest results in their respective geometric domains, appearing on Wiedijk's list of 100 famous theorems (chords = #55, Euler's formula = #9). Both reveal deep structural invariants: the power of a point is a circle invariant, $V - E + F = 2$ is a topological invariant"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "thematic",
+      "description": "Both are classical geometry results on Wiedijk's list (#55 and #63) that express geometric quantities (segment products, polygon area) through algebraic formulas. Pick's theorem computes area from lattice points; the intersecting chords theorem computes segment products from the power invariant"
     }
   ],
   "leanFile": {
@@ -180,10 +215,31 @@
   "references": [
     {
       "authors": "Euclid",
-      "title": "Elements, Book III, Proposition 35",
+      "title": "Elements, Book III, Propositions 35-37",
       "year": "~300 BCE",
       "venue": "Alexandria",
-      "note": "The power of a point theorem: if two chords intersect inside a circle, the products of their segments are equal"
+      "note": "Propositions 35-37 of Book III contain the complete ancient treatment: intersecting chords (35), secant-tangent (36), and its converse (37) -- the three cases that Steiner would later unify as the power of a point"
+    },
+    {
+      "authors": "Steiner, Jakob",
+      "title": "Einige geometrische Betrachtungen",
+      "year": "1826",
+      "venue": "Journal fur die reine und angewandte Mathematik, vol. 1, pp. 161-184",
+      "note": "Introduced the 'power of a point' concept, unifying the four classical circle-line intersection theorems as manifestations of a single invariant, and defined the radical axis of two circles"
+    },
+    {
+      "authors": "Coxeter, H. S. M.",
+      "title": "Introduction to Geometry",
+      "year": "1969",
+      "venue": "Wiley, 2nd edition",
+      "note": "Chapter 6 develops the power of a point systematically, connecting it to inversive geometry, coaxial circles, and the radical axis -- the modern framework for Steiner's original ideas"
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry",
+      "year": "1929",
+      "venue": "Houghton Mifflin (reprinted by Dover, 2007)",
+      "note": "Comprehensive treatment of circle geometry including the power of a point, radical axes, coaxial systems, and inversive distance -- the classical reference for advanced synthetic geometry"
     }
   ],
   "mainTheorems": [
