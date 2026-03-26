@@ -61,13 +61,16 @@ Known bounds on τ(n).
 -/
 
 /--
-**Average Order of τ**
+**Average Order of τ** (Dirichlet's divisor problem)
 
 The average value of τ(n) for n ≤ x is approximately log(x).
 More precisely, Σ_{n≤x} τ(n) = x log(x) + (2γ - 1)x + O(√x),
 where γ is the Euler-Mascheroni constant.
+
+Deep result from analytic number theory, not currently in Mathlib.
+Stated as a proposition rather than an axiom since it is not used in proofs below.
 -/
-axiom average_order_tau :
+def average_order_tau : Prop :=
     ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
     ∀ x ≥ 2, C₁ * Real.log x ≤ (1/x) * ∑ n ∈ Finset.range (⌊x⌋₊), (σ 0 (n+1) : ℝ)
     ∧ (1/x) * ∑ n ∈ Finset.range (⌊x⌋₊), (σ 0 (n+1) : ℝ) ≤ C₂ * Real.log x
@@ -79,8 +82,11 @@ The maximum order of τ(n) is 2^{(1+o(1)) log(n)/log(log(n))}.
 In particular, τ(n) can be much larger than any fixed power of log(n).
 
 Highly composite numbers achieve this maximum order.
+
+Deep result from analytic number theory, not currently in Mathlib.
+Stated as a proposition rather than an axiom since it is not used in proofs below.
 -/
-axiom max_order_tau :
+def max_order_tau : Prop :=
     ∀ ε > (0 : ℝ), ∃ C : ℝ, ∀ n ≥ 2,
     (σ 0 n : ℝ) ≤ C * (2 : ℝ) ^ ((1 + ε) * Real.log n / Real.log (Real.log n))
 
@@ -136,10 +142,13 @@ def erdos_826_conjecture : Prop :=
 **The formal statement from formal-conjectures.**
 
 Using Mathlib's σ 0 for the divisor function.
+The two sides are definitionally equal after unfolding.
 -/
-axiom erdos_826_statement :
+theorem erdos_826_statement :
     erdos_826_conjecture ↔
-    ∃ C > (0 : ℝ), { n | ∀ k ≥ 1, σ 0 (n + k) ≤ C * k }.Infinite
+    ∃ C > (0 : ℝ), { n | ∀ k ≥ 1, (σ 0 (n + k) : ℝ) ≤ C * k }.Infinite := by
+  unfold erdos_826_conjecture goodStartingPoints linearBoundCondition
+  rfl
 
 /-
 # Part 5: Relation to Problem #248
@@ -186,9 +195,13 @@ but the constraint at k = 1 is very restrictive.
 def fewDivisorsAt1 (n : ℕ) (C : ℝ) : Prop :=
   (σ 0 (n + 1) : ℝ) ≤ C
 
-/-- If n+1 is prime, τ(n+1) = 2, which easily satisfies the bound. -/
-axiom prime_satisfies_bound (n : ℕ) (hn : Nat.Prime (n + 1)) :
-    (σ 0 (n + 1) : ℝ) = 2
+/-- If n+1 is prime, τ(n+1) = 2, which easily satisfies the bound.
+Proved from Mathlib: σ₀(p) = ∑_{d|p} d⁰ = |{1,p}| = 2. -/
+theorem prime_satisfies_bound (n : ℕ) (hn : Nat.Prime (n + 1)) :
+    (σ 0 (n + 1) : ℝ) = 2 := by
+  suffices h : σ 0 (n + 1) = 2 by exact_mod_cast h
+  rw [ArithmeticFunction.sigma_apply, hn.divisors]
+  simp [Finset.not_mem_singleton.mpr hn.one_lt.ne]
 
 /-
 # Part 7: Probabilistic Heuristic
