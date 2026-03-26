@@ -73,6 +73,12 @@ theorem example_13 : IsTwoTimePrimePlusOne 13 := by
   · decide
   · exact ⟨3, 2, by decide, by norm_num⟩
 
+/-- p = 17: 17 = 2^3 · 2 + 1. Here q = 2, k = 3. -/
+theorem example_17 : IsTwoTimePrimePlusOne 17 := by
+  constructor
+  · decide
+  · exact ⟨2, 3, by decide, by norm_num⟩
+
 /-- p = 23: 23 = 2^1 · 11 + 1. Here q = 11, k = 1. -/
 theorem example_23 : IsTwoTimePrimePlusOne 23 := by
   constructor
@@ -143,6 +149,48 @@ theorem example_61_extended : IsTwoThreeTimePrimePlusOne 61 := by
   constructor
   · decide
   · exact ⟨5, 2, 1, by decide, by norm_num⟩
+
+/-- p = 19: 19 = 2^1 · 3^1 · 3 + 1. Here q = 3, k = 1, l = 1.
+    Note: 19 is NOT Form A (18 = 2 · 9, 9 not prime). -/
+theorem example_19_extended : IsTwoThreeTimePrimePlusOne 19 := by
+  constructor
+  · decide
+  · exact ⟨3, 1, 1, by decide, by norm_num⟩
+
+/-- p = 31: 31 = 2^1 · 3^1 · 5 + 1. Here q = 5, k = 1, l = 1.
+    Note: 31 is NOT Form A (30 = 2 · 15, 15 not prime). -/
+theorem example_31_extended : IsTwoThreeTimePrimePlusOne 31 := by
+  constructor
+  · decide
+  · exact ⟨5, 1, 1, by decide, by norm_num⟩
+
+/-- p = 43: 43 = 2^1 · 3^1 · 7 + 1. Here q = 7, k = 1, l = 1.
+    Note: 43 is NOT Form A (42 = 2 · 21, 21 not prime). -/
+theorem example_43_extended : IsTwoThreeTimePrimePlusOne 43 := by
+  constructor
+  · decide
+  · exact ⟨7, 1, 1, by decide, by norm_num⟩
+
+/-- p = 67: 67 = 2^1 · 3^1 · 11 + 1. Here q = 11, k = 1, l = 1.
+    Note: 67 is NOT Form A (66 = 2 · 33, 33 not prime). -/
+theorem example_67_extended : IsTwoThreeTimePrimePlusOne 67 := by
+  constructor
+  · decide
+  · exact ⟨11, 1, 1, by decide, by norm_num⟩
+
+/-- p = 73: 73 = 2^3 · 3^1 · 3 + 1. Here q = 3, k = 3, l = 1.
+    Note: 73 is NOT Form A (72 = 2^3 · 9, 9 not prime). -/
+theorem example_73_extended : IsTwoThreeTimePrimePlusOne 73 := by
+  constructor
+  · decide
+  · exact ⟨3, 3, 1, by decide, by norm_num⟩
+
+/-- p = 79: 79 = 2^1 · 3^1 · 13 + 1. Here q = 13, k = 1, l = 1.
+    Note: 79 is NOT Form A (78 = 2 · 39, 39 not prime). -/
+theorem example_79_extended : IsTwoThreeTimePrimePlusOne 79 := by
+  constructor
+  · decide
+  · exact ⟨13, 1, 1, by decide, by norm_num⟩
 
 -- ## Non-examples (formal proofs that specific primes are NOT Form A)
 
@@ -218,6 +266,57 @@ theorem not_form_b_71 : ¬ IsTwoThreeTimePrimePlusOne 71 := by
     | omega
     | (have : q = _ := by omega; subst this; exact absurd hq (by decide))
 
+/-- p = 19 is NOT Form A: 18 = 2 · 9 and 9 = 3² is not prime. -/
+theorem not_form_a_19 : ¬ IsTwoTimePrimePlusOne 19 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h18 : 2 ^ k * q = 18 := by omega
+  have hk : k ≤ 4 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 18 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 9 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+
+/-- p = 31 is NOT Form A: 30 = 2 · 15 and 15 = 3 · 5 is not prime. -/
+theorem not_form_a_31 : ¬ IsTwoTimePrimePlusOne 31 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h30 : 2 ^ k * q = 30 := by omega
+  have hk : k ≤ 4 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 30 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 15 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+
+/-- p = 43 is NOT Form A: 42 = 2 · 21 and 21 = 3 · 7 is not prime. -/
+theorem not_form_a_43 : ¬ IsTwoTimePrimePlusOne 43 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h42 : 2 ^ k * q = 42 := by omega
+  have hk : k ≤ 4 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 42 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 21 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+
 -- ## Form A ⊊ Form B: formal strict inclusion
 
 /-- Form A ⊊ Form B: 37 witnesses the strict inclusion (Form B but not Form A). -/
@@ -229,6 +328,21 @@ theorem strict_inclusion_37 :
 theorem strict_inclusion_61 :
     IsTwoThreeTimePrimePlusOne 61 ∧ ¬ IsTwoTimePrimePlusOne 61 :=
   ⟨example_61_extended, not_form_a_61⟩
+
+/-- Form A ⊊ Form B: 19 witnesses the strict inclusion. -/
+theorem strict_inclusion_19 :
+    IsTwoThreeTimePrimePlusOne 19 ∧ ¬ IsTwoTimePrimePlusOne 19 :=
+  ⟨example_19_extended, not_form_a_19⟩
+
+/-- Form A ⊊ Form B: 31 witnesses the strict inclusion. -/
+theorem strict_inclusion_31 :
+    IsTwoThreeTimePrimePlusOne 31 ∧ ¬ IsTwoTimePrimePlusOne 31 :=
+  ⟨example_31_extended, not_form_a_31⟩
+
+/-- Form A ⊊ Form B: 43 witnesses the strict inclusion. -/
+theorem strict_inclusion_43 :
+    IsTwoThreeTimePrimePlusOne 43 ∧ ¬ IsTwoTimePrimePlusOne 43 :=
+  ⟨example_43_extended, not_form_a_43⟩
 
 -- ## Structural Theorems
 
@@ -277,19 +391,21 @@ def checkTwoTimePrime (p : ℕ) : Bool :=
     pow2k > 0 && p > pow2k && (p - 1) % pow2k == 0 &&
     Nat.Prime ((p - 1) / pow2k)
 
-/-- All 14 Form A primes ≤ 100: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97. -/
-theorem fourteen_examples_le_100 :
-    ∀ p ∈ [3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97],
+/-- All 15 Form A primes ≤ 100: 3, 5, 7, 11, 13, 17, 23, 29, 41, 47, 53, 59, 83, 89, 97.
+    (Prior census missed p=17: 17 = 2³·2 + 1.) -/
+theorem fifteen_examples_le_100 :
+    ∀ p ∈ [3, 5, 7, 11, 13, 17, 23, 29, 41, 47, 53, 59, 83, 89, 97],
       IsTwoTimePrimePlusOne p := by
   intro p hp
   simp [List.mem_cons] at hp
   rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · exact example_3
   · exact example_5
   · exact example_7
   · exact example_11
   · exact example_13
+  · exact example_17
   · exact example_23
   · exact example_29
   · exact example_41
