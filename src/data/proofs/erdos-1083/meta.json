@@ -69,8 +69,10 @@
       "**The $\\varepsilon$-formulation:** Formalizing '$o(1)$' as '$\\forall \\varepsilon > 0$, ...' is the standard rigorous rendering of subpolynomial factors, capturing the conjecture precisely in Lean's type theory"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry: distance in ℝ^d, point configurations, lattice constructions",
+      "Combinatorial geometry: incidence bounds, distance repetition, extremal configurations",
+      "Algebraic methods: polynomial partitioning, sum-product estimates (for Solymosi-Vu)",
+      "Asymptotic analysis: subpolynomial factors, o(1) notation in exponents"
     ]
   },
   "sections": [
@@ -136,27 +138,53 @@
   "crossReferences": [
     {
       "targetId": "erdos-89",
-      "relationship": "2D base case of the distinct distances hierarchy: f_2(n) ≥ cn/log n, solved by Guth-Katz (2015) using polynomial partitioning—the techniques underpinning the d=2 resolution do not extend to d≥3"
+      "relationship": "specializes",
+      "description": "The 2D base case: Guth-Katz proved f_2(n) ≥ cn/log n using polynomial partitioning, but these techniques do not extend to d ≥ 3 where the problem remains open."
     },
     {
       "targetId": "erdos-1082",
-      "relationship": "Companion distinct-distances problem in the plane imposing a general-position constraint (no three collinear); shares the Erdős 1946 lower-bound strategy and the challenge of exploiting structural restrictions"
+      "relationship": "companion",
+      "description": "Distinct distances with no-three-collinear constraint. Shares the Erdős 1946 lower bound strategy and the challenge of exploiting structural restrictions on point sets."
     },
     {
       "targetId": "erdos-1084",
-      "relationship": "Unit-distance variant in ℝ^d with a separation constraint; the separation condition transforms the incidence-counting argument and directly relates the unit-distance bound to the distinct-distances exponent"
+      "relationship": "companion",
+      "description": "Unit-distance variant with separation constraint. The separation condition transforms the incidence geometry, directly relating unit-distance and distinct-distance exponents."
+    },
+    {
+      "targetId": "erdos-1084-oq-01",
+      "relationship": "companion",
+      "description": "The 3D correction term conjecture f_3(n) = 6n − Θ(n^{2/3}). The isoperimetric exponent (d−1)/d and the distinct-distance exponent 2/d both arise from dimensional scaling."
+    },
+    {
+      "targetId": "erdos-1085",
+      "relationship": "companion",
+      "description": "The unit distance problem: how many pairs at distance 1? The dual question to minimizing distinct distances — both probe the extremal structure of distance multisets."
     },
     {
       "targetId": "erdos-1088",
-      "relationship": "Studies subsets of ℝ^d all of whose pairwise distances are distinct (a dual perspective to minimizing distinct distances); the function f_d in #1088 is exponentially related to the extremal configurations in #1083"
+      "relationship": "related",
+      "description": "Subsets with all pairwise distances distinct (a dual perspective). The extremal function in #1088 is exponentially related to configurations minimizing distinct distances."
     },
     {
       "targetId": "erdos-1089",
-      "relationship": "The inverse function g_d(n)—maximum points in ℝ^d with at most n distinct distances—is essentially the functional inverse of f_d from this problem; progress on either immediately constrains the other"
+      "relationship": "related",
+      "description": "The inverse function g_d(n): maximum points with ≤ n distinct distances. Essentially the functional inverse of f_d — progress on either constrains the other."
     },
     {
       "targetId": "erdos-95",
-      "relationship": "Sum-of-squared-multiplicities problem in the plane; the polynomial method and algebraic incidence bounds used there are the same tools (Guth-Katz ruling surfaces, Cauchy-Schwarz over distance pairs) being sought for d≥3"
+      "relationship": "uses",
+      "description": "Sum-of-squared-multiplicities bounds: the polynomial method and Guth-Katz ruling surfaces used there are the same tools sought for extending distinct-distance results to d ≥ 3."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi regularity provides structural decomposition for graphs arising from point configurations, relevant to incidence-counting approaches in higher dimensions."
+    },
+    {
+      "targetId": "kepler-conjecture",
+      "relationship": "related",
+      "description": "Sphere packing in ℝ^d constrains lattice configurations that are extremal for distinct distances. The lattice upper bound f_d(n) ≤ n^{2/d} comes from the integer lattice, whose packing properties are governed by Kepler-type results."
     }
   ],
   "references": [
