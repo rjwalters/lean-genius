@@ -102,7 +102,7 @@
       "startLine": 68,
       "endLine": 79
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Main Conjecture: Power Saving in the Exponent",
     "content": "The formal statement `ErdosProblem159` asks: $\\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0$: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$. This is a **power saving** over $n^2$, strictly stronger than the known $(\\log n)^2$ improvement. The nested existential quantifiers $c, C, n_0$ follow the standard format for asymptotic bounds in combinatorics. Note that Spencer's lower bound $n^{3/2-o(1)}$ implies any $c > 0$ must satisfy $c \\leq 1/2$ (since the exponent cannot go below $3/2$).",
     "mathContext": "$\\text{ErdosProblem159}: \\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0: R(C_4, K_n) \\leq C \\cdot n^{2-c}$. If true, $c \\leq 1/2$ by Spencer's lower bound.",

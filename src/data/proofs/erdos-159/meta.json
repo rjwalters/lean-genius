@@ -76,10 +76,11 @@
       "**Threshold specification:** The formalization uses the complete min-max characterization: `ramseyC4Kn_spec` asserts BOTH directions (sufficiency and necessity), making $R(C_4, K_n)$ the exact threshold rather than just an upper bound. The complement `Gᶜ` turns clique-finding into independence-number questions."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)",
-      "Ramsey theory (partition regularity)",
-      "Extremal graph theory (Turán-type problems)"
+      "Ramsey theory: off-diagonal Ramsey numbers $R(H, K_n)$, threshold characterization",
+      "Extremal graph theory: Turán numbers, Kővári-Sós-Turán theorem $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$",
+      "Szemerédi regularity lemma: partition into regular pairs, density inheritance",
+      "Probabilistic method: random graph deletion, expected value arguments for lower bounds",
+      "Finite geometry: incidence graphs of projective planes, polarity graphs as $C_4$-free constructions"
     ]
   },
   "sections": [
@@ -164,17 +165,52 @@
     {
       "targetId": "erdos-569",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "Off-diagonal Ramsey problem — both study $R(H, K_n)$ where $H$ is a fixed sparse graph and $n$ grows, probing the interplay between subgraph structure and independence number"
     },
     {
       "targetId": "erdos-620",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "Ramsey and extremal graph theory overlap — both connect forbidden subgraph density to graph parameters via the regularity lemma and probabilistic method"
     },
     {
       "targetId": "erdos-667",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "Ramsey-type extremal problem — shares the framework of bounding graph invariants under forbidden subgraph constraints"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Asymptotic Ramsey theory — studies growth rates of Ramsey numbers, the same fundamental question as #159 but for different graph families"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Probabilistic method in Ramsey theory — Spencer's lower bound for $R(C_4, K_n)$ uses the same probabilistic deletion technique central to #1029"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Zarankiewicz-type extremal problems — the Kővári-Sós-Turán bound $\\mathrm{ex}(n; C_4) = O(n^{3/2})$ is the key ingredient in Spencer's lower bound for $R(C_4, K_n)$"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Bipartite Turán numbers — both problems study extremal functions for bipartite forbidden subgraphs; the Kővári-Sós-Turán theorem underlies both"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Chromatic number and girth — constructing graphs with high chromatic number and no short cycles is related to $C_4$-free Ramsey graphs"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Growth rates of Ramsey numbers — both investigate the polynomial exponent in Ramsey-type functions, the core question of #159"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "related",
+      "description": "Ramsey-type result in geometry (empty convex polygons) — illustrates how Ramsey-theoretic ideas extend beyond graph theory to geometric settings"
     }
   ],
   "references": [
