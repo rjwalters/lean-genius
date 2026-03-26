@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 4 axioms (erdosHajnal_subgraph + babai_theorem), removed 2 sorries. Proved upper bound of erdosHajnal_chromatic. Fixed Mathlib v4.26.0 deprecations (Ordinal.toType → ToType).",
+    "progressSummary": "PROGRESS: Eliminated erdosHajnal_chromatic axiom via double pigeonhole proof (8 new lemmas). Reduced from 2 axioms to 1. Remaining axiom: partialConstruction (ω₂² construction).",
     "builtItems": [
       "erdosHajnalGraph: now explicitly defined (was axiom) - comparability graph on omega1 x omega1",
       "babai_fails_omega1: proved (E-H construction refutes Babai extension)",
@@ -44,7 +44,12 @@
       "babai_theorem: proved via chromaticNumber_inducedSubgraph_le",
       "chromaticNumber_inducedSubgraph_le: monotonicity via csInf_le_csInf",
       "isColorable_inducedSubgraph: restriction of proper coloring is proper",
-      "isColorable_mk, colorable_nonempty, colorable_supset: basic infrastructure"
+      "isColorable_mk, colorable_nonempty, colorable_supset: basic infrastructure",
+      "exists_uncountable_fiber: cardinal pigeonhole for uncountable→countable maps",
+      "mk_Iio_omega1_le_aleph0: initial segments of ω₁ are countable (via typein + card_type + lt_ord)",
+      "uncountable_cofinal: uncountable subsets of ω₁ are cofinal",
+      "erdosHajnal_not_countably_colorable: main contradiction via double pigeonhole",
+      "erdosHajnal_chromatic: theorem replacing axiom, upper+lower bound combined"
     ],
     "insights": [
       "Lean file: 258 lines, 4 axioms (was 5), 2 sorries. E-H graph now explicit definition.",
@@ -61,7 +66,10 @@
       "mk(omega1.ToType) = ℵ₁ via Cardinal.mk_toType + Cardinal.ord_aleph + Ordinal.card_omega",
       "Lower bound of erdosHajnal_chromatic needs double pigeonhole: row pigeonhole + color pigeonhole + initial-segment cardinality bounds. Requires ~80 lines of cardinal infrastructure.",
       "Key Mathlib API: aleph_succ, Order.succ_eq_add_one, Order.lt_succ_iff for cardinal successor arithmetic",
-      "Ordinal.toType deprecated in Mathlib v4.26.0 → use Ordinal.ToType (capital T)"
+      "Ordinal.toType deprecated in Mathlib v4.26.0 → use Ordinal.ToType (capital T)",
+      "Proved erdosHajnal_chromatic: χ(E-H graph) = ℵ₁ via double pigeonhole + cofinality argument",
+      "Key infrastructure: exists_uncountable_fiber (cardinal pigeonhole), mk_Iio_omega1_le_aleph0 (initial segments countable), uncountable_cofinal (cofinal argument)",
+      "Added import Mathlib.SetTheory.Cardinal.Order for mk_le_mk_mul_of_mk_preimage_le"
     ],
     "mathlibGaps": [
       "LinearOrder/IsWellOrder instances for ordinal product types (omega2Squared)",
