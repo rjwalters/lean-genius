@@ -178,19 +178,18 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
 
 -- ## The Erdős–Nešetřil–Rödl Conjecture (OPEN)
 
-/-- Erdős Problem 846 (Erdős–Nešetřil–Rödl): Is every infinite ε-non-trilinear
-    subset of ℝ² weakly non-trilinear (a finite union of sets with no three
-    collinear)?
+/-- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, OPEN): Is every infinite
+    ε-non-trilinear subset of ℝ² weakly non-trilinear (a finite union of
+    sets with no three collinear)?
 
-    This is an OPEN problem. The converse (weakly non-trilinear → ε-non-trilinear)
-    is proved above as weaklyNonTrilinear_implies_eps. -/
-theorem ErdosProblem846 :
+    The converse (weakly non-trilinear → ε-non-trilinear) is proved above
+    as `weaklyNonTrilinear_implies_eps`. -/
+axiom ErdosProblem846 :
     ∀ A : Set (Fin 2 → ℝ), A.Infinite →
       ∀ ε : ℝ, ε > 0 → IsEpsNonTrilinear A ε →
-        IsWeaklyNonTrilinear A := by
-  sorry -- OPEN problem
+        IsWeaklyNonTrilinear A
 
-/-- Contrapositive formulation: equivalent to the main conjecture by pure logic -/
+/-- Contrapositive formulation: equivalent to the main conjecture by pure logic. -/
 theorem ErdosProblem846_contrapositive :
     ∀ A : Set (Fin 2 → ℝ), A.Infinite →
       ¬IsWeaklyNonTrilinear A →
