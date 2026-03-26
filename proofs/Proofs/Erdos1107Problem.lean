@@ -132,11 +132,11 @@ axiom erdos_1107 : ∀ r ≥ 2, ∀ᶠ n in atTop, SumOfRPowerful r n
 Every sufficiently large integer is the sum of at most three
 squareful (2-powerful) numbers.
 
-This resolves Erdős Problem #1107 for r = 2. The proof uses the
-theory of ternary quadratic forms and deep results on the
-representations of integers by such forms.
+This resolves Erdős Problem #1107 for r = 2. Follows immediately
+from the general conjecture by specializing r = 2.
 -/
-axiom erdos_1107_squareful : ∀ᶠ n in atTop, SumOfRPowerful 2 n
+theorem erdos_1107_squareful : ∀ᶠ n in atTop, SumOfRPowerful 2 n :=
+  erdos_1107 2 (by norm_num)
 
 /-
 ## Verified Example
