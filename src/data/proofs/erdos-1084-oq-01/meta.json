@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1084",
     "axiomCount": 8,
     "assumptions": "8 axiom declarations: kissingNumber (definition), kissing_1d (tau(1)=2), kissing_2d (tau(2)=6), kissing_3d (tau(3)=12), degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, degree_sum_eq_twice_pairs (handshaking lemma, previously axiom), f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition.",
-    "lineCount": 533,
+    "lineCount": 593,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
   },
@@ -85,7 +85,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "This formalization addresses the central open question from Erdos Problem #1084: whether the correction term in f_3(n) is exactly Theta(n^{2/3}). The upper bound f_3(n) < 6n - 0.926*n^{2/3} was proved by Bezdek and Reid (2013) using the isoperimetric method for finite sphere packings. The conjectured matching lower bound f_3(n) >= 6n - c*n^{2/3} would follow from exhibiting FCC lattice clusters with the right contact count. The exponent 2/3 = (d-1)/d for d=3 reflects the surface-to-volume ratio: a ball of volume n in R^3 has surface area Theta(n^{2/3}), and boundary spheres in an FCC cluster lose contacts compared to the 12-contact interior arrangement.",
+    "historicalContext": "This formalization addresses the central open question from Erdős Problem #1084: whether the correction term in $f_3(n)$ is exactly $\\Theta(n^{2/3})$. The problem originates in Erdős's 1946 work on unit distances and was sharpened in his 1975 paper, where he conjectured the $\\Theta(n^{(d-1)/d})$ correction pattern across dimensions. The leading coefficient $6 = \\tau(3)/2$ depends on the kissing number $\\tau(3) = 12$, whose value was the subject of the famous Newton-Gregory dispute (1694): Newton claimed 12, Gregory argued 13. The question remained open for 260 years until Schütte and van der Waerden (1953) confirmed Newton's answer. The upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ was proved by Bezdek and Reid (2013) using the isoperimetric method for finite sphere packings, refining earlier work by Böröczky. The conjectured matching lower bound follows from FCC lattice clusters, where interior points have the full 12 contacts and $\\Theta(n^{2/3})$ boundary points lose contacts — a direct manifestation of the isoperimetric inequality relating surface area to volume in $\\mathbb{R}^3$.",
     "problemStatement": "Is f_3(n) = 6n - Theta(n^{2/3})? That is, does the maximum number of unit-distance pairs among n separated points in R^3 have a correction term of order n^{2/3} below the leading term 6n?",
     "text": "Formalization of the Erdos conjecture on the correction term for unit-distance pairs among separated points in 3D, with proved kissing-number upper bounds, 1D theory, and isoperimetric exponent analysis.",
     "proofStrategy": "The formalization builds from the ground up: (1) Complete machine-verified 1D theory (f_1(n) = n-1). (2) Kissing number framework relating degree bounds to pair counts via double-counting. (3) Proved upper bounds f_2(n) <= 3n and f_3(n) <= 6n from kissing numbers tau(2)=6, tau(3)=12. (4) The central conjecture decomposed into FCC lower bound + Bezdek-Reid upper bound. (5) Isoperimetric exponent analysis connecting the 2D and 3D correction terms.",
@@ -94,7 +94,9 @@
       "**Isoperimetric exponent (d-1)/d**: The correction term n^{2/3} for d=3 matches the surface-to-volume ratio, just as n^{1/2} in Harborth's 2D formula matches alpha(2) = 1/2",
       "**FCC boundary deficit**: Interior FCC points have 12 contacts, boundary points lose O(1) contacts. With Theta(n^{2/3}) boundary points, deficit is Theta(n^{2/3})",
       "**Bezdek-Reid isoperimetric method**: Proves f_3(n) < 6n - 0.926*n^{2/3} by bounding the surface area of finite sphere packings",
-      "**Complete 1D theory**: f_1(n) = n-1 proved constructively with left-endpoint injection and consecutive-integer construction"
+      "**Complete 1D theory**: f_1(n) = n-1 proved constructively with left-endpoint injection and consecutive-integer construction",
+      "**Newton-Gregory connection**: The kissing number $\\tau(3) = 12$ resolving the 260-year Newton-Gregory dispute is the key constant determining the leading term $6n$",
+      "**Handshaking as bridge**: The degree-sum formula $\\sum \\deg(i) = 2|E|$ (now machine-verified) converts a local bound ($\\deg \\le \\tau(d)$) into a global one ($|E| \\le \\tau(d) \\cdot n / 2$)"
     ],
     "prerequisites": [
       "Euclidean geometry: distance in R^d, inner product spaces",
@@ -117,17 +119,52 @@
     {
       "targetId": "erdos-1084",
       "relationship": "extends",
-      "description": "Extends the base Erdos #1084 formalization with the 3D conjecture, kissing number framework, and isoperimetric analysis"
+      "description": "Extends the base Erdős #1084 formalization with the 3D conjecture, kissing number framework, and isoperimetric analysis"
     },
     {
       "targetId": "kepler-conjecture",
       "relationship": "related",
-      "description": "The FCC lower bound relies on the Kepler conjecture: FCC packing density governs the leading coefficient and contact structure"
+      "description": "The FCC lower bound relies on FCC packing structure; the Kepler conjecture guarantees FCC is densest, governing the contact geometry"
     },
     {
       "targetId": "erdos-1083",
       "relationship": "companion",
-      "description": "Companion problem on minimum distinct distances, sharing the dimension-indexed extremal function structure"
+      "description": "Companion problem on minimum distinct distances, sharing the dimension-indexed extremal function structure f_d(n)"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric exponent (d-1)/d controlling the correction term originates from the isoperimetric inequality's surface-to-volume scaling"
+    },
+    {
+      "targetId": "erdos-1085",
+      "relationship": "companion",
+      "description": "The unit distance problem in the plane: asks for the maximum number of unit distances among n points (without the separation constraint)"
+    },
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Independence number of unit distance graphs — dual perspective: this file studies edge count (contacts), Erdős #1070 studies independent sets"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Point sets with restricted distances share the framework of extremal distance problems in Euclidean space with combinatorial constraints"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Distinct distance subsets in high dimensions — both problems study how dimension affects extremal distance configurations"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Distinct distances in higher dimensions — complementary to unit-distance maximization, studying the minimum number of distinct distances"
+    },
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Distance multiplicities in planar point sets — both problems count how often a specific distance can occur among n points"
     }
   ],
   "references": [
