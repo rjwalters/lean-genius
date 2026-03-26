@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 3 eliminated bondy_quadratic_threshold axiom (7→6 axioms). Pure arithmetic proof: n²/4 ≥ n + log₂ n.",
+    "progressSummary": "PROGRESS: Session 3 eliminated bondy_quadratic_threshold axiom (7→6 axioms). Identified modeling flaw in pancyclicExcess definition (abstract IsPancyclic disconnects edge count from cycles). Remaining 6 axioms: 2 open problems, 2 deep published results, 2 small cases needing sSup evaluation.",
     "builtItems": [
       "theorem hamiltonian_edge_count: pancyclicExcess n ≥ 0 (trivial for ℕ)",
       "theorem pancyclic_monotone: IsPancyclic independent of edgeCount",
@@ -47,7 +47,9 @@
       "bondy_quadratic_threshold was FALSE for n=3,4,5 (n²/4 < n + log₂n in those cases) — fixed threshold to n≥7",
       "Remaining 7 axioms are all either the main conjecture, open questions, or deep published results",
       "bondy_quadratic_threshold is pure arithmetic — no graph theory needed. Proved via interval_cases + nlinarith.",
-      "Remaining 6 axioms: 2 open, 2 published deep results, 2 sSup evaluation (triangle_pancyclic, small_case_4)"
+      "Remaining 6 axioms: 2 open, 2 published deep results, 2 sSup evaluation (triangle_pancyclic, small_case_4)",
+      "MODELING FLAW: IsPancyclic does not connect edgeCount to hasCycleOfLength — the Prop parameter is unconstrained. This makes pancyclicExcess(n)=0 for all n via sSup of empty set, rendering small_case_4 (h(4)=1) inconsistent with the definition.",
+      "To properly formalize, would need SimpleGraph with Walk.IsCycle and edgeFinset — about 200+ lines of infrastructure"
     ],
     "mathlibGaps": [],
     "nextSteps": [
