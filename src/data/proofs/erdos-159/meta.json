@@ -164,30 +164,66 @@
     {
       "targetId": "erdos-569",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "Erdős #569 studies odd cycle Ramsey numbers R(C_{2k+1}, K_n), where the odd parity gives qualitatively different behavior from the even-cycle case R(C_4, K_n) studied here"
     },
     {
       "targetId": "erdos-620",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "The Erdős-Rogers problem (#620) asks about independence numbers in K_r-free graphs — the dual question to R(C_4, K_n), where we seek large clique-free substructures rather than large independent sets in C_4-free graphs"
     },
     {
       "targetId": "erdos-667",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+      "description": "Erdős #667 studies the clique density exponent c(p,q), a quantity that governs Ramsey-type bounds. The exponent gap in R(C_4, K_n) between 3/2 and 2 is closely related to clique density phenomena"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem guarantees R(C_4, K_n) is finite for all n. This problem asks for the precise growth rate, refining the existential guarantee to quantitative bounds"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Erdős #147 concerns Turán numbers ex(n; H) for bipartite H, which directly controls the lower bound for R(C_4, K_n) via the Turán-Ramsey connection: C_4-free graphs provide independent sets"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is used in the upper bound R(C_4, K_n) ≤ O(n²/(log n)²). Bypassing its quantitative inefficiency is key to proving or disproving the power saving conjecture"
     }
   ],
   "references": [
     {
-      "key": "CS83",
-      "authors": [
-        "V. Chvátal",
-        "E. Szemerédi"
-      ],
-      "title": "Notes on the Erdős-Ko-Rado theorem",
+      "key": "Sp77",
+      "authors": ["J. Spencer"],
+      "title": "Asymptotic lower bounds for Ramsey functions",
+      "venue": "Discrete Mathematics",
+      "year": "1977",
+      "note": "Establishes the lower bound R(C₄, Kₙ) ≥ Ω(n^{3/2}/(log n)^{3/2}) using the probabilistic method and Turán-type bounds for C₄-free graphs"
+    },
+    {
+      "key": "Sz83",
+      "authors": ["E. Szemerédi"],
+      "title": "Regular partitions of graphs",
+      "venue": "Colloques Internationaux CNRS, Problèmes Combinatoires et Théorie des Graphes",
+      "year": "1978",
+      "note": "The Szemerédi regularity lemma, used in the upper bound R(C₄, Kₙ) ≤ O(n²/(log n)²)"
+    },
+    {
+      "key": "KST54",
+      "authors": ["T. Kővári", "V.T. Sós", "P. Turán"],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloq. Math. 3 (1954), 50-57",
+      "year": "1954",
+      "note": "The Kővári-Sós-Turán bound z(n; 2,2) = O(n^{3/2}), the key Turán-type ingredient in the Ramsey lower bound"
+    },
+    {
+      "key": "AKS80",
+      "authors": ["M. Ajtai", "J. Komlós", "E. Szemerédi"],
+      "title": "A note on Ramsey numbers",
       "venue": "Journal of Combinatorial Theory, Series A",
-      "year": "1988",
-      "note": "Context for Ramsey numbers involving C₄ and complete graphs"
+      "year": "1980",
+      "note": "Establishes R(3,n) = Θ(n²/log n), the diagonal Ramsey bound whose techniques extend to the off-diagonal C₄ case"
     }
   ]
 }
