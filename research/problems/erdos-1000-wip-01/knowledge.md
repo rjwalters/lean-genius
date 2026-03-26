@@ -56,3 +56,44 @@ Session 1 proved structural lower bounds. Session 2 proved the complement formul
 - Formalize the double-counting argument for erdos_no_zero_limit
 - Alternative: prove for special cases first (lacunary, prime-rich sequences)
 - cassels_liminf_zero requires continued fraction construction (longer-term)
+
+## Session 2026-03-26 (Session 3) - Infrastructure for erdos_no_zero_limit
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+Added 11 new infrastructure theorems toward proving erdos_no_zero_limit:
+
+1. **Filter helpers**:
+   - `not_densityToZero_of_frequently_ge`: if ρ ≥ c > 0 frequently, then ¬DensityToZero
+   - `not_densityToZero_of_frequently_prime`: prime-rich sequences can't have ρ → 0
+2. **Base case**: `usedSum_zero`: usedSum A 0 = 0
+3. **Bounds**:
+   - `densityRatio_ge_inv`: ρ ≥ 1/n_k (absolute lower bound)
+   - `cesaroAvg_ge_totient_avg`: Cesàro ≥ average of φ(n_k)/n_k
+4. **Unused-divisor analysis**:
+   - `phiA_ge_unused_subset`: any subset of unused divisors bounds φ_A below
+   - `divisor_gt_prev_unused`: d > n_{k-1} implies d is unused
+   - `phiA_ge_large_divisor_sum`: φ_A ≥ sum of totients of large divisors
+   - `phiA_ge_self_and_quotient`: with p-fold gap, φ_A ≥ φ(n_k) + φ(n_k/p)
+5. **Deficit-sum analysis**:
+   - `sum_deficit_eq_sum_used_ratio`: Σ(1-ρ) = Σ usedSum/n (identity)
+   - `sum_deficit_lt`: Σ(1-ρ) < N (strict deficit bound)
+6. **Positivity**: `cesaroAvg_pos`: C_A(N) > 0 for N > 0
+
+### Key Findings
+- **Pointwise bounds are insufficient**: ρ ≥ φ(n)/n can → 0 (primorials), so the complement formula + structural argument is essential
+- **Double-counting bound is too loose**: Σ(1-ρ) ≤ O(N log N) via harmonic bounds, but ρ → 0 only requires Σ(1-ρ) ~ N. The O(N) vs O(N log N) gap prevents a contradiction.
+- **The proof of erdos_no_zero_limit likely requires**: (a) analytic NT results about φ(n)/n distribution (Mertens' theorem), or (b) a tighter structural argument about divisibility pairs, or (c) exploiting the tension between growth rate (fast growth → few used divisors) and divisor density (many small primes → φ/n small but forces fast growth)
+- The **prime-rich case** is now completely handled by `not_densityToZero_of_frequently_prime`
+
+### Files Modified
+- `proofs/Proofs/Erdos1000Problem.lean` — 11 new theorems (607 → 796 lines)
+- `src/data/proofs/erdos-1000/meta.json` — updated
+- `src/data/research/problems/erdos-1000-wip-01.json` — updated
+
+### Next Steps
+- Find or build Mathlib infrastructure for Mertens-type bounds on φ(n)/n
+- Alternatively: formalize the sum-switching identity and tighter pair bounds
+- The core challenge: bounding Σ_j φ(n_j) · Σ_{k>j: n_j|n_k} 1/n_k more tightly than O(N log N)
