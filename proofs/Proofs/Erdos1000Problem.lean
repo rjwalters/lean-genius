@@ -625,4 +625,172 @@ theorem pointwise_cesaro_gap :
   obtain ⟨A, hA⟩ := haight_resolution
   exact ⟨A, hA, erdos_no_zero_limit A⟩
 
+/- ## Part X: Infrastructure Toward Proving erdos_no_zero_limit -/
+
+/-- Helper: if ρ_A(k) ≥ c for infinitely many k (some c > 0), then ρ doesn't → 0.
+    This is the standard filter-level bridge for disproving convergence. -/
+theorem not_densityToZero_of_frequently_ge (A : IncreasingSeq) {c : ℝ} (hc : 0 < c)
+    (hfreq : ∃ᶠ k in atTop, c ≤ densityRatio A k) : ¬ DensityToZero A := by
+  intro hDZ
+  have hev : ∀ᶠ k in atTop, densityRatio A k < c := hDZ (Iio_mem_nhds hc)
+  exact hfreq (hev.mono fun k hk hge => absurd hge (not_le.mpr hk))
+
+/-- Sequences with infinitely many prime terms can't have ρ → 0.
+    At every prime n_k, the density ratio is ≥ 1/2 (from densityRatio_ge_of_prime). -/
+theorem not_densityToZero_of_frequently_prime (A : IncreasingSeq)
+    (hprime : ∃ᶠ k in atTop, Nat.Prime (A.seq k)) : ¬ DensityToZero A :=
+  not_densityToZero_of_frequently_ge A (by norm_num : (0 : ℝ) < 1 / 2)
+    (hprime.mono fun k hk => densityRatio_ge_of_prime A k hk)
+
+/-- The used sum at k = 0 is 0 — there are no previous terms to use. -/
+theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
+  unfold usedSum
+  suffices h : ((A.seq 0).divisors.filter (fun e => ∃ j, j < 0 ∧ e = A.seq j)) = ∅ by
+    rw [h]; exact Finset.sum_empty
+  rw [Finset.eq_empty_iff_forall_not_mem]
+  intro e
+  simp only [Finset.mem_filter, Nat.mem_divisors, not_and]
+  intro _
+  rintro ⟨j, hj, _⟩
+  omega
+
+/-- ρ_A(k) ≥ 1/n_k for all k — an absolute lower bound.
+    Since φ_A(k) ≥ 1 (from phiA_pos), the ratio is at least 1/n_k. -/
+theorem densityRatio_ge_inv (A : IncreasingSeq) (k : ℕ) :
+    1 / (A.seq k : ℝ) ≤ densityRatio A k := by
+  unfold densityRatio
+  rw [div_le_div_right (Nat.cast_pos.mpr (A.pos k))]
+  exact_mod_cast phiA_pos A k
+
+/-- The Cesàro average is bounded below by the average totient ratio:
+    C_A(N) ≥ (1/N) Σ_{k<N} φ(n_k)/n_k.
+    Consequence of the pointwise bound ρ_A(k) ≥ φ(n_k)/n_k. -/
+theorem cesaroAvg_ge_totient_avg (A : IncreasingSeq) (N : ℕ) :
+    (∑ k ∈ range N, (Nat.totient (A.seq k) : ℝ) / (A.seq k : ℝ)) / N
+    ≤ cesaroAvg A N := by
+  unfold cesaroAvg
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · simp
+  · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
+    exact Finset.sum_le_sum fun k _ => densityRatio_ge_totient_ratio A k
+
+/-- Any subset of unused divisors of n_k gives a lower bound on φ_A(k).
+    If S ⊆ divisors(n_k) and every e ∈ S is unused (≠ n_j for all j < k),
+    then S.sum φ ≤ φ_A(k). Direct from phiA_decomposition. -/
+theorem phiA_ge_unused_subset (A : IncreasingSeq) (k : ℕ)
+    (S : Finset ℕ)
+    (hS_div : S ⊆ (A.seq k).divisors)
+    (hS_unused : ∀ e ∈ S, ∀ j : ℕ, j < k → e ≠ A.seq j) :
+    S.sum Nat.totient ≤ phiA A k := by
+  rw [phiA_decomposition]
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro e he
+    exact Finset.mem_filter.mpr ⟨hS_div he, hS_unused e he⟩
+  · intro _ _ _; exact Nat.zero_le _
+
+/-- Any divisor of n_k that exceeds n_{k-1} is automatically unused —
+    it cannot equal any earlier term n_j (since n_j ≤ n_{k-1} for j < k).
+    Together with the decomposition, this means "large" divisors
+    always contribute to φ_A(k). -/
+theorem divisor_gt_prev_unused (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
+    (d : ℕ) (hd_dvd : d ∣ A.seq k)
+    (hd_large : A.seq (k - 1) < d) :
+    ∀ j : ℕ, j < k → d ≠ A.seq j := by
+  intro j hj
+  have : j ≤ k - 1 := by omega
+  have hle : A.seq j ≤ A.seq (k - 1) := by
+    rcases eq_or_lt_of_le this with rfl | h
+    · exact le_refl _
+    · exact le_of_lt (A.strictMono h)
+  omega
+
+/-- **Large-divisor lower bound**: φ_A(k) is at least the totient sum of
+    divisors of n_k that exceed n_{k-1}. These are automatically unused
+    since they're larger than all previous terms. -/
+theorem phiA_ge_large_divisor_sum (A : IncreasingSeq) (k : ℕ) (hk : 0 < k) :
+    ((A.seq k).divisors.filter (fun d => A.seq (k - 1) < d)).sum Nat.totient
+    ≤ phiA A k := by
+  rw [phiA_decomposition]
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro d hd
+    simp only [Finset.mem_filter, Nat.mem_divisors] at hd ⊢
+    exact ⟨hd.1, divisor_gt_prev_unused A k hk d hd.1.1 hd.2⟩
+  · intro _ _ _; exact Nat.zero_le _
+
+/-- For sequences with p-fold gaps (n_k ≥ p·n_{k-1} + 1 where p | n_k),
+    both n_k and n_k/p are unused divisors, giving a combined lower bound.
+    The gap condition ensures n_k/p > n_{k-1}, making n_k/p "too large"
+    to be any previous sequence term. -/
+theorem phiA_ge_self_and_quotient (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
+    (p : ℕ) (hp : Nat.Prime p) (hp_dvd : p ∣ A.seq k)
+    (hgap : A.seq (k - 1) * p < A.seq k) :
+    Nat.totient (A.seq k) + Nat.totient (A.seq k / p) ≤ phiA A k := by
+  -- n_k and n_k/p are distinct
+  have h_ne : A.seq k ≠ A.seq k / p := by
+    intro h; have := Nat.div_lt_self (A.pos k) hp.one_lt; omega
+  -- Both are large (exceed n_{k-1})
+  have h_nk_large : A.seq (k - 1) < A.seq k := A.strictMono (by omega)
+  have h_div_large : A.seq (k - 1) < A.seq k / p := by
+    have := Nat.div_mul_cancel hp_dvd
+    omega
+  -- Both are unused
+  have h_nk_unused := divisor_gt_prev_unused A k hk (A.seq k) (dvd_refl _) h_nk_large
+  have h_div_unused := divisor_gt_prev_unused A k hk (A.seq k / p)
+    (Nat.div_dvd_of_dvd hp_dvd) h_div_large
+  -- Apply phiA_ge_unused_subset with S = {n_k, n_k/p}
+  have hsub : ({A.seq k, A.seq k / p} : Finset ℕ) ⊆ (A.seq k).divisors := by
+    intro d hd
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hd
+    rcases hd with rfl | rfl
+    · exact Nat.mem_divisors.mpr ⟨dvd_refl _, (A.pos k).ne'⟩
+    · exact Nat.mem_divisors.mpr ⟨Nat.div_dvd_of_dvd hp_dvd, (A.pos k).ne'⟩
+  have hunused : ∀ e ∈ ({A.seq k, A.seq k / p} : Finset ℕ), ∀ j, j < k → e ≠ A.seq j := by
+    intro d hd
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hd
+    rcases hd with rfl | rfl
+    · exact h_nk_unused
+    · exact h_div_unused
+  calc Nat.totient (A.seq k) + Nat.totient (A.seq k / p)
+      = ({A.seq k, A.seq k / p} : Finset ℕ).sum Nat.totient := by
+        rw [Finset.sum_pair h_ne]
+    _ ≤ phiA A k := phiA_ge_unused_subset A k _ hsub hunused
+
+/-- **Deficit-sum identity in ℝ**: The total deficit from ρ=1 equals
+    the sum of usedSum(k)/n_k.
+    Σ_{k<N} (1 - ρ_A(k)) = Σ_{k<N} usedSum(k) / n_k. -/
+theorem sum_deficit_eq_sum_used_ratio (A : IncreasingSeq) (N : ℕ) :
+    ∑ k ∈ range N, (1 - densityRatio A k) =
+    ∑ k ∈ range N, (usedSum A k : ℝ) / (A.seq k : ℝ) := by
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [densityRatio_complement]
+  ring
+
+/-- **Deficit-sum upper bound**: The total deficit is less than N.
+    Since ρ_A(k) > 0, each term 1 - ρ < 1, so the sum < N.
+    This means the "average deficit" is strictly less than 1. -/
+theorem sum_deficit_lt (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
+    ∑ k ∈ range N, (1 - densityRatio A k) < N := by
+  calc ∑ k ∈ range N, (1 - densityRatio A k)
+      < ∑ _ ∈ range N, (1 : ℝ) := by
+        apply Finset.sum_lt_sum
+        · intro k _
+          linarith [densityRatio_nonneg A k]
+        · exact ⟨0, Finset.mem_range.mpr hN, by linarith [densityRatio_pos A 0]⟩
+    _ = N := by simp [Finset.sum_const, Finset.card_range]
+
+/-- **Cesàro average strictly positive**: C_A(N) > 0 for N > 0.
+    The density ratio is strictly positive at every step. -/
+theorem cesaroAvg_pos (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
+    0 < cesaroAvg A N := by
+  unfold cesaroAvg
+  apply div_pos
+  · have h0 : (0 : ℝ) < densityRatio A 0 := densityRatio_pos A 0
+    calc (0 : ℝ) < densityRatio A 0 := h0
+      _ ≤ ∑ k ∈ range N, densityRatio A k := by
+          apply Finset.single_le_sum
+          · intro k _; exact densityRatio_nonneg A k
+          · exact Finset.mem_range.mpr hN
+  · exact Nat.cast_pos.mpr hN
+
 end Erdos1000
