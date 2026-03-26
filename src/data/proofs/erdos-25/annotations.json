@@ -1,5 +1,27 @@
 [
   {
+    "id": "erdos-25-header",
+    "proofId": "erdos-25",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Problem Statement and Module Setup",
+    "content": "Erdős Problem #25 asks: given any strictly increasing sequence of positive integers $n_1 < n_2 < \\cdots$ and associated residue classes $a_i \\pmod{n_i}$, let $A$ be the set of positive integers avoiding all specified residue classes (up to the relevant modulus). Must the **logarithmic density** of $A$ always exist?\n\nThis is an open problem from Erdős (1995). The file imports `Erdos25LogDensity` for the constructive logarithmic density definition and opens the `Erdos25` and `Filter` namespaces.",
+    "mathContext": "$A = \\{m \\in \\mathbb{N} : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$. Question: does $\\delta_\\ell(A) = \\lim_{x \\to \\infty} \\frac{\\sum_{m \\in A, m \\leq x} 1/m}{\\ln x}$ always exist?",
+    "significance": "supporting",
+    "prerequisites": [
+      "logarithmic density",
+      "congruence classes"
+    ],
+    "relatedConcepts": [
+      "Erdős problems",
+      "density of integer sequences",
+      "sieve theory"
+    ]
+  },
+  {
     "id": "erdos-25-logdensity",
     "proofId": "erdos-25",
     "type": "definition",
@@ -137,6 +159,29 @@
     "prerequisites": [
       "Set.subset definition",
       "universal introduction"
+    ]
+  },
+  {
+    "id": "erdos-25-membership",
+    "proofId": "erdos-25",
+    "type": "technique",
+    "range": {
+      "startLine": 119,
+      "endLine": 166
+    },
+    "title": "Basic Membership and Density Bounds",
+    "content": "Three membership theorems and a key correction. `zero_in_sieved` shows $0 \\in A(\\sigma)$ since $0 < n_i$ for all moduli. `small_in_sieved` shows any $m < n_1$ is in the sieved set since strict monotonicity gives $m < n_1 \\leq n_i$. `sieved_set_nonempty` constructs a positive member (namely 1) under the hypothesis $n_1 \\geq 2$.\n\nA critical note documents why the previously-axiomatized `sieve_density_positive` was mathematically false: taking $n_i = p_i$ (the $i$-th prime) and $a_i = 0$ gives moduli that are pairwise coprime, but the sieved set is $\\{1\\}$ (every $m > 1$ is divisible by some prime), which has logarithmic density 0. This counterexample led to removing the unsound axiom.",
+    "mathContext": "$0 \\in A(\\sigma)$ always; $m \\in A(\\sigma)$ when $m < n_1$. Counterexample to density positivity: $n_i = p_i, a_i = 0 \\Rightarrow A = \\{1\\}, \\delta_\\ell = 0$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Nat.zero_le",
+      "StrictMono.monotone",
+      "omega tactic"
+    ],
+    "relatedConcepts": [
+      "base cases",
+      "counterexample construction",
+      "axiom soundness"
     ]
   }
 ]

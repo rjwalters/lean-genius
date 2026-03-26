@@ -103,6 +103,11 @@
       "description": "Vieta's formulas are the $S_n$-invariant polynomials — Abel-Ruffini says they cannot be 'inverted' by radicals when $\\text{Gal} = S_5$"
     },
     {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Formalizes the constructibility criterion via Galois 2-groups, illustrating the strict containment constructible ⊊ solvable by radicals: every 2-group is solvable (composition factors ℤ/2ℤ are abelian), so constructibility is a stronger condition than radical solvability, with A₅'s non-solvability marking the threshold where the broader class fails"
+    },
+    {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
       "description": "Proves $S_n$ and $A_n$ solvable iff $n \\leq 4$, and $[S_5, S_5] = A_5$ — the full bidirectional threshold"

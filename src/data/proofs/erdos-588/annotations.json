@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-588-header",
+    "proofId": "erdos-588",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "context",
+    "title": "Collinear Points in Planar Configurations",
+    "content": "Erdős Problem #588 ($100 prize): Let $f_k(n)$ be the minimum value such that any configuration of $n$ points in the plane with no more than $k$ points collinear contains at most $f_k(n)$ lines each passing through at least $k$ points. Is $f_k(n) = o(n^2)$ for $k \\geq 4$?\n\nFor $k = 3$, Sylvester established $f_3(n) = n^2/6 + O(n)$. For $k \\geq 4$, the best known lower bound is $f_k(n) \\gg_k n^{2 - O_k(1/\\sqrt{\\log n})}$, which is tantalizingly close to $n^2$ but doesn't resolve whether $f_k(n) = o(n^2)$.\n\nThis is a problem in **incidence geometry**, connecting to the Szemerédi-Trotter theorem and the Elekes-Rónyai framework.",
+    "mathContext": "$f_k(n) = o(n^2)$ for $k \\geq 4$? Known: $f_k(n) \\gg n^{2 - c_k/\\sqrt{\\log n}}$. For $k = 3$: $f_3(n) = n^2/6 + O(n)$.",
+    "significance": "supporting",
+    "prerequisites": ["incidence geometry", "point configurations", "collinearity"],
+    "relatedConcepts": ["Szemerédi-Trotter theorem", "incidence bounds", "discrete geometry"]
+  },
+  {
     "id": "ann-588-imports",
     "proofId": "erdos-588",
     "range": {
