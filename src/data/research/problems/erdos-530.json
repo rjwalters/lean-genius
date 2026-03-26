@@ -1,6 +1,6 @@
 {
   "slug": "erdos-530",
-  "title": "Erdős #530",
+  "title": "Erd\u0151s #530",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-13T04:39:49.623Z",
     "iteration": 2,
-    "focus": "Axiom elimination — proved sidon_upper_bound, partially proved sidon_sum_count",
+    "focus": "Axiom elimination \u2014 proved sidon_upper_bound, partially proved sidon_sum_count",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,39 +29,42 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added structural theorems (isSidon_subset, isSidon_pair, maxSidonSize_pos, maxSidonSize_ge_two). 3 deep axioms remain (not eliminable from Mathlib). File at 270 lines, 11 theorems.",
+    "progressSummary": "AXIOM ELIMINATION: Proved erdos_lower_bound from komlos_sulyok_szemeredi (3->2 axioms). N^{1/3} bound follows trivially from N^{1/2} bound. Remaining 2 axioms: KSS (deep known) and partition conjecture (open).",
     "builtItems": [
-      "maxSidonSize_le_card: proved maxSidonSize A ≤ A.card (Erdos530Problem.lean:87)",
-      "sidon_upper_bound: PROVED (was axiom) — trivial bound from subset property (Erdos530Problem.lean:95)",
+      "maxSidonSize_le_card: proved maxSidonSize A \u2264 A.card (Erdos530Problem.lean:87)",
+      "sidon_upper_bound: PROVED (was axiom) \u2014 trivial bound from subset property (Erdos530Problem.lean:95)",
       "sidon_sum_injective: proved injectivity of sum map on sorted pairs of Sidon sets (Erdos530Problem.lean:147)",
       "Fixed compilation: added open Classical for DecidablePred IsSidon (Erdos530Problem.lean:34)",
-      "Fixed deprecated: Finset.not_mem_empty → Finset.notMem_empty (Erdos530Problem.lean:44)",
-      "Proved card_sorted_pairs: |(S×S).filter(a≤b)| = n(n+1)/2 via partition+swap",
-      "Proved sidon_sum_count from sidon_sum_injective + card_sorted_pairs (axiom: 4→3)",
+      "Fixed deprecated: Finset.not_mem_empty \u2192 Finset.notMem_empty (Erdos530Problem.lean:44)",
+      "Proved card_sorted_pairs: |(S\u00d7S).filter(a\u2264b)| = n(n+1)/2 via partition+swap",
+      "Proved sidon_sum_count from sidon_sum_injective + card_sorted_pairs (axiom: 4\u21923)",
       "isSidon_subset: hereditary property of Sidon sets (term-mode proof)",
       "isSidon_pair: any 2-element set is Sidon (16-case omega analysis)",
-      "maxSidonSize_pos: nonempty sets have maxSidonSize ≥ 1",
-      "maxSidonSize_ge_two: sets with ≥ 2 elements have maxSidonSize ≥ 2"
+      "maxSidonSize_pos: nonempty sets have maxSidonSize \u2265 1",
+      "maxSidonSize_ge_two: sets with \u2265 2 elements have maxSidonSize \u2265 2",
+      "theorem erdos_lower_bound: proved as corollary of KSS via le_mul_of_one_le_right (Erdos530Problem.lean:90-102)"
     ],
     "insights": [
-      "sidon_upper_bound was trivially true (maxSidonSize A ≤ A.card, squared) — eliminated as axiom",
-      "Pre-existing compilation error: IsSidon needed Classical decidability for Finset.filter — fixed with open Classical",
+      "sidon_upper_bound was trivially true (maxSidonSize A \u2264 A.card, squared) \u2014 eliminated as axiom",
+      "Pre-existing compilation error: IsSidon needed Classical decidability for Finset.filter \u2014 fixed with open Classical",
       "sidon_sum_count partially proved: injectivity (sidon_sum_injective) follows directly from IsSidon definition; pair counting identity k(k+1)/2 remains as axiom",
-      "erdos_lower_bound and komlos_sulyok_szemeredi are deep combinatorial results — not provable from Mathlib",
-      "alon_erdos_partition_conjecture is an open conjecture — not provable",
-      "Remaining axiom sidon_sum_count could potentially be eliminated: need to prove |(S×S filtered a≤b)| = |S|*(|S|+1)/2 for Finset",
-      "card_sorted_pairs proved via partition + swap symmetry: S×S splits into upper/diagonal/lower triangles",
-      "Swap bijection (a,b)↦(b,a) gives |upper|=|lower|, diagonal gives |diag|=|S|",
+      "erdos_lower_bound and komlos_sulyok_szemeredi are deep combinatorial results \u2014 not provable from Mathlib",
+      "alon_erdos_partition_conjecture is an open conjecture \u2014 not provable",
+      "Remaining axiom sidon_sum_count could potentially be eliminated: need to prove |(S\u00d7S filtered a\u2264b)| = |S|*(|S|+1)/2 for Finset",
+      "card_sorted_pairs proved via partition + swap symmetry: S\u00d7S splits into upper/diagonal/lower triangles",
+      "Swap bijection (a,b)\u21a6(b,a) gives |upper|=|lower|, diagonal gives |diag|=|S|",
       "Finset.card_bij cleaner than Finset.map for bijection proofs in this context",
-      "sidon_sum_count = card_image_of_injOn + card_sorted_pairs — clean decomposition"
+      "sidon_sum_count = card_image_of_injOn + card_sorted_pairs \u2014 clean decomposition",
+      "erdos_lower_bound (N^{1/3}) follows trivially from komlos_sulyok_szemeredi (N^{1/2}): k\u00b2\u2265cN and k\u22651 implies k\u00b3=k\u00b7k\u00b2\u2265cN",
+      "Remaining 2 axioms: KSS (deep known result, probabilistic method) and Alon-Erdos partition (open)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "All 3 remaining axioms are deep: erdos_lower_bound (probabilistic/greedy), KSS (1975 paper), alon_erdos_partition (open conjecture)",
-      "Could formalize the greedy Sidon algorithm to prove erdos_lower_bound: add elements one by one, each forbids O(|S|²) future additions",
+      "Could formalize the greedy Sidon algorithm to prove erdos_lower_bound: add elements one by one, each forbids O(|S|\u00b2) future additions",
       "Consider adding explicit Sidon set constructions (e.g., Singer difference sets) as verified examples"
     ],
-    "markdown": "# Erdős #530 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\ell(N)$ be maximal such that in any finite set $A\\subset \\mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\\ell(N)$.\n\n\nIn particular, is it true that $\\ell(N)\\sim N^{1/2}$?\n\n\n\nOriginally asked by Riddell \\cite{Ri69}. Erd\\H{o}s noted the bounds\\[N^{1/3} \\ll \\ell(N) \\leq (1+o(1))N^{1/2}\\](the upper bound following from the case $A=\\{1,\\ldots,N\\}$). The lower bound was improved to $N^{1/2}\\ll \\ell(N)$ by Koml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS75}. The correct constant is unknown, but it is likely that the upper bound is true, so that $\\ell(N)\\sim N^{1/2}$.\n\nIn \\cite{AlEr85} Alon and Erd\\H{o}s make the stronger conjecture that perhaps $A$ can always be written as the union of at most $(1+o(1))N^{1/2}$ many Sidon sets. (This is easily verified for $A=\\{1,\\ldots,N\\}$ using standard constructions of Sidon sets.)\n\nThis is discussed in problem C9 of Guy's collection \\cite{Gu04}.\n\nSee also [1088] for a higher-dimensional generalisation.\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[KSS75] Koml\\'{o}s, J. and Sulyok, M. and Szemeredi, E., Linear problems in combinatorial number theory. Acta Math. Acad. Sci. Hungar. (1975), 113-121.\n\n[Ri69] Riddell, J., On sets of numbers containing no $l$ terms in arithmetic progression. Nieuw Arch. Wisk. (3) (1969), 204-209.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #1088\n- Problem #529\n- Problem #531\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80e\n- Ri69\n- KSS75\n- AlEr85\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #530 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\ell(N)$ be maximal such that in any finite set $A\\subset \\mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\\ell(N)$.\n\n\nIn particular, is it true that $\\ell(N)\\sim N^{1/2}$?\n\n\n\nOriginally asked by Riddell \\cite{Ri69}. Erd\\H{o}s noted the bounds\\[N^{1/3} \\ll \\ell(N) \\leq (1+o(1))N^{1/2}\\](the upper bound following from the case $A=\\{1,\\ldots,N\\}$). The lower bound was improved to $N^{1/2}\\ll \\ell(N)$ by Koml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS75}. The correct constant is unknown, but it is likely that the upper bound is true, so that $\\ell(N)\\sim N^{1/2}$.\n\nIn \\cite{AlEr85} Alon and Erd\\H{o}s make the stronger conjecture that perhaps $A$ can always be written as the union of at most $(1+o(1))N^{1/2}$ many Sidon sets. (This is easily verified for $A=\\{1,\\ldots,N\\}$ using standard constructions of Sidon sets.)\n\nThis is discussed in problem C9 of Guy's collection \\cite{Gu04}.\n\nSee also [1088] for a higher-dimensional generalisation.\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[KSS75] Koml\\'{o}s, J. and Sulyok, M. and Szemeredi, E., Linear problems in combinatorial number theory. Acta Math. Acad. Sci. Hungar. (1975), 113-121.\n\n[Ri69] Riddell, J., On sets of numbers containing no $l$ terms in arithmetic progression. Nieuw Arch. Wisk. (3) (1969), 204-209.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #1088\n- Problem #529\n- Problem #531\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80e\n- Ri69\n- KSS75\n- AlEr85\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
