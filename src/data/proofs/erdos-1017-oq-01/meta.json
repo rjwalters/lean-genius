@@ -67,7 +67,8 @@
       "**Turán's theorem is the hidden engine**: The bound ⌊n²/4⌋ = ex(n, K₃). After triangle extraction, the remainder is triangle-free, bounded by Turán.",
       "**K₄-free case: linear improvement**: Each edge beyond ⌊n²/4⌋ reduces the partition count by 1 (Győri-Keszegh 2017).",
       "**Larger cliques create competing savings**: K₄ saves 5 vs triangle's 2, but overlapping cliques make optimization NP-hard.",
-      "**Covering vs partitioning gap**: Lovász's 1968 covering bound is weaker; the partition constraint (edge-disjointness) is the core difficulty."
+      "**Covering vs partitioning gap**: Lovász's 1968 covering bound is weaker; the partition constraint (edge-disjointness) is the core difficulty.",
+      "**Edge-coloring duality**: $\\text{cp}(G) = \\chi'(\\overline{G})$, where $\\chi'$ is the chromatic index. By Vizing's theorem, $\\chi'(\\overline{G}) \\in \\{\\Delta(\\overline{G}), \\Delta(\\overline{G}) + 1\\}$. For dense $G$, $\\overline{G}$ is sparse (small max degree), so this duality could yield bounds — but computing $\\chi'$ is NP-hard in general."
     ],
     "prerequisites": [
       "Graph theory (edges, cliques, complete bipartite graphs)",
@@ -153,16 +154,70 @@
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
       "description": "Ramsey theory underpins the EGP proof: after triangle extraction, the remainder is triangle-free and hence bipartite."
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres theorem and its Turán-type extensions provide the extremal framework: the Turán bound $\\lfloor n^2/4 \\rfloor = \\text{ex}(n, K_3)$ is the universal ceiling for clique partition numbers."
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "thematic",
+      "description": "Both Erdős #1015 and #1017 study monochromatic clique partitions in 2-colored graphs; #1015 focuses on vertex-disjoint monochromatic $K_t$'s, while #1017 studies edge-disjoint clique partitions of general graphs."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "The friendship theorem characterizes graphs where every pair of vertices has exactly one common neighbor — a structural result about triangle configurations that relates to the triangle extraction step in the EGP proof."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The probabilistic method with alteration is used in Razborov's flag algebra supersaturation result (2010): graphs with $\\lfloor n^2/4 \\rfloor + m$ edges contain $\\Omega(m^2)$ triangles, providing the supply of triangles for potential partition improvements."
     }
   ],
   "references": [
     {
-      "text": "Erdős, P., Goodman, A.W., Pósa, L. (1966). The representation of a graph by set intersections. Canadian Journal of Mathematics.",
-      "url": "https://erdosproblems.com/1017"
+      "authors": "Erdős, Paul; Goodman, A.W.; Pósa, Lajos",
+      "title": "The representation of a graph by set intersections",
+      "year": "1966",
+      "venue": "Canadian Journal of Mathematics, vol. 18, pp. 106–112",
+      "note": "Foundational paper proving the EGP bound: every graph on n vertices can be edge-partitioned into at most ⌊n²/4⌋ complete subgraphs using only edges and triangles"
     },
     {
-      "text": "Győri, E., Keszegh, B. (2017). On the number of edge-disjoint triangles in K₄-free graphs. Combinatorica.",
-      "url": "https://link.springer.com/article/10.1007/s00493-016-3375-x"
+      "authors": "Győri, Ervin; Keszegh, Balázs",
+      "title": "On the number of edge-disjoint triangles in K₄-free graphs",
+      "year": "2017",
+      "venue": "Combinatorica, vol. 37, no. 6, pp. 1113–1124",
+      "note": "Resolves the K₄-free case of Erdős's question: K₄-free graphs with ⌊n²/4⌋ + m edges contain m edge-disjoint triangles, giving cp = ⌊n²/4⌋ - m"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Proved the extremal bound ex(n, K_{r+1}) and characterized the extremal graphs (complete r-partite with balanced parts). For r = 2: ex(n, K₃) = ⌊n²/4⌋, the Turán bound underlying EGP"
+    },
+    {
+      "authors": "Mantel, Willem",
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
+      "note": "Earliest triangle-free extremal result: max edges in a triangle-free graph on n vertices is ⌊n²/4⌋. Special case of Turán's theorem for K₃"
+    },
+    {
+      "authors": "Razborov, Alexander A.",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, no. 5–6, pp. 829–851",
+      "note": "Flag algebra proof of the Kruskal-Katona supersaturation bound: graphs with ⌊n²/4⌋ + m edges contain Ω(m²) triangles. Provides the triangle supply for potential partition improvements"
+    },
+    {
+      "authors": "Lovász, László",
+      "title": "On covering of graphs",
+      "year": "1968",
+      "venue": "Theory of Graphs (Proc. Colloq., Tihany), pp. 231–236",
+      "note": "Proved covering bounds for graphs by complete subgraphs — the covering problem (cliques may overlap) is strictly easier than the partition problem (edge-disjoint cliques)"
     }
   ]
 }

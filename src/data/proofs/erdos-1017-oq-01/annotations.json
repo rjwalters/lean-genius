@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-docstring-imports",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "Module Overview and Imports",
+    "content": "The module imports Mathlib's `SimpleGraph.Basic` and `SimpleGraph.Clique` for the graph-theoretic framework, `Fintype.Card` and `Finset.Card` for counting, and `Tactic` for proof automation. The docstring frames the open question: the Erdős-Goodman-Pósa (1966) bound $\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ is tight for triangle-free graphs ($K_{n/2,n/2}$), but can dense graphs with forced triangles and larger cliques achieve $\\text{cp}(G) < \\lfloor n^2/4 \\rfloor$? The K₄-free case was resolved by Győri-Keszegh (2017); the general case remains open.",
+    "mathContext": "The formalization builds on Mathlib's `SimpleGraph` type and `IsClique`/`CliqueFree` predicates. The `maxHeartbeats 400000` setting accommodates the proof search overhead from arithmetic computations in the Turán bound calculations.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib SimpleGraph", "clique predicates", "Lean 4 tactics"],
+    "prerequisites": ["Lean 4", "Mathlib graph theory"]
+  },
+  {
     "id": "ann-edge-clique-partition",
     "proofId": "erdos-1017-oq-01",
     "range": { "startLine": 42, "endLine": 63 },
