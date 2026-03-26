@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Nonderogatory_matrix",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -18,7 +18,7 @@
       "research"
     ],
     "badge": "verified",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.aeval",
@@ -78,7 +78,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 270,
-    "assumptions": "0 axioms, 1 sorry remaining. Uses Classical.propDecidable as a local instance for decidability of propositions.",
+    "assumptions": "0 axioms, 0 sorries . Uses Classical.propDecidable as a local instance for decidability of propositions. Fully machine-checked.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
