@@ -179,17 +179,27 @@
     {
       "targetId": "erdos-130",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry, open"
+      "description": "Erdős #130 asks about integer distance graphs in general position — a variant where distances are integer-valued rather than from a fixed set A, but chromatic number questions arise similarly"
     },
     {
       "targetId": "erdos-101",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+      "description": "Erdős #101 on four-point lines from planar point sets studies geometric constraints on point configurations, sharing the theme of how distance/incidence structure constrains combinatorial properties"
     },
     {
       "targetId": "erdos-1066",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+      "description": "Erdős #1066 studies the independence number α(G_A) of unit distance graphs — the dual chromatic question. For L(r) = χ, we need α ≤ n/χ, so independence bounds directly constrain chromatic bounds"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The four-color theorem gives χ ≤ 4 for planar graphs. Distance graphs G_A are generally non-planar, so the Hadwiger-Nelson problem (L(1) ∈ {5,6,7}) already exceeds the planar bound"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Erdős #1084 counts unit-distance pairs among separated points. The unit-distance graph's edge density controls both pair counts (1084) and chromatic number (706) through the degeneracy-chromatic relationship"
     }
   ]
 }
