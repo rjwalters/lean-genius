@@ -289,6 +289,15 @@ theorem four_to_three : totientPlusOne 4 = 3 := by
   native_decide
 
 /-- F(n) = 1 infinitely often: whenever φ(n) + 1 is prime,
-    which happens infinitely often. -/
-axiom one_iteration_infinite :
-  {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite
+    which happens infinitely often.
+    Proof: every prime p > 1 satisfies totientPlusOne p = p (by prime_fixed_point),
+    so the set contains all primes > 1, which is infinite.
+    Note: the set name is slightly misleading — F(p) = 0 for primes (not 1),
+    but primes are in this set because totientPlusOne p is prime. -/
+theorem one_iteration_infinite :
+    {n : ℕ | n > 1 ∧ (totientPlusOne n).Prime}.Infinite := by
+  -- Every prime p is in this set: p > 1 and totientPlusOne p = p (prime)
+  apply Nat.infinite_setOf_prime.mono
+  intro p hp
+  simp only [Set.mem_setOf_eq] at hp ⊢
+  exact ⟨hp.one_lt, prime_fixed_point p hp ▸ hp⟩

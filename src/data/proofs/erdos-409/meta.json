@@ -21,9 +21,9 @@
     "erdosNumber": 409,
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "assumptions": "3 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound, open), erdos_409_same_prime (infinite basin existence, open), one_iteration_infinite (infinitely many F=1). Proved erdos_409_density (trivially satisfiable: α=0 works). Proved (15 theorems): iterate_decreasing, iteration_terminates (strong induction), prime_zero_iterations, one_iteration_criterion, erdos_409_density, sigma_growing, totient_plus_one_odd, totientIterate_zero, totientIterate_one, two_fixed_point, four_to_three, sigma_variant_question, prime_fixed_point, one_to_two, six_to_three.",
-    "lineCount": 294,
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound, genuinely open), erdos_409_same_prime (infinite basin existence, genuinely open). Proved one_iteration_infinite (every prime p is in the set since totientPlusOne p = p; infinitely many primes). Proved erdos_409_density (trivially satisfiable: α=0). 16 theorems total.",
+    "lineCount": 303,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -144,9 +144,9 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 294,
-    "axiomCount": 3,
-    "theoremCount": 15,
+    "lineCount": 303,
+    "axiomCount": 2,
+    "theoremCount": 16,
     "definitionCount": 3
   },
   "crossReferences": [

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved erdos_409_density (was trivially satisfiable: α=0 works for ∃ α ∈ [0,1]). Added prime_fixed_point (φ(p)+1=p for primes), one_to_two, six_to_three. Axioms: 4→3. Total 9 axioms eliminated across all sessions (12→3). Remaining 3 are genuinely open conjectures.",
+    "progressSummary": "AXIOM ELIMINATION: Proved one_iteration_infinite via prime_fixed_point + Nat.infinite_setOf_prime (every prime p>1 is in the set since totientPlusOne p = p). Also proved erdos_409_density (trivially satisfiable). Axioms: 4→2 this session, 12→2 total. Remaining 2 are genuinely open conjectures (upper bound, infinite basin).",
     "builtItems": [
       "Proved sigma_variant_question (was trivially True placeholder)",
       "Proved four_to_three via native_decide",
@@ -42,6 +42,7 @@
       "Proved prime_fixed_point: every prime is a fixed point (φ(p)+1=p via Nat.totient_prime + omega)",
       "Added one_to_two: φ(1)+1=2 via native_decide",
       "Added six_to_three: φ(6)+1=3 via native_decide",
+      "Proved one_iteration_infinite: every prime p is in {n>1 | totientPlusOne n is prime} since totientPlusOne p = p; Set.Infinite.mono + Nat.infinite_setOf_prime",
       "Added helper lemmas totientIterate_zero, totientIterate_one",
       "Switched to import Mathlib for csSup_singleton/csSup_pair access",
       "Removed stale import Mathlib.Order.Filter.AtTopBot",
@@ -65,12 +66,12 @@
       "sigma_growing holds for all n>1 (not just composites) since σ(n)≥1+n whenever 1≠n are both divisors",
       "erdos_409_density was a trivially satisfiable axiom: ∃ α ∈ [0,1] is always true via α=0. The deeper question (positive density) remains open.",
       "Every prime p is a fixed point of totientPlusOne: φ(p)=p-1, so φ(p)+1=p. This means each orbit terminates at its own fixed prime.",
-      "Basin of attraction analysis: p=2 has finite basin ({1,2}). p=3 has finite basin ({3,4,6}). Larger primes may have infinite basins via totient preimage trees."
+      "Basin of attraction analysis: p=2 has finite basin ({1,2}). p=3 has finite basin ({3,4,6}). Larger primes may have infinite basins via totient preimage trees.",
+      "one_iteration_infinite was NOT genuinely open — it follows trivially from prime_fixed_point + infinitely many primes. Previous sessions missed that primes themselves satisfy the predicate."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "All eliminable axioms have been proved. Remaining 3 axioms are genuinely open conjectures or deep results",
-      "one_iteration_infinite could potentially be proved if Mathlib gains Dirichlet's theorem on primes in arithmetic progressions applied to φ preimages",
+      "All eliminable axioms have been proved. Remaining 2 axioms are genuinely open conjectures",
       "erdos_409_upper_bound is the core open question - any sub-linear bound better than o(n) would be significant",
       "erdos_409_same_prime: analysis shows p=2,3 have finite basins. Need to find a prime with infinite totient preimage tree."
     ],
@@ -97,9 +98,9 @@
     {
       "path": "Proofs/Erdos409Problem.lean",
       "filename": "Erdos409Problem.lean",
-      "lineCount": 294,
-      "theoremCount": 15,
-      "axiomCount": 3,
+      "lineCount": 303,
+      "theoremCount": 16,
+      "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
