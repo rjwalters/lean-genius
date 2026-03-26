@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T06:58:30.838Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Assessed 5 axioms. sidon_size_bound is provable (standard counting). sedov_M2/M3 are published results. ErdosProblem42/constructive are open.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved sidon_size_bound from Mathlib (axiom count 5→4). Remaining 4 axioms: sedov_M2, sedov_M3 (published results), ErdosProblem42, ErdosProblem42_constructive (open conjecture).",
+    "builtItems": [
+      "theorem sidon_size_bound in Proofs/Erdos42Problem.lean:56 — axiom eliminated (5→4)"
+    ],
     "insights": [
       "sidon_size_bound is provable: for Sidon A⊆[1,N], the map (a,b)↦(a:ℤ)-(b:ℤ) is injective on off-diagonal A×A pairs (by Sidon + Finset.pair analysis), image ⊆ [-N+1,N-1]\\{0}, giving |A|(|A|-1) ≤ 2(N-1)",
-      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results"
+      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results",
+      "sidon_size_bound PROVED: injective difference map on A.offDiag → Finset.Icc (1-N) (N-1) \\ {0}, using Sidon to derive sum equality, Finset.pair membership, and omega"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:58:30.839Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-03-26T23:05:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

@@ -48,14 +48,72 @@ def DisjointDiffs (A B : Finset ℕ) : Prop :=
 
 /- ## Basic Properties -/
 
-/-- A Sidon set in {1,...,N} has size at most ~√(2N).
-    By difference counting: all A.card*(A.card-1) ordered nonzero differences
-    are distinct and lie in {-(N-1),...,-1, 1,...,N-1} (2*(N-1) elements).
-    Note: the previous bound A.card² ≤ 2N+1 was incorrect
-    (counterexample: {1,2,5,7} ⊂ [1,7] has |A|²=16 > 15=2·7+1). -/
-axiom sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
+/-- A Sidon set in {1,...,N} satisfies |A|(|A|-1) ≤ 2(N-1).
+    Proof: the map (a₁,a₂) ↦ a₁-a₂ is injective on off-diagonal ordered pairs
+    of A by the Sidon property, and the image lies in {-(N-1),...,N-1}\{0}
+    which has 2(N-1) elements. -/
+theorem sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
     (hs : IsSidonSet A) (hi : InInterval A N) :
-  A.card * (A.card - 1) ≤ 2 * (N - 1)
+  A.card * (A.card - 1) ≤ 2 * (N - 1) := by
+  -- The difference map on ordered pairs
+  let f : ℕ × ℕ → ℤ := fun p => (↑p.1 : ℤ) - ↑p.2
+  -- Step 1: f is injective on A.offDiag (by the Sidon property)
+  have h_inj : Set.InjOn f ↑A.offDiag := by
+    rintro ⟨a₁, a₂⟩ ha ⟨b₁, b₂⟩ hb heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at ha hb
+    dsimp only [f] at heq
+    -- From equal differences, derive equal ℕ sums
+    have h_sum : a₁ + b₂ = b₁ + a₂ := by
+      have : (↑(a₁ + b₂) : ℤ) = ↑(b₁ + a₂) := by push_cast; linarith
+      exact_mod_cast this
+    -- Apply Sidon: {a₁, b₂} = {b₁, a₂}
+    have h_set := hs a₁ ha.1 b₂ hb.2.1 b₁ hb.1 a₂ ha.2.1 h_sum
+    -- Extract: a₁ ∈ {b₁, a₂}
+    have ha₁_mem : a₁ ∈ ({b₁, a₂} : Finset ℕ) := by
+      rw [← h_set]; exact Finset.mem_insert_self a₁ _
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
+    rcases ha₁_mem with h_eq | h_eq
+    · -- a₁ = b₁ ⟹ a₂ = b₂ from the sum equation
+      exact Prod.ext h_eq (by omega)
+    · -- a₁ = a₂: contradicts off-diagonal
+      exact absurd h_eq ha.2.2
+  -- Step 2: Image of f on A.offDiag ⊆ {-(N-1),...,N-1} \ {0}
+  have h_sub : A.offDiag.image f ⊆ (Finset.Icc (1 - (↑N : ℤ)) (↑N - 1)).erase 0 := by
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨a₁, a₂⟩, hmem, rfl⟩ := hd
+    rw [Finset.mem_offDiag] at hmem
+    dsimp only [f]
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    refine ⟨?_, ?_, ?_⟩
+    · intro h; apply hmem.2.2
+      exact_mod_cast show (↑a₁ : ℤ) = ↑a₂ by linarith
+    · have : (1 : ℤ) ≤ ↑a₁ := by exact_mod_cast (hi a₁ hmem.1).1
+      have : (↑a₂ : ℤ) ≤ ↑N := by exact_mod_cast (hi a₂ hmem.2.1).2
+      linarith
+    · have : (↑a₁ : ℤ) ≤ ↑N := by exact_mod_cast (hi a₁ hmem.1).2
+      have : (1 : ℤ) ≤ ↑a₂ := by exact_mod_cast (hi a₂ hmem.2.1).1
+      linarith
+  -- Step 3: Target set has 2*(N-1) elements
+  have h_card : ((Finset.Icc (1 - (↑N : ℤ)) (↑N - 1)).erase 0).card = 2 * (N - 1) := by
+    rw [Finset.card_erase_of_mem (by rw [Finset.mem_Icc]; constructor <;> omega)]
+    rw [Int.card_Icc]
+    omega
+  -- Step 4: |A|*(|A|-1) = |offDiag|
+  have h_offDiag : A.card * (A.card - 1) = A.offDiag.card := by
+    rw [Finset.offDiag_card]
+    generalize A.card = m
+    cases m with
+    | zero => simp
+    | succ n =>
+      simp only [show (n + 1) * (n + 1) = (n + 1) * n + (n + 1) from by ring,
+                  Nat.add_sub_cancel]
+  -- Combine
+  rw [h_offDiag]
+  calc A.offDiag.card
+      = (A.offDiag.image f).card := (Finset.card_image_of_injOn h_inj).symm
+    _ ≤ ((Finset.Icc (1 - (↑N : ℤ)) (↑N - 1)).erase 0).card := Finset.card_le_card h_sub
+    _ = 2 * (N - 1) := h_card
 
 /-- 0 is always in A − A: pick any a ∈ A, then a - a = 0. -/
 theorem zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :
