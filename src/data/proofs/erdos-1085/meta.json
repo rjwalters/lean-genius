@@ -72,92 +72,68 @@
       "**80 years of open gaps**: The 2D case has been open since 1946. Despite intense study, we don't know if f_2(n) is closer to n^(1+o(1)) or n^(4/3). This remains a central open problem in combinatorial geometry."
     ],
     "prerequisites": [
-      "Algebraic geometry (algebraic curves, polynomial method)",
-      "Combinatorial geometry (incidence bounds, configurations)",
-      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)",
-      "Discrete geometry (point-line incidences, arrangements)"
+      "Combinatorial geometry: point configurations, unit-distance graphs, incidence bounds",
+      "Graph theory: Turán-type problems, Erdős-Stone theorem, crossing number inequality",
+      "Extremal combinatorics: Szemerédi-Trotter theorem, forbidden subgraph theory",
+      "Euclidean geometry: distance in ℝ^d, orthogonal subspaces, sphere packing"
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Module Documentation",
+      "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Problem statement with dimension-by-dimension breakdown of known results.",
-      "mathContext": "Mathematical content: Problem statement with dimension-by-dimension breakdown of known results."
+      "summary": "Complete problem statement with dimension-by-dimension breakdown of known results, historical timeline of key contributors (Erdős 1946, Spencer-Szemerédi-Trotter 1984, Brass 1997, Swanepoel 2009), and literature references.",
+      "mathContext": "$f_d(n) = \\max |\\{\\{p,q\\} : \\|p-q\\| = 1\\}|$ over $n$-point sets in $\\mathbb{R}^d$."
+    },
+    {
+      "id": "background",
+      "title": "Background and Motivation",
+      "startLine": 37,
+      "endLine": 46,
+      "summary": "Contextualizes the unit distance problem as one of the most celebrated problems in combinatorial geometry, with the $d = 2$ gap open since the 1940s.",
+      "mathContext": "Given $n$ points in $\\mathbb{R}^d$, how many pairs can be at distance exactly 1?"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 52,
-      "endLine": 84,
-      "summary": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n)).",
-      "mathContext": "Mathematical content: PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n))."
-    },
-    {
-      "id": "trivial-bounds",
-      "title": "Trivial Bounds",
-      "startLine": 85,
-      "endLine": 99,
-      "summary": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension.",
-      "mathContext": "Bound: Upper bound n(n-1)/2 and lower bound n-1 for any dimension."
+      "startLine": 48,
+      "endLine": 71,
+      "summary": "Defines `PointConfig d n` (point configuration), `distinctPairs n` (index pairs with $i < j$), `unitDistanceCount` (edge count of unit-distance graph), and axiomatizes `maxUnitDistances d n` as the extremal function $f_d(n)$.",
+      "mathContext": "$\\text{unitDistanceCount}(P) = |\\{(i,j) : i < j,\\, \\|P(i) - P(j)\\| = 1\\}|$; $f_d(n) = \\max_P \\text{unitDistanceCount}(P)$."
     },
     {
       "id": "dimension-2",
-      "title": "Dimension 2: Classical Unit Distance Problem",
-      "startLine": 100,
-      "endLine": 126,
-      "summary": "Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture.",
-      "mathContext": "Bound: Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture."
+      "title": "Dimension 2: The Classical Unit Distance Problem (OPEN)",
+      "startLine": 73,
+      "endLine": 84,
+      "summary": "Formalizes the 2D conjecture $f_2(n) = n^{1+o(1)}$. The gap between Erdős's 1946 lower bound $n^{1+c/\\log\\log n}$ and the Spencer-Szemerédi-Trotter 1984 upper bound $O(n^{4/3})$ has been open for 80 years.",
+      "mathContext": "$n^{1+c/\\log\\log n} < f_2(n) \\leq O(n^{4/3})$ — is $f_2(n) = n^{1+o(1)}$?"
     },
     {
       "id": "dimension-3",
-      "title": "Dimension 3",
-      "startLine": 126,
-      "endLine": 126,
-      "summary": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open.",
-      "mathContext": "Bound: Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open."
+      "title": "Dimension 3: Partially Open",
+      "startLine": 86,
+      "endLine": 95,
+      "summary": "Formalizes the 3D open question: is $f_3(n) = O(n^{4/3} \\log\\log n)$? The current bounds involve the inverse Ackermann function from Davenport-Schinzel theory.",
+      "mathContext": "$n^{4/3} \\log\\log n \\ll f_3(n) \\ll n^{3/2} \\beta(n)$."
     },
     {
       "id": "high-dimensions",
-      "title": "Dimension ≥ 4: High-Dimensional Case",
-      "startLine": 126,
-      "endLine": 126,
-      "summary": "Lenz construction, Erdős-Stone upper bound - essentially solved.",
-      "mathContext": "Bound: Lenz construction, Erdős-Stone upper bound - essentially solved."
-    },
-    {
-      "id": "exact-results",
-      "title": "Exact Results for d ≥ 4",
-      "startLine": 126,
-      "endLine": 126,
-      "summary": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5.",
-      "mathContext": "Brass d=4, Swanepoel even d$\\geq$6, Erdős-Pach odd d$\\geq$5."
-    },
-    {
-      "id": "examples",
-      "title": "Examples and Special Values",
-      "startLine": 126,
-      "endLine": 126,
-      "summary": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6.",
-      "mathContext": "Mathematical content: Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6."
-    },
-    {
-      "id": "connections",
-      "title": "Connections to Other Problems",
-      "startLine": 126,
-      "endLine": 126,
-      "summary": "Relations to crossing numbers, incidence geometry, distinct distances.",
-      "mathContext": "Mathematical content: Relations to crossing numbers, incidence geometry, distinct distances."
+      "title": "Dimension $\\geq 4$: Lenz Construction (Essentially Solved)",
+      "startLine": 97,
+      "endLine": 108,
+      "summary": "Defines `lenzCoefficient` computing $(p-1)/(2p)$ for $p = \\lfloor d/2 \\rfloor$. The Lenz construction places points on orthogonal unit circles, achieving $\\sim (p-1)/(2p) \\cdot n^2$ unit distances — matching the Erdős-Stone upper bound.",
+      "mathContext": "$f_d(n) = \\frac{p-1}{2p} n^2 + o(n^2)$ for $d \\geq 4$, $p = \\lfloor d/2 \\rfloor$."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 126,
+      "title": "Summary and Status",
+      "startLine": 110,
       "endLine": 126,
-      "summary": "Overall status: high dimensions solved, d=2,3 partially open.",
-      "mathContext": "Mathematical content: Overall status: high dimensions solved, d=2,3 partially open."
+      "summary": "Recaps the dimension-by-dimension status: $d = 2, 3$ remain open with stubborn gaps, while $d \\geq 4$ is resolved with exact formulas (Brass $d=4$, Swanepoel even $d \\geq 6$) or tight bounds (Erdős-Pach odd $d \\geq 5$).",
+      "mathContext": "Main open question: Is $f_2(n) = n^{1+o(1)}$?"
     }
   ],
   "conclusion": {
@@ -175,32 +151,52 @@
     {
       "targetId": "erdos-90",
       "relationship": "specializes",
-      "description": "Erdős #90 is the classical 2D unit distance problem — a direct special case of #1085 restricted to ℝ². Both share the same open conjecture f_2(n) = n^(1+o(1)) and the Spencer-Szemerédi-Trotter O(n^(4/3)) upper bound."
+      "description": "Erdős #90 is the classical 2D unit distance problem — a direct special case of #1085 restricted to ℝ². Both share the open conjecture f_2(n) = n^{1+o(1)} and the Spencer-Szemerédi-Trotter O(n^{4/3}) upper bound."
     },
     {
       "targetId": "erdos-89",
       "relationship": "related",
-      "description": "The distinct distances problem (#89) is a close companion: both ask how many times a fixed distance can appear among n points. Guth-Katz (2015) resolved #89 using polynomial partitioning, a technique also relevant to improving unit distance bounds."
+      "description": "The distinct distances problem (#89) is the dual companion: how many *distinct* distances must n points determine? Guth-Katz (2015) resolved it using polynomial partitioning, a technique relevant to unit distance bounds."
     },
     {
       "targetId": "erdos-96",
       "relationship": "related",
-      "description": "Unit distances in convex polygons (#96) is a constrained variant: restricting n points to a convex position changes the extremal behavior. The Lenz construction exploits non-convexity, so convex configurations have much smaller unit distance counts."
+      "description": "Unit distances in convex position (#96): restricting to convex configurations changes the extremal behavior drastically. The Lenz construction exploits non-convexity."
     },
     {
       "targetId": "erdos-102",
       "relationship": "uses",
-      "description": "Incidence geometry and rich-line bounds (#102) are deeply linked to unit distances: the Szemerédi-Trotter theorem that yields the O(n^(4/3)) upper bound for unit distances also governs point-line incidence counts."
+      "description": "Incidence geometry (#102): the Szemerédi-Trotter theorem that yields the O(n^{4/3}) upper bound for unit distances also governs point-line incidence counts."
     },
     {
       "targetId": "erdos-95",
       "relationship": "related",
-      "description": "Sum of squared distance multiplicities (#95) provides an algebraic complement: bounding Σ_d f_d(P)² relates to the energy of distance multisets and connects to the polynomial method used in Guth-Katz."
+      "description": "Sum of squared distance multiplicities (#95): bounding Σ f_d(P)² relates to the energy of distance multisets and connects to the polynomial method."
     },
     {
       "targetId": "erdos-1007",
       "relationship": "related",
-      "description": "Graph dimension (#1007) asks for the minimum number of edges in a graph realizable in ℝ^d with prescribed edge lengths, connecting to the unit distance graph framework underlying #1085."
+      "description": "Graph dimension (#1007): minimum edges in a graph realizable in ℝ^d with prescribed edge lengths, connecting to the unit distance graph framework."
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "companion",
+      "description": "Erdős #1084 studies unit distances among *separated* points (pairwise distance ≥ 1). The separation constraint changes the extremal behavior entirely: f_d(n) = Θ(n) vs Θ(n^2)."
+    },
+    {
+      "targetId": "erdos-1084-oq-01",
+      "relationship": "companion",
+      "description": "The 3D correction term conjecture f_3(n) = 6n - Θ(n^{2/3}) for separated points. Shares the kissing number and isoperimetric framework with the unseparated setting."
+    },
+    {
+      "targetId": "erdos-1083",
+      "relationship": "companion",
+      "description": "Distinct distances in higher dimensions (#1083): the complementary extremal problem asking for the minimum number of distinct distances among n points in ℝ^d."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma and the Erdős-Stone theorem underpin the high-dimensional upper bounds: f_d(n) ≤ ((p-1)/(2p) + o(1))n² via the forbidden-subgraph framework."
     }
   ],
   "references": [
