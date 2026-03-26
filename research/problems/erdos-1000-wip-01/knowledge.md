@@ -5,7 +5,7 @@ Complete Erdős #1000: Generalized Totients and Diophantine Approximation.
 The existing formalization has 4 axioms (erdos_no_zero_limit, erdos_dichotomy, cassels_liminf_zero, haight_resolution) and 0 sorries. Goal: prove one or more axioms.
 
 ## Summary
-Proved 2 new structural lemmas that establish the fundamental lower bound connecting generalized totients to Euler's totient function. Fixed Mathlib API migration issues.
+Session 1 proved structural lower bounds. Session 2 proved the complement formula and 6 more infrastructure theorems, establishing the framework for proving erdos_no_zero_limit via a double-counting argument.
 
 ## Session 2026-03-25 (Session 1) - Structural Lower Bound
 
@@ -17,32 +17,42 @@ Proved 2 new structural lemmas that establish the fundamental lower bound connec
   - Key insight: coprime elements always pass the phiA filter
   - If gcd(m, n_k) = 1, then reducedDenom m n_k = n_k > n_j for all j < k
   - Proof: subset argument — (range n).filter(Coprime n) ⊆ (Icc 1 n).filter(phiA_cond)
-  - k=0 case: phiA_zero gives phiA = n₀ ≥ totient(n₀)
-  - k≥1 case: n_k ≥ 2, so the subset injection works
 - Proved `densityRatio_ge_totient_ratio`: ρ_A(k) ≥ φ(n_k)/n_k
-  - Direct corollary of phiA_ge_totient via div_le_div_of_nonneg_right
-- Fixed Mathlib API migration issues in existing proofs:
-  - `∑ k in range N` → `∑ k ∈ range N` (3 instances)
-  - `strictMono` proof: `by omega` → `Nat.add_lt_add_right`
-  - Constructor syntax: restructured `⟨by ..., by ...⟩` to `refine ⟨?_, ...⟩`
-  - `simp at hg; omega` → `simp at hg` (simp now closes goal)
-  - `push_cast; linarith` → explicit cast + linarith
-  - `le_div_iff₀` rewrite → explicit mul_div_cancel approach
+- Fixed Mathlib API migration issues (∑ in → ∈, omega, division lemmas)
 
 ### Key Findings
-- The lower bound φ_A(k) ≥ φ(n_k) is necessary but NOT sufficient for erdos_no_zero_limit
+- Lower bound φ_A(k) ≥ φ(n_k) is NOT sufficient for erdos_no_zero_limit
   - φ(n_k)/n_k CAN go to 0 (e.g., primorial sequence)
-  - Erdős' proof must use deeper structural arguments about the counting
-- The Mathlib API has diverged from when this file was written (v4.26.0)
-  - `∑ ... in` syntax replaced by `∑ ... ∈`
-  - Division lemma naming changed
-  - omega behavior with semiimplicit binders changed
+  - Need deeper structural argument
+
+## Session 2026-03-26 (Session 2) - Complement Formula
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+- Proved `phiA_add_used`: φ_A(k) + Σ_{used e|n_k} φ(e) = n_k (complement formula)
+  - Uses Finset.sum_filter_add_sum_filter_not + Nat.sum_totient
+- Proved `used_sum_le`: used φ-sum ≤ n_k - φ(n_k)
+  - n_k is always unused; from phiA_add_used + phiA_ge_totient
+- Proved `used_card_le`: at most k divisors are used
+  - Each used divisor maps injectively to j < k via A.seq
+- Proved `phiA_pos`: φ_A(k) ≥ 1
+- Proved `densityRatio_pos`: ρ_A(k) > 0
+- Proved `densityRatio_complement`: ρ_A(k) = 1 - used/n_k in ℝ
+- Proved `densityRatio_ge_of_prime`: ρ_A(k) ≥ 1/2 when n_k is prime
+
+### Key Findings
+- Complement formula reframes erdos_no_zero_limit: for ρ → 0, used divisors must capture almost ALL of n_k's φ-sum. At most k divisors can do this, and n_k is always excluded.
+- **erdos_no_zero_limit proof approach**: Double-count Σ_k (1-ρ_A(k)). Switch sum order: Σ_j φ(n_j) · Σ_{k>j: n_j|n_k} 1/n_k. Inner sum = reciprocals of multiples of n_j in the sequence. Bound by harmonic sum → contradiction.
+- Blocked on: formalizing the double-counting + real-valued sum bounds
 
 ### Files Modified
-- `proofs/Proofs/Erdos1000Problem.lean` — 2 new theorems + migration fixes (304→370 lines)
-- `src/data/proofs/erdos-1000/meta.json` — updated counts and sections
+- `proofs/Proofs/Erdos1000Problem.lean` — 7 new theorems (370→607 lines)
+- `src/data/proofs/erdos-1000/meta.json` — updated
+- `src/data/research/problems/erdos-1000-wip-01.json` — updated
 
 ### Next Steps
-- Investigate `cassels_liminf_zero`: simplest axiom to prove? Needs explicit sequence construction
-- Investigate `erdos_no_zero_limit`: needs understanding of WHY ρ_A can't converge to 0 despite φ(n_k)/n_k → 0. Likely needs structural argument about the excluded denominators
-- The lower bound enables future work: any proof of `erdos_no_zero_limit` will use `phiA_ge_totient` as a foundation
+- Formalize the double-counting argument for erdos_no_zero_limit
+- Alternative: prove for special cases first (lacunary, prime-rich sequences)
+- cassels_liminf_zero requires continued fraction construction (longer-term)
