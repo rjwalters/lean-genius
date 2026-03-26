@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/667",
     "erdosProblemStatus": "open",
     "axiomCount": 8,
-    "lineCount": 343,
+    "lineCount": 356,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -165,7 +165,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 667 in 323 lines with 14 axioms (reduced from 15 by proving cliqueGuarantee_pos) encoding the extremal function H(n;p,q) and its exponent c(p,q), and 22 proved theorems. Key results: axiom elimination via induction, strict increase at top step (EFRS + boundary), small cases (p=3 fully resolved, p=4 and p=5 at top), and structural gap analysis. The main conjecture — strict monotonicity of c(p,q) in q — remains open.",
+    "summary": "This formalization captures Erdős Problem 667 in 356 lines with 8 axiom declarations and 5 sorries (reduced from 14 axioms by concretizing cliqueGuarantee via sSup and proving cliqueGuarantee_pos + extended monotonicity), encoding the extremal function H(n;p,q) and its exponent c(p,q), and 30 proved theorems. Key results: axiom elimination via induction, strict increase at top step (EFRS + boundary), small cases (p=3 fully resolved, p=4 and p=5 at top), and structural gap analysis. The main conjecture — strict monotonicity of c(p,q) in q — remains open.",
     "implications": "Strict monotonicity would establish that every additional edge per p-set produces a measurably larger polynomial clique guarantee, ruling out 'plateaus' in the density-to-structure transfer function. This would provide a fine-grained understanding of how local graph density translates to global clique structure, connecting Ramsey theory (q=1) to Turán-type extremal problems (q near maximum) through a monotone interpolation.",
     "openQuestions": [
       "Is c(p,q) strictly increasing in q for all 1 ≤ q < C(p-1,2)+1? The formalization proves this at the top step and for p=3, but the general case remains open",
@@ -188,9 +188,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos667",
-    "lineCount": 343,
+    "lineCount": 356,
     "axiomCount": 8,
-    "theoremCount": 22,
+    "theoremCount": 30,
     "definitionCount": 3
   },
   "references": [
