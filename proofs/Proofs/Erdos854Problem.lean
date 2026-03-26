@@ -14,24 +14,39 @@ but computations by Lacampagne and Selfridge cast doubt on this for nₖ = 30030
 Reference: https://erdosproblems.com/854
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+namespace Erdos854
+
+open Nat
+
 /- ## Primorial and Coprime Residues -/
 
-/-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...) -/
-axiom nthPrime : ℕ → ℕ
-axiom nthPrime_prime (k : ℕ) (hk : 1 ≤ k) : Nat.Prime (nthPrime k)
-axiom nthPrime_mono : StrictMono nthPrime
-axiom nthPrime_vals : nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5
+/-- The k-th prime number (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...) -/
+noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
 
-/-- The k-th primorial: product of the first k primes -/
+theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
+
+theorem nthPrime_mono : StrictMono nthPrime := Nat.nth_prime_strictMono
+
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  simp [nthPrime, Nat.nth_prime_zero]
+
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  simp [nthPrime, Nat.nth_prime_one]
+
+theorem nthPrime_two : nthPrime 2 = 5 := by
+  simp [nthPrime]
+  native_decide
+
+/-- The k-th primorial: product of the first k primes (0-indexed).
+    primorial 0 = 1, primorial 1 = 2, primorial 2 = 6, primorial 3 = 30 -/
 noncomputable def primorial : ℕ → ℕ
   | 0 => 1
-  | k + 1 => primorial k * nthPrime (k + 1)
+  | k + 1 => primorial k * nthPrime k
 
 /-- The set of positive integers less than n that are coprime to n -/
 def coprimeResidues (n : ℕ) : Finset ℕ :=
@@ -41,8 +56,14 @@ def coprimeResidues (n : ℕ) : Finset ℕ :=
 noncomputable def sortedCoprimes (n : ℕ) : List ℕ := (coprimeResidues n).sort (· ≤ ·)
 
 theorem sortedCoprimes_sorted (n : ℕ) : (sortedCoprimes n).Pairwise (· < ·) := by
-  simp only [sortedCoprimes]
-  exact (coprimeResidues n).sort_pairwise_lt
+  unfold sortedCoprimes
+  have hle := Finset.pairwise_sort (coprimeResidues n) (· ≤ ·)
+  have hnd := (coprimeResidues n).sort_nodup (· ≤ ·)
+  rw [List.pairwise_iff_getElem] at hle ⊢
+  intro i j hi hj hij
+  have hle' := hle i j hi hj hij
+  have hne := (List.pairwise_iff_getElem.mp hnd) i j hi hj hij
+  omega
 
 theorem sortedCoprimes_mem (n : ℕ) (a : ℕ) :
     a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n := by
@@ -64,8 +85,16 @@ axiom gaps_even (k : ℕ) (hk : 2 ≤ k) (d : ℕ) (hd : d ∈ gapSet (primorial
     Defined as the supremum of the gap set. -/
 noncomputable def maxGap (n : ℕ) : ℕ := (gapSet n).sup id
 
-theorem maxGap_mem (n : ℕ) (hn : 1 < n) : maxGap n ∈ gapSet n := by
-  sorry -- Requires showing gapSet n is nonempty for n > 1
+theorem maxGap_mem (n : ℕ) (hne : (gapSet n).Nonempty) : maxGap n ∈ gapSet n := by
+  simp only [maxGap]
+  have hmem := Finset.max'_mem (gapSet n) hne
+  suffices h : (gapSet n).sup id = (gapSet n).max' hne by
+    rw [h]; exact hmem
+  apply le_antisymm
+  · apply Finset.sup_le
+    intro b hb
+    exact Finset.le_max' _ b hb
+  · exact Finset.le_sup (f := id) hmem
 
 theorem maxGap_max (n : ℕ) (d : ℕ) (hd : d ∈ gapSet n) : d ≤ maxGap n := by
   simp only [maxGap]; exact Finset.le_sup hd
@@ -78,25 +107,24 @@ theorem distinctGapCount_def (n : ℕ) :
 
 /- ## Known Bounds -/
 
-/-- Maximal gap for primorial(k) grows like 2pₖ (the Jacobsthal function bound) -/
+/-- Maximal gap for primorial(k) grows like 2pₖ₋₁ (the Jacobsthal function bound) -/
 axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
-  maxGap (primorial k) ≤ 2 * nthPrime k
+  maxGap (primorial k) ≤ 2 * nthPrime (k - 1)
 
 /-- The first missing gap: smallest positive even integer not in gapSet(n). -/
 noncomputable def firstMissingGap (n : ℕ) : ℕ :=
-  2 * Nat.find (⟨(gapSet n).sup id + 1, by
-    intro h
-    have := Finset.le_sup h
-    simp only [id] at this
+  2 * Nat.find (⟨(gapSet n).sup id + 1, fun h => by
+    have := Finset.le_sup (f := id) h
+    simp at this
     omega⟩ : ∃ m, 2 * m ∉ gapSet n)
 
 theorem firstMissingGap_even (_k : ℕ) (_hk : 2 ≤ _k) :
     2 ∣ firstMissingGap (primorial _k) :=
   dvd_mul_right 2 _
 
-theorem firstMissingGap_missing (k : ℕ) (_hk : 2 ≤ k) :
-    firstMissingGap (primorial k) ∉ gapSet (primorial k) := by
-  unfold firstMissingGap
+theorem firstMissingGap_missing (n : ℕ) :
+    firstMissingGap n ∉ gapSet n := by
+  simp only [firstMissingGap]
   exact Nat.find_spec _
 
 /-- Lacampagne–Selfridge computation: for nₖ = 30030 (k=6),
@@ -117,3 +145,5 @@ axiom ErdosProblem854_many_gaps :
   ∃ c : ℚ, 0 < c ∧
     ∀ k : ℕ, 2 ≤ k →
       c * (maxGap (primorial k) : ℚ) ≤ (distinctGapCount (primorial k) : ℚ)
+
+end Erdos854
