@@ -84,11 +84,22 @@ The key results on `ℓ(N)`:
 -/
 
 /-- Erdős's lower bound: every set of size N has a Sidon subset of
-    size at least c · N^{1/3} for some absolute constant c. -/
-axiom erdos_lower_bound :
-  ∃ c : ℕ, c ≥ 1 ∧
-    ∀ A : Finset ℤ, A.card ≥ 8 →
-      maxSidonSize A * maxSidonSize A * maxSidonSize A ≥ c * A.card
+    size at least c · N^{1/3} for some absolute constant c.
+    Proof: follows immediately from the stronger KSS bound k² ≥ c·N.
+    Since k ≥ 1, we have k³ = k·k² ≥ 1·(c·N) = c·N. -/
+theorem erdos_lower_bound :
+    ∃ c : ℕ, c ≥ 1 ∧
+      ∀ A : Finset ℤ, A.card ≥ 8 →
+        maxSidonSize A * maxSidonSize A * maxSidonSize A ≥ c * A.card := by
+  obtain ⟨c, hc, hkss⟩ := komlos_sulyok_szemeredi
+  refine ⟨c, hc, fun A hA => ?_⟩
+  have h := hkss A (by omega : A.card ≥ 4)
+  -- k³ = k · k² ≥ 1 · (c · |A|) = c · |A|
+  calc c * A.card
+      ≤ maxSidonSize A * maxSidonSize A := h
+    _ ≤ maxSidonSize A * maxSidonSize A * maxSidonSize A :=
+        le_mul_of_one_le_right (Nat.zero_le _)
+          (maxSidonSize_pos (Finset.card_pos.mp (by omega : 0 < A.card)))
 
 /-- Komlós–Sulyok–Szemerédi improved lower bound: every set of size N
     has a Sidon subset of size at least c · N^{1/2}. -/
