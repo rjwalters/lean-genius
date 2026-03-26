@@ -112,5 +112,29 @@
       "interpolation"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-amgm-oq03-oq01-06-inversion-detail",
+    "proofId": "amgm-inequality-oq-03-oq-01",
+    "range": { "startLine": 320, "endLine": 343 },
+    "type": "insight",
+    "title": "Inversion Technique: From A ≤ B to B⁻¹ ≤ A⁻¹",
+    "content": "The final step inverts the positive-case inequality $M_{-t}(z^{-1}) \\le M_{-r}(z^{-1})$ to get $M_{-r}(z^{-1})^{-1} \\le M_{-t}(z^{-1})^{-1}$. Rather than using Mathlib's `inv_le_inv_of_le` (which may have inconvenient side conditions), the proof builds the inversion from multiplicative primitives: from $A \\le B$ and $A > 0$, it constructs $1 = A \\cdot A^{-1} \\le B \\cdot A^{-1}$ via `mul_le_mul_of_nonneg_right`, then multiplies by $B^{-1}$ and simplifies with `mul_assoc`, `mul_inv_cancel₀`, and `mul_one`. This explicit approach avoids hypotheses on the ordering of inverses and works in any ordered field.",
+    "mathContext": "$A \\le B,\\, A > 0 \\implies 1 = A \\cdot A^{-1} \\le B \\cdot A^{-1} = A^{-1} \\cdot B$. Multiplying by $B^{-1} > 0$: $B^{-1} \\le A^{-1} \\cdot B \\cdot B^{-1} = A^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["order-reversing inversion", "multiplicative algebra", "ordered field"],
+    "prerequisites": ["mul_le_mul_of_nonneg_right", "mul_inv_cancel₀", "mul_assoc"]
+  },
+  {
+    "id": "ann-amgm-oq03-oq01-07-architecture",
+    "proofId": "amgm-inequality-oq-03-oq-01",
+    "range": { "startLine": 61, "endLine": 219 },
+    "type": "definition",
+    "title": "Parent File Dependencies: Power Mean Definitions and Positive Case",
+    "content": "Lines 57–219 belong to the parent entry `amgm-inequality-oq-03` and provide the foundation this sub-entry builds on. Key dependencies: `weightedPowerMean s w z p hp = (∑ wᵢzᵢ^p)^{1/p}` (the definition), `weightedGeomMean` and `weightedArithMean` (for specializations), and `power_mean_monotone_pos` (the positive-exponent monotonicity theorem proved via Jensen's inequality for $t \\mapsto t^{s/r}$). The sub-entry's `focusedRange` metadata (220–343) marks the original contribution boundary.",
+    "mathContext": "Prerequisites: $M_p(z,w) = (\\sum w_i z_i^p)^{1/p}$, $\\text{GM}(z,w) = \\prod z_i^{w_i}$, $\\text{AM}(z,w) = \\sum w_i z_i$, and $M_r \\le M_s$ for $0 < r \\le s$ (Jensen).",
+    "significance": "context",
+    "relatedConcepts": ["power mean definition", "Jensen's inequality", "parent-child proof organization"],
+    "prerequisites": ["Finset.sum", "Real.rpow", "Finset.prod"]
   }
 ]

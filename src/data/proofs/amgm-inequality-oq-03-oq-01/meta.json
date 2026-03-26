@@ -167,22 +167,42 @@
     {
       "targetId": "amgm-inequality",
       "relationship": "related",
-      "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+      "description": "The AM-GM inequality is the $r=1$, $s=0$ case of the general power mean monotonicity chain this file extends"
     },
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using $e_k$ means — complementary to the power mean approach"
     },
     {
       "targetId": "shannon-entropy",
       "relationship": "related",
-      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
+      "description": "The duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ translates to Rényi entropy: $H_\\alpha \\propto \\log M_{\\alpha-1}$, so negative power mean monotonicity implies Rényi entropy monotonicity for $\\alpha > 1$"
     },
     {
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ corresponds to the power sum identity p_{-k}(z) = p_k(z⁻¹)"
+      "description": "Power sums $p_k = \\sum x_i^k$ are unnormalized power means: $M_k = (p_k/n)^{1/k}$. The duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ corresponds to $p_{-k}(z) = p_k(z^{-1})$"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz is the $p=q=2$ case of Hölder's inequality, which itself follows from the power mean inequality applied to integrals — both exploit convexity of $t \\mapsto t^p$"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "related",
+      "description": "Hölder's inequality for $L^p$ spaces generalizes power mean monotonicity to function spaces; the duality $p \\leftrightarrow p/(p-1)$ parallels the power mean duality $r \\leftrightarrow -r$"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric inequality $4\\pi A \\le C^2$ can be proved via Wirtinger's inequality, which itself follows from Fourier analysis and Jensen-type convexity — the same family of techniques underlying power mean monotonicity"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Riesz-Thorin interpolation theorem uses log-convexity of $L^p$ norms, closely related to power mean monotonicity via the identification $\\|f\\|_p = M_p(|f|)$ for discrete measures"
     }
   ],
   "references": [
