@@ -70,8 +70,11 @@
       "**Massive gap:** The true order is between polylog and subpolynomial"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Additive combinatorics (sumsets, density)"
+      "Sum-free sets: $S \\subseteq A$ with $x + y \\ne z$ for all $x, y, z \\in S$; equivalently, $S \\cap (S + S) = \\emptyset$",
+      "Extremal function $g(n)$: maximum $k$ such that every $n$-element set of positive integers has a sum-free subset of size $\\ge k$",
+      "Additive combinatorics: Freiman-Ruzsa theory, sumset structure, Fourier methods on $\\mathbb{Z}/N\\mathbb{Z}$",
+      "Probabilistic method: random coloring arguments for sum-free lower bounds (Alon-Kleitman)",
+      "Analytic methods: exponential sums and $L^p$ bounds for proving Ruzsa-type upper bounds on $g(n)$"
     ]
   },
   "sections": [
@@ -179,17 +182,52 @@
     {
       "targetId": "erdos-1148",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, open"
+      "description": "Additive combinatorics problem — both study structural constraints on sumsets and the interaction between additive structure and extremal set sizes"
     },
     {
       "targetId": "erdos-142",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, open"
+      "description": "Additive combinatorics — both study how additive constraints on subsets of $\\{1,\\ldots,n\\}$ limit their size and structure"
     },
     {
       "targetId": "erdos-155",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, open"
+      "description": "Additive structure in extremal subsets — both connect additive number theory to combinatorial optimization over finite sets"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "companion",
+      "description": "Sum-free sets and density — directly related: #1136 studies the density of sum-free subsets of $\\mathbb{N}$, while #787 studies the maximum size of subsets avoiding $x+y=z$ configurations"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "companion",
+      "description": "Divisibility and sum-free sets — both study sum-free subsets from different angles: #13 via divisibility constraints, #787 via the extremal function $g(n)$"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Subset sum problems — the complementary question: while sum-free sets avoid sums, #1 studies which sums can be formed from subsets"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Sidon sets and unique representations — Sidon sets (all pairwise sums distinct) are a stricter condition than sum-free, both studied in additive combinatorics"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Density and sumsets — Freiman-Ruzsa theory connects sumset structure to density, relevant to understanding why $g(n)$ grows slowly"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Sumsets of lacunary sequences — both study how arithmetic constraints on sets affect their extremal sizes, with lacunary sequences providing natural sum-free examples"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Additive combinatorics with probabilistic and Fourier methods — Ruzsa's upper bound for $g(n)$ uses Fourier-analytic techniques similar to those in #1179"
     }
   ]
 }
