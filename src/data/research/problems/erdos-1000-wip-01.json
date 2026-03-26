@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1000-wip-01",
   "title": "Complete Erdős #1000: Generalized Totients and Diophantine Approximation (Work in Progress)",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,43 +11,65 @@
     "whyMatters": ["Connects totient theory to Cesàro summation", "Illustrates pointwise vs averaged convergence gap"]
   },
   "knownResults": {
-    "proven": ["phiA_ge_totient: φ_A(k) ≥ φ(n_k)", "densityRatio_ge_totient_ratio: ρ_A(k) ≥ φ(n_k)/n_k"],
+    "proven": [
+      "phiA_ge_totient: φ_A(k) ≥ φ(n_k)",
+      "densityRatio_ge_totient_ratio: ρ_A(k) ≥ φ(n_k)/n_k",
+      "phiA_add_used: φ_A(k) + used_sum = n_k (complement formula)",
+      "used_sum_le: used ≤ n_k - φ(n_k)",
+      "used_card_le: at most k used divisors",
+      "phiA_pos: φ_A(k) ≥ 1",
+      "densityRatio_pos: ρ_A(k) > 0",
+      "densityRatio_complement: ρ_A(k) = 1 - used/n_k",
+      "densityRatio_ge_of_prime: ρ ≥ 1/2 when n_k prime"
+    ],
     "open": ["erdos_no_zero_limit", "erdos_dichotomy", "cassels_liminf_zero", "haight_resolution"],
-    "goal": "Prove erdos_no_zero_limit or cassels_liminf_zero"
+    "goal": "Prove erdos_no_zero_limit — now within reach using complement formula + counting argument"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-25T00:00:00Z",
-    "iteration": 1,
-    "focus": "Proved structural lower bound lemmas. Assessing feasibility of axiom proofs.",
-    "blockers": ["erdos_no_zero_limit requires deeper structural argument beyond phiA ≥ totient"],
-    "nextAction": "Investigate cassels_liminf_zero: explicit sequence construction via continued fractions",
+    "phase": "ACT",
+    "since": "2026-03-26T00:00:00Z",
+    "iteration": 2,
+    "focus": "Built complement formula infrastructure. erdos_no_zero_limit needs double-counting argument.",
+    "blockers": ["erdos_no_zero_limit requires Erdős' 1964 counting argument: bounding Σ_{k<N} used_sum(k)/n_k via order-switching and divisor density. Non-trivial to formalize."],
+    "nextAction": "Formalize the double-counting argument: switch summation order in Σ_k Σ_{j<k,n_j|n_k} φ(n_j)/n_k, bound via harmonic sum, derive contradiction",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved phiA_ge_totient and densityRatio_ge_totient_ratio. Fixed Mathlib migration. 4 axioms remain.",
+    "progressSummary": "PROGRESS: Session 2 built 7 new theorems — complement formula, used-divisor bounds, positivity, prime case. 4 axioms remain. erdos_no_zero_limit is closest to proof via complement formula + counting argument.",
     "builtItems": [
-      {"name": "phiA_ge_totient", "type": "theorem", "description": "φ_A(k) ≥ φ(n_k) for any increasing sequence — coprime elements always pass phiA filter"},
-      {"name": "densityRatio_ge_totient_ratio", "type": "theorem", "description": "ρ_A(k) ≥ φ(n_k)/n_k — real-valued lower bound on density ratio"},
-      {"name": "coprime_range_subset_phiA_filter", "type": "lemma", "description": "Coprime elements in range form subset of phiA filter set"}
+      {"name": "phiA_ge_totient", "type": "theorem", "description": "φ_A(k) ≥ φ(n_k) for any increasing sequence"},
+      {"name": "densityRatio_ge_totient_ratio", "type": "theorem", "description": "ρ_A(k) ≥ φ(n_k)/n_k"},
+      {"name": "coprime_range_subset_phiA_filter", "type": "lemma", "description": "Coprime elements form subset of phiA filter"},
+      {"name": "phiA_add_used", "type": "theorem", "description": "φ_A(k) + Σ_{used e|n_k} φ(e) = n_k — complement of decomposition"},
+      {"name": "used_sum_le", "type": "theorem", "description": "Used φ-sum ≤ n_k − φ(n_k), since n_k is always unused"},
+      {"name": "used_card_le", "type": "theorem", "description": "At most k divisors are used (injective map to range k)"},
+      {"name": "phiA_pos", "type": "theorem", "description": "φ_A(k) ≥ 1 for all k (from totient positivity)"},
+      {"name": "densityRatio_pos", "type": "theorem", "description": "ρ_A(k) > 0 for all k"},
+      {"name": "densityRatio_complement", "type": "theorem", "description": "ρ_A(k) = 1 − used_sum/n_k in ℝ"},
+      {"name": "densityRatio_ge_of_prime", "type": "theorem", "description": "ρ_A(k) ≥ 1/2 when n_k is prime"}
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
       "Lower bound alone insufficient for erdos_no_zero_limit since φ(n)/n → 0 along primorials",
-      "Erdős' proof needs structural argument about excluded-denominator interplay",
-      "Mathlib v4.26.0 API migration: ∑ in → ∈, omega/semiimplicit, division lemma changes"
+      "Complement formula ρ = 1 - used/n reframes the problem: for ρ → 0, used divisors must capture almost all φ-weight",
+      "erdos_no_zero_limit proof strategy: double-count Σ_k used_sum(k)/n_k by switching summation order, bound inner sum by n_{N-1}/n_j, get harmonic-type bound contradicting →1",
+      "When n_k is prime, only {1,n_k} are divisors; n_k is unused, so ρ ≥ (p-1)/p ≥ 1/2",
+      "At most k of n_k's divisors can be 'used' — each maps to a unique j < k via injectivity of A",
+      "Mathlib v4.26.0 API: sum_filter_add_sum_filter_not, Nat.totient_pos, Nat.totient_prime all available"
     ],
     "mathlibGaps": [
-      "No gaps: Nat.totient, Finset.card_le_card, gcd API all sufficient"
+      "No gaps: Nat.totient, Finset.sum_filter_add_sum_filter_not, card_image_le all sufficient",
+      "For erdos_no_zero_limit: may need Finset.sum_comm or order-switching for double sums"
     ],
     "nextSteps": [
-      "Investigate cassels_liminf_zero via explicit continued fraction construction",
-      "Study erdos_no_zero_limit strategy: why can't ρ_A converge to 0?",
-      "Consider erdos_dichotomy via Euler product techniques"
+      "Formalize erdos_no_zero_limit via complement formula + double-counting argument",
+      "Key intermediate: bound Σ_{j<N} φ(n_j) · |{k>j : n_j | n_k}| / n_k using harmonic sum",
+      "Alternative: prove for special cases first (lacunary sequences, sequences with infinitely many primes)",
+      "cassels_liminf_zero: still requires explicit continued fraction construction"
     ]
   },
   "tags": [
@@ -70,7 +92,7 @@
     "mathlib": ["Mathlib.Data.Nat.Totient"]
   },
   "started": "2026-03-24T00:48:59.900Z",
-  "lastUpdate": "2026-03-25T00:00:00Z",
+  "lastUpdate": "2026-03-26T00:00:00Z",
   "significance": 7,
   "tractability": 6
 }

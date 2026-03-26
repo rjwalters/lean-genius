@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
-    "lineCount": 370,
-    "assumptions": "Four deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), cassels_liminf_zero (liminf of Cesàro average can be 0), haight_resolution (vanishing Cesàro average exists). New structural lemmas: phiA_ge_totient (φ_A(k) ≥ φ(n_k) for any sequence) and densityRatio_ge_totient_ratio (ρ_A(k) ≥ φ(n_k)/n_k).",
+    "lineCount": 607,
+    "assumptions": "Four deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), cassels_liminf_zero (liminf of Cesàro average can be 0), haight_resolution (vanishing Cesàro average exists). Infrastructure: complement formula (phiA_add_used), used-divisor bounds (used_sum_le, used_card_le), positivity (phiA_pos, densityRatio_pos), complement representation (densityRatio_complement), prime lower bound (densityRatio_ge_of_prime).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -95,42 +95,50 @@
       "mathContext": "For any $A$ and $k$: if $\\gcd(m, n_k) = 1$ then the reduced denominator is $n_k / 1 = n_k > n_j$ for all $j < k$. So the set $\\{m \\leq n_k : \\gcd(m, n_k) = 1\\}$ (of size $\\varphi(n_k)$) is a subset of the $\\varphi_A(k)$ filter. This lower bound is the foundation for Erdős' no-zero-limit theorem."
     },
     {
+      "id": "complement-formula",
+      "title": "Part IV-D: Complement Formula and Structural Bounds",
+      "startLine": 403,
+      "endLine": 486,
+      "summary": "Seven new infrastructure theorems: `phiA_add_used` (φ_A(k) + used_sum = n_k, complement of the decomposition), `used_sum_le` (used φ-sum ≤ n_k − φ(n_k)), `used_card_le` (at most k divisors are used), `phiA_pos` (φ_A(k) ≥ 1), `densityRatio_pos` (ρ_A(k) > 0), `densityRatio_complement` (ρ_A(k) = 1 − used/n_k in ℝ), and `densityRatio_ge_of_prime` (ρ_A(k) ≥ 1/2 when n_k is prime).",
+      "mathContext": "The complement formula $\\varphi_A(k) = n_k - \\sum_{e | n_k, e \\text{ used}} \\varphi(e)$ reveals the dual structure: for $\\rho_A(k) \\to 0$, the used divisors must capture almost all of $n_k$'s divisor-totient sum. The prime lower bound shows that whenever $n_k$ is prime, $\\rho_A(k) \\geq 1/2$, since primes have only the trivial divisor 1 available for 'use'."
+    },
+    {
       "id": "main-predicates",
       "title": "Part V: Main Predicates",
-      "startLine": 250,
-      "endLine": 258,
+      "startLine": 488,
+      "endLine": 496,
       "summary": "Defines `VanishingAverage A` ($C_A(N) \\to 0$) and `DensityToZero A` ($\\rho_A(k) \\to 0$) as filter-limit predicates.",
       "mathContext": "$\\text{VanishingAverage}(A) :\\Leftrightarrow \\lim_{N \\to \\infty} C_A(N) = 0$. $\\text{DensityToZero}(A) :\\Leftrightarrow \\lim_{k \\to \\infty} \\rho_A(k) = 0$."
     },
     {
       "id": "erdos-results",
       "title": "Part VI: Erdős' Results (1964)",
-      "startLine": 260,
-      "endLine": 272,
+      "startLine": 498,
+      "endLine": 510,
       "summary": "Two axioms: `erdos_no_zero_limit` ($\\rho_A(k) \\not\\to 0$ for any $A$, via Mertens' bound $\\varphi(n)/n \\geq c/\\log\\log n$) and `erdos_dichotomy` (if $\\liminf \\rho_A = 0$ then $\\limsup \\rho_A = 1$, via the Euler product for $\\varphi(n)/n$).",
       "mathContext": "Axiom 1: $\\neg \\text{DensityToZero}(A)$ for all $A$. Axiom 2: $\\liminf \\rho_A = 0 \\Rightarrow \\limsup \\rho_A = 1$. These establish that the density ratio must oscillate — it can visit near 0 but cannot stay there, and if it visits near 0 it must also visit near 1."
     },
     {
       "id": "cassels-result",
       "title": "Part VII: Cassels' Result (1950)",
-      "startLine": 274,
-      "endLine": 280,
+      "startLine": 512,
+      "endLine": 518,
       "summary": "Axiom `cassels_liminf_zero`: there exists $A$ with $\\liminf C_A(N) = 0$, constructed via continued fraction convergents. Historically the first result showing the average can approach 0.",
       "mathContext": "$\\exists A : \\text{IncreasingSeq},\\; \\forall \\varepsilon > 0,\\; \\exists^\\infty N,\\; C_A(N) < \\varepsilon$. Weaker than Haight's result (liminf = 0 vs lim = 0)."
     },
     {
       "id": "haight-resolution",
       "title": "Part VIII: Haight's Resolution",
-      "startLine": 282,
-      "endLine": 289,
+      "startLine": 520,
+      "endLine": 527,
       "summary": "Axiom `haight_resolution`: $\\exists A$ with $C_A(N) \\to 0$. Resolves Erdős' problem affirmatively. The construction uses rapidly growing highly composite numbers.",
       "mathContext": "$\\exists A : \\text{IncreasingSeq},\\; \\text{VanishingAverage}(A)$. The answer to Erdős' question is YES, contrary to his expectation."
     },
     {
       "id": "corollaries",
       "title": "Part IX: Corollaries",
-      "startLine": 291,
-      "endLine": 370,
+      "startLine": 529,
+      "endLine": 607,
       "summary": "Four proved theorems synthesizing the axioms: `vanishing_avg_visits_zero` (vanishing average implies $\\rho_A$ frequently visits near 0, via a split-sum argument), `haight_oscillation` (Haight's sequence oscillates between near 0 and near 1), `no_density_zero` (no sequence has $\\rho_A \\to 0$), and `pointwise_cesaro_gap` ($\\exists A$ with $C_A(N) \\to 0$ but $\\rho_A(k) \\not\\to 0$, a concrete separation between pointwise and Cesàro convergence).",
       "mathContext": "The key proved result `vanishing_avg_visits_zero` is a 40-line argument: assuming $\\rho_A(k) \\geq \\varepsilon$ eventually, the Cesàro sum is bounded below by $\\varepsilon(N - K)/N \\to \\varepsilon$, contradicting $C_A(N) \\to 0$. The corollaries combine this with the axioms via short compositions."
     }
@@ -194,9 +202,9 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 370,
+    "lineCount": 607,
     "axiomCount": 4,
-    "theoremCount": 14,
+    "theoremCount": 21,
     "definitionCount": 8
   }
 }
