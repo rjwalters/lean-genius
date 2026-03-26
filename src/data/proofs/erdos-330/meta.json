@@ -81,10 +81,11 @@
       "**Order matters**: For $h = 1$, the only basis is $A = \\mathbb{N}$ (trivially minimal and dense). The problem is interesting for $h \\geq 2$, where bases can be sparse yet minimal"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Additive combinatorics (sumsets, density)",
-      "Asymptotic density and counting"
+      "Additive basis theory: $h$-fold sumset $hA = \\{a_1 + \\cdots + a_h : a_i \\in A\\}$, asymptotic bases of order $h$",
+      "Asymptotic density: upper density $\\bar{d}(S) = \\limsup_{N \\to \\infty} |S \\cap [1,N]|/N$, Schnirelmann density",
+      "Minimal bases: $A$ is minimal if removing any element makes $hA$ miss infinitely many integers",
+      "Classical bases: Lagrange's four-square theorem ($h=4$, $A = $ squares), Waring's problem",
+      "Representation function: $r_{h,A}(n) = |\\{(a_1,\\ldots,a_h) : a_1 + \\cdots + a_h = n\\}|$"
     ]
   },
   "conclusion": {
@@ -100,17 +101,52 @@
     {
       "targetId": "erdos-38",
       "relationship": "related",
-      "description": "Both concern additive bases and density: #38 studies essential components and density boosting via Schnirelmann's method, while #330 asks about minimal bases where each element's removal creates positive-density gaps"
+      "description": "Essential components and Schnirelmann density — both study how removing elements from additive bases affects representation properties and density"
     },
     {
       "targetId": "erdos-469",
       "relationship": "related",
-      "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+      "description": "Density and convergence of number-theoretic sets — both probe the asymptotic structure of sets defined by representation/divisibility conditions"
     },
     {
       "targetId": "lagrange-four-squares",
       "relationship": "foundational",
-      "description": "Lagrange's four-square theorem proves that the squares form an additive basis of order 4. This is the classical example motivating additive basis theory — Problem #330 asks about the minimality structure of general bases, not just classical ones like squares"
+      "description": "The squares form an additive basis of order 4 — the classical example motivating additive basis theory that #330 generalizes to minimal bases"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Subset sum problems in additive combinatorics — both study structural properties of sumsets and how combinatorial constraints interact with density"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Density and sumsets in additive combinatorics — Freiman-Ruzsa theory connects sumset structure to the density phenomena underlying minimal basis questions"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Additive representations and density — both ask how the number of representations $r_{h,A}(n)$ interacts with the density of the base $A$"
+    },
+    {
+      "targetId": "erdos-1145",
+      "relationship": "companion",
+      "description": "Additive bases and representation functions — directly related: both study how basis structure (minimality, order, density) constrains representation counts"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Additive combinatorics and density of sum-free sets — the complementary question: instead of maximizing representability (bases), minimizing it (sum-free sets)"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Squarefree sumsets and growth rates — additive structure of number-theoretic sets with prescribed arithmetic properties, parallel to minimal basis constraints"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Primes, powers of 2, and additive density — both study how dense subsets of $\\mathbb{N}$ interact with additive representation theory"
     }
   ],
   "leanFile": {
