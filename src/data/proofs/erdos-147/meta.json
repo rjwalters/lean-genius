@@ -72,9 +72,11 @@
       "**$500 Erdős prize**: One of the higher-value Erdős prizes, reflecting the difficulty and importance of the problem"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory: Turán numbers $\\mathrm{ex}(n;H)$, Turán's theorem for complete graphs",
+      "Bipartite graph structure: vertex bipartition, minimum degree $\\delta(H)$, regular graphs",
+      "Kővári-Sós-Turán theorem: $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$",
+      "Probabilistic method: random graph deletion argument for lower bounds on Turán numbers",
+      "Asymptotic notation: $O$, $\\Omega$, $\\Theta$ for growth rates of extremal functions"
     ]
   },
   "sections": [
@@ -177,17 +179,52 @@
     {
       "targetId": "erdos-1080",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, disproved, extremal-graph-theory, graph-theory"
+      "description": "Bipartite Turán problem disproved by algebraic constructions — shares the theme of algebraic extremal graph theory refuting combinatorial conjectures"
     },
     {
       "targetId": "erdos-113",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, disproved, extremal-graph-theory"
+      "description": "Disproved extremal bipartite graph conjecture — both problems demonstrate that minimum degree alone does not determine the Turán exponent for bipartite $H$"
     },
     {
       "targetId": "erdos-127",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory, graph-theory"
+      "description": "Turán-type problem for bipartite forbidden subgraphs — both study the growth rate $\\mathrm{ex}(n; H)$ for bipartite $H$"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Zarankiewicz-type extremal problems for cycles and subgraphs — the Kővári-Sós-Turán bound $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ is the starting point for both problems"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Edge-disjoint triangles and Turán numbers — complementary extremal problem: while #147 asks about Turán numbers for bipartite $H$, #1009 asks about packing subgraphs"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Turán-type supersaturation for triangles — both study how forbidding subgraphs constrains edge count, with #1010 asking what happens when edges exceed the Turán number"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Turán-type problem for bipartite forbidden subgraphs — directly related to the Erdős-Simonovits framework for bipartite Turán numbers"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Chromatic number and Turán-type extremal graph theory — both probe the boundary between structural graph parameters and extremal density"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Extremal graph theory for triangle-related Turán problems — same framework of forbidden subgraph extremal functions"
+    },
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Probabilistic method in graph theory — both use random graph arguments; in #147 the probabilistic lower bound turns out to give the correct Turán exponent"
     }
   ]
 }
