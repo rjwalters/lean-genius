@@ -7,7 +7,7 @@
     "author": "Erdős-Goodman-Pósa (1966), Győri-Keszegh (2017)",
     "sourceUrl": "https://erdosproblems.com/1017",
     "date": "1966",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1017Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,15 +16,15 @@
       "clique-partition",
       "graph-decomposition"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1017,
     "erdosUrl": "https://erdosproblems.com/1017",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 9,
+    "lineCount": 2,
+    "assumptions": "Re-exports Erdos1017OQ01. See OQ01 entry for full formalization (9 axioms, 25 theorems).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
