@@ -40,16 +40,41 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _tokens_dir="$_repo_root/.loom/tokens"
 
     if [[ -d "$_tokens_dir" ]] && ls "$_tokens_dir"/*.token &>/dev/null; then
-        # Multi-account load balancing: pick a random token file
         _token_files=("$_tokens_dir"/*.token)
         _count=${#_token_files[@]}
-        _idx=$(( RANDOM % _count ))
-        _selected="${_token_files[$_idx]}"
-        _token=$(tr -d '[:space:]' < "$_selected")
-        if [[ -n "$_token" ]]; then
-            export CLAUDE_CODE_OAUTH_TOKEN="$_token"
-            _acct=$(basename "$_selected" .token)
-            echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
+        _pin_file="$_tokens_dir/.pinned"
+
+        if [[ -f "$_pin_file" ]]; then
+            # Pinned mode: use the specified account
+            _pinned_acct=$(tr -d '[:space:]' < "$_pin_file")
+            _selected="$_tokens_dir/${_pinned_acct}.token"
+            if [[ -f "$_selected" ]]; then
+                _token=$(tr -d '[:space:]' < "$_selected")
+                if [[ -n "$_token" ]]; then
+                    export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+                    echo "[wrapper] Using PINNED account: $_pinned_acct" >&2
+                fi
+            else
+                echo "[wrapper] WARNING: pinned account '$_pinned_acct' not found, falling back to random" >&2
+                _idx=$(( RANDOM % _count ))
+                _selected="${_token_files[$_idx]}"
+                _token=$(tr -d '[:space:]' < "$_selected")
+                if [[ -n "$_token" ]]; then
+                    export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+                    _acct=$(basename "$_selected" .token)
+                    echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
+                fi
+            fi
+        else
+            # Default: multi-account load balancing via random selection
+            _idx=$(( RANDOM % _count ))
+            _selected="${_token_files[$_idx]}"
+            _token=$(tr -d '[:space:]' < "$_selected")
+            if [[ -n "$_token" ]]; then
+                export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+                _acct=$(basename "$_selected" .token)
+                echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
+            fi
         fi
     else
         # Fallback: single token from .env
@@ -330,6 +355,15 @@ rotate_to_working_token() {
     local _tokens_dir="$_repo_root/.loom/tokens"
 
     if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null; then
+        return 1
+    fi
+
+    # If pinned, don't rotate — stay on the pinned account
+    local _pin_file="$_tokens_dir/.pinned"
+    if [[ -f "$_pin_file" ]]; then
+        local _pinned_acct
+        _pinned_acct=$(tr -d '[:space:]' < "$_pin_file")
+        log_warn "Account pinned to $_pinned_acct — not rotating (will backoff instead)"
         return 1
     fi
 
