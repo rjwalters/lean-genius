@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Nešetřil, Rödl",
     "sourceUrl": "https://erdosproblems.com/846",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos846Problem.lean",
     "tags": [
       "erdos",
@@ -17,14 +17,14 @@
       "pigeonhole-principle",
       "density-to-structure"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 846,
     "erdosUrl": "https://erdosproblems.com/846",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 199,
-    "assumptions": "No axioms. 1 sorry(s) remain in the formalization.",
+    "assumptions": "1 axiom: ErdosProblem846 (the main open conjecture of Erdős–Nešetřil–Rödl). All other results fully proved including the converse direction (weaklyNonTrilinear_implies_eps) and pigeonhole-based argument.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
