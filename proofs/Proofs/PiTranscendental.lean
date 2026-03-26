@@ -216,11 +216,16 @@ axiom pi_sq_transcendental_axiom : Transcendental ℤ (Real.pi ^ 2)
 theorem pi_sq_transcendental : Transcendental ℤ (Real.pi ^ 2) :=
   pi_sq_transcendental_axiom
 
-/-- **Axiom: π + 1 is transcendental**
-
-    If π + 1 were algebraic, say p(π + 1) = 0, then π satisfies q(X) = p(X + 1),
-    making π algebraic. This contradicts π being transcendental. -/
-axiom pi_plus_one_transcendental_axiom : Transcendental ℤ (Real.pi + 1)
+/-- **π + 1 is transcendental**: if π + 1 were algebraic over ℤ, then
+    π = (π + 1) − 1 would be algebraic (algebraic elements over ℚ are closed
+    under subtraction of rationals). This contradicts π being transcendental. -/
+theorem pi_plus_one_transcendental_axiom : Transcendental ℤ (Real.pi + 1) := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.pi + 1) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_algebraMap (1 : ℚ)
+  have hpi : IsAlgebraic ℚ Real.pi := by
+    have := hq.sub h1; rwa [add_sub_cancel_right] at this
+  exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
 
 /-- π + 1 is transcendental -/
 theorem pi_plus_one_transcendental : Transcendental ℤ (Real.pi + 1) :=
