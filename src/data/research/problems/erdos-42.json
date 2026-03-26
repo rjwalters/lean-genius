@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY: Assessed 5 axioms. sidon_size_bound is provable (standard counting). sedov_M2/M3 are published results. ErdosProblem42/constructive are open.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "sidon_size_bound is provable: for Sidon A⊆[1,N], the map (a,b)↦(a:ℤ)-(b:ℤ) is injective on off-diagonal A×A pairs (by Sidon + Finset.pair analysis), image ⊆ [-N+1,N-1]\\{0}, giving |A|(|A|-1) ≤ 2(N-1)",
+      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove sidon_size_bound via Finset difference injection: need Finset.card_le_card_of_injOn on (A×A).filter(a≠b) → Finset.Icc (1-N:ℤ) (N-1) \\ {0}",
+      "Consider proving sedov_M2 computationally for small N via native_decide"
+    ],
     "markdown": "# Erdős #42 - Knowledge Base\n\n## Problem Statement\n\nLet $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #41\n- Problem #43\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -68,7 +74,7 @@
       "filename": "Erdos420Problem.lean",
       "lineCount": 311,
       "theoremCount": 5,
-      "axiomCount": 13,
+      "axiomCount": 5,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
