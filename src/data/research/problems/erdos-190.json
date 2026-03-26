@@ -16,25 +16,29 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:01:50.836Z",
+    "phase": "ACT",
+    "since": "2026-03-26T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "10 axioms (down from 11). Proved H_minimal. Found H_pos false at k=0.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+    "nextAction": "Prove H_spec (needs monotonicity argument), fix H_pos condition"
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved H_minimal from Nat.find_min (11→10 axioms). Found H_pos incorrect: false for k=0 since H(0)=0.",
+    "builtItems": [
+      "H_minimal: proved directly from Nat.find_min + push_neg"
+    ],
+    "insights": [
+      "H_pos is FALSE for k=0: H(0)=0 because empty AP (Fin 0) trivially satisfies hasCanonicalAP",
+      "H_spec is provable via restriction: χ → χ∘Fin.castLE transfers canonical AP from Fin(H k) to Fin N",
+      "H_minimal is a direct consequence of Nat.find minimality"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #190 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $H(k)$ be the smallest $N$ such that in any finite colouring of $\\{1,\\ldots,N\\}$ (into any number of colours) there is always either a monochromatic $k$-term arithmetic progression or a rainbow arithmetic progression (i.e. all elements are different colours). Estimate $H(k)$. Is it true that\\[H(k)^{1/k}/k \\to \\infty\\]as $k\\to\\infty$?\n\n\n\nThis type of problem belongs to 'canonical' Ramsey theory. The existence of $H(k)$ follows from Szemer\\'{e}di's theorem, and it is easy to show that $H(k)^{1/k}\\to\\infty$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #189\n- Problem #191\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Prove H_spec via Fin.castLE restriction argument (needs image/injection lemmas)",
+      "Fix H_pos: add k ≥ 1 hypothesis",
+      "Prove H_le_W: show van der Waerden property implies canonical property"
+    ]
   },
   "tags": [
     "erdos"
@@ -50,7 +54,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.836Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-03-27T00:10:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
