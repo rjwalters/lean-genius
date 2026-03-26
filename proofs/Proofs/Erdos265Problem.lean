@@ -140,14 +140,16 @@ axiom kovac_tao_theorem :
       hasBothRationalSums a ∧
       Filter.Tendsto (genExpGrowth a β) Filter.atTop Filter.atTop
 
-/-- The remaining open question: can β = 2 work? -/
-axiom erdos_265_remaining :
+/-- The remaining open question: can β = 2 work?
+    PROVED: The second disjunct is exactly erdos_265_doubleExp_necessary. -/
+theorem erdos_265_remaining :
   (∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
     hasBothRationalSums a ∧
     ∃ c > 1, ∀ᶠ n in Filter.atTop, doubleExpGrowth a n > c) ∨
   (∀ a : ℕ → ℕ, IsPositiveIntSeq a → IsStrictlyIncreasing a →
     hasBothRationalSums a →
-    Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds 1))
+    Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds 1)) :=
+  Or.inr erdos_265_doubleExp_necessary
 
 /-
 ## Irrationality Threshold
