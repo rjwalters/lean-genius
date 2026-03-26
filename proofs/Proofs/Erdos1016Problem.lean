@@ -86,9 +86,20 @@ theorem hamiltonian_edge_count :
 
 /-- Bondy's theorem: any graph with ≥ n²/4 edges is pancyclic or bipartite.
     For n ≥ 7, n²/4 ≫ n + log₂ n, so the quadratic threshold is far from tight.
-    (The bound fails for n < 7 due to integer division.) -/
-axiom bondy_quadratic_threshold :
-  ∀ n : ℕ, n ≥ 7 → n * n / 4 ≥ n + Nat.log 2 n
+    Proof: small cases by computation, large cases by n²/4 ≥ 2n ≥ n + log₂ n. -/
+theorem bondy_quadratic_threshold :
+    ∀ n : ℕ, n ≥ 7 → n * n / 4 ≥ n + Nat.log 2 n := by
+  intro n hn
+  rcases le_or_lt n 15 with h15 | h16
+  · -- n ∈ {7,...,15}: compute directly
+    interval_cases n <;> native_decide
+  · -- n ≥ 16: n²/4 ≥ 2n and log₂ n ≤ n
+    have h16 : 16 ≤ n := by omega
+    have hq : 2 * n ≤ n * n / 4 := by
+      have : 4 * (2 * n) ≤ n * n := by nlinarith
+      omega
+    have hl : Nat.log 2 n ≤ n := le_of_lt (Nat.log_lt (by omega) (by omega))
+    omega
 
 /-- Monotonicity: adding edges preserves pancyclicity.
     (Trivially true since IsPancyclic does not depend on edgeCount.) -/
