@@ -174,10 +174,19 @@ theorem squarefull_case : HasDensityZero (SumsOfPowerful 2 2) :=
 axiom heath_brown_theorem :
     ∀ᶠ n in atTop, n ∈ SumsOfPowerful 2 3
 
-/-- Reformulation: The complement of SumsOfPowerful 2 3 is finite. -/
+/-- Reformulation: The complement of SumsOfPowerful 2 3 is finite.
+    Follows from Heath-Brown: eventually all n are in the set, so the
+    complement is bounded, hence finite. -/
 theorem heath_brown_complement_finite :
     (SumsOfPowerful 2 3)ᶜ.Finite := by
-  sorry
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp heath_brown_theorem
+  apply (Set.finite_Iio N).subset
+  intro n hn
+  simp only [Set.mem_compl_iff] at hn
+  simp only [Set.mem_Iio]
+  by_contra h_ge
+  push_neg at h_ge
+  exact hn (hN n h_ge)
 
 /- ## Part VII: The Cubefull Case and Three Cubes -/
 
