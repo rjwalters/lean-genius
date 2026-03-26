@@ -130,41 +130,87 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "foundational",
-      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots, which is why the Galois group acts by permutations on roots — the key structural fact underlying Abel-Ruffini"
+      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots, which is why the Galois group acts by permutations on roots -- the key structural fact underlying Abel-Ruffini"
     },
     {
       "targetId": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "The FTA guarantees that polynomials factor completely over C, providing the roots that Vieta's formulas relate to coefficients"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The quadratic formula, a special case of Vieta's formulas for degree 2, connects to quadratic residues and reciprocity"
+      "relationship": "prerequisite",
+      "description": "The FTA guarantees that every polynomial of degree n over C has exactly n roots (with multiplicity), making the splitting hypothesis in Vieta's general formula automatic"
     },
     {
       "targetId": "solution-of-cubic",
       "relationship": "related",
-      "description": "Cardano's cubic formula uses Vieta's formulas in reverse: the substitution $x = t - b/(3a)$ eliminates the $x^2$ term using $r_1 + r_2 + r_3 = -b/a$ (Vieta for degree 3)"
+      "description": "Cardano's cubic formula uses Vieta's sum-of-roots relation to eliminate the x^2 term via the Tschirnhaus substitution x = t - e_1/3"
     },
     {
       "targetId": "general-quartic",
       "relationship": "related",
-      "description": "Ferrari's quartic resolution uses Vieta's formulas for the resolvent cubic — relating quartic root sums/products to the coefficients of an auxiliary degree-3 polynomial"
+      "description": "Ferrari's quartic solution uses a resolvent cubic whose coefficients are Vieta-related to the original quartic's roots"
     },
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "Vieta's formulas show that polynomial coefficients are symmetric functions of roots, so the Galois group permutes roots while preserving the symmetric functions — the foundation for Galois theory and the Inverse Galois Problem"
+      "description": "The Inverse Galois Problem asks which groups arise as Galois groups over Q; Vieta's formulas constrain the coefficients of any polynomial realizing a given group"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Cayley-Hamilton states a matrix satisfies its characteristic polynomial; Vieta's formulas applied to the characteristic polynomial relate trace and determinant to eigenvalues"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "related",
+      "description": "Roots of unity provide the simplest Vieta example: the n-th cyclotomic polynomial has e_1 = e_2 = ... = e_{n-2} = 0 and e_{n-1} = 1"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "extends",
+      "description": "Newton's identities (extending Vieta's) express power sums of roots in terms of elementary symmetric polynomials, linking directly to sum-of-k-th-powers formulas"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic residues connect to the discriminant of quadratic polynomials, which is determined by the Vieta relations e_1^2 - 4e_2"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Both Cramer's rule and Vieta's formulas connect to determinants: the resultant of two polynomials is a determinant that vanishes iff they share a root"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The factorization of x^2 + y^2 over the Gaussian integers and resulting norm identities are instances of Vieta-type relations for quadratic norms"
     }
   ],
   "references": [
     {
-      "authors": "Viète, François",
+      "authors": "Viete, Francois",
       "title": "De Aequationum Recognitione et Emendatione Tractatus Duo",
       "year": "1615",
-      "venue": "Paris (published posthumously)",
-      "note": "Introduced the symmetric function relations between roots and coefficients of a polynomial — Vieta's formulas"
+      "venue": "Paris (published posthumously, edited by Alexander Anderson)",
+      "note": "Introduced the symmetric function relations between roots and coefficients of a polynomial"
+    },
+    {
+      "authors": "Viete, Francois",
+      "title": "In artem analyticem isagoge",
+      "year": "1591",
+      "venue": "Tours",
+      "note": "Founded symbolic algebra by systematically using letters for unknowns and parameters"
+    },
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "venue": "Cambridge (lectures from 1673-1683)",
+      "note": "Extended Vieta's formulas to Newton's identities relating power sums to elementary symmetric polynomials"
+    },
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib.RingTheory.Polynomial.Vieta",
+      "year": "2024",
+      "venue": "Lean 4 Mathlib",
+      "note": "Provides vieta_formula_quadratic and coeff_eq_esymm_roots_of_card used in this formalization"
     }
   ],
   "mainTheorems": [
