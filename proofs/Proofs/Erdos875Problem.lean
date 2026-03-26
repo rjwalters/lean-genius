@@ -120,7 +120,7 @@ theorem admissible_growth_lower (a : ℕ → ℕ) (ha : IsAdmissible a)
     S₁ = {1, 2, 4}, S₂ = {3, 5, 6}, S₃ = {7}, all disjoint. -/
 theorem pow2_small_example :
     Disjoint (rFoldSumset {1, 2, 4} 1) (rFoldSumset {1, 2, 4} 2) := by
-  sorry
+  native_decide
 
 -- ## Connection to Problem #874
 
