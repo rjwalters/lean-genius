@@ -1,6 +1,7 @@
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Maps
+import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Sym.Sym2
@@ -22,7 +23,7 @@ Can f(n,k) < floor(n^2/4) when k > n^2/4 and the graph contains K_4 or larger cl
 The K_4-free case is resolved by Gyori-Keszegh (2017): if G is K_4-free with
 floor(n^2/4) + m edges, it contains m edge-disjoint triangles, giving f = floor(n^2/4) - m.
 
-## What This File Proves (9 axioms -> 6 axioms)
+## What This File Proves (9 axioms -> 3 axioms)
 - completeBipartite_cliqueFree: K_{a,b} is triangle-free (PROVED)
 - completeBipartite_edgeCount: K_{a,b} has a*b edges (PROVED via edge bijection)
 - turanBound quadratic identity: n^2/4 = n/2 * (n - n/2) (PROVED)
@@ -32,14 +33,14 @@ floor(n^2/4) + m edges, it contains m edge-disjoint triangles, giving f = floor(
 - egp_tight_example: cp(K_{k,k}) = k^2 (PROVED from axioms)
 - lovasz_covering: Trivial existence bound (PROVED)
 - supersaturation_triangles: Trivial existence bound (PROVED)
+- dense_contains_triangle: Turan's theorem via Mathlib (PROVED)
+- cliquePartition_le_vertices: trivial bound via edge partition (PROVED)
+- triangleFree_cliquePartition_eq_edges: cp(G) = |E| for triangle-free G (PROVED)
 
-## Remaining Axioms (6)
+## Remaining Axioms (3)
 - egp_theorem: EGP bound (deep combinatorial theorem)
-- triangleFree_cliquePartition_eq_edges: cp(G) = |E| for triangle-free G
-- dense_contains_triangle: Turan's theorem consequence
 - gyori_keszegh_triangles: K_4-free edge-disjoint triangle packing
 - k4free_partition_number: K_4-free partition formula
-- cliquePartition_le_vertices: trivial bound
 
 ## Proof Techniques
 - Greedy triangle extraction + Turan bound on remainder
@@ -292,13 +293,152 @@ theorem completeBipartite_edgeCount (a b : ℕ) :
   rw [h_eq, Finset.card_image_of_injective _ h_inj]
   simp [Fintype.card_prod]
 
+/-- In a triangle-free graph, every clique has at most 2 vertices. -/
+private theorem cliqueFree3_clique_card_le_two (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hG : G.CliqueFree 3) (S : Finset V) (hS : G.IsClique (↑S : Set V)) :
+    S.card ≤ 2 := by
+  by_contra h
+  push_neg at h
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 h
+  exact hG T ⟨hS.mono (Finset.coe_subset.mpr hTS), hTcard⟩
+
+/-- In a triangle-free graph, two edges covered by the same clique must be equal.
+    Key insight: clique has ≤ 2 vertices, so contains at most one edge. -/
+private theorem edges_in_same_clique_eq (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hG : G.CliqueFree 3) (S : Finset V) (hS : G.IsClique (↑S : Set V))
+    (e₁ e₂ : Sym2 V) (he₁ : e₁ ∈ G.edgeSet) (he₂ : e₂ ∈ G.edgeSet)
+    (h1 : ∀ v, v ∈ e₁ → v ∈ S) (h2 : ∀ v, v ∈ e₂ → v ∈ S) :
+    e₁ = e₂ := by
+  have hScard := cliqueFree3_clique_card_le_two G hG S hS
+  revert h1 he₁
+  refine Sym2.ind (fun a b h1 he₁ => ?_) e₁
+  revert h2 he₂
+  refine Sym2.ind (fun c d h2 he₂ => ?_) e₂
+  rw [SimpleGraph.mem_edgeSet] at he₁ he₂
+  have hab : a ≠ b := G.ne_of_adj he₁
+  have hcd : c ≠ d := G.ne_of_adj he₂
+  have ha : a ∈ S := h1 a (Sym2.mem_iff.mpr (Or.inl rfl))
+  have hb : b ∈ S := h1 b (Sym2.mem_iff.mpr (Or.inr rfl))
+  have hc : c ∈ S := h2 c (Sym2.mem_iff.mpr (Or.inl rfl))
+  have hd : d ∈ S := h2 d (Sym2.mem_iff.mpr (Or.inr rfl))
+  -- S ⊇ {a,b} has ≥ 2 elements, but ≤ 2 (triangle-free), so S = {a,b}
+  have hSge : ({a, b} : Finset V).card ≤ S.card :=
+    Finset.card_le_card (Finset.insert_subset_iff.mpr ⟨ha, Finset.singleton_subset_iff.mpr hb⟩)
+  have hSeq : {a, b} = S := Finset.eq_of_subset_of_card_le
+    (Finset.insert_subset_iff.mpr ⟨ha, Finset.singleton_subset_iff.mpr hb⟩)
+    (by simp [hab] at hSge ⊢; omega)
+  rw [← hSeq] at hc hd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hc hd
+  rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
+  · exact absurd rfl hcd
+  · rfl
+  · exact Sym2.eq_swap
+  · exact absurd rfl hcd
+
+/-- Map each Sym2 element to the finset of its vertices. -/
+private noncomputable def edgeToFinset' (e : Sym2 V) : Finset V :=
+  Finset.univ.filter (· ∈ e)
+
+/-- edgeToFinset' is injective: distinct Sym2 elements have distinct vertex sets. -/
+private theorem edgeToFinset'_injective :
+    Function.Injective (edgeToFinset' (V := V)) := by
+  intro e₁ e₂ h
+  have hmem : ∀ a : V, a ∈ e₁ ↔ a ∈ e₂ := fun a => by
+    simp only [edgeToFinset', Finset.mem_filter, Finset.mem_univ, true_and] at h
+    constructor
+    · intro ha; exact (Finset.filter_congr_decidable (· ∈ e₁) (· ∈ e₂)
+        |>.mp h ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ a, ha⟩).2
+    · intro ha; exact (Finset.filter_congr_decidable (· ∈ e₂) (· ∈ e₁)
+        |>.mp h.symm ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ a, ha⟩).2
+  exact Sym2.ext_iff.mpr hmem
+
+/-- Construct an edge-by-edge partition: each edge is its own 2-element clique. -/
+private noncomputable def edgeByEdgePartition (G : SimpleGraph V)
+    [DecidableRel G.Adj] : EdgeCliquePartition G where
+  cliques := G.edgeFinset.image (edgeToFinset' (V := V))
+  isClique := by
+    intro S hS
+    simp only [Finset.mem_image] at hS
+    obtain ⟨e, he, rfl⟩ := hS
+    rw [SimpleGraph.mem_edgeFinset] at he
+    intro a ha b hb hab
+    simp only [edgeToFinset', Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+    revert ha hb he
+    exact Sym2.ind (fun v w he ha hb => by
+      rw [SimpleGraph.mem_edgeSet] at he
+      rw [Sym2.mem_iff] at ha hb
+      rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+      · exact absurd rfl hab
+      · exact he
+      · exact he.symm
+      · exact absurd rfl hab
+    ) e
+  covers := by
+    intro v w hvw
+    refine ⟨edgeToFinset' (⟦(v, w)⟧ : Sym2 V), ?_, ?_, ?_⟩
+    · exact Finset.mem_image.mpr ⟨⟦(v, w)⟧,
+        SimpleGraph.mem_edgeFinset.mpr (SimpleGraph.mem_edgeSet.mpr hvw), rfl⟩
+    · simp [edgeToFinset', Sym2.mem_iff]
+    · simp [edgeToFinset', Sym2.mem_iff]
+
+/-- The edge-by-edge partition has exactly |E| cliques. -/
+private theorem edgeByEdgePartition_card (G : SimpleGraph V) [DecidableRel G.Adj] :
+    (edgeByEdgePartition G).cliques.card = G.edgeFinset.card :=
+  Finset.card_image_of_injective _ edgeToFinset'_injective
+
+/-- cp(G) ≤ |E| for any graph (partition into individual edges). -/
+private theorem cliquePartitionNum_le_edgeFinset_card (G : SimpleGraph V)
+    [DecidableRel G.Adj] : cliquePartitionNum G ≤ G.edgeFinset.card := by
+  unfold cliquePartitionNum
+  exact le_trans (Nat.sInf_le ⟨edgeByEdgePartition G, edgeByEdgePartition_card G⟩) le_rfl
+
+/-- In a triangle-free graph, |E| ≤ cp(G): each clique covers at most one edge,
+    so the partition needs at least |E| cliques. -/
+private theorem edgeFinset_card_le_cliquePartitionNum (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hG : G.CliqueFree 3) :
+    G.edgeFinset.card ≤ cliquePartitionNum G := by
+  unfold cliquePartitionNum
+  apply Nat.le_sInf
+  intro m ⟨P, hPcard⟩
+  rw [← hPcard]
+  -- For each edge, P.covers provides a covering clique
+  have hex : ∀ e ∈ G.edgeFinset, ∃ S ∈ P.cliques, ∀ v, v ∈ e → v ∈ S := by
+    intro e he
+    rw [SimpleGraph.mem_edgeFinset] at he
+    revert he
+    refine Sym2.ind (fun v w he => ?_) e
+    rw [SimpleGraph.mem_edgeSet] at he
+    obtain ⟨S, hS, hv, hw⟩ := P.covers he
+    exact ⟨S, hS, fun a ha => by
+      rw [Sym2.mem_iff] at ha
+      rcases ha with rfl | rfl <;> assumption⟩
+  -- Build injection from edges to cliques
+  classical
+  let f : Sym2 V → Finset V := fun e =>
+    if h : e ∈ G.edgeFinset then (hex e h).choose else ∅
+  have hf_mem : ∀ e ∈ G.edgeFinset, f e ∈ P.cliques := by
+    intro e he; simp only [f, he, dif_pos]; exact (hex e he).choose_spec.1
+  have hf_cov : ∀ e ∈ G.edgeFinset, ∀ v, v ∈ e → v ∈ f e := by
+    intro e he; simp only [f, he, dif_pos]; exact (hex e he).choose_spec.2
+  -- f is injective on G.edgeFinset (distinct edges need distinct cliques)
+  exact Finset.card_le_card_of_injOn f hf_mem (fun e₁ he₁ e₂ he₂ hfeq => by
+    rw [Finset.mem_coe] at he₁ he₂
+    exact edges_in_same_clique_eq G hG (f e₁)
+      (P.isClique _ (hf_mem e₁ he₁))
+      e₁ e₂
+      (SimpleGraph.mem_edgeFinset.mp he₁)
+      (SimpleGraph.mem_edgeFinset.mp he₂)
+      (hf_cov e₁ he₁)
+      (fun v hv => hfeq ▸ hf_cov e₂ he₂ v hv))
+
 /-- Triangle-free graphs require one clique per edge in any partition:
     cp(G) = |E(G)| when G has no triangles.
-    Since each clique can only be a single edge (no larger cliques exist),
-    the minimum partition size is exactly the number of edges. -/
-axiom triangleFree_cliquePartition_eq_edges (G : SimpleGraph V) [DecidableRel G.Adj]
+    PROVED: ≤ by edge partition, ≥ by injection argument. -/
+theorem triangleFree_cliquePartition_eq_edges (G : SimpleGraph V) [DecidableRel G.Adj]
     (hG : G.CliqueFree 3) :
-    cliquePartitionNum G = G.edgeFinset.card
+    cliquePartitionNum G = G.edgeFinset.card :=
+  le_antisymm (cliquePartitionNum_le_edgeFinset_card G)
+    (edgeFinset_card_le_cliquePartitionNum G hG)
 
 /-- **Tightness of EGP**: K_{k,k} on 2k vertices has k^2 edges, is
     triangle-free, so needs k^2 = floor((2k)^2/4) cliques. This shows
@@ -325,9 +465,20 @@ PART V: THE OPEN QUESTION -- DENSE GRAPHS WITH LARGE CLIQUES
 def isDense (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   turanBound (Fintype.card V) < G.edgeFinset.card
 
-/-- **Turan's Theorem** (consequence): Dense graphs must contain a triangle. -/
-axiom dense_contains_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hG : isDense G) : ¬ G.CliqueFree 3
+/-- **Turan's Theorem** (consequence): Dense graphs must contain a triangle.
+    PROVED via Mathlib's `CliqueFree.card_edgeFinset_le` (Turán bound). -/
+theorem dense_contains_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hG : isDense G) : ¬ G.CliqueFree 3 := by
+  intro hcf
+  unfold isDense turanBound at hG
+  -- CliqueFree 3 = CliqueFree (2+1), so Turán with r=2
+  have hbound := hcf.card_edgeFinset_le
+  -- hbound: G.edgeFinset.card ≤ (n²-(n%2)²)*(2-1)/(2*2) + (n%2).choose 2
+  set n := Fintype.card V with hn
+  -- Simplify: (n%2).choose 2 = 0 for n%2 ∈ {0,1}
+  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+  -- Both cases: RHS ≤ n²/4 = turanBound, contradicting hG
+  rcases hmod with h | h <;> simp only [h] at hbound <;> omega
 
 /-- **Open Question (Erdos 1017)**: Can the EGP bound floor(n^2/4) be improved
     for dense graphs? That is, can triangles and larger cliques be exploited
@@ -431,10 +582,18 @@ PART VIII: CONNECTIONS AND CONSEQUENCES
 ==================================================================== -/
 
 /-- **Clique partition <= edge count**: The clique partition
-    number of G is at most the number of edges (use each edge as
-    its own clique). -/
-axiom cliquePartition_le_vertices (G : SimpleGraph V) [DecidableRel G.Adj] :
-    cliquePartitionNum G ≤ Fintype.card V * (Fintype.card V - 1) / 2
+    number of G is at most n*(n-1)/2 (use each edge as its own clique).
+    PROVED: cp(G) ≤ |E| ≤ n*(n-1)/2. -/
+theorem cliquePartition_le_vertices (G : SimpleGraph V) [DecidableRel G.Adj] :
+    cliquePartitionNum G ≤ Fintype.card V * (Fintype.card V - 1) / 2 := by
+  calc cliquePartitionNum G
+      ≤ G.edgeFinset.card := cliquePartitionNum_le_edgeFinset_card G
+    _ ≤ Fintype.card V * (Fintype.card V - 1) / 2 := by
+        -- |E(G)| ≤ n*(n-1)/2 (max edges in a simple graph)
+        -- edgeFinset ⊆ {all non-diagonal Sym2 elements}
+        have h := G.card_edgeFinset_le_card_choose_two
+        simp [Nat.choose_two_right] at h
+        exact h
 
 /-- **Supersaturation**: When k > floor(n^2/4) + m, the graph contains
     at least c*m^2 triangles (Razborov 2010, flag algebras).
