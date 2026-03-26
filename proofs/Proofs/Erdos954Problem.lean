@@ -163,13 +163,56 @@ def IsB2Sequence (a : ℕ → ℕ) (k : ℕ) : Prop :=
 axiom rosen_not_b2 (a : ℕ → ℕ) (h : IsRosenSequence a) :
     ∃ k, ¬IsB2Sequence a k
 
-/-- Erdős–Turán conjecture (Problem #28): every B₂ sequence has
-    unbounded representation function. Rosen's construction is
-    related but distinct — it controls the cumulative count rather
-    than individual representations. -/
-axiom erdos_turan_context :
+/-- The cumulative representation count fullRepCount is unbounded
+    for any infinite sequence. This is trivially true: for any B,
+    take x large enough that at least B+1 values j ∈ {1,...,B+1}
+    satisfy a(0)+a(j) ≤ x; each such j contributes ≥ 1 to the count.
+    (The B₂ hypothesis is not needed for this particular statement.) -/
+theorem erdos_turan_context :
     ∀ a : ℕ → ℕ, (∀ k, IsB2Sequence a k) →
-    ∀ B, ∃ n, fullRepCount a n > B
+    ∀ B, ∃ n, fullRepCount a n > B := by
+  intro a _ B
+  -- Choose x = max(B+1, max_{j=1..B+1} (a 0 + a j))
+  -- Each j ∈ {1,...,B+1} then contributes ≥ 1 via pair (0,j)
+  let M := (Finset.Icc 1 (B + 1)).sup (fun j => a 0 + a j)
+  let x := max M (B + 1)
+  use x
+  unfold fullRepCount
+  -- Step 1: Σ over Icc 1 (B+1) of f(j) ≤ Σ over range(x+1) of g(j)
+  -- where f(j) = filter.card and g(j) = if j=0 then 0 else filter.card
+  -- Step 2: |Icc 1 (B+1)| ≤ Σ over Icc 1 (B+1) of f(j), since each f(j) ≥ 1
+  -- Step 3: |Icc 1 (B+1)| = B+1
+  suffices h : B + 1 ≤
+      (Finset.range (x + 1)).sum (fun j =>
+        if j = 0 then 0 else
+        ((Finset.Icc 0 j).filter fun i => a i + a j ≤ x).card) by omega
+  -- Each j ∈ {1,...,B+1} contributes ≥ 1 via i=0
+  have h_each : ∀ j ∈ Finset.Icc 1 (B + 1),
+      1 ≤ ((Finset.Icc 0 j).filter fun i => a i + a j ≤ x).card := by
+    intro j hj
+    rw [Finset.mem_Icc] at hj
+    apply Finset.card_pos.mpr
+    exact ⟨0, Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨le_rfl, Nat.zero_le _⟩,
+      le_trans (Finset.le_sup (f := fun j => a 0 + a j)
+        (Finset.mem_Icc.mpr ⟨hj.1, hj.2⟩)) (le_max_left _ _)⟩⟩
+  -- card(Icc 1 (B+1)) = B+1 ≤ sum over Icc of f ≤ sum over range of g
+  calc B + 1
+      = (Finset.Icc 1 (B + 1)).card := by rw [Nat.card_Icc]; omega
+    _ = (Finset.Icc 1 (B + 1)).sum (fun _ => 1) := by simp
+    _ ≤ (Finset.Icc 1 (B + 1)).sum (fun j =>
+          ((Finset.Icc 0 j).filter fun i => a i + a j ≤ x).card) :=
+        Finset.sum_le_sum (fun j hj => h_each j hj)
+    _ ≤ (Finset.Icc 1 (B + 1)).sum (fun j =>
+          if j = 0 then 0 else
+          ((Finset.Icc 0 j).filter fun i => a i + a j ≤ x).card) := by
+        apply Finset.sum_le_sum; intro j hj
+        rw [Finset.mem_Icc] at hj; simp [show j ≠ 0 by omega]
+    _ ≤ (Finset.range (x + 1)).sum (fun j =>
+          if j = 0 then 0 else
+          ((Finset.Icc 0 j).filter fun i => a i + a j ≤ x).card) :=
+        Finset.sum_le_sum_of_subset_of_nonneg
+          (fun j hj => Finset.mem_range.mpr (by rw [Finset.mem_Icc] at hj; omega))
+          (fun _ _ _ => Nat.zero_le _)
 
 /- ## Representation Count Monotonicity -/
 
