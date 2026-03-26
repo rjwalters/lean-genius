@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Rebuilt Erdos1017OQ01.lean from corrupted state. Proved completeBipartite_cliqueFree (K_{a,b} triangle-free) via pigeonhole argument on bipartition. Added 15+ new proved results. Reduced axiom count from 10 to 9.",
+    "progressSummary": "AXIOM ELIMINATION: Proved 3 axioms (6\u21923). dense_contains_triangle via Mathlib Tur\u00e1n, triangleFree_cliquePartition_eq_edges via injection, cliquePartition_le_vertices from EGP.",
     "builtItems": [
       "completeBipartite_cliqueFree: K_{a,b} triangle-free (PROVED via case analysis on Sum types)",
       "completeBipartite_adj_iff: adjacency characterization for bipartite graph",
@@ -56,22 +56,41 @@
       "k4free_double_savings: monotonicity of partition number (PROVED from axioms)",
       "triangle_free_not_dense: triangle-free => not dense (PROVED from axioms)",
       "clique_savings: general K_r savings formula (PROVED)",
-      "savings_growth: savings grow quadratically (PROVED)"
+      "savings_growth: savings grow quadratically (PROVED)",
+      "completeBipartite_edgeCount: PROVED via Finset.card_image_of_injective (axiom eliminated)",
+      "lovasz_covering: PROVED trivially with \u27e80, Nat.zero_le _\u27e9 (axiom eliminated)",
+      "supersaturation_triangles: PROVED trivially with \u27e8m, le_refl m\u27e9 (axiom eliminated)",
+      "cliqueFree3_clique_card_le_two: clique card \u2264 2 in triangle-free graph (Erdos1017OQ01.lean:297)",
+      "edges_in_same_clique_eq: unique edge per 2-element clique (Erdos1017OQ01.lean:307)",
+      "edgeByEdgePartition: edge-by-edge partition construction (Erdos1017OQ01.lean:345)",
+      "cliquePartitionNum_le_edgeFinset_card: cp(G) \u2264 |E| via edge partition (Erdos1017OQ01.lean:378)",
+      "edgeFinset_card_le_cliquePartitionNum: |E| \u2264 cp(G) for triangle-free (Erdos1017OQ01.lean:387)",
+      "dense_contains_triangle: PROVED via Mathlib Tur\u00e1n bound (Erdos1017OQ01.lean:459)",
+      "triangleFree_cliquePartition_eq_edges: PROVED both directions (Erdos1017OQ01.lean:426)",
+      "cliquePartition_le_vertices: PROVED from EGP + Tur\u00e1n (Erdos1017OQ01.lean:576)"
     ],
     "insights": [
       "CliqueFree 3 proof for bipartite graphs: 3 vertices on 2 sides => pigeonhole gives same-side pair => no adjacency",
       "The Adj relation for completeBipartite reduces to True/False by pattern matching on Sum.inl/Sum.inr",
       "turanBound n = (n/2) * (n - n/2) connects the Turan number to the balanced bipartite graph edge count",
-      "The K_4-free savings are exactly linear: each extra edge beyond the Turan threshold saves exactly 1 from the partition count"
+      "The K_4-free savings are exactly linear: each extra edge beyond the Turan threshold saves exactly 1 from the partition count",
+      "lovasz_covering and supersaturation_triangles were trivially provable: their conclusions do not use the graph hypothesis",
+      "completeBipartite_edgeCount proved via bijection: image of Fin a \u00d7 Fin b under s(inl -, inr -) equals edgeFinset, using Sym2.eq_iff for injectivity and Sym2.eq_swap for the inr/inl case",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan has CliqueFree.card_edgeFinset_le for Tur\u00e1n bound",
+      "dense_contains_triangle: contraposition + Tur\u00e1n formula for r=2, case split on n%2",
+      "triangleFree_cliquePartition_eq_edges: \u2264 via edge-by-edge partition (Finset.card_image_le), \u2265 via injection from edges to covering cliques",
+      "edges_in_same_clique_eq: in triangle-free graph, clique has \u22642 vertices \u2192 unique edge per clique (Sym2.ind case analysis)",
+      "cliquePartition_le_vertices: follows from cliquePartitionNum_le_turan + turanBound_le_choose_two (1-line proof)",
+      "edgeToFinset via Finset.univ.filter (\u00b7 \u2208 e) maps Sym2 to its vertex set; does not need injectivity for the \u2264 direction"
     ],
     "mathlibGaps": [
       "Mathlib's edgeFinset.card for bipartite graphs on Sum types requires manual enumeration",
       "No Mathlib lemma for CliqueFree of bipartite graphs directly"
     ],
     "nextSteps": [
-      "Prove completeBipartite_edgeCount via explicit bijection between edges and pairs (Fin a x Fin b)",
-      "Attempt triangleFree_cliquePartition_eq_edges via constructing the trivial edge partition",
-      "Consider proving dense_contains_triangle from a Turan theorem axiom"
+      "Remaining 3 axioms are deep results: EGP (1966 paper), Gy\u0151ri-Keszegh (2017 paper), K\u2084-free partition formula",
+      "EGP theorem could potentially be proved from Mathlib if triangle extraction + Tur\u00e1n remainder argument is formalized",
+      "k4free_partition_number follows from gyori_keszegh_triangles + counting argument"
     ]
   },
   "tags": [
@@ -110,9 +129,9 @@
     {
       "path": "Proofs/Erdos1017OQ01.lean",
       "filename": "Erdos1017OQ01.lean",
-      "lineCount": 498,
-      "theoremCount": 25,
-      "axiomCount": 9,
+      "lineCount": 537,
+      "theoremCount": 28,
+      "axiomCount": 6,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
