@@ -7,8 +7,8 @@ For c > 0, if x is sufficiently large, does there exist n ≤ x such that
 
 **Status**: OPEN (partial results from EPS 1987)
 **File**: `proofs/Proofs/Erdos1004Problem.lean`
-**Sorries**: 2 remaining (was 3, then 5 originally)
-**Axioms**: 3 (EPS87 bound)
+**Sorries**: 0 remaining
+**Axioms**: 3 (1 EPS87 existential + longer_runs_need_larger_n + distinct_totients_asymptotic)
 
 ## Session 2026-03-25 (Session 2) - Prove run_length_sublinear
 
@@ -39,3 +39,37 @@ For c > 0, if x is sufficiently large, does there exist n ≤ x such that
 - `longer_runs_need_larger_n`: try CRT-based constructive existence or density argument
 - `distinct_totients_asymptotic`: deep analytic result (Ford 1998), likely needs Aristotle or axiomatization
 - Consider submitting both as HARD to Aristotle
+
+## Session 2026-03-26 (Session 3) - Axiom Consolidation
+
+**Mode**: REVISIT (axiom elimination focus)
+**Outcome**: progress (3 axioms eliminated via consolidation)
+
+### What I Did
+- Consolidated 4 separate EPS87 axioms into 1 existential axiom `eps87_theorem`
+  - `axiom eps87_constant : ℝ` → `noncomputable def eps87_constant := eps87_theorem.choose`
+  - `axiom eps87_constant_pos` → `theorem` derived from `.choose_spec.choose_spec.1`
+  - `axiom eps87_threshold : ℕ` → `noncomputable def` derived from `.choose_spec.choose`
+  - `axiom eps87_upper_bound` → `theorem` derived from `.choose_spec.choose_spec.2`
+- Axiom count reduced from 6 → 3 (mathematically accurate: 3 independent assumptions)
+- All downstream proofs (`run_length_sublinear`, etc.) unchanged — same API, different backing
+
+### Key Findings
+- The 4 EPS87 axioms were really 1 mathematical result split across 4 declarations
+- `Classical.choose` + `choose_spec` cleanly derives old names from existential axiom
+- `longer_runs_need_larger_n` and `distinct_totients_asymptotic` are unused in proofs (context-only)
+- Proving `longer_runs_need_larger_n` for all K requires deep number theory (CRT approach insufficient)
+
+### Axiom Classification (Final)
+- `eps87_theorem`: Deep (EPS 1987 paper, smooth number estimates) — KEEP
+- `longer_runs_need_larger_n`: Deep (requires showing K-length runs exist for all K ≥ 2) — KEEP
+- `distinct_totients_asymptotic`: Deep (Ford 1998, totient value counting) — KEEP
+
+### Files Modified
+- `proofs/Proofs/Erdos1004Problem.lean` (598 → 609 lines, 6 → 3 axioms)
+- `src/data/proofs/erdos-1004/meta.json` (updated axiomCount, assumptions, line counts)
+- `src/data/research/problems/erdos-1004-wip-01.json` (updated knowledge)
+
+### Next Steps
+- All 3 remaining axioms represent deep published results; further elimination unlikely without major Lean infrastructure
+- Problem is effectively complete as an axiomatized formalization

@@ -20,9 +20,9 @@
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 598,
-    "assumptions": "Six axioms: EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_threshold, eps87_upper_bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998).",
+    "axiomCount": 3,
+    "lineCount": 609,
+    "assumptions": "Three axioms: EPS87 upper bound (eps87_theorem: consolidated existential for constant, threshold, and bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998). eps87_constant, eps87_threshold derived as noncomputable defs; eps87_constant_pos, eps87_upper_bound derived as theorems.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -80,7 +80,7 @@
       "title": "Part IV: EPS87 Upper Bound",
       "startLine": 106,
       "endLine": 178,
-      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy (1987) theorem: `eps87_upper_bound` gives $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs. Proves `run_length_sublinear` ($f(n)/n \\to 0$) as a 50-line corollary using the squeeze lemma and the fact that $\\exp(c(\\log n)^{1/3}) \\to \\infty$.",
+      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy (1987) theorem via a single existential axiom `eps87_theorem` (∃ c, N₀ with c > 0 and the bound), deriving `eps87_constant`, `eps87_threshold` as noncomputable defs and `eps87_constant_pos`, `eps87_upper_bound` as theorems. Proves `run_length_sublinear` ($f(n)/n \\to 0$) as a 50-line corollary using the squeeze lemma.",
       "mathContext": "If $\\text{IsDistinctTotientRun}(n, K)$ and $n \\geq N_0$, then $K \\leq n / \\exp(c(\\log n)^{1/3})$ for an absolute constant $c > 0$. Corollary: $f(n) = o(n)$."
     },
     {
@@ -257,9 +257,9 @@
       "Topology"
     ],
     "namespace": "Erdos1004",
-    "lineCount": 598,
-    "axiomCount": 6,
-    "theoremCount": 22,
-    "definitionCount": 13
+    "lineCount": 609,
+    "axiomCount": 3,
+    "theoremCount": 24,
+    "definitionCount": 15
   }
 }
