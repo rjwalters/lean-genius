@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-25T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "Proved integration formula ∫T_j²=1-1/(4j²-1), change of variables x=cosθ, and trace formula combining step. Sorry localized to chebyshev_sq_expansion (DCT identity).",
+    "iteration": 4,
+    "focus": "Fixed integral_sin_mul and integral_cos_mul_sin via FTC (Real.hasDerivAt_cos + chain rule). Reduced API-breakage sorries from 4 to 2.",
     "blockers": [],
-    "nextAction": "Prove chebyshev_sq_expansion: DCT expansion ∑l_k(x)²=(1/n)(1+2∑cos²(j·arccos x)). Needs discrete cosine orthogonality + basis completeness (~200 lines).",
+    "nextAction": "Fix integral_cos_substitution (change of variables via integral_comp_mul_deriv), then integral_chebyshev_sq follows from cos² identity + substitution + integral_cos_mul_sin.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added DCT orthogonality infrastructure (frequency Abel sum, even/odd frequency sums, diagonal/offdiag conditions). chebyshev_sq_expansion proof strategy fully documented. Pre-existing Mathlib API breakage in integral lemmas needs Mechanic fix. File: ~700 lines, 1 sorry (expansion) + 1 axiom (conjecture) + 4 temp sorrys (API breakage).",
+    "progressSummary": "PROGRESS: Fixed 2 of 4 API-breakage sorries (integral_sin_mul, integral_cos_mul_sin). Used FTC via Real.hasDerivAt_cos + chain rule + integral_eq_sub_of_hasDerivAt pattern. File: ~700 lines, 5 sorries (3 API-breakage + 1 expansion + 1 trace) + 1 axiom (conjecture).",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -83,11 +83,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix Mathlib API breakage in integral_sin_mul, integral_cos_mul_sin, integral_cos_substitution (hasDerivAt_cos→Real.hasDerivAt_cos, etc.)",
-      "Fix frequency_cosine_sum_even/odd div_lt_iff usage for Lean 4.26 compatibility",
-      "Complete dct_offdiag proof (product-to-sum + parity argument)",
-      "Prove Lagrange interpolation identity: cos(j arccos x) = ∑cos(jθ_k)l_k(x) via Chebyshev polynomials",
-      "Prove chebyshev_sq_expansion: combine Lagrange interp + DCT Parseval"
+      "Fix integral_cos_substitution: use integral_comp_mul_deriv with cos/(-sin) + orientation flip via integral_symm",
+      "Fix integral_chebyshev_sq: cos²=(1+cos(2jα))/2 + integral_cos_substitution + integral_cos_mul_sin",
+      "Complete dct_offdiag proof (product-to-sum + parity argument on k-m vs k+m+1)",
+      "Prove chebyshev_sq_expansion: combine Lagrange interp + DCT Parseval",
+      "Fix chebyshev_integral_trace: needs chebyshev_sq_expansion + integral_chebyshev_sq"
     ]
   },
   "tags": [
@@ -117,11 +117,11 @@
     {
       "path": "Proofs/Erdos1131Problem.lean",
       "filename": "Erdos1131Problem.lean",
-      "lineCount": 467,
+      "lineCount": 700,
       "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 6,
-      "sorryCount": 1,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1131Problem.lean"
     }
