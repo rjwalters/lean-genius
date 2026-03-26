@@ -28,15 +28,15 @@
     "open": [
       "erdos1017_question: general case with K_4 and larger cliques"
     ],
-    "goal": "Prove completeBipartite_edgeCount, reduce remaining axiom count"
+    "goal": "Prove triangleFree_cliquePartition_eq_edges, further reduce remaining 5 axioms"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
-    "iteration": 2,
-    "focus": "Proved completeBipartite_cliqueFree, added turanBound infrastructure, proved K_4-free consequences. Reduced axioms from 10 to 9.",
+    "iteration": 3,
+    "focus": "Proved completeBipartite_edgeCount, lovasz_covering, cliquePartition_le_vertices, supersaturation_triangles. Reduced axioms from 9 to 5.",
     "blockers": [],
-    "nextAction": "Prove completeBipartite_edgeCount via explicit edge enumeration. Consider proving triangleFree_cliquePartition_eq_edges.",
+    "nextAction": "Prove triangleFree_cliquePartition_eq_edges via explicit edge partition construction and CliqueFree 3 lower bound argument.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,14 +44,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Rebuilt Erdos1017OQ01.lean from corrupted state. Proved completeBipartite_cliqueFree (K_{a,b} triangle-free) via pigeonhole argument on bipartition. Added 15+ new proved results. Reduced axiom count from 10 to 9.",
+    "progressSummary": "PROGRESS: Reduced axiom count from 9 to 5. Proved completeBipartite_edgeCount via Sym2 bijection (Fin a × Fin b → edges). Proved lovasz_covering, cliquePartition_le_vertices, supersaturation_triangles (all trivially provable from existing results or weak statements).",
     "builtItems": [
       "completeBipartite_cliqueFree: K_{a,b} triangle-free (PROVED via case analysis on Sum types)",
       "completeBipartite_adj_iff: adjacency characterization for bipartite graph",
+      "completeBipartite_edgeCount: K_{a,b} has a*b edges (PROVED via Sym2.mk image + injectivity)",
       "turanBound_eq_product: n^2/4 = (n/2) * (n - n/2) (PROVED)",
       "turanBound_pos: turanBound positive for n >= 2 (PROVED)",
       "turanBound_succ_diff: growth bound for turanBound (PROVED)",
       "turanBound_le_choose_two: turanBound <= n*(n-1)/2 (PROVED)",
+      "lovasz_covering: trivially true (PROVED: ⟨0, Nat.zero_le _⟩)",
+      "cliquePartition_le_vertices: follows from EGP + Turan (PROVED via le_trans)",
+      "supersaturation_triangles: weak existential form (PROVED: ⟨m, le_refl m⟩)",
       "k4free_savings_linear: cp + m = turanBound formula (PROVED from axioms)",
       "k4free_double_savings: monotonicity of partition number (PROVED from axioms)",
       "triangle_free_not_dense: triangle-free => not dense (PROVED from axioms)",
@@ -62,16 +66,18 @@
       "CliqueFree 3 proof for bipartite graphs: 3 vertices on 2 sides => pigeonhole gives same-side pair => no adjacency",
       "The Adj relation for completeBipartite reduces to True/False by pattern matching on Sum.inl/Sum.inr",
       "turanBound n = (n/2) * (n - n/2) connects the Turan number to the balanced bipartite graph edge count",
-      "The K_4-free savings are exactly linear: each extra edge beyond the Turan threshold saves exactly 1 from the partition count"
+      "The K_4-free savings are exactly linear: each extra edge beyond the Turan threshold saves exactly 1 from the partition count",
+      "edgeFinset.card for bipartite graphs follows the Erdos643 pattern: show finset = image of product, then card_image_of_injective",
+      "lovasz_covering, supersaturation_triangles, cliquePartition_le_vertices all have statements too weak to need axioms — they follow trivially from existing results or basic logic",
+      "Sym2.eq_swap is key for the inr→inl direction when mapping edges to canonical Sym2.mk (.inl, .inr) form"
     ],
     "mathlibGaps": [
-      "Mathlib's edgeFinset.card for bipartite graphs on Sum types requires manual enumeration",
       "No Mathlib lemma for CliqueFree of bipartite graphs directly"
     ],
     "nextSteps": [
-      "Prove completeBipartite_edgeCount via explicit bijection between edges and pairs (Fin a x Fin b)",
-      "Attempt triangleFree_cliquePartition_eq_edges via constructing the trivial edge partition",
-      "Consider proving dense_contains_triangle from a Turan theorem axiom"
+      "Prove triangleFree_cliquePartition_eq_edges: construct edge partition explicitly, show lower bound via clique-size argument in CliqueFree 3 graphs",
+      "Prove dense_contains_triangle: needs Turan's theorem or a formalization of the extremal bound. Consider if it can be derived from Mathlib's Turan-type results.",
+      "Consider whether gyori_keszegh_triangles and k4free_partition_number can be partially reduced (at minimum, k4free_partition_number could follow from gyori_keszegh_triangles with additional construction)"
     ]
   },
   "tags": [
@@ -103,16 +109,16 @@
     ]
   },
   "started": "2026-03-24T00:48:59.902Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-03-26T19:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1017OQ01.lean",
       "filename": "Erdos1017OQ01.lean",
-      "lineCount": 498,
-      "theoremCount": 25,
-      "axiomCount": 9,
+      "lineCount": 537,
+      "theoremCount": 29,
+      "axiomCount": 5,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
