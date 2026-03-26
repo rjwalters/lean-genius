@@ -54,10 +54,13 @@
       "Concrete examples: g(2)=6, g(3)=12, g(5)=30, g(6)=72, g(7)=56",
       "sigma_mul_coprime theorem: σ multiplicativity via ArithmeticFunction bridge",
       "f_eq_f theorem: Set.ncard = Finset.card characterization",
-      "mem_A327153_iff theorem: OEIS A327153 membership for n > 0"
+      "mem_A327153_iff theorem: OEIS A327153 membership for n > 0",
+      "f_le_n theorem: trivial upper bound f(n) ≤ n for n > 0",
+      "g_pos theorem: g(k) > 0 for k > 0",
+      "g_gt_k theorem: g(k) > k for k ≥ 2 (σ(k) ≥ k+1)"
     ],
     "axiomCount": 2,
-    "lineCount": 304,
+    "lineCount": 353,
     "assumptions": "2 axiom(s) (open conjectures). All supporting lemmas fully proved."
   },
   "overview": {
@@ -120,27 +123,35 @@
       "mathContext": "$f(1) = 1$ (only $k=1$ gives $g(1) = 1\\cdot 1 = 1$). $f(0) = 1$ (only $k=0$ gives $g(0) = 0$). Most values of $n$ have $f(n) = 0$ (not in the range of $g$)."
     },
     {
+      "id": "trivial-upper-bound",
+      "title": "Trivial Upper Bound",
+      "summary": "f_le_n, g_pos, g_gt_k theorems",
+      "startLine": 211,
+      "endLine": 257,
+      "mathContext": "**Trivial upper bound:** $f(n) \\leq n$ for $n > 0$, since solutions $k$ lie in $[1,n]$. Also $g(k) > 0$ for $k > 0$, and $g(k) > k$ for $k \\geq 2$ (because $\\sigma(k) \\geq k+1$ when both $1$ and $k$ divide $k$). The open conjectures ask for dramatically better bounds than $f(n) \\leq n$."
+    },
+    {
       "id": "conjectures",
       "title": "Upper Bound Conjectures (Open)",
       "summary": "Weak and strong conjecture axioms",
-      "startLine": 148,
-      "endLine": 173,
+      "startLine": 259,
+      "endLine": 283,
       "mathContext": "Weak: $f(n) \\leq n^{o(1/\\log\\log n)}$, meaning for any $\\varepsilon > 0$, eventually $f(n) \\leq n^{\\varepsilon/\\log\\log n}$. Strong: $f(n) \\leq (\\log n)^C$ for some absolute constant $C$. Both remain OPEN."
     },
     {
       "id": "oeis",
       "title": "OEIS Connection",
       "summary": "A327153 definition and membership",
-      "startLine": 174,
-      "endLine": 202,
+      "startLine": 285,
+      "endLine": 313,
       "mathContext": "OEIS A327153: the set $\\{n : f(n) > 0\\} = \\{g(k) : k \\geq 1\\} = \\{1, 6, 12, 30, 56, 72, \\ldots\\}$. This is the range of $g(k) = k\\sigma(k)$."
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete verified examples using native_decide",
-      "startLine": 203,
-      "endLine": 241,
+      "startLine": 315,
+      "endLine": 353,
       "mathContext": "Verified: $g(2) = 6$, $g(3) = 12$, $g(5) = 30$, $g(6) = 72$, $g(7) = 56$. For primes $p$: $g(p) = p(p+1)$, giving infinitely many values in the range."
     }
   ],
@@ -191,9 +202,9 @@
       "Finset"
     ],
     "namespace": "Erdos1060",
-    "lineCount": 304,
+    "lineCount": 353,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 5
   }
 }
