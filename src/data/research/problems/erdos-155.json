@@ -18,25 +18,35 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
-    "iteration": 1,
+    "iteration": 3,
     "focus": "9 axioms (down from 11). Proved maxSidon_monotone and maxSidon_step.",
     "blockers": [],
     "nextAction": "Convert maxSidonSize to def, prove more axioms"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved maxSidon_monotone and maxSidon_step (11→9 axioms). Both derived from maxSidon_achievable+maxSidon_optimal.",
+    "progressSummary": "PROGRESS: Converted maxSidonSize from axiom to def, proved achievable/optimal/monotone/step (11→6 axioms). Remaining 6: erdos_turan_upper, sidon_lower_asymptotic, erdos_155_conjecture, erdos_155_strong, increase_points_sparse, small_values.",
     "builtItems": [
       "maxSidon_monotone: any Sidon subset of {1,...,N} is valid for {1,...,N+1}",
-      "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1"
+      "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1",
+      "noncomputable def maxSidonSize using Finset.sup over sidonSets (replaces axiom)",
+      "theorem maxSidon_achievable (replaces axiom)",
+      "theorem maxSidon_optimal (replaces axiom)",
+      "theorem maxSidon_monotone (replaces axiom)",
+      "theorem maxSidon_step (replaces axiom)"
     ],
     "insights": [
       "maxSidon_monotone trivially follows from containment: {1,...,N}⊆{1,...,N+1}",
-      "maxSidon_step uses Finset.erase and Nat.lt_of_le_of_ne for the N+1 exclusion"
+      "maxSidon_step uses Finset.erase and Nat.lt_of_le_of_ne for the N+1 exclusion",
+      "maxSidonSize converted from axiom to noncomputable def using Finset.sup over sidonSets (powerset filter)",
+      "maxSidon_achievable proved via Finset.exists_max_image + le_antisymm with Finset.le_sup/Finset.sup_le",
+      "maxSidon_optimal proved via Finset.le_sup on the sidonSets membership",
+      "maxSidon_monotone proved: Sidon set of {1..N} ⊆ sidonSets (N+1) via Icc monotonicity",
+      "maxSidon_step proved: S.erase (N+1) gives valid N-set, card diff at most 1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Convert maxSidonSize from axiom to noncomputable def using Finset.sup",
-      "Prove small_values for F(1)=1 from the definition"
+      "Prove small_values for F(1)=1 by computation or decide on small Finsets",
+      "The 5 deep axioms (asymptotic bounds, conjecture, consequences) require substantial number theory"
     ]
   },
   "tags": [

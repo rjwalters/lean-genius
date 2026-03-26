@@ -23,10 +23,7 @@ increase by at most 1 over intervals of length proportional to √N.
 Reference: https://erdosproblems.com/155
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -37,50 +34,80 @@ def IsSidonSet (S : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ S → b ∈ S → c ∈ S → d ∈ S →
     a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
 
-/-- F(N): the size of the largest Sidon subset of {1, ..., N}. -/
-axiom maxSidonSize (N : ℕ) : ℕ
+/-- The set of Sidon subsets of {1,...,N}. -/
+private noncomputable def sidonSets (N : ℕ) : Finset (Finset ℕ) :=
+  (Finset.Icc 1 N).powerset.filter (fun S => IsSidonSet S)
+
+private theorem empty_mem_sidonSets (N : ℕ) : ∅ ∈ sidonSets N := by
+  simp only [sidonSets, Finset.mem_filter, Finset.mem_powerset, Finset.empty_subset,
+             true_and, IsSidonSet]
+  intro a _ _ _ ha; exact absurd ha (Finset.not_mem_empty a)
+
+private theorem sidonSets_nonempty (N : ℕ) : (sidonSets N).Nonempty :=
+  ⟨∅, empty_mem_sidonSets N⟩
+
+/-- F(N): the size of the largest Sidon subset of {1, ..., N}.
+    Defined as the supremum of cardinalities over all Sidon subsets of {1,...,N}. -/
+noncomputable def maxSidonSize (N : ℕ) : ℕ :=
+  (sidonSets N).sup Finset.card
 
 /-- F(N) is achieved: there exists a Sidon subset of {1,...,N} of size F(N). -/
-axiom maxSidon_achievable (N : ℕ) :
-    ∃ S : Finset ℕ, IsSidonSet S ∧ (∀ x ∈ S, 1 ≤ x ∧ x ≤ N) ∧ S.card = maxSidonSize N
+theorem maxSidon_achievable (N : ℕ) :
+    ∃ S : Finset ℕ, IsSidonSet S ∧ (∀ x ∈ S, 1 ≤ x ∧ x ≤ N) ∧ S.card = maxSidonSize N := by
+  obtain ⟨S, hS, hmax⟩ := Finset.exists_max_image _ Finset.card (sidonSets_nonempty N)
+  have hmem := Finset.mem_filter.mp hS
+  have hpow := Finset.mem_powerset.mp hmem.1
+  refine ⟨S, hmem.2, fun x hx => Finset.mem_Icc.mp (hpow hx), ?_⟩
+  exact le_antisymm (Finset.le_sup hS) (Finset.sup_le fun T hT => hmax T hT)
 
 /-- F(N) is optimal: no Sidon subset of {1,...,N} is larger. -/
-axiom maxSidon_optimal (N : ℕ) (S : Finset ℕ)
+theorem maxSidon_optimal (N : ℕ) (S : Finset ℕ)
     (hsidon : IsSidonSet S) (hrange : ∀ x ∈ S, 1 ≤ x ∧ x ≤ N) :
-    S.card ≤ maxSidonSize N
+    S.card ≤ maxSidonSize N := by
+  have hS : S ∈ sidonSets N :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (fun x hx => Finset.mem_Icc.mpr (hrange x hx)),
+                           hsidon⟩
+  exact Finset.le_sup hS
 
 /- ## Monotonicity -/
 
 /-- F is monotone nondecreasing: F(N) ≤ F(N+1).
-    Proof: any Sidon subset of {1,...,N} is also a Sidon subset of {1,...,N+1}. -/
+    Any Sidon subset of {1,...,N} is also a Sidon subset of {1,...,N+1}. -/
 theorem maxSidon_monotone (N : ℕ) : maxSidonSize N ≤ maxSidonSize (N + 1) := by
-  obtain ⟨S, hsidon, hrange, hcard⟩ := maxSidon_achievable N
-  calc maxSidonSize N = S.card := hcard.symm
-    _ ≤ maxSidonSize (N + 1) :=
-        maxSidon_optimal (N + 1) S hsidon (fun x hx => ⟨(hrange x hx).1, by omega⟩)
+  apply Finset.sup_le
+  intro S hS
+  have hmem := Finset.mem_filter.mp hS
+  have hpow := Finset.mem_powerset.mp hmem.1
+  have hS' : S ∈ sidonSets (N + 1) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (fun x hx => by
+      have := Finset.mem_Icc.mp (hpow hx); exact Finset.mem_Icc.mpr ⟨this.1, by omega⟩), hmem.2⟩
+  exact Finset.le_sup hS'
 
 /-- F increases by at most 1 in each step: F(N+1) ≤ F(N) + 1.
-    Proof: removing N+1 from an optimal (N+1)-set gives a valid N-set. -/
+    Removing N+1 from any Sidon subset of {1,...,N+1} gives a Sidon subset of {1,...,N}. -/
 theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 := by
-  obtain ⟨S, hsidon, hrange, hcard⟩ := maxSidon_achievable (N + 1)
-  -- S' = S without the element N+1
-  set S' := S.erase (N + 1) with hS'_def
-  -- S' is Sidon (subset of Sidon set)
-  have hS'_sidon : IsSidonSet S' := by
-    intro a b c d ha hb hc hd hab hcd heq
-    exact hsidon a b c d (Finset.erase_subset _ _ ha) (Finset.erase_subset _ _ hb)
-      (Finset.erase_subset _ _ hc) (Finset.erase_subset _ _ hd) hab hcd heq
-  -- S' ⊆ {1,...,N}
-  have hS'_range : ∀ x ∈ S', 1 ≤ x ∧ x ≤ N := fun x hx =>
-    ⟨(hrange x (Finset.erase_subset _ _ hx)).1,
-     Nat.lt_of_le_of_ne (hrange x (Finset.erase_subset _ _ hx)).2 (Finset.ne_of_mem_erase hx) |>.le⟩
-  -- |S'| ≤ F(N), and |S| ≤ |S'| + 1
-  have h1 := maxSidon_optimal N S' hS'_sidon hS'_range
-  have h2 : S.card ≤ S'.card + 1 := by
-    by_cases h : N + 1 ∈ S
-    · simp [hS'_def, Finset.card_erase_of_mem h]; omega
-    · simp [hS'_def, Finset.erase_eq_of_not_mem h]
-  linarith
+  apply Finset.sup_le
+  intro S hS
+  have hmem := Finset.mem_filter.mp hS
+  have hpow := Finset.mem_powerset.mp hmem.1
+  -- S.erase (N+1) is Sidon and in {1,...,N}
+  have hS'_sidon : IsSidonSet (S.erase (N + 1)) := by
+    intro a b c d ha hb hc hd
+    exact hmem.2 a b c d (Finset.mem_of_mem_erase ha) (Finset.mem_of_mem_erase hb)
+      (Finset.mem_of_mem_erase hc) (Finset.mem_of_mem_erase hd)
+  have hS'_range : S.erase (N + 1) ∈ sidonSets N :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (fun x hx => by
+      have hxS := Finset.mem_of_mem_erase hx
+      have hxne := Finset.ne_of_mem_erase hx
+      have := Finset.mem_Icc.mp (hpow hxS)
+      exact Finset.mem_Icc.mpr ⟨this.1, by omega⟩), hS'_sidon⟩
+  -- S.card ≤ (S.erase (N+1)).card + 1 ≤ F(N) + 1
+  have h1 : (S.erase (N + 1)).card ≤ maxSidonSize N := Finset.le_sup hS'_range
+  have h2 : S.card ≤ (S.erase (N + 1)).card + 1 := by
+    by_cases hmem : N + 1 ∈ S
+    · rw [Finset.card_erase_of_mem hmem]; omega
+    · rw [Finset.erase_eq_of_not_mem hmem]; omega
+  omega
 
 /- ## Asymptotic Bounds -/
 
