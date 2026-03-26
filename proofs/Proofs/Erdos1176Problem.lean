@@ -179,10 +179,12 @@ theorem strong_implies_domination {C : Type*} (G : SimpleGraph V)
     (hne : G.edgeSet.Nonempty) :
     HasDominationProperty G ec := by
   intro f hf
-  -- G has an edge, so it has a vertex
+  -- G has an edge, so it has a vertex. Pick any vertex u.
   obtain ⟨e, he⟩ := hne
-  obtain ⟨v, hv⟩ := Sym2.exists_mk_eq.mp ⟨e, rfl⟩
-  sorry
+  -- Extract a vertex from the edge via Quotient.out
+  let u := (Quotient.out e).1
+  -- The color class f(u) is nonempty (witnessed by u itself)
+  exact ⟨f u, hstrong f hf (f u) ⟨u, rfl⟩⟩
 
 /-
 # Part 8: Connection to Partition Calculus
