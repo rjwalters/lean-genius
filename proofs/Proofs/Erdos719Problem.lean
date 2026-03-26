@@ -146,14 +146,13 @@ theorem empty_case (n r : ℕ) (hr : r ≥ 2) :
     }
   · simp
 
-/-- Any valid decomposition has at most as many pieces as edges,
-    since each piece covers at least one distinct edge by edge-disjointness. -/
-theorem decomp_pieces_le_edges {V : Type*} [DecidableEq V] [Fintype V]
-    (r : ℕ) (H : RUniformHypergraph V r)
-    (pieces : Finset (Finset (Finset V)))
-    (hdecomp : IsValidDecomp r H pieces) :
-    pieces.card ≤ H.edges.card := by
-  sorry
+/-- NOTE: A previous version claimed pieces.card ≤ H.edges.card for any
+    valid decomposition. This is FALSE: the IsValidDecomp structure allows
+    "phantom" pieces (valid single-edge or clique pieces whose edges are not
+    in H). Counterexample: H with 1 edge e₁, pieces = {{e₁}, {e₂}} where
+    e₂ ∉ H.edges. Both valid, disjoint, covers satisfied, but pieces.card = 2
+    > 1 = H.edges.card. The correct statement would need an additional
+    hypothesis: ∀ p ∈ pieces, ∀ e ∈ p, e ∈ H.edges. -/
 
 /-- The trivial decomposition: every r-edge becomes its own piece (K_r^r).
     This always works but uses one piece per edge. -/
