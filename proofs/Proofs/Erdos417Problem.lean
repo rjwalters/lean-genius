@@ -73,10 +73,19 @@ noncomputable def V (x : ℕ) : ℕ :=
 
 /- ## Part II: Basic Properties -/
 
-/-- V'(x) ≤ V(x) trivially. -/
+/-- V'(x) ≤ V(x): every distinct totient from inputs ≤ x is a totient value ≤ x.
+
+    Proof: If n = φ(m) for some m ≤ x, then n ≤ m ≤ x (by totient_le) and
+    n is a totient value (witnessed by m). -/
 theorem V'_le_V (x : ℕ) : V' x ≤ V x := by
-  -- Every distinct totient from inputs ≤ x is a totient value ≤ x
-  sorry
+  unfold V' V
+  apply Finset.card_le_card
+  intro n hn
+  rw [Finset.mem_image] at hn
+  obtain ⟨m, hm, rfl⟩ := hn
+  rw [Finset.mem_filter]
+  exact ⟨Finset.mem_range.mpr (lt_of_le_of_lt (totient_le m) (Finset.mem_range.mp hm)),
+    m, rfl⟩
 
 /-- 1 is always a totient value (φ(1) = 1, φ(2) = 1). -/
 theorem one_is_totient_value : IsTotientValue 1 := by
@@ -90,11 +99,26 @@ theorem two_is_totient_value : IsTotientValue 2 := by
   · omega
   · native_decide
 
-/-- Odd numbers > 1 are not totient values. -/
+/-- Odd numbers > 1 are not totient values.
+
+    Proof: For m > 2, φ(m) is even (Nat.totient_even). For m ∈ {1,2},
+    φ(m) = 1. So no odd n > 1 is a totient value. -/
 theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
     ¬IsTotientValue n := by
-  -- φ(m) is even for m > 2, and φ(1) = φ(2) = 1
-  sorry
+  intro ⟨m, hm_pos, hm_eq⟩
+  by_cases hm2 : m ≤ 2
+  · -- m ∈ {1, 2}: φ(m) = 1 but n > 1
+    have : m = 1 ∨ m = 2 := by omega
+    rcases this with rfl | rfl
+    · rw [totient_one] at hm_eq; omega
+    · rw [totient_prime prime_two] at hm_eq; omega
+  · -- m > 2: φ(m) is even, contradicts odd n
+    push_neg at hm2
+    have heven := totient_even hm2
+    rw [← hm_eq] at heven
+    obtain ⟨k₁, hk₁⟩ := heven
+    obtain ⟨k₂, hk₂⟩ := hodd
+    omega
 
 /- ## Part III: The Main Questions -/
 
