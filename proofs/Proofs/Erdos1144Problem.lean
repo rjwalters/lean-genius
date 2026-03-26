@@ -129,22 +129,12 @@ axiom atherfold_upper_bound :
 theorem partialSum_zero (f : ℕ → ℤ) : partialSum f 0 = 0 := by
   simp [partialSum]
 
-/-- Atherfold's bound implies that the partial sums grow at most as
-√N · (log N)^{1+ε}, which gives an asymptotic bound strictly below
-N^{1/2+δ} for any δ > 0.
-
-**Note**: This statement is FALSE as stated for all Rademacher multiplicative functions.
-Aristotle found a counterexample: the constant function f ≡ 1 is Rademacher multiplicative
-(with f(p) = 1 for all primes p), and its partial sum is N-1 (linear growth),
-which grows faster than N^(3/4) for large N. The actual Atherfold result is
-probabilistic (holds almost surely), not deterministic (for all f). -/
-theorem atherfold_implies_subpolynomial :
-    ∀ δ : ℝ, 0 < δ →
-      ∃ C : ℝ, 0 < C ∧
-        ∀ f : ℕ → ℤ, IsRademacherMultiplicative f →
-          ∀ᶠ (N : ℕ) in atTop,
-            |(partialSum f N : ℝ)| ≤ C * (N : ℝ) ^ (1/2 + δ) := by
-  sorry
+/-- NOTE: A previous version stated that Atherfold's bound gives subpolynomial
+    growth for ALL Rademacher multiplicative functions. This is FALSE:
+    the constant function f ≡ 1 is Rademacher multiplicative (f(p) = 1 for
+    all primes), and its partial sum is N−1 (linear growth), exceeding
+    N^{3/4} for large N. The actual Atherfold result is probabilistic
+    (holds almost surely for random sign choices), not deterministic. -/
 
 /-- The trivial upper bound: |∑_{m ≤ N} f(m)| ≤ N for any
 function with |f(m)| ≤ 1. -/

@@ -238,13 +238,45 @@ theorem oddCycle_chromatic_at_least_3 {G : SimpleGraph V}
     intro i
     exact hc ⟨σ i, hσ_mem i⟩
       ⟨σ ⟨(i.val + 1) % S.card, _⟩, hσ_mem _⟩ (hσ_adj i)
-  -- With 2 colors, each step alternates. After an odd number of steps
-  -- we return to start with opposite color = contradiction.
-  -- Use: the XOR (parity) of colors around the cycle
-  -- b(0) ≠ b(1) ≠ b(2) ≠ ... ≠ b(n-1) ≠ b(0)
-  -- With 2 colors this means b(i) = b(0) iff i is even
-  -- But b(n-1) ≠ b(0) requires n-1 odd, i.e. n even — contradiction with n odd.
-  sorry
+  -- With 2 colors, adjacent ≠ means the value flips at each step.
+  -- After S.card steps around the odd cycle, parity contradicts.
+  -- Key: for Fin 2, a ≠ b means b.val = 1 - a.val
+  have hflip : ∀ i : Fin S.card,
+      (b ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by omega)⟩).val = 1 - (b i).val := by
+    intro i
+    have hneq : (b i).val ≠ (b ⟨(i.val + 1) % S.card, _⟩).val :=
+      fun h => hdiff i (Fin.ext h)
+    omega
+  -- By induction: b(i).val = (b(0).val + i) % 2 for i < S.card
+  have hparity : ∀ i : ℕ, (hi : i < S.card) →
+      (b ⟨i, hi⟩).val = ((b ⟨0, by omega⟩).val + i) % 2 := by
+    intro i hi
+    induction i with
+    | zero => simp
+    | succ n ih =>
+      have hn : n < S.card := by omega
+      have hmod : (n + 1) % S.card = n + 1 := Nat.mod_eq_of_lt hi
+      have hf := hflip ⟨n, hn⟩
+      -- hf : b(⟨(n+1) % S.card, _⟩).val = 1 - b(⟨n, hn⟩).val
+      -- Since (n+1) % S.card = n+1, rewrite
+      have : (b ⟨(n + 1) % S.card, Nat.mod_lt _ (by omega)⟩).val =
+             (b ⟨n + 1, hi⟩).val := by congr 1; exact Fin.ext (by omega)
+      rw [this] at hf
+      rw [hf, ih hn]
+      omega
+  -- Apply at S.card - 1 and use cycle closure to get contradiction
+  have hlast := hparity (S.card - 1) (by omega)
+  -- Cycle closure: b(S.card - 1) ≠ b(0)
+  have hclose := hdiff ⟨S.card - 1, by omega⟩
+  -- (S.card - 1 + 1) % S.card = 0
+  have hmod0 : (S.card - 1 + 1) % S.card = 0 := by omega
+  have hval_neq : (b ⟨S.card - 1, by omega⟩).val ≠ (b ⟨0, by omega⟩).val := by
+    intro heq; apply hclose; exact Fin.ext heq
+  -- From hlast: b(S.card-1).val = (b(0).val + S.card - 1) % 2
+  -- From hval_neq: b(S.card-1).val ≠ b(0).val
+  -- Since b(0).val < 2: these two facts force S.card to be even
+  -- But hodd says S.card is odd: contradiction
+  omega
 
 /- ## Part XII: Structural Summary -/
 

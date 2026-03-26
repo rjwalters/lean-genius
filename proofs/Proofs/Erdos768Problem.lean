@@ -77,13 +77,41 @@ theorem prime_power_not_in_setA (p : ℕ) (k : ℕ) (hp : p.Prime) (hk : k ≥ 1
   rw [Nat.dvd_iff_mod_eq_zero] at hp_dvd_d
   omega
 
-/-- Products of distinct primes p where (p-1) | n can be in A -/
-theorem product_special_primes_in_setA (ps : List ℕ) 
+/-- If p is prime and p divides a product of primes, then p is in the list. -/
+private lemma prime_mem_of_dvd_list_prod {p : ℕ} (hp : p.Prime) {l : List ℕ}
+    (hl : ∀ q ∈ l, q.Prime) (hdvd : p ∣ l.prod) : p ∈ l := by
+  induction l with
+  | nil => simp at hdvd; exact absurd hdvd hp.ne_one
+  | cons a t ih =>
+    simp only [List.prod_cons] at hdvd
+    rcases hp.prime.dvd_or_dvd hdvd with ha | ht
+    · -- p | a and both prime, so p = a
+      have heq : p = a := by
+        rcases (hl a (List.mem_cons_self a t)).eq_one_or_self_of_dvd p ha with h | h
+        · exact absurd h hp.ne_one
+        · exact h
+      exact List.mem_cons.mpr (Or.inl heq)
+    · exact List.mem_cons.mpr (Or.inr
+        (ih (fun q hq => hl q (List.mem_cons_of_mem a hq)) ht))
+
+/-- Products of distinct primes p where each has a witness q ≡ 1 (mod p) in the list
+    are in A. The witness q divides the product since it's a list member. -/
+theorem product_special_primes_in_setA (ps : List ℕ)
     (hprimes : ∀ p ∈ ps, Nat.Prime p)
     (hdistinct : ps.Nodup)
     (hwitness : ∀ p ∈ ps, ∃ q ∈ ps, q > 1 ∧ q % p = 1) :
     ps.prod ∈ setA := by
-  sorry
+  constructor
+  · -- Product of primes is positive
+    exact List.prod_pos (fun p hp => (hprimes p hp).pos)
+  · -- For each prime divisor of the product, find a witness
+    intro p hp hdiv _ _
+    -- p is prime and p | ps.prod, so p ∈ ps
+    have hp_mem : p ∈ ps := prime_mem_of_dvd_list_prod hp hprimes hdiv
+    -- The hypothesis provides a witness q ∈ ps
+    obtain ⟨q, hq_mem, hq_gt, hq_mod⟩ := hwitness p hp_mem
+    -- q divides ps.prod since q ∈ ps
+    exact ⟨q, hq_gt, List.dvd_prod hq_mem, hq_mod⟩
 
 /-
 ## The Counting Function
@@ -165,12 +193,11 @@ The condition for membership in A is closely related to the structure of
 the divisor lattice and Sylow theory.
 -/
 
-/-- If n ∈ A and n has a prime p with p^2 ∤ n, then ... -/
-theorem squarefree_part_structure (n : ℕ) (p : ℕ) 
-    (hn : n ∈ setA) (hp : p.Prime) (hdiv : p ∣ n) (hnosq : ¬(p^2 ∣ n)) :
-    ∃ q : ℕ, q.Prime ∧ q ∣ n ∧ q ≠ p ∧ q % p = 1 := by
-  -- The witness d ≡ 1 (mod p) with d > 1 and d | n must have a prime factor q ≡ 1 (mod p)
-  sorry
+/-- NOTE: A previous version claimed that if n ∈ A and p | n with p² ∤ n, then
+    some prime q | n has q ≡ 1 (mod p). This is FALSE:
+    n = 12 ∈ A, p = 3, 3 | 12, 9 ∤ 12, but the only other prime divisor is 2,
+    and 2 % 3 = 2 ≠ 1. The witness for p = 3 in n = 12 is d = 4 (composite,
+    4 ≡ 1 mod 3), whose prime factor 2 does NOT satisfy 2 ≡ 1 (mod 3). -/
 
 /-
 ## Asymptotic Analysis
