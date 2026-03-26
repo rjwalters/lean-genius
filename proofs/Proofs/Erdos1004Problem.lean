@@ -112,17 +112,26 @@ theorem exists_distinct_run (n : ℕ) :
     for some constant c > 0 and all sufficiently large n.
 
     This limits how long a distinct totient run can be.
+
+    This single axiom encapsulates the full EPS87 result: there exist a constant
+    c > 0 and a threshold N₀ such that the bound holds for all n ≥ N₀.
 -/
-axiom eps87_constant : ℝ
+axiom eps87_theorem : ∃ (c : ℝ) (N₀ : ℕ), c > 0 ∧
+    ∀ (n K : ℕ), n ≥ N₀ → IsDistinctTotientRun n K →
+      (K : ℝ) ≤ (n : ℝ) / Real.exp (c * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
 
-axiom eps87_constant_pos : eps87_constant > 0
+/-- The EPS87 constant c > 0 from the upper bound K ≤ n/exp(c(log n)^{1/3}). -/
+noncomputable def eps87_constant : ℝ := eps87_theorem.choose
 
-/-- The threshold beyond which the EPS87 bound holds. The original result
-    states the bound for "sufficiently large n"; this axiom captures that. -/
-axiom eps87_threshold : ℕ
+/-- The threshold beyond which the EPS87 bound holds. -/
+noncomputable def eps87_threshold : ℕ := eps87_theorem.choose_spec.choose
 
-axiom eps87_upper_bound (n K : ℕ) (hn : n ≥ eps87_threshold) (hrun : IsDistinctTotientRun n K) :
-    (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+theorem eps87_constant_pos : eps87_constant > 0 :=
+  eps87_theorem.choose_spec.choose_spec.1
+
+theorem eps87_upper_bound (n K : ℕ) (hn : n ≥ eps87_threshold) (hrun : IsDistinctTotientRun n K) :
+    (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3)) :=
+  eps87_theorem.choose_spec.choose_spec.2 n K hn hrun
 
 /-- Corollary: The run length is o(n). -/
 theorem run_length_sublinear :
@@ -583,15 +592,17 @@ such that φ(n+1), φ(n+2), ..., φ(n+⌊(log x)^c⌋) are all distinct?
 8. Probabilistic heuristics
 9. Special totient values
 
-**Key axioms** (6 total):
-- `eps87_constant`, `eps87_constant_pos`, `eps87_threshold`, `eps87_upper_bound`:
-  The EPS87 theorem and its parameters
+**Key axioms** (3 total):
+- `eps87_theorem`: The EPS87 upper bound ∃ c > 0, N₀, ∀ n ≥ N₀, K ≤ n/exp(c(log n)^{1/3})
+  (consolidated from 4 separate declarations to 1 existential axiom)
 - `longer_runs_need_larger_n`: Fixed-length distinct runs exist eventually
   (probabilistic argument on totient value distribution)
 - `distinct_totients_asymptotic`: #{distinct φ(k) : k ≤ x} ~ x/log x
   (Erdős 1935 / Ford 1998)
 
-**Proved from axioms**:
+**Derived from axioms** (not axiom declarations):
+- `eps87_constant`, `eps87_threshold`: noncomputable defs extracted from `eps87_theorem`
+- `eps87_constant_pos`, `eps87_upper_bound`: theorems derived from `eps87_theorem`
 - `run_length_sublinear`: maxDistinctRunLength(n)/n → 0 (via squeeze theorem + EPS bound)
 
 **Related Problems**: #945 (divisor function version)
