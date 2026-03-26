@@ -184,11 +184,16 @@ axiom e_inv_transcendental_axiom : Transcendental ℤ (Real.exp 1)⁻¹
 /-- 1/e is transcendental -/
 theorem e_inv_transcendental : Transcendental ℤ (Real.exp 1)⁻¹ := e_inv_transcendental_axiom
 
-/-- **Axiom: e + 1 is transcendental**
-
-    If e + 1 were algebraic, say p(e + 1) = 0, then e satisfies q(X) = p(X + 1),
-    making e algebraic. Contradiction. -/
-axiom e_plus_one_transcendental_axiom : Transcendental ℤ (Real.exp 1 + 1)
+/-- **e + 1 is transcendental**: if e + 1 were algebraic over ℤ, then
+    e = (e + 1) − 1 would be algebraic (algebraic elements over ℚ are closed
+    under subtraction of rationals). This contradicts e being transcendental. -/
+theorem e_plus_one_transcendental_axiom : Transcendental ℤ (Real.exp 1 + 1) := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.exp 1 + 1) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_algebraMap (1 : ℚ)
+  have he : IsAlgebraic ℚ (Real.exp 1) := by
+    have := hq.sub h1; rwa [add_sub_cancel_right] at this
+  exact e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr he)
 
 /-- e + 1 is transcendental -/
 theorem e_plus_one_transcendental : Transcendental ℤ (Real.exp 1 + 1) := e_plus_one_transcendental_axiom
