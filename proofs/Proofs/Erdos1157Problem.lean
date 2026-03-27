@@ -24,7 +24,9 @@ References:
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Finset.Powerset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 
 namespace Erdos1157
 
@@ -36,21 +38,57 @@ r-uniform hypergraph on n vertices with no s edges spanning at most k vertices.
 We axiomatize this as a function ℕ⁴ → ℕ.
 -/
 
+/-- A valid (r,k,s)-free hypergraph: an r-uniform hypergraph E on n vertices
+    such that no s edges span at most k vertices. -/
+def IsValidHypergraph (r n k s : ℕ) (E : Finset (Finset (Fin n))) : Prop :=
+  (∀ e ∈ E, e.card = r) ∧
+  (∀ F : Finset (Finset (Fin n)), F ⊆ E → F.card ≥ s → (F.biUnion id).card > k)
+
+/-- The set of achievable edge counts for (r,k,s)-free hypergraphs on n vertices. -/
+def achievableEdgeCounts (r n k s : ℕ) : Set ℕ :=
+  {m : ℕ | ∃ E : Finset (Finset (Fin n)), IsValidHypergraph r n k s E ∧ E.card = m}
+
+/-- The achievable set is always nonempty (the empty hypergraph is valid). -/
+private theorem achievable_nonempty (r n k s : ℕ) :
+    (achievableEdgeCounts r n k s).Nonempty :=
+  ⟨0, ∅, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
+    fun F hF hFs => absurd (Finset.card_eq_zero.mpr (Finset.subset_empty.mp hF) ▸ hFs)
+      (by omega)⟩, rfl⟩
+
+/-- The achievable set is bounded above (by the number of all possible edges). -/
+private theorem achievable_bddAbove (r n k s : ℕ) :
+    BddAbove (achievableEdgeCounts r n k s) :=
+  ⟨(Finset.univ : Finset (Finset (Fin n))).card,
+    fun m ⟨E, _, hcard⟩ => hcard ▸ Finset.card_le_univ E⟩
+
 /-- The general extremal number f^(r)(n; k, s):
     maximum number of edges in an r-uniform hypergraph on n vertices
     that contains no s edges spanning at most k vertices. -/
-axiom extremalNumber (r n k s : ℕ) : ℕ
+noncomputable def extremalNumber (r n k s : ℕ) : ℕ :=
+  sSup (achievableEdgeCounts r n k s)
 
 /-- Monotonicity in k: increasing k means more edge-sets are forbidden
-    (any s edges spanning ≤ k₂ ≥ k₁ vertices includes more configurations),
-    so fewer hypergraphs are valid and the extremal number decreases. -/
-axiom extremalNumber_mono_k (r n s k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
-  extremalNumber r n k₂ s ≤ extremalNumber r n k₁ s
+    (any s edges spanning ≤ k₂ includes those spanning ≤ k₁),
+    so fewer hypergraphs are valid and the extremal number decreases.
+    Proof: span > k₂ implies span > k₁ when k₁ ≤ k₂, so the valid
+    set for k₂ ⊆ valid set for k₁. -/
+theorem extremalNumber_mono_k (r n s k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
+    extremalNumber r n k₂ s ≤ extremalNumber r n k₁ s := by
+  unfold extremalNumber
+  apply csSup_le_csSup (achievable_bddAbove r n k₁ s) (achievable_nonempty r n k₂ s)
+  intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
+  exact ⟨E, ⟨hunif, fun F hF hFs => lt_of_le_of_lt h (hspan F hF hFs)⟩, hcard⟩
 
-/-- Monotonicity in s: requiring more forbidden edges makes it harder
-    to find violations, so the extremal number increases. -/
-axiom extremalNumber_mono_s (r n k s₁ s₂ : ℕ) (h : s₁ ≤ s₂) :
-  extremalNumber r n k s₁ ≤ extremalNumber r n k s₂
+/-- Monotonicity in s: requiring more forbidden edges (s₂ ≥ s₁) makes it harder
+    to find violations, so the extremal number increases.
+    Proof: if all s₁-subsets have span > k, then all s₂-subsets (with s₂ ≥ s₁)
+    also satisfy this (since F.card ≥ s₂ ≥ s₁ triggers the s₁ condition). -/
+theorem extremalNumber_mono_s (r n k s₁ s₂ : ℕ) (h : s₁ ≤ s₂) :
+    extremalNumber r n k s₁ ≤ extremalNumber r n k s₂ := by
+  unfold extremalNumber
+  apply csSup_le_csSup (achievable_bddAbove r n k s₂) (achievable_nonempty r n k s₁)
+  intro m ⟨E, ⟨hunif, hspan⟩, hcard⟩
+  exact ⟨E, ⟨hunif, fun F hF hFs => hspan F hF (le_trans h hFs)⟩, hcard⟩
 
 /-
 ## Part II: The Brown-Erdős-Sós Lower Bound (1973)
