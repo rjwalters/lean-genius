@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T11:29:51.028Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Surveyed existing formalization: 9 axioms, 0 sorries, 251 lines",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove size_ramsey_ge_edges from sizeRamseyNumber_spec via edge-injection",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved size_ramsey_ge_edges (9→8 axioms). Remaining 8 axioms are deep (sizeRamseyNumber defn, spec, minimal, Beck, KRSS, complete graph, vertex Ramsey, upper bound).",
+    "builtItems": [
+      "size_ramsey_ge_edges theorem: proved R̂(G) ≥ e(G) from sizeRamseyNumber_spec via edge injection (Erdos911Problem.lean:118)"
+    ],
+    "insights": [
+      "size_ramsey_ge_edges can be proved from sizeRamseyNumber_spec: get H Ramsey for G, choose trivial coloring, get embedding φ, then |E(H)| ≥ |E(G)| by edge injection",
+      "Needs Mathlib SimpleGraph.Embedding.mapEdgeSet or manual Sym2.map injection argument",
+      "sizeRamseyNumber is axiomatized because it quantifies over all graph types — reasonable",
+      "Beck path size Ramsey, KRSS bounded degree, complete graph results are deep literature — must stay as axioms",
+      "ErdosConjecture911 is well-formalized: ∃ superlinear f, ∀ C-dense G, R̂(G) ≥ f(C)·e(G)",
+      "Universe polymorphism fix: sizeRamseyNumber_spec needs explicit universe u for W to allow extraction",
+      "Proof uses SimpleGraph.Embedding.mapEdgeSet for edge injection + Set.toFinset_card conversion"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove size_ramsey_ge_edges from sizeRamseyNumber_spec (edge injection via Embedding)",
+      "Investigate if vertex_ramsey_number + size_ramsey_upper_bound can be better formalized",
+      "Consider adding more structural results about dense graphs and Ramsey numbers"
+    ],
     "markdown": "# Erdős #911 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges that is Ramsey for $G$.\n\nIs there a function $f$ such that $f(x)/x\\to \\infty$ as $x\\to \\infty$ such that, for all large $C$, if $G$ is a graph with $n$ vertices and $e\\geq Cn$ edges then\\[\\hat{R}(G) > f(C) e?\\]\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #910\n- Problem #912\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -57,9 +71,9 @@
     {
       "path": "Proofs/Erdos911Problem.lean",
       "filename": "Erdos911Problem.lean",
-      "lineCount": 252,
-      "theoremCount": 9,
-      "axiomCount": 9,
+      "lineCount": 269,
+      "theoremCount": 10,
+      "axiomCount": 8,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

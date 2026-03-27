@@ -29,6 +29,8 @@ import Mathlib.Topology.Order.Basic
 
 namespace Erdos911
 
+universe u
+
 open SimpleGraph
 
 /-
@@ -65,8 +67,9 @@ axiom sizeRamseyNumber {V : Type*} (G : SimpleGraph V) : ℕ
 
 -- Defining property: sizeRamseyNumber G = m means there exists H with
 -- m edges that is Ramsey for G, and no graph with fewer edges works.
-axiom sizeRamseyNumber_spec {V : Type*} (G : SimpleGraph V) :
-  ∃ (W : Type*) (H : SimpleGraph W) (_ : Fintype (H.edgeSet)),
+-- W is at the same universe as V (the Ramsey witness can always live there).
+axiom sizeRamseyNumber_spec {V : Type u} (G : SimpleGraph V) :
+  ∃ (W : Type u) (H : SimpleGraph W) (_ : Fintype (H.edgeSet)),
     Fintype.card H.edgeSet = sizeRamseyNumber G ∧
     IsRamseyFor H G
 
@@ -113,9 +116,24 @@ Basic properties that follow from the definitions.
 -- The trivial lower bound: R̂(G) ≥ e(G)
 -- Any graph that is Ramsey for G must contain G as a subgraph,
 -- hence must have at least as many edges as G.
-axiom size_ramsey_ge_edges {V : Type*} [Fintype V] [DecidableEq V]
+-- Proof: from sizeRamseyNumber_spec, get H Ramsey for G. Take trivial
+-- coloring to get embedding φ : G ↪g H. Edge injection gives |E(H)| ≥ |E(G)|.
+theorem size_ramsey_ge_edges {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    sizeRamseyNumber G ≥ edgeCount G
+    sizeRamseyNumber G ≥ edgeCount G := by
+  -- Get witness H with |E(H)| = sizeRamseyNumber G that is Ramsey for G
+  obtain ⟨W, H, hFinH, hcard, hRamsey⟩ := sizeRamseyNumber_spec G
+  -- Take constant coloring (all true); get monochromatic embedding
+  obtain ⟨b, φ, _⟩ := hRamsey (show EdgeColoring₂ H from fun _ => true)
+  -- Embedding induces injection on edge sets: |E(G)| ≤ |E(H)|
+  have h_le : Fintype.card G.edgeSet ≤ @Fintype.card _ hFinH :=
+    @Fintype.card_le_of_injective _ _ _ hFinH φ.mapEdgeSet φ.mapEdgeSet.injective
+  -- Combine: Fintype.card G.edgeSet ≤ sizeRamseyNumber G
+  have h1 : Fintype.card G.edgeSet ≤ sizeRamseyNumber G := by omega
+  -- edgeCount G = Fintype.card G.edgeSet
+  unfold edgeCount
+  rw [SimpleGraph.edgeFinset, Set.toFinset_card]
+  omega
 
 -- Dense graphs have at least C*n edges (definitional)
 theorem dense_has_many_edges {V : Type*} [Fintype V] [DecidableEq V]
