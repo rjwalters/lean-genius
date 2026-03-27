@@ -29,18 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (omega1_isLimit, omega1TimesOmega_isLimit) using Cardinal.ord_isLimit and Ordinal.mul_isLimit. Now 14 axioms, 0 sorries. Documented axiom classification.",
+    "progressSummary": "PROGRESS: Eliminated 9 axioms (14→5) by defining ordinalPartitionRel2/Multi concretely and proving all monotonicity properties. Remaining 5 axioms are deep mathematical results (Hajnal, Baumgartner, CH-multicolor, Erdős-Rado, MartinsAxiom).",
     "builtItems": [
       "omega1_isLimit: proved (was axiom) using Cardinal.ord_isLimit",
       "omega1TimesOmega_isLimit: proved (was axiom) using Ordinal.mul_isLimit",
-      "Updated gallery metadata: 16→14 axioms"
+      "Updated gallery metadata: 16→14 axioms",
+      "ordinalPartitionRelMulti: concrete def via coloring functions",
+      "ordinalPartitionRel2: concrete def (2-color case)",
+      "partition_multi_mono_colors: proved (with 2≤clique)",
+      "partition_multi_mono_target: proved",
+      "partition_multi_mono_source: proved",
+      "multi_two_eq: proved (color=1 extraction)",
+      "partition2_mono_target: proved",
+      "partition2_mono_source: proved",
+      "partition_multi_trivial: proved (id embedding + omega)"
     ],
     "insights": [
       "16 axioms classified: 2 definition-axioms (ordinalPartitionRel2, ordinalPartitionRelMulti), 2 limit ordinals (NOW PROVED), 7 monotonicity/structural, 4 deep results (Hajnal, Baumgartner, Erdős-Rado, CH multicolor), 1 concept declaration (MartinsAxiom)",
       "ordinalPartitionRel2 and ordinalPartitionRelMulti SHOULD be defs, not axioms — they define predicates. Converting them requires formalizing partition relations on ordinal types.",
       "partition_multi_trivial is provable once ordinalPartitionRelMulti is a def (1-color case is trivial)",
       "Problem is OPEN in ZFC but SOLVED under CH via Hajnal + color merging argument",
-      "The Baumgartner k=1 case under MA uses techniques specific to ω₁·ω that don't extend to higher k"
+      "The Baumgartner k=1 case under MA uses techniques specific to ω₁·ω that don't extend to higher k",
+      "Original partition_multi_mono_colors axiom was inconsistent for clique<2 — fixed by adding 2≤clique assumption",
+      "Concrete partition relation defs use c:Ordinal→Ordinal→ℕ with validity hypothesis, Fin clique for cliques, StrictMono for embeddings"
     ],
     "mathlibGaps": [
       "Ordinal partition relation API (not in Mathlib — would need custom definitions)",
@@ -76,9 +87,9 @@
     {
       "path": "Proofs/Erdos1171Problem.lean",
       "filename": "Erdos1171Problem.lean",
-      "lineCount": 296,
-      "theoremCount": 13,
-      "axiomCount": 14,
+      "lineCount": 372,
+      "theoremCount": 19,
+      "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
