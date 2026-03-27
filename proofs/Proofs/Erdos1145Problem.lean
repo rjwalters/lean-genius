@@ -218,11 +218,21 @@ axiom ruzsa_unique_rep (n : ℕ) (hn : n ≥ 1) :
     ∃! p : ℕ × ℕ, p.1 ∈ ruzsaA ∧ p.2 ∈ ruzsaB ∧ p.1 + p.2 = n
 
 /-- Consequently, r_{A,B}(n) = 1 for all n ≥ 1. The representation function
-    is bounded (in fact constant). -/
-axiom ruzsa_rep_bounded : ∀ n : ℕ, n ≥ 1 → twoSetRepFunc ruzsaA ruzsaB n = 1
+    is bounded (in fact constant).
+    Previously axiomatized; now derived from ruzsa_unique_rep. -/
+theorem ruzsa_rep_bounded : ∀ n : ℕ, n ≥ 1 → twoSetRepFunc ruzsaA ruzsaB n = 1 := by
+  intro n hn
+  unfold twoSetRepFunc
+  rw [Set.ncard_eq_one]
+  obtain ⟨p, hp, huniq⟩ := ruzsa_unique_rep n hn
+  exact ⟨p, Set.eq_singleton_iff_unique_mem.mpr ⟨hp, fun q hq => huniq q hq⟩⟩
 
-/-- ruzsaA + ruzsaB is a basis (covers all positive integers). -/
-axiom ruzsa_is_basis : IsTwoSetBasis ruzsaA ruzsaB
+/-- ruzsaA + ruzsaB is a basis (covers all positive integers).
+    Previously axiomatized; now derived from ruzsa_unique_rep. -/
+theorem ruzsa_is_basis : IsTwoSetBasis ruzsaA ruzsaB := by
+  refine ⟨1, fun n hn => ?_⟩
+  obtain ⟨p, hp, _⟩ := ruzsa_unique_rep n hn
+  exact ⟨p.1, p.2, hp.1, hp.2.1, hp.2.2.symm⟩
 
 /-- But the enumerations do NOT have ratio → 1.
     For Ruzsa's sets, aₙ/bₙ → 1/2 (since B = 2A). -/

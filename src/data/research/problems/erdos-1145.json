@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full Lean formalization with 337 lines. 10 theorems proved (basis equivalence, self-ratio, 1145→28 implication, Ruzsa necessity, commutativity, monotonicity, positivity, vanishing). 10 axioms (open conjecture + Ruzsa properties + partial results). Gallery entry created.",
+    "progressSummary": "COMPLETED: Eliminated 2 axioms (10→8). ruzsa_rep_bounded and ruzsa_is_basis derived from ruzsa_unique_rep.",
     "builtItems": [
       "proofs/Proofs/Erdos1145Problem.lean - Full formalization (337 lines, 0 sorries)",
       "src/data/proofs/erdos-1145/ - Gallery entry (meta.json, index.ts, annotations.json)",
@@ -37,7 +37,9 @@
       "Proved: hasAsymptoticRatio_self (A=A gives ratio 1)",
       "Proved: erdos_1145_implies_28 (1145 implies Erdős-Turán)",
       "Proved: ratio_condition_necessary (Ruzsa counterexample)",
-      "Proved: twoSetRepFunc_comm (representation symmetry)"
+      "Proved: twoSetRepFunc_comm (representation symmetry)",
+      "ruzsa_rep_bounded: derived from ruzsa_unique_rep via Set.ncard_eq_one",
+      "ruzsa_is_basis: derived from ruzsa_unique_rep (existence gives basis)"
     ],
     "insights": [
       "Problem #1145 strictly generalizes Problem #28 (Erdős-Turán): setting A = B recovers it",
