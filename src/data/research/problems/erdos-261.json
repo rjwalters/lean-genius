@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Building toward proving borwein_loring_family axiom from partial_sum_formula",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added 8 new lemmas including key partial_sum_formula. File has 16 theorems, 5 axioms, 195 lines. Path to proving borwein_loring_family is clear.",
+    "builtItems": [
+      "recipPow2Weight_zero: w(0) = 0",
+      "recipPow2Weight_three: w(3) = 3/8",
+      "recipPow2Sum_nonneg: sum of positive-element sets is non-negative",
+      "recipPow2Sum_insert: sum decomposes on insert",
+      "recipPow2Sum_pair: explicit sum for 2-element set",
+      "recipPow2Sum_le_of_subset: monotonicity of sum under subset inclusion",
+      "partial_sum_formula: KEY — sum_{k=1}^n k/2^k = 2 - (n+2)/2^n by induction"
+    ],
+    "insights": [
+      "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
+      "Key identity: sum_{k=1}^n k/2^k = 2 - (n+2)/2^n, proved by induction in partial_sum_formula",
+      "Partial sum formula enables proving BL family: n+m+2 = 2^{m+1} makes telescoping sum equal n/2^n",
+      "For m=1 (n=1), the BL set {n+1} has only 1 element — need separate argument for representability of 1",
+      "recipPow2Weight has the coincidence w(1) = w(2) = 1/2, then strictly decreasing for k >= 2"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove borwein_loring_family from partial_sum_formula (would reduce 5→4 axioms)",
+      "Need telescoping lemma: sum over Icc (n+1) (n+m) = (n+2)/2^n - (n+m+2)/2^{n+m}",
+      "Handle m=1 case separately (BL set too small, need alternate decomposition for n=1)"
+    ],
     "markdown": "# Erdős #261 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that there exists some $t\\geq 2$ and distinct integers $a_1,\\ldots,a_t\\geq 1$ such that\\[\\frac{n}{2^n}=\\sum_{1\\leq k\\leq t}\\frac{a_k}{2^{a_k}}?\\]Is this true for all $n$? Is there a rational $x$ such that\\[x = \\sum_{k=1}^\\infty \\frac{a_k}{2^{a_k}}\\]has at least $2^{\\aleph_0}$ solutions?\n\n\n\n\n\nRelated to [260].\n\nIn \\cite{Er88c} Erd\\H{o}s notes that Cusick had a simple proof that there do exist infinitely many such $n$. Erd\\H{o}s does not record what this was, but a later paper by Borwein and Loring \\cite{BoLo90} provides the following proof: for every positive integer $m$ and $n=2^{m+1}-m-2$ we have\\[\\frac{n}{2^n}=\\sum_{n<k\\leq n+m}\\frac{k}{2^k}.\\]Tengely, Ulas, and Zygadlo \\cite{TUZ20} have verified that all $n\\leq 10000$ have the required property.\n\nIn \\cite{Er88c} Erd\\H{o}s weakens the second question to asking for the existence of a rational $x$ which has two solutions.\n\n\n\n\nReferences\n\n\n[BoLo90] Borwein, Peter and Loring, Terry A., Some questions of {E}rd\\H{o}s and {G}raham on numbers of the\nform {$\\sum g_n/2^{g_n}$}. Math. Comp. (1990), 377--394.\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[TUZ20] Tengely, Szabolcs and Ulas, Maciej and Zygad\\l o, Jakub, On a {D}iophantine equation of {E}rd\\H{o}s and {G}raham. J. Number Theory (2020), 445--459.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #260\n- Problem #262\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er74b\n- ErGr80\n- Er88c\n- BoLo90\n- TUZ20\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [

@@ -50,6 +50,88 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
   Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
     (Finset.univ.product Finset.univ))
 
+/- ## Basic Properties -/
+
+/-- The empty vertex set is trivially a clique -/
+theorem isClique_empty {n : ℕ} (G : SGraph n) : IsClique G ∅ :=
+  fun _ hi => absurd hi (Finset.not_mem_empty _)
+
+/-- The empty vertex set is trivially triangle-free -/
+theorem isTriangleFree_empty {n : ℕ} (G : SGraph n) : IsTriangleFree G ∅ :=
+  fun ⟨_, _, _, ha, _, _, _, _, _, _, _⟩ => absurd ha (Finset.not_mem_empty _)
+
+/-- A clique on n vertices has at most n elements -/
+theorem hasClique_le_n {n : ℕ} (G : SGraph n) (k : ℕ) (h : HasClique G k) :
+    k ≤ n := by
+  obtain ⟨S, hcard, _⟩ := h
+  have : S.card ≤ Fintype.card (Fin n) := S.card_le_univ
+  simp [Fintype.card_fin] at this
+  omega
+
+/-- A K₅-free graph on n ≤ 4 vertices is trivially K₅-free -/
+theorem k5_free_of_small {n : ℕ} (G : SGraph n) (hn : n ≤ 4) : ¬HasClique G 5 := by
+  intro h
+  have := hasClique_le_n G 5 h
+  omega
+
+/-- A singleton is always triangle-free -/
+theorem isTriangleFree_singleton {n : ℕ} (G : SGraph n) (v : Fin n) :
+    IsTriangleFree G {v} := by
+  intro ⟨a, b, _, ha, hb, _, hab, _, _, _, _⟩
+  simp at ha hb
+  exact absurd (ha.symm ▸ hb) hab
+
+/-- Subsets of triangle-free sets are triangle-free -/
+theorem isTriangleFree_subset {n : ℕ} (G : SGraph n) (S T : Finset (Fin n))
+    (hTS : T ⊆ S) (hS : IsTriangleFree G S) : IsTriangleFree G T := by
+  intro ⟨a, b, c, ha, hb, hc, hab, hbc, hac, eab, ebc, eac⟩
+  exact hS ⟨a, b, c, hTS ha, hTS hb, hTS hc, hab, hbc, hac, eab, ebc, eac⟩
+
+/-- Subsets of cliques are cliques -/
+theorem isClique_subset {n : ℕ} (G : SGraph n) (S T : Finset (Fin n))
+    (hTS : T ⊆ S) (hS : IsClique G S) : IsClique G T :=
+  fun i hi j hj hij => hS i (hTS hi) j (hTS hj) hij
+
+/-- If a graph has a k-clique and j ≤ k, it has a j-clique -/
+theorem hasClique_mono {n : ℕ} (G : SGraph n) {j k : ℕ} (hjk : j ≤ k)
+    (hk : HasClique G k) : HasClique G j := by
+  obtain ⟨S, hcard, hclique⟩ := hk
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S j (hcard ▸ hjk)
+  exact ⟨T, hTcard, isClique_subset G S T hTS hclique⟩
+
+/-- Every graph has a 0-clique (empty set) -/
+theorem hasClique_zero {n : ℕ} (G : SGraph n) : HasClique G 0 :=
+  ⟨∅, Finset.card_empty, isClique_empty G⟩
+
+/-- Every nonempty graph has a 1-clique (singleton) -/
+theorem hasClique_one {n : ℕ} (G : SGraph n) (hn : 0 < n) : HasClique G 1 :=
+  ⟨{⟨0, hn⟩}, Finset.card_singleton _, fun i hi j hj hij => by
+    simp [Finset.mem_singleton] at hi hj; exact absurd (hi ▸ hj) hij⟩
+
+/-- Any pair of vertices is triangle-free -/
+theorem isTriangleFree_pair {n : ℕ} (G : SGraph n) (u v : Fin n) :
+    IsTriangleFree G {u, v} := by
+  intro ⟨a, b, c, ha, hb, hc, hab, hbc, hac, _, _, _⟩
+  simp [Finset.mem_insert, Finset.mem_singleton] at ha hb hc
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> rcases hc with rfl | rfl <;>
+    first | exact absurd rfl hab | exact absurd rfl hbc | exact absurd rfl hac
+
+/-- A graph with no triangles has all subsets triangle-free -/
+theorem isTriangleFree_of_no_triangle {n : ℕ} (G : SGraph n)
+    (hG : ¬HasClique G 3) (S : Finset (Fin n)) : IsTriangleFree G S := by
+  intro ⟨a, b, c, _, _, _, hab, hbc, hac, eab, ebc, eac⟩
+  apply hG
+  refine ⟨{a, b, c}, ?_, ?_⟩
+  · have hab' : a ∉ ({b, c} : Finset _) := by simp [hab, hac]
+    have hbc' : b ∉ ({c} : Finset _) := by simp [hbc]
+    rw [Finset.card_insert_of_not_mem hab', Finset.card_insert_of_not_mem hbc',
+        Finset.card_singleton]
+  · intro i hi j hj hij
+    simp [Finset.mem_insert, Finset.mem_singleton] at hi hj
+    rcases hi with rfl | rfl | rfl <;> rcases hj with rfl | rfl | rfl <;>
+      first | exact absurd rfl hij | exact eab | exact ebc | exact eac |
+      exact G.symm _ _ eab | exact G.symm _ _ ebc | exact G.symm _ _ eac
+
 /- ## Known Partial Results -/
 
 /-- Erdős–Hajnal–Simonovits–Sós–Szemerédi: for δ > 1/16, any K₅-free graph
