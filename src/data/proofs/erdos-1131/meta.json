@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "lineCount": 707,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 5 sorries: integral_cos_substitution (change of variables, needs integral_comp_mul_deriv), integral_chebyshev_sq (cos² substitution + FTC), dct_offdiag (product-to-sum + parity), chebyshev_sq_expansion (needs DCT Parseval), chebyshev_integral_trace (needs chebyshev_sq_expansion + integral_chebyshev_sq). Blocked on Mathlib calculus API gaps (continuous_cos.comp, integral_comp_mul_deriv).",
     "mathlib_version": "4.26.0"
@@ -202,7 +202,7 @@
     "lineCount": 707,
     "axiomCount": 1,
     "sorryCount": 5,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 6
   }
 }
