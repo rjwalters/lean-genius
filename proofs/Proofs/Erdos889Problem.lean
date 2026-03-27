@@ -31,6 +31,12 @@ noncomputable def newPrimeFactorCount (n k : ℕ) : ℕ :=
   ((n + k).primeFactors.filter (fun p =>
     ∀ i ∈ Finset.range k, ¬ p ∣ n + i)).card
 
+/-- At shift k = 0, every prime factor of n is "new" since the filter
+    condition ∀ i ∈ range 0, ... is vacuously true. -/
+theorem newPrimeFactorCount_zero (n : ℕ) :
+    newPrimeFactorCount n 0 = n.primeFactors.card := by
+  simp [newPrimeFactorCount]
+
 /-
 ## Section II: The Maximum v₀
 -/
@@ -55,15 +61,20 @@ def ErdosProblem889 : Prop :=
 ## Section IV: Known Results
 -/
 
-/-- Erdős and Selfridge (1967) proved v₀(n) ≥ 2 for all n ≥ 17.
-The exceptional values where v₀(n) ≤ 1 are n = 0,1,2,3,4,7,8,16. -/
-axiom v0_ge_2_for_large (n : ℕ) (hn : n ≥ 17) :
-    v₀ n ≥ 2
-
 /-- The complete list of exceptions: v₀(n) ≤ 1 only for
 n ∈ {0, 1, 2, 3, 4, 7, 8, 16}. -/
 axiom v0_exceptions :
     ∀ n : ℕ, v₀ n ≤ 1 ↔ n ∈ ({0, 1, 2, 3, 4, 7, 8, 16} : Finset ℕ)
+
+/-- Erdős and Selfridge (1967) proved v₀(n) ≥ 2 for all n ≥ 17.
+    Proof: by v0_exceptions, v₀(n) ≤ 1 only for n ∈ {0,...,16}, all < 17. -/
+theorem v0_ge_2_for_large (n : ℕ) (hn : n ≥ 17) :
+    v₀ n ≥ 2 := by
+  by_contra h
+  have h1 : v₀ n ≤ 1 := by omega
+  have h2 := (v0_exceptions n).mp h1
+  simp only [Finset.mem_insert, Finset.mem_singleton] at h2
+  omega
 
 /-
 ## Section V: Generalized Version v_l
@@ -77,9 +88,11 @@ noncomputable def vShifted (l n : ℕ) : ℕ :=
 def ErdosProblem889General : Prop :=
   ∀ l : ℕ, ∀ M : ℕ, ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → vShifted l n > M
 
-/-- The generalized version implies the base case. -/
-axiom general_implies_base :
-    ErdosProblem889General → ErdosProblem889
+/-- The generalized version implies the base case.
+    Proof: specialize l = 0; then vShifted 0 n = v₀ n definitionally. -/
+theorem general_implies_base :
+    ErdosProblem889General → ErdosProblem889 :=
+  fun hGen M => hGen 0 M
 
 /-
 ## Section VI: Finiteness of v₁(n) = 1
@@ -110,7 +123,20 @@ This variant might be more amenable to attack (Erdős–Selfridge). -/
 axiom exact_power_v1_finiteness :
     ∃ bound : ℕ, ∀ n ≥ bound, exactPowerShifted 1 n > 1
 
-/-- Connection: V(n,k) ≥ v(n,k) since exact power divisibility
-is a stronger condition than divisibility. -/
-axiom exact_power_ge_new_prime (n k : ℕ) :
-    exactPowerNewCount n k ≥ newPrimeFactorCount n k
+/-- V(n,k) ≥ v(n,k): the condition ¬(p^α ∣ m) is weaker than ¬(p ∣ m),
+    so more primes pass the exactPowerNewCount filter.
+    Proof: if ¬(p ∣ n+i) then ¬(p^α ∣ n+i) since p^α ∣ m → p ∣ m. -/
+theorem exact_power_ge_new_prime (n k : ℕ) :
+    exactPowerNewCount n k ≥ newPrimeFactorCount n k := by
+  simp only [exactPowerNewCount, newPrimeFactorCount, ge_iff_le]
+  apply Finset.card_le_card
+  intro p
+  simp only [Finset.mem_filter]
+  intro ⟨hp_mem, hf₁⟩
+  refine ⟨hp_mem, fun i hi hpow => ?_⟩
+  -- hpow : p ^ (n + k).factorization p ∣ n + i
+  -- Derive p ∣ n + i via p ∣ p^α (since α ≠ 0 for p ∈ primeFactors)
+  have hα : (n + k).factorization p ≠ 0 := by
+    have : p ∈ (n + k).factorization.support := hp_mem
+    exact Finsupp.mem_support_iff.mp this
+  exact hf₁ i hi ((dvd_pow (dvd_refl p) hα).trans hpow)
