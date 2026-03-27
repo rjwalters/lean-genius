@@ -16,12 +16,12 @@
       "clique-numbers"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "erdosNumber": 667,
     "erdosUrl": "https://erdosproblems.com/667",
     "erdosProblemStatus": "open",
     "axiomCount": 8,
-    "lineCount": 356,
+    "lineCount": 374,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -58,7 +58,7 @@
       "Extremal graph theory: Turán-type density conditions",
       "Combinatorics: binomial coefficients C(n,k)"
     ],
-    "assumptions": "8 axiom declarations (cpq, cpq_nonneg, cpq_le_one, cpq_mono_q, cpq_lower_ramsey, cpq_upper_ramsey, cpq_at_max, efrs_bound) and 5 sorries (cliqueGuarantee monotonicity/bounds theorems). Reduced from 14 axioms by concretizing cliqueGuarantee via sSup and proving cliqueGuarantee_pos and extended monotonicity.",
+    "assumptions": "8 axiom declarations (cpq, cpq_nonneg, cpq_le_one, cpq_mono_q, cpq_lower_ramsey, cpq_upper_ramsey, cpq_at_max, efrs_bound) and 3 sorries (cliqueGuarantee_mono_n, cliqueGuarantee_max, cliqueGuarantee_zero). Proved cliqueGuarantee_le_n (sSup bound) and cliqueGuarantee_mono_q (subset of sSup sets). Aristotle companion file created for remaining sorries.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [

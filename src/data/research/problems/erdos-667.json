@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "STRUCTURAL: Proved full conjecture for p=3, added p=4 Ramsey bounds. 14 axioms remain (all deep function definitions or known results).",
+    "progressSummary": "PROGRESS: Proved 2 of 5 sorry theorems (cliqueGuarantee_le_n, cliqueGuarantee_mono_q). 3 sorries remain. 8 axioms unchanged. Aristotle companion file created.",
     "builtItems": [
       "Proved cliqueGuarantee_pos from other axioms (axiom elimination: 15->14)",
       "Added cliqueGuarantee_mono_q_general: extended monotonicity for H",
@@ -39,7 +39,10 @@
       "Fixed edgeCount: Finset.product pipe syntax -> explicit parenthesization",
       "erdos667_holds_for_p3: proved (complete conjecture for p=3)",
       "p4_ramsey_lower: proved (c(4,1) ≥ 1/3)",
-      "p4_ramsey_upper: proved (c(4,1) ≤ 2/5)"
+      "p4_ramsey_upper: proved (c(4,1) ≤ 2/5)",
+      "Proved cliqueGuarantee_le_n in Erdos667Problem.lean (was sorry)",
+      "Proved cliqueGuarantee_mono_q in Erdos667Problem.lean (was sorry)",
+      "Created Erdos667Aristotle.lean companion file with 6 targets"
     ],
     "insights": [
       "cliqueGuarantee_pos is derivable from cliqueGuarantee_zero + cliqueGuarantee_mono_q by induction on q",
@@ -50,7 +53,11 @@
       "Finset.product pipe syntax |>.card broken in Lean 4.26.0; use explicit parenthesization",
       "Proved erdos667_holds_for_p3: the FULL conjecture holds for p=3 (only 1 step: c(3,1) < c(3,2))",
       "Added p4 Ramsey bounds: c(4,1) ∈ [1/3, 2/5]",
-      "p=3 is the only case where the conjecture is fully resolved (q ranges over {1,2})"
+      "p=3 is the only case where the conjecture is fully resolved (q ranges over {1,2})",
+      "cliqueGuarantee_le_n: sSup of {m | m ≤ n ∧ ...} is ≤ n — proved via csSup_le or sSup_empty/bot_le",
+      "cliqueGuarantee_mono_q: set for q ⊆ set for q+1 (strengthening antecedent) — proved via csSup_le_csSup",
+      "Remaining 3 sorries require graph constructions (empty graph, vertex embedding) — submitted to Aristotle",
+      "cpq axiom elimination would require defining cpq as Filter.liminf — major future task eliminating 5 of 8 axioms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
