@@ -14,6 +14,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 
 open Finset Classical
 
@@ -143,18 +145,134 @@ private lemma neighbor_dot_le_half (pts : Finset Point2D) (p q₁ q₂ : Point2D
       2 * ((q₁.1 - p.1) * (q₂.1 - p.1) + (q₁.2 - p.2) * (q₂.2 - p.2)) := by ring
   linarith
 
+-- ===== Kissing Number Proof Infrastructure =====
+
+/-- Sector assignment for angles in (-π, π]: six half-open arcs of width π/3. -/
+private noncomputable def angleSector (θ : ℝ) : Fin 6 :=
+  if θ ≤ -2 * Real.pi / 3 then ⟨0, by omega⟩
+  else if θ ≤ -Real.pi / 3 then ⟨1, by omega⟩
+  else if θ ≤ 0 then ⟨2, by omega⟩
+  else if θ ≤ Real.pi / 3 then ⟨3, by omega⟩
+  else if θ ≤ 2 * Real.pi / 3 then ⟨4, by omega⟩
+  else ⟨5, by omega⟩
+
+private noncomputable def sectorLo : Fin 6 → ℝ
+  | ⟨0, _⟩ => -Real.pi
+  | ⟨1, _⟩ => -2 * Real.pi / 3
+  | ⟨2, _⟩ => -Real.pi / 3
+  | ⟨3, _⟩ => 0
+  | ⟨4, _⟩ => Real.pi / 3
+  | ⟨5, _⟩ => 2 * Real.pi / 3
+  | ⟨n + 6, h⟩ => absurd h (by omega)
+
+private noncomputable def sectorHi : Fin 6 → ℝ
+  | ⟨0, _⟩ => -2 * Real.pi / 3
+  | ⟨1, _⟩ => -Real.pi / 3
+  | ⟨2, _⟩ => 0
+  | ⟨3, _⟩ => Real.pi / 3
+  | ⟨4, _⟩ => 2 * Real.pi / 3
+  | ⟨5, _⟩ => Real.pi
+  | ⟨n + 6, h⟩ => absurd h (by omega)
+
+private lemma sectorHi_sub_sectorLo (k : Fin 6) :
+    sectorHi k - sectorLo k = Real.pi / 3 := by
+  fin_cases k <;> simp [sectorHi, sectorLo] <;> ring
+
+private lemma angleSector_in_range (θ : ℝ) (hθ : θ ∈ Set.Ioc (-Real.pi) Real.pi) :
+    sectorLo (angleSector θ) < θ ∧ θ ≤ sectorHi (angleSector θ) := by
+  simp only [angleSector]
+  split_ifs with h1 h2 h3 h4 h5
+  all_goals (simp only [sectorLo, sectorHi]; constructor <;> linarith [hθ.1, hθ.2])
+
+private lemma same_sector_diff_lt {θ φ : ℝ}
+    (hθ : θ ∈ Set.Ioc (-Real.pi) Real.pi)
+    (hφ : φ ∈ Set.Ioc (-Real.pi) Real.pi)
+    (hs : angleSector θ = angleSector φ) :
+    |θ - φ| < Real.pi / 3 := by
+  obtain ⟨hlo_θ, hhi_θ⟩ := angleSector_in_range θ hθ
+  obtain ⟨hlo_φ, hhi_φ⟩ := angleSector_in_range φ hφ
+  rw [hs] at hlo_φ hhi_φ
+  have hw := sectorHi_sub_sectorLo (angleSector θ)
+  rw [abs_sub_lt_iff]; constructor <;> linarith
+
+private lemma cos_gt_half_of_abs_lt {d : ℝ} (hd : |d| < Real.pi / 3) :
+    1 / 2 < Real.cos d := by
+  have hpi := Real.pi_pos
+  have heven : Real.cos d = Real.cos |d| := by
+    rcases le_or_lt 0 d with h | h
+    · rw [abs_of_nonneg h]
+    · rw [abs_of_neg h, Real.cos_neg]
+  rw [heven, show (1 : ℝ) / 2 = Real.cos (Real.pi / 3) from Real.cos_pi_div_three.symm]
+  rcases eq_or_lt_of_le (abs_nonneg d) with h0 | h0
+  · rw [← h0, Real.cos_zero, Real.cos_pi_div_three]; norm_num
+  · exact Real.strictAntiOn_cos
+      (Set.mem_Icc.mpr ⟨le_of_lt h0, by linarith⟩)
+      (Set.mem_Icc.mpr ⟨by linarith, by linarith⟩)
+      hd
+
+/-- Dot product of unit vectors equals cosine of their Complex.arg difference. -/
+private lemma unit_dot_eq_cos_arg_sub {v w : ℝ × ℝ}
+    (hv : v.1 ^ 2 + v.2 ^ 2 = 1) (hw : w.1 ^ 2 + w.2 ^ 2 = 1) :
+    v.1 * w.1 + v.2 * w.2 =
+      Real.cos (Complex.arg ⟨v.1, v.2⟩ - Complex.arg ⟨w.1, w.2⟩) := by
+  set zv : ℂ := ⟨v.1, v.2⟩
+  set zw : ℂ := ⟨w.1, w.2⟩
+  have hv_ne : zv ≠ 0 := by
+    intro h; have := Complex.ext_iff.mp h; simp at this; nlinarith [this.1, this.2, hv]
+  have hw_ne : zw ≠ 0 := by
+    intro h; have := Complex.ext_iff.mp h; simp at this; nlinarith [this.1, this.2, hw]
+  have hv_abs : Complex.abs zv = 1 := by
+    have hsq : (Complex.abs zv) ^ 2 = 1 := by
+      rw [sq_abs]; simp [Complex.normSq_apply, zv]; nlinarith
+    have hnn := Complex.abs.nonneg zv
+    nlinarith [sq_nonneg (Complex.abs zv - 1)]
+  have hw_abs : Complex.abs zw = 1 := by
+    have hsq : (Complex.abs zw) ^ 2 = 1 := by
+      rw [sq_abs]; simp [Complex.normSq_apply, zw]; nlinarith
+    have hnn := Complex.abs.nonneg zw
+    nlinarith [sq_nonneg (Complex.abs zw - 1)]
+  rw [Real.cos_sub,
+    show Real.cos (Complex.arg zv) = v.1 from by
+      rw [Complex.cos_arg hv_ne, hv_abs, div_one],
+    show Real.sin (Complex.arg zv) = v.2 from by
+      rw [Complex.sin_arg hv_ne, hv_abs, div_one],
+    show Real.cos (Complex.arg zw) = w.1 from by
+      rw [Complex.cos_arg hw_ne, hw_abs, div_one],
+    show Real.sin (Complex.arg zw) = w.2 from by
+      rw [Complex.sin_arg hw_ne, hw_abs, div_one]]
+
+-- ===== Main Kissing Number Theorem =====
+
 /-- **2D Kissing Number**: At most 6 unit vectors in ℝ² can have pairwise
     dot product ≤ 1/2. Equivalently: at most 6 points on the unit circle
     can have pairwise distance ≥ 1.
 
-    Proof outline: Each unit vector v = (cos θ, sin θ). The constraint
-    cos(θᵢ - θⱼ) ≤ 1/2 forces angular separation ≥ π/3 (using
-    Real.strictAntiOn_cos). Since 6 · (π/3) = 2π, at most 6 fit. -/
+    Proof: Assign each vector to one of 6 sectors of width π/3 via Complex.arg.
+    Two vectors in the same sector have angular separation < π/3, hence
+    dot product > cos(π/3) = 1/2. So the sector map is injective on S,
+    giving |S| ≤ 6. -/
 theorem kissing_number_2d (S : Finset (ℝ × ℝ))
     (hunit : ∀ v ∈ S, v.1 ^ 2 + v.2 ^ 2 = 1)
     (hdot : ∀ v ∈ S, ∀ w ∈ S, v ≠ w → v.1 * w.1 + v.2 * w.2 ≤ 1 / 2) :
     S.card ≤ 6 := by
-  sorry -- Angular packing: uses Real.cos_sub, Real.cos_pi_div_three, Real.strictAntiOn_cos
+  let f : ℝ × ℝ → Fin 6 := fun v => angleSector (Complex.arg ⟨v.1, v.2⟩)
+  have hinj : Set.InjOn f ↑S := by
+    intro v hv w hw hfw
+    by_contra hvw
+    have hv_mem : v ∈ S := Finset.mem_coe.mp hv
+    have hw_mem : w ∈ S := Finset.mem_coe.mp hw
+    have hv_range : Complex.arg ⟨v.1, v.2⟩ ∈ Set.Ioc (-Real.pi) Real.pi :=
+      ⟨Complex.neg_pi_lt_arg _, Complex.arg_le_pi _⟩
+    have hw_range : Complex.arg ⟨w.1, w.2⟩ ∈ Set.Ioc (-Real.pi) Real.pi :=
+      ⟨Complex.neg_pi_lt_arg _, Complex.arg_le_pi _⟩
+    have h_close := same_sector_diff_lt hv_range hw_range hfw
+    have h_cos := cos_gt_half_of_abs_lt h_close
+    have h_dot := unit_dot_eq_cos_arg_sub (hunit v hv_mem) (hunit w hw_mem)
+    linarith [hdot v hv_mem w hw_mem hvw]
+  have h1 := (Finset.card_image_of_injOn hinj).symm
+  have h2 := Finset.card_le_univ (S.image f)
+  simp [Fintype.card_fin] at h2
+  linarith
 
 /-- In a 1-separated set, each point has at most 6 unit neighbors.
     Reduces to the 2D kissing number via translation to the origin. -/

@@ -1,6 +1,6 @@
 {
   "slug": "erdos-662",
-  "title": "Erd\u0151s #662",
+  "title": "Erdős #662",
   "phase": "ORIENT",
   "status": "active",
   "tier": "B",
@@ -18,23 +18,23 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-01-13T18:22:04.304Z",
-    "iteration": 2,
-    "focus": "Eliminated unit_neighbor_bound axiom by reducing to kissing_number_2d (sorry). 1 axiom remains.",
-    "blockers": ["kissing_number_2d sorry needs angular packing proof"],
-    "nextAction": "Prove kissing_number_2d via Real.cos_sub + cos_pi_div_three + strictAntiOn_cos",
+    "iteration": 3,
+    "focus": "Proved kissing_number_2d via sector pigeonhole + Complex.arg. 0 sorries remain (except open conjecture axiom).",
+    "blockers": [],
+    "nextAction": "Verify build via CI. File is sorry-free except for the open conjecture axiom.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 eliminated unit_neighbor_bound axiom. Proved neighbors on unit circle + dot product bound. Reduced to kissing_number_2d (sorry). 1 axiom remains (open conjecture).",
+    "progressSummary": "PROGRESS: Session 3 proved kissing_number_2d (2D kissing number ≤ 6) via sector pigeonhole on Complex.arg. 0 sorries remain. Only 1 axiom (the open conjecture).",
     "builtItems": [
       {
         "name": "triLatticeNorm",
         "type": "def",
-        "description": "a\u00b2 + ab + b\u00b2 norm for triangular lattice"
+        "description": "a² + ab + b² norm for triangular lattice"
       },
       {
         "name": "triLatticeCountInt",
@@ -55,16 +55,28 @@
         "name": "triLatticeCountInt_three",
         "type": "theorem",
         "description": "triLatticeCountInt 3 = 12"
+      },
+      {
+        "name": "angleSector",
+        "type": "def",
+        "description": "Maps angle in (-π,π] to one of 6 sectors (Fin 6)"
+      },
+      {
+        "name": "kissing_number_2d",
+        "type": "theorem",
+        "description": "≤6 unit vectors with pairwise dot ≤ 1/2 (sorry-free)"
       }
     ],
     "insights": [
-      "All triangular lattice norms a\u00b2+ab+b\u00b2 are integers \u2192 f(t) = countInt(\u230at\u00b2\u230b)",
+      "All triangular lattice norms a²+ab+b² are integers → f(t) = countInt(⌊t²⌋)",
       "native_decide efficiently verifies small lattice point counts",
-      "unit_neighbor_bound (2D kissing number) provable via angular packing but needs trig from Mathlib"
+      "unit_neighbor_bound (2D kissing number) provable via angular packing but needs trig from Mathlib",
+      "Sector pigeonhole: 6 half-open arcs of width π/3 on the unit circle, each can hold ≤1 unit vector with pairwise dot ≤ 1/2",
+      "Key identity: dot(v,w) = cos(arg(v)-arg(w)) via Complex.cos_arg + Real.cos_sub"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #662 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that $d(x_i,x_j)\\geq 1$ for all $i\\neq j$. Is it true that, provided $n$ is sufficiently large depending on $t$, the number of distances $d(x_i,x_j)\\leq t$ is less than or equal to $f(t)$ with equality perhaps only for the triangular lattice?\n\nIn particular, is it true that the number of distances $\\leq \\sqrt{3}-\\epsilon$ is less than $1$?\n\n\n\nA problem of Erd\\H{o}s, Lov\\'{a}sz, and Vesztergombi.\n\nThis is essentially verbatim the problem description in \\cite{Er97e}, but this does not make sense as written; there must be at least one typo. Suggestions about what this problem intends are welcome.\n\nErd\\H{o}s also goes on to write 'Perhaps the following stronger conjecture holds: Let $t_1<t_2<\\cdots$ be the set of distances occurring in the triangular lattice. $t_1=1$ $t_2=\\sqrt{3}$ $t_3=3$ $t_4=5$ etc. Is it true that there is an $\\epsilon_n$ so that for every set $y_1,\\ldots,$ with $d(y_i,y_j)\\geq 1$ the number of distances $d(y_i,y_j)<t_n$ is less than $f(t_n)$?'\n\nAgain, this is nonsense interpreted literally; I am not sure what Erd\\H{o}s intended.\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #661\n- Problem #663\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #662 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that $d(x_i,x_j)\\geq 1$ for all $i\\neq j$. Is it true that, provided $n$ is sufficiently large depending on $t$, the number of distances $d(x_i,x_j)\\leq t$ is less than or equal to $f(t)$ with equality perhaps only for the triangular lattice?\n\nIn particular, is it true that the number of distances $\\leq \\sqrt{3}-\\epsilon$ is less than $1$?\n\n\n\nA problem of Erd\\H{o}s, Lov\\'{a}sz, and Vesztergombi.\n\nThis is essentially verbatim the problem description in \\cite{Er97e}, but this does not make sense as written; there must be at least one typo. Suggestions about what this problem intends are welcome.\n\nErd\\H{o}s also goes on to write 'Perhaps the following stronger conjecture holds: Let $t_1<t_2<\\cdots$ be the set of distances occurring in the triangular lattice. $t_1=1$ $t_2=\\sqrt{3}$ $t_3=3$ $t_4=5$ etc. Is it true that there is an $\\epsilon_n$ so that for every set $y_1,\\ldots,$ with $d(y_i,y_j)\\geq 1$ the number of distances $d(y_i,y_j)<t_n$ is less than $f(t_n)$?'\n\nAgain, this is nonsense interpreted literally; I am not sure what Erd\\H{o}s intended.\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #661\n- Problem #663\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -87,11 +99,11 @@
     {
       "path": "Proofs/Erdos662Problem.lean",
       "filename": "Erdos662Problem.lean",
-      "lineCount": 234,
-      "theoremCount": 13,
+      "lineCount": 353,
+      "theoremCount": 14,
       "axiomCount": 1,
-      "defCount": 7,
-      "sorryCount": 1,
+      "defCount": 10,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos662Problem.lean"
     }
