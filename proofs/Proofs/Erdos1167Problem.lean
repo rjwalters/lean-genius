@@ -349,4 +349,181 @@ theorem infinite_ramsey_one (k : ℕ) (hk : k ≥ 1) :
     haveI := Cardinal.lt_aleph0_iff_finite.mp hlt
     exact hc (Set.toFinite _)
 
+/-
+## Section 6: Proof of the Infinite Ramsey Theorem
+
+Proved by induction on r with a "thinning chain" construction.
+This theorem replaces the `infinite_ramsey` axiom above.
+
+Proof outline (inductive step, r → r+1):
+  Given f : [α]^{r+1} → β with α infinite (ℵ₀) and β finite (k colors):
+  1. Build chain: pick x₀ ∈ α, restrict f to r-subsets fixing x₀,
+     apply IH to get infinite monochromatic H₀ ⊆ α \ {x₀} with color c₀.
+     Pick x₁ ∈ H₀, repeat. Produces sequences (xₙ), (cₙ), (Sₙ).
+  2. Pigeonhole: cₙ ∈ β with β finite → some c* has infinite preimage I.
+  3. A = {xₙ : n ∈ I} is infinite and monochromatic for f with color c*.
+     Proof: any (r+1)-subset of A contains smallest element xₙ₀ (n₀ ∈ I),
+     the rest is an r-subset of Sₙ₀₊₁ (monochromatic for f(· ∪ {xₙ₀}) = cₙ₀ = c*).
+
+Once all sorries are resolved, the `infinite_ramsey` axiom can be removed,
+reducing axiom count from 3 to 2.
+-/
+
+-- Helper: cardinality of an infinite subset of a type with #α = ℵ₀ is ℵ₀
+private lemma mk_infinite_subset_eq_aleph0 {α : Type*}
+    (hα : #α = ℵ₀) (S : Set α) (hS : Set.Infinite S) : #↥S = ℵ₀ := by
+  apply le_antisymm
+  · exact (Cardinal.mk_subtype_le S).trans (le_of_eq hα)
+  · by_contra h
+    simp only [not_le] at h
+    exact hS (Set.finite_coe_iff.mpr (Cardinal.lt_aleph0_iff_finite.mp h))
+
+-- The infinite Ramsey theorem (proof by induction on r)
+-- Once complete (all sorries resolved), this replaces the axiom `infinite_ramsey`
+theorem infinite_ramsey_proved (r k : ℕ) :
+    PartitionRelation ℵ₀ ℵ₀ r k := by
+  induction r with
+  | zero => exact infinite_ramsey_zero k
+  | succ r ih =>
+    intro α hα β hβ f
+    classical
+    -- α is infinite (cardinality ℵ₀)
+    haveI hInfα : Infinite α := by
+      by_contra h; simp only [not_infinite] at h
+      exact absurd (Cardinal.lt_aleph0_iff_finite.mpr h)
+        (not_lt.mpr (le_of_eq hα.symm))
+    -- β is finite (cardinality k)
+    haveI hFinβ : Finite β := Cardinal.lt_aleph0_iff_finite.mp
+      (hβ ▸ Cardinal.nat_lt_aleph0 k)
+    -- Handle vacuous case: β empty → no coloring can exist
+    by_cases hβne : Nonempty β
+    swap
+    · -- β empty means k = 0, but RSubset α (r+1) is nonempty (α is infinite),
+      -- so f : nonempty → empty is impossible
+      have : Nonempty (RSubset α (r + 1)) := by
+        -- An infinite type has finsets of any finite size
+        -- Use Infinite.natEmbedding to get ℕ ↪ α, then map a range finset
+        exact ⟨⟨(Finset.range (r + 1)).map (Infinite.natEmbedding α),
+          by simp [Finset.card_map]⟩⟩
+      exact absurd ⟨f this.some⟩ hβne
+    -- ===== THINNING STEP =====
+    -- For any infinite subset S ⊆ α, we can pick an element x ∈ S,
+    -- apply the IH to the restricted coloring on S \ {x}, and get
+    -- an infinite monochromatic subset T ⊆ S \ {x} with some color c.
+    have thin_step : ∀ (S : Set α), Set.Infinite S →
+        ∃ (x : α) (c : β) (T : Set α),
+          x ∈ S ∧ Set.Infinite T ∧ T ⊆ S \ {x} ∧
+          (∀ (s : Finset α) (_hs : s.card = r) (_hsub : (↑s : Set α) ⊆ T) (hxs : x ∉ s),
+            f ⟨Finset.cons x s hxs, by rw [Finset.card_cons]; omega⟩ = c) := by
+      intro S hS
+      obtain ⟨x, hxS⟩ := hS.nonempty
+      -- S \ {x} is infinite with cardinality ℵ₀
+      have hS' : Set.Infinite (S \ {x}) := hS.diff (Set.finite_singleton x)
+      have hcardS' : #↥(S \ {x}) = ℵ₀ := mk_infinite_subset_eq_aleph0 hα _ hS'
+      -- Define restricted coloring g on r-subsets of (S \ {x}):
+      -- g(T) = f({x} ∪ T), where T is lifted from the subtype to α
+      let g : Coloring ↥(S \ {x}) r β := fun ⟨T, hcard⟩ =>
+        let T' := T.map ⟨Subtype.val, Subtype.val_injective⟩
+        have hx_nmem : x ∉ T' := by
+          simp only [Finset.mem_map, Function.Embedding.coeFn_mk]
+          rintro ⟨⟨a, ha⟩, _, rfl⟩
+          exact (Set.mem_diff_singleton.mp ha).2 rfl
+        f ⟨Finset.cons x T' hx_nmem,
+          by rw [Finset.card_cons, Finset.card_map, hcard]⟩
+      -- Apply IH: PartitionRelation ℵ₀ ℵ₀ r k for the subtype ↥(S \ {x})
+      obtain ⟨c, H, hMono, hHcard⟩ := ih ↥(S \ {x}) hcardS' β hβ g
+      -- Convert H : Set ↥(S \ {x}) to T : Set α via Subtype.val
+      refine ⟨x, c, Subtype.val '' H, hxS, ?_, ?_, ?_⟩
+      · -- Subtype.val '' H is infinite (injective image of infinite set)
+        have : Set.Infinite H := by
+          rw [Set.infinite_coe_iff]
+          by_contra hinf; simp only [not_infinite] at hinf
+          exact absurd (Cardinal.lt_aleph0_iff_finite.mpr hinf)
+            (not_lt.mpr hHcard)
+        exact this.image Subtype.val_injective
+      · -- Subtype.val '' H ⊆ S \ {x}
+        exact Set.image_subset_iff.mpr fun ⟨a, ha⟩ _ => ha
+      · -- Monochromaticity: for r-subsets s ⊆ (Subtype.val '' H) with x ∉ s,
+        -- f(cons x s) = c
+        -- Requires lifting s back to Finset ↥(S\{x}) and applying hMono
+        sorry -- finset lifting: for each a ∈ s, obtain ⟨b, hb, rfl⟩ from hsub,
+              -- build the lifted Finset, apply hMono to get g(lifted) = c,
+              -- then show g(lifted) = f(cons x s) by definition of g
+    -- ===== CHAIN CONSTRUCTION =====
+    -- Build decreasing chain of infinite sets using Nat.rec:
+    --   state(0) = Set.univ (the whole of α, which is infinite)
+    --   state(n+1) = T from thin_step applied to state(n)
+    -- And extract element/color sequences from thin_step at each level.
+    let state : ℕ → { S : Set α // Set.Infinite S } :=
+      Nat.rec ⟨Set.univ, Set.infinite_univ⟩ fun _ ⟨S, hS⟩ =>
+        let h := thin_step S hS
+        ⟨h.choose_spec.choose_spec.choose,
+         h.choose_spec.choose_spec.choose_spec.2.1⟩
+    -- Element and color at step n (extracted from the same thin_step call)
+    let getElem (n : ℕ) : α :=
+      (thin_step (state n).val (state n).prop).choose
+    let getColor (n : ℕ) : β :=
+      (thin_step (state n).val (state n).prop).choose_spec.choose
+    -- ===== KEY CHAIN PROPERTIES =====
+    -- Property 1: getElem n ∈ (state n).val
+    have hElem_in : ∀ n, getElem n ∈ (state n).val :=
+      fun n => (thin_step (state n).val (state n).prop).choose_spec.choose_spec.choose_spec.1
+    -- Property 2: state(n+1) ⊆ state(n) \ {getElem n}
+    have hState_sub : ∀ n, (state (n + 1)).val ⊆ (state n).val \ {getElem n} :=
+      fun n => (thin_step (state n).val (state n).prop).choose_spec.choose_spec.choose_spec.2.2.1
+    -- Property 3: monochromaticity at each step
+    have hStep_mono : ∀ n (s : Finset α) (_hs : s.card = r)
+        (_hsub : (↑s : Set α) ⊆ (state (n + 1)).val) (hxs : getElem n ∉ s),
+        f ⟨Finset.cons (getElem n) s hxs, by rw [Finset.card_cons]; omega⟩ = getColor n :=
+      fun n => (thin_step (state n).val (state n).prop).choose_spec.choose_spec.choose_spec.2.2.2
+    -- Monotonicity of state chain (without singleton removal)
+    have hState_mono : ∀ n, (state (n + 1)).val ⊆ (state n).val :=
+      fun n => (hState_sub n).trans Set.diff_subset
+    -- Transitivity: state(m) ⊆ state(n) when n ≤ m
+    have hState_mono_le : ∀ n m, n ≤ m → (state m).val ⊆ (state n).val := by
+      intro n m hnm
+      obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hnm
+      induction d with
+      | zero => exact Set.Subset.rfl
+      | succ d ihd => exact (hState_mono (n + d)).trans ihd
+    -- Property 4: for m > n, getElem m ∈ state(n+1)
+    have hElem_in_later : ∀ n m, n < m → getElem m ∈ (state (n + 1)).val :=
+      fun n m hnm => hState_mono_le (n + 1) m hnm (hElem_in m)
+    -- getElem n ∉ state(n+1) (key for injectivity)
+    have hElem_not_in_next : ∀ n, getElem n ∉ (state (n + 1)).val := by
+      intro n hin
+      have := hState_sub n hin
+      exact (Set.mem_diff_singleton.mp this).2 rfl
+    -- Property 5: getElem is injective
+    have hElem_inj : Function.Injective getElem := by
+      intro a b hab
+      by_contra hne
+      rcases Nat.lt_or_gt_of_ne hne with hlt | hlt
+      · exact hElem_not_in_next a (hab ▸ hElem_in_later a b hlt)
+      · exact hElem_not_in_next b (hab.symm ▸ hElem_in_later b a hlt)
+    -- ===== PIGEONHOLE EXTRACTION =====
+    -- getColor : ℕ → β with ℕ infinite and β finite
+    -- By infinite pigeonhole, some color appears infinitely often
+    obtain ⟨c_star, hc_star⟩ := Finite.exists_infinite_fiber getColor
+    -- hc_star : Set.Infinite (getColor ⁻¹' {c_star})
+    -- The monochromatic set: elements at indices where color = c*
+    let A : Set α := getElem '' (getColor ⁻¹' {c_star})
+    -- A is infinite (injective image of infinite set)
+    have hA_inf : Set.Infinite A := hc_star.image hElem_inj.injOn
+    -- ===== MONOCHROMATICITY VERIFICATION =====
+    -- Any (r+1)-subset of A has color c* under f
+    have hA_mono : IsMonochromatic f A c_star := by
+      -- For any (r+1)-subset s with ↑s ⊆ A:
+      -- Each element is getElem(nᵢ) for some nᵢ with getColor(nᵢ) = c*.
+      -- Let n₀ be the minimum index. Then:
+      -- - {getElem(nᵢ) | i > 0} is an r-subset of state(n₀+1)
+      -- - getElem(n₀) ∉ {getElem(nᵢ) | i > 0} by injectivity
+      -- - f(cons (getElem n₀) rest) = getColor(n₀) = c* by hStep_mono
+      sorry -- requires: (1) extracting index function from s ⊆ A,
+            -- (2) finding minimum index, (3) showing rest ⊆ state(n₀+1),
+            -- (4) applying hStep_mono + hElem_in_later
+    -- ===== CONCLUSION =====
+    refine ⟨c_star, A, hA_mono, ?_⟩
+    exact le_of_eq (mk_infinite_subset_eq_aleph0 hα A hA_inf).symm
+
 end Erdos1167
