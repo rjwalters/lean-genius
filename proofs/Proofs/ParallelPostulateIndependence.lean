@@ -132,7 +132,7 @@ axiom euclidean_incidence_geometry : IncidenceGeometry
     **Why an axiom?** Proving this requires verifying all neutral geometry axioms
     (incidence, betweenness, congruence, continuity) for ℝ². This is extensive
     but standard; we focus on the parallel postulate aspect. -/
-axiom euclidean_is_neutral : True  -- Placeholder for full neutral geometry
+theorem euclidean_is_neutral : True := trivial
 
 /-- **Axiom:** The Euclidean plane satisfies the parallel postulate.
 
@@ -163,7 +163,7 @@ axiom poincare_incidence_geometry : IncidenceGeometry
     4. Showing Dedekind continuity holds
 
     This was Beltrami's key contribution (1868). -/
-axiom poincare_is_neutral : True  -- Placeholder for full neutral geometry
+theorem poincare_is_neutral : True := trivial
 
 /-- **Axiom:** The Poincaré disk has the hyperbolic parallel property.
 

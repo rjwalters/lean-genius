@@ -161,13 +161,13 @@ We verify some basic properties about the normalized prime sequence.
 -/
 
 /-- The first prime is 2. -/
-axiom first_prime : Nat.nth Nat.Prime 0 = 2
+theorem first_prime : Nat.nth Nat.Prime 0 = 2 := by native_decide
 
 /-- The second prime is 3. -/
-axiom second_prime : Nat.nth Nat.Prime 1 = 3
+theorem second_prime : Nat.nth Nat.Prime 1 = 3 := by native_decide
 
 /-- The third prime is 5. -/
-axiom third_prime : Nat.nth Nat.Prime 2 = 5
+theorem third_prime : Nat.nth Nat.Prime 2 = 5 := by native_decide
 
 /-- u(0) = 2/1 = 2. -/
 theorem u_zero : u 0 = 2 := by

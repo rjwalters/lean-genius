@@ -93,10 +93,10 @@ theorem totient_prime (p : ℕ) (hp : p.Prime) : p.totient = p - 1 :=
   Nat.totient_prime hp
 
 /-- φ(n) < n for n > 1 -/
-axiom totient_lt (n : ℕ) (hn : n > 1) : n.totient < n
+theorem totient_lt (n : ℕ) (hn : n > 1) : n.totient < n := Nat.totient_lt (by omega)
 
 /-- φ(n) ≥ 1 for n ≥ 1 -/
-axiom totient_pos (n : ℕ) (hn : n ≥ 1) : n.totient ≥ 1
+theorem totient_pos (n : ℕ) (hn : n ≥ 1) : n.totient ≥ 1 := Nat.totient_pos (by omega)
 
 /-
 ## Part III: The Totient-Sigma Pair Set
