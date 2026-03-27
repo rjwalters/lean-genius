@@ -19,14 +19,14 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 1,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "theoremCount": 14,
-    "lineCount": 707,
-    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 5 sorries: integral_cos_substitution (change of variables, needs integral_comp_mul_deriv), integral_chebyshev_sq (cos² substitution + FTC), dct_offdiag (product-to-sum + parity), chebyshev_sq_expansion (needs DCT Parseval), chebyshev_integral_trace (needs chebyshev_sq_expansion + integral_chebyshev_sq). Blocked on Mathlib calculus API gaps (continuous_cos.comp, integral_comp_mul_deriv).",
+    "theoremCount": 30,
+    "lineCount": 904,
+    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_sq_expansion (DCT Parseval identity — needs Lagrange interpolation of Chebyshev polynomials, substantial infrastructure). All other sorries proved: dct_offdiag (product-to-sum + parity), integral_cos_substitution (change of variables), integral_chebyshev_sq (cos² + FTC), chebyshev_integral_trace (trace formula).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -199,10 +199,10 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 707,
+    "lineCount": 904,
     "axiomCount": 1,
-    "sorryCount": 5,
-    "theoremCount": 14,
+    "sorryCount": 1,
+    "theoremCount": 30,
     "definitionCount": 6
   }
 }
