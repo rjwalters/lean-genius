@@ -16,10 +16,9 @@ Status: OPEN.
 Reference: https://erdosproblems.com/311
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
+
+open scoped Classical
 
 /- ## Definitions -/
 
@@ -27,12 +26,48 @@ import Mathlib.Data.Finset.Basic
 noncomputable def unitFracSum (A : Finset ℕ) : ℝ :=
   A.sum (fun n => (1 : ℝ) / n)
 
-/-- δ(N): the minimal nonzero value of |1 - Σ_{n∈A} 1/n| over subsets A ⊆ {1,...,N}
-    with the sum at most 1 and not equal to 1. Axiomatized. -/
-axiom delta (N : ℕ) : ℝ
+/-- A subset A ⊆ {1,...,N} is a valid candidate if its unit fraction sum is at most 1
+    and not equal to 1 (i.e., the deviation from 1 is nonzero). -/
+def validCandidate (N : ℕ) (A : Finset ℕ) : Prop :=
+  A ⊆ Finset.Icc 1 N ∧ unitFracSum A ≤ 1 ∧ unitFracSum A ≠ 1
 
-/-- δ(N) is positive for N ≥ 1. -/
-axiom delta_pos (N : ℕ) (hN : 1 ≤ N) : 0 < delta N
+/-- The set of valid candidates for a given N. -/
+noncomputable def validCandidates (N : ℕ) : Finset (Finset ℕ) :=
+  ((Finset.Icc 1 N).powerset).filter (fun A => unitFracSum A ≤ 1 ∧ unitFracSum A ≠ 1)
+
+/-- The set of deviations |1 - Σ 1/n| over valid candidates. Since unitFracSum A ≤ 1
+    and unitFracSum A ≠ 1 for valid candidates, the deviation equals 1 - unitFracSum A > 0. -/
+noncomputable def deviations (N : ℕ) : Finset ℝ :=
+  (validCandidates N).image (fun A => 1 - unitFracSum A)
+
+private lemma empty_mem_validCandidates (N : ℕ) : ∅ ∈ validCandidates N := by
+  simp only [validCandidates, Finset.mem_filter, Finset.mem_powerset]
+  refine ⟨Finset.empty_subset _, ?_, ?_⟩
+  · simp [unitFracSum]
+  · simp [unitFracSum]
+
+private lemma deviations_nonempty (N : ℕ) : (deviations N).Nonempty :=
+  ⟨1 - unitFracSum ∅, Finset.mem_image.mpr ⟨∅, empty_mem_validCandidates N, rfl⟩⟩
+
+/-- δ(N): the minimal nonzero value of |1 - Σ_{n∈A} 1/n| over subsets A ⊆ {1,...,N}
+    with the sum at most 1 and not equal to 1. Defined as the minimum over all valid
+    candidates. -/
+noncomputable def delta (N : ℕ) : ℝ :=
+  (deviations N).min' (deviations_nonempty N)
+
+/-- Every deviation in the set is positive. -/
+private lemma deviations_pos (N : ℕ) : ∀ x ∈ deviations N, 0 < x := by
+  intro x hx
+  simp only [deviations, Finset.mem_image] at hx
+  obtain ⟨A, hA, rfl⟩ := hx
+  simp only [validCandidates, Finset.mem_filter, Finset.mem_powerset] at hA
+  obtain ⟨_, hle, hne⟩ := hA
+  linarith [lt_of_le_of_ne hle hne]
+
+/-- δ(N) is positive for all N. (The original axiom required N ≥ 1 but this holds
+    unconditionally from the definition.) -/
+theorem delta_pos (N : ℕ) (_hN : 1 ≤ N) : 0 < delta N := by
+  exact deviations_pos N _ (Finset.min'_mem _ _)
 
 /- ## Lower Bound -/
 

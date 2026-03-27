@@ -43,54 +43,56 @@
     ],
     "originalContributions": [
       "unitFracSum definition",
-      "delta and delta_pos axioms",
+      "validCandidates and deviations definitions (powerset-based)",
+      "delta defined as Finset.min' over deviations (concrete, not axiomatized)",
+      "delta_pos theorem (proved: min of positive finset is positive)",
       "delta_lower_bound axiom (lcm/PNT lower bound)",
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
-    "axiomCount": 5,
-    "lineCount": 61,
-    "assumptions": "5 axioms: delta, delta_pos, delta_lower_bound, and 2 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 97,
+    "assumptions": "3 axioms: delta_lower_bound (PNT-based lcm estimate), tang_upper_bound (research result), erdos_311_conjecture (open). delta and delta_pos are now proved from concrete definitions."
   },
   "sections": [
     {
       "id": "header-setup",
       "title": "Module Header and Problem Statement",
       "startLine": 1,
-      "endLine": 23,
-      "summary": "Documents Erdős Problem #311 on the maximum number of unit fractions needed when denominators are bounded by b. Known: Ω(log b) ≤ f(b) ≤ O(b^{1/3+ε}). Connected to the Erdős-Straus conjecture on 4/n representations. Imports Mathlib."
+      "endLine": 21,
+      "summary": "Documents Erdős Problem #311 on the minimal deviation of unit fraction sums from 1. Known bounds: e^{-(1+o(1))N} (lower, from lcm/PNT) and exp(-cN/(log N log log N)³) (upper, Tang). Imports Mathlib."
     },
     {
       "id": "definitions",
-      "title": "Definitions",
-      "startLine": 24,
-      "endLine": 36,
-      "summary": "Defines `unitFracSum(A) = \\sum_{n \\in A} 1/n$`, axiomatizes `delta(N)` as the minimal nonzero deviation $|1 - \\sum 1/n|$, and proves `delta_pos`: $\\delta(N) > 0$ for $N \\ge 1$.",
-      "mathContext": "$\\text{unitFracSum}(A) = \\sum_{n \\in A} \\frac{1}{n}$ for $A \\subseteq \\{1, \\ldots, N\\}$. $\\delta(N) = \\min\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{unitFracSum}(A) \\le 1,\\, \\text{unitFracSum}(A) \\ne 1\\}$."
+      "title": "Definitions and δ(N) Construction",
+      "startLine": 23,
+      "endLine": 70,
+      "summary": "Defines `unitFracSum(A)`, `validCandidates(N)` (subsets of {1,...,N} with sum ≤ 1, ≠ 1), and `deviations(N)` (the set of 1 - unitFracSum(A) over valid candidates). Constructs `delta(N)` as `Finset.min'` of deviations — a concrete definition replacing the former axiom. Proves `delta_pos`: δ(N) > 0 by showing all deviations are positive and min' is in the set.",
+      "mathContext": "$\\delta(N) = \\min\\{1 - \\text{unitFracSum}(A) : A \\in \\text{validCandidates}(N)\\}$. Proved: $\\delta(N) > 0$ since each valid $A$ has $\\text{unitFracSum}(A) < 1$."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "startLine": 37,
-      "endLine": 43,
-      "summary": "Lower bound: $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
+      "startLine": 72,
+      "endLine": 78,
+      "summary": "Lower bound (axiom): $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
       "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "startLine": 44,
-      "endLine": 51,
-      "summary": "Tang's upper bound: $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
+      "startLine": 80,
+      "endLine": 86,
+      "summary": "Tang's upper bound (axiom): $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
       "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 52,
-      "endLine": 61,
-      "summary": "The conjecture: $\\exists c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$, formalized in $\\varepsilon$-$N_0$ form. Equivalently $-\\log\\delta(N)/N \\to c$.",
-      "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$. Equivalently, $-\\frac{\\log \\delta(N)}{N} \\to c$ as $N \\to \\infty$."
+      "startLine": 88,
+      "endLine": 97,
+      "summary": "The conjecture (axiom): $\\exists c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$, formalized in $\\varepsilon$-$N_0$ form.",
+      "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$."
     }
   ],
   "overview": {
@@ -136,17 +138,14 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Tactic",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic"
+      "Mathlib"
     ],
-    "opens": [],
+    "opens": ["Classical"],
     "namespace": null,
-    "lineCount": 61,
-    "axiomCount": 5,
-    "theoremCount": 0,
-    "definitionCount": 1
+    "lineCount": 97,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 5
   },
   "references": [
     {
