@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-lagrange-basis-def",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Lagrange Basis Polynomial",
+    "content": "Defines $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, the $k$-th Lagrange basis polynomial for a set of $n$ interpolation nodes. Each $l_k$ is a polynomial of degree $n-1$ satisfying the Kronecker property: $l_k(x_j) = \\delta_{kj}$. The `Finset.univ.erase k` construction elegantly excludes the $k$-th index from the product.",
+    "mathContext": "$l_k(x) = \\prod_{i=0, i \\neq k}^{n-1} \\frac{x - x_i}{x_k - x_i}$. These form a basis for $\\mathbb{R}_{n-1}[x]$ (polynomials of degree $\\leq n-1$) with the property that $p(x) = \\sum_k p(x_k) l_k(x)$ for any interpolant $p$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial interpolation", "Lagrange interpolation", "Kronecker delta", "barycentric weights"],
+    "prerequisites": ["finite products", "polynomial ring"]
+  },
+  {
+    "id": "ann-lebesgue-function-def",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Lebesgue Function",
+    "content": "Defines $\\lambda(x) = \\sum_k |l_k(x)|$, the Lebesgue function. Its supremum $\\Lambda_n = \\sup_x \\lambda(x)$ is the Lebesgue constant, which controls the error amplification of interpolation: $\\|f - p\\|_\\infty \\leq (1 + \\Lambda_n) \\cdot \\inf_{q \\in \\Pi_n} \\|f - q\\|_\\infty$. Thus $\\Lambda_n$ measures how far Lagrange interpolation is from optimal polynomial approximation.",
+    "mathContext": "$\\lambda(x) = \\sum_{k=0}^{n-1} |l_k(x)|$. The Lebesgue constant $\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda(x)$ satisfies $\\Lambda_n \\geq \\frac{2}{\\pi} \\log n - O(1)$ (this problem's result).",
+    "significance": "key",
+    "relatedConcepts": ["condition number", "error amplification", "best polynomial approximation", "operator norm"],
+    "prerequisites": ["polynomial interpolation", "absolute value", "operator theory"]
+  },
+  {
+    "id": "ann-kronecker-property",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 80, "endLine": 96 },
+    "type": "technique",
+    "title": "Kronecker Delta Property",
+    "content": "Two theorems prove $l_k(x_j) = \\delta_{kj}$. For $j \\neq k$, the product contains the factor $(x_j - x_j)/(x_k - x_j) = 0$, making the entire product vanish (`Finset.prod_eq_zero`). For $j = k$, every factor is $(x_k - x_i)/(x_k - x_i) = 1$ provided nodes are distinct, and `Finset.prod_eq_one` closes the proof. The distinctness hypothesis is essential — the interpolation problem is ill-posed for coincident nodes.",
+    "mathContext": "$l_k(x_j) = \\begin{cases} 1 & \\text{if } j = k \\\\ 0 & \\text{if } j \\neq k \\end{cases}$ for distinct nodes $x_0, \\ldots, x_{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Kronecker delta", "polynomial evaluation", "well-posedness of interpolation"],
+    "prerequisites": ["finite products", "distinct elements"]
+  },
+  {
+    "id": "ann-lebesgue-at-nodes",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 103, "endLine": 133 },
+    "type": "insight",
+    "title": "Lebesgue Function at Nodes",
+    "content": "Three properties of the Lebesgue function are established. Nonnegativity is immediate (sum of absolute values). The lower bound $\\lambda(x_k) \\geq 1$ follows from the single term $|l_k(x_k)| = 1$ via `Finset.single_le_sum`. The exact equality $\\lambda(x_k) = 1$ uses both Kronecker properties: $|l_k(x_k)| = 1$ and $|l_j(x_k)| = 0$ for $j \\neq k$. The `calc` proof chain provides a clean forward reasoning style.",
+    "mathContext": "$\\lambda(x_k) = \\sum_{j=0}^{n-1} |l_j(x_k)| = |l_k(x_k)| + \\sum_{j \\neq k} |l_j(x_k)| = 1 + 0 = 1$. Thus nodes are always global minima of $\\lambda$.",
+    "significance": "supporting",
+    "relatedConcepts": ["partition of unity", "interpolation nodes", "minimum of Lebesgue function"],
+    "prerequisites": ["Kronecker delta property", "absolute value properties"]
+  },
+  {
+    "id": "ann-erdos-1153-axiom",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 149, "endLine": 155 },
+    "type": "concept",
+    "title": "Erdős #1153: Universal Logarithmic Lower Bound",
+    "content": "The main result, axiomatized: for any $\\varepsilon > 0$ and any subinterval $[a,b] \\subseteq [-1,1]$, for all sufficiently large $n$, every set of $n$ distinct nodes in $[-1,1]$ has a point $x \\in [a,b]$ where $\\lambda(x) \\geq (2/\\pi - \\varepsilon) \\log n$. The $\\varepsilon$-formulation captures the asymptotic nature of the original result, which has a $-o(1)$ error term. The proof by Bernstein (1931) and Erdős (1961) uses potential-theoretic methods — the equilibrium measure of $[-1,1]$ is the arcsine distribution, whose density $(\\pi\\sqrt{1-x^2})^{-1}$ yields the $2/\\pi$ constant.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\forall [a,b] \\subseteq [-1,1],\\ \\exists N$ such that $\\forall n \\geq N$: $\\max_{x \\in [a,b]} \\lambda(x) \\geq \\left(\\frac{2}{\\pi} - \\varepsilon\\right) \\log n$.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue constant growth", "logarithmic lower bound", "potential theory", "arcsine distribution"],
+    "prerequisites": ["Lebesgue function", "asymptotic analysis", "logarithmic growth"]
+  },
+  {
+    "id": "ann-full-interval-corollary",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 158, "endLine": 164 },
+    "type": "technique",
+    "title": "Full Interval Corollary",
+    "content": "The full-interval version (Erdős's original 1961 result) follows by specializing $[a,b] = [-1,1]$. The proof is a single application of `erdos_1153` with $a = -1$, $b = 1$, with `le_rfl` and `norm_num` closing the trivial side conditions. This separates the subinterval generalization from the classical result cleanly.",
+    "mathContext": "Corollary: $\\max_{x \\in [-1,1]} \\lambda(x) \\geq (2/\\pi - \\varepsilon) \\log n$ for $n \\geq N(\\varepsilon)$. This is Erdős (1961).",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "Bernstein 1931", "Erdős 1961"],
+    "prerequisites": ["erdos_1153 axiom"]
+  },
+  {
+    "id": "ann-chebyshev-tightness",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 168, "endLine": 173 },
+    "type": "concept",
+    "title": "Chebyshev Tightness (Matching Upper Bound)",
+    "content": "The second axiom states that Chebyshev polynomial roots achieve the matching upper bound $(2/\\pi + \\varepsilon) \\log n$. Combined with the lower bound, this proves $2/\\pi$ is the exact asymptotic constant. Chebyshev nodes $x_k = \\cos((2k-1)\\pi/(2n))$ are the zeros of $T_n(x) = \\cos(n \\arccos x)$, and their optimality follows from the equioscillation property of the Chebyshev polynomials — the same property that underlies the Remez algorithm.",
+    "mathContext": "$\\exists$ nodes (Chebyshev roots) with $\\max_{x \\in [-1,1]} \\lambda(x) \\leq (2/\\pi + \\varepsilon) \\log n$. Combined: $\\Lambda_n \\sim (2/\\pi) \\log n$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "equioscillation theorem", "optimal node placement", "Remez algorithm"],
+    "prerequisites": ["Chebyshev polynomials", "minimax approximation"]
+  }
+]

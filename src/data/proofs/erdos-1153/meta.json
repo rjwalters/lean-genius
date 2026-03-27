@@ -66,7 +66,8 @@
       "**Lagrange interpolation and condition number**: The Lebesgue function λ(x) measures how much interpolation can amplify errors. It bounds the ratio of interpolation error to best polynomial approximation error.",
       "**Universal logarithmic growth**: No matter how cleverly nodes are placed in [-1,1], the Lebesgue function must grow at least as (2/π)log n. This is a fundamental limitation of polynomial interpolation.",
       "**Chebyshev optimality**: The roots of Chebyshev polynomials achieve the optimal constant 2/π, making them the best possible interpolation nodes.",
-      "**Subinterval universality**: The logarithmic growth cannot be avoided even on small subintervals — the phenomenon is truly local, not just global."
+      "**Subinterval universality**: The logarithmic growth cannot be avoided even on small subintervals — the phenomenon is truly local, not just global.",
+      "**The 2/π constant from potential theory**: The constant $2/\\pi$ arises from the equilibrium measure of $[-1,1]$ — the arcsine distribution with density $(\\pi\\sqrt{1-x^2})^{-1}$. Chebyshev nodes approximate this distribution, explaining their optimality."
     ],
     "prerequisites": [
       "Real analysis (continuity, compactness)",
@@ -80,28 +81,32 @@
       "title": "Definitions",
       "startLine": 42,
       "endLine": 68,
-      "summary": "Defines lagrangeBasis (Lagrange basis polynomial via finite product), lebesgueFunction (sum of absolute values), NodesInInterval (nodes in [-1,1]), and DistinctNodes (injectivity)."
+      "summary": "Defines lagrangeBasis (Lagrange basis polynomial via finite product), lebesgueFunction (sum of absolute values), NodesInInterval (nodes in [-1,1]), and DistinctNodes (injectivity).",
+      "mathContext": "$l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, $\\lambda(x) = \\sum_k |l_k(x)|$"
     },
     {
       "id": "lagrange-properties",
       "title": "Lagrange Basis Properties",
       "startLine": 69,
       "endLine": 93,
-      "summary": "Proves the Kronecker delta property: lₖ(xⱼ) = 0 for j ≠ k (zero factor in product) and lₖ(xₖ) = 1 (all factors cancel for distinct nodes)."
+      "summary": "Proves the Kronecker delta property: lₖ(xⱼ) = 0 for j ≠ k (zero factor in product) and lₖ(xₖ) = 1 (all factors cancel for distinct nodes).",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$: the fundamental property that makes Lagrange interpolation work"
     },
     {
       "id": "lebesgue-properties",
       "title": "Lebesgue Function Properties",
       "startLine": 94,
       "endLine": 126,
-      "summary": "Proves nonnegativity, the lower bound λ(xₖ) ≥ 1 at nodes, and the exact value λ(xₖ) = 1 at nodes for distinct node sets."
+      "summary": "Proves nonnegativity, the lower bound λ(xₖ) ≥ 1 at nodes, and the exact value λ(xₖ) = 1 at nodes for distinct node sets.",
+      "mathContext": "$\\lambda(x) \\geq 0$ always, and $\\lambda(x_k) = 1$ for distinct nodes (nodes are global minima)"
     },
     {
       "id": "main-result",
       "title": "Main Result and Tightness",
       "startLine": 127,
       "endLine": 160,
-      "summary": "States the main theorem (logarithmic lower bound with constant 2/π on arbitrary subintervals) and the matching Chebyshev upper bound as axioms. Proves the full-interval corollary."
+      "summary": "States the main theorem (logarithmic lower bound with constant 2/π on arbitrary subintervals) and the matching Chebyshev upper bound as axioms. Proves the full-interval corollary.",
+      "mathContext": "$\\max_{x \\in [a,b]} \\lambda(x) \\geq (2/\\pi - \\varepsilon) \\log n$ and Chebyshev tightness: $\\Lambda_n \\sim (2/\\pi) \\log n$"
     }
   ],
   "conclusion": {
