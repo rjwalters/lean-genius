@@ -36,11 +36,11 @@ noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
 
 -- ========= Aristotle Targets =========
 
-/-- When q = 0, there is no density constraint, so H(n; p, 0) = 1 for n ≥ 1.
-    Key steps: (1) Show 1 is in the sSup set (every graph has a 1-clique),
-    (2) Show 2 is NOT in the set (the empty graph is 2-clique-free). -/
-theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
-    cliqueGuarantee n p 0 = 1 := by sorry
+/-- PROVED in Erdos667Problem.lean (researcher-9, 2026-03-27).
+    Key steps: (1) 1 ∈ sSup set (singleton is 1-clique via Set.pairwise_singleton),
+    (2) m ≥ 2 ∉ set (empty graph ⊥ is m-clique-free, has no edges). -/
+-- theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
+--     cliqueGuarantee n p 0 = 1 := by sorry
 
 /-- H is monotone in n: more vertices can only help.
     Requires showing that if every n-vertex graph with density q has an
