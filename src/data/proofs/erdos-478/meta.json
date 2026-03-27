@@ -55,8 +55,8 @@
       "wilson_factorial_residue: (p-1)! ≡ -1 (mod p) (axiomatized)",
       "factorial_residues_nonzero: 0 ∉ A_p (axiomatized)",
       "factorial_residue_upper: |A_p| ≤ p-2 for p > 5 (axiomatized)",
-      "ratio_set_full: A_p/A_p = (Z/pZ)* (axiomatized)",
-      "factorial_residue_sqrt_lower: |A_p| ≥ √(p-1) (axiomatized)",
+      "ratio_set_full: A_p/A_p = (Z/pZ)* (PROVED — consecutive factorial ratios k!/(k-1)! = k cover all nonzero residues)",
+      "factorial_residue_sqrt_lower: |A_p|² ≥ p-1 (PROVED — ratio-map surjectivity argument via Finset.image cardinality)",
       "product_set_near_full: GSSV 2024 improved bound (axiomatized)",
       "erdos_478_conjecture: |A_p|/p → 1-1/e (axiomatized)",
       "random_model_heuristic: birthday-problem convergence (axiomatized)",
@@ -64,9 +64,9 @@
       "klurman_munsch_average: average result over primes (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
-    "lineCount": 125,
-    "assumptions": "6 axiom(s). Reduced from 10 by proving Wilson's theorem (Mathlib), factorial_residues_nonzero (p∤k!), factorial_as_multiplicative_walk (Nat.factorial_succ), klurman_munsch_average (placeholder → True)."
+    "axiomCount": 4,
+    "lineCount": 181,
+    "assumptions": "4 axiom(s). Reduced from 10 by proving Wilson's theorem (Mathlib), factorial_residues_nonzero (p∤k!), factorial_as_multiplicative_walk (Nat.factorial_succ), klurman_munsch_average (placeholder → True), ratio_set_full (consecutive factorial ratios cover all nonzero residues), factorial_residue_sqrt_lower (|A_p|² ≥ p-1 via ratio-map surjectivity)."
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #478 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 96), asking about the distribution of factorial residues $\\{k! \\bmod p\\}$ modulo primes. The conjecture $|A_p| \\sim (1-1/e)p$ is motivated by modeling factorials as a multiplicative random walk on $(\\mathbb{Z}/p\\mathbb{Z})^*$, where the birthday-problem heuristic predicts coverage fraction $1 - 1/e \\approx 0.6321$. Hardy and Subbarao (2002) studied the structure of $A_p$. Klurman and Munsch (2017) confirmed the conjecture holds on average over primes. Grebennikov, Sagdeev, Semchankau, and Vasilevskii (GSSV, 2024) established the current best unconditional lower bound $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$ using product-set estimates. The enormous gap between $\\sqrt{p}$ and the conjectured $0.63p$ makes this one of the most tantalizing open problems in combinatorial number theory. The problem also connects to Wilson's theorem ($(p-1)! \\equiv -1$), the sum-product phenomenon, and random matrix theory.",
@@ -171,9 +171,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 125,
-    "axiomCount": 6,
-    "theoremCount": 4,
+    "lineCount": 181,
+    "axiomCount": 4,
+    "theoremCount": 6,
     "definitionCount": 3
   },
   "crossReferences": [
