@@ -17,24 +17,49 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
-/- ## Greatest prime factor -/
+open Nat Finset
 
-/-- The greatest prime factor of `n`. Returns 0 for `n ≤ 1`. -/
-axiom greatestPrimeFactor : ℕ → ℕ
+/- ## Greatest prime factor
 
-/-- `greatestPrimeFactor n` is prime for `n ≥ 2`. -/
-axiom gpf_prime (n : ℕ) (hn : 2 ≤ n) :
-    (greatestPrimeFactor n).Prime
+Previously axiomatized (4 axioms: definition + 3 properties).
+Now defined concretely via `Nat.primeFactors` and `Finset.max'`,
+with all properties proved from the definition. -/
 
-/-- `greatestPrimeFactor n` divides `n`. -/
-axiom gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
-    greatestPrimeFactor n ∣ n
+/-- The greatest prime factor of `n`. Returns 0 for `n ≤ 1`.
+    Defined as the maximum of the prime factor set.
+    Previously an axiom; now concrete via Mathlib. -/
+noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n > 1 then n.primeFactors.max' (Nat.primeFactors_nonempty h) else 0
 
-/-- `greatestPrimeFactor n` is the largest prime dividing `n`. -/
-axiom gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
-    p ≤ greatestPrimeFactor n
+/-- `greatestPrimeFactor n` is prime for `n ≥ 2`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) :
+    (greatestPrimeFactor n).Prime := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  exact (Nat.mem_primeFactors.mp hmem).1
+
+/-- `greatestPrimeFactor n` divides `n`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor n ∣ n := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  exact (Nat.mem_primeFactors.mp hmem).2.1
+
+/-- `greatestPrimeFactor n` is the largest prime dividing `n`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
+    p ≤ greatestPrimeFactor n := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  apply Finset.le_max'
+  exact Nat.mem_primeFactors.mpr ⟨hp, hd, by omega⟩
 
 /- ## Bad intervals -/
 
@@ -89,9 +114,68 @@ axiom gpfSquare_asymptotic :
 
 /- ## Bad intervals and primes -/
 
-/-- Bad intervals cannot contain primes (since a prime `p` in `[u,v]`
-would make `p` the greatest prime factor, appearing exactly once in
-the product if `v < 2p`). -/
-axiom bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
+/-- Bad intervals with `v < 2u` cannot contain primes. If `p` is prime
+and `p ∈ [u,v]` with `v < 2u`, then the greatest prime factor P of ∏[u,v]
+satisfies P ≥ p ≥ u, so v < 2P. Thus only P itself is divisible by P in [u,v].
+Splitting the product as P * rest where P ∤ rest gives P² ∤ P * rest,
+contradicting the bad condition. PROVED. -/
+theorem bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
     v < 2 * u →
-      ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False
+      ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False := by
+  intro hv2u p hp hup hpv
+  obtain ⟨huv, hP2⟩ := hbad
+  set S := Finset.Icc u v with hS
+  set prod := S.prod id with hprod_def
+  set P := greatestPrimeFactor prod with hP_def
+  -- Product ≥ 2 (contains prime p)
+  have hprod_ge2 : 2 ≤ prod := by
+    have hp_mem : p ∈ S := Finset.mem_Icc.mpr ⟨hup, hpv⟩
+    calc prod = S.prod id := rfl
+      _ ≥ id p := Finset.single_le_prod' (fun m hm => by simp [Finset.mem_Icc] at hm; omega) hp_mem
+      _ = p := rfl
+      _ ≥ 2 := hp.two_le
+  -- P is prime, divides product, and is the largest such
+  have hPprime := gpf_prime prod hprod_ge2
+  have hP_dvd := gpf_dvd prod hprod_ge2
+  -- p divides the product (p ∈ S and prod = ∏ id)
+  have hp_dvd : p ∣ prod := Finset.dvd_prod_of_mem id (Finset.mem_Icc.mpr ⟨hup, hpv⟩)
+  -- P ≥ p ≥ u, so v < 2u ≤ 2P
+  have hPge_p : p ≤ P := gpf_largest prod p hprod_ge2 hp hp_dvd
+  have hPge_u : u ≤ P := le_trans hup hPge_p
+  have hv_lt_2P : v < 2 * P := lt_of_lt_of_le hv2u (Nat.mul_le_mul_left 2 hPge_u)
+  -- P ∈ [u,v]: P divides product, so P divides some m ∈ S with P ≤ m ≤ v
+  have hP_mem : P ∈ S := by
+    have hP_dvd_some := (hPprime.prime.dvd_finset_prod_iff id).mp hP_dvd
+    obtain ⟨m, hm_mem, hP_dvd_m⟩ := hP_dvd_some
+    have hm_bounds := Finset.mem_Icc.mp hm_mem
+    have hP_le_m : P ≤ m := Nat.le_of_dvd (by omega) hP_dvd_m
+    exact Finset.mem_Icc.mpr ⟨hPge_u, le_trans hP_le_m hm_bounds.2⟩
+  -- Key: P is the ONLY element of S divisible by P
+  -- (any kP with k≥2 gives kP ≥ 2P > v, out of range)
+  have hP_unique : ∀ m ∈ S, P ∣ m → m = P := by
+    intro m hm hPm
+    have hm_bounds := Finset.mem_Icc.mp hm
+    obtain ⟨k, rfl⟩ := hPm
+    have hk_pos : 0 < k := by
+      by_contra h; push_neg at h; simp at h; omega
+    have : k * P ≤ v := hm_bounds.2
+    have : k * P < 2 * P := le_trans this (le_of_lt hv_lt_2P)
+    have : k < 2 := by omega
+    omega
+  -- Split: prod = P * rest
+  set rest := (S.erase P).prod id with hrest_def
+  have hprod_split : P * rest = prod := Finset.mul_prod_erase S id hP_mem
+  -- P ∤ rest (no element of S \ {P} is divisible by P)
+  have hP_ndvd_rest : ¬ P ∣ rest := by
+    intro h
+    have := (hPprime.prime.dvd_finset_prod_iff id).mp h
+    obtain ⟨m, hm_erase, hP_dvd_m⟩ := this
+    exact Finset.ne_of_mem_erase hm_erase (hP_unique m (Finset.mem_of_mem_erase hm_erase) hP_dvd_m)
+  -- P² | prod = P * rest → P | rest (cancel P from both sides)
+  have hP_dvd_rest : P ∣ rest := by
+    have hP2_eq : P ^ 2 = P * P := sq P
+    rw [← hprod_split] at hP2
+    rw [hP2_eq] at hP2
+    exact (mul_dvd_mul_iff_left hPprime.ne_zero).mp hP2
+  -- Contradiction: P ∣ rest and P ∤ rest
+  exact hP_ndvd_rest hP_dvd_rest

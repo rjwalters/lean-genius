@@ -78,29 +78,21 @@ axiom erdos_szekeres_lower (n : ℕ) (hn : n ≥ 1) :
 **Erdős-Szekeres (1959) growth:**
 lim f(n)^{1/n} = 1
 -/
-axiom erdos_szekeres_growth :
-    Filter.Tendsto (fun n => (f n) ^ (1 / n : ℝ)) Filter.atTop (nhds 1)
 
 /--
 **Erdős probabilistic bound:**
 log f(n) ≪ n^{1-c} for some c > 0
 -/
-axiom erdos_probabilistic :
-    ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, ∀ n ≥ 2, Real.log (f n) ≤ C * n^(1 - c)
 
 /--
 **Atkinson (1961):**
 log f(n) ≪ n^{1/2} log n
 -/
-axiom atkinson_bound (n : ℕ) (hn : n ≥ 2) :
-    Real.log (f n) ≤ (n : ℝ)^(1/2 : ℝ) * Real.log n
 
 /--
 **Odlyzko (1982):**
 log f(n) ≪ n^{1/3} (log n)^{4/3}
 -/
-axiom odlyzko_bound (n : ℕ) (hn : n ≥ 2) :
-    ∃ C : ℝ, Real.log (f n) ≤ C * (n : ℝ)^(1/3 : ℝ) * (Real.log n)^(4/3 : ℝ)
 
 /-
 ## Part III: The Main Question
@@ -153,9 +145,6 @@ noncomputable def fDistinct (n : ℕ) : ℝ :=
 **Bourgain-Chang (2018):**
 log f*(n) ≪ (n log n)^{1/2} log log n
 -/
-axiom bourgain_chang_bound (n : ℕ) (hn : n ≥ 3) :
-    ∃ C : ℝ, Real.log (fDistinct n) ≤
-      C * ((n : ℝ) * Real.log n)^(1/2 : ℝ) * Real.log (Real.log n)
 
 /-
 ## Part VI: Connection to Chowla Cosine Problem
@@ -173,9 +162,6 @@ def chowlaMinimum (A : Finset ℤ) : ℝ :=
 If for any set A of n integers there exists θ with ∑_{a ∈ A} cos(aθ) < -Mₙ,
 then log f*(n) ≪ Mₙ log n.
 -/
-axiom atkinson_chowla_connection (n : ℕ) (M : ℝ) :
-    (∀ A : Finset ℤ, A.card = n → chowlaMinimum A < -M) →
-    ∃ C : ℝ, Real.log (fDistinct n) ≤ C * M * Real.log n
 
 /-
 ## Part VII: Properties of the Product
@@ -194,10 +180,6 @@ theorem product_at_root_of_unity (a : Fin n → ℕ) (k : ℕ) (hk : k ≥ 1)
 **Lower bound at primitive root:**
 There exists a root of unity where the product is not too small.
 -/
-axiom primitive_root_lower_bound (a : Fin n → ℕ) (hn : n ≥ 1) :
-    ∃ k : ℕ, k ≤ ∏ i, (a i + 1) ∧
-    ∃ ζ : ℂ, Complex.abs ζ = 1 ∧ ζ^k = 1 ∧ ζ ≠ 1 ∧
-      Complex.abs (productPoly a ζ) ≥ 1
 
 /-
 ## Part VIII: Summary of Bounds
@@ -220,9 +202,6 @@ Upper: log f(n) ≤ C (log n)^4
 
 The true growth rate is somewhere between these.
 -/
-axiom bounds_summary (n : ℕ) (hn : n ≥ 2) :
-    (1/2 : ℝ) * Real.log n ≤ Real.log (f n) ∧
-    ∃ C : ℝ, Real.log (f n) ≤ C * (Real.log n)^4
 
 /-
 ## Part IX: Summary

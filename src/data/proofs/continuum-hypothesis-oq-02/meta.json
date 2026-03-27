@@ -69,9 +69,9 @@
       "Easton-Konig characterization: complete picture of ZFC constraints on 2^aleph_0"
     ],
     "dateAdded": "2026-03-27",
-    "axiomCount": 4,
+    "axiomCount": 2,
     "lineCount": 574,
-    "assumptions": "4 axioms: konig_cofinality (cf(2^aleph_0) > aleph_0), bounding_number_uncountable (aleph_1 <= b), dominating_le_continuum (d <= 2^aleph_0), MA_implies_b_eq_continuum (MA -> b = 2^aleph_0). MartinsAxiom is opaque (not an axiom). Previously 8 axioms; 4 eliminated by proving from Mathlib/existing results.",
+    "assumptions": "2 axioms: bounding_number_uncountable (ℵ₁ ≤ b, requires diagonalization), MA_implies_b_eq_continuum (MA → b = 2^ℵ₀, deep forcing result). Previously 8 axioms; 6 eliminated: 4 by Mathlib definitions, konig_cofinality by Cardinal.lt_cof_power, dominating_le_continuum trivially.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -180,8 +180,8 @@
     ],
     "namespace": "ContinuumHypothesisOQ02",
     "lineCount": 574,
-    "axiomCount": 4,
-    "theoremCount": 31,
+    "axiomCount": 2,
+    "theoremCount": 33,
     "definitionCount": 6
   },
   "crossReferences": [

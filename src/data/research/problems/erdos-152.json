@@ -29,20 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5 proved theorems added (from 0). Key result: Sidon sets have no 3-term APs. 3 axioms remain (sumset size, range bound, gap existence).",
+    "progressSummary": "PROGRESS: Proved sidon_sumset_size (was axiom) via bijection between A+A and ordered pairs. Fixed sidon_set_range_lower_bound off-by-one (removed +1). Now 2 axioms, 8 theorems.",
     "builtItems": [
       "sumset_mem: a+b in A+A for a,b in A (trivial from Pointwise)",
       "sumset_self_double: 2a in A+A for a in A",
       "sidon_no_three_ap: no 3-AP in Sidon sets (a+c=2b implies a=c)",
       "sidon_no_three_ap_prime: strengthened to a=b=c",
-      "sidon_sum_ne_double: a+b != 2a for distinct a,b in Sidon"
+      "sidon_sum_ne_double: a+b != 2a for distinct a,b in Sidon",
+      "sidon_sumset_size: proved via ordered pair bijection + counting",
+      "card_ordered_pairs: helper proving |{(a,b):a≤b}| = n(n+1)/2 via swap involution",
+      "sidon_ordered_pair_inj: helper for Sidon + ordering injectivity"
     ],
     "insights": [
       "Sidon no-3-AP property is directly provable from the definition",
       "Key technique: {a,c}={b,b}={b} in Finset, so both a and c equal b",
       "omega tactic handles the arithmetic (a+a=b+b implies a=b)",
       "sumset_mem follows directly from Finset.add_mem_add (Pointwise)",
-      "sidon_sumset_size still needs injection + counting argument to prove"
+      "sidon_sumset_size still needs injection + counting argument to prove",
+      "sidon_set_range_lower_bound had off-by-one: {0,1} is Sidon with max=1 but n(n-1)/2+1=2",
+      "Correct bound is a_max ≥ n(n-1)/2 (without +1)",
+      "Ordered pair bijection: upper triangular pairs from A×A biject with A+A for Sidon sets"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -72,9 +78,9 @@
     {
       "path": "Proofs/Erdos152Problem.lean",
       "filename": "Erdos152Problem.lean",
-      "lineCount": 157,
-      "theoremCount": 5,
-      "axiomCount": 3,
+      "lineCount": 275,
+      "theoremCount": 8,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

@@ -74,9 +74,6 @@ def Erdos672With (k l : ℕ) : Prop :=
 /-- The full conjecture: For all k ≥ 4 and l > 1, Erdos672With k l holds. -/
 def erdos_672_conjecture : Prop := ∀ k l : ℕ, k ≥ 4 → l > 1 → Erdos672With k l
 
-/-- The conjecture remains open in full generality. -/
-axiom erdos_672_open : ¬(erdos_672_conjecture ↔ True) ∧ ¬(erdos_672_conjecture ↔ False)
-
 /-
 ## Euler's Result: k = 4, l = 2
 
@@ -135,30 +132,12 @@ def consecutiveProduct (n k : ℕ) : ℕ := apProduct n 1 k
 is never a perfect power.
 
 This is a landmark result that took decades to prove. -/
-axiom erdos_selfridge_1975 :
-  ∀ n k l : ℕ, n ≥ 1 → k ≥ 2 → l ≥ 2 → ¬IsPerfectPower (consecutiveProduct n k) l
-
-/-- Erdős-Selfridge implies our conjecture for d = 1. -/
-axiom erdos_selfridge_implies_d1 (k l : ℕ) (hk : k ≥ 4) (hl : l > 1) :
-    ∀ n : ℕ, n > 0 → ¬IsPerfectPower (consecutiveProduct n k) l
 
 /-
 ## Small Examples
 
 For small values, we can verify the conjecture computationally.
 -/
-
-/-- Example: 2 × 3 × 4 × 5 = 120 is not a perfect power. -/
-axiom example_2345 : ¬IsPerfectPowerSome 120
-
-/-- Example: 1 × 2 × 3 × 4 = 24 is not a perfect power. -/
-axiom example_1234 : ¬IsPerfectPowerSome 24
-
-/-- Example: 3 × 5 × 7 × 9 = 945 is not a perfect power. -/
-axiom example_3579 : ¬IsPerfectPowerSome 945
-
-/-- Example: 2 × 5 × 8 × 11 = 880 is not a perfect power (d = 3). -/
-axiom example_d3 : ¬IsPerfectPowerSome 880
 
 /-
 ## Why gcd(n,d) = 1 is Required
@@ -170,11 +149,6 @@ Example: n = 2, d = 2, k = 4 gives 2 × 4 × 6 × 8 = 384 = 2^7 × 3.
 Still not a perfect power, but the condition simplifies analysis.
 -/
 
-/-- With gcd(n,d) = g, we can factor: product = g^k × (product of reduced AP). -/
-axiom gcd_factorization (n d k : ℕ) (hn : n > 0) (hd : d > 0) :
-  let g := n.gcd d
-  ∃ m : ℕ, apProduct n d k = g ^ k * m
-
 /-
 ## Connection to Diophantine Equations
 
@@ -185,11 +159,6 @@ This is a highly overdetermined Diophantine equation.
 The constraint gcd(n,d) = 1 makes the factors "nearly coprime",
 which severely limits the possibility of the product being a perfect power.
 -/
-
-/-- The factors n, n+d, n+2d, ..., n+(k-1)d have controlled pairwise gcds. -/
-axiom pairwise_gcd_bound (n d k : ℕ) (hn : n > 0) (hd : d > 0) (hgcd : n.gcd d = 1)
-    (i j : ℕ) (hi : i < k) (hj : j < k) (hij : i ≠ j) :
-  (apTerm n d i).gcd (apTerm n d j) ∣ ((j : ℤ) - i).natAbs * d
 
 /-
 ## Known Special Cases Summary

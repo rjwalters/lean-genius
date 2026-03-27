@@ -69,11 +69,6 @@ lower density. This was proved by Romanoff in 1934.
 
 /-- **Romanoff's Theorem (1934)**: The set of integers of the form 2^k + p
 (where p is prime or 1) has positive lower density. -/
-axiom romanoff_theorem : 0 < lowerDensity (TwoPowAddSet 1)
-
-/-- The lower density of TwoPowAddSet 1 is approximately 0.0868... -/
-axiom romanoff_density_value :
-    0.08 < lowerDensity (TwoPowAddSet 1) ∧ lowerDensity (TwoPowAddSet 1) < 0.10
 
 /-
 ## Main Conjecture (OPEN)
@@ -87,19 +82,10 @@ the density of TwoPowAddSet r is at least 1 - ε?
 
 This asks whether almost all integers can be represented as 2^k + n
 where n has a bounded number of prime factors. -/
-axiom erdos_851_conjecture :
-    ∀ ε : ℝ, ε > 0 → ∃ r : ℕ, 1 - ε ≤ lowerDensity (TwoPowAddSet r)
 
 /-
 ## Density Properties
 -/
-
-/-- The density of TwoPowAddSet r is monotonically increasing in r. -/
-axiom density_mono (r s : ℕ) (hr : r ≤ s) :
-    lowerDensity (TwoPowAddSet r) ≤ lowerDensity (TwoPowAddSet s)
-
-/-- The limiting density is at most 1. -/
-axiom density_le_one (r : ℕ) : lowerDensity (TwoPowAddSet r) ≤ 1
 
 /-
 ## The Key Question
@@ -110,23 +96,12 @@ If no, there's a positive proportion of integers that cannot be
 written as 2^k + n for any n with bounded prime factors.
 -/
 
-/-- The conjecture is equivalent to asking if lim_{r→∞} density(r) = 1. -/
-axiom conjecture_iff_limit_one :
-    (∀ ε : ℝ, ε > 0 → ∃ r : ℕ, 1 - ε ≤ lowerDensity (TwoPowAddSet r)) ↔
-    (∀ ε : ℝ, ε > 0 → ∃ r₀ : ℕ, ∀ r ≥ r₀, 1 - ε < lowerDensity (TwoPowAddSet r))
-
 /-
 ## Related Results
 -/
 
 /-- The set of integers NOT of the form 2^k + p (prime) has positive density.
 This is the "uncovered" portion that Romanoff's theorem leaves. -/
-axiom uncovered_by_primes_positive :
-    0 < lowerDensity ((TwoPowAddSet 1)ᶜ)
-
-/-- Erdős-Odlyzko (1979): Improved lower bounds on Romanoff density. -/
-axiom erdos_odlyzko_bound :
-    0.0868 < lowerDensity (TwoPowAddSet 1)
 
 /-
 ## Examples
@@ -150,10 +125,6 @@ theorem nine_mem : 9 ∈ TwoPowAddSet 0 :=
 theorem seventeen_mem : 17 ∈ TwoPowAddSet 0 :=
   ⟨4, 1, rfl, by simp [Nat.primeFactors]⟩
 
-/-- For any prime p, 2^k + p ∈ TwoPowAddSet 1. -/
-axiom twoPow_add_prime_mem (k : ℕ) (p : ℕ) (hp : p.Prime) :
-    2^k + p ∈ TwoPowAddSet 1
-
 /-
 ## Connection to Covering Congruences
 
@@ -167,9 +138,6 @@ cannot be written as 2^k + n for small n, limiting representations.
 
 /-- The covering problem: for large r, does TwoPowAddSet r contain
 almost all integers? -/
-axiom covering_problem_open :
-    (∀ r : ℕ, ((TwoPowAddSet r)ᶜ : Set ℕ).Nonempty) ∨
-    (∃ r : ℕ, ∀ m : ℕ, m ≥ 2 → m ∈ TwoPowAddSet r)
 
 /-
 ## Historical Context

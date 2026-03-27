@@ -121,8 +121,6 @@ def Erdos620Statement : Prop :=
     Every K₄-free graph on n vertices has an independent set of size Ω(√n).
     Independent sets are triangle-free, so f(n) ≥ c√n for some c > 0.
 -/
-axiom trivial_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 1, (erdosRogers n : ℝ) ≥ c * Real.sqrt n
 
 /-- **Shearer's Lower Bound**
 
@@ -136,25 +134,16 @@ axiom shearer_lower_bound :
 
     f(n) ≪ n^{7/10 + o(1)}
 -/
-axiom bollobas_hind_upper :
-    ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1,
-      (erdosRogers n : ℝ) ≤ C * (n : ℝ) ^ ((7:ℝ)/10 + ε)
 
 /-- **Krivelevich Upper Bound (1994)**
 
     f(n) ≪ n^{2/3} · (log n)^{1/3}
 -/
-axiom krivelevich_upper :
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 2,
-      (erdosRogers n : ℝ) ≤ C * (n : ℝ) ^ ((2:ℝ)/3) * (Real.log n) ^ ((1:ℝ)/3)
 
 /-- **Wolfovitz Upper Bound (2013)**
 
     f(n) ≪ n^{1/2} · (log n)^{120}
 -/
-axiom wolfovitz_upper :
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 2,
-      (erdosRogers n : ℝ) ≤ C * Real.sqrt n * (Real.log n) ^ (120 : ℝ)
 
 /-- **Mubayi-Verstraete Upper Bound (2024)**
 
@@ -212,12 +201,6 @@ noncomputable def ramsey3k (k : ℕ) : ℕ :=
     HasTriangle G ∨ (∃ S : Finset (Fin n), S.card ≥ k ∧
       ∀ i j, i ∈ S → j ∈ S → i ≠ j → ¬G.Adj i j)}
 
-/-- R(3,k) ≈ k² / log k (Kim 1995, refined by others). -/
-axiom ramsey_3k_bound (k : ℕ) (hk : k ≥ 3) :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-      c * k^2 / Real.log k ≤ ramsey3k k ∧
-      (ramsey3k k : ℝ) ≤ C * k^2 / Real.log k
-
 /-- Connection: f(n) relates to finding independent sets in triangle-free subgraphs. -/
 theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
     erdosRogers n ≥ k ∨ ∀ (G : SimpleGraph (Fin n)), K4Free G → HasTriangle G := by
@@ -230,16 +213,6 @@ theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
     The probabilistic construction shows extremal K₄-free graphs exist
     with small maximum triangle-free induced subgraphs.
 -/
-axiom probabilistic_upper_bound :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      ∃ (G : SimpleGraph (Fin n)), K4Free G ∧
-        (maxTriangleFreeInduced G : ℝ) ≤ (1 + ε) * Real.sqrt n * Real.log n
-
-/-- Dependent random choice gives lower bounds. -/
-axiom dependent_random_choice_lower :
-    ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 4,
-      ∀ (G : SimpleGraph (Fin n)), K4Free G →
-        (maxTriangleFreeInduced G : ℝ) ≥ c * Real.sqrt n
 
 /- ## Part X: Generalizations -/
 
@@ -254,12 +227,6 @@ noncomputable def generalizedErdosRogers (s t n : ℕ) : ℕ :=
 theorem original_is_f43 (n : ℕ) :
     erdosRogers n = generalizedErdosRogers 4 3 n := by
   sorry
-
-/-- Known: f_{s,2}(n) ≈ n^{1/(s-1)} (independent sets in K_s-free graphs). -/
-axiom ramsey_independent_set (s : ℕ) (hs : s ≥ 3) :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n ≥ 1,
-      c * (n : ℝ) ^ (1 / (s - 1 : ℝ)) ≤ generalizedErdosRogers s 2 n ∧
-      (generalizedErdosRogers s 2 n : ℝ) ≤ C * (n : ℝ) ^ (1 / (s - 1 : ℝ)) * Real.log n
 
 /- ## Part XI: Open Status -/
 

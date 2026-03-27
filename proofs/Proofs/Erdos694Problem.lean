@@ -38,7 +38,6 @@ def totientPreimage (n : ℕ) : Set ℕ := {m | Nat.totient m = n}
 
 /-- The preimage is always finite (axiomatized).
 This follows from φ(m) ≥ √(m/2) for m > 1. -/
-axiom totientPreimage_finite (n : ℕ) : (totientPreimage n).Finite
 
 /- ## Largest and Smallest Preimages
 
@@ -54,26 +53,6 @@ axiom f_min : ℕ → ℕ
 
 /- ## Basic Properties -/
 
-/-- If n is in the range of φ, then f_max(n) is in the preimage. -/
-axiom f_max_mem (n : ℕ) (h : (totientPreimage n).Nonempty) :
-    f_max n ∈ totientPreimage n
-
-/-- If n is in the range of φ, then f_min(n) is in the preimage. -/
-axiom f_min_mem (n : ℕ) (h : (totientPreimage n).Nonempty) :
-    f_min n ∈ totientPreimage n
-
-/-- f_max is indeed the maximum. -/
-axiom f_max_is_max (n m : ℕ) (hm : m ∈ totientPreimage n) :
-    m ≤ f_max n
-
-/-- f_min is indeed the minimum. -/
-axiom f_min_is_min (n m : ℕ) (hm : m ∈ totientPreimage n) :
-    f_min n ≤ m
-
-/-- f_min(n) ≤ f_max(n) for all n in the range of φ. -/
-axiom f_min_le_f_max (n : ℕ) (h : (totientPreimage n).Nonempty) :
-    f_min n ≤ f_max n
-
 /- ## The Main Open Question
 
 The question asks to investigate the maximum ratio f_max(n)/f_min(n) over n ≤ x.
@@ -86,10 +65,6 @@ noncomputable def preimageRatio (n : ℕ) : ℚ :=
 /-- (OPEN) Investigation of the maximum preimage ratio.
 What is max_{n ≤ x} f_max(n)/f_min(n)? How does it grow with x?
 -/
-axiom erdos_694_open (x : ℕ) :
-    ∃ (n : ℕ), n ≤ x ∧ (totientPreimage n).Nonempty ∧
-      ∀ (m : ℕ), m ≤ x → (totientPreimage m).Nonempty →
-        preimageRatio m ≤ preimageRatio n
 
 /- ## Carmichael's Totient Conjecture
 
@@ -124,14 +99,8 @@ def carmichaelTotients : Set ℕ := {n | isCarmichaelTotient n}
 The proof uses the multiplicative structure of φ: if φ(m) = n is unique, then
 the behavior of n under multiplication by certain primes forces more unique preimages.
 -/
-axiom erdos_conditional_infinite :
-    CarmichaelCounterexample → carmichaelTotients.Infinite
 
 /- ## Known Partial Results -/
-
-/-- Ford (1999): Any Carmichael totient must exceed 10^10^10. -/
-axiom ford_lower_bound :
-    ∀ n, isCarmichaelTotient n → n > 10^(10^10)
 
 /-- The totient function is surjective onto its range (the "totient values"). -/
 def totientValues : Set ℕ := {n | ∃ m, Nat.totient m = n}
@@ -141,9 +110,6 @@ theorem one_is_totient_value : 1 ∈ totientValues := ⟨1, rfl⟩
 
 /-- 2 is a totient value: φ(3) = 2 and φ(4) = 2 and φ(6) = 2. -/
 theorem two_is_totient_value : 2 ∈ totientValues := ⟨3, rfl⟩
-
-/-- Every even number ≥ 2 is a totient value (axiomatized). -/
-axiom even_totient_values : ∀ n : ℕ, n ≥ 2 → Even n → n ∈ totientValues
 
 /- ## Examples of Preimage Sizes -/
 

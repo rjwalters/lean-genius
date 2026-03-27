@@ -30,6 +30,7 @@ References:
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Data.Real.Basic
@@ -51,20 +52,44 @@ The nth prime number (0-indexed).
 -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
-/-- The nth prime is indeed prime. -/
-axiom nthPrime_prime (n : ℕ) : (nthPrime n).Prime
+/-- The nth prime is indeed prime.
+    Previously axiomatized; now proved from Nat.nth definition. -/
+theorem nthPrime_prime (n : ℕ) : (nthPrime n).Prime := by
+  unfold nthPrime; exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
-/-- nthPrime is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
+/-- nthPrime is strictly increasing.
+    Previously axiomatized; now proved from Nat.nth_strictMono. -/
+theorem nthPrime_strictMono : StrictMono nthPrime := by
+  intro a b hab; unfold nthPrime; exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
 
-/-- The first prime is 2. -/
-axiom nthPrime_zero : nthPrime 0 = 2
+/-- The first prime is 2.
+    Previously axiomatized; now proved from Mathlib. -/
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  unfold nthPrime; exact Nat.nth_prime_zero_eq_two
 
-/-- The second prime is 3. -/
-axiom nthPrime_one : nthPrime 1 = 3
+/-- The second prime is 3.
+    Previously axiomatized; now proved from Mathlib. -/
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  unfold nthPrime; exact Nat.nth_prime_one_eq_three
 
-/-- The third prime is 5. -/
-axiom nthPrime_two : nthPrime 2 = 5
+/-- The third prime is 5.
+    Previously axiomatized; now proved from Mathlib. -/
+theorem nthPrime_two : nthPrime 2 = 5 := by
+  unfold nthPrime; exact Nat.nth_prime_two_eq_five
+
+/-- The fourth prime is 7. Helper for primeGap computations. -/
+private theorem nthPrime_three : nthPrime 3 = 7 := by
+  unfold nthPrime
+  have h_count : Nat.count Nat.Prime 7 = 3 := by decide
+  have h_prime : Nat.Prime 7 := by decide
+  rw [← h_count]; exact Nat.nth_count h_prime
+
+/-- The fifth prime is 11. Helper for primeGap computations. -/
+private theorem nthPrime_four : nthPrime 4 = 11 := by
+  unfold nthPrime
+  have h_count : Nat.count Nat.Prime 11 = 4 := by decide
+  have h_prime : Nat.Prime 11 := by decide
+  rw [← h_count]; exact Nat.nth_count h_prime
 
 /- ## Part II: Prime Gaps -/
 
@@ -87,17 +112,25 @@ theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
   have h := nthPrime_strictMono (Nat.lt_succ_self n)
   omega
 
-/-- The first prime gap is 1 (gap from 2 to 3). -/
-axiom primeGap_zero : primeGap 0 = 1
+/-- The first prime gap is 1 (gap from 2 to 3).
+    Previously axiomatized; now proved from nthPrime values. -/
+theorem primeGap_zero : primeGap 0 = 1 := by
+  unfold primeGap; rw [nthPrime_zero, nthPrime_one]
 
-/-- The second prime gap is 2 (gap from 3 to 5). -/
-axiom primeGap_one : primeGap 1 = 2
+/-- The second prime gap is 2 (gap from 3 to 5).
+    Previously axiomatized; now proved from nthPrime values. -/
+theorem primeGap_one : primeGap 1 = 2 := by
+  unfold primeGap; rw [nthPrime_one, nthPrime_two]
 
-/-- The third prime gap is 2 (gap from 5 to 7). -/
-axiom primeGap_two : primeGap 2 = 2
+/-- The third prime gap is 2 (gap from 5 to 7).
+    Previously axiomatized; now proved from nthPrime values. -/
+theorem primeGap_two : primeGap 2 = 2 := by
+  unfold primeGap; rw [nthPrime_two, nthPrime_three]
 
-/-- The fourth prime gap is 4 (gap from 7 to 11). -/
-axiom primeGap_three : primeGap 3 = 4
+/-- The fourth prime gap is 4 (gap from 7 to 11).
+    Previously axiomatized; now proved from nthPrime values. -/
+theorem primeGap_three : primeGap 3 = 4 := by
+  unfold primeGap; rw [nthPrime_three, nthPrime_four]
 
 /- ## Part III: Natural Density -/
 
@@ -153,11 +186,15 @@ This means p_n, p_{n+1}, p_{n+2} form an arithmetic progression!
 -/
 def gapEqualSet : Set ℕ := { n | primeGap n = primeGap (n + 1) }
 
-/-- 0 is in gapIncreasingSet since primeGap 0 = 1 < 2 = primeGap 1. -/
-axiom zero_mem_gapIncreasingSet : 0 ∈ gapIncreasingSet
+/-- 0 is in gapIncreasingSet since primeGap 0 = 1 ≤ 2 = primeGap 1.
+    Previously axiomatized; now proved from primeGap values. -/
+theorem zero_mem_gapIncreasingSet : 0 ∈ gapIncreasingSet := by
+  simp only [gapIncreasingSet, mem_setOf_eq]; rw [primeGap_zero, primeGap_one]
 
-/-- 1 is in gapEqualSet since primeGap 1 = primeGap 2 = 2. -/
-axiom one_mem_gapEqualSet : 1 ∈ gapEqualSet
+/-- 1 is in gapEqualSet since primeGap 1 = primeGap 2 = 2.
+    Previously axiomatized; now proved from primeGap values. -/
+theorem one_mem_gapEqualSet : 1 ∈ gapEqualSet := by
+  simp only [gapEqualSet, mem_setOf_eq]; rw [primeGap_one, primeGap_two]
 
 /-- gapEqualSet is the intersection of gapIncreasingSet and gapDecreasingSet. -/
 theorem gapEqualSet_eq_inter :
@@ -212,9 +249,14 @@ the gaps are equal: d_n = d_{n+1}.
 def threePrimesInAP (n : ℕ) : Prop :=
   nthPrime n + nthPrime (n + 2) = 2 * nthPrime (n + 1)
 
-/-- Equal gaps iff three consecutive primes form AP. -/
-axiom gapEqual_iff_ap (n : ℕ) :
-    n ∈ gapEqualSet ↔ threePrimesInAP n
+/-- Equal gaps iff three consecutive primes form AP.
+    Previously axiomatized; now proved by omega on ℕ subtraction. -/
+theorem gapEqual_iff_ap (n : ℕ) :
+    n ∈ gapEqualSet ↔ threePrimesInAP n := by
+  simp only [gapEqualSet, mem_setOf_eq, primeGap, threePrimesInAP]
+  have h1 := nthPrime_strictMono (Nat.lt_succ_self n)
+  have h2 := nthPrime_strictMono (Nat.lt_succ_self (n + 1))
+  constructor <;> intro h <;> omega
 
 /-- If 218c holds, there are infinitely many 3-term APs of consecutive primes. -/
 theorem infinitely_many_3ap_from_218c (h : gapEqualSet.Infinite) :
@@ -225,14 +267,17 @@ theorem infinitely_many_3ap_from_218c (h : gapEqualSet.Infinite) :
 
 /- ## Part VII: Known Examples of Equal Gaps -/
 
-/-- n=1: primes 3,5,7 form AP with common difference 2. -/
-axiom example_ap_1 : 1 ∈ gapEqualSet
+/-- n=1: primes 3,5,7 form AP with common difference 2.
+    Previously axiomatized; now proved from gap values. -/
+theorem example_ap_1 : 1 ∈ gapEqualSet := one_mem_gapEqualSet
 
 /-- The set of n where (p_n, p_{n+1}, p_{n+2}) forms an AP. -/
 def apTriples : Set ℕ := { n | threePrimesInAP n }
 
-/-- Known arithmetic progressions of 3 consecutive primes include (3,5,7). -/
-axiom ap_357 : 1 ∈ apTriples
+/-- Known arithmetic progressions of 3 consecutive primes include (3,5,7).
+    Previously axiomatized; now proved from gap equality. -/
+theorem ap_357 : 1 ∈ apTriples :=
+  (gapEqual_iff_ap 1).mp one_mem_gapEqualSet
 
 /- ## Part VIII: Connection to Green-Tao -/
 

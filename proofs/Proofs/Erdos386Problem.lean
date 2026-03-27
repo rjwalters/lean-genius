@@ -41,12 +41,6 @@ open Nat
 noncomputable def nthPrime (i : ℕ) : ℕ :=
   (Nat.Primes.instCountable.toEncodable.decode i).getD 2
 
-/-- `nthPrime i` is always prime (axiom; depends on Mathlib's prime enumeration). -/
-axiom nthPrime_prime (i : ℕ) : Nat.Prime (nthPrime i)
-
-/-- `nthPrime` is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
-
 /-
 ## Section 2: Product of consecutive primes
 
@@ -68,26 +62,6 @@ def IsProductOfConsecutivePrimes (m : ℕ) : Prop :=
 
 We state known examples where `C(n,k)` equals a product of consecutive primes.
 -/
-
-/-- C(21, 2) = 210 = 2 · 3 · 5 · 7 -/
-axiom choose_21_2_consec_primes :
-  IsProductOfConsecutivePrimes (Nat.choose 21 2)
-
-/-- C(7, 3) = 35 = 5 · 7 -/
-axiom choose_7_3_consec_primes :
-  IsProductOfConsecutivePrimes (Nat.choose 7 3)
-
-/-- C(10, 4) = 210 = 2 · 3 · 5 · 7 -/
-axiom choose_10_4_consec_primes :
-  IsProductOfConsecutivePrimes (Nat.choose 10 4)
-
-/-- C(14, 4) = 1001 = 7 · 11 · 13 -/
-axiom choose_14_4_consec_primes :
-  IsProductOfConsecutivePrimes (Nat.choose 14 4)
-
-/-- C(15, 6) = 5005 = 5 · 7 · 11 · 13 -/
-axiom choose_15_6_consec_primes :
-  IsProductOfConsecutivePrimes (Nat.choose 15 6)
 
 /-
 ## Section 4: The main conjecture
@@ -133,11 +107,6 @@ theorem choose_consec_primes_squarefree {n k : ℕ}
 For `k = 2`, we have `C(n, 2) = n(n-1)/2`. This is a product of consecutive
 primes when `n(n-1)/2` is a primorial or primorial quotient.
 -/
-
-/-- For k = 2, the problem reduces to finding n where n(n-1)/2 is a product
-    of consecutive primes. The known example is C(21, 2) = 210 = 2·3·5·7. -/
-axiom erdos_386_k2_examples :
-  ∃ n : ℕ, n ≥ 4 ∧ IsProductOfConsecutivePrimes (Nat.choose n 2)
 
 /-
 ## Section 7: Connection to Erdős–Graham (1980)

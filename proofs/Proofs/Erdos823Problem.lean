@@ -49,18 +49,23 @@ axiom sigma_is_divisor_sum (n : ℕ) (hn : n ≥ 1) :
     sigma n = (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum id
 
 /-- σ(1) = 1 -/
-axiom sigma_one : sigma 1 = 1
+theorem sigma_one : sigma 1 = 1 := by unfold sigma; native_decide
 
 /-- σ(p) = p + 1 for prime p -/
-axiom sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1
+theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
+  simp only [sigma, ArithmeticFunction.sigma_apply, hp.divisors,
+    Finset.sum_insert (Finset.not_mem_singleton.mpr hp.one_lt.ne'),
+    Finset.sum_singleton, pow_one]
+  omega
 
 /-- σ(p^k) = (p^{k+1} - 1)/(p - 1) for prime p -/
 axiom sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
     sigma (p ^ k) * (p - 1) = p ^ (k + 1) - 1
 
 /-- σ is multiplicative on coprime arguments -/
-axiom sigma_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) (h : Nat.Coprime m n) :
-    sigma (m * n) = sigma m * sigma n
+theorem sigma_multiplicative (m n : ℕ) (_hm : m ≥ 1) (_hn : n ≥ 1) (h : Nat.Coprime m n) :
+    sigma (m * n) = sigma m * sigma n :=
+  ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime h
 
 /-
 ## Part II: The Main Problem
@@ -105,13 +110,13 @@ Concrete examples where σ(n) = σ(m).
 -/
 
 /-- σ(14) = σ(15) = 24 -/
-axiom sigma_14_15 : sigma 14 = sigma 15
+theorem sigma_14_15 : sigma 14 = sigma 15 := by unfold sigma; native_decide
 
 /-- σ(14) = 1 + 2 + 7 + 14 = 24 -/
-axiom sigma_14_value : sigma 14 = 24
+theorem sigma_14_value : sigma 14 = 24 := by unfold sigma; native_decide
 
 /-- σ(15) = 1 + 3 + 5 + 15 = 24 -/
-axiom sigma_15_value : sigma 15 = 24
+theorem sigma_15_value : sigma 15 = 24 := by unfold sigma; native_decide
 
 /-- σ(14) = σ(15) verified: 14/15 is close to 1 -/
 example : (14 : ℚ) / 15 < 1 := by native_decide
@@ -123,7 +128,7 @@ axiom sigma_206_210 : sigma 206 = sigma 210
 example : (206 : ℚ) / 210 < 1 := by native_decide
 
 /-- σ(957) = σ(958) (consecutive integers can have equal σ) -/
-axiom sigma_957_958 : sigma 957 = sigma 958
+theorem sigma_957_958 : sigma 957 = sigma 958 := by unfold sigma; native_decide
 
 /-- 957/958 is very close to 1 -/
 example : (957 : ℕ) < 958 := by native_decide
@@ -152,10 +157,11 @@ axiom erdos_phi_easy (α : ℝ) (hα : α ≥ 1) :
       Tendsto (fun k => (n k : ℝ) / (m k : ℝ)) atTop (𝓝 α)
 
 /-- Example φ-pair: φ(1) = φ(2) = 1 -/
-axiom phi_1_2 : phi 1 = phi 2
+theorem phi_1_2 : phi 1 = phi 2 := by unfold phi; native_decide
 
 /-- Example φ-pair: φ(3) = φ(4) = φ(6) = 2 -/
-axiom phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6
+theorem phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6 := by
+  unfold phi; constructor <;> native_decide
 
 /-
 ## Part VI: Properties of Fibers of σ
@@ -165,7 +171,8 @@ axiom phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6
 def sigmaFiber (m : ℕ) : Set ℕ := {n | sigma n = m}
 
 /-- σ⁻¹(24) contains at least 14 and 15 -/
-axiom fiber_24_nonempty : 14 ∈ sigmaFiber 24 ∧ 15 ∈ sigmaFiber 24
+theorem fiber_24_nonempty : 14 ∈ sigmaFiber 24 ∧ 15 ∈ sigmaFiber 24 :=
+  ⟨sigma_14_value, sigma_15_value⟩
 
 /-- Fibers can be arbitrarily large (infinitely many n with same σ value) -/
 axiom fibers_can_be_large :

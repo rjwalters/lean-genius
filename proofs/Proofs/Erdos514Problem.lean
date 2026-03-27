@@ -180,9 +180,6 @@ Conjectured form: For some function Φ depending on M,
 the path γ from Boas's theorem satisfies
   length(γ ∩ {|z| ≤ r}) ≤ Φ(M(r))
 -/
-axiom path_length_bound_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :
-    ∃ (γ : ℝ → ℂ) (Φ : ℝ → ℝ), IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ ∧
-    Monotone Φ ∧ ∀ R : ℝ, R > 0 → pathLengthUpTo γ R ≤ Φ (maxModulus f R)
 
 /-
 ## Part V: Faster Than M(r)^ε Growth
@@ -207,8 +204,6 @@ def DominatesMaxModulusPower (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=
 **Part 3: Open Problem**
 Does such a path exist for every transcendental entire f?
 -/
-axiom faster_than_max_modulus_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :
-    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ DominatesMaxModulusPower f γ
 
 /-
 ## Part VI: Examples of Entire Functions
@@ -222,27 +217,16 @@ f(z) = e^z is transcendental entire.
 -/
 def expFunction : ℂ → ℂ := Complex.exp
 
-/-- The exponential function is entire. -/
-axiom exp_is_entire : IsEntire expFunction
-
-/-- The exponential function is transcendental. -/
-axiom exp_is_transcendental : IsTranscendental expFunction
-
 /--
 **Sine Function:**
 f(z) = sin(z) is transcendental entire.
 -/
 def sinFunction : ℂ → ℂ := Complex.sin
 
-/-- The sine function is entire. -/
-axiom sin_is_entire : IsEntire sinFunction
-
 /--
 **Maximum Modulus of Exponential:**
 M(r) for e^z equals e^r (achieved on positive real axis).
 -/
-axiom maxModulus_exp (r : ℝ) (hr : r ≥ 0) :
-    maxModulus expFunction r = Real.exp r
 
 /-
 ## Part VII: Growth Orders
@@ -267,7 +251,6 @@ noncomputable def orderOfGrowth (f : ℂ → ℂ) : ℝ :=
 An entire function has finite order if ρ < ∞.
 The exponential has order 1.
 -/
-axiom exp_has_order_one : orderOfGrowth expFunction = 1
 
 /-
 ## Part VIII: Connection to Wiman-Valiron Theory
@@ -294,27 +277,12 @@ noncomputable def centralIndex (f : ℂ → ℂ) (r : ℝ) : ℕ :=
 Near the maximum modulus point, f behaves like z^ν(r).
 This suggests why a path achieving super-polynomial growth exists.
 -/
-axiom wiman_valiron_intuition :
-    ∀ f : ℂ → ℂ, IsTranscendental f →
-    ∀ n : ℕ, ∃ R : ℝ, R > 0 ∧ centralIndex f R > n
 
 /-
 ## Part IX: Properties of Maximum Modulus
 
 Basic properties of the maximum modulus function M(r).
 -/
-
-/-- M(r) is non-decreasing in r for entire functions. -/
-axiom maxModulus_monotone (f : ℂ → ℂ) (hf : IsEntire f) :
-    Monotone (fun r => maxModulus f r)
-
-/-- M(r) ≥ |f(0)| for all r ≥ 0. -/
-axiom maxModulus_ge_origin (f : ℂ → ℂ) (hf : IsEntire f) (r : ℝ) (hr : r ≥ 0) :
-    maxModulus f r ≥ Complex.abs (f 0)
-
-/-- For transcendental f, M(r) → ∞ as r → ∞. -/
-axiom maxModulus_tendsto_infinity (f : ℂ → ℂ) (hf : IsTranscendental f) :
-    Tendsto (fun r => maxModulus f r) atTop atTop
 
 /-
 ## Part X: Main Results Summary
@@ -346,10 +314,5 @@ faster than any polynomial. The Boas result says we can find a PATH
 
 The technical proof involves extracting concrete bounds from the Tendsto condition.
 -/
-axiom key_insight (f : ℂ → ℂ) (hf : IsTranscendental f) :
-    ∃ γ : ℝ → ℂ, Continuous γ ∧
-    ∀ n : ℕ, ∃ R : ℝ, R > 0 ∧
-      ∀ t : ℝ, Complex.abs (γ t) > R →
-        Complex.abs (f (γ t)) > Complex.abs (γ t) ^ n
 
 end Erdos514

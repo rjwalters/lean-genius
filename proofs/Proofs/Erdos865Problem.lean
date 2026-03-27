@@ -66,32 +66,16 @@ f_k(N) ~ (1/2)(1 + Σ_{r=1}^{k-2} 1/4^r) N -/
 noncomputable def conjecturedThreshold (k N : ℕ) : ℚ :=
   (1/2) * (1 + (Finset.range (k - 2)).sum (fun r => (1 : ℚ) / (4 ^ (r + 1)))) * N
 
-/-- **For k=3:** f_3(N) ~ (1/2)(1 + 1/4) N = (5/8) N -/
-axiom k3_conjectured_threshold (N : ℕ) :
-    conjecturedThreshold 3 N = (5/8 : ℚ) * N
-
 /- ## Part III: The k=2 Case -/
 
 /-- **Classical k=2 Result:**
 If A ⊆ {1,...,2N} has |A| ≥ N+2, then ∃ distinct a,b ∈ A with a+b ∈ A. -/
-axiom classical_k2_result (N : ℕ) (A : Finset ℕ)
-    (hA : A ⊆ intervalSet (2 * N))
-    (hcard : A.card ≥ N + 2) :
-    HasSumPair A
-
-/-- **k=2 Threshold:** f_2(N) = N + 2 (asymptotically N/2 of the interval {1,...,2N}). -/
-axiom k2_threshold : ∀ N : ℕ, threshold 2 (2 * N) ≤ N + 2
 
 /- ## Part IV: The k=3 Case -/
 
 /-- **The 5/8 Conjecture (k=3):**
 If A ⊆ {1,...,N} has |A| ≥ (5/8)N + C for some constant C,
 then there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A. -/
-axiom k3_conjecture :
-    ∃ C : ℕ, ∀ N : ℕ, N ≥ 1 →
-    ∀ A : Finset ℕ, A ⊆ intervalSet N →
-    A.card ≥ 5 * N / 8 + C →
-    HasPairwiseSumTriple A
 
 /-- **Lower Bound Construction:**
 The construction [N/8, N/4] ∪ [N/2, N] shows 5/8 is best possible. -/
@@ -101,18 +85,9 @@ def lowerBoundConstruction (N : ℕ) : Finset ℕ :=
 
 /-- **Lower Bound Has No Triple:**
 The construction has size ≈ (5/8)N but no pairwise sum triple. -/
-axiom lower_bound_no_triple (N : ℕ) (hN : N ≥ 8) :
-    ¬HasPairwiseSumTriple (lowerBoundConstruction N)
-
-/-- **Lower Bound Size:** |[N/8, N/4] ∪ [N/2, N]| ≈ (5/8)N -/
-axiom lower_bound_size (N : ℕ) (hN : N ≥ 8) :
-    (lowerBoundConstruction N).card ≥ N / 8 + N / 2 - 2
 
 /-- **5/8 is Optimal:**
 The threshold f_3(N) satisfies f_3(N)/N → 5/8. -/
-axiom k3_optimal_threshold :
-    ∀ ε : ℚ, ε > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    |((threshold 3 N : ℚ) / N) - 5/8| < ε
 
 /- ## Part V: The General Conjecture -/
 
@@ -124,9 +99,6 @@ First few values:
 - k=3: f_3(N) ~ (5/8)N
 - k=4: f_4(N) ~ (21/32)N
 - k=5: f_5(N) ~ (85/128)N -/
-axiom erdos_sos_conjecture :
-    ∀ k : ℕ, k ≥ 2 → ∀ ε : ℚ, ε > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    |((threshold k N : ℚ) / N) - conjecturedThreshold k 1| < ε
 
 /-- **Threshold Values:**
 - k=2: 1/2
@@ -134,18 +106,12 @@ axiom erdos_sos_conjecture :
 - k=4: 21/32 ≈ 0.656
 - k=5: 85/128 ≈ 0.664
 The limit as k → ∞ is 2/3. -/
-axiom threshold_converges_to_two_thirds :
-    ∀ ε : ℚ, ε > 0 → ∃ K : ℕ, ∀ k ≥ K,
-    |conjecturedThreshold k 1 - 2/3| < ε
 
 /- ## Part VI: Choi-Erdős-Szemerédi Result -/
 
 /-- **CES Upper Bound (1975):**
 For all k ≥ 3, there exists ε_k > 0 such that
 f_k(N) ≤ (2/3 - ε_k)N for large N. -/
-axiom choi_erdos_szemeredi_bound :
-    ∀ k : ℕ, k ≥ 3 → ∃ ε : ℚ, ε > 0 ∧
-    ∃ N₀ : ℕ, ∀ N ≥ N₀, (threshold k N : ℚ) ≤ (2/3 - ε) * N
 
 /-- **CES implies k=3 upper bound:**
 f_3(N) ≤ (2/3 - ε_3)N < (5/8 + δ)N for some δ.
@@ -161,11 +127,6 @@ Taking A = [N/8, N/4] ∪ [N/2, N]:
 - Elements from [N/2, N] sum to at least N
 - Cross sums fall in the gap (N/2, N)
 No triple can form because sums miss the set. -/
-axiom lower_bound_cross_sums (N : ℕ) (hN : N ≥ 8) :
-    ∃ a b : ℕ, a ∈ lowerBoundConstruction N ∧
-              b ∈ lowerBoundConstruction N ∧
-              a ≤ N / 4 ∧ b ≥ N / 2 ∧
-              N / 2 < a + b ∧ a + b < N
 
 /- ## Part VIII: Related Problems -/
 
@@ -177,12 +138,9 @@ def IsSumFree (A : Finset ℕ) : Prop :=
 
 /-- **Maximum Sum-Free Subset:**
 The largest sum-free subset of {1,...,N} has size ~ N/2. -/
-axiom max_sum_free_size (N : ℕ) : ∃ A : Finset ℕ,
-    A ⊆ intervalSet N ∧ IsSumFree A ∧ A.card ≥ N / 2
 
 /-- **Schur Numbers:** S(k) = largest N such that {1,...,N} can be
 k-colored without monochromatic x + y = z. Known: S(1)=1, S(2)=4, S(3)=13, S(4)=44. -/
-axiom schurNumber (k : ℕ) : ℕ
 
 /- ## Part IX: Main Results -/
 

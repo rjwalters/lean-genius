@@ -81,24 +81,18 @@ theorem h4_edge_count : hkEdgeCount 4 = 16 := by native_decide
 For k ≥ 3, H_k contains a 4-cycle: x - y_1 - z_12 - y_2 - x.
 This gives the lower bound ex(n; H_k) ≫ n^(3/2).
 -/
-axiom hk_contains_c4 (k : ℕ) (hk : k ≥ 3) :
-    True  -- H_k contains C_4 as a subgraph
 
 /--
 **H_k is 2-degenerate:**
 Every subgraph of H_k has a vertex of degree at most 2.
 The z_ij vertices all have degree exactly 2.
 -/
-axiom hk_2_degenerate (k : ℕ) (hk : k ≥ 3) :
-    True  -- H_k is 2-degenerate
 
 /--
 **H_k is bipartite:**
 One part: {x} ∪ {z_ij}
 Other part: {y_1, ..., y_k}
 -/
-axiom hk_bipartite (k : ℕ) :
-    True  -- H_k is bipartite
 
 /-
 ## Part III: Extremal Numbers
@@ -108,7 +102,6 @@ axiom hk_bipartite (k : ℕ) :
 **Extremal number:**
 ex(n; H) is the maximum number of edges in an n-vertex graph containing no H.
 -/
-axiom extremalNumber (n : ℕ) (H : Type*) : ℕ
 
 /--
 **Kővári-Sós-Turán Theorem:**
@@ -117,15 +110,11 @@ ex(n; K_{r,s}) ≤ (1/2)(s-1)^(1/r) n^(2-1/r) + (r-1)n/2
 
 For C_4 = K_{2,2}: ex(n; C_4) ≤ (1/2)n^(3/2) + n/2 ~ (1/2)n^(3/2)
 -/
-axiom kovari_sos_turan (n r s : ℕ) (hr : r ≥ 2) (hs : s ≥ r) :
-    True  -- ex(n; K_{r,s}) has the stated bound
 
 /--
 **C_4 extremal number:**
 ex(n; C_4) ~ (1/2)n^(3/2) (tight up to constant).
 -/
-axiom c4_extremal (n : ℕ) (hn : n ≥ 2) :
-    True  -- ex(n; C_4) ~ (1/2)n^(3/2)
 
 /-
 ## Part IV: Lower Bound
@@ -139,8 +128,6 @@ This is trivial: if a graph avoids H_k, it may still contain C_4.
 But if it avoids C_4, it avoids H_k (since H_k ⊇ C_4).
 So ex(n; H_k) ≥ ex(n; C_4).
 -/
-axiom hk_lower_bound (n k : ℕ) (hk : k ≥ 3) :
-    True  -- ex(n; H_k) ≫ n^(3/2)
 
 /-
 ## Part V: Füredi's Theorem (1991)
@@ -152,8 +139,6 @@ For k ≥ 3: ex(n; H_k) ≪ (kn)^(3/2).
 
 The proof uses probabilistic methods and dependent random choice.
 -/
-axiom furedi_theorem (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) :
-    True  -- ex(n; H_k) ≤ C · (kn)^(3/2) for some constant C
 
 /-
 ## Part VI: Alon-Krivelevich-Sudakov Improvement (2003)
@@ -165,8 +150,6 @@ For k ≥ 3: ex(n; H_k) ≪ k · n^(3/2).
 
 This improves Füredi's (kn)^(3/2) to k · n^(3/2).
 -/
-axiom alon_krivelevich_sudakov (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) :
-    True  -- ex(n; H_k) ≤ C · k · n^(3/2) for some constant C
 
 /--
 **Erdős Problem #926: SOLVED**
@@ -186,16 +169,12 @@ For any 2-degenerate graph H: ex(n; H) ≪ n^(3/2).
 
 Since H_k is 2-degenerate, this problem is a special case of [146].
 -/
-axiom degenerate_conjecture :
-    ∀ H : Type*, True  -- ex(n; H) ≪ n^(3/2) for 2-degenerate H
 
 /--
 **Degeneracy bounds:**
 For d-degenerate graphs, ex(n; H) = O(n^(2-1/d)).
 For d = 2: ex(n; H) = O(n^(3/2)).
 -/
-axiom degeneracy_bound (d : ℕ) (hd : d ≥ 1) :
-    True  -- ex(n; H) ≤ C · n^(2-1/d) for d-degenerate H
 
 /-
 ## Part VIII: Related Problems
@@ -213,8 +192,6 @@ def hkMinusX (k : ℕ) : Type := Unit  -- The graph H_k without x
 Erdős claimed a proof for k = 3 in his 1971 paper.
 The general case required the later work of Füredi.
 -/
-axiom erdos_k3_claim :
-    True  -- Erdős claimed proof for k = 3 in 1971
 
 /-
 ## Part IX: Probabilistic Method Connection
@@ -230,15 +207,11 @@ of a random tuple. This gives a set with:
 - High minimum degree (in a bipartite sense)
 - Properties useful for embedding forbidden subgraphs
 -/
-axiom dependent_random_choice :
-    True  -- The method exists and works
 
 /--
 **Container Method:**
 Alternative approach using hypergraph containers.
 -/
-axiom container_method :
-    True  -- Alternative proof technique
 
 /-
 ## Part X: Main Results Summary

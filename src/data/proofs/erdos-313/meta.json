@@ -56,9 +56,9 @@
       "at_least_eight: lower bound on known solutions",
       "egyptian_fraction_form: connection to Egyptian fractions of 1"
     ],
-    "axiomCount": 11,
-    "lineCount": 104,
-    "assumptions": "11 axioms: erdos_313_conjecture, primary_pseudoperfect_infinite, solution_2, and 8 more. See Lean source for complete statements."
+    "axiomCount": 5,
+    "lineCount": 131,
+    "assumptions": "5 axioms: erdos_313_conjecture (open), primary_pseudoperfect_infinite (open), product_constraint, uniqueness, at_least_eight. 6 former axioms proved: 5 solutions verified by computation (norm_num), egyptian_fraction_form by algebra (linarith)."
   },
   "sections": [
     {
@@ -143,9 +143,9 @@
       "BigOperators"
     ],
     "namespace": null,
-    "lineCount": 104,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 131,
+    "axiomCount": 5,
+    "theoremCount": 6,
     "definitionCount": 2
   },
   "references": [

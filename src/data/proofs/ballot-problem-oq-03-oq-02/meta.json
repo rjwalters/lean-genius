@@ -7,7 +7,7 @@
     "author": "Lindström (1973), Gessel-Viennot (1985)",
     "sourceUrl": "",
     "date": "1985",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BallotProblemOQ03OQ02.lean",
     "tags": [
       "combinatorics",
@@ -17,8 +17,8 @@
       "permutations",
       "research"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "axioms": 0,
     "mathlibDependencies": [
       {
@@ -62,11 +62,14 @@
       "swapTailsAt: tail-swap operation (involution kernel for GV proof)",
       "swapTailsAt length preservation theorems",
       "gessel_viennot_transposition_sign: sign(swap(i,σi)∘σ) = -sign(σ) (proved)",
-      "lgv_lemma_rxr: the main r×r LGV lemma (proved as theorem, transitive sorry dep through gvCanon_self_inverse)",
+      "lgv_lemma_rxr: the main r×r LGV lemma (FULLY PROVED — 0 sorries, 0 axioms)",
       "firstNonFixed: smallest non-fixed point of non-identity perm (4 lemmas proved)",
       "permPathTuple_card: cardinality factorization for σ-path tuples (proved)",
       "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum (proved)",
-      "gv_involution_cancellation: GV cancellation (theorem with 1 sorry)",
+      "gv_involution_cancellation: GV cancellation (FULLY PROVED)",
+      "canonCrossN_preserved: canonical crossing code invariant under GV involution (PROVED)",
+      "gvCanon_self_inverse: GV involution is self-inverse via double tail-swap (PROVED)",
+      "decoded_y_le: lexicographic y-bound transfer for encoding arithmetic (PROVED)",
       "northBeforeEast_mono: northBeforeEast non-decreasing (proved)",
       "colEntry_mono: colEntry non-decreasing (proved)",
       "colEntry_le_north: colEntry ≤ n for PathMN m n (proved)",
@@ -76,17 +79,15 @@
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 2091,
-    "theoremCount": 79,
+    "lineCount": 2315,
+    "theoremCount": 82,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
       "Binomial coefficients (Mathlib)",
       "Lattice path foundations (from BallotProblemOQ03.lean)",
       "Gessel-Viennot involution theory"
     ],
-    "assumptions": [
-      "canonCrossN_preserved (line 1982) and gvCanon_self_inverse (line 1989): canonical crossing code preserved under involution, and double tail-swap recovers original paths (2 sorries). Note: gvCanon_membership is fully proved (118 lines, no sorry)"
-    ]
+    "assumptions": []
   },
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved a general version for vector matroids in 1973, building on ideas from Karlin and McGregor's 1959 work on coincidence probabilities of Markov chains. Ira Gessel and Gérard Viennot independently rediscovered and popularized the result in their influential 1985 paper, providing the elegant sign-reversing involution proof that has become the standard approach. The lemma connects non-intersecting lattice paths to determinants: the number of $r$-tuples of pairwise non-intersecting paths equals $\\det[e(A_i, B_j)]_{i,j}$. This determinantal structure has profound consequences—it underlies the Jacobi-Trudi identity for Schur polynomials, the Cauchy-Binet identity in linear algebra, and the Kasteleyn method for perfect matchings. The GV involution is a paradigmatic example of the 'cancellation via involution' technique that pervades algebraic combinatorics.",
@@ -225,10 +226,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Near-complete formalization of the general r×r LGV lemma in 2091 lines of original infrastructure. The main theorem lgv_lemma_rxr is proved as a theorem with transitive dependency on 2 remaining sorries in the involution self-inverse proof (canonCrossN_preserved and gvCanon_self_inverse). The GV involution construction, sign reversal, membership (118 lines, fully proved), and no-fixed-points properties are all complete. Key proved components: pathMN_card via double induction, det_pathMatrix_eq_signed_sum algebraic bridge, lattice_paths_must_cross discrete IVT, and cancellable_sum_eq_zero via Finset.sum_involution.",
+    "summary": "Complete formalization of the general r×r LGV lemma in 2315 lines with 0 axioms and 0 sorries. The main theorem lgv_lemma_rxr is fully machine-checked: niTupleCount(cfg) = det(pathMatrix(cfg)). The proof chain is complete: algebraic bridge (det = signed perm sum) → GV sign-reversing involution (cancellable sum = 0 via Finset.sum_involution with all 4 properties proved: sign_reversal, no_fixed_points, membership, self_inverse) → non-cancellable counting bijection → final theorem.",
     "implications": "**Theoretical Significance**: **Applications of the r×r LGV lemma:**\n1. **Schur polynomials**: Via Jacobi-Trudi, s_λ = det[h_{λᵢ-i+j}] counts NI lattice paths (semistandard Young tableaux)\n**2. Plane partitions**: MacMahon's box formula via LGV on 3D lattice\n3. **Aztec diamond**: 2^{n(n+1)/2} tilings via NI path determinant\n4. **Random matrices**: Eigenvalue spacing via NI random walk paths.",
     "openQuestions": [
-      "Close the 2 remaining sorries in canonCrossN_preserved (canonical crossing preserved under involution) and gvCanon_self_inverse (double tail-swap = identity) to complete the GV involution proof",
+      "All sorries closed — the r×r LGV lemma is fully proved",
       "Connect to Mathlib's Schur polynomial infrastructure for the Jacobi-Trudi identity",
       "Extend to weighted lattice paths (generating function version of LGV)"
     ]
@@ -285,9 +286,9 @@
       "Finset"
     ],
     "namespace": "LGV",
-    "lineCount": 2091,
+    "lineCount": 2315,
     "axiomCount": 0,
-    "theoremCount": 79,
+    "theoremCount": 82,
     "definitionCount": 29
   }
 }

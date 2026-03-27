@@ -476,13 +476,63 @@ theorem kth_residue_fermat_little (r k p : ℕ) (hp : Nat.Prime p) (hr : r % p �
     (_h : IsKthPowerResidue r k p) : r ^ (p - 1) % p = 1 :=
   fermat_little_theorem r p hp hr
 
+/-- Bridge: IsSquare in ZMod p gives a ℕ witness for our definition. -/
+private theorem isSquare_to_kth_residue (a p : ℕ) (hp : Nat.Prime p)
+    (hsq : IsSquare (a : ZMod p)) : IsKthPowerResidue a 2 p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  obtain ⟨r, hr⟩ := hsq
+  refine ⟨r.val, ?_⟩
+  have := congr_arg ZMod.val hr
+  rw [ZMod.val_natCast] at this
+  rw [ZMod.val_mul] at this
+  rw [sq]; exact this.symm
+
+/-- Bridge: not a kth power residue in ℕ implies not IsSquare in ZMod. -/
+private theorem not_kth_residue_to_not_isSquare (a p : ℕ) (hp : Nat.Prime p)
+    (h : ¬IsKthPowerResidue a 2 p) : ¬IsSquare (a : ZMod p) :=
+  fun hsq => h (isSquare_to_kth_residue a p hp hsq)
+
+/-- Bridge: a % p ≠ 0 implies (a : ZMod p) ≠ 0. -/
+private theorem nat_mod_ne_to_zmod_ne (a p : ℕ) (hp : Nat.Prime p)
+    (ha : a % p ≠ 0) : (a : ZMod p) ≠ 0 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  intro h; apply ha
+  rwa [ZMod.natCast_eq_zero_iff, Nat.dvd_iff_mod_eq_zero] at h
+
 /-- Quadratic residues: product of two non-residues is a residue (for odd prime p).
-    This follows from Legendre symbol multiplicativity: (a/p)(b/p) = (ab/p).
+    Proved via Legendre symbol multiplicativity: (a/p)(b/p) = (ab/p).
     If a, b are non-residues (symbol -1), product is +1, so ab is a residue. -/
-axiom qr_product_non_residues (a b p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1)
+theorem qr_product_non_residues (a b p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1)
     (ha : ¬IsKthPowerResidue a 2 p) (hb : ¬IsKthPowerResidue b 2 p)
     (ha_nz : a % p ≠ 0) (hb_nz : b % p ≠ 0) :
-    IsKthPowerResidue (a * b) 2 p
+    IsKthPowerResidue (a * b) 2 p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have ha_zmod := nat_mod_ne_to_zmod_ne a p hp ha_nz
+  have hb_zmod := nat_mod_ne_to_zmod_ne b p hp hb_nz
+  have ha_nsq := not_kth_residue_to_not_isSquare a p hp ha
+  have hb_nsq := not_kth_residue_to_not_isSquare b p hp hb
+  have cast_eq_a : ((a : ℤ) : ZMod p) = ((a : ℕ) : ZMod p) := Int.cast_natCast a
+  have cast_eq_b : ((b : ℤ) : ZMod p) = ((b : ℕ) : ZMod p) := Int.cast_natCast b
+  have ha_neg : legendreSym p (a : ℤ) = -1 := by
+    rw [legendreSym.eq_neg_one_iff]
+    rw [show ((a : ℤ) : ZMod p) = ((a : ℕ) : ZMod p) from cast_eq_a]
+    exact ha_nsq
+  have hb_neg : legendreSym p (b : ℤ) = -1 := by
+    rw [legendreSym.eq_neg_one_iff]
+    rw [show ((b : ℤ) : ZMod p) = ((b : ℕ) : ZMod p) from cast_eq_b]
+    exact hb_nsq
+  have hab_leg : legendreSym p ((a : ℤ) * (b : ℤ)) = 1 := by
+    rw [legendreSym.mul, ha_neg, hb_neg]; ring
+  have hab_nz : (((a : ℤ) * (b : ℤ) : ℤ) : ZMod p) ≠ 0 := by
+    rw [Int.cast_mul, Int.cast_natCast, Int.cast_natCast]
+    exact mul_ne_zero ha_zmod hb_zmod
+  have hab_sq : IsSquare (((a : ℤ) * (b : ℤ) : ℤ) : ZMod p) :=
+    (legendreSym.eq_one_iff p hab_nz).mp hab_leg
+  have hab_sq' : IsSquare ((a * b : ℕ) : ZMod p) := by
+    have : ((a * b : ℕ) : ZMod p) = (((a : ℤ) * (b : ℤ) : ℤ) : ZMod p) := by
+      rw [Int.cast_mul, Int.cast_natCast, Int.cast_natCast, Nat.cast_mul]
+    rw [this]; exact hab_sq
+  exact isSquare_to_kth_residue (a * b) p hp hab_sq'
 
 /-- The number of kth power residues mod p: (p-1)/gcd(k, p-1).
     This is a basic divisibility fact since gcd(k, p-1) always divides p-1. -/
@@ -580,11 +630,23 @@ theorem euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
     _ = 1 := fermat_little_theorem x p hp hx_nz
 
 /-- Euler's criterion (backward): if a^((p-1)/2) ≡ 1 (mod p) then a is a QR.
-    This direction requires Hensel-style lifting or Legendre symbol theory.
-    We axiomatize this as it needs deeper ZMod machinery. -/
-axiom euler_criterion_backward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
+    Proved using Mathlib's ZMod.euler_criterion and ℕ↔ZMod bridge lemmas. -/
+theorem euler_criterion_backward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
     (ha : a % p ≠ 0) (hpow : a ^ ((p - 1) / 2) % p = 1) :
-    IsQuadraticResidue a p
+    IsQuadraticResidue a p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have ha_zmod := nat_mod_ne_to_zmod_ne a p hp ha
+  have hp_div : (p - 1) / 2 = p / 2 := by
+    have hodd := hp.odd_of_ne_two (by omega)
+    rw [Nat.odd_iff] at hodd; omega
+  have hpow_zmod : (a : ZMod p) ^ (p / 2) = 1 := by
+    rw [← hp_div]
+    have h1 : ((a ^ ((p - 1) / 2) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by
+      rw [ZMod.natCast_eq_natCast_iff']
+      rw [hpow, Nat.mod_eq_of_lt hp.one_lt]
+    simp only [Nat.cast_pow, Nat.cast_one] at h1
+    exact h1
+  exact isSquare_to_kth_residue a p hp ((ZMod.euler_criterion p ha_zmod).mpr hpow_zmod)
 
 /-- Euler's criterion (full): a is a QR mod p iff a^((p-1)/2) ≡ 1 (mod p). -/
 theorem euler_criterion (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)

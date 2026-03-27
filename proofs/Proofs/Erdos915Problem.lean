@@ -98,9 +98,6 @@ contains two vertices connected by m edge-disjoint paths.
 -/
 axiom ell (m n : ℕ) : ℕ
 
-/-- ℓ_m(n) ≤ k_m(n) since vertex-disjoint implies edge-disjoint. -/
-axiom ell_le_k (m n : ℕ) (hm : m ≥ 2) : ell m n ≤ k m n
-
 /- ## The Bollobás-Erdős Conjecture -/
 
 /--
@@ -112,29 +109,7 @@ This predicts k_m(n) = (m/2)·n + O(1) growth.
 def BollobasErdosConjecture (m : ℕ) : Prop :=
   m ≥ 2 → ∀ n ≥ 1, k m (1 + (m - 1) * n) = 1 + choose m 2 * n
 
-/--
-**The Extremal Construction:**
-n copies of K_m sharing a single vertex (otherwise disjoint).
-This has 1 + (m-1)n vertices and 1 + C(m,2)n edges.
--/
-axiom extremal_construction (m n : ℕ) (hm : m ≥ 2) (hn : n ≥ 1) :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V,
-      Fintype.card V = 1 + (m - 1) * n ∧
-      G.edgeFinset.card = 1 + choose m 2 * n ∧
-      ¬ContainsMVertexDisjointPair G m
-
 /- ## Small Cases: Conjecture TRUE for m ≤ 4 -/
-
-/-- k_2(n) = n (trivial). -/
-axiom k_2 (n : ℕ) (hn : n ≥ 2) : k 2 n = n
-
-/-- Bártfai (1960): k_3(2n) = 3n - 1 and k_3(2n+1) = 3n + 1. -/
-axiom bartfai_k3_even (n : ℕ) (hn : n ≥ 1) : k 3 (2 * n) = 3 * n - 1
-axiom bartfai_k3_odd (n : ℕ) (hn : n ≥ 1) : k 3 (2 * n + 1) = 3 * n + 1
-
-/-- Bollobás (1966): k_4(n) = 2n - 1. -/
-axiom bollobas_k4 (n : ℕ) (hn : n ≥ 4) : k 4 n = 2 * n - 1
 
 /-- The conjecture holds for m = 2, 3, 4.
     Axiomatized since deriving the conjecture format from the explicit formulas
@@ -149,42 +124,6 @@ theorem conjecture_small_m : BollobasErdosConjecture 2 ∧
   ⟨conjecture_m2, conjecture_m3, conjecture_m4⟩
 
 /- ## The Disproof for m ≥ 5 -/
-
-/--
-**Leonard (1973) Counterexample:**
-A graph with 57 vertices and 141 edges that avoids 5 vertex-disjoint paths
-between any pair of vertices.
-
-The conjecture predicts k_5(57) = 1 + 10·14 = 141, but this graph shows
-that 141 edges are not enough.
--/
-axiom leonard_counterexample :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V,
-      Fintype.card V = 57 ∧
-      G.edgeFinset.card = 141 ∧
-      ¬ContainsMVertexDisjointPair G 5
-
-/-- Leonard (1973): k_5(n) > (5/2 + c)n - O(1) for some c > 0. -/
-axiom leonard_lower_bound :
-    ∃ c : ℚ, c > 0 ∧
-    ∀ᶠ n in Filter.atTop, (k 5 n : ℚ) > (5/2 + c) * n - 10
-
-/--
-**Sørensen-Thomassen (1974):**
-k_5(n) = ⌊8n/3⌋ - 3 for n ≥ 13.
-
-This is LARGER than the conjectured (5/2)n + O(1).
--/
-axiom sorensen_thomassen_k5 (n : ℕ) (hn : n ≥ 13) :
-    k 5 n = (8 * n) / 3 - 3
-
-/--
-**Mader (1973): Conjecture FALSE for all m ≥ 6.**
-For any C > 0 and m ≥ 6, there exists n with k_m(n) > (m/2)n + C.
--/
-axiom mader_disproof (m : ℕ) (hm : m ≥ 6) :
-    ∀ C : ℕ, ∃ n : ℕ, k m n > m * n / 2 + C
 
 /-- The vertex-disjoint conjecture is FALSE for m = 5.
     Leonard's counterexample contradicts the conjectured value. -/
@@ -211,51 +150,6 @@ def EdgeDisjointConjecture (m : ℕ) : Prop :=
 
 theorem edge_disjoint_solved (m : ℕ) (hm : m ≥ 2) :
     EdgeDisjointConjecture m := fun _ n hn => mader_edge_disjoint m n hm hn
-
-/- ## Specific Values for ℓ_m -/
-
-/-- Leonard (1972): ℓ_m(n) = k_m(n) for m ≤ 4. -/
-axiom leonard_small_m (m n : ℕ) (hm : 2 ≤ m ∧ m ≤ 4) :
-    ell m n = k m n
-
-/-- Leonard (1972): ℓ_5(2n) = 5n - 2 and ℓ_5(2n+1) = 5n + 1. -/
-axiom leonard_ell5_even (n : ℕ) (hn : n ≥ 1) : ell 5 (2 * n) = 5 * n - 2
-axiom leonard_ell5_odd (n : ℕ) (hn : n ≥ 1) : ell 5 (2 * n + 1) = 5 * n + 1
-
-/-- Leonard (1973): ℓ_6(n) = 3n - 2. -/
-axiom leonard_ell6 (n : ℕ) (hn : n ≥ 2) : ell 6 n = 3 * n - 2
-
-/- ## Mader's Stronger Result -/
-
-/--
-**Mader's Degree Condition:**
-If a graph G has > (m/2)(n-1) - (1/2)·(e_0(G) + ... + e_{m-2}(G)) edges,
-where e_r(G) counts vertices of degree ≤ r, then G contains two vertices
-connected by m edge-disjoint paths.
--/
-axiom mader_degree_condition (G : SimpleGraph V) (m : ℕ) (hm : m ≥ 2) :
-    let n := Fintype.card V
-    let low_degree_sum := (Finset.range (m - 1)).sum fun r =>
-      (Finset.univ.filter fun v => G.degree v ≤ r).card
-    G.edgeFinset.card > m * (n - 1) / 2 - low_degree_sum / 2 →
-    ContainsMEdgeDisjointPair G m
-
-/- ## 3-Connected Graphs -/
-
-/--
-**Sørensen-Thomassen (1974):**
-The Bollobás-Erdős conjecture holds for 3-connected graphs.
-The 3-connectivity hypothesis is axiomatized as a separate condition
-since Mathlib's connectivity API for specific k-connectivity levels
-requires additional infrastructure.
--/
-axiom three_connected_conjecture (G : SimpleGraph V) (m n : ℕ)
-    (hm : m ≥ 2) (hvertices : Fintype.card V = 1 + (m - 1) * n)
-    (hedges : G.edgeFinset.card ≥ 1 + choose m 2 * n)
-    (h3conn : ∀ (S : Finset V), S.card < 3 →
-      (G.induce (Finset.univ \ S : Set V).toFinset).Connected)
-    :
-    ContainsMVertexDisjointPair G m
 
 /- ## Summary -/
 

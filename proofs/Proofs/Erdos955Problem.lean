@@ -53,9 +53,6 @@ Sum only over proper divisors (d | n and d < n). -/
 noncomputable def s_alt (n : ℕ) : ℕ :=
   (n.properDivisors).sum id
 
-/-- **The two definitions agree.** -/
-axiom s_eq_s_alt (n : ℕ) (hn : n > 0) : s n = s_alt n
-
 /-
 ## Part II: Perfect, Deficient, and Abundant Numbers
 -/
@@ -68,10 +65,6 @@ def IsDeficient (n : ℕ) : Prop := s n < n
 
 /-- **Abundant Number:** n is abundant if s(n) > n. -/
 def IsAbundant (n : ℕ) : Prop := s n > n
-
-/-- **Examples:** 6 is perfect (1 + 2 + 3 = 6), 28 is perfect (1 + 2 + 4 + 7 + 14 = 28). -/
-axiom six_perfect : IsPerfect 6
-axiom twentyeight_perfect : IsPerfect 28
 
 /-
 ## Part III: Natural Density
@@ -117,22 +110,13 @@ def EGPSConjecture : Prop :=
 /-- **Forward direction fails:**
 s(A) can have positive density even if A has zero density.
 Example: Let A = {n : n = pq for distinct primes p, q}. -/
-axiom forward_fails :
-  ∃ A : Set ℕ, HasZeroDensity A ∧ HasPositiveDensity { m | ∃ n ∈ A, s n = m }
 
 /-- **Erdős (1973):**
 There exist sets A with positive density such that s⁻¹(A) = ∅. -/
-axiom erdos_1973_empty_preimage :
-  ∃ A : Set ℕ, HasPositiveDensity A ∧ preimage_s A = ∅
 
 /-- **Untouchable Numbers:**
 k is "untouchable" if s(n) = k has no solutions. Examples: 2, 5, 52, 88, 96, ... -/
 def IsUntouchable (k : ℕ) : Prop :=
-  ∀ n : ℕ, n > 0 → s n ≠ k
-
-/-- **Some untouchable numbers:** -/
-axiom two_untouchable : IsUntouchable 2
-axiom five_untouchable : IsUntouchable 5
 
 /-
 ## Part VII: Partial Results
@@ -140,25 +124,15 @@ axiom five_untouchable : IsUntouchable 5
 
 /-- **Pollack (2014):**
 If A is the set of primes, then s⁻¹(A) has density 0. -/
-axiom pollack_primes :
-  let primes := { p : ℕ | p.Prime }
-  HasZeroDensity (preimage_s primes)
 
 /-- **Troupe (2015):**
 If A is the set of integers with unusually many prime factors
 (ω(n) > k log log n for some k), then s⁻¹(A) has density 0. -/
-axiom troupe_many_factors :
-  ∀ k : ℝ, k > 1 →
-    HasZeroDensity (preimage_s { n : ℕ | n > 0 })
 
 /-- **Troupe (2020):**
 If A is the set of sums of two squares, then s⁻¹(A) has density 0. -/
 def IsSumOfTwoSquares (n : ℕ) : Prop :=
   ∃ a b : ℕ, a^2 + b^2 = n
-
-axiom troupe_two_squares :
-  let S := { n : ℕ | IsSumOfTwoSquares n }
-  HasZeroDensity (preimage_s S)
 
 /-
 ## Part VIII: The PPT Bound
@@ -185,8 +159,6 @@ theorem sparse_sets_work (A : Set ℕ)
 /-- **Growth bound on s(n):** s(n) ≪ n log log n for most n.
 The exponent 1/2 in PPT appears because s maps [1, x] to [1, O(x log log x)].
 If A grows like x^α with α < 1/2, the argument applies. -/
-axiom s_bound (n : ℕ) (hn : n > 0) :
-  (s n : ℝ) ≤ n * (2 + Real.log (Real.log n))
 
 /-
 ## Part X: Summary

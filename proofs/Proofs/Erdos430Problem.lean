@@ -151,9 +151,51 @@ theorem erdos_385_equivalence :
     intro n hn
     obtain ⟨m, hm_gt1, hm_lt_n, hm_not_prime, hm_factors⟩ :=
       hN₀ n (le_trans (le_max_left _ _) hn)
-    -- The greedy sequence must contain m (or terminate at m)
-    -- because it starts above m and m is always a valid next choice
-    sorry
+    have hn2 : n ≥ 2 := le_trans (le_max_right _ _) hn
+    have hm_adm : IsAdmissible n m := ⟨by omega, hm_lt_n, hm_factors⟩
+    -- Key lemma: greedyNext n prev ≥ m when prev > m (m is always a valid candidate)
+    have greedyNext_ge_m : ∀ prev, m < prev → m ≤ greedyNext n prev := by
+      intro prev hprev
+      unfold greedyNext
+      apply Finset.le_sup (f := id)
+      simp only [Finset.mem_filter, Finset.mem_Icc, id]
+      exact ⟨⟨by omega, by omega⟩, decide_eq_true hm_adm⟩
+    -- greedyNext is strictly less than prev (picks from [1, prev-1])
+    have greedyNext_lt : ∀ prev, 0 < greedyNext n prev → greedyNext n prev < prev := by
+      intro prev hpos
+      unfold greedyNext at hpos ⊢
+      set S := (Finset.Icc 1 (prev - 1)).filter (fun m => decide (IsAdmissible n m) = true)
+      have hne : S.Nonempty := by
+        by_contra hempty
+        simp [Finset.not_nonempty_iff_eq_empty.mp hempty, Finset.sup_empty] at hpos
+      have : S.sup id ≤ prev - 1 :=
+        Finset.sup_le fun b hb => (Finset.mem_Icc.mp (Finset.mem_filter.mp hb).1).2
+      omega
+    -- Descent: the sequence reaches m by strong induction on the gap (current - m)
+    suffices ∃ k, greedySeq n k = m by
+      obtain ⟨k, hk⟩ := this
+      exact ⟨k, by rw [hk]; omega, by rw [hk]; exact hm_not_prime, by rw [hk]; exact hm_gt1⟩
+    -- By strong induction on (greedySeq n k - m): show if f(k) ≥ m, some k' has f(k') = m
+    have h0_ge : m ≤ greedySeq n 0 := by simp [greedySeq]; omega
+    suffices ∀ d, ∀ k₀, greedySeq n k₀ = m + d → ∃ k, greedySeq n k = m by
+      exact this (greedySeq n 0 - m) 0 (by omega)
+    intro d
+    induction d using Nat.strongRecOn with
+    | ind d ih =>
+      intro k₀ hk₀
+      rcases d with _ | d
+      · exact ⟨k₀, by omega⟩
+      · -- greedySeq n k₀ = m + d + 1 > m, so greedyNext picks from ≥ m
+        have h_next_ge : m ≤ greedySeq n (k₀ + 1) := by
+          show m ≤ greedyNext n (greedySeq n k₀)
+          exact greedyNext_ge_m (greedySeq n k₀) (by omega)
+        have h_next_lt : greedySeq n (k₀ + 1) < greedySeq n k₀ := by
+          show greedyNext n (greedySeq n k₀) < greedySeq n k₀
+          apply greedyNext_lt
+          have := greedyNext_ge_m (greedySeq n k₀) (by omega)
+          omega
+        -- The gap decreased: greedySeq n (k₀+1) - m < d + 1
+        exact ih (greedySeq n (k₀ + 1) - m) (by omega) (k₀ + 1) (by omega)
 
 /- ## Main Conjecture -/
 

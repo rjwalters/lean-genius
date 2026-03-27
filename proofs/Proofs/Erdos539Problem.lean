@@ -97,21 +97,6 @@ theorem one_in_quotient_set (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a �
 ## Part III: Erdős-Szemerédi Bounds
 -/
 
-/-- **Erdős-Szemerédi Lower Bound:**
-    h(n) ≫ n^{1/2}. -/
-axiom erdos_szemeredi_lower :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (h n : ℝ) ≥ c * (n : ℝ)^(1/2 : ℝ)
-
-/-- **Erdős-Szemerédi Upper Bound:**
-    h(n) ≪ n^{1-c} for some c > 0. -/
-axiom erdos_szemeredi_upper :
-  ∃ c : ℝ, c > 0 ∧ c < 1 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a > 0) ∧
-        (gcdQuotientSize A : ℝ) ≤ (n : ℝ)^(1 - c)
-
 /-- Combined Erdős-Szemerédi result: n^{1/2} ≪ h(n) ≪ n^{1-c}. -/
 def ErdosSzemeredi_Bounds : Prop :=
   (∃ c₁ > 0, ∀ n ≥ 2, (h n : ℝ) ≥ c₁ * n^(1/2 : ℝ)) ∧
@@ -120,14 +105,6 @@ def ErdosSzemeredi_Bounds : Prop :=
 /-
 ## Part IV: Freiman-Lev Improvement
 -/
-
-/-- **Freiman-Lev Upper Bound:**
-    h(n) ≪ n^{2/3}. -/
-axiom freiman_lev_upper :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a > 0) ∧
-        (gcdQuotientSize A : ℝ) ≤ C * (n : ℝ)^(2/3 : ℝ)
 
 /-- The improved bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}. -/
 def ImprovedBounds : Prop :=
@@ -138,25 +115,13 @@ def ImprovedBounds : Prop :=
 ## Part V: Examples
 -/
 
-/-- For A = {1, 2, ..., n}, the quotient set has size at least n. -/
-axiom consecutive_quotient_set_large (n : ℕ) (hn : n ≥ 1) :
-    gcdQuotientSize (Finset.Icc 1 n) ≥ n
-
 /-- For A = {a, 2a, ..., na}, the quotient set is smaller. -/
 def arithmeticProgression (a n : ℕ) : Finset ℕ :=
   (Finset.range n).image (fun i => a * (i + 1))
 
-/-- AP gives quotient set of size at most n². -/
-axiom ap_quotient_set (a n : ℕ) (ha : a > 0) (hn : n ≥ 1) :
-    gcdQuotientSize (arithmeticProgression a n) ≤ n * n
-
 /-- Geometric progressions {a^0, a^1, ..., a^{n-1}} give smaller quotient sets. -/
 def geometricProgression (a n : ℕ) : Finset ℕ :=
   (Finset.range n).image (fun i => a^i)
-
-/-- Geometric progressions give quotient sets of size O(n^2). -/
-axiom gp_quotient_size (a n : ℕ) (ha : a ≥ 2) (hn : n ≥ 1) :
-  gcdQuotientSize (geometricProgression a n) ≤ n * n
 
 /-
 ## Part VI: Connection to GCD Structure
@@ -170,27 +135,9 @@ def gcdMatrix (A : Finset ℕ) : ℕ → ℕ → ℕ :=
 def quotientMatrix (A : Finset ℕ) : ℕ → ℕ → ℕ :=
   fun i j => if hi : i ∈ A then if hj : j ∈ A then gcdQuotient i j else 0 else 0
 
-/-- The quotient set is the image of the quotient matrix.
-    Axiomatized because the proof requires reasoning about
-    membership predicates inside Finset.image that is tedious
-    but straightforward. -/
-axiom quotient_set_is_matrix_image (A : Finset ℕ) :
-    gcdQuotientSet A = (A.product A).image (fun ab => quotientMatrix A ab.1 ab.2)
-
 /-
 ## Part VII: Geometric Reformulation (Granville-Roesler)
 -/
-
-/-- **Granville-Roesler geometric reformulation:**
-    For fixed dimension d, the GCD-reduced quotient problem can be
-    studied via lattice point configurations in ℤ^d, where the
-    "directed distance" δ(a,b) has i-th coordinate max(0, aᵢ - bᵢ).
-    The minimum size of {δ(a,b) : a,b ∈ A} over |A|=n gives
-    analogous bounds in each dimension. -/
-axiom geometric_reformulation (d : ℕ) (hd : d ≥ 1) :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (h n : ℝ) ≥ c * (n : ℝ)^(1 / (d : ℝ))
 
 /-
 ## Part VIII: Special Sets with Small Quotient Sets
@@ -201,16 +148,6 @@ def extremalSets : Prop :=
   ∀ n : ℕ, n ≥ 2 →
     ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a > 0) ∧
       (gcdQuotientSize A : ℝ) ≤ (n : ℝ)^(2/3 : ℝ)
-
-/-- **Extremal structure:** Sets achieving h(n) ~ n^{2/3} have
-    multiplicative structure — they are related to smooth numbers
-    or structured arithmetic progressions. Specifically, sets of the
-    form {d · k : k ∈ S} for a common factor d and structured S
-    tend to minimize the quotient set size. -/
-axiom extremal_structure (n : ℕ) (hn : n ≥ 2) :
-  ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a > 0) ∧
-    (gcdQuotientSize A : ℝ) ≤ (n : ℝ)^(2/3 : ℝ) ∧
-    ∃ d : ℕ, d > 0 ∧ ∀ a ∈ A, d ∣ a
 
 /-
 ## Part IX: The Erdős Question
@@ -247,21 +184,5 @@ Known Bounds:
 
 The exact behavior remains open.
 -/
-/-- **Erdős-Szemerédi bounds hold:** n^{1/2} ≪ h(n) ≪ n^{1-c}.
-    Axiomatized because the proof that h(n) achieves its infimum
-    requires measure-theoretic arguments beyond current Mathlib. -/
-axiom erdos_539 : ErdosSzemeredi_Bounds
-
-/-- **Main theorem: improved bounds** n^{1/2} ≪ h(n) ≪ n^{2/3}.
-    Combines Erdős-Szemerédi lower bound with Freiman-Lev upper bound.
-    Axiomatized because relating h(n) as infimum to specific set
-    constructions requires additional infrastructure. -/
-axiom erdos_539_bounds :
-    (∃ c > 0, ∀ n ≥ 2, (h n : ℝ) ≥ c * n^(1/2 : ℝ)) ∧
-    (∃ C > 0, ∀ n ≥ 2, (h n : ℝ) ≤ C * n^(2/3 : ℝ))
-
-/-- **OPEN:** The exact exponent α such that h(n) = Θ(n^α)
-    is unknown. Current bounds: 1/2 ≤ α ≤ 2/3. -/
-axiom erdos_539_open : ErdosQuestion539
 
 end Erdos539

@@ -55,45 +55,73 @@ noncomputable def smallestTotientDiv (n : ℕ) : ℕ :=
 axiom dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
   ∀ N : ℕ, ∃ p : ℕ, N ≤ p ∧ p.Prime ∧ n ∣ (p - 1)
 
-/-- pₙ is prime -/
-axiom smallestPrimeMod1_prime (n : ℕ) (hn : 1 ≤ n) :
-  (smallestPrimeMod1 n).Prime
+/-- The set of primes ≡ 1 (mod n) is nonempty for n ≥ 1. -/
+private lemma primes_mod1_nonempty (n : ℕ) (hn : 1 ≤ n) :
+    Set.Nonempty {p : ℕ | p.Prime ∧ n ∣ (p - 1)} := by
+  obtain ⟨p, _, hp, hd⟩ := dirichlet_primes_mod1 n hn 0
+  exact ⟨p, hp, hd⟩
 
-/-- pₙ ≡ 1 (mod n) -/
-axiom smallestPrimeMod1_cong (n : ℕ) (hn : 1 ≤ n) :
-  n ∣ (smallestPrimeMod1 n - 1)
+/-- The set of positive m with n | φ(m) is nonempty for n ≥ 1. -/
+private lemma totient_div_nonempty (n : ℕ) (hn : 1 ≤ n) :
+    Set.Nonempty {m : ℕ | 0 < m ∧ n ∣ m.totient} := by
+  obtain ⟨p, _, hp, hd⟩ := dirichlet_primes_mod1 n hn 0
+  exact ⟨p, hp.pos, Nat.totient_prime hp ▸ hd⟩
 
-/-- pₙ is minimal among such primes -/
-axiom smallestPrimeMod1_minimal (n : ℕ) (hn : 1 ≤ n) (p : ℕ)
+/-- pₙ is prime: follows from sInf membership in the set of primes ≡ 1 (mod n). -/
+theorem smallestPrimeMod1_prime (n : ℕ) (hn : 1 ≤ n) :
+    (smallestPrimeMod1 n).Prime := by
+  unfold smallestPrimeMod1
+  exact (Nat.sInf_mem (primes_mod1_nonempty n hn)).1
+
+/-- pₙ ≡ 1 (mod n): follows from sInf membership. -/
+theorem smallestPrimeMod1_cong (n : ℕ) (hn : 1 ≤ n) :
+    n ∣ (smallestPrimeMod1 n - 1) := by
+  unfold smallestPrimeMod1
+  exact (Nat.sInf_mem (primes_mod1_nonempty n hn)).2
+
+/-- pₙ is minimal among primes ≡ 1 (mod n): follows from sInf being a lower bound. -/
+theorem smallestPrimeMod1_minimal (n : ℕ) (hn : 1 ≤ n) (p : ℕ)
     (hp : p.Prime) (hcong : n ∣ (p - 1)) :
-  smallestPrimeMod1 n ≤ p
+    smallestPrimeMod1 n ≤ p := by
+  unfold smallestPrimeMod1
+  exact Nat.sInf_le ⟨hp, hcong⟩
 
 /-
 # Part 3: Properties of smallestTotientDiv
 -/
 
-/-- mₙ is positive -/
-axiom smallestTotientDiv_pos (n : ℕ) (hn : 1 ≤ n) :
-  0 < smallestTotientDiv n
+/-- mₙ is positive: follows from sInf membership in the set of positive m with n | φ(m). -/
+theorem smallestTotientDiv_pos (n : ℕ) (hn : 1 ≤ n) :
+    0 < smallestTotientDiv n := by
+  unfold smallestTotientDiv
+  exact (Nat.sInf_mem (totient_div_nonempty n hn)).1
 
-/-- n | φ(mₙ) -/
-axiom smallestTotientDiv_divides (n : ℕ) (hn : 1 ≤ n) :
-  n ∣ (smallestTotientDiv n).totient
+/-- n | φ(mₙ): follows from sInf membership. -/
+theorem smallestTotientDiv_divides (n : ℕ) (hn : 1 ≤ n) :
+    n ∣ (smallestTotientDiv n).totient := by
+  unfold smallestTotientDiv
+  exact (Nat.sInf_mem (totient_div_nonempty n hn)).2
 
-/-- mₙ is minimal -/
-axiom smallestTotientDiv_minimal (n : ℕ) (hn : 1 ≤ n) (m : ℕ)
+/-- mₙ is minimal among positive m with n | φ(m): follows from sInf being a lower bound. -/
+theorem smallestTotientDiv_minimal (n : ℕ) (hn : 1 ≤ n) (m : ℕ)
     (hm : 0 < m) (hdiv : n ∣ m.totient) :
-  smallestTotientDiv n ≤ m
+    smallestTotientDiv n ≤ m := by
+  unfold smallestTotientDiv
+  exact Nat.sInf_le ⟨hm, hdiv⟩
 
 /-
 # Part 4: Known Results
 -/
 
 /-- mₙ ≤ pₙ always.
-    Proof sketch: φ(pₙ) = pₙ − 1 and n | pₙ − 1, so pₙ is in the set defining mₙ.
+    φ(pₙ) = pₙ − 1 and n | pₙ − 1, so pₙ is in the set defining mₙ.
     By minimality of mₙ, mₙ ≤ pₙ. -/
-axiom m_le_p (n : ℕ) (hn : 1 ≤ n) :
-  smallestTotientDiv n ≤ smallestPrimeMod1 n
+theorem m_le_p (n : ℕ) (hn : 1 ≤ n) :
+    smallestTotientDiv n ≤ smallestPrimeMod1 n := by
+  apply smallestTotientDiv_minimal n hn
+  · exact (smallestPrimeMod1_prime n hn).pos
+  · rw [Nat.totient_prime (smallestPrimeMod1_prime n hn)]
+    exact smallestPrimeMod1_cong n hn
 
 /-- Linnik's theorem: pₙ = O(n^L) for some constant L -/
 axiom linnik_bound :

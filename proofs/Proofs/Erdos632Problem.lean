@@ -93,10 +93,6 @@ theorem list_chromatic_iff_choosable (G : SimpleGraph V) (a : ℕ) :
     listChromaticNumber G ≤ a ↔ IsChoosable G a 1 := by
   sorry
 
-/-- χ_L(G) ≥ χ(G) (list chromatic number ≥ chromatic number). -/
-axiom list_chromatic_ge_chromatic (G : SimpleGraph V) [Fintype V] :
-    listChromaticNumber G ≥ G.chromaticNumber
-
 /-
 ## Part IV: Properties of Choosability
 
@@ -183,20 +179,6 @@ axiom dhs_counterexample :
     ∃ (V : Type*) (G : SimpleGraph V),
       IsChoosable G 4 1 ∧ ¬IsChoosable G 8 2
 
-/-- The DHS graph has a specific structure (details in [DHS19]). -/
-axiom dhs_graph_structure :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
-      n > 100 ∧
-      IsChoosable G 4 1 ∧
-      ¬IsChoosable G 8 2
-
-/-- The construction uses a clever color assignment. -/
-axiom dhs_bad_assignment :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)) (L : ColorAssignment (Fin n) 8),
-      IsValidAssignment L ∧
-      ¬∃ S : ColorSelection (Fin n) 8,
-        IsValidSelection L S 2 ∧ SelectionsDisjoint G S
-
 /-
 ## Part VIII: The Main Disproof
 
@@ -230,37 +212,6 @@ theorem erdos_632 : ¬ERT_Conjecture :=
 What IS true about choosability scaling.
 -/
 
-/-- **Fractional Choosability Scales (Alon-Tuza-Voigt):**
-    In the fractional relaxation, the scaling property holds.
-    For any graph G, if the fractional chromatic number χ_f(G) ≤ a/b,
-    then χ_f(G) ≤ am/(bm) for all m ≥ 1 (trivially, since a/b = am/bm).
-    This contrasts with the integer version which FAILS (our main result). -/
-axiom fractional_choosability_scales (V : Type*) (G : SimpleGraph V) (a b : ℕ)
-    (hb : b > 0) :
-    IsChoosable G a b → ∀ m : ℕ, m ≥ 1 →
-      -- The fractional choosability ratio a/b is preserved under scaling
-      (a : ℚ) / b = (a * m : ℚ) / (b * m)
-
-/-- For complete graphs, the conjecture holds. -/
-axiom complete_graph_ert (n a b m : ℕ) (hm : m ≥ 1) :
-    IsChoosable (⊤ : SimpleGraph (Fin n)) a b →
-    IsChoosable (⊤ : SimpleGraph (Fin n)) (a * m) (b * m)
-
-/-- For bipartite graphs, the conjecture holds. -/
-axiom bipartite_ert (V : Type*) (G : SimpleGraph V) (hG : G.IsBipartite)
-    (a b m : ℕ) (hm : m ≥ 1) :
-    IsChoosable G a b → IsChoosable G (a * m) (b * m)
-
-/-- **Planar Graph Scaling (Voigt):**
-    For planar graphs, the m = 2 case of the ERT conjecture holds.
-    If a planar graph G is (a,b)-choosable, then G is (2a,2b)-choosable.
-    Planarity provides structural constraints that prevent the counterexample
-    construction used in the general case. -/
-axiom planar_m2 (V : Type*) [Fintype V] (G : SimpleGraph V)
-    (hPlanar : G.edgeFinset.card ≤ 3 * Fintype.card V - 6)
-    (a b : ℕ) :
-    IsChoosable G a b → IsChoosable G (2 * a) (2 * b)
-
 /-
 ## Part X: Connections to Other Problems
 
@@ -272,44 +223,11 @@ def ListColoringConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
     True  -- listChromaticNumber (lineGraph G) = edgeChromaticNumber G
 
-/-- Galvin's theorem: List chromatic = chromatic for line graphs of bipartite. -/
-axiom galvin_theorem :
-    ∀ (V : Type*) (G : SimpleGraph V), G.IsBipartite →
-      True  -- listChromaticNumber (lineGraph G) = Δ(G)
-
-/-- The Ohba conjecture (now theorem): χ_L(G) = χ(G) when |V| ≤ 2χ(G) + 1. -/
-axiom ohba_noel_reed_wu :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      Fintype.card V ≤ 2 * G.chromaticNumber + 1 →
-        listChromaticNumber G = G.chromaticNumber
-
 /-
 ## Part XI: The Construction Details
 
 How the counterexample is built.
 -/
-
-/-- The DHS construction starts with a specific base graph. -/
-axiom dhs_base_graph :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
-      -- G is constructed from Kneser-type graphs
-      IsChoosable G 4 1
-
-/-- Key lemma: A bad list assignment exists for the doubled parameters. -/
-axiom dhs_key_lemma :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
-      IsChoosable G 4 1 ∧
-      ∃ L : ColorAssignment (Fin n) 8,
-        IsValidAssignment L ∧
-        ∀ S : ColorSelection (Fin n) 8,
-          IsValidSelection L S 2 → ¬SelectionsDisjoint G S
-
-/-- The counterexample has bounded degree. -/
-axiom dhs_bounded_degree :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)) (Δ : ℕ),
-      Δ ≤ 100 ∧
-      IsChoosable G 4 1 ∧
-      ¬IsChoosable G 8 2
 
 /-
 ## Part XII: Main Result

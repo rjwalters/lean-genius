@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination: proved 2, removed 2 false, corrected definitions",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated 5 axioms (7→2, 0 sorries). Proved primeSeq_strictly_increasing (Nat.nth_strictMono), primeSeq_gt_one (Nat.Prime.one_lt), actualPrimes_counting (Galois connection nth/count). Removed 2 false axioms (powersOfTwo). Fixed primePi definition.",
+    "builtItems": [
+      "Proved primeSeq_isPrime helper theorem (Nat.nth_mem_of_infinite)",
+      "Proved primeSeq_strictly_increasing from Nat.nth_strictMono",
+      "Proved primeSeq_gt_one from Nat.Prime.one_lt",
+      "Removed false powersOfTwo section with documented counterexample",
+      "Fixed primePi definition to count primes ≤ x correctly",
+      "Proved primeSeq_strictly_increasing via Nat.nth_strictMono",
+      "Proved primeSeq_gt_one via Nat.Prime.one_lt",
+      "Proved actualPrimes_counting via Galois connection + Set.ncard_coe_Finset",
+      "Removed false powersOfTwo axioms (counterexample: k={0↦2}, ℓ={1↦1})",
+      "Fixed primePi: primeCounting counts ≤ n, so no +1 needed"
+    ],
+    "insights": [
+      "primeSeq_strictly_increasing proved via Nat.nth_strictMono + Nat.infinite_setOf_prime",
+      "primeSeq_gt_one proved via Nat.Prime.one_lt + Nat.nth_mem_of_infinite",
+      "powersOfTwo is NOT a valid Beurling prime sequence: counterexample k={0↦2} and ℓ={1↦1} both give product 4",
+      "primePi definition had off-by-one error: primeCounting counts primes < n, not ≤ n; fixed to primeCounting(⌊x⌋₊ + 1)",
+      "primeSeq_well_separated is correct (products of distinct primes are distinct integers by FTA) but needs formal unique factorization proof",
+      "actualPrimes_counting is correct with fixed primePi: uses Galois connection nth/count (Nat.lt_nth_iff_count_lt)",
+      "primeCounting n = #{primes ≤ n} = count Prime (n+1). Verified via primeCounting 10 = 4",
+      "Galois connection: n < count p m ↔ nth p n < m (Nat.lt_nth_iff_count_lt)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove primeSeq_well_separated from Mathlib UniqueFactorizationMonoid (hard)"
+    ],
     "markdown": "# Erdős #951 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #950\n- Problem #952\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

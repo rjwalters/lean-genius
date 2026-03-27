@@ -53,20 +53,14 @@ noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
 /--
 **Basic property: P(n) divides n**
 -/
-axiom lpf_divides (n : ℕ) (hn : n > 1) :
-  largestPrimeFactor n ∣ n
 
 /--
 **P(n) is prime for n > 1**
 -/
-axiom lpf_prime (n : ℕ) (hn : n > 1) :
-  (largestPrimeFactor n).Prime
 
 /--
 **P(p) = p for prime p**
 -/
-axiom lpf_of_prime (p : ℕ) (hp : p.Prime) :
-  largestPrimeFactor p = p
 
 /- ## Part II: Smooth Numbers -/
 
@@ -105,11 +99,6 @@ axiom dickman_function : ℝ → ℝ
 - ρ(u) ~ u^{-u} for large u
 - ρ is continuous and decreasing for u > 1
 -/
-axiom dickman_at_one : dickman_function 1 = 1
-axiom dickman_at_two : |dickman_function 2 - (1 - Real.log 2)| < 0.001
-axiom dickman_positive (u : ℝ) (hu : u > 0) : dickman_function u > 0
-axiom dickman_decreasing (u v : ℝ) (huv : 1 < u) (huv' : u < v) :
-  dickman_function v < dickman_function u
 
 /- ## Part IV: Dickman's Theorem (1930) -/
 
@@ -128,9 +117,6 @@ More precisely: Ψ(x, x^α) / x → ρ(1/α) as x → ∞.
 
 This is the fundamental result on smooth number distribution.
 -/
-axiom dickman_theorem (α : ℝ) (hα : 0 < α ∧ α < 1) :
-  ∀ ε > 0, ∃ X : ℝ, ∀ x > X,
-    |((psi x (x^α) : ℝ) / x) - dickman_function (1/α)| < ε
 
 /- ## Part V: The Main Question -/
 
@@ -216,7 +202,6 @@ The "friable" version concerns distribution of smooth numbers
 in arithmetic progressions. This conjecture enables better
 control of error terms in sieve methods.
 -/
-axiom elliott_halberstam_conjecture : Prop
 
 /- ## Part IX: Alternative Notation -/
 
@@ -233,8 +218,6 @@ Schinzel studied the largest prime factor of n(n+1).
 For infinitely many n: P(n(n+1)) ≤ n^{O(1/log log n)}.
 Axiomatized since this requires Schinzel's deep sieve theory result.
 -/
-axiom schinzel_product :
-    ∀ N : ℕ, ∃ n > N, largestPrimeFactor (n * (n + 1)) ≤ n
 
 /- ## Part X: Summary -/
 

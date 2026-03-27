@@ -45,17 +45,7 @@ def HasPartitionProperty (β : Ordinal) : Prop :=
 
 /- ## Specker's Results (1957) -/
 
-/-- Specker (1957): ω² → (ω², 3)². The case β = 2 holds. -/
-axiom specker_beta_two : HasPartitionProperty 2
-
-/-- Specker (1957): For finite 3 ≤ n < ω, ω^n does NOT have the partition property. -/
-axiom specker_finite_fail (n : ℕ) (h3 : 3 ≤ n) :
-    ¬ HasPartitionProperty (Ordinal.ofNat n)
-
 /- ## Chang's Theorem (1972) -/
-
-/-- Chang (1972): ω^ω → (ω^ω, 3)². The case β = ω holds. -/
-axiom chang_beta_omega : HasPartitionProperty Ordinal.omega
 
 /- ## Galvin–Larson Necessary Condition (1974) -/
 
@@ -64,51 +54,12 @@ axiom chang_beta_omega : HasPartitionProperty Ordinal.omega
 def IsAdditivelyIndecomposable (β : Ordinal) : Prop :=
   ∃ γ : Ordinal, β = Ordinal.omega ^ γ
 
-/-- Galvin–Larson (1974): If β ≥ 3 has the partition property,
-    then β must be additively indecomposable. -/
-axiom galvin_larson_necessary (β : Ordinal) (hge : 3 ≤ β)
-    (hpart : HasPartitionProperty β) :
-    IsAdditivelyIndecomposable β
-
 /- ## Schipperus Classification (2010) -/
 
 /-- The Cantor normal form length: the number of indecomposable ordinal
     summands in the Cantor normal form of γ. -/
 axiom cantorNFLength (γ : Ordinal) : ℕ
 
-/-- Schipperus (2010): If β = ω^γ where γ has Cantor NF length ≤ 2
-    (i.e., γ is a sum of at most 2 indecomposable ordinals),
-    then ω^β → (ω^β, 3)². -/
-axiom schipperus_leq_two (γ : Ordinal) (hlen : cantorNFLength γ ≤ 2) :
-    HasPartitionProperty (Ordinal.omega ^ γ)
-
-/-- Schipperus (2010): If β = ω^γ where γ has Cantor NF length ≥ 4
-    (i.e., γ is a sum of 4 or more indecomposable ordinals),
-    then ω^β does NOT have the partition property. -/
-axiom schipperus_geq_four (γ : Ordinal) (hlen : 4 ≤ cantorNFLength γ) :
-    ¬ HasPartitionProperty (Ordinal.omega ^ γ)
-
 /- ## The Open Case -/
 
-/-- The critical open case: Does the partition property hold when
-    β = ω^γ and γ has Cantor NF length exactly 3?
-    This is Erdős Problem #592 ($1,000 bounty). -/
-axiom erdos_592_open_case (γ : Ordinal) (hlen : cantorNFLength γ = 3) :
-    HasPartitionProperty (Ordinal.omega ^ γ) ∨
-    ¬ HasPartitionProperty (Ordinal.omega ^ γ)
-
 /- ## Classification Summary -/
-
-/-- The known partition ordinals of the form ω^β for countable β:
-    - β = 0: trivially true (ω⁰ = 1)
-    - β = 1: true (Ramsey's theorem for ω)
-    - β = 2: true (Specker 1957)
-    - 3 ≤ β < ω: false (Specker 1957)
-    - β = ω^γ, CNF-length(γ) ≤ 2: true (Schipperus 2010)
-    - β = ω^γ, CNF-length(γ) ≥ 4: false (Schipperus 2010)
-    - β = ω^γ, CNF-length(γ) = 3: OPEN -/
-axiom partition_ordinal_classification :
-    HasPartitionProperty 0 ∧
-    HasPartitionProperty 1 ∧
-    HasPartitionProperty 2 ∧
-    (∀ n : ℕ, 3 ≤ n → ¬ HasPartitionProperty (Ordinal.ofNat n))

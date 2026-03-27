@@ -73,8 +73,6 @@ admissible constants?
 
 Gyárfás-Lehel (1995) proved 1/2 < sSup {c | IsAdmissible c} < 3/5.
 The exact value remains unknown. -/
-axiom erdos_757_conjecture :
-    ∃ c : ℝ, c = sSup {x : ℝ | IsAdmissible x} ∧ (1/2 : ℝ) < c ∧ c < 3/5
 
 /-
 ## Known Results (Gyárfás-Lehel 1995)
@@ -84,16 +82,12 @@ axiom erdos_757_conjecture :
 than 1/2.
 
 The proof constructs explicit Sidon subsets using a greedy algorithm. -/
-axiom gyarfas_lehel_lower_bound :
-    (1/2 : ℝ) < sSup {c : ℝ | IsAdmissible c}
 
 /-- **Upper Bound** (Gyárfás-Lehel 1995): The supremum is strictly less
 than 3/5.
 
 The proof exhibits a family of almost-Sidon sets where the largest
 Sidon subset has size just under 3n/5. -/
-axiom gyarfas_lehel_upper_bound :
-    sSup {c : ℝ | IsAdmissible c} < (3/5 : ℝ)
 
 /-
 ## Properties of Sidon Sets
@@ -101,18 +95,6 @@ axiom gyarfas_lehel_upper_bound :
 
 /-- A Sidon set of size n has exactly n(n-1)/2 + 1 elements in its
 difference set (the +1 is for 0). -/
-axiom sidon_difference_count :
-    ∀ S : Finset ℝ, IsSidon (↑S : Set ℝ) →
-      ((↑S : Set ℝ) - ↑S).ncard = S.card * (S.card - 1) / 2 + S.card + 1
-
-/-- In particular, a Sidon set of size 4 has difference set of size 13. -/
-axiom sidon_4_difference_count :
-    ∀ S : Finset ℝ, S.card = 4 → IsSidon (↑S : Set ℝ) →
-      ((↑S : Set ℝ) - ↑S).ncard = 13
-
-/-- Any subset of a Sidon set is Sidon. -/
-axiom sidon_subset :
-    ∀ S T : Set ℝ, IsSidon S → T ⊆ S → IsSidon T
 
 /-- The empty set is Sidon. -/
 theorem sidon_empty : IsSidon (∅ : Set ℝ) := by
@@ -125,9 +107,6 @@ theorem sidon_singleton (x : ℝ) : IsSidon ({x} : Set ℝ) := by
   rw [Set.mem_singleton_iff] at ha hb hc hd
   subst ha hb hc hd
   rfl
-
-/-- Pairs are Sidon. -/
-axiom sidon_pair (x y : ℝ) (hxy : x ≠ y) : IsSidon ({x, y} : Set ℝ)
 
 /-
 ## Difference Sets
@@ -153,14 +132,8 @@ This condition is a relaxation of the Sidon property. It says that
 among any 4 elements, we can have at most one "collision" of differences.
 -/
 
-/-- The maximum size of |B - B| for a 4-element set B is 13 (Sidon case). -/
-axiom max_difference_4 :
-    ∀ B : Finset ℝ, B.card = 4 → (↑B - ↑B : Set ℝ).ncard ≤ 13
-
 /-- The minimum size of |B - B| for a 4-element set B is 7
 (arithmetic progression case). -/
-axiom min_difference_4 :
-    ∀ B : Finset ℝ, B.card = 4 → 7 ≤ (↑B - ↑B : Set ℝ).ncard
 
 /-- An almost-Sidon set has the property that no 4-element subset is
 "too far" from being Sidon. -/
@@ -197,10 +170,6 @@ theorem neg_admissible (c : ℝ) (hc : c < 0) : IsAdmissible c := by
         apply mul_nonpos_of_nonpos_of_nonneg (le_of_lt hc) (Nat.cast_nonneg A.ncard)
       exact h
 
-/-- The set of admissible constants is bounded above. -/
-axiom admissible_bounded_above :
-    BddAbove {c : ℝ | IsAdmissible c}
-
 /-- The set of admissible constants is nonempty. -/
 theorem admissible_nonempty : {c : ℝ | IsAdmissible c}.Nonempty :=
   ⟨0, zero_admissible⟩
@@ -218,9 +187,5 @@ def IsB2Sequence (S : Set ℝ) : Prop := IsSidon S
 
 /-- The Sidon set constant problem: what is the largest Sidon subset
 guaranteed in a set of size n? This is asymptotically √n. -/
-axiom sidon_constant :
-    ∃ C : ℝ, C > 0 ∧
-      ∀ (A : Finset ℝ), ∃ S ⊆ (↑A : Set ℝ), IsSidon S ∧
-        C * Real.sqrt A.card ≤ (S.ncard : ℝ)
 
 end Erdos757

@@ -22,6 +22,8 @@ Reference: https://erdosproblems.com/1056
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
 
 namespace Erdos1056
@@ -167,8 +169,24 @@ theorem wilson_constraint_17 : (Finset.Ico 1 17).prod id % 17 = 17 - 1 := by
     covering [1,p) have product ≡ 1 (mod p), the total is 1^k = 1,
     but Wilson says total = p-1 ≡ -1. So non-trivial solutions must
     avoid partitioning all of {1, ..., p-1}. -/
-axiom wilson_constraint (p : ℕ) (hp : p.Prime) :
-    (Finset.Ico 1 p).prod id % p = p - 1
+theorem wilson_constraint (p : ℕ) (hp : p.Prime) :
+    (Finset.Ico 1 p).prod id % p = p - 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  -- Step 1: Relate Finset.Ico 1 p product to (p-1)!
+  -- ∏ i in Ico 1 p, i = ∏ i in range (p-1), (i+1) = (p-1)!
+  have h_eq : (Finset.Ico 1 p).prod id = (p - 1).factorial := by
+    rw [Finset.prod_Ico_eq_prod_range]
+    simp only [id]
+    symm
+    induction p - 1 with
+    | zero => simp
+    | succ n ih => rw [Finset.prod_range_succ, Nat.factorial_succ, ih, add_comm]
+  rw [h_eq]
+  -- Step 2: (p-1)! % p = p - 1 by Wilson's theorem
+  have h := ZMod.wilsons_lemma p
+  have hval := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, ZMod.val_neg_one'] at hval
+  exact hval
 
 /- ## Part V: The Main Conjecture -/
 

@@ -36,11 +36,6 @@ def IsTree (G : SimpleGraph V) : Prop :=
 /-- Number of vertices in graph. -/
 def vertexCount (V : Type*) [Fintype V] : ℕ := Fintype.card V
 
-/-- A tree on n vertices has exactly n-1 edges. -/
-axiom tree_edge_count (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hT : IsTree G) (hn : vertexCount V ≥ 1) :
-    G.edgeFinset.card = vertexCount V - 1
-
 /- ## Part II: Complete Multipartite Graphs -/
 
 /-- Complete multipartite graph with part sizes m₁, ..., mₖ. -/
@@ -90,34 +85,12 @@ noncomputable def ramseyNumber (T : Type*) [Fintype T]
     (G : CompleteMultipartite) : ℕ :=
   Nat.find (ramsey_exists T G)
 
-/-- R(T, G) achieves the Ramsey property for the minimum N. -/
-axiom ramseyNumber_achieves (T : Type*) [Fintype T] (G : CompleteMultipartite) :
-    ∀ (coloring : Fin (ramseyNumber T G) → Fin (ramseyNumber T G) → Fin 2),
-      (∃ f : T → Fin (ramseyNumber T G), Function.Injective f ∧
-        ∀ x y, x ≠ y → coloring (f x) (f y) = 0) ∨
-      (∃ (parts : Fin G.k → Finset (Fin (ramseyNumber T G))),
-        (∀ i j, i ≠ j → Disjoint (parts i) (parts j)) ∧
-        (∀ i, (parts i).card ≥ G.partSizes i) ∧
-        (∀ i j, i ≠ j → ∀ u ∈ parts i, ∀ v ∈ parts j, coloring u v = 1))
-
 /- ## Part IV: Chvátal's Theorem -/
 
 /-- Chvátal (1977): R(T, Kₘ) = (m-1)(n-1) + 1 for any tree T on n vertices. -/
 axiom chvatal (T : Type*) [Fintype T] [DecidableEq T]
     (G : SimpleGraph T) [DecidableRel G.Adj] (hT : IsTree G) (m : ℕ) (hm : m ≥ 2) :
     ramseyNumber T (completeGraphAsMultipartite m) = (m - 1) * (Fintype.card T - 1) + 1
-
-/-- Upper bound from Chvátal. -/
-axiom chvatal_upper (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G → Fintype.card T = n →
-    ramseyNumber T (completeGraphAsMultipartite m) ≤ (m - 1) * (n - 1) + 1
-
-/-- Lower bound from Chvátal. -/
-axiom chvatal_lower (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G → Fintype.card T = n →
-    ramseyNumber T (completeGraphAsMultipartite m) ≥ (m - 1) * (n - 1) + 1
 
 /--
 **Chvátal's formula examples:**
@@ -168,12 +141,6 @@ axiom bipartite_case (T : Type*) [Fintype T] [DecidableEq T]
 def starGraph (n : ℕ) : CompleteMultipartite :=
   completeBipartite 1 (n - 1) (by omega)
 
-/-- R(star_n, K_m) = (m-1)(n-1) + 1 (stars are trees, Chvátal applies). -/
-axiom star_ramsey (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G → Fintype.card T = n →
-    ramseyNumber T (completeGraphAsMultipartite m) = (m - 1) * (n - 1) + 1
-
 /- ## Part VII: Path Graphs -/
 
 /-- Path on n vertices: P_n. -/
@@ -181,31 +148,11 @@ def IsPath (G : SimpleGraph V) : Prop :=
   IsTree G ∧ ∃ u v : V, (∀ w, G.degree w ≤ 2) ∧
     G.degree u = 1 ∧ G.degree v = 1
 
-/-- R(P_n, K_m) = (m-1)(n-1) + 1 (Chvátal applies). -/
-axiom path_complete (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-    IsPath G → Fintype.card V = n →
-    ramseyNumber V (completeGraphAsMultipartite m) = (m - 1) * (n - 1) + 1
-
-/-- Gerencsér-Gyárfás (1967): R(P_n, P_m) = n + ⌊m/2⌋ - 1 for n ≥ m ≥ 2. -/
-axiom gerencser_gyarfas (n m : ℕ) (hn : n ≥ m) (hm : m ≥ 2) :
-    ∀ (V₁ V₂ : Type*) [Fintype V₁] [Fintype V₂] [DecidableEq V₁] [DecidableEq V₂]
-      (G₁ : SimpleGraph V₁) (G₂ : SimpleGraph V₂) [DecidableRel G₁.Adj] [DecidableRel G₂.Adj],
-    IsPath G₁ → Fintype.card V₁ = n →
-    IsPath G₂ → Fintype.card V₂ = m →
-    n + m / 2 - 1 ≤ n + m  -- simplified bound statement
-
 /- ## Part VIII: General Tree Structure -/
 
 /-- Maximum degree of a tree. -/
 noncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   Finset.univ.sup (G.degree ·)
-
-/-- Trees with bounded maximum degree Δ have R(T, K₃) ≤ C·n for some C(Δ). -/
-axiom bounded_degree_ramsey (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hT : IsTree G) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
-    ∃ C : ℕ, ramseyNumber V (completeGraphAsMultipartite 3) ≤ C * Fintype.card V
 
 /-- Burr's conjecture for bounded degree trees. -/
 def BurrConjecture (Δ : ℕ) : Prop :=
@@ -223,24 +170,7 @@ axiom burr_conjecture (Δ : ℕ) : BurrConjecture Δ
 noncomputable def turanNumber (n r : ℕ) : ℕ :=
   (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 |>.floor.toNat
 
-/-- Turán extremal graphs are complete multipartite, connecting Ramsey and Turán. -/
-axiom ramsey_turan_connection (n r : ℕ) (hr : r ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G → Fintype.card T = n →
-    ramseyNumber T (completeGraphAsMultipartite r) ≥ turanNumber n r + 1
-
 /- ## Part X: Probabilistic Lower Bounds -/
-
-/-- Probabilistic argument gives R(T, G) ≥ some lower bound. -/
-axiom probabilistic_lower (n : ℕ) (G : CompleteMultipartite) (hn : n ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (H : SimpleGraph T) [DecidableRel H.Adj],
-    IsTree H → Fintype.card T = n →
-    ramseyNumber T G ≥ n - 1
-
-/-- Trees require at least n vertices for embedding. -/
-axiom tree_embedding_lower (T : Type*) [Fintype T] [DecidableEq T]
-    (G : SimpleGraph T) [DecidableRel G.Adj] (hT : IsTree G) :
-    ramseyNumber T (completeGraphAsMultipartite 2) ≥ Fintype.card T
 
 /- ## Part XI: Extremal Graphs -/
 
@@ -254,26 +184,7 @@ def RamseyExtremalGraph (n m : ℕ) : Prop :=
       IsTree G → Fintype.card T = n →
       ¬∃ f : T → V, Function.Injective f ∧ ∀ x y, x ≠ y → coloring (f x) (f y) = 0)
 
-/-- The extremal construction exists. -/
-axiom ramsey_extremal_exists (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
-    RamseyExtremalGraph n m
-
 /- ## Part XII: Asymptotic Behavior -/
-
-/-- For fixed m, R(T_n, K_m) ~ (m-1)n as n → ∞. -/
-axiom asymptotic_behavior (m : ℕ) (hm : m ≥ 2) :
-    ∀ ε > 0, ∃ N₀, ∀ n ≥ N₀,
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G → Fintype.card T = n →
-    |((ramseyNumber T (completeGraphAsMultipartite m) : ℝ) / n) - (m - 1)| < ε
-
-/-- The leading coefficient is exactly m - 1, following from Chvátal's exact formula:
-    R(T_n, K_m) = (m-1)(n-1)+1 = (m-1)n - (m-2), so R/n → (m-1). -/
-axiom leading_coefficient (m : ℕ) (hm : m ≥ 2) :
-    ∀ (T : Type*) [Fintype T] [DecidableEq T] (G : SimpleGraph T) [DecidableRel G.Adj],
-    IsTree G →
-    ramseyNumber T (completeGraphAsMultipartite m) =
-      (m - 1) * (Fintype.card T - 1) + 1
 
 end Erdos550
 

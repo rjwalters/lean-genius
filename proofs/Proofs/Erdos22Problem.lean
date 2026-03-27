@@ -86,45 +86,6 @@ def IsCliqueFree (G : Graph V) (k : ℕ) : Prop :=
     K_k-free graph on n vertices with independence number < ℓ. -/
 axiom rt (n k ℓ : ℕ) : ℕ
 
-/-- rt is achieved by some graph. -/
-axiom rt_achievable (n k ℓ : ℕ) (hn : n ≥ 1) :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : Graph V, Fintype.card V = n ∧
-      IsCliqueFree G k ∧
-      independenceNumber G < ℓ ∧
-      edgeCount G = rt n k ℓ
-
-/-- rt is maximal. -/
-axiom rt_maximal (n k ℓ : ℕ) :
-    ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : Graph V, Fintype.card V = n →
-      IsCliqueFree G k → independenceNumber G < ℓ →
-      edgeCount G ≤ rt n k ℓ
-
-/-
-## Turán's Theorem (Classical)
--/
-
-/-- The Turán number ex(n, K_r) is the maximum edges in a K_r-free graph on n vertices. -/
-axiom turanNumber (n r : ℕ) : ℕ
-
-/-- Turán's theorem: ex(n, K_{r+1}) ≈ (1 - 1/r) · n²/2.
-    The exact formula involves floor functions for the partition. -/
-axiom turan_theorem (n r : ℕ) (hr : r ≥ 1) :
-    (turanNumber n (r + 1) : ℚ) ≤ (1 - 1/r) * n^2 / 2 + r ∧
-    (turanNumber n (r + 1) : ℚ) ≥ (1 - 1/r) * n^2 / 2 - r
-
-/-- For K₄-free graphs: ex(n, K₄) ≈ n²/3. -/
-axiom turan_K4 (n : ℕ) (hn : n ≥ 3) :
-    (turanNumber n 4 : ℚ) ≤ n^2 / 3
-
-/-- The Turán graph T(n, r) achieves the Turán number. -/
-axiom turan_graph_optimal (n r : ℕ) (hr : r ≥ 1) :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : Graph V, Fintype.card V = n ∧
-      IsCliqueFree G (r + 1) ∧
-      edgeCount G = turanNumber n (r + 1)
-
 /-
 ## The Main Conjecture and Solution
 -/
@@ -136,11 +97,6 @@ def BollobasErdosConjecture : Prop :=
   ∀ ε : ℝ, ε > 0 →
     ∃ N : ℕ, ∀ n ≥ N, (rt n 4 ⌈ε * n⌉₊ : ℝ) ≥ n^2 / 8
 
-/-- Bollobás-Erdős (1976): Proved a weaker bound with (1/8 + o(1))n² edges. -/
-axiom bollobas_erdos_1976 :
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n ≥ N, (rt n 4 ⌈ε * n⌉₊ : ℝ) ≥ (1/8 - ε) * n^2
-
 /-- **Main Theorem (Fox-Loh-Zhao 2015)**: The conjecture is TRUE.
     Moreover, the independence number can be made much smaller than εn. -/
 axiom fox_loh_zhao_2015 :
@@ -151,10 +107,6 @@ axiom fox_loh_zhao_2015 :
         (edgeCount G : ℝ) ≥ n^2 / 8 ∧
         (independenceNumber G : ℝ) ≤
           10 * (Real.log (Real.log n))^(3/2 : ℝ) / (Real.log n)^(1/2 : ℝ) * n
-
-/-- rt is monotone increasing in the independence bound ℓ.
-    Larger allowed independence means more valid graphs means larger maximum. -/
-axiom rt_monotone_ℓ (n k ℓ₁ ℓ₂ : ℕ) (h : ℓ₁ ≤ ℓ₂) : rt n k ℓ₁ ≤ rt n k ℓ₂
 
 /-- Key lemma: existence of a valid graph implies rt is at least that graph's edge count.
     This is the "reverse" of rt_maximal. -/
@@ -205,42 +157,7 @@ theorem conjecture_resolved : BollobasErdosConjecture := by
   linarith
 
 /-
-## The Key Bound: n²/8
-
-Why n²/8? This comes from a specific construction.
--/
-
-/-- The bound n²/8 is sharp: there exist K₄-free graphs with ~n²/8 edges
-    and small independence number, but not significantly more edges. -/
-axiom bound_is_tight :
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n ≥ N,
-        -- Upper bound: can't do much better than n²/8
-        (∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-          ∀ G : Graph V, Fintype.card V = n →
-            IsCliqueFree G 4 → independenceNumber G ≤ ⌈ε * n⌉₊ →
-            (edgeCount G : ℝ) ≤ (1/8 + ε) * n^2)
-
-/-
-## The Construction (Sketch)
-
-Fox-Loh-Zhao use a **pseudorandom construction** based on:
-1. Start with a carefully chosen algebraic structure
-2. Use probabilistic deletion to remove K₄'s while preserving edge density
-3. The key is that random subgraphs of certain Cayley graphs work
--/
-
-/-- The construction uses Cayley graphs over finite fields. -/
-axiom cayley_graph_construction (n : ℕ) (hn : n ≥ 10) :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : Graph V, Fintype.card V = n ∧
-      IsCliqueFree G 4 ∧
-      (edgeCount G : ℝ) ≥ n^2 / 8 ∧
-      -- Independence number is polylogarithmic in n
-      (independenceNumber G : ℝ) ≤ (Real.log n)^3 * n / n
-
-/-
-## Comparison with Turán Numbers
+## Summary
 -/
 
 /-- The density gap: Turán gives 1/3 edge density; Ramsey-Turán gives 1/8.
@@ -248,75 +165,13 @@ axiom cayley_graph_construction (n : ℕ) (hn : n ≥ 10) :
 theorem edge_density_gap :
     (1 : ℚ) / 3 > 1 / 8 := by norm_num
 
-/-
-## Related Ramsey-Turán Results
--/
-
-/-- For K₃ (triangles), the situation is different. -/
-axiom rt_K3 (n ℓ : ℕ) (hn : n ≥ ℓ) (hℓ : ℓ ≥ 1) :
-    rt n 3 ℓ = 0  -- Triangle-free graphs can have linear independence number
-                  -- If we force small independence, we get few edges
-
-/-- For K₅ and higher, similar phenomena occur. -/
-axiom rt_K5_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n ≥ N, (rt n 5 ⌈ε * n⌉₊ : ℝ) ≥ c * n^2
-
-/-
-## The Density Function ρ_r
--/
-
-/-- The Ramsey-Turán density ρ_r = lim_{n→∞} rt(n; r, o(n)) / (n²/2). -/
-axiom ramseyTuranDensity (r : ℕ) : ℝ
-
-/-- ρ₃ = 0 (triangle case). -/
-axiom rho_3 : ramseyTuranDensity 3 = 0
-
-/-- ρ₄ = 1/4 (this problem). -/
-axiom rho_4 : ramseyTuranDensity 4 = 1/4
-
-/-- ρ₅ is known. -/
-axiom rho_5 : ramseyTuranDensity 5 = 1/4
-
-/-- General conjecture: ρ_r depends on r mod 4 in a specific way. -/
-axiom rho_general_conjecture (r : ℕ) (hr : r ≥ 3) :
-    ramseyTuranDensity r > 0 ↔ r ≥ 4
-
-/-
-## Why n²/8?
-
-The bound n²/8 corresponds to edge density 1/4 (since max edges is n²/2).
-This is exactly ρ₄ = 1/4.
--/
-
 theorem density_interpretation :
-    -- n²/8 edges out of max n²/2 edges
-    -- = 1/4 edge density
-    -- = ρ₄
     (1 : ℚ) / 8 / (1 / 2) = 1 / 4 := by norm_num
-
-/-
-## Summary
-
-**Problem Status: SOLVED**
-
-Erdős Problem #22 (Bollobás-Erdős Conjecture) asks whether K₄-free graphs
-can have ≥ n²/8 edges while having independence number o(n).
-
-**Answer: YES** (Fox-Loh-Zhao 2015)
-
-The bound n²/8 corresponds to Ramsey-Turán density ρ₄ = 1/4.
--/
 
 /--
 **Erdős Problem #22: SOLVED**
 
 The Bollobás-Erdős conjecture is TRUE: rt(n; 4, εn) ≥ n²/8.
-
-This theorem combines:
-1. The conjecture is resolved (from Fox-Loh-Zhao)
-2. The Turán vs Ramsey-Turán density gap (1/3 > 1/8)
-3. The density interpretation (n²/8 = 1/4 edge density)
 -/
 theorem erdos_22_summary :
     BollobasErdosConjecture ∧

@@ -64,10 +64,6 @@ axiom InGeneralPosition (S : PointSet) : Prop
 Axiomatized since the full definition requires convex hull checks. -/
 axiom IsConvexKGon (vertices : Finset Point) (k : ℕ) : Prop
 
-/-- A convex k-gon has the expected number of vertices. -/
-axiom convexKGon_card (vertices : Finset Point) (k : ℕ) :
-  IsConvexKGon vertices k → vertices.card = k
-
 /-
 ## Part II: Empty Convex Polygons
 -/
@@ -76,10 +72,6 @@ axiom convexKGon_card (vertices : Finset Point) (k : ℕ) :
 Axiomatized since formalizing "interior of convex hull" requires
 substantial geometric infrastructure. -/
 axiom IsEmptyConvexKGon (S : PointSet) (vertices : Finset Point) (k : ℕ) : Prop
-
-/-- An empty convex k-gon has its vertices in S and forms a convex k-gon. -/
-axiom emptyConvexKGon_sub (S : PointSet) (vertices : Finset Point) (k : ℕ) :
-  IsEmptyConvexKGon S vertices k → vertices ⊆ S ∧ IsConvexKGon vertices k
 
 /-- S contains an empty convex k-gon -/
 def ContainsEmptyKGon (S : PointSet) (k : ℕ) : Prop :=
@@ -151,10 +143,6 @@ axiom g_ge_7_not_exists : ∀ k : ℕ, k ≥ 7 → g k = none
 ## Part VI: Bounds and Growth
 -/
 
-/-- Known lower bound: g(k) ≥ 2k - 3 for k ≤ 6 -/
-axiom g_lower_bound : ∀ k : ℕ, 3 ≤ k → k ≤ 6 →
-  ∃ n, g k = some n ∧ n ≥ 2 * k - 3
-
 /-- For k ≤ 6, g(k) is finite -/
 theorem g_exists_le_6 : ∀ k : ℕ, 3 ≤ k → k ≤ 6 → gExists k := by
   intro k hk3 hk6
@@ -168,17 +156,6 @@ theorem g_exists_le_6 : ∀ k : ℕ, 3 ≤ k → k ≤ 6 → gExists k := by
 /-- Base case: Horton set of 1 point -/
 def hortonBase : PointSet := {![0, 0]}
 
-/-- Recursive Horton construction (simplified description) -/
-axiom horton_recursive :
-  ∀ (S₁ S₂ : PointSet),
-    IsHortonSet S₁ → IsHortonSet S₂ →
-    S₁.card = S₂.card →
-    ∃ S : PointSet, S.card = S₁.card + S₂.card ∧ IsHortonSet S
-
-/-- Key property: Horton sets have no empty 7-gon but contain empty 6-gons -/
-axiom horton_has_empty_6 :
-  ∀ S : PointSet, IsHortonSet S → S.card ≥ 30 → ContainsEmptyKGon S 6
-
 /-
 ## Part VIII: Connection to Happy Ending Problem
 -/
@@ -191,28 +168,13 @@ noncomputable def happyEnding (k : ℕ) : Option ℕ :=
   then some (Nat.find h)
   else none
 
-/-- Happy ending always exists (unlike empty version) -/
-axiom happy_ending_exists : ∀ k : ℕ, k ≥ 3 → (happyEnding k).isSome
-
 /-- Erdős-Szekeres conjecture: g'(k) = 2^(k-2) + 1 -/
 def erdos_szekeres_conjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 → happyEnding k = some (2^(k-2) + 1)
 
-/-- Empty implies non-empty: g(k) ≥ g'(k) when both exist -/
-axiom empty_implies_nonempty :
-  ∀ k n m : ℕ, g k = some n → happyEnding k = some m → n ≥ m
-
 /-
 ## Part IX: Computational Results
 -/
-
-/-- Lower bound witnessed by 29-point configuration with no empty hexagon -/
-axiom g_6_lower_witness :
-  ∃ S : PointSet, S.card = 29 ∧ InGeneralPosition S ∧ ¬ContainsEmptyKGon S 6
-
-/-- Upper bound: every 30-point set contains empty hexagon -/
-axiom g_6_upper :
-  ∀ S : PointSet, S.card ≥ 30 → InGeneralPosition S → ContainsEmptyKGon S 6
 
 /-
 ## Part X: Summary

@@ -64,12 +64,6 @@ def inSetA (n : ℕ) : Prop :=
 ## Part 2: Basic Properties
 -/
 
-/-- 6 is in A: 1/2 + 1/3 + 1/6 = 1 -/
-axiom six_in_A : 6 ∈ setA
-
-/-- 12 is in A: 1/2 + 1/3 + 1/12 = 1 or other representations -/
-axiom twelve_in_A : 12 ∈ setA
-
 /-
 ## Part 3: Straus's Observation - Closure Under Multiplication
 -/
@@ -113,30 +107,12 @@ theorem primes_not_in_A (p : ℕ) (hp : Nat.Prime p) : p ∉ setA := by
 ## Part 5: Doubling Property
 -/
 
-/-- If n ∈ A (with n > 1), then 2n ∈ A -/
-axiom doubling_in_A :
-  ∀ n : ℕ, n > 1 → n ∈ setA → 2 * n ∈ setA
-
 /-
 ## Part 6: The Complement Set B
 -/
 
 /-- The complement B = ℕ \ A -/
 def setB : Set ℕ := setA.compl
-
-/-- B consists essentially of small multiples of prime powers -/
-axiom B_characterization :
-  ∀ n ∈ setB, ∃ (p : ℕ) (k : ℕ) (c : ℕ),
-    Nat.Prime p ∧ k ≥ 1 ∧ n = c * p^k ∧ c < p^k
-
-/-- Martin's Theorem: |B ∩ [1,x]| / x ~ (log log x) / (log x) -/
-axiom martin_B_density :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ x : ℝ, x ≥ 10 →
-      c₁ * (Real.log (Real.log x)) / (Real.log x) ≤
-        (Finset.filter (· ∈ setB) (Finset.range ⌊x⌋₊)).card / x ∧
-      (Finset.filter (· ∈ setB) (Finset.range ⌊x⌋₊)).card / x ≤
-        c₂ * (Real.log (Real.log x)) / (Real.log x)
 
 /-
 ## Part 7: Martin's Main Theorem
@@ -151,24 +127,9 @@ def hasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
 /-- Martin's Main Theorem: A has density 1 -/
 axiom martin_main_theorem : hasNaturalDensity setA 1
 
-/-- Equivalently: B has density 0 -/
-axiom B_has_density_zero : hasNaturalDensity setB 0
-
 /-
 ## Part 8: Small Examples Analysis
 -/
-
-/-- Numbers in B up to 20: 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 17, 19 -/
-axiom small_B_examples :
-  2 ∈ setB ∧ 3 ∈ setB ∧ 4 ∈ setB ∧ 5 ∈ setB ∧
-  7 ∈ setB ∧ 8 ∈ setB ∧ 9 ∈ setB ∧ 11 ∈ setB
-
-/-- Numbers in A up to 20: 1, 6, 10, 12, 14, 15, 18, 20 -/
-axiom small_A_examples :
-  1 ∈ setA ∧ 6 ∈ setA ∧ 10 ∈ setA ∧ 12 ∈ setA
-
-/-- 6 = 2 × 3 is the smallest element of A greater than 1 -/
-axiom six_smallest_in_A : ∀ n : ℕ, 1 < n → n < 6 → n ∉ setA
 
 /-
 ## Part 9: Connections to Other Problems
@@ -178,12 +139,6 @@ axiom six_smallest_in_A : ∀ n : ℕ, 1 < n → n < 6 → n ∉ setA
 def erdosStrausConjecture : Prop :=
   ∀ n : ℕ, n ≥ 2 → ∃ a b c : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ c ≥ 1 ∧
     (4 : ℚ) / n = 1/a + 1/b + 1/c
-
-/-- General unit fraction problem: every n/m has Egyptian representation -/
-axiom general_egyptian_fraction :
-  ∀ n m : ℕ, m ≥ 1 → n ≤ m →
-    ∃ S : Finset ℕ, (∀ k ∈ S, k ≥ 1) ∧
-      S.sum (fun k => (1 : ℚ) / k) = n / m
 
 /-
 ## Part 10: Summary

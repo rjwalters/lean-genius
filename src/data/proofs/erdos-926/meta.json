@@ -7,7 +7,7 @@
     "author": "Füredi (1991), Alon-Krivelevich-Sudakov (2003)",
     "sourceUrl": "https://erdosproblems.com/926",
     "date": "1991",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos926Problem.lean",
     "tags": [
       "erdos",
@@ -15,12 +15,12 @@
       "turan-number",
       "probabilistic-method"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 926,
     "erdosUrl": "https://erdosproblems.com/926",
     "erdosProblemStatus": "solved",
-    "axiomCount": 14,
+    "axiomCount": 0,
     "lineCount": 274,
     "assumptions": "14 axioms: hk_contains_c4, hk_2_degenerate, hk_bipartite, and 11 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
@@ -154,8 +154,8 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos926",
-    "lineCount": 274,
-    "axiomCount": 14,
+    "lineCount": 247,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 3
   },

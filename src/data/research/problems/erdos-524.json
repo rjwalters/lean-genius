@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: 14 proved theorems (8 new this session). Added polyMax sSup infrastructure: BddAbove, nonneg, upper bound M_n≤n, endpoint lower bounds. Also continuity, ε²=1, P₀=0. Axiom count unchanged at 4 (all deep/open).",
+    "progressSummary": "COMPLETED: Removed unused salem_zygmund_trigonometric axiom (dead code, never referenced). Axioms reduced 4→3. Remaining 3 axioms are all deep results or open conjecture: erdos_lower_bound, chung_upper_bound, erdos_524_order_of_magnitude.",
     "builtItems": [
       "binaryDigit_values: sign function returns ±1 (line 87)",
       "binaryDigit_cast_abs: |sign(t,k)| = 1 as real (line 92)",
@@ -88,9 +88,9 @@
     {
       "path": "Proofs/Erdos524Problem.lean",
       "filename": "Erdos524Problem.lean",
-      "lineCount": 198,
+      "lineCount": 329,
       "theoremCount": 14,
-      "axiomCount": 4,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

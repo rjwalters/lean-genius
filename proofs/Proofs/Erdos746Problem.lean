@@ -93,10 +93,6 @@ def IsHamiltonianCycle (G : GraphOnN n) (cycle : List (Fin n)) : Prop :=
 def IsHamiltonian (G : GraphOnN n) : Prop :=
   ∃ cycle : List (Fin n), IsHamiltonianCycle G cycle
 
-/-- For connected graphs, Hamiltonicity requires minimum degree ≥ n/2 (Dirac). -/
-axiom dirac_theorem (n : ℕ) (hn : n ≥ 3) (G : GraphOnN n) :
-  (∀ v : Fin n, G.degree v ≥ n / 2) → IsHamiltonian G
-
 /-
 ## Part III: Perfect Matchings
 -/
@@ -115,13 +111,6 @@ def HasPerfectMatching (G : GraphOnN n) : Prop :=
 ## Part IV: Erdős-Rényi Result on Matchings
 -/
 
-/-- **Erdős-Rényi (1966):**
-    Random graph with ≥ (1/2 + ε)n log n edges almost surely has a perfect matching. -/
-axiom erdos_renyi_matching (ε : ℝ) (hε : ε > 0) :
-  AlmostSurely
-    (fun n => hamiltonianThreshold n ε)
-    (fun n G => HasPerfectMatching G)
-
 /-
 ## Part V: The Erdős Question
 -/
@@ -138,14 +127,6 @@ def ErdosQuestion746 : Prop :=
 ## Part VI: Pósa's Result
 -/
 
-/-- **Pósa (1976):**
-    Random graph with ≥ Cn log n edges is almost surely Hamiltonian (for large C). -/
-axiom posa_theorem :
-  ∃ C : ℝ, C > 0 ∧
-    AlmostSurely
-      (fun n => C * ↑n * Real.log ↑n)
-      (fun n G => IsHamiltonian G)
-
 /-- Pósa's constant is finite but not optimal. -/
 def posaConstant : ℝ := 1000 -- Placeholder, actual value not specified
 
@@ -157,15 +138,6 @@ def posaConstant : ℝ := 1000 -- Placeholder, actual value not specified
 def korshunovThreshold (n : ℕ) (ω : ℕ → ℝ) : ℝ :=
   if n ≤ 2 then 0
   else (1/2) * n * Real.log n + (1/2) * n * Real.log (Real.log n) + ω n * n
-
-/-- **Korshunov (1977):**
-    ≥ (1/2)n log n + (1/2)n log log n + ω(n)n edges suffices for Hamiltonicity,
-    where ω(n) → ∞ as n → ∞. -/
-axiom korshunov_theorem (ω : ℕ → ℝ) (hω_pos : ∀ n, ω n > 0)
-    (hω_tend : Filter.Tendsto ω Filter.atTop Filter.atTop) :
-  AlmostSurely
-    (fun n => korshunovThreshold n ω)
-    (fun n G => IsHamiltonian G)
 
 /-
 ## Part VIII: Komlós-Szemerédi Precise Result
@@ -186,14 +158,6 @@ axiom komlos_szemeredi_theorem (c : ℝ) :
 /-- At c = 0, probability is e^{-1} ≈ 0.368. -/
 theorem limiting_prob_at_zero : limitingProbability 0 = Real.exp (-1) := by
   simp [limitingProbability]
-
-/-- As c → ∞, probability → 1. -/
-axiom limiting_prob_at_infinity :
-  Filter.Tendsto limitingProbability Filter.atTop (nhds 1)
-
-/-- As c → -∞, probability → 0. -/
-axiom limiting_prob_at_neg_infinity :
-  Filter.Tendsto limitingProbability Filter.atBot (nhds 0)
 
 /-
 ## Part IX: The Answer
@@ -217,12 +181,6 @@ def hamiltonianThresholdValue : Prop :=
 def IsConnected (G : GraphOnN n) : Prop :=
   ∀ u v : Fin n, G.Reachable u v
 
-/-- The threshold for connectivity is also (1/2)n log n. -/
-axiom connectivity_threshold (ε : ℝ) (hε : ε > 0) :
-  AlmostSurely
-    (fun n => hamiltonianThreshold n ε)
-    (fun n G => IsConnected G)
-
 /-- Hamiltonicity implies connectivity. -/
 theorem hamiltonian_implies_connected (G : GraphOnN n) (hn : n ≥ 2) :
     IsHamiltonian G → IsConnected G := by
@@ -242,12 +200,6 @@ def thresholdCoincidence : Prop :=
 /-- Minimum degree for Hamiltonicity. -/
 def MinDegree (G : GraphOnN n) : ℕ :=
   (Finset.univ : Finset (Fin n)).inf' (by sorry) (fun v => G.degree v)
-
-/-- Random graphs above the Hamiltonicity threshold a.a.s. have no isolated vertices. -/
-axiom random_graph_min_degree (ε : ℝ) (hε : ε > 0) :
-  AlmostSurely
-    (fun n => hamiltonianThreshold n ε)
-    (fun n G => MinDegree G ≥ 1)
 
 /-
 ## Part XII: Summary

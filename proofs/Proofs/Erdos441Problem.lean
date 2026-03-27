@@ -76,15 +76,6 @@ def ErdosSecondPart (N : ℕ) : Finset ℕ :=
 def ErdosConstruction (N : ℕ) : Finset ℕ :=
   ErdosFirstPart N ∪ ErdosSecondPart N
 
-/-- Erdős' construction gives an LCM-bounded set -/
-axiom erdos_construction_valid :
-  ∀ N : ℕ, N ≥ 1 → IsLCMBounded (ErdosConstruction N) N
-
-/-- Size of Erdős' construction: approximately (9N/8)^{1/2} -/
-axiom erdos_construction_size :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-    |(ErdosConstruction N).card - Real.sqrt ((9 : ℝ) * N / 8)| ≤ C
-
 /-
 ## Part 3: The Main Question
 -/
@@ -107,9 +98,6 @@ theorem erdos_question_answer : ¬ErdosQuestion := by
 def LowerBound : Prop :=
   ∃ C : ℝ, ∀ N : ℕ, N ≥ 1 →
     (g N : ℝ) ≥ Real.sqrt ((9 : ℝ) * N / 8) - C
-
-/-- Erdős' construction establishes the lower bound -/
-axiom lower_bound_holds : LowerBound
 
 /-- The construction gives g(N) ≥ (9N/8)^{1/2} + O(1) -/
 theorem construction_gives_lower_bound (N : ℕ) (hN : N ≥ 1) :
@@ -163,71 +151,17 @@ theorem erdos_question_disproved :
 ## Part 7: Why the Construction Fails
 -/
 
-/-- The structure of optimal sets can differ from Erdős' pattern -/
-axiom optimal_sets_structure :
-  -- For some N, the optimal set has different structure
-  -- May include different combinations of integers
-  True
-
-/-- The error term in Chen-Dai bound shows room for improvement -/
-axiom error_term_significance :
-  -- The O((N/log N)^{1/2} · log log N) term is not O(1)
-  -- This leaves room for the construction to be suboptimal
-  True
-
 /-
 ## Part 8: Special Cases
 -/
-
-/-- For small N, exact values of g(N) can be computed -/
-axiom small_cases :
-  -- g(1) = 1: only {1} works
-  -- g(2) = 2: {1, 2} works
-  -- g(6) = 3: {1, 2, 3} works (since lcm(2,3) = 6)
-  True
-
-/-- The set {1, 2, ..., k} is LCM-bounded for N = lcm(1,...,k) -/
-axiom consecutive_integers :
-  -- For N = lcm(1, 2, ..., k), the set {1, 2, ..., k} works
-  True
 
 /-
 ## Part 9: Related Results
 -/
 
-/-- Connection to primitive sequences -/
-axiom primitive_sequence_connection :
-  -- A is primitive if no element divides another
-  -- LCM-bounded sets have connections to primitive sequences
-  True
-
-/-- Connection to density questions -/
-axiom density_connection :
-  -- The asymptotic g(N) ~ (9N/8)^{1/2} implies
-  -- LCM-bounded sets have density ~N^{-1/2}
-  True
-
-/-- Choi's earlier work (1972) -/
-axiom choi_1972 :
-  -- Choi studied related questions about LCM constraints
-  True
-
 /-
 ## Part 10: The Constant 9/8
 -/
-
-/-- Why 9/8 appears in the asymptotic -/
-axiom why_nine_eighths :
-  -- From Erdős' construction:
-  -- First part: integers in [1, (N/2)^{1/2}] ≈ (N/2)^{1/2}
-  -- Second part: even integers in [(N/2)^{1/2}, (2N)^{1/2}] ≈ (1/2)((2N)^{1/2} - (N/2)^{1/2})
-  -- Total ≈ (N/2)^{1/2} + (1/2)((2N)^{1/2} - (N/2)^{1/2})
-  --      = (1/2)(N/2)^{1/2} + (1/2)(2N)^{1/2}
-  --      = (1/2)N^{1/2}(1/√2 + √2)
-  --      = (1/2)N^{1/2} · (3/√2)
-  --      = (3/(2√2))N^{1/2}
-  --      = (9/8)^{1/2} · N^{1/2}
-  True
 
 /-- The constant (9/8)^{1/2} = 3/(2√2) ≈ 1.061 -/
 theorem constant_value :

@@ -33,9 +33,9 @@
       "two_squares_multiplicative: Brahmagupta-Fibonacci identity for 2-square sums"
     ],
     "dateAdded": "2025-12-26",
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations: legendre_three_squares (3-square obstruction criterion), jacobi_four_squares (r4(n) exact formula), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound), fermat_two_squares (p=1 mod 4 iff sum of two squares), hurwitz_quaternions_euclidean (Hurwitz integers Euclidean), hurwitz_representation_count (quaternion representation count). Note: 3 of the axioms assert True (placeholder).",
-    "lineCount": 398,
+    "axiomCount": 8,
+    "assumptions": "8 axiom declarations: legendre_three_squares (3-square obstruction criterion), jacobi_four_squares (r4(n) exact formula), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound), hurwitz_quaternions_euclidean (Hurwitz integers Euclidean), hurwitz_representation_count (quaternion representation count). Previously axiomatized fermat_two_squares now proved via Mathlib Nat.Prime.sq_add_sq.",
+    "lineCount": 415,
     "prerequisites": [
       "Quaternion algebra and norm multiplicativity",
       "Euler's four-square identity",
@@ -169,9 +169,9 @@
     ],
     "opens": [],
     "namespace": "LagrangeFourSquares",
-    "lineCount": 398,
-    "axiomCount": 9,
-    "theoremCount": 15,
+    "lineCount": 415,
+    "axiomCount": 8,
+    "theoremCount": 16,
     "definitionCount": 8
   },
   "references": [

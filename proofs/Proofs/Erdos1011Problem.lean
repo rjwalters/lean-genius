@@ -64,13 +64,6 @@ noncomputable def f (r n : ℕ) : ℕ :=
     ∀ G : SimpleGraph V, [DecidableRel G.Adj] →
     hasChromatic G r → edgeCount G ≥ m → HasTriangle G}
 
-/-- f is well-defined for r ≥ 2 -/
-axiom f_well_defined :
-  ∀ r n : ℕ, r ≥ 2 → n ≥ r → ∃ m : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V = n →
-    ∀ G : SimpleGraph V, [DecidableRel G.Adj] →
-    hasChromatic G r → edgeCount G ≥ m → HasTriangle G
-
 /-
 ## Turán's Theorem: The Case r = 2
 
@@ -83,13 +76,6 @@ def turanNumber (n : ℕ) : ℕ := n^2 / 4
 /-- Turán's theorem: f_2(n) = ⌊n²/4⌋ + 1 -/
 axiom turan_theorem :
   ∀ n ≥ 1, f 2 n = turanNumber n + 1
-
-/-- The Turán graph T(n,2) achieves the bound -/
-axiom turan_graph_optimal :
-  ∀ n ≥ 1, ∃ (V : Type*) [Fintype V] [DecidableEq V],
-    ∃ G : SimpleGraph V, [DecidableRel G.Adj] →
-    Fintype.card V = n ∧ edgeCount G = turanNumber n ∧
-    hasChromatic G 2 ∧ ¬HasTriangle G
 
 /-
 ## Erdős-Gallai: The Case r = 3
@@ -112,10 +98,6 @@ f_4(n) = ⌊(n-3)²/4⌋ + 6 for large n (Ren-Wang-Wang-Yang 2024)
 
 /-- The threshold for r = 4 -/
 def f4Threshold (n : ℕ) : ℕ := (n - 3)^2 / 4 + 6
-
-/-- Ren-Wang-Wang-Yang theorem (2024): f_4(n) for n ≥ 150 -/
-axiom rwwy_theorem :
-  ∀ n ≥ 150, f 4 n = f4Threshold n
 
 /-
 ## The Simonovits Asymptotic
@@ -152,40 +134,13 @@ axiom hhkp_upper :
   ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R,
     (g r : ℝ) ≤ (2 + ε) * r^2 * Real.log r
 
-/-- The gap: factor of 4 between lower and upper bounds -/
-axiom g_bounds_gap (r : ℕ) (hr : r ≥ 10) :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ c₂ / c₁ ≤ 5 ∧
-    c₁ * r^2 * Real.log r ≤ (g r : ℝ) ∧
-    (g r : ℝ) ≤ c₂ * r^2 * Real.log r
-
 /-
 ## Monotonicity Properties
 -/
 
-/-- f_r(n) is increasing in n -/
-axiom f_mono_n :
-  ∀ r n₁ n₂ : ℕ, n₁ ≤ n₂ → f r n₁ ≤ f r n₂
-
-/-- f_r(n) is decreasing in r (more chromatic restriction → fewer edges needed) -/
-axiom f_mono_r :
-  ∀ r₁ r₂ n : ℕ, r₁ ≤ r₂ → f r₂ n ≤ f r₁ n
-
-/-- g(r) is increasing in r -/
-axiom g_mono :
-  ∀ r₁ r₂ : ℕ, r₁ ≤ r₂ → g r₁ ≤ g r₂
-
 /-
 ## Special Values of g(r)
 -/
-
-/-- g(2) = 0: bipartite graphs are already bipartite -/
-axiom g_2 : g 2 = 0
-
-/-- g(3) = 1: odd cycle graphs need 1 vertex removed -/
-axiom g_3 : g 3 = 1
-
-/-- g(4) = 3: Grötzsch graph type constructions -/
-axiom g_4 : g 4 = 3
 
 /-
 ## The Main Conjecture

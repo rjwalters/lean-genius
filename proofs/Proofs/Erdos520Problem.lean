@@ -84,10 +84,6 @@ does there exist a constant c > 0 such that almost surely,
 
 This asks whether the law of the iterated logarithm holds for random
 multiplicative functions with a universal constant. -/
-axiom erdos_520_conjecture :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
-        ∀ᵐ ω ∂ℙ, limsup (fun N => normalizedSum f N ω) atTop = c
 
 /-
 ## Related Results
@@ -98,47 +94,18 @@ Several partial results are known about moments and fluctuations.
 /-- **Wintner's Result (1944)**: The partial sums satisfy E[S_N²] = ∑_{m ≤ N, squarefree} 1.
 
 This is because E[f(m)f(n)] = 1 if m = n and squarefree, 0 otherwise. -/
-axiom wintner_second_moment :
-    ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
-      ∀ N : ℕ, ∫ ω, (partialSum f N ω)^2 ∂ℙ =
-        ((Finset.Icc 1 N).filter Squarefree).card
 
 /-- The number of square-free integers up to N is asymptotically (6/π²)N.
 
 This implies E[S_N²] ~ (6/π²)N. -/
-axiom squarefree_count_asymptotic :
-    Tendsto (fun N : ℕ => ((Finset.Icc 1 N).filter Squarefree).card / (N : ℝ))
-      atTop (nhds (6 / Real.pi^2))
 
 /-- **Harper's Bound (2020)**: The moments of S_N have specific growth rates.
 
 For k ≥ 1: E[|S_N|^{2k}] ≍ N^k (log log N)^{k²}. -/
-axiom harper_moment_bound :
-    ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
-      ∀ k : ℕ, k ≥ 1 →
-        ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
-          ∀ᶠ N : ℕ in atTop,
-            C₁ * N^k * (Real.log (Real.log N))^(k^2 : ℕ) ≤
-              ∫ ω, |partialSum f N ω|^(2*k) ∂ℙ ∧
-            ∫ ω, |partialSum f N ω|^(2*k) ∂ℙ ≤
-              C₂ * N^k * (Real.log (Real.log N))^(k^2 : ℕ)
 
 /-
 ## Properties of Rademacher Multiplicative Functions
 -/
-
-/-- For a Rademacher multiplicative function, f takes values in {-1, 0, 1}. -/
-axiom rademacher_values (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :
-    ∀ n ω, f n ω ∈ ({-1, 0, 1} : Set ℝ)
-
-/-- The expected value E[f(n)] = 0 for n > 1. -/
-axiom rademacher_mean_zero (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :
-    ∀ n, n > 1 → ∫ ω, f n ω ∂ℙ = 0
-
-/-- For distinct square-free n, m, the values f(n), f(m) are uncorrelated. -/
-axiom rademacher_uncorrelated (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :
-    ∀ n m, n ≠ m → Squarefree n → Squarefree m →
-      ∫ ω, f n ω * f m ω ∂ℙ = 0
 
 /-
 ## Connection to the Law of the Iterated Logarithm
@@ -154,11 +121,6 @@ For multiplicative functions, the dependence structure changes the constant.
 For multiplicative functions, the constant may be different. -/
 noncomputable def lilConstant : ℝ := Real.sqrt 2
 
-/-- **Weak Version**: The normalized sum is bounded almost surely. -/
-axiom normalized_sum_bounded :
-    ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
-      ∃ C : ℝ, ∀ᵐ ω ∂ℙ, ∀ᶠ N in atTop, |normalizedSum f N ω| ≤ C
-
 /-
 ## The Square-Free Sieve
 
@@ -171,8 +133,5 @@ def squarefreeIndicator (n : ℕ) : ℕ := if Squarefree n then 1 else 0
 
 /-- For square-free n with prime factorization n = p₁...pᵣ,
 f(n) = f(p₁)...f(pᵣ) which is uniformly distributed on {-1, 1}. -/
-axiom squarefree_uniform (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :
-    ∀ n, Squarefree n → n > 1 →
-      ℙ {ω | f n ω = 1} = 1/2 ∧ ℙ {ω | f n ω = -1} = 1/2
 
 end Erdos520

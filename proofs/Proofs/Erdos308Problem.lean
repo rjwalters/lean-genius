@@ -105,20 +105,6 @@ where
 ## Part III: Basic Properties
 -/
 
-/-- 1 is always representable (use S = {1}) -/
-axiom one_representable (N : ℕ) (hN : N ≥ 1) : Representable N 1
-
-/-- 0 is representable (use S = ∅) -/
-axiom zero_representable (N : ℕ) : Representable N 0
-
-/-- The maximum representable is at most ⌊H_N⌋ -/
-axiom max_representable_le_floor_H (N k : ℕ) (hN : N ≥ 1) :
-    Representable N k → k ≤ (H N).num.natAbs
-
-/-- Representability is monotone in N -/
-axiom representable_monotone (N M k : ℕ) (hNM : N ≤ M) :
-    Representable N k → Representable M k
-
 /-
 ## Part IV: The Contiguity Question
 
@@ -172,10 +158,6 @@ The bounds imply that for large N, f(N) is either ⌊H_N⌋ or ⌊H_N⌋ - 1.
 
 This means RepresentableSet N is either {0,...,⌊H_N⌋-1} or {0,...,⌊H_N⌋}.
 -/
-axiom croot_main_theorem :
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      let m := (H N).num.natAbs
-      (f N = m ∨ f N = m - 1)
 
 /--
 **Answer to Question 2:**
@@ -187,29 +169,6 @@ axiom question2_yes :
 /-
 ## Part VI: Small Examples
 -/
-
-/-- H_2 = 1 + 1/2 = 3/2 -/
-axiom H_two : H 2 = 3 / 2
-
-/-- H_3 = 1 + 1/2 + 1/3 = 11/6 -/
-axiom H_three : H 3 = 11 / 6
-
-/-- H_4 = 1 + 1/2 + 1/3 + 1/4 = 25/12 -/
-axiom H_four : H 4 = 25 / 12
-
-/-- For N = 1: RepresentableSet = {0, 1}, f(1) = 2 -/
-axiom f_one : f 1 = 2
-
-/-- For N = 2: RepresentableSet = {0, 1}, f(2) = 2 (can't get 3/2 as integer) -/
-axiom f_two : f 2 = 2
-
-/-- For N = 3: Can represent 0, 1 (from 1/2 + 1/3 + 1/6? No, 6 > 3) -/
--- With {1,2,3}: 1 + 1/2 + 1/3 = 11/6 < 2
--- So f(3) = 2
-axiom f_three : f 3 = 2
-
-/-- For N = 6: H_6 = 49/20 ≈ 2.45, so ⌊H_6⌋ = 2 -/
-axiom f_six : f 6 = 3  -- Can represent 0, 1, 2 but not 3
 
 /-
 ## Part VII: Connection to Egyptian Fractions
@@ -233,10 +192,6 @@ To represent k, we can use the greedy algorithm:
 
 This doesn't always work optimally with bounded denominators.
 -/
-axiom greedy_not_always_optimal :
-    ∃ N k : ℕ, Representable N k ∧
-      -- Greedy with denominators ≤ N fails but k is still representable
-      True
 
 /-
 ## Part VIII: Asymptotic Behavior
@@ -248,9 +203,6 @@ H_N = ln(N) + γ + 1/(2N) - 1/(12N²) + O(1/N⁴)
 
 where γ ≈ 0.5772... is the Euler-Mascheroni constant.
 -/
-axiom harmonic_asymptotics :
-    -- H_N ~ ln(N) + γ
-    True
 
 /--
 **f(N) Asymptotics:**
@@ -258,9 +210,6 @@ f(N) = ⌊H_N⌋ - Θ((log log N)²/log N)
 
 The second-order term is between (1/2) and (9/2) times (log log N)²/log N.
 -/
-axiom f_asymptotics :
-    -- f(N) ~ ⌊H_N⌋ with second-order correction
-    True
 
 /--
 **Growth Rate:**
@@ -268,9 +217,6 @@ f(N) grows like ln(N), since H_N ~ ln(N).
 
 More precisely: f(N)/ln(N) → 1 as N → ∞.
 -/
-axiom f_growth_rate :
-    -- f(N)/ln(N) → 1
-    True
 
 /-
 ## Part IX: Summary

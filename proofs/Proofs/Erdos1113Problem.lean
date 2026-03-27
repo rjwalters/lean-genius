@@ -73,11 +73,6 @@ def IsCoveringSet (m : ℕ) (P : Finset ℕ) : Prop :=
 def HasFiniteCoveringSet (m : ℕ) : Prop :=
   ∃ P : Finset ℕ, IsCoveringSet m P
 
-/-- If m has a covering set, then m is a Sierpinski number. -/
-axiom covering_set_implies_sierpinski (m : ℕ) (hm : Odd m) (hpos : m > 0)
-    (P : Finset ℕ) (hP : IsCoveringSet m P) :
-    IsSierpinskiNumber m
-
 /- ## Part III: The Main Question -/
 
 /-- **Erdős Problem #1113:** Are there Sierpinski numbers without finite covering sets? -/
@@ -103,20 +98,10 @@ theorem problem_equivalence :
 /-- The smallest known Sierpinski number is 78557 (Selfridge). -/
 def smallestKnownSierpinski : ℕ := 78557
 
-/-- 78557 is believed to be Sierpinski. -/
-axiom selfridge_78557 : IsSierpinskiNumber smallestKnownSierpinski
-
 /-- 78557 has a covering set: {3, 5, 7, 13, 19, 37, 73}. -/
 def coveringSetFor78557 : Finset ℕ := {3, 5, 7, 13, 19, 37, 73}
 
-axiom covering_78557 : IsCoveringSet smallestKnownSierpinski coveringSetFor78557
-
 /- ## Part V: Sierpinski's Construction -/
-
-/-- Sierpinski (1960) proved infinitely many Sierpinski numbers exist
-    using covering systems. -/
-axiom sierpinski_infinitely_many :
-    ∀ N : ℕ, ∃ m > N, IsSierpinskiNumber m ∧ HasFiniteCoveringSet m
 
 /- ## Part VI: Izotov's Candidate -/
 
@@ -161,27 +146,7 @@ def FermatNumber (n : ℕ) : ℕ := 2^(2^n) + 1
 /-- A Fermat prime is a prime Fermat number. -/
 def IsFermatPrime (n : ℕ) : Prop := Nat.Prime (FermatNumber n)
 
-/-- Known Fermat primes: F_0, F_1, F_2, F_3, F_4. -/
-axiom fermat_primes_known :
-    IsFermatPrime 0 ∧ IsFermatPrime 1 ∧ IsFermatPrime 2 ∧
-    IsFermatPrime 3 ∧ IsFermatPrime 4
-
-/-- F_5 is known to be composite. -/
-axiom f5_composite : ¬IsFermatPrime 5
-
-/-- **Erdős-Graham observation:**
-    If ALL Sierpinski numbers have covering sets, then there are
-    infinitely many Fermat primes. (Considered unlikely.) -/
-axiom erdos_graham_connection :
-    AllSierpinskiHaveCoverings → (∀ N : ℕ, ∃ n > N, IsFermatPrime n)
-
 /- ## Part IX: FFK Power Result -/
-
-/-- FFK proved: for every l ≥ 1, there exists m such that
-    2^k·m^i + 1 is composite for all 1 ≤ i ≤ l and k ≥ 0. -/
-axiom ffk_power_result :
-    ∀ l : ℕ, l ≥ 1 → ∃ m : ℕ, ∀ i k : ℕ, 1 ≤ i → i ≤ l →
-      ¬Nat.Prime (2^k * m^i + 1)
 
 /- ## Part X: Summary -/
 

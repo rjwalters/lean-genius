@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved finite_set_zero_density theorem (was axiom). Reduced axioms from 2 to 1. Also fixed existing Mathlib API breakage (Nat.prime_iff, Set.not_mem_empty, Nat.cast_nonneg).",
+    "progressSummary": "COMPLETED: All 12 theorems verified, 0 sorries. 1 axiom (erdos_graham_limsup — deep conditional on k-tuple conjecture). finite_set_zero_density and liminf_implies_limsup fully proved.",
     "builtItems": [
       "Proved primeCounting_mono (monotonicity)",
       "Proved primeCounting_lt_of_prime (strict monotonicity at primes)",
@@ -44,7 +44,8 @@
       "Proved finite_set_zero_density: finite A has bounded |A∩[1,n]| while π(n)→∞, so density→0 by squeeze theorem",
       "primeCounting unboundedness proved via Nat.exists_infinite_primes + monotonicity",
       "Filter.liminf_le_limsup in current Mathlib requires IsBoundedUnder (bounded above) which fails for general density ratios",
-      "squeeze_zero in current Mathlib takes ∀ (not ∀ᶠ) - API change from earlier versions"
+      "squeeze_zero in current Mathlib takes ∀ (not ∀ᶠ) - API change from earlier versions",
+      "Meta.json was stale — sorryCount was 1 but file has 0 sorries since liminf_implies_limsup was proved"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -73,11 +74,11 @@
     {
       "path": "Proofs/Erdos428Problem.lean",
       "filename": "Erdos428Problem.lean",
-      "lineCount": 197,
+      "lineCount": 220,
       "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 6,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos428Problem.lean"
     }

@@ -60,11 +60,6 @@ axiom chromaticNumber (G : SimpleGraph V) : ℕ
 /--
 **Chromatic number properties:**
 -/
-axiom chromaticNumber_pos (G : SimpleGraph V) [Nonempty V] :
-  chromaticNumber G ≥ 1
-
-axiom chromaticNumber_bound (G : SimpleGraph V) :
-  chromaticNumber G ≤ Fintype.card V
 
 /-
 ## Part II: Clique Subdivisions
@@ -100,15 +95,6 @@ axiom subdivisionNumber (G : SimpleGraph V) : ℕ
 /--
 **Subdivision number properties:**
 -/
-axiom subdivisionNumber_pos (G : SimpleGraph V) [Nonempty V] :
-  subdivisionNumber G ≥ 1
-
-axiom subdivisionNumber_bound (G : SimpleGraph V) :
-  subdivisionNumber G ≤ Fintype.card V
-
-axiom hasSubdivision_of_subdivisionNumber (G : SimpleGraph V) (k : ℕ)
-    (hk : k ≤ subdivisionNumber G) :
-  hasSubdivision G (completeGraph k)
 
 /-
 ## Part III: Hajós Conjecture
@@ -130,8 +116,6 @@ def hajosConjecture (G : SimpleGraph V) : Prop :=
 Hajós conjecture holds when χ(G) = 4.
 If a graph needs 4 colors, it contains a subdivision of K_4.
 -/
-axiom dirac_theorem (G : SimpleGraph V) (hχ : chromaticNumber G = 4) :
-  subdivisionNumber G ≥ 4
 
 /--
 **Catlin's Counterexamples (1974):**
@@ -151,7 +135,6 @@ axiom catlin_counterexamples :
 G(n, 1/2) is the random graph on n vertices where each edge
 appears independently with probability 1/2.
 -/
-axiom randomGraph : ℕ → Type
 
 /--
 **Erdős-Fajtlowicz Theorem (1981):**
@@ -165,11 +148,6 @@ for some constant c > 0.
 This is a STRONG disproof of Hajós: not only does χ(G) > σ(G)
 happen, but χ(G)/σ(G) can be as large as n^{1/2}/log n!
 -/
-axiom erdos_fajtlowicz_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    -- For almost all graphs G on n vertices:
-    -- χ(G) ≥ c · (√n / log n) · σ(G)
-    True
 
 /-
 ## Part V: The Main Question
@@ -233,9 +211,6 @@ For typical graphs on n vertices:
 
 The ratio χ(G)/σ(G) is Θ(n^{1/2}/log n).
 -/
-axiom tight_bound :
-  -- The bound is tight up to constants
-  True
 
 /-
 ## Part VIII: Related Results
@@ -248,18 +223,12 @@ axiom tight_bound :
 Every graph with χ(G) = k has K_k as a minor.
 This is OPEN for k ≥ 7 and implies the 4-color theorem!
 -/
-axiom hadwiger_conjecture :
-  -- For all graphs G: χ(G) ≤ hadwigerNumber G
-  True
 
 /--
 **Relationship: Subdivisions vs Minors:**
 σ(G) ≤ h(G) always (subdivisions are stricter than minors).
 Hajós (subdivisions) is false; Hadwiger (minors) might be true.
 -/
-axiom subdivision_minor_relation :
-  -- σ(G) ≤ h(G) for all G
-  True
 
 /--
 **Kostochka-Thomason Theorem:**
@@ -267,9 +236,6 @@ h(G) ≤ c · √(χ(G) log χ(G))
 
 This gives an upper bound on the Hadwiger number.
 -/
-axiom kostochka_thomason :
-  -- h(G) ≤ c · √(χ(G) log χ(G))
-  True
 
 /-
 ## Part IX: Clique Minor Conjecture
@@ -282,14 +248,10 @@ contains K_k as a subdivision?
 
 That is: does large Hadwiger number imply subdivision?
 -/
-axiom bollobas_catlin_erdos_conjecture : Prop
 
 /--
 **Known: h(G) = Ω(k²/log k) implies K_k subdivision**
 -/
-axiom subdivision_from_minor :
-  -- If h(G) ≥ c · k² / log k, then σ(G) ≥ k
-  True
 
 /-
 ## Part X: Summary

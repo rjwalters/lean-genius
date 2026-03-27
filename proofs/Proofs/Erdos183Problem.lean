@@ -15,6 +15,12 @@ a monochromatic triangle.
 
 **Status:** OPEN
 
+**Proved in this file:**
+- R(3;1) = 3 (trivial: 1 color)
+- R(3;2) = 6 (classical R(3,3): pigeonhole upper bound + C₅ lower bound)
+- Monotonicity: k₁ ≤ k₂ → R(3;k₁) ≤ R(3;k₂)
+- R(3;k) ≥ 3 for all k ≥ 1
+
 **Reference:** [Er61], [ACPPRT21]
 
 Adapted from erdosproblems.com (Apache 2.0 License)
@@ -108,8 +114,112 @@ theorem R3k_one : R3k 1 = 3 := by
         simp only [Fin.mk.injEq]; omega
       rcases this with rfl | rfl | rfl <;> contradiction
 
-/-- R(3;2) = 6 is the classical Ramsey number R(3,3) -/
-axiom R3k_two : R3k 2 = 6
+/-- Pigeonhole for 5 items in 2 bins: at least 3 share a value.
+    Used to find 3 same-colored edges from a vertex in K_6. -/
+private lemma pigeonhole_five_two (f : Fin 5 → Fin 2) :
+    ∃ (color : Fin 2) (i j k : Fin 5), i ≠ j ∧ j ≠ k ∧ i ≠ k ∧
+      f i = color ∧ f j = color ∧ f k = color := by
+  native_decide
+
+/-- In Fin 2, if x ≠ c then x equals the other value. -/
+private lemma fin2_other {x c : Fin 2} (h : x ≠ c) : x = (1 : Fin 2) - c := by
+  fin_cases x <;> fin_cases c <;> simp_all
+
+/-- Given vertex v₀ and three neighbors u₁,u₂,u₃ all connected to v₀ by the same color,
+    there must be a monochromatic triangle (either with v₀ or among u₁,u₂,u₃).
+    This is the key step in proving R(3,3) = 6. -/
+private lemma triangle_from_three_neighbors {n : ℕ} (c : EdgeColoring n 2)
+    (v₀ u₁ u₂ u₃ : Fin n)
+    (h01 : v₀ ≠ u₁) (h02 : v₀ ≠ u₂) (h03 : v₀ ≠ u₃)
+    (h12 : u₁ ≠ u₂) (h23 : u₂ ≠ u₃) (h13 : u₁ ≠ u₃)
+    (color : Fin 2)
+    (hc1 : c (v₀, u₁) = color) (hc2 : c (v₀, u₂) = color) (hc3 : c (v₀, u₃) = color) :
+    HasSomeMonochromaticTriangle c := by
+  -- Check edges among u₁,u₂,u₃. If any has `color`, we get a triangle with v₀.
+  -- If none does, all three have the other color → monochromatic triangle {u₁,u₂,u₃}.
+  by_cases h_e12 : c (u₁, u₂) = color
+  · exact ⟨color, v₀, u₁, u₂, h01, h12, h02, hc1, h_e12, hc2⟩
+  by_cases h_e23 : c (u₂, u₃) = color
+  · exact ⟨color, v₀, u₂, u₃, h02, h23, h03, hc2, h_e23, hc3⟩
+  by_cases h_e13 : c (u₁, u₃) = color
+  · exact ⟨color, v₀, u₁, u₃, h01, h13, h03, hc1, h_e13, hc3⟩
+  · -- All three edges have the other color
+    exact ⟨(1 : Fin 2) - color, u₁, u₂, u₃, h12, h23, h13,
+      fin2_other h_e12, fin2_other h_e23, fin2_other h_e13⟩
+
+/-- Helper: no three distinct elements exist in Fin m for m < 3. -/
+private lemma no_three_distinct_lt3 {m : ℕ} (hm : m < 3) (i j l : Fin m)
+    (hij : i ≠ j) (hjl : j ≠ l) (hil : i ≠ l) : False := by
+  interval_cases m
+  · exact i.elim0
+  · exact hij (Subsingleton.elim i j)
+  · have : i = j ∨ i = l ∨ j = l := by
+      rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩; rcases l with ⟨l, hl⟩
+      simp only [Fin.mk.injEq]; omega
+    rcases this with rfl | rfl | rfl <;> contradiction
+
+/-- R(3;2) = 6 is the classical Ramsey number R(3,3).
+    Proof: Upper bound by pigeonhole (vertex with 5 edges → 3 same color → forced triangle).
+    Lower bound: exhibit triangle-free 2-colorings for K₃, K₄, K₅. -/
+theorem R3k_two : R3k 2 = 6 := by
+  unfold R3k
+  rw [dif_pos (show (2 : ℕ) ≥ 1 from by omega)]
+  apply Nat.find_eq_iff.mpr
+  refine ⟨?_, ?_⟩
+  · -- UPPER BOUND: ForcesMonochromaticTriangle 6 2
+    intro _ c _hsym
+    -- Consider edges from vertex 0 to the 5 other vertices
+    let f : Fin 5 → Fin 2 := fun i => c (⟨0, by omega⟩, ⟨i.val + 1, by omega⟩)
+    -- Pigeonhole: some color appears on ≥ 3 of these 5 edges
+    obtain ⟨color, i, j, k, hij, hjk, hik, hci, hcj, hck⟩ := pigeonhole_five_two f
+    -- Apply the triangle lemma to vertex 0 and the three same-colored neighbors
+    exact triangle_from_three_neighbors c
+      ⟨0, by omega⟩ ⟨i.val + 1, by omega⟩ ⟨j.val + 1, by omega⟩ ⟨k.val + 1, by omega⟩
+      (by intro h; simp [Fin.ext_iff] at h; omega)
+      (by intro h; simp [Fin.ext_iff] at h; omega)
+      (by intro h; simp [Fin.ext_iff] at h; omega)
+      (by intro h; simp [Fin.ext_iff] at h; exact hij (Fin.ext (by omega)))
+      (by intro h; simp [Fin.ext_iff] at h; exact hjk (Fin.ext (by omega)))
+      (by intro h; simp [Fin.ext_iff] at h; exact hik (Fin.ext (by omega)))
+      color hci hcj hck
+  · -- LOWER BOUND: ∀ m < 6, ¬ForcesMonochromaticTriangle m 2
+    intro m hm hf
+    interval_cases m
+    -- m = 0: Fin 0 is empty
+    · obtain ⟨_, i, _, _, _, _, _, _, _, _⟩ :=
+        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+      exact i.elim0
+    -- m = 1: Fin 1 is a singleton
+    · obtain ⟨_, i, j, _, hij, _, _, _, _, _⟩ :=
+        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+      exact hij (Subsingleton.elim i j)
+    -- m = 2: Fin 2, can't find 3 distinct
+    · obtain ⟨_, i, j, l, hij, hjl, hil, _, _, _⟩ :=
+        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+      exact no_three_distinct_lt3 (by omega) i j l hij hjl hil
+    -- m = 3: color edge {0,1} with 0, rest with 1
+    · let c₃ : EdgeColoring 3 2 := fun p =>
+        if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) then 0 else 1
+      have hsym₃ : IsSymmetric c₃ := by
+        intro i j; simp only [c₃]; fin_cases i <;> fin_cases j <;> simp
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₃ hsym₃
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₃]
+    -- m = 4: matching {01, 23} color 0, rest color 1
+    · let c₄ : EdgeColoring 4 2 := fun p =>
+        if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) ∨
+           (p.1.val = 2 ∧ p.2.val = 3) ∨ (p.1.val = 3 ∧ p.2.val = 2) then 0 else 1
+      have hsym₄ : IsSymmetric c₄ := by
+        intro i j; simp only [c₄]; fin_cases i <;> fin_cases j <;> simp
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₄ hsym₄
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₄]
+    -- m = 5: C₅ coloring — cycle {01,12,23,34,40} color 0, diagonals color 1
+    · let c₅ : EdgeColoring 5 2 := fun p =>
+        let d := (p.1.val + 5 - p.2.val) % 5
+        if d = 1 ∨ d = 4 then 0 else 1
+      have hsym₅ : IsSymmetric c₅ := by
+        intro i j; simp only [c₅]; fin_cases i <;> fin_cases j <;> simp
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₅ hsym₅
+      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₅]
 
 /-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
 axiom R3k_three : R3k 3 = 17

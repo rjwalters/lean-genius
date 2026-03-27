@@ -55,24 +55,6 @@ noncomputable def maxSquareFreeDensity (N : ℕ) : ℕ :=
 
 /- ## Part 2: The Simple mod 3 Construction -/
 
-/-- Squares are 0 or 1 mod 3 -/
-axiom square_mod_3 (n : ℕ) : IsSquare n → n % 3 = 0 ∨ n % 3 = 1
-
-/-- If a,b ≡ 1 (mod 3), then a + b ≡ 2 (mod 3), which is not a square mod 3 -/
-axiom sum_mod_3_construction :
-  ∀ a b : ℕ, a % 3 = 1 → b % 3 = 1 → (a + b) % 3 = 2
-
-/-- The set {n : n ≡ 1 (mod 3)} ∩ {1,...,N} has square-free sumset -/
-axiom mod_3_construction_works (N : ℕ) :
-  let A := (Finset.range (N + 1)).filter (fun n => n % 3 = 1)
-  IsSquareFreeSumset A
-
-/-- This gives |A| ≈ N/3 -/
-axiom mod_3_density :
-  ∀ N : ℕ, N > 0 →
-    let A := (Finset.range (N + 1)).filter (fun n => n % 3 = 1)
-    (A.card : ℝ) ≥ (N : ℝ) / 3 - 1
-
 /- ## Part 3: The Improved mod 32 Construction (Massias) -/
 
 /-- The 11 residue classes mod 32 that give square-free sumsets -/
@@ -86,21 +68,7 @@ def massias_construction (N : ℕ) : Finset ℕ :=
 axiom massias_construction_works (N : ℕ) :
   IsSquareFreeSumset (massias_construction N)
 
-/-- The Massias construction achieves density 11/32 -/
-axiom massias_density (N : ℕ) (hN : N > 0) :
-  ((massias_construction N).card : ℝ) ≥ (11 : ℝ) / 32 * N - 11
-
-/-- Why 11/32? Each residue class contributes about N/32 elements -/
-axiom massias_count_explanation :
-  massias_residues.card = 11
-
 /- ## Part 4: The Upper Bounds -/
-
-/-- Lagarias-Odlyzko-Shearer (1983): Upper bound 0.475N -/
-axiom los_upper_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, ∀ A : Finset ℕ,
-    A ⊆ Finset.range (N + 1) → IsSquareFreeSumset A →
-    (A.card : ℝ) ≤ 0.475 * N + C
 
 /-- Khalfalah-Lodha-Szemerédi (2002): 11/32 is sharp in general -/
 axiom kls_theorem :
@@ -115,11 +83,6 @@ def squares_mod_32 : Finset ℕ := {0, 1, 4, 9, 16, 17, 25}
 
 /-- There are 7 squares mod 32 -/
 theorem squares_mod_32_count : squares_mod_32.card = 7 := by native_decide
-
-/-- The Massias residues avoid all pairwise sums being squares mod 32 -/
-axiom massias_avoids_squares :
-  ∀ a b : ℕ, a ∈ massias_residues → b ∈ massias_residues →
-    (a + b) % 32 ∉ squares_mod_32
 
 /-- 11 is maximal: no 12 residues mod 32 can avoid all square sums -/
 axiom massias_is_maximal :

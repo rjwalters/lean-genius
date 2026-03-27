@@ -119,9 +119,6 @@ For k sufficiently large, d_k(n) ~ D·√n for some constant D > 0.
 
 This was the first rigorous result on SAW asymptotics.
 -/
-axiom slade_high_dim :
-    ∃ (k₀ : ℕ), ∀ k ≥ k₀, ∃ D : ℝ, D > 0 ∧
-    (fun n => d_k(n) / n^(1/2 : ℝ)) → D as n → ∞
 
 /--
 **Hara-Slade Theorem (1991-1992):**
@@ -169,9 +166,6 @@ d_2(n) ~ D·n^{3/4} for some constant D > 0.
 
 If true, this would answer Question 1 affirmatively (yes, grows faster than √n).
 -/
-axiom conjecture_2d :
-    ∃ D : ℝ, D > 0 ∧
-    (fun n => d_2(n) / n^(3/4 : ℝ)) → D as n → ∞
 
 /--
 If the 2D conjecture is true, Question 1 is answered YES.
@@ -200,9 +194,6 @@ d_3(n) ~ n^ν where ν ≈ 0.588.
 
 This exceeds √n since 0.588 > 0.5, meaning Question 2 is FALSE for k = 3.
 -/
-axiom conjecture_3d :
-    ∃ ν : ℝ, ν > 1/2 ∧ ν < 3/4 ∧
-    (fun n => d_3(n) / n^ν) → (1 : ℝ) as n → ∞
 
 /--
 **Conjectured 4D Behavior:**
@@ -210,9 +201,6 @@ d_4(n) ~ D·(log n)^{1/8}·√n.
 
 This also exceeds √n (by logarithmic factor), meaning Question 2 is FALSE for k = 4.
 -/
-axiom conjecture_4d :
-    ∃ D : ℝ, D > 0 ∧
-    (fun n => d_4(n) / ((Real.log n)^(1/8 : ℝ) * n^(1/2 : ℝ))) → D as n → ∞
 
 /--
 **Question 2 Status:**
@@ -225,10 +213,6 @@ axiom question2_high_dim :
 /--
 Conditional refutation: if 3D conjecture holds, Question 2 fails for k = 3.
 -/
-axiom question2_false_3d :
-    (∃ ν : ℝ, ν > 1/2 ∧ ν < 3/4 ∧
-     (fun n => d_3(n) / n^ν) → (1 : ℝ) as n → ∞) →
-    ¬question2 3
 
 /-
 ## Part VI: Upper Critical Dimension
@@ -247,22 +231,16 @@ def upperCriticalDimension : ℕ := 4
 **Below Critical Dimension (k < 4):**
 SAW has anomalous scaling with ν > 1/2.
 -/
-axiom below_critical (k : ℕ) (hk : k < 4) (hk2 : k ≥ 2) :
-    ν_k > 1/2
 
 /--
 **Above Critical Dimension (k > 4):**
 SAW has mean-field scaling with ν = 1/2.
 -/
-axiom above_critical (k : ℕ) (hk : k > 4) :
-    ν_k = 1/2
 
 /--
 **At Critical Dimension (k = 4):**
 SAW has ν = 1/2 with logarithmic corrections.
 -/
-axiom at_critical :
-    ν_4 = 1/2
 
 /-
 ## Part VII: Connection to Polymer Physics

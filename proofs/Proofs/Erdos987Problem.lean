@@ -48,12 +48,6 @@ For x ∈ [0,1], e(x) traces the unit circle once.
 -/
 noncomputable def e (x : ℝ) : ℂ := Complex.exp (2 * Real.pi * x * Complex.I)
 
-/-- |e(x)| = 1 for all x (maps to unit circle). -/
-axiom e_norm (x : ℝ) : Complex.abs (e x) = 1
-
-/-- e(x) has period 1: e(x + 1) = e(x). -/
-axiom e_periodic (x : ℝ) : e (x + 1) = e x
-
 /--
 **Partial Exponential Sum:**
 Sₙ(k) = ∑_{j=1}^n e(k·xⱼ)
@@ -90,9 +84,6 @@ For any sequence, the supremum of partial sums over n is unbounded as k → ∞.
 
 "Easy to see": limsup_{k→∞} (sup_n |∑_{j≤n} e(kxⱼ)|) = ∞
 -/
-axiom erdos_1964_basic (x : ℕ → ℝ) (hx : InUnitInterval x) :
-    ∀ M : ℝ, ∃ k : ℕ, ∃ n : ℕ,
-    Complex.abs (partialSum x k n) > M
 
 /--
 **Erdős (1965): Logarithmic Lower Bound**
@@ -100,8 +91,6 @@ Aₖ ≫ log k for infinitely many k.
 
 "Very easy" proof that the limsup of partial sums grows at least logarithmically.
 -/
-axiom erdos_1965_log_bound (x : ℕ → ℝ) (hx : InUnitInterval x) :
-    ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ k ≥ M, A x k ≥ C * Real.log k
 
 /- ## Part III: Clunie's Results (1967)
 
@@ -130,8 +119,6 @@ axiom clunie_upper_construction :
 **Tao's Independent Proof:**
 Tao independently found that Aₖ ≫ √k infinitely often.
 -/
-axiom tao_sqrt_bound (x : ℕ → ℝ) (hx : InUnitInterval x) :
-    ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ k ≥ M, A x k ≥ C * Real.sqrt k
 
 /- ## Part IV: Liu's Results (1969)
 
@@ -150,18 +137,12 @@ def FinitelyManyDistinct (x : ℕ → ℝ) : Prop :=
 If there are finitely many distinct points, then for any ε > 0,
 Aₖ ≫ k^{1-ε} infinitely often.
 -/
-axiom liu_finite_distinct (x : ℕ → ℝ) (hx : InUnitInterval x)
-    (hfin : FinitelyManyDistinct x) (ε : ℝ) (hε : ε > 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ k ≥ M, A x k ≥ C * (k : ℝ)^(1 - ε)
 
 /--
 **Clunie's Observation:**
 Under the finite distinct points assumption, Aₖ = ∞ infinitely often!
 (Noted in MathSciNet review of Liu's paper)
 -/
-axiom clunie_observation_finite (x : ℕ → ℝ) (hx : InUnitInterval x)
-    (hfin : FinitelyManyDistinct x) :
-    ∀ M : ℝ, ∃ k : ℕ, A x k > M
 
 /- ## Part V: The Open Question
 
@@ -212,8 +193,6 @@ e(kxⱼ) = e(kjα) = e(jkα)
 
 Weyl sums: |∑_{j=1}^n e(jθ)| ≤ csc(πθ/2) for θ ∉ ℤ.
 -/
-axiom weyl_sum_bound (θ : ℝ) (hθ : ∀ k : ℤ, θ ≠ k) (n : ℕ) :
-    Complex.abs (∑ j in Finset.range n, e (j * θ)) ≤ 1 / Real.sin (Real.pi * θ / 2)
 
 /- ## Part VII: Connection to Discrepancy Theory
 
@@ -232,9 +211,6 @@ def discrepancy (x : ℕ → ℝ) (n : ℕ) : ℝ :=
 **Erdős-Turán Inequality:**
 Exponential sums control discrepancy.
 -/
-axiom erdos_turan (x : ℕ → ℝ) (n K : ℕ) (hK : K ≥ 1) :
-    discrepancy x n ≤ 1/K + ∑ k in Finset.range K,
-      Complex.abs (partialSum x (k+1) n) / ((k+1) * n)
 
 /- ## Part VIII: Main Results
 

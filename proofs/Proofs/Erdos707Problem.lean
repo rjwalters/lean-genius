@@ -55,9 +55,6 @@ def IsSidonDiff (A : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a ≠ b → c ≠ d → (a : ℤ) - b = (c : ℤ) - d → (a = c ∧ b = d)
 
-/-- The two characterizations are equivalent. -/
-axiom sidon_equiv (A : Finset ℕ) : IsSidon A ↔ IsSidonDiff A
-
 /-- A perfect difference set mod n is a set B where every nonzero element of ℤ/nℤ
 appears exactly once as a difference b₁ - b₂ (mod n) for b₁, b₂ ∈ B, b₁ ≠ b₂.
 This is related to cyclic projective planes. -/
@@ -78,17 +75,12 @@ It is FALSE that every finite Sidon set can be embedded in a perfect
 difference set mod n for some n > 0.
 
 Counterexamples: {1,3,9,10,13} (Hall 1947), {1,2,4,8,13} (Alexeev-Mixon 2025). -/
-axiom erdos_707_false : ¬(∀ A : Finset ℕ, IsSidon A →
-    ∃ B : Finset ℕ, ∃ n : ℕ, n > 0 ∧ A ⊆ B ∧ IsPerfectDifferenceSet B n)
 
 /-- The formal statement of the problem (shown to be false). -/
 def erdos_707_statement : Prop :=
   ∀ A : Finset ℕ, IsSidon A →
     ∃ B : Finset ℕ, ∃ p : ℕ, p.Prime ∧ A ⊆ B ∧
       IsPerfectDifferenceSet B (p^2 + p + 1)
-
-/-- The statement is false. -/
-axiom erdos_707_statement_false : ¬erdos_707_statement
 
 /- ## Counterexamples -/
 
@@ -105,39 +97,21 @@ theorem sidon_124 : IsSidon {1, 2, 4} := by
 
 /-- The set {1, 2, 4, 8} is a Sidon set.
 This is the start of the Mian-Chowla sequence. -/
-axiom sidon_1248 : IsSidon {1, 2, 4, 8}
-
-/-- The set {1, 2, 4, 8, 13} is a Sidon set (Mian-Chowla continuation). -/
-axiom sidon_12_4_8_13 : IsSidon {1, 2, 4, 8, 13}
-
-/-- The set {1, 3, 9, 10, 13} is a Sidon set (Hall's counterexample). -/
-axiom sidon_hall : IsSidon {1, 3, 9, 10, 13}
 
 /-- **Alexeev-Mixon (2025)**: {1,2,4,8} cannot be extended to a perfect
 difference set mod p² + p + 1 for any prime p. -/
-axiom counterexample_alexeev_mixon_prime :
-  ∀ B : Finset ℕ, ∀ p : ℕ, p.Prime →
-    {1, 2, 4, 8} ⊆ B → ¬IsPerfectDifferenceSet B (p^2 + p + 1)
 
 /-- **Alexeev-Mixon (2025)**: {1,2,4,8,13} cannot be extended to ANY
 perfect difference set. -/
-axiom counterexample_mian_chowla :
-  ∀ B : Finset ℕ, ∀ n : ℕ,
-    ({1, 2, 4, 8, 13} : Finset ℕ) ⊆ B → ¬IsPerfectDifferenceSet B n
 
 /-- **Hall (1947)**: {1,3,9,10,13} cannot be extended to ANY
 perfect difference set. This was proved before Erdős even asked the question! -/
-axiom counterexample_hall :
-  ∀ B : Finset ℕ, ∀ n : ℕ,
-    ({1, 3, 9, 10, 13} : Finset ℕ) ⊆ B → ¬IsPerfectDifferenceSet B n
 
 /- ## Positive Results -/
 
 /-- **Size bound**: A perfect difference set mod n has size at most √n + 1.
 This is because each of the n-1 nonzero differences must be represented
 exactly once, giving |B|(|B|-1) = n-1, so |B| ≈ √n. -/
-axiom perfect_diff_set_size_bound (B : Finset ℕ) (n : ℕ) :
-  IsPerfectDifferenceSet B n → B.card ≤ Nat.sqrt n + 1
 
 /-- **Singer construction (1938)**: For any prime power p, there exists a
 perfect difference set mod p² + p + 1 of size p + 1.
@@ -147,15 +121,9 @@ axiom singer_construction (p : ℕ) (hp : Nat.Prime p) :
 
 /-- **Small Sidon sets**: Any Sidon set of size ≤ 3 can be extended to a
 perfect difference set. (Sawin, MathOverflow discussion) -/
-axiom small_sidon_extendable (A : Finset ℕ) :
-  IsSidon A → A.card ≤ 3 →
-    ∃ B : Finset ℕ, ∃ p : ℕ, Nat.Prime p ∧ A ⊆ B ∧
-      IsPerfectDifferenceSet B (p^2 + p + 1)
 
 /-- **Example**: {1, 2, 4} can be embedded in a perfect difference set mod 7.
 Here 7 = 2² + 2 + 1, and B = {0, 1, 3} (or equivalently {1, 2, 4}) works. -/
-axiom example_124_in_7 :
-  ∃ B : Finset ℕ, {1, 2, 4} ⊆ B ∧ IsPerfectDifferenceSet B 7
 
 /- ## Connection to Sidon Set Density
 
@@ -165,7 +133,6 @@ If the conjecture were TRUE, it would imply optimal density for Sidon sets. -/
 /-- If the conjecture were true (which it's not), it would imply the maximum
 density of Sidon sets in [1,n] is (1 + o(1))√n.
 Since the conjecture is false, this approach fails. -/
-axiom connection_to_density : Prop
 
 /- ## Summary -/
 

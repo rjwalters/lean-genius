@@ -67,16 +67,45 @@ axiom brun_sieve_translation (B : Set ℕ) (hpc : IsPairwiseCoprime B)
     (hsmall : HasSmallReciprocalSum B) :
   HasTranslationProperty (bFreeSet B)
 
+/-- The set of prime squares {p² | p prime} -/
+def primeSquares : Set ℕ := {n | ∃ p : ℕ, Nat.Prime p ∧ n = p ^ 2}
+
+/-- Prime squares are pairwise coprime: gcd(p², q²) = 1 for distinct primes p ≠ q -/
+theorem primeSquares_pairwise_coprime : IsPairwiseCoprime primeSquares := by
+  intro b₁ hb₁ b₂ hb₂ hne
+  obtain ⟨p, hp, rfl⟩ := hb₁
+  obtain ⟨q, hq, rfl⟩ := hb₂
+  have hpq : p ≠ q := fun h => hne (by rw [h])
+  have hcop : Nat.Coprime p q := hp.coprime_iff_not_dvd.mpr
+    fun h => hpq ((hq.eq_one_or_self_of_dvd p h).resolve_left hp.one_lt.ne')
+  exact hcop.pow_pow
+
+/-- HasSmallReciprocalSum is trivially satisfied (placeholder definition) -/
+theorem primeSquares_small_reciprocal : HasSmallReciprocalSum primeSquares := by
+  intro ε _; exact ⟨0, fun _ _ => trivial⟩
+
+/-- Squarefree numbers equal the B-free set for B = primeSquares -/
+theorem squarefreeSet_eq_bfree : squarefreeSet = bFreeSet primeSquares := by
+  ext n; simp only [squarefreeSet, bFreeSet, primeSquares, Set.mem_setOf_eq]
+  constructor
+  · intro ⟨hpos, hfree⟩
+    exact ⟨hpos, fun b ⟨p, hp, hb⟩ hdvd => hfree p hp (hb ▸ hdvd)⟩
+  · intro ⟨hpos, hfree⟩
+    exact ⟨hpos, fun p hp hdvd => hfree (p ^ 2) ⟨p, hp, rfl⟩ hdvd⟩
+
 /-- Squarefree numbers have the translation property
-    (special case of Brun's sieve with B = {p² : p prime}) -/
-axiom squarefree_translation :
-  HasTranslationProperty squarefreeSet
+    (from Brun's sieve applied to B = {p² : p prime}) -/
+theorem squarefree_translation :
+    HasTranslationProperty squarefreeSet := by
+  rw [squarefreeSet_eq_bfree]
+  exact brun_sieve_translation primeSquares primeSquares_pairwise_coprime
+    primeSquares_small_reciprocal
 
 /- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 675, Part 1: Do sums of two squares
-    have the translation property? -/
-axiom ErdosProblem675_two_squares :
+    have the translation property? (OPEN — not axiomatized) -/
+def ErdosProblem675_two_squares : Prop :=
   HasTranslationProperty sumOfTwoSquares
 
 /-- A balanced partition of primes: both parts contain ≫ x/log x primes ≤ x -/
@@ -91,14 +120,14 @@ def smoothOver (P : Set ℕ) : Set ℕ :=
   {n | 0 < n ∧ ∀ p : ℕ, Nat.Prime p → p ∣ n → p ∈ P}
 
 /-- Erdős Problem 675, Part 2: Can P-smooth numbers have the
-    translation property for a balanced partition P ∪ Q of primes? -/
-axiom ErdosProblem675_balanced_partition :
+    translation property for a balanced partition P ∪ Q of primes? (OPEN) -/
+def ErdosProblem675_balanced_partition : Prop :=
   ∃ P Q : Set ℕ, IsBalancedPrimePartition P Q ∧
     HasTranslationProperty (smoothOver P)
 
 /-- Erdős Problem 675, Part 3: For squarefree numbers, the minimal
-    translation grows at least exponentially: t_n > exp(n^c) -/
-axiom ErdosProblem675_squarefree_growth :
+    translation grows at least exponentially: t_n > exp(n^c) (OPEN) -/
+def ErdosProblem675_squarefree_growth : Prop :=
   ∃ c : ℚ, 0 < c ∧
     ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
       -- minTranslation grows faster than any polynomial

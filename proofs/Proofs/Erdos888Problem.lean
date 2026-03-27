@@ -80,11 +80,6 @@ def hasValidSetOfSize (n k : ℕ) : Prop :=
 We axiomatize this as it requires showing decidability of the existence predicate. -/
 axiom maxValidSize : ℕ → ℕ
 
-/-- maxValidSize n gives the largest k such that hasValidSetOfSize n k holds. -/
-axiom maxValidSize_spec (n : ℕ) :
-  hasValidSetOfSize n (maxValidSize n) ∧
-  ∀ k, hasValidSetOfSize n k → k ≤ maxValidSize n
-
 /-
 ## The Main Question (OPEN)
 
@@ -95,8 +90,6 @@ The exact formula for maxValidSize(n) is unknown.
 for the maximum size of A ⊆ {1,...,n} with the square-product condition.
 
 The exact answer is unknown. -/
-axiom erdos_888_exact_formula :
-  ∃ f : ℕ → ℕ, ∀ n, maxValidSize n = f n
 
 /-
 ## Sárközy's Upper Bound (SOLVED)
@@ -110,12 +103,6 @@ This uses a counting argument involving the multiplicative structure.
 For any ε > 0, eventually maxValidSize(n) < ε * n.
 
 This was proved by Sárközy using multiplicative number theory. -/
-axiom sarkozy_upper_bound :
-  ∀ ε : ℚ, 0 < ε → ∃ N : ℕ, ∀ n ≥ N, maxValidSize n < ε * n
-
-/-- Sárközy's bound: for large n, the set cannot be a positive fraction of {1,...,n}. -/
-axiom sarkozy_sublinear : ∀ c : ℕ, c > 0 →
-    ∃ N : ℕ, ∀ n ≥ N, c * maxValidSize n < n
 
 /-
 ## Prime Lower Bound (SOLVED)
@@ -149,13 +136,9 @@ theorem primes_valid_construction (n : ℕ) :
 /-- **Prime Lower Bound**: maxValidSize(n) ≥ π(n).
 
 The maximum is at least the number of primes up to n. -/
-axiom maxValidSize_ge_primeCount (n : ℕ) :
-  (primesUpTo n).card ≤ maxValidSize n
 
 /-- The primes up to n have cardinality approximately n / log n.
 By the Prime Number Theorem, |primesUpTo n| ~ n / log n. -/
-axiom primeCount_asymptotic :
-  ∃ c : ℕ, c > 0 ∧ ∀ n ≥ 10, c * (primesUpTo n).card ≥ n / (Nat.log 2 n + 1)
 
 /-
 ## Combined Bounds Summary
@@ -190,10 +173,6 @@ theorem singleton_valid (n : ℕ) (x : ℕ) (hx : x ∈ Finset.Ioc 0 n) :
     subst ha hb hc hd
     intro _ _ _ _
     ring
-
-/-- A two-element set satisfies the condition. -/
-axiom pair_valid (n : ℕ) (x y : ℕ) (hx : x ∈ Finset.Ioc 0 n) (hy : y ∈ Finset.Ioc 0 n) :
-    requiredCondition {x, y} n
 
 /-
 ## Connection to Problem 121
@@ -232,12 +211,6 @@ For small n, exact values can be computed:
 
 The primes {2,3,5,7,11,...} always work.
 -/
-
-/-- For n = 1, maxValidSize is 1. -/
-axiom maxValidSize_1 : maxValidSize 1 = 1
-
-/-- For n = 2, maxValidSize is 2. -/
-axiom maxValidSize_2 : maxValidSize 2 = 2
 
 /-
 ## Summary

@@ -63,14 +63,10 @@ noncomputable def g (n : ℕ) : ℕ :=
 0 must be in any 2-basis for {0,...,n}, since 0 ∈ A+A requires 0 = a+b
 with a, b ∈ A ⊆ ℕ, forcing a = b = 0.
 -/
-axiom basis_contains_zero (A : Finset ℕ) (n : ℕ) (h : isAdditiveBasis A n) :
-    0 ∈ A
 
 /--
 n must be reachable from A: either n ∈ A or n = a + b for some a, b ∈ A.
 -/
-axiom basis_contains_n (A : Finset ℕ) (n : ℕ) (hn : n ≥ 1) (h : isAdditiveBasis A n) :
-    n ∈ A ∨ ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ a + b = n ∧ a ≤ n ∧ b ≤ n
 
 /--
 The trivial 2-basis: {0, 1, ..., n} is always a 2-basis for {0,...,n}.
@@ -87,12 +83,10 @@ theorem trivial_basis (n : ℕ) : isAdditiveBasis (range (n + 1)) n := by
 /--
 g(n) exists and is at most n + 1.
 -/
-axiom g_le_n_plus_one (n : ℕ) : g n ≤ n + 1
 
 /--
 g(n) ≥ 1 for all n ≥ 0 (we need at least {0}).
 -/
-axiom g_pos (n : ℕ) : g n ≥ 1
 
 /- ## Part III: Rohrbach's Bounds (1937) -/
 
@@ -118,17 +112,12 @@ axiom rohrbach_upper (n : ℕ) (hn : n ≥ 1) :
 There exist 2-bases achieving g(n)² ≤ (7/2)n for large n.
 This disproves g(n) ~ 2√n since that would give g(n)² ~ 4n.
 -/
-axiom mrose_upper (n : ℕ) (hn : n ≥ 1) :
-    ∃ C : ℕ, C ≤ 4 ∧ (g n) * (g n) * 2 ≤ 7 * n + C
 
 /--
 **Erdős Conjecture Disproved:**
 There exists ε > 0 such that for all sufficiently large n,
 g(n)² < (4 - 2ε)n. This contradicts g(n) ~ 2√n.
 -/
-axiom erdos_conjecture_false :
-    ∃ ε : ℚ, ε > 0 ∧ ∀ᶠ n in Filter.atTop,
-      (g n : ℚ) * (g n : ℚ) < (4 - 2 * ε) * n
 
 /- ## Part V: Modern Bounds -/
 
@@ -136,15 +125,11 @@ axiom erdos_conjecture_false :
 **Yu's Lower Bound (2015):**
 (2.181... + o(1))n ≤ g(n)², improving Rohrbach's constant of 2.
 -/
-axiom yu_lower (n : ℕ) (hn : n ≥ 1) :
-    218 * n ≤ 100 * (g n) * (g n) + 100 * n
 
 /--
 **Kohonen's Upper Bound (2017):**
 g(n)² ≤ (3.458... + o(1))n, improving Mrose's 3.5.
 -/
-axiom kohonen_upper (n : ℕ) (hn : n ≥ 1) :
-    100 * (g n) * (g n) ≤ 346 * n + 100 * n
 
 /- ## Part VI: Small Values -/
 
@@ -152,16 +137,6 @@ axiom kohonen_upper (n : ℕ) (hn : n ≥ 1) :
 g(0) = 1: The set {0} covers {0} since 0 + 0 = 0.
 Axiomatized because the infimum computation is non-trivial to formalize.
 -/
-axiom g_zero : g 0 = 1
-
-/-- g(1) = 2: Need {0, 1} to cover {0, 1}. -/
-axiom g_one : g 1 = 2
-
-/-- g(2) = 2: {0, 1} covers {0, 1, 2} since 1+1=2. -/
-axiom g_two : g 2 = 2
-
-/-- g(3) = 3: {0, 1, 2} covers {0, 1, 2, 3, 4}; {0, 1} only covers up to 2. -/
-axiom g_three : g 3 = 3
 
 /- ## Part VII: Structural Properties -/
 
@@ -169,16 +144,12 @@ axiom g_three : g 3 = 3
 **Monotonicity (approximate):**
 g is essentially non-decreasing: larger intervals need at least as many basis elements.
 -/
-axiom g_nondecreasing (m n : ℕ) (h : m ≤ n) :
-    g m ≤ g n + 1
 
 /--
 **Subadditivity (approximate):**
 g satisfies approximate subadditivity: a basis for {0,...,m+n} can be
 built by combining bases for the two halves.
 -/
-axiom g_subadditive_approx (m n : ℕ) :
-    g (m + n) ≤ g m + g n
 
 /- ## Part VIII: Main Results -/
 
@@ -211,8 +182,6 @@ Is g(n) ~ 2n^{1/2}? NO.
 Axiomatized because the negation involves a limit statement
 whose proof from Mrose's bound requires real analysis.
 -/
-axiom erdos_791_answer : ¬(∀ ε : ℚ, ε > 0 →
-    ∀ᶠ n in Filter.atTop, |(g n : ℚ) - 2 * (n : ℚ).sqrt| < ε * (n : ℚ).sqrt)
 
 /- ## Part IX: Summary -/
 

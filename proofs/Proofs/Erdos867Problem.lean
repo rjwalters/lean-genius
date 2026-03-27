@@ -103,16 +103,11 @@ theorem upperHalf_card (N : ℕ) : (upperHalf N).card = N - N / 2 := by
 /--
 The upper half achieves density approaching 1/2.
 -/
-axiom upperHalf_density (N : ℕ) (hN : N ≥ 2) :
-  (upperHalf N).card ≥ N / 2 - 1
 
 /--
 The upper half is consecutive sum-free: any sum of two or more
 consecutive elements exceeds N.
 -/
-axiom upperHalf_sumFree (N : ℕ) (hN : N ≥ 4) :
-  ∀ a b : ℕ, a ∈ upperHalf N → b ∈ upperHalf N → a ≠ b →
-    a + b > N
 
 /-
 ## Part III: Adenwalla's Upper Bound
@@ -127,20 +122,12 @@ in (2x, 4x], all of which must be outside A.
 
 This gives |A ∩ [x, 4x]| ≤ t + (2x - (t - 1)) = 2x + 1.
 -/
-axiom adenwalla_dyadic_bound (A : Finset ℕ) (x : ℕ) (hx : x ≥ 1) :
-  let t := (A ∩ Finset.Icc x (2 * x)).card
-  (A ∩ Finset.Icc x (4 * x)).card ≤ t + 2 * x - t + 1
 
 /--
 **Adenwalla's Theorem:**
 For any consecutive sum-free set A ⊆ {1, ..., N},
   |A| ≤ (2/3)N + O(log N).
 -/
-axiom adenwalla_upper_bound :
-  ∀ N : ℕ, N ≥ 1 → ∀ A : Finset ℕ,
-    (∀ a ∈ A, a ≤ N) →  -- A ⊆ {1, ..., N}
-    -- A is consecutive sum-free (simplified)
-    A.card ≤ 2 * N / 3 + Nat.log2 N + 1
 
 /-
 ## Part IV: Freud's Lower Bound (Disproving the Conjecture)
@@ -154,15 +141,6 @@ There exist consecutive sum-free sets with density ≥ 19/36.
 
 Since 19/36 ≈ 0.5278 > 1/2, this disproves Erdős's conjecture.
 -/
-axiom freud_construction :
-  ∃ f : ℕ → List ℕ, ∀ N : ℕ, N ≥ 36 →
-    let A := f N
-    -- A ⊆ {1, ..., N}
-    (∀ a ∈ A, a ≤ N) ∧
-    -- A is consecutive sum-free
-    isConsecutiveSumFree A ∧
-    -- |A| ≥ (19/36)N - O(1)
-    A.length * 36 ≥ 19 * N - 36
 
 /--
 **The Key Fraction:**
@@ -195,11 +173,6 @@ The maximum density is at most 2/3 - 1/512.
 
 They improved Adenwalla's bound.
 -/
-axiom coppersmith_phillips_upper :
-  ∀ N : ℕ, N ≥ 1 →
-    ∀ A : Finset ℕ,
-      (∀ a ∈ A, a ≤ N) →
-      A.card * 512 * 3 ≤ (2 * 512 - 3) * N + 512 * 3 * Nat.log2 N
 
 /--
 **Best Known Bounds:**
@@ -231,9 +204,6 @@ def isInfiniteConsecutiveSumFree (A : Set ℕ) : Prop :=
 The infinite version asks about the asymptotic density of
 consecutive sum-free sets.
 -/
-axiom problem_839_connection :
-  ∀ A : Set ℕ, isInfiniteConsecutiveSumFree A →
-    ∃ d : ℝ, 0 ≤ d ∧ d ≤ 2/3 -- density bound
 
 /-
 ## Part VII: Concrete Examples
@@ -276,10 +246,6 @@ The conjecture that max density ≤ 1/2 is FALSE.
 
 Freud's 1993 construction achieves density 19/36 > 1/2.
 -/
-axiom erdos_867_conjecture_false :
-    ¬(∀ N : ℕ, N ≥ 2 → ∀ A : Finset ℕ,
-        (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) →
-        A.card * 2 ≤ N + 2)
 
 /--
 **Main Theorem: Erdős Problem #867 Status**

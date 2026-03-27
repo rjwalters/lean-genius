@@ -69,11 +69,6 @@ theorem cross2D_antisymm (u v : ℝ × ℝ) : cross2D u v = -cross2D v u := by
 
 /-- Triangle area is symmetric under vertex permutation.
 Axiomatized due to detailed algebra with absolute values. -/
-axiom triangleArea_perm (p q r : ℝ × ℝ) : triangleArea p q r = triangleArea q r p
-
-/-- Degenerate triangles (collinear points) have area 0. -/
-axiom triangleArea_collinear (p q r : ℝ × ℝ) (h : ∃ t : ℝ, r = p + t • (q - p)) :
-  triangleArea p q r = 0
 
 /- ## The Main Property
 
@@ -95,9 +90,6 @@ Is there c > 0 such that every measurable A ⊆ ℝ² with measure ≥ c
 contains a unit triangle?
 
 This is axiomatized as an unknown Prop since the answer is not known. -/
-axiom erdos_352_open :
-  Prop  -- Unknown: ∃ c > 0, ∀ A : Set (ℝ × ℝ), MeasurableSet A →
-        --   volume A ≥ c → ContainsUnitTriangle A
 
 /-- The formal statement of the main question. -/
 def erdos_352_statement : Prop :=
@@ -137,28 +129,12 @@ def erdos_352_optimal : Prop :=
 
 /-- **Erdős (unpublished)**: Sets of infinite measure contain unit triangles.
 Follows from the Lebesgue density theorem. -/
-axiom infinite_measure_contains_unit_triangle (A : Set (ℝ × ℝ))
-    (hA : MeasurableSet A) (hinf : volume A = ⊤) :
-  ContainsUnitTriangle A
 
 /-- **Erdős (unpublished)**: Unbounded sets of positive measure contain unit triangles.
 Also follows from the Lebesgue density theorem. -/
-axiom unbounded_positive_measure_contains_unit_triangle (A : Set (ℝ × ℝ))
-    (hA : MeasurableSet A) (hpos : volume A > 0) (hunb : ¬Bornology.IsBounded A) :
-  ContainsUnitTriangle A
 
 /-- **Freiling-Mauldin (2002)**: If outer measure > 4π/√27, then A contains
 a triangle with area > 1 (not just = 1). -/
-axiom freiling_mauldin_2002 (A : Set (ℝ × ℝ))
-    (h : MeasureTheory.OuterMeasure.measureOf (volume.toOuterMeasure) A >
-         ENNReal.ofReal erdosConstant) :
-  ∃ a > 1, ContainsTriangleOfArea A a
-
-/-- **Freiling-Mauldin (2002)**: The conjecture holds for compact convex sets. -/
-axiom conjecture_for_compact_convex (A : Set (ℝ × ℝ))
-    (hA : IsCompact A) (hconv : Convex ℝ A)
-    (hm : volume A ≥ ENNReal.ofReal erdosConstant) :
-  ContainsUnitTriangle A
 
 /- ## The Witness: Critical Circle
 
@@ -177,9 +153,6 @@ theorem critical_circle_area : Real.pi * criticalRadius ^ 2 = erdosConstant := b
 
 /-- The largest triangle inscribed in a circle of radius r is equilateral
 with area (3√3/4)r². For the critical radius, this is < 1. -/
-axiom max_inscribed_triangle_area (r : ℝ) (hr : r > 0) :
-  ∀ p q s : ℝ × ℝ, (‖p‖ ≤ r ∧ ‖q‖ ≤ r ∧ ‖s‖ ≤ r) →
-    triangleArea p q s ≤ 3 * Real.sqrt 3 / 4 * r ^ 2
 
 /-- For the critical radius, the max inscribed triangle has area < 1. -/
 theorem critical_circle_no_unit_triangle :
@@ -197,22 +170,9 @@ unions of finitely many compact convex interiors. -/
 
 /-- **Mauldin (2013)**: It suffices to prove the conjecture for sets that are
 unions of interiors of finitely many compact convex sets. -/
-axiom reduction_to_finite_unions :
-    (∀ n : ℕ, ∀ K : Fin n → Set (ℝ × ℝ),
-      (∀ i, IsCompact (K i)) → (∀ i, Convex ℝ (K i)) →
-      ∀ A : Set (ℝ × ℝ), A = ⋃ i, interior (K i) →
-        MeasurableSet A →
-        volume A ≥ ENNReal.ofReal erdosConstant → ContainsUnitTriangle A) →
-    erdos_352_conjecture
 
 /-- **Freiling-Mauldin**: The conjecture holds for unions of at most 3
 compact convex interiors. -/
-axiom conjecture_for_three_convex (K₁ K₂ K₃ : Set (ℝ × ℝ))
-    (hK₁ : IsCompact K₁) (hK₂ : IsCompact K₂) (hK₃ : IsCompact K₃)
-    (hc₁ : Convex ℝ K₁) (hc₂ : Convex ℝ K₂) (hc₃ : Convex ℝ K₃)
-    (A : Set (ℝ × ℝ)) (hA : A = interior K₁ ∪ interior K₂ ∪ interior K₃)
-    (hm : volume A ≥ ENNReal.ofReal erdosConstant) :
-  ContainsUnitTriangle A
 
 /- ## Summary -/
 

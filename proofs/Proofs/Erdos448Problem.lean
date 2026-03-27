@@ -103,7 +103,6 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : τ(p) = 2 := by
 τ⁺(n) counts occupied dyadic intervals.
 For n = 1, only the interval [1, 2) = [2^0, 2^1) is occupied.
 -/
-axiom tauPlus_one : τ⁺(1) = 1
 
 /--
 τ⁺(n) ≤ τ(n) since each occupied interval needs at least one divisor.
@@ -114,7 +113,6 @@ axiom tauPlus_le_tau (n : ℕ) (hn : n ≥ 1) : τ⁺(n) ≤ τ(n)
 /--
 τ⁺(n) ≤ log₂(n) + 1 since there are only that many possible dyadic intervals.
 -/
-axiom tauPlus_le_log (n : ℕ) (hn : n ≥ 1) : τ⁺(n) ≤ Nat.log 2 n + 1
 
 /-
 ## Part III: The Erdős Conjecture (DISPROVED)
@@ -141,12 +139,6 @@ actually ≍ ε^(1-o(1)) where o(1) → 0 as ε → 0.
 
 This means exceptions are NOT negligible - they have positive density!
 -/
-axiom erdos_tenenbaum_disproof :
-    ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-    ∀ ε : ℝ, 0 < ε → ε < 1/2 →
-      -- The upper density of {n : τ⁺(n) ≥ ε · τ(n)} is between c·ε and C·ε^(1-δ)
-      -- for some δ depending on ε (with δ → 0 as ε → 0)
-      True  -- placeholder for precise statement
 
 /--
 **Erdős Problem #448: DISPROVED**
@@ -166,11 +158,6 @@ The upper density of {n : τ⁺(n) ≥ ε · τ(n)} is ≪ ε · log(2/ε).
 
 This gives a more precise bound on how many exceptions exist.
 -/
-axiom hall_tenenbaum_upper_density :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ ε : ℝ, 0 < ε → ε < 1/2 →
-      -- upper_density {n : τ⁺(n) ≥ ε · τ(n)} ≤ C · ε · log(2/ε)
-      True  -- placeholder
 
 /--
 **Distribution Function:**
@@ -180,10 +167,6 @@ This means: for any x ∈ [0,1], the limit
   lim_{N→∞} (1/N) · |{n ≤ N : τ⁺(n)/τ(n) ≤ x}|
 exists.
 -/
-axiom tauPlus_ratio_has_distribution :
-    ∃ F : ℝ → ℝ, (∀ x, 0 ≤ F x ∧ F x ≤ 1) ∧
-    -- F is the distribution function of τ⁺(n)/τ(n)
-    True  -- placeholder for precise statement
 
 /-
 ## Part V: Ford's Asymptotic
@@ -208,10 +191,6 @@ axiom fordAlpha_approx : 0.086 < fordAlpha ∧ fordAlpha < 0.087
 
 This answers Erdős and Graham's question about the sum of τ⁺.
 -/
-axiom ford_asymptotic :
-    ∀ x : ℝ, x ≥ 3 →
-      -- ∑_{n≤x} τ⁺(n) is asymptotic to x · (log x)^(1-α) / (log log x)^(3/2)
-      True  -- placeholder for precise asymptotic
 
 /-
 ## Part VI: Examples
@@ -230,8 +209,6 @@ For n = 6 = 2 · 3:
 theorem example_six : τ(6) = 4 := by
   native_decide
 
-axiom example_six_tauPlus : τ⁺(6) = 3
-
 /--
 For n = 12 = 2² · 3:
 - Divisors: 1, 2, 3, 4, 6, 12
@@ -240,8 +217,6 @@ For n = 12 = 2² · 3:
 -/
 theorem example_twelve : τ(12) = 6 := by
   native_decide
-
-axiom example_twelve_tauPlus : τ⁺(12) = 4
 
 /--
 For highly composite numbers, τ(n) grows much faster than τ⁺(n).
@@ -258,7 +233,6 @@ theorem tau_power_of_two (k : ℕ) : τ(2^k) = k + 1 := by
 For products of distinct primes, the spread can be significant.
 n = 2 · 3 · 5 · 7 = 210 has τ(210) = 16 divisors spread across 8 intervals.
 -/
-axiom example_210 : τ(210) = 16 ∧ τ⁺(210) = 8
 
 /-
 ## Part VII: Relationship to Other Problems
@@ -270,10 +244,6 @@ Problem #446 asks about the maximum of τ⁺(n)/τ(n).
 The disproof of #448 shows this ratio can be bounded away from 0
 for a positive proportion of integers.
 -/
-axiom problem_446_connection :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (τ⁺(n) : ℝ) / τ(n) ≤ 1 ∧  -- trivially bounded above by 1
-      True  -- connection to #446
 
 /-
 **Connection to Problem #449:**

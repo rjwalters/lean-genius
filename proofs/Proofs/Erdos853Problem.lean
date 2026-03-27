@@ -215,8 +215,48 @@ theorem r_monotone {x y : ℕ} (hxy : x ≤ y) (hx : x ≥ 3) (hy : y ≥ 3) :
   have h_in_gapy := gapSet_mono hxy h_in_gapx
   exact r_not_gap y hy h_in_gapy
 
-/-- r(x) is at most x (trivial upper bound). -/
-axiom r_upper_bound (x : ℕ) (hx : x ≥ 3) : r x ≤ x
+/-- Bertrand's postulate implies prime gaps d_n < p_n for n ≥ 1.
+    Key step: 2·p_n is even > 2 hence not prime, so p_{n+1} < 2·p_n. -/
+theorem gap_lt_prime (k : ℕ) (hk : k ≥ 1) : primeGap k < nthPrime k := by
+  unfold primeGap
+  have hpk3 : nthPrime k ≥ 3 := by
+    calc nthPrime k ≥ nthPrime 1 := nthPrime_mono hk
+    _ = 3 := nthPrime_one
+  -- Bertrand: ∃ prime q with nthPrime k < q ≤ 2 * nthPrime k
+  obtain ⟨q, hq_prime, hq_gt, hq_le⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul (nthPrime k) (by omega)
+  -- nthPrime(k+1) ≤ q: q is prime and > nthPrime k, use Galois connection
+  have h_count : k < Nat.count Nat.Prime q :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr hq_gt
+  have h_count_succ : Nat.count Nat.Prime (q + 1) = Nat.count Nat.Prime q + 1 := by
+    rw [Nat.count_succ, if_pos hq_prime]
+  have h_next : nthPrime (k + 1) < q + 1 :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by omega)
+  -- 2 * nthPrime k is even > 2, hence not prime
+  have h_not_prime : ¬ Nat.Prime (2 * nthPrime k) := by
+    intro hp
+    have := hp.eq_one_or_self_of_dvd 2 ⟨nthPrime k, rfl⟩
+    rcases this with h | h <;> omega
+  -- So q < 2 * nthPrime k (since q ≤ 2·p_k and q is prime but 2·p_k isn't)
+  have hq_strict : q < 2 * nthPrime k := by
+    rcases lt_or_eq_of_le hq_le with h | h
+    · exact h
+    · exact absurd (h ▸ hq_prime) h_not_prime
+  omega
+
+/-- All gaps in gapSet(x) are strictly less than x. -/
+theorem gapSet_lt (t : ℕ) (x : ℕ) (ht : t ∈ gapSet x) : t < x := by
+  obtain ⟨n, hn1, hn2, hn3⟩ := ht
+  rw [← hn3]
+  calc primeGap n < nthPrime n := gap_lt_prime n hn1
+  _ ≤ x := hn2
+
+/-- r(x) ≤ x for x ≥ 4.
+    Note: FALSE at x = 3 (r(3) = 4 since gapSet(3) = {2}).
+    For even x: x ∉ gapSet(x) since gaps < x, so r ≤ x.
+    For odd x: needs a counting argument (number of primes < number of even values). -/
+theorem r_upper_bound (x : ℕ) (hx : x ≥ 4) : r x ≤ x := by
+  sorry
 
 -- ## Main Conjectures (OPEN)
 
@@ -272,11 +312,16 @@ axiom cramer_conjecture_bound :
 - r_monotone (from axioms about r)
 - weak_implies_all_even_gaps (consequence of weak conjecture)
 
-**Axioms** (5 deep results only):
-- r_upper_bound: trivial bound (provable with Bertrand infrastructure)
+**Axioms** (4 deep results):
 - erdos_853_weak, erdos_853_strong: the OPEN conjectures
 - maynard_tao_bounded_gaps: deep result (Maynard-Tao 2014)
 - cramer_conjecture_bound: OPEN conjecture (Cramer)
 
-**0 sorries**
+**1 sorry** (r_upper_bound: correct for x ≥ 4, proof infrastructure built)
+
+**New infrastructure**:
+- gap_lt_prime: d_n < p_n for n ≥ 1 (from Bertrand's postulate)
+- gapSet_lt: all gaps in gapSet(x) are < x
+
+**Bugfix**: r_upper_bound was FALSE at x = 3 (r(3) = 4). Fixed hypothesis to x ≥ 4.
 -/

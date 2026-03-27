@@ -94,11 +94,6 @@ def f_exists (n : ℕ) : Prop :=
 
 /-- The function f(n) (axiomatized since computing it is complex) -/
 axiom f (n : ℕ) : ℕ
-axiom f_pos (n : ℕ) (hn : n ≥ 1) : f n > 0
-axiom f_sufficient (n : ℕ) (hn : n ≥ 1) :
-    ∀ A : Finset ℕ, ValidSet A → A.card = n →
-    ∀ I : Interval, I.length ≥ f n * maxElem A →
-      HasCovering A I
 
 /-
 ## Part IV: Known Bounds (Erdős-Surányi 1959)
@@ -124,21 +119,9 @@ theorem erdos_suranyi_1959 :
 ## Part V: Special Cases
 -/
 
-/-- For n = 1, f(1) = 1: any interval of length max(A) contains a multiple of a₁ -/
-axiom f_one : f 1 = 1
-
-/-- For n = 2, any two distinct a, b ≥ 2 can be covered in interval of length O(max·f(2)) -/
-axiom f_two_bound : f 2 ≤ 2
-
 /-
 ## Part VI: Properties of f
 -/
-
-/-- f is monotone: larger sets need larger intervals -/
-axiom f_monotone (m n : ℕ) (hmn : m ≤ n) (hn : n ≥ 1) : f m ≤ f n
-
-/-- f grows at least logarithmically -/
-axiom f_at_least_log (n : ℕ) (hn : n ≥ 2) : (f n : ℝ) ≥ Real.log n
 
 /-
 ## Part VII: Connection to Problem 708
@@ -151,19 +134,6 @@ rather than interval length.
 
 /-- Problem 708's function g(n): minimal |B| for divisibility covering -/
 axiom g (n : ℕ) : ℕ
-
-/-- Known: g(n) ≥ (2 - o(1))n -/
-axiom g_lower_bound (n : ℕ) (hn : n ≥ 1) : g n ≥ 2 * n - 1
-
-/-- Known small values -/
-axiom g_two : g 2 = 2
-axiom g_three : g 3 = 4
-
-/-- f measures interval length needed (Problem 709),
-    g measures subset size needed (Problem 708).
-    Both study covering-by-divisibility but with different objectives. -/
-axiom f_g_distinct_objectives :
-  ∀ n : ℕ, n ≥ 1 → f n > 0 ∧ g n > 0
 
 /-
 ## Part VIII: The Open Problem
@@ -188,17 +158,6 @@ def conjecture_growth_rate : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
     |Real.log (f n) / Real.log n - c| < ε
 
-/-- The growth rate of f(n) is unknown; the problem is open.
-    Axiomatized as: neither the lower bound (log n)^c nor
-    the upper bound √n is known to be tight. -/
-axiom problem_709_open_lower_not_tight :
-    ¬ ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≤ C * (Real.log n) ^ C
-
-axiom problem_709_open_upper_not_tight :
-    ¬ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≥ Real.sqrt n / 2
-
 /-
 ## Part IX: Proof Techniques
 
@@ -213,23 +172,6 @@ The known bounds use fundamentally different methods:
   √n multiples in I. By Hall's marriage theorem (or greedy
   matching), a system of distinct representatives exists.
 -/
-
-/-- Lower bound technique: prime set + CRT argument.
-    For A = {p₁,...,pₙ} distinct primes, multiples of pᵢ in I
-    are approximately independent by CRT. -/
-axiom lower_bound_prime_crt :
-    ∀ n : ℕ, n ≥ 2 →
-    ∃ A : Finset ℕ, ValidSet A ∧ A.card = n ∧
-      (∀ a ∈ A, Nat.Prime a)
-
-/-- Upper bound technique: Hall's marriage theorem guarantees
-    a system of distinct representatives when each element has
-    enough multiples in the interval. -/
-axiom upper_bound_halls_theorem :
-    ∀ n : ℕ, n ≥ 1 →
-    ∀ A : Finset ℕ, ValidSet A → A.card = n →
-    ∀ I : Interval, I.length ≥ (Nat.sqrt n + 1) * maxElem A →
-      HasCovering A I
 
 /-
 ## Part X: Examples

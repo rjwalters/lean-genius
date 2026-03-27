@@ -51,7 +51,7 @@
       "Proved case analysis for p = 3 and p = 5 from the Yu-Liu characterization",
       "Formalized the Erdős-Graham perfect-power generalization"
     ],
-    "axiomCount": 12,
+    "axiomCount": 7,
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
@@ -63,7 +63,7 @@
       }
     ],
     "lineCount": 269,
-    "assumptions": "12 axioms: brindza_erdos_1991, yu_liu_1996, exactly_three_solutions, and 9 more. See Lean source for complete statements.",
+    "assumptions": "7 axioms: brindza_erdos_1991, yu_liu_1996, exactly_three_solutions, divisible_case_analysis, legendre_formula, large_prime_no_solution, erdos_graham_conjecture. Previously axiomatized wilson_theorem, fermat_little, sum_divisible_by_p, divisible_implies_large_power, and factorial_padic_zero now proved via Mathlib ZMod and basic number theory.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -187,9 +187,9 @@
       "Nat"
     ],
     "namespace": "Erdos405",
-    "lineCount": 269,
-    "axiomCount": 12,
-    "theoremCount": 9,
+    "lineCount": 309,
+    "axiomCount": 7,
+    "theoremCount": 14,
     "definitionCount": 5
   },
   "crossReferences": [

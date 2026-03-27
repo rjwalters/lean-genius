@@ -74,41 +74,10 @@ axiom conjecture_is_tight :
     ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
     ∃ G : SimpleGraph V, maxDegree G = Δ ∧ (χ'_s G : ℚ) = (5/4 : ℚ) * Δ^2
 
-/-- The C₅ blow-up construction: replace each vertex of C₅ with Δ/2 vertices. -/
-axiom c5_blowup_construction (Δ : ℕ) (hΔ : Even Δ) :
-    ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V,
-      maxDegree G = Δ ∧
-      (χ'_s G : ℚ) = (5/4 : ℚ) * Δ^2
-
 /- ## Part 3: Upper Bounds - Progress History
 
 The conjecture remains open, but bounds have improved steadily.
 -/
-
-/-- Trivial bound: χ'_s(G) ≤ 2Δ² - 2Δ + 1.
-    Each edge has at most 2Δ - 2 neighbors at distance 1 from each endpoint. -/
-axiom trivial_bound (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
-    (χ'_s G : ℚ) ≤ 2 * Δ^2 - 2 * Δ + 1
-
-/-- Molloy-Reed (1997): χ'_s(G) ≤ 1.998Δ² for large Δ.
-    First to break the factor-2 barrier. -/
-axiom molloy_reed_1997 :
-    ∃ Δ₀ : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V, maxDegree G ≥ Δ₀ →
-      (χ'_s G : ℚ) ≤ 1.998 * (maxDegree G)^2
-
-/-- Bruhn-Joos (2018): χ'_s(G) ≤ 1.93Δ² for large Δ. -/
-axiom bruhn_joos_2018 :
-    ∃ Δ₀ : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V, maxDegree G ≥ Δ₀ →
-      (χ'_s G : ℚ) ≤ 1.93 * (maxDegree G)^2
-
-/-- Bonamy-Perrett-Postle (2022): χ'_s(G) ≤ 1.835Δ² for large Δ. -/
-axiom bonamy_perrett_postle_2022 :
-    ∃ Δ₀ : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V, maxDegree G ≥ Δ₀ →
-      (χ'_s G : ℚ) ≤ 1.835 * (maxDegree G)^2
 
 /-- Hurley-de Joannis de Verclos-Kang (2022): χ'_s(G) ≤ 1.772Δ².
     Current best bound! -/
@@ -126,23 +95,6 @@ theorem current_gap :
 Better bounds are known for restricted graph classes.
 -/
 
-/-- For C₄-free graphs, Mahdian proved χ'_s(G) ≤ (2 + o(1))Δ²/log Δ. -/
-axiom mahdian_c4_free :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ Δ₀ : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V,
-      -- G is C₄-free (axiomatized)
-      maxDegree G ≥ Δ₀ →
-      (χ'_s G : ℝ) ≤ (2 + ε) * (maxDegree G)^2 / Real.log (maxDegree G)
-
-/-- For bipartite graphs, better bounds exist. -/
-axiom bipartite_bound :
-    ∃ c : ℝ, c < 5/4 ∧
-    ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V,
-      -- G is bipartite (axiomatized)
-      (χ'_s G : ℝ) ≤ c * (maxDegree G)^2
-
 /- ## Part 5: The Clique Number of L(G)²
 
 A related but weaker question: is ω(L(G)²) ≤ (5/4)Δ²?
@@ -152,18 +104,6 @@ A related but weaker question: is ω(L(G)²) ≤ (5/4)Δ²?
 axiom cliqueNumber_LineSquare (G : SimpleGraph V) : ℕ
 
 notation "ω_L²" => cliqueNumber_LineSquare
-
-/-- χ(H) ≥ ω(H) for any graph H, so ω(L(G)²) ≤ χ(L(G)²) = χ'_s(G). -/
-axiom clique_le_chromatic (G : SimpleGraph V) :
-    ω_L² G ≤ χ'_s G
-
-/-- Śleszyńska-Nowak (2015): ω(L(G)²) ≤ (3/2)Δ². -/
-axiom sleszynska_nowak_2015 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
-    (ω_L² G : ℚ) ≤ (3/2 : ℚ) * Δ^2
-
-/-- Faron-Postle (2019): ω(L(G)²) ≤ (4/3)Δ². -/
-axiom faron_postle_2019 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
-    (ω_L² G : ℚ) ≤ (4/3 : ℚ) * Δ^2
 
 /- ## Part 6: Strongly Independent Edge Pairs
 
@@ -175,13 +115,6 @@ Erdős-Nešetřil also asked an easier problem about pairs of strongly independe
 def StronglyIndependentEdges (G : SimpleGraph V) (e₁ e₂ : G.edgeSet) : Prop :=
   ¬ edgesAtDistance2 G e₁.val e₂.val
 
-/-- Chung-Gyárfás-Tuza-Trotter (1990): If |E(G)| ≥ (5/4)Δ², then G has two
-    strongly independent edges. -/
-axiom chung_gyarfas_tuza_trotter_1990 (G : SimpleGraph V) (Δ : ℕ)
-    (hΔ : maxDegree G ≤ Δ) :
-    G.edgeFinset.card ≥ (5 * Δ^2) / 4 →
-    ∃ e₁ e₂ : G.edgeSet, StronglyIndependentEdges G e₁ e₂
-
 /- ## Part 7: Induced Matchings
 
 Strong edge colorings partition edges into "induced matchings."
@@ -191,12 +124,6 @@ Strong edge colorings partition edges into "induced matchings."
     no other edges (i.e., they are pairwise strongly independent). -/
 def IsInducedMatching (G : SimpleGraph V) (M : Finset G.edgeSet) : Prop :=
   ∀ e₁ ∈ M, ∀ e₂ ∈ M, e₁ ≠ e₂ → StronglyIndependentEdges G e₁ e₂
-
-/-- χ'_s(G) equals the minimum number of induced matchings covering E(G). -/
-axiom strong_chromatic_eq_induced_matchings (G : SimpleGraph V) :
-    χ'_s G = sInf {k : ℕ | ∃ partition : Fin k → Finset G.edgeSet,
-      (∀ i, IsInducedMatching G (partition i)) ∧
-      (∀ e : G.edgeSet, ∃ i, e ∈ partition i)}
 
 /- ## Part 8: Summary
 

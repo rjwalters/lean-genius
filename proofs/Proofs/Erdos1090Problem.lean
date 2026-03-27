@@ -169,27 +169,12 @@ structure CombinatorialLine (k n : ℕ) where
 For any k and r, there exists n such that any r-coloring of [k]ⁿ
 contains a monochromatic combinatorial line.
 -/
-axiom hales_jewett (k r : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) :
-    ∃ n : ℕ, ∀ c : (Fin n → Fin k) → Fin r,
-      ∃ line : CombinatorialLine k n,
-        ∀ i j : Fin k,
-          c (fun coord => if coord ∈ line.varying then i else line.fixedValues coord) =
-          c (fun coord => if coord ∈ line.varying then j else line.fixedValues coord)
 
 /--
 **Generic Projection:**
 A "generic" projection from [k]ⁿ to ℝ² maps combinatorial lines
 to geometric lines (for sufficiently general projection).
 -/
-axiom generic_projection (k n : ℕ) :
-    ∃ proj : (Fin n → Fin k) → Point,
-      -- Injectivity on [k]ⁿ
-      (∀ x y : Fin n → Fin k, proj x = proj y → x = y) ∧
-      -- Combinatorial lines map to geometric lines
-      (∀ line : CombinatorialLine k n,
-        ∃ gline : Line, ∀ i : Fin k,
-          OnLine gline (proj (fun coord => if coord ∈ line.varying
-            then i else line.fixedValues coord)))
 
 /--
 **Hunter's Observation:**
@@ -221,21 +206,18 @@ theorem erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k := by
 **Vertices of Regular n-gon:**
 The vertices of a regular n-gon plus its center.
 -/
-axiom regularNgonWithCenter (n : ℕ) (hn : n ≥ 3) : Finset Point
 
 /--
 **Grid Points:**
 An m × m grid of points.
 Axiomatized since it requires embedding ℤ² into the Point type.
 -/
-axiom gridPoints (m : ℕ) : Finset Point
 
 /--
 **Projective Plane Points:**
 Points from a finite projective plane (useful for Ramsey constructions).
 Axiomatized since the construction depends on projective geometry over 𝔽_q.
 -/
-axiom projectivePlanePoints (q : ℕ) (hq : q.Prime) : Finset Point
 
 /-
 ## Part VIII: Lower Bounds on Set Size
@@ -261,7 +243,6 @@ theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
 -/
-axiom r3_small : ∃ A : Finset Point, A.card ≤ 9 ∧ HasRamseyProperty A 3
 
 /-
 ## Part IX: Connection to Other Results
@@ -276,10 +257,6 @@ This is a structural constraint on point configurations.
 -/
 def SylvesterGallai (A : Finset Point) (hA : ¬ ∀ p q r ∈ A, Collinear p q r) : Prop :=
   ∃ l : Line, (A.filter (OnLine l)).card = 2
-
-axiom sylvester_gallai (A : Finset Point) (hA : A.card ≥ 3)
-    (hNotAllCollinear : ¬ ∃ l : Line, ∀ p ∈ A, OnLine l p) :
-    ∃ l : Line, (A.filter (OnLine l)).card = 2
 
 /--
 **Relation to Helly's Theorem:**
@@ -311,8 +288,6 @@ def Erdos1090Generalized (k r : ℕ) : Prop :=
 **Generalized Version Holds:**
 By Hales-Jewett for r colors, the generalized version also holds.
 -/
-axiom erdos_1090_generalized (k r : ℕ) (hk : k ≥ 3) (hr : r ≥ 2) :
-    Erdos1090Generalized k r
 
 /--
 **Higher Dimensions:**

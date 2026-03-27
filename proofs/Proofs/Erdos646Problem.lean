@@ -55,22 +55,14 @@ vₚ(n!) = ∑_{j≥1} ⌊n/p^j⌋
 
 This counts how many times p divides n! by counting multiples of p, p², p³, etc.
 -/
-axiom legendre_formula (p n : ℕ) (hp : p.Prime) :
-    padicValNat p (n.factorial) = ∑ j ∈ Finset.range n, n / p ^ (j + 1)
 
 /--
 Simplified bound: vₚ(n!) ≤ n/(p-1) for p > 1.
 -/
-axiom padic_val_factorial_bound (p n : ℕ) (hp : p.Prime) :
-    padicValNat p (n.factorial) ≤ n / (p - 1)
 
 /--
 vₚ(n!) is computable and depends only on n mod p^k for large enough k.
 -/
-axiom padic_val_factorial_periodic (p : ℕ) (hp : p.Prime) :
-    ∀ k : ℕ, ∃ M : ℕ, ∀ n m : ℕ, n ≥ M → m ≥ M →
-      n % (p ^ k) = m % (p ^ k) →
-      padicValNat p (n.factorial) % 2 = padicValNat p (m.factorial) % 2
 
 /-
 ## Part II: Even Valuation Property
@@ -194,10 +186,6 @@ axiom berend_bounded_gaps (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
 **Density Corollary:**
 The density of n with all even valuations is positive (follows from bounded gaps).
 -/
-axiom positive_density (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
-    ∃ c : ℚ, c > 0 ∧ ∃ B : ℕ, B > 0 ∧
-      ∀ N : ℕ, N ≥ B → ∃ count : ℕ, count ≥ N / (B + 1) ∧
-        count ≤ (Finset.range N).card
 
 /-
 ## Part V: Single Prime Case
@@ -208,17 +196,10 @@ The case of a single prime is simpler and illustrates the key ideas.
 /--
 For a single prime p, the n with even vₚ(n!) have density approximately 1/2.
 -/
-axiom single_prime_density (p : ℕ) (hp : p.Prime) :
-    ∃ C : ℕ, C > 0 ∧ ∀ N : ℕ, N > 0 →
-      ∃ count : ℕ, count ≥ N / 2 - C ∧ count ≤ N / 2 + C
 
 /--
 The parity of vₚ(n!) alternates in a quasi-periodic pattern determined by base-p digits.
 -/
-axiom parity_quasi_periodic (p : ℕ) (hp : p.Prime) :
-    ∃ M : ℕ, M > 0 ∧ ∀ n : ℕ, n ≥ M →
-      padicValNat p (n.factorial) % 2 =
-      padicValNat p ((n % M).factorial) % 2 + n / M % 2
 
 /-
 ## Part VI: The Erdős Conjecture Statement
@@ -252,16 +233,11 @@ The p-adic valuation of n! is related to digit sums.
 vₚ(C(m+n, n)) equals the number of carries when adding m and n in base p.
 This is related to the even valuation property.
 -/
-axiom kummer_carries (p m n : ℕ) (hp : p.Prime) :
-    padicValNat p (Nat.choose (m + n) n) =
-      (Nat.digits p m).sum + (Nat.digits p n).sum - (Nat.digits p (m + n)).sum
 
 /--
 **Digit Sum Connection:**
 vₚ(n!) = (n - sₚ(n)) / (p - 1), where sₚ(n) is the sum of digits of n in base p.
 -/
-axiom digit_sum_formula (p n : ℕ) (hp : p.Prime) (hp2 : p > 1) :
-    padicValNat p (n.factorial) = (n - (Nat.digits p n).sum) / (p - 1)
 
 /--
 For p = 2: vₚ(n!) = n - s₂(n), which equals the number of 1-bits "below" n.
@@ -290,18 +266,12 @@ theorem explicit_bound_2_3 : ∃ n ≤ 100, hasAllEvenValuations {2, 3} n := by
 **Gap Bound for Two Primes:**
 For primes p, q, the gap is at most O(pq).
 -/
-axiom gap_bound_two_primes (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) :
-    ∃ B : ℕ, B ≤ 2 * p * q ∧ ∀ n : ℕ,
-      ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations {p, q} m
 
 /--
 **Chinese Remainder Perspective:**
 The even valuation condition for independent primes can be analyzed
 via the Chinese Remainder Theorem.
 -/
-axiom crt_independence (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) (hS' : S.card ≥ 2) :
-    ∃ M : ℕ, M = ∏ p ∈ S, p ∧
-      ∀ r : ℕ, r < M → ∃ n : ℕ, n % M = r ∧ hasAllEvenValuations S n
 
 /-
 ## Part IX: Related Problems
@@ -317,9 +287,6 @@ This is also true by symmetry arguments.
 def hasAllOddValuations (S : Finset ℕ) (n : ℕ) : Prop :=
   ∀ p ∈ S, p.Prime → Odd (padicValNat p (n.factorial))
 
-axiom odd_valuations_infinite (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
-    {n : ℕ | hasAllOddValuations S n}.Infinite
-
 /--
 **Related: Prescribed Parities**
 For any assignment of parities to primes, infinitely many n achieve it.
@@ -327,10 +294,6 @@ For any assignment of parities to primes, infinitely many n achieve it.
 def hasPrescribedParities (S : Finset ℕ) (parity : ℕ → Bool) (n : ℕ) : Prop :=
   ∀ p ∈ S, p.Prime →
     (parity p = true ↔ Even (padicValNat p (n.factorial)))
-
-axiom prescribed_parities_infinite (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime)
-    (parity : ℕ → Bool) :
-    {n : ℕ | hasPrescribedParities S parity n}.Infinite
 
 /-
 ## Part X: Main Results Summary

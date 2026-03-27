@@ -121,15 +121,6 @@ def erdos_231_question (k : ℕ) : Prop :=
 ## Part IV: Thue's Result on Squarefree Strings
 -/
 
-/-- Thue's theorem: there exist arbitrarily long squarefree strings over 3 letters.
-    (In fact, infinite squarefree strings exist over 3 letters.) -/
-axiom thue_squarefree :
-  ∀ n : ℕ, ∃ w : List (Fin 3), w.length = n ∧ isSquarefree w
-
-/-- For abelian-square-free, 3 letters are NOT enough. -/
-axiom three_letters_not_enough :
-  ∃ n₀ : ℕ, ∀ w : List (Fin 3), w.length ≥ n₀ → containsAbelianSquare w
-
 /-
 ## Part V: Keränen's Construction (1992)
 
@@ -139,11 +130,6 @@ The key result: infinite abelian-square-free strings exist over 4 letters.
 /-- Keränen (1992): There exists an infinite sequence over 4 letters
     with no abelian squares.
 
-    More precisely, for every n, there exists a word of length n over {1,2,3,4}
-    that is abelian-square-free. -/
-axiom keranen_1992 :
-  ∀ n : ℕ, ∃ w : List (Fin 4), w.length = n ∧ isAbelianSquareFree w
-
 /-- The Keränen morphism (85 letters per symbol) that generates
     abelian-square-free words. -/
 def keranenMorphismExists : Prop :=
@@ -151,19 +137,11 @@ def keranenMorphismExists : Prop :=
     (∀ a, (μ a).length = 85) ∧
     (∀ w : List (Fin 4), isAbelianSquareFree w → isAbelianSquareFree (w.bind μ))
 
-/-- Keränen's morphism exists. -/
-axiom keranen_morphism : keranenMorphismExists
-
 /-
 ## Part VI: Resolution of Erdős #231
 
 The answer is NO for k ≥ 4.
 -/
-
-/-- For k ≥ 4, Erdős's conjecture is FALSE.
-    Strings of length 2^k - 1 over k letters CAN avoid abelian squares. -/
-axiom erdos_231_disproved_for_k_geq_4 (k : ℕ) (hk : k ≥ 4) :
-    ¬erdos_231_question k
 
 /-- The general disproof: for k ≥ 4, the answer is NO. -/
 axiom erdos_231_disproved :
@@ -172,15 +150,6 @@ axiom erdos_231_disproved :
 /-
 ## Part VII: What Happens for Small k?
 -/
-
-/-- For k = 2, all strings of length 3 over {0,1} contain abelian squares.
-    (In fact, all strings of length ≥ 4 contain abelian squares.) -/
-axiom k_equals_2_abelian_square :
-    ∀ w : List (Fin 2), w.length ≥ 4 → containsAbelianSquare w
-
-/-- For k = 3, the question is more subtle but still YES for length 7 = 2³ - 1. -/
-axiom k_equals_3_contains :
-    ∀ w : List (Fin 3), w.length = 7 → containsAbelianSquare w
 
 /-
 The threshold is at k = 4 where abelian-square-free strings become possible:
@@ -207,10 +176,6 @@ example : isAbelianSquare ['a', 'b', 'b', 'a'] := by
     (mentioned by Erdős as counterexample for 2^4). -/
 def counterexample_k4 : List (Fin 4) :=
   [0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 2, 3]
-
-/-- The string 1213121412132124 is abelian-square-free.
-    (Note: indices shifted by 1 from the original notation) -/
-axiom counterexample_is_asf : isAbelianSquareFree counterexample_k4
 
 /-
 ## Part IX: Connection to Problem #192

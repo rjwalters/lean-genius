@@ -37,10 +37,6 @@ The divisor function and factorials.
 /-- The divisor function τ(n) = number of positive divisors of n -/
 noncomputable def tau (n : ℕ) : ℕ := n.divisors.card
 
-/-- τ(n) = ∏ₚ (vₚ(n) + 1) where vₚ is the p-adic valuation -/
-axiom tau_multiplicative_formula (n : ℕ) (hn : n ≠ 0) :
-    tau n = ∏ p ∈ n.primeFactors, (padicValNat p n + 1)
-
 /-- The ratio we're studying -/
 noncomputable def factorialDivisorRatio (n : ℕ) : ℚ :=
   if h : n.factorial ≠ 0 ∧ (n + 1).factorial ≠ 0 then
@@ -56,70 +52,20 @@ Key identity relating the ratio to prime factorization of n+1.
 noncomputable def padicValFactorial (p n : ℕ) : ℕ :=
   ∑ i ∈ Finset.range n, n / p^(i + 1)
 
-/-- Legendre's formula: vₚ(n!) = ∑_{i≥1} ⌊n/p^i⌋ -/
-axiom legendre_formula (p n : ℕ) (hp : p.Prime) :
-    padicValNat p n.factorial = padicValFactorial p n
-
-/-- vₚ(n!) ≥ n/p for primes p -/
-axiom padic_factorial_lower_bound (p n : ℕ) (hp : p.Prime) (hn : p ≤ n) :
-    (n : ℚ) / p ≤ padicValNat p n.factorial
-
-/-- The key ratio formula:
-    τ((n+1)!)/τ(n!) = ∏_{p|n+1} (1 + vₚ(n+1)/(vₚ(n!)+1)) -/
-axiom ratio_product_formula (n : ℕ) (hn : n ≥ 1) :
-    factorialDivisorRatio n =
-      ∏ p ∈ (n + 1).primeFactors, (1 + (padicValNat p (n + 1) : ℚ) / (padicValNat p n.factorial + 1))
-
 /- ## Part 3: Prime Factorization Bounds
 
 Bounds on prime factors and their valuations.
 -/
-
-/-- Number of prime divisors of n is < log₂(n) for n ≥ 2 -/
-axiom num_prime_divisors_bound (n : ℕ) (hn : n ≥ 2) :
-    (n.primeFactors.card : ℝ) < Real.log n / Real.log 2
-
-/-- vₚ(n) < log₂(n) for any prime p -/
-axiom padic_val_bound (p n : ℕ) (hp : p.Prime) (hn : n ≥ 2) :
-    (padicValNat p n : ℝ) < Real.log n / Real.log 2
-
-/-- At most one prime p | n+1 with p > n^(2/3) -/
-axiom at_most_one_large_prime (n : ℕ) (hn : n ≥ 8) :
-    ((n + 1).primeFactors.filter (fun p => (p : ℝ) > n^(2/3 : ℝ))).card ≤ 1
 
 /- ## Part 4: Small Primes Contribution
 
 Primes p ≤ n^(2/3) contribute approximately 1 to the ratio.
 -/
 
-/-- Small primes contribute (1 + o(1)) to the ratio -/
-axiom small_primes_contribution (n : ℕ) (hn : n ≥ 100) :
-    let smallPrimes := (n + 1).primeFactors.filter (fun p => (p : ℝ) ≤ n^(2/3 : ℝ))
-    let contribution := ∏ p ∈ smallPrimes,
-      (1 + (padicValNat p (n + 1) : ℝ) / (padicValNat p n.factorial + 1))
-    1 ≤ contribution ∧ contribution ≤ 1 + (Real.log n)^2 / n^(1/3 : ℝ)
-
-/-- The small prime contribution tends to 1 as n → ∞ -/
-axiom small_primes_limit :
-    ∀ ε > 0, ∃ N, ∀ n ≥ N,
-      let smallPrimes := (n + 1).primeFactors.filter (fun p => (p : ℝ) ≤ n^(2/3 : ℝ))
-      let contribution := ∏ p ∈ smallPrimes,
-        (1 + (padicValNat p (n + 1) : ℝ) / (padicValNat p n.factorial + 1))
-      |contribution - 1| < ε
-
 /- ## Part 5: Large Prime Contribution
 
 If n+1 = pk where p > n^(2/3), this prime contributes exactly 1 + 1/k.
 -/
-
-/-- If p | n+1 with p > n^(2/3), then vₚ(n+1) = 1 -/
-axiom large_prime_valuation (p n : ℕ) (hp : p.Prime) (hdiv : p ∣ n + 1)
-    (hlarge : (p : ℝ) > n^(2/3 : ℝ)) :
-    padicValNat p (n + 1) = 1
-
-/-- When n+1 is prime, the ratio is approximately 2 -/
-axiom prime_case (n : ℕ) (hp : (n + 1).Prime) (hn : n ≥ 4) :
-    |factorialDivisorRatio n - 2| < 1 / n
 
 /- ## Part 6: The Set of Limit Points
 
@@ -154,34 +100,10 @@ axiom only_these_limit_points (x : ℚ) :
 Concrete cases illustrating the phenomenon.
 -/
 
-/-- When n+1 is prime, n+1 = p × 1, so ratio ≈ 1 + 1/1 = 2 -/
-axiom example_prime : ∀ p : ℕ, p.Prime → p ≥ 5 →
-    |factorialDivisorRatio (p - 1) - 2| < 1
-
-/-- When n+1 = 2p for large prime p, ratio ≈ 1 + 1/2 = 3/2 -/
-axiom example_twice_prime : ∀ p : ℕ, p.Prime → p ≥ 11 →
-    |factorialDivisorRatio (2*p - 1) - 3/2| < 1
-
-/-- When n+1 = 3p for large prime p, ratio ≈ 1 + 1/3 = 4/3 -/
-axiom example_thrice_prime : ∀ p : ℕ, p.Prime → p ≥ 17 →
-    |factorialDivisorRatio (3*p - 1) - 4/3| < 1
-
-/-- When n+1 is highly composite (many small prime factors), ratio ≈ 1 -/
-axiom example_highly_composite :
-    ∀ ε > 0, ∃ N, ∀ n ≥ N, (n + 1).minFac ≤ n^(1/3 : ℝ) →
-      |factorialDivisorRatio n - 1| < ε
-
 /- ## Part 8: The Proof Structure and Main Theorem
 
 The ratio decomposition and Sawhney's characterization.
 -/
-
-/-- Main decomposition: ratio = (small prime contribution) × (large prime contribution) -/
-axiom ratio_decomposition (n : ℕ) (hn : n ≥ 100) :
-    ∃ S L : ℚ,
-      factorialDivisorRatio n = S * L ∧
-      1 ≤ S ∧ S ≤ 1 + 1/n^(1/4 : ℝ) ∧
-      (L = 1 ∨ ∃ k : ℕ, k ≥ 1 ∧ L = 1 + 1/k)
 
 /-- Sawhney's argument: the only limit points are {1, 2, 3/2, 4/3, ...} -/
 theorem sawhney_characterization :
@@ -204,15 +126,6 @@ theorem sawhney_characterization :
 
 Related results on the divisor function of factorials.
 -/
-
-/-- Asymptotic: τ(n!) grows very rapidly -/
-axiom tau_factorial_growth (n : ℕ) (hn : n ≥ 2) :
-    (tau n.factorial : ℝ) ≥ 2^(n / Real.log n)
-
-/-- More precise: log τ(n!) ~ n log n / log log n -/
-axiom tau_factorial_log_asymptotic :
-    ∀ ε > 0, ∃ N, ∀ n ≥ N,
-      |Real.log (tau n.factorial) - n * Real.log n / Real.log (Real.log n)| / n < ε
 
 /- ## Part 10: Summary
 

@@ -50,22 +50,39 @@ noncomputable def omega1Sq : Ordinal := omega1 * omega1
 noncomputable def omega1TimesOmega : Ordinal := omega1 * Ordinal.omega
 
 -- ============================================================
--- PART 2: Partition Relation Definitions
+-- PART 2: Partition Relation Definitions (concrete)
 -- ============================================================
+
+/-- The multicolor ordinal partition relation α → (β, k, ..., k)²_{numColors}:
+    for any numColors-coloring of pairs from α, there exists either:
+    - a monochromatic-0 subset of order type β (via order-embedding), or
+    - a monochromatic-i clique of size `clique` for some i ∈ {1, ..., numColors-1}.
+
+    The coloring is modeled as `c : Ordinal → Ordinal → ℕ` with a validity
+    hypothesis that c(i,j) < numColors for all i < j < α. -/
+def ordinalPartitionRelMulti (α β : Ordinal) (clique numColors : ℕ) : Prop :=
+  ∀ (c : Ordinal → Ordinal → ℕ),
+    (∀ i j, i < j → j < α → c i j < numColors) →
+    (∃ (f : Ordinal → Ordinal), StrictMono f ∧
+      (∀ x, x < β → f x < α) ∧
+      ∀ i j, i < j → j < β → c (f i) (f j) = 0) ∨
+    (∃ (color : ℕ), 0 < color ∧ color < numColors ∧
+      ∃ (S : Fin clique → Ordinal), StrictMono S ∧
+        (∀ i, S i < α) ∧
+        ∀ (i j : Fin clique), i < j → c (S i) (S j) = color)
 
 /-- The 2-color ordinal partition relation α → (β, k)²: for any 2-coloring
     of pairs from α, there exists either a monochromatic-0 subset of order
-    type β or a monochromatic-1 subset of size k. -/
-axiom ordinalPartitionRel2 (α β : Ordinal) (k : ℕ) : Prop
-
-/-- The multicolor ordinal partition relation α → (β, k, ..., k)²_{n}:
-    for any n-coloring of pairs from α, there exists either:
-    - a monochromatic-0 subset of order type β, or
-    - a monochromatic-i subset of size k for some i ∈ {1, ..., n-1}.
-
-    Here `numColors` is the total number of colors and `clique` is the
-    clique size required for colors 1 through numColors-1. -/
-axiom ordinalPartitionRelMulti (α β : Ordinal) (clique numColors : ℕ) : Prop
+    type β or a monochromatic-1 clique of size k. -/
+def ordinalPartitionRel2 (α β : Ordinal) (k : ℕ) : Prop :=
+  ∀ (c : Ordinal → Ordinal → ℕ),
+    (∀ i j, i < j → j < α → c i j < 2) →
+    (∃ (f : Ordinal → Ordinal), StrictMono f ∧
+      (∀ x, x < β → f x < α) ∧
+      ∀ i j, i < j → j < β → c (f i) (f j) = 0) ∨
+    (∃ (S : Fin k → Ordinal), StrictMono S ∧
+      (∀ i, S i < α) ∧
+      ∀ (i j : Fin k), i < j → c (S i) (S j) = 1)
 
 -- ============================================================
 -- PART 3: Basic Ordinal Properties
@@ -119,25 +136,64 @@ def erdos_1171_statement : Prop :=
 -- ============================================================
 
 /-- Monotonicity in the number of colors: if a partition relation holds for
-    n colors, it holds for fewer colors (with the same targets). -/
-axiom partition_multi_mono_colors (α β : Ordinal) (clique m n : ℕ)
-    (hmn : m ≤ n) (h : ordinalPartitionRelMulti α β clique n) :
-    ordinalPartitionRelMulti α β clique m
+    n colors, it holds for fewer colors (with the same targets).
+    Requires clique ≥ 2 to extract color bounds from the coloring. -/
+theorem partition_multi_mono_colors (α β : Ordinal) (clique m n : ℕ)
+    (hclique : 2 ≤ clique) (hmn : m ≤ n) (h : ordinalPartitionRelMulti α β clique n) :
+    ordinalPartitionRelMulti α β clique m := by
+  intro c hc
+  have hcn : ∀ i j, i < j → j < α → c i j < n :=
+    fun i j hij hj => lt_of_lt_of_le (hc i j hij hj) hmn
+  rcases h c hcn with ⟨f, hf, hfα, hfc⟩ | ⟨col, hcpos, _, S, hS, hSα, hSc⟩
+  · left; exact ⟨f, hf, hfα, hfc⟩
+  · right
+    have i0 : Fin clique := ⟨0, by omega⟩
+    have i1 : Fin clique := ⟨1, by omega⟩
+    have h01 : i0 < i1 := by change (0 : ℕ) < 1; omega
+    have hcol : c (S i0) (S i1) = col := hSc i0 i1 h01
+    have hSlt : S i0 < S i1 := hS h01
+    have hcm : col < m := by rw [← hcol]; exact hc (S i0) (S i1) hSlt (hSα i1)
+    exact ⟨col, hcpos, hcm, S, hS, hSα, hSc⟩
 
 /-- Monotonicity in ordinal target: weakening the first target. -/
-axiom partition_multi_mono_target (α β γ : Ordinal) (clique numColors : ℕ)
+theorem partition_multi_mono_target (α β γ : Ordinal) (clique numColors : ℕ)
     (hγβ : γ ≤ β) (h : ordinalPartitionRelMulti α β clique numColors) :
-    ordinalPartitionRelMulti α γ clique numColors
+    ordinalPartitionRelMulti α γ clique numColors := by
+  intro c hc
+  rcases h c hc with ⟨f, hf, hfα, hfc⟩ | hright
+  · left
+    exact ⟨f, hf, fun x hx => hfα x (lt_of_lt_of_le hx hγβ),
+           fun i j hij hj => hfc i j hij (lt_of_lt_of_le hj hγβ)⟩
+  · exact Or.inr hright
 
 /-- Monotonicity in source: a larger source makes the relation easier. -/
-axiom partition_multi_mono_source (α α' β : Ordinal) (clique numColors : ℕ)
+theorem partition_multi_mono_source (α α' β : Ordinal) (clique numColors : ℕ)
     (hαα' : α ≤ α') (h : ordinalPartitionRelMulti α β clique numColors) :
-    ordinalPartitionRelMulti α' β clique numColors
+    ordinalPartitionRelMulti α' β clique numColors := by
+  intro c hc
+  have hcα : ∀ i j, i < j → j < α → c i j < numColors :=
+    fun i j hij hj => hc i j hij (lt_of_lt_of_le hj hαα')
+  rcases h c hcα with ⟨f, hf, hfα, hfc⟩ | ⟨col, hcp, hcn, S, hS, hSα, hSc⟩
+  · left
+    exact ⟨f, hf, fun x hx => lt_of_lt_of_le (hfα x hx) hαα', hfc⟩
+  · right
+    exact ⟨col, hcp, hcn, S, hS, fun i => lt_of_lt_of_le (hSα i) hαα', hSc⟩
 
 /-- The 2-color case of the multicolor relation coincides with the standard
     2-color partition relation. -/
-axiom multi_two_eq (α β : Ordinal) (k : ℕ) :
-    ordinalPartitionRelMulti α β k 2 ↔ ordinalPartitionRel2 α β k
+theorem multi_two_eq (α β : Ordinal) (k : ℕ) :
+    ordinalPartitionRelMulti α β k 2 ↔ ordinalPartitionRel2 α β k := by
+  constructor
+  · intro h c hc
+    rcases h c hc with hleft | ⟨color, hpos, hlt, S, hS, hSα, hSc⟩
+    · exact Or.inl hleft
+    · have : color = 1 := by omega
+      subst this
+      exact Or.inr ⟨S, hS, hSα, hSc⟩
+  · intro h c hc
+    rcases h c hc with hleft | ⟨S, hS, hSα, hSc⟩
+    · exact Or.inl hleft
+    · exact Or.inr ⟨1, by omega, by omega, S, hS, hSα, hSc⟩
 
 -- ============================================================
 -- PART 6: Connection to Problem #1169
@@ -151,14 +207,28 @@ axiom hajnal_ch (h : CH) (k : ℕ) (hk : 2 ≤ k) :
     ordinalPartitionRel2 omega1Sq omega1Sq k
 
 /-- Monotonicity for the 2-color relation: weakening the ordinal target. -/
-axiom partition2_mono_target (α β γ : Ordinal) (k : ℕ)
+theorem partition2_mono_target (α β γ : Ordinal) (k : ℕ)
     (hγβ : γ ≤ β) (h : ordinalPartitionRel2 α β k) :
-    ordinalPartitionRel2 α γ k
+    ordinalPartitionRel2 α γ k := by
+  intro c hc
+  rcases h c hc with ⟨f, hf, hfα, hfc⟩ | hright
+  · left
+    exact ⟨f, hf, fun x hx => hfα x (lt_of_lt_of_le hx hγβ),
+           fun i j hij hj => hfc i j hij (lt_of_lt_of_le hj hγβ)⟩
+  · exact Or.inr hright
 
 /-- Source monotonicity for the 2-color relation. -/
-axiom partition2_mono_source (α α' β : Ordinal) (k : ℕ)
+theorem partition2_mono_source (α α' β : Ordinal) (k : ℕ)
     (hαα' : α ≤ α') (h : ordinalPartitionRel2 α β k) :
-    ordinalPartitionRel2 α' β k
+    ordinalPartitionRel2 α' β k := by
+  intro c hc
+  have hcα : ∀ i j, i < j → j < α → c i j < 2 :=
+    fun i j hij hj => hc i j hij (lt_of_lt_of_le hj hαα')
+  rcases h c hcα with ⟨f, hf, hfα, hfc⟩ | ⟨S, hS, hSα, hSc⟩
+  · left
+    exact ⟨f, hf, fun x hx => lt_of_lt_of_le (hfα x hx) hαα', hfc⟩
+  · right
+    exact ⟨S, hS, fun i => lt_of_lt_of_le (hSα i) hαα', hSc⟩
 
 /-- Under CH, the 2-color case of Problem #1171 holds.
     CH gives ω₁² → (ω₁², 3)² which implies ω₁² → (ω₁·ω, 3)². -/
@@ -215,9 +285,15 @@ theorem omega1Sq_pos : 0 < omega1Sq := by
 -- PART 9: The Multicolor Hierarchy
 -- ============================================================
 
-/-- The 1-color case is trivial: any partition into 1 color is monochromatic. -/
-axiom partition_multi_trivial (α β : Ordinal) (clique : ℕ) (hα : β ≤ α) :
-    ordinalPartitionRelMulti α β clique 1
+/-- The 1-color case is trivial: with only color 0 available, the identity
+    embedding witnesses a monochromatic-0 subset of order type β. -/
+theorem partition_multi_trivial (α β : Ordinal) (clique : ℕ) (hα : β ≤ α) :
+    ordinalPartitionRelMulti α β clique 1 := by
+  intro c hc
+  left
+  exact ⟨id, strictMono_id, fun x hx => lt_of_lt_of_le hx hα,
+    fun i j hij hjβ => by
+      have := hc i j hij (lt_of_lt_of_le hjβ hα); omega⟩
 
 /-- If Problem #1171 holds, then for k=1 (2 colors): ω₁² → (ω₁·ω, 3)². -/
 theorem erdos_1171_implies_k1 (h : erdos_1171_statement) :
@@ -288,8 +364,9 @@ for all finite k.
    from ZFC: without CH or MA, we lack the tools to control colorings
    of ω₁².
 
-### Axiom Count: 14 axioms, 12 theorems (9 with non-trivial proofs)
-### Note: omega1_isLimit and omega1TimesOmega_isLimit were proved (was 16 axioms)
+### Axiom Count: 5 axioms, 19 theorems (16 with non-trivial proofs)
+### Proved 9 axioms by defining ordinalPartitionRel2/Multi concretely (was 14 axioms)
+### Previously proved omega1_isLimit and omega1TimesOmega_isLimit (was 16 axioms)
 -/
 
 end Erdos1171

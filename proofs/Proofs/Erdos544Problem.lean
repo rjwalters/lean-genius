@@ -35,24 +35,6 @@ axiom ramsey3_mono (k : ℕ) : ramsey3 k ≤ ramsey3 (k + 1)
 /-- R(3, 3) = 6. -/
 axiom ramsey3_val_3 : ramsey3 3 = 6
 
-/-- R(3, 4) = 9. -/
-axiom ramsey3_val_4 : ramsey3 4 = 9
-
-/-- R(3, 5) = 14. -/
-axiom ramsey3_val_5 : ramsey3 5 = 14
-
-/-- R(3, 6) = 18. -/
-axiom ramsey3_val_6 : ramsey3 6 = 18
-
-/-- R(3, 7) = 23. -/
-axiom ramsey3_val_7 : ramsey3 7 = 23
-
-/-- R(3, 8) = 28. -/
-axiom ramsey3_val_8 : ramsey3 8 = 28
-
-/-- R(3, 9) = 36. -/
-axiom ramsey3_val_9 : ramsey3 9 = 36
-
 /- ## Derived bounds -/
 
 /-- R(3, k) is at least 6 for k ≥ 3, proved from R(3,3) = 6 and monotonicity. -/
@@ -60,16 +42,6 @@ theorem ramsey3_ge_six (k : ℕ) (hk : 3 ≤ k) : 6 ≤ ramsey3 k :=
   ramsey3_val_3 ▸ monotone_nat_of_le_succ ramsey3_mono hk
 
 /- ## Asymptotic bounds -/
-
-/-- Kim (1995) lower bound: R(3, k) ≥ c · k² / log k for some c > 0. -/
-axiom kim_lower_bound :
-    ∃ c : ℚ, 0 < c ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
-      c * ((k : ℚ) ^ 2 / (Nat.log 2 k : ℚ)) ≤ (ramsey3 k : ℚ)
-
-/-- Shearer (1983) / CGMS (2023) upper bound: R(3, k) ≤ C · k² / log k. -/
-axiom shearer_upper_bound :
-    ∃ C : ℚ, 0 < C ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
-      (ramsey3 k : ℚ) ≤ C * ((k : ℚ) ^ 2 / (Nat.log 2 k : ℚ))
 
 /- ## Main problems -/
 

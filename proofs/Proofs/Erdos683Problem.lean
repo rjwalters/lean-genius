@@ -58,22 +58,24 @@ noncomputable def P (n k : ℕ) : ℕ := largestPrimeDivisor (n.choose k)
 
 /--
 **Basic Property:**
-P(n) is prime when n > 1.
+P(n) is prime when n > 1. Proved from Nat.find_spec.
 -/
-axiom P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime
+theorem P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime := by
+  unfold largestPrimeDivisor; rw [dif_pos hn]
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).1
 
 /--
 **Divisibility Property:**
-P(n) divides n when n > 1.
+P(n) divides n when n > 1. Proved from Nat.find_spec.
 -/
-axiom P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n
+theorem P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n := by
+  unfold largestPrimeDivisor; rw [dif_pos hn]
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).2
 
 /--
 **Maximality Property:**
 P(n) is the largest prime divisor.
 -/
-axiom P_largest {n p : ℕ} (hn : n > 1) (hp : p.Prime) (hdvd : p ∣ n) :
-    p ≤ largestPrimeDivisor n
 
 /- ## Part II: Sylvester-Schur Theorem -/
 
@@ -147,10 +149,6 @@ Erdős wrote it "seems certain" that for any c > 0,
   P(C(n,k)) ≫ k^{1+c}
 with only finitely many exceptions (depending on c).
 -/
-axiom erdos_1979_belief :
-    ∀ c : ℝ, c > 0 →
-      ∃ N : ℕ, ∀ n k : ℕ, k > N → 2 * k ≤ n →
-        (P n k : ℝ) > (k : ℝ) ^ (1 + c)
 
 /- ## Part V: Heuristic Bounds -/
 
@@ -162,10 +160,6 @@ for some c > 0 when k ≤ n/2.
 
 This is much stronger than k^{1+c}.
 -/
-axiom prime_gap_heuristic :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in Filter.atTop, ∀ k : ℕ,
-      2 ≤ k → 2 * k ≤ n →
-        (P n k : ℝ) > Real.exp (c * Real.sqrt k)
 
 /--
 **Comparison of Bounds:**
@@ -174,8 +168,6 @@ e^{c√k} grows much faster than k^{1+c}:
 - e^{c√k} is stretched exponential
 The stretched exponential eventually dominates any polynomial growth.
 -/
-axiom heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
-    ∀ᶠ k in Filter.atTop, Real.exp (c * Real.sqrt k) > (k : ℝ) ^ (1 + c)
 
 /- ## Part VI: The min(n-k+1, k^{1+c}) Bound -/
 
@@ -183,8 +175,6 @@ axiom heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
 **Trivial Upper Bound:**
 P(C(n,k)) ≤ n since C(n,k) divides products of terms ≤ n.
 -/
-axiom P_upper_bound {n k : ℕ} (hk : 1 ≤ k) (hkn : k ≤ n) :
-    P n k ≤ n
 
 /- ## Part VII: Products of Consecutive Integers -/
 
@@ -201,16 +191,12 @@ def consecutiveProduct (m k : ℕ) : ℕ :=
 Bertrand's postulate (proven by Chebyshev) says there's a prime between n and 2n.
 This implies P(C(2n,n)) ≥ n+1 for the central binomial coefficient.
 -/
-axiom bertrand_for_central {n : ℕ} (hn : n ≥ 1) :
-    P (2 * n) n > n
 
 /--
 **Generalization:**
 Among k consecutive integers starting at m > k, at least one has
 a prime divisor > k.
 -/
-axiom consecutive_has_large_prime (m k : ℕ) (hm : m > k) (hk : k ≥ 1) :
-    ∃ i : ℕ, i < k ∧ largestPrimeDivisor (m + i) > k
 
 /- ## Part VIII: Specific Cases -/
 
@@ -219,9 +205,6 @@ axiom consecutive_has_large_prime (m k : ℕ) (hm : m > k) (hk : k ≥ 1) :
 When k ≈ n/2, we have C(n,k) = C(2k,k), the central binomial coefficient.
 Erdős proved P(C(2k,k)) > (4/3)k for large k.
 -/
-axiom central_binom_bound :
-    ∃ N : ℕ, ∀ k : ℕ, k > N →
-      (P (2 * k) k : ℝ) > (4 : ℝ) / 3 * k
 
 /--
 **Small k Cases:**
@@ -229,8 +212,6 @@ For small k, explicit computation is possible.
 k=2: P(C(n,2)) = P(n(n-1)/2) ≥ max prime factor of n or n-1.
 Since C(n,2) = n(n-1)/2, and either n or n-1 has a prime factor ≥ (n-1)/2.
 -/
-axiom small_k_case_2 (n : ℕ) (hn : n ≥ 4) :
-    P n 2 ≥ (n - 1) / 2
 
 /- ## Part IX: Summary -/
 

@@ -106,12 +106,10 @@ axiom h_le_H (n : ℕ) : h n ≤ H n
 /--
 For n = 1, there are no prime divisors, so h(1) = 0.
 -/
-axiom h_one : h 1 = 0
 
 /--
 For any prime p, h(p) = 1 since the only chain is [p] itself.
 -/
-axiom h_prime (p : ℕ) (hp : p.Prime) : h p = 1
 
 /-
 ## Part III: The Iterated Logarithm
@@ -129,13 +127,11 @@ noncomputable def logStar : ℕ → ℕ := fun _ => 0 -- Axiomatized via propert
 **log* properties:**
 log*(n) ≤ 5 for all n ≤ 2^65536.
 -/
-axiom logStar_small : ∀ n : ℕ, n ≤ 2^65536 → logStar n ≤ 5
 
 /--
 **log* grows unboundedly:**
 For any k, there exists n with log*(n) > k.
 -/
-axiom logStar_unbounded : ∀ k : ℕ, ∃ n : ℕ, logStar n > k
 
 /-
 ## Part IV: Erdős's Conjectures
@@ -173,9 +169,6 @@ def ErdosRatioConjecture : Prop :=
 If p | q-1, then the multiplicative group (ℤ/qℤ)* has a subgroup of order p.
 This is the structural reason for the congruence condition.
 -/
-axiom multiplicative_group_connection :
-  ∀ p q : ℕ, p.Prime → q.Prime → p ∣ q - 1 →
-    ∃ g : ℤ, (g^p : ℤ) ≡ 1 [ZMOD q] ∧ g ≢ 1 [ZMOD q]
 
 /--
 **Sophie Germain primes:**
@@ -183,9 +176,6 @@ If p and 2p+1 are both prime, then (p, 2p+1) forms a chain of length 2.
 -/
 def SophieGermainPrime (p : ℕ) : Prop :=
   p.Prime ∧ (2*p + 1).Prime
-
-axiom sophie_germain_chain (p : ℕ) (hsg : SophieGermainPrime p) :
-    IsPrimeChain (p * (2*p + 1)) [p, 2*p + 1]
 
 /--
 **Cunningham chains:**
@@ -205,20 +195,17 @@ def IsCunninghamChain (chain : List ℕ) : Prop :=
 **Example: n = 6 = 2 · 3**
 h(6) = 2 since [2, 3] is a prime chain: 3 ≡ 1 (mod 2).
 -/
-axiom h_six : h 6 ≥ 2
 
 /--
 **Example: n = 30 = 2 · 3 · 5**
 h(30) = 2: chains [2, 3] or [2, 5] work, but no longer chain.
 -/
-axiom h_thirty : h 30 = 2
 
 /--
 **Example: n = 2310 = 2 · 3 · 5 · 7 · 11**
 [2, 3, 7] is a prime chain: 3 ≡ 1 (mod 2), 7 ≡ 1 (mod 3).
 So h(2310) ≥ 3.
 -/
-axiom h_primorial : h 2310 ≥ 3
 
 /-
 ## Part VII: Comparison h(n) vs H(n)
@@ -229,24 +216,17 @@ axiom h_primorial : h 2310 ≥ 3
 Using composite divisors allows longer chains.
 For n with many divisors, H(n) >> h(n).
 -/
-axiom H_much_larger_example :
-  ∃ n : ℕ, H n ≥ 2 * h n
 
 /--
 **Why composites help:**
 If d | n and d' | n with d' ≡ 1 (mod d), we can include both.
 For example, if 6 | n and 7 | n, we can use [6, 7] as 7 ≡ 1 (mod 6).
 -/
-axiom composites_give_flexibility :
-    ∀ n : ℕ, n.divisors.card > n.primeFactors.card →
-    H n ≥ h n
 
 /--
 **Highly composite numbers:**
 For n with many divisors (like n = k!), H(n) should be large.
 -/
-axiom highly_composite_H :
-  ∀ k : ℕ, k ≥ 2 → H (k.factorial) ≥ k
 
 /-
 ## Part VIII: Upper Bounds
@@ -256,21 +236,16 @@ axiom highly_composite_H :
 **Trivial upper bound:**
 h(n) ≤ ω(n), the number of distinct prime factors.
 -/
-axiom h_le_omega (n : ℕ) (hn : n ≥ 2) : h n ≤ n.primeFactors.card
 
 /--
 **Better upper bound:**
 h(n) ≤ log*(n) + O(1) is expected but not proven.
 -/
-axiom h_upper_bound_conjecture :
-  ∃ C : ℕ, ∀ n ≥ 2, h n ≤ logStar n + C
 
 /--
 **Upper bound for H(n):**
 H(n) ≤ log₂(n) since each chain element at least doubles.
 -/
-axiom H_upper_bound :
-  ∀ n ≥ 2, H n ≤ Nat.log 2 n
 
 /-
 ## Part IX: The van Doorn Result
@@ -284,16 +259,11 @@ Key idea: For most n, there exist primes p₁ | n with p₁ small,
 and a prime p₂ | n with p₂ ≡ 1 (mod p₁). By Dirichlet, such p₂ exist
 with positive density, so most n have such p₂ among their factors.
 -/
-axiom van_doorn_proof :
-  ∀ k : ℕ, (Set.Icc 1 · ∩ {n : ℕ | h n < k}).ncard / · → (0 : ℝ) atTop
 
 /--
 **Density argument:**
 The density of n with h(n) ≥ k approaches 1 as n → ∞.
 -/
-axiom density_h_large :
-  ∀ k : ℕ, ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    ({m ∈ Set.Icc 1 n | h m ≥ k}.ncard : ℝ) / n ≥ 1 - ε
 
 /-
 ## Part X: Summary

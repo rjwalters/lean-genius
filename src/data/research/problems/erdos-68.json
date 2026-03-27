@@ -43,7 +43,9 @@
       "factorialSum_tighter_lower: proved factorialSum > 6267/5000 from 6-term partial sum",
       "eRelatedSum_summable: summability by comparison with geometric series",
       "eRelatedSum_lower: proved eRelatedSum > 718/1000 from 6-term partial sum",
-      "sixth_term: summand(5) = 1/5039"
+      "sixth_term: summand(5) = 1/5039",
+      "P_is_prime: PROVED (was axiom) — from Nat.find_spec in Erdos683",
+      "P_divides: PROVED (was axiom) — from Nat.find_spec in Erdos683"
     ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",

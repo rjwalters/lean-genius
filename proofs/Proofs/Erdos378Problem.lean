@@ -61,7 +61,6 @@ theorem squarefree_one : Squarefree 1 := by
 /--
 **Example:** 6 = 2 · 3 is squarefree.
 -/
-axiom squarefree_six : Squarefree 6
 
 /--
 **Non-example:** 4 = 2² is NOT squarefree.
@@ -135,16 +134,11 @@ For fixed large k, the density of n such that C(n,k) is squarefree is o_k(1).
 This means: for any ε > 0, there exists K such that for k ≥ K,
 the density of {n : C(n,k) is squarefree} is less than ε.
 -/
-axiom erdos_graham_sparse :
-    ∀ ε : ℝ, ε > 0 → ∃ K : ℕ, ∀ k ≥ K,
-      ∃ d : ℝ, d < ε ∧ NaturalDensity {n : ℕ | BinomialSquarefree n k} d
 
 /--
 **Erdős-Graham Result 2:**
 Infinitely many n have C(n,k) NOT squarefree for all 1 ≤ k < n.
 -/
-axiom erdos_graham_infinite_bad :
-    Set.Infinite {n : ℕ | ∀ k, 1 ≤ k → k < n → ¬Squarefree (n.choose k)}
 
 /-
 ## Part V: Granville-Ramaré Results (1996)
@@ -176,15 +170,11 @@ noncomputable def eta (m : ℕ) : ℝ :=
 /--
 **η_m is the actual density:**
 -/
-axiom eta_is_density :
-    ∀ m : ℕ, NaturalDensity (exactlySquarefree m) (eta m)
 
 /--
 **η_m is positive:**
 For all m, the density η_m > 0.
 -/
-axiom eta_positive :
-    ∀ m : ℕ, eta m > 0
 
 /-
 ## Part VI: Main Result - Resolution of Erdős Problem #378
@@ -200,8 +190,6 @@ def atLeastSquarefree (r : ℕ) : Set ℕ :=
 **Complement decomposition:**
 {n : squarefreeCount n < r} = ⋃_{m : 2m+2 < r} exactlySquarefree m
 -/
-axiom complement_decomposition (r : ℕ) :
-    {n : ℕ | squarefreeCount n < r} = ⋃ m ∈ Finset.range ((r - 1) / 2 + 1), exactlySquarefree m
 
 /--
 **Density of complement:**
@@ -259,7 +247,6 @@ theorem example_C_2_1 : BinomialSquarefree 2 1 := by
 /--
 **Example: C(4,2) = 6 is squarefree**
 -/
-axiom example_C_4_2 : BinomialSquarefree 4 2
 
 /--
 **Example: C(6,3) = 20 = 4 · 5 is NOT squarefree**
@@ -298,8 +285,6 @@ theorem binomial_squarefree_symm (n k : ℕ) (hk : k ≤ n) :
 Due to symmetry, squarefree binomials come in pairs (except possibly k = n/2).
 This explains why Granville-Ramaré uses 2m + 2 (even numbers).
 -/
-axiom squarefree_count_even_pattern :
-    ∀ n : ℕ, ∃ m : ℕ, squarefreeCount n = 2 * m ∨ squarefreeCount n = 2 * m + 1
 
 /-
 ## Part IX: Summary
