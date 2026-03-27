@@ -94,9 +94,15 @@ theorem prime_ap_3 : IsPrimeAP 3 7 :=
   ⟨3, 2, by omega, fun i hi => by interval_cases i <;> native_decide,
    fun i hi => by interval_cases i <;> omega⟩
 
-/-- The AP {5, 11, 17, 23, 29} has length 5 — proved by explicit construction. -/
+/-- The AP {5, 11, 17, 23, 29} has length 5 with d=6. -/
 theorem prime_ap_5 : IsPrimeAP 5 29 :=
   ⟨5, 6, by omega, fun i hi => by interval_cases i <;> native_decide,
+   fun i hi => by interval_cases i <;> omega⟩
+
+/-- The AP {7, 37, 67, 97, 127, 157} has length 6 with d=30.
+    Note d=30 = 2·3·5 = 5# (primorial), consistent with ap_difference_primorial. -/
+theorem prime_ap_6 : IsPrimeAP 6 157 :=
+  ⟨7, 30, by omega, fun i hi => by interval_cases i <;> native_decide,
    fun i hi => by interval_cases i <;> omega⟩
 
 /-- Green–Tao–Maynard: quantitative bounds on the least N containing
@@ -107,20 +113,13 @@ axiom green_tao_quantitative :
     ∃ N : ℕ, (N : ℝ) ≤ Real.exp (Real.exp (Real.exp (c * k))) ∧
     IsPrimeAP k N
 
-/- ## Relationship to Other Conjectures -/
+/- ## Relationship to Other Conjectures
 
-/-- If the Hardy–Littlewood k-tuple conjecture holds, then for any k,
-    the expected number of prime k-APs with difference d ≤ x is
-    ~ c_k · x / (log x)^k, predicting longestPrimeAP(N) ~ c · log N
-    for some constant c < 1. -/
-theorem hardy_littlewood_prediction :
-    True := trivial  -- Predicts longestPrimeAP(N) ~ c · log N, NOT o(log N)
-
-/-- Note: the Hardy–Littlewood prediction suggests the answer to
-    Erdős's question might be NO — the longest prime AP could be
-    Θ(log N), not o(log N). This makes the problem delicate. -/
-theorem hl_suggests_negative :
-    True := trivial  -- Heuristically, longestPrimeAP(N) / log(N) → c for some c ∈ (0,1]
+The Hardy–Littlewood k-tuple conjecture predicts that for any k, the number
+of prime k-APs with difference d ≤ x is ~ c_k · x / (log x)^k. This
+heuristic suggests longestPrimeAP(N) ~ c · log N for some c ∈ (0,1],
+which would mean the answer to Erdős's question is NO — the longest prime
+AP is Θ(log N), not o(log N). This makes the problem particularly delicate. -/
 
 /- ## Structural Observations -/
 
@@ -159,9 +158,7 @@ theorem ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
   · exact absurd h (by have := hp.one_lt; omega)
   · exact absurd (hgt i₀ hi₀k) (by omega)
 
-/-- The primorial constraint means a prime AP of length k uses
-    numbers up to at least a + (k-1) · k#, which grows rapidly. -/
-theorem primorial_growth :
-    ∀ ε : ℝ, ε > 0 → ∃ K₀ : ℕ, ∀ k : ℕ, k > K₀ →
-      True := -- k# ≥ e^((1-ε)k)
-  fun _ _ => ⟨0, fun _ _ => trivial⟩
+/- The primorial k# = ∏ (p prime, p ≤ k) p grows as e^{(1+o(1))k} by PNT.
+   Combined with ap_difference_primorial (d ≥ k# when AP terms > k),
+   a prime AP of length k needs numbers up to at least a + (k-1)·k#,
+   which grows roughly as e^{(1+o(1))k}. -/
