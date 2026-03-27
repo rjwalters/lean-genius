@@ -96,10 +96,6 @@ theorem reprCount_empty_nonzero {G : Type*} [AddCommGroup G] [DecidableEq G]
 -- probabilistic convergence.
 axiom gEps (ε : ℝ) (N : ℕ) : ℕ
 
--- g_ε is well-defined for valid parameters.
-axiom gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
-    gEps ε N ≥ 1
-
 /- ## Part V: Trivial Lower Bound -/
 
 -- **Trivial lower bound:** g_ε(N) ≥ log₂ N for all 0 < ε < 1.
@@ -111,6 +107,17 @@ axiom gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2
 -- prevents ε-uniformity for ε < 1.
 axiom trivial_lower_bound (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
     (gEps ε N : ℝ) ≥ Real.logb 2 N
+
+-- g_ε is well-defined for valid parameters.
+-- Proved from trivial_lower_bound: g_ε(N) ≥ log₂ N ≥ log₂ 2 = 1.
+theorem gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
+    gEps ε N ≥ 1 := by
+  have h := trivial_lower_bound ε N hε hε1 hN
+  have hlog : Real.logb 2 ↑N ≥ 1 := by
+    rw [Real.logb, ge_iff_le, div_le_iff (Real.log_pos (by norm_num : (1:ℝ) < 2)),
+        one_mul]
+    exact Real.log_le_log (by norm_num : (0:ℝ) < 2) (by exact_mod_cast hN)
+  exact_mod_cast (show (1 : ℝ) ≤ ↑(gEps ε N) from le_trans hlog h)
 
 /- ## Part VI: Upper Bounds -/
 

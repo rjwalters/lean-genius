@@ -54,7 +54,7 @@
       "chebyshev_lebesgue_upper"
     ],
     "axiomCount": 2,
-    "lineCount": 160,
+    "lineCount": 175,
     "assumptions": "2 axiom(s): erdos_1153 (the logarithmic lower bound, proved by Bernstein/Erdős), chebyshev_lebesgue_upper (matching upper bound via Chebyshev nodes)."
   },
   "overview": {
@@ -80,28 +80,32 @@
       "title": "Definitions",
       "startLine": 42,
       "endLine": 68,
-      "summary": "Defines lagrangeBasis (Lagrange basis polynomial via finite product), lebesgueFunction (sum of absolute values), NodesInInterval (nodes in [-1,1]), and DistinctNodes (injectivity)."
+      "summary": "Defines lagrangeBasis (Lagrange basis polynomial via finite product), lebesgueFunction (sum of absolute values), NodesInInterval (nodes in [-1,1]), and DistinctNodes (injectivity).",
+      "mathContext": "$l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, $\\lambda(x) = \\sum_k |l_k(x)|$. Nodes constrained to $[-1,1]$ and required to be distinct (injective)."
     },
     {
       "id": "lagrange-properties",
       "title": "Lagrange Basis Properties",
       "startLine": 69,
       "endLine": 93,
-      "summary": "Proves the Kronecker delta property: lₖ(xⱼ) = 0 for j ≠ k (zero factor in product) and lₖ(xₖ) = 1 (all factors cancel for distinct nodes)."
+      "summary": "Proves the Kronecker delta property: lₖ(xⱼ) = 0 for j ≠ k (zero factor in product) and lₖ(xₖ) = 1 (all factors cancel for distinct nodes).",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$: the zero case uses `Finset.prod_eq_zero`, the identity case uses `Finset.prod_eq_one` with `div_self` (requires node distinctness)."
     },
     {
       "id": "lebesgue-properties",
       "title": "Lebesgue Function Properties",
       "startLine": 94,
       "endLine": 126,
-      "summary": "Proves nonnegativity, the lower bound λ(xₖ) ≥ 1 at nodes, and the exact value λ(xₖ) = 1 at nodes for distinct node sets."
+      "summary": "Proves nonnegativity, the lower bound λ(xₖ) ≥ 1 at nodes, and the exact value λ(xₖ) = 1 at nodes for distinct node sets.",
+      "mathContext": "$\\lambda(x) \\ge 0$ (sum of absolute values), $\\lambda(x_k) \\ge 1$ (`Finset.single_le_sum`), and $\\lambda(x_k) = 1$ (Kronecker delta collapses the sum)."
     },
     {
       "id": "main-result",
       "title": "Main Result and Tightness",
       "startLine": 127,
       "endLine": 160,
-      "summary": "States the main theorem (logarithmic lower bound with constant 2/π on arbitrary subintervals) and the matching Chebyshev upper bound as axioms. Proves the full-interval corollary."
+      "summary": "States the main theorem (logarithmic lower bound with constant 2/π on arbitrary subintervals) and the matching Chebyshev upper bound as axioms. Proves the full-interval corollary.",
+      "mathContext": "$\\max_{x \\in [a,b]} \\lambda(x) \\ge (2/\\pi - \\varepsilon) \\log n$ (axiom). Matching upper bound: Chebyshev roots give $\\Lambda_n \\le (2/\\pi + \\varepsilon) \\log n$ (axiom). Full-interval corollary: direct instantiation with $a = -1$, $b = 1$."
     }
   ],
   "conclusion": {
@@ -123,7 +127,7 @@
       "Finset"
     ],
     "namespace": "Erdos1153",
-    "lineCount": 160,
+    "lineCount": 175,
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 4

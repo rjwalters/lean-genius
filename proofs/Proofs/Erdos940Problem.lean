@@ -134,12 +134,56 @@ def erdos_940_conjecture : Prop :=
 def erdos_940_infinitely_many : Prop :=
   ∀ r : ℕ, r ≥ 3 → (DiagonalSums r)ᶜ.Infinite
 
-/-- The conjecture implies infinitely many non-representable integers. -/
+/-- The conjecture implies infinitely many non-representable integers.
+    Proof: density 0 ⟹ complement is infinite.
+    If the complement were finite with upper bound M, then for N > M,
+    countingFunction(A, N) ≥ N - M, giving density ≥ (N-M)/N → 1 ≠ 0. -/
 theorem conjecture_implies_infinite (h : erdos_940_conjecture) :
     erdos_940_infinitely_many := by
   intro r hr
-  -- If density is 0, the complement must be infinite
-  sorry
+  have hd := h r hr -- HasDensityZero (DiagonalSums r)
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  -- The complement is finite, so bounded above
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  -- For n > M, n ∈ DiagonalSums r
+  have hmem : ∀ n : ℕ, M < n → n ∈ DiagonalSums r := by
+    intro n hn
+    by_contra hn'
+    exact absurd (hM hn') (not_le.mpr hn)
+  -- countingFunction counts at least all elements in (M, N]
+  have hcount : ∀ N : ℕ, M < N →
+      N - M ≤ countingFunction (DiagonalSums r) N := by
+    intro N hN
+    unfold countingFunction
+    calc N - M
+        = ((Finset.Ioc M N).filter (· ∈ DiagonalSums r)).card := by
+          rw [Finset.filter_true_of_mem (fun n hn => hmem n (Finset.mem_Ioc.mp hn).1)]
+          simp [Finset.card_Ioc]
+      _ ≤ ((Finset.range (N + 1)).filter (· ∈ DiagonalSums r)).card := by
+          apply Finset.card_le_card
+          apply Finset.filter_subset_filter
+          intro n hn; exact Finset.mem_range.mpr (by omega)
+  -- Density 0 means countingFunction/N → 0
+  -- But countingFunction/N ≥ (N-M)/N → 1 for large N, contradiction
+  have : ¬Tendsto (fun N => (countingFunction (DiagonalSums r) N : ℝ) / N) atTop (nhds 0) := by
+    rw [Filter.not_tendsto_iff_exists_frequently_nmem]
+    refine ⟨Iio (1/2), Iio_mem_nhds (by norm_num : (0:ℝ) < 1/2), ?_⟩
+    rw [Filter.Frequently, Filter.Eventually, Filter.mem_atTop_sets]
+    push_neg
+    intro N₀
+    use max N₀ (2 * M + 2)
+    refine ⟨le_max_left _ _, ?_⟩
+    simp only [Set.mem_Iio, not_lt]
+    have hN : M < max N₀ (2 * M + 2) := by omega
+    have hN' : (0 : ℝ) < max N₀ (2 * M + 2) := by positivity
+    rw [le_div_iff₀ hN']
+    calc 1 / 2 * ↑(max N₀ (2 * M + 2))
+        ≤ ↑(max N₀ (2 * M + 2)) - ↑M := by push_cast; nlinarith [le_max_right N₀ (2 * M + 2)]
+      _ = ↑(max N₀ (2 * M + 2) - M) := by push_cast; omega
+      _ ≤ ↑(countingFunction (DiagonalSums r) (max N₀ (2 * M + 2))) := by
+          exact_mod_cast hcount _ hN
+  exact this hd
 
 /- ## Part V: The Squarefull Case (r = 2) -/
 

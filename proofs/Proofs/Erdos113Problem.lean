@@ -191,11 +191,9 @@ axiom forward_direction (g : ℕ) :
 /--
 **Backward Direction (DISPROVED):**
 There exist bipartite graphs with ex(n;G) ≪ n^{3/2} that are NOT 2-degenerate.
+Proved from Janzer's counterexample below (see `janzer_beats_threshold`).
+Declared here as a forward reference; proved after Part VII.
 -/
-axiom backward_false :
-    ∃ g : ℕ, isBipartite g ∧
-      ((fun n => (extremalNumber n g : ℝ)) ≪ (fun n => (n : ℝ).rpow (3/2))) ∧
-      ¬isDegenerate g 2
 
 /-
 ## Part VII: Janzer's Counterexample (2023)
@@ -238,6 +236,16 @@ theorem janzer_beats_threshold (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/6) :
   · -- Since 4/3 + ε < 3/2 when ε < 1/6
     have h : (4 : ℝ)/3 + ε < 3/2 := by linarith
     exact asymp_trans_exponent _ _ _ h hext
+
+/-- **Backward Direction (DISPROVED):**
+There exist bipartite graphs with ex(n;G) ≪ n^{3/2} that are NOT 2-degenerate.
+Follows from Janzer's counterexample with ε = 1/12 < 1/6. -/
+theorem backward_false :
+    ∃ g : ℕ, isBipartite g ∧
+      ((fun n => (extremalNumber n g : ℝ)) ≪ (fun n => (n : ℝ).rpow (3/2))) ∧
+      ¬isDegenerate g 2 := by
+  obtain ⟨g, hbip, hnot2, hext⟩ := janzer_beats_threshold (1/12) (by norm_num) (by norm_num)
+  exact ⟨g, hbip, hext, hnot2⟩
 
 /-
 ## Part VIII: Related Results

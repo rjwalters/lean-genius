@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 268,
-    "assumptions": "2 axioms: gerver_ramsey_2d (Gerver-Ramsey 2D theorem), erdos193_rank_le_2 (rank ≤ 2 reduction to Gerver-Ramsey). 14 proved theorems including collinearity properties, d=1 case, singleton step sets, parallel step sets, and dimension reduction framework.",
+    "lineCount": 267,
+    "assumptions": "2 axioms: gerver_ramsey_2d (Gerver-Ramsey 2D theorem), erdos193_rank_le_2 (rank ≤ 2 reduction to Gerver-Ramsey). 13 proved theorems including collinearity properties, d=1 case, singleton step sets, parallel step sets, and dimension reduction framework.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -136,7 +136,7 @@
       "id": "dimension-reduction",
       "title": "Dimension Reduction Framework",
       "startLine": 218,
-      "endLine": 268,
+      "endLine": 267,
       "summary": "Defines $\\text{SpansAtMost2D}$ (step set in a 2D subspace), axiomatizes the rank $\\leq 2$ case via Gerver-Ramsey reduction, and proves that ErdosProblem193 reduces to the full-rank (rank 3) case.",
       "mathContext": "Mathematical content: Defines $\\text{SpansAtMost2D}$, axiomatizes $\\text{erdos193\\_rank\\_le\\_2}$ (rank $\\leq 2$ reduction), and proves $\\text{erdos193\\_reduces\\_to\\_full\\_rank}$: the conjecture holds iff it holds for full-rank step sets."
     }
@@ -159,10 +159,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 268,
+    "lineCount": 267,
     "axiomCount": 2,
-    "theoremCount": 14,
-    "definitionCount": 10
+    "theoremCount": 13,
+    "definitionCount": 7
   },
   "crossReferences": [
     {

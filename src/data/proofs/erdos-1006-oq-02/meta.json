@@ -48,9 +48,9 @@
       "Axiom minimum_chromatic_achieved: tightness via explicit construction for each g ≥ 3"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 3,
-    "lineCount": 449,
-    "assumptions": "3 axiom(s): k3_egirth_eq_3, k3_chromaticNumber_eq_3, ffllw_classical. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 469,
+    "assumptions": "1 axiom: ffllw_classical (Fisher-Fraughnaugh-Langley-West classical lower bound for non-robust graphs). Previously axiomatized k3_egirth_eq_3 and k3_chromaticNumber_eq_3 are now proved from Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -175,9 +175,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 449,
-    "axiomCount": 3,
-    "theoremCount": 15,
+    "lineCount": 469,
+    "axiomCount": 1,
+    "theoremCount": 17,
     "definitionCount": 8
   }
 }
