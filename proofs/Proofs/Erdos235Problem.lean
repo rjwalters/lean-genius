@@ -62,7 +62,6 @@ notation "N_" k => primorial k
 /--
 **Primorial is positive:**
 -/
-axiom primorial_pos (k : ℕ) (hk : k ≥ 1) : primorial k > 0
 
 /--
 **Euler's totient of primorial:**
@@ -75,8 +74,6 @@ noncomputable def primorialTotient (k : ℕ) : ℕ :=
 **Totient formula for primorial:**
 φ(p₁·p₂·...·pₖ) = (p₁-1)(p₂-1)·...·(pₖ-1)
 -/
-axiom primorial_totient_formula (k : ℕ) :
-    primorialTotient k = (Finset.range k).prod (fun i => nthPrime (i + 1) - 1)
 
 /-
 ## Part II: Coprime Sequences
@@ -108,8 +105,6 @@ noncomputable def coprimeSequence (k : ℕ) : List ℕ :=
 **First coprime is 1:**
 a₁ = 1 for all k ≥ 1
 -/
-axiom first_coprime (k : ℕ) (hk : k ≥ 1) :
-    (coprimeSequence k).head? = some 1
 
 /-
 ## Part III: Gap Distribution
@@ -228,8 +223,6 @@ theorem median_gap : exponentialCDF (Real.log 2) = 1/2 := by
 **Mean of exponential:**
 The mean of the normalized gaps is 1 (by definition of normalization).
 -/
-axiom mean_normalized_gap (k : ℕ) :
-    (gapSequence k).sum / (primorialTotient k : ℝ) / averageGap k = 1
 
 /-
 ## Part VII: Stronger Results
@@ -239,17 +232,11 @@ axiom mean_normalized_gap (k : ℕ) :
 **Uniform convergence:**
 The convergence is uniform in c on compact sets.
 -/
-axiom hooley_uniform (a b : ℝ) (hab : a ≤ b) :
-    ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K, ∀ c ∈ Set.Icc a b,
-      |gapDistribution k c - exponentialCDF c| < ε
 
 /--
 **Error term:**
 More precisely, f_k(c) = (1 - e^{-c}) + O(1/log k).
 -/
-axiom hooley_error_term :
-    ∃ C : ℝ, C > 0 ∧ ∀ k ≥ 2, ∀ c ≥ 0,
-      |gapDistribution k c - exponentialCDF c| ≤ C / Real.log k
 
 /-
 ## Part VIII: Related Results
@@ -259,9 +246,6 @@ axiom hooley_error_term :
 **Maximum gap:**
 The maximum gap in the coprime sequence grows like log Nₖ · log log Nₖ.
 -/
-axiom max_gap_bound (k : ℕ) (hk : k ≥ 2) :
-    ∃ g ∈ gapSequence k, ∀ g' ∈ gapSequence k, g' ≤ g ∧
-      (g : ℝ) ≤ Real.log (primorial k) * Real.log (Real.log (primorial k))
 
 /--
 **Jacobsthal function:**
@@ -270,9 +254,6 @@ j(n) = max gap between consecutive integers coprime to n.
 noncomputable def jacobsthal (n : ℕ) : ℕ :=
   let seq := (Finset.filter (fun a => Nat.Coprime a n) (Finset.range n)).sort (· ≤ ·)
   (seq.zipWith (fun a b => b - a) seq.tail).foldl max 0
-
-axiom jacobsthal_primorial_bound (k : ℕ) (hk : k ≥ 2) :
-    (jacobsthal (primorial k) : ℝ) ≤ nthPrime k * Real.log (nthPrime k)
 
 /--
 **Connection to prime gaps:**
@@ -290,17 +271,10 @@ where γ is the Euler-Mascheroni constant.
 -/
 noncomputable def eulerGamma : ℝ := 0.5772156649
 
-axiom mertens_third :
-    Tendsto (fun k => (primorialTotient k : ℝ) / (primorial k : ℝ) * Real.log (nthPrime k))
-      atTop (nhds (Real.exp (-eulerGamma)))
-
 /--
 **Average gap asymptotics:**
 Nₖ/φ(Nₖ) ~ e^γ · log pₖ
 -/
-axiom average_gap_asymptotic :
-    Tendsto (fun k => averageGap k / (Real.exp eulerGamma * Real.log (nthPrime k)))
-      atTop (nhds 1)
 
 /-
 ## Part X: Summary

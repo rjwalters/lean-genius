@@ -68,18 +68,6 @@ def validDenominators (S : Finset ℕ) : Prop :=
     finite subsets of positive integers with a cardinality constraint. -/
 axiom R (n : ℕ) (x : ℝ) : ℝ
 
-/-- **Property: R_n(x) < x**
-    The best underapproximation is always strictly less than x. -/
-axiom R_less_than_target (n : ℕ) (x : ℝ) (hx : x > 0) : R n x < x
-
-/-- **Property: R is monotonically increasing in n**
-    Adding more terms can only improve the approximation. -/
-axiom R_monotone (n : ℕ) (x : ℝ) (hx : x > 0) : R n x ≤ R (n + 1) x
-
-/-- **Property: R is bounded below by 0**
-    All sums of unit fractions are nonneg. -/
-axiom R_nonneg (n : ℕ) (x : ℝ) (hx : x > 0) : R n x ≥ 0
-
 /- ## Part II: The Greedy Property -/
 
 /-- **Eventually Greedy at x:**
@@ -109,19 +97,6 @@ axiom curtiss_theorem : EventuallyGreedy 1
 axiom erdos_unit_fractions (m : ℕ) (hm : m > 0) :
     EventuallyGreedy (1 / m)
 
-/-- **Nathanson (2023): a/b is eventually greedy when a | b+1.**
-    Identifies a structural divisibility condition for greedy behavior. -/
-axiom nathanson_theorem (a b : ℕ) (ha : a > 0) (hb : b > 0) (hdiv : a ∣ b + 1) :
-    EventuallyGreedy ((a : ℝ) / b)
-
-/-- **Chu (2023): Extended to larger class of rationals.**
-    A broader sufficient condition for eventual greedy behavior. -/
-axiom chu_extension :
-    ∃ (P : ℕ → ℕ → Prop),
-      (∀ a b, P a b → EventuallyGreedy ((a : ℝ) / b)) ∧
-      -- P extends Nathanson's condition
-      (∀ a b, a ∣ b + 1 → P a b)
-
 /- ## Part IV: Kovač's Theorem (2024) - The Main Result -/
 
 /-- **Kovač's Theorem (2024): DISPROVED**
@@ -133,11 +108,6 @@ axiom chu_extension :
     greedy. The conjecture fails in the strongest measure-theoretic sense. -/
 axiom kovac_theorem :
     volume EventuallyGreedySet = 0
-
-/-- **Corollary: Almost all x are not eventually greedy.**
-    The complement of EventuallyGreedySet in (0, infinity) has full measure. -/
-axiom almost_all_not_greedy :
-    volume (Ioi (0 : ℝ) \ EventuallyGreedySet) = ⊤
 
 /-- **The Answer to Erdős Problem #206: NO**
 
@@ -174,19 +144,7 @@ def explicit_nongreedy_example_exists : Prop :=
     So greedy would give 1/3 + 1/9 = 4/9 ≈ 0.444
     But 1/4 + 1/5 = 9/20 = 0.45 > 4/9
 
-    This shows optimal != greedy at step 2, but doesn't preclude
-    eventual greedy behavior (the question is about sufficiently large n). -/
-axiom non_greedy_at_step_two :
-  R 1 (11/24 : ℝ) = 1/3 ∧ R 2 (11/24 : ℝ) = 1/4 + 1/5
-
 /- ## Part VII: Connection to Egyptian Fractions -/
-
-/-- **Egyptian Fraction Representation Theorem:**
-    Every positive rational can be written as a sum of distinct
-    unit fractions. The greedy algorithm (Fibonacci/Sylvester)
-    provides one such representation, but not always the shortest. -/
-axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0) :
-    ∃ S : Finset ℕ, validDenominators S ∧ EgyptianFraction S = q
 
 /-- **Sylvester's Greedy Algorithm:**
     Given x > 0 with x < 1, compute the next denominator as ceil(1/x)

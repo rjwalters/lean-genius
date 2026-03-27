@@ -80,17 +80,6 @@ axiom smoothEnum (P : Set ℕ) : ℕ → ℕ
 /--
 **Enumeration properties:**
 -/
-axiom smoothEnum_pos (P : Set ℕ) (hP : P.Nonempty) (i : ℕ) :
-  smoothEnum P i > 0
-
-axiom smoothEnum_smooth (P : Set ℕ) (i : ℕ) :
-  isPSmooth P (smoothEnum P i)
-
-axiom smoothEnum_strictly_increasing (P : Set ℕ) (hP : P.Nonempty) (i j : ℕ) :
-  i < j → smoothEnum P i < smoothEnum P j
-
-axiom smoothEnum_surjective (P : Set ℕ) (n : ℕ) (hn : isPSmooth P n) :
-  ∃ i, smoothEnum P i = n
 
 /--
 **Gap function:**
@@ -126,16 +115,10 @@ def erdos240Question : Prop :=
 If f(n) is a quadratic integer polynomial without repeated roots,
 then the largest prime factor of f(n) → ∞ as n → ∞.
 -/
-axiom polya_theorem (a b c : ℤ) (hdisc : b^2 - 4*a*c ≠ 0) (ha : a ≠ 0) :
-  ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N,
-    ∃ p : ℕ, p.Prime ∧ p > M ∧ (p : ℤ) ∣ (a * n^2 + b * n + c)
 
 /--
 **Corollary: f(n) = n(n+k) has large prime factors:**
 -/
-axiom polya_corollary (k : ℕ) (hk : k > 0) :
-  ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N,
-    ∃ p : ℕ, p.Prime ∧ p > M ∧ p ∣ n * (n + k)
 
 /-
 ## Part V: Finite P Case
@@ -159,11 +142,6 @@ For finite P, the gaps satisfy:
 aᵢ₊₁ - aᵢ ≫ aᵢ / (log aᵢ)^C
 for some constant C depending on P.
 -/
-axiom tijdeman_finite_bound (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p) :
-  ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-    ∀ i : ℕ, smoothEnum (↑P : Set ℕ) i > 1 →
-      (gap (↑P : Set ℕ) i : ℝ) ≥ c * (smoothEnum (↑P : Set ℕ) i : ℝ) /
-        (Real.log (smoothEnum (↑P : Set ℕ) i : ℝ))^C
 
 /-
 ## Part VI: Tijdeman's Main Theorem (1973)
@@ -235,8 +213,6 @@ can both be P-smooth.
 
 This is another consequence of Pólya-type results.
 -/
-axiom stormer_theorem (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p) :
-  ∃ N : ℕ, ∀ n > N, ¬(isPSmooth (↑P : Set ℕ) n ∧ isPSmooth (↑P : Set ℕ) (n + 1))
 
 /-
 **Connection to ABC Conjecture:**

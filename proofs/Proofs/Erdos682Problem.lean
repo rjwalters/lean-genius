@@ -51,10 +51,6 @@ p_n is the n-th prime number (1-indexed: p_1 = 2, p_2 = 3, etc.)
 -/
 axiom nthPrime (n : ℕ) : ℕ
 
-axiom nthPrime_prime (n : ℕ) (hn : n ≥ 1) : Nat.Prime (nthPrime n)
-
-axiom nthPrime_monotone : ∀ m n : ℕ, m < n → nthPrime m < nthPrime n
-
 /--
 **Least Prime Factor:**
 p(m) is the smallest prime dividing m.
@@ -131,8 +127,6 @@ def gapInterval (n : ℕ) : Set ℕ :=
 **Non-empty Gaps:**
 For n ≥ 2, the gap contains composite numbers (the gap is at least 2).
 -/
-axiom gap_nonempty (n : ℕ) (hn : n ≥ 2) :
-  ∃ m : ℕ, m ∈ gapInterval n
 
 /-
 ## Part IV: The Main Property
@@ -163,16 +157,10 @@ n# = product of all primes ≤ n.
 -/
 axiom primorial (n : ℕ) : ℕ
 
-axiom primorial_13 : primorial 13 = 30030
-
 /--
 **Dickson's Conjecture (Special Case):**
 There are infinitely many d such that both 2183 + 30030d and 2201 + 30030d are prime.
 -/
-axiom dickson_special_case :
-  ∀ N : ℕ, ∃ d : ℕ, d > N ∧
-    Nat.Prime (2183 + 30030 * d) ∧
-    Nat.Prime (2201 + 30030 * d)
 
 /--
 **Erdős's Conditional Counterexample:**
@@ -180,21 +168,11 @@ If p = 2183 + 30030d and q = 2201 + 30030d are consecutive primes,
 then every m ∈ [2184, 2200] + 30030d is divisible by one of 2,3,5,7,11,13.
 Thus the gap (p, q) contains no 18-rough number, but q - p = 18.
 -/
-axiom erdos_counterexample_condition (d : ℕ) :
-  let p := 2183 + 30030 * d
-  let q := 2201 + 30030 * d
-  Nat.Prime p → Nat.Prime q →
-    (∀ m : ℕ, p < m ∧ m < q → leastPrimeFactor m < 18) →
-    isExceptional (nthPrime⁻¹' {p}).toFinset.min' sorry -- placeholder
 
 /--
 **Infinitely Many Exceptional n (Conditional):**
 Assuming Dickson's conjecture, there are infinitely many exceptional n.
 -/
-axiom dickson_implies_infinitely_many_exceptional :
-  (∀ N : ℕ, ∃ d : ℕ, d > N ∧
-    Nat.Prime (2183 + 30030 * d) ∧ Nat.Prime (2201 + 30030 * d)) →
-  ∀ K : ℕ, ∃ n : ℕ, n > K ∧ isExceptional n
 
 /-
 ## Part VI: The Main Question
@@ -238,11 +216,6 @@ axiom gafni_tao_upper_bound :
 Assuming a form of the prime tuples conjecture,
 E(X) ~ c · X / (log X)² for some explicit c > 0.
 -/
-axiom gafni_tao_conditional_asymptotic :
-  -- Under prime tuples conjecture
-  ∃ c : ℝ, c > 0 ∧
-    -- E(X) / (X / (log X)²) → c as X → ∞
-    True
 
 /--
 **Gafni-Tao Main Theorem:**

@@ -69,8 +69,6 @@ def isEgyptianRepresentationOf1 (S : Finset ℕ) : Prop :=
 **Example: {2, 3, 6} represents 1**
 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1.
 -/
-axiom egyptian_236 : isEgyptianRepresentationOf1 {2, 3, 6}
-  -- Verified: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1
 
 /-
 ## Part II: The t(N) Function
@@ -105,10 +103,6 @@ noncomputable def t_func (N : ℕ) : ℕ :=
 /--
 **Key property: t(N) is where representations stop being possible.**
 -/
-axiom t_func_characterization (N : ℕ) (hN : N ≥ 2) :
-    (∀ t < t_func N, hasConstrainedRepresentation t N) ∧
-    ¬hasConstrainedRepresentation (t_func N) N
-  -- By definition of Nat.find, t_func N is minimal with no representation
 
 /-
 ## Part III: Small Values
@@ -118,18 +112,12 @@ axiom t_func_characterization (N : ℕ) (hN : N ≥ 2) :
 **t(2) = 2:**
 Only {2} gives 1/2, not 1. So t(2) = 2.
 -/
-axiom t_2 : t_func 2 = 2
-  -- The only subset of {1, 2} giving sum ≤ 1 is {2} with sum 1/2
-  -- So starting from t=2, no representation exists
 
 /--
 **t(6) analysis:**
 {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1, so t(6) > 2.
 {3, 4, 5, 6} gives 1/3 + 1/4 + 1/5 + 1/6 = 20/60 + 15/60 + 12/60 + 10/60 = 57/60 ≠ 1.
 -/
-axiom t_6_lower : t_func 6 > 2
-  -- Since {2, 3, 6} sums to 1, representation exists for t=2
-  -- So the minimum non-representable t must be > 2
 
 /--
 **The harmonic sum:**
@@ -142,8 +130,6 @@ noncomputable def harmonicSum (N : ℕ) : ℚ :=
 **Harmonic sum bounds:**
 H_N ≈ log(N) + γ where γ ≈ 0.577 is Euler's constant.
 -/
-axiom harmonic_asymptotic (N : ℕ) (hN : N ≥ 2) :
-    |(harmonicSum N : ℝ) - Real.log N| < 1
 
 /-
 ## Part IV: Erdős-Graham Upper Bound
@@ -211,9 +197,6 @@ def densityInterpretation : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (N - t_func N : ℝ) / N > 1 - ε
 
-axiom almost_all_work : densityInterpretation
-  -- Follows from erdos_graham_1980: t(N)/N → 0, so (N - t(N))/N → 1
-
 /--
 **The harmonic sum connection:**
 t(N) is related to where the partial harmonic sums exceed certain thresholds.
@@ -242,11 +225,6 @@ noncomputable def f_func (n : ℕ) (hn : n ≥ 6) : ℕ :=
 **Relationship between t and f:**
 If f(N) exists, then t(N) > 1.
 -/
-axiom t_f_relationship (N : ℕ) (hN : N ≥ 6) :
-    (∃ S : Finset ℕ, isEgyptianRepresentationOf1 S ∧ (∀ n ∈ S, n ≤ N)) →
-    t_func N > 1
-  -- If a representation exists with max denominator ≤ N, then t=1 works,
-  -- so the minimum non-working t must be > 1
 
 /-
 ## Part VIII: The Greedy Algorithm
@@ -265,8 +243,6 @@ noncomputable def greedyStep (q : ℚ) : ℕ :=
 **Greedy algorithm property:**
 The greedy algorithm always terminates but may produce long representations.
 -/
-axiom greedy_terminates (q : ℚ) (hq : 0 < q ∧ q < 1) :
-    ∃ S : Finset ℕ, egyptianSum S = q
 
 /--
 **Relationship to t(N):**

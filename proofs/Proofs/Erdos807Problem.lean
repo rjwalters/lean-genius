@@ -109,10 +109,6 @@ Almost surely, τ(G) ≤ n - α(G) - 1 for G ∈ G(n, 1/2).
 This disproves the ERW conjecture, showing τ(G) is strictly smaller
 than n - α(G) almost surely.
 -/
-axiom alon_2015 (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely for random G on n vertices with p = 1/2:
-    -- τ(G) ≤ n - α(G) - 1
-    True
 
 /--
 **Corollary:** The ERW conjecture is false.
@@ -154,16 +150,11 @@ axiom alon_bohman_huang_2017 :
 The bipartition number satisfies τ(Kₙ) = n - 1 for the complete graph.
 This shows the upper bound n - 1 is achievable.
 -/
-axiom graham_pollak (n : ℕ) (hn : n ≥ 1) :
-    -- τ(Kₙ) = n - 1
-    True
 
 /--
 **General Lower Bound:**
 For any graph G on n vertices, τ(G) ≥ max(α(G), n - α(G) - τ(G)) in some sense.
 -/
-axiom bipartition_lower_bound (G : SimpleGraph V) :
-    bipartitionNumber G ≥ 1 ∨ (∀ v w, ¬G.Adj v w)
 
 /-
 ## Part VI: Properties of Random Graphs G(n, 1/2)
@@ -173,17 +164,11 @@ axiom bipartition_lower_bound (G : SimpleGraph V) :
 **Expected Independence Number:**
 For G ∈ G(n, 1/2), the independence number α(G) is typically around 2 log₂ n.
 -/
-axiom independence_number_random_graph (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely, α(G) ≈ 2 log₂ n
-    True
 
 /--
 **Expected Bipartition Number:**
 Combined with the above, τ(G) is typically around n - 2 log₂ n - O(log n).
 -/
-axiom bipartition_number_random_graph (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely, τ(G) ≤ n - (1+c) · 2 log₂ n
-    True
 
 /-
 ## Part VII: Main Results
@@ -229,9 +214,6 @@ def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
 **Chromatic Number Connection:**
 The bipartition number relates to the chromatic number of the complement.
 -/
-axiom bipartition_chromatic_relation (G : SimpleGraph V) :
-    -- τ(G) is related to chromatic properties of Gᶜ
-    True
 
 /-
 ## Part IX: Probabilistic Methods
@@ -243,9 +225,6 @@ Alon's proof uses the probabilistic method to show that the expected
 number of edges covered by a random bipartite graph is large enough
 to achieve the improved bound.
 -/
-axiom probabilistic_method_bipartition :
-    -- Key technique: random bipartite subgraphs cover edges efficiently
-    True
 
 /--
 **Concentration Inequalities:**
@@ -253,8 +232,5 @@ The "almost surely" statements use concentration inequalities
 (Chernoff bounds, etc.) to show the behavior holds with probability
 tending to 1 as n → ∞.
 -/
-axiom concentration_for_random_graphs :
-    -- Standard probabilistic tools give the high-probability bounds
-    True
 
 end Erdos807

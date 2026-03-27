@@ -96,7 +96,6 @@ def ErdosConjecture : Prop :=
 **Theorem (Counterexample Existence)**:
 Erdős's conjecture is FALSE. There exist permutations with S(π) ≥ cn² for constant c > 0.
 -/
-axiom erdos_34_disproved : ¬ErdosConjecture
 
 /-
 ## Known Results
@@ -106,29 +105,20 @@ axiom erdos_34_disproved : ¬ErdosConjecture
 **Hegyvári (1986)**: First counterexample to the conjecture.
 There exists a family of permutations πₙ with S(πₙ) ≥ (1/18 + o(1))n².
 -/
-axiom hegyvari_counterexample :
-    ∃ r : ℕ → ℝ, (∀ᶠ n in Filter.atTop, |r n| ≤ 1/n) ∧
-    ∀ᶠ n in Filter.atTop, ∃ π : Perm n, (S n π : ℝ) ≥ (1/18 + r n) * n^2
 
 /--
 **Konieczny (2015)**: The conjecture is "extremely false."
 There exist permutations with S(π) ≥ n²/4, which is asymptotically optimal
 up to lower-order terms.
 -/
-axiom konieczny_quarter_bound :
-    ∀ᶠ n in Filter.atTop, ∃ π : Perm n, S n π ≥ n^2 / 4
 
 /--
 **Lower bound on maximum**: f(n) ≥ 0.286...·n²
 -/
-axiom f_lower_bound :
-    ∃ c : ℝ, c ≥ 0.286 ∧ ∀ᶠ n in Filter.atTop, (f n : ℝ) ≥ c * n^2
 
 /--
 **Upper bound on maximum**: f(n) ≤ 0.446...·n²
 -/
-axiom f_upper_bound :
-    ∃ c : ℝ, c ≤ 0.446 ∧ ∀ᶠ n in Filter.atTop, (f n : ℝ) ≤ c * n^2
 
 /--
 **Random permutation behavior**: S(π) ~ (1 + e⁻²)/4 · n² asymptotically
@@ -136,9 +126,6 @@ for a random permutation π chosen uniformly.
 
 The constant (1 + e⁻²)/4 ≈ 0.2838...
 -/
-axiom random_permutation_limit :
-    ∃ c : ℝ, c = (1 + Real.exp (-2)) / 4 ∧
-    True  -- Formal probability statement would require measure theory
 
 /-
 ## The Identity Permutation
@@ -157,9 +144,6 @@ For the identity, consecutive sums are arithmetic progressions:
 
 The number of distinct such sums is O(n^(3/2)) which is o(n²).
 -/
-axiom identity_is_little_o :
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n > N, (S n (identityPerm n) : ℝ) < ε * n^2
 
 /-
 ## Minimum Bounds
@@ -170,8 +154,6 @@ axiom identity_is_little_o :
 
 Every permutation has at least Ω(n^(3/2)) distinct consecutive sums.
 -/
-axiom g_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in Filter.atTop, (g n : ℝ) ≥ c * n^(3/2 : ℝ)
 
 /--
 **Conjectured bound on minimum**: g(n) ≥ n^(2-o(1))

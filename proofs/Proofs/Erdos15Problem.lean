@@ -75,10 +75,6 @@ The Prime Number Theorem tells us p_n ~ n log n.
 
 /-- The Prime Number Theorem: p_n / (n log n) → 1 as n → ∞.
 
-    This is a fundamental result in analytic number theory. -/
-axiom prime_number_theorem :
-    Tendsto (fun n => (nthPrime n : ℝ) / (n * Real.log n)) atTop (𝓝 1)
-
 /-- Consequence: n / p_n ~ 1 / log n → 0.
 
     Proof: By PNT, p_n ~ n log n, so n/p_n ~ 1/log n → 0. -/
@@ -86,11 +82,6 @@ axiom terms_tend_to_zero :
     Tendsto (fun n : ℕ => (n : ℝ) / (nthPrime n : ℝ)) atTop (𝓝 0)
 
 /-- The terms of our series go to zero.
-
-    Proof: |(-1)^n · n/p_n| = |n/p_n| = n/p_n (since n, p_n > 0).
-    By terms_tend_to_zero, this tends to 0. -/
-axiom alternating_terms_to_zero :
-    Tendsto (fun n => |alternatingPrimeTerm n|) atTop (𝓝 0)
 
 /-
 ## The Alternating Series Test
@@ -112,8 +103,6 @@ This is why the problem is hard.
     - 5/11 ≈ 0.4545
     - 6/13 ≈ 0.4615 > 5/11 (ratio increased!)
 -/
-axiom not_monotone_decreasing :
-    ¬∀ n : ℕ, n ≥ 1 → (n + 1 : ℝ) / nthPrime (n + 1) ≤ n / nthPrime n
 
 /-
 ## Tao's Conditional Result (2023)
@@ -134,11 +123,6 @@ def HardyLittlewoodConjecture : Prop :=
     ∀ N : ℕ, ∃ n > N, ∀ i : Fin k, (n + h i).Prime
 
 /-- Tao's Theorem (2023): Assuming Hardy-Littlewood, the series converges.
-
-    This is a conditional result - the convergence depends on
-    a major unsolved conjecture in number theory. -/
-axiom tao_conditional_convergence :
-    HardyLittlewoodConjecture → AlternatingPrimeSeriesConverges
 
 /-
 ## Related Series (Erdős's Conjectures)
@@ -167,15 +151,7 @@ def ErdosGapConjecture2 : Prop :=
 
 /-- Zhang's Theorem (2014): There are infinitely many prime gaps ≤ 70,000,000.
 
-    This breakthrough proved bounded gaps exist, later improved to gaps ≤ 246. -/
-axiom zhang_bounded_gaps :
-    ∃ H : ℕ, Set.Infinite { n : ℕ | primeGap n ≤ H }
-
 /-- Consequence of Zhang: Erdős's second conjecture is true.
-
-    Proof idea: Bounded gaps mean infinitely many terms with |1/g_n| ≥ 1/H,
-    preventing convergence of the alternating series. -/
-axiom erdos_gap_conjecture2_true : ErdosGapConjecture2
 
 /-
 ## Why This Problem is Hard
@@ -195,15 +171,6 @@ The difficulty stems from the irregular distribution of primes.
 
 /-- The problem cannot be resolved by computing finitely many terms.
 
-    Even if we compute 10^100 terms, the tail could still diverge
-    or converge differently than the partial sums suggest. -/
-axiom not_finitely_resolvable :
-    ∀ N : ℕ, ∃ (f g : ℕ → ℝ),
-      (∀ n ≤ N, f n = alternatingPrimeTerm n) ∧
-      (∀ n ≤ N, g n = alternatingPrimeTerm n) ∧
-      (∃ L, Tendsto (fun M => ∑ n ∈ Finset.range M, f n) atTop (𝓝 L)) ∧
-      ¬(∃ L, Tendsto (fun M => ∑ n ∈ Finset.range M, g n) atTop (𝓝 L))
-
 /-
 ## Absolute Convergence
 
@@ -211,20 +178,6 @@ Note that the series does NOT converge absolutely.
 -/
 
 /-- The series Σ n/p_n diverges (no absolute convergence).
-
-    Proof: By PNT, n/p_n ~ 1/log n, and Σ 1/log n diverges
-    (since 1/log n > 1/n for large n and Σ 1/n diverges slower,
-    actually Σ 1/log n diverges even faster). -/
-axiom no_absolute_convergence :
-    ¬∃ L : ℝ, Tendsto
-      (fun N : ℕ => ∑ n ∈ Finset.Icc 1 N, (n : ℝ) / nthPrime n)
-      atTop (𝓝 L)
-
-/-- The harmonic-log series diverges. -/
-axiom harmonic_log_diverges :
-    ¬∃ L : ℝ, Tendsto
-      (fun N : ℕ => ∑ n ∈ Finset.Icc 2 N, 1 / Real.log n)
-      atTop (𝓝 L)
 
 /-
 ## Numerical Evidence
@@ -234,11 +187,6 @@ near -1, but this cannot prove convergence.
 -/
 
 /-- Empirical observation: partial sums appear to oscillate around ≈ -1.
-
-    This is just numerical evidence, not a proof of convergence. -/
-axiom empirical_limit_around_minus_one :
-    ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀,
-      |alternatingPrimePartialSum N - (-1)| < 1 + ε
 
 /-
 ## Summary

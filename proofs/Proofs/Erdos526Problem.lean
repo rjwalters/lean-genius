@@ -128,8 +128,6 @@ axiom superCriticalSeq (c : ℝ) (hc : c > 0) : ArcSequence
 **Kahane (1959) + Erdős:**
 a_n = (1+c)/n covers the circle with probability 1 for any c > 0.
 -/
-axiom kahane_erdos_supercritical (c : ℝ) (hc : c > 0) :
-    CoversWithProbOne (superCriticalSeq c hc)
 
 /--
 **Critical sequence:** a_n = 1/n.
@@ -146,10 +144,6 @@ Arc lengths decrease slightly slower than the critical rate.
 -/
 axiom subCriticalSeq (c : ℝ) (hc : c > 0) (hc1 : c < 1) : ArcSequence
 
-/-- Erdős: a_n = (1-c)/n does NOT cover with probability 1 -/
-axiom erdos_subcritical (c : ℝ) (hc : c > 0) (hc1 : c < 1) :
-    ¬CoversWithProbOne (subCriticalSeq c hc hc1)
-
 /-
 ## Part V: Verification of Shepp's Criterion for Special Cases
 -/
@@ -159,22 +153,17 @@ For a_n = (1+c)/n: S_n ≈ (1+c) log n, so exp(S_n)/n² ≈ n^{c-1}.
 When c > 0, the series Σ n^{c-1} diverges (by integral test).
 Hence Shepp's criterion holds.
 -/
-axiom shepp_check_supercritical (c : ℝ) (hc : c > 0) :
-    SheppCriterion (superCriticalSeq c hc).a
 
 /--
 For a_n = 1/n: S_n ≈ log n, so exp(S_n)/n² ≈ n/n² = 1/n.
 The harmonic series Σ 1/n diverges, so Shepp's criterion holds.
 This is the critical boundary case.
 -/
-axiom shepp_check_critical : SheppCriterion criticalSeq.a
 
 /--
 For a_n = (1-c)/n: S_n ≈ (1-c) log n, so exp(S_n)/n² ≈ n^{-1-c}.
 The series Σ n^{-1-c} converges for c > 0, so Shepp's criterion fails.
 -/
-axiom shepp_check_subcritical (c : ℝ) (hc : c > 0) (hc1 : c < 1) :
-    ¬SheppCriterion (subCriticalSeq c hc hc1).a
 
 /-
 ## Part VI: Dvoretzky's Observation
@@ -188,10 +177,6 @@ Under the basic conditions (a_n → 0, Σa_n = ∞), the Lebesgue measure
 of the uncovered portion of the circle tends to 0 with probability 1.
 That is, almost all the circle is covered, but there may be uncovered points.
 -/
-axiom dvoretzky_almost_all (seq : ArcSequence) :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ N : ℕ, ∀ n ≥ N, True
-    -- The measure of uncovered set after n arcs is < ε w.p. → 1
 
 /-
 ## Part VII: The Poisson Process Connection
@@ -204,8 +189,6 @@ on the circle × [0,∞). The uncovered set at "time" t relates to the
 gaps in a Poisson process, and the coverage criterion becomes a
 question about the convergence of a series involving gap probabilities.
 -/
-axiom shepp_poisson_technique (seq : ArcSequence) :
-    CoversWithProbOne seq ↔ SheppCriterion seq.a
 
 /--
 **Expected uncovered points:**
@@ -213,19 +196,10 @@ The expected number of uncovered points after n arcs is related to
 exp(-S_n), where S_n is the partial sum. The series Σ exp(S_n)/n²
 controls whether these expectations sum to a finite or infinite value.
 -/
-axiom expected_uncovered_relation (seq : ArcSequence) :
-    SheppCriterion seq.a →
-    CoversWithProbOne seq
 
 /-
 ## Part VIII: Computational Examples
 -/
-
-/-- Harmonic series diverges: Σ(1/n) = ∞ -/
-axiom harmonic_diverges : ¬Summable (fun n : ℕ => if n = 0 then (0:ℝ) else 1 / n)
-
-/-- Sum of 1/n² converges: Σ(1/n²) = π²/6 -/
-axiom basel_converges : Summable (fun n : ℕ => if n = 0 then (0:ℝ) else 1 / (n : ℝ)^2)
 
 /-- Numerical: 1/1 + 1/2 + ... + 1/5 > 2 -/
 example : (1 + 1/2 + 1/3 + 1/4 + 1/5 : ℚ) > 2 := by native_decide
@@ -241,12 +215,6 @@ Euler-Mascheroni constant. This is why 1/n is the critical threshold:
 exp(H_n) ≈ exp(log n) · exp(γ) = n · exp(γ), so
 exp(H_n)/n² ≈ exp(γ)/n, whose sum diverges.
 -/
-axiom harmonic_log_growth :
-    ∃ γ : ℝ, ∀ n : ℕ, n ≥ 1 →
-      |partialSum (fun k => if k = 0 then 0 else 1/k) n - Real.log n| ≤ γ + 1
-
-/-- Euler-Mascheroni constant γ ≈ 0.5772 -/
-axiom euler_mascheroni : ∃ γ : ℝ, 0.57 < γ ∧ γ < 0.58
 
 /-
 ## Part X: Summary

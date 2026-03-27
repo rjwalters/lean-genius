@@ -95,15 +95,11 @@ def strausSet (N : ℕ) : Finset ℕ :=
 **Straus's Lower Bound:**
 The construction shows liminf k(N)/√N ≥ 2.
 -/
-axiom straus_lower_bound :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (k N : ℝ) ≥ (2 - ε) * Real.sqrt N
 
 /--
 **Straus's Upper Bound:**
 limsup k(N)/√N ≤ 4/√3 ≈ 2.309.
 -/
-axiom straus_upper_bound :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (k N : ℝ) ≤ (4 / Real.sqrt 3 + ε) * Real.sqrt N
 
 /--
 **The constant 4/√3:**
@@ -111,9 +107,6 @@ axiom straus_upper_bound :
 noncomputable def strausConstant : ℝ := 4 / Real.sqrt 3
 
 theorem straus_constant_value : strausConstant = 4 / Real.sqrt 3 := rfl
-
-/-- 4/√3 ≈ 2.309 -/
-axiom straus_constant_approx : strausConstant > 2.309 ∧ strausConstant < 2.31
 
 /- ## Part IV: Erdős-Nicolas-Sárközy Improvement (1991) -/
 
@@ -127,18 +120,12 @@ noncomputable def ensConstant : ℝ := Real.sqrt (143 / 27)
 **ENS Upper Bound (1991):**
 limsup k(N)/√N ≤ √(143/27).
 -/
-axiom ens_upper_bound :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (k N : ℝ) ≤ (ensConstant + ε) * Real.sqrt N
-
-/-- √(143/27) ≈ 2.301 -/
-axiom ens_constant_approx : ensConstant > 2.301 ∧ ensConstant < 2.302
 
 /--
 **ENS improves Straus:**
 √(143/27) < 4/√3, so the ENS bound is strictly better.
 Axiomatized since this requires numerical computation beyond native_decide.
 -/
-axiom ens_improves_straus : ensConstant < strausConstant
 
 /- ## Part V: Deshouillers-Freiman Resolution (1999) -/
 
@@ -163,10 +150,6 @@ axiom k_limit_is_two :
 Deshouillers-Freiman showed that for some N, the optimal A has
 the form (N-k, N] ∩ ℕ.
 -/
-axiom optimal_often_interval :
-    ∃ᶠ N in Filter.atTop, ∃ A : Finset ℕ,
-      BoundedAdmissible A N ∧ A.card = k N ∧
-      ∃ m : ℕ, A = Finset.filter (fun x => x > N - m ∧ x ≤ N) (Finset.range (N + 1))
 
 /- ## Part VI: Examples -/
 
@@ -176,10 +159,6 @@ For N = 4, we can take A = {3, 4} with k = 2.
 S₁ = {3, 4}, S₂ = {7}.
 -/
 def example_N4 : Finset ℕ := {3, 4}
-
-/-- A = {3, 4} is admissible: S₁ = {3, 4} and S₂ = {7} are disjoint.
-    Axiomatized since the proof requires decidable equality on Set ℕ. -/
-axiom example_N4_admissible : Admissible example_N4
 
 /--
 **Example: N = 9**
@@ -195,8 +174,6 @@ def example_N9 : Finset ℕ := {4, 5, 6, 7, 8, 9}
 |S_r| is at most C(|A|, r), and equals C(|A|, r) when all sums are distinct.
 This follows since each r-element subset gives at most one sum.
 -/
-axiom sumSet_card_bound (A : Finset ℕ) (r : ℕ) (hr : r ≤ A.card) :
-    ∃ S : Finset ℕ, (↑S : Set ℕ) = sumSet A r ∧ S.card ≤ A.card.choose r
 
 /--
 **Total sum constraint:**
@@ -204,9 +181,6 @@ If A ⊆ {1,...,N} and sums are disjoint, the total number of distinct sums
 is bounded by the sum range. For r-element sums from A ⊆ {1,...,N},
 sums lie in [r, r·N], giving at most r·(N-1)+1 values per level.
 -/
-axiom total_sums_bounded (A : Finset ℕ) (N : ℕ) (hA : BoundedAdmissible A N) :
-    ∀ r : ℕ, r ≥ 1 → r ≤ A.card →
-      ∃ S : Finset ℕ, (↑S : Set ℕ) = sumSet A r ∧ S.card ≤ r * N
 
 /- ## Part VIII: Summary -/
 

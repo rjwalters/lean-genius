@@ -98,13 +98,6 @@ of cycle lengths is at least c log k for some absolute constant c > 0.
 
 This was proved in their 1984 paper.
 -/
-axiom gks_theorem :
-  ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-    let n := Fintype.card V
-    let e := edgeCount G
-    n > 0 → e ≥ n →
-      cycleLengthReciprocalSum G ≥ c * Real.log (e / n)
 
 /--
 **Question 2 (OPEN)**: Complete Bipartite Minimization
@@ -136,27 +129,11 @@ Complete bipartite graphs have well-understood cycle structure.
 We use Mathlib's definition: G.IsBipartite
 -/
 
-/-- Complete bipartite graphs only have even cycle lengths.
-    In K_{r,s}, the cycle lengths are exactly {4, 6, 8, ..., 2·min(r,s)}. -/
-axiom complete_bipartite_cycle_lengths (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-    -- If G is the complete bipartite graph K_{r,s}
-    (∃ (A B : Finset V), A.card = r ∧ B.card = s ∧ Disjoint A B ∧
-      ∀ u v, G.Adj u v ↔ (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)) →
-    -- Then its cycle lengths are exactly the even numbers from 4 to 2·min(r,s)
-    ∀ k, ContainsCycleLength G k ↔ (Even k ∧ 4 ≤ k ∧ k ≤ 2 * min r s)
-
 /-- The reciprocal sum for K_{r,s} can be computed explicitly. -/
 noncomputable def bipartiteCycleSum (r s : ℕ) : ℝ :=
   ∑ i ∈ Finset.Icc 2 (min r s), (1 : ℝ) / (2 * i)
 
 /-- The bipartite cycle sum is 1/2 times a partial harmonic sum.
-
-    Proof sketch: 1/(2i) = (1/i) * (1/2), so the sum factors.
-    Σ 1/(2i) = Σ (1/i · 1/2) = (Σ 1/i) · 1/2 = (1/2) · Σ 1/i -/
-axiom bipartiteCycleSum_eq (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
-    bipartiteCycleSum r s = (1/2 : ℝ) * ∑ i ∈ Finset.Icc 2 (min r s), (1 : ℝ) / i
 
 /-
 ## Lower Bounds on Cycle Variety
@@ -164,20 +141,6 @@ axiom bipartiteCycleSum_eq (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
 Any dense graph must have many cycle lengths, not just because of GKS,
 but also due to other structural results.
 -/
-
-/-- A graph with minimum degree d has a cycle of length at most 2d.
-    (This is a standard result: take a longest path and use pigeonhole.) -/
-axiom min_degree_implies_short_cycle (G : SimpleGraph V) [DecidableRel G.Adj]
-    [Nonempty V] (d : ℕ) (hd : d ≥ 2) :
-    (∀ v : V, d ≤ (G.neighborFinset v).card) →
-    ∃ k, k ≤ 2 * d ∧ k ≥ 3 ∧ ContainsCycleLength G k
-
-/-- A graph with high average degree contains a subgraph with high minimum degree. -/
-axiom high_avg_to_min_degree (G : SimpleGraph V) [DecidableRel G.Adj]
-    (d : ℕ) :
-    2 * edgeCount G ≥ d * Fintype.card V →
-    ∃ (S : Finset V), S.Nonempty ∧
-      ∀ v ∈ S, d / 2 ≤ ((G.neighborFinset v).filter (· ∈ S)).card
 
 /-
 ## The Zarankiewicz Connection
@@ -188,18 +151,6 @@ which bounds the maximum edges in a K_{r,s}-free graph.
 The GKS result uses similar extremal graph theory techniques.
 -/
 
-/-- Kővári-Sós-Turán: A K_{r,s}-free graph on n vertices has at most
-    (s-1)^{1/r} · n^{2-1/r} / 2 + (r-1)n/2 edges. -/
-axiom kovari_sos_turan (r s n : ℕ) (hr : r ≥ 2) (hs : s ≥ r) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-    Fintype.card V = n →
-    -- G is K_{r,s}-free
-    (¬∃ (A B : Finset V), A.card ≥ r ∧ B.card ≥ s ∧ Disjoint A B ∧
-      ∀ a ∈ A, ∀ b ∈ B, G.Adj a b) →
-    -- Edge bound
-    (edgeCount G : ℝ) ≤ (1/2) * (s - 1)^((1:ℝ)/r) * n^(2 - (1:ℝ)/r) + ((r-1:ℝ)/2) * n
-
 /-
 ## Special Cases
 -/
@@ -208,22 +159,6 @@ axiom kovari_sos_turan (r s n : ℕ) (hr : r ≥ 2) (hs : s ≥ r) :
 
     Proof: A forest (acyclic graph) on n vertices has at most n-1 edges.
     With n edges, the graph cannot be acyclic, so it contains a cycle.
-
-    More precisely: each connected component with v vertices has v-1 edges (tree)
-    or v+ edges (contains cycle). Total edges ≤ n - (# components) for a forest.
-    With n edges, some component must have a cycle. -/
-axiom density_one_has_cycle (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hn : Fintype.card V > 0) (he : edgeCount G = Fintype.card V) :
-    ∃ k, k ≥ 3 ∧ ContainsCycleLength G k
-
-/-- Triangle-free graphs have larger cycle reciprocal sums.
-    If G is triangle-free, the minimum cycle length is 4, which helps. -/
-axiom triangle_free_larger_sum (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hG : ¬ContainsCycleLength G 3) :
-    ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
-      edgeCount H = edgeCount G →
-      ContainsCycleLength H 3 →
-      cycleLengthReciprocalSum G ≤ cycleLengthReciprocalSum H + 1/3
 
 /-
 ## Remarks on the Open Question
@@ -245,11 +180,6 @@ the structure of ALL graphs with given edge count, not just bipartite ones.
     Walking around a cycle of length k, colors alternate, so after k steps
     we return to the starting color iff k is even. Since we return to the
     starting vertex (which has the starting color), k must be even.
-
-    This is a classical result - we state it as an axiom with the proof sketch above.
-    The full formalization requires careful handling of Fin arithmetic and color parity. -/
-axiom bipartite_only_even_cycles (G : SimpleGraph V) (hG : G.IsBipartite) :
-    ∀ k, ContainsCycleLength G k → Even k
 
 /-- Odd cycle contribution: if G has an odd cycle of length k, it contributes 1/k > 0.
     The oddness hypothesis is semantically relevant (odd cycles are the non-bipartite ones)

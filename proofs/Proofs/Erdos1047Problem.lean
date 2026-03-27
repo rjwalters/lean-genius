@@ -79,28 +79,11 @@ theorem lemniscate_isClosed (f : ℂ[X]) (c : ℝ) : IsClosed (lemniscate f c) :
   apply isClosed_le _ continuous_const
   fun_prop
 
-/-- For positive degree polynomials, lemniscates are bounded (hence compact) -/
-axiom lemniscate_isBounded (f : ℂ[X]) (hf : f.natDegree > 0) (c : ℝ) (hc : c > 0) :
-    Bornology.IsBounded (lemniscate f c)
-
-/-- Lemniscates of non-constant polynomials are compact -/
-axiom lemniscate_isCompact (f : ℂ[X]) (hf : f.natDegree > 0) (c : ℝ) (hc : c > 0) :
-    IsCompact (lemniscate f c)
-
 /-
 ## Part III: Connected Components
 
 For small c, the lemniscate splits into separate components around each root.
 -/
-
-/-- For small c, lemniscate has exactly m components where m = number of distinct roots -/
-axiom lemniscate_components_count (f : ℂ[X]) (hf : f.Monic) (hd : f.natDegree > 0)
-    (m : ℕ) (hm : m = f.roots.toFinset.card) :
-    ∃ c₀ > 0, ∀ c, 0 < c → c < c₀ →
-      ∃ components : Finset (Set ℂ),
-        components.card = m ∧
-        (⋃₀ ↑components) = lemniscate f c ∧
-        ∀ S ∈ components, IsConnected S
 
 /-- A connected component of a set containing a given point -/
 def componentContaining (S : Set ℂ) (z₀ : ℂ) : Set ℂ :=
@@ -164,19 +147,6 @@ theorem pommerenkePolynomial_degree (k : ℕ) (a : ℂ) (ha : a ≠ 0) :
       Polynomial.natDegree_pow, Polynomial.natDegree_X, Polynomial.natDegree_X_sub_C,
       mul_one]
 
-/-- For large k and specific a, Pommerenke's polynomial gives a non-convex component.
-    This is the first counterexample to Grunsky's conjecture. -/
-axiom pommerenke_counterexample :
-    ∃ k : ℕ, ∃ a : ℂ, ∃ c > 0,
-      let f := pommerenkePolynomial k a
-      ∃ z₀ ∈ lemniscate f c,
-        ¬IsConvexComplex (componentContaining (lemniscate f c) z₀)
-
-/-- Pommerenke's specific parameter: a ≈ (1 + 1/k) · k^(1/(k+1)) works for k ≥ 10 -/
-axiom pommerenke_parameter (k : ℕ) (hk : k ≥ 10) :
-    ∃ a : ℂ, ∃ z₀ ∈ lemniscate (pommerenkePolynomial k a) 1,
-      ¬IsConvexComplex (componentContaining (lemniscate (pommerenkePolynomial k a) 1) z₀)
-
 /-
 ## Part VII: Goodman's Counterexample (1966)
 
@@ -203,13 +173,6 @@ axiom goodman_counterexample :
       ¬IsConvexComplex (componentContaining
         (lemniscate goodmanPolynomial goodmanCriticalValue) z₀)
 
-/-- Goodman also constructed an example with only simple roots (degree 4) -/
-axiom goodman_simple_roots_example :
-    ∃ f : ℂ[X], f.natDegree = 4 ∧
-      (∀ z : ℂ, f.eval z = 0 → f.derivative.eval z ≠ 0) ∧
-      ∃ c > 0, ∃ z₀ ∈ lemniscate f c,
-        ¬IsConvexComplex (componentContaining (lemniscate f c) z₀)
-
 /-
 ## Part VIII: Referee's Example
 
@@ -229,22 +192,11 @@ theorem refereePolynomial_monic : refereePolynomial.Monic := by
 noncomputable def refereeCriticalValue : ℝ :=
   (5.6 : ℝ) ^ (-(6/5 : ℝ))
 
-/-- The referee's example also has a non-convex component -/
-axiom referee_counterexample :
-    ∃ z₀ ∈ lemniscate refereePolynomial refereeCriticalValue,
-      ¬IsConvexComplex (componentContaining
-        (lemniscate refereePolynomial refereeCriticalValue) z₀)
-
 /-
 ## Part IX: Positive Results
 
 There are cases where lemniscate components ARE convex.
 -/
-
-/-- For a polynomial with a single root, the lemniscate is a disk (hence convex) -/
-axiom single_root_convex (a : ℂ) (k : ℕ) (hk : k ≥ 1) (c : ℝ) (hc : c > 0) :
-    let f := (X - C a) ^ k
-    IsConvexComplex (lemniscate f c)
 
 /-
 ## Part X: Goodman's Open Question

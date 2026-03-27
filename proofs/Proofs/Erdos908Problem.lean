@@ -79,31 +79,8 @@ theorem additive_neg (h : ℝ → ℝ) (hAdd : IsAdditive h) (x : ℝ) : h (-x) 
   have h0 := additive_zero h hAdd
   linarith
 
-/-- Additive functions on ℝ are linear over ℚ -/
-axiom additive_linear_over_rationals :
-  ∀ (h : ℝ → ℝ), IsAdditive h → ∀ (q : ℚ) (x : ℝ), h (q * x) = q * h x
-
-/-- Not all additive functions are continuous (using Axiom of Choice).
-    Hamel bases allow construction of discontinuous additive functions. -/
-axiom discontinuous_additive_exists :
-  ∃ (h : ℝ → ℝ), IsAdditive h ∧ ¬Continuous h
-
-/-- Continuous additive functions on ℝ are of the form x ↦ cx -/
-axiom continuous_additive_characterization :
-  ∀ (h : ℝ → ℝ), IsAdditive h → Continuous h → ∃ c : ℝ, ∀ x, h x = c * x
-
 /- ## Part III: Properties of Rigid Functions
 -/
-
-/-- If r is rigid and continuous, then r is constant -/
-axiom rigid_continuous_is_constant :
-  ∀ (r : ℝ → ℝ), IsRigid r → Continuous r → ∃ c : ℝ, ∀ x, r x = c
-
-/-- Rigid functions have measurable differences (they're 0 a.e. for each h).
-    The difference r(x+h) - r(x) = 0 for a.e. x, so it's a.e. equal to the
-    constant 0 function, which is measurable. -/
-axiom rigid_has_measurable_differences (r : ℝ → ℝ) (hRigid : IsRigid r) :
-    HasMeasurableDifferences r
 
 /- ## Part IV: The Decomposition Theorem
 -/
@@ -122,41 +99,8 @@ axiom laczkovich_decomposition :
       (IsRigid r) ∧
       (∀ x, f x = g x + h x + r x)
 
-/-- The decomposition is essentially unique:
-    - g is unique
-    - h is unique up to a linear function (which can be absorbed into g)
-    - r is unique up to a.e. equivalence -/
-axiom decomposition_uniqueness :
-  ∀ (f : ℝ → ℝ) (g₁ h₁ r₁ g₂ h₂ r₂ : ℝ → ℝ),
-    HasMeasurableDifferences f →
-    (Continuous g₁) → (IsAdditive h₁) → (IsRigid r₁) →
-    (∀ x, f x = g₁ x + h₁ x + r₁ x) →
-    (Continuous g₂) → (IsAdditive h₂) → (IsRigid r₂) →
-    (∀ x, f x = g₂ x + h₂ x + r₂ x) →
-    -- Then g₁ - g₂ is linear and r₁ = r₂ a.e.
-    (∃ c : ℝ, ∀ x, g₁ x - g₂ x = c * x) ∧
-    (∀ᵐ x ∂volume, r₁ x = r₂ x)
-
 /- ## Part V: Special Cases
 -/
-
-/-- If f itself is measurable, then h can be taken to be 0 -/
-axiom measurable_decomposition :
-  ∀ (f : ℝ → ℝ), Measurable f →
-    ∃ (g r : ℝ → ℝ),
-      (Continuous g) ∧
-      (IsRigid r) ∧
-      (∀ x, f x = g x + r x)
-
-/-- If f is Baire measurable, then the decomposition simplifies -/
-axiom baire_measurable_decomposition :
-  ∀ (f : ℝ → ℝ), HasMeasurableDifferences f →
-    -- If f is also Baire measurable (measurable w.r.t. σ-algebra of Borel sets)
-    Measurable f →
-    ∃ (g r : ℝ → ℝ),
-      (Continuous g) ∧
-      (IsRigid r) ∧
-      (∀ x, f x = g x + r x)
 
 /-- Continuous functions trivially have measurable differences -/
 theorem continuous_has_measurable_differences (f : ℝ → ℝ) (hCont : Continuous f) :
@@ -186,9 +130,6 @@ def erdos_907_related : Prop :=
     (∃ (a b : ℝ) (M : ℝ), a < b ∧ ∀ x ∈ Set.Ioo a b, |h x| ≤ M) →
     Continuous h
 
-/-- The connection: Problem 908 uses additive functions as building blocks -/
-axiom erdos_907_connection : erdos_907_related
-
 /- ## Part VII: The de Bruijn Perspective
 -/
 
@@ -201,10 +142,6 @@ def DifferenceClosed (C : Set (ℝ → ℝ)) : Prop :=
   ∀ f : ℝ → ℝ, (∀ h : ℝ, h > 0 → (fun x => f (x + h) - f x) ∈ C) →
     ∃ (g h r : ℝ → ℝ), g ∈ C ∧ IsAdditive h ∧ IsRigid r ∧
       ∀ x, f x = g x + h x + r x
-
-/-- The class of measurable functions is difference closed -/
-axiom measurable_difference_closed :
-  DifferenceClosed {f : ℝ → ℝ | Measurable f}
 
 /- ## Part VIII: Summary
 -/

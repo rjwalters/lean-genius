@@ -66,22 +66,6 @@ noncomputable def extremalFunction (n _k : ℕ) : ℕ := n.choose 2
 ## Basic Properties
 -/
 
-/-- A 0-regular graph has no edges. -/
-axiom zero_regular_edgeless (G : SimpleGraph V) (h : IsRegular G 0) :
-    ∀ v w : V, ¬G.Adj v w
-
-/-- A k-regular graph on n vertices has exactly kn/2 edges. -/
-axiom regular_edge_count (G : SimpleGraph V) (k : ℕ) [DecidableRel G.Adj] (h : IsRegular G k) :
-    2 * G.edgeFinset.card = k * Fintype.card V
-
-/-- For k-regular graphs to exist on n vertices, we need kn even. -/
-axiom regular_parity (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :
-    Even (k * Fintype.card V)
-
-/-- Complete graph K_n is (n-1)-regular. -/
-axiom complete_is_regular (n : ℕ) (hn : 1 ≤ n) :
-    IsRegular (⊤ : SimpleGraph (Fin n)) (n - 1)
-
 /-
 ## Janzer-Sudakov Theorem (2023)
 
@@ -93,20 +77,6 @@ such that any graph on n vertices with at least C·n·log(log n) edges contains
 a k-regular subgraph.
 
 This resolves Erdős Problem #182 in the affirmative. -/
-axiom janzer_sudakov_theorem (k : ℕ) (hk : 3 ≤ k) :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      let n := Fintype.card V
-      (G.edgeFinset.card : ℝ) ≥ C * n * Real.log (Real.log n) →
-      HasKRegularSubgraph G k
-
-/-- Corollary: The extremal function f(n,k) = O(n log log n). -/
-axiom extremal_upper_bound (k : ℕ) (hk : 3 ≤ k) :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, 10 ≤ n →
-      ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-        ¬HasKRegularSubgraph G k →
-        (G.edgeFinset.card : ℝ) < C * n * Real.log (Real.log n)
 
 /-
 ## Pyber-Rödl-Szemerédi Lower Bound (1995)
@@ -118,19 +88,6 @@ The construction showing the Janzer-Sudakov bound is tight.
 Ω(n log log n) edges that contain no 3-regular subgraph.
 
 This shows Janzer-Sudakov is tight (up to constant factors). -/
-axiom pyber_rodl_szemeredi_lower_bound :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, 10 ≤ n →
-      ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
-        (G.edgeFinset.card : ℝ) ≥ c * n * Real.log (Real.log n) ∧
-        ¬HasKRegularSubgraph G 3
-
-/-- The extremal function is Θ(n log log n). -/
-axiom extremal_theta (k : ℕ) (hk : 3 ≤ k) :
-    ∃ c C : ℝ, 0 < c ∧ c < C ∧
-    ∀ n : ℕ, 10 ≤ n →
-      c * n * Real.log (Real.log n) ≤ extremalFunction n k ∧
-      extremalFunction n k ≤ C * n * Real.log (Real.log n)
 
 /-
 ## Special Cases and Variants
@@ -138,12 +95,6 @@ axiom extremal_theta (k : ℕ) (hk : 3 ≤ k) :
 
 /-- For k = 2, the situation is different: avoiding cycles.
 A graph with no 2-regular subgraph is a forest. -/
-axiom k_equals_2_is_forest (G : SimpleGraph V) :
-    ¬HasKRegularSubgraph G 2 ↔ G.IsAcyclic
-
-/-- Forests have at most n-1 edges. -/
-axiom forest_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] (h : G.IsAcyclic) :
-    G.edgeFinset.card ≤ Fintype.card V - 1
 
 /- For k = 1, a 1-regular graph is a perfect matching.
 Every graph with ≥ n/2 edges in each component contains a perfect matching. -/
@@ -165,31 +116,13 @@ def HasConnectedKRegularSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
 subgraphs is O(n^{5/3}).
 
 This is a weaker bound than the general case. -/
-axiom connected_3_regular_bound :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      let n := Fintype.card V
-      (G.edgeFinset.card : ℝ) ≥ C * (n : ℝ)^(5/3 : ℝ) →
-      HasConnectedKRegularSubgraph G 3
 
 /-
 ## Density and Probabilistic Aspects
 -/
 
-/-- Dense graphs almost surely contain regular subgraphs. -/
-axiom dense_has_regular (k : ℕ) (hk : 3 ≤ k) (ε : ℝ) (hε : 0 < ε) :
-    ∃ N : ℕ, ∀ n ≥ N,
-    ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      (G.edgeFinset.card : ℝ) ≥ ε * n^2 →
-      HasKRegularSubgraph G k
-
 /-- The "typical" graph on n vertices with m edges has a k-regular subgraph
 when m ≥ C·n·log(log n). -/
-axiom typical_threshold (k : ℕ) (hk : 3 ≤ k) :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, 10 ≤ n →
-      -- For random G(n,m) with m ≥ C·n·log(log n), w.h.p. G has k-regular subgraph
-      True  -- Placeholder for probabilistic statement
 
 /-
 ## Historical Context
@@ -211,14 +144,5 @@ The iteration depth is O(log log n), giving the final bound.
 
 This is the main summary theorem combining Janzer-Sudakov (upper bound)
 and Pyber-Rödl-Szemerédi (lower bound). -/
-axiom erdos_182_resolved (k : ℕ) (hk : 3 ≤ k) :
-    ∃ c C : ℝ, 0 < c ∧ c ≤ C ∧
-    ∀ n : ℕ, 10 ≤ n →
-      (∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-        ¬HasKRegularSubgraph G k →
-        (G.edgeFinset.card : ℝ) ≤ C * n * Real.log (Real.log n)) ∧
-      (∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
-        ¬HasKRegularSubgraph G k ∧
-        (G.edgeFinset.card : ℝ) ≥ c * n * Real.log (Real.log n))
 
 end Erdos182

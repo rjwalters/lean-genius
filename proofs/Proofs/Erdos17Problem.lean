@@ -85,12 +85,6 @@ theorem three_is_cluster : IsClusterPrime 3 := by
   · intro n _ h2 h3
     omega
 
-/-- 5 is a cluster prime: only need 2 = 5 - 3. -/
-axiom five_is_cluster : IsClusterPrime 5
-
-/-- 7 is a cluster prime: need 2 = 5 - 3 and 4 = 7 - 3. -/
-axiom seven_is_cluster : IsClusterPrime 7
-
 /-
 ## The First Non-Cluster Prime: 97
 
@@ -143,37 +137,13 @@ noncomputable def clusterPrimeCount (x : ℕ) : ℕ :=
 /-- Blecksmith-Erdős-Selfridge (1999): For any A > 0, the count of
     cluster primes up to x is O(x / (log x)^A).
 
-    This is a very strong bound - faster than any polynomial in log x. -/
-axiom blecksmith_erdos_selfridge :
-    ∀ A : ℝ, A > 0 →
-      ∃ C : ℝ, C > 0 ∧ ∀ x : ℕ, x ≥ 2 →
-        (clusterPrimeCount x : ℝ) ≤ C * x / (Real.log x) ^ A
-
 /-- Elsholtz (2003): Improved bound with double-logarithmic decay.
-
-    Count ≪ x · exp(-c(log log x)²) for c < 1/8. -/
-axiom elsholtz_bound :
-    ∀ c : ℝ, 0 < c → c < 1/8 →
-      ∃ C : ℝ, C > 0 ∧ ∀ x : ℕ, x ≥ 3 →
-        (clusterPrimeCount x : ℝ) ≤ C * x * Real.exp (-c * (Real.log (Real.log x))^2)
 
 /-
 ## Consequences of the Bounds
 
 These bounds show cluster primes are very rare, but don't prove finiteness.
 -/
-
-/-- The density of cluster primes among all primes is 0. -/
-axiom cluster_prime_density_zero :
-    Filter.Tendsto
-      (fun x : ℕ => (clusterPrimeCount x : ℝ) / (primesUpTo x).card)
-      Filter.atTop (nhds 0)
-
-/-- Cluster primes are rarer than primes in any arithmetic progression. -/
-axiom cluster_rarer_than_AP :
-    ∀ a d : ℕ, d > 0 → Nat.Coprime a d →
-      ∃ C : ℝ, ∀ x : ℕ, x ≥ 2 →
-        (clusterPrimeCount x : ℝ) ≤ C * ((primesUpTo x).filter (fun p => p % d = a)).card
 
 /-
 ## Connection to Prime Gaps
@@ -185,11 +155,6 @@ If gaps are too irregular, it becomes hard to represent all even differences.
 /-- Prime gap: g_n = p_{n+1} - p_n. -/
 noncomputable def primeGap (n : ℕ) : ℕ :=
   Nat.nth Nat.Prime (n + 1) - Nat.nth Nat.Prime n
-
-/-- If all gaps up to some point are small, then p is more likely cluster. -/
-axiom small_gaps_help_cluster (p : ℕ) (hp : Nat.Prime p) :
-    (∀ q : ℕ, Nat.Prime q → q < p → primeGap q ≤ Real.log p) →
-    IsClusterPrime p
 
 /-
 ## The OEIS Sequence A038133
@@ -204,10 +169,6 @@ All primes up to 89 are cluster primes. 97 is the first exception.
 def knownClusterPrimes : List ℕ :=
   [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89]
 
-/-- All primes in knownClusterPrimes are indeed cluster primes. -/
-axiom known_cluster_primes_correct :
-    ∀ p ∈ knownClusterPrimes, IsClusterPrime p
-
 /-
 ## Why This Problem is Hard
 
@@ -217,23 +178,12 @@ axiom known_cluster_primes_correct :
 4. Related to deep questions about prime distribution
 -/
 
-/-- Terence Tao's assessment: this problem is "difficult".
-    The difficulty stems from needing to control all prime differences simultaneously. -/
-axiom tao_difficult_lower_bound :
-  ∀ A : ℝ, A > 0 → ∃ p : ℕ, IsClusterPrime p ∧ (p : ℝ) > A
-
 /-
 ## Heuristic Arguments
 
 Probabilistic heuristics suggest infinitely many cluster primes,
 but these are not proofs.
 -/
-
-/-- Heuristic: If primes were random with density 1/log n,
-    the expected number of cluster primes up to x would be ~ log x. -/
-axiom heuristic_infinite :
-    ∃ f : ℕ → ℝ, (∀ x, f x > 0) ∧
-      Filter.Tendsto (fun x => f x / Real.log x) Filter.atTop (nhds 1)
 
 /-
 ## Summary

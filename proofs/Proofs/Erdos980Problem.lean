@@ -81,26 +81,16 @@ noncomputable def leastPowerNonresidue (k p : ℕ) : ℕ :=
 /--
 For prime p > 2, the least quadratic nonresidue exists.
 -/
-axiom quadratic_nonresidue_exists (p : ℕ) (hp : p.Prime) (hodd : p > 2) :
-    ∃ a : ℕ, 1 ≤ a ∧ a < p ∧ IsPowerNonresidue 2 p a
 
 /--
 **Vinogradov's Bound:**
 For the least quadratic nonresidue n(p), we have n(p) = O(p^{1/(4√e) + ε}).
 -/
-axiom vinogradov_bound (ε : ℝ) (hε : ε > 0) :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ p : ℕ, p.Prime → p > 2 →
-    (leastPowerNonresidue 2 p : ℝ) ≤ C * (p : ℝ) ^ (1 / (4 * Real.exp 1).sqrt + ε)
 
 /--
 **GRH Bound:**
 Assuming GRH, the least quadratic nonresidue n(p) = O((log p)²).
 -/
-axiom grh_bound :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ p : ℕ, p.Prime → p > 2 →
-    (leastPowerNonresidue 2 p : ℝ) ≤ C * (log p) ^ 2
 
 /-
 ## Part III: The Sum Function
@@ -116,8 +106,6 @@ noncomputable def sumLeastNonresidues (k : ℕ) (x : ℝ) : ℝ :=
 /--
 The sum is always nonnegative since each n_k(p) ≥ 0.
 -/
-axiom sumLeastNonresidues_nonneg (k : ℕ) (x : ℝ) :
-    sumLeastNonresidues k x ≥ 0
 
 /-
 ## Part IV: The Constants c_k
@@ -140,7 +128,6 @@ axiom c_2_positive : c_2 > 0
 /--
 Approximate value: c₂ ≈ 3.67
 -/
-axiom c_2_approx : 3.5 < c_2 ∧ c_2 < 4
 
 /--
 **The General Constants c_k:**
@@ -176,10 +163,6 @@ axiom erdos_1961_quadratic :
 Asymptotic form: S_2(x) / (x / log x) → c₂ as x → ∞.
 Follows from erdos_1961_quadratic.
 -/
-axiom erdos_quadratic_asymptotic :
-    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,
-    sumLeastNonresidues 2 x / (x / log x) > c_2 - ε ∧
-    sumLeastNonresidues 2 x / (x / log x) < c_2 + ε
 
 /-
 ## Part VI: Elliott's General Result (1967)
@@ -224,10 +207,6 @@ The average value of n_k(p) over primes p < x is roughly:
 
 since π(x) ~ x / log x.
 -/
-axiom average_interpretation (k : ℕ) (hk : k ≥ 2) :
-    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,
-    let avg := sumLeastNonresidues k x / (x / log x) / log x
-    |avg - c_k k| < ε
 
 /--
 **Typical Size:**
@@ -235,9 +214,6 @@ The asymptotic Σ n_k(p) ~ c_k · x/log x combined with π(x) ~ x/log x
 implies the average value of n_k(p) over primes p < x is c_k · log x.
 Individual values n_k(p) are typically O(log p) with rare exceptions.
 -/
-axiom typical_size_bound (k : ℕ) (hk : k ≥ 2) :
-    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,
-    sumLeastNonresidues k x ≤ (c_k k + ε) * x / log x
 
 /-
 ## Part VIII: Special Cases and Examples
@@ -248,18 +224,12 @@ axiom typical_size_bound (k : ℕ) (hk : k ≥ 2) :
 The least quadratic nonresidue is 2 whenever 2 is a QNR mod p,
 which happens for p ≡ 3, 5 (mod 8).
 -/
-axiom n_2_equals_2_often :
-    ∃ S : Set ℕ, S.Infinite ∧
-    ∀ p ∈ S, p.Prime ∧ leastPowerNonresidue 2 p = 2
 
 /--
 **n_2(p) = 3 sometimes:**
 The least QNR is 3 when 2 is a QR but 3 is a QNR.
 This happens for p ≡ 1, 7 (mod 24).
 -/
-axiom n_2_equals_3_sometimes :
-    ∃ S : Set ℕ, S.Infinite ∧
-    ∀ p ∈ S, p.Prime ∧ leastPowerNonresidue 2 p = 3
 
 /-
 ## Part IX: Connection to Character Sums
@@ -272,9 +242,6 @@ for character sums: |Σ_{n ≤ N} χ(n)| ≤ C√p log p, where χ is a
 nontrivial Dirichlet character mod p. This bounds the partial sums
 of k-th power residue symbols, enabling estimation of n_k(p).
 -/
-axiom polya_vinogradov_applicable :
-    ∀ p : ℕ, p.Prime → p > 2 →
-    ∃ C : ℝ, C > 0 ∧ C ≤ (p : ℝ).sqrt * log (p : ℝ)
 
 /-
 ## Part X: Summary

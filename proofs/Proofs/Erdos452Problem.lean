@@ -61,11 +61,6 @@ def intervalLength (a b : ℕ) : ℕ := b - a + 1
 The normal order of ω(n) is log log n.
 -/
 
-/-- Hardy-Ramanujan: ω(n) is normally log log n -/
-axiom hardy_ramanujan (ε : ℝ) (hε : ε > 0) :
-    ∀ᶠ n in Filter.atTop,
-      |omega n - Real.log (Real.log n)| < ε * Real.log (Real.log n)
-
 /-- Erdős (1937): The density of n with ω(n) > log log n is exactly 1/2 -/
 axiom erdos_1937_density :
     ∀ ε > 0, ∃ N : ℕ, ∀ x ≥ N,
@@ -77,16 +72,6 @@ axiom erdos_1937_density :
 The CRT gives a construction of valid intervals.
 -/
 
-/-- Lower bound: There exists an interval of length ≥ log x / (log log x)² -/
-axiom crt_lower_bound (x : ℕ) (hx : x ≥ 3) :
-    ∃ a b : ℕ, validInterval x a b ∧
-      (intervalLength a b : ℝ) ≥ (1 - 1 / Real.log (Real.log x)) *
-        Real.log x / (Real.log (Real.log x))^2
-
-/-- The CRT construction: choose n ≡ 0 (mod many small primes) -/
-axiom crt_construction_idea :
-    ∀ k : ℕ, ∃ P : ℕ, ∀ n, P ∣ n → omega n ≥ k
-
 /-
 ## Part 4: The Main Question
 
@@ -95,15 +80,6 @@ What is the maximum length of such an interval?
 
 /-- The maximum length of a valid interval in [x, 2x] -/
 axiom maxValidIntervalLength (x : ℕ) : ℕ
-
-/-- The key question: how does maxValidIntervalLength grow with x? -/
-axiom main_question_lower :
-    ∀ k : ℕ, ∃ x₀ : ℕ, ∀ x ≥ x₀, (maxValidIntervalLength x : ℝ) ≥ Real.log x / (Real.log (Real.log x))^2
-
-/-- Conjecture: Intervals of length (log x)^k exist for any k -/
-axiom conjecture_polynomial_length (k : ℕ) :
-    ∃ x₀ : ℕ, ∀ x ≥ x₀, ∃ a b : ℕ,
-      validInterval x a b ∧ (intervalLength a b : ℝ) ≥ (Real.log x)^k
 
 /-
 ## Part 5: Upper Bounds
@@ -115,15 +91,6 @@ What limits the length of valid intervals?
 axiom prime_gap_constraint :
     ∀ x : ℕ, x ≥ 16 → ∃ p : ℕ, p.Prime ∧ x ≤ p ∧ p ≤ 2*x ∧ ¬satisfiesCondition p
 
-/-- Primes fail the condition: ω(p) = 1 but log log p > 1 for p > e^e ≈ 15 -/
-axiom primes_fail_condition (p : ℕ) (hp : p.Prime) (hlarge : p > 16) :
-    ¬satisfiesCondition p
-
-/-- Consequence: valid intervals cannot contain primes > 16 -/
-axiom no_large_primes_in_valid (x : ℕ) (hx : x ≥ 16) (a b : ℕ)
-    (hvalid : validInterval x a b) :
-    ∀ p, p.Prime → a ≤ p → p ≤ b → False
-
 /-
 ## Part 6: Primorial Connection
 
@@ -133,14 +100,6 @@ The primorial n# has many prime factors.
 /-- The primorial: product of all primes ≤ n -/
 noncomputable def primorial (n : ℕ) : ℕ :=
   (Finset.filter Nat.Prime (Finset.range (n + 1))).prod id
-
-/-- ω(n#) = π(n), the number of primes up to n -/
-axiom omega_primorial (n : ℕ) :
-    omega (primorial n) = (Finset.filter Nat.Prime (Finset.range (n + 1))).card
-
-/-- Numbers divisible by n# have many prime factors -/
-axiom omega_primorial_divisible (n k : ℕ) (h : primorial n ∣ k) :
-    omega (primorial n) ≤ omega k
 
 /-
 ## Part 7: Small Examples
@@ -166,10 +125,6 @@ example : omega 210 = 4 := by native_decide
 ## Part 8: Consecutive Integers with Many Prime Factors
 -/
 
-/-- Consecutive integers can all have many prime factors -/
-axiom consecutive_many_factors (k L : ℕ) :
-    ∃ a : ℕ, ∀ i < L, omega (a + i) ≥ k
-
 /-
 ## Part 9: Related Problems
 -/
@@ -181,15 +136,8 @@ def bigOmega (n : ℕ) : ℕ := n.primeFactorsList.length
 def bigOmegaCondition (n : ℕ) : Prop :=
   (bigOmega n : ℝ) > Real.log (Real.log n)
 
-/-- ω(n) ≤ Ω(n) always -/
-axiom omega_le_bigOmega (n : ℕ) : omega n ≤ bigOmega n
-
 /-- The radical rad(n) = product of distinct prime factors -/
 noncomputable def radical (n : ℕ) : ℕ := n.primeFactors.prod id
-
-/-- ω(n) = ω(rad(n)) -/
-axiom omega_eq_omega_radical (n : ℕ) (hn : n ≠ 0) :
-    omega n = omega (radical n)
 
 /-
 ## Part 10: Current State of Knowledge

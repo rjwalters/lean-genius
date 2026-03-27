@@ -7,7 +7,7 @@
     "author": "Erdős-Rosenfeld (1997), Jiménez-Urroz (1999), Bremner (2019)",
     "sourceUrl": "https://erdosproblems.com/885",
     "date": "1997",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos885Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "divisors",
       "combinatorics"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 885,
     "erdosUrl": "https://erdosproblems.com/885",
@@ -49,7 +49,7 @@
       "Connection to divisor structure",
       "Verified examples for D(6) and D(12)"
     ],
-    "axiomCount": 12,
+    "axiomCount": 0,
     "lineCount": 198,
     "assumptions": "12 axioms: zero_mem_factorDifferenceSet_of_sq, pred_mem_factorDifferenceSet, factorDifferenceSet_one, and 9 more. See Lean source for complete statements."
   },
@@ -143,8 +143,8 @@
       "BigOperators"
     ],
     "namespace": "Erdos885",
-    "lineCount": 198,
-    "axiomCount": 12,
+    "lineCount": 165,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 2
   },

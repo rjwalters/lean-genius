@@ -77,20 +77,10 @@ f(n,k) is the number of n-step SAWs in ℤ^k.
     quantifying over all lattice points. -/
 axiom sawCount : ℕ → ℕ → ℕ
 
-/-- Basic property: f(0, k) = 1 (just the origin) -/
-axiom f_zero (k : ℕ) (hk : k ≥ 1) : sawCount 0 k = 1
-
-/-- Basic property: f(1, k) = 2k (first step goes in one of 2k directions) -/
-axiom f_one (k : ℕ) (hk : k ≥ 1) : sawCount 1 k = 2 * k
-
 /- ## Part 3: Submultiplicativity and Limit Existence
 
 The key insight: sawCount is submultiplicative, so lim f(n,k)^{1/n} exists.
 -/
-
-/-- Submultiplicativity: f(m+n, k) ≤ f(m, k) · f(n, k) -/
-axiom submultiplicativity (m n k : ℕ) (hk : k ≥ 1) :
-    sawCount (m + n) k ≤ sawCount m k * sawCount n k
 
 /-- Hammersley-Morton (1954): The limit exists -/
 axiom limit_exists (k : ℕ) (hk : k ≥ 1) :
@@ -132,12 +122,6 @@ axiom kesten_asymptotic (k : ℕ) (hk : k ≥ 2) :
     ∃ R : ℝ, |R| ≤ 1 ∧
       μ k = 2 * k - 1 - 1 / (2 * k) + R / k^2
 
-/-- First-order Kesten bound: |μ_k - (2k-1)| ≤ 1/k for k ≥ 2.
-    Axiomatized since the derivation from kesten_asymptotic requires
-    bounding the 1/(2k) + R/k² terms, which involves real arithmetic. -/
-axiom kesten_first_order (k : ℕ) (hk : k ≥ 2) :
-    |μ k - (2 * k - 1)| ≤ 1 / k
-
 /- ## Part 6: Two-Dimensional Case
 
 The connective constant for ℤ² is known numerically to high precision.
@@ -152,10 +136,6 @@ axiom conway_guttmann_lower : μ 2 ≥ 2.62
 /-- Alm upper bound (1993) -/
 axiom alm_upper : μ 2 ≤ 2.696
 
-/-- Jacobsen-Scullard-Guttmann (2016): High-precision computation -/
-axiom jsg_computation :
-    |μ 2 - 2.6381585303279| < 10^(-12 : ℤ)
-
 /-- The 2D case is well-bracketed -/
 theorem two_d_bounds : 2.62 ≤ μ 2 ∧ μ 2 ≤ 2.696 :=
   ⟨conway_guttmann_lower, alm_upper⟩
@@ -168,14 +148,6 @@ Exact values are unknown, but good bounds exist.
 /-- μ_3 ≈ 4.684... (numerical estimate) -/
 noncomputable def mu3_estimate : ℝ := 4.684
 
-/-- For large k, μ_k → 2k - 1 -/
-axiom large_k_limit :
-    Tendsto (fun k => μ k / k) atTop (nhds 2)
-
-/-- More precisely, μ_k / (2k - 1) → 1 -/
-axiom normalized_limit :
-    Tendsto (fun k => μ k / (2 * k - 1)) atTop (nhds 1)
-
 /- ## Part 8: Honeycomb Lattice (Related)
 
 For the honeycomb lattice, the exact connective constant is known!
@@ -183,19 +155,6 @@ For the honeycomb lattice, the exact connective constant is known!
 
 /-- Duminil-Copin and Smirnov (2012): μ_honeycomb = √(2 + √2) -/
 noncomputable def mu_honeycomb : ℝ := Real.sqrt (2 + Real.sqrt 2)
-
-/-- μ_honeycomb ≈ 1.8478.
-    Axiomatized since verifying the numerical bound from the sqrt definition
-    requires certified real arithmetic beyond Lean's native capabilities. -/
-axiom mu_honeycomb_approx :
-    |mu_honeycomb - 1.8478| < 0.001
-
-/-- Duminil-Copin and Smirnov (2012, Fields Medal contribution):
-    The connective constant for the honeycomb lattice is exactly √(2 + √2).
-    This was proved using discrete holomorphicity and parafermionic observables. -/
-axiom honeycomb_exact :
-    ∃ (μ_hex : ℝ), μ_hex = Real.sqrt (2 + Real.sqrt 2) ∧
-      μ_hex > 0 ∧ μ_hex < 2
 
 /- ## Part 9: Conjectures
 
@@ -210,46 +169,15 @@ def mu2_closed_form_conjecture : Prop :=
 def irrationality_conjecture : Prop :=
   ∀ k ≥ 2, Irrational (μ k)
 
-/-- The irrationality of μ_2 is currently unknown.
-    Neither rationality nor irrationality has been proved for any k ≥ 2. -/
-axiom mu2_irrationality_open_status :
-    ¬(∀ k ≥ 2, Irrational (μ k)) ∨ (∀ k ≥ 2, Irrational (μ k))
-
 /- ## Part 10: SAW Enumeration
 
 Exact counts for small n in 2D.
 -/
 
-/-- SAW counts in 2D for small n -/
-axiom saw_counts_2d :
-    sawCount 0 2 = 1 ∧
-    sawCount 1 2 = 4 ∧
-    sawCount 2 2 = 12 ∧
-    sawCount 3 2 = 36 ∧
-    sawCount 4 2 = 100 ∧
-    sawCount 5 2 = 284
-
-/-- The ratio f(n,2)/f(n-1,2) → μ_2 -/
-axiom ratio_convergence :
-    Tendsto (fun n => (sawCount (n + 1) 2 : ℝ) / sawCount n 2) atTop (nhds (μ 2))
-
 /- ## Part 11: Applications
 
 SAWs model polymers and have applications in chemistry and physics.
 -/
-
-/-- The critical exponent γ governs f(n,k) ~ A·μ_k^n·n^{γ-1} -/
-axiom critical_exponent_exists (k : ℕ) (hk : k ≥ 1) :
-    ∃ (A γ : ℝ), A > 0 ∧ γ > 0 ∧
-      Tendsto (fun n => (sawCount n k : ℝ) / (A * (μ k)^n * n^(γ - 1))) atTop (nhds 1)
-
-/-- In 2D, the critical exponent γ is conjectured to be 43/32.
-    This is supported by conformal field theory and numerical evidence
-    but not rigorously proved. -/
-axiom gamma_2d_conjecture_value :
-    ∃ (γ : ℝ), γ = 43 / 32 ∧
-      ∃ (A : ℝ), A > 0 ∧
-        Tendsto (fun n => (sawCount n 2 : ℝ) / (A * (μ 2)^n * n^(γ - 1))) atTop (nhds 1)
 
 /- ## Part 12: Summary
 

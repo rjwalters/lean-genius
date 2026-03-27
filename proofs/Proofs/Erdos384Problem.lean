@@ -121,11 +121,6 @@ def ecklundStrongConjecture : Prop :=
 
 /- This stronger conjecture is still open -/
 
-/-- Known partial result: p ≪ n/k^c for some c > 0 -/
-axiom partial_bound_known (n k : ℕ) (hk : 1 < k) (hn : k < n - 1) :
-    ∃ c : ℝ, c > 0 ∧ ∃ p : ℕ, p.Prime ∧ p ∣ Nat.choose n k ∧
-      (p : ℝ) ≤ n / (k : ℝ)^c
-
 /-- Selfridge's conjecture: if n > 17.125k then C(n,k) has prime ≤ n/k -/
 def selfridgeConjecture : Prop :=
   ∀ n k : ℕ, 1 < k → k < n - 1 → (n : ℚ) > (17125 : ℚ) / 1000 * k →
@@ -136,18 +131,6 @@ def selfridgeConjecture : Prop :=
 
 Kummer's theorem relates prime divisors of C(n,k) to base-p representations.
 -/
-
-/-- Kummer's Theorem: The exponent of p in C(n,k) equals the number of carries
-    when adding k and n-k in base p -/
-axiom kummer_theorem (n k p : ℕ) (hp : p.Prime) :
-    True  -- The actual statement involves digit sums
-
-/-- Consequence: If p > n, then p does not divide C(n,k).
-    This follows from the fact that C(n,k) is a product of integers
-    n, n-1, ..., n-k+1 divided by k!, and if p > n then p cannot
-    appear in any of these factors. -/
-axiom large_prime_not_divisor (n k p : ℕ) (hp : p.Prime) (hpn : p > n)
-    (hk : k ≤ n) : ¬(p ∣ Nat.choose n k)
 
 /-
 ## Part 6: Edge Cases
@@ -178,11 +161,6 @@ theorem choose_n_nminus1 (n : ℕ) (hn : n > 0) : Nat.choose n (n-1) = n := by
 
 Verify the theorem for small values of n.
 -/
-
-/-- All C(n,k) for n ≤ 6 with 1 < k < n-1 have small prime divisors -/
-axiom small_cases_verified :
-  ∀ n k : ℕ, n ≤ 6 → 1 < k → k < n - 1 →
-    hasSmallPrimeDivisor (Nat.choose n k) (n / 2 + 1)
 
 /-- C(5,2) = 10 = 2 × 5, has prime 2 < 5/2 + 1 = 3 -/
 example : hasSmallPrimeDivisor (Nat.choose 5 2) 3 := by
@@ -220,23 +198,11 @@ The primorial n# (product of primes ≤ n) appears in related results.
 /-- Primorial: product of all primes up to n -/
 noncomputable def primorial' (n : ℕ) : ℕ := primorial n
 
-/-- The central binomial coefficient C(2n, n) has many prime divisors -/
-axiom central_binomial_primes (n : ℕ) (hn : n ≥ 1) :
-    ∃ p : ℕ, p.Prime ∧ p ∣ Nat.choose (2*n) n ∧ n < p ∧ p ≤ 2*n
-
 /-
 ## Part 9: Asymptotic Behavior
 
 As n grows, C(n,k) has increasingly many small prime divisors.
 -/
-
-/-- For large n, C(n, n/2) has O(n/log n) distinct prime divisors -/
-axiom many_prime_divisors (n : ℕ) (hn : n ≥ 2) :
-    True  -- Placeholder for asymptotic statement
-
-/-- Erdős-Ko-Rado related: intersection properties of prime divisors -/
-axiom intersection_property :
-    True  -- Related combinatorial structure
 
 /-
 ## Part 10: Related Problems
@@ -244,31 +210,11 @@ axiom intersection_property :
 Connection to other Erdős problems.
 -/
 
-/-- Related to Problem #1094: Stronger version with different bounds -/
-axiom problem_1094_relation :
-    True  -- States the connection
-
-/-- Related to Problem #1095: Another strengthening -/
-axiom problem_1095_relation :
-    True  -- States the connection
-
-/-- Guy's Problem B31 and B33 discuss related questions -/
-axiom guy_problems_connection :
-    True  -- References to Guy's collection
-
 /-
 ## Part 11: Applications
 
 Where this result is used.
 -/
-
-/-- Application to Catalan numbers: C_n = C(2n,n)/(n+1) has a prime divisor ≤ n. -/
-axiom catalan_application (n : ℕ) (hn : n ≥ 2) :
-    hasSmallPrimeDivisor (Nat.choose (2 * n) n) (n + 1)
-
-/-- Application to Pascal's triangle: entries in Pascal's triangle have small prime factors. -/
-axiom pascal_modular (n k : ℕ) (hk : 1 < k) (hk' : k < n) :
-    hasSmallPrimeDivisor (Nat.choose n k) n
 
 /-
 ## Part 12: Summary

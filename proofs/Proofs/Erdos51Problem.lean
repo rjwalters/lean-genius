@@ -55,68 +55,15 @@ noncomputable def smallestTotientPreimage (a : ℕ) : ℕ :=
 /-- **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
     such that the smallest preimage grows faster than the value itself?
 
-    Formally: ∃ infinite A ⊆ ℕ such that ∀ a ∈ A, IsTotientValue a, and
-    smallestTotientPreimage(a) / a → ∞ as a → ∞ through A. -/
-axiom erdos_51_conjecture :
-  ∃ A : Set ℕ, A.Infinite ∧
-    (∀ a ∈ A, IsTotientValue a) ∧
-    ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ a ∈ A, a ≥ N →
-      (smallestTotientPreimage a : ℝ) / (a : ℝ) > C
-
 /- ## Basic Properties of Totient -/
 
 /-- φ(1) = 1: the trivial totient value. -/
 theorem totient_one : Nat.totient 1 = 1 := by simp
 
-/-- φ(p) = p − 1 for prime p. -/
-axiom totient_prime :
-  ∀ p : ℕ, Nat.Prime p → Nat.totient p = p - 1
-
-/-- φ(n) ≤ n for all n. -/
-axiom totient_le :
-  ∀ n : ℕ, Nat.totient n ≤ n
-
-/-- φ(n) is even for n ≥ 3. -/
-axiom totient_even :
-  ∀ n : ℕ, n ≥ 3 → Even (Nat.totient n)
-
 /- ## Preimage Structure -/
 
-/-- Every even number is a totient value: for any even a ≥ 2,
-    there exists n with φ(n) = a. In fact, a + 1 works when a + 1 is prime. -/
-axiom even_totient_values :
-  ∀ a : ℕ, a ≥ 2 → Even a → IsTotientValue a
-
-/-- The smallest preimage is at least a + 1 (since φ(n) < n for n ≥ 2). -/
-axiom smallest_preimage_lower :
-  ∀ a : ℕ, a ≥ 2 → IsTotientValue a →
-    smallestTotientPreimage a ≥ a + 1
-
-/-- Carmichael's observation: Erdős proved that if any totient value has
-    exactly one preimage, then infinitely many do. -/
-axiom erdos_carmichael :
-  (∃ a : ℕ, IsTotientValue a ∧ (totientPreimage a).ncard = 1) →
-  {a : ℕ | IsTotientValue a ∧ (totientPreimage a).ncard = 1}.Infinite
-
 /- ## Growth Bounds -/
-
-/-- For prime p, the smallest preimage of p − 1 is at most p.
-    So smallestTotientPreimage(p−1) ≤ p, giving ratio ≤ p/(p−1) → 1. -/
-axiom prime_preimage_ratio :
-  ∀ p : ℕ, Nat.Prime p →
-    smallestTotientPreimage (p - 1) ≤ p
-
-/-- Totient values p − 1 for primes p have small preimage ratios.
-    This shows the conjecture requires avoiding these "easy" totient values. -/
-axiom prime_minus_one_ratio_bounded :
-  ∀ p : ℕ, Nat.Prime p → p ≥ 3 →
-    (smallestTotientPreimage (p - 1) : ℝ) / ((p : ℝ) - 1) ≤ 2
 
 /-- The inverse totient counting function: number of solutions to φ(n) = a. -/
 noncomputable def inverseTotientCount (a : ℕ) : ℕ :=
   (totientPreimage a).ncard
-
-/-- Highly totient numbers have many preimages; the conjecture asks about
-    values where the smallest preimage is disproportionately large. -/
-axiom highly_totient_exist :
-  ∀ k : ℕ, ∃ a : ℕ, inverseTotientCount a ≥ k

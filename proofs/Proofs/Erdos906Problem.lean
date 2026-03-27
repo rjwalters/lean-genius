@@ -60,17 +60,6 @@ def IsTranscendental (f : ℂ → ℂ) : Prop :=
 Axiomatized as Mathlib's iteratedDeriv requires more setup. -/
 axiom iteratedDeriv (n : ℕ) (f : ℂ → ℂ) : ℂ → ℂ
 
-/-- Basic property: the 0th derivative is f itself. -/
-axiom iteratedDeriv_zero (f : ℂ → ℂ) : iteratedDeriv 0 f = f
-
-/-- The 1st derivative equals the standard derivative. -/
-axiom iteratedDeriv_one (f : ℂ → ℂ) (hf : Differentiable ℂ f) :
-  iteratedDeriv 1 f = deriv f
-
-/-- Recursive property: (n+1)th derivative = derivative of nth derivative. -/
-axiom iteratedDeriv_succ (n : ℕ) (f : ℂ → ℂ) :
-  iteratedDeriv (n + 1) f = deriv (iteratedDeriv n f)
-
 /- ## The Zero Set
 
 For a function f and a sequence of derivative indices, the zero set collects
@@ -100,8 +89,6 @@ This is why the problem requires transcendental functions. -/
 
 /-- Polynomials eventually have zero derivatives.
 Axiomatized as it requires degree theory. -/
-axiom polynomial_eventually_zero (p : Polynomial ℂ) :
-  ∃ d : ℕ, ∀ n > d, iteratedDeriv n (fun z => p.eval z) = 0
 
 /-- For polynomials, the property is trivially satisfied.
 Tang's observation: this is why transcendental is required.
@@ -118,8 +105,6 @@ such that HasDenseDerivativeZeros f holds?
 
 Erdős claimed this was solved affirmatively before 1972, but no proof
 is known. We axiomatize this as an unknown Prop. -/
-axiom erdos_906_open :
-  Prop  -- Unknown: ∃ f, IsEntire f ∧ f ≠ 0 ∧ IsTranscendental f ∧ HasDenseDerivativeZeros f
 
 /-- The formal statement of the problem. -/
 def erdos_906_statement : Prop :=
@@ -140,39 +125,26 @@ axiom exp_is_transcendental : IsTranscendental Complex.exp
 
 /-- e^z ≠ 0 for any z ∈ ℂ. All derivatives of e^z equal e^z.
 Axiomatized as it requires complex exponential properties. -/
-axiom exp_deriv_never_zero (z : ℂ) (k : ℕ) :
-  iteratedDeriv k Complex.exp z ≠ 0
 
 /-- However, exp does NOT satisfy the dense zeros property.
 All derivatives of e^z equal e^z, which has no zeros.
 Axiomatized due to proof complexity with Set.ext. -/
-axiom exp_no_zeros : derivativeZeroSet Complex.exp id = ∅
 
 /- ## Related Concepts -/
 
 /-- Connection to the Pólya-Erdős conjecture about zeros of derivatives.
 Pólya's shire theorem and Erdős's work on zeros of polynomials
 are related background. -/
-axiom connection_to_polya : Prop
 
 /-- Connection to the distribution of zeros of entire functions.
 The Weierstrass factorization theorem gives control over zeros,
 but not the density property for subsequences. -/
-axiom connection_to_weierstrass : Prop
 
 /- ## Properties of the Zero Set -/
-
-/-- The zero set is always closed (for continuous functions). -/
-axiom zero_set_closed (f : ℂ → ℂ) (n : ℕ → ℕ) (hf : Continuous f) :
-  IsClosed (derivativeZeroSet f n)
 
 /-- For a non-constant entire function, each individual zero set
 { z : f^{(k)}(z) = 0 } is discrete (isolated points) unless f^{(k)} ≡ 0.
 The union over a sequence can be dense. -/
-axiom individual_zero_sets_discrete (f : ℂ → ℂ) (k : ℕ) (hf : IsEntire f)
-    (hne : iteratedDeriv k f ≠ 0) :
-    ∀ z ∈ { w | iteratedDeriv k f w = 0 }, ∃ ε > 0,
-      ∀ w ∈ Metric.ball z ε, w = z ∨ iteratedDeriv k f w ≠ 0
 
 /- ## Summary -/
 

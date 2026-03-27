@@ -79,20 +79,6 @@ noncomputable def q (n k : ℕ) : ℕ :=
     omega
   Nat.find this
 
-/-- q(n, k) is always prime. -/
-axiom q_prime (n k : ℕ) : (q n k).Prime
-
-/-- q(n, k) does not divide the consecutive product. -/
-axiom q_not_dvd (n k : ℕ) : ¬(q n k ∣ consecutiveProduct n k)
-
-/-- q(n, k) is minimal: every smaller prime divides the product. -/
-axiom q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hpq : p < q n k) :
-    p ∣ consecutiveProduct n k
-
-/-- Trivial lower bound: q(n, k) > k for all n, k.
-    This follows from small_primes_divide. -/
-axiom q_lower_trivial (n k : ℕ) (hk : k ≥ 1) : q n k > k
-
 /- ## Part III: The Main Conjecture (OPEN)
 
 Erdős asks: can we do better than q(n, log n) > log(n)?
@@ -125,12 +111,6 @@ def ErdosConjecture457_q : Prop :=
   ∃ ε : ℝ, ε > 0 ∧
     { n : ℕ | (2 + ε) * Real.log n ≤ (q n ⌊Real.log n⌋₊ : ℝ) }.Infinite
 
-/-- The q(n,k) formulation is axiomatized. -/
-axiom erdos_457_q : ErdosConjecture457_q
-
-/-- The two formulations are equivalent. -/
-axiom conjecture_equivalence : ErdosConjecture457 ↔ ErdosConjecture457_q
-
 /- ## Part V: Known Construction — The (2 + o(1)) Barrier
 
 Erdős and Pomerance observed that one can achieve q(n, log n) ≥ (2 + o(1)) log(n)
@@ -143,19 +123,6 @@ constructed from primes in that range. -/
 
 /-- Known: q(n, log n) ≥ (2 + o(1)) log n is achievable by taking n
     as the product of primes between log(n) and (2 + o(1)) log(n).
-
-    For any ε > 0, there exist arbitrarily large n with
-    q(n, ⌊log n⌋) ≥ (2 - ε) log n. -/
-axiom construction_lower :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    ∃ m : ℕ, (2 - ε) * Real.log (m : ℝ) ≤
-      (q m ⌊Real.log (m : ℝ)⌋₊ : ℝ)
-
-/-- The gap between known and conjectured: we can achieve (2 - ε)
-    but we want (2 + ε). The conjecture asks to cross the "2 barrier." -/
-axiom two_barrier_significance :
-    ∀ ε : ℝ, ε > 0 →
-    { n : ℕ | (2 - ε) * Real.log n ≤ (q n ⌊Real.log n⌋₊ : ℝ) }.Infinite
 
 /- ## Part VI: Upper Bound Sub-Question
 
@@ -170,9 +137,6 @@ def UpperBoundConjecture : Prop :=
   ∃ ε : ℝ, ε > 0 ∧ ∀ᶠ n in atTop,
     (q n ⌊Real.log (n : ℝ)⌋₊ : ℝ) < (1 - ε) * (Real.log n) ^ 2
 
-/-- The upper bound conjecture is also axiomatized as open. -/
-axiom erdos_457_upper : UpperBoundConjecture
-
 /- ## Part VII: Connection to Smooth Numbers
 
 The problem is closely related to smooth number theory. A number m
@@ -183,12 +147,6 @@ the "smooth part" of the product captures all small primes. -/
 /-- A number is y-smooth if all its prime factors are at most y. -/
 def IsSmooth (m y : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ m → p ≤ y
-
-/-- The consecutive product is always ((2+o(1))log n)-smooth
-    in terms of its prime support up to q(n, log n). -/
-axiom consecutive_product_smooth_support (n : ℕ) (hn : n ≥ 2) :
-    ∀ p : ℕ, p.Prime → p < q n ⌊Real.log (n : ℝ)⌋₊ →
-      p ∣ consecutiveProduct n ⌊Real.log (n : ℝ)⌋₊
 
 /- ## Part VIII: Relationship to Problem #663
 

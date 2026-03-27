@@ -113,17 +113,11 @@ If B has |B ∩ [1,N]| = o(√N), then B + B has |B+B ∩ [1,N]| = o(N).
 
 More precisely, if |B ∩ [1,N]| ≤ f(N), then |B+B ∩ [1,2N]| ≤ f(N)².
 -/
-axiom sumset_counting_bound (B : Set ℕ) (f : ℕ → ℝ) :
-    (∀ N, (countingFunction B N : ℝ) ≤ f N) →
-    ∀ N, (countingFunction (sumset B) (2*N) : ℝ) ≤ (f N)^2
 
 /--
 **Corollary:**
 If B has o(√N) growth, then B + B has o(N) elements up to 2N.
 -/
-axiom subsqrt_sumset_sparse (B : Set ℕ) :
-    hasSubsqrtGrowth B →
-    (fun N => (countingFunction (sumset B) N : ℝ)) =o[atTop] (fun N => (N : ℝ))
 
 /--
 **Critical lemma:**
@@ -158,7 +152,6 @@ def squares : Set ℕ := {n : ℕ | ∃ k : ℕ, n = k^2}
 **Squares have zero density:**
 |{k² : k² ≤ N}| = √N + O(1), so density = 0.
 -/
-axiom squares_zero_density : hasZeroDensity squares
 
 /--
 **Erdős-Newman (1977):**
@@ -176,10 +169,6 @@ Sets with polynomial gaps admit such representations.
 def hasPolynomialGaps (A : Set ℕ) (α : ℝ) : Prop :=
   α > 1 ∧ ∀ n ∈ A, ∀ m ∈ A, n < m → m - n ≥ (n : ℝ)^(1/α)
 
-axiom polynomial_gap_positive (A : Set ℕ) (α : ℝ) (hα : α > 2) :
-    hasZeroDensity A → hasPolynomialGaps A α →
-    ∃ B : Set ℕ, isCoveredBySumset A B ∧ hasSubsqrtGrowth B
-
 /-
 ## Part V: Understanding the Counterexample
 -/
@@ -189,9 +178,6 @@ axiom polynomial_gap_positive (A : Set ℕ) (α : ℝ) (hα : α > 2) :
 If A has counting function f_A(N), and A ⊆ B + B, then B must satisfy
 a lower bound on |B ∩ [1,N]|.
 -/
-axiom covering_lower_bound (A B : Set ℕ) (N : ℕ) :
-    isCoveredBySumset A B →
-    (countingFunction B N : ℝ)^2 ≥ countingFunction A (2*N)
 
 /--
 **Remark:**
@@ -209,9 +195,6 @@ This has zero density (Prime Number Theorem), but is "dense within zero density"
 -/
 def almostPrimeFree (k : ℕ) : Set ℕ :=
   {n : ℕ | n ≥ 1 ∧ (Nat.factors n).length ≤ k}
-
-axiom almost_prime_free_density (k : ℕ) :
-    hasZeroDensity (almostPrimeFree k)
 
 /-
 ## Part VI: Connections
@@ -234,17 +217,10 @@ def isSidonSet (B : Set ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ B → b ∈ B → c ∈ B → d ∈ B →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-axiom sidon_growth (B : Set ℕ) :
-    isSidonSet B → ∃ C : ℝ, ∀ N, (countingFunction B N : ℝ) ≤ C * Real.sqrt N
-
 /--
 **Sidon sets give minimal sumsets:**
 If B is Sidon, then |B+B ∩ [1,N]| ≈ |B ∩ [1,N]|².
 -/
-axiom sidon_sumset_exact (B : Set ℕ) :
-    isSidonSet B → ∀ N,
-      (countingFunction (sumset B) N : ℝ) ≥
-      (countingFunction B (N/2) : ℝ) * ((countingFunction B (N/2) : ℝ) - 1) / 2
 
 /-
 ## Part VII: The Erdős-Newman Paper
@@ -265,11 +241,6 @@ The paper establishes that:
 There exist zero-density sets A where any B with A ⊆ B + B
 must have |B ∩ [1,N]| ≥ c√N for infinitely many N.
 -/
-axiom erdos_newman_theorem2 :
-    ∃ A : Set ℕ, hasZeroDensity A ∧
-      ∃ c : ℝ, c > 0 ∧
-        ∀ B : Set ℕ, isCoveredBySumset A B →
-          ∃ᶠ N in atTop, (countingFunction B N : ℝ) ≥ c * Real.sqrt N
 
 /-
 ## Part VIII: Summary

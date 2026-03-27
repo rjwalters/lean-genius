@@ -160,13 +160,6 @@ A cap set is a subset of F₃^n with no three-term arithmetic progressions.
 The breakthrough of Croot-Lev-Pach and Ellenberg-Gijswijt on cap sets
 led to the Naslund-Sawin improvement on sunflower bounds.
 -/
-axiom cap_set_connection :
-    -- The 3-sunflower bound is controlled by cap set density
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      -- Cap set bound: maximum 3-AP-free subset of F₃^n has size ≤ (2.756...)^n
-      ∃ (capBound : ℕ), capBound ≤ Nat.ceil (((2 : ℝ) + ε) ^ n) ∧
-        -- This controls the sunflower number
-        sunflowerNumber n 3 ≤ capBound * (n + 1)
 
 /- ## Part V: The Sunflower Conjecture -/
 
@@ -178,26 +171,18 @@ m(n, k) ≤ c(k)^n
 That is, the number of subsets of {1,...,n} needed to guarantee a k-sunflower
 grows at most exponentially in n.
 -/
-axiom sunflower_conjecture :
-    ∀ k ≥ 3, ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, sunflowerNumber n k ≤ Nat.ceil (c ^ n)
 
 /--
 **Trivial Upper Bound:**
 m(n, k) ≤ 2^n + 1 since there are only 2^n subsets of {1,...,n}.
 Any family of 2^n + 1 subsets must contain duplicates, hence a trivial 2-sunflower.
 -/
-axiom trivial_upper_bound (n k : ℕ) (hk : k ≥ 2) :
-    sunflowerNumber n k ≤ 2^n + 1
 
 /--
 **Lower Bound:**
 m(n, k) ≥ 2^(n/k) for k ≥ 3, since random constructions show sunflower-free
 families of exponential size exist.
 -/
-axiom lower_bound :
-    ∀ k : ℕ, k ≥ 3 → ∃ c : ℝ, c > 1 ∧
-      ∀ n : ℕ, sunflowerNumber n k ≥ Nat.floor (c ^ n)
 
 /- ## Part VI: Examples -/
 
@@ -217,20 +202,12 @@ theorem singleton_sunflower_example :
 The family {{1,2,3}, {1,2,4}, {1,2,5}} is a 3-sunflower with core {1,2}.
 Each petal is a singleton: {3}, {4}, {5} respectively.
 -/
-axiom nonempty_core_example :
-    ∃ (family : Finset (Finset (Fin 6))) (core : Finset (Fin 6)),
-      family.card = 3 ∧ IsSunflower family core ∧ core.card = 2
 
 /--
 **Example: Maximum Sunflower-Free Family**
 For k = 3 and sets of size 2 from {1,2,3,4}, a sunflower-free family
 can have at most 4 members, such as {{1,2}, {1,3}, {2,4}, {3,4}}.
 -/
-axiom sunflower_free_family_bound :
-    ∃ (family : Finset (Finset (Fin 4))),
-      (∀ A, A ∈ family → A.card = 2) ∧
-      family.card = 4 ∧
-      ¬ContainsSunflower family 3
 
 /- ## Part VII: Weak vs Strong Sunflower Problem -/
 
@@ -253,13 +230,6 @@ def strong_sunflower_bound (n k ℓ : ℕ) : Prop :=
 The weak sunflower bound m(n, k) can be expressed in terms of the
 strong bounds f(n, k, ℓ) summed over all set sizes 0 ≤ ℓ ≤ n.
 -/
-axiom weak_from_strong :
-    ∀ n k : ℕ, k ≥ 2 →
-      ∃ bound : ℕ,
-        (∀ family : Finset (Finset (Fin n)),
-          family.card > bound → ContainsSunflower family k) ∧
-        -- The bound sums over all possible set sizes
-        bound ≤ (n + 1) * (Nat.factorial (k - 1) * n ^ n)
 
 /--
 **Union Formulation:**
@@ -268,11 +238,6 @@ k sets form a sunflower iff the symmetric differences of any two
 equal the symmetric difference of the union minus the core.
 The intersection and union formulations are equivalent.
 -/
-axiom union_formulation_equivalent :
-    ∀ {α : Type*} [DecidableEq α] (family : Finset (Finset α)) (core : Finset α),
-      IsSunflower family core ↔
-      (∀ A B : Finset α, A ∈ family → B ∈ family → A ≠ B →
-        ∀ x, x ∈ A ∩ B ↔ x ∈ core)
 
 /- ## Part VIII: Summary -/
 

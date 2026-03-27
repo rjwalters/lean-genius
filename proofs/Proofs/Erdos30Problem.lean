@@ -101,41 +101,10 @@ def StrongerConjecture : Prop :=
 
 /- ## Upper Bounds -/
 
-/-- **Erdős-Turán (1941)**: h(N) ≤ N^{1/2} + N^{1/4} + 1.
-    The original upper bound. -/
-axiom erdos_turan_upper_bound :
-    ∀ N : ℕ, (sidonNumber N : ℝ) ≤ Real.sqrt N + N^(1/4 : ℝ) + 1
-
-/-- **Lindström (1969)**: h(N) ≤ N^{1/2} + N^{1/4} + 1/2.
-    Slight improvement. -/
-axiom lindstrom_upper_bound :
-    ∀ N : ℕ, (sidonNumber N : ℝ) ≤ Real.sqrt N + N^(1/4 : ℝ) + 1/2
-
-/-- **Balogh-Füredi-Roy (2021)**: h(N) ≤ N^{1/2} + 0.998 N^{1/4}.
-    First improvement to the N^{1/4} coefficient in 80 years. -/
-axiom balogh_furedi_roy_bound :
-    ∀ N : ℕ, N ≥ 1 → (sidonNumber N : ℝ) ≤ Real.sqrt N + 0.998 * N^(1/4 : ℝ)
-
-/-- **Carter-Hunter-O'Bryant (2025)**: h(N) ≤ N^{1/2} + 0.98183 N^{1/4} + O(1).
-    Current best upper bound. -/
-axiom carter_hunter_obryant_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-      (sidonNumber N : ℝ) ≤ Real.sqrt N + 0.98183 * N^(1/4 : ℝ) + C
-
 /- ## Lower Bounds -/
-
-/-- **Singer (1938)**: h(N) ≥ (1 - o(1)) N^{1/2}.
-    Construction using perfect difference sets from finite fields. -/
-axiom singer_lower_bound :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (sidonNumber N : ℝ) ≥ (1 - ε) * Real.sqrt N
 
 -- Singer's construction: For prime p, the set {a : a² mod p²-1} has
 -- size about p and is Sidon.
-
-/-- **Explicit lower bound**: For infinitely many N, h(N) ≥ N^{1/2} - N^{0.525}. -/
-axiom explicit_lower_bound :
-    ∀ M : ℕ, ∃ N > M, (sidonNumber N : ℝ) ≥ Real.sqrt N - N^(0.525 : ℝ)
 
 /- ## The Gap -/
 
@@ -158,11 +127,6 @@ def RequiredUpperBound (ε : ℝ) : Prop :=
     the conjecture for all ε > 0 by using N^ε₀ ≤ N^ε for ε ≤ ε₀ (when N ≥ 1)
     or C * N^ε₀ ≤ N^ε for large enough N when ε > ε₀.
 
-    This is a metastatement about the problem structure, not a proof of the
-    conjecture itself. The conjecture remains OPEN. -/
-axiom conjecture_from_small_epsilon :
-    (∃ ε : ℝ, 0 < ε ∧ ε < 1/4 ∧ RequiredUpperBound ε) → Erdos30Conjecture
-
 /- ## Perfect Difference Sets -/
 
 /-- A **perfect difference set** modulo n is a set D ⊆ Z/nZ where every
@@ -170,15 +134,6 @@ axiom conjecture_from_small_epsilon :
 def IsPerfectDifferenceSet (D : Finset ℕ) (n : ℕ) : Prop :=
   ∀ k : ℕ, 1 ≤ k → k < n →
     ∃! p : ℕ × ℕ, p.1 ∈ D ∧ p.2 ∈ D ∧ p.1 ≠ p.2 ∧ (p.1 - p.2) % n = k
-
-/-- Perfect difference sets give Sidon sets. -/
-axiom perfect_difference_gives_sidon (D : Finset ℕ) (n : ℕ) :
-    IsPerfectDifferenceSet D n → IsSidonSet D
-
-/-- Singer's construction: For prime power q, there exists a perfect
-    difference set of size q+1 modulo q²+q+1. -/
-axiom singer_construction (q : ℕ) (hq : Nat.Prime q) :
-    ∃ D : Finset ℕ, D.card = q + 1 ∧ IsPerfectDifferenceSet D (q^2 + q + 1)
 
 /- ## Small Examples -/
 
@@ -195,12 +150,6 @@ theorem sidon_example_1_2_5_10 : IsSidonSet {1, 2, 5, 10} := by
 
 -- Note: {1, 2, 5, 10, 11, 13} is NOT a Sidon set (1+11 = 2+10 = 12)
 
-/-- h(10) = 5 (verified computationally). -/
-axiom sidon_h10 : sidonNumber 10 = 5
-
-/-- h(100) ≈ 13 (verified computationally). -/
-axiom sidon_h100 : sidonNumber 100 = 13
-
 /- ## B_h Sets (Generalization) -/
 
 /-- A **B_h set** is a set where all h-wise sums are distinct (generalized Sidon).
@@ -214,10 +163,6 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
 /-- Sidon sets are B₂ sets.
     A Sidon set requires all pairwise sums to be distinct, which is exactly
     the B₂ condition (all 2-element multiset sums are distinct).
-
-    The proof requires decomposing 2-element multisets into their elements,
-    which is tedious but straightforward. -/
-axiom sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2
 
 /- ## Problem Status -/
 

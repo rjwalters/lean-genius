@@ -77,14 +77,6 @@ Axiomatized as exact computation is complex.
 -/
 axiom listChromaticNumber (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
 
-/-- χ_L(G) is achieved. -/
-axiom listChromaticNumber_achieved (G : SimpleGraph V) [DecidableRel G.Adj] :
-    IsKChoosable G (listChromaticNumber G)
-
-/-- χ_L(G) is minimal. -/
-axiom listChromaticNumber_minimal (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) :
-    IsKChoosable G k → listChromaticNumber G ≤ k
-
 /-
 ## Part II: Complement Graph
 -/
@@ -168,24 +160,16 @@ theorem conjecture_false : ¬ERTConjecture := by
 **χ_L(G) ≥ χ(G):**
 List chromatic number is at least the ordinary chromatic number.
 -/
-axiom list_chromatic_ge_chromatic (G : SimpleGraph V) [DecidableRel G.Adj] :
-    listChromaticNumber G ≥ G.chromaticNumber
 
 /--
 **Trivial Lower Bound:**
 χ_L(G) + χ_L(G^c) ≥ √n for most graphs.
 -/
-axiom trivial_lower_bound (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (complementGraph G).Adj] :
-    (listChromaticNumber G + listChromaticNumber (complementGraph G) : ℝ) ≥
-      Real.sqrt (Fintype.card V)
 
 /--
 **Upper Bound:**
 χ_L(G) ≤ Δ(G) + 1 where Δ is max degree (greedy coloring).
 -/
-axiom list_chromatic_le_max_degree_plus_one (G : SimpleGraph V) [DecidableRel G.Adj] :
-    True  -- Simplified
 
 /-
 ## Part VI: Probabilistic Construction
@@ -196,15 +180,11 @@ axiom list_chromatic_le_max_degree_plus_one (G : SimpleGraph V) [DecidableRel G.
 The counterexample uses random graphs near the threshold p = 1/2.
 The construction exploits the near-balance between G and G^c.
 -/
-axiom alon_construction_probabilistic :
-    True  -- The construction uses probabilistic method
 
 /--
 **Random Graph G(n, 1/2):**
 At probability 1/2, G and G^c have similar structure.
 -/
-axiom random_half_symmetry (n : ℕ) (hn : n ≥ 2) :
-    True  -- χ_L(G) ≈ χ_L(G^c) for G(n, 1/2)
 
 /-
 ## Part VII: Related Results
@@ -214,26 +194,16 @@ axiom random_half_symmetry (n : ℕ) (hn : n ≥ 2) :
 **Ordinary Chromatic Number:**
 χ(G) + χ(G^c) ≥ 2√n (Nordhaus-Gaddum).
 -/
-axiom nordhaus_gaddum (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (complementGraph G).Adj] :
-    (G.chromaticNumber + (complementGraph G).chromaticNumber : ℝ) ≥ 2 * Real.sqrt (Fintype.card V)
 
 /--
 **Nordhaus-Gaddum Upper Bound:**
 χ(G) + χ(G^c) ≤ n + 1.
 -/
-axiom nordhaus_gaddum_upper (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (complementGraph G).Adj] :
-    G.chromaticNumber + (complementGraph G).chromaticNumber ≤ Fintype.card V + 1
 
 /--
 **List vs Ordinary:**
 χ_L and χ can differ significantly (Voigt's example).
 -/
-axiom list_chromatic_differs_from_chromatic :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
-    listChromaticNumber G > G.chromaticNumber
 
 /-
 ## Part VIII: Choosability Properties
@@ -243,24 +213,16 @@ axiom list_chromatic_differs_from_chromatic :
 **Bipartite Graphs:**
 Not all bipartite graphs are 2-choosable (unlike 2-colorable).
 -/
-axiom bipartite_not_always_two_choosable :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
-    G.chromaticNumber = 2 ∧ listChromaticNumber G > 2
 
 /--
 **Complete Graphs:**
 K_n has χ_L(K_n) = n (same as χ).
 -/
-axiom complete_graph_list_chromatic (n : ℕ) (hn : n ≥ 1) :
-    listChromaticNumber (completeGraph (Fin n)) = n
 
 /--
 **Complete Bipartite:**
 K_{n,n} has χ_L = 1 + ⌈log₂ n⌉ (Galvin's theorem).
 -/
-axiom galvin_theorem (n : ℕ) (hn : n ≥ 1) :
-    True  -- χ_L(K_{n,n}) = 1 + ⌈log₂ n⌉
 
 /-
 ## Part IX: Summary

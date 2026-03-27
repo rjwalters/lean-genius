@@ -165,11 +165,6 @@ axiom freeCumulant_one (μ : NCDistribution) :
 axiom freeCumulant_two (μ : NCDistribution) :
     freeCumulant μ 2 = μ.moment 2 - (μ.moment 1)^2
 
-/-- Moments determine cumulants and vice versa via Möbius inversion
-    on the lattice of non-crossing partitions. -/
-axiom moment_cumulant_bijection :
-    Function.Bijective (fun μ : NCDistribution => freeCumulant μ)
-
 -- ============================================================================
 -- § 4. Free Convolution
 -- ============================================================================
@@ -370,9 +365,6 @@ axiom semicircle_cumulant_higher (n : ℕ) (hn : n ≥ 3) :
     This is because only κ₂ = 1 is nonzero:
     R_w(z) = κ₁ + κ₂z + κ₃z² + ⋯ = 0 + 1·z + 0 + ⋯ = z.
 
-    Compare with Gaussian: log φ_G(t) = -t²/2 (quadratic). -/
-axiom semicircle_Rtransform (z : ℝ) : Rtransform semicircle z = z
-
 -- ============================================================================
 -- § 7. Dilation (Scaling) of Distributions
 -- ============================================================================
@@ -389,14 +381,6 @@ The normalized n-fold free convolution is:
 /-- Dilation of a distribution by a scalar c.
     D_c(μ) is the distribution of c·a where a ~ μ. -/
 axiom dilate : ℝ → NCDistribution → NCDistribution
-
-/-- Dilation scales cumulants: κₙ(D_c(μ)) = cⁿ · κₙ(μ). -/
-axiom dilate_cumulant (c : ℝ) (μ : NCDistribution) (n : ℕ) (hn : n ≥ 1) :
-    freeCumulant (dilate c μ) n = c ^ n * freeCumulant μ n
-
-/-- Dilation scales the R-transform: R_{D_c(μ)}(z) = c · R_μ(cz). -/
-axiom dilate_Rtransform (c : ℝ) (μ : NCDistribution) (z : ℝ) :
-    Rtransform (dilate c μ) z = c * Rtransform μ (c * z)
 
 /-- The normalized free convolution power:
     μ^{⊞n} / √n = D_{1/√n}(μ^{⊞n})
@@ -442,13 +426,6 @@ noncomputable def freeRenormalization (μ : NCDistribution) : NCDistribution :=
 
 /-- The semicircle is a FIXED POINT of the free renormalization map:
     T(w) = w.
-
-    Proof: The free cumulants of T(w) = D_{1/√2}(w ⊞ w) are:
-    κₙ(T(w)) = (1/√2)ⁿ · (κₙ(w) + κₙ(w)) = (1/√2)ⁿ · 2κₙ(w)
-    For n = 2: (1/√2)² · 2 · 1 = (1/2) · 2 = 1 = κ₂(w) ✓
-    For n ≠ 2: (1/√2)ⁿ · 2 · 0 = 0 = κₙ(w) ✓ -/
-axiom semicircle_fixed_point :
-    freeRenormalization semicircle = semicircle
 
 /-- Structural verification: the free cumulants are preserved under
     renormalization for the semicircle (κ₂ check). -/
@@ -612,13 +589,6 @@ def bernoulliNC : NCDistribution where
     For the Boolean CLT, the Boolean cumulants satisfy:
     βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions. -/
 axiom booleanCumulant : NCDistribution → ℕ → ℝ
-
-/-- The Bernoulli has β₁ = 0, β₂ = 1, βₙ = 0 for n ≥ 3
-    (same structure as Gaussian and semicircle). -/
-axiom bernoulli_boolean_cumulant_one : booleanCumulant bernoulliNC 1 = 0
-axiom bernoulli_boolean_cumulant_two : booleanCumulant bernoulliNC 2 = 1
-axiom bernoulli_boolean_cumulant_higher (n : ℕ) (hn : n ≥ 3) :
-    booleanCumulant bernoulliNC n = 0
 
 /-- Summary: The answer to "How does the topological perspective extend?"
 

@@ -93,12 +93,6 @@ where
 /-- Notation for iteration length. -/
 notation "f(" n ")" => iterationLength n
 
-/-- f(1) = 0 -/
-axiom iterationLength_one : f(1) = 0
-
-/-- f(2) = 1 since φ(2) = 1 -/
-axiom iterationLength_two : f(2) = 1
-
 /-- For n > 1: f(n) ≥ 1 -/
 axiom iterationLength_pos (n : ℕ) (hn : n > 1) : f(n) ≥ 1
 
@@ -238,11 +232,6 @@ Conditionally, f(n)/log(n) → 1/log(2) for almost all n.
 
 Note: 1/log(2) = 1/ln(2) ≈ 1.4427
 -/
-axiom limiting_constant :
-    ElliottHalberstam →
-    ∃ c : ℝ, c > 0 ∧
-      -- c = 1/log(2) and f(n)/log(n) → c for almost all n
-      True
 
 /-
 ## Part VIII: The Largest Prime Factor Question
@@ -282,11 +271,6 @@ For any slowly growing k(n) → ∞:
 Intuitively: after many iterations, the largest prime factor
 becomes very small relative to n.
 -/
-axiom prime_factor_conjecture :
-    ∀ k : ℕ → ℕ, (∀ N : ℕ, ∃ n ≥ N, k n > k N) →  -- k grows to ∞
-    ∀ ε > 0, ∃ S : Set ℕ,
-      -- S has density 1 and P(φ_{k(n)}(n)) ≤ n^ε for n ∈ S
-      True
 
 /-
 ## Part IX: Small Examples
@@ -312,10 +296,6 @@ theorem example_f6 : (6 : ℕ).totient = 2 := by native_decide
 /-- φ(7) = 6, φ(6) = 2, φ(2) = 1, so f(7) = 3 -/
 theorem example_f7_step1 : (7 : ℕ).totient = 6 := by native_decide
 
-/-- The sequence f(2), f(3), f(4), ... = 1, 2, 2, 3, 2, 3, ... (OEIS A049108) -/
-axiom small_values :
-    f(2) = 1 ∧ f(3) = 2 ∧ f(4) = 2 ∧ f(5) = 3 ∧ f(6) = 2 ∧ f(7) = 3
-
 /-
 ## Part X: Related Results
 -/
@@ -326,7 +306,6 @@ f is non-decreasing in a weak sense: f(n) ≤ f(n+1) + 1.
 
 (It's not strictly monotone since f(4) = f(6) = 2 but 4 < 6.)
 -/
-axiom f_weak_monotone (n : ℕ) (hn : n ≥ 2) : f(n) ≤ f(n + 1) + 1
 
 /--
 **Powers of 2:**
@@ -334,7 +313,6 @@ f(2^k) = k for all k ≥ 1.
 
 Since φ(2^k) = 2^{k-1}, we have f(2^k) = k.
 -/
-axiom f_power_of_two (k : ℕ) (hk : k ≥ 1) : f(2 ^ k) = k
 
 /--
 **Primes:**
@@ -342,7 +320,6 @@ For prime p: f(p) = f(p-1) + 1.
 
 Since φ(p) = p - 1.
 -/
-axiom f_prime (p : ℕ) (hp : p.Prime) : f(p) = f(p - 1) + 1
 
 /-
 ## Part XI: Erdős Problem #408 Summary

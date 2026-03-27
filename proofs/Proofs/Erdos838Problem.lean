@@ -62,10 +62,6 @@ contains exactly the points of T (no other points of S inside).
     Axiomatized: proper definition requires convex hull machinery. -/
 axiom isConvexSubset (S T : Finset Point2D) : Prop
 
-/-- isConvexSubset requires T ⊆ S and |T| ≥ 3 -/
-axiom isConvexSubset_subset (S T : Finset Point2D) (h : isConvexSubset S T) :
-    T ⊆ S ∧ T.card ≥ 3
-
 /-- Number of convex subsets determined by S -/
 noncomputable def numConvexSubsets (S : Finset Point2D) : ℕ :=
   (S.powerset.filter (fun T => isConvexSubset S T)).card
@@ -79,16 +75,6 @@ of the number of convex subsets they determine.
 /-- f(n) = min { numConvexSubsets(S) : S has n points in general position }
     Axiomatized since Lean has no built-in infimum over types. -/
 axiom f : ℕ → ℕ
-
-/-- f(n) is a lower bound: ANY n-point general position set has ≥ f(n) convex subsets -/
-axiom f_lower_bound :
-  ∀ n : ℕ, ∀ S : Finset Point2D,
-    S.card = n → inGeneralPosition S → numConvexSubsets S ≥ f n
-
-/-- f(n) is tight: some n-point general position set achieves exactly f(n) -/
-axiom f_achieved :
-  ∀ n : ℕ, n ≥ 4 →
-    ∃ S : Finset Point2D, S.card = n ∧ inGeneralPosition S ∧ numConvexSubsets S = f n
 
 /- ## Part 4: Erdős's Bounds (1978)
 -/
@@ -127,31 +113,8 @@ def limitExists : Prop :=
   ∃ c : ℝ, ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |normalizedLogF n - c| < ε
 
-/-- If the limit exists, it lies between c₁ and c₂ from the bounds -/
-axiom limit_bounded_if_exists (c : ℝ)
-    (hlim : ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |normalizedLogF n - c| < ε) :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ c₁ ≤ c ∧ c ≤ c₂
-
 /- ## Part 6: Erdős-Szekeres Connection
 -/
-
-/-- Erdős-Szekeres theorem: any set of n points in general position
-    contains at least ⌈log₂(n)⌉ points in convex position.
-    This provides SOME convex subsets, but f(n) counts ALL of them. -/
-axiom erdos_szekeres_convex_subset (n : ℕ) (S : Finset Point2D)
-    (hn : S.card = n) (hgp : inGeneralPosition S) (hn4 : n ≥ 4) :
-    ∃ T : Finset Point2D, isConvexSubset S T ∧
-      T.card ≥ Nat.log 2 n
-
-/-- Every 3-element subset in general position is convex (a triangle) -/
-axiom triangles_are_convex (S : Finset Point2D) (T : Finset Point2D)
-    (hgp : inGeneralPosition S) (hsub : T ⊆ S) (hcard : T.card = 3) :
-    isConvexSubset S T
-
-/-- Any n-point set in general position has at least C(n,3) convex triangles -/
-axiom triangle_count_lower_bound (n : ℕ) (S : Finset Point2D)
-    (hn : S.card = n) (hgp : inGeneralPosition S) (hn3 : n ≥ 3) :
-    numConvexSubsets S ≥ n.choose 3
 
 /- ## Part 7: Growth Rate
 -/
@@ -159,10 +122,6 @@ axiom triangle_count_lower_bound (n : ℕ) (S : Finset Point2D)
 /-- f(n) grows faster than any polynomial: for all k, f(n) > n^k for large n -/
 axiom f_superpolynomial :
     ∀ k : ℕ, ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) > (n : ℝ)^(k : ℝ)
-
-/-- f(n) grows slower than any exponential: for all c > 1, f(n) < c^n for large n -/
-axiom f_subexponential :
-    ∀ c : ℝ, c > 1 → ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) < c^(n : ℝ)
 
 /- ## Part 8: Summary
 -/

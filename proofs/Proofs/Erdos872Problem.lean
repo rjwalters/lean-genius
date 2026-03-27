@@ -90,8 +90,6 @@ The game board has n - 1 elements for n ≥ 2.
 Axiomatized: the proof requires Finset/Set.ncard machinery
 that would distract from the game-theoretic content.
 -/
-axiom gameBoard_card (n : ℕ) (hn : n ≥ 2) :
-    (gameBoard n).ncard = n - 1
 
 /--
 **Legal Move:**
@@ -142,10 +140,6 @@ def IsMaximalAntichain (A : Set ℕ) (board : Set ℕ) : Prop :=
 **Game Terminates:**
 Any sequence of legal moves eventually reaches a maximal antichain.
 -/
-axiom game_terminates (n : ℕ) (hn : n ≥ 2) :
-    ∀ A : Set ℕ, A ⊆ gameBoard n → IsDivisibilityAntichain A →
-    A.Finite →
-    ∃ B : Set ℕ, A ⊆ B ∧ IsMaximalAntichain B (gameBoard n)
 
 /- ## Part IV: Bounds on Game Length
 -/
@@ -160,17 +154,11 @@ at least twice another while remaining ≤ n.
 **NOTE:** Previously stated as ≤ n/2, which is incorrect for odd n.
 E.g., for n=5, {3,4,5} is an antichain with 3 > 5/2 = 2 elements.
 The correct bound is (n+1)/2 (Nat division). -/
-axiom maximal_antichain_upper_bound (n : ℕ) (hn : n ≥ 2) :
-    ∀ A : Set ℕ, A ⊆ gameBoard n → IsDivisibilityAntichain A →
-    A.ncard ≤ (n + 1) / 2
 
 /--
 **Greedy Lower Bound:**
 The primes in [n/2, n] form an antichain, giving size ~ n / (2 ln n).
 -/
-axiom prime_antichain_bound (n : ℕ) (hn : n ≥ 10) :
-    ∃ P : Set ℕ, P ⊆ gameBoard n ∧ IsDivisibilityAntichain P ∧
-    (∀ p ∈ P, p.Prime) ∧ P.ncard ≥ n / (4 * Nat.log n + 1)
 
 /- ## Part V: Erdős's Questions
 -/
@@ -201,11 +189,6 @@ def gameLastsNearOptimal (gameLength : ℕ → ℕ) : Prop :=
 We axiomatize this as: the guaranteed game length under optimal play
 is currently unknown — neither linear nor sublinear behavior has been
 established. -/
-axiom erdos_872_open_status :
-    ¬ (∀ gameLength : ℕ → ℕ,
-      gameLastsLinear gameLength ∨ ¬ gameLastsLinear gameLength →
-      -- This axiom asserts we cannot currently determine the game's behavior
-      gameLastsLinear gameLength ∧ gameLastsNearOptimal gameLength)
 
 /- ## Part VI: Related Results
 -/
@@ -215,16 +198,11 @@ axiom erdos_872_open_status :
 In the analogous graph game, Füredi-Seress showed Ω(n log n) moves guaranteed.
 The triangle-free game on Kₙ lasts at least c · n · log n moves for some c > 0.
 -/
-axiom furedi_seress_triangle_game (n : ℕ) (hn : n ≥ 10) :
-    ∃ c : ℚ, c > 0 ∧ ∃ moves : ℕ, (moves : ℚ) ≥ c * (n : ℚ) * (Nat.log 2 n : ℚ)
 
 /--
 **Upper Bound for Triangle Game:**
 Biró, Horn, Wildstrom showed at most (26/121 + o(1))n² moves.
 -/
-axiom biro_horn_wildstrom_bound (n : ℕ) (hn : n ≥ 10) :
-    ∃ moves : ℕ, ∀ triangle_free_game_length : ℕ,
-      (triangle_free_game_length : ℚ) ≤ (27 : ℚ) / 121 * n ^ 2
 
 /- ## Part VII: Special Cases and Examples
 -/
@@ -281,12 +259,6 @@ def firstPlayerAdvantage : Prop :=
     IsMaximalAntichain A₂ (gameBoard n) ∧
     A₁.ncard ≠ A₂.ncard
 
-/-- Different maximal antichains indeed have different sizes.
-    For example in {2,...,6}: {5,6} is maximal with 2 elements,
-    while {4,5,6} is not maximal but {3,5} is maximal with 2 elements,
-    and {2,3,5} is maximal with 3 elements. -/
-axiom first_player_advantage_exists : firstPlayerAdvantage
-
 /- ## Part VIII: Game-Theoretic Formulation
 -/
 
@@ -296,7 +268,6 @@ The guaranteed game length under optimal play by both sides.
 Axiomatized since computing the minimax tree is exponential.
 -/
 axiom gameValue (n : ℕ) : ℕ
-axiom gameValue_pos (n : ℕ) (hn : n ≥ 4) : gameValue n > 0
 axiom gameValue_upper (n : ℕ) (hn : n ≥ 2) : gameValue n ≤ (n + 1) / 2
 
 /--
@@ -304,10 +275,6 @@ axiom gameValue_upper (n : ℕ) (hn : n ≥ 2) : gameValue n ≤ (n + 1) / 2
 Determine the asymptotic behavior of gameValue(n).
 Either the game lasts Θ(n) moves, or it is o(n) — we don't know which.
 -/
-axiom erdos_872_conjecture :
-    -- Either gameValue(n) = Θ(n) [linear] or gameValue(n) = o(n) [sublinear]
-    (∃ c : ℚ, c > 0 ∧ ∀ n ≥ 10, gameValue n ≥ (c * n).floor) ∨
-    (∀ ε : ℚ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, gameValue n ≤ (ε * n).ceil)
 
 /- ## Part IX: Summary
 -/

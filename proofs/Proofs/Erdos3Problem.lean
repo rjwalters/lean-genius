@@ -81,37 +81,6 @@ def Erdos3Conjecture : Prop :=
 
 /- ## Historical Results -/
 
-/-- **Roth's Theorem (1953)**: Sets with positive density contain 3-term APs.
-    First breakthrough: r_3(N) = o(N). -/
-axiom roth_theorem :
-  ∀ A : Set ℕ, (∀ M : ℕ, ∃ N > M, (countingFunction A N : ℝ) / N > 0) →
-    ContainsAP A 3
-
-/-- **Szemerédi's Theorem (1975)**: r_k(N) = o(N) for all k.
-    Sets with positive density contain arbitrarily long APs.
-    Won the Abel Prize (2012). -/
-axiom szemeredi_theorem :
-  ∀ k : ℕ, k ≥ 3 → ∀ε : ℝ, ε > 0 → ∀ᶠ N in atTop,
-    (rothNumber k N : ℝ) < ε * N
-
-/-- **Gowers' Bounds (2001)**: r_k(N) ≪ N / (log log N)^{c_k}.
-    Won the Fields Medal partly for this work. -/
-axiom gowers_bound (k : ℕ) (hk : k ≥ 3) :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
-    (rothNumber k N : ℝ) ≤ N / (Real.log (Real.log N))^c
-
-/-- **Kelley-Meka (2023)**: r_3(N) ≪ N / exp((log N)^{1/11}).
-    Massive improvement for 3-term APs. -/
-axiom kelley_meka_k3 :
-  ∀ᶠ N in atTop,
-    (rothNumber 3 N : ℝ) ≤ N / Real.exp ((Real.log N)^(1/11 : ℝ))
-
-/-- **Leng-Sah-Sawhney (2024)**: r_k(N) ≪ N / exp((log log N)^{c_k}).
-    Current best general bound. -/
-axiom leng_sah_sawhney_bound (k : ℕ) (hk : k ≥ 3) :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
-    (rothNumber k N : ℝ) ≤ N / Real.exp ((Real.log (Real.log N))^c)
-
 /- ## The Gap -/
 
 /-- **The Critical Gap**: Why the conjecture remains open.
@@ -138,27 +107,7 @@ theorem required_bound_implies_conjecture :
 /-- **Equivalent to Behrend-type bounds**: The conjecture asks whether
     Behrend's construction cannot be improved to achieve N / log N density. -/
 
-/-- Behrend (1946): There exist AP-free sets of size N / exp(c √(log N)) -/
-axiom behrend_construction :
-  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    ∃ A : Finset ℕ, ↑A ⊆ Finset.range (N + 1) ∧
-      IsAPFree (↑A : Set ℕ) 3 ∧
-      (A.card : ℝ) ≥ N / Real.exp (c * Real.sqrt (Real.log N))
-
-/-- Elkin (2011): Improved Behrend by logarithmic factor -/
-axiom elkin_improvement :
-  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    ∃ A : Finset ℕ, ↑A ⊆ Finset.range (N + 1) ∧
-      IsAPFree (↑A : Set ℕ) 3 ∧
-      (A.card : ℝ) ≥ c * N * Real.sqrt (Real.log (Real.log N)) /
-        Real.exp (4 * Real.sqrt (2 * Real.log N))
-
 /- ## Green-Tao Connection -/
-
-/-- **Green-Tao Theorem (2008)**: Primes contain arbitrarily long APs.
-    Erdős believed solving Problem #3 would lead to this result. -/
-axiom green_tao_primes :
-  ContainsArbitrarilyLongAP { p : ℕ | Nat.Prime p }
 
 /-- The primes have divergent reciprocal sum (Euler, 1737) -/
 axiom euler_prime_sum_diverges :

@@ -76,15 +76,6 @@ noncomputable def f (N : ℕ) : ℕ :=
   Finset.sup ((Finset.powerset (Interval N)).filter (fun S => SidonSubset N S))
     Finset.card
 
-/-- Classical bound: f(N) ~ N^{1/2} -/
-axiom f_asymptotic :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (1 - ε) * Real.sqrt N ≤ f N ∧ (f N : ℝ) ≤ (1 + ε) * Real.sqrt N
-
-/-- The largest Sidon set has size (1 + o(1))√N -/
-axiom largest_sidon_size :
-  Filter.Tendsto (fun N => (f N : ℝ) / Real.sqrt N) Filter.atTop (nhds 1)
-
 /- ## Part IV: The Cameron-Erdős Questions -/
 
 /-- Question 1: Is A₁(N) < 2^{o(N^{1/2})}? -/
@@ -99,29 +90,7 @@ def CameronErdosQuestion2 : Prop :=
 
 /- ## Part V: Saxton-Thomason Theorem (2015) -/
 
-/-- Saxton-Thomason: Number of Sidon sets is ≥ 2^{(1.16+o(1))N^{1/2}} -/
-axiom saxton_thomason_lower_bound :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (A N : ℝ) ≥ 2 ^ ((1.16 - ε) * Real.sqrt N)
-
-/-- Each maximal Sidon set contains at most 2^{(1+o(1))N^{1/2}} Sidon subsets -/
-axiom maximal_sidon_subsets_bound :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ S : Finset ℕ,
-    IsMaximalSidonSet N S →
-    ((Finset.powerset S).filter (fun T => IsSidonSet T) |>.card : ℝ) ≤
-      2 ^ ((1 + ε) * Real.sqrt N)
-
-/-- Key: Every Sidon set is contained in some maximal Sidon set -/
-axiom sidon_in_maximal :
-  ∀ N : ℕ, ∀ S : Finset ℕ, SidonSubset N S →
-    ∃ M : Finset ℕ, IsMaximalSidonSet N M ∧ S ⊆ M
-
 /- ## Part VI: The Main Result -/
-
-/-- The key counting argument: A₁(N) ≥ A(N) / (subsets per maximal) -/
-axiom counting_argument :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (A₁ N : ℝ) ≥ (A N : ℝ) / 2 ^ ((1 + ε) * Real.sqrt N)
 
 /-- Main Theorem: A₁(N) ≥ 2^{(0.16+o(1))N^{1/2}} -/
 axiom erdos_862_main :
@@ -136,11 +105,6 @@ axiom question1_negative : ¬CameronErdosQuestion1
 
 /- ## Part VII: Upper Bound -/
 
-/-- Upper bound: A₁(N) ≤ 2^{O(N^{1/2})} -/
-axiom upper_bound :
-  ∃ C > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (A₁ N : ℝ) ≤ 2 ^ (C * Real.sqrt N)
-
 /- ## Part VIII: B_h Generalizations -/
 
 /-- B_h sequences generalize Sidon sets -/
@@ -149,10 +113,6 @@ def IsBhSet (h : ℕ) (S : Finset ℕ) : Prop :=
     multiset1 ⊆ S → multiset2 ⊆ S →
     multiset1.card = h → multiset2.card = h →
     multiset1.sum = multiset2.sum → multiset1 = multiset2
-
-/-- Sidon sets are B₂ sequences -/
-axiom sidon_is_b2 :
-  ∀ S : Finset ℕ, IsSidonSet S ↔ IsBhSet 2 S
 
 /- ## Part IX: Summary -/
 

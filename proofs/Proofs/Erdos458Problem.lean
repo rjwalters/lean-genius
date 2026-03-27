@@ -82,30 +82,10 @@ theorem lcm_upto_dvd_mono {m n : ℕ} (hmn : m ≤ n) : lcm_upto m ∣ lcm_upto 
   apply Finset.lcm_mono
   exact Finset.Icc_subset_Icc (le_refl _) hmn
 
-/-- When we add a prime, lcm multiplies by that prime -/
-axiom lcm_upto_prime_step (p : ℕ) (hp : p.Prime) (n : ℕ) (hn : p ≤ n) (hnp : n < p.minFac) :
-    lcm_upto n = lcm_upto (p - 1)
-
-/-- lcm grows by factor p when crossing prime p -/
-axiom lcm_upto_at_prime (p : ℕ) (hp : p.Prime) :
-    lcm_upto p = p * lcm_upto (p - 1)
-
 /- ## The nth Prime -/
 
 /-- p_k denotes the k-th prime (0-indexed: p_0 = 2, p_1 = 3, etc.) -/
 noncomputable def nthPrime (k : ℕ) : ℕ := Nat.nth Nat.Prime k
-
-/-- The 0th prime is 2 -/
-axiom nthPrime_zero : nthPrime 0 = 2
-
-/-- The 1st prime is 3 -/
-axiom nthPrime_one : nthPrime 1 = 3
-
-/-- The 2nd prime is 5 -/
-axiom nthPrime_two : nthPrime 2 = 5
-
-/-- The 3rd prime is 7 -/
-axiom nthPrime_three : nthPrime 3 = 7
 
 /-- Every nthPrime is prime -/
 theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
@@ -153,9 +133,6 @@ def LegendreConjecture : Prop :=
 **Conditional Result**: If Legendre's conjecture holds, the prime gap
 p_{k+1} - p_k is bounded, which helps control the LCM growth.
 -/
-axiom legendre_implies_gap_bound :
-    LegendreConjecture →
-    ∀ k : ℕ, k ≥ 1 → nthPrime (k + 1) - nthPrime k < (nthPrime k).sqrt + 1
 
 /- ## Verified Small Cases -/
 
@@ -175,7 +152,5 @@ theorem erdos458_k2 : lcm_upto 6 < 5 * lcm_upto 5 := by native_decide
 This means lcm_upto n ≈ e^n asymptotically. The conjecture essentially
 asks about the fine structure of this growth between consecutive primes.
 -/
-axiom chebyshev_psi : ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < 1 ∧ 1 < c₂ ∧
-    ∀ n : ℕ, n ≥ 2 → c₁ * n < Real.log (lcm_upto n) ∧ Real.log (lcm_upto n) < c₂ * n
 
 end Erdos458

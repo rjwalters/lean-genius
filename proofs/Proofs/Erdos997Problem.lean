@@ -109,10 +109,6 @@ Well-distribution is strictly stronger than equidistribution.
 
 Well-distributed sequences are equidistributed, but not conversely.
 -/
-axiom well_distributed_implies_equidistributed :
-    ∀ x : UnitSequence, WellDistributed x →
-      ∀ I : Set ℝ, MeasurableSet I → I ⊆ Icc 0 1 →
-        True  -- Simplified: actual equidistribution statement
 
 /-
 ## Part III: The Prime Sequence
@@ -170,10 +166,6 @@ for almost all α.
 This is a measure-theoretic result: the set of α for which {αnₖ} is
 well-distributed has Lebesgue measure zero.
 -/
-axiom erdos_lacunary_theorem :
-    ∀ s : ℕ → ℕ, Lacunary s →
-      -- For almost all α, {α · sₖ} is not well-distributed
-      True  -- Simplified: actual measure-theoretic statement
 
 /-
 ## Part V: Primes and Well-Distribution
@@ -186,10 +178,6 @@ The main question.
 Erdős claimed there exists an irrational α such that {αpₙ} is not well-distributed.
 He later retracted this claim in 1985.
 -/
-axiom erdos_1964_retracted_claim :
-    -- Erdős claimed but later retracted that he had proved:
-    -- ∃ α : ℝ, Irrational α ∧ ¬WellDistributed (primeMultipleSequence α)
-    True
 
 /--
 **Champagne-Le-Liu-Wooley Theorem (2024):**
@@ -217,18 +205,12 @@ def Erdos997Conjecture : Prop :=
 For rational α = p/q, the sequence {αpₙ} has only finitely many values
 modulo 1, so cannot be well-distributed in any meaningful sense.
 -/
-axiom rational_case :
-    ∀ p q : ℤ, q ≠ 0 → ¬WellDistributed (primeMultipleSequence (p / q))
 
 /--
 **The Hard Case: Irrational α**
 For irrational α, the sequence {αpₙ} is equidistributed by Vinogradov.
 But well-distribution is stronger, requiring uniformity over all starting points.
 -/
-axiom vinogradov_equidistribution :
-    ∀ α : ℝ, Irrational α →
-      -- {αpₙ} is equidistributed mod 1
-      True  -- Simplified: actual equidistribution statement
 
 /-
 ## Part VI: Related Concepts
@@ -254,19 +236,12 @@ noncomputable def discrepancy (x : UnitSequence) (N : ℕ) : ℝ :=
 A sequence is well-distributed iff the discrepancy starting at any n
 goes to 0 uniformly.
 -/
-axiom well_distributed_iff_discrepancy :
-    ∀ x : UnitSequence,
-      WellDistributed x ↔
-        ∀ ε > 0, ∃ K, ∀ k ≥ K, ∀ n, discrepancy (fun m => x (n + m)) k < ε
 
 /--
 **Prime Distribution Irregularity:**
 The primes have inherent irregularities (prime gaps, twin primes, etc.)
 that may propagate to the sequence {αpₙ} regardless of α.
 -/
-axiom prime_irregularity :
-    -- The irregular distribution of primes affects well-distribution properties
-    True
 
 /-
 ## Part VII: Connections to Diophantine Approximation
@@ -277,18 +252,12 @@ axiom prime_irregularity :
 The well-distribution of {αpₙ} is related to how well α can be
 approximated by rationals with prime denominators.
 -/
-axiom diophantine_connection :
-    -- Well-distribution relates to approximation properties of α
-    True
 
 /--
 **Metric Theory:**
 By metric theory of Diophantine approximation, the behavior of {αpₙ}
 for "generic" (measure-theoretic typical) α may differ from all α.
 -/
-axiom metric_theory_perspective :
-    -- Metric vs universal statements may give different answers
-    True
 
 /-
 ## Part VIII: Status and Implications
@@ -314,9 +283,6 @@ theorem current_status :
 - Well-distribution is strictly stronger than equidistribution
 - Depends on subtle properties of prime gaps and α's continued fraction
 -/
-axiom problem_difficulty :
-    -- Primes' growth rate makes lacunary techniques inapplicable
-    True
 
 /-
 ## Part IX: Summary

@@ -111,11 +111,6 @@ structure TestFunction (a b : ℝ) where
 /-- **Fundamental Lemma of Calculus of Variations**:
     If ∫ f · η = 0 for all test functions η, then f = 0.
 
-    This is the key lemma that allows us to derive Euler-Lagrange. -/
-axiom fundamental_lemma (a b : ℝ) (f : ℝ → ℝ) (hf : Continuous f) :
-    (∀ η : TestFunction a b, ∫ x in Set.Icc a b, f x * η.func x = 0) →
-    (∀ x ∈ Set.Ioo a b, f x = 0)
-
 end FundamentalLemma
 
 /-!
@@ -152,11 +147,6 @@ def IsExtremal (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ) : Prop :=
     If y is a local minimizer of J[y] = ∫ L(x, y, y') dx, then y
     satisfies the Euler-Lagrange equation.
 
-    This is THE fundamental theorem of calculus of variations. -/
-axiom euler_lagrange_necessary (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ)
-    (a b : ℝ) (_hmin : ∀ _η : TestFunction a b, True) :
-    IsExtremal L y
-
 /-- The Euler-Lagrange equation can be written in "weak form":
     ∫ (∂L/∂y · η + ∂L/∂y' · η') dx = 0 for all test functions η -/
 theorem euler_lagrange_weak_form (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ)
@@ -187,22 +177,10 @@ noncomputable def geodesicLagrangian : ℝ → ℝ → ℝ → ℝ :=
 /-- Geodesics in Euclidean space are straight lines.
     This follows from Euler-Lagrange applied to the arc length functional.
 
-    The Euler-Lagrange equation for arc length gives y'' = 0,
-    whose general solution is y = mx + c for constants m, c. -/
-axiom geodesics_are_lines (y : ℝ → ℝ) (a b : ℝ)
-    (hgeod : IsExtremal geodesicLagrangian y) :
-    ∃ m c : ℝ, ∀ x, y x = m * x + c
-
 /-- **Classical Mechanics**: L = T - V (kinetic minus potential energy).
     Euler-Lagrange gives Newton's equations F = ma. -/
 noncomputable def mechanicsLagrangian (m : ℝ) (V : ℝ → ℝ) : ℝ → ℝ → ℝ → ℝ :=
   fun _ y y' => (m / 2) * y'^2 - V y
-
-/-- Newton's second law as Euler-Lagrange equation:
-    m·y'' = -∂V/∂y (force equals negative gradient of potential) -/
-axiom newton_from_euler_lagrange (m : ℝ) (V : ℝ → ℝ) (y : ℝ → ℝ)
-    (hextremal : IsExtremal (mechanicsLagrangian m V) y) :
-    ∀ x, m * deriv (deriv y) x = -(deriv V (y x))
 
 end Applications
 
@@ -234,16 +212,6 @@ def IsWeaklyLowerSemicontinuous (J : (ℝ → ℝ) → ℝ) : Prop :=
 /-- **Direct Method Existence Theorem** (Tonelli, 1920s):
     If J is coercive and weakly lower semicontinuous on a suitable space,
     then J attains its minimum.
-
-    This is one of the great achievements responding to Hilbert's 23rd problem. -/
-axiom direct_method_existence
-    (J : (ℝ → ℝ) → ℝ)
-    (K : Set (ℝ → ℝ))
-    (hcoer : IsCoercive J)
-    (hwlsc : IsWeaklyLowerSemicontinuous J)
-    (hK_nonempty : K.Nonempty)
-    (hK_closed : True) :
-    ∃ u ∈ K, ∀ v ∈ K, J u ≤ J v
 
 end DirectMethods
 
@@ -286,14 +254,6 @@ def hamiltonian (_S : ControlSystem) (_cost : CostFunctional _S)
     If u* is an optimal control with corresponding state x* and costate p*,
     then H(x*, u*, p*) = max_u H(x*, u, p*) almost everywhere.
 
-    This extended calculus of variations to modern control theory. -/
-axiom pontryagin_maximum_principle
-    (S : ControlSystem) (cost : CostFunctional S)
-    (u_star : ℝ → S.control) (x_star : ℝ → S.state) (p_star : ℝ → S.state) :
-    True → -- Optimality condition
-    ∀ t, hamiltonian S cost (x_star t) (u_star t) (p_star t) =
-         hamiltonian S cost (x_star t) (u_star t) (p_star t) -- Maximum condition
-
 end OptimalControl
 
 /-!
@@ -323,16 +283,6 @@ The 20th century saw explosive growth in variational methods:
 -/
 
 section ModernDevelopments
-
-/-- The Sobolev space W^{1,2}[a,b] (functions with one weak derivative in L²)
-    is the natural setting for many variational problems. -/
-axiom sobolev_space_exists (_a _b : ℝ) :
-    ∃ (_W12 : Type), True
-
-/-- **Rellich-Kondrachov Compactness**: W^{1,2} embeds compactly into L².
-    This is crucial for the direct method. -/
-axiom rellich_kondrachov_compactness (_a _b : ℝ) :
-    True  -- W^{1,2}[a,b] ↪→ L²[a,b] is compact
 
 /-- Many important PDEs are Euler-Lagrange equations:
     - Laplace equation: Dirichlet energy

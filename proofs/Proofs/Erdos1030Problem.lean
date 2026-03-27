@@ -69,14 +69,6 @@ noncomputable def R (k ℓ : ℕ) : ℕ :=
     Nat.find (ramsey_exists k ℓ h.1 h.2)
   else 0
 
-/-- R(k, ℓ) satisfies the Ramsey property. -/
-axiom R_satisfies (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
-    RamseyProperty (R k ℓ) k ℓ
-
-/-- R(k, ℓ) is minimal: R(k, ℓ) - 1 does not satisfy the property. -/
-axiom R_minimal (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
-    ¬RamseyProperty (R k ℓ - 1) k ℓ
-
 /-
 ## Part III: Basic Properties of Ramsey Numbers
 
@@ -97,10 +89,6 @@ theorem R_k_2 (k : ℕ) (hk : k ≥ 2) : R k 2 = k := by
 /-- R(3, 3) = 6. -/
 axiom R_3_3 : R 3 3 = 6
 
-/-- The recursive bound: R(k, ℓ) ≤ R(k-1, ℓ) + R(k, ℓ-1). -/
-axiom R_recursive_bound (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
-    R k ℓ ≤ R (k-1) ℓ + R k (ℓ-1)
-
 /-- Upper bound: R(k, ℓ) ≤ C(k+ℓ-2, k-1). -/
 axiom R_binomial_bound (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
     R k ℓ ≤ Nat.choose (k + ℓ - 2) (k - 1)
@@ -117,9 +105,6 @@ noncomputable def R_diag (k : ℕ) : ℕ := R k k
 /-- R(3) = R(3,3) = 6. -/
 theorem R_diag_3 : R_diag 3 = 6 := R_3_3
 
-/-- R(4) = R(4,4) = 18. -/
-axiom R_diag_4 : R_diag 4 = 18
-
 /-- Erdős-Szekeres upper bound: R(k, k) ≤ C(2k-2, k-1). -/
 theorem R_diag_upper (k : ℕ) (hk : k ≥ 2) :
     R_diag k ≤ Nat.choose (2*k - 2) (k - 1) := by
@@ -127,10 +112,6 @@ theorem R_diag_upper (k : ℕ) (hk : k ≥ 2) :
   have h : k + k - 2 = 2*k - 2 := by omega
   rw [← h]
   exact R_binomial_bound k k hk hk
-
-/-- Erdős lower bound: R(k, k) ≥ 2^(k/2) (probabilistic method). -/
-axiom R_diag_lower (k : ℕ) (hk : k ≥ 2) :
-    (R_diag k : ℝ) ≥ 2^((k : ℝ)/2)
 
 /-
 ## Part V: The Off-Diagonal Difference
@@ -145,11 +126,6 @@ noncomputable def R_off (k : ℕ) : ℕ := R (k+1) k
 noncomputable def RamseyDiff (k : ℕ) : ℕ := R_off k - R_diag k
 
 /-- Trivial lower bound: R(k+1, k) - R(k, k) ≥ k - 2.
-
-    Proof sketch: Adding one to k allows the red clique requirement
-    to increase, which needs at least k-2 more vertices. -/
-axiom trivial_diff_bound (k : ℕ) (hk : k ≥ 3) :
-    RamseyDiff k ≥ k - 2
 
 /-
 ## Part VI: Burr-Erdős-Faudree-Schelp Theorem (1989)
@@ -219,10 +195,6 @@ theorem befs_implies_weaker (k : ℕ) (hk : k ≥ 3) :
     (RamseyDiff k : ℝ) ≥ 2 * k - 5 :=
   diff_linear_growth k hk
 
-/-- Using the known upper bound R(k,k) ≤ 4^k, we get ratio bound. -/
-axiom R_diag_upper_exp (k : ℕ) (hk : k ≥ 2) :
-    (R_diag k : ℝ) ≤ 4^k
-
 /-- Using the known lower bound R(k,k) ≥ 2^(k/2), we can bound the ratio. -/
 theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :
     GrowthRatio k ≥ 1 + (2*k - 5) / 4^k := by
@@ -238,15 +210,6 @@ axiom erdos_sos_solved :
 
 Small cases that are completely determined.
 -/
-
-/-- Known values of R(k, ℓ) for small k, ℓ. -/
-axiom R_known_values :
-    R 3 3 = 6 ∧ R 3 4 = 9 ∧ R 3 5 = 14 ∧ R 3 6 = 18 ∧ R 3 7 = 23 ∧
-    R 4 4 = 18 ∧ R 4 5 = 25
-
-/-- R(3, k) growth: This is Problem #544. -/
-axiom R_3_k_bounds (k : ℕ) (hk : k ≥ 3) :
-    (k^2 : ℝ) / (4 * Real.log k) ≤ R 3 k ∧ (R 3 k : ℝ) ≤ k^2 / Real.log k
 
 /-
 ## Part XI: Connection to Other Problems

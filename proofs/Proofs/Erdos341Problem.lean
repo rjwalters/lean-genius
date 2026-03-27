@@ -67,10 +67,14 @@ axiom dickson_strictly_increasing :
   ∀ (A₀ : Finset ℕ) (n : ℕ), A₀.Nonempty →
     dicksonSeq A₀ (n + 1) > dicksonSeq A₀ n
 
-/-- Differences are positive: d(n) ≥ 1. -/
-axiom dickson_diff_pos :
+/-- Differences are positive: d(n) ≥ 1. Follows from strict increase. -/
+theorem dickson_diff_pos :
   ∀ (A₀ : Finset ℕ) (n : ℕ), A₀.Nonempty →
-    dicksonDiff A₀ n ≥ 1
+    dicksonDiff A₀ n ≥ 1 := by
+  intro A₀ n hne
+  have := dickson_strictly_increasing A₀ n hne
+  simp only [dicksonDiff]
+  omega
 
 /-- The sequence avoids self-sums: a_{n+1} is not a sum of two
     elements from {a₁, ..., aₙ}. -/
@@ -86,31 +90,19 @@ axiom dickson_minimal :
     dicksonSeq A₀ n < m → m < dicksonSeq A₀ (n + 1) →
     IsSumRepresentable (Finset.range (n + 1) |>.image (dicksonSeq A₀)) m
 
-/- ## Examples -/
+/- ## Derived Properties -/
 
-/-- Starting from {1}: the sequence is 1, 2, 4, 8, 16, ...
-    (powers of 2, differences all 2^k − 2^{k-1} = 2^{k-1},
-    eventually periodic with period 1 in log scale).
-    Actually: 1, 2, 4, 8, 13, 21, 31, 45, ... -/
-axiom singleton_one_example :
-  dicksonSeq {1} 0 = 1
-
-/-- The sequence starting from {1, 4, 9, 16, 25} (perfect squares)
-    requires thousands of terms before periodicity emerges. -/
-axiom squares_slow_periodicity :
-  ∀ N : ℕ, N < 1000 →
-    ¬∃ p : ℕ, p ≥ 1 ∧ p ≤ 10 ∧ IsEventuallyPeriodic (dicksonDiff {1, 4, 9, 16, 25}) p N
-
-/-- If the conjecture holds, the eventual period depends on A₀. -/
-axiom period_depends_on_initial :
-  ∃ A₁ A₂ : Finset ℕ,
-    A₁.Nonempty ∧ A₂.Nonempty ∧
-    ∀ p₁ p₂ N₁ N₂ : ℕ,
-      IsEventuallyPeriodic (dicksonDiff A₁) p₁ N₁ →
-      IsEventuallyPeriodic (dicksonDiff A₂) p₂ N₂ →
-      p₁ ≠ p₂
-
-/-- Growth rate: the sequence grows at least linearly. -/
-axiom dickson_linear_growth :
+/-- Growth rate: the sequence grows at least linearly.
+    Since a_{n+1} > aₙ (strict increase of naturals), we get aₙ ≥ n by induction. -/
+theorem dickson_linear_growth :
   ∀ (A₀ : Finset ℕ), A₀.Nonempty →
-    ∃ c : ℕ, c ≥ 1 ∧ ∀ n : ℕ, dicksonSeq A₀ n ≥ c * n
+    ∃ c : ℕ, c ≥ 1 ∧ ∀ n : ℕ, dicksonSeq A₀ n ≥ c * n := by
+  intro A₀ hne
+  refine ⟨1, le_refl _, ?_⟩
+  intro n
+  simp only [one_mul]
+  induction n with
+  | zero => omega
+  | succ n ih =>
+    have := dickson_strictly_increasing A₀ n hne
+    omega

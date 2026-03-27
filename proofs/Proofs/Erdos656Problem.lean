@@ -59,12 +59,6 @@ axiom lowerDensity (A : Set ℕ) : ℝ
 def HasPositiveUpperDensity (A : Set ℕ) : Prop :=
   0 < upperDensity A
 
-/-- Upper density is always between 0 and 1. -/
-axiom upperDensity_bounds (A : Set ℕ) : 0 ≤ upperDensity A ∧ upperDensity A ≤ 1
-
-/-- Lower density is at most upper density. -/
-axiom lowerDensity_le_upperDensity (A : Set ℕ) : lowerDensity A ≤ upperDensity A
-
 /-- The natural density exists when upper and lower densities agree. -/
 def HasNaturalDensity (A : Set ℕ) : Prop :=
   upperDensity A = lowerDensity A
@@ -87,13 +81,6 @@ def shiftedSumset (B : Set ℕ) (t : ℤ) : Set ℤ :=
 /-- Lift a set of naturals to integers for shifted sumset containment. -/
 def liftToInt (A : Set ℕ) : Set ℤ :=
   {z | ∃ n : ℕ, n ∈ A ∧ z = n}
-
-/-- The sumset of a finite set is finite. -/
-axiom sumset_finite_of_finite (B : Set ℕ) (hB : B.Finite) : (sumset B).Finite
-
-/-- The sumset of an infinite set has positive density. -/
-axiom sumset_positive_density (B : Set ℕ) (hB : B.Infinite) :
-    HasPositiveUpperDensity (sumset B)
 
 /-
 ## Part III: Hindman's Theorem (Background)
@@ -120,12 +107,6 @@ FS(B) is monochromatic.
 
 This is a cornerstone of Ramsey theory on the integers.
 -/
-axiom hindman_theorem (k : ℕ) (hk : k ≥ 1) (c : Coloring k) :
-    ∃ B : Set ℕ, B.Infinite ∧ IsMonochromatic c (finiteSums B)
-
-/-- Hindman's theorem implies B + B is monochromatic (weaker statement). -/
-axiom hindman_sumset (k : ℕ) (hk : k ≥ 1) (c : Coloring k) :
-    ∃ B : Set ℕ, B.Infinite ∧ IsMonochromatic c (sumset B)
 
 /-
 ## Part IV: The Erdős Conjecture
@@ -174,31 +155,11 @@ Reference: "A proof of Erdős's B+B+t conjecture", Commun. Am. Math. Soc. (2024)
 -/
 axiom kra_moreira_richter_robertson : ErdosConjecture656
 
-/-- The shift t can be taken to be 0 in some cases (sufficient density). -/
-axiom high_density_no_shift (A : Set ℕ) (h : upperDensity A > 1/2) :
-    ∃ B : Set ℕ, B.Infinite ∧ sumset B ⊆ A
-
 /-
 ## Part VI: Related Results and Strengthenings
 
 Several related problems and extensions.
 -/
-
-/-- Erdős Problem #172: Hindman's theorem (original). -/
-axiom erdos_172_hindman : ∀ k : ℕ, k ≥ 1 →
-    ∀ c : Coloring k, ∃ B : Set ℕ, B.Infinite ∧ IsMonochromatic c (finiteSums B)
-
-/-- Erdős Problem #109: Related sumset problem. -/
-axiom erdos_109_related : ∀ A : Set ℕ, HasPositiveUpperDensity A →
-    ∃ a₁ a₂ a₃ : ℕ, a₁ ∈ A ∧ a₂ ∈ A ∧ a₃ ∈ A ∧ a₁ + a₂ = 2 * a₃
-
-/-- Sárközy's theorem (1978): Density implies difference squares. -/
-axiom sarkozy_theorem (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ a₁ a₂ : ℕ, a₁ ∈ A ∧ a₂ ∈ A ∧ ∃ k : ℕ, k > 0 ∧ a₁ - a₂ = k^2
-
-/-- Furstenberg-Sárközy theorem via ergodic theory. -/
-axiom furstenberg_sarkozy (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ d : ℕ, d > 0 ∧ ∃ a₁ a₂ : ℕ, a₁ ∈ A ∧ a₂ ∈ A ∧ a₁ - a₂ = d^2
 
 /-
 ## Part VII: Furstenberg Correspondence
@@ -208,14 +169,6 @@ The key tool connecting density to ergodic theory.
 
 /-- A measure-preserving system (abstractly). -/
 axiom MeasurePreservingSystem : Type
-
-/-- Furstenberg correspondence: density statements ↔ recurrence statements. -/
-axiom furstenberg_correspondence (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ (_ : MeasurePreservingSystem), True  -- Placeholder for the correspondence
-
-/-- The correspondence preserves the key combinatorial structure. -/
-axiom correspondence_preserves_sumsets (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ B : Set ℕ, B.Infinite ∧ ∃ t : ℤ, HasShiftedSumsetIn A B t
 
 /-
 ## Part VIII: Main Results Summary
@@ -228,16 +181,5 @@ axiom correspondence_preserves_sumsets (A : Set ℕ) (h : HasPositiveUpperDensit
     This was the density version of Hindman's theorem conjectured by Erdős in 1975. -/
 theorem erdos_656 : ErdosConjecture656 :=
   kra_moreira_richter_robertson
-
-/-- The theorem is nontrivial: there exist sets with positive density
-    where the shift t is necessary (B + B is not contained in A). -/
-axiom shift_sometimes_necessary :
-    ∃ A : Set ℕ, HasPositiveUpperDensity A ∧
-      ¬∃ B : Set ℕ, B.Infinite ∧ sumset B ⊆ A
-
-/-- Quantitative version: the density of B can be controlled. -/
-axiom quantitative_version (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ B : Set ℕ, B.Infinite ∧ HasPositiveUpperDensity B ∧
-      ∃ t : ℤ, HasShiftedSumsetIn A B t
 
 end Erdos656

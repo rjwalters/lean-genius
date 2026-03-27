@@ -311,58 +311,8 @@ theorem f1_achievable (n : ℕ) (hn : n ≥ 1) :
       exact Fin.mk_lt_mk.mpr (Nat.lt_succ_of_le le_rfl)
     · exact nat_consecutive_abs_eq_one k.val
 
-/-- f_1(n) = n - 1 -/
-axiom f1_exact (n : ℕ) (hn : n ≥ 1) :
-  maxUnitDistPairs 1 n = n - 1
-
 /- ## Two-Dimensional Case -/
-
-/-- Erdős's upper bound: f_2(n) < 3n - c√n for some c > 0. -/
-axiom f2_upper_erdos :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    (maxUnitDistPairs 2 n : ℝ) < 3 * n - c * Real.sqrt n
-
-/-- Harborth's exact formula (1974):
-    f_2(n) = ⌊3n - √(12n - 3)⌋ for all n ≥ 2. -/
-axiom harborth_exact (n : ℕ) (hn : n ≥ 2) :
-  maxUnitDistPairs 2 n = Nat.floor (3 * (n : ℝ) - Real.sqrt (12 * n - 3))
-
-/-- The triangular lattice achieves the maximum. -/
-axiom triangular_lattice_optimal (n : ℕ) (hn : n ≥ 2) :
-  ∃ C : SeparatedConfig 2 n, unitDistPairs C = maxUnitDistPairs 2 n
-
-/-- Upper bound: f_2(n) < 3n (each point has ≤ 6 unit neighbors). -/
-axiom f2_trivial_upper (n : ℕ) (hn : n ≥ 1) :
-  maxUnitDistPairs 2 n < 3 * n
 
 /- ## Three-Dimensional Case -/
 
-/-- Leading coefficient in d=3: f_3(n) ~ 6n. -/
-axiom f3_leading :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-    |(maxUnitDistPairs 3 n : ℝ) / n - 6| < ε
-
-/-- Bezdek–Reid (2013): f_3(n) < 6n - 0.926 · n^(2/3). -/
-axiom bezdek_reid_upper :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    (maxUnitDistPairs 3 n : ℝ) < 6 * n - c * (n : ℝ) ^ (2/3 : ℝ)
-
-/-- Erdős conjecture for d=3: f_3(n) = 6n - Θ(n^{2/3}). -/
-axiom erdos_1084_d3_conjecture :
-  ∃ c₁ c₂ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧
-    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-      6 * (n : ℝ) - c₁ * (n : ℝ) ^ (2/3 : ℝ) ≤ (maxUnitDistPairs 3 n : ℝ) ∧
-      (maxUnitDistPairs 3 n : ℝ) ≤ 6 * (n : ℝ) - c₂ * (n : ℝ) ^ (2/3 : ℝ)
-
 /- ## General Dimension -/
-
-/-- Lower bound: f_d(n) ≥ (d - o(1)) · n. -/
-axiom fd_lower_general :
-  ∀ d : ℕ, d ≥ 1 → ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-      (maxUnitDistPairs d n : ℝ) ≥ ((d : ℝ) - ε) * n
-
-/-- Upper bound: f_d(n) ≤ 2^{O(d)} · n. -/
-axiom fd_upper_general :
-  ∃ C : ℝ, C > 0 ∧ ∀ d : ℕ, d ≥ 1 → ∀ n : ℕ, n ≥ 1 →
-    (maxUnitDistPairs d n : ℝ) ≤ (2 : ℝ) ^ (C * d) * n

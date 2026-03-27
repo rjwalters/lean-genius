@@ -67,14 +67,6 @@ def ErdosFaudreeSchelpConjecture : Prop :=
     GirthGreaterThan G (2 * s) →
     (numCycleLengths G : ℝ) ≥ c * (k : ℝ) ^ s
 
-/-- The base case s = 2 was proven by Erdős, Faudree, and Schelp -/
-axiom erdos_faudree_schelp_s2 : ∃ c : ℝ, c > 0 ∧
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ),
-    minDegree G ≥ k →
-    GirthGreaterThan G 4 →
-    (numCycleLengths G : ℝ) ≥ c * (k : ℝ) ^ 2
-
 /- ## Part 3: The Sudakov-Verstraëte Theorem (Stronger Version)
 -/
 
@@ -137,12 +129,6 @@ theorem erdos_752_solved : ErdosFaudreeSchelpConjecture := by
 /- ## Part 4: Why Girth Matters
 -/
 
-/-- Moore bound: a graph with min degree d and girth > 2s has many vertices -/
-axiom moore_bound_lower : ∀ (V : Type*) [Fintype V] [DecidableEq V]
-  (G : SimpleGraph V) [DecidableRel G.Adj] (d s : ℕ),
-  minDegree G ≥ d → GirthGreaterThan G (2 * s) →
-  (Fintype.card V : ℝ) ≥ 1 + d * ((d - 1 : ℝ) ^ s - 1) / (d - 2)
-
 /-- Moore graphs achieve the Moore bound exactly -/
 def IsMooreGraph (G : SimpleGraph V) [DecidableRel G.Adj] (d g : ℕ) : Prop :=
   G.IsRegular d ∧
@@ -165,42 +151,11 @@ theorem high_girth_spreads_cycles (G : SimpleGraph V) [DecidableRel G.Adj]
   push_neg at hlt
   exact hs n (Nat.lt_succ_iff.mp hlt) hn
 
-/-- In high girth graphs, cycle lengths bunch up at consecutive values -/
-axiom consecutive_lengths_theorem :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-    G.Connected →
-    cycleLengths G ≠ ∅ →
-    ∃ (a b : ℕ), a < b ∧ ∀ n, a ≤ n → n ≤ b → Even n → n ∈ cycleLengths G
-
 /- ## Part 6: Extremal Connections
 -/
 
-/-- Zarankiewicz-type bounds relate to cycle lengths -/
-axiom zarankiewicz_connection :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (s : ℕ),
-    GirthGreaterThan G (2 * s) →
-    G.edgeFinset.card ≤ (Fintype.card V : ℕ) ^ (1 + 1 / (s : ℝ))
-
 /- ## Part 7: Extensions and Generalizations
 -/
-
-/-- The chromatic number version: proved by Sudakov-Verstraëte -/
-axiom chromatic_version : ∃ c : ℝ, c > 0 ∧
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (k s : ℕ),
-    G.chromaticNumber ≥ k →
-    GirthGreaterThan G (2 * s) →
-    (cycleLengths G).ncard ≥ ⌊c * (k : ℝ) ^ s⌋₊
-
-/-- Odd cycle lengths also satisfy the bound -/
-axiom odd_cycle_version : ∃ c : ℝ, c > 0 ∧
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (k s : ℕ),
-    G.chromaticNumber ≥ k →
-    GirthGreaterThan G (2 * s) →
-    ({ n ∈ cycleLengths G | Odd n }).ncard ≥ ⌊c * (k : ℝ) ^ s⌋₊
 
 /-- Sudakov-Verstraëte conjecture about consecutive lengths -/
 def SudakovVerstrateConjecture : Prop :=
@@ -220,17 +175,6 @@ theorem sudakov_verstrate_constant_pos : sudakov_verstrate_constant > 0 := by
 
 theorem sudakov_verstrate_constant_is : sudakov_verstrate_constant > 1 / 1000 := by
   unfold sudakov_verstrate_constant; norm_num
-
-/-- Improved bounds for specific values of s -/
-axiom improved_bound_s2 : ∀ (V : Type*) [Fintype V] [DecidableEq V]
-  (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ),
-  avgDegree G ≥ k → GirthGreaterThan G 4 →
-  numCycleLengths G ≥ k^2 / 10
-
-axiom improved_bound_s3 : ∀ (V : Type*) [Fintype V] [DecidableEq V]
-  (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ),
-  avgDegree G ≥ k → GirthGreaterThan G 6 →
-  numCycleLengths G ≥ k^3 / 100
 
 /- ## Part 9: Summary
 -/

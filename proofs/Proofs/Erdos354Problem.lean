@@ -76,14 +76,6 @@ theorem floorSeqTerm_nonneg (α : ℝ) (k : ℕ) (hα : 0 < α) :
   unfold floorSeqTerm
   exact Nat.zero_le _
 
-/-- For α ≥ 1, the floor sequence is unbounded. -/
-axiom floorSeq_unbounded (α : ℝ) (hα : 1 ≤ α) :
-    ∀ M : ℕ, ∃ k : ℕ, M < floorSeqTerm α k
-
-/-- The floor sequence is monotonically increasing for k large enough. -/
-axiom floorSeq_eventually_increasing (α : ℝ) (hα : 0 < α) :
-    ∃ K : ℕ, ∀ k ≥ K, floorSeqTerm α k < floorSeqTerm α (k + 1)
-
 /-
 ## Hegyvári's Results (1989)
 
@@ -95,10 +87,6 @@ dyadic rational, then the combined floor sequences are complete.
 
 This uses the fact that dyadic rationals give periodic behavior mod powers of 2,
 while non-dyadic numbers fill in the gaps. -/
-axiom hegyvari_dyadic_complete (α β : ℝ) (hα : 0 < α) (hβ : 0 < β)
-    (hαDyadic : IsDyadicRational α) (hβNotDyadic : ¬IsDyadicRational β)
-    (hRatio : HasIrrationalRatio α β) :
-    IsComplete α β
 
 /-- **Hegyvári's Negative Result (1989)**: If α ≥ 2 and β = 2ᵏα for some k ≥ 1,
 then the combined sequences are NOT complete.
@@ -116,9 +104,6 @@ Another special case of completeness.
 /-- **Van Doorn's Result**: If α < 2 < β < 3, then the sequences are complete.
 
 The separation between α and β in this range ensures good coverage. -/
-axiom vanDoorn_complete (α β : ℝ) (hα : 0 < α) (hα2 : α < 2)
-    (hβ2 : 2 < β) (hβ3 : β < 3) (hRatio : HasIrrationalRatio α β) :
-    IsComplete α β
 
 /-
 ## Recent Negative Results (2024-2025)
@@ -130,12 +115,6 @@ Extensions of Hegyvári's non-completeness results.
 for sufficiently large k.
 
 This shows the gap phenomenon persists even when α is small. -/
-axiom jiangMa_not_complete (α : ℝ) (hα1 : 1 < α) (hα2 : α < 2) :
-    ∃ K : ℕ, ∀ k ≥ K, ¬IsComplete α ((2 : ℝ)^k * α)
-
-/-- **Fang-He (2025)**: Strengthened version with explicit bounds. -/
-axiom fangHe_not_complete (α : ℝ) (hα1 : 1 < α) (hα2 : α < 2) (k : ℕ) (hk : 10 ≤ k) :
-    ¬IsComplete α ((2 : ℝ)^k * α)
 
 /-
 ## Main Conjecture (OPEN)
@@ -148,24 +127,15 @@ is the combined floor sequence always complete?
 
 The answer is NOT always yes (Hegyvári counterexamples), so the refined
 conjecture asks: for which pairs (α, β) is completeness achieved? -/
-axiom erdos_354_conjecture :
-    (∀ α β : ℝ, 0 < α → 0 < β → HasIrrationalRatio α β → IsComplete α β) ∨
-    (∃ α β : ℝ, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β)
 
 /-- The conjecture is known to be FALSE in full generality - counterexamples exist.
 
 The counterexample construction is technical: one takes α > 2 and β such that
 α/β is irrational but β = 2ᵏ · α for some k. This gives HasIrrationalRatio α β
 while hegyvari_not_complete shows ¬IsComplete α β. -/
-axiom conjecture_is_false :
-    ∃ α β : ℝ, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β
 
 /-- The REFINED conjecture: Is completeness achieved when α/β is irrational
 AND neither α nor β is a power of 2 times the other? -/
-axiom refined_conjecture (α β : ℝ) (hα : 0 < α) (hβ : 0 < β)
-    (hRatio : HasIrrationalRatio α β)
-    (hNotPower : ∀ k : ℤ, β ≠ (2 : ℝ)^k * α) :
-    IsComplete α β ∨ ¬IsComplete α β  -- Unknown!
 
 /-
 ## Representation Properties
@@ -173,35 +143,11 @@ axiom refined_conjecture (α β : ℝ) (hα : 0 < α) (hβ : 0 < β)
 Understanding which numbers are representable.
 -/
 
-/-- Zero is always representable (empty sums). -/
-axiom zero_representable (α β : ℝ) : IsRepresentable α β 0
-
-/-- For α ≥ 1, every term in the floor sequence is representable. -/
-axiom floorSeqTerm_representable (α β : ℝ) (k : ℕ) (hα : 1 ≤ α) :
-    IsRepresentable α β (floorSeqTerm α k)
-
-/-- The set of representable numbers is closed under addition of floor sequence terms. -/
-axiom representable_add_term (α β : ℝ) (n : ℕ) (k : ℕ)
-    (hn : IsRepresentable α β n) :
-    IsRepresentable α β (n + floorSeqTerm α k) ∨
-    IsRepresentable α β (n + floorSeqTerm β k)
-
 /-
 ## Measure-Theoretic Results
 
 Hegyvári's density results.
 -/
-
-/-- The set of representable numbers has positive lower density. -/
-axiom representable_positive_density (α β : ℝ) (hα : 0 < α) (hβ : 0 < β)
-    (hRatio : HasIrrationalRatio α β) :
-    ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, c * N ≤ ({n : ℕ | n ≤ N ∧ IsRepresentable α β n} : Set ℕ).ncard
-
-/-- For "generic" pairs (α, β), completeness holds (measure 1). -/
-axiom generic_completeness :
-    ∃ S : Set (ℝ × ℝ), (∀ p ∈ S, 0 < p.1 ∧ 0 < p.2 ∧ IsComplete p.1 p.2) ∧
-    -- S has full measure in some appropriate sense
-    True  -- Placeholder for measure-theoretic statement
 
 /-
 ## Connection to Binary Representations
@@ -209,12 +155,8 @@ axiom generic_completeness :
 The problem relates to binary expansions.
 -/
 
-/-- For α = 1, the floor sequence gives powers of 2: {1, 2, 4, 8, ...}. -/
-axiom floorSeq_one (k : ℕ) : floorSeqTerm 1 k = 2^k
-
 /-- With α = β = 1, every positive integer is representable (binary representation).
 This follows from the standard fact that every natural number has a binary representation. -/
-axiom binary_complete : IsComplete 1 1
 
 /-
 ## The Generalization Question
@@ -225,14 +167,6 @@ What about base γ ∈ (1, 2)?
 /-- The **generalized floor sequence** for base γ: {⌊γᵏα⌋ : k ∈ ℕ}. -/
 def GeneralFloorSeq (γ α : ℝ) : Set ℕ :=
   {n | ∃ k : ℕ, n = ⌊γ^k * α⌋.toNat}
-
-/-- The generalized completeness question for base γ ∈ (1, 2). -/
-axiom generalized_conjecture (γ α β : ℝ) (hγ1 : 1 < γ) (hγ2 : γ < 2)
-    (hα : 0 < α) (hβ : 0 < β) (hRatio : HasIrrationalRatio α β) :
-    (∃ N : ℕ, ∀ n ≥ N, ∃ (S T : Finset ℕ),
-      n = (∑ s ∈ S, ⌊γ^s * α⌋.toNat) + (∑ t ∈ T, ⌊γ^t * β⌋.toNat)) ∨
-    ¬(∃ N : ℕ, ∀ n ≥ N, ∃ (S T : Finset ℕ),
-      n = (∑ s ∈ S, ⌊γ^s * α⌋.toNat) + (∑ t ∈ T, ⌊γ^t * β⌋.toNat))
 
 /-
 ## Historical Notes

@@ -89,10 +89,6 @@ def alpha_k_exists (k : ℕ) : Prop :=
 
 /-- The constant αₖ (as an axiom since computing it is complex) -/
 axiom alpha_k (k : ℕ) : ℝ
-axiom alpha_k_pos (k : ℕ) : alpha_k k > 0
-axiom alpha_k_achievable (k : ℕ) :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      ∃ P : PointSet n, R_k P k < (alpha_k k + ε) * Real.sqrt n
 
 /-
 ## Part IV: Basic Properties
@@ -100,30 +96,11 @@ axiom alpha_k_achievable (k : ℕ) :
 Trivial cases and fundamental bounds.
 -/
 
-/-- α₁ = 0: R(x₁) = 1 is achievable (all points equidistant from x₁) -/
-axiom alpha_1_zero : alpha_k 1 = 0
-  -- Place all points on a circle centered at x₁
-
-/-- R(x₁)·R(x₂) ≫ n: product of two smallest R values is large -/
-axiom product_lower_bound (n : ℕ) (hn : n ≥ 4) (P : PointSet n) :
-    ∃ C > 0, R_k P 1 * R_k P 2 ≥ C * n
-  -- A covering argument: if both are small, not enough distances for all pairs
-
-/-- The minimum number of distinct distances is 1 -/
-axiom min_distinct_distances (n : ℕ) (hn : n ≥ 2) :
-    ∃ P : PointSet n, R_k P 1 = 1
-  -- Regular polygon achieves this: place all points equidistant from center
-
 /-
 ## Part V: Elekes' Disproof
 
 Erdős conjectured R(x₃)/√n → ∞, but Elekes showed this is FALSE.
 -/
-
-/-- Elekes' theorem: for any k, there exist point sets with R_k ≪ √n -/
-axiom elekes_disproof (k : ℕ) (hk : k ≥ 1) :
-    ∃ C > 0, ∀ n ≥ k, ∃ P : PointSet n, R_k P k < C * Real.sqrt n
-  -- Elekes constructed explicit configurations using algebraic curves
 
 /-- Consequence: αₖ is finite for all k -/
 theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
@@ -135,11 +112,6 @@ theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
 
 The main positive result: αₖ → ∞ as k → ∞.
 -/
-
-/-- Mathialagan (2021): For 2 ≤ k ≤ n^{1/3}, R(xₖ) ≫ √(kn) -/
-axiom mathialagan_2021 (k n : ℕ) (hk : 2 ≤ k) (hkn : k ≤ n^(1/3 : ℝ)) (P : PointSet n) :
-    ∃ C > 0, R_k P k ≥ C * Real.sqrt (k * n)
-  -- Uses polynomial partitioning and incidence geometry
 
 /-- Corollary: αₖ ≥ C√k for some constant C -/
 axiom alpha_k_lower_bound (k : ℕ) (hk : k ≥ 2) :
@@ -171,32 +143,11 @@ theorem erdos_652_solved :
 Concrete bounds for small k.
 -/
 
-/-- Example: Regular n-gon has R(x₁) = 1 for center point -/
-axiom regular_polygon_example (n : ℕ) (hn : n ≥ 3) :
-    ∃ P : PointSet n, ∃ i, R P i = 1
-  -- Center of regular polygon: all vertices equidistant
-
-/-- Example: Square grid has R(x) ≈ √n for most points -/
-axiom grid_example (n : ℕ) (hn : n ≥ 4) :
-    ∃ P : PointSet n, ∀ k ≤ n / 2, R_k P k ≤ 2 * Real.sqrt n
-
 /-
 ## Part IX: Related Problems
 
 Connections to other distinct distance problems.
 -/
-
-/-- Connection to Erdős distinct distances problem -/
-axiom erdos_distinct_distances :
-    -- Total number of distinct distances ≫ n/√(log n)
-    ∀ n : ℕ, ∀ P : PointSet n,
-      (Finset.univ.biUnion (distinctDistances P)).card ≥ n / Real.sqrt (Real.log n)
-  -- Guth-Katz (2015): tight up to constants
-
-/-- Sum of all R values -/
-axiom R_sum_bound (n : ℕ) (P : PointSet n) :
-    (Finset.univ.sum (R P)) ≤ n^2
-  -- Each distance counted at most twice
 
 /-
 ## Part X: Summary

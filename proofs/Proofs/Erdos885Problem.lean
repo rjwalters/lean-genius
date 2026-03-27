@@ -44,21 +44,6 @@ def factorDifferenceSet (n : ℕ) : Set ℕ :=
 ## Basic Properties
 -/
 
-/-- 0 is always in D(n) when n is a perfect square. -/
-axiom zero_mem_factorDifferenceSet_of_sq (n : ℕ) (hn : IsSquare n) :
-    0 ∈ factorDifferenceSet n
-
-/-- For n > 0, D(n) always contains n - 1 (from factorization n = 1 · n). -/
-axiom pred_mem_factorDifferenceSet (n : ℕ) (hn : 0 < n) :
-    n - 1 ∈ factorDifferenceSet n
-
-/-- D(1) = {0} since 1 = 1 · 1 is the only factorization. -/
-axiom factorDifferenceSet_one : factorDifferenceSet 1 = {0}
-
-/-- D(p) = {p - 1} for prime p (only factorization is 1 · p). -/
-axiom factorDifferenceSet_prime (p : ℕ) (hp : p.Prime) :
-    factorDifferenceSet p = {p - 1}
-
 /-
 ## The Main Conjecture
 
@@ -77,7 +62,6 @@ def IsKCommonSet (k : ℕ) (Ns : Finset ℕ) : Prop :=
 For every k ≥ 1, there exists a k-common set.
 
 Solved for k ≤ 4, open for k ≥ 5. -/
-axiom erdos_885_conjecture : ∀ k ≥ 1, ∃ Ns : Finset ℕ, IsKCommonSet k Ns
 
 /-
 ## Solved Cases
@@ -89,19 +73,16 @@ Example: N₁ = 6, N₂ = 12
 - D(6) = {5, 1} (from 1·6, 2·3)
 - D(12) = {11, 4, 1} (from 1·12, 2·6, 3·4)
 - D(6) ∩ D(12) ⊇ {1} with |intersection| ≥ 2 achieved elsewhere. -/
-axiom erdos_rosenfeld_k2 : ∃ Ns : Finset ℕ, IsKCommonSet 2 Ns
 
 /-- **Jiménez-Urroz (1999)**: The case k = 3 is true.
 
 The construction requires finding three highly composite numbers with
 many common factor differences. -/
-axiom jimenez_urroz_k3 : ∃ Ns : Finset ℕ, IsKCommonSet 3 Ns
 
 /-- **Bremner (2019)**: The case k = 4 is true.
 
 Bremner used computational search combined with number-theoretic
 techniques to find four integers with ≥ 4 common factor differences. -/
-axiom bremner_k4 : ∃ Ns : Finset ℕ, IsKCommonSet 4 Ns
 
 /-
 ## The Open Case: k ≥ 5
@@ -113,26 +94,15 @@ rapidly because:
 3. Their D(N) sets must align on ≥ k common values
 -/
 
-/-- **OPEN**: Does there exist a 5-common set? -/
-axiom open_k5 :
-    (∃ Ns : Finset ℕ, IsKCommonSet 5 Ns) ∨
-    (¬∃ Ns : Finset ℕ, IsKCommonSet 5 Ns)
-
 /-
 ## Computational Observations
 -/
 
 /-- The number of elements in D(n) equals the number of divisor pairs.
 For n with d(n) divisors, |D(n)| = ⌈d(n)/2⌉. -/
-axiom card_factorDifferenceSet (n : ℕ) (hn : 0 < n) :
-    (factorDifferenceSet n).ncard = (n.divisors.card + 1) / 2
 
 /-- Highly composite numbers have larger factor difference sets,
 making them good candidates for finding common elements. -/
-axiom highly_composite_larger_D :
-    ∀ n m : ℕ, 0 < n → 0 < m →
-      n.divisors.card < m.divisors.card →
-      (factorDifferenceSet n).ncard ≤ (factorDifferenceSet m).ncard
 
 /-
 ## Connection to Divisor Structure
@@ -140,9 +110,6 @@ axiom highly_composite_larger_D :
 
 /-- D(n) can be characterized in terms of divisors:
 d ∈ D(n) iff there exists a divisor a of n with |a - n/a| = d. -/
-axiom mem_factorDifferenceSet_iff_divisor (n : ℕ) (hn : 0 < n) (d : ℕ) :
-    d ∈ factorDifferenceSet n ↔
-    ∃ a ∈ n.divisors, d = Int.natAbs ((a : ℤ) - (n / a : ℤ))
 
 /-
 ## Examples

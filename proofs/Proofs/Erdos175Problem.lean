@@ -51,24 +51,10 @@ noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
 4 | C(2n, n) unless n is a power of 2.
 -/
 
-/-- Kummer's theorem: v_p(C(m+n, m)) = number of carries when adding m, n in base p -/
-axiom kummer_theorem (p m n : ℕ) (hp : Nat.Prime p) :
-    padicValNat p (Nat.choose (m + n) m) =
-    -- number of carries in base-p addition of m and n
-    Classical.choose (⟨0, trivial⟩ : ∃ k : ℕ, True)
-
-/-- For C(2n, n), v_2 = number of 1s in binary expansion of n -/
-axiom v2_central_binom (n : ℕ) :
-    padicValNat 2 (centralBinom n) = (Nat.digits 2 n).count 1
-
 /-- 4 | C(2n, n) iff n is not a power of 2 -/
 theorem four_divides_iff (n : ℕ) (hn : n ≥ 2) :
     4 ∣ centralBinom n ↔ ¬∃ k : ℕ, n = 2 ^ k := by
   sorry
-
-/-- When n = 2^k, v_2(C(2n, n)) = 1 -/
-axiom power_of_two_case (k : ℕ) (hk : k ≥ 1) :
-    padicValNat 2 (centralBinom (2 ^ k)) = 1
 
 /-
 ## Part 3: The Main Theorem
@@ -79,14 +65,6 @@ C(2n, n) is not squarefree for n ≥ 5.
 /-- Granville-Ramaré (1996): C(2n, n) not squarefree for n ≥ 5 -/
 axiom granville_ramare_1996 (n : ℕ) (hn : n ≥ 5) :
     ¬IsSquarefree (centralBinom n)
-
-/-- Sárközy (1985): Proved for sufficiently large n -/
-axiom sarkozy_1985 :
-    ∃ N : ℕ, ∀ n ≥ N, ¬IsSquarefree (centralBinom n)
-
-/-- The small cases n ∈ {5, 6, ..., N} can be checked directly -/
-axiom small_cases_verified :
-    ∀ n : ℕ, 5 ≤ n → n ≤ 100 → ¬IsSquarefree (centralBinom n)
 
 /-
 ## Part 4: The Function f(n)
@@ -107,17 +85,6 @@ axiom sander_1992_f_unbounded :
 axiom sander_1995_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f n : ℝ) ≤ C * Real.log n
 
-/-- Lower bound for almost all n: f(n) ≫ log n (Sander 1995).
-    For a density-1 subset of natural numbers, f(n) ≥ c · log n. -/
-axiom sander_1995_lower_almost_all :
-    ∃ C : ℝ, C > 0 ∧ ∃ S : Set ℕ,
-      (∀ n ∈ S, n ≥ 2 → (f n : ℝ) ≥ C * Real.log n)
-
-/-- Better lower bound for all n: f(n) ≫ (log n)^{1/10} (Sander 1995) -/
-axiom sander_1995_lower_all :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≥ C * (Real.log n) ^ (1/10 : ℝ)
-
 /-- Erdős-Kolesnik improvement: f(n) ≫ (log n)^{1/4} -/
 axiom erdos_kolesnik_1999 :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
@@ -128,10 +95,6 @@ axiom erdos_kolesnik_1999 :
 
 When n = 2^k, we need odd primes.
 -/
-
-/-- For n = 2^k, the squareness comes from odd primes -/
-axiom power_of_two_odd_prime_square (k : ℕ) (hk : k ≥ 3) :
-    ∃ p : ℕ, Nat.Prime p ∧ p ≠ 2 ∧ p ^ 2 ∣ centralBinom (2 ^ k)
 
 /-- The key cases: n = 8, 16, 32, ... -/
 example : ¬IsSquarefree (centralBinom 8) := by
@@ -145,15 +108,6 @@ example : ¬IsSquarefree (centralBinom 8) := by
 Extensions and generalizations.
 -/
 
-/-- Sander (1992b): C(2n+d, n) not squarefree for |d| ≤ n^{1-ε} -/
-axiom sander_1992b (ε : ℝ) (hε : 0 < ε) (hε2 : ε < 1) :
-    ∃ N : ℕ, ∀ n ≥ N, ∀ d : ℤ, |d| ≤ (n : ℝ) ^ (1 - ε) →
-      ¬IsSquarefree (Nat.choose (2 * n + d.toNat) n)
-
-/-- Largest n where C(2n,n) has no odd prime square factor: n = 786 -/
-axiom largest_no_odd_square : ∀ n : ℕ, n > 786 →
-    ∃ p : ℕ, Nat.Prime p ∧ p ≠ 2 ∧ p ^ 2 ∣ centralBinom n
-
 /-
 ## Part 7: Open Questions
 
@@ -163,11 +117,6 @@ Is f(n) ≫ log n for ALL n?
 /-- Open question: f(n) ≫ log n for all n? -/
 def OpenQuestion_LogBound : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f n : ℝ) ≥ C * Real.log n
-
-/-- This is known for almost all n but open for all n -/
-axiom open_for_all_n :
-    -- Currently only (log n)^{1/4} is known for all n
-    True
 
 /-
 ## Part 8: Explicit Examples

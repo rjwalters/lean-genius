@@ -70,14 +70,6 @@ def MainTheorem : Prop :=
 /-- Draganić-Keevash-Müyesser (2025): The main theorem holds. -/
 axiom dkm_2025 : MainTheorem
 
-/-- The bound is asymptotically tight. -/
-axiom bound_tight :
-    ∀ ε > 0, ∃ᶠ n in Filter.atTop,
-      ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
-        (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-      IsErdosFaudreeGraph G n ∧
-      (cycleSpannedCount G : ℝ) ≤ (1/2 + ε) * 2 ^ (2 * n)
-
 /- ## Part IV: Erdős's Observation -/
 
 /-- Subsets NOT on a cycle. -/
@@ -92,15 +84,6 @@ axiom erdos_observation :
       IsErdosFaudreeGraph G n →
       (nonCycleCount G : ℝ) ≥ (1/2 - ε) * 2 ^ (2 * n)
 
-/-- Combined: Both cycle and non-cycle sets are about half. -/
-axiom half_half :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      ∀ (V : Type) [Fintype V] [DecidableEq V]
-        (G : SimpleGraph V) [DecidableRel G.Adj],
-      IsErdosFaudreeGraph G n →
-      (1/2 - ε) * 2 ^ (2 * n) ≤ (cycleSpannedCount G : ℝ) ∧
-      (cycleSpannedCount G : ℝ) ≤ (1/2 + ε) * 2 ^ (2 * n)
-
 /- ## Part V: Regularity is Essential -/
 
 /-- The complete bipartite graph K_{n,n}. -/
@@ -111,15 +94,6 @@ def completeBipartite (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
     | _, _ => false
   symm := by intro x y; simp only; cases x <;> cases y <;> simp
   loopless := by intro x; cases x <;> simp
-
-/-- K_{n,n} has 2n vertices and minimum degree n. -/
-axiom knn_structure (n : ℕ) (hn : n ≥ 1) :
-    vertexCount (Fin n ⊕ Fin n) = 2 * n ∧
-    ∀ v, (completeBipartite n).degree v = n
-
-/-- K_{n,n} is NOT regular of degree n+1. -/
-axiom knn_not_erdos_faudree (n : ℕ) (hn : n ≥ 2) :
-    ¬IsErdosFaudreeGraph (completeBipartite n) n
 
 /-- K_{n,n} has only O(n!) cycle-spanned subsets, not 2^{Θ(n)}. -/
 axiom knn_few_cycles (n : ℕ) (hn : n ≥ 2) :
@@ -137,14 +111,6 @@ def knn_with_stars (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
   symm := by intro x y; simp only; cases x <;> cases y <;> simp [or_comm]
   loopless := by intro x; cases x <;> simp
 
-/-- This graph has minimum degree n+1 but is not regular. -/
-axiom knn_stars_min_degree (n : ℕ) (hn : n ≥ 2) :
-    ∀ v, (knn_with_stars n).degree v ≥ n + 1
-
-/-- But still has few cycle-spanned subsets. -/
-axiom knn_stars_few_cycles (n : ℕ) (hn : n ≥ 2) :
-    (cycleSpannedCount (knn_with_stars n) : ℝ) < 2 ^ n
-
 /- ## Part VII: Examples of Erdős-Faudree Graphs -/
 
 /-- The Paley graph is an Erdős-Faudree graph when q ≡ 1 (mod 4). -/
@@ -153,22 +119,7 @@ def IsPaleyGraph (G : SimpleGraph V) (q : ℕ) : Prop :=
   ∃ (iso : V ≃ ZMod q), ∀ x y : V,
     G.Adj x y ↔ ∃ z : ZMod q, z ^ 2 = iso x - iso y ∧ z ≠ 0
 
-/-- Paley graphs are (q-1)/2 regular. -/
-axiom paley_regular (G : SimpleGraph V) [DecidableRel G.Adj] (q : ℕ)
-    (hpaley : IsPaleyGraph G q) :
-    IsRegular G ((q - 1) / 2)
-
 /- ## Part VIII: Probabilistic Bound -/
-
-/-- Random (n+1)-regular graphs on 2n vertices satisfy the cycle-spanning
-    bound with high probability: for large n, a random such graph has
-    at least (1/2 - ε)2^{2n} cycle-spanned subsets. -/
-axiom random_regular_bound :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      ∀ (V : Type) [Fintype V] [DecidableEq V]
-        (G : SimpleGraph V) [DecidableRel G.Adj],
-      IsErdosFaudreeGraph G n →
-      (cycleSpannedCount G : ℝ) ≥ (1/2 - ε) * 2 ^ (2 * n)
 
 /- ## Part IX: Hamiltonian Cycles -/
 
@@ -180,25 +131,7 @@ def IsHamiltonianCycle (G : SimpleGraph V) (c : List V) : Prop :=
 noncomputable def hamiltonianCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   (Finset.univ.filter (fun c : List V => IsHamiltonianCycle G c)).card
 
-/-- Erdős-Faudree graphs have at least one Hamiltonian cycle (Dirac's theorem). -/
-axiom erdos_faudree_hamiltonian (n : ℕ) (hn : n ≥ 2)
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hef : IsErdosFaudreeGraph G n) :
-    hamiltonianCount G ≥ 1
-
 /- ## Part X: Connection to Turán-type Problems -/
-
-/-- The number of edges in an Erdős-Faudree graph. -/
-axiom erdos_faudree_edge_count (n : ℕ)
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hef : IsErdosFaudreeGraph G n) :
-    G.edgeFinset.card = n * (n + 1)
-
-/-- This is slightly more than n² edges. -/
-axiom erdos_faudree_dense (n : ℕ) (hn : n ≥ 1)
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hef : IsErdosFaudreeGraph G n) :
-    (G.edgeFinset.card : ℝ) > (n : ℝ) ^ 2
 
 end Erdos622
 

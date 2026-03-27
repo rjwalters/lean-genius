@@ -54,34 +54,15 @@ monochromatic K_k. We axiomatize its existence and basic properties.
     as the full definition requires significant graph theory infrastructure. -/
 axiom RamseyNumber : ℕ → ℕ
 
-/-- Ramsey numbers are well-defined and positive for k ≥ 2. -/
-axiom ramseyNumber_pos : ∀ k ≥ 2, RamseyNumber k ≥ 1
-
 /-
 ## Small Ramsey Numbers (Known Values)
 -/
 
-/-- R(1) = 1 (trivial: any single vertex is a monochromatic K_1). -/
-axiom ramsey_1 : RamseyNumber 1 = 1
-
-/-- R(2) = 2 (trivial: any edge is monochromatic). -/
-axiom ramsey_2 : RamseyNumber 2 = 2
-
 /-- R(3) = 6 (classic result, often the first non-trivial Ramsey number computed).
-
-    This can be proven: K_5 can be 2-colored without monochromatic K_3,
-    but K_6 cannot. -/
-axiom ramsey_3 : RamseyNumber 3 = 6
 
 /-- R(4) = 18 (Greenwood-Gleason 1955).
 
-    This required significant computation to establish. -/
-axiom ramsey_4 : RamseyNumber 4 = 18
-
 /-- R(5) is between 43 and 48 (bounds, exact value unknown as of 2024).
-
-    Even with modern computers, determining R(5) exactly remains open. -/
-axiom ramsey_5_bounds : 43 ≤ RamseyNumber 5 ∧ RamseyNumber 5 ≤ 48
 
 /-
 ## Classical Bounds
@@ -92,13 +73,6 @@ Erdős proved the following bounds using probabilistic and explicit methods.
 /-- **Erdős Lower Bound (1947)**: R(k) ≥ 2^{k/2} for k ≥ 3.
 
     This was one of the first applications of the **probabilistic method**.
-
-    **Proof sketch**: A random 2-coloring of K_n has probability (1/2)^{C(k,2)}
-    of having any specific k-clique be monochromatic. By union bound over
-    all C(n,k) possible k-cliques, if n < 2^{k/2}, then with positive
-    probability no monochromatic k-clique exists. -/
-axiom erdos_lower_bound :
-    ∀ k ≥ 3, (RamseyNumber k : ℝ) ≥ 2^((k : ℝ)/2)
 
 /-- **Erdős-Szekeres Upper Bound**: R(k) ≤ 4^{k-1} for k ≥ 2.
 
@@ -153,22 +127,8 @@ After ~90 years with no improvement to the upper bound, major progress was made.
 /-- **Campos-Griffiths-Morris-Sahasrabudhe (2023)**:
     R(k) ≤ (4 - ε)^k for ε = 1/128.
 
-    This was the first improvement to Erdős's upper bound since the 1930s!
-    The paper "An exponential improvement for diagonal Ramsey" appeared in
-    Annals of Mathematics. -/
-axiom cgms_2023_bound :
-    ∀ᶠ k in atTop, (RamseyNumber k : ℝ) ≤ (4 - 1/128)^(k : ℝ)
-
-/-- Corollary: limsup R(k)^{1/k} ≤ 4 - 1/128 ≈ 3.992. -/
-axiom cgms_2023_limsup :
-    limsup (fun k => ramseyGrowthRate k) atTop ≤ 4 - 1/128
-
 /-- **Gupta-Ndiaye-Norin-Wei (2024)**:
     R(k) ≤ (3.7993)^k.
-
-    Further improvement using refined techniques. -/
-axiom gnnw_2024_bound :
-    ∀ᶠ k in atTop, (RamseyNumber k : ℝ) ≤ (3.7993 : ℝ)^(k : ℝ)
 
 /-- Corollary: limsup R(k)^{1/k} ≤ 3.7993. -/
 axiom gnnw_2024_limsup :
@@ -223,12 +183,6 @@ The probabilistic method gives the best known lower bounds.
 
 /-- **Refined Probabilistic Lower Bound**:
     R(k) ≥ (1 + o(1)) · k · 2^{k/2} / (e√2).
-
-    This improves on Erdős's original 2^{k/2} by a factor of k/(e√2). -/
-axiom probabilistic_lower_bound_refined :
-    ∃ f : ℕ → ℝ, (∀ᶠ k in atTop, |f k| ≤ 1/k) ∧
-    ∀ᶠ k in atTop, (RamseyNumber k : ℝ) ≥
-      (1 + f k) * k * 2^((k : ℝ)/2) / (Real.exp 1 * Real.sqrt 2)
 
 /-
 ## Erdős's "Evil Spirit" Parable

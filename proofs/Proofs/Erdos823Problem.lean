@@ -44,24 +44,6 @@ The sum of divisors function and related concepts.
 /-- The sum of divisors function σ(n) -/
 noncomputable def sigma (n : ℕ) : ℕ := ArithmeticFunction.sigma 1 n
 
-/-- σ(n) equals sum of all divisors of n -/
-axiom sigma_is_divisor_sum (n : ℕ) (hn : n ≥ 1) :
-    sigma n = (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum id
-
-/-- σ(1) = 1 -/
-axiom sigma_one : sigma 1 = 1
-
-/-- σ(p) = p + 1 for prime p -/
-axiom sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1
-
-/-- σ(p^k) = (p^{k+1} - 1)/(p - 1) for prime p -/
-axiom sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
-    sigma (p ^ k) * (p - 1) = p ^ (k + 1) - 1
-
-/-- σ is multiplicative on coprime arguments -/
-axiom sigma_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) (h : Nat.Coprime m n) :
-    sigma (m * n) = sigma m * sigma n
-
 /-
 ## Part II: The Main Problem
 
@@ -104,26 +86,11 @@ theorem erdos_823_solved (α : ℝ) (hα : α ≥ 1) :
 Concrete examples where σ(n) = σ(m).
 -/
 
-/-- σ(14) = σ(15) = 24 -/
-axiom sigma_14_15 : sigma 14 = sigma 15
-
-/-- σ(14) = 1 + 2 + 7 + 14 = 24 -/
-axiom sigma_14_value : sigma 14 = 24
-
-/-- σ(15) = 1 + 3 + 5 + 15 = 24 -/
-axiom sigma_15_value : sigma 15 = 24
-
 /-- σ(14) = σ(15) verified: 14/15 is close to 1 -/
 example : (14 : ℚ) / 15 < 1 := by native_decide
 
-/-- σ(206) = σ(210) = 432 -/
-axiom sigma_206_210 : sigma 206 = sigma 210
-
 /-- 206/210 ≈ 0.981 -/
 example : (206 : ℚ) / 210 < 1 := by native_decide
-
-/-- σ(957) = σ(958) (consecutive integers can have equal σ) -/
-axiom sigma_957_958 : sigma 957 = sigma 958
 
 /-- 957/958 is very close to 1 -/
 example : (957 : ℕ) < 958 := by native_decide
@@ -137,10 +104,6 @@ Erdős noted the Euler totient case is "easy to prove".
 /-- Euler's totient function φ(n) -/
 noncomputable def phi (n : ℕ) : ℕ := ArithmeticFunction.totient n
 
-/-- φ(n) counts integers in [1,n] coprime to n -/
-axiom phi_definition (n : ℕ) (hn : n ≥ 1) :
-    phi n = (Finset.filter (Nat.Coprime n) (Finset.range n)).card
-
 /-- A pair (n, m) is a φ-pair if φ(n) = φ(m) -/
 def IsPhiPair (n m : ℕ) : Prop := phi n = phi m
 
@@ -151,12 +114,6 @@ axiom erdos_phi_easy (α : ℝ) (hα : α ≥ 1) :
       (∀ k, phi (n k) = phi (m k)) ∧
       Tendsto (fun k => (n k : ℝ) / (m k : ℝ)) atTop (𝓝 α)
 
-/-- Example φ-pair: φ(1) = φ(2) = 1 -/
-axiom phi_1_2 : phi 1 = phi 2
-
-/-- Example φ-pair: φ(3) = φ(4) = φ(6) = 2 -/
-axiom phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6
-
 /-
 ## Part VI: Properties of Fibers of σ
 -/
@@ -164,34 +121,9 @@ axiom phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6
 /-- The fiber σ⁻¹(m) = {n : σ(n) = m} -/
 def sigmaFiber (m : ℕ) : Set ℕ := {n | sigma n = m}
 
-/-- σ⁻¹(24) contains at least 14 and 15 -/
-axiom fiber_24_nonempty : 14 ∈ sigmaFiber 24 ∧ 15 ∈ sigmaFiber 24
-
-/-- Fibers can be arbitrarily large (infinitely many n with same σ value) -/
-axiom fibers_can_be_large :
-    ∀ K : ℕ, ∃ m : ℕ, (sigmaFiber m).ncard ≥ K
-
-/-- Every sufficiently large even number is a σ-value -/
-axiom even_sigma_values :
-    ∃ N : ℕ, ∀ m : ℕ, m ≥ N → Even m → (sigmaFiber m).Nonempty
-
 /-
 ## Part VII: Density Results
 -/
-
-/-- The set of σ-values has positive density -/
-axiom sigma_values_positive_density :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, N ≥ 1 →
-      ((Finset.filter (fun m => (sigmaFiber m).Nonempty) (Finset.range N)).card : ℝ)
-      ≥ c * N
-
-/-- Many σ-values have multiple preimages -/
-axiom many_multiple_preimages :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, N ≥ 1 →
-      ((Finset.filter (fun m => (sigmaFiber m).ncard ≥ 2) (Finset.range N)).card : ℝ)
-      ≥ c * N
 
 /-
 ## Part VIII: Computational Examples
@@ -219,13 +151,6 @@ Why σ allows such sequences: The multiplicativity of σ combined with
 the rich structure of prime factorizations provides enough freedom
 to construct pairs with equal σ values at any prescribed ratio.
 -/
-
-/-- The abundance of σ-pairs enables Pollack's construction -/
-axiom key_insight_sigma_pairs :
-    -- There are infinitely many σ-pairs (n, m) with n ≠ m
-    ∃ pairs : ℕ → ℕ × ℕ, ∀ k,
-      (pairs k).1 ≠ (pairs k).2 ∧
-      sigma (pairs k).1 = sigma (pairs k).2
 
 -- Pollack's method uses careful construction with prime factorizations.
 

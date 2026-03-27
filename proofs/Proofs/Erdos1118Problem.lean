@@ -93,16 +93,6 @@ def HaymanConjecture : Prop :=
     Hayman's conjecture is true. -/
 axiom camera_goldberg_theorem : HaymanConjecture
 
-/-- The growth integral condition is necessary. -/
-axiom growth_necessary (f : ℂ → ℂ) (hf : IsNonConstantEntire f)
-    (c : ℝ) (hc : c > 0) (hFinite : HasFiniteMeasure f c) :
-    growthIntegral f < ⊤
-
-/-- The growth integral condition is sufficient. -/
-axiom growth_sufficient (f : ℂ → ℂ) (hf : IsNonConstantEntire f)
-    (hGrowth : growthIntegral f < ⊤) :
-    ∃ c > 0, HasFiniteMeasure f c
-
 /-
 ## Part IV: Gol'dberg's Counterexample
 -/
@@ -127,45 +117,13 @@ axiom goldberg_threshold_classification :
 ## Part V: Properties of the Maximum Modulus
 -/
 
-/-- M(r) → ∞ as r → ∞ for non-constant entire functions (Liouville). -/
-axiom max_modulus_unbounded (f : ℂ → ℂ) (hf : IsNonConstantEntire f) :
-    Filter.Tendsto (maxModulus f) Filter.atTop Filter.atTop
-
-/-- M(r) is increasing (roughly, by maximum principle). -/
-axiom max_modulus_increasing (f : ℂ → ℂ) (hf : IsNonConstantEntire f)
-    (r₁ r₂ : ℝ) (h : r₁ < r₂) (hr : r₁ ≥ 0) :
-    maxModulus f r₁ ≤ maxModulus f r₂
-
-/-- For polynomial f of degree d, M(r) ~ C·r^d. -/
-axiom polynomial_max_modulus (p : Polynomial ℂ) (hp : p.degree > 0) :
-    ∃ C > 0, ∀ᶠ r in Filter.atTop,
-      maxModulus (fun z => p.eval z) r ≤ C * r ^ p.natDegree
-
 /-
 ## Part VI: Examples
 -/
 
-/-- Polynomials have T(f) = (0, ∞). -/
-axiom polynomial_threshold (p : Polynomial ℂ) (hp : p.degree > 0) :
-    let f := fun z => p.eval z
-    thresholdSet f = Ioi 0
-
-/-- exp(z) has T(f) = ∅ (superlevel sets are half-planes). -/
-axiom exp_threshold :
-    thresholdSet Complex.exp = ∅
-
-/-- For fast-growing entire functions, T(f) can be bounded below. -/
-axiom fast_growth_bounded_threshold :
-    ∃ f : ℂ → ℂ, IsNonConstantEntire f ∧
-      ∃ m > 0, ∀ c < m, c > 0 → ¬HasFiniteMeasure f c
-
 /-
 ## Part VII: Measure Theory Aspects
 -/
-
-/-- Superlevel sets are measurable (f is continuous). -/
-axiom superlevel_measurable (f : ℂ → ℂ) (hf : IsEntire f) (c : ℝ) :
-    MeasurableSet (superlevelSet f c)
 
 /-- Nested property: c₁ < c₂ → E(c₂) ⊆ E(c₁). -/
 theorem superlevel_nested (f : ℂ → ℂ) (c₁ c₂ : ℝ) (h : c₁ < c₂) :

@@ -46,15 +46,6 @@ Egyptian fraction decomposition of 1. Axiomatized since the existence
 proof requires showing denominators are bounded. -/
 axiom v (k : ℕ) : ℕ
 
-/-- v(k) is positive. -/
-axiom v_pos : ∀ k : ℕ, v k > 0
-
-/-- v(k) does not appear in any k-term decomposition. -/
-axiom v_not_in_decomp : ∀ k : ℕ, ¬appearsInDecomp k (v k)
-
-/-- v(k) is minimal: every smaller positive integer appears in some decomposition. -/
-axiom v_minimal : ∀ k : ℕ, ∀ m : ℕ, 0 < m → m < v k → appearsInDecomp k m
-
 /- ## The Vardi Constant -/
 
 /-- The Vardi recurrence: u₁ = 1, uᵢ₊₁ = uᵢ(uᵢ + 1).
@@ -75,14 +66,7 @@ theorem vardiSeq_values :
 /-- The Vardi constant c₀ = lim_{n→∞} uₙ^{1/2^n} ≈ 1.26408. -/
 noncomputable def vardiConstant : ℝ := 1.26408473530530
 
-/-- Vardi constant bounds: 1.264 < c₀ < 1.265. -/
-axiom vardiConstant_bounds : vardiConstant > 1.264 ∧ vardiConstant < 1.265
-
 /- ## Known Lower Bounds -/
-
-/-- Bleicher-Erdős lower bound (1975): v(k) ≥ c · k! for some c > 0. -/
-axiom bleicher_erdos_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k > 0 → (v k : ℝ) ≥ c * k.factorial
 
 /-- van Doorn-Tang lower bound (2025): v(k) ≥ e^{ck²} for some c > 0.
 This is a significant improvement over the factorial bound. -/
@@ -99,10 +83,6 @@ axiom elementary_upper_bound :
 
 /-- Maximum denominator bound: in any k-term decomposition,
 the largest denominator is at most k · uₖ. -/
-axiom max_denominator_bound :
-    ∀ k : ℕ, ∀ s : Finset ℕ,
-      isEgyptianDecomp k s →
-      ∀ n ∈ s, n ≤ k * vardiSeq k
 
 /- ## Conjectures -/
 
@@ -122,14 +102,9 @@ def ErdosConjecture293Strong : Prop :=
 
 /-- v(1) = 2: The only 1-term decomposition would need 1/n = 1, but
 we require distinct terms. Actually, n = 1 works, so v(1) = 2. -/
-axiom v_1 : v 1 = 2
-
-/-- v(2) = 2: There is no 2-term decomposition of 1 with distinct terms. -/
-axiom v_2 : v 2 = 2
 
 /-- v(3) = 4: The unique 3-term decomposition is 1 = 1/2 + 1/3 + 1/6,
 so the first missing denominator is 4. -/
-axiom v_3 : v 3 = 4
 
 /- ## Summary -/
 

@@ -84,14 +84,6 @@ def IsKColorable {V : Type*} (G : SimpleGraph' V) (k : ℕ) : Prop :=
     Defined axiomatically as computing the exact minimum is complex. -/
 axiom chromaticNumber {V : Type*} [Finite V] (G : SimpleGraph' V) : ℕ
 
-/-- The chromatic number is realized by some coloring. -/
-axiom chromaticNumber_colorable {V : Type*} [Finite V] (G : SimpleGraph' V) :
-    IsKColorable G (chromaticNumber G)
-
-/-- The chromatic number is minimal. -/
-axiom chromaticNumber_minimal {V : Type*} [Finite V] (G : SimpleGraph' V) (k : ℕ) :
-    IsKColorable G k → chromaticNumber G ≤ k
-
 /-
 ## The EFL Setup
 
@@ -122,19 +114,11 @@ theorem efl_edge_count_bound (n : ℕ) (_F : EFLFamily n) :
     n ≥ 0 := by  -- Full statement requires counting; placeholder bound
   omega
 
-/-- Each vertex can be in at most n cliques (by edge-disjointness). -/
-axiom vertex_in_bounded_cliques (n : ℕ) (F : EFLFamily n) (v : Fin (n * n)) :
-    (Finset.univ.filter fun i => v ∈ F.cliques i).card ≤ n
-
 /-
 ## Lower Bound: χ(G) ≥ n
 
 The chromatic number is at least n because each clique K_n requires n colors.
 -/
-
-/-- Every K_n subgraph requires n colors, so χ(G) ≥ n. -/
-axiom efl_chromatic_lower_bound (n : ℕ) (hn : n ≥ 1) (F : EFLFamily n) :
-    chromaticNumber (eflUnionGraph n F) ≥ n
 
 /-
 ## Hindman's Result: Small Cases
@@ -142,24 +126,11 @@ axiom efl_chromatic_lower_bound (n : ℕ) (hn : n ≥ 1) (F : EFLFamily n) :
 Hindman proved the conjecture for n < 10.
 -/
 
-/-- Hindman: The EFL conjecture holds for n < 10. -/
-axiom hindman_small_cases (n : ℕ) (hn : n < 10) (F : EFLFamily n) :
-    chromaticNumber (eflUnionGraph n F) = n
-
 /-
 ## Kahn's Asymptotic Result (1992)
 
 Kahn proved that χ(G) ≤ (1 + o(1))n, earning Erdős's $100 consolation prize.
 -/
-
-/-- Kahn's theorem: χ(G) ≤ n + o(n). -/
-axiom kahn_asymptotic :
-    ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, ∀ F : EFLFamily n,
-      chromaticNumber (eflUnionGraph n F) ≤ n + ⌈ε * n⌉₊
-
-/-- Kahn's explicit bound: χ(G) ≤ n + n^(1-1/51). -/
-axiom kahn_explicit_bound (n : ℕ) (hn : n ≥ 2) (F : EFLFamily n) :
-    (chromaticNumber (eflUnionGraph n F) : ℝ) ≤ n + n^(1 - 1/51 : ℝ)
 
 /-
 ## The Main Result: Kang-Kelly-Kühn-Methuku-Osthus (2021)
@@ -202,11 +173,6 @@ structure LinearHypergraph (V : Type*) [DecidableEq V] where
 axiom chromaticIndex {V : Type*} [Finite V] [DecidableEq V]
     (H : LinearHypergraph V) : ℕ
 
-/-- EFL equivalent: linear hypergraph chromatic index bound. -/
-axiom efl_hypergraph_equivalent (V : Type*) [Finite V] [DecidableEq V]
-    (H : LinearHypergraph V) (hn : H.edges.length = Nat.card V) :
-    chromaticIndex H ≤ Nat.card V
-
 /-
 ### Nearly Disjoint Sets Formulation
 
@@ -221,11 +187,6 @@ structure NearlyDisjointFamily (α : Type*) [DecidableEq α] (n : ℕ) where
   size : ∀ i, (sets i).card = n
   nearly_disjoint : ∀ i j, i ≠ j → (sets i ∩ sets j).card ≤ 1
 
-/-- EFL equivalent: nearly disjoint sets admit rainbow partitions. -/
-axiom efl_nearly_disjoint_equivalent (α : Type*) [DecidableEq α] (n : ℕ)
-    (F : NearlyDisjointFamily α n) :
-    ∃ c : α → Fin n, ∀ i, Function.Bijective (fun x : F.sets i => c x.val)
-
 /-
 ## Special Cases
 -/
@@ -235,15 +196,11 @@ axiom efl_nearly_disjoint_equivalent (α : Type*) [DecidableEq α] (n : ℕ)
 If the n cliques come from a projective plane of order n-1,
 then the union graph has chromatic number exactly n.
 The full condition involves incidence axioms; here simplified. -/
-axiom projective_plane_case (n : ℕ) (F : EFLFamily n) :
-    chromaticNumber (eflUnionGraph n F) = n
 
 /-- Steiner systems give optimal colorings.
 
 S(2, n, n²) Steiner systems provide explicit EFL families
 where χ(G) = n. -/
-axiom steiner_system_case (n : ℕ) (F : EFLFamily n) :
-    chromaticNumber (eflUnionGraph n F) = n
 
 /-
 ## Related Results and Extensions
@@ -254,9 +211,6 @@ axiom steiner_system_case (n : ℕ) (F : EFLFamily n) :
 What if cliques can share up to k vertices (instead of 1)?
 Kang et al. also proved this generalization.
 The EFL conjecture is the special case k = 1. -/
-axiom erdos_furedi_generalization (n k : ℕ) (hk : k ≤ n)
-    (F : EFLFamily n) :
-    chromaticNumber (eflUnionGraph n F) ≤ n + k - 1
 
 /-
 ## Summary

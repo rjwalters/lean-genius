@@ -148,8 +148,6 @@ axiom bose_parker_shrikhande (n : ℕ) (hn : n ≥ 7) : f(n) ≥ 2
 - f(2) = 1 (no pair of orthogonal 2×2 Latin squares)
 - f(6) ≥ 1 (historically difficult; Euler was right that f(6) = 1)
 -/
-axiom f_two : f(2) = 1
-axiom f_six : f(6) = 1
 
 /-
 ## Part V: Lower Bound Progress
@@ -164,15 +162,11 @@ f(n) ≫ n^(1/91).
 
 For sufficiently large n, f(n) ≥ C · n^(1/91) for some constant C > 0.
 -/
-axiom chowla_erdos_straus : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 91 : ℝ)
 
 /--
 **Wilson's Improvement (1974):**
 f(n) ≫ n^(1/17).
 -/
-axiom wilson_1974 : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 17 : ℝ)
 
 /--
 **Beth's Improvement (1983):**
@@ -218,28 +212,20 @@ def latinSquare3_L : Fin 3 → Fin 3 → Fin 3 :=
   fun i j => ⟨(i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
 
 def latinSquare3_M : Fin 3 → Fin 3 → Fin 3 :=
-  fun i j => ⟨(2 * i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
-
-axiom latinSquare3_L_is_latin : IsLatinSquare latinSquare3_L
-axiom latinSquare3_M_is_latin : IsLatinSquare latinSquare3_M
-axiom latinSquare3_orthogonal : AreOrthogonal latinSquare3_L latinSquare3_M
 
 /--
 f(3) = 2, achieved by the construction above.
 -/
-axiom f_three : f(3) = 2
 
 /--
 **Example: f(4) = 3**
 For n = 4 = 2², the maximum is n - 1 = 3.
 -/
-axiom f_four : f(4) = 3
 
 /--
 **Example: f(5) = 4**
 For n = 5 (prime), the maximum is n - 1 = 4.
 -/
-axiom f_five : f(5) = 4
 
 /-
 ## Part VIII: Connection to Projective Planes
@@ -256,14 +242,11 @@ Projective planes of order n exist for all prime powers n, but existence
 for non-prime-powers (like n = 6, 10, 12, ...) is generally unknown,
 with n = 10 ruled out by the famous Lam-Thiel-Swiercz computation (1989).
 -/
-axiom mols_projective_plane_equiv (n : ℕ) (hn : n ≥ 2) :
-    f(n) = n - 1 ↔ ∃ (ProjectivePlane : Type), True  -- placeholder for plane existence
 
 /--
 **No Projective Plane of Order 10:**
 f(10) < 9, proved by exhaustive computer search.
 -/
-axiom f_ten_lt_nine : f(10) < 9
 
 /-
 ## Part IX: MacNeish's Conjecture (Disproved)
@@ -279,8 +262,6 @@ f(n) ≥ min{p_i^{a_i} - 1} where n = ∏p_i^{a_i}.
 While not tight, this provides a constructive lower bound using
 direct products of Latin squares.
 -/
-axiom macneish_lower_bound (n : ℕ) (hn : n ≥ 2) :
-    ∃ m : ℕ, m ≥ 1 ∧ f(n) ≥ m
 
 /-
 ## Part X: Summary

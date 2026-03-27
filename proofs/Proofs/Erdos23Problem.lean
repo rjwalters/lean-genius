@@ -81,23 +81,12 @@ def HasCycle (G : Graph V) (k : ℕ) : Prop :=
   ∃ (path : Fin k → V), Function.Injective path ∧
     (∀ i : Fin k, ∃ j : Fin k, j.val = (i.val + 1) % k ∧ G.adj (path i) (path j))
 
-/-- The odd girth: length of shortest odd cycle (or 0 if bipartite). -/
-axiom oddGirth (G : Graph V) : ℕ
-
 /-
 ## Edge Deletion and Bipartiteness
 -/
 
 /-- The bipartite edge deletion number: minimum edges to delete to make bipartite. -/
 axiom bipartiteEdgeDeletion {V : Type*} [Fintype V] (G : Graph V) : ℕ
-
-/-- The deletion number is achieved by some edge set whose removal makes G bipartite. -/
-axiom bipartiteEdgeDeletion_achieved {V : Type*} [Fintype V] (G : Graph V) :
-    ∃ (E : Finset (V × V)), E.card = bipartiteEdgeDeletion G
-
-/-- Bipartite graphs have deletion number 0. -/
-axiom bipartite_deletion_zero {V : Type*} [Fintype V] (G : Graph V) :
-    IsBipartite G ↔ bipartiteEdgeDeletion G = 0
 
 /-
 ## The Blow-Up of C₅
@@ -128,11 +117,6 @@ theorem c5_blowup_vertices (n : ℕ) :
     Fintype.card (Fin 5 × Fin n) = 5 * n := by
   simp [Fintype.card_prod]
 
-/-- The blow-up of C₅ has 2n² edges (each of 5 pairs of adjacent parts
-    contributes n² edges, but we count edges once). -/
-axiom c5_blowup_edges (n : ℕ) (hn : n ≥ 1) :
-    edgeCount (c5BlowUpGraph n) = 2 * n^2
-
 /-- C₅ is triangle-free: no three vertices are mutually adjacent. -/
 theorem c5_triangle_free : IsTriangleFree C5 := by
   intro ⟨i, j, k, hij_ne, hjk_ne, hik_ne, hij, hjk, hik⟩
@@ -148,11 +132,6 @@ theorem c5_blowup_triangle_free (n : ℕ) : IsTriangleFree (c5BlowUpGraph n) := 
   have hne2 : j ≠ k := fun h => by subst h; exact C5.loopless j hjk
   have hne3 : i ≠ k := fun h => by subst h; exact C5.loopless i hik
   exact c5_triangle_free ⟨i, j, k, hne1, hne2, hne3, hij, hjk, hik⟩
-
-/-- The blow-up of C₅ requires exactly n² edge deletions to become bipartite.
-    This shows n² is necessary for triangle-free graphs on 5n vertices. -/
-axiom c5_blowup_deletion (n : ℕ) (hn : n ≥ 1) :
-    bipartiteEdgeDeletion (c5BlowUpGraph n) = n^2
 
 /-
 ## The Main Conjecture
@@ -172,19 +151,6 @@ def ErdosConjecture23 : Prop :=
 ## Best Known Bounds
 -/
 
-/-- Balogh-Clemen-Lidicky (2021): At most 1.064n² edges suffice. -/
-axiom balogh_clemen_lidicky_2021 :
-    ∀ n : ℕ, ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-      Fintype.card V = 5 * n →
-      ∀ G : Graph V, IsTriangleFree G →
-        (bipartiteEdgeDeletion G : ℝ) ≤ 1.064 * n^2
-
-/-- Trivial upper bound: at most half the edges suffice
-    (delete all edges in one part of any 2-coloring attempt). -/
-axiom trivial_upper_bound :
-    ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : Graph V, bipartiteEdgeDeletion G ≤ edgeCount G / 2
-
 /-
 ## The Generalized Conjecture
 
@@ -200,54 +166,17 @@ def GeneralizedConjecture (k : ℕ) : Prop :=
       (∀ j : ℕ, j % 2 = 1 → j < 2 * k + 1 → ¬HasCycle G j) →
       bipartiteEdgeDeletion G ≤ n^2
 
-/-- The original conjecture is the k = 2 case (5 = 2*2+1). -/
-axiom original_is_k_equals_2 :
-    GeneralizedConjecture 2 ↔
-    (∀ n : ℕ, ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-      Fintype.card V = 5 * n →
-      ∀ G : Graph V, IsTriangleFree G →
-        bipartiteEdgeDeletion G ≤ n^2)
-
 /-
 ## The Blow-Up Construction for General k
 -/
-
-/-- The blow-up of C_{2k+1} is the extremal example for the generalized conjecture. -/
-axiom blowup_C_odd (k n : ℕ) (hk : k ≥ 1) (hn : n ≥ 1) :
-    ∃ V : Type, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : Graph V,
-      Fintype.card V = (2 * k + 1) * n ∧
-      (∀ j : ℕ, j % 2 = 1 → j < 2 * k + 1 → ¬HasCycle G j) ∧
-      bipartiteEdgeDeletion G = n^2
 
 /-
 ## Connection to Turán-Type Problems
 -/
 
-/-- The Kővári-Sós-Turán theorem bounds edges in bipartite graphs without K_{s,t}. -/
-axiom kovari_sos_turan (n s t : ℕ) (hs : s ≤ t) :
-    ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : Graph V, Fintype.card V = n →
-      IsBipartite G →
-      (edgeCount G : ℝ) ≤ (t - 1)^(1/s : ℝ) / 2 * n^(2 - 1/s : ℝ) + (s - 1) * n / 2
-
-/-- Triangle-free graphs have at most n²/4 edges (Mantel's theorem). -/
-axiom mantel_theorem (n : ℕ) :
-    ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : Graph V, Fintype.card V = n →
-      IsTriangleFree G →
-      edgeCount G ≤ n^2 / 4
-
 /-
 ## Odd Cycle Cover Equivalence
 -/
-
-/-- The bipartite edge deletion number equals the odd cycle edge transversal:
-    the minimum number of edges intersecting all odd cycles. -/
-axiom odd_cycle_cover_equivalent :
-    ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : Graph V,
-      bipartiteEdgeDeletion G = bipartiteEdgeDeletion G
 
 /-
 ## Summary

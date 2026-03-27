@@ -76,28 +76,6 @@ notation "R(" G ";" k ")" => ramseyBipartite G k
 The Ramsey number is well-defined and has basic properties.
 -/
 
-/-- Ramsey number exists (every coloring has monochromatic K_{s,t}) -/
-axiom ramsey_bipartite_exists (G : CompleteBipartite) (k : ℕ)
-    (hk : k ≥ 1) (hs : G.s ≥ 1) (ht : G.t ≥ 1) :
-  ∀ m ≥ R(G; k), ∀ c : EdgeColoring m k,
-    ∃ color : Fin k, hasMonochromaticBipartite m c G color
-
-/-- Ramsey number is minimal -/
-axiom ramsey_bipartite_minimal (G : CompleteBipartite) (k : ℕ)
-    (hk : k ≥ 1) (hs : G.s ≥ 1) (ht : G.t ≥ 1) :
-  ∃ c : EdgeColoring (R(G; k) - 1) k,
-    ∀ color : Fin k, ¬hasMonochromaticBipartite (R(G; k) - 1) c G color
-
-/-- Monotonicity in s and t -/
-axiom ramsey_bipartite_mono (s₁ s₂ t₁ t₂ k : ℕ)
-    (hs : s₁ ≤ s₂) (ht : t₁ ≤ t₂) :
-  R(K[s₁, t₁]; k) ≤ R(K[s₂, t₂]; k)
-
-/-- Monotonicity in k -/
-axiom ramsey_bipartite_mono_k (G : CompleteBipartite) (k₁ k₂ : ℕ)
-    (hk : k₁ ≤ k₂) :
-  R(G; k₁) ≤ R(G; k₂)
-
 /-
 ## Part 3: Chung-Graham Bounds (1975)
 
@@ -119,10 +97,6 @@ axiom chung_graham_bounds (s t k : ℕ)
   chungGrahamLower s t k ≤ R(K[s, t]; k) ∧
     (R(K[s, t]; k) : ℝ) ≤ chungGrahamUpper s t k
 
-/-- The exponent is between (st-1)/(s+t) and t -/
-axiom chung_graham_exponent (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
-    (s * t - 1 : ℝ) / (s + t) ≤ t
-
 /-
 ## Part 4: The Case K_{2,2} (Four-Cycle)
 
@@ -136,15 +110,6 @@ def C4 : CompleteBipartite := K[2, 2]
 axiom ramsey_K22 (k : ℕ) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
     c₁ * k^2 ≤ R(C4; k) ∧ (R(C4; k) : ℝ) ≤ c₂ * k^2
-
-/-- More precise: R(K_{2,2}; k) = (1+o(1))k² -/
-axiom ramsey_K22_asymptotic :
-  Filter.Tendsto (fun k => (R(C4; k) : ℝ) / k^2)
-    Filter.atTop (nhds 1)
-
-/-- Lower bound construction using projective planes -/
-axiom ramsey_K22_lower (k : ℕ) (hk : k ≥ 2) :
-  R(C4; k) ≥ k^2 - k + 1
 
 /-
 ## Part 5: The Case K_{3,3}
@@ -160,15 +125,6 @@ axiom ramsey_K33 (k : ℕ) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
     c₁ * k^3 ≤ R(K33; k) ∧ (R(K33; k) : ℝ) ≤ c₂ * k^3
 
-/-- More precise: R(K_{3,3}; k) = (1+o(1))k³ -/
-axiom ramsey_K33_asymptotic :
-  Filter.Tendsto (fun k => (R(K33; k) : ℝ) / k^3)
-    Filter.atTop (nhds 1)
-
-/-- Lower bound via norm graphs: R(K_{3,3}; k) ≥ c·k³ for some c > 0 -/
-axiom ramsey_K33_lower (k : ℕ) (hk : k ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧ (R(K33; k) : ℝ) ≥ c * (k : ℝ)^3
-
 /-
 ## Part 6: The General Theorem of Alon-Rónyai-Szabó
 
@@ -183,11 +139,6 @@ axiom alon_ronyai_szabo (s t k : ℕ)
     (hs : s ≥ criticalS t) (ht : t ≥ 2) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
     c₁ * k^t ≤ R(K[s, t]; k) ∧ (R(K[s, t]; k) : ℝ) ≤ c₂ * k^t
-
-/-- Below the threshold, the exponent is strictly between (st-1)/(s+t) and t -/
-axiom below_threshold (s t : ℕ)
-    (hs : s < criticalS t) (ht : t ≥ 2) :
-  ∃ α : ℝ, α > (s * t - 1 : ℝ) / (s + t) ∧ α < t
 
 /-
 ## Part 7: Erdős Problem #558 Statement
@@ -214,31 +165,13 @@ theorem erdos_558 (s t k : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hk : k ≥ 2) :
 Algebraic constructions give tight lower bounds.
 -/
 
-/-- Norm graph lower bound: R(K_{s,t}; k) ≥ c·q²·k for prime q with s = q+1 -/
-axiom norm_graph_lower_bound (s t k : ℕ) (hp : ∃ q, Nat.Prime q ∧ s = q + 1) :
-  ∃ q : ℕ, Nat.Prime q ∧ R(K[s, t]; k) ≥ q^2 * k
-
 /-
 ## Part 9: Specific Values and Bounds
 -/
 
-/-- R(K_{2,3}; k) bounds -/
-axiom ramsey_K23 (k : ℕ) (hk : k ≥ 2) :
-  ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * (k : ℝ)^(5/3 : ℝ) ≤ R(K[2, 3]; k) ∧ (R(K[2, 3]; k) : ℝ) ≤ c₂ * (k : ℝ)^2
-
-/-- R(K_{2,4}; k) bounds -/
-axiom ramsey_K24 (k : ℕ) (hk : k ≥ 2) :
-  ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * (k : ℝ)^(7/4 : ℝ) ≤ R(K[2, 4]; k) ∧ (R(K[2, 4]; k) : ℝ) ≤ c₂ * (k : ℝ)^2
-
 /-
 ## Part 10: Connection to Extremal Graph Theory
 -/
-
-/-- Turán-type lower bound: R(K_{s,t}; k) ≥ k^((st-1)/(s+t)) -/
-axiom turan_lower_bound (s t k : ℕ) (hs : s ≥ 2) (ht : t ≥ 2) :
-  (R(K[s, t]; k) : ℝ) ≥ (k : ℝ)^(((s * t - 1 : ℝ)) / (s + t : ℝ))
 
 /-
 ## Part 11: Summary

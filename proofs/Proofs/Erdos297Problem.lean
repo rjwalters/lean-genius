@@ -89,9 +89,6 @@ axiom two_three_six_is_egyptian : harmonicSum {2, 3, 6} = 1
 /-- Another decomposition: 1/2 + 1/4 + 1/5 + 1/20 = 1. -/
 axiom two_four_five_twenty_is_egyptian : harmonicSum {2, 4, 5, 20} = 1
 -- Arithmetic: 1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 20/20 = 1
-
-/-- A four-term decomposition: 1/2 + 1/3 + 1/7 + 1/42 = 1. -/
-axiom two_three_seven_fortytwo_is_egyptian : harmonicSum {2, 3, 7, 42} = 1
 -- Arithmetic: 1/2 + 1/3 + 1/7 + 1/42 = 21/42 + 14/42 + 6/42 + 1/42 = 42/42 = 1
 
 /-- There exist at least three distinct Egyptian representations. -/
@@ -106,20 +103,8 @@ theorem at_least_three_representations :
 
 Elementary bounds on the Egyptian count function.
 -/
-
-/-- There are finitely many Egyptian representations for any N: at most 2^(N+1).
-    This follows because there are exactly 2^(N+1) subsets of {0,...,N}. -/
-axiom egyptianCount_finite (N : ℕ) : egyptianCount N < 2^(N + 1)
 -- The filter of a finite set has cardinality ≤ the original set.
-
-/-- Trivial upper bound: at most 2^N subsets of {1,...,N}. -/
-axiom trivial_upper_bound (N : ℕ) :
-    (egyptianCount N : ℝ) ≤ 2^N
 -- At most 2^N subsets of an N-element set.
-
-/-- Lower bound: at least 1 representation exists for N ≥ 1 (namely {1}). -/
-axiom trivial_lower_bound (N : ℕ) (hN : N ≥ 1) :
-    egyptianCount N ≥ 1
 -- {1} ⊆ {1,...,N} and harmonicSum {1} = 1.
 
 /-
@@ -144,11 +129,6 @@ def steinerbergerConstant : ℝ := 0.93
 
 /-- **Steinerberger (2024, arXiv:2403.17041):**
     The Egyptian count satisfies egyptianCount(N) ≤ 2^{0.93N} for all sufficiently large N.
-
-    This was the first result proving the growth rate is strictly less than 1,
-    answering half of Erdős's question. -/
-axiom steinerberger_upper_bound :
-    ∃ N₀ : ℕ, ∀ N ≥ N₀, (egyptianCount N : ℝ) ≤ 2^(steinerbergerConstant * N)
 
 /-
 ## Part 6: Liu-Sawhney's Full Asymptotic (April 2024)
@@ -184,14 +164,6 @@ axiom liuSawhney_asymptotic :
 Independent proof of the same asymptotic, plus generalization to arbitrary targets.
 -/
 
-/-- **Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (2024, arXiv:2404.16016):**
-    Independently proved the same asymptotic as Liu-Sawhney.
-    Also generalized to arbitrary rational targets x > 0. -/
-axiom conlon_et_al_asymptotic :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      2^((liuSawhneyConstant - ε) * N) ≤ (egyptianCount N : ℝ) ∧
-      (egyptianCount N : ℝ) ≤ 2^((liuSawhneyConstant + ε) * N)
-
 /-- Count of subsets with harmonic sum equal to a given rational target x. -/
 noncomputable def egyptianCountTarget (N : ℕ) (x : ℚ) : ℕ :=
   ((subsets N).filter (fun A => harmonicSum A = x ∧ 0 ∉ A)).card
@@ -199,13 +171,6 @@ noncomputable def egyptianCountTarget (N : ℕ) (x : ℚ) : ℕ :=
 /-- **Conlon et al. generalization:**
     For any rational x > 0, there exists a constant c_x ∈ (0, 1) such that
     egyptianCountTarget(N, x) = 2^{(c_x + o(1))N}.
-
-    The constant c_x depends on x but is always strictly less than 1. -/
-axiom conlon_et_al_general (x : ℚ) (hx : x > 0) :
-    ∃ c_x : ℝ, c_x > 0 ∧ c_x < 1 ∧
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      2^((c_x - ε) * N) ≤ (egyptianCountTarget N x : ℝ) ∧
-      (egyptianCountTarget N x : ℝ) ≤ 2^((c_x + ε) * N)
 
 /-
 ## Part 8: The 2017 MathOverflow Precedent
@@ -217,13 +182,6 @@ A closely related question about sums ≤ 1 was studied earlier.
 noncomputable def egyptianCountLeq (N : ℕ) : ℕ :=
   ((subsets N).filter (fun A => harmonicSum A ≤ 1 ∧ 0 ∉ A)).card
 
-/-- **MathOverflow (2017):** Mikhail Tikhomirov asked about subsets with sum ≤ 1.
-    Lucia, RaphaelB4, and js21 sketched proofs of the asymptotic for this variant. -/
-axiom mathoverflow_2017_asymptotic :
-    ∃ c : ℝ, c < 1 ∧ ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      2^((c - ε) * N) ≤ (egyptianCountLeq N : ℝ) ∧
-      (egyptianCountLeq N : ℝ) ≤ 2^((c + ε) * N)
-
 /-
 ## Part 9: Intuition — Why c < 1?
 
@@ -232,13 +190,6 @@ The constraint Σ 1/n = 1 exactly is very restrictive.
 
 /-- **Heuristic:** For a random subset of {1,...,N}, the expected harmonic sum is
     E[Σ 1/n] ≈ (1/2) · H_N ≈ (log N)/2, which grows without bound.
-
-    Since the expected sum → ∞, most random subsets have sum > 1,
-    making the constraint Σ 1/n = 1 highly selective.
-    Only a 2^{-0.09N} fraction of all 2^N subsets satisfy it. -/
-axiom heuristic_expected_sum_grows :
-    ∀ K : ℝ, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (Finset.range (N + 1)).sum (fun n => if n = 0 then (0 : ℝ) else 1 / (2 * n)) ≥ K
 
 /-
 ## Part 10: Main Results
