@@ -19,7 +19,8 @@
   - Erdős (1964): φ_A(k)/n_k cannot converge to 0; dichotomy: liminf=0 ⟹ limsup=1
   - Haight: Cesàro average CAN vanish, resolving the problem
 
-  Axiom count: 3 (erdos_no_zero_limit, erdos_dichotomy, haight_resolution)
+  Axiom count: 2 (erdos_dichotomy, haight_resolution)
+  Proved: erdos_no_zero_limit (from erdos_dichotomy — convergence to 0 contradicts dichotomy)
   Proved: cassels_liminf_zero (from haight_resolution via Filter.Eventually.frequently)
   Proved: naturalSeq_phiA_eq_totient (filter condition ↔ coprimality + Icc/range bridge)
   Proved: phiA_ge_totient (φ_A(k) ≥ φ(n_k) — coprime elements always pass the filter)
@@ -567,8 +568,22 @@ theorem densityToZero_implies_vanishing (A : IncreasingSeq) (hD : DensityToZero 
     cannot converge to 0 for any sequence A. This is stronger than
     not_density_zero_of_infinitely_many_primes: it works even for
     sequences with no prime terms (e.g., composite numbers only).
-    Proof requires Erdős' 1964 double-counting argument. -/
-axiom erdos_no_zero_limit (A : IncreasingSeq) : ¬ DensityToZero A
+
+    Proof: If ρ → 0, then ρ < ε for all ε > 0 eventually, hence frequently.
+    By erdos_dichotomy, ρ > 1 - ε frequently. Taking ε = 1/2 gives
+    ρ < 1/2 eventually but ρ > 1/2 frequently — contradiction. -/
+theorem erdos_no_zero_limit (A : IncreasingSeq) : ¬ DensityToZero A := by
+  intro hDZ
+  -- ρ → 0 gives ρ < ε frequently (eventually implies frequently)
+  have h_freq : ∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε :=
+    fun ε hε => (hDZ (Iio_mem_nhds hε)).frequently
+  -- Dichotomy: frequently near 0 ⟹ frequently near 1
+  have h1 := erdos_dichotomy A h_freq (1/2) (by norm_num)
+  -- But ρ → 0 gives eventually ρ < 1/2
+  have h2 : ∀ᶠ k in atTop, densityRatio A k < 1/2 :=
+    hDZ (Iio_mem_nhds (by norm_num : (0 : ℝ) < 1/2))
+  -- Contradiction: frequently(ρ > 1/2) vs eventually(ρ < 1/2)
+  exact h1 (h2.mono fun k hk hge => by linarith)
 
 /-- Erdős' Dichotomy: If the density ratio gets arbitrarily close to 0,
     then it also gets arbitrarily close to 1.

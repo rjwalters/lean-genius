@@ -51,7 +51,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 4 proved cassels_liminf_zero (4→3 axioms), added densityToZero_implies_vanishing (Cesàro mean) and one_sub_densityRatio. Three deep axioms remain: erdos_no_zero_limit, erdos_dichotomy, haight_resolution.",
+    "progressSummary": "PROGRESS: Session 5 eliminated erdos_no_zero_limit axiom by proving it from erdos_dichotomy (3→2 axioms). Two deep axioms remain: erdos_dichotomy (Euler product), haight_resolution (explicit construction).",
     "builtItems": [
       {
         "name": "phiA_ge_totient",
@@ -122,7 +122,8 @@
         "name": "one_sub_densityRatio",
         "type": "theorem",
         "description": "1 - ρ_A(k) = usedSum(k)/n_k (algebraic identity)"
-      }
+      },
+      "PROVED erdos_no_zero_limit from erdos_dichotomy in Erdos1000Problem.lean:575"
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
@@ -135,7 +136,8 @@
       "cassels_liminf_zero is logically weaker than haight_resolution: convergence to 0 implies liminf=0, but not conversely",
       "Filter.Eventually.frequently (with atTop.NeBot) converts eventually-holds to frequently-holds — the key bridge",
       "Mathlib has Filter.Tendsto.cesaro in Analysis.Asymptotics.SpecificAsymptotics — if u→L then Cesàro average of u→L",
-      "cassels_liminf_zero proof: haight_resolution gives VanishingAverage A (Tendsto cesaroAvg 0), then Iio_mem_nhds + Filter.Eventually.frequently gives ∃ᶠ N, cesaroAvg < ε"
+      "cassels_liminf_zero proof: haight_resolution gives VanishingAverage A (Tendsto cesaroAvg 0), then Iio_mem_nhds + Filter.Eventually.frequently gives ∃ᶠ N, cesaroAvg < ε",
+      "erdos_no_zero_limit is a corollary of erdos_dichotomy: convergence to 0 gives frequently near 0, dichotomy gives frequently near 1, contradiction (3→2 axioms)"
     ],
     "mathlibGaps": [
       "No gaps: Nat.totient, Finset.sum_filter_add_sum_filter_not, card_image_le all sufficient",
