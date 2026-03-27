@@ -161,10 +161,28 @@ theorem minpoly_matA :
   have h_deg_le : (minpoly K matA).natDegree ≤ 2 :=
     Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
   have h_deg_pos : 0 < (minpoly K matA).natDegree := minpoly.natDegree_pos h_int
-  -- If deg = 1: minpoly divides X (since monic of deg 1 dividing X² must be X),
-  -- contradicting h_not_dvd_X. So deg = 2.
-  -- A monic polynomial of deg 2 dividing monic polynomial of deg 2 equals it.
-  sorry
+  -- By UFD: minpoly ∣ X^2 with X prime means minpoly ~ X^j for some j ≤ 2
+  have h_monic := minpoly.monic h_int
+  have hX_prime : Prime (X : K[X]) := Polynomial.prime_X
+  rw [dvd_prime_pow hX_prime] at h_dvd
+  obtain ⟨j, hj_le, hassoc⟩ := h_dvd
+  -- Associated monic polynomials are equal
+  obtain ⟨u, hu⟩ := hassoc
+  have hlc : (u : K[X]).leadingCoeff = 1 := by
+    have h := congr_arg Polynomial.leadingCoeff hu
+    rw [Polynomial.leadingCoeff_mul, h_monic.leadingCoeff, one_mul,
+        (monic_X_pow j (R := K)).leadingCoeff] at h
+    exact h
+  have heq : minpoly K matA = X ^ j := by rw [← hu, hlc, mul_one]
+  -- j = 2: not 0 (degree > 0) and not 1 (would mean minpoly ∣ X)
+  have : j ≠ 0 := by
+    intro hj; rw [hj, pow_zero] at heq
+    have := h_deg_pos; rw [heq, Polynomial.natDegree_one] at this; omega
+  have : j ≠ 1 := by
+    intro hj; rw [hj, pow_one] at heq
+    exact h_not_dvd_X ⟨1, by rw [heq, mul_one]⟩
+  have : j = 2 := by omega
+  rw [heq, this]
 
 /-- The minimal polynomial of matB is X². Same argument as matA. -/
 theorem minpoly_matB :
@@ -184,7 +202,25 @@ theorem minpoly_matB :
   have h_deg_le : (minpoly K matB).natDegree ≤ 2 :=
     Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
   have h_deg_pos : 0 < (minpoly K matB).natDegree := minpoly.natDegree_pos h_int
-  sorry
+  have h_monic := minpoly.monic h_int
+  have hX_prime : Prime (X : K[X]) := Polynomial.prime_X
+  rw [dvd_prime_pow hX_prime] at h_dvd
+  obtain ⟨j, hj_le, hassoc⟩ := h_dvd
+  obtain ⟨u, hu⟩ := hassoc
+  have hlc : (u : K[X]).leadingCoeff = 1 := by
+    have h := congr_arg Polynomial.leadingCoeff hu
+    rw [Polynomial.leadingCoeff_mul, h_monic.leadingCoeff, one_mul,
+        (monic_X_pow j (R := K)).leadingCoeff] at h
+    exact h
+  have heq : minpoly K matB = X ^ j := by rw [← hu, hlc, mul_one]
+  have : j ≠ 0 := by
+    intro hj; rw [hj, pow_zero] at heq
+    have := h_deg_pos; rw [heq, Polynomial.natDegree_one] at this; omega
+  have : j ≠ 1 := by
+    intro hj; rw [hj, pow_one] at heq
+    exact h_not_dvd_X ⟨1, by rw [heq, mul_one]⟩
+  have : j = 2 := by omega
+  rw [heq, this]
 
 /-- Both matrices have the same minimal polynomial. -/
 theorem same_minpoly :
@@ -225,18 +261,16 @@ theorem intertwining_forces_zeros (P : Matrix (Fin 4) (Fin 4) K)
   -- (AP)(3,j) = 0 and (PB)(3,j) = P(3,0)·δ(j,1)
   have entry := fun i j => congr_fun (congr_fun h i) j
   simp only [Matrix.mul_apply, matA_apply, matB_apply] at entry
-  -- The Fin 4 sums and if-then-else expressions should simplify
-  -- to give the 6 zero constraints
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> {
-    have := entry _ _
-    simp only [Fin.sum_univ_succ, Fin.sum_univ_zero] at this
-    simp_all [Fin.isValue]
-    try ring_nf at this ⊢
-    try linarith
-    try exact this
-    try { simp_all; done }
-    sorry
-  }
+  -- Extract the 6 specific matrix equation entries needed
+  have h00 := entry 0 0; have h02 := entry 0 2; have h03 := entry 0 3
+  have h20 := entry 2 0; have h22 := entry 2 2; have h23 := entry 2 3
+  -- Expand Fin 4 sums and evaluate if-then-else on concrete indices
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Fin.isValue] at
+    h00 h02 h03 h20 h22 h23
+  -- Aggressive simplification to resolve all Fin arithmetic
+  simp only [Fin.isValue, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul,
+    zero_add, add_zero, ite_true, ite_false] at h00 h02 h03 h20 h22 h23
+  exact ⟨by linarith, by linarith, by linarith, by linarith, by linarith, by linarith⟩
 
 /-- Any matrix P satisfying AP = PB has det(P) = 0.
 
