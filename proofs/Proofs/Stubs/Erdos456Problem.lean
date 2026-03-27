@@ -139,10 +139,21 @@ axiom m_over_n_diverges :
     -- The number of n ≤ M with mₙ ≤ C·n is < ε·M
     ((Finset.filter (fun n => smallestTotientDiv n ≤ C * n) (Finset.range M)).card : ℚ) < ε * M
 
-/-- Van Doorn: for n = 2^{2k+1}, mₙ ≤ 2n -/
-axiom van_doorn_power_of_two (k : ℕ) :
-  let n := 2 ^ (2 * k + 1)
-  smallestTotientDiv n ≤ 2 * n
+/-- Van Doorn: for n = 2^{2k+1}, mₙ ≤ 2n.
+    Proof: 2n = 2^{2k+2}, φ(2^{2k+2}) = 2^{2k+1} = n, so n | φ(2n)
+    and by minimality of mₙ, mₙ ≤ 2n. -/
+theorem van_doorn_power_of_two (k : ℕ) :
+    let n := 2 ^ (2 * k + 1)
+    smallestTotientDiv n ≤ 2 * n := by
+  intro n
+  have hn : 1 ≤ n := Nat.one_le_two_pow
+  apply smallestTotientDiv_minimal n hn (2 * n) (by omega)
+  -- n | φ(2n) = φ(2^{2k+2}) = 2^{2k+1} * (2 - 1) = n
+  show n ∣ (2 * 2 ^ (2 * k + 1)).totient
+  rw [show 2 * 2 ^ (2 * k + 1) = 2 ^ ((2 * k + 1) + 1) from by ring]
+  rw [Nat.totient_prime_pow_succ (by norm_num : Nat.Prime 2)]
+  -- Goal: n ∣ 2^(2k+1) * (2 - 1) = n * 1
+  exact dvd_mul_right n (2 - 1)
 
 /-
 # Part 5: Natural Density
