@@ -20,9 +20,9 @@
     "sourceUrl": "https://erdosproblems.com/943",
     "erdosUrl": "https://erdosproblems.com/943",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 87,
-    "assumptions": "4 axioms: erdos_943_subpolynomial, powerful_density, trivial_upper_bound, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 140,
+    "assumptions": "3 axioms: erdos_943_subpolynomial (OPEN conjecture), powerful_density (√x density of powerful numbers), powerful_structure (a²b³ characterization). trivial_upper_bound eliminated — now proved from powerful_density.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -114,8 +114,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 87,
-    "axiomCount": 4,
+    "lineCount": 140,
+    "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 3
   },
