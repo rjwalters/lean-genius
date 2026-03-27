@@ -39,8 +39,12 @@ def centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
 /--
 Basic identity: (2n)! = C(2n,n) * (n!)²
 -/
-axiom factorial_2n_eq (n : ℕ) :
-    (2 * n)! = centralBinom n * (n !) ^ 2
+theorem factorial_2n_eq (n : ℕ) :
+    (2 * n)! = centralBinom n * (n !) ^ 2 := by
+  unfold centralBinom; rw [sq]
+  have h := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at h
+  linarith
 
 /-
 ## The Main Question
@@ -122,7 +126,10 @@ def catalanNumber (n : ℕ) : ℕ := centralBinom n / (n + 1)
 /--
 Classical fact: (n+1) | C(2n, n) for all n.
 -/
-axiom catalan_divisibility (n : ℕ) : (n + 1) ∣ centralBinom n
+theorem catalan_divisibility (n : ℕ) : (n + 1) ∣ centralBinom n := by
+  unfold centralBinom
+  change (n + 1) ∣ Nat.centralBinom n
+  exact ⟨Nat.catalan n, (Nat.succ_mul_catalan_eq n).symm⟩
 
 /--
 Catalan identity: C(2n,n) = (n+1) * C_n

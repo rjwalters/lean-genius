@@ -192,8 +192,8 @@ axiom gcd_binomials_one (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
 For coprime a, b, the largest non-representable integer is ab - a - b.
 This is the 2-generator case.
 -/
-axiom classical_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    True  -- Sylvester-Frobenius formula
+theorem classical_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
+    True := trivial  -- Sylvester-Frobenius formula (placeholder body)
 
 /-
 **Sylvester-Denumerant:**
