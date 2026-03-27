@@ -110,13 +110,6 @@ def ErdosConjecture911 : Prop :=
 Basic properties that follow from the definitions.
 -/
 
--- The trivial lower bound: R̂(G) ≥ e(G)
--- Any graph that is Ramsey for G must contain G as a subgraph,
--- hence must have at least as many edges as G.
-axiom size_ramsey_ge_edges {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] :
-    sizeRamseyNumber G ≥ edgeCount G
-
 -- Dense graphs have at least C*n edges (definitional)
 theorem dense_has_many_edges {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (C : ℕ)
@@ -181,33 +174,6 @@ Key results from the literature about size Ramsey numbers.
 These are deep theorems that we state as axioms.
 -/
 
--- Beck's theorem (1983): paths have linear size Ramsey number
--- R̂(P_n) ≤ C * n for some absolute constant C
-axiom beck_path_size_ramsey : ∃ C : ℕ, C > 0 ∧
-  ∀ n : ℕ, n > 0 →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (P : SimpleGraph V) [DecidableRel P.Adj],
-    -- P is a path on n vertices (axiomatized as a graph with n-1 edges)
-    Fintype.card V = n → edgeCount P = n - 1 →
-    sizeRamseyNumber P ≤ C * n
-
--- Bounded degree graphs have linear size Ramsey number
--- (Kohayakawa-Rödl-Schacht-Szemerédi, 2011)
-axiom bounded_degree_linear_size_ramsey : ∀ Δ : ℕ, ∃ C : ℕ, C > 0 ∧
-  ∀ (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-  -- max degree ≤ Δ →
-  sizeRamseyNumber G ≤ C * Fintype.card V
-
--- For complete graphs K_n, R̂(K_n) = Θ(n²), which is linear in e(K_n)
-axiom complete_graph_size_ramsey :
-  ∃ c₁ c₂ : ℕ, c₁ > 0 ∧ c₂ > 0 ∧
-  ∀ n : ℕ, n ≥ 3 →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-    -- G = K_n (complete on n vertices)
-    Fintype.card V = n → edgeCount G = n * (n - 1) / 2 →
-    c₁ * n ^ 2 ≤ sizeRamseyNumber G ∧ sizeRamseyNumber G ≤ c₂ * n ^ 2
 
 /-
 # Part 5: Relationship to the Conjecture
@@ -222,13 +188,6 @@ lower bound by a factor that grows with C?
 In other words, does higher density always force larger size Ramsey numbers
 (beyond what the edge count alone predicts)?
 -/
-
--- Upper bound: R̂(G) ≤ C(R(G), 2) where R(G) is the vertex Ramsey number
--- This follows because K_{R(G)} is always Ramsey for G
-axiom vertex_ramsey_number {V : Type*} (G : SimpleGraph V) : ℕ
-
-axiom size_ramsey_upper_bound {V : Type*} (G : SimpleGraph V) :
-    sizeRamseyNumber G ≤ vertex_ramsey_number G * (vertex_ramsey_number G - 1) / 2
 
 -- The conjecture in simplified form: ∃ f superlinear, ∀ C-dense G, R̂(G) ≥ f(C) * e(G)
 -- This is exactly ErdosConjecture911 defined above.
