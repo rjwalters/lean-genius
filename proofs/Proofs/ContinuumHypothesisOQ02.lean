@@ -40,10 +40,12 @@ This file examines:
 - `spectrum_is_regular` — any consistent value for 2^ℵ₀ is regular
 - Various ordering and structural results
 
-**Axiomatized (deep results requiring forcing):**
-- `konig_cofinality` — cf(2^ℵ₀) > ℵ₀ (König's theorem)
-- `bounding_number_uncountable` — ℵ₁ ≤ b (the bounding number)
-- `dominating_le_continuum` — d ≤ 2^ℵ₀ (the dominating number)
+**Proved from Mathlib (newly proved):**
+- `konig_cofinality` — cf(2^ℵ₀) > ℵ₀ (from `Cardinal.lt_cof_power`)
+- `dominating_le_continuum` — d ≤ 2^ℵ₀ (trivial: ∅ is not dominating)
+
+**Axiomatized (deep results):**
+- `bounding_number_uncountable` — ℵ₁ ≤ b (requires diagonalization)
 - `MA_implies_b_eq_continuum` — Martin's Axiom makes b = 2^ℵ₀
 
 **Opaque declarations (not axioms):**
@@ -149,11 +151,12 @@ This is the **only** constraint ZFC places on 2^ℵ₀ beyond Cantor's ℵ₁ �
     Equivalently: the continuum cannot be written as a countable union of
     sets each strictly smaller than 2^ℵ₀.
 
-    Proof sketch: Suppose 2^ℵ₀ = sup{κ_n : n < ω} with κ_n < 2^ℵ₀.
-    By König, Σ_n κ_n < Π_n κ_n ≤ (2^ℵ₀)^ℵ₀ = 2^(ℵ₀·ℵ₀) = 2^ℵ₀.
-    But also 2^ℵ₀ ≤ Σ_n κ_n (each real is in some κ_n). Contradiction. -/
-axiom konig_cofinality :
-    (ℵ₀ : Cardinal.{0}) < (ContinuumHypothesis.continuum.ord.cof : Cardinal)
+    Previously axiomatized; now proved from `Cardinal.lt_cof_power`
+    (a consequence of König's theorem in Mathlib). -/
+theorem konig_cofinality :
+    (ℵ₀ : Cardinal.{0}) < (ContinuumHypothesis.continuum.ord.cof : Cardinal) := by
+  show (ℵ₀ : Cardinal.{0}) < ((2 ^ ℵ₀ : Cardinal.{0}).ord.cof : Cardinal)
+  exact Cardinal.lt_cof_power le_rfl (by norm_num)
 
 /-- König's constraint rules out 2^ℵ₀ = ℵ_ω. The argument:
     cf(ℵ_ω) = ℵ₀ (it's a countable limit of alephs), but
@@ -313,11 +316,19 @@ axiom bounding_number_uncountable :
     ContinuumHypothesis.aleph_one ≤ boundingNumber
 
 /-- The dominating number is at most the continuum: d ≤ 2^ℵ₀.
-    The set of all functions ℕ→ℕ has cardinality 2^ℵ₀ and is trivially dominating.
-
-    Axiom: requires showing |ℕ→ℕ| = 2^ℵ₀ and that the full function space dominates. -/
-axiom dominating_le_continuum :
-    dominatingNumber ≤ ContinuumHypothesis.continuum
+    Previously axiomatized; now proved trivially: the empty family is not
+    dominating, so the infimum term at F = ∅ equals continuum, giving
+    dominatingNumber ≤ continuum. -/
+theorem dominating_le_continuum :
+    dominatingNumber ≤ ContinuumHypothesis.continuum := by
+  unfold dominatingNumber
+  have hbdd : BddBelow (Set.range fun F : Set (ℕ → ℕ) =>
+      if IsDominating F then Cardinal.mk F else ContinuumHypothesis.continuum) :=
+    ⟨0, fun _ ⟨_, hF⟩ => hF ▸ by split <;> exact zero_le _⟩
+  calc ⨅ F, _ ≤ (if IsDominating (∅ : Set (ℕ → ℕ)) then Cardinal.mk (∅ : Set (ℕ → ℕ))
+        else ContinuumHypothesis.continuum) := ciInf_le hbdd ∅
+    _ = ContinuumHypothesis.continuum := by
+        rw [if_neg]; intro h; obtain ⟨_, hg, _⟩ := h (fun _ => 0); exact hg.elim
 
 /-- Every dominating family is unbounded: if F eventually dominates
     all functions, no single function can eventually dominate all of F.
