@@ -31,13 +31,6 @@ namespace Erdos554
     definition requires graph theory infrastructure beyond our scope. -/
 axiom ramseyNumber (graphSize : ℕ) (k : ℕ) : ℕ
 
-/-- Ramsey numbers are always at least the graph size. -/
-axiom ramseyNumber_ge (n k : ℕ) (hk : k ≥ 1) : ramseyNumber n k ≥ n
-
-/-- Ramsey numbers are monotone in the number of colors. -/
-axiom ramseyNumber_mono_colors (n k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
-  ramseyNumber n k₁ ≤ ramseyNumber n k₂
-
 /-- R(K_3; k): the k-color Ramsey number of the triangle. -/
 def triangleRamsey (k : ℕ) : ℕ := ramseyNumber 3 k
 
@@ -66,36 +59,11 @@ def erdosConjecture554 : Prop :=
 /-- **Triangle Ramsey lower bound (exponential):**
     R(K_3; k) >= 2^k for k >= 2.
 
-    This follows from the probabilistic method and explicit constructions.
-    The exact growth rate of R(K_3; k) is a major open problem. -/
-axiom triangle_ramsey_exponential :
-  ∀ k : ℕ, k ≥ 2 → triangleRamsey k ≥ 2 ^ k
-
-/-- **Triangle Ramsey upper bound:**
-    R(K_3; k) is at most exponential in k.
-    Due to the Hales-Jewett / stepping-up arguments. -/
-axiom triangle_ramsey_upper :
-  ∃ C : ℕ, C ≥ 2 ∧ ∀ k : ℕ, k ≥ 2 → triangleRamsey k ≤ C ^ k
-
 /-- **Odd cycle Ramsey upper bound:**
     R(C_{2n+1}; k) <= (2n+1)^k for n >= 2, k >= 2.
 
-    While also exponential in k, the base (2n+1) may be smaller
-    than the base for triangles. The conjecture asserts the ratio -> 0. -/
-axiom oddCycle_ramsey_upper :
-  ∀ n : ℕ, n ≥ 2 →
-    ∀ k : ℕ, k ≥ 2 →
-      oddCycleRamsey n k ≤ (2 * n + 1) ^ k
-
 /-- **Odd cycle Ramsey lower bound:**
     R(C_{2n+1}; k) >= k * (2n) + 1 for k >= 1, n >= 1.
-
-    The Bondy-Erdős result for 2 colors generalizes to a linear
-    lower bound in k. -/
-axiom oddCycle_ramsey_lower :
-  ∀ n : ℕ, n ≥ 1 →
-    ∀ k : ℕ, k ≥ 1 →
-      oddCycleRamsey n k ≥ k * (2 * n) + 1
 
 /- ## Part IV: Classical 2-Color Results -/
 
@@ -142,14 +110,6 @@ theorem pentagon_is_special_case :
 
 /- ## Part VI: Relation to Graph Chromatic Number -/
 
-/-- **Chromatic connection:**
-    All odd cycles have chromatic number 3, same as K_3.
-    Yet the conjecture says their Ramsey numbers behave very differently
-    in the multicolor setting. This suggests Ramsey complexity depends
-    on more than just chromatic number. -/
-axiom odd_cycle_chromatic (n : ℕ) (hn : n ≥ 2) :
-  ∃ χ : ℕ, χ = 3
-
 /-- **General question (Erdős):**
     Is there a graph G with χ(G) = 3 such that
     R(G; k) / R(K_3; k) does NOT tend to 0?
@@ -164,14 +124,5 @@ def erdos_question_chromatic_3 : Prop :=
         ramseyNumber graphSize k * εDen < εNum * triangleRamsey k
 
 /- ## Part VII: Summary -/
-
-/-- **Problem #554 Status:**
-    - OPEN (Erdős-Graham, 1981)
-    - Open even for C_5 (the pentagon)
-    - Known: 2-color case completely determined
-    - Known: exponential bounds on both sides
-    - The ratio R(C_{2n+1}; k) / R(K_3; k) is conjectured -> 0
-    - Would show Ramsey complexity depends on more than χ(G) -/
-axiom erdos_554 : erdosConjecture554
 
 end Erdos554

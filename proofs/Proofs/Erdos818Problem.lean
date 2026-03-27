@@ -84,16 +84,11 @@ def hasSmallSumset (A : Finset ℤ) (K : ℝ) : Prop :=
 |A + A| ≥ 2|A| - 1 for any nonempty set A.
 (Take a + min A and a + max A for each a.)
 -/
-axiom sumset_lower_bound (A : Finset ℤ) (hA : A.Nonempty) :
-    (sumset A).card ≥ 2 * A.card - 1
 
 /--
 **Lower bound on product set:**
 |A · A| ≥ |A| for A ⊆ ℤ⁺ (roughly, since products spread out).
 -/
-axiom productSet_lower_bound_positive (A : Finset ℤ)
-    (hA : ∀ a ∈ A, a > 0) (hne : A.Nonempty) :
-    (productSet A).card ≥ A.card
 
 /--
 **Upper bound on product set:**
@@ -178,15 +173,11 @@ def additiveEnergy (A : Finset ℤ) : ℕ :=
 **Energy-cardinality relationship:**
 E×(A) ≥ |A|⁴ / |AA| (by pigeonhole on products).
 -/
-axiom multiplicative_energy_bound (A : Finset ℤ) (hA : A.Nonempty) :
-    (multiplicativeEnergy A : ℝ) ≥ (A.card : ℝ)^4 / (productSet A).card
 
 /--
 **Solymosi's key lemma:**
 Bounds multiplicative energy in terms of sumset size.
 -/
-axiom solymosi_energy_lemma (A : Finset ℤ) (hA : A.card ≥ 2) :
-    (multiplicativeEnergy A : ℝ) ≤ (A.card : ℝ)^2 * ((sumset A).card : ℝ) * log A.card
 
 /-
 ## Part VI: Proof Sketch
@@ -215,12 +206,6 @@ There exist sets A with small sumset where |AA| = O(|A|² / log|A|).
 So the log factor cannot be removed entirely.
 -/
 /- The log factor is tight: there exist sets A with |A+A| ≤ 2|A| - 1
-   (arithmetic progressions) where |AA| = Θ(|A|²/log|A|) by the
-   Erdős multiplication table estimate. -/
-axiom log_factor_necessary :
-    ∀ ε > 0, ∃ A : Finset ℤ, A.card ≥ 2 ∧
-      hasSmallSumset A 2 ∧
-      ((productSet A).card : ℝ) ≤ (1 + ε) * (A.card : ℝ)^2 / log A.card
 
 /-
 ## Part VII: Connection to Sum-Product Conjecture
@@ -233,9 +218,6 @@ For any finite A ⊂ ℤ, max(|A+A|, |AA|) is large.
 This problem (818) explores what happens when we force |A+A| to be small:
 the product set must compensate and be large.
 -/
-axiom sum_product_dichotomy :
-    ∀ A : Finset ℤ, A.card ≥ 2 →
-      ∃ c : ℝ, c > 0 ∧ max (sumset A).card (productSet A).card ≥ c * A.card
 
 /--
 **Connection to Problem 52:**
@@ -246,12 +228,6 @@ Problem 818 asks: if |A+A| ≤ K|A|, then |AA| ≥ |A|²/log|A|?
 The latter is a conditional result: GIVEN small sumset, product set is large.
 -/
 /- Problem 52 conjectures max(|A+A|, |AA|) ≥ |A|^{2-ε}.
-   Problem 818 is conditional: given |A+A| small, product set is large.
-   Solymosi's bound on 818 implies partial progress toward Problem 52. -/
-axiom connection_to_problem_52 :
-    ∀ ε > 0, ∃ c : ℝ, c > 0 ∧
-      ∀ A : Finset ℤ, A.card ≥ 2 →
-        (max (sumset A).card (productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ ((4 : ℝ) / 3 - ε)
 
 /-
 ## Part VIII: Examples
@@ -264,11 +240,6 @@ If A = {1, 2, ..., n}, then:
 - |A · A| ≈ n²/log n (by Erdős multiplication table problem)
 -/
 /- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n.
-   This shows the log factor is necessary even for simple sets. -/
-axiom arithmetic_progression_example (n : ℕ) (hn : n ≥ 2) :
-    ∃ A : Finset ℤ, A.card = n ∧
-      hasSmallSumset A 2 ∧
-      ((productSet A).card : ℝ) ≤ 2 * (n : ℝ)^2 / log n
 
 /--
 **Example: Geometric progression**
@@ -278,12 +249,6 @@ If A = {1, r, r², ..., r^{n-1}}, then:
 This shows the opposite extreme.
 -/
 /- For A = {1, r, r², ..., r^{n-1}} with r > n:
-   |A+A| ≈ n² (large), |AA| = 2n - 1 (small).
-   Opposite extreme: multiplicative structure suppresses product set. -/
-axiom geometric_progression_example (n : ℕ) (hn : n ≥ 2) :
-    ∃ A : Finset ℤ, A.card = n ∧
-      (productSet A).card = 2 * n - 1 ∧
-      ((sumset A).card : ℝ) ≥ (n : ℝ)^2 / 2
 
 /-
 ## Part IX: Summary

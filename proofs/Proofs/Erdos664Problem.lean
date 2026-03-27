@@ -108,11 +108,6 @@ axiom alon_disproof : ¬ErdosQuestion664
 /-- Alon's construction uses projective planes. -/
 def projectivePlaneOrder : ℕ → ℕ := fun q => q^2 + q + 1
 
-/-- For prime power q, there exists a projective plane of order q. -/
-axiom projective_plane_exists (q : ℕ) (hq : Nat.Prime q ∨ ∃ p k, Nat.Prime p ∧ k ≥ 2 ∧ q = p^k) :
-  -- The projective plane PG(2,q) has q²+q+1 points and q²+q+1 lines
-  True
-
 /-- **Alon's Construction:**
     For n = m = q² + q + 1 (q a large prime power), there exist sets where:
     - |Aᵢ| ≥ (2/5)√n
@@ -140,30 +135,6 @@ def randomSubsetConstruction : Prop :=
 /-
 ## Part V: Why the Counterexample Works
 -/
-
-/-- Projective planes have exactly q+1 points per line. -/
-axiom projective_line_size (q : ℕ) :
-  -- Each line in PG(2,q) has q+1 points
-  True
-
-/-- Any two distinct lines in a projective plane meet in exactly one point. -/
-axiom projective_intersection (q : ℕ) :
-  -- This gives |Aᵢ ∩ Aⱼ| = 1 for i ≠ j (before thinning)
-  True
-
-/-- Random thinning to ~2/5 of each line maintains properties. -/
-axiom random_thinning_preserves :
-  -- With high probability:
-  -- 1. Sets still have size ≈ (2/5)(q+1) > (2/5)√n
-  -- 2. Intersection is still ≤ 1
-  -- 3. Coverage structure forces large blocker intersections
-  True
-
-/-- Key insight: logarithmic lower bound for blocker size. -/
-axiom logarithmic_lower_bound :
-  -- A covering argument shows any blocker B satisfies
-  -- ∃ j, |B ∩ Aⱼ| ≥ Ω(log n)
-  True
 
 /-
 ## Part VI: Balanced Block Designs (Original Weaker Version)
@@ -194,16 +165,6 @@ def blockingSetInterpretation : Prop :=
   -- The question asks if O(1)-intersecting blocking sets exist
   True
 
-/-- In PG(2,q), the minimum blocking set has size q + √q + 1. -/
-axiom minimum_blocking_set_size (q : ℕ) :
-  -- For a square q, Bruen's bound: minimum blocking set has size q + √q + 1
-  True
-
-/-- No blocking set can meet all lines in O(1) points in general. -/
-axiom no_constant_blocking :
-  -- This is essentially what Alon proved for the random subset construction
-  True
-
 /-
 ## Part VIII: The Constant 2/5
 -/
@@ -214,12 +175,6 @@ def constantTwoFifths : Prop :=
   -- Expected line size ≈ (2/5)(q+1)
   -- Concentration around this value
   True
-
-/-- Other constants would give similar counterexamples. -/
-axiom other_constants_work :
-  ∀ c : ℝ, c > 0 → c < 1/2 →
-    -- Can adjust the construction to work for any c < 1/2
-    True
 
 /-
 ## Part IX: Related Problems

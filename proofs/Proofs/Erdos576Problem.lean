@@ -89,14 +89,6 @@ theorem hypercube_vertex_count (k : ℕ) :
   unfold HypercubeVertex
   simp [Fintype.card_fun, Fintype.card_fin, Fintype.card_bool]
 
-/-- Each vertex in Q_k has degree k (stated as a property) -/
-axiom hypercube_degree (k : ℕ) (v : HypercubeVertex k) :
-    (Q(k)).degree v = k
-
-/-- The number of edges in Q_k is k·2^(k-1) -/
-axiom hypercube_edge_count (k : ℕ) :
-    (Q(k)).edgeFinset.card = k * 2^(k-1)
-
 /-
 ## Part 3: Turán Numbers and Extremal Graph Theory
 
@@ -151,19 +143,9 @@ theorem erdos_simonovits_bounds :
 Modern results have improved the upper bounds for general k.
 -/
 
-/-- Sudakov-Tomon (2022): ex(n; Q_k) = o(n^(2 - 1/k)) -/
-axiom sudakov_tomon_bound (k : ℕ) (hk : k ≥ 2) :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      (ex(n; Q(k)) : ℝ) ≤ ε * (n : ℝ)^(2 - 1/(k : ℝ))
-
 /-- The exponent in the Janzer-Sudakov bound: 2 - 1/(k-1) + 1/((k-1)·2^(k-1)) -/
 noncomputable def janzerSudakovExponent (k : ℕ) : ℝ :=
   2 - 1/((k : ℝ) - 1) + 1/(((k : ℝ) - 1) * 2^(k - 1))
-
-/-- Janzer-Sudakov (2022): ex(n; Q_k) ≪_k n^(janzerSudakovExponent k) -/
-axiom janzer_sudakov_bound (k : ℕ) (hk : k ≥ 3) :
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in Filter.atTop,
-      (ex(n; Q(k)) : ℝ) ≤ C * (n : ℝ)^(janzerSudakovExponent k)
 
 /-- For k = 3, Janzer-Sudakov gives exponent 2 - 1/2 + 1/8 = 13/8 = 1.625 -/
 theorem janzer_sudakov_k3_exponent :
@@ -199,15 +181,6 @@ theorem janzer_sudakov_vs_conjecture :
 Erdős-Simonovits also studied Q_3 with a missing edge.
 -/
 
-/-- Q_3 minus one edge has ex(n; G) ≍ n^(3/2) -/
-axiom erdos_simonovits_minus_edge :
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ n in Filter.atTop,
-    ∃ (G : SimpleGraph (HypercubeVertex 3)) [DecidableRel G.Adj],
-    -- G is Q_3 minus one edge
-    (∃ e, G = (Q(3)).deleteEdges {e}) ∧
-    c * (n : ℝ)^(3/2 : ℝ) ≤ (ex(n; G) : ℝ) ∧
-    (ex(n; G) : ℝ) ≤ C * (n : ℝ)^(3/2 : ℝ)
-
 /-
 ## Part 8: General Turán Theory Context
 
@@ -217,35 +190,11 @@ gives ex(n; H) = (1 - 1/(χ(H)-1) + o(1))·(n choose 2).
 For bipartite H, the problem is much harder.
 -/
 
-/-- The hypercube Q_k is bipartite for all k ≥ 1 -/
-axiom hypercube_bipartite (k : ℕ) (hk : k ≥ 1) :
-    ∃ (A B : Set (HypercubeVertex k)),
-      A ∩ B = ∅ ∧ A ∪ B = Set.univ ∧
-      ∀ v w, (Q(k)).Adj v w → (v ∈ A ∧ w ∈ B) ∨ (v ∈ B ∧ w ∈ A)
-
-/-- For bipartite H, ex(n; H) = o(n²) -/
-axiom bipartite_turan_subquadratic {W : Type*} [Fintype W] [DecidableEq W]
-    (H : SimpleGraph W) [DecidableRel H.Adj]
-    (hbip : ∃ (A B : Set W), A ∩ B = ∅ ∧ A ∪ B = Set.univ ∧
-      ∀ v w, H.Adj v w → (v ∈ A ∧ w ∈ B) ∨ (v ∈ B ∧ w ∈ A)) :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop, (ex(n; H) : ℝ) ≤ ε * (n : ℝ)^2
-
 /-
 ## Part 9: The Kővári-Sós-Turán Theorem
 
 A key tool for bipartite Turán problems.
 -/
-
-/-- Kővári-Sós-Turán: ex(n; K_{s,t}) ≤ (1/2)(t-1)^(1/s) · n^(2-1/s) + (s-1)n/2 -/
-axiom kovari_sos_turan (s t n : ℕ) (hs : s ≥ 1) (ht : t ≥ s) :
-    ∃ C : ℝ, C > 0 ∧ (ex(n; completeBipartiteGraph (Fin s) (Fin t)) : ℝ) ≤
-      C * (n : ℝ)^(2 - 1/(s : ℝ))
-
-/-- Q_k contains K_{2,2^(k-1)} as a subgraph -/
-axiom hypercube_contains_complete_bipartite (k : ℕ) (hk : k ≥ 2) :
-    ∃ (f : Fin 2 ⊕ Fin (2^(k-1)) ↪ HypercubeVertex k),
-      ∀ i j, (completeBipartiteGraph (Fin 2) (Fin (2^(k-1)))).Adj (Sum.inl i) (Sum.inr j) →
-        (Q(k)).Adj (f (Sum.inl i)) (f (Sum.inr j))
 
 /-
 ## Part 10: Summary and Main Theorem

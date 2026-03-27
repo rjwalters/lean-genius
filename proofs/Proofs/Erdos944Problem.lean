@@ -61,8 +61,6 @@ has size > r?
 exist a graph with the Erdős944 property?
 
 The case k = 4, r = 1 remains OPEN. -/
-axiom erdos_944_conjecture : ∀ k ≥ 4, ∀ r ≥ 1,
-    ∃ (G : Type), IsErdos944Graph G k r
 
 /-
 ## Dirac's Conjecture (r = 1)
@@ -72,8 +70,6 @@ Are there k-vertex-critical graphs without any critical edges?
 
 /-- **Dirac's Conjecture (1970)**: For k ≥ 4, there exists a k-vertex-critical
 graph with no critical edges (every critical edge set has size > 1). -/
-axiom dirac_conjecture : ∀ k ≥ 4,
-    ∃ (G : Type), IsErdos944Graph G k 1
 
 /-
 ## Solved Cases
@@ -81,23 +77,16 @@ axiom dirac_conjecture : ∀ k ≥ 4,
 
 /-- **Brown's Result (1992)**: There exists a 5-vertex-critical graph with
 no critical edges. Brown explicitly constructed such a graph with 11 vertices. -/
-axiom brown_1992 : ∃ (G : Type), IsErdos944Graph G 5 1
 
 /-- **Lattanzio's Result (2002)**: For k where k-1 is not prime, there exist
 k-vertex-critical graphs with no critical edges. -/
-axiom lattanzio_2002 (k : ℕ) (hk : 4 ≤ k) (h : ¬(k - 1).Prime) :
-    ∃ (G : Type), IsErdos944Graph G k 1
 
 /-- **Jensen's Result (2002)**: For k ≥ 5, there exist k-vertex-critical
 graphs with no critical edges. -/
-axiom jensen_2002 (k : ℕ) (hk : 5 ≤ k) :
-    ∃ (G : Type), IsErdos944Graph G k 1
 
 /-- **Martinsson-Steiner's Result (2025)**: For every r ≥ 1, if k is
 sufficiently large, there exist k-vertex-critical graphs where every
 critical edge set has size > r. -/
-axiom martinsson_steiner_2025 (r : ℕ) (hr : 1 ≤ r) :
-    ∃ k₀, ∀ k ≥ k₀, ∃ (G : Type), IsErdos944Graph G k r
 
 /-
 ## The Open Case: k = 4
@@ -106,29 +95,10 @@ axiom martinsson_steiner_2025 (r : ℕ) (hr : 1 ≤ r) :
 /-- **OPEN**: Does there exist a 4-vertex-critical graph with no critical edges?
 
 This is the last remaining case of Dirac's conjecture. All k ≥ 5 are solved. -/
-axiom k_equals_4_open :
-    (∃ (G : Type), IsErdos944Graph G 4 1) ∨
-    (¬∃ (G : Type), IsErdos944Graph G 4 1)
 
 /-
 ## Basic Properties of Critical Graphs
 -/
-
-/-- A k-vertex-critical graph has minimum degree at least k-1. -/
-axiom vertex_critical_min_degree (G : Type) [IsKVertexCritical G k] (hk : 2 ≤ k) :
-    True  -- Placeholder for: ∀ v, deg(v) ≥ k - 1
-
-/-- A k-vertex-critical graph is connected. -/
-axiom vertex_critical_connected (G : Type) [IsKVertexCritical G k] (hk : 2 ≤ k) :
-    True  -- Placeholder for: G is connected
-
-/-- The complete graph K_n is n-vertex-critical. -/
-axiom complete_graph_vertex_critical (n : ℕ) (hn : 1 ≤ n) :
-    ∃ (G : Type), IsKVertexCritical G n
-
-/-- An odd cycle C_{2n+1} is 3-vertex-critical. -/
-axiom odd_cycle_vertex_critical (n : ℕ) (hn : 1 ≤ n) :
-    ∃ (G : Type), IsKVertexCritical G 3
 
 /-
 ## Historical Context

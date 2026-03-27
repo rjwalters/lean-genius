@@ -77,22 +77,13 @@ theorem dissociated_iff_unique_sums (A : Finset ℕ) :
 def powersOfTwo (n : ℕ) : Finset ℕ :=
   (Finset.range n).image (fun i => 2^i)
 
-/-- Powers of 2 are dissociated (binary uniqueness). -/
-axiom powersOfTwo_dissociated (n : ℕ) : IsDissociated (powersOfTwo n)
-
 /-- More generally, powers of any b > 1 are dissociated. -/
 def powersOfBase (b n : ℕ) : Finset ℕ :=
   (Finset.range n).image (fun i => b^i)
 
-axiom powersOfBase_dissociated (b n : ℕ) (hb : b > 1) :
-    IsDissociated (powersOfBase b n)
-
 /-- Lacunary sequences: a_{n+1} > 2·∑_{i≤n} a_i are dissociated. -/
 def IsLacunary (a : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, a (n + 1) > 2 * (Finset.range (n + 1)).sum a
-
-axiom lacunary_is_dissociated (a : ℕ → ℕ) (h : IsLacunary a) (n : ℕ) :
-    IsDissociated ((Finset.range n).image a)
 
 /-
 ## Part III: Proportionately Dissociated Sets
@@ -134,11 +125,6 @@ def IsSidonHarmonic (A : Set ℕ) : Prop :=
       C * Complex.abs (∑ n in Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
         f n * Complex.exp (2 * Real.pi * Complex.I * n * θ))
 
-/-- **Pisier's Theorem (1983):**
-    Proportionately dissociated ⟺ Sidon (harmonic analysis). -/
-axiom pisier_theorem (A : Set ℕ) :
-    IsProportionatelyDissociated A ↔ IsSidonHarmonic A
-
 /-
 ## Part V: Sidon Sets (Additive Combinatorics)
 -/
@@ -148,14 +134,6 @@ axiom pisier_theorem (A : Set ℕ) :
 def IsSidonAdditive (A : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
-
-/-- Every Sidon set (additive) is dissociated. -/
-axiom sidon_implies_dissociated (A : Finset ℕ) :
-    IsSidonAdditive A → IsDissociated A
-
-/-- The converse is false: dissociated does not imply Sidon. -/
-axiom dissociated_not_implies_sidon :
-    ∃ A : Finset ℕ, IsDissociated A ∧ ¬IsSidonAdditive A
 
 /-
 ## Part VI: Union Decomposition
@@ -179,9 +157,6 @@ axiom finite_union_is_proportionately (A : Set ℕ) :
 def ErdosConjecture774 : Prop :=
   ∀ A : Set ℕ, A.Infinite → IsProportionatelyDissociated A →
     IsFiniteUnionDissociated A
-
-/-- Alon-Erdős (1985) conjectured the answer is NO. -/
-axiom alon_erdos_conjecture : ¬ErdosConjecture774
 
 /-
 ## Part VIII: The Sidon Analogue
@@ -211,23 +186,9 @@ def SidonAnalogue : Prop :=
     a finite union of Sidon sets. -/
 axiom nesetril_rodl_sales_theorem : ¬SidonAnalogue
 
-/-- The counterexample construction uses probabilistic methods. -/
-axiom nrs_construction :
-    ∃ A : Set ℕ, A.Infinite ∧ IsProportionatelySidon A ∧
-      ¬IsFiniteUnionSidon A
-
 /-
 ## Part IX: Connections and Implications
 -/
-
-/-- Dissociated implies Sidon (additive), so:
-    proportionately Sidon ⟹ proportionately dissociated. -/
-axiom prop_sidon_implies_prop_dissociated (A : Set ℕ) :
-    IsProportionatelySidon A → IsProportionatelyDissociated A
-
-/-- But finite union of Sidon ⟹ finite union of dissociated. -/
-axiom union_sidon_implies_union_dissociated (A : Set ℕ) :
-    IsFiniteUnionSidon A → IsFiniteUnionDissociated A
 
 /-
 ## Part X: Bounds on Dissociated Subsets
@@ -237,12 +198,6 @@ axiom union_sidon_implies_union_dissociated (A : Set ℕ) :
 noncomputable def maxDissociatedSize (n : ℕ) : ℕ :=
   Nat.find (⟨0, by trivial⟩ : ∃ k, ∀ D : Finset ℕ,
     (∀ d ∈ D, d ≤ n) → IsDissociated D → D.card ≤ k)
-
-/-- The maximum dissociated subset of {1,...,n} has size Θ(log n). -/
-axiom max_dissociated_log_bound :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      c * Real.log n ≤ maxDissociatedSize n ∧
-      maxDissociatedSize n ≤ C * Real.log n
 
 /-
 ## Part XI: Summary

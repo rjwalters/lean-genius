@@ -91,11 +91,6 @@ def totalIncidences (P : Finset Point) (L : Finset Line) : ℕ :=
 def incidencePairs (P : Finset Point) (L : Finset Line) : Finset (Point × Line) :=
   (P ×ˢ L).filter (fun pl => decide (pl.1.onLine pl.2))
 
-/-- The two incidence counting methods give the same result.
-    Axiomatized since the proof requires non-trivial finset manipulation. -/
-axiom incidences_eq (P : Finset Point) (L : Finset Line) :
-    (incidencePairs P L).card = totalIncidences P L
-
 /- ## Part 4: The Szemerédi-Trotter Theorem
 
 The main incidence bound: I(P, L) = O(|P|^(2/3)|L|^(2/3) + |P| + |L|).
@@ -111,11 +106,6 @@ noncomputable def szTrBound (n m : ℕ) : ℝ :=
 axiom szemeredi_trotter (P : Finset Point) (L : Finset Line) :
   ∃ C : ℝ, C > 0 ∧ (totalIncidences P L : ℝ) ≤ C * szTrBound P.card L.card
 
-/-- The exponent 2/3 is optimal: configurations exist achieving this bound. -/
-axiom szTr_exponent_optimal :
-  ∀ ε > 0, ∃ (P : Finset Point) (L : Finset Line),
-    (totalIncidences P L : ℝ) ≥ (P.card : ℝ)^(2/3 - ε) * (L.card : ℝ)^(2/3 - ε)
-
 /- ## Part 5: The k-Rich Lines Bound
 
 From Szemerédi-Trotter, we derive the k-rich lines bound.
@@ -124,11 +114,6 @@ From Szemerédi-Trotter, we derive the k-rich lines bound.
 /-- The k-rich lines bound function: n²/k³ -/
 noncomputable def kRichBound (n k : ℕ) : ℝ :=
   (n : ℝ)^2 / (k : ℝ)^3
-
-/-- Key lemma: k-rich lines contribute at least k incidences each.
-    If m lines each have ≥ k incidences, the total is ≥ mk. -/
-axiom kRich_incidences_lower (P : Finset Point) (L : Finset Line) (k : ℕ) (hk : k > 0) :
-    (totalIncidences P (kRichLines P L k) : ℝ) ≥ k * (numKRichLines P L k)
 
 /-- **Erdős Problem #1069: The k-rich lines bound.**
     Szemerédi-Trotter implies: the number of k-rich lines is O(n²/k³)
@@ -154,18 +139,6 @@ Szemerédi-Trotter to each level, then sum.
 def dyadicLines (P : Finset Point) (L : Finset Line) (i : ℕ) : Finset Line :=
   L.filter (fun l => decide (2^i ≤ incidenceCount P l ∧ incidenceCount P l < 2^(i+1)))
 
-/-- Total incidences bounded via dyadic decomposition.
-    Each dyadic level contributes at most 2^{i+1} · |L_i| incidences. -/
-axiom dyadic_bound (P : Finset Point) (L : Finset Line) :
-    (totalIncidences P L : ℝ) ≤ ∑ i ∈ Finset.range (Nat.log2 P.card + 1),
-      2^(i+1) * (dyadicLines P L i).card
-
-/-- Applying Szemerédi-Trotter to each dyadic level gives
-    |L_i| ≤ O(n²/2^{3i} + n/2^i). -/
-axiom dyadic_szTr (P : Finset Point) (L : Finset Line) (i : ℕ) :
-    ∃ C : ℝ, C > 0 ∧
-      ((dyadicLines P L i).card : ℝ) ≤ C * ((P.card : ℝ)^2 / (2^i : ℝ)^3 + P.card / 2^i)
-
 /- ## Part 7: Lower Bound Constructions
 
 Known constructions show the bound is close to tight.
@@ -175,31 +148,9 @@ Known constructions show the bound is close to tight.
 def latticePoints (m : ℕ) : Finset Point :=
   (Finset.range m ×ˢ Finset.range m).image (fun p => ((p.1 : ℝ), (p.2 : ℝ)))
 
-/-- The m × m lattice has m² points.
-    Axiomatized since the proof requires showing the image function is injective. -/
-axiom lattice_card (m : ℕ) : (latticePoints m).card = m ^ 2
-
-/-- Lattice construction gives ≥ 2m - 2 many m-rich lines
-    (the m horizontal and m vertical lines, minus edge effects). -/
-axiom lattice_lower_bound (m : ℕ) (hm : m ≥ 2) :
-  ∃ L : Finset Line, (numKRichLines (latticePoints m) L m : ℝ) ≥ 2 * m - 2
-
 /- ## Part 8: Special Cases -/
 
-/-- When k > √n, even stronger bounds apply: O(n/k) k-rich lines. -/
-axiom large_k_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
-    (hk : (k : ℝ)^2 > P.card) :
-  ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * P.card / k
-
 /- ## Part 9: Point-Line Duality -/
-
-/-- Dual: Given n lines, the number of k-rich points (points lying on
-    ≥ k lines) is O(n²/k³) when k ≤ √n. This follows from point-line
-    duality, which preserves incidence counts. -/
-axiom dual_kRich_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
-    (hk : k ≥ 2) (hn : (k : ℝ)^2 ≤ L.card) :
-  ∃ C : ℝ, C > 0 ∧ (P.filter (fun p => (L.filter (fun l =>
-    decide (l.a * p.1 + l.b * p.2 = l.c))).card ≥ k)).card ≤ C * (L.card : ℝ)^2 / (k : ℝ)^3
 
 /- ## Part 10: Summary
 

@@ -59,12 +59,6 @@ noncomputable def angle (x y z : ℝ × ℝ) : ℝ :=
   if norm1 = 0 ∨ norm2 = 0 then 0
   else Real.arccos (dot / (norm1 * norm2))
 
-/-- The angle is in [0, π]. -/
-axiom angle_range (x y z : ℝ × ℝ) : 0 ≤ angle x y z ∧ angle x y z ≤ π
-
-/-- The angle is symmetric in x and z. -/
-axiom angle_symm (x y z : ℝ × ℝ) : angle x y z = angle z y x
-
 /- ## Part II: Maximum Angle in a Point Set -/
 
 /--
@@ -74,13 +68,6 @@ Given a finite set A of points in ℝ², the maximum angle is the largest
 angle ∠xyz that can be formed with three distinct points x, y, z ∈ A.
 -/
 noncomputable axiom maxAngleInSet (A : Finset (ℝ × ℝ)) : ℝ
-
-/-- Every set of 3 or more points has some positive maximum angle. -/
-axiom maxAngleInSet_pos (A : Finset (ℝ × ℝ)) (hA : A.card ≥ 3) :
-    maxAngleInSet A > 0
-
-/-- The maximum angle is at most π. -/
-axiom maxAngleInSet_le_pi (A : Finset (ℝ × ℝ)) : maxAngleInSet A ≤ π
 
 /- ## Part III: The α_n Function -/
 
@@ -96,19 +83,7 @@ contains three points forming an angle ≥ α.
 noncomputable def alphaN (n : ℕ) : ℝ :=
   ⨅ (A : Finset (ℝ × ℝ)) (_ : A.card = n), maxAngleInSet A
 
-/-- α_n is well-defined for n ≥ 3. -/
-axiom alphaN_defined (n : ℕ) (hn : n ≥ 3) : 0 < alphaN n ∧ alphaN n ≤ π
-
-/-- α_n is monotonically non-increasing. -/
-axiom alphaN_mono (m n : ℕ) (h : m ≤ n) (hn : n ≥ 3) : alphaN n ≤ alphaN m
-
 /- ## Part IV: Small Cases -/
-
-/-- α_3 = π (any three points form a triangle with max angle ≥ 60°). -/
-axiom alpha_3 : alphaN 3 = π
-
-/-- α_4 = π (four points always have angle ≥ 90°). -/
-axiom alpha_4 : alphaN 4 = π
 
 /- ## Part V: Erdős-Szekeres Results (1960) -/
 
@@ -121,10 +96,6 @@ For powers of 2, the minimum maximum angle is achieved by regular polygons:
 
 /-- The formula for 2^n points per Erdős-Szekeres. -/
 noncomputable def erdosSzekeresFormula (n : ℕ) : ℝ := π * (1 - 1 / n)
-
-/-- α_{2^n} = π(1 - 1/n) for n ≥ 2. -/
-axiom erdos_szekeres (n : ℕ) (hn : n ≥ 2) :
-    alphaN (2^n) = erdosSzekeresFormula n
 
 /- ## Part VI: Sendov's Complete Solution (1993) -/
 
@@ -196,10 +167,6 @@ def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
   Finset.image (fun k => (Real.cos (2 * π * k / n), Real.sin (2 * π * k / n)))
     (Finset.range n)
 
-/-- Regular n-gon achieves the optimal configuration for N = n when N = 2^k. -/
-axiom regularNGon_optimal (k : ℕ) (hk : k ≥ 2) :
-    maxAngleInSet (regularNGonVertices (2^k)) = alphaN (2^k)
-
 /- ## Part IX: Connection to Convex Position -/
 
 /--
@@ -212,11 +179,6 @@ in convex position (vertices of convex polygons).
 
 /-- A finite set is in convex position if all points are vertices of its convex hull. -/
 axiom isConvexPosition (A : Finset (ℝ × ℝ)) : Prop
-
-/-- The optimal configurations are in convex position. -/
-axiom optimal_is_convex (n : ℕ) (hn : n ≥ 3) :
-    ∃ A : Finset (ℝ × ℝ), A.card = n ∧ isConvexPosition A ∧
-    maxAngleInSet A = alphaN n
 
 /- ## Part X: Summary -/
 

@@ -65,48 +65,17 @@ noncomputable def f (n : ℕ) : ℕ :=
 
 /- ## Part 3: The Moore Bound (Lower Bound) -/
 
-/-- The Moore bound: a graph with max degree d and diameter 2 has at most d² + 1 vertices.
-    Proof: from vertex v, reach at most 1 + d + d(d-1) = d² + 1 vertices within distance 2. -/
-axiom moore_bound (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] :
-    HasDiameter2 G → Fintype.card V ≤ maxDegree G ^ 2 + 1
-
-/-- Consequence: if n vertices then max degree ≥ √(n-1) -/
-axiom lower_bound_sqrt (n : ℕ) (hn : n ≥ 2) :
-    (f n : ℝ) ≥ Real.sqrt (n - 1)
-
 /-- The asymptotic lower bound: f(n) ≥ (1 - o(1))√n -/
 axiom lower_bound_asymptotic :
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (f n : ℝ) ≥ (1 - ε) * Real.sqrt n
 
 /- ## Part 4: Upper Bound Constructions -/
 
-/-- Simonovits construction using Kneser-type graphs: f(n) ≤ n^0.7182 -/
-axiom simonovits_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≤ C * n ^ (0.7182 : ℝ)
-
-/-- Alon's improvement using triangle-free graphs with small independence number:
-    f(n) ≪ √(n log n) -/
-axiom alon_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≤ C * Real.sqrt (n * Real.log n)
-
-/-- Hanson-Seyffarth (1984) using Cayley graphs on ℤ/nℤ with complete sum-free
-    generating sets: f(n) ≤ (√2 + o(1))√n -/
-axiom hanson_seyffarth_1984 :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      (f n : ℝ) ≤ (Real.sqrt 2 + ε) * Real.sqrt n
-
 /-- Füredi-Seress (1994), the current best upper bound:
     f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n -/
 axiom furedi_seress_1994 :
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
       (f n : ℝ) ≤ (2 / Real.sqrt 3 + ε) * Real.sqrt n
-
-/-- The constant 2/√3 ≈ 1.1547 improves on √2 ≈ 1.414 -/
-axiom furedi_seress_improves_hanson_seyffarth :
-    (2 : ℝ) / Real.sqrt 3 < Real.sqrt 2
 
 /- ## Part 5: The Main Question (DISPROVED) -/
 
@@ -117,11 +86,6 @@ def OriginalQuestion : Prop :=
 /-- Answer: NO - disproved by the Füredi-Seress upper bound showing f(n)/√n is bounded -/
 axiom original_question_false : ¬OriginalQuestion
 
-/-- The ratio f(n)/√n is bounded above -/
-axiom ratio_bounded :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) / Real.sqrt n ≤ C
-
 /- ## Part 6: Alon's Conjecture -/
 
 /-- Alon's conjecture: f(n)/√n → 1, i.e., f(n) ~ √n exactly -/
@@ -129,24 +93,6 @@ def AlonConjecture : Prop :=
   Filter.Tendsto (fun n => (f n : ℝ) / Real.sqrt n) Filter.atTop (nhds 1)
 
 /- ## Part 7: Polarity Graph Constructions -/
-
-/-- For primes q ≡ 1 (mod 4), polarity graphs on q² vertices are triangle-free,
-    have diameter 2, and max degree ≤ q + 1 ≈ √n -/
-axiom polarity_graph_construction :
-    ∀ q : ℕ, Nat.Prime q → q % 4 = 1 →
-      ∃ V : Type*, ∃ _ : Fintype V, ∃ G : SimpleGraph V,
-        Fintype.card V = q ^ 2 ∧
-        TriangleFree G ∧
-        HasDiameter2 G ∧
-        maxDegree G ≤ q + 1
-
-/-- The polarity graph construction gives f(q²) ≤ q + 1 ≈ √n -/
-axiom construction_gives_upper_bound (q : ℕ) (hq : Nat.Prime q) (h4 : q % 4 = 1) :
-    f (q ^ 2) ≤ q + 1
-
-/-- Bipartite graphs are automatically triangle-free (no odd cycles of length 3) -/
-axiom bipartite_triangle_free {V : Type*} (G : SimpleGraph V) :
-    G.IsBipartite → TriangleFree G
 
 /- ## Part 8: Complete Resolution -/
 

@@ -131,7 +131,6 @@ axiom erdos_hall_upper_bound :
 
 /-- **Corollary: Original Conjecture is True.**
 Follows from erdos_hall_upper_bound since (log log log x)/(log log x) → 0. -/
-axiom erdos_conjecture_proved : erdos_original_conjecture
 
 /- ## Part V: The Erdős-Hall Conjecture -/
 
@@ -173,30 +172,21 @@ def hierarchy_conjecture : Prop :=
 **t_{n-1}(n!) = 2:**
 The product 2·3·4···n = n! is divisible by n!.
 -/
-axiom factorial_t_n_minus_1 (n : ℕ) (hn : n ≥ 2) :
-    t (n - 1) n.factorial = 2
 
 /--
 **t_{n-2}(n!) ≪ n:**
 For n-2 consecutive integers, we need a larger starting point.
 -/
-axiom factorial_t_n_minus_2 (n : ℕ) (hn : n ≥ 3) :
-    t (n - 2) n.factorial ≤ 2 * n
 
 /--
 **This Bound is Sharp:**
 For n = 2^r, we have t_{n-2}(n!) ≳ n.
 -/
-axiom factorial_t_n_minus_2_sharp :
-    ∀ r : ℕ, r ≥ 2 →
-      t (2^r - 2) (2^r).factorial ≥ 2^(r-1)
 
 /--
 **Erdős-Hall Question about Factorials:**
 Does t_{n-3}(n!) have any special structure?
 -/
-axiom factorial_t_n_minus_3_bound (n : ℕ) (hn : n ≥ 4) :
-    t (n - 3) n.factorial ≤ n^2
 
 /- ## Part VIII: The Selfridge Result -/
 
@@ -223,24 +213,18 @@ Products of consecutive integers have nice divisibility properties:
 - k! | m(m+1)···(m+k-1) for all m (binomial coefficient argument)
 - The question is about divisibility by other n
 -/
-axiom consecutive_divisible_by_factorial (m k : ℕ) (hk : k ≥ 1) :
-    k.factorial ∣ consecutiveProduct m k
 
 /--
 **Probabilistic Intuition:**
 For random m, the probability that n | m(m+1)···(m+k-1) is roughly k/n
 for large n. Thus t_k(n) ≈ n/k on average.
 -/
-axiom probabilistic_heuristic (k n : ℕ) (hk : k ≥ 1) (hn : n ≥ 1) :
-    t k n ≤ n
 
 /--
 **Connection to Smooth Numbers:**
 t_k(n) is small when n is "smooth" (has only small prime factors),
 since smooth numbers appear more frequently in short intervals.
 -/
-axiom smooth_t_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 1) :
-    ∃ m : ℕ, m ≤ n ∧ n ∣ consecutiveProduct m k
 
 /- ## Part X: Summary -/
 

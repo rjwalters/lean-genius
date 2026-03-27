@@ -104,15 +104,11 @@ theorem frobenius_2_3 : G(({2, 3} : Finset ℕ)) = 1 := by
 If gcd(A) = 1 and A is nonempty, then G(A) is finite.
 More precisely, there exists N such that all n ≥ N are representable.
 -/
-axiom frobenius_finite (A : Finset ℕ) (hne : A.Nonempty)
-    (hgcd : A.gcd id = 1) : G(A) < ⊤
 
 /--
 **Monotonicity:**
 Adding more elements to A can only decrease G(A) (more combinations available).
 -/
-axiom frobenius_monotone (A B : Finset ℕ) (hAB : A ⊆ B)
-    (hgcdA : A.gcd id = 1) : G(B) ≤ G(A)
 
 /-
 ## Part III: The Function g(k, n)
@@ -141,8 +137,6 @@ g(k, n) < 2n²/k
 
 This was the first general bound.
 -/
-axiom erdos_graham_upper_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    g k n < 2 * n^2 / k
 
 /--
 **Lower Bound Construction:**
@@ -151,8 +145,6 @@ For k ≥ 2, there exist sets A achieving:
 
 The extremal set is approximately {n-k+1, n-k+2, ..., n}.
 -/
-axiom lower_bound_construction (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    g k n ≥ n^2 / (k - 1) - 5 * n
 
 /-
 ## Part V: Dixmier's Theorem (1990)
@@ -200,9 +192,6 @@ axiom erdos_433_solved : AsymptoticFormula
 **Dixmier's Exact Formula:**
 When (k-1) | n, (k-1) | (n-1), or (k-1) | (n-2), exact values are known.
 -/
-axiom dixmier_exact_divisibility (k n : ℕ) (hk : 2 ≤ k) (hkn : k < n)
-    (hdiv : (k - 1) ∣ n ∨ (k - 1) ∣ (n - 1) ∨ (k - 1) ∣ (n - 2)) :
-    ∃ exact : ℕ, g k n = exact
 
 /--
 **Special Case k = 2:**
@@ -223,9 +212,6 @@ The sets achieving g(k, n) are concentrated near {n-k+1, ..., n}.
 
 When these elements have gcd = 1, the Frobenius number is maximized.
 -/
-axiom extremal_set_structure (k n : ℕ) (hk : 2 ≤ k) (hkn : k < n) :
-    ∃ A : Finset ℕ, A ⊆ Finset.Icc (n - k + 1) n ∧ A.card = k ∧
-      IsCoprime A ∧ G(A) = g k n
 
 /-
 **Why Large Elements Maximize G(A):**
@@ -245,7 +231,6 @@ G({6, 9, 20}) = 43
 
 This popularized the Frobenius number problem.
 -/
-axiom chicken_mcnugget : G(({6, 9, 20} : Finset ℕ)) = 43
 
 /--
 **General Upper Bound (Schur):**
@@ -273,17 +258,12 @@ For coprime a, b, the number of gaps (non-representable numbers) is:
 
 This is exactly half the "conductor" ab - a - b + 1.
 -/
-axiom gap_count (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) (hcop : Nat.Coprime a b) :
-    ({n : ℕ | n ∉ NumericalSemigroup ({a, b} : Finset ℕ)}).ncard = (a - 1) * (b - 1) / 2
 
 /--
 **Symmetric Property:**
 The gaps for {a, b} are symmetric around (ab - a - b)/2.
 If n is a gap, so is (ab - a - b) - n.
 -/
-axiom gap_symmetry (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) (hcop : Nat.Coprime a b)
-    (n : ℕ) (hn : n ∉ NumericalSemigroup ({a, b} : Finset ℕ)) :
-    a * b - a - b - n ∉ NumericalSemigroup ({a, b} : Finset ℕ)
 
 /-
 ## Part X: Summary

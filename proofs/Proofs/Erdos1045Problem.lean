@@ -56,19 +56,6 @@ noncomputable def DeltaSqrt (z : Configuration n) : ℝ :=
 noncomputable def RegularPolygon (n : ℕ) (hn : n > 0) : Configuration n :=
   fun k => Complex.exp (2 * Real.pi * Complex.I * k / n)
 
-/-- Regular polygon has diameter 2 when n ≥ 2 -/
-axiom regular_polygon_diameter (n : ℕ) (hn : n ≥ 2) :
-  DiameterAtMost2 (RegularPolygon n (by omega))
-
-/-- Δ for regular polygon when n is even: Δ = n^n -/
-axiom delta_regular_even (n : ℕ) (hn : n ≥ 2) (heven : Even n) :
-  Delta (RegularPolygon n (by omega)) = n ^ n
-
-/-- Δ for regular polygon when n is odd: involves cos(π/2n) correction -/
-axiom delta_regular_odd (n : ℕ) (hn : n ≥ 3) (hodd : Odd n) :
-  Delta (RegularPolygon n (by omega)) =
-    (Real.cos (Real.pi / (2 * n))) ^ (-(n * (n - 1) : ℤ)) * n ^ n
-
 /- ## Part III: Erdős-Herzog-Piranian Bound (1958) -/
 
 /-- Polynomial with roots z₁,...,zₙ -/
@@ -79,29 +66,9 @@ noncomputable def polynomialFromRoots (z : Configuration n) : ℂ → ℂ :=
 Axiomatized since full topological connectivity is complex in Lean. -/
 axiom ConnectedSublevelSet (f : ℂ → ℂ) : Prop
 
-/-- Erdős-Herzog-Piranian (1958): If sublevel set connected, Δ < n^n -/
-axiom EHP_1958 (z : Configuration n) (hn : n ≥ 1)
-    (hconn : ConnectedSublevelSet (polynomialFromRoots z)) :
-  Delta z < n ^ n
-
 /- ## Part IV: Pommerenke's Upper Bound (1961) -/
 
-/-- Pommerenke (1961): Δ ≤ 2^{O(n)} · n^n for diameter ≤ 2 configurations -/
-axiom pommerenke_1961 :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∀ z : Configuration n,
-    DiameterAtMost2 z → Delta z ≤ (2 : ℝ) ^ (C * n) * n ^ n
-
 /- ## Part V: Counterexamples for Even n -/
-
-/-- Hu-Tang: Counterexample for n = 4 (first to beat the square) -/
-axiom hu_tang_n4 :
-  ∃ z : Configuration 4, DiameterAtMost2 z ∧
-    Delta z > Delta (RegularPolygon 4 (by omega))
-
-/-- Hu-Tang: Counterexample for n = 6 -/
-axiom hu_tang_n6 :
-  ∃ z : Configuration 6, DiameterAtMost2 z ∧
-    Delta z > Delta (RegularPolygon 6 (by omega))
 
 /-- Cambie: Regular polygon not optimal for ALL even n ≥ 4 -/
 axiom cambie_even_not_optimal (n : ℕ) (hn : n ≥ 4) (heven : Even n) :
@@ -114,16 +81,6 @@ axiom cambie_even_not_optimal (n : ℕ) (hn : n ≥ 4) (heven : Even n) :
 noncomputable def MaxDelta (n : ℕ) : ℝ :=
   sSup { Delta z | z : Configuration n ∧ DiameterAtMost2 z }
 
-/-- Sothanaphan (2025): liminf max Δ / n^n ≥ 1.0378 for even n -/
-axiom sothanaphan_2025 :
-  ∃ C : ℝ, C ≥ 1.0378 ∧
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, Even n → MaxDelta n / n ^ n ≥ C - ε
-
-/-- Cambie-Dong-Tang: C ≈ 1.304 when 6 | n -/
-axiom cambie_dong_tang_6div :
-  ∃ C : ℝ, C ≥ 1.304 ∧
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, 6 ∣ n → MaxDelta n / n ^ n ≥ C - ε
-
 /-- Cambie-Dong-Tang: C ≈ 1.269 for all even n -/
 axiom cambie_dong_tang_even :
   ∃ C : ℝ, C ≥ 1.269 ∧
@@ -135,15 +92,6 @@ axiom cambie_dong_tang_even :
 def RegularPolygonOptimalOdd : Prop :=
   ∀ n : ℕ, n ≥ 3 → Odd n → ∀ z : Configuration n, DiameterAtMost2 z →
     Delta z ≤ Delta (RegularPolygon n (by omega))
-
-/-- For n = 2, the maximum Δ = 4 (two points at distance 2) -/
-axiom optimal_n2 :
-  ∀ z : Configuration 2, DiameterAtMost2 z → Delta z ≤ 4
-
-/-- For n = 3 (equilateral triangle), the regular polygon is optimal -/
-axiom regular_optimal_n3 :
-  ∀ z : Configuration 3, DiameterAtMost2 z →
-    Delta z ≤ Delta (RegularPolygon 3 (by omega))
 
 /- ## Part VIII: Summary -/
 

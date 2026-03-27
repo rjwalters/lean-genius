@@ -110,12 +110,10 @@ All known weird numbers are even!
 /--
 836 is the second weird number.
 -/
-axiom weird_836 : IsWeird 836
 
 /--
 4030 is the third weird number.
 -/
-axiom weird_4030 : IsWeird 4030
 
 /-
 ## Open Question 1: Odd Weird Numbers
@@ -146,7 +144,6 @@ Liddy and Riedl (2018) showed that any odd weird must have at least
 /--
 Fang's result: No odd weird numbers below 10^21.
 -/
-axiom fang_bound : ∀ n : ℕ, n < 10^21 → Odd n → ¬IsWeird n
 
 /--
 The number of distinct prime divisors of n.
@@ -157,7 +154,6 @@ def numPrimeDivisors (n : ℕ) : ℕ :=
 /--
 Liddy-Riedl result: Any odd weird number has at least 6 prime divisors.
 -/
-axiom liddy_riedl : ∀ n : ℕ, IsWeird n → Odd n → numPrimeDivisors n ≥ 6
 
 /-
 ## Primitive Weird Numbers
@@ -220,7 +216,6 @@ axiom nthPrime : ℕ → ℕ
 /--
 Basic property: nthPrime produces primes.
 -/
-axiom nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime
 
 /--
 The prime gap after the n-th prime.
@@ -269,8 +264,6 @@ noncomputable def abundancyIndex (n : ℕ) : ℚ := sigma n / n
 /--
 If all weird numbers are even, then abundancy index < 4 for all weird numbers.
 -/
-axiom no_odd_weird_implies_bounded_abundancy :
-    (∀ n, IsWeird n → Even n) → ∀ n, IsWeird n → abundancyIndex n < 4
 
 /-
 ## Examples of Weird Numbers
@@ -282,14 +275,10 @@ Let's record some explicit weird numbers from OEIS A006037:
 /--
 The first several weird numbers.
 -/
-axiom first_weird_numbers :
-    IsWeird 70 ∧ IsWeird 836 ∧ IsWeird 4030 ∧ IsWeird 5830 ∧ IsWeird 7192
 
 /--
 All known weird numbers are even.
 -/
-axiom all_known_weird_even :
-    ∀ n ∈ ({70, 836, 4030, 5830, 7192, 7912, 9272} : Set ℕ), Even n
 
 /-
 ## Why 70 is Weird: A Detailed Analysis
@@ -310,13 +299,10 @@ Various checks show no exact match exists.
 /--
 σ(70) = 144.
 -/
-axiom sigma_70 : sigma 70 = 144
 
 /--
 The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
 -/
-axiom proper_divisors_70 :
-    (70 : ℕ).properDivisors = {1, 2, 5, 7, 10, 14, 35}
 
 /-
 ## Summary

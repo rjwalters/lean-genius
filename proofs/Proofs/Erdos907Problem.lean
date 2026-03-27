@@ -72,10 +72,6 @@ theorem additive_nat_mul (φ : ℝ → ℝ) (h : IsAdditive φ) (n : ℕ) (x : �
     rw [this, ih]
     ring
 
-/-- Additive functions satisfy φ(qx) = q · φ(x) for rational q -/
-axiom additive_rat_mul (φ : ℝ → ℝ) (h : IsAdditive φ) (q : ℚ) (x : ℝ) :
-    φ ((q : ℝ) * x) = (q : ℝ) * φ x
-
 /-
 ## Part 2: Continuous Additive Functions are Linear
 
@@ -98,25 +94,12 @@ theorem linear_is_additive (φ : ℝ → ℝ) (h : IsLinear φ) : IsAdditive φ 
 axiom continuous_additive_is_linear (φ : ℝ → ℝ)
     (hadd : IsAdditive φ) (hcont : Continuous φ) : IsLinear φ
 
-/-- Monotone additive functions are linear -/
-axiom monotone_additive_is_linear (φ : ℝ → ℝ)
-    (hadd : IsAdditive φ) (hmono : Monotone φ ∨ Antitone φ) : IsLinear φ
-
 /-
 ## Part 3: Discontinuous Additive Functions
 
 There exist discontinuous additive functions (via Axiom of Choice).
 They are "pathological" and highly irregular.
 -/
-
-/-- Existence of discontinuous additive functions (via AC) -/
-axiom exists_discontinuous_additive :
-  ∃ φ : ℝ → ℝ, IsAdditive φ ∧ ¬Continuous φ
-
-/-- Discontinuous additive functions are everywhere dense in their graph -/
-axiom discontinuous_additive_dense (φ : ℝ → ℝ)
-    (hadd : IsAdditive φ) (hdiscont : ¬Continuous φ) :
-  ∀ (a b : ℝ), ∀ ε > 0, ∃ x : ℝ, |x - a| < ε ∧ |φ x - b| < ε
 
 /-
 ## Part 4: The Difference Operator
@@ -174,13 +157,6 @@ theorem erdos_907 (f : ℝ → ℝ) :
 The decomposition f = g + φ has several nice properties.
 -/
 
-/-- The decomposition is essentially unique up to linear functions -/
-axiom decomposition_unique (f : ℝ → ℝ) (hf : hasContinuousDifferences f)
-    (g₁ φ₁ g₂ φ₂ : ℝ → ℝ)
-    (hg₁ : Continuous g₁) (hφ₁ : IsAdditive φ₁) (hf₁ : ∀ x, f x = g₁ x + φ₁ x)
-    (hg₂ : Continuous g₂) (hφ₂ : IsAdditive φ₂) (hf₂ : ∀ x, f x = g₂ x + φ₂ x) :
-  ∃ c : ℝ, ∀ x, g₁ x = g₂ x + c * x ∧ φ₁ x = φ₂ x - c * x
-
 /-- If f is already continuous, φ can be taken to be zero -/
 theorem continuous_decomposition (f : ℝ → ℝ) (hf : Continuous f) :
     ∃ (g φ : ℝ → ℝ), Continuous g ∧ IsAdditive φ ∧ (∀ x, f x = g x + φ x) ∧
@@ -230,27 +206,11 @@ The theorem fits into a broader pattern: regularity on differences
 implies global structure.
 -/
 
-/-- If Δ_h f is bounded for all h > 0, f has at most linear growth -/
-axiom bounded_differences_linear_growth (f : ℝ → ℝ)
-    (hbd : ∀ h > 0, ∃ M : ℝ, ∀ x, |Δ[h] f x| ≤ M) :
-  ∃ A B : ℝ, ∀ x, |f x| ≤ A * |x| + B
-
-/-- If Δ_h f is measurable for all h > 0, similar decomposition holds -/
-axiom measurable_differences_decomposition (f : ℝ → ℝ)
-    (hmeas : ∀ h > 0, Measurable (Δ[h] f)) :
-  ∃ (g φ : ℝ → ℝ), Measurable g ∧ IsAdditive φ ∧ ∀ x, f x = g x + φ x
-
 /-
 ## Part 9: Related Problem
 
 See also Erdős Problem #908 for related questions.
 -/
-
-/-- Related: characterization when φ in the decomposition is continuous -/
-axiom decomposition_continuous_additive (f : ℝ → ℝ)
-    (hf : hasContinuousDifferences f) :
-  (∃ (g φ : ℝ → ℝ), Continuous g ∧ IsAdditive φ ∧ Continuous φ ∧ ∀ x, f x = g x + φ x) ↔
-  Continuous f
 
 /-
 ## Part 10: Summary

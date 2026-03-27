@@ -122,11 +122,6 @@ theorem partition (n : ℕ) (hn : n ≥ 2) :
     Both SetPIncreasing and SetPDecreasing have positive upper density.
     This was the first major result on the problem.
 -/
-axiom erdos_pomerance_1978_increasing :
-    HasPositiveUpperDensity SetPIncreasing
-
-axiom erdos_pomerance_1978_decreasing :
-    HasPositiveUpperDensity SetPDecreasing
 
 /- ## Part V: Lü-Wang Lower Bound (2025) -/
 
@@ -136,12 +131,6 @@ axiom erdos_pomerance_1978_decreasing :
 
     This is the best unconditional lower bound available.
 -/
-axiom lu_wang_2025 :
-    HasLowerDensity SetPIncreasing 0.2017
-
-/-- The same lower bound holds for the complement. -/
-axiom lu_wang_2025_complement :
-    HasLowerDensity SetPDecreasing 0.2017
 
 /- ## Part VI: Teräväinen (2018) - Logarithmic Density -/
 
@@ -168,9 +157,6 @@ theorem teravanen_complement :
 def DensityAtAlmostAllScales (S : Set ℕ) (d : ℝ) : Prop :=
   ∀ ε > 0, ∃ E : Set ℝ, (∀ᶠ T in atTop, (∫ t in E ∩ Set.Icc 1 T, 1) / T < ε) ∧
     ∀ x : ℕ, (x : ℝ) ∉ E → |(countingFunction S x : ℝ) / x - d| < ε
-
-axiom tao_teravanen_2019 :
-    DensityAtAlmostAllScales SetPIncreasing (1/2)
 
 /- ## Part VIII: Wang (2021) - Conditional Result -/
 
@@ -224,8 +210,6 @@ def Erdos1979Question (α : ℝ) : Prop :=
     The logarithmic density of SetPAlpha(α) exists and equals the integral
     ∫∫_{y≥x+α} u(x)u(y) dx dy where u is related to the Dickman function.
 -/
-axiom teravanen_generalized (α : ℝ) (hα : 0 ≤ α ∧ α ≤ 1) :
-    ∃ d : ℝ, HasLogDensity (SetPAlpha α) d
 
 /- ## Part XI: The Dickman Function -/
 
@@ -234,12 +218,6 @@ axiom teravanen_generalized (α : ℝ) (hα : 0 ≤ α ∧ α ≤ 1) :
     Axiomatized as it is defined by a delay differential equation
     without closed-form solution. -/
 axiom dickman : ℝ → ℝ
-
-/-- The Dickman function equals 1 on [0, 1]. -/
-axiom dickman_base (u : ℝ) (hu : 0 ≤ u ∧ u ≤ 1) : dickman u = 1
-
-/-- The Dickman function is positive for u ≥ 0. -/
-axiom dickman_pos (u : ℝ) (hu : u ≥ 0) : dickman u > 0
 
 /-- The function u(x) = x^{-1} ρ(x^{-1} - 1) appearing in the density formula. -/
 noncomputable def densityKernel (x : ℝ) : ℝ :=

@@ -163,28 +163,6 @@ def primeCountAP (x : ℝ) (q a : ℕ) : ℕ :=
   (Finset.filter (fun p => Nat.Prime p ∧ p ≡ a [MOD q])
     (Finset.range (Nat.floor x + 1))).card
 
-/-- **Siegel-Walfisz theorem** (unconditional):
-    For fixed A > 0, uniformly for q ≤ (log x)^A,
-    π(x; q, a) = Li(x)/φ(q) + O(x · exp(-c√(log x))).
-    Weak error term, restricted range of q. -/
-axiom siegel_walfisz_theorem :
-  ∀ A : ℝ, A > 0 →
-    ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-    ∀ (x : ℝ) (q a : ℕ), x > 2 → Nat.Coprime a q → 1 ≤ q →
-      (q : ℝ) ≤ (Real.log x) ^ A →
-      |(primeCountAP x q a : ℝ) - x / (Nat.totient q * Real.log x)| ≤
-        C * x * Real.exp (-c * Real.sqrt (Real.log x))
-
-/-- **GRH-conditional PNT for APs**: Under GRH, the error improves to
-    O(√x · log x), with NO restriction on q relative to x.
-    This is the dramatic improvement. -/
-axiom GRH_PNT_for_APs :
-  GRH →
-    ∃ C : ℝ, C > 0 ∧
-    ∀ (x : ℝ) (q a : ℕ), x > 2 → Nat.Coprime a q → 1 ≤ q → (q : ℝ) < x →
-      |(primeCountAP x q a : ℝ) - x / (Nat.totient q * Real.log x)| ≤
-        C * Real.sqrt x * Real.log x
-
 /-- The GRH error term √x · log x is sublinear: √x · log x < x for x > e⁴.
     This follows from log x < √x for large x. -/
 theorem GRH_error_sublinear (x : ℝ) (hx : x > Real.exp 4) :
@@ -230,22 +208,6 @@ theorem GRH_error_sublinear (x : ℝ) (hx : x > Real.exp 4) :
 ## Part IV: Least Prime in Arithmetic Progressions
 -/
 
-/-- **Linnik's theorem** (unconditional): The least prime p ≡ a (mod q)
-    satisfies p ≤ C · q^L for absolute constant L (best known: L ≤ 5). -/
-axiom linnik_theorem :
-  ∃ L C : ℝ, L > 0 ∧ C > 0 ∧
-    ∀ (q a : ℕ), Nat.Coprime a q → q > 1 →
-      ∃ p : ℕ, Nat.Prime p ∧ p ≡ a [MOD q] ∧ (p : ℝ) ≤ C * (q : ℝ) ^ L
-
-/-- **GRH-conditional Linnik**: Under GRH, p ≤ C · q² · (log q)².
-    Dramatically better than the unconditional L ≈ 5. -/
-axiom GRH_least_prime :
-  GRH →
-    ∃ C : ℝ, C > 0 ∧
-    ∀ (q a : ℕ), Nat.Coprime a q → q > 1 →
-      ∃ p : ℕ, Nat.Prime p ∧ p ≡ a [MOD q] ∧
-        (p : ℝ) ≤ C * (q : ℝ) ^ 2 * (Real.log q) ^ 2
-
 /-- The GRH bound q²(log q)² improves q^5 for large q (PROVED). -/
 theorem GRH_least_prime_improves_linnik (q : ℕ) (hq : q > 1)
     (_hq_large : (q : ℝ) > Real.exp 1) :
@@ -274,24 +236,6 @@ theorem GRH_least_prime_improves_linnik (q : ℕ) (hq : q > 1)
 /-
 ## Part V: Character Sum Improvements Under GRH
 -/
-
-/-- **Pólya-Vinogradov inequality** (unconditional):
-    |Σ_{n=M+1}^{M+N} χ(n)| ≤ c · √q · log q for non-principal χ mod q. -/
-axiom polya_vinogradov :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 →
-    ∀ (M N : ℕ),
-      ‖∑ n ∈ Finset.range N, (χ (M + n + 1 : ℕ) : ℂ)‖ ≤ C * Real.sqrt q * Real.log q
-
-/-- **Montgomery-Vaughan improvement under GRH**:
-    Under GRH, the bound improves to √q · log log q (a log q / log log q factor). -/
-axiom GRH_character_sum_bound :
-  GRH →
-    ∃ C : ℝ, C > 0 ∧
-    ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 →
-    ∀ (M N : ℕ),
-      ‖∑ n ∈ Finset.range N, (χ (M + n + 1 : ℕ) : ℂ)‖ ≤
-        C * Real.sqrt q * Real.log (Real.log q)
 
 /-- The GRH character sum bound implies Pólya-Vinogradov (PROVED):
     log log q ≤ log q for q ≥ 3 (since log q ≥ 1). -/
@@ -362,21 +306,6 @@ theorem GRH_L_one_pos (hGRH : GRH)
 def IsQuadratic {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   χ ^ 2 = 1 ∧ χ ≠ 1
 
-/-- GRH for quadratic characters implies effective class number bounds:
-    h(d) ≥ C · √|d| / log|d| for imaginary quadratic fields ℚ(√d). -/
-axiom GRH_class_number_bound :
-  GRH →
-    ∃ C : ℝ, 0 < C ∧
-    ∀ d : ℤ, d < 0 →
-      ∃ h : ℕ, h > 0 ∧ (h : ℝ) ≥ C * Real.sqrt |d| / Real.log |d|
-
-/-- The unconditional class number bound (Goldfeld-Gross-Zagier, 1983+):
-    h(d) ≫ (log |d|)^{1-ε}, dramatically weaker than GRH. -/
-axiom unconditional_class_number_bound (ε : ℝ) (hε : 0 < ε) :
-  ∃ C : ℝ, 0 < C ∧
-    ∀ d : ℤ, d < -3 →
-      ∃ h : ℕ, h > 0 ∧ (h : ℝ) ≥ C * (Real.log |d|) ^ (1 - ε)
-
 /-
 ## Part IX: Equivalent Formulations of GRH
 -/
@@ -400,14 +329,6 @@ theorem GRH_equivalences :
 /-
 ## Part X: Computational Evidence and the Open Question
 -/
-
-/-- GRH has been verified computationally for billions of zeros. -/
-axiom GRH_verified_height :
-  ∃ T : ℝ, T > 10^10 ∧
-    ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N),
-      N ≤ 1000 →
-      ∀ s : ℂ, LFunction χ s = 0 → 0 < s.re → s.re < 1 → |s.im| ≤ T →
-        s.re = 1 / 2
 
 /-- **The open question**: Is GRH true?
 

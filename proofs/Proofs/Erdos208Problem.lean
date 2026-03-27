@@ -81,16 +81,11 @@ satisfies s_{n+1} - sₙ ≪ sₙ^{1/5 + o(1)}.
 
 This was the best unconditional bound for decades.
 -/
-axiom filaseta_trifonov_bound :
-    (fun n => (squarefreeGap n : ℝ)) =O[atTop] (fun n => (squarefreeSeq n : ℝ)^((1:ℝ)/5 + 0.01))
 
 /--
 **Pandey (2024)**: Improved the exponent to 1/5 - c for some constant c > 0.
 This is the current best unconditional bound.
 -/
-axiom pandey_bound :
-    ∃ c > (0 : ℝ), (fun n => (squarefreeGap n : ℝ)) =O[atTop]
-      (fun n => (squarefreeSeq n : ℝ)^(1/5 - c))
 
 /- ## The Optimal Lower Bound -/
 
@@ -100,10 +95,6 @@ axiom pandey_bound :
 
 This shows that Question 2's bound, if true, would be optimal.
 -/
-axiom erdos_lower_bound :
-    ∃ c : ℕ → ℝ, (c =o[atTop] (1 : ℕ → ℝ)) ∧
-      {n : ℕ | (squarefreeGap n : ℝ) >
-        (1 + c n) * (π^2 / 6) * Real.log (squarefreeSeq n) / Real.log (Real.log (squarefreeSeq n))}.Infinite
 
 /- ## Conditional Result -/
 
@@ -114,9 +105,6 @@ The ABC conjecture is a major open problem in number theory stating that for
 coprime integers a, b, c with a + b = c, we have c ≪_ε rad(abc)^{1+ε} where
 rad(n) is the product of distinct prime factors of n.
 -/
-axiom abc_implies_q1 :
-    -- Assuming some form of ABC conjecture (stated informally)
-    True → Erdos208_Q1
 
 /- ## Basic Properties -/
 
@@ -124,7 +112,6 @@ axiom abc_implies_q1 :
 
 This uses the fact that 1 is the smallest squarefree number (as it has no
 prime factors, hence trivially squarefree). -/
-axiom squarefree_one : squarefreeSeq 0 = 1
 
 /-- 2 is squarefree. -/
 example : Squarefree 2 := by native_decide
@@ -145,8 +132,6 @@ example : Squarefree 6 := by native_decide
 
 This classical result says that the proportion of integers up to N that are
 squarefree converges to 6/π² ≈ 0.6079... as N → ∞. -/
-axiom squarefree_density :
-    Tendsto (fun N => ({n : ℕ | n ≤ N ∧ Squarefree n}.ncard : ℝ) / N) atTop (nhds (6 / π^2))
 
 /- ## Typical Gap Size -/
 
@@ -159,7 +144,6 @@ and the question is how large they can be.
 
 Note: 6/π² ≈ 0.6079... > 0.6
 -/
-axiom average_gap_heuristic : (6 : ℝ) / π^2 > 0.6
 
 /- ## Small Examples of Gaps -/
 
@@ -188,15 +172,11 @@ A key observation: if n is squarefree and odd, then 2n is also squarefree.
 This limits how large gaps can be - you can't have arbitrarily many consecutive
 non-squarefree numbers.
 -/
-axiom squarefree_double_odd {n : ℕ} (hn : Squarefree n) (hodd : Odd n) :
-    Squarefree (2 * n)
 
 /--
 The maximum gap up to N is O(√N) since there are O(√N) numbers in [1, N]
 divisible by some fixed square. Improving this to subpolynomial bounds
 is the content of the problem.
 -/
-axiom max_gap_sqrt_bound :
-    (fun n => (squarefreeGap n : ℝ)) =O[atTop] (fun n => Real.sqrt (squarefreeSeq n))
 
 end Erdos208

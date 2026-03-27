@@ -90,7 +90,6 @@ def ex63 (n : ℕ) : ℕ := extremalHypergraph n 6 3
 
 /-- **Trivial Upper Bound:**
 The trivial upper bound is O(n²) since there are ≈ n³/6 possible 3-edges. -/
-axiom ex63_trivial_upper : ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ex63 n : ℝ) ≤ C * n^2
 
 /- ## Part III: Graph Formulation -/
 
@@ -108,10 +107,6 @@ def isRSGraph (G : SimpleGraph V) : Prop :=
 /-- **Equivalence of Formulations:**
 The maximum edges in an RS-graph on n vertices equals 3 · ex63(n).
 Each triangle in the graph corresponds to a hyperedge. -/
-axiom rs_hypergraph_equivalence (n : ℕ) :
-  ∃ M : ℕ, (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = n → isRSGraph G → G.edgeFinset.card ≤ M) ∧
-    M = 3 * ex63 n
 
 /- ## Part IV: The Main Theorem -/
 
@@ -148,17 +143,10 @@ For every ε > 0, there exists δ > 0 such that every n-vertex graph with
 at most δn³ triangles can be made triangle-free by removing at most εn² edges.
 
 This is a key consequence of Szemerédi's regularity lemma. -/
-axiom triangle_removal_lemma :
-  ∀ ε > 0, ∃ δ > 0, ∀ n : ℕ,
-    ∀ (numTriangles numEdgesToRemove : ℕ),
-      (numTriangles : ℝ) ≤ δ * (n : ℝ)^3 →
-      (numEdgesToRemove : ℝ) ≤ ε * (n : ℝ)^2
 
 /-- **RS Theorem Follows from Removal Lemma:**
 The Ruzsa-Szemerédi theorem can be deduced from the triangle removal lemma.
 This was a key insight connecting graph theory to additive combinatorics. -/
-axiom rs_from_removal_lemma :
-  isLittleO (fun n => (ex63 n : ℝ)) (fun n => (n : ℝ)^2)
 
 /- ## Part VI: Connection to Arithmetic Progressions -/
 
@@ -173,27 +161,17 @@ axiom roth_r3 (n : ℕ) : ℕ
 
 /-- **Roth's Theorem (1953):**
 r₃(n) = o(n). That is, large sets must contain 3-term arithmetic progressions. -/
-axiom roth_theorem :
-  isLittleO (fun n => (roth_r3 n : ℝ)) (fun n => (n : ℝ))
 
 /-- **Behrend's Construction (1946):**
 r₃(n) ≥ n · e^{-c√(log n)} for some constant c > 0. -/
-axiom behrend_construction :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    (roth_r3 n : ℝ) ≥ (n : ℝ) * Real.exp (-c * Real.sqrt (Real.log n))
 
 /-- **RS Lower Bound from Behrend:**
 The Behrend construction gives a lower bound for ex₃(n; 6, 3).
 Take a 3-AP-free set S and build a "group construction" hypergraph. -/
-axiom ex63_from_behrend :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ex63 n : ℝ) ≥ C * (n : ℝ) * (roth_r3 n : ℝ)
 
 /-- **Implication for Roth:**
 The Ruzsa-Szemerédi theorem implies Roth's theorem.
 This was a key insight connecting graph theory to additive combinatorics. -/
-axiom rs_implies_roth :
-  isLittleO (fun n => (ex63 n : ℝ)) (fun n => (n : ℝ)^2) →
-  isLittleO (fun n => (roth_r3 n : ℝ)) (fun n => (n : ℝ))
 
 /- ## Part VII: The Brown-Erdős-Sós Conjecture -/
 
@@ -213,11 +191,9 @@ theorem erdos716_is_bes_k3 : brownErdosSosConjecture 3 := by
 
 /-- **BES Conjecture for k = 4:**
 f^(3)(n; 7, 4) = o(n²). Proved by Glock (2019). -/
-axiom bes_k4_solved : brownErdosSosConjecture 4
 
 /-- **BES Conjecture in General:**
 The full conjecture was proved by Delcourt-Postle (2024). -/
-axiom bes_general_solved : ∀ k : ℕ, k ≥ 3 → brownErdosSosConjecture k
 
 /- ## Part VIII: Erdős's Stronger Question -/
 
@@ -234,10 +210,6 @@ def erdosStrongerQuestion (k : ℕ) : Prop :=
 
 /-- **Ruzsa's Lower Bound Result:**
 For k = 6, 7, 8, the lower bound f^(3)(n; k+3, k) ≥ Ω(n · r_{k-3}(n)) holds. -/
-axiom ruzsa_lower_bound_k678 :
-  ∀ k ∈ ({6, 7, 8} : Finset ℕ),
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (extremalHypergraph n (k + 3) k : ℝ) ≥ c * (n : ℝ) * (roth_r3 n : ℝ)
 
 /- ## Part IX: Summary -/
 

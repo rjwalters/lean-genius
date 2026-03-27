@@ -53,12 +53,6 @@ requires deep Ramsey theory arguments.
 -/
 axiom W : ℕ → ℕ
 
-/-- W(3,k) ≥ k for k ≥ 3 (trivial: color {1,...,k-1} all red). -/
-axiom W_ge (k : ℕ) : k ≥ 3 → W k ≥ k
-
-/-- W(3,k) is monotone increasing: more colors need more numbers. -/
-axiom W_increasing : ∀ k₁ k₂ : ℕ, k₁ ≤ k₂ → W k₁ ≤ W k₂
-
 /- ## Part II: Known Small Values -/
 
 /--
@@ -66,12 +60,6 @@ axiom W_increasing : ∀ k₁ k₂ : ℕ, k₁ ≤ k₂ → W k₁ ≤ W k₂
 W(3,3) = 9, W(3,4) = 18, W(3,5) = 22, W(3,6) = 32, W(3,7) = 46.
 These are computed by exhaustive search over all 2-colorings.
 -/
-axiom W_known_values :
-    W 3 = 9 ∧
-    W 4 = 18 ∧
-    W 5 = 22 ∧
-    W 6 = 32 ∧
-    W 7 = 46
 
 /- ## Part III: Graham's Conjecture (Disproved) -/
 
@@ -116,8 +104,6 @@ For any fixed polynomial degree d, W(3,k) > k^d for all large enough k.
 This follows from Hunter's lower bound since exp(c(log k)²/log log k) grows
 faster than any polynomial.
 -/
-axiom W_superpolynomial :
-    ∀ d : ℕ, ∃ N : ℕ, ∀ k ≥ N, (W k : ℝ) > k^(d : ℝ)
 
 /- ## Part V: Upper Bounds -/
 
@@ -150,11 +136,6 @@ where r₃(n) is the maximum size of a 3-AP-free subset of {1,...,n}.
 W(3,k) relates to r₃(n) because blue-coloring avoiding k-APs
 must be "thin", while red-coloring avoiding 3-APs must be "dense".
 -/
-axiom roth_density_connection :
-    ∃ f : ℕ → ℕ, ∀ n : ℕ, n ≥ 3 →
-      f n ≤ n ∧ -- r₃(n) ≤ n
-      ∀ S : Finset ℕ, (S.card : ℝ) > f n → -- any dense-enough subset
-        ∃ a d : ℕ, d > 0 ∧ a ∈ S ∧ (a + d) ∈ S ∧ (a + 2 * d) ∈ S
 
 /--
 **Behrend's construction (1946):**
@@ -162,12 +143,6 @@ There exist 3-AP-free subsets of {1,...,n} of size
 n · exp(-c · √(log n)). This gives a lower bound on r₃(n)
 and hence lower bounds on W(3,k) via the Roth connection.
 -/
-axiom behrend_construction :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ n ≥ 3, ∃ S : Finset ℕ,
-      (∀ x ∈ S, x ≤ n) ∧
-      (∀ a d : ℕ, d > 0 → a ∈ S → (a + d) ∈ S → (a + 2 * d) ∉ S) ∧
-      (S.card : ℝ) ≥ n * exp (-c * (log n)^(1/2 : ℝ))
 
 /--
 **Kelley-Meka breakthrough (2023):**
@@ -175,12 +150,6 @@ Sets without 3-APs in {1,...,n} have density at most
 exp(-c · (log n)^{1/12}). This dramatically improved previous bounds
 and led to the Bloom-Sisask improvement on W(3,k).
 -/
-axiom kelley_meka_density :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ n ≥ 3, ∀ S : Finset ℕ,
-      (∀ x ∈ S, x ≤ n) →
-      (∀ a d : ℕ, d > 0 → a ∈ S → (a + d) ∈ S → (a + 2 * d) ∉ S) →
-      (S.card : ℝ) ≤ n * exp (-c * (log n)^(1/12 : ℝ))
 
 /- ## Part VII: The Growth Rate Question -/
 
@@ -202,11 +171,6 @@ Lower: exp(c(log k)²/log log k) — exponent ≈ 2
 Upper: exp(C(log k)^9) — exponent = 9
 Closing this gap from [2, 9] is a major open problem.
 -/
-axiom bounds_gap_width :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-    ∀ k ≥ 3,
-      exp (c * (log k)^2 / log (log k)) ≤ W k ∧
-      (W k : ℝ) ≤ exp (C * (log k)^9)
 
 /- ## Part VIII: Related Problems -/
 
@@ -216,10 +180,6 @@ For any δ > 0 and k ≥ 3, any subset of {1,...,n} with density ≥ δ
 contains a k-AP for n sufficiently large. This generalizes Roth's
 theorem (k=3) and provides the existence proof for all W(r,k).
 -/
-axiom szemeredi_theorem (δ : ℝ) (hδ : δ > 0) (k : ℕ) (hk : k ≥ 3) :
-    ∃ N : ℕ, ∀ n ≥ N, ∀ S : Finset ℕ,
-      (∀ x ∈ S, x ≤ n) → (S.card : ℝ) ≥ δ * n →
-      ∃ a d : ℕ, d > 0 ∧ ∀ i : ℕ, i < k → (a + i * d) ∈ S
 
 /--
 **Diagonal van der Waerden numbers W(k,k):**
@@ -227,8 +187,6 @@ The diagonal case grows much faster — at least tower-type.
 Gowers' quantitative proof of Szemerédi's theorem gives bounds,
 but they are far from the believed truth.
 -/
-axiom diagonal_growth (k : ℕ) (hk : k ≥ 3) :
-    ∃ W_kk : ℕ, W_kk ≥ k -- W(k,k) exists and grows
 
 /- ## Part IX: Summary -/
 

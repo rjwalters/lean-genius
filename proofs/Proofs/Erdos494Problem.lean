@@ -78,8 +78,6 @@ axiom selfridge_straus_k2_not_power2 :
 
 There exist distinct sets A ≠ B with |A| = |B| = 2ˡ having the same 2-sum multiset.
 -/
-axiom selfridge_straus_k2_power2_fails :
-    ∀ l : ℕ, l ≥ 1 → ¬KSumDeterminesSet 2 (2^l)
 
 /-
 ## The k = 3 and k = 4 Cases (Selfridge-Straus 1958)
@@ -89,12 +87,6 @@ axiom selfridge_straus_k2_power2_fails :
 
 Sets with more than 6 elements are uniquely determined by their 3-sum multisets.
 -/
-axiom selfridge_straus_k3 :
-    ∀ card : ℕ, card > 6 → KSumDeterminesSet 3 card
-
-/-- **Selfridge-Straus (1958)**: For k = 4, uniqueness holds when |A| > 12. -/
-axiom selfridge_straus_k4 :
-    ∀ card : ℕ, card > 12 → KSumDeterminesSet 4 card
 
 /-
 ## The Prime Divisibility Criterion (Selfridge-Straus 1958)
@@ -105,8 +97,6 @@ axiom selfridge_straus_k4 :
 This is a powerful general criterion that explains many special cases.
 For example, |A| = 7 and k = 3: 7 is prime > 3, so uniqueness holds.
 -/
-axiom selfridge_straus_prime_criterion :
-    ∀ k card p : ℕ, Nat.Prime p → k < p → p ∣ card → KSumDeterminesSet k card
 
 /-
 ## Counterexamples for Small Sets
@@ -121,8 +111,6 @@ centroid gives a different set with the same k-sum.
 The rotation is: if c = (sum of A)/k, then A' = {2c - a : a ∈ A} ≠ A but
 has the same k-sum (which equals k·c).
 -/
-axiom kruyt_rotation_counterexample :
-    ∀ k : ℕ, k > 2 → ¬KSumDeterminesSet k k
 
 /-- **Tao**: Uniqueness FAILS when |A| = 2k (for k > 2).
 
@@ -132,8 +120,6 @@ then -A = {-a : a ∈ A} has the same k-sum multiset as A.
 The k-sums of -A are negations of the (2k-k)=k-sums of complements in A,
 which by the zero-sum condition equal the k-sums of A.
 -/
-axiom tao_negation_counterexample :
-    ∀ k : ℕ, k > 2 → ¬KSumDeterminesSet k (2 * k)
 
 /-
 ## The Main Result (Gordon-Fraenkel-Straus 1962)
@@ -166,9 +152,6 @@ Counterexample for k = 3: Let ζ₆ = e^(2πi/6) be a primitive 6th root of unit
 Take A = {1, ζ₆, ζ₆², ζ₆⁴} and B = {1, ζ₆², ζ₆³, ζ₆⁴}.
 Then |A| = |B| = 4, the 3-product multisets are equal, but A ≠ B.
 -/
-axiom steinerberger_product_counterexample :
-    ∃ A B : Finset ℂ, A.card = B.card ∧ A.card = 4 ∧
-      prodMultiset A 3 = prodMultiset B 3 ∧ A ≠ B
 
 /-
 ## Summary Theorem
@@ -201,12 +184,8 @@ Note: Complex numbers don't have decidable equality in the computational sense,
 so we use axioms to verify properties of concrete examples. -/
 noncomputable def example_set : Finset ℂ := {0, 1, 2}
 
-/-- The set {0, 1, 2} has cardinality 3. -/
-axiom example_set_card : example_set.card = 3
-
 /-- The 2-sum multiset of {0, 1, 2} is {0+1, 0+2, 1+2} = {1, 2, 3}.
 This has 3 elements (all C(3,2) = 3 subsets of size 2). -/
-axiom example_2sums : (example_set.powersetCard 2).card = 3
 
 /-
 ## The Threshold Function
@@ -224,9 +203,5 @@ For general k, Gordon-Fraenkel-Straus give N(k) ≤ k² - k + 2 (not sharp).
 -/
 def threshold (k : ℕ) : ℕ :=
   k^2 - k + 2  -- Upper bound from GFS, not necessarily sharp
-
-/-- The GFS bound: uniqueness holds for |A| > k² - k + 2. -/
-axiom gfs_explicit_bound :
-    ∀ k : ℕ, k > 2 → ∀ card : ℕ, card > threshold k → KSumDeterminesSet k card
 
 end Erdos494

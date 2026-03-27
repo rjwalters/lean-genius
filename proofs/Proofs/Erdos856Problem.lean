@@ -116,19 +116,11 @@ f_k(N) ≪ log(N)/log(log(N))
 The proof uses the observation that for every t, there are < k solutions
 to t = ap with a ∈ A and p prime.
 -/
-axiom erdos_1970_upper_bound :
-  ∀ k : ℕ, k ≥ 3 → ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 3 →
-      f_k k N ≤ C * Real.log N / Real.log (Real.log N)
 
 /--
 **Key Lemma:**
 The number of solutions to t = ap with a ∈ A (k-LCM-free) and p prime is < k.
 -/
-axiom prime_factor_bound :
-  ∀ k : ℕ, k ≥ 3 →
-    ∀ A : Finset ℕ, IsLCMFree A k →
-      ∀ t : ℕ, (Finset.filter (fun a => ∃ p : ℕ, Nat.Prime p ∧ t = a * p) A).card < k
 
 /-
 ## Part V: Tang-Zhang 2025 Bounds
@@ -139,22 +131,11 @@ axiom prime_factor_bound :
 There exist constants 0 < b_k ≤ c_k ≤ 1 such that
 (log N)^{b_k - o(1)} ≤ f_k(N) ≤ (log N)^{c_k + o(1)}
 -/
-axiom tang_zhang_2025 :
-  ∀ k : ℕ, k ≥ 3 →
-    ∃ b_k c_k : ℝ, 0 < b_k ∧ b_k ≤ c_k ∧ c_k ≤ 1 ∧
-      ∀ ε : ℝ, ε > 0 →
-        ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-          (Real.log N)^(b_k - ε) ≤ f_k k N ∧
-          f_k k N ≤ (Real.log N)^(c_k + ε)
 
 /--
 **Specific bounds for k=3:**
 (log N)^{0.438} ≤ f_3(N) ≤ (log N)^{0.889}
 -/
-axiom tang_zhang_k3 :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-    (Real.log N)^(0.438 : ℝ) ≤ f_k 3 N ∧
-    f_k 3 N ≤ (Real.log N)^(0.889 : ℝ)
 
 /-
 ## Part VI: Connection to Sunflower Conjecture
@@ -186,13 +167,6 @@ def SunflowerConjectureForK (k : ℕ) : Prop :=
 **Connection to Problem #856:**
 c_k < 1 (non-trivial upper bound) iff sunflower conjecture holds for k.
 -/
-axiom sunflower_connection :
-  ∀ k : ℕ, k ≥ 3 →
-    SunflowerConjectureForK k ↔
-    ∃ c_k : ℝ, c_k < 1 ∧
-      ∀ ε : ℝ, ε > 0 →
-        ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-          f_k k N ≤ (Real.log N)^(c_k + ε)
 
 /-
 ## Part VII: Natural Density Variant (Problem #536)
@@ -210,18 +184,11 @@ noncomputable def g_k (k N : ℕ) : ℕ :=
 There exists A ⊆ {1,...,N} with |A| ≫ N where no 4 elements
 have uniform pairwise LCM. So g_4(N) ≫ N.
 -/
-axiom erdos_natural_density_k4 :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 1 →
-      (g_k 4 N : ℝ) ≥ C * N
 
 /--
 **Interesting case is k=3:**
 The k=3 case for natural density (Problem #536) remains interesting.
 -/
-axiom natural_density_k3_interest :
-    -- For k=3, the natural density version has g_3(N) ≫ N
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 → (g_k 3 N : ℝ) ≥ C * N
 
 /-
 ## Part VIII: Examples
@@ -241,8 +208,6 @@ theorem divisor_set_lcm (n : ℕ) (hn : n > 0) :
 **Example: Prime powers**
 {p, p², ..., p^k} has uniform pairwise LCM equal to lcm of largest pair.
 -/
-axiom prime_power_lcm (p : ℕ) (hp : Nat.Prime p) (j k : ℕ) (hjk : j ≤ k) :
-    myLcm (p^j) (p^k) = p^k
 
 /-
 ## Part IX: Open Questions
@@ -266,11 +231,6 @@ def openProblem_precise_exponent : Prop :=
 - Tang-Zhang for k=3: between (log N)^0.438 and (log N)^0.889
 - True value: unknown
 -/
-axiom gap_analysis :
-    -- Tang-Zhang for k=3: (log N)^{0.438} ≪ f_3(N) ≪ (log N)^{0.889}
-    ∃ α β : ℝ, 0.438 ≤ α ∧ β ≤ 0.889 ∧
-      ∀ N : ℕ, N ≥ 2 →
-        (Real.log N)^α ≤ f_k 3 N ∧ f_k 3 N ≤ (Real.log N)^β
 
 /-
 ## Part X: Summary

@@ -70,38 +70,12 @@ axiom g (n : ℕ) : ℕ
 
 /- ## Part III: Lower Bounds -/
 
-/-- **Four Colour Theorem Implication (Pollack 1985):**
-    Since unit distance graphs with minimum distance 1 are planar,
-    the Four Colour Theorem implies g(n) ≥ n/4. -/
-axiom pollack_lower_bound :
-    ∀ n : ℕ, n ≥ 1 → g n ≥ n / 4
-
-/-- **Csizmadia's Improvement (1998):**
-    g(n) ≥ (9/35)n ≈ 0.257n -/
-axiom csizmadia_lower_bound :
-    ∀ n : ℕ, n ≥ 1 → (g n : ℚ) ≥ (9 : ℚ) / 35 * n
-
-/-- **Swanepoel's Lower Bound (2002):**
-    g(n) ≥ (8/31)n ≈ 0.258n. This is the current best lower bound. -/
-axiom swanepoel_lower_bound :
-    ∀ n : ℕ, n ≥ 1 → (g n : ℚ) ≥ (8 : ℚ) / 31 * n
-
 /-- Numerical comparison: n/4 = 0.25 < 9/35 ≈ 0.257 < 8/31 ≈ 0.258 -/
 theorem lower_bounds_comparison :
     (1 : ℚ) / 4 < 9 / 35 ∧ 9 / 35 < 8 / 31 := by
   constructor <;> norm_num
 
 /- ## Part IV: Upper Bounds -/
-
-/-- **Chung-Graham and Pach Construction:**
-    g(n) ≤ (6/19)n ≈ 0.316n -/
-axiom chung_graham_pach_upper_bound :
-    ∀ n : ℕ, n ≥ 1 → (g n : ℚ) ≤ (6 : ℚ) / 19 * n
-
-/-- **Pach-Tóth Upper Bound (1996):**
-    g(n) ≤ (5/16)n = 0.3125n. This is the current best upper bound. -/
-axiom pach_toth_upper_bound :
-    ∀ n : ℕ, n ≥ 1 → (g n : ℚ) ≤ (5 : ℚ) / 16 * n
 
 /-- Numerical comparison: 5/16 = 0.3125 < 6/19 ≈ 0.316 < 1/3 ≈ 0.333 -/
 theorem upper_bounds_comparison :
@@ -119,27 +93,12 @@ theorem current_best_bounds :
 theorem bound_gap :
     (5 : ℚ) / 16 - 8 / 31 = 27 / 496 := by norm_num
 
-/-- Combined current knowledge: 8n/31 ≤ g(n) ≤ 5n/16 for all n. -/
-axiom current_knowledge :
-    ∀ n : ℕ, n ≥ 1 →
-    (8 : ℚ) / 31 * n ≤ g n ∧ (g n : ℚ) ≤ (5 : ℚ) / 16 * n
-
 /- ## Part VI: Higher Dimensions -/
 
 /-- g_d(n): For n points in ℝ^d with minimum distance 1, the minimum number
     of points that always have pairwise distance > 1. Axiomatized since
     defining the infimum requires geometric measure theory. -/
 axiom g_d (d n : ℕ) : ℕ
-
-/-- Erdős's question: Is g_d(n) ≫ n/d in general? -/
-axiom erdos_higher_dimension_question :
-    ∀ d : ℕ, d ≥ 1 → ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 1 → (g_d d n : ℝ) ≥ c * n / d
-
-/-- Upper bound in higher dimensions: g_d(n) ≪ n/d via unit simplices. -/
-axiom higher_dimension_upper_bound :
-    ∀ d : ℕ, d ≥ 1 → ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 1 → (g_d d n : ℝ) ≤ C * n / d
 
 /- ## Part VII: Summary -/
 

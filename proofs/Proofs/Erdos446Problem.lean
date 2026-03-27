@@ -50,12 +50,6 @@ def integersWithDivisor (n : ℕ) : Set ℕ :=
 Axiomatized since the limit definition requires measure-theoretic infrastructure. -/
 axiom delta (n : ℕ) : ℝ
 
-/-- δ(n) is non-negative. -/
-axiom delta_nonneg (n : ℕ) : 0 ≤ delta n
-
-/-- δ(n) is at most 1 (it is a density). -/
-axiom delta_le_one (n : ℕ) : delta n ≤ 1
-
 /-- The number of divisors of m in the interval (n, 2n). -/
 def divisorCount (m n : ℕ) : ℕ :=
   (Finset.filter (fun d => n < d ∧ d < 2 * n ∧ d ∣ m) (Finset.range (2 * n))).card
@@ -68,10 +62,6 @@ def integersWithExactlyRDivisors (n r : ℕ) : Set ℕ :=
 Axiomatized for the same reason as delta. -/
 axiom deltaR (n r : ℕ) : ℝ
 
-/-- The densities decompose: δ(n) = Σᵣ δᵣ(n). -/
-axiom delta_decomposition (n : ℕ) :
-  ∀ ε > 0, ∃ R : ℕ, delta n - ε < (Finset.range R).sum (fun r => deltaR n (r + 1))
-
 /- ## The Constant α -/
 
 /-- The Erdős constant α = 1 - (1 + log log 2) / log 2 ≈ 0.08607.
@@ -79,30 +69,18 @@ This constant governs the decay rate of δ(n). -/
 noncomputable def alpha : ℝ :=
   1 - (1 + log (log 2)) / log 2
 
-/-- Numerical bounds: 0.086 < α < 0.087. -/
-axiom alpha_value : 0.086 < alpha ∧ alpha < 0.087
-
 /- ## Historical Results -/
 
 /-- **Besicovitch (1934):** liminf δ(n) = 0.
 The density can get arbitrarily small along subsequences. -/
-axiom besicovitch_1934 :
-  ∀ ε > 0, ∃ n : ℕ, delta n < ε
 
 /-- **Erdős (1935):** δ(n) = o(1).
 The density tends to 0 as n → ∞, strengthening Besicovitch's result
 from liminf to full convergence. -/
-axiom erdos_1935 :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, delta n < ε
 
 /-- **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
 First quantitative estimate with the correct exponent α.
 For any ε > 0 and large enough n:
-  (log n)^{-(α+ε)} < δ(n) < (log n)^{-(α-ε)} -/
-axiom erdos_1960 :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    (log n : ℝ) ^ (-(alpha + ε)) < delta n ∧
-    delta n < (log n : ℝ) ^ (-(alpha - ε))
 
 /- ## Ford's Resolution (2008) -/
 
@@ -125,8 +103,6 @@ axiom ford_2008_disproof :
 /-- **Ford's generalization:**
 For each r ≥ 1, δᵣ(n) ≫ᵣ δ(n). Integers with exactly r divisors
 in (n, 2n) have density comparable to the total density. -/
-axiom ford_2008_general (r : ℕ) (hr : r ≥ 1) :
-  ∃ cᵣ : ℝ, cᵣ > 0 ∧ ∀ n ≥ 10, deltaR n r ≥ cᵣ * delta n
 
 /- ## Key Examples -/
 

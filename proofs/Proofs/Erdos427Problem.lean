@@ -43,19 +43,14 @@ axiom nthPrime : ℕ → ℕ
 /--
 Basic property: nthPrime produces primes.
 -/
-axiom nthPrime_is_prime (n : ℕ) : (nthPrime n).Prime
 
 /--
 nthPrime is strictly increasing.
 -/
-axiom nthPrime_strictMono : StrictMono nthPrime
 
 /--
 The first few prime values.
 -/
-axiom nthPrime_values :
-    nthPrime 0 = 2 ∧ nthPrime 1 = 3 ∧ nthPrime 2 = 5 ∧
-    nthPrime 3 = 7 ∧ nthPrime 4 = 11 ∧ nthPrime 5 = 13
 
 /-
 ## The Sum of Consecutive Primes
@@ -147,16 +142,11 @@ More precisely:
 /--
 Key lemma: Sum of t primes each congruent to 1 (mod d) is congruent to t (mod d).
 -/
-axiom sum_of_ones_mod (m d t : ℕ) (hd : d ≠ 0) (ht : t ≤ d)
-    (hprimes : ∀ i ∈ Finset.Ico m (m + d), nthPrime i ≡ 1 [MOD d]) :
-    (Finset.Ico m (m + t)).sum nthPrime ≡ t [MOD d]
 
 /--
 From Shiu's theorem, we can find arbitrarily large m with d consecutive
 primes all congruent to 1 (mod d).
 -/
-axiom shiu_gives_ones (d : ℕ) (hd : 1 ≤ d) (N : ℕ) :
-    ∃ m, m ≥ N ∧ ∀ i ∈ Finset.Ico m (m + d), nthPrime i ≡ 1 [MOD d]
 
 /--
 **Main Theorem**: Erdős Problem #427 follows from Shiu's theorem.
@@ -179,27 +169,23 @@ Let's verify the statement for small cases.
 Example: For n = 0 and d = 5, we have p_0 + p_1 = 2 + 3 = 5, divisible by 5.
 So k = 2 works.
 -/
-axiom example_n0_d5 : 5 ∣ primeSum 0 2  -- 2 + 3 = 5
 
 /--
 Example: For n = 0 and d = 10, we need to find k such that the sum of the
 first k primes is divisible by 10.
 2+3+5+7+11+13+17+19+23 = 100, so k = 9 works.
 -/
-axiom example_n0_d10 : 10 ∣ primeSum 0 9  -- Sum of first 9 primes = 100
 
 /--
 Example: For n = 1 and d = 3, we have p_1 + p_2 + p_3 = 3 + 5 + 7 = 15,
 which is divisible by 3. So k = 3 works.
 -/
-axiom example_n1_d3 : 3 ∣ primeSum 1 3  -- 3 + 5 + 7 = 15
 
 /--
 Example: For n = 0 and d = 7, we check partial sums:
 2 ≡ 2, 2+3=5 ≡ 5, 5+5=10 ≡ 3, 10+7=17 ≡ 3, 17+11=28 ≡ 0 (mod 7).
 So k = 5 works: 2+3+5+7+11 = 28 = 4×7.
 -/
-axiom example_n0_d7 : 7 ∣ primeSum 0 5  -- 2+3+5+7+11 = 28
 
 /-
 ## The Power of Shiu's Theorem
@@ -269,8 +255,6 @@ Shiu says there exist 1000 consecutive primes all ≡ 1 (mod 7).
 Dirichlet's theorem (special case): There are infinitely many primes
 congruent to 1 modulo any q ≥ 2.
 -/
-axiom dirichlet_ones (q : ℕ) (hq : 2 ≤ q) :
-    { p : ℕ | p.Prime ∧ p ≡ 1 [MOD q] }.Infinite
 
 /--
 Shiu's theorem for the special case a = 1.

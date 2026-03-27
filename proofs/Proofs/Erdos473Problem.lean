@@ -94,16 +94,11 @@ axiom greedySeq : ℕ → ℕ
 **Greedy Sequence Initial Condition:**
 The greedy sequence starts with a₁ = 1.
 -/
-axiom greedySeq_one : greedySeq 1 = 1
 
 /--
 **Greedy Sequence Recurrence:**
 Each term is the smallest unused integer giving a prime sum.
 -/
-axiom greedySeq_recurrence : ∀ n ≥ 1,
-    let prev := greedySeq n
-    let used := {greedySeq i | i ≤ n}
-    (prev + greedySeq (n + 1)).Prime ∧ greedySeq (n + 1) ∉ used
 
 /--
 **Greedy Sequence Property:**
@@ -118,8 +113,6 @@ This remains OPEN.
 -/
 def greedyCoversAllIntegers : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ k : ℕ, greedySeq k = n
-
-axiom greedy_covers_all_open : ¬Decidable greedyCoversAllIntegers
 
 /--
 **Van Doorn's Observation:**
@@ -174,12 +167,6 @@ def primeSumGraph : ℕ → ℕ → Prop :=
 The structure of which pairs sum to primes is related to Goldbach's conjecture
 (every even n > 2 is the sum of two primes).
 -/
-axiom goldbach_implies_graph_connected :
-    (∀ n : ℕ, n > 2 → Even n → ∃ p q : ℕ, p.Prime ∧ q.Prime ∧ n = p + q) →
-    ∀ i j : ℕ, i ≥ 1 → j ≥ 1 → i ≠ j →
-      ∃ path : List ℕ, path.head? = some i ∧ path.getLast? = some j ∧
-        ∀ k : Fin (path.length - 1), primeSumGraph (path.get ⟨k.val, by omega⟩)
-          (path.get ⟨k.val + 1, by omega⟩)
 
 /--
 **Generalization: Other Conditions:**
@@ -189,9 +176,6 @@ One could ask for permutations where consecutive sums satisfy other properties:
 - Always a Fibonacci number
 These variants have different answers.
 -/
-axiom composite_sum_permutation_exists :
-    ∃ a : ℕ → ℕ, Function.Bijective a ∧ (∀ n, a n ≥ 1) ∧
-      ∀ k : ℕ, k ≥ 1 → ¬(a k + a (k + 1)).Prime
 
 /- ## Part VI: Properties of Prime Sum Permutations
 -/
@@ -204,18 +188,12 @@ This constrains the permutation structure.
 The only even prime is 2, so if a_k + a_{k+1} > 2 is prime, it must be odd,
 meaning exactly one of a_k, a_{k+1} is even.
 -/
-axiom parity_constraint (a : ℕ → ℕ) (h : HasPrimeSumProperty a) :
-    ∀ k : ℕ, k ≥ 1 →
-      (Even (a k) ∧ Odd (a (k + 1))) ∨ (Odd (a k) ∧ Even (a (k + 1))) ∨
-      (a k + a (k + 1) = 2)
 
 /--
 **Density Considerations:**
 Among the first N integers, roughly half are even and half odd.
 A prime sum permutation must carefully interleave evens and odds.
 -/
-axiom alternating_parity (a : ℕ → ℕ) (h : IsPrimeSumPermutation a) :
-    ∀ k : ℕ, k ≥ 2 → (Even (a k) ↔ Odd (a (k + 1)))
 
 /- ## Part VII: The Greedy Sequence Values
 -/
@@ -225,12 +203,6 @@ axiom alternating_parity (a : ℕ → ℕ) (h : IsPrimeSumPermutation a) :
 The greedy sequence begins: 1, 2, 3, 4, 7, 6, 5, 8, 9, ...
 (Each consecutive sum is prime: 3, 5, 7, 11, 13, 11, 13, 17, ...)
 -/
-axiom greedy_initial_values :
-    greedySeq 1 = 1 ∧
-    greedySeq 2 = 2 ∧
-    greedySeq 3 = 3 ∧
-    greedySeq 4 = 4 ∧
-    greedySeq 5 = 7
 
 /- ## Part VIII: Summary
 -/

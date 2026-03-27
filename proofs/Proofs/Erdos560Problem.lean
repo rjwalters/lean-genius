@@ -72,8 +72,6 @@ notation "K[" n "," n "]" => completeBipartiteGraph n
 /--
 Number of edges in K_{n,n} is n^2.
 -/
-axiom completeBipartite_edgeCount (n : ℕ) (hn : n > 0) :
-    (K[n,n]).edgeFinset.card = n * n
 
 /-
 ## Part II: Size Ramsey Numbers
@@ -154,19 +152,11 @@ theorem size_ramsey_bounds (n : ℕ) (hn : n ≥ 6) :
 **General Bipartite Bound (CFW 2023):**
 For s ≤ t, R_hat(K_{s,t}) ≫ s^{2-s/t} * t * 2^s.
 -/
-axiom cfw_general_lower (s t : ℕ) (hs : s ≥ 1) (hst : s ≤ t) :
-    ∃ C : ℝ, C > 0 ∧
-    (R̂(completeBipartiteGraph s) : ℝ) ≥ C * (s : ℝ)^(2 - (s : ℝ) / t) * t * (2 : ℝ)^s
 
 /--
 **Asymptotic Result (CFW 2023):**
 When t ≫ s * log(s), we have R_hat(K_{s,t}) ≍ s^2 * t * 2^s.
 -/
-axiom cfw_asymptotic (s t : ℕ) (hs : s ≥ 2) :
-    (t : ℝ) ≥ (s : ℝ) * Real.log s →
-    ∃ (c C : ℝ), c > 0 ∧ C > 0 ∧
-    c * (s : ℝ)^2 * t * (2 : ℝ)^s ≤ (R̂(completeBipartiteGraph s) : ℝ) ∧
-    (R̂(completeBipartiteGraph s) : ℝ) ≤ C * (s : ℝ)^2 * t * (2 : ℝ)^s
 
 /--
 **CFW Conjecture:**
@@ -174,11 +164,6 @@ R_hat(K_{n,n}) ≍ n^3 * 2^n for all n.
 
 This is the natural extension of the asymptotic result to the balanced case.
 -/
-axiom cfw_conjecture :
-    ∃ (c C : ℝ), c > 0 ∧ C > 0 ∧
-    ∀ n : ℕ, n ≥ 1 →
-    c * (n : ℝ)^3 * (2 : ℝ)^n ≤ (R̂(K[n,n]) : ℝ) ∧
-    (R̂(K[n,n]) : ℝ) ≤ C * (n : ℝ)^3 * (2 : ℝ)^n
 
 /-
 ## Part V: Basic Properties
@@ -187,25 +172,18 @@ axiom cfw_conjecture :
 /--
 Size Ramsey number is monotonic: if G is a subgraph of G', then R_hat(G) ≤ R_hat(G').
 -/
-axiom size_ramsey_monotone (G G' : SimpleGraph V) (h : G ≤ G') :
-    R̂(G) ≤ R̂(G')
 
 /--
 R_hat(G) ≥ |E(G)| (every witness must have at least as many edges as G).
 -/
-axiom size_ramsey_lower (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] :
-    R̂(G) ≥ G.edgeFinset.card
 
 /--
 R_hat(K_{1,1}) = 1 (a single edge suffices).
 -/
-axiom size_ramsey_K11 : R̂(K[1,1]) = 1
 
 /--
 For paths P_n, the size Ramsey number is linear in n.
 -/
-axiom size_ramsey_path_linear (n : ℕ) (hn : n ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ (R̂(SimpleGraph.pathGraph n) : ℝ) ≤ C * n
 
 /-
 ## Part VI: Related Concepts
@@ -225,15 +203,11 @@ notation "R(" G ")" => classicalRamseyNumber G
 **Relationship to Classical Ramsey:**
 R_hat(G) ≤ C(R(G), 2), the number of edges in K_{R(G)}.
 -/
-axiom size_ramsey_vs_classical (G : SimpleGraph W) :
-    R̂(G) ≤ (R(G)) * (R(G) - 1) / 2
 
 /--
 **Ramsey for K_{n,n}:**
 Classical Ramsey number for complete bipartite graphs grows doubly exponentially.
 -/
-axiom classical_ramsey_bipartite (n : ℕ) (hn : n ≥ 1) :
-    ∃ C : ℝ, C > 0 ∧ (R(K[n,n]) : ℝ) ≤ C * (2 : ℝ)^(2^n)
 
 /-
 ## Part VII: Gap Between Bounds
@@ -255,11 +229,6 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 6) :
 If CFW conjecture is true, the lower bound is tight up to constants.
 This is by definition: Θ(f) means bounded above and below by constant multiples of f.
 -/
-axiom cfw_implies_tight_lower (n : ℕ) (hn : n ≥ 1) :
-    (∃ (c C : ℝ), c > 0 ∧ C > 0 ∧
-      c * (n : ℝ)^3 * (2 : ℝ)^n ≤ (R̂(K[n,n]) : ℝ) ∧
-      (R̂(K[n,n]) : ℝ) ≤ C * (n : ℝ)^3 * (2 : ℝ)^n) →
-    (R̂(K[n,n]) : ℝ) = Θ((n : ℝ)^3 * (2 : ℝ)^n)
 
 -- Placeholder definition for Θ notation
 axiom thetaNotation {α : Type*} [Preorder α] (f : α → ℝ) : α → ℝ

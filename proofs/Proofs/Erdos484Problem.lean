@@ -89,13 +89,6 @@ In any k-coloring of {1,...,N}, at least
 N/2 - O(N^{1-1/2^{k+1}})
 even integers are representable as monochromatic sums.
 -/
-axiom ESS_theorem (k : ℕ) :
-    k ≥ 1 →
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N ≥ k, ∀ χ : Coloring N k,
-      (Finset.filter (fun s => s % 2 = 0 ∧ isMonochromaticSum χ s)
-        (Finset.range (2 * N))).card ≥
-      (N : ℝ) / 2 - C * (N : ℝ) ^ (1 - 1 / 2^(k + 1))
 
 /--
 **Why even numbers:**
@@ -103,10 +96,6 @@ A sum a + b where a, b have the same parity yields an even sum.
 In any color class of size m, the sumset contains at least m/2 elements
 of the same parity, so most sums are even.
 -/
-axiom even_sum_parity :
-    ∀ N k : ℕ, ∀ χ : Coloring N k, ∀ c : Fin k,
-      ∀ a b : Fin N, a ≠ b → χ a = c → χ b = c →
-        (a.val + 1 + (b.val + 1)) % 2 = ((a.val + 1) % 2 + (b.val + 1) % 2) % 2
 
 /--
 **The exponent 1 - 1/2^{k+1}:**
@@ -114,8 +103,6 @@ For k = 2: exponent = 1 - 1/8 = 7/8, so error ~ N^{7/8}
 For k = 3: exponent = 1 - 1/16 = 15/16, so error ~ N^{15/16}
 As k increases, the error term approaches N but stays sub-linear.
 -/
-axiom exponent_sublinear :
-    ∀ k : ℕ, k ≥ 1 → (1 : ℝ) - 1 / 2^(k + 1) < 1
 
 /- ## Part IV: The Two-Coloring Case -/
 
@@ -148,13 +135,6 @@ Then 2^m is never a monochromatic sum because if a + b = 2^m with
 a, b having the same 2-adic valuation parity, their sum cannot be a
 power of 2.
 -/
-axiom optimal_construction_exists :
-    ∀ N : ℕ, ∃ χ : Coloring N 2,
-      -- χ is based on 2-adic valuation mod 2
-      (∀ n : Fin N, ∃ v : ℕ, 2^v ∣ (n.val + 1) ∧ ¬(2^(v+1) ∣ (n.val + 1)) ∧
-        χ n = ⟨v % 2, by omega⟩) ∧
-      -- No power of 2 is a monochromatic sum
-      (∀ m : ℕ, 2^m ≤ 2 * N → ¬isMonochromaticSum χ (2^m))
 
 /- ## Part V: Key Proof Ideas -/
 
@@ -164,10 +144,6 @@ For a color class C of size m, the sumset C + C = {a + b : a, b ∈ C, a ≠ b}
 has size at least m - 1. By pigeonhole, some color class has size ≥ N/k,
 giving a sumset of size ≥ N/k - 1.
 -/
-axiom sumset_lower_bound :
-    ∀ N k : ℕ, k ≥ 1 → N ≥ k →
-      ∀ χ : Coloring N k,
-        ∃ c : Fin k, (colorClass χ c).card ≥ N / k
 
 /--
 **Density argument:**
@@ -175,13 +151,6 @@ If a color class has density δ in {1,...,N}, its sumset C + C
 covers at least 2δN - O(√N) integers in {2,...,2N} by the
 Freiman-Ruzsa theorem on sumsets.
 -/
-axiom sumset_density :
-    ∀ N : ℕ, N ≥ 2 →
-      ∀ C : Finset (Fin N), C.card ≥ 2 →
-        ∃ sums : Finset ℕ,
-          (∀ s ∈ sums, ∃ a b : Fin N, a ∈ C ∧ b ∈ C ∧ a ≠ b ∧
-            (a.val + 1) + (b.val + 1) = s) ∧
-          sums.card ≥ C.card - 1
 
 /--
 **Fourier analytic methods:**
@@ -189,13 +158,6 @@ The proof uses exponential sums to count the representation number
 r(s) = #{(a,b) : a+b=s, χ(a)=χ(b), a≠b}. The number of s with
 r(s) = 0 is bounded using the large sieve inequality.
 -/
-axiom fourier_representation_count :
-    ∀ N k : ℕ, k ≥ 1 → N ≥ k →
-      ∀ χ : Coloring N k,
-        -- The number of unrepresented even numbers is bounded
-        (Finset.filter (fun s => s % 2 = 0 ∧ ¬isMonochromaticSum χ s)
-          (Finset.range (2 * N))).card ≤
-        Nat.ceil ((N : ℝ) ^ (1 - 1 / 2^(k + 1)))
 
 /- ## Part VI: Consequences -/
 
@@ -217,11 +179,6 @@ For any ε > 0 and fixed k, the constant c = 1/2 - ε works for
 N large enough. This follows from the ESS theorem since the error
 term N^{1-1/2^{k+1}} is o(N).
 -/
-axiom constant_half_minus_epsilon :
-    ∀ ε : ℝ, ε > 0 → ∀ k : ℕ, k ≥ 1 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ χ : Coloring N k,
-        (Finset.filter (fun s => s % 2 = 0 ∧ isMonochromaticSum χ s)
-          (Finset.range (2 * N))).card ≥ ((1 : ℝ)/2 - ε) * N
 
 /- ## Part VII: Extensions and Related Results -/
 
@@ -231,13 +188,6 @@ Asks for more precise counting of monochromatic sums and understanding
 the structure of colorings that minimize them. The ESS result gives
 N/2 - o(N) even sums; Green asks for the exact second-order term.
 -/
-axiom ben_green_refinement :
-    -- Green asks: what is the exact error term for k colors?
-    ∀ k : ℕ, k ≥ 1 →
-      ∃ f : ℕ → ℝ, (∀ N : ℕ, f N ≥ 0) ∧
-        ∀ N ≥ k, ∀ χ : Coloring N k,
-          (Finset.filter (fun s => s % 2 = 0 ∧ isMonochromaticSum χ s)
-            (Finset.range (2 * N))).card ≥ (N : ℝ) / 2 - f N
 
 /--
 **Schur's theorem:**
@@ -245,11 +195,6 @@ In any k-coloring of {1,...,N} for N large enough, there exist
 monochromatic a, b, c with a + b = c. This is the "equation version"
 where the sum itself must be in the same color class.
 -/
-axiom schur_theorem :
-    ∀ k : ℕ, k ≥ 1 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ χ : Coloring N k,
-        ∃ a b c : Fin N, a ≠ b ∧ χ a = χ b ∧ χ b = χ c ∧
-          (a.val + 1) + (b.val + 1) = (c.val + 1)
 
 /--
 **Hindman's theorem:**
@@ -257,12 +202,6 @@ In any finite coloring of ℕ, there exists an infinite set S such that
 all finite sums of distinct elements of S have the same color.
 This is much stronger than Schur — it gives infinite structure.
 -/
-axiom hindman_theorem :
-    ∀ k : ℕ, k ≥ 1 →
-      ∀ χ : ℕ → Fin k,
-        ∃ c : Fin k, ∃ S : Set ℕ, Set.Infinite S ∧
-          ∀ F : Finset ℕ, ↑F ⊆ S → F.Nonempty →
-            χ (F.sum id) = c
 
 /- ## Part VIII: Summary -/
 

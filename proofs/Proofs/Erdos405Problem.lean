@@ -107,43 +107,15 @@ axiom yu_liu_1996 :
     (p = 3 ∧ a = 5 ∧ k = 3) ∨
     (p = 5 ∧ a = 1 ∧ k = 2)
 
-/-- There are exactly 3 solutions -/
-axiom exactly_three_solutions :
-    { (p, a, k) : ℕ × ℕ × ℕ | IsSolution p a k }.ncard = 3
-
 /-
 ## Part 4: Wilson's Theorem Connection
 
 (p-1)! ≡ -1 (mod p) for prime p.
 -/
 
-/-- Wilson's theorem -/
-axiom wilson_theorem (p : ℕ) (hp : Nat.Prime p) :
-    (p - 1).factorial % p = p - 1
-
-/-- Fermat's little theorem -/
-axiom fermat_little (p a : ℕ) (hp : Nat.Prime p) (ha : ¬p ∣ a) :
-    a ^ (p - 1) % p = 1
-
-/-- Combined: (p-1)! + a^{p-1} ≡ -1 + 1 = 0 (mod p) if p ∤ a.
-    By Wilson's theorem (p-1)! ≡ -1 (mod p) and Fermat's little theorem a^{p-1} ≡ 1 (mod p). -/
-axiom sum_divisible_by_p (p a : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (ha : ¬p ∣ a) :
-    p ∣ (p - 1).factorial + a ^ (p - 1)
-
 /-
 ## Part 5: The Exceptional Case p ∣ a
 -/
-
-/-- If p ∣ a, then a^{p-1} ≡ 0 (mod p^{p-1}).
-    Since p | a, we have a = p·m for some m, so a^{p-1} = p^{p-1}·m^{p-1}. -/
-axiom divisible_implies_large_power (p a : ℕ) (hp : Nat.Prime p) (ha : p ∣ a) :
-    p ^ (p - 1) ∣ a ^ (p - 1)
-
-/-- When p ∣ a, the equation becomes (p-1)! ≡ p^k (mod p^{p-1}),
-    which severely constrains k since v_p((p-1)!) = 0 for prime p. -/
-axiom divisible_case_analysis (p a k : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3)
-    (ha : p ∣ a) (heq : (p - 1).factorial + a ^ (p - 1) = p ^ k) :
-    k ≤ p - 1
 
 /-
 ## Part 6: p-adic Analysis
@@ -155,25 +127,11 @@ The p-adic valuation constrains solutions.
 noncomputable def factorialPadicVal (p n : ℕ) : ℕ :=
   (Finset.range n).sum fun i => n / p ^ (i + 1)
 
-/-- Legendre's formula for v_p(n!) -/
-axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
-    padicValNat p n.factorial = factorialPadicVal p n
-
-/-- For (p-1)!, the p-adic valuation is 0.
-    Since (p-1)! is the product of {1,...,p-1}, none of which is divisible by p. -/
-axiom factorial_padic_zero (p : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) :
-    padicValNat p (p - 1).factorial = 0
-
 /-
 ## Part 7: Why Only These Solutions?
 
 Analysis of why p ∈ {3, 5} are special.
 -/
-
-/-- For p ≥ 7, (p-1)! grows much faster than any p^k that a^{p-1} can reach -/
-axiom large_prime_no_solution (p a k : ℕ) (hp : Nat.Prime p) (hp7 : p ≥ 7)
-    (heq : (p - 1).factorial + a ^ (p - 1) = p ^ k) :
-    False
 
 /-- For p = 3: 2! = 2, so need 2 + a² = 3^k -/
 theorem p_equals_3_analysis :
@@ -214,13 +172,6 @@ def IsPerfectPower (n : ℕ) : Prop :=
 theorem example_perfect_power :
     6.factorial + 2 ^ 6 = 28 ^ 2 := by
   norm_num
-
-/-- Erdős-Graham conjecture: for most (p, a) pairs,
-    (p-1)! + a^{p-1} is not a perfect power.
-    This is a strengthening of Problem #405. -/
-axiom erdos_graham_conjecture :
-    ∀ p : ℕ, Nat.Prime p → p ≥ 7 → ∀ a k : ℕ, k ≥ 2 →
-      (p - 1).factorial + a ^ (p - 1) ≠ (p ^ k)
 
 /-
 ## Part 9: Main Problem Statement

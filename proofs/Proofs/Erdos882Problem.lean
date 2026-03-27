@@ -79,27 +79,13 @@ noncomputable def maxValidSize (n : ℕ) : ℕ :=
 Constructions achieving good sizes.
 -/
 
-/-- Greedy algorithm achieves Ω(log₃ n) -/
-axiom greedy_lower_bound (n : ℕ) (hn : n ≥ 2) :
-  ∃ A : Finset ℕ, ValidSubset n A ∧ A.card ≥ Nat.log 3 n - 1
-
 /-- Sándor's construction: A = {2^i + m·2^m : 0 ≤ i < m} achieves log₂ n -/
 def SandorConstruction (m : ℕ) : Finset ℕ :=
   Finset.filter (fun x => ∃ i < m, x = 2^i + m * 2^m) (Finset.range (m * 2^m + 2^m))
 
-/-- Sándor's construction is valid and achieves asymptotically log₂ n -/
-axiom sandor_construction_valid (m : ℕ) (hm : m ≥ 2) :
-  let n := 2^(m-1) + m * 2^m
-  ValidSubset n (SandorConstruction m) ∧ (SandorConstruction m).card = m
-
 /-- ELRSS (1999) construction: A = {2^m - 2^(m-1), ..., 2^m - 1} -/
 def ELRSSConstruction (m : ℕ) : Finset ℕ :=
   Finset.filter (fun x => 2^m - 2^(m-1) ≤ x ∧ x ≤ 2^m - 1) (Finset.range (2^m))
-
-/-- ELRSS construction achieves |A| > log₂ n - 1 -/
-axiom elrss_1999 (m : ℕ) (hm : m ≥ 2) :
-  let n := 2^m
-  ValidSubset n (ELRSSConstruction m) ∧ (ELRSSConstruction m).card > Nat.log 2 n - 1
 
 /-
 ## Part 4: Upper Bounds
@@ -112,16 +98,6 @@ def DistinctSubsetSums (A : Finset ℕ) : Prop :=
   ∀ S T : Finset ℕ, S ⊆ A → T ⊆ A → S ≠ ∅ → T ≠ ∅ → S ≠ T →
     S.sum id ≠ T.sum id
 
-/-- Divisibility-free implies distinct (intuitively: if s₁ | s₂ with s₁ ≠ s₂, they're distinct) -/
-axiom div_free_implies_distinct (A : Finset ℕ) (h : DivisibilityFree (subsetSums A)) :
-    DistinctSubsetSums A
-  -- If sums equal, they're the same element of subsetSums, not distinct
-  -- Two equal sums would give s | s, violating divisibility-free for distinct subsets
-
-/-- Distinct subset sums implies |A| ≤ log₂(σ(A)) where σ(A) = ∑A -/
-axiom distinct_sums_bound (A : Finset ℕ) (h : DistinctSubsetSums A) :
-  A.card ≤ Nat.log 2 (A.sum id) + 1
-
 /-- For A ⊆ {1,...,n}, σ(A) ≤ |A| · n ≤ n² -/
 lemma sum_bound (n : ℕ) (A : Finset ℕ) (h : ∀ a ∈ A, a ≤ n) :
     A.sum id ≤ A.card * n := by
@@ -132,10 +108,6 @@ lemma sum_bound (n : ℕ) (A : Finset ℕ) (h : ∀ a ∈ A, a ≤ n) :
 axiom upper_bound_refined (n : ℕ) (A : Finset ℕ) (hn : n ≥ 16)
     (h : ValidSubset n A) :
   A.card ≤ Nat.log 2 n + Nat.log 2 (Nat.log 2 n) / 2 + 3
-
-/-- Conjectured tight bound -/
-axiom conjectured_upper_bound (n : ℕ) (A : Finset ℕ) (h : ValidSubset n A) :
-  ∃ C : ℕ, A.card ≤ Nat.log 2 n + C
 
 /-
 ## Part 5: The Answer
@@ -159,28 +131,9 @@ theorem upper_bound_max (n : ℕ) (hn : n ≥ 16) :
 ## Part 6: Examples
 -/
 
-/-- Simple example: A = {1} has size 1, valid for any n ≥ 1 -/
-axiom example_singleton (n : ℕ) (hn : n ≥ 1) : ValidSubset n {1}
-  -- subsetSums {1} = {1}, singleton is trivially divisibility-free
-
-/-- A = {2, 3} has subset sums {2, 3, 5}, which is divisibility-free -/
-axiom example_2_3 (n : ℕ) (hn : n ≥ 3) : ValidSubset n ({2, 3} : Finset ℕ)
-  -- subset sums: {2}, {3}, {2,3} give 2, 3, 5
-  -- Check: 2 ∤ 3, 3 ∤ 2, 2 ∤ 5, 5 ∤ 2, 3 ∤ 5, 5 ∤ 3 ✓
-
 /-
 ## Part 7: Connection to Erdős Problem #1 and #13
 -/
-
-/-- Erdős #1: Distinct subset sums. If A has distinct subset sums, then |A| ≤ log₂(n) + O(1) -/
-axiom erdos_1_connection :
-  ∀ n A, ValidSubset n A → DistinctSubsetSums A
-
-/-- Connection to Sidon sets (Erdős #13): Sidon sets have distinct pairwise sums.
-    Our problem is about all subset sums being divisibility-free,
-    which is a weaker but related condition. -/
-axiom sidon_sets_have_distinct_pairwise_sums :
-  ∀ A : Finset ℕ, DistinctSubsetSums A → DivisibilityFree (subsetSums A)
 
 /-
 ## Part 8: Main Results

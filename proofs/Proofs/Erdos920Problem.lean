@@ -78,19 +78,11 @@ axiom maxChromaticKFree (k n : ℕ) : ℕ
 **Graver-Yackel Upper Bound (1968):**
 g_k(n) ≪ (n · log log n / log n)^{1-1/(k-1)}
 -/
-axiom graver_yackel_1968 :
-  ∀ k : ℕ, k ≥ 3 →
-    ∃ C : ℝ, C > 0 ∧
-      ∀ n : ℕ, n ≥ 2 →
-        (maxChromaticKFree k n : ℝ) ≤
-          C * ((n : ℝ) * Real.log (Real.log n) / Real.log n) ^ (1 - 1 / (k - 1 : ℝ))
 
 /--
 **Trivial Upper Bound:**
 g_k(n) ≤ n (at most n colors needed).
 -/
-axiom trivial_upper :
-  ∀ k n : ℕ, maxChromaticKFree k n ≤ n
 
 /-
 ## Part III: Known Lower Bounds
@@ -101,19 +93,11 @@ axiom trivial_upper :
 g_3(n) ≫ n^{1/2} / log n
 Via the Ramsey bound R(3,m) ≫ (m/log m)^2.
 -/
-axiom erdos_1959_k3 :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (maxChromaticKFree 3 n : ℝ) ≥ c * (n : ℝ) ^ (1/2 : ℝ) / Real.log n
 
 /--
 **Shearer's Improved Bound for k=3:**
 g_3(n) ≫ (n/log n)^{1/2}
 -/
-axiom shearer_k3 :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (maxChromaticKFree 3 n : ℝ) ≥ c * ((n : ℝ) / Real.log n) ^ (1/2 : ℝ)
 
 /--
 **Mattheus-Verstraete Bound for k=4 (2023):**
@@ -159,9 +143,6 @@ Conjectured lower bound exponent: 1 - 1/(k-1)
 For k=4: current = 3/5 = 0.6, conjectured = 2/3 ≈ 0.667
 For k=5: current = 2/3 ≈ 0.667, conjectured = 3/4 = 0.75
 -/
-axiom the_gap :
-  ∀ k : ℕ, k ≥ 4 →
-    (1 : ℝ) - 2 / (k + 1) < 1 - 1 / (k - 1)
 
 /-
 ## Part V: Connection to Ramsey Numbers
@@ -179,32 +160,17 @@ axiom RamseyNumber (k m : ℕ) : ℕ
 If R(k,m) ≥ c · m^α / (log m)^β, then
 g_k(n) ≥ c' · n^{1-1/α} / (log n)^{β/α}.
 This is the key bridge between Ramsey theory and chromatic numbers. -/
-axiom ramsey_chromatic_connection :
-  ∀ k : ℕ, k ≥ 3 →
-  ∀ α β : ℝ, α > 1 → β ≥ 0 →
-    (∃ c : ℝ, c > 0 ∧ ∀ m : ℕ, m ≥ 2 →
-      (RamseyNumber k m : ℝ) ≥ c * (m : ℝ) ^ α / (Real.log m) ^ β) →
-    ∃ c' : ℝ, c' > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (maxChromaticKFree k n : ℝ) ≥ c' * (n : ℝ) ^ (1 - 1/α) / (Real.log n) ^ (β/α)
 
 /--
 **Erdős Ramsey Bound (1959):**
 R(3,m) ≫ (m/log m)^2
 -/
-axiom erdos_ramsey_k3 :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ m : ℕ, m ≥ 2 →
-      (RamseyNumber 3 m : ℝ) ≥ c * ((m : ℝ) / Real.log m) ^ 2
 
 /--
 **Mattheus-Verstraete Ramsey Bound (2023):**
 R(4,m) ≫ m^3 / (log m)^4
 This was a breakthrough for k=4.
 -/
-axiom mattheus_verstraete_ramsey :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ m : ℕ, m ≥ 2 →
-      (RamseyNumber 4 m : ℝ) ≥ c * (m : ℝ) ^ 3 / (Real.log m) ^ 4
 
 /-
 ## Part VI: Summary

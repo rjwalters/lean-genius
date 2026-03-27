@@ -132,11 +132,6 @@ theorem counterexample_bounded (r : ℝ) (n : ℕ) (hn : n ≥ 1) (hr : r > 0) :
     RootsBoundedBy (pommerenkeCounterexample r n) r := by
   sorry
 
-/-- The lemniscate has n connected components. -/
-axiom counterexample_n_components (r : ℝ) (n : ℕ) (hn : n ≥ 1) (hr : r > 1) :
-    -- L(z^n - r^n, 1) has exactly n connected components
-    True
-
 /-- **Pommerenke (1961)**: Each component diameter → 0 as n → ∞. -/
 axiom pommerenke_diameter_vanishes (r : ℝ) (hr : r > 1) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
@@ -160,21 +155,6 @@ noncomputable def φ_minus_1 : ℝ := (Real.sqrt 5 - 1) / 2
 theorem phi_minus_1_value : φ_minus_1 > 0.618 ∧ φ_minus_1 < 0.619 := by
   exact ⟨ by rw [ show φ_minus_1 = ( Real.sqrt 5 - 1 ) / 2 by rfl ] ; nlinarith [ Real.sqrt_nonneg 5, Real.sq_sqrt ( show 0 ≤ 5 by norm_num ) ], by rw [ show φ_minus_1 = ( Real.sqrt 5 - 1 ) / 2 by rfl ] ; nlinarith [ Real.sqrt_nonneg 5, Real.sq_sqrt ( show 0 ≤ 5 by norm_num ) ] ⟩
 
-/-- **Case r ≤ 1/2**: Component containing 0 has diameter ≥ 2. -/
-axiom pommerenke_case_small_r (f : BoundedMonicPoly r) (hr : r ≤ 1/2) :
-    (0 : ℂ) ∈ unitLemniscate f.poly →
-    diameter (ConnectedComponent (unitLemniscate f.poly) 0) ≥ 2
-
-/-- **Case 1/2 < r ≤ φ-1**: Component containing 0 has diameter > 1/r. -/
-axiom pommerenke_case_medium_r (f : BoundedMonicPoly r) (hr1 : 1/2 < r) (hr2 : r ≤ φ_minus_1) :
-    (0 : ℂ) ∈ unitLemniscate f.poly →
-    diameter (ConnectedComponent (unitLemniscate f.poly) 0) > 1/r
-
-/-- **Case φ-1 ≤ r ≤ 1**: Component containing 0 has diameter > 2 - r². -/
-axiom pommerenke_case_large_r (f : BoundedMonicPoly r) (hr1 : φ_minus_1 ≤ r) (hr2 : r ≤ 1) :
-    (0 : ℂ) ∈ unitLemniscate f.poly →
-    diameter (ConnectedComponent (unitLemniscate f.poly) 0) > 2 - r^2
-
 /-
 ## Part VII: Optimal Examples
 
@@ -191,21 +171,11 @@ theorem diameter_2_sharp : ∀ ε > 0, ∃ f : BoundedMonicPoly 0,
     maxComponentDiameter f.poly 1 < 2 + ε := by
   sorry
 
-/-- For r = 1, examples show max diameter < 1 + ε. -/
-axiom diameter_near_1_for_r_eq_1 :
-    ∀ ε > 0, ∃ f : BoundedMonicPoly 1,
-      maxComponentDiameter f.poly 1 < 1 + ε
-
 /-
 ## Part VIII: Degree and Component Count
 
 Relationship between degree and lemniscate structure.
 -/
-
-/-- A degree n polynomial has at most n components. -/
-axiom component_count_bound (f : ℂ[X]) (hf : f.degree = n) (c : ℝ) (hc : c > 0) :
-    -- L(f, c) has at most n connected components
-    True
 
 /-- The exterior component is unbounded for c > |leading coeff|. -/
 theorem exterior_unbounded (f : ℂ[X]) (hf : f ≠ 0) (c : ℝ) (hc : c > Complex.abs f.leadingCoeff) :
@@ -221,14 +191,6 @@ Connection to logarithmic capacity.
 /-- The logarithmic capacity of a set.
     Axiomatized since it requires potential theory infrastructure. -/
 axiom logCapacity (S : Set ℂ) : ℝ
-
-/-- For a monic polynomial, capacity of L(f, c) equals c^(1/n). -/
-axiom lemniscate_capacity (f : BoundedMonicPoly r) (c : ℝ) (hc : c > 0) (n : ℕ) (hn : f.poly.degree = n) :
-    logCapacity (L(f.poly, c)) = c ^ (1 / n : ℝ)
-
-/-- Capacity lower bounds diameter. -/
-axiom capacity_diameter_inequality (S : Set ℂ) (hS : IsConnected S) :
-    diameter S ≥ 4 * logCapacity S
 
 /-
 ## Part X: Summary

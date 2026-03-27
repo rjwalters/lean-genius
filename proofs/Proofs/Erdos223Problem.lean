@@ -92,15 +92,6 @@ axiom hopf_pannwitz_1934 (n : ℕ) (hn : n ≥ 3) :
 def regularPolygonConfig (n : ℕ) : PointConfig 2 n :=
   fun i => ![Real.cos (2 * Real.pi * i.val / n), Real.sin (2 * Real.pi * i.val / n)]
 
-/-- Upper bound proof idea: Each point can be in at most 2 diameter pairs,
-    and the diameter graph is a matching + almost a matching. -/
-axiom f2_upper_bound (n : ℕ) (hn : n ≥ 2) :
-  f 2 n ≤ n
-
-/-- Lower bound: Regular polygon achieves n diameter pairs. -/
-axiom f2_lower_bound (n : ℕ) (hn : n ≥ 3) :
-  f 2 n ≥ n
-
 /- ## Part IV: Three-Dimensional Case (1956-57)
 -/
 
@@ -108,16 +99,6 @@ axiom f2_lower_bound (n : ℕ) (hn : n ≥ 3) :
     Proved independently by Grünbaum, Heppes, and Strasziewicz. -/
 axiom three_dimensional_case (n : ℕ) (hn : n ≥ 3) :
   f 3 n = 2 * n - 2
-
-/-- Upper bound: f₃(n) ≤ 2n - 2.
-    Key insight: The diameter graph in 3D has special structure. -/
-axiom f3_upper_bound (n : ℕ) (hn : n ≥ 3) :
-  f 3 n ≤ 2 * n - 2
-
-/-- Lower bound: There exist configurations with 2n - 2 diameter pairs.
-    Construction: Two regular (n-1)-gons sharing a vertex. -/
-axiom f3_lower_bound (n : ℕ) (hn : n ≥ 3) :
-  f 3 n ≥ 2 * n - 2
 
 /- ## Part V: Higher Dimensions (Erdős 1960)
 -/
@@ -134,25 +115,12 @@ noncomputable def leadingCoefficient (d : ℕ) : ℝ :=
   let p := d / 2
   (p - 1 : ℝ) / (2 * p)
 
-/-- Asymptotic formula for d ≥ 4. -/
-axiom asymptotic_formula (d : ℕ) (hd : d ≥ 4) :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |((f d n : ℝ) / n^2) - leadingCoefficient d| < ε
-
 /- ## Part VI: Swanepoel's Complete Solution (2009)
 -/
-
-/-- Swanepoel (2009) gave exact formulas for f_d(n) for all sufficiently large n. -/
-axiom swanepoel_2009 (d : ℕ) (hd : d ≥ 4) :
-  ∃ N : ℕ, ∃ exact_formula : ℕ → ℕ,
-    ∀ n ≥ N, f d n = exact_formula n
 
 /-- Swanepoel also characterized all extremal configurations. -/
 def extremalConfigurationExists (d n : ℕ) : Prop :=
   ∃ A : PointConfig d n, hasDiameterExactly A 1 ∧ diameterPairs A = f d n
-
-axiom swanepoel_extremal_configs (d : ℕ) (hd : d ≥ 4) :
-  ∃ N : ℕ, ∀ n ≥ N, extremalConfigurationExists d n
 
 /- ## Part VII: Special Cases and Bounds
 -/
@@ -175,13 +143,6 @@ theorem six_dimensional_coefficient :
   simp [leadingCoefficient]
   norm_num
 
-/-- **Limiting behavior:** As d → ∞, the leading coefficient
-    (p-1)/(2p) → 1/2 where p = ⌊d/2⌋. Axiomatized because
-    the proof requires real analysis limit theory for sequences
-    of the form (p-1)/(2p). -/
-axiom coefficient_approaches_half :
-    ∀ ε > 0, ∃ D : ℕ, ∀ d ≥ D, |leadingCoefficient d - (1/2 : ℝ)| < ε
-
 /- ## Part VIII: Geometric Interpretation
 -/
 
@@ -196,30 +157,6 @@ def diameterGraph {d n : ℕ} (A : PointConfig d n) : SimpleGraph (Fin n) where
   loopless := by
     intro i ⟨hne, _⟩
     exact hne rfl
-
-/-- **2D diameter graph structure:** In the plane, each point can participate
-    in at most 2 diameter pairs (the arcs of intersection with the unit
-    circle constrain adjacency). Maximum degree ≤ 2 yields a linear bound. -/
-axiom twoDDiameterGraphMaxDegree (n : ℕ) (hn : n ≥ 3)
-    (A : PointConfig 2 n) (hA : hasDiameterExactly A 1) :
-  ∀ v : Fin n, ((Finset.univ.filter (fun w => w ≠ v ∧
-    pointDist (A v) (A w) = diameter A)).card) ≤ 2
-
-/-- **3D diameter graph structure:** In 3 dimensions, each point can
-    participate in at most 3 diameter pairs, but the global structure
-    is constrained to give at most 2n - 2 edges total. -/
-axiom threeDDiameterGraphMaxEdges (n : ℕ) (hn : n ≥ 3)
-    (A : PointConfig 3 n) (hA : hasDiameterExactly A 1) :
-  diameterPairs A ≤ 2 * n - 2
-
-/-- **Higher-dimensional relaxation:** In d ≥ 4 dimensions, the diameter
-    graph can have Θ(n²) edges. Cross-polytope configurations achieve
-    this: place points at the vertices of a cross-polytope (d-dimensional
-    analogue of the octahedron). -/
-axiom higherDDiameterGraphQuadratic (d : ℕ) (hd : d ≥ 4) :
-  ∃ c > 0, ∀ n : ℕ, n ≥ 2 →
-    ∃ A : PointConfig d n, hasDiameterExactly A 1 ∧
-      (diameterPairs A : ℝ) ≥ c * (n : ℝ)^2
 
 /- ## Part IX: Related Problems
 -/

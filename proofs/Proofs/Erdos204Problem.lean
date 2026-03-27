@@ -100,17 +100,6 @@ def ErdosGrahamConjecture : Prop :=
 ## Part 4: Density Results
 -/
 
-/-- The density of n having disjoint covering systems would be zero -/
-axiom density_is_zero :
-  -- Even if such n existed, their density in ℕ would be 0
-  -- This was known before Adenwalla's complete proof
-  True
-
-/-- Erdős and Graham believed no such n exist -/
-axiom erdos_graham_belief :
-  -- Based on their extensive study of covering systems
-  True
-
 /-
 ## Part 5: Adenwalla's Theorem (2025)
 -/
@@ -134,23 +123,11 @@ theorem every_n_fails :
 ## Part 6: Why It Fails
 -/
 
-/-- Key insight: divisibility constraints force overlaps -/
-axiom divisibility_forces_overlaps :
-  -- If d | d', then the residue classes necessarily interact
-  -- The coprimality condition is too restrictive
-  True
-
 /-- For d | d', we have gcd(d, d') = d ≠ 1 (if d > 1) -/
 theorem divisor_pair_not_coprime (d d' : ℕ) (hd : d > 1) (hdiv : d ∣ d') :
     Nat.gcd d d' ≠ 1 := by
   rw [Nat.gcd_eq_left hdiv]
   exact Nat.one_lt_iff_ne_one.mp hd
-
-/-- Covering requires using divisible pairs, which can't be disjoint -/
-axiom covering_requires_divisible_pairs :
-  -- To cover all integers, we must use divisors d, d' with d | d'
-  -- These pairs have gcd ≠ 1, violating disjointness
-  True
 
 /-
 ## Part 7: Related Questions
@@ -162,17 +139,6 @@ def MaxCoverableDensity (n : ℕ) : ℝ :=
   -- subject to the disjointness constraint
   sorry
 
-/-- Adenwalla also studied this maximum density problem -/
-axiom adenwalla_density_study :
-  -- The paper investigates MaxCoverableDensity(n) for various n
-  True
-
-/-- For general n without coprimality, standard covering systems exist -/
-axiom standard_covering_systems_exist :
-  -- Without the coprimality constraint, covering systems are well-studied
-  -- e.g., {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)}
-  True
-
 /-
 ## Part 8: Small Examples
 -/
@@ -181,39 +147,9 @@ axiom standard_covering_systems_exist :
 example : properDivisors 6 = {2, 3, 6} := by
   native_decide
 
-/-- n = 6 cannot have a disjoint covering system -/
-axiom n6_fails :
-  -- Divisors 2, 3, 6 with 2 | 6 and 3 | 6
-  -- gcd(2,6) = 2 ≠ 1 and gcd(3,6) = 3 ≠ 1
-  -- So any covering using these must violate disjointness
-  ¬∃ assignment : ResidueAssignment 6,
-    IsDisjointCoveringSystem 6 assignment
-
-/-- For n = 12, similar obstruction -/
-axiom n12_fails :
-  ¬∃ assignment : ResidueAssignment 12,
-    IsDisjointCoveringSystem 12 assignment
-
 /-
 ## Part 9: Connection to Covering Systems
 -/
-
-/-- The classical Erdős covering system problem -/
-axiom classical_covering_problem :
-  -- Erdős studied covering systems extensively
-  -- This problem is a variant with an extra constraint
-  True
-
-/-- Minimum modulus problem for covering systems -/
-axiom minimum_modulus_problem :
-  -- Related: what's the minimum largest modulus in a covering system?
-  True
-
-/-- Hough's theorem (2015) on covering systems -/
-axiom hough_theorem :
-  -- For any covering system with distinct moduli > 1,
-  -- the sum of reciprocals must be ≥ 1
-  True
 
 /-
 ## Part 10: Summary

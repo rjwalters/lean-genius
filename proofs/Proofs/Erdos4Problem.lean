@@ -88,9 +88,6 @@ There exists C > 0 such that for infinitely many n,
 
 This was the first quantitative result on large prime gaps.
 -/
-axiom rankin_theorem :
-    ∃ C : ℝ, C > 0 ∧
-      ∀ N : ℕ, ∃ n : ℕ, n > N ∧ (primeGap n : ℝ) > C * erdosFunction n
 
 /-- Rankin's original constant (approximately 1/3 · e^γ where γ is Euler's constant). -/
 noncomputable def rankin_constant : ℝ := (1/3) * Real.exp 0.5772156649
@@ -110,7 +107,6 @@ axiom maynard_theorem : erdos_4_conjecture
 **Ford-Green-Konyagin-Tao Theorem** (2016):
 Independent proof of the same result as Maynard.
 -/
-axiom ford_green_konyagin_tao_theorem : erdos_4_conjecture
 
 /-- The problem is solved: both teams proved it. -/
 theorem erdos_4_solved : erdos_4_conjecture := maynard_theorem
@@ -127,10 +123,6 @@ Note: The denominator is (log log log n) not (log log log n)².
 noncomputable def improvedErdosFunction (n : ℕ) : ℝ :=
   (lg2 n * lg4 n) / (lg3 n) * lg n
 
-axiom fgkmt_improved_bound :
-    ∃ C : ℝ, C > 0 ∧
-      ∀ N : ℕ, ∃ n : ℕ, n > N ∧ (primeGap n : ℝ) > C * improvedErdosFunction n
-
 /- ## Upper Bounds -/
 
 /--
@@ -140,8 +132,6 @@ For all sufficiently large n,
 
 This is the best known upper bound on prime gaps.
 -/
-axiom baker_harman_pintz_upper_bound :
-    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → (primeGap n : ℝ) ≤ (n : ℝ)^(0.525 : ℝ)
 
 /-- The BHP exponent. -/
 def bhp_exponent : ℝ := 0.525
@@ -167,21 +157,7 @@ noncomputable def cramer_granville_constant : ℝ := 2 * Real.exp (-0.5772156649
 
 /- ## Simple Properties -/
 
-/-- The first prime gap: p₁ - p₀ = 3 - 2 = 1. -/
-axiom gap_0 : primeGap 0 = 1
-
-/-- Prime gaps are always positive for n ≥ 1. -/
-axiom prime_gap_pos (n : ℕ) (hn : n ≥ 1) : primeGap n > 0
-
-/-- The average prime gap near n is approximately log n. -/
-axiom average_gap_asymptotic :
-    Filter.Tendsto (fun n => (nthPrime n : ℝ) / n / lg n) Filter.atTop (nhds 1)
-
 /- ## Comparison of Bounds -/
-
-/-- The Erdős function grows slower than (log n)^(1+ε) for any ε > 0. -/
-axiom erdos_function_growth (ε : ℝ) (hε : ε > 0) :
-    ∀ᶠ n in Filter.atTop, erdosFunction n < (lg n)^(1 + ε)
 
 /-- The improved bound is stronger (larger). -/
 theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :

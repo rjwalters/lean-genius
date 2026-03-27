@@ -73,23 +73,12 @@ R(C_n;3) ≤ 4n - 3
 axiom bondy_erdos_conjecture :
     ∀ n : ℕ, n ≥ 3 → R_cycle_3 n ≤ 4 * n - 3
 
-/-- Trivial lower bound: we need at least n vertices to contain C_n -/
-axiom trivial_lower_bound (n : ℕ) (hn : n ≥ 3) : R_cycle_3 n ≥ n
-
 /-
 ## Part 3: Łuczak's Result (1999)
 
 R(C_n;3) ≤ (4+o(1))n for all n
 R(C_n;3) ≤ 3n+o(n) for even n
 -/
-
-/-- Łuczak's asymptotic bound for all cycles -/
-axiom luczak_1999_general :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, R_cycle_3 n ≤ (4 + ε) * n
-
-/-- Łuczak's improved bound for even cycles -/
-axiom luczak_1999_even :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, Even n → R_cycle_3 n ≤ (3 + ε) * n
 
 /-
 ## Part 4: Exact Bound for Odd Cycles (KSS 2005)
@@ -128,8 +117,6 @@ axiom benevides_skokan_2009 :
 
 /-- Why 2n for even cycles? The lower bound construction:
 K_{2n-1} can be 3-colored to avoid monochromatic C_n for even n. -/
-axiom even_cycle_lower_bound :
-    ∀ n : ℕ, Even n → n ≥ 4 → R_cycle_3 n ≥ 2 * n
 
 /-
 ## Part 6: Why the Dichotomy?
@@ -140,21 +127,10 @@ Odd and even cycles behave very differently!
 /-- Odd cycles require more vertices: the lower bound is 4n-3 vs 2n for even.
 The structural reason is that odd cycle length creates parity constraints
 with 3-colorings that even cycles avoid via bipartite structure. -/
-axiom odd_cycle_lower_bound :
-    ∀ n : ℕ, Odd n → n ≥ 3 → R_cycle_3 n ≥ 4 * n - 3
 
 /-
 ## Part 7: Small Cases
 -/
-
-/-- R(C_3;3) = R(K_3;3) = 17 (the classical 3-color Ramsey number for triangles) -/
-axiom R_triangle_3 : R_cycle_3 3 = 17
-
-/-- R(C_4;3) = 8 -/
-axiom R_C4_3 : R_cycle_3 4 = 8
-
-/-- R(C_5;3) = 17 -/
-axiom R_C5_3 : R_cycle_3 5 = 17
 
 /-- Verification: 4n - 3 for n = 5 is 4(5) - 3 = 17 ✓ -/
 example : 4 * 5 - 3 = 17 := rfl
@@ -171,13 +147,9 @@ The proofs use the Szemerédi Regularity Lemma.
 /-- The regularity method: Szemerédi's Regularity Lemma decomposes
 dense graphs into ε-regular pairs, enabling structural arguments
 for finding long paths and cycles. -/
-axiom regularity_decomposition (n : ℕ) (hn : n ≥ 1) :
-    ∃ k : ℕ, k ≤ n ∧ k ≥ 1
 
 /-- Blow-up Lemma: regular pairs can embed bounded-degree subgraphs.
 This converts regularity decompositions into actual graph embeddings. -/
-axiom blow_up_embedding (n k : ℕ) (hk : k ≥ 1) :
-    ∃ m : ℕ, m ≤ n * k
 
 /-
 ## Part 9: Connection to 2-Color Ramsey Numbers
@@ -186,8 +158,6 @@ axiom blow_up_embedding (n k : ℕ) (hk : k ≥ 1) :
 /-- For comparison: 2-color Ramsey numbers for cycles.
 R(C_n,C_n) = 2n - 1 for odd n ≥ 5; R(C_n,C_n) = 3n/2 - 1 for even n ≥ 6.
 The 3-color numbers are significantly larger: ratio ~2 for odd cycles. -/
-axiom two_color_cycle_ramsey_odd :
-    ∃ N : ℕ, ∀ n ≥ N, Odd n → R_cycle_3 n > 2 * n - 1
 
 /-
 ## Part 10: Main Results Summary

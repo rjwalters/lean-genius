@@ -58,20 +58,10 @@ def ContainsSunflower (F : Finset (Finset α)) (k : ℕ) : Prop :=
     Axiomatized because computing it requires checking all possible families. -/
 axiom sunflowerNumber (n k : ℕ) : ℕ
 
-/-- f(n,k) is well-defined and finite (Erdős-Rado Lemma). -/
-axiom sunflower_number_finite (n k : ℕ) (hk : k ≥ 2) :
-    ∃ m : ℕ, ∀ (α : Type*) [DecidableEq α] (F : Finset (Finset α)),
-      IsUniform F n → F.card ≥ m → ContainsSunflower F k
-
 /- ## The Sunflower Lemma (Erdős-Rado 1960) -/
 
 /-- **Erdős-Rado Sunflower Lemma (1960)**:
     f(n,k) ≤ (k-1)^n · n!
-
-    This is the original bound. Every sufficiently large n-uniform family
-    contains a k-sunflower. -/
-axiom erdos_rado_sunflower_lemma (n k : ℕ) (hk : k ≥ 2) :
-    sunflowerNumber n k ≤ (k - 1)^n * n.factorial
 
 /-- The Erdős-Rado bound explicitly. -/
 def erdosRadoBound (n k : ℕ) : ℕ := (k - 1)^n * n.factorial
@@ -91,24 +81,6 @@ def SunflowerConjectureK3 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (sunflowerNumber n 3 : ℝ) < c^n
 
 /- ## Progress on the Conjecture -/
-
-/-- **Kostochka (1997)**: f(n,k) = o(n!) · (k-1)^n.
-    First improvement over Erdős-Rado. Won $100 consolation prize. -/
-axiom kostochka_improvement (k : ℕ) (hk : k ≥ 2) :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      (sunflowerNumber n k : ℝ) < ε * (k - 1)^n * n.factorial
-
-/-- **Alweiss-Lovett-Wu-Zhang (2020)**: f(n,k) ≤ (Ck log n log log n)^n.
-    Major breakthrough reducing from n! growth to polynomial-in-n exponent. -/
-axiom alwz_bound (k : ℕ) (hk : k ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      (sunflowerNumber n k : ℝ) ≤ (C * k * Real.log n * Real.log (Real.log n))^n
-
-/-- **Rao (2020)**: f(n,k) ≤ (Ck log n)^n.
-    Current best bound, removing one log factor from ALWZ. -/
-axiom rao_bound (k : ℕ) (hk : k ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (sunflowerNumber n k : ℝ) ≤ (C * k * Real.log n)^n
 
 /- ## The Gap -/
 
@@ -131,16 +103,6 @@ theorem gap_description :
     exact ⟨c, hc, fun n => le_of_lt (hbound n)⟩
 
 /- ## Special Cases -/
-
-/-- For k=2: f(n,2) = n+1 (easy: any n+2 sets of size n have two overlapping). -/
-axiom sunflower_k2 (n : ℕ) : sunflowerNumber n 2 = n + 1
-
-/-- For k=3, n=2: f(2,3) = 6 (verified computationally). -/
-axiom sunflower_n2_k3 : sunflowerNumber 2 3 = 6
-
-/-- Lower bound: f(n,k) ≥ (k-1)^n (can avoid sunflowers up to this size). -/
-axiom sunflower_lower_bound (n k : ℕ) (hk : k ≥ 2) :
-    sunflowerNumber n k ≥ (k - 1)^n
 
 /- ## Examples -/
 

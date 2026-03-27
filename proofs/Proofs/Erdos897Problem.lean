@@ -59,18 +59,12 @@ f(p^k) / log(p^k) is unbounded over prime powers, then is
 
 This asks whether rapid growth on prime powers propagates to
 consecutive differences. -/
-axiom erdos_897_part_i :
-    ∀ f : ℕ → ℝ, IsAdditive f → UnboundedOnPrimePowers f →
-      ∀ M : ℝ, ∃ᶠ n in atTop, (f (n + 1) - f n) / Real.log n > M
 
 /-- **Erdős Problem #897, Part II (OPEN)**: If f is additive and
 f(p^k) / log(p^k) is unbounded over prime powers, then is
 f(n+1) / f(n) also unbounded?
 
 This asks whether the ratio of consecutive values can be arbitrarily large. -/
-axiom erdos_897_part_ii :
-    ∀ f : ℕ → ℝ, IsAdditive f → UnboundedOnPrimePowers f →
-      ∀ M : ℝ, ∃ᶠ n in atTop, f (n + 1) / f n > M
 
 /-
 ## Wirsing's Theorem (SOLVED)
@@ -85,10 +79,6 @@ f(n) = c·log(n) + O(1) for some constant c.
 
 This characterizes log as the essentially unique additive function with
 bounded consecutive differences. -/
-axiom wirsing_theorem :
-    ∀ f : ℕ → ℝ, IsAdditive f →
-      (∃ C : ℝ, ∀ n : ℕ, |f (n + 1) - f n| ≤ C) →
-        ∃ c : ℝ, (fun n => f n - c * Real.log n) =O[atTop] (1 : ℕ → ℝ)
 
 /-
 ## Restricted Variants (OPEN)
@@ -110,17 +100,9 @@ def IsCompletelyAdditive (f : ℕ → ℝ) : Prop :=
 
 /-- **Restricted Variant, Part I (OPEN)**: Same as Part I, but restricted
 to functions that are either strongly additive or completely additive. -/
-axiom erdos_897_restricted_part_i :
-    ∀ f : ℕ → ℝ, (IsStronglyAdditive f ∨ IsCompletelyAdditive f) →
-      UnboundedOnPrimePowers f →
-        ∀ M : ℝ, ∃ᶠ n in atTop, (f (n + 1) - f n) / Real.log n > M
 
 /-- **Restricted Variant, Part II (OPEN)**: Same as Part II, but restricted
 to functions that are either strongly additive or completely additive. -/
-axiom erdos_897_restricted_part_ii :
-    ∀ f : ℕ → ℝ, (IsStronglyAdditive f ∨ IsCompletelyAdditive f) →
-      UnboundedOnPrimePowers f →
-        ∀ M : ℝ, ∃ᶠ n in atTop, f (n + 1) / f n > M
 
 /-
 ## Classical Examples of Additive Functions
@@ -134,15 +116,6 @@ noncomputable def bigOmega (n : ℕ) : ℝ := (n.primeFactorsList.length : ℝ)
 
 /-- The natural logarithm function (restricted to ℕ). -/
 noncomputable def logN (n : ℕ) : ℝ := Real.log n
-
-/-- omega is strongly additive. -/
-axiom omega_strongly_additive : IsStronglyAdditive omega
-
-/-- bigOmega is completely additive. -/
-axiom bigOmega_completely_additive : IsCompletelyAdditive bigOmega
-
-/-- log is completely additive (up to the convention that log(1) = 0). -/
-axiom log_completely_additive : IsCompletelyAdditive logN
 
 /-
 ## Basic Properties

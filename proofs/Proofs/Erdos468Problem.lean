@@ -43,52 +43,14 @@ noncomputable def newElements (n : ℕ) : Set ℕ :=
 
 /- ## Question 1: Size of New Elements -/
 
-/-- How large is |D_n \ ⋃_{m<n} D_m|? This counts elements
-    that appear for the first time in D_n. -/
-axiom new_elements_exist (n : ℕ) (hn : 2 ≤ n) :
-    (newElements n).Nonempty
-
-/-- The number of new elements should grow — each n contributes
-    something genuinely new to the collection of partial sums. -/
-axiom new_element_count_conjecture :
-    ∀ B : ℕ, ∃ N : ℕ, ∀ n ≥ N,
-      B ≤ (partialDivisorSums n).card
-
 /- ## Question 2: The f(N) Function -/
 
 /-- f(N) = min{n : N ∈ D_n}: the first n whose divisor partial sums include N. -/
 noncomputable def firstAppearance (N : ℕ) : ℕ :=
   sInf { n : ℕ | N ∈ partialDivisorSums n }
 
-/-- **Main Conjecture:** f(N) = o(N). The first appearance of N
-    as a partial divisor sum grows sublinearly. -/
-axiom erdos_468_conjecture :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (firstAppearance N : ℝ) ≤ ε * (N : ℝ)
-
-/-- Weaker conjecture: f(N) = o(N) for almost all N.
-    The density of exceptions tends to 0. -/
-axiom erdos_468_almost_all :
-    ∀ ε > 0, ∀ δ > 0, ∃ N₀ : ℕ, ∀ M ≥ N₀,
-      ((Finset.Icc 1 M).filter (fun N => (firstAppearance N : ℝ) > ε * N)).card ≤ δ * M
-
 /- ## Small Examples -/
 
-/-- D_6: divisors > 1 are {2, 3, 6}. Partial sums: 2, 5, 11. -/
-axiom d6_example : partialDivisorSums 6 = {2, 5, 11}
-
-/-- D_12: divisors > 1 are {2, 3, 4, 6, 12}. Partial sums: 2, 5, 9, 15, 27. -/
-axiom d12_example : partialDivisorSums 12 = {2, 5, 9, 15, 27}
-
 /- ## Trivial Observations -/
-
-/-- The smallest element of D_n is always the smallest divisor > 1,
-    which is the smallest prime factor of n. -/
-axiom smallest_partial_sum (n : ℕ) (hn : 2 ≤ n) :
-    n.minFac ∈ partialDivisorSums n
-
-/-- The largest element of D_n is σ(n) - 1 (sum of all divisors minus 1). -/
-axiom largest_partial_sum (n : ℕ) (hn : 2 ≤ n) :
-    (n.divisors.sum id - 1) ∈ partialDivisorSums n
 
 /- OEIS A167485 relates to the sequence of partial sums of divisors. -/

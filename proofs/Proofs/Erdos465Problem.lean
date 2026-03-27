@@ -53,15 +53,6 @@ noncomputable def distToInt (x : ℝ) : ℝ :=
 noncomputable def distToInt' (x : ℝ) : ℝ :=
   min (x - ⌊x⌋) (⌈x⌉ - x)
 
-/-- The two definitions are equivalent -/
-axiom distToInt_equiv : ∀ x : ℝ, distToInt x = distToInt' x
-
-/-- Basic property: 0 ≤ ‖x‖ ≤ 1/2 -/
-axiom distToInt_bounds : ∀ x : ℝ, 0 ≤ distToInt x ∧ distToInt x ≤ 1/2
-
-/-- ‖x‖ = 0 iff x is an integer -/
-axiom distToInt_zero_iff : ∀ x : ℝ, distToInt x = 0 ↔ ∃ n : ℤ, x = n
-
 /-
 ## Part 2: Point Configurations in Disks
 -/
@@ -148,16 +139,6 @@ theorem sarkozy_weaker_than_konyagin :
   intro _ _
   trivial
 
-/-- Sárközy: N ≪ X / log log X (almost linear) -/
-axiom sarkozy_is_almost_linear :
-  -- X / log log X grows almost as fast as X
-  True
-
-/-- Konyagin: N ≪ X^{1/2} (much better!) -/
-axiom konyagin_is_sqrt :
-  -- X^{1/2} is much smaller than X / log log X
-  True
-
 /-
 ## Part 6: Lower Bounds (Problem #466)
 -/
@@ -183,23 +164,6 @@ theorem exponent_optimal :
 ## Part 7: Related Techniques
 -/
 
-/-- Connection to exponential sums -/
-axiom exponential_sum_method :
-  -- The proof uses exponential sum estimates
-  -- to count points with restricted distance properties
-  True
-
-/-- Connection to discrepancy theory -/
-axiom discrepancy_connection :
-  -- Related to how well points can be distributed
-  -- while avoiding certain distance constraints
-  True
-
-/-- Fourier analytic approach -/
-axiom fourier_approach :
-  -- Konyagin used Fourier analysis to get the sharp bound
-  True
-
 /-
 ## Part 8: Generalizations
 -/
@@ -210,35 +174,9 @@ def HigherDimAnalogue (d : ℕ) : Prop :=
   -- The answers depend on d
   True
 
-/-- Different distance functions -/
-axiom other_norms :
-  -- Can ask similar questions for ℓ^p norms
-  True
-
-/-- Problem #953: Related variant -/
-axiom problem_953_connection :
-  -- Problem 953 asks similar questions
-  -- with different constraints
-  True
-
 /-
 ## Part 9: Why X^{1/2}?
 -/
-
-/-- Intuition: Grid points nearly achieve the bound -/
-axiom grid_point_intuition :
-  -- Consider integer lattice points in a disk of radius X
-  -- There are about πX² lattice points
-  -- Distances are all integers, so we need to perturb
-  -- The perturbation limits us to ~X^{1/2} points
-  True
-
-/-- The constraint ‖d‖ ≥ δ is very restrictive -/
-axiom constraint_is_restrictive :
-  -- Most pairwise distances between random points
-  -- would have ‖d‖ < δ for small δ
-  -- So we can't have too many points
-  True
 
 /-
 ## Part 10: Summary

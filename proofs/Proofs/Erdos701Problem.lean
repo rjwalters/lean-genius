@@ -144,10 +144,6 @@ def ChvatalConjecture {α : Type*} [Fintype α] (F : Set (Set α)) : Prop :=
 **The conjecture is OPEN:**
 This axiom records that Chvátal's conjecture is unresolved.
 -/
-axiom chvatal_conjecture_open :
-  ∀ α [Fintype α], ∀ F : Set (Set α),
-    IsHereditary F → ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F →
-      IsIntersecting F' → F'.ncard ≤ (Star F x).ncard
 
 /-
 ## Part V: Partial Results
@@ -167,11 +163,6 @@ Proved the conjecture under a stronger ordering condition: if F is hereditary
 and there exists an injection f : F → F such that f(A) ⊂ A for all non-minimal A,
 then the maximum intersecting subfamily is a star.
 -/
-axiom chvatal_1974_injection_version {α : Type*} [Fintype α] (F : Set (Set α)) :
-  IsHereditary F →
-  (∃ f : Set α → Set α, (∀ A ∈ F, f A ∈ F) ∧
-    (∀ A ∈ F, A.Nonempty → f A ⊂ A)) →
-  ChvatalConjecture F
 
 /--
 **Sterboul (1974):**
@@ -193,19 +184,10 @@ def SterboulConditions {α : Type*} [DecidableEq α] [Fintype α]
     (∀ C ∈ F, ¬(A ⊂ C)) → (∀ C ∈ F, ¬(B ⊂ C)) →
     A ≠ B → (A ∩ B).Nonempty)
 
-axiom sterboul_1974 :
-  ∀ α [DecidableEq α] [Fintype α], ∀ F : Set (Set α),
-    IsHereditary F → SterboulConditions F → ChvatalConjecture F
-
 /--
 **Frankl-Kupavskii (2023):**
 Proved the conjecture for families with covering number 2.
 -/
-axiom frankl_kupavskii_2023 :
-  ∀ α [Fintype α], ∀ F : Set (Set α),
-    IsHereditary F → CoveringNumber F = 2 →
-      ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F →
-        IsIntersecting F' → F'.ncard ≤ (Star F x).ncard
 
 /--
 **Borg (2011):**
@@ -230,12 +212,6 @@ Chvátal's conjecture generalizes this to hereditary families.
 For uniform families (all sets have size k), EKR says the maximum
 intersecting family has size C(n-1, k-1), achieved by a star.
 -/
-axiom ekr_connection {n k : ℕ} (hn : n ≥ 2 * k) :
-    -- Erdős-Ko-Rado for k-subsets of Fin n: max intersecting family has size C(n-1, k-1)
-    ∀ (F : Finset (Finset (Fin n))),
-      (∀ A ∈ F, A.card = k) →
-      (∀ A B, A ∈ F → B ∈ F → (A ∩ B).Nonempty) →
-      F.card ≤ (n - 1).choose (k - 1)
 
 /--
 **Uniform Families:**
@@ -273,20 +249,12 @@ theorem uniform_not_hereditary {α : Type*} [Fintype α] [DecidableEq α]
 F = 2^[n] is hereditary. The star at x has size 2^(n-1).
 Any intersecting family has size ≤ 2^(n-1) (classical result).
 -/
-axiom boolean_lattice_chvatal (n : ℕ) (hn : n ≥ 1) :
-    -- The power set 2^[n] is hereditary and Chvátal's conjecture holds:
-    -- max intersecting family has size 2^(n-1), achieved by a star
-    ChvatalConjecture (Set.univ : Set (Set (Fin n)))
 
 /--
 **Example: Fano plane**
 The Fano plane matroid's independent sets form a hereditary family
 where Chvátal's conjecture holds.
 -/
-axiom fano_plane_chvatal :
-    -- The Fano plane's independent sets form a hereditary family
-    -- where Chvátal's conjecture holds
-    ∃ (F : Set (Set (Fin 7))), IsHereditary F ∧ ChvatalConjecture F
 
 /-
 ## Part VIII: Summary
@@ -312,9 +280,5 @@ The conjecture requires finding a SINGLE element x that works
 for ALL intersecting subfamilies simultaneously. Local arguments
 don't suffice; global structure is needed.
 -/
-axiom erdos_701_open_status :
-    ∀ α [Fintype α], ∀ F : Set (Set α),
-      IsHereditary F → ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F →
-        IsIntersecting F' → F'.ncard ≤ (Star F x).ncard
 
 end Erdos701

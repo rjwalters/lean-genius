@@ -64,7 +64,6 @@ theorem appears_at_least_once (a : ℕ) (ha : 2 ≤ a) :
 
 /-- 1 appears infinitely many times (as C(n,0) for all n, but k=0 excluded).
 Actually, 1 = C(n,n) but k > n/2, so with our restriction, 1 appears 0 times! -/
-axiom one_multiplicity : binomNMultiplicity 1 = 0
 
 /-- 2 appears exactly once: only as C(2,1). -/
 axiom two_multiplicity : binomNMultiplicity 2 = 1
@@ -79,11 +78,9 @@ The related conjecture bounds how many times any value can appear.
 appears more than N times in Pascal's triangle.
 
 The best known bound is that multiplicities are O((log n)^c) for some c. -/
-axiom singmaster_conjecture : ∃ N : ℕ, ∀ a : ℕ, binomNMultiplicity a ≤ N
 
 /-- Known: No value appears more than 8 times (conjectured bound is 8).
 This is based on extensive computation. -/
-axiom multiplicity_bound_8 : ∀ a : ℕ, binomNMultiplicity a ≤ 8
 
 /-
 ## Known Multiplicities
@@ -128,8 +125,6 @@ For every t ≥ 1, does there exist a with exactly t occurrences?
 that appears exactly t times in Pascal's triangle (with 1 ≤ k ≤ n/2).
 
 This is OPEN for t ≥ 5. -/
-axiom erdos_849_conjecture :
-    ∀ t ≥ 1, ∃ a : ℕ, binomNMultiplicity a = t
 
 /-- The t = 1 case is true: 2 appears exactly once. -/
 theorem t_equals_1 : ∃ a : ℕ, binomNMultiplicity a = 1 :=
@@ -143,19 +138,11 @@ theorem t_equals_3 : ∃ a : ℕ, binomNMultiplicity a = 3 :=
 theorem t_equals_4 : ∃ a : ℕ, binomNMultiplicity a = 4 :=
   ⟨3003, multiplicity_3003⟩
 
-/-- The t = 5 case is OPEN: no known value appears exactly 5 times. -/
-axiom t_equals_5_open :
-    (∃ a : ℕ, binomNMultiplicity a = 5) ∨
-    (¬∃ a : ℕ, binomNMultiplicity a = 5)
-
 /-
 ## Special Values in Pascal's Triangle
 
 Some values appear many times due to special structure.
 -/
-
-/-- The value 6 appears twice: C(4,2) = C(6,1) = 6. -/
-axiom multiplicity_6 : binomNMultiplicity 6 = 2
 
 /-- 10 appears twice: C(5,2) = C(10,1) = 10. -/
 theorem choose_5_2 : Nat.choose 5 2 = 10 := by native_decide
@@ -167,14 +154,8 @@ theorem choose_10_1 : Nat.choose 10 1 = 10 := by native_decide
 Upper bounds on how often a value can appear.
 -/
 
-/-- For large a, the multiplicity is bounded by O(log a). -/
-axiom multiplicity_log_bound : ∃ C : ℝ, C > 0 ∧
-    ∀ a ≥ 2, (binomNMultiplicity a : ℝ) ≤ C * Real.log a
-
 /-- The infinite family C(n,2) = C(n(n-1)/2, 1) gives infinitely many
 values with multiplicity ≥ 2. -/
-axiom infinitely_many_multiplicity_2 :
-    {a : ℕ | binomNMultiplicity a ≥ 2}.Infinite
 
 /-
 ## Related Sequences
@@ -184,11 +165,9 @@ Connection to OEIS sequences.
 
 /-- A003015: Numbers that occur 5 or more times in Pascal's triangle.
 Currently only {1} is known, and 1 doesn't count with our k ≥ 1 restriction. -/
-axiom oeis_A003015 : {a : ℕ | binomNMultiplicity a ≥ 5} ⊆ {1}
 
 /-- A182238: Numbers that occur exactly 4 times.
 Includes 3003, 6435, 11440, ... -/
-axiom values_with_multiplicity_4 : binomNMultiplicity 6435 = 4
 
 /-- Verification: C(15,6) = 5005 ≠ 6435. Let's verify 6435 placements. -/
 theorem choose_15_7 : Nat.choose 15 7 = 6435 := by native_decide

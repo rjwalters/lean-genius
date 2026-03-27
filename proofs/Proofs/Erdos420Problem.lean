@@ -65,8 +65,6 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 /--
 τ is multiplicative for coprime arguments.
 -/
-axiom tau_multiplicative (m n : ℕ) (hmn : Nat.Coprime m n) :
-    tau (m * n) = tau m * tau n
 
 /-
 ## Part II: Divisor Function of Factorials
@@ -85,9 +83,6 @@ def tauFactorial (n : ℕ) : ℕ := tau n.factorial
 For large n:
   log τ(n!) ~ n · log 2 / log log n
 -/
-axiom tau_factorial_asymptotic :
-    ∃ (C : ℝ), C > 0 ∧
-      ∀ n : ℕ, n ≥ 3 → (tauFactorial n : ℝ) ≥ 2^(n / (2 * Real.log n))
 
 /-
 ## Part III: The F Function
@@ -107,7 +102,6 @@ noncomputable def F (f : ℕ → ℝ) (n : ℕ) : ℝ :=
 /--
 F(f, n) ≥ 1 always, since (n + k)! is divisible by n!.
 -/
-axiom F_ge_one (f : ℕ → ℝ) (n : ℕ) (hf : f n ≥ 0) : F f n ≥ 1
 
 /-
 ## Part IV: Easy Result - F(√n, n) → ∞
@@ -129,9 +123,6 @@ axiom sqrt_gives_infinity :
 **Improvement:**
 The exponent can be reduced below 1/2.
 -/
-axiom subhalf_exponent_works :
-    ∃ c : ℝ, c > 0 ∧ c < 1/2 ∧
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(1/2 - c)) n > M
 
 /-
 ## Part V: EGIP96 Results
@@ -146,9 +137,6 @@ liminf_{n→∞} F(c log n, n) = 1 for any c > 0.
 This means the ratio can get arbitrarily close to 1 along
 subsequences, even when f(n) = c log n.
 -/
-axiom liminf_log_equals_one :
-    ∀ c : ℝ, c > 0 →
-      ∀ ε : ℝ, ε > 0 → ∃ᶠ n in Filter.atTop, F (fun n => c * Real.log n) n < 1 + ε
 
 /--
 **EGIP96 Theorem 2:**
@@ -165,13 +153,6 @@ If f(n) = o((log n)²), then F(f, n) ~ 1 for almost all n.
 
 "Almost all" means the exceptional set has density 0.
 -/
-axiom small_f_gives_one_almost_all :
-    ∀ f : ℕ → ℝ, (∀ ε > 0, ∃ N, ∀ n ≥ N, f n < ε * (Real.log n)^2) →
-      ∀ ε : ℝ, ε > 0 →
-        ∃ E : Set ℕ, (∀ n ∈ E, |F f n - 1| ≥ ε) ∧
-          -- E has natural density 0
-          Filter.Tendsto (fun N => ({n ∈ Finset.range N | n ∈ E}.card : ℝ) / N)
-            Filter.atTop (nhds 0)
 
 /-
 ## Part VI: Connection to Prime Gaps
@@ -216,12 +197,6 @@ theorem bounded_gaps_consequence :
 If Cramér's conjecture holds (prime gaps are O((log p)²)),
 then lim F(g(n) · (log n)², n) = ∞ for any g(n) → ∞.
 -/
-axiom cramer_implies_limit_infinity :
-    (∀ ε > 0, ∃ᶠ p in Filter.atTop, p.Prime ∧
-      ∃ q, q.Prime ∧ q > p ∧ q < p + (1 + ε) * (Real.log p)^2) →
-    ∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-        F (fun n => g n * (Real.log n)^2) n > M
 
 /-
 ## Part VII: Open Questions
@@ -265,18 +240,11 @@ By Legendre's formula, n! = ∏_p p^{⌊n/p⌋ + ⌊n/p²⌋ + ...}
 So τ(n!) = ∏_p (1 + ⌊n/p⌋ + ⌊n/p²⌋ + ...)
 This product over primes ≤ n grows extremely fast.
 -/
-axiom tau_factorial_formula :
-    ∀ n : ℕ, n ≥ 1 → ∃ (exponents : ℕ → ℕ),
-      tauFactorial n = ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
-        (1 + exponents p)
 
 /--
 **Legendre's Formula:**
 The exponent of prime p in n! is ∑_{i≥1} ⌊n/p^i⌋.
 -/
-axiom legendre_exponent (n p : ℕ) (hp : p.Prime) :
-    ∃ e : ℕ, e = (Finset.range n).filter (fun i => p^(i+1) ≤ n) |>.card ∧
-      p^e ∣ n.factorial ∧ ¬(p^(e+1) ∣ n.factorial)
 
 /-
 ## Part X: Summary and Historical Notes

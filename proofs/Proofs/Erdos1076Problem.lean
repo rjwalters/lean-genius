@@ -100,32 +100,9 @@ def IsFkFree (k : ℕ) (H : Hypergraph3 n) : Prop :=
     via Nat.find would require proving decidability of the hypergraph properties. -/
 axiom ex3 (n k : ℕ) : ℕ
 
-/-- The extremal number is achieved by some hypergraph. -/
-axiom ex3_achieved (n k : ℕ) (hk : k ≥ 4) :
-  ∃ H : Hypergraph3 n, IsFkFree k H ∧ numEdges H = ex3 n k
-
-/-- The extremal number is the maximum: no F_k-free hypergraph has more edges. -/
-axiom ex3_is_max (n k : ℕ) (hk : k ≥ 4) :
-  ∀ H : Hypergraph3 n, IsFkFree k H → numEdges H ≤ ex3 n k
-
 /- ## Part V: Brown-Erdős-Sós Results (1973) -/
 
-/-- Brown-Erdős-Sós (1973): For k = 4, ex₃(n, F_4) ~ n²/6. -/
-axiom brown_erdos_sos_k4 :
-  Tendsto (fun n => (ex3 n 4 : ℝ) / n^2) atTop (nhds (1/6))
-
-/-- Brown-Erdős-Sós (1973): For all k ≥ 4, ex₃(n, F_k) = Θ_k(n²). -/
-axiom brown_erdos_sos_general (k : ℕ) (hk : k ≥ 4) :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ n : ℕ, n ≥ k → c₁ * n^2 ≤ (ex3 n k : ℝ) ∧ (ex3 n k : ℝ) ≤ c₂ * n^2
-
 /- ## Part VI: Erdős's Supporting Theorem (1974) -/
-
-/-- Erdős (1974): Hypergraphs with > (1/3)C(n,2) edges contain F_5 or F_6 members. -/
-axiom erdos_1974_supporting (n : ℕ) (H : Hypergraph3 n)
-    (hH : (numEdges H : ℝ) > (1/3) * (n * (n-1) / 2)) :
-  (∃ G, G ∈ FamilyF 5 n ∧ ContainsSubgraph H G) ∨
-  (∃ G, G ∈ FamilyF 6 n ∧ ContainsSubgraph H G)
 
 /-- The threshold (1/3)C(n,2) is relevant for the conjecture. -/
 def thresholdEdges (n : ℕ) : ℝ := (1/3) * (n * (n-1) / 2)
@@ -154,10 +131,6 @@ def BrownErdosSosConjecture' : Prop :=
     Proved via large girth approximate Steiner triple system constructions. -/
 axiom bohman_warnke_theorem : BrownErdosSosConjecture
 
-/-- **Glock-Kühn-Lo-Osthus Theorem (2020):**
-    Independent proof of the same result using different methods. -/
-axiom glock_kuhn_lo_osthus_theorem : BrownErdosSosConjecture
-
 /-- The asymptotic is n²/6 for all k ≥ 5. -/
 theorem ex3_asymptotic (k : ℕ) (hk : k ≥ 5) :
     Tendsto (fun n => (ex3 n k : ℝ) / n^2) atTop (nhds (1/6)) :=
@@ -169,14 +142,6 @@ The asymptotic ex₃(n, F_k) ~ n²/6 implies both upper and lower bounds.
 These are axiomatized since extracting explicit bounds from filter convergence
 requires unwinding the topology definitions. -/
 
-/-- Upper bound: ex₃(n, F_k) ≤ (1/6 + o(1))n². -/
-axiom ex3_upper_bound (k : ℕ) (hk : k ≥ 5) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (ex3 n k : ℝ) ≤ (1/6 + ε) * n^2
-
-/-- Lower bound: ex₃(n, F_k) ≥ (1/6 - o(1))n². -/
-axiom ex3_lower_bound (k : ℕ) (hk : k ≥ 5) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (ex3 n k : ℝ) ≥ (1/6 - ε) * n^2
-
 /- ## Part X: Connection to Steiner Triple Systems -/
 
 /-- A Steiner triple system of order n: every pair of vertices lies in
@@ -185,28 +150,7 @@ def IsSteinerTripleSystem (H : Hypergraph3 n) : Prop :=
   ∀ i j : Fin n, i ≠ j → ∃! e ∈ H.edges, (i = e.1 ∨ i = e.2.1 ∨ i = e.2.2) ∧
     (j = e.1 ∨ j = e.2.1 ∨ j = e.2.2)
 
-/-- The number of edges in an STS(n) is n(n-1)/6. This is a standard
-    counting argument: each of the C(n,2) pairs is in exactly one triple,
-    and each triple covers 3 pairs, so |E| = C(n,2)/3 = n(n-1)/6. -/
-axiom sts_num_edges (n : ℕ) (H : Hypergraph3 n) (hH : IsSteinerTripleSystem H) :
-    (numEdges H : ℝ) = n * (n-1) / 6
-
-/-- The extremal density n²/6 matches STS density asymptotically.
-    This is not a coincidence: extremal F_k-free hypergraphs resemble
-    approximate Steiner systems with large girth. -/
-axiom extremal_sts_connection (k : ℕ) (hk : k ≥ 5) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      ∃ H : Hypergraph3 n, IsFkFree k H ∧
-        |(numEdges H : ℝ) - n * (n-1) / 6| < ε * n^2
-
 /- ## Part XI: Exact Results for Special k -/
-
-/-- For k satisfying divisibility conditions, exact values are known.
-    When n ≡ 1 or 3 (mod 6), exact Steiner triple systems exist,
-    giving exact extremal numbers. -/
-axiom exact_values_divisibility (k : ℕ) (hk : k ≥ 4)
-    (hdiv : ∃ m : ℕ, k = 3*m + 1 ∨ k = 3*m) :
-  ∃ f : ℕ → ℕ, ∀ n : ℕ, n ≥ k → ex3 n k = f n
 
 /- ## Part XII: Summary -/
 
