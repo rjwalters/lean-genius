@@ -190,8 +190,64 @@ theorem question_two_false : ¬ question_two := by
   have := f_four
   omega
 
-/-- For any n >= 1, at least one n-point extremal configuration exists. -/
-axiom extremalConfigs_nonempty (n : ℕ) (hn : n ≥ 1) : (extremalConfigs n).Nonempty
+/-- The plane is infinite (surjection to ℝ via first coordinate). -/
+instance : Infinite Plane :=
+  Infinite.of_surjective
+    (fun p : Plane => (EuclideanSpace.equiv (Fin 2) ℝ p) 0)
+    (fun r => ⟨(EuclideanSpace.equiv (Fin 2) ℝ).symm (fun _ => r), by simp⟩)
+
+/-- unitDistancePairs is contained in the product S × S. -/
+private lemma unitDistancePairs_subset_prod (S : Finset Plane) :
+    unitDistancePairs S ⊆ (↑S : Set Plane) ×ˢ (↑S : Set Plane) := by
+  intro ⟨p, q⟩ h
+  simp only [unitDistancePairs, Set.mem_setOf_eq] at h
+  exact Set.mem_prod.mpr ⟨Finset.mem_coe.mpr h.1, Finset.mem_coe.mpr h.2.1⟩
+
+/-- unitDistanceCount is at most card². -/
+private lemma unitDistanceCount_le_card_sq (S : Finset Plane) :
+    unitDistanceCount S ≤ S.card * S.card := by
+  unfold unitDistanceCount
+  calc Set.ncard (unitDistancePairs S) / 2
+      ≤ Set.ncard (unitDistancePairs S) := Nat.div_le_self _ _
+    _ ≤ Set.ncard ((↑S : Set Plane) ×ˢ (↑S : Set Plane)) :=
+        Set.ncard_le_ncard (unitDistancePairs_subset_prod S)
+          (S.finite_toSet.prod S.finite_toSet)
+    _ = (↑S : Set Plane).ncard * (↑S : Set Plane).ncard := Set.ncard_prod
+    _ = S.card * S.card := by rw [Set.ncard_coe_Finset, Set.ncard_coe_Finset]
+
+/-- The set of achievable unit distance counts is bounded above. -/
+private lemma achievable_bddAbove (n : ℕ) :
+    BddAbove {k : ℕ | ∃ S : Finset Plane, S.card = n ∧ unitDistanceCount S = k} := by
+  use n * n
+  rintro k ⟨S, hcard, hcount⟩
+  rw [← hcount, ← hcard]
+  exact unitDistanceCount_le_card_sq S
+
+/-- There exists a Finset of n points in the plane. -/
+private lemma exists_finset_plane_card (n : ℕ) : ∃ S : Finset Plane, S.card = n := by
+  induction n with
+  | zero => exact ⟨∅, Finset.card_empty⟩
+  | succ k ih =>
+    obtain ⟨S, hS⟩ := ih
+    obtain ⟨p, hp⟩ : ∃ x : Plane, x ∉ S := by
+      by_contra h; push_neg at h
+      exact absurd (S.finite_toSet.subset fun x _ => Finset.mem_coe.mpr (h x))
+        Set.infinite_univ
+    exact ⟨insert p S, by rw [Finset.card_insert_of_not_mem hp, hS]⟩
+
+/-- For any n >= 1, at least one n-point extremal configuration exists.
+    Proved: the set of achievable unit distance counts is nonempty and bounded,
+    so sSup (= u(n)) is achieved by some configuration. -/
+theorem extremalConfigs_nonempty (n : ℕ) (hn : n ≥ 1) : (extremalConfigs n).Nonempty := by
+  -- The set A = {k | ∃ S, S.card = n ∧ unitDistanceCount S = k} is nonempty and bounded
+  have hne : {k : ℕ | ∃ S : Finset Plane, S.card = n ∧ unitDistanceCount S = k}.Nonempty := by
+    obtain ⟨S, hS⟩ := exists_finset_plane_card n
+    exact ⟨unitDistanceCount S, S, hS, rfl⟩
+  -- u(n) = sSup A is achieved (Nat.sSup_mem for nonempty bounded sets of ℕ)
+  obtain ⟨S, hcard, hcount⟩ := Nat.sSup_mem hne (achievable_bddAbove n)
+  refine ⟨S, hcard, ?_⟩
+  show unitDistanceCount S = u S.card
+  rw [hcard]; exact hcount
 
 /-- u(n) >= n - 1 for n >= 2. -/
 axiom u_lower_bound (n : ℕ) (hn : n ≥ 2) : u n ≥ n - 1

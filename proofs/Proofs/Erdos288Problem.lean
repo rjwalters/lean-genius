@@ -67,9 +67,18 @@ axiom erdos_288 : ErdosConjecture288
 
 /-- Example: 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1.
     This uses intervals [3,6] and [20,20]. -/
-axiom example_sum_one :
+theorem example_sum_one :
     harmonicInterval ⟨3, by omega⟩ ⟨6, by omega⟩ +
-    harmonicInterval ⟨20, by omega⟩ ⟨20, by omega⟩ = 1
+    harmonicInterval ⟨20, by omega⟩ ⟨20, by omega⟩ = 1 := by
+  unfold harmonicInterval
+  -- Reduce the finite sums
+  have h36 : Finset.Icc 3 6 = {3, 4, 5, 6} := by decide
+  rw [h36, Finset.Icc_self]
+  simp only [Finset.sum_singleton, Finset.sum_cons, Finset.sum_empty,
+    show (3 : ℕ) > 0 from by omega, show (4 : ℕ) > 0 from by omega,
+    show (5 : ℕ) > 0 from by omega, show (6 : ℕ) > 0 from by omega,
+    show (20 : ℕ) > 0 from by omega, dif_pos, add_zero]
+  norm_num
 
 /- ## Part IV: Variant — Single Element I₂ -/
 
@@ -105,21 +114,45 @@ axiom erdos_288_k_intervals :
 /- ## Part VI: Properties of Harmonic Sums -/
 
 /-- The harmonic sum over [a, a] is 1/a. -/
-axiom harmonicInterval_singleton (a : ℕ+) :
-    harmonicInterval a a = (a : ℚ)⁻¹
+theorem harmonicInterval_singleton (a : ℕ+) :
+    harmonicInterval a a = (a : ℚ)⁻¹ := by
+  unfold harmonicInterval
+  rw [Finset.Icc_self]
+  simp only [Finset.sum_singleton, dif_pos (PNat.pos a)]
 
 /-- The harmonic sum is positive for valid intervals. -/
-axiom harmonicInterval_pos (a b : ℕ+) (h : a ≤ b) :
-    harmonicInterval a b > 0
+theorem harmonicInterval_pos (a b : ℕ+) (h : a ≤ b) :
+    harmonicInterval a b > 0 := by
+  unfold harmonicInterval
+  apply Finset.sum_pos
+  · -- Icc is nonempty since a ≤ b
+    exact ⟨(a : ℕ), Finset.mem_Icc.mpr ⟨le_refl _, h⟩⟩
+  · intro k hk
+    have hk_pos : k > 0 := by
+      have := (Finset.mem_Icc.mp hk).1; exact lt_of_lt_of_le (PNat.pos a) this
+    simp only [dif_pos hk_pos]
+    exact inv_pos.mpr (Nat.cast_pos.mpr hk_pos)
 
 /-- The harmonic sum over [1, n] is the n-th harmonic number. -/
-axiom harmonicInterval_from_one (n : ℕ+) :
-    harmonicInterval 1 n = ∑ k ∈ Finset.Icc 1 (n : ℕ), (k : ℚ)⁻¹
+theorem harmonicInterval_from_one (n : ℕ+) :
+    harmonicInterval 1 n = ∑ k ∈ Finset.Icc 1 (n : ℕ), (k : ℚ)⁻¹ := by
+  unfold harmonicInterval
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hk_pos : k > 0 := by
+    have := (Finset.mem_Icc.mp hk).1; omega
+  simp only [dif_pos hk_pos]
 
-/-- The harmonic sum grows logarithmically. -/
-axiom harmonicInterval_growth :
+/-- The harmonic sum grows logarithmically.
+    (Note: the conclusion simplifies to > 0, which follows from positivity.) -/
+theorem harmonicInterval_growth :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    harmonicInterval 1 ⟨n, by omega⟩ > (n : ℚ) * 0
+    harmonicInterval 1 ⟨n, by omega⟩ > (n : ℚ) * 0 := by
+  intro _ε _hε
+  use 1
+  intro n hn
+  simp only [mul_zero]
+  exact harmonicInterval_pos 1 ⟨n, by omega⟩ (by simp only [PNat.mk_le_mk]; omega)
 
 /- ## Part VII: Summary -/
 

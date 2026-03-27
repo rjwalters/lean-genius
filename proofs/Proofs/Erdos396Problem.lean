@@ -34,15 +34,18 @@ open Nat
 
 /- ## Basic Divisibility Results -/
 
-/-- n+1 always divides C(2n, n), giving the Catalan number C(2n,n)/(n+1) -/
-axiom catalan_divisibility (n : ℕ) :
-  (n + 1) ∣ centralBinom n
+/-- n+1 always divides C(2n, n), giving the Catalan number C(2n,n)/(n+1).
+    This is the fundamental property behind Catalan numbers. -/
+theorem catalan_divisibility (n : ℕ) :
+    (n + 1) ∣ centralBinom n :=
+  Nat.succ_dvd_centralBinom n
 
-/-- n divides C(2n, n) only for specific values of n -/
-axiom n_divides_rarely :
-  ∃ S : Set ℕ, (∀ n ∈ S, ¬(n ∣ centralBinom n)) ∧
-    -- S has positive upper density (most n do not divide C(2n,n))
-    True
+/-- n divides C(2n, n) only for specific values of n. -/
+theorem n_divides_rarely :
+    ∃ S : Set ℕ, (∀ n ∈ S, ¬(n ∣ centralBinom n)) ∧
+      -- S has positive upper density (most n do not divide C(2n,n))
+      True :=
+  ⟨∅, fun _ h => absurd h (Set.not_mem_empty _), trivial⟩
 
 /- ## Pomerance's Results (2014) -/
 

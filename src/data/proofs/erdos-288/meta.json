@@ -40,9 +40,14 @@
       "integerSumPairs set definition and ErdosConjecture288 as Set.Finite",
       "Singleton and k-interval variant definitions",
       "erdos_288_statement proved by simp",
-      "erdos_288_summary combining statement and conjecture"
+      "erdos_288_summary combining statement and conjecture",
+      "Proved harmonicInterval_singleton via Finset.Icc_self and dif_pos",
+      "Proved harmonicInterval_pos via Finset.sum_pos with inv_pos",
+      "Proved harmonicInterval_from_one via Finset.sum_congr with dif_pos",
+      "Proved harmonicInterval_growth from harmonicInterval_pos (trivially > 0)",
+      "Proved example_sum_one by reducing Finset.Icc and norm_num"
     ],
-    "axiomCount": 8,
+    "axiomCount": 3,
     "prerequisites": [
       "Rational number arithmetic (ℚ)",
       "Harmonic series and partial sums",
@@ -50,8 +55,8 @@
       "Set finiteness (Set.Finite in Lean 4)",
       "Finset.sum over intervals"
     ],
-    "lineCount": 161,
-    "assumptions": "8 axioms: erdos_288, example_sum_one, erdos_288_singleton, and 5 more. See Lean source for complete statements.",
+    "lineCount": 194,
+    "assumptions": "3 axioms (all OPEN conjectures): erdos_288, erdos_288_singleton, erdos_288_k_intervals.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -171,9 +176,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos288",
-    "lineCount": 161,
-    "axiomCount": 8,
-    "theoremCount": 2,
+    "lineCount": 194,
+    "axiomCount": 3,
+    "theoremCount": 7,
     "definitionCount": 9
   },
   "references": [
