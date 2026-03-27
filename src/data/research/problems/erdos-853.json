@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T10:25:45.156Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Fixed false axiom, built Bertrand-based infrastructure",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,8 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 9 axioms including opaque function r(x), deep results (Maynard-Tao, Cramer). 15 proved theorems - well-developed file.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Fixed false axiom r_upper_bound (counterexample at x=3). Built 2 infrastructure lemmas from Bertrand postulate (gap_lt_prime, gapSet_lt). Axioms 5→4 + 1 sorry. Remaining 4 axioms are all OPEN conjectures or deep results.",
+    "builtItems": [
+      "Proved gap_lt_prime: prime gaps are < the prime (Bertrand postulate)",
+      "Proved gapSet_lt: all gaps in gapSet(x) are < x",
+      "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)"
+    ],
     "insights": [
       "r(x) is an opaque axiom function - should ideally be defined via Nat.find",
       "Deep axioms: maynard_tao_bounded_gaps, cramer_conjecture_bound not provable from Mathlib",
@@ -40,7 +44,12 @@
       "r_even_pos, r_not_gap, r_minimal all follow from Nat.find_spec and Nat.find_min",
       "Use Set.infinite_range_of_injective with f(k) = 2k+2 to show even numbers are infinite",
       "For (2k+2) % 2 = 0, use Nat.mul_mod_right not omega",
-      "Need Classical.dec for Decidable (t in gapSet x)"
+      "Need Classical.dec for Decidable (t in gapSet x)",
+      "r_upper_bound axiom is FALSE at x=3: gapSet(3)={2}, r(3)=4>3. Correct for x≥4.",
+      "gap_lt_prime proved: d_n < p_n for n≥1 via Bertrand postulate (2·p_n not prime since even>2)",
+      "gapSet_lt proved: all gaps in gapSet(x) are strictly less than x",
+      "For even x≥4: r(x)≤x because x is even, ≥2, and x∉gapSet(x) since gaps<x",
+      "For odd x≥5: counting argument needed - number of distinct gaps < number of even values ≤ x"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
