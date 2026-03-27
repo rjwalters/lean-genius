@@ -432,13 +432,20 @@ fit in [1, v].
 def noPrimeLargerThanSqrt (u v : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v
 
-/-- The condition implies no large primes in [u, v] (forward direction proved
-    by no_prime_in_upper_half). The backward direction (noPrimeLargerThanSqrt
-    implies the condition) is a deeper result — it requires showing that when
-    all prime factors of elements in [u,v] are ≤ √v, some prime factor must
-    have exponent ≥ 2 in the product. -/
-axiom condition_iff_no_large_prime (u v : ℕ) (hu : u > 0) (huv : u ≤ v) :
-    satisfiesCondition u v ↔ (u ≤ v ∧ u > 0 ∧ noPrimeLargerThanSqrt u v)
+/-- NOTE: The previous axiom condition_iff_no_large_prime was INCORRECT.
+    Counterexample: [24, 28]. No primes in [24,28] (all composite), so
+    noPrimeLargerThanSqrt is vacuously true. But the product 24·25·26·27·28
+    has largest prime factor 13 (from 26 = 2·13), and 13 appears with
+    exponent 1 only, so satisfiesCondition is false.
+
+    The forward direction (satisfiesCondition → noPrimeLargerThanSqrt) is
+    correct and proved as `no_prime_in_upper_half` above.
+
+    The backward direction fails because noPrimeLargerThanSqrt only constrains
+    primes IN [u,v], not prime factors of COMPOSITE numbers in [u,v]. The largest
+    prime factor of the product can exceed √v via composite elements like 26 = 2·13.
+
+    Removed as it was mathematically incorrect. -/
 
 /- ## Part X: Summary -/
 
