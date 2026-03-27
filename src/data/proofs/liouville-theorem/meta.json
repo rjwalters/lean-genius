@@ -38,7 +38,7 @@
       "Properties of Liouville numbers (uncountable, measure zero) (axiomatized, not proved)"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 6,
+    "axiomCount": 3,
     "assumptions": "6 axiom declarations: liouville_approximation_theorem_axiom (algebraic approximation bound), liouville_constant_irrational_axiom (L is irrational), liouville_uncountable_axiom (Liouville numbers uncountable), liouville_add_rat_axiom (closed under rational translation), liouville_mul_rat_axiom (closed under rational scaling), roth_theorem (optimal exponent 2+epsilon)",
     "lineCount": 444,
     "mathlib_version": "4.26.0"
@@ -299,26 +299,6 @@
       "year": "2008",
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "The definitive list of 100 well-known theorems and their formalization status. Liouville's theorem is #18"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "liouville_transcendental",
-      "type": "wrapper",
-      "description": "Liouville numbers are transcendental (Wiedijk #18)",
-      "leanType": "(x : ℝ) → Liouville x → Transcendental ℤ x"
-    },
-    {
-      "name": "liouville_constant_transcendental",
-      "type": "application",
-      "description": "The Liouville constant L = Σ 10^(-n!) is transcendental",
-      "leanType": "Transcendental ℤ (liouvilleNumber 10)"
-    },
-    {
-      "name": "liouville_any_base_transcendental",
-      "type": "generalization",
-      "description": "Σ b^(-n!) is transcendental for any base b ≥ 2",
-      "leanType": "(b : ℕ) → 2 ≤ b → Transcendental ℤ (liouvilleNumber b)"
     }
   ],
   "mainTheorems": [

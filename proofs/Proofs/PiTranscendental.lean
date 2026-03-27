@@ -196,11 +196,18 @@ theorem pi_irrational_axiom : Irrational Real.pi := irrational_pi
 /-- π is irrational (weaker than transcendental, but follows from it) -/
 theorem pi_irrational : Irrational Real.pi := pi_irrational_axiom
 
-/-- **Axiom: 2π is transcendental**
+/-- **2π is transcendental** (formerly axiom, now proved)
 
-    If 2π were algebraic, say p(2π) = 0, then π satisfies q(X) = p(2X),
-    making π algebraic. This contradicts π being transcendental. -/
-axiom two_pi_transcendental_axiom : Transcendental ℤ (2 * Real.pi)
+    If 2π were algebraic over ℤ, then algebraic over ℚ. Multiplying by 2⁻¹
+    (algebraic over ℚ) gives π algebraic over ℚ, contradicting transcendence. -/
+theorem two_pi_transcendental_axiom : Transcendental ℤ (2 * Real.pi) := by
+  intro halg
+  have hq : IsAlgebraic ℚ (2 * Real.pi) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have h_half : IsAlgebraic ℚ ((2⁻¹ : ℚ) : ℝ) := isAlgebraic_algebraMap (2⁻¹ : ℚ)
+  have hpi : IsAlgebraic ℚ Real.pi := by
+    have := hq.mul h_half
+    rwa [show 2 * Real.pi * ((2⁻¹ : ℚ) : ℝ) = Real.pi from by push_cast; field_simp] at this
+  exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
 
 /-- 2π is transcendental -/
 theorem two_pi_transcendental : Transcendental ℤ (2 * Real.pi) :=
@@ -231,11 +238,16 @@ theorem pi_plus_one_transcendental_axiom : Transcendental ℤ (Real.pi + 1) := b
 theorem pi_plus_one_transcendental : Transcendental ℤ (Real.pi + 1) :=
   pi_plus_one_transcendental_axiom
 
-/-- **Axiom: 1/π is transcendental**
+/-- **1/π is transcendental** (formerly axiom, now proved)
 
-    If 1/π were algebraic, say p(1/π) = 0, then the reciprocal polynomial
-    q(X) = Xⁿ · p(1/X) satisfies q(π) = 0, making π algebraic. Contradiction. -/
-axiom pi_inv_transcendental_axiom : Transcendental ℤ (Real.pi)⁻¹
+    If π⁻¹ were algebraic over ℤ, then algebraic over ℚ. Since algebraic
+    elements over a field form a subfield, π = (π⁻¹)⁻¹ would be algebraic.
+    But π is transcendental — contradiction. -/
+theorem pi_inv_transcendental_axiom : Transcendental ℤ (Real.pi)⁻¹ := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.pi)⁻¹ := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have hpi : IsAlgebraic ℚ Real.pi := IsAlgebraic.inv_iff.mp hq
+  exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
 
 /-- 1/π is transcendental -/
 theorem pi_inv_transcendental : Transcendental ℤ (Real.pi)⁻¹ :=
@@ -281,13 +293,19 @@ theorem pi_inv_transcendental : Transcendental ℤ (Real.pi)⁻¹ :=
   3. Trisecting an arbitrary angle (some angles need degree 3 extensions)
 -/
 
-/-- **Axiom: √π is transcendental**
+/-- **√π is transcendental** (formerly axiom, now proved)
 
-    If √π were algebraic, say p(√π) = 0, then π = (√π)² satisfies q(X) = p(√X),
-    which (upon clearing radicals) would make π algebraic. This contradicts
-    π being transcendental. This result is key to proving that squaring the
-    circle is impossible with compass and straightedge. -/
-axiom sqrt_pi_transcendental_axiom : Transcendental ℤ (Real.sqrt Real.pi)
+    If √π were algebraic over ℤ, then algebraic over ℚ. Since algebraic
+    numbers over ℚ are closed under multiplication, π = √π · √π would be
+    algebraic over ℚ, contradicting π's transcendence. -/
+theorem sqrt_pi_transcendental_axiom : Transcendental ℤ (Real.sqrt Real.pi) := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.sqrt Real.pi) :=
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have hpi : IsAlgebraic ℚ Real.pi := by
+    have := hq.mul hq
+    rwa [Real.mul_self_sqrt (le_of_lt Real.pi_pos)] at this
+  exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
 
 /-- √π is transcendental (key to impossibility of squaring the circle) -/
 theorem sqrt_pi_transcendental : Transcendental ℤ (Real.sqrt Real.pi) :=

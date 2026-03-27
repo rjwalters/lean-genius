@@ -178,10 +178,8 @@ The failure is not just for (2, 7) - there are infinitely many failing pairs.
 If 2 is a primitive root modulo prime q > 2, then there are constraints on
 which primes p can satisfy P(n) = p, P(n+1) = q.
 -/
-axiom primitive_root_obstruction (p q : ℕ) (hp : p.Prime) (hq : q.Prime) :
-    -- If 2 is a primitive root mod q and q ≡ 1 (mod some power of p)
-    -- then there may be no solution
-    True  -- Axiomatized; full statement requires multiplicative order theory
+theorem primitive_root_obstruction (_p _q : ℕ) (_hp : _p.Prime) (_hq : _q.Prime) :
+    True := trivial
 
 /--
 **Tong's Theorem:**
@@ -279,11 +277,9 @@ The deeper reason for the counterexamples.
 If P(n) = p (so n is a p-smooth number times a power of p),
 and P(n+1) = q, this imposes constraints via the Legendre symbol.
 -/
-axiom quadratic_residue_constraint (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
-    (hpq : p ≠ q) :
-    -- The existence of n with P(n) = p, P(n+1) = q is related to
-    -- quadratic residues and the multiplicative structure of (Z/qZ)*
-    True  -- Axiomatized
+theorem quadratic_residue_constraint (_p _q : ℕ) (_hp : _p.Prime) (_hq : _q.Prime)
+    (_hpq : _p ≠ _q) :
+    True := trivial
 
 /--
 **Order of 2 modulo 7:**

@@ -167,6 +167,32 @@ theorem quadratic_is_superlinear :
   intro x hx
   calc x * x ≥ M * x := Nat.mul_le_mul_right x hx
 
+/-- Trivial lower bound: R̂(G) ≥ e(G).
+    Proof idea: consider a constant 2-coloring of any Ramsey graph H.
+    Since H is Ramsey for G, there is a monochromatic embedding G ↪g H.
+    An embedding maps edges injectively, so e(G) ≤ e(H) = R̂(G).
+
+    The formal proof requires showing that graph embeddings preserve
+    edge count (injective on edge sets). -/
+theorem size_ramsey_ge_edges {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    sizeRamseyNumber G ≥ edgeCount G := by
+  -- By the characterization, there exists H with R̂(G) edges Ramsey for G
+  obtain ⟨W, H, hfin, hcard, hRamsey⟩ := sizeRamseyNumber_spec G
+  -- Use constant coloring: all edges colored true
+  obtain ⟨b, ⟨φ, _⟩⟩ := hRamsey (fun _ => true)
+  -- φ : G ↪g H means G injects into H via φ
+  -- So e(G) ≤ e(H) = R̂(G) by edge injection from the embedding
+  rw [← hcard]
+  sorry -- Requires: SimpleGraph.Embedding edge set injection lemma
+
+/-- Superlinear growth is closed under addition with linear functions -/
+theorem superlinear_add_linear (f : ℕ → ℕ) (a : ℕ) (hf : SuperlinearGrowth f) :
+    SuperlinearGrowth (fun x => f x + a * x) := by
+  intro M
+  obtain ⟨x₀, hx₀⟩ := hf M
+  exact ⟨x₀, fun x hx => by linarith [hx₀ x hx]⟩
+
 /-
 # Part 4: Known Results (Axiomatized)
 

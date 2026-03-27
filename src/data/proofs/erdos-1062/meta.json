@@ -19,16 +19,16 @@
     "erdosNumber": 1062,
     "erdosUrl": "https://erdosproblems.com/1062",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 104,
-    "assumptions": "5 axioms: lower_bound_construction, lebensold_lower_bound, lebensold_upper_bound, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 147,
+    "assumptions": "3 axioms: lebensold_lower_bound, lebensold_upper_bound, limiting_density_exists (all deep published results).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erdős's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291–294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erdős's pioneering work on primitive sets with Besicovitch (1934) — sets where no element divides any other — and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erdős primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
     "problemStatement": "Let $f(n)$ be the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that no element of $A$ divides two distinct other elements of $A$. What is $\\lim_{n \\to \\infty} f(n)/n$? Is this limit irrational?",
     "text": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
-    "proofStrategy": "The formalization defines `NoDividesTwoOthers` as the combinatorial predicate (no element divides two distinct others) and `maxNDTOSize` as the extremal function $f(n)$. The lower bound from the interval $[m+1, 3m+2]$ and Lebensold's refined bounds are axiomatized. The existence of the limiting density is stated, and `ErdosProblem1062` asks whether it is irrational. A comparison with primitive sets (`IsPrimitiveFinset`) shows the NDTO condition is strictly weaker, with a constructive proof for the implication and the $\\{2, 6, 9\\}$ counterexample for strictness.",
+    "proofStrategy": "The formalization defines `NoDividesTwoOthers` as the combinatorial predicate (no element divides two distinct others) and `maxNDTOSize` as the extremal function $f(n)$. The lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ is proved constructively using the interval $[n/3+1, n]$: any element $a$ in this interval has third multiple $3a > n$, so at most one proper multiple fits, establishing NDTO. Lebensold's refined bounds and the limiting density existence are axiomatized as deep published results. A comparison with primitive sets is fully proved: `Primitive \\implies$ NDTO` and strictness via $\\{2, 6, 9\\}$.",
     "keyInsights": [
       "**Degree-bounded divisibility graph**: The NDTO condition is equivalent to requiring out-degree $\\leq 1$ in the divisibility graph on $A$, while primitive sets require out-degree $= 0$. This graph-theoretic view explains why NDTO allows linear-density sets while primitive sets have density 0",
       "**Near-optimal simple construction**: The interval $[m+1, 3m+2]$ achieves density $2/3 \\approx 0.667$, already within $0.7\\%$ of Lebensold's optimal lower bound $0.6725$. The difficulty in improving bounds lies in optimizing over the irregular divisibility structure beyond simple intervals",
@@ -69,35 +69,35 @@
       "id": "lower-bound",
       "title": "Lower Bound Construction",
       "startLine": 44,
-      "endLine": 53,
-      "summary": "Axiomatizes $f(n) \\geq \\lceil 2n/3 \\rceil$ via the interval $[m+1, 3m+2]$ where $\\max/\\min < 3$ ensures each element has at most one multiple in the range.",
+      "endLine": 87,
+      "summary": "Proves $f(n) \\geq \\lceil 2n/3 \\rceil$ constructively: the interval $[n/3+1, n]$ satisfies NDTO because any $a$ in this range has $3a > n$, so at most one proper multiple fits. Uses `Finset.le_sup` to connect witness cardinality to the extremal function.",
       "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
     {
       "id": "lebensold-bounds",
       "title": "Lebensold's Bounds (1976)",
-      "startLine": 54,
-      "endLine": 67,
+      "startLine": 89,
+      "endLine": 101,
       "summary": "Axiomatizes Lebensold's bounds: $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$. The lower bound improves the $2/3$ construction; the upper bound uses divisibility counting arguments.",
       "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
     {
       "id": "conjectures",
       "title": "Limiting Density and the Irrationality Conjecture",
-      "startLine": 68,
-      "endLine": 83,
+      "startLine": 103,
+      "endLine": 117,
       "summary": "Axiomatizes existence of $\\lambda = \\lim f(n)/n \\in [0.6725, 0.6736]$ and states `ErdosProblem1062`: $\\lambda$ is irrational. The limit exists by subadditivity (Fekete's lemma)."
     },
     {
       "id": "primitive-comparison",
       "title": "Comparison with Primitive Sets",
-      "startLine": 84,
-      "endLine": 104,
-      "summary": "Defines `IsPrimitiveFinset` (no divisibility at all), proves Primitive $\\implies$ NDTO, and axiomatizes strict separation via the $\\{2, 6, 9\\}$ counterexample where $2 \\mid 6$ violates primitivity but NDTO holds."
+      "startLine": 119,
+      "endLine": 147,
+      "summary": "Defines `IsPrimitiveFinset` (no divisibility at all), proves Primitive $\\implies$ NDTO, and proves strict separation via the $\\{2, 6, 9\\}$ counterexample: exhaustive case analysis shows NDTO holds, while $2 \\mid 6$ violates primitivity."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 1062: the extremal theory of \"no divides two others\" subsets of $\\{1,\\ldots,n\\}$. The NDTO condition, extremal function $f(n)$, constructive lower bound, Lebensold's tight asymptotic bounds, the irrationality conjecture, and the comparison with primitive sets are all encoded. The only fully proved result is the implication Primitive $\\implies$ NDTO; all other bounds and the existence of the limiting density are axiomatized.",
+    "summary": "This formalization captures Erdős Problem 1062: the extremal theory of \"no divides two others\" subsets of $\\{1,\\ldots,n\\}$. The lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ is proved constructively via the interval $[n/3+1, n]$, the primitive-NDTO comparison is fully proved (including the $\\{2,6,9\\}$ counterexample), and Lebensold's bounds and limiting density are axiomatized as deep results.",
     "implications": "**Theoretical Significance**: Resolution of the irrationality question would illuminate a fundamental phenomenon in extremal combinatorics: whether densities of divisibility-restricted sets are governed by rational or irrational constants.\n\nThe tight bounds $[0.6725, 0.6736]$ suggest the answer might require new techniques combining analytic number theory (to understand the divisibility structure of $[n]$) with combinatorial optimization. The recent progress on primitive sets (Lichtman 2022) may provide methodological inspiration.",
     "openQuestions": [
       "Is $\\lambda = \\lim f(n)/n$ irrational? No rational $p/q$ with small denominator fits within $[0.6725, 0.6736]$.",
@@ -118,9 +118,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 104,
-    "axiomCount": 5,
-    "theoremCount": 1,
+    "lineCount": 147,
+    "axiomCount": 3,
+    "theoremCount": 3,
     "definitionCount": 4
   },
   "crossReferences": [

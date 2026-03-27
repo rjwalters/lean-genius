@@ -123,16 +123,14 @@ The following axioms capture proof steps that require either:
 Each axiom is documented with its mathematical justification.
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Real Algebraic to Complex Algebraic**
+/-- **Real Algebraic to Complex Algebraic** (formerly axiom, now proved)
 
 A real algebraic number, when embedded into ℂ via the standard coercion ℝ → ℂ,
-remains algebraic over ℚ. The same minimal polynomial that witnesses algebraicity
-over ℝ works over ℂ since ℚ[X] ⊆ ℝ[X] ⊆ ℂ[X].
-
-This is a standard result in algebraic number theory: if α ∈ ℝ is algebraic over ℚ,
-then the embedding ι: ℝ → ℂ preserves this property since ι restricts to the identity on ℚ. -/
-axiom real_algebraic_to_complex_algebraic (x : ℝ) (h : IsAlgebraic ℚ x) :
-    IsAlgebraic ℚ (x : ℂ)
+remains algebraic over ℚ. Follows from isAlgebraic_algebraMap_iff with the
+injective embedding ℝ → ℂ. -/
+theorem real_algebraic_to_complex_algebraic (x : ℝ) (h : IsAlgebraic ℚ x) :
+    IsAlgebraic ℚ (x : ℂ) :=
+  (isAlgebraic_algebraMap_iff Complex.ofReal_injective).mpr h
 
 /-- **Axiom: Real Power Equals Complex Power (Positive Base)**
 
@@ -150,15 +148,14 @@ This axiom captures the compatibility of Real.rpow and Complex.cpow. -/
 axiom real_cpow_eq_rpow (a b : ℝ) (ha_pos : 0 < a) :
     (a : ℂ) ^ (b : ℂ) = ((a ^ b : ℝ) : ℂ)
 
-/-- **Axiom: Transcendence Preserved Under Real Embedding**
+/-- **Transcendence Preserved Under Real Embedding** (formerly axiom, now proved)
 
-If a complex number z that equals a real number r (i.e., z = (r : ℂ)) is transcendental
-over ℤ, then r itself is transcendental over ℤ.
-
-This is the contrapositive of: if r ∈ ℝ is algebraic over ℤ, then (r : ℂ) is algebraic over ℤ.
-The proof uses that ℤ ⊆ ℝ ⊆ ℂ with the embeddings being ring homomorphisms. -/
-axiom transcendental_of_complex_eq_real (r : ℝ) (z : ℂ) (hz : z = (r : ℂ))
-    (h_trans : Transcendental ℤ z) : Transcendental ℤ r
+If a complex number z that equals a real number r is transcendental over ℤ,
+then r itself is transcendental over ℤ. Follows from transcendental_algebraMap_iff. -/
+theorem transcendental_of_complex_eq_real (r : ℝ) (z : ℂ) (hz : z = (r : ℂ))
+    (h_trans : Transcendental ℤ z) : Transcendental ℤ r := by
+  rw [hz] at h_trans
+  exact (transcendental_algebraMap_iff Complex.ofReal_injective).mp h_trans
 
 /-- **Axiom: Euler's Identity for (-1)^(-i)**
 

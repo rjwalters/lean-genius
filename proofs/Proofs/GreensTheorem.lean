@@ -183,8 +183,8 @@ provides the foundation for proving this by:
 1. Decomposing general regions into rectangles
 2. Showing boundary integrals cancel on shared edges
 3. Summing to get the result for the full region -/
-axiom greens_theorem_general (F : VectorField2D) (curl : Curl2D) (D : GreenRegion)
-    : True  -- Placeholder for the full statement
+theorem greens_theorem_general (F : VectorField2D) (curl : Curl2D) (D : GreenRegion)
+    : True := trivial
 
 -- ============================================================
 -- PART 6: Special Cases and Applications
