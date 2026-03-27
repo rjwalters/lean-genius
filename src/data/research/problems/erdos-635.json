@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5A->4A. Proved f_t1 (exact value for t=1 case): upper bound via injection argument showing no 1-admissible set exceeds (N+1)/2 elements. Key: 1 divides everything so no consecutive elements allowed.",
+    "progressSummary": "Surveyed: 4 axioms, 1 provable (f_t1_density requires filter topology proof from f_t1). 3 deep/open.",
     "builtItems": [
       "IsAdmissible_mono_t: t-admissibility weakens with larger t (proved)",
       "f_set_nonempty: achievable cardinalities always nonempty (proved)",
@@ -46,7 +46,10 @@
       "f_monotone_t: larger t means fewer restricted pairs, proved via csSup_le_csSup",
       "f_lower_half: odd set is 1-admissible hence t-admissible, giving (N+1)/2 lower bound",
       "f_t1 upper bound: map a->(a-1)/2 is injective on A (no-consecutive property), range has (N+1)/2 elements",
-      "f_t1_density is corollary of f_t1 but limit proof in Lean is nontrivial"
+      "f_t1_density is corollary of f_t1 but limit proof in Lean is nontrivial",
+      "f_t1_density axiom is provable from f_t1: f(N,1)=(N+1)/2, so f(N,1)/N = (N+1)/(2N) → 1/2",
+      "Proof requires showing |(N+1)/2 in ℕ)/N - 1/2| ≤ 1/(2N) → 0 via squeeze theorem",
+      "Other 3 axioms are deep: Erdős construction for t=2, main open conjecture, t=2 lower bound"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
