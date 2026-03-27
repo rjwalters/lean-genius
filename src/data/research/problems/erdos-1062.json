@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5A→3A. Proved lower_bound_construction (interval argument) and ndto_strictly_weaker (exhaustive case analysis). Remaining 3 axioms are deep published results (Lebensold bounds, limiting density existence).",
+    "progressSummary": "Fixed metadata (5→3 axioms). All axioms are deep published results or open questions.",
     "builtItems": [
       "Proved lower_bound_construction: f(n) >= ceil(2n/3) via interval [n/3+1,n]",
       "Proved ndto_strictly_weaker: {2,6,9} is NDTO but not primitive",
@@ -38,7 +38,10 @@
     "insights": [
       "lower_bound_construction proved: interval [n/3+1,n] satisfies NDTO since 3a > n for all a >= n/3+1",
       "ndto_strictly_weaker proved: exhaustive case analysis on {2,6,9} shows NDTO holds and 2|6 violates primitivity",
-      "Remaining 3 axioms (lebensold bounds, limiting density) are deep published results — not eliminable from Mathlib"
+      "Remaining 3 axioms (lebensold bounds, limiting density) are deep published results — not eliminable from Mathlib",
+      "File has 3 axioms (not 5 as metadata claimed)",
+      "All 3 axioms are deep or open: Lebensold bounds (published), limiting density existence",
+      "limiting_density_exists partially subsumes Lebensold bounds at the limit level but not pointwise"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

@@ -22,12 +22,7 @@ for any additive basis of order 2. Problem #749 asks about a
 Reference: https://erdosproblems.com/749
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Order.LiminfLimsup
-import Mathlib.Data.Set.Card
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 

@@ -11,13 +11,7 @@ divides two distinct others. How large is f(n)? Is lim f(n)/n irrational?
 - Lebensold (1976), bounds 0.6725n ≤ f(n) ≤ 0.6736n
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Section I: The Divisibility Condition

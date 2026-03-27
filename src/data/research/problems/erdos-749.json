@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Replaced 4 axioms with Mathlib-based definitions and proved theorems (9→2 axioms). lowerDensity/upperDensity now defined via Filter.liminf/limsup. Fixed incorrect sidon_density_zero axiom. 7 theorems proved, 8 definitions.",
+    "progressSummary": "Fixed severely wrong metadata (6→2 axioms). 2 remaining axioms: sidon density (provable but substantial), ET conjecture (open).",
     "builtItems": [
       "countingFn: Set.ncard-based counting function in Erdos749Problem.lean",
       "densityRatio: counting function / N ratio in Erdos749Problem.lean",
@@ -38,14 +38,19 @@
       "densityRatio_nonneg: proved non-negativity",
       "densityRatio_le_one: proved ≤ 1 bound",
       "lowerDensity_nonneg: proved via le_liminf_of_le",
-      "lower_le_upper: proved liminf ≤ limsup"
+      "lower_le_upper: proved liminf ≤ limsup",
+      "Fixed metadata: axiomCount 6→2, theoremCount 3→7"
     ],
     "insights": [
       "lowerDensity/upperDensity can be properly defined via Filter.liminf/limsup of Set.ncard-based counting",
       "Original sidon_density_zero axiom was mathematically INCORRECT: claimed lowerDensity(A+A)=0 for Sidon sets, but Sidon sumsets have positive density. Corrected to upperDensity(A)=0",
       "densityRatio_le_one proof requires Set.ncard_le_ncard with Icc finiteness",
       "lower_le_upper proved using Filter.liminf_le_limsup with explicit bounding witnesses [0,1]",
-      "Remaining 2 axioms: sidon_set_density_zero (provable but needs ~50 lines Sidon counting bound), erdos_turan_conjecture_28 (open conjecture, cannot be proved)"
+      "Remaining 2 axioms: sidon_set_density_zero (provable but needs ~50 lines Sidon counting bound), erdos_turan_conjecture_28 (open conjecture, cannot be proved)",
+      "File has only 2 axioms (not 6 as metadata claimed) — sidon_set_density_zero and erdos_turan_conjecture_28",
+      "erdos_749_conjecture and erdos_749_upper_variant are trivial P∨¬P tautologies (not real progress)",
+      "sidon_set_density_zero is provable (counting argument: |A∩[1,N]|≤√(2N)+1 for Sidon sets) but requires ~50 lines with filter topology",
+      "erdos_turan_conjecture_28 as stated is STRONGER than the original ET conjecture (uses lowerDensity=1 instead of cofinite A+A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

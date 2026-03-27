@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 axioms (all OPEN conjectures). Added totient_zero_one_or_even, V_element_structure, prime_sub_one_even. 16 theorems total.",
+    "progressSummary": "Eliminated 2 of 3 axioms. Removed inconsistent erdos_417_limit_exists, proved erdos_417_ratio_gt_one from conjecture. Only erdos_417_conjecture (open) remains.",
     "builtItems": [
       "V'_mono: V' is monotone non-decreasing (proved)",
       "V_mono: V is monotone non-decreasing (proved)",
@@ -39,14 +39,18 @@
       "V_pos: V(x) ≥ 1 for x ≥ 1 (proved)",
       "totient_zero_one_or_even: structural trichotomy for totient values",
       "V_element_structure: V filter elements are 0, 1, or even",
-      "prime_sub_one_even: p-1 is even for primes p≥3"
+      "prime_sub_one_even: p-1 is even for primes p≥3",
+      "Eliminated erdos_417_limit_exists (inconsistent with conjecture)",
+      "Proved erdos_417_ratio_gt_one from erdos_417_conjecture"
     ],
     "insights": [
       "V' and V are both monotone non-decreasing — larger x means more totient values counted",
       "0 is never a totient value (φ(m) ≥ 1 for m ≥ 1); only 1 and even numbers can be totients",
       "Problem 417 database range goes to #1183 only; confirmed #417 is genuinely OPEN",
       "All 3 remaining axioms are open conjectures — cannot be eliminated",
-      "V(x) elements are 0, 1, or even (by totient_zero_one_or_even) — gives V(x) ≤ ⌊x/2⌋ + 2"
+      "V(x) elements are 0, 1, or even (by totient_zero_one_or_even) — gives V(x) ≤ ⌊x/2⌋ + 2",
+      "erdos_417_limit_exists (finite limit) is INCONSISTENT with erdos_417_conjecture (ratio → ∞) — having both as axioms was unsound",
+      "erdos_417_ratio_gt_one follows from erdos_417_conjecture via Filter.tendsto_atTop"
     ],
     "mathlibGaps": [],
     "nextSteps": [
