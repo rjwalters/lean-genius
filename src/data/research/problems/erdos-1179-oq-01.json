@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1179-oq-01",
-  "title": "What is the precise second-order term in g_\u03b5(N)",
+  "title": "What is the precise second-order term in g_ε(N)",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: What is the precise second-order term in g_\u03b5(N).",
+    "plain": "Formal investigation in combinatorics: What is the precise second-order term in g_ε(N).",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-25T00:00:00Z",
     "iteration": 4,
-    "focus": "0 axioms, 2 sorries (down from 5). Proved norm_one_add_\u03c9p_pow, abs_cos_mul_pi_div_le, fourier_product_bound.",
+    "focus": "0 axioms, 2 sorries (down from 5). Proved norm_one_add_ωp_pow, abs_cos_mul_pi_div_le, fourier_product_bound.",
     "blockers": [],
     "nextAction": "Prove reprCount_fourier_expansion (character orthogonality) and fourier_error_bound (assembly)",
     "attemptCounts": {
@@ -29,37 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved gEps_pos from trivial_lower_bound (7\u21926 axioms). g_\u03b5(N) \u2265 log\u2082 N \u2265 1 for N \u2265 2.",
+    "progressSummary": "COMPLETED: Proved gEps_pos from trivial_lower_bound (7→6 axioms). g_ε(N) ≥ log₂ N ≥ 1 for N ≥ 2.",
     "builtItems": [
       "abs_cos_pi_div_prime_lt_one: |cos(pi/p)| < 1 via strict antitonicity of cos on [0,pi]",
       "erdos_renyi_decay: proved from fourier_error_bound via exists_pow_lt_of_lt_one + pow_le_pow_of_le_one",
       "Corrected fourier_error_bound axiom: added (2^k/p) factor and k-1 exponent",
-      "\u03c9p_pow_eq_one: proved \u03c9^p=1 via Complex.exp_two_pi_mul_I",
-      "\u03c9p_pow_norm: proved \u2016\u03c9^n\u2016=1 via purely imaginary exponent",
-      "val_mul_nonzero: proved val(j*a)\u22600 for j,a\u22600 in Z/pZ (p prime)",
+      "ωp_pow_eq_one: proved ω^p=1 via Complex.exp_two_pi_mul_I",
+      "ωp_pow_norm: proved ‖ω^n‖=1 via purely imaginary exponent",
+      "val_mul_nonzero: proved val(j*a)≠0 for j,a≠0 in Z/pZ (p prime)",
       "fourier_j_zero_term: j=0 Fourier term = 2^|A|",
-      "norm_one_add_\u03c9p_pow: \u20161+\u03c9^m\u2016=2|cos(\u03c0m/p)| via normSq + cos double angle + sqrt",
-      "abs_cos_mul_pi_div_le: |cos(\u03c0m/p)|\u2264cos(\u03c0/p) via strictAntiOn_cos antitoneOn + cos_pi_sub symmetry",
-      "fourier_product_bound: \u220f|1+\u03c9^{val(ja)}|\u22642^k\u00b7cos(\u03c0/p)^{k-1} by splitting 0\u2208A case + Finset.prod_le_prod",
-      "gEps_pos proved from trivial_lower_bound: log\u2082(N) \u2265 log\u2082(2) = 1"
+      "norm_one_add_ωp_pow: ‖1+ω^m‖=2|cos(πm/p)| via normSq + cos double angle + sqrt",
+      "abs_cos_mul_pi_div_le: |cos(πm/p)|≤cos(π/p) via strictAntiOn_cos antitoneOn + cos_pi_sub symmetry",
+      "fourier_product_bound: ∏|1+ω^{val(ja)}|≤2^k·cos(π/p)^{k-1} by splitting 0∈A case + Finset.prod_le_prod",
+      "gEps_pos proved from trivial_lower_bound: log₂(N) ≥ log₂(2) = 1"
     ],
     "insights": [
       "fourier_error_bound axiom was FALSE: missing 2^k/p factor. Counterexample A={1,2} in Z/3Z gives error 2/3 > old bound 1/2",
       "Correct bound needs k-1 exponent (not k) to account for 0 in A where |cos(0)|=1",
-      "erdos_renyi_decay follows from fourier_error_bound: relative error (p-1)\u00b7|cos(pi/p)|^(k-1) decays geometrically since |cos(pi/p)|<1 for all primes",
+      "erdos_renyi_decay follows from fourier_error_bound: relative error (p-1)·|cos(pi/p)|^(k-1) decays geometrically since |cos(pi/p)|<1 for all primes",
       "|cos(pi/p)| < 1 proved via Real.strictAntiOn_cos on [0,pi]: cos(pi/p) < cos(0)=1 and cos(pi/p) > cos(pi)=-1",
-      "Mathlib prod_add provides subset product identity needed for Fourier expansion: \u220f(f+g) = \u2211_{T\u2286S}(\u220f_T f)(\u220f_{S\\T} g)",
-      "RothTheorem.lean char_orthogonality can be adapted: it proves \u2211_{r:ZMod N} \u03c8(r\u00b7c) = N\u00b7\u03b4(c=0)",
-      "Converting axiom\u2192sorry is valuable: 0 axioms means no logical assumptions, and sorries are Aristotle targets",
-      "norm_one_add_\u03c9p_pow proved by squaring both sides: \u20161+exp(2\u03b1i)\u2016\u00b2=(1+cos2\u03b1)\u00b2+sin\u00b22\u03b1=4cos\u00b2\u03b1=(2|cos\u03b1|)\u00b2, then sqrt",
-      "fourier_product_bound has two cases: 0\u2208A (factor out the a=0 term giving 1, rest bounded) and 0\u2209A (all bounded, use pow_le_pow_of_le_one)",
-      "gEps_pos is redundant: follows immediately from trivial_lower_bound since log\u2082(N) \u2265 1 for N \u2265 2"
+      "Mathlib prod_add provides subset product identity needed for Fourier expansion: ∏(f+g) = ∑_{T⊆S}(∏_T f)(∏_{S\\T} g)",
+      "RothTheorem.lean char_orthogonality can be adapted: it proves ∑_{r:ZMod N} ψ(r·c) = N·δ(c=0)",
+      "Converting axiom→sorry is valuable: 0 axioms means no logical assumptions, and sorries are Aristotle targets",
+      "norm_one_add_ωp_pow proved by squaring both sides: ‖1+exp(2αi)‖²=(1+cos2α)²+sin²2α=4cos²α=(2|cosα|)², then sqrt",
+      "fourier_product_bound has two cases: 0∈A (factor out the a=0 term giving 1, rest bounded) and 0∉A (all bounded, use pow_le_pow_of_le_one)",
+      "gEps_pos is redundant: follows immediately from trivial_lower_bound since log₂(N) ≥ 1 for N ≥ 2"
     ],
     "mathlibGaps": [
       "Discrete Fourier analysis on Z/pZ (character groups, orthogonality) needed to prove fourier_error_bound"
     ],
     "nextSteps": [
-      "Prove reprCount_fourier_expansion: needs character orthogonality \u03b4(\u2211S=g)=(1/p)\u2211_j \u03c9^{j(\u2211S-g)} + Finset.prod_add subset product identity",
+      "Prove reprCount_fourier_expansion: needs character orthogonality δ(∑S=g)=(1/p)∑_j ω^{j(∑S-g)} + Finset.prod_add subset product identity",
       "Prove fourier_error_bound: assembly from reprCount_fourier_expansion + fourier_product_bound via triangle inequality"
     ]
   },
@@ -75,7 +75,8 @@
     "erdos-1",
     "erdos-11",
     "erdos-117",
-    "erdos-1179"
+    "erdos-1179",
+    "erdos-1179-oq-01"
   ],
   "references": {
     "papers": [],
@@ -88,13 +89,24 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1179OQ01.lean",
+      "filename": "Erdos1179OQ01.lean",
+      "lineCount": 526,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos1179Problem.lean",
       "filename": "Erdos1179Problem.lean",
-      "lineCount": 218,
-      "theoremCount": 28,
+      "lineCount": 219,
+      "theoremCount": 6,
       "axiomCount": 6,
-      "defCount": 7,
-      "sorryCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179Problem.lean"
     }

@@ -79,8 +79,9 @@
     "erdos-1",
     "erdos-10",
     "erdos-101",
-    "erdos-1015",
     "erdos-1014-oq-01",
+    "erdos-1015",
+    "erdos-1015-oq-01",
     "ramseys-theorem"
   ],
   "references": {
@@ -104,26 +105,26 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1015Problem.lean",
-      "filename": "Erdos1015Problem.lean",
-      "lineCount": 159,
-      "theoremCount": 0,
-      "axiomCount": 10,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos1015OQ01.lean",
       "filename": "Erdos1015OQ01.lean",
-      "lineCount": 282,
+      "lineCount": 283,
       "theoremCount": 25,
       "axiomCount": 12,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1015Problem.lean",
+      "filename": "Erdos1015Problem.lean",
+      "lineCount": 165,
+      "theoremCount": 2,
+      "axiomCount": 8,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015Problem.lean"
     }
   ]
 }

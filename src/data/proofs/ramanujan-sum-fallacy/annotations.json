@@ -15,9 +15,6 @@
       "divergent series",
       "zeta function",
       "analytic continuation"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -36,9 +33,6 @@
       "tsum",
       "Summable",
       "convergence"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -55,11 +49,7 @@
     "relatedConcepts": [
       "natural numbers",
       "sequences"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "Defines `naturals : \\mathbb{N} \\to \\mathbb{R}$ by $n \\mapsto n + 1$, so `naturals 0 = 1`, `naturals 1 = 2`, etc., giving the sequence $1, 2, 3, 4, \\ldots$ The offset by $1$ accounts for Lean's convention that $\\mathbb{N}$ starts at $0$."
+    ]
   },
   {
     "id": "ann-false-claim",
@@ -76,9 +66,6 @@
     "relatedConcepts": [
       "vacuous truth",
       "impossible hypothesis"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -97,9 +84,6 @@
       "partial sums",
       "Cesaro mean",
       "divergence"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -117,9 +101,6 @@
     "relatedConcepts": [
       "tsum convention",
       "proof failure"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -138,9 +119,6 @@
       "Riemann series theorem",
       "rearrangement",
       "absolute convergence"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -157,11 +135,7 @@
     "relatedConcepts": [
       "divergence",
       "partial sums"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "The alternating series $\\sum (-1)^n(n+1) = 1 - 2 + 3 - 4 + \\cdots$ diverges because $|(-1)^n(n+1)| = n + 1 \\to \\infty$, violating the necessary condition that terms tend to $0$. In Lean, `Summable.tendsto_atTop_zero` provides this criterion."
+    ]
   },
   {
     "id": "ann-shift-requires-summable",
@@ -178,9 +152,6 @@
     "relatedConcepts": [
       "typeclass constraints",
       "proof obligations"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -197,11 +168,7 @@
     "relatedConcepts": [
       "type checking",
       "blocked proof"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "The `tsum_eq_zero_add` lemma in Mathlib has signature `(hf : Summable f) : \\sum f = f(0) + \\sum f(n+1)$. Without the `Summable` proof obligation, the shift-and-add manipulation is blocked at the type level, preventing invalid reasoning about divergent series."
+    ]
   },
   {
     "id": "ann-unbounded",
@@ -218,9 +185,6 @@
     "relatedConcepts": [
       "divergence to infinity",
       "triangle numbers"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -238,9 +202,6 @@
     "relatedConcepts": [
       "tsum_eq_zero_of_not_summable",
       "norm_num"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -259,9 +220,6 @@
       "Riemann zeta function",
       "analytic continuation",
       "regularization"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -278,11 +236,7 @@
     "relatedConcepts": [
       "second fallacy",
       "manipulation blocked"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "Step 2 claims $2S_2 = S_1$ via shift-and-add on $1 - 2 + 3 - 4 + \\cdots$. In Lean, both `tsum alternatingNaturals` and `tsum grandi` equal $0$ (non-summable convention), so $2 \\cdot 0 = 0$ holds trivially but reveals nothing about $-\\tfrac{1}{12}$."
+    ]
   },
   {
     "id": "ann-step3",
@@ -299,9 +253,6 @@
     "relatedConcepts": [
       "vacuous truth",
       "zero convention"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -314,15 +265,11 @@
     "type": "concept",
     "title": "Conclusion: Type Systems Enforce Rigor",
     "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
-    "mathContext": "Three layers of protection: (1) `Summable f` as a typeclass gate on `tsum_add`, `tsum_eq_zero_add`, etc.; (2) `tsum_eq_zero_of_not_summable` ensuring divergent series evaluate to $0$; (3) a separate `zeta_regularized` axiom distinguishing $\\zeta(-1) = -\\tfrac{1}{12}$ from ordinary summation.",
     "significance": "key",
     "relatedConcepts": [
       "formal verification",
       "type safety",
       "mathematical rigor"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   }
 ]
