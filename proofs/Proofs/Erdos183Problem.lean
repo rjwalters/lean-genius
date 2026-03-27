@@ -173,14 +173,8 @@ axiom R3k_inductive_upper (k : ℕ) (hk : k ≥ 2) :
 axiom R3k_factorial_upper :
   ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≤ Real.exp 1 * k.factorial + C
 
-/-- The ceiling form: R(3;k) ≤ ⌈e·k!⌉ + 1.
-    Note: R3k_factorial_upper gives R3k k ≤ e·k! + C for existential C.
-    This theorem requires C ≤ 1; the sorry encodes this gap. -/
-theorem R3k_ceiling_upper (k : ℕ) (hk : k ≥ 1) :
-    (R3k k : ℝ) ≤ ⌈Real.exp 1 * k.factorial⌉ + 1 := by
-  obtain ⟨C, hC, hbound⟩ := R3k_factorial_upper
-  have := hbound k hk
-  sorry -- Needs C ≤ 1 or a tighter upper bound axiom
+-- Note: The ceiling form R(3;k) ≤ ⌈e·k!⌉ + 1 requires a tighter constant
+-- than R3k_factorial_upper provides. Omitted to avoid a sorry.
 
 /-
 # Part 5: Lower Bound via Schur Numbers
@@ -223,18 +217,12 @@ So R(3;k) grows faster than any exponential c^k but slower than k!.
 noncomputable def kthRootR3k (k : ℕ) : ℝ :=
   (R3k k : ℝ) ^ (1 / k : ℝ)
 
-/-- Lower bound on k-th root: at least 380^{1/5} ≈ 3.28.
-    **WARNING**: This axiom is inconsistent with R3k_one. kthRootR3k 1 = R3k(1)^1 = 3,
-    but this axiom requires c > 3 with kthRootR3k k ≥ c for ALL k ≥ 1.
-    Should have k ≥ k₀ for some threshold k₀, not k ≥ 1. -/
-axiom kthRoot_lower :
-  ∃ c : ℝ, c > 3 ∧ ∀ k : ℕ, k ≥ 1 → kthRootR3k k ≥ c
-
-/-- Upper bound on k-th root: at most (k!)^{1/k} ~ k/e (Stirling).
-    **WARNING**: This axiom is false for k = 1. kthRootR3k 1 = 3 but
-    (e·1!)^1 = e ≈ 2.718 < 3. Should have k ≥ k₀ for some threshold. -/
-axiom kthRoot_upper :
-  ∀ k : ℕ, k ≥ 1 → kthRootR3k k ≤ (Real.exp 1 * k.factorial : ℝ) ^ (1 / k : ℝ)
+-- Note: kthRoot_lower and kthRoot_upper were removed due to inconsistency.
+-- kthRoot_lower required c > 3 for all k ≥ 1, but kthRootR3k(1) = 3.
+-- kthRoot_upper claimed kthRootR3k(k) ≤ (e·k!)^{1/k} for k ≥ 1,
+-- but kthRootR3k(1) = 3 > e ≈ 2.718.
+-- The correct bounds hold for sufficiently large k and follow from
+-- R3k_exponential_lower (lower) and R3k_factorial_upper (upper).
 
 /-- The main open question: does lim R(3;k)^{1/k} exist and what is it? -/
 def ErdosProblem183 : Prop :=
