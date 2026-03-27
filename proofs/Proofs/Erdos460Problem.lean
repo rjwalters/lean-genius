@@ -51,8 +51,14 @@ theorem sieve_initial (n : ℕ) (hn : n ≥ 2) :
 
 /-- Each subsequent term is the least integer > previous term
 such that n - aₖ is coprime to all previous n - aᵢ.
-Provable from the construction when candidates are nonempty. -/
-axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2) :
+Provable from the construction when candidates are nonempty.
+
+NOTE: The precondition `hvalid : greedyCoprimeSieve n k ≤ n` ensures
+the sieve has not terminated (sentinel value is n+1). Without it,
+the axiom is false: e.g., n=2, k=2 gives sentinel 3, and
+Coprime(2-3, 2) = Coprime(0, 2) is false in ℕ. -/
+axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2)
+    (hvalid : greedyCoprimeSieve n k ≤ n) :
     let a := greedyCoprimeSieve n
     a k > a (k - 1) ∧
     (∀ i, i < k → Nat.Coprime (n - a k) (n - a i)) ∧
