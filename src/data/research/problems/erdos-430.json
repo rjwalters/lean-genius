@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Made greedySeq computable. Proved example_n8 by native_decide. Axioms 4->3.",
+    "progressSummary": "COMPLETE: 0 sorries, equivalence fully proved. Only axioms are the open conjecture and small_n_all_prime.",
     "builtItems": [
       "Decidable instance for allPrimeFactorsExceed in Erdos430Problem.lean:37-49",
       "Decidable instance for IsAdmissible in Erdos430Problem.lean:56-57",
-      "Proved example_n8 in Erdos430Problem.lean:86"
+      "Proved example_n8 in Erdos430Problem.lean:86",
+      "PROVED backward direction of erdos_385_equivalence (was sorry)",
+      "greedyNext_ge_m: greedy next ≥ m when m is admissible and prev > m",
+      "greedyNext_lt: greedy next < prev (picks from [1, prev-1])"
     ],
     "insights": [
       "greedySeq uses noncomputable Finset.sup with decide on universal quantifier - not computable",
@@ -42,7 +45,9 @@
       "Provided Decidable instance for allPrimeFactorsExceed via bounded quantification over Finset.range",
       "Added explicit Decidable instance for IsAdmissible",
       "Removed noncomputable from greedyNext, greedySeq - now fully computable",
-      "example_n8 proved by native_decide (greedySeq 8 0 = 7, greedySeq 8 1 = 5)"
+      "example_n8 proved by native_decide (greedySeq 8 0 = 7, greedySeq 8 1 = 5)",
+      "erdos_385_equivalence fully proved: backward direction via greedy descent — if admissible composite m exists, greedy sequence reaches it since greedyNext ≥ m when prev > m",
+      "Strong induction on gap (current - m): sequence strictly decreases while bounded below by m, must reach m"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

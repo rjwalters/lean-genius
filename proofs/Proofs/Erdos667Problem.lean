@@ -66,10 +66,45 @@ noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
 
 -- Notation: H(n; p, q) = cliqueGuarantee n p q
 
-/-- H is monotone in n: more vertices can only help. -/
+/-- H is monotone in n: more vertices can only help.
+    Proof sketch: S_n ⊆ S_{n+1} because for any G on Fin (n+1) with density,
+    pulling back to G' = G.comap castSucc on Fin n preserves the density condition
+    (edgeCount unchanged by injective embedding). Any m-clique in G' lifts to G. -/
+open scoped Classical in
 theorem cliqueGuarantee_mono_n (p q n : ℕ) :
     cliqueGuarantee n p q ≤ cliqueGuarantee (n + 1) p q := by
-  sorry
+  simp only [cliqueGuarantee]
+  by_cases hne : {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+      HasDensity G p q → ¬G.CliqueFree m}.Nonempty
+  · apply csSup_le_csSup
+    · exact ⟨n + 1, fun m ⟨hm, _⟩ => hm⟩
+    · exact hne
+    · -- S_n ⊆ S_{n+1}
+      intro m ⟨hm_le, hm⟩
+      refine ⟨by omega, fun G hd => ?_⟩
+      -- Pull back G to Fin n via castSucc: G' = G.comap castSucc
+      -- HasDensity G' p q because edgeCount (G.comap f) S = edgeCount G (S.map f)
+      -- for injective f (castSucc preserves the pair structure bijectively)
+      have hcf := hm (G.comap Fin.castSucc) (by
+        intro S hS
+        -- edgeCount (G.comap castSucc) S = edgeCount G (S.map castSucc) ≥ q
+        -- The filter on S×S with (a ≠ b ∧ G.Adj (f a) (f b)) bijects via f×f
+        -- with the filter on (S.map f)×(S.map f) with (a ≠ b ∧ G.Adj a b)
+        sorry)
+      -- Lift: ¬CliqueFree (G.comap castSucc) m → ¬CliqueFree G m
+      intro hcfG
+      apply hcf
+      intro s hs
+      apply hcfG (s.map ⟨Fin.castSucc, Fin.castSucc_injective n⟩)
+      refine ⟨?_, by rw [Finset.card_map]; exact hs.card_eq⟩
+      -- IsClique: castSucc preserves adjacency from G.comap castSucc to G
+      intro a ha b hb hab
+      simp only [Finset.coe_map, Set.mem_image, Function.Embedding.coeFn_mk] at ha hb
+      obtain ⟨a', ha', rfl⟩ := ha
+      obtain ⟨b', hb', rfl⟩ := hb
+      exact hs.isClique (Finset.mem_coe.mpr ha') (Finset.mem_coe.mpr hb')
+        (fun h => hab (congrArg Fin.castSucc h))
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
 
 /-- H is monotone in q: more edges per p-set yields larger cliques.
     Proof: HasDensity G p (q+1) implies HasDensity G p q, so the density
@@ -109,20 +144,46 @@ theorem cliqueGuarantee_le_n (n p q : ℕ) :
 The function c(p,q) has known values at the endpoints.
 -/
 
-/-- When q = C(p-1, 2) + 1, every p-set is a clique, forcing G to be complete.
-    Hence H(n; p, q) = n.
-    Proof: C(p-1,2)+1 edges in a p-set exceeds the maximum for non-complete
-    graphs, forcing all p-sets (hence all pairs) to be adjacent. -/
-theorem cliqueGuarantee_max (n p : ℕ) (hp : 2 ≤ p) :
-    cliqueGuarantee n p (Nat.choose (p - 1) 2 + 1) = n := by
-  sorry
+/-- REMOVED (FALSE): Previously claimed H(n; p, C(p-1,2)+1) = n (i.e., graph must
+    be complete). Counterexample: C₄ (4-cycle on Fin 4) satisfies HasDensity 3 2
+    (every triple spans exactly 2 edges) but has clique number 2, not 4.
+
+    The correct fact is that the *exponent* c(p, C(p-1,2)+1) = 1, meaning H(n) ~ n
+    (grows linearly), but H(n) ≠ n exactly. This is captured by axiom `cpq_at_max`.
+
+    For p=3, q=C(2,2)+1=2: the complement of any satisfying graph is a matching,
+    giving clique number ⌈n/2⌉, so c(3,2) = lim inf log(⌈n/2⌉)/log(n) = 1. -/
 
 /-- When q = 0, there is no constraint, so H(n; p, 0) = 1 trivially.
     Every graph has at least one vertex (when n ≥ 1), forming a trivial 1-clique.
-    The empty graph on n vertices shows we can't guarantee 2-cliques. -/
+    The empty graph on n vertices shows we can't guarantee 2-cliques.
+    Proof: S = {m ≤ n | ∀ G, ¬CliqueFree G m} = {0, 1} since the empty graph
+    is CliqueFree m for m ≥ 2, and every nonempty graph has a 0-clique and 1-clique. -/
+open scoped Classical in
 theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
     cliqueGuarantee n p 0 = 1 := by
-  sorry
+  simp only [cliqueGuarantee]
+  apply le_antisymm
+  · -- Upper bound: sSup S ≤ 1
+    apply csSup_le
+    · -- S is nonempty: 0 ∈ S (empty set is a 0-clique in any graph)
+      exact ⟨0, Nat.zero_le n, fun G _ hcf =>
+        hcf ∅ ⟨Set.pairwise_empty _, rfl⟩⟩
+    · -- All elements of S are ≤ 1
+      intro m ⟨_, hm⟩
+      by_contra hgt
+      push_neg at hgt
+      -- m ≥ 2: the empty graph ⊥ satisfies HasDensity but is CliqueFree m
+      apply hm (⊥ : SimpleGraph (Fin n)) (fun _ _ => Nat.zero_le _)
+      -- Goal: CliqueFree ⊥ m
+      intro s hs
+      obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by rw [hs.card_eq]; omega)
+      exact hs.isClique (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab
+  · -- Lower bound: 1 ≤ sSup S
+    apply le_csSup ⟨n, fun m ⟨hm, _⟩ => hm⟩
+    -- 1 ∈ S: singleton {⟨0, _⟩} is a 1-clique in any graph on Fin n (n ≥ 1)
+    exact ⟨hn, fun G _ hcf =>
+      hcf {⟨0, by omega⟩} ⟨Set.pairwise_singleton _ _, Finset.card_singleton _⟩⟩
 
 /-- Extended monotonicity: H(n; p, q1) ≤ H(n; p, q2) for q1 ≤ q2. -/
 theorem cliqueGuarantee_mono_q_general (n p q1 q2 : ℕ) (h : q1 ≤ q2) :
