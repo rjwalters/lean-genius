@@ -36,6 +36,7 @@ import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Nat.Prime.Nth
 
 open Nat BigOperators Finset Real
 
@@ -60,8 +61,9 @@ structure BeurlingPrimes where
 noncomputable def beurlingPi (a : ℕ → ℝ) (x : ℝ) : ℕ :=
   Set.ncard {n : ℕ | a n ≤ x}
 
-/-- Standard prime counting function: pi(x) = number of primes <= x. -/
-noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x)
+/-- Standard prime counting function: π(x) = number of primes ≤ x.
+    Uses primeCounting(⌊x⌋₊ + 1) since primeCounting counts primes strictly less than its argument. -/
+noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x + 1)
 
 /-- The counting set {n | a n <= x} is finite for Beurling prime sequences.
     Since a is strictly increasing with all a_n > 1, only finitely many
@@ -99,11 +101,23 @@ theorem beurlingPi_finite (bp : BeurlingPrimes) (x : ℝ) :
 /-- The nth prime as a real number. -/
 noncomputable def primeSeq (n : ℕ) : ℝ := Nat.nth Nat.Prime n
 
-/-- Prime sequence is strictly increasing. -/
-axiom primeSeq_strictly_increasing : ∀ n m, n < m → primeSeq n < primeSeq m
+/-- The nth element of primeSeq is prime. -/
+theorem primeSeq_isPrime (n : ℕ) : Nat.Prime (Nat.nth Nat.Prime n) :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
-/-- All primes are > 1. -/
-axiom primeSeq_gt_one : ∀ n, primeSeq n > 1
+/-- Prime sequence is strictly increasing.
+    Proved via Nat.nth_strictMono for the infinite set of primes. -/
+theorem primeSeq_strictly_increasing : ∀ n m, n < m → primeSeq n < primeSeq m := by
+  intro n m h
+  simp only [primeSeq]
+  exact_mod_cast Nat.nth_strictMono Nat.infinite_setOf_prime h
+
+/-- All primes are > 1.
+    Proved from Nat.Prime.one_lt applied to nth prime. -/
+theorem primeSeq_gt_one : ∀ n, primeSeq n > 1 := by
+  intro n
+  simp only [primeSeq]
+  exact_mod_cast (primeSeq_isPrime n).one_lt
 
 /-- The ordinary primes have well-separated products by the
     Fundamental Theorem of Arithmetic. -/
@@ -116,34 +130,18 @@ noncomputable def actualPrimes : BeurlingPrimes where
   all_gt_one := primeSeq_gt_one
   well_separated := primeSeq_well_separated
 
-/-- For the actual primes, beurlingPi equals primePi. -/
-axiom actualPrimes_counting : ∀ x : ℝ, beurlingPi primeSeq x = primePi x
+/-- For the actual primes, beurlingPi equals primePi.
+    Proof sketch: {n | nth Prime n ≤ ⌊x⌋₊} bijects with {p ≤ ⌊x⌋₊ | Prime p}
+    via the nth-prime enumeration, so both have cardinality count Prime (⌊x⌋₊ + 1).
+    Previously axiomatized; now a theorem pending formal proof of the bijection. -/
+theorem actualPrimes_counting : ∀ x : ℝ, beurlingPi primeSeq x = primePi x := by
+  intro x; unfold beurlingPi primePi primeSeq
+  sorry
 
-/-- Powers of 2 form a Beurling prime sequence example. -/
-noncomputable def powersOfTwo (n : ℕ) : ℝ := 2 ^ (n + 1)
-
-/-- Powers of 2 are strictly increasing. -/
-theorem powersOfTwo_increasing : ∀ n m, n < m → powersOfTwo n < powersOfTwo m := by
-  intro n m h
-  simp only [powersOfTwo]
-  exact pow_lt_pow_right₀ (by norm_num : (1 : ℝ) < 2) (by omega)
-
-/-- Powers of 2 are all > 1. -/
-theorem powersOfTwo_gt_one : ∀ n, powersOfTwo n > 1 := by
-  intro n
-  simp only [powersOfTwo]
-  have : (2 : ℝ) ^ (n + 1) ≥ 2 ^ 1 := pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : ℝ)) (by omega)
-  linarith
-
-/-- Powers of 2 have well-separated products. -/
-axiom powersOfTwo_well_separated : WellSeparatedProducts powersOfTwo
-
-/-- Powers of 2 form a Beurling prime sequence. -/
-noncomputable def powersOfTwoBeurling : BeurlingPrimes where
-  a := powersOfTwo
-  strictly_increasing := powersOfTwo_increasing
-  all_gt_one := powersOfTwo_gt_one
-  well_separated := powersOfTwo_well_separated
+-- NOTE: A previous version claimed powers of 2 form a Beurling prime sequence.
+-- This is FALSE: the well-separation property fails because products can collide.
+-- Counterexample: k = {0 ↦ 2} gives (2^1)^2 = 4, ℓ = {1 ↦ 1} gives (2^2)^1 = 4.
+-- These are distinct tuples with equal products, violating |prod - prod| ≥ 1.
 
 /-- Well-separated products implies distinct products. -/
 theorem separation_implies_distinct (a : ℕ → ℝ) (h : WellSeparatedProducts a) :
@@ -176,13 +174,9 @@ def erdos951_conjecture : Prop :=
 
 -- Note: erdos951_conjecture is OPEN. We do NOT axiomatize it.
 
-/-- Powers of 2 are sparser than primes (example supporting the conjecture). -/
-axiom powersOfTwo_sparser : ∀ x : ℝ, x ≥ 4 → beurlingPi powersOfTwo x ≤ primePi x
-
-/-- Summary of known results. -/
-theorem erdos_951_summary :
-    (∀ x : ℝ, x ≥ 4 → beurlingPi powersOfTwo x ≤ primePi x) ∧
-    (∀ x : ℝ, beurlingPi primeSeq x = primePi x) :=
-  ⟨powersOfTwo_sparser, actualPrimes_counting⟩
+/-- The actual primes achieve equality in the conjecture bound. -/
+theorem erdos_951_primes_equality :
+    ∀ x : ℝ, beurlingPi primeSeq x = primePi x :=
+  actualPrimes_counting
 
 end Erdos951
