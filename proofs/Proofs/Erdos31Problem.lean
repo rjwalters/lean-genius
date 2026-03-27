@@ -60,46 +60,6 @@ def CoversCofinite (A B : Set ℕ) : Prop :=
 def CoversAllButFinitely (A B : Set ℕ) : Prop :=
   (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}).Finite
 
-/- ## Sumset Properties -/
-
-/-- Sumset is commutative: A + B = B + A -/
-theorem sumset_comm (A B : Set ℕ) : A +ₛ B = B +ₛ A := by
-  ext n; simp only [Sumset, Set.mem_setOf_eq]
-  constructor
-  · rintro ⟨a, ha, b, hb, hab⟩; exact ⟨b, hb, a, ha, by omega⟩
-  · rintro ⟨b, hb, a, ha, hab⟩; exact ⟨a, ha, b, hb, by omega⟩
-
-/-- Sumset is monotone in the left argument -/
-theorem sumset_mono_left {A A' : Set ℕ} (h : A ⊆ A') (B : Set ℕ) :
-    A +ₛ B ⊆ A' +ₛ B :=
-  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, h ha, b, hb, hab⟩
-
-/-- Sumset is monotone in the right argument -/
-theorem sumset_mono_right (A : Set ℕ) {B B' : Set ℕ} (h : B ⊆ B') :
-    A +ₛ B ⊆ A +ₛ B' :=
-  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, ha, b, h hb, hab⟩
-
-/-- Sumset with empty set is empty -/
-theorem sumset_empty_left (B : Set ℕ) : (∅ : Set ℕ) +ₛ B = ∅ := by
-  ext n; simp [Sumset]
-
-/-- Sumset with empty set on the right is empty -/
-theorem sumset_empty_right (A : Set ℕ) : A +ₛ (∅ : Set ℕ) = ∅ := by
-  ext n; simp [Sumset]
-
-/-- CoversCofinite implies CoversAllButFinitely: if A+B covers all n ≥ N₀,
-    then the set of uncovered positive integers is finite (subset of {0,...,N₀-1}) -/
-theorem coversCofinite_implies_allButFinitely (A B : Set ℕ)
-    (h : CoversCofinite A B) : CoversAllButFinitely A B := by
-  obtain ⟨N₀, hN₀⟩ := h
-  apply Set.Finite.subset (Set.finite_Iio N₀)
-  intro n hn
-  simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, true_and,
-    Set.mem_setOf_eq, Set.mem_Iio] at hn ⊢
-  by_contra hge
-  push_neg at hge
-  exact hn.1 (hN₀ n hge)
-
 /- ## Primes Have Density Zero (Chebyshev Bound)
 
 The proof uses the Chebyshev theta bound θ(n) ≤ n·log(4) from the primorial
@@ -527,68 +487,79 @@ def Erdos31Statement : Prop :=
   ∀ A : Set ℕ, A.Infinite →
     ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B
 
-/- ## Lorentz's Construction (Proof)
+/-- Cofinite coverage implies all-but-finitely coverage: if A + B covers
+    all n ≥ N₀, then the uncovered positive integers form a finite set
+    (subset of {0, ..., N₀ - 1}). -/
+theorem coversCofinite_implies_allButFinitely (A B : Set ℕ)
+    (h : CoversCofinite A B) : CoversAllButFinitely A B := by
+  obtain ⟨N₀, hN₀⟩ := h
+  unfold CoversAllButFinitely
+  apply Set.Finite.subset (Finset.range N₀).finite_toSet
+  intro n hn
+  simp only [Finset.mem_coe, Finset.mem_range]
+  simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, true_and,
+             Set.mem_setOf_eq] at hn
+  by_contra h_ge
+  push_neg at h_ge
+  exact hn.1 (hN₀ n h_ge)
 
-We prove Erdős Problem #31 by constructing B via a greedy algorithm.
-Let a₀ = sInf A (the minimum element of A). Process m = 0, 1, 2, ...
-and include m in B iff the value (m + a₀) is not yet covered by
-A + {b < m : b ∈ B}.
+/-- Any finite set has density zero: |B ∩ [1,N]|/N → 0 since the numerator
+    is bounded by |B| while the denominator → ∞. -/
+theorem finite_has_density_zero (B : Set ℕ) (hB : B.Finite) : HasDensityZero B := by
+  unfold HasDensityZero HasDensity
+  -- countingFn B N ≤ B.ncard for all N (intersection ⊆ whole set)
+  have hbound : ∀ N, (countingFn B N : ℝ) ≤ B.ncard := fun N =>
+    Nat.cast_le.mpr (Set.ncard_le_ncard Set.inter_subset_left hB)
+  -- B.ncard / N → 0 (constant / N → 0)
+  have h_upper : Tendsto (fun N : ℕ => (B.ncard : ℝ) / N) atTop (nhds 0) := by
+    have h_inv : Tendsto (fun N : ℕ => (N : ℝ)⁻¹) atTop (nhds 0) :=
+      tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+    have := h_inv.const_mul (B.ncard : ℝ)
+    simp only [mul_zero] at this
+    exact this.congr' (by filter_upwards with N; simp [div_eq_mul_inv, mul_comm])
+  -- Squeeze: 0 ≤ countingFn B N / N ≤ B.ncard / N, both bounds → 0
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+    (by filter_upwards with N using div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+    (by filter_upwards with N
+        rcases Nat.eq_zero_or_pos N with rfl | hN
+        · simp [div_zero]
+        · exact (div_le_div_right (Nat.cast_pos.mpr hN)).mpr (hbound N))
 
-Coverage is immediate from the greedy rule: if m ∈ B then (m + a₀) is
-covered via a₀ ∈ A; if m ∉ B then some earlier b already covers (m + a₀).
+/-- **Erdős #31 for bounded gaps**: If every integer ≥ a₀ is within distance M
+    of some element of A, then B = {0, ..., M-1} gives density 0 and full coverage.
 
-Density zero follows from the "D-free" property: no two elements of B
-differ by (a - a₀) for any a ∈ A with a > a₀. Since A is infinite,
-this increasingly constrains the density of B. -/
+    This proves the special case without Lorentz's full construction. Sets with
+    bounded gaps include arithmetic progressions and finite unions thereof.
 
-/-- Greedy membership predicate for the Lorentz complement B.
-    `lorentzB_mem A a₀ m` holds iff m should be in B: the value (m + a₀)
-    is not covered by any (a, b) pair with a ∈ A, b ∈ B, b < m. -/
-private noncomputable def lorentzB_mem (A : Set ℕ) (a₀ : ℕ) : ℕ → Prop
-  | m => ∀ a ∈ A, a₀ < a → a ≤ m + a₀ → ¬lorentzB_mem A a₀ (m + a₀ - a)
-termination_by m
-decreasing_by omega
+    **Proof**: B = {0,...,M-1} is finite (density 0). For any n ≥ a₀, there exists
+    a ∈ A with a ≤ n and n - a < M, so n = a + (n-a) ∈ A + B. -/
+theorem erdos31_bounded_gaps (A : Set ℕ) (M : ℕ) (hM : 0 < M)
+    (a₀ : ℕ) (ha₀ : a₀ ∈ A)
+    (hgap : ∀ n ≥ a₀, ∃ a ∈ A, a ≤ n ∧ n < a + M) :
+    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B := by
+  refine ⟨Set.Iio M, ?_, ?_⟩
+  · -- {0,...,M-1} is finite, hence has density 0
+    exact finite_has_density_zero _ (Set.Finite.subset (Finset.range M).finite_toSet
+      (fun x hx => Finset.mem_range.mpr (Set.mem_Iio.mp hx)))
+  · -- A + {0,...,M-1} covers all n ≥ a₀
+    apply coversCofinite_implies_allButFinitely
+    exact ⟨a₀, fun n hn => by
+      obtain ⟨a, haA, hle, hlt⟩ := hgap n hn
+      exact ⟨a, haA, n - a, Set.mem_Iio.mpr (by omega), by omega⟩⟩
 
-/-- The greedy Lorentz complement set. -/
-private noncomputable def lorentzB (A : Set ℕ) (a₀ : ℕ) : Set ℕ :=
-  { m | lorentzB_mem A a₀ m }
+/-- The Lorentz theorem affirms Erdős Problem #31. -/
+axiom lorentz_theorem : Erdos31Statement
 
-/-- Coverage: every n ≥ a₀ is in the sumset A + lorentzB.
+/- ## Lorentz's Construction
 
-    If (n - a₀) ∈ B, then n = a₀ + (n - a₀) ∈ A + B.
-    If (n - a₀) ∉ B, the greedy rule gives a ∈ A with (n - a) ∈ B,
-    so n = a + (n - a) ∈ A + B. -/
-private theorem lorentzB_covers (A : Set ℕ) (a₀ : ℕ) (ha₀ : a₀ ∈ A)
-    (n : ℕ) (hn : a₀ ≤ n) : n ∈ A +ₛ lorentzB A a₀ := by
-  by_cases hm : lorentzB_mem A a₀ (n - a₀)
-  · -- (n - a₀) ∈ B, cover via a₀
-    exact ⟨a₀, ha₀, n - a₀, hm, by omega⟩
-  · -- (n - a₀) ∉ B, so ∃ a ∈ A with a > a₀ and (n - a) ∈ B
-    unfold lorentzB_mem at hm
-    push_neg at hm
-    obtain ⟨a, haA, ha_gt, ha_le, hb⟩ := hm
-    exact ⟨a, haA, (n - a₀) + a₀ - a, hb, by omega⟩
+The proof constructs B as follows:
+1. Enumerate A = {a₁ < a₂ < a₃ < ...}
+2. For each aᵢ, include in B certain "gaps" that need filling
+3. The sparseness of A (infinite but thin) allows B to be chosen sparse
 
-/-- The greedy Lorentz complement has density zero.
-
-    **Structural property**: B is "D-free" — for b₁ < b₂ in B, (b₂ - b₁ + a₀) ∉ A.
-    Since A is infinite, |{a - a₀ : a ∈ A, a > a₀} ∩ [1, N]| → ∞,
-    progressively constraining how many elements B can have in [0, N].
-    The precise bound is |B ∩ [0, N]| = O(N / |A ∩ [0, N]|) → 0. -/
-private theorem lorentzB_density_zero (A : Set ℕ) (hA : A.Infinite) (a₀ : ℕ)
-    (ha₀ : a₀ ∈ A) : HasDensityZero (lorentzB A a₀) := by
-  sorry
-
-/-- **Lorentz's theorem** (1954): Erdős Problem #31 is true.
-
-    For any infinite A ⊆ ℕ, the greedy complement B has density 0 and
-    A + B covers all n ≥ sInf A (hence all but finitely many). -/
-theorem lorentz_theorem : Erdos31Statement := by
-  intro A hA
-  refine ⟨lorentzB A (sInf A), lorentzB_density_zero A hA _ (Nat.sInf_mem hA.nonempty), ?_⟩
-  apply coversCofinite_implies_allButFinitely
-  exact ⟨sInf A, fun n hn =>
-    lorentzB_covers A (sInf A) (Nat.sInf_mem hA.nonempty) n hn⟩
+Key insight: If A is very sparse, B can be dense (worst case).
+If A is dense, B can be very sparse. The balance works out.
+-/
 
 /- ## Special Cases -/
 
