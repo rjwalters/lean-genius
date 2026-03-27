@@ -113,13 +113,6 @@ noncomputable def circumradius (t : PointTriple) : ℝ :=
   if twiceArea = 0 then 0  -- degenerate case (collinear)
   else (a * b * c) / (2 * twiceArea)
 
-/--
-**Positive Circumradius:**
-For non-collinear points, the circumradius is positive.
--/
-axiom circumradius_pos (t : PointTriple) (h : ¬areCollinear t.p1 t.p2 t.p3) :
-    circumradius t > 0
-
 /-
 ## Part IV: Counting Distinct Radii
 -/
@@ -178,26 +171,6 @@ axiom h_four_lower : h 4 ≥ 2
 ## Part VI: The Main Conjecture
 -/
 
-/--
-**Erdős Problem #831 (Open):**
-What are the asymptotics of h(n)?
-
-The problem asks to estimate h(n) as n → ∞.
-
-Possible behaviors:
-1. h(n) grows linearly: h(n) = Θ(n)
-2. h(n) grows polynomially: h(n) = Θ(n^α) for some α ∈ (0, 2)
-3. h(n) grows quadratically: h(n) = Θ(n²)
-
-The constraint "no four concyclic" suggests that the radii must spread out,
-but how fast is unknown.
--/
-axiom erdos_831_conjecture :
-    (∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∀ n : ℕ, n ≥ 3 → c₁ * n ≤ h n ∧ h n ≤ c₂ * n^2) ∨
-    (∃ α : ℝ, α > 0 ∧ α < 2 ∧
-      ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 → h n ≥ c * n^α)
-
 /-
 ## Part VII: Related Constructions
 -/
@@ -217,15 +190,6 @@ theorem regular_polygon_not_general (S : Finset Point)
     (h : isRegularPolygon S) (hcard : S.card ≥ 4) :
     ¬isInGeneralPosition (↑S : Set Point) := by
   sorry  -- All points on a circle means any 4 are concyclic
-
-/--
-**Random Points:**
-Random points in general position are expected to have many distinct radii.
--/
-axiom random_points_many_radii (n : ℕ) :
-    ∃ c : ℝ, c > 0 ∧ ∀ S : Finset Point, S.card = n →
-      isInGeneralPosition (↑S : Set Point) →
-      (countDistinctRadii S : ℝ) ≥ c * n
 
 /-
 ## Part VIII: Connection to Other Problems
@@ -252,19 +216,6 @@ def unitDistanceProblem (S : Set Point) (d : ℝ) : ℕ :=
 /-
 ## Part IX: Small Cases
 -/
-
-/--
-**h(5) bounds:**
-With 5 points, there are C(5,3) = 10 triples.
-The minimum number of distinct radii is unknown but positive.
--/
-axiom h_five_bounds : 2 ≤ h 5 ∧ h 5 ≤ 10
-
-/--
-**h(6) bounds:**
-With 6 points, there are C(6,3) = 20 triples.
--/
-axiom h_six_bounds : 3 ≤ h 6 ∧ h 6 ≤ 20
 
 /-
 ## Part X: Summary
