@@ -49,21 +49,75 @@ theorem sieve_initial (n : ℕ) (hn : n ≥ 2) :
     greedyCoprimeSieve n 0 = 0 ∧ greedyCoprimeSieve n 1 = 1 := by
   constructor <;> simp [greedyCoprimeSieve]
 
-/-- Each subsequent term is the least integer > previous term
-such that n - aₖ is coprime to all previous n - aᵢ.
-Provable from the construction when candidates are nonempty.
+/-- Unfolding lemma for greedyCoprimeSieve at k + 2. -/
+private theorem greedyCoprimeSieve_succ_succ (n k : ℕ) :
+    greedyCoprimeSieve n (k + 2) =
+      let a : Fin (k + 2) → ℕ := fun i => greedyCoprimeSieve n i.val
+      let last := greedyCoprimeSieve n (k + 1)
+      let candidates := (Finset.range (n + 1)).filter fun m =>
+        last < m ∧ ∀ i : Fin (k + 2), Nat.Coprime (n - m) (n - a i)
+      if h : candidates.Nonempty then candidates.min' h else n + 1 := by
+  simp [greedyCoprimeSieve]
+
+/-- Each subsequent term is the least integer > previous term such that
+n - aₖ is coprime to all previous n - aᵢ. PROVED from the constructive
+definition: the filter gives coprimality, min' gives minimality, and
+hvalid rules out the sentinel.
 
 NOTE: The precondition `hvalid : greedyCoprimeSieve n k ≤ n` ensures
-the sieve has not terminated (sentinel value is n+1). Without it,
-the axiom is false: e.g., n=2, k=2 gives sentinel 3, and
-Coprime(2-3, 2) = Coprime(0, 2) is false in ℕ. -/
-axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2)
+the sieve has not terminated (sentinel is n+1). Without it, the theorem
+is false: e.g., n=2, k=2 gives sentinel 3. -/
+theorem sieve_greedy (n : ℕ) (_hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2)
     (hvalid : greedyCoprimeSieve n k ≤ n) :
     let a := greedyCoprimeSieve n
     a k > a (k - 1) ∧
     (∀ i, i < k → Nat.Coprime (n - a k) (n - a i)) ∧
     (∀ m, a (k - 1) < m → m < a k →
-      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i))
+      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i)) := by
+  obtain ⟨k', rfl⟩ : ∃ k', k = k' + 2 := ⟨k - 2, by omega⟩
+  simp only [show k' + 2 - 1 = k' + 1 from by omega]
+  set a := greedyCoprimeSieve n with ha_def
+  set last := a (k' + 1)
+  set prev : Fin (k' + 2) → ℕ := fun i => a i.val
+  set candidates := (Finset.range (n + 1)).filter fun m =>
+    last < m ∧ ∀ i : Fin (k' + 2), Nat.Coprime (n - m) (n - prev i)
+  -- Since a(k'+2) ≤ n by hvalid, the sentinel case (n+1) is impossible,
+  -- so candidates must have been nonempty
+  have hne : candidates.Nonempty := by
+    by_contra hemp
+    rw [Finset.not_nonempty_iff_eq_empty] at hemp
+    have heq := greedyCoprimeSieve_succ_succ n k'
+    simp only [ha_def] at hvalid
+    rw [heq] at hvalid
+    simp only [hemp, dite_false] at hvalid
+    omega
+  -- a(k'+2) = candidates.min' hne
+  have hval : a (k' + 2) = candidates.min' hne := by
+    have heq := greedyCoprimeSieve_succ_succ n k'
+    simp only [ha_def, heq, dif_pos hne]
+  -- min' is in candidates, so it satisfies the filter
+  have hmin_mem := Finset.min'_mem candidates hne
+  simp only [Finset.mem_filter, Finset.mem_range] at hmin_mem
+  obtain ⟨_, hlast_lt, hcoprime⟩ := hmin_mem
+  refine ⟨?_, ?_, ?_⟩
+  · -- a(k'+2) > a(k'+1)
+    rw [hval]; exact hlast_lt
+  · -- Coprimality with all previous terms
+    intro i hi
+    rw [hval]; exact hcoprime ⟨i, hi⟩
+  · -- Minimality: anything between last and a(k'+2) fails coprimality
+    intro m hlast_m hm_val
+    rw [hval] at hm_val
+    have hm_not_mem : m ∉ candidates :=
+      fun hm => Nat.not_lt.mpr (Finset.min'_le candidates m hm) hm_val
+    simp only [Finset.mem_filter, Finset.mem_range, not_and] at hm_not_mem
+    have hm_range : m < n + 1 := by
+      have := Finset.min'_le candidates (candidates.min' hne) (Finset.min'_mem _ _)
+      omega
+    have hfail := hm_not_mem hm_range
+    push_neg at hfail
+    obtain ⟨i, hi⟩ := hfail hlast_m
+    exact ⟨i.val, i.isLt, hi⟩
 
 /-
 ## Section II: The Sequence Terminates Before n
