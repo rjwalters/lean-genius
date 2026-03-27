@@ -32,20 +32,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 1 axiom (lorentz_theorem = main result), 0 sorries. Primes density zero fully proved via Chebyshev theta bound. All supporting lemmas proved. Optimal B-density = 0 proved. Coverage↔basis connection proved.",
+    "progressSummary": "PROGRESS: Eliminated 2 of 3 sorries in Erdos314Problem.lean. Proved partialHarmonicSum_as_difference and epsilon_upper_bound. Remaining: erdos_conjecture_true (asymptotic filter argument).",
     "builtItems": [
       "primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (Chebyshev splitting argument, ~70 lines)",
       "theorem sumset_comm: A+B = B+A (proved via omega)",
       "theorem sumset_mono_left/right: sumset monotone in both args (proved, term-mode)",
       "theorem sumset_empty_left/right: empty sumset is empty (proved via simp)",
-      "theorem coversCofinite_implies_allButFinitely: threshold coverage implies finiteness of exceptions"
+      "theorem coversCofinite_implies_allButFinitely: threshold coverage implies finiteness of exceptions",
+      "harmonicNumber_eq_sum_Icc: reindexing harmonic numbers",
+      "m_of_n_ge: m(n) ≥ n from achieves axiom",
+      "partialHarmonicSum_split_last: split off last term of Icc sum",
+      "epsilon_le_inv_m: overshoot bounded by last term",
+      "partialHarmonicSum_as_difference: proved H_m - H_{n-1} identity",
+      "epsilon_upper_bound: proved ε(n) ≤ 1/n"
     ],
     "insights": [
       "Proved primeCounting_le_chebyshev via small/large prime splitting — completing the full proof of primes have density zero",
       "Proof pattern was already in Erdos31Problem.lean (main file) but was missing from the standalone PrimesDensity file",
       "CoversCofinite is strictly stronger than CoversAllButFinitely — the former gives a threshold N₀",
       "Sumset is commutative (add_comm), monotone in both arguments (subset preservation)",
-      "Problem is fully axiomatized with minimal assumptions - only the deep Lorentz 1954 construction remains as axiom"
+      "Problem is fully axiomatized with minimal assumptions - only the deep Lorentz 1954 construction remains as axiom",
+      "partialHarmonicSum_as_difference: reindex via Finset.Icc sum_sdiff",
+      "m_of_n_ge derived from axioms: if m<n then Icc empty giving sum=0, contradicting ≥1",
+      "epsilon_upper_bound: split last term + minimality gives ε(n) ≤ 1/m(n) ≤ 1/n"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

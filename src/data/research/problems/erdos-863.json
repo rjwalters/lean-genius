@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 proved theorems (monotonicity, empty set, card bounds) to main file. Created Aristotle companion with 5 sorry targets (singleton, subset, counting bound). Axioms unchanged (3: 2 OPEN, 1 deep known).",
+    "progressSummary": "COMPLETED: All 6 Aristotle companion sorries proved (was 6S→0S). Proved singleton B₂[r] lemmas, subset monotonicity, and the Sidon counting bound |A|²≤4N.",
     "builtItems": [
       "theorem isB2r_mono: B₂[r] monotone in r (proved, term-mode)",
       "theorem isDiffB2r_mono: diff B₂[r] monotone in r (proved, term-mode)",
@@ -39,14 +39,21 @@
       "theorem isDiffB2r_empty: empty set is diff B₂[r] (proved, by simp)",
       "theorem sumRepCount_le_card_sq: sum rep count ≤ |A|² (proved)",
       "theorem diffRepCount_le_card_sq: diff rep count ≤ |A|² (proved)",
-      "Erdos863Aristotle.lean: companion file with 5 sorry targets"
+      "Erdos863Aristotle.lean: companion file with 5 sorry targets",
+      "isB2r_singleton: proved via card_filter_le",
+      "isDiffB2r_singleton: proved via card_filter_le",
+      "isB2r_subset: proved via filter/product monotonicity",
+      "isDiffB2r_subset: proved via filter/product monotonicity",
+      "sidon_counting_bound: full proof of |A|²≤4N for Sidon sets in {1,...,N}"
     ],
     "insights": [
       "B₂[r] monotonicity in r is trivial (le_trans); same for diff version",
       "All 3 axioms are deep: sidon_classical is a known result needing substantial proof, the other 2 are OPEN",
       "Counting argument gives |A|² ≤ 4N for Sidon sets - elementary but formalizing requires Finset product/filter API",
       "IsSidonSet from Erdos340Problem.lean is equivalent to IsB2r A 1 - potential future connection theorem",
-      "Cilleruelo-Ruzsa-Trujillo (2002): |A| ≤ (rN)^{1/2} + O(r^{1/2}N^{1/4}) for B₂[r] sets"
+      "Cilleruelo-Ruzsa-Trujillo (2002): |A| ≤ (rN)^{1/2} + O(r^{1/2}N^{1/4}) for B₂[r] sets",
+      "All 5 Aristotle companion sorries provable with standard Finset combinatorics",
+      "sidon_counting_bound proved via: injectivity on upper triangle, image in Icc 2 (2N) giving S≤2N-1, swap injection giving L≤S, partition S+L=n² yielding n²≤4N-2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -82,7 +89,7 @@
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos863Aristotle.lean"
     },
