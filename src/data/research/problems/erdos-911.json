@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: 9 axioms assessed. 3 deep theorems (Beck, KRSS, complete graphs), 4 definition/spec axioms, 1 provable (size_ramsey_ge_edges), 1 upper bound. Limited elimination potential.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "size_ramsey_ge_edges is provable: constant coloring → G embeds in H → e(H) ≥ e(G). Needs embedding edge injection.",
+      "sizeRamseyNumber + vertex_ramsey_number are definitional axioms (function values), not eliminable without alternative construction",
+      "Beck, KRSS, complete_graph results are deep published theorems — keep as axioms"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove size_ramsey_ge_edges from sizeRamseyNumber_spec via constant coloring + embedding edge injection"
+    ],
     "markdown": "# Erdős #911 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges that is Ramsey for $G$.\n\nIs there a function $f$ such that $f(x)/x\\to \\infty$ as $x\\to \\infty$ such that, for all large $C$, if $G$ is a graph with $n$ vertices and $e\\geq Cn$ edges then\\[\\hat{R}(G) > f(C) e?\\]\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #910\n- Problem #912\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
