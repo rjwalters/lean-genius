@@ -29,19 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 axioms (f_upper_trivial, f_monotone_t, f_lower_half) from existing infrastructure (8→5 axioms).",
+    "progressSummary": "PROGRESS: 5A->4A. Proved f_t1 (exact value for t=1 case): upper bound via injection argument showing no 1-admissible set exceeds (N+1)/2 elements. Key: 1 divides everything so no consecutive elements allowed.",
     "builtItems": [
       "IsAdmissible_mono_t: t-admissibility weakens with larger t (proved)",
       "f_set_nonempty: achievable cardinalities always nonempty (proved)",
       "f_set_bddAbove: achievable cardinalities bounded by N (proved)",
       "f_upper_trivial: f(N,t) ≤ N (proved, was axiom)",
       "f_monotone_t: f monotone in t (proved, was axiom)",
-      "f_lower_half: f(N,t) ≥ (N+1)/2 (proved, was axiom)"
+      "f_lower_half: f(N,t) ≥ (N+1)/2 (proved, was axiom)",
+      "no_consecutive_in_admissible: proved, 1-admissible sets have no consecutive elements",
+      "admissible_card_upper: proved, |A| <= (N+1)/2 via (a-1)/2 injection",
+      "f_t1: proved from oddSet lower bound + admissible_card_upper"
     ],
     "insights": [
       "f_upper_trivial follows from A ⊆ {1,...,N} → |A| ≤ N and csSup_le",
       "f_monotone_t: larger t means fewer restricted pairs, proved via csSup_le_csSup",
-      "f_lower_half: odd set is 1-admissible hence t-admissible, giving (N+1)/2 lower bound"
+      "f_lower_half: odd set is 1-admissible hence t-admissible, giving (N+1)/2 lower bound",
+      "f_t1 upper bound: map a->(a-1)/2 is injective on A (no-consecutive property), range has (N+1)/2 elements",
+      "f_t1_density is corollary of f_t1 but limit proof in Lean is nontrivial"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -69,8 +74,8 @@
       "path": "Proofs/Erdos635Problem.lean",
       "filename": "Erdos635Problem.lean",
       "lineCount": 266,
-      "theoremCount": 5,
-      "axiomCount": 8,
+      "theoremCount": 14,
+      "axiomCount": 4,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

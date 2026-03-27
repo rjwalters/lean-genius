@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 7 structural lemmas (monotonicity, subsets, basic clique/triangle-free properties). File now has 12 theorems, 4 axioms, 0 sorries, 173 lines.",
+    "progressSummary": "SURVEYED: Added 3 theorems (clique-free monotonicity, K5→K7 connection, partial resolution for delta>1/16). 4 axioms are all deep/open — cannot be eliminated.",
     "builtItems": [
       "isTriangleFree_subset: monotonicity of triangle-free sets (line 84-88)",
       "isClique_subset: monotonicity of cliques (line 90-93)",
@@ -37,7 +37,10 @@
       "hasClique_zero: trivial 0-clique via empty set (line 102-104)",
       "hasClique_one: singleton 1-clique (line 106-109)",
       "isTriangleFree_pair: pairs are triangle-free (line 111-117)",
-      "isTriangleFree_of_no_triangle: no K3 implies all subsets triangle-free (line 119-134)"
+      "isTriangleFree_of_no_triangle: no K3 implies all subsets triangle-free (line 119-134)",
+      "Proved not_hasClique_mono (contrapositive clique-free monotonicity)",
+      "Proved k5_free_implies_k7_free",
+      "Proved erdos_533_for_large_delta (partial resolution using ehsss axiom)"
     ],
     "insights": [
       "Axioms are all deep published results (EHSSS, K4-free case, Erdos-Rogers counterex, main conjecture) - none provable from Mathlib",
@@ -45,7 +48,10 @@
       "Triangle-free and clique definitions compose naturally via negation/subset transfer",
       "HasClique is monotone: k-clique implies j-clique for j ≤ k via Finset.exists_smaller_set",
       "IsTriangleFree is anti-monotone: subsets of triangle-free sets are triangle-free",
-      "Absence of K3 (triangle) implies all subsets are trivially triangle-free"
+      "Absence of K3 (triangle) implies all subsets are trivially triangle-free",
+      "4 axioms are all deep results (EHSSS, K4-free case, Erdos-Rogers) or the open conjecture itself — cannot be eliminated from Mathlib",
+      "For delta > 1/16, the conjecture follows directly from ehsss_result with c = delta/2",
+      "K5-free implies K7-free, so the Erdos-Rogers counterexample (K7-free) does not obstruct Problem 533"
     ],
     "mathlibGaps": [],
     "nextSteps": [

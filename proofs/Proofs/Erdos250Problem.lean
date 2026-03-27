@@ -87,7 +87,22 @@ theorem partialSum_one : partialSum 1 = 1 / 2 := by
 /-- σ(n) ≤ n · d(n) where d(n) is the number of divisors.
     Since d(n) ≤ n, we have σ(n) ≤ n².
     Proof: Each divisor d of n satisfies d ≤ n, and there are at most n divisors. -/
-axiom sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2
+theorem sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2 := by
+  simp only [divisorSum, ArithmeticFunction.sigma_apply]
+  calc ∑ d ∈ n.divisors, d ^ 1
+      ≤ ∑ _d ∈ n.divisors, n := by
+        apply Finset.sum_le_sum; intro d hd
+        simp; exact Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.dvd_of_mem_divisors hd)
+    _ = n.divisors.card * n := by rw [Finset.sum_const, Nat.smul_eq_mul]
+    _ ≤ n * n := by
+        apply Nat.mul_le_mul_right
+        have hsub : n.divisors ⊆ Finset.Icc 1 n := by
+          intro d hd; rw [Finset.mem_Icc]
+          exact ⟨Nat.pos_of_dvd_of_pos (Nat.dvd_of_mem_divisors hd) (Nat.pos_of_ne_zero hn),
+                 Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.dvd_of_mem_divisors hd)⟩
+        calc n.divisors.card ≤ (Finset.Icc 1 n).card := Finset.card_le_card hsub
+          _ = n := by simp [Finset.card_Icc]; omega
+    _ = n ^ 2 := by ring
 
 /-
 ## The Main Result

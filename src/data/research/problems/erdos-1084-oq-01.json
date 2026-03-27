@@ -85,7 +85,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-108",
-    "erdos-1084"
+    "erdos-1084",
+    "erdos-1084-oq-01"
   ],
   "references": {
     "papers": [
@@ -108,26 +109,26 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1084OQ01.lean",
+      "filename": "Erdos1084OQ01.lean",
+      "lineCount": 608,
+      "theoremCount": 20,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1084OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos1084Problem.lean",
       "filename": "Erdos1084Problem.lean",
-      "lineCount": 265,
-      "theoremCount": 3,
-      "axiomCount": 12,
+      "lineCount": 319,
+      "theoremCount": 4,
+      "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1084Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos1084OQ01.lean",
-      "filename": "Erdos1084OQ01.lean",
-      "lineCount": 607,
-      "theoremCount": 20,
-      "axiomCount": 4,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1084OQ01.lean"
     }
   ]
 }

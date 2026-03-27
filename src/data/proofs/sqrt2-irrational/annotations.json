@@ -14,11 +14,7 @@
       "Mathlib",
       "Lean 4",
       "tactic mode"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "Imports `Data.Real.Irrational` (the `Irrational` predicate and key results like `irrational_sqrt_two` and `Nat.Prime.irrational_sqrt`), `Algebra.Ring.Parity` (the `Even`/`Odd` predicates and lemmas on integer parity), and `Tactic` (automation including `norm_num`, `decide`, `ring`)."
+    ]
   },
   {
     "id": "ann-sqrt2-irrational-def",
@@ -36,9 +32,6 @@
       "rational numbers",
       "negation",
       "universal quantification"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -57,9 +50,6 @@
       "GCD",
       "lowest terms",
       "prime factorization"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -78,9 +68,6 @@
       "contrapositive",
       "parity",
       "proof by contradiction"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -139,9 +126,6 @@
       "proof by contradiction",
       "WLOG",
       "lowest terms"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -159,9 +143,6 @@
     "relatedConcepts": [
       "algebraic manipulation",
       "congruence"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {

@@ -73,9 +73,14 @@ theorem roots_in_sublevel (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
     z ∈ sublevelSet f := by
   simp [sublevelSet, hz, Complex.abs.map_zero]
 
-/-- The sublevel set is nonempty for non-constant f. -/
-axiom sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
-    (sublevelSet f).Nonempty
+/-- The sublevel set is nonempty for non-constant f (by FTA, f has a root). -/
+theorem sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
+    (sublevelSet f).Nonempty := by
+  have hne : f ≠ 0 := by intro h; simp [h] at hf
+  have hd : f.degree ≠ 0 := by
+    rw [Polynomial.degree_eq_natDegree hne]; exact_mod_cast hf.ne'
+  obtain ⟨z, hz⟩ := IsAlgClosed.exists_root f hd
+  exact ⟨z, roots_in_sublevel f z hz⟩
 
 /-- The sublevel set is compact. -/
 axiom sublevelSet_compact (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
@@ -141,8 +146,11 @@ For f(z) = z - a, the sublevel set is exactly the closed unit disc
 centered at a. This requires radius 1 to cover.
 -/
 /-- For the linear polynomial z, the sublevel set is the closed unit disc. -/
-axiom linear_sublevel_is_disc :
-    sublevelSet (X : Polynomial ℂ) = closedBall (0 : ℂ) 1
+theorem linear_sublevel_is_disc :
+    sublevelSet (X : Polynomial ℂ) = closedBall (0 : ℂ) 1 := by
+  ext z
+  simp [sublevelSet, Polynomial.eval_X, Metric.mem_closedBall, dist_zero_right,
+        Complex.norm_eq_abs]
 
 /- ## Part VI: Lower Bounds -/
 
@@ -153,8 +161,10 @@ For some polynomials, total radius 2 is necessary. For f(z) = z^2 - 1,
 the sublevel set has two components around ±1, each requiring radius 1.
 -/
 /-- The sublevel set of z² - 1 contains 1 and -1 (the roots). -/
-axiom quadratic_sublevel_nonempty :
-    (sublevelSet (X^2 - C 1 : Polynomial ℂ)).Nonempty
+theorem quadratic_sublevel_nonempty :
+    (sublevelSet (X^2 - C 1 : Polynomial ℂ)).Nonempty := by
+  exact ⟨1, roots_in_sublevel _ 1 (by simp [Polynomial.eval_sub, Polynomial.eval_pow,
+    Polynomial.eval_X, Polynomial.eval_C])⟩
 
 /- ## Part VII: Historical Context -/
 

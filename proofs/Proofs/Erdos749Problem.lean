@@ -24,6 +24,9 @@ Reference: https://erdosproblems.com/749
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Order.Filter.Basic
+import Mathlib.Order.LiminfLimsup
+import Mathlib.Data.Set.Card
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -37,17 +40,46 @@ def repFunction (A : Set ℕ) (n : ℕ) : ℕ :=
 def sumSet (A : Set ℕ) : Set ℕ :=
   {n : ℕ | ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ n = a + b}
 
+/-- Counting function: |S ∩ {1,...,N}|. -/
+noncomputable def countingFn (S : Set ℕ) (N : ℕ) : ℕ :=
+  Set.ncard (S ∩ Set.Icc 1 N)
+
+/-- Density ratio: |S ∩ {1,...,N}| / N. -/
+noncomputable def densityRatio (S : Set ℕ) (N : ℕ) : ℝ :=
+  (countingFn S N : ℝ) / N
+
 /-- The lower density of a set S ⊆ ℕ: lim inf_{N→∞} |S ∩ {1,...,N}| / N. -/
-axiom lowerDensity (S : Set ℕ) : ℝ
+noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
+  Filter.liminf (densityRatio S) Filter.atTop
 
 /-- The upper density of a set S ⊆ ℕ: lim sup_{N→∞} |S ∩ {1,...,N}| / N. -/
-axiom upperDensity (S : Set ℕ) : ℝ
+noncomputable def upperDensity (S : Set ℕ) : ℝ :=
+  Filter.limsup (densityRatio S) Filter.atTop
 
-/-- Lower density is between 0 and 1. -/
-axiom lowerDensity_bounds (S : Set ℕ) : 0 ≤ lowerDensity S ∧ lowerDensity S ≤ 1
+/-- Density ratio is always non-negative. -/
+theorem densityRatio_nonneg (S : Set ℕ) (N : ℕ) : 0 ≤ densityRatio S N :=
+  div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
 
-/-- Lower density ≤ upper density. -/
-axiom lower_le_upper (S : Set ℕ) : lowerDensity S ≤ upperDensity S
+/-- Density ratio is at most 1 (since |S ∩ {1,...,N}| ≤ N). -/
+theorem densityRatio_le_one (S : Set ℕ) (N : ℕ) (hN : 0 < N) : densityRatio S N ≤ 1 := by
+  unfold densityRatio countingFn
+  rw [div_le_one (Nat.cast_pos.mpr hN)]
+  exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_right.trans (by
+    intro x hx; exact Set.mem_Icc.mp hx |>.2)) (Set.toFinite _)
+
+/-- Lower density is non-negative: liminf of non-negative values is non-negative. -/
+theorem lowerDensity_nonneg (S : Set ℕ) : 0 ≤ lowerDensity S := by
+  unfold lowerDensity
+  exact le_liminf_of_le (by infer_instance)
+    (Filter.Eventually.of_forall (densityRatio_nonneg S))
+
+/-- Lower density ≤ upper density: liminf ≤ limsup. -/
+theorem lower_le_upper (S : Set ℕ) : lowerDensity S ≤ upperDensity S := by
+  unfold lowerDensity upperDensity
+  exact Filter.liminf_le_limsup (by infer_instance)
+    ⟨0, Filter.Eventually.of_forall (densityRatio_nonneg S)⟩
+    ⟨1, Filter.eventually_atTop.mpr ⟨1, fun N hN =>
+      densityRatio_le_one S N (by omega)⟩⟩
 
 /- ## The Representation Bounded Property -/
 
@@ -98,11 +130,15 @@ theorem sidon_bounded_rep (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
   have heq : a + (n - a) = b + (n - b) := by omega
   exact (hsidon a (n - a) b (n - b) ha_A hna_A hb_A hnb_A ha_le hb_le heq).1
 
-/-- For Sidon sets, the sumset A + A has density 0 (since |A ∩ [1,N]| ~ √N). -/
-axiom sidon_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
+/-- Sidon sets have natural density 0: upper density of A is 0.
+    This follows from the classical bound |A ∩ [1,N]| ≤ √(2N) + 1,
+    since all pairwise sums a+b (a ≤ b) are distinct and lie in [2, 2N].
+    Thus Sidon sets can't achieve dense sumsets (they have bounded rep
+    but fail the density requirement of Problem #749). -/
+axiom sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
     a ∈ A → b ∈ A → c ∈ A → d ∈ A → a ≤ b → c ≤ d →
     a + b = c + d → a = c ∧ b = d) :
-    lowerDensity (sumSet A) = 0
+    upperDensity A = 0
 
 /- ## Erdős–Turán Conjecture Connection -/
 

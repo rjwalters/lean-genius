@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created BorsukUlamOQ04.lean (295 lines). 4 proved theorems: setoid equivalence, projMap_neg, odd_preserves_relation, odd_gives_equivariant. 3 axioms: sphere_double_cover, fundamental_group_RPn, covering_space_obstruction. 11 definitions including CoveringType abstraction and EquivariantMap.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (3→1). Proved fundamental_group_RPn (Fin 2 witness). Replaced false sphere_double_cover axiom with correct+proved sphere_fiber_pair theorem. Only remaining axiom is covering_space_obstruction (main Borsuk-Ulam variant).",
     "builtItems": [
       "BorsukUlamOQ04.lean: 295 lines, 4 theorems, 3 axioms, 11 definitions",
       "Involution structure: self-inverse map with proved setoid properties",
@@ -39,14 +39,18 @@
       "descendOdd: descent construction via Quotient.map",
       "CoveringType: abstraction for both classical and higher categorical coverings",
       "EquivariantMap: maps between covering types respecting structure",
-      "odd_gives_equivariant: proved odd maps yield equivariant maps between antipodal coverings"
+      "odd_gives_equivariant: proved odd maps yield equivariant maps between antipodal coverings",
+      "sphere_fiber_pair: proved fiber characterization (replaces false sphere_double_cover axiom)",
+      "fundamental_group_RPn: proved via Fin 2 witness"
     ],
     "insights": [
       "Descent of odd maps to RP^n is purely algebraic: odd maps preserve the antipodal equivalence relation",
       "CoveringType captures the key structure: total/base spaces, projection, deck transformation, compatibility",
       "The Z/2 case is special: Z/2Z has no higher homotopy, so pi_1 suffices. For general G, higher homotopy groups matter.",
       "Higher coverings change fiber type: 0-type (classical) to n-type to infinity-type (full local system)",
-      "Borsuk-Ulam in infty-topos language: non-existence of sections in the slice infty-topos over BZ/2"
+      "Borsuk-Ulam in infty-topos language: non-existence of sections in the slice infty-topos over BZ/2",
+      "sphere_double_cover was FALSE: RP defined as quotient of all R^{n+1} by x~-x, but [0] has no sphere representative. Correct RP should quotient S^n or R^{n+1}\\{0}.",
+      "fundamental_group_RPn only claimed existence of a 2-element type — trivially witnessed by Fin 2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -67,7 +71,8 @@
     "borsuk-ulam-oq-03",
     "borsuk-ulam-oq-03-oq-01",
     "borsuk-ulam-oq-03-oq-01-oq-01",
-    "borsuk-ulam-oq-03-oq-03"
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-04"
   ],
   "references": {
     "papers": [],
@@ -80,14 +85,92 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/BorsukUlam.lean",
+      "filename": "BorsukUlam.lean",
+      "lineCount": 307,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlam.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ01.lean",
+      "filename": "BorsukUlamOQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02.lean",
+      "filename": "BorsukUlamOQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03.lean",
+      "filename": "BorsukUlamOQ03.lean",
+      "lineCount": 5170,
+      "theoremCount": 227,
+      "axiomCount": 2,
+      "defCount": 35,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01.lean",
+      "lineCount": 1164,
+      "theoremCount": 41,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01OQ01.lean",
+      "lineCount": 435,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ03.lean",
+      "filename": "BorsukUlamOQ03OQ03.lean",
+      "lineCount": 2634,
+      "theoremCount": 123,
+      "axiomCount": 1,
+      "defCount": 30,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    },
+    {
       "path": "Proofs/BorsukUlamOQ04.lean",
       "filename": "BorsukUlamOQ04.lean",
-      "lineCount": 295,
+      "lineCount": 296,
       "theoremCount": 4,
       "axiomCount": 3,
-      "defCount": 11,
+      "defCount": 8,
       "sorryCount": 0,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
     }
   ]
 }

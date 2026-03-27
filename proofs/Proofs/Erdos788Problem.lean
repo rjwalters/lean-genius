@@ -139,9 +139,14 @@ theorem interval_sum_range : ∀ n : ℕ, n ≥ 1 →
     · right; omega
 
 /-- Sums of distinct elements from (n, 2n) lie in (2n, 4n) -/
-axiom sums_in_upper_interval : ∀ n : ℕ, n ≥ 1 →
+theorem sums_in_upper_interval : ∀ n : ℕ, n ≥ 1 →
     ∀ c₁ ∈ lowerInterval n, ∀ c₂ ∈ lowerInterval n,
-    c₁ ≠ c₂ → c₁ + c₂ ∈ upperInterval n
+    c₁ ≠ c₂ → c₁ + c₂ ∈ upperInterval n := by
+  intro n _hn c₁ hc₁ c₂ hc₂ _hne
+  simp only [lowerInterval, upperInterval, openInterval, mem_filter, mem_range] at *
+  constructor
+  · omega
+  · constructor <;> omega
 
 /- ## Part VII: Summary -/
 

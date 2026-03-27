@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T14:31:40.058Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 48 theorems proved, 0 sorries, 0 axioms. Key result: sigma(a)+sigma(2a)=sigma(3a) for all a coprime to 6, giving infinite family of solutions. Also proved non-solution criterion, symmetry, monotonicity of S(x), and OEIS A110177 membership.",
+    "builtItems": [
+      "sigma_add_eq_coprime6: general structural theorem for coprime-to-6 family",
+      "not_solution_of_sum_prime: non-solution criterion for prime triples",
+      "S_monotone: monotonicity of counting function",
+      "prime_solution_counted: each prime p in [5,x/3] contributes to S(x)"
+    ],
+    "insights": [
+      "sigma(a)+sigma(2a)=sigma(3a) for gcd(a,6)=1 via multiplicativity: sigma(2a)=3*sigma(a), sigma(3a)=4*sigma(a)",
+      "Non-solution criterion: if p,q,p+q all prime then (p,q) is never a solution (sigma overshoots by 1)",
+      "Infinitely many solutions from prime family {(p,2p) : p>=5 prime}",
+      "S(x) is monotone; coprime-to-6 family gives linear lower bound via prime counting"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1061 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?\n\n\n\nA question of Erd\\H{o}s reported in problem B15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1060\n- Problem #1062\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"

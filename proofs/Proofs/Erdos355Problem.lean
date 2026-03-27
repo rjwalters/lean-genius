@@ -53,6 +53,7 @@ import Mathlib.Data.Rat.Lemmas
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.SpecificLimits.Basic
 
 
 open Finset Set
@@ -149,7 +150,11 @@ Powers of 2 (λ = 2) cannot represent all rationals in any interval.
 
 /-- The sum of all reciprocals of powers of 2 is exactly 1.
     ∑_{n=1}^∞ 1/2^n = 1 (geometric series). -/
-axiom geometric_series_sum : ∑' n, (1 : ℝ) / 2^(n+1) = 1
+theorem geometric_series_sum : ∑' n, (1 : ℝ) / 2^(n+1) = 1 := by
+  have h1 : ∀ n : ℕ, (1 : ℝ) / 2 ^ (n + 1) = (1 / 2) * (1 / 2) ^ n := by
+    intro n; rw [pow_succ]; ring
+  simp_rw [h1, tsum_mul_left, tsum_geometric_of_lt_one (by positivity) (by norm_num)]
+  norm_num
 
 /- For λ = 2 (powers of 2), the achievable sums are exactly the dyadic rationals
     in [0, 1]. These are rationals of the form k/2^n and don't fill any interval. -/
