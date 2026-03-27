@@ -73,10 +73,24 @@ theorem achievable_small {n k : ℕ} (hn : n ≤ 3) (hk : k ≥ 1) : Achievable 
   intro a d ⟨hd, ha, hle⟩
   omega
 
-/-- If k-coloring is achievable, then (k+1)-coloring is also achievable
-    (just ignore the extra color). -/
-axiom achievable_mono_colors {n k : ℕ} (h : Achievable n k) :
-    Achievable n (k + 1)
+/-- If k-coloring is achievable, then (k+1)-coloring is also achievable.
+    Proof: embed Fin k into Fin (k+1) via Fin.castSucc (injective,
+    so distinct colors remain distinct). -/
+theorem achievable_mono_colors {n k : ℕ} (hak : Achievable n k) :
+    Achievable n (k + 1) := by
+  obtain ⟨c, hc⟩ := hak
+  refine ⟨Fin.castSucc ∘ c, fun a d hap ha ha1 ha2 ha3 => ?_⟩
+  have hcard := hc a d hap ha ha1 ha2 ha3
+  unfold colorCount4 at hcard ⊢
+  simp only [Function.comp]
+  have himg : ({Fin.castSucc (c ⟨a - 1, ha⟩), Fin.castSucc (c ⟨a + d - 1, ha1⟩),
+      Fin.castSucc (c ⟨a + 2 * d - 1, ha2⟩),
+      Fin.castSucc (c ⟨a + 3 * d - 1, ha3⟩)} : Finset (Fin (k + 1))) =
+    ({c ⟨a - 1, ha⟩, c ⟨a + d - 1, ha1⟩, c ⟨a + 2 * d - 1, ha2⟩,
+      c ⟨a + 3 * d - 1, ha3⟩} : Finset (Fin k)).image Fin.castSucc := by
+    simp [Finset.image_insert, Finset.image_singleton]
+  rw [himg, Finset.card_image_of_injective _ (Fin.castSucc_injective k)]
+  exact hcard
 
 /-- Monotonicity in n: if achievable for n, achievable for any m ≤ n
     with the same number of colors. -/
@@ -186,21 +200,34 @@ axiom lower_bound_exp :
 # Part 6: Consequences
 -/
 
-/-- The upper bound implies h grows sublinearly. -/
-theorem h_sublinear : ∀ ε > (0 : ℝ), ∃ N₀ : ℕ, ∀ n ≥ N₀,
+/-- The upper bound implies h grows sublinearly (for ε < 1/3).
+    NOTE: as stated this is FALSE for ε > 1/3 since h(n) ≤ C·n^(2/3)
+    does NOT imply h(n) ≤ n^(1-ε) when 1-ε < 2/3. The correct
+    statement would be h(n) ≤ n^(2/3+ε) for any ε > 0. -/
+theorem h_sublinear : ∀ ε > (0 : ℝ), ε < 1/3 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (h n : ℝ) ≤ (n : ℝ) ^ (1 - ε) := by
-  sorry
+  sorry -- Follows from upper_bound_two_thirds for ε < 1/3; needs rpow_le_rpow
 
-/-- The lower bound implies h grows superpolynomially in log. -/
+/-- The lower bound implies h grows without bound: for any C,
+    h(n) ≥ C for all sufficiently large n. Proof: the exponential
+    lower bound exp(c · (log n)^{1/9}) → ∞ as n → ∞. -/
 theorem h_superlog : ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (h n : ℝ) ≥ C := by
-  sorry
+  sorry -- Requires showing exp(c · (log n)^{1/9}) → ∞, needs Filter.Tendsto infrastructure
 
 /-- The Hunter upper bound improves on the LeechLattice bound
-    (log 3 / log 22 < 2/3). -/
+    (log 3 / log 22 < 2/3). Proof: log 3 < (2/3) · log 22 since
+    3^3 = 27 < 22^2 = 484, so log 27 < log 484, i.e., 3·log 3 < 2·log 22.
+    Division by 3·log 22 gives the result. -/
 theorem hunter_improves_leechlattice :
     Real.log 3 / Real.log 22 < (2 : ℝ) / 3 := by
-  sorry
+  have hlog22_pos : (0 : ℝ) < Real.log 22 := Real.log_pos (by norm_num)
+  rw [div_lt_div_iff hlog22_pos (by norm_num : (0 : ℝ) < 3)]
+  -- Goal: Real.log 3 * 3 < 2 * Real.log 22
+  -- Equivalently: log(3^3) < log(22^2), i.e., log 27 < log 484
+  rw [show Real.log 3 * 3 = Real.log (3 ^ 3) by rw [Real.log_pow]; ring,
+      show (2 : ℝ) * Real.log 22 = Real.log (22 ^ 2) by rw [Real.log_pow]; ring]
+  exact Real.log_lt_log (by positivity) (by norm_num)
 
 /-
 # Part 7: Open Questions (the actual Erdős problem)
