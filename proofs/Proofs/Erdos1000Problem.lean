@@ -829,4 +829,143 @@ theorem cesaroAvg_pos (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
           · exact Finset.mem_range.mpr hN
   · exact Nat.cast_pos.mpr hN
 
+/- ## Part XI: Growth Bound and Density Floor -/
+
+/-- **Used-sum growth bound**: usedSum(k) ≤ k · n_{k-1} for k ≥ 1.
+    Each used divisor e of n_k equals some n_j with j < k, so e ≤ n_{k-1}.
+    Since φ(e) ≤ e, each term contributes at most n_{k-1}, and there
+    are at most k used divisors (by usedDivisors_card_le). -/
+theorem usedSum_le_card_mul (A : IncreasingSeq) (k : ℕ) (hk : 0 < k) :
+    usedSum A k ≤ k * A.seq (k - 1) := by
+  unfold usedSum
+  -- Each φ(e) ≤ n_{k-1} for used divisors e
+  have hle : ∀ e ∈ (A.seq k).divisors.filter
+      (fun e => ∃ j, j < k ∧ e = A.seq j),
+      Nat.totient e ≤ A.seq (k - 1) := by
+    intro e he
+    simp only [Finset.mem_filter, Nat.mem_divisors] at he
+    obtain ⟨_, j, hj, rfl⟩ := he
+    calc Nat.totient (A.seq j) ≤ A.seq j := Nat.totient_le _
+      _ ≤ A.seq (k - 1) := by
+          have : j ≤ k - 1 := by omega
+          rcases eq_or_lt_of_le this with rfl | h
+          · exact le_refl _
+          · exact le_of_lt (A.strictMono h)
+  calc ((A.seq k).divisors.filter _).sum Nat.totient
+      ≤ ((A.seq k).divisors.filter _).card • A.seq (k - 1) :=
+        Finset.sum_le_card_nsmul _ _ _ hle
+    _ = ((A.seq k).divisors.filter _).card * A.seq (k - 1) := by
+        rw [smul_eq_mul]
+    _ ≤ k * A.seq (k - 1) :=
+        Nat.mul_le_mul_right _ (usedDivisors_card_le A k)
+
+/-- **Density ratio growth floor**: ρ_A(k) ≥ 1 - k·n_{k-1}/n_k.
+    From the complement formula and the growth bound:
+    ρ = 1 - usedSum/n_k ≥ 1 - k·n_{k-1}/n_k.
+    This shows that if the sequence grows faster than k·n_{k-1},
+    the density ratio is bounded away from 0. -/
+theorem densityRatio_ge_one_sub_growth (A : IncreasingSeq) (k : ℕ) (hk : 0 < k) :
+    1 - (k : ℝ) * (A.seq (k - 1) : ℝ) / (A.seq k : ℝ) ≤ densityRatio A k := by
+  rw [densityRatio_complement]
+  apply sub_le_sub_left
+  apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
+  exact_mod_cast usedSum_le_card_mul A k hk
+
+/-- **Fast-growth density floor**: If n_k > 2k · n_{k-1} then ρ_A(k) > 1/2.
+    When the growth ratio exceeds 2k, the used divisors can capture at most
+    half the totient weight, so the density ratio stays above 1/2. -/
+theorem densityRatio_gt_half_of_fast_growth (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
+    (hgrow : 2 * k * A.seq (k - 1) < A.seq k) :
+    1 / 2 < densityRatio A k := by
+  have hge := densityRatio_ge_one_sub_growth A k hk
+  have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
+  have hkn : (k : ℝ) * (A.seq (k - 1) : ℝ) / (A.seq k : ℝ) < 1 / 2 := by
+    rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2)]
+    have hgrow_r : (↑(2 * k * A.seq (k - 1)) : ℝ) < ↑(A.seq k) :=
+      Nat.cast_lt.mpr hgrow
+    push_cast at hgrow_r
+    linarith
+  linarith
+
+/-- **No density-to-zero for fast-growing sequences**: If the growth ratio
+    n_k / (k · n_{k-1}) exceeds 2 for infinitely many k, then ρ_A(k)
+    cannot converge to 0 — in fact ρ ≥ 1/2 frequently. -/
+theorem not_densityToZero_of_fast_growth (A : IncreasingSeq)
+    (hgrow : ∃ᶠ k in atTop, 2 * k * A.seq (k - 1) < A.seq k) :
+    ¬ DensityToZero A :=
+  not_densityToZero_of_frequently_ge A (by norm_num : (0 : ℝ) < 1 / 2)
+    (hgrow.mono fun k hk => by
+      rcases Nat.eq_zero_or_pos k with rfl | hk_pos
+      · -- k = 0: ρ_A(0) = 1 ≥ 1/2
+        linarith [densityRatio_zero A]
+      · exact le_of_lt (densityRatio_gt_half_of_fast_growth A k hk_pos hk))
+
+/-- **φ_A floor from growth**: φ_A(k) ≥ n_k - k·n_{k-1} for k ≥ 1.
+    Direct from the complement formula and the growth bound. -/
+theorem phiA_ge_seq_sub_growth (A : IncreasingSeq) (k : ℕ) (hk : 0 < k) :
+    A.seq k - k * A.seq (k - 1) ≤ phiA A k := by
+  have h1 := phiA_add_usedSum A k  -- φ_A(k) + usedSum(k) = n_k
+  have h2 := usedSum_le_card_mul A k hk  -- usedSum(k) ≤ k · n_{k-1}
+  omega
+
+/- ## Part XII: Sum-Switching Identity for Double-Counting -/
+
+/-- The set of divisibility pairs: indices (j, k) with j < k < N and n_j | n_k. -/
+def divPairs (A : IncreasingSeq) (N : ℕ) : Finset (ℕ × ℕ) :=
+  (range N ×ˢ range N).filter (fun p => p.1 < p.2 ∧ A.seq p.1 ∣ A.seq p.2)
+
+/-- The fiber over k: indices j < k with n_j | n_k. This is exactly
+    the set of "used divisor sources" for position k. -/
+def divPairs_fiber_k (A : IncreasingSeq) (N k : ℕ) : Finset ℕ :=
+  (range N).filter (fun j => j < k ∧ A.seq j ∣ A.seq k)
+
+/-- The fiber over j: indices k > j with n_j | n_k, k < N.
+    These are the later positions where n_j appears as a used divisor. -/
+def divPairs_fiber_j (A : IncreasingSeq) (N j : ℕ) : Finset ℕ :=
+  (range N).filter (fun k => j < k ∧ A.seq j ∣ A.seq k)
+
+/-- **Multiplicity bound**: The number of multiples of n_j in the sequence
+    up to index N is at most n_{N-1}/n_j.
+    Each such n_k = q·n_j for distinct q ≥ 2, and n_k ≤ n_{N-1},
+    so q ≤ n_{N-1}/n_j. The injective map k ↦ n_k/n_j into Ico 1 (M+1)
+    (which has card M) establishes the bound. -/
+theorem divPairs_fiber_j_card_le (A : IncreasingSeq) (N j : ℕ) (hj : j < N)
+    (hN : 0 < N) :
+    (divPairs_fiber_j A N j).card ≤ A.seq (N - 1) / A.seq j := by
+  unfold divPairs_fiber_j
+  set M := A.seq (N - 1) / A.seq j with hM_def
+  -- Inject via k ↦ A.seq k / A.seq j into Ico 1 (M + 1) which has card M
+  calc ((range N).filter (fun k => j < k ∧ A.seq j ∣ A.seq k)).card
+      ≤ (Finset.Ico 1 (M + 1)).card := by
+        apply Finset.card_le_card_of_injOn (fun k => A.seq k / A.seq j)
+        · -- Maps into Ico 1 (M+1)
+          intro k hk
+          simp only [Finset.mem_filter, Finset.mem_range] at hk
+          obtain ⟨hkN, _, hdvd⟩ := hk
+          rw [Finset.mem_Ico]
+          constructor
+          · -- quotient ≥ 1 (from divisibility and positivity)
+            exact Nat.div_pos (Nat.le_of_dvd (A.pos k) hdvd) (A.pos j)
+          · -- quotient ≤ M, hence < M + 1
+            apply Nat.lt_succ_of_le
+            apply Nat.div_le_div_right
+            have hk_le_N : k ≤ N - 1 := by omega
+            rcases eq_or_lt_of_le hk_le_N with rfl | h
+            · exact le_refl _
+            · exact le_of_lt (A.strictMono h)
+        · -- Injective on the fiber
+          intro k₁ hk₁ k₂ hk₂ heq
+          simp only [Finset.coe_filter, Set.mem_sep_iff, Finset.mem_coe,
+                     Finset.mem_range] at hk₁ hk₂
+          have hd₁ : A.seq j ∣ A.seq k₁ := hk₁.2.2
+          have hd₂ : A.seq j ∣ A.seq k₂ := hk₂.2.2
+          have h1 := Nat.div_mul_cancel hd₁
+          have h2 := Nat.div_mul_cancel hd₂
+          have : A.seq k₁ = A.seq k₂ :=
+            calc A.seq k₁ = A.seq k₁ / A.seq j * A.seq j := h1.symm
+              _ = A.seq k₂ / A.seq j * A.seq j := by rw [heq]
+              _ = A.seq k₂ := h2
+          exact A.strictMono.injective this
+    _ = M := by rw [Finset.card_Ico]; omega
+
 end Erdos1000

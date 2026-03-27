@@ -97,3 +97,36 @@ Added 11 new infrastructure theorems toward proving erdos_no_zero_limit:
 - Find or build Mathlib infrastructure for Mertens-type bounds on φ(n)/n
 - Alternatively: formalize the sum-switching identity and tighter pair bounds
 - The core challenge: bounding Σ_j φ(n_j) · Σ_{k>j: n_j|n_k} 1/n_k more tightly than O(N log N)
+
+## Session 2026-03-26 (Session 4) - Growth Bound and Multiplicity Infrastructure
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+- Proved `usedSum_le_card_mul`: usedSum(k) ≤ k · n_{k-1} — growth bound on used divisors
+  - Each used divisor e = n_j has φ(e) ≤ e ≤ n_{k-1}, and there are at most k of them
+- Proved `densityRatio_ge_one_sub_growth`: ρ_A(k) ≥ 1 - k·n_{k-1}/n_k
+  - From complement formula + growth bound
+- Proved `densityRatio_gt_half_of_fast_growth`: ρ > 1/2 when n_k > 2k·n_{k-1}
+- Proved `not_densityToZero_of_fast_growth`: sequences with frequent super-linear growth can't have ρ→0
+- Proved `phiA_ge_seq_sub_growth`: φ_A(k) ≥ n_k - k·n_{k-1}
+- Defined `divPairs`, `divPairs_fiber_k`, `divPairs_fiber_j` — vocabulary for double-counting
+- Proved `divPairs_fiber_j_card_le`: multiplicity bound |{k > j : n_j | n_k, k < N}| ≤ n_{N-1}/n_j
+  - Via injective map k ↦ n_k/n_j into Ico 1 (M+1)
+
+### Key Findings
+- **Growth bound reframes the problem**: For ρ → 0, need usedSum ≈ n_k, so k·n_{k-1} ≥ n_k. This constrains the sequence to grow at most linearly: n_k ≤ O(k·n_{k-1}).
+- **Special case proved**: Sequences growing faster than 2k·n_{k-1} (super-exponential, factorial, lacunary) can't have ρ→0.
+- **Double-counting vocabulary established**: divPairs and fiber definitions set up the sum-switching identity needed for the general proof.
+- **Multiplicity bound proved**: at most n_{N-1}/n_j multiples of n_j in the sequence. This is the key ingredient for bounding the switched sum.
+
+### Files Modified
+- `proofs/Proofs/Erdos1000Problem.lean` — 6 new theorems, 3 new definitions (796→935 lines)
+- `src/data/proofs/erdos-1000/meta.json` — updated counts
+- `src/data/research/problems/erdos-1000-wip-01.json` — updated
+
+### Next Steps
+- Formalize the sum-switching identity: Σ usedSum(k)/n_k = Σ_j φ(n_j) · Σ_{k>j,n_j|n_k} 1/n_k
+- Use multiplicity bound + growth bound to derive contradiction from ρ→0
+- Alternative: prove Mertens-type lower bound φ(n)/n ≥ c/log(log(n)) for more direct proof
