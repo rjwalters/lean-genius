@@ -129,8 +129,29 @@ theorem partial_sum_formula (n : ℕ) :
 
 /- ## Known Results -/
 
+/-- n = 1 is representable: 1/2 = 4/16 + 5/32 + 6/64. -/
+theorem representable_one : IsRepresentable 1 := by
+  refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
+  · -- card ≥ 2
+    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · -- all ≥ 1
+    intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl <;> omega
+  · -- sum = 1/2 (= recipPow2Weight 1)
+    show recipPow2Sum {4, 5, 6} = recipPow2Weight 1
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (4 : ℕ) ∉ ({5, 6} : Finset ℕ) by decide),
+                Finset.sum_insert (show (5 : ℕ) ∉ ({6} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
-    via the consecutive block {n+1, ..., n+m} -/
+    via the consecutive block {n+1, ..., n+m} for m ≥ 2.
+    For m = 1 (n = 1), the consecutive block has card 1, so we use
+    representable_one instead.
+    Proof strategy for m ≥ 2: telescoping via partial_sum_formula gives
+    ∑_{k=n+1}^{n+m} = (n+2)/2^n - (n+m+2)/2^{n+m} = n/2^n
+    using the key identity n + m + 2 = 2^{m+1}. -/
 axiom borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
   let n := 2 ^ (m + 1) - m - 2
   IsRepresentable n
