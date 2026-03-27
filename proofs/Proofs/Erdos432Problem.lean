@@ -103,31 +103,54 @@ def ErdosProblem432 : Prop :=
 If A + B is pairwise coprime, each prime p divides at most one
 element of A + B.
 -/
-axiom prime_divides_at_most_one :
-  ∀ A B : Set ℕ,
-    SumsetPairwiseCoprime A B →
-    ∀ p : ℕ, p.Prime →
-      ∀ x ∈ sumset A B, ∀ y ∈ sumset A B,
-        p ∣ x → p ∣ y → x = y
+theorem prime_divides_at_most_one :
+    ∀ A B : Set ℕ,
+      SumsetPairwiseCoprime A B →
+      ∀ p : ℕ, p.Prime →
+        ∀ x ∈ sumset A B, ∀ y ∈ sumset A B,
+          p ∣ x → p ∣ y → x = y := by
+  intro A B hcop p hp x hx y hy hpx hpy
+  by_contra hne
+  -- x ≠ y and both in sumset ⟹ gcd(x,y) = 1
+  have hxy : Nat.Coprime x y := hcop x hx y hy hne
+  -- p ∣ x and p ∣ y ⟹ p ∣ gcd(x,y) = 1
+  have hpg : p ∣ Nat.gcd x y := Nat.dvd_gcd hpx hpy
+  rw [hxy] at hpg
+  -- p ∣ 1 contradicts p ≥ 2
+  exact absurd hpg (Nat.Prime.one_lt hp |>.not_le ∘ Nat.le_of_dvd one_pos)
 
 /--
 A pairwise coprime set S ⊆ {1, …, n} has at most π(n) + 1
 elements, where π(n) is the prime counting function. This is
 because each element > 1 has a distinct smallest prime factor.
 -/
-axiom coprime_set_bound :
-  ∀ S : Set ℕ,
-    IsPairwiseCoprime S →
-    ∀ n : ℕ, countingFn S n ≤ n
+theorem coprime_set_bound :
+    ∀ S : Set ℕ,
+      IsPairwiseCoprime S →
+      ∀ n : ℕ, countingFn S n ≤ n := by
+  intro S _ n
+  -- countingFn S n filters range(n+1) by m ∈ S ∧ m ≥ 1, excluding 0
+  unfold countingFn
+  calc ((Finset.range (n + 1)).filter (fun m => m ∈ S ∧ m ≥ 1)).card
+      ≤ ((Finset.range (n + 1)).filter (fun m => m ≥ 1)).card :=
+        Finset.card_filter_le_card_filter _ _ _ (fun m _ h => h.2)
+    _ ≤ ((Finset.range n).image (· + 1)).card := by
+        apply Finset.card_le_card
+        intro m hm
+        simp only [Finset.mem_filter, Finset.mem_range] at hm
+        simp only [Finset.mem_image, Finset.mem_range]
+        exact ⟨m - 1, by omega, by omega⟩
+    _ ≤ (Finset.range n).card := Finset.card_image_le
+    _ = n := Finset.card_range n
 
 /--
 Ostmann's related problem (#431): if A + B = ℕ (an additive
 complement pair), can A + B be pairwise coprime? Clearly not
 for A + B = ℕ, but the question is about near-complements.
 -/
-axiom ostmann_connection :
-  -- Ostmann's problem is the companion to #432
-  True
+theorem ostmann_connection :
+    -- Ostmann's problem is the companion to #432
+    True := trivial
 
 /- ## Part VI: Summary -/
 
