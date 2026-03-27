@@ -20,9 +20,9 @@
     "erdosNumber": 289,
     "erdosUrl": "https://erdosproblems.com/289",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 131,
-    "assumptions": "7 axioms: erdos_289_conjecture, hickerson_montgomery_example, harmonic_tail_diverges, and 4 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 160,
+    "assumptions": "5 axioms: erdos_289_conjecture (OPEN), hickerson_montgomery_example, harmonic_tail_diverges, exact_target_difficulty, trivial_without_nonadjacency. interval_recipsum_upper/lower PROVED.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -117,9 +117,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 131,
-    "axiomCount": 7,
-    "theoremCount": 2,
+    "lineCount": 160,
+    "axiomCount": 5,
+    "theoremCount": 4,
     "definitionCount": 5
   }
 }

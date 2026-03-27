@@ -58,10 +58,17 @@ noncomputable def edgeCount {n : ℕ} (G : Graph n) : ℕ :=
   ((Finset.univ.product Finset.univ).filter fun (p : Fin n × Fin n) =>
     p.1 < p.2 ∧ G.adj p.1 p.2).card
 
-/-- The graph Ramsey number R(K_s, G) for a graph G on n vertices:
-    minimum r such that any 2-coloring of K_r contains a red K_s
-    or a blue copy of G. Axiomatized as the standard definition. -/
-noncomputable def graphRamseyK3 {n : ℕ} (_G : Graph n) : ℕ := sorry
+/-- The graph Ramsey number R(K₃, G) for a graph G on n vertices:
+    smallest r such that every 2-coloring of K_r contains a red K₃
+    or a blue copy of G (as an induced subgraph via injection).
+    Returns 0 if the set is empty (degenerate; nonemptiness follows
+    from the Ramsey theorem for any fixed G). -/
+noncomputable def graphRamseyK3 {n : ℕ} (G : Graph n) : ℕ :=
+  sInf { r : ℕ | ∀ (color : Fin r → Fin r → Bool),
+    (∃ a b c : Fin r, a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
+      color a b = true ∧ color b c = true ∧ color a c = true) ∨
+    (∃ (φ : Fin n ↪ Fin r),
+      ∀ a b : Fin n, G.adj a b → color (φ a) (φ b) = false) }
 
 -- ## Part III: The Threshold Functions
 
@@ -124,10 +131,9 @@ connected graphs.
 - erdos_1182_conjecture: does F(n)/n → ∞?
 - graphRamseyK3: graph Ramsey number R(K₃, G)
 
-**Sorries (4)**:
-- graphRamseyK3: definition needs proper formalization
-- bigF_lower_bound_tree: derive from chvatal_tree_ramsey
-- f_val_2, bigF_val_2: small case verification
+**Sorries (3)**:
+- bigF_lower_bound_tree: derive from chvatal_tree_ramsey (needs forest generalization)
+- f_val_2, bigF_val_2: small case verification (needs concrete Ramsey computation)
 
 References:
 - Burr, S.A., Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H. (1980)

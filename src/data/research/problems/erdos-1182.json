@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed graphRamseyK3 definition (sorry → proper sInf). 4→3 sorries. Remaining sorries need forest generalization of Chvátal + small case Ramsey computation.",
+    "builtItems": [
+      "graphRamseyK3 definition: sInf-based, R(K3,G) = smallest r coloring any K_r yields red triangle or blue G"
+    ],
+    "insights": [
+      "graphRamseyK3 was defined with sorry — making ALL downstream definitions meaningless. Fixed with proper sInf-based definition.",
+      "Remaining 3 sorries need: (1) forest generalization of Chvátal, (2-3) concrete Ramsey computations for small graphs"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1182 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
