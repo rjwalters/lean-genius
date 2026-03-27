@@ -1,0 +1,150 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02",
+  "title": "S₂, S₃, S₄ Are Solvable: Complete Classification",
+  "slug": "abel-ruffini-oq-04-oq-02",
+  "description": "Proves that the symmetric groups S₂, S₃, S₄ are solvable, completing the degree-by-degree picture alongside S₅ not solvable from the parent. The highlight is the bidirectional theorem: Sₙ is solvable if and only if n ≤ 4.",
+  "meta": {
+    "author": "Classical (Lagrange, Galois)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Symmetric_group#Solvable_and_perfect_groups",
+    "date": "1832",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "solvability",
+      "symmetric-group",
+      "classification",
+      "wiedijk-100",
+      "extension",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "Perm(α) not solvable for |α| ≥ 5",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "IsSolvable",
+        "description": "Definition of solvable group via derived series",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "S₂ solvable: CommGroup instance via decide (verifies commutativity of 2-element group)",
+      "S₃ solvable: derivedSeries 2 = ⊥ verified by decide (6 elements)",
+      "S₄ solvable: derivedSeries 3 = ⊥ verified by native_decide (24 elements)",
+      "solvable_iff_le_four: Complete bidirectional classification Sₙ solvable ↔ n ≤ 4"
+    ],
+    "dateAdded": "2026-03-27",
+    "axiomCount": 0,
+    "lineCount": 145,
+    "assumptions": "0 axioms, 0 sorries. S₂ via CommGroup instance, S₃ via decide on derived series, S₄ via native_decide. Classification theorem combines with Mathlib's Equiv.Perm.not_solvable.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The solvability of symmetric groups is the heart of the Abel-Ruffini theorem. Lagrange (1770) studied permutation groups to understand polynomial roots. Galois (1832) proved that a polynomial is solvable by radicals iff its Galois group is solvable, and that Sₙ (n ≥ 5) is not solvable because A₅ is simple.\n\nThe complete classification: Sₙ is solvable iff n ≤ 4, with derived series lengths 0, 0, 1, 2, 3 for n = 0, 1, 2, 3, 4. For n ≥ 5, the derived series gets stuck at the simple group Aₙ.",
+    "problemStatement": "**Open Question**: Prove S₂, S₃, S₄ are solvable to complete the degree-by-degree picture.\n\n**Answer**: All three are solvable. The complete classification is: Sₙ is solvable if and only if n ≤ 4.",
+    "text": "Completes the classification of solvable symmetric groups by proving S₂, S₃, S₄ are solvable. Combined with S₅ not solvable (parent), gives the bidirectional characterization.",
+    "proofStrategy": "**S₂**: Construct a CommGroup instance by verifying commutativity via `decide` (only 2 elements). Abelian groups are solvable.\n\n**S₃**: Show derivedSeries(S₃, 2) = ⊥ by `decide`. The derived series is S₃ ⊵ A₃ ⊵ {e}.\n\n**S₄**: Show derivedSeries(S₄, 3) = ⊥ by `native_decide`. The derived series is S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}.\n\n**Classification**: Forward direction by contrapositive of Mathlib's not_solvable. Backward direction by interval_cases on n ∈ {0,...,4}.",
+    "keyInsights": [
+      "S₂ is the only symmetric group that is abelian (besides S₀, S₁)",
+      "The derived series lengths are 0, 0, 1, 2, 3 for S₀-S₄, then ∞ for S₅+",
+      "native_decide handles S₄ (24 elements) but might be slow for larger groups",
+      "The solvable_iff_le_four theorem is a clean bidirectional classification",
+      "5 is special because A₅ (order 60) is the smallest non-abelian simple group"
+    ],
+    "prerequisites": [
+      "Group theory (solvable groups, derived series, commutator subgroups)",
+      "Symmetric groups and permutations",
+      "Lean 4 decidability and native_decide"
+    ]
+  },
+  "sections": [
+    {
+      "id": "s2-solvable",
+      "title": "S₂ Is Solvable",
+      "startLine": 32,
+      "endLine": 42,
+      "summary": "S₂ is commutative (CommGroup instance via decide), hence solvable.",
+      "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ is abelian. $[S_2, S_2] = \\{e\\}$."
+    },
+    {
+      "id": "s3-solvable",
+      "title": "S₃ Is Solvable",
+      "startLine": 44,
+      "endLine": 55,
+      "summary": "S₃ solvable via derivedSeries(2) = ⊥, verified by decide.",
+      "mathContext": "$S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$. Both quotients abelian."
+    },
+    {
+      "id": "s4-solvable",
+      "title": "S₄ Is Solvable",
+      "startLine": 57,
+      "endLine": 68,
+      "summary": "S₄ solvable via derivedSeries(3) = ⊥, verified by native_decide.",
+      "mathContext": "$S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$. $V_4$ is the Klein four-group."
+    },
+    {
+      "id": "classification",
+      "title": "Complete Classification",
+      "startLine": 70,
+      "endLine": 120,
+      "summary": "solvable_iff_le_four: Sₙ is solvable iff n ≤ 4. Forward: contrapositive of not_solvable. Backward: interval_cases.",
+      "mathContext": "$S_n$ is solvable $\\iff n \\leq 4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The solvability of Sₙ for n ≤ 4 is proved, completing the picture alongside the non-solvability of S₅+ from the parent. The clean bidirectional theorem solvable_iff_le_four is the highlight.",
+    "implications": "1. **Polynomial solvability**: Combined with Galois theory, this explains exactly which degrees admit radical formulas.\n2. **Complete classification**: The number 5 is the exact threshold, determined by A₅ being the smallest non-abelian simple group.\n3. **Decidability approach**: For finite groups, solvability can be verified computationally (decide/native_decide).",
+    "openQuestions": [
+      "Can the derived series for S₃ and S₄ be exhibited explicitly (not just by decide) as subgroup towers?",
+      "What about alternating groups: Aₙ solvable iff n ≤ 4? (Same threshold, since Aₙ = [Sₙ, Sₙ])",
+      "Can the general theorem 'finite group of order < 60 is solvable' be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ02",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Parent: proves Sₙ not solvable for n ≥ 5. This entry completes the other direction: Sₙ solvable for n ≤ 4."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Sibling: proves Gal(x⁵-4x+2) = S₅, giving a concrete non-solvable quintic. This entry provides the group-theoretic foundation."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Grandparent: the Abel-Ruffini theorem itself. This entry explains WHY degree ≤ 4 is solvable."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hungerford, Thomas W.",
+      "title": "Algebra",
+      "year": "1974",
+      "venue": "Graduate Texts in Mathematics, Springer",
+      "note": "Section II.8: solvability of symmetric groups, derived series computation for S₃ and S₄"
+    }
+  ]
+}
