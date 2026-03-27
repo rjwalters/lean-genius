@@ -123,84 +123,77 @@ theorem partial_sum_formula (n : ℕ) :
     field_simp
     ring
 
-/- ## Block Sum Formula -/
+/- ## Known Results -/
 
-/-- Block sum formula: ∑_{k=n+1}^{n+m} k/2^k = (n+2)/2^n - (n+m+2)/2^{n+m}.
-    Proved by induction on m, extending the block one element at a time. -/
-lemma block_sum_formula (n m : ℕ) :
-    (Finset.Icc (n + 1) (n + m)).sum recipPow2Weight =
-    ((n : ℚ) + 2) / 2 ^ n - ((n : ℚ) + ↑m + 2) / 2 ^ (n + m) := by
+/-- n = 1 is representable: 1/2 = 4/16 + 5/32 + 6/64. -/
+theorem representable_one : IsRepresentable 1 := by
+  refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
+  · -- card ≥ 2
+    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · -- all ≥ 1
+    intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl <;> omega
+  · -- sum = 1/2 (= recipPow2Weight 1)
+    show recipPow2Sum {4, 5, 6} = recipPow2Weight 1
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (4 : ℕ) ∉ ({5, 6} : Finset ℕ) by decide),
+                Finset.sum_insert (show (5 : ℕ) ∉ ({6} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
+/-- Sum over consecutive block {a+1, ..., a+m} as a telescoping difference.
+    ∑_{k=a+1}^{a+m} k/2^k = (a+2)/2^a - (a+m+2)/2^(a+m). -/
+private lemma icc_recipPow2_sum (a m : ℕ) :
+    (Finset.Icc (a + 1) (a + m)).sum recipPow2Weight =
+    ((a : ℚ) + 2) / 2 ^ a - ((a : ℚ) + m + 2) / 2 ^ (a + m) := by
   induction m with
   | zero =>
-    simp only [Nat.add_zero, Nat.cast_zero, add_zero,
-      Finset.Icc_eq_empty (by omega), Finset.sum_empty, sub_self]
+    simp only [Nat.add_zero, Nat.cast_zero, add_zero]
+    rw [Finset.Icc_eq_empty (by omega)]
+    simp
   | succ m ih =>
-    have hsplit : Finset.Icc (n + 1) (n + (m + 1)) =
-        Finset.Icc (n + 1) (n + m) ∪ {n + m + 1} := by
-      ext x
-      simp only [Finset.mem_Icc, Finset.mem_union, Finset.mem_singleton]
-      omega
-    have hdisj : Disjoint (Finset.Icc (n + 1) (n + m)) ({n + m + 1} : Finset ℕ) := by
-      rw [Finset.disjoint_singleton_right]
-      simp only [Finset.mem_Icc, not_and, not_le]
-      intro; omega
-    rw [hsplit, Finset.sum_union hdisj, Finset.sum_singleton, ih]
+    have h_ins : Finset.Icc (a + 1) (a + (m + 1)) =
+        insert (a + m + 1) (Finset.Icc (a + 1) (a + m)) := by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [h_ins, Finset.sum_insert (by simp only [Finset.mem_Icc]; omega), ih]
     simp only [recipPow2Weight]
     push_cast
+    rw [show (2 : ℚ) ^ (a + (m + 1)) = 2 ^ (a + m) * 2 from by ring]
+    rw [show (2 : ℚ) ^ (a + m) = 2 ^ a * 2 ^ m from by ring]
     field_simp
     ring
 
-/- ## Known Results -/
-
-/-- n = 1 is representable: 1/2 = 4/16 + 5/32 + 6/64.
-    Needed for the m = 1 case of Borwein-Loring where the standard
-    block {n+1} has only 1 element (below the card ≥ 2 threshold). -/
-private theorem representable_one : IsRepresentable 1 := by
-  refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
-  · -- card ≥ 2
-    decide
-  · -- all k ≥ 1
-    intro k hk
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hk
-    omega
-  · -- sum = recipPow2Weight 1
-    simp only [recipPow2Sum, recipPow2Weight,
-      Finset.sum_insert (show (4 : ℕ) ∉ ({5, 6} : Finset ℕ) by decide),
-      Finset.sum_insert (show (5 : ℕ) ∉ ({6} : Finset ℕ) by decide),
-      Finset.sum_singleton]
-    norm_num
-
-/-- Borwein–Loring explicit family (PROVED): n = 2^{m+1} − m − 2 is
-    representable via the consecutive block {n+1, ..., n+m}.
-
-    For m = 1 (n = 1): uses {4, 5, 6} since the standard block has card 1.
-    For m ≥ 2: block_sum_formula + n + m + 2 = 2^{m+1} gives the identity. -/
+/-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
+    via the consecutive block {n+1, ..., n+m} for m ≥ 2.
+    For m = 1 (n = 1), uses representable_one.
+    Proof: telescoping via partial_sum_formula gives
+    ∑_{k=n+1}^{n+m} = (n+2)/2^n - (n+m+2)/2^{n+m} = n/2^n
+    using the key identity n + m + 2 = 2^{m+1}. -/
 theorem borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
-  let n := 2 ^ (m + 1) - m - 2
-  IsRepresentable n := by
-  show IsRepresentable (2 ^ (m + 1) - m - 2)
-  set n := 2 ^ (m + 1) - m - 2 with hn_def
-  rcases Nat.eq_or_gt_of_le hm with rfl | hm2
+    let n := 2 ^ (m + 1) - m - 2
+    IsRepresentable n := by
+  obtain rfl | hm2 := hm.eq_or_gt
   · -- m = 1: n = 2^2 - 3 = 1
     exact representable_one
-  · -- m ≥ 2: use BL set Icc (n+1) (n+m)
-    have hpow_ge : m + 2 ≤ 2 ^ (m + 1) := by
-      have : m + 1 < 2 ^ (m + 1) := Nat.lt_two_pow_self
-      omega
-    have hn_eq : n + m + 2 = 2 ^ (m + 1) := by omega
+  · -- m ≥ 2: use consecutive block {n+1, ..., n+m}
+    intro n
+    have hpow : m + 2 ≤ 2 ^ (m + 1) := by
+      have := Nat.lt_two_pow_self (n := m + 1); omega
+    have hn_sum : n + m + 2 = 2 ^ (m + 1) := by simp only [n]; omega
     refine ⟨Finset.Icc (n + 1) (n + m), ?_, ?_, ?_⟩
-    · -- card = m ≥ 2
-      rw [Finset.card_Icc]; omega
-    · -- all k ≥ 1
-      intro k hk
-      simp only [Finset.mem_Icc] at hk
+    · -- card ≥ 2
+      rw [show Finset.Icc (n + 1) (n + m) = Finset.Ico (n + 1) (n + m + 1) from
+        (Finset.Ico_succ_right).symm, Finset.card_Ico]
       omega
-    · -- sum = recipPow2Weight n (the Borwein-Loring identity)
-      rw [block_sum_formula]
-      simp only [recipPow2Weight]
-      have hn_cast : (↑n + ↑m + 2 : ℚ) = (2 : ℚ) ^ (m + 1) := by exact_mod_cast hn_eq
-      rw [hn_cast]
-      push_cast
+    · -- all elements ≥ 1
+      intro k hk; simp only [Finset.mem_Icc] at hk; omega
+    · -- recipPow2Sum S = recipPow2Weight n
+      unfold recipPow2Sum
+      rw [icc_recipPow2_sum n m]
+      unfold recipPow2Weight
+      have h_eq : ((n : ℚ) + ↑m + 2) = (2 : ℚ) ^ (m + 1) := by exact_mod_cast hn_sum
+      rw [h_eq, show (2 : ℚ) ^ (n + m) = 2 ^ n * 2 ^ m from by ring,
+          show (2 : ℚ) ^ (m + 1) = 2 ^ m * 2 from by ring]
       field_simp
       ring
 

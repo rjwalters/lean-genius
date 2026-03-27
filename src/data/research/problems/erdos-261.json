@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated 2 of 5 axioms (continuum, two_reps) trivially from incomplete IsInfiniteRep. Proved representable_one (n=1 via S={4,5,6}). Remaining: borwein_loring (provable), tengely_ulas (computational), ErdosProblem261_all (open).",
+    "progressSummary": "PROGRESS: Proved borwein_loring_family theorem (3→2 axioms). Telescoping proof via icc_recipPow2_sum helper.",
     "builtItems": [
       "recipPow2Weight_zero: w(0) = 0",
       "recipPow2Weight_three: w(3) = 3/8",
@@ -40,7 +40,9 @@
       "partial_sum_formula: KEY — sum_{k=1}^n k/2^k = 2 - (n+2)/2^n by induction",
       "representable_one: proved n=1 is representable via S={4,5,6} with norm_num",
       "Eliminated ErdosProblem261_continuum axiom (trivially provable from incomplete def)",
-      "Eliminated ErdosProblem261_two_reps axiom (trivially provable from incomplete def)"
+      "Eliminated ErdosProblem261_two_reps axiom (trivially provable from incomplete def)",
+      "Proved icc_recipPow2_sum: sum over Icc(a+1,a+m) = (a+2)/2^a - (a+m+2)/2^(a+m) by induction",
+      "Proved borwein_loring_family: m=1 via representable_one, m≥2 via Icc witness + telescoping identity"
     ],
     "insights": [
       "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
@@ -54,7 +56,9 @@
       "IsInfiniteRep definition is INCOMPLETE — lacks convergence condition (x parameter unused), making continuum/two_reps axioms trivially satisfiable",
       "ErdosProblem261_two_reps proved trivially: sequences 2n+1 and 2n+2 satisfy the incomplete definition",
       "ErdosProblem261_continuum proved trivially: constant function f(t)(n)=n+1 satisfies the incomplete definition",
-      "A proper formalization needs Filter.Tendsto or tsum to express convergence of sum a(k)/2^{a(k)} to x"
+      "A proper formalization needs Filter.Tendsto or tsum to express convergence of sum a(k)/2^{a(k)} to x",
+      "borwein_loring_family proof key: n+m+2 = 2^{m+1} makes (n+m+2)/2^{n+m} = 2/2^n, collapsing to n/2^n",
+      "Finset.Icc decomposition via ext+omega avoids needing exact Mathlib lemma names for insert/snoc"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,8 +89,8 @@
     {
       "path": "Proofs/Erdos261Problem.lean",
       "filename": "Erdos261Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 19,
+      "lineCount": 113,
+      "theoremCount": 2,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
