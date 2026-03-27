@@ -122,7 +122,7 @@ theorem sigma_15_value : sigma 15 = 24 := by unfold sigma; native_decide
 example : (14 : ℚ) / 15 < 1 := by native_decide
 
 /-- σ(206) = σ(210) = 432 -/
-axiom sigma_206_210 : sigma 206 = sigma 210
+theorem sigma_206_210 : sigma 206 = sigma 210 := by unfold sigma; native_decide
 
 /-- 206/210 ≈ 0.981 -/
 example : (206 : ℚ) / 210 < 1 := by native_decide

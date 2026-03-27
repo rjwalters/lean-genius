@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -246,11 +247,12 @@ This was historically the first number proven to be transcendental!
 theorem liouville_constant_transcendental : Transcendental ℤ (liouvilleNumber 10) :=
   liouville_transcendental _ liouville_constant_is_liouville
 
-/-- **Axiom: The Liouville constant is irrational**
+/-- **The Liouville constant is irrational** (formerly axiom, now proved)
 
     Transcendental implies irrational: if L = p/q, then L is a root of
     q·X - p = 0, making L algebraic. This contradicts transcendence. -/
-axiom liouville_constant_irrational_axiom : Irrational (liouvilleNumber 10)
+theorem liouville_constant_irrational_axiom : Irrational (liouvilleNumber 10) :=
+  liouville_constant_is_liouville.irrational
 
 /-- The Liouville constant is irrational (weaker statement, but worth noting). -/
 theorem liouville_constant_irrational : Irrational (liouvilleNumber 10) :=
@@ -272,11 +274,11 @@ axiom liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x}
 theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} :=
   liouville_uncountable_axiom
 
-/-- **Axiom: Adding a rational preserves the Liouville property.**
+/-- **Adding a rational preserves the Liouville property.** (formerly axiom, now proved)
 
-    If |x - p/q| < 1/q^n, then |(x + r) - (p + rq)/q| = |x - p/q| < 1/q^n.
-    So any good approximation to x gives an equally good approximation to x + r. -/
-axiom liouville_add_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r)
+    Follows from LiouvilleWith.add_rat and the equivalence with Liouville. -/
+theorem liouville_add_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r) :=
+  LiouvilleWith.forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).add_rat r)
 
 /-- If x is Liouville and r is a non-zero rational, then x + r is Liouville.
 
@@ -284,11 +286,11 @@ Adding a rational doesn't change the approximability properties. -/
 theorem liouville_add_rat (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r) :=
   liouville_add_rat_axiom x hx r
 
-/-- **Axiom: Scaling by a non-zero rational preserves the Liouville property.**
+/-- **Scaling by a non-zero rational preserves the Liouville property.** (formerly axiom, now proved)
 
-    If |x - p/q| < 1/q^n and r = a/b, then |rx - (ap)/(bq)| = |r||x - p/q| < |r|/q^n.
-    For sufficiently large exponents, this still beats any polynomial bound. -/
-axiom liouville_mul_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x)
+    Follows from LiouvilleWith.rat_mul and the equivalence with Liouville. -/
+theorem liouville_mul_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x) :=
+  LiouvilleWith.forall_liouvilleWith_iff.mp (fun p => (hx.liouvilleWith p).rat_mul hr)
 
 /-- If x is Liouville and r is a non-zero rational, then r * x is Liouville.
 
