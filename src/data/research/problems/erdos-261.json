@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 new lemmas including key partial_sum_formula. File has 16 theorems, 5 axioms, 195 lines. Path to proving borwein_loring_family is clear.",
+    "progressSummary": "PROGRESS: Proved representable_one (n=1 via S={4,5,6}). 5 axioms, 17+ theorems. borwein_loring_family proof strategy documented.",
     "builtItems": [
       "recipPow2Weight_zero: w(0) = 0",
       "recipPow2Weight_three: w(3) = 3/8",
@@ -37,7 +37,8 @@
       "recipPow2Sum_insert: sum decomposes on insert",
       "recipPow2Sum_pair: explicit sum for 2-element set",
       "recipPow2Sum_le_of_subset: monotonicity of sum under subset inclusion",
-      "partial_sum_formula: KEY — sum_{k=1}^n k/2^k = 2 - (n+2)/2^n by induction"
+      "partial_sum_formula: KEY — sum_{k=1}^n k/2^k = 2 - (n+2)/2^n by induction",
+      "representable_one: proved n=1 is representable via S={4,5,6} with norm_num"
     ],
     "insights": [
       "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
