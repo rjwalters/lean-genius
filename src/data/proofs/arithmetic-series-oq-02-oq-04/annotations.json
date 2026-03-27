@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-main-identity",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "technique",
+    "title": "Rising Factorial Identity (Main Theorem)",
+    "content": "Proves $\\binom{n+k}{k} \\cdot k! = (n+1)^{(k)}$ in just three lines: unfold `simplicial` to expose the binomial coefficient, apply Mathlib's `ascFactorial_eq_factorial_mul_choose` which gives $(n+1)^{(k)} = k! \\cdot \\binom{n+k}{k}$, then commute the multiplication. This elegance demonstrates the power of Mathlib's combinatorial library — the deepest identity in the file is a direct rewrite.",
+    "mathContext": "$S_k(n) \\cdot k! = \\binom{n+k}{k} \\cdot k! = (n+1)^{(k)} = (n+1)(n+2)\\cdots(n+k)$. Direct from `Nat.ascFactorial_eq_factorial_mul_choose`.",
+    "significance": "key",
+    "relatedConcepts": ["ascending factorial", "Pochhammer symbol", "binomial coefficient", "mul_comm"],
+    "prerequisites": ["simplicial numbers", "Nat.ascFactorial"]
+  },
+  {
+    "id": "ann-product-formula",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 52, "endLine": 64 },
+    "type": "technique",
+    "title": "Explicit Product Formula",
+    "content": "Two theorems bridge the recursive definition of `ascFactorial` with an explicit finite product. `ascFactorial_eq_prod` proves $(n)^{(k)} = \\prod_{i=0}^{k-1}(n+i)$ by induction on $k$, using `prod_range_succ` to peel the last factor and `mul_comm` to match the recurrence. `simplicial_product` then composes this with the main identity to get $S_k(n) \\cdot k! = \\prod_{i=0}^{k-1}(n+1+i)$.",
+    "mathContext": "$\\text{ascFactorial}(n, k) = \\prod_{i \\in \\text{range}\\,k} (n + i) = n(n+1)\\cdots(n+k-1)$. Hence $S_k(n) \\cdot k! = \\prod_{i=0}^{k-1}(n+1+i)$.",
+    "significance": "key",
+    "relatedConcepts": ["finite products", "Finset.prod_range_succ", "induction on k", "recursive vs explicit"],
+    "prerequisites": ["ascending factorial recurrence", "finite product manipulation"]
+  },
+  {
+    "id": "ann-full-factorial",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "insight",
+    "title": "Full Factorial and Divisibility",
+    "content": "The full factorial identity $S_k(n) \\cdot k! \\cdot n! = (n+k)!$ decomposes $(n+k)!$ into three natural factors, revealing the complete structure of the binomial coefficient. The divisibility corollary $k! \\mid (n+1)^{(k)}$ is proved by exhibiting $S_k(n)$ as the quotient — this is the constructive proof that any $k$ consecutive positive integers have a product divisible by $k!$, which in turn implies $\\binom{n+k}{k} \\in \\mathbb{N}$.",
+    "mathContext": "$\\binom{n+k}{k} \\cdot k! \\cdot n! = (n+k)!$, so $\\binom{n+k}{k} = \\frac{(n+k)!}{k! \\cdot n!} \\in \\mathbb{N}$. Equivalently, $k! \\mid (n+1)(n+2)\\cdots(n+k)$.",
+    "significance": "key",
+    "relatedConcepts": ["factorial decomposition", "integrality of binomial coefficients", "divisibility", "choose_mul_factorial_mul_factorial"],
+    "prerequisites": ["simplicial_factorial", "factorial arithmetic"]
+  },
+  {
+    "id": "ann-specializations",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 92, "endLine": 108 },
+    "type": "context",
+    "title": "Low-Dimensional Specializations",
+    "content": "The $k = 1, 2, 3$ cases produce familiar combinatorial identities. $k = 1$: $S_1(n) = n+1$ (counting natural numbers). $k = 2$: $S_2(n) \\cdot 2 = (n+1)(n+2)$, so $S_2(n) = \\binom{n+2}{2}$ is the $(n+1)$-th triangular number. $k = 3$: $S_3(n) \\cdot 6 = (n+1)(n+2)(n+3)$, giving the tetrahedral numbers. Each is proved via `simplicial_product` followed by `simp` and `ring`.",
+    "mathContext": "$k=1$: $S_1(n) = n+1$. $k=2$: $T_n = \\frac{(n+1)(n+2)}{2}$ (triangular). $k=3$: $\\text{Tet}_n = \\frac{(n+1)(n+2)(n+3)}{6}$ (tetrahedral).",
+    "significance": "supporting",
+    "relatedConcepts": ["triangular numbers", "tetrahedral numbers", "figurate numbers", "Pascal's triangle"],
+    "prerequisites": ["simplicial_product", "basic algebra"]
+  },
+  {
+    "id": "ann-concrete-checks",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 114, "endLine": 121 },
+    "type": "context",
+    "title": "Concrete Verification via native_decide",
+    "content": "Three numerical checks verify the identity at specific values using `native_decide`, which compiles the computation to native code for efficient evaluation. $S_4(3) \\cdot 24 = 840 = 4 \\cdot 5 \\cdot 6 \\cdot 7$ and $S_5(2) \\cdot 120 = 2520 = 3 \\cdot 4 \\cdot 5 \\cdot 6 \\cdot 7$ provide cross-checks between the symbolic theorem and concrete arithmetic.",
+    "mathContext": "$\\binom{7}{4} \\cdot 24 = 35 \\cdot 24 = 840$. $\\binom{7}{5} \\cdot 120 = 21 \\cdot 120 = 2520$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "computational verification", "decidable equality"],
+    "prerequisites": ["decidable natural number arithmetic"]
+  },
+  {
+    "id": "ann-summary-insight",
+    "proofId": "arithmetic-series-oq-02-oq-04",
+    "range": { "startLine": 123, "endLine": 156 },
+    "type": "insight",
+    "title": "Combinatorial Interpretation: Compressed Rising Factorials",
+    "content": "The summary articulates the key combinatorial insight: simplicial numbers are 'compressed' rising factorials. The binomial coefficient $\\binom{n+k}{k}$ counts unordered $k$-subsets of $\\{1, \\ldots, n+k\\}$; multiplying by $k!$ (the number of orderings) recovers the ordered count — which is exactly the product of $k$ consecutive integers. This is the combinatorial reason why $\\binom{n+k}{k}$ is always a natural number despite being defined as a ratio of factorials.",
+    "mathContext": "$\\binom{n+k}{k} = \\frac{(n+1)(n+2)\\cdots(n+k)}{k!}$: unordered selections = ordered selections / orderings.",
+    "significance": "key",
+    "relatedConcepts": ["double counting", "unordered vs ordered selections", "integrality argument"],
+    "prerequisites": ["combinatorial interpretation of binomial coefficients"]
+  }
+]
