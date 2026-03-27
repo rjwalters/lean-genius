@@ -41,9 +41,12 @@ noncomputable def primePi (n : ℕ) : ℕ :=
 
 /--
 **Basic Property:**
-π is monotonically increasing.
+π is monotonically increasing, since Icc 1 m ⊆ Icc 1 n when m ≤ n.
 -/
-axiom primePi_monotone : Monotone primePi
+theorem primePi_monotone : Monotone primePi := by
+  intro m n hmn
+  unfold primePi
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.Icc_subset_Icc_right hmn))
 
 /--
 **Prime Number Theorem:**

@@ -100,14 +100,30 @@ def RelatedToProblem457 : Prop :=
 /-- Small primes always divide sufficiently long consecutive products.
     If p ≤ k, then p divides (n+1)(n+2)···(n+k) since among k consecutive
     integers, at least one is divisible by p. -/
-axiom small_prime_divides_product (n k p : ℕ)
+theorem small_prime_divides_product (n k p : ℕ)
     (hp : p.Prime) (hpk : p ≤ k) :
-    p ∣ consecutiveProduct n k
+    p ∣ consecutiveProduct n k := by
+  unfold consecutiveProduct
+  -- Among k ≥ p consecutive integers n+1, ..., n+k, one is divisible by p.
+  -- Specifically, take i = (p - (n+1) mod p) mod p; then i < p ≤ k and p | (n+i+1).
+  have hp_pos := hp.pos
+  have ⟨i, hi, hdvd⟩ : ∃ i < k, p ∣ (n + i + 1) := by
+    refine ⟨(p - (n + 1) % p) % p, lt_of_lt_of_le (Nat.mod_lt _ hp_pos) hpk, ?_⟩
+    have h_div := Nat.div_add_mod (n + 1) p
+    by_cases hr : (n + 1) % p = 0
+    · simp [hr, Nat.mod_self]; exact ⟨(n + 1) / p, by omega⟩
+    · rw [Nat.mod_eq_of_lt (by omega : p - (n + 1) % p < p)]
+      exact ⟨(n + 1) / p + 1, by omega⟩
+  exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi))
 
 /-- Lower bound: q(n,k) > k for all n, since every prime p ≤ k divides
     some term in k consecutive integers. -/
-axiom q_gt_k (n k : ℕ) (hk : 1 < k) :
-    k < smallestMissingPrime n k
+theorem q_gt_k (n k : ℕ) (hk : 1 < k) :
+    k < smallestMissingPrime n k := by
+  by_contra h
+  push_neg at h
+  exact smallestMissingPrime_not_dvd n k (by omega)
+    (small_prime_divides_product n k _ (smallestMissingPrime_prime n k (by omega)) h)
 
 /- ## Monotonicity Properties -/
 
