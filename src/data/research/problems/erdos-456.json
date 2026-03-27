@@ -29,10 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Fixed metadata (12→5 axioms). Documented AlmostAll formalization bug (missing ε*M factor).",
+    "progressSummary": "PROGRESS: Proved van_doorn_power_of_two (5→4 axioms). φ(2^{2k+2}) = 2^{2k+1} = n via Nat.totient_prime_pow_succ.",
     "builtItems": [
       "part2_implies_part1: SORRY FILLED — Part2 implies Part1 via C=2 argument",
-      "part1_implies_infinitely_many: SORRY FILLED — using erdos_strict_inequality axiom"
+      "part1_implies_infinitely_many: SORRY FILLED — using erdos_strict_inequality axiom",
+      "Proved van_doorn_power_of_two: φ(2n)=n for n=2^{2k+1}, mₙ ≤ 2n by minimality"
     ],
     "insights": [
       "AlmostAll definition has a bug: uses |bad| < M instead of |bad| < ε·M. This makes it weaker than true natural density 0",
@@ -40,9 +41,7 @@
       "part1_implies_infinitely_many: cannot be derived purely from AlmostAll(Part1) due to buggy definition. Used erdos_strict_inequality axiom instead",
       "The 5 axioms are all deep: Dirichlet theorem, Linnik bound, Erdos strict inequality, m/n divergence, van Doorn power-of-two",
       "sInf-based definitions for smallestPrimeMod1 and smallestTotientDiv work well with Mathlib",
-      "File has 5 axioms (not 12 as metadata claimed)",
-      "AlmostAll definition has a BUG: bound should be < ε*M not < M — as written it only asserts infinitely many n satisfy P",
-      "Same bug in m_over_n_diverges axiom — ε parameter is unused in conclusion"
+      "van_doorn_power_of_two is trivial: φ(2^{2k+2}) = 2^{2k+1}*(2-1) = n, by Nat.totient_prime_pow_succ"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -74,7 +73,7 @@
       "filename": "Erdos456Problem.lean",
       "lineCount": 169,
       "theoremCount": 2,
-      "axiomCount": 12,
+      "axiomCount": 4,
       "defCount": 6,
       "sorryCount": 2,
       "isAristotle": false,
