@@ -60,6 +60,46 @@ def CoversCofinite (A B : Set ℕ) : Prop :=
 def CoversAllButFinitely (A B : Set ℕ) : Prop :=
   (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}).Finite
 
+/- ## Sumset Properties -/
+
+/-- Sumset is commutative: A + B = B + A -/
+theorem sumset_comm (A B : Set ℕ) : A +ₛ B = B +ₛ A := by
+  ext n; simp only [Sumset, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨a, ha, b, hb, hab⟩; exact ⟨b, hb, a, ha, by omega⟩
+  · rintro ⟨b, hb, a, ha, hab⟩; exact ⟨a, ha, b, hb, by omega⟩
+
+/-- Sumset is monotone in the left argument -/
+theorem sumset_mono_left {A A' : Set ℕ} (h : A ⊆ A') (B : Set ℕ) :
+    A +ₛ B ⊆ A' +ₛ B :=
+  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, h ha, b, hb, hab⟩
+
+/-- Sumset is monotone in the right argument -/
+theorem sumset_mono_right (A : Set ℕ) {B B' : Set ℕ} (h : B ⊆ B') :
+    A +ₛ B ⊆ A +ₛ B' :=
+  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, ha, b, h hb, hab⟩
+
+/-- Sumset with empty set is empty -/
+theorem sumset_empty_left (B : Set ℕ) : (∅ : Set ℕ) +ₛ B = ∅ := by
+  ext n; simp [Sumset]
+
+/-- Sumset with empty set on the right is empty -/
+theorem sumset_empty_right (A : Set ℕ) : A +ₛ (∅ : Set ℕ) = ∅ := by
+  ext n; simp [Sumset]
+
+/-- CoversCofinite implies CoversAllButFinitely: if A+B covers all n ≥ N₀,
+    then the set of uncovered positive integers is finite (subset of {0,...,N₀-1}) -/
+theorem coversCofinite_implies_allButFinitely (A B : Set ℕ)
+    (h : CoversCofinite A B) : CoversAllButFinitely A B := by
+  obtain ⟨N₀, hN₀⟩ := h
+  apply Set.Finite.subset (Set.finite_Iio N₀)
+  intro n hn
+  simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, true_and,
+    Set.mem_setOf_eq, Set.mem_Iio] at hn ⊢
+  by_contra hge
+  push_neg at hge
+  exact hn.1 (hN₀ n hge)
+
 /- ## Primes Have Density Zero (Chebyshev Bound)
 
 The proof uses the Chebyshev theta bound θ(n) ≤ n·log(4) from the primorial
