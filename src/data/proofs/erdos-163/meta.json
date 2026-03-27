@@ -50,7 +50,7 @@
       "OptimalBurrErdos definition: conjectured 2^{O(d)} bound",
       "Special cases: trees, paths, cycles, planar graphs"
     ],
-    "axiomCount": 20,
+    "axiomCount": 1,
     "lineCount": 311,
     "assumptions": "20 axioms: degenerate_equiv_ordering, trees_are_1_degenerate, ramsey_exists, and 17 more. See Lean source for complete statements."
   },
@@ -203,8 +203,8 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos163",
-    "lineCount": 311,
-    "axiomCount": 20,
+    "lineCount": 198,
+    "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 8
   },

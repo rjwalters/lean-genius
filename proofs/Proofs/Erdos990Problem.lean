@@ -70,12 +70,6 @@ noncomputable def mahlerM (d : ℕ) (p : ComplexPoly d) (hd : 0 < d) : ℝ :=
   let ad := Complex.abs (p ⟨d, Nat.lt_succ_self d⟩)
   if a0 * ad = 0 then 1 else coeffSum d p / Real.sqrt (a0 * ad)
 
-/-- M ≥ 2 for monic polynomials with nonzero constant term -/
-axiom mahler_ge_two (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
-    (hmonic : Complex.abs (p ⟨d, Nat.lt_succ_self d⟩) = 1)
-    (hconst : p 0 ≠ 0) :
-    mahlerM d p hd ≥ 2
-
 /-
 ## Part 3: Root Counting and Discrepancy
 
@@ -84,10 +78,6 @@ Counting roots in angular intervals.
 
 /-- Roots of a polynomial (axiomatized) -/
 axiom rootSet (d : ℕ) (p : ComplexPoly d) : Finset ℂ
-
-/-- A polynomial of degree d has exactly d roots (counted with multiplicity) -/
-axiom root_count (d : ℕ) (p : ComplexPoly d) (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) :
-    (rootSet d p).card = d
 
 /-- Count roots with argument in interval [α, β] -/
 noncomputable def rootsInInterval (d : ℕ) (p : ComplexPoly d) (α β : ℝ) : ℕ :=
@@ -122,12 +112,6 @@ axiom erdos_turan_explicit_constant :
       (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),
       maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd))
 
-/-- Ganelius (1954) improved the constant -/
-axiom ganelius_improvement :
-    ∃ C : ℝ, C ≤ 8 ∧ ∀ (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
-      (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),
-      maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd))
-
 /-
 ## Part 5: The Sparse Conjecture (Erdős Problem #990)
 
@@ -146,27 +130,11 @@ theorem sparse_improves_dense (d : ℕ) (p : ComplexPoly d) :
   simp only [nonzeroCoeffCount]
   exact Finset.card_filter_le _ _
 
-/-- Example: x^d - 1 has only 2 nonzero coefficients but degree d -/
-axiom unity_root_sparse (d : ℕ) (hd : 0 < d) :
-    ∃ p : ComplexPoly d, nonzeroCoeffCount d p = 2 ∧ polyDegree d p = d
-
 /-
 ## Part 6: Sharp Constant
 
 Recent work on the optimal constant in Erdős-Turán.
 -/
-
-/-- Soundararajan (2019) and subsequent work: the sharp constant -/
-axiom sharp_erdos_turan :
-    ∃ C_sharp : ℝ, ∀ C' : ℝ,
-      (∀ (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
-        (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),
-        maxDiscrepancy d p ≤ C' * Real.sqrt (d * Real.log (mahlerM d p hd)))
-      → C_sharp ≤ C'
-
-/-- The sharp constant is related to a Hilbert transform extremal problem -/
-axiom hilbert_connection :
-    True  -- Placeholder for the connection to Fourier analysis
 
 /-
 ## Part 7: Special Cases
@@ -174,22 +142,9 @@ axiom hilbert_connection :
 Polynomials where root distribution is well-understood.
 -/
 
-/-- Roots of unity are exactly uniformly distributed -/
-axiom unity_roots_uniform (n : ℕ) (hn : 0 < n) :
-    ∃ p : ComplexPoly n, ∀ α β : ℝ, 0 ≤ α → α ≤ β → β ≤ 2 * π →
-      discrepancy n p α β = 0 ∨ discrepancy n p α β ≤ 1
-
-/-- Random polynomials: roots tend to cluster on the unit circle -/
-axiom random_polynomial_equidistribution :
-    True  -- Placeholder for probabilistic version
-
 /-- Littlewood polynomials (coefficients ±1): special structure -/
 def isLittlewood (d : ℕ) (p : ComplexPoly d) : Prop :=
   ∀ i : Fin (d + 1), Complex.abs (p i) = 1 ∨ p i = 0
-
-axiom littlewood_root_distribution (d : ℕ) (p : ComplexPoly d)
-    (hp : isLittlewood d p) (hd : 0 < d) :
-    maxDiscrepancy d p ≤ Real.sqrt (d * Real.log d + d)
 
 /-
 ## Part 8: Generalizations
@@ -197,35 +152,11 @@ axiom littlewood_root_distribution (d : ℕ) (p : ComplexPoly d)
 Extensions beyond the unit circle.
 -/
 
-/-- Erdős-Turán can be extended to other contours -/
-axiom general_contour_version :
-    True  -- Extension to Jordan curves
-
-/-- The theorem has a potential-theoretic interpretation -/
-axiom potential_theory_connection :
-    True  -- Connection to logarithmic potentials
-
-/-- Discrepancy bounds for zeros of trigonometric polynomials -/
-axiom trigonometric_version :
-    True  -- Version for real trigonometric polynomials
-
 /-
 ## Part 9: Applications
 
 Where the Erdős-Turán inequality is used.
 -/
-
-/-- Application to numerical analysis: polynomial interpolation -/
-axiom interpolation_application :
-    True  -- Leja points, Fekete points
-
-/-- Application to random matrix theory -/
-axiom random_matrix_application :
-    True  -- Eigenvalue distribution
-
-/-- Application to number theory: roots of Dirichlet L-functions -/
-axiom l_function_application :
-    True  -- Distribution of zeros
 
 /-
 ## Part 10: Lower Bounds
@@ -233,32 +164,11 @@ axiom l_function_application :
 The Erdős-Turán bound is essentially tight.
 -/
 
-/-- There exist polynomials achieving the bound up to constants -/
-axiom lower_bound_construction :
-    ∀ d : ℕ, 0 < d → ∃ p : ComplexPoly d,
-      p ⟨d, Nat.lt_succ_self d⟩ ≠ 0 ∧ p 0 ≠ 0 ∧
-      maxDiscrepancy d p ≥ (1/10) * Real.sqrt d
-
-/-- The √(d log M) dependence is optimal -/
-axiom optimal_dependence :
-    True  -- Both d and log M are necessary
-
 /-
 ## Part 11: One-Sided Improvements
 
 Erdélyi's refinement.
 -/
-
-/-- Erdélyi: one-sided improvement of Erdős-Turán -/
-axiom erdelyi_one_sided (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
-    (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ α β : ℝ, 0 ≤ α → α ≤ β → β ≤ 2 * π →
-      (rootsInInterval d p α β : ℝ) - expectedCount d α β ≤
-        C * Real.sqrt (d * Real.log (mahlerM d p hd))
-
-/-- Totik-Varjú result as a corollary -/
-axiom totik_varju_corollary :
-    True  -- Can be derived from Erdélyi's result
 
 /-
 ## Part 12: Summary

@@ -63,10 +63,6 @@ def commonProductCount (m n : ℕ) : ℕ :=
 Basic facts about the product k(m-k).
 -/
 
-/-- k(m-k) is maximized when k = m/2 -/
-axiom product_max_at_half (m k : ℕ) (hk : k ≤ m / 2) :
-    productValue m k ≤ productValue m (m / 2)
-
 /-- k(m-k) = 0 when k = 0 or k = m -/
 theorem product_zero_endpoints (m : ℕ) :
     productValue m 0 = 0 ∧ productValue m m = 0 := by
@@ -75,26 +71,10 @@ theorem product_zero_endpoints (m : ℕ) :
   · ring
   · simp
 
-/-- The maximum value of k(m-k) is at most m²/4 -/
-axiom product_max_bound (m k : ℕ) (hk : k ≤ m) :
-    productValue m k ≤ m * m / 4
-
-/-- Symmetry: k(m-k) = (m-k)(m-(m-k)) = (m-k)k -/
-axiom product_symmetric (m k : ℕ) (hk : k ≤ m) :
-    productValue m k = productValue m (m - k)
-
 /- ## Part 3: Size of A_m
 
 The set A_m has approximately m/2 elements.
 -/
-
-/-- A_m has at most m/2 elements -/
-axiom productSet_card_le (m : ℕ) :
-    (productSet m).card ≤ m / 2
-
-/-- For m ≥ 2, A_m is non-empty (contains 1*(m-1) = m-1) -/
-axiom productSet_nonempty (m : ℕ) (hm : 2 ≤ m) :
-    (productSet m).Nonempty
 
 /- ## Part 4: The Diophantine Equation
 
@@ -105,23 +85,10 @@ Finding common products means solving k(m-k) = l(n-l).
 def sameProduct (m n k l : ℕ) : Prop :=
   productValue m k = productValue n l
 
-/-- Rewriting: k(m-k) = l(n-l) ⟺ km - k² = ln - l² -/
-axiom same_product_equiv (m n k l : ℕ) :
-    sameProduct m n k l ↔ k * m - k * k = l * n - l * l
-
-/-- This is equivalent to (m²/4) - (k - m/2)² = (n²/4) - (l - n/2)² -/
-axiom product_as_squares (m n k l : ℤ) :
-    k * (m - k) = l * (n - l) ↔
-    m^2 - (2*k - m)^2 = n^2 - (2*l - n)^2
-
 /- ## Part 5: Main Results - Hegyvári (2025)
 
 The key bounds on |A_m ∩ B_n|.
 -/
-
-/-- Upper bound: |A_m ∩ B_n| ≤ m^{O(1/log log m)} when m > n -/
-axiom hegyvari_upper_bound (m n : ℕ) (hm : n < m) (hm' : 2 ≤ m) :
-    ∃ C : ℝ, C > 0 ∧ (commonProductCount m n : ℝ) ≤ (m : ℝ) ^ (C / Real.log (Real.log m))
 
 /-- The bound (mn)^{o(1)} is achieved -/
 axiom subpolynomial_bound (m n : ℕ) (hm : 2 ≤ m) (hn : 2 ≤ n) :
@@ -154,24 +121,10 @@ example : productValue 6 1 = 5 := by native_decide
 example : productValue 6 2 = 8 := by native_decide
 example : productValue 6 3 = 9 := by native_decide
 
-/-- A_4 = {3, 4} (from k=1,2) -/
-axiom A4_elements : productSet 4 ⊆ {3, 4}
-
-/-- A_6 = {5, 8, 9} (from k=1,2,3) -/
-axiom A6_elements : productSet 6 ⊆ {5, 8, 9}
-
 /- ## Part 7: Relation to Quadratic Residues
 
 k(m-k) is related to squares and quadratic residues.
 -/
-
-/-- k(m-k) = (m/2)² - (k - m/2)² when m is even -/
-axiom product_difference_of_squares (m k : ℤ) (hm : Even m) :
-    k * (m - k) = (m / 2)^2 - (k - m / 2)^2
-
-/-- For fixed m, knowing A_m is about knowing which squares appear -/
-axiom product_set_squares_relation (m : ℕ) :
-    ∀ x ∈ productSet m, ∃ d : ℤ, x = (m * m / 4 : ℤ) - d^2 ∨ 4*x = m*m - 4*d^2
 
 /- ## Part 8: Connection to Sums of Arithmetic Progressions
 
@@ -181,32 +134,15 @@ k(m-k) = 1 + 2 + ... + (m-1) with specific terms removed.
 /-- The sum 1 + 2 + ... + (m-1) = m(m-1)/2 -/
 def triangularNumber (m : ℕ) : ℕ := m * (m - 1) / 2
 
-/-- k(m-k) appears in partitioning {1, ..., m-1} -/
-axiom product_partition_interpretation (m k : ℕ) (hk : 1 ≤ k) (hk' : k ≤ m - 1) :
-    productValue m k = (Finset.range k).sum id
-
 /- ## Part 9: Growth Rate Analysis
 
 The bound m^{O(1/log log m)} grows very slowly.
 -/
 
-/-- The exponent 1/log log m → 0 as m → ∞ -/
-axiom exponent_tends_to_zero :
-    ∀ ε > 0, ∃ M : ℕ, ∀ m ≥ M, 1 / Real.log (Real.log (m : ℝ)) < ε
-
-/-- Therefore m^{O(1/log log m)} = m^{o(1)} -/
-axiom subpolynomial_growth :
-    ∀ ε > 0, ∃ M : ℕ, ∀ m ≥ M, ∀ n ≤ m,
-      (commonProductCount m n : ℝ) ≤ (m : ℝ) ^ ε
-
 /- ## Part 10: The Proof Technique
 
 Hegyvári's approach uses divisibility and sieve methods.
 -/
-
-/-- Key observation: k(m-k) = l(n-l) implies divisibility constraints -/
-axiom divisibility_constraint (m n k l : ℕ) :
-    sameProduct m n k l → (k ∣ l * n ∨ n - l ∣ m - k)
 
 
 /- ## Part 11: Comparison with Related Problems
@@ -217,10 +153,6 @@ Similar problems about common values.
 /-- Compare: Common values of n choose 2 -/
 def binomialSet (m : ℕ) : Finset ℕ :=
   (Finset.range (m + 1)).image (fun k => k * (k - 1) / 2)
-
-/-- The set {k(m-k)} has a different structure from {n choose k} -/
-axiom different_from_binomial :
-    ∃ m n : ℕ, (productSet m ∩ binomialSet n).card ≠ commonProductCount m m
 
 /- ## Part 12: Summary
 
