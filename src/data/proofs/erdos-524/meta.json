@@ -35,7 +35,7 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 198,
+    "lineCount": 271,
     "assumptions": "4 axioms: erdos_lower_bound, chung_upper_bound, salem_zygmund_trigonometric, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -103,6 +103,14 @@
       "endLine": 198,
       "summary": "sSup infrastructure for polyMax: `polyMax_bddAbove` (BddAbove), `polyMax_nonneg` ($M_n \\geq 0$), `polyMax_le_n` ($M_n \\leq n$), and endpoint evaluation lower bounds `randSignPoly_eval_one_le_polyMax` and `randSignPoly_eval_neg_one_le_polyMax`.",
       "mathContext": "The polyMax sSup infrastructure establishes: (1) the supremum is well-defined (BddAbove by the trivial bound $n$), (2) $M_n \\geq 0$ (since $|\\cdot| \\geq 0$ and the domain is nonempty), (3) $M_n \\leq n$ (triangle inequality), and (4) endpoint evaluations $|P_n(t, \\pm 1)| \\leq M_n$ provide lower bounds. The endpoint bound at $x = 1$ is the key observation behind Erdős's lower bound: $M_n \\geq |P_n(t,1)| = |\\sum \\varepsilon_k|$, and by the LIL this is $\\geq \\sqrt{2n \\log\\log n}$ infinitely often."
+    },
+    {
+      "id": "advanced-polymax",
+      "title": "Advanced polyMax Results",
+      "startLine": 200,
+      "endLine": 271,
+      "summary": "Four new results: `polyMax_zero` ($M_0 = 0$), `polyMax_achieved` (extreme value theorem: $\\exists x_0 \\in [-1,1]$ achieving $M_n$), `polyMax_one` ($M_1 = 1$), and `polyMax_succ_le` ($M_{n+1} \\leq M_n + 1$, Lipschitz-type bound on the max sequence).",
+      "mathContext": "The extreme value theorem ensures the supremum defining $M_n$ is actually a maximum — the continuous function $|P_n(t,\\cdot)|$ on the compact interval $[-1,1]$ achieves its supremum. The Lipschitz bound $M_{n+1} \\leq M_n + 1$ follows from $|P_{n+1}(t,x) - P_n(t,x)| = |\\varepsilon_{n+1} x^{n+1}| \\leq 1$ on $[-1,1]$, giving a quantitative bound on how fast the polynomial maximum can grow."
     }
   ],
   "overview": {
@@ -143,9 +151,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 198,
+    "lineCount": 271,
     "axiomCount": 4,
-    "theoremCount": 14,
+    "theoremCount": 18,
     "definitionCount": 3
   },
   "references": [

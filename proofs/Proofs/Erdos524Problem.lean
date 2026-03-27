@@ -196,3 +196,76 @@ theorem randSignPoly_eval_neg_one_le_polyMax (t : ℝ) (n : ℕ) :
   unfold polyMax
   apply le_csSup (polyMax_bddAbove t n)
   exact ⟨-1, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩
+
+/- ## Additional polyMax results -/
+
+/-- M_0(t) = 0: the empty polynomial has zero maximum (empty sum). -/
+theorem polyMax_zero (t : ℝ) : polyMax t 0 = 0 :=
+  le_antisymm (by simpa using polyMax_le_n t 0) (polyMax_nonneg t 0)
+
+/-- The maximum of |P_n(t,·)| on [-1,1] is achieved: there exists x₀ ∈ [-1,1]
+    with |P_n(t,x₀)| = M_n(t). This is the extreme value theorem applied to the
+    continuous function |P_n(t,·)| on the compact set [-1,1]. -/
+theorem polyMax_achieved (t : ℝ) (n : ℕ) :
+    ∃ x₀ ∈ Set.Icc (-1 : ℝ) 1, |randSignPoly t n x₀| = polyMax t n := by
+  have hcont : ContinuousOn (fun x => |randSignPoly t n x|) (Set.Icc (-1 : ℝ) 1) :=
+    (continuous_abs.comp (randSignPoly_continuous t n)).continuousOn
+  have hne : (Set.Icc (-1 : ℝ) 1).Nonempty := ⟨0, by constructor <;> norm_num⟩
+  obtain ⟨x₀, hx₀_mem, hx₀_max⟩ := isCompact_Icc.exists_isMaxOn hne hcont
+  refine ⟨x₀, hx₀_mem, le_antisymm ?_ ?_⟩
+  · -- |P_n(t,x₀)| ≤ M_n(t): element ≤ sSup
+    unfold polyMax
+    apply le_csSup (polyMax_bddAbove t n)
+    exact ⟨x₀, hx₀_mem, rfl⟩
+  · -- M_n(t) ≤ |P_n(t,x₀)|: x₀ is the maximizer
+    unfold polyMax
+    apply csSup_le
+    · exact ⟨|randSignPoly t n 0|, ⟨0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩⟩
+    · rintro _ ⟨y, hy, rfl⟩
+      exact hx₀_max hy
+
+/-- For n = 1, M_1(t) = 1. The single-term polynomial P₁(t,x) = ε₁·x
+    has maximum |x| on [-1,1], which equals 1. -/
+theorem polyMax_one (t : ℝ) : polyMax t 1 = 1 := by
+  have h_eq : ∀ x : ℝ, |randSignPoly t 1 x| = |x| := by
+    intro x
+    simp only [randSignPoly, Finset.sum_range_one, Nat.zero_add, pow_one,
+               abs_mul, binaryDigit_cast_abs, one_mul]
+  apply le_antisymm
+  · -- M_1(t) ≤ 1: |x| ≤ 1 for x ∈ [-1,1]
+    unfold polyMax
+    apply csSup_le
+    · exact ⟨|randSignPoly t 1 0|, ⟨0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩⟩
+    · rintro _ ⟨x, hx, rfl⟩
+      rw [h_eq]
+      exact abs_le.mpr ⟨by linarith [hx.1], hx.2⟩
+  · -- 1 ≤ M_1(t): achieved at x = 1
+    unfold polyMax
+    apply le_csSup (polyMax_bddAbove t 1)
+    exact ⟨1, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, by rw [h_eq]; norm_num⟩
+
+/-- Adding one term changes the maximum by at most 1: M_{n+1}(t) ≤ M_n(t) + 1.
+    The new term |ε_{n+1}·x^{n+1}| ≤ 1 on [-1,1], and by the triangle inequality,
+    |P_{n+1}(t,x)| ≤ |P_n(t,x)| + 1 ≤ M_n(t) + 1 for each x. -/
+theorem polyMax_succ_le (t : ℝ) (n : ℕ) :
+    polyMax t (n + 1) ≤ polyMax t n + 1 := by
+  suffices h : ∀ x ∈ Set.Icc (-1 : ℝ) 1,
+      |randSignPoly t (n + 1) x| ≤ polyMax t n + 1 by
+    unfold polyMax
+    apply csSup_le
+    · exact ⟨|randSignPoly t (n + 1) 0|,
+        ⟨0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩⟩
+    · rintro _ ⟨x, hx, rfl⟩; exact h x hx
+  intro x hx
+  have hx_abs : |x| ≤ 1 := abs_le.mpr ⟨by linarith [hx.1], hx.2⟩
+  rw [randSignPoly_succ]
+  have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
+    rw [abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+      _ = 1 := one_pow _
+  have h_poly : |randSignPoly t n x| ≤ polyMax t n := by
+    unfold polyMax
+    apply le_csSup (polyMax_bddAbove t n)
+    exact ⟨x, hx, rfl⟩
+  linarith [abs_add (randSignPoly t n x)
+    ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
