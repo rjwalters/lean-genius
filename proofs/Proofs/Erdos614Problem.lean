@@ -22,8 +22,7 @@ Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
 Results:
 - erdos_614_existence: proved from f_upper_bound
 - f_max_k: identified as FALSE and removed (star graph counterexample)
-- f_upper_bound: proved via complete graph construction on Fin n
-Axioms: 3 (f_lower_bound, f_case_k_eq_1, f_mono_k)
+Axioms: 4 (f_lower_bound, f_upper_bound, f_case_k_eq_1, f_mono_k)
 Sorries: 0
 -/
 
