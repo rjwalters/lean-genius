@@ -438,7 +438,24 @@ Negate both sides and use ∫ f·sinθ = -∫ f·(-sinθ). -/
 private lemma integral_cos_substitution {f : ℝ → ℝ} (hf : Continuous f) :
     ∫ x in (-1 : ℝ)..1, f x =
     ∫ θ in (0 : ℝ)..Real.pi, f (Real.cos θ) * Real.sin θ := by
-  sorry -- Substitution: integral_comp_mul_deriv + orientation
+  -- Step 1: Apply substitution with g = cos, g' = -sin
+  -- ∫₀^π f(cos θ)·(-sin θ) dθ = ∫_{cos 0}^{cos π} f(x) dx
+  have hg : ∀ x ∈ Set.uIcc (0 : ℝ) Real.pi,
+      HasDerivAt Real.cos (-Real.sin x) x :=
+    fun x _ => Real.hasDerivAt_cos x
+  have hg' : ContinuousOn (fun x => -Real.sin x) (Set.uIcc 0 Real.pi) :=
+    Real.continuous_sin.neg.continuousOn
+  have h_subst := intervalIntegral.integral_comp_mul_deriv hg hg' hf.continuousOn
+  -- h_subst : ∫₀^π f(cos θ)·(-sin θ) = ∫_{cos 0}^{cos π} f
+  rw [Real.cos_zero, Real.cos_pi] at h_subst
+  -- h_subst : ∫₀^π f(cos θ)·(-sin θ) = ∫₁^{-1} f
+  -- Step 2: ∫ f·(-sin) = -(∫ f·sin) and ∫₁^{-1} f = -(∫_{-1}^1 f)
+  have h_neg : ∫ θ in (0 : ℝ)..Real.pi, f (Real.cos θ) * (-Real.sin θ) =
+      -(∫ θ in (0 : ℝ)..Real.pi, f (Real.cos θ) * Real.sin θ) := by
+    simp_rw [mul_neg]; exact intervalIntegral.integral_neg
+  have h_flip : ∫ x in (1 : ℝ)..(-1 : ℝ), f x =
+      -(∫ x in (-1 : ℝ)..(1 : ℝ), f x) := intervalIntegral.integral_symm 1 (-1)
+  linarith
 
 /-- ∫₋₁¹ cos²(j·arccos x) dx = 1 - 1/(4j²-1) for j ≥ 1.
 
@@ -447,7 +464,44 @@ integrals evaluated via product-to-sum and FTC. -/
 private lemma integral_chebyshev_sq (j : ℕ) (hj : j ≥ 1) :
     ∫ x in (-1 : ℝ)..1, (Real.cos ((↑j : ℝ) * Real.arccos x)) ^ 2 =
     1 - 1 / (4 * (↑j : ℝ) ^ 2 - 1) := by
-  sorry -- cos² + substitution + FTC: needs API fix for continuous_cos.comp, integral_cos_substitution
+  have hj_pos : (0 : ℝ) < ↑j := Nat.cast_pos.mpr (by omega)
+  -- Step 1: Substitution x = cos θ
+  -- ∫₋₁¹ cos²(j·arccos x) dx = ∫₀^π cos²(j·arccos(cos θ))·sin θ dθ
+  rw [integral_cos_substitution (by
+    exact (Real.continuous_cos.comp ((continuous_const.mul Real.continuous_arccos))).pow 2)]
+  -- Step 2: arccos(cos θ) = θ for θ ∈ [0, π]
+  have h_simp : ∀ θ : ℝ, θ ∈ Set.uIcc (0 : ℝ) Real.pi →
+      (Real.cos (↑j * Real.arccos (Real.cos θ))) ^ 2 * Real.sin θ =
+      (Real.cos (↑j * θ)) ^ 2 * Real.sin θ := by
+    intro θ hθ
+    rw [Set.uIcc_of_le Real.pi_pos.le] at hθ
+    rw [Real.arccos_cos hθ.1 hθ.2]
+  rw [intervalIntegral.integral_congr h_simp]
+  -- Step 3: cos²(jθ) = (1 + cos(2jθ))/2
+  have h_cos_sq : ∀ θ : ℝ,
+      (Real.cos (↑j * θ)) ^ 2 * Real.sin θ =
+      (1/2) * Real.sin θ + (1/2) * (Real.cos (2 * ↑j * θ) * Real.sin θ) := by
+    intro θ; nlinarith [Real.cos_sq (↑j * θ),
+      show Real.cos (2 * (↑j * θ)) = Real.cos (2 * ↑j * θ) from by ring_nf]
+  simp_rw [h_cos_sq]
+  rw [intervalIntegral.integral_add
+    ((Real.continuous_sin.const_mul _).intervalIntegrable _ _)
+    (((Real.continuous_cos.comp (continuous_const.mul continuous_id)).mul
+      Real.continuous_sin).const_mul _).intervalIntegrable _ _]
+  -- Step 4: ∫₀^π (1/2)·sin θ dθ = (1/2)·2 = 1
+  rw [intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+  -- ∫₀^π sin θ dθ = 2 (via FTC: antiderivative -cos θ)
+  have h_sin_int : ∫ θ in (0 : ℝ)..Real.pi, Real.sin θ = 2 := by
+    have hd : ∀ x ∈ Set.uIcc (0 : ℝ) Real.pi,
+        HasDerivAt (fun θ => -Real.cos θ) (Real.sin x) x := by
+      intro x _; exact (Real.hasDerivAt_cos x).neg
+    rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hd
+      (Real.continuous_sin.intervalIntegrable _ _)]
+    simp [Real.cos_zero, Real.cos_pi]
+  rw [h_sin_int, integral_cos_mul_sin j hj]
+  -- Arithmetic: (1/2)·2 + (1/2)·(-2/(4j²-1)) = 1 - 1/(4j²-1)
+  have h4 : (4 : ℝ) * ↑j ^ 2 - 1 ≠ 0 := by nlinarith
+  field_simp; ring
 
 -- ============================================================================
 -- Part V½: DCT Orthogonality Infrastructure for Chebyshev Expansion
@@ -587,7 +641,102 @@ private lemma dct_offdiag (n : ℕ) (hn : n ≥ 2) (k m : Fin n) (hkm : k ≠ m)
     (1 : ℝ) + 2 * ∑ j ∈ Finset.range (n - 1),
       Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
       Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) = 0 := by
-  sorry -- Product-to-sum + frequency sums + parity argument (k-m, k+m+1 have opposite parity)
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  set θ_k := (2 * (↑↑k : ℝ) + 1) * Real.pi / (2 * ↑n) with hθk_def
+  set θ_m := (2 * (↑↑m : ℝ) + 1) * Real.pi / (2 * ↑n) with hθm_def
+  have hkm_val : (k : ℕ) ≠ (m : ℕ) := fun h => hkm (Fin.ext h)
+  -- Step 1: Product-to-sum: 2cos(A)cos(B) = cos(A-B) + cos(A+B)
+  have h_pts : ∀ j ∈ Finset.range (n - 1),
+      2 * (Real.cos (((↑j : ℝ) + 1) * θ_k) * Real.cos (((↑j : ℝ) + 1) * θ_m)) =
+      Real.cos (((↑j : ℝ) + 1) * (θ_k - θ_m)) +
+      Real.cos (((↑j : ℝ) + 1) * (θ_k + θ_m)) := by
+    intro j _
+    have := two_cos_mul_cos (((↑j : ℝ) + 1) * θ_k) (((↑j : ℝ) + 1) * θ_m)
+    have h1 : ((↑j : ℝ) + 1) * θ_k - ((↑j : ℝ) + 1) * θ_m =
+        ((↑j : ℝ) + 1) * (θ_k - θ_m) := by ring
+    have h2 : ((↑j : ℝ) + 1) * θ_k + ((↑j : ℝ) + 1) * θ_m =
+        ((↑j : ℝ) + 1) * (θ_k + θ_m) := by ring
+    rw [h1, h2] at this; linarith
+  rw [Finset.mul_sum, Finset.sum_congr rfl h_pts, Finset.sum_add_distrib]
+  -- Goal: 1 + ∑cos((j+1)(θ_k-θ_m)) + ∑cos((j+1)(θ_k+θ_m)) = 0
+  -- Step 2: Reindex partial sums to full frequency sums
+  -- ∑_{j<n-1} cos((j+1)·α) = (∑_{j<n} cos(j·α)) - 1
+  have reindex_cos (α : ℝ) :
+      ∑ j ∈ Finset.range (n - 1), Real.cos (((↑j : ℝ) + 1) * α) =
+      (∑ j ∈ Finset.range n, Real.cos ((↑j : ℝ) * α)) - 1 := by
+    set f : ℕ → ℝ := fun i => Real.cos ((↑i : ℝ) * α)
+    have hf_eq : ∀ j ∈ Finset.range (n - 1),
+        Real.cos (((↑j : ℝ) + 1) * α) = f (j + 1) := by
+      intro j _; simp only [f]; push_cast; congr 1; ring
+    rw [Finset.sum_congr rfl hf_eq]
+    have h := Finset.sum_range_succ_comm f (n - 1)
+    rw [show n - 1 + 1 = n from by omega] at h
+    linarith [show f 0 = 1 from by simp [f, Real.cos_zero]]
+  rw [reindex_cos (θ_k - θ_m), reindex_cos (θ_k + θ_m)]
+  -- Goal: 1 + (S_d - 1) + (S_s - 1) = 0  ↔  S_d + S_s = 1
+  -- Step 3: Suffices to show full frequency sums add to 1
+  suffices h_main :
+      (∑ j ∈ Finset.range n, Real.cos ((↑j : ℝ) * (θ_k - θ_m))) +
+      (∑ j ∈ Finset.range n, Real.cos ((↑j : ℝ) * (θ_k + θ_m))) = 1 by linarith
+  -- Step 4: Set up sum direction: θ_k + θ_m = s₂ · π / n
+  set s₂ : ℕ := ↑↑k + ↑↑m + 1 with hs₂_def
+  have hs₂_pos : 0 < s₂ := by omega
+  have hs₂_lt : s₂ < 2 * n := by have := k.isLt; have := m.isLt; omega
+  have h_sum_cos : ∀ j : ℕ,
+      Real.cos ((↑j : ℝ) * (θ_k + θ_m)) =
+      Real.cos ((↑j : ℝ) * (↑s₂ * Real.pi / ↑n)) := by
+    intro j; congr 1
+    simp only [hθk_def, hθm_def, hs₂_def]; push_cast; field_simp; ring
+  simp_rw [h_sum_cos]
+  -- Step 5: Handle difference direction — case split on k vs m
+  rcases hkm_val.lt_or_lt with hlt | hgt
+  · -- Case k.val < m.val: θ_k - θ_m = -(s₁ · π / n), use cos(-x) = cos(x)
+    set s₁ : ℕ := ↑↑m - ↑↑k with hs₁_def
+    have hs₁_pos : 0 < s₁ := by omega
+    have hs₁_lt : s₁ < 2 * n := by have := m.isLt; omega
+    have h_diff_cos : ∀ j : ℕ,
+        Real.cos ((↑j : ℝ) * (θ_k - θ_m)) =
+        Real.cos ((↑j : ℝ) * (↑s₁ * Real.pi / ↑n)) := by
+      intro j
+      have harg : (↑j : ℝ) * (θ_k - θ_m) =
+          -((↑j : ℝ) * (↑s₁ * Real.pi / ↑n)) := by
+        simp only [hθk_def, hθm_def, hs₁_def]
+        push_cast [Nat.cast_sub (by omega : (↑↑k : ℕ) ≤ ↑↑m)]
+        field_simp; ring
+      rw [harg, Real.cos_neg]
+    simp_rw [h_diff_cos]
+    -- Parity: s₁ + s₂ = (m-k) + (k+m+1) = 2m+1 (odd)
+    -- → exactly one of s₁, s₂ is even and the other is odd
+    -- Even frequency sum = 0, odd frequency sum = 1, total = 0 + 1 = 1
+    rcases Nat.even_or_odd s₁ with he | ho
+    · -- s₁ even → s₂ odd
+      have : Odd s₂ := by rcases he with ⟨a, ha⟩; exact ⟨↑↑m - a, by omega⟩
+      rw [frequency_cosine_sum_even n (by omega) s₁ hs₁_pos hs₁_lt he,
+          frequency_cosine_sum_odd n (by omega) s₂ hs₂_pos hs₂_lt this]; ring
+    · -- s₁ odd → s₂ even
+      have : Even s₂ := by rcases ho with ⟨a, ha⟩; exact ⟨↑↑m - a, by omega⟩
+      rw [frequency_cosine_sum_odd n (by omega) s₁ hs₁_pos hs₁_lt ho,
+          frequency_cosine_sum_even n (by omega) s₂ hs₂_pos hs₂_lt this]; ring
+  · -- Case k.val > m.val: θ_k - θ_m = s₁ · π / n (positive, direct)
+    set s₁ : ℕ := ↑↑k - ↑↑m with hs₁_def
+    have hs₁_pos : 0 < s₁ := by omega
+    have hs₁_lt : s₁ < 2 * n := by have := k.isLt; omega
+    have h_diff_cos : ∀ j : ℕ,
+        Real.cos ((↑j : ℝ) * (θ_k - θ_m)) =
+        Real.cos ((↑j : ℝ) * (↑s₁ * Real.pi / ↑n)) := by
+      intro j; congr 1
+      simp only [hθk_def, hθm_def, hs₁_def]
+      push_cast [Nat.cast_sub (by omega : (↑↑m : ℕ) ≤ ↑↑k)]
+      field_simp; ring
+    simp_rw [h_diff_cos]
+    -- Parity: s₁ + s₂ = (k-m) + (k+m+1) = 2k+1 (odd)
+    rcases Nat.even_or_odd s₁ with he | ho
+    · have : Odd s₂ := by rcases he with ⟨a, ha⟩; exact ⟨↑↑k - a, by omega⟩
+      rw [frequency_cosine_sum_even n (by omega) s₁ hs₁_pos hs₁_lt he,
+          frequency_cosine_sum_odd n (by omega) s₂ hs₂_pos hs₂_lt this]; ring
+    · have : Even s₂ := by rcases ho with ⟨a, ha⟩; exact ⟨↑↑k - a, by omega⟩
+      rw [frequency_cosine_sum_odd n (by omega) s₁ hs₁_pos hs₁_lt ho,
+          frequency_cosine_sum_even n (by omega) s₂ hs₂_pos hs₂_lt this]; ring
 
 /-- **Chebyshev expansion**: ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} cos²(j·arccos x))
 for Chebyshev nodes and x ∈ [-1,1].
@@ -613,7 +762,55 @@ private lemma chebyshev_integral_trace (n : ℕ) (hn : n ≥ 2) :
     lagrangeIntegral n (chebyshevNodes n) =
     (1 / ↑n : ℝ) * (2 * ↑n - 2 * ∑ j ∈ Finset.range (n - 1),
       (1 : ℝ) / (4 * ((↑j : ℝ) + 1) ^ 2 - 1)) := by
-  sorry -- Needs chebyshev_sq_expansion + integral_chebyshev_sq (API fix needed)
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- Step 1: Unfold and apply Chebyshev expansion to the integrand
+  unfold lagrangeIntegral
+  -- Rewrite integrand: ∑ l_k² = (1/n)(1 + 2∑T_j²) for Chebyshev nodes
+  have h_integrand : ∀ x : ℝ, x ∈ Set.Icc (-1 : ℝ) 1 →
+      ∑ k : Fin n, (lagrangeBasis n (chebyshevNodes n) k x) ^ 2 =
+      (1 / ↑n) * (1 + 2 * ∑ j ∈ Finset.range (n - 1),
+        (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) :=
+    fun x hx => chebyshev_sq_expansion n hn x hx
+  -- Use integral_congr to rewrite the integrand on [-1, 1]
+  have h_rw : ∫ x in (-1 : ℝ)..1,
+      ∑ k : Fin n, (lagrangeBasis n (chebyshevNodes n) k x) ^ 2 =
+    ∫ x in (-1 : ℝ)..1,
+      (1 / ↑n) * (1 + 2 * ∑ j ∈ Finset.range (n - 1),
+        (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) := by
+    apply intervalIntegral.integral_congr
+    intro x hx
+    rw [Set.uIcc_of_le (by norm_num : (-1 : ℝ) ≤ 1)] at hx
+    exact h_integrand x hx
+  rw [h_rw]
+  -- Step 2: Pull out 1/n
+  rw [intervalIntegral.integral_const_mul]
+  congr 1
+  -- Step 3: Split integral: ∫(1 + 2∑f_j) = ∫1 + 2·∑∫f_j
+  -- Continuity for integrability
+  have h_cont_T : ∀ j : ℕ, Continuous (fun x =>
+      (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) := by
+    intro j
+    exact (Real.continuous_cos.comp
+      ((continuous_const.mul Real.continuous_arccos))).pow 2
+  rw [intervalIntegral.integral_add intervalIntegrable_const
+    ((continuous_const.mul (continuous_finset_sum _ fun j _ => h_cont_T j)).intervalIntegrable _ _)]
+  rw [intervalIntegral.integral_const, smul_eq_mul, show (1 : ℝ) * ((1 : ℝ) - (-1 : ℝ)) = 2 from by ring]
+  rw [intervalIntegral.integral_const_mul]
+  -- Step 4: Exchange ∑ and ∫
+  rw [intervalIntegral.integral_finset_sum _ (fun j _ => (h_cont_T j).intervalIntegrable _ _)]
+  -- Step 5: Apply integral_chebyshev_sq to each term
+  have h_each : ∀ j ∈ Finset.range (n - 1),
+      ∫ x in (-1 : ℝ)..1, (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2 =
+      1 - 1 / (4 * ((↑j : ℝ) + 1) ^ 2 - 1) := by
+    intro j hj
+    rw [show ((↑j : ℝ) + 1) = ↑(j + 1 : ℕ) from by push_cast; ring]
+    exact integral_chebyshev_sq (j + 1) (by omega)
+  rw [Finset.sum_congr rfl h_each]
+  -- Step 6: Arithmetic: 2 + 2·∑(1 - 1/(4j²-1)) = 2 + 2(n-1) - 2∑1/(4j²-1) = 2n - 2∑1/(4j²-1)
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+  push_cast [Nat.cast_sub (by omega : 1 ≤ n)]
+  ring
 
 /-- The exact value of the Lagrange integral for Chebyshev nodes.
 
