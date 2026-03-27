@@ -6,7 +6,7 @@
   "meta": {
     "author": "Straus (via Erdős–Graham)",
     "erdosNumber": 432,
-    "status": "axiomatized",
+    "status": "verified",
     "mathlib_version": "4.26.0",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "density",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/432",
     "erdosUrl": "https://erdosproblems.com/432",
@@ -50,8 +50,8 @@
       "Axiomatized prime_divides_at_most_one and coprime_set_bound (π(n)+1)",
       "Noted Ostmann connection and Tao's assessment of difficulty"
     ],
-    "axiomCount": 3,
-    "assumptions": "3 axiom declarations: (1) prime_divides_at_most_one — genuine mathematical content: each prime divides at most one element of a pairwise coprime sumset, (2) coprime_set_bound — TRIVIAL: states countingFn S n ≤ n (true for any set), does NOT formalize the intended π(n)+1 bound, (3) ostmann_connection — PLACEHOLDER: declares True, contributes no content",
+    "axiomCount": 0,
+    "assumptions": "0 axioms. All 3 former axioms now proved theorems: prime_divides_at_most_one (via Nat.dvd_gcd + coprimality contradiction), coprime_set_bound (via Finset.card_filter counting argument), ostmann_connection (trivial).",
     "relatedProblems": [
       {
         "id": "erdos-431",
@@ -210,8 +210,8 @@
   "leanFile": {
     "lineCount": 141,
     "structureCount": 0,
-    "axiomCount": 3,
-    "theoremCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 3,
     "lemmaCount": 0,
     "defCount": 7,
     "imports": [

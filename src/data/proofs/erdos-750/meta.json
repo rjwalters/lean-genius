@@ -46,9 +46,9 @@
       "sqrt_case and log_case: specific open sublinear instances",
       "problem_75_connection and bipartite_benchmark: structural context"
     ],
-    "axiomCount": 7,
-    "lineCount": 106,
-    "assumptions": "7 axioms: erdos_750_conjecture, erdos_hajnal_1967, erdos_hajnal_szemeredi_1982, and 4 more. See Lean source for complete statements.",
+    "axiomCount": 6,
+    "lineCount": 145,
+    "assumptions": "6 axioms: erdos_750_conjecture (open), erdos_hajnal_1967 (known), erdos_hajnal_szemeredi_1982 (known), sqrt_case (open), log_case (open), problem_75_connection (open). bipartite_benchmark proved via 2-coloring pigeonhole.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -137,9 +137,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 106,
-    "axiomCount": 7,
-    "theoremCount": 0,
+    "lineCount": 145,
+    "axiomCount": 6,
+    "theoremCount": 2,
     "definitionCount": 3
   },
   "references": [

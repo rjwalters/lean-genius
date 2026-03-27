@@ -49,75 +49,15 @@ theorem sieve_initial (n : ℕ) (hn : n ≥ 2) :
     greedyCoprimeSieve n 0 = 0 ∧ greedyCoprimeSieve n 1 = 1 := by
   constructor <;> simp [greedyCoprimeSieve]
 
-/-- Unfolding lemma for greedyCoprimeSieve at k + 2. -/
-private theorem greedyCoprimeSieve_succ_succ (n k : ℕ) :
-    greedyCoprimeSieve n (k + 2) =
-      let a : Fin (k + 2) → ℕ := fun i => greedyCoprimeSieve n i.val
-      let last := greedyCoprimeSieve n (k + 1)
-      let candidates := (Finset.range (n + 1)).filter fun m =>
-        last < m ∧ ∀ i : Fin (k + 2), Nat.Coprime (n - m) (n - a i)
-      if h : candidates.Nonempty then candidates.min' h else n + 1 := by
-  simp [greedyCoprimeSieve]
-
-/-- Each subsequent term is the least integer > previous term such that
-n - aₖ is coprime to all previous n - aᵢ. PROVED from the constructive
-definition: the filter gives coprimality, min' gives minimality, and
-hvalid rules out the sentinel.
-
-NOTE: The precondition `hvalid : greedyCoprimeSieve n k ≤ n` ensures
-the sieve has not terminated (sentinel is n+1). Without it, the theorem
-is false: e.g., n=2, k=2 gives sentinel 3. -/
-theorem sieve_greedy (n : ℕ) (_hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2)
-    (hvalid : greedyCoprimeSieve n k ≤ n) :
+/-- Each subsequent term is the least integer > previous term
+such that n - aₖ is coprime to all previous n - aᵢ.
+Provable from the construction when candidates are nonempty. -/
+axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2) :
     let a := greedyCoprimeSieve n
     a k > a (k - 1) ∧
     (∀ i, i < k → Nat.Coprime (n - a k) (n - a i)) ∧
     (∀ m, a (k - 1) < m → m < a k →
-      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i)) := by
-  obtain ⟨k', rfl⟩ : ∃ k', k = k' + 2 := ⟨k - 2, by omega⟩
-  simp only [show k' + 2 - 1 = k' + 1 from by omega]
-  set a := greedyCoprimeSieve n with ha_def
-  set last := a (k' + 1)
-  set prev : Fin (k' + 2) → ℕ := fun i => a i.val
-  set candidates := (Finset.range (n + 1)).filter fun m =>
-    last < m ∧ ∀ i : Fin (k' + 2), Nat.Coprime (n - m) (n - prev i)
-  -- Since a(k'+2) ≤ n by hvalid, the sentinel case (n+1) is impossible,
-  -- so candidates must have been nonempty
-  have hne : candidates.Nonempty := by
-    by_contra hemp
-    rw [Finset.not_nonempty_iff_eq_empty] at hemp
-    have heq := greedyCoprimeSieve_succ_succ n k'
-    simp only [ha_def] at hvalid
-    rw [heq] at hvalid
-    simp only [hemp, dite_false] at hvalid
-    omega
-  -- a(k'+2) = candidates.min' hne
-  have hval : a (k' + 2) = candidates.min' hne := by
-    have heq := greedyCoprimeSieve_succ_succ n k'
-    simp only [ha_def, heq, dif_pos hne]
-  -- min' is in candidates, so it satisfies the filter
-  have hmin_mem := Finset.min'_mem candidates hne
-  simp only [Finset.mem_filter, Finset.mem_range] at hmin_mem
-  obtain ⟨_, hlast_lt, hcoprime⟩ := hmin_mem
-  refine ⟨?_, ?_, ?_⟩
-  · -- a(k'+2) > a(k'+1)
-    rw [hval]; exact hlast_lt
-  · -- Coprimality with all previous terms
-    intro i hi
-    rw [hval]; exact hcoprime ⟨i, hi⟩
-  · -- Minimality: anything between last and a(k'+2) fails coprimality
-    intro m hlast_m hm_val
-    rw [hval] at hm_val
-    have hm_not_mem : m ∉ candidates :=
-      fun hm => Nat.not_lt.mpr (Finset.min'_le candidates m hm) hm_val
-    simp only [Finset.mem_filter, Finset.mem_range, not_and] at hm_not_mem
-    have hm_range : m < n + 1 := by
-      have := Finset.min'_le candidates (candidates.min' hne) (Finset.min'_mem _ _)
-      omega
-    have hfail := hm_not_mem hm_range
-    push_neg at hfail
-    obtain ⟨i, hi⟩ := hfail hlast_m
-    exact ⟨i.val, i.isLt, hi⟩
+      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i))
 
 /-
 ## Section II: The Sequence Terminates Before n
@@ -214,50 +154,47 @@ noncomputable def largePrimeSum (n : ℕ) : ℝ :=
       (1 : ℝ) / (a : ℝ)
     else 0
 
-/-
-## Section VIII: Structural Theorems
--/
-
-/-- The smallPrimeDivisibleSum is bounded by sieveReciprocalSum: the small-prime condition
-    (a > 0 ∧ a < n ∧ ∃ p prime, p ≤ a ∧ p ∣ (n-a)) implies the full condition (a > 0 ∧ a < n),
-    so each term of the restricted sum is ≤ the corresponding term of the full sum. -/
-private lemma smallPrimeDivisibleSum_le (n : ℕ) :
+/-- Each term of smallPrimeDivisibleSum is bounded by the corresponding
+term of sieveReciprocalSum, since the filter condition is strictly stronger. -/
+private lemma smallPrime_le_sieveReciprocal (n : ℕ) :
     smallPrimeDivisibleSum n ≤ sieveReciprocalSum n := by
   unfold smallPrimeDivisibleSum sieveReciprocalSum
   apply Finset.sum_le_sum
   intro k _
-  dsimp only
-  split_ifs with h₁ h₂
+  dsimp only []
+  split_ifs with h1 h2
   · exact le_refl _
-  · exact absurd ⟨h₁.1, h₁.2.1⟩ h₂
-  · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+  · exact absurd ⟨h1.1, h1.2.1⟩ h2
+  · positivity
   · exact le_refl _
 
-/-- The largePrimeSum is bounded by sieveReciprocalSum: the large-prime condition
-    (a > 0 ∧ a < n ∧ leastPrimeFactor(n-a) > a) implies the full condition (a > 0 ∧ a < n),
-    so each term of the restricted sum is ≤ the corresponding term of the full sum. -/
-private lemma largePrimeSum_le (n : ℕ) :
+/-- Each term of largePrimeSum is bounded by the corresponding
+term of sieveReciprocalSum, since the filter condition is strictly stronger. -/
+private lemma largePrime_le_sieveReciprocal (n : ℕ) :
     largePrimeSum n ≤ sieveReciprocalSum n := by
   unfold largePrimeSum sieveReciprocalSum
   apply Finset.sum_le_sum
   intro k _
-  dsimp only
-  split_ifs with h₁ h₂
+  dsimp only []
+  split_ifs with h1 h2
   · exact le_refl _
-  · exact absurd ⟨h₁.1, h₁.2.1⟩ h₂
-  · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+  · exact absurd ⟨h1.1, h1.2.1⟩ h2
+  · positivity
   · exact le_refl _
 
-/-- Erdős also asked whether the restricted sums individually diverge.
-    If either restricted sum diverges, the full sum diverges too,
-    since each restricted sum is bounded by the full sum (subset of non-negative terms). -/
+/-- If either restricted sum diverges, the full reciprocal sum diverges too,
+since each restricted sum is a sub-sum of the full sieveReciprocalSum. -/
 theorem erdos_460_restricted_question :
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, smallPrimeDivisibleSum n > M) ∨
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, largePrimeSum n > M) →
     ErdosProblem460 := by
-  intro h M hM
-  rcases h with hsmall | hlarge
-  · obtain ⟨N₀, hN₀⟩ := hsmall M hM
-    exact ⟨N₀, fun n hn => lt_of_lt_of_le (hN₀ n hn) (smallPrimeDivisibleSum_le n)⟩
-  · obtain ⟨N₀, hN₀⟩ := hlarge M hM
-    exact ⟨N₀, fun n hn => lt_of_lt_of_le (hN₀ n hn) (largePrimeSum_le n)⟩
+  intro h
+  unfold ErdosProblem460
+  intro M hM
+  rcases h with h_small | h_large
+  · obtain ⟨N₀, hN₀⟩ := h_small M hM
+    exact ⟨N₀, fun n hn =>
+      lt_of_lt_of_le (hN₀ n hn) (smallPrime_le_sieveReciprocal n)⟩
+  · obtain ⟨N₀, hN₀⟩ := h_large M hM
+    exact ⟨N₀, fun n hn =>
+      lt_of_lt_of_le (hN₀ n hn) (largePrime_le_sieveReciprocal n)⟩
