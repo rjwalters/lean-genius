@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.SumFourSquares
+import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.Tactic
 
 /-!
@@ -315,9 +316,32 @@ theorem two_squares_multiplicative (m n : ℕ)
   push_cast
   ring
 
-/-- Fermat's two-square theorem: p ≡ 1 (mod 4) iff p = a² + b² (for odd prime p) -/
-axiom fermat_two_squares (p : ℕ) (hp : Nat.Prime p) (hp_odd : p ≠ 2) :
-    (∃ a b : ℕ, a ^ 2 + b ^ 2 = p) ↔ p % 4 = 1
+/-- Fermat's two-square theorem: p ≡ 1 (mod 4) iff p = a² + b² (for odd prime p).
+    Proved using Mathlib's Nat.Prime.sq_add_sq (backward) and mod-4 arithmetic (forward). -/
+theorem fermat_two_squares (p : ℕ) (hp : Nat.Prime p) (hp_odd : p ≠ 2) :
+    (∃ a b : ℕ, a ^ 2 + b ^ 2 = p) ↔ p % 4 = 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  constructor
+  · -- Forward: p = a² + b² → p ≡ 1 (mod 4)
+    rintro ⟨a, b, hab⟩
+    -- Since p is odd prime ≠ 2, p % 4 ∈ {1, 3}. We show p % 4 ≠ 3.
+    by_contra h
+    push_neg at h
+    -- p % 4 ∈ {0, 2, 3} since ≠ 1
+    -- p is prime > 2, so p is odd, so p % 4 ∈ {1, 3}
+    have hp_odd' : p % 2 = 1 := Nat.Prime.odd_of_ne_two hp hp_odd |>.mod_cast
+    -- p % 4 must be 3 (since not 0, not 2 because odd, not 1 by assumption)
+    have hp4 : p % 4 = 3 := by omega
+    -- Squares mod 4 are 0 or 1
+    have ha4 : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by omega
+    have hb4 : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by omega
+    -- So a² + b² ≡ 0, 1, or 2 (mod 4), never 3
+    have hsum : (a ^ 2 + b ^ 2) % 4 ≠ 3 := by
+      rcases ha4 with ha | ha <;> rcases hb4 with hb | hb <;> omega
+    rw [hab] at hsum; exact hsum hp4
+  · -- Backward: p ≡ 1 (mod 4) → p = a² + b²
+    intro hp1
+    exact Nat.Prime.sq_add_sq (by omega)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART V: QUATERNIONS AND THE ALGEBRAIC STRUCTURE
