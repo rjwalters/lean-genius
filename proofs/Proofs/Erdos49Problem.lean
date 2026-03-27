@@ -80,8 +80,10 @@ axiom incTotientSet_density_zero :
 /- ## Totient properties -/
 
 /-- `φ(p) = p - 1` for primes. -/
-axiom totient_prime (p : ℕ) (hp : Nat.Prime p) :
-    Nat.totient p = p - 1
+theorem totient_prime (p : ℕ) (hp : Nat.Prime p) :
+    Nat.totient p = p - 1 :=
+  hp.totient
 
 /-- `φ(n) ≤ n` for all `n`. -/
-axiom totient_le (n : ℕ) : Nat.totient n ≤ n
+theorem totient_le (n : ℕ) : Nat.totient n ≤ n :=
+  Nat.totient_le n
