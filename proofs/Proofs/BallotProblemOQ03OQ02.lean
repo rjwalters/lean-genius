@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 2 sorries — GV involution membership + self-inverse)
+## Status (0 axioms, 0 sorries — COMPLETE)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -60,7 +60,7 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] gvCanon_no_fixed (PROVED — same as before, only depends on perm)
 - [x] cancellable_sum_eq_zero wired to Finset.sum_involution (PROVED modulo sorries below)
 - [x] gvCanon_membership (PROVED — tail-swapped paths share (c, y) → ¬NI)
-- [ ] gvCanon_self_inverse (sorry — canonical crossing preserved + double swap = id)
+- [x] gvCanon_self_inverse (PROVED — canonical crossing preserved + double swap = id)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -1968,6 +1968,17 @@ private lemma drop_take_append {α : Type} (l₁ l₂ : List α) :
   rw [List.drop_append, Nat.sub_self, List.drop_length, List.nil_append,
       List.drop_zero]
 
+/-- When two codes have the same column component and n < N, decoded y of n ≤ decoded y of N. -/
+private lemma decoded_y_le {rr B n N : ℕ} (hrr : 0 < rr) (hBrr : 0 < B * rr)
+    (hn : n < N) (hc : n / (B * rr) = N / (B * rr)) :
+    (n / rr) % B ≤ (N / rr) % B := by
+  have h1 : n / rr ≤ N / rr := Nat.div_le_div_right (le_of_lt hn)
+  have h2 : n / rr / B = N / rr / B := by
+    simp only [Nat.div_div_eq_div_mul, mul_comm rr B]; exact hc
+  have h3 := Nat.div_add_mod (n / rr) B
+  have h4 := Nat.div_add_mod (N / rr) B
+  omega
+
 /-- The canonical crossing code is preserved under the GV involution.
     Key insight: with the (c, y, i, j) encoding scanning y bottom-up,
     the tail swap at point (c₀, y₀) preserves all crossings at (c', y', i', j')
@@ -1979,14 +1990,226 @@ private theorem canonCrossN_preserved {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.w
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t)
     (ht' : ¬isNonCancellable (gvCanonInv cfg hwf t ht)) :
     canonCrossN cfg hwf (gvCanonInv cfg hwf t ht) ht' = canonCrossN cfg hwf t ht := by
-  sorry -- TODO: prove via prefix preservation + shared-point argument
+  -- Setup: extract canonical crossing data for t
+  set t' := gvCanonInv cfg hwf t ht with ht'_def
+  set N := canonCrossN cfg hwf t ht with hN_def
+  set ci := canonI cfg hwf t ht
+  set cj := canonJ cfg hwf t ht
+  set c₀ := canonCol cfg hwf t ht
+  set y₀ := canonY cfg hwf t ht
+  set ki := splitPosAt cfg t c₀ y₀ ci
+  set kj := splitPosAt cfg t c₀ y₀ cj
+  have hij : (ci : ℕ) < cj := canonI_lt_canonJ cfg hwf t ht
+  have hc₀m := canonCol_le_m cfg hwf t ht
+  have hri := canonY_in_range_i cfg hwf t ht
+  have hrj := canonY_in_range_j cfg hwf t ht
+  have hspec := canonCross_spec cfg hwf t ht
+  -- Prefix East counts = c₀
+  have hpfx_ci : ((t.2 ci).val.take ki).countP (· = false) = c₀ :=
+    take_east_count_within_column (t.2 ci).val c₀ (y₀ - cfg.sources ci) (by omega) hri.1
+      (by split_ifs at hri ⊢ with h <;> [exact hri.2; omega])
+  have hpfx_cj : ((t.2 cj).val.take kj).countP (· = false) = c₀ :=
+    take_east_count_within_column (t.2 cj).val c₀ (y₀ - cfg.sources cj) (by omega) hrj.1
+      (by split_ifs at hrj ⊢ with h <;> [exact hrj.2; omega])
+  -- Image path values
+  have himg_ci : (t'.2 ci).val = (t.2 ci).val.take ki ++ (t.2 cj).val.drop kj := by
+    simp only [ht'_def, gvCanonInv, dif_pos rfl]; rfl
+  have himg_cj : (t'.2 cj).val = (t.2 cj).val.take kj ++ (t.2 ci).val.drop ki := by
+    simp only [ht'_def, gvCanonInv, dif_neg (Fin.ne_of_gt hij), dif_pos rfl]; rfl
+  -- colEntry preserved at c ≤ c₀ for ci
+  have colEntry_eq_ci (c : ℕ) (hc : c ≤ c₀) :
+      colEntry (t'.2 ci).val c = colEntry (t.2 ci).val c := by
+    cases c with
+    | zero => simp [colEntry]
+    | succ c' =>
+      simp only [colEntry, himg_ci]
+      rw [show (t.2 ci).val = (t.2 ci).val.take ki ++ (t.2 ci).val.drop ki from
+        (List.take_append_drop ki (t.2 ci).val).symm]
+      exact northBeforeEast_prefix _ _ _ c' (by rw [hpfx_ci]; omega)
+  -- colEntry preserved at c ≤ c₀ for cj
+  have colEntry_eq_cj (c : ℕ) (hc : c ≤ c₀) :
+      colEntry (t'.2 cj).val c = colEntry (t.2 cj).val c := by
+    cases c with
+    | zero => simp [colEntry]
+    | succ c' =>
+      simp only [colEntry, himg_cj]
+      rw [show (t.2 cj).val = (t.2 cj).val.take kj ++ (t.2 cj).val.drop kj from
+        (List.take_append_drop kj (t.2 cj).val).symm]
+      exact northBeforeEast_prefix _ _ _ c' (by rw [hpfx_cj]; omega)
+  -- colEntry preserved for any index at c ≤ c₀
+  have colEntry_eq (k : Fin r) (c : ℕ) (hc : c ≤ c₀) :
+      colEntry (t'.2 k).val c = colEntry (t.2 k).val c := by
+    by_cases hk_ci : k = ci
+    · subst hk_ci; exact colEntry_eq_ci c hc
+    · by_cases hk_cj : k = cj
+      · subst hk_cj; exact colEntry_eq_cj c hc
+      · congr 1; simp only [ht'_def, gvCanonInv, dif_neg hk_ci, dif_neg hk_cj]; rfl
+  -- Upper bound helpers: y₀ ≤ source_k + colEntry(t.2 k, c₀+1) for k ∈ {ci, cj}
+  have hup_ci (y : ℕ) (hy : y ≤ y₀) :
+      y ≤ (if c₀ < cfg.m then cfg.sources ci + colEntry (t.2 ci).val (c₀ + 1)
+           else cfg.targets (t.1 ci)) := by
+    split_ifs with h
+    · have := hri.2; split_ifs at this with h' <;> omega
+    · have := hri.2; split_ifs at this with h' <;> omega
+  have hup_cj (y : ℕ) (hy : y ≤ y₀) :
+      y ≤ (if c₀ < cfg.m then cfg.sources cj + colEntry (t.2 cj).val (c₀ + 1)
+           else cfg.targets (t.1 cj)) := by
+    split_ifs with h
+    · have := hrj.2; split_ifs at this with h' <;> omega
+    · have := hrj.2; split_ifs at this with h' <;> omega
+  -- Helper: transfer upper bound from t' to t for arbitrary index k at column c ≤ c₀
+  have transfer_hi (k : Fin r) (c y : ℕ) (hc_le : c ≤ c₀) (hy_le : c = c₀ → y ≤ y₀)
+      (hhi : y ≤ (if c < cfg.m then cfg.sources k + colEntry (t'.2 k).val (c + 1)
+                  else cfg.targets (t'.1 k))) :
+      y ≤ (if c < cfg.m then cfg.sources k + colEntry (t.2 k).val (c + 1)
+           else cfg.targets (t.1 k)) := by
+    by_cases hk_ci : k = ci
+    · subst hk_ci
+      by_cases hc_lt : c < c₀
+      · -- c < c₀: colEntry at c+1 preserved
+        rw [(colEntry_eq ci (c + 1) (by omega)).symm]
+        split_ifs at hhi ⊢ with h <;> [exact hhi; omega]
+      · -- c = c₀: use y ≤ y₀
+        have hc_eq : c = c₀ := by omega
+        subst hc_eq
+        exact hup_ci y (hy_le rfl)
+    · by_cases hk_cj : k = cj
+      · subst hk_cj
+        by_cases hc_lt : c < c₀
+        · rw [(colEntry_eq cj (c + 1) (by omega)).symm]
+          split_ifs at hhi ⊢ with h <;> [exact hhi; omega]
+        · have hc_eq : c = c₀ := by omega; subst hc_eq
+          exact hup_cj y (hy_le rfl)
+      · -- k ∉ {ci, cj}: path and perm unchanged
+        have hval : (t'.2 k).val = (t.2 k).val := by
+          simp only [ht'_def, gvCanonInv, dif_neg hk_ci, dif_neg hk_cj]; rfl
+        have hperm : t'.1 k = t.1 k := by
+          simp [ht'_def, gvCanonInv, canonNewPerm, Equiv.Perm.mul_apply,
+            Equiv.swap_apply_of_ne_of_ne hk_ci hk_cj]
+        rw [hval, hperm] at hhi; exact hhi
+  -- ===== PART 1: canonCrossN(t') ≤ N =====
+  have h_le : canonCrossN cfg hwf t' ht' ≤ N := by
+    apply canonCross_min
+    obtain ⟨hr, hcm, hij_enc, hiv, hjv, hshare⟩ := hspec
+    refine ⟨hr, hcm, hij_enc, hiv, hjv, ?_⟩
+    simp only [pathsSharePoint] at hshare ⊢
+    obtain ⟨hlo_i, hhi_i, hlo_j, hhi_j⟩ := hshare
+    refine ⟨by rw [colEntry_eq ci c₀ le_rfl]; exact hlo_i, ?_,
+            by rw [colEntry_eq cj c₀ le_rfl]; exact hlo_j, ?_⟩
+    · -- Upper bound for ci in t': use northBeforeEast_ge_prefix_true
+      split_ifs with hcm'
+      · rw [himg_ci]; simp only [colEntry]
+        have hge := northBeforeEast_ge_prefix_true
+          ((t.2 ci).val.take ki) ((t.2 cj).val.drop kj) c₀ hpfx_ci
+        have htrue := take_countP_true_eq (t.2 ci) ki c₀
+          (splitPos_le_length cfg hwf t ht ci (Or.inl rfl))
+          (by simp [splitPosAt] at ki; exact hpfx_ci)
+        rw [htrue] at hge; simp [splitPosAt] at ki; omega
+      · -- c₀ = m: target(t'.1 ci) = target(t.1 cj) ≥ y₀
+        simp [ht'_def, gvCanonInv, canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_left]
+        have := hri.2; have := hrj.2
+        split_ifs at * with h <;> omega
+    · -- Upper bound for cj in t'
+      split_ifs with hcm'
+      · rw [himg_cj]; simp only [colEntry]
+        have hge := northBeforeEast_ge_prefix_true
+          ((t.2 cj).val.take kj) ((t.2 ci).val.drop ki) c₀ hpfx_cj
+        have htrue := take_countP_true_eq (t.2 cj) kj c₀
+          (splitPos_le_length cfg hwf t ht cj (Or.inr rfl))
+          (by simp [splitPosAt] at kj; exact hpfx_cj)
+        rw [htrue] at hge; simp [splitPosAt] at kj; omega
+      · simp [ht'_def, gvCanonInv, canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_right]
+        have := hri.2; have := hrj.2
+        split_ifs at * with h <;> omega
+  -- ===== PART 2: N ≤ canonCrossN(t') (by contradiction + transfer) =====
+  suffices h_ge : N ≤ canonCrossN cfg hwf t' ht' from le_antisymm h_le h_ge
+  by_contra h_neg; push_neg at h_neg
+  set N' := canonCrossN cfg hwf t' ht'
+  have hN'_lt : N' < N := by omega
+  have hspec' := canonCross_spec cfg hwf t' ht'
+  -- Transfer the crossing from t' to t
+  have htransfer : crossingCode cfg t N' := by
+    obtain ⟨hr', hcm', hij'', hiv', hjv', hshare'⟩ := hspec'
+    refine ⟨hr', hcm', hij'', hiv', hjv', ?_⟩
+    simp only [pathsSharePoint] at hshare' ⊢
+    obtain ⟨hlo_i', hhi_i', hlo_j', hhi_j'⟩ := hshare'
+    set c' := N' / (yBound cfg * (r * r))
+    set y' := (N' / (r * r)) % yBound cfg
+    set i' : Fin r := ⟨(N' / r) % r, hiv'⟩
+    set j' : Fin r := ⟨N' % r, hjv'⟩
+    have hc'_le : c' ≤ c₀ := Nat.div_le_div_right (le_of_lt hN'_lt)
+    have hr_pos : 0 < r := hr'
+    -- y' ≤ y₀ when c' = c₀
+    have hy'_le (hc'_eq : c' = c₀) : y' ≤ y₀ := by
+      simp only [y', y₀, c', c₀, canonY, canonCol] at hc'_eq ⊢
+      exact decoded_y_le (by positivity) (by positivity) hN'_lt hc'_eq
+    -- Transfer: lower bounds use colEntry preservation, upper bounds use transfer_hi
+    exact ⟨by rw [(colEntry_eq i' c' hc'_le).symm]; exact hlo_i',
+           transfer_hi i' c' y' hc'_le hy'_le hhi_i',
+           by rw [(colEntry_eq j' c' hc'_le).symm]; exact hlo_j',
+           transfer_hi j' c' y' hc'_le hy'_le hhi_j'⟩
+  exact absurd htransfer (Nat.find_min (crossingCode_exists cfg hwf t ht) hN'_lt)
 
 private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg)
     (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
     gvCanonInv cfg hwf (gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2))
       ((Finset.mem_filter.mp (gvCanon_membership cfg hwf t ht)).2) = t := by
-  sorry -- TODO: use canonCrossN_preserved + double tail-swap = id + swap² = 1
+  have hht := (Finset.mem_filter.mp ht).2
+  set t' := gvCanonInv cfg hwf t hht with ht'_def
+  have hht' := (Finset.mem_filter.mp (gvCanon_membership cfg hwf t ht)).2
+  -- Canonical crossing data for t
+  set ci := canonI cfg hwf t hht
+  set cj := canonJ cfg hwf t hht
+  set c₀ := canonCol cfg hwf t hht
+  set y₀ := canonY cfg hwf t hht
+  set ki := splitPosAt cfg t c₀ y₀ ci
+  set kj := splitPosAt cfg t c₀ y₀ cj
+  have hij := canonI_lt_canonJ cfg hwf t hht
+  -- canonCrossN preserved → canonical data for t' matches t
+  have hN := canonCrossN_preserved cfg hwf t hht hht'
+  have hci' : canonI cfg hwf t' hht' = ci := by
+    simp only [canonI]; congr 1; exact hN
+  have hcj' : canonJ cfg hwf t' hht' = cj := by
+    simp only [canonJ]; congr 1; exact hN
+  have hc₀' : canonCol cfg hwf t' hht' = c₀ := by
+    simp only [canonCol]; congr 1; exact hN
+  have hy₀' : canonY cfg hwf t' hht' = y₀ := by
+    simp only [canonY]; congr 1; exact hN
+  -- Split positions for t' = split positions for t
+  -- (splitPosAt only uses cfg.sources, not the tuple itself)
+  have hki' : splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
+      (canonI cfg hwf t' hht') = ki := by simp [splitPosAt, hci', hc₀', hy₀']
+  have hkj' : splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
+      (canonJ cfg hwf t' hht') = kj := by simp [splitPosAt, hcj', hc₀', hy₀']
+  -- Image path values for double application
+  have himg_ci : (t'.2 ci).val = (t.2 ci).val.take ki ++ (t.2 cj).val.drop kj := by
+    simp only [ht'_def, gvCanonInv, dif_pos rfl]; rfl
+  have himg_cj : (t'.2 cj).val = (t.2 cj).val.take kj ++ (t.2 ci).val.drop ki := by
+    simp only [ht'_def, gvCanonInv, dif_neg (Fin.ne_of_gt hij), dif_pos rfl]; rfl
+  -- Sigma.ext: show fst and snd match
+  have hfst : (gvCanonInv cfg hwf t' hht').1 = t.1 := by
+    simp only [gvCanonInv, canonNewPerm, hci', hcj']
+    -- (t'.1 * swap(ci, cj)) = (t.1 * swap(ci,cj)) * swap(ci,cj) = t.1
+    simp only [ht'_def, gvCanonInv, canonNewPerm]
+    rw [mul_assoc, Equiv.swap_mul_self, mul_one]
+  -- Path equality at each index
+  have hval : ∀ k, ((gvCanonInv cfg hwf t' hht').2 k).val = (t.2 k).val := by
+    intro k
+    simp only [gvCanonInv, hci', hcj', hki', hkj']
+    split_ifs with hk_ci hk_cj
+    · -- k = ci: double tail-swap
+      subst hk_ci
+      simp only [tailSwapPath, himg_ci, himg_cj]
+      rw [take_take_append, drop_take_append, List.take_append_drop]
+    · -- k = cj: double tail-swap
+      subst hk_cj
+      simp only [tailSwapPath, himg_ci, himg_cj]
+      rw [take_take_append, drop_take_append, List.take_append_drop]
+    · -- k ∉ {ci, cj}: double cast = identity
+      simp only [ht'_def, gvCanonInv, dif_neg hk_ci, dif_neg hk_cj]; rfl
+  -- Combine into Sigma equality
+  exact Sigma.ext hfst (by subst hfst; exact heq_of_eq (funext fun k => Subtype.ext (hval k)))
 
 /-- The signed sum over cancellable tagged tuples is zero,
     by the GV sign-reversing involution via `Finset.sum_involution`. -/
