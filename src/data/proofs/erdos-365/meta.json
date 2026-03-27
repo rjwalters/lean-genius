@@ -1,10 +1,10 @@
 {
   "id": "erdos-365",
-  "title": "Erdős Problem #365: Consecutive Powerful Numbers",
+  "title": "Erd\u0151s Problem #365: Consecutive Powerful Numbers",
   "slug": "erdos-365",
   "description": "Do all pairs of consecutive powerful numbers come from Pell equations? Must one be a square? Is the count O((log x)^O(1))?",
   "meta": {
-    "author": "Paul Erdős, Kurt Mahler, Solomon W. Golomb, David T. Walker",
+    "author": "Paul Erd\u0151s, Kurt Mahler, Solomon W. Golomb, David T. Walker",
     "sourceUrl": "https://erdosproblems.com/365",
     "date": "1970",
     "status": "axiomatized",
@@ -21,7 +21,7 @@
     "erdosNumber": 365,
     "erdosUrl": "https://erdosproblems.com/365",
     "erdosProblemStatus": "open",
-    "axiomCount": 8,
+    "axiomCount": 6,
     "lineCount": 189,
     "assumptions": [
       "square_is_powerful: every perfect square k^2 (k >= 1) is powerful",
@@ -73,18 +73,19 @@
         "url": "https://oeis.org/A060355"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
-    "historicalContext": "Erdős asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x² - 8y² = 1 yield pairs (8y², 8y² + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erdős then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23³ and 12168 = 2³·3²·13², both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x² = 27y² + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem — whether the counting function P(x) = |{n ≤ x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) — remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",
-    "problemStatement": "Q1: Do all pairs of consecutive powerful numbers n, n+1 come from Pell equations? Equivalently, must either n or n+1 be a square? Q2: Is the number of such n ≤ x bounded by (log x)^O(1)?",
+    "historicalContext": "Erd\u0151s asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x\u00b2 - 8y\u00b2 = 1 yield pairs (8y\u00b2, 8y\u00b2 + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erd\u0151s then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23\u00b3 and 12168 = 2\u00b3\u00b73\u00b2\u00b713\u00b2, both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x\u00b2 = 27y\u00b2 + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem \u2014 whether the counting function P(x) = |{n \u2264 x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) \u2014 remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",
+    "problemStatement": "Q1: Do all pairs of consecutive powerful numbers n, n+1 come from Pell equations? Equivalently, must either n or n+1 be a square? Q2: Is the number of such n \u2264 x bounded by (log x)^O(1)?",
     "text": "A powerful (or squarefull) number n satisfies p^2 | n for every prime p | n, equivalently n = a^2 b^3. These numbers have density ~c sqrt(x) up to x, but consecutive powerful pairs are far rarer. Mahler showed Pell equations produce infinitely many such pairs, e.g. (8, 9) from x^2 - 8y^2 = 1. Erdos asked: must every consecutive powerful pair arise from a Pell equation -- i.e., must one element be a perfect square? Golomb (1970) disproved this with the pair (12167, 12168) = (23^3, 2^3 * 3^2 * 13^2), and Walker (1976) showed infinitely many non-Pell pairs exist via the generalized equation 343x^2 = 27y^2 + 1. The counting question -- whether the number of pairs up to x is O((log x)^C) -- remains open.",
     "proofStrategy": "The formalization proceeds in seven parts, building from definitions through proved examples to axiomatized deep results, culminating in a summary theorem that packages the resolved portion of the problem. Part I: Powerful Numbers: Defines IsPowerful via prime factorization (p^2 | n for all primes p | n) and the equivalent characterization IsPowerfulAlt (n = a^2 b^3). Axiomatizes that all perfect squares and cubes are powerful. Part II: Consecutive Powerful Pairs: Defines IsConsecutivePowerfulPair and proves the smallest example (8, 9) by enumerating prime divisors with interval_cases and verifying divisibility conditions with decide. Part III: Pell Equation Connection: Formalizes IsPellSolution and axiomatizes Mahler's observation that solutions to x^2 = 8y^2 + 1 yield consecutive powerful pairs, together with the existence of infinitely many such solutions. Part IV: Question 1 Refutation: Formalizes Question1 as a Prop and axiomatizes its negation. Records Golomb's specific counterexample (12167, 12168) with verified factorizations 12167 = 23^3 and 12168 = 2^3 * 3^2 * 13^2 via native_decide. Part V: Walker's Infinite Family: Formalizes WalkerEquation (7^3 x^2 = 3^3 y^2 + 1) and axiomatizes both the existence of infinitely many solutions and the fact that each solution yields a non-square consecutive powerful pair. Part VI: Question 2: Defines the counting function P(x) as a Finset.card computation and formalizes the open Question2 as the existence of constants C, K such that P(x) <= K (log x)^C. Part VII: Summary: The theorem erdos_365_summary packages three results into a conjunction: negation of Question1, Golomb's counterexample, and Walker's infinite family, using the axioms directly.",
     "keyInsights": [
-      "Q1 is FALSE: Golomb found 12167 = 23³, 12168 = 2³·3²·13² (neither square)",
-      "Walker: infinitely many counterexamples via 7³x² = 3³y² + 1",
+      "Q1 is FALSE: Golomb found 12167 = 23\u00b3, 12168 = 2\u00b3\u00b73\u00b2\u00b713\u00b2 (neither square)",
+      "Walker: infinitely many counterexamples via 7\u00b3x\u00b2 = 3\u00b3y\u00b2 + 1",
       "Most pairs DO come from Pell equations, but not all",
-      "Q2 remains OPEN — expected YES from Pell equation theory",
+      "Q2 remains OPEN \u2014 expected YES from Pell equation theory",
       "OEIS A060355 lists consecutive powerful pairs"
     ],
     "prerequisites": [
@@ -153,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #365 is partially resolved. Q1 (must one be a square?) is FALSE — Golomb found the counterexample (12167, 12168) and Walker proved infinitely many exist. Q2 (polylogarithmic count) remains OPEN but is expected to be true from Pell equation theory.",
+    "summary": "Erd\u0151s Problem #365 is partially resolved. Q1 (must one be a square?) is FALSE \u2014 Golomb found the counterexample (12167, 12168) and Walker proved infinitely many exist. Q2 (polylogarithmic count) remains OPEN but is expected to be true from Pell equation theory.",
     "implications": "The resolution of Q1 reveals that the arithmetic of consecutive powerful numbers is richer than the Pell equation framework suggests. While Mahler's construction via x^2 - 8y^2 = 1 produces pairs where one element is always a perfect square, Walker's generalized equation 7^3 x^2 = 3^3 y^2 + 1 demonstrates that the structure of powerful pairs extends into a broader family of Diophantine equations of the form a^3 x^2 - b^3 y^2 = 1. The counting question (Q2) connects to deep problems in analytic number theory. The density of powerful numbers up to x is asymptotically c * sqrt(x), so the probability that a random n is powerful is ~c / sqrt(n). Heuristically, consecutive powerful pairs should have density ~c^2 / n, giving P(x) ~ c^2 log(x), consistent with the conjectured polylogarithmic bound. Making this rigorous requires understanding correlations between the powerful-number property at n and n+1. This problem belongs to a rich cluster of Erdos problems about powerful numbers: Problem #364 asks about three consecutive powerful numbers (still open), Problem #366 asks about consecutive k-full numbers for k >= 3, and Problems #935-#943 explore arithmetic structure (progressions, sums, distribution) within the powerful numbers. The Pell equation machinery developed here reappears in several of these related problems.",
     "openQuestions": [
       "Is P(x) = O((log x)^C) for some constant C?",
@@ -171,8 +172,8 @@
     "opens": [],
     "namespace": "Erdos365",
     "lineCount": 189,
-    "axiomCount": 8,
-    "theoremCount": 2,
+    "axiomCount": 6,
+    "theoremCount": 4,
     "definitionCount": 8
   },
   "crossReferences": [
