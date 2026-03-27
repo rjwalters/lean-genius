@@ -49,9 +49,9 @@ axiom ramsey_recurrence (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
 
 /- ## R(3, l) Bounds -/
 
-/-- Shearer (1983) / Kim (1995): R(3, l) ≥ c · l² / log l. -/
-axiom R3_lower (c : ℝ) (hc : c > 0) :
-  ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
+/-- Shearer (1983) / Kim (1995): ∃ c > 0 s.t. R(3, l) ≥ c · l² / log l. -/
+axiom R3_lower :
+  ∃ c : ℝ, c > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     (ramseyNumber 3 l : ℝ) ≥ c * (l : ℝ) ^ 2 / Real.log l
 
 /-- Ajtai–Komlós–Szemerédi (1980): R(3, l) ≤ C · l² / log l. -/
@@ -354,3 +354,106 @@ theorem diagonal_ramsey_lower (k : ℕ) (hk : k ≥ 2) :
                       _ ≤ ramseyNumber (n + 1) (n + 1) := ramsey_monotone_right (n + 1) 2
             · interval_cases n <;> simp_all [R22, ramsey_k2, ramsey_symm]
         exact h1
+
+/- ## General Increment Bound -/
+
+/-- Recurrence gives a linear increment bound: R(k, l+1) - R(k, l) ≤ R(k-1, l+1).
+    For k = 3, this yields R(3, l+1) - R(3, l) ≤ R(2, l+1) = l+1. -/
+theorem increment_bound_general (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
+    ramseyNumber k (l + 1) ≤ ramseyNumber k l + ramseyNumber (k - 1) (l + 1) :=
+  ramsey_recurrence k l hk hl
+
+/-- For k = 3: R(3, l+1) ≤ R(3, l) + (l + 1). -/
+theorem increment_bound_k3 (l : ℕ) (hl : l ≥ 1) :
+    ramseyNumber 3 (l + 1) ≤ ramseyNumber 3 l + (l + 1) := by
+  have h := ramsey_recurrence 3 l (by omega) hl
+  simp only [show (3 : ℕ) - 1 = 2 from rfl] at h
+  rw [ramsey_k2 (l + 1) (by omega)] at h
+  exact h
+
+/- ## R(3, l) Tight Asymptotics -/
+
+/-- R(3, l) = Θ(l²/log l): combining Kim's lower and AKS upper, for large l
+    the ratio R(3, l)/(l²/log l) is bounded above and below by positive constants. -/
+theorem R3_asymptotic_bounds :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
+      c₁ * (l : ℝ) ^ 2 / Real.log l ≤ (ramseyNumber 3 l : ℝ) ∧
+      (ramseyNumber 3 l : ℝ) ≤ c₂ * (l : ℝ) ^ 2 / Real.log l := by
+  obtain ⟨c₁, hc₁, L₁, hL₁⟩ := R3_lower
+  obtain ⟨c₂, hc₂, L₂, hL₂⟩ := R3_upper
+  exact ⟨c₁, c₂, hc₁, hc₂, max L₁ L₂, fun l hl =>
+    ⟨hL₁ l (by omega), hL₂ l (by omega)⟩⟩
+
+/- ## The k = 3 Case of the Conjecture -/
+
+/-- **Erdős Problem #1014 for k = 3**: R(3, l+1)/R(3, l) → 1 as l → ∞.
+    Proof via recurrence: R(3, l+1) - R(3, l) ≤ l + 1 while R(3, l) ≥ c·l²/log l,
+    so the ratio (l+1)/(c·l²/log l) = O(log l / l) → 0. -/
+theorem R3_ratio_convergence :
+    ∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
+      |(ramseyNumber 3 (l + 1) : ℝ) / (ramseyNumber 3 l : ℝ) - 1| < ε := by
+  intro ε hε
+  obtain ⟨c, hc, L₁, hL₁⟩ := R3_lower
+  -- Find L₂ where (l+1)·log l / (c·l²) < ε, via log = o(x)
+  have ho := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
+  have hev := ho.bound (show (0 : ℝ) < c * ε / 4 by positivity)
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
+  use max (max L₁ (⌈N⌉₊ + 1)) 2
+  intro l hl
+  have hl1 : l > L₁ := by omega
+  have hl_ge1 : l ≥ 1 := by omega
+  have hl_pos : (0 : ℝ) < (l : ℝ) := by exact_mod_cast (show 0 < l by omega)
+  set R := (ramseyNumber 3 l : ℝ) with hR_def
+  set R' := (ramseyNumber 3 (l + 1) : ℝ) with hR'_def
+  -- R > 0 from ramsey_pos
+  have hR_pos : R > 0 := by
+    simp only [hR_def]
+    have := ramsey_pos 3 l (by omega) hl_ge1
+    exact_mod_cast (show 0 < ramseyNumber 3 l by omega)
+  have hR_ne : R ≠ 0 := ne_of_gt hR_pos
+  -- R' ≥ R (monotonicity)
+  have hmon : R ≤ R' := by
+    simp only [hR_def, hR'_def]
+    exact Nat.cast_le.mpr (ramsey_monotone_right 3 l)
+  -- R' - R ≤ l + 1 (from increment bound)
+  have h_diff : R' - R ≤ (l : ℝ) + 1 := by
+    simp only [hR_def, hR'_def]
+    have h := increment_bound_k3 l hl_ge1
+    have : (ramseyNumber 3 (l + 1) : ℝ) ≤ (ramseyNumber 3 l : ℝ) + ((l : ℝ) + 1) := by
+      exact_mod_cast h
+    linarith
+  -- |R'/R - 1| = (R' - R)/R (since R' ≥ R > 0)
+  have h_abs : |R' / R - 1| = (R' - R) / R := by
+    have h_eq : R' / R - 1 = (R' - R) / R := by field_simp
+    rw [h_eq, abs_of_nonneg (div_nonneg (by linarith) (le_of_lt hR_pos))]
+  rw [h_abs]
+  -- R ≥ c · l² / log l (lower bound)
+  have hlb := hL₁ l hl1
+  have hlog : Real.log (l : ℝ) > 0 :=
+    Real.log_pos (by exact_mod_cast (show 1 < l by omega))
+  have hcl_pos : c * (l : ℝ) ^ 2 / Real.log (l : ℝ) > 0 := by positivity
+  -- log l bound from little-o
+  have hl_ge_N : N ≤ (l : ℝ) :=
+    le_trans (Nat.le_ceil N) (by exact_mod_cast (show ⌈N⌉₊ ≤ l by omega))
+  have hb := hN (l : ℝ) hl_ge_N
+  rw [Real.rpow_one, Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_pos hlog, abs_of_pos hl_pos] at hb
+  have hl2 : (2 : ℝ) ≤ (l : ℝ) := by exact_mod_cast (show 2 ≤ l by omega)
+  -- Chain: (R'-R)/R ≤ (l+1)/R ≤ (l+1)·log l/(c·l²) < ε
+  have h_num : ((l : ℝ) + 1) * Real.log (l : ℝ) ≤ ε / 2 * (c * (l : ℝ) ^ 2) :=
+    calc ((l : ℝ) + 1) * Real.log (l : ℝ)
+        ≤ (2 * (l : ℝ)) * Real.log (l : ℝ) :=
+          mul_le_mul_of_nonneg_right (by linarith) (le_of_lt hlog)
+      _ ≤ (2 * (l : ℝ)) * (c * ε / 4 * (l : ℝ)) :=
+          mul_le_mul_of_nonneg_left hb (by positivity)
+      _ = ε / 2 * (c * (l : ℝ) ^ 2) := by ring
+  calc (R' - R) / R
+      ≤ ((l : ℝ) + 1) / R := by
+        apply div_le_div_of_nonneg_right h_diff (le_of_lt hR_pos)
+    _ ≤ ((l : ℝ) + 1) / (c * (l : ℝ) ^ 2 / Real.log (l : ℝ)) := by
+        apply div_le_div_of_nonneg_left (by positivity : (0 : ℝ) ≤ (l : ℝ) + 1) hcl_pos
+        exact hlb
+    _ = ((l : ℝ) + 1) * Real.log (l : ℝ) / (c * (l : ℝ) ^ 2) := by
+        rw [div_div_eq_mul_div]
+    _ ≤ ε / 2 := (div_le_iff₀ (by positivity : (0 : ℝ) < c * (l : ℝ) ^ 2)).mpr h_num
+    _ < ε := by linarith
