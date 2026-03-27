@@ -151,7 +151,14 @@ def Erdos416Conjecture : Prop := Erdos416_Part_i ∧ Erdos416_Part_ii
 
 /-- 3 is NOT a totient value (no m has φ(m) = 3).
     Proof: φ(m) is even for m > 2, and φ(1) = φ(2) = 1. -/
-axiom three_not_totient : ¬∃ m : ℕ, m.totient = 3
+theorem three_not_totient : ¬∃ m : ℕ, m.totient = 3 := by
+  intro ⟨m, hm⟩
+  by_cases hm2 : m ≤ 2
+  · interval_cases m <;> simp_all [Nat.totient]
+  · push_neg at hm2
+    have heven := Nat.totient_even (show 2 < m by omega)
+    rw [hm] at heven
+    exact (by decide : ¬ Even 3) heven
 
 -- Note: The only odd totient value is 1, since φ(n) is even for n > 2
 
