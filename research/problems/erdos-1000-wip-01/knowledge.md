@@ -130,3 +130,31 @@ Added 11 new infrastructure theorems toward proving erdos_no_zero_limit:
 - Formalize the sum-switching identity: Σ usedSum(k)/n_k = Σ_j φ(n_j) · Σ_{k>j,n_j|n_k} 1/n_k
 - Use multiplicity bound + growth bound to derive contradiction from ρ→0
 - Alternative: prove Mertens-type lower bound φ(n)/n ≥ c/log(log(n)) for more direct proof
+
+## Session 2026-03-26 (Session 5) - Axiom Elimination: erdos_no_zero_limit
+
+**Mode**: REVISIT
+**Outcome**: progress (axiom eliminated)
+
+### What I Did
+- **Proved erdos_no_zero_limit from erdos_dichotomy** (3→2 axioms)
+  - Key insight: erdos_no_zero_limit is a direct corollary of erdos_dichotomy
+  - If ρ → 0, then ρ < ε eventually, hence frequently (Eventually.frequently)
+  - By erdos_dichotomy, ρ > 1 - ε frequently
+  - Taking ε = 1/2: ρ < 1/2 eventually but ρ > 1/2 frequently — contradiction
+  - Proof is 10 lines, uses the same patterns as cassels_liminf_zero and not_densityToZero_of_frequently_ge
+
+### Key Findings
+- The no-zero-limit theorem does NOT need its own deep argument (double-counting, Mertens). It follows purely from the dichotomy via elementary filter theory.
+- The extensive infrastructure built in sessions 1-4 (growth bounds, multiplicity, double-counting) is still valuable for eventually proving erdos_dichotomy itself.
+- Two axioms remain: erdos_dichotomy (deep — needs Euler product), haight_resolution (deep — needs explicit construction)
+
+### Files Modified
+- `proofs/Proofs/Erdos1000Problem.lean` — erdos_no_zero_limit: axiom → theorem
+- `src/data/proofs/erdos-1000/meta.json` — axiomCount: 3 → 2
+- `src/data/research/problems/erdos-1000-wip-01.json` — updated
+
+### Next Steps
+- Prove erdos_dichotomy: requires Euler product φ(n)/n = Π(1-1/p), smooth number theory
+- Prove haight_resolution: requires explicit construction of highly composite sequence
+- Both are deep results requiring significant Mathlib infrastructure

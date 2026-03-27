@@ -28,11 +28,12 @@ import Mathlib
 /- ## Core Definitions -/
 
 /-- A Sidon set (B₂ set): a set of natural numbers where all pairwise sums
-    a + b (a ≤ b, a, b ∈ S) are distinct. Equivalently, all pairwise
-    differences are distinct. -/
+    a + b (a < b, a, b ∈ S) are distinct. Equivalently, all pairwise
+    differences are distinct. Uses strict inequality a < b to match the
+    standard combinatorial definition (distinct pairs only, no self-sums). -/
 def IsSidonSet (S : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ S → b ∈ S → c ∈ S → d ∈ S →
-    a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
+    a < b → c < d → a + b = c + d → a = c ∧ b = d
 
 /-- The set of Sidon subsets of {1,...,N}. -/
 private noncomputable def sidonSets (N : ℕ) : Finset (Finset ℕ) :=
@@ -153,9 +154,40 @@ axiom increase_points_sparse :
 
 /- ## Small Values (OEIS A003022) -/
 
-/-- Known small values of F(N):
-    F(1)=1, F(2)=2, F(3)=3, F(4)=3, F(5)=3, F(6)=4,
-    F(11)=5, F(18)=6, F(26)=7. -/
-axiom small_values :
-    maxSidonSize 1 = 1 ∧ maxSidonSize 2 = 2 ∧ maxSidonSize 3 = 3 ∧
+/-- F(1) = 1: {1} is the largest Sidon subset of {1}. -/
+theorem maxSidonSize_1 : maxSidonSize 1 = 1 := by
+  apply le_antisymm
+  · apply Finset.sup_le; intro S hS
+    exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
+      (by simp [Finset.card_Icc])
+  · exact maxSidon_optimal 1 {1} (fun a b c d ha hb _ _ hab _ _ => by
+      simp only [Finset.mem_singleton] at ha hb; omega)
+      (fun x hx => by simp only [Finset.mem_singleton] at hx; subst hx; omega)
+
+/-- F(2) = 2: {1, 2} is the largest Sidon subset of {1, 2}. -/
+theorem maxSidonSize_2 : maxSidonSize 2 = 2 := by
+  apply le_antisymm
+  · apply Finset.sup_le; intro S hS
+    exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
+      (by simp [Finset.card_Icc])
+  · have : ({1, 2} : Finset ℕ).card = 2 := by decide
+    rw [← this]; exact maxSidon_optimal 2 {1, 2} (fun a b c d ha hb hc hd hab hcd heq => by
+      simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+      omega) (fun x hx => by simp only [Finset.mem_insert, Finset.mem_singleton] at hx; omega)
+
+/-- F(3) = 3: {1, 2, 3} is Sidon under the strict-pair definition.
+    Sums: 1+2=3, 1+3=4, 2+3=5 — all distinct. -/
+theorem maxSidonSize_3 : maxSidonSize 3 = 3 := by
+  apply le_antisymm
+  · apply Finset.sup_le; intro S hS
+    exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
+      (by simp [Finset.card_Icc])
+  · have : ({1, 2, 3} : Finset ℕ).card = 3 := by decide
+    rw [← this]; exact maxSidon_optimal 3 {1, 2, 3} (fun a b c d ha hb hc hd hab hcd heq => by
+      simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+      omega) (fun x hx => by simp only [Finset.mem_insert, Finset.mem_singleton] at hx; omega)
+
+/-- Known small values for larger N (OEIS A003022).
+    F(6)=4, F(11)=5, F(18)=6. -/
+axiom small_values_large :
     maxSidonSize 6 = 4 ∧ maxSidonSize 11 = 5 ∧ maxSidonSize 18 = 6

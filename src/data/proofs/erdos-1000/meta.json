@@ -21,9 +21,9 @@
     "erdosNumber": 1000,
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
-    "axiomCount": 3,
-    "lineCount": 988,
-    "assumptions": "Three deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), haight_resolution (vanishing Cesàro average exists). cassels_liminf_zero is now PROVED as a corollary of haight_resolution (convergence to 0 implies liminf = 0). Infrastructure: complement formula (phiA_add_used), used-divisor bounds (used_sum_le, used_card_le), positivity (phiA_pos, densityRatio_pos), complement representation (densityRatio_complement), prime lower bound (densityRatio_ge_of_prime).",
+    "axiomCount": 2,
+    "lineCount": 1003,
+    "assumptions": "Two deep axioms: erdos_dichotomy (liminf=0 implies limsup=1, via Euler product for φ(n)/n), haight_resolution (vanishing Cesàro average exists, via highly composite construction). erdos_no_zero_limit is now PROVED from erdos_dichotomy (convergence to 0 contradicts dichotomy via frequently-vs-eventually). cassels_liminf_zero is PROVED from haight_resolution. Infrastructure: complement formula, growth bounds, multiplicity bounds, double-counting vocabulary.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -115,8 +115,8 @@
       "title": "Part VI: Erdős' Results (1964)",
       "startLine": 498,
       "endLine": 510,
-      "summary": "Two axioms: `erdos_no_zero_limit` ($\\rho_A(k) \\not\\to 0$ for any $A$, via Mertens' bound $\\varphi(n)/n \\geq c/\\log\\log n$) and `erdos_dichotomy` (if $\\liminf \\rho_A = 0$ then $\\limsup \\rho_A = 1$, via the Euler product for $\\varphi(n)/n$).",
-      "mathContext": "Axiom 1: $\\neg \\text{DensityToZero}(A)$ for all $A$. Axiom 2: $\\liminf \\rho_A = 0 \\Rightarrow \\limsup \\rho_A = 1$. These establish that the density ratio must oscillate — it can visit near 0 but cannot stay there, and if it visits near 0 it must also visit near 1."
+      "summary": "PROVED theorem `erdos_no_zero_limit` ($\\rho_A(k) \\not\\to 0$ for any $A$, derived from `erdos_dichotomy`: convergence to 0 implies frequently near 0, dichotomy gives frequently near 1, contradicting convergence). One axiom: `erdos_dichotomy` (if $\\liminf \\rho_A = 0$ then $\\limsup \\rho_A = 1$, via the Euler product for $\\varphi(n)/n$).",
+      "mathContext": "PROVED: $\\neg \\text{DensityToZero}(A)$ for all $A$ — if $\\rho_A \\to 0$ then $\\rho_A < \\varepsilon$ eventually hence frequently, dichotomy gives $\\rho_A > 1-\\varepsilon$ frequently, taking $\\varepsilon = 1/2$ yields contradiction. Axiom: $\\liminf \\rho_A = 0 \\Rightarrow \\limsup \\rho_A = 1$."
     },
     {
       "id": "haight-resolution",
@@ -202,9 +202,9 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 988,
-    "axiomCount": 3,
-    "theoremCount": 52,
+    "lineCount": 1003,
+    "axiomCount": 2,
+    "theoremCount": 48,
     "definitionCount": 8
   }
 }
