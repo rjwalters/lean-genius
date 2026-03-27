@@ -16,7 +16,9 @@ Reference: https://erdosproblems.com/1092
 
 Results:
 - Questions 1 and 2: both FALSE (removed) — Rödl's construction disproves them
-Axioms: 3 (rodl_upper_bound, f_trivial_lower, erdos_744_connection)
+- f_trivial_lower: FALSE (removed) — K₃ + isolated vertex counterexample
+- erdos_744_connection: FALSE (removed) — sSup pathology for unbounded sets
+Axioms: 1 (rodl_upper_bound)
 Sorries: 0
 -/
 
