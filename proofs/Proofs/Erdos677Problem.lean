@@ -43,9 +43,10 @@ def ErdosProblem677 : Prop :=
 /- ## Known examples -/
 
 /-- The two known examples where `M(n,k) = M(m,l)` with different parameters:
-`lcm(5,6,7) = lcm(14,15) = 210` and `lcm(4,5,6,7) = lcm(20,21) = 420`. -/
-axiom lcmInterval_example1 : lcmInterval 4 3 = lcmInterval 13 2
-axiom lcmInterval_example2 : lcmInterval 3 4 = lcmInterval 19 2
+`lcm(5,6,7) = lcm(14,15) = 210` and `lcm(4,5,6,7) = lcm(20,21) = 420`.
+These are concrete computations, now proved by evaluation. -/
+theorem lcmInterval_example1 : lcmInterval 4 3 = lcmInterval 13 2 := by native_decide
+theorem lcmInterval_example2 : lcmInterval 3 4 = lcmInterval 19 2 := by native_decide
 
 /- ## Stronger conjecture: same prime factors -/
 
@@ -89,9 +90,29 @@ theorem consecutiveProduct_zero (n : ℕ) : consecutiveProduct n 0 = 1 := by
 theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n + 1 := by
   simp [consecutiveProduct]
 
-/-- The LCM divides the product of the same range. -/
-axiom lcmInterval_dvd_product (n k : ℕ) :
-    lcmInterval n k ∣ consecutiveProduct n k
+/-- The LCM divides the product of the same range.
+Proof: by induction on k using fold/prod over range. -/
+theorem lcmInterval_dvd_product (n k : ℕ) :
+    lcmInterval n k ∣ consecutiveProduct n k := by
+  simp only [lcmInterval, consecutiveProduct]
+  suffices h : ∀ s : Finset ℕ, s.fold Nat.lcm 1 (fun i => n + i + 1) ∣
+      s.prod (fun i => n + i + 1) from h _
+  intro s
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert ha ih =>
+    rw [Finset.fold_insert ha, Finset.prod_insert ha]
+    exact Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_of_dvd_left ih _)
 
-/-- `lcmInterval` is positive when `k > 0`. -/
-axiom lcmInterval_pos (n k : ℕ) (hk : 0 < k) : 0 < lcmInterval n k
+/-- `lcmInterval` is positive when `k > 0`.
+Proof: the product of positive numbers is positive, and the LCM divides it. -/
+theorem lcmInterval_pos (n k : ℕ) (hk : 0 < k) : 0 < lcmInterval n k := by
+  rcases Nat.eq_zero_or_pos (lcmInterval n k) with h | h
+  · -- If lcmInterval = 0, then 0 ∣ product, so product = 0, contradiction
+    have hdvd := lcmInterval_dvd_product n k
+    rw [h, zero_dvd_iff] at hdvd
+    have : 0 < consecutiveProduct n k := by
+      unfold consecutiveProduct
+      exact Finset.prod_pos (fun i _ => by omega)
+    omega
+  · exact h
