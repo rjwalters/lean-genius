@@ -19,9 +19,9 @@
     "erdosNumber": 913,
     "erdosUrl": "https://erdosproblems.com/913",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 134,
-    "assumptions": "6 axioms: infinite_8p_sq_minus_1_primes, erdos_913_conditional, example_n3, and 3 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 150,
+    "assumptions": "3 axioms: infinite_8p_sq_minus_1_primes, erdos_913_conditional, exponent_structure. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -154,8 +154,8 @@
     ],
     "namespace": "Erdos913",
     "lineCount": 134,
-    "axiomCount": 6,
-    "theoremCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 4,
     "definitionCount": 5
   }
 }

@@ -72,6 +72,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Int.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 
 open Finset
@@ -152,9 +153,12 @@ They proved H(n) ≫ n^{3/2}, matching the upper bound.
 axiom erdos_spencer_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
   (H n : ℝ) ≥ c * (n : ℝ) ^ (3/2 : ℝ)
 
-/-- n ≤ n^{3/2} for n ≥ 2: the cubic-root bound is weaker. -/
-axiom erdos_spencer_improves (n : ℕ) (hn : n ≥ 2) :
-    (n : ℝ) ≤ (n : ℝ) ^ (3/2 : ℝ)
+/-- n ≤ n^{3/2} for n ≥ 2: follows from n = n^1 and exponent monotonicity. -/
+theorem erdos_spencer_improves (n : ℕ) (hn : n ≥ 2) :
+    (n : ℝ) ≤ (n : ℝ) ^ (3/2 : ℝ) := by
+  have h1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (show 1 ≤ n by omega)
+  conv_lhs => rw [← rpow_one (↑n : ℝ)]
+  exact rpow_le_rpow_of_exponent_le h1 (by norm_num : (1 : ℝ) ≤ 3 / 2)
 /-
 ## The Main Result: H(n) = Θ(n^{3/2})
 
