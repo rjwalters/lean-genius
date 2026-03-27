@@ -250,9 +250,90 @@ max - min ≥ n(n-1)/2.
 
 Note: The previous bound n*(n-1)/2 + 1 was too strong;
 {0,1} is a Sidon set of size 2 with max = 1 but 2*1/2 + 1 = 2. -/
-axiom sidon_set_range_lower_bound (A : Finset ℕ) (hS : IsSidonFinset A)
+-- Sidon sets have distinct differences: if a > b, c > d, a-b = c-d then a=c, b=d
+private theorem sidon_diff_injective {A : Finset ℕ} (hS : IsSidonFinset A)
+    {a b c d : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hd : d ∈ A)
+    (hab : a > b) (_hcd : c > d) (heq : a - b = c - d) :
+    a = c ∧ b = d := by
+  have h1 : a + d = c + b := by omega
+  have hpair := hS a d c b ha hd hc hb h1
+  have ha_mem : a ∈ ({c, b} : Finset ℕ) := hpair ▸ Finset.mem_insert_self a _
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha_mem
+  rcases ha_mem with rfl | rfl
+  · exact ⟨rfl, by omega⟩
+  · omega
+
+theorem sidon_set_range_lower_bound (A : Finset ℕ) (hS : IsSidonFinset A)
     (hA : A.card = n) (hn : n ≥ 1) :
-  ∃ a_max : ℕ, a_max ∈ A ∧ a_max ≥ n * (n - 1) / 2
+    ∃ a_max : ℕ, a_max ∈ A ∧ a_max ≥ n * (n - 1) / 2 := by
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  refine ⟨A.max' hne, Finset.max'_mem A hne, ?_⟩
+  set M := A.max' hne
+  -- D = ordered pairs (a, b) with b < a, both in A
+  set D := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1)
+  -- |D| = n(n-1)/2 (strict lower triangle of A×A)
+  have hD_card : D.card = n * (n - 1) / 2 := by
+    -- Same counting as card_ordered_pairs but for strict lower triangle
+    set strict_upper := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)
+    -- D and strict_upper have same card by swap
+    have hswap : D.card = strict_upper.card := by
+      apply Finset.card_bij (fun p _ => (p.2, p.1))
+      · intro ⟨a, b⟩ hp
+        simp only [Finset.mem_filter, Finset.mem_product, D] at hp
+        simp only [Finset.mem_filter, Finset.mem_product, strict_upper]
+        exact ⟨⟨hp.1.2, hp.1.1⟩, hp.2⟩
+      · intro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h; simpa using h
+      · intro ⟨a, b⟩ hp
+        simp only [Finset.mem_filter, Finset.mem_product, strict_upper] at hp
+        exact ⟨⟨b, a⟩, by simp only [Finset.mem_filter, Finset.mem_product, D];
+          exact ⟨⟨hp.1.2, hp.1.1⟩, hp.2⟩, by simp⟩
+    -- |upper (≤)| = n(n+1)/2
+    have h_upper := card_ordered_pairs A
+    rw [hA] at h_upper
+    -- Partition upper = strict_upper ∪ diag
+    set upper := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)
+    set diag := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 = p.2)
+    have h_split : upper = strict_upper ∪ diag := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product,
+        upper, strict_upper, diag]
+      constructor
+      · intro ⟨h, hab⟩; rcases Nat.eq_or_lt_of_le hab with rfl | h'
+        · exact Or.inr ⟨h, rfl⟩
+        · exact Or.inl ⟨h, h'⟩
+      · rintro (⟨h, hab⟩ | ⟨h, hab⟩)
+        · exact ⟨h, le_of_lt hab⟩
+        · exact ⟨h, le_of_eq hab⟩
+    have h_disj : Disjoint strict_upper diag := by
+      simp only [Finset.disjoint_left, Finset.mem_filter, strict_upper, diag]
+      intro ⟨a, b⟩ ⟨_, h1⟩ ⟨_, h2⟩; omega
+    have h_diag : diag.card = n := by
+      have : diag = A.map ⟨fun a => (a, a), fun a b h => by simpa using h⟩ := by
+        ext ⟨a, b⟩
+        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_map,
+          Function.Embedding.coeFn_mk, Prod.mk.injEq, diag]
+        constructor
+        · intro ⟨⟨ha, _⟩, hab⟩; exact ⟨a, ha, rfl, hab.symm⟩
+        · intro ⟨c, hc, rfl, rfl⟩; exact ⟨⟨hc, hc⟩, rfl⟩
+      rw [this, Finset.card_map, hA]
+    rw [hswap, h_split, Finset.card_union_of_disjoint h_disj, h_diag] at h_upper ⊢
+    omega
+  -- Injection: D → Finset.range M via difference map, so |D| ≤ M
+  suffices h : D.card ≤ M by omega
+  calc D.card
+      ≤ (Finset.range M).card := by
+        apply Finset.card_le_card_of_injOn (fun p => p.1 - p.2 - 1)
+        · intro ⟨a, b⟩ hp
+          simp only [Finset.mem_filter, Finset.mem_product, D] at hp
+          simp only [Finset.mem_range]
+          have : a ≤ M := Finset.le_max' A a hp.1.1
+          omega
+        · intro ⟨a₁, b₁⟩ hp₁ ⟨a₂, b₂⟩ hp₂ heq
+          simp only [Finset.mem_filter, Finset.mem_product, D] at hp₁ hp₂
+          have ⟨ha, hb⟩ := sidon_diff_injective hS hp₁.1.1 hp₁.1.2 hp₂.1.1 hp₂.1.2
+            hp₁.2 hp₂.2 (by omega)
+          exact Prod.ext ha hb
+    _ = M := Finset.card_range M
 
 /-
 ## Section VI: Related Results

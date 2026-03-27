@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_sumset_size (was axiom) via bijection between A+A and ordered pairs. Fixed sidon_set_range_lower_bound off-by-one (removed +1). Now 2 axioms, 8 theorems.",
+    "progressSummary": "PROGRESS: Proved sidon_set_range_lower_bound (2→1 axioms) via distinct differences injection into {1,...,max(A)}.",
     "builtItems": [
       "sumset_mem: a+b in A+A for a,b in A (trivial from Pointwise)",
       "sumset_self_double: 2a in A+A for a in A",
@@ -38,7 +38,9 @@
       "sidon_sum_ne_double: a+b != 2a for distinct a,b in Sidon",
       "sidon_sumset_size: proved via ordered pair bijection + counting",
       "card_ordered_pairs: helper proving |{(a,b):a≤b}| = n(n+1)/2 via swap involution",
-      "sidon_ordered_pair_inj: helper for Sidon + ordering injectivity"
+      "sidon_ordered_pair_inj: helper for Sidon + ordering injectivity",
+      "Proved sidon_diff_injective: Sidon ⟹ distinct pairwise differences",
+      "Proved sidon_set_range_lower_bound: max(A) ≥ n(n-1)/2 via injection D → Finset.range M"
     ],
     "insights": [
       "Sidon no-3-AP property is directly provable from the definition",
@@ -48,7 +50,8 @@
       "sidon_sumset_size still needs injection + counting argument to prove",
       "sidon_set_range_lower_bound had off-by-one: {0,1} is Sidon with max=1 but n(n-1)/2+1=2",
       "Correct bound is a_max ≥ n(n-1)/2 (without +1)",
-      "Ordered pair bijection: upper triangular pairs from A×A biject with A+A for Sidon sets"
+      "Ordered pair bijection: upper triangular pairs from A×A biject with A+A for Sidon sets",
+      "sidon_set_range_lower_bound proved via: n(n-1)/2 distinct positive differences ≤ max(A), using Finset.card_le_card_of_injOn"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -80,7 +83,7 @@
       "filename": "Erdos152Problem.lean",
       "lineCount": 275,
       "theoremCount": 8,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

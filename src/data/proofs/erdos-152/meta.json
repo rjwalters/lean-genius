@@ -19,9 +19,9 @@
     "erdosNumber": 152,
     "erdosUrl": "https://erdosproblems.com/152",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 108,
-    "assumptions": "2 axioms: sidon_set_range_lower_bound (max element bound, deep), gap_existence_pigeonhole (at least 1 isolated for n≥5, deep). All structural properties proved from definitions.",
+    "assumptions": "1 axiom: gap_existence_pigeonhole (at least 1 isolated for n≥5). sidon_set_range_lower_bound proved via distinct differences injection.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -131,7 +131,7 @@
     ],
     "namespace": null,
     "lineCount": 275,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 7
   },
