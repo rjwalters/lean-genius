@@ -21,16 +21,15 @@
     "erdosNumber": 693,
     "erdosUrl": "https://erdosproblems.com/693",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
+    "axiomCount": 1,
     "prerequisites": [
       "Elementary number theory (divisibility, divisor functions)",
       "Finite set theory and cardinality (Finset, Set.Finite)",
       "Asymptotic analysis (polylogarithmic growth, Filter.Eventually)",
-      "Sieve methods and density estimates",
-      "Pigeonhole principle"
+      "Sieve methods and density estimates (Ford 2008)"
     ],
-    "lineCount": 350,
-    "assumptions": "4 axioms: maxGap_trivial_upper, maxGap_pigeonhole, divisor_density_ford, and 1 more. See Lean source for complete statements.",
+    "lineCount": 402,
+    "assumptions": "1 axiom: divisor_density_ford (Ford's 2008 density theorem, deep analytic number theory). All other results fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -160,13 +159,7 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Order.Filter.AtTopBot.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -175,8 +168,8 @@
       "Filter"
     ],
     "namespace": "Erdos693",
-    "lineCount": 350,
-    "axiomCount": 3,
+    "lineCount": 402,
+    "axiomCount": 1,
     "theoremCount": 26,
     "definitionCount": 13
   }
