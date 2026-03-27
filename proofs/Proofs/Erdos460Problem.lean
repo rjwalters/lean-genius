@@ -11,6 +11,10 @@ Does Σ (1/aᵢ) → ∞ as n → ∞ (summing over 0 < aᵢ < n)?
 - Erdős (1977), p.64
 - Erdős–Graham (1980), p.91
 - Eggleton–Erdős–Selfridge: aₖ < k^{2+o(1)}
+
+Proved: sieve_initial (a₀ = 0, a₁ = 1) — follows from the constructive definition.
+The sieve is now implemented as a proper well-founded recursive function
+(was previously a dummy fun _ => 0 with all behavior axiomatized).
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -27,16 +31,27 @@ import Mathlib.Tactic
 /-- The greedy coprime sieve sequence for a given n.
 Starting with a₀ = 0, a₁ = 1, each aₖ is the least integer > aₖ₋₁
 such that (n - aₖ) is coprime to (n - aᵢ) for all i < k.
-We model this as a function from ℕ (index k) to ℕ (value aₖ). -/
-noncomputable def greedyCoprimeSieve (n : ℕ) : ℕ → ℕ :=
-  fun _ => 0  -- specification only; defined by axiom below
+When no valid candidate exists in [0, n], returns n + 1 (sentinel). -/
+noncomputable def greedyCoprimeSieve (n : ℕ) : ℕ → ℕ
+  | 0 => 0
+  | 1 => 1
+  | k + 2 =>
+    let a : Fin (k + 2) → ℕ := fun i => greedyCoprimeSieve n i.val
+    let last := greedyCoprimeSieve n (k + 1)
+    let candidates := (Finset.range (n + 1)).filter fun m =>
+      last < m ∧ ∀ i : Fin (k + 2), Nat.Coprime (n - m) (n - a i)
+    if h : candidates.Nonempty then candidates.min' h else n + 1
+termination_by k => k
+decreasing_by all_goals omega
 
 /-- The defining property: a₀ = 0 and a₁ = 1. -/
-axiom sieve_initial (n : ℕ) (hn : n ≥ 2) :
-    greedyCoprimeSieve n 0 = 0 ∧ greedyCoprimeSieve n 1 = 1
+theorem sieve_initial (n : ℕ) (hn : n ≥ 2) :
+    greedyCoprimeSieve n 0 = 0 ∧ greedyCoprimeSieve n 1 = 1 := by
+  constructor <;> simp [greedyCoprimeSieve]
 
 /-- Each subsequent term is the least integer > previous term
-such that n - aₖ is coprime to all previous n - aᵢ. -/
+such that n - aₖ is coprime to all previous n - aᵢ.
+Provable from the construction when candidates are nonempty. -/
 axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2) :
     let a := greedyCoprimeSieve n
     a k > a (k - 1) ∧
