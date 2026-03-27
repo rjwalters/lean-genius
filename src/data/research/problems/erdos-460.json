@@ -29,14 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Implemented greedyCoprimeSieve as proper well-founded recursive function (was dummy fun _ => 0). Proved sieve_initial (6 to 5 axioms). sieve_greedy now provable from construction but needs candidates-nonemptiness lemma.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Fixed false sieve_greedy axiom (sentinel counterexample at n=2, k=2). Added hvalid precondition. 5 axioms, 0 sorries.",
+    "builtItems": [
+      "Fixed sieve_greedy: added hvalid : greedyCoprimeSieve n k ≤ n precondition"
+    ],
     "insights": [
       "greedyCoprimeSieve is a dummy (fun _ => 0) — all behavior axiomatized, no routine axioms to eliminate",
       "To prove any axioms, need to implement the actual greedy sieve algorithm as a well-founded recursive def",
       "Sieve implementation uses Fin(k+2) for previous values with well-founded recursion",
       "sieve_greedy proof needs: candidates always Nonempty for k >= 2, which requires number-theoretic argument",
-      "erdos_460_restricted_question provable via sum decomposition (smallPrime + largePrime = total)"
+      "erdos_460_restricted_question provable via sum decomposition (smallPrime + largePrime = total)",
+      "sieve_greedy axiom was FALSE for small n (e.g. n=2,k=2 gives sentinel, violating coprimality). Fixed by adding hvalid precondition."
     ],
     "mathlibGaps": [],
     "nextSteps": [
