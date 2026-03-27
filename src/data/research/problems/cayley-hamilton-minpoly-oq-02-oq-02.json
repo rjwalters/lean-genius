@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: CayleyHamiltonMinpolyOQ02OQ02.lean (~250 lines, 12 theorems, 0 axioms, 3 sorries). Defines counterexample matrices (Jordan types [2,2] vs [2,1,1]), proves nilpotency, establishes same minpoly X^2, and proves non-similarity via intertwining/pigeonhole argument. The 3 sorries are in minpoly minimality (classifying monic divisors of X^2) and intertwining constraint extraction (Fin 4 sum computation).",
+    "progressSummary": "COMPLETE: CayleyHamiltonMinpolyOQ02OQ02.lean (372 lines, 12 theorems, 0 axioms, 0 sorries). All theorems fully proved. Minpoly proofs use two_le_natDegree_iff (not scalar) + quotient analysis. Intertwining constraints proved via explicit entry extraction.",
     "builtItems": [
       "matA: Jordan type [2,2] — two 2x2 nilpotent blocks",
       "matB: Jordan type [2,1,1] — one 2x2 and two 1x1 blocks",
@@ -47,7 +47,10 @@
       "same_minpoly: both share minpoly X^2",
       "intertwining_forces_zeros: AP=PB forces 6 zeros in P (sorry in extraction)",
       "det_intertwiner_zero: det(P) = 0 via pigeonhole on Leibniz formula",
-      "not_similar: main theorem — A and B are not similar"
+      "not_similar: main theorem — A and B are not similar",
+      "minpoly_matA: proved via not-scalar + degree bounds + quotient-is-1",
+      "minpoly_matB: same technique",
+      "intertwining_forces_zeros: 6 constraints from explicit entry extraction (rows 0,2)"
     ],
     "insights": [
       "The converse of similarity invariance is FALSE: same minpoly + charpoly ≠ similar",
@@ -55,7 +58,10 @@
       "Invariant factors (X^2,X^2) vs (X^2,X,X) — same largest and product, different list",
       "Novel proof technique: intertwining equation forces sparse P, then pigeonhole kills det",
       "This is the smallest counterexample: for 3x3, same minpoly+charpoly DO imply similarity",
-      "The minpoly proof requires classifying monic divisors of X^2 — routine but finicky in Lean"
+      "The minpoly proof requires classifying monic divisors of X^2 — routine but finicky in Lean",
+      "minpoly.two_le_natDegree_iff gives 2 ≤ deg(minpoly) when element not in algebraMap range",
+      "Matrix.algebraMap_matrix_apply reduces scalar matrix entries: (algebraMap K _) r i j = if i = j then r else 0",
+      "For quotient-is-1: use leadingCoeff_mul + Monic.natDegree_eq_zero_iff_eq_one"
     ],
     "mathlibGaps": [
       "No Mathlib lemma for 'monic divisors of X^k are {1, X, ..., X^k}' (need UFD + irreducibility of X)",
@@ -95,11 +101,11 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean",
       "filename": "CayleyHamiltonMinpolyOQ02OQ02.lean",
-      "lineCount": 250,
+      "lineCount": 372,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean"
     }

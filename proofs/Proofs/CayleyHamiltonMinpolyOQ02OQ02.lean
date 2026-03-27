@@ -146,45 +146,57 @@ theorem minpoly_matA :
     minpoly K (matA : Matrix (Fin 4) (Fin 4) K) = X ^ 2 := by
   have h_int := Matrix.isIntegral (R := K) matA
   have h_dvd : minpoly K matA ∣ X ^ 2 := minpoly.dvd K matA matA_annihilated
-  -- minpoly doesn't divide X: if it did, then aeval A X = 0, but A ≠ 0
-  have h_not_dvd_X : ¬(minpoly K matA ∣ X) := by
-    intro ⟨q, hq⟩
-    have : Polynomial.aeval matA X = 0 := by
-      calc Polynomial.aeval matA X
-          = Polynomial.aeval matA (minpoly K matA * q) := by rw [← hq]
-        _ = Polynomial.aeval matA (minpoly K matA) * Polynomial.aeval matA q := map_mul _ _ _
-        _ = 0 * Polynomial.aeval matA q := by rw [minpoly.aeval]
-        _ = 0 := zero_mul _
-    rw [aeval_X] at this
-    exact matA_ne_zero this
-  -- Degree bounds: 0 < deg(minpoly) ≤ 2
   have h_deg_le : (minpoly K matA).natDegree ≤ 2 :=
     Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
-  have h_deg_pos : 0 < (minpoly K matA).natDegree := minpoly.natDegree_pos h_int
-  -- If deg = 1: minpoly divides X (since monic of deg 1 dividing X² must be X),
-  -- contradicting h_not_dvd_X. So deg = 2.
-  -- A monic polynomial of deg 2 dividing monic polynomial of deg 2 equals it.
-  sorry
+  -- matA is not a scalar matrix (off-diagonal entry (0,1) = 1)
+  have h_not_scalar : (matA : Matrix (Fin 4) (Fin 4) K) ∉ (algebraMap K _).range := by
+    rintro ⟨c, hc⟩
+    have h01 := congr_fun (congr_fun hc 0) 1
+    simp [matA_apply, Matrix.algebraMap_matrix_apply] at h01
+  -- Therefore 2 ≤ natDegree(minpoly) ≤ 2, so natDegree = 2
+  have h_two_le := (minpoly.two_le_natDegree_iff h_int).mpr h_not_scalar
+  have h_deg : (minpoly K matA).natDegree = 2 := le_antisymm h_deg_le h_two_le
+  -- Factor: X² = minpoly * q; show q = 1 via leading coefficient
+  obtain ⟨q, hq⟩ := h_dvd
+  have hq_ne : q ≠ 0 := right_ne_zero_of_mul (hq ▸ pow_ne_zero 2 X_ne_zero)
+  have h_qdeg : q.natDegree = 0 := by
+    have := (minpoly.monic h_int).natDegree_mul hq_ne
+    rw [← hq, Polynomial.natDegree_X_pow] at this; omega
+  have h_q_one : q = 1 := by
+    have h_lc := congr_arg Polynomial.leadingCoeff hq
+    simp only [show (X ^ 2 : K[X]).leadingCoeff = 1 from monic_X_pow 2,
+               Polynomial.leadingCoeff_mul,
+               show (minpoly K matA).leadingCoeff = 1 from minpoly.monic h_int,
+               one_mul] at h_lc
+    exact (h_lc.symm : q.Monic).natDegree_eq_zero_iff_eq_one.mp h_qdeg
+  rw [hq, h_q_one, mul_one]
 
 /-- The minimal polynomial of matB is X². Same argument as matA. -/
 theorem minpoly_matB :
     minpoly K (matB : Matrix (Fin 4) (Fin 4) K) = X ^ 2 := by
   have h_int := Matrix.isIntegral (R := K) matB
   have h_dvd : minpoly K matB ∣ X ^ 2 := minpoly.dvd K matB matB_annihilated
-  have h_not_dvd_X : ¬(minpoly K matB ∣ X) := by
-    intro ⟨q, hq⟩
-    have : Polynomial.aeval matB X = 0 := by
-      calc Polynomial.aeval matB X
-          = Polynomial.aeval matB (minpoly K matB * q) := by rw [← hq]
-        _ = Polynomial.aeval matB (minpoly K matB) * Polynomial.aeval matB q := map_mul _ _ _
-        _ = 0 * Polynomial.aeval matB q := by rw [minpoly.aeval]
-        _ = 0 := zero_mul _
-    rw [aeval_X] at this
-    exact matB_ne_zero this
   have h_deg_le : (minpoly K matB).natDegree ≤ 2 :=
     Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
-  have h_deg_pos : 0 < (minpoly K matB).natDegree := minpoly.natDegree_pos h_int
-  sorry
+  have h_not_scalar : (matB : Matrix (Fin 4) (Fin 4) K) ∉ (algebraMap K _).range := by
+    rintro ⟨c, hc⟩
+    have h01 := congr_fun (congr_fun hc 0) 1
+    simp [matB_apply, Matrix.algebraMap_matrix_apply] at h01
+  have h_two_le := (minpoly.two_le_natDegree_iff h_int).mpr h_not_scalar
+  have h_deg : (minpoly K matB).natDegree = 2 := le_antisymm h_deg_le h_two_le
+  obtain ⟨q, hq⟩ := h_dvd
+  have hq_ne : q ≠ 0 := right_ne_zero_of_mul (hq ▸ pow_ne_zero 2 X_ne_zero)
+  have h_qdeg : q.natDegree = 0 := by
+    have := (minpoly.monic h_int).natDegree_mul hq_ne
+    rw [← hq, Polynomial.natDegree_X_pow] at this; omega
+  have h_q_one : q = 1 := by
+    have h_lc := congr_arg Polynomial.leadingCoeff hq
+    simp only [show (X ^ 2 : K[X]).leadingCoeff = 1 from monic_X_pow 2,
+               Polynomial.leadingCoeff_mul,
+               show (minpoly K matB).leadingCoeff = 1 from minpoly.monic h_int,
+               one_mul] at h_lc
+    exact (h_lc.symm : q.Monic).natDegree_eq_zero_iff_eq_one.mp h_qdeg
+  rw [hq, h_q_one, mul_one]
 
 /-- Both matrices have the same minimal polynomial. -/
 theorem same_minpoly :
@@ -223,19 +235,23 @@ theorem intertwining_forces_zeros (P : Matrix (Fin 4) (Fin 4) K)
   -- (AP)(2,j) = P(3,j) and (PB)(2,j) = P(2,0)·δ(j,1)
   -- (AP)(1,j) = 0 and (PB)(1,j) = P(1,0)·δ(j,1)
   -- (AP)(3,j) = 0 and (PB)(3,j) = P(3,0)·δ(j,1)
-  have entry := fun i j => congr_fun (congr_fun h i) j
-  simp only [Matrix.mul_apply, matA_apply, matB_apply] at entry
-  -- The Fin 4 sums and if-then-else expressions should simplify
-  -- to give the 6 zero constraints
+  have entry : ∀ i j, (matA * P) i j = (P * matB) i j :=
+    fun i j => congr_fun (congr_fun h i) j
+  -- Each zero constraint comes from a specific entry of AP = PB
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> {
-    have := entry _ _
-    simp only [Fin.sum_univ_succ, Fin.sum_univ_zero] at this
-    simp_all [Fin.isValue]
-    try ring_nf at this ⊢
-    try linarith
-    try exact this
-    try { simp_all; done }
-    sorry
+    first
+    | (have := entry 0 0; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
+    | (have := entry 0 2; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
+    | (have := entry 0 3; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
+    | (have := entry 2 0; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
+    | (have := entry 2 2; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
+    | (have := entry 2 3; simp [Matrix.mul_apply, matA_apply, matB_apply,
+        Fin.sum_univ_succ, Fin.sum_univ_zero] at this; linarith)
   }
 
 /-- Any matrix P satisfying AP = PB has det(P) = 0.

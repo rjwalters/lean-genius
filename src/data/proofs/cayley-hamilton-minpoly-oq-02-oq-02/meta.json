@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jordan_normal_form#Uniqueness",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean",
     "tags": [
       "linear-algebra",
@@ -21,8 +21,8 @@
       "extension",
       "research"
     ],
-    "badge": "formalized",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.dvd",
@@ -59,7 +59,7 @@
     "dateAdded": "2026-03-27",
     "axiomCount": 0,
     "lineCount": 250,
-    "assumptions": "3 sorries: minpoly_matA and minpoly_matB minimality steps (degree classification of divisors of X^2), and intertwining constraint extraction (Fin 4 sum computation). Non-similarity proof (main result) is structurally complete.",
+    "assumptions": "None. All theorems fully proved: minpoly_matA and minpoly_matB proved via two_le_natDegree_iff (not scalar) + degree bounds + quotient analysis; intertwining constraints proved via explicit matrix entry extraction.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -104,7 +104,7 @@
       "title": "Same Minimal Polynomial X^2",
       "startLine": 97,
       "endLine": 168,
-      "summary": "Shows X^2 annihilates both matrices, X does not annihilate either, and deduces minpoly = X^2 for both. The minimality step (classifying monic divisors of X^2) has sorries.",
+      "summary": "Shows X^2 annihilates both matrices, X does not annihilate either, and deduces minpoly = X^2 for both. Minimality proved via two_le_natDegree_iff (matrices are not scalar) + quotient-is-one argument.",
       "mathContext": "Since $A^2 = 0$, $\\text{minpoly}(A) \\mid X^2$. Since $A \\neq 0$, $\\text{minpoly}(A) \\nmid X$. The only monic divisors of $X^2$ are $\\{1, X, X^2\\}$; ruling out $1$ and $X$ gives $\\text{minpoly}(A) = X^2$."
     },
     {
@@ -135,7 +135,7 @@
       "Polynomial"
     ],
     "namespace": "SimilarCounterexample",
-    "lineCount": 250,
+    "lineCount": 372,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2
