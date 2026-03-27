@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham–Dickson",
     "sourceUrl": "https://erdosproblems.com/341",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos341Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "periodicity",
       "open"
     ],
-    "badge": "axiom",
-    "sorries": 2,
+    "badge": "original",
+    "sorries": 0,
     "erdosNumber": 341,
     "erdosUrl": "https://erdosproblems.com/341",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "assumptions": "4 axioms: erdos_341_conjecture (open), dickson_strictly_increasing, dickson_avoids_sums, dickson_minimal (structural properties). dickson_diff_pos and dickson_linear_growth now proved theorems.",
-    "lineCount": 108,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All structural properties (strict monotonicity, sum avoidance, minimality) proved from the definition using Nat.find_spec and Nat.find_min. The main conjecture (eventual periodicity) is stated as a def, not an axiom — it remains OPEN.",
+    "lineCount": 158,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Formal framework: pairwiseSums, IsSumRepresentable, dicksonSeq (greedy via Nat.find), IsEventuallyPeriodic",
@@ -188,10 +188,9 @@
     ],
     "opens": [],
     "namespace": "",
-    "lineCount": 108,
-    "axiomCount": 4,
-    "theoremCount": 2,
-    "definitionCount": 5,
+    "lineCount": 158,
+    "theoremCount": 5,
+    "definitionCount": 8,
     "mainTheorems": [
       "erdos_341_conjecture"
     ]
