@@ -27,8 +27,8 @@
       "erdos-234"
     ],
     "axiomCount": 6,
-    "lineCount": 161,
-    "assumptions": "11 axioms: maxSidonSize, maxSidon_achievable, maxSidon_optimal, and 8 more. See Lean source for complete statements.",
+    "lineCount": 193,
+    "assumptions": "6 axioms: erdos_turan_upper, sidon_lower_asymptotic, erdos_155_conjecture (OPEN), erdos_155_strong (OPEN), increase_points_sparse, small_values_large. 7 proved theorems.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -134,9 +134,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 109,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 193,
+    "axiomCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "references": [
