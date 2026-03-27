@@ -19,11 +19,9 @@ of C(n,k) = "n choose k" exceed k.
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic
+import Mathlib
 
-open Nat
+open Nat Filter
 
 namespace Erdos1095OQ01
 
@@ -166,6 +164,56 @@ theorem gFunc_two : gFunc 2 = 6 := by
            fun h5 => not_allPrimesExceed_choose_5_2 (h5 ▸ gFunc_spec 2)⟩
 
 /-
+# Part 5b: Computing g(3) and g(4)
+
+g(3) = g(4) = 7, since C(7,3) = C(7,4) = 35 = 5·7 has no prime factor ≤ 4.
+-/
+
+/-- C(5,3) = 10 is even. -/
+private theorem not_allPrimesExceed_choose_5_3 : ¬AllPrimesExceed (choose 5 3) 3 :=
+  not_allPrimesExceed_of_prime_dvd Nat.prime_two (by omega) (by decide)
+
+/-- C(6,3) = 20 is even. -/
+private theorem not_allPrimesExceed_choose_6_3 : ¬AllPrimesExceed (choose 6 3) 3 :=
+  not_allPrimesExceed_of_prime_dvd Nat.prime_two (by omega) (by decide)
+
+/-- AllPrimesExceed (C(7,3)) 3: C(7,3) = 35 = 5·7, no prime ≤ 3 divides. -/
+private theorem allPrimesExceed_choose_7_3 : AllPrimesExceed (choose 7 3) 3 := by
+  intro p hp hpk hpdvd
+  have : p = 2 ∨ p = 3 := by have := hp.two_le; omega
+  rcases this with rfl | rfl <;> exact absurd hpdvd (by decide)
+
+/-- g(3) = 7: C(5,3)=10 (2|10), C(6,3)=20 (2|20), C(7,3)=35 (5·7, succeeds). -/
+theorem gFunc_three : gFunc 3 = 7 := by
+  apply le_antisymm
+  · exact gFunc_minimal 3 7 (by omega) allPrimesExceed_choose_7_3
+  · have hgt := gFunc_gt 3
+    suffices h : gFunc 3 ≠ 5 ∧ gFunc 3 ≠ 6 by omega
+    exact ⟨fun h5 => not_allPrimesExceed_choose_5_3 (h5 ▸ gFunc_spec 3),
+           fun h6 => not_allPrimesExceed_choose_6_3 (h6 ▸ gFunc_spec 3)⟩
+
+/-- C(6,4) = 15, and 3 | 15. -/
+private theorem not_allPrimesExceed_choose_6_4 : ¬AllPrimesExceed (choose 6 4) 4 :=
+  not_allPrimesExceed_of_prime_dvd (by decide : Nat.Prime 3) (by omega) (by decide)
+
+/-- AllPrimesExceed (C(7,4)) 4: C(7,4) = 35, no prime ≤ 4 divides. -/
+private theorem allPrimesExceed_choose_7_4 : AllPrimesExceed (choose 7 4) 4 := by
+  intro p hp hpk hpdvd
+  have : p = 2 ∨ p = 3 ∨ p = 4 := by have := hp.two_le; omega
+  rcases this with rfl | rfl | rfl
+  · exact absurd hpdvd (by decide)
+  · exact absurd hpdvd (by decide)
+  · exact absurd hp (by decide)
+
+/-- g(4) = 7: C(6,4)=15 (3|15), C(7,4)=35 (5·7, no primes ≤ 4). -/
+theorem gFunc_four : gFunc 4 = 7 := by
+  apply le_antisymm
+  · exact gFunc_minimal 4 7 (by omega) allPrimesExceed_choose_7_4
+  · have hgt := gFunc_gt 4
+    suffices h : gFunc 4 ≠ 6 by omega
+    exact fun h6 => not_allPrimesExceed_choose_6_4 (h6 ▸ gFunc_spec 4)
+
+/-
 # Part 6: Structural properties of g(k)
 -/
 
@@ -189,21 +237,24 @@ More precisely: lim_{k→∞} (log g(k)) / (k / log k) = c for some c > 0.
 This would mean g(k) ~ exp(c · k / log k), placing g(k) between polynomial
 (too small) and exponential (too large) growth.
 
-This conjecture remains OPEN. It is not formalized here because it requires
-real analysis machinery (Filter.Tendsto, Real.log, asymptotics) which is
-beyond the scope of this number-theoretic formalization.
-
-OPEN CONJECTURE (informal):
-  ∃ c : ℝ, c > 0 ∧ Filter.Tendsto (fun k => Real.log (gFunc k) / (k / Real.log k))
-    Filter.atTop (nhds c)
+This conjecture remains OPEN.
 -/
 
-/-- Concrete values: g(1) = 3 and g(2) = 6 (proved above from axioms). -/
-example : gFunc 1 = 3 := gFunc_one
-example : gFunc 2 = 6 := gFunc_two
+/-- The asymptotic conjecture: log g(k) / (k / log k) → c for some c > 0.
+    This means g(k) ~ exp(c · k / log k), between polynomial and exponential. -/
+def ErdosAsymptoticConjecture : Prop :=
+  ∃ c : ℝ, c > 0 ∧
+    Tendsto (fun k : ℕ => Real.log (gFunc k : ℝ) / ((k : ℝ) / Real.log (k : ℝ)))
+      atTop (nhds c)
 
-/-- Main statement: g(k) exists and is well-defined for all k. -/
+/-- Weaker statement: g(k) grows faster than any fixed polynomial. -/
 def ErdosProblem1095OQ01 : Prop :=
   ∃ c : ℕ, c > 0 ∧ ∀ k : ℕ, k > 0 → gFunc k > k ^ c
+
+/-- Concrete values (proved from axioms). -/
+example : gFunc 1 = 3 := gFunc_one
+example : gFunc 2 = 6 := gFunc_two
+example : gFunc 3 = 7 := gFunc_three
+example : gFunc 4 = 7 := gFunc_four
 
 end Erdos1095OQ01
