@@ -99,11 +99,17 @@ axiom erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
     (∃ (sub : Subsequence n r), IsIncreasing seq sub) ∨
     (∃ (sub : Subsequence n s), IsDecreasing seq sub)
 
-/-- Corollary: Every sequence of n² + 1 elements has a monotonic
-    subsequence of length n + 1. -/
-axiom erdos_szekeres_square (k : ℕ) (n : ℕ) (hn : n = k^2 + 1)
+/-- Corollary: Every sequence of k²+1 elements has a monotonic
+    subsequence of length ≥ k+1.
+    Proof: apply erdos_szekeres with r = s = k+1.
+    Note: (k+1-1)*(k+1-1)+1 = k²+1. -/
+theorem erdos_szekeres_square (k : ℕ) (n : ℕ) (hn : n = k^2 + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
-    ∃ (m : ℕ) (sub : Subsequence n m), m ≥ k + 1 ∧ IsMonotonic seq sub
+    ∃ (m : ℕ) (sub : Subsequence n m), m ≥ k + 1 ∧ IsMonotonic seq sub := by
+  have hneq : n = (k + 1 - 1) * (k + 1 - 1) + 1 := by omega
+  rcases erdos_szekeres (k + 1) (k + 1) n hneq seq hDistinct with ⟨sub, hInc⟩ | ⟨sub, hDec⟩
+  · exact ⟨k + 1, sub, le_refl _, Or.inl hInc⟩
+  · exact ⟨k + 1, sub, le_refl _, Or.inr hDec⟩
 
 /-
 ## Part III: Hanani's Decomposition
@@ -204,19 +210,15 @@ axiom weighted_erdos_szekeres (k : ℕ) (hk : k ≥ 1)
     (hSum : totalSum seq = 1) :
     maxMonotonicSum seq ≥ 1 / k
 
-/--
-**Tidor-Wang-Yang Theorem (2016):**
-The weighted Erdős-Szekeres theorem holds, proving c = 1.
-
-This was also proved independently by Wagner (2017) and
-formalized by Aristotle with an alternative proof by Chan.
--/
-axiom tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
+/-- **Tidor-Wang-Yang Theorem (2016):** identical to weighted_erdos_szekeres.
+    Proved independently by Wagner (2017). Here derived as a direct synonym. -/
+theorem tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
     (seq : RealSeq (k^2))
     (hDistinct : Function.Injective seq)
     (hPos : ∀ i, seq i > 0)
     (hSum : totalSum seq = 1),
-    maxMonotonicSum seq ≥ 1 / k
+    maxMonotonicSum seq ≥ 1 / k :=
+  weighted_erdos_szekeres
 
 /-- The optimal constant is exactly 1. -/
 axiom optimal_constant_is_one :
@@ -243,7 +245,8 @@ axiom lis_lds_bound (n : ℕ) (seq : RealSeq n)
     (hDistinct : Function.Injective seq) :
     LIS seq * LDS seq ≥ n
 
-/-- The longest monotonic subsequence has length ≥ √n. -/
+/-- The longest monotonic subsequence has length ≥ √n.
+    Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
 axiom longest_monotonic_bound (n : ℕ) (seq : RealSeq n)
     (hDistinct : Function.Injective seq) :
     max (LIS seq) (LDS seq) ≥ Nat.sqrt n
@@ -274,12 +277,12 @@ axiom erdos_1026_tight :
       Function.Injective seq ∧ (∀ i, seq i > 0) ∧
       totalSum seq = 1 ∧ maxMonotonicSum seq ≤ 1 / k + ε
 
-/-- Connection to tournament theory (Wagner): in a tournament on n players,
-    the longest monotonic path has length at least √n. This gives an
-    alternative proof of the Erdős–Szekeres-type bound for monotonic
-    subsequences in real sequences. -/
-axiom tournament_connection :
+/-- Connection to tournament theory: there exists a path of length m
+    with m² ≥ n. Trivially provable: take m = n, then n² ≥ n for n ≥ 1. -/
+theorem tournament_connection :
     ∀ n : ℕ, n ≥ 1 → ∃ (path_length : ℕ),
-      path_length ^ 2 ≥ n
+      path_length ^ 2 ≥ n := by
+  intro n hn
+  exact ⟨n, by nlinarith⟩
 
 end Erdos1026
