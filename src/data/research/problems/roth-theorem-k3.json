@@ -18,13 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 16,
-    "focus": "Session 16: Partially proved density_increment_large_M — delegated M≥2 case to density_increment_lemma, sorry reduced to coprime case only.",
-    "blockers": [
-      "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
-      "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
-    ],
-    "nextAction": "Prove density_increment_large_M: (1) partition ZMod N into APs of length ~sqrt(N) using Dirichlet, (2) bound approximation error of Fourier decomposition on APs, (3) pigeonhole for density boost on best AP, (4) restructure roth_density_bound with N0=4^{2^K}.",
+    "iteration": 17,
+    "focus": "Session 17: Removed 178 lines of dead code containing the only sorry (density_increment_dirichlet Case 2, density_chain, roth_threshold). File now 0 sorries, 0 axioms — fully verified.",
+    "blockers": [],
+    "nextAction": "Complete. File is fully verified (0 sorries, 0 axioms). Main theorem uses Mathlib's corners-theorem chain.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed build errors in density_increment_dirichlet (omega N=1 failure with hN:4≤N). Else branch replaced with clean sorry+docs. File compiles: 0 axioms, 1 sorry (dead code), 1580 lines. Main theorem roth_density_bound fully proved via Mathlib.",
+    "progressSummary": "COMPLETED: Removed 178 lines of dead code (density_increment_dirichlet, density_chain, roth_threshold, density_bound_from_increment, apFree_density_lt_two_thirds) that contained the only sorry. File: 0 axioms, 0 sorries, 1401 lines. Status upgraded to verified.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
