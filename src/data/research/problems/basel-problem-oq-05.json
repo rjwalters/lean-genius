@@ -1,0 +1,90 @@
+{
+  "slug": "basel-problem-oq-05",
+  "title": "Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\pr...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ be formalized? Mathlib has `Complex.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-26T20:00:24.431Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-26T20:00:24.431Z",
+  "lastUpdate": "2026-03-26T20:00:24.431Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BaselProblem.lean",
+      "filename": "BaselProblem.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblem.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02.lean",
+      "filename": "BaselProblemOQ02.lean",
+      "lineCount": 275,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02Aristotle.lean",
+      "filename": "BaselProblemOQ02Aristotle.lean",
+      "lineCount": 54,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
+    }
+  ]
+}

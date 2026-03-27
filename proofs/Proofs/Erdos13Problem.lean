@@ -93,11 +93,18 @@ axiom upperThird_divisibilityFree (N : ℕ) : DivisibilityFree (upperThird N)
     Proof: The upper third contains k with 2N/3 < k ≤ N.
     The smallest such k is ⌊2N/3⌋ + 1, the largest is N.
     So the count is N - ⌊2N/3⌋. -/
-axiom upperThird_card (N : ℕ) : (upperThird N).card = N - 2 * N / 3
+theorem upperThird_card (N : ℕ) : (upperThird N).card = N - 2 * N / 3 := by
+  unfold upperThird
+  convert_to (Finset.Icc (2 * N / 3 + 1) N).card = N - 2 * N / 3
+  · congr 1; ext k
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+    omega
+  · rw [Finset.card_Icc]; omega
 
 /-- The upper third achieves the N/3 lower bound. -/
-axiom upperThird_achieves_bound (N : ℕ) (hN : N ≥ 3) :
-    (upperThird N).card ≥ N / 3
+theorem upperThird_achieves_bound (N : ℕ) (hN : N ≥ 3) :
+    (upperThird N).card ≥ N / 3 := by
+  rw [upperThird_card]; omega
 
 /-
 ## Bedert's Theorem (2023)
