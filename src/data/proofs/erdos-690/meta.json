@@ -21,9 +21,9 @@
     "erdosNumber": 690,
     "erdosUrl": "https://erdosproblems.com/690",
     "erdosProblemStatus": "open",
-    "axiomCount": 10,
-    "lineCount": 134,
-    "assumptions": "10 axioms: kthPrimeFactorDensity, cambie_unimodal_k1, cambie_unimodal_k2, and 7 more. See Lean source for complete statements.",
+    "axiomCount": 8,
+    "lineCount": 172,
+    "assumptions": "8 axioms: kthPrimeFactorDensity (density function), d1_at_2/d1_at_3/d1_at_5 (density values), d1_strictly_decreasing (classical), cambie_unimodal_k2/k3 (Cambie 2025), cambie_not_unimodal (4<=k<=20). d1_unimodal PROVED from d1_strictly_decreasing.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -128,9 +128,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 134,
-    "axiomCount": 10,
-    "theoremCount": 2,
+    "lineCount": 172,
+    "axiomCount": 8,
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "references": [
