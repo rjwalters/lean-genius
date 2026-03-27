@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated 4 axioms (5→1). Converted 3 open conjectures from axiom to def. Proved squarefree_translation from brun_sieve_translation via primeSquares B-free characterization.",
+    "builtItems": [
+      "Proved squarefree_translation from brun_sieve_translation + primeSquares characterization",
+      "primeSquares_pairwise_coprime: distinct prime squares are coprime (Coprime.pow_pow)",
+      "squarefreeSet_eq_bfree: squarefree = bFreeSet primeSquares (ext argument)",
+      "Converted ErdosProblem675_two_squares from axiom to def (OPEN conjecture)",
+      "Converted ErdosProblem675_balanced_partition from axiom to def (OPEN conjecture)",
+      "Converted ErdosProblem675_squarefree_growth from axiom to def (OPEN conjecture)"
+    ],
+    "insights": [
+      "Squarefree numbers = B-free set with B = {p^2 | p prime}. Prime squares pairwise coprime by FTA.",
+      "HasSmallReciprocalSum is a placeholder (True body) - reciprocal sum condition not formalized",
+      "Open conjectures should be def/Prop, not axiom - axiomatizing introduces potentially false assumptions"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize HasSmallReciprocalSum properly (requires Finset sum of reciprocals ≤ ε·log(log x))"
+    ],
     "markdown": "# Erdős #675 - Knowledge Base\n\n## Problem Statement\n\nWe say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation property? If $A$ is the set of squarefree numbers then how fast does the minimal such $t_n$ grow? Is it true that $t_n>\\exp(n^c)$ for some constant $c>0$? Elementary sieve theory implies that the set of squarefree numbers has the translation property. More generally, Brun's sieve can be used to prove that if $B\\subseteq \\mathbb{N}$ is a set of pairwise coprime integers with $\\sum_{b View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #674\n- Problem #676\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
