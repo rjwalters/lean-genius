@@ -56,10 +56,16 @@ def ErdosProblem959 : Prop :=
 
 -- ## Known lower bound
 
-/-- Clemen-Dumitrescu-Liu (2025): max(f(d₁) - f(d₂)) ≫ n log n. -/
-axiom clemen_dumitrescu_liu (n : ℕ) (hn : 2 ≤ n) :
-    ∃ (A : Finset (EuclideanSpace ℝ (Fin 2))),
-      A.card = n ∧ ∃ C : ℝ, 0 < C ∧ C * n * Real.log n ≤ (frequencyGap A : ℝ)
+/-- Clemen-Dumitrescu-Liu (2025): there exists a universal constant C > 0 such that
+    for all n ≥ 2, some n-point set achieves frequency gap ≥ C·n·log n.
+    The ≫ notation means C is independent of n. -/
+axiom clemen_dumitrescu_liu :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 2 ≤ n →
+      ∃ (A : Finset (EuclideanSpace ℝ (Fin 2))),
+        A.card = n ∧ C * n * Real.log n ≤ (frequencyGap A : ℝ)
+
+/-- Erdős Problem 959 is resolved by the Clemen-Dumitrescu-Liu result. -/
+theorem erdos_959_resolved : ErdosProblem959 := clemen_dumitrescu_liu
 
 -- ## Stronger conjecture
 
@@ -85,6 +91,17 @@ theorem maxFreq_ge_second (A : Finset (EuclideanSpace ℝ (Fin 2))) :
   simp +zetaDelta at *
   exact fun b hb x hx hx' => hx'.symm ▸ Finset.le_sup (f := distFrequency A) hx
 
+/-- Zero distance has frequency 0: dist(p,q) = 0 forces p = q, contradicting p ≠ q. -/
+theorem distFrequency_zero (A : Finset (EuclideanSpace ℝ (Fin 2))) :
+    distFrequency A 0 = 0 := by
+  unfold distFrequency
+  suffices h : ((A ×ˢ A).filter (fun p => p.1 ≠ p.2 ∧ dist p.1 p.2 = 0)) = ∅ by
+    simp [h]
+  ext ⟨a, b⟩
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.not_mem_empty, iff_false, not_and]
+  intro _ hne hdist
+  exact hne (dist_eq_zero.mp hdist)
+
 /-- The frequency gap for the empty set is zero. -/
 theorem frequencyGap_empty : frequencyGap ∅ = 0 := by
   unfold frequencyGap maxFrequency secondFrequency distinctDistances
@@ -101,13 +118,12 @@ noncomputable def frequencyGapR (A : Finset (EuclideanSpace ℝ (Fin 2)))
     freqs.get ⟨r, hr.1⟩ - freqs.get ⟨r + 1, hr.2⟩
   else 0
 
-/-- CDL generalized: for 1 ≤ r ≤ log n, there exists an n-point set with
-    f(dᵣ) - f(dᵣ₊₁) ≫ n log n / r. -/
-axiom clemen_dumitrescu_liu_general (n r : ℕ) (hn : 2 ≤ n)
-    (hr1 : 1 ≤ r) (hr2 : r ≤ Nat.log 2 n) :
-    ∃ (A : Finset (EuclideanSpace ℝ (Fin 2))),
-      A.card = n ∧ ∃ C : ℝ, 0 < C ∧
-        C * n * Real.log n / r ≤ (frequencyGapR A r : ℝ)
+/-- CDL generalized: there exists a universal constant C > 0 such that for
+    1 ≤ r ≤ log n, some n-point set achieves f(dᵣ) - f(dᵣ₊₁) ≥ C·n·log(n)/r. -/
+axiom clemen_dumitrescu_liu_general :
+    ∃ C : ℝ, 0 < C ∧ ∀ n r : ℕ, 2 ≤ n → 1 ≤ r → r ≤ Nat.log 2 n →
+      ∃ (A : Finset (EuclideanSpace ℝ (Fin 2))),
+        A.card = n ∧ C * n * Real.log n / r ≤ (frequencyGapR A r : ℝ)
 
 -- ## Total pair count
 

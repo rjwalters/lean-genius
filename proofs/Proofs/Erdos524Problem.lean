@@ -129,3 +129,70 @@ theorem randSignPoly_abs_le (t : ℝ) (n : ℕ) {x : ℝ} (hx : |x| ≤ 1) :
     rw [show (↑(n + 1) : ℝ) = ↑n + 1 from by push_cast; ring]
     linarith [abs_add (randSignPoly t n x)
       ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
+
+/- ## Additional properties of binary digits -/
+
+/-- The square of any binary digit (cast to ℝ) is 1. -/
+theorem binaryDigit_sq (t : ℝ) (k : ℕ) :
+    ((binaryDigit t k : ℝ)) ^ 2 = 1 := by
+  rcases binaryDigit_values t k with h | h <;> simp [h]
+
+/- ## Polynomial properties -/
+
+/-- For n = 0, the polynomial is identically zero (empty sum). -/
+theorem randSignPoly_zero (t : ℝ) (x : ℝ) : randSignPoly t 0 x = 0 := by
+  simp [randSignPoly]
+
+/-- The random sign polynomial is continuous in x (for fixed t, n).
+    Each term c · x^k is continuous, and finite sums preserve continuity.
+    This is foundational for well-definedness of polyMax via sSup. -/
+theorem randSignPoly_continuous (t : ℝ) (n : ℕ) :
+    Continuous (fun x => randSignPoly t n x) := by
+  simp only [randSignPoly]
+  apply continuous_finset_sum
+  intro k _
+  exact continuous_const.mul (continuous_pow _)
+
+/- ## polyMax infrastructure: sSup well-definedness and bounds -/
+
+/-- The set { |P_n(t,x)| : x ∈ [-1,1] } is bounded above by n.
+    This ensures sSup (used in polyMax) is well-defined. -/
+theorem polyMax_bddAbove (t : ℝ) (n : ℕ) :
+    BddAbove { |randSignPoly t n x| | x ∈ Set.Icc (-1 : ℝ) 1 } := by
+  refine ⟨↑n, ?_⟩
+  rintro _ ⟨x, hx, rfl⟩
+  exact randSignPoly_abs_le t n (abs_le.mpr ⟨by linarith [hx.1], hx.2⟩)
+
+/-- M_n(t) ≥ 0: the polynomial max is nonneg since |·| ≥ 0 and the
+    supremum is taken over a nonempty set (0 ∈ [-1,1]). -/
+theorem polyMax_nonneg (t : ℝ) (n : ℕ) : 0 ≤ polyMax t n := by
+  unfold polyMax
+  apply le_csSup_of_le (polyMax_bddAbove t n)
+  · exact ⟨0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩
+  · exact abs_nonneg _
+
+/-- M_n(t) ≤ n: the trivial upper bound from the triangle inequality.
+    Each of the n terms has absolute value at most 1 on [-1,1]. -/
+theorem polyMax_le_n (t : ℝ) (n : ℕ) : polyMax t n ≤ ↑n := by
+  unfold polyMax
+  apply csSup_le
+  · exact ⟨|randSignPoly t n 0|, 0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩
+  · rintro _ ⟨x, hx, rfl⟩
+    exact randSignPoly_abs_le t n (abs_le.mpr ⟨by linarith [hx.1], hx.2⟩)
+
+/-- The random walk P_n(t,1) = Σ ε_k is a lower bound for M_n(t).
+    This is the key observation behind Erdős's lower bound: the LIL
+    governs |P_n(t,1)| ≈ √(2n log log n), providing the a.e. lower bound. -/
+theorem randSignPoly_eval_one_le_polyMax (t : ℝ) (n : ℕ) :
+    |randSignPoly t n 1| ≤ polyMax t n := by
+  unfold polyMax
+  apply le_csSup (polyMax_bddAbove t n)
+  exact ⟨1, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩
+
+/-- The alternating walk P_n(t,-1) is also a lower bound for M_n(t).
+    Endpoint evaluation at x = ±1 provides the strongest pointwise bounds. -/
+theorem randSignPoly_eval_neg_one_le_polyMax (t : ℝ) (n : ℕ) :
+    |randSignPoly t n (-1)| ≤ polyMax t n := by
+  unfold polyMax
+  apply le_csSup (polyMax_bddAbove t n)
+  exact ⟨-1, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: ContinuumHypothesisOQ02.lean created (526 lines, 27 theorems, 8 axioms, 6 definitions). Covers Konig cofinality constraint, Easton spectrum theorem, cardinal characteristics (b, d), Martin Axiom, three scenarios for 2^aleph_0. Gallery data created. Docker build pending.",
+    "progressSummary": "BUILD: 28 theorems (+1), 8 axioms. Added dominating_implies_unbounded: proved every dominating family is unbounded via diagonal argument (g+1 ≤ h contradicts h ≤ g). This is the mathematical core of bounding_le_dominating axiom; axiom retained only for Cardinal infimum manipulation.",
     "builtItems": [
       "aleph_one_is_regular: proved from Mathlib Cardinal.isRegular_aleph_one",
       "aleph_succ_is_regular: proved from Mathlib for all successor alephs",

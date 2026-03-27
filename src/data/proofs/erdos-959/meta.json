@@ -23,8 +23,8 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.26.0",
     "axiomCount": 2,
-    "lineCount": 142,
-    "assumptions": "2 axioms: clemen_dumitrescu_liu (CDL 2025 lower bound Ω(n log n)), clemen_dumitrescu_liu_general (rank-r generalization Ω(n log n / r)). Both are deep recent results. 0 sorries."
+    "lineCount": 159,
+    "assumptions": "2 axioms: clemen_dumitrescu_liu (CDL 2025: ∃ universal C>0, ∀n≥2, gap ≥ C·n·log n), clemen_dumitrescu_liu_general (CDL 2025: ∃ universal C>0, rank-r gap ≥ C·n·log(n)/r). Both are deep results with correctly universally-quantified constants. ErdosProblem959 proved from CDL axiom."
   },
   "overview": {
     "historicalContext": "Erdős studied the distribution of pairwise distances in planar point configurations extensively throughout his career. Among the many questions he raised, Problem 959 concerns not the count of distinct distances (as in the celebrated Erdős distinct distances problem, resolved by Guth and Katz in 2015) but rather the gap between the most frequent and second-most frequent distance in an n-point set.\n\nClemen, Dumitrescu, and Liu (2025) made the first substantial progress, proving that the maximum frequency gap can be as large as Ω(n log n) using explicit constructions. They further generalized the result to rank-r gaps: for 1 ≤ r ≤ log n, the gap between the r-th and (r+1)-th most frequent distances is Ω(n log n / r). This shows the frequency distribution is not flat even among the top-ranked distances.\n\nClemen, Dumitrescu, and Liu conjectured that the true order of the maximum frequency gap is n^{1+c/log log n} for some constant c > 0, which would be dramatically larger than n log n. This conjectured growth rate mirrors bounds appearing in other combinatorial geometry problems, such as the Elekes–Rónyai framework. The problem remains open.",
@@ -53,7 +53,9 @@
       "ErdosProblem959_strong: n^{1+c/log log n} conjecture",
       "frequencyGapR: generalized rank-r frequency gap",
       "clemen_dumitrescu_liu_general: rank-r generalization axiom",
+      "erdos_959_resolved: proved ErdosProblem959 from CDL axiom",
       "distFrequency_nonneg: proved nonnegativity",
+      "distFrequency_zero: proved zero distance has zero frequency",
       "frequencyGap_empty: proved zero gap for empty sets",
       "total_pairs: sum of frequencies ≤ n choose 2",
       "avg_frequency_bound: average frequency bound"
@@ -82,40 +84,40 @@
       "id": "known",
       "title": "Known Lower Bound",
       "startLine": 57,
-      "endLine": 63,
-      "summary": "Axiomatizes the Clemen–Dumitrescu–Liu (2025) result: Ω(n log n) lower bound on frequency gap."
+      "endLine": 68,
+      "summary": "Axiomatizes the CDL (2025) result with correctly universal constant C. Proves erdos_959_resolved: ErdosProblem959 follows directly from the CDL axiom."
     },
     {
       "id": "strong",
       "title": "Stronger Conjecture",
-      "startLine": 64,
-      "endLine": 72,
-      "summary": "Conjectured n^{1+c/log log n} growth rate for the maximum frequency gap."
+      "startLine": 70,
+      "endLine": 78,
+      "summary": "Conjectured n^{1+c/log log n} growth rate for the maximum frequency gap (remains open)."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 73,
-      "endLine": 89,
-      "summary": "Proves distFrequency_nonneg, maxFreq_ge_second (sorry), and frequencyGap_empty."
+      "startLine": 79,
+      "endLine": 108,
+      "summary": "Proves distFrequency_nonneg, maxFreq_ge_second, distFrequency_zero (zero distance has zero frequency), and frequencyGap_empty."
     },
     {
       "id": "generalized",
       "title": "Generalized Frequency Gap",
-      "startLine": 90,
-      "endLine": 108,
-      "summary": "Defines frequencyGapR for rank-r gaps and states the CDL generalized bound Ω(n log n / r)."
+      "startLine": 110,
+      "endLine": 126,
+      "summary": "Defines frequencyGapR for rank-r gaps and axiomatizes the CDL generalized bound with universal constant: ∃C>0, ∀n,r, gap ≥ C·n·log(n)/r."
     },
     {
       "id": "counting",
       "title": "Total Pair Count",
-      "startLine": 109,
-      "endLine": 142,
-      "summary": "States total_pairs (sum of frequencies ≤ n choose 2) and derives avg_frequency_bound."
+      "startLine": 128,
+      "endLine": 159,
+      "summary": "Proves total_pairs (sum of frequencies ≤ n choose 2) and derives avg_frequency_bound."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 959 on distance frequency gaps, including the Clemen–Dumitrescu–Liu Ω(n log n) lower bound, the stronger n^{1+c/log log n} conjecture, rank-r generalizations, and structural counting bounds. 2 sorries remain for maxFreq_ge_second and total_pairs.",
+    "summary": "The formalization captures Erdős Problem 959 on distance frequency gaps, including the CDL Ω(n log n) lower bound (with correctly universally-quantified constant), the stronger n^{1+c/log log n} conjecture, rank-r generalizations, and structural counting bounds. ErdosProblem959 is proved resolved by the CDL axiom. 0 sorries, 2 axioms (both CDL 2025 results).",
     "implications": "Resolution would advance understanding of distance distribution in planar point configurations, connecting to the broader program of Erdős distance problems including the solved distinct distances conjecture.",
     "openQuestions": [
       "Is the Ω(n log n) lower bound tight, or can it be improved toward the conjectured n^{1+c/log log n}?",
@@ -136,9 +138,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 142,
+    "lineCount": 159,
     "axiomCount": 2,
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 8
   },
   "crossReferences": [

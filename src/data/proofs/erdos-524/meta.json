@@ -35,7 +35,7 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 131,
+    "lineCount": 198,
     "assumptions": "4 axioms: erdos_lower_bound, chung_upper_bound, salem_zygmund_trigonometric, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -87,6 +87,22 @@
       "endLine": 82,
       "summary": "Axiom `erdos_524_order_of_magnitude`: $\\exists f : \\mathbb{N} \\to \\mathbb{R}_{>0}$ such that $M_n(t) = \\Theta(f(n))$ a.e. Conjectured $f(n) = \\sqrt{n}$. The gap between $n^{1/2-\\varepsilon}$ and $\\sqrt{n/\\log\\log n}$ remains the frontier.",
       "mathContext": "The open problem: find $f(n)$ with $c_1 f(n) \\leq M_n(t) \\leq c_2 f(n)$ for all large $n$, a.s. Known: $f(n) = \\omega(n^{1/2-\\varepsilon})$ and $f(n) = O(\\sqrt{n/\\log\\log n})$. Conjecture: $f(n) = \\sqrt{n}$."
+    },
+    {
+      "id": "additional-properties",
+      "title": "Additional Properties",
+      "startLine": 134,
+      "endLine": 150,
+      "summary": "Proved `binaryDigit_sq` ($\\varepsilon_k^2 = 1$), `randSignPoly_zero` ($P_0 = 0$), and `randSignPoly_continuous` (continuity in $x$). The continuity result is foundational for sSup well-definedness.",
+      "mathContext": "The orthogonality property $\\varepsilon_k^2 = 1$ is key for second moment computations: $\\mathbb{E}[P_n(t,x)^2] = \\sum_k x^{2k}$ uses the fact that cross terms vanish since $\\mathbb{E}[\\varepsilon_j \\varepsilon_k] = \\delta_{jk}$, which follows from $\\varepsilon_k^2 = 1$ and independence. Continuity of $P_n(\\cdot, x)$ in $x$ ensures the supremum $M_n(t) = \\max_{x \\in [-1,1]} |P_n(t,x)|$ is attained on the compact set $[-1,1]$."
+    },
+    {
+      "id": "polymax-infrastructure",
+      "title": "polyMax Infrastructure",
+      "startLine": 152,
+      "endLine": 198,
+      "summary": "sSup infrastructure for polyMax: `polyMax_bddAbove` (BddAbove), `polyMax_nonneg` ($M_n \\geq 0$), `polyMax_le_n` ($M_n \\leq n$), and endpoint evaluation lower bounds `randSignPoly_eval_one_le_polyMax` and `randSignPoly_eval_neg_one_le_polyMax`.",
+      "mathContext": "The polyMax sSup infrastructure establishes: (1) the supremum is well-defined (BddAbove by the trivial bound $n$), (2) $M_n \\geq 0$ (since $|\\cdot| \\geq 0$ and the domain is nonempty), (3) $M_n \\leq n$ (triangle inequality), and (4) endpoint evaluations $|P_n(t, \\pm 1)| \\leq M_n$ provide lower bounds. The endpoint bound at $x = 1$ is the key observation behind Erdős's lower bound: $M_n \\geq |P_n(t,1)| = |\\sum \\varepsilon_k|$, and by the LIL this is $\\geq \\sqrt{2n \\log\\log n}$ infinitely often."
     }
   ],
   "overview": {
@@ -127,9 +143,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 131,
+    "lineCount": 198,
     "axiomCount": 4,
-    "theoremCount": 6,
+    "theoremCount": 14,
     "definitionCount": 3
   },
   "references": [
