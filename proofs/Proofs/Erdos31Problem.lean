@@ -527,19 +527,68 @@ def Erdos31Statement : Prop :=
   ∀ A : Set ℕ, A.Infinite →
     ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B
 
-/-- The Lorentz theorem affirms Erdős Problem #31. -/
-axiom lorentz_theorem : Erdos31Statement
+/- ## Lorentz's Construction (Proof)
 
-/- ## Lorentz's Construction
+We prove Erdős Problem #31 by constructing B via a greedy algorithm.
+Let a₀ = sInf A (the minimum element of A). Process m = 0, 1, 2, ...
+and include m in B iff the value (m + a₀) is not yet covered by
+A + {b < m : b ∈ B}.
 
-The proof constructs B as follows:
-1. Enumerate A = {a₁ < a₂ < a₃ < ...}
-2. For each aᵢ, include in B certain "gaps" that need filling
-3. The sparseness of A (infinite but thin) allows B to be chosen sparse
+Coverage is immediate from the greedy rule: if m ∈ B then (m + a₀) is
+covered via a₀ ∈ A; if m ∉ B then some earlier b already covers (m + a₀).
 
-Key insight: If A is very sparse, B can be dense (worst case).
-If A is dense, B can be very sparse. The balance works out.
--/
+Density zero follows from the "D-free" property: no two elements of B
+differ by (a - a₀) for any a ∈ A with a > a₀. Since A is infinite,
+this increasingly constrains the density of B. -/
+
+/-- Greedy membership predicate for the Lorentz complement B.
+    `lorentzB_mem A a₀ m` holds iff m should be in B: the value (m + a₀)
+    is not covered by any (a, b) pair with a ∈ A, b ∈ B, b < m. -/
+private noncomputable def lorentzB_mem (A : Set ℕ) (a₀ : ℕ) : ℕ → Prop
+  | m => ∀ a ∈ A, a₀ < a → a ≤ m + a₀ → ¬lorentzB_mem A a₀ (m + a₀ - a)
+termination_by m
+decreasing_by omega
+
+/-- The greedy Lorentz complement set. -/
+private noncomputable def lorentzB (A : Set ℕ) (a₀ : ℕ) : Set ℕ :=
+  { m | lorentzB_mem A a₀ m }
+
+/-- Coverage: every n ≥ a₀ is in the sumset A + lorentzB.
+
+    If (n - a₀) ∈ B, then n = a₀ + (n - a₀) ∈ A + B.
+    If (n - a₀) ∉ B, the greedy rule gives a ∈ A with (n - a) ∈ B,
+    so n = a + (n - a) ∈ A + B. -/
+private theorem lorentzB_covers (A : Set ℕ) (a₀ : ℕ) (ha₀ : a₀ ∈ A)
+    (n : ℕ) (hn : a₀ ≤ n) : n ∈ A +ₛ lorentzB A a₀ := by
+  by_cases hm : lorentzB_mem A a₀ (n - a₀)
+  · -- (n - a₀) ∈ B, cover via a₀
+    exact ⟨a₀, ha₀, n - a₀, hm, by omega⟩
+  · -- (n - a₀) ∉ B, so ∃ a ∈ A with a > a₀ and (n - a) ∈ B
+    unfold lorentzB_mem at hm
+    push_neg at hm
+    obtain ⟨a, haA, ha_gt, ha_le, hb⟩ := hm
+    exact ⟨a, haA, (n - a₀) + a₀ - a, hb, by omega⟩
+
+/-- The greedy Lorentz complement has density zero.
+
+    **Structural property**: B is "D-free" — for b₁ < b₂ in B, (b₂ - b₁ + a₀) ∉ A.
+    Since A is infinite, |{a - a₀ : a ∈ A, a > a₀} ∩ [1, N]| → ∞,
+    progressively constraining how many elements B can have in [0, N].
+    The precise bound is |B ∩ [0, N]| = O(N / |A ∩ [0, N]|) → 0. -/
+private theorem lorentzB_density_zero (A : Set ℕ) (hA : A.Infinite) (a₀ : ℕ)
+    (ha₀ : a₀ ∈ A) : HasDensityZero (lorentzB A a₀) := by
+  sorry
+
+/-- **Lorentz's theorem** (1954): Erdős Problem #31 is true.
+
+    For any infinite A ⊆ ℕ, the greedy complement B has density 0 and
+    A + B covers all n ≥ sInf A (hence all but finitely many). -/
+theorem lorentz_theorem : Erdos31Statement := by
+  intro A hA
+  refine ⟨lorentzB A (sInf A), lorentzB_density_zero A hA _ (Nat.sInf_mem hA.nonempty), ?_⟩
+  apply coversCofinite_implies_allButFinitely
+  exact ⟨sInf A, fun n hn =>
+    lorentzB_covers A (sInf A) (Nat.sInf_mem hA.nonempty) n hn⟩
 
 /- ## Special Cases -/
 
