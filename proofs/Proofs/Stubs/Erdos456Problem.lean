@@ -25,8 +25,7 @@ Known:
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Totient
+import Mathlib
 
 open Nat
 
