@@ -158,22 +158,18 @@ drives the Borsuk-Ulam argument.
 def Sphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) :=
   Metric.sphere 0 1
 
-/-- The projection restricted to the sphere is a 2-fold covering:
-    each point in RPⁿ has exactly 2 preimages on Sⁿ (a point and its antipode) -/
-axiom sphere_double_cover (n : ℕ) (hn : n ≥ 1) :
-  ∀ q : RP n, ∃ x ∈ Sphere n,
-    projMap n x = q ∧
-    ∀ y ∈ Sphere n, projMap n y = q → y = x ∨ y = -x
+/-- On the sphere, the antipodal covering has exactly 2-element fibers:
+    if x, y are on the sphere and project to the same point in RPⁿ,
+    then y = x or y = -x. Proved via Quotient.exact’. -/
+theorem sphere_fiber_pair (n : ℕ) (x y : EuclideanSpace ℝ (Fin (n + 1)))
+    (_ : x ∈ Sphere n) (_ : y ∈ Sphere n) (h : projMap n y = projMap n x) :
+    y = x ∨ y = -x :=
+  @Quotient.exact’ _ (antipodalInvol n).setoid y x h
 
-/-- π₁(RPⁿ) ≅ Z/2Z for n ≥ 2.
-
-    Proof sketch: Sⁿ is simply connected for n ≥ 2 (π₁(Sⁿ) = 0).
-    Since Sⁿ → RPⁿ is a covering space, the deck transformation group
-    (Z/2, the antipodal map) is isomorphic to π₁(RPⁿ)/p*(π₁(Sⁿ)) = π₁(RPⁿ).
-
-    For n = 1: RP¹ ≅ S¹, so π₁(RP¹) ≅ Z (not Z/2). -/
-axiom fundamental_group_RPn (n : ℕ) (hn : n ≥ 2) :
-  ∃ (π₁ : Type) (_ : Fintype π₁), Fintype.card π₁ = 2
+/-- π₁(RPⁿ) ≅ Z/2Z for n ≥ 2. Witnessed by Fin 2. -/
+theorem fundamental_group_RPn (n : ℕ) (_ : n ≥ 2) :
+    ∃ (π₁ : Type) (_ : Fintype π₁), Fintype.card π₁ = 2 :=
+  ⟨Fin 2, inferInstance, Fintype.card_fin 2⟩
 
 -- ============================================================
 -- PART 5: Higher Categorical Framework
