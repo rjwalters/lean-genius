@@ -50,7 +50,9 @@ def StrictlyIncreasingSeq (x : ℕ → ℕ) : Prop :=
 noncomputable def frac (t : ℝ) : ℝ := t - ⌊t⌋
 
 /-- Fractional part is in [0, 1) -/
-axiom frac_in_unit_interval (t : ℝ) : 0 ≤ frac t ∧ frac t < 1
+theorem frac_in_unit_interval (t : ℝ) : 0 ≤ frac t ∧ frac t < 1 := by
+  unfold frac
+  constructor <;> linarith [Int.floor_le t, Int.lt_floor_add_one t]
 
 /-
 ## Part II: Discrepancy Definition
@@ -141,7 +143,8 @@ axiom lower_bound_sqrt :
 /-- Example: x_n = n (natural numbers) -/
 def naturalSeq : ℕ → ℕ := id
 
-axiom natural_seq_strictly_increasing : StrictlyIncreasingSeq naturalSeq
+theorem natural_seq_strictly_increasing : StrictlyIncreasingSeq naturalSeq := by
+  intro n; simp [naturalSeq]; omega
 
 /-- Example: x_n = 2^n (powers of 2, lacunary with λ = 2) -/
 def powersOfTwo (n : ℕ) : ℕ := 2 ^ n

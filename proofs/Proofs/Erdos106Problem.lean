@@ -109,19 +109,27 @@ axiom f_mono : ∀ n m : ℕ, n ≤ m → f n ≤ f m
 -/
 
 /-- f(1) = 1: one square fills the unit square -/
-axiom f_1 : f 1 = 1
+theorem f_1 : f 1 = 1 := by
+  have := f_perfect_square 1 (by omega)
+  simpa using this
 
 /-- f(2) = 1 (Erdős) -/
 axiom f_2 : f 2 = 1
 
 /-- f(4) = 2: four squares of side 1/2 -/
-axiom f_4 : f 4 = 2
+theorem f_4 : f 4 = 2 := by
+  have := f_perfect_square 2 (by omega)
+  norm_num at this
+  exact this
 
 /-- f(5) = 2 (Newman) -/
 axiom f_5 : f 5 = 2
 
 /-- f(9) = 3: nine squares of side 1/3 -/
-axiom f_9 : f 9 = 3
+theorem f_9 : f 9 = 3 := by
+  have := f_perfect_square 3 (by omega)
+  norm_num at this
+  exact this
 
 /-
 ## Perfect Squares: f(k²) = k
@@ -143,7 +151,11 @@ theorem perfect_square_achieved (k : ℕ) (hk : k ≥ 1) :
 -/
 
 /-- Lower bound: f(k²+1) ≥ k from the k×k grid -/
-axiom f_k2_plus_1_lower : ∀ k : ℕ, k ≥ 1 → f (k^2 + 1) ≥ k
+theorem f_k2_plus_1_lower : ∀ k : ℕ, k ≥ 1 → f (k^2 + 1) ≥ k := by
+  intro k hk
+  have h1 : f (k^2) ≤ f (k^2 + 1) := f_mono (k^2) (k^2 + 1) (by omega)
+  have h2 : f (k^2) = ↑k := f_perfect_square k hk
+  linarith
 
 /-- The main conjecture: f(k²+1) = k -/
 def erdos106Conjecture : Prop :=
