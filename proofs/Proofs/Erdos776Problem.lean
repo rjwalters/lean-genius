@@ -100,19 +100,73 @@ axiom sperner_theorem (n : ℕ) :
 
 /-- The middle layer has the most sets: all sets of size ⌊n/2⌋ form
     an antichain with one distinct size and multiplicity C(n, ⌊n/2⌋). -/
-axiom middle_layer_antichain (n : ℕ) :
-  ∃ F : SubsetFamily n, IsAntichain F ∧
-    numDistinctSizes F = 1 ∧
-    F.card = Nat.choose n (n / 2)
+theorem middle_layer_antichain (n : ℕ) :
+    ∃ F : SubsetFamily n, IsAntichain F ∧
+      numDistinctSizes F = 1 ∧
+      F.card = Nat.choose n (n / 2) := by
+  -- Take F = all (n/2)-element subsets of Fin n
+  use (Finset.univ : Finset (Fin n)).powersetCard (n / 2)
+  refine ⟨?_, ?_, ?_⟩
+  · -- IsAntichain: same-size sets can't have proper subset relation
+    intro A hA B hB hne hsub
+    rw [Finset.mem_powersetCard] at hA hB
+    exact hne (Finset.eq_of_subset_of_card_le hsub (hB.2 ▸ hA.2 ▸ le_refl _))
+  · -- numDistinctSizes = 1: all sets have the same cardinality
+    unfold numDistinctSizes distinctSizes
+    -- Every element has card = n/2, so image = {n/2}
+    have hall : ∀ A ∈ (Finset.univ : Finset (Fin n)).powersetCard (n / 2),
+        A.card = n / 2 := by
+      intro A hA; exact (Finset.mem_powersetCard.mp hA).2
+    -- The family is nonempty (powersetCard k univ is nonempty when k ≤ n)
+    have hne : ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)).Nonempty := by
+      obtain ⟨t, ht, htc⟩ := Finset.exists_smaller_set
+        (Finset.univ : Finset (Fin n)) (n / 2) (by simp [Fintype.card_fin]; omega)
+      exact ⟨t, Finset.mem_powersetCard.mpr ⟨ht, htc⟩⟩
+    -- Image of card on same-sized sets is a singleton
+    have himg : Finset.image Finset.card
+        ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)) = {n / 2} := by
+      ext s; simp only [Finset.mem_image, Finset.mem_singleton]; constructor
+      · rintro ⟨A, hA, rfl⟩; exact hall A hA
+      · intro hs; obtain ⟨A, hA⟩ := hne
+        exact ⟨A, hA, (hall A hA).trans hs.symm⟩
+    rw [himg, Finset.card_singleton]
+  · -- card = C(n, n/2)
+    rw [Finset.card_powersetCard, Fintype.card_fin]
 
 /-- To get many distinct sizes, we need sets from many different layers.
     The antichain constraint limits how sets from different layers interact. -/
-axiom size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
-  ∀ F : SubsetFamily n, IsAntichain F → HasMultiplicity F r →
-    -- The family needs at least r·(numDistinctSizes F) sets
-    F.card ≥ r * numDistinctSizes F
+theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
+    ∀ F : SubsetFamily n, IsAntichain F → HasMultiplicity F r →
+      F.card ≥ r * numDistinctSizes F := by
+  intro F _ hmult
+  unfold numDistinctSizes
+  -- F decomposes into disjoint groups by cardinality
+  -- Step 1: F = ⋃_{s ∈ distinctSizes F} (F.filter (·.card = s))
+  have h_eq : F = (distinctSizes F).biUnion (fun s => F.filter (fun A => A.card = s)) := by
+    ext A; constructor
+    · intro hA
+      rw [Finset.mem_biUnion]
+      exact ⟨A.card, Finset.mem_image.mpr ⟨A, hA, rfl⟩, Finset.mem_filter.mpr ⟨hA, rfl⟩⟩
+    · intro hA
+      rw [Finset.mem_biUnion] at hA
+      obtain ⟨_, _, hAf⟩ := hA
+      exact (Finset.mem_filter.mp hAf).1
+  -- Step 2: The groups are pairwise disjoint
+  have h_disj : ∀ s ∈ distinctSizes F, ∀ t ∈ distinctSizes F, s ≠ t →
+      Disjoint (F.filter (fun A => A.card = s)) (F.filter (fun A => A.card = t)) := by
+    intro s _ t _ hst
+    rw [Finset.disjoint_left]
+    intro A hAs hAt
+    exact hst ((Finset.mem_filter.mp hAs).2 ▸ (Finset.mem_filter.mp hAt).2)
+  -- Step 3: |F| = ∑ |groups| ≥ ∑ r = r · d
+  rw [h_eq, Finset.card_biUnion h_disj]
+  calc ∑ s ∈ distinctSizes F, (F.filter (fun A => A.card = s)).card
+      ≥ ∑ _s ∈ distinctSizes F, r := Finset.sum_le_sum (fun s hs => hmult s hs)
+    _ = r * (distinctSizes F).card := by
+        rw [Finset.sum_const, mul_comm]; simp [smul_eq_mul]
 
 /-- For size k, the number of k-element subsets of {1,...,n} is C(n,k).
     The multiplicity constraint r requires C(n,k) ≥ r for each used size k. -/
-axiom size_availability (n r k : ℕ) (hk : k ≤ n) :
-  Nat.choose n k ≥ r → True  -- Size k can contribute to a multiplicity-r family
+theorem size_availability (n r k : ℕ) (hk : k ≤ n) :
+  Nat.choose n k ≥ r → True := by
+  intro; trivial
