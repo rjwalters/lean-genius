@@ -54,9 +54,6 @@ theorem dist2_symm (p q : Point2) : dist2 p q = dist2 q p := by
 theorem dist2_nonneg (p q : Point2) : dist2 p q ≥ 0 :=
   Real.sqrt_nonneg _
 
-/-- Distance is zero iff points are equal. -/
-axiom dist2_eq_zero_iff (p q : Point2) : dist2 p q = 0 ↔ p = q
-
 /-
 ## Part II: Isosceles-Free Sets
 -/
@@ -91,10 +88,6 @@ def IsIsoscelesFree (A : Finset Point2) : Prop :=
 def AllTriplesDistinct (A : Finset Point2) : Prop :=
   ∀ t : Triple A, (tripleDistances t).card = 3
 
-/-- The two definitions are equivalent. -/
-axiom isosceles_free_iff_distinct (A : Finset Point2) :
-    IsIsoscelesFree A ↔ AllTriplesDistinct A
-
 /-
 ## Part III: Distinct Distances in a Point Set
 -/
@@ -106,10 +99,6 @@ noncomputable def distanceSet (A : Finset Point2) : Finset ℝ :=
 /-- The number of distinct distances determined by A. -/
 noncomputable def numDistinctDistances (A : Finset Point2) : ℕ :=
   (distanceSet A).card
-
-/-- For n points, at most n(n-1)/2 + 1 distinct distances (including 0). -/
-axiom max_distances (A : Finset Point2) :
-    numDistinctDistances A ≤ A.card * (A.card - 1) / 2 + 1
 
 /-
 ## Part IV: The Erdős-Davies Question
@@ -137,33 +126,9 @@ def ErdosQuestion657' : Prop :=
 ## Part V: Dumitrescu's Bounds (2008)
 -/
 
-/-- **Dumitrescu's Lower Bound (2008):**
-    f(n) ≥ (log n)^c for some constant c > 0. -/
-axiom dumitrescu_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      ∀ A : Finset Point2, A.card = n → IsIsoscelesFree A →
-        (numDistinctDistances A : ℝ) ≥ (Real.log n)^c * n
-
-/-- **Dumitrescu's Upper Bound (2008):**
-    f(n) ≤ 2^{O(√log n)}. There exist isosceles-free sets with few distances. -/
-axiom dumitrescu_upper_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      ∃ A : Finset Point2, A.card = n ∧ IsIsoscelesFree A ∧
-        (numDistinctDistances A : ℝ) ≤ 2^(c * Real.sqrt (Real.log n)) * n
-
 /-
 ## Part VI: Recent Progress (Kelley-Meka, Bloom-Sisask 2023)
 -/
-
-/-- **Kelley-Meka/Bloom-Sisask Improvement (2023):**
-    f(n) ≥ 2^{c(log n)^{1/9}} for some c > 0. -/
-axiom kelley_meka_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      ∀ A : Finset Point2, A.card = n → IsIsoscelesFree A →
-        (numDistinctDistances A : ℝ) ≥ 2^(c * (Real.log n)^(1/9)) * n
 
 /-
 ## Part VII: Connection to 3-AP Free Sets
@@ -181,28 +146,6 @@ noncomputable def differenceSet (A : Finset ℝ) : Finset ℝ :=
 noncomputable def numDifferences (A : Finset ℝ) : ℕ :=
   (differenceSet A).card
 
-/-- In ℝ, isosceles-free is equivalent to 3-AP-free, connecting this problem
-    to Roth-type results on arithmetic progressions. -/
-axiom threeAPConnection :
-    ∀ n : ℕ, n ≥ 3 →
-    ∀ A : Finset ℝ, A.card = n → Is3APFree A →
-    ∀ B : Finset Point2, B.card = n → IsIsoscelesFree B →
-    (numDifferences A : ℝ) ≤ (numDistinctDistances B : ℝ)
-
-/-- **1D Equivalence (Adenwalla):**
-    In ℝ, isosceles-free is equivalent to 3-AP-free for distinct differences. -/
-axiom oneDimensional_equivalence :
-  ∀ n : ℕ, n ≥ 3 →
-    (∀ A : Finset ℝ, A.card = n → Is3APFree A →
-      (numDifferences A : ℝ) ≥ f_ratio n * n)
-
-/-- Progress on Roth-type theorems (bounding 3-AP-free sets) translates
-    directly to improved lower bounds for f(n) in this problem. -/
-axiom reductionTo3AP :
-    ∀ n : ℕ, n ≥ 3 →
-    ∀ A : Finset ℝ, A.card = n → Is3APFree A →
-    (numDifferences A : ℝ) ≥ f_ratio n * n
-
 /-
 ## Part VIII: Straus's High-Dimensional Construction
 -/
@@ -211,48 +154,9 @@ axiom reductionTo3AP :
     If 2^k ≥ n, there exist n points in ℝ^k with no isosceles triangle
     that determine at most n-1 distinct distances.
 
-    Uses the standard basis vectors {e_i} of ℝ^k which are all equidistant:
-    ‖e_i - e_j‖ = √2 for i ≠ j. Selecting n ≤ 2^k of the 2^k vertices of
-    the unit hypercube gives an isosceles-free set with few distances. -/
-axiom straus_high_dimension (k n : ℕ) (h : 2^k ≥ n) :
-  ∃ A : Finset (Fin k → ℝ),
-    A.card = n ∧
-    -- At most n-1 distinct pairwise distances
-    ((A.product A).image (fun pq => ∑ i, (pq.1 i - pq.2 i)^2)).card ≤ n - 1
-
-/-- In high dimension, isosceles-free sets can have few distances (n-1),
-    but in ℝ and ℝ² they must have f(n)·n distances with f(n) → ∞.
-    This dimensional threshold is a key feature of the problem. -/
-axiom highDimensionDifference :
-    ∀ n : ℕ, n ≥ 3 →
-    -- In ℝ² (low dimension): many distances needed
-    (∀ A : Finset Point2, A.card = n → IsIsoscelesFree A →
-      (numDistinctDistances A : ℝ) ≥ Real.log n * n) ∧
-    -- In ℝ^n (high dimension): few distances suffice
-    (∃ A : Finset (Fin n → ℝ), A.card = n ∧
-      ((A.product A).image (fun pq => ∑ i, (pq.1 i - pq.2 i)^2)).card ≤ n - 1)
-
 /-
 ## Part IX: Known Examples
 -/
-
-/-- The vertices of a regular n-gon are NOT isosceles-free for n ≥ 4,
-    since adjacent vertices form isosceles triangles by symmetry. -/
-axiom regular_ngon_has_isosceles (n : ℕ) (hn : n ≥ 4)
-    (A : Finset Point2) (hA : A.card = n) :
-    -- Regular n-gon configuration has isosceles triangles
-    ¬IsIsoscelesFree A
-
-/-- Generic point configurations in ℝ² are isosceles-free: the set of
-    configurations containing isosceles triangles has measure zero. -/
-axiom generic_isosceles_free (n : ℕ) (hn : n ≥ 3) :
-    ∃ A : Finset Point2, A.card = n ∧ IsIsoscelesFree A
-
-/-- Integer lattice points {1,...,n}² contain many isosceles triangles.
-    Any axis-parallel right triangle with integer vertices is isosceles. -/
-axiom lattice_isosceles (n : ℕ) (hn : n ≥ 2)
-    (A : Finset Point2) (hA : A.card = n * n) :
-    ¬IsIsoscelesFree A
 
 /-
 ## Part X: The Gap Between Upper and Lower Bounds
@@ -267,13 +171,6 @@ def currentGap : Prop :=
 
 /-- The exponents differ: 1/9 < 1/2. -/
 theorem gap_exists : (1 : ℝ) / 9 < 1 / 2 := by norm_num
-
-/-- Closing the gap between the lower bound exponent 1/9 and upper bound exponent 1/2
-    is a major open problem. Neither bound is believed to be tight. -/
-axiom closingTheGap :
-    ¬(∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, n ≥ 10 →
-        f_ratio n = 2^(c * (Real.log n)^(1/9)))
 
 /-
 ## Part XI: Partial Answer

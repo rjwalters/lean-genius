@@ -77,10 +77,6 @@ def turanNumberDef (n r k : ℕ) : Prop :=
     Fintype.card V = n ∧ isCliqueFree H k ∧ H.edgeCount = m) →
     m ≤ turanNumber n r k
 
-/-- Turán number is at most the number of r-subsets -/
-axiom turan_upper_trivial (n r k : ℕ) (hr : r ≤ n) :
-    turanNumber n r k ≤ Nat.choose n r
-
 /-
 ## Part III: The Turán Density
 -/
@@ -88,16 +84,6 @@ axiom turan_upper_trivial (n r k : ℕ) (hr : r ≤ n) :
 /-- The Turán density π_r(K_k^r) -/
 noncomputable def turanDensity (r k : ℕ) : ℝ :=
   sSup {(turanNumber n r k : ℝ) / (Nat.choose n r : ℝ) | n : ℕ}
-
-/-- The Turán density exists as a limit -/
-axiom turan_density_exists (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-  ∃ π : ℝ, Filter.Tendsto
-    (fun n => (turanNumber n r k : ℝ) / (Nat.choose n r : ℝ))
-    Filter.atTop (nhds π)
-
-/-- The density is in [0, 1] -/
-axiom turan_density_bounds (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-  0 ≤ turanDensity r k ∧ turanDensity r k ≤ 1
 
 /-
 ## Part IV: Classical Turán Theorem (r = 2)
@@ -114,8 +100,6 @@ axiom turan_theorem (k : ℕ) (hk : k ≥ 2) :
 /-- **Turán Graph Extremality:**
 The Turán graph T(n, k-1) — the balanced complete (k-1)-partite graph — achieves
 the maximum number of edges among K_k-free graphs on n vertices. -/
-axiom turan_graph_extremal (n k : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    turanNumber n 2 k = Nat.choose n 2 - Nat.choose n 2 * 1 / (k - 1)
 
 /-
 ## Part V: The Case r = 3, k = 4 (Turán's Conjecture)
@@ -128,21 +112,10 @@ def turanConjectureK43 : ℝ := 5 / 9
 The conjectured extremal 3-uniform hypergraph for K_4^3 is obtained by
 partitioning n vertices into 4 balanced parts and taking all 3-edges
 that meet at least 2 of the 4 parts. This gives ≈ (5/9)C(n,3) edges. -/
-axiom turanHypergraph34_is_clique_free (n : ℕ) (hn : n ≥ 4) :
-    ∃ (H : Hypergraph (Fin n) 3), isCliqueFree H 4 ∧
-      H.edgeCount ≥ 5 * Nat.choose n 3 / 9
-
-/-- Turán's conjecture (1941): π_3(K_4^3) = 5/9 -/
-axiom turan_conjecture_K43 :
-  turanDensity 3 4 = turanConjectureK43
 
 /-- Best known lower bound for K_4^3 -/
 axiom K43_lower_bound :
   turanDensity 3 4 ≥ 5 / 9
-
-/-- Best known upper bound for K_4^3 (Razborov, 2010) -/
-axiom K43_upper_bound_razborov :
-  turanDensity 3 4 ≤ 0.5616  -- Approximately
 
 /-
 ## Part VI: Known Bounds and Results
@@ -152,17 +125,9 @@ axiom K43_upper_bound_razborov :
 axiom turan_density_positive (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
   turanDensity r k > 0
 
-/-- De Caen's lower bound -/
-axiom de_caen_lower_bound (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-  turanDensity r k ≥ 1 - (Nat.choose (k - 1) r : ℝ) / (Nat.choose k r : ℝ)
-
 /-- The Kruskal-Katona theorem gives upper bounds -/
 axiom kruskal_katona_upper (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
   turanDensity r k ≤ 1 - 1 / (k : ℝ)
-
-/-- Improved upper bound from flag algebras (Razborov method) -/
-axiom flag_algebras_upper (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-  ∃ upper : ℝ, turanDensity r k ≤ upper ∧ upper < 1 - 1 / (k : ℝ)
 
 /-
 ## Part VII: The General Problem Statement
@@ -207,30 +172,14 @@ theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
 /-- **Extremal Structure Conjecture:**
 For any r ≥ 2, k > r, the extremal K_k^r-free hypergraph is a balanced
 k-partition construction (generalization of the Turán graph). -/
-axiom extremal_structure_conjecture (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-    ∃ (H_n : ℕ → ℕ), ∀ n : ℕ, H_n n ≤ turanNumber n r k ∧
-      H_n n ≥ turanNumber n r k - n
 
 /-- **Mubayi's conjecture for K_5^3:**
 π_3(K_5^3) = 3/4, achieved by taking 3-edges meeting at least 2 parts
 of a balanced 5-partition. -/
-axiom mubayi_K53_conjecture :
-  turanDensity 3 5 = 3 / 4
 
 /-
 ## Part IX: Computational Approaches
 -/
-
-/-- Flag algebra method (Razborov, 2007) -/
-axiom flag_algebra_method (r k : ℕ) :
-  ∃ (compute : ℕ → ℝ), ∀ n : ℕ, compute n ≥ turanDensity r k
-
-/-- Known computations for small cases -/
-axiom computed_bounds :
-  -- K_4^3
-  (5 / 9 : ℝ) ≤ turanDensity 3 4 ∧ turanDensity 3 4 ≤ 0.562 ∧
-  -- K_5^3
-  (0.75 : ℝ) ≤ turanDensity 3 5 ∧ turanDensity 3 5 ≤ 0.769
 
 /-
 ## Part X: Connections to Other Problems
@@ -240,15 +189,11 @@ axiom computed_bounds :
 π_r(K_k^r) < 1 is equivalent to the Ramsey-type statement that sufficiently
 dense r-uniform hypergraphs must contain K_k^r. Since Ramsey numbers for
 hypergraphs exist, the Turán density is strictly less than 1. -/
-axiom ramsey_connection (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
-    turanDensity r k < 1
 
 /-- **Connection to Coding Theory:**
 Turán-type hypergraphs correspond to optimal covering codes: an r-uniform
 hypergraph on n vertices avoiding K_k^r corresponds to a covering design
 with prescribed intersection properties. -/
-axiom coding_connection (r k n : ℕ) (hr : r ≥ 2) (hk : k > r) :
-    turanNumber n r k ≤ Nat.choose n r
 
 /-
 ## Part XI: Summary

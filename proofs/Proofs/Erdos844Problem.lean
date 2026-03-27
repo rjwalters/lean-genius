@@ -92,11 +92,6 @@ lemma nonsquarefree_product (a b : ℕ) (ha : ¬Squarefree a) (hb : b > 0) :
   have : p * p ∣ a * b := Nat.mul_dvd_mul_right hdiv b
   exact hsq.natSq_dvd_self_of_dvd p hp this
 
-/-- If a is even and b is odd non-squarefree, then ab is not squarefree.
-    Since b is not squarefree, some prime p² divides b, hence p² divides ab. -/
-axiom even_times_odd_nonsquarefree (a b : ℕ) (ha : 2 ∣ a) (hb : ¬Squarefree b) :
-    ¬Squarefree (a * b)
-
 /-- The optimal set has the non-squarefree product property -/
 axiom optimal_set_has_property :
   ∀ N : ℕ, N ≥ 1 → HasNonSquarefreeProducts (optimalSet N)
@@ -105,17 +100,6 @@ axiom optimal_set_has_property :
 ## Part 3: Any Maximal Set Must Contain All Non-Squarefree Numbers
 -/
 
-/-- If A is maximal and has the property, it contains all non-squarefree numbers -/
-axiom maximal_contains_nonsquarefree :
-  ∀ N : ℕ, ∀ A : Finset ℕ, A ⊆ interval N →
-    HasNonSquarefreeProducts A →
-    (∀ B : Finset ℕ, B ⊆ interval N → A ⊆ B → HasNonSquarefreeProducts B → A = B) →
-    nonSquarefreeNumbers N ⊆ A
-
-/-- Intuition: For n not squarefree, n*m is not squarefree for any m -/
-axiom nonsquarefree_always_works :
-  ∀ n m : ℕ, ¬Squarefree n → m > 0 → ¬Squarefree (n * m)
-
 /-
 ## Part 4: Reduction to Squarefree Numbers
 -/
@@ -123,11 +107,6 @@ axiom nonsquarefree_always_works :
 /-- The squarefree numbers in {1,...,N} -/
 def squarefreeNumbers (N : ℕ) : Finset ℕ :=
   (interval N).filter Squarefree
-
-/-- Two squarefree numbers have non-squarefree product iff they share a prime -/
-axiom squarefree_product_criterion :
-  ∀ a b : ℕ, Squarefree a → Squarefree b →
-    (¬Squarefree (a * b) ↔ ∃ p : ℕ, p.Prime ∧ p ∣ a ∧ p ∣ b)
 
 /-- A subset of squarefree numbers with non-squarefree products is an "intersecting family" -/
 def IsIntersectingFamily (A : Finset ℕ) : Prop :=
@@ -142,17 +121,6 @@ def IsIntersectingFamily (A : Finset ℕ) : Prop :=
 def evenSquarefreeNumbers (N : ℕ) : Finset ℕ :=
   (interval N).filter (fun n => 2 ∣ n ∧ Squarefree n)
 
-/-- Chvátal's result: Maximum intersecting family of squarefree numbers
-    is the set of all squarefree numbers divisible by some fixed prime -/
-axiom chvatal_intersecting_families :
-  ∀ N : ℕ, ∀ A : Finset ℕ, A ⊆ squarefreeNumbers N →
-    IsIntersectingFamily A →
-    A.card ≤ (evenSquarefreeNumbers N).card
-
-/-- The bound is achieved by taking all squarefree multiples of 2 -/
-axiom chvatal_achieved_by_evens :
-  ∀ N : ℕ, IsIntersectingFamily (evenSquarefreeNumbers N)
-
 /-
 ## Part 6: The Main Theorem
 -/
@@ -163,52 +131,13 @@ axiom weisenberg_proof :
     HasNonSquarefreeProducts A →
     A.card ≤ (optimalSet N).card
 
-/-- Alternative proof by Alexeev, Mixon, and Sawin -/
-axiom alexeev_mixon_sawin_proof :
-  ∀ N : ℕ, N ≥ 1 → ∀ A : Finset ℕ, A ⊆ interval N →
-    HasNonSquarefreeProducts A →
-    A.card ≤ (optimalSet N).card
-
-/-- The optimal set is a valid example -/
-axiom optimal_set_valid :
-  ∀ N : ℕ, N ≥ 1 → optimalSet N ⊆ interval N ∧ HasNonSquarefreeProducts (optimalSet N)
-
 /-
 ## Part 7: Characterization of the Optimal Set
 -/
 
-/-- The optimal set equals: even numbers ∪ odd non-squarefree =
-    all numbers except odd squarefree numbers -/
-axiom optimal_set_complement :
-  ∀ N : ℕ, ∀ n ∈ interval N,
-    n ∈ optimalSet N ↔ ¬(¬(2 ∣ n) ∧ Squarefree n)
-
-/-- Size of optimal set: N - #{odd squarefree in {1,...,N}} -/
-axiom optimal_set_size :
-  ∀ N : ℕ, (optimalSet N).card =
-    N - ((interval N).filter (fun n => ¬(2 ∣ n) ∧ Squarefree n)).card
-
-/-- Asymptotic: The odd squarefree numbers excluded from the optimal set
-    form a positive-density subset. The optimal set density is 1 - 4/π² ≈ 0.595. -/
-axiom optimal_set_density :
-  ∀ N : ℕ, N ≥ 1 → (optimalSet N).card ≤ N
-
 /-
 ## Part 8: Examples
 -/
-
-/-- Example: {2, 4, 6, 8, 9, 10} in {1,...,10}
-    2 is even, 4 is even (and non-squarefree), 6 is even, 8 is even,
-    9 = 3² is odd non-squarefree, 10 is even -/
-axiom example_N_10 : optimalSet 10 = {2, 4, 6, 8, 9, 10}
-
-/-- The missing elements are 1, 3, 5, 7 (odd squarefree) -/
-axiom missing_elements_example :
-  ∀ n ∈ ({1, 3, 5, 7} : Finset ℕ), Squarefree n ∧ ¬(2 ∣ n)
-
-/-- Why 1 cannot be added: 1 * 3 = 3 is squarefree -/
-axiom cannot_add_one :
-  Squarefree (1 * 3)
 
 /-
 ## Part 9: Summary

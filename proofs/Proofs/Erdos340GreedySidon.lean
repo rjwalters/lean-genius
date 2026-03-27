@@ -382,8 +382,6 @@ The actual bound √N + O(N^{1/4}) comes from a more careful analysis.
 
 Note: The weaker bound √(2N) + 1 is proved above as `sidon_upper_bound_weak`.
 This tighter bound requires additional counting machinery. -/
-axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
-    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
 
 /- ## Part 3: Greedy Sidon Sequence Construction -/
 
@@ -395,21 +393,12 @@ def CanAddProp (A : Finset ℕ) (n : ℕ) : Prop :=
     We axiomatize its values directly for computational efficiency. -/
 axiom greedySidonSeq : ℕ → ℕ
 
-/-- The greedy Sidon sequence starts at 1. -/
-axiom greedySidonSeq_zero : greedySidonSeq 0 = 1
-
 /-- The greedy Sidon sequence is strictly increasing. -/
 axiom greedySidonSeq_strictMono : StrictMono greedySidonSeq
 
 /-- The set of first n+1 terms is always Sidon. -/
 axiom greedySidonSeq_isSidon (n : ℕ) :
   IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1)))
-
-/-- The greedy property: greedySidon(n+1) is the smallest value > greedySidon(n)
-    that can be added while preserving Sidon. -/
-axiom greedySidonSeq_greedy (n : ℕ) :
-  ∀ m, greedySidonSeq n < m → m < greedySidonSeq (n + 1) →
-    ¬IsSidon (Finset.image greedySidonSeq (Finset.range (n + 1)) ∪ {m})
 
 /-- Alias for compatibility. -/
 noncomputable def greedySidon : ℕ → ℕ := greedySidonSeq
@@ -419,19 +408,6 @@ noncomputable def greedySidonSet (n : ℕ) : Finset ℕ :=
   Finset.image greedySidon (Finset.range (n + 1))
 
 /- ## Part 4: Computational Verification -/
-
--- These would require decidable instances; marking as axioms for now
-axiom greedySidon_0 : greedySidon 0 = 1
-axiom greedySidon_1 : greedySidon 1 = 2
-axiom greedySidon_2 : greedySidon 2 = 4
-axiom greedySidon_3 : greedySidon 3 = 8
-axiom greedySidon_4 : greedySidon 4 = 13
-axiom greedySidon_5 : greedySidon 5 = 21
-axiom greedySidon_6 : greedySidon 6 = 31
-axiom greedySidon_7 : greedySidon 7 = 45
-axiom greedySidon_8 : greedySidon 8 = 66
-axiom greedySidon_9 : greedySidon 9 = 81
-axiom greedySidon_10 : greedySidon 10 = 97
 
 /-- The greedy Sidon sequence is strictly increasing. -/
 theorem greedySidon_strictMono : StrictMono greedySidon :=
@@ -458,9 +434,6 @@ requires setting up the growth argument carefully.
 - Inverting: if greedySidon(n) ≤ N, then n ≥ Ω(N^(1/3))
 
 **Proof status**: HARD (known result, needs asymptotic formalization ~80 lines) -/
-axiom greedySidon_growth_third :
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ N : ℕ in atTop,
-      (N : ℝ) ^ (1/3 : ℝ) ≤ C * (greedySidonCount N : ℝ)
 
 /-- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
 
@@ -501,9 +474,6 @@ References:
 
 **OPEN CONJECTURE** - Do not attempt to prove.
 This axiom statement captures the conjecture for reference only. -/
-axiom erdos_340 (ε : ℝ) (hε : ε > 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ N : ℕ in atTop,
-      (N : ℝ) ^ ((1:ℝ)/2 - ε) ≤ C * (greedySidonCount N : ℝ)
 
 /- ## Part 6: Difference Set Properties
 
@@ -526,12 +496,10 @@ From OEIS A005282 (Mian-Chowla sequence):
 - 204 - 182 = 22
 
 This could be proved by adding axioms for greedySidon_13 and greedySidon_14. -/
-axiom _22_mem_diffSet : (22 : ℤ) ∈ greedySidonDiffSet
 
 /-- **Axiom**: 33 is in the difference set (value uncertain).
 
 This requires computing more of the greedy Sidon sequence to verify.
 The statement "↔ True" is a placeholder indicating the question is open. -/
-axiom _33_mem_diffSet_iff : 33 ∈ greedySidonDiffSet ↔ True
 
 end Erdos340

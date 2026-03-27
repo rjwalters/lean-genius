@@ -78,11 +78,6 @@ axiom birch_theorem :
   ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
     isComplete (powerSet a b)
 
-/-- Explicit threshold: there exists N₀ depending on a, b -/
-axiom birch_threshold_exists :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ N₀ : ℕ, isCompleteFrom (powerSet a b) N₀
-
 /-- The classical case: {2^k · 3^l} is complete -/
 theorem two_three_complete : isComplete (powerSet 2 3) := by
   apply birch_theorem
@@ -94,16 +89,6 @@ theorem two_three_complete : isComplete (powerSet 2 3) := by
 ## Part 3: Cassels' Generalization
 -/
 
-/-- Cassels' more general result (1960) -/
-axiom cassels_general :
-  ∀ S : Set ℕ, (∃ c > 0, ∀ n ≥ 1, (S ∩ Set.Icc 1 n).ncard ≥ c * Real.log n) →
-    isComplete S
-
-/-- Cassels implies Birch: power sets grow at least logarithmically -/
-axiom cassels_implies_birch :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    isComplete (powerSet a b)
-
 /-
 ## Part 4: Davenport's Observation
 -/
@@ -112,43 +97,13 @@ axiom cassels_implies_birch :
 def powerSetBoundedL (a b : ℕ) (L : ℕ) : Set ℕ :=
   { n : ℕ | ∃ k l : ℕ, l ≤ L ∧ n = a^k * b^l }
 
-/-- Davenport: Completeness holds even with bounded l -/
-axiom davenport_bounded_l :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ L : ℕ, isComplete (powerSetBoundedL a b L)
-
-/-- The bound L depends only on a and b -/
-axiom davenport_uniform :
-  ∃ f : ℕ → ℕ → ℕ, ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    isComplete (powerSetBoundedL a b (f a b))
-
 /-
 ## Part 5: Quantitative Bounds (Hegyvári, Fang-Chen)
 -/
 
-/-- Hegyvári's explicit bound (2000): quadruple exponential -/
-axiom hegyvari_bound :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ L : ℕ, L ≤ 2^(2^(2^(2^(max a b)))) ∧
-    isComplete (powerSetBoundedL a b L)
-
-/-- Fang-Chen improvement (2017): triply exponential -/
-axiom fang_chen_bound :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ L : ℕ, L ≤ 2^(2^(2^(max a b))) ∧
-    isComplete (powerSetBoundedL a b L)
-
 /-
 ## Part 6: Yu's Result on Large Summands
 -/
-
-/-- Yu (2024): Can use only large elements -/
-axiom yu_large_summands :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ T : Finset ℕ,
-      (∀ x ∈ T, x ∈ powerSet a b) ∧
-      (∀ x ∈ T, x > n / (Nat.log n + 1)^2) ∧
-      T.sum id = n
 
 /-
 ## Part 7: Related Complete Sequences
@@ -162,18 +117,8 @@ def fibonacci : ℕ → ℕ
 
 def fibonacciSet : Set ℕ := { n | ∃ k ≥ 2, n = fibonacci k }
 
-axiom zeckendorf_completeness : isComplete fibonacciSet
-
 /-- Powers of 2 are complete (binary representation) -/
 def powersOfTwo : Set ℕ := { n | ∃ k : ℕ, n = 2^k }
-
-axiom powers_of_two_complete : isComplete powersOfTwo
-
-/-- General criterion for completeness -/
-axiom completeness_criterion :
-  ∀ S : Set ℕ, (1 ∈ S) →
-    (∀ N : ℕ, ∃ T : Finset ℕ, (∀ x ∈ T, x ∈ S ∧ x ≤ N) ∧ T.sum id ≥ N + 1) →
-    isComplete S
 
 /-
 ## Part 8: Non-Complete Sequences
@@ -186,13 +131,6 @@ def powersOf (a : ℕ) : Set ℕ := { n | ∃ k : ℕ, n = a^k }
 axiom single_powers_not_complete :
   ∀ a : ℕ, a ≥ 3 → ¬ isComplete (powersOf a)
 
-/-- The missing integers form positive density -/
-axiom non_representable_density :
-  ∀ a : ℕ, a ≥ 3 →
-    ∃ c > 0, ∀ N : ℕ, N ≥ 1 →
-      (Set.Icc 1 N \ { n | ∃ T : Finset ℕ, (∀ x ∈ T, x ∈ powersOf a) ∧ T.sum id = n }).ncard
-        ≥ c * N
-
 /-
 ## Part 9: Structure of Power Sets
 -/
@@ -200,19 +138,6 @@ axiom non_representable_density :
 /-- Elements up to N in powerSet a b -/
 def powerSetUpTo (a b N : ℕ) : Finset ℕ :=
   Finset.filter (· ∈ powerSet a b) (Finset.range (N + 1))
-
-/-- Counting function grows logarithmically -/
-axiom power_set_counting :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ c₁ c₂ > 0, ∀ N ≥ 2,
-      c₁ * (Real.log N)^2 ≤ (powerSetUpTo a b N).card ∧
-      (powerSetUpTo a b N).card ≤ c₂ * (Real.log N)^2
-
-/-- The sum of reciprocals diverges slowly -/
-axiom reciprocal_sum_bound :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 →
-    ∃ c > 0, ∀ N ≥ 2,
-      (powerSetUpTo a b N).sum (fun x => (1 : ℝ) / x) ≤ c * Real.log N
 
 /-
 ## Part 10: Unique Representations
@@ -223,11 +148,6 @@ def numRepresentations (a b n : ℕ) : ℕ :=
   (Finset.filter
     (fun T : Finset ℕ => (∀ x ∈ T, x ∈ powerSet a b) ∧ T.sum id = n)
     (Finset.powerset (powerSetUpTo a b n))).card
-
-/-- Most numbers have few representations -/
-axiom sparse_representations :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
-    ∃ C : ℕ, ∀ n : ℕ, numRepresentations a b n ≤ C * (Nat.log n + 1)^2
 
 /-
 ## Part 11: Algorithmic Aspects
