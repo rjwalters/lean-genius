@@ -87,8 +87,11 @@ f(n) ≥ 2 for all sufficiently large n?
 def Erdos358Weak : Prop :=
   ∃ A : IntSequence, ∃ N₀ : ℤ, ∀ n ≥ N₀, consecutiveSumCount A n ≥ 2
 
-/-- Strong implies weak. -/
-axiom strong_implies_weak : Erdos358Strong → Erdos358Weak
+/-- Strong implies weak: if f(n) → ∞, then certainly f(n) ≥ 2 for all large n. -/
+theorem strong_implies_weak : Erdos358Strong → Erdos358Weak := by
+  intro ⟨A, hA⟩
+  obtain ⟨N, hN⟩ := Filter.tendsto_atTop_atTop.mp hA (2 : ℝ)
+  exact ⟨A, N, fun n hn => by exact_mod_cast hN n hn⟩
 
 /- ## Part IV: Known Observations -/
 
