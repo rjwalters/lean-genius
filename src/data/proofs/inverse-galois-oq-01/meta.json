@@ -32,7 +32,7 @@
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem now sorry-free via imports of InverseGaloisA5.lean (1 axiom: Dedekind) and AbelRuffiniOQ04OQ01.lean (2 axioms: Dedekind). Commutator theorem [S5,S5]=A5 fully proved.",
+    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. Transitive dependency axioms: InverseGalois.lean (2 axioms: abelian_realizable, shafarevich_theorem), InverseGaloisA5.lean (1 axiom: three_dvd_gal_card). AbelRuffiniOQ04OQ01.lean is axiom-free (all axioms eliminated). Commutator theorem [S5,S5]=A5 fully proved.",
     "leanFile": {
       "lineCount": 723,
       "theoremCount": 47,
