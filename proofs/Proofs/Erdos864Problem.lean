@@ -152,6 +152,25 @@ theorem pairwise_sum_count (A : Finset ℕ) :
   rw [h_target, Finset.card_union_of_disjoint h_disj, h_upper, h_diag]
   omega
 
+/-- Sums a + b with a,b ∈ A ⊆ {1,...,N} and a ≤ b lie in {2,...,2N} -/
+theorem sum_in_range {A : Finset ℕ} {N : ℕ}
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ A) (hab : a ≤ b) :
+    a + b ∈ Finset.Icc 2 (2 * N) := by
+  simp only [Finset.mem_Icc] at hA ⊢
+  have := hA a ha; have := hA b hb; omega
+
+/-- Empty set is Sidon -/
+theorem isSidon_empty : IsSidon ∅ := by
+  unfold IsSidon multiRepSet sumRepCount
+  simp
+
+/-- Sidon is monotone: subsets of Sidon sets are Sidon -/
+theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
+    IsSidon A := by
+  unfold IsSidon at *
+  sorry -- Requires: sumRepCount is monotone in A, which needs Finset.product/filter monotonicity
+
 /-- For almost-Sidon A, at most one sum has a collision, so the number of
     distinct sums is ≥ C(|A|,2) + |A| − 1. These must fit in [2, 2N]. -/
 axiom almost_sidon_sum_range (A : Finset ℕ) (N : ℕ) :
