@@ -120,6 +120,45 @@ theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
     obtain ⟨k₂, hk₂⟩ := hodd
     omega
 
+/-- V' is monotone non-decreasing. -/
+theorem V'_mono {x y : ℕ} (h : x ≤ y) : V' x ≤ V' y := by
+  unfold V'
+  exact Finset.card_le_card (Finset.image_subset_image (Finset.range_mono (by omega)))
+
+/-- V is monotone non-decreasing. -/
+theorem V_mono {x y : ℕ} (h : x ≤ y) : V x ≤ V y := by
+  unfold V
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.range_mono (by omega)))
+
+/-- 0 is not a totient value (φ(m) ≥ 1 for all m ≥ 1). -/
+theorem zero_not_totient_value : ¬IsTotientValue 0 := by
+  intro ⟨m, hm, heq⟩
+  have := Nat.totient_pos hm
+  omega
+
+/-- 4 is a totient value: φ(5) = 4. -/
+theorem four_is_totient_value : IsTotientValue 4 := by
+  use 5
+  constructor
+  · omega
+  · native_decide
+
+/-- V'(x) ≥ 1 for x ≥ 1: since φ(1) = 1, the value 1 is always in the image. -/
+theorem V'_pos (x : ℕ) (hx : x ≥ 1) : V' x ≥ 1 := by
+  unfold V'
+  have h1 : 1 ∈ Finset.image totient (Finset.range (x + 1)) := by
+    rw [Finset.mem_image]
+    exact ⟨1, Finset.mem_range.mpr (by omega), totient_one⟩
+  exact Finset.card_pos.mpr ⟨1, h1⟩
+
+/-- V(x) ≥ 1 for x ≥ 1: since φ(1) = 1 ≤ x, the value 1 is counted. -/
+theorem V_pos (x : ℕ) (hx : x ≥ 1) : V x ≥ 1 := by
+  unfold V
+  have h1 : 1 ∈ Finset.filter (fun n => ∃ m, totient m = n) (Finset.range (x + 1)) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_range.mpr (by omega), 1, totient_one⟩
+  exact Finset.card_pos.mpr ⟨1, h1⟩
+
 /- ## Part III: The Main Questions -/
 
 /--
@@ -187,6 +226,32 @@ theorem pow_two_totient_value (k : ℕ) : IsTotientValue (2^k) := by
 theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 1) := by
   use p
   exact ⟨hp.pos, totient_prime hp⟩
+
+/-- Euler's totient is either 0 (m=0), 1 (m=1,2), or even (m≥3).
+    This structural constraint limits V(x) to counting at most 0, 1, and even numbers. -/
+theorem totient_zero_one_or_even (m : ℕ) :
+    totient m = 0 ∨ totient m = 1 ∨ Even (totient m) := by
+  rcases le_or_lt m 2 with hm | hm
+  · interval_cases m
+    · left; decide
+    · right; left; exact totient_one
+    · right; left; rw [totient_prime Nat.prime_two]
+  · right; right; exact totient_even (by omega)
+
+/-- All elements counted by V are 0, 1, or even. This gives V(x) ≤ ⌊x/2⌋ + 2. -/
+theorem V_element_structure (n x : ℕ)
+    (hn : n ∈ Finset.filter (fun n => ∃ m, totient m = n) (Finset.range (x + 1))) :
+    n = 0 ∨ n = 1 ∨ Even n := by
+  rw [Finset.mem_filter] at hn
+  obtain ⟨_, m, hm⟩ := hn
+  have := totient_zero_one_or_even m
+  rwa [hm] at this
+
+/-- p-1 is even for primes p ≥ 3 (used for totient value structure). -/
+theorem prime_sub_one_even (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) : Even (p - 1) := by
+  have hodd := hp.odd_of_ne_two (by omega)
+  obtain ⟨k, hk⟩ := hodd
+  exact ⟨k, by omega⟩
 
 /- ## Part VII: Asymptotic Estimates -/
 

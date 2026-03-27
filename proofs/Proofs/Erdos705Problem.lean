@@ -24,6 +24,7 @@ Adapted from formal-conjectures (Apache 2.0 License)
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
@@ -75,26 +76,25 @@ The two key graph parameters in this problem.
 /--
 **Chromatic Number χ(G)**
 
-The minimum number of colors needed to properly color G
-(no two adjacent vertices share a color).
+Uses Mathlib's `SimpleGraph.chromaticNumber`: the minimum number of colors
+needed to properly color G (no two adjacent vertices share a color).
 -/
-axiom chromaticNumber' {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ
 
-/-- A graph is k-colorable if χ(G) ≤ k. -/
+/-- A graph is k-colorable if χ(G) ≤ k. Uses Mathlib's chromaticNumber. -/
 def isKColorable {V : Type*} [Fintype V] (G : SimpleGraph V) (k : ℕ) : Prop :=
-  chromaticNumber' G ≤ k
+  G.chromaticNumber ≤ k
 
 /--
 **Girth g(G)**
 
-The length of the shortest cycle in G.
-Convention: g(G) = 0 if G is acyclic (forests have infinite girth).
+Uses Mathlib's `SimpleGraph.girth`: the length of the shortest cycle in G.
+Returns ⊤ (infinity) if G is acyclic.
 -/
-axiom girth' {V : Type*} (G : SimpleGraph V) : ℕ
 
-/-- A graph has girth at least k. -/
+/-- A graph has girth at least k. Acyclic graphs (girth = ⊤) satisfy this
+    for all k, since ⊤ ≥ k in ℕ∞. -/
 def hasGirthAtLeast {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
-  girth' G ≥ k ∨ girth' G = 0
+  (k : ℕ∞) ≤ G.girth
 
 /-
 # Part 3: Known 4-Chromatic Constructions
@@ -110,7 +110,7 @@ The smallest known 4-chromatic unit distance graph.
 -/
 axiom moser_spindle_exists :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 7 ∧ chromaticNumber' (unitDistGraph ↑V) = 4
+    V.card = 7 ∧ (unitDistGraph ↑V).chromaticNumber = 4
 
 /--
 **O'Donnell's Graph (1994)**
@@ -120,8 +120,8 @@ Triangle-free but still 4-chromatic!
 -/
 axiom odonnell_graph_exists :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 56 ∧ girth' (unitDistGraph ↑V) ≥ 4 ∧
-    chromaticNumber' (unitDistGraph ↑V) = 4
+    V.card = 56 ∧ (4 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+    (unitDistGraph ↑V).chromaticNumber = 4
 
 /--
 **Wormald's Graph (1979)**
@@ -131,8 +131,8 @@ No triangles, no 4-cycles — yet still 4-chromatic!
 -/
 axiom wormald_graph_exists :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 6448 ∧ girth' (unitDistGraph ↑V) ≥ 5 ∧
-    chromaticNumber' (unitDistGraph ↑V) = 4
+    V.card = 6448 ∧ (5 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+    (unitDistGraph ↑V).chromaticNumber = 4
 
 /--
 **Chilakamarri (1995)**
@@ -142,8 +142,8 @@ Smallest known triangle-free 4-chromatic unit distance graph.
 -/
 axiom chilakamarri_family :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 47 ∧ girth' (unitDistGraph ↑V) ≥ 4 ∧
-    chromaticNumber' (unitDistGraph ↑V) = 4
+    V.card = 47 ∧ (4 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+    (unitDistGraph ↑V).chromaticNumber = 4
 
 /-
 # Part 4: The Erdős Conjecture
@@ -161,13 +161,13 @@ Since Wormald showed girth ≥ 5 does not suffice, we need k ≥ 6.
 def erdos_705_conjecture : Prop :=
   ∃ k : ℕ, ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),
     hasGirthAtLeast (unitDistGraph ↑V) k →
-    chromaticNumber' (unitDistGraph ↑V) ≤ 3
+    (unitDistGraph ↑V).chromaticNumber ≤ 3
 
 /-- The negation: 4-chromatic UDGs exist at every girth. -/
 def erdos_705_negation : Prop :=
   ∀ k : ℕ, ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
     hasGirthAtLeast (unitDistGraph ↑V) k ∧
-    chromaticNumber' (unitDistGraph ↑V) ≥ 4
+    (unitDistGraph ↑V).chromaticNumber ≥ 4
 
 /-
 # Part 5: Deriving Consequences
@@ -178,21 +178,23 @@ What the known constructions tell us.
 /-- χ = 4 is achievable at girth 3 (Moser spindle). -/
 theorem girth_3_chi_4 :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    chromaticNumber' (unitDistGraph ↑V) = 4 := by
+    (unitDistGraph ↑V).chromaticNumber = 4 := by
   obtain ⟨V, _, hchi⟩ := moser_spindle_exists
   exact ⟨V, hchi⟩
 
 /-- χ = 4 is achievable at girth ≥ 4 (O'Donnell). -/
 theorem girth_4_chi_4 :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    girth' (unitDistGraph ↑V) ≥ 4 ∧ chromaticNumber' (unitDistGraph ↑V) = 4 := by
+    (4 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+    (unitDistGraph ↑V).chromaticNumber = 4 := by
   obtain ⟨V, _, hg, hchi⟩ := odonnell_graph_exists
   exact ⟨V, hg, hchi⟩
 
 /-- χ = 4 is achievable at girth ≥ 5 (Wormald). -/
 theorem girth_5_chi_4 :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    girth' (unitDistGraph ↑V) ≥ 5 ∧ chromaticNumber' (unitDistGraph ↑V) = 4 := by
+    (5 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+    (unitDistGraph ↑V).chromaticNumber = 4 := by
   obtain ⟨V, _, hg, hchi⟩ := wormald_graph_exists
   exact ⟨V, hg, hchi⟩
 
@@ -215,7 +217,7 @@ Problem #705 concerns finite subgraphs with girth restrictions.
 -/
 axiom de_grey_lower_bound :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    chromaticNumber' (unitDistGraph ↑V) ≥ 5
+    (unitDistGraph ↑V).chromaticNumber ≥ 5
 
 /-
 # Part 7: Abstract vs. Geometric Graphs
@@ -235,7 +237,41 @@ may prevent this. Problem #705 asks exactly whether it does
 -/
 axiom erdos_1959_girth_chromatic :
     ∀ g k : ℕ, ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
-    girth' G ≥ g ∧ chromaticNumber' G ≥ k
+    (g : ℕ∞) ≤ G.girth ∧ G.chromaticNumber ≥ k
+
+/-
+# Part 7b: Lower Bound on the Threshold
+
+Any threshold k satisfying the conjecture must be at least 6.
+-/
+
+/--
+**Lower Bound: k ≥ 6**
+
+If there exists k such that girth ≥ k implies χ ≤ 3, then k ≥ 6.
+Proof: Wormald's graph has girth ≥ 5 and χ = 4, so k ≤ 5 doesn't work.
+-/
+theorem threshold_ge_6 (k : ℕ)
+    (hk : ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),
+      hasGirthAtLeast (unitDistGraph ↑V) k →
+      (unitDistGraph ↑V).chromaticNumber ≤ 3) :
+    6 ≤ k := by
+  by_contra h
+  push_neg at h
+  obtain ⟨V, _, hg, hchi⟩ := wormald_graph_exists
+  have hgk : hasGirthAtLeast (unitDistGraph ↑V) k := by
+    unfold hasGirthAtLeast
+    exact le_trans (by exact_mod_cast (by omega : k ≤ 5)) hg
+  have h3 := hk V hgk
+  omega
+
+/-- If the conjecture holds, any witnessing k is at least 6. -/
+theorem erdos_705_conjecture_lower (h : erdos_705_conjecture) :
+    ∃ k : ℕ, 6 ≤ k ∧ ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),
+    hasGirthAtLeast (unitDistGraph ↑V) k →
+    (unitDistGraph ↑V).chromaticNumber ≤ 3 := by
+  obtain ⟨k, hk⟩ := h
+  exact ⟨k, threshold_ge_6 k hk, hk⟩
 
 /-
 # Part 8: Vertex Count Growth
@@ -282,11 +318,13 @@ def erdos_705_status : String := "OPEN"
 /-- Main statement: known results from constructions. -/
 theorem erdos_705_main :
     (∃ V : Finset (EuclideanSpace ℝ (Fin 2)),
-      chromaticNumber' (unitDistGraph ↑V) = 4) ∧
+      (unitDistGraph ↑V).chromaticNumber = 4) ∧
     (∃ V : Finset (EuclideanSpace ℝ (Fin 2)),
-      girth' (unitDistGraph ↑V) ≥ 4 ∧ chromaticNumber' (unitDistGraph ↑V) = 4) ∧
+      (4 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+      (unitDistGraph ↑V).chromaticNumber = 4) ∧
     (∃ V : Finset (EuclideanSpace ℝ (Fin 2)),
-      girth' (unitDistGraph ↑V) ≥ 5 ∧ chromaticNumber' (unitDistGraph ↑V) = 4) := by
+      (5 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
+      (unitDistGraph ↑V).chromaticNumber = 4) := by
   exact ⟨girth_3_chi_4, girth_4_chi_4, girth_5_chi_4⟩
 
 /-

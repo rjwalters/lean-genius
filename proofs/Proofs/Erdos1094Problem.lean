@@ -176,13 +176,39 @@ def StrongestBound13 : Prop :=
 
 -- ## Part 8: Connection to Problem 384
 
-/-- The Erdős-Selfridge conjecture (Problem 384): if n ≥ 2k,
-    then C(n,k) has a prime factor ≤ n/k. This is weaker than #1094. -/
-def ErdosProblem384 : Prop :=
+/-- Naive formulation of Problem 384: "if n ≥ 2k, then C(n,k) has a prime
+    factor ≤ n/k." This is FALSE — see `erdos384_naive_false` below. -/
+def ErdosProblem384_Naive : Prop :=
   ∀ n k : ℕ, 0 < k → 2 * k ≤ n → ∃ p : ℕ, p.Prime ∧ p ∣ n.choose k ∧ p ≤ n / k
 
-/-- #1094 implies #384 for large n (the finite exceptions don't affect asymptotics) -/
-axiom main_implies_384 : ErdosProblem1094 → ErdosProblem384
+/-- The naive formulation of Problem 384 is false: C(7,3) = 35 = 5 × 7
+    has prime factors 5 and 7, both exceeding ⌊7/3⌋ = 2. The only prime
+    ≤ 2 is 2, and 2 ∤ 35. -/
+theorem erdos384_naive_false : ¬ErdosProblem384_Naive := by
+  intro h
+  obtain ⟨p, hp, hd, hle⟩ := h 7 3 (by omega) (by omega)
+  -- The only prime ≤ ⌊7/3⌋ = 2 is p = 2 (since p.Prime → 2 ≤ p)
+  have h2le := hp.two_le
+  have h7d3 : (7 : ℕ) / 3 = 2 := by native_decide
+  rw [h7d3] at hle
+  have heq : p = 2 := by omega
+  subst heq
+  -- But 2 ∤ C(7,3) = 35
+  have h35 : Nat.choose 7 3 = 35 := by native_decide
+  rw [h35] at hd
+  exact absurd hd (by decide)
+
+/-- Corrected Problem 384 (Erdős observation): for each k > 0, there exists
+    a threshold N(k) such that for all n ≥ N(k) with n ≥ 2k,
+    lpf(C(n,k)) ≤ n/k. This is the actual mathematical statement. -/
+def ErdosProblem384 : Prop :=
+  ∀ k : ℕ, 0 < k → ∃ N : ℕ, ∀ n : ℕ, N ≤ n → 2 * k ≤ n →
+    (n.choose k).minFac ≤ n / k
+
+-- The relationship: if #1094 holds (finitely many exceptions to the max(n/k,k)
+-- bound), then for each fixed k, sufficiently large n satisfies the n/k bound
+-- (since max(n/k, k) = n/k when n ≥ k²). This follows from basic set theory
+-- but the formal proof requires extracting bounds from finite sets.
 
 -- ## Part 9: Binomial Coefficient Properties
 
@@ -200,18 +226,21 @@ theorem choose_gt_one_10_3 : (10 : ℕ).choose 3 > 1 := by native_decide
 **Conjecture:** For n ≥ 2k, lpf(C(n,k)) ≤ max(n/k, k) with finitely many exceptions.
 
 **What we proved:**
-- 12 of 14 known exceptions verified computationally (native_decide)
+- All 14 known exceptions verified computationally (native_decide)
 - 8 non-exception cases verified
-- k=0 never exception, k=1 never exception
+- k=0 never exception, k=1 never exception (structural proofs)
 - Bound simplification for n ≥ k² and n < k²
-- C(n,k) > 1 for 0 < k < n
-- minFac of C(n,k) is prime when C(n,k) > 1
+- C(n,k) > 1 for specific small cases
+- The naive formulation of Problem 384 (∀ n ≥ 2k, ∃ prime ≤ n/k dividing C(n,k))
+  is FALSE: C(7,3) = 35 has only prime factors 5 and 7, both > ⌊7/3⌋ = 2
+- Corrected Problem 384 uses a sufficiency-large-n condition
 
 **What remains open:**
 - The finiteness conjecture itself
-- 2 large exceptions (C(241,16), C(284,28)) now proved by native_decide
-- Connection to Problem 384
 - Selfridge's conjecture, stronger bounds
+- Formal proof that #1094 implies the corrected #384
+
+**Axiom status:** 0 axioms (previously had 1 incorrect axiom asserting #1094 → naive #384)
 
 **References:** ELS88, ELS93, Guy B31/B33
 -/

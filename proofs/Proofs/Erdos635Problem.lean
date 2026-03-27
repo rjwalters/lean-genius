@@ -125,12 +125,73 @@ theorem oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2 := by
       · simp only [Finset.mem_filter, Finset.mem_Icc, not_and_or]; omega
     · rw [ih]; omega
 
+/-- Key lemma: no two consecutive numbers can be in a 1-admissible set.
+    Since (a+1) - a = 1 and 1 divides everything, the non-divisibility
+    condition is immediately violated. -/
+private lemma no_consecutive_in_admissible (A : Finset ℕ) (N : ℕ)
+    (hA : IsAdmissible A N 1) (a : ℕ) (ha : a ∈ A) (ha1 : a + 1 ∈ A) : False := by
+  have := hA.2 a (a + 1) ha ha1 (by omega) (by omega)
+  exact this ⟨a + 1, by omega⟩
+
+/-- Upper bound: any 1-admissible set in {1,...,N} has at most (N+1)/2 elements.
+    Proof: the map a ↦ (a-1)/2 is injective on A (no consecutive elements
+    means distinct elements map to distinct values) and its range has
+    size (N+1)/2. -/
+private theorem admissible_card_upper (A : Finset ℕ) (N : ℕ) (hA : IsAdmissible A N 1) :
+    A.card ≤ (N + 1) / 2 := by
+  -- Injection: a ↦ (a - 1) / 2
+  let φ : ℕ → ℕ := fun a => (a - 1) / 2
+  -- Show φ is injective on A
+  have hinj : Set.InjOn φ ↑A := by
+    intro a ha b hb heq
+    simp only [φ] at heq
+    have ha1 : 1 ≤ a := (hA.1 a (Finset.mem_coe.mp ha)).1
+    have hb1 : 1 ≤ b := (hA.1 b (Finset.mem_coe.mp hb)).1
+    -- From (a-1)/2 = (b-1)/2, derive a and b are in the same {2k+1, 2k+2}
+    have ha_mod := Nat.div_add_mod (a - 1) 2
+    have hb_mod := Nat.div_add_mod (b - 1) 2
+    have ha_r := Nat.mod_lt (a - 1) (by omega : 0 < 2)
+    have hb_r := Nat.mod_lt (b - 1) (by omega : 0 < 2)
+    -- a = 2k + (a-1)%2 + 1, b = 2k + (b-1)%2 + 1 where k = (a-1)/2 = (b-1)/2
+    by_contra hab
+    -- a ≠ b means (a-1)%2 ≠ (b-1)%2, so they differ by exactly 1
+    have : a = b + 1 ∨ b = a + 1 := by omega
+    rcases this with rfl | rfl
+    · exact no_consecutive_in_admissible A N hA b
+        (Finset.mem_coe.mp hb) (Finset.mem_coe.mp ha)
+    · exact no_consecutive_in_admissible A N hA a
+        (Finset.mem_coe.mp ha) (Finset.mem_coe.mp hb)
+  -- Show φ(A) ⊆ Finset.range ((N+1)/2)
+  have hrange : A.image φ ⊆ Finset.range ((N + 1) / 2) := by
+    intro x hx
+    simp only [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    simp only [Finset.mem_range, φ]
+    have ha_le : a ≤ N := (hA.1 a ha).2
+    have ha_ge : a ≥ 1 := (hA.1 a ha).1
+    -- (a-1)/2 < (N+1)/2 since a ≤ N
+    have : a - 1 < N + 1 := by omega
+    exact Nat.div_lt_of_lt_mul (by omega)
+  -- Combine: |A| = |φ(A)| ≤ |range((N+1)/2)| = (N+1)/2
+  calc A.card = (A.image φ).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (Finset.range ((N + 1) / 2)).card := Finset.card_le_card hrange
+    _ = (N + 1) / 2 := Finset.card_range _
+
 /-- For t = 1, the maximum is exactly ⌊(N+1)/2⌋.
 
-    This is tight: the odd set achieves it (lower bound), and no
-    set with more than (N+1)/2 elements can satisfy the condition
-    (upper bound, since the condition applies to all pairs). -/
-axiom f_t1 (N : ℕ) (hN : N ≥ 1) : f N 1 = (N + 1) / 2
+    This is tight: the odd set achieves it (lower bound, proved via oddSet),
+    and no set with more than (N+1)/2 elements can satisfy the condition
+    (upper bound, proved via no-consecutive injection). -/
+theorem f_t1 (N : ℕ) (hN : N ≥ 1) : f N 1 = (N + 1) / 2 := by
+  apply le_antisymm
+  · -- Upper bound: f(N,1) ≤ (N+1)/2
+    unfold f
+    exact csSup_le (f_set_nonempty N 1) fun _ ⟨A, hcard, hAdm⟩ =>
+      hcard ▸ admissible_card_upper A N hAdm
+  · -- Lower bound: (N+1)/2 ≤ f(N,1) via oddSet
+    unfold f
+    rw [← oddSet_card N]
+    exact le_csSup (f_set_bddAbove N 1) ⟨oddSet N, rfl, oddSet_admissible N hN⟩
 
 /- ## Part IV: The Case t = 2 — Beating the N/2 Barrier
 
@@ -182,29 +243,57 @@ def ErdosConjecture635 : Prop :=
 /-- The conjecture is axiomatized as it remains open. -/
 axiom erdos_635 : ErdosConjecture635
 
-/- ## Part VI: Upper and Lower Bounds
+/- ## Part VI: Upper and Lower Bounds -/
 
-We collect known bounds on f(N, t). The trivial upper bound is N
-(the entire set {1,...,N}), but this is far from tight. -/
+/-- t-admissibility weakens with larger t: fewer pairs are constrained.
+    If b - a ≥ t' ≥ t, the t-condition already covers it. -/
+theorem IsAdmissible_mono_t {A : Finset ℕ} {N t t' : ℕ} (h : t ≤ t')
+    (hA : IsAdmissible A N t) : IsAdmissible A N t' :=
+  ⟨hA.1, fun a b ha hb hab hd => hA.2 a b ha hb hab (le_trans h hd)⟩
+
+/-- The set of achievable cardinalities is nonempty (∅ is always admissible). -/
+theorem f_set_nonempty (N t : ℕ) :
+    {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}.Nonempty :=
+  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
+    fun _ _ h => absurd h (Finset.not_mem_empty _)⟩⟩
+
+/-- The set of achievable cardinalities is bounded above by N. -/
+theorem f_set_bddAbove (N t : ℕ) :
+    BddAbove {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t} :=
+  ⟨N, fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
+      (by simp [Finset.card_Icc]; omega)⟩
 
 /-- Trivial upper bound: f(N, t) ≤ N for all t.
-    Since A ⊆ {1,...,N}, we have |A| ≤ N. -/
-axiom f_upper_trivial (N t : ℕ) : f N t ≤ N
+    Proof: A ⊆ {1,...,N} implies |A| ≤ N. -/
+theorem f_upper_trivial (N t : ℕ) : f N t ≤ N := by
+  unfold f
+  exact csSup_le (f_set_nonempty N t) fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
+      (by simp [Finset.card_Icc]; omega)
 
 /-- Monotonicity: f(N, t) ≤ f(N, t') when t ≤ t'.
-    Larger t means the condition applies to fewer pairs,
-    so more sets are admissible. -/
-axiom f_monotone_t (N t t' : ℕ) (h : t ≤ t') : f N t ≤ f N t'
+    Proof: Larger t means fewer restricted pairs, so more admissible sets. -/
+theorem f_monotone_t (N t t' : ℕ) (h : t ≤ t') : f N t ≤ f N t' := by
+  unfold f
+  exact csSup_le_csSup (f_set_bddAbove N t') (f_set_nonempty N t)
+    fun _ ⟨A, hcard, hAdm⟩ => ⟨A, hcard, IsAdmissible_mono_t h hAdm⟩
 
 /-- Lower bound: f(N, t) ≥ (N+1)/2 for all t ≥ 1.
-    The odd set works for t = 1, hence for all larger t too. -/
-axiom f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
-    f N t ≥ (N + 1) / 2
+    Proof: The odd set is 1-admissible (hence t-admissible) with card (N+1)/2. -/
+theorem f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
+    f N t ≥ (N + 1) / 2 := by
+  unfold f
+  rw [← oddSet_card N]
+  exact le_csSup (f_set_bddAbove N t)
+    ⟨oddSet N, rfl, IsAdmissible_mono_t (by omega : 1 ≤ t) (oddSet_admissible N hN)⟩
 
 /-- The density is at most 1/2 + o(1) for t = 1.
     Since f(N,1) = ⌊(N+1)/2⌋, the ratio f(N,1)/N → 1/2 as N → ∞. -/
 axiom f_t1_density :
     Filter.Tendsto (fun N => (f N 1 : ℝ) / N) Filter.atTop (nhds (1 / 2))
+-- Note: f_t1_density is a direct corollary of f_t1 (proved above).
+-- The limit (N+1)/(2N) → 1/2 as N → ∞ follows from standard analysis.
 
 /- ## Part VII: Structural Observations
 

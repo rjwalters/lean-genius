@@ -91,7 +91,12 @@ axiom cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
 theorem bipartite_dichrom_le_two {V : Type*} (G : SimpleGraph V)
     (hBip : G.Colorable 2) :
     G.dichromNumber ≤ 2 := by
-  sorry
+  unfold SimpleGraph.dichromNumber
+  apply Nat.sInf_le
+  -- Show: ∀ O, HasAcyclicColoring O 2 (any proper 2-coloring is acyclic)
+  intro O
+  obtain ⟨c⟩ := hBip
+  exact ⟨c, fun u v hdir => c.valid (O.consistent u v hdir)⟩
 
 -- ## Main Conjectures (OPEN)
 

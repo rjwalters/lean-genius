@@ -25,8 +25,9 @@ def IsDistanceSet (A : Finset ℝ) : Prop :=
   ∀ a ∈ A, a > 0
 
 /-- L(r) is the maximum chromatic number over all distance sets of size r.
-    We axiomatize this function. -/
-noncomputable def multiDistChromatic : ℕ → ℕ := fun _ => 0  -- axiomatized below
+    This is axiomatized as an opaque function since defining it properly
+    requires the full chromatic number theory for distance graphs in ℝ². -/
+axiom multiDistChromatic : ℕ → ℕ
 
 /- ## Main Conjecture -/
 
@@ -51,9 +52,10 @@ axiom erdos_706_monotone :
   ∀ r s : ℕ, r ≤ s → multiDistChromatic r ≤ multiDistChromatic s
 
 /-- **Trivial Lower Bound**: L(r) ≥ L(1) ≥ 5 for all r ≥ 1.
-    The chromatic number with more distances is at least as large. -/
-axiom erdos_706_lower :
-  ∀ r : ℕ, r ≥ 1 → multiDistChromatic r ≥ 5
+    Proof: By monotonicity, L(r) ≥ L(1), and by the base case, L(1) ≥ 5. -/
+theorem erdos_706_lower :
+    ∀ r : ℕ, r ≥ 1 → multiDistChromatic r ≥ 5 :=
+  fun r hr => le_trans erdos_706_base_case.1 (erdos_706_monotone 1 r hr)
 
 /- ## Exponential Upper Bound -/
 

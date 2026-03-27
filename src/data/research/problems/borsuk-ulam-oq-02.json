@@ -47,7 +47,8 @@
     "borsuk-ulam-oq-03",
     "borsuk-ulam-oq-03-oq-01",
     "borsuk-ulam-oq-03-oq-01-oq-01",
-    "borsuk-ulam-oq-03-oq-03"
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-04"
   ],
   "references": {
     "papers": [],
@@ -107,7 +108,7 @@
     {
       "path": "Proofs/BorsukUlamOQ03OQ01.lean",
       "filename": "BorsukUlamOQ03OQ01.lean",
-      "lineCount": 1163,
+      "lineCount": 1164,
       "theoremCount": 41,
       "axiomCount": 1,
       "defCount": 3,
@@ -136,6 +137,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ04.lean",
+      "filename": "BorsukUlamOQ04.lean",
+      "lineCount": 296,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
     }
   ]
 }

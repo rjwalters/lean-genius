@@ -52,7 +52,7 @@
       "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}"
     ],
     "axiomCount": 5,
-    "lineCount": 165,
+    "lineCount": 219,
     "assumptions": "5 axioms: erdos_freud_lower_bound, sidon_upper_bound, almost_sidon_exceeds_sidon, almost_sidon_sum_range, reflected_construction_valid. Proved: erdos_864_conjecture (True placeholder), erdos_freud_difference_version (True placeholder), pairwise_sum_count (upper triangle counting via symmetry).",
     "mathlib_version": "4.26.0"
   },
@@ -157,9 +157,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 165,
+    "lineCount": 219,
     "axiomCount": 5,
-    "theoremCount": 4,
+    "theoremCount": 10,
     "definitionCount": 5
   }
 }

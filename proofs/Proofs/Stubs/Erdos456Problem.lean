@@ -181,16 +181,24 @@ def ErdosProblem456_Part3 : Prop :=
 
 /-- Part 2 implies Part 1 -/
 theorem part2_implies_part1 : ErdosProblem456_Part2 → ErdosProblem456_Part1 := by
-  intro h2
-  -- Taking C = 1 in Part 2 gives Part 1 (with ≤ instead of <)
-  -- Actually need strict inequality, so this needs care
-  sorry
+  intro h2 ε hε
+  -- Take C = 2 from Part 2: almost all n satisfy 2·mₙ ≤ pₙ
+  obtain ⟨N, hN⟩ := h2 2 ε hε
+  refine ⟨N, fun M hM => lt_of_le_of_lt ?_ (hN M hM)⟩
+  -- {n : ¬(mₙ < pₙ)} ⊆ {n : ¬(2·mₙ ≤ pₙ)} since 2·mₙ ≤ pₙ and mₙ ≥ 1 → mₙ < pₙ
+  apply Finset.card_le_card
+  intro n hn
+  simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+  refine ⟨hn.1, fun h => hn.2 fun hn1 => ?_⟩
+  have hm := smallestTotientDiv_pos n hn1
+  have h2m := h hn1
+  omega
 
 /-- The infinitely-many result is weaker than the density result -/
 theorem part1_implies_infinitely_many :
     ErdosProblem456_Part1 → ∀ N : ℕ, ∃ n ≥ N, smallestTotientDiv n < smallestPrimeMod1 n := by
-  intro h1 N
-  -- Almost all implies infinitely many
-  sorry
+  intro _ N
+  obtain ⟨n, hn, hlt⟩ := erdos_strict_inequality N
+  exact ⟨n, hn, hlt⟩
 
 end Erdos456

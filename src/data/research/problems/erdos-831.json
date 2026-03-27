@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 3S→2S. Proved regular_polygon_not_general (extract 4 points from finset, show concyclic). Remaining sorries h_upper_bound and h_three need constructive R² point configs.",
+    "builtItems": [
+      "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction"
+    ],
+    "insights": [
+      "regular_polygon_not_general proved: 4 points on same circle are concyclic, contradicting GP",
+      "Remaining 2 sorries (h_upper_bound, h_three) need constructive point configurations in R²"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
@@ -57,9 +62,9 @@
     {
       "path": "Proofs/Erdos831Problem.lean",
       "filename": "Erdos831Problem.lean",
-      "lineCount": 306,
+      "lineCount": 257,
       "theoremCount": 5,
-      "axiomCount": 6,
+      "axiomCount": 1,
       "defCount": 10,
       "sorryCount": 3,
       "isAristotle": false,

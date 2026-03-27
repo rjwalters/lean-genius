@@ -9,16 +9,11 @@
     "type": "concept",
     "title": "Primes Are Never Far Apart",
     "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
-    "mathContext": "$\\forall n \\geq 1, \\exists p$ prime with $n < p \\leq 2n$. Equivalently: $\\pi(2n) - \\pi(n) \\geq 1$ for all $n \\geq 1$, where $\\pi$ is the prime counting function.",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
       "prime distribution",
       "number theory"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "natural number arithmetic"
     ]
   },
   {
@@ -36,10 +31,6 @@
     "relatedConcepts": [
       "history of mathematics",
       "analytic number theory"
-    ],
-    "prerequisites": [
-      "history of number theory",
-      "Chebyshev functions"
     ]
   },
   {
@@ -57,10 +48,6 @@
     "relatedConcepts": [
       "prime numbers",
       "existence proofs"
-    ],
-    "prerequisites": [
-      "Nat.Prime",
-      "Nat.exists_prime_lt_and_le_two_mul"
     ]
   },
   {
@@ -78,10 +65,6 @@
     "relatedConcepts": [
       "prime gaps",
       "consecutive primes"
-    ],
-    "prerequisites": [
-      "bertrand_postulate theorem",
-      "Nat.minFac"
     ]
   },
   {
@@ -94,15 +77,10 @@
     "type": "technique",
     "title": "Infinitude of Primes (Alternative Proof)",
     "content": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1. Given any $n$, apply Bertrand to get prime $p$ with $n < p$\n2. This prime $p > n$\n3. Since $n$ was arbitrary, primes are unbounded\n4. Therefore there are infinitely many primes\n\nThis is distinct from Euclid's factorial argument, showing how the same result can arise from different perspectives.",
-    "mathContext": "Bertrand $\\Rightarrow$ $\\forall n, \\exists p$ prime with $p > n$ $\\Rightarrow$ the set of primes is infinite. This gives a constructive bound: the $k$-th prime $p_k \\leq 2^k$.",
     "significance": "key",
     "relatedConcepts": [
       "infinitude of primes",
       "Euclid's theorem"
-    ],
-    "prerequisites": [
-      "bertrand_postulate theorem",
-      "proof by contradiction"
     ]
   },
   {
@@ -120,11 +98,6 @@
     "relatedConcepts": [
       "binomial coefficients",
       "prime factorization"
-    ],
-    "prerequisites": [
-      "Nat.choose (central binomial coefficient)",
-      "prime factorization",
-      "Legendre's formula"
     ]
   },
   {
@@ -137,15 +110,10 @@
     "type": "insight",
     "title": "The Descending Prime Chain",
     "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. ✓",
-    "mathContext": "The descending chain $p_1 > p_2 > \\cdots$ with $p_{i+1} > p_i/2$ covers all $n < p_1$ by the property: for any $n$, the smallest $p_i \\leq n$ satisfies $p_{i-1} \\leq 2n$, so $p_{i-1} \\in (n, 2n]$.",
     "significance": "key",
     "relatedConcepts": [
       "constructive proofs",
       "explicit bounds"
-    ],
-    "prerequisites": [
-      "Nat.Prime",
-      "decidability of primality for small numbers"
     ]
   },
   {
@@ -164,11 +132,6 @@
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
-    ],
-    "prerequisites": [
-      "bertrand_postulate theorem",
-      "prime counting function",
-      "asymptotic notation"
     ]
   }
 ]

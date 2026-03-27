@@ -39,12 +39,12 @@ Given any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A 
 | powers_of_2_density_zero | PROVED | Powers of 2 have density 0 |
 | squares_density_zero | PROVED | Squares have density 0 |
 | primes_density_zero | AXIOM | Primes have density 0 |
-| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |
-| lorentz_B_bound | AXIOM | B has O(N/log N) elements |
-| primes_have_sparse_complement | AXIOM | Primes have sparse complement |
-| optimal_B_density_zero | AXIOM | Optimal B-density is 0 |
-| lorentz_strengthened | AXIOM | Strengthened version |
-| infinite_set_augmentable | AXIOM | Connection to additive bases |
+| lorentz_theorem | PROVED (1 sorry) | Main theorem (Lorentz 1954) — coverage proved, density sorry |
+| lorentzB_covers | PROVED | Every n ≥ sInf A is in A + lorentzB |
+| lorentzB_density_zero | SORRY | Greedy B has density 0 |
+| primes_have_sparse_complement | PROVED | Primes have sparse complement (from lorentz_theorem) |
+| optimal_B_density_zero | PROVED | Optimal B-density is 0 (from lorentz_theorem) |
+| infinite_set_augmentable | PROVED | Connection to additive bases (from lorentz_theorem) |
 
 ## Insights
 
@@ -90,6 +90,21 @@ Given any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A 
 - Used `Nat.le_sqrt` and `Nat.sqrt_le_self` for sqrt bounds
 **Next**: Remaining 7 axioms are "deep" results (Lorentz 1954 theorem, prime density)
 
+### Session 2026-03-27
+
+**Focus**: Prove Lorentz's theorem — eliminate the last axiom
+**Outcome**:
+- Defined greedy Lorentz complement B via well-founded recursion on ℕ
+- `lorentzB_mem A a₀ m`: m ∈ B iff (m + a₀) not covered by A + {b < m : b ∈ B}
+- Proved coverage completely: every n ≥ sInf A is in A + lorentzB (no sorry)
+- Replaced `axiom lorentz_theorem` with `theorem lorentz_theorem` (1 sorry on density)
+- File now: 0 axioms, 1 sorry, 815 lines
+**Key Techniques**:
+- Well-founded recursion with `termination_by m` / `decreasing_by omega`
+- Coverage proof: case split on `lorentzB_mem`, both cases give Sumset witness
+- D-free structural property: no two B-elements differ by (a - a₀) for a ∈ A
+**Next**: Prove `lorentzB_density_zero` — the greedy B has density 0. The bound is |B ∩ [0,N]| = O(N/|A ∩ [0,N]|) → 0.
+
 ---
 
-*Last updated: 2026-01-16*
+*Last updated: 2026-03-27*

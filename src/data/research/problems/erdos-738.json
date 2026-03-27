@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-14T21:33:35.591Z",
-    "iteration": 2,
-    "focus": "Axiom elimination: proved 4 axioms from gyarfas_conjecture, fixed formalization bugs",
+    "since": "2026-03-27T10:00:00Z",
+    "iteration": 3,
+    "focus": "Strengthened FiniteTree with IsTree, added tree-class predicates for partial results",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 axioms (7→2). Proved infinite_chrom_contains_paths, infinite_chrom_contains_stars, kierstead_penrice_radius2, scott_caterpillars from gyarfas_conjecture. Fixed buggy True→ hypothesis and duplicate statement. 9 theorems, 2 axioms, 0 sorries, 189 lines.",
+    "progressSummary": "PROGRESS: Strengthened FiniteTree to require Mathlib IsTree (connected + acyclic). Added HasRadius and IsCaterpillar tree-class predicates. Kierstead-Penrice and Scott theorems now properly constrained. 2 provable sorries for pathGraph_isTree, starGraph_isTree (Aristotle candidates). 10 theorems, 10 defs, 2 axioms, 2 sorries, 244 lines.",
     "builtItems": [
       "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
       "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
@@ -37,7 +37,15 @@
       "Proved infinite_chrom_contains_paths from gyarfas_conjecture",
       "Proved infinite_chrom_contains_stars from gyarfas_conjecture",
       "Proved kierstead_penrice_radius2 from gyarfas_conjecture (fixed True→ bug)",
-      "Proved scott_caterpillars from gyarfas_conjecture (fixed wrong conclusion)"
+      "Proved scott_caterpillars from gyarfas_conjecture (fixed wrong conclusion)",
+      "Strengthened FiniteTree with graph.IsTree field",
+      "Added import Mathlib.Combinatorics.SimpleGraph.Acyclic",
+      "Defined pathTree and starTree constructors",
+      "Defined SimpleGraph.HasRadius predicate for tree radius",
+      "Defined SimpleGraph.IsCaterpillar predicate for caterpillar trees",
+      "Added HasRadius 2 constraint to kierstead_penrice_radius2",
+      "Added IsCaterpillar constraint to scott_caterpillars",
+      "Stated pathGraph_isTree and starGraph_isTree (sorry - Aristotle candidates)"
     ],
     "insights": [
       "pathGraph and starGraph triangle-freeness proved via Finset.card_eq_three extraction and omega on adjacency disjunctions",
@@ -47,10 +55,19 @@
       "kierstead_penrice_radius2 had vacuous True→ hypothesis making it equivalent to full conjecture",
       "scott_caterpillars conclusion was pathGraph n (duplicate of paths axiom) instead of caterpillar-specific",
       "FiniteTree has no tree-checking predicate, so all partial results follow trivially from full conjecture",
-      "Remaining 2 axioms: gyarfas_conjecture (OPEN) and gyarfas_finite_version (OPEN, independent via compactness)"
+      "Remaining 2 axioms: gyarfas_conjecture (OPEN) and gyarfas_finite_version (OPEN, independent via compactness)",
+      "FiniteTree without tree constraint made all partial results trivially identical to full conjecture",
+      "HasRadius and IsCaterpillar predicates make partial results genuinely weaker than the full conjecture",
+      "pathGraph_isTree proof strategy: induction on vertex distance for Connected, walk structure analysis for IsAcyclic",
+      "starGraph_isTree proof strategy: all leaves adjacent to center (Connected), degree-1 leaves prevent cycles (IsAcyclic)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove pathGraph_isTree (connected + acyclic for path graph) - submit to Aristotle",
+      "Prove starGraph_isTree (connected + acyclic for star graph) - submit to Aristotle",
+      "Independent proof of infinite_chrom_contains_stars without axiom (via greedy coloring bound)",
+      "Prove pathTree and starTree have correct HasRadius (paths: radius n/2, stars: radius 1)"
+    ],
     "markdown": "# Erdős #738 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ has infinite chromatic number and is triangle-free (contains no $K_3$) then must $G$ contain every tree as an induced subgraph?\n\n\n\nA conjecture of Gy\\'{a}rf\\'{a}s.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #737\n- Problem #739\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -74,11 +91,11 @@
     {
       "path": "Proofs/Erdos738Problem.lean",
       "filename": "Erdos738Problem.lean",
-      "lineCount": 190,
-      "theoremCount": 8,
+      "lineCount": 244,
+      "theoremCount": 10,
       "axiomCount": 2,
-      "defCount": 6,
-      "sorryCount": 0,
+      "defCount": 10,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos738Problem.lean"
     }

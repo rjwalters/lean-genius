@@ -76,20 +76,26 @@
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos863Aristotle.lean",
+      "filename": "Erdos863Aristotle.lean",
+      "lineCount": 63,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos863Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos863Problem.lean",
       "filename": "Erdos863Problem.lean",
-      "lineCount": 97,
-      "theoremCount": 0,
+      "lineCount": 139,
+      "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos863Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos863Aristotle.lean",
-      "filename": "Erdos863Aristotle.lean",
-      "isAristotle": true
     }
   ]
 }

@@ -69,9 +69,13 @@ def IsFreeFunction {X : Type*} (f : Finset X → X) : Prop :=
     when restricted to output something not in A. -/
 theorem exists_free_function (X : Type*) [Infinite X] [Nonempty X] :
     ∃ f : Finset X → X, IsFreeFunction f := by
-  -- We can construct f by choosing any element not in A
-  -- This exists because X is infinite and A is finite
-  sorry
+  -- For any finite A, X \ A is nonempty (X is infinite)
+  have key : ∀ A : Finset X, ∃ x : X, x ∉ A := by
+    intro A
+    by_contra h
+    push_neg at h
+    exact absurd ⟨⟨A, h⟩⟩ (not_finite X)
+  exact ⟨fun A => (key A).choose, fun A => (key A).choose_spec⟩
 
 /- ## Part III: Independent Sets -/
 

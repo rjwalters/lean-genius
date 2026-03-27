@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 5A→3A. Proved lower_bound_construction (interval argument) and ndto_strictly_weaker (exhaustive case analysis). Remaining 3 axioms are deep published results (Lebensold bounds, limiting density existence).",
+    "builtItems": [
+      "Proved lower_bound_construction: f(n) >= ceil(2n/3) via interval [n/3+1,n]",
+      "Proved ndto_strictly_weaker: {2,6,9} is NDTO but not primitive",
+      "Helper lemma ndto_upper_interval for interval NDTO property"
+    ],
+    "insights": [
+      "lower_bound_construction proved: interval [n/3+1,n] satisfies NDTO since 3a > n for all a >= n/3+1",
+      "ndto_strictly_weaker proved: exhaustive case analysis on {2,6,9} shows NDTO holds and 2|6 violates primitivity",
+      "Remaining 3 axioms (lebensold bounds, limiting density) are deep published results — not eliminable from Mathlib"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1062 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Le76] Lebensold, Kenneth, A divisibility problem. Studies in Appl. Math. (1976/77), 291--294.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1061\n- Problem #1063\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Le76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
