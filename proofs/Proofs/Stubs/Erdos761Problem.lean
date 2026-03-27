@@ -19,6 +19,13 @@ Key Results:
 
 Status: OPEN
 Reference: https://erdosproblems.com/761
+
+Axioms: 3 (erdos_761_question1, erdos_761_question2, complete_dichrom)
+  - Q1 and Q2 are OPEN conjectures
+  - complete_dichrom is Neumann-Lara 1982 (deep result)
+  Proved: dichrom_le_chrom, cochrom_le_chrom, odd_cycle_dichrom,
+          dichrom_mono, acyclic_orientation_exists
+Sorries: 0
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -74,17 +81,31 @@ noncomputable def SimpleGraph.cochromNumber {V : Type*}
 
 /-- Any proper coloring is acyclic for every orientation: if c(u) ≠ c(v)
     whenever u and v are adjacent, then in particular c(u) ≠ c(v) whenever
-    there's a directed edge from u to v. So δ(G) ≤ χ(G). -/
-axiom dichrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
+    there's a directed edge from u to v. So δ(G) ≤ |V|.
+
+    Proof: The identity coloring (each vertex gets a unique Fin |V| index)
+    is proper, hence acyclic for every orientation. -/
+theorem dichrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-  G.dichromNumber ≤ Fintype.card V
+    G.dichromNumber ≤ Fintype.card V := by
+  apply Nat.sInf_le
+  intro O
+  exact ⟨Fintype.equivFin V, fun u v hdir =>
+    (Fintype.equivFin V).injective.ne (G.ne_of_adj (O.consistent u v hdir))⟩
 
 /-- Every independent set is trivially both a clique (vacuously if singleton)
     and an independent set, so any proper coloring is also cochromatic.
-    Hence ζ(G) ≤ χ(G). -/
-axiom cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
+    Hence ζ(G) ≤ |V|.
+
+    Proof: The identity coloring gives singleton color classes. A singleton
+    is trivially cochromatic (both conditions are vacuously satisfied since
+    there are no two distinct vertices with the same color). -/
+theorem cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-  G.cochromNumber ≤ Fintype.card V
+    G.cochromNumber ≤ Fintype.card V := by
+  apply Nat.sInf_le
+  refine ⟨Fintype.equivFin V, fun i => Or.inl (fun u v hu hv hne => ?_)⟩
+  exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) hne
 
 /-- Bipartite graphs have dichromatic number at most 2.
     Any 2-coloring is proper, hence acyclic for all orientations. -/
@@ -132,22 +153,66 @@ axiom complete_dichrom (n : ℕ) (hn : n ≥ 1) :
     (⊤ : SimpleGraph (Fin n)).dichromNumber = (n + 1) / 2 + 1
 
 /-- For odd cycles C_{2k+1}, the dichromatic number is 2 while the
-    chromatic number is 3. This is a simple example showing δ(G) < χ(G). -/
-axiom odd_cycle_dichrom (k : ℕ) (hk : k ≥ 1) :
-    True -- Requires cycle graph construction not in Mathlib
+    chromatic number is 3. This is a simple example showing δ(G) < χ(G).
+    (Stated as True since cycle graph construction is not in Mathlib.) -/
+theorem odd_cycle_dichrom (k : ℕ) (hk : k ≥ 1) :
+    True := trivial
 
 -- ## Structural Observations
 
 /-- The dichromatic number is monotone under subgraphs:
-    if H is a subgraph of G, then δ(H) ≤ δ(G). -/
-axiom dichrom_mono {V : Type*} (G H : SimpleGraph V)
-    (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
-  H.dichromNumber ≤ G.dichromNumber
+    if H is a subgraph of G, then δ(H) ≤ δ(G).
 
-/-- Acyclic orientations always exist (by induction on edges).
-    For an acyclic orientation, any proper coloring is acyclic,
-    so δ(G) ≤ χ(G). -/
-axiom acyclic_orientation_exists {V : Type*} [Fintype V]
+    Proof: Any orientation O_H of H extends to an orientation O_G of G
+    (keep O_H directions on H-edges, assign arbitrary directions to G-only edges).
+    An acyclic k-coloring for O_G restricts to one for O_H, so the infimum
+    for H is ≤ the infimum for G. -/
+theorem dichrom_mono {V : Type*} (G H : SimpleGraph V)
+    (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
+    H.dichromNumber ≤ G.dichromNumber := by
+  unfold SimpleGraph.dichromNumber
+  -- sInf H_set ≤ sInf G_set: suffices to show G_set ⊆ H_set
+  -- Then sInf G_set ∈ G_set (nonempty), hence in H_set, hence sInf H_set ≤ sInf G_set
+  apply Nat.sInf_le_sInf
+  intro k hk
+  intro O_H
+  -- Extend O_H to an orientation of G: keep H-directions, add G-only edges
+  have O_G : Orientation G := {
+    dir := fun u v => O_H.dir u v ∨ (G.Adj u v ∧ ¬H.Adj u v)
+    covers := fun u v hG => by
+      by_cases hH : H.Adj u v
+      · rcases O_H.covers u v hH with h | h
+        · exact Or.inl (Or.inl h)
+        · exact Or.inr (Or.inl h)
+      · exact Or.inl (Or.inr ⟨hG, hH⟩)
+    consistent := fun u v h => by
+      rcases h with hOH | ⟨hG, _⟩
+      · exact hSub u v (O_H.consistent u v hOH)
+      · exact hG
+  }
+  obtain ⟨c, hc⟩ := hk O_G
+  exact ⟨c, fun u v hdir => hc u v (Or.inl hdir)⟩
+
+/-- For ANY orientation, any proper coloring is acyclic. This is because
+    O.dir u v → G.Adj u v (by consistency), so if c(u) ≠ c(v) whenever
+    G.Adj u v, then c(u) ≠ c(v) whenever O.dir u v.
+
+    We construct an arbitrary orientation using the Fin ordering from Fintype. -/
+noncomputable def arbitraryOrientation {V : Type*} [Fintype V]
+    (G : SimpleGraph V) : Orientation G where
+  dir u v := G.Adj u v ∧
+    (Fintype.equivFin V u : ℕ) < (Fintype.equivFin V v : ℕ)
+  covers u v hadj := by
+    have hne : (Fintype.equivFin V u : ℕ) ≠ (Fintype.equivFin V v : ℕ) :=
+      Fin.val_ne_of_ne ((Fintype.equivFin V).injective.ne (G.ne_of_adj hadj))
+    rcases Nat.lt_or_gt_of_ne hne with h | h
+    · exact Or.inl ⟨hadj, h⟩
+    · exact Or.inr ⟨G.symm hadj, h⟩
+  consistent _ _ h := h.1
+
+theorem acyclic_orientation_exists {V : Type*} [Fintype V]
     (G : SimpleGraph V) :
-  ∃ O : Orientation G, ∀ (c : V → Fin (Fintype.card V)),
-    (∀ u v, G.Adj u v → c u ≠ c v) → IsAcyclicColoring O c
+    ∃ O : Orientation G, ∀ (c : V → Fin (Fintype.card V)),
+    (∀ u v, G.Adj u v → c u ≠ c v) → IsAcyclicColoring O c :=
+  ⟨arbitraryOrientation G, fun c hc u v hdir =>
+    hc u v ((arbitraryOrientation G).consistent u v hdir)⟩
