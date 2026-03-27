@@ -167,18 +167,55 @@ theorem besExponent_7_4 : besExponent 3 7 4 = 5 / 3 := by
   norm_num
 
 /-- When the BES conjecture parameter constraint k ≥ (r-t)s + t + 1 holds
-    with t = 2, the lower bound exponent is at most 1. This means the BES
-    conjecture asserts o(n²) growth, which is compatible with the lower bound. -/
-theorem besExponent_le_one_at_bes_threshold (r s : ℕ) (hr : r ≥ 3) (hs : s ≥ 3) :
-    besExponent r ((r - 2) * s + 3) s ≤ 1 := by
+    with t = 2, the lower bound exponent is strictly less than 2.
+    Specifically, besExponent = (2s-3)/(s-1) < 2 since -3 < -2. -/
+theorem besExponent_lt_two_at_bes_threshold (r s : ℕ) (hr : r ≥ 3) (hs : s ≥ 3) :
+    besExponent r ((r - 2) * s + 3) s < 2 := by
   unfold besExponent
-  rw [div_le_one]
+  rw [div_lt_iff]
   · push_cast
     have hr' : (3 : ℝ) ≤ (r : ℝ) := Nat.ofNat_le_cast.mpr hr
     have hs' : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
-    nlinarith
+    nlinarith [Nat.cast_sub (show 2 ≤ r by omega)]
   · have : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
     linarith
+
+/-- The zero function is little-o of any eventually positive function. -/
+theorem isLittleO_zero (g : ℕ → ℝ) : IsLittleO (fun _ => (0 : ℝ)) g := by
+  intro ε _; exact ⟨0, fun n _ => by simp⟩
+
+/-- If f ≤ g pointwise eventually and g = o(h), then f = o(h). -/
+theorem isLittleO_of_eventually_le {f g h : ℕ → ℝ}
+    (hfg : ∃ N₀, ∀ n ≥ N₀, |f n| ≤ |g n|) (hg : IsLittleO g h) :
+    IsLittleO f h := by
+  intro ε hε
+  obtain ⟨N₁, hN₁⟩ := hfg
+  obtain ⟨N₂, hN₂⟩ := hg ε hε
+  exact ⟨max N₁ N₂, fun n hn => by
+    have := hN₁ n (le_of_max_le_left hn)
+    exact le_trans this (hN₂ n (le_of_max_le_right hn))⟩
+
+/-- BES conjecture is monotone in s: if it holds for s₁ edges,
+    it holds for s₂ ≥ s₁ edges (fewer forbidden configurations). -/
+theorem bes_monotone_in_s {k s₁ s₂ : ℕ} (hs : s₁ ≤ s₂)
+    (h : IsLittleO (fun n => (extremalNumber 3 n k s₁ : ℝ)) (fun n => (n : ℝ) ^ 2)) :
+    IsLittleO (fun n => (extremalNumber 3 n k s₂ : ℝ)) (fun n => (n : ℝ) ^ 2) := by
+  apply isLittleO_of_eventually_le
+  · exact ⟨0, fun n _ => by
+      rw [abs_of_nonneg (Nat.cast_nonneg _), abs_of_nonneg (Nat.cast_nonneg _)]
+      exact Nat.cast_le.mpr (extremalNumber_mono_s 3 n k s₁ s₂ hs)⟩
+  · exact h
+
+/-- When k = rs − s + 1, the BES exponent equals 1.
+    This is the threshold where the lower bound growth rate matches n¹. -/
+theorem besExponent_at_threshold_one (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    besExponent r (r * s - s + 1) s = 1 := by
+  unfold besExponent
+  have hs' : (s : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs; linarith
+  rw [div_eq_one_iff_eq hs']
+  push_cast [Nat.cast_sub (show s ≤ r * s by nlinarith)]
+  ring
 
 /-
 ## Part VII: Proved Theorems
