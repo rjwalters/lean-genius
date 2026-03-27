@@ -226,11 +226,43 @@ theorem setA_has_many_elements {n k : ℕ} (hn : n ≥ 3) (hk : k ≥ 2) :
 
 /- ## Part VIII: Gap Bounds -/
 
-/-- Trivial upper bound: maximum gap ≤ n^k - n.
-All elements lie in [n, n^k], so consecutive differences are ≤ n^k - n.
-Axiomatized: proof requires deep list infrastructure (foldl max bound). -/
-axiom maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
-    maxGapA n k hn ≤ n ^ k - n
+/-- Helper: if all elements of a list are in [lo, hi], the foldl max of
+    consecutive gaps is bounded by hi - lo. -/
+private theorem consecutiveGaps_foldl_max_le (lo hi : ℕ) :
+    ∀ (L : List ℕ) (acc : ℕ),
+      acc ≤ hi - lo →
+      (∀ x ∈ L, lo ≤ x ∧ x ≤ hi) →
+      (consecutiveGaps L).foldl max acc ≤ hi - lo := by
+  intro L
+  induction L with
+  | nil => intro acc hacc _; rw [consecutiveGaps_nil]; exact hacc
+  | cons a L ih =>
+    intro acc hacc hL
+    cases L with
+    | nil => rw [consecutiveGaps_singleton]; exact hacc
+    | cons b L' =>
+      have hcg : consecutiveGaps (a :: b :: L') =
+          (b - a) :: consecutiveGaps (b :: L') := by
+        simp only [consecutiveGaps, List.tail_cons, List.zipWith_cons_cons]
+      rw [hcg]; change (consecutiveGaps (b :: L')).foldl max (max acc (b - a)) ≤ hi - lo
+      apply ih
+      · exact max_le hacc (by
+          have := (hL a (List.mem_cons_self _ _)).1
+          have := (hL b (List.mem_cons_of_mem _ (List.mem_cons_self _ _))).2
+          omega)
+      · intro x hx; exact hL x (List.mem_cons_of_mem _ hx)
+
+/-- Maximum gap ≤ n^k - n: all elements lie in [n, n^k], so no
+    consecutive difference can exceed the total range. -/
+theorem maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
+    maxGapA n k hn ≤ n ^ k - n := by
+  unfold maxGapA maxGap
+  apply consecutiveGaps_foldl_max_le n (n ^ k) (orderedA n k hn) 0 (Nat.zero_le _)
+  intro x hx
+  have hmem : x ∈ setAFinset n k hn := by
+    simp only [orderedA] at hx
+    rwa [Finset.mem_sort] at hx
+  exact Finset.mem_Icc.mp (setAFinset_subset_Icc n k hn hmem)
 
 /-- Pigeonhole: if A has |A| elements in range R, max gap ≥ R/|A|.
 Axiomatized: requires telescoping sum through list operations. -/
@@ -300,15 +332,16 @@ axiom polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolynomi
 
 **STATUS:** OPEN
 
-**PROVED (16 theorems):**
+**PROVED (25 theorems):**
 - setA finite, contained in [n, n^k], monotone in k
 - Divisor bounds: d ≥ 2, quotient q ≥ 1
 - setA contains all d ∈ (n, 2n) (≥ n-1 elements for n ≥ 3)
 - General membership criterion, specific witnesses
 - Gap infrastructure, cardinality bounds
+- maxGap ≤ n^k - n (was axiom, now proved by list induction)
 
-**AXIOMATIZED (4 axioms):**
-- maxGap ≤ n^k - n, Pigeonhole, Ford density, polylog⟹subpoly
+**AXIOMATIZED (3 axioms):**
+- Pigeonhole, Ford density, polylog⟹subpoly
 -/
 theorem erdos_693_summary :
     erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k :=
