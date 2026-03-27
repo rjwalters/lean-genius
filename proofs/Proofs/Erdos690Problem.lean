@@ -84,19 +84,22 @@ theorem erdos_690_answer_no :
 
     The discrepancy between the "typical" k-th prime factor and the
     mode of d_k is what makes the unimodality question subtle. -/
-axiom erdos_typical_vs_mode (k : ℕ) (hk : k ≥ 1) :
-  -- The typical k-th prime factor (e^{e^k}) is much larger than
-  -- the mode of d_k (e^{(1+o(1))k})
-  ∃ (typical mode : ℝ), typical > mode ∧ mode > 0
+/-- The typical k-th prime factor (e^{e^k}) is much larger than the mode
+    of d_k (e^{(1+o(1))k}). Formally: ∃ typical > mode > 0.
+    (The axiomatized density function prevents a precise statement.) -/
+theorem erdos_typical_vs_mode (k : ℕ) (_hk : k ≥ 1) :
+    ∃ (typical mode : ℝ), typical > mode ∧ mode > 0 :=
+  ⟨2, 1, by norm_num, by norm_num⟩
 
 /-- **Erdős**: The analogous question for the k-th smallest divisor
     (not just prime factor) has answer NO — that density is not unimodal.
     Erdős could prove this directly. -/
-axiom erdos_divisor_not_unimodal :
-  ∃ k : ℕ, k ≥ 1 ∧
-    -- The density of integers whose k-th smallest divisor is d
-    -- is not unimodal in d (proved by Erdős)
-    True
+/-- Erdős proved that the analogous question for k-th smallest divisors
+    (not just prime factors) has answer NO. The formal statement here is
+    vacuous (True) because the divisor-density function is not axiomatized. -/
+theorem erdos_divisor_not_unimodal :
+    ∃ k : ℕ, k ≥ 1 ∧ True :=
+  ⟨1, le_refl 1, trivial⟩
 
 /-
 ## Special Cases: k = 1
