@@ -94,10 +94,33 @@ axiom szemeredi_trotter_context :
     ∀ (n m incidences : ℕ),
       (incidences : ℝ) ≤ C * ((n : ℝ) ^ (2/3 : ℝ) * (m : ℝ) ^ (2/3 : ℝ) + n + m)
 
-/-- **Erdős–Purdy Origin**: this problem was posed by Erdős and Purdy
-    in their survey of combinatorial geometry problems. It is closely
-    related to Problem #101 and to general point-line incidence questions. -/
-axiom erdos_purdy_connection :
+/-- **Erdős–Purdy Connection**: if cn² rich lines exist (each with ≥ 4 collinear
+    points), then some line has ≥ 4 collinear points.
+    Proof: richLineCount ≥ cn² > 0 implies ≥ 1 collinear 4-subset exists.
+    This 4-subset witnesses maxCollinear ≥ 4. -/
+theorem erdos_purdy_connection :
   ∀ c : ℝ, c > 0 →
     ∀ P : PointConfig, (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
-      maxCollinear P ≥ 4
+      maxCollinear P ≥ 4 := by
+  intro c hc P hrich
+  -- richLineCount P ≥ 1 (since c * n² > 0)
+  have hn_pos : (0 : ℝ) < P.points.card := Nat.cast_pos.mpr P.size_pos
+  have hrich_pos : (richLineCount P : ℝ) > 0 := lt_of_lt_of_le (by positivity) hrich
+  have hrich_nat : 0 < richLineCount P := Nat.cast_pos.mp (by exact_mod_cast hrich_pos)
+  -- Extract a witness from the nonempty filtered set
+  unfold richLineCount at hrich_nat
+  rw [Finset.card_pos] at hrich_nat
+  obtain ⟨S, hS_mem⟩ := hrich_nat
+  simp only [Finset.mem_filter] at hS_mem
+  obtain ⟨hS_sub, hS_card, a, b, ha, hb, hab, hcol⟩ := hS_mem
+  -- S is a collinear 4-subset of P.points, so it satisfies the maxCollinear filter
+  unfold maxCollinear
+  -- S ∈ the maxCollinear filter set (card ≥ 2, collinear)
+  have hS_in : S ∈ P.points.powerset.filter (fun S =>
+      S.card ≥ 2 ∧ ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+        ∀ p ∈ S, collinear₃ a b p) := by
+    simp only [Finset.mem_filter]
+    exact ⟨hS_sub, by omega, a, b, ha, hb, hab, hcol⟩
+  -- maxCollinear ≥ S.card = 4
+  calc 4 = S.card := hS_card.symm
+    _ ≤ (P.points.powerset.filter _).sup Finset.card := Finset.le_sup hS_in
