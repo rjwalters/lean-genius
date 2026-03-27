@@ -149,10 +149,22 @@ Related problems include Erdős Problem 384 (prime divisors < n/2) and
 Erdős Problem 387 (divisors in interval (cn, n]).
 -/
 
-/-- The Erdős–Graham observation: if C(n,k) is a product of consecutive primes,
-    then the largest prime factor of C(n,k) is at most n. -/
-axiom choose_largest_prime_le (n k : ℕ) (hk : 2 ≤ k) (hn : k + 2 ≤ n)
+/-- The Erdős–Graham observation: the largest prime factor of C(n,k) is at most n.
+    Proof: C(n,k) | n! (since n! = C(n,k) · k! · (n-k)!), so every prime factor
+    of C(n,k) is a prime factor of n!, hence ≤ n by Nat.Prime.dvd_factorial. -/
+theorem choose_largest_prime_le (n k : ℕ) (hk : 2 ≤ k) (hn : k + 2 ≤ n)
     (p : ℕ) (hp : Nat.Prime p) (hd : p ∣ Nat.choose n k) :
-    p ≤ n
+    p ≤ n := by
+  by_contra h
+  push_neg at h
+  -- p > n, so p ∤ n!
+  have hndvd : ¬(p ∣ n.factorial) := by
+    rw [hp.dvd_factorial]; omega
+  -- C(n,k) | n! since n! = C(n,k) · k! · (n-k)!
+  have hchoose_dvd : Nat.choose n k ∣ n.factorial :=
+    ⟨k.factorial * (n - k).factorial,
+      (Nat.choose_mul_factorial_mul_factorial (by omega : k ≤ n)).symm⟩
+  -- p | C(n,k) and C(n,k) | n! implies p | n!, contradiction
+  exact hndvd (dvd_trans hd hchoose_dvd)
 
 end Erdos386
