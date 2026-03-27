@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T14:52:37.979Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "5A->3A, 0S. Removed 2 false axioms: erdos_1092_question1 and question2 both disproved by Rodl 1982 construction (f_2(n) = O(n polylog n), not superlinear).",
+    "builtItems": [
+      "Removed false axiom erdos_1092_question1 with documented counterexample",
+      "Removed false axiom erdos_1092_question2 (consequence of Q1 being false)"
+    ],
+    "insights": [
+      "erdos_1092_question1 is FALSE: asserts f_2(n) >> n but Tang/Rodl showed f_2(n) = O(n polylog(n))",
+      "erdos_1092_question2 is FALSE: generalizes Q1, which is already false for r=2",
+      "rodl_upper_bound is the correct bound (legitimate cited axiom)",
+      "The file docstring already acknowledges Q1 is disproved but axiomatized it anyway"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1092 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.\n\n\n\n\nReferences\n\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #744\n- Problem #1091\n- Problem #1093\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ro82\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"

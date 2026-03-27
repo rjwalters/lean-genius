@@ -104,32 +104,26 @@ theorem small_prime_divides_product (n k p : ℕ)
     (hp : p.Prime) (hpk : p ≤ k) :
     p ∣ consecutiveProduct n k := by
   unfold consecutiveProduct
-  -- The smallest multiple of p above n is m = (n/p + 1) * p ∈ {n+1,...,n+k}
-  set m := (n / p + 1) * p with hm_def
+  -- Among k ≥ p consecutive integers n+1, ..., n+k, one is divisible by p.
+  -- Specifically, take i = (p - (n+1) mod p) mod p; then i < p ≤ k and p | (n+i+1).
   have hp_pos := hp.pos
-  have hm_dvd : p ∣ m := ⟨n / p + 1, by ring⟩
-  have hm_ge : n + 1 ≤ m := by
-    have := Nat.div_mul_le_self n p
-    nlinarith
-  have hm_le : m ≤ n + k := by
-    have := Nat.div_mul_le_self n p
-    nlinarith
-  -- Index i = m - (n + 1) satisfies n + i + 1 = m and i < k
-  set i := m - (n + 1) with hi_def
-  have hi_lt : i < k := by omega
-  have hi_eq : n + i + 1 = m := by omega
-  have : p ∣ (n + i + 1) := by rwa [hi_eq]
-  exact dvd_trans this (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi_lt))
+  have ⟨i, hi, hdvd⟩ : ∃ i < k, p ∣ (n + i + 1) := by
+    refine ⟨(p - (n + 1) % p) % p, lt_of_lt_of_le (Nat.mod_lt _ hp_pos) hpk, ?_⟩
+    have h_div := Nat.div_add_mod (n + 1) p
+    by_cases hr : (n + 1) % p = 0
+    · simp [hr, Nat.mod_self]; exact ⟨(n + 1) / p, by omega⟩
+    · rw [Nat.mod_eq_of_lt (by omega : p - (n + 1) % p < p)]
+      exact ⟨(n + 1) / p + 1, by omega⟩
+  exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi))
 
 /-- Lower bound: q(n,k) > k for all n, since every prime p ≤ k divides
     some term in k consecutive integers. -/
 theorem q_gt_k (n k : ℕ) (hk : 1 < k) :
     k < smallestMissingPrime n k := by
   by_contra h
-  push_neg at h  -- h : smallestMissingPrime n k ≤ k
-  have hq_prime := smallestMissingPrime_prime n k (by omega : 0 < k)
-  have hq_not_dvd := smallestMissingPrime_not_dvd n k (by omega : 0 < k)
-  exact hq_not_dvd (small_prime_divides_product n k _ hq_prime h)
+  push_neg at h
+  exact smallestMissingPrime_not_dvd n k (by omega)
+    (small_prime_divides_product n k _ (smallestMissingPrime_prime n k (by omega)) h)
 
 /- ## Monotonicity Properties -/
 

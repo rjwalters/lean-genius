@@ -84,8 +84,8 @@
       "erdos_749_upper_variant: upper density version (proved via by_cases)"
     ],
     "axiomCount": 2,
-    "lineCount": 167,
-    "assumptions": "2 axioms: sidon_set_density_zero (Sidon sets have upper density 0, known classical result), erdos_turan_conjecture_28 (open conjecture). All density definitions and properties are now proved from Mathlib."
+    "lineCount": 162,
+    "assumptions": "2 axioms: sidon_set_density_zero (Sidon sets have zero upper density), erdos_turan_conjecture_28 (ET conjecture, open)."
   },
   "overview": {
     "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets (Erdős-Turán 1941) demonstrate that bounded r(n) is compatible with sparse sumsets: they have r(n) ≤ 1 but |A ∩ [1,N]| ∼ √N, giving density-0 sumsets. At the other extreme, the Erdős-Turán conjecture (Problem #28, $500 bounty) asserts that any additive basis of order 2 (density-1 sumset) must have unbounded r(n).\n\nProblem #749 asks about the boundary: can we get sumset density arbitrarily close to 1 while keeping r(n) bounded? A positive answer would show the Erdős-Turán obstruction is specific to density exactly 1 — a sharp phase transition. A negative answer would show the obstruction appears at some critical density 1-ε₀ < 1, strengthening the Erdős-Turán conjecture quantitatively.",
@@ -155,16 +155,11 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Order.LiminfLimsup",
-      "Mathlib.Data.Set.Card",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 167,
+    "lineCount": 162,
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 8

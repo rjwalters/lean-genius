@@ -91,11 +91,20 @@ def PrimeCovering (S : Finset (ℕ × ℕ)) (P : ℕ × ℕ → ℕ) : Prop :=
 axiom covering_implies_sierpinski :
   ∀ S P, PrimeCovering S P → ∃ m, IsSierpinskiNumber m
 
-/- Part 5: The Extended Problem -/
+/- Part 5: The Extended Problem — 2D Covering Systems -/
 
 -- For the extended problem, we'd need primes dividing 2^a * 3^b - 1
 def ExtendedDivisibility (p : ℕ) (a b : ℕ) : Prop :=
   p.Prime ∧ p ∣ (2^a * 3^b - 1)
+
+-- A 2D covering system: a tuple (r₁, d₁, r₂, d₂) covers (k, l)
+-- when k ≡ r₁ (mod d₁) and l ≡ r₂ (mod d₂)
+def Covers2D (r₁ d₁ r₂ d₂ k l : ℕ) : Prop :=
+  k % d₁ = r₁ ∧ l % d₂ = r₂
+
+-- A 2D covering system: covers every (k, l) ∈ ℕ²
+def IsCoveringSystem2D (S : Finset (ℕ × ℕ × ℕ × ℕ)) : Prop :=
+  ∀ k l : ℕ, ∃ s ∈ S, Covers2D s.1 s.2.1 s.2.2.1 s.2.2.2 k l
 
 /- Part 6: Small Cases and Constraints -/
 
@@ -173,6 +182,31 @@ theorem twentythree_fails : ¬ AvoidsPrimes 23 := by
   intro ⟨_, h⟩
   have := h 1 0; simp only [candidateNumber] at this; norm_num at this
 
+-- m = 25: 4*25+1 = 101 is prime
+theorem twentyfive_fails : ¬ AvoidsPrimes 25 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 29: 2*29+1 = 59 is prime
+theorem twentynine_fails : ¬ AvoidsPrimes 29 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 31: 4*3*31+1 = 373 is prime
+theorem thirtyone_fails : ¬ AvoidsPrimes 31 := by
+  intro ⟨_, h⟩
+  have := h 2 1; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 35: 2*35+1 = 71 is prime
+theorem thirtyfive_fails : ¬ AvoidsPrimes 35 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 37: 4*37+1 = 149 is prime
+theorem thirtyseven_fails : ¬ AvoidsPrimes 37 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
+
 -- Structural: if m is avoiding primes, then m+1, 2m+1, 3m+1 are all composite
 theorem avoiding_implies_composites (m : ℕ) (h : AvoidsPrimes m) :
     ¬ (m + 1).Prime ∧ ¬ (2 * m + 1).Prime ∧ ¬ (3 * m + 1).Prime := by
@@ -237,6 +271,20 @@ def IsGeneralizedAvoiding (primes : List ℕ) (m : ℕ) : Prop :=
   m.Coprime (primes.foldl (·*·) 1) ∧
   ∀ exps : List ℕ, exps.length = primes.length →
     ¬ ((List.zipWith (·^·) primes exps).foldl (·*·) 1 * m + 1).Prime
+
+-- candidateNumber with larger k is at least as large
+theorem candidate_mono_k (m k₁ k₂ l : ℕ) (h : k₁ ≤ k₂) :
+    candidateNumber m k₁ l ≤ candidateNumber m k₂ l := by
+  unfold candidateNumber
+  have : 2 ^ k₁ ≤ 2 ^ k₂ := Nat.pow_le_pow_right (by omega) h
+  nlinarith [Nat.one_le_pow l 3 (by omega)]
+
+-- candidateNumber with larger l is at least as large
+theorem candidate_mono_l (m k l₁ l₂ : ℕ) (h : l₁ ≤ l₂) :
+    candidateNumber m k l₁ ≤ candidateNumber m k l₂ := by
+  unfold candidateNumber
+  have : 3 ^ l₁ ≤ 3 ^ l₂ := Nat.pow_le_pow_right (by omega) h
+  nlinarith [Nat.one_le_pow k 2 (by omega)]
 
 /- Part 10: Problem Status
 

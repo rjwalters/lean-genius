@@ -60,7 +60,9 @@ axiom greatestPrimeFactor : ℕ → ℕ
 notation "P(" m ")" => greatestPrimeFactor m
 
 /-- P(p) = p for prime p. -/
-axiom gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p
+theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
+  have h := gpf_prime_power p 1 hp (by omega)
+  simpa [pow_one] using h
 
 /-- P(p^k) = p for prime p and k ≥ 1. -/
 axiom gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p

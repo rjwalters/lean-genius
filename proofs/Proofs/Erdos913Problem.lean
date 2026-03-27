@@ -93,14 +93,33 @@ Small examples of n with distinct exponents in n(n+1):
 - n = 127: 127·128 = 2⁷·127, exponents {7,1} distinct
 -/
 
+/-- Helper: prove distinct exponents by reducing to concrete prime factor enumeration. -/
+private theorem hasDistinctExponents_of_primeFactors_pair
+    {n : ℕ} {m p q : ℕ} (hm : n * (n + 1) = m) (hpf : m.primeFactors = {p, q})
+    (hne : m.factorization p ≠ m.factorization q) :
+    HasDistinctExponents n := by
+  unfold HasDistinctExponents
+  rw [hm, hpf]
+  intro x hx y hy heq
+  simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+             Set.mem_singleton_iff] at hx hy
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+  · rfl
+  · exact absurd heq hne
+  · exact absurd heq (Ne.symm hne)
+  · rfl
+
 /-- n = 3 has distinct exponents: 3·4 = 2²·3¹. -/
-axiom example_n3 : HasDistinctExponents 3
+theorem example_n3 : HasDistinctExponents 3 :=
+  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 7 has distinct exponents: 7·8 = 2³·7¹. -/
-axiom example_n7 : HasDistinctExponents 7
+theorem example_n7 : HasDistinctExponents 7 :=
+  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 8 has distinct exponents: 8·9 = 2³·3². -/
-axiom example_n8 : HasDistinctExponents 8
+theorem example_n8 : HasDistinctExponents 8 :=
+  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
 
 /-
 ## Section 6: Connection to Bunyakovsky conjecture

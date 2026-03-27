@@ -20,8 +20,8 @@
     "erdosUrl": "https://erdosproblems.com/1062",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 147,
-    "assumptions": "3 axioms: lebensold_lower_bound, lebensold_upper_bound, limiting_density_exists (all deep published results).",
+    "lineCount": 141,
+    "assumptions": "3 axioms: lebensold_lower_bound, lebensold_upper_bound (Lebensold 1976), limiting_density_exists (limit exists in [0.6725, 0.6736]).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -108,19 +108,13 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Real.Irrational",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 147,
+    "lineCount": 141,
     "axiomCount": 3,
-    "theoremCount": 3,
+    "theoremCount": 4,
     "definitionCount": 4
   },
   "crossReferences": [
