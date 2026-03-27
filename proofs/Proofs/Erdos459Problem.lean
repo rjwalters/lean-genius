@@ -179,17 +179,27 @@ theorem irregular_growth :
 -/
 
 /-- f(2) = 4: smallest v > 2 with all prime factors dividing 2 is 4 = 2². -/
-axiom f_2 : f 2 = 4
+theorem f_2 : f 2 = 4 := by
+  have h := f_prime 2 (by decide)
+  omega
 
 /-- f(3) = 9: smallest v > 3 with all prime factors dividing 3 is 9 = 3². -/
-axiom f_3 : f 3 = 9
+theorem f_3 : f 3 = 9 := by
+  have h := f_prime 3 (by decide)
+  omega
 
 /-- f(6) = 8: 6 = 2·3, so smooth numbers are products of 2s and 3s.
     8 = 2³ is the first such number > 6. -/
-axiom f_6 : f 6 = 8
+theorem f_6 : f 6 = 8 := by
+  have h := f_minimal_case 3 (by omega)
+  norm_num at h
+  exact h
 
 /-- f(14) = 16: 14 = 2·7. The first v > 14 smooth w.r.t. {2,7} is 16 = 2⁴. -/
-axiom f_14 : f 14 = 16
+theorem f_14 : f 14 = 16 := by
+  have h := f_minimal_case 4 (by omega)
+  norm_num at h
+  exact h
 
 /-
 ## Part VIII: The Resolution

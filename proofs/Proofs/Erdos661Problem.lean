@@ -36,12 +36,28 @@ noncomputable def bipartiteDistSet (X Y : Finset Point2) : Finset ℝ :=
   (X ×ˢ Y).image (fun p => distSq p.1 p.2)
 
 /-- F(2n): the minimum number of distinct bipartite distances
-    between two n-point sets in ℝ². -/
-noncomputable def minBipartiteDist : ℕ → ℕ := fun _ => 0  -- axiomatized
+    between two n-point sets in ℝ². Declared opaque since the
+    exact values are unknown; properties are axiomatized below. -/
+opaque minBipartiteDist : ℕ → ℕ := fun _ => 0
 
 /-- f(2n): the minimum number of distinct distances among 2n
-    points in ℝ². -/
-noncomputable def minDistinct2n : ℕ → ℕ := fun _ => 0  -- axiomatized
+    points in ℝ². Declared opaque since the exact values are
+    unknown; properties are axiomatized below. -/
+opaque minDistinct2n : ℕ → ℕ := fun _ => 0
+
+/- ## Properties of distSq -/
+
+theorem distSq_nonneg (p q : Point2) : distSq p q ≥ 0 := by
+  unfold distSq
+  apply add_nonneg <;> apply sq_nonneg
+
+theorem distSq_self (p : Point2) : distSq p p = 0 := by
+  unfold distSq
+  simp
+
+theorem distSq_comm (p q : Point2) : distSq p q = distSq q p := by
+  unfold distSq
+  ring
 
 /- ## Main Conjecture -/
 
@@ -68,6 +84,15 @@ axiom lattice_upper :
   ∃ C : ℝ, C > 0 ∧
     ∀ n : ℕ, n ≥ 2 →
       (minDistinct2n n : ℝ) ≤ C * n / Real.sqrt (Real.log n)
+
+/- ## Basic Bounds -/
+
+theorem bipartiteDistSet_card_le (X Y : Finset Point2) :
+    (bipartiteDistSet X Y).card ≤ X.card * Y.card := by
+  unfold bipartiteDistSet
+  calc (X ×ˢ Y).image (fun p => distSq p.1 p.2) |>.card
+      ≤ (X ×ˢ Y).card := Finset.card_image_le
+    _ = X.card * Y.card := Finset.card_product X Y
 
 /- ## Higher Dimensions -/
 

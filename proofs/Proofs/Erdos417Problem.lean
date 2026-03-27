@@ -33,10 +33,7 @@ Copyright 2025 The Formal Conjectures Authors.
 Licensed under the Apache License, Version 2.0.
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Set Filter Finset
 
@@ -185,9 +182,18 @@ Erdős conjectured in [Er98] that V(x)/V'(x) → ∞.
 def erdos417ConjectureInfinite : Prop :=
   Tendsto (fun x : ℕ => (V x : ℝ) / V' x) atTop atTop
 
-axiom erdos_417_limit_exists : erdos417LimitExists
-axiom erdos_417_ratio_gt_one : erdos417RatioGtOne
+-- NOTE: erdos417LimitExists (finite limit) is INCONSISTENT with
+-- erdos417ConjectureInfinite (limit = ∞). If V(x)/V'(x) → ∞, then
+-- no finite L exists with V(x)/V'(x) → L. The original problem asks
+-- "does the limit exist?" as a question, not an assertion. We keep
+-- only Erdős's conjecture (ratio → ∞) as the axiom.
+
 axiom erdos_417_conjecture : erdos417ConjectureInfinite
+
+/-- The ratio V(x)/V'(x) > 1 for large x follows from the conjecture:
+    if V(x)/V'(x) → ∞, it is eventually > 1 (indeed eventually > any bound). -/
+theorem erdos_417_ratio_gt_one : erdos417RatioGtOne :=
+  (Filter.tendsto_atTop.mp erdos_417_conjecture 2).mono (fun _ hx => by linarith)
 
 /- ## Part IV: Intuition for the Conjecture -/
 
