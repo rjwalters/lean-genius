@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 911,
     "erdosUrl": "https://erdosproblems.com/911",
     "erdosProblemStatus": "open",
@@ -51,9 +51,9 @@
       "graphRamseyNumber axiom: vertex Ramsey number",
       "erdos_911_statement theorem: equivalence"
     ],
-    "axiomCount": 3,
-    "lineCount": 236,
-    "assumptions": "3 axiom(s) and 1 sorry(s). Axioms: sizeRamseyNumber, sizeRamseyNumber_spec, sizeRamseyNumber_minimal. Sorry in size_ramsey_ge_edges (edge injection lemma)."
+    "axiomCount": 8,
+    "lineCount": 269,
+    "assumptions": "8 axiom(s) and 0 sorry(s). Axioms: sizeRamseyNumber, sizeRamseyNumber_spec, sizeRamseyNumber_minimal, beck_path_size_ramsey, bounded_degree_linear_size_ramsey, complete_graph_size_ramsey, vertex_ramsey_number, size_ramsey_upper_bound."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1982 [Er82e, p.78]. Size Ramsey numbers, introduced by Erdős, Faudree, Rousseau, and Schelp in 1978, measure the minimum edge complexity of Ramsey graphs.\n\nMajor results include:\n- Beck (1983): Paths have linear size Ramsey numbers R̂(Pₙ) = O(n)\n- Rödl-Szemerédi (2000): Complete graphs have R̂(Kₙ) = Θ(n²)\n- Kohayakawa-Rödl-Schacht-Szemerédi (2011): Bounded degree graphs have linear R̂\n\nThe question asks whether edge density forces additional Ramsey complexity. The motivation is that complete graphs K_n have Θ(n²) edges and R̂(K_n) = Θ(n²), giving R̂(G)/e(G) bounded — so no superlinear factor emerges even for the densest graphs. Erdős asked whether some dense family must exhibit superlinear R̂/e(G) growth, distinguishing density-driven complexity from degree-driven complexity established by the KRSS theorem.",
@@ -186,9 +186,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos911",
-    "lineCount": 236,
-    "axiomCount": 3,
-    "theoremCount": 11,
+    "lineCount": 269,
+    "axiomCount": 8,
+    "theoremCount": 10,
     "definitionCount": 7
   }
 }
