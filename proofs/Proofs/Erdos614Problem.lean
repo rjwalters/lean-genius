@@ -22,12 +22,14 @@ Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
 Results:
 - erdos_614_existence: proved from f_upper_bound
 - f_max_k: identified as FALSE and removed (star graph counterexample)
-Axioms: 4 (f_lower_bound, f_upper_bound, f_case_k_eq_1, f_mono_k)
+- f_upper_bound: proved via complete graph construction on Fin n
+Axioms: 3 (f_lower_bound, f_case_k_eq_1, f_mono_k)
 Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Card
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
 open SimpleGraph Finset
@@ -101,12 +103,79 @@ axiom f_lower_bound :
   ∀ n k : ℕ, n > k + 2 → k > 0 →
     ∀ m, existsGraphWithPropertyP n k m → m ≥ k * n / 2
 
+/-- The number of strictly ordered pairs (i,j) with i < j in Fin n × Fin n
+    equals n*(n-1)/2. Uses the symmetry argument: partition {(i,j) | i ≠ j}
+    into {i < j} and {i > j} of equal size, total = n*(n-1). -/
+private lemma card_lt_pairs (n : ℕ) :
+    ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card =
+      n * (n - 1) / 2 := by
+  -- The off-diagonal set {(i,j) | i ≠ j} has cardinality n*(n-1)
+  have h_offDiag : ((Finset.univ : Finset (Fin n × Fin n)).filter
+      (fun p => p.1 ≠ p.2)).card = n * (n - 1) := by
+    have : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
+        (Finset.univ : Finset (Fin n)).offDiag := by
+      ext ⟨a, b⟩; simp [Finset.mem_offDiag]
+    rw [this, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+  -- Partition: {i ≠ j} = {i < j} ∪ {i > j}
+  have h_split : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2)).card =
+      ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card +
+      ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card := by
+    rw [← Finset.filter_or]
+    congr 1; ext ⟨a, b⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ne_iff_lt_or_gt
+  -- Symmetry: |{i < j}| = |{i > j}| via swap
+  have h_symm : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card =
+      ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card := by
+    apply Finset.card_bij (fun p _ => (p.2, p.1))
+      (fun ⟨a, b⟩ h => by simp_all)
+      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by
+        simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
+      (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
+  omega
+
+/-- In the complete graph (⊤), the edge count equals n*(n-1)/2. -/
+private lemma edgeCount_complete (n : ℕ) :
+    @edgeCount (Fin n) _ _ (⊤ : SimpleGraph (Fin n)) _ = n * (n - 1) / 2 := by
+  unfold edgeCount
+  -- In ⊤, Adj a b ↔ a ≠ b. Since a < b → a ≠ b, the filter simplifies.
+  have : ∀ p : Fin n × Fin n, (p.1 < p.2 ∧ (⊤ : SimpleGraph (Fin n)).Adj p.1 p.2) ↔
+      p.1 < p.2 := by
+    intro ⟨a, b⟩
+    simp only [top_adj]
+    exact ⟨fun h => h.1, fun h => ⟨h, Fin.ne_of_lt h⟩⟩
+  simp_rw [Finset.filter_congr (fun p _ => this p)]
+  exact card_lt_pairs n
+
+/-- The complete graph has property P(k) when k+2 ≤ n: every vertex in
+    any (k+2)-subset is adjacent to all others, giving induced degree k+1 ≥ k. -/
+private lemma complete_hasPropertyP (n k : ℕ) (h : k + 2 ≤ n) :
+    @hasPropertyP (Fin n) _ _ (⊤ : SimpleGraph (Fin n)) _ k := by
+  intro S hS
+  unfold inducedMaxDegree
+  have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+  simp only [dif_pos hne]
+  obtain ⟨v, hv⟩ := hne
+  -- In ⊤, the filter {u ∈ S | u ≠ v ∧ Adj v u} = S.erase v
+  have hfilt : S.filter (fun u => u ≠ v ∧ (⊤ : SimpleGraph (Fin n)).Adj v u) = S.erase v := by
+    ext u; simp [Finset.mem_filter, Finset.mem_erase, top_adj, ne_comm]
+    tauto
+  calc k ≤ k + 1 := Nat.le_succ k
+    _ = S.card - 1 := by omega
+    _ = (S.erase v).card := (Finset.card_erase_of_mem hv).symm
+    _ = (S.filter (fun u => u ≠ v ∧ (⊤ : SimpleGraph (Fin n)).Adj v u)).card := by rw [hfilt]
+    _ ≤ S.sup' hne (fun w =>
+        (S.filter (fun u => u ≠ w ∧ (⊤ : SimpleGraph (Fin n)).Adj w u)).card) :=
+      Finset.le_sup' _ hv
+
 /-- Upper bound: the complete graph K_n has n(n-1)/2 edges and trivially
     has property P(k) for all k ≤ n-2, since every vertex in any induced
     subgraph has degree equal to the subgraph size minus 1. -/
-axiom f_upper_bound :
+theorem f_upper_bound :
   ∀ n k : ℕ, k + 2 ≤ n →
-    existsGraphWithPropertyP n k (n * (n - 1) / 2)
+    existsGraphWithPropertyP n k (n * (n - 1) / 2) := by
+  intro n k hnk
+  exact ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n,
+    ⊤, inferInstance, edgeCount_complete n, complete_hasPropertyP n k hnk⟩
 
 /-
 ## Part 5: Special Cases

@@ -71,14 +71,28 @@ axiom initial_elements :
 /- ## Observations -/
 
 /-- **Monotonicity**: A_n ⊆ A_{n+1} for all n. -/
-axiom sequence_monotone (n : ℕ) :
-  sequenceSet n ⊆ sequenceSet (n + 1)
+theorem sequence_monotone (n : ℕ) :
+  sequenceSet n ⊆ sequenceSet (n + 1) := by
+  intro x hx; exact Set.mem_union_left _ hx
+
+/-- Monotonicity of sequenceSet extended to ≤. -/
+private lemma sequenceSet_mono {a b : ℕ} (h : a ≤ b) : sequenceSet a ⊆ sequenceSet b := by
+  induction h with
+  | refl => exact Set.Subset.rfl
+  | step _ ih => exact Set.Subset.trans ih (sequence_monotone _)
 
 /-- **Closure**: generatedSet is closed under the operation (x, y) ↦ xy − 1
     for distinct x, y in the set with xy ≥ 2. -/
-axiom generated_closed :
+theorem generated_closed :
   ∀ x y, x ∈ generatedSet → y ∈ generatedSet → x ≠ y → x * y ≥ 2 →
-    x * y - 1 ∈ generatedSet
+    x * y - 1 ∈ generatedSet := by
+  intro x y hx hy hne hge
+  simp only [generatedSet, Set.mem_iUnion] at hx hy ⊢
+  obtain ⟨a, ha⟩ := hx
+  obtain ⟨b, hb⟩ := hy
+  exact ⟨max a b + 1, Set.mem_union_right _
+    ⟨x, y, sequenceSet_mono (le_max_left a b) ha,
+     sequenceSet_mono (le_max_right a b) hb, hne, hge, rfl⟩⟩
 
 /- **Guy E31**: this problem appears as E31 in Guy's 'Unsolved Problems
     in Number Theory' and as Problem 63 on Green's open problems list. -/
