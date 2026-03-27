@@ -35,6 +35,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Finite
 import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.NumberTheory.SumFourSquares
 
 open Nat Finset
 
@@ -239,8 +240,11 @@ axiom burr_erdos_upper_bound :
 Every positive integer is a sum of four squares.
 This is related but doesn't directly imply Ramsey completeness.
 -/
-axiom lagrange_four_squares :
-  ∀ n : ℕ, n ≥ 1 → ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2
+theorem lagrange_four_squares :
+    ∀ n : ℕ, n ≥ 1 → ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2 := by
+  intro n _
+  obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
+  exact ⟨a, b, c, d, h.symm⟩
 
 /-
 ## Part IX: Summary

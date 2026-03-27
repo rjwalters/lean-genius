@@ -27,6 +27,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.Padics.PadicVal
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.Finite.Basic
 
 namespace Erdos405
 
@@ -113,9 +115,60 @@ axiom yu_liu_1996 :
 (p-1)! ≡ -1 (mod p) for prime p.
 -/
 
+/-- Wilson's theorem: (p-1)! ≡ p-1 ≡ -1 (mod p).
+    Proved via Mathlib's ZMod.wilsons_lemma. -/
+theorem wilson_theorem (p : ℕ) (hp : Nat.Prime p) :
+    (p - 1).factorial % p = p - 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have h := ZMod.wilsons_lemma p
+  -- h : ((p-1)! : ZMod p) = -1
+  have hval := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, ZMod.val_neg_one'] at hval
+  exact hval
+
+/-- Fermat's little theorem: a^(p-1) ≡ 1 (mod p) when p ∤ a.
+    Proved via Mathlib's ZMod.pow_card_sub_one_eq_one. -/
+theorem fermat_little (p a : ℕ) (hp : Nat.Prime p) (ha : ¬p ∣ a) :
+    a ^ (p - 1) % p = 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have ha_zmod : (a : ZMod p) ≠ 0 := by
+    intro h; apply ha
+    rwa [ZMod.natCast_eq_zero_iff] at h
+  have hcard : p - 1 = Fintype.card (ZMod p) - 1 := by
+    rw [ZMod.card p]
+  have key : ((a : ZMod p)) ^ (p - 1) = 1 := by
+    rw [hcard]; exact ZMod.pow_card_sub_one_eq_one ha_zmod
+  have h1 : ((a ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by
+    push_cast; exact key
+  rwa [ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt hp.one_lt] at h1
+
+/-- Combined: (p-1)! + a^{p-1} ≡ -1 + 1 = 0 (mod p) if p ∤ a.
+    Proved from Wilson's theorem and Fermat's little theorem. -/
+theorem sum_divisible_by_p (p a : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (ha : ¬p ∣ a) :
+    p ∣ (p - 1).factorial + a ^ (p - 1) := by
+  have hw := wilson_theorem p hp
+  have hf := fermat_little p a hp ha
+  rw [Nat.dvd_iff_mod_eq_zero]
+  rw [Nat.add_mod, hw, hf]
+  omega
+
 /-
 ## Part 5: The Exceptional Case p ∣ a
 -/
+
+/-- If p ∣ a, then a^{p-1} ≡ 0 (mod p^{p-1}).
+    Since p | a, we have a = p·m, so a^{p-1} = p^{p-1}·m^{p-1}. -/
+theorem divisible_implies_large_power (p a : ℕ) (hp : Nat.Prime p) (ha : p ∣ a) :
+    p ^ (p - 1) ∣ a ^ (p - 1) := by
+  obtain ⟨m, rfl⟩ := ha
+  rw [mul_pow]
+  exact dvd_mul_right _ _
+
+/-- When p ∣ a, the equation becomes (p-1)! ≡ p^k (mod p^{p-1}),
+    which severely constrains k since v_p((p-1)!) = 0 for prime p. -/
+axiom divisible_case_analysis (p a k : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3)
+    (ha : p ∣ a) (heq : (p - 1).factorial + a ^ (p - 1) = p ^ k) :
+    k ≤ p - 1
 
 /-
 ## Part 6: p-adic Analysis
@@ -126,6 +179,26 @@ The p-adic valuation constrains solutions.
 /-- p-adic valuation of n! -/
 noncomputable def factorialPadicVal (p n : ℕ) : ℕ :=
   (Finset.range n).sum fun i => n / p ^ (i + 1)
+
+/-- Legendre's formula for v_p(n!) -/
+axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
+    padicValNat p n.factorial = factorialPadicVal p n
+
+/-- For (p-1)!, the p-adic valuation is 0.
+    Since (p-1)! is the product of {1,...,p-1}, none divisible by p. -/
+theorem factorial_padic_zero (p : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) :
+    padicValNat p (p - 1).factorial = 0 := by
+  rw [padicValNat.eq_zero_iff]
+  right; right
+  intro ⟨k, hk⟩
+  -- p ∣ (p-1)! means some factor in 1..p-1 is divisible by p.
+  -- But (p-1)! = ∏_{i=1}^{p-1} i, and for prime p, p ∤ i for 1 ≤ i ≤ p-1.
+  have h_ne_zero : (p - 1).factorial ≠ 0 := Nat.factorial_pos _ |>.ne'
+  have h_dvd : p ∣ (p - 1).factorial := ⟨k, hk⟩
+  have h_not_dvd : ¬ p ∣ (p - 1).factorial := by
+    rw [hp.dvd_factorial]
+    omega
+  exact h_not_dvd h_dvd
 
 /-
 ## Part 7: Why Only These Solutions?

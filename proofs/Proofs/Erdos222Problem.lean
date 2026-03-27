@@ -72,9 +72,15 @@ axiom fermat_sum_two_squares_criterion (n : ℕ) (hn : n > 0) :
     IsSumTwoSquares n ↔
       ∀ p : ℕ, IsPrime3Mod4 p → Even (padicValNat p n)
 
-/-- Primes p ≡ 1 (mod 4) are sums of two squares. -/
-axiom prime_1_mod_4_sum_two_squares (p : ℕ) (hp : p.Prime) (h : p % 4 = 1) :
-    IsSumTwoSquares p
+/-- Primes p ≡ 1 (mod 4) are sums of two squares.
+    Proved via Mathlib's Nat.Prime.sq_add_sq. -/
+theorem prime_1_mod_4_sum_two_squares (p : ℕ) (hp : p.Prime) (h : p % 4 = 1) :
+    IsSumTwoSquares p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq (show p % 4 ≠ 3 by omega)
+  exact ⟨↑a, ↑b, by
+    have : (↑a : ℤ) ^ 2 + (↑b : ℤ) ^ 2 = ↑p := by push_cast; linarith
+    rw [this, Int.toNat_natCast]⟩
 
 /-- 2 = 1² + 1² -/
 theorem two_is_sum_two_squares : IsSumTwoSquares 2 := ⟨1, 1, rfl⟩
