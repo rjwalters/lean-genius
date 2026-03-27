@@ -6,11 +6,11 @@ establishing the proof architecture:
 
 1. countingFn_primes_le_primeCounting: bridges our counting function with π(N)
 2. chebyshevTheta_le: θ(N) ≤ N·log(4) (from primorial bound, proved)
-3. primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (1 sorry)
+3. primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (proved)
 4. chebyshev_bound_tendsto_zero: the upper bound → 0 (proved)
-5. primes_density_zero: the density result (proved modulo #3)
+5. primes_density_zero: the density result (proved)
 
-Status: 1 sorry remaining (the splitting argument in primeCounting_le_chebyshev)
+Status: VERIFIED — 0 sorries, 0 axioms. Complete proof from Mathlib.
 Dependencies: Only Mathlib (no other project files needed)
 -/
 
@@ -87,10 +87,81 @@ This splitting argument is mathematically straightforward but requires careful
 Lean formalization with Finset partitions. -/
 
 /-- Upper bound on prime counting from Chebyshev:
-    π(N) ≤ 2·N·log(4)/log(N) + √N + 1 for N ≥ 2. -/
+    π(N) ≤ 2·N·log(4)/log(N) + √N + 1 for N ≥ 2.
+
+    Proof: Split primes ≤ N at √N. Small primes (≤ √N): at most √N + 1.
+    Large primes (> √N): each contributes ≥ (1/2)log(N) to θ(N) ≤ N·log(4),
+    so their count ≤ 2N·log(4)/log(N). -/
 theorem primeCounting_le_chebyshev (N : ℕ) (hN : 2 ≤ N) :
     (Nat.primeCounting N : ℝ) ≤ 2 * N * Real.log 4 / Real.log N + Nat.sqrt N + 1 := by
-  sorry
+  set S := Finset.filter Nat.Prime (Finset.range (N + 1)) with hS_def
+  set sqrtN := Nat.sqrt N with hsqrtN_def
+  set S_small := S.filter (· ≤ sqrtN) with hS_small_def
+  set S_large := S.filter (fun p => sqrtN < p) with hS_large_def
+  have hS_union : S = S_small ∪ S_large := by
+    ext p
+    simp only [hS_small_def, hS_large_def, Finset.mem_union, Finset.mem_filter]
+    constructor
+    · intro hp; by_cases h : p ≤ sqrtN
+      · left; exact ⟨hp, h⟩
+      · right; exact ⟨hp, by omega⟩
+    · intro hp; rcases hp with ⟨hp, _⟩ | ⟨hp, _⟩ <;> exact hp
+  have hS_disj : Disjoint S_small S_large := by
+    simp only [hS_small_def, hS_large_def, Finset.disjoint_filter]
+    intro p _ h1 h2; omega
+  have hpiN : Nat.primeCounting N = S.card := by
+    simp only [hS_def, Nat.primeCounting, Nat.primeCounting']
+    rw [Nat.count_eq_card_filter_range]
+  have hcard_split : S.card = S_small.card + S_large.card := by
+    rw [hS_union, Finset.card_union_of_disjoint hS_disj]
+  have h_small_bound : (S_small.card : ℝ) ≤ Nat.sqrt N + 1 := by
+    have hsub : S_small ⊆ Finset.range (sqrtN + 1) := by
+      intro p hp
+      simp only [hS_small_def, Finset.mem_filter] at hp
+      simp only [Finset.mem_range]; omega
+    have hcard := Finset.card_le_card hsub
+    rw [Finset.card_range] at hcard
+    exact_mod_cast hcard
+  have hlogN_pos : Real.log (N : ℝ) > 0 := by
+    apply Real.log_pos; exact_mod_cast show 1 < N by omega
+  have h_large_bound : (S_large.card : ℝ) ≤ 2 * N * Real.log 4 / Real.log N := by
+    have h_log_lower : ∀ p ∈ S_large, Real.log (N : ℝ) / 2 ≤ Real.log (p : ℝ) := by
+      intro p hp
+      simp only [hS_large_def, Finset.mem_filter] at hp
+      obtain ⟨hpS, hpgt⟩ := hp
+      simp only [hS_def, Finset.mem_filter] at hpS
+      have hp_sq_gt : N < p * p := by
+        have hp_ge : sqrtN + 1 ≤ p := hpgt
+        have h_succ_sq : N < (sqrtN + 1) * (sqrtN + 1) := by
+          rw [hsqrtN_def]; exact Nat.lt_succ_sqrt' N
+        nlinarith [Nat.mul_le_mul hp_ge hp_ge]
+      have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hpS.2.pos
+      have hp_sq_real : (N : ℝ) < (p : ℝ) * (p : ℝ) := by exact_mod_cast hp_sq_gt
+      rw [div_le_iff₀ (two_pos)]
+      have hlog_mul : Real.log ((p : ℝ) * (p : ℝ)) = Real.log (p : ℝ) + Real.log (p : ℝ) :=
+        Real.log_mul (ne_of_gt hp_pos) (ne_of_gt hp_pos)
+      have hlog_lt : Real.log (N : ℝ) < Real.log ((p : ℝ) * (p : ℝ)) :=
+        Real.log_lt_log (by exact_mod_cast (show 0 < N by omega)) hp_sq_real
+      linarith
+    have h_sum_lower : S_large.card * (Real.log N / 2) ≤
+        ∑ p ∈ S_large, Real.log (p : ℝ) := by
+      have := Finset.card_nsmul_le_sum S_large _ _ h_log_lower
+      simp only [nsmul_eq_mul] at this; exact this
+    have h_sum_le_theta : ∑ p ∈ S_large, Real.log (p : ℝ) ≤ chebyshevTheta N := by
+      unfold chebyshevTheta
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro p hp
+        simp only [hS_large_def, Finset.mem_filter] at hp
+        exact hp.1
+      · intro p hp _
+        simp only [Finset.mem_filter, Finset.mem_range] at hp
+        exact Real.log_nonneg (by exact_mod_cast hp.2.one_le)
+    have h_theta_bound := chebyshevTheta_le N
+    have h_combined : S_large.card * (Real.log N / 2) ≤ N * Real.log 4 := by linarith
+    rw [le_div_iff₀ hlogN_pos]
+    nlinarith
+  rw [hpiN, hcard_split, Nat.cast_add]
+  linarith
 
 /-! ## Tendsto results -/
 
