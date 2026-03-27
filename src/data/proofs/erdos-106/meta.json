@@ -22,9 +22,9 @@
     "erdosNumber": 106,
     "erdosUrl": "https://erdosproblems.com/106",
     "erdosProblemStatus": "open",
-    "axiomCount": 13,
-    "assumptions": "13 axiom declarations: f_bounded (Cauchy-Schwarz sqrt bound), f_mono (monotone increasing), f_1 (f(1)=1), f_2 (f(2)=1 Erdos), f_4 (f(4)=2), f_5 (f(5)=2 Newman), f_9 (f(9)=3), f_perfect_square (f(k^2)=k), f_k2_plus_1_lower (grid lower bound), halasz_odd (odd increment bound), halasz_even (even increment bound), praton_equivalence (conjecture equivalence), bku_theorem (axis-parallel 2024 result)",
-    "lineCount": 233,
+    "axiomCount": 9,
+    "assumptions": "9 axiom declarations: f_bounded (Cauchy-Schwarz sqrt bound), f_mono (monotone increasing), f_2 (f(2)=1 Erdos), f_5 (f(5)=2 Newman), f_perfect_square (f(k^2)=k), halasz_odd (odd increment bound), halasz_even (even increment bound), praton_equivalence (conjecture equivalence), bku_theorem (axis-parallel 2024 result). Proved: f_1, f_4, f_9 from f_perfect_square; f_k2_plus_1_lower from f_mono + f_perfect_square",
+    "lineCount": 245,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -287,10 +287,10 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 233,
-    "axiomCount": 13,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 3,
+    "lineCount": 245,
+    "axiomCount": 9,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 7,
     "sorryTheorems": 1,
     "definitionCount": 12,
     "mainTheorems": [
