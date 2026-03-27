@@ -1,6 +1,6 @@
 {
   "slug": "erdos-190",
-  "title": "Erdős #190",
+  "title": "Erd\u0151s #190",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,27 +18,32 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
-    "iteration": 1,
-    "focus": "10 axioms (down from 11). Proved H_minimal. Found H_pos false at k=0.",
+    "iteration": 2,
+    "focus": "Proved H_spec, H_lower_bound (9->7 axioms). Remaining 7 axioms are deep or computational.",
     "blockers": [],
     "nextAction": "Prove H_spec (needs monotonicity argument), fix H_pos condition"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved H_pos (10→9 axioms). Fixed false axiom (was missing k≥1 hypothesis).",
+    "progressSummary": "PROGRESS: Proved H_spec (restriction arg) and H_lower_bound (AP size). Axiom count 9\u21927. H_spec uses Fin.castLE + Nat.find_spec; H_lower_bound uses AP max-value bound k-1 \u2264 a+(k-1)*d.",
     "builtItems": [
-      "H_minimal: proved directly from Nat.find_min + push_neg",
-      "H_pos (Erdos190Problem.lean:226): theorem with k≥1 hypothesis, fixed false axiom"
+      "H_minimal: proved from Nat.find_min (prior session)",
+      "H_pos: proved for k>=1 (prior session)",
+      "H_spec: proved via Fin.castLE restriction from Nat.find_spec",
+      "H_lower_bound: proved \u2014 k-term AP needs N>=k (strengthened to k>=1 from k>=3)"
     ],
     "insights": [
       "H_pos is FALSE for k=0: H(0)=0 because empty AP (Fin 0) trivially satisfies hasCanonicalAP",
-      "H_spec is provable via restriction: χ → χ∘Fin.castLE transfers canonical AP from Fin(H k) to Fin N",
+      "H_spec is provable via restriction: \u03c7 \u2192 \u03c7\u2218Fin.castLE transfers canonical AP from Fin(H k) to Fin N",
       "H_minimal is a direct consequence of Nat.find minimality",
-      "H_pos proved: H(k)>0 for k≥1 via Fin 0 emptiness — Fin.elim0 eliminates impossible Fin k → Fin 0"
+      "H_pos proved: H(k)>0 for k\u22651 via Fin 0 emptiness \u2014 Fin.elim0 eliminates impossible Fin k \u2192 Fin 0",
+      "H_spec follows from Nat.find_spec + Fin.castLE restriction: restrict coloring to first H(k) elements, get canonical AP, lift back via injective castLE",
+      "H_lower_bound: any k-term AP has max value a+(k-1)*d >= k-1, so it needs N>=k",
+      "For rainbow case in H_spec: Fin.castLE_injective preserves card of image, and Finset.image_image transfers color map"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove H_spec via Fin.castLE restriction argument (needs image/injection lemmas)",
-      "Fix H_pos: add k ≥ 1 hypothesis",
+      "Fix H_pos: add k \u2265 1 hypothesis",
       "Prove H_le_W: show van der Waerden property implies canonical property"
     ]
   },
@@ -56,16 +61,16 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.836Z",
-  "lastUpdate": "2026-03-27T00:10:00Z",
+  "lastUpdate": "2026-03-26T23:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos190Problem.lean",
       "filename": "Erdos190Problem.lean",
-      "lineCount": 265,
-      "theoremCount": 4,
-      "axiomCount": 9,
+      "lineCount": 296,
+      "theoremCount": 6,
+      "axiomCount": 7,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

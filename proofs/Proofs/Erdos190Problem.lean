@@ -109,9 +109,41 @@ noncomputable def H (k : ℕ) : ℕ :=
 axiom exists_canonical_threshold (k : ℕ) :
     ∃ N : ℕ, ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k
 
-/-- For N ≥ H(k), every coloring has the canonical property. -/
-axiom H_spec (k N : ℕ) (hN : N ≥ H k) :
-    ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k
+/-- For N ≥ H(k), every coloring has the canonical property.
+    Proof: restrict χ : Fin N → C to Fin (H k) via Fin.castLE,
+    apply Nat.find_spec, then lift the AP back via Fin.castLE.
+    The monochromatic/rainbow property transfers because castLE is injective. -/
+theorem H_spec (k N : ℕ) (hN : N ≥ H k) :
+    ∀ (C : Type) [DecidableEq C] (χ : Fin N → C), hasCanonicalAP χ k := by
+  intro C _ χ
+  have hle : H k ≤ N := hN
+  -- Restrict coloring to first H(k) elements
+  let χ' : Fin (H k) → C := χ ∘ Fin.castLE hle
+  -- By Nat.find_spec, χ' has a canonical AP
+  obtain ⟨f, hAP, hColor⟩ := Nat.find_spec (exists_canonical_threshold k) C χ'
+  -- Lift AP to Fin N: castLE preserves .val so AP property transfers
+  have hinj := Fin.castLE_injective hle
+  refine ⟨Fin.castLE hle ∘ f, ?_, ?_⟩
+  · -- isAPSequence preserved: castLE preserves .val
+    obtain ⟨a, d, hd, hf⟩ := hAP
+    exact ⟨a, d, hd, fun i => by simp [Fin.castLE, hf i]⟩
+  · -- Coloring property transfers via castLE
+    have himg : Finset.image (Fin.castLE hle ∘ f) Finset.univ =
+        Finset.image (Fin.castLE hle) (Finset.image f Finset.univ) := by
+      rw [← Finset.image_comp]
+    rw [himg]
+    cases hColor with
+    | inl hMono =>
+      left
+      obtain ⟨c, hc⟩ := hMono
+      exact ⟨c, fun x hx => by
+        obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
+        exact hc y hy⟩
+    | inr hRain =>
+      right
+      unfold isRainbow at hRain ⊢
+      rw [Finset.card_image_of_injective _ hinj, Finset.image_image]
+      exact hRain
 
 /-- H(k) is the minimum such N.
     Proof: direct from Nat.find_min (minimality of Nat.find). -/
@@ -141,8 +173,26 @@ noncomputable def W (k : ℕ) : ℕ :=
 /-- H(k) ≤ W(k) because rainbow APs give an easier win condition. -/
 axiom H_le_W (k : ℕ) (hk : k ≥ 3) : H k ≤ W k
 
-/-- But H(k) is still large. -/
-axiom H_lower_bound (k : ℕ) (hk : k ≥ 3) : H k ≥ k
+/-- H(k) ≥ k for k ≥ 1: a k-term AP a, a+d, ..., a+(k-1)d with d ≥ 1
+    requires N ≥ k (since the max value a+(k-1)d ≥ k-1).
+    Strengthened from original k ≥ 3 to k ≥ 1. -/
+theorem H_lower_bound (k : ℕ) (hk : k ≥ 1) : H k ≥ k := by
+  by_contra h
+  push_neg at h  -- h : H k < k
+  -- Nat.find_spec gives a canonical AP for any coloring of Fin (H k)
+  obtain ⟨f, ⟨a, d, hd, hf⟩, _⟩ :=
+    Nat.find_spec (exists_canonical_threshold k) (Fin (H k)) (fun x => x)
+  -- f : Fin k → Fin (H k) with f i = a + i * d, d > 0
+  -- The last element: a + (k-1)*d < H k
+  have hval := hf ⟨k - 1, by omega⟩
+  have hlt := (f ⟨k - 1, by omega⟩).isLt
+  -- But a + (k-1)*d ≥ (k-1)*1 = k-1 (since d ≥ 1)
+  have hge : k - 1 ≤ a + (k - 1) * d := by
+    calc k - 1 = (k - 1) * 1 := by omega
+      _ ≤ (k - 1) * d := Nat.mul_le_mul_left _ (by omega : 1 ≤ d)
+      _ ≤ a + (k - 1) * d := Nat.le_add_left _ _
+  -- k-1 ≤ a+(k-1)*d < H k < k — no natural between k-1 and k
+  omega
 
 /- ## Part VI: Known Asymptotic Results -/
 
