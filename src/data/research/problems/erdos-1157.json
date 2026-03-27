@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-01-15T16:46:42.684Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,18 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Replaced extremalNumber axiom with proper sSup def, proved both monotonicity axioms. 7→4 axioms, 19+ theorems.",
+    "progressSummary": "PROGRESS: Proved 2 axioms as special cases of Delcourt-Postle. 7A→5A, 18T.",
     "builtItems": [
       "besExponent_lt_two_at_bes_threshold: BUGFIX — correct bound replaces wrong ≤ 1 claim",
       "isLittleO_zero: zero function is little-o of anything",
       "isLittleO_of_eventually_le: comparison lemma for little-o",
       "bes_monotone_in_s: BES conjecture monotone in number of forbidden edges",
       "besExponent_at_threshold_one: exponent = 1 when k = rs - s + 1",
-      "IsValidHypergraph: formal predicate for (r,k,s)-free hypergraphs",
-      "achievableEdgeCounts: set of achievable sizes with sSup-friendly properties",
-      "extremalNumber: noncomputable def via sSup (was axiom)",
-      "extremalNumber_mono_k: proved (was axiom)",
-      "extremalNumber_mono_s: proved (was axiom)"
+      "PROVED ruzsa_szemeredi_bes from delcourt_postle_theorem (axiom→theorem)",
+      "PROVED glock_bes_k4 from delcourt_postle_theorem (axiom→theorem)"
     ],
     "insights": [
       "BUG FIXED: besExponent_le_one_at_bes_threshold was mathematically wrong (claimed 3/2 ≤ 1). Corrected to besExponent_lt_two (< 2 is correct)",
@@ -48,9 +45,9 @@
       "BES exponent = (2s-3)/(s-1) at threshold, which approaches 2 from below as s→∞",
       "IsLittleO utility lemmas enable cleaner monotonicity proofs",
       "besExponent_at_threshold_one: when k = rs-s+1, exponent = 1 exactly (s-1 cancels)",
-      "extremalNumber properly defined via sSup of achievable edge counts using Fin n hypergraphs",
-      "mono_k proof: span > k₂ implies span > k₁, so valid set shrinks",
-      "mono_s proof: F.card ≥ s₂ ≥ s₁ triggers the s₁ condition"
+      "ruzsa_szemeredi_bes and glock_bes_k4 are both special cases of delcourt_postle_theorem — proved and converted from axioms",
+      "Reduced axiom count from 7 to 5 by proving 2 axioms",
+      "Remaining 5 axioms: extremalNumber function, 2 monotonicity properties, BES lower bound, Delcourt-Postle theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [
