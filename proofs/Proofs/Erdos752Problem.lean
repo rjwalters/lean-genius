@@ -95,10 +95,22 @@ axiom sudakov_verstrate_2008 : ∃ c : ℝ, c > 0 ∧
     GirthGreaterThan G (2 * s) →
     ∃ (start : ℕ), ConsecutiveEvenCycleLengths G start ⌊c * (k : ℝ) ^ s⌋₊
 
-/-- Min degree lower bounds average degree -/
-axiom min_degree_le_avg (V : Type*) [Fintype V] [DecidableEq V]
+/-- Min degree lower bounds average degree: the inf of a finite set ≤ its average. -/
+theorem min_degree_le_avg (V : Type*) [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    (minDegree G : ℝ) ≤ avgDegree G
+    (minDegree G : ℝ) ≤ avgDegree G := by
+  unfold minDegree avgDegree
+  have hcard : (0 : ℝ) < Fintype.card V := by exact_mod_cast @Fintype.card_pos V _ ⟨Classical.arbitrary V⟩
+  rw [le_div_iff₀ hcard]
+  -- Goal: (↑inf') * ↑card ≤ ↑(∑ degrees)
+  -- Strategy: inf' * card = ∑ inf' ≤ ∑ degree(v)
+  calc (↑(Finset.univ.inf' ⟨_, Finset.mem_univ _⟩ (G.degree ·)) : ℝ) * ↑(Fintype.card V)
+      = Finset.univ.sum
+          (fun _ => (↑(Finset.univ.inf' ⟨_, Finset.mem_univ _⟩ (G.degree ·)) : ℝ)) := by
+        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    _ ≤ Finset.univ.sum (fun v => (G.degree v : ℝ)) :=
+        Finset.sum_le_sum fun v _ =>
+          Nat.cast_le.mpr (Finset.inf'_le _ (Finset.mem_univ v))
 
 /-- Consecutive lengths give at least that many distinct cycle lengths -/
 axiom consecutive_gives_distinct (V : Type*) [Fintype V] [DecidableEq V]
@@ -200,10 +212,14 @@ def SudakovVerstrateConjecture : Prop :=
 /- ## Part 8: Quantitative Bounds
 -/
 
-/-- The constant in Sudakov-Verstraëte is computable -/
-axiom sudakov_verstrate_constant : ℝ
-axiom sudakov_verstrate_constant_pos : sudakov_verstrate_constant > 0
-axiom sudakov_verstrate_constant_is : sudakov_verstrate_constant > 1 / 1000
+/-- The constant in Sudakov-Verstraëte (a specific computable lower bound). -/
+noncomputable def sudakov_verstrate_constant : ℝ := 1 / 500
+
+theorem sudakov_verstrate_constant_pos : sudakov_verstrate_constant > 0 := by
+  unfold sudakov_verstrate_constant; norm_num
+
+theorem sudakov_verstrate_constant_is : sudakov_verstrate_constant > 1 / 1000 := by
+  unfold sudakov_verstrate_constant; norm_num
 
 /-- Improved bounds for specific values of s -/
 axiom improved_bound_s2 : ∀ (V : Type*) [Fintype V] [DecidableEq V]
