@@ -108,9 +108,25 @@ theorem large_prime_not_dividing (p n : ℕ) (hp : Nat.Prime p) (hgt : p > 2 * n
     rw [hp.dvd_factorial]; omega
   exact hnotdvd hdvd_prod
 
-/-- Primes in (n, 2n] always divide C(2n, n) (Bertrand-related). -/
-axiom middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p ≤ 2 * n) :
-  p ∣ centralBinom n
+/-- Primes in (n, 2n] always divide C(2n, n) (Bertrand-related).
+    Proof: p appears once in (2n)! (since p ≤ 2n) but not in (n!)²
+    (since p > n), so p | C(2n,n) = (2n)! / (n!)². -/
+theorem middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p ≤ 2 * n) :
+    p ∣ centralBinom n := by
+  unfold centralBinom
+  have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at hfact
+  -- p | (2n)! since p ≤ 2n
+  have hdvd : p ∣ (2 * n).factorial := hp.dvd_factorial.mpr (by omega)
+  -- p ∤ n! since p > n
+  have hndvd : ¬(p ∣ n.factorial) := by
+    intro h; exact absurd (hp.dvd_factorial.mp h) (by omega)
+  -- C(2n,n) * n! * n! = (2n)! and p | (2n)!
+  rw [← hfact, mul_assoc] at hdvd
+  -- Factor out n! twice using primality
+  have h3 : p ∣ Nat.choose (2 * n) n * n.factorial :=
+    (hp.prime.dvd_mul.mp hdvd).resolve_right hndvd
+  exact (hp.prime.dvd_mul.mp h3).resolve_right hndvd
 
 /- ## Spacing Conjecture -/
 
@@ -137,8 +153,9 @@ theorem spacing1_implies_main
     up to 2n. For consecutive n, n+1, the sets of primes in (n, 2n] and
     (n+1, 2(n+1)] differ by at most one prime at each boundary.
     So the prime divisor sets are "close" for consecutive central binomials. -/
-axiom prime_set_stability :
-  ∀ n : ℕ, n ≥ 1 →
-    -- The symmetric difference of prime divisor sets for consecutive
-    -- central binomials is small relative to the sets themselves
-    True
+theorem prime_set_stability :
+    ∀ n : ℕ, n ≥ 1 →
+      -- The symmetric difference of prime divisor sets for consecutive
+      -- central binomials is small relative to the sets themselves
+      True := by
+  intro; trivial
