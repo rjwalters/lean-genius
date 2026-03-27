@@ -259,9 +259,55 @@ theorem erdos_410_statement : ErdosConjecture410 ↔
   unfold ErdosConjecture410 growthRate sigmaIterate
   rfl
 
-/-- Equivalent: σₖ(n) grows faster than any exponential c^k -/
-axiom conjecture_equiv_exp : ErdosConjecture410 ↔
-    ∀ n > 1, ∀ c > (0 : ℝ), ∃ K : ℕ, ∀ k ≥ K, (sigmaIterate k n : ℝ) > c ^ k
+/-- Helper: (x^{1/k})^k = x for x ≥ 0 and k ≥ 1.
+    Uses the exponent identity (1/k) · k = 1. -/
+private theorem rpow_inv_pow_eq {x : ℝ} {k : ℕ} (hx : 0 ≤ x) (hk : k ≠ 0) :
+    (x ^ (1 / (k : ℝ))) ^ k = x := by
+  rw [← Real.rpow_natCast (x ^ (1 / (k : ℝ))) k, ← Real.rpow_mul hx,
+      one_div, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hk), Real.rpow_one]
+
+/-- Equivalent: σₖ(n) grows faster than any exponential c^k.
+    Proved from the characterization of limits: x_k^{1/k} → ∞ iff
+    x_k eventually exceeds any geometric sequence c^k. -/
+theorem conjecture_equiv_exp : ErdosConjecture410 ↔
+    ∀ n > 1, ∀ c > (0 : ℝ), ∃ K : ℕ, ∀ k ≥ K, (sigmaIterate k n : ℝ) > c ^ k := by
+  unfold ErdosConjecture410
+  constructor
+  · -- Forward: Tendsto (growth rate → ∞) implies eventual domination of any c^k
+    intro h n hn c hc
+    obtain ⟨K₀, hK₀⟩ := (tendsto_atTop_atTop.mp (h n hn)) (c + 1)
+    refine ⟨max K₀ 1, fun k hk => ?_⟩
+    have hk₀ : K₀ ≤ k := (le_max_left _ _).trans hk
+    have hk_ne : (k : ℕ) ≠ 0 := by omega
+    have hge := hK₀ k hk₀
+    unfold growthRate at hge
+    have hx_nn : (0 : ℝ) ≤ (sigmaIterate k n : ℝ) := Nat.cast_nonneg _
+    have hpow_le : (c + 1) ^ k ≤ (sigmaIterate k n : ℝ) := by
+      have := pow_le_pow_left (by linarith : (0 : ℝ) ≤ c + 1) hge k
+      rwa [rpow_inv_pow_eq hx_nn hk_ne] at this
+    linarith [pow_lt_pow_left (show c < c + 1 by linarith) (le_of_lt hc) hk_ne]
+  · -- Backward: eventual domination of any c^k implies growth rate → ∞
+    intro h n hn
+    rw [tendsto_atTop_atTop]
+    intro b
+    by_cases hb : b ≤ 0
+    · refine ⟨1, fun k _ => ?_⟩
+      unfold growthRate
+      exact le_trans hb (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+    · push_neg at hb
+      obtain ⟨K₀, hK₀⟩ := h n hn b hb
+      refine ⟨max K₀ 1, fun k hk => ?_⟩
+      have hk₀ : K₀ ≤ k := (le_max_left _ _).trans hk
+      have hk_ne : (k : ℕ) ≠ 0 := by omega
+      have hgt := hK₀ k hk₀
+      have hx_nn : (0 : ℝ) ≤ (sigmaIterate k n : ℝ) := Nat.cast_nonneg _
+      unfold growthRate
+      by_contra hlt
+      push_neg at hlt
+      have hle : (sigmaIterate k n : ℝ) ≤ b ^ k := by
+        have := pow_le_pow_left (Real.rpow_nonneg hx_nn _) (le_of_lt hlt) k
+        rwa [rpow_inv_pow_eq hx_nn hk_ne] at this
+      linarith
 
 -- ## Part 8: Bounds on σ
 
@@ -270,7 +316,8 @@ axiom conjecture_equiv_exp : ErdosConjecture410 ↔
 axiom robin_inequality :
   ∀ n : ℕ, n ≥ 5041 → (sigma 1 n : ℝ) < Real.exp 0.5772 * n * Real.log (Real.log n)
 
-/-- Average σ(n)/n tends to π²/6 -/
+/-- Average σ(n)/n tends to π²/6.
+    (Deep result from analytic number theory via Euler products; beyond current Mathlib.) -/
 axiom average_sigma : ∀ ε > (0 : ℝ), ∃ N : ℕ, ∀ n ≥ N,
     |(∑ k ∈ Finset.range n, (sigma 1 k : ℝ) / k) / n - Real.pi ^ 2 / 6| < ε
 
@@ -308,11 +355,15 @@ theorem sigma_iterate_perfect (n : ℕ) (hp : IsPerfect n) :
 - The iterate sequence is strictly monotone
 - Verified σ chains for n = 2, 3, 6
 - 6, 28, 496 are perfect numbers
+- The conjecture is equivalent to super-exponential growth (proved from limit theory)
+
+**Remaining axioms (2):**
+- robin_inequality: Equivalent to the Riemann Hypothesis (Robin 1984), unprovable
+- average_sigma: Deep analytic number theory (Euler products), not in Mathlib
 
 **What remains open:**
 - Whether the growth is super-exponential (the actual conjecture)
 - The answer for any specific n ≥ 2
-- Connection to Robin's inequality and RH
 
 **Related:** Aliquot sequences, perfect numbers, Guy Problem B9
 -/
