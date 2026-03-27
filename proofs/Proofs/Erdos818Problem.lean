@@ -205,7 +205,7 @@ theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
 There exist sets A with small sumset where |AA| = O(|A|² / log|A|).
 So the log factor cannot be removed entirely.
 -/
-/- The log factor is tight: there exist sets A with |A+A| ≤ 2|A| - 1
+/- The log factor is tight: there exist sets A with |A+A| ≤ 2|A| - 1 -/
 
 /-
 ## Part VII: Connection to Sum-Product Conjecture
@@ -227,7 +227,7 @@ Problem 818 asks: if |A+A| ≤ K|A|, then |AA| ≥ |A|²/log|A|?
 
 The latter is a conditional result: GIVEN small sumset, product set is large.
 -/
-/- Problem 52 conjectures max(|A+A|, |AA|) ≥ |A|^{2-ε}.
+/- Problem 52 conjectures max(|A+A|, |AA|) ≥ |A|^{2-ε}. -/
 
 /-
 ## Part VIII: Examples
@@ -239,7 +239,7 @@ If A = {1, 2, ..., n}, then:
 - |A + A| = 2n - 1 (small, additive doubling ~2)
 - |A · A| ≈ n²/log n (by Erdős multiplication table problem)
 -/
-/- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n.
+/- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n. -/
 
 /--
 **Example: Geometric progression**
@@ -248,7 +248,7 @@ If A = {1, r, r², ..., r^{n-1}}, then:
 - |A · A| = 2n - 1 (small, multiplicative structure)
 This shows the opposite extreme.
 -/
-/- For A = {1, r, r², ..., r^{n-1}} with r > n:
+/- For A = {1, r, r², ..., r^{n-1}} with r > n: -/
 
 /-
 ## Part IX: Summary
