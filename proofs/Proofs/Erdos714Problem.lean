@@ -138,9 +138,9 @@ axiom brown_theorem :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     (exKrr n 3 : ℝ) ≥ c * (n : ℝ)^(5/3 : ℝ)
 
-axiom erdos_renyi_sos_theorem :
+theorem erdos_renyi_sos_theorem :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exKrr n 3 : ℝ) ≥ c * (n : ℝ)^(5/3 : ℝ)
+    (exKrr n 3 : ℝ) ≥ c * (n : ℝ)^(5/3 : ℝ) := brown_theorem
 
 /--
 **Erdős Problem #714: Proved for r = 2 and r = 3**
