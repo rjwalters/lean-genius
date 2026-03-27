@@ -14,10 +14,7 @@ Status: OPEN.
 Reference: https://erdosproblems.com/533
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 /- ## Definitions -/
 
@@ -132,6 +129,18 @@ theorem isTriangleFree_of_no_triangle {n : ℕ} (G : SGraph n)
       first | exact absurd rfl hij | exact eab | exact ebc | exact eac |
       exact G.symm _ _ eab | exact G.symm _ _ ebc | exact G.symm _ _ eac
 
+/-- Clique-freeness is upward-closed: no j-clique implies no k-clique for k ≥ j.
+    Contrapositive of hasClique_mono. -/
+theorem not_hasClique_mono {n : ℕ} (G : SGraph n) {j k : ℕ} (hjk : j ≤ k)
+    (hj : ¬HasClique G j) : ¬HasClique G k :=
+  fun hk => hj (hasClique_mono G hjk hk)
+
+/-- K₅-free graphs are also K₇-free. The Erdős–Rogers counterexample
+    uses K₇-free graphs, so it does not directly obstruct Problem 533. -/
+theorem k5_free_implies_k7_free {n : ℕ} (G : SGraph n) (h : ¬HasClique G 5) :
+    ¬HasClique G 7 :=
+  not_hasClique_mono G (by omega) h
+
 /- ## Known Partial Results -/
 
 /-- Erdős–Hajnal–Simonovits–Sós–Szemerédi: for δ > 1/16, any K₅-free graph
@@ -159,6 +168,19 @@ axiom erdos_rogers_counterexample :
     (1 : ℝ) / 4 * n ^ 2 ≤ (edgeCount G : ℝ) ∧
     ∀ (S : Finset (Fin n)), IsTriangleFree G S →
       (S.card : ℝ) < C * n
+
+/- ## Partial Resolution -/
+
+/-- For δ > 1/16, Problem 533 follows from the known ehsss_result.
+    The constant c = δ/2 works. The open part is 0 < δ ≤ 1/16. -/
+theorem erdos_533_for_large_delta (δ : ℝ) (hδ : 0 < δ) (hδ_large : 1 / 16 < δ) :
+    ∃ c : ℝ, 0 < c ∧ ∀ (n : ℕ) (hn : 1 ≤ n)
+      (G : SGraph n) (hK5 : ¬HasClique G 5)
+      (hEdges : δ * n ^ 2 ≤ (edgeCount G : ℝ)),
+    ∃ (S : Finset (Fin n)), IsTriangleFree G S ∧
+      (S.card : ℝ) ≥ c * n :=
+  ⟨δ / 2, by linarith, fun n hn G hK5 hEdges =>
+    ehsss_result n hn δ hδ_large G hK5 hEdges⟩
 
 /- ## The Open Question -/
 
