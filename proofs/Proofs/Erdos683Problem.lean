@@ -58,15 +58,19 @@ noncomputable def P (n k : ℕ) : ℕ := largestPrimeDivisor (n.choose k)
 
 /--
 **Basic Property:**
-P(n) is prime when n > 1.
+P(n) is prime when n > 1. Proved from Nat.find_spec.
 -/
-axiom P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime
+theorem P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime := by
+  unfold largestPrimeDivisor; rw [dif_pos hn]
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).1
 
 /--
 **Divisibility Property:**
-P(n) divides n when n > 1.
+P(n) divides n when n > 1. Proved from Nat.find_spec.
 -/
-axiom P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n
+theorem P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n := by
+  unfold largestPrimeDivisor; rw [dif_pos hn]
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).2
 
 /--
 **Maximality Property:**
