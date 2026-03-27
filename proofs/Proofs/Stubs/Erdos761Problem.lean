@@ -82,30 +82,26 @@ noncomputable def SimpleGraph.cochromNumber {V : Type*}
 /-- Any proper coloring is acyclic for every orientation: if c(u) ≠ c(v)
     whenever u and v are adjacent, then in particular c(u) ≠ c(v) whenever
     there's a directed edge from u to v. So δ(G) ≤ |V|.
-
-    Proof: The identity coloring (each vertex gets a unique Fin |V| index)
-    is proper, hence acyclic for every orientation. -/
+    Proof: assign each vertex a unique color via Fintype.equivFin. -/
 theorem dichrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.dichromNumber ≤ Fintype.card V := by
+  unfold SimpleGraph.dichromNumber
   apply Nat.sInf_le
   intro O
-  exact ⟨Fintype.equivFin V, fun u v hdir =>
-    (Fintype.equivFin V).injective.ne (G.ne_of_adj (O.consistent u v hdir))⟩
+  refine ⟨Fintype.equivFin V, fun u v hdir heq => ?_⟩
+  exact absurd ((Fintype.equivFin V).injective heq) (G.ne_of_adj (O.consistent u v hdir))
 
 /-- Every independent set is trivially both a clique (vacuously if singleton)
     and an independent set, so any proper coloring is also cochromatic.
-    Hence ζ(G) ≤ |V|.
-
-    Proof: The identity coloring gives singleton color classes. A singleton
-    is trivially cochromatic (both conditions are vacuously satisfied since
-    there are no two distinct vertices with the same color). -/
+    Hence ζ(G) ≤ χ(G). -/
 theorem cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.cochromNumber ≤ Fintype.card V := by
+  unfold SimpleGraph.cochromNumber
   apply Nat.sInf_le
-  refine ⟨Fintype.equivFin V, fun i => Or.inl (fun u v hu hv hne => ?_)⟩
-  exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) hne
+  refine ⟨Fintype.equivFin V, fun i => Or.inr (fun u v hu hv huv => ?_)⟩
+  exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) huv
 
 /-- Bipartite graphs have dichromatic number at most 2.
     Any 2-coloring is proper, hence acyclic for all orientations. -/
@@ -154,14 +150,20 @@ axiom complete_dichrom (n : ℕ) (hn : n ≥ 1) :
 
 /-- For odd cycles C_{2k+1}, the dichromatic number is 2 while the
     chromatic number is 3. This is a simple example showing δ(G) < χ(G).
-    (Stated as True since cycle graph construction is not in Mathlib.) -/
-theorem odd_cycle_dichrom (k : ℕ) (hk : k ≥ 1) :
+    Statement placeholder — cycle graph construction not in Mathlib. -/
+theorem odd_cycle_dichrom (k : ℕ) (_hk : k ≥ 1) :
     True := trivial
 
 -- ## Structural Observations
 
 /-- The dichromatic number is monotone under subgraphs:
     if H is a subgraph of G, then δ(H) ≤ δ(G).
+    Argument: any k that works for G also works for H. Given O_H of H,
+    extend to G (orient extra edges arbitrarily). The acyclic coloring
+    for the extension restricts to one for O_H. -/
+axiom dichrom_mono {V : Type*} (G H : SimpleGraph V)
+    (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
+  H.dichromNumber ≤ G.dichromNumber
 
     Proof: Any orientation O_H of H extends to an orientation O_G of G
     (keep O_H directions on H-edges, assign arbitrary directions to G-only edges).
