@@ -916,10 +916,62 @@ theorem barrier_equiv_all_squarefree_below (n : ℕ)
     have := hb m hm
     omega
 
+-- ## Orbit Coalescence via Barriers
+--
+-- Key result: barriers absorb all orbits from n ≥ 2. Each orbit step strictly
+-- increases but stays ≤ the barrier, so the orbit reaches it in finitely many steps.
+-- Combined with infinite barriers (the conjecture), this proves all trajectories coalesce.
+
+/-- ω(n) ≥ 1 for n ≥ 2: every number ≥ 2 has at least one prime factor -/
+theorem omega_pos_of_ge_two (n : ℕ) (hn : n ≥ 2) : omega n ≥ 1 := by
+  unfold omega
+  have : 0 < n.primeFactors.card :=
+    Finset.card_pos.mpr ⟨n.minFac, Nat.mem_primeFactors.mpr
+      ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd n, by omega⟩⟩
+  omega
+
+/-- orbit n k = iterOmegaPow k n: the two orbit notations agree -/
+theorem orbit_eq_iterOmegaPow (n k : ℕ) : orbit n k = iterOmegaPow k n := by
+  induction k with
+  | zero => rfl
+  | succ k ih => exact congr_arg iterOmega ih
+
+/-- Orbit shift: orbit n (k + j) = orbit (orbit n k) j -/
+theorem orbit_add (n k j : ℕ) : orbit n (k + j) = orbit (orbit n k) j := by
+  induction j with
+  | zero => rfl
+  | succ j ih => exact congr_arg iterOmega ih
+
+/-- Helper: orbit from m ≥ 2 below barrier b reaches b, by induction on fuel ≥ gap -/
+private theorem orbit_reaches_aux (b : ℕ) (hb : IsBarrier omega b) (hb3 : b ≥ 3) :
+    ∀ fuel m, b - m ≤ fuel → 2 ≤ m → m < b → ∃ k, orbit m k = b := by
+  intro fuel
+  induction fuel with
+  | zero => intro m hfuel _ hmb; omega
+  | succ fuel ih =>
+    intro m hfuel hm2 hmb
+    have hom := omega_pos_of_ge_two m hm2
+    have hle := hb m hmb
+    by_cases heq : m + omega m = b
+    · exact ⟨1, heq⟩
+    · have hlt : m + omega m < b := by omega
+      have hval : orbit m 1 = m + omega m := rfl
+      obtain ⟨k, hk⟩ := ih (m + omega m) (by omega) (by omega) hlt
+      exact ⟨1 + k, by rw [orbit_add m 1 k, hval]; exact hk⟩
+
+/-- Every orbit from m ∈ [2, b) reaches barrier b exactly.
+    Since ω(m) ≥ 1 for m ≥ 2, the orbit is strictly increasing.
+    Since b is a barrier, each step stays ≤ b. A strictly increasing
+    sequence in ℕ bounded by b must reach b. -/
+theorem orbit_reaches_barrier_exact (b : ℕ) (hb : IsBarrier omega b) (hb3 : b ≥ 3)
+    (m : ℕ) (hm2 : 2 ≤ m) (hmb : m < b) :
+    ∃ k, orbit m k = b :=
+  orbit_reaches_aux b hb hb3 (b - m) m le_rfl hm2 hmb
+
 -- ## The Main Conjectures (OPEN)
 --
--- The core of Erdős #413 remains open. These are stated as axioms
--- since they are unresolved conjectures.
+-- The core of Erdős #413 remains open. The main conjecture and two
+-- deep results are axioms; trajectory coalescence is now proved from the conjecture.
 
 /-- Erdős Problem #413 Main Conjecture (OPEN): ω has infinitely many barriers -/
 axiom erdos_413_conjecture :
@@ -935,9 +987,23 @@ theorem erdos_413_epsilon_variant :
   simp only [one_mul]
   exact_mod_cast hn m hm
 
-/-- Conjecture: all trajectories of n ↦ n + ω(n) eventually meet (related to #412) -/
-axiom all_trajectories_meet :
-  ∀ a b : ℕ, 1 ≤ a → 1 ≤ b → eventuallyMeet a b
+/-- All trajectories from n ≥ 2 eventually meet, via barriers.
+    PROVED from erdos_413_conjecture: infinite barriers are unbounded,
+    so both orbits reach some common barrier B and agree thereafter.
+    (Previously axiom; axiom count reduced 4→3.)
+    Note: requires a, b ≥ 2 since ω(0) = ω(1) = 0 creates fixed points. -/
+theorem all_trajectories_meet :
+    ∀ a b : ℕ, 2 ≤ a → 2 ≤ b → eventuallyMeet a b := by
+  intro a b ha hb
+  -- Infinite barriers are unbounded: choose barrier B > max(a, b)
+  obtain ⟨B, hB_mem, hB_gt⟩ := erdos_413_conjecture.exists_gt (max a b)
+  have hB_barrier : IsBarrier omega B := hB_mem
+  have hB_ge3 : B ≥ 3 := by omega
+  -- Both orbits reach B
+  obtain ⟨ka, hka⟩ := orbit_reaches_barrier_exact B hB_barrier hB_ge3 a ha (by omega)
+  obtain ⟨kb, hkb⟩ := orbit_reaches_barrier_exact B hB_barrier hB_ge3 b hb (by omega)
+  -- They meet at B: iterOmegaPow ka a = B = iterOmegaPow kb b
+  exact ⟨ka, kb, by rw [← orbit_eq_iterOmegaPow, ← orbit_eq_iterOmegaPow, hka, hkb]⟩
 
 -- ## Known Results (stated as axioms, provable but deep)
 

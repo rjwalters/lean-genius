@@ -14,6 +14,7 @@
 -- Reference: erdosproblems.com/852, Er85c
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -23,13 +24,21 @@ import Mathlib.Tactic
 
 open Filter Asymptotics Real
 
--- ## Prime Sequence and Gaps (Axiomatized)
+-- ## Prime Sequence and Gaps (PROVED from Mathlib)
 
-/-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...) -/
-axiom nthPrime : ℕ → ℕ
-axiom nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n)
-axiom nthPrime_strictMono : StrictMono nthPrime
-axiom nthPrime_initial : nthPrime 0 = 2 ∧ nthPrime 1 = 3
+/-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...).
+    Previously axiomatized; now defined using Mathlib's Nat.nth. -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+theorem nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+
+theorem nthPrime_strictMono : StrictMono nthPrime :=
+  fun _ _ h => Nat.nth_strictMono Nat.infinite_setOf_prime h
+
+theorem nthPrime_initial : nthPrime 0 = 2 ∧ nthPrime 1 = 3 :=
+  ⟨by unfold nthPrime; exact Nat.nth_prime_zero_eq_two,
+   by unfold nthPrime; exact Nat.nth_prime_one_eq_three⟩
 
 /-- The n-th prime gap: dₙ = pₙ₊₁ − pₙ -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
@@ -162,9 +171,27 @@ axiom maxDistinctRun_le_x (x : ℕ) (hx : 2 ≤ x) :
   maxDistinctRun x ≤ x
 
 /-- If all gaps in a distinct run of length k are ≤ M, then k ≤ M
-    (by pigeonhole: k distinct positive values in {1, ..., M} implies k ≤ M). -/
-axiom distinct_run_bounded_by_max_gap (n k M : ℕ)
+    (by pigeonhole: k distinct positive values in {1, ..., M} implies k ≤ M).
+    Previously axiomatized; now proved via Finset.card_image_of_injOn. -/
+theorem distinct_run_bounded_by_max_gap (n k M : ℕ)
     (hk : IsDistinctRun n k)
     (hbound : ∀ i, i < k → primeGap (n + i) ≤ M)
     (hpos : ∀ i, i < k → 0 < primeGap (n + i)) :
-    k ≤ M
+    k ≤ M := by
+  -- The k values primeGap(n+i) for i < k are distinct elements of Icc 1 M
+  have hinj : Set.InjOn (fun i => primeGap (n + i)) (↑(Finset.range k)) := by
+    intro a ha b hb heq
+    simp only [Finset.coe_range, Set.mem_Iio] at ha hb
+    by_contra hne
+    exact hk a b ha hb hne heq
+  have hsub : (Finset.range k).image (fun i => primeGap (n + i)) ⊆ Finset.Icc 1 M := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    rw [Finset.mem_range] at hi
+    exact Finset.mem_Icc.mpr ⟨hpos i hi, hbound i hi⟩
+  calc k = (Finset.range k).card := (Finset.card_range k).symm
+    _ = ((Finset.range k).image (fun i => primeGap (n + i))).card :=
+        (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (Finset.Icc 1 M).card := Finset.card_le_card hsub
+    _ = M := by rw [Finset.card_Icc]; omega
