@@ -62,8 +62,8 @@ noncomputable def beurlingPi (a : ℕ → ℝ) (x : ℝ) : ℕ :=
   Set.ncard {n : ℕ | a n ≤ x}
 
 /-- Standard prime counting function: π(x) = number of primes ≤ x.
-    Uses primeCounting(⌊x⌋₊ + 1) since primeCounting counts primes strictly less than its argument. -/
-noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x + 1)
+    Nat.primeCounting n counts primes ≤ n (unfolding: count Prime (n+1) = #{p < n+1 | Prime p}). -/
+noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x)
 
 /-- The counting set {n | a n <= x} is finite for Beurling prime sequences.
     Since a is strictly increasing with all a_n > 1, only finitely many
@@ -131,12 +131,34 @@ noncomputable def actualPrimes : BeurlingPrimes where
   well_separated := primeSeq_well_separated
 
 /-- For the actual primes, beurlingPi equals primePi.
-    Proof sketch: {n | nth Prime n ≤ ⌊x⌋₊} bijects with {p ≤ ⌊x⌋₊ | Prime p}
-    via the nth-prime enumeration, so both have cardinality count Prime (⌊x⌋₊ + 1).
-    Previously axiomatized; now a theorem pending formal proof of the bijection. -/
+    Uses the Galois connection: n < count Prime m ↔ nth Prime n < m
+    to show {n | nth Prime n ≤ ⌊x⌋₊} = Finset.range(count Prime (⌊x⌋₊ + 1)). -/
 theorem actualPrimes_counting : ∀ x : ℝ, beurlingPi primeSeq x = primePi x := by
-  intro x; unfold beurlingPi primePi primeSeq
-  sorry
+  intro x
+  simp only [beurlingPi, primePi, primeSeq]
+  -- Unfold primeCounting to expose count Prime (⌊x⌋₊ + 1)
+  unfold Nat.primeCounting Nat.primeCounting'
+  -- Goal: ncard {n | (↑(nth Prime n) : ℝ) ≤ x} = count Prime (⌊x⌋₊ + 1)
+  -- Show set = ↑(Finset.range (count Prime (⌊x⌋₊ + 1)))
+  have hset : {n : ℕ | (↑(Nat.nth Nat.Prime n) : ℝ) ≤ x} =
+      ↑(Finset.range (Nat.count Nat.Prime (⌊x⌋₊ + 1))) := by
+    ext n; simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_range]
+    constructor
+    · -- (↑(nth Prime n) : ℝ) ≤ x → n < count Prime (⌊x⌋₊ + 1)
+      intro hle
+      have h1 : Nat.nth Nat.Prime n ≤ ⌊x⌋₊ := Nat.le_floor (by exact_mod_cast hle)
+      exact (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr (by omega)
+    · -- n < count Prime (⌊x⌋₊ + 1) → (↑(nth Prime n) : ℝ) ≤ x
+      intro hlt
+      have h1 := (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp hlt
+      have h2 : Nat.nth Nat.Prime n ≤ ⌊x⌋₊ := by omega
+      have hx_nn : 0 ≤ x := by
+        by_contra hlt_x; push_neg at hlt_x
+        have := Nat.floor_eq_zero.mpr (show x < 1 by linarith)
+        exact absurd (le_trans (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n).two_le h2)
+          (by omega)
+      exact le_trans (Nat.cast_le.mpr h2) (Nat.floor_le hx_nn)
+  rw [hset, Set.ncard_coe_Finset, Finset.card_range]
 
 -- NOTE: A previous version claimed powers of 2 form a Beurling prime sequence.
 -- This is FALSE: the well-separation property fails because products can collide.
