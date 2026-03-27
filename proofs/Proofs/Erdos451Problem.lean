@@ -113,6 +113,46 @@ theorem card_safeResidues (k p : ℕ) (_hp : Nat.Prime p) (hpk : k < p)
   rw [Finset.card_union_of_disjoint hdisj, Finset.card_singleton, Nat.card_Icc]
   omega
 
+/-- Key CRT insight: if p divides n and p > k, then p does not divide
+    n - i for any 1 ≤ i ≤ k, since p | n and p | (n-i) would give p | i,
+    but i ≤ k < p contradicts this. -/
+theorem prime_not_dvd_factor_when_dvd_n (n k p i : ℕ)
+    (_hp : Nat.Prime p) (hpk : k < p) (_hn : k < n)
+    (hi : 1 ≤ i) (hik : i ≤ k) (hpn : p ∣ n) :
+    ¬(p ∣ (n - i)) := by
+  intro h
+  have hsub := Nat.dvd_sub' hpn h
+  have heq : n - (n - i) = i := by omega
+  rw [heq] at hsub
+  exact absurd (Nat.le_of_dvd (by omega) hsub) (by omega)
+
+/-- When n ≡ 0 (mod p) for all primes p in (k, 2k), the descending product
+    avoids all Bertrand-range primes. This is the core of the CRT construction. -/
+theorem avoids_when_divisible_by_all (n k : ℕ) (hn : 2 * k < n)
+    (hdiv : ∀ p : ℕ, IsInBertrandRange p k → p ∣ n) :
+    AvoidsBertrandPrimes n k := by
+  intro p hp hprod
+  obtain ⟨hpk, _, hprime⟩ := hp
+  rw [prime_dvd_descendingProduct n k p hprime (by omega)] at hprod
+  obtain ⟨i, hi, hdi⟩ := hprod
+  rw [Finset.mem_Icc] at hi
+  exact prime_not_dvd_factor_when_dvd_n n k p i hprime hpk (by omega) hi.1 hi.2
+    (hdiv p hp) hdi
+
+/-- AvoidsBertrandPrimes is equivalent to a finite check over bertrandPrimes k.
+    This makes the property computationally verifiable. -/
+theorem avoidsBertrand_iff_finset (n k : ℕ) (hk : 1 ≤ k) :
+    AvoidsBertrandPrimes n k ↔
+    ∀ p ∈ bertrandPrimes k, ¬(p ∣ descendingProduct n k) := by
+  constructor
+  · intro h p hp
+    rw [bertrandPrimes, Finset.mem_filter, Finset.mem_Icc] at hp
+    exact h p ⟨by omega, by omega, hp.2⟩
+  · intro h p ⟨hpk, hpk2, hprime⟩
+    apply h p
+    rw [bertrandPrimes, Finset.mem_filter, Finset.mem_Icc]
+    exact ⟨⟨by omega, by omega⟩, hprime⟩
+
 /- ## Known bounds -/
 
 /-- Erdős–Graham lower bound: n_k > k^{1+c} for some constant c > 0. -/
