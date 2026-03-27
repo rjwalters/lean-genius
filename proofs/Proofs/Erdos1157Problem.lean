@@ -41,10 +41,11 @@ We axiomatize this as a function ℕ⁴ → ℕ.
     that contains no s edges spanning at most k vertices. -/
 axiom extremalNumber (r n k s : ℕ) : ℕ
 
-/-- Monotonicity in k: allowing more vertices in forbidden configurations
-    makes it harder to be free, so the extremal number increases. -/
+/-- Monotonicity in k: increasing k means more edge-sets are forbidden
+    (any s edges spanning ≤ k₂ ≥ k₁ vertices includes more configurations),
+    so fewer hypergraphs are valid and the extremal number decreases. -/
 axiom extremalNumber_mono_k (r n s k₁ k₂ : ℕ) (h : k₁ ≤ k₂) :
-  extremalNumber r n k₁ s ≤ extremalNumber r n k₂ s
+  extremalNumber r n k₂ s ≤ extremalNumber r n k₁ s
 
 /-- Monotonicity in s: requiring more forbidden edges makes it harder
     to find violations, so the extremal number increases. -/

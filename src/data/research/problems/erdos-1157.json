@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed mathematical error in extremalNumber_mono_k axiom (wrong monotonicity direction). Corrected axiom now states extremal number decreases with k.",
+    "builtItems": [
+      "Fixed axiom extremalNumber_mono_k: corrected monotonicity direction (k₁ ≤ k₂ → f(k₂) ≤ f(k₁))"
+    ],
+    "insights": [
+      "BUG FIXED: extremalNumber_mono_k had wrong direction — extremal number DECREASES with k (more forbidden configurations), not increases",
+      "The bes_monotone_in_k proof had a type error from the wrong monotonicity direction — fixed by correcting the axiom"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1157 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
