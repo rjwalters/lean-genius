@@ -154,8 +154,50 @@ noncomputable def largePrimeSum (n : ℕ) : ℝ :=
       (1 : ℝ) / (a : ℝ)
     else 0
 
-/-- Erdős also asked whether the restricted sums individually diverge. -/
-axiom erdos_460_restricted_question :
+/-
+## Section VIII: Structural Theorems
+-/
+
+/-- The smallPrimeDivisibleSum is bounded by sieveReciprocalSum: the small-prime condition
+    (a > 0 ∧ a < n ∧ ∃ p prime, p ≤ a ∧ p ∣ (n-a)) implies the full condition (a > 0 ∧ a < n),
+    so each term of the restricted sum is ≤ the corresponding term of the full sum. -/
+private lemma smallPrimeDivisibleSum_le (n : ℕ) :
+    smallPrimeDivisibleSum n ≤ sieveReciprocalSum n := by
+  unfold smallPrimeDivisibleSum sieveReciprocalSum
+  apply Finset.sum_le_sum
+  intro k _
+  dsimp only
+  split_ifs with h₁ h₂
+  · exact le_refl _
+  · exact absurd ⟨h₁.1, h₁.2.1⟩ h₂
+  · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- The largePrimeSum is bounded by sieveReciprocalSum: the large-prime condition
+    (a > 0 ∧ a < n ∧ leastPrimeFactor(n-a) > a) implies the full condition (a > 0 ∧ a < n),
+    so each term of the restricted sum is ≤ the corresponding term of the full sum. -/
+private lemma largePrimeSum_le (n : ℕ) :
+    largePrimeSum n ≤ sieveReciprocalSum n := by
+  unfold largePrimeSum sieveReciprocalSum
+  apply Finset.sum_le_sum
+  intro k _
+  dsimp only
+  split_ifs with h₁ h₂
+  · exact le_refl _
+  · exact absurd ⟨h₁.1, h₁.2.1⟩ h₂
+  · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- Erdős also asked whether the restricted sums individually diverge.
+    If either restricted sum diverges, the full sum diverges too,
+    since each restricted sum is bounded by the full sum (subset of non-negative terms). -/
+theorem erdos_460_restricted_question :
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, smallPrimeDivisibleSum n > M) ∨
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, largePrimeSum n > M) →
-    ErdosProblem460
+    ErdosProblem460 := by
+  intro h M hM
+  rcases h with hsmall | hlarge
+  · obtain ⟨N₀, hN₀⟩ := hsmall M hM
+    exact ⟨N₀, fun n hn => lt_of_lt_of_le (hN₀ n hn) (smallPrimeDivisibleSum_le n)⟩
+  · obtain ⟨N₀, hN₀⟩ := hlarge M hM
+    exact ⟨N₀, fun n hn => lt_of_lt_of_le (hN₀ n hn) (largePrimeSum_le n)⟩

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 2 of 5 sorry theorems (cliqueGuarantee_le_n, cliqueGuarantee_mono_q). 3 sorries remain. 8 axioms unchanged. Aristotle companion file created.",
+    "progressSummary": "PROGRESS: 3S→1S, false theorem removed (C₄ counterexample). Proved cliqueGuarantee_zero and cliqueGuarantee_mono_n (1 sorry remaining on edgeCount equality).",
     "builtItems": [
       "Proved cliqueGuarantee_pos from other axioms (axiom elimination: 15->14)",
       "Added cliqueGuarantee_mono_q_general: extended monotonicity for H",
@@ -42,7 +42,10 @@
       "p4_ramsey_upper: proved (c(4,1) ≤ 2/5)",
       "Proved cliqueGuarantee_le_n in Erdos667Problem.lean (was sorry)",
       "Proved cliqueGuarantee_mono_q in Erdos667Problem.lean (was sorry)",
-      "Created Erdos667Aristotle.lean companion file with 6 targets"
+      "Created Erdos667Aristotle.lean companion file with 6 targets",
+      "PROVED cliqueGuarantee_zero in Erdos667Problem.lean (was sorry)",
+      "PROVED cliqueGuarantee_mono_n structure (modulo edgeCount equality under injective pullback)",
+      "REMOVED false theorem cliqueGuarantee_max with C₄ counterexample documentation"
     ],
     "insights": [
       "cliqueGuarantee_pos is derivable from cliqueGuarantee_zero + cliqueGuarantee_mono_q by induction on q",
@@ -57,14 +60,15 @@
       "cliqueGuarantee_le_n: sSup of {m | m ≤ n ∧ ...} is ≤ n — proved via csSup_le or sSup_empty/bot_le",
       "cliqueGuarantee_mono_q: set for q ⊆ set for q+1 (strengthening antecedent) — proved via csSup_le_csSup",
       "Remaining 3 sorries require graph constructions (empty graph, vertex embedding) — submitted to Aristotle",
-      "cpq axiom elimination would require defining cpq as Filter.liminf — major future task eliminating 5 of 8 axioms"
+      "cpq axiom elimination would require defining cpq as Filter.liminf — major future task eliminating 5 of 8 axioms",
+      "cliqueGuarantee_max is FALSE: C₄ (4-cycle) satisfies HasDensity(3,2) with clique number 2, not 4. H(n)≠n but c(p,q_max)=1 is correct (liminf exponent).",
+      "cliqueGuarantee_zero PROVED: sSup argument via le_antisymm — empty graph counterexample for m≥2, singleton for 1-clique",
+      "For p=3,q=2: complement of any satisfying graph is a matching → clique number ⌈n/2⌉ → c(3,2)=1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define cliqueGuarantee as proper Lean definition to eliminate more axioms (cliqueGuarantee itself, mono_q, le_n, zero, mono_n)",
-      "Define cpq using liminf from Mathlib.Topology.Algebra.Order.LiminfLimsup to eliminate cpq axioms",
-      "Investigate whether cpq_mono_q can be derived from the definition of cpq + cliqueGuarantee_mono_q",
-      "Create Aristotle companion file with routine lemmas for automated proof search"
+      "Complete the edgeCount equality lemma in cliqueGuarantee_mono_n (injective pullback preserves filtered pair count)",
+      "Consider defining cpq via Filter.liminf to eliminate cpq axioms (major infrastructure)"
     ],
     "markdown": "# Erdős #667 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.\nIs\\[c(p,q)=\\liminf \\frac{\\log H(n)}{\\log n}\\]a strictly increasing function of $q$ for $1\\leq q\\leq \\binom{p-1}{2}+1$?\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp.\n\nWhen $q=1$ this corresponds exactly to the classical Ramsey problem, and hence for example\\[\\frac{1}{p-1}\\leq c(p,1) \\leq \\frac{2}{p+1}.\\]It is easy to see that if $q=\\binom{p-1}{2}+1$ then $c(p,q)=1$. Erd\\H{o}s, Faudree, Rousseau, and Schelp have shown that $c(p,\\binom{p-1}{2})\\leq 1/2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #666\n- Problem #668\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97f\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
