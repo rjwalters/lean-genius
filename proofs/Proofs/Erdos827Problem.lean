@@ -12,6 +12,11 @@ the argument and showed n_k ≪ k⁹.
 The problem asks to determine n_k more precisely.
 
 Reference: https://erdosproblems.com/827
+
+Axioms: 6 (minimalNk, minimalNk_valid, minimalNk_sharp,
+  martinez_roldan_pensado, nk_three, nk_ge_k)
+Proved: nk_monotone (from valid + sharp + subset argument)
+Sorries: 0
 -/
 
 import Mathlib.Data.Real.Basic
@@ -103,9 +108,28 @@ axiom martinez_roldan_pensado : MartinezBound
     exactly one circumradius, so n_3 = 3. -/
 axiom nk_three : minimalNk 3 = 3
 
-/-- n_k is monotone non-decreasing. -/
-axiom nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
-    minimalNk k₁ ≤ minimalNk k₂
+/-- n_k is monotone non-decreasing.
+
+    Proof: Assume for contradiction that n_{k₂} < n_{k₁}. By minimalNk_sharp,
+    there exists a GP set S of size n_{k₁} - 1 with no good k₁-subset.
+    Since |S| ≥ n_{k₂}, by minimalNk_valid there is a good k₂-subset T ⊆ S.
+    Since k₁ ≤ k₂ = |T|, we can take T' ⊆ T of size k₁. AllDistinctCircumradii
+    is inherited by subsets (fewer triples, same radii). So T' is a good k₁-subset
+    of S, contradicting the sharpness of S. -/
+theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
+    minimalNk k₁ ≤ minimalNk k₂ := by
+  by_contra hlt
+  push_neg at hlt
+  have hk2 : 3 ≤ k₂ := le_trans hk h
+  obtain ⟨S, hGP, hCard, hBad⟩ := minimalNk_sharp k₁ hk
+  have hBig : minimalNk k₂ ≤ S.card := by omega
+  obtain ⟨T, hTS, hTcard, hTgood⟩ := minimalNk_valid k₂ hk2 S hGP hBig
+  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_smaller_set T k₁ (by omega)
+  have hT'good : AllDistinctCircumradii T' := by
+    intro p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂
+    exact hTgood p₁ (hT'T hp₁) q₁ (hT'T hq₁) r₁ (hT'T hr₁)
+      p₂ (hT'T hp₂) q₂ (hT'T hq₂) r₂ (hT'T hr₂)
+  exact hBad ⟨T', Finset.Subset.trans hT'T hTS, hT'card, hT'good⟩
 
 /-- n_k ≥ k trivially. -/
 axiom nk_ge_k (k : ℕ) (hk : 3 ≤ k) : k ≤ minimalNk k
