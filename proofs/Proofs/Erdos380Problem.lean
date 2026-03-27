@@ -17,24 +17,49 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
-/- ## Greatest prime factor -/
+open Nat Finset
 
-/-- The greatest prime factor of `n`. Returns 0 for `n ≤ 1`. -/
-axiom greatestPrimeFactor : ℕ → ℕ
+/- ## Greatest prime factor
 
-/-- `greatestPrimeFactor n` is prime for `n ≥ 2`. -/
-axiom gpf_prime (n : ℕ) (hn : 2 ≤ n) :
-    (greatestPrimeFactor n).Prime
+Previously axiomatized (4 axioms: definition + 3 properties).
+Now defined concretely via `Nat.primeFactors` and `Finset.max'`,
+with all properties proved from the definition. -/
 
-/-- `greatestPrimeFactor n` divides `n`. -/
-axiom gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
-    greatestPrimeFactor n ∣ n
+/-- The greatest prime factor of `n`. Returns 0 for `n ≤ 1`.
+    Defined as the maximum of the prime factor set.
+    Previously an axiom; now concrete via Mathlib. -/
+noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n > 1 then n.primeFactors.max' (Nat.primeFactors_nonempty h) else 0
 
-/-- `greatestPrimeFactor n` is the largest prime dividing `n`. -/
-axiom gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
-    p ≤ greatestPrimeFactor n
+/-- `greatestPrimeFactor n` is prime for `n ≥ 2`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) :
+    (greatestPrimeFactor n).Prime := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  exact (Nat.mem_primeFactors.mp hmem).1
+
+/-- `greatestPrimeFactor n` divides `n`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor n ∣ n := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  exact (Nat.mem_primeFactors.mp hmem).2.1
+
+/-- `greatestPrimeFactor n` is the largest prime dividing `n`.
+    Previously axiomatized; now proved from the definition. -/
+theorem gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
+    p ≤ greatestPrimeFactor n := by
+  unfold greatestPrimeFactor
+  rw [dif_pos (by omega : n > 1)]
+  apply Finset.le_max'
+  exact Nat.mem_primeFactors.mpr ⟨hp, hd, by omega⟩
 
 /- ## Bad intervals -/
 
@@ -89,9 +114,10 @@ axiom gpfSquare_asymptotic :
 
 /- ## Bad intervals and primes -/
 
-/-- Bad intervals cannot contain primes (since a prime `p` in `[u,v]`
-would make `p` the greatest prime factor, appearing exactly once in
-the product if `v < 2p`). -/
+/-- Bad intervals with `v < 2u` cannot contain primes. If `p` is prime
+and `p ∈ [u,v]` with `v < 2u`, then `p` is the only multiple of itself
+in the interval, so it appears with exponent 1 in the product — contradicting
+the "bad" condition that requires the greatest prime factor to have exponent ≥ 2. -/
 axiom bad_interval_no_prime (u v : ℕ) (hbad : IsBadInterval u v) :
     v < 2 * u →
       ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False
