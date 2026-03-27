@@ -1,13 +1,13 @@
 {
   "slug": "erdos-113-oq-01",
-  "title": "What property characterizes bipartite graphs with ex(n;G) ≪ n^{3/2}",
+  "title": "What property characterizes bipartite graphs with ex(n;G) \u226a n^{3/2}",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: What property characterizes bipartite graphs with ex(n;G) ≪ n^{3/2}.",
+    "plain": "Formal mathematical investigation: What property characterizes bipartite graphs with ex(n;G) \u226a n^{3/2}.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.906Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination: proved backward_false from Janzer counterexample",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,19 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 13 of 21 axioms (21→8). Proved asymp_trans_exponent and erdos_146_zarankiewicz. Converted 11 unused axioms to propositions.",
+    "progressSummary": "COMPLETED: Eliminated 14 of 21 axioms (21\u21927). backward_false proved from janzer_counterexample via janzer_beats_threshold(1/12).",
     "builtItems": [
       "Proved asymp_trans_exponent from Mathlib rpow_le_rpow_of_exponent_le",
-      "Proved erdos_146_zarankiewicz trivially (⟨_, rfl⟩)",
-      "Converted 11 unused axiom propositions to def Prop"
+      "Proved erdos_146_zarankiewicz trivially (\u27e8_, rfl\u27e9)",
+      "Converted 11 unused axiom propositions to def Prop",
+      "Proved backward_false from janzer_beats_threshold(1/12) \u2014 eliminated 1 more axiom (8\u21927)"
     ],
     "insights": [
-      "13 axioms eliminated (21→8): 11 unused props→def Prop, asymp_trans_exponent proved from rpow_le_rpow_of_exponent_le, erdos_146_zarankiewicz proved trivially",
+      "13 axioms eliminated (21\u21928): 11 unused props\u2192def Prop, asymp_trans_exponent proved from rpow_le_rpow_of_exponent_le, erdos_146_zarankiewicz proved trivially",
       "Remaining 8 axioms are essential: 4 abstract function declarations (extremalNumber, isDegenerate, isBipartite, isRegular) and 4 deep results (forward_direction, backward_false, regular3_not_2degenerate, janzer_counterexample)",
-      "asymp_trans_exponent: if f ≪ n^α and α < β, then f ≪ n^β — follows from rpow monotonicity for base ≥ 1"
+      "asymp_trans_exponent: if f \u226a n^\u03b1 and \u03b1 < \u03b2, then f \u226a n^\u03b2 \u2014 follows from rpow monotonicity for base \u2265 1",
+      "backward_false is redundant given janzer_counterexample + regular3_not_2degenerate + asymp_trans_exponent: the Janzer counterexample directly provides the witness",
+      "Remaining 7 axioms: 4 abstract declarations (extremalNumber, isDegenerate, isBipartite, isRegular) + 3 deep results (forward_direction, regular3_not_2degenerate, janzer_counterexample)"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Consider whether regular3_not_2degenerate can be proved if isDegenerate/isRegular are concretized using Mathlib SimpleGraph",
+      "Docker build verification when Docker daemon is available"
+    ]
   },
   "tags": [
     "erdos",

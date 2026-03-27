@@ -22,6 +22,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Order.Antichain
 import Mathlib.Tactic
+import Mathlib.Combinatorics.SetFamily.LYM
 
 open Finset
 
@@ -93,10 +94,21 @@ axiom erdos_776_threshold :
 
 /- ## Structural Observations -/
 
-/-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋). -/
-axiom sperner_theorem (n : ℕ) :
-  ∀ (F : SubsetFamily n), IsAntichain F →
-    F.card ≤ Nat.choose n (n / 2)
+/-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋).
+    Bridges our custom IsAntichain to Mathlib's IsAntichain, then applies
+    Mathlib's IsAntichain.sperner (proved via the LYM inequality). -/
+theorem sperner_theorem (n : ℕ) :
+    ∀ (F : SubsetFamily n), IsAntichain F →
+      F.card ≤ Nat.choose n (n / 2) := by
+  intro F hF
+  -- Bridge custom IsAntichain to Mathlib's IsAntichain (· ⊆ ·)
+  have h : _root_.IsAntichain (· ⊆ ·) (↑F : Set (Finset (Fin n))) := by
+    intro A hA B hB hne hsub
+    exact hF A (Finset.mem_coe.mp hA) B (Finset.mem_coe.mp hB) hne hsub
+  -- Apply Mathlib's Sperner bound (from LYM inequality)
+  have := h.sperner (α := Fin n)
+  simp [Fintype.card_fin] at this
+  exact this
 
 /-- The middle layer has the most sets: all sets of size ⌊n/2⌋ form
     an antichain with one distinct size and multiplicity C(n, ⌊n/2⌋). -/

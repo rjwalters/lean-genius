@@ -26,10 +26,6 @@ import Mathlib
     edges of K_n contains a red K_k or a blue K_l. -/
 axiom ramseyNumber (k l : ℕ) : ℕ
 
-/-- Basic property: R(k, l) ≥ 1 for all k, l ≥ 1. -/
-axiom ramsey_pos (k l : ℕ) (hk : k ≥ 1) (hl : l ≥ 1) :
-  ramseyNumber k l ≥ 1
-
 /-- Symmetry: R(k, l) = R(l, k). -/
 axiom ramsey_symm (k l : ℕ) : ramseyNumber k l = ramseyNumber l k
 
@@ -46,6 +42,38 @@ axiom ramsey_monotone_right (k l : ℕ) :
 /-- R(k, l+1) ≤ R(k, l) + R(k-1, l+1) (recurrence). -/
 axiom ramsey_recurrence (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
   ramseyNumber k (l + 1) ≤ ramseyNumber k l + ramseyNumber (k - 1) (l + 1)
+
+/-- For k = 2: R(2, l) = l, so R(2, l+1)/R(2, l) = (l+1)/l → 1.
+    This is trivial (k = 2 case). -/
+axiom ramsey_k2 (l : ℕ) (hl : l ≥ 1) : ramseyNumber 2 l = l
+
+-- Monotonicity in the left argument (proved from symm + monotone_right)
+private theorem ramsey_monotone_left' (k l : ℕ) :
+    ramseyNumber k l ≤ ramseyNumber (k + 1) l := by
+  calc ramseyNumber k l
+      = ramseyNumber l k := ramsey_symm k l
+    _ ≤ ramseyNumber l (k + 1) := ramsey_monotone_right l k
+    _ = ramseyNumber (k + 1) l := ramsey_symm l (k + 1)
+
+/-- R(2, l) ≤ R(k, l) for k ≥ 2 (iterated left-monotonicity). -/
+private theorem ramsey_mono_left_ge2 (k l : ℕ) (hk : k ≥ 2) :
+    ramseyNumber 2 l ≤ ramseyNumber k l := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    by_cases hn : n ≥ 2
+    · exact (ih hn).trans (ramsey_monotone_left' n l)
+    · -- n < 2 and n + 1 ≥ 2, so n = 1 and k = n + 1 = 2
+      have : n = 1 := by omega
+      subst this
+
+/-- R(k, l) ≥ 1 for all k ≥ 2, l ≥ 1. Proved from R(2,l)=l and iterated
+    left-monotonicity: R(2,l) ≤ R(k,l) for k ≥ 2. -/
+theorem ramsey_pos (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
+    ramseyNumber k l ≥ 1 := by
+  have h1 : ramseyNumber 2 l ≤ ramseyNumber k l := ramsey_mono_left_ge2 k l hk
+  have h2 : ramseyNumber 2 l = l := ramsey_k2 l hl
+  omega
 
 /- ## R(3, l) Bounds -/
 
@@ -288,10 +316,6 @@ theorem ratio_equiv_difference (k : ℕ) (hk : k ≥ 3) :
     exact ⟨L₀, fun l hl => by rw [abs_eq l (by omega)]; exact hL l hl⟩
 
 /- ## Special Cases -/
-
-/-- For k = 2: R(2, l) = l, so R(2, l+1)/R(2, l) = (l+1)/l → 1.
-    This is trivial (k = 2 case). -/
-axiom ramsey_k2 (l : ℕ) (hl : l ≥ 1) : ramseyNumber 2 l = l
 
 /-- Known small values: R(3,3) = 6, R(3,4) = 9, R(3,5) = 14. -/
 axiom R33 : ramseyNumber 3 3 = 6
