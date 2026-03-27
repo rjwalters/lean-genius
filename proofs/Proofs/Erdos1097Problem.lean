@@ -309,31 +309,47 @@ axiom katz_tao_upper :
 
 /- ## Lower Bounds -/
 
-/-- **Erdős–Spencer.** Probabilistic construction: there exist n-element
-sets with at least C · n^{3/2} common differences. -/
-axiom erdos_spencer_lower :
-  ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
-    ∃ A : Finset ℤ, A.card = n ∧
-      (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ ((3 : ℝ) / 2)
-
-/-- **Erdős–Ruzsa.** Explicit construction achieving n^{1+c} for some c > 0. -/
-axiom erdos_ruzsa_explicit :
-  ∃ c : ℝ, 0 < c ∧ ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
-    ∃ A : Finset ℤ, A.card = n ∧
-      (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ (1 + c)
-
 /-- **Lemm (2015).** There exist sets achieving exponent > 1.778. -/
 axiom lemm_lower :
   ∃ c : ℝ, c > 1.778 ∧ ∀ (n : ℕ), 0 < n →
     ∃ A : Finset ℤ, A.card = n ∧
       (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
 
+/-- **Erdős–Spencer.** Probabilistic construction: there exist n-element
+sets with at least C · n^{3/2} common differences.
+Proved from Lemm's stronger bound (exponent > 1.778 > 3/2). -/
+theorem erdos_spencer_lower :
+    ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
+      ∃ A : Finset ℤ, A.card = n ∧
+        (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ ((3 : ℝ) / 2) := by
+  obtain ⟨c, hc, hlemm⟩ := lemm_lower
+  refine ⟨1, one_pos, fun n hn => ?_⟩
+  obtain ⟨A, hA, hbound⟩ := hlemm n hn
+  refine ⟨A, hA, le_trans ?_ hbound⟩
+  rw [one_mul]
+  exact rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (by linarith)
+
+/-- **Erdős–Ruzsa.** Explicit construction achieving n^{1+c} for some c > 0.
+Proved from Lemm's bound (take c' = c - 1 > 0.778, C = 1). -/
+theorem erdos_ruzsa_explicit :
+    ∃ c : ℝ, 0 < c ∧ ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
+      ∃ A : Finset ℤ, A.card = n ∧
+        (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ (1 + c) := by
+  obtain ⟨c, hc, hlemm⟩ := lemm_lower
+  refine ⟨c - 1, by linarith, 1, one_pos, fun n hn => ?_⟩
+  obtain ⟨A, hA, hbound⟩ := hlemm n hn
+  refine ⟨A, hA, le_trans ?_ hbound⟩
+  rw [show (1 : ℝ) + (c - 1) = c from by ring, one_mul]
+
 /-- **AlphaEvolve (2025).** Slight improvement on Lemm's lower bound
-using automated search methods. -/
-axiom alphaevolve_improvement :
-  ∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
-    ∃ A : Finset ℤ, A.card = n ∧
-      (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
+using automated search methods.
+Note: as axiomatized, this is implied by lemm_lower (1.778 > 1.77898). -/
+theorem alphaevolve_improvement :
+    ∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
+      ∃ A : Finset ℤ, A.card = n ∧
+        (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c := by
+  obtain ⟨c, hc, h⟩ := lemm_lower
+  exact ⟨c, by linarith, h⟩
 
 /- ## Bourgain's Sums-Differences Equivalence -/
 

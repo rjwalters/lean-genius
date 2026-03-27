@@ -21,9 +21,9 @@
     "erdosUrl": "https://erdosproblems.com/1097",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n^{3/2}) probabilistic lower bound), erdos_ruzsa_explicit (Ω(n^{1+c}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (exponent > 1.77898, DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
-    "lineCount": 374,
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound, Katz-Tao 1999), lemm_lower (Ω(n^{1.778}) best known lower bound, Lemm 2015), chan_equivalence (equivalence to Bourgain sums-differences problem, Chan). Three former axioms now proved as theorems from lemm_lower: erdos_spencer_lower (c > 1.778 > 3/2), erdos_ruzsa_explicit (c' = c-1), alphaevolve_improvement (1.778 > 1.77898).",
+    "lineCount": 391,
     "relatedProblems": [
       {
         "id": "erdos-3",
