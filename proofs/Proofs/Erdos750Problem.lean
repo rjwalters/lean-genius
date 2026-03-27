@@ -21,6 +21,7 @@ Reference: https://erdosproblems.com/750
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
@@ -98,9 +99,46 @@ axiom problem_75_connection :
       ∃ n₀ : ℕ, ∀ S : Finset V, S.card ≥ n₀ →
         (maxIndSetSize G S : ℚ) > S.card ^ ((1 : ℚ) - ε)
 
+/-- In Fin 2, the only nonzero element is 1. -/
+private theorem fin2_ne_zero_eq_one : ∀ (i : Fin 2), i ≠ 0 → i = 1 := by decide
+
 /-- **Bipartite Benchmark**: bipartite graphs on m vertices have maximum
-    independent set ⌈m/2⌉. The deviation f(m) measures local non-bipartiteness. -/
-axiom bipartite_benchmark :
-  ∀ (V : Type) [DecidableEq V] (G : SimpleGraph V),
-    G.IsBipartite →
-    ∀ S : Finset V, maxIndSetSize G S ≥ S.card / 2
+    independent set ≥ ⌊m/2⌋. The deviation f(m) measures local non-bipartiteness. -/
+theorem bipartite_benchmark :
+    ∀ (V : Type) [DecidableEq V] (G : SimpleGraph V),
+      G.IsBipartite →
+      ∀ S : Finset V, maxIndSetSize G S ≥ S.card / 2 := by
+  intro V _ G hbip S
+  -- Extract 2-coloring from IsBipartite = Colorable 2
+  obtain ⟨c⟩ := hbip
+  classical
+  -- Define the two color classes within S
+  set A := S.filter (fun v => c v = (0 : Fin 2)) with hA_def
+  set B := S.filter (fun v => c v ≠ (0 : Fin 2)) with hB_def
+  -- A and B are complementary filters, so |A| + |B| = |S|
+  have hpart : A.card + B.card = S.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card S (fun v => c v = (0 : Fin 2))
+  -- Both color classes are independent sets
+  have hA_indep : ∀ v ∈ A, ∀ w ∈ A, v ≠ w → ¬G.Adj v w := by
+    intro v hv w hw _ hadj
+    simp only [hA_def, Finset.mem_filter] at hv hw
+    -- c maps adjacent vertices to different colors; but v, w have same color 0
+    exact (c.map_rel' hadj) (hv.2 ▸ hw.2)
+  have hB_indep : ∀ v ∈ B, ∀ w ∈ B, v ≠ w → ¬G.Adj v w := by
+    intro v hv w hw _ hadj
+    simp only [hB_def, Finset.mem_filter] at hv hw
+    -- c v ≠ 0 and c w ≠ 0 ⟹ both = 1 in Fin 2, so same color
+    exact (c.map_rel' hadj) (by rw [fin2_ne_zero_eq_one _ hv.2, fin2_ne_zero_eq_one _ hw.2])
+  -- Both are in the filtered powerset (independent subsets of S)
+  have hA_mem : A ∈ S.powerset.filter
+      (fun I => ∀ v ∈ I, ∀ w ∈ I, v ≠ w → ¬G.Adj v w) := by
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.filter_subset _ _, hA_indep⟩
+  have hB_mem : B ∈ S.powerset.filter
+      (fun I => ∀ v ∈ I, ∀ w ∈ I, v ≠ w → ¬G.Adj v w) := by
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.filter_subset _ _, hB_indep⟩
+  -- The larger class has ≥ S.card / 2 elements
+  by_cases h : S.card / 2 ≤ A.card
+  · exact le_trans h (Finset.le_sup hA_mem)
+  · exact le_trans (by omega : S.card / 2 ≤ B.card) (Finset.le_sup hB_mem)
