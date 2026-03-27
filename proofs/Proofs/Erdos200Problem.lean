@@ -22,6 +22,7 @@ length o(log N)?
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -123,12 +124,40 @@ theorem hl_suggests_negative :
 
 /- ## Structural Observations -/
 
-/-- In a prime AP {a, a+d, ..., a+(k-1)d}, the common difference d
-    must be divisible by all primes ≤ k (to avoid forced composites).
-    So d ≥ k# (primorial of k), which grows as e^(1+o(1))k. -/
-axiom ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
+/-- Helper: for p prime with p ∤ d, some index i < p satisfies p ∣ (a + i * d).
+    Proof: in ZMod p, d is a unit, so i = −a · d⁻¹ solves a + id ≡ 0. -/
+private lemma exists_dvd_in_ap (a d p : ℕ) (hp : p.Prime) (hnd : ¬p ∣ d) :
+    ∃ i, i < p ∧ p ∣ (a + i * d) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := hp.neZero
+  have hd_ne : (d : ZMod p) ≠ 0 := fun h =>
+    hnd ((ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mp h)
+  refine ⟨(-(a : ZMod p) * (d : ZMod p)⁻¹).val, ZMod.val_lt _, ?_⟩
+  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
+  push_cast
+  rw [ZMod.natCast_zmod_val, mul_assoc, inv_mul_cancel₀ hd_ne, mul_one, add_neg_cancel]
+
+/-- In a prime AP {a, a+d, ..., a+(k-1)d} of length k ≥ 3 where all terms > k,
+    every prime p ≤ k divides the common difference d.
+
+    The hypothesis that all terms exceed k is necessary: without it,
+    {3,5,7} would be a counterexample (k=3, p=3, but 3 ∤ 2).
+
+    Proof: if p ∤ d, then by exists_dvd_in_ap some term a + i₀d is divisible
+    by p. Being prime forces it to equal p, but it exceeds k ≥ p — contradiction.
+
+    So d ≥ k# (primorial of k), which grows as e^{(1+o(1))k}. -/
+theorem ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
   ∀ a d : ℕ, (∀ i : ℕ, i < k → (a + i * d).Prime) → d > 0 →
-    ∀ p : ℕ, p.Prime → p ≤ k → p ∣ d
+    (∀ i : ℕ, i < k → a + i * d > k) →
+    ∀ p : ℕ, p.Prime → p ≤ k → p ∣ d := by
+  intro a d hprime _ hgt p hp hpk
+  by_contra hnd
+  obtain ⟨i₀, hi₀, hdvd⟩ := exists_dvd_in_ap a d p hp hnd
+  have hi₀k : i₀ < k := lt_of_lt_of_le hi₀ hpk
+  rcases (hprime i₀ hi₀k).eq_one_or_self_of_dvd p hdvd with h | h
+  · exact absurd h (by have := hp.one_lt; omega)
+  · exact absurd (hgt i₀ hi₀k) (by omega)
 
 /-- The primorial constraint means a prime AP of length k uses
     numbers up to at least a + (k-1) · k#, which grows rapidly. -/
