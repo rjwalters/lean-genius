@@ -84,6 +84,25 @@ theorem sidon_is_almost_sidon (A : Finset ℕ) (h : IsSidon A) : IsAlmostSidon A
   unfold IsAlmostSidon IsSidon at *
   omega
 
+/-- Empty set is almost-Sidon (trivially) -/
+theorem isAlmostSidon_empty : IsAlmostSidon ∅ := by
+  unfold IsAlmostSidon multiRepSet sumRepCount
+  simp
+
+/-- Almost-Sidon is monotone: subsets of almost-Sidon sets are almost-Sidon -/
+theorem isAlmostSidon_subset {A B : Finset ℕ} (h : IsAlmostSidon B) (hsub : A ⊆ B) :
+    IsAlmostSidon A := by
+  unfold IsAlmostSidon at *
+  have : (multiRepSet A).card ≤ (multiRepSet B).card := by
+    apply Finset.card_le_card
+    intro n hn
+    simp only [multiRepSet, Finset.mem_filter, Finset.mem_image,
+      Finset.mem_product, Prod.exists] at hn ⊢
+    obtain ⟨⟨a, b, ha, hb, rfl⟩, hrep⟩ := hn
+    exact ⟨⟨a, b, hsub ha, hsub hb, rfl⟩,
+           le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
+  omega
+
 /- ## Difference Version -/
 
 /-- For the difference analogue (at most one n with multiple a − b
@@ -165,11 +184,27 @@ theorem isSidon_empty : IsSidon ∅ := by
   unfold IsSidon multiRepSet sumRepCount
   simp
 
+/-- sumRepCount is monotone in the underlying set -/
+private lemma sumRepCount_le_of_subset {A B : Finset ℕ} (hsub : A ⊆ B) (n : ℕ) :
+    sumRepCount A n ≤ sumRepCount B n := by
+  unfold sumRepCount
+  exact Finset.card_le_card
+    (Finset.filter_subset_filter _ (Finset.product_subset_product hsub hsub))
+
 /-- Sidon is monotone: subsets of Sidon sets are Sidon -/
 theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
     IsSidon A := by
   unfold IsSidon at *
-  sorry -- Requires: sumRepCount is monotone in A, which needs Finset.product/filter monotonicity
+  -- multiRepSet A ⊆ multiRepSet B, so card(A) ≤ card(B) = 0
+  have : (multiRepSet A).card ≤ (multiRepSet B).card := by
+    apply Finset.card_le_card
+    intro n hn
+    simp only [multiRepSet, Finset.mem_filter, Finset.mem_image,
+      Finset.mem_product, Prod.exists] at hn ⊢
+    obtain ⟨⟨a, b, ha, hb, rfl⟩, hrep⟩ := hn
+    exact ⟨⟨a, b, hsub ha, hsub hb, rfl⟩,
+           le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
+  omega
 
 /-- For almost-Sidon A, at most one sum has a collision, so the number of
     distinct sums is ≥ C(|A|,2) + |A| − 1. These must fit in [2, 2N]. -/
