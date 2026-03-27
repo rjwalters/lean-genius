@@ -45,14 +45,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The volume of the unit n-ball $\\omega_n = \\pi^{n/2}/\\Gamma(n/2 + 1)$ is a fundamental constant in geometry and analysis. While the Gamma function provides a closed-form expression, the two-step recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ offers a purely algebraic computation requiring only multiplication and division, starting from $\\omega_0 = 1$ and $\\omega_1 = 2$. This recurrence is a direct consequence of the Gamma function's functional equation $\\Gamma(z+1) = z\\cdot\\Gamma(z)$.",
+    "historicalContext": "The volume of the unit $n$-ball $\\omega_n = \\pi^{n/2}/\\Gamma(n/2 + 1)$ is a fundamental constant whose formula dates to Dirichlet's 1839 work on multi-dimensional integrals, later refined by Schläfli (1852) in his studies of higher-dimensional geometry. The Gamma function $\\Gamma(z+1) = z\\cdot\\Gamma(z)$, discovered by Euler in 1729 as an extension of the factorial to non-integer arguments, provides the key structural identity. The two-step recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ is a folklore result that appears in various forms in analysis textbooks (e.g., Folland's 'Introduction to Partial Differential Equations', Stein and Shakarchi's 'Real Analysis'). A notable feature of the volume sequence is that $\\omega_n \\to 0$ as $n \\to \\infty$ — the unit ball becomes negligible in high dimensions, a phenomenon known as the 'curse of dimensionality' in statistics and machine learning.",
     "problemStatement": "Can the unit ball volumes $\\omega_n$ be computed for all $n$ via a recursive formula?",
     "text": "Proves the recurrence \u03c9_{n+2} = (2\u03c0/(n+2))\u00b7\u03c9_n for computing unit n-ball volumes.",
     "proofStrategy": "The proof unfolds $\\omega_{n+2}$ and $\\omega_n$ by definition, uses `push_cast` and `ring` for cast arithmetic, `rpow_add` to factor $\\pi^{(n+2)/2}$ into $\\pi \\cdot \\pi^{n/2}$, and `Gamma_add_one` to factor $\\Gamma(n/2+2)$ into $(n/2+1)\\cdot\\Gamma(n/2+1)$. Finally `field_simp` and `ring` close the algebraic identity.",
     "keyInsights": [
       "The recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ reduces to the Gamma function identity $\\Gamma(z+1) = z\\cdot\\Gamma(z)$ applied at $z = n/2 + 1$",
       "The two-step nature (even and odd dimensions evolve independently) reflects the factorization $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ where the parity of $n$ determines whether we evaluate $\\Gamma$ at integers or half-integers",
-      "The formula $(2\\pi/n)\\cdot\\omega_n$ sometimes cited in the literature has an off-by-two indexing error; the correct formula is $(2\\pi/(n+2))\\cdot\\omega_n$, easily verified: $\\omega_2 = \\pi = (2\\pi/2)\\cdot 1 = \\pi$ from $\\omega_0 = 1$"
+      "The formula $(2\\pi/n)\\cdot\\omega_n$ sometimes cited in the literature has an off-by-two indexing error; the correct formula is $(2\\pi/(n+2))\\cdot\\omega_n$, easily verified: $\\omega_2 = \\pi = (2\\pi/2)\\cdot 1 = \\pi$ from $\\omega_0 = 1$",
+      "All unit ball volumes are rational multiples of powers of $\\pi$: $\\omega_n \\in \\mathbb{Q} \\cdot \\pi^{\\lfloor n/2 \\rfloor}$, a direct consequence of the recurrence multiplying by rational factors at each step",
+      "The proof technique — using `push_cast; ring` after applying `Gamma_add_one` and `rpow_add` — is a reusable pattern for any identity reducible to the Gamma functional equation"
     ],
     "prerequisites": [
       "Gamma function theory (functional equation)",
