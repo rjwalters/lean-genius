@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: sidon_not_basis PROVED (3→2 axioms). Unordered pair counting lemma (|sumset| ≤ n(n+1)/2) + tight Sidon density bound gives contradiction for large N. File: 18 theorems, 2 axioms, 0 sorries, ~647 lines.",
+    "progressSummary": "AXIOM ELIMINATION: sidon_not_basis PROVED (3→2 axioms). Unordered pair counting lemma (|sumset| ≤ n(n+1)/2) + tight Sidon density bound gives contradiction for large N. File: 18 theorems, 2 axioms, 0 sorries, ~647 lines. erdos-284: Removed incorrect e_minus_one_constant axiom + proved example_k4 (9→7 axioms).",
     "builtItems": [
       "repFunc_ge_repFuncUnordered: proved (ordered ≥ unordered)",
       "nat_repFuncUnordered_unbounded: proved",
@@ -39,7 +39,9 @@
       "sidon_density_bound PROVED: was axiom, now theorem via bridge + Erdos340.sidon_upper_bound_weak",
       "sidon_not_basis PROVED: was axiom, now theorem via unordered pair counting + tight Sidon bound",
       "card_upper_triangle: |{(a,b) ∈ F×F : a≤b}|*2 = |F|*(|F|+1) via partition/swap/diagonal",
-      "finset_sumset_card_bound: |sumset(F)|*2 ≤ |F|*(|F|+1)"
+      "finset_sumset_card_bound: |sumset(F)|*2 ≤ |F|*(|F|+1)",
+      "Removed e_minus_one_constant (was mathematically incorrect: e-1 ≠ ∫₁^e 1/x dx = 1)",
+      "Proved example_k4: RepresentsOne {2,4,5,20} via Finset sum computation"
     ],
     "insights": [
       "The Erdős-Turán conjecture (3 forms) is OPEN with $500 prize - cannot be proved",
