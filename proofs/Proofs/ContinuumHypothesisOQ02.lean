@@ -316,11 +316,25 @@ axiom bounding_number_uncountable :
 axiom dominating_le_continuum :
     dominatingNumber ≤ ContinuumHypothesis.continuum
 
-/-- The bounding number is at most the dominating number: b ≤ d.
-    Every dominating family is unbounded (if g dominates all functions,
-    then g itself cannot be eventually dominated by all of them).
+/-- Every dominating family is unbounded: if F eventually dominates
+    all functions, no single function can eventually dominate all of F.
 
-    Axiom: requires formal proof that dominating implies unbounded. -/
+    Proof: given g, find h ∈ F dominating g+1. Then g(n)+1 ≤ h(n)
+    for large n, so h cannot satisfy h(n) ≤ g(n) for large n. -/
+theorem dominating_implies_unbounded {F : Set (ℕ → ℕ)}
+    (hF : IsDominating F) : IsUnbounded F := by
+  intro g
+  obtain ⟨h, hh_mem, N₁, hN₁⟩ := hF (fun n => g n + 1)
+  refine ⟨h, hh_mem, fun ⟨N₂, hN₂⟩ => ?_⟩
+  have h1 := hN₁ (max N₁ N₂) (le_max_left _ _)
+  have h2 := hN₂ (max N₁ N₂) (le_max_right _ _)
+  omega
+
+/-- The bounding number is at most the dominating number: b ≤ d.
+    Since every dominating family is unbounded, the infimum over
+    unbounded families is ≤ the infimum over dominating families.
+
+    Axiom: the formal Cardinal infimum manipulation is complex. -/
 axiom bounding_le_dominating : boundingNumber ≤ dominatingNumber
 
 /-- The fundamental chain of cardinal characteristics:
