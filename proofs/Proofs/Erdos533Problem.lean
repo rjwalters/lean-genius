@@ -50,6 +50,37 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
   Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
     (Finset.univ.product Finset.univ))
 
+/- ## Basic Properties -/
+
+/-- The empty vertex set is trivially a clique -/
+theorem isClique_empty {n : ℕ} (G : SGraph n) : IsClique G ∅ :=
+  fun _ hi => absurd hi (Finset.not_mem_empty _)
+
+/-- The empty vertex set is trivially triangle-free -/
+theorem isTriangleFree_empty {n : ℕ} (G : SGraph n) : IsTriangleFree G ∅ :=
+  fun ⟨_, _, _, ha, _, _, _, _, _, _, _⟩ => absurd ha (Finset.not_mem_empty _)
+
+/-- A clique on n vertices has at most n elements -/
+theorem hasClique_le_n {n : ℕ} (G : SGraph n) (k : ℕ) (h : HasClique G k) :
+    k ≤ n := by
+  obtain ⟨S, hcard, _⟩ := h
+  have : S.card ≤ Fintype.card (Fin n) := S.card_le_univ
+  simp [Fintype.card_fin] at this
+  omega
+
+/-- A K₅-free graph on n ≤ 4 vertices is trivially K₅-free -/
+theorem k5_free_of_small {n : ℕ} (G : SGraph n) (hn : n ≤ 4) : ¬HasClique G 5 := by
+  intro h
+  have := hasClique_le_n G 5 h
+  omega
+
+/-- A singleton is always triangle-free -/
+theorem isTriangleFree_singleton {n : ℕ} (G : SGraph n) (v : Fin n) :
+    IsTriangleFree G {v} := by
+  intro ⟨a, b, _, ha, hb, _, hab, _, _, _, _⟩
+  simp at ha hb
+  exact absurd (ha.symm ▸ hb) hab
+
 /- ## Known Partial Results -/
 
 /-- Erdős–Hajnal–Simonovits–Sós–Szemerédi: for δ > 1/16, any K₅-free graph
