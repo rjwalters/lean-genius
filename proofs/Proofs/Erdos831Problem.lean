@@ -189,7 +189,32 @@ Any 4 vertices of a regular polygon are concyclic.
 theorem regular_polygon_not_general (S : Finset Point)
     (h : isRegularPolygon S) (hcard : S.card ≥ 4) :
     ¬isInGeneralPosition (↑S : Set Point) := by
-  sorry  -- All points on a circle means any 4 are concyclic
+  obtain ⟨center, r, hr, hcirc⟩ := h
+  intro ⟨_, hno4⟩
+  -- Extract 4 distinct points from S
+  obtain ⟨T, hT, hTc⟩ := Finset.exists_smaller_set S 4 hcard
+  obtain ⟨p1, R3, h1, rfl, hR3⟩ := Finset.card_eq_succ.mp (show T.card = 3 + 1 by omega)
+  obtain ⟨p2, R2, h2, rfl, hR2⟩ := Finset.card_eq_succ.mp (show R3.card = 2 + 1 by omega)
+  obtain ⟨p3, R1, h3, rfl, hR1⟩ := Finset.card_eq_succ.mp (show R2.card = 1 + 1 by omega)
+  obtain ⟨p4, rfl⟩ := Finset.card_eq_one.mp (show R1.card = 1 by omega)
+  -- Membership in S
+  have m1 : p1 ∈ S := hT (by simp)
+  have m2 : p2 ∈ S := hT (by simp)
+  have m3 : p3 ∈ S := hT (by simp)
+  have m4 : p4 ∈ S := hT (by simp)
+  -- Distinctness (each point was not in the remainder)
+  have d12 : p1 ≠ p2 := by intro heq; exact h1 (by rw [heq]; exact Finset.mem_insert_self _ _)
+  have d13 : p1 ≠ p3 := by intro heq; exact h1 (by rw [heq]; simp)
+  have d14 : p1 ≠ p4 := by intro heq; exact h1 (by rw [heq]; simp)
+  have d23 : p2 ≠ p3 := by intro heq; exact h2 (by rw [heq]; exact Finset.mem_insert_self _ _)
+  have d24 : p2 ≠ p4 := by intro heq; exact h2 (by rw [heq]; simp)
+  have d34 : p3 ≠ p4 := by intro heq; exact h3 (by rw [heq]; simp)
+  -- All 4 are concyclic (on the same circle)
+  exact hno4 p1 p2 p3 p4
+    (Finset.mem_coe.mpr m1) (Finset.mem_coe.mpr m2)
+    (Finset.mem_coe.mpr m3) (Finset.mem_coe.mpr m4)
+    d12 d23 d34 d13 d14 d24
+    ⟨center, r, hr, hcirc p1 m1, hcirc p2 m2, hcirc p3 m3, hcirc p4 m4⟩
 
 /-
 ## Part VIII: Connection to Other Problems
