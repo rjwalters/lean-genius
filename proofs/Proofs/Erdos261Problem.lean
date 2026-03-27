@@ -44,6 +44,35 @@ def IsRecipPow2Rep (n : ℕ) (S : Finset ℕ) : Prop :=
 def IsRepresentable (n : ℕ) : Prop :=
   ∃ S : Finset ℕ, IsRecipPow2Rep n S
 
+/- ## Basic Properties -/
+
+/-- The weight function is positive for positive k -/
+theorem recipPow2Weight_pos (k : ℕ) (hk : 1 ≤ k) : 0 < recipPow2Weight k := by
+  unfold recipPow2Weight
+  apply div_pos
+  · exact_mod_cast show 0 < k by omega
+  · positivity
+
+/-- The weight at k = 1 is 1/2 -/
+theorem recipPow2Weight_one : recipPow2Weight 1 = 1 / 2 := by
+  unfold recipPow2Weight; norm_num
+
+/-- The weight at k = 2 is also 1/2 (2/4 = 1/2) -/
+theorem recipPow2Weight_two : recipPow2Weight 2 = 1 / 2 := by
+  unfold recipPow2Weight; norm_num
+
+/-- recipPow2Weight 1 = recipPow2Weight 2: a coincidence at k=1,2 -/
+theorem recipPow2Weight_one_eq_two : recipPow2Weight 1 = recipPow2Weight 2 := by
+  rw [recipPow2Weight_one, recipPow2Weight_two]
+
+/-- Empty set has zero sum -/
+theorem recipPow2Sum_empty : recipPow2Sum ∅ = 0 := by
+  unfold recipPow2Sum; simp
+
+/-- Singleton sum equals the weight -/
+theorem recipPow2Sum_singleton (k : ℕ) : recipPow2Sum {k} = recipPow2Weight k := by
+  unfold recipPow2Sum; simp
+
 /- ## Known Results -/
 
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
