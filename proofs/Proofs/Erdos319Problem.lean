@@ -65,8 +65,14 @@ axiom adenwalla_lower_bound :
       (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
 
 /-- **Trivial Upper Bound**: c(N) ≤ N since A ⊆ {1,...,N}. -/
-axiom trivial_upper_bound (N : ℕ) :
-  maxIrreducibleSize N ≤ N
+theorem trivial_upper_bound (N : ℕ) :
+    maxIrreducibleSize N ≤ N := by
+  unfold maxIrreducibleSize
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA.1
+    _ = N := by rw [Finset.Nat.card_Icc]; omega
 
 /-- **Croot (2001)**: every positive integer ≤ N is a sum of distinct
     unit fractions with denominators in {1,...,N} for large enough N.
