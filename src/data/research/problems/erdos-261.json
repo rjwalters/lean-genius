@@ -44,7 +44,10 @@
       "Key identity: sum_{k=1}^n k/2^k = 2 - (n+2)/2^n, proved by induction in partial_sum_formula",
       "Partial sum formula enables proving BL family: n+m+2 = 2^{m+1} makes telescoping sum equal n/2^n",
       "For m=1 (n=1), the BL set {n+1} has only 1 element — need separate argument for representability of 1",
-      "recipPow2Weight has the coincidence w(1) = w(2) = 1/2, then strictly decreasing for k >= 2"
+      "recipPow2Weight has the coincidence w(1) = w(2) = 1/2, then strictly decreasing for k >= 2",
+      "borwein_loring_identity key step: (n+2)/2^n - 2^{m+1}/2^{n+m} = n/2^n, since 2^{m+1}/2^{n+m} = 2/2^n",
+      "For m=1 (n=1): consecutive block {2} has card 1, need alternate construction S={4,5,6} (verified: 4/16+5/32+6/64=1/2)",
+      "Proof strategy: Icc sum = difference of partial sums via partial_sum_formula, then n+m+2=2^{m+1} collapses everything"
     ],
     "mathlibGaps": [],
     "nextSteps": [
