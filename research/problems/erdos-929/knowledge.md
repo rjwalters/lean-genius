@@ -62,45 +62,31 @@ Back to the problem
 - Er76d
 - FGKMT18
 
-## Current State
+## Sessions
 
-- **File**: `proofs/Proofs/Erdos929Problem.lean` (387 lines)
-- **Sorries**: 0
-- **Axioms**: 2 (rosser_lower, fgkmt_upper — deep published results)
-- **Theorems**: ~22
+### Session 2026-03-25 (Session 1) — Eliminate smoothBlockSet_pos_density sorry
 
-## Session 2026-03-25 (Session 1) - Prove sorry + eliminate axiom
+**Mode**: REVISIT
+**Outcome**: completed (sorry eliminated)
 
-**Mode**: REVISIT (RICH knowledge, score 19)
-**Outcome**: completed (1S+3A → 0S+2A)
+#### What I Did
+- Proved `smoothBlockSet_pos_density`: the set smoothBlockSet k (k+1) has positive upper density
+- Proof strategy: the AP {M*i+1 : i ∈ ℕ} (M = (k+1)!) is contained in the smooth block set (via `arithProg_subset_smoothBlockSet`). At index n=M*t, the AP contributes ≥ t members to {0,...,n}. So densityRatio ≥ t/(M*t+1) ≥ 1/(M+1) > 0 frequently.
+- Used `Filter.le_limsup_of_frequently_le` + `densityRatio_isBoundedUnder` for the limsup bound
+- Used `Finset.card_image_of_injOn` + `Finset.card_le_card` for the cardinality injection
+- Overcame DecidablePred instance mismatch: `change` to `densityRatio S (M*t)` then `unfold densityRatio` to match exact Classical.decPred instance from Set.upperDensity definition
 
-### What I Did
-- Proved `smoothBlockSet_pos_density` (sorry → theorem): the AP {M*t+1} ⊆ smoothBlockSet gives density ≥ 1/(2M) > 0
-  - Created `ap_count_bound`: AP elements inject into the filter, giving card ≥ t+1
-  - Used `le_csInf` on the limsup defining set with by_contra argument
-  - Key arithmetic: 1/(2M) ≤ (N₀+1)/(M*(N₀+1)+1) via `div_le_div_of_nonneg_left`
-- Proved `smooth_threshold_2` (axiom → theorem): S(2) = 3 via Nat.find_eq_iff
-  - Created `smoothBlockSet_two_empty_of_le_one`: sets empty for x ≤ 1 (minFac bounds)
-  - Created `smoothBlockSet_two_two_sub_zero`: set ⊆ {0} for x = 2 (odd consecutive argument)
-  - Created `upperDensity_singleton_zero`: {0} has density 0 via limsup_le_of_le + 1/(N+1) → 0
+#### Key Findings
+- DecidablePred instance from `haveI` does NOT match the one embedded in Set.upperDensity definition — must use `@Finset.filter` with explicit `Classical.decPred (· ∈ S)` to match
+- `div_le_div_iff` is deprecated; use `div_le_div_iff₀` in current Mathlib
+- `omega` cannot handle nonlinear multiplication (M*a = M*b); use `linarith` + `mul_left_cancel₀`
 
-### Key Findings
-- `le_csInf` (not `le_limsup_of_le`) is the way to bound limsup from below: provide nonemptiness + lower bound for the defining set
-- `Filter.eventually_map.mp` converts `∀ᶠ in f.map u` to `∀ᶠ in f` (not `rw [Filter.eventually_map]`)
-- omega needs `dsimp` first for beta-reduction of function application terms
-- `mul_left_cancel₀` + explicit `Nat.factorial_ne_zero` for AP injectivity
-- `div_le_div_iff` and `div_le_iff` NOT available in Lean 4.26.0/Mathlib — use `div_le_div_of_nonneg_left` + `field_simp` instead
-- `le_antisymm h1 hprime.two_le` closes minFac = 2 contradiction cleanly
-- `exact_mod_cast Nat.factorial_pos _` converts `0 < M` (Nat) to `1 ≤ ↑M` (ℝ)
+#### Files Modified
+- `proofs/Proofs/Erdos929Problem.lean` — eliminated sorry in smoothBlockSet_pos_density
 
-### Files Modified
-- `proofs/Proofs/Erdos929Problem.lean` (224→387 lines, -1 sorry, -1 axiom, +8 theorems)
-- `src/data/proofs/erdos-929/meta.json` (axiomCount 3→2, lineCount 224→387)
-- `src/data/research/problems/erdos-929.json` (knowledge updated)
-
-### Next Steps
-- Problem complete — 0 sorries, 2 deep axioms (Rosser sieve + FGKMT)
-- No further work possible without sieve theory infrastructure in Mathlib
+#### Next Steps
+- smooth_threshold_2 (S(2)=3) may be provable: show x≤2 gives zero density, x=3 works via n≡2 mod 6
+- rosser_lower and fgkmt_upper are deep analytic NT — keep as axioms
 
 ---
 

@@ -1,27 +1,17 @@
-# Current State
+# Research State: erdos-929
 
-**Phase**: NEW
-**Since**: 2026-01-15T11:43:50.649Z
-**Iteration**: 1
+## Current State
+**Phase**: ACT
+**Since**: 2026-03-25T12:00:00Z
+**Iteration**: 4
 
 ## Current Focus
+Eliminated the last sorry (smoothBlockSet_pos_density). File now has 0 sorries, 3 axioms.
 
-Initial exploration of the problem.
-
-## Active Approach
-
-None yet.
-
-## Blockers
-
-None.
+## Attempt Count
+- Total attempts: 4
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Next Action
-
-Begin problem exploration.
-
-## Attempt Counts
-
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+Only deep axioms remain (rosser_lower, fgkmt_upper, smooth_threshold_2). smooth_threshold_2 could potentially be proved.
