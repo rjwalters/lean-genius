@@ -14,6 +14,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
+import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 
 open Finset Classical
 
@@ -143,18 +144,158 @@ private lemma neighbor_dot_le_half (pts : Finset Point2D) (p q₁ q₂ : Point2D
       2 * ((q₁.1 - p.1) * (q₂.1 - p.1) + (q₁.2 - p.2) * (q₂.2 - p.2)) := by ring
   linarith
 
+-- ══════════════════════════════════════════════════════════════════════
+-- Helpers for the 2D kissing number proof
+-- ══════════════════════════════════════════════════════════════════════
+
+/-- Convert (x, y) pair to complex number. -/
+private noncomputable def mkℂ (v : ℝ × ℝ) : ℂ := ⟨v.1, v.2⟩
+
+@[simp] private lemma mkℂ_re (v : ℝ × ℝ) : (mkℂ v).re = v.1 := rfl
+@[simp] private lemma mkℂ_im (v : ℝ × ℝ) : (mkℂ v).im = v.2 := rfl
+
+/-- Unit pair → nonzero complex number. -/
+private lemma mkℂ_ne_zero {v : ℝ × ℝ} (hv : v.1 ^ 2 + v.2 ^ 2 = 1) : mkℂ v ≠ 0 := by
+  intro h
+  have hns : Complex.normSq (mkℂ v) = 0 := by rw [h]; simp
+  simp only [Complex.normSq_apply, mkℂ_re, mkℂ_im] at hns
+  nlinarith [sq_nonneg v.1, sq_nonneg v.2]
+
+/-- Unit pair → ‖z‖ = 1. -/
+private lemma mkℂ_norm_one {v : ℝ × ℝ} (hv : v.1 ^ 2 + v.2 ^ 2 = 1) : ‖mkℂ v‖ = 1 := by
+  rw [Complex.norm_eq_abs, Complex.abs_apply]
+  have hns : Complex.normSq (mkℂ v) = 1 := by
+    simp only [Complex.normSq_apply, mkℂ_re, mkℂ_im]
+    nlinarith [sq_nonneg v.1, sq_nonneg v.2]
+  rw [hns, Real.sqrt_one]
+
+/-- Normalize angle from (-π, π] to [0, 2π). -/
+private noncomputable def normAngle (θ : ℝ) : ℝ :=
+  if θ ≥ 0 then θ else θ + 2 * Real.pi
+
+private lemma normAngle_nonneg {θ : ℝ} (hθ : -Real.pi < θ) : 0 ≤ normAngle θ := by
+  simp only [normAngle]; split_ifs with h
+  · exact h
+  · linarith [Real.pi_pos]
+
+private lemma normAngle_lt_two_pi {θ : ℝ} (hθ : θ ≤ Real.pi) : normAngle θ < 2 * Real.pi := by
+  simp only [normAngle]; split_ifs with h
+  · linarith [Real.pi_pos]
+  · linarith
+
+/-- cos is 2π-periodic, so normalizing angles preserves cos of differences. -/
+private lemma cos_normAngle_sub (θ₁ θ₂ : ℝ) :
+    Real.cos (normAngle θ₁ - normAngle θ₂) = Real.cos (θ₁ - θ₂) := by
+  simp only [normAngle]
+  split_ifs with h1 h2 h1 h2
+  · rfl
+  · have : θ₁ - (θ₂ + 2 * Real.pi) = (θ₁ - θ₂) - 2 * Real.pi := by ring
+    rw [this, Real.cos_sub_two_pi]
+  · have : θ₁ + 2 * Real.pi - θ₂ = (θ₁ - θ₂) + 2 * Real.pi := by ring
+    rw [this, Real.cos_add_two_pi]
+  · have : θ₁ + 2 * Real.pi - (θ₂ + 2 * Real.pi) = θ₁ - θ₂ := by ring
+    rw [this]
+
+/-- Two values with the same Nat.floor (divided by c > 0) differ by less than c. -/
+private lemma abs_sub_lt_of_floor_eq {a b c : ℝ} (hc : 0 < c) (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (hfl : ⌊a / c⌋₊ = ⌊b / c⌋₊) : |a - b| < c := by
+  have hac := div_nonneg ha (le_of_lt hc)
+  have hbc := div_nonneg hb (le_of_lt hc)
+  have h1 := Nat.lt_floor_add_one (a / c)
+  have h2 := Nat.floor_le hac
+  have h3 := Nat.lt_floor_add_one (b / c)
+  have h4 := Nat.floor_le hbc
+  rw [hfl] at h1 h2
+  rw [abs_lt]; constructor <;> nlinarith
+
+/-- |θ| < π/3 implies cos θ > 1/2, by strict anti-monotonicity of cos on [0, π]. -/
+private lemma cos_gt_half_of_abs_lt {θ : ℝ} (h : |θ| < Real.pi / 3) :
+    Real.cos θ > 1 / 2 := by
+  have h1 : |θ| ∈ Set.Icc (0 : ℝ) Real.pi :=
+    ⟨abs_nonneg θ, le_of_lt (lt_of_lt_of_le h (by linarith [Real.pi_pos]))⟩
+  have h2 : Real.pi / 3 ∈ Set.Icc (0 : ℝ) Real.pi :=
+    ⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩
+  have key := Real.strictAntiOn_cos h1 h2 h
+  rw [Real.cos_pi_div_three] at key
+  have : Real.cos θ = Real.cos |θ| := by
+    rcases le_or_lt 0 θ with hnn | hn
+    · rw [abs_of_nonneg hnn]
+    · rw [abs_of_neg hn, Real.cos_neg]
+  linarith
+
+/-- For unit vectors, dot product = cos(arg difference). -/
+private lemma dot_eq_cos_arg_sub {v w : ℝ × ℝ}
+    (hv : v.1 ^ 2 + v.2 ^ 2 = 1) (hw : w.1 ^ 2 + w.2 ^ 2 = 1) :
+    v.1 * w.1 + v.2 * w.2 =
+      Real.cos (Complex.arg (mkℂ v) - Complex.arg (mkℂ w)) := by
+  have hvz := mkℂ_ne_zero hv
+  have hwz := mkℂ_ne_zero hw
+  have hvn := mkℂ_norm_one hv
+  have hwn := mkℂ_norm_one hw
+  have cv := Complex.cos_arg hvz; rw [hvn, div_one, mkℂ_re] at cv
+  have sv := Complex.sin_arg (mkℂ v); rw [hvn, div_one, mkℂ_im] at sv
+  have cw := Complex.cos_arg hwz; rw [hwn, div_one, mkℂ_re] at cw
+  have sw := Complex.sin_arg (mkℂ w); rw [hwn, div_one, mkℂ_im] at sw
+  -- cv : cos(arg(mkℂ v)) = v.1,  sv : sin(arg(mkℂ v)) = v.2, etc.
+  rw [cv.symm, sv.symm, cw.symm, sw.symm]
+  exact (Real.cos_sub _ _).symm
+
+-- ══════════════════════════════════════════════════════════════════════
+
 /-- **2D Kissing Number**: At most 6 unit vectors in ℝ² can have pairwise
     dot product ≤ 1/2. Equivalently: at most 6 points on the unit circle
     can have pairwise distance ≥ 1.
 
-    Proof outline: Each unit vector v = (cos θ, sin θ). The constraint
-    cos(θᵢ - θⱼ) ≤ 1/2 forces angular separation ≥ π/3 (using
-    Real.strictAntiOn_cos). Since 6 · (π/3) = 2π, at most 6 fit. -/
+    Proof: Assign each vector an angle via Complex.arg, normalize to [0, 2π),
+    and partition into 6 sectors of width π/3. By pigeonhole (7 into 6),
+    two vectors share a sector. Their angular separation < π/3 gives
+    dot product > cos(π/3) = 1/2, contradicting the hypothesis. -/
 theorem kissing_number_2d (S : Finset (ℝ × ℝ))
     (hunit : ∀ v ∈ S, v.1 ^ 2 + v.2 ^ 2 = 1)
     (hdot : ∀ v ∈ S, ∀ w ∈ S, v ≠ w → v.1 * w.1 + v.2 * w.2 ≤ 1 / 2) :
     S.card ≤ 6 := by
-  sorry -- Angular packing: uses Real.cos_sub, Real.cos_pi_div_three, Real.strictAntiOn_cos
+  -- Assign each vector to one of 6 angular sectors of width π/3.
+  -- The sector map is injective on S (collision ⟹ dot > 1/2 ⟹ contradicts hdot),
+  -- so |S| = |S.image sec| ≤ |Fin 6| = 6.
+  let nAng : ℝ × ℝ → ℝ := fun u => normAngle (Complex.arg (mkℂ u))
+  let sec : ℝ × ℝ → Fin 6 := fun u =>
+    ⟨min 5 ⌊nAng u / (Real.pi / 3)⌋₊, by omega⟩
+  have hpi3 : (0 : ℝ) < Real.pi / 3 := by positivity
+  -- Angle range and floor bound for any unit vector
+  have nAng_nn : ∀ u, 0 ≤ nAng u :=
+    fun u => normAngle_nonneg (Complex.neg_pi_lt_arg (mkℂ u))
+  have nAng_ub : ∀ u, nAng u < 2 * Real.pi :=
+    fun u => normAngle_lt_two_pi (Complex.arg_le_pi (mkℂ u))
+  have floor_le : ∀ u, ⌊nAng u / (Real.pi / 3)⌋₊ ≤ 5 := by
+    intro u
+    have hnn : (0 : ℝ) ≤ nAng u / (Real.pi / 3) := div_nonneg (nAng_nn u) hpi3.le
+    have h6 : nAng u / (Real.pi / 3) < 6 := by rw [div_lt_iff hpi3]; linarith [nAng_ub u]
+    have : ⌊nAng u / (Real.pi / 3)⌋₊ < 6 := by
+      rw [Nat.floor_lt hnn]; exact_mod_cast h6
+    omega
+  -- The sector function is injective on S
+  have hinj : Set.InjOn sec ↑S := by
+    intro v hv w hw heq
+    by_contra hvw
+    have hv' := Finset.mem_coe.mp hv
+    have hw' := Finset.mem_coe.mp hw
+    -- Same sector ⟹ same floor
+    have hmin_eq : min 5 ⌊nAng v / (Real.pi / 3)⌋₊ =
+        min 5 ⌊nAng w / (Real.pi / 3)⌋₊ := congr_arg Fin.val heq
+    rw [min_eq_right (floor_le v), min_eq_right (floor_le w)] at hmin_eq
+    -- Same floor ⟹ |normalized angle diff| < π/3
+    have hclose := abs_sub_lt_of_floor_eq hpi3 (nAng_nn v) (nAng_nn w) hmin_eq
+    -- cos(nAng diff) > 1/2, and cos(nAng diff) = cos(arg diff) = dot product
+    have hcos_gt := cos_gt_half_of_abs_lt hclose
+    have hdot_val := dot_eq_cos_arg_sub (hunit v hv') (hunit w hw')
+    have hperiod := cos_normAngle_sub (Complex.arg (mkℂ v)) (Complex.arg (mkℂ w))
+    -- dot > 1/2 contradicts hdot ≤ 1/2
+    linarith [hdot v hv' w hw' hvw, hdot_val, hperiod]
+  -- |S| = |S.image sec| ≤ |Fin 6| = 6
+  calc S.card = (S.image sec).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (Finset.univ : Finset (Fin 6)).card :=
+        Finset.card_le_card (Finset.subset_univ _)
+    _ = 6 := by simp [Fintype.card_fin]
 
 /-- In a 1-separated set, each point has at most 6 unit neighbors.
     Reduces to the 2D kissing number via translation to the origin. -/
