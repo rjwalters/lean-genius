@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Defined graphRamseyK3 via sInf (eliminated definition sorry). 4→3 sorries. 2 axioms unchanged (deep results).",
+    "builtItems": [
+      "Defined graphRamseyK3 properly via sInf (was sorry)"
+    ],
+    "insights": [
+      "graphRamseyK3 defined via sInf over {r | every 2-coloring has red K3 or blue copy of G}",
+      "Blue copy formalized as Function.Embedding preserving adjacency under false color"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1182 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
@@ -61,7 +66,7 @@
       "theoremCount": 3,
       "axiomCount": 2,
       "defCount": 6,
-      "sorryCount": 4,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1182Problem.lean"
     }
