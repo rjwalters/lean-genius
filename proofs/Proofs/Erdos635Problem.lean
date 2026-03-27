@@ -182,24 +182,50 @@ def ErdosConjecture635 : Prop :=
 /-- The conjecture is axiomatized as it remains open. -/
 axiom erdos_635 : ErdosConjecture635
 
-/- ## Part VI: Upper and Lower Bounds
+/- ## Part VI: Upper and Lower Bounds -/
 
-We collect known bounds on f(N, t). The trivial upper bound is N
-(the entire set {1,...,N}), but this is far from tight. -/
+/-- t-admissibility weakens with larger t: fewer pairs are constrained.
+    If b - a ≥ t' ≥ t, the t-condition already covers it. -/
+theorem IsAdmissible_mono_t {A : Finset ℕ} {N t t' : ℕ} (h : t ≤ t')
+    (hA : IsAdmissible A N t) : IsAdmissible A N t' :=
+  ⟨hA.1, fun a b ha hb hab hd => hA.2 a b ha hb hab (le_trans h hd)⟩
+
+/-- The set of achievable cardinalities is nonempty (∅ is always admissible). -/
+theorem f_set_nonempty (N t : ℕ) :
+    {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}.Nonempty :=
+  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
+    fun _ _ h => absurd h (Finset.not_mem_empty _)⟩⟩
+
+/-- The set of achievable cardinalities is bounded above by N. -/
+theorem f_set_bddAbove (N t : ℕ) :
+    BddAbove {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t} :=
+  ⟨N, fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
+      (by simp [Finset.card_Icc]; omega)⟩
 
 /-- Trivial upper bound: f(N, t) ≤ N for all t.
-    Since A ⊆ {1,...,N}, we have |A| ≤ N. -/
-axiom f_upper_trivial (N t : ℕ) : f N t ≤ N
+    Proof: A ⊆ {1,...,N} implies |A| ≤ N. -/
+theorem f_upper_trivial (N t : ℕ) : f N t ≤ N := by
+  unfold f
+  exact csSup_le (f_set_nonempty N t) fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
+      (by simp [Finset.card_Icc]; omega)
 
 /-- Monotonicity: f(N, t) ≤ f(N, t') when t ≤ t'.
-    Larger t means the condition applies to fewer pairs,
-    so more sets are admissible. -/
-axiom f_monotone_t (N t t' : ℕ) (h : t ≤ t') : f N t ≤ f N t'
+    Proof: Larger t means fewer restricted pairs, so more admissible sets. -/
+theorem f_monotone_t (N t t' : ℕ) (h : t ≤ t') : f N t ≤ f N t' := by
+  unfold f
+  exact csSup_le_csSup (f_set_bddAbove N t') (f_set_nonempty N t)
+    fun _ ⟨A, hcard, hAdm⟩ => ⟨A, hcard, IsAdmissible_mono_t h hAdm⟩
 
 /-- Lower bound: f(N, t) ≥ (N+1)/2 for all t ≥ 1.
-    The odd set works for t = 1, hence for all larger t too. -/
-axiom f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
-    f N t ≥ (N + 1) / 2
+    Proof: The odd set is 1-admissible (hence t-admissible) with card (N+1)/2. -/
+theorem f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
+    f N t ≥ (N + 1) / 2 := by
+  unfold f
+  rw [← oddSet_card N]
+  exact le_csSup (f_set_bddAbove N t)
+    ⟨oddSet N, rfl, IsAdmissible_mono_t (by omega : 1 ≤ t) (oddSet_admissible N hN)⟩
 
 /-- The density is at most 1/2 + o(1) for t = 1.
     Since f(N,1) = ⌊(N+1)/2⌋, the ratio f(N,1)/N → 1/2 as N → ∞. -/
