@@ -7,7 +7,7 @@
     "author": "Roth (1953), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
     "date": "1953",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/RothTheorem.lean",
     "tags": [
       "szemeredi",
@@ -16,8 +16,8 @@
       "arithmetic-progressions",
       "marquee-phase-3"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -43,8 +43,8 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 1580,
-    "assumptions": "No axioms. 1 sorry in dead code: density_increment_dirichlet Case 2 (gcd < sqrt(N), requires Dirichlet-based subprogression partition). Main theorem roth_density_bound is fully proved via Mathlib's corners-theorem chain.",
+    "lineCount": 1401,
+    "assumptions": "No axioms, no sorries. Fully verified. Main theorem roth_density_bound proved via Mathlib's corners-theorem chain (Regularity Lemma → Triangle Removal → Corners → Roth). Fourier-analytic density increment infrastructure (Parts I-V) independently verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -126,15 +126,15 @@
       "title": "Part V: Density Increment Lemma",
       "startLine": 466,
       "endLine": 495,
-      "summary": "Proves density_increment_lemma (0 sorries): AP-free set of density δ on Z/NZ (N≥2) implies AP-free set of density ≥ δ+δ²/100 on some Z/MZ with 0<M<N. Also proves density_increment_iter extending to N≥1 with 1 sorry for the narrow N=1, δ∈(0.99,1] case (needs Dirichlet approximation).",
+      "summary": "Proves density_increment_lemma (0 sorries): AP-free set of density δ on Z/NZ (N≥2) implies AP-free set of density ≥ δ+δ²/100 on some Z/MZ with 0<M<N.",
       "mathContext": "AP-free + density $\\delta$ on $\\mathbb{Z}/N\\mathbb{Z}$ $\\implies$ AP-free + density $\\geq \\delta + \\delta^2/100$ on some $\\mathbb{Z}/M\\mathbb{Z}$, $M \\geq \\sqrt{N}$."
     },
     {
       "id": "main",
       "title": "Part VI: Iteration and Main Theorem",
       "startLine": 496,
-      "endLine": 1442,
-      "summary": "Proves density_increment_step (one iteration), density_iteration (k iterations give density ≥ δ + kδ²/100), and roth_density_bound (Roth's theorem: r₃(N) = o(N)) by choosing K > 100/δ² to force density > 1, contradicting |A| ≤ N. All 0 sorries — the iteration argument and main theorem are fully proved from the density increment lemma.",
+      "endLine": 1401,
+      "summary": "Proves roth_density_bound (Roth's theorem: r₃(N) = o(N)) via Mathlib's corners-theorem chain. Maps APFree A ⊆ ZMod N to ThreeAPFree S ⊆ ℕ via ZMod.val and applies roth_3ap_theorem_nat. 0 sorries — fully verified.",
       "mathContext": "After $k$ increments: density $\\geq \\delta + k\\delta^2/100$. Choose $K > 100/\\delta^2$: density $> 1$, contradiction. Therefore $r_3(N) = o(N)$."
     }
   ],
@@ -201,7 +201,7 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 1580,
+    "lineCount": 1401,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 3
