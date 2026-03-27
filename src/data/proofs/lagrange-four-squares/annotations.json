@@ -4,7 +4,7 @@
     "proofId": "lagrange-four-squares",
     "range": {
       "startLine": 1,
-      "endLine": 2
+      "endLine": 3
     },
     "type": "context",
     "title": "Mathlib's Four Squares Module",
@@ -15,17 +15,14 @@
       "Mathlib",
       "number theory",
       "sum of squares"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-historical",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 4,
-      "endLine": 40
+      "startLine": 5,
+      "endLine": 41
     },
     "type": "insight",
     "title": "From Euler to Quaternions: A 100-Year Mystery",
@@ -37,17 +34,14 @@
       "Hamilton",
       "division algebras",
       "Frobenius theorem"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-euler-identity",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 44,
-      "endLine": 47
+      "startLine": 45,
+      "endLine": 48
     },
     "type": "theorem",
     "title": "Euler's Four-Square Identity",
@@ -58,17 +52,14 @@
       "quaternions",
       "bilinear forms",
       "algebraic identities"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-ring-tactic",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 49,
-      "endLine": 62
+      "startLine": 50,
+      "endLine": 63
     },
     "type": "tactic",
     "title": "The ring Tactic",
@@ -79,17 +70,14 @@
       "proof automation",
       "polynomial identities",
       "commutative algebra"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-why-not-three",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 49,
-      "endLine": 62
+      "startLine": 50,
+      "endLine": 63
     },
     "type": "insight",
     "title": "Why Three Squares Fail",
@@ -100,17 +88,14 @@
       "Legendre's theorem",
       "quadratic forms",
       "three squares problem"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-example-seven",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 49,
-      "endLine": 69
+      "startLine": 50,
+      "endLine": 70
     },
     "type": "example",
     "title": "The Notorious Seven",
@@ -120,17 +105,14 @@
     "relatedConcepts": [
       "counterexamples",
       "three squares theorem"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 71,
-      "endLine": 75
+      "startLine": 72,
+      "endLine": 76
     },
     "type": "theorem",
     "title": "Lagrange's Four Squares Theorem",
@@ -150,8 +132,8 @@
     "id": "ann-integer-version",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 82,
-      "endLine": 93
+      "startLine": 83,
+      "endLine": 94
     },
     "type": "corollary",
     "title": "Integer Version",
@@ -161,17 +143,14 @@
     "relatedConcepts": [
       "integer arithmetic",
       "type coercion"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
     "id": "ann-two-squares-connection",
     "proofId": "lagrange-four-squares",
     "range": {
-      "startLine": 120,
-      "endLine": 120
+      "startLine": 121,
+      "endLine": 121
     },
     "type": "insight",
     "title": "Connection to Two Squares",
@@ -182,9 +161,6 @@
       "Fermat two squares",
       "quadratic residues",
       "number theory"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   }
 ]

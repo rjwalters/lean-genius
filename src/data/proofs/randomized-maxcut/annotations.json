@@ -14,11 +14,7 @@
       "Mathlib",
       "SimpleGraph",
       "Finset"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "Imports `SimpleGraph.Basic` (symmetric adjacency $G : V \\to V \\to \\text{Prop}$), `SimpleGraph.Finite` (the finite edge set `edgeFinset`), `Sym2` (unordered pairs $\\{u, v\\}$ representing edges), and `Finset.Basic` (finite summation $\\sum_{x \\in S} f(x)$ for linearity of expectation)."
+    ]
   },
   {
     "id": "ann-maxcut-theorem2",
@@ -36,9 +32,6 @@
       "bijection",
       "involution",
       "double counting"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
@@ -98,11 +91,7 @@
       "quotient induction",
       "Sym2",
       "diagonal"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
-    ],
-    "mathContext": "Edges in Mathlib are unordered pairs `Sym2 V` (quotient of $V \\times V$ by the swap relation). The tactic `induction e using Sym2.ind` destructs an edge $e$ into representatives $u, v$ with $e = \\{u, v\\}$; the hypothesis `\\neg e.\\text{IsDiag}` ensures $u \\neq v$."
+    ]
   },
   {
     "id": "ann-maxcut-theorem4",
@@ -163,9 +152,6 @@
       "supremum",
       "optimization",
       "NP-hardness"
-    ],
-    "prerequisites": [
-      "mathematical foundations"
     ]
   },
   {
