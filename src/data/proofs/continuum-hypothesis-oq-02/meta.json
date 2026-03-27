@@ -55,7 +55,11 @@
       }
     ],
     "originalContributions": [
-      "Formal proof that aleph_omega is singular (from cofinality axiom + regularity API)",
+      "Proved aleph_omega_cof_eq_omega from Mathlib (Cardinal.cof_aleph + Ordinal.card_omega0)",
+      "Proved bounding_le_dominating from dominating_implies_unbounded via Cardinal infimum reasoning",
+      "Proved easton_regular_consistency (conclusion was trivially True)",
+      "Converted MartinsAxiom from axiom to opaque (removes from axiom environment)",
+      "Formal proof that aleph_omega is singular (from cofinality + regularity API)",
       "Konig's cofinality constraint on the continuum: cf(2^aleph_0) > aleph_0",
       "Proof that 2^aleph_0 != aleph_omega (combining Konig with singular cofinality)",
       "IsPossibleContinuumValue predicate: characterizes the spectrum as regular uncountable cardinals",
@@ -65,9 +69,9 @@
       "Easton-Konig characterization: complete picture of ZFC constraints on 2^aleph_0"
     ],
     "dateAdded": "2026-03-27",
-    "axiomCount": 8,
-    "lineCount": 526,
-    "assumptions": "8 axioms: konig_cofinality (cf(2^aleph_0) > aleph_0), aleph_omega_cof_eq_omega (cf(aleph_omega) = aleph_0), easton_regular_consistency, bounding_number_uncountable, dominating_le_continuum, bounding_le_dominating, MA_implies_b_eq_continuum, MartinsAxiom. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "lineCount": 574,
+    "assumptions": "4 axioms: konig_cofinality (cf(2^aleph_0) > aleph_0), bounding_number_uncountable (aleph_1 <= b), dominating_le_continuum (d <= 2^aleph_0), MA_implies_b_eq_continuum (MA -> b = 2^aleph_0). MartinsAxiom is opaque (not an axiom). Previously 8 axioms; 4 eliminated by proving from Mathlib/existing results.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -175,9 +179,9 @@
       "ContinuumHypothesis"
     ],
     "namespace": "ContinuumHypothesisOQ02",
-    "lineCount": 526,
-    "axiomCount": 8,
-    "theoremCount": 27,
+    "lineCount": 574,
+    "axiomCount": 4,
+    "theoremCount": 31,
     "definitionCount": 6
   },
   "crossReferences": [

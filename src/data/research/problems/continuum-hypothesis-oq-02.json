@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: 28 theorems (+1), 8 axioms. Added dominating_implies_unbounded: proved every dominating family is unbounded via diagonal argument (g+1 ≤ h contradicts h ≤ g). This is the mathematical core of bounding_le_dominating axiom; axiom retained only for Cardinal infimum manipulation.",
+    "progressSummary": "AXIOM HUNT: Eliminated 4 of 8 axioms (8→4). Proved aleph_omega_cof_eq_omega from Mathlib (Cardinal.cof_aleph + Ordinal.card_omega0), proved bounding_le_dominating from dominating_implies_unbounded via infimum reasoning, proved easton_regular_consistency (conclusion was True), converted MartinsAxiom from axiom to opaque. Remaining 4 axioms are deep (Konig, diagonalization, cardinality, forcing).",
     "builtItems": [
       "aleph_one_is_regular: proved from Mathlib Cardinal.isRegular_aleph_one",
       "aleph_succ_is_regular: proved from Mathlib for all successor alephs",
@@ -45,7 +45,11 @@
       "MA_collapses_characteristics: proved MA implies b = d = 2^aleph_0",
       "easton_konig_characterization: both possible and impossible values exist",
       "the_open_question: at least two distinct possible values + ruled-out values",
-      "Gallery data: meta.json, index.ts, annotations.json, tacticStates.json created"
+      "Gallery data: meta.json, index.ts, annotations.json, tacticStates.json created",
+      "aleph_omega_cof_eq_omega: proved from Mathlib (was axiom)",
+      "bounding_le_dominating: proved via infimum reasoning (was axiom)",
+      "easton_regular_consistency: proved as trivial (was axiom)",
+      "MartinsAxiom: converted from axiom to opaque"
     ],
     "insights": [
       "Konig cofinality constraint is the ONLY constraint beyond Cantor lower bound",
@@ -53,7 +57,11 @@
       "Cardinal characteristics b, d provide intermediate structure between aleph_1 and 2^aleph_0",
       "CH collapses all characteristics; MA makes them maximal",
       "Three natural scenarios: aleph_1 (CH), aleph_2 (PFA), and exotic values",
-      "8 axioms kept minimal: Konig, Easton, cardinal char bounds, MA, and aleph_omega cofinality"
+      "8 axioms kept minimal: Konig, Easton, cardinal char bounds, MA, and aleph_omega cofinality",
+      "Cardinal.cof_aleph gives cofinality of aleph at limit ordinals from Mathlib",
+      "bounding_le_dominating provable via le_ciInf + ciInf_le using dominating_implies_unbounded",
+      "easton_regular_consistency had conclusion True — axiom was vacuous",
+      "MartinsAxiom as axiom Prop pollutes axiom environment — opaque Prop is cleaner"
     ],
     "mathlibGaps": [],
     "nextSteps": []

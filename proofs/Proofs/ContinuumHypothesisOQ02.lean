@@ -29,22 +29,25 @@ This file examines:
 **Proved from Mathlib:**
 - `aleph_one_is_regular` — ℵ₁ is a regular cardinal
 - `aleph_succ_is_regular` — every successor aleph is regular
+- `aleph_omega_cof_eq_omega` — cf(ℵ_ω) = ℵ₀ (from `Cardinal.cof_aleph`)
 - `aleph_omega_is_singular` — ℵ_ω is singular (not regular)
 - `continuum_ne_aleph_omega` — 2^ℵ₀ ≠ ℵ_ω (from König's constraint)
 - `ch_determines_characteristics` — under CH all characteristics equal ℵ₁
 - `characteristics_chain` — ℵ₁ ≤ b ≤ d ≤ 2^ℵ₀
+- `bounding_le_dominating` — b ≤ d (from `dominating_implies_unbounded` + infimum)
+- `easton_regular_consistency` — trivially true (conclusion is `True`)
 - `spectrum_lower_bound` — any consistent value for 2^ℵ₀ is ≥ ℵ₁
 - `spectrum_is_regular` — any consistent value for 2^ℵ₀ is regular
 - Various ordering and structural results
 
 **Axiomatized (deep results requiring forcing):**
 - `konig_cofinality` — cf(2^ℵ₀) > ℵ₀ (König's theorem)
-- `aleph_omega_cof_eq_omega` — cf(ℵ_ω) = ℵ₀
-- `easton_regular_consistency` — any regular κ ≥ ℵ₁ is a consistent value for 2^ℵ₀
 - `bounding_number_uncountable` — ℵ₁ ≤ b (the bounding number)
 - `dominating_le_continuum` — d ≤ 2^ℵ₀ (the dominating number)
-- `bounding_le_dominating` — b ≤ d
 - `MA_implies_b_eq_continuum` — Martin's Axiom makes b = 2^ℵ₀
+
+**Opaque declarations (not axioms):**
+- `MartinsAxiom` — MA as a proposition (opaque, not in axiom environment)
 
 ## Historical Note
 
@@ -104,11 +107,12 @@ theorem aleph_two_lt_aleph_three : Cardinal.aleph 2 < Cardinal.aleph 3 :=
     ℵ_ω = sup{ℵ₀, ℵ₁, ℵ₂, ...} is the supremum of a countable sequence,
     hence has cofinality ω (= ℵ₀).
 
-    Axiom: requires computing cf(ℵ_ω) from Mathlib's cofinality API,
-    which involves showing that ω is the minimal order type of an
-    unbounded sequence in ℵ_ω. -/
-axiom aleph_omega_cof_eq_omega :
-    ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀
+    Proof: `Cardinal.cof_aleph ω` gives `(aleph ω).ord.cof = ω` as ordinals,
+    then `Ordinal.card_omega0` gives `ω.card = ℵ₀` for the cardinal coercion. -/
+theorem aleph_omega_cof_eq_omega :
+    ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀ := by
+  rw [Cardinal.cof_aleph]
+  exact Ordinal.card_omega0
 
 /-- ℵ_ω is not regular: since cf(ℵ_ω) = ℵ₀ < ℵ_ω, the defining
     condition cf(κ) = κ for regularity fails. -/
@@ -201,13 +205,12 @@ def IsPossibleContinuumValue (κ : Cardinal.{0}) : Prop :=
     The full theorem handles all regular cardinals simultaneously, but
     for 2^ℵ₀ specifically, this is the key consequence.
 
-    Axiom: the forcing construction requires ~1500 lines of forcing machinery. -/
-axiom easton_regular_consistency (κ : Cardinal.{0})
+    The conclusion is `True` because we represent consistency as a Prop;
+    in a full metamathematical framework, this would be Con(ZFC + 2^ℵ₀ = κ).
+    Since the conclusion is trivially true, no axiom is needed. -/
+theorem easton_regular_consistency (κ : Cardinal.{0})
     (hle : ContinuumHypothesis.aleph_one ≤ κ) (hreg : κ.IsRegular) :
-    -- It is consistent with ZFC that 2^ℵ₀ = κ
-    -- (We represent this as a Prop; in a full metamathematical framework,
-    -- this would be a consistency statement Con(ZFC + 2^ℵ₀ = κ).)
-    True
+    True := trivial
 
 /-- The spectrum of possible values includes all successor alephs. -/
 theorem successor_alephs_possible (α : Ordinal.{0}) (hα : 0 < α) :
@@ -331,11 +334,41 @@ theorem dominating_implies_unbounded {F : Set (ℕ → ℕ)}
   omega
 
 /-- The bounding number is at most the dominating number: b ≤ d.
-    Since every dominating family is unbounded, the infimum over
-    unbounded families is ≤ the infimum over dominating families.
+    Since every dominating family is unbounded (by `dominating_implies_unbounded`),
+    the infimum over unbounded families is ≤ the infimum over dominating families.
 
-    Axiom: the formal Cardinal infimum manipulation is complex. -/
-axiom bounding_le_dominating : boundingNumber ≤ dominatingNumber
+    Proof: for each F, `boundingNumber ≤ g_d(F)`:
+    - If F is dominating: F is unbounded, so `boundingNumber ≤ mk F = g_d(F)`
+    - If F is not dominating: `g_d(F) = continuum`, and `boundingNumber ≤ continuum`
+      because ∅ is not unbounded so the infimum includes `continuum`. -/
+theorem bounding_le_dominating : boundingNumber ≤ dominatingNumber := by
+  unfold dominatingNumber
+  apply le_ciInf
+  intro F
+  -- Helper: boundingNumber infimum is bounded below by 0
+  have hbdd : BddBelow (Set.range fun G : Set (ℕ → ℕ) =>
+      if IsUnbounded G then Cardinal.mk G else ContinuumHypothesis.continuum) :=
+    ⟨0, by rintro _ ⟨G, rfl⟩; split_ifs <;> exact Cardinal.zero_le _⟩
+  by_cases hdom : IsDominating F
+  · -- F dominating → F unbounded → boundingNumber ≤ mk F
+    have hunb := dominating_implies_unbounded hdom
+    simp only [hdom, ite_true]
+    calc boundingNumber
+        = ⨅ G : Set (ℕ → ℕ), if IsUnbounded G then Cardinal.mk G
+            else ContinuumHypothesis.continuum := rfl
+      _ ≤ (if IsUnbounded F then Cardinal.mk F
+            else ContinuumHypothesis.continuum) := ciInf_le hbdd F
+      _ = Cardinal.mk F := by simp [hunb]
+  · -- F not dominating → rhs = continuum → boundingNumber ≤ continuum
+    simp only [hdom, ite_false]
+    have hempty : ¬IsUnbounded (∅ : Set (ℕ → ℕ)) := by
+      intro h; obtain ⟨f, hf, _⟩ := h (fun _ => 0); exact Set.not_mem_empty f hf
+    calc boundingNumber
+        = ⨅ G : Set (ℕ → ℕ), if IsUnbounded G then Cardinal.mk G
+            else ContinuumHypothesis.continuum := rfl
+      _ ≤ (if IsUnbounded (∅ : Set (ℕ → ℕ)) then Cardinal.mk (∅ : Set (ℕ → ℕ))
+            else ContinuumHypothesis.continuum) := ciInf_le hbdd ∅
+      _ = ContinuumHypothesis.continuum := by simp [hempty]
 
 /-- The fundamental chain of cardinal characteristics:
     ℵ₁ ≤ b ≤ d ≤ 2^ℵ₀.
@@ -380,9 +413,10 @@ MA is the "tame" forcing axiom. PFA and MM are stronger.
 /-- Martin's Axiom: for any ccc poset and any family of fewer than 2^ℵ₀
     dense sets, a filter meeting them all exists.
 
-    Axiom: formal statement requires defining ccc posets, dense sets,
-    and filters, which is ~500 lines of forcing infrastructure. -/
-axiom MartinsAxiom : Prop
+    Declared as opaque rather than axiom: MA is a specific set-theoretic
+    proposition, not a foundational assumption. The full formal statement
+    requires defining ccc posets, dense sets, and filters (~500 lines). -/
+opaque MartinsAxiom : Prop := True
 
 /-- Under MA + ¬CH, the bounding number equals the continuum:
     b = 2^ℵ₀. This means no family smaller than the continuum is unbounded.
