@@ -445,10 +445,40 @@ theorem infinite_ramsey_proved (r k : ℕ) :
         exact Set.image_subset_iff.mpr fun ⟨a, ha⟩ _ => ha
       · -- Monochromaticity: for r-subsets s ⊆ (Subtype.val '' H) with x ∉ s,
         -- f(cons x s) = c
-        -- Requires lifting s back to Finset ↥(S\{x}) and applying hMono
-        sorry -- finset lifting: for each a ∈ s, obtain ⟨b, hb, rfl⟩ from hsub,
-              -- build the lifted Finset, apply hMono to get g(lifted) = c,
-              -- then show g(lifted) = f(cons x s) by definition of g
+        -- Strategy: lift s to Finset ↥(S\{x}) via preimage, apply hMono, then
+        -- connect back via T.map subtype_val = s
+        intro s hs hsub hxs
+        -- All elements of s are in S \ {x}
+        have hs_diff : (↑s : Set α) ⊆ S \ {x} :=
+          hsub.trans (Set.image_subset_iff.mpr fun ⟨_, ha⟩ _ => ha)
+        -- Lift s to Finset of the subtype via preimage
+        let T : Finset ↥(S \ {x}) :=
+          s.preimage Subtype.val Subtype.val_injective.injOn
+        -- T maps back to s
+        have hT_map : T.map ⟨Subtype.val, Subtype.val_injective⟩ = s := by
+          ext a; simp only [Finset.mem_map, Finset.mem_preimage,
+            Function.Embedding.coeFn_mk]
+          exact ⟨fun ⟨b, hb, rfl⟩ => hb,
+            fun ha => ⟨⟨a, hs_diff (Finset.mem_coe.mpr ha)⟩, ha, rfl⟩⟩
+        -- T has card r
+        have hT_card : T.card = r := by
+          rw [← Finset.card_map ⟨Subtype.val, Subtype.val_injective⟩, hT_map]; exact hs
+        -- T ⊆ H (each element of T has its val in s ⊆ Subtype.val '' H)
+        have hT_sub_H : (↑T : Set ↥(S \ {x})) ⊆ H := by
+          intro b hb
+          rw [Finset.mem_coe, Finset.mem_preimage] at hb
+          obtain ⟨b', hb'H, hb'val⟩ := hsub (Finset.mem_coe.mpr hb)
+          rwa [show b' = b from Subtype.val_injective hb'val] at hb'H
+        -- Apply monochromaticity of g on H
+        have hgc := hMono ⟨T, hT_card⟩ hT_sub_H
+        -- hgc : g ⟨T, hT_card⟩ = c, which unfolds to
+        -- f ⟨Finset.cons x (T.map subtype_val) _, _⟩ = c
+        -- Since T.map subtype_val = s, this gives f ⟨Finset.cons x s _, _⟩ = c
+        -- Definitional unfolding + rewrite to match goal
+        change f ⟨Finset.cons x (T.map ⟨Subtype.val, Subtype.val_injective⟩) _ , _⟩ = c at hgc
+        rw [hT_map] at hgc
+        convert hgc using 2
+        exact Subtype.ext rfl
     -- ===== CHAIN CONSTRUCTION =====
     -- Build decreasing chain of infinite sets using Nat.rec:
     --   state(0) = Set.univ (the whole of α, which is infinite)
@@ -513,15 +543,64 @@ theorem infinite_ramsey_proved (r k : ℕ) :
     -- ===== MONOCHROMATICITY VERIFICATION =====
     -- Any (r+1)-subset of A has color c* under f
     have hA_mono : IsMonochromatic f A c_star := by
-      -- For any (r+1)-subset s with ↑s ⊆ A:
-      -- Each element is getElem(nᵢ) for some nᵢ with getColor(nᵢ) = c*.
-      -- Let n₀ be the minimum index. Then:
-      -- - {getElem(nᵢ) | i > 0} is an r-subset of state(n₀+1)
-      -- - getElem(n₀) ∉ {getElem(nᵢ) | i > 0} by injectivity
-      -- - f(cons (getElem n₀) rest) = getColor(n₀) = c* by hStep_mono
-      sorry -- requires: (1) extracting index function from s ⊆ A,
-            -- (2) finding minimum index, (3) showing rest ⊆ state(n₀+1),
-            -- (4) applying hStep_mono + hElem_in_later
+      intro ⟨s, hcard⟩ hs
+      -- For each a ∈ s, find its chain index (with color c* and getElem = a)
+      have h_idx : ∀ a ∈ s, ∃ n, getColor n = c_star ∧ getElem n = a := by
+        intro a ha
+        obtain ⟨n, hn, rfl⟩ := hs (Finset.mem_coe.mpr ha)
+        exact ⟨n, by rwa [Set.mem_preimage, Set.mem_singleton_iff] at hn, rfl⟩
+      choose idx hidx using h_idx
+      -- s is nonempty (r+1 ≥ 1)
+      have hs_ne : s.Nonempty := Finset.card_pos.mp (by omega)
+      -- Build index set and find minimum index n₀
+      let idx_of : { a // a ∈ s } → ℕ := fun ⟨a, ha⟩ => idx a ha
+      let idx_set := s.attach.image idx_of
+      have hne_idx : idx_set.Nonempty :=
+        (Finset.attach_nonempty_iff.mpr hs_ne).image _
+      let n₀ := idx_set.min' hne_idx
+      -- n₀ is realized by some a₀ ∈ s with idx a₀ ha₀ = n₀
+      have hn₀_mem : n₀ ∈ idx_set := Finset.min'_mem _ _
+      rw [Finset.mem_image] at hn₀_mem
+      obtain ⟨⟨a₀, ha₀⟩, _, hn₀_eq⟩ := hn₀_mem
+      -- hn₀_eq : idx a₀ ha₀ = n₀
+      have hn₀_elem : getElem n₀ = a₀ := by rw [← hn₀_eq]; exact (hidx a₀ ha₀).2
+      have hn₀_color : getColor n₀ = c_star := by rw [← hn₀_eq]; exact (hidx a₀ ha₀).1
+      -- Decompose s = cons a₀ (s.erase a₀)
+      let rest := s.erase a₀
+      have hrest_card : rest.card = r := by
+        rw [Finset.card_erase_of_mem ha₀, hcard]; omega
+      -- Every element of rest has index > n₀, so is in state(n₀+1)
+      have hrest_sub : (↑rest : Set α) ⊆ (state (n₀ + 1)).val := by
+        intro b hb_rest
+        rw [Finset.mem_coe] at hb_rest
+        have hbs : b ∈ s := Finset.erase_subset _ _ hb_rest
+        have hbne : b ≠ a₀ := Finset.ne_of_mem_erase hb_rest
+        -- n₀ ≤ idx b hbs (minimality)
+        have hge : n₀ ≤ idx b hbs :=
+          Finset.min'_le _ _ (Finset.mem_image_of_mem _ (Finset.mem_attach _ _))
+        -- idx b hbs ≠ n₀ (since getElem injective and b ≠ a₀)
+        have hne : idx b hbs ≠ n₀ := by
+          intro h; apply hbne
+          calc b = getElem (idx b hbs) := ((hidx b hbs).2).symm
+            _ = getElem n₀ := by rw [h]
+            _ = a₀ := hn₀_elem
+        -- n₀ < idx b hbs
+        rw [← (hidx b hbs).2]
+        exact hElem_in_later n₀ _ (lt_of_le_of_ne hge hne)
+      -- getElem n₀ ∉ rest (since getElem n₀ = a₀ and a₀ ∉ s.erase a₀)
+      have hn₀_nrest : getElem n₀ ∉ rest := by rw [hn₀_elem]; exact Finset.not_mem_erase _ _
+      -- Apply hStep_mono: f(cons (getElem n₀) rest) = getColor n₀ = c*
+      have hstep := hStep_mono n₀ rest hrest_card hrest_sub hn₀_nrest
+      rw [hn₀_color] at hstep
+      -- Reconstruct: cons a₀ (s.erase a₀) = s
+      have hrecons : Finset.cons a₀ rest (Finset.not_mem_erase _ _) = s :=
+        Finset.cons_erase ha₀
+      -- Goal: f ⟨s, hcard⟩ = c_star, known: f ⟨cons (getElem n₀) rest _, _⟩ = c_star
+      -- These match since cons (getElem n₀) rest = cons a₀ rest = s
+      convert hstep using 2
+      apply Subtype.ext
+      show s = Finset.cons (getElem n₀) rest hn₀_nrest
+      rw [hn₀_elem]; exact hrecons.symm
     -- ===== CONCLUSION =====
     refine ⟨c_star, A, hA_mono, ?_⟩
     exact le_of_eq (mk_infinite_subset_eq_aleph0 hα A hA_inf).symm
