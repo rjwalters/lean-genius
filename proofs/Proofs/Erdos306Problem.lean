@@ -153,8 +153,8 @@ example : ArithmeticFunction.cardFactors 6 = 2 := by native_decide
 /-- Example: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 1
 This shows 1 can be represented with 2-distinct-prime denominators.
 (6 terms: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7) -/
-axiom example_one_representation :
-  (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1
+theorem example_one_representation :
+    (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1 := by norm_num
 
 /-- The first few products of 3 distinct primes. -/
 def threePrimeProducts : List ℕ := [30, 42, 66, 70, 78, 102, 105, 110, 114, 130]
