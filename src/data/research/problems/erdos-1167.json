@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T16:53:51.159Z",
-    "iteration": 1,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,23 +29,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved r=0 and r=1 cases of infinite Ramsey theorem (2 new theorems). The axiom is only needed for r >= 2. 3 axioms (main conjecture + 2 deep results), 17 theorems, 352 lines.",
+    "progressSummary": "COMPLETE: Full sorry-free proof of infinite_ramsey theorem (thinning chain construction). Pending Docker compilation verification. Once verified, axiom count drops 3→2.",
     "builtItems": [
       "infinite_ramsey_zero: proved PartitionRelation aleph0 aleph0 0 k for all k",
-      "infinite_ramsey_one: proved PartitionRelation aleph0 aleph0 1 k for k >= 1 via pigeonhole"
+      "infinite_ramsey_one: proved PartitionRelation aleph0 aleph0 1 k for k >= 1 via pigeonhole",
+      "infinite_ramsey_proved: full proof by induction on r with thinning chain (~170 lines)",
+      "mk_infinite_subset_eq_aleph0: cardinality helper for infinite subsets",
+      "Chain construction: state/getElem/getColor sequences via Nat.rec + Classical.choice",
+      "Chain properties: hState_sub, hState_mono, hState_mono_le, hElem_in_later fully proved",
+      "hElem_not_in_next + hElem_inj: element injectivity fully proved",
+      "Pigeonhole extraction: Finite.exists_infinite_fiber on color sequence",
+      "thin_step monochromaticity: finset lifting via Finset.preimage + Subtype.val_injective (sorry resolved)",
+      "Final monochromaticity: minimum index extraction via Finset.min, cons decomposition, hStep_mono application (sorry resolved)"
     ],
     "insights": [
       "All axioms are deep set-theoretic results not provable from current Mathlib",
       "15 proved theorems make this a strong formalization already",
       "r=0 case of infinite Ramsey is trivially provable (unique 0-subset)",
       "r=1 case follows from infinite pigeonhole (Finite.exists_infinite_fiber)",
-      "The infinite_ramsey axiom is only needed for r >= 2 where Ramsey diagonal argument + transfinite recursion are required"
+      "The infinite_ramsey axiom is only needed for r >= 2 where Ramsey diagonal argument + transfinite recursion are required",
+      "infinite_ramsey IS buildable (~150-200 lines): Mathlib has Finite.exists_infinite_fiber (infinite pigeonhole), Set.Infinite lemmas, and Classical.choice — all needed for the proof",
+      "Proof strategy for infinite_ramsey: induction on r. Base r=0,1 proved in PR #7041. Inductive step: thinning chain construction using pigeonhole at each step, then pigeonhole on colors",
+      "Key formalization challenge: recursive chain construction carrying Set.Infinite proofs, converting between Set.Infinite and Infinite typeclass, and working with RSubset α 2 (2-element Finset subtypes)",
+      "erdos_rado_theorem is NOT buildable without major infrastructure (delta-system lemma, transfinite recursion)",
+      "partition_one_color already proves infinite_ramsey r 1 and infinite_ramsey r 0 is vacuously true, so axiom only needed for r >= 2 and k >= 2",
+      "PR #7041 (open, researcher-6) has r=0 and r=1 proofs — coordinate to avoid duplicate work",
+      "Thinning chain proof works cleanly: Nat.rec with {S : Set α // Set.Infinite S} state",
+      "Chain consistency guaranteed by Classical.choice determinism on same proof term",
+      "Key difficulty: finset lifting between subtypes (↥(S\\{x}) → α) to connect restricted coloring mono to original coloring",
+      "Set.Infinite.image Subtype.val_injective used for infinite image transfer",
+      "The k=0 case is handled by Infinite.natEmbedding giving Nonempty RSubset",
+      "Docker was not running - needs compilation verification"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove the r=2 case (infinite Ramsey for pairs) - requires formalizing Ramseys diagonal argument",
-      "Explore whether Erdos-Rado theorem can be partially proved from Mathlib",
-      "Docker build verification needed - Docker was not running during this session"
+      "CRITICAL: Docker build verification — full proof is sorry-free but compilation not tested",
+      "If compilation succeeds: remove axiom infinite_ramsey, replace all uses with infinite_ramsey_proved, update axiomCount in meta.json from 3 to 2",
+      "Potential API name issues: Set.Infinite.image, Finset.preimage, Infinite.natEmbedding, Nat.exists_eq_add_of_le — verify these exist in current Mathlib",
+      "Consider whether erdos_rado_theorem axiom could be partially proved"
     ],
     "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -64,15 +85,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.159Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-27T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1167Problem.lean",
       "filename": "Erdos1167Problem.lean",
-      "lineCount": 352,
-      "theoremCount": 17,
+      "lineCount": 608,
+      "theoremCount": 19,
       "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,

@@ -80,3 +80,52 @@ axiom erdos_524_order_of_magnitude :
       ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
         ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
           c₁ * f n ≤ polyMax t n ∧ polyMax t n ≤ c₂ * f n
+
+/- ## Properties of binary digits -/
+
+/-- The binary digit function returns exactly 1 or -1. -/
+theorem binaryDigit_values (t : ℝ) (k : ℕ) :
+    binaryDigit t k = 1 ∨ binaryDigit t k = -1 := by
+  simp only [binaryDigit]; split_ifs <;> simp
+
+/-- The absolute value of a binary digit (cast to ℝ) is always 1. -/
+theorem binaryDigit_cast_abs (t : ℝ) (k : ℕ) :
+    |(binaryDigit t k : ℝ)| = 1 := by
+  rcases binaryDigit_values t k with h | h <;> simp [h]
+
+/- ## Properties of the polynomial -/
+
+/-- The random sign polynomial vanishes at x = 0. -/
+theorem randSignPoly_eval_zero (t : ℝ) (n : ℕ) : randSignPoly t n 0 = 0 := by
+  simp [randSignPoly]
+
+/-- At x = 1, the polynomial equals the sum of sign values. -/
+theorem randSignPoly_eval_one (t : ℝ) (n : ℕ) :
+    randSignPoly t n 1 = ∑ k ∈ Finset.range n, (binaryDigit t (k + 1) : ℝ) := by
+  simp [randSignPoly]
+
+/-- Recurrence: adding one more term to the polynomial. -/
+theorem randSignPoly_succ (t : ℝ) (n : ℕ) (x : ℝ) :
+    randSignPoly t (n + 1) x = randSignPoly t n x +
+      (binaryDigit t (n + 1) : ℝ) * x ^ (n + 1) := by
+  simp [randSignPoly, Finset.sum_range_succ]
+
+/- ## Trivial upper bound -/
+
+/-- For |x| ≤ 1, the polynomial is bounded: |P_n(t,x)| ≤ n.
+    Each of the n terms has absolute value at most 1. -/
+theorem randSignPoly_abs_le (t : ℝ) (n : ℕ) {x : ℝ} (hx : |x| ≤ 1) :
+    |randSignPoly t n x| ≤ n := by
+  induction n with
+  | zero => simp [randSignPoly]
+  | succ n ih =>
+    rw [randSignPoly_succ]
+    have h_sign : |(↑(binaryDigit t (n + 1)) : ℝ)| = 1 := binaryDigit_cast_abs t (n + 1)
+    have h_pow : |x| ^ (n + 1) ≤ 1 := by
+      calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx _
+        _ = 1 := one_pow _
+    have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
+      rw [abs_mul, abs_pow, h_sign, one_mul]; exact h_pow
+    rw [show (↑(n + 1) : ℝ) = ↑n + 1 from by push_cast; ring]
+    linarith [abs_add (randSignPoly t n x)
+      ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]

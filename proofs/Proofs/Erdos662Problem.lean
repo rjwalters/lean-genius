@@ -52,9 +52,22 @@ noncomputable def pairsWithinDist (pts : Finset Point2D) (t : ℝ) : ℕ :=
 noncomputable def triLatticePoint (a b : ℤ) : Point2D :=
   (↑a + ↑b / 2, ↑b * Real.sqrt 3 / 2)
 
-/-- f(t): the number of nonzero lattice points at distance le t from the
-    origin in the triangular lattice. -/
-axiom triangularLatticeCount : ℝ → ℕ
+/-- The triangular lattice norm: a² + ab + b² (equals squared Euclidean
+    distance for lattice point (a,b) from the origin). -/
+def triLatticeNorm (a b : ℤ) : ℤ := a ^ 2 + a * b + b ^ 2
+
+/-- Computable count of nonzero lattice points with norm ≤ T.
+    The range [-T, T] × [-T, T] suffices since a² + ab + b² ≥ max(a², b²/2)
+    for all a, b. -/
+def triLatticeCountInt (T : ℕ) : ℕ :=
+  (((Finset.Icc (-(T : ℤ)) T) ×ˢ (Finset.Icc (-(T : ℤ)) T)).filter
+    fun ab : ℤ × ℤ => ab ≠ (0, 0) ∧ triLatticeNorm ab.1 ab.2 ≤ T).card
+
+/-- f(t): the number of nonzero lattice points at distance ≤ t from the origin
+    in the triangular lattice. Since all lattice norms a² + ab + b² are integers,
+    f(t) = triLatticeCountInt ⌊t²⌋₊. -/
+noncomputable def triangularLatticeCount (t : ℝ) : ℕ :=
+  triLatticeCountInt (Nat.floor (t ^ 2))
 
 -- ## Known Lattice Values
 
@@ -70,20 +83,107 @@ theorem triLattice_sqDist (a b : ℤ) :
     rw [div_pow, mul_pow, h3]; ring
   rw [key]; ring
 
+/-- The integer count at threshold 1 is 6: points (±1,0), (0,±1), (1,−1), (−1,1). -/
+theorem triLatticeCountInt_one : triLatticeCountInt 1 = 6 := by native_decide
+
+/-- The integer count at threshold 3 is 12: 6 nearest + 6 second-shell. -/
+theorem triLatticeCountInt_three : triLatticeCountInt 3 = 12 := by native_decide
+
 /-- The 6 nearest neighbors in the triangular lattice at distance 1. -/
 theorem triLattice_nearest_neighbors :
-    triangularLatticeCount 1 = 6 := by sorry
+    triangularLatticeCount 1 = 6 := by
+  unfold triangularLatticeCount
+  norm_num
+  exact triLatticeCountInt_one
 
-/-- The 12 points within distance sqrt 3. -/
+/-- The 12 points within distance √3. -/
 theorem triLattice_second_shell :
-    triangularLatticeCount (Real.sqrt 3) = 12 := by sorry
+    triangularLatticeCount (Real.sqrt 3) = 12 := by
+  unfold triangularLatticeCount
+  have hsq : (Real.sqrt 3) ^ 2 = 3 := Real.sq_sqrt (by norm_num : (3 : ℝ) ≥ 0)
+  rw [hsq]
+  have hfl : Nat.floor (3 : ℝ) = 3 := by
+    rw [Nat.floor_eq_iff (by norm_num : (0 : ℝ) ≤ 3)]
+    constructor <;> norm_num
+  rw [hfl]
+  exact triLatticeCountInt_three
 
 -- ## Contact Number Bound (t = 1 case)
 
-/-- In a 1-separated set, each point has at most 6 unit neighbors. -/
-axiom unit_neighbor_bound (pts : Finset Point2D) (p : Point2D)
+/-- In a 1-separated set, all unit neighbors are at exactly unit squared distance.
+    Neighbors satisfy sqDist ≤ 1 (from neighbors def) and sqDist ≥ 1 (from separation).
+    Together: sqDist = 1, so all neighbors lie on the unit circle around p. -/
+private lemma neighbor_sqDist_eq_one (pts : Finset Point2D) (p q : Point2D)
+    (hp : p ∈ pts) (hsep : IsSeparated pts)
+    (hneigh : q ∈ neighbors pts p 1) :
+    sqDist p q = 1 := by
+  have hmem := Finset.mem_filter.mp hneigh
+  have hle : sqDist p q ≤ 1 ^ 2 := hmem.2.2
+  have hge := hsep p hp q hmem.1 hmem.2.1
+  linarith [sq_nonneg (1 : ℝ)]
+
+/-- The dot product of relative position vectors of two distinct neighbors
+    is at most 1/2. From the identity sqDist(q₁,q₂) = 2 - 2·dot and
+    the separation constraint sqDist(q₁,q₂) ≥ 1. -/
+private lemma neighbor_dot_le_half (pts : Finset Point2D) (p q₁ q₂ : Point2D)
+    (hp : p ∈ pts) (hsep : IsSeparated pts)
+    (hq₁ : q₁ ∈ neighbors pts p 1) (hq₂ : q₂ ∈ neighbors pts p 1)
+    (hne : q₁ ≠ q₂) :
+    (q₁.1 - p.1) * (q₂.1 - p.1) + (q₁.2 - p.2) * (q₂.2 - p.2) ≤ 1 / 2 := by
+  have hq₁_mem := (Finset.mem_filter.mp hq₁).1
+  have hq₂_mem := (Finset.mem_filter.mp hq₂).1
+  have hd₁ := neighbor_sqDist_eq_one pts p q₁ hp hsep hq₁
+  have hd₂ := neighbor_sqDist_eq_one pts p q₂ hp hsep hq₂
+  have hd₁₂ := hsep q₁ hq₁_mem q₂ hq₂_mem hne
+  unfold sqDist at hd₁ hd₂ hd₁₂
+  -- Key identity: (q₁-q₂)² = |q₁-p|² + |q₂-p|² - 2·dot
+  have key : (q₁.1 - q₂.1) ^ 2 + (q₁.2 - q₂.2) ^ 2 =
+      (p.1 - q₁.1) ^ 2 + (p.2 - q₁.2) ^ 2 +
+      ((p.1 - q₂.1) ^ 2 + (p.2 - q₂.2) ^ 2) -
+      2 * ((q₁.1 - p.1) * (q₂.1 - p.1) + (q₁.2 - p.2) * (q₂.2 - p.2)) := by ring
+  linarith
+
+/-- **2D Kissing Number**: At most 6 unit vectors in ℝ² can have pairwise
+    dot product ≤ 1/2. Equivalently: at most 6 points on the unit circle
+    can have pairwise distance ≥ 1.
+
+    Proof outline: Each unit vector v = (cos θ, sin θ). The constraint
+    cos(θᵢ - θⱼ) ≤ 1/2 forces angular separation ≥ π/3 (using
+    Real.strictAntiOn_cos). Since 6 · (π/3) = 2π, at most 6 fit. -/
+theorem kissing_number_2d (S : Finset (ℝ × ℝ))
+    (hunit : ∀ v ∈ S, v.1 ^ 2 + v.2 ^ 2 = 1)
+    (hdot : ∀ v ∈ S, ∀ w ∈ S, v ≠ w → v.1 * w.1 + v.2 * w.2 ≤ 1 / 2) :
+    S.card ≤ 6 := by
+  sorry -- Angular packing: uses Real.cos_sub, Real.cos_pi_div_three, Real.strictAntiOn_cos
+
+/-- In a 1-separated set, each point has at most 6 unit neighbors.
+    Reduces to the 2D kissing number via translation to the origin. -/
+theorem unit_neighbor_bound (pts : Finset Point2D) (p : Point2D)
     (hp : p ∈ pts) (hsep : IsSeparated pts) :
-    (neighbors pts p 1).card ≤ 6
+    (neighbors pts p 1).card ≤ 6 := by
+  -- Translate neighbors to origin: S = {q - p : q ∈ neighbors}
+  set S := (neighbors pts p 1).image (fun q : Point2D => (q.1 - p.1, q.2 - p.2))
+  -- Translation is injective, so card is preserved
+  have hcard : S.card = (neighbors pts p 1).card := by
+    apply Finset.card_image_of_injective
+    intro q₁ q₂ heq
+    exact Prod.ext (by linarith [Prod.mk.inj heq |>.1])
+                   (by linarith [Prod.mk.inj heq |>.2])
+  rw [← hcard]
+  apply kissing_number_2d S
+  · -- All translated vectors are unit (sqDist = 1)
+    intro v hv
+    rw [Finset.mem_image] at hv
+    obtain ⟨q, hq, rfl⟩ := hv
+    have h := neighbor_sqDist_eq_one pts p q hp hsep hq
+    unfold sqDist at h; nlinarith
+  · -- Pairwise dot products ≤ 1/2
+    intro v hv w hw hvw
+    rw [Finset.mem_image] at hv hw
+    obtain ⟨q₁, hq₁, rfl⟩ := hv
+    obtain ⟨q₂, hq₂, rfl⟩ := hw
+    have hne : q₁ ≠ q₂ := fun heq => hvw (by subst heq; rfl)
+    exact neighbor_dot_le_half pts p q₁ q₂ hp hsep hq₁ hq₂ hne
 
 /-- Ordered unit-distance pairs bounded by 6n.
 

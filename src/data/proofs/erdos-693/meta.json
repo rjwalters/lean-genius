@@ -21,7 +21,7 @@
     "erdosNumber": 693,
     "erdosUrl": "https://erdosproblems.com/693",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 3,
     "prerequisites": [
       "Elementary number theory (divisibility, divisor functions)",
       "Finite set theory and cardinality (Finset, Set.Finite)",
@@ -29,7 +29,7 @@
       "Sieve methods and density estimates",
       "Pigeonhole principle"
     ],
-    "lineCount": 317,
+    "lineCount": 350,
     "assumptions": "4 axioms: maxGap_trivial_upper, maxGap_pigeonhole, divisor_density_ford, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -175,9 +175,9 @@
       "Filter"
     ],
     "namespace": "Erdos693",
-    "lineCount": 317,
-    "axiomCount": 4,
-    "theoremCount": 24,
+    "lineCount": 350,
+    "axiomCount": 3,
+    "theoremCount": 26,
     "definitionCount": 13
   }
 }

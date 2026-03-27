@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM HUNT: Eliminated maxGap_trivial_upper axiom (4→3 axioms). Proved by list induction via consecutiveGaps_foldl_max_le helper. 26 theorems total.",
+    "builtItems": [
+      "consecutiveGaps_foldl_max_le: if list elements in [lo,hi], foldl max of gaps ≤ hi-lo (line 234)",
+      "maxGap_trivial_upper: PROVED (was axiom) — max gap ≤ n^k - n (line 260)"
+    ],
+    "insights": [
+      "maxGap_trivial_upper axiom eliminated: proved by induction on list structure of consecutive gaps",
+      "Key technique: consecutiveGaps_foldl_max_le helper generalizes over accumulator for foldl max induction",
+      "Remaining 3 axioms: pigeonhole (list telescoping), Ford density (deep analysis), polylog⟹subpoly (standard analysis)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove polylog_implies_subpoly using Mathlib log/pow asymptotics",
+      "Prove maxGap_pigeonhole via telescoping sum over sorted list",
+      "Consider Aristotle companion file for routine list lemmas"
+    ],
     "markdown": "# Erdős #693 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?\n\n\n\nSee also [446].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #446\n- Problem #692\n- Problem #694\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [

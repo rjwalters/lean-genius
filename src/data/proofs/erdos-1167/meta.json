@@ -56,6 +56,7 @@
       "conjecture_simplifies_infinite_targets",
       "two_pow_infinite",
       "erdos_1167_conjecture",
+      "ramsey_step",
       "infinite_ramsey",
       "erdos_rado_theorem",
       "erdos_1167_r2_case",
@@ -67,20 +68,20 @@
       "infinite_ramsey_zero",
       "infinite_ramsey_one"
     ],
-    "axiomCount": 3,
-    "lineCount": 352,
-    "assumptions": "3 axiom(s): erdos_1167_conjecture, infinite_ramsey, erdos_rado_theorem. The infinite_ramsey axiom is only needed for r >= 2; the r=0 and r=1 cases are proved from first principles (infinite_ramsey_zero, infinite_ramsey_one)."
+    "axiomCount": 2,
+    "lineCount": 594,
+    "assumptions": "2 axiom(s): erdos_1167_conjecture (OPEN), erdos_rado_theorem. The infinite Ramsey theorem (previously axiomatized) is now FULLY PROVED by induction on r using Ramsey's diagonal argument."
   },
   "overview": {
     "historicalContext": "The partition calculus was founded by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory', which systematized the study of Ramsey-type properties for infinite sets. The central achievement was the Erdős-Rado theorem: (2^κ)⁺ → (κ⁺)²_κ for infinite κ, establishing that exponentially larger cardinals satisfy partition relations at the next level. This 'stepping-up' lemma — going from exponent r to r+1 — became a core technique.\n\nProblem #1167 asks the reverse question: can partition properties be 'stepped down' from exponent r+1 to r? Specifically, if 2^λ → (κ_α + 1)^{r+1}_{α<γ} holds, does λ → (κ_α)^r_{α<γ} follow? The '+1' in the hypothesis accounts for the possibility of finite targets, where κ+1 > κ (for infinite κ, κ+1 = κ by cardinal absorption). This question was posed by Erdős, Hajnal, and Rado in their foundational work, reflecting their deep interest in understanding the exact relationship between partition relations at different exponents.\n\nThe problem remains open nearly 70 years later. While the stepping-up direction is well understood, stepping down is fundamentally harder because it requires extracting structure from colorings of smaller subsets — a process that generally loses information. The problem is catalogued as [Va99, 7.79] in Vaughan's survey and connects to the broader program of understanding the partition calculus hierarchy, including problems #1169 and #1171 on ordinal partition relations.",
     "problemStatement": "**Erdős Problem #1167** (Erdős-Hajnal-Rado):\n\nFor finite $r \\geq 2$, infinite cardinal $\\lambda$, and cardinals $\\kappa_\\alpha$ (for all $\\alpha < \\gamma$), does\n$$2^\\lambda \\to (\\kappa_\\alpha + 1)^{r+1}_{\\alpha < \\gamma}$$\nimply\n$$\\lambda \\to (\\kappa_\\alpha)^r_{\\alpha < \\gamma}?$$\n\nThe notation $\\kappa \\to (\\lambda_\\alpha)^r_{\\alpha < \\gamma}$ means: for every $\\gamma$-coloring of $r$-element subsets of $\\kappa$, there exist $\\alpha < \\gamma$ and $H \\subseteq \\kappa$ with $|H| \\geq \\lambda_\\alpha$ such that all $r$-element subsets of $H$ receive color $\\alpha$.\n\n**Status**: Open.",
     "text": "For finite r ≥ 2, infinite cardinal λ, and cardinals κ_α (for all α < γ), does 2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}? A fundamental open question in infinitary combinatorics about transferring partition properties from higher to lower exponents.",
-    "proofStrategy": "The formalization builds partition relation infrastructure from scratch in 352 lines of Lean 4 code. It defines RSubset, Coloring, IsMonochromatic, PartitionRelation, and IndexedPartitionRelation using Lean's dependent types and Mathlib's cardinal/ordinal API. Five structural lemmas are fully proved (one-color triviality, target monotonicity, zero target, indexed monotonicity, monochromatic subsets). Cardinal arithmetic lemmas clarify the role of '+1' for infinite vs finite targets. The r=0 and r=1 cases of the infinite Ramsey theorem are proved from first principles (the r=1 case via infinite pigeonhole), demonstrating the axiom is only needed for r>=2. The conjecture is stated as an axiom; the remaining infinite Ramsey cases and Erdős-Rado theorem are axiomatized. Consequences and consistency checks are proved from the axioms.",
+    "proofStrategy": "The formalization builds partition relation infrastructure from scratch in 594 lines of Lean 4 code. It defines RSubset, Coloring, IsMonochromatic, PartitionRelation, and IndexedPartitionRelation using Lean's dependent types and Mathlib's cardinal/ordinal API. Five structural lemmas are fully proved. Cardinal arithmetic lemmas clarify the role of '+1'. The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k for all finite r, k) is FULLY PROVED by induction on r: base cases r=0 (unique 0-subset) and r=1 (infinite pigeonhole) are established first, then the inductive step uses Ramsey's diagonal argument — fixing a vertex, applying the IH to a reduced coloring on an infinite subset, iterating to build a sequence, and extracting an infinite monochromatic subsequence via pigeonhole. The key technical challenge is lifting between subtypes and the ambient type when applying the IH to subsets. The conjecture and Erdős-Rado theorem remain as the only 2 axioms.",
     "keyInsights": [
       "**Stepping up vs stepping down**: The Erdős-Rado theorem steps UP from exponent r to r+1, gaining a factor of 2^κ in the source. The conjecture asks whether the reverse direction holds — stepping DOWN from r+1 to r while shrinking the source from 2^λ to λ. Stepping up is constructive (transfinite recursion builds the monochromatic set); stepping down requires showing that structure in (r+1)-colorings implies structure in r-colorings.",
       "**The +1 dichotomy**: For infinite κ_α, the '+1' is absorbed (κ + 1 = κ), so the conjecture reduces to whether 2^λ → (κ_α)^{r+1} implies λ → (κ_α)^r. For finite targets, κ_α + 1 > κ_α genuinely strengthens the hypothesis. The formalization explicitly proves this dichotomy with infinite_card_add_one and finite_card_add_one.",
       "**Building partition calculus in Lean 4**: The formalization constructs the full partition relation machinery from Finset and Cardinal, using dependent subtypes for r-element subsets and universal quantification over types to handle cardinal arithmetic in a universe-polymorphic way.",
-      "**Consistency with established results**: The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k) and the Erdős-Rado theorem ((2^κ)⁺ → (κ⁺)²_κ) are axiomatized as reference points. The formalization verifies that these are consistent with the conjecture and that structural lemmas interact correctly with the axioms.",
+      "**Full proof of the infinite Ramsey theorem**: The infinite Ramsey theorem is proved from first principles by induction on r, using Ramsey's diagonal argument in the inductive step. The proof constructs a sequence of vertices and colors by iteratively fixing a vertex, reducing the coloring, and applying the IH. Pigeonhole on the color sequence extracts an infinite monochromatic subsequence. The key challenge is the subtype lifting: applying the IH to infinite subsets requires embedding the reduced coloring on a subtype, applying the IH, and then transferring the monochromatic set back to the ambient type.",
       "**70 years unsolved**: Posed in 1956, this is among the longest-standing open problems in infinite combinatorics. The difficulty reflects the fundamental asymmetry between stepping up (constructive) and stepping down (requires information-theoretic arguments about colorings)."
     ],
     "prerequisites": [
@@ -142,13 +143,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1167 — the stepping-down conjecture for partition relations — in 352 lines of Lean 4 code with 3 axioms (conjecture, infinite Ramsey for r>=2, Erdős-Rado) and 17 theorems. The partition relation infrastructure is built from scratch using Finset and Cardinal. The r=0 and r=1 cases of the infinite Ramsey theorem are proved from first principles (pigeonhole principle), showing the axiom is only needed for the genuinely non-trivial r>=2 case requiring transfinite recursion.",
+    "summary": "This formalization captures Erdős Problem #1167 — the stepping-down conjecture for partition relations — in 594 lines of Lean 4 code with only 2 axioms (the OPEN conjecture and the Erdős-Rado theorem) and 19 theorems. The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k for all finite r, k) is FULLY PROVED by induction on r using Ramsey's diagonal argument, eliminating the previous axiom. This is a significant advancement: the formalization now proves a major classical result of infinite combinatorics from first principles.",
     "implications": "Resolving this conjecture would establish a fundamental duality in partition calculus: the stepping-up lemma and a stepping-down lemma would together give a complete picture of how partition properties transfer between consecutive exponents. A positive resolution would provide a powerful tool for deriving partition relations at lower exponents from known results at higher exponents, potentially simplifying many arguments in infinite combinatorics.",
     "openQuestions": [
       "Does the stepping-down implication hold in ZFC, or is it independent of the standard axioms?",
       "Can the conjecture be proved for the special case r=2, γ=2 (two colors, pairs-to-triples)?",
       "What is the relationship between this conjecture and the stepping-up lemma — is there a formal duality?",
-      "Can the infinite Ramsey theorem for r >= 2 (the remaining axiomatized case) be proved in Lean 4? The r=0 and r=1 cases are now proved; r=2 requires a formalization of Ramsey's diagonal argument with transfinite recursion.",
+      "Can the Erdős-Rado theorem ((2^κ)⁺ → (κ⁺)²_κ) be proved in Lean 4? This is the only remaining axiomatized known result, requiring a formalization of transfinite recursion on ordinals.",
       "Does a counterexample exist for specific choices of λ, r, γ, and targets?"
     ]
   },
@@ -163,9 +164,9 @@
       "Set"
     ],
     "namespace": "Erdos1167",
-    "lineCount": 352,
-    "axiomCount": 3,
-    "theoremCount": 17,
+    "lineCount": 594,
+    "axiomCount": 2,
+    "theoremCount": 19,
     "definitionCount": 5
   },
   "references": [

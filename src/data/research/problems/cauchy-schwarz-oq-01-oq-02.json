@@ -1,0 +1,86 @@
+{
+  "slug": "cauchy-schwarz-oq-01-oq-02",
+  "title": "Gram-Schmidt Orthogonalization via Cauchy-Schwarz",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the complex Gram-Schmidt process be formalized using this Cauchy-Schwarz bound as the key projection estimate?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-27T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalize Gram-Schmidt orthogonalization using Cauchy-Schwarz.",
+    "blockers": [],
+    "nextAction": "Complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: CauchySchwarzOQ01OQ02.lean (262 lines, 14 theorems, 0 axioms, 0 sorries). Formalizes orthogonal projection, Cauchy-Schwarz projection bound, Gram-Schmidt one-step, Pythagoras decomposition, multi-step GS, and numerical stability.",
+    "builtItems": [
+      "orthProj: orthogonal projection definition",
+      "projCoeff_norm_le: CS-based bound on projection coefficient",
+      "orthProj_norm_le: projection never amplifies norm",
+      "residual_orthogonal: GS residual perpendicular to v",
+      "gsStep_orthogonal: one-step GS produces orthogonality",
+      "gs_pythagoras: norm decomposition into projection + residual",
+      "gsStep_norm_le: residual norm bounded by input norm",
+      "gramSchmidtList: multi-step GS for finite lists",
+      "gsStep_of_orthogonal: GS identity when already orthogonal",
+      "gsStep_of_parallel: GS produces zero when parallel",
+      "gram_schmidt_uses_cauchy_schwarz: summary theorem"
+    ],
+    "insights": [
+      "Cauchy-Schwarz directly bounds the projection coefficient: |⟨v,u⟩/⟨v,v⟩| ≤ ‖u‖/‖v‖",
+      "The key connection is projCoeff_norm_le which uses norm_inner_le_norm",
+      "Pythagoras for GS follows from the orthogonality of projection and residual",
+      "0 axioms: everything follows from Mathlib inner product space API"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-27T00:00:00Z",
+  "lastUpdate": "2026-03-27T00:00:00Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ02.lean",
+      "filename": "CauchySchwarzOQ01OQ02.lean",
+      "lineCount": 262,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ02.lean"
+    }
+  ]
+}

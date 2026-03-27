@@ -156,3 +156,112 @@ theorem singleton_step_collinear {d : ℕ} (v : LatPoint d) (w : Walk d)
 theorem erdos193_singleton {d : ℕ} (v : LatPoint d) (w : Walk d)
     (hw : IsStepWalk ({v} : StepSet d) w) : HasThreeCollinear w :=
   ⟨0, 1, 2, by omega, by omega, singleton_step_collinear v w hw 0 1 2 (by omega)⟩
+
+/- ## Parallel step sets -/
+
+/-- A step set is parallel if all steps are integer multiples of a single
+    direction vector `v`. -/
+def IsParallelStepSet {d : ℕ} (S : StepSet d) (v : LatPoint d) : Prop :=
+    ∀ s ∈ S, ∃ c : ℤ, ∀ j : Fin d, s j = c * v j
+
+/-- In a parallel-step walk, position at step n satisfies
+    w(n)(j) = w(0)(j) + c * v(j) for some integer c (the accumulated coefficient).
+    All visited points lie on the line through w(0) in direction v. -/
+theorem parallel_walk_on_line {d : ℕ} (S : StepSet d) (v : LatPoint d)
+    (w : Walk d) (hS : IsParallelStepSet S v) (hw : IsStepWalk S w)
+    (n : ℕ) : ∃ c : ℤ, ∀ j : Fin d, w n j = w 0 j + c * v j := by
+  induction n with
+  | zero => exact ⟨0, fun j => by simp⟩
+  | succ n ih =>
+    obtain ⟨cn, hcn⟩ := ih
+    obtain ⟨cs, hcs⟩ := hS _ (hw n)
+    refine ⟨cn + cs, fun j => ?_⟩
+    have hstep : w (n + 1) j - w n j = cs * v j := hcs j
+    have := hcn j
+    linarith [hstep]
+
+/-- Three points on a line through the origin (with coefficients cᵢ, cⱼ, cₖ)
+    are collinear, provided the first two are distinct (cᵢ ≠ cⱼ). -/
+private theorem line_points_collinear {d : ℕ} (o v : LatPoint d)
+    (ci cj ck : ℤ) (hne : cj ≠ ci)
+    (pi pj pk : LatPoint d)
+    (hi : ∀ c, pi c = o c + ci * v c)
+    (hj : ∀ c, pj c = o c + cj * v c)
+    (hk : ∀ c, pk c = o c + ck * v c) :
+    AreCollinear pi pj pk := by
+  refine ⟨ck - ci, cj - ci, Or.inr (sub_ne_zero.mpr hne), fun c => ?_⟩
+  have := hi c; have := hj c; have := hk c
+  linarith [mul_comm (ck - ci) (v c), mul_comm (cj - ci) (v c)]
+
+/-- Any three points of a parallel-step walk are collinear, provided the
+    walk visits at least two distinct points among them. -/
+theorem parallel_step_collinear {d : ℕ} (S : StepSet d) (v : LatPoint d)
+    (w : Walk d) (hS : IsParallelStepSet S v) (hw : IsStepWalk S w)
+    (i j k : ℕ) (hne : w i ≠ w j) : AreCollinear (w i) (w j) (w k) := by
+  obtain ⟨ci, hci⟩ := parallel_walk_on_line S v w hS hw i
+  obtain ⟨cj, hcj⟩ := parallel_walk_on_line S v w hS hw j
+  obtain ⟨ck, hck⟩ := parallel_walk_on_line S v w hS hw k
+  have hcij : cj ≠ ci := by
+    intro heq; apply hne; ext c; have := hci c; have := hcj c; linarith
+  exact line_points_collinear (w 0) v ci cj ck hcij (w i) (w j) (w k) hci hcj hck
+
+/-- Every parallel-step walk has three collinear points. -/
+theorem erdos193_parallel {d : ℕ} (S : StepSet d) (v : LatPoint d) (w : Walk d)
+    (hS : IsParallelStepSet S v) (hw : IsStepWalk S w) :
+    HasThreeCollinear w := by
+  by_cases h01 : w 0 = w 1
+  · -- If w(0) = w(1), they are equal, so (w 0, w 1, w 2) is trivially collinear
+    exact ⟨0, 1, 2, by omega, by omega, by subst h01; exact collinear_refl (w 0) (w 2)⟩
+  · exact ⟨0, 1, 2, by omega, by omega,
+      parallel_step_collinear S v w hS hw 0 1 2 h01⟩
+
+/- ## Dimension reduction framework -/
+
+/-- The step set spans at most a 2D subspace: every step vector is an
+    integer linear combination of two fixed vectors v₁, v₂. -/
+def SpansAtMost2D {d : ℕ} (S : StepSet d) : Prop :=
+    ∃ (v₁ v₂ : LatPoint d), ∀ s ∈ S,
+      ∃ (a b : ℤ), ∀ j : Fin d, s j = a * v₁ j + b * v₂ j
+
+/-- When the step set spans at most a 2D subspace, the conjecture holds
+    by reduction to the 2D case (Gerver-Ramsey).
+
+    The proof idea: the walk stays in the 2D affine plane through w(0)
+    spanned by v₁, v₂. Project onto ℤ² via the coordinate map
+    (a, b) ↦ a * v₁ + b * v₂. The projected walk is an S'-walk in ℤ²
+    for a finite step set S'. Apply gerver_ramsey_2d, then lift back.
+
+    Axiom: requires constructing the projection/embedding explicitly and
+    verifying the step-walk and injectivity properties transfer. -/
+axiom erdos193_rank_le_2 :
+    ∀ (S : StepSet 3) (w : Walk 3),
+      SpansAtMost2D S →
+      IsStepWalk S w → IsInjective w → HasThreeCollinear w
+
+/-- The conjecture reduces to the full-rank case: step sets that span
+    all of ℤ³. This is the genuinely 3-dimensional case that remains open.
+
+    Proof: either S spans ≤ 2D (apply erdos193_rank_le_2) or S spans
+    3D (the hypothesis gives the result). -/
+theorem erdos193_reduces_to_full_rank :
+    (∀ (S : StepSet 3) (w : Walk 3),
+      ¬SpansAtMost2D S →
+      IsStepWalk S w → IsInjective w → HasThreeCollinear w) →
+    ErdosProblem193 := by
+  intro h_full_rank S w hw hinj
+  by_cases h : SpansAtMost2D S
+  · exact erdos193_rank_le_2 S w h hw hinj
+  · exact h_full_rank S w h hw hinj
+
+/- ## Summary of proved special cases -/
+
+/-
+The conjecture ErdosProblem193 (for ℤ³) has been proved in these cases:
+1. d = 1: trivially, all triples in ℤ¹ are collinear (erdos193_dim1)
+2. Singleton step sets: the walk is a line (erdos193_singleton)
+3. Parallel step sets: all steps ∈ ℤ·v, walk lies on a line (erdos193_parallel)
+4. Rank ≤ 2 step sets: walk in 2D subspace → Gerver-Ramsey (erdos193_rank_le_2, axiom)
+
+The open case: step sets spanning all of ℤ³ (full rank 3).
+By erdos193_reduces_to_full_rank, this is the only remaining case.
+-/
