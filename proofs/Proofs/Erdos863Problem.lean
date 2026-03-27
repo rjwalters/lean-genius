@@ -94,3 +94,45 @@ axiom erdos_863_weak :
         |((maxB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c| < ε) ∧
       (∀ε > 0, ∀ᶠ N in Filter.atTop,
         |((maxDiffB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c'| < ε)
+
+/- ## Part II: Basic Properties of B₂[r] Sets -/
+
+/-- B₂[r] property is monotone in r: B₂[r] implies B₂[r'] for r ≤ r' -/
+theorem isB2r_mono {A : Finset ℕ} {r r' : ℕ} (h : IsB2r A r) (hrr : r ≤ r') :
+    IsB2r A r' :=
+  fun n => le_trans (h n) hrr
+
+/-- Difference B₂[r] property is monotone in r -/
+theorem isDiffB2r_mono {A : Finset ℕ} {r r' : ℕ} (h : IsDiffB2r A r)
+    (hrr : r ≤ r') : IsDiffB2r A r' :=
+  fun n hn => le_trans (h n hn) hrr
+
+/-- InRange is monotone in N: A ⊆ {1,...,N} implies A ⊆ {1,...,N'} for N ≤ N' -/
+theorem inRange_mono {A : Finset ℕ} {N N' : ℕ} (h : InRange A N)
+    (hNN : N ≤ N') : InRange A N' :=
+  fun a ha => ⟨(h a ha).1, le_trans (h a ha).2 hNN⟩
+
+/-- Empty set is in range for any N -/
+theorem inRange_empty (N : ℕ) : InRange ∅ N :=
+  fun _ ha => absurd ha (Finset.not_mem_empty _)
+
+/-- The empty set is B₂[r] for any r -/
+theorem isB2r_empty (r : ℕ) : IsB2r ∅ r := by
+  intro n; simp [sumRepCount]
+
+/-- The empty set is a difference B₂[r] set for any r -/
+theorem isDiffB2r_empty (r : ℕ) : IsDiffB2r ∅ r := by
+  intro n _; simp [diffRepCount]
+
+/-- Sum representation count is at most |A|²: filtering a product
+    can only decrease cardinality -/
+theorem sumRepCount_le_card_sq (A : Finset ℕ) (n : ℕ) :
+    sumRepCount A n ≤ A.card * A.card := by
+  unfold sumRepCount
+  exact le_trans (Finset.card_filter_le _ _) (le_of_eq (Finset.card_product A A))
+
+/-- Difference representation count is at most |A|² -/
+theorem diffRepCount_le_card_sq (A : Finset ℕ) (n : ℤ) :
+    diffRepCount A n ≤ A.card * A.card := by
+  unfold diffRepCount
+  exact le_trans (Finset.card_filter_le _ _) (le_of_eq (Finset.card_product A A))

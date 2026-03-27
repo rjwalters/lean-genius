@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/863",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 96,
+    "lineCount": 138,
     "assumptions": "3 axiom(s): sidon_classical, ErdosProblem863, erdos_863_weak. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -89,8 +89,15 @@
       "id": "sec-863-weak-conjecture",
       "title": "Weak Conjecture: cᵣ ≠ c'ᵣ",
       "startLine": 89,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Axiom erdos_863_weak: there exists r ≥ 2 with c_r ≠ c'_r. A stepping stone that avoids specifying the direction of the inequality."
+    },
+    {
+      "id": "sec-863-basic-properties",
+      "title": "Basic Properties of B₂[r] Sets",
+      "startLine": 99,
+      "endLine": 138,
+      "summary": "Eight proved theorems: monotonicity of B₂[r] and IsDiffB2r in r (isB2r_mono, isDiffB2r_mono), monotonicity of InRange in N (inRange_mono), empty set lemmas (inRange_empty, isB2r_empty, isDiffB2r_empty), and crude cardinality bounds (sumRepCount_le_card_sq, diffRepCount_le_card_sq)."
     }
   ],
   "conclusion": {
@@ -131,9 +138,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 96,
+    "lineCount": 138,
     "axiomCount": 3,
-    "theoremCount": 0,
+    "theoremCount": 8,
     "definitionCount": 7
   }
 }
