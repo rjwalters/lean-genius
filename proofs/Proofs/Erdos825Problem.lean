@@ -54,18 +54,36 @@ noncomputable def abundancy (n : ℕ) (hn : 0 < n) : ℚ :=
 /- ## Known examples -/
 
 /-- 70 is the smallest weird number. -/
-axiom weird_70 : IsWeird 70
+theorem weird_70 : IsWeird 70 := by
+  constructor
+  · -- IsAbundant: 2 * 70 < divisorSum 70
+    unfold IsAbundant divisorSum; native_decide
+  · -- ¬IsSemiperfect: no subset of proper divisors sums to 70
+    intro ⟨S, hS_sub, hS_sum⟩
+    have : ∀ T ∈ (properDivisors 70).powerset, T.sum id ≠ 70 := by native_decide
+    exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
 
 /-- σ(70) = 144, so abundancy of 70 is 144/70 ≈ 2.057. -/
-axiom sigma_70 : divisorSum 70 = 144
+theorem sigma_70 : divisorSum 70 = 144 := by
+  unfold divisorSum
+  native_decide
 
 /- ## Lower bound on C -/
 
 /-- If C works for the problem, then C > 2. The counterexample is n = 70:
     σ(70) = 144 > 2 · 70 = 140, yet 70 is not semiperfect. -/
-axiom necessary_lower_bound (C : ℚ) (hC : 0 < C)
+theorem necessary_lower_bound (C : ℚ) (hC : 0 < C)
     (h : ∀ n : ℕ, 0 < n → C * (n : ℚ) < (divisorSum n : ℚ) → IsSemiperfect n) :
-    2 < C
+    2 < C := by
+  by_contra hle
+  push_neg at hle
+  apply weird_70.2
+  apply h 70 (by norm_num)
+  have hsig : (divisorSum 70 : ℚ) = 144 := by exact_mod_cast sigma_70
+  calc C * (70 : ℚ) ≤ 2 * 70 := by nlinarith
+    _ = 140 := by norm_num
+    _ < 144 := by norm_num
+    _ = (divisorSum 70 : ℚ) := hsig.symm
 
 /- ## Odd weird numbers -/
 
