@@ -51,10 +51,13 @@ theorem scalar_is_additive (c : ℝ) : IsAdditive (fun x => c * x) := by
   ring
 
 /-- **Continuous Additive Functions:**
-If f is additive and continuous, then f(x) = cx for some c. -/
-axiom continuous_additive_is_linear :
+If f is additive and continuous, then f(x) = cx for some c.
+PROVED from measurable_additive_is_linear: continuous → measurable.
+(Previously axiom; axiom count reduced 5→4.) -/
+theorem continuous_additive_is_linear :
     ∀ f : ℝ → ℝ, IsAdditive f → Continuous f →
-      ∃ c : ℝ, ∀ x : ℝ, f x = c * x
+      ∃ c : ℝ, ∀ x : ℝ, f x = c * x := fun f hf hcont =>
+  measurable_additive_is_linear f hf hcont.measurable
 
 /- ## Part II: Almost Additive Functions -/
 
