@@ -19,15 +19,15 @@
       "fourier-analysis"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 2,
     "axiomCount": 0,
     "theoremCount": 23,
     "definitionCount": 7,
-    "lineCount": 414,
+    "lineCount": 525,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "open-question",
-    "assumptions": "Zero axioms. Five sorries remain in the Fourier analysis infrastructure: (1) reprCount_fourier_expansion (the core Fourier inversion identity on Z/pZ via character orthogonality and subset product identity), (2) norm_one_add_omegap_pow (|1+omega^m| = 2|cos(pi*m/p)|), (3) abs_cos_mul_pi_div_le (|cos(pi*m/p)| <= cos(pi/p) for m in {1,...,p-1}), (4) fourier_product_bound (product of character factors bounded by 2^k*cos(pi/p)^(k-1)), (5) fourier_error_bound assembly (combining Fourier expansion with product bounds via triangle inequality). All foundational lemmas and erdos_renyi_decay are fully proved.",
+    "assumptions": "Zero axioms. Two sorries remain: (1) reprCount_fourier_expansion (the core Fourier inversion identity on Z/pZ via character orthogonality and subset product identity), (2) fourier_error_bound assembly (combining Fourier expansion with product bounds via triangle inequality). Three previously sorry'd lemmas (norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound) are now fully proved. All foundational lemmas and erdos_renyi_decay fully proved.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -84,9 +84,10 @@
       ],
       "opens": ["Finset", "Real"],
       "namespace": "Erdos1179OQ01",
-      "lineCount": 286,
-      "axiomCount": 1,
-      "theoremCount": 11,
+      "lineCount": 525,
+      "axiomCount": 0,
+      "sorryCount": 2,
+      "theoremCount": 23,
       "definitionCount": 5,
       "mainTheorems": [
         {

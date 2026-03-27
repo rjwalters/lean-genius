@@ -12,7 +12,7 @@
     "erdosUrl": "https://erdosproblems.com/160",
     "erdosProblemStatus": "open",
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -21,9 +21,9 @@
       "van-der-waerden",
       "open"
     ],
-    "axiomCount": 7,
-    "lineCount": 225,
-    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "axiomCount": 6,
+    "lineCount": 252,
+    "assumptions": "6 axioms (h, h_achievable, h_minimal, upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp) and 2 sorries (h_sublinear, h_superlog). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -131,8 +131,8 @@
       "Finset"
     ],
     "namespace": "Erdos160",
-    "lineCount": 225,
-    "axiomCount": 7,
+    "lineCount": 252,
+    "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 5
   },
