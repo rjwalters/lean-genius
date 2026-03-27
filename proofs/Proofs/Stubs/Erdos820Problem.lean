@@ -30,6 +30,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.FieldTheory.Finite.Basic
 
 open Nat Real
 
@@ -219,8 +220,14 @@ theorem gcd_characterization (k l n p : ℕ) (hp : Nat.Prime p) :
 For prime p not dividing k, we have k^(p-1) ≡ 1 (mod p).
 So if (p-1) | n, then p might divide both k^n - 1 and l^n - 1.
 -/
-axiom fermat_little_theorem (k p : ℕ) (hp : Nat.Prime p) (hk : ¬p ∣ k) :
-  k^(p - 1) ≡ 1 [MOD p]
+theorem fermat_little_theorem (k p : ℕ) (hp : Nat.Prime p) (hk : ¬p ∣ k) :
+    k^(p - 1) ≡ 1 [MOD p] := by
+  have := Fact.mk hp
+  have hk' : (k : ZMod p) ≠ 0 := by rwa [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  have h : (k : ZMod p) ^ (p - 1) = 1 := by
+    rw [← ZMod.card p]; exact ZMod.pow_card_sub_one_eq_one hk'
+  have h' : ((k ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by push_cast; exact h
+  rwa [ZMod.natCast_eq_natCast_iff] at h'
 
 /-
 ## Part VIII: Connection to Problem #770

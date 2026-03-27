@@ -98,8 +98,11 @@ then n = m² - 1 satisfies the condition.
 def SteinerbergerConstruction (m : ℕ) : ℕ := m ^ 2 - 1
 
 /-- n = m² - 1 = (m-1)(m+1) factorization (difference of squares). -/
-axiom steinerberger_factorization (m : ℕ) (hm : m ≥ 2) :
-    SteinerbergerConstruction m = (m - 1) * (m + 1)
+theorem steinerberger_factorization (m : ℕ) (hm : m ≥ 2) :
+    SteinerbergerConstruction m = (m - 1) * (m + 1) := by
+  unfold SteinerbergerConstruction
+  zify [show 1 ≤ m ^ 2 from by positivity, show 1 ≤ m from by omega]
+  ring
 
 /-- For the construction, n + 1 = m². -/
 theorem steinerberger_succ (m : ℕ) (hm : m ≥ 2) :
