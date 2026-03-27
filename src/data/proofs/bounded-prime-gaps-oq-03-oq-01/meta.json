@@ -28,9 +28,9 @@
       "barrier_246: the 246 barrier cannot be broken by k-tuple methods alone"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 162,
-    "assumptions": "4 axiom(s) and 2 sorry(s).",
+    "assumptions": "3 axioms (minAdmissibleDiameter values for k=2,3,50) and 2 sorries. Previously 4 axioms; maynard_under_eh proved as theorem from minAdmissibleDiameter_3.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -141,9 +141,9 @@
       "BoundedPrimeGaps"
     ],
     "namespace": "BoundedPrimeGapsOQ03OQ01",
-    "lineCount": 162,
+    "lineCount": 172,
     "axiomCount": 4,
-    "theoremCount": 13,
+    "theoremCount": 15,
     "definitionCount": 3
   },
   "references": [
