@@ -58,10 +58,15 @@ noncomputable def edgeCount {n : ℕ} (G : Graph n) : ℕ :=
   ((Finset.univ.product Finset.univ).filter fun (p : Fin n × Fin n) =>
     p.1 < p.2 ∧ G.adj p.1 p.2).card
 
-/-- The graph Ramsey number R(K_s, G) for a graph G on n vertices:
-    minimum r such that any 2-coloring of K_r contains a red K_s
-    or a blue copy of G. Axiomatized as the standard definition. -/
-noncomputable def graphRamseyK3 {n : ℕ} (_G : Graph n) : ℕ := sorry
+/-- The graph Ramsey number R(K₃, G) for a graph G on n vertices:
+    minimum r such that any 2-coloring of K_r contains a red K₃
+    or a blue copy of G (injective adjacency-preserving map). -/
+noncomputable def graphRamseyK3 {n : ℕ} (G : Graph n) : ℕ :=
+  sInf { r : ℕ | r ≥ 1 ∧ ∀ (f : Fin r → Fin r → Bool),
+    (∃ S : Finset (Fin r), S.card = 3 ∧
+      ∀ a ∈ S, ∀ b ∈ S, a ≠ b → f a b = true) ∨
+    (∃ (φ : Fin n → Fin r), Function.Injective φ ∧
+      ∀ (i j : Fin n), G.adj i j → f (φ i) (φ j) = false) }
 
 -- ## Part III: The Threshold Functions
 

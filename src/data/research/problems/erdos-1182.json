@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 4→3 sorries. Replaced graphRamseyK3 definition sorry with proper sInf definition (R(K₃,G) via 2-colorings). 3 theorem sorries remain: bigF_lower_bound_tree, f_val_2, bigF_val_2.",
+    "builtItems": [
+      "Defined graphRamseyK3 via sInf of Ramsey-valid sizes (red K₃ or blue copy of G)",
+      "Consistent with ramseyNumber style (Fin r colorings)"
+    ],
+    "insights": [
+      "graphRamseyK3 now has a proper sInf definition matching the Ramsey number pattern",
+      "bigF_lower_bound_tree requires more than chvatal_tree_ramsey (needs all ≤(n-1)-edge graphs, not just trees)",
+      "f_val_2 and bigF_val_2 require computing specific Ramsey numbers for small cases",
+      "sSup definitions for f_threshold and bigF_threshold may have issues for unbounded sets on ℕ"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove bigF_lower_bound_tree (needs argument for all graphs with ≤ n-1 edges)",
+      "Prove f_val_2 and bigF_val_2 via explicit Ramsey number computation for n=2"
+    ],
     "markdown": "# Erdős #1182 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
   "tags": [
