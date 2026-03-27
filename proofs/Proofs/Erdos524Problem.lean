@@ -316,3 +316,27 @@ theorem polyMax_ge_eval (t : ℝ) (n : ℕ) {x : ℝ} (hx : x ∈ Set.Icc (-1 : 
   unfold polyMax
   apply le_csSup (polyMax_bddAbove t n)
   exact ⟨x, hx, rfl⟩
+
+/-- For n = 2, M_2(t) = 2 for all t. The polynomial P₂(t,x) = ε₁·x + ε₂·x².
+    For each sign pattern, at least one endpoint x ∈ {±1} gives |P₂| = 2.
+    Upper bound: M_2 ≤ M_1 + 1 = 2 by the Lipschitz property. -/
+theorem polyMax_two (t : ℝ) : polyMax t 2 = 2 := by
+  apply le_antisymm
+  · -- M_2 ≤ M_1 + 1 = 2
+    linarith [polyMax_succ_le t 1, polyMax_one t]
+  · -- M_2 ≥ 2: case split on binary digit signs
+    have h1_mem : (1 : ℝ) ∈ Set.Icc (-1) 1 := by norm_num
+    have hn1_mem : (-1 : ℝ) ∈ Set.Icc (-1) 1 := by norm_num
+    rcases binaryDigit_values t 1 with h1 | h1 <;> rcases binaryDigit_values t 2 with h2 | h2
+    · -- ε₁=1, ε₂=1: P₂(t,1) = 2
+      suffices h : |randSignPoly t 2 1| = 2 by linarith [polyMax_ge_eval t 2 h1_mem]
+      simp [randSignPoly, Finset.sum_range_succ, Finset.sum_range_one, h1, h2]; norm_num
+    · -- ε₁=1, ε₂=-1: P₂(t,-1) = -2
+      suffices h : |randSignPoly t 2 (-1)| = 2 by linarith [polyMax_ge_eval t 2 hn1_mem]
+      simp [randSignPoly, Finset.sum_range_succ, Finset.sum_range_one, h1, h2]; norm_num
+    · -- ε₁=-1, ε₂=1: P₂(t,-1) = 2
+      suffices h : |randSignPoly t 2 (-1)| = 2 by linarith [polyMax_ge_eval t 2 hn1_mem]
+      simp [randSignPoly, Finset.sum_range_succ, Finset.sum_range_one, h1, h2]; norm_num
+    · -- ε₁=-1, ε₂=-1: P₂(t,1) = -2
+      suffices h : |randSignPoly t 2 1| = 2 by linarith [polyMax_ge_eval t 2 h1_mem]
+      simp [randSignPoly, Finset.sum_range_succ, Finset.sum_range_one, h1, h2]; norm_num
