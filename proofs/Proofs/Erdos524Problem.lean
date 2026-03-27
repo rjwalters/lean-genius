@@ -56,19 +56,6 @@ axiom chung_upper_bound :
       ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
         polyMax t n ≤ C * Real.sqrt ((n : ℝ) / Real.log (Real.log n))
 
-/- ## Classical Comparison: Salem–Zygmund for Trigonometric Polynomials -/
-
-/-- Salem–Zygmund theorem (for comparison): for random trigonometric polynomials
-    with ±1 coefficients, the maximum on [0,2π] is typically Θ(√(n log n)).
-    The polynomial case on [-1,1] is expected to behave differently due to
-    endpoint concentration. -/
-axiom salem_zygmund_trigonometric :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧ c₁ < c₂ ∧
-    ∀ᵐ t ∂MeasureTheory.volume, t ∈ Set.Ioo (0 : ℝ) 1 →
-      ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-        c₁ * Real.sqrt ((n : ℝ) * Real.log n) ≤ polyMax t n ∧
-        polyMax t n ≤ c₂ * Real.sqrt ((n : ℝ) * Real.log n)
-
 /- ## Main Open Problem -/
 
 /-- Erdős Problem #524: Determine the correct order of magnitude of M_n(t)
