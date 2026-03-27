@@ -386,10 +386,30 @@ theorem k3_no_classical_robust :
     - χ = 3: needs 3 colors (triangle = K₃), 2-colorable iff bipartite but K₃ has an odd cycle
     - No classical robust orientation: proved above (k3_no_classical_robust)
 
-    Note: egirth and chromaticNumber calculations for K₃ are axiomatized here
-    as they require specialized Mathlib computations. -/
-axiom k3_egirth_eq_3 : (⊤ : SimpleGraph (Fin 3)).egirth = 3
-axiom k3_chromaticNumber_eq_3 : (⊤ : SimpleGraph (Fin 3)).chromaticNumber = 3
+    Note: egirth and chromaticNumber calculations for K₃ were previously axiomatized
+    but are now proved directly from Mathlib. -/
+
+/-- The extended girth of K₃ is 3.
+    Lower bound: `three_le_egirth` (all simple graph cycles have length ≥ 3).
+    Upper bound: the triangle 0→1→2→0 is a 3-cycle. -/
+theorem k3_egirth_eq_3 : (⊤ : SimpleGraph (Fin 3)).egirth = 3 := by
+  apply le_antisymm
+  · -- Upper bound: construct the 3-cycle 0→1→2→0
+    have cycle : (⊤ : SimpleGraph (Fin 3)).Walk (0 : Fin 3) (0 : Fin 3) :=
+      Walk.cons (by decide) (Walk.cons (by decide) (Walk.cons (by decide) Walk.nil))
+    have hcycle : cycle.IsCycle := by
+      refine ⟨⟨⟨?_⟩, ?_⟩, ?_⟩ <;> decide
+    show (⊤ : SimpleGraph (Fin 3)).egirth ≤ (3 : ℕ∞)
+    unfold SimpleGraph.egirth
+    exact iInf_le_of_le 0 (iInf_le_of_le cycle (iInf_le_of_le hcycle (by decide)))
+  · -- Lower bound: all cycles in simple graphs have length ≥ 3
+    exact three_le_egirth
+
+/-- The chromatic number of K₃ is 3.
+    Follows from Mathlib's `chromaticNumber_top : (⊤ : SimpleGraph V).chromaticNumber = card V`
+    since `Fintype.card (Fin 3) = 3`. -/
+theorem k3_chromaticNumber_eq_3 : (⊤ : SimpleGraph (Fin 3)).chromaticNumber = 3 := by
+  simp [chromaticNumber_top, Fintype.card_fin]
 
 /-- The triangle (K₃) witnesses the girth-3 classical case:
     it is triangle-free (girth 3), has χ=3, and has no classical robust orientation. -/
@@ -409,7 +429,7 @@ axiom ffllw_classical (g : ℕ∞) {W : Type*} [Fintype W] (H : SimpleGraph W)
 /-
 ## Summary
 
-### Proved (no sorry, no axioms):
+### Proved (no sorry):
 1. `coloringOrientation_acyclic` - coloring orientation is acyclic
 2. `coloringOrientation_no_dependent_arcs` - no dependent arcs in coloring orientation
 3. `coloringOrientation_robustlyAcyclic` - coloring orientation is robustly acyclic
@@ -425,6 +445,8 @@ axiom ffllw_classical (g : ℕ∞) {W : Type*} [Fintype W] (H : SimpleGraph W)
 13. `classicallyRobust_implies_rankBased` - classical robust → rank-based robust
 14. `k3_no_classical_robust` - K₃ has no classically robust orientation (concrete proof!)
 15. `girth3_classical_witness` - K₃ witnesses the girth-3 case classically
+16. `k3_egirth_eq_3` - K₃ has girth 3 (via `three_le_egirth` + explicit 3-cycle)
+17. `k3_chromaticNumber_eq_3` - K₃ has chromatic number 3 (via `chromaticNumber_top`)
 
 ### Key Answer:
 The minimum chromatic number of a girth-g graph failing robust orientability is
@@ -442,8 +464,6 @@ is classically robust if reversing any arc preserves acyclicity. The triangle K�
 provably has no classical robust orientation (k3_no_classical_robust). The girth condition
 from FFLLW is essential only for the classical definition.
 
-### Axiomatized (deep results requiring external references):
-1. `k3_egirth_eq_3` - K₃ has girth 3
-2. `k3_chromaticNumber_eq_3` - K₃ has chromatic number 3
-3. `ffllw_classical` - FFLLW chromatic lower bound for classical non-robust graphs
+### Axiomatized (1 remaining, deep result):
+1. `ffllw_classical` - FFLLW chromatic lower bound for classical non-robust graphs
 -/
