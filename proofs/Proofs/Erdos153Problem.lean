@@ -8,6 +8,13 @@ Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that
 
 ## References
 - Erdős–Sárközy–Sós, "On Sum Sets of Sidon Sets, I" (1994)
+
+Results:
+- sidon_sumset_card: proved (modulo combinatorial card lemma for filtered product)
+- sidon_sumset_range: proved
+- average_gap_bounded: proved (trivially: C can depend on N)
+Axioms: 2 (ess_1994_result, infinite_sidon_gap_question)
+Sorries: 1 (card of {(a,b) ∈ A×A : a ≤ b})
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -81,10 +88,36 @@ def ErdosProblem153 : Prop :=
 ## Section V: Sidon Set Sumset Properties
 -/
 
-/-- A Sidon set of size n has exactly n(n+1)/2 distinct pairwise sums
-(counting ordered pairs with a ≤ b). -/
-axiom sidon_sumset_card (A : Finset ℕ) (h : IsSidon A) :
-    (sumset A).card ≥ A.card * (A.card + 1) / 2
+/-- A Sidon set of size n has at least n(n+1)/2 distinct pairwise sums.
+    Proof: the map (a,b) ↦ a+b is injective on {(a,b) ∈ A×A : a ≤ b}
+    by the Sidon condition, and this set has n(n+1)/2 elements. -/
+theorem sidon_sumset_card (A : Finset ℕ) (h : IsSidon A) :
+    (sumset A).card ≥ A.card * (A.card + 1) / 2 := by
+  -- Let S = {(a,b) ∈ A×A : a ≤ b}
+  set S := (A ×ˢ A).filter (fun p => p.1 ≤ p.2) with hSdef
+  -- The sum map is injective on S (Sidon condition)
+  have hinj : Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2) ↑S := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe,
+               Finset.mem_product] at h₁ h₂
+    have := h a₁ h₁.1.1 b₁ h₁.1.2 a₂ h₂.1.1 b₂ h₂.1.2 h₁.2 h₂.2 heq
+    exact Prod.ext this.1 this.2
+  -- The image of S under the sum map is contained in sumset A
+  have hsub : S.image (fun p => p.1 + p.2) ⊆ sumset A := by
+    intro s hs
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product] at hs
+    obtain ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩ := hs
+    exact Finset.mem_image.mpr ⟨⟨a, b⟩, Finset.mem_product.mpr ⟨ha, hb⟩, rfl⟩
+  -- So |sumset A| ≥ |S|
+  have hge : (sumset A).card ≥ S.card :=
+    (Finset.card_image_of_injOn hinj) ▸ Finset.card_le_card hsub
+  -- |S| ≥ n(n+1)/2 because S contains all ordered pairs (a,b) with a ≤ b
+  -- By a symmetry argument: |A×A| = |{a≤b}| + |{a>b}| and |{a≤b}| ≥ |{a>b}|
+  -- so |S| ≥ |A×A|/2 = n²/2 ≥ n(n+1)/2 (for the latter, note n²/2 ≥ n(n+1)/2
+  -- iff n² ≥ n(n+1) which fails). Use the direct count instead:
+  -- |S| = n + n(n-1)/2 = n(n+1)/2
+  -- This requires a combinatorial card lemma; we leave it as sorry for now.
+  sorry
 
 /-- If A ⊆ {1,...,N} is Sidon, then A+A ⊆ {2,...,2N} so gaps can be
 computed within a bounded range. -/
@@ -102,11 +135,25 @@ theorem sidon_sumset_range (A : Finset ℕ) (N : ℕ) (_h : IsSidon A)
 
 /-- The sumset has size Θ(n²) while lying in an interval of length
 Θ(n²) (since Sidon sets have size O(√N) in {1,...,N}).
-The average gap is therefore Θ(1), but the variance could grow. -/
-axiom average_gap_bounded (A : Finset ℕ) (N : ℕ) (h : IsSidon A)
+The average gap is therefore Θ(1), but the variance could grow.
+NOTE: This is trivially true since C is allowed to depend on N. -/
+theorem average_gap_bounded (A : Finset ℕ) (N : ℕ) (_h : IsSidon A)
     (hN : ∀ a ∈ A, a ≤ N) (hn : A.card ≥ 2) :
     ∃ C : ℝ, C > 0 ∧
-      (2 * N : ℝ) / (sumset A).card ≤ C
+      (2 * N : ℝ) / (sumset A).card ≤ C := by
+  -- The sumset is nonempty (A has ≥ 2 elements, so a+a ∈ sumset A)
+  have hne : (sumset A).Nonempty := by
+    have ⟨a, ha⟩ := Finset.card_pos.mp (by omega : 0 < A.card)
+    exact ⟨a + a, Finset.mem_image.mpr ⟨(a, a), Finset.mem_product.mpr ⟨ha, ha⟩, rfl⟩⟩
+  have hcard_pos : (0 : ℝ) < (sumset A).card :=
+    Nat.cast_pos.mpr (Finset.Nonempty.card_pos hne)
+  -- C = 2N + 1 works: 2N / |A+A| ≤ 2N ≤ 2N + 1
+  refine ⟨2 * N + 1, by positivity, ?_⟩
+  have h1 : (1 : ℝ) ≤ (sumset A).card := by exact_mod_cast Finset.Nonempty.card_pos hne
+  calc (2 * (N : ℝ)) / ((sumset A).card : ℝ)
+      ≤ 2 * N / 1 := by apply div_le_div_of_nonneg_left (by positivity) one_pos h1
+    _ = 2 * N := by ring
+    _ ≤ 2 * N + 1 := by linarith
 
 /-- Erdős, Sárközy, and Sós (1994) studied the gap distribution
 in sumsets of Sidon sets and posed this problem about the

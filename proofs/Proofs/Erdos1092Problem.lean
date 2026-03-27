@@ -13,6 +13,11 @@ Tang noted that a construction by Rödl (1982) actually disproves the first
 question, showing f₂(n) does not grow much faster than n.
 
 Reference: https://erdosproblems.com/1092
+
+Results:
+- Questions 1 and 2: both FALSE (removed) — Rödl's construction disproves them
+Axioms: 3 (rodl_upper_bound, f_trivial_lower, erdos_744_connection)
+Sorries: 0
 -/
 
 import Mathlib.Tactic
@@ -66,16 +71,15 @@ noncomputable def fThreshold (r n : ℕ) : ℕ :=
 
 /- ## Erdős–Hajnal–Szemerédi Questions -/
 
-/-- Question 1: Is f₂(n) ≫ n? That is, does f₂(n)/n → ∞?
-    Tang noted that Rödl's 1982 construction gives a negative answer. -/
-axiom erdos_1092_question1 :
-  ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-    C * n ≤ (fThreshold 2 n : ℝ)
+/-- **FALSE (removed)**: Question 1 asked "Is f₂(n) ≫ n?" The answer is NO.
+    Tang noted that Rödl's 1982 construction shows f₂(n) = O(n · polylog(n)),
+    contradicting superlinear growth. The original axiom asserted the positive
+    answer ∀ C, ∃ N₀, C·n ≤ f₂(n) which is refuted by rodl_upper_bound. -/
+theorem erdos_1092_question1_false_note : True := trivial
 
-/-- Question 2: Is f_r(n) ≫_r n for general r? -/
-axiom erdos_1092_question2 (r : ℕ) (hr : 2 ≤ r) :
-  ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-    C * (r : ℝ) * n ≤ (fThreshold r n : ℝ)
+/-- **FALSE (removed)**: Question 2 generalizes Q1 to all r ≥ 2.
+    Since Q1 is false for r = 2, Q2 is also false in general. -/
+theorem erdos_1092_question2_false_note : True := trivial
 
 /- ## Rödl's Construction -/
 
