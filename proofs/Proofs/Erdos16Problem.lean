@@ -57,10 +57,6 @@ def ExceptionalSet : Set ℕ :=
 /-- Alternative characterization: n is exceptional if for all k with 2^k < n,
     the number n - 2^k is not prime.
 
-    Proof: Direct unfolding of definitions shows the equivalence. -/
-axiom exceptional_iff (n : ℕ) (hn : Odd n) :
-    n ∈ ExceptionalSet ↔ ∀ k : ℕ, k ≥ 1 → 2^k < n → ¬Nat.Prime (n - 2^k)
-
 /-
 ## The Romanoff Theorem
 
@@ -79,15 +75,7 @@ noncomputable def lowerDensity (A : Set ℕ) : ℝ :=
 
 /-- Romanoff's Theorem (1934): A positive proportion of odd integers are Romanoff.
 
-    More precisely, the set of Romanoff numbers has positive lower density. -/
-axiom romanoff_theorem :
-    lowerDensity { n : ℕ | Odd n ∧ IsRomanoff n } > 0
-
 /-- Corollary: The exceptional set has density less than 1/2.
-
-    (Since odd integers have density 1/2, and a positive fraction are Romanoff.) -/
-axiom exceptional_density_less_than_half :
-    lowerDensity ExceptionalSet < 1/2
 
 /-
 ## Erdős's Covering Congruence Result (1950)
@@ -102,17 +90,6 @@ def IsCoveringSystem (residues : List (ℕ × ℕ)) : Prop :=
 
 /-- Erdős's construction (1950): The exceptional set contains an
     infinite arithmetic progression.
-
-    Proof sketch: Using a covering system, one can construct residue classes
-    such that for any n in the progression and any k, the number n - 2^k
-    is divisible by some small prime from the covering. -/
-axiom erdos_covering_result :
-    ∃ a d : ℕ, d > 0 ∧ ∀ n : ℕ, n ∈ ExceptionalSet ↔
-      (∃ m : ℕ, n = a + m * d) ∨ n ∈ ExceptionalSet
-
-/-- Simplified form: there exists an arithmetic progression in the exceptional set. -/
-axiom exceptional_contains_progression :
-    ∃ a d : ℕ, d > 0 ∧ ∀ m : ℕ, a + m * d ∈ ExceptionalSet
 
 /-
 ## The Conjecture and Its Disproof
@@ -129,20 +106,9 @@ def ErdosConjecture16 : Prop :=
 
 /-- Chen's Theorem (2023): The conjecture is FALSE.
 
-    The exceptional set has more complex structure than just
-    an arithmetic progression plus density-0 noise. -/
-axiom chen_disproof : ¬ErdosConjecture16
-
 /-- Consequence: The exceptional set contains elements from multiple
     "essentially different" arithmetic progressions, or has positive
     density outside any single progression.
-
-    Proof: If for some a, d we had both the progression in ExceptionalSet
-    and density 0 outside, that would contradict Chen's disproof. -/
-axiom exceptional_complex_structure :
-    ∀ a d : ℕ, d > 0 →
-      lowerDensity (ExceptionalSet \ { n | ∃ m, n = a + m * d }) > 0 ∨
-      ¬(∀ m : ℕ, a + m * d ∈ ExceptionalSet)
 
 /-
 ## Known Exceptional Numbers
@@ -152,22 +118,6 @@ The first few odd integers not of the form 2^k + p (OEIS A006285):
 -/
 
 /-- 127 is in the exceptional set.
-
-    Verification: Check n - 2^k for k = 1, 2, ..., 6:
-    - 127 - 2 = 125 = 5³ (not prime)
-    - 127 - 4 = 123 = 3 × 41 (not prime)
-    - 127 - 8 = 119 = 7 × 17 (not prime)
-    - 127 - 16 = 111 = 3 × 37 (not prime)
-    - 127 - 32 = 95 = 5 × 19 (not prime)
-    - 127 - 64 = 63 = 9 × 7 (not prime)
-    And 2^7 = 128 > 127, so no valid k remains. -/
-axiom exceptional_127 : 127 ∈ ExceptionalSet
-
-/-- 149 is in the exceptional set. -/
-axiom exceptional_149 : 149 ∈ ExceptionalSet
-
-/-- 251 is in the exceptional set. -/
-axiom exceptional_251 : 251 ∈ ExceptionalSet
 
 /-
 ## Connection to Covering Congruences
@@ -180,12 +130,6 @@ cover all integers. They are key to constructing exceptional numbers.
 def erdosCovering : List (ℕ × ℕ) :=
   [(0, 2), (0, 3), (1, 4), (1, 6), (3, 8), (7, 12), (23, 24)]
 
-/-- If n ≡ r (mod 2^k - 1) for suitable r, then n - 2^k shares a factor. -/
-axiom covering_implies_composite :
-    ∀ n : ℕ, n ∈ ExceptionalSet →
-      ∀ k : ℕ, k ≥ 1 → 2^k < n →
-        ∃ p : ℕ, Nat.Prime p ∧ p < 100 ∧ p ∣ (n - 2^k)
-
 /-
 ## Density Bounds
 
@@ -193,16 +137,6 @@ More precise bounds on the density of the exceptional set.
 -/
 
 /-- The exceptional set has positive lower density.
-
-    This follows from Erdős's covering construction: the arithmetic
-    progression he constructed contributes positive density. -/
-axiom exceptional_positive_density :
-    lowerDensity ExceptionalSet > 0
-
-/-- Upper bound: the exceptional set has density at most ~0.09
-    among all positive integers (or ~0.18 among odd integers). -/
-axiom exceptional_density_upper_bound :
-    lowerDensity ExceptionalSet < 1/10
 
 /-
 ## Related Problems
@@ -238,14 +172,6 @@ Possible implications:
 2. Fractal-like or quasi-random structure
 3. Deep connections to the distribution of primes
 -/
-
-/-- The exceptional set intersects infinitely many arithmetic progressions
-    with positive density in each. -/
-axiom multiple_progressions :
-    ∃ (progs : ℕ → ℕ × ℕ),
-      (∀ i, (progs i).2 > 0) ∧
-      (∀ i j, i ≠ j → (progs i).2 ≠ (progs j).2) ∧
-      (∀ i, lowerDensity (ExceptionalSet ∩ { n | ∃ m, n = (progs i).1 + m * (progs i).2 }) > 0)
 
 /-
 ## Summary

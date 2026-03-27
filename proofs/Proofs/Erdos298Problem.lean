@@ -79,15 +79,6 @@ def ContainsUnitSumSubset (A : Set ℕ) : Prop :=
 These examples show that unit fraction sums equal to 1 do exist.
 -/
 
-/-- 1/2 + 1/3 + 1/6 = 1 (classic identity). -/
-axiom example_2_3_6 : unitFractionSum {2, 3, 6} = 1
-
-/-- 1/2 + 1/4 + 1/5 + 1/20 = 1. -/
-axiom example_2_4_5_20 : unitFractionSum {2, 4, 5, 20} = 1
-
-/-- 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1. -/
-axiom example_3_4_5_6_20 : unitFractionSum {3, 4, 5, 6, 20} = 1
-
 /-
 ## The Erdős Conjecture and Bloom's Theorem
 
@@ -135,9 +126,6 @@ This is strictly stronger because:
 def erdos_298_upper_density : Prop :=
   ∀ A : Set ℕ, 0 ∉ A → HasPosUpperDensity A → ContainsUnitSumSubset A
 
-/-- The upper density version is also true (Bloom 2021). -/
-axiom bloom_2021_upper : erdos_298_upper_density
-
 /-- Positive natural density implies positive upper density. -/
 axiom pos_dens_implies_pos_upper (A : Set ℕ) : HasPosDensity A → HasPosUpperDensity A
 
@@ -151,20 +139,6 @@ theorem upper_implies_natural :
 
 Basic properties of the density definitions.
 -/
-
-/-- The set ℕ⁺ = {1, 2, 3, ...} has density 1. -/
-axiom nat_pos_density : HasPosDensity {n : ℕ | n > 0}
-
-/-- Even numbers have density 1/2. -/
-axiom even_density : HasPosDensity {n : ℕ | Even n ∧ n > 0}
-
-/-- Density is monotone: A ⊆ B implies density(A) ≤ density(B). -/
-axiom density_mono (A B : Set ℕ) (h : A ⊆ B) :
-    upperDensity A ≤ upperDensity B
-
-/-- Finite sets have density 0. -/
-axiom finite_density_zero (A : Set ℕ) (h : A.Finite) :
-    upperDensity A = 0
 
 /-
 ## Connection to Egyptian Fractions
@@ -180,10 +154,6 @@ def HasEgyptianRep (q : ℚ) : Prop :=
 
 /-- Every positive rational has an Egyptian fraction representation.
 (This is a classical theorem.) -/
-axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0) : HasEgyptianRep q
-
-/-- In particular, 1 has many Egyptian fraction representations. -/
-axiom one_has_egyptian_rep : HasEgyptianRep 1
 
 /-
 ## Quantitative Aspects
@@ -195,16 +165,10 @@ Bloom's proof gives some quantitative bounds.
 |A| ≥ δN contains a subset summing to 1.
 
 This is a finitary version of Bloom's theorem. -/
-axiom bloom_quantitative (δ : ℝ) (hδ : δ > 0) :
-    ∃ N : ℕ, ∀ A : Finset ℕ, (∀ a ∈ A, 0 < a ∧ a ≤ N) →
-      (A.card : ℝ) ≥ δ * N → ∃ S : Finset ℕ, S ⊆ A ∧ SumsToOne S
 
 /-- There exist arbitrarily large sets with no unit sum subset.
 
 This shows the density condition cannot be dropped entirely. -/
-axiom sparse_counterexample :
-    ∀ N : ℕ, ∃ A : Finset ℕ, (∀ a ∈ A, 0 < a) ∧ A.card = N ∧
-      ¬∃ S : Finset ℕ, S ⊆ A ∧ SumsToOne S
 
 /-
 ## The Formalized Proof
@@ -230,7 +194,6 @@ Erdős posed several related problems about unit fractions.
 1 = 1/x₁ + ... + 1/xₖ where all xᵢ ≤ n?
 
 Answer: Yes for n ≥ 5 (various authors). -/
-axiom erdos_46_related : ∀ n ≥ 5, ∃ S : Finset ℕ, (∀ a ∈ S, 0 < a ∧ a ≤ n) ∧ SumsToOne S
 
 /- **Erdős Problem #47**: Bounds on representing 1 as sum of unit fractions
 with denominators from an interval.

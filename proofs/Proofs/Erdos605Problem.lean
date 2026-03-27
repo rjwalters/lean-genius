@@ -128,9 +128,6 @@ noncomputable def iterLog : ℕ → ℕ
   | n + 2 => if Real.log (n + 2 : ℝ) ≤ 1 then 1
              else 1 + iterLog (Nat.floor (Real.log (n + 2 : ℝ)))
 
-/-- The iterated logarithm tends to infinity (very slowly). -/
-axiom iterLog_tendsto_atTop : Filter.Tendsto (fun n => (iterLog n : ℝ)) Filter.atTop Filter.atTop
-
 /-
 ## Part VI: Known Bounds
 
@@ -145,9 +142,6 @@ This was the first superlinear lower bound, resolving Problem #605.
 The proof uses a recursive construction based on the Borsuk-Ulam theorem
 and properties of spherical configurations.
 -/
-axiom ehp_lower_bound (D : ℝ) (hD : D > 1) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      (u D n : ℝ) ≥ c * (n : ℝ) * (iterLog n : ℝ)
 
 /--
 **Swanepoel-Valtr Bound (2004):**
@@ -156,9 +150,6 @@ For any sphere of radius D > 1, u_D(n) ≫ n · √(log n).
 This significantly improves the EHP bound. The proof uses algebraic
 constructions on the sphere combined with refined counting arguments.
 -/
-axiom swanepoel_valtr_bound (D : ℝ) (hD : D > 1) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      (u D n : ℝ) ≥ c * (n : ℝ) * Real.sqrt (Real.log (n : ℝ))
 
 /--
 **Upper Bound:**
@@ -167,9 +158,6 @@ For any sphere of radius D > 0, u_D(n) ≪ n^{4/3}.
 This follows from the Szemerédi-Trotter type incidence bounds
 for points and circles in ℝ³.
 -/
-axiom upper_bound (D : ℝ) (hD : D > 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (u D n : ℝ) ≤ C * (n : ℝ) ^ (4/3 : ℝ)
 
 /--
 **√2 Sphere Tight Bound:**
@@ -179,11 +167,6 @@ Both upper and lower bounds match! The lower bound uses cube vertices
 and related algebraic constructions. The √2 radius is special because
 it allows inscribing cubes whose vertices all lie on the sphere.
 -/
-axiom sqrt2_tight_lower (n : ℕ) (hn : n ≥ 1) :
-    ∃ c : ℝ, c > 0 ∧ (u (Real.sqrt 2) n : ℝ) ≥ c * (n : ℝ) ^ (4/3 : ℝ)
-
-axiom sqrt2_tight_upper (n : ℕ) (hn : n ≥ 1) :
-    ∃ C : ℝ, C > 0 ∧ (u (Real.sqrt 2) n : ℝ) ≤ C * (n : ℝ) ^ (4/3 : ℝ)
 
 /-
 ## Part VII: Main Theorem — Erdős #605 Solved
@@ -214,10 +197,6 @@ The affirmative answer: there exists f(n) → ∞ with u_D(n) ≥ f(n) · n.
 
 We can take f(n) = √(log n).
 -/
-axiom erdos_605_witness (D : ℝ) (hD : D > 1) :
-    ∃ f : ℕ → ℝ,
-      Filter.Tendsto f Filter.atTop Filter.atTop ∧
-      ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (u D n : ℝ) ≥ f n * (n : ℝ)
 
 /-
 ## Part VIII: Unit Distance Connection
@@ -234,24 +213,11 @@ noncomputable def planarUnitDist (n : ℕ) : ℕ :=
     (Finset.univ.filter fun p : Fin n × Fin n =>
       p.1 < p.2 ∧ dist (pts p.1) (pts p.2) = 1).card = k}
 
-/-- The sphere problem is harder: spherical u_D(n) can exceed planar bounds. -/
-axiom sphere_exceeds_plane (D : ℝ) (hD : D > 1) :
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → u D n ≥ planarUnitDist n
-
 /-
 ## Part IX: Geometric Constructions
 
 Explicit constructions achieving many repeated distances.
 -/
-
-/-- Placing n points equally spaced on a great circle achieves Ω(n) pairs. -/
-axiom great_circle_linear (D : ℝ) (hD : D > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      (u D n : ℝ) ≥ c * (n : ℝ)
-
-/-- Regular polyhedra vertices on the √2 sphere give good small-n bounds. -/
-axiom cube_vertices_bound :
-    u (Real.sqrt 2) 8 ≥ 12
 
 /-
 ## Part X: Asymptotic Notation
@@ -271,14 +237,6 @@ def IsBigO (f g : ℕ → ℝ) : Prop :=
 def AsympEquiv (f g : ℕ → ℝ) : Prop :=
   IsOmega f g ∧ IsBigO f g
 
-/-- The Swanepoel-Valtr bound in asymptotic notation. -/
-axiom u_is_omega_n_sqrt_log (D : ℝ) (hD : D > 1) :
-    IsOmega (fun n => (u D n : ℝ)) (fun n => (n : ℝ) * Real.sqrt (Real.log (n : ℝ)))
-
-/-- The √2 sphere achieves asymptotic equivalence with n^{4/3}. -/
-axiom u_sqrt2_asymp_equiv :
-    AsympEquiv (fun n => (u (Real.sqrt 2) n : ℝ)) (fun n => (n : ℝ) ^ (4/3 : ℝ))
-
 /-
 ## Part XI: Open Questions
 
@@ -288,11 +246,5 @@ Several important questions remain:
 3. What happens for the unit sphere (D = 1)?
 4. What is the exact threshold radius where behavior changes?
 -/
-
-/-- The gap between known lower and upper bounds. -/
-axiom gap_remains_open :
-    ¬ ∃ α : ℝ, 0 < α ∧ α < 1/3 ∧
-      ∀ D : ℝ, D > 1 →
-        AsympEquiv (fun n => (u D n : ℝ)) (fun n => (n : ℝ) ^ (1 + α))
 
 end Erdos605

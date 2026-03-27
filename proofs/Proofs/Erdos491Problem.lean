@@ -50,10 +50,6 @@ theorem completely_additive_is_additive (f : ℕ → ℝ) :
     IsCompletelyAdditive f → IsAdditive f := fun ⟨h1, h2⟩ =>
   ⟨h1, fun a b _ => h2 a b⟩
 
-/-- The natural logarithm is completely additive -/
-axiom log_is_completely_additive :
-  IsCompletelyAdditive (fun n => if n = 0 then 0 else Real.log n)
-
 /- ## Part II: Bounded Differences Condition
 
 The key hypothesis: |f(n+1) - f(n)| < c.
@@ -62,10 +58,6 @@ The key hypothesis: |f(n+1) - f(n)| < c.
 /-- f has bounded consecutive differences -/
 def HasBoundedDifferences (f : ℕ → ℝ) (c : ℝ) : Prop :=
   c > 0 ∧ ∀ n : ℕ, |f (n + 1) - f n| < c
-
-/-- The logarithm has bounded consecutive differences (with c = 1 suffices for n ≥ 1) -/
-axiom log_bounded_differences :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → |Real.log (n + 1) - Real.log n| < c
 
 /- ## Part III: Erdős's Earlier Results (1946)
 
@@ -84,11 +76,6 @@ def IsMonotone (f : ℕ → ℝ) : Prop :=
 axiom erdos_1946_o1 (f : ℕ → ℝ) (hf : IsAdditive f)
     (hd : DifferencesTendToZero f) :
   ∃ c : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n
-
-/-- Erdős (1946): If additive and monotone, then f(n) = c·log(n) -/
-axiom erdos_1946_monotone (f : ℕ → ℝ) (hf : IsAdditive f)
-    (hm : IsMonotone f) :
-  ∃ c : ℝ, c ≥ 0 ∧ ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n
 
 /- ## Part IV: Wirsing's Theorem (1970)
 
@@ -137,23 +124,8 @@ axiom wirsing_constant_unique (f : ℕ → ℝ) (hf : IsAdditive f)
     (c' c'' : ℝ) (h' : IsLogPlusO1 f c') (h'' : IsLogPlusO1 f c'') :
   c' = c''
 
-/-- For monotone additive functions, c' ≥ 0 -/
-axiom wirsing_monotone_nonneg (f : ℕ → ℝ) (hf : IsAdditive f)
-    (hm : IsMonotone f) (c' : ℝ) (h : IsLogPlusO1 f c') :
-  c' ≥ 0
-
-/-- The logarithm is the only completely additive function (up to scaling) -/
-axiom log_unique_completely_additive (f : ℕ → ℝ)
-    (hf : IsCompletelyAdditive f) (c : ℝ) (hc : HasBoundedDifferences f c) :
-  ∃ c' : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c' * Real.log n
-
 /- ## Part VII: Examples and Non-Examples
 -/
-
-/-- The logarithm satisfies the hypothesis: log has bounded consecutive differences
-    since log((n+1)/n) = log(1 + 1/n) ≤ log(2) for all n ≥ 1. -/
-axiom log_satisfies_hypothesis :
-    ∃ c : ℝ, HasBoundedDifferences (fun n => if n = 0 then 0 else Real.log n) c
 
 /-- A non-additive function need not satisfy the conclusion -/
 def nonExample : ℕ → ℝ := fun n => (n : ℝ)
@@ -166,63 +138,24 @@ theorem non_example_bounded_diff :
     simp [nonExample]
     norm_num
 
-/-- n grows faster than any c'·log(n) + O(1), so the identity function
-    is not logarithmic plus bounded error. -/
-axiom non_example_not_log_plus_O1 :
-    ¬∃ c' : ℝ, IsLogPlusO1 nonExample c'
-
 /- ## Part VIII: Connection to Prime Factorization
 
 Additive functions are determined by values on primes.
 -/
 
-/-- An additive function is determined by its values on prime powers -/
-axiom additive_from_prime_powers (f : ℕ → ℝ) (hf : IsAdditive f)
-    (n : ℕ) (hn : n ≥ 1) :
-  f n = ∑ p ∈ n.primeFactors, f (p ^ n.factorization p)
-
 /-- The completely additive extension from primes -/
 noncomputable def additiveFromPrimes (g : ℕ → ℝ) : ℕ → ℝ :=
   fun n => if n = 0 then 0 else ∑ p ∈ n.primeFactors, g p * n.factorization p
-
-/-- This extension is completely additive -/
-axiom additive_from_primes_is_additive (g : ℕ → ℝ) :
-  IsCompletelyAdditive (additiveFromPrimes g)
 
 /- ## Part IX: Rate of Convergence
 
 How quickly does f(n) approach c'·log(n)?
 -/
 
-/-- Wirsing's theorem gives a specific bound on M in terms of c -/
-axiom wirsing_explicit_bound (f : ℕ → ℝ) (hf : IsAdditive f)
-    (c : ℝ) (hc : HasBoundedDifferences f c) :
-  ∃ c' : ℝ, ∀ n : ℕ, n ≥ 2 → |f n - c' * Real.log n| ≤ 10 * c
-
-/-- There exist additive functions with bounded differences where the O(1) error
-    does not vanish — the deviation from c'·log(n) is bounded but nonzero. -/
-axiom deviation_bounded_not_zero :
-  ∃ f : ℕ → ℝ, IsAdditive f ∧
-    (∃ c, HasBoundedDifferences f c) ∧
-    (∃ c', IsLogPlusO1 f c') ∧
-    ¬DifferencesTendToZero f
-
 /- ## Part X: Related Problems
 
 Connections to other additive function problems.
 -/
-
-/-- Connection to Erdős #897: characterizations of additive functions
-    via other regularity conditions (Lipschitz, Hölder, etc.) -/
-axiom erdos_897_connection (f : ℕ → ℝ) (hf : IsAdditive f) :
-  (∃ c, HasBoundedDifferences f c) → ∃ c', IsLogPlusO1 f c'
-
-/-- Connection to multiplicative functions: if g is multiplicative
-    and |g(n+1) - g(n)| → 0, then g(n) = n^{it} for some t ∈ ℝ. -/
-axiom multiplicative_analog (g : ℕ → ℝ) :
-  (g 1 = 1 ∧ ∀ a b, Nat.Coprime a b → g (a * b) = g a * g b) →
-  Filter.Tendsto (fun n => g (n + 1) - g n) Filter.atTop (nhds 0) →
-  ∃ t : ℝ, ∀ n : ℕ, n ≥ 1 → g n = (n : ℝ)^t
 
 /- ## Part XI: Summary
 -/

@@ -95,8 +95,6 @@ noncomputable def W (k : ℕ) : ℕ :=
 **Van der Waerden's Theorem:**
 For all k ≥ 3, W(k) is finite (but grows extremely fast).
 -/
-axiom van_der_waerden_finite (k : ℕ) (hk : k ≥ 3) :
-  W k < ⊤
 
 /-
 ## Part IV: Berlekamp's Lower Bound (1968)
@@ -117,8 +115,6 @@ axiom berlekamp_lower_bound (k : ℕ) (hk : k ≥ 3) :
 Consider integers n whose base-2 representation has at most ⌊k/2⌋ ones.
 This set is AP-free and has harmonic sum ≥ (log 2 / 2) · k.
 -/
-axiom berlekamp_construction (k : ℕ) (hk : k ≥ 3) :
-  ∃ A : Finset ℕ, IsAPFree (↑A) k ∧ harmonicSum A ≥ (Real.log 2 / 2) * k
 
 /-
 ## Part V: Gerver's Improvement (1977)
@@ -131,17 +127,12 @@ f(k) ≥ (1 - o(1)) k log k
 This is a significant improvement over Berlekamp, showing f(k) grows
 faster than linearly in k.
 -/
-axiom gerver_lower_bound (k : ℕ) (hk : k ≥ 3) :
-  ∃ c : ℝ, c > 0 ∧ f k ≥ c * k * Real.log k
 
 /--
 **Gerver's observation:**
 Problem #3 (whether all f(k) are finite) is equivalent to asking
 whether the set of integers avoiding all APs has finite harmonic sum.
 -/
-axiom gerver_equivalence :
-  (∀ k : ℕ, k ≥ 3 → f k < ⊤) ↔
-  (∀ k : ℕ, k ≥ 3 → ∃ B : ℝ, ∀ A : Finset ℕ, IsAPFree (↑A) k → harmonicSum A ≤ B)
 
 /-
 ## Part VI: The Ratio Question
@@ -174,13 +165,11 @@ def RatioQuestion : Prop :=
 **f(3) ≥ 3.00849:**
 Due to Wróblewski (1984). Finding 3-AP-free sets with large harmonic sum.
 -/
-axiom f3_lower_bound : f 3 ≥ 3.00849
 
 /--
 **f(4) ≥ 4.43975:**
 Due to Walker (2025). The state of the art for 4-AP-free sets.
 -/
-axiom f4_lower_bound : f 4 ≥ 4.43975
 
 /-
 ## Part VIII: Walker's Results (2025)
@@ -201,9 +190,6 @@ Optimal AP-free sets for harmonic sum can be approximated by Kempner sets.
 For any k ≥ 3 and ε > 0, there exists a Kempner set A lacking k-term APs
 with ∑_{n ∈ A} 1/n ≥ f(k) - ε.
 -/
-axiom walker_kempner_sufficiency (k : ℕ) (hk : k ≥ 3) (ε : ℝ) (hε : ε > 0) :
-  ∃ A : Set ℕ, IsKempnerSet A ∧ IsAPFree A k ∧
-    ∃ B : Finset ℕ, ↑B ⊆ A ∧ harmonicSum B ≥ f k - ε
 
 /-
 ## Part IX: Basic Properties
@@ -213,18 +199,15 @@ axiom walker_kempner_sufficiency (k : ℕ) (hk : k ≥ 3) (ε : ℝ) (hε : ε >
 **f is monotonically decreasing:**
 Larger k means stronger AP-avoidance, so smaller harmonic sums.
 -/
-axiom f_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) : f k₂ ≤ f k₁
 
 /--
 **f(k) > 0 for all k:**
 There always exist non-trivial AP-free sets.
 -/
-axiom f_positive (k : ℕ) (hk : k ≥ 3) : f k > 0
 
 /--
 **The {1} singleton is k-AP-free for all k ≥ 2:**
 -/
-axiom singleton_ap_free (k : ℕ) (hk : k ≥ 2) : IsAPFree ({1} : Set ℕ) k
 
 /-
 ## Part X: Related Problems
@@ -235,23 +218,17 @@ axiom singleton_ap_free (k : ℕ) (hk : k ≥ 2) : IsAPFree ({1} : Set ℕ) k
 Is f(k) finite for all k? Gerver showed this is equivalent to the
 finiteness of f(k) for each individual k.
 -/
-axiom problem_3_finiteness (k : ℕ) (hk : k ≥ 3) :
-  f k < ⊤ → ∃ B : ℝ, ∀ A : Finset ℕ, IsAPFree (↑A) k → harmonicSum A ≤ B
 
 /--
 **Problem #170:**
 Related question about AP-free sets and their density properties.
 -/
-axiom problem_170_density_connection :
-  ∀ k : ℕ, k ≥ 3 → f k ≥ 0
 
 /--
 **OEIS A005346:**
 Number of subsets of {1,...,n} containing no 3-term AP.
 Grows exponentially but sub-exponentially in n.
 -/
-axiom oeis_a005346_growth (n : ℕ) (hn : n ≥ 1) :
-  ∃ A : Finset (Finset ℕ), A.card ≥ 1
 
 /-
 ## Part XI: Summary

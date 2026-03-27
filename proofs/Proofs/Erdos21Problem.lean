@@ -85,14 +85,6 @@ Axiomatized as the exact computation is complex.
 -/
 axiom f (n : ℕ) : ℕ
 
-/-- f(n) is achieved by some covering family. -/
-axiom f_achievable (n : ℕ) :
-    ∃ α : Type, ∃ _ : DecidableEq α, Nonempty (CoveringFamily α n (f n))
-
-/-- f(n) is minimal. -/
-axiom f_minimal (n k : ℕ) :
-    (∃ α : Type, ∃ _ : DecidableEq α, Nonempty (CoveringFamily α n k)) → f n ≤ k
-
 /- ## Part III: Known Exact Values
 
 These values were computed through exhaustive search and construction.
@@ -114,9 +106,6 @@ axiom f_four : f 4 = 9
 /-- f(5) = 13 (Barát-Wanless 2021). -/
 axiom f_five : f 5 = 13
 
-/-- 13 ≤ f(6) ≤ 18 (Barát-Wanless 2021). -/
-axiom f_six_bounds : 13 ≤ f 6 ∧ f 6 ≤ 18
-
 /-- The known values of f as a list. -/
 def knownValues : List (ℕ × ℕ) := [(1, 1), (2, 3), (3, 6), (4, 9), (5, 13)]
 
@@ -136,8 +125,6 @@ axiom erdos_lovasz_lower_bound (n : ℕ) (hn : n ≥ 1) :
 
 /-- Simplified lower bound: f(n) ≥ 2n for n ≥ 2.
 Follows from (8/3)n - 3 ≥ 2n for n ≥ 9, and small cases are checked directly. -/
-axiom lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :
-    f n ≥ 2 * n
 
 /- ## Part V: Upper Bounds and Resolution
 -/
@@ -146,17 +133,11 @@ axiom lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :
 **Original Erdős-Lovász Upper Bound (1975):**
 f(n) ≪ n^(3/2) log n using projective plane constructions.
 -/
-axiom erdos_lovasz_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≤ C * (n : ℝ)^(3/2 : ℝ) * Real.log n
 
 /--
 **Kahn's First Improvement (1992):**
 f(n) ≪ n log n using improved probabilistic methods.
 -/
-axiom kahn_1992_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f n : ℝ) ≤ C * n * Real.log n
 
 /--
 **Main Theorem (Kahn 1994):**
@@ -207,19 +188,11 @@ structure ProjectivePlane (q : ℕ) where
   two_lines_meet : ∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card = 1
   num_lines : lines.card = q^2 + q + 1
 
-/-- Projective planes exist when q is a prime power. -/
-axiom projective_plane_exists (q : ℕ) (hq : Nat.Prime q ∨ IsPrimePow q) :
-    Nonempty (ProjectivePlane q)
-
 /--
 **Erdős-Lovász Construction:**
 When n-1 is a prime power, the lines of a projective plane of order n-1
 form an intersecting family.
 -/
-axiom erdos_lovasz_construction (n : ℕ) (hn : n ≥ 2)
-    (hprime : Nat.Prime (n - 1) ∨ IsPrimePow (n - 1)) :
-    ∃ (V : Type) (_ : DecidableEq V) (F : Finset (Finset V)),
-      IsIntersecting F ∧ IsUniform F n ∧ CoversSmallSets F n
 
 /- ## Part VIII: Properties of Covering Families
 -/
@@ -228,14 +201,6 @@ axiom erdos_lovasz_construction (n : ℕ) (hn : n ≥ 2)
 **Intersection Structure:**
 Any two members of a covering family share at most one element.
 -/
-axiom covering_family_intersection (α : Type*) [DecidableEq α] (n k : ℕ)
-    (F : CoveringFamily α n k) :
-    ∀ A ∈ F.family, ∀ B ∈ F.family, A ≠ B → (A ∩ B).card ≤ 1
-
-/-- The union of a covering family has size at least n + k - 1. -/
-axiom covering_family_union_size (α : Type*) [DecidableEq α] (n k : ℕ)
-    (F : CoveringFamily α n k) (hk : k ≥ 1) :
-    (F.family.biUnion id).card ≥ n + k - 1
 
 /- ## Part IX: Sunflower Connection
 -/
@@ -247,11 +212,6 @@ A family where all pairwise intersections equal the same "kernel" set.
 def IsSunflower (F : Finset (Finset α)) : Prop :=
   ∃ C : Finset α, ∀ A ∈ F, ∀ B ∈ F, A ≠ B → A ∩ B = C
 
-/-- Not all covering families are sunflowers. -/
-axiom covering_not_always_sunflower :
-    ∃ n : ℕ, ∃ α : Type, ∃ _ : DecidableEq α, ∃ F : CoveringFamily α n (f n),
-      ¬IsSunflower F.family
-
 /- ## Part X: Kahn's Probabilistic Argument
 -/
 
@@ -260,9 +220,6 @@ axiom covering_not_always_sunflower :
 When n-1 is a prime power, randomly select O(n) lines from a projective
 plane. With positive probability, this covers all (n-1)-sets.
 -/
-axiom kahn_probabilistic_argument (n : ℕ) (hn : n ≥ 2)
-    (hprime : Nat.Prime (n - 1) ∨ IsPrimePow (n - 1)) :
-    f n ≤ 10 * n  -- Explicit constant (actual constant is smaller)
 
 /- ## Part XI: Generalizations
 -/
@@ -273,9 +230,6 @@ f_k(n) is the minimum size of a family covering all (n-k)-sets.
 The original problem is f_1(n).
 -/
 axiom f_general (k n : ℕ) : ℕ
-
-/-- The original problem is f_1(n). -/
-axiom original_is_f_one : f = f_general 1
 
 /--
 **Generalized Conjecture:**

@@ -53,30 +53,13 @@ def unitFractionExpressible (a b : ℕ) : Set ℕ :=
 We axiomatize this for simplicity. -/
 axiom smallestCollection : ℕ → ℕ → ℕ
 
-/-- smallestCollection a b is the infimum of unitFractionExpressible a b. -/
-axiom smallestCollection_spec (a b : ℕ) :
-  (unitFractionExpressible a b).Nonempty →
-  smallestCollection a b ∈ unitFractionExpressible a b ∧
-  ∀ k ∈ unitFractionExpressible a b, smallestCollection a b ≤ k
-
 /-- N(b) = max_{1 ≤ a < b} N(a,b).
 This is the worst-case number of unit fractions needed for any a/b with 1 ≤ a < b. -/
 axiom smallestCollectionMax : ℕ → ℕ
 
-/-- smallestCollectionMax b is the maximum of smallestCollection a b over 1 ≤ a < b. -/
-axiom smallestCollectionMax_spec (b : ℕ) (hb : 1 < b) :
-  ∀ a, 1 ≤ a → a < b → smallestCollection a b ≤ smallestCollectionMax b
-
 /-
 ## Basic Properties
 -/
-
-/-- Zero is expressible with 0 terms iff the fraction is 0 (i.e., a = 0 or b = 0). -/
-axiom zero_in_expressible_iff {a b : ℕ} :
-    0 ∈ unitFractionExpressible a b ↔ a = 0 ∨ b = 0
-
-/-- 1/b can always be expressed with 1 term (namely, 1/b itself). -/
-axiom smallestCollection_one_denom (b : ℕ) (hb : 1 < b) : smallestCollection 1 b = 1
 
 /-
 ## Example: N(2, 15) = 2
@@ -84,15 +67,6 @@ axiom smallestCollection_one_denom (b : ℕ) (hb : 1 < b) : smallestCollection 1
 We can express 2/15 = 1/10 + 1/30.
 This is minimal because 2/15 ≠ 1/n for any n > 1 (since 2 ∤ 15).
 -/
-
-/-- Example: 2/15 = 1/10 + 1/30. -/
-axiom example_two_fifteen : (2 : ℚ) / 15 = 1 / 10 + 1 / 30
-
-/-- N(2, 15) = 2. -/
-axiom smallestCollection_two_fifteen : smallestCollection 2 15 = 2
-
-/-- 2 is in the expressibility set for 2/15. -/
-axiom two_expressible_two_fifteen : 2 ∈ unitFractionExpressible 2 15
 
 /-
 ## Bounds on N(b) - The Main Results
@@ -118,9 +92,6 @@ axiom erdos_1950_lower_bound :
 
 Every rational a/b with 1 ≤ a < b can be expressed with at most
 O(log b / log log b) unit fractions. -/
-axiom erdos_1950_upper_bound :
-  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,
-    smallestCollectionMax b ≤ C * Nat.log 2 b / (Nat.log 2 (Nat.log 2 b) + 1)
 
 /-- **Vose Improvement (1985)**: N(b) ≪ √(log b).
 
@@ -146,9 +117,6 @@ If true, this would be optimal since we also have log log b ≪ N(b). -/
 def erdos_304_conjecture : Prop :=
   ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10, smallestCollectionMax b ≤ C * Nat.log 2 (Nat.log 2 b + 1)
 
-/-- The conjecture remains open - neither proved nor disproved. -/
-axiom erdos_304_open : ¬(erdos_304_conjecture ↔ True) ∧ ¬(erdos_304_conjecture ↔ False)
-
 /-
 ## Average Case Behavior
 
@@ -160,17 +128,9 @@ Defined as (∑_{a=1}^{b-1} N(a,b)) / (b-1) for b > 1, and 0 otherwise.
 We axiomatize this to avoid LocallyFiniteOrder dependencies. -/
 axiom averageCollection : ℕ → ℚ
 
-/-- averageCollection 1 = 0 (no valid range). -/
-axiom averageCollection_one : averageCollection 1 = 0
-
-/-- averageCollection is non-negative. -/
-axiom averageCollection_nonneg (b : ℕ) : 0 ≤ averageCollection b
-
 /-- **Average lower bound**: The average of N(a,b) is at least Ω(log log b).
 
 This shows even the typical case requires log log b unit fractions. -/
-axiom average_lower_bound :
-  ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10, c * Nat.log 2 (Nat.log 2 b) ≤ averageCollection b
 
 /-
 ## Special Case: N(b-1, b)
@@ -183,8 +143,6 @@ noncomputable def almostOneCollection (b : ℕ) : ℕ := smallestCollection (b -
 
 /-- Connection to Erdős Problem #293: The case (b-1)/b connects to the smallest
 missing denominator in unit fraction representations of 1. -/
-axiom connection_to_problem_293 :
-  ∀ b ≥ 2, almostOneCollection b ≤ smallestCollectionMax b
 
 /-
 ## Algorithmic Aspects
@@ -194,10 +152,6 @@ The greedy algorithm gives an upper bound, but not the optimal one.
 
 /-- **Greedy algorithm bound**: The greedy algorithm uses at most O(log b) terms.
 This is worse than Vose's √(log b) bound but easier to compute. -/
-axiom greedy_upper_bound :
-  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 2, ∀ a, 1 ≤ a → a < b →
-    ∃ s : Finset ℕ, s.card ≤ C * Nat.log 2 b ∧
-      (∀ n ∈ s, n > 1) ∧ (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹
 
 /-
 ## Summary of Known Bounds

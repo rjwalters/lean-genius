@@ -7,7 +7,7 @@
     "author": "Romanoff (1934), Erdős (1950), Chen (2023)",
     "sourceUrl": "https://erdosproblems.com/16",
     "date": "1950",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos16Problem.lean",
     "tags": [
       "erdos",
@@ -16,12 +16,12 @@
       "covering-congruences",
       "disproved"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 16,
     "erdosUrl": "https://erdosproblems.com/16",
     "erdosProblemStatus": "solved",
-    "axiomCount": 14,
+    "axiomCount": 0,
     "prerequisites": [
       "number theory basics",
       "prime numbers and primality testing",
@@ -211,8 +211,8 @@
       "BigOperators"
     ],
     "namespace": "Erdos16",
-    "lineCount": 277,
-    "axiomCount": 14,
+    "lineCount": 203,
+    "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 10
   },

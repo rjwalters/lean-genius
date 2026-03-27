@@ -109,11 +109,6 @@ theorem unit_square_from_stronger :
 ## Part 4: Limitations for Larger Sets
 -/
 
-/-- The stronger theorem fails for arbitrarily large point sets -/
-axiom fails_for_large_sets :
-  ∃ n : ℕ, ∃ S : Set Plane, IsUnitDistanceFree S ∧
-    ∃ P : PointSet n, ¬ContainsCongruentCopy Sᶜ P
-
 /-- However, it may hold for 5 points (open question) -/
 def HoldsFor5Points : Prop :=
   ∀ S : Set Plane, IsUnitDistanceFree S →
@@ -143,102 +138,25 @@ theorem unit_distance_free_iff_no_edges (S : Set Plane) :
     rw [hEmpty] at this
     exact this
 
-/-- Chromatic number of the plane -/
-axiom chromatic_number_of_plane :
-  -- The chromatic number χ(ℝ²) with respect to unit distances
-  -- is between 4 and 7 (inclusive)
-  -- de Grey (2018) proved χ(ℝ²) ≥ 5
-  True
-
 /-
 ## Part 6: Proof Techniques
 -/
-
-/-- Key insight: analyze the structure of maximal unit-distance-free sets -/
-axiom structure_of_maximal_sets :
-  -- Maximal unit-distance-free sets have specific geometric properties
-  -- Their complements are "dense" enough to contain small configurations
-  True
-
-/-- Pigeonhole argument -/
-axiom pigeonhole_argument :
-  -- If S avoids unit distances, then for any point p,
-  -- the unit circle centered at p lies entirely in Sᶜ
-  -- This provides many points to work with
-  True
-
-/-- Intersection patterns of unit circles -/
-axiom unit_circle_intersections :
-  -- Unit circles intersect in at most 2 points
-  -- This limits how "sparse" Sᶜ can be locally
-  True
 
 /-
 ## Part 7: Examples and Constructions
 -/
 
-/-- The integer lattice ℤ² is unit-distance-free -/
-axiom integer_lattice_example :
-  -- No two integer points are exactly distance 1 apart
-  -- (since √(a² + b²) = 1 has no integer solutions other than (±1,0), (0,±1)
-  -- which give distance 1, but those are distinct points)
-  -- Actually ℤ² is NOT unit-distance-free! Points like (0,0) and (1,0) are distance 1
-  True
-
 /-- A proper example: scale ℤ² by √2 -/
 def ScaledLattice : Set Plane :=
   {p : Plane | ∃ a b : ℤ, p 0 = Real.sqrt 2 * a ∧ p 1 = Real.sqrt 2 * b}
-
-/-- The scaled lattice is unit-distance-free -/
-axiom scaled_lattice_is_unit_free :
-  IsUnitDistanceFree ScaledLattice
-
-/-- The complement of scaled lattice contains unit squares -/
-axiom scaled_lattice_complement_has_squares :
-  ContainsUnitSquare ScaledLatticeᶜ
 
 /-
 ## Part 8: Related Problems
 -/
 
-/-- The Nelson-Hadwiger problem (chromatic number of the plane) -/
-axiom nelson_hadwiger_problem :
-  -- What is the minimum number of colors needed to color ℝ²
-  -- so that no two points at distance 1 have the same color?
-  -- Answer: between 5 and 7
-  True
-
-/-- Connection to Erdős unit distance problem -/
-axiom erdos_unit_distance_problem :
-  -- How many pairs of points at unit distance can n points in ℝ² have?
-  -- Answer: Θ(n^{1+c/log log n}) for some c > 0
-  True
-
-/-- Moser's worm problem (related geometric problem) -/
-axiom moser_worm_problem :
-  -- What is the smallest convex set that contains a congruent copy
-  -- of every plane curve of length 1?
-  True
-
 /-
 ## Part 9: Geometric Intuition
 -/
-
-/-- Why the result is true (intuition) -/
-axiom intuitive_explanation :
-  -- If S avoids unit distances, the "forbidden region" around each point of S
-  -- is a unit circle. The complement Sᶜ must include these circles.
-  -- With enough circles in Sᶜ, we can find four points forming a unit square.
-  -- The key is that 4 points give limited degrees of freedom.
-  True
-
-/-- The role of the number 4 -/
-axiom why_four_points :
-  -- 4 points can be placed with some flexibility
-  -- The configuration space of 4 points up to congruence is 4-dimensional
-  -- The complement Sᶜ is "almost all" of ℝ²
-  -- So finding a 4-point configuration is always possible
-  True
 
 /-
 ## Part 10: Summary
