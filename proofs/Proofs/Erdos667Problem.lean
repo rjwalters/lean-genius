@@ -77,13 +77,31 @@ theorem cliqueGuarantee_mono_n (p q n : ℕ) :
     over a smaller class of graphs makes it easier to guarantee larger cliques. -/
 theorem cliqueGuarantee_mono_q (n p q : ℕ) :
     cliqueGuarantee n p q ≤ cliqueGuarantee n p (q + 1) := by
-  sorry
+  simp only [cliqueGuarantee]
+  set Sq := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+    HasDensity G p q → ¬G.CliqueFree m}
+  set Sq1 := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+    HasDensity G p (q + 1) → ¬G.CliqueFree m}
+  by_cases hne : Sq.Nonempty
+  · apply csSup_le_csSup
+    · -- Sq1 is bounded above by n
+      exact ⟨n, fun m ⟨hm, _⟩ => hm⟩
+    · exact hne
+    · -- Sq ⊆ Sq1: HasDensity G p (q+1) → HasDensity G p q (more edges ≥ fewer)
+      intro m ⟨hm, hG⟩
+      exact ⟨hm, fun G hd => hG G fun S hS => le_trans (Nat.le_succ q) (hd S hS)⟩
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
 
 /-- H(n; p, q) ≤ n: cannot guarantee a clique larger than the graph.
     Follows directly from the m ≤ n constraint in the sSup definition. -/
 theorem cliqueGuarantee_le_n (n p q : ℕ) :
     cliqueGuarantee n p q ≤ n := by
-  sorry
+  simp only [cliqueGuarantee]
+  set S := {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
+    HasDensity G p q → ¬G.CliqueFree m}
+  by_cases hne : S.Nonempty
+  · exact csSup_le hne fun m ⟨hm, _⟩ => hm
+  · rw [Set.not_nonempty_iff_eq_empty.mp hne, sSup_empty]; exact bot_le
 
 /-
 ## Part III: Boundary Values
