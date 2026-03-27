@@ -54,9 +54,9 @@ def IsEventuallyPeriodic (f : ℕ → ℕ) (p N : ℕ) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős–Dickson Conjecture**: For every finite starting set A₀,
+/-- **Erdős–Dickson Conjecture (OPEN)**: For every finite starting set A₀,
     the difference sequence d(n) = a_{n+1} − aₙ is eventually periodic. -/
-axiom erdos_341_conjecture :
+def erdos_341_conjecture : Prop :=
   ∀ A₀ : Finset ℕ, A₀.Nonempty →
     ∃ p N : ℕ, IsEventuallyPeriodic (dicksonDiff A₀) p N
 
@@ -67,10 +67,14 @@ axiom dickson_strictly_increasing :
   ∀ (A₀ : Finset ℕ) (n : ℕ), A₀.Nonempty →
     dicksonSeq A₀ (n + 1) > dicksonSeq A₀ n
 
-/-- Differences are positive: d(n) ≥ 1. -/
-axiom dickson_diff_pos :
-  ∀ (A₀ : Finset ℕ) (n : ℕ), A₀.Nonempty →
-    dicksonDiff A₀ n ≥ 1
+/-- Differences are positive: d(n) ≥ 1. Follows from strict increase. -/
+theorem dickson_diff_pos :
+    ∀ (A₀ : Finset ℕ) (n : ℕ), A₀.Nonempty →
+      dicksonDiff A₀ n ≥ 1 := by
+  intro A₀ n hne
+  unfold dicksonDiff
+  have := dickson_strictly_increasing A₀ n hne
+  omega
 
 /-- The sequence avoids self-sums: a_{n+1} is not a sum of two
     elements from {a₁, ..., aₙ}. -/
