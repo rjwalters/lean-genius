@@ -308,3 +308,11 @@ theorem polyMax_diff_le (t : ℝ) (n : ℕ) :
   constructor
   · linarith [polyMax_ge_succ t n]
   · linarith [polyMax_succ_le t n]
+
+/-- General evaluation bound: |P_n(t,x)| ≤ M_n(t) for any x ∈ [-1,1].
+    Generalizes the endpoint lemmas randSignPoly_eval_{one,neg_one}_le_polyMax. -/
+theorem polyMax_ge_eval (t : ℝ) (n : ℕ) {x : ℝ} (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+    |randSignPoly t n x| ≤ polyMax t n := by
+  unfold polyMax
+  apply le_csSup (polyMax_bddAbove t n)
+  exact ⟨x, hx, rfl⟩
