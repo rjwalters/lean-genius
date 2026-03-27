@@ -20,9 +20,9 @@
     "erdosNumber": 675,
     "erdosUrl": "https://erdosproblems.com/675",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 105,
-    "assumptions": "5 axioms: brun_sieve_translation, squarefree_translation, ErdosProblem675_two_squares, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 130,
+    "assumptions": "1 axiom: brun_sieve_translation (Brun's sieve — deep sieve theory). 3 open conjectures converted from axioms to defs. squarefree_translation proved from Brun's sieve via prime-squares B-free set.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -129,8 +129,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 105,
-    "axiomCount": 5,
+    "lineCount": 130,
+    "axiomCount": 1,
     "theoremCount": 0,
     "definitionCount": 9
   },
