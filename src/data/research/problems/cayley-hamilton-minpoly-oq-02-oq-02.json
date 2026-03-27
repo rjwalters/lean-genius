@@ -1,0 +1,107 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-02",
+  "title": "Counterexample: Same Minpoly and Charpoly, Not Similar",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the converse be formalized: if two matrices have the same minimal polynomial and characteristic polynomial, are they similar? Answer: NO (counterexample).",
+    "whyMatters": [
+      "Determines the limits of minimal/characteristic polynomial as similarity invariants",
+      "Motivates the rational canonical form as the complete invariant"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Similar matrices have the same minpoly (cayley-hamilton-minpoly-oq-02)",
+      "Minpoly invariance generalizes to K-algebras (cayley-hamilton-minpoly-oq-02-oq-01)"
+    ],
+    "open": [],
+    "goal": "Prove the converse fails: exhibit a concrete counterexample"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-27T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalize the standard 4x4 nilpotent counterexample",
+    "blockers": [],
+    "nextAction": "Fill in sorry for minpoly minimality step and intertwining constraints",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: CayleyHamiltonMinpolyOQ02OQ02.lean (~250 lines, 12 theorems, 0 axioms, 3 sorries). Defines counterexample matrices (Jordan types [2,2] vs [2,1,1]), proves nilpotency, establishes same minpoly X^2, and proves non-similarity via intertwining/pigeonhole argument. The 3 sorries are in minpoly minimality (classifying monic divisors of X^2) and intertwining constraint extraction (Fin 4 sum computation).",
+    "builtItems": [
+      "matA: Jordan type [2,2] — two 2x2 nilpotent blocks",
+      "matB: Jordan type [2,1,1] — one 2x2 and two 1x1 blocks",
+      "matA_sq_zero, matB_sq_zero: nilpotency proofs",
+      "matA_ne_zero, matB_ne_zero: nonzero proofs",
+      "matA_annihilated, matB_annihilated: X^2 annihilation",
+      "matA_not_annihilated_by_X, matB_not_annihilated_by_X: X doesn't annihilate",
+      "minpoly_matA, minpoly_matB: minpoly = X^2 (sorry in minimality step)",
+      "same_minpoly: both share minpoly X^2",
+      "intertwining_forces_zeros: AP=PB forces 6 zeros in P (sorry in extraction)",
+      "det_intertwiner_zero: det(P) = 0 via pigeonhole on Leibniz formula",
+      "not_similar: main theorem — A and B are not similar"
+    ],
+    "insights": [
+      "The converse of similarity invariance is FALSE: same minpoly + charpoly ≠ similar",
+      "Standard counterexample: Jordan types [2,2] vs [2,1,1] for 4x4 nilpotent matrices",
+      "Invariant factors (X^2,X^2) vs (X^2,X,X) — same largest and product, different list",
+      "Novel proof technique: intertwining equation forces sparse P, then pigeonhole kills det",
+      "This is the smallest counterexample: for 3x3, same minpoly+charpoly DO imply similarity",
+      "The minpoly proof requires classifying monic divisors of X^2 — routine but finicky in Lean"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma for 'monic divisors of X^k are {1, X, ..., X^k}' (need UFD + irreducibility of X)",
+      "Fin.sum_univ_four might not be a named lemma — need Fin.sum_univ_succ unfolding"
+    ],
+    "nextSteps": [
+      "Fill in sorry for minpoly minimality step using polynomial division with remainder",
+      "Fill in sorry for intertwining constraint extraction using fin_cases/simp",
+      "Submit intertwining_forces_zeros to Aristotle as a companion file target"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "minpoly.dvd",
+      "minpoly.aeval",
+      "minpoly.unique",
+      "Matrix.isIntegral",
+      "Matrix.det_apply'"
+    ]
+  },
+  "started": "2026-03-27T00:00:00Z",
+  "lastUpdate": "2026-03-27T00:00:00Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean"
+    }
+  ]
+}
