@@ -104,3 +104,28 @@ axiom f_trivial_lower (r n : ℕ) (hr : 1 ≤ r) (hn : 2 ≤ n) :
 axiom erdos_744_connection :
   ∀ r n : ℕ, 2 ≤ r → 2 ≤ n →
     fThreshold r n ≤ fThreshold (r + 1) n
+
+/-
+## Structural Properties of Colorings
+-/
+
+/-- Every graph on n vertices is n-colorable: the identity function
+assigns each vertex a distinct color. -/
+theorem SGraph.hasColoring_self {n : ℕ} (G : SGraph n) : G.hasColoring n := by
+  refine ⟨id, fun u v hadj heq => ?_⟩
+  subst heq
+  exact G.irrefl u hadj
+
+/-- Coloring is monotone in the number of colors: an r₁-colorable graph
+is also r₂-colorable for any r₂ ≥ r₁ (embed colors via inclusion). -/
+theorem SGraph.hasColoring_mono {n : ℕ} (G : SGraph n) {r₁ r₂ : ℕ} (h : r₁ ≤ r₂)
+    (hc : G.hasColoring r₁) : G.hasColoring r₂ := by
+  obtain ⟨c, hc⟩ := hc
+  exact ⟨fun v => ⟨(c v).val, lt_of_lt_of_le (c v).isLt h⟩,
+    fun u v hadj heq => hc u v hadj (Fin.ext (congr_arg Fin.val heq))⟩
+
+/-- If G is already r-colorable, removing zero edges suffices. -/
+theorem canReduce_zero {n : ℕ} (G : SGraph n) (r : ℕ) (hc : G.hasColoring r) :
+    CanReduceChromatic G 0 r := by
+  obtain ⟨c, hc⟩ := hc
+  exact ⟨∅, by simp, c, fun u v ⟨hadj, _, _⟩ => hc u v hadj⟩

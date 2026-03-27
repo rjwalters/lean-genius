@@ -59,11 +59,12 @@
       "Iterated dynamics: orbit definitions and barrier-orbit interaction",
       "Coprime multiplicativity of ω and subadditivity for products",
       "Computable barrier checking framework with soundness and completeness proofs",
-      "Barrier comparison hierarchy: F >> ω >> Ω verified computationally"
+      "Barrier comparison hierarchy: F >> ω >> Ω verified computationally",
+      "Orbit coalescence: proved all_trajectories_meet from erdos_413_conjecture (4→3 axioms)"
     ],
-    "axiomCount": 4,
-    "lineCount": 1047,
-    "assumptions": "4 axioms: erdos_413_conjecture, all_trajectories_meet, erdos_expProd_positive_density, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 1097,
+    "assumptions": "3 axioms: erdos_413_conjecture (OPEN), erdos_expProd_positive_density (deep), selfridge_bigOmega_barrier (computational). all_trajectories_meet proved from conjecture.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -214,9 +215,9 @@
     ],
     "opens": [],
     "namespace": "Erdos413",
-    "lineCount": 1047,
-    "axiomCount": 4,
-    "theoremCount": 116,
+    "lineCount": 1097,
+    "axiomCount": 3,
+    "theoremCount": 122,
     "definitionCount": 17
   },
   "crossReferences": [

@@ -65,14 +65,28 @@ axiom f_tight : ∀ n : ℕ, n ≥ 1 →
 
 -- Lower Bounds
 
-/-- Erdős (1965): f(n) ≥ n/3 via the middle-third construction -/
-axiom erdos_lower_bound : ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≥ n / 3
-
-/-- Alon-Kleitman (1990): f(n) ≥ (n+1)/3 -/
-axiom alon_kleitman_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 1) / 3
-
-/-- Bourgain (1997): f(n) ≥ (n+2)/3 -/
+/-- Bourgain (1997): f(n) ≥ (n+2)/3 — the strongest unconditional lower bound -/
 axiom bourgain_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 2) / 3
+
+/-- Alon-Kleitman (1990): f(n) ≥ (n+1)/3.
+    Previously axiomatized; now derived from Bourgain's stronger bound. -/
+theorem alon_kleitman_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 1) / 3 := by
+  intro n hn
+  have := bourgain_bound n hn
+  have : (n + 1) / 3 ≤ (n + 2) / 3 := Nat.div_le_div_right (by omega)
+  omega
+
+/-- Erdős (1965): f(n) ≥ n/3 via the middle-third construction.
+    Previously axiomatized; now derived from Bourgain's stronger bound. -/
+theorem erdos_lower_bound : ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≥ n / 3 := by
+  intro n hn
+  have hb := bourgain_bound n hn
+  have hnat : n ≤ (n + 2) / 3 * 3 := by omega
+  have h1 : (f n : ℝ) ≥ ↑((n + 2) / 3) := by exact_mod_cast hb
+  have h2 : (↑n : ℝ) / 3 ≤ ↑((n + 2) / 3) := by
+    rw [div_le_iff (by norm_num : (3 : ℝ) > 0)]
+    exact_mod_cast hnat
+  linarith
 
 /-- Bedert (2025): f(n) ≥ n/3 + c·log log n for some c > 0 -/
 axiom bedert_bound : ∃ c : ℝ, c > 0 ∧

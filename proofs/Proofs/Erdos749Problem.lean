@@ -76,6 +76,16 @@ theorem lower_le_upper (S : Set ℕ) : lowerDensity S ≤ upperDensity S := by
     ⟨1, Filter.eventually_atTop.mpr ⟨1, fun N hN =>
       densityRatio_le_one S N (by omega)⟩⟩
 
+/-- Upper density is at most 1: limsup of a ratio bounded by 1. -/
+theorem upperDensity_le_one (S : Set ℕ) : upperDensity S ≤ 1 := by
+  unfold upperDensity
+  exact limsup_le_of_le (by infer_instance)
+    (Filter.eventually_atTop.mpr ⟨1, fun N hN => densityRatio_le_one S N (by omega)⟩)
+
+/-- Lower density is at most 1: follows from lower ≤ upper ≤ 1. -/
+theorem lowerDensity_le_one (S : Set ℕ) : lowerDensity S ≤ 1 :=
+  le_trans (lower_le_upper S) (upperDensity_le_one S)
+
 /- ## The Representation Bounded Property -/
 
 /-- A set A has bounded representation function: there exists C such that
@@ -129,7 +139,12 @@ theorem sidon_bounded_rep (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
     This follows from the classical bound |A ∩ [1,N]| ≤ √(2N) + 1,
     since all pairwise sums a+b (a ≤ b) are distinct and lie in [2, 2N].
     Thus Sidon sets can't achieve dense sumsets (they have bounded rep
-    but fail the density requirement of Problem #749). -/
+    but fail the density requirement of Problem #749).
+
+    Proof sketch: For S = A ∩ [1,N] with |S| = k, the Sidon property
+    implies the sum map (a,b) ↦ a+b on S×S has each fiber of size ≤ 2
+    (the pair (a,b) and its swap (b,a)). Since sums lie in {2,...,2N},
+    we get k² ≤ 2·(2N-1) < 4N, hence k < 2√N and density → 0. -/
 axiom sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
     a ∈ A → b ∈ A → c ∈ A → d ∈ A → a ≤ b → c ≤ d →
     a + b = c + d → a = c ∧ b = d) :

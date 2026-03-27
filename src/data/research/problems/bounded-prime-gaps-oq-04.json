@@ -70,7 +70,8 @@
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-03",
-    "bounded-prime-gaps-oq-03-oq-01"
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-04"
   ],
   "references": {
     "papers": [],
@@ -118,13 +119,24 @@
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
       "filename": "BoundedPrimeGapsOQ03OQ01.lean",
-      "lineCount": 163,
-      "theoremCount": 13,
-      "axiomCount": 4,
+      "lineCount": 173,
+      "theoremCount": 15,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsSieve.lean",

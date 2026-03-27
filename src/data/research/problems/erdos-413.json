@@ -29,19 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 redundant axioms (6→4). epsilon_variant proved from conjecture (ε=1). Also fixed several Mathlib API issues. File has ~60 pre-existing build errors from Mathlib version changes.",
+    "progressSummary": "PROGRESS: Eliminated 3 redundant axioms (6→3). Latest: proved all_trajectories_meet from erdos_413_conjecture (4→3 axioms) via orbit coalescence through barriers.",
     "builtItems": [
       "Proved erdos_413_epsilon_variant from erdos_413_conjecture (take ε=1)",
       "Proved erdos_413_main as ⟨erdos_413_conjecture, erdos_413_epsilon_variant⟩",
       "Fixed Nat.factors→primeFactorsList in bigOmegaC/expProdC definitions",
-      "Fixed barrier_pred_is_prime_power and barrier_equiv_all_squarefree_below proofs"
+      "Fixed barrier_pred_is_prime_power and barrier_equiv_all_squarefree_below proofs",
+      "Proved omega_pos_of_ge_two: ω(n) ≥ 1 for n ≥ 2",
+      "Proved orbit_eq_iterOmegaPow, orbit_add (orbit determinism)",
+      "Proved orbit_reaches_barrier_exact: orbits from [2,b) reach barrier b",
+      "Proved all_trajectories_meet from erdos_413_conjecture (4→3 axioms)"
     ],
     "insights": [
       "erdos_413_epsilon_variant is redundant: take ε=1, then ω-barriers are (1·ω)-barriers",
       "erdos_413_main is redundant: conjunction of erdos_413_conjecture and erdos_413_epsilon_variant",
-      "2 axioms eliminated (6→4): epsilon_variant and main proved from conjecture",
-      "Remaining 4 axioms are genuine: erdos_413_conjecture (OPEN), all_trajectories_meet (OPEN), erdos_expProd_positive_density (deep proved result), selfridge_bigOmega_barrier (computational)",
-      "File has ~60 pre-existing Mathlib API breakages from Lean/Mathlib updates (Nat.factors rename, Classical.propDecidable, div_le_iff, etc.)"
+      "all_trajectories_meet follows from erdos_413_conjecture: infinite barriers are unbounded, both orbits reach a common barrier and coalesce",
+      "Key structural insight: barriers absorb all orbits from n ≥ 2 (orbit is strictly increasing, bounded by barrier, so reaches it)",
+      "Original axiom all_trajectories_meet was too strong: required 1 ≤ a but orbit from 1 is fixed (ω(1)=0). Corrected to 2 ≤ a",
+      "3 axioms eliminated (6→3): epsilon_variant, main, and all_trajectories_meet all proved from conjecture",
+      "Remaining 3 axioms are genuine: erdos_413_conjecture (OPEN), erdos_expProd_positive_density (deep proved result), selfridge_bigOmega_barrier (computational)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,9 +74,9 @@
     {
       "path": "Proofs/Erdos413Problem.lean",
       "filename": "Erdos413Problem.lean",
-      "lineCount": 1048,
-      "theoremCount": 103,
-      "axiomCount": 4,
+      "lineCount": 1114,
+      "theoremCount": 108,
+      "axiomCount": 3,
       "defCount": 17,
       "sorryCount": 0,
       "isAristotle": false,

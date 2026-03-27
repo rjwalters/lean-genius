@@ -94,8 +94,19 @@ axiom sylvester_schur {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) :
 /--
 **C(n,k) > 1 for valid binomial:**
 For 1 ≤ k ≤ n/2, the binomial coefficient C(n,k) is at least 2.
+Proved via Pascal's rule: C(n+1,k+1) = C(n,k) + C(n,k+1) ≥ 1 + 1 = 2.
 -/
-axiom choose_gt_one {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) : n.choose k > 1
+theorem choose_gt_one {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) : n.choose k > 1 := by
+  cases n with
+  | zero => omega
+  | succ n' =>
+    cases k with
+    | zero => omega
+    | succ k' =>
+      rw [Nat.choose_succ_succ]
+      have h1 : 0 < n'.choose k' := Nat.choose_pos (by omega)
+      have h2 : 0 < n'.choose (k' + 1) := Nat.choose_pos (by omega)
+      omega
 
 /--
 **Alternative Statement:**

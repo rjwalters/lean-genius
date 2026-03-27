@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Filled isSidon_subset sorry, added 3 monotonicity/structural lemmas. File has 10 theorems, 5 axioms, 0 sorries, 219 lines.",
+    "progressSummary": "Surveyed: almost_sidon_exceeds_sidon is redundant (follows from erdos_freud_lower_bound). Proof requires real analysis (sqrt(3) < 2 bound). 4 remaining axioms are deep.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
@@ -41,7 +41,9 @@
       "multiRepSet A ⊆ multiRepSet B when A ⊆ B — follows from sumRepCount monotonicity",
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
       "All 5 axioms are deep results: asymptotic bounds (EF lower, Sidon upper, comparison) and combinatorial arguments (sum range, reflected construction)",
-      "almost_sidon_sum_range might have an off-by-one for large collision multiplicity r — worth verifying"
+      "almost_sidon_sum_range might have an off-by-one for large collision multiplicity r — worth verifying",
+      "almost_sidon_exceeds_sidon is REDUNDANT: follows from erdos_freud_lower_bound since 2/sqrt(3) > 1, so (2/sqrt(3)-eps)*sqrt(N) > sqrt(N)+1 for large N",
+      "Proof requires numerical bound on sqrt(3) < 2 and Real analysis (sqrt_lt_sqrt, div manipulation)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -71,8 +73,8 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 166,
-      "theoremCount": 4,
+      "lineCount": 220,
+      "theoremCount": 9,
       "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,

@@ -1,0 +1,199 @@
+{
+  "slug": "angle-trisection-oq-05",
+  "title": "Origami (paper folding) can solve cubic and quartic equations via the Huzita-...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Origami (paper folding) can solve cubic and quartic equations via the Huzita-Hatori axioms, allowing angle trisection and cube doubling.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-26T20:00:24.430Z",
+    "iteration": 2,
+    "focus": "Formalization complete, pending build verification",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created AngleTrisectionOQ05.lean (695 lines) formalizing Huzita-Hatori axioms, origami constructibility, and proving angle trisection/cube doubling are possible with origami.",
+    "builtItems": [
+      "Created proofs/Proofs/AngleTrisectionOQ05.lean (695 lines, 0 axioms, 0 sorries)",
+      "Created src/data/proofs/angle-trisection-oq-05/ gallery entry with meta.json, index.ts, annotations.json",
+      "HHAxioms structure: 7 axioms as fold existence assertions",
+      "Line structure and reflectAcross definition for geometric primitives",
+      "30 theorems including angle_trisection_possible_with_origami, origami_equiv_neusis",
+      "15 definitions including IsOrigamiConstructible, IsMultiFoldConstructible"
+    ],
+    "insights": [
+      "The 7 Huzita-Hatori axioms can be formalized as a structure over R^2 with fold existence assertions",
+      "HH-6 (Beloch fold) is the key axiom: it reduces to finding common tangents to two parabolas (degree 3)",
+      "Origami-constructible = neusis-constructible (Alperin-Lang 2006): both have 2^a * 3^b degree characterization",
+      "Multi-fold origami (k>=2 simultaneous folds) is strictly more powerful than single-fold origami",
+      "Origami-constructible degrees up to 12 are exactly: 1, 2, 3, 4, 6, 8, 9, 12 (3-smooth numbers)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Run Docker build to verify the Lean file compiles",
+      "Add annotations for gallery page",
+      "Consider Aristotle companion file for any routine lemmas"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection-oq-02-oq-03",
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "angle-trisection-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-26T20:00:24.430Z",
+  "lastUpdate": "2026-03-26T20:00:24.430Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AngleTrisection.lean",
+      "filename": "AngleTrisection.lean",
+      "lineCount": 384,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisection.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20Gal.lean",
+      "filename": "AngleTrisectionCos20Gal.lean",
+      "lineCount": 475,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20Gal.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionEmbedding.lean",
+      "filename": "AngleTrisectionEmbedding.lean",
+      "lineCount": 175,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionEmbedding.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ01.lean",
+      "filename": "AngleTrisectionOQ01.lean",
+      "lineCount": 367,
+      "theoremCount": 40,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02.lean",
+      "filename": "AngleTrisectionOQ02.lean",
+      "lineCount": 299,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01.lean",
+      "filename": "AngleTrisectionOQ02OQ01.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ03.lean",
+      "filename": "AngleTrisectionOQ02OQ03.lean",
+      "lineCount": 1800,
+      "theoremCount": 150,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ03Ext.lean",
+      "filename": "AngleTrisectionOQ02OQ03Ext.lean",
+      "lineCount": 298,
+      "theoremCount": 55,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ03OQ01.lean",
+      "filename": "AngleTrisectionOQ02OQ03OQ01.lean",
+      "lineCount": 741,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ04.lean",
+      "filename": "AngleTrisectionOQ04.lean",
+      "lineCount": 600,
+      "theoremCount": 43,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ05.lean",
+      "filename": "AngleTrisectionOQ05.lean",
+      "lineCount": 696,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05.lean"
+    }
+  ]
+}

@@ -20,9 +20,9 @@
     "erdosNumber": 1092,
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 102,
-    "assumptions": "5 axioms: erdos_1092_question1, erdos_1092_question2, rodl_upper_bound, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 131,
+    "assumptions": "3 axioms: rodl_upper_bound (Rödl 1982 O(n·polylog) bound), f_trivial_lower (f_r(n) ≥ n-1), erdos_744_connection (monotonicity in r). Questions 1 & 2 removed (disproved by Rödl).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -195,9 +195,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 102,
-    "axiomCount": 5,
-    "theoremCount": 0,
+    "lineCount": 131,
+    "axiomCount": 3,
+    "theoremCount": 5,
     "definitionCount": 5
   }
 }

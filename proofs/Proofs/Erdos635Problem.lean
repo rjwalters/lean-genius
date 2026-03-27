@@ -289,11 +289,45 @@ theorem f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
     ⟨oddSet N, rfl, IsAdmissible_mono_t (by omega : 1 ≤ t) (oddSet_admissible N hN)⟩
 
 /-- The density is at most 1/2 + o(1) for t = 1.
-    Since f(N,1) = ⌊(N+1)/2⌋, the ratio f(N,1)/N → 1/2 as N → ∞. -/
-axiom f_t1_density :
-    Filter.Tendsto (fun N => (f N 1 : ℝ) / N) Filter.atTop (nhds (1 / 2))
--- Note: f_t1_density is a direct corollary of f_t1 (proved above).
--- The limit (N+1)/(2N) → 1/2 as N → ∞ follows from standard analysis.
+    Since f(N,1) = ⌊(N+1)/2⌋, the ratio f(N,1)/N → 1/2 as N → ∞.
+
+    Proof: By f_t1, f(N,1) = (N+1)/2 (Nat division). We squeeze:
+    - Lower: N ≤ ((N+1)/2)*2 (omega), so 1/2 ≤ f(N,1)/N
+    - Upper: ((N+1)/2)*2 ≤ N+1 (Nat.div_mul_le_self), so f(N,1)/N ≤ (N+1)/(2N)
+    Then (N+1)/(2N) = 1/2 + 1/(2N) → 1/2. -/
+theorem f_t1_density :
+    Filter.Tendsto (fun N => (f N 1 : ℝ) / N) Filter.atTop (nhds (1 / 2)) := by
+  -- Squeeze: constant 1/2 ≤ f(N,1)/N ≤ 1/2 + 1/(2N) → 1/2
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
+  · -- Upper bound function: 1/2 + 1/(2N) → 1/2
+    have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / (2 * (N : ℝ))) Filter.atTop (nhds 0) := by
+      have := Filter.Tendsto.const_mul
+        (show Filter.Tendsto (fun n : ℕ => (n : ℝ)⁻¹) Filter.atTop (nhds 0) from
+          tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop) (1 / 2 : ℝ)
+      simp only [mul_zero] at this
+      convert this using 1
+      ext n; ring
+    convert h0.const_add (1 / 2) using 1
+    · ext; ring
+    · ring
+  · -- Lower bound: 1/2 ≤ f(N,1)/N eventually
+    exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
+      rw [f_t1 N (by omega : N ≥ 1)]
+      rw [le_div_iff (by positivity : (0 : ℝ) < ↑N)]
+      have : N ≤ ((N + 1) / 2) * 2 := by omega
+      exact_mod_cast this⟩
+  · -- Upper bound: f(N,1)/N ≤ 1/2 + 1/(2N) eventually
+    exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
+      rw [f_t1 N (by omega : N ≥ 1)]
+      have hNpos : (0 : ℝ) < ↑N := by positivity
+      rw [div_le_iff hNpos]
+      have hdiv : ((N + 1) / 2 : ℕ) * 2 ≤ N + 1 := Nat.div_mul_le_self (N + 1) 2
+      have : (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := by
+        rw [div_le_iff (two_pos)]
+        exact_mod_cast hdiv
+      calc (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := this
+        _ = (1 / 2 + 1 / (2 * ↑N)) * ↑N := by field_simp; ring
+      ⟩
 
 /- ## Part VII: Structural Observations
 

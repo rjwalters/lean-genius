@@ -141,16 +141,61 @@ theorem representable_one : IsRepresentable 1 := by
                 Finset.sum_singleton]
     norm_num
 
+/-- Sum over consecutive block {a+1, ..., a+m} as a telescoping difference.
+    ∑_{k=a+1}^{a+m} k/2^k = (a+2)/2^a - (a+m+2)/2^(a+m). -/
+private lemma icc_recipPow2_sum (a m : ℕ) :
+    (Finset.Icc (a + 1) (a + m)).sum recipPow2Weight =
+    ((a : ℚ) + 2) / 2 ^ a - ((a : ℚ) + m + 2) / 2 ^ (a + m) := by
+  induction m with
+  | zero =>
+    simp only [Nat.add_zero, Nat.cast_zero, add_zero]
+    rw [Finset.Icc_eq_empty (by omega)]
+    simp
+  | succ m ih =>
+    have h_ins : Finset.Icc (a + 1) (a + (m + 1)) =
+        insert (a + m + 1) (Finset.Icc (a + 1) (a + m)) := by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [h_ins, Finset.sum_insert (by simp only [Finset.mem_Icc]; omega), ih]
+    simp only [recipPow2Weight]
+    push_cast
+    rw [show (2 : ℚ) ^ (a + (m + 1)) = 2 ^ (a + m) * 2 from by ring]
+    rw [show (2 : ℚ) ^ (a + m) = 2 ^ a * 2 ^ m from by ring]
+    field_simp
+    ring
+
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
     via the consecutive block {n+1, ..., n+m} for m ≥ 2.
-    For m = 1 (n = 1), the consecutive block has card 1, so we use
-    representable_one instead.
-    Proof strategy for m ≥ 2: telescoping via partial_sum_formula gives
+    For m = 1 (n = 1), uses representable_one.
+    Proof: telescoping via partial_sum_formula gives
     ∑_{k=n+1}^{n+m} = (n+2)/2^n - (n+m+2)/2^{n+m} = n/2^n
     using the key identity n + m + 2 = 2^{m+1}. -/
-axiom borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
-  let n := 2 ^ (m + 1) - m - 2
-  IsRepresentable n
+theorem borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
+    let n := 2 ^ (m + 1) - m - 2
+    IsRepresentable n := by
+  obtain rfl | hm2 := hm.eq_or_gt
+  · -- m = 1: n = 2^2 - 3 = 1
+    exact representable_one
+  · -- m ≥ 2: use consecutive block {n+1, ..., n+m}
+    intro n
+    have hpow : m + 2 ≤ 2 ^ (m + 1) := by
+      have := Nat.lt_two_pow_self (n := m + 1); omega
+    have hn_sum : n + m + 2 = 2 ^ (m + 1) := by simp only [n]; omega
+    refine ⟨Finset.Icc (n + 1) (n + m), ?_, ?_, ?_⟩
+    · -- card ≥ 2
+      rw [show Finset.Icc (n + 1) (n + m) = Finset.Ico (n + 1) (n + m + 1) from
+        (Finset.Ico_succ_right).symm, Finset.card_Ico]
+      omega
+    · -- all elements ≥ 1
+      intro k hk; simp only [Finset.mem_Icc] at hk; omega
+    · -- recipPow2Sum S = recipPow2Weight n
+      unfold recipPow2Sum
+      rw [icc_recipPow2_sum n m]
+      unfold recipPow2Weight
+      have h_eq : ((n : ℚ) + ↑m + 2) = (2 : ℚ) ^ (m + 1) := by exact_mod_cast hn_sum
+      rw [h_eq, show (2 : ℚ) ^ (n + m) = 2 ^ n * 2 ^ m from by ring,
+          show (2 : ℚ) ^ (m + 1) = 2 ^ m * 2 from by ring]
+      field_simp
+      ring
 
 /-- For m ≥ 1, the Borwein-Loring value n = 2^{m+1} - m - 2 satisfies n ≥ m.
     Follows from 2(m+1) ≤ 2^{m+1} (exponential dominates linear). -/

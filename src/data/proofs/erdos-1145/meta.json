@@ -18,7 +18,7 @@
     "sourceUrl": "https://erdosproblems.com/1145",
     "erdosUrl": "https://erdosproblems.com/1145",
     "proofRepoPath": "Proofs/Erdos1145Problem.lean",
-    "axiomCount": 10,
+    "axiomCount": 8,
     "assumptions": "10 axiom declarations: erdos_sarkozy_conjecture (main open conjecture), ruzsaA_infinite, ruzsaB_infinite, ruzsa_unique_rep, ruzsa_rep_bounded, ruzsa_is_basis, ruzsa_ratio_not_one (Ruzsa counterexample properties from Problem #331), sum_of_reps_bound, average_rep_grows, grekos_two_set (partial results). All 10 theorems/lemmas proved without sorry.",
     "badge": "axiom",
     "prerequisites": [
@@ -28,7 +28,8 @@
       "Asymptotic density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 333
+    "lineCount": 333,
+    "dateUpdated": "2026-03-27"
   },
   "sections": [
     {
@@ -187,7 +188,7 @@
     ],
     "namespace": "Erdos1145",
     "lineCount": 333,
-    "axiomCount": 10,
+    "axiomCount": 8,
     "theoremCount": 10,
     "definitionCount": 10
   }

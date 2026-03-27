@@ -206,12 +206,12 @@ axiom general_k_open :
 /--
 **Problem #165:** The special case k = 3 (Spencer's theorem)
 -/
-axiom problem_165_is_k3 : erdos_986_conjecture 3
+theorem problem_165_is_k3 : erdos_986_conjecture 3 := erdos_986_k3_solved
 
 /--
 **Problem #166:** The special case k = 4 (Mattheus-Verstraete)
 -/
-axiom problem_166_is_k4 : erdos_986_conjecture 4
+theorem problem_166_is_k4 : erdos_986_conjecture 4 := erdos_986_k4_solved
 
 /-
 ## Part IX: Summary

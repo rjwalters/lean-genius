@@ -107,12 +107,10 @@ axiom f_upper_bound :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
       (f k : ℝ) ≤ (1 + ε) * k / (Real.exp 1 - 1)
 
-/--
-**The Constant e-1:**
-e - 1 ≈ 1.71828 comes from ∫₁^e 1/x dx = ln(e) - ln(1) = 1.
--/
-axiom e_minus_one_constant :
-    Real.exp 1 - 1 = ∫ x in (1)..(Real.exp 1), 1 / x
+/-- **Note**: The previously axiomatized `e_minus_one_constant` stating
+    `Real.exp 1 - 1 = ∫ x in 1..e, 1/x` was mathematically incorrect
+    (the integral equals 1 = ln e, not e - 1 ≈ 1.718). It was unused
+    by any theorem, so it has been removed. -/
 
 /-
 ## Part IV: Croot's Lower Bound (2001)
@@ -149,11 +147,18 @@ axiom f_asymptotic :
 -/
 
 /--
-**Example: k = 4**
+**Example: k = 4** (PROVED)
 1 = 1/2 + 1/4 + 1/5 + 1/20
 Here n₁ = 2, and we expect f(4) ≈ 4/(e-1) ≈ 2.33.
 -/
-axiom example_k4 : RepresentsOne {2, 4, 5, 20}
+theorem example_k4 : RepresentsOne {2, 4, 5, 20} := by
+  constructor
+  · intro n hn; simp only [Finset.mem_insert, Finset.mem_singleton] at hn; omega
+  · simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({4, 5, 20} : Finset ℕ) by decide),
+      Finset.sum_insert (show (4 : ℕ) ∉ ({5, 20} : Finset ℕ) by decide),
+      Finset.sum_insert (show (5 : ℕ) ∉ ({20} : Finset ℕ) by decide),
+      Finset.sum_singleton]
+    norm_num
 
 /-
 ## Part VI: Summary
