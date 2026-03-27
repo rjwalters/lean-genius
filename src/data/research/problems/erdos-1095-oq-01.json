@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created Lean formalization (148 lines, 4 axioms, 0 sorries, 10 theorems). Defines AllPrimesExceed predicate, axiomatizes g(k), proves structural lemmas and concrete computations. Main asymptotic conjecture stated informally.",
+    "progressSummary": "COMPLETED: Added g(3)=7, g(4)=7 (proved from axioms), formalized asymptotic conjecture. 260 lines, 4 axioms (structural), 0 sorries, 24 theorems.",
     "builtItems": [
       "AllPrimesExceed: predicate definition",
       "gFunc: axiomatized with gt, spec, minimal properties",
@@ -39,7 +39,10 @@
       "choose_odd_of_allPrimesExceed: proved (C(n,k) must be odd for k≥2)",
       "choose_3_1, choose_6_2, choose_4_2, choose_5_2: concrete computations",
       "gFunc_ge_k_plus_two: proved from gFunc_gt",
-      "Gallery entry created with meta.json"
+      "Gallery entry created with meta.json",
+      "gFunc_three theorem: g(3) = 7",
+      "gFunc_four theorem: g(4) = 7",
+      "ErdosAsymptoticConjecture def: formal statement of log g(k) ~ c*k/log k"
     ],
     "insights": [
       "g(k) = smallest n > k+1 such that all prime factors of C(n,k) exceed k",
@@ -47,7 +50,10 @@
       "Conjecture: log g(k) ~ c·k/log k — places g(k) between polynomial and exponential growth",
       "For k ≥ 2, the AllPrimesExceed condition forces C(n,k) to be odd (since 2 ≤ k)",
       "Kummer's theorem: C(n,k) is odd iff no carries in binary addition of k and n-k — constrains valid n",
-      "g(1) = 3 (C(3,1) = 3, prime > 1), g(2) = 6 (C(6,2) = 15 = 3×5, both > 2)"
+      "g(1) = 3 (C(3,1) = 3, prime > 1), g(2) = 6 (C(6,2) = 15 = 3×5, both > 2)",
+      "g(3) = g(4) = 7 because C(7,3) = C(7,4) = 35 = 5*7 has no prime factor ≤ 4",
+      "Asymptotic conjecture formalized as ErdosAsymptoticConjecture using Filter.Tendsto and Real.log",
+      "The 4 axioms are structural (define gFunc via existence) — cannot be eliminated without formalizing Kummer theorem + CRT existence proof"
     ],
     "mathlibGaps": [
       "Real.log and Filter.Tendsto needed for formal asymptotic statement",
