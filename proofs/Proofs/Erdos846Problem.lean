@@ -65,12 +65,31 @@ theorem nonTrilinear_singleton (p : Fin 2 → ℝ) :
   fun a ha b hb _ _ hqr _ =>
     hqr (by rw [Set.mem_singleton_iff.mp ha, Set.mem_singleton_iff.mp hb])
 
+/-- A two-element set is non-trilinear: three pairwise distinct elements
+    cannot be drawn from a set of two -/
+theorem nonTrilinear_pair (p q : Fin 2 → ℝ) (hpq : p ≠ q) :
+    NonTrilinear ({p, q} : Set (Fin 2 → ℝ)) := by
+  intro a ha b hb c hc hab hbc hac
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb hc
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> rcases hc with rfl | rfl <;>
+    -- In each of 8 cases, at least one of hab/hbc/hac becomes x ≠ x
+    contradiction
+
 -- ## Properties of Collinearity
 
 /-- Collinearity is symmetric in the first two arguments -/
 theorem areCollinear_symm12 {p q r : Fin 2 → ℝ} (h : AreCollinear p q r) :
     AreCollinear q p r := by
   unfold AreCollinear at *; linarith
+
+/-- Collinearity is cyclically symmetric: (p,q,r) collinear implies (q,r,p) collinear -/
+theorem areCollinear_cycle {p q r : Fin 2 → ℝ} (h : AreCollinear p q r) :
+    AreCollinear q r p := by
+  unfold AreCollinear at *; linarith
+
+/-- Any point is collinear with itself and any other point (degenerate case) -/
+theorem areCollinear_self_left (p r : Fin 2 → ℝ) : AreCollinear p p r := by
+  unfold AreCollinear; ring
 
 -- ## Proved: Non-trilinear implies ε-non-trilinear with ε = 1
 
@@ -176,6 +195,57 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
     rw [le_div_iff hkR]
     exact_mod_cast hi
 
+-- ## Finite sets are always weakly non-trilinear
+
+/-- Every finite set is weakly non-trilinear (as a union of singletons).
+    This shows the "infinite" condition in Erdős Problem 846 is essential:
+    the conjecture is trivially true for finite sets. -/
+theorem finite_weaklyNonTrilinear (A : Set (Fin 2 → ℝ)) (hA : Set.Finite A) :
+    IsWeaklyNonTrilinear A := by
+  classical
+  haveI : Fintype ↑A := hA.fintype
+  exact ⟨Fintype.card ↑A,
+    fun i => {((Fintype.equivFin ↑A).symm i).val},
+    fun i => nonTrilinear_singleton _,
+    fun x hx => Set.mem_iUnion.mpr
+      ⟨Fintype.equivFin ↑A ⟨x, hx⟩, by simp [Equiv.symm_apply_apply]⟩⟩
+
+-- ## Bounds on ε for ε-non-trilinear sets
+
+/-- For any nonempty A, if A is ε-non-trilinear then ε ≤ 1.
+    Proof: take B = {a} for a ∈ A. Then C ⊆ B forces |C| ≤ 1, so ε ≤ 1. -/
+theorem isEpsNonTrilinear_eps_le_one {A : Set (Fin 2 → ℝ)} {ε : ℝ}
+    (hA : A.Nonempty) (heps : IsEpsNonTrilinear A ε) : ε ≤ 1 := by
+  obtain ⟨a, ha⟩ := hA
+  -- Apply definition with singleton B = {a}
+  have hB : (↑({a} : Finset (Fin 2 → ℝ)) : Set (Fin 2 → ℝ)) ⊆ A := by
+    intro x hx; rw [Finset.mem_coe, Finset.mem_singleton] at hx; rw [hx]; exact ha
+  obtain ⟨C, hCB, hcard, _⟩ := heps {a} hB
+  -- C ⊆ {a} so |C| ≤ 1
+  have hCsub : C ⊆ {a} := fun x hx =>
+    Finset.mem_coe.mp (hCB (Finset.mem_coe.mpr hx))
+  have hCle : C.card ≤ 1 :=
+    (Finset.card_le_card hCsub).trans (by simp [Finset.card_singleton])
+  -- ε * 1 ≤ |C| ≤ 1
+  rw [Finset.card_singleton] at hcard
+  linarith [Nat.cast_le.mpr hCle, mul_one ε]
+
+/-- For ε > 1, the only ε-non-trilinear set is the empty set.
+    This gives a tight characterization of the valid range ε ∈ (0, 1]. -/
+theorem isEpsNonTrilinear_empty_of_eps_gt_one {A : Set (Fin 2 → ℝ)} {ε : ℝ}
+    (hε : 1 < ε) (heps : IsEpsNonTrilinear A ε) : A = ∅ := by
+  by_contra hne
+  have hA : A.Nonempty := Set.nonempty_iff_ne_empty.mpr hne
+  exact absurd (isEpsNonTrilinear_eps_le_one hA heps) (not_le.mpr hε)
+
+/-- The Erdős–Nešetřil–Rödl conjecture holds trivially for finite sets.
+    This is an immediate corollary of `finite_weaklyNonTrilinear` and shows
+    the "infinite" hypothesis in Problem 846 is the essential difficulty. -/
+theorem erdos846_finite (A : Set (Fin 2 → ℝ)) (hA : Set.Finite A)
+    (ε : ℝ) (_ : ε > 0) (_ : IsEpsNonTrilinear A ε) :
+    IsWeaklyNonTrilinear A :=
+  finite_weaklyNonTrilinear A hA
+
 -- ## The Erdős–Nešetřil–Rödl Conjecture (OPEN)
 
 /-- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, OPEN): Is every infinite
@@ -183,7 +253,9 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
     sets with no three collinear)?
 
     The converse (weakly non-trilinear → ε-non-trilinear) is proved above
-    as `weaklyNonTrilinear_implies_eps`. -/
+    as `weaklyNonTrilinear_implies_eps`. The finite case is proved as
+    `erdos846_finite`. The valid range is ε ∈ (0, 1] by
+    `isEpsNonTrilinear_eps_le_one`. -/
 axiom ErdosProblem846 :
     ∀ A : Set (Fin 2 → ℝ), A.Infinite →
       ∀ ε : ℝ, ε > 0 → IsEpsNonTrilinear A ε →
