@@ -7,6 +7,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Topology.MetricSpace.Basic
+import Proofs.BrouwerFixedPoint
 
 /-
 # Kakutani Fixed Point Theorem (OQ-04)
@@ -38,8 +39,10 @@ This is the foundational tool for:
 ## Axioms
 - `kakutani_fixed_point_axiom`: The main Kakutani FPT (requires Brouwer +
   finite-dimensional approximation, which needs algebraic topology)
-- `brouwer_compact_convex_axiom`: Brouwer FPT for compact convex subsets
-  (used to derive Kakutani in the standard proof)
+
+## Proved (previously axiomatized)
+- `brouwer_compact_convex`: Brouwer FPT for compact convex subsets
+  (now derived from BrouwerFixedPoint.lean's no-retraction proof)
 
 ## Historical Note
 Shizuo Kakutani (1941) proved this as a direct generalization of Brouwer's
@@ -129,16 +132,21 @@ theorem closedBall_nonempty : (ClosedBall n).Nonempty :=
 theorem closedBall_convex : Convex ℝ (ClosedBall n) :=
   convex_closedBall 0 1
 
-/-- Axiom: Brouwer Fixed Point Theorem for compact convex subsets.
+/-- **Brouwer Fixed Point Theorem for compact convex subsets** (PROVED).
 
-    Every continuous function from a nonempty compact convex subset of ℝⁿ
-    to itself has a fixed point. This is a consequence of the standard Brouwer
-    theorem (proved in BrouwerFixedPoint.lean via the no-retraction theorem). -/
-axiom brouwer_compact_convex_axiom (n : ℕ) (hn : n ≥ 1)
+    Every continuous function from the closed unit ball in ℝⁿ to itself
+    has a fixed point. Derived from the Brouwer FPT in BrouwerFixedPoint.lean
+    (which proves it via the no-retraction theorem).
+
+    Previously axiomatized; now proved by wrapping the function in a
+    `Brouwer.SelfMap` and applying the parent theorem. -/
+theorem brouwer_compact_convex (n : ℕ) (hn : n ≥ 1)
     (f : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n))
     (hf : Continuous f)
     (hmaps : ∀ x ∈ ClosedBall n, f x ∈ ClosedBall n) :
-    ∃ x ∈ ClosedBall n, f x = x
+    ∃ x ∈ ClosedBall n, f x = x := by
+  obtain ⟨x, hx, hfx⟩ := Brouwer.brouwer_fixed_point hn ⟨f, hf, hmaps⟩
+  exact ⟨x, hx, hfx⟩
 
 /-- Axiom: Kakutani Fixed Point Theorem (1941).
 
@@ -396,7 +404,33 @@ theorem nash_equilibrium_framework (N : ℕ) (hN : 0 < N) :
   exact isCompact_univ_pi (fun i => mixed_strategy_compact)
 
 -- ============================================================
--- PART 8: Properties of Upper Hemicontinuity
+-- PART 8: Nash Equilibrium Definition
+-- ============================================================
+
+/-- A Nash equilibrium: no player can improve expected utility by
+    unilateral deviation from their mixed strategy.
+
+    σ is a Nash equilibrium of G if:
+    1. Each σᵢ is a valid mixed strategy
+    2. For every player i and alternative strategy τᵢ,
+       u_i(τᵢ, σ₋ᵢ) ≤ u_i(σ) -/
+def IsNashEquilibrium {N : ℕ} (G : FiniteGame N)
+    (σ : ∀ j, Fin (G.strategies j) → ℝ) : Prop :=
+  (∀ j, σ j ∈ MixedStrategy (G.strategies j)) ∧
+  ∀ i : Fin N, ∀ τ ∈ MixedStrategy (G.strategies i),
+    G.utility i (Function.update σ i τ) ≤ G.utility i σ
+
+/-- In a constant-utility game, every valid strategy profile is a
+    Nash equilibrium (no deviation can improve utility). -/
+theorem isNashEquilibrium_of_constant_utility {N : ℕ} (G : FiniteGame N)
+    (σ : ∀ j, Fin (G.strategies j) → ℝ)
+    (hσ : ∀ j, σ j ∈ MixedStrategy (G.strategies j))
+    (hconst : ∀ i σ', G.utility i σ' = G.utility i σ) :
+    IsNashEquilibrium G σ :=
+  ⟨hσ, fun i τ _ => le_of_eq (hconst i _)⟩
+
+-- ============================================================
+-- PART 9: Properties of Upper Hemicontinuity
 -- ============================================================
 
 /-- A constant correspondence is upper hemicontinuous. -/
@@ -426,6 +460,7 @@ theorem uhc_image {α : Type*} [TopologicalSpace α]
 end KakutaniFPT
 
 -- Export main results
+#check KakutaniFPT.brouwer_compact_convex
 #check KakutaniFPT.kakutani_fixed_point
 #check KakutaniFPT.brouwer_from_kakutani
 #check KakutaniFPT.kakutani_singleton_iff_brouwer
@@ -434,3 +469,5 @@ end KakutaniFPT
 #check KakutaniFPT.mixed_strategy_convex
 #check KakutaniFPT.mixed_strategy_compact
 #check KakutaniFPT.nash_equilibrium_framework
+#check @KakutaniFPT.IsNashEquilibrium
+#check @KakutaniFPT.isNashEquilibrium_of_constant_utility
