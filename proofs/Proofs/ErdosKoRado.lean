@@ -85,8 +85,15 @@ theorem card_cyclicIntervals (n k : ℕ) (_hn : 0 < n) (_hk : k ≤ n) :
 
 /-- Each cyclic interval has cardinality k (when k ≤ n).
     The mapping j ↦ (i + j) mod n is injective on {0, ..., k-1} when k ≤ n. -/
-axiom card_cyclicInterval (n k i : ℕ) (_hn : 0 < n) (_hk : k ≤ n) :
-    (cyclicInterval n k i).card = k
+theorem card_cyclicInterval (n k i : ℕ) (hn : 0 < n) (hk : k ≤ n) :
+    (cyclicInterval n k i).card = k := by
+  simp only [cyclicInterval, dif_pos hn]
+  rw [← Finset.card_range k]
+  apply Finset.card_image_of_injOn
+  intro a ha b hb heq
+  rw [Finset.coe_range, Set.mem_Iio] at ha hb
+  simp only [Fin.mk.injEq] at heq
+  omega
 
 /- ## Key Lemma: At most k cyclic intervals can be intersecting -/
 

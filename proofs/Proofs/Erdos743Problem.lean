@@ -73,8 +73,21 @@ def completeGraphEdges (n : ℕ) : ℕ := n * (n - 1) / 2
 
 /-- The total tree edges equals the edges in Kₙ.
 This is a necessary condition for perfect packing. -/
-axiom edge_counts_match (n : ℕ) (hn : n ≥ 2) :
-  totalTreeEdges n = completeGraphEdges n
+theorem edge_counts_match (n : ℕ) (hn : n ≥ 2) :
+    totalTreeEdges n = completeGraphEdges n := by
+  simp only [totalTreeEdges, completeGraphEdges]
+  -- Helper: 2 * ∑_{i<m} (i+1) = m * (m+1)
+  have haux : ∀ m, 2 * (Finset.range m).sum (· + 1) = m * (m + 1) := by
+    intro m; induction m with
+    | zero => simp
+    | succ k ih => rw [Finset.sum_range_succ]; nlinarith
+  have hm := haux (n - 1)
+  rw [show n - 1 + 1 = n from by omega] at hm
+  -- hm : 2 * sum = (n - 1) * n
+  -- Goal: sum = n * (n - 1) / 2
+  conv_rhs => rw [show n * (n - 1) = (n - 1) * n from by ring]
+  rw [show (n - 1) * n = 2 * (Finset.range (n - 1)).sum (· + 1) from hm.symm]
+  exact (Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)).symm
 
 /-- Concrete edge counts for small complete graphs. -/
 theorem complete_graph_edges_small :

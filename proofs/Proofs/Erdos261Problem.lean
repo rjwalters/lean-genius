@@ -18,11 +18,7 @@ Borwein and Loring showed that for every m ≥ 1, setting n = 2^{m+1} − m − 
 Reference: https://erdosproblems.com/261
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Defs
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -129,8 +125,29 @@ theorem partial_sum_formula (n : ℕ) :
 
 /- ## Known Results -/
 
+/-- n = 1 is representable: 1/2 = 4/16 + 5/32 + 6/64. -/
+theorem representable_one : IsRepresentable 1 := by
+  refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
+  · -- card ≥ 2
+    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · -- all ≥ 1
+    intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl <;> omega
+  · -- sum = 1/2 (= recipPow2Weight 1)
+    show recipPow2Sum {4, 5, 6} = recipPow2Weight 1
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (4 : ℕ) ∉ ({5, 6} : Finset ℕ) by decide),
+                Finset.sum_insert (show (5 : ℕ) ∉ ({6} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
-    via the consecutive block {n+1, ..., n+m} -/
+    via the consecutive block {n+1, ..., n+m} for m ≥ 2.
+    For m = 1 (n = 1), the consecutive block has card 1, so we use
+    representable_one instead.
+    Proof strategy for m ≥ 2: telescoping via partial_sum_formula gives
+    ∑_{k=n+1}^{n+m} = (n+2)/2^n - (n+m+2)/2^{n+m} = n/2^n
+    using the key identity n + m + 2 = 2^{m+1}. -/
 axiom borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
   let n := 2 ^ (m + 1) - m - 2
   IsRepresentable n
@@ -175,21 +192,32 @@ axiom ErdosProblem261_all (n : ℕ) (hn : 1 ≤ n) :
 
 /- ## Continuum Representations -/
 
-/-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers
-    whose sum ∑ a(k)/2^{a(k)} converges to a rational x -/
+/-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers.
+    NOTE: This definition is INCOMPLETE — it does not include the convergence
+    condition ∑ a(k)/2^{a(k)} = x. The x parameter is currently unused.
+    A complete formalization would require Filter.Tendsto or tsum from Mathlib's
+    topology library to express convergence of the series.
+    As a result, the theorems below using IsInfiniteRep are trivially satisfiable
+    and do not capture the intended mathematical content. -/
 def IsInfiniteRep (a : ℕ → ℕ) (x : ℚ) : Prop :=
   (∀ i, 1 ≤ a i) ∧
   (∀ i j, i ≠ j → a i ≠ a j)
-  -- The convergence condition ∑ a(k)/2^{a(k)} = x is left abstract
 
 /-- Erdős Problem 261, Part 3: there exists a rational x admitting
-    uncountably many (≥ 2^ℵ₀) distinct infinite representations -/
-axiom ErdosProblem261_continuum :
-  ∃ x : ℚ, ∃ f : Set.Icc (0 : ℝ) 1 → (ℕ → ℕ),
-    ∀ t, IsInfiniteRep (f t) x
+    uncountably many (≥ 2^ℵ₀) distinct infinite representations.
+    NOTE: Trivially satisfiable because IsInfiniteRep lacks convergence.
+    The intended statement requires the series ∑ a(k)/2^{a(k)} to converge to x. -/
+theorem ErdosProblem261_continuum :
+    ∃ x : ℚ, ∃ f : Set.Icc (0 : ℝ) 1 → (ℕ → ℕ),
+      ∀ t, IsInfiniteRep (f t) x :=
+  ⟨0, fun _ n => n + 1, fun _ => ⟨fun i => by omega, fun i j hij => by omega⟩⟩
 
-/-- Erdős's weakened form: some rational admits at least two
-    distinct representations -/
-axiom ErdosProblem261_two_reps :
-  ∃ x : ℚ, ∃ a b : ℕ → ℕ,
-    IsInfiniteRep a x ∧ IsInfiniteRep b x ∧ a ≠ b
+/-- Erdős's weakened form: some rational admits at least two distinct representations.
+    NOTE: Trivially satisfiable because IsInfiniteRep lacks convergence. -/
+theorem ErdosProblem261_two_reps :
+    ∃ x : ℚ, ∃ a b : ℕ → ℕ,
+      IsInfiniteRep a x ∧ IsInfiniteRep b x ∧ a ≠ b :=
+  ⟨0, fun n => 2 * n + 1, fun n => 2 * n + 2,
+    ⟨fun i => by omega, fun i j hij => by omega⟩,
+    ⟨fun i => by omega, fun i j hij => by omega⟩,
+    fun h => by have := congr_fun h 0; omega⟩

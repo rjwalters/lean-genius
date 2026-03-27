@@ -45,8 +45,17 @@ The sum of divisors function and related concepts.
 noncomputable def sigma (n : ℕ) : ℕ := ArithmeticFunction.sigma 1 n
 
 /-- σ(n) equals sum of all divisors of n -/
-axiom sigma_is_divisor_sum (n : ℕ) (hn : n ≥ 1) :
-    sigma n = (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum id
+theorem sigma_is_divisor_sum (n : ℕ) (hn : n ≥ 1) :
+    sigma n = (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum id := by
+  simp only [sigma, ArithmeticFunction.sigma_apply, pow_one]
+  congr 1
+  ext a
+  simp only [Nat.mem_divisors, Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨ha, -⟩
+    exact ⟨Nat.lt_succ_of_le (Nat.le_of_dvd (by omega) ha), ha⟩
+  · intro ⟨_, ha⟩
+    exact ⟨ha, by omega⟩
 
 /-- σ(1) = 1 -/
 theorem sigma_one : sigma 1 = 1 := by unfold sigma; native_decide
@@ -59,8 +68,18 @@ theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
   omega
 
 /-- σ(p^k) = (p^{k+1} - 1)/(p - 1) for prime p -/
-axiom sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
-    sigma (p ^ k) * (p - 1) = p ^ (k + 1) - 1
+theorem sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
+    sigma (p ^ k) * (p - 1) = p ^ (k + 1) - 1 := by
+  -- Reduce to geometric series identity via Mathlib's sigma and divisors API
+  unfold sigma
+  rw [ArithmeticFunction.sigma_apply, Nat.divisors_prime_pow hp]
+  simp only [Finset.sum_map, Function.Embedding.coeFn_mk, pow_one]
+  -- Goal: (∑ i in range (k+1), p^i) * (p - 1) = p^(k+1) - 1
+  induction k with
+  | zero => simp; omega
+  | succ n ih =>
+    rw [Finset.sum_range_succ, add_mul]
+    nlinarith [Nat.one_le_pow (n + 1) p hp.pos, Nat.one_le_pow (n + 2) p hp.pos]
 
 /-- σ is multiplicative on coprime arguments -/
 theorem sigma_multiplicative (m n : ℕ) (_hm : m ≥ 1) (_hn : n ≥ 1) (h : Nat.Coprime m n) :
@@ -143,8 +162,10 @@ Erdős noted the Euler totient case is "easy to prove".
 noncomputable def phi (n : ℕ) : ℕ := ArithmeticFunction.totient n
 
 /-- φ(n) counts integers in [1,n] coprime to n -/
-axiom phi_definition (n : ℕ) (hn : n ≥ 1) :
-    phi n = (Finset.filter (Nat.Coprime n) (Finset.range n)).card
+theorem phi_definition (n : ℕ) (hn : n ≥ 1) :
+    phi n = (Finset.filter (Nat.Coprime n) (Finset.range n)).card := by
+  unfold phi
+  rfl
 
 /-- A pair (n, m) is a φ-pair if φ(n) = φ(m) -/
 def IsPhiPair (n m : ℕ) : Prop := phi n = phi m
