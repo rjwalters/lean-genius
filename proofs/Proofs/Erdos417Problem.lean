@@ -120,6 +120,45 @@ theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
     obtain ⟨k₂, hk₂⟩ := hodd
     omega
 
+/-- V' is monotone non-decreasing. -/
+theorem V'_mono {x y : ℕ} (h : x ≤ y) : V' x ≤ V' y := by
+  unfold V'
+  exact Finset.card_le_card (Finset.image_subset_image (Finset.range_mono (by omega)))
+
+/-- V is monotone non-decreasing. -/
+theorem V_mono {x y : ℕ} (h : x ≤ y) : V x ≤ V y := by
+  unfold V
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.range_mono (by omega)))
+
+/-- 0 is not a totient value (φ(m) ≥ 1 for all m ≥ 1). -/
+theorem zero_not_totient_value : ¬IsTotientValue 0 := by
+  intro ⟨m, hm, heq⟩
+  have := Nat.totient_pos hm
+  omega
+
+/-- 4 is a totient value: φ(5) = 4. -/
+theorem four_is_totient_value : IsTotientValue 4 := by
+  use 5
+  constructor
+  · omega
+  · native_decide
+
+/-- V'(x) ≥ 1 for x ≥ 1: since φ(1) = 1, the value 1 is always in the image. -/
+theorem V'_pos (x : ℕ) (hx : x ≥ 1) : V' x ≥ 1 := by
+  unfold V'
+  have h1 : 1 ∈ Finset.image totient (Finset.range (x + 1)) := by
+    rw [Finset.mem_image]
+    exact ⟨1, Finset.mem_range.mpr (by omega), totient_one⟩
+  exact Finset.card_pos.mpr ⟨1, h1⟩
+
+/-- V(x) ≥ 1 for x ≥ 1: since φ(1) = 1 ≤ x, the value 1 is counted. -/
+theorem V_pos (x : ℕ) (hx : x ≥ 1) : V x ≥ 1 := by
+  unfold V
+  have h1 : 1 ∈ Finset.filter (fun n => ∃ m, totient m = n) (Finset.range (x + 1)) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_range.mpr (by omega), 1, totient_one⟩
+  exact Finset.card_pos.mpr ⟨1, h1⟩
+
 /- ## Part III: The Main Questions -/
 
 /--
