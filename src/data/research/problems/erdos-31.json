@@ -32,13 +32,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Erdos31PrimesDensity.lean now has 0 sorries, 0 axioms. Full proof that primes have density zero from Chebyshev bounds.",
+    "progressSummary": "PROGRESS: Added 6 sumset infrastructure theorems and CoversCofinite→CoversAllButFinitely implication. Main axiom lorentz_theorem remains (Lorentz 1954 construction).",
     "builtItems": [
-      "primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (Chebyshev splitting argument, ~70 lines)"
+      "primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (Chebyshev splitting argument, ~70 lines)",
+      "theorem sumset_comm: A+B = B+A (proved via omega)",
+      "theorem sumset_mono_left/right: sumset monotone in both args (proved, term-mode)",
+      "theorem sumset_empty_left/right: empty sumset is empty (proved via simp)",
+      "theorem coversCofinite_implies_allButFinitely: threshold coverage implies finiteness of exceptions"
     ],
     "insights": [
       "Proved primeCounting_le_chebyshev via small/large prime splitting — completing the full proof of primes have density zero",
-      "Proof pattern was already in Erdos31Problem.lean (main file) but was missing from the standalone PrimesDensity file"
+      "Proof pattern was already in Erdos31Problem.lean (main file) but was missing from the standalone PrimesDensity file",
+      "CoversCofinite is strictly stronger than CoversAllButFinitely — the former gives a threshold N₀",
+      "Sumset is commutative (add_comm), monotone in both arguments (subset preservation)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

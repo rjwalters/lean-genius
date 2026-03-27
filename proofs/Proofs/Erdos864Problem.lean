@@ -50,11 +50,11 @@ noncomputable def maxAlmostSidon (N : ℕ) : ℕ :=
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #864** (OPEN): The maximum almost-Sidon set in {1,...,N}
-    has size (1+o(1)) · (2/√3) · √N.
-    NOTE: Placeholder statement — the precise asymptotic has not been formalized. -/
+    has size (1+o(1)) · (2/√3) · √N. -/
 theorem erdos_864_conjecture :
   -- For all ε > 0, for sufficiently large N:
   -- maxAlmostSidon N ≤ (2/√3 + ε) · √N
+  -- NOTE: The actual conjecture is OPEN. This placeholder states True only.
   True := trivial
 
 /- ## Known Bounds -/
@@ -87,11 +87,11 @@ theorem sidon_is_almost_sidon (A : Finset ℕ) (h : IsSidon A) : IsAlmostSidon A
 /- ## Difference Version -/
 
 /-- For the difference analogue (at most one n with multiple a − b
-    representations), Erdős–Freud proved |A| ~ √N.
-    NOTE: Placeholder statement — the asymptotic has not been formalized. -/
+    representations), Erdős–Freud proved |A| ~ √N. -/
 theorem erdos_freud_difference_version :
   -- The maximum size of A ⊆ {1,...,N} with at most one difference collision
   -- is asymptotically √N
+  -- NOTE: The actual result is deep. This placeholder states True only.
   True := trivial
 
 /- ## Structural Properties -/
@@ -99,8 +99,58 @@ theorem erdos_freud_difference_version :
 /-- The number of ordered pairs (a, b) with a ≤ b in A is C(|A|, 2) + |A|.
     In a Sidon set, all pairwise sums are distinct, using C(|A|,2) + |A|
     distinct values from {2, ..., 2N}. -/
-axiom pairwise_sum_count (A : Finset ℕ) :
-  ((A ×ˢ A).filter (fun p => p.1 ≤ p.2)).card = A.card * (A.card + 1) / 2
+theorem pairwise_sum_count (A : Finset ℕ) :
+    ((A ×ˢ A).filter (fun p => p.1 ≤ p.2)).card = A.card * (A.card + 1) / 2 := by
+  -- Split upper triangle into strict and diagonal:
+  -- |{(a,b) | a ≤ b}| = |{(a,b) | a < b}| + |{(a,b) | a = b}|
+  -- By symmetry: |{a < b}| = |{a > b}|, and |A×A| = |{a<b}| + |{a=b}| + |{a>b}|
+  -- So |{a ≤ b}| = (|A|² + |A|) / 2 = |A|(|A|+1)/2
+  set n := A.card with hn
+  -- The upper triangle and lower triangle partition A×A with the diagonal
+  have h_total : (A ×ˢ A).card = n * n := by simp [Finset.card_product, hn]
+  -- Define the three regions
+  set upper := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2) with hupper
+  set diag := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 = p.2) with hdiag
+  set lower := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1) with hlower
+  -- Diagonal has n elements
+  have h_diag : diag.card = n := by
+    rw [hdiag]
+    have : diag = A.image (fun a => (a, a)) := by
+      ext ⟨x, y⟩; simp [diag, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
+      constructor
+      · rintro ⟨⟨hx, hy⟩, rfl⟩; exact ⟨x, hx, rfl⟩
+      · rintro ⟨a, ha, rfl, rfl⟩; exact ⟨⟨ha, ha⟩, rfl⟩
+    rw [this, Finset.card_image_of_injective _ (fun a b h => by simpa using h), hn]
+  -- Upper and lower have equal cardinality (by the involution (a,b) ↦ (b,a))
+  have h_sym : upper.card = lower.card := by
+    have : lower = upper.image (fun p : ℕ × ℕ => (p.2, p.1)) := by
+      ext ⟨x, y⟩; simp [upper, lower, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
+      constructor
+      · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨hy, hx⟩, hlt, rfl, rfl⟩
+      · rintro ⟨a, b, ⟨ha, hb⟩, hab, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
+    rw [this, Finset.card_image_of_injective _ (fun ⟨a, b⟩ ⟨c, d⟩ h => by simpa using h)]
+  -- Partition: |A×A| = |upper| + |diag| + |lower|
+  have h_part : (A ×ˢ A).card = upper.card + diag.card + lower.card := by
+    have h1 : A ×ˢ A = upper ∪ diag ∪ lower := by
+      ext ⟨x, y⟩; simp [upper, lower, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+      intro _ _; omega
+    have h2 : Disjoint upper diag := by
+      simp [Finset.disjoint_filter]; intro ⟨x, y⟩ _ hlt heq; omega
+    have h3 : Disjoint (upper ∪ diag) lower := by
+      simp [Finset.disjoint_filter, Finset.mem_union]; intro ⟨x, y⟩ _ h _
+      rcases h with h | h <;> omega
+    rw [h1, Finset.card_union_of_disjoint h3, Finset.card_union_of_disjoint h2]
+  -- From partition: n² = 2·|upper| + n, so |upper| = (n²-n)/2
+  have h_upper : upper.card = n * (n - 1) / 2 := by
+    have := h_total; rw [h_part, h_sym, h_diag] at this; omega
+  -- Target set = upper ∪ diag
+  have h_target : (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) = upper ∪ diag := by
+    ext ⟨x, y⟩; simp [upper, diag, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+    intro _ _; omega
+  have h_disj : Disjoint upper diag := by
+    simp [Finset.disjoint_filter]; intro ⟨x, y⟩ _ hlt heq; omega
+  rw [h_target, Finset.card_union_of_disjoint h_disj, h_upper, h_diag]
+  omega
 
 /-- For almost-Sidon A, at most one sum has a collision, so the number of
     distinct sums is ≥ C(|A|,2) + |A| − 1. These must fit in [2, 2N]. -/

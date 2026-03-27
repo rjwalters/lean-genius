@@ -1,0 +1,138 @@
+{
+  "id": "borsuk-ulam-oq-04",
+  "title": "Higher Categorical Analogues of the Covering Space Argument",
+  "slug": "borsuk-ulam-oq-04",
+  "description": "Explores the covering space argument in the Borsuk-Ulam proof through the lens of higher category theory. Formalizes Z/2 involutions, real projective spaces, descent of odd maps, and covering type abstractions for higher categorical generalizations.",
+  "meta": {
+    "author": "Borsuk, Ulam; higher categorical perspective",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BorsukUlamOQ04.lean",
+    "tags": [
+      "topology",
+      "algebraic-topology",
+      "category-theory",
+      "borsuk-ulam",
+      "covering-spaces",
+      "projective-space"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 295,
+    "assumptions": "3 axiom(s): sphere_double_cover, fundamental_group_RPn, covering_space_obstruction. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem (1933) asserts that every continuous map Sⁿ → Rⁿ identifies a pair of antipodal points. The classical proof reduces to showing that no continuous odd (equivariant) map Sⁿ → Sⁿ⁻¹ can exist. This is proved via the covering space argument: an odd map descends to a map RPⁿ → RPⁿ⁻¹ on real projective spaces, which induces a homomorphism π₁(RPⁿ) → π₁(RPⁿ⁻¹) between fundamental groups (both Z/2Z for n ≥ 2). The lifting property forces this homomorphism to be surjective, but geometric considerations force it to be trivial — contradiction. Higher categorical analogues replace π₁ with the full ∞-groupoid Π_∞(X), covering spaces with ∞-local systems, and the fundamental group obstruction with obstructions in higher cohomology.",
+    "problemStatement": "What are the higher categorical analogues of the covering space argument in the Borsuk-Ulam proof? Can ∞-topos theory or higher homotopy theory provide stronger or more general results?",
+    "text": "Explores the covering space argument in the Borsuk-Ulam proof through the lens of higher category theory. Formalizes Z/2 involutions, real projective spaces, descent of odd maps, and covering type abstractions.",
+    "proofStrategy": "Makes the covering space argument explicit by defining Z/2 involutions, their quotients (real projective spaces), and proving that odd maps descend to well-defined quotient maps. Introduces a CoveringType abstraction that captures the key properties needed for the descent argument, applicable to both classical and higher categorical settings.",
+    "keyInsights": [
+      "**Descent is the key step:** The covering space argument fundamentally relies on odd maps descending to maps between projective spaces. This descent is a purely algebraic fact (preserving an equivalence relation) independent of topology.",
+      "**CoveringType abstraction:** The essential structure is a total space, base space, projection, deck transformation, and compatibility conditions. This captures both classical covering spaces and potential higher analogues.",
+      "**Higher coverings change the fiber type:** Classical covering spaces have discrete fibers (0-types). n-covering spaces have n-type fibers. The progression 0-covering → n-covering → ∞-covering corresponds to using more homotopical information.",
+      "**∞-topos perspective:** Borsuk-Ulam can be formulated as a non-existence of sections in the slice ∞-topos over BZ/2, connecting to obstruction theory and equivariant homotopy theory.",
+      "**The Z/2 case is special:** For Z/2 coverings, π₁ suffices because Z/2Z has no higher homotopy. For general G-bundles (especially non-discrete G), higher homotopy groups become essential."
+    ],
+    "prerequisites": [
+      "Topology (covering spaces, fundamental groups)",
+      "Category theory (functors, groupoids)",
+      "Algebraic topology (homotopy groups)",
+      "Linear algebra (Euclidean spaces, involutions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-oq04-involutions",
+      "title": "Z/2 Involutions and Equivalence Relations",
+      "startLine": 48,
+      "endLine": 82,
+      "summary": "Defines the Involution structure (a self-inverse map), the antipodal involution on Euclidean space, and proves the induced equivalence relation (x ~ σ(x)) is well-formed with full proofs of reflexivity, symmetry, and transitivity."
+    },
+    {
+      "id": "sec-oq04-projective-space",
+      "title": "Real Projective Space",
+      "startLine": 84,
+      "endLine": 102,
+      "summary": "Defines RPⁿ as the quotient of R^{n+1} by the antipodal relation, the projection map π, and proves π(-x) = π(x)."
+    },
+    {
+      "id": "sec-oq04-descent",
+      "title": "Descent of Equivariant Maps",
+      "startLine": 104,
+      "endLine": 148,
+      "summary": "Defines IsOdd for equivariant maps, proves odd maps preserve the antipodal relation (odd_preserves_relation), constructs the descent map f̄: RPⁿ → RPᵐ from an odd map f, and proves commutativity with projection."
+    },
+    {
+      "id": "sec-oq04-covering-space",
+      "title": "Covering Space Structure",
+      "startLine": 150,
+      "endLine": 181,
+      "summary": "Axiomatizes the 2-fold covering property of Sⁿ → RPⁿ and the fundamental group π₁(RPⁿ) ≅ Z/2Z for n ≥ 2."
+    },
+    {
+      "id": "sec-oq04-higher-categorical",
+      "title": "Higher Categorical Framework",
+      "startLine": 183,
+      "endLine": 255,
+      "summary": "Defines CoveringType abstraction capturing key properties for descent arguments, constructs the antipodal covering as an instance, defines EquivariantMap between covering types, and proves odd maps give equivariant maps."
+    },
+    {
+      "id": "sec-oq04-obstruction",
+      "title": "The Covering Space Argument",
+      "startLine": 257,
+      "endLine": 280,
+      "summary": "States the covering space obstruction axiom (no continuous odd nonvanishing map on the sphere) and discusses higher categorical generalizations."
+    },
+    {
+      "id": "sec-oq04-open-questions",
+      "title": "Open Questions",
+      "startLine": 282,
+      "endLine": 295,
+      "summary": "Lists four open questions about higher analogues: Z/p generalization, ∞-groupoid perspective, ∞-topos formulation, and whether higher coverings yield new results."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization makes the covering space argument in the Borsuk-Ulam proof explicit, identifying descent of odd maps as the key algebraic step. The CoveringType abstraction captures the essential structure for both classical and higher categorical generalizations.",
+    "implications": "Understanding the higher categorical structure of the Borsuk-Ulam argument connects to active research in equivariant homotopy theory, ∞-topos theory, and topological combinatorics. The CoveringType framework may enable formal verification of higher categorical generalizations as Lean's algebraic topology library matures.",
+    "openQuestions": [
+      "Can the Z/2 obstruction be generalized to Z/p using Yang-Borsuk theory?",
+      "What does the ∞-groupoid perspective reveal beyond the π₁ argument?",
+      "Does ∞-topos theory provide a unified framework for all Borsuk-Ulam variants?",
+      "Do higher covering space arguments yield genuinely new topological results?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "extends",
+      "description": "Makes explicit the covering space argument axiomatized as no_continuous_odd_nonzero_on_sphere in the main Borsuk-Ulam file."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 studies equivariant versions for other group actions (Yang-Borsuk, Dold), which are concrete instances of the higher categorical framework."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 develops the topological combinatorics perspective, which connects to higher categorical methods via configuration spaces."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BorsukUlamOQ04",
+    "lineCount": 295,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 11
+  }
+}
