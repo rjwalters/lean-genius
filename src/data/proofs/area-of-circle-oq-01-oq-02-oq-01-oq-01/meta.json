@@ -52,7 +52,9 @@
     "keyInsights": [
       "The recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ reduces to the Gamma function identity $\\Gamma(z+1) = z\\cdot\\Gamma(z)$ applied at $z = n/2 + 1$",
       "The two-step nature (even and odd dimensions evolve independently) reflects the factorization $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ where the parity of $n$ determines whether we evaluate $\\Gamma$ at integers or half-integers",
-      "The formula $(2\\pi/n)\\cdot\\omega_n$ sometimes cited in the literature has an off-by-two indexing error; the correct formula is $(2\\pi/(n+2))\\cdot\\omega_n$, easily verified: $\\omega_2 = \\pi = (2\\pi/2)\\cdot 1 = \\pi$ from $\\omega_0 = 1$"
+      "The formula $(2\\pi/n)\\cdot\\omega_n$ sometimes cited in the literature has an off-by-two indexing error; the correct formula is $(2\\pi/(n+2))\\cdot\\omega_n$, easily verified: $\\omega_2 = \\pi = (2\\pi/2)\\cdot 1 = \\pi$ from $\\omega_0 = 1$",
+      "The ratio $\\omega_{n+2}/\\omega_n = 2\\pi/(n+2)$ falls below 1 for $n \\geq 5$, explaining why unit ball volumes eventually decrease — a non-obvious geometric fact that emerges naturally from the recurrence",
+      "The base case $\\omega_1 = 2$ requires the deep identity $\\Gamma(1/2) = \\sqrt{\\pi}$ (equivalent to the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$), making the odd-dimensional chain intrinsically harder than the even-dimensional one"
     ],
     "prerequisites": [
       "Gamma function theory (functional equation)",

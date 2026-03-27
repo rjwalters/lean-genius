@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-omega-def",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 29, "endLine": 32 },
+    "type": "definition",
+    "title": "Unit Ball Volume Definition",
+    "content": "Defines $\\omega_n = \\pi^{n/2} / \\Gamma(n/2 + 1)$, the volume of the unit $n$-ball. This is the standard formula from the Gamma function theory of volumes. The definition is marked `noncomputable` because real-valued division and exponentiation in Lean 4 involve classical choices.",
+    "mathContext": "$\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2 + 1)}$, equivalently $\\omega_n = \\frac{\\pi^{n/2}}{(n/2)!}$ when $n$ is even, using the Gamma function as a generalized factorial.",
+    "significance": "key",
+    "relatedConcepts": ["Gamma function", "unit ball", "n-dimensional volume"],
+    "prerequisites": ["Gamma function", "real-valued exponentiation"]
+  },
+  {
+    "id": "ann-base-case-zero",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "technique",
+    "title": "Base Case: ω₀ = 1",
+    "content": "The 0-dimensional ball is a single point with volume 1. The proof unfolds the definition and simplifies: $\\pi^0 = 1$ and $\\Gamma(1) = 1$, so $\\omega_0 = 1/1 = 1$. Lean's `simp [Gamma_one]` handles both simplifications automatically.",
+    "mathContext": "$\\omega_0 = \\pi^0 / \\Gamma(1) = 1/1 = 1$. The 0-ball $B^0 = \\{0\\}$ is a single point.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gamma function evaluation", "dimensional analysis"],
+    "prerequisites": ["Gamma function basics"]
+  },
+  {
+    "id": "ann-base-case-one",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 41, "endLine": 52 },
+    "type": "technique",
+    "title": "Base Case: ω₁ = 2",
+    "content": "The 1-ball is the interval $[-1,1]$ with length 2. The proof requires the non-trivial identity $\\Gamma(3/2) = \\sqrt{\\pi}/2$, derived from the Gamma recurrence $\\Gamma(3/2) = (1/2)\\Gamma(1/2) = \\sqrt{\\pi}/2$ using Mathlib's `Gamma_one_half_eq`. Then $\\omega_1 = \\pi^{1/2} / (\\sqrt{\\pi}/2) = 2$. The proof carefully manages the cast arithmetic and uses `field_simp` to close.",
+    "mathContext": "$\\omega_1 = \\frac{\\pi^{1/2}}{\\Gamma(3/2)} = \\frac{\\sqrt{\\pi}}{\\sqrt{\\pi}/2} = 2$, using $\\Gamma(3/2) = \\frac{1}{2}\\Gamma(\\frac{1}{2}) = \\frac{\\sqrt{\\pi}}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gamma function at half-integers", "Gamma_one_half_eq", "interval length"],
+    "prerequisites": ["Gamma function recurrence", "square root of pi"]
+  },
+  {
+    "id": "ann-positivity",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "insight",
+    "title": "Positivity of Unit Ball Volumes",
+    "content": "Establishes $\\omega_n > 0$ for all $n$, which is needed as a side condition for later algebraic manipulations (e.g., dividing both sides by $\\omega_n$). The proof factors through positivity of $\\pi^{n/2}$ (since $\\pi > 0$) and $\\Gamma(n/2 + 1)$ (since $\\Gamma$ is positive on the positive reals). Lean's `positivity` tactic handles the argument $n/2 + 1 > 0$.",
+    "mathContext": "$\\omega_n > 0$ for all $n \\in \\mathbb{N}$, since $\\pi^{n/2} > 0$ and $\\Gamma(n/2 + 1) > 0$ (the Gamma function is positive on $(0, \\infty)$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Gamma function positivity", "positivity tactic", "well-definedness"],
+    "prerequisites": ["properties of Gamma function", "real analysis"]
+  },
+  {
+    "id": "ann-recurrence-main",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 93 },
+    "type": "technique",
+    "title": "Main Theorem: The Two-Step Recurrence",
+    "content": "The central result: $\\omega_{n+2} = (2\\pi/(n+2)) \\cdot \\omega_n$. The proof has four phases. First, `push_cast; ring` handles the cast arithmetic $(n+2)/2 = n/2 + 1$. Second, `rpow_add` splits the exponent $\\pi^{n/2+1} = \\pi \\cdot \\pi^{n/2}$. Third, `Gamma_add_one` applies the functional equation to get $\\Gamma(n/2+2) = (n/2+1) \\cdot \\Gamma(n/2+1)$. Finally, `field_simp` and `ring` close the algebraic identity. This is the core computation that reduces any ball volume to the base cases in $\\lfloor n/2 \\rfloor$ steps.",
+    "mathContext": "$\\omega_{n+2} = \\frac{\\pi^{(n+2)/2}}{\\Gamma((n+2)/2+1)} = \\frac{\\pi \\cdot \\pi^{n/2}}{(n/2+1)\\Gamma(n/2+1)} = \\frac{2\\pi}{n+2} \\cdot \\omega_n$",
+    "significance": "key",
+    "relatedConcepts": ["Gamma function recurrence", "rpow_add", "field_simp tactic", "inductive computation"],
+    "prerequisites": ["Gamma function functional equation", "real power identities", "Lean cast arithmetic"]
+  },
+  {
+    "id": "ann-computations",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 121 },
+    "type": "insight",
+    "title": "Computed Values: ω₂ through ω₅",
+    "content": "Four corollaries demonstrate the recurrence in action. $\\omega_2 = \\pi$ (the area of the unit disk), $\\omega_3 = 4\\pi/3$ (the volume of the unit 3-ball), $\\omega_4 = \\pi^2/2$ (the 4-ball hypervolume), and $\\omega_5 = 8\\pi^2/15$. Each proof consists of a single `rw [omega_recurrence]`, substituting the previously computed value, followed by `push_cast; ring`. This chain shows the recurrence is not just theoretically valid but practically usable as a computation engine.",
+    "mathContext": "$\\omega_2 = \\pi$, $\\omega_3 = \\frac{4\\pi}{3}$, $\\omega_4 = \\frac{\\pi^2}{2}$, $\\omega_5 = \\frac{8\\pi^2}{15}$. The pattern: even dimensions involve pure powers of $\\pi$, odd dimensions have rational prefactors.",
+    "significance": "supporting",
+    "relatedConcepts": ["unit disk area", "unit ball volume", "dimensional volume formulas"],
+    "prerequisites": ["omega_recurrence", "base cases"]
+  },
+  {
+    "id": "ann-summary-and-answer",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 123, "endLine": 146 },
+    "type": "context",
+    "title": "Summary and Corrected Formula",
+    "content": "The summary block confirms all 8 theorems are fully verified (0 sorries, 0 axioms) and highlights an important correction: the formula sometimes cited as $\\omega_n = (2\\pi/n) \\cdot \\omega_{n-2}$ has an off-by-two indexing error when translated to the $\\omega_{n+2} = \\ldots$ form. The correct recurrence is $\\omega_{n+2} = (2\\pi/(n+2)) \\cdot \\omega_n$, and this formalization provides machine-checked evidence for the correction.",
+    "mathContext": "The literature sometimes writes $V_n = (2\\pi/n)V_{n-2}$, which is correct with that indexing. But translated to $\\omega_{n+2} = \\ldots \\omega_n$, the denominator must be $n+2$, not $n$.",
+    "significance": "context",
+    "relatedConcepts": ["indexing conventions", "mathematical errata", "formal verification"],
+    "prerequisites": ["recurrence relations"]
+  }
+]
