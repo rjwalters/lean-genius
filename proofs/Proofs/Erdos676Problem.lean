@@ -173,9 +173,18 @@ The problem relates to square-free representations and quadratic residues.
 def RepresentableByPrime (p : ℕ) (hp : p.Prime) : Set ℕ :=
   {n | ∃ a b, a ≥ 1 ∧ b < p ∧ n = a * p^2 + b}
 
--- The union over all primes covers "almost all" ℕ
-axiom almost_all_covered : ∀ ε > 0, ∃ N : ℕ,
-  ∀ x ≥ N, (x - exceptionCount x : ℝ) / x > 1 - ε
+-- The union over all primes covers "almost all" ℕ.
+-- Follows from density_one: if (x - E(x))/x → 1, then eventually > 1 - ε.
+theorem almost_all_covered : ∀ ε > 0, ∃ N : ℕ,
+    ∀ x ≥ N, (x - exceptionCount x : ℝ) / x > 1 - ε := by
+  intro ε hε
+  have hev := density_one.eventually (Metric.ball_mem_nhds 1 hε)
+  rw [Filter.eventually_atTop] at hev
+  obtain ⟨N, hN⟩ := hev
+  exact ⟨N, fun x hx => by
+    have := hN x hx
+    simp only [Metric.mem_ball, Real.dist_eq] at this
+    linarith [abs_lt.mp this |>.1]⟩
 
 -- Quadratic residue connection
 -- n ≡ b (mod p) for some b < p means n is in certain residue classes
