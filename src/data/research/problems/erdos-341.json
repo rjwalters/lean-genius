@@ -29,20 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 9→7 axioms. Converted erdos_341_conjecture to def (OPEN). Proved dickson_diff_pos from dickson_strictly_increasing. Definition has 2 sorries blocking further axiom elimination.",
+    "progressSummary": "PROGRESS: 9→4 axioms, 2→0 sorries. Restructured dicksonSeq via dicksonAux (accumulator pattern). Proved dickson_strictly_increasing from Nat.find_spec, singleton_one_example, dickson_linear_growth by induction.",
     "builtItems": [
       "Converted erdos_341_conjecture from axiom to def (OPEN conjecture)",
-      "Proved dickson_diff_pos from dickson_strictly_increasing (omega)"
+      "Proved dickson_diff_pos from dickson_strictly_increasing (omega)",
+      "Restructured dicksonSeq using dicksonAux accumulator (removed 2 definition sorries)",
+      "Proved dickson_strictly_increasing from Nat.find_spec (was axiom)",
+      "Proved singleton_one_example via simp (was axiom)",
+      "Proved dickson_linear_growth via induction + strict monotonicity (was axiom)"
     ],
     "insights": [
-      "dicksonSeq has 2 definition sorries (nonempty max, Nat.find existence) blocking structural axiom proofs",
-      "Structural axioms (strictly_increasing, avoids_sums, minimal) should follow from fixed definition",
-      "Nat.find existence proof: pairwiseSums is finite, so sup+1 works as witness"
+      "dicksonAux accumulator pattern: (value, terms) pairs avoid termination checker issues with Finset.image",
+      "dickson_next_exists lemma: for any bound+finite sums set, there exists a larger non-member (via sup+1)",
+      "Nat.find_spec directly proves strict monotonicity from the construction",
+      "dickson_avoids_sums and dickson_minimal require relating accumulated set to range.image — nontrivial",
+      "squares_slow_periodicity is computational (needs thousands of terms), period_depends_on_initial presupposes conjecture"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix dicksonSeq definition sorries (pass Nonempty as param, prove Nat.find existence via finite sums)",
-      "Once definition compiles, prove dickson_strictly_increasing, dickson_avoids_sums, dickson_minimal from Nat.find spec"
+      "Prove dickson_avoids_sums: show range.image subset of accumulated set, use monotonicity of pairwiseSums",
+      "Prove dickson_minimal: use Nat.find_min to show values below Nat.find are sums",
+      "squares_slow_periodicity and period_depends_on_initial likely need to stay as axioms"
     ],
     "markdown": "# Erdős #341 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?\n\n\n\nAn old problem of Dickson. Even a starting set as small as $\\{1,4,9,16,25\\}$ requires thousands of terms before periodicity occurs.\n\nThis problem is discussed under Problem 7 on Green's open problems list.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #340\n- Problem #342\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
