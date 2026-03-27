@@ -29,21 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom elimination (8→7) + sorry elimination (3→2). Proved smoothPart_dvd and f_lower_bound. Fixed mahler_ineffective inconsistency and 4 pre-existing build issues. File now builds cleanly.",
+    "progressSummary": "PROGRESS: Axiom elimination (7→6) + sorry elimination (2→1). Proved below_f_small (sInf min property), f_tendsto_infty_weak (from Mahler via rpow monotonicity).",
     "builtItems": [
       "Proved smoothPart_dvd via prod_pow_factorization_dvd helper (Finset induction + coprimality)",
       "Proved f_lower_bound theorem from f_property axiom",
       "Fixed mahler_ineffective axiom (∀ k ≤ n → ∀ k₀ fixed)",
       "Fixed noncomputable defs: tang_exponent, rh_exponent, heuristic_bound",
       "Fixed prime_binomial_structure to use current Mathlib API",
-      "Fixed heuristic_conjecture to use DecidablePred"
+      "Fixed heuristic_conjecture to use DecidablePred",
+      "Proved below_f_small: if k < f(n) then smoothPart ≤ n² (sInf is minimum)",
+      "Proved f_tendsto_infty_weak: f(n)→∞ from Mahler + rpow_le_rpow_of_exponent_le"
     ],
     "insights": [
       "smoothPart_dvd proved: product of p^(factorization p) for primes p ≤ k divides m, via coprimality of distinct prime powers and Finset induction",
       "f_lower_bound converted from axiom to theorem: no primes exist ≤ 0 or ≤ 1, so smoothPart 0 and smoothPart 1 both equal 1, which is ≤ n² for n ≥ 4",
       "mahler_ineffective axiom was INCONSISTENT (∀ k ≤ n would contradict f_property). Fixed to correct statement: for fixed k₀ and ε>0",
       "kummer_theorem has a Mathlib equivalent via Nat.Prime.multiplicity_choose — convertible but requires bridging multiplicity vs factorization APIs",
-      "4 pre-existing build issues fixed: noncomputable defs, deprecated API names, heuristic_conjecture decidability issue"
+      "4 pre-existing build issues fixed: noncomputable defs, deprecated API names, heuristic_conjecture decidability issue",
+      "below_f_small follows trivially from sInf_le: if k were in the set, sInf ≤ k, contradicting k < sInf",
+      "f_tendsto_infty_weak uses Mahler with ε=1/2 for each k≤C, then Finset.sup to collect thresholds"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -76,9 +80,9 @@
       "filename": "Erdos684Problem.lean",
       "lineCount": 313,
       "theoremCount": 7,
-      "axiomCount": 7,
+      "axiomCount": 6,
       "defCount": 10,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos684Problem.lean"
     }

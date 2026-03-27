@@ -118,8 +118,14 @@ axiom f_property (n : ℕ) (hn : n ≥ 2) :
     binomialSmoothPart n (f n) > n^2
 
 -- Below f(n), smooth part ≤ n²
-axiom below_f_small (n k : ℕ) (hn : n ≥ 2) (hk : k < f n) :
-    binomialSmoothPart n k ≤ n^2
+-- Proved: follows from sInf being the minimum of the set.
+theorem below_f_small (n k : ℕ) (_hn : n ≥ 2) (hk : k < f n) :
+    binomialSmoothPart n k ≤ n ^ 2 := by
+  by_contra h
+  push_neg at h
+  have hmem : k ∈ {k : ℕ | binomialSmoothPart n k > n ^ 2} := h
+  have := Nat.sInf_le hmem
+  omega
 
 /-
 # Part 3: Mahler's Classical Result
@@ -135,9 +141,46 @@ axiom mahler_ineffective : ∀ (k₀ : ℕ), ∀ ε : ℝ, ε > 0 → ∃ N : �
     (binomialSmoothPart n k₀ : ℝ) ≤ (n : ℝ)^(1 + ε)
 
 -- Mahler implies f(n) → ∞
+-- Proof: For each k ≤ C, Mahler with ε=1/2 gives N_k such that smoothPart ≤ n^(3/2) ≤ n².
+-- Taking N = max of all N_k, all k ≤ C have smoothPart ≤ n², so f(n) > C.
 theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C := by
   intro C
-  sorry  -- Follows from Mahler
+  -- For each k₀, Mahler with ε = 1/2 gives a threshold
+  have h_mahler : ∀ k₀ : ℕ, ∃ N : ℕ, ∀ n ≥ N,
+      (binomialSmoothPart n k₀ : ℝ) ≤ (n : ℝ) ^ ((3 : ℝ) / 2) := by
+    intro k₀
+    obtain ⟨N, hN⟩ := mahler_ineffective k₀ (1 / 2 : ℝ) (by norm_num)
+    exact ⟨N, fun n hn => by have := hN n hn; linarith⟩
+  -- Collect thresholds for k = 0, ..., C
+  choose N_fn hN_fn using h_mahler
+  -- Take N = max(4, max of N_fn over [0, C])
+  use max 4 ((Finset.range (C + 1)).sup N_fn)
+  intro n hn
+  have hn4 : n ≥ 4 := le_of_max_le_left hn
+  have hn_thresholds : ∀ k₀ ≤ C, n ≥ N_fn k₀ := by
+    intro k₀ hk₀
+    have : N_fn k₀ ≤ (Finset.range (C + 1)).sup N_fn :=
+      Finset.le_sup (f := N_fn) (Finset.mem_range.mpr (by omega))
+    omega
+  -- Show f(n) > C by contradiction
+  by_contra hfC
+  push_neg at hfC
+  -- f(n) ≤ C, so f_property gives smoothPart > n²
+  have hf := f_property n (by omega : n ≥ 2)
+  -- Mahler gives smoothPart ≤ n^(3/2)
+  have hN := hN_fn (f n) n (hn_thresholds (f n) hfC)
+  -- n^(3/2) ≤ n² for n ≥ 1 (monotonicity of rpow)
+  have h32 : (n : ℝ) ^ ((3 : ℝ) / 2) ≤ (n : ℝ) ^ (2 : ℝ) :=
+    Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (show 1 ≤ n by omega)) (by norm_num)
+  -- Combine: smoothPart ≤ n^(3/2) ≤ n^2 = ↑(n^2)
+  have h_cast : (n : ℝ) ^ (2 : ℝ) = (↑(n ^ 2) : ℝ) := by
+    push_cast; rw [Nat.cast_pow]; ring
+  have h_le : (binomialSmoothPart n (f n) : ℝ) ≤ (↑(n ^ 2) : ℝ) := by
+    calc (binomialSmoothPart n (f n) : ℝ) ≤ (n : ℝ) ^ ((3 : ℝ) / 2) := hN
+      _ ≤ (n : ℝ) ^ (2 : ℝ) := h32
+      _ = (↑(n ^ 2) : ℝ) := h_cast
+  have := Nat.cast_le.mp h_le
+  omega
 
 /-
 # Part 4: Modern Bounds
