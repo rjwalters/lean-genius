@@ -20,7 +20,7 @@
   - Haight: Cesàro average CAN vanish, resolving the problem
 
   Axiom count: 3 (erdos_no_zero_limit, erdos_dichotomy, haight_resolution)
-  Proved: cassels_liminf_zero (derived from haight_resolution — convergence implies liminf=0)
+  Proved: cassels_liminf_zero (from haight_resolution via Filter.Eventually.frequently)
   Proved: naturalSeq_phiA_eq_totient (filter condition ↔ coprimality + Icc/range bridge)
   Proved: phiA_ge_totient (φ_A(k) ≥ φ(n_k) — coprime elements always pass the filter)
   Proved: densityRatio_ge_totient_ratio (ρ_A(k) ≥ φ(n_k)/n_k)
@@ -542,6 +542,25 @@ theorem naturalSeq_not_density_zero : ¬ DensityToZero naturalSeq :=
     obtain ⟨p, hp_prime, hp_ge⟩ := Nat.exists_infinite_primes (k + 2)
     exact ⟨p - 1, by omega, by simp [naturalSeq]; omega⟩)
 
+/- ## Part V-C: Complement and DensityToZero Infrastructure -/
+
+/-- The complement of the density ratio equals the used fraction:
+    1 - ρ_A(k) = usedSum(k) / n_k. -/
+theorem one_sub_densityRatio (A : IncreasingSeq) (k : ℕ) :
+    1 - densityRatio A k = (usedSum A k : ℝ) / (A.seq k : ℝ) := by
+  rw [densityRatio_complement]; ring
+
+/-- DensityToZero implies VanishingAverage (Cesàro mean of a convergent
+    sequence converges to the same limit). Uses Mathlib's `Tendsto.cesaro`. -/
+theorem densityToZero_implies_vanishing (A : IncreasingSeq) (hD : DensityToZero A) :
+    VanishingAverage A := by
+  show Tendsto (cesaroAvg A) atTop (𝓝 0)
+  have h := hD.cesaro
+  -- h : Tendsto (fun n => (↑n)⁻¹ * ∑ i ∈ range n, densityRatio A i) atTop (𝓝 0)
+  -- cesaroAvg A N = (∑ k ∈ range N, densityRatio A k) / ↑N = ↑N⁻¹ * ∑ ...
+  refine h.congr (eventually_of_forall fun N => ?_)
+  unfold cesaroAvg; rw [div_eq_inv_mul]
+
 /- ## Part VI: Erdős' Results (1964) -/
 
 /-- Erdős' No-Zero-Limit Theorem: The density ratio ρ_A(k) = φ_A(k)/n_k
@@ -558,7 +577,19 @@ axiom erdos_dichotomy (A : IncreasingSeq) :
     (∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε) →
     (∀ ε > 0, ∃ᶠ k in atTop, 1 - ε < densityRatio A k)
 
-/- ## Part VII: Haight's Resolution -/
+/- ## Part VII: Cassels' Result (1950) -/
+
+/-- Cassels' theorem: There exists a sequence A such that
+    the liminf of the Cesàro average is 0.
+    Proved as a corollary of Haight's stronger result: if the average
+    converges to 0 (VanishingAverage), then it visits near 0 frequently.
+    Uses Filter.Eventually.frequently with atTop.NeBot. -/
+theorem cassels_liminf_zero :
+    ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε := by
+  obtain ⟨A, hA⟩ := haight_resolution
+  exact ⟨A, fun ε hε => (hA (Iio_mem_nhds hε)).frequently⟩
+
+/- ## Part VIII: Haight's Resolution -/
 
 /-- Haight's Theorem (resolves Erdős' Problem #1000):
     There exists a sequence A such that the Cesàro average converges to 0.
@@ -566,20 +597,6 @@ axiom erdos_dichotomy (A : IncreasingSeq) :
     the average to zero while individual terms oscillate.
     This contradicts Erdős' conjecture that no such sequence exists. -/
 axiom haight_resolution : ∃ A : IncreasingSeq, VanishingAverage A
-
-/- ## Part VIII: Cassels' Result (1950) — Proved -/
-
-/-- Cassels' theorem: There exists a sequence A such that
-    the liminf of the Cesàro average is 0.
-
-    Originally proved by Cassels via continued fraction convergents.
-    Here we derive it as a corollary of Haight's stronger result
-    (haight_resolution): convergence to 0 implies the liminf is 0.
-    This reduces the axiom count by 1, from 4 to 3. -/
-theorem cassels_liminf_zero :
-    ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε := by
-  obtain ⟨A, hA⟩ := haight_resolution
-  exact ⟨A, fun ε hε => (hA (Iio_mem_nhds hε)).frequently⟩
 
 /- ## Part IX: Corollaries -/
 
