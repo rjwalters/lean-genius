@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
     "axiomCount": 3,
-    "lineCount": 681,
+    "lineCount": 988,
     "assumptions": "Three deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), haight_resolution (vanishing Cesàro average exists). cassels_liminf_zero is now PROVED as a corollary of haight_resolution (convergence to 0 implies liminf = 0). Infrastructure: complement formula (phiA_add_used), used-divisor bounds (used_sum_le, used_card_le), positivity (phiA_pos, densityRatio_pos), complement representation (densityRatio_complement), prime lower bound (densityRatio_ge_of_prime).",
     "mathlib_version": "4.26.0"
   },
@@ -202,9 +202,9 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 681,
+    "lineCount": 988,
     "axiomCount": 3,
-    "theoremCount": 22,
+    "theoremCount": 52,
     "definitionCount": 8
   }
 }
