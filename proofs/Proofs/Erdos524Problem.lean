@@ -269,3 +269,42 @@ theorem polyMax_succ_le (t : ℝ) (n : ℕ) :
     exact ⟨x, hx, rfl⟩
   linarith [abs_add (randSignPoly t n x)
     ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
+
+/-- Reverse bound: M_n(t) ≤ M_{n+1}(t) + 1. Removing a term changes the max
+    by at most 1, since P_n(t,x) = P_{n+1}(t,x) - ε_{n+1}·x^{n+1}. -/
+theorem polyMax_ge_succ (t : ℝ) (n : ℕ) :
+    polyMax t n ≤ polyMax t (n + 1) + 1 := by
+  suffices h : ∀ x ∈ Set.Icc (-1 : ℝ) 1,
+      |randSignPoly t n x| ≤ polyMax t (n + 1) + 1 by
+    unfold polyMax
+    apply csSup_le
+    · exact ⟨|randSignPoly t n 0|,
+        ⟨0, Set.mem_Icc.mpr ⟨by norm_num, by norm_num⟩, rfl⟩⟩
+    · rintro _ ⟨x, hx, rfl⟩; exact h x hx
+  intro x hx
+  have hx_abs : |x| ≤ 1 := abs_le.mpr ⟨by linarith [hx.1], hx.2⟩
+  -- P_n(t,x) = P_{n+1}(t,x) + (−ε_{n+1}·x^{n+1})
+  have h_rearrange : randSignPoly t n x =
+      randSignPoly t (n + 1) x +
+      (-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))) := by
+    linarith [randSignPoly_succ t n x]
+  rw [h_rearrange]
+  have h_neg_term : |(-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))| ≤ 1 := by
+    rw [abs_neg, abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+      _ = 1 := one_pow _
+  have h_poly : |randSignPoly t (n + 1) x| ≤ polyMax t (n + 1) := by
+    unfold polyMax
+    apply le_csSup (polyMax_bddAbove t (n + 1))
+    exact ⟨x, hx, rfl⟩
+  linarith [abs_add (randSignPoly t (n + 1) x)
+    (-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))]
+
+/-- The polynomial maximum is 1-Lipschitz in n: |M_{n+1}(t) - M_n(t)| ≤ 1.
+    Combining polyMax_succ_le and polyMax_ge_succ. -/
+theorem polyMax_diff_le (t : ℝ) (n : ℕ) :
+    |polyMax t (n + 1) - polyMax t n| ≤ 1 := by
+  rw [abs_le]
+  constructor
+  · linarith [polyMax_ge_succ t n]
+  · linarith [polyMax_succ_le t n]

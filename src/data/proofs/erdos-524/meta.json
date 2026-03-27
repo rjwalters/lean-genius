@@ -35,7 +35,7 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 271,
+    "lineCount": 310,
     "assumptions": "4 axioms: erdos_lower_bound, chung_upper_bound, salem_zygmund_trigonometric, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -108,9 +108,9 @@
       "id": "advanced-polymax",
       "title": "Advanced polyMax Results",
       "startLine": 200,
-      "endLine": 271,
-      "summary": "Four new results: `polyMax_zero` ($M_0 = 0$), `polyMax_achieved` (extreme value theorem: $\\exists x_0 \\in [-1,1]$ achieving $M_n$), `polyMax_one` ($M_1 = 1$), and `polyMax_succ_le` ($M_{n+1} \\leq M_n + 1$, Lipschitz-type bound on the max sequence).",
-      "mathContext": "The extreme value theorem ensures the supremum defining $M_n$ is actually a maximum — the continuous function $|P_n(t,\\cdot)|$ on the compact interval $[-1,1]$ achieves its supremum. The Lipschitz bound $M_{n+1} \\leq M_n + 1$ follows from $|P_{n+1}(t,x) - P_n(t,x)| = |\\varepsilon_{n+1} x^{n+1}| \\leq 1$ on $[-1,1]$, giving a quantitative bound on how fast the polynomial maximum can grow."
+      "endLine": 310,
+      "summary": "Six new results: `polyMax_zero` ($M_0 = 0$), `polyMax_achieved` (extreme value theorem), `polyMax_one` ($M_1 = 1$), `polyMax_succ_le` ($M_{n+1} \\leq M_n + 1$), `polyMax_ge_succ` ($M_n \\leq M_{n+1} + 1$), and `polyMax_diff_le` ($|M_{n+1} - M_n| \\leq 1$).",
+      "mathContext": "The extreme value theorem ensures $M_n$ is a true maximum. The 1-Lipschitz property $|M_{n+1} - M_n| \\leq 1$ follows from $|P_{n+1}(t,x) - P_n(t,x)| = |\\varepsilon_{n+1} x^{n+1}| \\leq 1$ on $[-1,1]$ — each new term changes the polynomial by at most 1 pointwise, hence the maximum by at most 1."
     }
   ],
   "overview": {
@@ -151,9 +151,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 271,
+    "lineCount": 310,
     "axiomCount": 4,
-    "theoremCount": 18,
+    "theoremCount": 20,
     "definitionCount": 3
   },
   "references": [
