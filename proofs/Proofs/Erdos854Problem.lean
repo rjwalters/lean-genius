@@ -77,9 +77,54 @@ noncomputable def gapSet (n : ℕ) : Finset ℕ :=
   let l := sortedCoprimes n
   (List.zipWith (· - ·) l.tail l).toFinset
 
+/-- The primorial of k is divisible by 2 for k ≥ 1. -/
+private theorem two_dvd_primorial : ∀ k : ℕ, 1 ≤ k → 2 ∣ primorial k
+  | 0, h => absurd h (by omega)
+  | 1, _ => by simp [primorial, nthPrime_zero]
+  | k + 2, _ => dvd_mul_of_dvd_left (two_dvd_primorial (k + 1) (by omega)) _
+
+/-- Every coprime residue of an even number is odd. -/
+private theorem coprimeResidues_odd (n : ℕ) (hn : 2 ∣ n)
+    (a : ℕ) (ha : a ∈ coprimeResidues n) : ¬ 2 ∣ a := by
+  simp only [coprimeResidues, Finset.mem_filter, Finset.mem_range] at ha
+  obtain ⟨_, _, hcop⟩ := ha
+  intro h2a
+  have h2g : (2 : ℕ) ∣ Nat.gcd a n := Nat.dvd_gcd h2a hn
+  rw [hcop] at h2g
+  exact absurd h2g (by norm_num)
+
+/-- Differences of elements where all elements satisfy ¬(2 ∣ ·) are even. -/
+private theorem zipWith_sub_dvd_two :
+    ∀ (l : List ℕ), (∀ x ∈ l, ¬ 2 ∣ x) →
+    ∀ d ∈ List.zipWith (· - ·) l.tail l, 2 ∣ d := by
+  intro l
+  induction l with
+  | nil => simp
+  | cons a t ih =>
+    intro hodd d hd
+    cases t with
+    | nil => simp at hd
+    | cons b rest =>
+      simp only [List.tail_cons, List.zipWith_cons_cons] at hd
+      rcases List.mem_cons.mp hd with rfl | hmem
+      · -- d = b - a, both odd ⇒ difference is even
+        have ha := hodd a (List.mem_cons_self _ _)
+        have hb := hodd b (List.mem_cons_of_mem _ (List.mem_cons_self _ _))
+        have ha' : a % 2 ≠ 0 := fun h => ha (Nat.dvd_of_mod_eq_zero h)
+        have hb' : b % 2 ≠ 0 := fun h => hb (Nat.dvd_of_mod_eq_zero h)
+        exact Nat.dvd_of_mod_eq_zero (by omega)
+      · exact ih (fun x hx => hodd x (List.mem_cons_of_mem _ hx)) d hmem
+
 /-- Every gap is even for k ≥ 2 (since nₖ is even, all coprime residues are odd) -/
-axiom gaps_even (k : ℕ) (hk : 2 ≤ k) (d : ℕ) (hd : d ∈ gapSet (primorial k)) :
-  2 ∣ d
+theorem gaps_even (k : ℕ) (hk : 2 ≤ k) (d : ℕ) (hd : d ∈ gapSet (primorial k)) :
+    2 ∣ d := by
+  simp only [gapSet, List.mem_toFinset] at hd
+  have hprim_even := two_dvd_primorial k (by omega)
+  have hodd : ∀ x ∈ sortedCoprimes (primorial k), ¬ 2 ∣ x := by
+    intro x hx
+    rw [sortedCoprimes_mem] at hx
+    exact coprimeResidues_odd (primorial k) hprim_even x hx
+  exact zipWith_sub_dvd_two (sortedCoprimes (primorial k)) hodd d hd
 
 /-- The maximal gap between consecutive coprime residues of n.
     Defined as the supremum of the gap set. -/
