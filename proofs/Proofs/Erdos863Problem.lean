@@ -136,3 +136,90 @@ theorem diffRepCount_le_card_sq (A : Finset ℕ) (n : ℤ) :
     diffRepCount A n ≤ A.card * A.card := by
   unfold diffRepCount
   exact le_trans (Finset.card_filter_le _ _) (le_of_eq (Finset.card_product A A))
+
+/-- B₂[r] property is preserved by subsets: if A is B₂[r] and A' ⊆ A, then A' is B₂[r].
+
+**Proof**: For any n, the pairs (a,b) ∈ A'×A' with a ≤ b, a+b = n form a subset
+of the corresponding pairs in A×A, so sumRepCount A' n ≤ sumRepCount A n ≤ r. -/
+theorem isB2r_subset {A A' : Finset ℕ} {r : ℕ} (h : IsB2r A r) (hsub : A' ⊆ A) :
+    IsB2r A' r := by
+  intro n
+  calc sumRepCount A' n
+      ≤ sumRepCount A n := by
+        unfold sumRepCount
+        exact Finset.card_le_card (Finset.filter_subset_filter _
+          (Finset.product_subset_product hsub hsub))
+    _ ≤ r := h n
+
+/-- Difference B₂[r] property is preserved by subsets. -/
+theorem isDiffB2r_subset {A A' : Finset ℕ} {r : ℕ} (h : IsDiffB2r A r) (hsub : A' ⊆ A) :
+    IsDiffB2r A' r := by
+  intro n hn
+  calc diffRepCount A' n
+      ≤ diffRepCount A n := by
+        unfold diffRepCount
+        exact Finset.card_le_card (Finset.filter_subset_filter _
+          (Finset.product_subset_product hsub hsub))
+    _ ≤ r := h n hn
+
+/- ## Connection to Sidon Sets (Erdős #340)
+
+A B₂[1] set is exactly a Sidon set: all pairwise sums a + b (a ≤ b) are distinct.
+This connects Erdős #863 (r = 1 case) to the Sidon set formalization in Erdős #340. -/
+
+/-- Sidon set property: all ordered sums are distinct.
+    Matches IsSidonSet from Erdos340Problem.lean. -/
+def IsSidonSetLocal (S : Finset ℕ) : Prop :=
+  ∀ a ∈ S, ∀ b ∈ S, ∀ c ∈ S, ∀ d ∈ S,
+    a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
+
+/-- B₂[1] is equivalent to the Sidon set property.
+
+**Forward** (B₂[1] → Sidon): If sumRepCount A n ≤ 1 for all n, then any two pairs
+(a,b) and (c,d) with a+b = c+d are in the same singleton filter set, hence equal.
+
+**Backward** (Sidon → B₂[1]): If all sums are distinct, then for each n the filter
+set has at most one element, giving sumRepCount A n ≤ 1. -/
+theorem isB2r_one_iff_sidon (A : Finset ℕ) : IsB2r A 1 ↔ IsSidonSetLocal A := by
+  constructor
+  · -- B₂[1] → Sidon: unique representation implies distinct sums
+    intro h a ha b hb c hc d hd hab hcd hsum
+    have h1 := h (a + b)
+    unfold sumRepCount at h1
+    have hmem1 : (a, b) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) := by
+      simp only [Finset.mem_filter, Finset.mem_product]
+      exact ⟨⟨ha, hb⟩, hab, rfl⟩
+    have hmem2 : (c, d) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) := by
+      simp only [Finset.mem_filter, Finset.mem_product]
+      exact ⟨⟨hc, hd⟩, hcd, hsum⟩
+    have heq := Finset.card_le_one.mp h1 hmem1 hmem2
+    exact ⟨congr_arg Prod.fst heq, congr_arg Prod.snd heq⟩
+  · -- Sidon → B₂[1]: distinct sums implies unique representation
+    intro h n
+    unfold sumRepCount
+    rw [Finset.card_le_one]
+    intro ⟨a, b⟩ hab ⟨c, d⟩ hcd
+    simp only [Finset.mem_filter, Finset.mem_product] at hab hcd
+    obtain ⟨⟨ha, hb⟩, hab_le, hab_sum⟩ := hab
+    obtain ⟨⟨hc, hd⟩, hcd_le, hcd_sum⟩ := hcd
+    have hsum : a + b = c + d := by omega
+    have := h a ha b hb c hc d hd hab_le hcd_le hsum
+    exact Prod.ext this.1 this.2
+
+/-- Singleton sets are B₂[r] for any r ≥ 1. -/
+theorem isB2r_singleton (a : ℕ) (r : ℕ) (hr : r ≥ 1) : IsB2r {a} r := by
+  intro n
+  unfold sumRepCount
+  calc ({a} ×ˢ {a}).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n) |>.card
+      ≤ ({a} ×ˢ {a}).card := Finset.card_filter_le _ _
+    _ = 1 := by simp [Finset.product_singleton_singleton]
+    _ ≤ r := hr
+
+/-- Singleton sets are difference B₂[r] for any r ≥ 1. -/
+theorem isDiffB2r_singleton (a : ℕ) (r : ℕ) (hr : r ≥ 1) : IsDiffB2r {a} r := by
+  intro n hn
+  unfold diffRepCount
+  calc ({a} ×ˢ {a}).filter (fun p => (p.1 : ℤ) - (p.2 : ℤ) = n) |>.card
+      ≤ ({a} ×ˢ {a}).card := Finset.card_filter_le _ _
+    _ = 1 := by simp [Finset.product_singleton_singleton]
+    _ ≤ r := hr
