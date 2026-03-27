@@ -227,6 +227,32 @@ theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 
   use p
   exact ⟨hp.pos, totient_prime hp⟩
 
+/-- Euler's totient is either 0 (m=0), 1 (m=1,2), or even (m≥3).
+    This structural constraint limits V(x) to counting at most 0, 1, and even numbers. -/
+theorem totient_zero_one_or_even (m : ℕ) :
+    totient m = 0 ∨ totient m = 1 ∨ Even (totient m) := by
+  rcases le_or_lt m 2 with hm | hm
+  · interval_cases m
+    · left; decide
+    · right; left; exact totient_one
+    · right; left; rw [totient_prime Nat.prime_two]
+  · right; right; exact totient_even (by omega)
+
+/-- All elements counted by V are 0, 1, or even. This gives V(x) ≤ ⌊x/2⌋ + 2. -/
+theorem V_element_structure (n x : ℕ)
+    (hn : n ∈ Finset.filter (fun n => ∃ m, totient m = n) (Finset.range (x + 1))) :
+    n = 0 ∨ n = 1 ∨ Even n := by
+  rw [Finset.mem_filter] at hn
+  obtain ⟨_, m, hm⟩ := hn
+  have := totient_zero_one_or_even m
+  rwa [hm] at this
+
+/-- p-1 is even for primes p ≥ 3 (used for totient value structure). -/
+theorem prime_sub_one_even (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) : Even (p - 1) := by
+  have hodd := hp.odd_of_ne_two (by omega)
+  obtain ⟨k, hk⟩ := hodd
+  exact ⟨k, by omega⟩
+
 /- ## Part VII: Asymptotic Estimates -/
 
 /--
