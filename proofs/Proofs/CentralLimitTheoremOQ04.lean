@@ -127,10 +127,11 @@ on a large Hilbert space, then U and V are asymptotically free.
 /-- Free independence is encoded in how mixed moments factorize.
     For free random variables, the mixed moments are determined by
     the individual moment sequences via the free moment-cumulant formula. -/
-axiom freeMixedMoments (μ ν : NCDistribution) :
+theorem freeMixedMoments (μ ν : NCDistribution) :
     ∀ _p _q : ℕ, ∃ f : (ℕ → ℝ) → (ℕ → ℝ) → ℝ,
     -- The mixed moment is determined by individual moments
-    f μ.moment ν.moment = f μ.moment ν.moment
+    f μ.moment ν.moment = f μ.moment ν.moment := by
+  intro _ _; exact ⟨fun _ _ => 0, rfl⟩
 
 -- ============================================================================
 -- § 3. Free Cumulants
@@ -349,11 +350,15 @@ theorem semicircle_mean : semicircle.moment 1 = 0 := by
 theorem semicircle_variance : semicircle.moment 2 = 1 := by
   simp [semicircle]; norm_num
 
-/-- The first free cumulant of the semicircle is 0 (mean 0). -/
-axiom semicircle_cumulant_one : freeCumulant semicircle 1 = 0
+/-- The first free cumulant of the semicircle is 0 (mean 0).
+    Proved from freeCumulant_one (κ₁ = m₁) and semicircle_mean (m₁ = 0). -/
+theorem semicircle_cumulant_one : freeCumulant semicircle 1 = 0 := by
+  rw [freeCumulant_one, semicircle_mean]
 
-/-- The second free cumulant of the semicircle is 1 (variance 1). -/
-axiom semicircle_cumulant_two : freeCumulant semicircle 2 = 1
+/-- The second free cumulant of the semicircle is 1 (variance 1).
+    Proved from freeCumulant_two (κ₂ = m₂ - m₁²), semicircle_variance, semicircle_mean. -/
+theorem semicircle_cumulant_two : freeCumulant semicircle 2 = 1 := by
+  rw [freeCumulant_two, semicircle_variance, semicircle_mean]; norm_num
 
 /-- All higher free cumulants of the semicircle vanish.
     This is the defining property: κₙ(w) = 0 for n ≥ 3.

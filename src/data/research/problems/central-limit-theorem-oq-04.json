@@ -37,17 +37,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created CentralLimitTheoremOQ04.lean (648 lines, 15 theorems, 25 axioms, 0 sorries). Formalized free probability CLT with NCDistribution, free convolution monoid, R-transform, semicircle distribution, and CLTStructure abstraction. Docker build succeeds.",
+    "progressSummary": "AXIOM HUNT: Eliminated 3 axioms (25→22). Proved freeMixedMoments (trivial), semicircle_cumulant_one (from freeCumulant_one + semicircle_mean), semicircle_cumulant_two (from freeCumulant_two + moments). Remaining 22 axioms are foundational free probability (not in Mathlib).",
     "builtItems": [
       "proofs/Proofs/CentralLimitTheoremOQ04.lean (648 lines, builds clean)",
-      "src/data/proofs/central-limit-theorem-oq-04/ (gallery entry: meta.json, index.ts, annotations.json)"
+      "src/data/proofs/central-limit-theorem-oq-04/ (gallery entry: meta.json, index.ts, annotations.json)",
+      "freeMixedMoments: PROVED (was axiom) — trivial, 1 line",
+      "semicircle_cumulant_one: PROVED (was axiom) — from freeCumulant_one + semicircle_mean",
+      "semicircle_cumulant_two: PROVED (was axiom) — from freeCumulant_two + moments + norm_num"
     ],
     "insights": [
       "The semicircle R-transform R_w(z) = z is the simplest possible — only κ₂=1 nonzero, just like the Gaussian",
       "CLTStructure abstraction captures the universal pattern: convolution monoid + cumulant linearization + renormalization = CLT",
       "Muraki classification: exactly 5 universal independences (classical, free, Boolean, monotone, anti-monotone) each with own CLT",
       "Free cumulant scaling proved from linearization axiom + Dirac identity trick (induction)",
-      "Free probability not in Mathlib — all core objects axiomatized, structural theorems proved from axioms"
+      "Free probability not in Mathlib — all core objects axiomatized, structural theorems proved from axioms",
+      "freeMixedMoments axiom was trivial: conclusion f(a,b)=f(a,b) is tautological",
+      "semicircle_cumulant_one/two derivable from freeCumulant_one/two + semicircle moment theorems",
+      "semicircle_fixed_point potentially provable via moment_cumulant_bijection but requires κ₀ handling"
     ],
     "mathlibGaps": [
       "No free probability theory in Mathlib (non-commutative probability spaces, free convolution, R-transforms)",
@@ -159,7 +165,7 @@
       "filename": "CentralLimitTheoremOQ04.lean",
       "lineCount": 649,
       "theoremCount": 15,
-      "axiomCount": 25,
+      "axiomCount": 22,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
