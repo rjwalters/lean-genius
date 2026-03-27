@@ -73,6 +73,60 @@ theorem recipPow2Sum_empty : recipPow2Sum ∅ = 0 := by
 theorem recipPow2Sum_singleton (k : ℕ) : recipPow2Sum {k} = recipPow2Weight k := by
   unfold recipPow2Sum; simp
 
+/-- The weight at k = 0 is 0 -/
+theorem recipPow2Weight_zero : recipPow2Weight 0 = 0 := by
+  unfold recipPow2Weight; simp
+
+/-- The weight at k = 3 is 3/8 -/
+theorem recipPow2Weight_three : recipPow2Weight 3 = 3 / 8 := by
+  unfold recipPow2Weight; norm_num
+
+/-- The sum over any set of positive integers is non-negative -/
+theorem recipPow2Sum_nonneg (S : Finset ℕ) (hS : ∀ k ∈ S, 1 ≤ k) :
+    0 ≤ recipPow2Sum S := by
+  unfold recipPow2Sum
+  apply Finset.sum_nonneg
+  intro k hk
+  exact le_of_lt (recipPow2Weight_pos k (hS k hk))
+
+/-- Adding an element to a disjoint set adds to the sum -/
+theorem recipPow2Sum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    recipPow2Sum (insert k S) = recipPow2Weight k + recipPow2Sum S := by
+  unfold recipPow2Sum
+  exact Finset.sum_insert hk
+
+/-- The sum over a two-element set is the sum of the two weights -/
+theorem recipPow2Sum_pair {a b : ℕ} (hab : a ≠ b) :
+    recipPow2Sum {a, b} = recipPow2Weight a + recipPow2Weight b := by
+  unfold recipPow2Sum
+  rw [Finset.sum_insert (by simp [hab]), Finset.sum_singleton]
+
+/-- Monotonicity: adding positive elements increases the sum -/
+theorem recipPow2Sum_le_of_subset {S T : Finset ℕ}
+    (hST : S ⊆ T) (hT : ∀ k ∈ T, 1 ≤ k) :
+    recipPow2Sum S ≤ recipPow2Sum T := by
+  unfold recipPow2Sum
+  apply Finset.sum_le_sum_of_subset_of_nonneg hST
+  intro k _ _
+  exact le_of_lt (recipPow2Weight_pos k (hT k (by assumption)))
+
+/- ## Partial Sum Formula -/
+
+/-- Key identity: ∑_{k=1}^{n} k/2^k = 2 - (n+2)/2^n.
+    Proved by induction on n. -/
+theorem partial_sum_formula (n : ℕ) :
+    (Finset.range n).sum (fun k => recipPow2Weight (k + 1)) =
+    2 - ((n : ℚ) + 2) / 2 ^ n := by
+  induction n with
+  | zero => simp [recipPow2Weight]; ring
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    unfold recipPow2Weight
+    rw [pow_succ]
+    push_cast
+    field_simp
+    ring
+
 /- ## Known Results -/
 
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
