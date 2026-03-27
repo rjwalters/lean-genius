@@ -22,20 +22,30 @@ Reference: https://erdosproblems.com/5
 
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
 
 /- ## Definitions -/
 
-/-- The n-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...).
-    Axiomatized to avoid computability issues. -/
-axiom nthPrime (n : ℕ) : ℕ
+/-- The n-th prime number (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...).
+    Defined using Mathlib's Nat.nth enumeration of the infinite set of primes.
+    Previously axiomatized; now concrete via Nat.nth. -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
-/-- nthPrime n is always prime for n ≥ 1. -/
-axiom nthPrime_prime (n : ℕ) (hn : 1 ≤ n) : (nthPrime n).Prime
+/-- nthPrime n is always prime.
+    Previously axiomatized (with unnecessary hypothesis 1 ≤ n);
+    now proved directly from the Nat.nth definition. -/
+theorem nthPrime_prime (n : ℕ) : (nthPrime n).Prime := by
+  unfold nthPrime
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
-/-- nthPrime is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
+/-- nthPrime is strictly increasing.
+    Previously axiomatized; now proved from Nat.nth_strictMono. -/
+theorem nthPrime_strictMono : StrictMono nthPrime := by
+  intro a b hab
+  unfold nthPrime
+  exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
 
 /-- The normalized prime gap ratio g(n) = (p_{n+1} - p_n) / log(p_n). -/
 noncomputable def normalizedGap (n : ℕ) : ℝ :=
@@ -60,9 +70,11 @@ axiom gaps_unbounded (M : ℝ) :
   ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ normalizedGap n > M
 
 /-- Hildebrand–Maier: for any C > 0 there exist infinitely many n
-    with g(n) > C. (Strengthening: S contains arbitrarily large finite values.) -/
-axiom hildebrand_maier_large_gaps (C : ℝ) (hC : 0 < C) :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ normalizedGap n > C
+    with g(n) > C. (Strengthening: S contains arbitrarily large finite values.)
+    Previously axiomatized; now derived from gaps_unbounded. -/
+theorem hildebrand_maier_large_gaps (C : ℝ) (hC : 0 < C) :
+    ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ normalizedGap n > C :=
+  gaps_unbounded C
 
 /-- Merikoski (2020): at least 1/3 of any bounded interval [0, T]
     is covered by S. Formally: the Lebesgue measure of
