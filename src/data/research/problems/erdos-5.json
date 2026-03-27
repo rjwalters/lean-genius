@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. 20 theorems, 3 axioms (deep results), 0 sorries. limitPointSet_isClosed proved via diagonal extraction + triangle inequality.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms (8→4). Defined nthPrime via Nat.nth, proved properties, derived redundant axiom. Remaining: zero_is_limit_point, gaps_unbounded, merikoski_density, erdos_5_conjecture (all deep).",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
@@ -45,7 +45,11 @@
       "Updated gallery meta.json: proofRepoPath → Erdos5PrimeGaps.lean, axiomCount 8→3",
       "Fixed limitPoint_nonneg: le_of_tendsto → ge_of_tendsto (Mathlib API change)",
       "Added limitPointSet_isClosed statement with proof outline (sorry, 1 remaining)",
-      "PROVED limitPointSet_isClosed: S is closed as subset of ℝ (Erdos5PrimeGaps.lean:427)"
+      "PROVED limitPointSet_isClosed: S is closed as subset of ℝ (Erdos5PrimeGaps.lean:427)",
+      "Defined nthPrime via Nat.nth Nat.Prime in Erdos5Problem.lean",
+      "Proved nthPrime_prime from Nat.nth_mem_of_infinite",
+      "Proved nthPrime_strictMono from Nat.nth_strictMono",
+      "Derived hildebrand_maier_large_gaps from gaps_unbounded"
     ],
     "insights": [
       "Erdos5PrimeGaps.lean is the main file (343L, well-structured); Erdos5Problem.lean is legacy (81L, all axiomatized)",
@@ -60,7 +64,10 @@
       "Gallery was pointing to legacy Erdos5Problem.lean (8 axioms, 80 lines) instead of main Erdos5PrimeGaps.lean (3 axioms, 380 lines, 19 theorems)",
       "limitPoint_nonneg was broken by Mathlib API change: le_of_tendsto renamed to ge_of_tendsto",
       "limitPointSet_isClosed proof strategy documented: show complement is open via cluster point characterization + triangle inequality",
-      "limitPointSet_isClosed proved: complement is open via contrapositive diagonal extraction (build strictly increasing subsequence from infinite ε-neighborhoods) + triangle inequality (ε/2-ball argument)"
+      "limitPointSet_isClosed proved: complement is open via contrapositive diagonal extraction (build strictly increasing subsequence from infinite ε-neighborhoods) + triangle inequality (ε/2-ball argument)",
+      "nthPrime can be defined as Nat.nth Nat.Prime (from Mathlib.Data.Nat.Prime.Nth) — eliminates 3 axioms",
+      "hildebrand_maier_large_gaps is redundant with gaps_unbounded (same statement with weaker hypothesis C > 0 vs any M)",
+      "4 axioms eliminated in this session: nthPrime (defined), nthPrime_prime (proved), nthPrime_strictMono (proved), hildebrand_maier_large_gaps (derived)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
