@@ -6,10 +6,16 @@ finite tree as an induced subgraph?
 
 ## Key Results
 
-- Gyárfás conjecture: YES for all finite trees
-- Kierstead–Penrice (1994): true for radius-2 trees
-- Scott (1997): true for trees with ≤ 3 leaves (caterpillars, spiders)
+- Gyárfás conjecture (1975): YES for all finite trees (OPEN)
+- Kierstead–Penrice (1994): true for trees of radius ≤ 2
+- Scott (1997): true for caterpillar trees (≤ 3 leaves, spiders)
 - Chudnovsky–Scott–Seymour (2020): partial results for subdivisions
+
+## Formalization Notes
+
+FiniteTree enforces tree structure via Mathlib's IsTree (connected + acyclic).
+Partial results use tree-class predicates (HasRadius, IsCaterpillar) so they
+are genuinely weaker than the full conjecture.
 
 ## References
 
@@ -21,6 +27,7 @@ finite tree as an induced subgraph?
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Acyclic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
@@ -40,10 +47,13 @@ def SimpleGraph.ChromAtMost {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
 def SimpleGraph.HasInfiniteChrom {V : Type*} (G : SimpleGraph V) : Prop :=
   ∀ k : ℕ, ¬G.ChromAtMost k
 
-/-- A tree on n vertices: connected acyclic graph with n − 1 edges.
-    We model finite trees as simple graphs on Fin n. -/
+/-- A finite tree on n vertices: a connected acyclic simple graph on Fin n.
+    Uses Mathlib's `IsTree` (connected + acyclic). Previously this structure
+    carried no tree constraint, making partial results trivially identical
+    to the full conjecture. -/
 structure FiniteTree (n : ℕ) where
   graph : SimpleGraph (Fin n)
+  isTree : graph.IsTree
 
 /-- An induced subgraph isomorphism: an injective map preserving and
     reflecting adjacency. -/
@@ -52,29 +62,21 @@ def SimpleGraph.HasInducedCopy {V : Type*} {n : ℕ}
   ∃ f : Fin n → V, Function.Injective f ∧
     ∀ i j : Fin n, T.Adj i j ↔ G.Adj (f i) (f j)
 
-/- ## Main Conjecture -/
+/- ## Graph Constructions -/
 
-/-- **Erdős Problem #738 / Gyárfás Conjecture** (OPEN):
-    Every triangle-free graph with infinite chromatic number contains
-    every finite tree as an induced subgraph. -/
-axiom gyarfas_conjecture :
-  ∀ {V : Type*} (G : SimpleGraph V),
-    G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ (n : ℕ) (T : FiniteTree n), G.HasInducedCopy T.graph
-
-/- ## Known Partial Results -/
-
-/-- A path on n vertices. -/
+/-- A path on n vertices: vertex i is adjacent to vertex i+1. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
   symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
   loopless := by intro i h; cases h with | inl h => omega | inr h => omega
 
-/-- A star on n+1 vertices: one center adjacent to n leaves. -/
+/-- A star on n+1 vertices: one center (vertex 0) adjacent to n leaves. -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
   symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
   loopless := by intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
+
+/- ## Triangle-Freeness of Constructions -/
 
 /-- Paths are triangle-free: no three vertices in a path are pairwise adjacent,
     since adjacent vertices differ by 1 and no three values can pairwise differ by 1. -/
@@ -102,38 +104,100 @@ theorem starGraph_isTriangleFree {n : ℕ} : (starGraph n).IsTriangleFree := by
   change ((b.val = 0 ∧ c.val ≠ 0) ∨ (c.val = 0 ∧ b.val ≠ 0)) at h3
   omega
 
+/- ## Tree Properties of Constructions -/
+
+/-- The path graph on n+1 ≥ 1 vertices is a tree (connected and acyclic).
+    Connected: vertices 0-1-2-...-n form a path connecting all vertices.
+    Acyclic: adjacent vertices differ by exactly 1, so any closed walk must
+    revisit an edge (forward and backward steps on the same edge). -/
+theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree := by sorry
+
+/-- The star graph K_{1,n} on n+1 vertices is a tree.
+    Connected: every leaf is adjacent to center (vertex 0).
+    Acyclic: every non-center vertex has degree 1, so any closed walk
+    must reuse an edge (a leaf's unique edge to center). -/
+theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree := by sorry
+
+/-- Path on n+1 vertices as a FiniteTree. -/
+def pathTree (n : ℕ) : FiniteTree (n + 1) :=
+  ⟨pathGraph (n + 1), pathGraph_isTree⟩
+
+/-- Star K_{1,n} on n+1 vertices as a FiniteTree. -/
+def starTree (n : ℕ) : FiniteTree (n + 1) :=
+  ⟨starGraph n, starGraph_isTree⟩
+
+/- ## Main Conjecture -/
+
+/-- **Erdős Problem #738 / Gyárfás Conjecture** (OPEN):
+    Every triangle-free graph with infinite chromatic number contains
+    every finite tree as an induced subgraph.
+
+    Now quantifies over actual trees (FiniteTree enforces IsTree),
+    matching the mathematical conjecture precisely. -/
+axiom gyarfas_conjecture :
+  ∀ {V : Type*} (G : SimpleGraph V),
+    G.IsTriangleFree → G.HasInfiniteChrom →
+      ∀ (n : ℕ) (T : FiniteTree n), G.HasInducedCopy T.graph
+
+/- ## Known Partial Results (derived from conjecture) -/
+
 /-- **Paths**: Triangle-free graphs with infinite chromatic number contain
-    paths of every length. This is a known result (Ramsey-type arguments),
-    weaker than the full conjecture. Here derived from the conjecture axiom;
-    an independent proof exists via degeneracy/Ramsey bounds. -/
+    induced paths of every length. Derived from the conjecture axiom.
+    An independent proof exists via degeneracy bounds (not yet formalized). -/
 theorem infinite_chrom_contains_paths :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ n : ℕ, G.HasInducedCopy (pathGraph n) :=
-  fun G htf hinf n => gyarfas_conjecture G htf hinf n ⟨pathGraph n⟩
+      ∀ n : ℕ, G.HasInducedCopy (pathGraph (n + 1)) :=
+  fun G htf hinf n => gyarfas_conjecture G htf hinf (n + 1) (pathTree n)
 
 /-- **Stars**: Triangle-free graphs with infinite chromatic number contain
-    stars of every size. This is a known result (infinite χ implies unbounded
-    degree; triangle-freeness gives independence of neighborhoods).
-    Here derived from the conjecture axiom; an independent proof exists
-    via greedy coloring of bounded-degree graphs. -/
+    induced stars of every size. Derived from the conjecture axiom.
+    An independent proof exists via greedy coloring bounds (not yet formalized). -/
 theorem infinite_chrom_contains_stars :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
       ∀ n : ℕ, G.HasInducedCopy (starGraph n) :=
-  fun G htf hinf n => gyarfas_conjecture G htf hinf (n + 1) ⟨starGraph n⟩
+  fun G htf hinf n => gyarfas_conjecture G htf hinf (n + 1) (starTree n)
+
+/- ## Tree-Class Predicates -/
+
+/-- A graph has radius ≤ r: there exists a center vertex c such that every
+    vertex can be reached by a walk of length ≤ r from c. -/
+def SimpleGraph.HasRadius {V : Type*} (G : SimpleGraph V) (r : ℕ) : Prop :=
+  ∃ c : V, ∀ v : V, ∃ w : G.Walk c v, w.length ≤ r
+
+/-- A caterpillar graph: every vertex is either on a central path ("spine")
+    or adjacent to a spine vertex. Removing all degree-1 vertices from a
+    caterpillar yields a path. -/
+def SimpleGraph.IsCaterpillar {V : Type*} (G : SimpleGraph V) : Prop :=
+  ∃ (m : ℕ) (spine : Fin m → V),
+    Function.Injective spine ∧
+    (∀ i j : Fin m, (pathGraph m).Adj i j → G.Adj (spine i) (spine j)) ∧
+    ∀ v : V, (∃ i, spine i = v) ∨ (∃ i, G.Adj v (spine i))
+
+/- ## Partial Results with Tree-Class Predicates -/
 
 /-- **Kierstead–Penrice (1994)**: The conjecture holds for trees of radius ≤ 2.
-    NOTE: FiniteTree carries no structural constraint (no acyclicity/radius check),
-    so this formal statement covers ALL finite graphs, not just radius-2 trees.
-    The previous axiom had a vacuous `True →` hypothesis. Now derived from the
-    full conjecture. A proper formalization would define a radius predicate. -/
+    The HasRadius constraint restricts to a proper subclass of trees,
+    making this genuinely weaker than the full conjecture.
+    Here derived from the full conjecture axiom. -/
 theorem kierstead_penrice_radius2 :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ (n : ℕ) (T : FiniteTree n),
+      ∀ (n : ℕ) (T : FiniteTree n), T.graph.HasRadius 2 →
         G.HasInducedCopy T.graph :=
-  fun G htf hinf n T => gyarfas_conjecture G htf hinf n T
+  fun G htf hinf n T _ => gyarfas_conjecture G htf hinf n T
+
+/-- **Scott (1997)**: The conjecture holds for caterpillar trees
+    (trees where all vertices are within distance 1 of a central path).
+    The IsCaterpillar constraint restricts to a proper subclass of trees.
+    Here derived from the full conjecture axiom. -/
+theorem scott_caterpillars :
+  ∀ {V : Type*} (G : SimpleGraph V),
+    G.IsTriangleFree → G.HasInfiniteChrom →
+      ∀ (n : ℕ) (T : FiniteTree n), T.graph.IsCaterpillar →
+        G.HasInducedCopy T.graph :=
+  fun G htf hinf n T _ => gyarfas_conjecture G htf hinf n T
 
 /- ## Structural Observations -/
 
@@ -153,26 +217,17 @@ theorem triangle_free_large_chrom_local_tree :
     exact hinf 1 ⟨⟨fun v => h.elim v, fun {v} => h.elim v⟩⟩
   exact ⟨hne.some, fun _ _ => hinf k⟩
 
-/-- The conjecture generalizes: for any forest F, does every triangle-free
-    graph with χ(G) ≥ f(|F|) contain F as an induced subgraph? -/
+/-- The finite version of the conjecture: for any tree T, there exists a
+    chromatic threshold N such that any triangle-free graph with χ > N
+    contains T as an induced subgraph. -/
 axiom gyarfas_finite_version :
   ∀ (n : ℕ) (T : FiniteTree n),
     ∃ N : ℕ, ∀ {V : Type*} [Fintype V] (G : SimpleGraph V),
       G.IsTriangleFree → ¬G.ChromAtMost N →
         G.HasInducedCopy T.graph
 
-/-- **Scott (1997)**: The conjecture holds for subdivided stars
-    (caterpillars and spiders with ≤ 3 legs). NOTE: The previous axiom
-    incorrectly stated the conclusion as paths only. Now derived from the
-    full conjecture. A proper formalization would define caterpillar graphs. -/
-theorem scott_caterpillars :
-  ∀ {V : Type*} (G : SimpleGraph V),
-    G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ (n : ℕ) (T : FiniteTree n), G.HasInducedCopy T.graph :=
-  fun G htf hinf n T => gyarfas_conjecture G htf hinf n T
-
-/-- Relationship: the conjecture for k-chromatic (finite bound) implies the
-    infinite chromatic case by compactness. -/
+/-- Relationship: the finite chromatic bound version implies the infinite
+    chromatic case by compactness (De Bruijn–Erdős). -/
 theorem finite_implies_infinite_version
     (hfin : ∀ (n : ℕ) (T : FiniteTree n),
       ∃ N : ℕ, ∀ {V : Type*} [Fintype V] (G : SimpleGraph V),
