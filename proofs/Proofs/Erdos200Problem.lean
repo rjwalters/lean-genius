@@ -63,9 +63,17 @@ axiom prime_ap_upper_pnt :
 axiom green_tao :
   ∀ k : ℕ, ∃ N : ℕ, IsPrimeAP k N
 
-/-- Consequence: longestPrimeAP N is unbounded. -/
-axiom longest_prime_ap_unbounded :
-  ∀ M : ℕ, ∃ N : ℕ, longestPrimeAP N ≥ M
+/-- Consequence: longestPrimeAP N is unbounded.
+    Proof: from green_tao, IsPrimeAP M N holds for some N,
+    so M ∈ the sSup set and longestPrimeAP N ≥ M. -/
+theorem longest_prime_ap_unbounded :
+    ∀ M : ℕ, ∃ N : ℕ, longestPrimeAP N ≥ M := by
+  intro M
+  obtain ⟨N, hN⟩ := green_tao M
+  exact ⟨N, le_csSup ⟨N + 1, fun k ⟨a, d, hd, _, hle⟩ => by
+    rcases k with _ | k
+    · omega
+    · have := hle k (by omega); omega⟩ hN⟩
 
 /- ## Main Conjecture -/
 
@@ -80,11 +88,15 @@ axiom erdos_200_conjecture :
 
 /- ## Known Bounds and Examples -/
 
-/-- The AP {3, 5, 7} has length 3 — trivial example. -/
-axiom prime_ap_3 : IsPrimeAP 3 7
+/-- The AP {3, 5, 7} has length 3 — proved by explicit construction. -/
+theorem prime_ap_3 : IsPrimeAP 3 7 :=
+  ⟨3, 2, by omega, fun i hi => by interval_cases i <;> native_decide,
+   fun i hi => by interval_cases i <;> omega⟩
 
-/-- The AP {5, 11, 17, 23, 29} has length 5. -/
-axiom prime_ap_5 : IsPrimeAP 5 29
+/-- The AP {5, 11, 17, 23, 29} has length 5 — proved by explicit construction. -/
+theorem prime_ap_5 : IsPrimeAP 5 29 :=
+  ⟨5, 6, by omega, fun i hi => by interval_cases i <;> native_decide,
+   fun i hi => by interval_cases i <;> omega⟩
 
 /-- Green–Tao–Maynard: quantitative bounds on the least N containing
     a prime AP of length k. The best bounds give
@@ -100,14 +112,14 @@ axiom green_tao_quantitative :
     the expected number of prime k-APs with difference d ≤ x is
     ~ c_k · x / (log x)^k, predicting longestPrimeAP(N) ~ c · log N
     for some constant c < 1. -/
-axiom hardy_littlewood_prediction :
-  True  -- Predicts longestPrimeAP(N) ~ c · log N, NOT o(log N)
+theorem hardy_littlewood_prediction :
+    True := trivial  -- Predicts longestPrimeAP(N) ~ c · log N, NOT o(log N)
 
 /-- Note: the Hardy–Littlewood prediction suggests the answer to
     Erdős's question might be NO — the longest prime AP could be
     Θ(log N), not o(log N). This makes the problem delicate. -/
-axiom hl_suggests_negative :
-  True  -- Heuristically, longestPrimeAP(N) / log(N) → c for some c ∈ (0,1]
+theorem hl_suggests_negative :
+    True := trivial  -- Heuristically, longestPrimeAP(N) / log(N) → c for some c ∈ (0,1]
 
 /- ## Structural Observations -/
 
@@ -120,6 +132,7 @@ axiom ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
 
 /-- The primorial constraint means a prime AP of length k uses
     numbers up to at least a + (k-1) · k#, which grows rapidly. -/
-axiom primorial_growth :
-  ∀ ε : ℝ, ε > 0 → ∃ K₀ : ℕ, ∀ k : ℕ, k > K₀ →
-    True  -- k# ≥ e^((1-ε)k)
+theorem primorial_growth :
+    ∀ ε : ℝ, ε > 0 → ∃ K₀ : ℕ, ∀ k : ℕ, k > K₀ →
+      True := -- k# ≥ e^((1-ε)k)
+  fun _ _ => ⟨0, fun _ _ => trivial⟩

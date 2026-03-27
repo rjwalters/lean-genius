@@ -66,9 +66,9 @@
       "ap_difference_primorial: Axiom encoding the primorial divisibility constraint on AP differences"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 11,
-    "lineCount": 125,
-    "assumptions": "11 axioms: prime_ap_upper_pnt, green_tao, longest_prime_ap_unbounded, and 8 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 131,
+    "assumptions": "5 axioms: prime_ap_upper_pnt (PNT bound), green_tao (arbitrarily long prime APs), erdos_200_conjecture (OPEN), green_tao_quantitative (effective bounds), ap_difference_primorial (primorial divisibility). Proved: longest_prime_ap_unbounded (from green_tao), prime_ap_3/5 (explicit construction), hardy_littlewood_prediction/hl_suggests_negative/primorial_growth (trivial True).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -160,9 +160,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 125,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 131,
+    "axiomCount": 5,
+    "theoremCount": 6,
     "definitionCount": 3
   },
   "crossReferences": [
