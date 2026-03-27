@@ -154,8 +154,47 @@ noncomputable def largePrimeSum (n : ℕ) : ℝ :=
       (1 : ℝ) / (a : ℝ)
     else 0
 
-/-- Erdős also asked whether the restricted sums individually diverge. -/
-axiom erdos_460_restricted_question :
+/-- Each term of smallPrimeDivisibleSum is bounded by the corresponding
+term of sieveReciprocalSum, since the filter condition is strictly stronger. -/
+private lemma smallPrime_le_sieveReciprocal (n : ℕ) :
+    smallPrimeDivisibleSum n ≤ sieveReciprocalSum n := by
+  unfold smallPrimeDivisibleSum sieveReciprocalSum
+  apply Finset.sum_le_sum
+  intro k _
+  dsimp only []
+  split_ifs with h1 h2
+  · exact le_refl _
+  · exact absurd ⟨h1.1, h1.2.1⟩ h2
+  · positivity
+  · exact le_refl _
+
+/-- Each term of largePrimeSum is bounded by the corresponding
+term of sieveReciprocalSum, since the filter condition is strictly stronger. -/
+private lemma largePrime_le_sieveReciprocal (n : ℕ) :
+    largePrimeSum n ≤ sieveReciprocalSum n := by
+  unfold largePrimeSum sieveReciprocalSum
+  apply Finset.sum_le_sum
+  intro k _
+  dsimp only []
+  split_ifs with h1 h2
+  · exact le_refl _
+  · exact absurd ⟨h1.1, h1.2.1⟩ h2
+  · positivity
+  · exact le_refl _
+
+/-- If either restricted sum diverges, the full reciprocal sum diverges too,
+since each restricted sum is a sub-sum of the full sieveReciprocalSum. -/
+theorem erdos_460_restricted_question :
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, smallPrimeDivisibleSum n > M) ∨
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, largePrimeSum n > M) →
-    ErdosProblem460
+    ErdosProblem460 := by
+  intro h
+  unfold ErdosProblem460
+  intro M hM
+  rcases h with h_small | h_large
+  · obtain ⟨N₀, hN₀⟩ := h_small M hM
+    exact ⟨N₀, fun n hn =>
+      lt_of_lt_of_le (hN₀ n hn) (smallPrime_le_sieveReciprocal n)⟩
+  · obtain ⟨N₀, hN₀⟩ := h_large M hM
+    exact ⟨N₀, fun n hn =>
+      lt_of_lt_of_le (hN₀ n hn) (largePrime_le_sieveReciprocal n)⟩

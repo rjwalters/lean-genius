@@ -54,9 +54,9 @@
       "Definition of the least-prime-factor filtered sum f(n) and its sufficiency axiom",
       "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erdős's question about individual divergence"
     ],
-    "axiomCount": 5,
-    "lineCount": 161,
-    "assumptions": "5 axioms: sieve_greedy (provable from construction, needs nonemptiness proof), eggleton_erdos_selfridge (deep result), sieve_conjectured_bound (conjecture), filtered_sum_implies_full, erdos_460_restricted_question. sieve_initial proved from constructive definition."
+    "axiomCount": 4,
+    "lineCount": 201,
+    "assumptions": "4 axioms: sieve_greedy (provable from construction, needs nonemptiness proof), eggleton_erdos_selfridge (deep result), sieve_conjectured_bound (conjecture), filtered_sum_implies_full. sieve_initial proved from constructive definition. erdos_460_restricted_question proved via sub-sum comparison (restricted sums ≤ full reciprocal sum)."
   },
   "leanFile": {
     "imports": [
@@ -69,9 +69,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 161,
-    "axiomCount": 5,
-    "theoremCount": 1,
+    "lineCount": 201,
+    "axiomCount": 4,
+    "theoremCount": 4,
     "definitionCount": 8
   },
   "crossReferences": [
