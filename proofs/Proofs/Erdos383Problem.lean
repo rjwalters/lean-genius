@@ -22,8 +22,9 @@ occur with positive density, supporting an affirmative conjecture.
 
 **Reference:** Erdős & Graham 1980 [ErGr80]
 
-**Proved in this file (7 theorems):**
+**Proved in this file (8 theorems):**
 - hasLargestPrimeFactor_iff: equivalence of largest prime factor definitions
+- conjecture_equiv: ErdosConjecture383 ↔ ErdosConjecture383' (was axiom, now proved)
 - zero_good: every prime is 0-good (p is largest prime factor of p²)
 - infinitely_many_zero_good: infinitely many 0-good primes
 - kGood_iff_smooth: k-good iff all p²+i are p-smooth
@@ -67,6 +68,33 @@ theorem hasLargestPrimeFactor_iff (n p : ℕ) (hn : n ≠ 0) :
       fun q hq_mem => by
         rw [Nat.mem_primeFactors] at hq_mem
         exact hmax q hq_mem.1 hq_mem.2.1⟩
+
+/-- The largest prime factor of n, or 0 if n ≤ 1. -/
+noncomputable def maxPrimeFac (n : ℕ) : ℕ :=
+  if h : n.primeFactors.Nonempty then n.primeFactors.max' h else 0
+
+private lemma maxPrimeFac_mem {n : ℕ} (hn : n.primeFactors.Nonempty) :
+    maxPrimeFac n ∈ n.primeFactors := by
+  simp only [maxPrimeFac, dif_pos hn]
+  exact Finset.max'_mem _ hn
+
+private lemma le_maxPrimeFac {n q : ℕ} (hq : q ∈ n.primeFactors) :
+    q ≤ maxPrimeFac n := by
+  have hne : n.primeFactors.Nonempty := ⟨q, hq⟩
+  simp only [maxPrimeFac, dif_pos hne]
+  exact Finset.le_max' _ _ hq
+
+/-- hasLargestPrimeFactor and maxPrimeFac agree when primeFactors is nonempty. -/
+private lemma hasLargestPrimeFactor_iff_maxPrimeFac {n p : ℕ}
+    (hne : n.primeFactors.Nonempty) :
+    hasLargestPrimeFactor n p ↔ maxPrimeFac n = p := by
+  simp only [hasLargestPrimeFactor, primeDivisors]
+  constructor
+  · intro ⟨hp_mem, hmax⟩
+    exact le_antisymm (hmax _ (maxPrimeFac_mem hne)) (le_maxPrimeFac hp_mem)
+  · intro heq
+    subst heq
+    exact ⟨maxPrimeFac_mem hne, fun q hq => le_maxPrimeFac hq⟩
 
 /-
 # Part 2: The Product Definition
@@ -136,9 +164,31 @@ def ErdosConjecture383 : Prop :=
   ∀ k : ℕ, (kGoodPrimes k).Infinite
 
 def ErdosConjecture383' : Prop :=
-  ∀ k : ℕ, {p : ℕ | p.Prime ∧ Nat.maxPrimeFac (consecutiveSquareProduct p k) = p}.Infinite
+  ∀ k : ℕ, {p : ℕ | p.Prime ∧ maxPrimeFac (consecutiveSquareProduct p k) = p}.Infinite
 
-axiom conjecture_equiv : ErdosConjecture383 ↔ ErdosConjecture383'
+theorem conjecture_equiv : ErdosConjecture383 ↔ ErdosConjecture383' := by
+  simp only [ErdosConjecture383, ErdosConjecture383', kGoodPrimes]
+  apply forall_congr'
+  intro k
+  congr 1
+  ext p
+  simp only [Set.mem_setOf_eq, isKGood]
+  constructor
+  · intro ⟨hp, hlpf⟩
+    refine ⟨hp, ?_⟩
+    have hne : (consecutiveSquareProduct p k).primeFactors.Nonempty := ⟨p, hlpf.1⟩
+    exact (hasLargestPrimeFactor_iff_maxPrimeFac hne).mp hlpf
+  · intro ⟨hp, heq⟩
+    refine ⟨hp, ?_⟩
+    have hp_mem : p ∈ (consecutiveSquareProduct p k).primeFactors := by
+      rw [Nat.mem_primeFactors]
+      refine ⟨hp, ?_, consecutiveSquareProduct_ne_zero hp⟩
+      rw [consecutiveSquareProduct_eq]
+      apply dvd_trans (dvd_pow_self p 2)
+      have : p ^ 2 + 0 = p ^ 2 := by ring
+      rw [← this]
+      exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.zero_lt_succ k))
+    exact (hasLargestPrimeFactor_iff_maxPrimeFac ⟨p, hp_mem⟩).mpr heq
 
 /-
 # Part 5: Partial Results
@@ -238,7 +288,7 @@ def erdos_383_status : String := "OPEN"
 
 theorem erdos_383_statement :
     ErdosConjecture383' ↔
-    ∀ k, {p : ℕ | p.Prime ∧ Nat.maxPrimeFac (∏ i ∈ Icc 0 k, (p ^ 2 + i)) = p}.Infinite := by
+    ∀ k, {p : ℕ | p.Prime ∧ maxPrimeFac (∏ i ∈ Icc 0 k, (p ^ 2 + i)) = p}.Infinite := by
   simp only [ErdosConjecture383', consecutiveSquareProduct]
 
 end Erdos383
