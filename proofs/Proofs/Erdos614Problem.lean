@@ -18,6 +18,12 @@ has high maximum degree?
 Reference: [FRS97] (original source)
 
 Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
+
+Results:
+- erdos_614_existence: proved from f_upper_bound
+- f_max_k: identified as FALSE and removed (star graph counterexample)
+Axioms: 4 (f_lower_bound, f_upper_bound, f_case_k_eq_1, f_mono_k)
+Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -113,11 +119,14 @@ axiom f_case_k_eq_1 :
   ∀ n : ℕ, n ≥ 3 →
     ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2
 
-/-- Case k = n - 2: every n-subset must have max degree ≥ n - 2,
-    forcing the complete graph as the only possibility. -/
-axiom f_max_k :
-  ∀ n : ℕ, n ≥ 2 →
-    ∀ m, existsGraphWithPropertyP n (n - 2) m → m ≥ n * (n - 1) / 2
+/-- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
+    COUNTEREXAMPLE: The star graph K_{1,n-1} has n-1 edges and satisfies P(n-2),
+    since the center has degree n-1 ≥ n-2 in the only n-subset (= V itself).
+    So f(n, n-2) ≤ n-1 << n(n-1)/2 for n ≥ 4.
+
+    The correct statement is: P(n-2) only requires max degree ≥ n-2 in the
+    whole graph, which a single high-degree vertex achieves. -/
+theorem f_max_k_false_note : True := trivial
 
 /-
 ## Part 6: Monotonicity
@@ -148,9 +157,11 @@ Currently unknown:
 
 We formalize the known structural results: bounds, special cases,
 and monotonicity. The exact determination remains open. -/
-axiom erdos_614_existence :
-  ∀ n k : ℕ, n ≥ k + 2 → k > 0 →
-    ∃ m, existsGraphWithPropertyP n k m
+theorem erdos_614_existence :
+    ∀ n k : ℕ, n ≥ k + 2 → k > 0 →
+      ∃ m, existsGraphWithPropertyP n k m := by
+  intro n k hn _
+  exact ⟨n * (n - 1) / 2, f_upper_bound n k (by omega)⟩
 
 /-
 ## Part 8: Summary
@@ -162,9 +173,9 @@ Summarizes what is known:
 1. The function f(n,k) is well-defined (complete graph gives upper bound)
 2. Lower bound: at least kn/2 edges needed
 3. k=1: at least n-2 edges
-4. k=n-2: complete graph required
-5. Monotone in k parameter
-6. Exact formula: UNKNOWN -/
+4. Monotone in k parameter
+5. Exact formula: UNKNOWN
+Note: k=n-2 does NOT force complete graph (star suffices; false axiom removed). -/
 theorem erdos_614_summary :
     -- The function is well-defined (existence)
     (∀ n k : ℕ, n ≥ k + 2 → k > 0 →
