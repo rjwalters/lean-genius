@@ -77,13 +77,29 @@ theorem sumDivisors_one : σ(1) = 1 := by
   simp [sumDivisors, Nat.divisors_one]
 
 /-- σ(p) = 1 + p for prime p -/
-axiom sumDivisors_prime (p : ℕ) (hp : p.Prime) : σ(p) = 1 + p
+theorem sumDivisors_prime (p : ℕ) (hp : p.Prime) : σ(p) = 1 + p := by
+  simp only [sumDivisors, Nat.divisors_prime_eq hp, Finset.sum_pair hp.one_lt.ne', id]
 
 /-- σ(n) ≥ n for all n ≥ 1 -/
-axiom sumDivisors_ge (n : ℕ) (hn : n ≥ 1) : σ(n) ≥ n
+theorem sumDivisors_ge (n : ℕ) (hn : n ≥ 1) : σ(n) ≥ n := by
+  unfold sumDivisors
+  have : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  exact le_trans (le_of_eq rfl) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) this)
 
 /-- σ(n) > n for n > 1 (n divides itself and 1 divides n) -/
-axiom sumDivisors_gt (n : ℕ) (hn : n > 1) : σ(n) > n
+theorem sumDivisors_gt (n : ℕ) (hn : n > 1) : σ(n) > n := by
+  unfold sumDivisors
+  have h1 : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_mem : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have hne : (1 : ℕ) ≠ n := by omega
+  have hsub : {1, n} ⊆ n.divisors := by
+    intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  calc n.divisors.sum id
+      ≥ ({1, n} : Finset ℕ).sum id :=
+        Finset.sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => Nat.zero_le _)
+    _ = 1 + n := by rw [Finset.sum_pair hne]; rfl
+    _ > n := by omega
 
 /-- φ(1) = 1 -/
 theorem totient_one : (1 : ℕ).totient = 1 := by native_decide

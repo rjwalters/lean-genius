@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/533",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 173,
-    "assumptions": "4 axioms: ehsss_result, k4_free_triangle_free_subset, erdos_rogers_counterexample, and 1 more. See Lean source for complete statements.",
+    "lineCount": 195,
+    "assumptions": "4 axioms: ehsss_result (EHSSS partial result), k4_free_triangle_free_subset (K4-free case), erdos_rogers_counterexample (K7 counterexample), erdos_533_conjecture (the open conjecture). All are deep published results or open problems.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -139,16 +139,13 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Tactic",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 173,
+    "lineCount": 195,
     "axiomCount": 4,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 5
   },
   "references": [

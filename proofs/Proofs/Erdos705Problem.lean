@@ -240,6 +240,40 @@ axiom erdos_1959_girth_chromatic :
     (g : ℕ∞) ≤ G.girth ∧ G.chromaticNumber ≥ k
 
 /-
+# Part 7b: Lower Bound on the Threshold
+
+Any threshold k satisfying the conjecture must be at least 6.
+-/
+
+/--
+**Lower Bound: k ≥ 6**
+
+If there exists k such that girth ≥ k implies χ ≤ 3, then k ≥ 6.
+Proof: Wormald's graph has girth ≥ 5 and χ = 4, so k ≤ 5 doesn't work.
+-/
+theorem threshold_ge_6 (k : ℕ)
+    (hk : ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),
+      hasGirthAtLeast (unitDistGraph ↑V) k →
+      (unitDistGraph ↑V).chromaticNumber ≤ 3) :
+    6 ≤ k := by
+  by_contra h
+  push_neg at h
+  obtain ⟨V, _, hg, hchi⟩ := wormald_graph_exists
+  have hgk : hasGirthAtLeast (unitDistGraph ↑V) k := by
+    unfold hasGirthAtLeast
+    exact le_trans (by exact_mod_cast (by omega : k ≤ 5)) hg
+  have h3 := hk V hgk
+  omega
+
+/-- If the conjecture holds, any witnessing k is at least 6. -/
+theorem erdos_705_conjecture_lower (h : erdos_705_conjecture) :
+    ∃ k : ℕ, 6 ≤ k ∧ ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),
+    hasGirthAtLeast (unitDistGraph ↑V) k →
+    (unitDistGraph ↑V).chromaticNumber ≤ 3 := by
+  obtain ⟨k, hk⟩ := h
+  exact ⟨k, threshold_ge_6 k hk, hk⟩
+
+/-
 # Part 8: Vertex Count Growth
 
 How the size of constructions grows with girth.

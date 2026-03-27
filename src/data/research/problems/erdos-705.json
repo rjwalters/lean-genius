@@ -29,16 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Replaced axiomatized chromaticNumber' and girth' with Mathlib SimpleGraph.chromaticNumber and SimpleGraph.girth (8→6 axioms).",
+    "progressSummary": "PROGRESS: 8→6 axioms (Mathlib defs). Added threshold_ge_6 and erdos_705_conjecture_lower proving k≥6 from Wormald. 6 theorems total.",
     "builtItems": [
       "Replaced axiom chromaticNumber' with Mathlib SimpleGraph.chromaticNumber",
       "Replaced axiom girth' with Mathlib SimpleGraph.girth",
-      "Added import Mathlib.Combinatorics.SimpleGraph.Girth"
+      "Added import Mathlib.Combinatorics.SimpleGraph.Girth",
+      "threshold_ge_6: proved k≥6 lower bound from Wormald axiom",
+      "erdos_705_conjecture_lower: conjecture implies ∃k≥6 with the threshold property"
     ],
     "insights": [
       "chromaticNumber' and girth' were unnecessary axiom-definitions — Mathlib provides real definitions",
       "SimpleGraph.chromaticNumber returns ℕ, SimpleGraph.girth returns ℕ∞ (⊤ for acyclic)",
-      "hasGirthAtLeast simplifies to (k : ℕ∞) ≤ G.girth, naturally handling acyclic case"
+      "hasGirthAtLeast simplifies to (k : ℕ∞) ≤ G.girth, naturally handling acyclic case",
+      "threshold_ge_6: any k satisfying conjecture must be ≥ 6 (derived from Wormald girth-5 construction)",
+      "All 6 remaining axioms are concrete construction claims or deep results — none easily eliminable"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

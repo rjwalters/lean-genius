@@ -20,6 +20,9 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.Data.Set.Card
 
 open Nat Set
 
@@ -111,8 +114,9 @@ For small k, the smallest n such that 2^n ≡ k (mod n) can be enormous.
 /--
 For k = 2, all odd primes p satisfy 2^p ≡ 2 (mod p) by Fermat's Little Theorem.
 -/
-axiom odd_primes_give_two (p : ℕ) (hp : Nat.Prime p) (hodd : p > 2) :
-    p ∈ SolutionSet 2
+theorem odd_primes_give_two (p : ℕ) (hp : Nat.Prime p) (_hodd : p > 2) :
+    p ∈ SolutionSet 2 :=
+  ⟨hp.pos, fermat_little p hp⟩
 
 /--
 For k = 3, the smallest solution is n = 4700063497.
@@ -146,15 +150,32 @@ Why is 2^n (mod n) difficult to analyze?
 By Fermat's Little Theorem, 2^p ≡ 2 (mod p) for any prime p.
 This is the key to proving SolutionSet(2) is infinite.
 -/
-axiom fermat_little (p : ℕ) (hp : Nat.Prime p) :
-    (2 : ℤ) ^ p ≡ 2 [ZMOD p]
+theorem fermat_little (p : ℕ) (hp : Nat.Prime p) :
+    (2 : ℤ) ^ p ≡ 2 [ZMOD p] := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  -- In ZMod p, x^p = x for all x (Fermat's Little Theorem for finite fields)
+  have key : (2 : ZMod p) ^ p = 2 := by
+    rw [← ZMod.card p]; exact FiniteField.pow_card _
+  -- This gives p ∣ (2^p - 2) as integers
+  have hdvd : (p : ℤ) ∣ ((2 : ℤ) ^ p - 2) := by
+    rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
+    push_cast
+    exact sub_eq_zero.mpr key
+  -- Convert to modular equivalence
+  rw [Int.modEq_iff_dvd, show (2 : ℤ) - (2 : ℤ) ^ p = -((2 : ℤ) ^ p - 2) from by ring]
+  exact dvd_neg.mpr hdvd
 
 /--
 The infinitude of SolutionSet(2) follows from infinitude of odd primes.
 Since there are infinitely many odd primes, and each is in SolutionSet(2),
 the set is infinite.
 -/
-axiom solution_set_two_infinite : (SolutionSet 2).Infinite
+theorem solution_set_two_infinite : (SolutionSet 2).Infinite := by
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro n
+  obtain ⟨p, hle, hp⟩ := Nat.exists_infinite_primes (max (n + 1) 3)
+  exact ⟨p, odd_primes_give_two p hp (by omega), by omega⟩
 
 /-
 ## The OEIS Connection
