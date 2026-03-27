@@ -29,21 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Formalized BV statement, Chebyshev psi functions, level of distribution concept, EH conjecture. Mapped 4-layer prerequisite roadmap (~12000 lines). Key finding: ~70% of Mathlib prerequisites exist; Polya-Vinogradov inequality is the critical missing piece.",
+    "progressSummary": "Eliminated 1 of 4 axioms (maynard_under_eh). Remaining 3 axioms and 2 sorries blocked by opaque minAdmissibleDiameter.",
     "builtItems": [
       "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
       "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
       "BoundedPrimeGapsOQ04.lean: hasLevelOfDistribution, bv_gives_half_level",
       "BoundedPrimeGapsOQ04.lean: ElliottHalberstamConjecture formal statement",
       "BoundedPrimeGapsOQ04.lean: BVPrerequisiteLayer with effort estimates (12000 lines)",
-      "Gallery entry with meta.json and index.ts"
+      "Gallery entry with meta.json and index.ts",
+      "Eliminated maynard_under_eh axiom (proved from minAdmissibleDiameter_3)",
+      "Replaced trivial elliott_halberstam_improvement with eh_improvement_ratio and eh_bound_lt_unconditional"
     ],
     "insights": [
       "BV gives RH-quality results without RH — primes equidistribute on average over moduli q <= sqrt(x)",
       "4 prerequisite layers: character sums (2k lines) -> analytic core (5k) -> sieve methods (3k) -> assembly (2k)",
       "Polya-Vinogradov inequality is the single most impactful missing result for number theory in Mathlib",
       "Formalizing BV would replace 1 of 3 axioms in BoundedPrimeGaps.lean (maynard_tao_sieve)",
-      "Mathlib already has Dirichlet characters, L-functions, primes in AP, PNT — roughly 70% coverage"
+      "Mathlib already has Dirichlet characters, L-functions, primes in AP, PNT — roughly 70% coverage",
+      "maynard_under_eh axiom is redundant: D(3)=6≤12 witnesses it directly from minAdmissibleDiameter_3",
+      "Remaining 3 axioms are opaque function values that cannot be eliminated without making minAdmissibleDiameter computable",
+      "2 sorries (diameter_lower_bound, diameter_upper_bound_exists) also blocked by opaque function"
     ],
     "mathlibGaps": [
       "Polya-Vinogradov inequality (character sum bounds)",
