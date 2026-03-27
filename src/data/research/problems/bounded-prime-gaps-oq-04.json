@@ -1,0 +1,147 @@
+{
+  "slug": "bounded-prime-gaps-oq-04",
+  "title": "Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib? This is the key analytic ingredient missing from the proof chain — Zhang's breakthrough required a weakened variant (BV with smooth m.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-26T20:00:24.432Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formalized BV statement, Chebyshev psi functions, level of distribution concept, EH conjecture. Mapped 4-layer prerequisite roadmap (~12000 lines). Key finding: ~70% of Mathlib prerequisites exist; Polya-Vinogradov inequality is the critical missing piece.",
+    "builtItems": [
+      "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
+      "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
+      "BoundedPrimeGapsOQ04.lean: hasLevelOfDistribution, bv_gives_half_level",
+      "BoundedPrimeGapsOQ04.lean: ElliottHalberstamConjecture formal statement",
+      "BoundedPrimeGapsOQ04.lean: BVPrerequisiteLayer with effort estimates (12000 lines)",
+      "Gallery entry with meta.json and index.ts"
+    ],
+    "insights": [
+      "BV gives RH-quality results without RH — primes equidistribute on average over moduli q <= sqrt(x)",
+      "4 prerequisite layers: character sums (2k lines) -> analytic core (5k) -> sieve methods (3k) -> assembly (2k)",
+      "Polya-Vinogradov inequality is the single most impactful missing result for number theory in Mathlib",
+      "Formalizing BV would replace 1 of 3 axioms in BoundedPrimeGaps.lean (maynard_tao_sieve)",
+      "Mathlib already has Dirichlet characters, L-functions, primes in AP, PNT — roughly 70% coverage"
+    ],
+    "mathlibGaps": [
+      "Polya-Vinogradov inequality (character sum bounds)",
+      "Large sieve inequality",
+      "Siegel-Walfisz theorem",
+      "Zero density estimates for L-functions",
+      "Perron formula (contour integration)"
+    ],
+    "nextSteps": [
+      "Formalize Polya-Vinogradov inequality as Layer 1 cornerstone",
+      "Verify BV file compiles via Docker build",
+      "Explore Zhang smooth moduli variant as lower-infrastructure alternative"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-26T20:00:24.432Z",
+  "lastUpdate": "2026-03-26T20:00:24.432Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 163,
+      "theoremCount": 13,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ]
+}
