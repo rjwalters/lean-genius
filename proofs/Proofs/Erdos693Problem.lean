@@ -282,7 +282,44 @@ axiom divisor_density_ford :
     ∀ᶠ n in atTop, ∀ k : ℕ, k ≥ 2 → ∀ hn : (n : ℕ) ≥ 1,
       (countA n k hn : ℝ) ≥ (n ^ k - n : ℝ) / (2 * Real.log n)
 
-/- ## Part X: Alternative Formulation -/
+/- ## Part X: orderedA Properties -/
+
+/-- The sorted list of A is sorted in increasing order. -/
+theorem orderedA_sorted (n k : ℕ) (hn : n ≥ 1) :
+    (orderedA n k hn).Sorted (· ≤ ·) :=
+  Finset.sort_sorted (· ≤ ·) _
+
+/-- Membership in orderedA iff membership in setAFinset. -/
+theorem mem_orderedA_iff {n k : ℕ} (hn : n ≥ 1) (m : ℕ) :
+    m ∈ orderedA n k hn ↔ m ∈ setAFinset n k hn := by
+  simp [orderedA, Finset.mem_sort]
+
+/-- Every element of orderedA is in [n, n^k]. -/
+theorem orderedA_bounds {n k : ℕ} (hn : n ≥ 1) {m : ℕ}
+    (hm : m ∈ orderedA n k hn) : n ≤ m ∧ m ≤ n ^ k :=
+  Finset.mem_Icc.mp (setAFinset_subset_Icc n k hn ((mem_orderedA_iff hn m).mp hm))
+
+/-- The length of orderedA equals |A|. -/
+theorem orderedA_length (n k : ℕ) (hn : n ≥ 1) :
+    (orderedA n k hn).length = (setAFinset n k hn).card :=
+  Finset.length_sort _
+
+/-- orderedA is nonempty when n ≥ 2 and k ≥ 2. -/
+theorem orderedA_ne_nil {n k : ℕ} (hn : n ≥ 2) (hk : k ≥ 2) :
+    (orderedA n k (by omega : n ≥ 1)).length ≥ 1 := by
+  rw [orderedA_length]
+  have : n + 1 ∈ setAFinset n k (by omega : n ≥ 1) := by
+    simp [setAFinset, Set.Finite.mem_toFinset]
+    exact mem_setA_of_succ hn hk
+  have := Finset.card_pos.mpr ⟨n + 1, this⟩
+  omega
+
+/-- orderedA has no duplicates (comes from a Finset). -/
+theorem orderedA_nodup (n k : ℕ) (hn : n ≥ 1) :
+    (orderedA n k hn).Nodup :=
+  Finset.sort_nodup _ _
+
+/- ## Part XI: Alternative Formulation -/
 
 /-- Maximum gap alias. -/
 noncomputable def maxConsecDiff (n k : ℕ) (hn : n ≥ 1) : ℕ :=
@@ -379,7 +416,7 @@ theorem polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolyno
 
 **STATUS:** OPEN
 
-**PROVED (26 theorems):**
+**PROVED (31+ theorems):**
 - setA finite, contained in [n, n^k], monotone in k
 - Divisor bounds: d ≥ 2, quotient q ≥ 1
 - setA contains all d ∈ (n, 2n) (≥ n-1 elements for n ≥ 3)
@@ -387,6 +424,7 @@ theorem polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolyno
 - Gap infrastructure, cardinality bounds
 - maxGap ≤ n^k - n (proved by list induction)
 - polylogBoundedGap → subpolynomialGap (proved via isLittleO_log_rpow_atTop)
+- orderedA: sorted, membership, bounds, length, nonempty, nodup
 
 **AXIOMATIZED (1 axiom):**
 - Ford density theorem (deep analytic number theory, Ford 2008)
