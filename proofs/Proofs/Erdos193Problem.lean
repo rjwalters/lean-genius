@@ -88,3 +88,71 @@ theorem collinear_symm {d : ℕ} (p q r : LatPoint d) :
 /-- A constant walk (all points equal) trivially has collinear triples. -/
 theorem collinear_const {d : ℕ} (v : LatPoint d) :
     AreCollinear v v v := collinear_refl v v
+
+/-- Collinearity is preserved when swapping the first two arguments.
+    Given a(q-p) = b(r-p), witnesses (b-a, b) satisfy (b-a)(p-q) = b(r-q). -/
+theorem collinear_perm12 {d : ℕ} (p q r : LatPoint d) :
+    AreCollinear p q r → AreCollinear q p r := by
+  rintro ⟨a, b, hab, h⟩
+  refine ⟨b - a, b, ?_, fun j => ?_⟩
+  · by_contra hc
+    push_neg at hc
+    have ha : a = 0 := by omega
+    have hb : b = 0 := hc.2
+    exact hab.elim (fun h => h ha) (fun h => h hb)
+  · have := h j; linarith
+
+/- ## Dimension 1: trivial collinearity -/
+
+/-- In dimension 1, every triple of lattice points is collinear
+    (all points lie on a single line). -/
+theorem collinear_dim1 (p q r : LatPoint 1) : AreCollinear p q r := by
+  by_cases hqp : q ⟨0, by omega⟩ = p ⟨0, by omega⟩
+  · have : q = p := by ext x; fin_cases x; exact hqp
+    subst this; exact collinear_refl p r
+  · exact ⟨r ⟨0, by omega⟩ - p ⟨0, by omega⟩, q ⟨0, by omega⟩ - p ⟨0, by omega⟩,
+      Or.inr (sub_ne_zero.mpr hqp), fun j => by fin_cases j; ring⟩
+
+/-- The collinearity conjecture holds trivially in dimension 1:
+    every walk contains three collinear points. -/
+theorem erdos193_dim1 :
+    ∀ (S : StepSet 1) (w : Walk 1),
+      IsStepWalk S w → IsInjective w → HasThreeCollinear w := by
+  intro S w _ _
+  exact ⟨0, 1, 2, by omega, by omega, collinear_dim1 (w 0) (w 1) (w 2)⟩
+
+/- ## Singleton step sets -/
+
+/-- In a walk with singleton step set {v}, position at step n satisfies
+    w(n)(j) = w(0)(j) + n * v(j) for each coordinate j. -/
+theorem singleton_walk_pos {d : ℕ} (v : LatPoint d) (w : Walk d)
+    (hw : IsStepWalk ({v} : StepSet d) w) (n : ℕ) (j : Fin d) :
+    w n j = w 0 j + ↑n * v j := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have step := hw n
+    simp only [Finset.mem_singleton] at step
+    have hcoord : w (n + 1) j - w n j = v j := congr_fun step j
+    rw [show w (n + 1) j = w n j + v j from by linarith, ih]
+    push_cast; ring
+
+/-- Any three points of a singleton-step walk are collinear, since
+    all visited points lie on a line through w(0) in direction v. -/
+theorem singleton_step_collinear {d : ℕ} (v : LatPoint d) (w : Walk d)
+    (hw : IsStepWalk ({v} : StepSet d) w) (i j k : ℕ) (hij : i < j) :
+    AreCollinear (w i) (w j) (w k) := by
+  have hij' : (↑i : ℤ) < ↑j := Nat.cast_lt.mpr hij
+  refine ⟨↑k - ↑i, ↑j - ↑i, Or.inr (by omega), fun c => ?_⟩
+  have hi := singleton_walk_pos v w hw i c
+  have hj := singleton_walk_pos v w hw j c
+  have hk := singleton_walk_pos v w hw k c
+  have diffj : w j c - w i c = (↑j - ↑i) * v c := by linarith
+  have diffk : w k c - w i c = (↑k - ↑i) * v c := by linarith
+  rw [diffj, diffk]; ring
+
+/-- Every walk with a singleton step set has three collinear points
+    (injectivity is not required). -/
+theorem erdos193_singleton {d : ℕ} (v : LatPoint d) (w : Walk d)
+    (hw : IsStepWalk ({v} : StepSet d) w) : HasThreeCollinear w :=
+  ⟨0, 1, 2, by omega, by omega, singleton_step_collinear v w hw 0 1 2 (by omega)⟩

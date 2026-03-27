@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 90,
-    "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem). collinear_symm now proved via CRT-style witness transformation.",
+    "lineCount": 159,
+    "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem). 9 proved theorems including collinearity permutations, d=1 case, and singleton step set case.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -104,13 +104,29 @@
       "id": "collinearity-properties",
       "title": "Basic Collinearity Properties",
       "startLine": 69,
-      "endLine": 90,
-      "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity.",
-      "mathContext": "Formal definition: Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity."
+      "endLine": 103,
+      "summary": "Proves collinearity reflexivity, symmetry in outer points, constant walk degeneracy, and permutation of first two arguments — establishing that collinearity is a symmetric relation on unordered triples.",
+      "mathContext": "Formal definition: Proves collinearity reflexivity (via `ring`), symmetry (witness transformation), constant walks, and first-two-argument swap (witnesses $(b-a, b)$) — validating the definition."
+    },
+    {
+      "id": "dimension-1",
+      "title": "Dimension 1: Trivial Collinearity",
+      "startLine": 105,
+      "endLine": 122,
+      "summary": "In $\\mathbb{Z}^1$, all triples are collinear (single coordinate, multiplicative commutativity). The conjecture holds trivially for $d = 1$.",
+      "mathContext": "Mathematical content: Proves $\\text{collinear\\_dim1}$: every triple in $\\mathbb{Z}^1$ is collinear, and $\\text{erdos193\\_dim1}$: the conjecture holds for dimension 1 without any axioms."
+    },
+    {
+      "id": "singleton-step-sets",
+      "title": "Singleton Step Sets",
+      "startLine": 124,
+      "endLine": 158,
+      "summary": "For walks with $|S| = 1$, all visited points lie on a line ($w(n) = w(0) + nv$), so any three are collinear. Proved by induction on position formula, then multiplicative commutativity.",
+      "mathContext": "Mathematical content: Proves $\\text{singleton\\_walk\\_pos}$ (position formula by induction), $\\text{singleton\\_step\\_collinear}$ (collinearity via witnesses $(k-i, j-i)$), and $\\text{erdos193\\_singleton}$ (the conjecture for $|S|=1$, without requiring injectivity)."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 193 — the question of whether infinite injective lattice walks in $\\mathbb{Z}^3$ must contain three collinear points. It records the known Gerver–Ramsey 2D result, formalizes collinearity via integer parallelism, and proves basic structural properties of the collinearity relation.",
+    "summary": "The formalization captures Erdős Problem 193 — the question of whether infinite injective lattice walks in $\\mathbb{Z}^3$ must contain three collinear points. It records the known Gerver–Ramsey 2D result, proves the conjecture for dimension 1 and singleton step sets, and establishes full permutation symmetry of the collinearity relation.",
     "implications": "Resolution would illuminate the geometric structure of self-avoiding walks on three-dimensional lattices and establish new bounds on unavoidable linear patterns in discrete geometry. The dimension gap between $d = 2$ (resolved) and $d = 3$ (open) highlights a fundamental threshold in combinatorial geometry.",
     "openQuestions": [
       "Does every infinite injective $S$-walk in $\\mathbb{Z}^3$ contain three collinear points?",
@@ -127,9 +143,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 90,
+    "lineCount": 159,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 9,
     "definitionCount": 5
   },
   "crossReferences": [

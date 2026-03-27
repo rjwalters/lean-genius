@@ -67,18 +67,36 @@ def HasDenseSumset (A : Set ℕ) (ε : ℝ) : Prop :=
 
     This asks whether we can have a "near-basis" of order 2 with
     bounded representation function. -/
-axiom erdos_749_conjecture :
+theorem erdos_749_conjecture :
     (∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ, HasDenseSumset A ε ∧ HasBoundedRep A) ∨
-    (∃ ε : ℝ, ε > 0 ∧ ∀ A : Set ℕ, HasDenseSumset A ε → ¬ HasBoundedRep A)
+    (∃ ε : ℝ, ε > 0 ∧ ∀ A : Set ℕ, HasDenseSumset A ε → ¬ HasBoundedRep A) := by
+  -- This is P ∨ ¬P: ¬(∀ε,∃A,...) ↔ ∃ε,∀A,¬(...) ↔ ∃ε,∀A,dense→¬bounded
+  by_cases h : ∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ, HasDenseSumset A ε ∧ HasBoundedRep A
+  · exact Or.inl h
+  · right
+    push_neg at h
+    obtain ⟨ε, hε, hA⟩ := h
+    exact ⟨ε, hε, fun A hd hb => hA ε hε A ⟨hd, hb⟩⟩
 
 /- ## Context: Sidon Sets and Bases -/
 
-/-- Sidon sets have r(n) ≤ 2 for all n (bounded representation),
-    but their sumset has density 0. -/
-axiom sidon_bounded_rep (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
+/-- Sidon sets have r(n) ≤ 1 for all n (bounded representation).
+    Proof: the Sidon property ensures at most one pair (a, n-a) with
+    a ≤ n-a, a ∈ A, n-a ∈ A for each n. -/
+theorem sidon_bounded_rep (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
     a ∈ A → b ∈ A → c ∈ A → d ∈ A → a ≤ b → c ≤ d →
     a + b = c + d → a = c ∧ b = d) :
-    HasBoundedRep A
+    HasBoundedRep A := by
+  use 1
+  intro n
+  unfold repFunction
+  rw [Finset.card_le_one]
+  intro a ha b hb
+  simp only [Finset.mem_filter, Finset.mem_range] at ha hb
+  obtain ⟨_, ha_A, hna_A, ha_le⟩ := ha
+  obtain ⟨_, hb_A, hnb_A, hb_le⟩ := hb
+  have heq : a + (n - a) = b + (n - b) := by omega
+  exact (hsidon a (n - a) b (n - b) ha_A hna_A hb_A hnb_A ha_le hb_le heq).1
 
 /-- For Sidon sets, the sumset A + A has density 0 (since |A ∩ [1,N]| ~ √N). -/
 axiom sidon_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
@@ -99,8 +117,15 @@ axiom erdos_turan_conjecture_28 :
 
 /-- Similar question for upper density: does there exist A with
     upper density of A + A at least 1 - ε and bounded r(n)? -/
-axiom erdos_749_upper_variant :
+theorem erdos_749_upper_variant :
     (∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ,
       upperDensity (sumSet A) ≥ 1 - ε ∧ HasBoundedRep A) ∨
     (∃ ε : ℝ, ε > 0 ∧ ∀ A : Set ℕ,
-      upperDensity (sumSet A) ≥ 1 - ε → ¬ HasBoundedRep A)
+      upperDensity (sumSet A) ≥ 1 - ε → ¬ HasBoundedRep A) := by
+  by_cases h : ∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ,
+      upperDensity (sumSet A) ≥ 1 - ε ∧ HasBoundedRep A
+  · exact Or.inl h
+  · right
+    push_neg at h
+    obtain ⟨ε, hε, hA⟩ := h
+    exact ⟨ε, hε, fun A hd hb => hA ε hε A ⟨hd, hb⟩⟩

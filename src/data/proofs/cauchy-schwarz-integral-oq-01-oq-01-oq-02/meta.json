@@ -1,0 +1,57 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+  "title": "Riesz Representation for Lp Spaces",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+  "description": "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality? Answer: partially — the embedding direction yes, surjectivity requires Radon-Nikodým.",
+  "meta": {
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+    "tags": [
+      "functional-analysis",
+      "lp-spaces",
+      "riesz-representation",
+      "holder-inequality",
+      "hilbert-space"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 137,
+    "assumptions": "1 axiom: riesz_lp_surjective (the hard direction requiring Radon-Nikodym). L2 case fully proved via InnerProductSpace.toDual. Embedding direction proved via Hölder.",
+    "dateAdded": "2026-03-26"
+  },
+  "overview": {
+    "problemStatement": "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality?",
+    "text": "The Riesz representation theorem identifies the dual of Lp with Lq for conjugate exponents. Hölder's inequality provides the embedding direction; the surjectivity requires Radon-Nikodým.",
+    "proofStrategy": "L2 self-duality via Fréchet-Riesz (Mathlib), Hölder for Lq → (Lp)* embedding, Radon-Nikodým for surjectivity (axiomatized).",
+    "keyInsights": [
+      "Hölder's inequality gives the isometric embedding Lq ↪ (Lp)* but NOT surjectivity",
+      "The L2 case is special: Hilbert space structure gives both directions",
+      "Surjectivity for general Lp requires constructing the representing function via Radon-Nikodým"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "lineCount": 137,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "l2_riesz",
+        "type": "core",
+        "description": "Fréchet-Riesz for L2: isometric equivalence (L2)* ≅ L2"
+      },
+      {
+        "name": "holder_lintegral_conjugate",
+        "type": "core",
+        "description": "Hölder's inequality for conjugate exponents at lintegral level"
+      },
+      {
+        "name": "l2_inner_eq_integral",
+        "type": "key",
+        "description": "L2 inner product equals integral of pointwise product"
+      }
+    ]
+  }
+}
