@@ -125,7 +125,7 @@ noncomputable def R_off (k : ℕ) : ℕ := R (k+1) k
 /-- The difference between consecutive Ramsey numbers. -/
 noncomputable def RamseyDiff (k : ℕ) : ℕ := R_off k - R_diag k
 
-/-- Trivial lower bound: R(k+1, k) - R(k, k) ≥ k - 2.
+/- Trivial lower bound: R(k+1, k) - R(k, k) ≥ k - 2. -/
 
 /-
 ## Part VI: Burr-Erdős-Faudree-Schelp Theorem (1989)
