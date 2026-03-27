@@ -80,12 +80,17 @@ The smallest weird number is 70. Let's verify the properties:
 /--
 70 is abundant: σ(70) = 144 > 140 = 2 × 70.
 -/
-axiom seventy_is_abundant : IsAbundant 70
+theorem seventy_is_abundant : IsAbundant 70 := by
+  unfold IsAbundant sigma
+  native_decide
 
 /--
 70 is not pseudoperfect: no subset of its proper divisors sums to 70.
 -/
-axiom seventy_not_pseudoperfect : ¬IsPseudoperfect 70
+theorem seventy_not_pseudoperfect : ¬IsPseudoperfect 70 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have : ∀ T ∈ (70 : ℕ).properDivisors.powerset, T.sum id ≠ 70 := by native_decide
+  exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
 
 /--
 No number below 70 is weird (verified by exhaustive check).

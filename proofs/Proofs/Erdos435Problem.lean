@@ -151,8 +151,8 @@ axiom frobenius_6 : frobeniusBinomial 6 = 49
 If n = p^k, then C(n, p^j) ≡ 0 (mod p) for appropriate j,
 making the representation problem degenerate.
 -/
-axiom prime_power_degenerate (n : ℕ) (hPP : IsPrimePower n) :
-    True  -- The formula doesn't apply to prime powers
+theorem prime_power_degenerate (n : ℕ) (hPP : IsPrimePower n) :
+    True := trivial  -- The formula doesn't apply to prime powers
 
 /-
 **Lucas' Theorem Connection:**
