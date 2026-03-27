@@ -138,3 +138,50 @@ theorem ndto_strictly_weaker :
       rcases hc with rfl | rfl | rfl <;> simp_all <;> omega
   · intro h
     exact h 2 6 (by simp) (by simp) (by omega) (by omega)
+
+/-
+## Section VII: Structural Properties of NDTO
+-/
+
+/-- The NDTO property is hereditary: subsets of NDTO sets are NDTO.
+This is because the universal quantification over triples restricts
+to fewer candidates in a smaller set. -/
+theorem ndto_subset {A B : Finset ℕ} (hBA : B ⊆ A) (hA : NoDividesTwoOthers A) :
+    NoDividesTwoOthers B := by
+  intro a b c ha hb hc
+  exact hA a b c (hBA ha) (hBA hb) (hBA hc)
+
+/-- Any pair satisfies NDTO: the condition requires three distinct elements,
+so sets of size ≤ 2 satisfy it vacuously (pigeonhole on {a, b}). -/
+theorem ndto_pair (a b : ℕ) : NoDividesTwoOthers ({a, b} : Finset ℕ) := by
+  intro x y z hx hy hz _ _ hxy hxz hyz
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy hz
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;>
+    rcases hz with rfl | rfl <;> simp_all
+
+/-
+## Section VIII: Properties of the Extremal Function
+-/
+
+/-- The extremal function f is monotonically non-decreasing: any NDTO
+subset of {1,…,m} is also a valid subset of {1,…,n} when m ≤ n. -/
+theorem maxNDTOSize_mono {m n : ℕ} (hmn : m ≤ n) : maxNDTOSize m ≤ maxNDTOSize n := by
+  unfold maxNDTOSize
+  apply Finset.sup_le
+  intro A hA
+  apply Finset.le_sup
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  refine ⟨fun x hx => ?_, hA.2⟩
+  have := hA.1 hx
+  simp only [Finset.mem_Icc] at this ⊢
+  omega
+
+/-- f(n) ≤ n: a subset of {1,…,n} has at most n elements. -/
+theorem maxNDTOSize_le (n : ℕ) : maxNDTOSize n ≤ n := by
+  unfold maxNDTOSize
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  have h := Finset.card_le_card hA.1
+  rw [Nat.card_Icc] at h
+  omega
