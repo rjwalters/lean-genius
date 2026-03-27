@@ -69,3 +69,33 @@ Triangular lattice maximality conjecture for pair distances.
 ### Next Steps
 - Prove kissing_number_2d via angular packing (good Aristotle candidate)
 - The main conjecture `erdos_662_lattice_optimal` remains open (unprovable)
+
+## Session 2026-03-27 (Session 3) - Gallery Metadata Update & Completion
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+- Verified file state: 0 sorries, 1 axiom (erdos_662_lattice_optimal — the main OPEN conjecture)
+- kissing_number_2d was already fully proved (angular sector pigeonhole via Complex.arg)
+- Updated gallery meta.json:
+  - leanFile section: corrected lineCount (108→375), axiomCount (3→1), theoremCount (5→9), lemmaCount (0→10), defCount (2→10), added missing import
+  - sections array: updated all line ranges, added 3 new sections (geometric-reductions, kissing-number-helpers, kissing-number) to reflect the full proof structure
+  - proofStrategy: updated to describe the complete kissing number proof
+- Updated research problem JSON: leanFiles stats, progress summary, cleared blockers
+
+### Stats (Final)
+| Metric | Value |
+|--------|-------|
+| Axioms | **1** (open conjecture only) |
+| Sorries | **0** |
+| Theorems | 9 (public) |
+| Lemmas | 10 (private) |
+| Definitions | 10 |
+| Lines | 375 |
+
+### Key Status
+- **Formalization is at maximum potential**: all provable parts are fully machine-checked
+- **The only axiom** is `erdos_662_lattice_optimal` — the main open conjecture, which cannot be proved
+- **kissing_number_2d** is a clean, self-contained theorem that could be contributed to Mathlib
+- **contact_number_3n** resolves the t=1 case of the conjecture completely
