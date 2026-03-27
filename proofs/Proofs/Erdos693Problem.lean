@@ -22,13 +22,7 @@ References:
 - Related to Problem #446 (density δ(n) solved by Ford)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset Set Filter
 
@@ -264,11 +258,11 @@ theorem maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
     rwa [Finset.mem_sort] at hx
   exact Finset.mem_Icc.mp (setAFinset_subset_Icc n k hn hmem)
 
-/-- Pigeonhole: if A has |A| elements in range R, max gap ≥ R/|A|.
-Axiomatized: requires telescoping sum through list operations. -/
-axiom maxGap_pigeonhole (n k : ℕ) (hn : n ≥ 1) (hA : (setA n k).Nonempty) :
-    ∃ gap : ℕ, gap ≤ maxGapA n k hn ∧
-      gap * (setAFinset n k hn).card ≥ n ^ k - n
+/-- Note: a previous `maxGap_pigeonhole` axiom stating `maxGap * card ≥ n^k - n`
+    was removed because the bound is incorrect — counterexample: n=2, k=2 gives
+    setA = {3} (only 3 has a divisor in (2,4)), so card=1, maxGap=0, but n^k-n=2.
+    A correct pigeonhole bound involves the actual span (last-first) of the sorted
+    list, not the ambient range n^k - n. -/
 
 /-- Crude upper bound on average gap using cardinality. -/
 theorem average_gap_crude_bound {n k : ℕ} (_hn : n ≥ 3) (_hk : k ≥ 2) :
@@ -322,8 +316,61 @@ def subpolynomialGap (k : ℕ) : Prop :=
     ∀ᶠ n in atTop, ∀ hn : (n : ℕ) ≥ 1,
       (maxGapA n k hn : ℝ) ≤ (n : ℝ) ^ ε
 
-/-- Polylogarithmic implies subpolynomial (standard analysis). -/
-axiom polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolynomialGap k
+/-- Polylogarithmic implies subpolynomial: for any ε > 0, eventually
+    C · (log n)^α ≤ n^ε. Uses that log = o(n^δ) for any δ > 0
+    (Mathlib: `isLittleO_log_rpow_atTop`), splitting ε as ε/2 + ε/2. -/
+theorem polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolynomialGap k := by
+  intro k ⟨C, α, hC, hα, hpoly⟩ ε hε
+  have hε2 : (0 : ℝ) < ε / 2 := by linarith
+  have hδ : (0 : ℝ) < ε / (2 * α) := div_pos hε (by positivity)
+  -- From little-o: eventually |log x| ≤ |x^(ε/(2α))| for x : ℝ
+  obtain ⟨R, hR⟩ := Filter.eventually_atTop.mp
+    ((isLittleO_log_rpow_atTop hδ).bound (show (0 : ℝ) < 1 by norm_num))
+  -- From polylog bound (on ℕ)
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hpoly
+  -- Combined ℕ threshold
+  rw [Filter.eventually_atTop]
+  refine ⟨max (max ⌈R⌉₊ ⌈C ^ (2 / ε)⌉₊) N, fun n hn hn1 => ?_⟩
+  -- Sub-threshold extraction
+  have hR_le : ⌈R⌉₊ ≤ n := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn
+  have hC_le : ⌈C ^ (2 / ε)⌉₊ ≤ n :=
+    le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn
+  have hN_le : N ≤ n := le_trans (le_max_right _ _) hn
+  -- Transfer to ℝ
+  have hR_real : R ≤ (n : ℝ) :=
+    le_trans (Nat.le_ceil R) (by exact_mod_cast hR_le)
+  have hCexp_real : C ^ (2 / ε) ≤ (n : ℝ) :=
+    le_trans (Nat.le_ceil _) (by exact_mod_cast hC_le)
+  -- Basic positivity
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  have hn_nn : (0 : ℝ) ≤ (n : ℝ) := le_of_lt hn_pos
+  have hlog_nn : 0 ≤ Real.log (n : ℝ) :=
+    Real.log_nonneg (by exact_mod_cast hn1)
+  -- (1) log n ≤ n^(ε/(2α)) from isLittleO bound
+  have h_logb := hR (n : ℝ) hR_real
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg hlog_nn, abs_of_nonneg (rpow_nonneg hn_nn _)] at h_logb
+  -- (2) (log n)^α ≤ n^(ε/2) by raising to power α
+  have h_pow : Real.log (n : ℝ) ^ α ≤ (n : ℝ) ^ (ε / 2) :=
+    calc Real.log (n : ℝ) ^ α
+        ≤ ((n : ℝ) ^ (ε / (2 * α))) ^ α :=
+          rpow_le_rpow hlog_nn h_logb hα.le
+      _ = (n : ℝ) ^ (ε / (2 * α) * α) := rpow_mul hn_nn _ _
+      _ = (n : ℝ) ^ (ε / 2) := by congr 1; field_simp
+  -- (3) C ≤ n^(ε/2) since n ≥ C^(2/ε)
+  have h_C : C ≤ (n : ℝ) ^ (ε / 2) := by
+    have hC_eq : C = (C ^ (2 / ε)) ^ (ε / 2) := by
+      rw [rpow_mul hC.le, show (2 : ℝ) / ε * (ε / 2) = 1 by field_simp, rpow_one]
+    rw [hC_eq]
+    exact rpow_le_rpow (rpow_nonneg hC.le _) hCexp_real hε2.le
+  -- Combine: maxGap ≤ C·(log n)^α ≤ C·n^(ε/2) ≤ n^(ε/2)·n^(ε/2) = n^ε
+  calc (maxGapA n k hn1 : ℝ)
+      ≤ C * Real.log (n : ℝ) ^ α := hN n hN_le hn1
+    _ ≤ C * (n : ℝ) ^ (ε / 2) :=
+        mul_le_mul_of_nonneg_left h_pow hC.le
+    _ ≤ (n : ℝ) ^ (ε / 2) * (n : ℝ) ^ (ε / 2) :=
+        mul_le_mul_of_nonneg_right h_C (rpow_nonneg hn_nn _)
+    _ = (n : ℝ) ^ ε := by rw [← rpow_add hn_pos]; congr 1; ring
 
 /- ## Part XII: Summary -/
 
@@ -332,16 +379,20 @@ axiom polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolynomi
 
 **STATUS:** OPEN
 
-**PROVED (25 theorems):**
+**PROVED (26 theorems):**
 - setA finite, contained in [n, n^k], monotone in k
 - Divisor bounds: d ≥ 2, quotient q ≥ 1
 - setA contains all d ∈ (n, 2n) (≥ n-1 elements for n ≥ 3)
 - General membership criterion, specific witnesses
 - Gap infrastructure, cardinality bounds
-- maxGap ≤ n^k - n (was axiom, now proved by list induction)
+- maxGap ≤ n^k - n (proved by list induction)
+- polylogBoundedGap → subpolynomialGap (proved via isLittleO_log_rpow_atTop)
 
-**AXIOMATIZED (3 axioms):**
-- Pigeonhole, Ford density, polylog⟹subpoly
+**AXIOMATIZED (1 axiom):**
+- Ford density theorem (deep analytic number theory, Ford 2008)
+
+**REMOVED:**
+- maxGap_pigeonhole (incorrect bound — see comment at Part VIII)
 -/
 theorem erdos_693_summary :
     erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k :=
