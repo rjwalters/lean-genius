@@ -45,7 +45,8 @@ def divisorsOf (n : ℕ) : Finset ℕ := n.divisors
 def divisorCount (n : ℕ) : ℕ := (divisorsOf n).card
 
 /-- Every positive integer has at least one divisor (itself). -/
-axiom divisorCount_pos (n : ℕ) (hn : n ≥ 1) : divisorCount n ≥ 1
+theorem divisorCount_pos (n : ℕ) (hn : n ≥ 1) : divisorCount n ≥ 1 :=
+  Finset.card_pos.mpr ⟨1, Nat.one_mem_divisors.mpr (by omega)⟩
 
 /- ## Part II: The Interval Near √n
 -/

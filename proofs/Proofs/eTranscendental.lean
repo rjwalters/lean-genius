@@ -154,11 +154,14 @@ theorem e_transcendental_over_rationals : Transcendental ℚ (Real.exp 1) :=
 -- PART 5: Corollaries
 -- ============================================================
 
-/-- **Axiom: e is irrational**
+/-- **e is irrational** (formerly axiom, now proved)
 
     Transcendental implies irrational: if e = p/q for rationals p, q, then
     e would be algebraic (root of q·X - p = 0), contradicting transcendence. -/
-axiom e_irrational_axiom : Irrational (Real.exp 1)
+theorem e_irrational_axiom : Irrational (Real.exp 1) := by
+  intro ⟨q, hq⟩
+  exact e_transcendental
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr (by rw [← hq]; exact isAlgebraic_algebraMap q))
 
 /-- e is irrational (weaker than transcendental, but follows from it) -/
 theorem e_irrational : Irrational (Real.exp 1) := e_irrational_axiom
@@ -175,11 +178,16 @@ theorem exp_nat_transcendental (n : ℕ) (hn : n ≠ 0) :
     Transcendental ℤ (Real.exp n) :=
   exp_nat_transcendental_axiom n hn
 
-/-- **Axiom: 1/e is transcendental**
+/-- **1/e is transcendental** (formerly axiom, now proved)
 
-    If 1/e were algebraic, say p(1/e) = 0, then the reciprocal polynomial
-    q(X) = X^n · p(1/X) satisfies q(e) = 0, making e algebraic. Contradiction. -/
-axiom e_inv_transcendental_axiom : Transcendental ℤ (Real.exp 1)⁻¹
+    If 1/e were algebraic over ℤ, then algebraic over ℚ. Since algebraic
+    elements over a field are closed under inversion, e = (1/e)⁻¹ would be
+    algebraic over ℚ, contradicting transcendence. -/
+theorem e_inv_transcendental_axiom : Transcendental ℤ (Real.exp 1)⁻¹ := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.exp 1)⁻¹ := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  have he : IsAlgebraic ℚ (Real.exp 1) := IsAlgebraic.inv_iff.mp hq
+  exact e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr he)
 
 /-- 1/e is transcendental -/
 theorem e_inv_transcendental : Transcendental ℤ (Real.exp 1)⁻¹ := e_inv_transcendental_axiom
