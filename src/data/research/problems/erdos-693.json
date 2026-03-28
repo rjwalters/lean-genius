@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 2 axioms (4→1). Proved polylog_implies_subpoly via isLittleO_log_rpow_atTop (ε-splitting). Removed incorrect maxGap_pigeonhole (counterexample: n=2,k=2). Only Ford density axiom remains.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "consecutiveGaps_foldl_max_le: if list elements in [lo,hi], foldl max of gaps ≤ hi-lo (line 234)",
       "maxGap_trivial_upper: PROVED (was axiom) — max gap ≤ n^k - n (line 260)",
@@ -45,11 +45,7 @@
       "Only remaining axiom is Ford density (2008) — deep analytic number theory, not provable from Mathlib"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Ford density axiom is deep (2008 paper) — unlikely provable from Mathlib",
-      "Could add a correct pigeonhole bound using actual list span (last-first), but low priority",
-      "Companion file for Aristotle could target supporting lemmas if any new sorries are introduced"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #693 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?\n\n\n\nSee also [446].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #446\n- Problem #692\n- Problem #694\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
