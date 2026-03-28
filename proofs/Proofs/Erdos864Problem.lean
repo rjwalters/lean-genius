@@ -275,8 +275,257 @@ theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     The correct PROVED bound is `distinct_sums_bounded` above. -/
 theorem almost_sidon_sum_range_false_note : True := trivial
 
+/-- IsSidon means every sum has at most one representation. -/
+private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : ℕ) :
+    sumRepCount B n ≤ 1 := by
+  unfold IsSidon at hS
+  by_contra h
+  push_neg at h
+  have hmem : n ∈ multiRepSet B := by
+    unfold multiRepSet
+    simp only [Finset.mem_filter, Finset.mem_image, Finset.mem_product, Prod.exists]
+    constructor
+    · unfold sumRepCount at h
+      have hpos : 0 < ((B ×ˢ B).filter fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n).card := by omega
+      obtain ⟨⟨a, b⟩, hab⟩ := Finset.card_pos.mp hpos
+      simp only [Finset.mem_filter, Finset.mem_product] at hab
+      exact ⟨a, b, hab.1.1, hab.1.2, hab.2.2⟩
+    · unfold sumRepCount at h; omega
+  rw [Finset.card_eq_zero] at hS
+  exact (hS ▸ Finset.not_mem_empty n) hmem
+
 /-- The reflected construction: B ∪ (N − B) is almost-Sidon when B is Sidon.
     The only possible collision is at n = N (sums from B-side and reflected-side). -/
-axiom reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
-  (∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) → IsSidon B →
-    IsAlmostSidon (B ∪ B.image (fun b => N - b))
+theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
+    (∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) → IsSidon B →
+      IsAlmostSidon (B ∪ B.image (fun b => N - b)) := by
+  intro hB hSidon
+  set B' := B.image (fun b => N - b) with hB'_def
+  set A := B ∪ B'
+  -- Bounds on elements
+  have hB_le : ∀ x ∈ B, x ≤ N / 3 := fun x hx => (Finset.mem_Icc.mp (hB x hx)).2
+  have hB_pos : ∀ x ∈ B, 1 ≤ x := fun x hx => (Finset.mem_Icc.mp (hB x hx)).1
+  have hB_le_N : ∀ x ∈ B, x ≤ N := fun x hx => le_trans (hB_le x hx) (Nat.div_le_self N 3)
+  -- B' elements: ∃ c ∈ B, x = N - c
+  have hB'_mem : ∀ x ∈ B', ∃ c ∈ B, x = N - c :=
+    fun x hx => Finset.mem_image.mp hx
+  -- B' elements are large: x ≥ N - N/3
+  have hB'_ge : ∀ x ∈ B', x ≥ N - N / 3 := by
+    intro x hx; obtain ⟨c, hc, rfl⟩ := hB'_mem x hx
+    have := hB_le c hc; omega
+  -- B elements < B' elements (for disjoint ranges)
+  have hB_lt_B' : ∀ x ∈ B, ∀ y ∈ B', x < y := by
+    intro x hx y hy
+    obtain ⟨c, hc, rfl⟩ := hB'_mem y hy
+    have hxle := hB_le x hx; have hcle := hB_le c hc
+    have hcpos := hB_pos c hc
+    -- x ≤ N/3 and N - c ≥ N - N/3; need N/3 < N - N/3, i.e. 2*(N/3) < N
+    -- This holds when N ≥ 2 (and when N=0,1 B is empty)
+    by_cases hN : N ≤ 1
+    · -- N ≤ 1: N/3 = 0, but x ≥ 1 and x ≤ N/3 = 0, contradiction
+      omega
+    · -- N ≥ 2: 2*(N/3) < N, so N/3 < N - N/3
+      omega
+  -- Show multiRepSet A ⊆ {N}
+  unfold IsAlmostSidon
+  suffices hsub : multiRepSet A ⊆ {N} by
+    calc (multiRepSet A).card ≤ ({N} : Finset ℕ).card := Finset.card_le_card hsub
+      _ = 1 := Finset.card_singleton N
+  -- For any s ∈ multiRepSet A, show s = N
+  intro s hs
+  rw [Finset.mem_singleton]
+  -- s has sumRepCount ≥ 2, extract two distinct pairs
+  simp only [multiRepSet, Finset.mem_filter] at hs
+  obtain ⟨_, hrep⟩ := hs
+  unfold sumRepCount at hrep
+  have hlt : 1 < ((A ×ˢ A).filter fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = s).card := by omega
+  rw [Finset.one_lt_card] at hlt
+  obtain ⟨⟨a₁, b₁⟩, h1, ⟨a₂, b₂⟩, h2, hne⟩ := hlt
+  simp only [Finset.mem_filter, Finset.mem_product] at h1 h2
+  obtain ⟨⟨ha1, hb1⟩, hab1, hs1⟩ := h1
+  obtain ⟨⟨ha2, hb2⟩, hab2, hs2⟩ := h2
+  -- Each element is in B or B'
+  -- Classify each pair: (B,B), (B,B'), or (B',B'). (B',B) impossible since a ≤ b.
+  -- Helper: if a ∈ B' and b ∈ B then a > b, contradicting a ≤ b
+  have no_B'_B : ∀ a b, a ∈ B' → b ∈ B → ¬(a ≤ b) := by
+    intro a b ha hb; exact not_le.mpr (hB_lt_B' b hb a ha)
+  -- Sum range for BB pairs: s ≤ 2*(N/3)
+  have bb_range : ∀ a b, a ∈ B → b ∈ B → a + b ≤ 2 * (N / 3) := by
+    intro a b ha hb; have := hB_le a ha; have := hB_le b hb; omega
+  -- Sum range for cross pairs (B,B'): s ≥ N - N/3 + 1
+  have cross_lo : ∀ a b, a ∈ B → b ∈ B' → a + b ≥ N - N / 3 + 1 := by
+    intro a b ha hb
+    have := hB_pos a ha; have := hB'_ge b hb; omega
+  -- Sum range for cross pairs: s ≤ N/3 + (N - 1)
+  have cross_hi : ∀ a b, a ∈ B → b ∈ B' → B.Nonempty → a + b ≤ N / 3 + (N - 1) := by
+    intro a b ha hb _
+    have hale := hB_le a ha
+    obtain ⟨c, hc, rfl⟩ := hB'_mem b hb
+    have hcpos := hB_pos c hc
+    omega
+  -- Sum range for B'B' pairs: s ≥ 2*(N - N/3)
+  have b'b'_range : ∀ a b, a ∈ B' → b ∈ B' → a + b ≥ 2 * (N - N / 3) := by
+    intro a b ha hb; have := hB'_ge a ha; have := hB'_ge b hb; omega
+  -- Key separation: 2*(N/3) < N - N/3 + 1 (BB max < Cross min)
+  have sep1 : 2 * (N / 3) < N - N / 3 + 1 := by omega
+  -- Key separation: N/3 + (N-1) < 2*(N - N/3) (Cross max < B'B' min) when N ≥ 3
+  -- (equivalent to 3*(N/3) < N+1, which is 3*(N/3) ≤ N)
+  have sep2 : N ≥ 3 → N / 3 + (N - 1) < 2 * (N - N / 3) := by omega
+  -- Now do the case analysis on the two pairs
+  rcases Finset.mem_union.mp ha1 with ha1B | ha1B'
+  · -- a₁ ∈ B
+    rcases Finset.mem_union.mp hb1 with hb1B | hb1B'
+    · -- Pair 1 is BB: s = a₁ + b₁ ≤ 2*(N/3)
+      have hs_bb := bb_range a₁ b₁ ha1B hb1B
+      rcases Finset.mem_union.mp ha2 with ha2B | ha2B'
+      · rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · -- Pair 2 also BB: both in B×B filter with same sum → equal by Sidon
+          have hle1 := isSidon_sumRepCount_le_one hSidon s
+          unfold sumRepCount at hle1
+          have h1' : (a₁, b₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = s) := by
+            simp [Finset.mem_filter, Finset.mem_product, ha1B, hb1B, hab1, hs1]
+          have h2' : (a₂, b₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = s) := by
+            simp [Finset.mem_filter, Finset.mem_product, ha2B, hb2B, hab2, hs2]
+          exact absurd (Finset.card_le_one.mp hle1 h1' h2') hne
+        · -- Pair 2 is Cross: s ≥ N - N/3 + 1 > 2*(N/3) ≥ s. Contradiction.
+          have := cross_lo a₂ b₂ ha2B hb2B'
+          omega
+      · -- a₂ ∈ B'
+        rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · exact absurd hab2 (no_B'_B a₂ b₂ ha2B' hb2B)
+        · -- Pair 2 is B'B': s ≥ 2*(N - N/3) > 2*(N/3) ≥ s. Contradiction.
+          have := b'b'_range a₂ b₂ ha2B' hb2B'
+          omega
+    · -- Pair 1 is Cross (a₁ ∈ B, b₁ ∈ B')
+      obtain ⟨d₁, hd1, rfl⟩ := hB'_mem b₁ hb1B'
+      -- s = a₁ + (N - d₁), so s ≥ N - N/3 + 1 and s ≤ N/3 + (N-1)
+      rcases Finset.mem_union.mp ha2 with ha2B | ha2B'
+      · rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · -- Pair 2 is BB: s ≤ 2*(N/3) but s ≥ N - N/3 + 1 > 2*(N/3). Contradiction.
+          have := bb_range a₂ b₂ ha2B hb2B
+          have := cross_lo a₁ (N - d₁) ha1B (Finset.mem_image.mpr ⟨d₁, hd1, rfl⟩)
+          omega
+        · -- Pair 2 also Cross (a₂ ∈ B, b₂ ∈ B')
+          obtain ⟨d₂, hd2, rfl⟩ := hB'_mem b₂ hb2B'
+          -- a₁ + (N - d₁) = a₂ + (N - d₂) = s
+          -- So a₁ + d₂ = a₂ + d₁ (rearranging with ℕ subtraction)
+          have hd1_le : d₁ ≤ N := hB_le_N d₁ hd1
+          have hd2_le : d₂ ≤ N := hB_le_N d₂ hd2
+          have heq : a₁ + d₂ = a₂ + d₁ := by omega
+          -- By IsSidon B: the pair (min(a₁,d₂), max(a₁,d₂)) = (min(a₂,d₁), max(a₂,d₁))
+          -- Use sumRepCount B (a₁ + d₂) ≤ 1
+          -- Two pairs with same sum in B: (a₁, d₂) ordered and (a₂, d₁) ordered
+          -- Both give sum a₁ + d₂ = a₂ + d₁
+          -- Sidon on B says at most one pair, so the ordered versions must match
+          by_cases h_ad : a₁ ≤ d₂
+          · by_cases h_ad2 : a₂ ≤ d₁
+            · -- Pairs (a₁, d₂) and (a₂, d₁) both in upper triangle of B
+              have hle1 := isSidon_sumRepCount_le_one hSidon (a₁ + d₂)
+              unfold sumRepCount at hle1
+              have hp1 : (a₁, d₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, ha1B, hd2, h_ad]
+              have hp2 : (a₂, d₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, ha2B, hd1, h_ad2, heq]
+              have := Finset.card_le_one.mp hle1 hp1 hp2
+              -- (a₁, d₂) = (a₂, d₁), so a₁ = a₂ and d₂ = d₁
+              -- Then the original pairs are equal, contradicting hne
+              simp only [Prod.mk.injEq] at this
+              obtain ⟨rfl, rfl⟩ := this
+              exact absurd rfl hne
+            · -- a₂ > d₁: swap order to (d₁, a₂)
+              push_neg at h_ad2
+              have hle1 := isSidon_sumRepCount_le_one hSidon (a₁ + d₂)
+              unfold sumRepCount at hle1
+              have hp1 : (a₁, d₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, ha1B, hd2, h_ad]
+              have hp2 : (d₁, a₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, hd1, ha2B]; omega
+              have := Finset.card_le_one.mp hle1 hp1 hp2
+              simp only [Prod.mk.injEq] at this
+              obtain ⟨rfl, rfl⟩ := this
+              -- a₁ = d₁ and d₂ = a₂, so s = a₁ + (N - d₁) = a₁ + (N - a₁) = N
+              omega
+          · push_neg at h_ad
+            -- a₁ > d₂: swap order to (d₂, a₁)
+            by_cases h_ad2 : a₂ ≤ d₁
+            · have hle1 := isSidon_sumRepCount_le_one hSidon (a₁ + d₂)
+              unfold sumRepCount at hle1
+              have hp1 : (d₂, a₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, hd2, ha1B]; omega
+              have hp2 : (a₂, d₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, ha2B, hd1, h_ad2, heq]
+              have := Finset.card_le_one.mp hle1 hp1 hp2
+              simp only [Prod.mk.injEq] at this
+              obtain ⟨rfl, rfl⟩ := this
+              -- d₂ = a₂ and a₁ = d₁ → s = a₁ + (N - a₁) = N
+              omega
+            · push_neg at h_ad2
+              have hle1 := isSidon_sumRepCount_le_one hSidon (a₁ + d₂)
+              unfold sumRepCount at hle1
+              have hp1 : (d₂, a₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, hd2, ha1B]; omega
+              have hp2 : (d₁, a₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + d₂) := by
+                simp [Finset.mem_filter, Finset.mem_product, hd1, ha2B]; omega
+              have := Finset.card_le_one.mp hle1 hp1 hp2
+              simp only [Prod.mk.injEq] at this
+              obtain ⟨rfl, rfl⟩ := this
+              exact absurd rfl hne
+      · -- a₂ ∈ B'
+        rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · exact absurd hab2 (no_B'_B a₂ b₂ ha2B' hb2B)
+        · -- Pair 2 is B'B': s ≥ 2*(N - N/3) but s ≤ Cross max. Contradiction for N ≥ 3.
+          have := b'b'_range a₂ b₂ ha2B' hb2B'
+          have hcross := cross_lo a₁ (N - d₁) ha1B (Finset.mem_image.mpr ⟨d₁, hd1, rfl⟩)
+          have hBne : B.Nonempty := ⟨a₁, ha1B⟩
+          have hchi := cross_hi a₁ (N - d₁) ha1B (Finset.mem_image.mpr ⟨d₁, hd1, rfl⟩) hBne
+          -- Need N ≥ 3 for the separation
+          by_cases hN3 : N ≥ 3
+          · have := sep2 hN3; omega
+          · -- N < 3: N/3 = 0, so B ⊆ Icc 1 0 = ∅, contradiction
+            exfalso; have h03 : N / 3 = 0 := by omega
+            have := (Finset.mem_Icc.mp (hB a₁ ha1B)).1
+            have := (Finset.mem_Icc.mp (hB a₁ ha1B)).2; omega
+  · -- a₁ ∈ B'
+    rcases Finset.mem_union.mp hb1 with hb1B | hb1B'
+    · exact absurd hab1 (no_B'_B a₁ b₁ ha1B' hb1B)
+    · -- Pair 1 is B'B': s ≥ 2*(N - N/3)
+      have hs_b'b' := b'b'_range a₁ b₁ ha1B' hb1B'
+      rcases Finset.mem_union.mp ha2 with ha2B | ha2B'
+      · rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · -- Pair 2 is BB: range contradiction
+          have := bb_range a₂ b₂ ha2B hb2B; omega
+        · -- Pair 2 is Cross: range contradiction
+          obtain ⟨d₂, hd2, rfl⟩ := hB'_mem b₂ hb2B'
+          have hBne : B.Nonempty := ⟨a₂, ha2B⟩
+          have hchi := cross_hi a₂ (N - d₂) ha2B (Finset.mem_image.mpr ⟨d₂, hd2, rfl⟩) hBne
+          by_cases hN3 : N ≥ 3
+          · have := sep2 hN3; omega
+          · exfalso; have h03 : N / 3 = 0 := by omega
+            have := (Finset.mem_Icc.mp (hB a₂ ha2B)).1
+            have := (Finset.mem_Icc.mp (hB a₂ ha2B)).2; omega
+      · rcases Finset.mem_union.mp hb2 with hb2B | hb2B'
+        · exact absurd hab2 (no_B'_B a₂ b₂ ha2B' hb2B)
+        · -- Pair 2 also B'B': use reflected Sidon
+          -- a₁ = N - c₁, b₁ = N - d₁, a₂ = N - c₂, b₂ = N - d₂
+          obtain ⟨c₁, hc1, rfl⟩ := hB'_mem a₁ ha1B'
+          obtain ⟨d₁, hd1, rfl⟩ := hB'_mem b₁ hb1B'
+          obtain ⟨c₂, hc2, rfl⟩ := hB'_mem a₂ ha2B'
+          obtain ⟨d₂, hd2, rfl⟩ := hB'_mem b₂ hb2B'
+          -- (N-c₁) + (N-d₁) = (N-c₂) + (N-d₂) → c₁+d₁ = c₂+d₂
+          have hc1N := hB_le_N c₁ hc1; have hd1N := hB_le_N d₁ hd1
+          have hc2N := hB_le_N c₂ hc2; have hd2N := hB_le_N d₂ hd2
+          have heq : c₁ + d₁ = c₂ + d₂ := by omega
+          -- a₁ ≤ b₁ means N-c₁ ≤ N-d₁ means d₁ ≤ c₁
+          have hdc1 : d₁ ≤ c₁ := by omega
+          have hdc2 : d₂ ≤ c₂ := by omega
+          -- Sidon: (d₁, c₁) and (d₂, c₂) are pairs in B with same sum
+          have hle1 := isSidon_sumRepCount_le_one hSidon (c₁ + d₁)
+          unfold sumRepCount at hle1
+          have hp1 : (d₁, c₁) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = c₁ + d₁) := by
+            simp [Finset.mem_filter, Finset.mem_product, hc1, hd1, hdc1]; omega
+          have hp2 : (d₂, c₂) ∈ (B ×ˢ B).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = c₁ + d₁) := by
+            simp [Finset.mem_filter, Finset.mem_product, hc2, hd2, hdc2, heq]; omega
+          have := Finset.card_le_one.mp hle1 hp1 hp2
+          simp only [Prod.mk.injEq] at this
+          obtain ⟨rfl, rfl⟩ := this
+          exact absurd rfl hne
