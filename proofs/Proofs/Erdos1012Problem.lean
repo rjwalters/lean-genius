@@ -135,7 +135,10 @@ in extremal graph theory.
     For k = 0: Every graph on n ≥ 1 vertices with ≥ C(n-1, 2) + 2 edges
     has a Hamiltonian cycle (cycle on all n vertices).
 
-    This is the foundation of the problem — the base case k = 0. -/
+    NOTE: For n ≥ 3, this follows from woodall_theorem (take k = 0).
+    For n = 1, 2: the edge threshold (≥ 2) exceeds the maximum possible
+    edges C(n,2) ≤ 1, making the statement vacuously true.
+    A full proof would need SimpleGraph.card_edgeFinset_le_card_choose_two. -/
 axiom ore_theorem : ∀ n ≥ 1, hasLongCycle n 0
 
 /-- **Axiom 2**: Bondy's Theorem (1971).
@@ -143,10 +146,15 @@ axiom ore_theorem : ∀ n ≥ 1, hasLongCycle n 0
     has an (n-1)-cycle. -/
 axiom bondy_theorem : ∀ n ≥ 1, hasLongCycle n 1
 
-/-- **Axiom 3**: Woodall's Theorem (1972) — the complete solution.
-    For n ≥ 2k+3 and sufficient edges, the graph has an (n-k)-cycle. -/
-axiom woodall_theorem (n k : ℕ) (hn : n ≥ 2 * k + 3) :
-    hasLongCycle n k
+/-- **Theorem**: Woodall's Theorem (1972) — the complete solution.
+    For n ≥ 2k+3 and sufficient edges, the graph has an (n-k)-cycle.
+    PROVED from woodall_pancyclic: pancyclicity up to n-k implies an (n-k)-cycle.
+    (Previously axiom; axiom count reduced 5→4.) -/
+theorem woodall_theorem (n k : ℕ) (hn : n ≥ 2 * k + 3) :
+    hasLongCycle n k := by
+  intro V inst1 inst2 hcard G inst3 hedges
+  have hpan := woodall_pancyclic n k hn V hcard G hedges
+  exact hpan (n - k) (by omega) le_rfl
 
 /-- **Axiom 4**: Woodall's stronger pancyclicity result.
     Under the same conditions, the graph actually has cycles of ALL lengths
@@ -337,8 +345,8 @@ with ≥ C(n-k-1, 2) + C(k+2, 2) + 1 edges has an (n-k)-cycle. Determine f(k).
 not just an (n-k)-cycle but cycles of all intermediate lengths.
 
 **Proof Structure**:
-- 5 axioms (deep graph theory results: Ore, Bondy, Woodall, pancyclicity, tightness)
-- 29 proved theorems (threshold analysis, monotonicity, structural consequences)
+- 4 axioms (Ore, Bondy, pancyclicity, tightness). Woodall proved from pancyclicity.
+- 30 proved theorems (threshold analysis, monotonicity, structural consequences)
 - 0 sorries
 -/
 
