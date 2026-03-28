@@ -13,12 +13,14 @@ The Schur number f(k) is the minimal N such that every k-coloring of
 Question: Is f(k) < c^k for some constant c > 0?
 
 Known:
-- f(1) = 2, f(2) = 5, f(3) = 14, f(4) = 45, f(5) = 161
+- f(1) = 2 (proved), f(2) = 5 (proved), f(3) = 14 (proved via native_decide)
+- f(4) = 45, f(5) = 161 (axiomatized — too large for native_decide)
 - Lower bound: f(k) ≥ 380^{k/5} - O(1) (Ageron et al.)
 - Upper bound: f(k) ≤ ⌊(e - 1/24)k!⌋ - 1 (Whitehead, 1973)
 - Schur's theorem (1916): f(k) is finite for all k
 
 Status: OPEN.
+Axioms: 5 (schurNumber_4, schurNumber_5, schur_lower_bound, schur_upper_bound, erdos_483_conjecture)
 
 Reference: https://erdosproblems.com/483
 -/
@@ -166,10 +168,42 @@ theorem schurNumber_nondecreasing {k₁ k₂ : ℕ} (hk1 : k₁ ≥ 1) (hle : k�
       exact this
     exact Fin.ext hval
 
--- ## Known Values (larger cases - axiomatized)
+-- ## Proved: S(3) = 14
 
-/-- f(3) = 14. -/
-axiom schurNumber_3 : schurNumber 3 = 14
+/-- A sum-free 3-coloring of {1,...,13}: {1,4,10,13} / {2,3,11,12} / {5,...,9}. -/
+def sumFreeColoring13 : IntegerColoring 13 3 := fun i =>
+  if i.val = 0 ∨ i.val = 3 ∨ i.val = 9 ∨ i.val = 12 then (0 : Fin 3)
+  else if i.val = 1 ∨ i.val = 2 ∨ i.val = 10 ∨ i.val = 11 then (1 : Fin 3)
+  else (2 : Fin 3)
+
+/-- The witness coloring has no monochromatic Schur triple. -/
+theorem sumFreeColoring13_no_triple : ¬HasMonochromaticSchurTriple sumFreeColoring13 := by
+  native_decide
+
+/-- S(3) > 13: some 3-coloring of {1,...,13} avoids monochromatic triples. -/
+theorem not_schurProp_13_3 : ¬SchurProp 13 3 := by
+  intro h
+  exact sumFreeColoring13_no_triple (h sumFreeColoring13)
+
+/-- S(3) ≤ 14: every 3-coloring of {1,...,14} has a monochromatic Schur triple. -/
+theorem schurProp_14_3 : SchurProp 14 3 := by native_decide
+
+/-- S(3) = 14. -/
+theorem schurNumber_3 : schurNumber 3 = 14 := by
+  have hspec := schurNumber_spec 3 (by omega)
+  have hmin := schurNumber_min 3 (by omega)
+  have h_le : schurNumber 3 ≤ 14 := by
+    by_contra h
+    push_neg at h
+    exact hmin 14 (by omega) schurProp_14_3
+  have h_ge : schurNumber 3 ≥ 14 := by
+    by_contra h
+    push_neg at h
+    have h13 : SchurProp 13 3 := schurProp_mono (by omega) hspec
+    exact not_schurProp_13_3 h13
+  omega
+
+-- ## Known Values (larger cases - axiomatized)
 
 /-- f(4) = 45. -/
 axiom schurNumber_4 : schurNumber 4 = 45
