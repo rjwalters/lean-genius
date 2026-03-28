@@ -329,7 +329,15 @@ theorem erdos_684_statement :
   intro n hn
   use f n
   constructor
-  · sorry  -- f(n) ≤ n
+  · -- f(n) ≤ n: if f n > n then Choose(n, f n) = 0, so smoothPart = 1, contradicting > n²
+    by_contra h
+    push_neg at h
+    have hfp := f_property n hn
+    unfold binomialSmoothPart at hfp
+    rw [Nat.choose_eq_zero_of_lt h] at hfp
+    simp only [smoothPart, Nat.factorization_zero, Finsupp.zero_apply, pow_zero,
+      Finset.prod_const_one] at hfp
+    nlinarith [sq_nonneg n]
   · exact f_property n hn
 
 -- Known bounds summary
