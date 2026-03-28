@@ -251,6 +251,18 @@ theorem gapSet_lt (t : ℕ) (x : ℕ) (ht : t ∈ gapSet x) : t < x := by
   calc primeGap n < nthPrime n := gap_lt_prime n hn1
   _ ≤ x := hn2
 
+/-- r(x) ≤ x for even x ≥ 4.
+    x is even, ≥ 2, and x ∉ gapSet(x) (since all gaps < x). -/
+theorem r_upper_bound_even (x : ℕ) (hx : x ≥ 4) (heven : x % 2 = 0) : r x ≤ x := by
+  have hx3 : x ≥ 3 := by omega
+  -- x is a candidate: even, ≥ 2, and not in gapSet(x)
+  have hx_not_gap : x ∉ gapSet x := by
+    intro hc; exact Nat.lt_irrefl x (gapSet_lt x x hc)
+  -- r(x) is the minimal such candidate, so r(x) ≤ x
+  by_contra h; push_neg at h
+  have hr := r_even_pos x hx3
+  exact hx_not_gap (r_minimal x hx3 x (by omega) h heven)
+
 /-- r(x) ≤ x for x ≥ 4.
     Note: FALSE at x = 3 (r(3) = 4 since gapSet(3) = {2}).
     For even x: x ∉ gapSet(x) since gaps < x, so r ≤ x.
