@@ -419,9 +419,31 @@ theorem completeBipartiteHypergraph_card (n : ℕ) :
   -- evens.card = ⌈n/2⌉ even elements in {0,...,n-1}
   -- odds.card = ⌊n/2⌋ odd elements in {0,...,n-1}
   have hevens : evens.card = (n + 1) / 2 := by
-    sorry -- Counting even elements in Fin n via bijection with Fin ⌈n/2⌉
+    simp only [evens_def]
+    have h_eq : (Finset.univ : Finset (Fin n)).filter (fun v : Fin n => v.val % 2 = 0) =
+        Finset.image (fun k : Fin ((n + 1) / 2) =>
+          (⟨2 * k.val, by omega⟩ : Fin n)) Finset.univ := by
+      ext ⟨v, hv⟩
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Fin.mk.injEq]
+      constructor
+      · intro hmod; exact ⟨⟨v / 2, by omega⟩, by omega⟩
+      · rintro ⟨⟨k, hk⟩, heq⟩; omega
+    rw [h_eq, Finset.card_image_of_injective _
+      (fun a b h => by ext; simp only [Fin.mk.injEq] at h; omega)]
+    simp
   have hodds : odds.card = n / 2 := by
-    sorry -- Counting odd elements in Fin n via bijection with Fin ⌊n/2⌋
+    simp only [odds_def]
+    have h_eq : (Finset.univ : Finset (Fin n)).filter (fun v : Fin n => v.val % 2 = 1) =
+        Finset.image (fun k : Fin (n / 2) =>
+          (⟨2 * k.val + 1, by omega⟩ : Fin n)) Finset.univ := by
+      ext ⟨v, hv⟩
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Fin.mk.injEq]
+      constructor
+      · intro hmod; exact ⟨⟨v / 2, by omega⟩, by omega⟩
+      · rintro ⟨⟨k, hk⟩, heq⟩; omega
+    rw [h_eq, Finset.card_image_of_injective _
+      (fun a b h => by ext; simp only [Fin.mk.injEq] at h; omega)]
+    simp
   rw [hevens, hodds]
   -- ⌈n/2⌉ * ⌊n/2⌋ = n²/4 by parity case split
   rcases Nat.even_or_odd n with ⟨k, rfl⟩ | ⟨k, rfl⟩
