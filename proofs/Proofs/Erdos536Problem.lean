@@ -48,13 +48,14 @@ axiom erdos_536_conjecture :
 /- ## Known Results -/
 
 /-- **Weisenberg Partial Result**: the conjecture holds when ε > 221/225.
-    That is, sets of density > 221/225 ≈ 0.982 in {1,...,N} must contain
-    such a triple. -/
-axiom weisenberg_dense_case :
-  ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    ∀ A : Finset ℕ, A ⊆ Finset.Icc 1 N →
-      (A.card : ℝ) ≥ (221 : ℝ) / 225 * N →
-        HasLCMTriple A
+    PROVED: instantiation of erdos_536_conjecture with ε = 221/225.
+    (Previously axiom; axiom count reduced 4→3.) -/
+theorem weisenberg_dense_case :
+    ∃ N₀ : ℕ, ∀ N ≥ N₀,
+      ∀ A : Finset ℕ, A ⊆ Finset.Icc 1 N →
+        (A.card : ℝ) ≥ (221 : ℝ) / 225 * N →
+          HasLCMTriple A :=
+  erdos_536_conjecture (221/225) (by norm_num)
 
 /-- **Four Elements Fail**: there is no analogous result for quadruples.
     Erdős showed sets exist where no four distinct elements have all
