@@ -216,8 +216,8 @@ Connection to Problem #729 and general factorial divisibility.
 Problem #729 asks related questions about factorial divisibility
 with different parameter constraints.
 -/
-axiom problem_729_connection :
-    True  -- Placeholder for connection to Problem #729
+theorem problem_729_connection :
+    True := trivial  -- Placeholder for connection to Problem #729
 
 /--
 **General Principle:**

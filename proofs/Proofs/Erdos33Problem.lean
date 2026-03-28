@@ -90,7 +90,12 @@ axiom cilleruelo_habsieger_lower_bound (A : Set ℕ)
   (4 / π : ℝ) ≤ liminf (fun N => normalizedDensity A N) atTop
 
 /-- The lower bound 4/π is approximately 1.273. -/
-axiom four_over_pi_approx : (4 / π : ℝ) > 1.27
+theorem four_over_pi_approx : (4 / π : ℝ) > 1.27 := by
+  rw [gt_iff_lt, div_lt_iff Real.pi_pos]
+  -- Need: 1.27 * π < 4, equivalently π < 4/1.27 ≈ 3.1496...
+  -- We know π < 3.15 from Mathlib
+  have hpi : Real.pi < 3.15 := Real.pi_lt_315
+  linarith
 
 /- ## Upper Bounds on limsup -/
 
@@ -145,7 +150,9 @@ def liminfStrictlyGreaterThanOne : Prop :=
     (1 : ℝ) < liminf (fun N => normalizedDensity A N) atTop
 
 /-- 4/π > 1 since π < 4 -/
-axiom four_over_pi_gt_one : (4 / π : ℝ) > 1
+theorem four_over_pi_gt_one : (4 / π : ℝ) > 1 := by
+  rw [gt_iff_lt, one_lt_div Real.pi_pos]
+  exact Real.pi_lt_four
 
 /-- The current bounds imply liminf > 1. -/
 theorem liminf_gt_one_from_bounds (A : Set ℕ)
