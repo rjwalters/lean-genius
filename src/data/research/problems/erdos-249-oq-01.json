@@ -69,6 +69,8 @@
     "research"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-24",
     "erdos-249"
   ],
   "references": {
@@ -89,13 +91,24 @@
     {
       "path": "Proofs/Erdos249OQ01.lean",
       "filename": "Erdos249OQ01.lean",
-      "lineCount": 96,
-      "theoremCount": 6,
+      "lineCount": 139,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos249OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos249Problem.lean",
+      "filename": "Erdos249Problem.lean",
+      "lineCount": 193,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos249Problem.lean"
     }
   ]
 }

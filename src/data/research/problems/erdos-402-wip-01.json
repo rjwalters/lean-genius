@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-402-wip-01",
+  "title": "Complete Graham's GCD Conjecture (Work in Progress)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: This proof is marked as work in progress and needs completion.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T19:26:08.359Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Reduced sorries from 2 to 1. Proved equality characterization is false ({1,2,4} counterexample). Proved main conjecture for two-element sets.",
+    "builtItems": [
+      "counterexample_124_satisfies: {1,2,4} satisfies Graham condition",
+      "counterexample_124_primitive: {1,2,4} has gcd 1",
+      "counterexample_124_not_case: {1,2,4} is not a Graham equality case",
+      "erdos_402_equality_counterexample: complete disproof",
+      "dvd_lt_imp_le_half: proper divisors are at most half",
+      "erdos_402_pair: main conjecture for |A|=2"
+    ],
+    "insights": [
+      "Equality characterization is false: {1,2,4} is a counterexample (primitive, satisfies GCD condition, not in three families)",
+      "For two-element sets: gcd of distinct elements is a proper divisor of the larger, so ≤ max/2 = max/|A|",
+      "Key to disproving case 2: L/1 = L must be in image, so L ∈ {1,2,4}, but lcm(1,...,n) cannot equal any of these for n≥3",
+      "Coprimality of 2 and 3 forces 6|L when n≥3, ruling out L≤4"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Main conjecture requires deep sieve argument (Balasubramanian-Soundararajan 1996)",
+      "Could try proving for |A|=3 but likely needs significant infrastructure"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "gcd",
+    "combinatorics",
+    "solved",
+    "wip",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-40",
+    "erdos-402"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T19:26:08.359Z",
+  "lastUpdate": "2026-03-28T19:26:08.359Z",
+  "significance": 5,
+  "tractability": 6
+}

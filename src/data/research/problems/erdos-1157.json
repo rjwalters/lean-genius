@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1157",
-  "title": "Erd\u0151s #1157",
+  "title": "Erdős #1157",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -31,25 +31,25 @@
   "knowledge": {
     "progressSummary": "COMPLETE: 2A appropriate (BES 1973 lower bound + Delcourt-Postle 2024 theorem), 27T proved, 0S. Monotonicity in r/k/s fully characterized.",
     "builtItems": [
-      "besExponent_lt_two_at_bes_threshold: BUGFIX \u2014 correct bound replaces wrong \u2264 1 claim",
+      "besExponent_lt_two_at_bes_threshold: BUGFIX — correct bound replaces wrong ≤ 1 claim",
       "isLittleO_zero: zero function is little-o of anything",
       "isLittleO_of_eventually_le: comparison lemma for little-o",
       "bes_monotone_in_s: BES conjecture monotone in number of forbidden edges",
       "besExponent_at_threshold_one: exponent = 1 when k = rs - s + 1",
-      "PROVED ruzsa_szemeredi_bes from delcourt_postle_theorem (axiom\u2192theorem)",
-      "PROVED glock_bes_k4 from delcourt_postle_theorem (axiom\u2192theorem)",
+      "PROVED ruzsa_szemeredi_bes from delcourt_postle_theorem (axiom→theorem)",
+      "PROVED glock_bes_k4 from delcourt_postle_theorem (axiom→theorem)",
       "besExponent_3uniform_threshold: exact formula (2s-3)/(s-1) at 3-uniform BES threshold",
       "bes_monotone_in_k_general: IsLittleO transfer for arbitrary uniformity t",
       "bes_monotone_in_s_general: IsLittleO transfer for arbitrary uniformity t",
       "besExponent_mono_r: exponent increases with uniformity r (monotonicity in r)"
     ],
     "insights": [
-      "BUG FIXED: besExponent_le_one_at_bes_threshold was mathematically wrong (claimed 3/2 \u2264 1). Corrected to besExponent_lt_two (< 2 is correct)",
+      "BUG FIXED: besExponent_le_one_at_bes_threshold was mathematically wrong (claimed 3/2 ≤ 1). Corrected to besExponent_lt_two (< 2 is correct)",
       "All 7 axioms are deep: extremalNumber definition, monotonicity properties, published results (BES/RS/Glock/DP). None provable from Mathlib",
-      "BES exponent = (2s-3)/(s-1) at threshold, which approaches 2 from below as s\u2192\u221e",
+      "BES exponent = (2s-3)/(s-1) at threshold, which approaches 2 from below as s→∞",
       "IsLittleO utility lemmas enable cleaner monotonicity proofs",
       "besExponent_at_threshold_one: when k = rs-s+1, exponent = 1 exactly (s-1 cancels)",
-      "ruzsa_szemeredi_bes and glock_bes_k4 are both special cases of delcourt_postle_theorem \u2014 proved and converted from axioms",
+      "ruzsa_szemeredi_bes and glock_bes_k4 are both special cases of delcourt_postle_theorem — proved and converted from axioms",
       "Reduced axiom count from 7 to 5 by proving 2 axioms",
       "Remaining 5 axioms: extremalNumber function, 2 monotonicity properties, BES lower bound, Delcourt-Postle theorem",
       "General monotonicity transfer theorems proved for arbitrary uniformity t (not just 3-uniform)",
@@ -59,9 +59,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "No further work needed \u2014 file is complete"
+      "No further work needed — file is complete"
     ],
-    "markdown": "# Erd\u0151s #1157 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1157 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -85,10 +85,10 @@
     {
       "path": "Proofs/Erdos1157Problem.lean",
       "filename": "Erdos1157Problem.lean",
-      "lineCount": 378,
-      "theoremCount": 27,
+      "lineCount": 379,
+      "theoremCount": 25,
       "axiomCount": 2,
-      "defCount": 4,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1157Problem.lean"

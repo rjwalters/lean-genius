@@ -46,6 +46,7 @@
   ],
   "relatedProofs": [
     "wolstenholme-theorem",
+    "wolstenholme-theorem-oq-01",
     "wolstenholme-theorem-oq-02"
   ],
   "references": {
@@ -68,6 +69,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ01.lean",
+      "filename": "WolstenholmeTheoremOQ01.lean",
+      "lineCount": 272,
+      "theoremCount": 24,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
     },
     {
       "path": "Proofs/WolstenholmeTheoremOQ02.lean",

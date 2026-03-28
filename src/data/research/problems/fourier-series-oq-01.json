@@ -1,0 +1,99 @@
+{
+  "slug": "fourier-series-oq-01",
+  "title": "Can Carleson's theorem ($L^2$ Fourier series converge pointwise a",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-28T15:56:29-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-02",
+    "fourier-series-oq-02-oq-03",
+    "fourier-series-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T22:57:01.595Z",
+  "lastUpdate": "2026-03-28T22:57:01.614Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeries.lean",
+      "filename": "FourierSeries.lean",
+      "lineCount": 452,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 467,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03.lean",
+      "filename": "FourierSeriesOQ02OQ03.lean",
+      "lineCount": 148,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ03.lean",
+      "filename": "FourierSeriesOQ03.lean",
+      "lineCount": 809,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    }
+  ]
+}

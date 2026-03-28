@@ -32,7 +32,11 @@
     "focus": "Completed",
     "blockers": [],
     "nextAction": "None",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: Generalized diagonal argument to all regular cardinals",
@@ -46,21 +50,110 @@
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "tags": ["set-theory", "ordinals", "cardinals", "regularity", "research"],
-  "relatedProofs": ["cantor-diagonalization", "cantor-diagonalization-oq-02"],
-  "references": { "papers": [], "urls": [], "mathlib": ["Ordinal.iSup_lt_ord", "Cardinal.IsRegular.cof_eq"] },
+  "tags": [
+    "set-theory",
+    "ordinals",
+    "cardinals",
+    "regularity",
+    "research"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-02",
+    "cantor-diagonalization-oq-02-oq-01",
+    "cantor-diagonalization-oq-03",
+    "cantor-diagonalization-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Ordinal.iSup_lt_ord",
+      "Cardinal.IsRegular.cof_eq"
+    ]
+  },
   "started": "2026-03-28T19:00:00.000Z",
   "lastUpdate": "2026-03-28T19:00:00.000Z",
   "significance": 7,
   "tractability": 8,
-  "leanFiles": [{
-    "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
-    "filename": "CantorDiagonalizationOQ02OQ03.lean",
-    "lineCount": 142,
-    "theoremCount": 6,
-    "axiomCount": 0,
-    "defCount": 0,
-    "sorryCount": 0,
-    "isAristotle": false
-  }]
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorDiagonalization.lean",
+      "filename": "CantorDiagonalization.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalization.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01.lean",
+      "filename": "CantorDiagonalizationOQ01.lean",
+      "lineCount": 443,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02.lean",
+      "filename": "CantorDiagonalizationOQ02.lean",
+      "lineCount": 273,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
+      "filename": "CantorDiagonalizationOQ02OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03.lean",
+      "lineCount": 143,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03.lean",
+      "filename": "CantorDiagonalizationOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04.lean",
+      "filename": "CantorDiagonalizationOQ04.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04.lean"
+    }
+  ]
 }

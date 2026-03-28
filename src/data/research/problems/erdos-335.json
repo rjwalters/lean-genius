@@ -1,6 +1,6 @@
 {
   "slug": "erdos-335",
-  "title": "Erd\u0151s #335",
+  "title": "Erdős #335",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -42,17 +42,17 @@
     ],
     "insights": [
       "limUnder requires Mathlib.Topology.Basic import (not in original file)",
-      "countingFn A N \u2264 N: A\u2229Icc 1 N \u2286 Icc 1 N, ncard(Icc 1 N) = N",
+      "countingFn A N ≤ N: A∩Icc 1 N ⊆ Icc 1 N, ncard(Icc 1 N) = N",
       "density_nonneg needs DensityExists assumption for proper statement (limUnder of non-convergent filter is arbitrary)",
       "additive_sum_le_one follows trivially from density_le_one applied to Sumset A B",
-      "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Pl\u00fcnnecke-Ruzsa. None are routine Mathlib proofs.",
-      "plunnecke_ruzsa_lower axiom was unused by any theorem - removed (4\u21923 axioms)",
-      "density_additive_pos: positive densities + DensityAdditive \u2192 positive sumset density (trivial from d(A+B)=d(A)+d(B))",
-      "Sumset_empty_left/right: Sumset with \u2205 yields \u2205 (no elements to sum)"
+      "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Plünnecke-Ruzsa. None are routine Mathlib proofs.",
+      "plunnecke_ruzsa_lower axiom was unused by any theorem - removed (4→3 axioms)",
+      "density_additive_pos: positive densities + DensityAdditive → positive sumset density (trivial from d(A+B)=d(A)+d(B))",
+      "Sumset_empty_left/right: Sumset with ∅ yields ∅ (no elements to sum)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #335 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #334\n- Problem #336\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #335 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #334\n- Problem #336\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -75,8 +75,8 @@
     {
       "path": "Proofs/Erdos335Problem.lean",
       "filename": "Erdos335Problem.lean",
-      "lineCount": 181,
-      "theoremCount": 9,
+      "lineCount": 204,
+      "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
