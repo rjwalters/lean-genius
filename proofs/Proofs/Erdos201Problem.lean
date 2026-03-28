@@ -66,13 +66,6 @@ noncomputable def rk (k N : ℕ) : ℕ :=
       ((Finset.Icc (1 : ℤ) N).powerset.filter (fun A => IsAPFree A k))
       Finset.card
 
-/-- G_k(N): the minimum over all N-element integer sets S of the
-maximum k-AP-free subset of S.
-
-The true definition quantifies over all N-element integer sets,
-which cannot be expressed as a computable function. We axiomatize it. -/
-axiom gk : ℕ → ℕ → ℕ
-
 /-- A set S has a k-AP-free subset of size at least m. -/
 def HasAPFreeSubsetOfSize (S : Finset ℤ) (k m : ℕ) : Prop :=
   ∃ A : Finset ℤ, A ⊆ S ∧ IsAPFree A k ∧ A.card ≥ m
@@ -82,14 +75,55 @@ of size ≥ m. This is the Prop-level definition of G_k(N) ≥ m. -/
 def gk_prop (k N m : ℕ) : Prop :=
   ∀ S : Finset ℤ, S.card = N → HasAPFreeSubsetOfSize S k m
 
+/-- G_k(N): the greatest m such that every N-element integer set has
+a k-AP-free subset of size at least m.
+
+Defined as sSup of valid lower bounds. The set is nonempty (0 is valid:
+the empty subset is AP-free) and bounded above by N. -/
+noncomputable def gk (k N : ℕ) : ℕ :=
+  sSup { m : ℕ | gk_prop k N m }
+
 /-
 ## Basic bounds
 -/
 
 /-- Trivial bound: G_k(N) ≤ R_k(N).
 {1,...,N} is a particular N-element set, so the worst-case AP-free
-subset over all N-element sets is at most the maximum over {1,...,N}. -/
-axiom gk_le_rk (k N : ℕ) (hk : 3 ≤ k) : gk k N ≤ rk k N
+subset over all N-element sets is at most the maximum over {1,...,N}.
+Proof: each valid bound m satisfies m ≤ rk k N, since applying the
+universality to Icc 1 N yields an AP-free subset A with m ≤ |A| ≤ rk. -/
+theorem gk_le_rk (k N : ℕ) (hk : 3 ≤ k) : gk k N ≤ rk k N := by
+  apply csSup_le ⟨0, fun S _ => ⟨∅, Finset.empty_subset _,
+    fun ⟨a, d, _, _, hmem⟩ => by have := hmem ⟨0, by omega⟩; simp at this, by omega⟩⟩
+  intro m hm
+  -- For N = 0: the only size-0 set is ∅, so A = ∅ and m ≤ 0 = rk k 0
+  by_cases hN : N = 0
+  · subst hN
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm ∅ rfl
+    have hA_empty := Finset.subset_empty.mp hA_sub
+    rw [hA_empty] at hA_card
+    simp at hA_card
+    omega
+  · -- For N ≥ 1: apply hm to S = image (·+1) (range N) ⊆ Icc 1 N
+    have hN_pos : 0 < N := Nat.pos_of_ne_zero hN
+    -- Build an N-element set inside Icc 1 N
+    set S := (Finset.range N).image (fun i : ℕ => (i : ℤ) + 1) with hS_def
+    have hS_card : S.card = N := by
+      rw [hS_def, Finset.card_image_of_injective]
+      · exact Finset.card_range N
+      · intro a b hab; omega
+    have hS_sub : S ⊆ Finset.Icc (1 : ℤ) ↑N := by
+      intro x hx
+      simp [hS_def] at hx
+      obtain ⟨i, hi, rfl⟩ := hx
+      simp [Finset.mem_Icc]
+      omega
+    obtain ⟨A, hA_sub, hA_free, hA_card⟩ := hm S hS_card
+    -- A ⊆ S ⊆ Icc 1 N, so A is in the filtered powerset defining rk
+    have hA_sub_Icc : A ⊆ Finset.Icc (1 : ℤ) ↑N := le_trans hA_sub hS_sub
+    have hA_mem : A ∈ (Finset.Icc (1 : ℤ) ↑N).powerset.filter (fun B => IsAPFree B k) := by
+      simp [Finset.mem_filter, Finset.mem_powerset, hA_sub_Icc, hA_free]
+    exact le_trans hA_card (Finset.le_sup hA_mem)
 
 /-- Strict inequality example: G_3(5) = 3 while R_3(5) = 4. -/
 axiom g3_5_eq : gk 3 5 = 3
