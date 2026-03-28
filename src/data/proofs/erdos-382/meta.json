@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 382,
     "erdosUrl": "https://erdosproblems.com/382",
     "erdosProblemStatus": "open",
@@ -65,7 +65,7 @@
       "Concrete example: prodInterval 2 4 = 24 via native_decide"
     ],
     "axiomCount": 3,
-    "lineCount": 509,
+    "lineCount": 591,
     "assumptions": "3 axioms: erdos_382_q1 (OPEN conjecture), erdos_382_q2_heuristic (OPEN conjecture), ramachandra_bound (deep result). 3 sorries in cramer_implies_q1 (growth rate steps). Proved: exponentInProduct_sum, largest_prime_exp_one (Bertrand's postulate), no_prime_in_upper_half."
   },
   "overview": {
@@ -204,7 +204,7 @@
       "Real"
     ],
     "namespace": "Erdos382",
-    "lineCount": 509,
+    "lineCount": 591,
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 9
