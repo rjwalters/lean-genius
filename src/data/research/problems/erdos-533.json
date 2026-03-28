@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 4A all appropriate, 14T proved, 0S. Well-structured file.",
+    "progressSummary": "PROGRESS: 4A→3A. Removed unused erdos_rogers_counterexample axiom. 3 remaining: ehsss_result (used), k4_free_triangle_free_subset (used), erdos_533_conjecture (OPEN).",
     "builtItems": [
       "isTriangleFree_subset: monotonicity of triangle-free sets (line 84-88)",
       "isClique_subset: monotonicity of cliques (line 90-93)",
@@ -53,7 +53,8 @@
       "For delta > 1/16, the conjecture follows directly from ehsss_result with c = delta/2",
       "K5-free implies K7-free, so the Erdos-Rogers counterexample (K7-free) does not obstruct Problem 533",
       "All 4 axioms appropriate: ehsss_result (deep), k4_free_triangle_free_subset (deep), erdos_rogers_counterexample (construction), erdos_533_conjecture (open)",
-      "File has 14 proved theorems (metadata claimed 0). Good structure."
+      "File has 14 proved theorems (metadata claimed 0). Good structure.",
+      "erdos_rogers_counterexample axiom was unused — removed (4→3A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -84,9 +85,9 @@
     {
       "path": "Proofs/Erdos533Problem.lean",
       "filename": "Erdos533Problem.lean",
-      "lineCount": 196,
+      "lineCount": 222,
       "theoremCount": 15,
-      "axiomCount": 4,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

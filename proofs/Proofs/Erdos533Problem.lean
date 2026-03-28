@@ -184,15 +184,6 @@ axiom k4_free_triangle_free_subset (n : ℕ) (hn : 1 ≤ n)
   ∃ (c : ℝ) (S : Finset (Fin n)), 0 < c ∧ IsTriangleFree G S ∧
     (S.card : ℝ) ≥ c * n
 
-/-- Erdős–Rogers counterexample: there exist K₇-free graphs with n/4 · n edges
-    where every triangle-free subset has o(n) vertices. -/
-axiom erdos_rogers_counterexample :
-  ∀ C : ℝ, 0 < C → ∃ (n : ℕ) (G : SGraph n),
-    1 ≤ n ∧ ¬HasClique G 7 ∧
-    (1 : ℝ) / 4 * n ^ 2 ≤ (edgeCount G : ℝ) ∧
-    ∀ (S : Finset (Fin n)), IsTriangleFree G S →
-      (S.card : ℝ) < C * n
-
 /- ## Partial Resolution -/
 
 /-- For δ > 1/16, Problem 533 follows from the known ehsss_result.
