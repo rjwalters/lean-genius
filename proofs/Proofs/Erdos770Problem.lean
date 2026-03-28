@@ -384,12 +384,34 @@ theorem gcdPowerSeq_succ_eq_one (n : ℕ) (hn : 0 < n) : gcdPowerSeq n (n + 1) =
     -- (distinct since a < p). But X^n - 1 has degree n, so ≤ n roots over a field.
     -- Contradiction: n+1 > n.
     push_neg at hple
-    -- For a ∈ [2, n+1]: p | a^n - 1 (gcd divides each term)
-    have hpdvd_all : ∀ a ∈ Finset.Icc 2 (n + 1), p ∣ a ^ n - 1 := fun a ha =>
-      dvd_trans hpdvd (gcdPowerSeq_dvd_term n (n + 1) a ha)
-    -- This gives n+1 distinct n-th roots of unity in ℤ/pℤ (a=1,...,n+1),
-    -- contradicting the polynomial degree bound. See polynomial root counting theory.
-    sorry
+    haveI : Fact p.Prime := ⟨hp⟩
+    -- Each a ∈ [1, n+1] is an n-th root of unity in ZMod p
+    have hroots : ∀ a ∈ Finset.Icc 1 (n + 1),
+        (a : ZMod p) ∈ Polynomial.nthRoots n (1 : ZMod p) := by
+      intro a ha
+      rw [Polynomial.mem_nthRoots hn, Finset.mem_Icc] at *
+      rcases ha.1.eq_or_gt with rfl | ha1
+      · simp
+      · have hpa : p ∣ a ^ n - 1 := dvd_trans hpdvd
+          (gcdPowerSeq_dvd_term n (n+1) a (Finset.mem_Icc.mpr ⟨ha1, ha.2⟩))
+        rw [← sub_eq_zero, ← ZMod.natCast_zmod_eq_zero_iff_dvd] at hpa
+        push_cast [Nat.cast_pow] at hpa ⊢; linarith
+    -- The map ℕ → ZMod p is injective on [1, n+1] (all values < p)
+    have hinj : Set.InjOn (Nat.cast : ℕ → ZMod p)
+        (↑(Finset.Icc 1 (n + 1)) : Set ℕ) := by
+      intro a ha b hb hab
+      simp only [Finset.mem_coe, Finset.mem_Icc] at ha hb
+      rwa [ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt (by omega : a < p),
+           Nat.mod_eq_of_lt (by omega : b < p)] at hab
+    -- n+1 distinct elements in nthRoots, but card nthRoots ≤ n
+    have := (Finset.card_le_card
+      (show (Finset.Icc 1 (n+1)).image (Nat.cast : ℕ → ZMod p) ≤
+        (Polynomial.nthRoots n (1 : ZMod p)).toFinset from by
+          intro x hx; rw [Multiset.mem_toFinset]
+          obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hx; exact hroots a ha)).trans
+      ((Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots n 1))
+    rw [Finset.card_image_of_injOn hinj] at this
+    simp [Nat.add_sub_cancel] at this
 
 /-- When n+1 is prime, h(n) = n+1: the gcd stays non-trivial up to k = n
     (by Fermat, since (n+1)-1 = n divides n) and drops to 1 at k = n+1. -/
