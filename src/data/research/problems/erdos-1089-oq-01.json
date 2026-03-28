@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1089-oq-01",
-  "title": "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2",
+  "title": "Does lim_{d\u2192\u221e} g_d(n)/d^{n-1} exist for each fixed n \u2265 2",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2.",
+    "plain": "Formal mathematical investigation: Does lim_{d\u2192\u221e} g_d(n)/d^{n-1} exist for each fixed n \u2265 2.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,16 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Parent Erdos1089Problem.lean: 10A, 5T, 0S. No OQ01-specific Lean file.",
+    "progressSummary": "PROGRESS: Removed incorrect g_d_2 axiom (BUG FIX), proved g_mono_d (10A\u21928A, +1 sorry in norm calc)",
     "builtItems": [
       "Proved g_d_1: g d 1 = 2 (Erdos1089Problem.lean)",
       "Proved cube_lower_bound: g d (d+1) > 2^d via cube subset monotonicity (Erdos1089Problem.lean)",
-      "Proved distinctDistances_mono: distance set monotone under subset (Erdos1089Problem.lean)"
+      "Proved distinctDistances_mono: distance set monotone under subset (Erdos1089Problem.lean)",
+      "embedPoint: isometric embedding Point d\u2081 \u2192 Point d\u2082 via zero-padding",
+      "g_mono_d (THEOREM): monotonicity in d proved by embedding argument"
     ],
     "insights": [
-      "Finset.mk_mem_product bridges .product and ×ˢ notation gap for membership proofs",
+      "Finset.mk_mem_product bridges .product and \u00d7\u02e2 notation gap for membership proofs",
       "Finset.exists_subset_card_eq exists in Mathlib for constructing subsets of given cardinality",
-      "dsimp reduces match expressions that simp cannot handle"
+      "dsimp reduces match expressions that simp cannot handle",
+      "g_d_2 axiom was INCORRECT: g_d(2) = d+2 not 3 (equilateral triangle in \u211d^d has 1 distance for d\u22652)",
+      "g_mono_d proved via isometric embedding \u211d^{d\u2081} \u21aa \u211d^{d\u2082} (pad with zeros); sorry remains on norm calculation"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -63,18 +67,18 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.904Z",
-  "lastUpdate": "2026-03-24T00:48:59.904Z",
+  "lastUpdate": "2026-03-28T11:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1089Problem.lean",
       "filename": "Erdos1089Problem.lean",
-      "lineCount": 308,
+      "lineCount": 382,
       "theoremCount": 5,
-      "axiomCount": 10,
+      "axiomCount": 8,
       "defCount": 11,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1089Problem.lean"
     }

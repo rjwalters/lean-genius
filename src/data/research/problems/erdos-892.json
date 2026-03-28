@@ -29,30 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Removed 2 unused axioms (3→1). Fixed Aristotle file: removed incorrectly stated reciprocal_log_comparison (counterexample: a=6,C=3,b=2).",
     "builtItems": [
-      "primitive_elements_ge_two: proved from primitivity (0 divides everything, 1 divides everything)",
-      "erdos_1935_necessary: converted from axiom to theorem (Steps 1-2 complete, Step 3 sorry for comparison arithmetic)",
-      "reciprocal_log_comparison: stated comparison test lemma (sorry, Aristotle target)",
-      "Erdos892Aristotle.lean: companion file with comparison lemmas for Aristotle",
-      "product_log_comparison: proved a·log(a) ≤ 2C·(b·log(b)) via log monotonicity",
-      "strict_inc_lower_bound: proved a(n) ≥ n+2 by induction",
-      "strict_inc_eventually_ge: proved sequence eventually exceeds any bound M",
-      "reciprocal_log_comparison: PROVED from product_log_comparison via div_le_div_iff₀",
-      "erdos_1935_necessary: FULLY PROVED - sum splitting at N₀, head bounded by finite sum, tail by comparison+convergence"
+      "Removed incorrect Aristotle reciprocal_log_comparison (had counterexample)",
+      "Removed unused axioms ess_1967_necessary and primitive_counting_bound (documented as comments)",
+      "Cleaned Aristotle file: now sorry-free"
     ],
     "insights": [
-      "erdos_1935_necessary is logically derivable from primitive_reciprocal_log_convergent: if a ≤ C*b, then 1/(b·log b) ≤ 2C/(a·log a) for large n, so convergence transfers",
-      "Proof sketch: split sum at threshold N₀ where a_n ≥ 2C. Finite head is bounded. Tail satisfies comparison with Σ 1/(a_n log a_n).",
-      "ess_1967_necessary is strictly stronger than erdos_1935_necessary (the growth rate condition implies convergence)",
-      "primitive_counting_bound and primitive_reciprocal_log_convergent are independent foundational results from 1935",
-      "File is well-structured with clean definitions for IsPrimitive, IsStrictlyIncreasing, IsDominatedBy, IsGCDFree",
-      "primitive_elements_ge_two has clean proof: 0|everything and 1|everything both contradict primitivity",
-      "The comparison test from primitive_reciprocal_log_convergent to erdos_1935_necessary requires careful handling of ℕ/ℝ coercions and log monotonicity",
-      "Key step: split sum at threshold where a(n) ≥ 2C. Finitely many terms below threshold (by strict increase), comparison above.",
-      "div_le_div_iff₀ (not div_le_div_iff) is the correct Mathlib name for cross-multiplication of fraction inequalities",
-      "The threshold b(n) ≥ C (instead of a(n) ≥ 2C) is more natural for the comparison lemma",
-      "Finset.sum_filter_add_sum_filter_not cleanly splits sums by predicate; Finset.sum_le_sum_of_subset_of_nonneg handles subset monotonicity with non-negative terms"
+      "Only 1 axiom needed: primitive_reciprocal_log_convergent (Erdős 1935)",
+      "ess_1967_necessary and primitive_counting_bound were stated but never used in proofs",
+      "Aristotle reciprocal_log_comparison had wrong hypothesis (a>=2C instead of b>=C), counterexample: a=6,C=3,b=2",
+      "Main file reciprocal_log_comparison is correctly stated and proved",
+      "Main theorem erdos_1935_necessary is a substantive 70-line proof"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

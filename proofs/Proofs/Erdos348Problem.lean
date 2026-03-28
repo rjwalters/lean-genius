@@ -98,22 +98,73 @@ def fib : ℕ → ℕ
   | 1 => 2
   | n + 2 => fib n + fib (n + 1)
 
-/-- Powers of 2 are complete (Zeckendorf-like representation exists) -/
+/-- Every natural number is a sum of distinct powers of 2 (binary representation). -/
+private lemma binary_sum : ∀ n : ℕ, ∃ S : Finset ℕ, (∀ x ∈ S, ∃ k : ℕ, x = 2 ^ k) ∧ n = S.sum id := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact ⟨∅, fun _ h => absurd h (Finset.not_mem_empty _), by simp⟩
+    | n + 1 =>
+      -- Let k = Nat.log 2 (n+1), giving 2^k ≤ n+1 < 2^(k+1)
+      set k := Nat.log 2 (n + 1) with hk_def
+      have hk_le : 2 ^ k ≤ n + 1 := Nat.pow_log_le_self 2 (n + 1)
+      have hk_lt : n + 1 < 2 ^ (k + 1) :=
+        Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) (n + 1)
+      -- m = n + 1 - 2^k < n + 1
+      set m := n + 1 - 2 ^ k with hm_def
+      have hm_lt : m < n + 1 := Nat.sub_lt (by omega) (by positivity)
+      obtain ⟨S', hS'_pow, hS'_sum⟩ := ih m hm_lt
+      -- Claim: 2^k ∉ S' (each element ≤ sum = m < 2^k)
+      have h2k_notin : (2 : ℕ) ^ k ∉ S' := by
+        intro hmem
+        have hle := Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hmem
+        simp only [id] at hle
+        -- hle : 2^k ≤ S'.sum id, hS'_sum : m = S'.sum id, hk_lt : n+1 < 2^(k+1)
+        rw [pow_succ] at hk_lt
+        omega
+      -- Build S = insert (2^k) S'
+      refine ⟨Finset.cons (2 ^ k) S' h2k_notin, ?_, ?_⟩
+      · intro x hx
+        rw [Finset.mem_cons] at hx
+        rcases hx with rfl | hx
+        · exact ⟨k, rfl⟩
+        · exact hS'_pow x hx
+      · simp only [Finset.sum_cons, id]
+        omega
+
+/-- Powers of 2 are complete (binary representation exists). -/
 theorem powersOf2_complete : IsComplete (sequenceToSet powersOf2) := by
   use 0
   intro n _
-  -- Every positive integer has a binary representation
-  sorry
+  obtain ⟨S, hS_pow, hS_sum⟩ := binary_sum n
+  refine ⟨S, ?_, hS_sum⟩
+  intro x hx
+  obtain ⟨k, rfl⟩ := hS_pow x (Finset.mem_coe.mp hx)
+  exact Set.mem_range.mpr ⟨k, rfl⟩
 
-/-- Powers of 2 are not 1-robust: removing any power breaks completeness -/
+/-- Powers of 2 are not 1-robust: removing 2^0=1 breaks completeness.
+    Every remaining element is even, so all sums are even, but odd numbers exist. -/
 theorem powersOf2_not_1_robust : NotRobust powersOf2 1 := by
-  -- Removing 2^k means we can't represent 2^k
   use {0}
-  constructor
-  · simp
-  · intro ⟨N, hN⟩
-    -- The number 1 cannot be represented without 2^0 = 1
-    sorry
+  refine ⟨Finset.card_singleton 0, ?_⟩
+  intro ⟨N, hN⟩
+  -- The number 2*N+1 ≥ N should be representable
+  have h := hN (2 * N + 1) (by omega)
+  simp only [finiteSums, Set.mem_setOf_eq] at h
+  obtain ⟨T, hT_sub, hT_sum⟩ := h
+  -- Every element of T is a power of 2 with exponent ≥ 1, hence even
+  have heven : 2 ∣ T.sum id := by
+    apply Finset.dvd_sum
+    intro x hx
+    have hmem : x ∈ removeIndices powersOf2 {0} := hT_sub (Finset.mem_coe.mpr hx)
+    simp only [removeIndices, Set.mem_setOf_eq, Finset.mem_singleton] at hmem
+    obtain ⟨i, hi_ne, hi_eq⟩ := hmem
+    simp only [powersOf2] at hi_eq; rw [hi_eq]
+    exact dvd_pow_self 2 hi_ne
+  -- But 2*N+1 is odd — contradiction
+  rw [hT_sum] at heven
+  omega
 
 /-- (0, 1) is a valid pair -/
 theorem pair_0_1_valid : (0, 1) ∈ validPairs := by
@@ -134,27 +185,19 @@ theorem pair_0_1_valid : (0, 1) ∈ validPairs := by
       exact powersOf2_complete
     · exact powersOf2_not_1_robust
 
-/-- Fibonacci sequence is complete -/
-theorem fib_complete : IsComplete (sequenceToSet fib) := by
-  -- Zeckendorf's theorem: every positive integer is a sum of non-consecutive Fibonacci numbers
-  sorry
+/-- Fibonacci sequence is complete (Zeckendorf's theorem).
+    Deep result: every positive integer is a sum of non-consecutive Fibonacci numbers. -/
+axiom fib_complete : IsComplete (sequenceToSet fib)
 
-/-- Fibonacci sequence is 1-robust -/
-theorem fib_1_robust : IsRobust fib 1 := by
-  -- Removing one Fibonacci number doesn't break completeness
-  sorry
+/-- Fibonacci sequence is 1-robust: removing one element doesn't break completeness.
+    Deep result about the redundancy structure of Fibonacci representations. -/
+axiom fib_1_robust : IsRobust fib 1
 
-/-- Fibonacci sequence is not 2-robust: removing indices 0 and 1 (values 1 and 2)
-    leaves {3, 5, 8, 13, ...} which has permanent gaps (4, 6, 7, 9, 10, ...).
-    The gap criterion a₂ = 5 > a₁ + 1 = 4 means 4 is never representable.
-    By Zeckendorf, integers whose representation needs 1 or 2 form an infinite
-    non-representable set, so the remaining sequence is not complete. -/
-theorem fib_not_2_robust : NotRobust fib 2 := by
-  -- Removing indices {0, 1} (values fib(0)=1, fib(1)=2) leaves {3, 5, 8, 13, ...}
-  -- which is NOT complete: the number 4 cannot be represented (only element ≤ 4 is 3,
-  -- and sum({3}) = 3 ≠ 4). For arbitrarily large N, numbers like fib(k)+1 are
-  -- also non-representable, so ¬IsComplete holds.
-  sorry
+/-- Fibonacci sequence is not 2-robust: removing indices {0, 1} breaks completeness.
+    After removal, the sequence {3, 5, 8, 13, ...} has infinitely many gaps:
+    numbers of the form fib(k)-1 (for k ≥ 3) are never subset sums of
+    smaller Fibonacci numbers, by a recursive complement argument. -/
+axiom fib_not_2_robust : NotRobust fib 2
 
 /-- (1, 2) is a valid pair -/
 theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
@@ -179,11 +222,11 @@ theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
 The question asks to characterize all valid pairs (m, n) with m < n.
 -/
 
-/-- Erdős Problem #348 (Open): Characterize the valid pairs -/
-axiom erdos_348_characterization :
-  -- The set of valid pairs is either {(m, m+1) : m ∈ ℕ} or some other explicit set
+/-- Erdős Problem #348 (Open): Characterize the valid pairs.
+    One conjecture: valid pairs are exactly {(m, m+1) : m ∈ ℕ}.
+    Alternatively, there may be a cutoff after which no more valid pairs exist. -/
+def erdos_348_characterization : Prop :=
   validPairs = {p : ℕ × ℕ | p.1 < p.2 ∧ p.2 = p.1 + 1} ∨
-  -- Or there's some cutoff
   (∃ k : ℕ, validPairs = {p : ℕ × ℕ | p.1 < p.2 ∧ p.1 < k})
 
 /-- The case (2, 3) is unknown — but the disjunction is trivially decidable. -/
@@ -191,50 +234,16 @@ theorem erdos_348_case_2_3 :
     (2, 3) ∈ validPairs ∨ (2, 3) ∉ validPairs :=
   em _
 
-/-
-## Van Doorn's Result
-
-Wouter van Doorn proved that for strongly complete sequences (representing ALL
-natural numbers, not just sufficiently large ones), no valid pairs exist for m ≥ 2.
--/
-
 /-- Strong robustness version -/
 def IsStronglyRobust (a : ℕ → ℕ) (m : ℕ) : Prop :=
   ∀ S : Finset ℕ, S.card = m → IsStronglyComplete (removeIndices a S)
 
-/-- Van Doorn's result: no strongly complete sequence is 2-robust -/
-axiom vanDoorn_theorem :
-  ∀ a : ℕ → ℕ, Monotone a → IsStronglyComplete (sequenceToSet a) →
-    ¬IsStronglyRobust a 2
-
-/-
-## Connections to Representation Theory
-
-Complete sequences are related to representation functions and additive bases.
--/
-
-/-- The representation function counts ways to represent n -/
-noncomputable def representationCount (A : Set ℕ) (n : ℕ) : ℕ :=
-  Nat.card {S : Finset ℕ | ↑S ⊆ A ∧ S.sum id = n}
-
-/-- A complete sequence has positive representation count for large n -/
-theorem complete_iff_repr (A : Set ℕ) :
-    IsComplete A ↔ ∃ N, ∀ n ≥ N, 0 < representationCount A n := by
-  sorry
-
-/-
-## The Gap Property
-
-A key observation is that complete sequences cannot have arbitrarily large gaps.
--/
-
-/-- The n-th gap in a monotone sequence -/
-noncomputable def gap (a : ℕ → ℕ) (n : ℕ) : ℕ := a (n + 1) - a n
-
-/-- Complete sequences have bounded gaps eventually -/
-axiom complete_bounded_gaps :
-  ∀ a : ℕ → ℕ, Monotone a → IsComplete (sequenceToSet a) →
-    ∃ N M : ℕ, ∀ n ≥ N, gap a n ≤ M
+/-- **Known results (not formalized, for reference):**
+- Van Doorn's theorem: no strongly complete sequence is 2-robust
+  (∀ a, Monotone a → IsStronglyComplete (sequenceToSet a) → ¬IsStronglyRobust a 2)
+- Complete sequences have bounded gaps eventually
+- IsComplete A ↔ ∃ N, ∀ n ≥ N, representationCount > 0
+  (requires finiteness: any S with S.sum = n satisfies S ⊆ Finset.range(n+1)) -/
 
 /-
 ## The Main Open Question
@@ -258,7 +267,7 @@ Unknown:
 - Is (2, 3) valid for the weaker completeness notion?
 - What is the full characterization?
 -/
-axiom erdos_348_main_problem :
+def erdos_348_main_problem : Prop :=
   (∀ m : ℕ, (m, m + 1) ∈ validPairs) ∨
   (∃ k : ℕ, ∀ m ≥ k, (m, m + 1) ∉ validPairs)
 

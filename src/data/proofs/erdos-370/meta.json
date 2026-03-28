@@ -63,9 +63,9 @@
       "erdos_370_infinitely_many: infinitude statement (sorry'd)",
       "erdos_370: injective-function encoding of infinitude (sorry'd)"
     ],
-    "axiomCount": 10,
-    "lineCount": 258,
-    "assumptions": "10 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "axiomCount": 2,
+    "lineCount": 280,
+    "assumptions": "2 axioms (gpf_mul_le, dickman_density) and 2 sorries. gpf function and 7 properties now proved from Mathlib."
   },
   "leanFile": {
     "path": "Proofs/Erdos370Problem.lean",
@@ -91,8 +91,8 @@
       "ValidSteinerbergerM",
       "PomeranceExponent"
     ],
-    "axiomCount": 11,
-    "theoremCount": 4,
+    "axiomCount": 2,
+    "theoremCount": 13,
     "sorryCount": 2,
     "opens": [
       "Nat",

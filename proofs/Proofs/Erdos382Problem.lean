@@ -35,6 +35,8 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.NumberTheory.Bertrand
 import Mathlib.Tactic
 
@@ -318,16 +320,96 @@ def cramersConjecture : Prop :=
     For large v under Cramér, u must exceed √v (else [√v,v] is a prime-free gap of
     length ≈ v, contradicting the O((log v)²) gap bound). So [u,v] lies within a
     single Cramér gap of length ≤ C(log v)², which is < v^ε for large v. -/
+-- Helper: C * (log v)² < v^ε for large v.
+-- From log = o(x^(ε/4)), squaring gives log² ≤ x^(ε/2),
+-- and absorbing C into x^(ε/2) yields C * log² < x^ε.
+private lemma log_sq_lt_rpow (C : ℝ) (hC : C > 0) (ε : ℝ) (hε : ε > 0) :
+    ∃ V : ℕ, ∀ v : ℕ, v ≥ V → C * (Real.log ↑v) ^ 2 < (v : ℝ) ^ ε := by
+  -- Step 1: log x ≤ (1/2) * x^(ε/4) eventually (from isLittleO)
+  have hε4 : (0 : ℝ) < ε / 4 := by linarith
+  obtain ⟨R, hR⟩ := Filter.eventually_atTop.mp
+    ((isLittleO_log_rpow_atTop hε4).bound (show (0 : ℝ) < 1 / 2 by norm_num))
+  -- Step 2: C ≤ v^(ε/2) for large v
+  -- Since rpow ε/2 → ∞ and C is fixed, find threshold for C ≤ v^(ε/2)
+  have hε2 : (0 : ℝ) < ε / 2 := by linarith
+  -- Use: n ≥ ⌈C^(2/ε)⌉₊ implies (n : ℝ) ≥ C^(2/ε), hence n^(ε/2) ≥ C
+  refine ⟨max ⌈R⌉₊ (max ⌈C ^ (2 / ε)⌉₊ 2), fun v hv => ?_⟩
+  have hR_le : (R : ℝ) ≤ (v : ℝ) := by
+    calc R ≤ ⌈R⌉₊ := Nat.le_ceil R
+      _ ≤ v := by exact_mod_cast le_trans (le_max_left _ _) hv
+  have hv_pos : (0 : ℝ) < (v : ℝ) := by
+    have : 2 ≤ v := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hv
+    exact_mod_cast show 0 < v by omega
+  have hv_nn : (0 : ℝ) ≤ (v : ℝ) := le_of_lt hv_pos
+  -- Extract: |log v| ≤ (1/2) * v^(ε/4)
+  have hlog_bound := hR (v : ℝ) hR_le
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (Real.log_nonneg (by exact_mod_cast (show 1 ≤ v by omega))),
+      abs_of_nonneg (rpow_nonneg hv_nn _)] at hlog_bound
+  -- log² v ≤ (1/4) * v^(ε/2) (by squaring, since (1/2)² = 1/4)
+  have hlog_sq : (Real.log (v : ℝ)) ^ 2 ≤ (1 / 4) * (v : ℝ) ^ (ε / 2) := by
+    calc (Real.log (v : ℝ)) ^ 2
+        = Real.log (v : ℝ) * Real.log (v : ℝ) := by ring
+      _ ≤ (1 / 2 * (v : ℝ) ^ (ε / 4)) * (1 / 2 * (v : ℝ) ^ (ε / 4)) :=
+          mul_le_mul hlog_bound hlog_bound
+            (Real.log_nonneg (by exact_mod_cast (show 1 ≤ v by omega)))
+            (by positivity)
+      _ = 1 / 4 * ((v : ℝ) ^ (ε / 4) * (v : ℝ) ^ (ε / 4)) := by ring
+      _ = 1 / 4 * (v : ℝ) ^ (ε / 2) := by
+          congr 1; rw [← rpow_add hv_pos]; congr 1; ring
+  -- C ≤ v^(ε/2): from v ≥ C^(2/ε)
+  have hC_bound : C ≤ (v : ℝ) ^ (ε / 2) := by
+    have hCexp_le : ⌈C ^ (2 / ε)⌉₊ ≤ v := by
+      exact_mod_cast le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hv
+    have hCexp_real : C ^ (2 / ε) ≤ (v : ℝ) :=
+      le_trans (Nat.le_ceil _) (by exact_mod_cast hCexp_le)
+    calc C = (C ^ (2 / ε)) ^ (ε / 2) := by
+            rw [← rpow_mul hC.le]; congr 1; field_simp
+      _ ≤ (v : ℝ) ^ (ε / 2) := rpow_le_rpow (rpow_nonneg hC.le _) hCexp_real hε2.le
+  -- Combine: C * log² v ≤ C * (1/4) * v^(ε/2) ≤ (1/4) * v^(ε/2) * v^(ε/2) ≤ v^ε
+  calc C * (Real.log (v : ℝ)) ^ 2
+      ≤ C * (1 / 4 * (v : ℝ) ^ (ε / 2)) := by
+        exact mul_le_mul_of_nonneg_left hlog_sq hC.le
+    _ = C / 4 * (v : ℝ) ^ (ε / 2) := by ring
+    _ < 1 * (v : ℝ) ^ (ε / 2) * (v : ℝ) ^ (ε / 2) := by
+        have : C / 4 < (v : ℝ) ^ (ε / 2) := by linarith
+        nlinarith [rpow_pos_of_pos hv_pos (ε / 2)]
+    _ = (v : ℝ) ^ ε := by rw [one_mul, ← rpow_add hv_pos]; congr 1; ring
+
 theorem cramer_implies_q1 : cramersConjecture → question1 := by
   intro ⟨C, hC, hcramer⟩ ε hε
-  -- Find V₁ where C(log v)² < v^ε (standard: log² = o(v^ε))
-  obtain ⟨V₁, hV₁⟩ : ∃ V₁ : ℕ, ∀ v : ℕ, v ≥ V₁ →
-      C * (Real.log ↑v) ^ 2 < (v : ℝ) ^ ε := by
-    sorry -- Standard growth rate: C(log v)² = o(v^ε), via isLittleO_log_rpow_atTop
-  -- Find V₂ where v - √v > C(log v)² (eliminates u ≤ √v case)
+  -- Find V₁ where C(log v)² < v^ε
+  obtain ⟨V₁, hV₁⟩ := log_sq_lt_rpow C hC ε hε
+  -- Find V₂ where v - √v > C(log v)²
+  -- Strategy: C*log²(v) < v^(1/2) (from log_sq_lt_rpow) and v - √v > √v for v ≥ 5
   obtain ⟨V₂, hV₂⟩ : ∃ V₂ : ℕ, ∀ v : ℕ, v ≥ V₂ →
       (v : ℝ) - Real.sqrt ↑v > C * (Real.log ↑v) ^ 2 := by
-    sorry -- Standard: v - √v ~ v dominates C(log v)²
+    obtain ⟨V', hV'⟩ := log_sq_lt_rpow C hC (1 / 2) (by norm_num : (0 : ℝ) < 1 / 2)
+    refine ⟨max V' 5, fun v hv => ?_⟩
+    have hv5 : 5 ≤ v := le_trans (le_max_right _ _) hv
+    have hV'_le : V' ≤ v := le_trans (le_max_left _ _) hv
+    have hv_pos : (0 : ℝ) < (v : ℝ) := by exact_mod_cast show 0 < v by omega
+    have hv_nn : (0 : ℝ) ≤ (v : ℝ) := le_of_lt hv_pos
+    -- C * log²(v) < v^(1/2)
+    have hlt := hV' v hV'_le
+    -- v^(1/2) = √v (standard: Real.sqrt_eq_rpow)
+    have hrpow_sqrt : (v : ℝ) ^ ((1 : ℝ) / 2) = Real.sqrt (v : ℝ) :=
+      (Real.sqrt_eq_rpow (v : ℝ)).symm
+    -- So C * log²(v) < √v
+    rw [hrpow_sqrt] at hlt
+    -- v - √v > √v ≥ C*log²(v), so v - √v > C*log²(v)
+    -- √v * √v = v and √v ≥ √5 > 2, so 2*√v < v, giving v - √v > √v
+    have hsqrt_sq : Real.sqrt (v : ℝ) * Real.sqrt (v : ℝ) = (v : ℝ) :=
+      Real.mul_self_sqrt hv_nn
+    have hsqrt_pos : 0 < Real.sqrt (v : ℝ) := Real.sqrt_pos.mpr hv_pos
+    have hsqrt_ge2 : Real.sqrt (v : ℝ) ≥ 2 := by
+      rw [ge_iff_le, ← Real.sqrt_sq (show (0 : ℝ) ≤ 2 by norm_num),
+          show (2 : ℝ) ^ 2 = 4 from by norm_num]
+      exact Real.sqrt_le_sqrt (by exact_mod_cast show (4 : ℕ) ≤ v by omega)
+    -- v - √v = √v(√v - 1) ≥ √v · 1 = √v (since √v ≥ 2 implies √v - 1 ≥ 1)
+    have hgap : (v : ℝ) - Real.sqrt (v : ℝ) ≥ Real.sqrt (v : ℝ) := by
+      nlinarith [hsqrt_sq, hsqrt_ge2]
+    linarith
   use max (max V₁ V₂) 4
   intro u v hv hcond
   obtain ⟨huv, hu, _⟩ := hcond

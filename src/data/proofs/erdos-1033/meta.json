@@ -17,7 +17,7 @@
       "turan-theory"
     ],
     "badge": "axiom",
-    "sorries": 14,
+    "sorries": 13,
     "erdosNumber": 1033,
     "erdosUrl": "https://erdosproblems.com/1033",
     "erdosProblemStatus": "open",
@@ -52,8 +52,8 @@
     ],
     "relatedProblems": [],
     "axiomCount": 6,
-    "lineCount": 358,
-    "assumptions": "6 axiom(s) and 14 sorry(s). See the Lean source for details."
+    "lineCount": 367,
+    "assumptions": "6 axioms (turan_has_triangle, erdos_laskar_upper, upper_bound_tight, erdos_laskar_lower, fan_lower, extremal_exists) and 13 sorries. erdosLaskar_approx now proved."
   },
   "overview": {
     "historicalContext": "Pál Turán proved in 1941 that every graph on $n$ vertices with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle — establishing the foundational result of extremal graph theory. This problem, posed by Erdős and Laskar, asks a refined question: given that triangles must exist above the Turán threshold, how large must the degree sum of the *heaviest* triangle be?\n\nErdős and Renu Laskar (1985) proved the initial bounds $(1+c)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$, where the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ comes from optimizing triangle configurations in nearly-bipartite graphs close to the Turán graph $T(n,2)$. Genghua Fan (1988) improved the lower bound to $(21/16)n = 1.3125n$ via careful degree counting arguments.\n\nThe gap between $1.3125n$ and $1.464n$ remains open. The conjectured answer is $h(n) = (2(\\sqrt{3}-1) - o(1))n$, which would mean the Erdős-Laskar construction is essentially optimal.",
@@ -113,87 +113,87 @@
       "title": "The Constant 2(√3−1)",
       "summary": "erdosLaskarConstant, erdosLaskar_approx",
       "startLine": 119,
-      "endLine": 131,
+      "endLine": 140,
       "mathContext": "$2(\\sqrt{3}-1) \\approx 1.464$. Arises from optimizing triangle degree sums in nearly-bipartite graphs near the Turán graph $T(n,2)$."
     },
     {
       "id": "upper-bound",
       "title": "Erdős-Laskar Upper Bound",
       "summary": "erdos_laskar_upper, upper_bound_tight",
-      "startLine": 132,
-      "endLine": 149,
+      "startLine": 141,
+      "endLine": 158,
       "mathContext": "Erdos-Laskar upper: $h(n) \\\\leq cn$ for some constant $c < 1$."
     },
     {
       "id": "original-lower",
       "title": "Erdős-Laskar Lower Bound",
       "summary": "erdos_laskar_lower, lower_beats_n",
-      "startLine": 150,
-      "endLine": 167,
+      "startLine": 159,
+      "endLine": 176,
       "mathContext": "Erdos-Laskar lower: $h(n) \\\\geq n + O(1)$. Every dense graph has a triangle with degree sum $> n$."
     },
     {
       "id": "fan-bound",
       "title": "Fan's Improved Lower Bound",
       "summary": "fanConstant, fan_lower, current_bounds",
-      "startLine": 168,
-      "endLine": 191,
+      "startLine": 177,
+      "endLine": 200,
       "mathContext": "Fan: $h(n) \\\\geq cn$ with improved constant. Current best lower bound."
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "boundGap, gap_positive, gap_approx",
-      "startLine": 192,
-      "endLine": 209,
+      "startLine": 201,
+      "endLine": 218,
       "mathContext": "Gap: $cn_1 \\\\leq h(n) \\\\leq cn_2$ with $c_1 < c_2$. Narrowing the gap is the main challenge."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_1033_conjecture, h_asymptotic",
-      "startLine": 210,
-      "endLine": 230,
+      "startLine": 219,
+      "endLine": 239,
       "mathContext": "Conjecture: $h(n) \\\\sim cn$ for some specific constant $c$. Determine the asymptotic."
     },
     {
       "id": "degree-properties",
       "title": "Degree Sum Properties",
       "summary": "triangle_min_degree, triangle_sum_min, dense_average_degree",
-      "startLine": 231,
-      "endLine": 252,
+      "startLine": 240,
+      "endLine": 261,
       "mathContext": "Dense graph: average degree $> n/2$. Triangle with degree sum $> 3n/2$ exists (from average)."
     },
     {
       "id": "maximum",
       "title": "Maximum Triangle Degree Sum",
       "summary": "maxTriangleDegreeSum, h_as_min",
-      "startLine": 253,
-      "endLine": 271,
+      "startLine": 262,
+      "endLine": 280,
       "mathContext": "max triangle degree sum over all triangles in $G$. The function $h$ minimizes this over all dense graphs."
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
       "summary": "isExtremal, extremal_exists",
-      "startLine": 272,
-      "endLine": 288,
+      "startLine": 281,
+      "endLine": 297,
       "mathContext": "Extremal graph: achieves $h(n)$ exactly. Near-bipartite constructions are typically extremal."
     },
     {
       "id": "turan-graph",
       "title": "Relation to Turán Graph",
       "summary": "bipartite_no_triangle, turan_plus_one",
-      "startLine": 289,
-      "endLine": 312,
+      "startLine": 298,
+      "endLine": 321,
       "mathContext": "Turan graph $T(n,2)$: no triangles, $n^2/4$ edges. One more edge forces a triangle."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "h_three, h_four",
-      "startLine": 313,
-      "endLine": 358
+      "startLine": 322,
+      "endLine": 367
     }
   ],
   "conclusion": {
@@ -303,7 +303,7 @@
       "Finset"
     ],
     "namespace": "Erdos1033",
-    "lineCount": 358,
+    "lineCount": 367,
     "axiomCount": 6,
     "theoremCount": 16,
     "definitionCount": 17

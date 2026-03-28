@@ -52,11 +52,38 @@ axiom numGroups_prime (p : ℕ) (hp : Nat.Prime p) : numGroups p = 1
 theorem numGroups_two : numGroups 2 = 1 :=
   numGroups_prime 2 (by norm_num)
 
-/-- Known values for small powers of 2. -/
-axiom numGroups_four : numGroups 4 = 2
+/-- For any prime p, there are exactly 2 groups of order p²:
+    the cyclic group ℤ/p²ℤ and the direct product ℤ/pℤ × ℤ/pℤ. -/
+axiom numGroups_prime_sq (p : ℕ) (hp : Nat.Prime p) : numGroups (p ^ 2) = 2
+
+/-- numGroups 4 = 2: derived from numGroups_prime_sq since 4 = 2². -/
+theorem numGroups_four : numGroups 4 = 2 := by
+  have : (2 : ℕ) ^ 2 = 4 := by norm_num
+  rw [← this]; exact numGroups_prime_sq 2 (by norm_num)
+
+/-- For distinct primes p > q with q ∣ (p - 1), there are exactly 2 groups
+    of order pq: the cyclic group ℤ/pqℤ and a semidirect product ℤ/pℤ ⋊ ℤ/qℤ. -/
+axiom numGroups_pq_dvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
+    (hdvd : q ∣ (p - 1)) : numGroups (p * q) = 2
+
+/-- For distinct primes p > q with q ∤ (p - 1), there is exactly 1 group
+    of order pq: the cyclic group ℤ/pqℤ (by Sylow theory). -/
+axiom numGroups_pq_ndvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
+    (hndvd : ¬(q ∣ (p - 1))) : numGroups (p * q) = 1
+
+/-- numGroups 6 = 2: derived from numGroups_pq_dvd since 6 = 3 × 2 and 2 ∣ (3-1). -/
+theorem numGroups_six : numGroups 6 = 2 := by
+  have : 6 = 3 * 2 := by norm_num
+  rw [this]; exact numGroups_pq_dvd 3 2 (by norm_num) (by norm_num) (by omega) ⟨1, by omega⟩
+
+/-- Known value: g(8) = 5. The 5 groups are: ℤ/8ℤ, ℤ/4ℤ×ℤ/2ℤ, (ℤ/2ℤ)³, D₄, Q₈. -/
 axiom numGroups_eight : numGroups 8 = 5
+
+/-- Known value: g(12) = 5. The 5 groups are: ℤ/12ℤ, ℤ/2ℤ×ℤ/6ℤ, D₆, A₄, Dic₃. -/
+axiom numGroups_twelve : numGroups 12 = 5
+
+/-- Known value: g(16) = 14. There are 14 non-isomorphic groups of order 2⁴. -/
 axiom numGroups_sixteen : numGroups 16 = 14
-axiom numGroups_thirtytwo : numGroups 32 = 51
 
 /-
 ## Section II: Basic Properties
@@ -206,6 +233,69 @@ theorem erdos_1160_m_eq_two (n : ℕ) (hn : n ≤ 4) :
   · rw [numGroups_one, numGroups_four]; omega
   · rw [numGroups_two, numGroups_four]; omega
   · rw [numGroups_prime 3 (by norm_num), numGroups_four]; omega
+  · exact le_refl _
+
+/-- The conjecture for all n ≤ 8 (m = 3).
+    Uses g(p) = 1 for primes p ∈ {3,5,7}, g(4) = 2, g(6) = 2, g(8) = 5. -/
+theorem erdos_1160_m_eq_three (n : ℕ) (hn : n ≤ 8) :
+    numGroups n ≤ numGroups (2 ^ 3) := by
+  have h8 : (2 : ℕ) ^ 3 = 8 := by norm_num
+  rw [h8]
+  interval_cases n
+  · rw [numGroups_zero]; exact Nat.zero_le _
+  · rw [numGroups_one, numGroups_eight]; omega
+  · rw [numGroups_two, numGroups_eight]; omega
+  · rw [numGroups_prime 3 (by norm_num), numGroups_eight]; omega
+  · rw [numGroups_four, numGroups_eight]; omega
+  · rw [numGroups_prime 5 (by norm_num), numGroups_eight]; omega
+  · rw [numGroups_six, numGroups_eight]; omega
+  · rw [numGroups_prime 7 (by norm_num), numGroups_eight]; omega
+  · exact le_refl _
+
+/-- Helper: g(9) = 2, since 9 = 3² and g(p²) = 2 for all primes. -/
+theorem numGroups_nine : numGroups 9 = 2 := by
+  have : (3 : ℕ) ^ 2 = 9 := by norm_num
+  rw [← this]; exact numGroups_prime_sq 3 (by norm_num)
+
+/-- Helper: g(10) = 2, since 10 = 5 × 2 and 2 ∣ (5 - 1). -/
+theorem numGroups_ten : numGroups 10 = 2 := by
+  have : 10 = 5 * 2 := by norm_num
+  rw [this]; exact numGroups_pq_dvd 5 2 (by norm_num) (by norm_num) (by omega) ⟨2, by omega⟩
+
+/-- Helper: g(14) = 2, since 14 = 7 × 2 and 2 ∣ (7 - 1). -/
+theorem numGroups_fourteen : numGroups 14 = 2 := by
+  have : 14 = 7 * 2 := by norm_num
+  rw [this]; exact numGroups_pq_dvd 7 2 (by norm_num) (by norm_num) (by omega) ⟨3, by omega⟩
+
+/-- Helper: g(15) = 1, since 15 = 5 × 3 and 3 ∤ (5 - 1) = 4. -/
+theorem numGroups_fifteen : numGroups 15 = 1 := by
+  have : 15 = 5 * 3 := by norm_num
+  rw [this]; exact numGroups_pq_ndvd 5 3 (by norm_num) (by norm_num) (by omega)
+    (by omega)
+
+/-- The conjecture for all n ≤ 16 (m = 4).
+    Uses structural axioms: g(p²) = 2, g(pq) formulas, plus g(8) = 5, g(12) = 5, g(16) = 14. -/
+theorem erdos_1160_m_eq_four (n : ℕ) (hn : n ≤ 16) :
+    numGroups n ≤ numGroups (2 ^ 4) := by
+  have h16 : (2 : ℕ) ^ 4 = 16 := by norm_num
+  rw [h16]
+  interval_cases n
+  · rw [numGroups_zero]; exact Nat.zero_le _
+  · rw [numGroups_one, numGroups_sixteen]; omega
+  · rw [numGroups_two, numGroups_sixteen]; omega
+  · rw [numGroups_prime 3 (by norm_num), numGroups_sixteen]; omega
+  · rw [numGroups_four, numGroups_sixteen]; omega
+  · rw [numGroups_prime 5 (by norm_num), numGroups_sixteen]; omega
+  · rw [numGroups_six, numGroups_sixteen]; omega
+  · rw [numGroups_prime 7 (by norm_num), numGroups_sixteen]; omega
+  · rw [numGroups_eight, numGroups_sixteen]; omega
+  · rw [numGroups_nine, numGroups_sixteen]; omega
+  · rw [numGroups_ten, numGroups_sixteen]; omega
+  · rw [numGroups_prime 11 (by norm_num), numGroups_sixteen]; omega
+  · rw [numGroups_twelve, numGroups_sixteen]; omega
+  · rw [numGroups_prime 13 (by norm_num), numGroups_sixteen]; omega
+  · rw [numGroups_fourteen, numGroups_sixteen]; omega
+  · rw [numGroups_fifteen, numGroups_sixteen]; omega
   · exact le_refl _
 
 /-- If the conjecture holds for m, and g(2^m) ≤ g(2^(m+1)),

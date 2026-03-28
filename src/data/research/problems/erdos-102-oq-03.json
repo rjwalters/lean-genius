@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-24T00:48:59.903Z",
-    "iteration": 4,
-    "focus": "Sorry elimination in Erdos1021/1020 + Aristotle companion file",
+    "iteration": 5,
+    "focus": "Gk definition fix, axiom elimination, companion lemma proofs",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved Gk_bipartite (1 sorry eliminated in Erdos1021). Reduced strong_implies_weak to 1 rpow-decay sorry. Created Erdos1021Aristotle.lean companion. Documented proof strategy for upper_bound_tight_construction2.",
+    "progressSummary": "PROGRESS: Fixed critical Gk definition bug (was K_{k,C(k,2)}, now correct pair graph). Removed 3 unused axioms (7\u21924) and 1 vacuous sorry (4\u21923) from Erdos1021. Proved 5 of 7 companion lemmas. 2 rpow Aristotle targets remain.",
     "builtItems": [
       "Assessment: 11A all appropriate, f is opaque",
       "collinear\u2083_comm: symmetry in last two args",
@@ -39,7 +39,14 @@
       "Gk_bipartite: proved G_k bipartiteness by case analysis on Sum type (Erdos1021Problem.lean)",
       "strong_implies_weak: reduced to 1 sorry (rpow decay C*n^{-c}\u21920) via max N argument (Erdos1021Problem.lean)",
       "Erdos1021Aristotle.lean: companion file with 7 routine lemmas for automated proof search",
-      "upper_bound_tight_construction2: documented telescoping proof strategy (Erdos1020Problem.lean)"
+      "upper_bound_tight_construction2: documented telescoping proof strategy (Erdos1020Problem.lean)",
+      "Gk: corrected definition using {p : Fin k \u00d7 Fin k // p.1 < p.2} vertex type (Erdos1021Problem.lean)",
+      "Gk_bipartite: re-proved for corrected definition (Erdos1021Problem.lean)",
+      "choose_succ_sub: proved Pascal subtraction form via Nat.choose_succ_succ (Erdos1021Aristotle.lean)",
+      "choose_le_choose_of_le: proved via Nat.choose_le_choose (Erdos1021Aristotle.lean)",
+      "nat_sub_split: proved via omega (Erdos1021Aristotle.lean)",
+      "sum_inl_injective: proved via Sum.inl_injective (Erdos1021Aristotle.lean)",
+      "sum_inr_injective: proved via Sum.inr_injective (Erdos1021Aristotle.lean)"
     ],
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
@@ -51,15 +58,18 @@
       "strong_implies_weak reduces to showing C*n^{3/2-c} <= eps*n^{3/2} for large n, i.e. n^c >= C/eps \u2014 standard rpow decay",
       "upper_bound_tight_construction2 proof strategy: induction on k using Pascal C(n+1,r+1)-C(n,r+1)=C(n,r) and Nat.choose monotonicity",
       "Erdos1021 k3_case_solved needs graph isomorphism invariance of extremal numbers \u2014 not yet formalized",
-      "gap_positive_conjecture unprovable: conjecturedGap is opaque axiom, no definitional content to work with"
+      "gap_positive_conjecture unprovable: conjecturedGap is opaque axiom, no definitional content to work with",
+      "CRITICAL BUG FIXED: Gk was defined as K_{k,C(k,2)} (all cross-edges) instead of the pair graph. Corrected to use subtype {(a,b) : a<b} vertex type with proper adjacency.",
+      "With corrected Gk, G3_is_C6 axiom is now actually TRUE (pair graph G_3 = C_6 via mapping: 0\u2192(0,1)\u21921\u2192(1,2)\u21922\u2192(0,2)\u21920)",
+      "Removed weak_conjecture_open (meta-mathematical, not useful), conjecturedGap+gap_positive_conjecture (opaque axiom, vacuous), Gk_from_Hk (unused embedding)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Integrate Aristotle results from Erdos1021Aristotle.lean into main file",
-      "Complete upper_bound_tight_construction2 proof by induction (need choose_succ_sub and nat_sub_split helpers)",
-      "Prove k3_case_solved: formalize extremal number isomorphism invariance, then chain G3_is_C6 with C6_extremal_bound",
-      "Resolve rpow_decay_bound sorry in strong_implies_weak (Aristotle target)",
-      "For trivial_bound: need K_{2,t} embedding into G_k to chain with kovari_sos_turan"
+      "Prove upper_bound_tight_construction2 in Erdos1020 (telescoping + Pascal, proof strategy documented)",
+      "Prove large_n_construction2_dominates in Erdos1020 (construction2 grows polynomially, construction1 is constant)",
+      "Integrate Aristotle results for rpow_decay_bound and rpow_eventually_large when available",
+      "Prove k3_case_solved: need extremalNumber isomorphism invariance to chain G3_is_C6 with C6_extremal_bound",
+      "Attempt to eliminate f_mono_n and f_mono_k axioms in Erdos1020 from sSup definition"
     ]
   },
   "tags": [
@@ -91,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.903Z",
-  "lastUpdate": "2026-03-27T23:00:00.000Z",
+  "lastUpdate": "2026-03-28T14:05:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -111,9 +121,9 @@
       "filename": "Erdos1021Problem.lean",
       "lineCount": 268,
       "theoremCount": 6,
-      "axiomCount": 7,
+      "axiomCount": 4,
       "defCount": 17,
-      "sorryCount": 5,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Problem.lean"
     },

@@ -61,7 +61,7 @@ axiom chung_upper_bound :
 /-- Erdős Problem #524: Determine the correct order of magnitude of M_n(t)
     for almost all t ∈ (0,1). The known bounds leave a gap between
     n^{1/2-ε} (lower) and √(n/log log n) (upper, for infinitely many n). -/
-axiom erdos_524_order_of_magnitude :
+def erdos_524_order_of_magnitude : Prop :=
   ∃ f : ℕ → ℝ, (∀ n, 0 < f n) ∧
     ∀ᵐ t ∂MeasureTheory.volume, t ∈ Set.Ioo (0 : ℝ) 1 →
       ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧

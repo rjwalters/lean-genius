@@ -1,0 +1,31 @@
+{
+  "id": "erdos-1168",
+  "title": "Erdős Problem #1168: Negative Partition Relation for ℵ_{ω+1}",
+  "slug": "erdos-1168",
+  "description": "Prove ℵ_{ω+1} ↛ (ℵ_{ω+1}, 3, …, 3)_{ℵ₀}² without GCH. Open problem in set-theoretic combinatorics at the intersection of partition calculus and pcf theory.",
+  "meta": {
+    "erdosNumber": 1168,
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1168Problem.lean",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "partition-relations",
+      "cardinals",
+      "open-conjecture"
+    ],
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1168",
+    "erdosUrl": "https://erdosproblems.com/1168",
+    "erdosProblemStatus": "open",
+    "badge": "axiom",
+    "axiomCount": 1,
+    "lineCount": 153,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "assumptions": "1 axiom: erdos_1168_under_gch (known under GCH). Open conjecture is a def, not axiom. 5 structural theorems proved.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-28"
+  }
+}

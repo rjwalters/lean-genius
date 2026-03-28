@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T16:53:51.158Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom elimination: 12→8 axioms (structure conversion + orphan removal)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Axiom elimination: 12→8 (7 axiom declarations + 1 structure field). Converted RandomWalk to structure, removed 2 orphan axioms. 1 sorry remains (erdos1166_from_ingredients counting argument).",
+    "builtItems": [
+      "Refactored RandomWalk from 3 axioms to structure with trajectory field + starts_at_origin hypothesis",
+      "Removed 2 orphan axioms (erdosTaylor_upper_bound, maxVisitCount_tendsto_infty)"
+    ],
+    "insights": [
+      "RandomWalk/trajectory/walk_starts_at_origin converted to structure: 3 axiom declarations → 1 structure-encoded assumption",
+      "erdosTaylor_upper_bound removed: implied by erdosTaylor_constant via erdosTaylor_implies_bound (already proved in file)",
+      "maxVisitCount_tendsto_infty removed: unused, follows from polya_recurrence by induction on return times"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Fill sorry in erdos1166_from_ingredients via plateau analysis (requires maxVisitCount monotonicity + Finset counting)",
+      "Potential: convert AlmostSurely/almostSurely_mono/almostSurely_and to structure (3→3 structure fields, no net change)"
+    ],
     "markdown": "# Erdős #1166 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -51,16 +61,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.158Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-28T12:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1166Problem.lean",
       "filename": "Erdos1166Problem.lean",
-      "lineCount": 284,
+      "lineCount": 324,
       "theoremCount": 8,
-      "axiomCount": 19,
+      "axiomCount": 8,
       "defCount": 1,
       "sorryCount": 1,
       "isAristotle": false,
