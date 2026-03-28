@@ -1,24 +1,61 @@
 {
   "slug": "erdos-263-wip-01",
-  "title": "Erdős #263: Irrationality Sequences (WIP)",
-  "phase": "COMPLETED",
+  "title": "Erd\u0151s #263: Irrationality Sequences (WIP)",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
-  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:46:00Z", "iteration": 1,
-    "focus": "Surveyed — no existing Lean file, needs creation from scratch.",
-    "blockers": ["No existing formalization to build on"],
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:46:00Z",
+    "iteration": 1,
+    "focus": "Surveyed \u2014 no existing Lean file, needs creation from scratch.",
+    "blockers": [
+      "No existing formalization to build on"
+    ],
     "nextAction": "Create initial Lean file with problem statement and basic structure",
-    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
-  "knowledge": {
-    "progressSummary": "SURVEYED: No Lean file exists yet. Problem is about irrationality sequences — sequences (aₙ) such that ∑ 1/aₙ is irrational. Needs creation from scratch.",
-    "builtItems": [],
-    "insights": ["No proofs/Proofs/Erdos263*.lean files exist — this is a true WIP needing initial creation",
-      "Problem relates to Engel expansions and Sylvester's sequence",
-      "Mathlib has irrationality results but not specific to this Erdős problem"],
-    "mathlibGaps": [],
-    "nextSteps": ["Create Erdos263Problem.lean with basic definitions and problem statement"]
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
-  "tags": ["erdos", "number-theory", "irrationality", "sequences", "wip", "seeker-selected"],
-  "started": "2026-03-28T20:45:00Z", "lastUpdate": "2026-03-28T20:46:00Z",
-  "significance": 5, "tractability": 6
+  "knowledge": {
+    "progressSummary": "PROGRESS: 7\u21925 sorries. Proved doubleExp_not_folklore_growth (constant limit 2) and factorial_no_folklore_growth (bounded by 2 via induction). Remaining: 3 deep research results + 2 existential constructions.",
+    "builtItems": [
+      "Proved doubleExp_not_folklore_growth via rpow_mul exponent cancellation",
+      "Proved factorial_no_folklore_growth via factorial_le_doubleExp induction bound",
+      "Extracted doubleExp_rpow_eq as reusable helper"
+    ],
+    "insights": [
+      "No proofs/Proofs/Erdos263*.lean files exist \u2014 this is a true WIP needing initial creation",
+      "Problem relates to Engel expansions and Sylvester's sequence",
+      "Mathlib has irrationality results but not specific to this Erd\u0151s problem",
+      "doubleExp_not_folklore_growth: (2^{2^n})^{1/2^n} = 2 (constant) \u2014 proved via rpow_mul identity",
+      "factorial_no_folklore_growth: (n+1)! \u2264 2^{2^n} (by induction), hence ((n+1)!)^{1/2^n} \u2264 2 \u2014 proved",
+      "Extracted doubleExp_rpow_eq helper lemma for reuse across proofs"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "characterization_gap: needs witness with superexponential but not folklore growth (e.g. n^n)",
+      "truncation_insufficient: needs careful construction of agreeing-then-diverging sequences",
+      "Deep sorries (folklore, kovac_tao, positive_condition) require published proofs \u2014 axiomatize or leave"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "irrationality",
+    "sequences",
+    "wip",
+    "seeker-selected"
+  ],
+  "started": "2026-03-28T20:45:00Z",
+  "lastUpdate": "2026-03-28T20:46:00Z",
+  "significance": 5,
+  "tractability": 6,
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-26",
+    "erdos-263"
+  ]
 }

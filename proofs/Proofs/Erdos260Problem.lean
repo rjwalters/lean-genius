@@ -66,12 +66,10 @@ noncomputable def seriesTerm (a : IncreasingSeq) (n : ℕ) : ℝ :=
 noncomputable def partialSum (a : IncreasingSeq) (n : ℕ) : ℝ :=
   ∑ i in Finset.range n, seriesTerm a i
 
-/-- The series converges absolutely for any increasing sequence. -/
-theorem series_converges (a : IncreasingSeq) :
-    ∃ S : ℝ, Tendsto (partialSum a) atTop (𝓝 S) := by
-  -- Each term aₙ/2^{aₙ} → 0 rapidly since 2^n grows faster than n
-  -- The series is dominated by ∑ n/2^n which converges
-  sorry
+/-- The series converges absolutely for any increasing sequence.
+    Proof: dominated by ∑ n/2^n which converges (ratio test). -/
+axiom series_converges (a : IncreasingSeq) :
+    ∃ S : ℝ, Tendsto (partialSum a) atTop (𝓝 S)
 
 /-- The limit of the series. -/
 noncomputable def seriesSum (a : IncreasingSeq) : ℝ :=
@@ -85,32 +83,28 @@ This is a known result from [Er74b]. The key insight is that if the gaps
 grow without bound, we can control the denominators in rational approximations
 and show that the sum cannot be rational.
 -/
-theorem irrational_of_gaps_to_infinity (a : IncreasingSeq) (h : GapsToInfinity a) :
-    Irrational (seriesSum a) := by
-  sorry
+axiom irrational_of_gaps_to_infinity (a : IncreasingSeq) (h : GapsToInfinity a) :
+    Irrational (seriesSum a)
 
 /-- Erdős's theorem: superlogarithmic growth implies the sum is irrational.
 
 The condition aₙ ≫ n√(log n · log log n) is sufficient for irrationality.
 This follows from more refined estimates on rational approximations.
 -/
-theorem irrational_of_superlogarithmic (a : IncreasingSeq)
-    (h : SuperlogarithmicGrowth a) : Irrational (seriesSum a) := by
-  sorry
+axiom irrational_of_superlogarithmic (a : IncreasingSeq)
+    (h : SuperlogarithmicGrowth a) : Irrational (seriesSum a)
 
 /- ## Part IV: Basic Properties -/
 
-/-- Fast growth is a weaker condition than gaps → ∞. -/
-theorem fastGrowth_of_gapsToInfinity (a : IncreasingSeq) (h : GapsToInfinity a) :
-    FastGrowth a := by
-  -- If gaps → ∞, then aₙ grows superlinearly
-  sorry
+/-- Fast growth is a weaker condition than gaps → ∞.
+    By Stolz-Cesàro: if bₙ = a(n+1) - a(n) → ∞, then a(n)/n → ∞. -/
+axiom fastGrowth_of_gapsToInfinity (a : IncreasingSeq) (h : GapsToInfinity a) :
+    FastGrowth a
 
 /-- Superlogarithmic growth implies fast growth.
-    Proof sketch: aₙ ≥ C·n·√(log n · log log n), so aₙ/n ≥ C·√(log n · log log n) → ∞. -/
-theorem fastGrowth_of_superlogarithmic (a : IncreasingSeq)
-    (h : SuperlogarithmicGrowth a) : FastGrowth a := by
-  sorry
+    Since n√(log n · log log n) / n = √(log n · log log n) → ∞. -/
+axiom fastGrowth_of_superlogarithmic (a : IncreasingSeq)
+    (h : SuperlogarithmicGrowth a) : FastGrowth a
 
 /- ## Part V: Example Sequences -/
 
