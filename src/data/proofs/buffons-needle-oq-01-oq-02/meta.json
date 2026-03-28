@@ -22,10 +22,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
-    "theoremCount": 21,
+    "axiomCount": 4,
+    "theoremCount": 19,
     "defCount": 3,
-    "lineCount": 237,
+    "lineCount": 265,
     "mathlibDependencies": [
       {
         "theorem": "Real.Gamma",
@@ -67,7 +67,7 @@
       "Recurrence-derived values: c₅ = 2/3, c₆ = 3/π"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "5 axiom(s): gamma_one_half (Γ(1/2)=√π, Gaussian integral), buffon_higher_dim (Cauchy-Crofton formula), buffonConstant_le_one (|cosine|≤1), buffonConstant_recurrence (sphere volume recurrence). No sorries.",
+    "assumptions": "4 axioms: gamma_one_half (Γ(1/2)=√π, Gaussian integral), buffonConstant_le_one (c_n ≤ 1), buffon_higher_dim (Cauchy-Crofton formula), buffonConstant_recurrence (sphere volume recurrence). No sorries.",
     "prerequisites": [
       "The Gamma function and its functional equation",
       "Buffon's needle problem in 2D",
@@ -174,9 +174,9 @@
       "Real"
     ],
     "namespace": "BuffonHigherDim",
-    "lineCount": 237,
-    "axiomCount": 5,
-    "theoremCount": 21,
+    "lineCount": 265,
+    "axiomCount": 4,
+    "theoremCount": 19,
     "definitionCount": 3
   },
   "crossReferences": [

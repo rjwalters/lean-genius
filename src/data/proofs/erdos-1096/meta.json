@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 1096,
     "erdosUrl": "https://erdosproblems.com/1096",
     "erdosProblemStatus": "open",
@@ -50,8 +50,8 @@
       "ejs_refinement axiom: for q < φ, only need m = 2"
     ],
     "axiomCount": 9,
-    "lineCount": 304,
-    "assumptions": "Nine axioms remain: qSequence (ordered enumeration), qSequence_initial (initial values), smallestPisot_minimal (Siegel theorem), pisot_no_gap_property (EJK 1990), gap_universal_bound (EJK 1990), bugeaud_characterization (Bugeaud 1996), ejs_refinement (EJS 1996), density_near_one (density result), qSequenceM (m-digit enumeration). Five axioms eliminated: IsPisot (now concrete def via polynomial roots), smallestPisot (now def via IVT for x^3-x-1=0), smallestPisot_value/smallestPisot_is_pisot/goldenRatio_is_pisot (now theorems with sorry).",
+    "lineCount": 438,
+    "assumptions": "Nine axioms remain: qSequence (ordered enumeration), qSequence_initial (initial values), smallestPisot_minimal (Siegel theorem), pisot_no_gap_property (EJK 1990), gap_universal_bound (EJK 1990), bugeaud_characterization (Bugeaud 1996), ejs_refinement (EJS 1996), density_near_one (density result), qSequenceM (m-digit enumeration). All 6 sorries proved (0 remaining). Five axioms eliminated: IsPisot (now concrete def via polynomial roots), smallestPisot (now def via IVT for x^3-x-1=0), smallestPisot_value/smallestPisot_is_pisot/goldenRatio_is_pisot (now proved theorems).",
     "theoremCount": 14,
     "definitionCount": 9
   },
@@ -165,10 +165,10 @@
       "Real"
     ],
     "namespace": "Erdos1096",
-    "lineCount": 304,
-    "axiomCount": 14,
-    "theoremCount": 5,
-    "definitionCount": 7
+    "lineCount": 438,
+    "axiomCount": 9,
+    "theoremCount": 14,
+    "definitionCount": 9
   },
   "crossReferences": [
     {
