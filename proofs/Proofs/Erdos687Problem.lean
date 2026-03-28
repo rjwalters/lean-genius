@@ -273,6 +273,23 @@ theorem erdos_687_conjecture :
 private lemma no_prime_le_one (p : ℕ) (hp : p.Prime) (hpx : p ≤ 1) : False := by
   have := hp.two_le; omega
 
+/-- Y(0) = 0: with no primes ≤ 0, no integer can be covered. -/
+theorem jacobsthalY_zero : jacobsthalY 0 = 0 := by
+  unfold jacobsthalY
+  refine Nat.le_zero.mp (csSup_le (jacobsthalSet_nonempty 0) fun y hy => ?_)
+  by_contra h; push_neg at h
+  obtain ⟨a, ha⟩ := hy
+  obtain ⟨p, hp, hpx, _⟩ := ha 1 le_rfl (by exact_mod_cast (show 1 ≤ y by omega))
+  exact no_prime_le_one p hp (by omega)
+
+/-- Y(1) = 0: with no primes ≤ 1, no integer can be covered. -/
+theorem jacobsthalY_one : jacobsthalY 1 = 0 := by
+  unfold jacobsthalY
+  refine Nat.le_zero.mp (csSup_le (jacobsthalSet_nonempty 1) fun y hy => ?_)
+  by_contra h; push_neg at h
+  obtain ⟨a, ha⟩ := hy
+  obtain ⟨p, hp, hpx, _⟩ := ha 1 le_rfl (by exact_mod_cast (show 1 ≤ y by omega))
+  exact no_prime_le_one p hp hpx
 
 /-- For x ≤ 1, jacobsthalSet x = {0} (no primes means only vacuous covering). -/
 theorem jacobsthalSet_eq_zero_of_le_one {x : ℕ} (hx : x ≤ 1) :
