@@ -29,13 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 6A (powerfulPart definable → could reduce to 1A). Noted for future work.",
+    "progressSummary": "ASSESSED: 5/6 axioms eliminable by constructive def of powerfulPart. Needs Finsupp.prod and Nat.factorization API.",
     "builtItems": [
-      "Assessment: powerfulPart is definable, reducing 5 of 6 axioms to provable"
+      "Assessment: 5 of 6 axioms are for opaque powerfulPart — all eliminable by constructive def"
     ],
     "insights": [
-      "6 axioms: powerfulPart (opaque function + 4 properties) + mahler_lower_bound. All appropriate since powerfulPart is axiomatized.",
-      "powerfulPart could be defined from Nat.factorization but currently axiomatized. Defining it would reduce 5 axioms to 0."
+      "powerfulPart can be defined as n.factorization.prod(fun p k => if 2≤k then p^k else 1)",
+      "powerfulPart_one: follows from factorization_one = 0 → empty product = 1",
+      "powerfulPart_dvd: use Finset.prod_dvd_prod since each factor divides p^k",
+      "powerfulPart_is_powerful: immediate from filtering on exponent ≥ 2",
+      "powerfulPart_mul coprime: use Nat.factorization_mul_of_coprime",
+      "mahler_lower_bound: deep result from Mahler 1953, appropriate axiom"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
