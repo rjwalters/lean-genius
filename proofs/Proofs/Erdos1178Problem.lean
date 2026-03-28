@@ -81,8 +81,9 @@ def IsFamilyFree (r d e : ℕ) (H : UniformHypergraph r n) : Prop :=
 
 /-- The extremal number ex_r(n, F(r,d,e)): maximum number of edges in an
     r-uniform n-vertex hypergraph that is F(r,d,e)-free.
-    Axiomatized since constructive definition requires decidability. -/
-axiom exr (r n d e : ℕ) : ℕ
+    Defined as the supremum over all F(r,d,e)-free hypergraphs on n vertices. -/
+noncomputable def exr (r n d e : ℕ) : ℕ :=
+  sSup {m : ℕ | ∃ H : UniformHypergraph r n, IsFamilyFree r d e H ∧ numEdges H = m}
 
 /-- Little-o notation: f(n) = o(g(n)) means f(n)/g(n) → 0. -/
 def isLittleO (f g : ℕ → ℝ) : Prop :=
@@ -92,9 +93,9 @@ def isLittleO (f g : ℕ → ℝ) : Prop :=
 
 /-- d_r(e) is the minimal d such that ex_r(n, F(r,d,e)) = o(n²).
     That is, the threshold number of vertices above which the extremal number
-    becomes subquadratic. Axiomatized as the definition involves a minimization
-    over an existential condition. -/
-axiom dr (r e : ℕ) : ℕ
+    becomes subquadratic. Defined as the infimum over the set of such d. -/
+noncomputable def dr (r e : ℕ) : ℕ :=
+  sInf {d : ℕ | isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2)}
 
 /-- dr is well-defined: ex_r(n, F(r, dr(r,e), e)) = o(n²). -/
 axiom dr_spec (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
