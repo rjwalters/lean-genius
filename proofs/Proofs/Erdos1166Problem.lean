@@ -16,7 +16,7 @@
 --
 -- Status: PROVED
 -- Axioms: 7 declarations + 1 structure field = 8 (down from 12)
--- Sorries: 0 (all proved)
+-- Sorries: 0 (cumulative_card_bound proved via induction on interval length)
 -- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
 --   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
 --   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence)
@@ -235,87 +235,80 @@ theorem mostVisited_subset_trajectory (ω : RandomWalk) (k : ℕ) :
   intro x hx
   exact (Finset.mem_filter.mp (by unfold mostVisitedSet at hx; exact hx)).1
 
-/-- If T increases from a to b, there is a step where it increases. -/
-private theorem exists_T_increase (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
-    (hTlt : maxVisitCount ω a < maxVisitCount ω b) :
-    ∃ c, a ≤ c ∧ c < b ∧ maxVisitCount ω c < maxVisitCount ω (c + 1) := by
-  by_contra h
-  push_neg at h
-  have hconst : ∀ k, a ≤ k → k < b → maxVisitCount ω k = maxVisitCount ω (k + 1) := by
-    intro k hak hkb
-    exact le_antisymm (h k hak hkb) (maxVisitCount_mono_succ ω k)
-  -- T_a = T_{a+1} = ... = T_b by iteration
-  suffices maxVisitCount ω a = maxVisitCount ω b by omega
-  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hab
-  induction d with
-  | zero => rfl
-  | succ n ih =>
-    rw [ih (fun k hak hkn => hconst k hak (by omega)),
-        hconst (a + n) (by omega) (by omega)]
-
 /-- Counting bound (nesting argument): when |F(k)| ≤ 3 throughout [a, b],
     the cumulative set has card ≤ 3 * (T_b - T_a + 1).
 
-    Proof: strong induction on d = T_b - T_a. If T constant (d = 0), then
-    F sets are nested and the union ⊆ F(b), card ≤ 3. If T increases (d > 0),
-    find any step c with T_c < T_{c+1}. Split [a, c] ∪ [c+1, b]. Both parts
-    have d' < d (left because T_c < T_{c+1} ≤ T_b, right because T_a ≤ T_c <
-    T_{c+1}). By IH + card_union_le: bound ≤ 3*(T_c-T_a+1) + 3*(T_b-T_{c+1}+1)
-    ≤ 3*(T_b-T_a+1) since T_c+1 ≤ T_{c+1}. -/
+    Proof sketch: Group steps by T-value. Within each constant-T interval,
+    F sets are nested (by mostVisited_nesting), so the union equals the last F.
+    Each group contributes ≤ 3 points. The number of groups ≤ T_b - T_a + 1.
+
+    This is the core of the Erdős #1166 counting argument. -/
 theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
     (hcard : ∀ k, a ≤ k → k ≤ b → (mostVisitedSet ω k).card ≤ 3) :
     ((Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω)).card ≤
       3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by
-  -- Reduce to strong induction on d = T_b - T_a
-  suffices hsuff : ∀ (d a b : ℕ), a ≤ b →
-      maxVisitCount ω b - maxVisitCount ω a = d →
+  -- Induction on interval length b - a. When T is constant, use nesting.
+  -- When T increases, split at a+1: if T_{a+1}=T_a, F(a) is absorbed by nesting;
+  -- if T_{a+1}>T_a, union bound + IH gives the result.
+  suffices ∀ (len a b : ℕ), b - a = len → a ≤ b →
       (∀ k, a ≤ k → k ≤ b → (mostVisitedSet ω k).card ≤ 3) →
-      ((Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω)).card ≤ 3 * (d + 1) by
-    exact hsuff _ a b hab rfl hcard
-  intro d
-  -- Strong induction on d
-  induction d using Nat.strongRecOn with
-  | _ d ih =>
-    intro a b hab hd hcard
-    by_cases hTeq : maxVisitCount ω a = maxVisitCount ω b
-    · -- T constant on [a, b]: biUnion ⊆ F(b), card ≤ 3
+      ((Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω)).card ≤
+        3 * (maxVisitCount ω b - maxVisitCount ω a + 1) from
+    this (b - a) a b rfl hab hcard
+  intro len
+  induction len with
+  | zero =>
+    intro a b hlen hab hcard
+    have hab' : a = b := by omega
+    subst hab'
+    have hIco : Finset.Ico a (a + 1) = {a} := by
+      ext k; simp only [Finset.mem_Ico, Finset.mem_singleton]; omega
+    rw [hIco, Finset.biUnion_singleton]
+    have := hcard a le_rfl le_rfl; omega
+  | succ n ih =>
+    intro a b hlen hab hcard
+    have ha_lt_b : a < b := by omega
+    by_cases hT : maxVisitCount ω a = maxVisitCount ω b
+    · -- T constant on [a, b]: biUnion ⊆ F(b) by nesting
       calc ((Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω)).card
           ≤ (mostVisitedSet ω b).card :=
-            Finset.card_le_card (biUnion_subset_last_of_constant_T ω a b hab hTeq)
+            Finset.card_le_card (biUnion_subset_last_of_constant_T ω a b hab hT)
         _ ≤ 3 := hcard b hab le_rfl
-        _ ≤ 3 * (d + 1) := by omega
-    · -- T increases: find a split point
-      have hTlt : maxVisitCount ω a < maxVisitCount ω b :=
-        lt_of_le_of_ne (maxVisitCount_le_of_le ω hab) hTeq
-      obtain ⟨c, hac, hcb, hTc⟩ := exists_T_increase ω a b hab hTlt
-      -- Split: [a, c] ∪ [c+1, b]
-      have hsplit : Finset.Ico a (b + 1) =
-          Finset.Ico a (c + 1) ∪ Finset.Ico (c + 1) (b + 1) :=
-        (Finset.Ico_union_Ico_eq_Ico (by omega) (by omega)).symm
-      rw [hsplit, Finset.biUnion_union]
-      -- Both subproblems have strictly smaller d
-      have hdl : maxVisitCount ω c - maxVisitCount ω a < d := by
-        have h1 := maxVisitCount_le_of_le ω (show c + 1 ≤ b by omega)
-        omega
-      have hdr : maxVisitCount ω b - maxVisitCount ω (c + 1) < d := by
-        have h1 := maxVisitCount_le_of_le ω (show a ≤ c by omega)
-        omega
-      calc ((Finset.Ico a (c + 1)).biUnion (mostVisitedSet ω) ∪
-              (Finset.Ico (c + 1) (b + 1)).biUnion (mostVisitedSet ω)).card
-          ≤ ((Finset.Ico a (c + 1)).biUnion (mostVisitedSet ω)).card +
-            ((Finset.Ico (c + 1) (b + 1)).biUnion (mostVisitedSet ω)).card :=
-            Finset.card_union_le _ _
-        _ ≤ 3 * (maxVisitCount ω c - maxVisitCount ω a + 1) +
-            3 * (maxVisitCount ω b - maxVisitCount ω (c + 1) + 1) := by
-            apply Nat.add_le_add
-            · exact ih _ hdl a c (by omega) rfl (fun k hak hkc => hcard k hak (by omega))
-            · exact ih _ hdr (c + 1) b (by omega) rfl (fun k hck hkb => hcard k (by omega) hkb)
-        _ ≤ 3 * (d + 1) := by
-            -- Key: T_c + 1 ≤ T_{c+1} (naturals, strict increase)
-            -- So (T_c - T_a + 1) + (T_b - T_{c+1} + 1) ≤ T_b - T_a + 1 = d + 1
-            have h1 := maxVisitCount_le_of_le ω (show a ≤ c by omega)
-            have h2 := maxVisitCount_le_of_le ω (show c + 1 ≤ b by omega)
-            omega
+        _ ≤ 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
+    · -- T increases: split Ico(a, b+1) = {a} ∪ Ico(a+1, b+1)
+      have hlt : maxVisitCount ω a < maxVisitCount ω b :=
+        lt_of_le_of_ne (maxVisitCount_le_of_le ω hab) hT
+      have hIco : Finset.Ico a (b + 1) = {a} ∪ Finset.Ico (a + 1) (b + 1) := by
+        ext k; simp only [Finset.mem_Ico, Finset.mem_union, Finset.mem_singleton]; omega
+      rw [hIco, Finset.biUnion_union, Finset.biUnion_singleton]
+      -- IH on [a+1, b]
+      have ih_ab : ((Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card ≤
+          3 * (maxVisitCount ω b - maxVisitCount ω (a + 1) + 1) :=
+        ih (a + 1) b (by omega) (by omega) (fun k hak hkb => hcard k (by omega) hkb)
+      by_cases hTstep : maxVisitCount ω a = maxVisitCount ω (a + 1)
+      · -- T constant at first step: F(a) ⊆ F(a+1) ⊆ biUnion[a+1,b]
+        have hFa_sub : mostVisitedSet ω a ⊆
+            (Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω) := by
+          intro x hx
+          have hx' := mostVisited_nesting ω a hTstep hx
+          exact Finset.mem_biUnion.mpr ⟨a + 1, Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩, hx'⟩
+        rw [sup_eq_right.mpr hFa_sub]
+        calc ((Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card
+            ≤ 3 * (maxVisitCount ω b - maxVisitCount ω (a + 1) + 1) := ih_ab
+          _ = 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
+      · -- T increases at first step: union bound
+        have hTinc : maxVisitCount ω a < maxVisitCount ω (a + 1) :=
+          lt_of_le_of_ne (maxVisitCount_mono_succ ω a) hTstep
+        have hTa1b : maxVisitCount ω (a + 1) ≤ maxVisitCount ω b :=
+          maxVisitCount_le_of_le ω (by omega)
+        calc (mostVisitedSet ω a ∪
+                (Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card
+            ≤ (mostVisitedSet ω a).card +
+              ((Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card :=
+              Finset.card_union_le _ _
+          _ ≤ 3 + 3 * (maxVisitCount ω b - maxVisitCount ω (a + 1) + 1) :=
+              Nat.add_le_add (hcard a le_rfl (by omega)) ih_ab
+          _ ≤ 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
 
 -- ## Almost Sure Events
 
