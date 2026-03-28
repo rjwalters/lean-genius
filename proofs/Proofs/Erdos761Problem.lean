@@ -14,9 +14,13 @@ Definitions:
 
 Axiom reduction: Rebuilt from prior version (deleted in PR #4955 as dead weight).
 Original had 8 axioms and 1 sorry. This version has 2 axioms (the open questions)
-with 5 formerly-axiom properties proved. The IsAcyclicColoring definition was
-corrected from "no monochromatic edge" to "no monochromatic directed cycle"
-using Relation.TransGen (Neumann-Lara 1982).
+with 6 formerly-axiom properties proved (including dichrom_mono via orientation
+extension + TransGen monotonicity). The IsAcyclicColoring definition was corrected
+from "no monochromatic edge" to "no monochromatic directed cycle" using
+Relation.TransGen (Neumann-Lara 1982).
+
+Axioms: 2 (erdos_761_question1, erdos_761_question2 — OPEN conjectures)
+Sorries: 0
 
 Status: OPEN
 Reference: https://erdosproblems.com/761
@@ -188,8 +192,42 @@ theorem dichrom_mono [Fintype V] [DecidableEq V]
     (G H : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel H.Adj]
     (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
     H.dichromNumber ≤ G.dichromNumber := by
-  -- Monotonicity via sInf: {k | works for all G-orientations} ⊆ {k | works for all H-orientations}
-  sorry -- Needs: orientation extension + Relation.TransGen monotonicity; Aristotle target
+  unfold SimpleGraph.dichromNumber
+  apply csInf_le_csInf (nat_bddBelow _)
+  · -- G-set nonempty: Fintype.card V works for all G-orientations
+    exact ⟨Fintype.card V, fun O => by
+      let e := Fintype.equivFin V
+      exact ⟨e, isAcyclicColoring_of_no_mono_edge O e fun u v hdir =>
+        mt e.injective (G.ne_of_adj (O.consistent u v hdir))⟩⟩
+  · -- Inclusion: k acyclic for all G-orientations → acyclic for all H-orientations
+    intro k hk O_H
+    classical
+    -- Extend O_H to a G-orientation: keep H-directions, orient non-H edges by index
+    let ι := Fintype.equivFin V
+    let O_G : Orientation G :=
+      { dir := fun u v =>
+          (H.Adj u v ∧ O_H.dir u v) ∨
+          (G.Adj u v ∧ ¬H.Adj u v ∧ (ι u).val < (ι v).val)
+        covers := fun u v hadj => by
+          by_cases hH : H.Adj u v
+          · rcases O_H.covers u v hH with h | h
+            · exact Or.inl (Or.inl ⟨hH, h⟩)
+            · exact Or.inr (Or.inl ⟨hH.symm, h⟩)
+          · have hne : (ι u).val ≠ (ι v).val :=
+              fun h => absurd (ι.injective (Fin.val_injective h)) (G.ne_of_adj hadj)
+            by_cases hlt : (ι u).val < (ι v).val
+            · exact Or.inl (Or.inr ⟨hadj, hH, hlt⟩)
+            · exact Or.inr (Or.inr ⟨hadj.symm, fun h => hH h.symm, by omega⟩)
+        consistent := fun u v hdir => by
+          rcases hdir with ⟨_, h⟩ | ⟨h, _, _⟩
+          · exact hSub u v (O_H.consistent u v h)
+          · exact h }
+    -- Get acyclic k-coloring for O_G
+    obtain ⟨c, hc⟩ := hk O_G
+    -- c is also acyclic for O_H: any H-cycle is a G-cycle via TransGen.mono
+    exact ⟨c, fun i v hcycle => hc i v (Relation.TransGen.mono
+      (fun a b hab => ⟨hab.1, hab.2.1, Or.inl ⟨O_H.consistent a b hab.2.2, hab.2.2⟩⟩)
+      hcycle)⟩
 
 end ProvedProperties
 

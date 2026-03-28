@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-15T08:25:36.657Z",
-    "iteration": 4,
-    "focus": "Rebuilt with corrected IsAcyclicColoring (TransGen), proved 5 axioms as theorems",
+    "since": "2026-03-28T14:15:00Z",
+    "iteration": 5,
+    "focus": "Proved dichrom_mono (last sorry). File now 2A+0S — only open conjectures remain as axioms.",
     "blockers": [],
-    "nextAction": "Prove dichrom_mono sorry (orientation extension + TransGen monotonicity)",
+    "nextAction": "Problem essentially complete. Both remaining axioms are open conjectures.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Rebuilt Lean file. Corrected IsAcyclicColoring from wrong no-mono-edge to correct no-mono-cycle (TransGen). Proved 5 former axioms via bridge lemma. Removed 2 incorrect axioms (complete_dichrom wrong formula, odd_cycle_dichrom placeholder). 8A+1S → 2A+1S.",
+    "progressSummary": "PROGRESS: 2A+0S (was 2A+1S). Proved dichrom_mono: subgraph monotonicity of dichromatic number via orientation extension + TransGen.mono. All 6 formerly-axiom properties now proved. Only the 2 open conjectures remain as axioms.",
     "builtItems": [
       "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
       "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
