@@ -18,7 +18,7 @@ Results:
 - Questions 1 and 2: both FALSE (removed) — Rödl's construction disproves them
 - f_trivial_lower: FALSE (removed) — K₃ + isolated vertex counterexample
 - erdos_744_connection: FALSE (removed) — sSup pathology for unbounded sets
-Axioms: 1 (rodl_upper_bound)
+Axioms: 0
 Sorries: 0
 -/
 
@@ -90,15 +90,6 @@ theorem erdos_1092_question1_false_note : True := trivial
 /-- **FALSE (removed)**: Question 2 generalizes Q1 to all r ≥ 2.
     Since Q1 is false for r = 2, Q2 is also false in general. -/
 theorem erdos_1092_question2_false_note : True := trivial
-
-/- ## Rödl's Construction -/
-
-/-- Rödl (1982): Construction showing that f₂(n) does not grow much
-    faster than n, providing evidence against Question 1.
-    Specifically, f₂(n) = O(n · polylog(n)). -/
-axiom rodl_upper_bound :
-  ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 2 ≤ n →
-    (fThreshold 2 n : ℝ) ≤ C * n * (Real.log n) ^ 2
 
 /- ## Trivial Lower Bound — FALSE (removed)
 
