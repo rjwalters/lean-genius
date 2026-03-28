@@ -47,9 +47,9 @@
       "Structural comparison theorems for classical vs free vs boolean CLT"
     ],
     "historicalContext": "Voiculescu introduced free probability in 1985 to study von Neumann algebras of free groups. The Free CLT — that the semicircle distribution is the universal limit under free convolution — was the founding result. Speicher (1990) developed the combinatorial theory via non-crossing partitions, and Muraki (2003) classified all five universal independences, each with its own CLT and limit law.",
-    "axiomCount": 22,
+    "axiomCount": 21,
     "lineCount": 623,
-    "assumptions": "22 axioms: foundational free probability (freeConv, freeCumulant, Rtransform, dilate), semicircle higher cumulants, free_clt, Boolean cumulants. 3 axioms proved: freeMixedMoments (trivial), semicircle_cumulant_one/two (from moment-cumulant axioms). Free probability not yet in Mathlib.",
+    "assumptions": "21 axioms: 14 axiom declarations (freeCumulant, freeCumulant_one, freeCumulant_two, freeConv, freeConv_comm, freeConv_assoc, freeConv_dirac_right, freeConv_linearizes_cumulants, Rtransform, Rtransform_additive, semicircle_cumulant_higher, dilate, free_clt, booleanCumulant) + 7 CLTStructure hypothesis fields (conv_comm, conv_assoc, conv_identity, cumulant_additive, limitLaw_cumulant_one, limitLaw_cumulant_two, limitLaw_cumulant_higher).",
     "mathlib_version": "4.26.0"
   },
   "sections": [
