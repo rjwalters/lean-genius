@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 8A (5 structural for cpq + 3 deep results), 29T proved, 1S (edgeCount pullback bijection in cliqueGuarantee_mono_n). Aristotle companion has 7 targets.",
+    "progressSummary": "PROGRESS: Filled sorry in cliqueGuarantee_mono_n (edgeCount pullback bijection). 8A, 29T, 0S in main file.",
     "builtItems": [
       "Proved cliqueGuarantee_pos from other axioms (axiom elimination: 15->14)",
       "Added cliqueGuarantee_mono_q_general: extended monotonicity for H",
@@ -45,7 +45,8 @@
       "Created Erdos667Aristotle.lean companion file with 6 targets",
       "PROVED cliqueGuarantee_zero in Erdos667Problem.lean (was sorry)",
       "PROVED cliqueGuarantee_mono_n structure (modulo edgeCount equality under injective pullback)",
-      "REMOVED false theorem cliqueGuarantee_max with C₄ counterexample documentation"
+      "REMOVED false theorem cliqueGuarantee_max with C₄ counterexample documentation",
+      "Proved edgeCount pullback bijection in cliqueGuarantee_mono_n via Finset.prodMap_map_product + filter_map + castSucc_injective.ne_iff"
     ],
     "insights": [
       "cliqueGuarantee_pos is derivable from cliqueGuarantee_zero + cliqueGuarantee_mono_q by induction on q",
@@ -65,7 +66,8 @@
       "cliqueGuarantee_zero PROVED: sSup argument via le_antisymm — empty graph counterexample for m≥2, singleton for 1-clique",
       "For p=3,q=2: complement of any satisfying graph is a matching → clique number ⌈n/2⌉ → c(3,2)=1",
       "5 structural cpq axioms (noncomputable function + properties) + 3 deep results (Ramsey bounds, EFRS bound)",
-      "1 sorry: edgeCount equality under injective pullback (combinatorial bijection on filtered pairs)"
+      "1 sorry: edgeCount equality under injective pullback (combinatorial bijection on filtered pairs)",
+      "edgeCount (G.comap f) S = edgeCount G (S.map f) for injective f: use prodMap_map_product to rewrite the Cartesian product, filter_map to push filter inside map, then ne_iff from injectivity to match filter predicates"
     ],
     "mathlibGaps": [],
     "nextSteps": [

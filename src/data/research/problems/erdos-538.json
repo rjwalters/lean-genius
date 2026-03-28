@@ -67,7 +67,8 @@
       "double_counting_bound remains as only sorry: needs Finset.sum_fiberwise to regroup Σ 1/(ap) by m=ap, then bound each fiber by reprCount ≤ r",
       "double_counting_bound proved: used Finset.sum_fiberwise_of_maps_to for fiber decomposition, Prod.fst injection for fiber card bound, field_simp for 1/a*1/p=1/(a*p)",
       "Moved harmonic_upper_bound and inv_succ_le_log_sub before double_counting_bound to resolve forward reference",
-      "harmonic_sq_bound: H(N²) ≤ 1 + 2·log N via harmonic_upper_bound + Real.log_pow"
+      "harmonic_sq_bound: H(N²) ≤ 1 + 2·log N via harmonic_upper_bound + Real.log_pow",
+      "All metadata corrected: 0 sorries, 1 axiom (Mertens second theorem), 17 theorems. Section line ranges updated to match actual file layout. Problem is complete — only remaining axiom is deep analytic NT result not in Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
