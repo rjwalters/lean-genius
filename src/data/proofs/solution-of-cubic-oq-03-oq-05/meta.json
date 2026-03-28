@@ -7,14 +7,14 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vieta%27s_formulas",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ05.lean",
     "tags": ["algebra", "polynomials", "cubic-equations", "vieta-formulas", "symmetric-polynomials", "research"],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-03-28",
     "axiomCount": 0,
-    "lineCount": 120,
+    "lineCount": 112,
     "relatedProblems": [
       {"id": "solution-of-cubic-oq-03", "relationship": "Parent: Vieta's for depressed cubic"},
       {"id": "solution-of-cubic", "relationship": "Root: solution of the cubic equation"}
@@ -25,13 +25,13 @@
     "proofStrategy": "Expand (x-r₁)(x-r₂)(x-r₃) via ring, then extract coefficients at each degree to obtain the three Vieta relations."
   },
   "sorryCount": 0,
-  "status": "formalized",
-  "badge": "verified",
+  "status": "verified",
+  "badge": "original",
   "leanFile": {
     "imports": ["Mathlib"],
     "opens": [],
     "namespace": "VietaCubic",
-    "lineCount": 120,
+    "lineCount": 112,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0
