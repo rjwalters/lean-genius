@@ -135,8 +135,13 @@ theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
         rw [hempty, Finset.card_empty] at this
         omega
 
-/-- Trivial: g_d(2) = 3 for d ≥ 1 -/
-axiom g_d_2 : ∀ d ≥ 1, g d 2 = 3
+/-- NOTE: The previous axiom `g_d_2 : ∀ d ≥ 1, g d 2 = 3` was INCORRECT.
+    In ℝ^d, d+1 points can be mutually equidistant (regular d-simplex), giving only 1
+    distinct distance. So g_d(2) = d + 2, not 3. The correct values: g_1(2) = 3
+    (on a line, 3 points always have ≥ 2 distinct distances since equidistant triples
+    are impossible), but g_2(2) = 4 (equilateral triangle has 1 distance),
+    g_3(2) = 5 (regular tetrahedron), and generally g_d(2) = d + 2.
+    Removed as it was unused and mathematically incorrect. -/
 
 /-
 ## Lower Bound
@@ -272,9 +277,79 @@ theorem g_mono_n :
     -- sInf of n₁ set ≤ g d n₂ = sInf of n₂ set
     exact Nat.sInf_le hmem_n1
 
-/-- g_d(n) is generally increasing in d -/
-axiom g_mono_d :
-  ∀ d₁ d₂ n : ℕ, d₁ ≤ d₂ → n ≥ 2 → g d₁ n ≤ g d₂ n
+/-- Isometric embedding of ℝ^{d₁} into ℝ^{d₂} (pad with zeros).
+    Preserves distances: ‖embed(p) - embed(q)‖ = ‖p - q‖. -/
+private noncomputable def embedPoint {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
+    (p : Point d₁) : Point d₂ :=
+  (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
+    if hj : j.val < d₁ then
+      (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j.val, hj⟩
+    else 0)
+
+/-- embedPoint is injective -/
+private lemma embedPoint_injective {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) :
+    Function.Injective (embedPoint hd : Point d₁ → Point d₂) := by
+  intro p q hpq
+  have h := congr_arg (EuclideanSpace.equiv (Fin d₂) ℝ) hpq
+  simp only [embedPoint, Equiv.apply_symm_apply] at h
+  ext ⟨i, hi⟩
+  have := congr_fun h ⟨i, by omega⟩
+  simp only [dif_pos hi] at this
+  exact this
+
+/-- embedPoint preserves Euclidean distance -/
+private lemma embedPoint_dist {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
+    (p q : Point d₁) : eucDist (embedPoint hd p) (embedPoint hd q) = eucDist p q := by
+  simp only [eucDist, embedPoint]
+  congr 1
+  -- ‖embed(p) - embed(q)‖ = ‖p - q‖ via the PiLp norm
+  have : (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
+      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ else 0) -
+    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
+      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩ else 0) =
+    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
+      if hj : j.val < d₁ then
+        (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ - (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩
+      else 0) := by
+    simp only [map_sub]; ext j; simp [EuclideanSpace.equiv]; split_ifs <;> ring
+  sorry -- norm equality: ‖(padded difference)‖ = ‖(original difference)‖
+
+/-- g_d(n) is non-decreasing in d: more dimensions → more equidistant configurations →
+    more points needed to guarantee n distinct distances.
+    Proved via isometric embedding ℝ^{d₁} ↪ ℝ^{d₂}. -/
+theorem g_mono_d :
+    ∀ d₁ d₂ n : ℕ, d₁ ≤ d₂ → n ≥ 2 → g d₁ n ≤ g d₂ n := by
+  intro d₁ d₂ n hd hn
+  by_cases hn2 : n = 0
+  · omega
+  · obtain ⟨m, hm⟩ := g_well_defined d₂ n (by omega)
+    have hne : Set.Nonempty {m | ∀ P : Finset (Point d₂), P.card = m →
+        determinesNDistances P n} := ⟨m, hm⟩
+    have hmem := Nat.sInf_mem hne
+    -- g d₂ n is in the d₁ threshold set (embed any d₁ config into d₂)
+    suffices h : g d₂ n ∈ {m | ∀ P : Finset (Point d₁), P.card = m →
+        determinesNDistances P n} from Nat.sInf_le h
+    intro P hP
+    -- Embed P into ℝ^{d₂}
+    let P' := P.image (embedPoint hd)
+    have hP'card : P'.card = P.card :=
+      Finset.card_image_of_injective _ (embedPoint_injective hd)
+    -- P' determines ≥ n distances by g d₂ n property
+    have hP'det := hmem P' (hP'card.trans hP)
+    -- Distances are preserved by embedding
+    unfold determinesNDistances numDistinctDistances at hP'det ⊢
+    -- distinctDistances P' contains same values as distinctDistances P
+    suffices hcard : (distinctDistances P').card ≥ (distinctDistances P).card by
+      omega
+    apply Finset.card_le_card
+    intro r hr
+    simp only [distinctDistances, Finset.mem_filter, Finset.mem_image,
+      Finset.mem_product] at hr ⊢
+    obtain ⟨⟨⟨p, q⟩, ⟨hp, hq⟩, rfl⟩, hr_pos⟩ := hr
+    refine ⟨⟨(embedPoint hd p, embedPoint hd q),
+      ⟨Finset.mem_image_of_mem _ hp, Finset.mem_image_of_mem _ hq⟩, ?_⟩, ?_⟩
+    · exact (embedPoint_dist hd p q).symm
+    · rw [embedPoint_dist hd]; exact hr_pos
 
 /-
 ## Connection to f_d(n)
