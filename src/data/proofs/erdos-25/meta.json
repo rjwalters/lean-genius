@@ -20,9 +20,9 @@
     "erdosNumber": 25,
     "erdosUrl": "https://erdosproblems.com/25",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 4,
     "lineCount": 166,
-    "assumptions": "Main file: 0 axioms (finite_sieve_density_exists proved vacuously — hypothesis contradicts StrictMono; sieve_density_positive removed — mathematically false). Companion Erdos25LogDensity.lean: 4 axioms (logDensity_avoid_one_residue, naturalDensity_implies_logDensity, exists_logDensity_no_naturalDensity, davenport_erdos). Previously 6 main-file axioms: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity; sieved_set_nonempty proved with corrected hypothesis (seq_n 0 ≥ 2).",
+    "assumptions": "4 axioms (from imported Erdos25LogDensity.lean): logDensity_avoid_one_residue, naturalDensity_implies_logDensity, exists_logDensity_no_naturalDensity, davenport_erdos. Main file has 0 direct axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -150,7 +150,7 @@
     ],
     "namespace": null,
     "lineCount": 166,
-    "axiomCount": 0,
+    "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 6
   },
