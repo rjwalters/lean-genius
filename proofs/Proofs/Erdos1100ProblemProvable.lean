@@ -104,7 +104,7 @@ def question1_almost_all_growth : Prop :=
 /--
 **Status of Question 1: OPEN**
 -/
-theorem question1_open : True := by sorry
+theorem question1_open : True := trivial
 
 /-
 ## Part IV: Question 2 - Upper Bound
@@ -132,7 +132,7 @@ theorem erdos_hall_max_lower_bound : := by sorry
 /--
 **Status of Question 2: OPEN**
 -/
-theorem question2_open : True := by sorry
+theorem question2_open : True := trivial
 
 /-
 ## Part V: Question 3 - Growth of g(k)
@@ -218,7 +218,7 @@ For n = p₁^a₁ · ... · p_k^a_k:
 
 The exponential bounds on g(k) show the structure is neither trivial nor chaotic.
 -/
-theorem structural_insight : True := by sorry
+theorem structural_insight : True := trivial
 
 /-
 ## Part VIII: Summary

@@ -251,7 +251,7 @@ def completeDecompProblem : Prop :=
 
 Closing this gap is the challenge.
 -/
-theorem open_problem_difficulty : True := by sorry
+theorem open_problem_difficulty : True := trivial
 
 /--
 **Progress History:**
@@ -261,7 +261,7 @@ theorem open_problem_difficulty : True := by sorry
 - 2022: Bucić-Montgomery prove O(n log* n)
 - ???: General O(n) remains open
 -/
-theorem progress_timeline : True := by sorry
+theorem progress_timeline : True := trivial
 
 /-
 ## Part IX: Summary
