@@ -59,7 +59,15 @@ theorem levelSet_X : unitLevelSet X = Metric.closedBall 0 1 := by
 /-- For f(z) = zⁿ, the unit level set is still the closed unit disk. -/
 theorem levelSet_X_pow (n : ℕ) (hn : n > 0) :
     unitLevelSet (X ^ n) = Metric.closedBall 0 1 := by
-  sorry
+  ext z
+  simp only [unitLevelSet, levelSet, Set.mem_setOf_eq, Metric.mem_closedBall, dist_zero_right,
+    map_pow, Polynomial.eval_pow, Polynomial.eval_X]
+  constructor
+  · intro h
+    rwa [norm_pow, pow_le_one_iff_of_nonneg (norm_nonneg z) (by omega)] at h
+  · intro h
+    rw [norm_pow]
+    exact pow_le_one₀ (norm_nonneg z) h
 
 /- ## Part II: Projections onto Lines -/
 
