@@ -103,21 +103,21 @@ axiom hhkp_bound :
 Combining upper and lower bounds.
 -/
 
-/-- The asymptotic order of R(3,k). -/
+/-- The asymptotic order of R(3,k): there exist positive constants c₁, c₂
+    such that c₁ · k²/log k ≤ R(3,k) ≤ c₂ · k²/log k for sufficiently large k. -/
 theorem R3_asymptotic_order :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∀ k : ℕ, k ≥ 3 → c₁ * k^2 / log k ≤ R3 k ∧ (R3 k : ℝ) ≤ c₂ * k^2 / log k := by
-  use 1/162, 2  -- We can use any valid constants
+      ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        c₁ * k^2 / log k ≤ R3 k ∧ (R3 k : ℝ) ≤ c₂ * k^2 / log k := by
+  use 1/4, 2
+  refine ⟨by norm_num, by norm_num, ?_⟩
+  obtain ⟨k₁, hk₁⟩ := hhkp_bound (1/4) (by norm_num)
+  obtain ⟨k₂, hk₂⟩ := shearer_upper_bound 1 one_pos
+  use max k₁ k₂
+  intro k hk
   constructor
-  · norm_num
-  constructor
-  · norm_num
-  · intro k _
-    constructor
-    · -- Lower bound from Kim
-      sorry
-    · -- Upper bound from Shearer
-      sorry
+  · linarith [hk₁ k (le_of_max_le_left hk)]
+  · linarith [hk₂ k (le_of_max_le_right hk)]
 
 /-
 ## Part VI: The Triangle-Free Process
