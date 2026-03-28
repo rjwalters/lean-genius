@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-02-08T00:55:03.569Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Survey complete: 3 sorries classified, proof strategies identified",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,16 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed graphRamseyK3 definition (sorry → proper sInf). 4→3 sorries. Remaining sorries need forest generalization of Chvátal + small case Ramsey computation.",
+    "progressSummary": "3 sorries remain. bigF_lower_bound_tree derivable from chvatal_tree_ramsey for connected graphs (trees have exactly n-1 edges). f_val_2/bigF_val_2 need concrete Ramsey computation infrastructure.",
     "builtItems": [
       "graphRamseyK3 definition: sInf-based, R(K3,G) = smallest r coloring any K_r yields red triangle or blue G"
     ],
     "insights": [
       "graphRamseyK3 was defined with sorry — making ALL downstream definitions meaningless. Fixed with proper sInf-based definition.",
-      "Remaining 3 sorries need: (1) forest generalization of Chvátal, (2-3) concrete Ramsey computations for small graphs"
+      "Remaining 3 sorries need: (1) forest generalization of Chvátal, (2-3) concrete Ramsey computations for small graphs",
+      "bigF_lower_bound_tree proof: connected graph on n vertices with ≤ n-1 edges IS a tree (exactly n-1 edges). Chvátal directly applies. For disconnected graphs: needs separate argument or connectivity constraint in definition.",
+      "f_val_2 and bigF_val_2: require computing graphRamseyK3 for K₂, which needs constructing explicit colorings and embeddings — non-trivial Lean infrastructure"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove bigF_lower_bound_tree by showing connected graph with ≤ n-1 edges is a tree",
+      "Need: Graph connectivity definition, then Chvátal applies",
+      "f_val_2/bigF_val_2 need explicit graph constructions and colorings"
+    ],
     "markdown": "# Erdős #1182 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
   "tags": [
@@ -55,7 +61,7 @@
     "mathlib": []
   },
   "started": "2026-02-08T00:55:03.569Z",
-  "lastUpdate": "2026-03-13T07:52:17.061Z",
+  "lastUpdate": "2026-03-28T12:15:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
