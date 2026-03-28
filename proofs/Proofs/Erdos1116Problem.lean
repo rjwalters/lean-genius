@@ -114,6 +114,15 @@ private lemma countingFunction_empty {f : ℂ → ℂ} {a : ℂ} {r : ℝ}
   have : hfin.toFinset = ∅ := by rwa [Set.Finite.toFinset_eq_empty]
   rw [this]; rfl
 
+/-- The counting function is 0 for non-positive radius (empty disk). -/
+theorem countingFunction_nonpos (f : ℂ → ℂ) (a : ℂ) {r : ℝ} (hr : r ≤ 0) :
+    countingFunction f a r = 0 := by
+  apply countingFunction_empty
+  ext z
+  simp only [aPoints, mem_inter_iff, mem_setOf_eq, mem_empty_iff_false, iff_false, not_and]
+  intro _
+  exact not_lt_of_le (le_trans hr (Complex.abs.nonneg z))
+
 /-
 ## Part III: The Problem Statement
 
@@ -144,6 +153,18 @@ This is a very strong condition!
 def HasExtremeValueDistribution (f : ℂ → ℂ) : Prop :=
   ∀ a b : ℂ, a ≠ b →
     HasUnboundedRatio f a b ∧ HasUnboundedRatio f b a
+
+/-- HasUnboundedRatio is irreflexive: n(r,a)/n(r,a) = 1 for n(r,a) > 0. -/
+theorem not_hasUnboundedRatio_self (f : ℂ → ℂ) (a : ℂ) :
+    ¬HasUnboundedRatio f a a := by
+  intro h
+  obtain ⟨r, _, hgt⟩ := h 2 two_pos 1 one_pos
+  linarith [Nat.cast_nonneg (countingFunction f a r)]
+
+/-- Extreme value distribution requires distinct values: a ≠ b is necessary. -/
+theorem extreme_requires_two_values (f : ℂ → ℂ) (h : HasExtremeValueDistribution f) :
+    ∀ a b : ℂ, a ≠ b → HasUnboundedRatio f a b := by
+  intro a b hab; exact (h a b hab).1
 
 /-
 ## Part IV: The Solution
