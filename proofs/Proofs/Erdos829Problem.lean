@@ -147,7 +147,7 @@ Famous anecdote: Hardy mentioned taking taxi number 1729, calling it dull.
 Ramanujan immediately noted it's the smallest number expressible as sum of
 two cubes in two different ways.
 -/
-axiom hardy_ramanujan_1729 : cubeRepresentations 1729 = 2
+theorem hardy_ramanujan_1729 : cubeRepresentations 1729 = 2 := by native_decide
 
 /--
 **Taxicab(3) = 87539319:**

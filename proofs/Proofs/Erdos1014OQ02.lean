@@ -21,75 +21,18 @@ References:
 -/
 
 import Mathlib
+import Proofs.Erdos1014Problem
 
 open Real Filter Topology
 
 namespace Erdos1014OQ02
 
--- ══════════════════════════════════════════════════════════════════
--- § Axioms (shared with Erdos1014Problem.lean and OQ-01)
--- ══════════════════════════════════════════════════════════════════
-
-/-- The Ramsey number R(k, l). -/
-axiom ramseyNumber (k l : ℕ) : ℕ
-
-/-- Monotonicity: R(k, l) ≤ R(k, l+1). -/
-axiom ramsey_monotone_right (k l : ℕ) :
-  ramseyNumber k l ≤ ramseyNumber k (l + 1)
-
-/-- R(k, l+1) ≤ R(k, l) + R(k-1, l+1) (recurrence). -/
-axiom ramsey_recurrence (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
-  ramseyNumber k (l + 1) ≤ ramseyNumber k l + ramseyNumber (k - 1) (l + 1)
-
-/-- R(2, l) = l for l ≥ 1. -/
-axiom ramsey_k2 (l : ℕ) (hl : l ≥ 1) : ramseyNumber 2 l = l
-
-/-- R(k, l) = R(l, k). -/
-axiom ramsey_symm (k l : ℕ) : ramseyNumber k l = ramseyNumber l k
-
-/-- Kim (1995) / Shearer (1995): ∃ c > 0 s.t. R(3,l) ≥ c·l²/log l. -/
-axiom R3_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
-    (ramseyNumber 3 l : ℝ) ≥ c * (l : ℝ) ^ 2 / Real.log (l : ℝ)
+-- All axioms (ramseyNumber, ramsey_monotone_right, ramsey_recurrence,
+-- ramsey_k2, ramsey_symm, R3_lower) and key theorems (ramsey_pos,
+-- increment_bound_k3) are imported from Proofs.Erdos1014Problem.
 
 -- ══════════════════════════════════════════════════════════════════
--- § R(k,l) ≥ 1 (proved from axioms)
--- ══════════════════════════════════════════════════════════════════
-
-private theorem ramsey_monotone_left (k l : ℕ) :
-    ramseyNumber k l ≤ ramseyNumber (k + 1) l := by
-  calc ramseyNumber k l
-      = ramseyNumber l k := ramsey_symm k l
-    _ ≤ ramseyNumber l (k + 1) := ramsey_monotone_right l k
-    _ = ramseyNumber (k + 1) l := ramsey_symm l (k + 1)
-
-private theorem ramsey_pos (k l : ℕ) (hk : k ≥ 2) (hl : l ≥ 1) :
-    ramseyNumber k l ≥ 1 := by
-  have h2l : ramseyNumber 2 l = l := ramsey_k2 l hl
-  suffices h : ramseyNumber 2 l ≤ ramseyNumber k l by omega
-  induction k with
-  | zero => omega
-  | succ n ih =>
-    by_cases hn : n ≥ 2
-    · exact (ih hn).trans (ramsey_monotone_left n l)
-    · have : n = 1 := by omega
-      subst this
-
--- ══════════════════════════════════════════════════════════════════
--- § Step 1: Linear Increment Bound
--- ══════════════════════════════════════════════════════════════════
-
-/-- R(3, l+1) ≤ R(3, l) + (l + 1), from recurrence + R(2,l) = l. -/
-theorem increment_bound (l : ℕ) (hl : l ≥ 1) :
-    ramseyNumber 3 (l + 1) ≤ ramseyNumber 3 l + (l + 1) := by
-  have h_rec := ramsey_recurrence 3 l (by omega) hl
-  have h3 : (3 : ℕ) - 1 = 2 := by omega
-  rw [h3] at h_rec
-  have h_k2 := ramsey_k2 (l + 1) (by omega)
-  omega
-
--- ══════════════════════════════════════════════════════════════════
--- § Step 2: Explicit Rate Bound for k = 3
+-- § Step 1: Explicit Rate Bound for k = 3
 -- ══════════════════════════════════════════════════════════════════
 
 /-- **Main result**: For k = 3, the convergence rate is O(log l / l).
@@ -97,7 +40,7 @@ theorem increment_bound (l : ℕ) (hl : l ≥ 1) :
     Specifically, there exist C > 0 and L₀ such that for all l > L₀:
       |R(3,l+1)/R(3,l) - 1| ≤ C · log l / l
 
-    This is FASTER than O(1/log l). The constant C = 1/c where c is the
+    This is FASTER than O(1/log l). The constant C = 2/c where c is the
     Kim lower bound constant: R(3,l) ≥ c·l²/log l.
 
     Proof sketch:
@@ -109,7 +52,7 @@ theorem rate_of_convergence_k3 :
     ∃ C : ℝ, C > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
       |(ramseyNumber 3 (l + 1) : ℝ) / (ramseyNumber 3 l : ℝ) - 1| ≤
         C * Real.log (l : ℝ) / (l : ℝ) := by
-  obtain ⟨c, hc, L₁, hL₁⟩ := R3_lower_bound
+  obtain ⟨c, hc, L₁, hL₁⟩ := R3_lower
   refine ⟨2 / c, by positivity, max L₁ 2, fun l hl => ?_⟩
   have hl1 : l > L₁ := by omega
   have hl_ge1 : l ≥ 1 := by omega
@@ -129,7 +72,7 @@ theorem rate_of_convergence_k3 :
   -- R' - R ≤ l + 1
   have h_diff : R' - R ≤ (l : ℝ) + 1 := by
     simp only [hR_def, hR'_def]
-    have h := increment_bound l hl_ge1
+    have h := increment_bound_k3 l hl_ge1
     have : (ramseyNumber 3 (l + 1) : ℝ) ≤ (ramseyNumber 3 l : ℝ) + ((l : ℝ) + 1) := by
       exact_mod_cast h
     linarith
@@ -157,7 +100,7 @@ theorem rate_of_convergence_k3 :
         field_simp; ring
 
 -- ══════════════════════════════════════════════════════════════════
--- § Step 3: Answer to the Open Question
+-- § Step 2: log l / l is faster than 1/log l
 -- ══════════════════════════════════════════════════════════════════
 
 /-- The convergence rate O(log l / l) is faster than O(1/log l).
@@ -198,7 +141,7 @@ theorem log_over_l_faster_than_inv_log :
   linarith
 
 -- ══════════════════════════════════════════════════════════════════
--- § Step 4: Rate Bound for General k (Conditional)
+-- § Step 3: Rate Bound for General k (Conditional)
 -- ══════════════════════════════════════════════════════════════════
 
 /-- Conditional rate for general k: If R(k,l) has power-law growth
@@ -217,21 +160,9 @@ theorem conditional_rate_general_k (k : ℕ) (hk : k ≥ 3) :
   ∃ C : ℝ, C > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| ≤ C / (l : ℝ) := by
   intro h_asymp
-  -- Get asymptotic constant
   obtain ⟨c, hc, L₁, hL₁⟩ := h_asymp (1/4) (by positivity)
-  -- The growth ratio ((l+1)/l)^a · (log l/log(l+1))^b → 1 with rate O(1/l)
-  -- We bound |growth_ratio - 1| ≤ C₁/l for large l
-  -- ((l+1)/l)^(k-1) - 1 ≤ (k-1)·2/l for l ≥ k-1 (binomial bound)
-  -- |1 - (log l/log(l+1))^(k-2)| ≤ (k-2)·2/(l·log 2) for l ≥ 2
-  -- Use 3-factor decomposition: ratio = α·β·γ where
-  --   α = R(l+1)/(c·(l+1)^a/(log(l+1))^b) ∈ (3/4, 5/4)
-  --   β = growth_ratio = (l+1)/l)^a · (log l/log(l+1))^b
-  --   γ = (c·l^a/(log l)^b)/R(l) ∈ (3/4, 5/4)
-  -- Then |αβγ - 1| ≤ |αγ - 1|·|β| + |β - 1|
-  -- and |αγ - 1| controlled by sandwich, |β - 1| = O(1/l)
-  -- For simplicity, we use C = 4k
   refine ⟨4 * k, by positivity, ?_⟩
-  -- Growth ratio bound
+  -- Growth ratio bound: |((l+1)/l)^(k-1) · (log l/log(l+1))^(k-2) - 1| ≤ 2k/l
   have hgr : ∃ L₂ : ℕ, ∀ l : ℕ, l > L₂ →
       |(((l : ℝ) + 1) / (l : ℝ)) ^ (k - 1) *
        (Real.log (l : ℝ) / Real.log ((l : ℝ) + 1)) ^ (k - 2) - 1| ≤
@@ -244,10 +175,7 @@ theorem conditional_rate_general_k (k : ℕ) (hk : k ≥ 3) :
       Real.log_pos (by exact_mod_cast (show 1 < l by omega))
     have hlog_l1 : 0 < Real.log ((l : ℝ) + 1) :=
       Real.log_pos (by linarith)
-    -- ((l+1)/l)^(k-1) ≤ 1 + 2(k-1)/l for l ≥ 2(k-1)
-    -- Using (1 + 1/l)^n ≤ 1 + 2n/l for l ≥ 2n (Bernoulli-type)
-    -- and (log l/log(l+1))^(k-2) ∈ [1 - (k-2)/(l·log 2), 1]
-    -- Combined: product - 1 ≤ 2(k-1)/l + (k-2)/(l·log 2) ≤ 2k/l
+    -- Bernoulli-type bound for growth ratio
     sorry
   obtain ⟨L₂, hL₂⟩ := hgr
   use max (max L₁ L₂) 2
@@ -260,7 +188,6 @@ theorem conditional_rate_general_k (k : ℕ) (hk : k ≥ 3) :
     Real.log_pos (by exact_mod_cast (show 1 < l by omega))
   have hlog_l1 : 0 < Real.log ((l : ℝ) + 1) :=
     Real.log_pos (by linarith)
-  -- Setup
   set a := k - 1 with ha_def
   set b := k - 2 with hb_def
   set g := c * (l : ℝ) ^ a / (Real.log (l : ℝ)) ^ b
@@ -269,34 +196,20 @@ theorem conditional_rate_general_k (k : ℕ) (hk : k ≥ 3) :
   have hg'_pos : 0 < g' := div_pos (mul_pos hc (pow_pos hl1_pos _)) (pow_pos hlog_l1 _)
   set R := (ramseyNumber k l : ℝ)
   set R' := (ramseyNumber k (l + 1) : ℝ)
-  -- Sandwich bounds
   have hα : |R' / g' - 1| < 1/4 := by
     convert hL₁ (l + 1) (by omega) using 2; push_cast; ring
   have hζ : |R / g - 1| < 1/4 := hL₁ l hl1
-  -- Growth ratio bound
   have hβ := hL₂ l hl2
-  -- R > 0
   have hR_pos : 0 < R := by
     have hRg : R / g > 3/4 := by linarith [(abs_lt.mp hζ).1]
     by_contra h; push_neg at h
     have : R / g ≤ 0 := div_nonpos_of_nonpos_of_nonneg h (le_of_lt hg_pos)
     linarith
-  -- Decompose R'/R = (R'/g')·(g'/g)·(g/R)
-  have h_decomp : R' / R = (R' / g') * (g' / g) * (g / R) := by field_simp
-  -- g'/g = growth ratio
-  have hg_ratio : g' / g = (((l : ℝ) + 1) / (l : ℝ)) ^ a *
-      (Real.log (l : ℝ) / Real.log ((l : ℝ) + 1)) ^ b := by
-    simp only [g, g']; field_simp; ring
-  -- Combine the 3-factor bound
-  -- α = R'/g' ∈ (3/4, 5/4), γ = g/R ∈ (3/4, 5/4)
-  -- β = g'/g, |β - 1| ≤ 2k/l
-  -- |αβγ - 1| = |α·γ·β - 1| = |α·γ(β-1) + (α·γ-1)|
-  -- |α·γ - 1| ≤ |α-1|·|γ| + |γ-1| ≤ (1/4)·(5/4) + (4/3)·(1/4) = ...
-  -- In total: ≤ 2·(2k/l) + 2·(1/4) ≤ 4k/l for l ≥ 2
+  -- Decompose and bound R'/R - 1 using 3-factor decomposition
   sorry
 
 -- ══════════════════════════════════════════════════════════════════
--- § Step 5: The Answer
+-- § Step 4: The Answer
 -- ══════════════════════════════════════════════════════════════════
 
 /-- **Corollary answering OQ-02**: The rate is O(log l / l) for k = 3,

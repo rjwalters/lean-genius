@@ -44,11 +44,15 @@
       "Proof that every chain is a sublattice (closed under union and intersection)",
       "Construction of the standard chain ∅ ⊂ {0} ⊂ ... ⊂ Fin n",
       "Proof of injectivity of initial segments",
-      "Pigeonhole argument yielding f(n) ≥ ⌈(n+1)/2⌉"
+      "Pigeonhole argument yielding f(n) ≥ ⌈(n+1)/2⌉",
+      "Corrected abstract definitions of f(n) and F(n) using sSup (was sInf, evaluating to 0)",
+      "Formal proof erdos1183_f_lower_bound: f(n) ≥ ⌈(n+1)/2⌉ via le_csSup",
+      "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
+      "BddAbove proofs bounding achievable sets by 2^n"
     ],
     "axiomCount": 2,
     "assumptions": "Two axioms encode the open conjectures: (1) an upper bound on f(n) (linear growth), (2) superpolynomial growth of F(n). Both are open questions from [Er78].",
-    "lineCount": 223,
+    "lineCount": 277,
     "prerequisites": [
       "Finite set theory (Finset, powerset, filter)",
       "Lattice theory (union/intersection closure)",
@@ -117,10 +121,23 @@
       "title": "Main Results",
       "content": "The chain bound: for any 2-coloring of subsets of Fin n, there exists a monochromatic sublattice of size ≥ ⌈(n+1)/2⌉. The F(n) bound follows since every sublattice is union-closed.",
       "lineStart": 166,
-      "lineEnd": 201,
+      "lineEnd": 200,
       "theorems": [
         "erdos1183_chain_bound",
         "erdos1183_F_chain_bound"
+      ]
+    },
+    {
+      "title": "Abstract Definitions and Bounds",
+      "content": "Corrected definitions of f(n) and F(n) using sSup (previously sInf, which gave 0). Proves the chain bound connects to the abstract definition: f(n) ≥ ⌈(n+1)/2⌉. Proves F(n) ≥ f(n) since sublattices are union-closed.",
+      "lineStart": 201,
+      "lineEnd": 276,
+      "theorems": [
+        "achievableSublattice_bddAbove",
+        "achievableUnionClosed_bddAbove",
+        "erdos1183_f_lower_bound",
+        "achievableSublattice_subset_unionClosed",
+        "erdos1183_F_ge_f"
       ]
     }
   ],
@@ -155,15 +172,16 @@
       "Mathlib.Data.Finset.Powerset",
       "Mathlib.Data.Finset.Lattice",
       "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos1183",
-    "lineCount": 223,
+    "lineCount": 277,
     "axiomCount": 2,
-    "theoremCount": 10,
-    "definitionCount": 10
+    "theoremCount": 15,
+    "definitionCount": 12
   }
 }

@@ -232,6 +232,57 @@ theorem smallQuad_diameter : smallQuad.max' (by simp [smallQuad]) -
 -- Part III: Asymptotic Growth of D(k)
 -- ============================================================
 
+/-- A prime p ≤ k divides k!.
+    By induction: in the step k+1, either p = k+1 (so p | (k+1) * k!)
+    or p ≤ k and IH gives p | k!, hence p | (k+1) * k!. -/
+private lemma prime_dvd_factorial {p k : ℕ} (hp : Nat.Prime p) (hpk : p ≤ k) : p ∣ k ! := by
+  suffices h : ∀ (n : ℕ), ∀ (q : ℕ), Nat.Prime q → q ≤ n → q ∣ n ! from h k p hp hpk
+  intro n
+  induction n with
+  | zero => intro q hq hle; exfalso; have := hq.two_le; omega
+  | succ m ih =>
+    intro q hq hqm
+    rw [Nat.factorial_succ]
+    by_cases heq : q = m + 1
+    · subst heq; exact dvd_mul_right q m !
+    · exact dvd_mul_of_dvd_right (ih q hq (by omega)) (m + 1)
+
+/-- For any k ≥ 1, there exists an admissible k-tuple.
+    Construction: H = {i * k! | i < k} is admissible because:
+    - For primes p ≤ k: p | k!, so all elements ≡ 0 mod p → 1 residue class < p
+    - For primes p > k: at most k distinct residues, and k < p -/
+theorem exists_admissible_k_tuple (k : ℕ) (hk : 1 ≤ k) :
+    ∃ H : Finset ℕ, H.card = k ∧ IsAdmissible H := by
+  refine ⟨(Finset.range k).image (· * k !), ?_, ?_⟩
+  · -- Card = k: multiplication by k! is injective since k! > 0
+    rw [Finset.card_image_of_injective _ (fun a b (h : a * k ! = b * k !) =>
+      mul_right_cancel₀ (Nat.factorial_pos k).ne' h), Finset.card_range]
+  · -- Admissibility: for every prime p, |image(H mod p)| < p
+    intro p hp
+    by_cases hpk : p ≤ k
+    · -- Case p ≤ k: p | k!, so all elements are ≡ 0 mod p
+      have hdvd : p ∣ k ! := prime_dvd_factorial hp hpk
+      have hsub : ((Finset.range k).image (· * k !)).image (· % p) ⊆ {0} := by
+        intro x hx
+        rw [Finset.mem_image] at hx
+        obtain ⟨y, hy, rfl⟩ := hx
+        rw [Finset.mem_image] at hy
+        obtain ⟨i, _, rfl⟩ := hy
+        rw [Finset.mem_singleton]
+        have : p ∣ i * k ! := dvd_mul_of_dvd_right hdvd i
+        rwa [Nat.dvd_iff_mod_eq_zero] at this
+      calc (((Finset.range k).image (· * k !)).image (· % p)).card
+          ≤ ({0} : Finset ℕ).card := Finset.card_le_card hsub
+        _ = 1 := Finset.card_singleton 0
+        _ < p := hp.one_lt
+    · -- Case p > k: at most k residues, and k < p
+      push_neg at hpk
+      calc (((Finset.range k).image (· * k !)).image (· % p)).card
+          ≤ ((Finset.range k).image (· * k !)).card := Finset.card_image_le
+        _ ≤ (Finset.range k).card := Finset.card_image_le
+        _ = k := Finset.card_range k
+        _ < p := hpk
+
 /-- The minimum admissible k-tuple diameter grows at least as fast as k.
     This follows because k distinct natural numbers span at least k - 1. -/
 theorem diameter_lower_bound (k : ℕ) (hk : 2 ≤ k) :
@@ -246,10 +297,10 @@ theorem diameter_lower_bound (k : ℕ) (hk : 2 ≤ k) :
       rw [hcard]
       exact finset_card_le_diameter_succ H hne'
     linarith [le_csInf hne hbound]
-  · -- Empty set: sInf = 0. Need k ≤ 1, but k ≥ 2.
-    -- This case requires showing admissible k-tuples exist for all k ≥ 2.
+  · -- Admissible k-tuples exist for all k ≥ 1, so the set is nonempty
     exfalso; apply hne
-    sorry -- TODO: prove admissible k-tuples exist for general k ≥ 1
+    obtain ⟨H, hcard, hadm⟩ := exists_admissible_k_tuple k (by omega)
+    exact ⟨fsDiameter H, H, hcard, hadm, rfl⟩
 
 /-- The prime number theorem implies D(k) ≤ C · k(log k)² for some constant C.
     This is the upper bound from greedy admissible tuple construction. -/

@@ -53,9 +53,32 @@ theorem chebyshevNode_mem_Icc (n : ℕ) (hn : 0 < n) (k : Fin n) :
   · exact neg_one_le_cos _
   · exact cos_le_one _
 
-/-- Chebyshev nodes are distinct. -/
-axiom chebyshevNodes_injective (n : ℕ) (hn : 0 < n) :
-    Function.Injective (chebyshevNodes n)
+/-- Chebyshev nodes are distinct.
+    Proof: cos is strictly decreasing on [0, π], and the arguments
+    (2k+1)π/(2n) lie in (0, π) with distinct numerators. -/
+theorem chebyshevNodes_injective (n : ℕ) (hn : 0 < n) :
+    Function.Injective (chebyshevNodes n) := by
+  intro k₁ k₂ heq
+  simp only [chebyshevNodes, chebyshevNode] at heq
+  have hn_pos : (0 : ℝ) < 2 * n := by positivity
+  -- Both arguments are in [0, π]
+  have h₁_mem : (2 * ↑k₁.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
+    constructor
+    · positivity
+    · rw [div_le_iff hn_pos]; nlinarith [k₁.isLt, Real.pi_pos]
+  have h₂_mem : (2 * ↑k₂.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
+    constructor
+    · positivity
+    · rw [div_le_iff hn_pos]; nlinarith [k₂.isLt, Real.pi_pos]
+  -- cos injective on [0, π] gives equal arguments
+  have hθ := Real.strictAntiOn_cos.injOn h₁_mem h₂_mem heq
+  -- Equal arguments ⟹ equal indices
+  have : (k₁ : ℕ) = (k₂ : ℕ) := by
+    have hpi_ne : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
+    have h2n_ne : (2 * (n : ℝ)) ≠ 0 := ne_of_gt hn_pos
+    field_simp at hθ
+    linarith
+  exact Fin.ext this
 
 /-! ## Part II: Lagrange Interpolation -/
 
@@ -87,10 +110,26 @@ def IsLimitPoint (seq : ℕ → ℝ) (y : ℝ) : Prop :=
 def limitPointSet (seq : ℕ → ℝ) : Set ℝ :=
   { y : ℝ | IsLimitPoint seq y }
 
-/-- The limit point set of a bounded sequence is closed
-    (this is a standard topology result). -/
-axiom limitPointSet_isClosed {seq : ℕ → ℝ}
-    (hbdd : ∃ M, ∀ n, |seq n| ≤ M) : IsClosed (limitPointSet seq)
+/-- The limit point set of a bounded sequence is closed.
+    Proof: The complement is open. If y is not a limit point, seq is
+    eventually ε-away from y. Any z within ε/2 of y is also not a
+    limit point by the reverse triangle inequality. -/
+theorem limitPointSet_isClosed {seq : ℕ → ℝ}
+    (hbdd : ∃ M, ∀ n, |seq n| ≤ M) : IsClosed (limitPointSet seq) := by
+  rw [← isOpen_compl_iff, Metric.isOpen_iff]
+  intro y hy
+  simp only [limitPointSet, Set.mem_compl_iff, Set.mem_setOf_eq, IsLimitPoint, not_forall,
+    not_exists, not_lt, not_le] at hy
+  push_neg at hy
+  obtain ⟨ε, hε, N, hN⟩ := hy
+  refine ⟨ε / 2, by linarith, fun z hz => ?_⟩
+  simp only [limitPointSet, Set.mem_compl_iff, Set.mem_setOf_eq, IsLimitPoint, not_forall,
+    not_exists, not_lt, not_le]
+  push_neg
+  refine ⟨ε / 2, by linarith, N, fun n hn => ?_⟩
+  rw [Metric.mem_ball, Real.dist_eq] at hz
+  -- Reverse triangle: |seq n - z| ≥ |seq n - y| - |y - z| ≥ ε - ε/2
+  linarith [hN n hn, abs_sub_le (seq n) z y]
 
 /-! ## Part IV: The Main Conjecture -/
 
@@ -108,7 +147,7 @@ noncomputable def chebyshevInterpSeq (f : ℝ → ℝ) (x : ℝ) : ℕ → ℝ :
 axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     let x := Real.cos (p * Real.pi / q)
-    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ x' ∈ Set.Icc (-1 : ℝ) 1, True) ∧
+    ∃ f : ℝ → ℝ, Continuous f ∧
       ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterpSeq f x n
 
 /-- **The Erdős Conjecture (Problem #1151, [Va99, 2.41]):**

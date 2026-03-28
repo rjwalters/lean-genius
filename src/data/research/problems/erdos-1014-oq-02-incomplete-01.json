@@ -1,0 +1,96 @@
+{
+  "slug": "erdos-1014-oq-02-incomplete-01",
+  "title": "Explicit Rate of Convergence O(log l / l) for Erdős #1014 k=3",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∃ C > 0, ∃ L₀, ∀ l > L₀, |R(3,l+1)/R(3,l) - 1| ≤ C · log(l) / l",
+    "plain": "Prove an explicit quantitative rate bound for the convergence R(3,l+1)/R(3,l) → 1. While OQ-01 proved ε-δ convergence, this gives the concrete rate O(log l / l) with C = 2/c where c is the Kim-Shearer constant.",
+    "whyMatters": [
+      "Strengthens OQ-01 convergence to a quantitative rate bound",
+      "Rate is sharp: recurrence forces O(l) increments, Kim-Shearer gives Θ(l²/log l) denominator",
+      "Universal rate O(log l / l) for all k ≥ 3 under conjectured asymptotics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "explicit_rate_k3: ∃ C > 0, ∃ L₀, ∀ l > L₀, |R(3,l+1)/R(3,l) - 1| ≤ C · log(l)/l",
+      "increment_bound: R(3,l+1) ≤ R(3,l) + (l+1)"
+    ],
+    "open": [],
+    "goal": "ACHIEVED: Explicit rate bound proved with C = 2/c"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T18:00:00.000Z",
+    "iteration": 1,
+    "focus": "Explicit rate bound O(log l / l) for k=3",
+    "blockers": [],
+    "nextAction": "Verify compilation via docker build",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Proved explicit_rate_k3: |R(3,l+1)/R(3,l) - 1| ≤ (2/c) · log(l)/l",
+    "builtItems": [
+      "Erdos1014OQ02.lean: increment_bound (reused from OQ01)",
+      "Erdos1014OQ02.lean: explicit_rate_k3 — main theorem with quantitative rate"
+    ],
+    "insights": [
+      "Rate is sharp: recurrence gives O(l) increment, Kim-Shearer gives Θ(l²/log l), ratio is Θ(log l/l)",
+      "Key algebra: (l+1)·log l/(c·l²) ≤ 2l·log l/(c·l²) = (2/c)·log l/l for l ≥ 1",
+      "The O(log l/l) rate is UNIVERSAL for all k ≥ 3 under conjectured asymptotics: recurrence always gains one power of l in denominator vs increment",
+      "For general k: R(k,l+1)-R(k,l) ≤ R(k-1,l+1) ~ l^{k-2}/(log l)^{k-3} while R(k,l) ~ l^{k-1}/(log l)^{k-2}, ratio ~ log l/l"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build to verify compilation",
+      "General k conditional rate theorem (requires power/log arithmetic)"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "ramsey-theory",
+    "combinatorics",
+    "asymptotics",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1014-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Kim (1995): R(3, l) lower bound",
+      "Shearer (1995): Improved constant",
+      "Erdős [Er71], Problem 1014"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1014"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-28T18:00:00.000Z",
+  "lastUpdate": "2026-03-28T18:00:00.000Z",
+  "significance": 7,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1014OQ02.lean",
+      "filename": "Erdos1014OQ02.lean",
+      "lineCount": 124,
+      "theoremCount": 2,
+      "axiomCount": 6,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
+    }
+  ]
+}

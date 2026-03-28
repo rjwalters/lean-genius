@@ -66,11 +66,11 @@ theorem f_five : f 5 = 1 := by decide
 
 /-- f(9) = 2: 9 = 7 + 2 = 5 + 4.
     Verification: 9 - 1 = 8 (not prime), 9 - 2 = 7 (prime), 9 - 4 = 5 (prime), 9 - 8 = 1 (not prime). -/
-axiom f_nine : f 9 = 2
+theorem f_nine : f 9 = 2 := by native_decide
 
 /-- f(15) = 3: 15 = 13 + 2 = 11 + 4 = 7 + 8.
     Verification: 15 - 2 = 13 (prime), 15 - 4 = 11 (prime), 15 - 8 = 7 (prime). -/
-axiom f_fifteen : f 15 = 3
+theorem f_fifteen : f 15 = 3 := by native_decide
 
 /- ## Part III: Special Numbers (All-Prime Property) -/
 
@@ -100,10 +100,22 @@ theorem seven_all_prime : HasAllPrimeProperty 7 := by
   interval_cases k <;> [simp at hk1; decide; decide]
 
 /-- 15 has the all-prime property: 15 - 2 = 13, 15 - 4 = 11, 15 - 8 = 7 (all prime). -/
-axiom fifteen_all_prime : HasAllPrimeProperty 15
+theorem fifteen_all_prime : HasAllPrimeProperty 15 := by
+  intro k hk1 hk15
+  have hk_bound : k ≤ 3 := by
+    by_contra h; push_neg at h
+    have : 2 ^ k ≥ 2 ^ 4 := Nat.pow_le_pow_right (by omega) h
+    omega
+  interval_cases k <;> simp_all <;> decide
 
 /-- 21 has the all-prime property: 21 - 2 = 19, 21 - 4 = 17, 21 - 8 = 13, 21 - 16 = 5 (all prime). -/
-axiom twentyone_all_prime : HasAllPrimeProperty 21
+theorem twentyone_all_prime : HasAllPrimeProperty 21 := by
+  intro k hk1 hk21
+  have hk_bound : k ≤ 4 := by
+    by_contra h; push_neg at h
+    have : 2 ^ k ≥ 2 ^ 5 := Nat.pow_le_pow_right (by omega) h
+    omega
+  interval_cases k <;> simp_all <;> decide
 
 /-- The Erdős-Guy conjecture: These are the ONLY numbers with all-prime property.
     Verified up to 2^44 by Mientka-Weitzenkamp (1969).

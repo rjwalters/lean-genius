@@ -2,7 +2,7 @@
   "id": "bounded-prime-gaps-oq-03-oq-01",
   "title": "Improving the 246 Bound: k-Tuple Size and Gap Bounds",
   "slug": "bounded-prime-gaps-oq-03-oq-01",
-  "description": "Formalizes the relationship between admissible k-tuple size and prime gap bounds in the Maynard-Tao framework. Defines the minimum diameter function D(k) for admissible k-tuples, verifies specific tuples ({0,2}, {0,2,6}, {0,2,6,8}) with native_decide, axiomatizes computed values D(2)=2, D(3)=6, D(50)=246, proves the Polymath 8b bound of 246 using the Maynard-Tao structure, and analyzes the barrier: improving below 246 requires going beyond k-tuple methods.",
+  "description": "Formalizes the relationship between admissible k-tuple size and prime gap bounds in the Maynard-Tao framework. Proves D(2)=2 and D(3)=6 from scratch (consecutive non-admissibility and parity arguments), proves admissible k-tuples exist for all k via factorial construction, establishes diameter lower bound D(k) >= k-1, axiomatizes D(50)=246 from Engelsma's exhaustive computation, and analyzes the 246 barrier.",
   "meta": {
     "author": "Maynard (2015), Polymath 8b (2014), Engelsma (2013)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Bounded_gaps_between_primes",
@@ -18,7 +18,7 @@
       "maynard-tao"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "mathlibDependencies": [],
     "originalContributions": [
       "minAdmissibleDiameter: opaque function D(k) for minimum admissible k-tuple diameter",
@@ -28,9 +28,9 @@
       "barrier_246: the 246 barrier cannot be broken by k-tuple methods alone"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 3,
-    "lineCount": 329,
-    "assumptions": "3 axioms (minAdmissibleDiameter values for k=2,3,50) and 2 sorries. Previously 4 axioms; maynard_under_eh proved as theorem from minAdmissibleDiameter_3.",
+    "axiomCount": 1,
+    "lineCount": 380,
+    "assumptions": "1 axiom (minAdmissibleDiameter_50: D(50) = 246 by Engelsma computation) and 1 sorry (diameter_upper_bound_exists). D(2)=2 and D(3)=6 fully proved. diameter_lower_bound proved via factorial k-tuple construction.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -97,10 +97,10 @@
     "summary": "This formalization captures the precise reason the current prime gap bound is stuck at 246: the Maynard-Tao sieve converts admissible k-tuple diameters to gap bounds, and D(50) = 246 is provably optimal by Engelsma's exhaustive computation. The Lean development cleanly separates computational facts (axiomatized D(k) values) from the sieve-theoretic framework (MaynardTaoBound structure), and machine-verifies small tuple properties.",
     "implications": "The formalization demonstrates that improving bounded prime gaps requires either proving the Elliott-Halberstam conjecture (reducing to 12) or developing fundamentally new sieve methods beyond Maynard-Tao. It also illustrates a productive pattern for formalizing results that depend on large-scale computation: use opaque functions with axiomatized values rather than attempting to replicate the computation in the proof assistant.",
     "openQuestions": [
-      "Can the lower bound D(k) >= k - 1 be proved in Lean using a covering systems argument?",
       "Can the upper bound D(k) <= C * k * (log k)^2 be formalized using Mathlib's prime number theorem?",
       "Is there a feasible path to formalize partial results toward Elliott-Halberstam in Lean 4?",
-      "Can Engelsma's exhaustive computation for D(50) = 246 be verified computationally within Lean, perhaps for smaller k values?"
+      "Can Engelsma's exhaustive computation for D(50) = 246 be verified computationally within Lean, perhaps for smaller k values?",
+      "Can D(4) = 8 be proved from scratch, extending the D(2)=2, D(3)=6 pattern?"
     ]
   },
   "crossReferences": [
@@ -141,10 +141,10 @@
       "BoundedPrimeGaps"
     ],
     "namespace": "BoundedPrimeGapsOQ03OQ01",
-    "lineCount": 329,
-    "axiomCount": 4,
-    "theoremCount": 15,
-    "definitionCount": 3
+    "lineCount": 380,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 5
   },
   "references": [
     {

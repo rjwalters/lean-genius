@@ -1,0 +1,66 @@
+{
+  "slug": "cantor-diagonalization-oq-02-oq-03",
+  "title": "Diagonal Argument Generalized to Regular Cardinals",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ κ regular uncountable, ∀ f : ι → Ordinal, #ι < κ → (∀ i, f i < κ.ord) → ∃ β < κ.ord, ∀ i, f i < β",
+    "plain": "Generalize the Cantor diagonal argument from ℵ₁ to arbitrary regular cardinals. The key property is regularity (cof = κ), not just uncountability.",
+    "whyMatters": [
+      "Unifies all diagonal-type arguments under one theorem",
+      "Distinguishes regular from singular cardinals",
+      "The ℵ₁ case is a 3-line specialization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "regular_sup_bounded: iSup f < κ.ord for regular κ",
+      "card_succ_lt_of_lt_infinite: μ+1 < κ for infinite κ",
+      "regular_diagonal: main diagonal argument for regular κ",
+      "regular_no_surjection: impossibility of <κ-sized surjection",
+      "aleph1_diagonal: ℵ₁ specialization"
+    ],
+    "open": [],
+    "goal": "ACHIEVED"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T19:00:00.000Z",
+    "iteration": 1,
+    "focus": "Completed",
+    "blockers": [],
+    "nextAction": "None",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Generalized diagonal argument to all regular cardinals",
+    "builtItems": [
+      "CantorDiagonalizationOQ02OQ03.lean: 6 theorems, 0 axioms, 0 sorries"
+    ],
+    "insights": [
+      "Regularity is the essential property — singular cardinals have countable cofinality",
+      "The proof factors cleanly into: bounded sup (regularity) + limit ordinal (infinite) + diagonal step"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": ["set-theory", "ordinals", "cardinals", "regularity", "research"],
+  "relatedProofs": ["cantor-diagonalization", "cantor-diagonalization-oq-02"],
+  "references": { "papers": [], "urls": [], "mathlib": ["Ordinal.iSup_lt_ord", "Cardinal.IsRegular.cof_eq"] },
+  "started": "2026-03-28T19:00:00.000Z",
+  "lastUpdate": "2026-03-28T19:00:00.000Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [{
+    "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
+    "filename": "CantorDiagonalizationOQ02OQ03.lean",
+    "lineCount": 142,
+    "theoremCount": 6,
+    "axiomCount": 0,
+    "defCount": 0,
+    "sorryCount": 0,
+    "isAristotle": false
+  }]
+}

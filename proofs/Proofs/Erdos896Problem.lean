@@ -173,6 +173,42 @@ theorem uniqueProductCount_empty_left (B : Finset ℕ) :
     uniqueProductCount ∅ B = 0 := by
   simp [uniqueProductCount, reprCount]
 
+/-- F(A, ∅) = 0 by commutativity. -/
+theorem uniqueProductCount_empty_right (A : Finset ℕ) :
+    uniqueProductCount A ∅ = 0 := by
+  rw [uniqueProductCount_comm]; exact uniqueProductCount_empty_left A
+
+/-- If m is not in the product set A·B, its representation count is 0. -/
+theorem reprCount_zero_of_not_mem (A B : Finset ℕ) (m : ℕ)
+    (hm : m ∉ (A ×ˢ B).image (fun p => p.1 * p.2)) :
+    reprCount A B m = 0 := by
+  unfold reprCount
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  intro ⟨a, b⟩
+  simp only [Finset.mem_filter, Finset.mem_product, not_and]
+  intro hab heq
+  exact hm (Finset.mem_image.mpr ⟨⟨a, b⟩, Finset.mem_product.mpr hab, heq⟩)
+
+/-- F({a}, {b}) = 1 for singletons: exactly one product ab with unique
+    representation. -/
+theorem uniqueProductCount_singletons (a b : ℕ) :
+    uniqueProductCount {a} {b} = 1 := by
+  unfold uniqueProductCount reprCount
+  simp [Finset.product_singleton_right, Finset.product_singleton_left,
+        Finset.filter_singleton, Finset.image_singleton]
+
+/-- maxUniqueProducts N ≥ 1 for N ≥ 1: singleton subsets {1}×{1} give F = 1. -/
+theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
+    1 ≤ maxUniqueProducts N := by
+  unfold maxUniqueProducts
+  apply Finset.le_sup
+    (Finset.mem_product.mpr
+      ⟨Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr
+        (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩)),
+       Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr
+        (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩))⟩)
+  exact le_of_eq (uniqueProductCount_singletons 1 1).symm
+
 /-
 ## Gap Between Bounds and Conjecture
 

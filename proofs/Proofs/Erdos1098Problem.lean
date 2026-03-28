@@ -214,7 +214,18 @@ theorem clique_different_cosets (S : Set G) (hS : isClique S) :
 -/
 theorem clique_size_bound (S : Set G) (hS : isClique S) (hSfin : S.Finite) :
     S.ncard ≤ (Subgroup.center G).index := by
-  sorry
+  -- The quotient map mk : G → G ⧸ Z(G) is injective on cliques
+  have hinj : Set.InjOn (Subgroup.center G).quotient.mk S := by
+    intro g hg h hh heq
+    by_contra hne
+    exact clique_different_cosets S hS g hg h hh hne heq
+  -- |S| = |mk(S)| ≤ |G ⧸ Z(G)| = [G : Z(G)]
+  calc S.ncard
+      = (((Subgroup.center G).quotient.mk) '' S).ncard :=
+          (Set.ncard_image_of_injOn hinj hSfin).symm
+    _ ≤ Set.univ.ncard := Set.ncard_le_ncard (Set.subset_univ _) (hSfin.image _)
+    _ = Nat.card ((Subgroup.center G).quotient) := Set.ncard_univ _
+    _ = (Subgroup.center G).index := (Subgroup.index_eq_card _).symm
 
 /- ## Part VI: Infinite Groups
 -/
@@ -264,7 +275,9 @@ Every finite group has finite index center (trivially).
 -/
 theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] :
     centerHasFiniteIndex G := by
-  sorry
+  unfold centerHasFiniteIndex
+  -- For finite G, index of any subgroup is finite (a natural number, not ⊤)
+  exact Subgroup.index_ne_zero.mpr (inferInstance : Finite (Subgroup.center G).quotient)
 
 /- ## Part VIII: Generalizations
 -/

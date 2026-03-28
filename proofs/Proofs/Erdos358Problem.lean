@@ -142,9 +142,19 @@ axiom power_of_two_obstruction :
 
 /- ## Part V: The Prime Case -/
 
-/-- The primes sequence (axiomatized since nth is complex). -/
-axiom primesSeq : IntSequence
-axiom primesSeq_def (n : ℕ) : primesSeq.seq n = Nat.nth Nat.Prime n
+/-- The primes sequence, defined using Mathlib's `Nat.nth`.
+    Previously axiomatized; now concrete via Mathlib. -/
+noncomputable def primesSeq : IntSequence where
+  seq := fun n => (Nat.nth Nat.Prime n : ℤ)
+  increasing := fun n => by
+    have hinf : (setOf Nat.Prime).Infinite := by
+      rw [Set.infinite_iff_exists_gt]
+      intro n; obtain ⟨p, hp, hpn⟩ := Nat.exists_infinite_primes (n + 1)
+      exact ⟨p, hp, by omega⟩
+    exact_mod_cast Nat.nth_strictMono hinf (Nat.lt_succ_of_le le_rfl)
+
+/-- The primes sequence at index n equals the nth prime. -/
+theorem primesSeq_def (n : ℕ) : primesSeq.seq n = Nat.nth Nat.Prime n := rfl
 
 /--
 **Erdős-Moser Conjecture (1963):**
