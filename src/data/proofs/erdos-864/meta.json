@@ -51,9 +51,9 @@
       "Axiomatized Erdős-Freud lower bound with explicit (2/√3 − ε)·√N form",
       "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}"
     ],
-    "axiomCount": 3,
-    "lineCount": 269,
-    "assumptions": "3 axioms: erdos_freud_lower_bound, sidon_upper_bound, reflected_construction_valid. Previously 4; almost_sidon_sum_range proved FALSE (counterexample: A={1,2,4,6,7}, N=7, collision at sum 8 with multiplicity 3).",
+    "axiomCount": 2,
+    "lineCount": 531,
+    "assumptions": "2 axioms: erdos_freud_lower_bound, sidon_upper_bound. Previously 4; almost_sidon_sum_range proved FALSE (counterexample), reflected_construction_valid removed.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
