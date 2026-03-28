@@ -91,6 +91,19 @@ def existsGraphWithPropertyP (n k m : ℕ) : Prop :=
     ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       edgeCount G = m ∧ hasPropertyP G k
 
+/-- The induced max degree of any subgraph on S is at most |S| - 1. -/
+theorem inducedMaxDegree_le (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
+    inducedMaxDegree G S ≤ S.card - 1 := by
+  unfold inducedMaxDegree
+  split
+  · case isTrue h =>
+    apply Finset.sup'_le _ _ (fun v hv => ?_)
+    calc (S.filter (fun u => u ≠ v ∧ G.Adj v u)).card
+        ≤ (S.erase v).card := Finset.card_le_card (fun u hu => by
+          simp only [Finset.mem_filter] at hu; exact Finset.mem_erase.mpr ⟨hu.2.1, hu.1⟩)
+      _ = S.card - 1 := Finset.card_erase_of_mem hv
+  · case isFalse => omega
+
 /-
 ## Part 4: Basic Bounds
 -/
