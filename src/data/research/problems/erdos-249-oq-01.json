@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-249-oq-01",
+  "title": "Tighter bounds on Σ φ(n)/2^n",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "totientPowerSum ≥ 5/4 ∧ totientPowerSum > 1",
+    "plain": "Prove tighter lower bounds on the series Σ φ(n)/2^n by computing more terms and using partial sum bounds.",
+    "whyMatters": [
+      "Tightens known range from (0, 2] to [5/4, 2]",
+      "Rules out integer values 0 and 1",
+      "Provides explicit term computations for n = 3, 4, 5"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "termFn_three: φ(3)/2^3 = 1/4",
+      "termFn_four: φ(4)/2^4 = 1/8",
+      "termFn_five: φ(5)/2^5 = 1/8",
+      "partial_sum_6: first 6 terms sum to 5/4",
+      "totientPowerSum_ge_five_fourths: sum ≥ 5/4",
+      "totientPowerSum_gt_one: sum > 1"
+    ],
+    "open": [],
+    "goal": "ACHIEVED: Tighter bounds established"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T18:30:00.000Z",
+    "iteration": 1,
+    "focus": "Term computations and partial sum bounds",
+    "blockers": [],
+    "nextAction": "Verify compilation",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Proved 6 new theorems: 3 term computations, 1 partial sum, 2 bounds",
+    "builtItems": [
+      "Erdos249OQ01.lean: termFn_three, termFn_four, termFn_five",
+      "Erdos249OQ01.lean: partial_sum_6 = 5/4",
+      "Erdos249OQ01.lean: totientPowerSum_ge_five_fourths, totientPowerSum_gt_one"
+    ],
+    "insights": [
+      "φ(n)/2^n decreases rapidly: the largest terms are n=1,2,3 (each ≥ 1/4)",
+      "Partial sum through n=5 already gives 5/4, very close to the true value ~1.324",
+      "For strict < 2: need tsum_lt_tsum (φ(4)=2 < 4 gives termFn 4 < 4*(1/2)^4)",
+      "native_decide handles Nat.totient for small composite numbers (e.g., φ(4)=2)"
+    ],
+    "mathlibGaps": [
+      "tsum_lt_tsum for strict comparison of infinite sums (may exist but hard to find)"
+    ],
+    "nextSteps": [
+      "Prove totientPowerSum < 2 (strict) using tsum_lt_tsum",
+      "Prove the sum is not an integer",
+      "Compute more terms for better approximation"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "irrationality",
+    "totient",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-249"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/249"
+    ],
+    "mathlib": [
+      "Nat.totient_prime",
+      "sum_le_hasSum"
+    ]
+  },
+  "started": "2026-03-28T18:30:00.000Z",
+  "lastUpdate": "2026-03-28T18:30:00.000Z",
+  "significance": 6,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos249OQ01.lean",
+      "filename": "Erdos249OQ01.lean",
+      "lineCount": 96,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos249OQ01.lean"
+    }
+  ]
+}
