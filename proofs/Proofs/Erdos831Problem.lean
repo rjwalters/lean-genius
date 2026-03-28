@@ -151,14 +151,24 @@ noncomputable def h (n : ℕ) : ℕ :=
 With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
 -/
 theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  sorry  -- The number of distinct radii cannot exceed the number of triples
+  -- Proof strategy: sInf S ≤ C(n,3) because:
+  -- (a) If S = ∅ (no GP config exists), sInf = 0 ≤ C(n,3)
+  -- (b) If S ≠ ∅, every k ∈ S satisfies k ≤ C(n,3) since
+  --     countDistinctRadii ≤ number of triples = C(n,3)
+  -- Blocked: needs Set.ncard image bound + sInf argument
+  sorry
 
 /--
 **h(3) = 1:**
 Three points in general position give exactly one circle, hence one radius.
 -/
 theorem h_three : h 3 = 1 := by
-  sorry  -- With exactly 3 points, there's exactly 1 triple, hence 1 radius
+  -- Proof strategy: construct explicit 3-point GP config {(0,0), (1,0), (0,1)}
+  -- Show: not collinear (linear system has only trivial solution)
+  -- Show: 4-concyclic condition vacuous (only 3 points)
+  -- Show: exactly 1 triple → 1 circumradius = √2/2
+  -- Blocked: EuclideanSpace ℝ (Fin 2) point construction is verbose
+  sorry
 
 /--
 **h(4) ≥ 2:**
