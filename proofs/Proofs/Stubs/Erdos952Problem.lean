@@ -167,11 +167,121 @@ theorem classification_backward (z : GaussianInt) :
   · exact prime_of_inert hp hmod hnorm
   · exact prime_of_split hp hmod hnorm
 
-/-- Forward direction: a Gaussian prime must be one of the three types.
-    Requires showing every prime in ℤ[i] lies over a rational prime
-    (follows from ℤ[i] being integral of degree 2 over ℤ). -/
-axiom classification_forward (z : GaussianInt) :
-    IsGaussianPrime z → IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z
+/-- A Gaussian prime divides some rational prime cast into ℤ[i].
+    Proof by strong induction: z ∣ norm(z), and for any composite n > 1,
+    z ∣ n implies z ∣ minFac(n) or z ∣ n/minFac(n), the latter being smaller. -/
+private theorem exists_nat_prime_dvd {z : GaussianInt} (hz : IsGaussianPrime z)
+    (n : ℕ) (hn : 1 < n) (hd : z ∣ (n : ℤ[i])) :
+    ∃ p : ℕ, p.Prime ∧ z ∣ (p : ℤ[i]) := by
+  by_cases hp : n.Prime
+  · exact ⟨n, hp, hd⟩
+  · -- n > 1 and composite: factor via minFac
+    set f := n.minFac with hf_def
+    set m := n / f with hm_def
+    have hfp : f.Prime := Nat.minFac_prime (by omega)
+    have hfd : f ∣ n := Nat.minFac_dvd n
+    have hn_eq : f * m = n := Nat.mul_div_cancel' hfd
+    have hm_lt : m < n := Nat.div_lt_self (by omega) hfp.one_lt
+    have hm_gt : 1 < m := by
+      have hm0 : m ≠ 0 := by intro h; rw [h, mul_zero] at hn_eq; omega
+      have hm1 : m ≠ 1 := by
+        intro h; rw [h, mul_one] at hn_eq; rw [← hn_eq] at hp; exact hp hfp
+      omega
+    have hd' : z ∣ (f : ℤ[i]) * (m : ℤ[i]) := by rwa [← Nat.cast_mul, hn_eq]
+    rcases hz.dvd_or_dvd hd' with h | h
+    · exact ⟨f, hfp, h⟩
+    · exact exists_nat_prime_dvd hz m hm_gt h
+termination_by n
+
+/-- Forward direction of Gaussian prime classification: every Gaussian prime
+    has norm 2, p (for p ≡ 1 mod 4), or p² (for p ≡ 3 mod 4).
+
+    Proof strategy:
+    1. z * star(z) = norm(z), so z ∣ norm(z)
+    2. By strong induction, z ∣ ↑p for some rational prime p
+    3. norm(z) * norm(q) = p² (from ↑p = z * q), giving norm(z) = p or p²
+    4. If norm = p: p = 2 (Norm2) or p ≡ 1 mod 4 (Split, via sum-of-squares mod 4)
+    5. If norm = p²: z ∼ ↑p (associated), so ↑p is prime in ℤ[i],
+       hence p ≡ 3 mod 4 (by Mathlib characterization) -/
+theorem classification_forward (z : GaussianInt) :
+    IsGaussianPrime z → IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z := by
+  intro hz
+  -- Step 1: z ∣ ↑(norm(z).natAbs) in ℤ[i]
+  have hdvd : z ∣ (z.norm : ℤ[i]) := ⟨star z, (Zsqrtd.norm_eq_mul_conj z).symm⟩
+  have hne0 : z ≠ 0 := hz.ne_zero
+  have hna_ne1 : z.norm.natAbs ≠ 1 := mt Zsqrtd.norm_eq_one_iff.mpr hz.not_unit
+  have hna_gt1 : 1 < z.norm.natAbs := by
+    have := Int.natAbs_pos.mpr (GaussianInt.norm_pos.mpr hne0).ne'; omega
+  have hdvd_nat : z ∣ (z.norm.natAbs : ℤ[i]) := by
+    rw [show (z.norm.natAbs : ℤ[i]) = (z.norm : ℤ[i]) from by
+      exact_mod_cast GaussianInt.natCast_natAbs_norm z]
+    exact hdvd
+  -- Step 2: find a rational prime p with z ∣ ↑p
+  obtain ⟨p, hp, hzp⟩ := exists_nat_prime_dvd hz z.norm.natAbs hna_gt1 hdvd_nat
+  -- Step 3: from ↑p = z * q, get norm(z) * norm(q) = p²
+  obtain ⟨q, hq⟩ := hzp
+  have hnorm_mul : z.norm * q.norm = (p : ℤ) * p := by
+    have := congr_arg Zsqrtd.norm hq
+    rw [Zsqrtd.norm_mul, Zsqrtd.norm_natCast] at this
+    linarith
+  have hna_mul : z.norm.natAbs * q.norm.natAbs = p ^ 2 := by
+    zify [GaussianInt.norm_nonneg z, GaussianInt.norm_nonneg q]
+    have h1 := GaussianInt.natCast_natAbs_norm z
+    have h2 := GaussianInt.natCast_natAbs_norm q
+    push_cast [h1, h2]; nlinarith [hnorm_mul]
+  -- Step 4: classify by whether norm(q) is 1 or not
+  by_cases hqu : q.norm.natAbs = 1
+  · -- norm(q) = 1: q is a unit, norm(z) = p², z ∼ ↑p
+    have hna_p2 : z.norm.natAbs = p ^ 2 := by nlinarith
+    have hnorm_p2 : z.norm = (p : ℤ) ^ 2 := by
+      have := GaussianInt.natCast_natAbs_norm z; push_cast [hna_p2] at this ⊢; linarith
+    -- z and ↑p are associates: ↑p = z * q with q a unit
+    have hpu : IsUnit q := Zsqrtd.norm_eq_one_iff.mp hqu
+    -- ↑p is prime in ℤ[i] (associated to the prime z)
+    haveI : Fact p.Prime := ⟨hp⟩
+    have hp_prime_gi : Prime (↑p : ℤ[i]) := by
+      -- ↑p = z * q with q a unit, so ↑p ∣ z (via z = ↑p * q⁻¹)
+      -- Combined with z ∣ ↑p, they are associated, and associated preserves primality
+      obtain ⟨u, hu⟩ := hpu -- u : ℤ[i]ˣ, hu : ↑u = q
+      have hpz : (↑p : ℤ[i]) ∣ z := ⟨↑u⁻¹, by
+        have h1 : (↑p : ℤ[i]) = z * ↑u := by rw [hu]; exact hq
+        calc z = z * 1 := (mul_one z).symm
+          _ = z * (↑u * ↑u⁻¹) := by rw [Units.val_mul_inv]
+          _ = (z * ↑u) * ↑u⁻¹ := (mul_assoc z ↑u ↑u⁻¹).symm
+          _ = ↑p * ↑u⁻¹ := by rw [h1]⟩
+      exact (associated_of_dvd_dvd hpz hzp).prime_iff.mpr hz
+    -- By Mathlib: Prime (↑p : ℤ[i]) ↔ p % 4 = 3
+    have hp4 : p % 4 = 3 :=
+      (GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime p).mp hp_prime_gi
+    right; left
+    exact ⟨p, hp, hp4, hnorm_p2⟩
+  · -- Both natAbs ≠ 1: by mul_eq_prime_sq_iff, norm(z).natAbs = p
+    have hboth := (hp.mul_eq_prime_sq_iff hna_ne1 hqu).mp hna_mul
+    have hna_p : z.norm.natAbs = p := hboth.1
+    have hnorm_p : z.norm = (p : ℤ) := by
+      have := GaussianInt.natCast_natAbs_norm z; push_cast [hna_p] at this; linarith
+    -- Classify: p = 2 → Norm2, p odd → Split (p ≡ 1 mod 4)
+    by_cases hp2 : p = 2
+    · left; show z.norm = 2; rw [hnorm_p, hp2]; simp
+    · -- p odd prime, norm(z) = z.re² + z.im² = p
+      -- Sum of two squares mod 4: since p is odd, p ≡ 1 mod 4
+      right; right; refine ⟨p, hp, ?_, hnorm_p⟩
+      have hsum : z.re ^ 2 + z.im ^ 2 = (p : ℤ) := by
+        have : z.norm = z.re * z.re - (-1 : ℤ) * (z.im * z.im) := rfl; nlinarith [hnorm_p]
+      -- p ≡ 3 mod 4 is impossible (sum of two squares ∈ {0,1,2} mod 4)
+      have hp_ne3 : p % 4 ≠ 3 := by
+        intro h3
+        have h4 : (z.re : ZMod 4) ^ 2 + (z.im : ZMod 4) ^ 2 = (p : ZMod 4) := by
+          have := congr_arg (Int.cast : ℤ → ZMod 4) hsum; push_cast at this ⊢; exact this
+        have : (p : ZMod 4) = (3 : ZMod 4) := by
+          change ((p : ℤ) : ZMod 4) = 3
+          rw [show (p : ℤ) = ((p % 4 : ℕ) : ℤ) + 4 * ((p / 4 : ℕ) : ℤ) from by omega]
+          simp [h3]
+        rw [this] at h4; revert h4; decide
+      -- p is odd (not 2) and p % 4 ≠ 3, so p % 4 = 1
+      have hp_odd : p % 2 = 1 := by
+        rcases hp.eq_two_or_odd with rfl | h; exact absurd rfl hp2; exact h
+      omega
 
 /-- Full Gaussian prime classification (backward proved, forward axiom). -/
 theorem gaussian_prime_classification (z : GaussianInt) :
@@ -241,18 +351,6 @@ theorem canEscapeMoat_mono {k k' : ℕ} (hk : k ≤ k') (h : CanEscapeMoat k) :
 
 -- Current state: unknown for larger step sizes
 def CurrentBestBound : ℕ := 27
-
-/-- Moat escape monotonicity: if we can escape with step size k₁,
-    we can escape with any larger step size k₂ ≥ k₁. -/
-theorem canEscapeMoat_mono {k₁ k₂ : ℕ} (h : k₁ ≤ k₂) :
-    CanEscapeMoat k₁ → CanEscapeMoat k₂ := by
-  intro ⟨x, hwalk, hgaps⟩
-  exact ⟨x, hwalk, fun n => lt_of_lt_of_le (hgaps n) h⟩
-
-/-- Tsuchimura's result blocks all step sizes up to √26. -/
-theorem no_walk_up_to_sqrt26 (k : ℕ) (hk : k ≤ 27) :
-    ¬CanEscapeMoat k :=
-  fun h => tsuchimura (canEscapeMoat_mono hk h)
 
 /-
 # Part 5: The Moat Width
@@ -368,16 +466,15 @@ def RationalPrimeMoat : Prop :=
 - Whether any bounded step size suffices
 - The critical moat width (if the answer is NO)
 
-**Axioms (4):**
-- classification_forward: prime → one of three norm types (deep, requires integral extension theory)
+**Axioms (3):**
 - tsuchimura: computational verification (no walk ≤ √26)
 - gaussian_prime_theorem: asymptotic density (analytic number theory)
 - primes_mod_4_connection: moat structure from prime gaps
 
 **Proved from Mathlib:**
-- Classification backward direction (3 norm types → prime)
-  - prime_of_prime_natAbs_norm: prime norm → Gaussian prime
-  - prime_of_inert: p² norm with p ≡ 3 mod 4 → prime (via ZMod 4 argument)
+- Full Gaussian prime classification (both directions):
+  - Backward: 3 norm types → prime (prime_of_prime_natAbs_norm, prime_of_inert, prime_of_split)
+  - Forward: prime → one of 3 norm types (classification_forward, via strong induction + mod 4)
 - splitPrime definition (via Fermat's two-square theorem)
 - jordan_rabung, gethner_et_al from tsuchimura
 - Moat monotonicity and structural equivalences
