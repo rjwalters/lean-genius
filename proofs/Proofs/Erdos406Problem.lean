@@ -53,13 +53,16 @@ def ErdosProblem406_variant : Prop :=
 /- ## Known examples -/
 
 /-- `1 = 2^0` has base-3 representation `[1]`, with only digits 0 and 1. -/
-axiom one_in_ternarySparse : (1 : ℕ) ∈ ternarySparse
+theorem one_in_ternarySparse : (1 : ℕ) ∈ ternarySparse :=
+  ⟨0, rfl, by native_decide⟩
 
 /-- `4 = 2^2` has base-3 representation `[1, 1]`, with only digits 0 and 1. -/
-axiom four_in_ternarySparse : (4 : ℕ) ∈ ternarySparse
+theorem four_in_ternarySparse : (4 : ℕ) ∈ ternarySparse :=
+  ⟨2, rfl, by native_decide⟩
 
 /-- `256 = 2^8` has base-3 representation `[1, 1, 1, 0, 0, 1]` in base 3. -/
-axiom pow2_8_in_ternarySparse : (256 : ℕ) ∈ ternarySparse
+theorem pow2_8_in_ternarySparse : (256 : ℕ) ∈ ternarySparse :=
+  ⟨8, rfl, by native_decide⟩
 
 /- ## Computational evidence -/
 
@@ -74,8 +77,30 @@ axiom saye_computation :
 
 /-- A number with only digits 0 and 1 in base 3 is a sum of distinct
 powers of 3 (i.e., a subset sum of a geometric progression). -/
-axiom digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
-    ∃ S : Finset ℕ, n = S.sum (3 ^ ·)
+theorem digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
+    ∃ S : Finset ℕ, n = S.sum (3 ^ ·) := by
+  suffices ∀ (l : List ℕ), (∀ d ∈ l, d = 0 ∨ d = 1) →
+      ∃ S : Finset ℕ, Nat.ofDigits 3 l = S.sum (3 ^ ·) by
+    have key := this (Nat.digits 3 n) h
+    rwa [Nat.ofDigits_digits] at key
+  intro l
+  induction l with
+  | nil => intro _; exact ⟨∅, by simp [Nat.ofDigits]⟩
+  | cons d l ih =>
+    intro hall
+    have hd := hall d (List.mem_cons_self d l)
+    obtain ⟨S', hS'⟩ := ih (fun x hx => hall x (List.mem_cons_of_mem d hx))
+    set T := S'.image (· + 1)
+    have h0T : (0 : ℕ) ∉ T := by simp [T]
+    have hshift : 3 * S'.sum (3 ^ ·) = T.sum (3 ^ ·) := by
+      change 3 * S'.sum (3 ^ ·) = (S'.image (· + 1)).sum (3 ^ ·)
+      rw [Finset.sum_image (fun a _ b _ hab => by omega)]
+      simp only [Function.comp, pow_succ']
+      rw [← Finset.mul_sum]
+    rcases hd with rfl | rfl
+    · exact ⟨T, by simp only [Nat.ofDigits_cons, zero_add, hS', hshift]⟩
+    · exact ⟨insert 0 T, by
+        rw [Nat.ofDigits_cons, hS', hshift, Finset.sum_insert h0T, pow_zero]⟩
 
 /-- The base-3 representation of 0 is empty, so 0 trivially has only
 digits 0 and 1. -/
