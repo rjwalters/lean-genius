@@ -63,9 +63,12 @@ For any A of size N and any target t:
 -/
 
 /-- Erdős-Moser (1965): Weaker bound with log factor.
+    Note: This bound is degenerate for N ≤ 2 since log(1) = 0 and log(2) < 1.
+    For N ≥ 3, it follows from the sharper sarkozy_szemeredi_1965 bound since
+    (log N)^(3/2) ≥ 1, making the RHS larger. See PR #7493 for a proof.
     First proved the concentration bound with an extra (log N)^(3/2) factor. -/
 axiom erdos_moser_1965_bound :
-    ∃ C > 0, ∀ (A : Finset ℤ), A.card > 0 →
+    ∃ C > 0, ∀ (A : Finset ℤ), A.card ≥ 3 →
       ∀ t : ℤ, (countSubsetsWithSum A t : ℝ) ≤
         C * 2^(A.card) / (A.card : ℝ)^(3/2 : ℝ) * (Real.log A.card)^(3/2 : ℝ)
 
@@ -160,9 +163,10 @@ the concentration bound follows from saddle point analysis.
 -/
 
 /-- The generating function for subset sums.
-    The coefficient of z^t in this product equals countSubsetsWithSum A t. -/
+    For z ≠ 0, the coefficient of z^t in this product equals countSubsetsWithSum A t.
+    Uses zpow (integer exponentiation) since elements of A may be negative. -/
 noncomputable def subsetSumGF (A : Finset ℤ) (z : ℂ) : ℂ :=
-  ∏ a ∈ A, (1 + z^(a.toNat))
+  ∏ a ∈ A, (1 + z ^ a)
 
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
     the integral of the generating function against an exponential. -/
