@@ -166,6 +166,43 @@ theorem positive_lower_density_bounded_gaps (A : Set ℕ) :
     HasPositiveLowerDensity A → HasBoundedGaps (diffSet A) :=
   fun h => positive_density_bounded_gaps A (lower_density_implies_upper A h)
 
+/- ## Density implies infiniteness -/
+
+/-- Positive upper density implies the set is infinite. If countingFn A N ≥ δN
+    for arbitrarily large N, the count grows without bound, which is impossible
+    for finite A (where countingFn is bounded by |A|). -/
+theorem positive_density_infinite (A : Set ℕ) (hd : HasPositiveUpperDensity A) :
+    Set.Infinite A := by
+  obtain ⟨δ, hδ, hden⟩ := hd
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  -- countingFn A N ≤ |A| for all N (filter is subset of A)
+  have hbound : ∀ N, (countingFn A N : ℚ) ≤ hfin.toFinset.card := by
+    intro N
+    have : countingFn A N ≤ hfin.toFinset.card := by
+      unfold countingFn
+      apply Finset.card_le_card
+      intro n hn
+      simp only [Finset.mem_filter, Finset.mem_Icc] at hn
+      exact hfin.mem_toFinset.mpr hn.2
+    exact_mod_cast this
+  -- By Archimedean property, ∃ N₀ with δ * N₀ > |A|
+  obtain ⟨N₀, hN₀⟩ : ∃ N₀ : ℕ, (hfin.toFinset.card : ℚ) < δ * N₀ := by
+    obtain ⟨n, hn⟩ := exists_nat_gt ((hfin.toFinset.card : ℚ) / δ)
+    exact ⟨n, by rwa [div_lt_iff hδ] at hn⟩
+  -- Take N ≥ N₀ with δ * N ≤ countingFn A N
+  obtain ⟨N, hN_ge, hN_count⟩ := hden N₀
+  -- Chain: |A| < δ * N₀ ≤ δ * N ≤ countingFn A N ≤ |A|. Contradiction.
+  have h1 : δ * ↑N₀ ≤ δ * ↑N :=
+    mul_le_mul_of_nonneg_left (Nat.cast_le.mpr hN_ge) (le_of_lt hδ)
+  linarith [hbound N]
+
+/-- Positive upper density implies D(A) is nonempty (it contains 0).
+    Combines positive_density_infinite with diffSet_nonempty_of_infinite. -/
+theorem positive_density_diffSet_nonempty (A : Set ℕ) (hd : HasPositiveUpperDensity A) :
+    (diffSet A).Nonempty :=
+  diffSet_nonempty_of_infinite A (positive_density_infinite A hd)
+
 /- ## Main problem -/
 
 /-- Erdős Problem 332: What conditions on `A ⊆ ℕ` are sufficient to
