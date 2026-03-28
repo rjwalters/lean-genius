@@ -45,7 +45,8 @@ theorem divisors_mul_coprime {m n : ℕ} (hmn : Nat.Coprime m n) (hm : m > 0) (h
 
 theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
     Nat.divisors (p ^ a) = (Finset.range (a + 1)).map ⟨fun i => p ^ i, fun _ _ => by
-      intro h; exact Nat.pow_right_injective hp.two_le h⟩ := by sorry
+      intro h; exact Nat.pow_right_injective hp.two_le h⟩ :=
+  Nat.divisors_prime_pow hp
 
 /- Target 3: Density of the full set is 1 -/
 

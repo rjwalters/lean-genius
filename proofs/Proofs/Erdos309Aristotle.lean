@@ -86,7 +86,9 @@ theorem sumUnitFractions_insert (S : Finset ℕ) (d : ℕ) (hd : d ∉ S) :
 
 -- Harmonic number
 /-- H_1 = 1. -/
-theorem harmonicNumber_one : harmonicNumber 1 = 1 := by sorry
+theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
+  unfold harmonicNumber sumUnitFractions denominatorRange
+  simp [unitFraction]
 
 -- Representability
 /-- 0 is always representable (empty set). -/

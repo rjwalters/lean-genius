@@ -91,7 +91,19 @@ def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
 /-- Degrees in an induced subgraph are bounded by degrees in the full graph. -/
 theorem induced_degree_le (G : SimpleGraph V) [DecidableRel G.Adj]
     (S : Finset V) (v : S) [DecidableRel (inducedSubgraph G S).Adj] :
-    (inducedSubgraph G S).degree v ≤ G.degree v.val := by sorry
+    (inducedSubgraph G S).degree v ≤ G.degree v.val := by
+  simp only [SimpleGraph.degree]
+  -- Map induced neighbors injectively into full graph neighbors
+  calc ((inducedSubgraph G S).neighborFinset v).card
+      = (((inducedSubgraph G S).neighborFinset v).image Subtype.val).card :=
+        (Finset.card_image_of_injective _ Subtype.val_injective).symm
+    _ ≤ (G.neighborFinset v.val).card := by
+        apply Finset.card_le_card
+        intro u hu
+        rw [Finset.mem_image] at hu
+        obtain ⟨w, hw, rfl⟩ := hu
+        rw [SimpleGraph.mem_neighborFinset] at hw ⊢
+        exact hw
 
 -- The empty graph
 /-- The empty graph (no edges) is 0-regular. -/
