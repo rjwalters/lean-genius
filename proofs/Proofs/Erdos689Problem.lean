@@ -17,6 +17,8 @@
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.NumberTheory.SumPrimeReciprocals
+import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Tactic
 
 -- ## Definitions
@@ -120,11 +122,43 @@ axiom erdos_689_r_fold (r : ℕ) (hr : r ≥ 1) :
 
 /-- The sum Σ_{p ≤ n, p prime} 1/p diverges as log log n by Mertens' theorem.
     This means the "expected" covering count for a random assignment grows,
-    suggesting r-fold covering should be achievable for large n. -/
-axiom mertens_sum_divergence :
+    suggesting r-fold covering should be achievable for large n.
+
+    Proved from Mathlib's `not_summable_one_div_on_primes`: since the prime
+    reciprocal indicator is not summable and nonneg, its partial sums tend to ∞.
+    These partial sums are bounded by the `primesUpTo n` sums. -/
+theorem mertens_sum_divergence :
   ∀ C : ℝ, 0 < C →
     ∃ N : ℕ, ∀ n ≥ N,
-      C < ((primesUpTo n).sum (fun p => (1 : ℝ) / p))
+      C < ((primesUpTo n).sum (fun p => (1 : ℝ) / p)) := by
+  intro C _
+  -- Step 1: Prime reciprocal indicator is not summable (from Mathlib)
+  have hns := not_summable_one_div_on_primes
+  -- Step 2: The indicator is nonneg
+  have hnn : ∀ i, 0 ≤ ({p : ℕ | p.Prime}.indicator fun n : ℕ => (1 : ℝ) / ↑n) i :=
+    fun i => Set.indicator_apply_nonneg (fun _ => by positivity)
+  -- Step 3: Not summable + nonneg ↔ partial sums → ∞
+  rw [not_summable_iff_tendsto_nat_atTop_of_nonneg hnn] at hns
+  rw [Filter.tendsto_atTop_atTop] at hns
+  -- Step 4: For C + 1, get N such that C + 1 ≤ partial sum for all n ≥ N
+  obtain ⟨N, hN⟩ := hns (C + 1)
+  use N
+  intro n hn
+  have h_bound := hN n hn
+  -- Step 5: Convert indicator sum to sum over filtered finset
+  have h_ind_eq : ∀ x, ({p : ℕ | p.Prime}.indicator fun n : ℕ => (1 : ℝ) / ↑n) x =
+      if x.Prime then (1 : ℝ) / ↑x else 0 := fun x => by
+    simp [Set.indicator_apply]
+  simp_rw [h_ind_eq, ← Finset.sum_filter] at h_bound
+  -- Step 6: (Finset.range n).filter Nat.Prime ⊆ primesUpTo n
+  have h_sub : (Finset.range n).filter Nat.Prime ⊆ primesUpTo n := by
+    intro p hp
+    simp only [primesUpTo, Finset.mem_filter, Finset.mem_range] at hp ⊢
+    exact ⟨by omega, hp.2⟩
+  -- Step 7: Subset + nonneg terms → sum over subset ≤ sum over superset
+  have h_le := Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)
+  -- Step 8: C < C + 1 ≤ filter_sum ≤ primesUpTo_sum
+  linarith
 
 /-- Connection to Jacobsthal function (Problem #687): For large n,
     1-fold covering of [1,n] by primes up to n exists.
