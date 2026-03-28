@@ -405,10 +405,61 @@ but is expected to have type
   ℕ
 in the application
   Erdos202.L N-/
-/-- L grows faster than any power of log N. -/
+/-- L grows faster than any power of log N.
+    Proof: (log N)^c = exp(c · log(log N)), and for large N,
+    c · log(log N) < √(log N · log(log N)) since c² · log(log N) < log N
+    (because log(log N) = o(log N)). -/
 theorem L_superlogarithmic (c : ℝ) :
     ∀ᶠ N in Filter.atTop, (Real.log N) ^ c < L N := by
-  sorry
+  have h_L_eq : ∀ N : ℕ, 2 < N →
+      L N = Real.exp (Real.sqrt (Real.log N * Real.log (Real.log N))) :=
+    fun N hN => if_neg (by linarith)
+  by_cases hc : c ≤ 0
+  · -- Case c ≤ 0: (log N)^c ≤ 1 ≤ exp(√(...)) = L N
+    filter_upwards [Filter.eventually_ge_atTop 3] with N hN
+    rw [h_L_eq N (by omega)]
+    calc (Real.log (N : ℝ)) ^ c
+        ≤ 1 := rpow_le_one_of_one_le_of_nonpos
+          (Real.le_log_of_exp_le (by norm_cast; linarith [Real.exp_one_gt_d9])) hc
+      _ ≤ Real.exp (Real.sqrt (Real.log ↑N * Real.log (Real.log ↑N))) :=
+          one_le_exp (Real.sqrt_nonneg _)
+  · -- Case c > 0: use exp(u) > (1+u/2)² ≥ u²/4 ≥ c²u for u ≥ 4c²
+    push_neg at hc
+    -- Eventually log(log N) is large enough
+    have h_tend : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+        Filter.atTop Filter.atTop :=
+      Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+    filter_upwards [h_tend.eventually (Filter.eventually_ge_atTop (4 * c ^ 2)),
+        h_tend.eventually (Filter.eventually_gt_atTop 0),
+        (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop).eventually
+          (Filter.eventually_gt_atTop 0),
+        Filter.eventually_gt_atTop 2] with N hu_ge hu_pos hv_pos hN2
+    simp only [Function.comp] at hu_ge hu_pos hv_pos
+    rw [h_L_eq N hN2]
+    set u := Real.log (Real.log (N : ℝ))
+    -- log N = exp(u)
+    have hv_eq : Real.log (N : ℝ) = Real.exp u := Real.exp_log hv_pos
+    -- (log N)^c = exp(c * u) since log N > 0
+    rw [Real.rpow_def_of_pos hv_pos, hv_eq]
+    apply Real.exp_lt_exp.mpr
+    -- Need: c * u < √(exp(u) * u)
+    -- Step 1: c²u ≤ u²/4 (since u ≥ 4c²)
+    have h1 : c ^ 2 * u ≤ u ^ 2 / 4 := by nlinarith
+    -- Step 2: u²/4 < exp(u) (since exp(u) ≥ (1+u/2)² = 1+u+u²/4 > u²/4)
+    have h2 : u ^ 2 / 4 < Real.exp u := by
+      have := Real.add_one_le_exp (u / 2)
+      have hep := Real.exp_pos (u / 2)
+      nlinarith [Real.exp_add (u / 2) (u / 2)]
+    -- Step 3: c²u < exp(u), so c²u² < exp(u)·u, so (cu)² < exp(u)·u
+    -- Therefore cu < √(exp(u)·u) since √ is monotone and cu > 0
+    have h_prod_pos : Real.exp u * u > 0 := mul_pos (Real.exp_pos u) hu_pos
+    calc c * u
+        < Real.sqrt (Real.exp u * u) := by
+          rw [show c * u = Real.sqrt ((c * u) ^ 2) from
+            (Real.sqrt_sq (by positivity : c * u ≥ 0)).symm]
+          apply Real.sqrt_lt_sqrt (sq_nonneg _)
+          nlinarith
+      _ = Real.sqrt (Real.exp u * Real.log (Real.log ↑N)) := by rfl
 
 /- Aristotle failed to find a proof. -/
 /- ## Part VI: The Erdős-Stein Conjecture (PROVED) -/
