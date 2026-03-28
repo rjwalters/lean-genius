@@ -79,13 +79,13 @@
       "HasDenseSumset: ε-dense sumset d(A+A) ≥ 1-ε",
       "erdos_749_conjecture: main question as dichotomy (proved via by_cases)",
       "sidon_bounded_rep: proved Sidon → bounded r(n) via Finset.card_le_one",
-      "sidon_set_density_zero: axiomatized Sidon → upper density of A = 0 (known classical result)",
+      "sidon_set_density_zero: PROVED Sidon → upper density of A = 0 via counting bound",
       "erdos_turan_conjecture_28: axiomatized d(A+A) = 1 → ¬HasBoundedRep (open conjecture)",
       "erdos_749_upper_variant: upper density version (proved via by_cases)"
     ],
-    "axiomCount": 2,
-    "lineCount": 177,
-    "assumptions": "2 axioms: sidon_set_density_zero (Sidon sets have zero upper density), erdos_turan_conjecture_28 (ET conjecture, open)."
+    "axiomCount": 1,
+    "lineCount": 253,
+    "assumptions": "1 axiom: erdos_turan_conjecture_28 (Erdős-Turán conjecture, open). sidon_set_density_zero was proved from Sidon counting bound via Erdos340GreedySidon."
   },
   "overview": {
     "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets (Erdős-Turán 1941) demonstrate that bounded r(n) is compatible with sparse sumsets: they have r(n) ≤ 1 but |A ∩ [1,N]| ∼ √N, giving density-0 sumsets. At the other extreme, the Erdős-Turán conjecture (Problem #28, $500 bounty) asserts that any additive basis of order 2 (density-1 sumset) must have unbounded r(n).\n\nProblem #749 asks about the boundary: can we get sumset density arbitrarily close to 1 while keeping r(n) bounded? A positive answer would show the Erdős-Turán obstruction is specific to density exactly 1 — a sharp phase transition. A negative answer would show the obstruction appears at some critical density 1-ε₀ < 1, strengthening the Erdős-Turán conjecture quantitatively.",
@@ -131,7 +131,7 @@
     {
       "id": "context",
       "title": "Sidon Sets and Erdős-Turán Connection",
-      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1). Axiomatizes `sidon_set_density_zero` (Sidon sets have upper density 0, known classical result). Connects to Erdős-Turán conjecture (#28, open) as axiom.",
+      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1). Proves `sidon_set_density_zero` (Sidon sets have upper density 0) from Sidon counting bound. Connects to Erdős-Turán conjecture (#28, open) as axiom.",
       "startLine": 113,
       "endLine": 150
     },
@@ -155,13 +155,14 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib",
+      "Proofs.Erdos340GreedySidon"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 177,
-    "axiomCount": 2,
-    "theoremCount": 7,
+    "lineCount": 253,
+    "axiomCount": 1,
+    "theoremCount": 10,
     "definitionCount": 8
   },
   "references": [
