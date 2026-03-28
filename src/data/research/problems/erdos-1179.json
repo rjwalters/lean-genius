@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T17:01:06.709Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 6A all appropriate.",
+    "progressSummary": "PROGRESS: Added 2 theorems (6T→8T). reprCount bound + expectedReprCount positivity. 6A unchanged.",
     "builtItems": [
-      "Assessment: 6A all appropriate"
+      "Assessment: 6A all appropriate",
+      "reprCount_le_pow: each element has ≤ 2^|A| representations",
+      "expectedReprCount_pos: expected count positive for N≥1"
     ],
     "insights": [
-      "6 axioms: gEps (opaque function) + 5 properties. All appropriate."
+      "6 axioms: gEps (opaque function) + 5 properties. All appropriate.",
+      "main_asymptotic axiom is potentially provable from trivial_lower_bound + erdos_hall_upper via log(log(log N))/log(log N) → 0, but requires complex limit manipulation",
+      "OQ01 sorries are deep: Fourier character expansion + error bound assembly over ZMod p"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -56,7 +60,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T17:01:06.709Z",
-  "lastUpdate": "2026-03-13T07:52:17.060Z",
+  "lastUpdate": "2026-03-28T06:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -74,8 +78,8 @@
     {
       "path": "Proofs/Erdos1179Problem.lean",
       "filename": "Erdos1179Problem.lean",
-      "lineCount": 219,
-      "theoremCount": 6,
+      "lineCount": 232,
+      "theoremCount": 8,
       "axiomCount": 6,
       "defCount": 3,
       "sorryCount": 0,
