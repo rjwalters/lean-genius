@@ -52,11 +52,11 @@ axiom numGroups_prime (p : ℕ) (hp : Nat.Prime p) : numGroups p = 1
 theorem numGroups_two : numGroups 2 = 1 :=
   numGroups_prime 2 (by norm_num)
 
-/-- Known values for small powers of 2. -/
+/-- Known values for small orders.
+    Further known values (for reference): g(16) = 14, g(32) = 51, g(64) = 267. -/
 axiom numGroups_four : numGroups 4 = 2
+axiom numGroups_six : numGroups 6 = 2
 axiom numGroups_eight : numGroups 8 = 5
-axiom numGroups_sixteen : numGroups 16 = 14
-axiom numGroups_thirtytwo : numGroups 32 = 51
 
 /-
 ## Section II: Basic Properties
@@ -206,6 +206,23 @@ theorem erdos_1160_m_eq_two (n : ℕ) (hn : n ≤ 4) :
   · rw [numGroups_one, numGroups_four]; omega
   · rw [numGroups_two, numGroups_four]; omega
   · rw [numGroups_prime 3 (by norm_num), numGroups_four]; omega
+  · exact le_refl _
+
+/-- The conjecture for all n ≤ 8 (m = 3).
+    Uses g(p) = 1 for primes p ∈ {3,5,7}, g(4) = 2, g(6) = 2, g(8) = 5. -/
+theorem erdos_1160_m_eq_three (n : ℕ) (hn : n ≤ 8) :
+    numGroups n ≤ numGroups (2 ^ 3) := by
+  have h8 : (2 : ℕ) ^ 3 = 8 := by norm_num
+  rw [h8]
+  interval_cases n
+  · rw [numGroups_zero]; exact Nat.zero_le _
+  · rw [numGroups_one, numGroups_eight]; omega
+  · rw [numGroups_two, numGroups_eight]; omega
+  · rw [numGroups_prime 3 (by norm_num), numGroups_eight]; omega
+  · rw [numGroups_four, numGroups_eight]; omega
+  · rw [numGroups_prime 5 (by norm_num), numGroups_eight]; omega
+  · rw [numGroups_six, numGroups_eight]; omega
+  · rw [numGroups_prime 7 (by norm_num), numGroups_eight]; omega
   · exact le_refl _
 
 /-- If the conjecture holds for m, and g(2^m) ≤ g(2^(m+1)),

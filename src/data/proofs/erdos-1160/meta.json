@@ -19,13 +19,13 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 11,
+    "axiomCount": 10,
     "erdosNumber": 1160,
     "erdosUrl": "https://erdosproblems.com/1160",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-24",
     "mathlib_version": "4.26.0",
-    "lineCount": 222,
+    "lineCount": 240,
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -58,11 +58,12 @@
       "erdos_1160_prime: proved conjecture for prime n",
       "pantelidakis_odd: axiomatized partial result for odd n",
       "numGroups_prime_power_pos: proved positivity for prime powers from numGroups_prime + monotonicity",
-      "erdos_1160_m_eq_two: proved conjecture for all n ≤ 4 (m=2 case)"
+      "erdos_1160_m_eq_two: proved conjecture for all n ≤ 4 (m=2 case)",
+      "erdos_1160_m_eq_three: proved conjecture for all n ≤ 8 (m=3 case)"
     ],
     "assumptions": [
       "numGroups is axiomatized (Lean/Mathlib lacks group enumeration)",
-      "Known values g(1)=1, g(2)=1, g(4)=2, g(8)=5, g(16)=14, g(32)=51 are axiomatized",
+      "Known values g(1)=1, g(2)=1, g(4)=2, g(6)=2, g(8)=5 are axiomatized",
       "Pantelidakis's result for odd n (m ≥ 3619) is axiomatized",
       "Asymptotic growth formula log₂(g(2^m)) ~ (2/27)m³ is axiomatized"
     ]
@@ -91,53 +92,53 @@
       "id": "group-counting",
       "title": "The Group Counting Function",
       "startLine": 30,
-      "endLine": 60,
-      "summary": "Axiomatization of the group counting function numGroups : ℕ → ℕ (OEIS A000001) along with known values for small powers of 2. Since Lean/Mathlib has no computable group enumeration, these are declared as axioms.",
-      "mathContext": "$g(n) = |\\{G : |G| = n\\}/\\cong|$, with known values $g(1)=1$, $g(4)=2$, $g(8)=5$, $g(16)=14$, $g(32)=51$"
+      "endLine": 59,
+      "summary": "Axiomatization of the group counting function numGroups : ℕ → ℕ (OEIS A000001) along with known values for small orders. Since Lean/Mathlib has no computable group enumeration, these are declared as axioms.",
+      "mathContext": "$g(n) = |\\{G : |G| = n\\}/\\cong|$, with known values $g(1)=1$, $g(4)=2$, $g(6)=2$, $g(8)=5$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 62,
-      "endLine": 84,
+      "startLine": 61,
+      "endLine": 83,
       "summary": "Monotonicity of g(p^k) in k for fixed prime p (axiom), positivity of g(p^k) for k ≥ 1 (proved from g(p)=1 + monotonicity), and g(2^m) ≥ 1 (proved without general positivity axiom).",
       "mathContext": "$g(p^{k_1}) \\leq g(p^{k_2})$ for $k_1 \\leq k_2$; $g(p^k) > 0$ for $k \\geq 1$; $g(2^m) \\geq 1$"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 79,
-      "endLine": 97,
+      "startLine": 85,
+      "endLine": 109,
       "summary": "States the main conjecture in two equivalent forms and proves their equivalence. The universally quantified form (∀ m n, n ≤ 2^m → g(n) ≤ g(2^m)) is equivalent to the Finset-range form, enabling computational verification for fixed m.",
       "mathContext": "$\\forall m, n \\in \\mathbb{N},\\; n \\leq 2^m \\implies g(n) \\leq g(2^m)$"
     },
     {
       "id": "stronger-conjecture",
       "title": "Stronger Conjecture (BNV07)",
-      "startLine": 99,
-      "endLine": 114,
+      "startLine": 111,
+      "endLine": 128,
       "summary": "Formalizes the dramatically stronger conjecture of Blackburn–Neumann–Venkataraman: the sum of g(n) over all n < 2^m is dominated by g(2^m) alone for sufficiently large m. Proves this implies the original conjecture via Finset.single_le_sum.",
       "mathContext": "$\\exists M,\\; \\forall m \\geq M: \\sum_{n=0}^{2^m-1} g(n) \\leq g(2^m)$"
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
-      "startLine": 116,
-      "endLine": 138,
+      "startLine": 130,
+      "endLine": 149,
       "summary": "Verifies the conjecture for base cases: n = 1 (trivially g(1) = 1 ≤ g(2^m)), prime n (g(p) = 1), and axiomatizes Pantelidakis's 2003 result for odd n when m ≥ 3619.",
       "mathContext": "$g(1) = 1 \\leq g(2^m)$; $g(p) = 1$ for prime $p$; Pantelidakis: odd $n \\leq 2^m,\\, m \\geq 3619 \\implies g(n) \\leq g(2^m)$"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Growth",
-      "startLine": 140,
-      "endLine": 156,
+      "startLine": 151,
+      "endLine": 162,
       "summary": "Axiomatizes the Higman–Sims asymptotic formula: log₂(g(2^m)) / m³ → 2/27 as m → ∞. This super-exponential growth is the fundamental reason powers of 2 are conjectured to maximize the group counting function.",
       "mathContext": "$\\lim_{m \\to \\infty} \\frac{\\log_2 g(2^m)}{m^3} = \\frac{2}{27}$"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies base cases (n = 0, 1, prime n, m ≤ 2), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. The 11 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
+    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies base cases (n = 0, 1, prime n, m ≤ 3), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. The 10 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
     "implications": "A proof of the full conjecture would establish that 2-groups are the dominant source of finite group diversity at every scale — a fundamental structural fact about finite group theory. The BNV stronger form would imply that the diversity of 2-groups grows so fast that a single order $2^m$ harbors more non-isomorphic groups than all smaller orders combined. Progress on this conjecture is closely tied to advances in $p$-group enumeration and nilpotent Lie algebra classification.",
     "openQuestions": [
       "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",

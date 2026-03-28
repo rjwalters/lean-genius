@@ -80,7 +80,7 @@ noncomputable def targets : ℕ → Cardinal
     and each other color has no monochromatic triangle.
 
     The challenge is to prove this in ZFC without assuming GCH. -/
-axiom erdos_1168 : ¬ partitionRelation aleph_omega_succ targets
+def erdos_1168_conjecture : Prop := ¬ partitionRelation aleph_omega_succ targets
 
 /- ## Part IV: Known Results -/
 
@@ -90,6 +90,11 @@ axiom erdos_1168 : ¬ partitionRelation aleph_omega_succ targets
 axiom erdos_1168_under_gch :
     (∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) →
     ¬ partitionRelation aleph_omega_succ targets
+
+/-- Under GCH, the open conjecture holds. -/
+theorem gch_implies_conjecture (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) :
+    erdos_1168_conjecture :=
+  erdos_1168_under_gch hgch
 
 /- ## Part V: Structural Observations -/
 
@@ -132,11 +137,14 @@ theorem partitionRelation.mono_targets {κ : Cardinal}
 2. ℵ_ω is singular (cofinality ω), making pcf theory applicable
 3. Shelah's pcf theory provides ZFC tools for successor-of-singular
 
-**Axioms (2):**
-- erdos_1168: the main open conjecture
+**Axioms (1):**
 - erdos_1168_under_gch: GCH-conditional version (known result)
 
-**Proved (4):**
+**Open Conjecture:**
+- erdos_1168_conjecture: the main open problem (defined as Prop)
+
+**Proved (5):**
+- gch_implies_conjecture: GCH implies the conjecture
 - empty_homogeneous, singleton_homogeneous: basic homogeneity facts
 - IsHomogeneous.subset: homogeneity is monotone under subsets
 - partitionRelation.mono_targets: partition relation antimonotone in targets

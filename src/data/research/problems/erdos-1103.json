@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (5→3) via Nat.nth definition for enumSet",
+    "progressSummary": "COMPLETE: 3 axioms (all published results: vanDoorn-Tao upper/lower, Konyagin). Conjecture is def. Well-formalized.",
     "builtItems": [
       "Proved squarefreeSumset_singleton (axiom → theorem) in Erdos1103Problem.lean:78",
       "Fixed type annotation for ErdosProblem1103 (j : ℕ)",
@@ -38,12 +38,10 @@
       "enumSet_spec: replaced axiom with theorem (5→3 axioms)"
     ],
     "insights": [
-      "squarefreeSumset_singleton proved by simp [SquarefreeSumset] which unfolds definition and simplifies singleton membership",
-      "Pre-existing build error: j was inferred as Real in atTop filter due to C^j expression - fixed with explicit (j : ℕ) annotation",
-      "Set.not_mem_empty deprecated to Set.notMem_empty in current Mathlib",
-      "Eliminated 2 axioms (enumSet + enumSet_spec) by defining enumSet via Nat.nth",
-      "Nat.nth_count provides surjectivity: for m ∈ A, Nat.nth_count gives enumSet A (count m) = m",
-      "Nat.nth_strictMono + Nat.nth_mem_of_infinite provide monotonicity and membership"
+      "All 3 axioms are deep published results (not provable from Mathlib)",
+      "Main conjecture is properly a def, not axiom",
+      "enumSet defined via Nat.nth (previously axiomatized, now proved from Mathlib)",
+      "SquarefreeSumset automatically excludes 0 (Squarefree 0 = False), so enumSet values >= 1"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
