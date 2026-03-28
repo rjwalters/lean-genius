@@ -80,7 +80,8 @@ For every k ≥ 2, there exists n_k such that n_k has the k-Egyptian property.
 -/
 theorem croot_existence (k : ℕ) (hk : k ≥ 2) :
     ∃ n : ℕ, HasKEgyptianProperty n k := by
-  sorry
+  obtain ⟨_, _, n, hn, _⟩ := sawhney_upper_bound k hk
+  exact ⟨n, hn⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
