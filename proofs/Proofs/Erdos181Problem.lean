@@ -203,6 +203,80 @@ theorem bound_gap_description :
   apply Nat.pow_le_pow_right (by omega : 0 < 2)
   omega
 
+/-
+## Part VI: Structural Lemmas
+
+These theorems establish key structural properties of the Ramsey number
+without relying on the axioms above. They are fully proved from the
+definition of ramseyNumber and basic Mathlib facts.
+-/
+
+/-- Core pigeonhole: if N < 2^n, no injective function from Fin(2^n) to Fin(N) exists.
+    This is the key lemma underlying the lower bound on R(Q_n): any monochromatic
+    embedding of Q_n requires at least 2^n vertices in the host graph. -/
+theorem no_embedding_small (n N : ℕ) (hN : N < 2 ^ n) :
+    ¬∃ f : Fin (2 ^ n) → Fin N, Function.Injective f := by
+  intro ⟨f, hf⟩
+  have h1 := Fintype.card_le_of_injective f hf
+  simp [Fintype.card_fin] at h1
+  omega
+
+/-- The Ramsey property for Q_n is monotone: if every 2-coloring of K_N
+    contains a monochromatic copy of Q_n, then so does every 2-coloring of K_M
+    for any M ≥ N. Proof: restrict any coloring of K_M to the first N vertices
+    via Fin.castLE, then lift the embedding back. -/
+theorem ramsey_property_mono (n N M : ℕ) (hNM : N ≤ M)
+    (h : ∀ c : Fin N → Fin N → Fin 2, ∃ f : Fin (2 ^ n) → Fin N,
+      Function.Injective f ∧ ∃ color : Fin 2, ∀ x y : Fin (2 ^ n),
+        hypercubeAdj n x y → c (f x) (f y) = color) :
+    ∀ c : Fin M → Fin M → Fin 2, ∃ f : Fin (2 ^ n) → Fin M,
+      Function.Injective f ∧ ∃ color : Fin 2, ∀ x y : Fin (2 ^ n),
+        hypercubeAdj n x y → c (f x) (f y) = color := by
+  intro c
+  obtain ⟨f, hf_inj, color, hcolor⟩ :=
+    h (fun i j => c (Fin.castLE hNM i) (Fin.castLE hNM j))
+  exact ⟨fun x => Fin.castLE hNM (f x),
+    (Fin.castLE_injective hNM).comp hf_inj,
+    color, fun x y hxy => hcolor x y hxy⟩
+
+/-- Conditional lower bound: if any N satisfies the Ramsey property for Q_n
+    (i.e., the Ramsey set is nonempty), then R(Q_n) ≥ 2^n. This follows from
+    the pigeonhole principle — every N in the Ramsey set must accommodate an
+    injective map from Q_n's 2^n vertices. -/
+theorem lower_bound_conditional (n : ℕ)
+    (hne : ∃ N, ∀ c : Fin N → Fin N → Fin 2, ∃ f : Fin (2 ^ n) → Fin N,
+      Function.Injective f ∧ ∃ color : Fin 2, ∀ x y : Fin (2 ^ n),
+        hypercubeAdj n x y → c (f x) (f y) = color) :
+    ramseyNumber n ≥ 2 ^ n := by
+  unfold ramseyNumber
+  apply le_csInf hne
+  intro N hN
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨f, hf_inj, _⟩ := hN (fun _ _ => 0)
+  exact no_embedding_small n N hlt ⟨f, hf_inj⟩
+
+/-- R(Q_0) = 1: the 0-dimensional hypercube is a single vertex with no edges,
+    so any graph on 1 vertex trivially contains a monochromatic copy. -/
+theorem ramseyNumber_zero_eq : ramseyNumber 0 = 1 := by
+  apply le_antisymm ramseyNumber_zero_bound
+  -- Lower bound: R(Q_0) ≥ 1
+  unfold ramseyNumber
+  apply le_csInf
+  · -- Nonemptiness: 1 is in the Ramsey set for Q_0
+    exact ⟨1, fun c => ⟨fun _ => ⟨0, by omega⟩,
+      fun a b _ => by ext; omega,
+      0, fun x y hxy => absurd hxy (by
+        have : x = y := by ext; omega
+        rw [this]; exact hypercubeAdj_irrefl 0 y)⟩⟩
+  · -- All N in the Ramsey set satisfy N ≥ 1
+    intro N hN
+    by_contra hlt; push_neg at hlt
+    have hN0 : N = 0 := by omega
+    subst hN0
+    obtain ⟨f, hf_inj, _⟩ := hN Fin.elim0
+    exact no_embedding_small 0 0 (by omega) ⟨f, hf_inj⟩
+
 /--
 **Erdős Problem #181: OPEN**
 
