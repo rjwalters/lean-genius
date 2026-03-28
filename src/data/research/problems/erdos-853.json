@@ -1,6 +1,6 @@
 {
   "slug": "erdos-853",
-  "title": "Erd\u0151s #853",
+  "title": "Erdős #853",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -33,7 +33,7 @@
     "builtItems": [
       "Proved gap_lt_prime: prime gaps are < the prime (Bertrand postulate)",
       "Proved gapSet_lt: all gaps in gapSet(x) are < x",
-      "Fixed r_upper_bound: hypothesis x\u22653 \u2192 x\u22654 (counterexample at x=3)",
+      "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)",
       "r_upper_bound_even: even case of upper bound (Erdos853Problem.lean:257)"
     ],
     "insights": [
@@ -46,20 +46,20 @@
       "Use Set.infinite_range_of_injective with f(k) = 2k+2 to show even numbers are infinite",
       "For (2k+2) % 2 = 0, use Nat.mul_mod_right not omega",
       "Need Classical.dec for Decidable (t in gapSet x)",
-      "r_upper_bound axiom is FALSE at x=3: gapSet(3)={2}, r(3)=4>3. Correct for x\u22654.",
-      "gap_lt_prime proved: d_n < p_n for n\u22651 via Bertrand postulate (2\u00b7p_n not prime since even>2)",
+      "r_upper_bound axiom is FALSE at x=3: gapSet(3)={2}, r(3)=4>3. Correct for x≥4.",
+      "gap_lt_prime proved: d_n < p_n for n≥1 via Bertrand postulate (2·p_n not prime since even>2)",
       "gapSet_lt proved: all gaps in gapSet(x) are strictly less than x",
-      "For even x\u22654: r(x)\u2264x because x is even, \u22652, and x\u2209gapSet(x) since gaps<x",
-      "For odd x\u22655: counting argument needed - number of distinct gaps < number of even values \u2264 x",
+      "For even x≥4: r(x)≤x because x is even, ≥2, and x∉gapSet(x) since gaps<x",
+      "For odd x≥5: counting argument needed - number of distinct gaps < number of even values ≤ x",
       "r_upper_bound sorry: even x case trivial (x not in gapSet by gapSet_lt), odd x needs counting argument",
       "All 4 axioms appropriate: erdos_853_weak/strong (open), maynard_tao (deep), cramer_conjecture (deep)",
-      "r_upper_bound_even: proved r(x) \u2264 x for even x \u2265 4 via x \u2209 gapSet(x) + minimality of r"
+      "r_upper_bound_even: proved r(x) ≤ x for even x ≥ 4 via x ∉ gapSet(x) + minimality of r"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove r_upper_bound: even case trivial, odd case needs pigeonhole on gapSet size vs even numbers"
     ],
-    "markdown": "# Erd\u0151s #853 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #852\n- Problem #854\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #853 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #852\n- Problem #854\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -82,8 +82,8 @@
     {
       "path": "Proofs/Erdos853Problem.lean",
       "filename": "Erdos853Problem.lean",
-      "lineCount": 339,
-      "theoremCount": 26,
+      "lineCount": 340,
+      "theoremCount": 25,
       "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 2,
