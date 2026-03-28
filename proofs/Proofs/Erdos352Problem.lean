@@ -107,12 +107,21 @@ noncomputable def erdosConstant : ℝ := 4 * Real.pi / Real.sqrt 27
 
 /-- Numerical approximation: 4π/√27 ≈ 2.418. -/
 theorem erdosConstant_approx : erdosConstant > 2.4 ∧ erdosConstant < 2.5 := by
+  unfold erdosConstant
+  have hsqrt_pos : 0 < Real.sqrt 27 := Real.sqrt_pos_of_pos (by norm_num)
+  have hsqrt_lt : Real.sqrt 27 < 5.197 := by
+    rw [show (5.197 : ℝ) = Real.sqrt (5.197 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 5.197)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have hsqrt_gt : 5.196 < Real.sqrt 27 := by
+    rw [show (5.196 : ℝ) = Real.sqrt (5.196 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 5.196)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   constructor
-  all_goals {
-    simp only [erdosConstant]
-    -- Requires numerical bounds on π and √27
-    sorry
-  }
+  · rw [gt_iff_lt, lt_div_iff hsqrt_pos]
+    linarith [Real.pi_gt_314]
+  · rw [div_lt_iff hsqrt_pos]
+    linarith [Real.pi_lt_315]
 
 /-- The conjectured statement: c = 4π/√27 suffices. -/
 def erdos_352_conjecture : Prop :=
@@ -148,20 +157,46 @@ noncomputable def criticalRadius : ℝ := 2 * (3 : ℝ) ^ (-(3/4 : ℝ))
 /-- A circle of the critical radius has area exactly 4π/√27. -/
 theorem critical_circle_area : Real.pi * criticalRadius ^ 2 = erdosConstant := by
   simp only [criticalRadius, erdosConstant]
-  -- π * (2 * 3^(-3/4))² = π * 4 * 3^(-3/2) = 4π / 3^(3/2) = 4π / √27
-  sorry
+  have h3_pos : (0 : ℝ) < 3 := by norm_num
+  have h3_nn : (0 : ℝ) ≤ 3 := by norm_num
+  -- (2 * 3^(-3/4))^2 = 4 * 3^(-3/2)
+  rw [mul_pow, show (2 : ℝ) ^ 2 = 4 from by norm_num]
+  have h_cr_sq : ((3 : ℝ) ^ (-(3 / 4 : ℝ))) ^ 2 = (3 : ℝ) ^ (-(3 / 2 : ℝ)) := by
+    rw [sq, ← Real.rpow_add h3_pos]; congr 1; norm_num
+  rw [h_cr_sq]
+  -- √27 = 3^(3/2)
+  have h_sqrt27 : Real.sqrt 27 = (3 : ℝ) ^ ((3 : ℝ) / 2) := by
+    rw [Real.sqrt_eq_rpow, show (27 : ℝ) = (3 : ℝ) ^ (3 : ℕ) from by norm_num,
+        ← Real.rpow_natCast (3 : ℝ) 3, ← Real.rpow_mul h3_nn]
+    congr 1; norm_num
+  -- 3^(-3/2) = (√27)⁻¹
+  have h_inv : (3 : ℝ) ^ (-(3 / 2 : ℝ)) = (Real.sqrt 27)⁻¹ := by
+    conv_rhs => rw [h_sqrt27]
+    rw [Real.rpow_neg h3_nn]
+  rw [h_inv, div_eq_mul_inv]
+  ring
 
 /-- The largest triangle inscribed in a circle of radius r is equilateral
-with area (3√3/4)r². For the critical radius, this is < 1. -/
-
-/-- For the critical radius, the max inscribed triangle has area < 1. -/
-theorem critical_circle_no_unit_triangle :
-    3 * Real.sqrt 3 / 4 * criticalRadius ^ 2 < 1 := by
+with area (3√3/4)r². For the critical radius, this equals exactly 1.
+This shows the critical circle is the exact boundary case: the optimality
+of 4π/√27 follows because circles of radius strictly less than
+criticalRadius have max inscribed triangle area strictly less than 1. -/
+theorem critical_circle_max_area :
+    3 * Real.sqrt 3 / 4 * criticalRadius ^ 2 = 1 := by
   simp only [criticalRadius]
-  -- 3√3/4 * (2 * 3^(-3/4))² = 3√3/4 * 4 * 3^(-3/2) = 3√3 * 3^(-3/2)
-  -- = 3^(3/2) * 3^(-3/2) = 1... wait, that's exactly 1!
-  -- Actually, need to be more careful about the strict inequality
-  sorry
+  have h3_pos : (0 : ℝ) < 3 := by norm_num
+  have h3_nn : (0 : ℝ) ≤ 3 := by norm_num
+  rw [mul_pow, show (2 : ℝ) ^ 2 = 4 from by norm_num]
+  have h_sq : ((3 : ℝ) ^ (-(3 / 4 : ℝ))) ^ 2 = (3 : ℝ) ^ (-(3 / 2 : ℝ)) := by
+    rw [sq, ← Real.rpow_add h3_pos]; congr 1; norm_num
+  rw [h_sq, Real.sqrt_eq_rpow]
+  -- 3 * 3^(1/2) / 4 * (4 * 3^(-3/2)) = 3 * (3^(1/2) * 3^(-3/2)) = 3 * 3^(-1) = 1
+  have h_ring : (3 : ℝ) * (3 : ℝ) ^ ((1 : ℝ) / 2) / 4 * (4 * (3 : ℝ) ^ (-(3 / 2 : ℝ))) =
+                3 * ((3 : ℝ) ^ ((1 : ℝ) / 2) * (3 : ℝ) ^ (-(3 / 2 : ℝ))) := by ring
+  rw [h_ring, ← Real.rpow_add h3_pos]
+  have h_exp : (1 : ℝ) / 2 + -(3 / 2 : ℝ) = -(1 : ℝ) := by norm_num
+  rw [h_exp, Real.rpow_neg h3_nn, Real.rpow_one]
+  exact mul_inv_cancel₀ (by norm_num)
 
 /- ## Reduction to Finite Unions
 

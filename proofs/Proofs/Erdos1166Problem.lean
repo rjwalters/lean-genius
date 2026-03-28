@@ -95,17 +95,23 @@ theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
 -- ## Cumulative Most-Visited Points
 
 /-- The cumulative set of most-visited points through step n:
-    ⋃_{k ≤ n} F(k). -/
-noncomputable axiom cumulativeMostVisited : RandomWalk → ℕ → Finset LatticePoint
+    ⋃_{k ≤ n} F(k). Defined as the biUnion of F(k) over k ∈ {0, ..., n}. -/
+noncomputable def cumulativeMostVisited (ω : RandomWalk) (n : ℕ) :
+    Finset LatticePoint :=
+  (Finset.range (n + 1)).biUnion (mostVisitedSet ω)
 
 /-- The cumulative set contains all F(k) for k ≤ n. -/
-axiom cumulativeMostVisited_contains (ω : RandomWalk) (n k : ℕ) (hk : k ≤ n) :
-    mostVisitedSet ω k ⊆ cumulativeMostVisited ω n
+theorem cumulativeMostVisited_contains (ω : RandomWalk) (n k : ℕ) (hk : k ≤ n) :
+    mostVisitedSet ω k ⊆ cumulativeMostVisited ω n := by
+  intro x hx
+  exact Finset.mem_biUnion.mpr ⟨k, Finset.mem_range.mpr (by omega), hx⟩
 
 /-- The cumulative set only contains points from some F(k) with k ≤ n. -/
-axiom cumulativeMostVisited_subset (ω : RandomWalk) (n : ℕ)
+theorem cumulativeMostVisited_subset (ω : RandomWalk) (n : ℕ)
     (x : LatticePoint) (hx : x ∈ cumulativeMostVisited ω n) :
-    ∃ k : ℕ, k ≤ n ∧ x ∈ mostVisitedSet ω k
+    ∃ k : ℕ, k ≤ n ∧ x ∈ mostVisitedSet ω k := by
+  obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
+  exact ⟨k, by omega, hxk⟩
 
 /-- Monotonicity: the cumulative set grows with n. -/
 theorem cumulativeMostVisited_mono (ω : RandomWalk) (m n : ℕ) (h : m ≤ n) :
