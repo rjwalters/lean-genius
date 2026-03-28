@@ -200,10 +200,13 @@ theorem h_gt_3_at_11 : gcdPowerSeq 11 3 ≠ 1 := by native_decide
 -- ## The three open questions (axiomatized)
 
 /-- **Q1 (OPEN)**: Does the density of integers n with h(n) = p
-    exist for every prime p? -/
-axiom erdos_770_density_exists :
-  ∀ p : ℕ, Nat.Prime p →
-    ∃ δ : ℝ, δ ≥ 0 ∧ True
+    exist for every prime p?
+    NOTE: As stated, this is trivially true (δ = 0 works).
+    The intended statement should involve an actual density computation. -/
+theorem erdos_770_density_exists :
+    ∀ p : ℕ, Nat.Prime p →
+      ∃ δ : ℝ, δ ≥ 0 ∧ True :=
+  fun _ _ => ⟨0, le_refl _, trivial⟩
 
 /-- **Q2 (OPEN)**: Is h(n) unbounded? Specifically, does
     lim inf h(n) = ∞? -/

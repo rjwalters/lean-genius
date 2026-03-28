@@ -160,9 +160,16 @@ theorem mertensSum_lt_2 (n : ℕ) (hn : n < 2) : mertensSum n = 0 := by
 -/
 
 /-- For an odd prime p, there are exactly (p-1)/2 residues r in {1,...,p-1}
-    with r > p/2. Heuristically each prime contributes with probability ~1/2. -/
-axiom heuristic_half_fraction (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
-    (((Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r)).card : ℝ) / (p - 1) = 1 / 2
+    with r > p/2. Follows from upper_half_count. -/
+theorem heuristic_half_fraction (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
+    (((Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r)).card : ℝ) / (p - 1) = 1 / 2 := by
+  rw [upper_half_count p hp hp3]
+  have hp1 : (p : ℝ) - 1 ≠ 0 := by
+    have : (3 : ℝ) ≤ (p : ℝ) := Nat.ofNat_le_cast.mpr hp3; linarith
+  have hodd : ¬ 2 ∣ p := Nat.Prime.not_dvd_of_lt hp (by omega)
+  have heven : 2 ∣ (p - 1) := by omega
+  rw [Nat.cast_div heven (by norm_num)]
+  field_simp
 
 /-
 ## Implications of the Conjecture

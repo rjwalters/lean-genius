@@ -1,6 +1,6 @@
 {
   "slug": "erdos-421",
-  "title": "Erdős #421",
+  "title": "Erd\u0151s #421",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T02:38:27.587Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "1A assessed, appropriate",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,12 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ASSESSED: 1A appropriate (Selfridge construction, deep result). 3T, 0S.",
+    "builtItems": [
+      "Assessment: 1A appropriate (Selfridge)"
+    ],
+    "insights": [
+      "selfridge_construction encodes Selfridge result: sequences with distinct products, density > 1/e - \u03b5",
+      "Deep result, appropriate as axiom",
+      "selfridge_achieves_one_over_e proved from the axiom (good use)",
+      "Clean file with good definitions: IsValidSequence, HasDistinctProducts, HasDensity, selfridgeDensity"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #421 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a sequence $1\\leq d_1<d_2<\\cdots$ with density $1$ such that all products $\\prod_{u\\leq i\\leq v}d_i$ are distinct?\n\n\n\nA construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\\epsilon$ for any $\\epsilon>0$.\n\nSee also [786].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #786\n- Problem #420\n- Problem #422\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #421 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a sequence $1\\leq d_1<d_2<\\cdots$ with density $1$ such that all products $\\prod_{u\\leq i\\leq v}d_i$ are distinct?\n\n\n\nA construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\\epsilon$ for any $\\epsilon>0$.\n\nSee also [786].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #786\n- Problem #420\n- Problem #422\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"

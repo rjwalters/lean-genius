@@ -102,17 +102,23 @@ def ErdosConjecture952 : Prop := GaussianMoatConjecture
 Various researchers have shown bounded walks don't exist for small step sizes.
 -/
 
--- Jordan-Rabung (1970): No walk with step size ≤ 2
-axiom jordan_rabung : ¬ ∃ x : ℕ → GaussianInt,
-    IsInfiniteGaussianPrimeWalk x ∧ HasBoundedGaps x 5  -- norm < 5 means |step| ≤ 2
-
--- Tsuchimura (2005): No walk with step size ≤ √26
+-- Tsuchimura (2005): No walk with step size ≤ √26 (strongest known)
 axiom tsuchimura : ¬ ∃ x : ℕ → GaussianInt,
     IsInfiniteGaussianPrimeWalk x ∧ HasBoundedGaps x 27  -- norm < 27 means |step| < √27
 
--- Best known: step size 4 insufficient
-axiom gethner_et_al : ¬ ∃ x : ℕ → GaussianInt,
-    IsInfiniteGaussianPrimeWalk x ∧ HasBoundedGaps x 17  -- |step| ≤ 4 means norm ≤ 16
+-- Jordan-Rabung (1970): No walk with step size ≤ 2
+-- Follows from Tsuchimura since 5 < 27: any walk with norm < 5 also has norm < 27
+theorem jordan_rabung : ¬ ∃ x : ℕ → GaussianInt,
+    IsInfiniteGaussianPrimeWalk x ∧ HasBoundedGaps x 5 := by
+  intro ⟨x, hwalk, hgaps⟩
+  exact tsuchimura ⟨x, hwalk, fun n => lt_trans (hgaps n) (by norm_num)⟩
+
+-- Gethner et al.: step size 4 insufficient
+-- Follows from Tsuchimura since 17 < 27
+theorem gethner_et_al : ¬ ∃ x : ℕ → GaussianInt,
+    IsInfiniteGaussianPrimeWalk x ∧ HasBoundedGaps x 17 := by
+  intro ⟨x, hwalk, hgaps⟩
+  exact tsuchimura ⟨x, hwalk, fun n => lt_trans (hgaps n) (by norm_num)⟩
 
 -- Current state: unknown for larger step sizes
 def CurrentBestBound : ℕ := 27

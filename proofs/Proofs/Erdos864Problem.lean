@@ -246,8 +246,25 @@ theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
            le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
   omega
 
-/-- For almost-Sidon A, at most one sum has a collision, so the number of
-    distinct sums is ≥ C(|A|,2) + |A| − 1. These must fit in [2, 2N]. -/
+/-- The set of distinct pairwise sums from A ⊆ {1,...,N} has at most 2N-1 elements,
+    since all sums a+b lie in {2,...,2N}. -/
+theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) :
+    ((A ×ˢ A).image (fun p => p.1 + p.2)).card ≤ 2 * N - 1 := by
+  calc ((A ×ˢ A).image (fun p => p.1 + p.2)).card
+      ≤ (Finset.Icc 2 (2 * N)).card := by
+        apply Finset.card_le_card
+        intro s hs
+        simp only [Finset.mem_image, Finset.mem_product, Prod.exists] at hs
+        obtain ⟨a, b, ha, hb, rfl⟩ := hs
+        simp only [Finset.mem_Icc] at hA ⊢
+        have := hA a ha; have := hA b hb; omega
+    _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
+
+/-- **WARNING**: This axiom may be incorrect for high collision multiplicity.
+    If the single permitted collision has r ≥ 3 representations, the counting
+    argument gives |A|(|A|+1)/2 ≤ 2N + r - 2, which is weaker than stated.
+    The correct bound uses `distinct_sums_bounded` above. -/
 axiom almost_sidon_sum_range (A : Finset ℕ) (N : ℕ) :
   (∀ a ∈ A, a ∈ Finset.Icc 1 N) → IsAlmostSidon A →
     A.card * (A.card + 1) / 2 - 1 ≤ 2 * N - 1

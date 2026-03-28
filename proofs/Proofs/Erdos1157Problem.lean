@@ -161,13 +161,17 @@ theorem erdos1076_beyond_bes (s : ℕ) (hs : s ≥ 3) :
 -/
 
 /-- The BES conjecture for the (6,3)-case (Problem #716).
-    Proved by Ruzsa-Szemerédi (1978) via the Triangle Removal Lemma. -/
-axiom ruzsa_szemeredi_bes :
-  IsLittleO (fun n => (extremalNumber 3 n 6 3 : ℝ)) (fun n => (n : ℝ) ^ 2)
+    Originally proved by Ruzsa-Szemerédi (1978) via the Triangle Removal Lemma.
+    Now follows from the full 3-uniform result of Delcourt-Postle (2024). -/
+theorem ruzsa_szemeredi_bes :
+    IsLittleO (fun n => (extremalNumber 3 n 6 3 : ℝ)) (fun n => (n : ℝ) ^ 2) :=
+  delcourt_postle_theorem 3 6 (by omega) (by omega)
 
-/-- **Glock (2019):** The (7,4)-case. -/
-axiom glock_bes_k4 :
-  IsLittleO (fun n => (extremalNumber 3 n 7 4 : ℝ)) (fun n => (n : ℝ) ^ 2)
+/-- **Glock (2019):** The (7,4)-case.
+    Now follows from the full 3-uniform result of Delcourt-Postle (2024). -/
+theorem glock_bes_k4 :
+    IsLittleO (fun n => (extremalNumber 3 n 7 4 : ℝ)) (fun n => (n : ℝ) ^ 2) :=
+  delcourt_postle_theorem 4 7 (by omega) (by omega)
 
 /-- **Delcourt-Postle (2024):** The full 3-uniform BES conjecture.
     For all s ≥ 3 and k ≥ s + 3: f^(3)(n; k, s) = o(n²). -/

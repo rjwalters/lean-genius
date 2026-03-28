@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved van_doorn_power_of_two (5→4 axioms). φ(2^{2k+2}) = 2^{2k+1} = n via Nat.totient_prime_pow_succ.",
+    "progressSummary": "BLOCKED: Lean file deleted in dead weight cleanup.",
     "builtItems": [
       "part2_implies_part1: SORRY FILLED — Part2 implies Part1 via C=2 argument",
       "part1_implies_infinitely_many: SORRY FILLED — using erdos_strict_inequality axiom",
@@ -41,7 +41,7 @@
       "part1_implies_infinitely_many: cannot be derived purely from AlmostAll(Part1) due to buggy definition. Used erdos_strict_inequality axiom instead",
       "The 5 axioms are all deep: Dirichlet theorem, Linnik bound, Erdos strict inequality, m/n divergence, van Doorn power-of-two",
       "sInf-based definitions for smallestPrimeMod1 and smallestTotientDiv work well with Mathlib",
-      "van_doorn_power_of_two is trivial: φ(2^{2k+2}) = 2^{2k+1}*(2-1) = n, by Nat.totient_prime_pow_succ"
+      "Lean file was deleted by PR #4955 (dead weight cleanup). File no longer exists."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -265,6 +265,21 @@ theorem threshold_ge_6 (k : ℕ)
   have h3 := hk V hgk
   omega
 
+/-- The conjecture and its negation are contradictory. -/
+theorem conjecture_implies_not_negation :
+    erdos_705_conjecture → ¬ erdos_705_negation := by
+  intro ⟨k, hk⟩ hn
+  obtain ⟨V, hg, hchi⟩ := hn k
+  have := hk V hg
+  omega
+
+theorem negation_implies_not_conjecture :
+    erdos_705_negation → ¬ erdos_705_conjecture := by
+  intro hn ⟨k, hk⟩
+  obtain ⟨V, hg, hchi⟩ := hn k
+  have := hk V hg
+  omega
+
 /-- If the conjecture holds, any witnessing k is at least 6. -/
 theorem erdos_705_conjecture_lower (h : erdos_705_conjecture) :
     ∃ k : ℕ, 6 ≤ k ∧ ∀ (V : Finset (EuclideanSpace ℝ (Fin 2))),

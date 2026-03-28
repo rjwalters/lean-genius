@@ -117,7 +117,9 @@ theorem small_prime_divides_product (n k p : ℕ)
   exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi))
 
 /-- Lower bound: q(n,k) > k for all n, since every prime p ≤ k divides
-    some term in k consecutive integers. -/
+    some term in k consecutive integers.
+    Proof: if q ≤ k, then q divides the product (by small_prime_divides_product),
+    contradicting smallestMissingPrime_not_dvd. -/
 theorem q_gt_k (n k : ℕ) (hk : 1 < k) :
     k < smallestMissingPrime n k := by
   by_contra h
