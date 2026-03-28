@@ -193,11 +193,246 @@ axiom fib_complete : IsComplete (sequenceToSet fib)
     Deep result about the redundancy structure of Fibonacci representations. -/
 axiom fib_1_robust : IsRobust fib 1
 
+/-- Fibonacci is monotone at each step. -/
+private lemma fib_mono_succ (n : ℕ) : fib n ≤ fib (n + 1) := by
+  cases n with
+  | zero => show (1 : ℕ) ≤ 2; omega
+  | succ k => show fib (k + 1) ≤ fib k + fib (k + 1); omega
+
+/-- Fibonacci is strictly monotone. -/
+private lemma fib_strictMono : StrictMono fib := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  cases n with
+  | zero => show (1 : ℕ) < 2; omega
+  | succ k =>
+    show fib (k + 1) < fib k + fib (k + 1)
+    have : 0 < fib k := by cases k <;> simp [fib]; omega
+    omega
+
+/-- fib(k) ≥ k + 1 for k ≥ 1 (fib grows faster than linear). -/
+private lemma fib_ge_succ : ∀ k, 1 ≤ k → k + 1 ≤ fib k := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    intro hk
+    match k with
+    | 0 => omega
+    | 1 => simp [fib]
+    | 2 => simp [fib]
+    | k + 3 =>
+      simp [fib]
+      have := ih (k + 1) (by omega) (by omega)
+      have := ih (k + 2) (by omega) (by omega)
+      omega
+
+/-- fib(i) ≥ 3 for i ≥ 2. -/
+private lemma fib_ge_three (i : ℕ) (hi : 2 ≤ i) : 3 ≤ fib i := by
+  have := fib_ge_succ i (by omega); omega
+
+/-- Elements of removeIndices fib {0,1} are all ≥ 3. -/
+private lemma removeIndices_fib_ge_three {x : ℕ}
+    (hx : x ∈ removeIndices fib {0, 1}) : 3 ≤ x := by
+  simp only [removeIndices, Set.mem_setOf_eq] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  exact fib_ge_three i (by simp [Finset.mem_singleton, Finset.mem_insert] at hi; omega)
+
+/-- fib(k+1) > fib(k) + 1 for k ≥ 2 (there's always a gap of ≥ 2). -/
+private lemma fib_succ_gt_succ (k : ℕ) (hk : 2 ≤ k) : fib k + 1 < fib (k + 1) := by
+  simp [fib]; show fib k + 1 < fib (k - 1) + fib k
+  have : 2 ≤ fib (k - 1) := by
+    have := fib_ge_succ (k - 1) (by omega); omega
+  omega
+
+/-- Partial sum identity: fib(2) + ... + fib(n) = fib(n+2) - 5 for n ≥ 2.
+    Proved by induction using the Fibonacci recurrence. -/
+private lemma fib_partial_sum : ∀ n, 2 ≤ n →
+    (Finset.Icc 2 n).sum fib + 5 = fib (n + 2) := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro hn
+    match n with
+    | 0 => omega
+    | 1 => omega
+    | 2 => simp [Finset.Icc_self, fib]
+    | n + 3 =>
+      -- Icc 2 (n+3) = Icc 2 (n+2) ∪ {n+3}
+      rw [show Finset.Icc 2 (n + 3) = Finset.Icc 2 (n + 2) ∪ {n + 3} from by
+        ext x; simp [Finset.mem_Icc, Finset.mem_union, Finset.mem_singleton]; omega]
+      rw [Finset.sum_union (by simp [Finset.disjoint_singleton_right, Finset.mem_Icc]; omega)]
+      simp only [Finset.sum_singleton]
+      have ih_prev := ih (n + 2) (by omega) (by omega)
+      -- Goal: (Icc 2 (n+2)).sum fib + fib (n+3) + 5 = fib (n+5)
+      -- IH: (Icc 2 (n+2)).sum fib + 5 = fib (n+4)
+      -- fib (n+5) = fib (n+3) + fib (n+4)
+      simp [fib]; omega
+
+/-- Core lemma: fib(k) + 1 is not a sum of distinct elements from {fib(j) | j ≥ 2}.
+    Proof by strong induction on k.
+    - Case A (fib(k) ∈ S): remainder 1, but all elements ≥ 3.
+    - Case B1 (fib(k-1) ∈ S): remainder fib(k-2)+1, apply IH.
+    - Case B2 (neither): elements ≤ fib(k-2), sum bounded by fib(k)-5 < fib(k)+1. -/
+private lemma fib_plus_one_not_repr : ∀ k, 2 ≤ k →
+    fib k + 1 ∉ finiteSums (removeIndices fib {0, 1}) := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    intro hk ⟨S, hS_sub, hS_sum⟩
+    have hge3 : ∀ x ∈ S, 3 ≤ x := fun x hx =>
+      removeIndices_fib_ge_three (hS_sub (Finset.mem_coe.mpr hx))
+    -- Case A: fib(k) ∈ S
+    by_cases hfk : fib k ∈ S
+    · -- Remainder after removing fib(k) is 1
+      have hrem : (S.erase (fib k)).sum id = 1 := by
+        have := Finset.sum_erase_eq_sub hfk (f := id)
+        simp only [id] at this ⊢; omega
+      -- But all remaining elements ≥ 3
+      rcases (S.erase (fib k)).eq_empty_or_nonempty with he | ⟨x, hx⟩
+      · rw [he] at hrem; simp at hrem
+      · have : 3 ≤ (S.erase (fib k)).sum id :=
+          le_trans (hge3 x (Finset.mem_of_mem_erase hx))
+            (Finset.single_le_sum (fun a _ => Nat.zero_le _) hx)
+        omega
+    · -- Case B: fib(k) ∉ S
+      by_cases hfk1 : fib (k - 1) ∈ S
+      · -- Case B1: fib(k-1) ∈ S
+        -- For k = 2: fib(1) = 2 ∈ S contradicts all elements ≥ 3
+        have hk3 : 3 ≤ k := by
+          by_contra h; push_neg at h
+          have : k = 2 := by omega
+          subst this; exact absurd (hge3 _ hfk1) (by simp [fib]; omega)
+        -- Remainder = fib(k)+1-fib(k-1) = fib(k-2)+1
+        have hrec : fib k = fib (k - 2) + fib (k - 1) := by
+          conv_lhs => rw [show k = (k - 2) + 2 from by omega, fib]
+        have hrem : (S.erase (fib (k - 1))).sum id = fib (k - 2) + 1 := by
+          have := Finset.sum_erase_eq_sub hfk1 (f := id)
+          simp only [id] at this ⊢; omega
+        -- S.erase fib(k-1) ⊆ removeIndices fib {0,1}
+        have hsub : ↑(S.erase (fib (k - 1))) ⊆ removeIndices fib {0, 1} := by
+          exact Set.Subset.trans (Finset.coe_subset.mpr (Finset.erase_subset _ _)) hS_sub
+        -- Apply IH: fib(k-2)+1 not representable (k-2 ≥ 2 since k ≥ 4)
+        by_cases hk4 : 4 ≤ k
+        · exact ih (k - 2) (by omega) (by omega) ⟨S.erase (fib (k - 1)), hsub, hrem⟩
+        · -- k = 3: remainder = fib(1)+1 = 3.
+          -- S.erase(fib 2) has sum 3 but excludes fib(2)=3 and fib(3)=5∉S.
+          -- Remaining elements are fib(j) with j ≥ 4, each ≥ 8 > 3.
+          have : k = 3 := by omega
+          subst this
+          rcases (S.erase (fib 2)).eq_empty_or_nonempty with he | ⟨x, hx⟩
+          · rw [he] at hrem; simp at hrem
+          · have hx_mem := hS_sub (Finset.mem_coe.mpr (Finset.mem_of_mem_erase hx))
+            simp only [removeIndices, Set.mem_setOf_eq] at hx_mem
+            obtain ⟨j, hj, rfl⟩ := hx_mem
+            have hj2 : 2 ≤ j := by
+              simp [Finset.mem_singleton, Finset.mem_insert] at hj; omega
+            -- fib j ≠ fib(k) = fib 3 since fib(k) ∉ S
+            have hj_ne3 : j ≠ 3 := by
+              intro heq; subst heq; exact hfk (Finset.mem_of_mem_erase hx)
+            -- fib j ≠ fib(k-1) = fib 2 since it was erased
+            have hj_ne2 : j ≠ 2 := by
+              intro heq; subst heq
+              exact (Finset.not_mem_erase _ _) hx
+            -- So j ≥ 4, fib j ≥ fib 4 = 8
+            have : 8 ≤ fib j := by
+              have : 4 ≤ j := by omega
+              have := fib_ge_succ j (by omega); simp [fib] at *; omega
+            have : 8 ≤ (S.erase (fib 2)).sum id :=
+              le_trans this (Finset.single_le_sum (fun a _ => Nat.zero_le _) hx)
+            omega
+      · -- Case B2: fib(k) ∉ S, fib(k-1) ∉ S
+        -- All elements are fib(j) with j ≥ 2, j ≠ k, j ≠ k-1
+        -- No element ≥ fib(k+1) since fib(k+1) > fib(k)+1 = S.sum
+        -- So all elements are in {fib(2),...,fib(k-2)}
+        -- Their sum ≤ fib(k)-5 < fib(k)+1 = S.sum, contradiction
+        -- Handle small k directly
+        match k with
+        | 0 => omega
+        | 1 => omega
+        | 2 =>
+          -- S ⊆ {fib j | j ≥ 2, j ≠ 2, j ≠ 1}. fib(k)=fib(2)=3, fib(k-1)=fib(1)=2.
+          -- So elements are fib j with j ≥ 3, each ≥ 5. But sum = 4.
+          -- Single element ≥ 5 > 4. Two elements ≥ 10 > 4.
+          rcases S.eq_empty_or_nonempty with he | ⟨x, hx⟩
+          · rw [he] at hS_sum; simp at hS_sum
+          · have hx_ge5 : 5 ≤ x := by
+              have := hS_sub (Finset.mem_coe.mpr hx)
+              simp only [removeIndices, Set.mem_setOf_eq] at this
+              obtain ⟨j, hj, rfl⟩ := this
+              have hj2 : 2 ≤ j := by
+                simp [Finset.mem_singleton, Finset.mem_insert] at hj; omega
+              have hj_ne2 : j ≠ 2 := fun h => by subst h; exact hfk hx
+              have : 3 ≤ j := by omega
+              have := fib_ge_succ j (by omega)
+              simp [fib] at *; omega
+            have : 5 ≤ S.sum id :=
+              le_trans hx_ge5 (Finset.single_le_sum (fun a _ => Nat.zero_le _) hx)
+            omega
+        | 3 =>
+          -- fib(3)+1=6. fib(2)=3∉S, fib(3)=5∉S. Elements have j≥4, each≥8.
+          rcases S.eq_empty_or_nonempty with he | ⟨x, hx⟩
+          · rw [he] at hS_sum; simp at hS_sum
+          · have hx_ge8 : 8 ≤ x := by
+              have := hS_sub (Finset.mem_coe.mpr hx)
+              simp only [removeIndices, Set.mem_setOf_eq] at this
+              obtain ⟨j, hj, rfl⟩ := this
+              have hj2 : 2 ≤ j := by
+                simp [Finset.mem_singleton, Finset.mem_insert] at hj; omega
+              have hj_ne3 : j ≠ 3 := fun h => by subst h; exact hfk hx
+              have hj_ne2 : j ≠ 2 := fun h => by subst h; exact hfk1 hx
+              have : 4 ≤ j := by omega
+              have := fib_ge_succ j (by omega); simp [fib] at *; omega
+            have : 8 ≤ S.sum id :=
+              le_trans hx_ge8 (Finset.single_le_sum (fun a _ => Nat.zero_le _) hx)
+            omega
+        | k + 4 =>
+          -- General case: k+4 ≥ 4.
+          -- All elements of S are fib(j) for 2 ≤ j ≤ k+2 (j ≠ k+3,k+4, j≥k+5 too big).
+          -- S ⊆ image fib (Icc 2 (k+2)), so S.sum ≤ (Icc 2 (k+2)).sum fib = fib(k+4)-5.
+          -- But S.sum = fib(k+4)+1, contradiction.
+          have hS_sub_img : S ⊆ (Finset.Icc 2 (k + 2)).image fib := by
+            intro x hx
+            have hx_ri := hS_sub (Finset.mem_coe.mpr hx)
+            simp only [removeIndices, Set.mem_setOf_eq] at hx_ri
+            obtain ⟨j, hj, rfl⟩ := hx_ri
+            have hj2 : 2 ≤ j := by
+              simp [Finset.mem_singleton, Finset.mem_insert] at hj; omega
+            refine Finset.mem_image.mpr ⟨j, Finset.mem_Icc.mpr ⟨hj2, ?_⟩, rfl⟩
+            -- Show j ≤ k + 2: j ≠ k+3 (from hfk1), j ≠ k+4 (from hfk), j < k+5 (too big)
+            by_contra hjg; push_neg at hjg
+            rcases show j = k + 3 ∨ j = k + 4 ∨ k + 5 ≤ j from by omega with rfl | rfl | hjg5
+            · exact hfk1 hx
+            · exact hfk hx
+            · have : fib (k + 4) + 1 < fib j :=
+                lt_of_lt_of_le (fib_succ_gt_succ (k + 4) (by omega))
+                  (fib_strictMono.monotone (by omega : k + 5 ≤ j))
+              have : fib j ≤ S.sum id :=
+                Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+              omega
+          have hS_bound : S.sum id ≤ (Finset.Icc 2 (k + 2)).sum fib := by
+            calc S.sum id
+                ≤ ((Finset.Icc 2 (k + 2)).image fib).sum id :=
+                  Finset.sum_le_sum_of_subset_of_nonneg hS_sub_img (fun _ _ _ => Nat.zero_le _)
+              _ = (Finset.Icc 2 (k + 2)).sum (id ∘ fib) :=
+                  Finset.sum_image (fun i _ j _ h => fib_strictMono.injective h)
+              _ = (Finset.Icc 2 (k + 2)).sum fib := by congr
+          have := fib_partial_sum (k + 2) (by omega)
+          omega
+
 /-- Fibonacci sequence is not 2-robust: removing indices {0, 1} breaks completeness.
-    After removal, the sequence {3, 5, 8, 13, ...} has infinitely many gaps:
-    numbers of the form fib(k)-1 (for k ≥ 3) are never subset sums of
-    smaller Fibonacci numbers, by a recursive complement argument. -/
-axiom fib_not_2_robust : NotRobust fib 2
+    Proof: for any N, the number fib(max N 2) + 1 ≥ N is not representable
+    by {fib(j) | j ≥ 2}, giving infinitely many non-representable numbers.
+    Previously axiomatized; now proved via fib_plus_one_not_repr. -/
+theorem fib_not_2_robust : NotRobust fib 2 := by
+  refine ⟨{0, 1}, by simp, ?_⟩
+  intro ⟨N, hN⟩
+  have hk : 2 ≤ max N 2 := le_max_right _ _
+  have hN_le : N ≤ fib (max N 2) + 1 := by
+    calc N ≤ max N 2 := le_max_left _ _
+      _ ≤ max N 2 + 1 := Nat.le_succ _
+      _ ≤ fib (max N 2) + 1 := by
+        have := fib_ge_succ (max N 2) (by omega); omega
+  exact fib_plus_one_not_repr (max N 2) hk (hN (fib (max N 2) + 1) hN_le)
 
 /-- (1, 2) is a valid pair -/
 theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
