@@ -17,11 +17,11 @@
       "finite-fields",
       "module-theory"
     ],
-    "badge": "wip",
-    "sorries": 5,
+    "badge": "axiom",
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 262,
-    "assumptions": "0 axioms. 5 sorries: F_2 counterexample (decidable), annPoly definition, annPoly_dvd_minpoly, cyclic_iff_ann_eq_minpoly, main theorem (needs PID structure theorem).",
+    "lineCount": 263,
+    "assumptions": "0 axioms. 1 sorry: main theorem nonderogatory_has_cyclic_vector_any_field (needs structure theorem for f.g. modules over PID, not in Mathlib).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -73,9 +73,9 @@
     "imports": ["Mathlib"],
     "opens": ["Matrix", "Polynomial"],
     "namespace": "NonderogatoryGeneral",
-    "lineCount": 262,
+    "lineCount": 183,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 3
+    "theoremCount": 8,
+    "definitionCount": 2
   }
 }

@@ -57,26 +57,24 @@ def IsNonderogatory (M : Matrix (Fin n) (Fin n) K) : Prop :=
 theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K)ˣ)
     (p : K[X]) :
     aeval (↑P⁻¹ * M * ↑P) p = ↑P⁻¹ * aeval M p * ↑P := by
-  -- The map A ↦ P⁻¹AP is an algebra homomorphism
-  induction p using Polynomial.induction_on' with
-  | h_add p q hp hq =>
-    simp only [map_add, hp, hq]
-    ring
-  | h_monomial n a =>
-    simp only [map_mul, aeval_C, Algebra.algebraMap_eq_smul_one, aeval_X_pow]
-    induction n with
-    | zero =>
-      simp [Matrix.mul_one, Matrix.one_mul]
-    | succ k ih =>
-      rw [pow_succ, pow_succ]
-      calc ↑P⁻¹ * M * ↑P * (↑P⁻¹ * M * ↑P) ^ k
-          = ↑P⁻¹ * M * (↑P * ↑P⁻¹) * M * ↑P * (↑P⁻¹ * M * ↑P) ^ k := by
-            simp [Units.val_mul, Units.mul_inv, Matrix.mul_one]; ring
-        _ = ↑P⁻¹ * M * M ^ k * ↑P := by
-            rw [Units.val_mul, Units.mul_inv, Matrix.mul_one]
-            sorry -- requires inductive argument on matrix power conjugation
-      rw [smul_mul_assoc, mul_smul_comm]
-      sorry -- combine scalar commutation with power result
+  -- Conjugation by P is a K-algebra endomorphism (cf. CayleyHamiltonMinpolyOQ02)
+  let φ : Matrix (Fin n) (Fin n) K →ₐ[K] Matrix (Fin n) (Fin n) K where
+    toFun := fun A => ↑P⁻¹ * A * ↑P
+    map_one' := by rw [mul_one, Units.inv_mul]
+    map_mul' := fun A B => by
+      have key : (↑P⁻¹ * A * ↑P) * (↑P⁻¹ * B * ↑P)
+          = ↑P⁻¹ * A * ((↑P : Matrix (Fin n) (Fin n) K) * ↑P⁻¹) * B * ↑P := by
+        simp only [mul_assoc]
+      rw [key, Units.mul_inv, mul_one]; simp only [mul_assoc]
+    map_zero' := by simp
+    map_add' := fun A B => by simp [mul_add, add_mul]
+    commutes' := fun c => by
+      simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, mul_smul_comm]
+      rw [mul_one, Units.inv_mul]
+  -- Apply aeval_algHom_apply: φ(aeval M p) = aeval(φ M)(p)
+  have h : aeval (↑P⁻¹ * M * ↑P) p = φ (aeval M p) := by
+    rw [← Polynomial.aeval_algHom_apply φ M p]; rfl
+  rw [h]; rfl
 
 /-- If N has a cyclic vector w, and M = P⁻¹NP, then M has a cyclic vector. -/
 theorem cyclic_vector_of_similar
@@ -88,12 +86,16 @@ theorem cyclic_vector_of_similar
   -- v = P⁻¹ · w is cyclic for M
   refine ⟨(↑P⁻¹ : Matrix (Fin n) (Fin n) K).mulVec w, fun p hp hann => ?_⟩
   apply hw p hp
-  -- Need: (aeval N p).mulVec w = 0
-  -- From hann: (aeval M p).mulVec (P⁻¹ · w) = 0
-  -- M = P⁻¹NP, so aeval M p = P⁻¹ · (aeval N p) · P
-  -- (P⁻¹ · (aeval N p) · P) · (P⁻¹ · w) = P⁻¹ · (aeval N p) · w = 0
-  -- P⁻¹ injective, so (aeval N p) · w = 0
-  sorry
+  -- Substitute M = P⁻¹NP and apply aeval_conj
+  rw [hMN, aeval_conj] at hann
+  -- Simplify: (P⁻¹ · aeval(N)(p) · P) · (P⁻¹ · w) = P⁻¹ · (aeval(N)(p) · w) via PP⁻¹ = 1
+  rw [Matrix.mulVec_mulVec,
+      ← Matrix.mulVec_mulVec (↑P : Matrix (Fin n) (Fin n) K) ↑P⁻¹,
+      Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_mulVec] at hann
+  -- P⁻¹ · (aeval(N)(p) · w) = 0 ⟹ aeval(N)(p) · w = 0 (multiply by P)
+  have := congr_arg ((↑P : Matrix (Fin n) (Fin n) K).mulVec) hann
+  rwa [← Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec,
+       Matrix.mulVec_zero] at this
 
 -- ============================================================
 -- SECTION III: Annihilator Characterization
@@ -142,31 +144,31 @@ theorem cyclic_iff_ann_eq_minpoly (M : Matrix (Fin n) (Fin n) K)
     have hd_ann := annihilator_dvd_minpoly M v p hp
     have hd_dvd_μ : d ∣ μ := EuclideanDomain.gcd_dvd_right p μ
     -- If d properly divides μ, then deg(d) < deg(μ) = n
-    by_cases hd_unit : IsUnit d
-    · -- d is a unit, so gcd(p, μ) is a unit, so μ | p
-      exact (EuclideanDomain.dvd_of_isUnit_gcd hd_unit).2
-    · -- d is non-unit divisor of μ (monic), so deg(d) < n
-      exfalso
-      have hd_ne : d ≠ 0 := by
-        intro h0; rw [h0] at hd_dvd_μ
-        exact (minpoly.monic (isIntegral M)).ne_zero (eq_zero_of_zero_dvd hd_dvd_μ)
-      have hd_deg : d.natDegree < n := by
-        have : d.natDegree ≤ μ.natDegree := Polynomial.natDegree_le_of_dvd hd_dvd_μ
-          (minpoly.monic (isIntegral M)).ne_zero
-        have hμ_deg : μ.natDegree = n := by
-          rw [show μ = minpoly K M from rfl, hnd, Matrix.charpoly_natDegree_eq_dim,
-              Fintype.card_fin]
-        have : d.natDegree < μ.natDegree := by
-          rcases this.lt_or_eq with h | h
-          · exact h
-          · exfalso; apply hd_unit
-            have := Polynomial.eq_of_dvd_of_natDegree_le_of_leadingCoeff
-              hd_dvd_μ (by omega)
-            sorry -- monic implies leading coefficients match, forcing d = μ, but d is unit-like
-        omega
-      -- d annihilates v and has degree < n, so d = 0 by cyclicity
-      have := hcyc d hd_deg hd_ann
-      exact hd_ne this
+    have hd_ne : d ≠ 0 := by
+      intro h0; rw [h0] at hd_dvd_μ
+      exact (minpoly.monic (isIntegral M)).ne_zero (eq_zero_of_zero_dvd hd_dvd_μ)
+    have hd_deg_le : d.natDegree ≤ μ.natDegree := Polynomial.natDegree_le_of_dvd hd_dvd_μ
+      (minpoly.monic (isIntegral M)).ne_zero
+    have hμ_deg : μ.natDegree = n := by
+      rw [show μ = minpoly K M from rfl, hnd, Matrix.charpoly_natDegree_eq_dim,
+          Fintype.card_fin]
+    rcases hd_deg_le.lt_or_eq with hd_lt | hd_eq
+    · -- deg(d) < deg(μ) = n: cyclicity forces d = 0, contradicting d ≠ 0
+      exfalso; exact absurd (hcyc d (by omega) hd_ann) hd_ne
+    · -- deg(d) = deg(μ): μ = d * q where q is a unit, so μ ∣ d ∣ p
+      obtain ⟨q, hq_eq⟩ := hd_dvd_μ
+      have hq_ne : q ≠ 0 :=
+        right_ne_zero_of_mul (hq_eq ▸ (minpoly.monic (isIntegral M)).ne_zero)
+      have hq_deg : q.natDegree = 0 := by
+        have := hq_eq ▸ Polynomial.natDegree_mul hd_ne hq_ne; omega
+      have hq_unit : IsUnit q := by
+        rw [Polynomial.eq_C_of_natDegree_eq_zero hq_deg]
+        exact isUnit_C.mpr (IsUnit.mk0 _ (by
+          intro h0; exact hq_ne
+            (by rw [Polynomial.eq_C_of_natDegree_eq_zero hq_deg, h0, map_zero])))
+      obtain ⟨u, hu⟩ := hq_unit
+      exact dvd_trans ⟨↑u⁻¹, by rw [hq_eq, ← hu, mul_assoc, Units.mul_inv, mul_one]⟩
+        (EuclideanDomain.gcd_dvd_left p μ)
   · -- Backward: ann = minpoly ⟹ cyclic
     intro hann p hp hpann
     by_contra hp_ne
@@ -250,10 +252,8 @@ theorem for f.g. modules over a PID, which is not currently in Mathlib.
 **Proved (sorry-free)**:
 - `annihilator_dvd_minpoly`: Bezout identity for GCD annihilation
 - `cyclic_iff_ann_eq_minpoly`: Characterization of cyclic vectors via annihilators
-
-**Infrastructure**:
-- `aeval_conj`: Conjugation commutes with polynomial evaluation (partial)
-- `cyclic_vector_of_similar`: Cyclic vectors transfer under similarity (partial)
+- `aeval_conj`: Conjugation commutes with polynomial evaluation (via AlgHom)
+- `cyclic_vector_of_similar`: Cyclic vectors transfer under similarity
 - `F2_union_covers`: Counterexample showing union avoidance fails over F₂
 -/
 
