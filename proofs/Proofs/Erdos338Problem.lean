@@ -134,15 +134,6 @@ Every basis of order 2 has restricted order at most 3.
 def kellyConjecture : Prop :=
   ∀ A : Set ℕ, IsBasisOfOrder A 2 → HasRestrictedOrder A 3
 
-/--
-**Kelly's Conjecture is FALSE.**
-Hennecart (2005) provided a counterexample.
--/
-theorem kelly_conjecture_false : ¬kellyConjecture := by
-  intro h
-  -- Hennecart constructed a basis of order 2 with restricted order 4
-  sorry
-
 /-
 ## Part IV: Hennecart's Counterexample (2005)
 -/
@@ -159,12 +150,17 @@ axiom hennecart_is_order_two :
 axiom hennecart_restricted_order_four :
     HasRestrictedOrder hennecart_basis 4 ∧ ¬HasRestrictedOrder hennecart_basis 3
 
-/-- Hennecart's result disproves Kelly's conjecture. -/
-theorem hennecart_disproves_kelly : ¬kellyConjecture := by
+/--
+**Kelly's Conjecture is FALSE.**
+Hennecart (2005) provided a counterexample: an order-2 basis with restricted order 4.
+-/
+theorem kelly_conjecture_false : ¬kellyConjecture := by
   intro hconj
-  have h3 := hconj hennecart_basis hennecart_is_order_two
-  have h4 := hennecart_restricted_order_four.2
-  exact h4 h3
+  exact hennecart_restricted_order_four.2 (hconj hennecart_basis hennecart_is_order_two)
+
+/-- Hennecart's result disproves Kelly's conjecture. -/
+theorem hennecart_disproves_kelly : ¬kellyConjecture :=
+  kelly_conjecture_false
 
 /-
 ## Part V: Classical Examples
@@ -303,7 +299,13 @@ If A has order h and restricted order t, then h ≤ t.
 theorem order_le_restricted_order (A : Set ℕ) (h t : ℕ)
     (hbasis : IsExactOrder A h) (hrestricted : HasRestrictedOrder A t) :
     h ≤ t := by
-  sorry
+  by_contra hlt
+  push_neg at hlt
+  apply hbasis.2
+  obtain ⟨N, hN⟩ := restricted_implies_regular A t hrestricted
+  exact ⟨N, fun n hn => by
+    obtain ⟨s, hmem, hcard, hsum⟩ := hN n hn
+    exact ⟨s, hmem, le_trans hcard (by omega), hsum⟩⟩
 
 /--
 **Monotonicity:**
