@@ -53,7 +53,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The ascending factorial (Pochhammer symbol) $n^{(k)} = n(n+1)\\cdots(n+k-1)$ was systematically studied by Leo August Pochhammer in 1870, though the notation and concept appeared earlier in the work of Euler and Vandermonde. The identity $\\binom{n+k}{k} \\cdot k! = (n+1)^{(k)}$ is one of the most fundamental relationships in combinatorics, connecting the unordered world of binomial coefficients to the ordered world of permutations. It explains why $\\binom{n}{k}$ is always an integer: the product of any $k$ consecutive integers is always divisible by $k!$.",
+    "historicalContext": "The ascending factorial (Pochhammer symbol) $n^{(k)} = n(n+1)\\cdots(n+k-1)$ was systematically studied by Leo August Pochhammer in his 1870 paper 'Ueber hypergeometrische Reihen n-ter Ordnung' in Crelle's journal, though the concept appeared earlier in the work of Euler on hypergeometric series and Vandermonde's 1772 memoir on determinants. The notation remains notoriously inconsistent: combinatorialists write $n^{\\overline{k}}$ for the rising factorial, while the Pochhammer symbol $(a)_k$ denotes the rising factorial in the theory of special functions but the falling factorial in some combinatorics texts. The identity $\\binom{n+k}{k} \\cdot k! = (n+1)^{(k)}$ is one of the most fundamental relationships in enumerative combinatorics, bridging the unordered world of binomial coefficients to the ordered world of permutations. It explains why $\\binom{n}{k}$ is always an integer: the product of any $k$ consecutive positive integers is always divisible by $k!$, because the quotient counts a combinatorial object — the number of $k$-element subsets. This integrality principle was known to Pascal and appears implicitly in his 1654 'Traité du triangle arithmétique'.",
     "problemStatement": "**Rising Factorial Identity**: For all natural numbers $k$ and $n$:\n\n$$\\binom{n+k}{k} \\cdot k! = (n+1)(n+2)\\cdots(n+k)$$\n\nEquivalently, $S_k(n) \\cdot k! = n^{\\overline{k+1}}_1$ where $S_k(n)$ is the $k$-th simplicial number and $n^{\\overline{k}}$ is the rising factorial.",
     "text": "Proves that the simplicial number S_k(n) = C(n+k, k) times k! equals the ascending factorial (n+1)(n+2)...(n+k). Derives the explicit product formula, full factorial identity S_k(n) * k! * n! = (n+k)!, and divisibility corollary.",
     "proofStrategy": "**Direct from Mathlib** for the main identity, using `Nat.ascFactorial_eq_factorial_mul_choose` with commutativity. The product formula is proved by induction on $k$ using the ascending factorial recurrence. The full factorial identity follows from `Nat.choose_mul_factorial_mul_factorial`.",
@@ -61,7 +61,8 @@
       "The main identity simplicial_factorial is essentially a one-liner: Mathlib's ascFactorial_eq_factorial_mul_choose gives ascFactorial(n+1, k) = k! * C(n+k, k), and commutativity yields C(n+k, k) * k! = ascFactorial(n+1, k).",
       "The ascending factorial recurrence ascFactorial(n, k+1) = (n+k) * ascFactorial(n, k) gives an elegant induction for the product formula, with mul_comm bridging the definitional and goal forms.",
       "The divisibility theorem factorial_dvd_ascFactorial(n, k) : k! | ascFactorial(n+1, k) follows immediately from the existence of simplicial numbers -- this explains why products of k consecutive integers are always divisible by k!.",
-      "The full factorial identity S_k(n) * k! * n! = (n+k)! decomposes (n+k)! into three natural factors: the combinatorial count, the ordering count, and the complement count."
+      "The full factorial identity S_k(n) * k! * n! = (n+k)! decomposes (n+k)! into three natural factors: the combinatorial count, the ordering count, and the complement count.",
+      "The low-dimensional specializations (k=1,2,3) recover the classical figurate number formulas: natural numbers, triangular numbers T(n) = n(n+1)/2, and tetrahedral numbers Te(n) = n(n+1)(n+2)/6, showing that these familiar sequences are all instances of the single identity S_k(n) * k! = (n+1)^(k)."
     ],
     "prerequisites": [
       "Binomial coefficients",
@@ -140,6 +141,16 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The binomial theorem uses C(n,k) coefficients -- the rising factorial identity reveals why these coefficients are always integers"
+    },
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Factorial divisibility properties -- this file's k! | ascFactorial(n+1,k) is a specific instance of divisibility of products of consecutive integers by factorials"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation for n! -- the full factorial identity S_k(n)*k!*n! = (n+k)! connects simplicial numbers to factorial growth"
     }
   ],
   "leanFile": {
