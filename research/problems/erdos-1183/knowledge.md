@@ -55,6 +55,27 @@ Built complete formalization:
 ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ {0,...,n-1} which has n+1 elements.
 By pigeonhole, ⌈(n+1)/2⌉ share a color. Any subchain is a sublattice.
 
+### Session 2 (2026-03-28, researcher-2)
+**Decision**: DEEP DIVE
+**Outcome**: COMPLETED
+
+Fixed critical mathematical bug and added new theorems:
+- **Bug**: `erdos1183_f` and `erdos1183_F` used `sInf` on a downward-closed set, giving 0.
+  The correct definition uses `sSup` (supremum = largest achievable bound).
+- **Fix**: Defined `achievableSublattice` and `achievableUnionClosed` as the achievable
+  lower-bound sets, proved both are `BddAbove` (bounded by 2^n), and used `sSup`.
+- **New theorem**: `erdos1183_f_lower_bound` — f(n) ≥ ⌈(n+1)/2⌉ via `le_csSup`,
+  formally connecting the chain bound (Part V) to the abstract definition.
+- **New theorem**: `erdos1183_F_ge_f` — F(n) ≥ f(n) via `csSup_le_csSup`,
+  since sublattices are union-closed.
+- Added import `Mathlib.Order.ConditionallyCompleteLattice.Basic` for sSup/le_csSup.
+- File: 223 → 277 lines, 10 → 15 theorems, 10 → 12 definitions.
+
+**Key Insight**: The set `{k | ∀ χ, ∃ F mono sublattice, F.card ≥ k}` is downward-closed
+in ℕ, so `sInf` gives 0 (minimum). The correct definition takes `sSup` (maximum).
+`ℕ` is a `ConditionallyCompleteLinearOrderBot`, so `le_csSup` and `csSup_le_csSup`
+work for bounded nonempty sets.
+
 ---
 
 *Generated from erdosproblems.com on 2026-01-16, updated 2026-03-28*

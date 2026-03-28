@@ -227,7 +227,37 @@ theorem logloglog_div_loglog_tendsto_zero :
     ∀ c : ℝ, c > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       Real.log (Real.log ↑N) > 0 →
         |Real.log (Real.log (Real.log ↑N)) / Real.log (Real.log ↑N)| < c := by
-  sorry -- Standard: log(x)/x → 0 (isLittleO_log_rpow_atTop) ∘ (log ∘ log → ∞)
+  intro c hc
+  -- Step 1: From isLittleO_log_rpow_atTop(p=1): |log x| ≤ (c/2)|x| for large x
+  have h_olit := Real.isLittleO_log_rpow_atTop (show (0:ℝ) < 1 by norm_num)
+  have h_bound : ∀ᶠ x in Filter.atTop, ‖Real.log x‖ ≤ c / 2 * ‖x ^ (1:ℝ)‖ :=
+    h_olit.bound (by linarith : 0 < c / 2)
+  rw [Filter.eventually_atTop] at h_bound
+  obtain ⟨M, hM⟩ := h_bound
+  -- Step 2: log(log(N)) → ∞, so eventually log(log(N)) ≥ max M 1
+  have h_ll : Tendsto (fun N : ℕ => Real.log (Real.log (↑N : ℝ))) atTop atTop :=
+    Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+  rw [Filter.tendsto_atTop] at h_ll
+  obtain ⟨N₀, hN₀⟩ := h_ll (max M 1)
+  use N₀
+  intro N hN hlog_pos
+  have hll_ge := hN₀ N hN  -- log(log(N)) ≥ max M 1
+  have hll_ge_M : M ≤ Real.log (Real.log ↑N) := le_trans (le_max_left M 1) hll_ge
+  have hll_ge_1 : (1 : ℝ) ≤ Real.log (Real.log ↑N) := le_trans (le_max_right M 1) hll_ge
+  -- Step 3: Apply the bound to x = log(log(N))
+  have h_apply := hM _ hll_ge_M
+  -- h_apply : ‖log(log(log(N)))‖ ≤ (c/2) * ‖log(log(N)) ^ 1‖
+  simp only [rpow_one, Real.norm_eq_abs] at h_apply
+  -- h_apply : |log(log(log(N)))| ≤ (c/2) * |log(log(N))|
+  have hll_pos : 0 < Real.log (Real.log ↑N) := by linarith
+  rw [abs_div, abs_of_pos hll_pos]
+  calc |Real.log (Real.log (Real.log ↑N))| / Real.log (Real.log ↑N)
+      ≤ c / 2 * |Real.log (Real.log ↑N)| / Real.log (Real.log ↑N) := by
+        exact div_le_div_of_nonneg_right h_apply _ hll_pos.le
+    _ = c / 2 * (|Real.log (Real.log ↑N)| / Real.log (Real.log ↑N)) := by ring
+    _ = c / 2 * 1 := by rw [abs_of_pos hll_pos, div_self hll_pos.ne']
+    _ = c / 2 := mul_one _
+    _ < c := by linarith
 
 /-- **Axiom elimination**: main_asymptotic is derivable from trivial_lower_bound
     and erdos_hall_upper via the squeeze theorem.
