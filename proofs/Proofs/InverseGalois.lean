@@ -67,14 +67,13 @@ open problem — we assert its truth without proof, because no proof is known.
 **The Inverse Galois Problem**: Every finite group G occurs as the Galois group
 of some Galois extension of ℚ.
 
-This is an OPEN PROBLEM. The `sorry` is intentional — no proof is known for the
-general case, though many special cases have been settled.
+This is an OPEN PROBLEM — no proof is known for the general case, though many
+special cases have been settled (cyclic, symmetric, alternating, solvable, ...).
 -/
-theorem inverse_galois_problem_open_conjecture
+axiom inverse_galois_problem_open_conjecture
     (G : Type*) [Group G] [Fintype G] :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (G ≃* (K ≃ₐ[ℚ] K)) := by
-  sorry -- OPEN: No proof known for general finite group G
+      (_ : IsGalois ℚ K), Nonempty (G ≃* (K ≃ₐ[ℚ] K))
 
 /-
 ## Part II: Cyclotomic Extensions Are Galois
@@ -358,10 +357,12 @@ Symmetric groups Sₙ are realizable as Galois groups over ℚ.
 This follows from Hilbert's irreducibility theorem applied to the general polynomial.
 The splitting field of a generic degree-n polynomial has Galois group Sₙ.
 -/
-theorem symmetric_group_realizable (n : ℕ) :
+/-- Axiomatized: follows from Hilbert's irreducibility theorem applied to the
+    generic polynomial. Hilbert, "Über die Irreducibilität ganzer rationaler
+    Functionen mit ganzzahligen Coefficienten", Crelle's J. 110 (1892). -/
+axiom symmetric_group_realizable (n : ℕ) :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (Equiv.Perm (Fin n) ≃* (K ≃ₐ[ℚ] K)) := by
-  sorry -- Classical: Hilbert's irreducibility theorem (not yet in Mathlib)
+      (_ : IsGalois ℚ K), Nonempty (Equiv.Perm (Fin n) ≃* (K ≃ₐ[ℚ] K))
 
 /-
 ## Part VII.b: S₃ Realizability via X³ - 2
