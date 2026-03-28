@@ -13,9 +13,8 @@ The problem asks to determine n_k more precisely.
 
 Reference: https://erdosproblems.com/827
 
-Axioms: 6 (minimalNk, minimalNk_valid, minimalNk_sharp,
-  martinez_roldan_pensado, nk_three, nk_ge_k)
-Proved: nk_monotone (from valid + sharp + subset argument)
+Axioms: 4 (nk_exists, martinez_roldan_pensado, nk_three, nk_ge_k)
+Proved: minimalNk_valid, minimalNk_sharp, nk_monotone, GeneralPosition_subset
 Sorries: 0
 -/
 
@@ -37,6 +36,11 @@ def GeneralPosition (S : Finset Point) : Prop :=
   ∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S,
     p ≠ q → q ≠ r → p ≠ r →
     (p.1 - r.1) * (q.2 - r.2) ≠ (q.1 - r.1) * (p.2 - r.2)
+
+/-- A subset of a general position set is in general position. -/
+theorem GeneralPosition_subset {S T : Finset Point} (hTS : T ⊆ S)
+    (hGP : GeneralPosition S) : GeneralPosition T :=
+  fun p hp q hq r hr => hGP p (hTS hp) q (hTS hq) r (hTS hr)
 
 /- ## Circumradius -/
 
@@ -68,19 +72,63 @@ def NkExists (k : ℕ) : Prop :=
   ∃ n : ℕ, ∀ S : Finset Point, GeneralPosition S → n ≤ S.card →
     ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
 
-/-- n_k is the minimal such number. -/
-axiom minimalNk : ℕ → ℕ
+/-- The set of valid thresholds: values of n for which any n points in
+    general position contain a k-subset with all distinct circumradii. -/
+def ThresholdSet (k : ℕ) : Set ℕ :=
+  {n : ℕ | ∀ S : Finset Point, GeneralPosition S → n ≤ S.card →
+    ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T}
 
-/-- minimalNk k is a valid threshold. -/
-axiom minimalNk_valid (k : ℕ) (hk : 3 ≤ k) :
+/-- n_k exists for k ≥ 3: the threshold set is nonempty.
+    Established by Martinez and Roldán-Pensado (2015), correcting Erdős (1978). -/
+axiom nk_exists (k : ℕ) (hk : 3 ≤ k) : (ThresholdSet k).Nonempty
+
+/-- n_k is the minimal valid threshold, defined as sInf of the threshold set. -/
+noncomputable def minimalNk (k : ℕ) : ℕ := sInf (ThresholdSet k)
+
+/-- minimalNk k is a valid threshold: any GP set of size ≥ minimalNk k
+    contains a k-subset with all distinct circumradii.
+    Proved from sInf membership in nonempty set (well-ordering of ℕ). -/
+theorem minimalNk_valid (k : ℕ) (hk : 3 ≤ k) :
     ∀ S : Finset Point, GeneralPosition S → minimalNk k ≤ S.card →
-      ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+      ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T :=
+  Nat.sInf_mem (nk_exists k hk)
 
 /-- minimalNk k is minimal: there exist configurations with minimalNk k - 1
-    points that avoid k-subsets with all distinct circumradii. -/
-axiom minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) :
+    points that avoid k-subsets with all distinct circumradii.
+    Proved from minimality of sInf and classical extraction of witnesses. -/
+theorem minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) :
     ∃ S : Finset Point, GeneralPosition S ∧ S.card = minimalNk k - 1 ∧
-      ¬∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+      ¬∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T := by
+  -- Step 1: minimalNk k > 0 (the empty set witnesses that 0 is not a threshold)
+  have h_pos : 0 < minimalNk k := by
+    by_contra h_not_pos
+    push_neg at h_not_pos
+    have h0 : minimalNk k = 0 := by omega
+    have hmem := Nat.sInf_mem (nk_exists k hk)
+    rw [show minimalNk k = sInf (ThresholdSet k) from rfl, h0] at hmem
+    obtain ⟨T, hT_sub, hT_card, _⟩ :=
+      hmem ∅ (fun p hp => absurd hp (Finset.not_mem_empty p)) (Nat.zero_le _)
+    have : T = ∅ := Finset.subset_empty.mp hT_sub
+    rw [this, Finset.card_empty] at hT_card; omega
+  -- Step 2: minimalNk k - 1 is not a valid threshold (below the minimum)
+  have h_not_thresh : ¬∀ S : Finset Point, GeneralPosition S →
+      minimalNk k - 1 ≤ S.card →
+      ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T := by
+    intro hmem
+    have h_le := Nat.sInf_le (show minimalNk k - 1 ∈ ThresholdSet k from hmem)
+    omega
+  -- Step 3: Extract witness with |S| ≥ m-1 and no good k-subset
+  have h_fail : ∃ S : Finset Point, GeneralPosition S ∧ minimalNk k - 1 ≤ S.card ∧
+      ¬∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T := by
+    by_contra h_all_good
+    push_neg at h_all_good
+    exact h_not_thresh h_all_good
+  -- Step 4: Trim to exact cardinality
+  obtain ⟨S, hGP, hCard, hBad⟩ := h_fail
+  obtain ⟨S', hS'_sub, hS'_card⟩ := Finset.exists_smaller_set S (minimalNk k - 1) hCard
+  exact ⟨S', GeneralPosition_subset hS'_sub hGP, hS'_card,
+    fun ⟨T, hT_sub, hT_card, hT_good⟩ =>
+      hBad ⟨T, Finset.Subset.trans hT_sub hS'_sub, hT_card, hT_good⟩⟩
 
 /- ## Main Problem -/
 
