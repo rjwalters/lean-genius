@@ -189,104 +189,70 @@ def IsGrahamEqualityCase (A : Finset ℕ) : Prop :=
     A = (Finset.range (n + 1) \ {0}).image fun k => L / k) ∨
   A = GrahamSpecialSet
 
-/- Aristotle found this block to be false. Here is a proof of the negation:
+/-! ## Equality Characterization: DISPROVED
 
-noncomputable section AristotleLemmas
+Graham conjectured that the only primitive sets achieving equality in the
+GCD bound are {1,...,n}, {L/1,...,L/n}, and {2,3,4,6}. However, when
+formalized as "all pairs satisfy gcd(a,b) ≥ a/|A|", the set {1,2,4}
+is a counterexample: it's primitive, satisfies the condition, but is
+not one of the three families.
 
-/-
-Definition of the condition that for all pairs (a,b) in A, gcd(a,b) >= a / |A|.
+The counterexample was discovered by Aristotle (automated proof search).
 -/
-open Nat Finset
 
-def SatisfiesGrahamCondition (A : Finset ℕ) : Prop :=
-  ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card
+/-- {1,2,4} satisfies gcd(a,b) ≥ a/|A| for all pairs. -/
+theorem counterexample_124_satisfies (a : ℕ) (ha : a ∈ ({1, 2, 4} : Finset ℕ))
+    (b : ℕ) (hb : b ∈ ({1, 2, 4} : Finset ℕ)) :
+    Nat.gcd a b ≥ a / ({1, 2, 4} : Finset ℕ).card := by
+  fin_cases ha <;> fin_cases hb <;> simp_all +decide
 
-/-
-The set {1, 2, 4} satisfies the Graham condition gcd(a,b) >= a/|A|.
+/-- {1,2,4} is primitive (gcd of all elements is 1). -/
+theorem counterexample_124_primitive : HasNoCommonDivisor {1, 2, 4} := by
+  simp [HasNoCommonDivisor]
+
+/-- {1,2,4} is NOT one of the three Graham equality cases.
+
+  Case 1: 3 ∉ {1,2,4} but 3 ∈ {1,...,n} for n ≥ 4, and card differs for n ≤ 3.
+  Case 2: L/1 = L ∈ {1,2,4} so 3 ∤ L, but 3 | lcm(1,...,n) for n ≥ 3, so n ≤ 2,
+          and then image card ≤ 2 < 3.
+  Case 3: {1,2,4} ≠ {2,3,4,6} by decide.
 -/
-theorem counterexample_124_satisfies :
-    SatisfiesGrahamCondition {1, 2, 4} := by
-      intro a ha b hb; fin_cases ha <;> fin_cases hb <;> trivial;
-
-/-
-The set {1, 2, 4} has gcd 1.
--/
-theorem counterexample_124_primitive :
-    Erdos402.HasNoCommonDivisor {1, 2, 4} := by
-      -- Since 1 is in the set, the gcd must divide 1, so it must be 1. Therefore, the gcd is 1.
-      simp [Erdos402.HasNoCommonDivisor]
-
-/-
-The set {1, 2, 4} is not one of the Graham equality cases.
--/
-theorem counterexample_124_not_case :
-    ¬ Erdos402.IsGrahamEqualityCase {1, 2, 4} := by
-      rintro ⟨ n, hn, h ⟩;
-      · rcases n with ( _ | _ | _ | _ | _ | n ) <;> simp_all +arith +decide [ Finset.ext_iff ];
-        exact absurd ( h 3 ) ( by norm_num );
-      · rename_i h;
-        rcases h with ( ⟨ n, hn, L, rfl, h ⟩ | h ) <;> simp_all +decide [ Finset.Subset.antisymm_iff, Finset.subset_iff ];
-        rcases h with ⟨ ⟨ ⟨ a, ⟨ ha₁, ha₂ ⟩, ha₃ ⟩, ⟨ b, ⟨ hb₁, hb₂ ⟩, hb₃ ⟩, ⟨ c, ⟨ hc₁, hc₂ ⟩, hc₃ ⟩ ⟩, h ⟩ ; have := @h ( ( Finset.range ( n + 1 ) \ { 0 } ).lcm id / 1 ) 1 ; simp_all +decide ;
-        rcases n with ( _ | _ | _ | _ | _ | n ) <;> simp_all +arith +decide [ Finset.range_add_one ];
-        · interval_cases b <;> contradiction;
-        · interval_cases c <;> contradiction;
-        · rcases this with h | h | h <;> simp_all +decide [ Nat.lcm_assoc ];
-          · rcases a with ( _ | _ | a ) <;> rcases b with ( _ | _ | b ) <;> rcases c with ( _ | _ | c ) <;> simp_all +arith +decide [ Nat.div_eq_of_lt ];
-          · exact absurd hc₃ ( Nat.ne_of_lt ( Nat.div_lt_of_lt_mul <| by linarith [ Nat.pos_of_ne_zero hc₂ ] ) );
-          · have := h ▸ Finset.dvd_lcm ( show n + 5 ∈ _ from by simp +decide ) ; simp_all +decide [ Nat.dvd_prime ] ;
-            linarith [ Nat.le_of_dvd ( by norm_num ) this ]
-
-/-
-The Graham equality conjecture is false, witnessed by {1, 2, 4}.
--/
-theorem erdos_402_equality_cases_false :
-    ¬ (∀ A : Finset ℕ, A.Nonempty → (∀ x ∈ A, x > 0) → Erdos402.HasNoCommonDivisor A →
-       (∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) → Erdos402.IsGrahamEqualityCase A) := by
-         push_neg;
-         -- Consider the set $A = \{1, 2, 4\}$.
-         use {1, 2, 4};
-         simp +zetaDelta at *;
-         refine' ⟨ _, _ ⟩;
-         · exact?;
-         · exact?
-
-end AristotleLemmas
-
-/-
-**Graham's Equality Conjecture**: The only primitive sets achieving equality
-in the GCD bound are the three families described above.
--/
-theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)
-    (hpos : ∀ x ∈ A, x > 0) (hprim : HasNoCommonDivisor A)
-    (heq : ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) :
-    IsGrahamEqualityCase A := by
-  -- Proved by Szegedy for large sets
-  by_contra! h_contra2_equality_cases_false;
-  apply_rules [ erdos_402_equality_cases_false ];
-  apply Classical.byContradiction
-  intro h_contra2_equality_cases_false_2;
-  apply h_contra2_equality_cases_false_2;
-  -- Wait, there's a mistake. We can actually prove the opposite.
-  negate_state;
-  -- Proof starts here:
-  -- Consider the set $A = \{1, 2, 4\}$.
-  use {1, 2, 4};
-  -- Check that the set {1, 2, 4} is nonempty.
-  simp [Erdos402.HasNoCommonDivisor];
-  -- Show that {1, 2, 4} is not one of the Graham equality cases by checking each case.
-  apply counterexample_124_not_case
-
--/
-/--
-**Graham's Equality Conjecture**: The only primitive sets achieving equality
-in the GCD bound are the three families described above.
--/
-theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)
-    (hpos : ∀ x ∈ A, x > 0) (hprim : HasNoCommonDivisor A)
-    (heq : ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) :
-    IsGrahamEqualityCase A := by
-  -- Proved by Szegedy for large sets
-  sorry
+theorem counterexample_124_not_equality_case :
+    ¬IsGrahamEqualityCase ({1, 2, 4} : Finset ℕ) := by
+  intro h
+  rcases h with ⟨n, hn, heq⟩ | ⟨n, hn, L, hL, heq⟩ | heq
+  · -- Case 1: {1,2,4} = {1,...,n}. Use "3 is missing" argument.
+    have h3 : (3 : ℕ) ∉ ({1, 2, 4} : Finset ℕ) := by decide
+    have h4 : (4 : ℕ) ∈ ({1, 2, 4} : Finset ℕ) := by decide
+    rw [heq] at h3 h4
+    simp [Finset.mem_sdiff, Finset.mem_range] at h3 h4
+    omega
+  · -- Case 2: {1,2,4} = image of (fun k => L / k) over {1,...,n} where L = lcm.
+    -- Step 1: L/1 = L is in the image = {1,2,4}, so L ∈ {1,2,4}
+    have h1_mem : (1 : ℕ) ∈ Finset.range (n + 1) \ {0} := by
+      simp [Finset.mem_sdiff, Finset.mem_range]; omega
+    have hL_in_img : L / 1 ∈ (Finset.range (n + 1) \ {0}).image (fun k => L / k) :=
+      Finset.mem_image_of_mem _ h1_mem
+    rw [Nat.div_one] at hL_in_img
+    rw [← heq] at hL_in_img
+    -- Step 2: L ∈ {1,2,4} means 3 ∤ L
+    have h3_ndvd : ¬(3 ∣ L) := by fin_cases hL_in_img <;> omega
+    -- Step 3: If n ≥ 3 then 3 ∈ {1,...,n}, so 3 | lcm = L. Contradiction.
+    have hn2 : n ≤ 2 := by
+      by_contra h_gt; push_neg at h_gt
+      have h3_mem : (3 : ℕ) ∈ Finset.range (n + 1) \ {0} := by
+        simp [Finset.mem_sdiff, Finset.mem_range]; omega
+      exact h3_ndvd (hL ▸ Finset.dvd_lcm h3_mem)
+    -- Step 4: For n ≤ 2, image card ≤ n ≤ 2 < 3 = card({1,2,4}). Contradiction.
+    have hcard : ({1, 2, 4} : Finset ℕ).card = 3 := by decide
+    rw [heq] at hcard
+    have hle : ((Finset.range (n + 1) \ {0}).image (fun k => L / k)).card ≤
+        (Finset.range (n + 1) \ {0}).card := Finset.card_image_le
+    simp [Finset.card_sdiff, Finset.card_range,
+          Finset.singleton_subset_iff, Finset.mem_range] at hle
+    omega
+  · -- Case 3: {1,2,4} = {2,3,4,6}
+    exact absurd heq (by decide)
 
 /-! ## Key Lemmas -/
 
