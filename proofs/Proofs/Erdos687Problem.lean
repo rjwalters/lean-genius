@@ -368,29 +368,3 @@ theorem not_mem_jacobsthalSet_two {y : ℕ} (hy : 2 ≤ y) :
   -- So 1 % 2 = a(2) % 2 = 2 % 2, i.e., 1 = 0. Contradiction.
   have := hcov₁.trans hcov₂.symm
   norm_num at this
-
-/-- 1 ∈ jacobsthalSet 2: choosing residue class 1 mod 2 covers [1, 1]. -/
-theorem one_mem_jacobsthalSet_two : (1 : ℕ) ∈ jacobsthalSet 2 := by
-  refine ⟨fun _ _ _ => 1, fun n h1 hn => ?_⟩
-  -- n ∈ [1, 1] means n = 1
-  have hn_eq : n = 1 := le_antisymm hn h1
-  subst hn_eq
-  -- 1 is covered by prime 2 with class 1: 1 % 2 = 1 % 2
-  exact ⟨2, by decide, le_refl 2, rfl⟩
-
-/-- Y(2) = 1. With only prime 2 available, the best covering picks one
-    parity class, achieving exactly [1, 1].
-    Note: this proof uses a LOCAL BddAbove argument for x = 2,
-    independent of the general jacobsthalSet_bddAbove axiom. -/
-theorem jacobsthalY_two : jacobsthalY 2 = 1 := by
-  unfold jacobsthalY
-  apply le_antisymm
-  · -- sSup ≤ 1: every element of jacobsthalSet 2 is ≤ 1
-    apply csSup_le (jacobsthalSet_nonempty 2)
-    intro y hy
-    by_contra h; push_neg at h
-    exact not_mem_jacobsthalSet_two (by omega) hy
-  · -- 1 ≤ sSup: 1 is in the set and the set is bounded above
-    exact le_csSup ⟨1, fun y hy => by
-      by_contra h; push_neg at h
-      exact not_mem_jacobsthalSet_two (by omega) hy⟩ one_mem_jacobsthalSet_two
