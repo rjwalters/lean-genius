@@ -166,12 +166,36 @@ theorem e_irrational_axiom : Irrational (Real.exp 1) := by
 /-- e is irrational (weaker than transcendental, but follows from it) -/
 theorem e_irrational : Irrational (Real.exp 1) := e_irrational_axiom
 
-/-- **Axiom: eⁿ is transcendental for any non-zero integer n**
+/-- **eⁿ is transcendental for any non-zero integer n** (formerly axiom, now proved)
 
-    If eⁿ were algebraic, then e would be algebraic via a degree n extension.
+    If eⁿ were algebraic, then e would be algebraic via polynomial composition.
     Specifically, if p(eⁿ) = 0, then e satisfies q(X) = p(Xⁿ) which is
-    a polynomial of degree n · deg(p). This contradicts e being transcendental. -/
-axiom exp_nat_transcendental_axiom (n : ℕ) (hn : n ≠ 0) : Transcendental ℤ (Real.exp n)
+    a polynomial of degree n · deg(p). This contradicts e being transcendental.
+
+    We use exp(n) = (exp 1)^n and polynomial composition. -/
+theorem exp_nat_transcendental_axiom (n : ℕ) (hn : n ≠ 0) : Transcendental ℤ (Real.exp n) := by
+  -- exp(n) = (exp 1)^n
+  have hexp : Real.exp (n : ℝ) = (Real.exp 1) ^ n := by
+    rw [← Real.exp_nat_mul]; ring_nf
+  rw [hexp]
+  intro halg
+  have hq : IsAlgebraic ℚ ((Real.exp 1) ^ n) :=
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  obtain ⟨p, hp_ne, hp_eval⟩ := hq
+  have he : IsAlgebraic ℚ (Real.exp 1) := by
+    refine ⟨p.comp (Polynomial.X ^ n), ?_, ?_⟩
+    · intro h
+      rcases Nat.eq_zero_or_pos p.natDegree with hd | hd
+      · have heq := Polynomial.eq_C_of_natDegree_eq_zero hd
+        rw [heq, Polynomial.C_comp] at h
+        rw [heq] at hp_ne; exact hp_ne h
+      · have hpos : 0 < (p.comp (Polynomial.X ^ n)).natDegree := by
+          rw [Polynomial.natDegree_comp]
+          simp only [Polynomial.natDegree_X_pow]
+          exact Nat.mul_pos hd (Nat.pos_of_ne_zero hn)
+        simp [h] at hpos
+    · rw [Polynomial.aeval_comp, map_pow, Polynomial.aeval_X]; exact hp_eval
+  exact e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr he)
 
 /-- eⁿ is transcendental for any non-zero integer n -/
 theorem exp_nat_transcendental (n : ℕ) (hn : n ≠ 0) :

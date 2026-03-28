@@ -46,14 +46,17 @@ noncomputable def distInt (x : ℝ) : ℝ :=
   |x - round x|
 
 /--
-distInt is always non-negative.
+distInt is always non-negative (formerly axiom, now proved).
 -/
-axiom distInt_nonneg (x : ℝ) : distInt x ≥ 0
+theorem distInt_nonneg (x : ℝ) : distInt x ≥ 0 := by
+  unfold distInt; exact abs_nonneg _
 
 /--
-distInt is at most 1/2.
+distInt is at most 1/2 (formerly axiom, now proved).
+Uses the fundamental property of rounding: |x - round(x)| ≤ 1/2.
 -/
-axiom distInt_le_half (x : ℝ) : distInt x ≤ 1 / 2
+theorem distInt_le_half (x : ℝ) : distInt x ≤ 1 / 2 := by
+  unfold distInt; exact abs_sub_round x
 
 /- ## Part II: The Littlewood Product -/
 
@@ -65,10 +68,13 @@ noncomputable def littlewoodProduct (n : ℕ) (α β : ℝ) : ℝ :=
   (n : ℝ) * distInt ((n : ℝ) * α) * distInt ((n : ℝ) * β)
 
 /--
-The Littlewood product is always non-negative.
+The Littlewood product is always non-negative (formerly axiom, now proved).
+Each factor is non-negative: n ≥ 0, |·| ≥ 0, |·| ≥ 0.
 -/
-axiom littlewoodProduct_nonneg (n : ℕ) (α β : ℝ) :
-  littlewoodProduct n α β ≥ 0
+theorem littlewoodProduct_nonneg (n : ℕ) (α β : ℝ) :
+    littlewoodProduct n α β ≥ 0 := by
+  unfold littlewoodProduct distInt
+  positivity
 
 /- ## Part III: The Littlewood Conjecture -/
 
