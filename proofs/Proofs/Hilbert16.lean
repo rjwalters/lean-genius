@@ -240,15 +240,18 @@ def LinearVectorField.matrix (L : LinearVectorField) : Matrix (Fin 2) (Fin 2) �
 def LinearVectorField.eval (L : LinearVectorField) (p : Plane) : Plane :=
   L.matrix.mulVec p
 
-/-- **Axiom: Linear Polynomial Degree Bound**
+/-- **Linear Polynomial Degree Bound** (formerly axiom, now proved)
 
 A polynomial of the form C(a) * X_0 + C(b) * X_1 (linear in two variables)
-has total degree at most 1. This follows from the definition of total degree
-as the maximum sum of exponents, but the MvPolynomial API requires careful
-manipulation of support sets and degree bounds. -/
-axiom linear_poly_degree_le_one (a b : ℝ) :
+has total degree at most 1. Uses totalDegree_add and totalDegree_C_mul_X_le. -/
+theorem linear_poly_degree_le_one (a b : ℝ) :
     (MvPolynomial.C a * MvPolynomial.X 0 + MvPolynomial.C b * MvPolynomial.X 1 :
-      MvPolynomial (Fin 2) ℝ).totalDegree ≤ 1
+      MvPolynomial (Fin 2) ℝ).totalDegree ≤ 1 := by
+  apply le_trans (MvPolynomial.totalDegree_add _ _)
+  apply max_le <;> {
+    apply le_trans (MvPolynomial.totalDegree_mul _ _)
+    simp [MvPolynomial.totalDegree_C, MvPolynomial.totalDegree_X]
+  }
 
 /-- A linear vector field as a polynomial vector field of degree 1 -/
 def LinearVectorField.toPolynomialVectorField (L : LinearVectorField) :

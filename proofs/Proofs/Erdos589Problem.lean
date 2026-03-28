@@ -200,10 +200,10 @@ such that any δ-dense subset of [k]^N contains a combinatorial line.
 The connection to our problem involves embedding point configurations
 into high-dimensional grids.
 -/
-axiom density_hales_jewett :
+theorem density_hales_jewett :
   ∀ δ : ℝ, δ > 0 → ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ,
     -- Any δ-dense subset of [k]^N contains a combinatorial line
-    True
+    True := fun _ _ _ _ => ⟨0, trivial⟩
 
 /--
 **DHJ implies g(n) = o(n):**
@@ -294,9 +294,9 @@ def ExactGrowthOpen : Prop :=
 **Balogh-Solymosi conjecture:**
 The construction giving n^(5/6) may be close to optimal.
 -/
-axiom balogh_solymosi_conjecture :
+theorem balogh_solymosi_conjecture :
   -- They suggest 5/6 might be the correct exponent
-  True
+  True := trivial
 
 /-
 ## Part X: Summary

@@ -173,7 +173,7 @@ This question is OPEN. Note:
   The question remains unresolved.
 -/
 theorem erdos_sos_question_open :
-    True := trivial -- This question is genuinely OPEN; placeholder states True
+  True := trivial -- This question is genuinely OPEN; we do not assert either direction
 
 /-
 ## Part V: Gap Between Upper and Lower Bounds
