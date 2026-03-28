@@ -25,13 +25,13 @@
     ],
     "badge": "formalized",
     "sorries": 1,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. Transitive dependency axiom: InverseGaloisA5.lean (1 axiom: three_dvd_gal_card). AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved.",
+    "assumptions": "1 axiom total (0 in main file, 1 transitive via InverseGaloisA5.lean: three_dvd_gal_card — Dedekind's theorem that 3 divides the Galois group order). 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved.",
     "leanFile": {
       "lineCount": 723,
       "theoremCount": 46,
