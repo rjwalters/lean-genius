@@ -135,40 +135,37 @@ For k ≤ 2, the strong bound holds because B₂(n) ≤ n.
 /--
 **Trivial Case: k = 1**
 
-B₂(n) ≤ n ≤ n², so strongBound(1) holds with C = 1.
-Previously axiomatized; now proved from twoFullPart_le.
+B₂(n) ≤ n ≤ n², so strongBound(1) holds.
 -/
 theorem strong_bound_k1 : strongBound 1 := by
   refine ⟨1, one_pos, fun n hn => ?_⟩
-  simp only [productTwoFullParts, one_mul]
-  rw [show Ico n (n + 1) = {n} from by
-    ext x; simp only [mem_Ico, mem_singleton]; omega]
-  rw [prod_singleton]
+  unfold productTwoFullParts
+  have hIco : Finset.Ico n (n + 1) = {n} := by
+    ext m; simp only [Finset.mem_Ico, Finset.mem_singleton]; omega
+  rw [hIco, Finset.prod_singleton]
   have h1 : (twoFullPart n : ℝ) ≤ (n : ℝ) := by exact_mod_cast twoFullPart_le n
-  have h2 : (n : ℝ) ≤ (n : ℝ) ^ 2 := by
-    rw [sq]; exact le_mul_of_one_le_left (by positivity) (by exact_mod_cast hn)
-  linarith
+  have hn' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  nlinarith [sq_nonneg ((n : ℝ) - 1)]
 
 /--
 **Trivial Case: k = 2**
 
-B₂(n) · B₂(n+1) ≤ n · (n+1) ≤ 2n², so strongBound(2) holds with C = 2.
-Previously axiomatized; now proved from twoFullPart_le.
+B₂(n) · B₂(n+1) ≤ n · (n+1) < 2n², so strongBound(2) holds.
 -/
 theorem strong_bound_k2 : strongBound 2 := by
   refine ⟨2, by norm_num, fun n hn => ?_⟩
-  simp only [productTwoFullParts]
-  rw [show Ico n (n + 2) = {n, n + 1} from by
-    ext x; simp only [mem_Ico, mem_insert, mem_singleton]; omega]
-  rw [prod_pair (by omega : n ≠ n + 1)]
+  unfold productTwoFullParts
+  have hIco : Finset.Ico n (n + 2) = {n, n + 1} := by
+    ext m; simp only [Finset.mem_Ico, Finset.mem_insert, Finset.mem_singleton]; omega
+  rw [hIco, Finset.prod_insert (show n ∉ ({n + 1} : Finset ℕ) by simp; omega),
+      Finset.prod_singleton]
+  simp only [Nat.cast_mul]
   have h1 : (twoFullPart n : ℝ) ≤ (n : ℝ) := by exact_mod_cast twoFullPart_le n
-  have h2 : (twoFullPart (n + 1) : ℝ) ≤ ((n : ℝ) + 1) := by
-    exact_mod_cast twoFullPart_le (n + 1)
-  have h3 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-  calc (↑(twoFullPart n * twoFullPart (n + 1)) : ℝ)
-      = (twoFullPart n : ℝ) * (twoFullPart (n + 1) : ℝ) := by push_cast; ring
-    _ ≤ (n : ℝ) * ((n : ℝ) + 1) := by nlinarith
-    _ ≤ 2 * (n : ℝ) ^ 2 := by nlinarith
+  have h2 : (twoFullPart (n + 1) : ℝ) ≤ (n : ℝ) + 1 := by exact_mod_cast twoFullPart_le (n + 1)
+  have hn' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  nlinarith [mul_le_mul h1 h2 (Nat.cast_nonneg (twoFullPart (n + 1)))
+               (by linarith : (0 : ℝ) ≤ (n : ℝ)),
+             sq_nonneg ((n : ℝ) - 1)]
 
 /-
 # Part 6: Known Results — Failure of Strong Bound
