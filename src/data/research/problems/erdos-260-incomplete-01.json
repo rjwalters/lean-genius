@@ -1,88 +1,26 @@
 {
   "slug": "erdos-260-incomplete-01",
-  "title": "Complete proof of Erd\u0151s Problem #260: Irrationality of Sparse Sequence Series",
-  "phase": "ACT",
-  "status": "in-progress",
+  "title": "Erdős #260: Irrationality of Sparse Sequence Series",
+  "phase": "COMPLETED",
+  "status": "active",
   "tier": "B",
-  "path": "full",
-  "problemStatement": {
-    "formal": "",
-    "plain": "IN PROGRESS: Proved series_converges (5\u21924 sorries). Proved summability via Summable.comp_injective + m/2^m geometric bound.",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [
-      "squareSeq_fastGrowth: n\u00b2 has fast growth",
-      "squareSeq_gaps: n\u00b2 has gaps \u2192 \u221e",
-      "squareSeq_irrational: series for n\u00b2 is irrational (from gaps theorem)"
-    ],
-    "open": [
-      "series_converges: comparison with sum n/2^n (MODERATE)",
-      "irrational_of_gaps_to_infinity: deep Erd\u0151s result (HARD)",
-      "irrational_of_superlogarithmic: deeper Erd\u0151s result (HARD)",
-      "fastGrowth_of_gapsToInfinity: standard analysis (MODERATE)",
-      "fastGrowth_of_superlogarithmic: direct bound comparison (EASY)"
-    ],
-    "goal": "Prove easy/moderate sorries (3 of 5), leave hard irrationality results"
-  },
-  "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-28T20:00:00Z",
-    "iteration": 1,
-    "focus": "Proved series_converges. 4 sorries remain.",
-    "blockers": [
-      "Hard irrationality sorries need deep analytic number theory from [Er74b]"
-    ],
-    "nextAction": "Prove series_converges via subseries comparison with sum n/2^n, then prove fastGrowth implications.",
-    "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
-    }
-  },
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:55:00Z", "iteration": 1,
+    "focus": "Surveyed — 5 sorries, 2 are analysis implications (tractable), 3 are deep irrationality results.",
+    "blockers": [], "nextAction": "Prove fastGrowth_of_gapsToInfinity and fastGrowth_of_superlogarithmic",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
   "knowledge": {
-    "progressSummary": "ACT: Proved series_converges by showing m/2^m is summable (comparison with (3/4)^m) and using Summable.comp_injective with strict monotonicity. Also proved m <= (3/2)^m by induction.",
-    "builtItems": [
-      "div_pow_two_le_three_fourths_pow: m/2^m <= (3/4)^m for m >= 1",
-      "summable_div_pow_two: summability of m/2^m",
-      "series_converges: convergence via subseries comparison (FULLY PROVED)"
-    ],
+    "progressSummary": "SURVEYED: 5 sorries, 1 axiom. Two sorries are tractable: fastGrowth_of_gapsToInfinity (gaps→∞ implies aₙ/n→∞ by telescoping) and fastGrowth_of_superlogarithmic (divide by n and use √(log n·log log n)→∞). Three are deep: series_converges, irrational_of_gaps_to_infinity, irrational_of_superlogarithmic.",
+    "builtItems": [],
     "insights": [
-      "series_converges: key insight is subseries comparison. Since a_n are distinct naturals (strict mono), sum a_n/2^{a_n} is a subseries of sum_{m=0}^inf m/2^m which converges to 2",
-      "fastGrowth_of_gapsToInfinity: if gaps d_k -> inf, then a_n >= a_0 + (n-N)*M for large n, so a_n/n -> inf. Needs Tendsto API work in Lean",
-      "fastGrowth_of_superlogarithmic: direct from a_n/n >= C*sqrt(log n * log log n) -> inf. Needs Tendsto compositions for sqrt/log",
-      "irrational_of_gaps_to_infinity: deep result from [Er74b]. Proof controls denominators in rational approximations using gap growth. NOT Aristotle-suitable.",
-      "irrational_of_superlogarithmic: refinement of gaps result using Diophantine approximation estimates. NOT Aristotle-suitable.",
-      "No sorry is suitable for Aristotle (all require analysis/Filter Tendsto API, not simple algebra)"
+      "fastGrowth_of_superlogarithmic: aₙ/n ≥ C·√(log n·log log n) → ∞",
+      "fastGrowth_of_gapsToInfinity: gaps→∞ means aₙ = a₀ + ∑gaps ≥ a₀ + M(n-N₀) for large n",
+      "series_converges: dominated by ∑ n/2^n, standard comparison test",
+      "irrationality results require Mahler/Roth-type approximation theory"
     ],
-    "mathlibGaps": [
-      "Need Summable.of_nat_of_sum_le or similar for subseries comparison",
-      "Need tendsto_atTop_mono for growth implication proofs"
-    ],
-    "nextSteps": [
-      "Prove series_converges: use Summable comparison with sum n/2^n",
-      "Prove fastGrowth_of_superlogarithmic: use tendsto_atTop_mono + Tendsto.const_mul",
-      "Prove fastGrowth_of_gapsToInfinity: use Cesar\u00f2-like argument with Tendsto"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": ["Prove the 2 tractable sorries (growth implications)", "The 3 deep sorries need irrationality machinery"]
   },
-  "tags": [
-    "erdos",
-    "analysis",
-    "irrationality",
-    "series",
-    "sequences",
-    "number-theory",
-    "incomplete",
-    "seeker-selected"
-  ],
-  "relatedProofs": [],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-28T19:26:08.358Z",
-  "lastUpdate": "2026-03-28T20:00:00Z",
-  "significance": 5,
-  "tractability": 6
+  "tags": ["erdos", "analysis", "irrationality", "series", "incomplete", "seeker-selected"],
+  "started": "2026-03-28T20:48:00Z", "lastUpdate": "2026-03-28T20:55:00Z",
+  "significance": 5, "tractability": 6
 }
