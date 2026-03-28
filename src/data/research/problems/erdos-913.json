@@ -29,12 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 6A (3 provable examples, 1 structural, 1 open, 1 complex). 0T.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Added 4 theorems (4T→8T). Triple-factor helper enables verification of 8p²-1 construction instances. 3 axioms remain: 1 open conjecture + 2 provable-but-deep.",
+    "builtItems": [
+      "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
+      "Proved example_n31: 31·32 = 2^5·31^1",
+      "Proved example_n71: 71·72 = 2^3·3^2·71^1 (first 3-factor example, from 8p²-1 with p=3)",
+      "Proved example_n127: 127·128 = 2^7·127^1"
+    ],
     "insights": [
-      "6 axioms: infinite_8p_sq_minus_1_primes (open conjecture), erdos_913_conditional (structural), example_n3/n7/n8 (computationally provable), exponent_structure (complex)",
-      "example_n3, example_n7, example_n8 are provable by checking Set.InjOn on small Finsets via native_decide, but proof is fragile without compilation testing",
-      "File has 0 theorems — all content is axioms. Would benefit from adding proved structural lemmas."
+      "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
+      "erdos_913_conditional could be proved from exponent_structure + Set.Infinite image argument",
+      "exponent_structure is provable but needs heavy Mathlib factorization API (Nat.primeFactors_mul, Coprime, etc.)",
+      "n=71 demonstrates the 8p²-1 construction (p=3): 71·72 = 71·2³·3² with exponents {1,3,2}",
+      "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,8 +72,8 @@
     {
       "path": "Proofs/Erdos913Problem.lean",
       "filename": "Erdos913Problem.lean",
-      "lineCount": 154,
-      "theoremCount": 3,
+      "lineCount": 193,
+      "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,

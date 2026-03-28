@@ -103,6 +103,30 @@ theorem not_pseudoperfect_5 : ¬IsPseudoperfect 5 := by
   have : (5 : ℕ).properDivisors.sum id = 1 := by decide
   omega
 
+/-- 28 is pseudoperfect: 28 = 1 + 2 + 4 + 7 + 14 (perfect number) -/
+theorem pseudoperfect_28 : IsPseudoperfect 28 :=
+  ⟨{1, 2, 4, 7, 14}, by decide, by decide⟩
+
+-- ## Non-pseudoperfect: additional cases needed for primitivity proofs
+
+theorem not_pseudoperfect_7 : ¬IsPseudoperfect 7 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 7 S hS_sub
+  have : (7 : ℕ).properDivisors.sum id = 1 := by decide
+  omega
+
+theorem not_pseudoperfect_10 : ¬IsPseudoperfect 10 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 10 S hS_sub
+  have : (10 : ℕ).properDivisors.sum id = 8 := by decide
+  omega
+
+theorem not_pseudoperfect_14 : ¬IsPseudoperfect 14 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 14 S hS_sub
+  have : (14 : ℕ).properDivisors.sum id = 10 := by decide
+  omega
+
 -- ## Key Structural Results
 
 /-- The smallest pseudoperfect number is 6 -/
@@ -126,6 +150,35 @@ theorem primitive_pseudoperfect_6 : IsPrimitivePseudoperfect 6 := by
   refine ⟨by norm_num, pseudoperfect_6, ?_⟩
   intro m hm _ hps
   exact absurd (pseudoperfect_ge_six m hps) (by omega)
+
+/-- 20 is the second primitive pseudoperfect number (A006036):
+    20 = 1 + 4 + 5 + 10, and no proper divisor of 20 is pseudoperfect.
+    Proper divisors: {1, 2, 4, 5, 10}. Values 1-5 are not pseudoperfect
+    (below the minimum 6). Value 10 has σ₀(10) = 8 < 10, so is deficient. -/
+theorem primitive_pseudoperfect_20 : IsPrimitivePseudoperfect 20 := by
+  refine ⟨by norm_num, pseudoperfect_20, ?_⟩
+  intro m hm hdvd hps
+  have hge := pseudoperfect_ge_six m hps
+  -- m ≥ 6, m < 20, m ∣ 20 → m = 10
+  interval_cases m <;>
+    first
+    | exact absurd hps not_pseudoperfect_10
+    | exact absurd hdvd (by decide)
+
+/-- 28 is the third primitive pseudoperfect number (A006036):
+    28 = 1 + 2 + 4 + 7 + 14 (perfect number). No proper divisor is pseudoperfect.
+    Proper divisors: {1, 2, 4, 7, 14}. Values 1-5 not pseudoperfect (below minimum 6).
+    7 has σ₀(7) = 1 < 7, 14 has σ₀(14) = 10 < 14 — both deficient. -/
+theorem primitive_pseudoperfect_28 : IsPrimitivePseudoperfect 28 := by
+  refine ⟨by norm_num, pseudoperfect_28, ?_⟩
+  intro m hm hdvd hps
+  have hge := pseudoperfect_ge_six m hps
+  -- m ≥ 6, m < 28, m ∣ 28 → m ∈ {7, 14}
+  interval_cases m <;>
+    first
+    | exact absurd hps not_pseudoperfect_7
+    | exact absurd hps not_pseudoperfect_14
+    | exact absurd hdvd (by decide)
 
 -- ## Structural Theorems
 

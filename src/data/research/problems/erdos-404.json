@@ -31,7 +31,7 @@
   "knowledge": {
     "progressSummary": "COMPLETE: 4A (deep results — Lin 1976, padic asymptotics), 2T proved, 0S.",
     "builtItems": [
-      "Assessment: 4A all appropriate"
+      "Proved lin_bound from lin_bound_meaning via csSup_le (axiom eliminated)"
     ],
     "insights": [
       "lin_bound and lin_bound_meaning both encode Lin 1976 result (f(2,2) ≤ 254) — deep, appropriate",
@@ -66,9 +66,9 @@
     {
       "path": "Proofs/Erdos404Problem.lean",
       "filename": "Erdos404Problem.lean",
-      "lineCount": 97,
-      "theoremCount": 2,
-      "axiomCount": 4,
+      "lineCount": 117,
+      "theoremCount": 3,
+      "axiomCount": 3,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
