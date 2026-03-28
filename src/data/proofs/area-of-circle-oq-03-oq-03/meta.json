@@ -1,0 +1,85 @@
+{
+  "id": "area-of-circle-oq-03-oq-03",
+  "title": "Method of Exhaustion for Ellipses and Parabolas",
+  "slug": "area-of-circle-oq-03-oq-03",
+  "description": "Generalizes Archimedes' method of exhaustion to ellipses (via affine scaling from circles) and parabolic segments (via geometric series 1 + 1/4 + 1/16 + ... = 4/3). Proves convergence rates and the general exhaustion principle.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ03.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "method of exhaustion",
+      "Archimedes",
+      "convergence"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 185,
+    "assumptions": "None. All results proved from Mathlib.",
+    "theoremCount": 14,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Archimedes used the method of exhaustion to compute the area of a circle (πr²) and a parabolic segment (4/3 of the inscribed triangle). The method was later generalized by Cavalieri and others, eventually leading to integral calculus. The question of whether the same technique applies to other curves is fundamental to the history of analysis.",
+    "problemStatement": "Can the method of exhaustion be generalized to other curves (ellipses, parabolas)?",
+    "text": "Proves that the method of exhaustion generalizes to ellipses via affine scaling and to parabolic segments via Archimedes' geometric series.",
+    "proofStrategy": "For ellipses: the affine scaling (x,y) → (ax,by) transforms the unit circle to an ellipse, multiplying area by ab. For parabolas: Archimedes' key insight that each exhaustion step fills 1/4 of the remaining area, giving a geometric series summing to 4/3.",
+    "keyInsights": [
+      "Ellipse area = ab · circle area via Jacobian of affine scaling",
+      "Parabolic area follows from geometric series 1 + 1/4 + 1/16 + ... = 4/3",
+      "The general exhaustion principle: geometric convergence C·r^n → 0 for 0 < r < 1",
+      "Archimedes' parabolic result predates integral calculus by ~2000 years"
+    ],
+    "prerequisites": [
+      "Real analysis (geometric series, convergence)",
+      "Measure theory (basic area concepts)",
+      "Classical geometry (inscribed polygons, parabolic segments)"
+    ]
+  },
+  "conclusion": {
+    "summary": "YES, the method of exhaustion generalizes to ellipses and parabolas. For ellipses, the circle exhaustion scales via the Jacobian. For parabolas, Archimedes' triangle exhaustion gives exponential convergence with ratio 1/4.",
+    "implications": "The exhaustion principle is universal: any geometric shape whose inscribed approximations converge geometrically can have its area computed by this method. This unifies circle, ellipse, and parabola area computations.",
+    "openQuestions": [
+      "Can the method be extended to surfaces of revolution (sphere, ellipsoid)?",
+      "What is the optimal convergence rate for ellipse exhaustion by inscribed polygons?",
+      "Can Archimedes' spiral area computation be formalized similarly?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "AreaOfCircleOQ03OQ03",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "extends",
+      "description": "Generalizes the circle exhaustion method to ellipses and parabolas"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-01",
+      "relationship": "related",
+      "description": "OQ03-OQ01 proves convergence rates for circle; this extends to other curves"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The original circle area proof that this generalizes"
+    }
+  ]
+}

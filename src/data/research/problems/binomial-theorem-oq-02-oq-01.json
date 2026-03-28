@@ -1,7 +1,7 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01",
   "title": "Can the multinomial distribution and its moment-generating function be formal...",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,22 +16,41 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-28T15:56:28-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Formalized multinomial distribution PMF, normalization, MGF, binomial connection",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 12 theorems, 0 axioms, 0 sorries. Multinomial PMF, normalization via multinomial theorem, MGF formula, binomial connection.",
+    "builtItems": [
+      "multinomialProb: PMF definition for multinomial distribution",
+      "multinomialProb_nonneg: nonnegativity of probabilities",
+      "multinomialProb_sum_eq_one: normalization via multinomial theorem",
+      "multinomial_weighted_sum: general weighted sum formula",
+      "multinomial_mgf_factored: factored MGF showing P(k) * weight(k) structure",
+      "multinomial_mgf_real: MGF over reals",
+      "multinomialProb_uniform_sum: uniform distribution normalization",
+      "multinomial_is_binomial: 2-outcome = binomial distribution",
+      "binomial_normalization: (1-p+p)^n = 1",
+      "fair_coin_three_flips: concrete example",
+      "multinomial_count: |s|^n counting identity"
+    ],
+    "insights": [
+      "The multinomial theorem IS the normalization proof for the multinomial distribution",
+      "The MGF formula is just the multinomial theorem with f(i) = p(i)*exp(t(i))",
+      "(p*g)^k = p^k * g^k factorization separates probability from expectation",
+      "Binomial distribution is Bool-indexed multinomial",
+      "Mathlib has PMF, MGF, multinomial coefficients but NOT multinomial distribution as PMF",
+      "All proofs are axiom-free - pure Mathlib derivations"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: binomial-theorem-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -56,114 +75,15 @@
   "lastUpdate": "2026-03-28T22:57:01.613Z",
   "leanFiles": [
     {
-      "path": "Proofs/BinomialTheorem.lean",
-      "filename": "BinomialTheorem.lean",
-      "lineCount": 177,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheorem.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ01.lean",
-      "filename": "BinomialTheoremOQ01.lean",
-      "lineCount": 265,
-      "theoremCount": 17,
+      "path": "Proofs/BinomialTheoremOQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ01Aristotle.lean",
-      "filename": "BinomialTheoremOQ01Aristotle.lean",
-      "lineCount": 112,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ01OQ01.lean",
-      "filename": "BinomialTheoremOQ01OQ01.lean",
-      "lineCount": 221,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ02.lean",
-      "filename": "BinomialTheoremOQ02.lean",
-      "lineCount": 281,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ03.lean",
-      "filename": "BinomialTheoremOQ03.lean",
-      "lineCount": 589,
-      "theoremCount": 33,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ03OQ02.lean",
-      "filename": "BinomialTheoremOQ03OQ02.lean",
-      "lineCount": 216,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ04.lean",
-      "filename": "BinomialTheoremOQ04.lean",
-      "lineCount": 196,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ04OQ01.lean",
-      "filename": "BinomialTheoremOQ04OQ01.lean",
-      "lineCount": 300,
-      "theoremCount": 14,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01.lean"
-    },
-    {
-      "path": "Proofs/BinomialTheoremOQ04OQ02.lean",
-      "filename": "BinomialTheoremOQ04OQ02.lean",
-      "lineCount": 112,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01.lean"
     }
   ]
 }

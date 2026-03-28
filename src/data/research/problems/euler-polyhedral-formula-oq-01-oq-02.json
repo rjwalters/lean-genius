@@ -1,7 +1,7 @@
 {
   "slug": "euler-polyhedral-formula-oq-01-oq-02",
   "title": "Can the Four Color Theorem (Gonthier 2005 Coq proof) be re-formalized in Lean...",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,25 +16,35 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-28T15:56:29-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-29T01:15:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Survey: 4CT needs ~43K lines. Proved small cases.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 6 theorems, 0 axioms. 4CT is ~43K lines. Starting points: planar graphs + 5CT.",
+    "builtItems": [
+      "colorable_of_le: monotonicity of colorability",
+      "four_colorable_small: 4CT for ≤4 vertices",
+      "four_colorable_of_bipartite: bipartite→4-colorable",
+      "colorable_of_fintype: n vertices→n-colorable"
+    ],
+    "insights": [
+      "Gonthier Coq proof ~60K lines, Lean estimate ~43K with native_decide",
+      "Planar graph formalization is main missing piece",
+      "Five Color Theorem (~2000 lines) is feasible intermediate",
+      "native_decide could replace computational kernel"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": ""
   },
   "tags": [],
   "relatedProofs": [
@@ -50,15 +60,14 @@
   "lastUpdate": "2026-03-28T22:57:01.614Z",
   "leanFiles": [
     {
-      "path": "Proofs/EulerPolyhedralFormula.lean",
-      "filename": "EulerPolyhedralFormula.lean",
-      "lineCount": 1093,
-      "theoremCount": 65,
-      "axiomCount": 1,
-      "defCount": 27,
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 140,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+      "isAristotle": false
     }
   ]
 }
