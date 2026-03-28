@@ -29,17 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated lower_half_also_half axiom (4A→3A). Proved sum_partition + limit arithmetic.",
+    "progressSummary": "PROGRESS: Eliminated ratio_converges_to_half axiom (3A→2A). Proved via log log n → ∞ and ε-δ argument.",
     "builtItems": [
       "PROVED heuristic_half_fraction from upper_half_count (6A→5A)",
       "sum_partition: mertensSum = upperHalfSum + lowerHalfSum",
-      "lower_half_also_half: proved from partition + ε/2 triangle inequality"
+      "lower_half_also_half: proved from partition + ε/2 triangle inequality",
+      "PROVED ratio_converges_to_half: axiom→theorem via Tendsto log log atTop + numerator/denominator bounds (3A→2A)"
     ],
     "insights": [
       "heuristic_half_fraction follows from upper_half_count + Nat.cast_div. 6A→5A.",
       "sum_partition proved via Finset.sum_filter_add_sum_filter_not on primes split by isUpperHalfResidue",
       "lower_half_also_half: triangle inequality on limits (ε/2 + ε/2 = ε) from mertens + conjecture",
-      "Remaining 3A: mertens_theorem (deep), erdos_726_conjecture (open), ratio_converges_to_half (derivable but needs limit division)"
+      "Remaining 3A: mertens_theorem (deep), erdos_726_conjecture (open), ratio_converges_to_half (derivable but needs limit division)",
+      "ratio_converges_to_half proved: rewrite ratio diff as (2·upper - mertens)/(2·mertens), bound numerator < 3 from axioms, denominator → ∞ from log log growth",
+      "Remaining 2A: mertens_theorem (deep but possibly in Mathlib), erdos_726_conjecture (open conjecture - cannot be eliminated)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -59,16 +62,16 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:29:39.409Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-27T05:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos726Problem.lean",
       "filename": "Erdos726Problem.lean",
-      "lineCount": 248,
-      "theoremCount": 16,
-      "axiomCount": 3,
+      "lineCount": 284,
+      "theoremCount": 17,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
