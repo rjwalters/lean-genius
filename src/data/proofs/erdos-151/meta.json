@@ -20,8 +20,8 @@
     "erdosNumber": 151,
     "erdosUrl": "https://erdosproblems.com/151",
     "erdosProblemStatus": "open",
-    "axiomCount": 16,
-    "assumptions": "16 axioms encoding graph-theoretic predicates and their properties. 2 former axioms proved: erdos_151_K4free_open (trivially True), erdos_151_triangle_free (from triangleFreeIndep_spec + complement_of_indep_is_transversal).",
+    "axiomCount": 12,
+    "assumptions": "12 axioms encoding graph-theoretic predicates and their properties. 4 unused axioms removed (IsClique, cliqueTransversal_spec, triangleFree_isK4Free, IsK4Free). Remaining axioms: vertexCount, IsMaximalClique, IsIndependent, IsTriangleFree (graph predicates) + cliqueTransversal, cliqueTransversal_min, triangleFreeIndep, triangleFreeIndep_spec, triangleFreeIndep_sqrt, triangleFreeIndep_le, complement_of_indep_is_transversal, clique_transversal_easy_bound.",
     "prerequisites": [
       "Graph theory basics (cliques, independent sets)",
       "Ramsey theory (R(3,t) bounds)",

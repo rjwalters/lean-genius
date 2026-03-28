@@ -30,9 +30,6 @@ namespace Erdos151
 /-- Number of vertices of a graph. -/
 axiom vertexCount : Type → ℕ
 
-/-- A set of vertices is a clique. -/
-axiom IsClique : Type → Finset ℕ → Prop
-
 /-- A clique is maximal (not contained in a larger clique). -/
 axiom IsMaximalClique : Type → Finset ℕ → Prop
 
@@ -41,9 +38,6 @@ axiom IsIndependent : Type → Finset ℕ → Prop
 
 /-- The graph is triangle-free. -/
 axiom IsTriangleFree : Type → Prop
-
-/-- The graph is K₄-free (no complete subgraph on 4 vertices). -/
-axiom IsK4Free : Type → Prop
 
 /- ## Part II: Clique Transversal Number -/
 
@@ -54,10 +48,6 @@ def IsCliqueTransversal (G : Type) (T : Finset ℕ) : Prop :=
 
 /-- τ(G): the minimum clique transversal size. -/
 axiom cliqueTransversal : Type → ℕ
-
-/-- τ(G) is achievable: there exists a transversal of this size. -/
-axiom cliqueTransversal_spec (G : Type) :
-    ∃ T : Finset ℕ, T.card = cliqueTransversal G ∧ IsCliqueTransversal G T
 
 /-- τ(G) is minimal: no smaller transversal exists. -/
 axiom cliqueTransversal_min (G : Type) (T : Finset ℕ)
@@ -116,10 +106,6 @@ theorem conjecture_implies_easy_bound
   have h2 := triangleFreeIndep_sqrt n
   omega
 
-/-- Triangle-free graphs are K₄-free. -/
-axiom triangleFree_isK4Free (G : Type) (h : IsTriangleFree G) :
-    IsK4Free G
-
 /-- An independent set provides a transversal of the complement vertices.
     If I is an independent set in G, then V \ I contains a vertex
     from every maximal clique (since no clique is fully inside I). -/
@@ -159,17 +145,8 @@ theorem erdos_151_triangle_free (G : Type) (n : ℕ)
     _ ≤ n - I.card := hT_card
     _ ≤ n - triangleFreeIndep n := by omega
 
-/-- Even the K₄-free case remains open. -/
-theorem erdos_151_K4free_open :
-    -- This is a statement that the K₄-free restriction doesn't make
-    -- the conjecture easy; formalized as: IF K₄-free implies the bound,
-    -- then a non-trivial argument is needed.
-    (∀ (G : Type) (n : ℕ), vertexCount G = n → IsK4Free G →
-      cliqueTransversal G ≤ n - triangleFreeIndep n) →
-    -- (This implication is stated but not proved; Erdős and Gallai
-    --  were unable to make progress even in this restricted case.)
-    True := by
-  tauto
+/- Note: Even the K₄-free restriction of the conjecture remains open.
+   Erdős and Gallai were unable to make progress even in this case. -/
 
 /- ## Part VII: Corollaries and Summary -/
 
