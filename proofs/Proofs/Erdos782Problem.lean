@@ -104,8 +104,30 @@ def Question1 : Prop :=
 def Question1Weak : Prop :=
   ∀ k : ℕ, ∃ C : ℕ, ContainsQuasiProg Squares C k
 
--- The weak version is trivially true for each fixed k
--- The strong version (uniform C) is the real question
+-- The strong version (uniform C) is the real question.
+-- The weak version is trivially true: consecutive squares (i+1)² form quasi-progs.
+
+/-- Q1 (uniform C) implies Q1Weak (C may depend on k). -/
+theorem question1_implies_question1Weak : Question1 → Question1Weak :=
+  fun ⟨C, hC⟩ k => ⟨C, hC k⟩
+
+/-- The weak formulation is trivially true: consecutive squares {1²,2²,...,k²}
+    form a quasi-progression with d=3, C=2k. Gaps are (i+2)²-(i+1)²=2i+3,
+    ranging from 3 to 2k-1. -/
+theorem question1Weak_true : Question1Weak := by
+  intro k
+  use 2 * k, fun i => (i + 1) ^ 2, 3
+  refine ⟨⟨by omega, ?_, ?_⟩, ?_⟩
+  · -- Strictly increasing: (i+1)² < (i+2)²
+    intro i _
+    nlinarith
+  · -- Gaps bounded: 3 ≤ (i+2)²-(i+1)² ≤ 3+2k
+    intro i hi
+    have hgap : (i + 1 + 1) ^ 2 = (i + 1) ^ 2 + (2 * i + 3) := by ring
+    constructor <;> omega
+  · -- All elements are squares
+    intro i _
+    exact ⟨i + 1, rfl⟩
 
 /-
 # Part 4: Combinatorial Cubes
@@ -182,9 +204,10 @@ Under the Bombieri-Lang conjecture, Q2 has a negative answer.
     general type defined over ℚ, the set of rational points is not
     Zariski dense. Formalized as: for all d ≥ 2, the rational points on
     "generic" degree-d hypersurfaces in ℙⁿ are contained in finitely
-    many proper subvarieties. We axiomatize this as an abstract Prop
-    since the full algebraic geometry machinery is beyond Mathlib. -/
-axiom BombieriLangConjecture : Prop
+    many proper subvarieties. We use `opaque` rather than `axiom` since
+    this merely names an unspecified Prop (it does not assert truth or
+    falsity); the full algebraic geometry machinery is beyond Mathlib. -/
+opaque BombieriLangConjecture : Prop := True
 
 -- Under Bombieri-Lang, squares contain no large cubes
 axiom cilleruelo_granville :
@@ -270,20 +293,31 @@ theorem erdos_782_question2 :
 **Proved Theorems (0 sorries)**:
 - squares_contain_3AP: {1, 25, 49} = {1², 5², 7²} is a 3-term AP (d=24) [was axiom]
 - squares_contain_2cube: {0, 9, 16, 25} = {0², 3², 4², 5²} is a 2-cube (Pythagorean triple)
+- question1Weak_true: consecutive squares form quasi-progressions (Q1Weak trivially true)
+- question1_implies_question1Weak: Q1 → Q1Weak (quantifier swap)
 - no_cubes_implies_no_quasiprog: ¬Q2 → ¬Q1 (contrapositive)
 - conditional_q2_negative: Bombieri-Lang → ¬Q2
 - solymosi_equiv: Solymosi conjecture equivalence
 - erdos_782_question1/question2: definitional unfoldings
 
-**Axioms (4)**:
-- no_4AP_in_squares: classical (Euler descent / Fermat for quartics)
+**Axioms (3)**:
+- no_4AP_in_squares: classical — reducible to `not_fermat_42` from Mathlib.FLT.Four
 - question1_implies_question2: combinatorial (Ramsey-type argument)
-- BombieriLangConjecture: open conjecture in algebraic geometry
 - cilleruelo_granville: conditional result [CiGr07]
+
+**Opaque Constants (1)**:
+- BombieriLangConjecture: open conjecture in algebraic geometry (opaque Prop, not an axiom)
 
 **Key Improvements**:
 - Eliminated `squares_contain_3AP` axiom by explicit construction
 - Proved `squares_contain_2cube`: Pythagorean triple gives concrete 2-cube in squares
+- Converted `BombieriLangConjecture` from axiom to opaque (not a mathematical assumption)
+- Proved Q1Weak (weak quasi-progression existence) via consecutive squares construction
+
+**Next target**: `no_4AP_in_squares` can be proved via Mathlib's `not_fermat_42`
+(a⁴+b⁴≠c² for nonzero a,b). The reduction: from 2q²=p²+r² and 2r²=q²+s²,
+parameterize via Pythagorean triples (α,β,q) and (γ,δ,r) with αβ=γδ,
+then derive a solution to x⁴+y⁴=z² contradicting `not_fermat_42`.
 
 References:
 - Brown, Erdős, Freedman [BEF90]: posed the problem
