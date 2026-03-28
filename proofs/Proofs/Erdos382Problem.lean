@@ -313,8 +313,27 @@ def cramersConjecture : Prop :=
     (∀ r, p < r → r < q → ¬r.Prime) →
     (q - p : ℝ) ≤ C * (Real.log p) ^ 2
 
-/-- Under Cramér's conjecture, Question 1 is true. -/
-axiom cramer_implies_q1 : cramersConjecture → question1
+/-- Under Cramér's conjecture, Question 1 is true.
+    Proof: the condition forces no primes > √v in [u,v] (by no_prime_in_upper_half).
+    For large v under Cramér, u must exceed √v (else [√v,v] is a prime-free gap of
+    length ≈ v, contradicting the O((log v)²) gap bound). So [u,v] lies within a
+    single Cramér gap of length ≤ C(log v)², which is < v^ε for large v. -/
+theorem cramer_implies_q1 : cramersConjecture → question1 := by
+  intro ⟨C, hC, hcramer⟩ ε hε
+  -- Find V₁ where C(log v)² < v^ε (standard: log² = o(v^ε))
+  obtain ⟨V₁, hV₁⟩ : ∃ V₁ : ℕ, ∀ v : ℕ, v ≥ V₁ →
+      C * (Real.log ↑v) ^ 2 < (v : ℝ) ^ ε := by
+    sorry -- Standard growth rate: C(log v)² = o(v^ε), via isLittleO_log_rpow_atTop
+  -- Find V₂ where v - √v > C(log v)² (eliminates u ≤ √v case)
+  obtain ⟨V₂, hV₂⟩ : ∃ V₂ : ℕ, ∀ v : ℕ, v ≥ V₂ →
+      (v : ℝ) - Real.sqrt ↑v > C * (Real.log ↑v) ^ 2 := by
+    sorry -- Standard: v - √v ~ v dominates C(log v)²
+  use max (max V₁ V₂) 4
+  intro u v hv hcond
+  obtain ⟨huv, hu, _⟩ := hcond
+  have hno_large := no_prime_in_upper_half u v hu huv hcond
+  -- Combine: the interval is within a Cramér gap, giving v - u ≤ C(log v)² < v^ε
+  sorry -- Case split u vs √v + Cramér gap bound + growth comparison
 
 /- ## Part VIII: Examples -/
 
