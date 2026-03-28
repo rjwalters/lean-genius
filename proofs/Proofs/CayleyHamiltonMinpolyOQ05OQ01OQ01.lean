@@ -46,11 +46,35 @@ def IsNonderogatory (M : Matrix (Fin n) (Fin n) K) : Prop :=
 theorem card_normalizedFactors_le_natDegree {p : K[X]}
     (hp : p ≠ 0) :
     (UniqueFactorizationMonoid.normalizedFactors p).toFinset.card ≤ p.natDegree := by
-  -- Each normalized factor has degree ≥ 1 (since irreducible polynomials have degree ≥ 1)
-  -- The product of the factors equals p (up to units)
-  -- Sum of degrees = degree of p
-  -- Since each factor contributes degree ≥ 1, the number of factors ≤ degree
-  sorry
+  -- Step 1: distinct ≤ total count
+  refine le_trans (Multiset.toFinset_card_le _) ?_
+  -- Step 2: each irreducible factor has degree ≥ 1
+  have hirr : ∀ q ∈ UniqueFactorizationMonoid.normalizedFactors p, 1 ≤ q.natDegree := by
+    intro q hq
+    have := (UniqueFactorizationMonoid.prime_of_normalized_factor q hq).irreducible
+    exact Nat.one_le_iff_ne_zero.mpr (Irreducible.natDegree_pos this |>.ne')
+  -- Step 3: count ≤ sum of degrees via multiset induction
+  have hcard_le_sum :
+      (UniqueFactorizationMonoid.normalizedFactors p).card ≤
+      ((UniqueFactorizationMonoid.normalizedFactors p).map Polynomial.natDegree).sum := by
+    induction UniqueFactorizationMonoid.normalizedFactors p using Multiset.induction_on with
+    | empty => simp
+    | cons a s ih =>
+      simp only [Multiset.card_cons, Multiset.map_cons, Multiset.sum_cons]
+      have ha : 1 ≤ a.natDegree := hirr a (Multiset.mem_cons_self a s)
+      have hs : s.card ≤ (s.map Polynomial.natDegree).sum :=
+        ih (fun q hq => hirr q (Multiset.mem_cons_of_mem hq))
+      omega
+  -- Step 4: sum of degrees = natDegree of product = natDegree p
+  have hne : ∀ q ∈ UniqueFactorizationMonoid.normalizedFactors p, q ≠ (0 : K[X]) :=
+    fun q hq => UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hq
+  have hprod := UniqueFactorizationMonoid.normalizedFactors_prod hp
+  calc (UniqueFactorizationMonoid.normalizedFactors p).card
+      ≤ ((UniqueFactorizationMonoid.normalizedFactors p).map Polynomial.natDegree).sum :=
+        hcard_le_sum
+    _ = (UniqueFactorizationMonoid.normalizedFactors p).prod.natDegree :=
+        (Polynomial.natDegree_multiset_prod hne).symm
+    _ = p.natDegree := by rw [hprod, Polynomial.natDegree_normalize]
 
 -- ============================================================
 -- SECTION III: Finite Union Avoidance
@@ -65,9 +89,13 @@ theorem not_union_proper_subspaces_finite
     (hS : ∀ i ∈ s, S i ≠ ⊤)
     (hK : s.card < Fintype.card K) [Fintype K] :
     ∃ v : V, ∀ i ∈ s, v ∉ S i := by
-  -- The proof follows the same line argument as the infinite case
-  -- but counts: each proper subspace intersects a line in at most 1 point,
-  -- so we need |K| > |s| bad parameters on the line
+  -- Proof by Finset.induction_on:
+  -- Base: |s| = 0, any vector works.
+  -- Step: remove i₀ from s, get v ∉ S_j for j ∈ s'. If v ∉ S_{i₀}, done.
+  --   Otherwise pick w ∉ S_{i₀}. On the line v + t•w (t ∈ K):
+  --   - For each j ∈ s' (v ∉ S_j): at most 1 bad t (by linear independence)
+  --   - For i₀ (v ∈ S_{i₀}, w ∉ S_{i₀}): only t = 0 is bad
+  --   Total bad: ≤ |s'| + 1 = |s| < |K|, so good t exists.
   sorry
 
 -- ============================================================
