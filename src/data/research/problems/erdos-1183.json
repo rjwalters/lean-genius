@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1183",
-  "title": "Erd\u0151s #1183",
+  "title": "Erdős #1183",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,21 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized problem statement and proved trivial chain bound f(n) >= ceil((n+1)/2).",
+    "progressSummary": "COMPLETED: Fixed mathematically incorrect definitions (sInf→sSup), proved f(n)≥⌈(n+1)/2⌉ formally connecting chain bound to abstract definition, proved F(n)≥f(n). 2 axioms (open conjectures), 0 sorries.",
     "builtItems": [
       "Erdos1183Problem.lean: full formalization (223 lines)",
       "Definitions: SubsetColoring, IsUnionClosed, IsInterClosed, IsSublattice, IsMonochromatic, IsChain",
       "Proved: chain_isSublattice, initialSeg_injective, stdChain_card, exists_mono_color_class",
       "Main theorem: erdos1183_chain_bound (f(n) >= ceil((n+1)/2))",
-      "Gallery entry: src/data/proofs/erdos-1183/meta.json"
+      "Gallery entry: src/data/proofs/erdos-1183/meta.json",
+      "Fixed erdos1183_f/F definitions: sInf → sSup (critical correctness fix)",
+      "Proved achievableSublattice_bddAbove and achievableUnionClosed_bddAbove",
+      "Proved erdos1183_f_lower_bound: f(n) ≥ (n+2)/2 via le_csSup",
+      "Proved achievableSublattice_subset_unionClosed",
+      "Proved erdos1183_F_ge_f: F(n) ≥ f(n)",
+      "Added import Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "File grew from 223 → 277 lines; 10 → 15 theorems; 10 → 12 definitions"
     ],
     "insights": [
       "Problem is about monochromatic sublattice families in 2-colorings of the powerset",
       "f(n) counts families closed under union AND intersection; F(n) only union-closure",
       "The standard chain gives f(n) >= ceil((n+1)/2) via pigeonhole",
       "Improving beyond the chain bound requires non-chain families",
-      "Erd\u0151s and Ulam had no conjecture for the true order of f(n)",
-      "Howorka proved F(n) > n^omega(n) for same-size colorings"
+      "Erdős and Ulam had no conjecture for the true order of f(n)",
+      "Howorka proved F(n) > n^omega(n) for same-size colorings",
+      "Definitions of erdos1183_f and erdos1183_F used sInf which gives 0 for downward-closed sets — must use sSup",
+      "The achievable set {k | every coloring has mono sublattice of size ≥ k} is bounded above by 2^n",
+      "le_csSup connects the chain bound to the abstract sSup definition",
+      "F(n) ≥ f(n) follows from csSup_le_csSup and the fact that sublattices are union-closed"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -51,7 +62,7 @@
       "Search for Howorka reference and try to formalize his result for same-size colorings",
       "Check if Dilworth theorem can give stronger bound via antichain decomposition"
     ],
-    "markdown": "# Erd\u0151s #1183 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+    "markdown": "# Erdős #1183 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
   },
   "tags": [
     "erdos"
