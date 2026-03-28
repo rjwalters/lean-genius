@@ -66,11 +66,14 @@ noncomputable def seriesTerm (a : IncreasingSeq) (n : ℕ) : ℝ :=
 noncomputable def partialSum (a : IncreasingSeq) (n : ℕ) : ℝ :=
   ∑ i in Finset.range n, seriesTerm a i
 
-/-- The series converges absolutely for any increasing sequence. -/
+/-- The series converges for any increasing sequence.
+    Proof strategy: seriesTerm a n = f(a.seq n) where f(k) = k/2^k. Since
+    a.seq is injective (strictly monotone) and ∑ f(k) converges (standard),
+    the subseries ∑ f(a.seq n) converges.
+    Alternatively: all terms ≥ 0 (monotone partial sums) and bounded above
+    by ∑ k/2^k = 2 (since a.seq hits each natural at most once). -/
 theorem series_converges (a : IncreasingSeq) :
     ∃ S : ℝ, Tendsto (partialSum a) atTop (𝓝 S) := by
-  -- Each term aₙ/2^{aₙ} → 0 rapidly since 2^n grows faster than n
-  -- The series is dominated by ∑ n/2^n which converges
   sorry
 
 /-- The limit of the series. -/
