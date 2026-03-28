@@ -89,14 +89,67 @@ theorem not_union_proper_subspaces_finite
     (hS : ∀ i ∈ s, S i ≠ ⊤)
     (hK : s.card < Fintype.card K) [Fintype K] :
     ∃ v : V, ∀ i ∈ s, v ∉ S i := by
-  -- Proof by Finset.induction_on:
-  -- Base: |s| = 0, any vector works.
-  -- Step: remove i₀ from s, get v ∉ S_j for j ∈ s'. If v ∉ S_{i₀}, done.
-  --   Otherwise pick w ∉ S_{i₀}. On the line v + t•w (t ∈ K):
-  --   - For each j ∈ s' (v ∉ S_j): at most 1 bad t (by linear independence)
-  --   - For i₀ (v ∈ S_{i₀}, w ∉ S_{i₀}): only t = 0 is bad
-  --   Total bad: ≤ |s'| + 1 = |s| < |K|, so good t exists.
-  sorry
+  -- Adapted from the infinite-field proof in CayleyHamiltonMinpolyOQ05OQ01.lean
+  -- The only change: use |K| > |s| (finite) instead of Infinite K
+  induction s using Finset.induction_on with
+  | empty =>
+    obtain ⟨v, _⟩ := exists_pair_ne V
+    exact ⟨v, fun _ h => absurd h (Finset.notMem_empty _)⟩
+  | @insert k s' hk ih =>
+    have hS' : ∀ i ∈ s', S i ≠ ⊤ := fun i hi => hS i (Finset.mem_insert_of_mem hi)
+    have hK' : s'.card < Fintype.card K := by
+      have := Finset.card_insert_of_notMem hk; omega
+    obtain ⟨w, hw⟩ := ih hS' hK'
+    have hk_proper := hS k (Finset.mem_insert_self k s')
+    have ⟨v, hv⟩ : ∃ v : V, v ∉ S k := by
+      by_contra h; push_neg at h
+      exact hk_proper (eq_top_iff.mpr fun x _ => h x)
+    by_cases hw_k : w ∉ S k
+    · exact ⟨w, fun i hi => by
+        rw [Finset.mem_insert] at hi
+        rcases hi with rfl | hi
+        · exact hw_k
+        · exact hw i hi⟩
+    · -- w ∈ S k, v ∉ S k. The line v + t•w avoids S k for all t.
+      push_neg at hw_k
+      have h_no_k : ∀ t : K, v + t • w ∉ S k := by
+        intro t ht
+        have : v ∈ S k := by
+          have := (S k).sub_mem ht ((S k).smul_mem t hw_k)
+          rwa [show v + t • w - t • w = v by abel] at this
+        exact hv this
+      -- For each j ∈ s', the bad parameter set {t | v + t•w ∈ S j} is subsingleton
+      have h_bad_finite : Set.Finite (⋃ i ∈ s', {t : K | v + t • w ∈ S i}) := by
+        apply Set.Finite.biUnion s'.finite_toSet
+        intro i hi
+        apply Set.Subsingleton.finite
+        intro t₁ ht₁ t₂ ht₂
+        simp only [Set.mem_setOf_eq] at ht₁ ht₂
+        by_contra hne
+        have hsub : (t₁ - t₂) • w ∈ S i := by
+          have := (S i).sub_mem ht₁ ht₂
+          rwa [show (v + t₁ • w) - (v + t₂ • w) = (t₁ - t₂) • w by module] at this
+        have : w ∈ S i := by
+          have := (S i).smul_mem (t₁ - t₂)⁻¹ hsub
+          simp [sub_ne_zero.mpr hne] at this; exact this
+        exact (hw i hi) this
+      -- |bad set| ≤ |s'| < |K|, so there's a good t
+      have h_bad_ne_univ : (⋃ i ∈ s', {t : K | v + t • w ∈ S i}) ≠ Set.univ := by
+        intro h_eq
+        -- The finite biUnion of ≤|s'| subsingleton sets has ≤ |s'| elements
+        -- But h_eq says it equals Set.univ which has |K| > |s'| elements
+        have h_fin_univ : (Set.univ : Set K).Finite := Set.finite_univ
+        have h_card_univ : h_fin_univ.toFinset.card = Fintype.card K := by
+          simp [Set.Finite.toFinset_eq_toFinset]
+        rw [h_eq] at h_bad_finite
+        sorry -- Card of biUnion of |s'| subsingleton sets ≤ |s'| < |K| = card univ
+      obtain ⟨t, ht⟩ := Set.nonempty_compl.mpr h_bad_ne_univ
+      rw [Set.mem_compl_iff, Set.mem_iUnion₂] at ht; push_neg at ht
+      exact ⟨v + t • w, fun i hi => by
+        rw [Finset.mem_insert] at hi
+        rcases hi with rfl | hi
+        · exact h_no_k t
+        · exact ht i hi⟩
 
 -- ============================================================
 -- SECTION IV: Main Theorem (Weakened Hypothesis)
