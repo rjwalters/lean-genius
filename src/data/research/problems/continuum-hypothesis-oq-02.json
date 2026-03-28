@@ -62,16 +62,16 @@
       "8 axioms kept minimal: Konig, Easton, cardinal char bounds, MA, and aleph_omega cofinality",
       "Cardinal.cof_aleph gives cofinality of aleph at limit ordinals from Mathlib",
       "bounding_le_dominating provable via le_ciInf + ciInf_le using dominating_implies_unbounded",
-      "easton_regular_consistency had conclusion True \u2014 axiom was vacuous",
-      "MartinsAxiom as axiom Prop pollutes axiom environment \u2014 opaque Prop is cleaner",
-      "konig_cofinality proved from Cardinal.lt_cof_power (K\u00f6nig consequence in Mathlib)",
+      "easton_regular_consistency had conclusion True — axiom was vacuous",
+      "MartinsAxiom as axiom Prop pollutes axiom environment — opaque Prop is cleaner",
+      "konig_cofinality proved from Cardinal.lt_cof_power (König consequence in Mathlib)",
       "dominating_le_continuum proved trivially: empty set is not dominating so infimum term equals continuum",
-      "Cardinal.lt_cof_power: for \u2135\u2080 \u2264 a and 1 < b, a < (b^a).ord.cof \u2014 directly gives cf(2^\u2135\u2080) > \u2135\u2080",
-      "bounding_number_uncountable: Hausdorff diagonal argument \u2014 standard but requires constructive proof of dominance",
-      "MA_implies_b_eq_continuum: forcing/transfinite recursion \u2014 deep set-theoretic result",
-      "Both remaining axioms are appropriate \u2014 no further elimination possible",
-      "bounding_number_uncountable IS PROVABLE: standard diagonalization. Countable F \u2192 enumerate {f_n} \u2192 g(k)=max{f_i(k):i\u2264k} \u2192 g eventually dominates all f_n",
-      "Proof sketch: le_ciInf, split on IsUnbounded. For unbounded F with mk F < \u2135\u2081, get countable enum, construct diagonal g, show g bounds F. Contradiction.",
+      "Cardinal.lt_cof_power: for ℵ₀ ≤ a and 1 < b, a < (b^a).ord.cof — directly gives cf(2^ℵ₀) > ℵ₀",
+      "bounding_number_uncountable: Hausdorff diagonal argument — standard but requires constructive proof of dominance",
+      "MA_implies_b_eq_continuum: forcing/transfinite recursion — deep set-theoretic result",
+      "Both remaining axioms are appropriate — no further elimination possible",
+      "bounding_number_uncountable IS PROVABLE: standard diagonalization. Countable F → enumerate {f_n} → g(k)=max{f_i(k):i≤k} → g eventually dominates all f_n",
+      "Proof sketch: le_ciInf, split on IsUnbounded. For unbounded F with mk F < ℵ₁, get countable enum, construct diagonal g, show g bounds F. Contradiction.",
       "Needs: Cardinal.lt_aleph_one_iff for countability, Finset.sup for pointwise max, Set.Countable.exists_surjective for enumeration",
       "MA_implies_b_eq_continuum is genuinely deep (Martin Axiom machinery)",
       "bounding_number_uncountable proof strategy: for countable F = {f_n}, define g(k) = max(f_0(k),...,f_k(k))+1, then g eventually dominates each f_n",
@@ -80,7 +80,7 @@
     "mathlibGaps": [],
     "nextSteps": [
       "Prove bounding_number_uncountable: countable_not_unbounded via diagonal argument",
-      "Need Set.Countable \u2192 \u2203 enum : \u2115 \u2192 \u03b1, to construct diagonal function"
+      "Need Set.Countable → ∃ enum : ℕ → α, to construct diagonal function"
     ]
   },
   "tags": [

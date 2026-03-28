@@ -1,0 +1,84 @@
+{
+  "slug": "erdos-107-incomplete-01",
+  "title": "Complete proof of Erdos Problem #107: The Happy Ending Problem",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete proof of Erdos Problem #107: The Happy Ending Problem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:57:10.257Z",
+    "iteration": 1,
+    "focus": "Geometric reasoning for convex hull computations",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "BLOCKED: All sorries require geometric reasoning about convex hulls in \u211d\u00b2. Mathlib convexity API makes concrete computations extremely difficult.",
+    "builtItems": [],
+    "insights": [
+      "5 sorries: f_three_eq (duplicate of f_3_value), f_finite, f_3_value, f_4_lb, f_4_ub",
+      "6 axioms: f_four_eq, f_five_eq, ersz_lower_bound, ersz_upper_bound, suk_bound, hmpt_bound",
+      "f_three_eq and f_3_value are DUPLICATES \u2014 both claim f(3) = 3",
+      "f(3) = 3 is trivial (3 non-collinear points form a triangle) but needs convexHull machinery",
+      "If f_4_lb (4 < f(4)) and f_4_ub (f(4) \u2264 5) are proved, axiom f_four_eq becomes redundant",
+      "All proofs require EuclideanSpace, Collinear, convexHull \u2014 heavyweight Mathlib objects",
+      "The definition of InGeneralPosition uses negation of Collinear on 3-element subsets",
+      "CardSet n is the set of N guaranteeing convex n-gons \u2014 f(n) = sInf of this set",
+      "f(3) proof approach: any 3 non-collinear points are automatically in convex position",
+      "f_4_lb proof: exhibit 4 points (triangle + interior point) with no convex quadrilateral",
+      "f_4_ub (Klein): case analysis on convex hull of 5 points (triangle or quad/pent cases)",
+      "All 5 sorries require geometric reasoning about convex hulls in EuclideanSpace \u211d (Fin 2)",
+      "Mathlib convexHull API is abstract \u2014 computing with concrete point configurations is very hard",
+      "f(3)=3 could be proved but requires showing non-collinear points are extreme points of their convex hull",
+      "f_finite requires full Ramsey-theoretic argument (Erd\u0151s-Szekeres 1935)"
+    ],
+    "mathlibGaps": [
+      "Need Collinear for EuclideanSpace \u211d (Fin 2) \u2014 should be in Mathlib.Analysis.InnerProductSpace",
+      "convexHull \u211d for finite point sets in \u211d\u00b2 \u2014 in Mathlib but proof-heavy to work with",
+      "No existing formalization of Erd\u0151s-Szekeres theorem in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove f_3_value : f 3 = 3 (remove duplicate f_three_eq)",
+      "Prove f_4_lb : 4 < f 4 by exhibiting counterexample (triangle + interior point)",
+      "Prove f_4_ub : f 4 \u2264 5 (Klein 1931 \u2014 case analysis on convex hull)",
+      "If f_4_lb + f_4_ub proved, convert f_four_eq from axiom to theorem"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "combinatorial-geometry",
+    "ramsey-theory",
+    "convex-geometry",
+    "incomplete"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-107"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "significance": 6,
+  "tractability": 5
+}

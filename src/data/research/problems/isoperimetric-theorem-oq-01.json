@@ -48,11 +48,44 @@
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "tags": ["seeker-selected"],
-  "relatedProofs": ["isoperimetric-theorem"],
-  "references": {"papers": [], "urls": [], "mathlib": []},
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "isoperimetric-theorem",
+    "isoperimetric-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-03-28T20:05:00Z",
   "lastUpdate": "2026-03-28T20:15:00Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/IsoperimetricTheorem.lean",
+      "filename": "IsoperimetricTheorem.lean",
+      "lineCount": 450,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheorem.lean"
+    },
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ01.lean",
+      "filename": "IsoperimetricTheoremOQ01.lean",
+      "lineCount": 393,
+      "theoremCount": 15,
+      "axiomCount": 4,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ01.lean"
+    }
+  ]
 }

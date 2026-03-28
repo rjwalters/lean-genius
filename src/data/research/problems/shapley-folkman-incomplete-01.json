@@ -1,0 +1,79 @@
+{
+  "slug": "shapley-folkman-incomplete-01",
+  "title": "Complete proof of Shapley-Folkman Lemma",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Complete proof of Shapley-Folkman Lemma.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 2,
+    "focus": "Proof strategy documented, ready for implementation",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Identified key Mathlib theorems (eq_pos_convex_span_of_mem_convexHull), documented proof strategy for all 4 sorries, added exists_minimal_decomposition, created Aristotle companion file. File grew from 158 to 198 lines, 5 to 6 theorems.",
+    "builtItems": [
+      "Added exists_minimal_decomposition (trivial construction of Decomposition from data)",
+      "Added detailed proof strategy documentation for convexHull_not_mem_requires_two",
+      "Documented main proof decomposition: Parts 1-5 with clear strategy for each step",
+      "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search"
+    ],
+    "insights": [
+      "Key Mathlib theorem: eq_pos_convex_span_of_mem_convexHull gives affinely-independent convex combinations with positive weights",
+      "convexHull_not_mem_requires_two follows from eq_pos_convex_span: if card(ι)=0 then sum=0≠1, if card(ι)=1 then x=z₀∈s, both contradictions",
+      "excess_vertices_affine_dependent already proved using AffineIndependent.fintype_card_le_finrank_succ",
+      "Main proof strategy: minimize total Caratheodory vertices, then >d excess indices give affine dependence for contradiction",
+      "Corollaries sum_close_to_convexHull and repeated_sum_nearly_convex follow from main theorem + Minkowski sum algebra",
+      "0 axioms — all sorries are provable theorems (not open conjectures)"
+    ],
+    "mathlibGaps": [
+      "No gap: convexHull Caratheodory representation is fully available via eq_pos_convex_span_of_mem_convexHull",
+      "No gap: AffineIndependent.fintype_card_le_finrank_succ available for dimension bounds",
+      "Possible gap: no direct theorem for Minkowski sum of convex hulls = convex hull of Minkowski sum (may need manual proof)"
+    ],
+    "nextSteps": [
+      "Prove convexHull_not_mem_requires_two using eq_pos_convex_span_of_mem_convexHull from Caratheodory",
+      "Prove shapley_folkman main theorem via minimality + affine dependence argument",
+      "Prove corollaries from main theorem (sum_close_to_convexHull, repeated_sum_nearly_convex)",
+      "Aristotle companion file ready for automated proof search on routine lemmas",
+      "Consider targeting mathlib4#14427 for upstream contribution (see project memory)"
+    ]
+  },
+  "tags": [
+    "convex-analysis",
+    "economics",
+    "combinatorics",
+    "intermediate",
+    "incomplete"
+  ],
+  "relatedProofs": [
+    "shapley-folkman"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "significance": 6,
+  "tractability": 5
+}

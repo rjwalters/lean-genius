@@ -34,7 +34,7 @@
       "Documented proof strategy for zeta_two_transcendental and zeta_four_transcendental"
     ],
     "insights": [
-      "Both sorries reduce to: if p(a^n/c)=0 for c\u2208\u211a\u00d7, construct q(x) = c^d\u00b7p(x^n/c) vanishing at a",
+      "Both sorries reduce to: if p(a^n/c)=0 for c∈ℚ×, construct q(x) = c^d·p(x^n/c) vanishing at a",
       "Key Mathlib tools needed: Transcendental.pow, polynomial composition, IsAlgebraic closure under field ops"
     ],
     "mathlibGaps": [],
@@ -83,7 +83,7 @@
     {
       "path": "Proofs/BaselProblemOQ02Aristotle.lean",
       "filename": "BaselProblemOQ02Aristotle.lean",
-      "lineCount": 54,
+      "lineCount": 59,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,

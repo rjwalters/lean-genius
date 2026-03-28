@@ -64,7 +64,8 @@
     "wiedijk-100"
   ],
   "relatedProofs": [
-    "four-color-theorem"
+    "four-color-theorem",
+    "four-color-theorem-oq-01"
   ],
   "references": {
     "papers": [],
@@ -86,6 +87,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheorem.lean"
+    },
+    {
+      "path": "Proofs/FourColorTheoremOQ01.lean",
+      "filename": "FourColorTheoremOQ01.lean",
+      "lineCount": 459,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheoremOQ01.lean"
     }
   ]
 }

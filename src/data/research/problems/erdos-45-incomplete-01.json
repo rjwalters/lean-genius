@@ -4,11 +4,22 @@
   "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
-  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:25:00Z", "iteration": 1,
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:25:00Z",
+    "iteration": 1,
     "focus": "Assessed — sorry and axioms are all deep results.",
-    "blockers": ["croot_existence: probabilistic method (Croot)", "case_k_2 axiom could be proved computationally but needs reformulation"],
+    "blockers": [
+      "croot_existence: probabilistic method (Croot)",
+      "case_k_2 axiom could be proved computationally but needs reformulation"
+    ],
     "nextAction": "Convert case_k_2 axiom to theorem via finite check",
-    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
   "knowledge": {
     "progressSummary": "SURVEYED: 1 sorry (croot_existence — deep), 3 axioms. The case_k_2 axiom (HasKEgyptianProperty 120 2) is the most tractable: it's a finite combinatorial check over 2^15 colorings of properDivisors(120). But the ∀ c : ℕ → Fin 2 quantifier has infinite domain, requiring reformulation before decide/native_decide.",
     "builtItems": [],
@@ -24,8 +35,21 @@
       "The main sorry (croot_existence) is beyond current formalization capacity"
     ]
   },
-  "tags": ["erdos", "number-theory", "combinatorics", "ramsey-theory", "egyptian-fractions", "incomplete", "seeker-selected"],
-  "relatedProofs": ["erdos-45"],
-  "started": "2026-03-28T20:20:00Z", "lastUpdate": "2026-03-28T20:30:00Z",
-  "significance": 5, "tractability": 6
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "ramsey-theory",
+    "egyptian-fractions",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-45"
+  ],
+  "started": "2026-03-28T20:20:00Z",
+  "lastUpdate": "2026-03-28T20:30:00Z",
+  "significance": 5,
+  "tractability": 6
 }

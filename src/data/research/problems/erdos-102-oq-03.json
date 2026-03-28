@@ -1,13 +1,13 @@
 {
   "slug": "erdos-102-oq-03",
-  "title": "Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen...",
+  "title": "Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen...",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen....",
+    "plain": "Formal mathematical investigation: Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen....",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,18 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed critical Gk definition bug (was K_{k,C(k,2)}, now correct pair graph). Removed 3 unused axioms (7\u21924) and 1 vacuous sorry (4\u21923) from Erdos1021. Proved 5 of 7 companion lemmas. 2 rpow Aristotle targets remain.",
+    "progressSummary": "PROGRESS: Fixed critical Gk definition bug (was K_{k,C(k,2)}, now correct pair graph). Removed 3 unused axioms (7→4) and 1 vacuous sorry (4→3) from Erdos1021. Proved 5 of 7 companion lemmas. 2 rpow Aristotle targets remain.",
     "builtItems": [
       "Assessment: 11A all appropriate, f is opaque",
-      "collinear\u2083_comm: symmetry in last two args",
-      "collinear\u2083_perm12: invariance swapping first two args",
-      "collinear\u2083_self_left: p is collinear with itself and any q",
+      "collinear₃_comm: symmetry in last two args",
+      "collinear₃_perm12: invariance swapping first two args",
+      "collinear₃_self_left: p is collinear with itself and any q",
       "connection_101_for_same_c: proved contrapositive of divergence",
       "Gk_bipartite: proved G_k bipartiteness by case analysis on Sum type (Erdos1021Problem.lean)",
-      "strong_implies_weak: reduced to 1 sorry (rpow decay C*n^{-c}\u21920) via max N argument (Erdos1021Problem.lean)",
+      "strong_implies_weak: reduced to 1 sorry (rpow decay C*n^{-c}→0) via max N argument (Erdos1021Problem.lean)",
       "Erdos1021Aristotle.lean: companion file with 7 routine lemmas for automated proof search",
       "upper_bound_tight_construction2: documented telescoping proof strategy (Erdos1020Problem.lean)",
-      "Gk: corrected definition using {p : Fin k \u00d7 Fin k // p.1 < p.2} vertex type (Erdos1021Problem.lean)",
+      "Gk: corrected definition using {p : Fin k × Fin k // p.1 < p.2} vertex type (Erdos1021Problem.lean)",
       "Gk_bipartite: re-proved for corrected definition (Erdos1021Problem.lean)",
       "choose_succ_sub: proved Pascal subtraction form via Nat.choose_succ_succ (Erdos1021Aristotle.lean)",
       "choose_le_choose_of_le: proved via Nat.choose_le_choose (Erdos1021Aristotle.lean)",
@@ -51,16 +51,16 @@
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
       "Could potentially reduce by defining f from Finset.sup, but would be major rewrite.",
-      "connection_101 axiom is over-strong: states \u2200\u03b5>0 but hypothesis only supports \u03b5\u2265c. The \u2200\u03b5 version requires divergence for all c, not just one.",
+      "connection_101 axiom is over-strong: states ∀ε>0 but hypothesis only supports ε≥c. The ∀ε version requires divergence for all c, not just one.",
       "connection_101_for_same_c: correct provable version via contrapositive with M=5",
-      "collinear\u2083 is preserved under all 6 permutations of 3 points (proved comm and perm12)",
+      "collinear₃ is preserved under all 6 permutations of 3 points (proved comm and perm12)",
       "Erdos1021 Gk_bipartite: 4-way case split on Sum.inl/inr reduces to trivial goals; definitional reduction handles False cases",
-      "strong_implies_weak reduces to showing C*n^{3/2-c} <= eps*n^{3/2} for large n, i.e. n^c >= C/eps \u2014 standard rpow decay",
+      "strong_implies_weak reduces to showing C*n^{3/2-c} <= eps*n^{3/2} for large n, i.e. n^c >= C/eps — standard rpow decay",
       "upper_bound_tight_construction2 proof strategy: induction on k using Pascal C(n+1,r+1)-C(n,r+1)=C(n,r) and Nat.choose monotonicity",
-      "Erdos1021 k3_case_solved needs graph isomorphism invariance of extremal numbers \u2014 not yet formalized",
+      "Erdos1021 k3_case_solved needs graph isomorphism invariance of extremal numbers — not yet formalized",
       "gap_positive_conjecture unprovable: conjecturedGap is opaque axiom, no definitional content to work with",
       "CRITICAL BUG FIXED: Gk was defined as K_{k,C(k,2)} (all cross-edges) instead of the pair graph. Corrected to use subtype {(a,b) : a<b} vertex type with proper adjacency.",
-      "With corrected Gk, G3_is_C6 axiom is now actually TRUE (pair graph G_3 = C_6 via mapping: 0\u2192(0,1)\u21921\u2192(1,2)\u21922\u2192(0,2)\u21920)",
+      "With corrected Gk, G3_is_C6 axiom is now actually TRUE (pair graph G_3 = C_6 via mapping: 0→(0,1)→1→(1,2)→2→(0,2)→0)",
       "Removed weak_conjecture_open (meta-mathematical, not useful), conjecturedGap+gap_positive_conjecture (opaque axiom, vacuous), Gk_from_Hk (unused embedding)"
     ],
     "mathlibGaps": [],
@@ -77,7 +77,7 @@
     "combinatorial-geometry",
     "incidence-geometry",
     "collinearity",
-    "Szemer\u00e9di-Trotter",
+    "Szemerédi-Trotter",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -108,7 +108,7 @@
     {
       "path": "Proofs/Erdos1020Problem.lean",
       "filename": "Erdos1020Problem.lean",
-      "lineCount": 248,
+      "lineCount": 254,
       "theoremCount": 4,
       "axiomCount": 11,
       "defCount": 11,
@@ -117,12 +117,23 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1020Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1021Aristotle.lean",
+      "filename": "Erdos1021Aristotle.lean",
+      "lineCount": 67,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1021Problem.lean",
       "filename": "Erdos1021Problem.lean",
-      "lineCount": 268,
-      "theoremCount": 6,
+      "lineCount": 261,
+      "theoremCount": 5,
       "axiomCount": 4,
-      "defCount": 17,
+      "defCount": 16,
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Problem.lean"
@@ -130,10 +141,10 @@
     {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 1,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 0,
+      "lineCount": 322,
+      "theoremCount": 22,
+      "axiomCount": 3,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
@@ -207,11 +218,11 @@
     {
       "path": "Proofs/Erdos1027Problem.lean",
       "filename": "Erdos1027Problem.lean",
-      "lineCount": 1,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
+      "lineCount": 234,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Problem.lean"
     },
@@ -240,8 +251,8 @@
     {
       "path": "Proofs/Erdos102Problem.lean",
       "filename": "Erdos102Problem.lean",
-      "lineCount": 155,
-      "theoremCount": 5,
+      "lineCount": 197,
+      "theoremCount": 10,
       "axiomCount": 5,
       "defCount": 3,
       "sorryCount": 0,

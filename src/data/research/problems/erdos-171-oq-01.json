@@ -1,13 +1,13 @@
 {
   "slug": "erdos-171-oq-01",
-  "title": "Erd\u0151s #171: Is \u03c7(\u211d\u00b2) = 5, 6, or 7",
+  "title": "Erdős #171: Is χ(ℝ²) = 5, 6, or 7",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Erd\u0151s #171: Is \u03c7(\u211d\u00b2) = 5, 6, or 7.",
+    "plain": "Formal mathematical investigation: Erdős #171: Is χ(ℝ²) = 5, 6, or 7.",
     "whyMatters": []
   },
   "knownResults": {
@@ -21,7 +21,7 @@
     "iteration": 1,
     "focus": "Proved both sorry theorems (lower_bound_4 and de_grey). 0 sorries remain.",
     "blockers": [],
-    "nextAction": "None \u2014 problem completed.",
+    "nextAction": "None — problem completed.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -66,8 +66,8 @@
     {
       "path": "Proofs/Erdos171Problem.lean",
       "filename": "Erdos171Problem.lean",
-      "lineCount": 184,
-      "theoremCount": 18,
+      "lineCount": 210,
+      "theoremCount": 6,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,

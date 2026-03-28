@@ -1,0 +1,77 @@
+{
+  "slug": "yang-mills-2d-wip-01",
+  "title": "Complete Yang-Mills: 2D Exact Solution (Migdal Formula) (Work in Progress)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete Yang-Mills: 2D Exact Solution (Migdal Formula) (Work in Progress).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:57:10.259Z",
+    "iteration": 1,
+    "focus": "Sorry elimination in Exploration.lean",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated 12 sorries in 28K-line Yang-Mills 2D exploration file",
+    "builtItems": [
+      "proofs/Proofs/YangMills/Exploration.lean: 12 sorries eliminated (59\u219247)",
+      "src/data/proofs/yang-mills-2d/meta.json: updated sorry count and line count"
+    ],
+    "insights": [
+      "28K-line Exploration.lean with 59 sorries, 0 axioms (assumptions in structures)",
+      "Many sorries tagged MATHLIB-DRIFT (API breakage), some are simple Nat/Real arithmetic",
+      "Proved Nat division identities: translations (Poincar\u00e9 = Lorentz + d), conformal_larger, conformal_extra",
+      "Proved orbit_grows_with_N via Nat.pow_lt_pow_left + omega",
+      "Proved softWallMassSq_pos and softWallMassSq_monotone via positivity",
+      "Proved RGZ propagator non-negativity lemma",
+      "Proved mpsCorrelationLength_pos via div_pos_of_neg_of_neg and Real.log_neg",
+      "Proved horizon_condition_dof and ym_anomaly_free via nlinarith+omega",
+      "Proved step scaling lattice correction via sq_pos_of_pos",
+      "Remaining 47 sorries mostly MATHLIB-DRIFT or deeper mathematical content"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Fix MATHLIB-DRIFT sorries by finding updated Mathlib API names",
+      "Investigate field_simp/ring breakage patterns",
+      "Consider splitting the 28K-line file into focused modules"
+    ]
+  },
+  "tags": [
+    "mathematical-physics",
+    "exactly-solvable",
+    "representation-theory",
+    "casimir-operator",
+    "heat-kernel",
+    "migdal-formula"
+  ],
+  "relatedProofs": [
+    "yang-mills",
+    "yang-mills-2d"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "significance": 6,
+  "tractability": 5
+}
