@@ -81,10 +81,12 @@ def OptimalSet (n : ℕ) : Set (PointConfig n) :=
 Two configurations are congruent if related by a rigid motion (isometry).
 -/
 
--- An isometry of ℝ² is a distance-preserving map
+-- An isometry of ℝ² is a bijective distance-preserving map.
+-- All isometries of ℝⁿ are bijective; we include this for constructivity.
 structure Isometry2D where
   toFun : ℝ × ℝ → ℝ × ℝ
   preserves_dist : ∀ p q, pointDist (toFun p) (toFun q) = pointDist p q
+  bijective : Function.Bijective toFun
 
 -- Apply isometry to a configuration
 def applyIsometry (n : ℕ) (σ : Isometry2D) (P : PointConfig n) : PointConfig n :=
@@ -96,20 +98,29 @@ def AreCongruent (n : ℕ) (P Q : PointConfig n) : Prop :=
 
 -- Congruence is an equivalence relation
 theorem congruent_refl (n : ℕ) (P : PointConfig n) : AreCongruent n P P := by
-  use ⟨id, fun p q => rfl⟩
-  intro i
-  rfl
+  use ⟨id, fun p q => rfl, Function.bijective_id⟩
+  intro i; rfl
 
 theorem congruent_symm (n : ℕ) (P Q : PointConfig n) :
     AreCongruent n P Q → AreCongruent n Q P := by
   intro ⟨σ, hσ⟩
-  sorry -- Requires inverse isometry construction
+  let g := Function.surjInv σ.bijective.surjective
+  have hg_right : ∀ p, σ.toFun (g p) = p := Function.surjInv_eq σ.bijective.surjective
+  have hg_left : ∀ p, g (σ.toFun p) = p := by
+    intro p; exact σ.bijective.injective (hg_right (σ.toFun p))
+  refine ⟨⟨g, fun p q => ?_, ?_⟩, fun i => ?_⟩
+  · have := σ.preserves_dist (g p) (g q)
+    rw [hg_right, hg_right] at this; exact this.symm
+  · exact ⟨fun p q h => by rwa [← hg_right p, ← hg_right q, h],
+           fun p => ⟨σ.toFun p, hg_left p⟩⟩
+  · rw [hσ i, hg_left]
 
 theorem congruent_trans (n : ℕ) (P Q R : PointConfig n) :
     AreCongruent n P Q → AreCongruent n Q R → AreCongruent n P R := by
   intro ⟨σ₁, hσ₁⟩ ⟨σ₂, hσ₂⟩
   exact ⟨⟨σ₂.toFun ∘ σ₁.toFun, fun p q => by
-    simp only [Function.comp]; rw [σ₂.preserves_dist, σ₁.preserves_dist]⟩,
+    simp only [Function.comp]; rw [σ₂.preserves_dist, σ₁.preserves_dist],
+    σ₂.bijective.comp σ₁.bijective⟩,
     fun i => by simp only [Function.comp]; rw [hσ₂ i, hσ₁ i]⟩
 
 /-
@@ -149,17 +160,13 @@ def ErdosConjecture103 : Prop :=
 def hUnbounded : Prop :=
   ∀ C : ℕ, ∃ n : ℕ, h n > C
 
--- Equivalence of formulations
-theorem conjecture_equiv : ErdosConjecture103 ↔ hUnbounded := by
-  constructor
-  · intro hconj C
-    obtain ⟨N, hN⟩ := hconj C
-    exact ⟨N, hN N (le_refl N)⟩
-  · intro hunb C
-    obtain ⟨n₀, hn₀⟩ := hunb C
-    use n₀
-    intro n hn
-    sorry -- Need monotonicity or other argument
+-- The conjecture (h → ∞) implies h is unbounded.
+-- The converse does NOT hold without monotonicity: a function can be
+-- unbounded without tending to infinity (e.g., oscillating).
+theorem conjecture_implies_unbounded : ErdosConjecture103 → hUnbounded := by
+  intro hconj C
+  obtain ⟨N, hN⟩ := hconj C
+  exact ⟨N, hN N (le_refl N)⟩
 
 /-
 # Part 6: Known Bounds and Partial Results

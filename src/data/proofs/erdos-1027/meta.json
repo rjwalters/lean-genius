@@ -7,7 +7,7 @@
     "author": "Koishi Chan (proof)",
     "sourceUrl": "https://erdosproblems.com/1027",
     "date": "2024",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1027Problem.lean",
     "tags": [
       "combinatorics",
@@ -16,7 +16,7 @@
       "property-b",
       "2-colorable"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1027,
     "erdosUrl": "https://erdosproblems.com/1027",
@@ -24,9 +24,9 @@
     "relatedProblems": [
       901
     ],
-    "axiomCount": 0,
-    "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 2,
+    "lineCount": 240,
+    "assumptions": "2 axioms: erdos_1027_conjecture (the conjecture statement), erdos_1027_solution (Koishi Chan's affirmative answer). 0 sorries. 6 theorems proved sorry-free.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -212,12 +212,12 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "Erdos1027",
+    "lineCount": 240,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 10
   }
 }
