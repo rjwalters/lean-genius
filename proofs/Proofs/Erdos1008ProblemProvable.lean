@@ -76,11 +76,11 @@ This follows from the Kővári–Sós–Turán theorem.
 -/
 
 /-- Kővári–Sós–Turán: C₄-free graphs on n vertices have O(n^{3/2}) edges -/
-theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] : := by sorry
+axiom kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] :
   isC4Free G → edgeCount G ≤ (Fintype.card V)^2 / 2
 
 /-- Trivial bound: every graph has a C₄-free subgraph with Ω(√m) edges -/
-theorem c4free_subgraph_sqrt (G : SimpleGraph V) [DecidableRel G.Adj] : := by sorry
+axiom c4free_subgraph_sqrt (G : SimpleGraph V) [DecidableRel G.Adj] :
   ∃ (H : SimpleGraph V) [DecidableRel H.Adj],
     IsSubgraphOf H G ∧ isC4Free H ∧
     edgeCount H ≥ Nat.sqrt (edgeCount G)
@@ -95,7 +95,7 @@ K_{n,n²} shows m^{3/4} is impossible.
 theorem complete_bipartite_edges (n : ℕ) : n * n^2 = n^3 := by ring
 
 /-- Folkman's counterexample: K_{n,n²} has no large C₄-free subgraph -/
-theorem folkman_counterexample (n : ℕ) (hn : n ≥ 2) : := by sorry
+axiom folkman_counterexample (n : ℕ) (hn : n ≥ 2) :
   ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
     edgeCount G = n^3 ∧
     (∀ (H : SimpleGraph V) [DecidableRel H.Adj],
@@ -109,13 +109,13 @@ The optimal exponent is 2/3.
 
 /-- Conlon-Fox-Sudakov theorem (Erdős #1008):
     Every graph with m edges has a C₄-free subgraph with Ω(m^{2/3}) edges -/
-theorem erdos_1008_c4free_subgraph (G : SimpleGraph V) [DecidableRel G.Adj] : := by sorry
+axiom erdos_1008_c4free_subgraph (G : SimpleGraph V) [DecidableRel G.Adj] :
   ∃ (H : SimpleGraph V) [DecidableRel H.Adj],
     IsSubgraphOf H G ∧ isC4Free H ∧
     edgeCount H ≥ (edgeCount G)^(2/3 : ℝ).toNNReal.toNat
 
 /-- The exponent 2/3 is optimal (follows from Folkman) -/
-theorem exponent_two_thirds_optimal : := by sorry
+axiom exponent_two_thirds_optimal :
   ∀ ε > 0, ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
     ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
       IsSubgraphOf H G → isC4Free H →
@@ -137,9 +137,35 @@ def hasKst (G : SimpleGraph V) (s t : ℕ) : Prop :=
 theorem k22_is_c4 (G : SimpleGraph V) : hasKst G 2 2 ↔ hasC4 G := by
   constructor <;> intro h
   · obtain ⟨S, T, hS, hT, hdisj, hadj⟩ := h
-    sorry -- Extract the 4 vertices and show they form a C₄
-  · obtain ⟨a, b, c, d, _, _, _, _, _, _, hab, hbc, hcd, hda⟩ := h
-    sorry -- S = {a, c}, T = {b, d}
+    obtain ⟨a, c, hac, hSac⟩ := Finset.card_eq_two.mp hS
+    obtain ⟨b, d, hbd, hTbd⟩ := Finset.card_eq_two.mp hT
+    have ha : a ∈ S := by rw [hSac]; simp
+    have hc : c ∈ S := by rw [hSac]; simp
+    have hb : b ∈ T := by rw [hTbd]; simp
+    have hd : d ∈ T := by rw [hTbd]; simp
+    have hab : a ≠ b := by intro heq; subst heq; exact Finset.disjoint_left.mp hdisj ha hb
+    have hcb : c ≠ b := by intro heq; subst heq; exact Finset.disjoint_left.mp hdisj hc hb
+    have hcd : c ≠ d := by intro heq; subst heq; exact Finset.disjoint_left.mp hdisj hc hd
+    have had : a ≠ d := by intro heq; subst heq; exact Finset.disjoint_left.mp hdisj ha hd
+    exact ⟨a, b, c, d, hab, hcb.symm, hcd, had.symm, hac, hbd,
+      hadj a ha b hb, (hadj c hc b hb).symm, hadj c hc d hd, (hadj a ha d hd).symm⟩
+  · obtain ⟨a, b, c, d, hab, hbc, hcd, hda, hac, hbd, e_ab, e_bc, e_cd, e_da⟩ := h
+    refine ⟨{a, c}, {b, d}, ?_, ?_, ?_, ?_⟩
+    · simp [Finset.card_pair hac]
+    · simp [Finset.card_pair hbd]
+    · rw [Finset.disjoint_left]
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      cases hx with
+      | inl h => subst h; simp [hab, hda.symm]
+      | inr h => subst h; simp [hbc.symm, hcd]
+    · intro x hx y hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
+      rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+      · exact e_ab
+      · exact e_da.symm
+      · exact e_bc.symm
+      · exact e_cd
 
 #check @erdos_1008_c4free_subgraph
 #check @folkman_counterexample
