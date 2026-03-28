@@ -33,14 +33,7 @@ References:
 Tags: egyptian-fractions, number-theory, combinatorics, counting
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Rat.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
+import Mathlib
 
 open Nat Finset
 
@@ -82,12 +75,23 @@ theorem singleton_one_is_egyptian : harmonicSum {1} = 1 := by
   simp [harmonicSum]
 
 /-- The classic decomposition: 1/2 + 1/3 + 1/6 = 1.
-    Axiomatized because Finset.sum over {2,3,6} requires careful decidability handling. -/
-axiom two_three_six_is_egyptian : harmonicSum {2, 3, 6} = 1
+    Proved by unfolding the sum and computing with norm_num. -/
+theorem two_three_six_is_egyptian : harmonicSum {2, 3, 6} = 1 := by
+  unfold harmonicSum
+  simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({3, 6} : Finset ℕ) by decide),
+              Finset.sum_insert (show (3 : ℕ) ∉ ({6} : Finset ℕ) by decide),
+              Finset.sum_singleton]
+  norm_num
 -- Arithmetic: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1
 
 /-- Another decomposition: 1/2 + 1/4 + 1/5 + 1/20 = 1. -/
-axiom two_four_five_twenty_is_egyptian : harmonicSum {2, 4, 5, 20} = 1
+theorem two_four_five_twenty_is_egyptian : harmonicSum {2, 4, 5, 20} = 1 := by
+  unfold harmonicSum
+  simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({4, 5, 20} : Finset ℕ) by decide),
+              Finset.sum_insert (show (4 : ℕ) ∉ ({5, 20} : Finset ℕ) by decide),
+              Finset.sum_insert (show (5 : ℕ) ∉ ({20} : Finset ℕ) by decide),
+              Finset.sum_singleton]
+  norm_num
 -- Arithmetic: 1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 20/20 = 1
 -- Arithmetic: 1/2 + 1/3 + 1/7 + 1/42 = 21/42 + 14/42 + 6/42 + 1/42 = 42/42 = 1
 
