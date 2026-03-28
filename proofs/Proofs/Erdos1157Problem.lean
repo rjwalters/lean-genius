@@ -272,6 +272,18 @@ theorem besExponent_3uniform_threshold (s : ℕ) (hs : s ≥ 3) :
   push_cast
   ring
 
+/-- The BES exponent increases with uniformity r: larger r gives a larger numerator
+    rs − k while the denominator s − 1 stays fixed, so the exponent grows. -/
+theorem besExponent_mono_r (r₁ r₂ k s : ℕ) (hs : s ≥ 2) (hr : r₁ ≤ r₂) :
+    besExponent r₁ k s ≤ besExponent r₂ k s := by
+  unfold besExponent
+  apply div_le_div_of_nonneg_right
+  · have : (r₁ * s : ℕ) ≤ (r₂ * s : ℕ) := Nat.mul_le_mul_right s hr
+    have h : (↑(r₁ * s) : ℝ) ≤ ↑(r₂ * s) := Nat.cast_le.mpr this
+    linarith
+  · have : (2 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
+    linarith
+
 /-- General monotonicity in k: if f^(t)(n; k₁, s) = o(n^t) and k₁ ≤ k₂,
     then f^(t)(n; k₂, s) = o(n^t). Increasing k restricts which edge-sets
     are forbidden, so the extremal number can only decrease. -/
