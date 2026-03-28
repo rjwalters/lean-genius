@@ -1,0 +1,44 @@
+{
+  "slug": "solution-of-cubic-oq-03-oq-05",
+  "title": "Verify Vieta's formulas for the general cubic",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "vieta_cubic: a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -(r₁r₂r₃)",
+    "plain": "Vieta's formulas for x³ + ax² + bx + c = (x-r₁)(x-r₂)(x-r₃) over any CommRing.",
+    "whyMatters": ["Extends depressed cubic Vieta's to general case", "Fundamental result in algebra"]
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:10:00Z",
+    "iteration": 1,
+    "focus": "Complete proof via polynomial coefficient comparison.",
+    "blockers": [],
+    "nextAction": "Docker build verification",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved all Vieta's formulas for general cubic (0 sorries, 0 axioms). Expansion via ring, coefficient extraction via simp.",
+    "builtItems": [
+      "cubic_factor_expansion: product of linear factors = canonical cubic form (by ring)",
+      "vieta_sigma1, vieta_sigma2, vieta_sigma3: individual Vieta relations",
+      "vieta_cubic: combined formulas",
+      "root_satisfies: roots are actual roots of the polynomial"
+    ],
+    "insights": [
+      "Working over general CommRing avoids needing field-specific arguments",
+      "The ring tactic handles the polynomial expansion cleanly",
+      "Coefficient extraction via coeff + simp gives the individual relations"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": ["Docker build verification"]
+  },
+  "tags": ["algebra", "polynomials", "cubic-equations", "vieta-formulas", "research", "seeker-selected"],
+  "relatedProofs": ["solution-of-cubic", "solution-of-cubic-oq-03"],
+  "started": "2026-03-28T20:05:00Z",
+  "lastUpdate": "2026-03-28T20:15:00Z",
+  "significance": 7,
+  "tractability": 5
+}
