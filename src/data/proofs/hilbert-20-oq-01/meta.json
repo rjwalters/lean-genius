@@ -17,7 +17,7 @@
       "microlocal-analysis"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": null,
     "mathlib_version": "4.29.0",
     "mathlibDependencies": [
@@ -39,9 +39,9 @@
       "Statement of the Nirenberg-Treves characterization theorem",
       "Proof that elliptic operators of principal type are locally solvable"
     ],
-    "axiomCount": 6,
-    "assumptions": "6 axioms: IsLocallySolvable (distribution solution existence), BicharacteristicCurve (Hamilton flow curves), imSymbolAlongCurve (symbol evaluation along curves), hormander_necessity (Hörmander 1960), dencker_sufficiency (Dencker 2006), elliptic_satisfies_psi (vacuous condition Ψ for elliptic operators). These encode deep results from microlocal analysis.",
-    "lineCount": 181,
+    "axiomCount": 7,
+    "assumptions": "7 axioms: IsLocallySolvable, BicharacteristicCurve, imSymbolAlongCurve, imSymbolAlongCurve_eq (bridge: curve evaluation = principal symbol Im), hormander_necessity (Hörmander 1960), dencker_sufficiency (Dencker 2006), elliptic_satisfies_psi. These encode deep results from microlocal analysis.",
+    "lineCount": 189,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
@@ -155,8 +155,8 @@
       "NNReal"
     ],
     "namespace": "Hilbert20LocalSolvability",
-    "lineCount": 181,
-    "axiomCount": 6,
+    "lineCount": 189,
+    "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 7
   }
