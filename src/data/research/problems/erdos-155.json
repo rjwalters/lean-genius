@@ -24,7 +24,7 @@
     "nextAction": "Convert maxSidonSize to def, prove more axioms"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted maxSidonSize from axiom to def, proved achievable/optimal/monotone/step (11→6 axioms). Remaining 6: erdos_turan_upper, sidon_lower_asymptotic, erdos_155_conjecture, erdos_155_strong, increase_points_sparse, small_values.",
+    "progressSummary": "PROGRESS: 10 theorems (up from 7), 6 axioms, 0 sorries. Proved increase_count_le. increase_points_sparse nearly eliminable (needs only elementary ℝ inequality).",
     "builtItems": [
       "maxSidon_monotone: any Sidon subset of {1,...,N} is valid for {1,...,N+1}",
       "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1",
@@ -32,7 +32,8 @@
       "theorem maxSidon_achievable (replaces axiom)",
       "theorem maxSidon_optimal (replaces axiom)",
       "theorem maxSidon_monotone (replaces axiom)",
-      "theorem maxSidon_step (replaces axiom)"
+      "theorem maxSidon_step (replaces axiom)",
+      "Proved increase_count_le: telescoping bound on increase points"
     ],
     "insights": [
       "maxSidon_monotone trivially follows from containment: {1,...,N}⊆{1,...,N+1}",
@@ -41,7 +42,9 @@
       "maxSidon_achievable proved via Finset.exists_max_image + le_antisymm with Finset.le_sup/Finset.sup_le",
       "maxSidon_optimal proved via Finset.le_sup on the sidonSets membership",
       "maxSidon_monotone proved: Sidon set of {1..N} ⊆ sidonSets (N+1) via Icc monotonicity",
-      "maxSidon_step proved: S.erase (N+1) gives valid N-set, card diff at most 1"
+      "maxSidon_step proved: S.erase (N+1) gives valid N-set, card diff at most 1",
+      "Proved increase_count_le: #{N<M : F(N+1)>F(N)} ≤ F(M). Induction: each step contributes 0 or 1 (maxSidon_step), telescoping gives total = F(M)-F(0) = F(M).",
+      "increase_points_sparse can be eliminated: increase_count_le + erdos_turan_upper + elementary real analysis (M^{1/4}+1 ≤ ε√M for large M). Only missing piece is the ℝ inequality."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -70,8 +73,8 @@
     {
       "path": "Proofs/Erdos155Problem.lean",
       "filename": "Erdos155Problem.lean",
-      "lineCount": 194,
-      "theoremCount": 7,
+      "lineCount": 218,
+      "theoremCount": 10,
       "axiomCount": 6,
       "defCount": 2,
       "sorryCount": 0,
