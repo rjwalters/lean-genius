@@ -246,11 +246,18 @@ theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
            le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
   omega
 
-/-- For almost-Sidon A, at most one sum has a collision, so the number of
-    distinct sums is ≥ C(|A|,2) + |A| − 1. These must fit in [2, 2N]. -/
-axiom almost_sidon_sum_range (A : Finset ℕ) (N : ℕ) :
-  (∀ a ∈ A, a ∈ Finset.Icc 1 N) → IsAlmostSidon A →
-    A.card * (A.card + 1) / 2 - 1 ≤ 2 * N - 1
+/-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
+    almost-Sidon A ⊆ {1,...,N} with |A| = k.
+
+    COUNTEREXAMPLE: A = {1, 2, 4, 6, 7} ⊆ {1,...,7} is almost-Sidon
+    (the only collision is at sum 8, with three representations:
+    1+7 = 2+6 = 4+4 = 8). But |A|·(|A|+1)/2 - 1 = 5·6/2 - 1 = 14 > 13 = 2·7 - 1.
+
+    The bug: when the single allowed collision has multiplicity c ≥ 3,
+    the number of distinct sums is k(k+1)/2 - (c-1), which can be
+    strictly less than k(k+1)/2 - 1. The correct bound is:
+    #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1. -/
+theorem almost_sidon_sum_range_false_note : True := trivial
 
 /-- The reflected construction: B ∪ (N − B) is almost-Sidon when B is Sidon.
     The only possible collision is at n = N (sums from B-side and reflected-side). -/
