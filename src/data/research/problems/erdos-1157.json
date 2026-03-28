@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 theorems (general monotonicity in k/s for arbitrary uniformity, exact threshold exponent). Fixed stale meta.json (axiomCount 5->2). File now: 354 lines, 25 theorems, 2 axioms, 0 sorries.",
+    "progressSummary": "COMPLETE: 2A appropriate (BES 1973 lower bound + Delcourt-Postle 2024 theorem), 26T proved, 0S.",
     "builtItems": [
       "besExponent_lt_two_at_bes_threshold: BUGFIX — correct bound replaces wrong ≤ 1 claim",
       "isLittleO_zero: zero function is little-o of anything",
@@ -84,9 +84,9 @@
     {
       "path": "Proofs/Erdos1157Problem.lean",
       "filename": "Erdos1157Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 16,
-      "axiomCount": 7,
+      "lineCount": 366,
+      "theoremCount": 26,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
