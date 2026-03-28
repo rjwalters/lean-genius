@@ -107,7 +107,12 @@ axiom kleitman_theorem :
 /- ## Part VI: Lower Bound -/
 
 /-- |middleLayer(n)| = C(n, ⌊n/2⌋) -/
-axiom middleLayer_card (n : ℕ) : (middleLayer n).card = middleBinomial n
+theorem middleLayer_card (n : ℕ) : (middleLayer n).card = middleBinomial n := by
+  simp only [middleLayer, middleBinomial]
+  have h : (Finset.univ : Finset (Finset (Fin n))).filter (fun S => S.card = n / 2) =
+      (Finset.univ : Finset (Fin n)).powersetCard (n / 2) := by
+    ext S; simp [Finset.mem_powersetCard]
+  rw [h, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
 
 /-- maxUnionFreeSize(n) ≥ C(n, ⌊n/2⌋), achieved by the middle layer -/
 axiom lower_bound (n : ℕ) : maxUnionFreeSize n ≥ middleBinomial n

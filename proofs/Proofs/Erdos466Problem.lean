@@ -82,7 +82,8 @@ axiom sarkozy_polynomial_bound :
 
 /-- For any δ > 1/2, we have N(X, δ) = 0 for all X, since the
 fractional distance is always at most 1/2. -/
-axiom fracDist_bound : ∀ x : ℝ, fracDist x ≤ 1/2
+theorem fracDist_bound : ∀ x : ℝ, fracDist x ≤ 1/2 := by
+  intro x; exact abs_sub_round x
 
 /-- N(X, δ) is monotone non-decreasing in X: a larger disk can
 accommodate at least as many separated points. -/
