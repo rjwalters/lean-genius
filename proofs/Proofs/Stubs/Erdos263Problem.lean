@@ -155,11 +155,21 @@ theorem doubleExp_strictly_increasing : IsStrictlyIncreasing doubleExp := by
   exact Nat.pow_lt_pow_right (by norm_num) (Nat.pow_lt_pow_right (by norm_num) hnm)
 
 /-- Double exponential sum converges: Σ 1/2^{2^n} converges.
-    Proof sketch: n ≤ 2^n for all n, so 2^n ≤ 2^{2^n}, giving
-    1/2^{2^n} ≤ 1/2^n = (1/2)^n. The geometric series Σ (1/2)^n converges,
-    so Σ 1/2^{2^n} converges by comparison. -/
+    Proof: n ≤ 2^n for all n, so 2^n ≤ 2^{2^n}, giving
+    1/2^{2^n} ≤ 1/2^n = (1/2)^n. The geometric series Σ (1/2)^n converges. -/
 theorem doubleExp_convergent : HasConvergentSum doubleExp := by
-  sorry
+  apply Summable.of_norm_bounded (fun n => ((1 : ℝ) / 2) ^ n)
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+  intro n
+  simp only [doubleExp, PNat.val_mk]
+  rw [Real.norm_of_nonneg (by positivity)]
+  have h_le : n ≤ 2 ^ n := (Nat.lt_pow_self (by norm_num : 1 < 2) n).le
+  calc (1 : ℝ) / ((2 ^ 2 ^ n : ℕ) : ℝ)
+      = 1 / (2 : ℝ) ^ (2 ^ n) := by push_cast; ring
+    _ ≤ 1 / (2 : ℝ) ^ n :=
+        one_div_le_one_div_of_le (pow_pos (by norm_num) n)
+          (pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) h_le)
+    _ = (1 / 2) ^ n := by rw [one_div, inv_pow]
 
 /- ## Part VIII: Characterization Attempts -/
 
