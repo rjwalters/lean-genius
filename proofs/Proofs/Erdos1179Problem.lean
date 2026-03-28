@@ -159,12 +159,9 @@ axiom erdos_hall_upper (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
 /- ## Part VII: The Main Result -/
 
 -- The asymptotic answer: g_ε(N) = (1 + o_ε(1)) · log₂ N.
---
 -- Combining the trivial lower bound g_ε(N) ≥ log₂ N with the
 -- Erdős-Hall upper bound gives g_ε(N) / log₂ N → 1 as N → ∞.
-axiom main_asymptotic (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
-    ∀ δ : ℝ, δ > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      |((gEps ε N : ℝ) / Real.logb 2 ↑N) - 1| < δ
+-- Originally axiom, now derived as main_asymptotic_derived below.
 
 /- ## Part VIII: Comparison with Problem #543 -/
 
@@ -255,14 +252,41 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     rw [Real.logb]
     exact div_pos (Real.log_pos (by exact_mod_cast (show 1 < N by omega)))
                    (Real.log_pos (by norm_num : (1:ℝ) < 2))
-  -- Squeeze: 1 ≤ ratio ≤ 1 + error, error < δ → |ratio - 1| < δ
-  -- Lower bound → ratio ≥ 1
+  -- Lower bound: gEps ε N ≥ logb 2 N
   have h_lower := trivial_lower_bound ε N hε hε1 hN2
-  -- Upper bound → ratio ≤ 1 + C·f(N)
+  -- Upper bound: gEps ε N ≤ (1 + C·f(N))·logb 2 N
   have h_upper := hUB N hN2
-  -- Limit → C·|f(N)| < δ for our N
-  -- Combine: |ratio - 1| = ratio - 1 ∈ [0, C·|f(N)|) ⊂ [0, δ)
-  sorry -- Squeeze: routine real arithmetic combining h_lower, h_upper, hN₁
+  -- Establish log(log N) > 0 for N ≥ 3 (since 3 > e, log 3 > 1, log(log 3) > 0)
+  have hllN_pos : Real.log (Real.log ↑N) > 0 := by
+    apply Real.log_pos
+    calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
+      _ < Real.log 3 := by
+          apply Real.log_lt_log (Real.exp_pos 1)
+          exact lt_trans Real.exp_one_lt_d9 (by norm_num)
+      _ ≤ Real.log ↑N := Real.log_le_log (by norm_num) (by exact_mod_cast hN3)
+  -- Get the limit bound: |f(N)| < δ/C
+  set f := Real.log (Real.log (Real.log ↑N)) / Real.log (Real.log ↑N) with hf_def
+  have h_f_bound : |f| < δ / C := hN₁ N hN1_le hllN_pos
+  -- Divide bounds by logb 2 N to get ratio bounds
+  have h_ratio_ge : 1 ≤ (gEps ε N : ℝ) / Real.logb 2 ↑N := by
+    rw [le_div_iff hlog_pos, one_mul]; exact h_lower
+  have h_ratio_le : (gEps ε N : ℝ) / Real.logb 2 ↑N ≤ 1 + C * f := by
+    rw [div_le_iff hlog_pos]; exact h_upper
+  -- Squeeze: 0 ≤ ratio - 1 ≤ C·f(N), and C·|f(N)| < δ
+  rw [abs_lt]
+  constructor
+  · -- -δ < ratio - 1: since ratio ≥ 1, ratio - 1 ≥ 0 > -δ
+    linarith
+  · -- ratio - 1 < δ: by case split on sign of f(N)
+    by_cases hf_sign : 0 ≤ f
+    · -- f ≥ 0: ratio - 1 ≤ C·f < C·(δ/C) = δ
+      have : f < δ / C := by rwa [abs_of_nonneg hf_sign] at h_f_bound
+      have : C * f < δ := by rw [← div_lt_iff hC]; exact this
+      linarith
+    · -- f < 0: ratio - 1 ≤ C·f < 0, and ratio - 1 ≥ 0, so ratio - 1 < δ
+      push_neg at hf_sign
+      have : C * f < 0 := mul_neg_of_pos_of_neg hC hf_sign
+      linarith
 
 /- ## Part XI: Summary -/
 
@@ -271,6 +295,6 @@ theorem erdos_1179_summary (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     (∀ δ : ℝ, δ > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       |((gEps ε N : ℝ) / Real.logb 2 ↑N) - 1| < δ) :=
   ⟨fun N hN => trivial_lower_bound ε N hε hε1 hN,
-   main_asymptotic ε hε hε1⟩  -- Can use main_asymptotic_derived once sorry is cleared
+   main_asymptotic_derived ε hε hε1⟩
 
 end Erdos1179

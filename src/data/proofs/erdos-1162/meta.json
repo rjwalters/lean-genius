@@ -17,7 +17,7 @@
       "asymptotic"
     ],
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 5,
     "erdosNumber": 1162,
     "erdosUrl": "https://erdosproblems.com/1162",
     "erdosProblemStatus": "open",
@@ -47,17 +47,17 @@
     ],
     "originalContributions": [
       "numSubgroups axiom: f(n) = number of subgroups of S_n",
-      "pyber_theorem: log f(n) ≍ n² with explicit constants",
       "roney_dougal_tracey: log f(n) / n² → 1/16 (Tendsto formulation)",
-      "rdt_implies_pyber: RDT result implies Pyber's bounds",
+      "rdt_implies_pyber: convergence → eventual bounds (PROVED, no sorry)",
+      "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey (no longer an axiom)",
       "Elementary abelian 2-group infrastructure (maxElem2Rank, numSubgroupsElem2)",
       "constant_explanation: (1/4)² = 1/16 (proved by norm_num)",
       "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
       "erdos1162_asymptotic: formal statement of the asymptotic result"
     ],
-    "axiomCount": 7,
-    "lineCount": 155,
-    "assumptions": "7 axioms: numSubgroups, numSubgroups_pos, pyber_theorem, numSubgroupsElem2, elem2_subgroup_count_asymptotic, most_subgroups_are_2groups, f4. 7 sorries: trivial_upper, roney_dougal_tracey, rdt_implies_pyber, f1, f2, f3, constant_explanation (proved)."
+    "axiomCount": 5,
+    "lineCount": 185,
+    "assumptions": "5 axioms: numSubgroups, numSubgroups_pos, numSubgroupsElem2, elem2_subgroup_count_asymptotic, f4. 5 sorries: trivial_upper, roney_dougal_tracey, f1, f2, f3. Eliminated: pyber_theorem (now derived from rdt_implies_pyber + roney_dougal_tracey), most_subgroups_are_2groups (was trivially True placeholder)."
   },
   "overview": {
     "historicalContext": "Erdős and Turán posed the question of counting subgroups of the symmetric group S_n. Pyber (1993) established the order of magnitude: log f(n) is between c₁n² and c₂n² for positive constants c₁, c₂. The precise asymptotic was a long-standing open problem until Roney-Dougal and Tracey (2025) proved that log f(n) = (1/16 + o(1))n². The constant 1/16 = (1/4)² reflects that the dominant subgroups are elementary abelian 2-groups embedded via the wreath product (Z/2Z) ≀ S_{⌊n/4⌋}.",
@@ -96,20 +96,20 @@
       "mathContext": "Each subgroup is a subset of $S_n$ ($|S_n| = n!$), giving $f(n) \\leq 2^{n!}$."
     },
     {
-      "id": "pyber",
-      "title": "Part III: Pyber's Theorem (1993)",
-      "summary": "pyber_theorem: log f(n) ≍ n².",
-      "startLine": 53,
-      "endLine": 62,
-      "mathContext": "Pyber (1993): $\\exists c_1, c_2 > 0$ such that $c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$ for large $n$."
+      "id": "asymptotic-constant",
+      "title": "Part III: The Asymptotic Constant 1/16 (Roney-Dougal-Tracey 2025)",
+      "summary": "roney_dougal_tracey theorem, rdt_implies_pyber (PROVED).",
+      "startLine": 64,
+      "endLine": 107,
+      "mathContext": "$\\log f(n) / n^2 \\to 1/16$ as $n \\to \\infty$ [Roney-Dougal-Tracey 2025]. Convergence implies eventual bounds (proved)."
     },
     {
-      "id": "asymptotic-constant",
-      "title": "Part IV: The Asymptotic Constant 1/16",
-      "summary": "roney_dougal_tracey theorem, rdt_implies_pyber.",
-      "startLine": 63,
-      "endLine": 82,
-      "mathContext": "$\\log f(n) / n^2 \\to 1/16$ as $n \\to \\infty$ [Roney-Dougal-Tracey 2025]."
+      "id": "pyber",
+      "title": "Part IV: Pyber's Theorem (1993)",
+      "summary": "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey.",
+      "startLine": 109,
+      "endLine": 119,
+      "mathContext": "Pyber (1993): $\\exists c_1, c_2 > 0$ such that $c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$ for large $n$. Now a corollary of RDT."
     },
     {
       "id": "elem2-groups",
@@ -204,9 +204,9 @@
       "Filter"
     ],
     "namespace": "Erdos1162",
-    "lineCount": 155,
-    "axiomCount": 7,
-    "theoremCount": 9,
+    "lineCount": 185,
+    "axiomCount": 5,
+    "theoremCount": 10,
     "definitionCount": 5
   }
 }
