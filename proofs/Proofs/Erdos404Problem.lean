@@ -15,13 +15,7 @@ Known results:
 Tags: number-theory, p-adic-valuation, factorials, divisibility, open-problem
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset Filter
 
@@ -66,8 +60,17 @@ axiom lin_bound_meaning : ∀ s : StrictIncSeq 2, ¬(2^255 ∣ factorialSum s)
 noncomputable def legendreSum (n p : ℕ) : ℕ :=
   ∑ i ∈ Finset.range (Nat.log p n + 1), n / p^(i+1)
 
-axiom legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
-    padicValNat p n.factorial = legendreSum n p
+/-- Legendre's formula: ν_p(n!) = ∑_{i=1}^{⌊log_p n⌋+1} ⌊n/p^i⌋.
+    Proved from Mathlib's padicValNat_factorial by reindexing. -/
+theorem legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
+    padicValNat p n.factorial = legendreSum n p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  rw [padicValNat_factorial (show Nat.log p n < Nat.log p n + 2 by omega),
+      Finset.sum_Ico_eq_sum_range]
+  unfold legendreSum
+  have h1 : Nat.log p n + 2 - 1 = Nat.log p n + 1 := by omega
+  rw [h1]
+  exact Finset.sum_congr rfl fun k _ => by rw [add_comm]
 
 axiom padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
     Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1)))
