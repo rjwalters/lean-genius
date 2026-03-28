@@ -401,15 +401,60 @@ interval pairs, and all their products must be distinct positive integers.
 This constrains how small the maximum product (= ∏ all terms) can be.
 -/
 
-/-- The number of valid pairs (u,v) with u ≤ v and both in [0, n-1]
-    is exactly n*(n+1)/2. -/
+/-- The number of valid pairs (u,v) with u ≤ v and both in {0, ..., n-1}
+    is exactly n*(n+1)/2. Uses `Finset.range n` for correct n=0 handling. -/
 theorem numValidPairs_eq (n : ℕ) :
-    ((Finset.Icc 0 (n - 1)).product (Finset.Icc 0 (n - 1))).filter
+    ((Finset.range n).product (Finset.range n)).filter
       (fun p => p.1 ≤ p.2) |>.card = n * (n + 1) / 2 := by
   induction n with
   | zero => simp
   | succ n ih =>
-    sorry
+    -- Decompose: filtered pairs on range(n+1) = filtered pairs on range(n)
+    --   ∪ {(u, n) : u ∈ range(n+1)} (n+1 new pairs with second component = n)
+    set S := ((Finset.range (n + 1)).product (Finset.range (n + 1))).filter (fun p => p.1 ≤ p.2)
+    set S_old := ((Finset.range n).product (Finset.range n)).filter (fun p => p.1 ≤ p.2)
+    set S_new := (Finset.range (n + 1)).image (fun u => (u, n))
+    have h_eq : S = S_old ∪ S_new := by
+      ext ⟨a, b⟩
+      simp only [S, S_old, S_new, Finset.mem_union, Finset.mem_filter, Finset.mem_product,
+                  Finset.mem_range, Finset.mem_image, Prod.mk.injEq]
+      constructor
+      · rintro ⟨⟨ha, hb⟩, hab⟩
+        rcases Nat.eq_or_lt_of_le (Nat.lt_succ_iff.mp hb) with rfl | hb_lt
+        · right; exact ⟨a, by omega, rfl, rfl⟩
+        · left; exact ⟨⟨by omega, hb_lt⟩, hab⟩
+      · rintro (⟨⟨ha, hb⟩, hab⟩ | ⟨u, hu, rfl, rfl⟩)
+        · exact ⟨⟨by omega, by omega⟩, hab⟩
+        · exact ⟨⟨hu, by omega⟩, by omega⟩
+    have h_disj : Disjoint S_old S_new := by
+      rw [Finset.disjoint_left]
+      intro ⟨a, b⟩ h_old h_new
+      simp only [S_old, Finset.mem_filter, Finset.mem_product, Finset.mem_range] at h_old
+      simp only [S_new, Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at h_new
+      obtain ⟨⟨_, hb⟩, _⟩ := h_old
+      obtain ⟨_, _, _, rfl⟩ := h_new
+      omega
+    have h_new_card : S_new.card = n + 1 := by
+      rw [Finset.card_image_of_injective _ (fun a b h => by
+        simp only [Prod.mk.injEq] at h; exact h.1)]
+      exact Finset.card_range (n + 1)
+    rw [h_eq, Finset.card_union_of_disjoint h_disj, ih, h_new_card]
+    -- n*(n+1)/2 + (n+1) = (n+1)*(n+2)/2
+    have heven : ∀ m : ℕ, 2 ∣ m * (m + 1) := by
+      intro m
+      rcases Nat.even_or_odd m with ⟨k, hk⟩ | ⟨k, hk⟩ <;> rw [hk]
+      · exact ⟨k * (k + k + 1), by ring⟩
+      · exact ⟨(2 * k + 1) * (k + 1), by ring⟩
+    have h1 := Nat.div_mul_cancel (heven n)
+    have h2 := Nat.div_mul_cancel (heven (n + 1))
+    have h3 : 2 * (n * (n + 1) / 2 + (n + 1)) = 2 * ((n + 1) * (n + 2) / 2) := by
+      calc 2 * (n * (n + 1) / 2 + (n + 1))
+          = n * (n + 1) / 2 * 2 + 2 * (n + 1) := by omega
+        _ = n * (n + 1) + 2 * (n + 1) := by rw [h1]
+        _ = (n + 1) * (n + 2) := by ring
+        _ = (n + 1) * (n + 2) / 2 * 2 := h2.symm
+        _ = 2 * ((n + 1) * (n + 2) / 2) := by omega
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < 2) h3
 
 /-- Adjacent products d(i)*d(i+1) grow at least quadratically for valid
     sequences with distinct products: d(i)*d(i+1) ≥ (i+2)*(i+3). -/
