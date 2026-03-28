@@ -48,12 +48,14 @@ Density 1 means the sequence contains "almost all" integers asymptotically.
 -/
 
 -- Counting function: number of terms ≤ n
+open Classical in
 noncomputable def countingFunc (d : ℕ → ℕ) (n : ℕ) : ℕ :=
   (Finset.range (n + 1)).filter (fun k => k ∈ Set.range d) |>.card
 
 -- Alternative: for strictly increasing d, count is max {i : d(i) ≤ n}
+open Classical in
 noncomputable def indexUpTo (d : ℕ → ℕ) (n : ℕ) : ℕ :=
-  Nat.find (⟨n + 1, fun h => by omega⟩ : ∃ i, n < d i)
+  if h : ∃ i, n < d i then Nat.find h else 0
 
 -- Density definition: limit of countingFunc(n)/n as n → ∞
 def HasDensity (S : Set ℕ) (δ : ℝ) : Prop :=
@@ -111,6 +113,124 @@ theorem distinct_equiv (d : ℕ → ℕ) :
     exact h p₁.1 p₁.2 p₂.1 p₂.2 hp₁ hp₂ hne heq
 
 /-
+# Part 4b: Structural Properties of Interval Products
+-/
+
+-- Single-element product equals the sequence value
+@[simp]
+theorem intervalProduct_single (d : ℕ → ℕ) (u : ℕ) :
+    intervalProduct d u u = d u := by
+  simp [intervalProduct, Finset.Icc_self]
+
+-- Product over empty interval (u > v) is 1
+theorem intervalProduct_empty (d : ℕ → ℕ) {u v : ℕ} (h : v < u) :
+    intervalProduct d u v = 1 := by
+  simp [intervalProduct, Finset.Icc_eq_empty (by omega : ¬u ≤ v)]
+
+-- Valid sequences have all terms ≥ 1
+theorem valid_seq_pos (d : ℕ → ℕ) (hd : IsValidSequence d) (i : ℕ) :
+    1 ≤ d i := by
+  obtain ⟨hmono, hstart⟩ := hd
+  cases i with
+  | zero => exact hstart
+  | succ n =>
+    calc 1 ≤ d 0 := hstart
+    _ ≤ d (n + 1) := le_of_lt (hmono (Nat.zero_lt_succ n))
+
+-- Valid sequences are injective (from StrictMono)
+theorem valid_seq_injective (d : ℕ → ℕ) (hd : IsValidSequence d) :
+    Function.Injective d :=
+  hd.1.injective
+
+-- Interval products of valid sequences are positive
+theorem intervalProduct_pos (d : ℕ → ℕ) (hd : IsValidSequence d) (u v : ℕ) :
+    0 < intervalProduct d u v := by
+  simp only [intervalProduct]
+  apply Finset.prod_pos
+  intro i _
+  exact Nat.lt_of_lt_of_le Nat.zero_lt_one (valid_seq_pos d hd i)
+
+-- Strictly increasing implies d(i) ≥ i + 1
+theorem valid_seq_ge_succ (d : ℕ → ℕ) (hd : IsValidSequence d) (i : ℕ) :
+    i + 1 ≤ d i := by
+  induction i with
+  | zero => exact hd.2
+  | succ n ih =>
+    have hlt := hd.1 (show n < n + 1 by omega)
+    omega
+
+/-
+# Part 4c: Natural Numbers Fail Distinctness
+
+The sequence d(i) = i + 1 has density 1 but fails HasDistinctProducts.
+This demonstrates the difficulty: the densest natural sequence already fails.
+-/
+
+-- The natural-number sequence: d(i) = i + 1
+def natSeq : ℕ → ℕ := fun i => i + 1
+
+theorem natSeq_valid : IsValidSequence natSeq := by
+  refine ⟨fun a b hab => ?_, ?_⟩
+  · simp [natSeq]; omega
+  · simp [natSeq, StartsAtOne]
+
+-- natSeq fails distinctness: product [0,1] = 1*2 = 2 = product [1,1]
+-- Two distinct valid pairs map to the same product value.
+theorem natSeq_not_distinct : ¬ HasDistinctProducts natSeq := by
+  intro h
+  -- productMap natSeq (0,1) = ∏ i ∈ Icc 0 1, (i+1) = 1*2 = 2
+  -- productMap natSeq (1,1) = ∏ i ∈ Icc 1 1, (i+1) = 2
+  -- Both (0,1) and (1,1) are in ValidPairs, so h forces them equal
+  have : (0, 1) = (1, 1) := h (show (0 : ℕ) ≤ 1 by omega) (le_refl 1)
+    (show productMap natSeq (0, 1) = productMap natSeq (1, 1) by native_decide)
+  simp at this
+
+/-
+# Part 4d: Powers of 2 Also Fail Distinctness
+
+The sequence d(i) = 2^i has distinct factorizations but NOT distinct interval
+products. Example: ∏[0,2] = 2^0 * 2^1 * 2^2 = 8 = 2^3 = ∏[3,3].
+The exponent sums 0+1+2 = 3 collide.
+-/
+
+-- Powers of 2 sequence
+def pow2Seq : ℕ → ℕ := fun i => 2 ^ i
+
+theorem pow2Seq_valid : IsValidSequence pow2Seq := by
+  refine ⟨fun a b hab => ?_, ?_⟩
+  · exact Nat.pow_lt_pow_right (by omega) hab
+  · simp [pow2Seq, StartsAtOne]
+
+-- pow2Seq also fails: product [0,2] = 1*2*4 = 8 = product [3,3] = 8
+theorem pow2Seq_not_distinct : ¬ HasDistinctProducts pow2Seq := by
+  intro h
+  have : (0, 2) = (3, 3) := h (show (0 : ℕ) ≤ 2 by omega) (le_refl 3)
+    (show productMap pow2Seq (0, 2) = productMap pow2Seq (3, 3) by native_decide)
+  simp at this
+
+/-
+# Part 4e: The Gap Between Density 0 and Density 1
+
+Primes have distinct products (by unique factorization) but density 0.
+Natural numbers have density 1 but non-distinct products.
+The challenge is achieving both simultaneously.
+-/
+
+-- For distinct products, intervals of the same length cannot share a product.
+-- The number of pairs (u,v) with u ≤ v ≤ n-1 is n*(n+1)/2.
+-- All these products must be distinct, yet bounded by d(n-1)^n.
+-- This constrains how slowly d can grow.
+theorem distinct_products_growth_lower (d : ℕ → ℕ) (hd : IsValidSequence d)
+    (_hdist : HasDistinctProducts d) (n : ℕ) (hn : 0 < n) :
+    n ≤ d (n - 1) := by
+  -- For a valid sequence with distinct products, consider the n single-element
+  -- intervals [0,0], [1,1], ..., [n-1,n-1].
+  -- Their products are d(0), d(1), ..., d(n-1), all distinct (since d is injective).
+  -- Since d is strictly increasing starting from ≥ 1, d(n-1) ≥ n.
+  have := valid_seq_ge_succ d hd (n - 1)
+  omega
+
+/-
 # Part 5: The Main Conjecture
 
 Existence of a density-1 sequence with distinct products.
@@ -125,7 +245,8 @@ theorem erdos_421_statement :
     ErdosConjecture421 ↔
     ∃ d : ℕ → ℕ, StrictMono d ∧ 1 ≤ d 0 ∧ HasDensity (Set.range d) 1 ∧
       ValidPairs.InjOn (productMap d) := by
-  rfl
+  simp only [ErdosConjecture421, IsValidSequence, IsStrictlyIncreasing,
+    StartsAtOne, HasDensityOne, HasDistinctProducts, and_assoc]
 
 /-
 # Part 6: Selfridge's Construction
