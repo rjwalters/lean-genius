@@ -69,6 +69,26 @@ private lemma deviations_pos (N : ℕ) : ∀ x ∈ deviations N, 0 < x := by
 theorem delta_pos (N : ℕ) (_hN : 1 ≤ N) : 0 < delta N := by
   exact deviations_pos N _ (Finset.min'_mem _ _)
 
+/- ## Structural Properties -/
+
+/-- δ(N) ≤ 1 for all N: the empty set is always a valid candidate
+    with deviation 1 - 0 = 1. -/
+theorem delta_le_one (N : ℕ) : delta N ≤ 1 := by
+  apply Finset.min'_le
+  simp only [deviations, Finset.mem_image]
+  exact ⟨∅, empty_mem_validCandidates N, by simp [unitFracSum]⟩
+
+/-- δ is antitone: δ(N+1) ≤ δ(N). More numbers means more candidates,
+    so the minimum deviation can only decrease or stay the same. -/
+theorem delta_antitone (N : ℕ) : delta (N + 1) ≤ delta N := by
+  apply Finset.min'_le
+  have hmin := Finset.min'_mem (deviations N) (deviations_nonempty N)
+  simp only [deviations, Finset.mem_image] at hmin ⊢
+  obtain ⟨A, hA, rfl⟩ := hmin
+  refine ⟨A, ?_, rfl⟩
+  simp only [validCandidates, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc_right (by omega)), hA.2⟩
+
 /- ## Lower Bound -/
 
 /-- δ(N) ≥ e^{-(1+o(1))N}: for every ε > 0, δ(N) ≥ e^{-(1+ε)N} for large N.
