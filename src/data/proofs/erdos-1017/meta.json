@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1017",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 1,
-    "assumptions": "Re-exports Erdos1017OQ01. See OQ01 entry for full formalization (9 axioms, 25 theorems).",
+    "assumptions": "3 axioms (inherited from Erdos1017OQ01.lean): egp_theorem, gyori_keszegh_triangles, k4free_partition_number. Re-exports Erdos1017OQ01. See OQ01 entry for full formalization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
