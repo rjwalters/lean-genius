@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved gcdPowerSeq_at_succ_eq_one (h(n)≤n+1 for all n≥1) and h_eq_succ_of_prime (h(n)=n+1 when n+1 prime). Key insight: any prime q dividing gcd(2^n-1,...,(n+1)^n-1) leads to contradiction — small primes self-refute (q|q^n and q|q^n-1), large primes violate polynomial root counting. Now 75 theorems, 2 axioms (both genuinely open).",
+    "progressSummary": "PROGRESS: Added formal hMinK definition + 3 properties. Total: 71 theorems, 2 axioms, 0 sorries.",
     "builtItems": [
       "PROVED erdos_770_density_exists (trivial: \u03b4=0 works). 3A\u21922A.",
       "gcdPowerSeq_dvd_of_le: monotone divisibility for gcd fold",
@@ -46,7 +46,11 @@
       "no_small_prime_dvd_gcdPowerSeq_succ: primes q\u2264n+1 self-refute (q|q^n and q|q^n-1)",
       "no_large_prime_dvd_gcdPowerSeq_succ: primes q>n+1 give n+1 roots of degree-n poly X^n-1",
       "gcdPowerSeq_at_succ_eq_one: gcd(2^n-1,...,(n+1)^n-1)=1 for all n\u22651",
-      "h_eq_succ_of_prime: h(n)=n+1 when n+1 is prime (Fermat + root counting)"
+      "h_eq_succ_of_prime: h(n)=n+1 when n+1 is prime (Fermat + root counting)",
+      "hMinK: formal definition of h(n) (Erdos770Problem.lean:488)",
+      "hMinK_spec: gcdPowerSeq n (hMinK n) = 1 (Erdos770Problem.lean:494)",
+      "hMinK_le_succ: hMinK n \u2264 n+1 (Erdos770Problem.lean:499)",
+      "hMinK_is_min: minimality of hMinK (Erdos770Problem.lean:504)"
     ],
     "insights": [
       "erdos_770_density_exists was trivially true (\u2203 \u03b4 \u2265 0, True). Proved. 3A\u21922A.",
@@ -56,7 +60,8 @@
       "Small prime case: if q\u2264n+1 and q|gcd, then q is in the fold so q|q^n-1, but q|q^n, so q|1",
       "Large prime case: if q>n+1 and q|gcd, then {1,...,n+1} are n+1 distinct roots of X^n-1 in ZMod q, violating degree bound",
       "Combined with Fermat transition: h(n)=n+1 iff n+1 is prime (both directions now formalized)",
-      "The polynomial root counting argument uses Polynomial.card_roots_le_degree from Mathlib"
+      "The polynomial root counting argument uses Polynomial.card_roots_le_degree from Mathlib",
+      "hMinK: formal definition of h(n) as Nat.find, with spec/le_succ/is_min properties"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -76,15 +81,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:32:32.167Z",
-  "lastUpdate": "2026-03-28T05:31:00.904143+00:00",
+  "lastUpdate": "2026-03-28T23:20:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos770Problem.lean",
       "filename": "Erdos770Problem.lean",
-      "lineCount": 360,
-      "theoremCount": 68,
+      "lineCount": 509,
+      "theoremCount": 71,
       "axiomCount": 2,
       "defCount": 1,
       "sorryCount": 0,

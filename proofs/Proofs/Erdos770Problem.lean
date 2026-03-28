@@ -482,3 +482,28 @@ theorem h_eq_succ_of_prime {n : ℕ} (hn : 0 < n) (hp : Nat.Prime (n + 1)) :
     gcdPowerSeq n n ≠ 1 ∧ gcdPowerSeq n (n + 1) = 1 :=
   ⟨gcdPowerSeq_ne_one_of_large_prime hp (dvd_refl (n + 1 - 1)) (by omega),
    gcdPowerSeq_at_succ_eq_one hn⟩
+
+-- ## Formal definition of h(n)
+
+/-- `hMinK n` is the minimal k such that gcdPowerSeq n k = 1, i.e., the minimal k
+    where gcd(2^n−1, ..., k^n−1) = 1. Returns 0 for n = 0 (vacuous). -/
+noncomputable def hMinK (n : ℕ) : ℕ :=
+  if hn : 0 < n then
+    Nat.find (⟨n + 1, gcdPowerSeq_at_succ_eq_one hn⟩ : ∃ k, gcdPowerSeq n k = 1)
+  else 0
+
+/-- h(n) satisfies gcdPowerSeq n (hMinK n) = 1 for n ≥ 1. -/
+theorem hMinK_spec {n : ℕ} (hn : 0 < n) : gcdPowerSeq n (hMinK n) = 1 := by
+  unfold hMinK; rw [dif_pos hn]
+  exact Nat.find_spec ⟨n + 1, gcdPowerSeq_at_succ_eq_one hn⟩
+
+/-- h(n) ≤ n + 1 for all n ≥ 1. -/
+theorem hMinK_le_succ {n : ℕ} (hn : 0 < n) : hMinK n ≤ n + 1 := by
+  unfold hMinK; rw [dif_pos hn]
+  exact Nat.find_le (gcdPowerSeq_at_succ_eq_one hn)
+
+/-- h(n) is minimal: for any k < hMinK n, gcdPowerSeq n k ≠ 1. -/
+theorem hMinK_is_min {n : ℕ} (hn : 0 < n) {k : ℕ} (hk : k < hMinK n) :
+    gcdPowerSeq n k ≠ 1 := by
+  unfold hMinK at hk; rw [dif_pos hn] at hk
+  exact Nat.find_min ⟨n + 1, gcdPowerSeq_at_succ_eq_one hn⟩ hk
