@@ -50,21 +50,33 @@ theorem latticeGrid_card (n : ℕ) (hn : n ≥ 1) :
 
 /-- The lattice grid is finite. -/
 theorem latticeGrid_finite (n : ℕ) :
-    (latticeGrid n).Finite := by sorry
+    (latticeGrid n).Finite := by
+  apply Set.Finite.subset (Set.Finite.prod (Set.finite_Icc (1 : ℤ) n) (Set.finite_Icc 1 n))
+  intro ⟨x, y⟩ ⟨h1, h2, h3, h4⟩
+  exact ⟨⟨h1, h2⟩, ⟨h3, h4⟩⟩
 
 /-- A point (i,j) with 1 ≤ i,j ≤ n is in the lattice grid. -/
 theorem mem_latticeGrid (n : ℕ) (i j : ℤ)
     (hi1 : 1 ≤ i) (hi2 : i ≤ n) (hj1 : 1 ≤ j) (hj2 : j ≤ n) :
-    (i, j) ∈ latticeGrid n := by sorry
+    (i, j) ∈ latticeGrid n :=
+  ⟨hi1, hi2, hj1, hj2⟩
 
 -- Line properties
 /-- A point lies on the line through it and any other point. -/
 theorem mem_lineThroughPoints_left (p q : ℤ × ℤ) :
-    p ∈ lineThroughPoints p q := by sorry
+    p ∈ lineThroughPoints p q := by
+  simp only [lineThroughPoints]
+  split
+  · exact Set.mem_singleton _
+  · exact ⟨0, by simp⟩
 
 /-- The second point also lies on the line. -/
 theorem mem_lineThroughPoints_right (p q : ℤ × ℤ) :
-    q ∈ lineThroughPoints p q := by sorry
+    q ∈ lineThroughPoints p q := by
+  simp only [lineThroughPoints]
+  split
+  · next h => rw [h]; exact Set.mem_singleton _
+  · exact ⟨1, by simp⟩
 
 /-- Lines are symmetric: the line through p,q equals the line through q,p. -/
 theorem lineThroughPoints_symm (p q : ℤ × ℤ) :

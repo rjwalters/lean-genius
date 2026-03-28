@@ -32,31 +32,33 @@ theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
 
 /-- τ(p^k) = k + 1 for prime p. -/
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
-    tau (p ^ k) = k + 1 := by sorry
+    tau (p ^ k) = k + 1 := by
+  simp [tau, Nat.divisors_prime_pow hp]
 
 /-- τ is multiplicative on coprime arguments. -/
 theorem tau_multiplicative (m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0)
     (h : Nat.Coprime m n) :
-    tau (m * n) = tau m * tau n := by sorry
+    tau (m * n) = tau m * tau n := by
+  simp [tau, Nat.Coprime.divisors_mul h]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 2: Small Computations
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- τ(2) = 2. -/
-theorem tau_two : tau 2 = 2 := by sorry
+theorem tau_two : tau 2 = 2 := tau_prime 2 Nat.prime_two
 
 /-- τ(3) = 2. -/
-theorem tau_three : tau 3 = 2 := by sorry
+theorem tau_three : tau 3 = 2 := tau_prime 3 Nat.prime_three
 
 /-- τ(4) = 3. -/
-theorem tau_four : tau 4 = 3 := by sorry
+theorem tau_four : tau 4 = 3 := by native_decide
 
 /-- τ(6) = 4. -/
-theorem tau_six : tau 6 = 4 := by sorry
+theorem tau_six : tau 6 = 4 := by native_decide
 
 /-- τ(12) = 6. -/
-theorem tau_twelve : tau 12 = 6 := by sorry
+theorem tau_twelve : tau 12 = 6 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Density of Rationals
