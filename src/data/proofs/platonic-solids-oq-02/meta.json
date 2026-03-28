@@ -1,0 +1,163 @@
+{
+  "id": "platonic-solids-oq-02",
+  "title": "Classification of Archimedean (Semi-Regular) Solids",
+  "slug": "platonic-solids-oq-02",
+  "description": "Formalizes the 13 Archimedean solids: convex vertex-transitive polyhedra with regular faces that are neither Platonic nor prisms/antiprisms. Defines vertex types, verifies angle defects computationally, records Euler formula data, and proves structural properties.",
+  "meta": {
+    "author": "Kepler (1619), Grünbaum (1967); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Archimedean_solid",
+    "date": "1619",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PlatonicSolidsOQ02.lean",
+    "tags": [
+      "geometry",
+      "polyhedra",
+      "combinatorics",
+      "classification",
+      "euler-formula",
+      "research",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "theoremCount": 22,
+    "defCount": 20,
+    "lineCount": 210,
+    "mathlibDependencies": [
+      {
+        "theorem": "native_decide",
+        "description": "Computational decision procedure",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Angle defect computation via LCM-based integer arithmetic",
+      "Computational verification of all 13 Archimedean vertex types (native_decide)",
+      "Euler formula verification for all 13 solids",
+      "Proof that no Archimedean type is Platonic (uniform face check)",
+      "Proof of exactly 13 types, all distinct",
+      "Tightest angle defect: snub dodecahedron at 29/30 of 2π",
+      "Soccer ball (truncated icosahedron) identified as Archimedean"
+    ],
+    "dateAdded": "2026-03-28",
+    "assumptions": "1 axiom: archimedean_classification (full classification requires geometric realizability beyond combinatorics). No sorries.",
+    "prerequisites": [
+      "Euler's polyhedral formula V - E + F = 2",
+      "Interior angles of regular polygons",
+      "Platonic solids classification (parent proof)"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Archimedean solids generalize the Platonic solids by relaxing the requirement that all faces be congruent. Instead, all faces must be regular polygons, and the same cyclic arrangement of faces must meet at every vertex. Archimedes reportedly studied these solids, though his original work is lost. Johannes Kepler gave the first systematic enumeration in *Harmonices Mundi* (1619), finding 13 types. The modern rigorous proof follows Grünbaum's *Convex Polytopes* (1967) and Cromwell's *Polyhedra* (1997).\n\nThe classification has two parts: (1) the angle defect constraint narrows the field to finitely many candidate vertex types, and (2) geometric analysis determines which candidates actually close up into convex polyhedra. This formalization handles part (1) computationally and axiomatizes part (2).",
+    "problemStatement": "**Classification Theorem**: There are exactly 13 Archimedean solids — convex, vertex-transitive polyhedra with regular faces that are neither Platonic solids, prisms, nor antiprisms.\n\nEach is uniquely determined by its vertex type: the cyclic sequence of face sizes meeting at each vertex.",
+    "text": "Formalizes the 13 Archimedean solids with computational angle defect verification, Euler formula data, and structural properties.",
+    "proofStrategy": "The formalization uses LCM-based integer arithmetic to verify angle defects:\n\n1. For vertex type [n₁,...,nₖ], compute L = lcm(n₁,...,nₖ)\n2. Angle sum numerator = Σ (nᵢ-2)·(L/nᵢ)\n3. Check: numerator < 2L (equivalent to angle sum < 2π)\n\nAll 13 vertex types are verified via `native_decide`. Euler's formula V-E+F=2 is verified for each solid via `omega`.",
+    "keyInsights": [
+      "LCM-based angle computation avoids rational/real arithmetic entirely: checking Σ(nᵢ-2)/nᵢ < 2 reduces to (nᵢ-2)·(L/nᵢ) < 2L in ℕ",
+      "The snub dodecahedron has the tightest angle defect: 29/30 of a full angle (angle sum = 29π/15), barely satisfying the constraint",
+      "All 13 Archimedean types fail the Platonic (uniform face) check: no Archimedean solid has all faces the same type",
+      "The soccer ball / football is the truncated icosahedron (5,6,6): 12 pentagons and 20 hexagons, 60 vertices, 90 edges",
+      "Euler's formula V-E+F=2 is verified computationally for all 13 solids, serving as a consistency check on the combinatorial data"
+    ],
+    "prerequisites": [
+      "Euler's polyhedral formula V - E + F = 2",
+      "Interior angles of regular polygons",
+      "Platonic solids classification (parent proof)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "vertex-types",
+      "title": "Vertex Types and Angle Computation",
+      "startLine": 28,
+      "endLine": 52,
+      "summary": "LCM-based angle defect computation for vertex types.",
+      "mathContext": "Angle sum = Σ (nᵢ-2)/nᵢ in units of π. Positive defect: sum < 2. Integer check: Σ(nᵢ-2)(L/nᵢ) < 2L."
+    },
+    {
+      "id": "thirteen-types",
+      "title": "The 13 Archimedean Vertex Types",
+      "startLine": 57,
+      "endLine": 74,
+      "summary": "All 13 vertex types defined as concrete List ℕ values.",
+      "mathContext": "From truncated tetrahedron (3,6,6) to snub dodecahedron (3,3,3,3,5)."
+    },
+    {
+      "id": "verification",
+      "title": "Angle Defect Verification",
+      "startLine": 79,
+      "endLine": 115,
+      "summary": "All 13 types verified by native_decide to have positive angle defect.",
+      "mathContext": "Each hasPositiveDefect check reduces to a ℕ comparison, decided by native compilation."
+    },
+    {
+      "id": "euler-data",
+      "title": "Face Counts and Euler's Formula",
+      "startLine": 120,
+      "endLine": 165,
+      "summary": "ArchimedeanData records with V, E, F values; Euler formula verified by omega.",
+      "mathContext": "V - E + F = 2 for all 13 solids. E.g., truncated icosahedron: 60 - 90 + 32 = 2."
+    },
+    {
+      "id": "classification",
+      "title": "The Classification Theorem",
+      "startLine": 170,
+      "endLine": 210,
+      "summary": "Exactly 13 types, all distinct, none Platonic; classification axiom.",
+      "mathContext": "The full classification (Kepler 1619, Grünbaum 1967) is axiomatized. Geometric realizability is beyond the scope of the current formalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete computational verification of the 13 Archimedean solids' angle defects and Euler formula data. The classification itself is axiomatized pending formalization of geometric realizability.",
+    "implications": "1. **Computational geometry**: The LCM-based angle computation demonstrates that polyhedral constraints can be verified in pure integer arithmetic.\n\n2. **Extension of Wiedijk #50**: This extends the Platonic solids classification (Wiedijk's 100 Theorems #50) to the semi-regular case.\n\n3. **Soccer ball connection**: The truncated icosahedron's identification as an Archimedean solid connects abstract geometry to everyday objects.",
+    "openQuestions": [
+      "Can geometric realizability be formalized in Lean (construction of each solid)?",
+      "Are there analogous classifications in higher dimensions (uniform polytopes)?",
+      "Can the angle constraint alone (without geometric analysis) determine the 13 types?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.List.Basic"
+    ],
+    "opens": [],
+    "namespace": "ArchimedeanSolids",
+    "lineCount": 210,
+    "axiomCount": 1,
+    "theoremCount": 22,
+    "definitionCount": 20
+  },
+  "crossReferences": [
+    {
+      "targetId": "platonic-solids",
+      "relationship": "extends",
+      "description": "Extends the Platonic solids classification (Wiedijk #50) to semi-regular polyhedra. The Archimedean condition generalizes the Platonic condition by allowing non-uniform face types"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kepler, Johannes",
+      "title": "Harmonices Mundi",
+      "year": "1619",
+      "venue": "Linz",
+      "note": "First systematic enumeration of the 13 Archimedean solids"
+    },
+    {
+      "authors": "Grünbaum, Branko",
+      "title": "Convex Polytopes",
+      "year": "1967",
+      "venue": "John Wiley & Sons",
+      "note": "Rigorous modern treatment of the Archimedean classification"
+    },
+    {
+      "authors": "Cromwell, Peter R.",
+      "title": "Polyhedra",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Accessible treatment of Archimedean solids with historical context"
+    }
+  ]
+}
