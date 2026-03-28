@@ -87,7 +87,7 @@ theorem frobenius_3_5 : G(({3, 5} : Finset ℕ)) = 7 := by
   have : Nat.Coprime 3 5 := by decide
   have := sylvester_frobenius 3 5 (by norm_num) (by norm_num) this
   simp at this ⊢
-  sorry -- 3*5 - 3 - 5 = 7
+  omega
 
 /--
 **Example: G({2, 3}) = 1**
@@ -97,7 +97,7 @@ theorem frobenius_2_3 : G(({2, 3} : Finset ℕ)) = 1 := by
   have : Nat.Coprime 2 3 := by decide
   have := sylvester_frobenius 2 3 (by norm_num) (by norm_num) this
   simp at this ⊢
-  sorry -- 2*3 - 2 - 3 = 1
+  omega
 
 /--
 **Fundamental Theorem:**
