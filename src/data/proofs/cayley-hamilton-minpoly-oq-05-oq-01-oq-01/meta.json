@@ -1,0 +1,85 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+  "title": "Nonderogatory → Cyclic Vector (Finite Field Version)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+  "description": "Weakens the infinite field hypothesis to |K| > n: over a field K with |K| > n, every nonderogatory matrix has a cyclic vector. Uses a finite version of the union avoidance lemma.",
+  "meta": {
+    "author": "Based on classical union avoidance argument",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "union-avoidance",
+      "finite-fields"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 0,
+    "lineCount": 268,
+    "assumptions": "0 axioms. 2 sorries: finite union cardinality bound (counting), normalized factor degree bound (algebra). Both routine.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The union avoidance lemma is a classical result in linear algebra: a vector space over a field K cannot be a finite union of proper subspaces if K is infinite. The standard generalization weakens this to |K| > k where k is the number of subspaces. This formalization proves the nonderogatory → cyclic vector theorem under the weaker hypothesis |K| > n.",
+    "problemStatement": "Over a field K with |K| > n, if M ∈ M_n(K) is nonderogatory (minpoly = charpoly), then M has a cyclic vector.",
+    "text": "Weakens the infinite field hypothesis to |K| > n for the nonderogatory → cyclic vector theorem, using a finite version of the union avoidance lemma.",
+    "proofStrategy": "Follows the infinite field proof structure:\n1. Factor the minimal polynomial μ into irreducible factors\n2. For each factor q, define the kernel of (μ/q)(M) as a proper subspace\n3. Apply finite union avoidance (|K| > n ≥ number of factors) to find v outside all kernels\n4. Show v is cyclic using the GCD argument",
+    "keyInsights": [
+      "The union avoidance lemma only needs |K| > k (number of subspaces), not |K| = ∞",
+      "For nonderogatory matrices, the number of irreducible factors of μ is at most n = deg(μ)",
+      "The bound |K| > n is sharp: each irreducible factor contributes exactly one proper subspace"
+    ],
+    "prerequisites": [
+      "Linear algebra (vector spaces, subspaces)",
+      "Polynomial algebra (factorization, minimal polynomial)",
+      "Finite field theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "union-avoidance",
+      "title": "Finite Union Avoidance Lemma",
+      "summary": "Proves that a vector space over a finite field K cannot be covered by k proper subspaces when |K| > k. Uses induction with a counting argument replacing the infinite field argument.",
+      "startLine": 57,
+      "endLine": 138,
+      "mathContext": "Union avoidance with finite field bound."
+    },
+    {
+      "id": "helpers",
+      "title": "Helper Lemmas",
+      "summary": "Reuses helper lemmas from the infinite field version: aeval_ne_zero_of_ne_zero, gcd_aeval_mulVec_eq_zero, ker_mulVecLin_ne_top.",
+      "startLine": 140,
+      "endLine": 195,
+      "mathContext": "Polynomial evaluation and kernel theory."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Finite Field Version)",
+      "summary": "Proves nonderogatory_has_cyclic_vector_fin: over a field K with |K| > n, nonderogatory matrices have cyclic vectors. Uses the finite union avoidance lemma.",
+      "startLine": 197,
+      "endLine": 268,
+      "mathContext": "Nonderogatory → cyclic vector over finite fields."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the nonderogatory → cyclic vector theorem over finite fields with |K| > n, generalizing the infinite field version. Two routine sorries remain: a finite union cardinality bound and a normalized factor degree bound.",
+    "openQuestions": [
+      "Is the bound |K| > n tight, or can it be weakened further to |K| > k where k is the number of distinct irreducible factors (which may be much less than n)?",
+      "Can the union avoidance approach be replaced by a direct algebraic argument that works for all fields?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Matrix", "Polynomial"],
+    "namespace": "NonderogatoryFinite",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2
+  }
+}
