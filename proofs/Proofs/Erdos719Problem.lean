@@ -129,6 +129,70 @@ theorem choose_succ_self (r : ℕ) : Nat.choose (r + 1) r = r + 1 := by
   rw [Nat.choose_symm (Nat.le_succ r)]
   simp [Nat.choose]
 
+/-- Edges in a complete clique are subsets of the vertex set. -/
+theorem completeClique_subset {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    ∀ e ∈ completeClique r S, e ⊆ S := by
+  intro e he
+  simp [completeClique, Finset.mem_filter, Finset.mem_powerset] at he
+  exact he.1
+
+/-- Edges in a complete clique have exactly r elements. -/
+theorem completeClique_uniform {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    ∀ e ∈ completeClique r S, e.card = r := by
+  intro e he
+  simp [completeClique, Finset.mem_filter] at he
+  exact he.2
+
+/-- PiecesEdgeDisjoint is symmetric. -/
+theorem piecesEdgeDisjoint_comm {V : Type*} [DecidableEq V]
+    (p₁ p₂ : Finset (Finset V)) :
+    PiecesEdgeDisjoint p₁ p₂ ↔ PiecesEdgeDisjoint p₂ p₁ := by
+  simp only [PiecesEdgeDisjoint, and_comm]
+
+-- ## Clique Cardinality
+
+/-- completeClique r S equals powersetCard r S: the family of all r-element
+    subsets of S. This connects our definition to Mathlib's combinatorial API. -/
+theorem completeClique_eq_powersetCard {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    completeClique r S = S.powersetCard r := by
+  ext e
+  simp [completeClique, Finset.mem_powersetCard, Finset.mem_filter, Finset.mem_powerset]
+
+/-- The number of r-edges in a complete clique on S equals C(|S|, r). -/
+theorem completeClique_card {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    (completeClique r S).card = Nat.choose S.card r := by
+  rw [completeClique_eq_powersetCard, Finset.card_powersetCard]
+
+/-- A complete (r+1)-clique K_{r+1}^r has exactly r+1 hyperedges. -/
+theorem fullClique_edge_count {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V)
+    (hS : S.card = r + 1) :
+    (completeClique r S).card = r + 1 := by
+  rw [completeClique_card, hS, Nat.choose_succ_self_right]
+
+/-- completeClique is monotone: larger vertex sets yield more r-edges. -/
+theorem completeClique_mono {V : Type*} [DecidableEq V] (r : ℕ) {S T : Finset V} (h : S ⊆ T) :
+    completeClique r S ⊆ completeClique r T := by
+  intro e he
+  rw [completeClique_eq_powersetCard] at he ⊢
+  exact Finset.powersetCard_mono h he
+
+/-- Each piece in a valid decomposition has at most r + 1 edges:
+    single edges contribute 1, full cliques contribute r + 1. -/
+theorem decomp_piece_card_le {V : Type*} [DecidableEq V] [Fintype V] (r : ℕ)
+    (H : RUniformHypergraph V r) (pieces : Finset (Finset (Finset V)))
+    (hdecomp : IsValidDecomp r H pieces)
+    (p : Finset (Finset V)) (hp : p ∈ pieces) :
+    p.card ≤ r + 1 := by
+  rcases hdecomp.pieces_valid p hp with ⟨e, he⟩ | ⟨S, hS⟩
+  · -- p = {e}: a single r-edge
+    have : p = {e} := he.2
+    subst this; simp
+  · -- p = completeClique r S with |S| = r+1
+    have hcard : S.card = r + 1 := hS.1
+    have : p = completeClique r S := hS.2
+    subst this
+    rw [completeClique_card, hcard, Nat.choose_succ_self_right]
+
 -- ## Empty and Trivial Cases
 
 /-- The empty hypergraph trivially satisfies the Erdős–Sauer conjecture. -/
