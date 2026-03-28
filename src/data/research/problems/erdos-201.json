@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 7A all appropriate (gk axiomatized). 10T, 0S.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (7A→5A). gk defined, gk_le_rk proved.",
+    "builtItems": [
+      "DEFINED gk via sSup (was axiom)",
+      "PROVED gk_le_rk from definition (universal → specific set)"
+    ],
     "insights": [
       "7 axioms: gk function (opaque), gk_le_rk (follows from gk definition), 4 specific values, komlos_sulyok_szemeredi (deep). All appropriate since gk is axiomatized.",
-      "10 theorems proved, 0 sorries."
+      "10 theorems proved, 0 sorries.",
+      "gk defined as sSup of valid lower bounds (gk_prop). gk_le_rk proved: apply universality to Icc 1 N, get AP-free subset A with m ≤ |A| ≤ rk k N."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -60,9 +64,9 @@
     {
       "path": "Proofs/Erdos201Problem.lean",
       "filename": "Erdos201Problem.lean",
-      "lineCount": 198,
+      "lineCount": 231,
       "theoremCount": 10,
-      "axiomCount": 7,
+      "axiomCount": 5,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved q_gt_k (7A→6A).",
+    "progressSummary": "COMPLETED: All 4 axioms eliminated (4A→0A). File is now fully verified: 0 axioms, 0 sorries.",
     "builtItems": [
-      "PROVED q_gt_k from other axioms (7A→6A)"
+      "PROVED q_gt_k from other axioms (7A→6A)",
+      "PROVED exists_prime_not_dvd_consecutiveProduct (existence via infinitude of primes)",
+      "DEFINED smallestMissingPrime via Nat.find (was axiom)",
+      "PROVED smallestMissingPrime_prime from Nat.find_spec",
+      "PROVED smallestMissingPrime_not_dvd from Nat.find_spec",
+      "PROVED smallestMissingPrime_least from Nat.find_min"
     ],
     "insights": [
       "q_gt_k follows from smallestMissingPrime_not_dvd + small_prime_divides_product — proved (7A→6A).",
-      "small_prime_divides_product itself is provable (pigeonhole on consecutive integers) but needs ~15 lines."
+      "small_prime_divides_product itself is provable (pigeonhole on consecutive integers) but needs ~15 lines.",
+      "All 4 axioms eliminated via Nat.find: smallestMissingPrime now defined concretely using infinitude of primes + Nat.find, properties proved from Nat.find_spec and Nat.find_min."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -62,9 +68,9 @@
     {
       "path": "Proofs/Erdos663Problem.lean",
       "filename": "Erdos663Problem.lean",
-      "lineCount": 164,
-      "theoremCount": 7,
-      "axiomCount": 4,
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
