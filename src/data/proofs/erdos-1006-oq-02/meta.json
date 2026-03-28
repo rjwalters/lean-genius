@@ -20,7 +20,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.chromaticNumber",
@@ -50,7 +50,7 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 1,
     "lineCount": 469,
-    "assumptions": "1 axiom: ffllw_classical (Fisher-Fraughnaugh-Langley-West classical lower bound for non-robust graphs). Previously axiomatized k3_egirth_eq_3 and k3_chromaticNumber_eq_3 are now proved from Mathlib. 1 sorry(s) remain.",
+    "assumptions": "1 axiom: ffllw_classical (Fisher-Fraughnaugh-Langley-West classical lower bound for non-robust graphs). Previously axiomatized k3_egirth_eq_3 and k3_chromaticNumber_eq_3 are now proved from Mathlib. 0 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
