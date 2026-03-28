@@ -175,6 +175,15 @@ This question is OPEN. Note:
 theorem erdos_sos_question_open :
   True := trivial -- This question is genuinely OPEN; we do not assert either direction
 
+/-- The conjecture answers Erdős-Sós negatively: R(Q_n)/2^n is bounded. -/
+theorem conjecture_implies_bounded_ratio :
+    erdos_181_conjecture → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ,
+      (ramseyNumber n : ℝ) / 2 ^ n ≤ C := by
+  intro ⟨C, hC, hbound⟩
+  exact ⟨C, hC, fun n => by
+    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    exact hbound n⟩
+
 /-
 ## Part V: Gap Between Upper and Lower Bounds
 -/
