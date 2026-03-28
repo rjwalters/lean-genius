@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Converted open conjecture to def (3→2 axioms). Remaining 2 axioms are deep published results.",
     "builtItems": [
       "binaryDigit_values: sign function returns ±1 (line 87)",
       "binaryDigit_cast_abs: |sign(t,k)| = 1 as real (line 92)",
@@ -47,16 +47,9 @@
       "randSignPoly_eval_neg_one_le_polyMax: |P_n(t,-1)| ≤ M_n (line 187)"
     ],
     "insights": [
-      "binaryDigit returns exactly 1 or -1 (cast of floor-mod condition)",
-      "|binaryDigit(t,k)| = 1 as a real, enabling clean term-by-term bounds",
-      "ε_k² = 1 — key for L² norm computation E[P_n²] = Σ x^{2k}",
-      "P_n(t,0) = 0 since all terms have x^k with k≥1",
-      "P_n(t,1) = sum of signs, connecting polynomial max to partial sums",
-      "|P_n(t,x)| ≤ n for |x| ≤ 1 by triangle inequality + term bound",
-      "All 4 axioms are deep results or open: none provable from Mathlib",
-      "polyMax = sSup requires BddAbove (proved via pointwise bound) and nonemptiness (0 ∈ [-1,1])",
-      "Endpoint evaluations at x = ±1 provide the sharpest pointwise lower bounds for M_n",
-      "randSignPoly is continuous in x — finite sum of c·x^k terms, each continuous"
+      "erdos_524_order_of_magnitude was OPEN conjecture axiomatized as true, now a def",
+      "erdos_lower_bound and chung_upper_bound are deep published results, both unused in proofs",
+      "All 3 axioms were unused: file proves structural properties from definitions only"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
