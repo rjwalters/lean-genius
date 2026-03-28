@@ -23,6 +23,10 @@ open question about the arithmetic nature of odd zeta values.
 **Status**: OPEN for odd values; PROVED for even values (from Lindemann)
 
 Source: Extension of the Basel Problem formalization
+
+Axioms: 1 (apery_theorem)
+Proved: 17 theorems (including pi_transcendental from PiTranscendental import)
+Sorries: 0
 -/
 
 import Mathlib.NumberTheory.ZetaValues
@@ -31,6 +35,7 @@ import Mathlib.Topology.Algebra.InfiniteSum.Order
 import Mathlib.Analysis.PSeries
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Tactic
+import Proofs.PiTranscendental
 
 open BigOperators Filter Topology Real Polynomial
 
@@ -95,8 +100,9 @@ theorem zetaValue_four : zetaValue 4 = π ^ 4 / 90 := by
 
 /-- **Lindemann's Theorem (1882)**: π is transcendental over ℚ.
     This is the key ingredient for showing even zeta values are transcendental.
-    Not yet in Mathlib v4.26.0. -/
-axiom pi_transcendental : Transcendental ℚ (Real.pi : ℝ)
+    Proved in Proofs.PiTranscendental via Lindemann-Weierstrass. -/
+theorem pi_transcendental : Transcendental ℚ (Real.pi : ℝ) :=
+  pi_transcendental_over_rationals
 
 /-- **Apéry's Theorem (1978)**: ζ(3) is irrational.
     The first (and still only individually named) odd zeta value

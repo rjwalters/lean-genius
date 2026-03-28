@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated pi_transcendental axiom from BaselProblemOQ02.lean (2A\u21921A) by importing PiTranscendental.",
+    "builtItems": [
+      "Documented proof strategy for zeta_two_transcendental and zeta_four_transcendental",
+      "PROVED pi_transcendental: from PiTranscendental.pi_transcendental_over_rationals (2A\u21921A)"
+    ],
+    "insights": [
+      "Both sorries reduce to: if p(a^n/c)=0 for c\u2208\u211a\u00d7, construct q(x) = c^d\u00b7p(x^n/c) vanishing at a",
+      "Key Mathlib tools needed: Transcendental.pow, polynomial composition, IsAlgebraic closure under field ops",
+      "pi_transcendental_over_rationals already proved in Proofs.PiTranscendental \u2014 just needed import + alias"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -49,7 +56,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.431Z",
-  "lastUpdate": "2026-03-26T20:00:24.431Z",
+  "lastUpdate": "2026-03-28T00:30:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -68,8 +75,8 @@
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
       "lineCount": 275,
-      "theoremCount": 16,
-      "axiomCount": 2,
+      "theoremCount": 17,
+      "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
