@@ -69,9 +69,19 @@ theorem nine_works : IsSquarefreePlusPow2 9 :=
 def IsWieferichPrime (p : ℕ) : Prop :=
   Nat.Prime p ∧ 2^(p - 1) % (p^2) = 1
 
-/-- The only known Wieferich primes are 1093 and 3511 -/
-axiom known_wieferich_1093 : IsWieferichPrime 1093
-axiom known_wieferich_3511 : IsWieferichPrime 3511
+/-- 1093 is a Wieferich prime (Meissner, 1913): 2^1092 ≡ 1 (mod 1093²).
+    Proved by verified computation. -/
+theorem known_wieferich_1093 : IsWieferichPrime 1093 := by
+  constructor
+  · decide
+  · native_decide
+
+/-- 3511 is a Wieferich prime (Beeger, 1922): 2^3510 ≡ 1 (mod 3511²).
+    Proved by verified computation. -/
+theorem known_wieferich_3511 : IsWieferichPrime 3511 := by
+  constructor
+  · decide
+  · native_decide
 
 /-- It is conjectured that there are infinitely many non-Wieferich primes -/
 def InfinitelyManyNonWieferich : Prop :=
