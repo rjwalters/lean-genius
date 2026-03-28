@@ -166,6 +166,33 @@ theorem positive_lower_density_bounded_gaps (A : Set ℕ) :
     HasPositiveLowerDensity A → HasBoundedGaps (diffSet A) :=
   fun h => positive_density_bounded_gaps A (lower_density_implies_upper A h)
 
+/- ## Additional structural properties -/
+
+/-- D(A) ∪ D(B) ⊆ D(A ∪ B): union of difference sets embeds into
+    difference set of the union. -/
+theorem diffSet_union_subset (A B : Set ℕ) :
+    diffSet A ∪ diffSet B ⊆ diffSet (A ∪ B) :=
+  Set.union_subset (diffSet_mono _ _ Set.subset_union_left)
+    (diffSet_mono _ _ Set.subset_union_right)
+
+/-- A set with bounded gaps is nonempty. -/
+theorem hasBoundedGaps_nonempty (S : Set ℤ) (h : HasBoundedGaps S) : S.Nonempty := by
+  obtain ⟨M, _, hz⟩ := h
+  obtain ⟨s, hs, _⟩ := hz 0
+  exact ⟨s, hs⟩
+
+/-- HasBoundedGaps is upward closed: if S ⊆ T and S has bounded gaps, so does T. -/
+theorem hasBoundedGaps_mono {S T : Set ℤ} (h : S ⊆ T) (hs : HasBoundedGaps S) :
+    HasBoundedGaps T := by
+  obtain ⟨M, hM, hz⟩ := hs
+  exact ⟨M, hM, fun z => let ⟨s, hs', hle, hlt⟩ := hz z; ⟨s, h hs', hle, hlt⟩⟩
+
+/-- If D(A) has bounded gaps, then A is infinite. -/
+theorem infinite_of_diffSet_bounded_gaps (A : Set ℕ)
+    (h : HasBoundedGaps (diffSet A)) : Set.Infinite A := by
+  rw [← diffSet_nonempty_iff]
+  exact hasBoundedGaps_nonempty _ h
+
 /- ## Main problem -/
 
 /-- Erdős Problem 332: What conditions on `A ⊆ ℕ` are sufficient to
