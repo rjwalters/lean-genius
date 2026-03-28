@@ -47,7 +47,12 @@ theorem primes_3_5_7 : (3 : ℕ).Prime ∧ (5 : ℕ).Prime ∧ (7 : ℕ).Prime :
   refine ⟨?_, ?_, ?_⟩ <;> norm_num
 
 /-- {3, 5, 7} is a prime AP: 3 + 0*2 = 3, 3 + 1*2 = 5, 3 + 2*2 = 7. -/
-axiom is_prime_ap_3_5_7 : IsPrimeAP {3, 5, 7}
+theorem is_prime_ap_3_5_7 : IsPrimeAP {3, 5, 7} := by
+  constructor
+  · intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl <;> norm_num
+  · exact ⟨3, 2, 3, by omega, by omega, by native_decide⟩
 
 /-- 5, 11, 17, 23, 29 are all prime. -/
 theorem primes_5_11_17_23_29 :
@@ -56,7 +61,12 @@ theorem primes_5_11_17_23_29 :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> norm_num
 
 /-- {5, 11, 17, 23, 29} is a prime AP with difference 6. -/
-axiom is_prime_ap_5_11_17_23_29 : IsPrimeAP {5, 11, 17, 23, 29}
+theorem is_prime_ap_5_11_17_23_29 : IsPrimeAP {5, 11, 17, 23, 29} := by
+  constructor
+  · intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl | rfl | rfl <;> norm_num
+  · exact ⟨5, 6, 5, by omega, by omega, by native_decide⟩
 
 /- ## The Green-Tao Theorem -/
 
