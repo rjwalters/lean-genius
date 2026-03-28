@@ -212,11 +212,47 @@ theorem lower_half_also_half :
   rw [abs_lt] at h1 h2 ⊢
   constructor <;> linarith
 
-/-- The conjecture implies the ratio upperHalfSum/mertensSum → 1/2. -/
-axiom ratio_converges_to_half :
+/-- The conjecture implies the ratio upperHalfSum/mertensSum → 1/2.
+    Proof: |upper/mertens - 1/2| = |2·upper - mertens|/(2·mertens).
+    Both numerator errors are bounded by the axioms (error 1 each → numerator < 3),
+    and mertens → ∞, so the ratio → 0. -/
+theorem ratio_converges_to_half :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       mertensSum n > 0 →
-      |upperHalfSum n / mertensSum n - 1 / 2| < ε
+      |upperHalfSum n / mertensSum n - 1 / 2| < ε := by
+  intro ε hε
+  obtain ⟨N₁, hN₁⟩ := erdos_726_conjecture 1 one_pos
+  obtain ⟨N₂, hN₂⟩ := mertens_theorem 1 one_pos
+  -- log log n → ∞, so mertensSum n → ∞
+  have hloglog : Filter.Tendsto (fun n : ℕ => Real.log (Real.log (n : ℝ)))
+      Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+  rw [Filter.tendsto_atTop_atTop] at hloglog
+  obtain ⟨N₃, hN₃⟩ := hloglog (3 / (2 * ε) + 2)
+  refine ⟨max (max N₁ N₂) N₃, fun n hn hmpos => ?_⟩
+  have hn1 := hN₁ n (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn)
+  have hn2 := hN₂ n (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn)
+  have hn3 := hN₃ n (le_trans (le_max_right _ _) hn)
+  -- Numerator bound: |2·upper - mertens| < 3
+  have h_num : |2 * upperHalfSum n - mertensSum n| < 3 := by
+    rw [abs_lt] at hn1 hn2 ⊢; constructor <;> linarith
+  -- Denominator bound: 2·mertens > 3/ε
+  have h_merts : 3 / (2 * ε) < mertensSum n := by
+    have := (abs_lt.mp hn2).1; linarith
+  have h_denom : 3 < 2 * ε * mertensSum n := by
+    calc (3 : ℝ) = 2 * ε * (3 / (2 * ε)) := by field_simp
+      _ < 2 * ε * mertensSum n := by
+          exact mul_lt_mul_of_pos_left h_merts (by linarith)
+  -- Combine: |ratio - 1/2| = |num|/(2·mertens) < 3/(2·mertens) < ε
+  rw [show upperHalfSum n / mertensSum n - 1 / 2 =
+    (2 * upperHalfSum n - mertensSum n) / (2 * mertensSum n) from by
+    field_simp; ring]
+  rw [abs_div, abs_of_pos (by linarith : (0 : ℝ) < 2 * mertensSum n)]
+  rw [div_lt_iff (by linarith : (0 : ℝ) < 2 * mertensSum n)]
+  calc |2 * upperHalfSum n - mertensSum n|
+      < 3 := h_num
+    _ < 2 * ε * mertensSum n := h_denom
+    _ = ε * (2 * mertensSum n) := by ring
 
 /-
 ## Monotonicity and Growth
