@@ -250,9 +250,14 @@ axiom erdos_selfridge :
 A single block of consecutive integers is never a perfect square (by Erdős-Selfridge).
 But DISJOINT blocks can multiply to give a square when combined correctly.
 -/
-theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2) :
+theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2)
+    (hne : I.product ≠ 0) :
     ¬isPerfectSquare I.product := by
-  sorry -- Follows from Erdős-Selfridge
+  -- Note: the nonzero hypothesis is necessary (e.g., [0,1] has product 0 = 0²).
+  -- I.product = ∏ m ∈ Icc(I.start, I.start + I.length - 1), m
+  -- This is the same as ∏ i ∈ range(I.length), (I.start + i) by reindexing.
+  -- By Erdős-Selfridge (axiom), this cannot be a perfect power ≥ 2.
+  sorry -- Follows from Erdős-Selfridge + reindexing the product
 
 /-
 ## Part XII: Summary

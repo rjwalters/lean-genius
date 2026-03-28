@@ -1,0 +1,29 @@
+{
+  "slug": "erdos-363-incomplete-01",
+  "title": "Erdős #363: Square Products from Disjoint Intervals",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:35:00Z", "iteration": 1,
+    "focus": "Fixed false theorem statement (missing nonzero hypothesis).",
+    "blockers": ["Product reindexing (Icc → range) for full proof"],
+    "nextAction": "Prove product equivalence to eliminate last sorry",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "PROGRESS: Fixed single_block_not_square theorem statement — added required nonzero hypothesis (original was FALSE for intervals containing 0, e.g. [0,1] has product 0 = 0²). Sorry remains for product reindexing (connecting Icc-indexed and range-indexed products).",
+    "builtItems": [
+      "Fixed single_block_not_square: added hne : I.product ≠ 0 hypothesis"
+    ],
+    "insights": [
+      "Original theorem was FALSE: [0,1] has product 0 = 0², so isPerfectSquare holds",
+      "Erdős-Selfridge axiom has nonzero hypothesis — theorem needs it too",
+      "Product reindexing (∏ m ∈ Icc(a, a+n-1) = ∏ i ∈ range(n), (a+i)) is the main gap",
+      "File has 5 axioms (erdos_selfridge, sawhney, ulas, bauer_bennett, bennett_van_luijk)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": ["Prove product reindexing via Finset.prod_bij or similar"]
+  },
+  "tags": ["erdos", "number-theory", "diophantine-equations", "perfect-squares", "incomplete", "seeker-selected"],
+  "started": "2026-03-28T20:30:00Z", "lastUpdate": "2026-03-28T20:35:00Z",
+  "significance": 5, "tractability": 6
+}
