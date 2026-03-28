@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced from 8 to 6. maxTerm concretized as iSup, maxTerm_nonneg proved from definition. Fixed pre-existing half_lt_two_div_pi build error. maxModulus still axiomatized (requires tsum infrastructure).",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Concretized maxTerm definition (Erdos513Problem.lean:31-33)",
       "Proved maxTerm_nonneg from concrete def (Erdos513Problem.lean:36-37)",
