@@ -290,18 +290,6 @@ def IsWeird (n : ℕ) : Prop := IsAbundant n ∧ ¬IsPseudoperfect n
 --
 -- The core of Erdős #469 remains open.
 
-/-- There are infinitely many primitive pseudoperfect numbers -/
-axiom infinitely_many_primitive :
-  Set.Infinite primitivePseudoperfectSet
-
-/-- Erdős Problem #469 (OPEN): Does the sum of reciprocals of primitive
-    pseudoperfect numbers converge?
-    Σ_{n ∈ A} 1/n < ∞ ? -/
-axiom erdos_469_convergence :
-  ∃ B : ℝ, 0 < B ∧
-    ∀ (S : Finset ℕ), (∀ n ∈ S, IsPrimitivePseudoperfect n) →
-      (S.sum (fun n => (1 : ℝ) / n)) ≤ B
-
 /-- Every multiple of a pseudoperfect number is pseudoperfect.
     Proof: if n = d₁ + ⋯ + dₖ with dᵢ proper divisors of n, then
     n·m = d₁·m + ⋯ + dₖ·m, and each dᵢ·m is a proper divisor of n·m. -/

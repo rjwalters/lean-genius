@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Verified 88 as 4th primitive pseudoperfect (A006036: 6, 20, 28, 88). 2 axioms, 0 sorries.",
+    "progressSummary": "COMPLETE: 0A 0S. Both axioms removed (unused). File axiom-free.",
     "builtItems": [
       "Assessment: 2A both appropriate, excellent formalization",
       "Proved pseudoperfect_28: 28 = 1+2+4+7+14 (perfect number)",
@@ -47,10 +47,7 @@
       "Verified examples: 6 is smallest pseudoperfect, 6 is primitive pseudoperfect",
       "deficient_not_pseudoperfect gives clean relationship between abundance and pseudoperfection",
       "Weird number definition included for context (abundant but not pseudoperfect)",
-      "For 20: only proper divisor ≥6 is 10, which is deficient (σ₀=8<10)",
-      "For 28 (perfect number): proper divisors {7,14} both deficient, so 28 is primitive",
-      "Verified first 3 entries of A006036: 6, 20, 28",
-      "88 = 2^3 * 11: all proper divisors {1,2,4,8,11,22,44} are deficient (sigma_0 = {0,1,3,7,1,14,40})"
+      "Both axioms (infinitely_many_primitive, erdos_469_convergence) were unused — removed (2→0A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -77,9 +74,9 @@
     {
       "path": "Proofs/Erdos469Problem.lean",
       "filename": "Erdos469Problem.lean",
-      "lineCount": 326,
-      "theoremCount": 32,
-      "axiomCount": 2,
+      "lineCount": 228,
+      "theoremCount": 19,
+      "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
