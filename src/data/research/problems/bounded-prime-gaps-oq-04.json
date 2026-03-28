@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (D(2), D(3)) via sInf definition + parity argument. 3A→1A.",
+    "progressSummary": "PROGRESS: Proved admissible k-tuple existence for all k (factorial construction), closing diameter_lower_bound sorry. OQ03OQ01: 3A→1A, 2S→1S.",
     "builtItems": [
       "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
       "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
@@ -42,7 +42,10 @@
       "Replaced opaque minAdmissibleDiameter with noncomputable def via sInf",
       "PROVED D(2)=2: consecutive non-admissibility + {0,2} witness",
       "PROVED D(3)=6: parity argument (mixed→mod2, same→AP diff 2→mod3) + {0,2,6} witness",
-      "New lemmas: not_admissible_consecutive, not_admissible_ap_diff2, finset_card_le_diameter_succ"
+      "New lemmas: not_admissible_consecutive, not_admissible_ap_diff2, finset_card_le_diameter_succ",
+      "exists_admissible_k_tuple: proved admissible k-tuples exist for all k≥1 (factorial construction)",
+      "prime_dvd_factorial: helper lemma p|k! when p prime and p≤k",
+      "Closed sorry in diameter_lower_bound (2→1 sorries in OQ03OQ01)"
     ],
     "insights": [
       "BV gives RH-quality results without RH — primes equidistribute on average over moduli q <= sqrt(x)",
@@ -54,7 +57,9 @@
       "Remaining 3 axioms are opaque function values that cannot be eliminated without making minAdmissibleDiameter computable",
       "2 sorries (diameter_lower_bound, diameter_upper_bound_exists) also blocked by opaque function",
       "Key insight for D(3)≥6: 3 same-parity elements in interval ≤5 must form {a,a+2,a+4}, which is non-admissible mod 3",
-      "diameter_lower_bound mostly proved — only missing piece is existence of admissible k-tuples for general k"
+      "diameter_lower_bound mostly proved — only missing piece is existence of admissible k-tuples for general k",
+      "Admissible k-tuples exist for all k≥1 via factorial construction: {i*k! | i<k}. For p≤k: p|k! collapses all residues. For p>k: at most k<p residues.",
+      "diameter_lower_bound sorry closed: proved admissible k-tuples exist for general k, establishing D(k)≥k-1 without sorry"
     ],
     "mathlibGaps": [
       "Polya-Vinogradov inequality (character sum bounds)",

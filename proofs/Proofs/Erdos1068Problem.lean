@@ -241,6 +241,19 @@ theorem inf_connected_subgraph_has_paths (G : SimpleGraph V) (S : Set V)
       p.vertices.head? = some u ∧ p.vertices.getLast? = some v :=
   inf_connected_implies_path _ hconn u v huv
 
+/-- **Finite k-connectivity**: Infinitely connected graphs are k-vertex-connected
+    for every finite k. This follows immediately from inf_connected_no_finite_separator
+    which doesn't use the cardinality of S. -/
+theorem inf_connected_k_connected (G : SimpleGraph V)
+    (hconn : InfinitelyConnected G) (k : ℕ) :
+    ∀ (u v : V), u ≠ v → ∀ (S : Finset V),
+      S.card ≤ k → u ∉ (S : Set V) → v ∉ (S : Set V) →
+      ∃ (p : PathInGraph G),
+        p.vertices.head? = some u ∧ p.vertices.getLast? = some v ∧
+        ∀ w ∈ p.vertices, w ∉ (S : Set V) := by
+  intro u v huv S _ hu hv
+  exact inf_connected_no_finite_separator V G hconn u v huv S hu hv
+
 /- ## Summary
 
 **Erdős Problem #1068: OPEN**
