@@ -72,27 +72,6 @@
     ]
   },
   {
-    "id": "ann-flt-semistable",
-    "proofId": "fermats-last-theorem",
-    "range": {
-      "startLine": 84,
-      "endLine": 89
-    },
-    "type": "lemma",
-    "title": "Semi-stability of Frey Curves",
-    "content": "An elliptic curve is **semi-stable** if at every prime of bad reduction, the reduction is multiplicative (nodes, not cusps). Frey curves are semi-stable, which is crucial because Wiles' modularity theorem applies specifically to semi-stable curves.",
-    "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
-    "significance": "key",
-    "prerequisites": [
-      "ann-flt-frey"
-    ],
-    "relatedConcepts": [
-      "reduction",
-      "bad primes",
-      "Neron model"
-    ]
-  },
-  {
     "id": "ann-flt-modularity",
     "proofId": "fermats-last-theorem",
     "range": {

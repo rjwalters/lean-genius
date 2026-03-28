@@ -1,13 +1,13 @@
 {
   "slug": "buffons-needle-oq-03",
-  "title": "Can the higher-dimensional generalization (random needles on a grid in \u211d\u00b3) be...",
+  "title": "Can the higher-dimensional generalization (random needles on a grid in ℝ³) be...",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization generalizing a known result: Can the higher-dimensional generalization (random needles on a grid in \u211d\u00b3) be....",
+    "plain": "Formalization generalizing a known result: Can the higher-dimensional generalization (random needles on a grid in ℝ³) be....",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,7 +19,7 @@
     "phase": "OBSERVE",
     "since": "2026-03-23T00:42:35.518Z",
     "iteration": 2,
-    "focus": "Blocked \u2014 no formalization, vague statement",
+    "focus": "Blocked — no formalization, vague statement",
     "blockers": [
       "No Lean file for OQ03",
       "Truncated problem statement",
@@ -33,13 +33,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: No Lean file exists. Problem statement truncated/vague (\u211d\u00b3 generalization). Seeker stub only.",
+    "progressSummary": "BLOCKED: No Lean file exists. Problem statement truncated/vague (ℝ³ generalization). Seeker stub only.",
     "builtItems": [
       "Assessment: blocked, no Lean file, vague statement"
     ],
     "insights": [
-      "No BuffonsNeedleOQ03.lean exists \u2014 seeker stub without formalization",
-      "Problem statement truncated: \"Can the higher-dimensional generalization (random needles on a grid in \u211d\u00b3) be...\"",
+      "No BuffonsNeedleOQ03.lean exists — seeker stub without formalization",
+      "Problem statement truncated: \"Can the higher-dimensional generalization (random needles on a grid in ℝ³) be...\"",
       "Would need substantial Lean infrastructure for 3D geometric probability (not in Mathlib)",
       "Related files (BuffonsNeedle, OQ01, OQ02) are well-developed but 2D only"
     ],
