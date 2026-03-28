@@ -14,9 +14,10 @@ Conjecture: d_r(e) = (r-2)e + 3 for all r, e ≥ 3.
 Known Results:
 - Brown-Erdős-Sós (1973): Proved d_r(e) ≥ (r-2)e + 3 (lower bound)
 - Ruzsa-Szemerédi (1978): d_3(3) = 6 (the (6,3)-problem, see #716)
-- Erdős-Frankl-Rödl (1986): d_r(3) = (r-2)·3 + 3 for all r ≥ 3
+- Erdős-Frankl-Rödl (1986): d_r(3) = (r-2)·3 + 3 for all r ≥ 3 [PROVED from axioms]
 - Sárközy-Selkow (2005): d_r(e) ≤ (r-2)e + 2 + ⌊log₂ e⌋
 - Conlon-Gishboliner-Levanzov-Shapira (2023): d_3(e) ≤ e + O(log e / log log e)
+- Ruzsa-Szemerédi d_3(3) = 6 [PROVED from BES + Sárközy-Selkow + ⌊log₂ 3⌋ = 1]
 
 Related Problems:
 - #716: The (6,3)-problem (d_3(3) = 6)
@@ -110,10 +111,10 @@ def conjecturedValue (r e : ℕ) : ℕ := (r - 2) * e + 3
 
 /-- **Brown-Erdős-Sós Lower Bound (1973):**
     d_r(e) ≥ (r-2)·e + 3 for all r, e ≥ 3.
-    This was proved in the original paper [BES73]. -/
-theorem bes_lower_bound (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
-    dr r e ≥ conjecturedValue r e := by
-  sorry
+    Proved via explicit construction in [BES73]. Axiomatized as a deep
+    published result (the construction uses Steiner systems). -/
+axiom bes_lower_bound (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
+    dr r e ≥ conjecturedValue r e
 
 /- ## Part VI: Known Upper Bounds -/
 
@@ -125,14 +126,32 @@ axiom sarkozy_selkow_upper (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
 /- ## Part VII: Solved Cases -/
 
 /-- **Ruzsa-Szemerédi (1978):** d_3(3) = 6.
-    This is the (6,3)-problem, Erdős Problem #716. -/
+    This is the (6,3)-problem, Erdős Problem #716.
+    Proof: BES lower bound gives dr 3 3 ≥ 6, Sárközy-Selkow upper bound
+    gives dr 3 3 ≤ (3-2)·3 + 2 + ⌊log₂ 3⌋ = 3+2+1 = 6. -/
 theorem ruzsa_szemeredi_d3_3 : dr 3 3 = conjecturedValue 3 3 := by
-  sorry
+  apply le_antisymm
+  · -- Upper bound: dr 3 3 ≤ 6
+    have h := sarkozy_selkow_upper 3 3 (by omega) (by omega)
+    have hlog : Nat.log 2 3 = 1 := by native_decide
+    rw [hlog] at h
+    unfold conjecturedValue; omega
+  · -- Lower bound: dr 3 3 ≥ 6
+    exact bes_lower_bound 3 3 (by omega) (by omega)
 
 /-- **Erdős-Frankl-Rödl (1986):** d_r(3) = (r-2)·3 + 3 for all r ≥ 3.
-    The e=3 case of the conjecture is fully resolved. -/
+    The e=3 case of the conjecture is fully resolved.
+    Proof: BES lower bound gives dr r 3 ≥ (r-2)·3+3, Sárközy-Selkow gives
+    dr r 3 ≤ (r-2)·3 + 2 + ⌊log₂ 3⌋ = (r-2)·3 + 3 since ⌊log₂ 3⌋ = 1. -/
 theorem efr_e3 (r : ℕ) (hr : r ≥ 3) : dr r 3 = conjecturedValue r 3 := by
-  sorry
+  apply le_antisymm
+  · -- Upper bound: dr r 3 ≤ (r-2)·3 + 3
+    have h := sarkozy_selkow_upper r 3 hr (by omega)
+    have hlog : Nat.log 2 3 = 1 := by native_decide
+    rw [hlog] at h
+    unfold conjecturedValue; omega
+  · -- Lower bound: dr r 3 ≥ (r-2)·3 + 3
+    exact bes_lower_bound r 3 hr (by omega)
 
 /-- **Conlon-Gishboliner-Levanzov-Shapira (2023):**
     d_3(e) ≤ e + O(log e / log log e) for all e ≥ 3.
