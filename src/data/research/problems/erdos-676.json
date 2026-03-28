@@ -1,13 +1,13 @@
 {
   "slug": "erdos-676",
-  "title": "Erdős #676",
+  "title": "Erd\u0151s #676",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Is every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erdős [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View th...",
+    "plain": "Is every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erd\u0151s [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View th...",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,17 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved almost_all_covered (5A→4A).",
+    "progressSummary": "PROGRESS: Proved 5 new structural theorems (5\u219210T). 4A remain.",
     "builtItems": [
-      "PROVED almost_all_covered from density_one (5A→4A)"
+      "PROVED almost_all_covered from density_one (5A\u21924A)",
+      "PROVED not_representable_of_lt_four: n<4 implies not representable (a*p^2\u22654)",
+      "PROVED four_representable: 4=1*2^2+0",
+      "PROVED exceptionCount_le: E(x)\u2264x",
+      "PROVED exceptionCount_mono: monotonicity",
+      "PROVED representable_of_decomposition: constructor from components"
     ],
     "insights": [
-      "almost_all_covered follows from density_one (convergence → eventually > 1-ε). Proved (5A→4A).",
-      "Remaining 4 axioms: brun_selberg_bound (deep), density_one (deep), selfridge_wagstaff_conjecture (open), erdos_minimal_conjecture (open)"
+      "almost_all_covered follows from density_one (convergence \u2192 eventually > 1-\u03b5). Proved (5A\u21924A).",
+      "Remaining 4 axioms: brun_selberg_bound (deep), density_one (deep), selfridge_wagstaff_conjecture (open), erdos_minimal_conjecture (open)",
+      "density_one is provable from brun_selberg_bound: if E(x)\u2264x/(log x)^c then E(x)/x\u22641/(log x)^c\u21920, so (x-E(x))/x\u21921. Proof needs Metric.tendsto_atTop + squeeze argument (~40 lines Lean).",
+      "density_one provable from brun_selberg_bound via squeeze argument, needs ~50 lines Lean with Filter.Tendsto API"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #676 - Knowledge Base\n\n## Problem Statement\n\nIs every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erdős [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #675\n- Problem #677\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+    "markdown": "# Erd\u0151s #676 - Knowledge Base\n\n## Problem Statement\n\nIs every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erd\u0151s [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View the LaTeX source\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #675\n- Problem #677\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
     "erdos"
@@ -62,8 +69,8 @@
     {
       "path": "Proofs/Erdos676Problem.lean",
       "filename": "Erdos676Problem.lean",
-      "lineCount": 239,
-      "theoremCount": 5,
+      "lineCount": 278,
+      "theoremCount": 10,
       "axiomCount": 4,
       "defCount": 13,
       "sorryCount": 0,

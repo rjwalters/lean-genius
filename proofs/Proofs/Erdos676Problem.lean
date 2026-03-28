@@ -20,6 +20,10 @@ integer a ≥ 1, and 0 ≤ b < p?
 **Reference:** [Er79], [Er79d]
 
 Adapted from formal-conjectures (Apache 2.0 License)
+
+Axioms: 4 (brun_selberg_bound, density_one, selfridge_wagstaff_conjecture, erdos_minimal_conjecture)
+Proved: 10 theorems
+Sorries: 0
 -/
 
 import Mathlib
@@ -220,7 +224,39 @@ theorem erdos_676_statement :
     exact ⟨a, p, b, hp, ha, hb, heq⟩
 
 /-
-# Part 8: Summary
+# Part 8: Structural Properties
+-/
+
+/-- Numbers less than 4 are not representable: the smallest representation
+    is 1·2²+0 = 4, since a ≥ 1, p ≥ 2 (prime), and b ≥ 0. -/
+theorem not_representable_of_lt_four (n : ℕ) (hn : n < 4) : ¬IsRepresentable n := by
+  intro ⟨a, p, b, hp, ha, hb, heq⟩
+  have hp2 : p ≥ 2 := hp.two_le
+  have h1 : p ^ 2 ≥ 4 := by nlinarith
+  have h2 : a * p ^ 2 ≥ 4 := by nlinarith
+  omega
+
+/-- 4 is the smallest representable number: 4 = 1·2²+0. -/
+theorem four_representable : IsRepresentable 4 := by
+  exact ⟨1, 2, 0, Nat.prime_two, by omega, by omega, by ring⟩
+
+/-- The exception count is at most x (trivial upper bound). -/
+theorem exceptionCount_le (x : ℕ) : exceptionCount x ≤ x :=
+  (Finset.card_filter_le _ _).trans (Finset.card_range x).le
+
+/-- The exception count is monotone non-decreasing. -/
+theorem exceptionCount_mono {x y : ℕ} (hxy : x ≤ y) :
+    exceptionCount x ≤ exceptionCount y :=
+  Finset.card_le_card (Finset.filter_subset_filter _ (Finset.range_mono hxy))
+
+/-- Every multiple of p² plus a remainder b < p is representable (with a ≥ 1). -/
+theorem representable_of_decomposition (n a : ℕ) (p : ℕ) (b : ℕ)
+    (hp : p.Prime) (ha : a ≥ 1) (hb : b < p) (heq : n = a * p^2 + b) :
+    IsRepresentable n :=
+  ⟨a, p, b, hp, ha, hb, heq⟩
+
+/-
+# Part 9: Summary
 
 **Known:**
 - Almost all integers are representable (density 1)
