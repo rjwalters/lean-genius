@@ -45,9 +45,9 @@ theorem last_divisor_eq_n (n : ℕ) (hn : n ≥ 1) :
     divisorAt n (tau n - 1) = n := by
   sorry
 
--- Routine lemma: G(1) = 0
+-- Routine lemma: G(1) = 0 (sum over empty range since tau(1)=1)
 theorem G_one : G 1 = 0 := by
-  sorry
+  simp [G, tau_one]
 
 -- Routine lemma: G(p) = 1/p for prime p
 theorem G_prime (p : ℕ) (hp : p.Prime) : G p = 1 / p := by
@@ -75,11 +75,11 @@ theorem G_not_multiplicative :
 
 -- Routine lemma: tau(1) = 1
 theorem tau_one : tau 1 = 1 := by
-  sorry
+  simp [tau, Nat.divisors_one]
 
 -- Routine lemma: tau(p) = 2 for prime p
 theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
-  sorry
+  simp [tau, Nat.Prime.divisors hp]
 
 -- Routine lemma: tau is multiplicative for coprime arguments
 theorem tau_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
@@ -87,8 +87,11 @@ theorem tau_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
     tau (m * n) = tau m * tau n := by
   sorry
 
--- Routine lemma: G(n) ≥ 0 for all n
+-- Routine lemma: G(n) ≥ 0 for all n (sum of nonneg ratios)
 theorem G_nonneg (n : ℕ) : G n ≥ 0 := by
-  sorry
+  unfold G
+  apply Finset.sum_nonneg
+  intro i _
+  exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
 
 end Erdos673Aristotle
