@@ -25,7 +25,7 @@ Adapted from erdosproblems.com (Apache 2.0 License)
 
 import Mathlib
 
-open Finset SimpleGraph
+open Finset SimpleGraph Filter
 
 namespace Erdos667
 
@@ -214,20 +214,91 @@ theorem cliqueGuarantee_pos (n p q : ℕ) (hn : 1 ≤ n) :
 ## Part IV: The Exponent c(p, q)
 
 c(p, q) = lim inf (log H(n; p, q)) / (log n) as n tends to infinity.
+Previously axiomatized as a ℝ-valued function with 4 structural axioms.
+Now defined concretely via Filter.liminf over ℝ, with the structural
+properties proved from the definition. This eliminates 4 axioms.
 -/
 
-/-- c(p, q) = lim inf log(H(n;p,q)) / log(n).
-    Axiomatized as a rational-valued function. -/
-axiom cpq : ℕ → ℕ → ℚ
+/-- The sequence whose liminf defines c(p,q): n ↦ log(H(n;p,q)) / log(n). -/
+private noncomputable def cpqSeq (p q : ℕ) (n : ℕ) : ℝ :=
+  Real.log ↑(cliqueGuarantee n p q) / Real.log ↑n
 
-/-- c(p,q) ≥ 0 (H(n;p,q) ≥ 1 for all n). -/
-axiom cpq_nonneg (p q : ℕ) : 0 ≤ cpq p q
+/-- c(p, q) = lim inf log(H(n;p,q)) / log(n) as n → ∞.
+    Previously axiomatized; now defined via Filter.liminf. -/
+noncomputable def cpq (p q : ℕ) : ℝ :=
+  liminf (cpqSeq p q) atTop
 
-/-- c(p,q) ≤ 1 (H(n;p,q) ≤ n for all n). -/
-axiom cpq_le_one (p q : ℕ) : cpq p q ≤ 1
+section CpqProperties
 
-/-- c is weakly increasing in q (from monotonicity of H in q). -/
-axiom cpq_mono_q (p q : ℕ) : cpq p q ≤ cpq p (q + 1)
+/-- The cpq sequence is eventually nonneg: for n ≥ 1, H ≥ 1 and log n ≥ 0. -/
+private lemma cpqSeq_eventually_nonneg (p q : ℕ) :
+    ∀ᶠ n in atTop, 0 ≤ cpqSeq p q n := by
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  exact div_nonneg
+    (Real.log_nonneg (by exact_mod_cast cliqueGuarantee_pos n p q hn))
+    (Real.log_nonneg (by exact_mod_cast hn))
+
+/-- The cpq sequence is eventually ≤ 1: H(n) ≤ n implies log H / log n ≤ 1. -/
+private lemma cpqSeq_eventually_le_one (p q : ℕ) :
+    ∀ᶠ n in atTop, cpqSeq p q n ≤ 1 := by
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  have hH_pos : (0 : ℝ) < ↑(cliqueGuarantee n p q) := by
+    have := cliqueGuarantee_pos n p q hn
+    exact_mod_cast (show 0 < cliqueGuarantee n p q by omega)
+  exact div_le_one_of_le
+    (Real.log_le_log hH_pos (by exact_mod_cast cliqueGuarantee_le_n n p q))
+    (Real.log_nonneg (by exact_mod_cast hn))
+
+/-- The cpq sequence is bounded below (for Filter.liminf API). -/
+private lemma cpq_isBoundedUnder_ge (p q : ℕ) :
+    IsBoundedUnder (· ≥ ·) atTop (cpqSeq p q) :=
+  ⟨0, cpqSeq_eventually_nonneg p q⟩
+
+/-- The cpq sequence is cobounded below: any eventual lower bound ≤ 1,
+    since the sequence is eventually ≤ 1. -/
+private lemma cpq_isCoboundedUnder_ge (p q : ℕ) :
+    IsCoboundedUnder (· ≥ ·) atTop (cpqSeq p q) :=
+  ⟨1, fun a ha => by
+    obtain ⟨N, hN⟩ := eventually_atTop.mp (ha.and (cpqSeq_eventually_le_one p q))
+    have ⟨h1, h2⟩ := hN N le_rfl; linarith⟩
+
+/-- c(p,q) ≥ 0 (H(n;p,q) ≥ 1 for all n ≥ 1).
+    Proved from the definition: the sequence is eventually ≥ 0. -/
+theorem cpq_nonneg (p q : ℕ) : 0 ≤ cpq p q :=
+  le_liminf_of_le (cpq_isCoboundedUnder_ge p q) (cpqSeq_eventually_nonneg p q)
+
+/-- c(p,q) ≤ 1 (H(n;p,q) ≤ n for all n).
+    Proved from the definition: the sequence is eventually ≤ 1. -/
+theorem cpq_le_one (p q : ℕ) : cpq p q ≤ 1 :=
+  liminf_le_of_frequently_le (cpqSeq_eventually_le_one p q).frequently
+    (cpq_isBoundedUnder_ge p q)
+
+/-- c is weakly increasing in q (from monotonicity of H in q).
+    Proved from the definition: H(n;p,q) ≤ H(n;p,q+1) implies the
+    sequence is pointwise monotone, and liminf preserves ≤. -/
+theorem cpq_mono_q (p q : ℕ) : cpq p q ≤ cpq p (q + 1) := by
+  apply liminf_le_liminf
+  · -- Pointwise: cpqSeq p q n ≤ cpqSeq p (q+1) n for all n
+    filter_upwards with n
+    simp only [cpqSeq]
+    by_cases hlog : Real.log (↑n : ℝ) = 0
+    · simp [hlog]
+    · have hn2 : 2 ≤ n := by
+        by_contra h; push_neg at h
+        exact hlog (by
+          have : n = 0 ∨ n = 1 := by omega
+          rcases this with rfl | rfl <;> simp)
+      have hlog_pos : 0 < Real.log (↑n : ℝ) :=
+        Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+      rw [div_le_div_right hlog_pos]
+      have hH_pos : (0 : ℝ) < ↑(cliqueGuarantee n p q) := by
+        have := cliqueGuarantee_pos n p q (by omega : 1 ≤ n)
+        exact_mod_cast (show 0 < cliqueGuarantee n p q by omega)
+      exact Real.log_le_log hH_pos (by exact_mod_cast cliqueGuarantee_mono_q n p q)
+  · exact cpq_isBoundedUnder_ge p q
+  · exact cpq_isCoboundedUnder_ge p (q + 1)
+
+end CpqProperties
 
 /-
 ## Part V: Known Bounds
@@ -237,11 +308,11 @@ Established results on c(p,q).
 
 /-- c(p, 1) ≥ 1/(p-1) (Ramsey lower bound). -/
 axiom cpq_lower_ramsey (p : ℕ) (hp : 2 ≤ p) :
-    (1 : ℚ) / ((p : ℚ) - 1) ≤ cpq p 1
+    (1 : ℝ) / ((p : ℝ) - 1) ≤ cpq p 1
 
 /-- c(p, 1) ≤ 2/(p+1) (Ramsey upper bound). -/
 axiom cpq_upper_ramsey (p : ℕ) (hp : 2 ≤ p) :
-    cpq p 1 ≤ (2 : ℚ) / ((p : ℚ) + 1)
+    cpq p 1 ≤ (2 : ℝ) / ((p : ℝ) + 1)
 
 /-- c(p, C(p-1,2)+1) = 1: at maximum density, full clique is guaranteed. -/
 axiom cpq_at_max (p : ℕ) (hp : 2 ≤ p) :
@@ -250,7 +321,7 @@ axiom cpq_at_max (p : ℕ) (hp : 2 ≤ p) :
 /-- Erdos-Faudree-Rousseau-Schelp: c(p, C(p-1,2)) ≤ 1/2.
     The second-to-last value of q already forces c ≤ 1/2. -/
 axiom efrs_bound (p : ℕ) (hp : 3 ≤ p) :
-    cpq p (Nat.choose (p - 1) 2) ≤ (1 : ℚ) / 2
+    cpq p (Nat.choose (p - 1) 2) ≤ (1 : ℝ) / 2
 
 /-
 ## Part VI: Proved Consequences
@@ -274,12 +345,12 @@ theorem cpq_strict_at_top (p : ℕ) (hp : 3 ≤ p) :
   linarith
 
 /-- For p ≥ 3, the Ramsey lower bound gives c(p,1) > 0. -/
-theorem cpq_pos_at_one (p : ℕ) (hp : 3 ≤ p) : (0 : ℚ) < cpq p 1 := by
+theorem cpq_pos_at_one (p : ℕ) (hp : 3 ≤ p) : (0 : ℝ) < cpq p 1 := by
   have h := cpq_lower_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
-  have : (0 : ℚ) < (1 : ℚ) / ((p : ℚ) - 1) := by
+  have : (0 : ℝ) < (1 : ℝ) / ((p : ℝ) - 1) := by
     apply div_pos
     · exact one_pos
-    · have : (p : ℚ) ≥ 3 := by exact_mod_cast hp
+    · have : (p : ℝ) ≥ 3 := by exact_mod_cast hp
       linarith
   linarith
 
@@ -292,7 +363,7 @@ theorem cpq_mono_q_general (p q1 q2 : ℕ) (h : q1 ≤ q2) :
 
 /-- The Ramsey bound interval: for p ≥ 2, c(p,1) lies in [1/(p-1), 2/(p+1)]. -/
 theorem cpq_ramsey_interval (p : ℕ) (hp : 2 ≤ p) :
-    (1 : ℚ) / ((p : ℚ) - 1) ≤ cpq p 1 ∧ cpq p 1 ≤ (2 : ℚ) / ((p : ℚ) + 1) :=
+    (1 : ℝ) / ((p : ℝ) - 1) ≤ cpq p 1 ∧ cpq p 1 ≤ (2 : ℝ) / ((p : ℝ) + 1) :=
   ⟨cpq_lower_ramsey p hp, cpq_upper_ramsey p hp⟩
 
 /-
@@ -312,7 +383,7 @@ theorem p3_strict : cpq 3 1 < cpq 3 2 := by
     rw [← this]; exact cpq_at_max 3 (by omega)
   rw [h2]
   have := cpq_upper_ramsey 3 (by omega)
-  have : (2 : ℚ) / ((3 : ℚ) + 1) = 1 / 2 := by norm_num
+  have : (2 : ℝ) / ((3 : ℝ) + 1) = 1 / 2 := by norm_num
   linarith
 
 /-- For p = 4: C(3,2) + 1 = 4. So q ranges over {1, 2, 3, 4}.
@@ -320,7 +391,7 @@ theorem p3_strict : cpq 3 1 < cpq 3 2 := by
 theorem p4_max : cpq 4 (Nat.choose 3 2 + 1) = 1 := cpq_at_max 4 (by omega)
 
 /-- For p = 4: EFRS gives c(4,3) ≤ 1/2, and c(4,4) = 1. -/
-theorem p4_efrs : cpq 4 (Nat.choose 3 2) ≤ (1 : ℚ) / 2 :=
+theorem p4_efrs : cpq 4 (Nat.choose 3 2) ≤ (1 : ℝ) / 2 :=
   efrs_bound 4 (by omega)
 
 /-- For p = 4: strict increase at the top: c(4,3) < c(4,4) = 1. -/
@@ -332,7 +403,7 @@ theorem p4_strict_at_top : cpq 4 (Nat.choose 3 2) < cpq 4 (Nat.choose 3 2 + 1) :
 theorem p5_max : cpq 5 (Nat.choose 4 2 + 1) = 1 := cpq_at_max 5 (by omega)
 
 /-- For p = 5: EFRS gives c(5,6) ≤ 1/2. -/
-theorem p5_efrs : cpq 5 (Nat.choose 4 2) ≤ (1 : ℚ) / 2 :=
+theorem p5_efrs : cpq 5 (Nat.choose 4 2) ≤ (1 : ℝ) / 2 :=
   efrs_bound 5 (by omega)
 
 /-- For p = 5: strict increase at the top: c(5,6) < c(5,7) = 1. -/
@@ -340,23 +411,23 @@ theorem p5_strict_at_top : cpq 5 (Nat.choose 4 2) < cpq 5 (Nat.choose 4 2 + 1) :
   cpq_strict_at_top 5 (by omega)
 
 /-- For p = 5: the Ramsey lower bound gives c(5,1) ≥ 1/4. -/
-theorem p5_ramsey_lower : (1 : ℚ) / 4 ≤ cpq 5 1 := by
+theorem p5_ramsey_lower : (1 : ℝ) / 4 ≤ cpq 5 1 := by
   have h := cpq_lower_ramsey 5 (by omega)
   norm_num at h ⊢
   exact h
 
 /-- For p = 5: the Ramsey upper bound gives c(5,1) ≤ 1/3. -/
-theorem p5_ramsey_upper : cpq 5 1 ≤ (1 : ℚ) / 3 := by
+theorem p5_ramsey_upper : cpq 5 1 ≤ (1 : ℝ) / 3 := by
   have h := cpq_upper_ramsey 5 (by omega)
   norm_num at h ⊢
   exact h
 
 /-- For p = 4: Ramsey bounds give c(4,1) ∈ [1/3, 2/5]. -/
-theorem p4_ramsey_lower : (1 : ℚ) / 3 ≤ cpq 4 1 := by
+theorem p4_ramsey_lower : (1 : ℝ) / 3 ≤ cpq 4 1 := by
   have h := cpq_lower_ramsey 4 (by omega)
   norm_num at h ⊢; exact h
 
-theorem p4_ramsey_upper : cpq 4 1 ≤ (2 : ℚ) / 5 := by
+theorem p4_ramsey_upper : cpq 4 1 ≤ (2 : ℝ) / 5 := by
   have h := cpq_upper_ramsey 4 (by omega)
   norm_num at h ⊢; exact h
 
@@ -388,9 +459,9 @@ theorem erdos667_weak_evidence (p : ℕ) (hp : 3 ≤ p) :
   have h := cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp)
   rw [h]
   have := cpq_upper_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
-  have hp' : (p : ℚ) ≥ 3 := by exact_mod_cast hp
-  have : (2 : ℚ) / ((p : ℚ) + 1) < 1 := by
-    rw [div_lt_one (by linarith : (0 : ℚ) < (p : ℚ) + 1)]
+  have hp' : (p : ℝ) ≥ 3 := by exact_mod_cast hp
+  have : (2 : ℝ) / ((p : ℝ) + 1) < 1 := by
+    rw [div_lt_one (by linarith : (0 : ℝ) < (p : ℝ) + 1)]
     linarith
   linarith
 
@@ -403,7 +474,7 @@ General results about the gap structure of c(p,q).
 /-- The total gap: for p ≥ 3, c(p,1) is bounded away from c(p,q_max) = 1.
     Specifically, c(p,q_max) - c(p,1) ≥ 1 - 2/(p+1). -/
 theorem cpq_total_gap (p : ℕ) (hp : 3 ≤ p) :
-    1 - (2 : ℚ) / ((p : ℚ) + 1) ≤
+    1 - (2 : ℝ) / ((p : ℝ) + 1) ≤
     cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
   have h1 := cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp)
   have h2 := cpq_upper_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
@@ -411,7 +482,7 @@ theorem cpq_total_gap (p : ℕ) (hp : 3 ≤ p) :
 
 /-- The gap is positive: c(p,q_max) - c(p,1) > 0 for p ≥ 3. -/
 theorem cpq_gap_pos (p : ℕ) (hp : 3 ≤ p) :
-    (0 : ℚ) < cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
+    (0 : ℝ) < cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
   linarith [erdos667_weak_evidence p hp]
 
 /-- For p ≥ 3, there exists at least one strict step in c(p,·).
@@ -429,7 +500,7 @@ theorem erdos667_at_least_one_strict_step (p : ℕ) (hp : 3 ≤ p) :
 /-- Summary of known results for c(p,q). -/
 theorem erdos667_summary (p : ℕ) (hp : 3 ≤ p) :
     -- c(p,1) is in the Ramsey interval
-    ((1 : ℚ) / ((p : ℚ) - 1) ≤ cpq p 1 ∧ cpq p 1 ≤ (2 : ℚ) / ((p : ℚ) + 1)) ∧
+    ((1 : ℝ) / ((p : ℝ) - 1) ≤ cpq p 1 ∧ cpq p 1 ≤ (2 : ℝ) / ((p : ℝ) + 1)) ∧
     -- c(p,q_max) = 1
     cpq p (Nat.choose (p - 1) 2 + 1) = 1 ∧
     -- c is weakly increasing
