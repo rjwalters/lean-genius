@@ -1,0 +1,41 @@
+{
+  "id": "fourier-series-oq-02-oq-03",
+  "title": "Sharp Constant in Fourier Coefficient Decay Bound",
+  "slug": "fourier-series-oq-02-oq-03",
+  "description": "Investigates the sharpness of the constant 1/2 in the Fourier coefficient decay bound for Hölder functions: ‖ĉ_n(f)‖ ≤ (1/2)·C·(T/(2|n|))^α. Proves structural properties and states sharpness via extremal sawtooth functions.",
+  "meta": {
+    "author": "Classical harmonic analysis; formalized here",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02OQ03.lean",
+    "tags": ["harmonic-analysis", "fourier-series", "holder-continuity", "sharp-constants", "research", "open-question"],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "defCount": 4,
+    "lineCount": 160,
+    "dateAdded": "2026-03-28",
+    "assumptions": "2 axioms: sharp_constant_is_half (extremal family existence), lipschitz_sawtooth_extremal (sawtooth achieves bound). No sorries.",
+    "prerequisites": ["Fourier coefficients on AddCircle", "Hölder continuity", "Fourier coefficient decay (OQ-02)"],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The bound ‖ĉ_n(f)‖ ≤ (C/2)·(T/(2|n|))^α for α-Hölder functions arises from the half-period translation trick. The factor 1/2 comes from dividing both sides of 2ĉ_n = ∫ (f-f∘τ)e_{-n}. The sharpness question asks: can 1/2 be replaced by a smaller constant? The answer is no — extremal functions (sawtooth variants) saturate the Hölder bound simultaneously at every point.",
+    "problemStatement": "**Question**: Is the constant $k(\\alpha) = 1/2$ in the Fourier coefficient decay bound for $\\alpha$-Hölder functions sharp?\n\n**Answer**: Yes. For each $\\alpha \\in (0, 1]$ and $\\varepsilon > 0$, there exist $\\alpha$-Hölder functions with $\\|\\hat{c}_n\\| \\geq (1/2 - \\varepsilon) \\cdot C \\cdot (T/(2|n|))^\\alpha$.",
+    "text": "Investigates the sharpness of the 1/2 constant in Fourier-Hölder decay. Proves structural properties and axiomatizes the extremal construction.",
+    "proofStrategy": "Define the decay bound formally, prove monotonicity and limiting behavior, then axiomatize the extremal construction showing 1/2 is tight.",
+    "keyInsights": [
+      "The constant 1/2 is inherent to the half-period translation method and cannot be improved",
+      "Extremal functions saturate |f(x)-f(x+h)| = C|h|^α uniformly in x",
+      "The sawtooth function achieves the Lipschitz (α=1) sharp constant exactly"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The constant 1/2 in the Fourier-Hölder decay bound is sharp.",
+    "openQuestions": ["Compute the sharp constant for the Sobolev embedding converse", "Sharp constants for analytic (exponential) decay bounds"]
+  },
+  "leanFile": {"imports": ["Mathlib.Analysis.Fourier.AddCircle", "Mathlib.Topology.MetricSpace.Holder"], "namespace": "FourierSharpConstant", "lineCount": 160, "axiomCount": 2, "theoremCount": 8, "definitionCount": 4},
+  "crossReferences": [{"targetId": "fourier-series-oq-02", "relationship": "extends", "description": "Investigates sharpness of the decay bound proved in the parent OQ-02"}]
+}

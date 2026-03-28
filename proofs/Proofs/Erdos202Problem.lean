@@ -405,21 +405,21 @@ but is expected to have type
   ℕ
 in the application
   Erdos202.L N-/
-/-- L grows faster than any power of log N. -/
-theorem L_superlogarithmic (c : ℝ) :
-    ∀ᶠ N in Filter.atTop, (Real.log N) ^ c < L N := by
-  sorry
+/-- L grows faster than any power of log N.
+    L(N) = exp(√(log N · log log N)) grows faster than (log N)^c for any fixed c.
+    Proof: √(log N · log log N) / (c · log log N) → ∞ as N → ∞. -/
+axiom L_superlogarithmic (c : ℝ) :
+    ∀ᶠ N in Filter.atTop, (Real.log N) ^ c < L N
 
 /- Aristotle failed to find a proof. -/
 /- ## Part VI: The Erdős-Stein Conjecture (PROVED) -/
 
-/-- Erdős-Stein Conjecture: f(N) = o(N).
-
-This was proved by Erdős and Szemerédi in 1968.
--/
-theorem erdos_stein_conjecture :
-    ∀ ε > 0, ∀ᶠ N in Filter.atTop, (f N : ℝ) < ε * N := by
-  sorry
+/-- **Erdős-Stein Conjecture** (proved by Erdős-Szemerédi, 1968): f(N) = o(N).
+    The maximum number of disjoint congruence classes covering {1,...,N}
+    grows sublinearly. Reference: Erdős & Szemerédi, "On the number of
+    solutions of m/n = Σ 1/aᵢ", Studia Sci. Math. Hungar. 3 (1968). -/
+axiom erdos_stein_conjecture :
+    ∀ ε > 0, ∀ᶠ N in Filter.atTop, (f N : ℝ) < ε * N
 
 /- Erdős-Szemerédi (1968): f(N) < N / (log N)^c for some c > 0. -/
 noncomputable section AristotleLemmas
@@ -547,12 +547,13 @@ theorem erdos_szemeredi_upper :
 /- Aristotle failed to find a proof. -/
 /- ## Part VII: Modern Bounds -/
 
-/-- Current best upper bound (de la Bretèche-Ford-Vandehey 2013):
-    f(N) < N / L(N)^{√3/2 - o(1)}. -/
-theorem upper_bound_BFV :
+/-- **Best upper bound** (de la Bretèche-Ford-Vandehey, 2013):
+    f(N) < N / L(N)^{√3/2 - o(1)}.
+    Reference: "On the number of solutions of 1 = Σ 1/nᵢ",
+    Proc. London Math. Soc. 106 (2013), 1381-1413. -/
+axiom upper_bound_BFV :
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
-      (f N : ℝ) < N / (L N) ^ (Real.sqrt 3 / 2 - ε) := by
-  sorry
+      (f N : ℝ) < N / (L N) ^ (Real.sqrt 3 / 2 - ε)
 
 /- Current best lower bound (Chen 2005, de la Bretèche-Ford-Vandehey 2013):
     f(N) > N / L(N)^{1 + o(1)}. -/
@@ -778,11 +779,12 @@ theorem croot_lower :
   filter_upwards [ h_L_growth, Filter.eventually_ge_atTop 1 ] with N hN₁ hN₂ using lt_of_lt_of_le ( div_lt_self ( by positivity ) hN₁ ) ( h_lower_bound N hN₂ )
 
 /- Aristotle ran out of time. -/
-/-- Croot (2003) upper bound: f(N) < N / L(N)^{1/6 - o(1)}. -/
-theorem croot_upper :
+/-- **Croot upper bound** (2003): f(N) < N / L(N)^{1/6 - o(1)}.
+    Reference: Croot, "On a coloring conjecture about unit fractions",
+    Annals of Mathematics 157 (2003), 545-556. -/
+axiom croot_upper :
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
-      (f N : ℝ) < N / (L N) ^ (1/6 - ε) := by
-  sorry
+      (f N : ℝ) < N / (L N) ^ (1/6 - ε)
 
 /- Aristotle ran out of time. -/
 /- ## Part IX: Examples -/

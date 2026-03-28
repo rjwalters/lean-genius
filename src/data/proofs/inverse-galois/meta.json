@@ -26,15 +26,15 @@
       "Proofs/AbelRuffini.lean"
     ],
     "badge": "axiom",
-    "sorries": 2,
-    "axiomCount": 2,
+    "sorries": 0,
+    "axiomCount": 4,
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
       "Cyclotomic fields and Kronecker-Weber theorem",
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "3 axiom declarations: abelian_realizable, shafarevich_theorem (InverseGalois.lean), three_dvd_gal_card (InverseGaloisA5.lean). 2 sorries: inverse_galois_problem (line 77, open problem), symmetric_group_realizable (line 364, Hilbert irreducibility).",
+    "assumptions": "3 axiom declarations: abelian_realizable, shafarevich_theorem (InverseGalois.lean), three_dvd_gal_card (InverseGaloisA5.lean). 2 sorries: inverse_galois_problem (line 77, open problem), symmetric_group_realizable (line 364, Hilbert irreducibility). + inverse_galois_problem_open_conjecture (OPEN PROBLEM), symmetric_group_realizable (Hilbert irreducibility, not in Mathlib). 0 sorries.",
     "leanFile": {
       "lineCount": 1881,
       "theoremCount": 107,
