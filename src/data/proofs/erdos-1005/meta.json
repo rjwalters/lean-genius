@@ -7,7 +7,7 @@
     "author": "van Doorn (2025)",
     "sourceUrl": "https://erdosproblems.com/1005",
     "date": "2025",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1005Problem.lean",
     "tags": [
       "number-theory",
@@ -16,15 +16,15 @@
       "asymptotic-analysis",
       "combinatorics"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1005,
     "erdosUrl": "https://erdosproblems.com/1005",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 0,
-    "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 4,
+    "lineCount": 118,
+    "assumptions": "4 axioms: longestSimilarRun (function definition), longestSimilarRun_lower (van Doorn 2025 lower bound), longestSimilarRun_upper (van Doorn 2025 upper bound), erdos_1005_conjecture (open conjecture c=1/4). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
