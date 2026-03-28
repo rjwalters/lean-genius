@@ -222,11 +222,11 @@ theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
 The question asks to characterize all valid pairs (m, n) with m < n.
 -/
 
-/-- Erdős Problem #348 (Open): Characterize the valid pairs -/
-axiom erdos_348_characterization :
-  -- The set of valid pairs is either {(m, m+1) : m ∈ ℕ} or some other explicit set
+/-- Erdős Problem #348 (Open): Characterize the valid pairs.
+    One conjecture: valid pairs are exactly {(m, m+1) : m ∈ ℕ}.
+    Alternatively, there may be a cutoff after which no more valid pairs exist. -/
+def erdos_348_characterization : Prop :=
   validPairs = {p : ℕ × ℕ | p.1 < p.2 ∧ p.2 = p.1 + 1} ∨
-  -- Or there's some cutoff
   (∃ k : ℕ, validPairs = {p : ℕ × ℕ | p.1 < p.2 ∧ p.1 < k})
 
 /-- The case (2, 3) is unknown — but the disjunction is trivially decidable. -/
@@ -234,51 +234,16 @@ theorem erdos_348_case_2_3 :
     (2, 3) ∈ validPairs ∨ (2, 3) ∉ validPairs :=
   em _
 
-/-
-## Van Doorn's Result
-
-Wouter van Doorn proved that for strongly complete sequences (representing ALL
-natural numbers, not just sufficiently large ones), no valid pairs exist for m ≥ 2.
--/
-
 /-- Strong robustness version -/
 def IsStronglyRobust (a : ℕ → ℕ) (m : ℕ) : Prop :=
   ∀ S : Finset ℕ, S.card = m → IsStronglyComplete (removeIndices a S)
 
-/-- Van Doorn's result: no strongly complete sequence is 2-robust -/
-axiom vanDoorn_theorem :
-  ∀ a : ℕ → ℕ, Monotone a → IsStronglyComplete (sequenceToSet a) →
-    ¬IsStronglyRobust a 2
-
-/-
-## Connections to Representation Theory
-
-Complete sequences are related to representation functions and additive bases.
--/
-
-/-- The representation function counts ways to represent n -/
-noncomputable def representationCount (A : Set ℕ) (n : ℕ) : ℕ :=
-  Nat.card {S : Finset ℕ | ↑S ⊆ A ∧ S.sum id = n}
-
-/-- A complete sequence has positive representation count for large n.
-    The proof requires showing the representation count type is Finite,
-    which follows from S ⊆ Finset.range (n+1) for any witness of n. -/
-axiom complete_iff_repr (A : Set ℕ) :
-    IsComplete A ↔ ∃ N, ∀ n ≥ N, 0 < representationCount A n
-
-/-
-## The Gap Property
-
-A key observation is that complete sequences cannot have arbitrarily large gaps.
--/
-
-/-- The n-th gap in a monotone sequence -/
-noncomputable def gap (a : ℕ → ℕ) (n : ℕ) : ℕ := a (n + 1) - a n
-
-/-- Complete sequences have bounded gaps eventually -/
-axiom complete_bounded_gaps :
-  ∀ a : ℕ → ℕ, Monotone a → IsComplete (sequenceToSet a) →
-    ∃ N M : ℕ, ∀ n ≥ N, gap a n ≤ M
+/-- **Known results (not formalized, for reference):**
+- Van Doorn's theorem: no strongly complete sequence is 2-robust
+  (∀ a, Monotone a → IsStronglyComplete (sequenceToSet a) → ¬IsStronglyRobust a 2)
+- Complete sequences have bounded gaps eventually
+- IsComplete A ↔ ∃ N, ∀ n ≥ N, representationCount > 0
+  (requires finiteness: any S with S.sum = n satisfies S ⊆ Finset.range(n+1)) -/
 
 /-
 ## The Main Open Question
@@ -302,7 +267,7 @@ Unknown:
 - Is (2, 3) valid for the weaker completeness notion?
 - What is the full characterization?
 -/
-axiom erdos_348_main_problem :
+def erdos_348_main_problem : Prop :=
   (∀ m : ℕ, (m, m + 1) ∈ validPairs) ∨
   (∃ k : ℕ, ∀ m ≥ k, (m, m + 1) ∉ validPairs)
 
