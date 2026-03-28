@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Straus",
     "sourceUrl": "https://erdosproblems.com/389",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos389Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "consecutive integers",
       "products"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 389,
     "erdosUrl": "https://erdosproblems.com/389",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "assumptions": "2 axiom declarations: erdos_389 (main open conjecture), erdos_389_n2 (n=2 k=5 case). Previously axiomatized results now proved.",
-    "lineCount": 115,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All Mehta computational results (n=4, k=207 minimal) proved by native_decide. Main conjecture stated as def (open problem).",
+    "lineCount": 121,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -112,9 +112,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 115,
-    "axiomCount": 2,
-    "theoremCount": 4,
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 6,
     "definitionCount": 3
   },
   "crossReferences": [

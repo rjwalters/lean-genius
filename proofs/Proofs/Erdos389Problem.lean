@@ -78,13 +78,19 @@ theorem erdos_389_n3 : divides_upper_block 3 4 := by native_decide
 
 /-- **Bhavik Mehta's computation.**
 The minimal k for n = 4 is 207. This is the smallest k such that
-  4·5···210 ∣ 211·212···414. -/
-axiom mehta_n4_minimal :
-  1 ≤ (207 : ℕ) ∧ divides_upper_block 4 207
+  4·5···210 ∣ 211·212···417.
+  PROVED by native_decide (bignum arithmetic). -/
+theorem mehta_n4_minimal :
+  1 ≤ (207 : ℕ) ∧ divides_upper_block 4 207 := ⟨by omega, by native_decide⟩
 
-/-- No smaller k works for n = 4. -/
-axiom mehta_n4_minimality :
-  ∀ k : ℕ, 1 ≤ k → k < 207 → ¬ divides_upper_block 4 k
+/-- No smaller k works for n = 4.
+    PROVED by reducing to a finite check over Finset.Ico 1 207
+    and using native_decide for bignum divisibility checks. -/
+theorem mehta_n4_minimality :
+    ∀ k : ℕ, 1 ≤ k → k < 207 → ¬ divides_upper_block 4 k := by
+  suffices ∀ k ∈ Finset.Ico 1 207, ¬ divides_upper_block 4 k from
+    fun k hk1 hk207 => this k (Finset.mem_Ico.mpr ⟨hk1, hk207⟩)
+  native_decide
 
 /- ## Ratio Interpretation -/
 
