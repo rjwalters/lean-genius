@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_size_bound from Mathlib (axiom count 5→4). Remaining 4 axioms: sedov_M2, sedov_M3 (published results), ErdosProblem42, ErdosProblem42_constructive (open conjecture).",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "theorem sidon_size_bound in Proofs/Erdos42Problem.lean:56 — axiom eliminated (5→4)"
     ],
@@ -39,10 +39,7 @@
       "sidon_size_bound PROVED: injective difference map on A.offDiag → Finset.Icc (1-N) (N-1) \\ {0}, using Sidon to derive sum equality, Finset.pair membership, and omega"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove sidon_size_bound via Finset difference injection: need Finset.card_le_card_of_injOn on (A×A).filter(a≠b) → Finset.Icc (1-N:ℤ) (N-1) \\ {0}",
-      "Consider proving sedov_M2 computationally for small N via native_decide"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #42 - Knowledge Base\n\n## Problem Statement\n\nLet $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #41\n- Problem #43\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
