@@ -173,10 +173,150 @@ theorem constant_2_optimal :
 
 /- ## Davenport's density -/
 
-/-- The asymptotic density of `B(A)` exists and can be computed by
-inclusion–exclusion over the elements of `A`. -/
-axiom multiplesSet_density_exists (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a) :
+/-- Divisibility is periodic: `a ∣ n ↔ a ∣ (n + P)` when `a ∣ P`. -/
+private lemma dvd_add_period_iff {a P n : ℕ} (haP : a ∣ P) :
+    a ∣ n ↔ a ∣ (n + P) :=
+  ⟨fun h => dvd_add h haP, fun h => by
+    have := Nat.dvd_sub' h haP; rwa [Nat.add_sub_cancel] at this⟩
+
+/-- `lcm(A) > 0` when all elements of `A` are positive. -/
+private lemma lcm_pos_of_pos (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a) : 0 < A.lcm id := by
+  apply Nat.pos_of_ne_zero; intro h
+  rw [Finset.lcm_eq_zero_iff] at h
+  obtain ⟨a, ha, ha0⟩ := h
+  simp only [id_eq] at ha0
+  exact absurd (hA a ha) (by omega)
+
+/-- Membership in `B(A)` is periodic with period `lcm(A)`. -/
+private lemma inB_periodic (A : Finset ℕ) (n : ℕ) :
+    (∃ a ∈ A, a ∣ n) ↔ (∃ a ∈ A, a ∣ (n + A.lcm id)) := by
+  constructor
+  · rintro ⟨a, ha, hd⟩; exact ⟨a, ha, (dvd_add_period_iff (Finset.dvd_lcm ha)).mp hd⟩
+  · rintro ⟨a, ha, hd⟩; exact ⟨a, ha, (dvd_add_period_iff (Finset.dvd_lcm ha)).mpr hd⟩
+
+/-- Step recurrence: adding `N+1` to the range increments the count by 0 or 1. -/
+private lemma multiplesCount_succ' (A : Finset ℕ) (N : ℕ) :
+    multiplesCount A (N + 1) = multiplesCount A N +
+      if ∃ a ∈ A, a ∣ (N + 1) then 1 else 0 := by
+  unfold multiplesCount
+  have hset : Finset.Icc 1 (N + 1) = insert (N + 1) (Finset.Icc 1 N) := by
+    ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+  have hmem : N + 1 ∉ (Finset.Icc 1 N).filter (fun n => ∃ a ∈ A, a ∣ n) := by
+    simp only [Finset.mem_filter, Finset.mem_Icc, not_and]; omega
+  rw [hset, Finset.filter_insert]
+  split
+  · exact Finset.card_insert_of_not_mem hmem
+  · rfl
+
+/-- Periodicity of the counting function:
+`|B(A) ∩ [1, N+P]| = |B(A) ∩ [1, N]| + |B(A) ∩ [1, P]|`. -/
+private theorem multiplesCount_add_period (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a) (N : ℕ) :
+    multiplesCount A (N + A.lcm id) = multiplesCount A N + multiplesCount A (A.lcm id) := by
+  induction N with
+  | zero =>
+    have : multiplesCount A 0 = 0 := by
+      unfold multiplesCount; simp [Finset.Icc_eq_empty (by omega : ¬(1 ≤ 0))]
+    omega
+  | succ n ih =>
+    rw [show n + 1 + A.lcm id = (n + A.lcm id) + 1 from by omega]
+    rw [multiplesCount_succ' A (n + A.lcm id), ih, multiplesCount_succ' A n]
+    have hper : (∃ a ∈ A, a ∣ (n + A.lcm id + 1)) ↔ (∃ a ∈ A, a ∣ (n + 1)) := by
+      rw [show n + A.lcm id + 1 = (n + 1) + A.lcm id from by omega]
+      exact (inB_periodic A (n + 1)).symm
+    simp only [hper]; omega
+
+/-- Decomposition via division: `count(qP + r) = q · count(P) + count(r)`. -/
+private theorem multiplesCount_div_mod (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a) (N : ℕ) :
+    multiplesCount A N =
+      (N / A.lcm id) * multiplesCount A (A.lcm id) + multiplesCount A (N % A.lcm id) := by
+  set P := A.lcm id
+  have hP : 0 < P := lcm_pos_of_pos A hA
+  have hN : N = N / P * P + N % P := (Nat.div_add_mod N P).symm
+  conv_lhs => rw [hN]
+  induction (N / P) with
+  | zero => simp
+  | succ q ih =>
+    rw [show (q + 1) * P + N % P = (q * P + N % P) + P from by ring]
+    rw [multiplesCount_add_period A hA, ih]; ring
+
+/-- `multiplesCount A N ≤ N` (we filter a subset of `[1, N]`). -/
+private lemma multiplesCount_le (A : Finset ℕ) (N : ℕ) : multiplesCount A N ≤ N := by
+  unfold multiplesCount
+  calc ((Finset.Icc 1 N).filter _).card ≤ (Finset.Icc 1 N).card := Finset.card_filter_le _ _
+    _ = N := by simp [Finset.card_Icc]; omega
+
+/-- The asymptotic density of `B(A)` exists and equals `count(P)/P` where `P = lcm(A)`.
+
+Proved via periodicity: `B(A)` has period `P = lcm(A)`, so the ratio
+`|B(A) ∩ [1,N]| / N` converges to `|B(A) ∩ [1,P]| / P` with error `O(P/N)`. -/
+theorem multiplesSet_density_exists (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a)
+    (hAne : A.Nonempty) :
     ∃ δ : ℚ, 0 < δ ∧ δ ≤ 1 ∧
       ∀ ε : ℚ, 0 < ε →
         ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-          |multiplesRatio A N - δ| < ε
+          |multiplesRatio A N - δ| < ε := by
+  set P := A.lcm id with hP_def
+  set c := multiplesCount A P with hc_def
+  have hP_pos : (0 : ℕ) < P := lcm_pos_of_pos A hA
+  have hP_ne : (P : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  -- δ = c / P
+  refine ⟨(c : ℚ) / (P : ℚ), ?_, ?_, ?_⟩
+  · -- 0 < c/P: A nonempty implies c ≥ 1
+    apply div_pos (by exact_mod_cast show 0 < c from ?_) (by exact_mod_cast hP_pos)
+    -- Show c > 0: pick a ∈ A, then a ∈ [1,P] and a ∣ a
+    obtain ⟨a, haA⟩ := hAne
+    have ha1 : 1 ≤ a := hA a haA
+    have haP : a ≤ P := Nat.le_of_dvd (by omega) (Finset.dvd_lcm haA)
+    have : 0 < ((Finset.Icc 1 P).filter (fun n => ∃ b ∈ A, b ∣ n)).card := by
+      apply Finset.card_pos.mpr
+      exact ⟨a, Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨ha1, haP⟩, ⟨a, haA, dvd_refl a⟩⟩⟩
+    exact this
+  · -- c/P ≤ 1
+    rw [div_le_one (by exact_mod_cast hP_pos)]
+    exact_mod_cast multiplesCount_le A P
+  · -- Convergence: |multiplesRatio A N - c/P| < ε for large N
+    intro ε hε
+    obtain ⟨N₀, hN₀⟩ := exists_nat_gt ((P : ℚ) / ε)
+    refine ⟨max N₀ 1, fun N hN => ?_⟩
+    have hN_pos : 0 < N := by omega
+    have hN_ne : (↑N : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    -- Decomposition
+    have hdecomp := multiplesCount_div_mod A hA N
+    set q := N / P; set r := N % P; set d := multiplesCount A r
+    have hr_lt : r < P := Nat.mod_lt N hP_pos
+    have hN_eq : N = q * P + r := by
+      have := (Nat.div_add_mod N P).symm; linarith [mul_comm P q]
+    have hN_cast : (↑N : ℚ) = ↑q * ↑P + ↑r := by exact_mod_cast hN_eq
+    have hd_le : d ≤ r := multiplesCount_le A r
+    have hc_le : c ≤ P := multiplesCount_le A P
+    -- Key inequality: P < ε * N
+    have hPN : (↑P : ℚ) < ε * ↑N := by
+      have h1 : (↑P : ℚ) / ε < ↑N :=
+        lt_of_lt_of_le hN₀ (Nat.cast_le.mpr (le_trans (le_max_left _ _) hN))
+      rw [div_lt_iff₀ hε] at h1; linarith
+    -- Main proof
+    show |multiplesRatio A N - ↑c / ↑P| < ε
+    unfold multiplesRatio; rw [hdecomp]
+    -- Rewrite as single fraction: (q*c+d)/N - c/P = (d*P - r*c) / (N*P)
+    have h_eq : (↑(q * c + d) : ℚ) / ↑N - ↑c / ↑P =
+        (↑d * ↑P - ↑r * ↑c) / (↑N * ↑P) := by
+      rw [div_sub_div _ _ hN_ne hP_ne]; congr 1
+      · rw [hN_cast]; push_cast; ring
+      · ring
+    rw [h_eq, abs_div, abs_of_pos (by positivity : (0 : ℚ) < ↑N * ↑P),
+        div_lt_iff₀ (by positivity : (0 : ℚ) < ↑N * ↑P)]
+    -- Bound: |d*P - r*c| ≤ P*r < P² < ε*N*P
+    have habs : |(↑d * ↑P - ↑r * ↑c : ℚ)| ≤ ↑P * ↑r := by
+      rw [abs_le]; constructor <;>
+        nlinarith [Nat.cast_nonneg d, Nat.cast_nonneg c,
+          Nat.cast_nonneg r, Nat.cast_nonneg P,
+          Nat.cast_le.mpr hd_le, Nat.cast_le.mpr hc_le]
+    calc |(↑d * ↑P - ↑r * ↑c : ℚ)|
+        ≤ ↑P * ↑r := habs
+      _ < ↑P * ↑P := by
+          exact mul_lt_mul_of_pos_left
+            (by exact_mod_cast hr_lt) (by exact_mod_cast hP_pos)
+      _ < ε * ↑N * ↑P := by
+          exact mul_lt_mul_of_pos_right hPN (by exact_mod_cast hP_pos)
+      _ = ε * (↑N * ↑P) := by ring
+
