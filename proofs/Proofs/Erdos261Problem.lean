@@ -252,13 +252,55 @@ theorem cusick_infinitely_many :
 theorem representable_four : IsRepresentable 4 :=
   borwein_loring_family 2 (by omega)
 
-/-- All n from 1 to 4 are representable. -/
-theorem representable_le_4 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 4) : IsRepresentable n := by
+/-- n = 5 is representable: 5/32 = 6/64 + 7/128 + 11/2048 + 13/8192 + 14/16384. -/
+theorem representable_five : IsRepresentable 5 := by
+  refine ⟨{6, 7, 11, 13, 14}, ?_, ?_, ?_⟩
+  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
+  · show recipPow2Sum {6, 7, 11, 13, 14} = recipPow2Weight 5
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (6 : ℕ) ∉ ({7, 11, 13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (7 : ℕ) ∉ ({11, 13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (11 : ℕ) ∉ ({13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (13 : ℕ) ∉ ({14} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
+/-- n = 6 is representable: 6/64 = 7/128 + 8/256 + 11/2048 + 13/8192 + 14/16384. -/
+theorem representable_six : IsRepresentable 6 := by
+  refine ⟨{7, 8, 11, 13, 14}, ?_, ?_, ?_⟩
+  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
+  · show recipPow2Sum {7, 8, 11, 13, 14} = recipPow2Weight 6
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (7 : ℕ) ∉ ({8, 11, 13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (8 : ℕ) ∉ ({11, 13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (11 : ℕ) ∉ ({13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (13 : ℕ) ∉ ({14} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
+/-- All n from 1 to 6 are representable. -/
+theorem representable_le_6 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 6) : IsRepresentable n := by
   interval_cases n
   · exact representable_one
   · exact representable_two
   · exact representable_three
   · exact representable_four
+  · exact representable_five
+  · exact representable_six
+
+/-- n = 11 is representable, from the Borwein-Loring family with m = 3:
+    11 = 2⁴ - 3 - 2, and 11/2¹¹ = ∑_{k=12}^{14} k/2^k. -/
+theorem representable_eleven : IsRepresentable 11 :=
+  borwein_loring_family 3 (by omega)
+
+/-- n = 26 is representable, from the Borwein-Loring family with m = 4:
+    26 = 2⁵ - 4 - 2, and 26/2²⁶ = ∑_{k=27}^{30} k/2^k. -/
+theorem representable_26 : IsRepresentable 26 :=
+  borwein_loring_family 4 (by omega)
 
 /-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
 axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
