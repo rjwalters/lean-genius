@@ -43,7 +43,17 @@ def UnitFractionSum (a b c : ℕ) : Prop :=
 /-- Equivalent form: bc = a(b + c) -/
 theorem unit_fraction_equiv (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0) :
     (1 : ℚ) / a = (1 : ℚ) / b + (1 : ℚ) / c ↔ b * c = a * (b + c) := by
-  sorry
+  have ha' : (a : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hb' : (b : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hc' : (c : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  constructor
+  · intro h
+    have : (↑(b * c) : ℚ) = ↑(a * (b + c)) := by
+      field_simp at h; linarith
+    exact_mod_cast this
+  · intro h
+    have : (↑(b * c) : ℚ) = ↑(a * (b + c)) := by exact_mod_cast h
+    field_simp; linarith
 
 /-- A set is sum-free for unit fractions if no three distinct elements satisfy 1/a = 1/b + 1/c -/
 def IsUnitFractionSumFree (A : Finset ℕ) : Prop :=
