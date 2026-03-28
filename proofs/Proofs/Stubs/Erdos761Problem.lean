@@ -158,9 +158,10 @@ theorem odd_cycle_dichrom (k : ℕ) (_hk : k ≥ 1) :
 
 /-- The dichromatic number is monotone under subgraphs:
     if H is a subgraph of G, then δ(H) ≤ δ(G).
-    Argument: any k that works for G also works for H. Given O_H of H,
-    extend to G (orient extra edges arbitrarily). The acyclic coloring
-    for the extension restricts to one for O_H. -/
+    Proof: Any orientation O_H of H extends to an orientation O_G of G
+    (keep O_H directions on H-edges, assign arbitrary directions to G-only edges).
+    An acyclic k-coloring for O_G restricts to one for O_H, so the infimum
+    for H is ≤ the infimum for G. -/
 theorem dichrom_mono {V : Type*} (G H : SimpleGraph V)
     (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
     H.dichromNumber ≤ G.dichromNumber := by
