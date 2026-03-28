@@ -21,9 +21,9 @@
     "erdosNumber": 430,
     "erdosUrl": "https://erdosproblems.com/430",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: erdos_430_conjecture (the open conjecture: composites appear for large n), small_n_all_prime (small n can be all-prime). 0 sorries — equivalence with Problem #385 fully proved via greedy descent argument.",
-    "lineCount": 214,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). small_n_all_prime proved (n₀=1: for n≤1 the greedy sequence is identically 0). 0 sorries — equivalence with Problem #385 fully proved via greedy descent argument.",
+    "lineCount": 228,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -137,9 +137,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 214,
-    "axiomCount": 2,
-    "theoremCount": 2,
+    "lineCount": 228,
+    "axiomCount": 1,
+    "theoremCount": 3,
     "definitionCount": 7
   },
   "crossReferences": [

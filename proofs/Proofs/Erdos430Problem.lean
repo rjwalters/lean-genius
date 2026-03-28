@@ -207,8 +207,22 @@ axiom erdos_430_conjecture :
 
 /- ## Auxiliary: Prime Elements Dominate for Small n -/
 
-/-- For small n, the sequence may consist entirely of primes.
-    The key difficulty is showing this cannot persist for all large n. -/
-axiom small_n_all_prime :
+/-- greedyNext applied to 0 returns 0: the candidate set Icc 1 (0-1) = Icc 1 0 is empty. -/
+private lemma greedyNext_zero (n : ℕ) : greedyNext n 0 = 0 := by
+  unfold greedyNext
+  have : Finset.Icc 1 (0 - 1 : ℕ) = ∅ := Finset.Icc_eq_empty (by omega)
+  simp [this]
+
+/-- For n ≤ 1, the greedy sequence is identically 0. -/
+private lemma greedySeq_zero_of_le_one {n : ℕ} (hn : n ≤ 1) (k : ℕ) :
+    greedySeq n k = 0 := by
+  induction k with
+  | zero => simp [greedySeq]; omega
+  | succ k ih => simp only [greedySeq]; rw [ih]; exact greedyNext_zero n
+
+/-- For small n (specifically n ≤ 1), the sequence consists entirely of zeros,
+    so every positive element is vacuously prime or 1. -/
+theorem small_n_all_prime :
   ∃ n₀ : ℕ, ∀ n : ℕ, n ≤ n₀ →
-    ∀ k : ℕ, 0 < greedySeq n k → (greedySeq n k).Prime ∨ greedySeq n k = 1
+    ∀ k : ℕ, 0 < greedySeq n k → (greedySeq n k).Prime ∨ greedySeq n k = 1 :=
+  ⟨1, fun n hn k hpos => absurd (greedySeq_zero_of_le_one hn k) (by omega)⟩
