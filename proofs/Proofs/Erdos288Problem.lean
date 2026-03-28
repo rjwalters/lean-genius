@@ -63,7 +63,7 @@ def ErdosConjecture288 : Prop :=
 /-- The conjecture is axiomatized. -/
 axiom erdos_288 : ErdosConjecture288
 
-/- ## Part III: The Known Example -/
+/- ## Part III: The Known Examples -/
 
 /-- Example: 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1.
     This uses intervals [3,6] and [20,20]. -/
@@ -78,6 +78,19 @@ theorem example_sum_one :
     show (3 : ℕ) > 0 from by omega, show (4 : ℕ) > 0 from by omega,
     show (5 : ℕ) > 0 from by omega, show (6 : ℕ) > 0 from by omega,
     show (20 : ℕ) > 0 from by omega, dif_pos, add_zero]
+  norm_num
+
+/-- Second example: 1/2 + 1/3 + 1/6 = 1.
+    This uses intervals [2,3] and [6,6]. -/
+theorem example_sum_one_v2 :
+    harmonicInterval ⟨2, by omega⟩ ⟨3, by omega⟩ +
+    harmonicInterval ⟨6, by omega⟩ ⟨6, by omega⟩ = 1 := by
+  unfold harmonicInterval
+  have h23 : Finset.Icc 2 3 = {2, 3} := by decide
+  rw [h23, Finset.Icc_self]
+  simp only [Finset.sum_singleton, Finset.sum_cons, Finset.sum_empty,
+    show (2 : ℕ) > 0 from by omega, show (3 : ℕ) > 0 from by omega,
+    show (6 : ℕ) > 0 from by omega, dif_pos, add_zero]
   norm_num
 
 /- ## Part IV: Variant — Single Element I₂ -/
@@ -143,16 +156,26 @@ theorem harmonicInterval_from_one (n : ℕ+) :
     have := (Finset.mem_Icc.mp hk).1; omega
   simp only [dif_pos hk_pos]
 
-/-- The harmonic sum grows logarithmically.
-    (Note: the conclusion simplifies to > 0, which follows from positivity.) -/
-theorem harmonicInterval_growth :
-    ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    harmonicInterval 1 ⟨n, by omega⟩ > (n : ℚ) * 0 := by
-  intro _ε _hε
-  use 1
-  intro n hn
-  simp only [mul_zero]
-  exact harmonicInterval_pos 1 ⟨n, by omega⟩ (by simp only [PNat.mk_le_mk]; omega)
+/-- The harmonic sum H(a,b) is at least 1/a when a ≤ b.
+    The single term at k = a gives this lower bound via Finset.single_le_sum. -/
+theorem harmonicInterval_ge_inv_first (a b : ℕ+) (h : a ≤ b) :
+    harmonicInterval a b ≥ (a : ℚ)⁻¹ := by
+  unfold harmonicInterval
+  have hmem : (a : ℕ) ∈ Finset.Icc (a : ℕ) (b : ℕ) :=
+    Finset.mem_Icc.mpr ⟨le_refl _, h⟩
+  have hnn : ∀ k ∈ Finset.Icc (a : ℕ) (b : ℕ),
+      0 ≤ (if h : k > 0 then (k : ℚ)⁻¹ else 0) := by
+    intro k _
+    by_cases hk : k > 0
+    · simp only [dif_pos hk]
+      exact le_of_lt (inv_pos.mpr (Nat.cast_pos.mpr hk))
+    · simp only [dif_neg hk, le_refl]
+  have hval : (if h : (a : ℕ) > 0 then ((a : ℕ) : ℚ)⁻¹ else 0) = (a : ℚ)⁻¹ := by
+    simp only [dif_pos (PNat.pos a)]
+  calc (a : ℚ)⁻¹
+      = (if h : (a : ℕ) > 0 then ((a : ℕ) : ℚ)⁻¹ else 0) := hval.symm
+    _ ≤ ∑ n ∈ Finset.Icc (a : ℕ) (b : ℕ),
+          if h : n > 0 then (n : ℚ)⁻¹ else 0 := Finset.single_le_sum hnn hmem
 
 /- ## Part VII: Summary -/
 
@@ -164,7 +187,9 @@ such that Σ_{I₁} 1/n + Σ_{I₂} 1/n ∈ ℕ?
 
 STATUS: OPEN
 
-EXAMPLE: 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
+EXAMPLES:
+- [3,6] ∪ [20,20] gives 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
+- [2,3] ∪ [6,6] gives 1/2 + 1/3 + 1/6 = 1
 
 VARIANTS:
 - Open even when |I₂| = 1
@@ -184,6 +209,7 @@ STATUS: OPEN
 
 KNOWN:
 - Example: [3,6] ∪ [20,20] gives 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
+- Example: [2,3] ∪ [6,6] gives 1/2 + 1/3 + 1/6 = 1
 - Open even when |I₂| = 1
 - Conjectured to hold for k intervals (any k)
 -/

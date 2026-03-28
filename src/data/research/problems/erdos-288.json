@@ -29,18 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count 8->3. All 5 routine axioms proved. Remaining 3 axioms are the open conjectures: erdos_288, erdos_288_singleton, erdos_288_k_intervals.",
+    "progressSummary": "COMPLETE: 3A appropriate (all open conjectures), 8T proved, 0S. Added second verified example H(2,3)+H(6,6)=1. Replaced trivial growth lemma with meaningful lower bound H(a,b)>=1/a.",
     "builtItems": [
       "Proved harmonicInterval_singleton, harmonicInterval_pos, harmonicInterval_from_one (axiom->theorem)",
-      "Proved harmonicInterval_growth from harmonicInterval_pos",
-      "Proved example_sum_one by computation (8->3 axioms total)"
+      "Proved harmonicInterval_ge_inv_first: H(a,b) >= 1/a via Finset.single_le_sum",
+      "Proved example_sum_one by computation (8->3 axioms total)",
+      "Proved example_sum_one_v2: H(2,3)+H(6,6)=1 (second verified integer harmonic sum)"
     ],
     "insights": [
       "harmonicInterval_singleton: unfold Icc_self + dif_pos for PNat.pos",
       "harmonicInterval_pos: Finset.sum_pos with inv_pos (all terms in Icc are > 0)",
       "harmonicInterval_from_one: Finset.sum_congr rfl + dif_pos (k >= 1 in Icc 1 n)",
-      "harmonicInterval_growth: conclusion is trivially > 0 (mul_zero), follows from pos",
-      "example_sum_one: reduce Icc 3 6 by decide, simp dif_pos for each element, norm_num"
+      "harmonicInterval_ge_inv_first: Finset.single_le_sum with non-negativity + dif_pos",
+      "example_sum_one: reduce Icc 3 6 by decide, simp dif_pos for each element, norm_num",
+      "example_sum_one_v2: same pattern as v1 with Icc 2 3 = {2,3} by decide",
+      "All 3 remaining axioms are genuinely open conjectures"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,8 +70,8 @@
     {
       "path": "Proofs/Erdos288Problem.lean",
       "filename": "Erdos288Problem.lean",
-      "lineCount": 195,
-      "theoremCount": 7,
+      "lineCount": 217,
+      "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 9,
       "sorryCount": 0,
