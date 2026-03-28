@@ -206,6 +206,42 @@ Status:
 - Related: Lee (2017) proved bounded-degree case, but Q_n has unbounded degree
 - Erdős-Sós question (R(Q_n)/2^n → ∞?): OPEN
 -/
+/-- If the Burr-Erdős conjecture holds, R(Q_n)/2^n is bounded. -/
+theorem conjecture_implies_ratio_bounded :
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n) →
+    ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ, n ≥ 1 → (ramseyNumber n : ℝ) / 2 ^ n ≤ B := by
+  intro ⟨C, hC, hbound⟩
+  exact ⟨C, hC, fun n _ => by
+    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    exact hbound n⟩
+
+/-- Tikhomirov implies R(Q_n) is subexponential relative to the vertex count:
+    R(Q_n) / (2^n)^2 → 0. -/
+theorem tikhomirov_subquadratic :
+    (∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧
+      ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ ((2 - c) * n)) →
+    ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧
+      ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * (2 ^ n : ℝ) ^ (2 - c) := by
+  intro ⟨c, hc, C, hC, hbound⟩
+  exact ⟨c, hc, C, hC, fun n => by
+    have : (2 : ℝ) ^ ((2 - c) * n) = ((2 : ℝ) ^ n) ^ (2 - c) := by
+      rw [← Real.rpow_natCast 2 n, ← Real.rpow_natCast 2 ((2 - c) * ↑n)]
+      simp [Real.rpow_mul (by positivity : (0 : ℝ) ≤ 2)]
+    linarith [hbound n]⟩
+
+/-- The conjecture contradicts the possibility that R(Q_n)/2^n → ∞. -/
+theorem conjecture_contradicts_divergence :
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n) →
+    ¬(∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
+      (ramseyNumber n : ℝ) / 2 ^ n > M) := by
+  intro ⟨C, hC, hbound⟩ hdiv
+  obtain ⟨N₀, hN⟩ := hdiv (C + 1) (by linarith)
+  have h := hN N₀ le_rfl
+  have hle := hbound N₀
+  have hpos : (0 : ℝ) < 2 ^ N₀ := by positivity
+  rw [div_gt_iff hpos] at h
+  linarith
+
 theorem erdos_181 :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n :=
   erdos_181_conjecture
