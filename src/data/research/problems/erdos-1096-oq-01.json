@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: All 6 sorries proved. File now has 0 sorries, 9 axioms (all deep results).",
     "builtItems": [
       "goldenRatio_gt_one theorem in Erdos1096Problem.lean (proved: phi > 1)",
       "goldenRatio_lt_two theorem in Erdos1096Problem.lean (proved: phi < 2)",
@@ -39,7 +39,8 @@
       "IsPisot: concrete definition via polynomial roots (was axiom)",
       "smallestPisot: concrete definition via Classical.choose + IVT (was axiom)",
       "smallestPisot_spec: lemma extracting properties from the definition",
-      "goldenRatio_gt_one/lt_two: moved before goldenRatio_is_pisot"
+      "goldenRatio_gt_one/lt_two: moved before goldenRatio_is_pisot",
+      "smallestPisot_value/is_pisot/goldenRatio_is_pisot: all sorries proved"
     ],
     "insights": [
       "All 14 axioms are necessary: function definitions (qSequence, IsPisot, smallestPisot, qSequenceM) + deep results (EJK1990, Bugeaud1996, EJS1996)",
@@ -49,7 +50,8 @@
       "Confirmed: all 14 axioms are genuinely deep results (Pisot numbers, gap properties, Bugeaud characterization)",
       "IsPisot can be defined concretely: 1<q + monic int polynomial vanishing at q + all other complex roots have |z|<1",
       "smallestPisot defined as real root of x³-x-1=0 via IVT (f(1)=-1<0, f(2)=5>0)",
-      "goldenRatio_is_pisot provable: X²-X-1 is the polynomial, other root (1-√5)/2 has |·|<1 since √5<3"
+      "goldenRatio_is_pisot provable: X²-X-1 is the polynomial, other root (1-√5)/2 has |·|<1 since √5<3",
+      "All 6 sorries proved: numerical bounds (1.324<q₀<1.325), monic proofs (X³-X-1, X²-X-1), complex root bounds via factorization + conjugate analysis"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -81,11 +83,11 @@
     {
       "path": "Proofs/Erdos1096Problem.lean",
       "filename": "Erdos1096Problem.lean",
-      "lineCount": 305,
+      "lineCount": 438,
       "theoremCount": 13,
       "axiomCount": 9,
       "defCount": 9,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1096Problem.lean"
     }
