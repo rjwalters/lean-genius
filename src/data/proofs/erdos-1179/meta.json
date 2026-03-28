@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "proved",
@@ -60,7 +60,7 @@
     ],
     "axiomCount": 6,
     "lineCount": 218,
-    "assumptions": "6 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, main_asymptotic, gEps_mono. gEps_pos proved from trivial_lower_bound.",
+    "assumptions": "6 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, main_asymptotic, gEps_mono. gEps_pos proved from trivial_lower_bound. 2 sorries remain: logloglog_div_loglog_tendsto_zero (line 233), main_asymptotic_derived squeeze step (line 265).",
     "theoremCount": 5
   },
   "overview": {
