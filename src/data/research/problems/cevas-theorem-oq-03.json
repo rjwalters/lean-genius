@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: No Lean file. Parent files fully proved (0A, 0S). OQ-03 about computational complexity needs new formalization.",
+    "builtItems": [
+      "Assessment: BLOCKED — no Lean file, computational complexity question needs new formalization"
+    ],
+    "insights": [
+      "No Lean file for OQ-03. Parent files: 9 Lean files, 0 axioms, 0 real sorries, 146 theorems",
+      "OQ-03 is about computational complexity of cevian configurations — theoretical CS question",
+      "All existing formalizations are fully proved (0 axioms across all files)",
+      "Would need new formalization about computational complexity, not a Lean proof task"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -52,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-03-23T00:42:35.519Z",
-  "lastUpdate": "2026-03-23T00:42:35.519Z",
+  "lastUpdate": "2026-03-28T05:56:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

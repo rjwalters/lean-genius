@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 1A deep, many T, 0S. Near-complete.",
+    "progressSummary": "PROGRESS: Added 3 structural theorems (24→27T). tau_pos, f_succ recurrence, f_ge lower bound. 1A deep (unchanged).",
     "builtItems": [
-      "Assessment: 1A deep, file near-complete"
+      "Assessment: 1A deep, file near-complete",
+      "tau_pos: 0 < τ(n) for n ≥ 1",
+      "f_succ: f(n+1) = f(n) + τ(2^(n+1)-1)",
+      "f_ge: n ≤ f(n) for all n"
     ],
     "insights": [
-      "1 axiom (kovac_luca_limsup_infinite — deep result), many theorems proved, 0 sorries. Near-complete file."
+      "1 axiom (kovac_luca_limsup_infinite — deep result), many theorems proved, 0 sorries. Near-complete file.",
+      "tau_pos: every positive n has at least 1 divisor (1 ∈ n.divisors)",
+      "f_ge: f(n) ≥ n since each τ(2^k-1) ≥ 1 for k ≥ 1",
+      "f_succ recurrence via Finset.Icc decomposition into union + singleton"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -54,7 +60,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:22:53.229Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-03-28T05:40:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
