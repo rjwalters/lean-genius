@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added 3 partialSum theorems (7T→10T). Recursion + small values. 1A deep (unchanged).",
+    "builtItems": [
+      "partialSum_one: partialSum f 1 = 0",
+      "partialSum_two: partialSum f 2 = f 1",
+      "partialSum_succ: recursion partialSum f (N+1) = partialSum f N + f N for N ≥ 1"
+    ],
+    "insights": [
+      "partialSum sums f(m) for m ∈ [1, N-1] (range N filtered by ≥ 1), so it is off-by-one from mathematical convention ∑_{m≤N}",
+      "1 axiom (atherfold_upper_bound 2025) — deep, cannot eliminate",
+      "All f(m) values are ±1 by strong induction on prime factorization (proved by Aristotle)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1144 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
@@ -51,15 +59,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-03-28T06:05:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1144Problem.lean",
       "filename": "Erdos1144Problem.lean",
-      "lineCount": 176,
-      "theoremCount": 7,
+      "lineCount": 191,
+      "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
