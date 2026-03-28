@@ -103,7 +103,11 @@ theorem f_le_complete (n : ℕ) : f n ≤ n * (n - 1) / 2 := by
 /-- A cycle of length k has at most k(k-3)/2 possible diagonals. -/
 theorem max_diagonals_in_cycle (k : ℕ) (hk : k ≥ 3) :
     k * (k - 3) / 2 = (k.choose 2) - k := by
-  sorry
+  rw [Nat.choose_two_right]
+  suffices h : k * (k - 3) / 2 + k = k * (k - 1) / 2 by omega
+  have heq : k * (k - 1) = k * (k - 3) + k * 2 := by
+    rw [← mul_add, show k - 3 + 2 = k - 1 from by omega]
+  rw [heq, Nat.add_mul_div_right _ _ (by norm_num : (0 : ℕ) < 2)]
 
 /-
 ## Part V: Chen-Erdős-Staton Bound (1996)

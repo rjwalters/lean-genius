@@ -127,7 +127,16 @@ noncomputable def erdosLaskarConstant : ℝ := 2 * (Real.sqrt 3 - 1)
 
 /-- Numerical value: 2(√3 - 1) ≈ 1.464. -/
 theorem erdosLaskar_approx : erdosLaskarConstant > 1.46 ∧ erdosLaskarConstant < 1.47 := by
-  sorry
+  unfold erdosLaskarConstant
+  have hsqrt3_lb : (1.73 : ℝ) < Real.sqrt 3 := by
+    have h : (1.73 : ℝ) ^ 2 < 3 := by norm_num
+    rw [← Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1.73)]
+    exact Real.sqrt_lt_sqrt (sq_nonneg _) h
+  have hsqrt3_ub : Real.sqrt 3 < (1.735 : ℝ) := by
+    have h : (3 : ℝ) < 1.735 ^ 2 := by norm_num
+    rw [← Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1.735)]
+    exact Real.sqrt_lt_sqrt (by norm_num) h
+  constructor <;> linarith
 
 /-
 ## Erdős-Laskar Upper Bound (1985)
