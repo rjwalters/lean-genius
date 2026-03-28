@@ -19,9 +19,9 @@
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 175,
-    "assumptions": "5 axioms: f_upper_bound, f_lower_bound, f_semiprime, erdos_700_question2, erdos_700_question3. fBinom now defined (not axiomatized). f_prime_square proved from f_lower_bound.",
+    "axiomCount": 3,
+    "lineCount": 257,
+    "assumptions": "3 axioms: f_upper_bound (needs Kummer's theorem), erdos_700_question2, erdos_700_question3 (both open problems). f_lower_bound PROVED via absorption identity + coprime cancellation. f_30 PROVED computationally. f_semiprime proved from bounds.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -45,25 +45,25 @@
       "id": "helper-lemmas",
       "title": "Helper Lemmas",
       "startLine": 48,
-      "endLine": 80,
-      "summary": "Proves `minFac_prime_sq` ($\\text{minFac}(p^2) = p$) via `dvd_of_dvd_pow` and prime uniqueness. Proves `minFac_mul_prime` ($\\text{minFac}(pq) = p$ for primes $p \\le q$) via case analysis on which prime factor the minFac divides. Proves `le_largestPrimeFactor`: any prime factor $r \\mid n$ satisfies $r \\le P(n)$.",
-      "mathContext": "Lemma `minFac_prime_sq`: $\\text{minFac}(p^2)$ is prime and divides $p^2$, hence divides $p$ by `dvd_of_dvd_pow`, and equals $p$ since $p$ is prime. Lemma `minFac_mul_prime`: $\\text{minFac}(pq)$ divides $pq$, so divides $p$ or $q$; combined with $\\text{minFac}(pq) \\le p$ (from `minFac_le_of_dvd`), yields $\\text{minFac}(pq) = p$. These are used in proving $f(pq) = p$ and $f(p^2) \\ge p$."
+      "endLine": 134,
+      "summary": "Proves `minFac_prime_sq`, `minFac_mul_prime`, `le_largestPrimeFactor` (existing). NEW: `n_dvd_k_mul_choose` (absorption identity: $n \\mid k \\cdot \\binom{n}{k}$, from `Nat.succ_mul_choose_eq`). NEW: `gcd_choose_ge_minFac` (for $n \\ge 4$ and $2 \\le k \\le n/2$, $\\gcd(n, \\binom{n}{k}) \\ge \\text{minFac}(n)$, via coprime cancellation: $n/\\gcd(n,k) \\mid \\binom{n}{k}$).",
+      "mathContext": "Key new result: from the absorption identity $k \\cdot \\binom{n}{k} = n \\cdot \\binom{n-1}{k-1}$, coprime cancellation gives $n/\\gcd(n,k) \\mid \\binom{n}{k}$. Since $\\gcd(n,k) \\le k \\le n/2$, the quotient $n/\\gcd(n,k) \\ge \\text{minFac}(n)$ (every proper divisor of $n$ is $\\le n/\\text{minFac}(n)$). This establishes the lower bound $\\gcd(n, \\binom{n}{k}) \\ge \\text{minFac}(n)$ for all $k$ in range."
     },
     {
       "id": "bounds",
       "title": "Basic Sandwich Bounds",
-      "startLine": 82,
-      "endLine": 96,
-      "summary": "Axiomatizes `f_upper_bound` ($f(n) \\le n/P(n)$ for composite $n$, via Kummer's theorem) and `f_lower_bound` ($p(n) \\le f(n)$ for $n \\ge 2$, since the smallest prime dividing $n$ divides every $\\gcd(n, \\binom{n}{k})$).",
-      "mathContext": "The sandwich inequality $p(n) \\le f(n) \\le n/P(n)$ is the fundamental structural result. Upper bound: choosing $k = p^a$ where $p^a \\| n$ gives exactly one carry in base-$p$ addition, so $v_p(\\binom{n}{k}) = 1$, hence $\\gcd(n, \\binom{n}{p^a}) = n/p^a \\le n/P(n)$. Lower bound: for every $0 < k < n$, Kummer's theorem gives $v_p(\\binom{n}{k}) \\ge 1$ when $p \\mid n$."
+      "startLine": 135,
+      "endLine": 157,
+      "summary": "Axiomatizes `f_upper_bound` ($f(n) \\le n/P(n)$, needs Kummer's theorem). PROVES `f_lower_bound` ($p(n) \\le f(n)$ for $n \\ge 4$) via the absorption identity and coprime cancellation: for each $k$, $n/\\gcd(n,k) \\mid \\gcd(n, \\binom{n}{k})$, and $n/\\gcd(n,k) \\ge \\text{minFac}(n)$ since $\\gcd(n,k) \\le n/2$.",
+      "mathContext": "The sandwich inequality $p(n) \\le f(n) \\le n/P(n)$ is fundamental. Upper bound (axiomatized): Kummer's theorem. Lower bound (NOW PROVED): from $n \\mid k \\cdot \\binom{n}{k}$ and coprime cancellation, every $\\gcd(n, \\binom{n}{k})$ is divisible by $n/\\gcd(n,k) \\ge \\text{minFac}(n)$."
     },
     {
       "id": "equalities",
       "title": "Known Exact Values",
-      "startLine": 98,
-      "endLine": 135,
-      "summary": "PROVES `f_semiprime`: $f(pq) = p$ for primes $p \\le q$, by sandwiching between `f_lower_bound` (giving $p \\le f(pq)$) and `f_upper_bound` (giving $f(pq) \\le pq/P(pq) \\le p$). Axiomatizes `f_30`: $f(30) = 6 = 30/5$, the first non-semiprime example achieving $f(n) = n/P(n)$.",
-      "mathContext": "Proved: $f(pq) = p$ for primes $p \\le q$. Lower bound: $p = \\text{minFac}(pq) \\le f(pq)$. Upper bound: $f(pq) \\le pq/P(pq)$, and $q \\le P(pq)$ (since $q$ is a prime factor), so $pq/P(pq) \\le pq/q \\cdot P(pq)/P(pq) \\le p$. The case $n = 30 = 2 \\cdot 3 \\cdot 5$ with $f(30) = 6$ shows the characterization extends beyond semiprimes."
+      "startLine": 159,
+      "endLine": 211,
+      "summary": "PROVES `f_semiprime` ($f(pq) = p$) and NOW PROVES `f_30` ($f(30) = 6$) computationally via `interval_cases` + `native_decide` over all $k \\in [2, 15]$. The sandwich gives equality for semiprimes; $n = 30$ requires checking all 14 GCD values explicitly.",
+      "mathContext": "Proved: $f(pq) = p$ for primes $p \\le q$ (sandwich argument). NOW PROVED: $f(30) = 6$ by verifying $\\gcd(30, \\binom{30}{k}) \\ge 6$ for all $k \\in [2, 15]$, with equality at $k = 5$ where $\\gcd(30, 142506) = 6$."
     },
     {
       "id": "question1",
@@ -146,9 +146,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 175,
-    "axiomCount": 5,
-    "theoremCount": 2,
+    "lineCount": 257,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 3
   },
   "references": [
