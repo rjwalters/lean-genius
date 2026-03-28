@@ -94,15 +94,19 @@ theorem schnirelmannDensity_le_one (A : Set ℕ) : d_s A ≤ 1 := by
   unfold densityRatio
   simp only [↓reduceIte, Nat.cast_one, div_one]
   -- countingFunction A 1 ≤ 1 since we only count in {1}
-  sorry
+  suffices h : countingFunction A 1 ≤ 1 by exact_mod_cast h
+  unfold countingFunction
+  exact le_trans (Finset.card_filter_le _ _) (by native_decide)
 
 /-- If 1 ∈ A, then d_s(A) > 0 is possible but not guaranteed. -/
 theorem density_pos_of_one_mem (A : Set ℕ) (h : 1 ∈ A) :
     densityRatio A 1 = 1 := by
   unfold densityRatio countingFunction
   simp only [↓reduceIte, Nat.cast_one, div_one]
-  -- {1} \ {0} filtered by (· ∈ A) has card 1 when 1 ∈ A
-  sorry
+  -- Finset.range 2 \ {0} = {1}, and 1 ∈ A, so filter gives {1} with card 1
+  suffices hc : (Finset.filter (· ∈ A) (Finset.range 2 \ {0})).card = 1 by exact_mod_cast hc
+  have hset : Finset.range 2 \ {0} = ({1} : Finset ℕ) := by native_decide
+  rw [hset, Finset.filter_singleton, if_pos h, Finset.card_singleton]
 
 /-- Adding a basis can only increase density. -/
 theorem density_mono_sumset (A B : Set ℕ) (h0 : 0 ∈ B) :
