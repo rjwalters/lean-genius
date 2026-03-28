@@ -290,6 +290,19 @@ def IsWeird (n : ℕ) : Prop := IsAbundant n ∧ ¬IsPseudoperfect n
 --
 -- The core of Erdős #469 remains open.
 
+/-- **Erdős Problem #469 (OPEN)**: Does the sum of reciprocals of primitive
+    pseudoperfect numbers converge?
+    Σ_{n ∈ A} 1/n where A = {6, 20, 28, 88, 104, 272, ...}
+    This is stated as a Prop definition (NOT axiom) since it is open. -/
+def erdos469_conjecture : Prop :=
+  Summable (fun n : ℕ => if IsPrimitivePseudoperfect n then (1 : ℝ) / n else 0)
+
+/-- There are infinitely many primitive pseudoperfect numbers.
+    Known: every even perfect number is primitive pseudoperfect (verified for 6, 28).
+    This is also open, stated as a Prop definition. -/
+def infinitely_many_primitive : Prop :=
+  Set.Infinite primitivePseudoperfectSet
+
 /-- Every multiple of a pseudoperfect number is pseudoperfect.
     Proof: if n = d₁ + ⋯ + dₖ with dᵢ proper divisors of n, then
     n·m = d₁·m + ⋯ + dₖ·m, and each dᵢ·m is a proper divisor of n·m. -/
