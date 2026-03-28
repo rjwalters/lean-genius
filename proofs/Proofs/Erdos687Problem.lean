@@ -122,6 +122,58 @@ theorem jacobsthalY_zero : jacobsthalY 0 = 0 := by
 theorem jacobsthalY_one : jacobsthalY 1 = 0 := by
   simp [jacobsthalY, jacobsthalSet_one]
 
+/- ## Concrete Values -/
+
+/-- 1 ∈ jacobsthalSet 2: choosing a₂ = 1 covers all odd numbers, including 1. -/
+theorem one_mem_jacobsthalSet_two : (1 : ℕ) ∈ jacobsthalSet 2 := by
+  refine ⟨fun p _ _ => 1, fun n h1 hn => ?_⟩
+  -- n ∈ [1,1], so n = 1
+  have : n = 1 := by omega
+  subst this
+  exact ⟨2, by decide, le_refl 2, by norm_num⟩
+
+/-- 2 ∉ jacobsthalSet 2: the only prime ≤ 2 is 2, and any single residue
+    class mod 2 covers exactly one of {1, 2}. So [1, 2] can't be fully covered. -/
+theorem two_not_mem_jacobsthalSet_two : (2 : ℕ) ∉ jacobsthalSet 2 := by
+  intro ⟨a, ha⟩
+  have h1 := ha 1 (by norm_num) (by norm_num)
+  have h2 := ha 2 (by norm_num) (by norm_num)
+  obtain ⟨p₁, hp₁, hpx₁, hcov₁⟩ := h1
+  obtain ⟨p₂, hp₂, hpx₂, hcov₂⟩ := h2
+  -- p₁ = p₂ = 2 (only prime ≤ 2)
+  have : p₁ = 2 := by have := hp₁.two_le; omega
+  subst this
+  have : p₂ = 2 := by have := hp₂.two_le; omega
+  subst this
+  -- 1 % 2 = (a 2 _ _) % 2 and 2 % 2 = (a 2 _ _) % 2, so 1 % 2 = 2 % 2
+  have : (1 : ℤ) % 2 = (2 : ℤ) % 2 := hcov₁.trans hcov₂.symm
+  norm_num at this
+
+/-- jacobsthalSet 2 = {0, 1}: with only prime 2, we can cover at most one
+    parity class, giving Y(2) = 1. -/
+theorem jacobsthalSet_two : jacobsthalSet 2 = {0, 1} := by
+  ext y
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · intro hy
+    by_contra hne
+    push_neg at hne
+    have : 2 ≤ y := by omega
+    exact two_not_mem_jacobsthalSet_two (jacobsthalSet_downward hy (by omega))
+  · rintro (rfl | rfl)
+    · exact jacobsthalSet_downward one_mem_jacobsthalSet_two (by omega)
+    · exact one_mem_jacobsthalSet_two
+
+/-- Y(2) = 1. -/
+theorem jacobsthalY_two : jacobsthalY 2 = 1 := by
+  unfold jacobsthalY
+  rw [jacobsthalSet_two]
+  apply le_antisymm
+  · exact csSup_le ⟨0, Or.inl rfl⟩ (fun x hx => by rcases hx with rfl | rfl <;> omega)
+  · exact le_csSup ⟨1, fun x hx => by rcases hx with rfl | rfl <;> omega⟩ (Or.inr rfl)
+
+/- ## Monotonicity -/
+
 /-- Key lemma: the Jacobsthal set for x₁ is contained in that for x₂
 when x₁ ≤ x₂. Given a covering for primes ≤ x₁, extend it to primes
 ≤ x₂ by choosing class 0 for each new prime. -/
