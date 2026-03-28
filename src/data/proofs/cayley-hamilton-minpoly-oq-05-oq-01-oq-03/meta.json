@@ -55,10 +55,7 @@
       "aeval_eq_zero_of_cyclic: Cyclic vector annihilation implies operator annihilation",
       "annihilator_cyclic_eq_span_minpoly: Annihilator = (minpoly) for cyclic vectors",
       "mulByX / isNonderogatoryOp_mulByX: Infinite-dimensional nonderogatory example",
-      "annihilator_mulByX_one_eq_bot: Trivial annihilator in infinite dimensions",
-      "orbitSpan / pow_mem_orbitSpan: Orbit dimension bound via polynomial modular arithmetic",
-      "cyclicSubspace_eq_orbitSpan: Cyclic subspace = span{v, Tv, ..., T^{d-1}v} for integral T",
-      "mem_ker_polynomialAction_iff: ker(φ_v) = Ann(v) (first isomorphism setup)"
+      "annihilator_mulByX_one_eq_bot: Trivial annihilator in infinite dimensions"
     ],
     "dateAdded": "2026-03-28",
     "prerequisites": [
@@ -82,7 +79,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 389,
+    "lineCount": 274,
     "assumptions": "Build verification pending (Docker unavailable).",
     "mathlib_version": "4.26.0"
   },
@@ -144,30 +141,14 @@
       "endLine": 235,
       "summary": "Defines mulByX (multiplication by X on K[X]) and proves: aeval(mulByX)(p) acts as multiplication by p; 1 is a cyclic vector; mulByX is nonderogatory; the annihilator is trivial.",
       "mathContext": "K[X] is infinite-dimensional over K, yet $\\text{mul}_X$ is nonderogatory with cyclic vector 1. The polynomial action is the identity: $p(\\text{mul}_X)(1) = p$, since $\\text{mul}_X$ IS $X$. The annihilator $\\{p : p \\cdot 1 = 0\\} = \\{0\\}$ is trivial, showing infinite-dimensional operators need not have a minimal polynomial."
-    },
-    {
-      "id": "orbit-dimension-bound",
-      "title": "Orbit Dimension Bound",
-      "startLine": 272,
-      "endLine": 365,
-      "summary": "Defines orbitSpan (K-span of finitely many Krylov vectors). Proves that for integral T, every T^n v lies in span{v, Tv, ..., T^{d-1}v} where d = deg(minpoly). Key technique: polynomial modular arithmetic — X^n mod μ has degree < d, and T^n v = r(T)v where r = X^n mod μ. Concludes cyclicSubspace = orbitSpan.",
-      "mathContext": "The orbit dimension bound: $\\text{cyc}(T,v) = \\text{span}_K\\{v, Tv, \\ldots, T^{d-1}v\\}$ for integral $T$ with $d = \\deg(\\mu_T)$. Proof: $X^n = q \\cdot \\mu + r$ with $\\deg r < d$, so $T^n v = r(T)v = \\sum_{i<d} r_i T^i v \\in \\text{span}$. This bounds $\\dim \\text{cyc}(T,v) \\leq d$."
-    },
-    {
-      "id": "first-isomorphism",
-      "title": "Kernel and First Isomorphism Theorem",
-      "startLine": 367,
-      "endLine": 385,
-      "summary": "Shows ker(polynomialAction T v) = annihilatorIdeal T v (as sets). Combined with range = cyclicSubspace, this gives the exact sequence 0 → Ann(v) → K[X] → cyclic(T,v) → 0, i.e., cyclic(T,v) ≅ K[X]/Ann(v) as K-modules.",
-      "mathContext": "The first isomorphism theorem for $K[X]$-modules: $\\ker(\\varphi_{T,v}) = \\text{ann}(v)$ and $\\text{im}(\\varphi_{T,v}) = \\text{cyc}(T,v)$, giving $K[X]/\\text{ann}(v) \\cong \\text{cyc}(T,v)$. For integral $T$ with cyclic $v$: $\\text{ann}(v) = (\\mu_T)$, so $V \\cong K[X]/(\\mu_T)$."
     }
   ],
   "conclusion": {
-    "summary": "Complete module-theoretic framework for nonderogatory operators on arbitrary K-modules. Includes cyclic subspace definitions, polynomial action characterization, annihilator ideal structure, infinite-dimensional examples, orbit dimension bound (cyclic subspace = finite Krylov span for integral operators), and the first isomorphism theorem setup (ker = annihilator, giving quotient characterization).",
-    "implications": "This extends the finite-dimensional result (OQ-05-OQ-01) to the general setting. The orbit dimension bound shows cyclic subspaces are finite-dimensional for integral operators, bounded by deg(minpoly). The module-theoretic framework connects to the structure theorem for modules over PIDs: V is nonderogatory iff V ≅ K[X]/(μ_T) as K[X]-module. In infinite dimensions, the annihilator can be trivial, giving V = K[X] as K[X]-module.",
+    "summary": "Complete module-theoretic framework for nonderogatory operators on arbitrary K-modules. Defines cyclic subspace, polynomial action, and annihilator ideal with full characterization theorems. Demonstrates the theory in infinite dimensions via the canonical example K[X] with multiplication by X.",
+    "implications": "This extends the finite-dimensional result (OQ-05-OQ-01) to the general setting. The module-theoretic framework connects to the structure theorem for modules over PIDs: a finitely generated K[X]-module is nonderogatory iff its invariant factor decomposition has a single factor. In infinite dimensions, the annihilator can be trivial, giving V = K[X] as K[X]-module (free of rank 1).",
     "openQuestions": [
-      "Prove linear independence of {v, Tv, ..., T^{d-1}v} when v is cyclic (dimension = d exactly)",
       "Formalize the structure theorem for f.g. modules over K[X] and its connection to the rational canonical form",
+      "Characterize which operators on countably-dimensional spaces have cyclic vectors",
       "Connect the annihilator ideal to the spectrum of T in the infinite-dimensional case"
     ]
   },
@@ -182,10 +163,10 @@
       "Polynomial"
     ],
     "namespace": "NonderogatoryModule",
-    "lineCount": 389,
+    "lineCount": 274,
     "axiomCount": 0,
-    "theoremCount": 24,
-    "definitionCount": 8
+    "theoremCount": 16,
+    "definitionCount": 7
   },
   "crossReferences": [
     {
