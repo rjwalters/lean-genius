@@ -1,6 +1,6 @@
 {
   "slug": "erdos-726",
-  "title": "Erdős #726",
+  "title": "Erd\u0151s #726",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-14T21:29:39.409Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,19 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (4A→3A). Proved sum_partition (key structural lemma) and lower_half_also_half (limit arithmetic from other axioms).",
+    "progressSummary": "PROGRESS: Eliminated lower_half_also_half axiom (4A\u21923A). Proved sum_partition + limit arithmetic.",
     "builtItems": [
-      "Proved sum_partition: upperHalfSum + lowerHalfSum = mertensSum (Finset partition)",
-      "Proved lower_half_also_half from mertens_theorem + erdos_726_conjecture (eliminated axiom)"
+      "PROVED heuristic_half_fraction from upper_half_count (6A\u21925A)",
+      "sum_partition: mertensSum = upperHalfSum + lowerHalfSum",
+      "lower_half_also_half: proved from partition + \u03b5/2 triangle inequality"
     ],
     "insights": [
-      "lower_half_also_half follows from sum_partition + limit arithmetic (triangle inequality with ε/2)",
-      "ratio_converges_to_half also derivable but needs limit division (more complex, left as axiom)",
-      "sum_partition uses Finset.filter_filter + sum_filter_add_sum_filter_not"
+      "heuristic_half_fraction follows from upper_half_count + Nat.cast_div. 6A\u21925A.",
+      "sum_partition proved via Finset.sum_filter_add_sum_filter_not on primes split by isUpperHalfResidue",
+      "lower_half_also_half: triangle inequality on limits (\u03b5/2 + \u03b5/2 = \u03b5) from mertens + conjecture",
+      "Remaining 3A: mertens_theorem (deep), erdos_726_conjecture (open), ratio_converges_to_half (derivable but needs limit division)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #726 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAs $n\\to \\infty$ ranges over integers\\[\\sum_{p\\leq n}1_{n\\in (p/2,p)\\pmod{p}}\\frac{1}{p}\\sim \\frac{\\log\\log n}{2}.\\]\n\n\n\nA conjecture of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}. For comparison the classical estimate of Mertens states that\\[\\sum_{p\\leq n}\\frac{1}{p}\\sim \\log\\log n.\\]By $n\\in (p/2,p)\\pmod{p}$ we mean $n\\equiv r\\pmod{p}$ for some integer $r$ with $p/2<r<p$.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #725\n- Problem #727\n- Problem #39\n- Problem #1\n\n## References\n\n- EGRS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+    "markdown": "# Erd\u0151s #726 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAs $n\\to \\infty$ ranges over integers\\[\\sum_{p\\leq n}1_{n\\in (p/2,p)\\pmod{p}}\\frac{1}{p}\\sim \\frac{\\log\\log n}{2}.\\]\n\n\n\nA conjecture of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}. For comparison the classical estimate of Mertens states that\\[\\sum_{p\\leq n}\\frac{1}{p}\\sim \\log\\log n.\\]By $n\\in (p/2,p)\\pmod{p}$ we mean $n\\equiv r\\pmod{p}$ for some integer $r$ with $p/2<r<p$.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #725\n- Problem #727\n- Problem #39\n- Problem #1\n\n## References\n\n- EGRS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
     "erdos"
@@ -64,9 +66,9 @@
     {
       "path": "Proofs/Erdos726Problem.lean",
       "filename": "Erdos726Problem.lean",
-      "lineCount": 209,
-      "theoremCount": 12,
-      "axiomCount": 4,
+      "lineCount": 247,
+      "theoremCount": 18,
+      "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
