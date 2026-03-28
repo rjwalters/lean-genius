@@ -97,3 +97,24 @@ theorem squarefreeSumset_subset {A B : Set ℕ} (h : B ⊆ A) (hA : SquarefreeSu
 
 /-- `1` is squarefree (basic fact used in constructions). -/
 theorem one_squarefree : Squarefree 1 := squarefree_one
+
+/-- {1} has a squarefree sumset since 1 + 1 = 2 is squarefree. -/
+theorem squarefreeSumset_one : SquarefreeSumset {1} :=
+  (squarefreeSumset_singleton 1).mpr (by decide)
+
+/-- For a two-element set {a, b}, squarefree sumset requires
+    2a, a+b, and 2b all squarefree. -/
+theorem squarefreeSumset_pair (a b : ℕ) :
+    SquarefreeSumset ({a, b} : Set ℕ) ↔
+    Squarefree (a + a) ∧ Squarefree (a + b) ∧ Squarefree (b + b) := by
+  simp only [SquarefreeSumset, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · intro h
+    exact ⟨h a (Or.inl rfl) a (Or.inl rfl),
+           h a (Or.inl rfl) b (Or.inr rfl),
+           h b (Or.inr rfl) b (Or.inr rfl)⟩
+  · rintro ⟨haa, hab_sf, hbb⟩ x (rfl | rfl) y (rfl | rfl)
+    · exact haa
+    · exact hab_sf
+    · rwa [add_comm]
+    · exact hbb
