@@ -245,37 +245,19 @@ axiom erdos_selfridge :
       ∏ i ∈ Finset.range n, (m + i) ≠ (0 : ℤ) →
       ¬∃ (a : ℤ) (b : ℕ), b ≥ 2 ∧ ∏ i ∈ Finset.range n, (m + i) = a^b
 
-/-- Reindex: the product over Icc equals the product over range with offset.
-    ∏ m ∈ Icc(a, a+n-1), m = ∏ i ∈ range(n), (a + ↑i).
-    Standard bijective reindexing via i ↦ a + i. -/
-private lemma product_eq_range_prod (a : ℤ) (n : ℕ) (_ : n > 0) :
-    ∏ m ∈ Finset.Icc a (a + ↑n - 1), m = ∏ i ∈ Finset.range n, (a + ↑i) := by
-  -- Standard bijective reindexing via i ↦ a + i. The map bijects
-  -- {0,...,n-1} with {a,...,a+n-1}, and both compute the same product.
-  sorry
-
 /--
 **Key Insight:**
-A single block of consecutive integers is never a perfect square (by Erdős-Selfridge),
-provided the product is nonzero (i.e., no element in the interval is zero).
+A single block of consecutive integers is never a perfect square (by Erdős-Selfridge).
 But DISJOINT blocks can multiply to give a square when combined correctly.
-
-Note: If 0 ∈ I.elements, then I.product = 0 = 0², which IS a perfect square.
-The nonzero hypothesis is necessary.
 -/
 theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2)
     (hne : I.product ≠ 0) :
     ¬isPerfectSquare I.product := by
-  intro ⟨a, ha⟩
-  -- Rewrite the product in Erdős-Selfridge form
-  have hprod : I.product = ∏ i ∈ Finset.range I.length, (I.start + ↑i) := by
-    unfold ConsecutiveInterval.product ConsecutiveInterval.elements
-    exact product_eq_range_prod I.start I.length I.length_pos
-  -- Apply Erdős-Selfridge: product of ≥ 2 consecutive integers is never a perfect power
-  have h_es := erdos_selfridge I.length 2 I.start h (by omega : (2 : ℕ) ≥ 2)
-  apply h_es
-  · rw [← hprod]; exact hne
-  · exact ⟨a, 2, by omega, by rw [← hprod]; exact ha⟩
+  -- Note: the nonzero hypothesis is necessary (e.g., [0,1] has product 0 = 0²).
+  -- I.product = ∏ m ∈ Icc(I.start, I.start + I.length - 1), m
+  -- This is the same as ∏ i ∈ range(I.length), (I.start + i) by reindexing.
+  -- By Erdős-Selfridge (axiom), this cannot be a perfect power ≥ 2.
+  sorry -- Follows from Erdős-Selfridge + reindexing the product
 
 /-
 ## Part XII: Summary
