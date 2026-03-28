@@ -116,7 +116,11 @@ theorem excess_vertices_affine_dependent [FiniteDimensional ℝ E]
     {n : ℕ} (hn : Module.finrank ℝ E < n)
     {f : Fin n → E} :
     ¬AffineIndependent ℝ f := by
-  sorry
+  intro haf
+  -- Affinely independent n points require dim ≥ n-1, i.e., n ≤ finrank + 1
+  have hcard := haf.fintype_card_le_finrank_succ
+  simp [Fintype.card_fin] at hcard
+  omega
 
 /-
 Part 4: Corollaries
