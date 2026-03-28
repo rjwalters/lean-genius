@@ -1,13 +1,13 @@
 {
   "slug": "erdos-260-incomplete-01",
   "title": "Complete proof of Erd\u0151s Problem #260: Irrationality of Sparse Sequence Series",
-  "phase": "ORIENT",
-  "status": "surveyed",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "",
-    "plain": "SURVEYED: 5 sorries assessed. 2 easy (growth implications), 1 moderate (series convergence), 2 hard (irrationality theorems).",
+    "plain": "IN PROGRESS: Proved series_converges (5\u21924 sorries). Proved summability via Summable.comp_injective + m/2^m geometric bound.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,7 +29,7 @@
     "phase": "ORIENT",
     "since": "2026-03-28T20:00:00Z",
     "iteration": 1,
-    "focus": "Surveyed all 5 sorries and classified by difficulty.",
+    "focus": "Proved series_converges. 4 sorries remain.",
     "blockers": [
       "Hard irrationality sorries need deep analytic number theory from [Er74b]"
     ],
@@ -41,8 +41,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: File has 5 sorries, 1 axiom (open conjecture). Good structure with clean definitions. Key insight: series converges by subseries comparison - since a_n are distinct naturals, sum a_n/2^{a_n} <= sum m/2^m = 2.",
-    "builtItems": [],
+    "progressSummary": "ACT: Proved series_converges by showing m/2^m is summable (comparison with (3/4)^m) and using Summable.comp_injective with strict monotonicity. Also proved m <= (3/2)^m by induction.",
+    "builtItems": [
+      "div_pow_two_le_three_fourths_pow: m/2^m <= (3/4)^m for m >= 1",
+      "summable_div_pow_two: summability of m/2^m",
+      "series_converges: convergence via subseries comparison (FULLY PROVED)"
+    ],
     "insights": [
       "series_converges: key insight is subseries comparison. Since a_n are distinct naturals (strict mono), sum a_n/2^{a_n} is a subseries of sum_{m=0}^inf m/2^m which converges to 2",
       "fastGrowth_of_gapsToInfinity: if gaps d_k -> inf, then a_n >= a_0 + (n-N)*M for large n, so a_n/n -> inf. Needs Tendsto API work in Lean",
