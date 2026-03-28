@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-15T12:36:36.407Z",
-    "iteration": 1,
-    "focus": "Proved trivial_bound, found 2 bugs",
+    "phase": "COMPLETED",
+    "since": "2026-03-28T09:15:00Z",
+    "iteration": 2,
+    "focus": "Graduated: 0 sorries, 3 deep axioms",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — formalization complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETED: 6 theorems, 3 deep axioms, 0 sorries. Axioms: main conjecture (OPEN), Turán upper bound, Green-Tao ordinary lines. All structural results proved.",
     "builtItems": [
       "Proved trivial_bound: ordinaryLineCount P ≤ P.n * (P.n - 1) / 2",
       "Identified bug in threshold_r2 (claims 1, should be 0)",
@@ -41,7 +41,8 @@
       "trivial_bound: ordinaryLineCount P ≤ P.n*(P.n-1)/2 proved via offDiag subset (Erdos960Problem.lean:107-124)",
       "linear_implies_littleo: arithmetic sorry eliminated via ceil/toNat chain + nlinarith (Erdos960Problem.lean:155-181)",
       "ordinary_line_exists: helper lemma extracting ordinary pair from ordinaryLineCount ≥ 1",
-      "threshold_r2: full proof via le_antisymm, csSup_le, ordinary line extraction, isOrdinaryLine_symm"
+      "threshold_r2: full proof via le_antisymm, csSup_le, ordinary line extraction, isOrdinaryLine_symm",
+      "Graduated to completed (iteration 2)"
     ],
     "insights": [
       "trivial_bound provable: filter_le on offDiag + card_offDiag + omega",
@@ -62,7 +63,8 @@
       "trivial_bound follows from Finset.offDiag_card + Nat.mul_succ after case split on P.n",
       "threshold_r2 proof: for r=2, any ordinary line gives a 2-element all-ordinary subset, so the counterexample set in sSup is empty/singleton, hence sSup=0",
       "turan_upper_bound axiomatized: Turán 1941 is in Mathlib (SimpleGraph.Extremal.Turan) but bridging to PointConfig needs ~200-400 lines of infrastructure",
-      "csSup_le + Finset.mem_filter extraction pattern effective for sSup-based threshold proofs"
+      "csSup_le + Finset.mem_filter extraction pattern effective for sSup-based threshold proofs",
+      "Graduation review: 3 axioms verified as deep (Turán, Green-Tao, main OPEN conjecture). Formalization complete."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
