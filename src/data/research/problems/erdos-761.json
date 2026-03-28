@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T08:25:36.657Z",
-    "iteration": 2,
-    "focus": "3 axioms proved (8A→5A), remaining 5A appropriate",
+    "iteration": 3,
+    "focus": "Definition correctness fix + axiom elimination (3A→2A)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,14 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FIXED: Removed duplicate axiom/theorem for dichrom_mono (compilation blocker). 3 axioms remain: Q1, Q2 (open), complete_dichrom (Neumann-Lara 1982). Updated stale metadata.",
+    "progressSummary": "MAJOR FIX: Corrected IsAcyclicColoring definition from wrong \"no monochromatic directed edge\" to correct \"no monochromatic directed cycle\" (Neumann-Lara 1982). Eliminated incorrect complete_dichrom axiom (3A→2A). All structural theorems re-proved for correct definition.",
     "builtItems": [
       "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
       "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
       "odd_cycle_dichrom: proved trivial True placeholder (axiom→theorem)",
       "Assessment: remaining 5A all appropriate",
       "Fixed duplicate axiom/theorem declaration for dichrom_mono (compilation error)",
-      "Updated stale leanFile metadata (axiomCount 8→3, theoremCount 1→6)"
+      "Updated stale leanFile metadata (axiomCount 8→3, theoremCount 1→6)",
+      "colorClassEdge: directed edge relation within a color class (new definition)",
+      "IsAcyclicColoring: fixed to use Relation.TransGen cycle-free condition",
+      "transGen_mono: private helper for TransGen monotonicity",
+      "isAcyclicColoring_of_no_mono_edge: bridge lemma (strong condition ⟹ cycle-free condition)",
+      "dichrom_le_chrom: re-proved with correct definition via bridge lemma",
+      "bipartite_dichrom_le_two: re-proved with correct definition via bridge lemma",
+      "dichrom_mono: re-proved with correct definition via transGen_mono",
+      "acyclic_orientation_exists: re-proved with correct definition via bridge lemma"
     ],
     "insights": [
       "dichrom_le_chrom proved: injective coloring via Fintype.equivFin gives |V| colors, injectivity + ne_of_adj yields acyclicity",
@@ -50,7 +58,11 @@
       "bipartite_dichrom_le_two already proved — demonstrates Nat.sInf_le pattern well",
       "File had duplicate declaration: axiom dichrom_mono AND theorem dichrom_mono — Lean 4 rejects this",
       "Prior researcher proved dichrom_mono but forgot to remove the axiom declaration",
-      "File is in Stubs/ — may not have been build-verified"
+      "File is in Stubs/ — may not have been build-verified",
+      "IsAcyclicColoring was WRONG: used \"no monochromatic directed edge\" instead of correct \"no monochromatic directed cycle\". These are NOT equivalent — for K₃ directed 3-cycle: 2 colors avoid cycles but not all monochromatic edges",
+      "Relation.TransGen provides clean cycle-free formalization: TransGen (colorClassEdge O c i) v v = directed cycle through v in color class i",
+      "complete_dichrom axiom had incorrect formula (n+1)/2+1 — wrong under BOTH definitions. Eliminated as axiom",
+      "Bridge lemma isAcyclicColoring_of_no_mono_edge: proper coloring ⟹ no mono edges ⟹ no mono cycles. All existing proofs go through this bridge"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -70,17 +82,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:25:36.657Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-28T01:51:41.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos761Problem.lean",
       "filename": "Erdos761Problem.lean",
-      "lineCount": 213,
-      "theoremCount": 6,
-      "axiomCount": 3,
-      "defCount": 5,
+      "lineCount": 251,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 7,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos761Problem.lean"

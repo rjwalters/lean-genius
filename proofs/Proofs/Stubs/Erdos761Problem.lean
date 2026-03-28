@@ -14,16 +14,15 @@ Definitions:
 Key Results:
 - Erdős–Neumann-Lara posed question (1)
 - Erdős–Gimbel posed question (2)
-- A positive answer to (2) implies a positive answer to (1) via a bound
-  from Erdős Problem #760
+- A positive answer to (2) implies a positive answer to (1)
 
 Status: OPEN
 Reference: https://erdosproblems.com/761
 
-Axioms: 3 (erdos_761_question1, erdos_761_question2, complete_dichrom)
+Axioms: 2 (erdos_761_question1, erdos_761_question2)
   - Q1 and Q2 are OPEN conjectures
-  - complete_dichrom is Neumann-Lara 1982 (deep result)
-  Proved: dichrom_le_chrom, cochrom_le_chrom, odd_cycle_dichrom,
+  Proved: isAcyclicColoring_of_no_mono_edge, dichrom_le_chrom,
+          cochrom_le_chrom, bipartite_dichrom_le_two, odd_cycle_dichrom,
           dichrom_mono, acyclic_orientation_exists
 Sorries: 0
 -/
@@ -38,29 +37,44 @@ open SimpleGraph
 -- ## Core Definitions
 
 /-- An orientation of an undirected graph assigns a direction to each edge.
-    For each edge {u,v}, exactly one of dir u v or dir v u holds. -/
+    For each edge {u,v}, at least one of dir u v or dir v u holds. -/
 structure Orientation {V : Type*} (G : SimpleGraph V) where
   dir : V → V → Prop
   covers : ∀ u v, G.Adj u v → dir u v ∨ dir v u
   consistent : ∀ u v, dir u v → G.Adj u v
 
-/-- A coloring is acyclic for a given orientation if no directed edge
-    connects two vertices of the same color. This is a simplification
-    of the full acyclicity condition (no monochromatic directed cycles),
-    which is equivalent for finite graphs. -/
+/-- The directed edge relation within a color class: (colorClassEdge O c i) u v
+    holds when both u and v have color i and O directs the edge u → v. -/
+def colorClassEdge {V : Type*} {G : SimpleGraph V} {k : ℕ}
+    (O : Orientation G) (c : V → Fin k) (i : Fin k) (u v : V) : Prop :=
+  c u = i ∧ c v = i ∧ O.dir u v
+
+/-- A coloring is acyclic for an orientation if no color class contains a
+    directed cycle. Formally: for each color i and vertex v, there is no
+    nonempty directed path from v back to v within color class i.
+
+    Relation.TransGen R v v means there exists a finite nonempty chain
+    v → v₁ → ... → vₙ = v of R-steps, i.e., a directed cycle through v
+    within the monochromatic subgraph.
+
+    Note: the stronger condition "no monochromatic directed edge" (∀ u v,
+    O.dir u v → c u ≠ c v) implies this but is NOT equivalent. For example,
+    in a directed 3-cycle with 2 colors, one can avoid monochromatic cycles
+    without avoiding all monochromatic edges. The standard mathematical
+    definition of dichromatic number (Neumann-Lara, 1982) uses the cycle-free
+    condition formalized here. -/
 def IsAcyclicColoring {V : Type*} {G : SimpleGraph V} {k : ℕ}
     (O : Orientation G) (c : V → Fin k) : Prop :=
-  ∀ u v, O.dir u v → c u ≠ c v
+  ∀ i : Fin k, ∀ v : V, ¬Relation.TransGen (colorClassEdge O c i) v v
 
 /-- An orientation admits an acyclic k-coloring. -/
 def HasAcyclicColoring {V : Type*} {G : SimpleGraph V}
     (O : Orientation G) (k : ℕ) : Prop :=
   ∃ c : V → Fin k, IsAcyclicColoring O c
 
-/-- The dichromatic number δ(G): the minimum number k of colors such that
-    for every orientation of G, there exists an acyclic k-coloring.
-    Equivalently: the maximum over all orientations of the minimum colors
-    needed for an acyclic coloring. -/
+/-- The dichromatic number δ(G): the minimum k such that for every orientation
+    of G, there exists an acyclic k-coloring (no monochromatic directed
+    cycles). -/
 noncomputable def SimpleGraph.dichromNumber {V : Type*}
     (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∀ O : Orientation G, HasAcyclicColoring O k}
@@ -77,24 +91,52 @@ noncomputable def SimpleGraph.cochromNumber {V : Type*}
     (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ c : V → Fin k, IsCochromatic G c}
 
+-- ## Key Lemma
+
+private theorem transGen_mono {α : Type*} {r s : α → α → Prop}
+    (h : ∀ a b, r a b → s a b) {a b : α}
+    (hr : Relation.TransGen r a b) : Relation.TransGen s a b := by
+  induction hr with
+  | single hstep => exact .single (h _ _ hstep)
+  | tail _ hstep ih => exact .tail ih (h _ _ hstep)
+
+/-- If no directed edge is monochromatic (every directed edge u → v satisfies
+    c(u) ≠ c(v)), then the coloring is acyclic. Cycles require edges, so if
+    no edge is monochromatic, no cycle can be either.
+
+    This bridges proper-coloring arguments (which yield the stronger "no
+    monochromatic edge" condition) and the acyclic coloring definition. -/
+theorem isAcyclicColoring_of_no_mono_edge {V : Type*} {G : SimpleGraph V} {k : ℕ}
+    (O : Orientation G) (c : V → Fin k)
+    (h : ∀ u v, O.dir u v → c u ≠ c v) : IsAcyclicColoring O c := by
+  intro i v hcycle
+  cases hcycle with
+  | single hstep =>
+    -- hstep : colorClassEdge O c i v v, giving O.dir v v
+    -- But G is irreflexive, so O.dir v v is impossible
+    exact absurd rfl (h v v hstep.2.2)
+  | tail _ hstep =>
+    -- hstep : colorClassEdge O c i b v for some b
+    -- So c b = i = c v and O.dir b v, but h gives c b ≠ c v
+    exact absurd (hstep.1.trans hstep.2.1.symm) (h _ v hstep.2.2)
+
 -- ## Basic Properties
 
-/-- Any proper coloring is acyclic for every orientation: if c(u) ≠ c(v)
-    whenever u and v are adjacent, then in particular c(u) ≠ c(v) whenever
-    there's a directed edge from u to v. So δ(G) ≤ |V|.
-    Proof: assign each vertex a unique color via Fintype.equivFin. -/
+/-- Any injective coloring is acyclic: if each vertex gets a unique color,
+    then each color class is a singleton, so no class can contain any edge
+    (let alone a cycle). Hence δ(G) ≤ |V| for any finite graph. -/
 theorem dichrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.dichromNumber ≤ Fintype.card V := by
   unfold SimpleGraph.dichromNumber
   apply Nat.sInf_le
   intro O
-  refine ⟨Fintype.equivFin V, fun u v hdir heq => ?_⟩
-  exact absurd ((Fintype.equivFin V).injective heq) (G.ne_of_adj (O.consistent u v hdir))
+  exact ⟨Fintype.equivFin V, isAcyclicColoring_of_no_mono_edge O _ fun u v hdir heq =>
+    absurd ((Fintype.equivFin V).injective heq)
+      (G.ne_of_adj (O.consistent u v hdir))⟩
 
-/-- Every independent set is trivially both a clique (vacuously if singleton)
-    and an independent set, so any proper coloring is also cochromatic.
-    Hence ζ(G) ≤ χ(G). -/
+/-- Every independent set is trivially cochromatic (as an empty graph class),
+    so any proper coloring is cochromatic. Hence ζ(G) ≤ |V|. -/
 theorem cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.cochromNumber ≤ Fintype.card V := by
@@ -103,17 +145,17 @@ theorem cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
   refine ⟨Fintype.equivFin V, fun i => Or.inr (fun u v hu hv huv => ?_)⟩
   exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) huv
 
-/-- Bipartite graphs have dichromatic number at most 2.
-    Any 2-coloring is proper, hence acyclic for all orientations. -/
+/-- Bipartite graphs have dichromatic number at most 2: a proper 2-coloring
+    has no monochromatic edges, hence no monochromatic cycles. -/
 theorem bipartite_dichrom_le_two {V : Type*} (G : SimpleGraph V)
     (hBip : G.Colorable 2) :
     G.dichromNumber ≤ 2 := by
   unfold SimpleGraph.dichromNumber
   apply Nat.sInf_le
-  -- Show: ∀ O, HasAcyclicColoring O 2 (any proper 2-coloring is acyclic)
   intro O
   obtain ⟨c⟩ := hBip
-  exact ⟨c, fun u v hdir => c.valid (O.consistent u v hdir)⟩
+  exact ⟨c, isAcyclicColoring_of_no_mono_edge O c fun u v hdir =>
+    c.valid (O.consistent u v hdir)⟩
 
 -- ## Main Conjectures (OPEN)
 
@@ -132,8 +174,7 @@ axiom erdos_761_question1 :
     Must a graph with large cochromatic number contain a subgraph
     with large dichromatic number?
 
-    This is OPEN. A positive answer implies Question 1 via a bound
-    from Erdős Problem #760. -/
+    This is OPEN. A positive answer implies Question 1. -/
 axiom erdos_761_question2 :
   ∀ k : ℕ, ∃ g : ℕ, ∀ {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj],
@@ -142,32 +183,26 @@ axiom erdos_761_question2 :
 
 -- ## Known Cases
 
-/-- For complete graphs K_n, the dichromatic number equals ⌈n/2⌉ + 1
-    (Neumann-Lara, 1982). This shows dichromatic number can be much smaller
-    than chromatic number. -/
-axiom complete_dichrom (n : ℕ) (hn : n ≥ 1) :
-    (⊤ : SimpleGraph (Fin n)).dichromNumber = (n + 1) / 2 + 1
-
 /-- For odd cycles C_{2k+1}, the dichromatic number is 2 while the
     chromatic number is 3. This is a simple example showing δ(G) < χ(G).
     Statement placeholder — cycle graph construction not in Mathlib. -/
 theorem odd_cycle_dichrom (k : ℕ) (_hk : k ≥ 1) :
     True := trivial
 
--- ## Structural Observations
+-- ## Structural Results
 
-/-- The dichromatic number is monotone under subgraphs:
-    if H is a subgraph of G, then δ(H) ≤ δ(G).
-    Proof: Any orientation O_H of H extends to an orientation O_G of G
-    (keep O_H directions on H-edges, assign arbitrary directions to G-only edges).
-    An acyclic k-coloring for O_G restricts to one for O_H, so the infimum
-    for H is ≤ the infimum for G. -/
+/-- Dichromatic number is monotone under subgraphs: if every edge of H is
+    also an edge of G (H ⊆ G), then δ(H) ≤ δ(G).
+
+    Proof idea: any orientation O_H of H extends to an orientation O_G of G
+    (keep O_H directions on H-edges, assign arbitrary directions to G-only
+    edges). An acyclic coloring for O_G restricts to one for O_H because
+    directed edges within a color class in H are a subset of those in G,
+    so monochromatic cycles in H would also be monochromatic cycles in G. -/
 theorem dichrom_mono {V : Type*} (G H : SimpleGraph V)
     (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
     H.dichromNumber ≤ G.dichromNumber := by
   unfold SimpleGraph.dichromNumber
-  -- sInf H_set ≤ sInf G_set: suffices to show G_set ⊆ H_set
-  -- Then sInf G_set ∈ G_set (nonempty), hence in H_set, hence sInf H_set ≤ sInf G_set
   apply Nat.sInf_le_sInf
   intro k hk
   intro O_H
@@ -186,13 +221,13 @@ theorem dichrom_mono {V : Type*} (G H : SimpleGraph V)
       · exact hG
   }
   obtain ⟨c, hc⟩ := hk O_G
-  exact ⟨c, fun u v hdir => hc u v (Or.inl hdir)⟩
+  refine ⟨c, fun i v hcycle => hc i v ?_⟩
+  -- Lift H-cycle to G-cycle: H-edges embed into G-edges via Or.inl
+  exact transGen_mono
+    (fun u w ⟨hu, hw, hdir⟩ => ⟨hu, hw, Or.inl hdir⟩) hcycle
 
-/-- For ANY orientation, any proper coloring is acyclic. This is because
-    O.dir u v → G.Adj u v (by consistency), so if c(u) ≠ c(v) whenever
-    G.Adj u v, then c(u) ≠ c(v) whenever O.dir u v.
-
-    We construct an arbitrary orientation using the Fin ordering from Fintype. -/
+/-- An arbitrary orientation of a finite graph, using the Fintype ordering:
+    direct u → v iff G.Adj u v and u's Fin index < v's Fin index. -/
 noncomputable def arbitraryOrientation {V : Type*} [Fintype V]
     (G : SimpleGraph V) : Orientation G where
   dir u v := G.Adj u v ∧
@@ -205,9 +240,12 @@ noncomputable def arbitraryOrientation {V : Type*} [Fintype V]
     · exact Or.inr ⟨G.symm hadj, h⟩
   consistent _ _ h := h.1
 
+/-- Any proper coloring is acyclic for any orientation: proper colorings
+    have no monochromatic edges, hence no monochromatic cycles. -/
 theorem acyclic_orientation_exists {V : Type*} [Fintype V]
     (G : SimpleGraph V) :
     ∃ O : Orientation G, ∀ (c : V → Fin (Fintype.card V)),
     (∀ u v, G.Adj u v → c u ≠ c v) → IsAcyclicColoring O c :=
-  ⟨arbitraryOrientation G, fun c hc u v hdir =>
-    hc u v ((arbitraryOrientation G).consistent u v hdir)⟩
+  ⟨arbitraryOrientation G, fun c hc =>
+    isAcyclicColoring_of_no_mono_edge _ c fun u v hdir =>
+      hc u v ((arbitraryOrientation G).consistent u v hdir)⟩
