@@ -1,0 +1,93 @@
+{
+  "slug": "fair-games-theorem-oq-02",
+  "title": "Can a specific example be formalized \u2014 e",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Can a specific example be formalized \u2014 e.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created FairGamesTheoremOQ02.lean with concrete examples of the Fair Games Theorem. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "FairGamesTheoremOQ02.lean: ~145 lines, 10 theorems, 5 defs, 0 sorries, 0 axioms",
+      "Concrete game instances: game_5_10 (50/50), game_1_10 (underdog)",
+      "Doubling strategy: doublingBet, doubling_total_invested, doubling_win_gain, maxDoublings",
+      "Expected value theorem: doubling_expected_value_zero"
+    ],
+    "insights": [
+      "OQ-02 asks for concrete examples of the Fair Games Theorem (Optional Stopping Theorem)",
+      "Created 3 parts: concrete Gambler's Ruin instances, doubling betting strategy, E[value]=0 proof",
+      "Doubling strategy: bet 2^k after k losses, win = +1, lose-all = -(2^n-1). E=0 by direct computation.",
+      "File depends on FairGamesOQ01 (GamblersRuin structure, ruinProbWin, expectedRuinTime)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probability",
+    "random-walk",
+    "martingale",
+    "gambling",
+    "wiedijk-100",
+    "classic"
+  ],
+  "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 477,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    }
+  ]
+}
