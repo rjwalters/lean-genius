@@ -222,6 +222,57 @@ theorem rk_pos (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : rk k N ≥ 1 := by
       ≥ Finset.card ({1} : Finset ℤ) := Finset.le_sup hmem
     _ = 1 := by simp
 
+/-- A two-element set is always k-AP-free for k ≥ 3.
+    Three AP elements are distinct (d ≠ 0), so they can't fit in a 2-element set. -/
+theorem isAPFree_pair (x y : ℤ) (hxy : x ≠ y) (k : ℕ) (hk : k ≥ 3) :
+    IsAPFree {x, y} k := by
+  intro ⟨a, d, hd, _, hmem⟩
+  have h0 := hmem ⟨0, by omega⟩
+  have h1 := hmem ⟨1, by omega⟩
+  have h2 := hmem ⟨2, by omega⟩
+  simp at h0 h1 h2
+  rcases h0 with rfl | rfl <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> linarith
+
+/-- G_k(0) = 0: the only 0-element set is ∅, whose only subset is ∅. -/
+theorem gk_zero (k : ℕ) : gk k 0 = 0 := by
+  unfold gk
+  apply le_antisymm
+  · apply csSup_le ⟨0, fun S hS => ⟨∅, Finset.empty_subset _, isAPFree_empty k, by omega⟩⟩
+    intro m hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm ∅ rfl
+    rw [Finset.subset_empty.mp hA_sub] at hA_card; simp at hA_card
+  · exact Nat.zero_le _
+
+/-- gk_prop is anti-monotone in k: if every N-set has a k-AP-free subset of size m,
+    then every N-set has an l-AP-free subset of size m (for l ≥ k). -/
+theorem gk_prop_anti_k {k l N m : ℕ} (hkl : k ≤ l) (hk1 : k ≥ 1)
+    (h : gk_prop k N m) : gk_prop l N m := by
+  intro S hS
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := h S hS
+  exact ⟨A, hA_sub, isAPFree_of_le hkl hk1 hA_free, hA_card⟩
+
+/-- gk_prop is monotone in N: if every M-set has a k-AP-free subset of size m,
+    and M ≤ N, then every N-set also does (by restricting to an M-element subset). -/
+theorem gk_prop_mono_N {k M N m : ℕ} (hMN : M ≤ N) (h : gk_prop k M m) :
+    gk_prop k N m := by
+  intro S hS
+  -- S has N ≥ M elements; take any M-element subset
+  have ⟨S', hS'_sub, hS'_card⟩ := Finset.exists_subset_card_le (by omega : M ≤ S.card)
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := h S' hS'_card
+  exact ⟨A, le_trans hA_sub hS'_sub, hA_free, hA_card⟩
+
+/-- R_k(N) ≥ 2 for N ≥ 2 and k ≥ 3: any two distinct elements are k-AP-free. -/
+theorem rk_ge_two (k N : ℕ) (hN : N ≥ 2) (hk : k ≥ 3) : rk k N ≥ 2 := by
+  unfold rk
+  have hmem : ({1, 2} : Finset ℤ) ∈ (Finset.Icc (1 : ℤ) N).powerset.filter
+      (fun A => IsAPFree A k) := by
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, isAPFree_pair 1 2 (by omega) k hk⟩
+    intro x hx; simp at hx; rcases hx with rfl | rfl <;> simp [Finset.mem_Icc] <;> omega
+  calc Finset.sup ((Finset.Icc (1 : ℤ) ↑N).powerset.filter fun A => IsAPFree A k) Finset.card
+      ≥ Finset.card ({1, 2} : Finset ℤ) := Finset.le_sup hmem
+    _ = 2 := by simp
+
 /-- Summary of Erdős Problem 201. -/
 theorem erdos_201_summary :
     gk 3 5 < rk 3 5 ∧
