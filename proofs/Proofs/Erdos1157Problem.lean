@@ -261,6 +261,45 @@ theorem besExponent_at_threshold_one (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
   push_cast [Nat.cast_sub (show s ≤ r * s by nlinarith)]
   ring
 
+/-- At the 3-uniform BES threshold k = s + 3, the exponent is exactly (2s-3)/(s-1).
+    This approaches 2 from below as s → ∞, confirming the sharp phase transition. -/
+theorem besExponent_3uniform_threshold (s : ℕ) (hs : s ≥ 3) :
+    besExponent 3 (s + 3) s = (2 * (s : ℝ) - 3) / ((s : ℝ) - 1) := by
+  unfold besExponent
+  have hs' : (s : ℝ) - 1 ≠ 0 := by
+    have : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs; linarith
+  field_simp [hs']
+  push_cast
+  ring
+
+/-- General monotonicity in k: if f^(t)(n; k₁, s) = o(n^t) and k₁ ≤ k₂,
+    then f^(t)(n; k₂, s) = o(n^t). Increasing k restricts which edge-sets
+    are forbidden, so the extremal number can only decrease. -/
+theorem bes_monotone_in_k_general (t : ℕ) {s k₁ k₂ : ℕ} (hk : k₁ ≤ k₂)
+    (h : IsLittleO (fun n => (extremalNumber t n k₁ s : ℝ)) (fun n => (n : ℝ) ^ t)) :
+    IsLittleO (fun n => (extremalNumber t n k₂ s : ℝ)) (fun n => (n : ℝ) ^ t) := by
+  intro ε hε
+  obtain ⟨N, hN⟩ := h ε hε
+  refine ⟨N, fun n hn => ?_⟩
+  have h1 : (extremalNumber t n k₂ s : ℝ) ≤ (extremalNumber t n k₁ s : ℝ) :=
+    Nat.cast_le.mpr (extremalNumber_mono_k t n s k₁ k₂ hk)
+  have h2 : (0 : ℝ) ≤ (extremalNumber t n k₂ s : ℝ) := Nat.cast_nonneg _
+  rw [abs_of_nonneg h2]
+  exact le_trans (le_trans h1 (le_abs_self _)) (hN n hn)
+
+/-- General monotonicity in s: if f^(t)(n; k, s₁) = o(n^t) and s₁ ≤ s₂,
+    then f^(t)(n; k, s₂) = o(n^t). Requiring more forbidden edges makes
+    violations harder to find, so the extremal number can only increase,
+    but the o(n^t) bound transfers via comparison. -/
+theorem bes_monotone_in_s_general (t : ℕ) {k s₁ s₂ : ℕ} (hs : s₁ ≤ s₂)
+    (h : IsLittleO (fun n => (extremalNumber t n k s₁ : ℝ)) (fun n => (n : ℝ) ^ t)) :
+    IsLittleO (fun n => (extremalNumber t n k s₂ : ℝ)) (fun n => (n : ℝ) ^ t) := by
+  apply isLittleO_of_eventually_le
+  · exact ⟨0, fun n _ => by
+      rw [abs_of_nonneg (Nat.cast_nonneg _), abs_of_nonneg (Nat.cast_nonneg _)]
+      exact Nat.cast_le.mpr (extremalNumber_mono_s t n k s₁ s₂ hs)⟩
+  · exact h
+
 /-
 ## Part VII: Proved Theorems
 -/
