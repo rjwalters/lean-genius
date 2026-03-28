@@ -107,16 +107,73 @@ digits 0 and 1. -/
 theorem zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0 := by
   intro d hd; exact absurd hd (List.not_mem_nil d)
 
-/-- Complete classification for n ≤ 15: exactly n ∈ {0, 2, 8} give
-    powers of 2 with only ternary digits 0 and 1. Together with
-    Saye's computation (n ≥ 16), this means the known examples
-    {1, 4, 256} = {2⁰, 2², 2⁸} are the only ones up to 2^(5.9×10²¹). -/
-theorem sparse_complete_to_15 :
-    ∀ n : ℕ, n ≤ 15 → HasOnlyDigits01Base3 (2 ^ n) → n = 0 ∨ n = 2 ∨ n = 8 := by
-  intro n hn h
-  interval_cases n <;>
-    first
+/- ## Small-case exhaustive classification -/
+
+/-- Decidability of `HasOnlyDigits01Base3` for concrete values. -/
+instance (n : ℕ) : Decidable (HasOnlyDigits01Base3 n) :=
+  List.decidableBAll _ (Nat.digits 3 n)
+
+/-- Decidability of `HasOnlyDigits12Base3` for concrete values. -/
+instance (n : ℕ) : Decidable (HasOnlyDigits12Base3 n) :=
+  List.decidableBAll _ (Nat.digits 3 n)
+
+/-- For `n ≤ 15`, the only exponents where `2^n` has ternary digits in {0,1}
+are `n ∈ {0, 2, 8}`. This exhaustively checks all 16 cases. -/
+theorem sparse_complete_to_15 (n : ℕ) (hn : n ≤ 15) (h : HasOnlyDigits01Base3 (2 ^ n)) :
+    n = 0 ∨ n = 2 ∨ n = 8 := by
+  interval_cases n <;> first
     | left; rfl
     | right; left; rfl
     | right; right; rfl
     | exact absurd h (by native_decide)
+
+/-- No power of 2 beyond `2^15` and within Saye's verified range is ternary-sparse. -/
+theorem no_sparse_in_saye_range (n : ℕ) (h16 : 16 ≤ n) (hmax : n ≤ 59 * 10 ^ 20) :
+    ¬HasOnlyDigits01Base3 (2 ^ n) :=
+  (saye_computation n h16 hmax).1
+
+/-- Complete known classification: for `n ≤ 5.9 × 10²¹`, the only exponents
+giving ternary-sparse powers of 2 are `n ∈ {0, 2, 8}`. -/
+theorem sparse_classification_known_range (n : ℕ) (hmax : n ≤ 59 * 10 ^ 20)
+    (h : HasOnlyDigits01Base3 (2 ^ n)) : n = 0 ∨ n = 2 ∨ n = 8 := by
+  by_cases h16 : 16 ≤ n
+  · exact absurd h (no_sparse_in_saye_range n h16 hmax)
+  · exact sparse_complete_to_15 n (by omega) h
+
+/- ## Variant: digits {1, 2} in base 3 -/
+
+/-- For `n ≤ 15`, the exponents where `2^n` has only ternary digits in {1,2}
+are `n ∈ {1, 3, 5, 7, 15}`. -/
+theorem dense_complete_to_15 (n : ℕ) (hn : n ≤ 15) (h : HasOnlyDigits12Base3 (2 ^ n)) :
+    n = 1 ∨ n = 3 ∨ n = 5 ∨ n = 7 ∨ n = 15 := by
+  interval_cases n <;> first
+    | left; rfl
+    | right; left; rfl
+    | right; right; left; rfl
+    | right; right; right; left; rfl
+    | right; right; right; right; rfl
+    | exact absurd h (by native_decide)
+
+/-- No power of 2 beyond `2^15` and within Saye's range has only digits {1,2}. -/
+theorem no_dense_in_saye_range (n : ℕ) (h16 : 16 ≤ n) (hmax : n ≤ 59 * 10 ^ 20) :
+    ¬HasOnlyDigits12Base3 (2 ^ n) :=
+  (saye_computation n h16 hmax).2
+
+/-- Complete known classification for variant: `2^15` is the largest known power
+of 2 whose ternary representation uses only digits {1, 2}. -/
+theorem variant_classification_known_range (n : ℕ) (hmax : n ≤ 59 * 10 ^ 20)
+    (h : HasOnlyDigits12Base3 (2 ^ n)) : n ≤ 15 := by
+  by_contra h16
+  exact absurd h (no_dense_in_saye_range n (by omega) hmax)
+
+/- ## Connection to Kummer's theorem -/
+
+/-- The Kummer connection: if `2^n` has ternary digits in {0,1}, then it is a
+sum of distinct powers of 3, meaning no carrying occurs in base-3 addition.
+By Kummer's theorem, this means `3 ∤ C(2^(k+1), 2^k)` only when
+`2^k ∈ ternarySparse`. Equivalently: if ternarySparse is finite, then
+`3 ∣ C(2^(k+1), 2^k)` for all sufficiently large `k`. -/
+theorem kummer_connection_forward (k : ℕ) (h : 2 ^ k ∈ ternarySparse) :
+    ∃ S : Finset ℕ, 2 ^ k = S.sum (3 ^ ·) := by
+  obtain ⟨k', hk', hdigits⟩ := h
+  exact digits01_sum_of_powers (2 ^ k) hdigits

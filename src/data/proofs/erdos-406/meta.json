@@ -45,18 +45,22 @@
       "Defined ternarySparse and ternaryDense sets capturing the two conjecture variants",
       "Recorded all three known examples: 1 = 2^0, 4 = 2^2, 256 = 2^8",
       "Axiomatized Saye's (2022) massive computational verification up to 5.9 × 10²¹",
-      "Connected {0,1}-digit numbers to sums of distinct powers of 3 (Cantor set integers)",
-      "Formalized the variant conjecture on digits {1,2} with 2^15 as the largest"
+      "Proved digits01_sum_of_powers: {0,1}-digit numbers are sums of distinct powers of 3",
+      "Exhaustive classification sparse_complete_to_15: for n ≤ 15, 2^n is ternary-sparse iff n ∈ {0, 2, 8}",
+      "Bridge theorem sparse_classification_known_range combining small cases + Saye for full known-range classification",
+      "Variant classification dense_complete_to_15: digits {1,2} examples are n ∈ {1,3,5,7,15}",
+      "Proved variant_classification_known_range: 2^15 is the largest in Saye's verified range",
+      "Kummer connection: ternary-sparse powers of 2 are sums of distinct powers of 3"
     ],
     "axiomCount": 1,
-    "lineCount": 98,
+    "lineCount": 180,
     "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms."
   },
   "overview": {
     "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (equivalently, sums of distinct powers of 3). Only three examples are known: $1 = 2^0$, $4 = 2^2 = 1 + 3$, and $256 = 2^8 = 1 + 3 + 9 + 243$. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult, sitting at the frontier of S-unit equations and multiplicative independence.\n\nThe underlying difficulty is the fundamental tension between the multiplicative structure of $2^k$ and the additive structure of base-3 representations. Since $\\log_3 2$ is irrational (by the fundamental theorem of arithmetic), the sequence $2^k \\bmod 3^m$ behaves quasi-randomly as $k$ grows. Heuristically, the 'probability' that a random $n$-digit ternary number uses only digits $\\{0,1\\}$ is $(2/3)^n$, and $2^k$ has about $k \\log_3 2 \\approx 0.631k$ ternary digits, so the expected count of solutions is $\\sum_k (2/3)^{0.631k}$, which converges — strongly predicting finitely many solutions.\n\nSaye (2022) provided overwhelming computational evidence by checking all $2^n$ for $n \\leq 5.9 \\times 10^{21}$ using an efficient incremental base-3 digit extraction algorithm that avoids computing the full number. The problem connects to the S-unit equation theorem of Evertse, Schlickewei, and Schmidt, and to the ABC conjecture: a sufficiently effective ABC would force $2^k$ to eventually use all three ternary digits.",
     "problemStatement": "Is the set $\\{2^k : \\text{all base-3 digits of } 2^k \\text{ are } 0 \\text{ or } 1\\}$ finite? A variant asks whether $2^{15} = 32768$ is the largest power of 2 with only digits 1 and 2 in base 3.",
     "text": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known examples: $1 = 2^0$, $4 = 2^2$, $256 = 2^8$. These are numbers simultaneously equal to a power of 2 and a sum of distinct powers of 3. Saye (2022) verified no new examples for $2^n$ with $n \\leq 5.9 \\times 10^{21}$.",
-    "proofStrategy": "The formalization defines digit predicates `HasOnlyDigits01Base3` and `HasOnlyDigits12Base3` via `Nat.digits`, constructs the sets `ternarySparse` and `ternaryDense`, states finiteness as the main conjecture (`ErdosProblem406`), records the three known examples and the variant, and axiomatizes Saye's computational verification. The connection to sums of distinct powers of 3 is made explicit via the `digits01_sum_of_powers` axiom.",
+    "proofStrategy": "The formalization defines digit predicates `HasOnlyDigits01Base3` and `HasOnlyDigits12Base3` via `Nat.digits`, constructs the sets `ternarySparse` and `ternaryDense`, states finiteness as the main conjecture (`ErdosProblem406`), records the three known examples and the variant, and axiomatizes Saye's computational verification. The connection to sums of distinct powers of 3 is proved via `digits01_sum_of_powers`. Complete small-case classification via `native_decide` is bridged with Saye's computation to give the full known-range classification.",
     "keyInsights": [
       "**Only three known examples:** $1 = 2^0 = 3^0$, $4 = 2^2 = 3^0 + 3^1$, $256 = 2^8 = 3^0 + 3^1 + 3^2 + 3^5$. The sparsity of solutions over an astronomically large search range ($n \\leq 5.9 \\times 10^{21}$) strongly suggests finiteness.",
       "**Cantor set integers:** Numbers with ternary digits $\\{0, 1\\}$ are exactly sums of distinct powers of 3, which correspond to integer points in the middle-thirds Cantor set scaled by powers of 3. The problem asks: which powers of 2 are Cantor set integers?",
@@ -80,9 +84,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 122,
-    "axiomCount": 6,
-    "theoremCount": 0,
+    "lineCount": 180,
+    "axiomCount": 1,
+    "theoremCount": 12,
     "definitionCount": 6
   },
   "crossReferences": [
@@ -158,9 +162,30 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 73,
-      "endLine": 82,
-      "summary": "Numbers with ternary digits {0,1} are sums of distinct powers of 3; zero trivially satisfies the predicate."
+      "startLine": 76,
+      "endLine": 109,
+      "summary": "Numbers with ternary digits {0,1} are sums of distinct powers of 3 (proved by induction on digit list); zero trivially satisfies the predicate."
+    },
+    {
+      "id": "small-case-classification",
+      "title": "Small-Case Exhaustive Classification",
+      "startLine": 110,
+      "endLine": 141,
+      "summary": "Decidability instances for digit predicates, exhaustive classification for n ≤ 15 via native_decide: only {0,2,8} give ternary-sparse 2^n. Bridge theorem combining small cases with Saye's computation gives the complete known-range classification."
+    },
+    {
+      "id": "variant-classification",
+      "title": "Variant: Digits {1, 2} in Base 3",
+      "startLine": 143,
+      "endLine": 167,
+      "summary": "Exhaustive classification for digits {1,2} variant: for n ≤ 15, 2^n has only digits {1,2} iff n ∈ {1,3,5,7,15}. Combined with Saye: 2^15 is the largest in the verified range."
+    },
+    {
+      "id": "kummer-connection",
+      "title": "Connection to Kummer's Theorem",
+      "startLine": 169,
+      "endLine": 180,
+      "summary": "Ternary-sparse powers of 2 are sums of distinct powers of 3, connecting to Kummer's theorem on carries in base-p addition and divisibility of binomial coefficients."
     }
   ],
   "conclusion": {
