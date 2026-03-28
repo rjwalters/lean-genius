@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/332",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "assumptions": "3 axiom declarations: positive_density_bounded_gaps (Prikry's theorem), positive_density_diffset_dense (density inheritance for D(A)), diffSet_harmonic_diverges (harmonic thickness conjecture). diffSet_symm and zero_mem_diffSet are now proved theorems.",
+    "assumptions": "3 axiom declarations: positive_density_bounded_gaps (Prikry's theorem), positive_density_diffset_dense (density inheritance for D(A)), diffSet_harmonic_diverges (harmonic thickness conjecture). 7 theorems proved: diffSet_symm, zero_mem_diffSet, diffSet_mono, diffSet_finite_eq_empty, diffSet_nonempty_of_infinite, lower_density_implies_upper, positive_lower_density_bounded_gaps.",
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -47,6 +47,11 @@
       "Formal framework: diffSet (D(A) via infinite fibre), HasBoundedGaps (syndeticity), density predicates over ℚ, ErdosProblem332 (weakest condition characterization)",
       "Proved diffSet_symm: D(A) = -D(A) via the bijection (a₁,a₂) ↦ (a₂,a₁)",
       "Proved zero_mem_diffSet: 0 ∈ D(A) for infinite A (any element pairs with itself)",
+      "Proved diffSet_mono: A ⊆ B → D(A) ⊆ D(B) via subset transfer on infinite fibres",
+      "Proved diffSet_finite_eq_empty: D(A) = ∅ for finite A via Set.Finite.prod bound on pairs",
+      "Proved diffSet_nonempty_of_infinite: D(A) is nonempty for infinite A (corollary of zero_mem_diffSet)",
+      "Proved lower_density_implies_upper: positive lower density → positive upper density",
+      "Proved positive_lower_density_bounded_gaps: lower density suffices for bounded gaps (combines density implication with Prikry's theorem)",
       "Axiomatized Prikry's theorem, density inheritance, and harmonic thickness conjecture as the known landscape for Problem #332"
     ],
     "prerequisites": [
@@ -56,12 +61,12 @@
       "Additive combinatorics: difference sets, syndetic sets",
       "Ergodic theory basics: Furstenberg correspondence principle (for context)"
     ],
-    "lineCount": 118
+    "lineCount": 154
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80], building on the classical study of difference sets pioneered by Khintchine (1930s) and Følner (1954). The key known result is due to Karel Prikry, who proved that positive upper density of $A$ guarantees $D(A)$ has bounded gaps (syndeticity); related work by Robert Tijdeman and Cameron Stewart refined the quantitative bounds on the gap parameter $M$ in terms of the density $\\delta$. The problem connects deeply to Hillel Furstenberg's 1977 correspondence principle (*Journal d'Analyse Mathématique*), which translates combinatorial density questions into ergodic theory — Prikry's theorem follows from Poincaré recurrence in the associated measure-preserving system. The open question of finding the *weakest* sufficient condition sits within the broader program of understanding how density forces structure: Szemerédi's theorem (1975) shows positive density forces arithmetic progressions, and the Green–Tao theorem (2008) extends this to the primes. Problem #332 asks the analogous question for difference sets rather than progressions.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ and $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many } (a_1, a_2) \\in A^2\\}$. What is the weakest condition on $A$ guaranteeing that $D(A)$ has bounded gaps (is syndetic)?",
-    "text": "A 118-line formalization of Erdős Problem #332 studying the difference set $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many pairs}\\}$ and the conditions forcing it to be syndetic (have bounded gaps). Defines 6 predicates: `diffSet` (infinite-fibre differences), `HasBoundedGaps` (syndeticity), `countingFn` ($A(N) = |A \\cap [1,N]|$), `HasPositiveUpperDensity` and `HasPositiveLowerDensity` (density via $\\mathbb{Q}$ ratios), and `ErdosProblem332` (weakest sufficient condition). Axiomatizes Prikry's theorem ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance, and the harmonic thickness conjecture. Proves `diffSet_symm` ($D(A) = -D(A)$) and `zero_mem_diffSet` ($0 \\in D(A)$ for infinite $A$).",
+    "text": "A 154-line formalization of Erdős Problem #332 studying the difference set $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many pairs}\\}$ and the conditions forcing it to be syndetic (have bounded gaps). Defines 6 predicates: `diffSet` (infinite-fibre differences), `HasBoundedGaps` (syndeticity), `countingFn` ($A(N) = |A \\cap [1,N]|$), `HasPositiveUpperDensity` and `HasPositiveLowerDensity` (density via $\\mathbb{Q}$ ratios), and `ErdosProblem332` (weakest sufficient condition). Axiomatizes Prikry's theorem ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance, and the harmonic thickness conjecture. Proves 7 theorems including symmetry, zero membership, monotonicity, finite emptiness, nonemptiness for infinite sets, density hierarchy, and bounded gaps from lower density.",
     "proofStrategy": "We formalize $D(A)$ as the set of differences with infinite fibre, bounded gaps (syndeticity) via interval covering with parameter $M$, positive upper/lower density via counting functions over $\\mathbb{Q}$, and axiomatize Prikry's theorem and related structural results (density inheritance, symmetry, zero membership). The main problem is stated as a characterization question about optimal sufficient conditions.",
     "keyInsights": [
       "**$D(A)$ captures persistent differences**: Unlike the ordinary difference set $A - A$, $D(A)$ requires each difference to have infinitely many witness pairs — a much stronger structural property that filters out 'accidental' differences",
@@ -120,18 +125,26 @@
       "mathContext": "Axioms: Prikry's theorem $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$; density inheritance. Proved: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
     {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Five proved theorems: monotonicity ($A \\subseteq B \\Rightarrow D(A) \\subseteq D(B)$), empty difference set for finite sets, nonemptiness for infinite sets, positive lower density implies positive upper density, and bounded gaps from lower density (combining density implication with Prikry's theorem).",
+      "mathContext": "Proved: $D$ is monotone, $D(A) = \\emptyset$ for finite $A$, $D(A) \\neq \\emptyset$ for infinite $A$, $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0$, $\\underline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$."
+    },
+    {
       "id": "main-problem",
       "title": "The Main Open Problem",
-      "startLine": 99,
-      "endLine": 109,
+      "startLine": 134,
+      "endLine": 144,
       "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition.",
       "mathContext": "Find weakest $P$: $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Known: $\\overline{d}(A) > 0$ suffices."
     },
     {
       "id": "related-questions",
       "title": "Related Questions",
-      "startLine": 111,
-      "endLine": 118,
+      "startLine": 146,
+      "endLine": 154,
       "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity.",
       "mathContext": "Open: $\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/|d| = \\infty$? (harmonic thickness conjecture)"
     }
@@ -158,6 +171,36 @@
       "type": "original",
       "description": "0 ∈ D(A) for any infinite A: every element pairs with itself, giving infinitely many witness pairs",
       "leanType": "(A : Set ℕ) → Set.Infinite A → (0 : ℤ) ∈ diffSet A"
+    },
+    {
+      "name": "diffSet_mono",
+      "type": "original",
+      "description": "Monotonicity: A ⊆ B → D(A) ⊆ D(B), proved via subset transfer on infinite fibres",
+      "leanType": "(A B : Set ℕ) → A ⊆ B → diffSet A ⊆ diffSet B"
+    },
+    {
+      "name": "diffSet_finite_eq_empty",
+      "type": "original",
+      "description": "Finite sets have empty difference set: D(A) = ∅ when A is finite, since A × A is finite",
+      "leanType": "(A : Set ℕ) → A.Finite → diffSet A = ∅"
+    },
+    {
+      "name": "diffSet_nonempty_of_infinite",
+      "type": "original",
+      "description": "D(A) is nonempty for infinite A (contains zero), corollary of zero_mem_diffSet",
+      "leanType": "(A : Set ℕ) → Set.Infinite A → (diffSet A).Nonempty"
+    },
+    {
+      "name": "lower_density_implies_upper",
+      "type": "original",
+      "description": "Positive lower density implies positive upper density: liminf > 0 → limsup > 0",
+      "leanType": "(A : Set ℕ) → HasPositiveLowerDensity A → HasPositiveUpperDensity A"
+    },
+    {
+      "name": "positive_lower_density_bounded_gaps",
+      "type": "original",
+      "description": "Lower density suffices for bounded gaps: combines density implication with Prikry's theorem",
+      "leanType": "(A : Set ℕ) → HasPositiveLowerDensity A → HasBoundedGaps (diffSet A)"
     }
   ],
   "crossReferences": [
@@ -209,9 +252,9 @@
       "Set"
     ],
     "namespace": "",
-    "lineCount": 118,
+    "lineCount": 154,
     "axiomCount": 3,
-    "theoremCount": 2,
+    "theoremCount": 7,
     "definitionCount": 6,
     "mainTheorems": [
       {
