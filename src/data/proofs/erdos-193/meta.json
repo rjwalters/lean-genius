@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 267,
-    "assumptions": "2 axioms: gerver_ramsey_2d (Gerver-Ramsey 2D theorem), erdos193_rank_le_2 (rank ≤ 2 reduction to Gerver-Ramsey). 13 proved theorems including collinearity properties, d=1 case, singleton step sets, parallel step sets, and dimension reduction framework.",
+    "lineCount": 315,
+    "assumptions": "2 axioms: gerver_ramsey_2d (Gerver-Ramsey 2D theorem), erdos193_rank_le_2 (rank ≤ 2 reduction to Gerver-Ramsey). 17 proved theorems including collinearity properties, translation invariance, 2D-span position formula, coordinate collinearity lifting, d=1 case, singleton/parallel step sets, and dimension reduction framework.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -159,9 +159,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 267,
+    "lineCount": 315,
     "axiomCount": 2,
-    "theoremCount": 13,
+    "theoremCount": 17,
     "definitionCount": 7
   },
   "crossReferences": [

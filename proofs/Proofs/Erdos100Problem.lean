@@ -52,6 +52,28 @@ theorem dist_nonneg (p q : EuclideanSpace ℝ (Fin 2)) : dist p q ≥ 0 := by
   unfold dist
   exact norm_nonneg _
 
+/--
+Distance from a point to itself is zero.
+-/
+theorem dist_self (p : EuclideanSpace ℝ (Fin 2)) : dist p p = 0 := by
+  unfold dist; simp
+
+/--
+Distance between distinct points is positive.
+-/
+theorem dist_pos {p q : EuclideanSpace ℝ (Fin 2)} (h : p ≠ q) : dist p q > 0 := by
+  unfold dist
+  exact norm_pos_iff.mpr (sub_ne_zero.mpr h)
+
+/--
+Triangle inequality for Euclidean distance.
+-/
+theorem dist_triangle (p q r : EuclideanSpace ℝ (Fin 2)) :
+    dist p r ≤ dist p q + dist q r := by
+  unfold dist
+  calc ‖p - r‖ = ‖(p - q) + (q - r)‖ := by congr 1; abel
+    _ ≤ ‖p - q‖ + ‖q - r‖ := norm_add_le _ _
+
 /-
 ## Restricted Distance Sets
 

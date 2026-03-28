@@ -215,6 +215,54 @@ theorem erdos193_parallel {d : ℕ} (S : StepSet d) (v : LatPoint d) (w : Walk d
   · exact ⟨0, 1, 2, by omega, by omega,
       parallel_step_collinear S v w hS hw 0 1 2 h01⟩
 
+/- ## Collinearity under translation -/
+
+/-- Collinearity is invariant under translation: the differences q-p, r-p
+    are unchanged by adding a constant vector to all three points. -/
+theorem collinear_translate {d : ℕ} (p q r v : LatPoint d) :
+    AreCollinear p q r →
+    AreCollinear (fun j => p j + v j) (fun j => q j + v j) (fun j => r j + v j) := by
+  rintro ⟨a, b, hab, h⟩
+  exact ⟨a, b, hab, fun j => by dsimp; linarith [h j]⟩
+
+/- ## 2D-span position formula -/
+
+/-- In a walk with a 2D-spanning step set, position at step n satisfies
+    w(n)(j) = w(0)(j) + a * v₁(j) + b * v₂(j) for some integers a, b. -/
+theorem walk_in_2d_span {d : ℕ} (S : StepSet d) (v₁ v₂ : LatPoint d)
+    (hS : ∀ s ∈ S, ∃ (a b : ℤ), ∀ j : Fin d, s j = a * v₁ j + b * v₂ j)
+    (w : Walk d) (hw : IsStepWalk S w)
+    (n : ℕ) : ∃ (a b : ℤ), ∀ j : Fin d, w n j = w 0 j + a * v₁ j + b * v₂ j := by
+  induction n with
+  | zero => exact ⟨0, 0, fun j => by simp⟩
+  | succ n ih =>
+    obtain ⟨an, bn, hn⟩ := ih
+    obtain ⟨as, bs, hs⟩ := hS _ (hw n)
+    refine ⟨an + as, bn + bs, fun j => ?_⟩
+    have hstep : w (n + 1) j - w n j = as * v₁ j + bs * v₂ j := hs j
+    have := hn j; linarith [hstep]
+
+/-- Collinearity lifts from 2D coordinates to the ambient space:
+    if three points have representations o + aᵢv₁ + bᵢv₂ and the
+    2D coordinates (aᵢ,bᵢ) are collinear, then the points are collinear. -/
+theorem collinear_from_2d_coords {d : ℕ} (o v₁ v₂ : LatPoint d)
+    (a₁ b₁ a₂ b₂ a₃ b₃ : ℤ)
+    (α β : ℤ) (hαβ : α ≠ 0 ∨ β ≠ 0)
+    (hca : α * (a₂ - a₁) = β * (a₃ - a₁))
+    (hcb : α * (b₂ - b₁) = β * (b₃ - b₁))
+    (p₁ p₂ p₃ : LatPoint d)
+    (h₁ : ∀ j, p₁ j = o j + a₁ * v₁ j + b₁ * v₂ j)
+    (h₂ : ∀ j, p₂ j = o j + a₂ * v₁ j + b₂ * v₂ j)
+    (h₃ : ∀ j, p₃ j = o j + a₃ * v₁ j + b₃ * v₂ j) :
+    AreCollinear p₁ p₂ p₃ := by
+  refine ⟨α, β, hαβ, fun j => ?_⟩
+  have d12 : p₂ j - p₁ j = (a₂ - a₁) * v₁ j + (b₂ - b₁) * v₂ j := by
+    have := h₁ j; have := h₂ j; linarith
+  have d13 : p₃ j - p₁ j = (a₃ - a₁) * v₁ j + (b₃ - b₁) * v₂ j := by
+    have := h₁ j; have := h₃ j; linarith
+  rw [d12, d13]
+  linear_combination v₁ j * hca + v₂ j * hcb
+
 /- ## Dimension reduction framework -/
 
 /-- The step set spans at most a 2D subspace: every step vector is an
