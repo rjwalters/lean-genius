@@ -1,0 +1,72 @@
+{
+  "slug": "erdos-338-incomplete-01",
+  "title": "Complete proof of Erdős Problem #338: Restricted Order of Additive Bases",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "COMPLETED: Both sorry statements filled — kelly_conjecture_false and order_le_restricted_order now genuinely proved.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "kelly_conjecture_false: Hennecart's order-2 basis has restricted order 4, contradicting Kelly's conjecture bound of 3",
+      "order_le_restricted_order: exact order h and restricted order t implies h ≤ t, via contraposition and basis monotonicity"
+    ],
+    "open": [],
+    "goal": "Eliminate all 2 sorries in Erdos338Problem.lean"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T19:30:00Z",
+    "iteration": 1,
+    "focus": "Proved both remaining sorries.",
+    "blockers": [],
+    "nextAction": "None — complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved 2 sorries → 0 sorries. kelly_conjecture_false proved by restructuring file so Hennecart axioms precede the theorem, then applying contradiction. order_le_restricted_order proved by contraposition: if t < h, restricted_implies_regular gives IsBasisOfOrder A t, monotonicity lifts to IsBasisOfOrder A (h-1), contradicting IsExactOrder.",
+    "builtItems": [
+      "Proved kelly_conjecture_false in Erdos338Problem.lean via Hennecart contradiction",
+      "Proved order_le_restricted_order in Erdos338Problem.lean via contraposition + basis monotonicity",
+      "Restructured file: moved Hennecart axioms before kelly_conjecture_false to resolve forward reference"
+    ],
+    "insights": [
+      "kelly_conjecture_false was blocked by forward reference to Hennecart axioms — fix: reorder sections",
+      "order_le_restricted_order follows from restricted_implies_regular + IsBasisOfOrder monotonicity (s.card ≤ t ≤ h-1)",
+      "IsBasisOfOrder is monotone: if basis of order t and t ≤ k, then basis of order k (s.card ≤ t ≤ k)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "additive-bases",
+    "restricted-order",
+    "combinatorics",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-33",
+    "erdos-338"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T19:26:08.358Z",
+  "lastUpdate": "2026-03-28T19:30:00Z",
+  "significance": 5,
+  "tractability": 6
+}

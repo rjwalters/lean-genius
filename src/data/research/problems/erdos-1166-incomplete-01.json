@@ -1,0 +1,55 @@
+{
+  "slug": "erdos-1166-incomplete-01",
+  "title": "Complete proof of Erdős Problem #1166: Most-Visited Points in Planar Random Walk",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "SURVEYED: The 1 remaining sorry requires a genuine combinatorial argument about maxVisitCount nesting.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": ["erdos1166_from_ingredients sorry at line 264"],
+    "goal": "Prove |⋃_{k≤n} F(k)| ≤ 3C(log n)² from the two ingredients"
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:30:00Z",
+    "iteration": 1,
+    "focus": "Analyzed the sorry — it's a structural combinatorial argument.",
+    "blockers": ["Sorry requires ~40 lines proving T_k monotonicity, F-nesting, and interval counting"],
+    "nextAction": "Prove maxVisitCount_mono, then F-nesting lemma, then bound.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Analyzed the sorry deeply. The bound |⋃_{k≤n} F(k)| ≤ 3C(log n)² requires: (1) T_k is non-decreasing, (2) F(k) ⊆ F(k+1) when T constant (points can't leave F without increasing T), (3) each T-value contributes ≤3 points, (4) early k<N₁ terms need absorption. Proof needs restructuring: current constant 3*C doesn't account for early terms.",
+    "builtItems": [],
+    "insights": [
+      "T_k = maxVisitCount(k) is non-decreasing because visitCount is non-decreasing and T is the sup",
+      "F(k) ⊆ F(k+1) when T_k = T_{k+1}: if x ∈ F(k) with count m = T_k, visiting x would increase T, contradiction. So visit count stays m = T_{k+1}, hence x ∈ F(k+1)",
+      "Each distinct value of T_k contributes ≤3 points to cumulative set (since |F| ≤ 3 for k ≥ N₁). T_k takes ≤ T_n values. So |cumulative from N₁ to n| ≤ 3*T_n ≤ 3*C*(log n)²",
+      "The proof structure needs modification: constant should be larger (e.g., 4*C) to absorb early k<N₁ contributions, or threshold should include N₃ where early terms ≤ C*(log N₃)²"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove helper lemma: maxVisitCount_mono (T_k non-decreasing)",
+      "Prove helper lemma: F-nesting when T constant",
+      "Restructure proof with larger constant/threshold to absorb early terms",
+      "Prove the interval-counting bound: |cumulative from N₁ to n| ≤ 3*T_n"
+    ]
+  },
+  "tags": ["erdos", "probability", "random-walks", "combinatorics", "geometry", "analysis", "solved", "incomplete", "seeker-selected"],
+  "relatedProofs": [],
+  "references": {"papers": [], "urls": [], "mathlib": []},
+  "started": "2026-03-28T20:20:00Z",
+  "lastUpdate": "2026-03-28T20:30:00Z",
+  "significance": 5,
+  "tractability": 6
+}
