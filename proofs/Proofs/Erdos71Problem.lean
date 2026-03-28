@@ -71,7 +71,11 @@ theorem first_mem_arithProg (a d : ℕ) : a ∈ ArithProg a d :=
 /-- If d > 0, the progression is infinite.
 
     Proof: The progression contains a + k*d for all k ∈ ℕ, which is unbounded. -/
-axiom arithProg_infinite (a d : ℕ) (hd : d > 0) : Set.Infinite (ArithProg a d)
+theorem arithProg_infinite (a d : ℕ) (hd : d > 0) : Set.Infinite (ArithProg a d) := by
+  have : ArithProg a d = Set.range (fun k : ℕ => a + k * d) := by
+    ext n; simp [ArithProg, Set.mem_range, eq_comm]
+  rw [this]
+  exact Set.infinite_range_of_injective (fun _ _ h => by omega)
 
 /-
 ## Graph Definitions
