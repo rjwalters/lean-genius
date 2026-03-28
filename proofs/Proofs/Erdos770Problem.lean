@@ -28,6 +28,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 open Finset
@@ -268,3 +269,92 @@ theorem gcdPowerSeq_ne_one_of_le (n : ℕ) {j k : ℕ} (hjk : j ≤ k)
 theorem gcdPowerSeq_dvd_term (n k a : ℕ) (ha : a ∈ Finset.Icc 2 k) :
     gcdPowerSeq n k ∣ (a ^ n - 1) :=
   fold_gcd_dvd_mem ha _
+
+-- ## Fermat's Little Theorem Connection
+--
+-- The key structural insight behind h(n): a prime p divides gcdPowerSeq n k
+-- for all k < p when p-1 | n (by Fermat), but p never divides gcdPowerSeq n p
+-- (because p ∤ p^n - 1). This explains why h(n) = largest prime with p-1 | n.
+
+/-- If d divides every term in a gcd fold, then d divides the fold result. -/
+private theorem dvd_fold_gcd_of_dvd_all {S : Finset ℕ} {f : ℕ → ℕ} {d : ℕ}
+    (h : ∀ a ∈ S, d ∣ f a) : d ∣ S.fold Nat.gcd 0 f := by
+  induction S using Finset.cons_induction with
+  | empty => exact dvd_zero d
+  | cons a S' ha ih =>
+    rw [Finset.fold_cons ha]
+    exact Nat.dvd_gcd (h a (Finset.mem_cons_self a S'))
+      (ih fun b hb => h b (Finset.mem_cons_of_mem hb))
+
+/-- Fermat corollary: when p is prime, p-1 | n, and a is coprime to p,
+    then p | a^n - 1. Since a^(p-1) ≡ 1 (mod p) and (p-1) | n,
+    we get a^n = (a^(p-1))^m ≡ 1 (mod p). -/
+theorem prime_dvd_pow_sub_one {p : ℕ} (hp : Nat.Prime p) {n : ℕ} (hdvd : (p - 1) ∣ n)
+    {a : ℕ} (hcop : ¬p ∣ a) : p ∣ (a ^ n - 1) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have ha_pos : 0 < a := by
+    rcases Nat.eq_zero_or_pos a with rfl | h
+    · exact absurd (dvd_zero p) hcop
+    · exact h
+  have ha_zmod : (a : ZMod p) ≠ 0 := by
+    intro h; apply hcop; rwa [ZMod.natCast_eq_zero_iff] at h
+  obtain ⟨m, hm⟩ := hdvd
+  have key : ((a : ZMod p)) ^ n = 1 := by
+    rw [hm, pow_mul, show p - 1 = Fintype.card (ZMod p) - 1 from by rw [ZMod.card p],
+        ZMod.pow_card_sub_one_eq_one ha_zmod, one_pow]
+  have h1 : ((a ^ n : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by push_cast; exact key
+  rw [ZMod.natCast_eq_natCast_iff'] at h1
+  have h2 : a ^ n % p = 1 := by rw [h1, Nat.mod_eq_of_lt hp.one_lt]
+  have h3 := Nat.div_add_mod (a ^ n) p
+  rw [h2] at h3
+  exact ⟨a ^ n / p, by rw [mul_comm]; omega⟩
+
+/-- A prime p never divides p^n - 1 (when n ≥ 1).
+    Since p | p^n and p | (p^n - 1) would give p | 1, contradicting p ≥ 2. -/
+theorem prime_not_dvd_self_pow_sub_one {p : ℕ} (hp : Nat.Prime p) {n : ℕ} (hn : 0 < n) :
+    ¬(p ∣ (p ^ n - 1)) := by
+  intro h
+  have h1 : p ∣ p ^ n - (p ^ n - 1) := Nat.dvd_sub' (dvd_pow_self p hn.ne') h
+  have h2 : p ^ n - (p ^ n - 1) = 1 := by
+    have : 1 ≤ p ^ n := Nat.one_le_pow n p hp.pos; omega
+  rw [h2] at h1
+  have h3 := Nat.le_of_dvd one_pos h1
+  have := hp.two_le; omega
+
+/-- When p is prime, p-1 | n, and k < p, then p divides gcdPowerSeq n k.
+    Every term a^n - 1 for a ∈ [2,k] is divisible by p (since a < p
+    implies a is coprime to p, and Fermat gives p | a^n - 1). -/
+theorem prime_dvd_gcdPowerSeq {p : ℕ} (hp : Nat.Prime p) {n k : ℕ}
+    (hdvd : (p - 1) ∣ n) (hk : k < p) : p ∣ gcdPowerSeq n k := by
+  unfold gcdPowerSeq
+  apply dvd_fold_gcd_of_dvd_all
+  intro a ha
+  rw [Finset.mem_Icc] at ha
+  exact prime_dvd_pow_sub_one hp hdvd (by
+    intro hpa; exact absurd (Nat.le_of_dvd (by omega) hpa) (by omega))
+
+/-- p never divides gcdPowerSeq n p (for p prime, n ≥ 1), because the
+    term p^n - 1 is in the fold and p ∤ p^n - 1. -/
+theorem prime_not_dvd_gcdPowerSeq_self {p : ℕ} (hp : Nat.Prime p) {n : ℕ} (hn : 0 < n) :
+    ¬(p ∣ gcdPowerSeq n p) := by
+  intro h
+  have h1 : p ∈ Finset.Icc 2 p := Finset.mem_Icc.mpr ⟨hp.two_le, le_refl p⟩
+  exact prime_not_dvd_self_pow_sub_one hp hn (dvd_trans h (gcdPowerSeq_dvd_term n p p h1))
+
+/-- If there exists a prime p with p-1 | n and k < p, then gcdPowerSeq n k ≠ 1.
+    This is the Fermat mechanism: p divides the gcd, so gcd ≥ p ≥ 2. -/
+theorem gcdPowerSeq_ne_one_of_large_prime {p : ℕ} (hp : Nat.Prime p) {n k : ℕ}
+    (hdvd : (p - 1) ∣ n) (hk : k < p) : gcdPowerSeq n k ≠ 1 := by
+  intro h1
+  have := prime_dvd_gcdPowerSeq hp hdvd hk
+  rw [h1] at this
+  exact absurd (Nat.le_of_dvd one_pos this) (by have := hp.two_le; omega)
+
+/-- Fermat phase transition: for prime p with (p-1) | n and n ≥ 1,
+    p divides gcdPowerSeq n (p-1) but not gcdPowerSeq n p.
+    This captures the exact moment h(n) = p: adding the p-th term breaks
+    the shared factor p. -/
+theorem gcdPowerSeq_fermat_transition {p : ℕ} (hp : Nat.Prime p) {n : ℕ}
+    (hn : 0 < n) (hdvd : (p - 1) ∣ n) :
+    p ∣ gcdPowerSeq n (p - 1) ∧ ¬(p ∣ gcdPowerSeq n p) :=
+  ⟨prime_dvd_gcdPowerSeq hp hdvd (by omega), prime_not_dvd_gcdPowerSeq_self hp hn⟩
