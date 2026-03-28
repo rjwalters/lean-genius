@@ -21,15 +21,15 @@
     "erdosNumber": 423,
     "erdosUrl": "https://erdosproblems.com/423",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
+    "axiomCount": 5,
     "prerequisites": [
       "Natural number sequences and strict monotonicity",
       "Finite sums (Finset.sum) and consecutive index ranges",
       "Asymptotic analysis and Filter.Tendsto",
       "Set.Infinite and natural density concepts"
     ],
-    "lineCount": 267,
-    "assumptions": "6 axioms: consSeq_strictMono, consSeq_is_consecutive_sum, consSeq_minimal, and 3 more. See Lean source for complete statements.",
+    "lineCount": 314,
+    "assumptions": "5 axioms: consSeq_is_consecutive_sum, consSeq_minimal (structural), excess_nondecreasing, excess_unbounded, infinitely_many_missing (Bolan-Tang). consSeq_strictMono proved from definition.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -83,8 +83,8 @@
       "title": "Part IV: Monotonicity",
       "startLine": 126,
       "endLine": 138,
-      "summary": "Strict monotonicity verified on first 8 terms (native_decide) and axiomatized globally (consSeq_strictMono).",
-      "mathContext": "StrictMono consSeq follows from the definition: each $a_k$ is the *least* integer *greater than* $a_{k-1}$. The axiom `consSeq_strictMono : StrictMono consSeq` packages this."
+      "summary": "Strict monotonicity verified on first 8 terms (native_decide) and proved globally via findNextElem_ge.",
+      "mathContext": "StrictMono consSeq is proved from the definition: findNextElem always returns ≥ its starting candidate, so each $a_k$ is strictly greater than $a_{k-1}$. The proof chain: findNextElem_ge → consSeq_succ_gt → consSeq_strictMono."
     },
     {
       "id": "consecutive-sum-predicate",
@@ -172,8 +172,8 @@
     ],
     "namespace": "Erdos423",
     "lineCount": 267,
-    "axiomCount": 6,
-    "theoremCount": 22,
-    "definitionCount": 7
+    "axiomCount": 5,
+    "theoremCount": 27,
+    "definitionCount": 8
   }
 }

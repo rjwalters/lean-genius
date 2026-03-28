@@ -89,7 +89,11 @@
       "integral_chebyshev_sq: arccos(cos θ)=θ on [0,π] + cos² identity + integral_cos_mul_sin",
       "chebyshev_integral_trace: integrand rewrite via chebyshev_sq_expansion + linearity + integral_finset_sum",
       "OQ01 file clean: 1A (open conjecture) + 11T + 0S",
-      "Parent file has 1 sorry (chebyshev_sq_expansion) needing Lagrange interpolation — documented approach"
+      "Parent file has 1 sorry (chebyshev_sq_expansion) needing Lagrange interpolation — documented approach",
+      "chebyshev_interp sorry needs: (1) T_real_cos from Mathlib Polynomial.Chebyshev, (2) lagrangeBasis_eq_eval_basis link, (3) Lagrange interpolation exactness for degree < n polynomials at n distinct points",
+      "chebyshev_sq_expansion sorry depends on chebyshev_interp + DCT diagonal/offdiag (already proved in file)",
+      "Key Mathlib tools: Lagrange.basis, degree_interpolate_lt, card_roots_le_degree (polynomial uniqueness)",
+      "Proof path: show T_{j+1} and Lagrange interpolant are both degree < n, agree at n nodes → equal by uniqueness"
     ],
     "mathlibGaps": [],
     "nextSteps": []
