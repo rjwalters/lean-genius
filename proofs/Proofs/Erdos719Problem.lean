@@ -310,11 +310,38 @@ def completeBipartiteHypergraph (n : ℕ) : RUniformHypergraph (Fin n) 2 where
 theorem completeBipartiteHypergraph_cliqueFree (n : ℕ) :
     IsCliqueFree 2 (completeBipartiteHypergraph n) := by
   intro S hS hcontain
-  -- S has 3 elements. The map (· : Fin n).val % 2 : S → {0, 1} is not injective.
-  -- Two vertices v, w ∈ S satisfy v % 2 = w % 2.
-  -- The edge {v, w} ∈ completeClique 2 S, so {v, w} ∈ (completeBipartiteHypergraph n).edges.
-  -- But bipartite edges require v % 2 ≠ w % 2: contradiction.
-  sorry
+  -- S = {x, y, z} with x, y, z distinct
+  rw [Finset.card_eq_three] at hS
+  obtain ⟨x, y, z, hxy, hxz, hyz, rfl⟩ := hS
+  -- Pigeonhole: among 3 elements, two share parity mod 2
+  have hmod := fun (a : Fin n) => Nat.mod_two_eq_zero_or_one (a : ℕ)
+  obtain ⟨a, b, hab, ha, hb, hparity⟩ :
+      ∃ a b : Fin n, a ≠ b ∧ a ∈ ({x, y, z} : Finset _) ∧
+        b ∈ ({x, y, z} : Finset _) ∧ (a : ℕ) % 2 = (b : ℕ) % 2 := by
+    rcases hmod x with hx | hx <;> rcases hmod y with hy | hy <;>
+      rcases hmod z with hz | hz <;>
+    first
+      | exact ⟨x, y, hxy, by simp, by simp, by omega⟩
+      | exact ⟨x, z, hxz, by simp, by simp, by omega⟩
+      | exact ⟨y, z, hyz, by simp, by simp, by omega⟩
+  -- {a, b} ∈ completeClique 2 {x, y, z}
+  have hedge : ({a, b} : Finset _) ∈ completeClique 2 ({x, y, z} : Finset (Fin n)) := by
+    rw [completeClique_eq_powersetCard, Finset.mem_powersetCard]
+    refine ⟨?_, Finset.card_pair hab⟩
+    intro v hv
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+    rcases hv with rfl | rfl <;> assumption
+  -- {a, b} is in the bipartite edge set
+  have hmem := hcontain hedge
+  -- But bipartite edges require different parities
+  simp only [completeBipartiteHypergraph, Finset.mem_filter] at hmem
+  obtain ⟨_, v, hv, w, hw, hvw, hpvw⟩ := hmem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hv hw
+  rcases hv with rfl | rfl <;> rcases hw with rfl | rfl
+  · exact absurd rfl hvw
+  · exact hpvw hparity
+  · exact hpvw hparity.symm
+  · exact absurd rfl hvw
 
 /-- The complete bipartite hypergraph has ⌊n²/4⌋ edges.
     This equals ⌊n/2⌋ * ⌈n/2⌉ = ⌊n/2⌋ * (n - ⌊n/2⌋). -/
