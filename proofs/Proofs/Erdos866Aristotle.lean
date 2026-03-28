@@ -45,7 +45,9 @@ noncomputable def upperExponent (k : ℕ) : ℝ :=
 -- Routine lemma: geometric sequence is strictly decreasing,
 -- so 1 - (1/2)^k < 1 - (1/2)^(k+1)
 theorem upperExponent_increasing (k : ℕ) (hk : k ≥ 1) :
-    upperExponent k < upperExponent (k + 1) := by sorry
+    upperExponent k < upperExponent (k + 1) := by
+  simp only [upperExponent, sub_lt_sub_iff_left]
+  exact pow_lt_pow_right (by norm_num : (2:ℝ)⁻¹ < 1) (by omega)
 
 -- Routine lemma: the odd numbers in {1,...,2N} have cardinality N
 theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by sorry
