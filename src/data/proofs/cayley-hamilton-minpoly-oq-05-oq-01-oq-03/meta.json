@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cyclic_module",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
     "tags": [
       "linear-algebra",
@@ -18,8 +18,8 @@
       "infinite-dimensional",
       "research"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.aeval",
@@ -79,8 +79,8 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 274,
-    "assumptions": "None. 0 axioms, 0 sorries. All 19 theorems fully proved from Mathlib. Build verification pending.",
+    "lineCount": 305,
+    "assumptions": "3 sorries: cyclicSubspace_le_minpoly_degree (orbit bound via induction), matrix_nonderogatory_implies_module (defers to OQ05OQ01), structure_theorem_cyclic_iff (needs PID structure theorem).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -152,9 +152,9 @@
       "Connect the annihilator ideal to the spectrum of T in the infinite-dimensional case"
     ]
   },
-  "sorryCount": 0,
-  "status": "verified",
-  "badge": "verified",
+  "sorryCount": 3,
+  "status": "formalized",
+  "badge": "wip",
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -163,9 +163,9 @@
       "Polynomial"
     ],
     "namespace": "NonderogatoryModule",
-    "lineCount": 274,
+    "lineCount": 305,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 7
   },
   "crossReferences": [
