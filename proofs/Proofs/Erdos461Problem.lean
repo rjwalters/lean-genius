@@ -196,6 +196,11 @@ theorem smoothDistinctCount_zero (n : ℕ) : smoothDistinctCount n 0 = 0 := by
 theorem smoothComponent_zero (t : ℕ) : smoothComponent t 0 = 1 := by
   simp [smoothComponent, Nat.factors_zero]
 
+/-- If n is t-smooth (all prime factors < t), then smoothComponent t n = n. -/
+theorem smoothComponent_eq_self (t n : ℕ) (hn : n ≠ 0)
+    (h : ∀ p : ℕ, p.Prime → p ∣ n → p < t) : smoothComponent t n = n :=
+  Nat.dvd_antisymm (smoothComponent_dvd t n hn) (smoothComponent_largest t n n hn dvd_rfl h)
+
 /-- For a prime `p`, `smoothComponent t p = p` if `p < t`, else `1`. -/
 theorem smoothComponent_prime (t p : ℕ) (hp : p.Prime) :
     smoothComponent t p = if p < t then p else 1 := by
