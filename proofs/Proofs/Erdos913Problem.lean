@@ -13,14 +13,13 @@ is proved in detail below.
 
 This remains an open problem.
 
-Axioms: 3 (infinite_8p_sq_minus_1_primes, erdos_913_conditional, exponent_structure)
+Axioms: 1 (infinite_8p_sq_minus_1_primes — Bunyakovsky-type conjecture, genuinely open)
 Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.PrimeNormNum
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
@@ -108,24 +107,96 @@ private theorem hasDistinctExponents_of_primeFactors_triple
 /-- The map p ↦ 8p²-1 is injective on naturals ≥ 1. -/
 private theorem injective_8p_sq_minus_1 : Function.Injective (fun p : ℕ => 8 * p ^ 2 - 1) := by
   intro a b hab
-  have h : 8 * a ^ 2 = 8 * b ^ 2 := by omega
-  have : a ^ 2 = b ^ 2 := by omega
-  exact Nat.pow_left_injective (by omega : 0 < 2) this
+  simp only at hab
+  by_contra hne
+  rcases Nat.lt_or_gt_of_ne hne with h | h
+  · have : a ^ 2 < b ^ 2 := by nlinarith
+    omega
+  · have : b ^ 2 < a ^ 2 := by nlinarith
+    omega
+
+/-- When p is prime and 8p²-1 is prime, n = 8p²-1 gives a product
+    n(n+1) with exactly three prime factors {8p²-1, p, 2}. -/
+theorem exponent_structure (p : ℕ) (hp : p.Prime) (hp' : (8 * p ^ 2 - 1).Prime)
+    (hp'' : p ≠ 2) :
+    let n := 8 * p ^ 2 - 1
+    (n * (n + 1)).primeFactors = {8 * p ^ 2 - 1, p, 2} := by
+  simp only []
+  have hn_succ : 8 * p ^ 2 - 1 + 1 = 8 * p ^ 2 :=
+    Nat.sub_add_cancel (show 1 ≤ 8 * p ^ 2 by nlinarith [hp.pos])
+  rw [hn_succ]
+  have hne1 : 8 * p ^ 2 - 1 ≠ 0 := by nlinarith [hp.pos]
+  have hne2 : 8 * p ^ 2 ≠ 0 := by nlinarith [hp.pos]
+  rw [primeFactors_mul hne1 hne2, hp'.primeFactors,
+      primeFactors_mul (by norm_num : (8 : ℕ) ≠ 0) (pow_ne_zero 2 hp.ne_zero),
+      show (8 : ℕ).primeFactors = {2} from by native_decide,
+      primeFactors_pow _ (show (2 : ℕ) ≠ 0 from by norm_num), hp.primeFactors]
+  ext x
+  simp only [Finset.mem_union, Finset.mem_singleton, Finset.mem_insert]
+  tauto
+
+/-- Helper: for p prime, p ≠ 2, 8p²-1 prime, n = 8p²-1 has distinct exponents. -/
+private theorem hasDistinctExponents_8p_sq (p : ℕ) (hp : p.Prime) (hp' : (8 * p ^ 2 - 1).Prime)
+    (hp'' : p ≠ 2) : HasDistinctExponents (8 * p ^ 2 - 1) := by
+  have hp2_pos : 0 < p ^ 2 := pow_pos hp.pos 2
+  have hne1 : 8 * p ^ 2 - 1 ≠ 0 := by omega
+  have hne2 : 8 * p ^ 2 ≠ 0 := by omega
+  have hm : (8 * p ^ 2 - 1) * ((8 * p ^ 2 - 1) + 1) = (8 * p ^ 2 - 1) * (8 * p ^ 2) := by
+    congr 1; omega
+  set m := (8 * p ^ 2 - 1) * (8 * p ^ 2) with hm_def
+  -- Coprimality: consecutive integers are coprime
+  have hcop : Nat.Coprime (8 * p ^ 2 - 1) (8 * p ^ 2) := by
+    rw [show 8 * p ^ 2 = (8 * p ^ 2 - 1) + 1 from by omega]
+    exact (coprime_self_add_right.mpr (coprime_one_right _))
+  -- Non-divisibility via coprimality and primality
+  have hndvd_main : ¬((8 * p ^ 2 - 1) ∣ (8 * p ^ 2)) := by
+    intro hd; exact absurd (Nat.le_of_dvd one_pos (hcop ▸ Nat.dvd_gcd dvd_rfl hd)) (by omega)
+  have hndvd_p8 : ¬(p ∣ (8 : ℕ)) := by
+    intro hd
+    have h2 : p ∣ 2 := hp.dvd_of_dvd_pow (show p ∣ 2 ^ 3 from hd)
+    exact hp'' ((Nat.prime_two.eq_one_or_self_of_dvd p h2).resolve_left hp.one_lt.ne')
+  -- Factorization value at (8p²-1) = 1
+  have hv1 : m.factorization (8 * p ^ 2 - 1) = 1 := by
+    rw [hm_def, factorization_mul hne1 hne2, Finsupp.add_apply, hp'.factorization,
+        Finsupp.single_apply, if_pos rfl, factorization_eq_zero_of_not_dvd hndvd_main, add_zero]
+  -- Factorization value at p = 2
+  have hv2 : m.factorization p = 2 := by
+    rw [hm_def, factorization_mul hne1 hne2, Finsupp.add_apply, hp'.factorization,
+        Finsupp.single_apply, if_neg (show 8 * p ^ 2 - 1 ≠ p by nlinarith [hp.two_le]),
+        zero_add, show (8 : ℕ) * p ^ 2 = 8 * (p * p) from by ring,
+        factorization_mul (by norm_num) (mul_ne_zero hp.ne_zero hp.ne_zero), Finsupp.add_apply,
+        factorization_eq_zero_of_not_dvd hndvd_p8, zero_add,
+        factorization_mul hp.ne_zero hp.ne_zero, Finsupp.add_apply,
+        hp.factorization, Finsupp.single_apply, if_pos rfl]
+  -- Factorization value at 2 = 3
+  have hv3 : m.factorization 2 = 3 := by
+    rw [hm_def, factorization_mul hne1 hne2, Finsupp.add_apply, hp'.factorization,
+        Finsupp.single_apply, if_neg (show 8 * p ^ 2 - 1 ≠ 2 by omega), zero_add,
+        show (8 : ℕ) * p ^ 2 = 8 * (p * p) from by ring,
+        factorization_mul (by norm_num) (mul_ne_zero hp.ne_zero hp.ne_zero), Finsupp.add_apply,
+        show (8 : ℕ).factorization 2 = 3 from by native_decide,
+        factorization_mul hp.ne_zero hp.ne_zero, Finsupp.add_apply,
+        hp.factorization, Finsupp.single_apply, if_neg hp'']
+    norm_num
+  -- Apply the triple helper
+  have hpf := exponent_structure p hp hp' hp''
+  simp only at hpf
+  rw [show 8 * p ^ 2 - 1 + 1 = 8 * p ^ 2 from by omega] at hpf
+  rw [← hm_def] at hpf
+  exact hasDistinctExponents_of_primeFactors_triple hm hpf (by omega) (by omega) (by omega)
 
 /-- Conditional result: if there are infinitely many primes p with
-    8p² - 1 prime, then infinitely many n have distinct exponents.
-
-    PROOF SKETCH (not yet formalized):
-    1. PrimePairs8 \ {2} is still infinite (removing one element).
-    2. p ↦ 8p²-1 is injective (by injective_8p_sq_minus_1).
-    3. For each p ≠ 2, n = 8p²-1 gives n(n+1) = (8p²-1)¹·p²·2³
-       with exponents {1,2,3} (pairwise distinct).
-    4. So the image is an infinite subset of DistinctExponentSet.
-
-    The main gap: proving factorization values 1,2,3 symbolically
-    requires Nat.Coprime.factorization_mul + Nat.Prime.factorization. -/
-axiom erdos_913_conditional (h : PrimePairs8.Infinite) :
-  DistinctExponentSet.Infinite
+    8p² - 1 prime, then infinitely many n have distinct exponents. -/
+theorem erdos_913_conditional (h : PrimePairs8.Infinite) :
+    DistinctExponentSet.Infinite := by
+  have hS : (PrimePairs8 \ {2}).Infinite := h.diff (Set.finite_singleton 2)
+  have hinj : Set.InjOn (fun p => 8 * p ^ 2 - 1) (PrimePairs8 \ {2}) :=
+    fun _ _ _ _ h => injective_8p_sq_minus_1 h
+  have himg : ((fun p => 8 * p ^ 2 - 1) '' (PrimePairs8 \ {2})).Infinite := hS.image hinj
+  exact himg.mono (by
+    rintro _ ⟨p, ⟨⟨hp, hp'⟩, hp''⟩, rfl⟩
+    simp only [PrimePairs8, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff] at hp hp' hp''
+    exact hasDistinctExponents_8p_sq p hp hp' hp'')
 
 /-
 ## Section 5: Known examples
@@ -154,54 +225,37 @@ private theorem hasDistinctExponents_of_primeFactors_pair
   · exact absurd heq (Ne.symm hne)
   · rfl
 
-/-- Helper: prove distinct exponents for products with exactly 3 prime factors. -/
-private theorem hasDistinctExponents_of_primeFactors_triple
-    {n : ℕ} {m p q r : ℕ} (hm : n * (n + 1) = m) (hpf : m.primeFactors = {p, q, r})
-    (hpq : m.factorization p ≠ m.factorization q)
-    (hpr : m.factorization p ≠ m.factorization r)
-    (hqr : m.factorization q ≠ m.factorization r) :
-    HasDistinctExponents n := by
-  unfold HasDistinctExponents
-  rw [hm, hpf]
-  intro x hx y hy heq
-  simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
-             Set.mem_singleton_iff] at hx hy
-  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
-  all_goals first
-    | rfl
-    | exact absurd heq hpq
-    | exact absurd heq hpr
-    | exact absurd heq hqr
-    | exact absurd heq.symm hpq
-    | exact absurd heq.symm hpr
-    | exact absurd heq.symm hqr
-
 /-- n = 3 has distinct exponents: 3·4 = 2²·3¹. -/
 theorem example_n3 : HasDistinctExponents 3 :=
-  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+  hasDistinctExponents_of_primeFactors_pair (m := 12) (p := 2) (q := 3)
+    (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 7 has distinct exponents: 7·8 = 2³·7¹. -/
 theorem example_n7 : HasDistinctExponents 7 :=
-  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+  hasDistinctExponents_of_primeFactors_pair (m := 56) (p := 2) (q := 7)
+    (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 8 has distinct exponents: 8·9 = 2³·3². -/
 theorem example_n8 : HasDistinctExponents 8 :=
-  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+  hasDistinctExponents_of_primeFactors_pair (m := 72) (p := 2) (q := 3)
+    (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 31 has distinct exponents: 31·32 = 2⁵·31¹. -/
 theorem example_n31 : HasDistinctExponents 31 :=
-  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+  hasDistinctExponents_of_primeFactors_pair (m := 992) (p := 2) (q := 31)
+    (by norm_num) (by native_decide) (by native_decide)
 
 /-- n = 71 has distinct exponents: 71·72 = 2³·3²·71¹ (3-factor case).
     This is the instance from the 8p²-1 construction with p = 3:
     n = 8·9-1 = 71, n+1 = 72 = 8·9 = 2³·3². -/
 theorem example_n71 : HasDistinctExponents 71 :=
-  hasDistinctExponents_of_primeFactors_triple
+  hasDistinctExponents_of_primeFactors_triple (m := 5112) (p := 2) (q := 3) (r := 71)
     (by norm_num) (by native_decide) (by native_decide) (by native_decide) (by native_decide)
 
 /-- n = 127 has distinct exponents: 127·128 = 2⁷·127¹. -/
 theorem example_n127 : HasDistinctExponents 127 :=
-  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+  hasDistinctExponents_of_primeFactors_pair (m := 16256) (p := 2) (q := 127)
+    (by norm_num) (by native_decide) (by native_decide)
 
 /-
 ## Section 6: Connection to Bunyakovsky conjecture
@@ -216,20 +270,5 @@ for irreducible polynomials satisfying a fixed-divisor condition.
     many prime values of 8x² - 1 as x ranges over the primes.
     This is a weaker form than the full Bunyakovsky conjecture. -/
 def Bunyakovsky8 : Prop := PrimePairs8.Infinite
-
-/-
-## Section 7: Exponent multiplicity structure
-
-The key insight of the conditional proof is that n = 8p² - 1 gives
-n(n+1) = (8p²-1)¹ · p² · 2³, with three distinct primes {8p²-1, p, 2}
-having three distinct exponents {1, 2, 3}. The injectivity of the
-factorization map follows from these exponents being pairwise distinct.
--/
-
-/-- When p is prime and 8p²-1 is prime, n = 8p²-1 gives a product
-    n(n+1) with exactly three prime factors and exponents {1,2,3}. -/
-axiom exponent_structure (p : ℕ) (hp : p.Prime) (hp' : (8 * p ^ 2 - 1).Prime) (hp'' : p ≠ 2) :
-  let n := 8 * p ^ 2 - 1
-  (n * (n + 1)).primeFactors = {8 * p ^ 2 - 1, p, 2}
 
 end Erdos913
