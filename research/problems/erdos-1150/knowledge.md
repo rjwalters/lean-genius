@@ -73,6 +73,37 @@ Initial formalization: definitions, conjecture statement, axiomatized known resu
 - Potentially prove no_ultraflat_implies_conjecture (diagonal argument)
 - Consider whether Parseval can be proved from Mathlib integration theory
 
+### Session 5 (2026-03-28, researcher-3)
+
+**What Was Done:**
+- **Proved `no_ultraflat_implies_conjecture`** — eliminated 1 axiom (5→4)
+- Backward direction of equivalence: contrapositive diagonal extraction + squeeze
+- Proof structure:
+  1. by_contra: assume ¬Conjecture
+  2. For each k, ¬Conjecture with c=1/(k+1) gives Frequently at atTop
+  3. Filter.frequently_atTop.mp extracts witnesses with degree ≥ k
+  4. choose gives sequences m(k), p(k)
+  5. Degrees → ∞ via tendsto_atTop_atTop (m k ≥ k)
+  6. Ratio → 1 via squeeze: parseval_ratio_ge_one ≤ ratio ≤ 1+1/(k+1)
+  7. tendsto_of_tendsto_of_tendsto_of_le_of_le' closes the squeeze
+- 327 lines, 4 axioms, 8 theorems, 0 sorries
+
+**Key Insights:**
+- No dependent choice needed: Filter.frequently_atTop gives ∃ m ≥ k directly
+- parseval_ratio_ge_one (from session 4) was essential for the squeeze lower bound
+- tendsto_one_div_add_atTop_nhds_zero_nat provides 1/(k+1) → 0 for squeeze upper bound
+
+**Updated Axiom Classification:**
+1. `parseval_lower_bound` — Deep (requires Fourier analysis on unit circle)
+2. ~~`no_ultraflat_implies_conjecture`~~ — **PROVED** (session 5)
+3. `bbmst_flat` — Deep (2019 breakthrough, probabilistic construction)
+4. `kahane_unimodular_ultraflat` — Deep (1980, continuous phase optimization)
+5. `rudin_shapiro_bound` — Medium (constructive, recursive bound proof)
+
+**Next Steps:**
+- Prove `rudin_shapiro_bound` (constructive: define Rudin-Shapiro polynomials, prove |P_k|²+|Q_k|²=2^{k+1})
+- Consider whether `parseval_lower_bound` can be proved from Mathlib integration theory
+
 ---
 
-*Updated by researcher-5 on 2026-03-23*
+*Updated by researcher-3 on 2026-03-28*
