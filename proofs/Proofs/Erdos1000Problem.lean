@@ -1000,4 +1000,120 @@ theorem divPairs_fiber_j_card_le (A : IncreasingSeq) (N j : ℕ) (hj : j < N)
           exact A.strictMono.injective this
     _ = M := by rw [Finset.card_Ico]; omega
 
+/- ## Part XIII: Growth Constraints from Low Density -/
+
+/-- **Low density implies slow growth**: If ρ_A(k) < ε at index k ≥ 1,
+    then the sequence growth is constrained: (1-ε) · n_k ≤ k · n_{k-1}.
+    This follows from the complement formula: ρ < ε means usedSum > (1-ε)n_k,
+    and usedSum ≤ k · n_{k-1} (growth bound).
+    Key consequence: during periods of low density, the sequence must
+    grow slowly, which eventually forces density recovery. -/
+theorem low_density_growth_constraint (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
+    (ε : ℝ) (hε : 0 < ε) (hρ : densityRatio A k < ε) :
+    (1 - ε) * (A.seq k : ℝ) < (k : ℝ) * (A.seq (k - 1) : ℝ) := by
+  have hge := densityRatio_ge_one_sub_growth A k hk
+  -- hge : 1 - k * n_{k-1} / n_k ≤ ρ
+  -- hρ : ρ < ε
+  -- So 1 - k * n_{k-1} / n_k < ε
+  -- Hence (1 - ε) < k * n_{k-1} / n_k
+  -- Hence (1 - ε) * n_k < k * n_{k-1}
+  have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
+  have h1 : 1 - (k : ℝ) * (A.seq (k - 1) : ℝ) / (A.seq k : ℝ) < ε := lt_of_le_of_lt hge hρ
+  -- Multiply both sides by n_k
+  have h2 : (1 - ε) * (A.seq k : ℝ) < (k : ℝ) * (A.seq (k - 1) : ℝ) := by
+    rw [sub_div] at h1
+    have h3 : 1 - (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) < ε := h1
+    have h4 : 1 - ε < (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) := by linarith
+    rwa [lt_div_iff hn_pos] at h4
+  exact h2
+
+/-- **Consecutive low density implies bounded growth ratio**: If ρ < ε for
+    two consecutive indices k and k+1 (with k ≥ 1), then:
+    n_{k+1} / n_k < (k+1) / (1-ε).
+    This constrains the growth when density is persistently low. -/
+theorem consecutive_low_density_ratio (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
+    (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1)
+    (hρ : densityRatio A (k + 1) < ε) :
+    (A.seq (k + 1) : ℝ) / (A.seq k : ℝ) < (k + 1 : ℝ) / (1 - ε) := by
+  have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
+  have h1ε : (0 : ℝ) < 1 - ε := by linarith
+  have hgrow := low_density_growth_constraint A (k + 1) (by omega) ε hε hρ
+  -- hgrow : (1-ε) * n_{k+1} < (k+1) * n_k
+  simp only [Nat.add_sub_cancel] at hgrow
+  rw [div_lt_div_iff hn_pos h1ε]
+  linarith
+
+/-- **Average density from deficit**: The Cesàro average equals 1 minus
+    the average deficit. Combined with deficit bounds, this gives tight
+    estimates on the Cesàro average.
+    C_A(N) = 1 - (1/N) Σ (1 - ρ_A(k)). -/
+theorem cesaroAvg_eq_one_sub_avg_deficit (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
+    cesaroAvg A N = 1 - (∑ k ∈ range N, (1 - densityRatio A k)) / N := by
+  unfold cesaroAvg
+  have hNr : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
+  have hdef : ∑ k ∈ range N, (1 - densityRatio A k) =
+      ↑N - ∑ k ∈ range N, densityRatio A k := by
+    rw [Finset.sum_sub_distrib]; simp [Finset.sum_const, Finset.card_range]
+  rw [hdef]; field_simp; ring
+
+/-- **Deficit proportion bound**: If ρ < ε for at least m indices in {0,...,N-1},
+    then the sum of deficits is at least m · (1-ε).
+    Together with sum_deficit_lt, this shows that the number of low-ρ indices
+    is bounded: m < N/(1-ε). -/
+theorem deficit_count_bound (A : IncreasingSeq) (N : ℕ)
+    (S : Finset ℕ) (hS : S ⊆ range N)
+    (ε : ℝ) (hε1 : ε < 1)
+    (hρ : ∀ k ∈ S, densityRatio A k < ε) :
+    (S.card : ℝ) * (1 - ε) ≤ ∑ k ∈ range N, (1 - densityRatio A k) := by
+  calc (S.card : ℝ) * (1 - ε)
+      = ∑ _ ∈ S, (1 - ε) := by rw [sum_const, nsmul_eq_mul]
+    _ ≤ ∑ k ∈ S, (1 - densityRatio A k) := by
+        apply sum_le_sum; intro k hk
+        linarith [hρ k hk]
+    _ ≤ ∑ k ∈ range N, (1 - densityRatio A k) := by
+        apply sum_le_sum_of_subset_of_nonneg hS
+        intro k _ _; linarith [densityRatio_le_one A k]
+
+/-- **Density cannot be uniformly zero**: There is no ε = 0 case — the density
+    ratio is strictly positive at every index. This is a direct corollary of
+    densityRatio_pos, restated in a form useful for the dichotomy approach. -/
+theorem density_somewhere_pos (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
+    0 < ∑ k ∈ range N, densityRatio A k :=
+  calc (0 : ℝ) < densityRatio A 0 := densityRatio_pos A 0
+    _ ≤ ∑ k ∈ range N, densityRatio A k := by
+        apply Finset.single_le_sum (fun k _ => densityRatio_nonneg A k)
+        exact Finset.mem_range.mpr hN
+
+/- ## Part XIV: Euler-Totient Bridge for Dichotomy -/
+
+/-- **Low density implies small Euler ratio**: If ρ_A(k) < ε, then
+    the classical Euler ratio φ(n_k)/n_k < ε as well.
+    This is the key bridge to the prime factorization: by the Euler product
+    φ(n)/n = ∏_{p | n}(1 - 1/p), having φ(n)/n < ε forces n to be
+    divisible by many small primes.
+    Named corollary of densityRatio_ge_totient_ratio for use in dichotomy analysis. -/
+theorem low_density_euler_bound (A : IncreasingSeq) (k : ℕ)
+    (ε : ℝ) (hρ : densityRatio A k < ε) :
+    (Nat.totient (A.seq k) : ℝ) / (A.seq k : ℝ) < ε :=
+  lt_of_le_of_lt (densityRatio_ge_totient_ratio A k) hρ
+
+/-- **Density recovery from fast growth**: If the sequence growth at index k+1
+    satisfies n_{k+1} > C · n_k for some C > 0, then ρ_A(k+1) ≥ 1 - (k+1)/C.
+    In particular, when C is much larger than k, the density is close to 1.
+    This is the mechanism by which low-density periods (slow growth) are
+    followed by density recovery (when growth resumes). -/
+theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
+    (C : ℝ) (hC : 0 < C)
+    (hgrow : C * (A.seq k : ℝ) < (A.seq (k + 1) : ℝ)) :
+    1 - (k + 1 : ℝ) / C ≤ densityRatio A (k + 1) := by
+  have hge := densityRatio_ge_one_sub_growth A (k + 1) (by omega)
+  simp only [Nat.add_sub_cancel] at hge
+  calc 1 - (k + 1 : ℝ) / C
+      ≤ 1 - (k + 1 : ℝ) * (A.seq k : ℝ) / (A.seq (k + 1) : ℝ) := by
+        apply sub_le_sub_left
+        have hn_pos : (0 : ℝ) < A.seq (k + 1) := Nat.cast_pos.mpr (A.pos (k + 1))
+        rw [div_le_div_iff hC hn_pos]
+        nlinarith
+    _ ≤ densityRatio A (k + 1) := hge
+
 end Erdos1000

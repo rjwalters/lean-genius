@@ -157,4 +157,41 @@ Added 11 new infrastructure theorems toward proving erdos_no_zero_limit:
 ### Next Steps
 - Prove erdos_dichotomy: requires Euler product φ(n)/n = Π(1-1/p), smooth number theory
 - Prove haight_resolution: requires explicit construction of highly composite sequence
+
+## Session 2026-03-28 (Session 6+7) - Growth Constraints and Euler Bridge
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+Added 8 new infrastructure theorems in two batches:
+
+**Batch 1 (Growth Constraints)**:
+- `low_density_growth_constraint`: (1-ε)n_k < k·n_{k-1} when ρ < ε — slow growth forced
+- `consecutive_low_density_ratio`: n_{k+1}/n_k < (k+1)/(1-ε) for consecutive low ρ
+- `cesaroAvg_eq_one_sub_avg_deficit`: C_A(N) = 1 - avg(1-ρ) — Cesàro-deficit duality
+- `deficit_count_bound`: m low-ρ indices contribute ≥ m(1-ε) to total deficit
+- `density_somewhere_pos`: Σ ρ_k > 0 for N > 0
+
+**Batch 2 (Euler-Totient Bridge)**:
+- `low_density_euler_bound`: ρ < ε ⟹ φ(n)/n < ε — bridge to prime factorization
+- `densityRatio_recovery_from_growth`: n_{k+1} > C·n_k ⟹ ρ_{k+1} ≥ 1-(k+1)/C
+
+### Key Findings
+- **Growth constraint from low density**: ρ < ε forces n_{k+1}/n_k < (k+1)/(1-ε), constraining growth to at most factorial speed during low-ρ periods
+- **Deficit counting insufficient**: Among N indices, m with ρ < ε gives m(1-ε) ≤ Σ(1-ρ) < N, so m < N/(1-ε). Since 1/(1-ε) > 1, this doesn't limit proportion below 1.
+- **Euler product NOT in Mathlib as single theorem**: φ(n)/n = ∏(1-1/p) must be composed from `totient_prime_pow`, `totient_mul`, etc. Not a single theorem.
+- **Recovery mechanism**: When growth resumes after slow period, ρ recovers via densityRatio_recovery_from_growth. The tension between slow growth (forced by low ρ) and strict monotonicity is the structural driver of the dichotomy.
+- **Both remaining axioms are deep**: erdos_dichotomy needs Euler product + smooth number bounds; haight_resolution needs explicit constructive argument. Each likely requires 200+ lines of non-trivial proof.
+
+### Files Modified
+- `proofs/Proofs/Erdos1000Problem.lean` — 8 new theorems (1003→1119 lines)
+- `src/data/proofs/erdos-1000/meta.json` — updated counts
+- `src/data/research/problems/erdos-1000-wip-01.json` — updated
+
+### Next Steps
+- Build the Euler product formula φ(n)/n = ∏(1-1/p) from Mathlib primitives
+- Use it to formalize: ρ < ε ⟹ n_k has all primes ≤ B_ε as factors
+- Formalize the smooth-number counting argument for erdos_dichotomy
+- Alternative: try haight_resolution via explicit primorial-based construction
 - Both are deep results requiring significant Mathlib infrastructure
