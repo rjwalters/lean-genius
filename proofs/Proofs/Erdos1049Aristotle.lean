@@ -47,7 +47,8 @@ theorem n_div_pow_summable (t : ℝ) (ht : t > 1) :
 -- Routine: t^n - 1 > 0 for t > 1, n ≥ 1
 theorem pow_sub_one_pos (t : ℝ) (n : ℕ) (ht : t > 1) (hn : n ≥ 1) :
     t ^ n - 1 > 0 := by
-  sorry
+  have h : 1 < t ^ n := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  linarith
 
 -- Routine: 1/(t^n - 1) ≤ 2/t^n for t ≥ 2, n ≥ 1
 -- (since t^n - 1 ≥ t^n / 2)
@@ -57,12 +58,14 @@ theorem inv_pow_sub_one_bound (t : ℝ) (n : ℕ) (ht : t ≥ 2) (hn : n ≥ 1) 
 
 -- Routine: τ(n) ≤ n (number of divisors bounded by n)
 theorem tau_le_self (n : ℕ) : tau n ≤ n := by
-  sorry
+  simp only [tau]
+  exact Nat.card_divisors_le_self n
 
 -- Routine: If transcendental, then irrational
--- (transcendental numbers are not algebraic, rational numbers are algebraic)
+-- Transcendental → not algebraic → not rational → irrational
 theorem transcendental_implies_irrational (x : ℝ) (h : ¬IsAlgebraic ℚ x) :
     Irrational x := by
-  sorry
+  intro ⟨q, hq⟩
+  exact h (hq ▸ isAlgebraic_algebraMap q)
 
 end Erdos1049Aristotle

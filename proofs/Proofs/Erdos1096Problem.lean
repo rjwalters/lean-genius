@@ -129,14 +129,26 @@ theorem smallestPisot_value : 1.324 < smallestPisot ∧ smallestPisot < 1.325 :=
   -- So the root lies in (1.324, 1.325).
   obtain ⟨hgt1, hlt2, hcubic⟩ := smallestPisot_spec
   constructor
-  · -- 1.324 < q: show f(1.324) < 0, i.e., 1.324³ - 1.324 - 1 < 0
+  · -- 1.324 < q: f(x) = x³ - x is strictly increasing for x ≥ 1
+    -- f(q) = 1 (from q³ = q + 1), but f(1.324) < 1, so q > 1.324
     by_contra h
     push_neg at h
-    -- If q ≤ 1.324 then q³ ≤ 1.324³ < 2.324 = 1.324 + 1 ≤ q + 1
-    -- But q³ = q + 1, contradiction
-    sorry
-  · -- q < 1.325: show f(1.325) > 0
-    sorry
+    -- Monotonicity: (1.324 - q)(1.324² + 1.324·q + q² - 1) ≥ 0
+    -- This expands to 1.324³ - 1.324 - q³ + q ≥ 0
+    -- With q³ = q + 1: 1.324³ - 1.324 - 1 ≥ 0, but 1.324³ < 2.324
+    have hmono : 0 ≤ (1.324 - smallestPisot) *
+        (1.324 ^ 2 + 1.324 * smallestPisot + smallestPisot ^ 2 - 1) :=
+      mul_nonneg (by linarith) (by nlinarith [sq_nonneg smallestPisot,
+        sq_nonneg (smallestPisot - 1)])
+    nlinarith [hcubic]
+  · -- q < 1.325: same argument, f(1.325) > 1 but f(q) = 1
+    by_contra h
+    push_neg at h
+    have hmono : 0 ≤ (smallestPisot - 1.325) *
+        (smallestPisot ^ 2 + 1.325 * smallestPisot + 1.325 ^ 2 - 1) :=
+      mul_nonneg (by linarith) (by nlinarith [sq_nonneg smallestPisot,
+        sq_nonneg (smallestPisot - 1)])
+    nlinarith [hcubic]
 
 /-- The smallest Pisot number satisfies its defining polynomial. -/
 theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
@@ -146,17 +158,97 @@ theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
   use Polynomial.X ^ 3 - Polynomial.X - 1
   refine ⟨?_, ?_, ?_⟩
   · -- Monic: X³ - X - 1 has leading coefficient 1
-    sorry
+    have h_eq : (Polynomial.X ^ 3 - Polynomial.X - 1 : Polynomial ℤ) =
+                Polynomial.X ^ 3 - (Polynomial.X + 1) := by ring
+    rw [h_eq]
+    apply Polynomial.Monic.sub_of_left (Polynomial.monic_X_pow 3)
+    apply lt_of_le_of_lt (Polynomial.degree_add_le _ _)
+    apply max_lt <;> simp [Polynomial.degree_X_pow, Polynomial.degree_X, Polynomial.degree_one]
   · -- smallestPisot is a root
     simp only [Polynomial.aeval_sub, Polynomial.aeval_pow, Polynomial.aeval_X,
       Polynomial.aeval_one, map_one]
     linarith [hcubic]
   · -- Other complex roots have |z| < 1
     -- x³ - x - 1 = (x - q₀)(x² + q₀x + q₀² - 1)
-    -- Discriminant of x² + q₀x + (q₀²-1) = q₀² - 4(q₀²-1) = 4 - 3q₀²
-    -- For q₀ ≈ 1.3247: 4 - 3(1.3247)² ≈ 4 - 5.27 < 0, so complex conjugate roots
-    -- |z|² = q₀² - 1 < 1 iff q₀² < 2 iff q₀ < √2 ≈ 1.414 ✓
-    sorry
+    -- The conjugate roots of the quadratic have |z|² = q₀² - 1 < 1
+    intro z hz hne
+    set q := algebraMap ℝ ℂ smallestPisot with hq_def
+    -- z is a root of X³ - X - 1 over ℂ
+    have hzroot : z ^ 3 - z - 1 = 0 := by
+      have h := hz
+      simp only [Polynomial.IsRoot, Polynomial.eval_map, Polynomial.eval₂_sub,
+                  Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_one,
+                  Polynomial.eval₂_C, map_one] at h
+      linear_combination h
+    -- q₀ satisfies q³ - q - 1 = 0 in ℂ
+    have hqroot : q ^ 3 - q - 1 = 0 := by
+      have h := congr_arg (algebraMap ℝ ℂ) (show smallestPisot ^ 3 - smallestPisot - 1 = 0
+        from by linarith [hcubic])
+      simp only [map_sub, map_pow, map_one, map_zero] at h
+      exact h
+    -- Factor: (z - q)(z² + qz + (q² - 1)) = z³ - z - 1 = 0
+    have hfactor : (z - q) * (z ^ 2 + q * z + (q ^ 2 - 1)) = 0 := by
+      linear_combination hzroot - hqroot
+    -- Since z ≠ q: z² + qz + (q² - 1) = 0
+    have hquad : z ^ 2 + q * z + (q ^ 2 - 1) = 0 := by
+      rcases mul_eq_zero.mp hfactor with h | h
+      · exact absurd (sub_eq_zero.mp h) hne
+      · exact h
+    -- Conjugate also satisfies: conj(z)² + q·conj(z) + (q² - 1) = 0
+    -- (since q is real, starRingEnd ℂ q = q)
+    have hq_conj : starRingEnd ℂ q = q := by
+      simp [hq_def, Complex.conj_ofReal]
+    have hquad_conj : (starRingEnd ℂ z) ^ 2 + q * (starRingEnd ℂ z) + (q ^ 2 - 1) = 0 := by
+      have := congr_arg (starRingEnd ℂ) hquad
+      simp only [map_add, map_mul, map_pow, map_sub, map_one, map_zero, hq_conj] at this
+      exact this
+    -- Key: (z - conj z)(z·conj z - (q² - 1)) = 0
+    have hkey : (z - starRingEnd ℂ z) * (z * starRingEnd ℂ z - (q ^ 2 - 1)) = 0 := by
+      linear_combination (starRingEnd ℂ z) * hquad - z * hquad_conj
+    -- z is not real (discriminant 4 - 3q₀² < 0)
+    have hz_ne_conj : z ≠ starRingEnd ℂ z := by
+      intro heq
+      -- If z = conj(z), z is real. Then z² + q₀z + (q₀² - 1) = 0 has a real root.
+      -- But discriminant = q₀² - 4(q₀² - 1) = 4 - 3q₀² < 0 (for q₀ > 1.324)
+      have hz_real : z = algebraMap ℝ ℂ z.re := by
+        ext
+        · simp
+        · have : z.im = 0 := by
+            have := Complex.conj_eq_iff_im.mp heq
+            exact this
+          simp [this]
+      -- z.re satisfies z² + q₀·z + q₀² - 1 = 0
+      rw [hz_real, hq_def] at hquad
+      simp only [← map_pow, ← map_mul, ← map_add, ← map_sub, ← map_one] at hquad
+      have hquad_real : z.re ^ 2 + smallestPisot * z.re + (smallestPisot ^ 2 - 1) = 0 := by
+        exact_mod_cast congr_arg Complex.re hquad
+      -- Discriminant: Δ = q₀² - 4(q₀² - 1) = 4 - 3q₀² < 0
+      have hdisc : smallestPisot ^ 2 - 4 * (smallestPisot ^ 2 - 1) < 0 := by
+        nlinarith [hgt1]
+      -- But for the equation to have a real root: Δ ≥ 0
+      have : 0 ≤ smallestPisot ^ 2 - 4 * (smallestPisot ^ 2 - 1) := by
+        nlinarith [sq_nonneg (z.re + smallestPisot / 2), hquad_real]
+      linarith
+    -- So z·conj(z) = q² - 1
+    have hprod : z * starRingEnd ℂ z = q ^ 2 - 1 := by
+      rcases mul_eq_zero.mp hkey with h | h
+      · exact absurd (sub_eq_zero.mp h).symm hz_ne_conj
+      · linear_combination -h
+    -- normSq z = q₀² - 1
+    have hnorm : Complex.normSq z = smallestPisot ^ 2 - 1 := by
+      have h : (Complex.normSq z : ℂ) = q ^ 2 - 1 := by
+        rw [← Complex.mul_conj z]
+        exact hprod
+      rw [hq_def] at h
+      simp only [← map_pow, ← map_one (algebraMap ℝ ℂ), ← map_sub] at h
+      exact_mod_cast h
+    -- Complex.abs z < 1
+    rw [Complex.abs_apply, hnorm]
+    have hpos : 0 ≤ smallestPisot ^ 2 - 1 := by nlinarith [hgt1]
+    have hlt : smallestPisot ^ 2 - 1 < 1 := by nlinarith [hcubic, hgt1]
+    calc Real.sqrt (smallestPisot ^ 2 - 1)
+        < Real.sqrt 1 := Real.sqrt_lt_sqrt hpos hlt
+      _ = 1 := Real.sqrt_one
 
 /-- Siegel's theorem: q₀ is the smallest Pisot-Vijayaraghavan number. -/
 axiom smallestPisot_minimal :
@@ -189,8 +281,13 @@ theorem goldenRatio_is_pisot : IsPisot goldenRatio := by
   -- Polynomial X² - X - 1
   use Polynomial.X ^ 2 - Polynomial.X - 1
   refine ⟨?_, ?_, ?_⟩
-  · -- Monic
-    sorry
+  · -- Monic: X² - X - 1 has leading coefficient 1
+    have h_eq : (Polynomial.X ^ 2 - Polynomial.X - 1 : Polynomial ℤ) =
+                Polynomial.X ^ 2 - (Polynomial.X + 1) := by ring
+    rw [h_eq]
+    apply Polynomial.Monic.sub_of_left (Polynomial.monic_X_pow 2)
+    apply lt_of_le_of_lt (Polynomial.degree_add_le _ _)
+    apply max_lt <;> simp [Polynomial.degree_X_pow, Polynomial.degree_X, Polynomial.degree_one]
   · -- φ is a root: φ² - φ - 1 = 0
     simp only [Polynomial.aeval_sub, Polynomial.aeval_pow, Polynomial.aeval_X,
       Polynomial.aeval_one, map_one]
@@ -198,8 +295,45 @@ theorem goldenRatio_is_pisot : IsPisot goldenRatio := by
     have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num : (5:ℝ) ≥ 0)
     nlinarith
   · -- Other roots have |z| < 1
-    -- The other root is (1-√5)/2. |(1-√5)/2| = (√5-1)/2 < 1 since √5 < 3.
-    sorry
+    -- Strategy: z² - z - 1 = 0 and φ² - φ - 1 = 0
+    -- Factor: (z - φ)(z + φ - 1) = 0. Since z ≠ φ, z = 1 - φ.
+    -- |1 - φ| = φ - 1 < 1 since φ < 2.
+    intro z hz hne
+    set φ := algebraMap ℝ ℂ goldenRatio with hφ_def
+    -- z is a root of X² - X - 1 over ℂ
+    have hzroot : z ^ 2 - z - 1 = 0 := by
+      have := hz
+      simp only [Polynomial.IsRoot, Polynomial.eval_map, Polynomial.eval₂_sub,
+                  Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_one,
+                  Polynomial.eval₂_C, map_one] at this
+      linear_combination this
+    -- φ satisfies φ² - φ - 1 = 0 (embed from ℝ to ℂ)
+    have hφroot : φ ^ 2 - φ - 1 = 0 := by
+      have hreal : goldenRatio ^ 2 - goldenRatio - 1 = 0 := by
+        unfold goldenRatio
+        have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num : (5 : ℝ) ≥ 0)
+        nlinarith
+      have h := congr_arg (algebraMap ℝ ℂ) hreal
+      simp only [map_sub, map_pow, map_one, map_zero] at h
+      exact h
+    -- (z - φ)(z + φ - 1) = z² - z - (φ² - φ) = 0
+    have hfactor : (z - φ) * (z + φ - 1) = 0 := by linear_combination hzroot - hφroot
+    -- Since z ≠ φ, we get z = 1 - φ
+    have hz_val : z = 1 - φ := by
+      rcases mul_eq_zero.mp hfactor with h | h
+      · exact absurd (sub_eq_zero.mp h) hne
+      · linear_combination -h
+    -- |z| = |1 - φ| = φ - 1 < 1
+    rw [hz_val, hφ_def]
+    rw [show (1 : ℂ) - algebraMap ℝ ℂ goldenRatio =
+        algebraMap ℝ ℂ (1 - goldenRatio) from by push_cast; ring]
+    -- Complex.abs of a real number = |·|
+    rw [Complex.abs_apply]
+    rw [show Complex.normSq (algebraMap ℝ ℂ (1 - goldenRatio)) =
+        (1 - goldenRatio) ^ 2 from by
+      simp [Complex.normSq_apply, Complex.ofReal_re, Complex.ofReal_im]]
+    rw [Real.sqrt_sq_eq_abs, abs_of_neg (by linarith [goldenRatio_gt_one])]
+    linarith [goldenRatio_lt_two]
 
 /- ## Part IV: The Erdős-Joó-Komornik Results (1990)
 -/
