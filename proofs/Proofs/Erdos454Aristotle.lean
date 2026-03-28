@@ -66,7 +66,8 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
 -- f(n) bounds
 /-- The i=0 term of the infimum equals 2*p_n. -/
 theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
-    nthPrime (n + 0) + nthPrime (n - 0) = 2 * nthPrime n := by sorry
+    nthPrime (n + 0) + nthPrime (n - 0) = 2 * nthPrime n := by
+  simp; ring
 
 /-- f(n) ≤ 2p_n, since the infimum includes the i=0 term. -/
 theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) :
@@ -96,6 +97,9 @@ theorem large_prime_gaps_exist :
 -- Asymmetric behavior of primes around a central index
 /-- For i > 0, primes at n+i exceed p_n and primes at n-i are below p_n. -/
 theorem asymmetric_behavior (n i : ℕ) (hi : 0 < i) (hin : i < n) :
-    nthPrime (n + i) > nthPrime n ∧ nthPrime (n - i) < nthPrime n := by sorry
+    nthPrime (n + i) > nthPrime n ∧ nthPrime (n - i) < nthPrime n := by
+  constructor
+  · exact nthPrime_strictMono (by omega)
+  · exact nthPrime_strictMono (by omega)
 
 end Erdos454Aristotle
