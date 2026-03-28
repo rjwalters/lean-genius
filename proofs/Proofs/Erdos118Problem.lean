@@ -26,8 +26,19 @@ import Mathlib.Tactic
 
 /-- The ordinal partition relation: α → (α, k)² means that for any 2-coloring
     of pairs from α, there is either a monochromatic-red set of order type α
-    or a monochromatic-blue set of size k. -/
-axiom ordPartition (α : Ordinal.{0}) (k : ℕ) : Prop
+    or a monochromatic-blue set of size k.
+
+    Formally: given any coloring f of ordered pairs of ordinals less than α,
+    either there exists a strictly monotone embedding φ of [0,α) into itself
+    with all pairs colored true (red), or there exist k ordinals less than α
+    forming a strictly increasing sequence with all pairs colored false (blue). -/
+def ordPartition (α : Ordinal.{0}) (k : ℕ) : Prop :=
+  ∀ f : Ordinal → Ordinal → Bool,
+    (∃ (φ : Ordinal → Ordinal), StrictMono φ ∧
+      (∀ x, x < α → φ x < α) ∧
+      ∀ x y, x < y → x < α → y < α → f (φ x) (φ y) = true) ∨
+    (∃ (ψ : Fin k → Ordinal), StrictMono ψ ∧ (∀ i, ψ i < α) ∧
+      ∀ i j, i < j → f (ψ i) (ψ j) = false)
 
 /-- A partition ordinal for k-cliques: α satisfies α → (α, k)². -/
 def IsPartitionOrd (α : Ordinal.{0}) (k : ℕ) : Prop :=
@@ -68,9 +79,21 @@ theorem erdos_118_disproved : ¬ ErdosHajnalConjecture := by
 axiom partitionThreshold (α : Ordinal.{0}) : ℕ
 
 /-- If α → (α, k)² holds, then α → (α, j)² holds for all j ≤ k.
-    The partition relation is monotone decreasing in k. -/
-axiom partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
-    (hk : IsPartitionOrd α k) : IsPartitionOrd α j
+    The partition relation is monotone decreasing in k.
+
+    Proof: Given a blue k-clique, any j-element initial segment (j ≤ k)
+    is also a blue clique. A red set of order type α passes through unchanged. -/
+theorem partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
+    (hk : IsPartitionOrd α k) : IsPartitionOrd α j := by
+  intro f
+  rcases hk f with ⟨φ, hφ_mono, hφ_bound, hφ_red⟩ | ⟨ψ, hψ_mono, hψ_bound, hψ_blue⟩
+  · left; exact ⟨φ, hφ_mono, hφ_bound, hφ_red⟩
+  · -- Restrict the blue k-clique ψ : Fin k → Ordinal to a j-element initial segment
+    right
+    let embed : Fin j → Fin k := fun i => ⟨i.val, Nat.lt_of_lt_of_le i.isLt hjk⟩
+    have hemb : StrictMono embed := fun _ _ h => h
+    exact ⟨ψ ∘ embed, hψ_mono.comp hemb, fun i => hψ_bound _,
+           fun a b hab => hψ_blue _ _ (hemb hab)⟩
 
 /-- The threshold captures the exact boundary: the partition property holds
     at the threshold and fails one step above. -/
