@@ -7,7 +7,7 @@
     "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
     "date": "-250",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "geometry",
       "analysis",
@@ -18,8 +18,8 @@
       "research"
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ02.lean",
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Real.sin_lt",
@@ -52,7 +52,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core π bounds derived from Mathlib's pi_gt_d4 and pi_lt_d4.",
+    "assumptions": "1 sorry(s) remain in the formalization.",
     "lineCount": 102,
     "mathlib_version": "4.26.0"
   },
