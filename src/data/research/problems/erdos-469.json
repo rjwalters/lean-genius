@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 6 theorems (19T→25T). Verified 20 and 28 as primitive pseudoperfect via deficiency arguments. 2 axioms remain (open problem + deep known result).",
+    "progressSummary": "Verified 88 as 4th primitive pseudoperfect (A006036: 6, 20, 28, 88). 2 axioms, 0 sorries.",
     "builtItems": [
       "Assessment: 2A both appropriate, excellent formalization",
       "Proved pseudoperfect_28: 28 = 1+2+4+7+14 (perfect number)",
       "Proved not_pseudoperfect_7, not_pseudoperfect_10, not_pseudoperfect_14 (all deficient)",
       "Proved primitive_pseudoperfect_20: 20 is 2nd primitive pseudoperfect (A006036)",
-      "Proved primitive_pseudoperfect_28: 28 is 3rd primitive pseudoperfect (A006036, perfect number)"
+      "Proved primitive_pseudoperfect_28: 28 is 3rd primitive pseudoperfect (A006036, perfect number)",
+      "not_pseudoperfect_{8,11,22,44}: deficiency proofs for divisors of 88",
+      "pseudoperfect_88: witness {1,2,8,11,22,44} sums to 88",
+      "primitive_pseudoperfect_88: 4th entry of A006036 verified"
     ],
     "insights": [
       "infinitely_many_primitive: known result (OEIS A006036 confirmed infinite) but proof is deep",
@@ -46,7 +49,8 @@
       "Weird number definition included for context (abundant but not pseudoperfect)",
       "For 20: only proper divisor ≥6 is 10, which is deficient (σ₀=8<10)",
       "For 28 (perfect number): proper divisors {7,14} both deficient, so 28 is primitive",
-      "Verified first 3 entries of A006036: 6, 20, 28"
+      "Verified first 3 entries of A006036: 6, 20, 28",
+      "88 = 2^3 * 11: all proper divisors {1,2,4,8,11,22,44} are deficient (sigma_0 = {0,1,3,7,1,14,40})"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,15 +70,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.513Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-03-28T01:37:21.456460+00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos469Problem.lean",
       "filename": "Erdos469Problem.lean",
-      "lineCount": 280,
-      "theoremCount": 25,
+      "lineCount": 326,
+      "theoremCount": 32,
       "axiomCount": 2,
       "defCount": 8,
       "sorryCount": 0,
