@@ -24,6 +24,11 @@ coprime to n.
 #688, #689, #970 address related variants.
 
 *Reference:* [erdosproblems.com/687](https://www.erdosproblems.com/687)
+
+Axioms: 6 (jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal,
+  erdos_687_conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
+Removed: jacobsthalY_trivial_lower (FALSE — Y(2) = 1 < 3 counterexample)
+Sorries: 0
 -/
 
 import Mathlib.Tactic
@@ -139,10 +144,22 @@ axiom maier_pomerance_conjecture :
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ᶠ (x : ℕ) in atTop,
     (jacobsthalY x : ℝ) ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ (2 + ε)
 
-/-- The trivial lower bound: Y(x) ≥ x + 1, since we can cover
-[1, x] by taking aₚ = 0 for each prime p ≤ x (every integer in [1,x]
-has a prime factor ≤ x). The interval [1, x+1] is also covered since
-x+1 has a prime factor ≤ x+1 ≤ ... but the precise bound needs careful
-argument. -/
-axiom jacobsthalY_trivial_lower (x : ℕ) (hx : 2 ≤ x) :
-  x + 1 ≤ jacobsthalY x
+/- ## Trivial Lower Bound — FALSE (removed)
+
+The original axiom claimed Y(x) ≥ x + 1 for x ≥ 2, based on the argument
+that "every integer in [1,x] has a prime factor ≤ x." However, a covering
+system requires choosing ONE residue class per prime, not covering all
+multiples. With only one prime p = 2, we can only cover one parity class.
+
+**Counterexample**: x = 2, primes ≤ 2 = {2}.
+- With a₂ = 0: covers {even}. n = 1 not covered. Y ≤ 0.
+- With a₂ = 1: covers {odd}. n = 2 not covered. Y ≤ 1.
+- So Y(2) = 1 < 3 = x + 1.
+
+Similarly, for x = 3 (primes {2,3}):
+- Best covering a₂ = 1, a₃ = 2: covers {odd} ∪ {≡ 2 mod 3}.
+  n = 1,2,3 covered but n = 4 not. So Y(3) ≤ 3 < 4 = x + 1.
+
+The bound Y(x) ≥ x + 1 may hold for sufficiently large x (e.g., x ≥ 5
+where the primorial has enough prime factors), but not universally from x ≥ 2.
+-/
