@@ -43,8 +43,8 @@
     "originalContributions": [
       "UniformHypergraph: r-uniform hypergraph structure via Finsets of Fin n",
       "InFamily, IsFamilyFree: general family F(r,d,e) definitions",
-      "exr axiom: extremal number for r-uniform hypergraphs with (d,e) constraint",
-      "dr axiom: threshold function d_r(e) with spec and minimality",
+      "exr def: extremal number for r-uniform hypergraphs with (d,e) constraint",
+      "dr def: threshold function d_r(e) with spec and minimality axioms",
       "bes_lower_bound: d_r(e) ≥ (r-2)e+3 (Brown-Erdős-Sós 1973)",
       "ruzsa_szemeredi_d3_3: d_3(3) = 6 (Ruzsa-Szemerédi 1978)",
       "efr_e3: d_r(3) = (r-2)·3+3 for all r ≥ 3 (Erdős-Frankl-Rödl 1986)",
@@ -52,9 +52,9 @@
       "conjecture_implies_dense_free, conjecture_implies_subquadratic: implications",
       "Connection theorems linking to Problems #716 and #1076"
     ],
-    "axiomCount": 9,
-    "lineCount": 242,
-    "assumptions": "9 axioms: exr, dr, dr_spec, dr_minimal, bes_lower_bound (BES 1973), sarkozy_selkow_upper (SS 2005), cgls_upper_r3 (CGLS 2023), solymosi_d3_10, erdos_1178 (main conjecture). 0 sorries. ruzsa_szemeredi_d3_3 and efr_e3 proved from axioms."
+    "axiomCount": 7,
+    "lineCount": 243,
+    "assumptions": "7 axioms: dr_spec, dr_minimal, bes_lower_bound (BES 1973), sarkozy_selkow_upper (SS 2005), cgls_upper_r3 (CGLS 2023), solymosi_d3_10, erdos_1178 (main conjecture). exr and dr are noncomputable defs, not axioms. 0 sorries. ruzsa_szemeredi_d3_3 and efr_e3 proved from axioms."
   },
   "overview": {
     "historicalContext": "Brown, Erdős, and Sós (1973) initiated the study of extremal numbers for r-uniform hypergraphs avoiding configurations with few vertices relative to edges. They introduced the function d_r(e) — the threshold number of vertices above which the extremal number becomes subquadratic — and conjectured d_r(e) = (r-2)e + 3. They proved the lower bound. Ruzsa and Szemerédi (1978) resolved the case r=3, e=3 (the famous (6,3)-problem), connecting it to the Triangle Removal Lemma and Szemerédi's regularity lemma. Erdős-Frankl-Rödl (1986) proved the full e=3 case. Recent work by Conlon, Gishboliner, Levanzov, and Shapira (2023) brought the r=3 upper bound close to the conjectured value.",
@@ -258,9 +258,9 @@
       "Filter"
     ],
     "namespace": "Erdos1178",
-    "lineCount": 242,
-    "axiomCount": 9,
-    "theoremCount": 12,
-    "definitionCount": 8
+    "lineCount": 243,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 10
   }
 }
