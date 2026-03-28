@@ -48,8 +48,14 @@ def AgreeFinitely (S T : Set ℕ) : Prop :=
   (S \ T).Finite ∧ (T \ S).Finite
 
 /-- Equivalent: symmetric difference is finite -/
-axiom agreeFinitely_iff (S T : Set ℕ) :
-    AgreeFinitely S T ↔ (S ∆ T).Finite
+theorem agreeFinitely_iff (S T : Set ℕ) :
+    AgreeFinitely S T ↔ (S ∆ T).Finite := by
+  unfold AgreeFinitely
+  rw [Set.symmDiff_def]
+  constructor
+  · exact fun ⟨h1, h2⟩ => h1.union h2
+  · intro h
+    exact ⟨h.subset Set.subset_union_left, h.subset Set.subset_union_right⟩
 
 /-
 ## Part 2: The Inverse Goldbach Conjecture

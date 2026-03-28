@@ -58,9 +58,35 @@ def HasNonIncreasingGaps {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     seq ⟨j.val + 1, by omega⟩ - seq j ≤ seq j - seq ⟨j.val - 1, by omega⟩
 
 /-- For strictly increasing sequences, descending wave ↔ non-increasing gaps. -/
-axiom descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)
+theorem descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)
     (hinc : StrictlyIncreasing seq) :
-    IsDescendingWave seq ↔ HasNonIncreasingGaps seq
+    IsDescendingWave seq ↔ HasNonIncreasingGaps seq := by
+  unfold IsDescendingWave HasNonIncreasingGaps
+  constructor
+  · intro h
+    rcases h with hk | hwave
+    · exact Or.inl hk
+    · right; intro j hj0 hjk
+      have hlt1 : (⟨j.val - 1, by omega⟩ : Fin k) < j := by
+        simp [Fin.lt_iff_val_lt_val]; omega
+      have hlt2 : j < (⟨j.val + 1, by omega⟩ : Fin k) := by
+        simp [Fin.lt_iff_val_lt_val]; omega
+      have h1 := hinc _ _ hlt1
+      have h2 := hinc _ _ hlt2
+      have hw := hwave j hj0 hjk
+      omega
+  · intro h
+    rcases h with hk | hgaps
+    · exact Or.inl hk
+    · right; intro j hj0 hjk
+      have hlt1 : (⟨j.val - 1, by omega⟩ : Fin k) < j := by
+        simp [Fin.lt_iff_val_lt_val]; omega
+      have hlt2 : j < (⟨j.val + 1, by omega⟩ : Fin k) := by
+        simp [Fin.lt_iff_val_lt_val]; omega
+      have h1 := hinc _ _ hlt1
+      have h2 := hinc _ _ hlt2
+      have hg := hgaps j hj0 hjk
+      omega
 
 /-- A k-term descending wave in a set S is:
     - A strictly increasing sequence x₁ < x₂ < ... < xₖ in S
