@@ -58,16 +58,24 @@ theorem cliqueGuarantee_max (n p : ℕ) (hp : 2 ≤ p) :
 /-- Every non-empty graph has a 1-clique (any single vertex).
     Helper for cliqueGuarantee_zero. -/
 theorem cliqueFree_one_iff_empty {n : ℕ} (G : SimpleGraph (Fin n)) (hn : 1 ≤ n) :
-    ¬G.CliqueFree 1 := by sorry
+    ¬G.CliqueFree 1 := by
+  intro h
+  apply h {⟨0, by omega⟩}
+  refine ⟨Finset.card_singleton _, ?_⟩
+  exact Set.pairwise_singleton _ _
 
 /-- The empty graph on Fin n is 2-clique-free (no two vertices are adjacent).
     Helper for cliqueGuarantee_zero. -/
 theorem emptyGraph_cliqueFree_two (n : ℕ) :
-    (⊥ : SimpleGraph (Fin n)).CliqueFree 2 := by sorry
+    (⊥ : SimpleGraph (Fin n)).CliqueFree 2 := by
+  intro t ⟨hcard, hclique⟩
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < t.card)
+  exact (hclique (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab).elim
 
 /-- HasDensity for the empty graph with q = 0 is trivially true.
     Helper for cliqueGuarantee_zero. -/
 theorem emptyGraph_hasDensity_zero (n p : ℕ) :
-    @HasDensity (Fin n) _ _ (⊥ : SimpleGraph (Fin n)) _ p 0 := by sorry
+    @HasDensity (Fin n) _ _ (⊥ : SimpleGraph (Fin n)) _ p 0 := by
+  intro S _; exact Nat.zero_le _
 
 end Erdos667Aristotle
