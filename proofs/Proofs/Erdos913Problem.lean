@@ -80,8 +80,50 @@ So the prime factorization has exponents {1, 2, 3} on primes {8p²-1, p, 2},
 which are all distinct.
 -/
 
+/-- Helper: prove distinct exponents from a triple of prime factors with
+    pairwise distinct factorization values. -/
+private theorem hasDistinctExponents_of_primeFactors_triple
+    {n : ℕ} {m p q r : ℕ} (hm : n * (n + 1) = m)
+    (hpf : m.primeFactors = {p, q, r})
+    (hpq : m.factorization p ≠ m.factorization q)
+    (hpr : m.factorization p ≠ m.factorization r)
+    (hqr : m.factorization q ≠ m.factorization r) :
+    HasDistinctExponents n := by
+  unfold HasDistinctExponents
+  rw [hm, hpf]
+  intro x hx y hy heq
+  simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+             Set.mem_singleton_iff] at hx hy
+  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+  · rfl
+  · exact absurd heq hpq
+  · exact absurd heq hpr
+  · exact absurd heq hpq.symm
+  · rfl
+  · exact absurd heq hqr
+  · exact absurd heq hpr.symm
+  · exact absurd heq hqr.symm
+  · rfl
+
+/-- The map p ↦ 8p²-1 is injective on naturals ≥ 1. -/
+private theorem injective_8p_sq_minus_1 : Function.Injective (fun p : ℕ => 8 * p ^ 2 - 1) := by
+  intro a b hab
+  have h : 8 * a ^ 2 = 8 * b ^ 2 := by omega
+  have : a ^ 2 = b ^ 2 := by omega
+  exact Nat.pow_left_injective (by omega : 0 < 2) this
+
 /-- Conditional result: if there are infinitely many primes p with
-    8p² - 1 prime, then infinitely many n have distinct exponents. -/
+    8p² - 1 prime, then infinitely many n have distinct exponents.
+
+    PROOF SKETCH (not yet formalized):
+    1. PrimePairs8 \ {2} is still infinite (removing one element).
+    2. p ↦ 8p²-1 is injective (by injective_8p_sq_minus_1).
+    3. For each p ≠ 2, n = 8p²-1 gives n(n+1) = (8p²-1)¹·p²·2³
+       with exponents {1,2,3} (pairwise distinct).
+    4. So the image is an infinite subset of DistinctExponentSet.
+
+    The main gap: proving factorization values 1,2,3 symbolically
+    requires Nat.Coprime.factorization_mul + Nat.Prime.factorization. -/
 axiom erdos_913_conditional (h : PrimePairs8.Infinite) :
   DistinctExponentSet.Infinite
 

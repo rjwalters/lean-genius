@@ -106,3 +106,17 @@ theorem digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
 digits 0 and 1. -/
 theorem zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0 := by
   intro d hd; exact absurd hd (List.not_mem_nil d)
+
+/-- Complete classification for n ≤ 15: exactly n ∈ {0, 2, 8} give
+    powers of 2 with only ternary digits 0 and 1. Together with
+    Saye's computation (n ≥ 16), this means the known examples
+    {1, 4, 256} = {2⁰, 2², 2⁸} are the only ones up to 2^(5.9×10²¹). -/
+theorem sparse_complete_to_15 :
+    ∀ n : ℕ, n ≤ 15 → HasOnlyDigits01Base3 (2 ^ n) → n = 0 ∨ n = 2 ∨ n = 8 := by
+  intro n hn h
+  interval_cases n <;>
+    first
+    | left; rfl
+    | right; left; rfl
+    | right; right; rfl
+    | exact absurd h (by native_decide)

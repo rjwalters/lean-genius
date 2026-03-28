@@ -98,6 +98,22 @@ theorem squares_have_square_factorial_product (n : ℕ) (hn : 2 ≤ n) :
 example : HasSquareFactorialProduct 4 2 :=
   ⟨[3, 4], rfl, by decide, by decide, ⟨12, by native_decide⟩⟩
 
+/-- F(n²) = 2 for n ≥ 2: the Nat.find gives 2 because:
+    - k = 2 satisfies 2 ≤ k ∧ HasSquareFactorialProduct (proved above)
+    - k = 0, 1 fail the 2 ≤ k condition -/
+theorem bigF_eq_two_of_square (n : ℕ) (hn : 2 ≤ n) : bigF (n * n) = 2 := by
+  unfold bigF
+  have h : ∃ k, 2 ≤ k ∧ HasSquareFactorialProduct (n * n) k :=
+    ⟨2, le_refl 2, squares_have_square_factorial_product n hn⟩
+  rw [dif_pos h]
+  exact Nat.find_eq_iff.mpr ⟨⟨le_refl 2, squares_have_square_factorial_product n hn⟩,
+    fun k hk ⟨h1, _⟩ => by omega⟩
+
+/-- Every perfect square n² with n ≥ 2 belongs to D₂. This is the
+    backward direction of D2_eq_squares, now proved. -/
+theorem square_in_D2 (n : ℕ) (hn : 2 ≤ n) : inDk 2 (n * n) :=
+  bigF_eq_two_of_square n hn
+
 /- ## Known Results (Axiomatized — deep results from Erdős-Graham 1976) -/
 
 /-- D₂ consists of all perfect squares > 1 (Erdős-Graham 1976).

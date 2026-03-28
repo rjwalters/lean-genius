@@ -29,20 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 axioms (6A→2A). one_in_ternarySparse via native_decide, four_in_ternarySparse via native_decide, pow2_8_in_ternarySparse via native_decide, digits01_sum_of_powers via structural induction on digit list. Remaining: saye_computation (deep computational), open conjecture.",
+    "progressSummary": "PROGRESS: Proved complete small-case classification (5T→6T). 1 axiom remains (Saye computation, appropriate).",
     "builtItems": [
-      "PROVED zero_hasOnlyDigits01 (6A→5A)",
-      "PROVED one_in_ternarySparse: ⟨0, rfl, by native_decide⟩ (5A→4A)",
-      "PROVED four_in_ternarySparse: ⟨2, rfl, by native_decide⟩ (4A→3A)",
-      "PROVED pow2_8_in_ternarySparse: ⟨8, rfl, by native_decide⟩ (3A→2A) — digits 3 256 = [1,1,1,0,0,1]",
-      "PROVED digits01_sum_of_powers: structural induction on Nat.digits list + Finset.sum shifting"
+      "Proved sparse_complete_to_15: exactly n∈{0,2,8} give ternary-sparse 2^n for n≤15"
     ],
     "insights": [
-      "Proved zero_hasOnlyDigits01 (Nat.digits 3 0 = [], vacuously true). 6A→5A.",
-      "one_in_ternarySparse, four_in_ternarySparse, pow2_8_in_ternarySparse provable via native_decide: provide exponent k explicitly, rfl for 2^k=n, native_decide for digit check",
-      "digits01_sum_of_powers proof: induction on List of digits, key shift lemma 3 * S'.sum(3^·) = (S'.image(·+1)).sum(3^·), uses Nat.ofDigits_digits for reconstruction",
-      "saye_computation (n up to 5.9×10²¹) is NOT provable — would require computing 2^n for astronomical n",
-      "Remaining 2 axioms: saye_computation (deep), open conjecture (not axiom but def)"
+      "saye_computation (sole axiom) covers n≥16 up to 5.9×10^21 — appropriate",
+      "Combined with sparse_complete_to_15, known examples {1,4,256} are verified as complete to 2^(5.9×10^21)",
+      "native_decide handles ¬HasOnlyDigits01Base3(2^n) for n≤15 easily"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -69,8 +63,8 @@
     {
       "path": "Proofs/Erdos406Problem.lean",
       "filename": "Erdos406Problem.lean",
-      "lineCount": 98,
-      "theoremCount": 5,
+      "lineCount": 122,
+      "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
