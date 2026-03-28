@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (deep results), 13T proved, 0S.",
+    "progressSummary": "COMPLETE: 1A (erdos_635 OPEN conjecture), 13T, 0S. Removed 2 unused axioms.",
     "builtItems": [
       "IsAdmissible_mono_t: t-admissibility weakens with larger t (proved)",
       "f_set_nonempty: achievable cardinalities always nonempty (proved)",
@@ -50,7 +50,8 @@
       "f_t1 upper bound: map a->(a-1)/2 is injective on A (no-consecutive property), range has (N+1)/2 elements",
       "f_t1_density is corollary of f_t1 but limit proof in Lean is nontrivial",
       "All 4 axioms assessed: f_t2_lower and erdos_construction_t2 are deep constructions, erdos_635 is open, f_t1_density is provable via squeeze theorem but needs ~20 lines Filter.Tendsto",
-      "14 theorems proved, 0 sorries. Good file."
+      "14 theorems proved, 0 sorries. Good file.",
+      "f_t2_lower and erdos_construction_t2 axioms were unused — removed (3→1A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -79,7 +80,7 @@
       "filename": "Erdos635Problem.lean",
       "lineCount": 388,
       "theoremCount": 13,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
