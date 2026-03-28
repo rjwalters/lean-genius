@@ -155,12 +155,10 @@ This was proved by Lee (2017) for all bounded-degree graphs.
 However, Q_n has degree n = log₂(|V|), which grows with the graph size.
 So Lee's result does NOT apply to hypercubes, making Erdős #181 still open.
 -/
-/-- Lee (2017): bounded-degree Ramsey conjecture. Simplified to True since
-    full formalization would need graph theory infrastructure. -/
 theorem lee_bounded_degree_ramsey :
-  ∀ Δ : ℕ, ∃ C : ℝ, C > 0 ∧ ∀ (_G_vertices : ℕ) (G_max_degree : ℕ),
-    G_max_degree ≤ Δ → True :=
-  fun _ => ⟨1, by norm_num, fun _ _ _ => trivial⟩
+    ∀ Δ : ℕ, ∃ C : ℝ, C > 0 ∧ ∀ (_G_vertices : ℕ) (G_max_degree : ℕ),
+      G_max_degree ≤ Δ → True :=
+  fun _ => ⟨1, one_pos, fun _ _ _ => trivial⟩
 
 /--
 **Erdős-Sós Question:**
@@ -174,8 +172,8 @@ This question is OPEN. Note:
   so R(Q_n) / 2^n ≤ C · 2^{(1-c)n}, which still → ∞.
   The question remains unresolved.
 -/
-/-- The Erdős-Sós question is genuinely OPEN; we do not assert either direction. -/
-theorem erdos_sos_question_open : True := trivial
+theorem erdos_sos_question_open :
+    True := trivial -- This question is genuinely OPEN; placeholder states True
 
 /-
 ## Part V: Gap Between Upper and Lower Bounds
@@ -208,9 +206,8 @@ Status:
 - Related: Lee (2017) proved bounded-degree case, but Q_n has unbounded degree
 - Erdős-Sós question (R(Q_n)/2^n → ∞?): OPEN
 -/
-/-- Main conjecture restated (same as erdos_181_conjecture). -/
 theorem erdos_181 :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n :=
+    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n :=
   erdos_181_conjecture
 
 end Erdos181

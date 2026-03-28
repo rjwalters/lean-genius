@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T10:32:49.761Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,13 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 1 axiom (almost_sidon_exceeds_sidon proved from erdos_freud_lower_bound via √3<40/23 bound).",
+    "progressSummary": "PROGRESS: Added distinct_sums_bounded, flagged almost_sidon_sum_range as potentially incorrect. 11T 5A 0S.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
       "isAlmostSidon_subset: almost-Sidon is monotone under subsets",
       "isAlmostSidon_empty: empty set is almost-Sidon",
-      "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)"
+      "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
@@ -43,8 +43,9 @@
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
       "All 5 axioms are deep results: asymptotic bounds (EF lower, Sidon upper, comparison) and combinatorial arguments (sum range, reflected construction)",
       "almost_sidon_sum_range might have an off-by-one for large collision multiplicity r — worth verifying",
-      "almost_sidon_exceeds_sidon is REDUNDANT: follows from erdos_freud_lower_bound since 2/sqrt(3) > 1, so (2/sqrt(3)-eps)*sqrt(N) > sqrt(N)+1 for large N",
-      "Proof requires numerical bound on sqrt(3) < 2 and Real analysis (sqrt_lt_sqrt, div manipulation)"
+      "almost_sidon_sum_range axiom is likely INCORRECT for high collision multiplicity r≥3: counting gives |A|(|A|+1)/2 ≤ 2N+r-2, not ≤ 2N",
+      "Added correct provable bound distinct_sums_bounded: image of sum map has ≤ 2N-1 elements",
+      "All 5 axioms are deep: 3 asymptotic bounds + 2 combinatorial arguments. None trivially in Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [

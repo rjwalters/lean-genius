@@ -19,9 +19,9 @@
     "erdosNumber": 1157,
     "erdosUrl": "https://erdosproblems.com/1157",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 275,
-    "assumptions": "7 axioms: extremalNumber, extremalNumber_mono_k, extremalNumber_mono_s, and 4 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 276,
+    "assumptions": "5 axioms: extremalNumber, extremalNumber_mono_k, extremalNumber_mono_s, brown_erdos_sos_lower_bound, delcourt_postle_theorem. ruzsa_szemeredi_bes and glock_bes_k4 proved as special cases of Delcourt-Postle.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -173,9 +173,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1157",
-    "lineCount": 275,
-    "axiomCount": 7,
-    "theoremCount": 16,
+    "lineCount": 276,
+    "axiomCount": 5,
+    "theoremCount": 18,
     "definitionCount": 4
   }
 }

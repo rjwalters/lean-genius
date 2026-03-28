@@ -246,6 +246,21 @@ theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
            le_trans hrep (sumRepCount_le_of_subset hsub _)⟩
   omega
 
+/-- The set of distinct pairwise sums from A ⊆ {1,...,N} has at most 2N-1 elements,
+    since all sums a+b lie in {2,...,2N}. -/
+theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) :
+    ((A ×ˢ A).image (fun p => p.1 + p.2)).card ≤ 2 * N - 1 := by
+  calc ((A ×ˢ A).image (fun p => p.1 + p.2)).card
+      ≤ (Finset.Icc 2 (2 * N)).card := by
+        apply Finset.card_le_card
+        intro s hs
+        simp only [Finset.mem_image, Finset.mem_product, Prod.exists] at hs
+        obtain ⟨a, b, ha, hb, rfl⟩ := hs
+        simp only [Finset.mem_Icc] at hA ⊢
+        have := hA a ha; have := hA b hb; omega
+    _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
+
 /-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.
 
@@ -256,7 +271,8 @@ theorem isSidon_subset {A B : Finset ℕ} (h : IsSidon B) (hsub : A ⊆ B) :
     The bug: when the single allowed collision has multiplicity c ≥ 3,
     the number of distinct sums is k(k+1)/2 - (c-1), which can be
     strictly less than k(k+1)/2 - 1. The correct bound is:
-    #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1. -/
+    #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1.
+    The correct PROVED bound is `distinct_sums_bounded` above. -/
 theorem almost_sidon_sum_range_false_note : True := trivial
 
 /-- The reflected construction: B ∪ (N − B) is almost-Sidon when B is Sidon.

@@ -79,4 +79,5 @@ axiom digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
 
 /-- The base-3 representation of 0 is empty, so 0 trivially has only
 digits 0 and 1. -/
-axiom zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0
+theorem zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0 := by
+  intro d hd; exact absurd hd (List.not_mem_nil d)

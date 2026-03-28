@@ -42,11 +42,6 @@ A number m is B-smooth if all prime factors of m are ≤ B.
 def IsSmooth (m B : ℕ) : Prop :=
   m ≥ 1 ∧ ∀ p : ℕ, p.Prime → p ∣ m → p ≤ B
 
-/--
-The largest prime factor of n (0 if n ≤ 1).
--/
-noncomputable axiom largestPrimeFactor (n : ℕ) : ℕ
-
 /- ## Part II: Consecutive Smooth Runs -/
 
 /--

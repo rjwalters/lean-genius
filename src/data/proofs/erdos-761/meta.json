@@ -37,9 +37,9 @@
         "module": "Mathlib.Data.Fintype.Basic"
       }
     ],
-    "axiomCount": 8,
-    "lineCount": 148,
-    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "axiomCount": 3,
+    "lineCount": 218,
+    "assumptions": "3 axioms: erdos_761_question1 (OPEN), erdos_761_question2 (OPEN), complete_dichrom (Neumann-Lara 1982). Proved: dichrom_le_chrom, cochrom_le_chrom, odd_cycle_dichrom, dichrom_mono, acyclic_orientation_exists.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
