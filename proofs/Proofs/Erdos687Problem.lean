@@ -85,6 +85,43 @@ axiom jacobsthalSet_bddAbove (x : ℕ) :
 
 /- ## Structural Properties -/
 
+/-- The Jacobsthal set is downward closed: if y achievable, so is y' ≤ y. -/
+theorem jacobsthalSet_downward {x y y' : ℕ} (hy : y ∈ jacobsthalSet x) (h : y' ≤ y) :
+    y' ∈ jacobsthalSet x := by
+  obtain ⟨a, ha⟩ := hy
+  exact ⟨a, fun n h1 hn => ha n h1 (hn.trans (by exact_mod_cast h))⟩
+
+/-- When there are no primes ≤ x, jacobsthalSet x = {0}: nothing can be covered. -/
+theorem jacobsthalSet_eq_zero_of_no_primes {x : ℕ} (hx : ∀ p, Nat.Prime p → ¬(p ≤ x)) :
+    jacobsthalSet x = {0} := by
+  ext y
+  simp only [Set.mem_singleton_iff]
+  constructor
+  · intro hy
+    by_contra hne
+    have hpos : 1 ≤ y := Nat.one_le_iff_ne_zero.mpr hne
+    obtain ⟨a, ha⟩ := hy
+    obtain ⟨p, hp, hpx, _⟩ := ha 1 le_rfl (by exact_mod_cast hpos)
+    exact hx p hp hpx
+  · intro hy; subst hy
+    exact ⟨fun _ _ _ => 0, fun n h1 h2 => by omega⟩
+
+/-- jacobsthalSet 0 = {0}: no primes ≤ 0. -/
+theorem jacobsthalSet_zero : jacobsthalSet 0 = {0} :=
+  jacobsthalSet_eq_zero_of_no_primes (fun p hp hpx => by have := hp.two_le; omega)
+
+/-- jacobsthalSet 1 = {0}: no primes ≤ 1. -/
+theorem jacobsthalSet_one : jacobsthalSet 1 = {0} :=
+  jacobsthalSet_eq_zero_of_no_primes (fun p hp hpx => by have := hp.two_le; omega)
+
+/-- Y(0) = 0. -/
+theorem jacobsthalY_zero : jacobsthalY 0 = 0 := by
+  simp [jacobsthalY, jacobsthalSet_zero]
+
+/-- Y(1) = 0. -/
+theorem jacobsthalY_one : jacobsthalY 1 = 0 := by
+  simp [jacobsthalY, jacobsthalSet_one]
+
 /-- Key lemma: the Jacobsthal set for x₁ is contained in that for x₂
 when x₁ ≤ x₂. Given a covering for primes ≤ x₁, extend it to primes
 ≤ x₂ by choosing class 0 for each new prime. -/
