@@ -888,8 +888,17 @@ get_consecutive_failures() {
         *) echo "0"; return ;;
     esac
     if [[ ! -f "$log_file" ]]; then echo "0"; return; fi
+
+    # Only count failures from the current daemon run (after the last "Cycle 1 start")
+    local last_restart_line
+    last_restart_line=$(grep -n "Cycle 1 start" "$log_file" | tail -1 | cut -d: -f1)
+
     local count
-    count=$(grep -o "consecutive failures: [0-9]*" "$log_file" | tail -1 | grep -o '[0-9]*$')
+    if [[ -n "$last_restart_line" ]]; then
+        count=$(tail -n +"$last_restart_line" "$log_file" | grep -o "consecutive failures: [0-9]*" | tail -1 | grep -o '[0-9]*$')
+    else
+        count=$(grep -o "consecutive failures: [0-9]*" "$log_file" | tail -1 | grep -o '[0-9]*$')
+    fi
     echo "${count:-0}"
 }
 CONSECUTIVE_FAILURE_THRESHOLD=10
