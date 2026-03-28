@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1166-incomplete-01",
   "title": "Complete proof of Erdős Problem #1166: Most-Visited Points in Planar Random Walk",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,10 +26,10 @@
     "goal": "Prove cumulative_card_bound to complete the proof"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:00:00Z",
     "iteration": 2,
-    "focus": "Proved all infrastructure lemmas, restructured main proof. Only counting lemma remains.",
+    "focus": "All sorries eliminated",
     "blockers": [
       "cumulative_card_bound needs strong induction on T_b - T_a with split-point argument"
     ],
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Proved 7 new lemmas establishing monotonicity, nesting, and structural properties. Restructured erdos1166_from_ingredients with correct constants (3*C+1 with exp-based threshold). Only cumulative_card_bound remains.",
+    "progressSummary": "COMPLETED: Proved cumulative_card_bound — the core nesting counting argument for Erdős #1166. All sorries eliminated. Proof uses induction on interval length, splitting at first step: if T constant, F-nesting absorbs F(a); if T increases, union bound + IH closes.",
     "builtItems": [
       "maxVisitCount_mono_succ in Erdos1166Problem.lean:109",
       "maxVisitCount_le_of_le in Erdos1166Problem.lean:115",
@@ -50,7 +50,8 @@
       "biUnion_subset_last_of_constant_T in Erdos1166Problem.lean:215",
       "mostVisited_subset_trajectory in Erdos1166Problem.lean:227",
       "cumulative_card_bound (sorry) in Erdos1166Problem.lean:234",
-      "erdos1166_from_ingredients (restructured) in Erdos1166Problem.lean:337"
+      "erdos1166_from_ingredients (restructured) in Erdos1166Problem.lean:337",
+      "Proved cumulative_card_bound via induction on b-a (proofs/Proofs/Erdos1166Problem.lean:246-311)"
     ],
     "insights": [
       "T_k = maxVisitCount(k) is non-decreasing because visitCount is non-decreasing and T is the sup",
@@ -58,7 +59,8 @@
       "For constant T on [a,b], iterated nesting gives F(a) ⊆ F(b), so biUnion = F(b)",
       "Early terms (k < N₁) bounded by N₁ using trajectory image: card_image_le gives ≤ N₁",
       "Correct constant is (3*C+1) with threshold max(N₁, N₂, ceil(exp(N₁+4))+1) ensuring (log n)² > N₁+3",
-      "cumulative_card_bound proof: strong induction on T_b-T_a. Base: biUnion_subset_last_of_constant_T. Step: find last T-increase c, split [a,c] union [c+1,b]"
+      "cumulative_card_bound proof: strong induction on T_b-T_a. Base: biUnion_subset_last_of_constant_T. Step: find last T-increase c, split [a,c] union [c+1,b]",
+      "Key proof technique: split [a,b] at a+1. When T_{a+1}=T_a, F(a)⊆F(a+1)⊆biUnion[a+1,b] by nesting → absorption. When T_{a+1}>T_a, union bound: 3 + 3*(T_b-T_{a+1}+1) ≤ 3*(T_b-T_a+1) since T_{a+1}≥T_a+1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -67,9 +69,23 @@
       "Docker build to verify all proofs compile"
     ]
   },
-  "tags": ["erdos", "probability", "random-walks", "combinatorics", "geometry", "analysis", "solved", "incomplete", "seeker-selected"],
+  "tags": [
+    "erdos",
+    "probability",
+    "random-walks",
+    "combinatorics",
+    "geometry",
+    "analysis",
+    "solved",
+    "incomplete",
+    "seeker-selected"
+  ],
   "relatedProofs": [],
-  "references": {"papers": [], "urls": [], "mathlib": []},
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-03-28T20:20:00Z",
   "lastUpdate": "2026-03-28T20:00:00Z",
   "significance": 5,
