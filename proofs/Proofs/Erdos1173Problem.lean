@@ -144,14 +144,33 @@ theorem gch_aleph_omega_strong_limit :
   rwa [Nat.cast_add, Nat.cast_one] at this
 
 /-- The almost disjoint condition means the "overlap" between any two
-    images is strictly bounded by ℵ_ω. Since cf(ℵ_ω) = ω, this overlap
-    must be bounded by some ℵ_n. -/
-axiom overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
+    images is strictly bounded by ℵ_ω. Since ℵ_ω = sup_{n<ω} ℵ_n (by
+    `aleph_limit`), any cardinal below ℵ_ω must be ≤ ℵ_n for some n.
+
+    Proof: By contraposition. If ℵ_n < c for all n, then since
+    ℵ_ω = ⨆_{a < ω} ℵ_a, we get ℵ_ω ≤ c, contradicting c < ℵ_ω. -/
+theorem overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
     (had : AlmostDisjoint omega_omega_succ f aleph_omega) :
   ∀ (α β : Ordinal) (hα : α < omega_omega_succ) (hβ : β < omega_omega_succ),
     α ≠ β →
     ∃ n : ℕ, Cardinal.mk { x : { δ : Ordinal // δ < omega_omega_succ } //
-      x ∈ f α hα ∧ x ∈ f β hβ } ≤ Cardinal.aleph n
+      x ∈ f α hα ∧ x ∈ f β hβ } ≤ Cardinal.aleph n := by
+  intro α β hα hβ hab
+  have hlt := had α β hα hβ hab
+  unfold aleph_omega at hlt
+  -- hlt : Cardinal.mk ... < Cardinal.aleph Ordinal.omega0
+  -- By contradiction: if ∀ n, ℵ_n < c, then ℵ_ω ≤ c
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ n : ℕ, Cardinal.aleph ↑n < Cardinal.mk ...
+  apply absurd hlt (not_lt.mpr _)
+  -- Goal: Cardinal.aleph Ordinal.omega0 ≤ Cardinal.mk ...
+  -- ℵ_ω = ⨆_{a < ω₀} ℵ_a by the limit characterization of aleph
+  rw [aleph_limit isSuccLimit_omega0]
+  -- Goal: ⨆ (a : Set.Iio Ordinal.omega0), Cardinal.aleph ↑a ≤ ...
+  exact ciSup_le fun ⟨a, ha⟩ => by
+    obtain ⟨n, rfl⟩ := lt_omega0.mp ha
+    exact le_of_lt (hall n)
 
 -- ============================================================
 -- PART 6: Related Results
