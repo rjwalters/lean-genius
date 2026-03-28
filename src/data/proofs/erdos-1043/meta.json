@@ -17,7 +17,7 @@
       "geometry"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 7,
     "erdosNumber": 1043,
     "erdosUrl": "https://erdosproblems.com/1043",
     "erdosProblemStatus": "solved",
@@ -47,8 +47,8 @@
       "Connection to Bernoulli lemniscates"
     ],
     "axiomCount": 8,
-    "lineCount": 280,
-    "assumptions": "8 axiom(s) and 8 sorry(s). See the Lean source for details."
+    "lineCount": 288,
+    "assumptions": "8 axiom(s) and 7 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Origins in Polynomial Geometry (1958)**\n\nErdős, Herzog, and Piranian posed this problem in their 1958 paper 'Metric properties of polynomials' (J. Analyse Math. 6, 125–148), studying how the level set $L_f = \\{z \\in \\mathbb{C} : |f(z)| \\le 1\\}$ of a monic polynomial spreads in the complex plane. For $f(z) = z^n$, the level set is the closed unit disk $\\overline{B}(0,1)$, whose projection onto any line has length exactly 2 (the diameter). They conjectured this measure of 2 might be universally achievable.\n\n**The Level Set Tradition**: These sets are **lemniscates**, named after the figure-eight curve $|z^2 - 1| = c$ studied by Jakob Bernoulli (1694). The arc length integral for Bernoulli's lemniscate was a catalyst for Euler's and Gauss's work on elliptic integrals. In potential theory, level sets of monic polynomials have logarithmic capacity 1, a normalization due to Fekete's transfinite diameter theorem (1923).\n\n**Pommerenke's Resolution (1961)**: Christian Pommerenke, in 'Über die analytische Kapazität' (Math. Ann. 144, 285–296), proved the conjecture **FALSE**: there exist monic polynomials where every projection has measure $\\ge 2.386$, so no direction achieves the disk's measure of 2. He also proved the positive result that every monic polynomial has some projection $\\le 3.3$. The exact value of the **Pommerenke constant** $\\mathcal{P} = \\sup_f \\inf_u \\mu(\\pi_u(L_f)) \\in [2.386, 3.3]$ remains unknown.",
@@ -75,95 +75,95 @@
       "id": "level-sets",
       "title": "Level Sets of Polynomials",
       "startLine": 43,
-      "endLine": 63,
+      "endLine": 71,
       "summary": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$",
       "mathContext": "$L_f(r) = \\\\{z : |f(z)| \\\\leq r\\\\}$ for monic polynomial $f$. Unit lemniscate: $L_f = L_f(1)$. Capacity: $\\\\text{cap}(L_f) = 1$ for monic $f$ of degree $n$."
     },
     {
       "id": "projections",
       "title": "Projections onto Lines",
-      "startLine": 64,
-      "endLine": 81,
+      "startLine": 72,
+      "endLine": 89,
       "summary": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$",
       "mathContext": "Direction $u \\\\in S^1$, projection $\\\\pi_u(z) = \\\\text{Re}(z\\\\bar{u})$. Projection measure $\\\\mu(\\\\pi_u(L_f))$: the Lebesgue measure of the shadow of $L_f$ onto the line through $u$."
     },
     {
       "id": "examples",
       "title": "Basic Examples",
-      "startLine": 82,
-      "endLine": 93,
+      "startLine": 90,
+      "endLine": 101,
       "summary": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction",
       "mathContext": "Unit disk $\\\\overline{B}(0,1)$: projects to $[-1,1]$ with measure 2 in every direction. This is the simplest lemniscate ($f(z) = z$, degree 1)."
     },
     {
       "id": "ehp-question",
       "title": "The EHP Question",
-      "startLine": 94,
-      "endLine": 108,
+      "startLine": 102,
+      "endLine": 116,
       "summary": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures",
       "mathContext": "EHP Conjecture: $\\\\forall f$ monic, $\\\\exists u$ with $\\\\mu(\\\\pi_u(L_f)) \\\\leq 2$. Equivalently: $\\\\inf_u \\\\mu(\\\\pi_u(L_f)) \\\\leq 2$. DISPROVED by Pommerenke (1961)."
     },
     {
       "id": "counterexample",
       "title": "Pommerenke's Counterexample",
-      "startLine": 109,
-      "endLine": 135,
+      "startLine": 117,
+      "endLine": 143,
       "summary": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$",
       "mathContext": "Pommerenke (1961): $\\\\exists f$ monic with $\\\\inf_u \\\\mu(\\\\pi_u(L_f)) \\\\geq 2.386 > 2$. The lemniscate is wider than the disk in every direction."
     },
     {
       "id": "upper-bound",
       "title": "Pommerenke's Upper Bound",
-      "startLine": 136,
-      "endLine": 149,
+      "startLine": 144,
+      "endLine": 157,
       "summary": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$",
       "mathContext": "$\\\\forall f$ monic, $\\\\exists u$ with $\\\\mu(\\\\pi_u(L_f)) \\\\leq 3.3$. So the minimum projection width is bounded: $2 < \\\\inf_u \\\\mu \\\\leq 3.3$."
     },
     {
       "id": "level-set-properties",
       "title": "Properties of Level Sets",
-      "startLine": 150,
-      "endLine": 166,
+      "startLine": 158,
+      "endLine": 175,
       "summary": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact",
       "mathContext": "Properties: $\\\\text{cap}(L_f) = 1$ (logarithmic capacity), $L_f$ connected iff all roots $\\\\in L_f$, $L_f$ compact, $\\\\text{Area}(L_f) \\\\leq \\\\pi$."
     },
     {
       "id": "width-function",
       "title": "The Width Function",
-      "startLine": 167,
-      "endLine": 185,
+      "startLine": 176,
+      "endLine": 194,
       "summary": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$",
       "mathContext": "Width: $w(S,u) = \\\\mu(\\\\pi_u(S))$, $w_{\\\\min}(S) = \\\\inf_u w$, $w_{\\\\max}(S) = \\\\sup_u w$. The problem asks about $w_{\\\\min}(L_f)$ for monic polynomials."
     },
     {
       "id": "lemniscates",
       "title": "Lemniscates",
-      "startLine": 186,
-      "endLine": 201,
+      "startLine": 195,
+      "endLine": 210,
       "summary": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)",
       "mathContext": "Lemniscate: $\\\\{z : |f(z)| = 1\\\\}$. Bernoulli lemniscate $\\\\{|z^2-1|=c\\\\}$ (figure-eight). Higher-degree lemniscates have $n$ lobes near roots."
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "startLine": 202,
-      "endLine": 217,
+      "startLine": 211,
+      "endLine": 228,
       "summary": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$",
       "mathContext": "Transfinite diameter $d_\\\\infty(L_f) = 1$. Chebyshev polynomials: $T_n$ minimizes $\\\\|p\\\\|_{[-1,1]}$ among monic degree-$n$ polynomials."
     },
     {
       "id": "bounds",
       "title": "Quantitative Bounds",
-      "startLine": 218,
-      "endLine": 229,
+      "startLine": 229,
+      "endLine": 240,
       "summary": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials",
       "mathContext": "$\\\\text{Area}(L_f) \\\\leq \\\\pi$ and $\\\\text{diam}(L_f) \\\\leq 4$ for monic polynomials. Combined with isoperimetric estimates on projection widths."
     },
     {
       "id": "summary",
       "title": "Main Theorem",
-      "startLine": 230,
-      "endLine": 280,
+      "startLine": 241,
+      "endLine": 255,
       "summary": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$",
       "mathContext": "DISPROVED: $\\\\inf_u \\\\mu(\\\\pi_u(L_f))$ can exceed 2 (Pommerenke). But bounded: $\\\\leq 3.3$. The exact supremum of $\\\\inf_u \\\\mu$ over all monic polynomials is unknown."
     }
@@ -251,7 +251,7 @@
       "Complex"
     ],
     "namespace": "Erdos1043",
-    "lineCount": 280,
+    "lineCount": 288,
     "axiomCount": 8,
     "theoremCount": 12,
     "definitionCount": 15
