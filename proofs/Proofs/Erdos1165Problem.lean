@@ -158,8 +158,8 @@ directly part of the problem statement.
     visit count is achieved at a unique site almost surely.
     This motivates the 2D question: in higher dimensions, the
     structure of favourite sites becomes more complex. -/
-axiom bass_griffin_1d_unique :
-  True  -- P(|F_1D(n)| = 1 for all large n) = 1
+theorem bass_griffin_1d_unique :
+  True := trivial  -- P(|F_1D(n)| = 1 for all large n) = 1
 
 theorem bass_griffin_context : True := bass_griffin_1d_unique
 

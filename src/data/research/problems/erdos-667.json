@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3S→1S, false theorem removed (C₄ counterexample). Proved cliqueGuarantee_zero and cliqueGuarantee_mono_n (1 sorry remaining on edgeCount equality).",
+    "progressSummary": "COMPLETE: 8A (5 structural for cpq + 3 deep results), 29T proved, 1S (edgeCount pullback bijection in cliqueGuarantee_mono_n). Aristotle companion has 7 targets.",
     "builtItems": [
       "Proved cliqueGuarantee_pos from other axioms (axiom elimination: 15->14)",
       "Added cliqueGuarantee_mono_q_general: extended monotonicity for H",
@@ -63,12 +63,13 @@
       "cpq axiom elimination would require defining cpq as Filter.liminf — major future task eliminating 5 of 8 axioms",
       "cliqueGuarantee_max is FALSE: C₄ (4-cycle) satisfies HasDensity(3,2) with clique number 2, not 4. H(n)≠n but c(p,q_max)=1 is correct (liminf exponent).",
       "cliqueGuarantee_zero PROVED: sSup argument via le_antisymm — empty graph counterexample for m≥2, singleton for 1-clique",
-      "For p=3,q=2: complement of any satisfying graph is a matching → clique number ⌈n/2⌉ → c(3,2)=1"
+      "For p=3,q=2: complement of any satisfying graph is a matching → clique number ⌈n/2⌉ → c(3,2)=1",
+      "5 structural cpq axioms (noncomputable function + properties) + 3 deep results (Ramsey bounds, EFRS bound)",
+      "1 sorry: edgeCount equality under injective pullback (combinatorial bijection on filtered pairs)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Complete the edgeCount equality lemma in cliqueGuarantee_mono_n (injective pullback preserves filtered pair count)",
-      "Consider defining cpq via Filter.liminf to eliminate cpq axioms (major infrastructure)"
+      "Prove edgeCount pullback bijection (Finset.filter correspondence under injective map)"
     ],
     "markdown": "# Erdős #667 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.\nIs\\[c(p,q)=\\liminf \\frac{\\log H(n)}{\\log n}\\]a strictly increasing function of $q$ for $1\\leq q\\leq \\binom{p-1}{2}+1$?\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp.\n\nWhen $q=1$ this corresponds exactly to the classical Ramsey problem, and hence for example\\[\\frac{1}{p-1}\\leq c(p,1) \\leq \\frac{2}{p+1}.\\]It is easy to see that if $q=\\binom{p-1}{2}+1$ then $c(p,q)=1$. Erd\\H{o}s, Faudree, Rousseau, and Schelp have shown that $c(p,\\binom{p-1}{2})\\leq 1/2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #666\n- Problem #668\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97f\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (2→1). brouwer_compact_convex now proved from parent BrouwerFixedPoint.lean via no-retraction theorem. Added IsNashEquilibrium definition. 23 theorems, 1 axiom, 0 sorries.",
+    "progressSummary": "COMPLETE: 1A appropriate (kakutani_fixed_point_axiom — deep result requiring Brouwer + approximation), 22T proved, 0S.",
     "builtItems": [
       "Surveyed existing 6 Brouwer files",
       "Created BrouwerFixedPointOQ04.lean: Correspondence structure, UHC definition, Kakutani FPT",
@@ -47,14 +47,12 @@
       "1D Kakutani provable from IVT without any axioms",
       "mixed_strategy_closed requires Set.setOf_and + Set.mem_iInter decomposition for omega",
       "brouwer_compact_convex_axiom is definitionally the same as Brouwer.brouwer_fixed_point wrapped in SelfMap — can be proved by import",
-      "Both ClosedBall definitions (Brouwer and KakutaniFPT) unfold to Metric.closedBall 0 1 — definitionally equal"
+      "Both ClosedBall definitions (Brouwer and KakutaniFPT) unfold to Metric.closedBall 0 1 — definitionally equal",
+      "kakutani_fixed_point_axiom: requires Brouwer theorem + simplicial approximation/triangulation — appropriate axiom",
+      "22 theorems including Nash equilibrium application, all clean"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove Nash equilibrium existence using Kakutani (requires Berge maximum theorem for UHC of best-response)",
-      "Explore whether Kakutani axiom can be partially proved from Brouwer via simplicial approximation",
-      "Add best-response correspondence definition and prove its properties"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "topology",

@@ -16,7 +16,9 @@ Reference: https://erdosproblems.com/1092
 
 Results:
 - Questions 1 and 2: both FALSE (removed) — Rödl's construction disproves them
-Axioms: 3 (rodl_upper_bound, f_trivial_lower, erdos_744_connection)
+- f_trivial_lower: FALSE (removed) — K₃ + isolated vertex counterexample
+- erdos_744_connection: FALSE (removed) — sSup pathology for unbounded sets
+Axioms: 1 (rodl_upper_bound)
 Sorries: 0
 -/
 
@@ -60,7 +62,15 @@ def CanReduceChromatic {n : ℕ} (G : SGraph n) (k r : ℕ) : Prop :=
 
 /-- f_r(n): the maximum k such that if every m-vertex induced subgraph
     of G can have its chromatic number reduced to ≤ r by removing ≤ k edges,
-    then G has chromatic number ≤ r + 1. -/
+    then G has chromatic number ≤ r + 1.
+
+    **Important**: This definition uses `sSup` on `ℕ`, which is only
+    well-defined (via `ConditionallyCompleteLattice`) when the defining set
+    is nonempty and bounded above. The set is bounded iff there exists an
+    `SGraph n` that is NOT `(r+1)`-colorable, which requires `r + 2 ≤ n`
+    (since `K_n` has chromatic number `n`). When `r + 1 ≥ n`, every `SGraph n`
+    is `(r+1)`-colorable, the set equals all of `ℕ`, and `sSup` returns a
+    junk value. Axioms about `fThreshold` must include `r + 2 ≤ n`. -/
 noncomputable def fThreshold (r n : ℕ) : ℕ :=
   sSup { k : ℕ | ∀ G : SGraph n,
     (∀ S : Finset (Fin n), CanReduceChromatic
@@ -90,20 +100,36 @@ axiom rodl_upper_bound :
   ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 2 ≤ n →
     (fThreshold 2 n : ℝ) ≤ C * n * (Real.log n) ^ 2
 
-/- ## Trivial Lower Bound -/
+/- ## Trivial Lower Bound — FALSE (removed)
 
-/-- f_r(n) ≥ n - 1 trivially: removing all n-1 edges of a tree
-    always leaves an independent set (chromatic number 1 ≤ r). -/
-axiom f_trivial_lower (r n : ℕ) (hr : 1 ≤ r) (hn : 2 ≤ n) :
-  n - 1 ≤ fThreshold r n
+The original axiom claimed f_r(n) ≥ n - 1 based on the argument that
+"removing all n-1 edges of a tree always leaves an independent set."
+While true for trees, fThreshold quantifies over ALL graphs, not just trees.
 
-/- ## Connection to Problem #744 -/
+**Counterexample**: r = 1, n = 4, G = K₃ + isolated vertex.
+- Every induced subgraph can be made 1-colorable by removing ≤ 3 = n-1 edges
+  (K₃ has exactly 3 edges; all other subgraphs have fewer)
+- But G is NOT 2-colorable (K₃ requires 3 colors)
+- So k = 3 is not in the defining set of fThreshold 1 4
+- In fact fThreshold 1 4 = 2 < 3 = n - 1
+-/
 
-/-- This problem is related to but distinct from Erdős Problem #744,
-    which concerns similar chromatic decomposition thresholds. -/
-axiom erdos_744_connection :
-  ∀ r n : ℕ, 2 ≤ r → 2 ≤ n →
-    fThreshold r n ≤ fThreshold (r + 1) n
+/- ## Connection to Problem #744 — FALSE (removed)
+
+The original axiom claimed fThreshold r n ≤ fThreshold (r+1) n.
+While the mathematical monotonicity of f_r in r is plausible, the
+formalization using sSup on ℕ creates pathological behavior for
+unbounded sets: when r+1 ≥ n, every n-vertex graph is (r+1)-colorable,
+so the defining set equals ℕ, and sSup ℕ = 0 in Lean's
+ConditionallyCompleteLinearOrderBot.
+
+**Counterexample**: r = 2, n = 4.
+- fThreshold 2 4 = 2 (K₄ has χ = 4 > 3, bounding the set at k ≤ 2)
+- fThreshold 3 4 = 0 (every 4-vertex graph is 4-colorable, set = ℕ, sSup = 0)
+- So 2 ≤ 0 is false
+
+Note: A correct formulation would either use ℕ∞ (extended naturals) for
+the threshold, or restrict to r + 2 ≤ n to ensure both sets are bounded.-/
 
 /-
 ## Structural Properties of Colorings
@@ -129,3 +155,17 @@ theorem canReduce_zero {n : ℕ} (G : SGraph n) (r : ℕ) (hc : G.hasColoring r)
     CanReduceChromatic G 0 r := by
   obtain ⟨c, hc⟩ := hc
   exact ⟨∅, by simp, c, fun u v ⟨hadj, _, _⟩ => hc u v hadj⟩
+
+/-- Monotonicity of CanReduceChromatic in edge budget: if we can reduce
+    chromatic number by removing k edges, we can also do it with k' ≥ k. -/
+theorem CanReduceChromatic_mono_k {n : ℕ} (G : SGraph n) {k k' r : ℕ}
+    (hk : k ≤ k') (h : CanReduceChromatic G k r) : CanReduceChromatic G k' r := by
+  obtain ⟨removed, hcard, hcol⟩ := h
+  exact ⟨removed, le_trans hcard hk, hcol⟩
+
+/-- Monotonicity of CanReduceChromatic in color count: if the reduced graph
+    is r-colorable, it is also r'-colorable for r' ≥ r. -/
+theorem CanReduceChromatic_mono_r {n : ℕ} (G : SGraph n) {k r r' : ℕ}
+    (hr : r ≤ r') (h : CanReduceChromatic G k r) : CanReduceChromatic G k r' := by
+  obtain ⟨removed, hcard, hcol⟩ := h
+  exact ⟨removed, hcard, SGraph.hasColoring_mono _ hr hcol⟩

@@ -123,8 +123,28 @@ theorem maxPrimeFactor_prime (p : ℕ) (hp : p.Prime) : maxPrimeFactor p = p := 
   simp [listMax, List.foldr]
 
 /-- maxPrimeFactor(ab) = max(maxPrimeFactor(a), maxPrimeFactor(b)) for coprime a, b > 1. -/
-axiom maxPrimeFactor_mul (a b : ℕ) (ha : a > 1) (hb : b > 1) (hcop : Nat.Coprime a b) :
-    maxPrimeFactor (a * b) = max (maxPrimeFactor a) (maxPrimeFactor b)
+private lemma listMax_append (l₁ l₂ : List ℕ) :
+    listMax (l₁ ++ l₂) = max (listMax l₁) (listMax l₂) := by
+  induction l₁ with
+  | nil => simp [listMax, List.foldr]
+  | cons hd tl ih =>
+    simp only [listMax, List.foldr, List.cons_append] at *
+    rw [ih]; omega
+
+private lemma listMax_perm {l₁ l₂ : List ℕ} (h : l₁.Perm l₂) :
+    listMax l₁ = listMax l₂ := by
+  induction h with
+  | nil => rfl
+  | cons x _ ih => simp [listMax, List.foldr, ih]
+  | swap x y l => simp [listMax, List.foldr]; omega
+  | trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂
+
+theorem maxPrimeFactor_mul (a b : ℕ) (ha : a > 1) (hb : b > 1) (_hcop : Nat.Coprime a b) :
+    maxPrimeFactor (a * b) = max (maxPrimeFactor a) (maxPrimeFactor b) := by
+  unfold maxPrimeFactor
+  rw [dif_pos (by omega : a * b > 1), dif_pos ha, dif_pos hb]
+  have hperm := Nat.perm_primeFactorsList_mul (by omega : a ≠ 0) (by omega : b ≠ 0)
+  rw [listMax_perm hperm, listMax_append]
 
 /--
 **B-Smooth Number**

@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-15T14:52:37.979Z",
     "iteration": 2,
     "focus": "Initial exploration of the problem.",
@@ -29,13 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5A→3A (by prior researcher). Added 3 structural theorems (hasColoring_self, hasColoring_mono, canReduce_zero). 3 axioms remain: Rodl bound, trivial lower bound, connection to #744.",
+    "progressSummary": "PROGRESS: 3A→1A. Removed 2 unsound axioms (f_trivial_lower, erdos_744_connection) that made claims about sSup of unbounded sets. Added 2 structural theorems (CanReduceChromatic_mono_k, CanReduceChromatic_mono_r). Only rodl_upper_bound remains (deep published result).",
     "builtItems": [
       "Removed false axiom erdos_1092_question1 with documented counterexample",
       "Removed false axiom erdos_1092_question2 (consequence of Q1 being false)",
       "Proved hasColoring_self: every graph on n vertices is n-colorable",
       "Proved hasColoring_mono: r1-colorable implies r2-colorable for r1 ≤ r2",
-      "Proved canReduce_zero: if G is r-colorable, no edge removal needed"
+      "Proved canReduce_zero: if G is r-colorable, no edge removal needed",
+      "Removed unsound axiom f_trivial_lower (sSup undefined for unbounded sets)",
+      "Removed unsound axiom erdos_744_connection (sSup undefined for unbounded sets)",
+      "Proved CanReduceChromatic_mono_k: monotonicity of edge removal budget",
+      "Proved CanReduceChromatic_mono_r: monotonicity of color count in CanReduceChromatic",
+      "Documented sSup boundedness requirement on fThreshold definition"
     ],
     "insights": [
       "erdos_1092_question1 is FALSE: asserts f_2(n) >> n but Tang/Rodl showed f_2(n) = O(n polylog(n))",
@@ -44,7 +49,10 @@
       "The file docstring already acknowledges Q1 is disproved but axiomatized it anyway",
       "Identity function provides n-coloring (irreflexivity ensures distinct adjacent colors)",
       "Color embedding via Fin inclusion preserves proper coloring property",
-      "Remaining 3 axioms (rodl_upper_bound, f_trivial_lower, erdos_744_connection) are deep graph-theoretic results"
+      "fThreshold uses sSup on ℕ which is only well-defined for bounded sets. When r+1 >= n, every SGraph n is (r+1)-colorable so the defining set is all of ℕ (unbounded) and sSup returns junk.",
+      "f_trivial_lower was unsound: for r=n-1 (satisfying 1≤r, 2≤n), fThreshold(n-1,n) is junk. A correct version needs r+2≤n.",
+      "erdos_744_connection was unsound: for r=n-2, fThreshold(n-2,n) is well-defined but fThreshold(n-1,n) is junk. A correct version needs r+3≤n.",
+      "Added CanReduceChromatic_mono_k and CanReduceChromatic_mono_r as proved structural lemmas"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -72,9 +80,9 @@
     {
       "path": "Proofs/Erdos1092Problem.lean",
       "filename": "Erdos1092Problem.lean",
-      "lineCount": 132,
-      "theoremCount": 5,
-      "axiomCount": 3,
+      "lineCount": 171,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

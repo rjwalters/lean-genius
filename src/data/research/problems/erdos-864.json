@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T10:32:49.761Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,28 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 1 axiom (almost_sidon_exceeds_sidon proved from erdos_freud_lower_bound via √3<40/23 bound).",
+    "progressSummary": "PROGRESS: Removed false axiom almost_sidon_sum_range (4A→3A). Collision multiplicity r can be |B| >> 2 in reflected construction, violating the claimed bound. Remaining: erdos_freud_lower_bound (deep), sidon_upper_bound (classical), reflected_construction_valid (construction).",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
       "isAlmostSidon_subset: almost-Sidon is monotone under subsets",
       "isAlmostSidon_empty: empty set is almost-Sidon",
-      "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)"
+      "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range",
+      "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)",
+      "REMOVED false axiom almost_sidon_sum_range: |A|(|A|+1)/2-1 ≤ 2N-1 is false when collision multiplicity r > 2"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
       "multiRepSet A ⊆ multiRepSet B when A ⊆ B — follows from sumRepCount monotonicity",
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
-      "All 5 axioms are deep results: asymptotic bounds (EF lower, Sidon upper, comparison) and combinatorial arguments (sum range, reflected construction)",
-      "almost_sidon_sum_range might have an off-by-one for large collision multiplicity r — worth verifying",
-      "almost_sidon_exceeds_sidon is REDUNDANT: follows from erdos_freud_lower_bound since 2/sqrt(3) > 1, so (2/sqrt(3)-eps)*sqrt(N) > sqrt(N)+1 for large N",
-      "Proof requires numerical bound on sqrt(3) < 2 and Real analysis (sqrt_lt_sqrt, div manipulation)"
+      "almost_sidon_sum_range was FALSE: claimed |A|(|A|+1)/2 ≤ 2N but reflected construction has collision multiplicity |B| at sum N",
+      "Correct bound: |A|(|A|+1)/2 ≤ 2N + r - 2 where r is max collision multiplicity. Use distinct_sums_bounded for correct count.",
+      "Remaining 3 axioms are all deep results: EF lower bound (asymptotic construction), Sidon upper (classical), reflected construction (nontrivial case analysis)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove almost_sidon_sum_range via counting argument (distinct sums vs possible range)",
-      "Prove reflected_construction_valid — show B ∪ (N-B) has at most 1 collision at n=N"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #864 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots N\\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\\leq b\\in A$). Estimate the maximal possible size of $\\lvert A\\rvert$ - in particular, is it true that\\[\\lvert A\\rvert \\leq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}?\\]\n\n\n\nA problem of Erd\\H{o}s and Freud, who prove that\\[\\lvert A\\rvert \\geq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}.\\]This is shown by taking a genuine Sidon set $B\\subset [1,N/3]$ of size $\\sim N^{1/2}/\\sqrt{3}$ and taking the union with $\\{N-b : b\\in B\\}$.\n\nFor the analogous question with $n=a-b$ they prove that $\\lvert A\\rvert\\sim N^{1/2}$.\n\nThis is a weaker form of [840].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #840\n- Problem #863\n- Problem #865\n- Problem #39\n- Problem #1\n\n## References\n\n- ErFr91\n- Er92c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -74,9 +72,9 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 220,
-      "theoremCount": 9,
-      "axiomCount": 5,
+      "lineCount": 269,
+      "theoremCount": 10,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

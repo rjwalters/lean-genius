@@ -42,10 +42,45 @@ A number m is B-smooth if all prime factors of m are ≤ B.
 def IsSmooth (m B : ℕ) : Prop :=
   m ≥ 1 ∧ ∀ p : ℕ, p.Prime → p ∣ m → p ≤ B
 
-/--
-The largest prime factor of n (0 if n ≤ 1).
--/
-noncomputable axiom largestPrimeFactor (n : ℕ) : ℕ
+/-- 1 is B-smooth for any B (vacuously: 1 has no prime factors). -/
+theorem isSmooth_one (B : ℕ) : IsSmooth 1 B := by
+  constructor
+  · exact le_refl 1
+  · intro p hp hdvd
+    exfalso
+    have : p = 1 := Nat.dvd_one.mp hdvd
+    subst this
+    exact Nat.not_prime_one hp
+
+/-- Smoothness is monotone in the bound: B-smooth implies B'-smooth for B ≤ B'. -/
+theorem isSmooth_mono_B {m B B' : ℕ} (h : B ≤ B') (hs : IsSmooth m B) : IsSmooth m B' :=
+  ⟨hs.1, fun p hp hdvd => le_trans (hs.2 p hp hdvd) h⟩
+
+/-- Any prime p is p-smooth. -/
+theorem isSmooth_prime_self {p : ℕ} (hp : p.Prime) : IsSmooth p p :=
+  ⟨hp.pos, fun q hq hdvd => by
+    rcases hq.eq_one_or_self_of_dvd p (Nat.dvd_of_dvd_of_dvd hdvd (dvd_refl p)) with h | h
+    · exact absurd h hq.ne_one
+    · rw [← (hp.eq_one_or_self_of_dvd q hdvd).resolve_left hq.ne_one]⟩
+
+/-- Products of B-smooth numbers are B-smooth. -/
+theorem isSmooth_mul {m n B : ℕ} (hm : IsSmooth m B) (hn : IsSmooth n B) :
+    IsSmooth (m * n) B := by
+  constructor
+  · exact Nat.one_le_iff_ne_zero.mpr (mul_ne_zero
+      (Nat.one_le_iff_ne_zero.mp hm.1) (Nat.one_le_iff_ne_zero.mp hn.1))
+  · intro p hp hdvd
+    rcases hp.dvd_mul.mp hdvd with h | h
+    · exact hm.2 p hp h
+    · exact hn.2 p hp h
+
+/-- Prime powers p^k are p-smooth. -/
+theorem isSmooth_prime_pow {p k : ℕ} (hp : p.Prime) (hk : k ≥ 1) : IsSmooth (p^k) p := by
+  constructor
+  · exact Nat.one_le_pow k p hp.pos
+  · intro q hq hdvd
+    have : q ∣ p := (hq.dvd_of_dvd_pow hdvd)
+    exact Nat.le_of_dvd hp.pos this
 
 /- ## Part II: Consecutive Smooth Runs -/
 
@@ -127,5 +162,15 @@ Erdős Problem #369 asks whether consecutive smooth numbers exist
 in {1,…,n} for all large n. Open even for k = 2. Balog–Wooley
 proved infinitely many exist, but not for all n.
 -/
+
+/-- (1, 2) form a run of 2 consecutive 2-smooth numbers:
+    1 is vacuously smooth, 2 is 2-smooth. -/
+theorem consecutiveSmoothRun_1_2_2 : ConsecutiveSmoothRun 1 2 2 := by
+  constructor
+  · omega
+  · intro i hi
+    interval_cases i
+    · simpa using isSmooth_one 2
+    · exact ⟨by omega, fun p hp hdvd => Nat.le_of_dvd (by omega) hdvd⟩
 
 end Erdos369

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. 0 sorry, 2 axioms (both deep), 14 theorems proved. rpow algebra sorry in growth_satisfies_ruzsa_necessary proved via sqrt substitution and nlinarith.",
+    "progressSummary": "COMPLETE: 2A appropriate (deep), 13T proved, 0S.",
     "builtItems": [
       "Narrowed sorry in growth_satisfies_ruzsa_necessary to algebraic rpow bound",
       "Proof structure: filter_upwards combines counting approx with algebraic bound",
@@ -45,10 +45,7 @@
       "growth_satisfies_ruzsa_necessary: proved via converting rpow to sqrt, then using (C*s-2)*s^3 + s^2*(s-1) >= 0 decomposition"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Assess axiom smooth23_schnirelmann_zero for provability from smooth23_counting",
-      "Assess axiom smooth23_not_lacunary for provability from Mathlib"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

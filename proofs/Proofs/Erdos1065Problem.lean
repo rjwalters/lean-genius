@@ -37,9 +37,12 @@ def IsTwoThreeTimePrimePlusOne (p : ℕ) : Prop :=
 axiom erdos_1065a :
   Set.Infinite {p : ℕ | IsTwoTimePrimePlusOne p}
 
-/-- **Erdős Problem #1065b**: are there infinitely many primes p = 2^k · 3^l · q + 1? -/
-axiom erdos_1065b :
-  Set.Infinite {p : ℕ | IsTwoThreeTimePrimePlusOne p}
+/-- **Erdős Problem #1065b**: infinitely many primes p = 2^k · 3^l · q + 1.
+    PROVED from erdos_1065a: every Form A prime is Form B (take l = 0).
+    (Previously axiom; axiom count reduced 2→1.) -/
+theorem erdos_1065b :
+    Set.Infinite {p : ℕ | IsTwoThreeTimePrimePlusOne p} :=
+  conjecture_a_implies_b erdos_1065a
 
 -- ## Verified Form A Examples
 
@@ -317,6 +320,65 @@ theorem not_form_a_43 : ¬ IsTwoTimePrimePlusOne 43 := by
   · omega
   · omega
 
+/-- p = 67 is NOT Form A: 66 = 2 · 33 and 33 = 3 · 11 is not prime. -/
+theorem not_form_a_67 : ¬ IsTwoTimePrimePlusOne 67 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h66 : 2 ^ k * q = 66 := by omega
+  have hk : k ≤ 6 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 66 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 33 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+  · omega
+  · omega
+
+/-- p = 73 is NOT Form A: 72 = 2³ · 9 and 9 = 3² is not prime. -/
+theorem not_form_a_73 : ¬ IsTwoTimePrimePlusOne 73 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h72 : 2 ^ k * q = 72 := by omega
+  have hk : k ≤ 6 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 72 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 36 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 18 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 9 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+
+/-- p = 79 is NOT Form A: 78 = 2 · 39 and 39 = 3 · 13 is not prime. -/
+theorem not_form_a_79 : ¬ IsTwoTimePrimePlusOne 79 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h78 : 2 ^ k * q = 78 := by omega
+  have hk : k ≤ 6 := by
+    by_contra hk; push_neg at hk
+    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    nlinarith [hq.two_le]
+  interval_cases k
+  · have : q = 78 := by omega
+    subst this; exact absurd hq (by decide)
+  · have : q = 39 := by omega
+    subst this; exact absurd hq (by decide)
+  · omega
+  · omega
+  · omega
+  · omega
+  · omega
+
 -- ## Form A ⊊ Form B: formal strict inclusion
 
 /-- Form A ⊊ Form B: 37 witnesses the strict inclusion (Form B but not Form A). -/
@@ -343,6 +405,21 @@ theorem strict_inclusion_31 :
 theorem strict_inclusion_43 :
     IsTwoThreeTimePrimePlusOne 43 ∧ ¬ IsTwoTimePrimePlusOne 43 :=
   ⟨example_43_extended, not_form_a_43⟩
+
+/-- Form A ⊊ Form B: 67 witnesses the strict inclusion. -/
+theorem strict_inclusion_67 :
+    IsTwoThreeTimePrimePlusOne 67 ∧ ¬ IsTwoTimePrimePlusOne 67 :=
+  ⟨example_67_extended, not_form_a_67⟩
+
+/-- Form A ⊊ Form B: 73 witnesses the strict inclusion. -/
+theorem strict_inclusion_73 :
+    IsTwoThreeTimePrimePlusOne 73 ∧ ¬ IsTwoTimePrimePlusOne 73 :=
+  ⟨example_73_extended, not_form_a_73⟩
+
+/-- Form A ⊊ Form B: 79 witnesses the strict inclusion. -/
+theorem strict_inclusion_79 :
+    IsTwoThreeTimePrimePlusOne 79 ∧ ¬ IsTwoTimePrimePlusOne 79 :=
+  ⟨example_79_extended, not_form_a_79⟩
 
 -- ## Structural Theorems
 

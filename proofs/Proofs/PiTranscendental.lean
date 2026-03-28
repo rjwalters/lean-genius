@@ -213,11 +213,30 @@ theorem two_pi_transcendental_axiom : Transcendental ℤ (2 * Real.pi) := by
 theorem two_pi_transcendental : Transcendental ℤ (2 * Real.pi) :=
   two_pi_transcendental_axiom
 
-/-- **Axiom: π² is transcendental**
+/-- **π² is transcendental** (formerly axiom, now proved)
 
     If π² were algebraic, say p(π²) = 0, then π satisfies q(X) = p(X²),
     making π algebraic. This contradicts π being transcendental. -/
-axiom pi_sq_transcendental_axiom : Transcendental ℤ (Real.pi ^ 2)
+theorem pi_sq_transcendental_axiom : Transcendental ℤ (Real.pi ^ 2) := by
+  intro halg
+  have hq : IsAlgebraic ℚ (Real.pi ^ 2) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
+  obtain ⟨p, hp_ne, hp_eval⟩ := hq
+  have hpi : IsAlgebraic ℚ Real.pi := by
+    refine ⟨p.comp (Polynomial.X ^ 2), ?_, ?_⟩
+    · -- p.comp (X^2) ≠ 0: either p is a nonzero constant (comp = p) or
+      -- natDegree(p.comp(X^2)) = natDegree(p) * 2 > 0
+      intro h
+      rcases Nat.eq_zero_or_pos p.natDegree with hd | hd
+      · have heq := Polynomial.eq_C_of_natDegree_eq_zero hd
+        rw [heq, Polynomial.C_comp] at h
+        rw [heq] at hp_ne; exact hp_ne h
+      · have hpos : 0 < (p.comp (Polynomial.X ^ 2)).natDegree := by
+          rw [Polynomial.natDegree_comp]
+          simp only [Polynomial.natDegree_X_pow]
+          omega
+        simp [h] at hpos
+    · rw [Polynomial.aeval_comp, map_pow, Polynomial.aeval_X]; exact hp_eval
+  exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
 
 /-- π² is transcendental -/
 theorem pi_sq_transcendental : Transcendental ℤ (Real.pi ^ 2) :=

@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: maxGap_tendsto_atTop proved (2->1 axioms). File: 22 theorems, 1 axiom (open conjecture), 0 sorries, 314 lines.",
+    "progressSummary": "COMPLETE: 1A appropriate (open conjecture), 19T proved, 0S.",
     "builtItems": [
       "proofs/Proofs/Erdos1137Problem.lean - 210 lines, 17 theorems, 3 axioms",
       "src/data/proofs/erdos-1137/ - complete gallery entry",
@@ -72,9 +72,7 @@
       "No direct nth_prime_one theorem in Mathlib (proved via Nat.nth_count + decide)",
       "Nat.even_sub signature should be verified against current Mathlib version"
     ],
-    "nextSteps": [
-      "Only erdos_1137 (open conjecture) remains as axiom"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1137 - Knowledge Base\n\n## Problem Statement\n\nLet $d_n = p_{n+1} - p_n$, where $p_n$ is the $n$th prime. Is it true that\n$$\\frac{\\max_{n<x} d_n d_{n-1}}{(\\max_{n<x} d_n)^2} \\to 0$$\nas $x \\to \\infty$?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Reference**: [Va99, §1.2]\n\n**Tractability Score**: 6/10 (open conjecture, but basic properties provable)\n**Aristotle Suitable**: Partially (basic lemmas yes, main conjecture no)\n\n## Session 1 (2026-03-23, researcher-5)\n\n**Decision**: DEEP DIVE\n**Outcome**: Created complete formalization with 17 theorems proved\n\nKey results:\n- Defined primeGap, maxGap, erdosRatio\n- Proved gap positivity, parity, and specific values\n- Stated main conjecture as axiom\n- Created gallery entry\n\n## Tags\n\n- erdos\n- number-theory\n- prime-gaps\n- analytic-number-theory\n\n## Related Problems\n\n- Erdős #6 (Cramér's conjecture on maximal prime gaps)\n- PrimeGapBounds.lean (Bertrand postulate infrastructure)\n\n## References\n\n- [Va99] Varga (1999), Survey §1.2\n- Cramér, H. (1936). On the order of magnitude of the difference between consecutive prime numbers.\n- Google DeepMind formal-conjectures: FormalConjectures/ErdosProblems/1137.lean\n"
   },
   "tags": [
@@ -121,7 +119,7 @@
       "theoremCount": 19,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1137Problem.lean"
     }

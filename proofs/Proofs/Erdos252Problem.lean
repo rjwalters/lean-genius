@@ -170,8 +170,32 @@ and Σ n^(k+1)/n! converges.
 /-- Upper bound: σ_k(n) ≤ n · n^k = n^(k+1) (every divisor is ≤ n).
 
 The sum has at most n terms (actually d(n) ≤ n), each at most n^k.
--/
-axiom sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1)
+Proof: each divisor d | n satisfies d ≤ n, so d^k ≤ n^k.
+The sum over at most n divisors gives σ_k(n) ≤ n · n^k = n^(k+1). -/
+theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: sigma k 0 = 0 by convention (divisors of 0 is empty)
+    simp [sigma]
+  · -- n ≥ 1: bound each term and count
+    unfold sigma
+    rw [pow_succ]
+    -- σ_k(n) = ∑ d in n.divisors, d^k
+    -- Each d ≤ n, so d^k ≤ n^k. Sum ≤ |n.divisors| · n^k ≤ n · n^k
+    calc Finset.sum (Nat.divisors n) (· ^ k)
+        ≤ n.divisors.card * n ^ k := by
+          apply Finset.sum_le_card_nsmul
+          intro d hd
+          exact Nat.pow_le_pow_left (Nat.le_of_dvd hn (Nat.mem_divisors.mp hd).1) k
+      _ ≤ n * n ^ k := by
+          apply Nat.mul_le_mul_right
+          -- n.divisors ⊆ Finset.Icc 1 n, so |n.divisors| ≤ |Finset.Icc 1 n| = n
+          calc n.divisors.card
+              ≤ (Finset.Icc 1 n).card := by
+                apply Finset.card_le_card
+                intro d hd
+                simp only [Finset.mem_Icc]
+                exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le (Nat.mem_divisors.mp hd).1⟩
+            _ = n := by simp [Finset.card_Icc]; omega
 
 /-- The series converges (proof sketch via comparison test).
 

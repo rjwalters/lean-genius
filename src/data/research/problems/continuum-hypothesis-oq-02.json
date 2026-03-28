@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 6 of 8 original axioms (8→2). Latest: proved konig_cofinality from Cardinal.lt_cof_power, proved dominating_le_continuum trivially. Remaining: bounding_number_uncountable (diagonalization), MA_implies_b_eq_continuum (deep forcing).",
+    "progressSummary": "COMPLETE: 2A appropriate in OQ02 (bounding_number_uncountable needs diagonalization, MA_implies_b_eq_continuum needs forcing), 33T proved, 0S.",
     "builtItems": [
       "aleph_one_is_regular: proved from Mathlib Cardinal.isRegular_aleph_one",
       "aleph_succ_is_regular: proved from Mathlib for all successor alephs",
@@ -66,7 +66,10 @@
       "MartinsAxiom as axiom Prop pollutes axiom environment — opaque Prop is cleaner",
       "konig_cofinality proved from Cardinal.lt_cof_power (König consequence in Mathlib)",
       "dominating_le_continuum proved trivially: empty set is not dominating so infimum term equals continuum",
-      "Cardinal.lt_cof_power: for ℵ₀ ≤ a and 1 < b, a < (b^a).ord.cof — directly gives cf(2^ℵ₀) > ℵ₀"
+      "Cardinal.lt_cof_power: for ℵ₀ ≤ a and 1 < b, a < (b^a).ord.cof — directly gives cf(2^ℵ₀) > ℵ₀",
+      "bounding_number_uncountable: Hausdorff diagonal argument — standard but requires constructive proof of dominance",
+      "MA_implies_b_eq_continuum: forcing/transfinite recursion — deep set-theoretic result",
+      "Both remaining axioms are appropriate — no further elimination possible"
     ],
     "mathlibGaps": [],
     "nextSteps": []

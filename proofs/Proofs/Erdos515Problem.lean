@@ -184,8 +184,8 @@ axiom lewis_rossi_weitsman_1984 : UniversalQuestion
 The Lewis-Rossi-Weitsman result actually holds for e^u where u is any
 subharmonic function, not just u = log|f| for entire f.
 -/
-axiom lrw_subharmonic_version :
-  True  -- Placeholder for more general statement
+theorem lrw_subharmonic_version :
+  True := trivial  -- Placeholder for more general statement
 
 /-
 ## Part VII: Why This is Surprising

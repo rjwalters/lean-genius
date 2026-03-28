@@ -238,11 +238,11 @@ sums of k elements from A?
 
 The Erdős-Fuchs theorem extends to this case.
 -/
-axiom erdos_fuchs_k_fold :
+theorem erdos_fuchs_k_fold :
   ∀ (k : ℕ), k ≥ 2 →
   ∀ (A : Set ℕ), A.Infinite →
   ∀ (c : ℝ), c > 0 →
-  True  -- Statement would involve k-fold representation function
+  True := fun _ _ _ _ _ _ => trivial  -- Statement would involve k-fold representation function
 
 /--
 **Connection to Waring's Problem:**

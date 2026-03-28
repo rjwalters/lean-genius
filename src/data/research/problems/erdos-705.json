@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-14T21:07:11.724Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "6 remaining axioms are concrete constructions (Moser, Wormald, etc.) — deep results.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,20 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8→6 axioms (Mathlib defs). Added threshold_ge_6 and erdos_705_conjecture_lower proving k≥6 from Wormald. 6 theorems total.",
+    "progressSummary": "COMPLETE: 6A appropriate (all deep), 6T proved, 0S.",
     "builtItems": [
       "Replaced axiom chromaticNumber' with Mathlib SimpleGraph.chromaticNumber",
       "Replaced axiom girth' with Mathlib SimpleGraph.girth",
       "Added import Mathlib.Combinatorics.SimpleGraph.Girth",
       "threshold_ge_6: proved k≥6 lower bound from Wormald axiom",
-      "erdos_705_conjecture_lower: conjecture implies ∃k≥6 with the threshold property"
+      "erdos_705_conjecture_lower: conjecture implies ∃k≥6 with the threshold property",
+      "theorem conjecture_implies_not_negation (proved)",
+      "theorem negation_implies_not_conjecture (proved)",
+      "Fixed axiomCount in meta.json (8→6)"
     ],
     "insights": [
       "chromaticNumber' and girth' were unnecessary axiom-definitions — Mathlib provides real definitions",
       "SimpleGraph.chromaticNumber returns ℕ, SimpleGraph.girth returns ℕ∞ (⊤ for acyclic)",
       "hasGirthAtLeast simplifies to (k : ℕ∞) ≤ G.girth, naturally handling acyclic case",
       "threshold_ge_6: any k satisfying conjecture must be ≥ 6 (derived from Wormald girth-5 construction)",
-      "All 6 remaining axioms are concrete construction claims or deep results — none easily eliminable"
+      "All 6 remaining axioms are concrete construction claims or deep results — none easily eliminable",
+      "All 6 axioms are deep existence results about specific geometric constructions — none provable from Mathlib",
+      "Meta.json had incorrect axiomCount: 8 claimed, 6 actual. Fixed.",
+      "Added 2 structural theorems: conjecture_implies_not_negation, negation_implies_not_conjecture"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

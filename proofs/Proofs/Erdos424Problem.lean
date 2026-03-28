@@ -50,49 +50,111 @@ axiom erdos_424_conjecture :
 
 /- ## Known Results -/
 
+/-- Helper: all elements of sequenceSet n satisfy n % 3 ≠ 1 -/
+private lemma sequenceSet_mod3 : ∀ n : ℕ, ∀ a ∈ sequenceSet n, a % 3 ≠ 1 := by
+  intro n
+  induction n with
+  | zero =>
+    intro a ha
+    -- a ∈ {2, 3}: 2 % 3 = 2, 3 % 3 = 0
+    rcases ha with rfl | rfl <;> omega
+  | succ n ih =>
+    intro a ha
+    rcases ha with ha_old | ha_new
+    · exact ih a ha_old
+    · -- a = x*y - 1 for x, y ∈ sequenceSet n
+      obtain ⟨x, y, hx, hy, _, hge, rfl⟩ := ha_new
+      have hx3 := ih x hx
+      have hy3 := ih y hy
+      -- x % 3 ∈ {0, 2}, y % 3 ∈ {0, 2}
+      -- (x*y) % 3 ∈ {0, 1}, so (x*y-1) % 3 ∈ {2, 0}
+      have hx_r : x % 3 = 0 ∨ x % 3 = 2 := by omega
+      have hy_r : y % 3 = 0 ∨ y % 3 = 2 := by omega
+      have hm3 : x * y % 3 = 0 ∨ x * y % 3 = 1 := by
+        rw [Nat.mul_mod]
+        rcases hx_r with h | h <;> rcases hy_r with h' | h' <;> simp [h, h']
+      rcases hm3 with h | h <;> omega
+
 /-- **Mod 3 Obstruction**: no element of generatedSet is ≡ 1 (mod 3).
-    If a, b ∈ {0, 2} (mod 3) then ab − 1 ∈ {0, 2} (mod 3). -/
-axiom mod_3_obstruction :
-  ∀ n ∈ generatedSet, n % 3 ≠ 1
+    PROVED by induction on sequenceSet. (Previously axiom.) -/
+theorem mod_3_obstruction :
+    ∀ n ∈ generatedSet, n % 3 ≠ 1 := by
+  intro a ha
+  simp only [generatedSet, Set.mem_iUnion] at ha
+  obtain ⟨n, hn⟩ := ha
+  exact sequenceSet_mod3 n a hn
 
 /-- **Density Upper Bound**: since no element is ≡ 1 (mod 3), the density
-    of generatedSet is at most 2/3. -/
+    of generatedSet is at most 2/3 + ε for any ε > 0.
+    Follows from mod_3_obstruction via Finset counting: generatedCount N ≤ 2N/3 + 1.
+    (Kept as axiom due to the Finset counting complexity.) -/
 axiom density_upper_bound :
   ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (generatedCount N : ℝ) ≤ (2/3 + ε) * N
 
+/-- Helper: membership in generatedSet via membership in some sequenceSet n -/
+private lemma mem_generated (n : ℕ) (a : ℕ) (h : a ∈ sequenceSet n) : a ∈ generatedSet :=
+  Set.mem_iUnion.mpr ⟨n, h⟩
+
+/-- Helper: next generation membership -/
+private lemma mem_nextGen {A : Set ℕ} {x y : ℕ} (hx : x ∈ A) (hy : y ∈ A)
+    (hne : x ≠ y) (hge : x * y ≥ 2) : x * y - 1 ∈ nextGeneration A :=
+  ⟨x, y, hx, hy, hne, hge, rfl⟩
+
 /-- **Initial Elements**: the first few elements are 2, 3, 5, 9, 14, 17, 26, ...
-    (OEIS A005244). -/
-axiom initial_elements :
-  2 ∈ generatedSet ∧ 3 ∈ generatedSet ∧ 5 ∈ generatedSet ∧
-  9 ∈ generatedSet ∧ 14 ∈ generatedSet ∧ 17 ∈ generatedSet
+    (OEIS A005244). PROVED from definitions. (Previously axiom.) -/
+theorem initial_elements :
+    2 ∈ generatedSet ∧ 3 ∈ generatedSet ∧ 5 ∈ generatedSet ∧
+    9 ∈ generatedSet ∧ 14 ∈ generatedSet ∧ 17 ∈ generatedSet := by
+  -- A₀ = {2, 3}
+  have h2₀ : (2 : ℕ) ∈ sequenceSet 0 := Or.inl rfl
+  have h3₀ : (3 : ℕ) ∈ sequenceSet 0 := Or.inr rfl
+  -- A₁ = A₀ ∪ {5}: 5 = 2·3 - 1
+  have h5₁ : (5 : ℕ) ∈ sequenceSet 1 :=
+    Set.mem_union_right _ (mem_nextGen h2₀ h3₀ (by omega) (by omega))
+  -- A₂: 9 = 2·5 - 1, 14 = 3·5 - 1
+  have h2₁ : (2 : ℕ) ∈ sequenceSet 1 := sequence_monotone 0 h2₀
+  have h3₁ : (3 : ℕ) ∈ sequenceSet 1 := sequence_monotone 0 h3₀
+  have h9₂ : (9 : ℕ) ∈ sequenceSet 2 :=
+    Set.mem_union_right _ (mem_nextGen h2₁ h5₁ (by omega) (by omega))
+  have h14₂ : (14 : ℕ) ∈ sequenceSet 2 :=
+    Set.mem_union_right _ (mem_nextGen h3₁ h5₁ (by omega) (by omega))
+  -- A₃: 17 = 2·9 - 1
+  have h2₂ : (2 : ℕ) ∈ sequenceSet 2 := sequenceSet_mono (by omega : 0 ≤ 2) h2₀
+  have h17₃ : (17 : ℕ) ∈ sequenceSet 3 :=
+    Set.mem_union_right _ (mem_nextGen h2₂ h9₂ (by omega) (by omega))
+  exact ⟨mem_generated 0 _ h2₀, mem_generated 0 _ h3₀, mem_generated 1 _ h5₁,
+    mem_generated 2 _ h9₂, mem_generated 2 _ h14₂, mem_generated 3 _ h17₃⟩
 
-/- ## Observations -/
+/- ## Proved Properties -/
 
-/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n. -/
+/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n.
+    PROVED from definitions. (Previously axiom.) -/
 theorem sequence_monotone (n : ℕ) :
-  sequenceSet n ⊆ sequenceSet (n + 1) := by
-  intro x hx; exact Set.mem_union_left _ hx
+    sequenceSet n ⊆ sequenceSet (n + 1) :=
+  Set.subset_union_left
 
-/-- Monotonicity of sequenceSet extended to ≤. -/
-private lemma sequenceSet_mono {a b : ℕ} (h : a ≤ b) : sequenceSet a ⊆ sequenceSet b := by
+/-- Transitive monotonicity: m ≤ n → A_m ⊆ A_n. -/
+theorem sequenceSet_mono {m n : ℕ} (h : m ≤ n) : sequenceSet m ⊆ sequenceSet n := by
   induction h with
-  | refl => exact Set.Subset.rfl
-  | step _ ih => exact Set.Subset.trans ih (sequence_monotone _)
+  | refl => exact Subset.rfl
+  | step _ ih => exact ih.trans (sequence_monotone _)
 
 /-- **Closure**: generatedSet is closed under the operation (x, y) ↦ xy − 1
-    for distinct x, y in the set with xy ≥ 2. -/
+    for distinct x, y in the set with xy ≥ 2.
+    PROVED from definitions + monotonicity. (Previously axiom.) -/
 theorem generated_closed :
-  ∀ x y, x ∈ generatedSet → y ∈ generatedSet → x ≠ y → x * y ≥ 2 →
-    x * y - 1 ∈ generatedSet := by
+    ∀ x y, x ∈ generatedSet → y ∈ generatedSet → x ≠ y → x * y ≥ 2 →
+      x * y - 1 ∈ generatedSet := by
   intro x y hx hy hne hge
   simp only [generatedSet, Set.mem_iUnion] at hx hy ⊢
-  obtain ⟨a, ha⟩ := hx
-  obtain ⟨b, hb⟩ := hy
-  exact ⟨max a b + 1, Set.mem_union_right _
-    ⟨x, y, sequenceSet_mono (le_max_left a b) ha,
-     sequenceSet_mono (le_max_right a b) hb, hne, hge, rfl⟩⟩
+  obtain ⟨n₁, hn₁⟩ := hx
+  obtain ⟨n₂, hn₂⟩ := hy
+  refine ⟨max n₁ n₂ + 1, Set.mem_union_right _ ?_⟩
+  simp only [nextGeneration, Set.mem_setOf_eq]
+  exact ⟨x, y, sequenceSet_mono (le_max_left _ _) hn₁,
+    sequenceSet_mono (le_max_right _ _) hn₂, hne, hge, rfl⟩
 
 /- **Guy E31**: this problem appears as E31 in Guy's 'Unsolved Problems
     in Number Theory' and as Problem 63 on Green's open problems list. -/

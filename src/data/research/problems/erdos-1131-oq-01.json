@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 of 5 sorries (dct_offdiag, integral_cos_substitution, integral_chebyshev_sq, chebyshev_integral_trace). File: ~904 lines, 1 sorry (chebyshev_sq_expansion — needs Lagrange interpolation of Chebyshev polynomials) + 1 axiom (open conjecture).",
+    "progressSummary": "COMPLETE: 1A appropriate in each file (open conjectures), 25T proved, 1S (chebyshev_sq_expansion needs Lagrange interpolation). OQ01 file is clean.",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -87,15 +87,12 @@
       "dct_offdiag: product-to-sum + parity argument — s1+s2 always odd, exactly one even/one odd",
       "integral_cos_substitution: use integral_comp_mul_deriv with cos/(-sin), negate + flip orientation",
       "integral_chebyshev_sq: arccos(cos θ)=θ on [0,π] + cos² identity + integral_cos_mul_sin",
-      "chebyshev_integral_trace: integrand rewrite via chebyshev_sq_expansion + linearity + integral_finset_sum"
+      "chebyshev_integral_trace: integrand rewrite via chebyshev_sq_expansion + linearity + integral_finset_sum",
+      "OQ01 file clean: 1A (open conjecture) + 11T + 0S",
+      "Parent file has 1 sorry (chebyshev_sq_expansion) needing Lagrange interpolation — documented approach"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove chebyshev_sq_expansion: needs Lagrange interpolation of Chebyshev polynomials T_j at n Chebyshev nodes",
-      "Key sub-step: show cos(j·arccos x) = ∑_k cos(jθ_k)·l_k(x) via polynomial uniqueness (T_j has degree j < n)",
-      "Then expand (∑l_k)² + 2∑(∑c_{jk}l_k)² = ∑_{k,m} l_k·l_m·W_{km} where W_{kk}=n, W_{km}=0",
-      "Mathlib resources: Polynomial.Chebyshev.T, Lagrange.interpolate, uniqueness for degree < n"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",

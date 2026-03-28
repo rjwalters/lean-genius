@@ -117,7 +117,9 @@ theorem small_prime_divides_product (n k p : ℕ)
   exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi))
 
 /-- Lower bound: q(n,k) > k for all n, since every prime p ≤ k divides
-    some term in k consecutive integers. -/
+    some term in k consecutive integers.
+    Proof: if q ≤ k, then q divides the product (by small_prime_divides_product),
+    contradicting smallestMissingPrime_not_dvd. -/
 theorem q_gt_k (n k : ℕ) (hk : 1 < k) :
     k < smallestMissingPrime n k := by
   by_contra h
@@ -127,9 +129,27 @@ theorem q_gt_k (n k : ℕ) (hk : 1 < k) :
 
 /- ## Monotonicity Properties -/
 
-/-- q(n,k) is non-increasing in k: adding more terms can only help. -/
-axiom q_mono_k (n k₁ k₂ : ℕ) (hk₁ : 0 < k₁) (hle : k₁ ≤ k₂) :
-    smallestMissingPrime n k₂ ≤ smallestMissingPrime n k₁
+/-- q(n,k) is non-decreasing in k: longer products have more prime factors,
+    so the smallest missing prime can only increase.
+    Note: the original axiom had the wrong direction (≤ instead of ≥). -/
+theorem q_mono_k (n k₁ k₂ : ℕ) (hk₁ : 0 < k₁) (hle : k₁ ≤ k₂) :
+    smallestMissingPrime n k₁ ≤ smallestMissingPrime n k₂ := by
+  -- Any prime p < q(n,k₁) divides the k₁-product, hence also the k₂-product
+  -- (since the k₁-product divides the k₂-product). So p < q(n,k₂).
+  -- Contrapositive: q(n,k₂) ≤ p < q(n,k₁) is impossible.
+  by_contra h
+  push_neg at h  -- h : smallestMissingPrime n k₂ < smallestMissingPrime n k₁
+  -- q(n,k₂) is prime and < q(n,k₁), so q(n,k₂) divides the k₁-product
+  have hq2_prime := smallestMissingPrime_prime n k₂ (by omega : 0 < k₂)
+  have hq2_dvd := smallestMissingPrime_least n k₁ hk₁ _ hq2_prime h
+  -- But q(n,k₂) doesn't divide the k₂-product
+  have hq2_not_dvd := smallestMissingPrime_not_dvd n k₂ (by omega : 0 < k₂)
+  -- The k₁-product divides the k₂-product (more factors)
+  have hprod_dvd : consecutiveProduct n k₁ ∣ consecutiveProduct n k₂ := by
+    unfold consecutiveProduct
+    have hsub := Finset.range_mono hle
+    exact Dvd.intro _ (Finset.prod_sdiff hsub).symm
+  exact hq2_not_dvd (dvd_trans hq2_dvd hprod_dvd)
 
 /-- The conjecture implies the weak bound. -/
 theorem main_implies_weak (h : ErdosProblem663) : WeakBound := by

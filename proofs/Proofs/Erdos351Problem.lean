@@ -50,8 +50,8 @@ leading coefficient and positive degree, is {p(n) + 1/n : n ∈ ℕ} strongly co
 
 This remains open. The answer is unknown.
 -/
-axiom erdos_351_open :
-  True  -- Placeholder: the general problem is open
+theorem erdos_351_open :
+  True := trivial  -- Placeholder: the general problem is open
 
 /- ## Solved Cases -/
 

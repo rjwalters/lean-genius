@@ -13,15 +13,13 @@ Known results:
 - Lin (1976): f(2, 2) ≤ 254
 
 Tags: number-theory, p-adic-valuation, factorials, divisibility, open-problem
+
+Axioms: 3 (lin_bound_meaning, legendre_formula, padic_val_factorial_asymp)
+  - lin_bound proved from lin_bound_meaning via csSup_le
+Sorries: 0
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset Filter
 
@@ -58,16 +56,42 @@ def erdos404Conjecture : Prop :=
 
 /- ## Part III: Known Results -/
 
-axiom lin_bound : f 2 2 ≤ 254
+/-- Lin (1976): No strictly increasing sequence starting at 2 has
+    factorial sum divisible by 2^255. -/
 axiom lin_bound_meaning : ∀ s : StrictIncSeq 2, ¬(2^255 ∣ factorialSum s)
+
+/-- Lin (1976): f(2,2) ≤ 254. Proved from lin_bound_meaning:
+    since 2^255 divides no factorial sum, every achievable power k satisfies
+    k ≤ 254 (if k ≥ 255 then 2^255 ∣ 2^k ∣ sum, contradicting lin_bound_meaning).
+    The set of achievable powers is nonempty (k=0 works since 2^0=1 divides all). -/
+theorem lin_bound : f 2 2 ≤ 254 := by
+  unfold f
+  apply csSup_le
+  · -- Nonemptiness: k = 0 is achievable (2^0 = 1 divides any factorial sum)
+    exact ⟨0, ⟨⟨1, fun _ => 2, fun _ => rfl, fun i j h => by omega⟩, one_dvd _⟩⟩
+  · -- Upper bound: every achievable k ≤ 254
+    intro k ⟨s, hs⟩
+    by_contra hk
+    push_neg at hk
+    -- k ≥ 255 so 2^255 ∣ 2^k ∣ factorialSum s, contradicting lin_bound_meaning
+    exact lin_bound_meaning s (dvd_trans (Nat.pow_dvd_pow 2 (by omega)) hs)
 
 /- ## Part IV: p-adic Analysis -/
 
 noncomputable def legendreSum (n p : ℕ) : ℕ :=
   ∑ i ∈ Finset.range (Nat.log p n + 1), n / p^(i+1)
 
-axiom legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
-    padicValNat p n.factorial = legendreSum n p
+/-- Legendre's formula: ν_p(n!) = ∑_{i=1}^{⌊log_p n⌋+1} ⌊n/p^i⌋.
+    Proved from Mathlib's padicValNat_factorial by reindexing. -/
+theorem legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
+    padicValNat p n.factorial = legendreSum n p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  rw [padicValNat_factorial (show Nat.log p n < Nat.log p n + 2 by omega),
+      Finset.sum_Ico_eq_sum_range]
+  unfold legendreSum
+  have h1 : Nat.log p n + 2 - 1 = Nat.log p n + 1 := by omega
+  rw [h1]
+  exact Finset.sum_congr rfl fun k _ => by rw [add_comm]
 
 axiom padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
     Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1)))

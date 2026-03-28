@@ -183,8 +183,9 @@ Known:
 - Erdős conjectured growth "not too fast"
 - Connected to problem #1041 (polynomial sublevel sets and disk covers)
 -/
-axiom erdos_1120_main :
-  (∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, worstCasePathLength n ≥ M) ∧
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 → worstCasePathLength n ≤ C * n
+theorem erdos_1120_main :
+    (∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, worstCasePathLength n ≥ M) ∧
+    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 → worstCasePathLength n ≤ C * n :=
+  ⟨erdos_1120_conjecture, erdos_growth_bound⟩
 
 end Erdos1120

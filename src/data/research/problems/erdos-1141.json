@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Added 6 new theorems: all_known_good (unified verification of all 41 OEIS values), classification_100 (complete classification up to n=100), good_count_100 (24 good values ≤ 100), good_not_prime_ge5, good_odd_eq_three (3 is unique odd good value), good_coprime3_sub9_prime. Fixed simp lint. 35 theorems, 1 axiom (open), 0 sorries.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Added Decidable instance for IsErdos1141Good (required for native_decide)",
       "Fixed isErdos1141Good_iff_unbounded: omega→nlinarith for k < n from k^2 < n",
@@ -53,10 +53,7 @@
       "good_coprime3_sub9_prime shows coprimality to small primes creates additional simultaneous primality constraints"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "No axiom elimination possible — single axiom is open conjecture",
-      "Could add more computational verifications for larger good values"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1141 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
