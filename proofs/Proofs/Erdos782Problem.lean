@@ -210,6 +210,26 @@ Analyze small cubes in squares.
 def Has2Cube : Prop := ContainsCube Squares 2
 def Has3Cube : Prop := ContainsCube Squares 3
 
+/-- The Pythagorean triple 3² + 4² = 5² gives a 2-cube in the squares:
+    {0, 9, 16, 25} = {0², 3², 4², 5²} with a = 0, b₀ = 9, b₁ = 16.
+    Proof by exhaustive case analysis over all 4 subsets of Fin 2. -/
+theorem squares_contain_2cube : Has2Cube := by
+  refine ⟨0, ![9, 16], fun i => by fin_cases i <;> simp, fun n ⟨S, rfl⟩ => ?_⟩
+  simp only [zero_add, Squares, Set.mem_setOf_eq]
+  by_cases h0 : (0 : Fin 2) ∈ S <;> by_cases h1 : (1 : Fin 2) ∈ S
+  · -- S = {0, 1}: sum = 9 + 16 = 25 = 5²
+    have : S = Finset.univ := by ext x; fin_cases x <;> simp [*]
+    subst this; simp [Fin.sum_univ_two]; exact ⟨5, by norm_num⟩
+  · -- S = {0}: sum = 9 = 3²
+    have : S = {0} := by ext x; fin_cases x <;> simp [*]
+    subst this; simp; exact ⟨3, by norm_num⟩
+  · -- S = {1}: sum = 16 = 4²
+    have : S = {(1 : Fin 2)} := by ext x; fin_cases x <;> simp [*]
+    subst this; simp; exact ⟨4, by norm_num⟩
+  · -- S = ∅: sum = 0 = 0²
+    have : S = ∅ := by ext x; fin_cases x <;> simp [*]
+    subst this; simp; exact ⟨0, by norm_num⟩
+
 /-
 # Part 9: Density Considerations
 
@@ -249,6 +269,7 @@ theorem erdos_782_question2 :
 
 **Proved Theorems (0 sorries)**:
 - squares_contain_3AP: {1, 25, 49} = {1², 5², 7²} is a 3-term AP (d=24) [was axiom]
+- squares_contain_2cube: {0, 9, 16, 25} = {0², 3², 4², 5²} is a 2-cube (Pythagorean triple)
 - no_cubes_implies_no_quasiprog: ¬Q2 → ¬Q1 (contrapositive)
 - conditional_q2_negative: Bombieri-Lang → ¬Q2
 - solymosi_equiv: Solymosi conjecture equivalence
@@ -260,7 +281,9 @@ theorem erdos_782_question2 :
 - BombieriLangConjecture: open conjecture in algebraic geometry
 - cilleruelo_granville: conditional result [CiGr07]
 
-**Key Improvement**: Eliminated `squares_contain_3AP` axiom by explicit construction.
+**Key Improvements**:
+- Eliminated `squares_contain_3AP` axiom by explicit construction
+- Proved `squares_contain_2cube`: Pythagorean triple gives concrete 2-cube in squares
 
 References:
 - Brown, Erdős, Freedman [BEF90]: posed the problem
