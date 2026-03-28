@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed false axiom almost_sidon_sum_range (4A→3A). Collision multiplicity r can be |B| >> 2 in reflected construction, violating the claimed bound. Remaining: erdos_freud_lower_bound (deep), sidon_upper_bound (classical), reflected_construction_valid (construction).",
+    "progressSummary": "PROGRESS: Proved sidon_counting_bound (elementary Sidon bound). File now has 2 axioms (down from original 5). 16T 2A 0S.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
@@ -37,7 +37,8 @@
       "isAlmostSidon_empty: empty set is almost-Sidon",
       "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range",
       "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)",
-      "REMOVED false axiom almost_sidon_sum_range: |A|(|A|+1)/2-1 ≤ 2N-1 is false when collision multiplicity r > 2"
+      "REMOVED false axiom almost_sidon_sum_range: |A|(|A|+1)/2-1 ≤ 2N-1 is false when collision multiplicity r > 2",
+      "theorem sidon_counting_bound: elementary Sidon bound k(k+1)/2 ≤ 2N-1 (proved)"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
@@ -45,7 +46,8 @@
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
       "almost_sidon_sum_range was FALSE: claimed |A|(|A|+1)/2 ≤ 2N but reflected construction has collision multiplicity |B| at sum N",
       "Correct bound: |A|(|A|+1)/2 ≤ 2N + r - 2 where r is max collision multiplicity. Use distinct_sums_bounded for correct count.",
-      "Remaining 3 axioms are all deep results: EF lower bound (asymptotic construction), Sidon upper (classical), reflected construction (nontrivial case analysis)"
+      "Remaining 3 axioms are all deep results: EF lower bound (asymptotic construction), Sidon upper (classical), reflected construction (nontrivial case analysis)",
+      "sidon_counting_bound proved: for Sidon A ⊆ {1,...,N}, k(k+1)/2 ≤ 2N-1 (elementary √N bound, fully proved from injectivity + distinct_sums_bounded)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -72,8 +74,8 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 532,
-      "theoremCount": 13,
+      "lineCount": 556,
+      "theoremCount": 16,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,

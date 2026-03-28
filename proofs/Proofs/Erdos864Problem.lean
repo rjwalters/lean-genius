@@ -261,6 +261,40 @@ theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         have := hA a ha; have := hA b hb; omega
     _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
 
+/-- **Elementary Sidon counting bound**: For a Sidon set A ⊆ {1,...,N},
+    the pairwise sum count |A|(|A|+1)/2 ≤ 2N-1.
+    This gives |A| ≤ ~2√N. Weaker than `sidon_upper_bound` but fully proved.
+
+    Proof idea: in a Sidon set, the sum function (a,b) ↦ a+b is injective on
+    the upper triangle {(a,b) | a ≤ b}. So the number of pairs equals the number
+    of distinct sums, which is at most 2N-1. -/
+theorem sidon_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) (hS : IsSidon A) :
+    A.card * (A.card + 1) / 2 ≤ 2 * N - 1 := by
+  rw [← pairwise_sum_count A]
+  set U := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) with hU_def
+  -- Step 1: The sum function is injective on U (from Sidon property)
+  have hinj : Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2) (↑U) := by
+    intro ⟨a₁, b₁⟩ h1 ⟨a₂, b₂⟩ h2 heq
+    simp only [Finset.mem_coe, hU_def, Finset.mem_filter, Finset.mem_product] at h1 h2
+    obtain ⟨⟨ha1, hb1⟩, hab1⟩ := h1
+    obtain ⟨⟨ha2, hb2⟩, hab2⟩ := h2
+    -- Both pairs are in the sumRepCount filter for the same sum
+    have hle := isSidon_sumRepCount_le_one hS (a₁ + b₁)
+    unfold sumRepCount at hle
+    have hp1 : (a₁, b₁) ∈ (A ×ˢ A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₁) := by
+      simp [Finset.mem_filter, Finset.mem_product, ha1, hb1, hab1]
+    have hp2 : (a₂, b₂) ∈ (A ×ˢ A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₁) := by
+      simp [Finset.mem_filter, Finset.mem_product, ha2, hb2, hab2, heq]
+    exact Finset.card_le_one.mp hle hp1 hp2
+  -- Chain: |U| = |U.image sum| ≤ |(A×A).image sum| ≤ 2N-1
+  calc U.card
+      = (U.image (fun p : ℕ × ℕ => p.1 + p.2)).card :=
+        (Finset.card_image_of_injOn hinj).symm
+    _ ≤ ((A ×ˢ A).image (fun p => p.1 + p.2)).card :=
+        Finset.card_le_card (Finset.image_subset_image (Finset.filter_subset _ _))
+    _ ≤ 2 * N - 1 := distinct_sums_bounded A N hN hA
+
 /-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.
 

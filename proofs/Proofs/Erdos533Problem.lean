@@ -153,6 +153,49 @@ theorem edgeCount_le_sq {n : ℕ} (G : SGraph n) : edgeCount G ≤ n ^ 2 := by
     simp [Finset.card_product, sq]
   linarith
 
+/-- The number of strictly ordered pairs (i,j) with i < j in Fin n equals n*(n-1)/2. -/
+private lemma card_strict_upper_tri (n : ℕ) :
+    ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+      (fun p : Fin n × Fin n => p.1 < p.2)).card = n * (n - 1) / 2 := by
+  -- Off-diagonal {(i,j) | i ≠ j} has n*(n-1) elements
+  have h_od : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+      (fun p : Fin n × Fin n => p.1 ≠ p.2)).card = n * (n - 1) := by
+    have : (Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.1 ≠ p.2) = (Finset.univ : Finset (Fin n)).offDiag := by
+      ext ⟨a, b⟩; simp [Finset.mem_offDiag]
+    rw [this, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+  -- Split: {i ≠ j} = {i < j} ∪ {i > j}
+  have h_split : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+      (fun p : Fin n × Fin n => p.1 ≠ p.2)).card =
+      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.1 < p.2)).card +
+      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+    rw [← Finset.filter_or]
+    congr 1; ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and]
+    exact ne_iff_lt_or_gt
+  -- Symmetry: |{i < j}| = |{i > j}| via the swap bijection
+  have h_symm : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+      (fun p : Fin n × Fin n => p.1 < p.2)).card =
+      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+    apply Finset.card_bij (fun p _ => (p.2, p.1))
+      (fun ⟨a, b⟩ h => by simp_all)
+      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by
+        simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
+      (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
+  omega
+
+/-- **Tight edge bound**: A simple graph on n vertices has at most n*(n-1)/2 edges.
+    Improves `edgeCount_le_sq` from n² to the exact maximum. -/
+theorem edgeCount_le {n : ℕ} (G : SGraph n) : edgeCount G ≤ n * (n - 1) / 2 := by
+  unfold edgeCount
+  have h1 : (Finset.univ ×ˢ Finset.univ).filter
+      (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
+      ⊆ (Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.1 < p.2) := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and] at hp ⊢
+    exact hp.1
+  linarith [Finset.card_le_card h1, card_strict_upper_tri n]
+
 /-- Clique-freeness is upward-closed: no j-clique implies no k-clique for k ≥ j.
     Contrapositive of hasClique_mono. -/
 theorem not_hasClique_mono {n : ℕ} (G : SGraph n) {j k : ℕ} (hjk : j ≤ k)
