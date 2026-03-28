@@ -12,6 +12,9 @@ many primes `p` such that `8p² - 1` is also prime, then using exponents
 is proved in detail below.
 
 This remains an open problem.
+
+Axioms: 3 (infinite_8p_sq_minus_1_primes, erdos_913_conditional, exponent_structure)
+Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -109,6 +112,28 @@ private theorem hasDistinctExponents_of_primeFactors_pair
   · exact absurd heq (Ne.symm hne)
   · rfl
 
+/-- Helper: prove distinct exponents for products with exactly 3 prime factors. -/
+private theorem hasDistinctExponents_of_primeFactors_triple
+    {n : ℕ} {m p q r : ℕ} (hm : n * (n + 1) = m) (hpf : m.primeFactors = {p, q, r})
+    (hpq : m.factorization p ≠ m.factorization q)
+    (hpr : m.factorization p ≠ m.factorization r)
+    (hqr : m.factorization q ≠ m.factorization r) :
+    HasDistinctExponents n := by
+  unfold HasDistinctExponents
+  rw [hm, hpf]
+  intro x hx y hy heq
+  simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+             Set.mem_singleton_iff] at hx hy
+  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+  all_goals first
+    | rfl
+    | exact absurd heq hpq
+    | exact absurd heq hpr
+    | exact absurd heq hqr
+    | exact absurd heq.symm hpq
+    | exact absurd heq.symm hpr
+    | exact absurd heq.symm hqr
+
 /-- n = 3 has distinct exponents: 3·4 = 2²·3¹. -/
 theorem example_n3 : HasDistinctExponents 3 :=
   hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
@@ -119,6 +144,21 @@ theorem example_n7 : HasDistinctExponents 7 :=
 
 /-- n = 8 has distinct exponents: 8·9 = 2³·3². -/
 theorem example_n8 : HasDistinctExponents 8 :=
+  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+
+/-- n = 31 has distinct exponents: 31·32 = 2⁵·31¹. -/
+theorem example_n31 : HasDistinctExponents 31 :=
+  hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
+
+/-- n = 71 has distinct exponents: 71·72 = 2³·3²·71¹ (3-factor case).
+    This is the instance from the 8p²-1 construction with p = 3:
+    n = 8·9-1 = 71, n+1 = 72 = 8·9 = 2³·3². -/
+theorem example_n71 : HasDistinctExponents 71 :=
+  hasDistinctExponents_of_primeFactors_triple
+    (by norm_num) (by native_decide) (by native_decide) (by native_decide) (by native_decide)
+
+/-- n = 127 has distinct exponents: 127·128 = 2⁷·127¹. -/
+theorem example_n127 : HasDistinctExponents 127 :=
   hasDistinctExponents_of_primeFactors_pair (by norm_num) (by native_decide) (by native_decide)
 
 /-
