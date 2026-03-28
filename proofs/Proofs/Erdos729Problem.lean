@@ -22,11 +22,7 @@
   Tags: factorials, divisibility, number-theory, legendre-formula
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 namespace Erdos729
 
@@ -42,9 +38,21 @@ Factorial divisibility and p-adic valuations.
 noncomputable def factorialPadicVal (p n : ℕ) : ℕ :=
   (Finset.range n).sum fun i => n / p ^ (i + 1)
 
-/-- Legendre's formula for v_p(n!) -/
-axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
-    padicValNat p n.factorial = factorialPadicVal p n
+/-- Legendre's formula for v_p(n!).
+    Proved from Mathlib's padicValNat_factorial by reindexing. -/
+theorem legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
+    padicValNat p n.factorial = factorialPadicVal p n := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp [factorialPadicVal]
+  · have hlog : Nat.log p n < n + 1 := by
+      rw [Nat.log_lt hp.one_lt hn]
+      calc n < 2 ^ n := Nat.lt_two_pow n
+        _ ≤ p ^ n := Nat.pow_le_pow_left hp.two_le n
+        _ ≤ p ^ (n + 1) := Nat.pow_le_pow_right hp.pos (Nat.le_succ n)
+    rw [padicValNat_factorial hlog, Finset.sum_Ico_eq_sum_range]
+    unfold factorialPadicVal
+    exact Finset.sum_congr (by omega) fun k _ => by rw [add_comm]
 
 /-- The quotient n!/(a!b!) as a rational (may not be an integer) -/
 def factorialQuotient (n a b : ℕ) : ℚ :=

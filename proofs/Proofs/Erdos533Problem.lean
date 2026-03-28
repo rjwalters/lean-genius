@@ -47,6 +47,20 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
   Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
     (Finset.univ.product Finset.univ))
 
+/- ## SimpleGraph Bridge -/
+
+/-- Bridge SGraph to Mathlib's SimpleGraph for access to the full Mathlib graph theory API.
+    This enables using Mathlib's clique, independent set, and Ramsey theory results. -/
+def SGraph.toSimpleGraph {n : ℕ} (G : SGraph n) : SimpleGraph (Fin n) where
+  Adj i j := G.adj i j
+  symm := fun hab => G.symm _ _ hab
+  loopless := G.irrefl
+
+@[simp]
+theorem SGraph.toSimpleGraph_adj {n : ℕ} (G : SGraph n) (i j : Fin n) :
+    G.toSimpleGraph.Adj i j ↔ G.adj i j :=
+  Iff.rfl
+
 /- ## Basic Properties -/
 
 /-- The empty vertex set is trivially a clique -/
@@ -129,6 +143,16 @@ theorem isTriangleFree_of_no_triangle {n : ℕ} (G : SGraph n)
       first | exact absurd rfl hij | exact eab | exact ebc | exact eac |
       exact G.symm _ _ eab | exact G.symm _ _ ebc | exact G.symm _ _ eac
 
+/-- Edge count is at most n², since we filter from the n × n product. -/
+theorem edgeCount_le_sq {n : ℕ} (G : SGraph n) : edgeCount G ≤ n ^ 2 := by
+  unfold edgeCount
+  have h1 := Finset.card_le_card (Finset.filter_subset
+    (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
+    (Finset.univ.product Finset.univ))
+  have h2 : (Finset.univ.product (Finset.univ : Finset (Fin n))).card = n ^ 2 := by
+    simp [Finset.card_product, sq]
+  linarith
+
 /-- Clique-freeness is upward-closed: no j-clique implies no k-clique for k ≥ j.
     Contrapositive of hasClique_mono. -/
 theorem not_hasClique_mono {n : ℕ} (G : SGraph n) {j k : ℕ} (hjk : j ≤ k)
@@ -181,6 +205,18 @@ theorem erdos_533_for_large_delta (δ : ℝ) (hδ : 0 < δ) (hδ_large : 1 / 16 
       (S.card : ℝ) ≥ c * n :=
   ⟨δ / 2, by linarith, fun n hn G hK5 hEdges =>
     ehsss_result n hn δ hδ_large G hK5 hEdges⟩
+
+/-- K₄-free graphs satisfy the conclusion of Problem 533 for all δ > 0.
+    K₄-free is a strictly stronger condition than K₅-free, so this resolves
+    the conjecture for a subset of graphs. Follows from the K₄-free axiom. -/
+theorem erdos_533_for_k4_free (δ : ℝ) (hδ : 0 < δ)
+    (n : ℕ) (hn : 1 ≤ n) (G : SGraph n)
+    (hK4 : ¬HasClique G 4)
+    (hEdges : δ * n ^ 2 ≤ (edgeCount G : ℝ)) :
+    ∃ (S : Finset (Fin n)), IsTriangleFree G S ∧
+      ∃ c : ℝ, 0 < c ∧ (S.card : ℝ) ≥ c * n := by
+  obtain ⟨c, S, hc, hTF, hSize⟩ := k4_free_triangle_free_subset n hn δ hδ G hK4 hEdges
+  exact ⟨S, hTF, c, hc, hSize⟩
 
 /- ## The Open Question -/
 

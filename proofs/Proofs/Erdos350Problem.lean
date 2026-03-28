@@ -56,9 +56,14 @@ theorem singleton_one_dissociated : DistinctSubsetSums {1} := by
   rcases hX with rfl | rfl <;> rcases hY with rfl | rfl
   all_goals simp_all
 
-/-- The set {1, 2} is dissociated: subsets have sums 0, 1, 2, 3.
-We axiomatize this for simplicity as the full proof requires extensive case analysis. -/
-axiom one_two_dissociated : DistinctSubsetSums {1, 2}
+/-- The set {1, 2} is dissociated: subsets have sums 0, 1, 2, 3. -/
+theorem one_two_dissociated : DistinctSubsetSums {1, 2} := by
+  intro X hX Y hY hne
+  -- X, Y ⊆ {1, 2}, so each is one of: ∅, {1}, {2}, {1,2}
+  -- Their sums are 0, 1, 2, 3 respectively — all distinct
+  simp only [Finset.subset_insert_iff, Finset.subset_singleton_iff] at hX hY
+  -- Use decide or native_decide for the finite exhaustion
+  fin_cases hX <;> fin_cases hY <;> simp_all [Finset.sum_empty, Finset.sum_singleton, Finset.sum_pair]
 
 /-- The powers of 2: {1, 2, 4, ..., 2^k} form a dissociated set.
 This is the extremal example achieving equality in Ryavec's bound. -/
@@ -146,10 +151,18 @@ As k → ∞, the sum approaches 2 (geometric series). -/
 theorem sum_reciprocals_powers_four : (1 : ℝ) + 1/2 + 1/4 + 1/8 < 2 := by norm_num
 
 /-- The geometric series ∑_{i=0}^{k} 2^(-i) = 2 - 2^(-k) approaches 2 as k → ∞.
-This shows powers of 2 achieve Ryavec's bound asymptotically.
-We axiomatize this standard result about geometric series. -/
-axiom geometric_series_bound (k : ℕ) :
-    ∑ i ∈ Finset.range (k + 1), (2 : ℝ)^(-(i : ℤ)) = 2 - 2^(-(k : ℤ))
+This shows powers of 2 achieve Ryavec's bound asymptotically. -/
+theorem geometric_series_bound (k : ℕ) :
+    ∑ i ∈ Finset.range (k + 1), (2 : ℝ)^(-(i : ℤ)) = 2 - 2^(-(k : ℤ)) := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast
+    ring_nf
+    rw [zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, zpow_natCast]
+    field_simp
+    ring
 
 /- ## Summary -/
 
