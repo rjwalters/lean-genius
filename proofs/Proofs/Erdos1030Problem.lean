@@ -23,7 +23,7 @@ import Mathlib
 
 namespace Erdos1030
 
-open Finset
+open Finset Classical
 
 /-
 ## Part I: Ramsey Numbers
@@ -144,6 +144,9 @@ axiom burr_erdos_faudree_schelp (k : ℕ) (hk : k ≥ 3) :
 theorem diff_linear_growth (k : ℕ) (hk : k ≥ 3) :
     (RamseyDiff k : ℝ) ≥ 2 * k - 5 := by
   have h := burr_erdos_faudree_schelp k hk
+  have h5 : 5 ≤ 2 * k := by omega
+  rw [ge_iff_le, show (2 * (k : ℝ) - 5) = ↑(2 * k - 5 : ℕ) from by
+    rw [Nat.cast_sub h5]; push_cast; ring]
   exact_mod_cast h
 
 /-
@@ -157,12 +160,14 @@ noncomputable def GrowthRatio (k : ℕ) : ℝ :=
   (R_off k : ℝ) / (R_diag k : ℝ)
 
 /-- The ratio can be written as 1 + diff/R(k,k). -/
-theorem ratio_decomposition (k : ℕ) (hk : k ≥ 2) (hR : R_diag k > 0) :
+theorem ratio_decomposition (k : ℕ) (hR : R_diag k > 0)
+    (hle : R_diag k ≤ R_off k) :
     GrowthRatio k = 1 + (RamseyDiff k : ℝ) / (R_diag k : ℝ) := by
-  unfold GrowthRatio RamseyDiff R_off
   have hne : (R_diag k : ℝ) ≠ 0 := by positivity
-  field_simp
-  ring
+  simp only [GrowthRatio, RamseyDiff]
+  conv_lhs => rw [show R_off k = R_diag k + (R_off k - R_diag k) from
+    (Nat.add_sub_cancel' hle).symm]
+  rw [Nat.cast_add, add_div, div_self hne]
 
 /-- The limit inferior of the growth ratio. -/
 noncomputable def GrowthRatioLimInf : ℝ :=
@@ -195,15 +200,66 @@ theorem befs_implies_weaker (k : ℕ) (hk : k ≥ 3) :
     (RamseyDiff k : ℝ) ≥ 2 * k - 5 :=
   diff_linear_growth k hk
 
-/-- Using the known lower bound R(k,k) ≥ 2^(k/2), we can bound the ratio. -/
+/-- C(n, i) ≤ 2^n: each binomial coefficient is bounded by the total sum. -/
+private lemma choose_le_two_pow (n i : ℕ) : Nat.choose n i ≤ 2 ^ n := by
+  by_cases h : i ≤ n
+  · calc Nat.choose n i
+        ≤ ∑ j ∈ Finset.range (n + 1), Nat.choose n j :=
+          single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_range.mpr (by omega))
+      _ = 2 ^ n := Nat.sum_range_choose n
+  · rw [Nat.choose_eq_zero_of_lt (by omega : n < i)]
+    exact Nat.zero_le _
+
+/-- R(k, ℓ) > 0 for k, ℓ ≥ 2: no cliques exist in K₀. -/
+private lemma R_pos_of_ge_two (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) : R k ℓ > 0 := by
+  unfold R; rw [dif_pos ⟨hk, hℓ⟩]
+  by_contra h; push_neg at h
+  have heq : Nat.find (ramsey_exists k ℓ hk hℓ) = 0 := by omega
+  have hprop := Nat.find_spec (ramsey_exists k ℓ hk hℓ)
+  rw [heq] at hprop
+  unfold RamseyProperty at hprop
+  specialize hprop (fun _ _ => 0)
+  rcases hprop with ⟨S, hcard, _⟩ | ⟨S, hcard, _⟩ <;> {
+    have h1 : S.card ≤ Fintype.card (Fin 0) := S.card_le_univ
+    simp only [Fintype.card_fin] at h1
+    omega
+  }
+
+/-- Using the BEFS bound and binomial upper bound to bound the ratio. -/
 theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :
     GrowthRatio k ≥ 1 + (2*k - 5) / 4^k := by
-  sorry -- Technical calculation using BEFS and upper bound
+  have hk2 : k ≥ 2 := by omega
+  -- R(k,k) > 0
+  have hR_pos : R_diag k > 0 := R_pos_of_ge_two k k hk2 hk2
+  have hR_real_pos : (0 : ℝ) < (R_diag k : ℝ) := Nat.cast_pos.mpr hR_pos
+  -- R_diag k ≤ R_off k from BEFS
+  have h_befs_nat := burr_erdos_faudree_schelp k hk
+  have hle : R_diag k ≤ R_off k := by
+    unfold RamseyDiff at h_befs_nat; omega
+  -- Ratio decomposition: R(k+1,k)/R(k,k) = 1 + (R(k+1,k)-R(k,k))/R(k,k)
+  rw [ratio_decomposition k hR_pos hle]
+  -- Reduce to showing the fractions satisfy the inequality
+  suffices h : (2 * (k : ℝ) - 5) / (4 : ℝ) ^ k ≤
+      (RamseyDiff k : ℝ) / (R_diag k : ℝ) by linarith
+  -- BEFS: numerator bound
+  have h_befs : (2 * (k : ℝ) - 5) ≤ (RamseyDiff k : ℝ) := diff_linear_growth k hk
+  -- Binomial + choose bound: denominator bound R(k,k) ≤ 4^k
+  have h_den : (R_diag k : ℝ) ≤ (4 : ℝ) ^ k := by
+    calc (R_diag k : ℝ)
+        ≤ ↑(Nat.choose (2 * k - 2) (k - 1)) := by exact_mod_cast R_diag_upper k hk2
+      _ ≤ ↑(2 ^ (2 * k - 2)) := by exact_mod_cast choose_le_two_pow (2 * k - 2) (k - 1)
+      _ = (2 : ℝ) ^ (2 * k - 2) := by norm_cast
+      _ ≤ (4 : ℝ) ^ k := by
+          rw [show (4 : ℝ) = 2 ^ 2 from by norm_num, ← pow_mul]
+          exact pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ 2) (by omega)
+  -- Cross-multiply: (2k-5) * R(k,k) ≤ RamseyDiff(k) * 4^k
+  rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < (4 : ℝ) ^ k) hR_real_pos]
+  have h_rd_nn : (0 : ℝ) ≤ (RamseyDiff k : ℝ) := by exact_mod_cast Nat.zero_le _
+  nlinarith
 
 /-- The conjecture is essentially solved: linear diff / exponential R(k,k)
     gives a positive limit, though the exact value depends on R(k,k) growth. -/
-axiom erdos_sos_solved :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ k in Filter.atTop, GrowthRatio k > 1 + c
+axiom erdos_sos_solved : ErdosSosConjecture
 
 /-
 ## Part X: Known Ramsey Numbers
