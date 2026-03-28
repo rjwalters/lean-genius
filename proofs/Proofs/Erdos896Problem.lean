@@ -43,13 +43,35 @@ def SubsetsOfRange (A B : Finset ℕ) (N : ℕ) : Prop :=
 ## Main Problem
 -/
 
-/-- The maximum of F(A,B) over all A, B ⊆ {1,...,N}. -/
-axiom maxUniqueProducts : ℕ → ℕ
+/-- The maximum of F(A,B) over all A, B ⊆ {1,...,N}.
+    Defined as the supremum of uniqueProductCount over the finite set
+    of all pairs of subsets. Since ℕ has OrderBot (⊥ = 0), Finset.sup
+    returns 0 for N = 0 (no subsets) and the actual maximum otherwise. -/
+noncomputable def maxUniqueProducts (N : ℕ) : ℕ :=
+  (Finset.powerset (Finset.Icc 1 N) ×ˢ Finset.powerset (Finset.Icc 1 N)).sup
+    (fun p : Finset ℕ × Finset ℕ => uniqueProductCount p.1 p.2)
 
-/-- maxUniqueProducts N is achieved by some pair (A, B). -/
-axiom maxUniqueProducts_achieved (N : ℕ) :
+/-- maxUniqueProducts N is achieved by some pair (A, B).
+    Proof: The set of subset pairs is finite and nonempty (contains (∅, ∅)).
+    By Finset.exists_max_image, the maximum is achieved. -/
+theorem maxUniqueProducts_achieved (N : ℕ) :
     ∃ A B : Finset ℕ, SubsetsOfRange A B N ∧
-      uniqueProductCount A B = maxUniqueProducts N
+      uniqueProductCount A B = maxUniqueProducts N := by
+  unfold maxUniqueProducts
+  set pairs := Finset.powerset (Finset.Icc 1 N) ×ˢ Finset.powerset (Finset.Icc 1 N)
+  set f : Finset ℕ × Finset ℕ → ℕ := fun p => uniqueProductCount p.1 p.2
+  have hne : pairs.Nonempty :=
+    ⟨(∅, ∅), Finset.mem_product.mpr
+      ⟨Finset.empty_mem_powerset _, Finset.empty_mem_powerset _⟩⟩
+  obtain ⟨⟨A, B⟩, hmem, hmax⟩ := Finset.exists_max_image pairs f hne
+  refine ⟨A, B, ?_, ?_⟩
+  · -- SubsetsOfRange: (A, B) ∈ pairs means A, B ⊆ Icc 1 N
+    exact ⟨Finset.mem_powerset.mp (Finset.mem_product.mp hmem).1,
+           Finset.mem_powerset.mp (Finset.mem_product.mp hmem).2⟩
+  · -- The sup equals f at the maximizer
+    exact (le_antisymm
+      (Finset.sup_le fun y hy => hmax y hy)
+      (Finset.le_sup hmem)).symm
 
 /-- Erdős Problem 896: Estimate max_{A,B ⊆ {1,...,N}} F(A,B).
     The problem asks for the asymptotic order of this maximum. -/
