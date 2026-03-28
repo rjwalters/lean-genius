@@ -1,0 +1,109 @@
+{
+  "slug": "fourier-series-oq-02-oq-03",
+  "title": "Sharp Constant in Fourier Coefficient Decay Bound",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Sharp Constant in Fourier Coefficient Decay Bound.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T17:58:20.661Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created FourierSeriesOQ02OQ03.lean (160 lines, 8 theorems, 2 axioms, 0 sorries). Formalized the sharp constant question: k(α) = 1/2 is optimal.",
+    "builtItems": [
+      "FourierSeriesOQ02OQ03.lean: decayConstant, decayBound definitions",
+      "Proved: decay bound positivity, antitonicity in |n|, tends to 0",
+      "Axiomatized: sharp_constant_is_half, lipschitz_sawtooth_extremal",
+      "Gallery entry for fourier-series-oq-02-oq-03"
+    ],
+    "insights": [
+      "The constant 1/2 arises from the half-period translation: 2ĉ_n = ∫(f-f∘τ)e_{-n}",
+      "Sharpness: extremal sawtooth functions saturate the Hölder bound uniformly in x",
+      "For Lipschitz (α=1), the sawtooth f(x)=x achieves |ĉ_n| = T/(2π|n|) exactly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-02",
+    "fourier-series-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.661Z",
+  "lastUpdate": "2026-03-28T20:20:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeries.lean",
+      "filename": "FourierSeries.lean",
+      "lineCount": 452,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 467,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ03.lean",
+      "filename": "FourierSeriesOQ03.lean",
+      "lineCount": 809,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03.lean",
+      "filename": "FourierSeriesOQ02OQ03.lean",
+      "lineCount": 160,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
+}
