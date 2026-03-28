@@ -26,6 +26,28 @@ namespace WolstenholmeInfinitude
 open Nat
 
 -- ============================================================
+-- Efficient Binomial Coefficient Computation
+-- ============================================================
+
+/-- O(k) computation of C(n, k) via the multiplicative recurrence
+    C(n, k+1) = C(n, k) · (n - k) / (k + 1).
+    Lean's Nat.choose uses Pascal's triangle (exponential without memoization),
+    making native_decide infeasible for large inputs. This version enables
+    computational verification of specific binomial values. -/
+def choose_fast : ℕ → ℕ → ℕ
+  | _, 0 => 1
+  | n, k + 1 => choose_fast n k * (n - k) / (k + 1)
+
+/-- choose_fast agrees with Nat.choose -/
+theorem choose_fast_eq (n k : ℕ) : choose_fast n k = Nat.choose n k := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+    unfold choose_fast
+    rw [ih, ← Nat.choose_succ_right_eq n k]
+    exact Nat.mul_div_cancel _ (Nat.succ_pos k)
+
+-- ============================================================
 -- Section 1: Core Definitions
 -- ============================================================
 
@@ -45,9 +67,10 @@ theorem prime_16843 : Nat.Prime 16843 := by native_decide
 /-- 2124679 is prime -/
 theorem prime_2124679 : Nat.Prime 2124679 := by native_decide
 
-/-- C(33685, 16842) ≡ 1 (mod 16843⁴). Axiomatized: binomial too large for kernel.
+/-- C(33685, 16842) ≡ 1 (mod 16843⁴). Verified computationally via choose_fast.
     McIntosh, Acta Arith. 71 (1995), 381-389. -/
-axiom cb_16843 : cb 16843 % (16843 ^ 4) = 1
+theorem cb_16843 : cb 16843 % (16843 ^ 4) = 1 := by
+  unfold cb; rw [← choose_fast_eq]; native_decide
 
 /-- C(4249357, 2124678) ≡ 1 (mod 2124679⁴). Axiomatized: binomial too large.
     McIntosh-Roettger, Math. Comp. 76 (2007), 2087-2094. -/

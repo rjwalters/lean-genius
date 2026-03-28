@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended from 103 to 213 lines. Added 11 proved structural theorems about sparsity monotonicity, Property B for singletons, family size bounds, empty-set exclusion, and filter-count monotonicity. No new axioms or sorries.",
+    "progressSummary": "PROGRESS: Extended from 213 to 321 lines. Added element degree infrastructure, Lovász theorem (c(2)=1 axiom), union sparsity, Erdős first-moment bound (axiom), and 7 proved theorems. Total: 3 axioms, 22 theorems, 0 sorries.",
     "builtItems": [
       "isSparse_mono: sparsity monotone in c (Erdos1022Problem.lean)",
       "isSparse_subset: subfamilies inherit sparsity (Erdos1022Problem.lean)",
@@ -40,7 +40,16 @@
       "sparse_no_empty_member: sparsity excludes empty set (Erdos1022Problem.lean)",
       "allSizeAtLeast_no_empty: min-size >= 1 excludes empty set (Erdos1022Problem.lean)",
       "filter_subset_mono: subset count monotone under inclusion (Erdos1022Problem.lean)",
-      "filter_subset_insert_le: element insertion increases count (Erdos1022Problem.lean)"
+      "filter_subset_insert_le: element insertion increases count (Erdos1022Problem.lean)",
+      "degree, maxDegree: element degree definitions (Erdos1022Problem.lean)",
+      "degree_subset: degree monotonicity under subfamilies (Erdos1022Problem.lean)",
+      "degree_eq_zero_of_not_mem: characterization of zero degree (Erdos1022Problem.lean)",
+      "lovasz_theorem: axiom for c(2)=1 base case (Erdos1022Problem.lean)",
+      "graph_sparse_propertyB: 1-sparse graphs are 2-colorable (Erdos1022Problem.lean)",
+      "isSparse_union: union sparsity is additive (Erdos1022Problem.lean)",
+      "allSizeAtLeast_union: min-size preserved under union (Erdos1022Problem.lean)",
+      "erdos_first_moment_bound: axiom for 2^{t-1} bound (Erdos1022Problem.lean)",
+      "hasPropertyB_card_le_one: families with ≤1 member have Property B (Erdos1022Problem.lean)"
     ],
     "insights": [
       "Property B infrastructure well-suited for Finset-based formalization",
@@ -48,13 +57,17 @@
       "Singleton sets of size >= 2 have Property B by splitting on any element",
       "c-sparsity forces empty set not in F since |F.filter(subset empty)| <= c*0 = 0",
       "Filter counts are monotone: X subset Y implies |{f subset X}| <= |{f subset Y}|",
-      "Global family size bound |F| <= c*|U| follows from sparsity at any superset U"
+      "Global family size bound |F| <= c*|U| follows from sparsity at any superset U",
+      "Element degree deg(a) = |{f : a ∈ f}| is fundamental for Local Lemma applications",
+      "Lovász (1968) c(2)=1: only solved case of the conjecture, deep proof via greedy/matching",
+      "Sparsity is additive under union: c-sparse ∪ d-sparse is (c+d)-sparse",
+      "Erdős first-moment: Pr(mono) = 2^{1-t} per set, union bound gives |F| < 2^{t-1} threshold"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Add chromatic number definition and prove propertyB_iff_chromatic_le2",
-      "Formalize Lovasz theorem (c_2 = 1) as axiom with application lemmas",
       "Add cover-free family definition and prove coverFree_implies_sparse",
+      "Prove degree-based sparsity bound: max degree d implies d-sparse (with min size ≥ 1)",
+      "Try to prove Lovász theorem from Lean: may need Hall/matching infrastructure",
       "Create Aristotle companion file for routine supporting lemmas"
     ]
   },

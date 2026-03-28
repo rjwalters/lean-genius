@@ -210,4 +210,112 @@ theorem filter_subset_insert_le [Fintype α] (F : Finset (Finset α))
     (F.filter (· ⊆ X)).card ≤ (F.filter (· ⊆ insert a X)).card :=
   filter_subset_mono F (Finset.subset_insert a X)
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: Element Degree
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The degree of an element a in family F: the number of sets containing a. -/
+def degree (F : Finset (Finset α)) (a : α) : ℕ :=
+  (F.filter (a ∈ ·)).card
+
+/-- The maximum degree of any element in F relative to a ground set. -/
+def maxDegree [Fintype α] (F : Finset (Finset α)) : ℕ :=
+  Finset.univ.sup (degree F)
+
+/-- Degree is monotone: subfamilies have at most the same degree. -/
+theorem degree_subset {F G : Finset (Finset α)} {a : α}
+    (hFG : F ⊆ G) : degree F a ≤ degree G a :=
+  Finset.card_le_card (Finset.filter_subset_filter _ hFG)
+
+/-- An element not in any member has degree 0. -/
+theorem degree_eq_zero_of_not_mem {F : Finset (Finset α)} {a : α}
+    (ha : ∀ f ∈ F, a ∉ f) : degree F a = 0 := by
+  simp only [degree, Finset.card_eq_zero]
+  ext f
+  simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false, not_and]
+  exact ha f
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 10: Lovász Theorem (c(2) = 1)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Lovász's theorem** (1968): Every 1-sparse family of sets of size ≥ 2
+    has Property B.
+
+    This is the base case c(2) = 1 of Erdős #1022. It establishes that the
+    conjecture holds for t = 2 with the smallest possible sparsity constant.
+
+    The proof uses a greedy argument: consider a maximal proper 2-coloring
+    and show that 1-sparsity prevents any uncolored element from being forced
+    into a monochromatic configuration.
+
+    Reference: Lovász, L. "On decomposition of graphs." Studia Sci. Math.
+    Hungar. 1 (1966), 237-238. -/
+axiom lovasz_theorem [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 2) (hsparse : IsSparse F 1) : HasPropertyB F
+
+/-- Application: if a graph (sets of size exactly 2) is 1-sparse, it is 2-colorable. -/
+theorem graph_sparse_propertyB [Fintype α] (F : Finset (Finset α))
+    (hsize : ∀ f ∈ F, f.card = 2) (hsparse : IsSparse F 1) : HasPropertyB F :=
+  lovasz_theorem F (fun f hf => by rw [hsize f hf]) hsparse
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 11: Union and Combination of Families
+-- ══════════════════════════════════════════════════════════════════
+
+/-- Property B is inherited by subfamilies (already proved as hasPropertyB_subset). -/
+
+/-- The union of a c-sparse and a d-sparse family is (c + d)-sparse. -/
+theorem isSparse_union [Fintype α] {F G : Finset (Finset α)} {c d : ℕ}
+    (hF : IsSparse F c) (hG : IsSparse G d) : IsSparse (F ∪ G) (c + d) := by
+  intro X
+  calc (Finset.filter (· ⊆ X) (F ∪ G)).card
+      ≤ (F.filter (· ⊆ X)).card + (G.filter (· ⊆ X)).card := by
+        rw [Finset.filter_union]
+        exact Finset.card_union_le _ _
+    _ ≤ c * X.card + d * X.card := Nat.add_le_add (hF X) (hG X)
+    _ = (c + d) * X.card := by ring
+
+/-- Disjoint union of c-sparse families is c-sparse if sizes partition. -/
+theorem allSizeAtLeast_union {F G : Finset (Finset α)} {t : ℕ}
+    (hF : AllSizeAtLeast F t) (hG : AllSizeAtLeast G t) :
+    AllSizeAtLeast (F ∪ G) t :=
+  fun f hf => by
+    rw [Finset.mem_union] at hf
+    exact hf.elim (hF f) (hG f)
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 12: Erdős First-Moment Threshold
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Erdős 2^{t-1} bound** (1963): any family of fewer than 2^{t-1} sets,
+    each of size ≥ t, has Property B. This follows from a probabilistic
+    first-moment argument: color randomly, Pr(set monochromatic) = 2^{1-t},
+    so E(mono sets) < 1 if |F| < 2^{t-1}.
+
+    Reference: Erdős, P. "On a combinatorial problem. II."
+    Acta Math. Acad. Sci. Hungar. 15 (1964), 445-447. -/
+axiom erdos_first_moment_bound [Fintype α] (F : Finset (Finset α)) (t : ℕ)
+    (ht : 2 ≤ t) (hsize : AllSizeAtLeast F t)
+    (hcount : F.card < 2 ^ (t - 1)) : HasPropertyB F
+
+/-- A family with at most one member of size ≥ 2 has Property B. -/
+theorem hasPropertyB_card_le_one [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 2) (hF : F.card ≤ 1) : HasPropertyB F := by
+  rcases Nat.eq_or_gt_of_le (Nat.zero_le F.card) with h | h
+  · -- F is empty
+    rw [Finset.card_eq_zero.mp h]
+    exact hasPropertyB_empty
+  · -- F has exactly one element
+    have hone : F.card = 1 := by omega
+    obtain ⟨f, hf⟩ := Finset.card_eq_one.mp hone
+    have hmem : f ∈ F := by rw [hf]; exact Finset.mem_singleton_self f
+    rw [hf]
+    exact hasPropertyB_singleton (hsize f hmem)
+
+/-- The Erdős bound applies at t = 2: any family of one set of size ≥ 2 has Property B. -/
+theorem first_moment_at_2 [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 2) (hF : F.card < 2) : HasPropertyB F :=
+  hasPropertyB_card_le_one F hsize (by omega)
+
 end Erdos1022

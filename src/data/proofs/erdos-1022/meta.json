@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1022",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 1,
-    "lineCount": 213,
-    "assumptions": "1 axiom: erdos_1022_conjecture (open conjecture: c_t → ∞ threshold for property B). 0 sorries.",
+    "axiomCount": 3,
+    "lineCount": 321,
+    "assumptions": "3 axioms: erdos_1022_conjecture (open conjecture), lovasz_theorem (c(2)=1, Lovász 1968), erdos_first_moment_bound (|F| < 2^{t-1} implies Property B, Erdős 1963). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -116,6 +116,38 @@
       "startLine": 204,
       "endLine": 213,
       "mathContext": "Monotonicity of subset counts under set inclusion."
+    },
+    {
+      "id": "degree",
+      "title": "§ 9: Element Degree",
+      "summary": "Defines `degree F a` (number of sets containing a) and `maxDegree F`. Proves degree monotonicity under subfamilies and zero-degree characterization.",
+      "startLine": 214,
+      "endLine": 237,
+      "mathContext": "Element degree in set families, monotonicity under subfamilies."
+    },
+    {
+      "id": "lovasz",
+      "title": "§ 10: Lovász Theorem (c(2) = 1)",
+      "summary": "Axiomatizes Lovász's theorem: every 1-sparse family of sets of size ≥ 2 has Property B. Application: 1-sparse graphs are 2-colorable.",
+      "startLine": 238,
+      "endLine": 260,
+      "mathContext": "The base case c(2) = 1 of Erdős #1022 (Lovász 1968)."
+    },
+    {
+      "id": "union",
+      "title": "§ 11: Union and Combination of Families",
+      "summary": "Proves the union of a c-sparse and d-sparse family is (c+d)-sparse (`isSparse_union`), and AllSizeAtLeast is preserved under union.",
+      "startLine": 262,
+      "endLine": 286,
+      "mathContext": "Sparsity and size bounds are preserved under family union."
+    },
+    {
+      "id": "first-moment",
+      "title": "§ 12: Erdős First-Moment Threshold",
+      "summary": "Axiomatizes the Erdős 2^{t-1} bound and proves Property B for families with ≤ 1 member of size ≥ 2.",
+      "startLine": 287,
+      "endLine": 321,
+      "mathContext": "Erdős (1963): |F| < 2^{t-1} with min size ≥ t implies Property B."
     }
   ],
   "conclusion": {
@@ -215,9 +247,9 @@
     "imports": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Fintype.Basic", "Mathlib.Tactic"],
     "opens": ["Finset"],
     "namespace": "Erdos1022",
-    "lineCount": 213,
-    "axiomCount": 1,
-    "theoremCount": 15,
-    "definitionCount": 3
+    "lineCount": 321,
+    "axiomCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 5
   }
 }

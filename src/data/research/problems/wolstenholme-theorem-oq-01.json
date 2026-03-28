@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created WolstenholmeTheoremOQ01.lean (222 lines, 23 theorems, 4 axioms, 0 sorries). Formalized the infinitude conjecture with finite/infinite dichotomy proof, conditional bounds, Bernoulli number characterization, and Wieferich prime parallel.",
+    "progressSummary": "COMPLETED: WolstenholmeTheoremOQ01.lean (268 lines, 24 theorems, 3 axioms, 0 sorries). Eliminated cb_16843 axiom by defining choose_fast (O(k) multiplicative recurrence for Nat.choose) and proving via native_decide. Axiom count reduced from 4 to 3.",
     "builtItems": [
       "WolstenholmeTheoremOQ01.lean: InfinitelyManyWP, BoundedWP definitions",
       "bounded_iff_not_infinite: logical equivalence proof",
@@ -39,20 +39,26 @@
       "bernoulli_characterization: axiom stating p|B_{p-3} equivalence",
       "isWieferich_1093, isWieferich_3511: Wieferich prime verification via native_decide",
       "wp_satisfies_wolstenholme, wp_satisfies_babbage: divisibility chain theorems",
-      "Gallery entry: meta.json, annotations.json, index.ts for wolstenholme-theorem-oq-01"
+      "Gallery entry: meta.json, annotations.json, index.ts for wolstenholme-theorem-oq-01",
+      "choose_fast: O(k) multiplicative recurrence for Nat.choose, proved equivalent via choose_fast_eq",
+      "cb_16843: axiom eliminated — proved via unfold cb; rw [← choose_fast_eq]; native_decide"
     ],
     "insights": [
       "The finite/infinite dichotomy (BoundedWP ↔ ¬InfinitelyManyWP) is provable via classical push_neg",
       "Bernoulli characterization p|B_{p-3} links WPs to irregular prime theory — every WP is (p-3)-irregular",
       "Wieferich prime parallel is structurally precise: 2 known examples, density ≈ 1/p, same open status",
       "Divisibility chain p⁴ → p³ → p² connects WP definition to Wolstenholme and Babbage theorems",
-      "Heuristic ln(ln N) growth predicts only ≈3.1 WPs below 10⁹, consistent with 2 observed"
+      "Heuristic ln(ln N) growth predicts only ≈3.1 WPs below 10⁹, consistent with 2 observed",
+      "Lean's Nat.choose uses Pascal triangle recurrence (exponential w/o memoization) — choose_fast O(k) multiplicative formula needed for native_decide on large inputs",
+      "cb_2124679 still requires axiom: C(4249357, 2124678) has ~1.3M digits, choose_fast evaluation too slow for native_decide (~45min estimated)",
+      "Nat.choose_succ_right_eq is the key Mathlib lemma: C(n,k+1)*(k+1) = C(n,k)*(n-k), enabling proof that choose_fast = Nat.choose"
     ],
     "mathlibGaps": [
       "No Mathlib theorem connecting Bernoulli numbers to binomial coefficient mod p⁴",
       "No irregular prime predicate in Mathlib connected to specific Bernoulli indices"
     ],
     "nextSteps": [
+      "Eliminate cb_2124679 axiom via modular arithmetic approach: define choose_mod using modular inverse to avoid computing 1.3M-digit intermediate values",
       "Try to prove the Bernoulli characterization from Mathlib (currently axiom)",
       "Attempt to formally prove WPs are irregular primes as a theorem",
       "Explore whether the ABC conjecture implies infinitely many WPs (conditional result)"
@@ -110,10 +116,10 @@
     {
       "path": "Proofs/WolstenholmeTheoremOQ01.lean",
       "filename": "WolstenholmeTheoremOQ01.lean",
-      "lineCount": 222,
-      "theoremCount": 23,
-      "axiomCount": 4,
-      "defCount": 6,
+      "lineCount": 268,
+      "theoremCount": 24,
+      "axiomCount": 3,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
