@@ -358,13 +358,31 @@ rotate_to_working_token() {
         return 1
     fi
 
-    # If pinned, don't rotate — stay on the pinned account
+    # If pinned, don't rotate — unless we've failed too many times
     local _pin_file="$_tokens_dir/.pinned"
+    local _pin_fail_file="$_tokens_dir/.pin-exhaust-count"
+    local _pin_exhaust_limit=5
     if [[ -f "$_pin_file" ]]; then
         local _pinned_acct
         _pinned_acct=$(tr -d '[:space:]' < "$_pin_file")
-        log_warn "Account pinned to $_pinned_acct — not rotating (will backoff instead)"
-        return 1
+
+        # Track consecutive exhaustion failures while pinned
+        local _pin_fails=0
+        if [[ -f "$_pin_fail_file" ]]; then
+            _pin_fails=$(tr -d '[:space:]' < "$_pin_fail_file")
+            _pin_fails=${_pin_fails:-0}
+        fi
+        _pin_fails=$((_pin_fails + 1))
+        echo "$_pin_fails" > "$_pin_fail_file"
+
+        if [[ $_pin_fails -ge $_pin_exhaust_limit ]]; then
+            log_warn "Account pinned to $_pinned_acct exhausted after $_pin_fails attempts — auto-unpinning to allow rotation"
+            rm -f "$_pin_file" "$_pin_fail_file"
+            # Fall through to normal rotation below
+        else
+            log_warn "Account pinned to $_pinned_acct — not rotating (attempt $_pin_fails/$_pin_exhaust_limit, will backoff instead)"
+            return 1
+        fi
     fi
 
     local _token_files=("$_tokens_dir"/*.token)
@@ -623,6 +641,8 @@ run_daemon() {
                 log_success "Daemon cycle $cycle: Claude completed successfully"
                 backoff=$INITIAL_BACKOFF
                 consecutive_failures=0
+                # Reset pin-exhaust counter on success
+                rm -f "${REPO_ROOT:-.}/.loom/tokens/.pin-exhaust-count" 2>/dev/null
                 cycle=$((cycle + 1))
                 continue
                 ;;
