@@ -46,12 +46,17 @@
       "Multiple equivalent formulations (ratio, asymptotic, error term, Li) with proved equivalences",
       "Consequences: prime density → 0, nth prime ~ n ln n, Mertens sum, prime gaps",
       "Connection to Riemann Hypothesis via von Koch's conditional error bound",
-      "Chebyshev's pre-PNT bounds as elementary comparison"
+      "Chebyshev's pre-PNT bounds as elementary comparison",
+      "PROVED ratio_iff_equiv from Mathlib isEquivalent_iff_tendsto_one + field_simp (13A→8A)",
+      "PROVED equiv_iff_error: definitional — IsEquivalent IS the little-o condition",
+      "PROVED li_iff_equiv via transitivity/symmetry of ~[l] from li_equiv_approx_axiom",
+      "PROVED prime_counting_tendsto_top from Nat.tendsto_primeCounting ∘ tendsto_nat_floor_atTop",
+      "PROVED prime_density_tends_to_zero from PNT via Tendsto.mul + div_atTop"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 13,
+    "axiomCount": 8,
     "lineCount": 463,
-    "assumptions": "13 axioms: ratio_iff_equiv_axiom, equiv_iff_error_axiom, li_equiv_approx_axiom, and 10 more. See Lean source for complete statements.",
+    "assumptions": "8 axioms: primeNumberTheorem (PNT itself), li_equiv_approx_axiom (Li ~ x/ln x), nth_prime_asymptotic_axiom, mertens_sum_primes_axiom, prime_gaps_sublinear_axiom, RiemannHypothesis_statement, pnt_rh_error_axiom, chebyshev_bounds_axiom. Eliminated 5 axioms by proving from Mathlib: ratio_iff_equiv (via isEquivalent_iff_tendsto_one), equiv_iff_error (definitional), li_iff_equiv (transitivity of ~), prime_counting_tendsto_top (Nat.tendsto_primeCounting), prime_density_tends_to_zero (from PNT).",
     "mathlib_version": "4.26.0",
     "prerequisites": [
       "Real analysis (limits, integrals, asymptotic analysis)",
@@ -99,7 +104,7 @@
       "title": "Equivalence of Formulations",
       "startLine": 127,
       "endLine": 189,
-      "summary": "Axiomatized equivalences between all four PNT formulations, including Li(x) ~ x/ln(x) via asymptotic expansion.",
+      "summary": "Proved equivalences between all four PNT formulations (3 axioms eliminated). Only Li(x) ~ x/ln(x) remains axiomatized.",
       "mathContext": "\\(f \\sim g \\iff f - g = o(g)\\); transitivity: \\(\\pi \\sim x/\\ln x \\sim \\mathrm{Li}(x)\\) because \\(\\mathrm{Li}(x) = x/\\ln x + x/\\ln^2 x + \\cdots\\)"
     },
     {
@@ -294,8 +299,10 @@
     "imports": [
       "Mathlib.NumberTheory.PrimeCounting",
       "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.AsymptoticEquivalent",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
       "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
       "Mathlib.Order.Filter.Basic",
       "Mathlib.Topology.Order.Basic",
@@ -314,7 +321,7 @@
     ],
     "namespace": "PrimeNumberTheorem",
     "lineCount": 463,
-    "axiomCount": 13,
+    "axiomCount": 8,
     "theoremCount": 15,
     "definitionCount": 9,
     "substantiveTheoremCount": 5,
