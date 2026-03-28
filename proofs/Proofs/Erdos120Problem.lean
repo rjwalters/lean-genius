@@ -187,10 +187,24 @@ is half the previous one).
 def geometricSeq : Set ℝ := {x | ∃ n : ℕ, x = (1/2 : ℝ)^n}
 
 /-- The geometric sequence is infinite. -/
-axiom geometricSeq_infinite : geometricSeq.Infinite
+theorem geometricSeq_infinite : geometricSeq.Infinite := by
+  have : geometricSeq = Set.range (fun n : ℕ => (1/2 : ℝ)^n) := by
+    ext x; simp [geometricSeq, Set.mem_range, eq_comm]
+  rw [this]
+  apply Set.infinite_range_of_injective
+  intro n₁ n₂ h
+  by_contra hne
+  rcases Nat.lt_or_gt_of_ne hne with h12 | h12
+  · exact absurd h (ne_of_gt (pow_lt_pow_of_lt_one (by norm_num) (by norm_num) h12))
+  · exact absurd h (ne_of_lt (pow_lt_pow_of_lt_one (by norm_num) (by norm_num) h12))
 
 /-- The geometric sequence is bounded. -/
-axiom geometricSeq_bounded : Bornology.IsBounded geometricSeq
+theorem geometricSeq_bounded : Bornology.IsBounded geometricSeq := by
+  apply (isBounded_Icc (a := (0 : ℝ)) (b := 1)).subset
+  intro x ⟨n, hx⟩
+  simp only [Set.mem_Icc]
+  subst hx
+  exact ⟨by positivity, pow_le_one₀ (by norm_num) (by norm_num)⟩
 
 /--
 **The Geometric Sequence Case (OPEN)**

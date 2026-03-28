@@ -66,7 +66,28 @@ def IsSidon' (S : Finset ℕ) : Prop :=
 /--
 The equivalence of Sidon definitions.
 -/
-axiom sidon_equiv (S : Finset ℕ) : IsSidon S ↔ IsSidon' S
+theorem sidon_equiv (S : Finset ℕ) : IsSidon S ↔ IsSidon' S := by
+  constructor
+  · intro h a b c d ha hb hc hd hadd
+    -- Sort both pairs and apply IsSidon
+    rcases le_total a b with hab | hab <;> rcases le_total c d with hcd | hcd
+    all_goals (first
+      | (have ⟨h1, h2⟩ := h a b c d ha hb hc hd hab hcd hadd
+         subst h1; subst h2; rfl)
+      | (have ⟨h1, h2⟩ := h a b d c ha hb hd hc hab hcd (by omega)
+         subst h1; subst h2; simp [Finset.pair_comm])
+      | (have ⟨h1, h2⟩ := h b a c d hb ha hc hd hab hcd (by omega)
+         subst h1; subst h2; simp [Finset.pair_comm])
+      | (have ⟨h1, h2⟩ := h b a d c hb ha hd hc hab hcd (by omega)
+         subst h1; subst h2; rfl))
+  · intro h a b c d ha hb hc hd hab hcd hadd
+    have heq := h a b c d ha hb hc hd hadd
+    -- {a, b} = {c, d} with a ≤ b and c ≤ d
+    have hc_mem : c ∈ ({a, b} : Finset ℕ) := by rw [heq]; exact Finset.mem_insert_self c {d}
+    have hd_mem : d ∈ ({a, b} : Finset ℕ) := by
+      rw [heq]; exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self d))
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hc_mem hd_mem
+    rcases hc_mem with rfl | rfl <;> rcases hd_mem with rfl | rfl <;> constructor <;> omega
 
 /-
 ## Part II: The Functions f(N) and A(N)

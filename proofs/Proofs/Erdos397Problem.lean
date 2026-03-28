@@ -72,7 +72,10 @@ axiom somani_identity (a : ℕ) (ha : a ≥ 2) :
   C a * C (2*a + 2) * C (somaniC a) = C (a + 1) * C (2*a) * C (somaniC a + 1)
 
 /-- For a ≥ 2, the LHS and RHS sets are disjoint -/
-axiom somani_disjoint (a : ℕ) (ha : a ≥ 2) : Disjoint (somaniLHS a) (somaniRHS a)
+theorem somani_disjoint (a : ℕ) (ha : a ≥ 2) : Disjoint (somaniLHS a) (somaniRHS a) := by
+  simp only [Finset.disjoint_left, somaniLHS, somaniRHS, Finset.mem_insert, Finset.mem_singleton]
+  intro x
+  rintro (rfl | rfl | rfl) <;> rintro (rfl | rfl | rfl) <;> simp_all [somaniC] <;> omega
 
 /-- Each (somaniLHS a, somaniRHS a) for a ≥ 2 is a valid solution -/
 private lemma somani_prod_lhs (a : ℕ) (ha : a ≥ 2) :
