@@ -82,9 +82,21 @@ theorem folklore_irrationality (a : PosIntSeq)
     Irrational (∑' n, (1 : ℝ) / (a n : ℕ)) := by
   sorry
 
-/-- Double exponential satisfies folklore condition. -/
-theorem doubleExp_has_folklore_growth : HasFolkloreGrowth doubleExp := by
+/-- Double exponential does NOT satisfy the folklore condition.
+    (2^{2^n})^{1/2^n} = 2^(2^n/2^n) = 2^1 = 2, which is constant, not → ∞.
+    The irrationality of Σ 1/2^{2^n} follows instead from the Sylvester-type
+    condition a_{n+1} ≈ a_n² (see doubleExp_sylvester_growth). -/
+theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
   sorry
+
+/-- For double exponential, a_{n+1} = a_n²: the sequence satisfies a_{n+1} = a_n².
+    This implies irrationality of Σ 1/a_n by the Sylvester argument
+    (a_{n+1} ≥ a_n² - a_n + 1 with equality approached). -/
+theorem doubleExp_square_growth (n : ℕ) :
+    (doubleExp (n + 1) : ℕ) = ((doubleExp n : ℕ)) ^ 2 := by
+  change 2 ^ (2 ^ (n + 1)) = (2 ^ (2 ^ n)) ^ 2
+  have : 2 ^ (n + 1) = 2 ^ n * 2 := by ring
+  rw [this, pow_mul]
 
 /- ## Part V: Kovač-Tao Result (2024) -/
 
@@ -135,11 +147,17 @@ noncomputable def tower : ℕ → ℕ
   | 0 => 1
   | n + 1 => 2 ^ tower n
 
-/-- Double exponential is strictly increasing. -/
+/-- Double exponential is strictly increasing: n < m → 2^{2^n} < 2^{2^m}. -/
 theorem doubleExp_strictly_increasing : IsStrictlyIncreasing doubleExp := by
-  sorry
+  intro n m hnm
+  -- Goal: (doubleExp n : ℕ) < (doubleExp m : ℕ), i.e., 2^{2^n} < 2^{2^m}
+  change (2 : ℕ) ^ 2 ^ n < 2 ^ 2 ^ m
+  exact Nat.pow_lt_pow_right (by norm_num) (Nat.pow_lt_pow_right (by norm_num) hnm)
 
-/-- Double exponential sum converges (rapidly). -/
+/-- Double exponential sum converges: Σ 1/2^{2^n} converges.
+    Proof sketch: n ≤ 2^n for all n, so 2^n ≤ 2^{2^n}, giving
+    1/2^{2^n} ≤ 1/2^n = (1/2)^n. The geometric series Σ (1/2)^n converges,
+    so Σ 1/2^{2^n} converges by comparison. -/
 theorem doubleExp_convergent : HasConvergentSum doubleExp := by
   sorry
 
@@ -212,10 +230,19 @@ end Erdos263
   6. Connections to Problems #262 and #264
   7. Non-computability of the property
 
-  **Key sorries**:
-  - `folklore_irrationality`: The folklore sufficient condition
-  - `kovac_tao_not_irrationality`: The 2024 negative result
-  - `positive_condition_irrationality`: Sufficient condition for irrationality
+  **Proved**:
+  - `doubleExp_strictly_increasing`: 2^{2^n} is strictly increasing
+  - `doubleExp_square_growth`: a_{n+1} = a_n² for double exponential
+
+  **Bug fixed**: `doubleExp_has_folklore_growth` was FALSE (2^{2^n})^{1/2^n} = 2,
+  not → ∞. Replaced with correct `doubleExp_not_folklore_growth`.
+
+  **Key sorries** (8 remaining):
+  - `folklore_irrationality`: The folklore sufficient condition (deep)
+  - `kovac_tao_not_irrationality`: The 2024 negative result (deep)
+  - `positive_condition_irrationality`: Sufficient condition for irrationality (deep)
+  - `doubleExp_convergent`: Comparison with geometric series (routine)
+  - `doubleExp_not_folklore_growth`: Constant limit = 2 (routine)
 
   **Related**: Problems #262, #264 (other irrationality sequence questions)
 -/
