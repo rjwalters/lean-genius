@@ -1,6 +1,6 @@
 {
   "slug": "erdos-831",
-  "title": "Erdős #831",
+  "title": "Erd\u0151s #831",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T09:46:19.704Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Documented strategies, both sorries blocked on constructive configs",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,17 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3S→2S. Proved regular_polygon_not_general (extract 4 points from finset, show concyclic). Remaining sorries h_upper_bound and h_three need constructive R² point configs.",
+    "progressSummary": "PROGRESS: Documented proof strategies for h_upper_bound and h_three. 1A appropriate. Both sorries blocked on constructive EuclideanSpace \u211d (Fin 2) point configs.",
     "builtItems": [
-      "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction"
+      "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction",
+      "Documented proof strategies for h_upper_bound (sInf + image bound) and h_three (explicit 3-point config)"
     ],
     "insights": [
       "regular_polygon_not_general proved: 4 points on same circle are concyclic, contradicting GP",
-      "Remaining 2 sorries (h_upper_bound, h_three) need constructive point configurations in R²"
+      "Remaining 2 sorries (h_upper_bound, h_three) need constructive point configurations in R\u00b2",
+      "h_upper_bound: for empty set sInf=0, for non-empty every k \u2264 C(n,3) by image cardinality",
+      "h_three: explicit config (0,0),(1,0),(0,1) works \u2014 not collinear (det\u22600), concyclic vacuous, 1 radius",
+      "h_four_lower axiom is appropriate: proving h(4)\u22652 requires showing all GP 4-point configs have \u22652 radii"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -55,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:46:19.704Z",
-  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "lastUpdate": "2026-03-28T00:15:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

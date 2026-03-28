@@ -66,7 +66,12 @@ def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
 /-- G_k is bipartite by construction. -/
 theorem Gk_bipartite (k : ℕ) : ∀ v w : Gk_vertex k,
     (Gk k).Adj v w → (∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j) := by
-  sorry
+  intro v w h
+  rcases v with i | i <;> rcases w with j | j
+  · exact h.elim        -- inl/inl: Adj is definitionally False
+  · simp                 -- inl/inr: both existentials are True
+  · simp                 -- inr/inl: both existentials are False (Sum.inr ≠ Sum.inl)
+  · exact h.elim         -- inr/inr: Adj is definitionally False
 
 /-
 ## Special Case: G_3 = C_6
@@ -161,9 +166,23 @@ Even ex(n, G_k) = o(n^(3/2)) is unknown.
 def weak_conjecture : Prop :=
   ∀ k ≥ 3, (fun n => exGk k n) = o(fun n => (n : ℝ) ^ (3/2 : ℝ))
 
-/-- The main conjecture implies the weak conjecture. -/
+/-- The main conjecture implies the weak conjecture.
+    Proof reduces to showing C·n^{3/2-c} ≤ ε·n^{3/2} for large n,
+    i.e., n^c ≥ C/ε, which holds eventually since n^c → ∞. -/
 theorem strong_implies_weak : erdos_1021_conjecture → weak_conjecture := by
-  sorry
+  intro hstrong k hk
+  obtain ⟨c, hc_pos, C, hC_pos, N₀, hN₀⟩ := hstrong k hk
+  -- Goal: isLittleO (exGk k) (n^{3/2})
+  -- Strategy: exGk k n ≤ C * n^{3/2-c} ≤ ε * n^{3/2} for large n
+  intro ε hε
+  -- For large n: C * n^{3/2-c} = C * n^{3/2} * n^{-c} ≤ ε * n^{3/2}
+  -- when n^c ≥ C/ε, which holds for all sufficiently large n
+  obtain ⟨N₁, hN₁⟩ : ∃ N₁ : ℕ, ∀ n : ℕ, n ≥ N₁ →
+      C * powerBound c n ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by
+    sorry  -- Real analysis: rpow decay C·n^{-c} → 0; routine Aristotle target
+  refine ⟨max N₀ N₁, fun n hn => ?_⟩
+  have ⟨hn₀, hn₁⟩ := max_le_iff.mp hn
+  exact le_trans (hN₀ n hn₀) (hN₁ n hn₁)
 
 /-- Even the weak conjecture is open. -/
 axiom weak_conjecture_open : ¬∃ (proof : weak_conjecture), True

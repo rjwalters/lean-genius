@@ -167,9 +167,15 @@ axiom frankl_upper_bound :
   ∀ n r k : ℕ, r ≥ 2 → k ≥ 1 → n ≥ r →
     f n r k ≤ (k - 1) * Nat.choose (n - 1) (r - 1)
 
-/-- The upper bound is sometimes tight -/
+/-- The upper bound is sometimes tight.
+    Proof sketch: By telescoping, C(n,r) - C(n-k+1,r) = Σ_{i=1}^{k-1} C(n-i,r-1)
+    via Pascal's rule. Each term ≤ C(n-1,r-1) by monotonicity, giving ≤ (k-1)·C(n-1,r-1). -/
 theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :
     construction2 n r k ≤ (k - 1) * Nat.choose (n - 1) (r - 1) := by
+  -- Telescoping sum + monotonicity of binomial coefficients
+  -- C(n,r) - C(n-k+1,r) = Σ_{i=1}^{k-1} [C(n-i+1,r) - C(n-i,r)]
+  --                      = Σ_{i=1}^{k-1} C(n-i,r-1)  [Pascal's rule]
+  --                      ≤ (k-1) · C(n-1,r-1)         [each term ≤ C(n-1,r-1)]
   sorry
 
 /-
