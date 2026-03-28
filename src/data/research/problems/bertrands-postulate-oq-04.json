@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: OQ04 asks for direct Erdős proof formalization. Parent uses Mathlib opaque proof. Would need Legendre formula, Chebyshev θ/ψ functions, central binomial coefficient analysis — 500+ lines.",
+    "builtItems": [
+      "Assessment: BLOCKED — needs substantial infrastructure (Legendre formula, Chebyshev functions)"
+    ],
+    "insights": [
+      "Parent BertrandsPostulate.lean wraps Mathlib (Mathlib.NumberTheory.Bertrand), 0A/7T/0S",
+      "OQ03 has 3 axioms, 12 theorems — already extends the main proof",
+      "OQ04 goal: formalize Erdős proof directly with visible central binomial coefficient analysis",
+      "This requires: prime factorization of C(2n,n), Legendre formula, Chebyshev functions",
+      "Substantial project — would need 500+ lines of new infrastructure"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -49,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.431Z",
-  "lastUpdate": "2026-03-26T20:00:24.431Z",
+  "lastUpdate": "2026-03-28T05:54:00Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [

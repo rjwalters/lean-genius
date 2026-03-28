@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Stub file with axiom-definitions. Needs SimpleGraph rewrite. OQ about 4-chromatic critical graphs is open.",
+    "builtItems": [
+      "Assessment: stub file needs rewrite to use Mathlib SimpleGraph infrastructure"
+    ],
+    "insights": [
+      "Lean file is a lightweight stub: 4 axiom-definitions (vertexCount, minDegree, chromaticNumber, edgeCount) + 2 deep axioms",
+      "Deep axioms: dirac_6_critical, simonovits_toft_4_critical — known results in graph coloring",
+      "File uses Type-level axioms instead of Mathlib SimpleGraph — would need complete rewrite to be useful",
+      "OQ about 4-chromatic critical graphs with high minimum degree — open conjecture"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -55,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.903Z",
-  "lastUpdate": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-28T05:58:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

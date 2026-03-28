@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: No Lean file exists. Parent OQ02 is fully proved (9T, 0A, 0S). This sub-question about query complexity for specific function classes needs new definitions and infrastructure.",
+    "builtItems": [
+      "Assessment: no Lean file, parent OQ02 fully proved, needs new formalization"
+    ],
+    "insights": [
+      "No dedicated Lean file — needs new formalization or integration into existing BrouwerFixedPointOQ02.lean",
+      "Parent OQ02 has 9 theorems, 0 axioms, 0 sorries — already fully verified",
+      "OQ02 covers 1D complexity (O(log 1/ε)) and PPAD structure for ≥2D",
+      "This sub-question about specific function classes (Lipschitz, polynomial, etc.) would need new definitions",
+      "Low tractability without substantial new infrastructure for function class complexity bounds"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -50,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.432Z",
-  "lastUpdate": "2026-03-26T20:00:24.432Z",
+  "lastUpdate": "2026-03-28T05:50:00Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [

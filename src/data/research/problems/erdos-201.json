@@ -29,15 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (7A→5A). gk defined, gk_le_rk proved.",
+    "progressSummary": "PROGRESS: Added 4 structural theorems about G_k (10→14T). gk_prop_zero, gk_bddAbove, gk_ge_one, gk_anti_k. 5A unchanged (4 computational, 1 deep).",
     "builtItems": [
       "DEFINED gk via sSup (was axiom)",
-      "PROVED gk_le_rk from definition (universal → specific set)"
+      "PROVED gk_le_rk from definition (universal → specific set)",
+      "gk_prop_zero: 0 is always a valid lower bound for G_k(N)",
+      "gk_bddAbove: {m | gk_prop k N m} is bounded above by N",
+      "gk_ge_one: G_k(N) ≥ 1 for N ≥ 1, k ≥ 2 (singletons are AP-free)",
+      "gk_anti_k: G_l(N) ≤ G_k(N) for k ≤ l (larger k = harder avoidance)"
     ],
     "insights": [
       "7 axioms: gk function (opaque), gk_le_rk (follows from gk definition), 4 specific values, komlos_sulyok_szemeredi (deep). All appropriate since gk is axiomatized.",
       "10 theorems proved, 0 sorries.",
-      "gk defined as sSup of valid lower bounds (gk_prop). gk_le_rk proved: apply universality to Icc 1 N, get AP-free subset A with m ≤ |A| ≤ rk k N."
+      "gk defined as sSup of valid lower bounds (gk_prop). gk_le_rk proved: apply universality to Icc 1 N, get AP-free subset A with m ≤ |A| ≤ rk k N.",
+      "4 value axioms (g3_5_eq, r3_5_eq, etc.) need decidability instance for IsAPFree on finite sets — not trivially provable",
+      "KSS 1975 axiom is deep, stays as axiom",
+      "gk_bddAbove: G_k bounds set bounded by N (needed for csSup lemmas)",
+      "gk_anti_k: G_k anti-monotone in k via isAPFree_of_le transfer"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -57,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:06:12.675Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-03-28T05:46:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

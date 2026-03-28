@@ -31,9 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Highly developed formalization. 43T, 1A (szemeredi_k_ge_4 for k≥4, needs hypergraph regularity). k=1,2,3 fully proved. Only gap is k≥4 which requires infrastructure not in Mathlib.",
+    "builtItems": [
+      "Assessment: highly developed formalization, 43T/1A/0S across 4 files, 2174 lines total"
+    ],
+    "insights": [
+      "4 Lean files: Core (110L, 3T), Counting (1196L, 13T), Regularity (533L, 15T), Theorem (335L, 12T)",
+      "Total: 2174 lines, 43 theorems, 1 axiom (szemeredi_k_ge_4), 0 sorries",
+      "k=1,2 proved (trivial cases), k=3 proved via Mathlib corner theorem chain",
+      "Only axiom: szemeredi_k_ge_4 — k ≥ 4 case requires hypergraph regularity (not in Mathlib)",
+      "Extensive infrastructure: regularity lemma, counting lemma, energy increment all formalized",
+      "Axiom is deep: needs hypergraph regularity or Furstenberg ergodic theory, neither in Mathlib"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -53,7 +62,33 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-22T06:10:36.236Z",
+  "lastUpdate": "2026-03-28T05:52:00Z",
   "significance": 10,
-  "tractability": 3
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediTheorem.lean",
+      "axiomCount": 1,
+      "theoremCount": 12,
+      "sorryCount": 0
+    },
+    {
+      "path": "Proofs/SzemerediCore.lean",
+      "axiomCount": 0,
+      "theoremCount": 3,
+      "sorryCount": 0
+    },
+    {
+      "path": "Proofs/SzemerediCounting.lean",
+      "axiomCount": 0,
+      "theoremCount": 13,
+      "sorryCount": 0
+    },
+    {
+      "path": "Proofs/SzemerediRegularity.lean",
+      "axiomCount": 0,
+      "theoremCount": 15,
+      "sorryCount": 0
+    }
+  ]
 }

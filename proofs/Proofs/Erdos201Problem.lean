@@ -83,6 +83,39 @@ the empty subset is AP-free) and bounded above by N. -/
 noncomputable def gk (k N : ℕ) : ℕ :=
   sSup { m : ℕ | gk_prop k N m }
 
+/-- gk_prop k N 0 always holds: the empty set is always AP-free. -/
+theorem gk_prop_zero (k N : ℕ) : gk_prop k N 0 := by
+  intro S _
+  exact ⟨∅, Finset.empty_subset _, isAPFree_empty k, by omega⟩
+
+/-- The set of valid lower bounds for G_k(N) is bounded above by N. -/
+private lemma gk_bddAbove (k N : ℕ) : BddAbove {m : ℕ | gk_prop k N m} := by
+  use N; intro m hm
+  set S := (Finset.range N).image (fun i : ℕ => (i : ℤ))
+  have hS_card : S.card = N := by
+    rw [Finset.card_image_of_injective _ (fun a b h => by exact_mod_cast h)]
+    exact Finset.card_range N
+  obtain ⟨A, hA_sub, _, hA_card⟩ := hm S hS_card
+  linarith [Finset.card_le_card hA_sub]
+
+/-- G_k(N) ≥ 1 for N ≥ 1 and k ≥ 2: any nonempty set has a singleton
+    AP-free subset. -/
+theorem gk_ge_one (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : gk k N ≥ 1 := by
+  unfold gk
+  apply le_csSup (gk_bddAbove k N)
+  intro S hS
+  obtain ⟨x, hx⟩ := Finset.card_pos.mp (by omega : 0 < S.card)
+  exact ⟨{x}, Finset.singleton_subset_iff.mpr hx, isAPFree_singleton x k hk, by simp⟩
+
+/-- G_k(N) is anti-monotone in k: larger k means harder AP avoidance,
+    but any l-AP-free set is also k-AP-free when k ≤ l. -/
+theorem gk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) : gk l N ≤ gk k N := by
+  unfold gk
+  apply csSup_le_csSup (gk_bddAbove k N) ⟨0, gk_prop_zero l N⟩
+  intro m hm S hS
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := hm S hS
+  exact ⟨A, hA_sub, isAPFree_of_le hkl hk1 hA_free, hA_card⟩
+
 /-
 ## Basic bounds
 -/
