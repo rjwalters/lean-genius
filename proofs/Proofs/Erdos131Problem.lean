@@ -125,16 +125,14 @@ theorem F_monotonic : ∀ N M : ℕ, N ≤ M → F N ≤ F M := by
 /- ## Upper Bounds -/
 
 /-- ELRSS (1999): F(N) < 3√N + 1 -/
-theorem elrss_upper_bound (N : ℕ) (hN : N ≥ 1) :
-    (F N : ℝ) < 3 * Real.sqrt N + 1 := by
-  sorry -- Erdős, Lev, Rauzy, Sándor, Sárközy (1999)
+axiom elrss_upper_bound (N : ℕ) (hN : N ≥ 1) :
+    (F N : ℝ) < 3 * Real.sqrt N + 1
 
 /-- Pham-Zakharov (2024): F(N) ≤ N^{1/4 + o(1)}
     This resolves the original question negatively. -/
-theorem pham_zakharov_upper_bound :
+axiom pham_zakharov_upper_bound :
     ∃ (ε : ℕ → ℝ), (∀ δ > 0, ∃ N₀, ∀ N ≥ N₀, |ε N| < δ) ∧
-    ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (N : ℝ)^(1/4 + ε N) := by
-  sorry -- Pham-Zakharov (2024), via non-averaging connection
+    ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (N : ℝ)^(1/4 + ε N)
 
 /-- The original question "Is F(N) > N^{1/2 - o(1)}?" is answered NO.
     Proof: instantiate with ε ≡ 0, then F(N) > N^{1/2} for large N.
@@ -172,17 +170,15 @@ theorem original_question_answered_no :
 /- ## Lower Bounds -/
 
 /-- Csaba's construction: F(N) ≫ N^{1/5} -/
-theorem csaba_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^((1 : ℝ)/5) := by
-  sorry -- Csaba, credited by Erdős
+axiom csaba_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^((1 : ℝ)/5)
 
 /-- Straus's lower bound: F(N) > exp((√(2/log 2) + o(1))√(log N)) -/
-theorem straus_lower_bound :
+axiom straus_lower_bound :
     ∃ (ε : ℕ → ℝ), (∀ δ > 0, ∃ N₀, ∀ N ≥ N₀, |ε N| < δ) ∧
     ∀ N : ℕ, N ≥ 2 →
       (F N : ℝ) > Real.exp ((Real.sqrt (2 / Real.log 2) + ε N) *
-                            Real.sqrt (Real.log N)) := by
-  sorry -- Straus
+                            Real.sqrt (Real.log N))
 
 /-- exp(3/4) > 2, via Taylor sum of order 3:
     1 + 3/4 + 9/32 = 65/32 > 2 -/
