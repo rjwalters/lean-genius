@@ -21,15 +21,15 @@
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 417,
-    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (the main open conjecture, Erdős #153). The infinite Sidon variant is now derived as a theorem (infinite_sidon_gap_from_finite) from the finite conjecture.",
+    "lineCount": 341,
+    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: infinite_sidon_gap_question (open conjecture for infinite Sidon sets). Previously: ess_1994_result was proved (c=1 works since gaps between distinct naturals >= 1).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
     "problemStatement": "Let $A$ be a finite Sidon set and $A+A = \\{s_1 < s_2 < \\cdots < s_t\\}$. Is it true that $\\frac{1}{t} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2 \\to \\infty$ as $|A| \\to \\infty$?",
     "text": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
-    "proofStrategy": "The formalization defines Sidon sets as finite subsets of ℕ with all pairwise sums distinct, constructs the sumset A+A via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every M > 0 there exists N₀ such that all Sidon sets of size ≥ N₀ have mean squared gap exceeding M, and axiomatized as the single assumption. Key structural properties are fully proved: sumset cardinality |A+A| ≥ n(n+1)/2 via an injection argument and an upper triangle cardinality lemma, range bound A+A ⊆ [0,2N], bounded average gap, and the ESS (1994) lower bound (mean gap² ≥ 1). The infinite Sidon set variant is derived as a theorem from the finite conjecture via three lemmas: finite restrictions of infinite Sidon sets inherit the Sidon property, infinite subsets of ℕ have arbitrarily large finite restrictions, and combining these with the finite conjecture yields the infinite result.",
+    "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties are fully proved: sumset cardinality $|A+A| \\ge n(n+1)/2$ via an injection argument and an upper triangle cardinality lemma (partition into strict triangles + diagonal with swap bijection), range bound $A+A \\subseteq [0,2N]$, and bounded average gap. The Erdős–Sárközy–Sós (1994) positive lower bound is axiomatized as a deep published result. The infinite Sidon set variant is also formalized.",
     "keyInsights": [
       "**Sidon property forces quadratic sumset growth**: A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ — every unordered pair yields a distinct sum, so the sumset is as large as possible given the representation constraint",
       "**Bounded mean vs unbounded variance**: For a maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the average gap in $A+A$ is $\\Theta(1)$, yet the conjecture predicts the variance diverges — a striking separation between first and second moments",
@@ -110,11 +110,11 @@
     },
     {
       "id": "infinite-sidon",
-      "title": "The Main Conjecture and Infinite Sidon Sets",
-      "startLine": 325,
-      "endLine": 417,
-      "summary": "Axiomatizes the finite conjecture as erdos_153_conjecture, defines IsInfiniteSidon for infinite subsets of ℕ, and derives the infinite Sidon gap result as a theorem from the finite conjecture via three helper lemmas: restriction inheritance, growing finite subsets, and the main implication.",
-      "mathContext": "Proved: The infinite Sidon gap conjecture follows from the finite one. If ErdosProblem153 holds (mean squared gap diverges for finite Sidon sets), then for any infinite Sidon set S, the mean squared gap of S ∩ {0,...,N} also diverges as N → ∞. This reduces the infinite variant to a consequence of the finite conjecture."
+      "title": "Infinite Sidon Sets",
+      "startLine": 259,
+      "endLine": 277,
+      "summary": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$.",
+      "mathContext": "Formal definition: Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
     }
   ],
   "conclusion": {
@@ -139,9 +139,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 417,
+    "lineCount": 341,
     "axiomCount": 1,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 8
   },
   "crossReferences": [

@@ -66,7 +66,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 13,
     "assumptions": "13 axiom declarations: s_eq_s_alt (two s(n) definitions agree), six_perfect (6 is perfect), twentyeight_perfect (28 is perfect), forward_fails (forward density amplification), erdos_1973_empty_preimage (untouchable numbers exist), two_untouchable (2 is untouchable), five_untouchable (5 is untouchable), pollack_primes (primes preimage sparse), troupe_many_factors (many-factors preimage sparse), troupe_two_squares (sums-of-squares preimage sparse), ppt_bound (x^{1/2+o(1)} threshold), s_bound (s(n) growth bound), erdos_955_summary (combined partial results)",
-    "lineCount": 219
+    "lineCount": 191
   },
   "overview": {
     "historicalContext": "The sum of proper divisors $s(n) = \\sigma(n) - n$ (the aliquot sum) has been studied since antiquity in connection with perfect numbers—integers where $s(n) = n$, such as 6 and 28. Pythagoras and Euclid investigated these, and Euler proved that all even perfect numbers have the form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\nThe modern question about density preservation under $s$ was formulated by Erdős, Granville, Pomerance, and Spiro in their influential 1990 paper on iterates of arithmetic functions. The EGPS conjecture asks: if $A \\subset \\mathbb{N}$ has natural density 0, must $s^{-1}(A) = \\{n : s(n) \\in A\\}$ also have density 0? This is a question about the \"regularity\" of the arithmetic function $s$—whether it distributes values uniformly enough that sparse target sets cannot attract a dense set of inputs.\n\nSubstantial partial progress has been made. Pollack (2014) proved the conjecture for $A$ = primes, using deep results on the distribution of $s(n)$ modulo primes. Troupe (2020) extended this to $A$ = sums of two squares. Pollack, Pomerance, and Thompson (2018) proved the conjecture for all sets with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$, identifying the threshold exponent $1/2$ as critical. The general case remains open after over 35 years.\n\nStrikingly, the forward direction behaves differently: there exist density-0 sets $A$ whose image $s(A)$ has positive density. Additionally, the existence of untouchable numbers (integers $k$ with $s^{-1}(\\{k\\}) = \\emptyset$, such as 2 and 5) shows that even positive-density sets can have empty preimages. The conjecture concerns only the backward direction: does sparse target force sparse fiber?\n\n**Status**: OPEN — The EGPS conjecture is unresolved in full generality.",
@@ -203,7 +203,7 @@
       "Filter"
     ],
     "namespace": "Erdos955",
-    "lineCount": 219,
+    "lineCount": 191,
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 14

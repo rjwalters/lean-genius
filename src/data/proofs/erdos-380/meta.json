@@ -49,7 +49,7 @@
       "bad_interval_no_prime axiom: short bad intervals are prime-free"
     ],
     "axiomCount": 3,
-    "lineCount": 111,
+    "lineCount": 181,
     "assumptions": "3 axioms: erdos_graham_lower (deep analytic result), gpfSquare_asymptotic (deep analytic result), bad_interval_no_prime (elementary but requires p-adic valuation infrastructure). Previously 7 axioms; 4 eliminated by defining greatestPrimeFactor via Nat.primeFactors.max' with proved properties."
   },
   "overview": {
@@ -140,9 +140,12 @@
       "Mathlib.Data.Nat.Factorization.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "Finset"],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
     "namespace": null,
-    "lineCount": 97,
+    "lineCount": 181,
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5

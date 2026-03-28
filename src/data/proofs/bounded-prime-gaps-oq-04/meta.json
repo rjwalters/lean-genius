@@ -55,7 +55,7 @@
       "PolyaVinogradovHolds: key prerequisite statement",
       "BVPrerequisiteLayer: concrete 4-layer roadmap with estimates"
     ],
-    "lineCount": 290,
+    "lineCount": 366,
     "erdosUrl": null,
     "dateAdded": "2026-03-27"
   },
@@ -136,28 +136,36 @@
   ],
   "references": [
     {
-      "authors": ["Enrico Bombieri"],
+      "authors": [
+        "Enrico Bombieri"
+      ],
       "title": "On the large sieve",
       "venue": "Mathematika",
       "year": "1965",
       "description": "Original proof of the Bombieri-Vinogradov theorem using the large sieve"
     },
     {
-      "authors": ["A.I. Vinogradov"],
+      "authors": [
+        "A.I. Vinogradov"
+      ],
       "title": "The density hypothesis for Dirichlet L-series",
       "venue": "Izv. Akad. Nauk SSSR Ser. Mat.",
       "year": "1965",
       "description": "Independent proof of the BV theorem via density estimates for L-function zeros"
     },
     {
-      "authors": ["Yitang Zhang"],
+      "authors": [
+        "Yitang Zhang"
+      ],
       "title": "Bounded gaps between primes",
       "venue": "Annals of Mathematics",
       "year": "2014",
       "description": "Used a BV variant with smooth moduli to prove bounded prime gaps"
     },
     {
-      "authors": ["James Maynard"],
+      "authors": [
+        "James Maynard"
+      ],
       "title": "Small gaps between primes",
       "venue": "Annals of Mathematics",
       "year": "2015",
@@ -165,10 +173,19 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.BoundedPrimeGaps"],
-    "opens": ["Nat", "Finset", "BoundedPrimeGaps", "ArithmeticFunction", "Filter"],
+    "imports": [
+      "Mathlib",
+      "Proofs.BoundedPrimeGaps"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BoundedPrimeGaps",
+      "ArithmeticFunction",
+      "Filter"
+    ],
     "namespace": "BoundedPrimeGapsOQ04",
-    "lineCount": 290,
+    "lineCount": 366,
     "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 10
