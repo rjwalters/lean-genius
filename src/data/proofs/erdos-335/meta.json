@@ -63,12 +63,13 @@
       "weyl_equidistribution: density existence for fractional part sets (axiomatized)",
       "fractional_part_density_additive: known construction achieving exact additivity (axiomatized)",
       "erdos_335_conjecture: all density-additive pairs arise from group rotations (OPEN, axiomatized)",
-      "Basic properties: density_nonneg, density_le_one, additive_sum_le_one, plunnecke_ruzsa_lower",
-      "additive_implies_tight: PROVED — density additivity implies Plünnecke–Ruzsa is tight"
+      "Basic properties: density_nonneg, density_le_one, additive_sum_le_one",
+      "additive_implies_tight: PROVED — density additivity implies Plünnecke–Ruzsa is tight",
+      "density_additive_comm: PROVED — density additivity is symmetric"
     ],
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 180,
-    "assumptions": "4 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture, and 1 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements."
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
       "title": "Basic Properties and Tightness",
       "startLine": 97,
       "endLine": 180,
-      "summary": "States **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), and **plunnecke_ruzsa_lower** ($d(A+B) \\geq \\min(d(A)+d(B), 1)$). PROVES **additive_implies_tight**: density additivity makes the Plünnecke–Ruzsa bound an equality.",
+      "summary": "PROVES **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), **additive_implies_tight** (density additivity makes Plünnecke–Ruzsa tight), and **density_additive_comm** (density additivity is symmetric).",
       "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
     }
   ],
@@ -171,8 +172,8 @@
     ],
     "namespace": null,
     "lineCount": 180,
-    "axiomCount": 4,
-    "theoremCount": 8,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 8
   },
   "references": [
