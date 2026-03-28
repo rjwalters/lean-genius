@@ -75,7 +75,7 @@ structure IsValidDecomp {V : Type*} [DecidableEq V] [Fintype V] (r : ℕ)
 
 /-- Whether an r-uniform hypergraph on V is K_{r+1}^r-free:
     no (r+1)-element subset has all its r-subsets as edges. -/
-def IsCliqueFree {V : Type*} [DecidableEq V] (r : ℕ)
+def IsCliqueFree {V : Type*} [DecidableEq V] [Fintype V] (r : ℕ)
     (H : RUniformHypergraph V r) : Prop :=
   ∀ S : Finset V, S.card = r + 1 →
     ¬(completeClique r S ⊆ H.edges)
@@ -126,8 +126,7 @@ theorem graph_case_bound (n : ℕ) (H : RUniformHypergraph (Fin n) 2)
 
 /-- C(r+1, r) = r+1: a complete (r+1)-clique has exactly r+1 edges. -/
 theorem choose_succ_self (r : ℕ) : Nat.choose (r + 1) r = r + 1 := by
-  rw [Nat.choose_symm (Nat.le_succ r)]
-  simp [Nat.choose]
+  simp [Nat.choose_succ_self_right]
 
 /-- Edges in a complete clique are subsets of the vertex set. -/
 theorem completeClique_subset {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
@@ -241,7 +240,7 @@ theorem empty_case (n r : ℕ) (hr : r ≥ 2) :
     }
   · simp
 
-/-- NOTE: A previous version claimed pieces.card ≤ H.edges.card for any
+/- NOTE: A previous version claimed pieces.card ≤ H.edges.card for any
     valid decomposition. This is FALSE: the IsValidDecomp structure allows
     "phantom" pieces (valid single-edge or clique pieces whose edges are not
     in H). Counterexample: H with 1 edge e₁, pieces = {{e₁}, {e₂}} where
@@ -271,7 +270,8 @@ theorem trivial_decomp_exists (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
         intro e
         simp only [Finset.mem_singleton, not_and]
         intro h1 h2
-        exact hne (by rw [h1, h2])
+        subst h1; subst h2
+        exact absurd rfl hne
       covers := by
         intro e he
         exact ⟨{e}, Finset.mem_image.mpr ⟨e, he, rfl⟩, Finset.mem_singleton.mpr rfl⟩
@@ -344,10 +344,101 @@ theorem completeBipartiteHypergraph_cliqueFree (n : ℕ) :
   · exact absurd rfl hvw
 
 /-- The complete bipartite hypergraph has ⌊n²/4⌋ edges.
-    This equals ⌊n/2⌋ * ⌈n/2⌉ = ⌊n/2⌋ * (n - ⌊n/2⌋). -/
+    Proof: edges biject with ordered pairs (even vertex, odd vertex),
+    giving ⌈n/2⌉ * ⌊n/2⌋ = ⌊n²/4⌋. -/
 theorem completeBipartiteHypergraph_card (n : ℕ) :
     (completeBipartiteHypergraph n).edges.card = n ^ 2 / 4 := by
-  sorry
+  set evens := (Finset.univ : Finset (Fin n)).filter (fun v : Fin n => v.val % 2 = 0) with evens_def
+  set odds := (Finset.univ : Finset (Fin n)).filter (fun v : Fin n => v.val % 2 = 1) with odds_def
+  set f : Fin n × Fin n → Finset (Fin n) := fun p => {p.1, p.2} with f_def
+  -- Step 1: edges = image of evens ×ˢ odds
+  have h_eq : (completeBipartiteHypergraph n).edges = (evens ×ˢ odds).image f := by
+    ext e; constructor
+    · intro he
+      simp only [completeBipartiteHypergraph, Finset.mem_filter,
+        Finset.mem_powersetCard] at he
+      obtain ⟨⟨_, hcard⟩, v, hv, w, hw, hne, hparity⟩ := he
+      rw [Finset.card_eq_two] at hcard
+      obtain ⟨a, b, hab, rfl⟩ := hcard
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv hw
+      have hmod_v := Nat.mod_two_eq_zero_or_one v.val
+      have hmod_w := Nat.mod_two_eq_zero_or_one w.val
+      simp only [Finset.mem_image, Finset.mem_product, f_def]
+      -- Determine which is even/odd and construct the pair
+      rcases hmod_v with hve | hvo <;> rcases hmod_w with hwe | hwo
+      · exfalso; exact hparity (by omega)
+      · -- v even, w odd: map to (v, w), show {v, w} = {a, b}
+        refine ⟨⟨v, w⟩, ⟨by simp [evens_def, hve], by simp [odds_def, hwo]⟩, ?_⟩
+        -- {v, w} = {a, b} since v, w ∈ {a, b} are distinct
+        rcases hv with rfl | rfl <;> rcases hw with rfl | rfl
+        · exact absurd rfl hne
+        · rfl
+        · exact Finset.pair_comm _ _
+        · exact absurd rfl hne
+      · -- v odd, w even: map to (w, v), show {w, v} = {a, b}
+        refine ⟨⟨w, v⟩, ⟨by simp [evens_def, hwe], by simp [odds_def, hvo]⟩, ?_⟩
+        rcases hv with rfl | rfl <;> rcases hw with rfl | rfl
+        · exact absurd rfl hne
+        · exact Finset.pair_comm _ _
+        · rfl
+        · exact absurd rfl hne
+      · exfalso; exact hparity (by omega)
+    · intro he
+      simp only [Finset.mem_image, Finset.mem_product, f_def] at he
+      obtain ⟨⟨v, w⟩, ⟨hv_mem, hw_mem⟩, rfl⟩ := he
+      simp only [evens_def, odds_def, Finset.mem_filter, Finset.mem_univ, true_and] at hv_mem hw_mem
+      simp only [completeBipartiteHypergraph, Finset.mem_filter, Finset.mem_powersetCard]
+      exact ⟨⟨Finset.subset_univ _, Finset.card_pair (by intro h; subst h; omega)⟩,
+        v, Finset.mem_insert_self _ _, w,
+        Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _)),
+        by intro h; subst h; omega, by omega⟩
+  -- Step 2: f is injective on evens ×ˢ odds
+  have h_inj : Set.InjOn f ((evens ×ˢ odds : Finset _) : Set _) := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [f_def] at heq
+    simp only [Finset.coe_product, Set.mem_prod, Finset.mem_coe, evens_def, odds_def,
+      Finset.mem_filter, Finset.mem_univ, true_and] at h₁ h₂
+    have ha₁_mem : a₁ ∈ ({a₂, b₂} : Finset _) := by rw [← heq]; simp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
+    have ha : a₁ = a₂ := by
+      rcases ha₁_mem with rfl | rfl
+      · rfl
+      · exfalso; omega
+    have hb₁_mem : b₁ ∈ ({a₂, b₂} : Finset _) := by
+      rw [← heq]; exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hb₁_mem
+    have hb : b₁ = b₂ := by
+      rcases hb₁_mem with rfl | rfl
+      · exfalso; omega
+      · rfl
+    exact Prod.ext ha hb
+  -- Step 3: Compute cardinality
+  rw [h_eq, Finset.card_image_of_injOn h_inj, Finset.card_product]
+  -- evens.card = ⌈n/2⌉, odds.card = ⌊n/2⌋
+  -- Compute evens.card * odds.card = n²/4
+  -- evens.card = ⌈n/2⌉ even elements in {0,...,n-1}
+  -- odds.card = ⌊n/2⌋ odd elements in {0,...,n-1}
+  have hevens : evens.card = (n + 1) / 2 := by
+    sorry -- Counting even elements in Fin n via bijection with Fin ⌈n/2⌉
+  have hodds : odds.card = n / 2 := by
+    sorry -- Counting odd elements in Fin n via bijection with Fin ⌊n/2⌋
+  rw [hevens, hodds]
+  -- ⌈n/2⌉ * ⌊n/2⌋ = n²/4 by parity case split
+  rcases Nat.even_or_odd n with ⟨k, rfl⟩ | ⟨k, rfl⟩
+  · -- n = k + k (even)
+    have h1 : (k + k) / 2 = k := by omega
+    have h2 : (k + k + 1) / 2 = k := by omega
+    have h3 : (k + k) ^ 2 / 4 = k * k := by
+      have : (k + k) ^ 2 = 4 * (k * k) := by ring
+      rw [this, Nat.mul_div_cancel_left _ (by omega : 0 < 4)]
+    rw [h1, h2, h3]
+  · -- n = 2 * k + 1 (odd)
+    have h1 : (2 * k + 1) / 2 = k := by omega
+    have h2 : (2 * k + 1 + 1) / 2 = k + 1 := by omega
+    have h3 : (2 * k + 1) ^ 2 / 4 = k * k + k := by
+      have : (2 * k + 1) ^ 2 = 4 * (k * k + k) + 1 := by ring
+      rw [this]; omega
+    rw [h1, h2, h3]; ring
 
 /-- Lower bound on the graph Turán number: turanHypergraph n 2 ≥ ⌊n²/4⌋.
     Follows from cliqueFree_le_turan applied to the bipartite construction. -/
