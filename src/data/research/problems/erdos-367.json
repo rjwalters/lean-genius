@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 11 to 7. Proved 4 properties of B₂ from definitions using Mathlib factorization API.",
+    "progressSummary": "PROGRESS: Proved strong_bound_k1/k2 from twoFullPart_le. Axioms 7→5. 5A, 0S.",
     "builtItems": [
-      "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean"
+      "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean",
+      "PROVED strong_bound_k1 from twoFullPart_le + nlinarith (was axiom, eliminated)",
+      "PROVED strong_bound_k2 from twoFullPart_le + nlinarith (was axiom, eliminated)"
     ],
     "insights": [
-      "4 axioms proved from Mathlib: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq"
+      "4 axioms proved from Mathlib: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq",
+      "strong_bound_k1: B₂(n) ≤ n ≤ n² gives C=1 bound for k=1",
+      "strong_bound_k2: B₂(n)·B₂(n+1) ≤ n·(n+1) ≤ 2n² gives C=2 bound for k=2",
+      "Remaining 5 axioms: van Doorn results (deep), multiplicativity (moderate), squarefree equiv (moderate)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
