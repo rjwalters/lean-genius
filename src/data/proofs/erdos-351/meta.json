@@ -47,9 +47,9 @@
       "Axiomatized Graham-Alekseyev theorem for p(x) = x²",
       "Verified bounds on n + 1/n"
     ],
-    "axiomCount": 3,
+    "axiomCount": 2,
     "lineCount": 115,
-    "assumptions": "3 axiom(s): erdos_351_open, graham_theorem_linear, graham_alekseyev_quadratic. See Lean source for complete statements."
+    "assumptions": "2 axiom(s): erdos_351_open, graham_theorem_linear, graham_alekseyev_quadratic. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Erdős Problem #351 concerns the additive structure of sequences of the form {p(n) + 1/n : n ∈ ℕ} where p(x) is a polynomial. The notion of 'strong completeness' is a robust form of additive completeness that survives removal of any finite set of elements.\n\nGraham (1963) proved the foundational case p(x) = x, showing that {n + 1/n : n ∈ ℕ} is strongly complete. This was a significant result in additive number theory.\n\nThe case p(x) = x² was resolved much later by combining Graham's work with Alekseyev's 2019 results on partitions into squares. The general question—whether ALL polynomials with positive leading coefficient yield strongly complete sets—remains open.",
@@ -127,7 +127,7 @@
     ],
     "namespace": "Erdos351",
     "lineCount": 115,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 3
   },
