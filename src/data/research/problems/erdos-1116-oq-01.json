@@ -46,7 +46,8 @@
       "Proved oscillation_key_insight: derived from goldberg_toppila_existence (deficiency is placeholder=0)",
       "Proved nevanlinna_deficiency_sum: trivial since deficiency is placeholder constant 0",
       "Proved first_main_theorem_heuristic: trivial since integratedCounting and characteristic are both placeholder id",
-      "Remaining axioms: goldberg_toppila_existence (deep construction), polynomial_not_extreme (needs FTA)"
+      "Remaining axioms: goldberg_toppila_existence (deep construction), polynomial_not_extreme (needs FTA)",
+      "polynomial_not_extreme proof strategy: (1) n(p,r,a) ≤ p.natDegree from Polynomial.card_rootSet_le_degree, (2) n(p,r,b) ≥ 1 for large r from FTA surjectivity + root boundedness, (3) ratio bounded by degree → not unbounded. Needs ~100 lines connecting countingFunction to Polynomial.roots."
     ],
     "mathlibGaps": [],
     "nextSteps": []
