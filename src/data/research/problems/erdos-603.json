@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-13T18:05:31.779Z",
-    "iteration": 2,
-    "focus": "Eliminated countable_suffices_trivial axiom",
+    "phase": "COMPLETED",
+    "since": "2026-03-28T08:30:00Z",
+    "iteration": 3,
+    "focus": "Graduated: formalization complete (0 sorries, 1 deep axiom)",
     "blockers": [],
-    "nextAction": "Only komjath_not1 remains (deep published result, keep as axiom)",
+    "nextAction": "None — problem fully formalized. Remaining axiom (komjath_not1) is a deep published result.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved countable_suffices (replacing axiom countable_suffices_trivial). For countable index sets, ℵ₀ colors suffice via injective encoding of countable union. Axiom count: 2→1. File: 6 theorems, 1 axiom (komjath_not1 only), 0 sorries.",
+    "progressSummary": "COMPLETED: Formalization captures all known results for Erdős #603. Bounds proved: 2 ≤ C ≤ ℵ₀. Key theorems: lower_bound_2, countable_suffices, disjoint_2_colors. The only axiom (komjath_not1, Komjáth 2003) is a deep published result for the related ≠1 variant. The ≠2 problem remains OPEN.",
     "builtItems": [
       "Proved lower_bound_2: C >= 2 for valid families (0 sorries)",
       "Proved disjoint_2_colors: disjoint infinite families, 2 colors (0 sorries)",
       "Added IsCountablyInfiniteFamily.nonempty lemma",
       "Fixed universe annotations on 5 pre-existing definitions",
       "Proved countable_suffices: ℵ₀ colors suffice for countable I (was axiom)",
-      "Proof strategy: encode countable union ⋃A_i → ℕ; injection non-constant on infinite sets"
+      "Proof strategy: encode countable union ⋃A_i → ℕ; injection non-constant on infinite sets",
+      "Graduated problem to completed status (iteration 3)"
     ],
     "insights": [
       "lower_bound_2 proved: C >= 2 via Subsingleton argument (Fintype.card < 2 → Subsingleton)",
@@ -44,7 +45,8 @@
       "Pre-existing universe metavariable errors fixed in ErdosConjecture603, minimalChromatic, CanDoBetterThanAleph0, Aleph0Necessary, erdos_603_statement",
       "countable_suffices_trivial was overclaiming for uncountable I (union may be uncountable)",
       "For countable I, Set.countable_iUnion + Encodable.encode_injective gives clean proof",
-      "Remaining axiom komjath_not1 (Komjáth 2003) is a deep published result, not provable from Mathlib"
+      "Remaining axiom komjath_not1 (Komjáth 2003) is a deep published result, not provable from Mathlib",
+      "Graduation review: formalization is complete for known mathematics. No sorries, 1 justified axiom. No further progress possible without new mathematical results."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
