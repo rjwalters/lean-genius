@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 2A appropriate in OQ02 (bounding_number_uncountable needs diagonalization, MA_implies_b_eq_continuum needs forcing), 33T proved, 0S.",
+    "progressSummary": "ASSESSED: bounding_number_uncountable is PROVABLE via diagonalization (~60-80 lines). MA axiom is deep. High-priority target for future session.",
     "builtItems": [
       "aleph_one_is_regular: proved from Mathlib Cardinal.isRegular_aleph_one",
       "aleph_succ_is_regular: proved from Mathlib for all successor alephs",
@@ -69,7 +69,11 @@
       "Cardinal.lt_cof_power: for ℵ₀ ≤ a and 1 < b, a < (b^a).ord.cof — directly gives cf(2^ℵ₀) > ℵ₀",
       "bounding_number_uncountable: Hausdorff diagonal argument — standard but requires constructive proof of dominance",
       "MA_implies_b_eq_continuum: forcing/transfinite recursion — deep set-theoretic result",
-      "Both remaining axioms are appropriate — no further elimination possible"
+      "Both remaining axioms are appropriate — no further elimination possible",
+      "bounding_number_uncountable IS PROVABLE: standard diagonalization. Countable F → enumerate {f_n} → g(k)=max{f_i(k):i≤k} → g eventually dominates all f_n",
+      "Proof sketch: le_ciInf, split on IsUnbounded. For unbounded F with mk F < ℵ₁, get countable enum, construct diagonal g, show g bounds F. Contradiction.",
+      "Needs: Cardinal.lt_aleph_one_iff for countability, Finset.sup for pointwise max, Set.Countable.exists_surjective for enumeration",
+      "MA_implies_b_eq_continuum is genuinely deep (Martin Axiom machinery)"
     ],
     "mathlibGaps": [],
     "nextSteps": []
