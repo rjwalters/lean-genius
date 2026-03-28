@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1137,
     "erdosUrl": "https://erdosproblems.com/1137",
     "erdosProblemStatus": "open",
@@ -60,16 +60,17 @@
       "primeGap_even: for n ≥ 1, d_n is even (odd − odd)",
       "primeGap_ge_two: for n ≥ 1, d_n ≥ 2 (even + positive)",
       "primeGap_unbounded: for any B, ∃ n with primeGap n ≥ B (factorial argument + Nat.nth/count Galois connection)",
-      "maxGap_tendsto_atTop: max prime gap → ∞ (previously axiom, now PROVED from primeGap_unbounded)"
+      "maxGap_tendsto_atTop: max prime gap → ∞ (previously axiom, now PROVED from primeGap_unbounded)",
+      "maxGap_mono: maxGap is monotone non-decreasing (via Finset.sup_mono)"
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 1,
-    "lineCount": 314,
-    "assumptions": "1 axiom: erdos_1137 (the main open conjecture, ratio → 0). All other results fully proved: maxGap_tendsto_atTop proved via factorial composites + Galois connection (Nat.nth/Nat.count), erdosRatio_le_one proved from Finset.sup properties. 1 sorry(s) remain."
+    "lineCount": 322,
+    "assumptions": "1 axiom: erdos_1137 (the main open conjecture, ratio → 0). All other results fully proved: maxGap_tendsto_atTop proved via factorial composites + Galois connection (Nat.nth/Nat.count), erdosRatio_le_one proved from Finset.sup properties, maxGap_mono proved via Finset.sup_mono. 0 sorries remain."
   },
   "leanFile": {
     "path": "Proofs/Erdos1137Problem.lean",
-    "lineCount": 314,
+    "lineCount": 322,
     "namespace": "Erdos1137",
     "imports": [
       "Mathlib"
@@ -83,7 +84,8 @@
       "primeGap_three",
       "nth_prime_not_even",
       "primeGap_even",
-      "primeGap_ge_two"
+      "primeGap_ge_two",
+      "maxGap_mono"
     ],
     "mainDefinitions": [
       "primeGap",
@@ -91,7 +93,7 @@
       "erdosRatio"
     ],
     "axiomCount": 1,
-    "theoremCount": 22
+    "theoremCount": 23
   },
   "crossReferences": [
     {
