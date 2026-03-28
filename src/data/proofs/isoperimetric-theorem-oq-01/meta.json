@@ -2,7 +2,7 @@
   "id": "isoperimetric-theorem-oq-01",
   "title": "Isoperimetric Shapes on Other Surfaces",
   "slug": "isoperimetric-theorem-oq-01",
-  "description": "The classical isoperimetric inequality 4\u03c0A \u2264 L\u00b2 generalizes to constant-curvature surfaces: L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2, where \u03ba is the Gaussian curvature. On the sphere, geodesic caps are optimal; on the hyperbolic plane, geodesic disks are optimal.",
+  "description": "The classical isoperimetric inequality 4πA ≤ L² generalizes to constant-curvature surfaces: L² ≥ 4πA - κA², where κ is the Gaussian curvature. On the sphere, geodesic caps are optimal; on the hyperbolic plane, geodesic disks are optimal.",
   "meta": {
     "author": "Osserman, Burago-Zalgaller, Chavel",
     "sourceUrl": "https://www.cs.ru.nl/~freek/100/",
@@ -34,30 +34,30 @@
     ],
     "originalContributions": [
       "SurfaceRegion structure abstracting regions on curved surfaces",
-      "SphericalCap structure with area = 2\u03c0(1-cos\u03b8) and boundary = 2\u03c0 sin\u03b8",
-      "HyperbolicDisk structure with area = 2\u03c0(cosh r - 1) and boundary = 2\u03c0 sinh r",
-      "spherical_cap_equality genuinely proved via sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1 and nlinarith",
-      "hyperbolic_disk_equality genuinely proved via cosh\u00b2r - sinh\u00b2r = 1 and nlinarith",
-      "UnifiedIsoperimetric framework parameterized by curvature \u03ba",
+      "SphericalCap structure with area = 2π(1-cosθ) and boundary = 2π sinθ",
+      "HyperbolicDisk structure with area = 2π(cosh r - 1) and boundary = 2π sinh r",
+      "spherical_cap_equality genuinely proved via sin²θ + cos²θ = 1 and nlinarith",
+      "hyperbolic_disk_equality genuinely proved via cosh²r - sinh²r = 1 and nlinarith",
+      "UnifiedIsoperimetric framework parameterized by curvature κ",
       "isoperimetric_monotone: smaller curvature gives stronger inequality",
       "corrected_ratio_le_one from unified inequality",
-      "small_area_universal: curvature correction is O(A\u00b2)"
+      "small_area_universal: curvature correction is O(A²)"
     ],
     "axiomCount": 4,
     "lineCount": 392,
     "assumptions": "4 axioms: spherical_isoperimetric, spherical_equality_iff_cap, hyperbolic_isoperimetric, hyperbolic_equality_iff_disk. These encode the deep isoperimetric results requiring differential geometry."
   },
   "overview": {
-    "historicalContext": "The isoperimetric problem has been studied since antiquity, but its generalization to curved surfaces required the development of Riemannian geometry in the 19th century. On constant-curvature surfaces, the isoperimetric inequality takes the elegant unified form L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2, where \u03ba is the Gaussian curvature. This was established through work by Bernstein (1905), Bol (1941), and Schmidt (1948) for the sphere, and extended to general Riemannian manifolds by L\u00e9vy-Gromov. Osserman's 1978 survey unified the landscape.",
-    "problemStatement": "How does the isoperimetric inequality change on curved surfaces? On the unit sphere S\u00b2 (\u03ba = 1), the inequality becomes L\u00b2 \u2265 4\u03c0A - A\u00b2 with geodesic caps as optimal shapes. On the hyperbolic plane H\u00b2 (\u03ba = -1), it strengthens to L\u00b2 \u2265 4\u03c0A + A\u00b2 with geodesic disks as optimal. The unified formula L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2 reveals the role of curvature: positive curvature helps enclose area, negative curvature penalizes it.",
-    "text": "Isoperimetric shapes on constant-curvature surfaces: L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2 unifies Euclidean, spherical, and hyperbolic geometry.",
-    "proofStrategy": "The formalization uses abstract SurfaceRegion structures (boundary length + area) and concrete SphericalCap/HyperbolicDisk structures with explicit formulas. The key genuine proofs (spherical_cap_equality and hyperbolic_disk_equality) verify that the optimal shapes achieve equality using the Pythagorean identities sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1 and cosh\u00b2r - sinh\u00b2r = 1. The isoperimetric inequalities themselves are axiomatized since their proofs require variational methods or symmetrization beyond current Mathlib.",
+    "historicalContext": "The isoperimetric problem has been studied since antiquity, but its generalization to curved surfaces required the development of Riemannian geometry in the 19th century. On constant-curvature surfaces, the isoperimetric inequality takes the elegant unified form L² ≥ 4πA - κA², where κ is the Gaussian curvature. This was established through work by Bernstein (1905), Bol (1941), and Schmidt (1948) for the sphere, and extended to general Riemannian manifolds by Lévy-Gromov. Osserman's 1978 survey unified the landscape.",
+    "problemStatement": "How does the isoperimetric inequality change on curved surfaces? On the unit sphere S² (κ = 1), the inequality becomes L² ≥ 4πA - A² with geodesic caps as optimal shapes. On the hyperbolic plane H² (κ = -1), it strengthens to L² ≥ 4πA + A² with geodesic disks as optimal. The unified formula L² ≥ 4πA - κA² reveals the role of curvature: positive curvature helps enclose area, negative curvature penalizes it.",
+    "text": "Isoperimetric shapes on constant-curvature surfaces: L² ≥ 4πA - κA² unifies Euclidean, spherical, and hyperbolic geometry.",
+    "proofStrategy": "The formalization uses abstract SurfaceRegion structures (boundary length + area) and concrete SphericalCap/HyperbolicDisk structures with explicit formulas. The key genuine proofs (spherical_cap_equality and hyperbolic_disk_equality) verify that the optimal shapes achieve equality using the Pythagorean identities sin²θ + cos²θ = 1 and cosh²r - sinh²r = 1. The isoperimetric inequalities themselves are axiomatized since their proofs require variational methods or symmetrization beyond current Mathlib.",
     "keyInsights": [
-      "The curvature correction \u03baA\u00b2 arises from the Gauss-Bonnet theorem: the total geodesic curvature of a boundary relates to the area and Euler characteristic via \u222e \u03ba_g ds = 2\u03c0\u03c7 - \u03baA",
-      "Spherical cap equality uses sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1 to show L\u00b2 = 4\u03c0\u00b2sin\u00b2\u03b8 = 4\u03c0\u00b2(1-cos\u03b8)(1+cos\u03b8) = 4\u03c0A - A\u00b2",
-      "Hyperbolic disk equality uses cosh\u00b2r - sinh\u00b2r = 1 to show L\u00b2 = 4\u03c0\u00b2sinh\u00b2r = 4\u03c0\u00b2(cosh r-1)(cosh r+1) = 4\u03c0A + A\u00b2",
-      "The monotonicity theorem shows that less curvature (more negative \u03ba) gives a strictly stronger isoperimetric constraint",
-      "At small scales (A \u2192 0), the correction \u03baA\u00b2 is negligible, recovering Euclidean geometry to first order"
+      "The curvature correction κA² arises from the Gauss-Bonnet theorem: the total geodesic curvature of a boundary relates to the area and Euler characteristic via ∮ κ_g ds = 2πχ - κA",
+      "Spherical cap equality uses sin²θ + cos²θ = 1 to show L² = 4π²sin²θ = 4π²(1-cosθ)(1+cosθ) = 4πA - A²",
+      "Hyperbolic disk equality uses cosh²r - sinh²r = 1 to show L² = 4π²sinh²r = 4π²(cosh r-1)(cosh r+1) = 4πA + A²",
+      "The monotonicity theorem shows that less curvature (more negative κ) gives a strictly stronger isoperimetric constraint",
+      "At small scales (A → 0), the correction κA² is negligible, recovering Euclidean geometry to first order"
     ],
     "prerequisites": [
       "Differential geometry",
@@ -75,38 +75,38 @@
     },
     {
       "id": "sphere",
-      "title": "The Unit Sphere S\u00b2",
+      "title": "The Unit Sphere S²",
       "startLine": 57,
       "endLine": 105,
-      "summary": "Defines SphericalCap with colatitude \u03b8, area 2\u03c0(1-cos\u03b8), boundary 2\u03c0sin\u03b8. Proves positivity of area and boundary."
+      "summary": "Defines SphericalCap with colatitude θ, area 2π(1-cosθ), boundary 2πsinθ. Proves positivity of area and boundary."
     },
     {
       "id": "spherical-isoperimetric",
       "title": "Spherical Isoperimetric Inequality",
       "startLine": 107,
       "endLine": 142,
-      "summary": "Axiomatizes L\u00b2 \u2265 4\u03c0A - A\u00b2 for S\u00b2. Genuinely proves spherical_cap_equality using sin\u00b2+cos\u00b2=1."
+      "summary": "Axiomatizes L² ≥ 4πA - A² for S². Genuinely proves spherical_cap_equality using sin²+cos²=1."
     },
     {
       "id": "hyperbolic",
-      "title": "The Hyperbolic Plane H\u00b2",
+      "title": "The Hyperbolic Plane H²",
       "startLine": 144,
       "endLine": 195,
-      "summary": "Defines HyperbolicDisk with radius r, area 2\u03c0(cosh r - 1), boundary 2\u03c0 sinh r. Proves positivity."
+      "summary": "Defines HyperbolicDisk with radius r, area 2π(cosh r - 1), boundary 2π sinh r. Proves positivity."
     },
     {
       "id": "hyperbolic-isoperimetric",
       "title": "Hyperbolic Isoperimetric Inequality",
       "startLine": 197,
       "endLine": 235,
-      "summary": "Axiomatizes L\u00b2 \u2265 4\u03c0A + A\u00b2 for H\u00b2. Genuinely proves hyperbolic_disk_equality using cosh\u00b2-sinh\u00b2=1."
+      "summary": "Axiomatizes L² ≥ 4πA + A² for H². Genuinely proves hyperbolic_disk_equality using cosh²-sinh²=1."
     },
     {
       "id": "unified",
       "title": "Unified Curvature Framework",
       "startLine": 237,
       "endLine": 295,
-      "summary": "UnifiedIsoperimetric(\u03ba): L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2. Proves equivalences for \u03ba=0,1,-1 and monotonicity in \u03ba."
+      "summary": "UnifiedIsoperimetric(κ): L² ≥ 4πA - κA². Proves equivalences for κ=0,1,-1 and monotonicity in κ."
     },
     {
       "id": "summary",
@@ -117,13 +117,14 @@
     }
   ],
   "conclusion": {
-    "summary": "The isoperimetric inequality on constant-curvature surfaces takes the unified form L\u00b2 \u2265 4\u03c0A - \u03baA\u00b2. This formalization covers the three fundamental geometries (Euclidean, spherical, hyperbolic) with 15 genuinely proved theorems and 4 axioms for the deep isoperimetric results. The key genuine proofs verify that optimal shapes (caps on S\u00b2, disks on H\u00b2) achieve equality using the fundamental trigonometric/hyperbolic identities.",
+    "summary": "The isoperimetric inequality on constant-curvature surfaces takes the unified form L² ≥ 4πA - κA². This formalization covers the three fundamental geometries (Euclidean, spherical, hyperbolic) with 15 genuinely proved theorems and 4 axioms for the deep isoperimetric results. The key genuine proofs verify that optimal shapes (caps on S², disks on H²) achieve equality using the fundamental trigonometric/hyperbolic identities.",
     "openQuestions": [
       "Can the spherical/hyperbolic isoperimetric inequalities be proved in Lean using symmetrization or Fourier methods?",
       "What is the isoperimetric inequality on surfaces with non-constant curvature?",
-      "The L\u00e9vy-Gromov inequality generalizes to Riemannian manifolds with Ricci curvature bounds \u2014 can this be formalized?",
-      "On a torus T\u00b2, the isoperimetric problem is more subtle (flat but compact) \u2014 what are the optimal shapes?"
-    ]
+      "The Lévy-Gromov inequality generalizes to Riemannian manifolds with Ricci curvature bounds — can this be formalized?",
+      "On a torus T², the isoperimetric problem is more subtle (flat but compact) — what are the optimal shapes?"
+    ],
+    "implications": "Provides a unified framework for isoperimetric problems across constant-curvature geometries, demonstrating that curvature controls the efficiency of enclosing area. The formalization bridges Euclidean, spherical, and hyperbolic geometry through a single parameterized inequality."
   },
   "leanFile": {
     "imports": [
@@ -144,7 +145,7 @@
     {
       "targetId": "isoperimetric-theorem",
       "relationship": "extends",
-      "description": "Extends the Euclidean isoperimetric theorem (4\u03c0A \u2264 L\u00b2) to curved surfaces with curvature-dependent correction term"
+      "description": "Extends the Euclidean isoperimetric theorem (4πA ≤ L²) to curved surfaces with curvature-dependent correction term"
     }
   ]
 }
