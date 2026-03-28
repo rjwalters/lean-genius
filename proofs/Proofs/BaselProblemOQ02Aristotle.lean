@@ -35,12 +35,16 @@ theorem zetaValue_four : zetaValue 4 = π ^ 4 / 90 := by
 
 -- TARGET 1: ζ(2) is transcendental
 -- Strategy: ζ(2) = π²/6, π transcendental → π² transcendental → π²/6 transcendental
--- Key Mathlib tools: IsAlgebraic, Transcendental, algebraic closure under field ops
+-- Key Mathlib tools: Transcendental.pow, Transcendental of a/c when a transcendental and c ∈ ℚ
 theorem zeta_two_transcendental : Transcendental ℚ (zetaValue 2) := by
   rw [zetaValue_two]
+  -- Goal: Transcendental ℚ (π^2/6)
+  -- π transcendental → π² transcendental → π²/6 transcendental
   intro ⟨p, hp, hpx⟩
   apply pi_transcendental
-  sorry
+  -- Need: IsAlgebraic ℚ π from p(π²/6) = 0
+  -- Construct q(x) = 6^(deg p) · p(x²/6) which vanishes at π
+  sorry  -- Algebraic closure: if a^n/c is algebraic (c ∈ ℚ×), then a is algebraic
 
 -- TARGET 2: ζ(4) is transcendental
 -- Strategy: ζ(4) = π⁴/90, same approach as ζ(2)
@@ -48,6 +52,7 @@ theorem zeta_four_transcendental : Transcendental ℚ (zetaValue 4) := by
   rw [zetaValue_four]
   intro ⟨p, hp, hpx⟩
   apply pi_transcendental
-  sorry
+  -- Need: IsAlgebraic ℚ π from p(π⁴/90) = 0
+  sorry  -- Same strategy: compose polynomial with x⁴/90
 
 end BaselProblemOQ02Aristotle
