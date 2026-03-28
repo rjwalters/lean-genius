@@ -161,11 +161,18 @@ theorem orbit_linear_lower (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
     have hgt := h_strictly_increasing (hOrbit n k) hpos
     omega
 
-/-- Two orbits starting at m and n must eventually be "close" since
-    both grow at rate ~ log(current value), and gaps between
-    consecutive values h^k(n) are bounded by τ(h^k(n)). -/
-axiom orbits_get_close :
-  ∀ m n : ℕ, m ≥ 1 → n ≥ 1 →
-    ∀ D : ℕ, ∃ i j : ℕ,
-      (hOrbit m i : ℤ) - (hOrbit n j : ℤ) < D ∧
-      (hOrbit n j : ℤ) - (hOrbit m i : ℤ) < D
+/-- Two orbits starting at m and n eventually merge (from the conjecture),
+    so their distance eventually becomes 0. This is strictly stronger than
+    "orbits get close".
+    PROVED from erdos_414_conjecture: once orbits merge at h^i(m) = h^j(n),
+    the distance is zero, which is ≤ D for any D.
+    (Previously axiom with a soundness bug: the original < D formulation
+    was False for D = 0. Fixed to use ≤ D and proved from conjecture.
+    Axiom count reduced 2→1.) -/
+theorem orbits_get_close :
+    ∀ m n : ℕ, m ≥ 1 → n ≥ 1 →
+      ∀ D : ℕ, ∃ i j : ℕ,
+        |(hOrbit m i : ℤ) - (hOrbit n j : ℤ)| ≤ D := by
+  intro m n hm hn D
+  obtain ⟨i, j, hij⟩ := erdos_414_conjecture m n hm hn
+  exact ⟨i, j, by rw [hij]; simp⟩
