@@ -1,0 +1,108 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01",
+  "title": "Modified Dirichlet Function (Thomae's Function) — Lebesgue Integral Zero",
+  "slug": "lebesgue-measure-oq-01-oq-01",
+  "description": "The modified Dirichlet function f(p/q) = 1/q (Thomae's function) has Lebesgue integral 0, because it equals 0 almost everywhere on the irrationals.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Thomae%27s_function",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01.lean",
+    "tags": [
+      "measure-theory",
+      "lebesgue-integral",
+      "dirichlet-function",
+      "thomae-function",
+      "almost-everywhere",
+      "countable-sets",
+      "real-analysis"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 149,
+    "assumptions": "0 axioms. 1 sorry in thomae_integral_unit_interval (restricted integral). Main result thomae_integral_zero is sorry-free.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Thomae's function (also called the popcorn function or modified Dirichlet function) was introduced by Carl Johannes Thomae in 1875. It assigns f(p/q) = 1/q for rationals in lowest terms and f(x) = 0 for irrationals. Unlike the standard Dirichlet function, Thomae's function is Riemann integrable — it is continuous at every irrational and discontinuous at every rational. This formalization shows the Lebesgue integral is 0 via the measure-zero argument.",
+    "problemStatement": "Prove that the modified Dirichlet function f(x) = 1/q for x = p/q in lowest terms (f(x) = 0 for irrational x) has Lebesgue integral 0 over ℝ and over [0,1].",
+    "proofStrategy": "The proof uses the same strategy as the parent OQ01 (standard Dirichlet function): since Thomae's function is zero on irrationals and the rationals have Lebesgue measure zero, f = 0 almost everywhere. Then integral_eq_zero_of_ae gives ∫ f = 0.",
+    "keyInsights": [
+      "**Same core argument**: Both the standard and modified Dirichlet functions are zero a.e., so both have integral 0",
+      "**Thomae ≤ Dirichlet pointwise**: The modified version is bounded above by the standard Dirichlet function",
+      "**Riemann vs Lebesgue**: Thomae's function is Riemann integrable (unlike the standard Dirichlet function), but the Lebesgue argument is simpler — no epsilon-delta needed"
+    ],
+    "prerequisites": [
+      "Lebesgue measure and integration",
+      "Almost everywhere properties",
+      "Countability of rationals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Part I: The Thomae Function",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Defines `thomae : ℝ → ℝ` via classical choice on rational representation. Proves basic properties: zero at irrationals, nonneg, bounded by 1."
+    },
+    {
+      "id": "ae-zero",
+      "title": "Part II: Zero Almost Everywhere",
+      "startLine": 76,
+      "endLine": 100,
+      "summary": "Proves support ⊆ ℚ (countable, measure zero), hence thomae = 0 a.e."
+    },
+    {
+      "id": "integral",
+      "title": "Part III: The Lebesgue Integral",
+      "startLine": 101,
+      "endLine": 120,
+      "summary": "Main result: ∫ thomae = 0 via integral_eq_zero_of_ae. Unit interval version has 1 sorry."
+    },
+    {
+      "id": "comparison",
+      "title": "Part IV: Comparison with Standard Dirichlet",
+      "startLine": 121,
+      "endLine": 149,
+      "summary": "thomae ≤ dirichlet pointwise. Both have integral 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function.",
+    "openQuestions": [
+      "Can the unit interval restriction be proved without the sorry?",
+      "Can we formalize the Riemann integrability of Thomae's function?",
+      "Can we prove that Thomae's function is continuous at every irrational?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Data.Rat.Cast.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["MeasureTheory", "Measure", "Set", "Filter"],
+    "namespace": "LebesgueMeasureOQ01OQ01",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "extends",
+      "description": "Extends the Dirichlet function integral proof to the modified (Thomae) variant"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "extends",
+      "description": "Part of the Lebesgue measure formalization family"
+    }
+  ]
+}
