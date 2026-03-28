@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-resolvent-ring-id",
+    "proofId": "solution-of-cubic-oq-03-oq-03",
+    "range": {"startLine": 69, "endLine": 75},
+    "type": "technique",
+    "title": "The Core Ring Identity",
+    "content": "The fundamental algebraic fact: after substituting m = t - 5p/6 into the resolvent cubic, the result equals exactly 8 times the depressed cubic t^3 + At + B. This is verified purely by the ring tactic, which handles the expansion and simplification automatically.",
+    "mathContext": "$8(t - 5p/6)^3 + 20p(t - 5p/6)^2 + (16p^2 - 8r)(t - 5p/6) + (4p^3 - 4pr - q^2) = 8(t^3 + At + B)$",
+    "significance": "key",
+    "relatedConcepts": ["Tschirnhaus transformation", "polynomial depression", "ring identity"],
+    "prerequisites": ["ring tactic"]
+  },
+  {
+    "id": "ann-resolvent-depresses",
+    "proofId": "solution-of-cubic-oq-03-oq-03",
+    "range": {"startLine": 77, "endLine": 97},
+    "type": "concept",
+    "title": "Depression Theorem",
+    "content": "The iff theorem: m = t - 5p/6 is a resolvent root iff t satisfies the depressed cubic. The forward direction uses mul_eq_zero (since 8 != 0, the factor must be zero). The backward direction multiplies by zero.",
+    "mathContext": "$m = t - 5p/6$ satisfies the resolvent iff $t^3 + At + B = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["depression substitution", "Cardano's form", "mul_eq_zero"],
+    "prerequisites": ["resolvent_ring_identity"]
+  },
+  {
+    "id": "ann-quartic-chain",
+    "proofId": "solution-of-cubic-oq-03-oq-03",
+    "range": {"startLine": 199, "endLine": 218},
+    "type": "insight",
+    "title": "The Complete Quartic-Cubic-Cardano Chain",
+    "content": "The culminating theorem: for any depressed quartic, the resolvent cubic depresses to a Cardano-solvable form, and any root of this depressed cubic gives a valid Ferrari parameter. This formally connects all pieces of the radical solution chain: quartic -> Ferrari -> resolvent cubic -> Cardano -> explicit radicals.",
+    "mathContext": "Quartic $\\xrightarrow{\\text{Ferrari}}$ resolvent cubic $\\xrightarrow{m = t - 5p/6}$ depressed cubic $\\xrightarrow{\\text{Cardano}}$ radicals.",
+    "significance": "key",
+    "relatedConcepts": ["solvability by radicals", "Ferrari's method", "Cardano's formula"],
+    "prerequisites": ["resolvent_depresses", "recoverM_is_resolvent_root"]
+  }
+]
