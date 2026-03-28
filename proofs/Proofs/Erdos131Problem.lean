@@ -434,6 +434,98 @@ theorem nondividing_hard_to_find :
   · simp
   · simp [Finset.sum_insert, Finset.sum_singleton]
 
+/- ## Parity Constraint: Sets Containing 2 -/
+
+/-- If 2 ∈ A and A is non-dividing, then |A| ≤ 3.
+    Proof: Among any 3 positive integers, at least two share parity,
+    and their sum is even (divisible by 2). So A \ {2} has ≤ 2 elements.
+    Example: {2, 4, 5} achieves |A| = 3 (see two_four_five_nondividing). -/
+theorem two_in_nondividing_bound (A : Finset ℕ) (h2 : 2 ∈ A) (hND : IsNonDividing A) :
+    A.card ≤ 3 := by
+  by_contra hge
+  push_neg at hge
+  set B := A.erase 2
+  have hBcard : 3 ≤ B.card := by rw [Finset.card_erase_of_mem h2]; omega
+  -- Split B by parity (mod 2)
+  set Be := B.filter (fun n => n % 2 = 0)
+  set Bo := B.filter (fun n => ¬(n % 2 = 0))
+  have hBsplit : B.card = Be.card + Bo.card :=
+    (Finset.filter_card_add_filter_neg_card_eq_card (fun n => n % 2 = 0)).symm
+  -- Pigeonhole: one of Be, Bo has ≥ 2 elements
+  have hge2 : 2 ≤ Be.card ∨ 2 ≤ Bo.card := by omega
+  -- Extract two elements of same parity and show 2 | their sum
+  suffices ∀ (F : Finset ℕ), F ⊆ B → 1 < F.card →
+      (∀ x ∈ F, x % 2 = 0) ∨ (∀ x ∈ F, ¬(x % 2 = 0)) → False by
+    rcases hge2 with h | h
+    · exact this Be (Finset.filter_subset _ _) (by omega)
+        (Or.inl (fun x hx => (Finset.mem_filter.mp hx).2))
+    · exact this Bo (Finset.filter_subset _ _) (by omega)
+        (Or.inr (fun x hx => (Finset.mem_filter.mp hx).2))
+  intro F hFB hFcard hparity
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hFcard
+  have hdvd : 2 ∣ ({a, b} : Finset ℕ).sum id := by
+    rw [Finset.sum_pair hab]; simp only [id]
+    apply Nat.dvd_of_mod_eq_zero
+    rcases hparity with h | h
+    · have := h a ha; have := h b hb; omega  -- even + even
+    · have := h a ha; have := h b hb; omega  -- odd + odd
+  exact hND 2 h2 {a, b}
+    (by intro x hx; simp at hx; rcases hx with rfl | rfl <;> exact hFB (by assumption))
+    (by rw [Finset.card_pair hab])
+    hdvd
+
+/-- Helper: for S ⊆ T with |S| ≥ 2 and |T| = 3, non-divisibility reduces
+    to checking the full sum and each "pair sum" T.sum - x for x ∈ T. -/
+private lemma nondividing_three_subset {a : ℕ} {T : Finset ℕ} (hT : T.card = 3)
+    (h_full : ¬(a ∣ T.sum id))
+    (h_pairs : ∀ x ∈ T, ¬(a ∣ T.sum id - x))
+    {S : Finset ℕ} (hS : S ⊆ T) (hCard : S.card ≥ 2) : ¬(a ∣ S.sum id) := by
+  have hScard_le : S.card ≤ 3 := (Finset.card_le_card hS).trans hT.le
+  intro hdvd
+  rcases Nat.eq_or_lt_of_le hCard with h2 | h3
+  · -- |S| = 2: T \ S has exactly 1 element
+    have hTdiff_card : (T \ S).card = 1 := by
+      rw [Finset.card_sdiff hS, hT]; omega
+    obtain ⟨x, hx_eq⟩ := Finset.card_eq_one.mp hTdiff_card
+    have hxT : x ∈ T := by
+      have : x ∈ T \ S := hx_eq ▸ Finset.mem_singleton_self x
+      exact Finset.sdiff_subset this
+    -- T.sum = S.sum + x (via Finset.sum_sdiff)
+    have hsum : (T \ S).sum id + S.sum id = T.sum id := Finset.sum_sdiff hS
+    rw [hx_eq, Finset.sum_singleton] at hsum
+    -- So T.sum - x = S.sum
+    have hsub : T.sum id - x = S.sum id := by omega
+    exact h_pairs x hxT (hsub ▸ hdvd)
+  · -- |S| = 3 = |T|, so S = T
+    exact h_full (Finset.eq_of_subset_of_card_le hS (by omega) ▸ hdvd)
+
+/-- {3, 5, 11, 18} is non-dividing.
+    Verification: For each a ∈ {3,5,11,18}, all subset sums of A \ {a}
+    with ≥ 2 elements are not divisible by a.
+    Sums: a=3→{16,23,29,34}, a=5→{14,21,29,32},
+          a=11→{8,21,23,26}, a=18→{8,14,16,19}. -/
+theorem three_five_eleven_eighteen_nondividing :
+    IsNonDividing ({3, 5, 11, 18} : Finset ℕ) := by
+  intro a ha S hS hCard hdvd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha
+  rcases ha with rfl | rfl | rfl | rfl
+  · -- a = 3: T = {5, 11, 18}
+    have : ({3, 5, 11, 18} : Finset ℕ).erase 3 = {5, 11, 18} := by decide
+    exact absurd hdvd (nondividing_three_subset (by decide)
+      (by decide) (by decide) (this ▸ hS) hCard)
+  · -- a = 5: T = {3, 11, 18}
+    have : ({3, 5, 11, 18} : Finset ℕ).erase 5 = {3, 11, 18} := by decide
+    exact absurd hdvd (nondividing_three_subset (by decide)
+      (by decide) (by decide) (this ▸ hS) hCard)
+  · -- a = 11: T = {3, 5, 18}
+    have : ({3, 5, 11, 18} : Finset ℕ).erase 11 = {3, 5, 18} := by decide
+    exact absurd hdvd (nondividing_three_subset (by decide)
+      (by decide) (by decide) (this ▸ hS) hCard)
+  · -- a = 18: T = {3, 5, 11}
+    have : ({3, 5, 11, 18} : Finset ℕ).erase 18 = {3, 5, 11} := by decide
+    exact absurd hdvd (nondividing_three_subset (by decide)
+      (by decide) (by decide) (this ▸ hS) hCard)
+
 /- ## Bound Exponent Comparison -/
 
 /-- The upper bound exponent 1/4 is strictly less than the original conjectured 1/2. -/
@@ -465,8 +557,8 @@ remains to be closed. The polynomial exponent gap (1/4 vs 1/5) is 1/20.
 - original_question_answered_no (from pham_zakharov_upper_bound)
 - erdos_original_conjecture_false (from csaba_lower_bound, via log ≤ x^δ/δ)
 - F monotonic, F ≤ g
-- Concrete examples: {2,3}, {2,4,5} non-dividing; {2,3,5} not non-dividing
-- Structural: 1 ∉ large non-dividing sets
+- Concrete examples: {2,3}, {2,4,5}, {3,5,11,18} non-dividing; {2,3,5} not non-dividing
+- Structural: 1 ∉ large non-dividing sets; 2 ∈ A ⇒ |A| ≤ 3 (parity constraint)
 - Exponent comparisons: 1/4 < 1/2, 1/5 < 1/4, gap = 1/20
 -/
 
