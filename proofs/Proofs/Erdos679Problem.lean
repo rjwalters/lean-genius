@@ -38,17 +38,20 @@ theorem omega_one : omega 1 = 0 := by
 
 /-- ω(p) = 1 for prime p. -/
 theorem omega_prime (p : ℕ) (hp : p.Prime) : omega p = 1 := by
-  sorry
+  rw [show p = p ^ 1 from (pow_one p).symm]
+  simp [omega, Nat.primeFactors_prime_pow hp (show (1 : ℕ) ≠ 0 by omega)]
 
 /-- ω(p^k) = 1 for prime p and k ≥ 1. -/
 theorem omega_prime_pow (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
     omega (p ^ k) = 1 := by
-  sorry
+  simp [omega, Nat.primeFactors_prime_pow hp (show k ≠ 0 by omega)]
 
 /-- ω is additive on coprime arguments. -/
 theorem omega_mul_coprime (m n : ℕ) (hmn : m.Coprime n) :
     omega (m * n) = omega m + omega n := by
-  sorry
+  unfold omega
+  rw [Nat.Coprime.primeFactors_mul hmn]
+  exact Finset.card_union_of_disjoint (Nat.Coprime.disjoint_primeFactors hmn)
 
 /- ## Part II: The Hardy-Ramanujan Bound -/
 

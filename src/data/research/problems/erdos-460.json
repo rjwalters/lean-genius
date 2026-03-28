@@ -1,6 +1,6 @@
 {
   "slug": "erdos-460",
-  "title": "Erdős #460",
+  "title": "Erd\u0151s #460",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -29,23 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "Axiom reduction 4\u21923: demoted sieve_conjectured_bound from axiom to def (was open conjecture incorrectly axiomatized). 0 sorries.",
     "builtItems": [
       "Proved smallPrime_le_sieveReciprocal and largePrime_le_sieveReciprocal (sub-sum lemmas)",
-      "Proved erdos_460_restricted_question theorem (was axiom — eliminated 1 axiom)"
+      "Proved erdos_460_restricted_question theorem (was axiom \u2014 eliminated 1 axiom)",
+      "sieve_conjectured_bound: axiom\u2192def (open conjecture correction)"
     ],
     "insights": [
-      "greedyCoprimeSieve is a dummy (fun _ => 0) — all behavior axiomatized, no routine axioms to eliminate",
+      "greedyCoprimeSieve is a dummy (fun _ => 0) \u2014 all behavior axiomatized, no routine axioms to eliminate",
       "To prove any axioms, need to implement the actual greedy sieve algorithm as a well-founded recursive def",
       "Sieve implementation uses Fin(k+2) for previous values with well-founded recursion",
       "sieve_greedy proof needs: candidates always Nonempty for k >= 2, which requires number-theoretic argument",
       "erdos_460_restricted_question provable via sum decomposition (smallPrime + largePrime = total)",
       "erdos_460_restricted_question proved: restricted sums (smallPrime, largePrime) are sub-sums of sieveReciprocalSum, so divergence of either implies the full sum diverges",
-      "Proof technique: Finset.sum_le_sum with termwise comparison — filter condition P∧Q implies P, and 1/a ≥ 0 for natural a"
+      "Proof technique: Finset.sum_le_sum with termwise comparison \u2014 filter condition P\u2227Q implies P, and 1/a \u2265 0 for natural a",
+      "sieve_conjectured_bound was incorrectly axiomatized \u2014 it is an open conjecture, not a proved result. Demoted to def.",
+      "All 4 axioms were unused by any theorem \u2014 documentation-only. Removed 1 (open conjecture)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #460 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_0=n$ and $a_1=1$, and in general $a_k$ is the least integer $>a_{k-1}$ for which $(n-a_k,n-a_i)=1$ for all $1\\leq i<k$. Does\\[\\sum_{i}\\frac{1}{a_i}\\to \\infty\\]as $n\\to \\infty$? What about if we restrict the sum to those $i$ such that $n-a_j$ is divisible by some prime $\\leq a_j$, or the complement of such $i$?\n\n\n\nThis question arose in work of Eggleton, Erd\\H{o}s, and Selfridge, who could prove that $a_k <k^{2+o(1)}$ for $k$ large enough depending on $n$, but conjectured that in fact $a_k\\ll k\\log k$ is true.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #459\n- Problem #461\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #460 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_0=n$ and $a_1=1$, and in general $a_k$ is the least integer $>a_{k-1}$ for which $(n-a_k,n-a_i)=1$ for all $1\\leq i<k$. Does\\[\\sum_{i}\\frac{1}{a_i}\\to \\infty\\]as $n\\to \\infty$? What about if we restrict the sum to those $i$ such that $n-a_j$ is divisible by some prime $\\leq a_j$, or the complement of such $i$?\n\n\n\nThis question arose in work of Eggleton, Erd\\H{o}s, and Selfridge, who could prove that $a_k <k^{2+o(1)}$ for $k$ large enough depending on $n$, but conjectured that in fact $a_k\\ll k\\log k$ is true.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #459\n- Problem #461\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"

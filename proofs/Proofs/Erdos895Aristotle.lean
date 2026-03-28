@@ -99,7 +99,7 @@ theorem schur_two_colors :
     ∀ c : Fin 5 → Fin 2,
     ∃ a b : Fin 5, a.val > 0 ∧ b.val > 0 ∧ a.val + b.val < 5 ∧
       c a = c b ∧ c a = c ⟨a.val + b.val, by omega⟩ := by
-  sorry
+  native_decide
 
 -- Routine: Pigeonhole — if n items are colored with k colors,
 -- some color class has at least ⌈n/k⌉ items.

@@ -100,14 +100,16 @@ noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
 -/
 
 /-- The girth of a graph: the length of the shortest cycle.
-    Returns 0 if the graph is acyclic (a forest). -/
+    Returns 0 if the graph is acyclic (a forest).
+    Defined as sInf of cycle lengths via Walk.IsCycle. -/
 noncomputable def girth (G : SimpleGraph V) : ℕ :=
-  sorry -- Standard definition via cycle walks; placeholder
+  sInf {n : ℕ | ∃ (v : V) (p : G.Walk v v), p.IsCycle ∧ p.length = n}
 
 /-- The diameter of a graph: the maximum over all pairs of vertices of
-    the shortest-path distance. Returns 0 for disconnected graphs. -/
+    the shortest-path distance. Returns 0 for disconnected graphs.
+    Uses SimpleGraph.dist (shortest walk length, 0 if unreachable). -/
 noncomputable def diameter (G : SimpleGraph V) : ℕ :=
-  sorry -- Via G.dist supremum; placeholder
+  Finset.sup (Finset.univ ×ˢ Finset.univ) (fun vw => G.dist vw.1 vw.2)
 
 /-
 ## Part VII: Basic Lemmas

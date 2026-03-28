@@ -106,17 +106,102 @@ theorem starGraph_isTriangleFree {n : ℕ} : (starGraph n).IsTriangleFree := by
 
 /- ## Tree Properties of Constructions -/
 
-/-- The path graph on n+1 ≥ 1 vertices is a tree (connected and acyclic).
-    Connected: vertices 0-1-2-...-n form a path connecting all vertices.
-    Acyclic: adjacent vertices differ by exactly 1, so any closed walk must
-    revisit an edge (forward and backward steps on the same edge). -/
-theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree := by sorry
+/-- In the star graph, non-zero vertices have a unique neighbor: vertex 0. -/
+private lemma starGraph_neighbor_zero {n : ℕ} {a b : Fin (n + 1)}
+    (hadj : (starGraph n).Adj a b) (ha : a.val ≠ 0) : b.val = 0 := by
+  rcases hadj with ⟨h, _⟩ | ⟨h, _⟩; exact absurd h ha; exact h
 
 /-- The star graph K_{1,n} on n+1 vertices is a tree.
     Connected: every leaf is adjacent to center (vertex 0).
     Acyclic: every non-center vertex has degree 1, so any closed walk
     must reuse an edge (a leaf's unique edge to center). -/
-theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree := by sorry
+theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree where
+  isConnected := by
+    refine Connected.mk fun u v => ?_
+    by_cases hu : u.val = 0 <;> by_cases hv : v.val = 0
+    · have : u = v := Fin.ext (by omega)
+      exact this ▸ SimpleGraph.Reachable.refl
+    · exact ⟨Walk.cons (show (starGraph n).Adj u v from Or.inl ⟨hu, hv⟩) Walk.nil⟩
+    · exact ⟨Walk.cons (show (starGraph n).Adj u v from Or.inr ⟨hv, hu⟩) Walk.nil⟩
+    · exact ⟨Walk.cons (show (starGraph n).Adj u ⟨0, by omega⟩ from Or.inr ⟨rfl, hu⟩)
+            (Walk.cons (show (starGraph n).Adj ⟨0, by omega⟩ v from Or.inl ⟨rfl, hv⟩) Walk.nil)⟩
+  IsAcyclic := by
+    intro v c hcyc
+    have htrl := hcyc.isCircuit.isTrail
+    have hne := hcyc.isCircuit.ne_nil
+    have hnd := hcyc.support_nodup
+    cases c with
+    | nil => exact hne rfl
+    | @cons _ w _ hadj p =>
+      cases p with
+      | nil => exact absurd hadj ((starGraph n).loopless v)
+      | @cons _ w' _ hadj' p' =>
+        cases p' with
+        | nil =>
+          -- Length 2: v → w → v. Edges are [s(v,w), s(w,v)] = same edge → not a trail.
+          have hedges := htrl.edges_nodup
+          simp only [Walk.edges_cons, Walk.edges_nil] at hedges
+          exact absurd (List.mem_cons.mpr (Or.inl Sym2.eq_swap))
+            (List.nodup_cons.mp hedges).1
+        | @cons _ w'' _ hadj'' p'' =>
+          -- Length ≥ 3: v → w → w' → w'' → ... → v
+          -- Support tail = [w, w', w'', ..., v]. Show it has duplicates.
+          simp only [Walk.support_cons, List.tail_cons] at hnd
+          -- hnd : (w :: w' :: support(p'')).Nodup where support(p'') = [w'', ..., v]
+          have hnd1 := (List.nodup_cons.mp hnd).1   -- w ∉ w' :: support(p'')
+          have hnd2 := (List.nodup_cons.mp (List.nodup_cons.mp hnd).2).1  -- w' ∉ support(p'')
+          by_cases hw : w.val = 0
+          · -- w is center: w'.val ≠ 0, so w''.val = 0, so w = w''
+            have hw' : w'.val ≠ 0 := by
+              rcases hadj' with ⟨_, h⟩ | ⟨h, _⟩; exact h; omega
+            have hw'' : w''.val = 0 := starGraph_neighbor_zero hadj'' hw'
+            -- w'' ∈ support(p'') by start_mem_support, and w'' = w
+            have hmem : w ∈ p''.support := by
+              have := Walk.start_mem_support p''
+              rwa [show w'' = w from Fin.ext (by omega)] at this
+            exact hnd1 (List.mem_cons_of_mem _ hmem)
+          · -- w is a leaf: v.val = 0 and w'.val = 0, so v = w'
+            have hv : v.val = 0 := by
+              rcases hadj with ⟨h, _⟩ | ⟨_, h⟩; exact h; exact absurd h hw
+            have hw' : w'.val = 0 := starGraph_neighbor_zero hadj' hw
+            -- v ∈ support(p'') by end_mem_support, and v = w'
+            have hmem : w' ∈ p''.support := by
+              have := Walk.end_mem_support p''
+              rwa [show v = w' from Fin.ext (by omega)] at this
+            exact hnd2 hmem
+
+/-- Helper: vertex 0 reaches any vertex i in the path graph via consecutive steps. -/
+private lemma pathGraph_reachable_zero {n : ℕ} (i : Fin (n + 1)) :
+    (pathGraph (n + 1)).Reachable ⟨0, Nat.zero_lt_succ n⟩ i := by
+  suffices h : ∀ k (hk : k < n + 1),
+      (pathGraph (n + 1)).Reachable ⟨0, Nat.zero_lt_succ n⟩ ⟨k, hk⟩ from
+    h i.val i.isLt
+  intro k
+  induction k with
+  | zero => intro _; exact SimpleGraph.Reachable.refl _
+  | succ k ih =>
+    intro hk
+    exact (ih (by omega)).trans
+      ⟨Walk.cons (show (pathGraph (n + 1)).Adj ⟨k, by omega⟩ ⟨k + 1, hk⟩ from Or.inl rfl)
+        Walk.nil⟩
+
+/-- The path graph on n+1 ≥ 1 vertices is a tree (connected and acyclic).
+    Connected: vertices 0-1-2-...-n form a path connecting all vertices.
+    Acyclic: adjacent vertices differ by exactly 1, so any closed walk must
+    revisit an edge (forward and backward steps on the same edge). -/
+theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree where
+  isConnected := by
+    refine Connected.mk fun u v => ?_
+    exact (pathGraph_reachable_zero u).symm.trans (pathGraph_reachable_zero v)
+  IsAcyclic := by
+    -- In the path graph, every edge is a bridge: removing edge {k,k+1}
+    -- disconnects vertices {0,...,k} from {k+1,...,n}. A graph where every
+    -- edge is a bridge is acyclic.
+    -- The key insight: adjacent vertices differ by exactly 1 in value,
+    -- so any closed trail would need to traverse an edge in both directions
+    -- (forward k→k+1 and backward k+1→k), but these are the same undirected
+    -- edge — violating the trail property.
+    sorry
 
 /-- Path on n+1 vertices as a FiniteTree. -/
 def pathTree (n : ℕ) : FiniteTree (n + 1) :=

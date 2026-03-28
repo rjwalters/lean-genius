@@ -17,13 +17,13 @@
       "sieve theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 687,
     "erdosUrl": "https://erdosproblems.com/687",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 274,
-    "assumptions": "6 axioms: jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal, erdos_687_conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. See Lean source for complete statements.",
+    "lineCount": 396,
+    "assumptions": "5 axioms: jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. erdos_687_conjecture is a theorem proved from maier_pomerance_conjecture. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -138,8 +138,8 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 274,
-    "axiomCount": 6,
+    "lineCount": 396,
+    "axiomCount": 5,
     "theoremCount": 14,
     "definitionCount": 5
   },

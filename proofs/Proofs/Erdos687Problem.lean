@@ -31,12 +31,13 @@ Proved: erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronge
 Theorems: 12 (was 9; added not_mem_jacobsthalSet_two, one_mem_jacobsthalSet_two,
   jacobsthalY_two. Fixed duplicate definitions.)
 Removed: jacobsthalY_trivial_lower (FALSE — Y(2) = 1 < 3 counterexample)
-Sorries: 1 (log_pow_eventually_le_rpow — standard asymptotic: log^k = o(x^ε))
+Sorries: 0 (was 1; proved log_pow_eventually_le_rpow via isLittleO_log_rpow_atTop)
 -/
 
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 open Finset Filter
 
@@ -230,13 +231,50 @@ axiom maier_pomerance_conjecture :
 
 /- ## Main Conjecture ($1,000) -/
 
-/-- Helper: For any C > 0, ε > 0, and k ≥ 0, eventually C · (log x)^k ≤ x^ε.
-Standard asymptotic: polynomial growth dominates any power of logarithm. -/
-private lemma log_pow_eventually_le_rpow (C : ℝ) (hC : 0 < C) (k ε : ℝ) (hε : 0 < ε) :
+/-- Helper: For any C > 0, k > 0, ε > 0, eventually C · (log x)^k ≤ x^ε.
+Standard asymptotic: polynomial growth dominates any power of logarithm.
+Uses isLittleO_log_rpow_atTop with c = C^(-1/k) to get exact cancellation. -/
+private lemma log_pow_eventually_le_rpow (C : ℝ) (hC : 0 < C) (k : ℝ) (hk : 0 < k)
+    (ε : ℝ) (hε : 0 < ε) :
     ∀ᶠ (x : ℕ) in atTop, C * Real.log (x : ℝ) ^ k ≤ (x : ℝ) ^ ε := by
-  -- Standard: log(x)^k = o(x^ε) for ε > 0, so C·log(x)^k ≤ x^ε eventually
-  -- Follows from Real.isLittleO_log_rpow_rpow_atTop or tendsto_log_div_rpow
-  sorry
+  -- Choose c = C^(-1/k) > 0 as the little-o bound parameter
+  have hεk : 0 < ε / k := div_pos hε hk
+  have hcinv : 0 < C ^ (-(1 : ℝ) / k) := rpow_pos_of_pos hC _
+  -- From log =o(x^(ε/k)): eventually |log x| ≤ C^(-1/k) · |x^(ε/k)|
+  have hbound := (isLittleO_log_rpow_atTop hεk).bound hcinv
+  -- Transfer from ℝ filter to ℕ filter
+  rw [Filter.eventually_atTop]
+  obtain ⟨R, hR⟩ := Filter.eventually_atTop.mp hbound
+  refine ⟨max ⌈R⌉₊ 1, fun n hn => ?_⟩
+  have hn1 : 1 ≤ n := le_trans (le_max_right _ _) hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hn_nn : (0 : ℝ) ≤ (n : ℝ) := le_of_lt hn_pos
+  have hR_le : R ≤ (n : ℝ) :=
+    le_trans (Nat.le_ceil R) (by exact_mod_cast le_trans (le_max_left _ _) hn)
+  -- Extract: log n ≤ C^(-1/k) · n^(ε/k)
+  have hlog := hR (n : ℝ) hR_le
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (Real.log_nonneg (by exact_mod_cast hn1)),
+      abs_of_nonneg (rpow_nonneg hn_nn _)] at hlog
+  have hlog_nn : 0 ≤ Real.log (n : ℝ) := Real.log_nonneg (by exact_mod_cast hn1)
+  -- Raise to power k and simplify:
+  -- (log n)^k ≤ (C^(-1/k) · n^(ε/k))^k = C^(-1) · n^ε
+  -- So C · (log n)^k ≤ C · C^(-1) · n^ε = n^ε
+  calc C * Real.log (n : ℝ) ^ k
+      ≤ C * (C ^ (-(1 : ℝ) / k) * (n : ℝ) ^ (ε / k)) ^ k :=
+        mul_le_mul_of_nonneg_left (rpow_le_rpow hlog_nn hlog hk.le) hC.le
+    _ = C * (C ^ (-(1 : ℝ) / k * k) * (n : ℝ) ^ (ε / k * k)) := by
+        congr 1
+        rw [mul_rpow (rpow_nonneg hC.le _) (rpow_nonneg hn_nn _),
+            ← rpow_mul hC.le, ← rpow_mul hn_nn]
+    _ = C * (C ^ (-(1 : ℝ)) * (n : ℝ) ^ ε) := by
+        have hk_ne : k ≠ 0 := ne_of_gt hk
+        congr 2 <;> (field_simp [hk_ne]; ring)
+    _ = C * C ^ (-(1 : ℝ)) * (n : ℝ) ^ ε := by ring
+    _ = (n : ℝ) ^ ε := by
+        have : C ^ (-(1 : ℝ)) = C⁻¹ := by
+          rw [rpow_neg hC.le, rpow_one]
+        rw [this, mul_inv_cancel₀ hC.ne', one_mul]
 
 /-- **Erdős Problem #687 ($1,000 prize).**
 Is Y(x) = o(x²)? More specifically, is Y(x) ≪ x^{1+o(1)}?
@@ -253,7 +291,7 @@ theorem erdos_687_conjecture :
   -- hMP: ∀ᶠ x, Y(x) ≤ C · x · (log x)^3
   -- Eventually: C · x · (log x)^3 ≤ x^{1+ε}
   -- i.e., C · (log x)^3 ≤ x^ε (standard asymptotic)
-  have h_asymp := log_pow_eventually_le_rpow C hC 3 ε hε
+  have h_asymp := log_pow_eventually_le_rpow C hC 3 (by norm_num) ε hε
   -- Combine both eventual bounds
   filter_upwards [hMP, h_asymp] with x hMP_x h_asymp_x
   -- hMP_x: Y(x) ≤ C · x · (log x)^3

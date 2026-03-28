@@ -171,7 +171,14 @@ theorem translation_disjoint (A : Set (EuclideanSpace ℝ (Fin 2)))
     (u : EuclideanSpace ℝ (Fin 2))
     (hu : ‖u‖ = 1) :
     A ∩ ({x | x - u ∈ A}) = ∅ := by
-  sorry
+  ext x
+  simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  rintro ⟨hx, hxu⟩
+  have heq : x = x - u := hA x (x - u) hx hxu (by
+    simp only [IsUnitDistance, euclideanDist, dist_eq_norm, sub_sub_cancel]; exact hu)
+  have h0 := sub_eq_zero.mpr heq
+  rw [sub_sub_cancel] at h0
+  simp [h0] at hu
 
 /-
 ## Part VII: Lower Bounds (Constructions)

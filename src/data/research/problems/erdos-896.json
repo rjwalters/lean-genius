@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T11:22:53.229Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Session 2: Eliminated 2 axioms (3→1). maxUniqueProducts defined via Finset.sup, achievability proved.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,19 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: 7 theorems, 1 axiom. Eliminated maxUniqueProducts + maxUniqueProducts_achieved axioms.",
     "builtItems": [
       "reprCount_comm: reprCount A B m = reprCount B A m (via Finset.card_bij)",
       "uniqueProductCount_comm: PROVED (was axiom) F(A,B) = F(B,A)",
       "theorem reprCount_comm: symmetric representation count (Erdos896Problem.lean)",
-      "theorem uniqueProductCount_comm: F(A,B) = F(B,A) - eliminated 1 axiom"
+      "theorem uniqueProductCount_comm: F(A,B) = F(B,A) - eliminated 1 axiom",
+      "maxUniqueProducts: replaced axiom with noncomputable def via Finset.sup over powerset pairs",
+      "maxUniqueProducts_achieved: proved via Finset.exists_max_image on nonempty finite set"
     ],
     "insights": [
       "uniqueProductCount_comm proved by showing reprCount is symmetric (Finset.card_bij with swap) then image sets are equal (mul_comm)",
       "Pre-existing Mathlib breakage: |>.card calc chain syntax no longer works, fixed by using parentheses",
       "Remaining 3 axioms: maxUniqueProducts (function def), maxUniqueProducts_achieved (existence), van_doorn_bounds (deep result)",
       "reprCount_comm proved via Finset.card_bij with swap (a,b)↦(b,a)",
-      "uniqueProductCount_comm proved: image sets equal by mul_comm, filter conditions match by reprCount_comm"
+      "uniqueProductCount_comm proved: image sets equal by mul_comm, filter conditions match by reprCount_comm",
+      "maxUniqueProducts is just a finite max over all subset pairs — no need for axiom",
+      "Finset.sup with OrderBot ℕ handles the definition cleanly",
+      "Finset.exists_max_image gives the achievability for free"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -61,16 +66,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:22:53.229Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-03-28T08:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos896Problem.lean",
       "filename": "Erdos896Problem.lean",
-      "lineCount": 183,
-      "theoremCount": 6,
-      "axiomCount": 3,
+      "lineCount": 204,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

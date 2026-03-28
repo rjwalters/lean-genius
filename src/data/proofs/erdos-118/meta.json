@@ -23,9 +23,9 @@
     "relatedProblems": [
       592
     ],
-    "axiomCount": 6,
-    "lineCount": 120,
-    "assumptions": "6 axioms: ordPartition, counter_partition_3, counter_not_partition_5, partitionThreshold, partition_monotone_down, threshold_exact. omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
+    "axiomCount": 4,
+    "lineCount": 144,
+    "assumptions": "4 axioms: counter_partition_3 (Schipperus), counter_not_partition_5 (Larson), partitionThreshold, threshold_exact. ordPartition now properly defined. partition_monotone_down proved from definition (blue clique restriction). omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -34,7 +34,7 @@
       "title": "Core Definitions",
       "startLine": 20,
       "endLine": 39,
-      "summary": "Defines the ordinal partition relation $\\alpha \\to (\\alpha, k)^2$ (axiomatized), the `IsPartitionOrd` predicate, and the Erdős–Hajnal conjecture: $\\alpha \\to (\\alpha,3)^2 \\implies \\forall n \\ge 3,\\, \\alpha \\to (\\alpha,n)^2$."
+      "summary": "Defines the ordinal partition relation $\\alpha \\to (\\alpha, k)^2$ as a concrete Prop (strict monotone red embedding or blue Fin-clique), the `IsPartitionOrd` predicate, and the Erdős–Hajnal conjecture."
     },
     {
       "id": "counterexample",
@@ -55,7 +55,7 @@
       "title": "Partition Threshold and Monotonicity",
       "startLine": 63,
       "endLine": 86,
-      "summary": "Introduces the partition threshold $\\text{thr}(\\alpha) = \\max\\{k : \\alpha \\to (\\alpha,k)^2\\}$, axiomatizes monotonicity ($j \\le k$ preserves the relation), and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$. The exact value remains open."
+      "summary": "Introduces the partition threshold $\\text{thr}(\\alpha) = \\max\\{k : \\alpha \\to (\\alpha,k)^2\\}$, proves monotonicity ($j \\le k$ preserves the relation) from the ordPartition definition, and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$. The exact value remains open."
     },
     {
       "id": "relation-592",
@@ -102,10 +102,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 120,
-    "axiomCount": 6,
-    "theoremCount": 3,
-    "definitionCount": 3
+    "lineCount": 144,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 4
   },
   "references": [
     "Erdős–Hajnal: original conjecture",

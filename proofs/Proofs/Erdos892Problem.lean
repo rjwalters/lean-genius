@@ -165,24 +165,16 @@ axiom primitive_reciprocal_log_convergent (a : ℕ → ℕ)
         (1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))
       ≤ S
 
-/-- Erdős–Sárközy–Szemerédi (1967): A stronger necessary condition.
-The partial reciprocal sums must grow slower than log x / √(log log x). -/
-axiom ess_1967_necessary (b : ℕ → ℕ) :
-    (∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
-      IsDominatedBy a b) →
-    ∀ ε : ℝ, ε > 0 →
-      ∃ X₀ : ℕ, ∀ X : ℕ, X ≥ X₀ →
-        (∑ n ∈ Finset.range X,
-          if b n < X then (1 : ℝ) / (b n : ℝ) else 0)
-        ≤ ε * Real.log (X : ℝ) / Real.sqrt (Real.log (Real.log (X : ℝ)))
+/-- **Known result (ESS 1967, not formalized):**
+Erdős–Sárközy–Szemerédi proved a stronger necessary condition:
+the partial reciprocal sums Σ_{bₙ<x} 1/bₙ = o(log x / √(log log x)).
 
-/-- The counting function of a primitive sequence grows sublinearly.
-A primitive set A ⊆ {1,...,N} has |A| ≪ N / √(log N). -/
-axiom primitive_counting_bound :
-    ∀ a : ℕ → ℕ, IsPrimitive a → IsStrictlyIncreasing a →
-      ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-        ((Finset.card ((Finset.range N).filter (fun n => ∃ k, a k = n)) : ℝ)
-          ≤ C * (N : ℝ) / Real.sqrt (Real.log (N : ℝ)))
+**Known result (not formalized):**
+The counting function of a primitive sequence grows sublinearly:
+a primitive set A ⊆ {1,...,N} has |A| ≪ N / √(log N).
+
+Both are deep number-theoretic results, previously axiomatized but unused
+in any proofs. Kept as documentation. -/
 
 /-
 ## Section VI: Main Theorem

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: 10 theorems, 2 axioms (down from 3), 0 sorries. Eliminated false axiom small_primes_divide via Kummer counterexample.",
     "builtItems": [
       "Proved erdos_731_conjecture (True placeholder)",
       "Proved kummer_carries (True placeholder)",
@@ -40,7 +40,9 @@
       "Proved two_divides_central: Pascal + choose_symm → C(2n,n) = 2·C(2n-1,n-1)",
       "Proved bertrand_central: Nat.exists_prime_lt_and_le_two_mul + Prime.dvd_choose_add",
       "Proved central_binom_lower: sum_range_choose + choose_le_middle → (2n+1)·C(2n,n) ≥ 4^n",
-      "Proved least_nondiv_counterexample: C(4,2)=6, leastNonDiv=4, 4 not prime"
+      "Proved least_nondiv_counterexample: C(4,2)=6, leastNonDiv=4, 4 not prime",
+      "Eliminated small_primes_divide axiom (FALSE)",
+      "Proved small_primes_divide_false: ¬(3 ∣ C(6,3)) ∧ C(6,3)=20"
     ],
     "insights": [
       "File had pre-existing build failure: omega cannot prove non-divisibility (m+1 does not divide m)",
@@ -49,7 +51,10 @@
       "least_nondiv_is_prime axiom was FALSE: counterexample n=2, C(4,2)=6, leastNonDivisor(6)=4 (not prime)",
       "EGRS result is about ALMOST ALL n, not ALL n — the axiom overclaimed",
       "Bertrand proof uses dvd_choose_add with a=b=n, p in (n,2n]: both n<p and p≤n+n",
-      "Central binom lower bound: max-term argument from Σ C(2n,k) = 4^n with 2n+1 terms"
+      "Central binom lower bound: max-term argument from Σ C(2n,k) = 4^n with 2n+1 terms",
+      "FOUND FALSE AXIOM: small_primes_divide claimed ∀ primes p, ∃ N, ∀ n≥N, p|C(2n,n). FALSE for p≥3: n=p^k gives 0 carries in Kummer theorem, so p∤C(2p^k,p^k) for all k.",
+      "Concrete counterexample: p=3, n=3, C(6,3)=20, 3∤20. Replaced axiom with counterexample theorem.",
+      "Axiom count reduced 3→2"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -76,9 +81,9 @@
     {
       "path": "Proofs/Erdos731Problem.lean",
       "filename": "Erdos731Problem.lean",
-      "lineCount": 155,
-      "theoremCount": 9,
-      "axiomCount": 3,
+      "lineCount": 161,
+      "theoremCount": 10,
+      "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

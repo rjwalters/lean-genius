@@ -15,6 +15,10 @@
 -- (2) Erdős–Taylor: max visit count T_n satisfies T_n ≪ (log n)² a.s.
 --
 -- Status: PROVED
+-- Axioms: 7 declarations + 1 structure field = 8 (down from 12)
+-- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
+--   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
+--   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence)
 -- Reference: erdosproblems.com/1166, Erdős–Révész [Va99, 6.78]
 
 import Mathlib
@@ -31,41 +35,67 @@ abbrev LatticePoint := ℤ × ℤ
 /-- The origin in Z². -/
 def origin : LatticePoint := (0, 0)
 
-/-- A random walk trajectory on Z²: a function from step number to position. -/
-axiom RandomWalk : Type
-/-- The trajectory of a random walk: position at each step. -/
-axiom trajectory : RandomWalk → ℕ → LatticePoint
-/-- Every walk starts at the origin. -/
-axiom walk_starts_at_origin (ω : RandomWalk) : trajectory ω 0 = origin
+/-- A random walk on Z²: a trajectory (step → position) starting at the origin.
+    Defined as a structure, not axiomatized. -/
+structure RandomWalk where
+  /-- The trajectory of a random walk: position at each step. -/
+  trajectory : ℕ → LatticePoint
+  /-- Every walk starts at the origin. -/
+  starts_at_origin : trajectory 0 = origin
 
 -- ## Visit Counts
 
-/-- f_k(x, ω): number of visits to point x through step k in walk ω. -/
-noncomputable axiom visitCount : RandomWalk → ℕ → LatticePoint → ℕ
+/-- f_k(x, ω): number of visits to point x through step k in walk ω.
+    Defined as |{n ∈ {0,...,k} | ω.trajectory n = x}|. -/
+noncomputable def visitCount (ω : RandomWalk) (k : ℕ) (x : LatticePoint) : ℕ :=
+  ((Finset.range (k + 1)).filter (fun n => ω.trajectory n = x)).card
 
 /-- Visit count is non-negative (trivially, since it's ℕ). -/
 theorem visitCount_nonneg (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
     0 ≤ visitCount ω k x := Nat.zero_le _
 
 /-- Visit count is monotone in k: more steps means at least as many visits. -/
-axiom visitCount_mono (ω : RandomWalk) (k₁ k₂ : ℕ) (x : LatticePoint)
-    (h : k₁ ≤ k₂) : visitCount ω k₁ x ≤ visitCount ω k₂ x
+theorem visitCount_mono (ω : RandomWalk) (k₁ k₂ : ℕ) (x : LatticePoint)
+    (h : k₁ ≤ k₂) : visitCount ω k₁ x ≤ visitCount ω k₂ x := by
+  unfold visitCount
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (by
+    intro n hn; simp only [Finset.mem_range] at *; omega))
 
 /-- The origin is visited at step 0. -/
-axiom visitCount_origin (ω : RandomWalk) : visitCount ω 0 origin ≥ 1
+theorem visitCount_origin (ω : RandomWalk) : visitCount ω 0 origin ≥ 1 := by
+  unfold visitCount
+  exact Finset.card_pos.mpr ⟨0, Finset.mem_filter.mpr
+    ⟨Finset.mem_range.mpr (by omega), ω.starts_at_origin⟩⟩
 
 -- ## Maximum Visit Count
 
-/-- T_k(ω): the maximum number of visits to any single point through step k. -/
-noncomputable axiom maxVisitCount : RandomWalk → ℕ → ℕ
+/-- T_k(ω): the maximum number of visits to any single point through step k.
+    Defined as the supremum of visitCount over all visited points.
+    Uses ℕ's OrderBot (⊥ = 0) for Finset.sup. -/
+noncomputable def maxVisitCount (ω : RandomWalk) (k : ℕ) : ℕ :=
+  ((Finset.range (k + 1)).image (ω.trajectory)).sup (visitCount ω k)
 
 /-- T_k achieves the maximum over all points. -/
-axiom maxVisitCount_is_max (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
-    visitCount ω k x ≤ maxVisitCount ω k
+theorem maxVisitCount_is_max (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
+    visitCount ω k x ≤ maxVisitCount ω k := by
+  unfold maxVisitCount
+  by_cases hx : x ∈ (Finset.range (k + 1)).image (ω.trajectory)
+  · exact Finset.le_sup hx
+  · -- x not visited in first k+1 steps: visitCount = 0
+    suffices visitCount ω k x = 0 by omega
+    unfold visitCount; rw [Finset.card_eq_zero, Finset.filter_eq_empty]
+    intro n hn heq
+    exact hx (Finset.mem_image.mpr ⟨n, hn, heq⟩)
 
 /-- T_k is achieved by some point. -/
-axiom maxVisitCount_achieved (ω : RandomWalk) (k : ℕ) :
-    ∃ x : LatticePoint, visitCount ω k x = maxVisitCount ω k
+theorem maxVisitCount_achieved (ω : RandomWalk) (k : ℕ) :
+    ∃ x : LatticePoint, visitCount ω k x = maxVisitCount ω k := by
+  unfold maxVisitCount
+  set visited := (Finset.range (k + 1)).image (ω.trajectory)
+  have hne : visited.Nonempty :=
+    ⟨ω.trajectory 0, Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (by omega), rfl⟩⟩
+  obtain ⟨x, hx, hmax⟩ := Finset.exists_max_image visited (visitCount ω k) hne
+  exact ⟨x, (le_antisymm (Finset.sup_le fun y hy => hmax y hy) (Finset.le_sup hx)).symm⟩
 
 /-- T_k ≥ 1 for all k ≥ 0 (at least the origin is visited). -/
 theorem maxVisitCount_pos (ω : RandomWalk) (k : ℕ) :
@@ -77,14 +107,27 @@ theorem maxVisitCount_pos (ω : RandomWalk) (k : ℕ) :
 
 -- ## Set of Most-Visited Points
 
-/-- F(k, ω): the set of points achieving the maximum visit count at step k.
-    Since this is a finite subset of Z² (only finitely many points are visited),
-    we axiomatize it as a Finset. -/
-noncomputable axiom mostVisitedSet : RandomWalk → ℕ → Finset LatticePoint
+/-- F(k, ω): the set of visited points achieving the maximum visit count.
+    Defined as the filter of visited points where visitCount equals maxVisitCount. -/
+noncomputable def mostVisitedSet (ω : RandomWalk) (k : ℕ) : Finset LatticePoint :=
+  ((Finset.range (k + 1)).image (ω.trajectory)).filter
+    (fun x => visitCount ω k x = maxVisitCount ω k)
 
 /-- A point is in F(k) iff it achieves the maximum visit count. -/
-axiom mem_mostVisitedSet (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
-    x ∈ mostVisitedSet ω k ↔ visitCount ω k x = maxVisitCount ω k
+theorem mem_mostVisitedSet (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
+    x ∈ mostVisitedSet ω k ↔ visitCount ω k x = maxVisitCount ω k := by
+  unfold mostVisitedSet
+  constructor
+  · exact fun hx => (Finset.mem_filter.mp hx).2
+  · intro heq
+    apply Finset.mem_filter.mpr
+    refine ⟨?_, heq⟩
+    -- x must be visited since visitCount > 0
+    have hpos : 0 < visitCount ω k x := heq ▸ maxVisitCount_pos ω k
+    unfold visitCount at hpos
+    obtain ⟨n, hn⟩ := Finset.card_pos.mp hpos
+    have := Finset.mem_filter.mp hn
+    exact Finset.mem_image.mpr ⟨n, this.1, this.2⟩
 
 /-- F(k) is nonempty (the maximum is achieved). -/
 theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
@@ -95,17 +138,23 @@ theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
 -- ## Cumulative Most-Visited Points
 
 /-- The cumulative set of most-visited points through step n:
-    ⋃_{k ≤ n} F(k). -/
-noncomputable axiom cumulativeMostVisited : RandomWalk → ℕ → Finset LatticePoint
+    ⋃_{k ≤ n} F(k). Defined as the biUnion of F(k) over k ∈ {0, ..., n}. -/
+noncomputable def cumulativeMostVisited (ω : RandomWalk) (n : ℕ) :
+    Finset LatticePoint :=
+  (Finset.range (n + 1)).biUnion (mostVisitedSet ω)
 
 /-- The cumulative set contains all F(k) for k ≤ n. -/
-axiom cumulativeMostVisited_contains (ω : RandomWalk) (n k : ℕ) (hk : k ≤ n) :
-    mostVisitedSet ω k ⊆ cumulativeMostVisited ω n
+theorem cumulativeMostVisited_contains (ω : RandomWalk) (n k : ℕ) (hk : k ≤ n) :
+    mostVisitedSet ω k ⊆ cumulativeMostVisited ω n := by
+  intro x hx
+  exact Finset.mem_biUnion.mpr ⟨k, Finset.mem_range.mpr (by omega), hx⟩
 
 /-- The cumulative set only contains points from some F(k) with k ≤ n. -/
-axiom cumulativeMostVisited_subset (ω : RandomWalk) (n : ℕ)
+theorem cumulativeMostVisited_subset (ω : RandomWalk) (n : ℕ)
     (x : LatticePoint) (hx : x ∈ cumulativeMostVisited ω n) :
-    ∃ k : ℕ, k ≤ n ∧ x ∈ mostVisitedSet ω k
+    ∃ k : ℕ, k ≤ n ∧ x ∈ mostVisitedSet ω k := by
+  obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
+  exact ⟨k, by omega, hxk⟩
 
 /-- Monotonicity: the cumulative set grows with n. -/
 theorem cumulativeMostVisited_mono (ω : RandomWalk) (m n : ℕ) (h : m ≤ n) :
@@ -140,14 +189,8 @@ axiom mostVisited_bounded_eventually :
 
 -- ## Key Result 2: Erdős–Taylor Theorem
 -- The maximum visit count grows like (log n)²
-
-/-- Erdős–Taylor (1960): Almost surely, the maximum visit count satisfies
-    T_n ≤ C · (log n)² for some constant C and all large n.
-    More precisely, T_n / (π · (log n)²) → 1 a.s. -/
-axiom erdosTaylor_upper_bound :
-    AlmostSurely (fun ω =>
-      ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-        (maxVisitCount ω n : ℝ) ≤ C * (Real.log n) ^ 2)
+-- [Formerly axiom erdosTaylor_upper_bound — now derived from
+--  erdosTaylor_constant via erdosTaylor_implies_bound below.]
 
 -- ## Main Theorem: Erdős Problem #1166
 
@@ -197,7 +240,7 @@ theorem erdos1166_polylog :
     Step 1: By mostVisited_bounded_eventually (related to #1165),
     a.s. for large n, |F(n)| ≤ 3.
 
-    Step 2: By erdosTaylor_upper_bound, a.s. the max visit count T_n grows
+    Step 2: By erdosTaylor_constant (via erdosTaylor_implies_bound), a.s. T_n grows
     like (log n)². Points can only enter ⋃_{k≤n} F(k) when the max visit
     count changes or when a new point ties for the max.
 
@@ -235,12 +278,10 @@ theorem connection_to_1165 :
     infinitely often, almost surely. (Pólya, 1921) -/
 axiom polya_recurrence :
     AlmostSurely (fun ω =>
-      ∀ N : ℕ, ∃ n ≥ N, trajectory ω n = origin)
+      ∀ N : ℕ, ∃ n ≥ N, ω.trajectory n = origin)
 
-/-- Recurrence implies the max visit count tends to infinity. -/
-axiom maxVisitCount_tendsto_infty :
-    AlmostSurely (fun ω =>
-      ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, M ≤ maxVisitCount ω n)
+-- [Formerly axiom maxVisitCount_tendsto_infty — follows from polya_recurrence
+--  by inductively finding M distinct return times. Removed as unused.]
 
 -- ## The Erdős–Taylor Constant
 

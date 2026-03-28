@@ -29,16 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 partialSum theorems (7T→10T). Recursion + small values. 1A deep (unchanged).",
+    "progressSummary": "PROGRESS: 12 theorems (was 10), 1 deep axiom, 0 sorries. Added power preservation and square-one properties. Fixed incorrect completely_mult_zero + 4 compilation errors.",
     "builtItems": [
       "partialSum_one: partialSum f 1 = 0",
       "partialSum_two: partialSum f 2 = f 1",
-      "partialSum_succ: recursion partialSum f (N+1) = partialSum f N + f N for N ≥ 1"
+      "partialSum_succ: recursion partialSum f (N+1) = partialSum f N + f N for N ≥ 1",
+      "completely_mult_pow: f(n^k) = (f n)^k in Erdos1144Problem.lean",
+      "rademacher_sq_one: f(n²) = 1 for Rademacher mult in Erdos1144Problem.lean",
+      "completely_mult_zero_or_one: f(0) ∈ {0,1} (corrected) in Erdos1144Problem.lean"
     ],
     "insights": [
       "partialSum sums f(m) for m ∈ [1, N-1] (range N filtered by ≥ 1), so it is off-by-one from mathematical convention ∑_{m≤N}",
       "1 axiom (atherfold_upper_bound 2025) — deep, cannot eliminate",
-      "All f(m) values are ±1 by strong induction on prime factorization (proved by Aristotle)"
+      "All f(m) values are ±1 by strong induction on prime factorization (proved by Aristotle)",
+      "Proved completely_mult_pow: f(n^k) = (f n)^k for completely multiplicative f, by induction on k",
+      "Proved rademacher_sq_one: f(n²) = 1 for Rademacher multiplicative f (follows from f(n)∈{±1})",
+      "Fixed incorrect completely_mult_zero — replaced with correct completely_mult_zero_or_one (f(0) ∈ {0,1})",
+      "Fixed 4 compilation errors: deprecated range_succ, detached doc comment, card_le_card API, simp proofs"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,8 +73,8 @@
     {
       "path": "Proofs/Erdos1144Problem.lean",
       "filename": "Erdos1144Problem.lean",
-      "lineCount": 191,
-      "theoremCount": 10,
+      "lineCount": 205,
+      "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,

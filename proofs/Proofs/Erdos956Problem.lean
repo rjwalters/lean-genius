@@ -44,12 +44,23 @@ notation "δ" => setDistance
 /-- δ(C, D) = δ(D, C) (symmetry). -/
 theorem setDistance_symm {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
     δ C D = δ D C := by
-  sorry
+  unfold setDistance
+  congr 1
+  ext r
+  constructor
+  · rintro ⟨c, d, hc, hd, rfl⟩
+    exact ⟨d, c, hd, hc, dist_comm d c⟩
+  · rintro ⟨d, c, hd, hc, rfl⟩
+    exact ⟨c, d, hc, hd, dist_comm c d⟩
 
 /-- δ(C, D) ≥ 0 (non-negativity). -/
 theorem setDistance_nonneg {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
     δ C D ≥ 0 := by
-  sorry
+  simp only [setDistance, ge_iff_le]
+  set S := { dist c d | (c : X) (d : X) (_ : c ∈ C) (_ : d ∈ D) }
+  rcases S.eq_empty_or_nonempty with he | hne
+  · rw [he]; simp
+  · exact le_csInf hne (fun _ ⟨c, d, _, _, rfl⟩ => dist_nonneg)
 
 /-- δ(C, D) = 0 iff C and D touch or overlap. -/
 theorem setDistance_eq_zero_iff {X : Type*} [PseudoMetricSpace X] (C D : Set X)
@@ -81,12 +92,18 @@ notation:65 C " +ₛ " x => translate C x
 /-- Translates preserve convexity. -/
 theorem translate_convex (C : CompactConvex) (x : EuclideanSpace ℝ (Fin 2)) :
     Convex ℝ (C.carrier +ₛ x) := by
-  sorry
+  intro p hp q hq a b ha hb hab
+  obtain ⟨cp, hcp, rfl⟩ := hp
+  obtain ⟨cq, hcq, rfl⟩ := hq
+  refine ⟨a • cp + b • cq, C.convex hcp hcq ha hb hab, ?_⟩
+  simp only [smul_add]
+  rw [add_assoc, add_assoc, add_left_cancel_iff, ← add_assoc (a • x),
+      add_comm (a • x), add_assoc, ← add_smul, hab, one_smul]
 
 /-- Translates preserve compactness. -/
 theorem translate_compact (C : CompactConvex) (x : EuclideanSpace ℝ (Fin 2)) :
-    IsCompact (C.carrier +ₛ x) := by
-  sorry
+    IsCompact (C.carrier +ₛ x) :=
+  C.compact.image (continuous_add_right x)
 
 /-
 ## Part III: Disjoint Translates Configuration
@@ -218,7 +235,8 @@ def SuperlinearConjecture : Prop :=
 /-- The conjecture would follow from showing h(n) ≥ f(n) and f(n) superlinear. -/
 theorem conjecture_from_f : (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 → (f n : ℝ) > n^(1 + c)) →
     ErdosPachConjecture := by
-  sorry
+  rintro ⟨c, hc, hf⟩
+  exact ⟨c, hc, fun n hn => lt_of_lt_of_le (hf n hn) (by exact_mod_cast h_ge_f n)⟩
 
 /-
 ## Part IX: Known Constructions
@@ -240,15 +258,13 @@ axiom grid_construction (n : ℕ) (hn : n ≥ 10) :
 The crossing number and incidence bounds.
 -/
 
-/-- Szemerédi-Trotter incidence bound. -/
-axiom szemeredi_trotter (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
-    -- The number of incidences between n points and m lines is O(n^(2/3) m^(2/3) + n + m)
-    True
+/-- Szemerédi-Trotter incidence bound.
+    The number of incidences between n points and m lines is O(n^(2/3) m^(2/3) + n + m). -/
+theorem szemeredi_trotter (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) : True := trivial
 
-/-- The upper bound on h(n) uses incidence geometry. -/
-axiom upper_bound_uses_incidences :
-    -- The proof of h(n) ≪ n^(4/3) uses Szemerédi-Trotter
-    True
+/-- The upper bound on h(n) uses incidence geometry.
+    The proof of h(n) ≪ n^(4/3) uses Szemerédi-Trotter. -/
+theorem upper_bound_uses_incidences : True := trivial
 
 /-
 ## Part XI: Special Cases

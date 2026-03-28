@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Removed 2 unused axioms (11→10), added numGroups_six, proved erdos_1160_m_eq_three (m=3 case)",
     "builtItems": [
       "Created Erdos1160Problem.lean with numGroups axiomatization",
       "Proved erdos_1160_equiv (two formulations equivalent)",
@@ -41,7 +41,12 @@
       "erdos_1160_power_of_two: proved (all powers of 2)",
       "erdos_1160_m_eq_one: proved (m=1 case, all n ≤ 2)",
       "numGroups_two_power_pos: proved (g(2^m) ≥ 1)",
-      "erdos_1160_lift: proved (monotone lifting from m to m+1 on [0,2^m])"
+      "erdos_1160_lift: proved (monotone lifting from m to m+1 on [0,2^m])",
+      "numGroups_prime_power_pos: proved g(p^k)>0 for k≥1 from numGroups_prime + prime_power_mono",
+      "numGroups_two_power_pos: re-proved without numGroups_pos axiom",
+      "erdos_1160_m_eq_two: proved conjecture for all n≤4 (m=2 case)",
+      "numGroups_six: g(6)=2 axiom for non-prime composite case",
+      "erdos_1160_m_eq_three: conjecture for m=3 (all n <= 8)"
     ],
     "insights": [
       "g(2^m) grows as 2^{(2/27)m³} due to nilpotent Lie algebra correspondence",
@@ -51,7 +56,13 @@
       "Eliminated numGroups_two axiom: derived from numGroups_prime since 2 is prime (13→12 axioms)",
       "Proved erdos_1160_power_of_two: conjecture holds for n = 2^k when k ≤ m (via prime power monotonicity)",
       "Proved erdos_1160_m_eq_one: conjecture verified for all n ≤ 2 using interval_cases",
-      "Proved erdos_1160_lift: if conjecture holds for m, the [0,2^m] range carries over to m+1"
+      "Proved erdos_1160_lift: if conjecture holds for m, the [0,2^m] range carries over to m+1",
+      "Eliminated numGroups_pos axiom: all uses were for 2^m, derivable from numGroups_prime + numGroups_prime_power_mono (12→11 axioms)",
+      "numGroups_prime_power_pos: general positivity theorem for prime powers, proved from g(p)=1 and monotonicity",
+      "erdos_1160_m_eq_two: conjecture verified for m=2 using interval_cases and numGroups_prime for g(3)=1",
+      "Removed unused axioms numGroups_sixteen and numGroups_thirtytwo (never referenced in proofs)",
+      "Added numGroups_six : numGroups 6 = 2 (g(6)=2: Z/6Z and S_3)",
+      "Proved erdos_1160_m_eq_three: conjecture verified for all n <= 8 via interval_cases"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -79,9 +90,9 @@
     {
       "path": "Proofs/Erdos1160Problem.lean",
       "filename": "Erdos1160Problem.lean",
-      "lineCount": 206,
-      "theoremCount": 11,
-      "axiomCount": 12,
+      "lineCount": 222,
+      "theoremCount": 13,
+      "axiomCount": 11,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

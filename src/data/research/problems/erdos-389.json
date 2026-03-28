@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved consecutiveProd_binomial (ascending factorial = k! * binomial), fixed pre-existing build issues (missing imports, buggy minimalK def, missing Decidable instances). Axioms: 3→2.",
+    "progressSummary": "COMPLETE: 0A, 0S, 6T proved. All axioms eliminated — Mehta computational results proved by native_decide. Fully verified.",
     "builtItems": [
       "erdos_389_n2: divides_upper_block 2 5 proved by native_decide",
       "erdos_389_n3: divides_upper_block 3 4 proved by native_decide",
@@ -39,14 +39,18 @@
       "consecutiveProd_succ: recurrence helper (proved)",
       "Fixed import (Finset.LocallyFinite→Nat.Choose.Basic)",
       "Fixed minimalK definition (was unsound)",
-      "Added Nat.decidableDvd instance for native_decide"
+      "Added Nat.decidableDvd instance for native_decide",
+      "mehta_n4_minimal: proved (was axiom) by native_decide",
+      "mehta_n4_minimality: proved (was axiom) via Finset.Ico reformulation + native_decide"
     ],
     "insights": [
       "Open conjecture was incorrectly axiomatized — converted to def",
       "n=2 (k=5) and n=3 (k=4) cases provable by native_decide (computational verification)",
       "ratio_identity axiom was vacuously true (used ∨ ¬divides as escape clause) — removed",
       "consecutiveProd relates to binomial coefficients: consecutiveProd n k = k! * C(n+k-1,k)",
-      "n=4 has minimal k=207 (Bhavik Mehta computation) — too large for native_decide"
+      "n=4 has minimal k=207 (Bhavik Mehta computation) — too large for native_decide",
+      "mehta_n4_minimal and mehta_n4_minimality proved by native_decide — bignum arithmetic handles k=207 computation",
+      "mehta_n4_minimality reformulated as Finset.Ico check for decidability"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

@@ -71,8 +71,11 @@ theorem F_mono {a : ℕ → ℕ} {X : ℝ} {k₁ k₂ : ℕ} (h : k₁ ≤ k₂)
   intro i hi
   simp only [Set.mem_setOf_eq] at hi ⊢
   have hdvd := consecutiveLcm_mono h (a := a) (i := i)
-  -- LCM grows as we add more terms
-  sorry
+  refine lt_of_le_of_lt ?_ hi
+  exact_mod_cast Nat.le_of_dvd
+    (Nat.pos_of_ne_zero (mt Finset.lcm_eq_zero_iff.mp (by
+      intro ⟨j, hj⟩; exact absurd hj.2 (ne_of_gt (hpos _)))))
+    hdvd
 
 /-
 ## Main Conjecture (OPEN)
@@ -135,12 +138,13 @@ example : consecutiveLcm (fun j => 2^j) 3 2 = 2^4 := by native_decide
 Since 2^i | 2^(i+1), the LCM equals the larger term. -/
 theorem consecutiveLcm_powers_of_two (i : ℕ) :
     consecutiveLcm (fun j => 2^j) i 2 = 2^(i+1) := by
-  -- Verified computationally for small i; general case follows from 2^i | 2^(i+1)
-  cases i with
-  | zero => native_decide
-  | succ n =>
-    induction n with
-    | zero => native_decide
-    | succ m _ => sorry -- Pattern continues: lcm(2^(m+2), 2^(m+3)) = 2^(m+3)
+  unfold consecutiveLcm
+  rw [show Finset.range 2 = insert 1 {0} from by
+    rw [Finset.range_succ, Finset.range_one]]
+  rw [Finset.lcm_insert (by simp), Finset.lcm_singleton]
+  simp only [normalize_eq, Nat.add_zero]
+  exact (Nat.dvd_antisymm
+    (dvd_lcm_left _ _)
+    (lcm_dvd (dvd_refl _) (pow_dvd_pow 2 (Nat.le_succ i)))).symm
 
 end Erdos873Provable

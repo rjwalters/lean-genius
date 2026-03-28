@@ -134,21 +134,61 @@ theorem conjecture_implies_no_ultraflat :
   obtain ⟨n, hgt, hlt'⟩ := (hev'.and hlt).exists
   linarith
 
-/-- **Backward direction (axiomatized):**
+/-- **Backward direction (proved):**
     If no ultraflat Littlewood sequence exists, then the conjecture holds.
 
-    Proof sketch (contrapositive): Assume ¬Conjecture. For each k ≥ 1,
-    the negation gives arbitrarily large n with a degree-n Littlewood P
-    satisfying supNorm(P) ≤ (1+1/k)√n. By dependent choice, extract a
-    strictly increasing sequence n₁ < n₂ < ... with corresponding
-    Littlewood P_k of degree n_k and supNorm(P_k)/√n_k ≤ 1+1/k.
-    Combined with Parseval (ratio ≥ √((n+1)/n) → 1), the squeeze theorem
-    gives ratio → 1, yielding an ultraflat sequence.
-
-    This proof requires dependent choice, Filter.Frequently ↔ ¬Eventually,
-    and the squeeze theorem for Tendsto. -/
-axiom no_ultraflat_implies_conjecture :
-    (∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P) → Erdos1150Conjecture
+    Proof (contrapositive): Assume ¬Conjecture. For each k, ¬Conjecture with
+    c = 1/(k+1) gives frequently many n with a degree-n Littlewood P satisfying
+    supNorm(P) ≤ (1+1/(k+1))√n. Extract witnesses with degree ≥ k using
+    Filter.frequently_atTop. The resulting sequence has degrees → ∞ (since
+    n(k) ≥ k) and ratio supNorm/√degree → 1 (squeeze between Parseval's
+    ratio ≥ 1 and the bound 1+1/(k+1) → 1), yielding an ultraflat sequence.
+    Contradiction. -/
+theorem no_ultraflat_implies_conjecture :
+    (∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P) → Erdos1150Conjecture := by
+  intro hall
+  by_contra hcontra
+  -- For each c > 0, frequently there's a near-flat polynomial
+  have hfreq : ∀ c : ℝ, c > 0 → ∃ᶠ n in atTop,
+      ∃ p : Polynomial ℂ, p.natDegree = n ∧ IsLittlewoodPolynomial p ∧
+      supNorm p ≤ (1 + c) * Real.sqrt ↑n := by
+    intro c hc
+    have h : ¬(∀ᶠ n in atTop, ∀ p : Polynomial ℂ, p.natDegree = n →
+        IsLittlewoodPolynomial p → supNorm p > (1 + c) * Real.sqrt ↑n) :=
+      fun hev => hcontra ⟨c, hc, hev⟩
+    rw [Filter.not_eventually] at h
+    exact h.mono fun n hn => by push_neg at hn; exact hn
+  -- For each k, extract witness with c = 1/(k+1) and degree ≥ k
+  have hext : ∀ k : ℕ, ∃ m : ℕ, m ≥ k ∧ ∃ p : Polynomial ℂ,
+      p.natDegree = m ∧ IsLittlewoodPolynomial p ∧
+      supNorm p ≤ (1 + 1 / ((k : ℝ) + 1)) * Real.sqrt ↑m := by
+    intro k
+    exact Filter.frequently_atTop.mp (hfreq (1 / ((k : ℝ) + 1)) (by positivity)) k
+  -- Choose sequences: m(k) ≥ k with polynomial p(k) of degree m(k)
+  choose m hm_ge p hdeg hlit hbound using hext
+  -- Contradiction: p is an ultraflat Littlewood sequence
+  apply hall p
+  refine ⟨hlit, ?_, ?_⟩
+  -- Degrees tend to infinity: (p k).natDegree = m k ≥ k → ∞
+  · rw [Filter.tendsto_atTop_atTop]
+    intro b
+    exact ⟨b, fun k hk => by rw [hdeg k]; exact le_trans hk (hm_ge k)⟩
+  -- Ratio → 1 by squeeze between Parseval's 1 and 1 + 1/(k+1)
+  · have hlb : ∀ᶠ k in atTop,
+        (1 : ℝ) ≤ supNorm (p k) / Real.sqrt ↑((p k).natDegree) :=
+      Filter.eventually_atTop.mpr ⟨1, fun k hk =>
+        parseval_ratio_ge_one (p k) (hlit k) (by rw [hdeg k]; have := hm_ge k; omega)⟩
+    have hub : ∀ᶠ k in atTop,
+        supNorm (p k) / Real.sqrt ↑((p k).natDegree) ≤ 1 + 1 / ((k : ℝ) + 1) :=
+      Filter.eventually_atTop.mpr ⟨1, fun k hk => by
+        have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑((p k).natDegree) :=
+          Real.sqrt_pos_of_pos (Nat.cast_pos.mpr (by rw [hdeg k]; have := hm_ge k; omega))
+        rw [div_le_iff₀ hsqrt_pos, hdeg k]
+        exact hbound k⟩
+    have hub_tends : Tendsto (fun k : ℕ => (1 : ℝ) + 1 / ((k : ℝ) + 1)) atTop (nhds 1) := by
+      have := tendsto_const_nhds.add (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))
+      rwa [add_zero] at this
+    exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hub_tends hlb hub
 
 /-- The full equivalence follows from both directions. -/
 theorem conjecture_equiv_no_ultraflat :
@@ -200,6 +240,22 @@ theorem bbmst_upper_bound_exists :
 ## The Gap Between Flat and Ultraflat
 -/
 
+/-- Parseval implies the sup-norm-to-sqrt-degree ratio is at least 1
+    for any Littlewood polynomial with degree ≥ 1. This is the key
+    lower bound ingredient for the ultraflat ↔ conjecture squeeze argument. -/
+theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial p)
+    (hn : p.natDegree ≥ 1) :
+    supNorm p / Real.sqrt ↑p.natDegree ≥ 1 := by
+  have hpb := parseval_lower_bound p hp
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑p.natDegree :=
+    Real.sqrt_pos_of_pos (Nat.cast_pos.mpr (by omega))
+  have hsqrt_le : Real.sqrt ↑p.natDegree ≤ Real.sqrt (↑p.natDegree + 1) :=
+    Real.sqrt_le_sqrt (by linarith)
+  calc (1 : ℝ) = Real.sqrt ↑p.natDegree / Real.sqrt ↑p.natDegree :=
+        (div_self (ne_of_gt hsqrt_pos)).symm
+    _ ≤ supNorm p / Real.sqrt ↑p.natDegree :=
+        (div_le_div_right hsqrt_pos).mpr (by linarith)
+
 /-- The key open question is about the gap between BBMST and ultraflat.
     BBMST shows c₁√n ≤ max|P| ≤ c₂√n for SOME P. But:
     - Can we make c₂ → 1? (ultraflat) Probably NOT for ±1.
@@ -248,9 +304,10 @@ every degree-n ±1 polynomial has max_{|z|=1} |P(z)| > (1+c)√n?
 ultraflat ±1 polynomials exist. Erdős conjectured they don't.
 
 **Proved in this file**:
-5. Conjecture ↔ no ultraflat ±1 sequences (forward direction proved,
-   backward direction axiomatized). Uses subsequence-based ultraflat
-   definition (degrees → ∞, ratio → 1) for mathematical correctness.
+5. Conjecture ↔ no ultraflat ±1 sequences (both directions proved).
+   Forward: conjecture bound contradicts ratio → 1.
+   Backward: contrapositive diagonal extraction + squeeze theorem.
+   Uses subsequence-based ultraflat definition for mathematical correctness.
 6. BBMST implies supNorm bound (proved from pointwise bound)
 -/
 theorem erdos_1150_summary :

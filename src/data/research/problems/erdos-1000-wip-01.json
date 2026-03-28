@@ -51,7 +51,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 5 eliminated erdos_no_zero_limit axiom by proving it from erdos_dichotomy (3→2 axioms). Two deep axioms remain: erdos_dichotomy (Euler product), haight_resolution (explicit construction).",
+    "progressSummary": "PROGRESS: Session 7 added Euler-totient bridge (ρ < ε ⟹ φ(n)/n < ε, connecting to prime factorization) and density recovery theorem (fast growth forces high ρ). Total: 1119 lines, 56 theorems, 0 sorries, 2 deep axioms remain.",
     "builtItems": [
       {
         "name": "phiA_ge_totient",
@@ -123,7 +123,14 @@
         "type": "theorem",
         "description": "1 - ρ_A(k) = usedSum(k)/n_k (algebraic identity)"
       },
-      "PROVED erdos_no_zero_limit from erdos_dichotomy in Erdos1000Problem.lean:575"
+      "PROVED erdos_no_zero_limit from erdos_dichotomy in Erdos1000Problem.lean:575",
+      "low_density_growth_constraint: (1-ε)n_k < k·n_{k-1} when ρ < ε",
+      "consecutive_low_density_ratio: n_{k+1}/n_k < (k+1)/(1-ε) when ρ < ε",
+      "cesaroAvg_eq_one_sub_avg_deficit: C_A = 1 - avg(1-ρ)",
+      "deficit_count_bound: m(1-ε) ≤ Σ(1-ρ) for m low-ρ indices",
+      "density_somewhere_pos: Σ ρ_k > 0",
+      "low_density_euler_bound: ρ < ε ⟹ φ(n)/n < ε (bridge to prime factorization)",
+      "densityRatio_recovery_from_growth: n_{k+1} > C·n_k ⟹ ρ_{k+1} ≥ 1-(k+1)/C"
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
@@ -137,7 +144,11 @@
       "Filter.Eventually.frequently (with atTop.NeBot) converts eventually-holds to frequently-holds — the key bridge",
       "Mathlib has Filter.Tendsto.cesaro in Analysis.Asymptotics.SpecificAsymptotics — if u→L then Cesàro average of u→L",
       "cassels_liminf_zero proof: haight_resolution gives VanishingAverage A (Tendsto cesaroAvg 0), then Iio_mem_nhds + Filter.Eventually.frequently gives ∃ᶠ N, cesaroAvg < ε",
-      "erdos_no_zero_limit is a corollary of erdos_dichotomy: convergence to 0 gives frequently near 0, dichotomy gives frequently near 1, contradiction (3→2 axioms)"
+      "erdos_no_zero_limit is a corollary of erdos_dichotomy: convergence to 0 gives frequently near 0, dichotomy gives frequently near 1, contradiction (3→2 axioms)",
+      "Growth constraint from low density: if ρ < ε then (1-ε)n_k < k·n_{k-1}, so the sequence must grow slowly during low-density periods",
+      "The growth constraint means low ρ cannot persist at indices where the sequence grows faster than O(k)·n_{k-1}",
+      "Deficit counting: among N indices, if m have ρ < ε, then Σ(1-ρ) ≥ m(1-ε). Combined with Σ(1-ρ) < N, this gives m < N/(1-ε), but this is > N for ε < 1, so deficit counting alone does NOT limit the proportion of low-ρ indices to below 1.",
+      "The dichotomy proof likely requires deeper structure than growth/deficit bounds — probably needs the Euler product connection or explicit smooth-number analysis"
     ],
     "mathlibGaps": [
       "No gaps: Nat.totient, Finset.sum_filter_add_sum_filter_not, card_image_le all sufficient",

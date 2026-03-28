@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 341,
-    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: infinite_sidon_gap_question (open conjecture for infinite Sidon sets). Previously: ess_1994_result was proved (c=1 works since gaps between distinct naturals >= 1).",
+    "lineCount": 457,
+    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (main open conjecture). Proved: sidon_distinct_differences (B₂ distinct differences), sidon_density_bound (√N density), sidon_sumset_card, ess_1994_result, infinite_sidon_gap_from_finite.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -139,7 +139,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 341,
+    "lineCount": 457,
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 8
