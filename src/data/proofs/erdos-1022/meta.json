@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 1,
-    "lineCount": 103,
+    "lineCount": 213,
     "assumptions": "1 axiom: erdos_1022_conjecture (open conjecture: c_t → ∞ threshold for property B). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -48,94 +48,78 @@
     {
       "id": "header",
       "title": "Problem Documentation and Imports",
-      "summary": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds.",
+      "summary": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Tactic` modules.",
       "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds."
-    },
-    {
-      "id": "set-families",
-      "title": "Set Family Infrastructure",
-      "summary": "Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These are the basic objects parametrizing the hypergraph coloring problem.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$."
+      "endLine": 36,
+      "mathContext": "Imports and namespace setup for finite set combinatorics."
     },
     {
       "id": "property-b",
-      "title": "Property B (2-Colorability)",
-      "summary": "Defines `hasPropertyB F` via existence of a `TwoColoring` $c: \\alpha \\to \\text{Bool}$ such that every set $A \\in \\mathcal{F}$ with $|A| \\ge 2$ contains both a true-colored and false-colored element. Named after Bernstein (1908). Proves `propertyB_iff_chromatic2`.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `hasPropertyB F` via existence of a `TwoColoring` $c: \\alpha \\to \\text{Bool}$ such that every set $A \\in \\mathcal{F}$ with $|A| \\ge 2$ contains both a true-colored and false-colored element. Proves `propertyB_iff_chromatic2`."
+      "title": "§ 1: Property B (2-Colorability)",
+      "summary": "Defines `HasPropertyB F` via existence of a set $S$ such that every $f \\in F$ intersects both $S$ and its complement. Proves Property B for the empty family (`hasPropertyB_empty`) and monotonicity under subfamilies (`hasPropertyB_subset`).",
+      "startLine": 38,
+      "endLine": 55,
+      "mathContext": "Defines `HasPropertyB` and proves it for empty families and subfamilies."
     },
     {
-      "id": "chromatic",
-      "title": "Chromatic Number of a Set Family",
-      "summary": "Generalizes to $k$ colors: `isKColorable F k` requires a $k$-coloring making every set non-monochromatic. `chromaticNumber F` is the minimum such $k$ via `Nat.find`. Connects property B to $\\chi(\\mathcal{F}) \\le 2$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Generalizes to $k$ colors: `isKColorable F k` requires a $k$-coloring making every set non-monochromatic. `chromaticNumber F` is the minimum such $k$ via `Nat.find`. Connects property B to $\\chi(\\mathcal{F}) \\le 2$."
-    },
-    {
-      "id": "sparseness",
-      "title": "Sparseness Condition",
-      "summary": "Defines `subsetCount F X` counting $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}|$, `isSparse F c` requiring this count $< c \\cdot |X|$ for all finite $X$, and `hasMinSize F t` requiring all sets to have $|A| \\ge t$. The sparseness condition is the key structural hypothesis.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `subsetCount F X` counting $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}|$, `isSparse F c` requiring this count $< c \\cdot |X|$ for all finite $X$, and `hasMinSize F t` requiring all sets to have $|A| \\ge t$."
+      "id": "definitions",
+      "title": "§ 2: Definitions",
+      "summary": "Defines `AllSizeAtLeast F t` (every member has $|f| \\ge t$) and `IsSparse F c` (for all $X$, at most $c \\cdot |X|$ members are subsets of $X$).",
+      "startLine": 57,
+      "endLine": 68,
+      "mathContext": "Core definitions: minimum set size and sparsity condition."
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture: $c_t \\to \\infty$",
-      "summary": "Defines `ThresholdFunction` and `tendsToInfinity`. States `erdos_1022_conjecture`: existence of $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ such that $t$-sparse families with minimum size $t$ have property B. The divergence condition is the heart of the problem.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `ThresholdFunction` and `tendsToInfinity`. States `erdos_1022_conjecture`: existence of $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ such that $t$-sparse families with minimum size $t$ have property B."
+      "title": "§ 3: The Conjecture",
+      "summary": "States `erdos_1022_conjecture` as an axiom: existence of $c : \\mathbb{N} \\to \\mathbb{N}$ tending to infinity such that $c(t)$-sparse families of sets of size $\\ge t$ have Property B.",
+      "startLine": 70,
+      "endLine": 81,
+      "mathContext": "The main open conjecture, axiomatized."
     },
     {
-      "id": "lovasz",
-      "title": "Lovász's Theorem (1968): $c_2 = 1$",
-      "summary": "Axiomatizes `lovasz_theorem`: for $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B. Derives `t2_case_solved` packaging this as an existential witness ($c = 1 > 0$). The only solved case of the conjecture.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes `lovasz_theorem`: for $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B. Derives `t2_case_solved` packaging this as an existential witness ($c = 1 > 0$)."
+      "id": "sparsity-properties",
+      "title": "§ 4: Sparsity Properties",
+      "summary": "Proves structural properties: 0-sparse forces empty members, sparsity is monotone in $c$ (`isSparse_mono`), subfamilies inherit sparsity (`isSparse_subset`), `AllSizeAtLeast` is monotone downward and inherited by subfamilies.",
+      "startLine": 83,
+      "endLine": 139,
+      "mathContext": "Monotonicity and inheritance lemmas for sparsity and minimum-size conditions."
     },
     {
-      "id": "hypergraph",
-      "title": "Hypergraph Formulation",
-      "summary": "Defines `Hypergraph α` as an alias for `SetFamily α` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_equiv` showing logical equivalence of the two viewpoints.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `Hypergraph α` as an alias for `SetFamily α` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_equiv` showing logical equivalence of the two viewpoints."
+      "id": "small-families",
+      "title": "§ 5: Property B for Small Families",
+      "summary": "Proves `hasPropertyB_singleton`: any single set of size $\\ge 2$ has Property B by splitting on any element.",
+      "startLine": 141,
+      "endLine": 162,
+      "mathContext": "Base case: singleton families with large sets have Property B."
     },
     {
-      "id": "necessary",
-      "title": "Necessary Conditions and Subset Density",
-      "summary": "If $c_t$ exists and $c_t \\to \\infty$, it must be eventually positive (`threshold_positive`) and grow without bound (`threshold_grows`). Defines `subsetDensity` $= |\\{A \\subseteq X\\}| / |X|$ and proves `sparse_iff_low_density`: sparseness $\\iff$ low density for all nonempty $X$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "If $c_t$ exists and $c_t \\to \\infty$, it must be eventually positive (`threshold_positive`) and grow without bound (`threshold_grows`). Defines `subsetDensity` $= |\\{A \\subseteq X\\}| / |X|$ and proves `sparse_iff_low_density`: sparseness $\\iff$ low density for all nonempty $X$."
+      "id": "counting",
+      "title": "§ 6: Counting Lemmas",
+      "summary": "Proves the subset filter is bounded by $|F|$ (`filter_subset_card_le`) and that $c$-sparse families satisfy $|F| \\le c \\cdot |U|$ for any superset $U$ (`sparse_family_size_bound`).",
+      "startLine": 164,
+      "endLine": 184,
+      "mathContext": "Global size bounds from local sparsity conditions."
     },
     {
-      "id": "probabilistic",
-      "title": "Probabilistic Intuition: Random Colorings",
-      "summary": "Defines `expectedMonochromatic F` $= \\sum_{A \\in \\mathcal{F}} 2^{1-|A|}$: the expected number of monochromatic sets under a random 2-coloring. Axiomatizes the first-moment method: if $< 1$, property B holds. Proves `sparse_bounds_expected`: sparseness controls this expectation.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `expectedMonochromatic F` $= \\sum_{A \\in \\mathcal{F}} 2^{1-|A|}$: the expected number of monochromatic sets under a random 2-coloring. Axiomatizes the first-moment method: if $< 1$, property B holds. Proves `sparse_bounds_expected`: sparseness controls this expectation."
+      "id": "empty-set",
+      "title": "§ 7: Sparsity and Empty Set",
+      "summary": "Proves $c$-sparsity implies $\\emptyset \\notin F$ (`sparse_no_empty_member`) and that families with min size $\\ge 1$ exclude $\\emptyset$ (`allSizeAtLeast_no_empty`).",
+      "startLine": 186,
+      "endLine": 202,
+      "mathContext": "Exclusion of the empty set from sparse and size-bounded families."
     },
     {
-      "id": "cover-free",
-      "title": "Cover-Free Families",
-      "summary": "Defines `isCoverFree F r`: no set in $\\mathcal{F}$ is contained in the union of $r$ others. Proves `coverFree_implies_sparse`: $r$-cover-freeness implies $(r+1)$-sparseness. Connects to combinatorial group testing and superimposed codes.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `isCoverFree F r`: no set in $\\mathcal{F}$ is contained in the union of $r$ others. Proves `coverFree_implies_sparse`: $r$-cover-freeness implies $(r+1)$-sparseness."
+      "id": "filter-monotonicity",
+      "title": "§ 8: Monotonicity of Filter Counts",
+      "summary": "Proves `filter_subset_mono`: if $X \\subseteq Y$, the number of family members inside $X$ is at most the number inside $Y$. Corollary for element insertion (`filter_subset_insert_le`).",
+      "startLine": 204,
+      "endLine": 213,
+      "mathContext": "Monotonicity of subset counts under set inclusion."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1022 on property B for sparse set families in a ~250-line Lean file spanning 11 sections. The framework builds from `SetFamily` through property B, chromatic number, and sparseness to state the main conjecture ($c_t \\to \\infty$). Lovász's theorem ($c_2 = 1$) is axiomatized as the unique solved case. The dual hypergraph formulation is shown equivalent. Analysis includes necessary conditions, the probabilistic first-moment method, and the connection to cover-free families.",
+    "summary": "This formalization captures Erdős Problem #1022 on property B for sparse set families in 213 lines across 8 sections. It defines `HasPropertyB` and `IsSparse`, states the open conjecture as an axiom, and proves 15 structural theorems: monotonicity of sparsity and Property B, size bounds from sparsity, singleton Property B, empty-set exclusion, and filter-count monotonicity. 1 axiom (the open conjecture), 0 sorries.",
     "implications": "**Theoretical Significance**: This problem sits at a nexus of several major areas in combinatorics:\n\n1. **Hypergraph coloring theory**: Property B is the simplest case of hypergraph chromatic number theory. The Erdős-Hajnal conjecture on $\\chi(\\mathcal{F})$ for $t$-uniform families, the Lovász Local Lemma, and the Hales-Jewett theorem all connect to understanding when hypergraphs are $k$-colorable under structural constraints.\n\n2. **The probabilistic method and the Local Lemma**: The first-moment bound ($\\mathbb{E}[\\text{mono}] < 1 \\Rightarrow$ property B) is the simplest probabilistic tool. The Lovász Local Lemma (1975) extends this to handle dependencies: if each set $A$ shares elements with few other sets, a 2-coloring exists even when the expectation is large.\n\nThe sparseness condition in Problem #1022 is a global version of the dependency condition in the Local Lemma.\n\n3. **VC dimension and trace theory**: The sparseness condition bounds the 'trace' of $\\mathcal{F}$ on supersets. The Sauer-Shelah lemma bounds traces by VC dimension: a family with VC dimension $d$ has $|\\{A \\cap X : A \\in \\mathcal{F}\\}| \\le \\binom{|X|}{\\le d}$. While the subset-count condition in Problem #1022 is different (counting $A \\subseteq X$ rather than traces), the two are related through inclusion-exclusion.\n\n4. **Combinatorial group testing**: Cover-free families, which imply sparseness, are the mathematical foundation of non-adaptive group testing—identifying $d$ defective items among $n$ by pooling tests. The bound $r$-cover-free $\\Rightarrow$ $(r+1)$-sparse connects 2-colorability to testability.",
     "openQuestions": [
       "Does $c_t \\to \\infty$ as $t \\to \\infty$? This is the core of Problem #1022. Even showing $c_3 > 1$ (that the $t = 3$ threshold strictly exceeds Lovász's $t = 2$ threshold) would be significant progress.",
@@ -228,12 +212,12 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Fintype.Basic", "Mathlib.Tactic"],
+    "opens": ["Finset"],
+    "namespace": "Erdos1022",
+    "lineCount": 213,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 3
   }
 }

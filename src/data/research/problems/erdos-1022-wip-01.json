@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-1022-wip-01",
+  "title": "Complete Erdős #1022: Property B and Sparse Set Families",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete Erdős #1022: Property B and Sparse Set Families.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T17:58:20.661Z",
+    "iteration": 2,
+    "focus": "Structural infrastructure complete. Next: chromatic number, first-moment bound.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Extended from 103 to 213 lines. Added 11 proved structural theorems about sparsity monotonicity, Property B for singletons, family size bounds, empty-set exclusion, and filter-count monotonicity. No new axioms or sorries.",
+    "builtItems": [
+      "isSparse_mono: sparsity monotone in c (Erdos1022Problem.lean)",
+      "isSparse_subset: subfamilies inherit sparsity (Erdos1022Problem.lean)",
+      "allSizeAtLeast_mono: min-size monotone downward (Erdos1022Problem.lean)",
+      "allSizeAtLeast_subset: subfamilies inherit min-size (Erdos1022Problem.lean)",
+      "hasPropertyB_singleton: singleton sets of size >= 2 have Property B (Erdos1022Problem.lean)",
+      "sparse_family_size_bound: |F| <= c*|U| for any superset U (Erdos1022Problem.lean)",
+      "sparse_no_empty_member: sparsity excludes empty set (Erdos1022Problem.lean)",
+      "allSizeAtLeast_no_empty: min-size >= 1 excludes empty set (Erdos1022Problem.lean)",
+      "filter_subset_mono: subset count monotone under inclusion (Erdos1022Problem.lean)",
+      "filter_subset_insert_le: element insertion increases count (Erdos1022Problem.lean)"
+    ],
+    "insights": [
+      "Property B infrastructure well-suited for Finset-based formalization",
+      "Sparsity monotonicity (in c and subfamilies) proved directly from definition",
+      "Singleton sets of size >= 2 have Property B by splitting on any element",
+      "c-sparsity forces empty set not in F since |F.filter(subset empty)| <= c*0 = 0",
+      "Filter counts are monotone: X subset Y implies |{f subset X}| <= |{f subset Y}|",
+      "Global family size bound |F| <= c*|U| follows from sparsity at any superset U"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Add chromatic number definition and prove propertyB_iff_chromatic_le2",
+      "Formalize Lovasz theorem (c_2 = 1) as axiom with application lemmas",
+      "Add cover-free family definition and prove coverFree_implies_sparse",
+      "Create Aristotle companion file for routine supporting lemmas"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1022"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.661Z",
+  "lastUpdate": "2026-03-28T20:15:00Z",
+  "significance": 6,
+  "tractability": 5
+}
