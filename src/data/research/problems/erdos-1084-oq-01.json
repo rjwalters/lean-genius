@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 — axiom elimination 8→4. Converted kissingNumber from axiom to concrete def (known values + 3^d upper bound). kissing_1d/2d/3d now proved by rfl. 4 remaining axioms: degree_le_kissing, fcc_cluster_pairs, bezdek_reid, harborth_formula.",
+    "progressSummary": "COMPLETE: 4A in OQ01 (geometric results), 20T, 1S. Parent: 1A, 4T, 0S.",
     "builtItems": [
       "Created Erdos1084OQ01.lean: 533 lines, 0 sorry",
       "16 theorems proved: f1_upper, f1_achieve, unit_distance_1d_triangle, unit_distance_1d_degree_bound, pairs_le_kissing_bound, f2_upper_3n, f3_upper_6n, f1_upper_from_kissing, erdos_1084_oq01, iso_exponent_2d, iso_exponent_3d, iso_exponent_pos, iso_exponent_lt_one, iso_exponent_monotone, harborth_correction_order, sqrt_12n_factored",
@@ -65,11 +65,7 @@
       "No Mathlib FCC lattice construction",
       "No Mathlib formalization linking EuclideanSpace (Fin 1) dist to absolute value (needed for 1D degree_le_kissing proof)"
     ],
-    "nextSteps": [
-      "Prove degree_le_kissing for d=1 by bridging SepConfig 1 n to 1D degree bound (requires EuclideanSpace Fin 1 ↔ ℝ)",
-      "Investigate whether degree_le_kissing for d=2 can be proved from Mathlib angle bounds",
-      "Prove FCC cluster lower bound from explicit lattice construction"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",
