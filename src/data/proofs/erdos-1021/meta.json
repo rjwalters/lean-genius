@@ -17,7 +17,7 @@
       "bipartite-graphs"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 1021,
     "erdosUrl": "https://erdosproblems.com/1021",
     "erdosProblemStatus": "open",
@@ -26,8 +26,8 @@
       "erdos-926"
     ],
     "axiomCount": 7,
-    "lineCount": 267,
-    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "lineCount": 286,
+    "assumptions": "7 axioms: G3_is_C6, erdos_simonovits_limit, weak_conjecture_open, C6_extremal_bound, Gk_from_Hk, kovari_sos_turan, conjecturedGap. 4 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -252,7 +252,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1021",
-    "lineCount": 267,
+    "lineCount": 286,
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 17
