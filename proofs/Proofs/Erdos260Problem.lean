@@ -106,10 +106,12 @@ theorem fastGrowth_of_gapsToInfinity (a : IncreasingSeq) (h : GapsToInfinity a) 
   -- If gaps → ∞, then aₙ grows superlinearly
   sorry
 
-/-- Superlogarithmic growth implies fast growth.
-    Proof sketch: aₙ ≥ C·n·√(log n · log log n), so aₙ/n ≥ C·√(log n · log log n) → ∞. -/
+/-- Superlogarithmic growth implies fast growth. -/
 theorem fastGrowth_of_superlogarithmic (a : IncreasingSeq)
     (h : SuperlogarithmicGrowth a) : FastGrowth a := by
+  -- Proof strategy: aₙ/n ≥ C*√(log n · log log n) → ∞
+  -- Use tendsto_atTop_mono with the bound from h, then show
+  -- C*√(log n · log log n) → ∞ via Tendsto compositions.
   sorry
 
 /- ## Part V: Example Sequences -/
