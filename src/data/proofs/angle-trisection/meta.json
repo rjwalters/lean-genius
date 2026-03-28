@@ -2,12 +2,12 @@
   "id": "angle-trisection",
   "title": "Impossibility of Trisecting an Angle",
   "slug": "angle-trisection",
-  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 0 axioms, 0 sorries. pi_transcendental imported from PiTranscendental.lean.",
+  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 2 axioms (from PiTranscendental.lean), 0 sorries.",
   "meta": {
     "author": "Pierre Wantzel (1837)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "geometry",
       "galois-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/AngleTrisection.lean",
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "prerequisites": [
       "Field extensions and algebraic degree",
       "Polynomial rings and irreducibility over Q",
@@ -82,7 +82,7 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "assumptions": "0 local axioms, 0 sorries. Angle trisection and cube doubling: fully verified (0 axioms transitively). Circle squaring: depends on axiomatized pi_transcendental from PiTranscendental.lean (which uses axiom declarations). Wantzel's constructibility criterion is encoded in the IsConstructible definition. Trisection polynomial irreducibility is proved via Eisenstein criterion in companion file AngleTrisectionCos20Gal.lean.",
+    "assumptions": "2 axioms (from imported PiTranscendental.lean): lindemann_theorem and pi_transcendental. Angle trisection and cube doubling are axiom-free locally. Circle squaring depends on the axiomatized pi transcendence. 0 sorries. Wantzel's constructibility criterion is encoded in the IsConstructible definition. Trisection polynomial irreducibility is proved via Eisenstein criterion in companion file AngleTrisectionCos20Gal.lean.",
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
@@ -99,7 +99,7 @@
     "namespace": "AngleTrisection",
     "lineCount": 383,
     "structureCount": 0,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 23,
     "lemmaCount": 0,
     "defCount": 6,
