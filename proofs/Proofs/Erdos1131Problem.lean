@@ -738,19 +738,73 @@ private lemma dct_offdiag (n : ℕ) (hn : n ≥ 2) (k m : Fin n) (hkm : k ≠ m)
       rw [frequency_cosine_sum_odd n (by omega) s₁ hs₁_pos hs₁_lt ho,
           frequency_cosine_sum_even n (by omega) s₂ hs₂_pos hs₂_lt this]; ring
 
+/-- **Lagrange interpolation exactness for Chebyshev polynomials**:
+`cos((j+1)·arccos x) = ∑_k cos((j+1)θ_k)·l_k(x)` for x ∈ [-1,1] and j+1 < n.
+
+Both sides are polynomials of degree < n (LHS = T_{j+1} via `Polynomial.Chebyshev.T`,
+RHS = Lagrange interpolant) that agree at all n Chebyshev nodes. By polynomial
+uniqueness (a nonzero polynomial of degree < n has fewer than n roots), they're equal.
+
+Proof sketch:
+1. `(Polynomial.Chebyshev.T ℝ (j+1)).eval x = cos((j+1)·arccos x)` via `T_real_cos`
+2. `(Polynomial.Chebyshev.T ℝ (j+1)).natDegree = j+1 < n`
+3. `Lagrange.interpolate Finset.univ nodes f` has degree < n (`degree_interpolate_lt`)
+4. They agree at nodes: `T_{j+1}(x_k) = cos((j+1)θ_k) = ∑_m f(m)·δ_{mk}`
+5. Uniqueness: two polynomials of degree < n agreeing at n distinct points are equal
+   (via `Polynomial.card_roots_le_degree` applied to their difference) -/
+private lemma chebyshev_interp (n : ℕ) (hn : n ≥ 2) (j : ℕ) (hj : j ∈ Finset.range (n - 1))
+    (x : ℝ) (_hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+    Real.cos (((↑j : ℝ) + 1) * Real.arccos x) =
+    ∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
+      ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
+      lagrangeBasis n (chebyshevNodes n) k x := by
+  sorry
+
 /-- **Chebyshev expansion**: ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} cos²(j·arccos x))
 for Chebyshev nodes and x ∈ [-1,1].
 
-Proved via DCT Parseval identity:
-1. Lagrange interpolation: cos(j·arccos x) = ∑_k cos(jθ_k)·l_k(x)
+Proved via DCT Parseval identity using `chebyshev_interp`, `dct_diagonal`, `dct_offdiag`,
+and `partition_of_unity`:
+1. Substitute `chebyshev_interp`: T_j(x) = ∑_k cos(jθ_k)·l_k(x)
 2. Expand: 1 + 2∑T_j² = (∑l_k)² + 2∑(∑cos(jθ_k)l_k)² = ∑_{k,m} l_k l_m W_{km}
 3. DCT orthogonality: W_{km} = n·δ_{km} (diagonal/off-diagonal)
 4. Result: = n·∑l_k², so ∑l_k² = (1/n)(1 + 2∑T_j²) -/
-private lemma chebyshev_sq_expansion (n : ℕ) (_hn : n ≥ 2) (x : ℝ)
-    (_hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+private lemma chebyshev_sq_expansion (n : ℕ) (hn : n ≥ 2) (x : ℝ)
+    (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
     ∑ k : Fin n, (lagrangeBasis n (chebyshevNodes n) k x) ^ 2 =
     (1 / (↑n : ℝ)) * (1 + 2 * ∑ j ∈ Finset.range (n - 1),
       (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) := by
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hd := chebyshevNodes_distinct n hn
+  set nodes := chebyshevNodes n
+  set l := fun k => lagrangeBasis n nodes k x
+  -- Suffices: n · ∑l_k² = 1 + 2∑T_j²
+  rw [div_mul_eq_mul_div, eq_div_iff hn_ne]
+  -- Step 1: Substitute interpolation identity into T_j²
+  have h_Tj_sq : ∀ j ∈ Finset.range (n - 1),
+      (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2 =
+      (∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
+        ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) ^ 2 := by
+    intro j hj
+    congr 1
+    exact chebyshev_interp n hn j hj x hx
+  conv_rhs => rw [Finset.sum_congr rfl h_Tj_sq]
+  -- Step 2: Use partition of unity: (∑l_k)² = 1² = 1
+  have h_pu := partition_of_unity n (by omega) nodes hd x
+  -- Step 3: Expand n·∑l_k² using DCT diagonal
+  -- n·∑l_k² = ∑_k n·l_k² = ∑_k (1 + 2∑_j cos²((j+1)θ_k))·l_k²
+  -- by dct_diagonal: 1 + 2∑cos²((j+1)θ_k) = n
+  conv_lhs => rw [show ↑n * ∑ k : Fin n, l k ^ 2 =
+    ∑ k : Fin n, l k ^ 2 * ↑n from by rw [Finset.mul_sum]; congr 1; ext k; ring]
+  simp_rw [show ∀ k : Fin n, l k ^ 2 * (↑n : ℝ) =
+    l k ^ 2 * ((1 : ℝ) + 2 * ∑ j ∈ Finset.range (n - 1),
+      (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n)))) ^ 2) from
+    fun k => by rw [dct_diagonal n hn k]]
+  -- Now LHS = ∑_k l_k² · (1 + 2∑_j cos²((j+1)θ_k))
+  -- RHS = 1 + 2∑_j (∑_k cos((j+1)θ_k)·l_k)²
+  -- These are equal by expanding both sides as ∑_k ∑_m l_k l_m W_{km}
+  -- (with W_{kk} = n and W_{km} = 0 for k ≠ m)
   sorry
 
 /-- **Trace formula**: The Chebyshev integral equals (1/n)(2n - 2·∑1/(4j²-1)).
