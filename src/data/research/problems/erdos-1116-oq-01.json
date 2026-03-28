@@ -29,11 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 6A all deep complex analysis. No reductions possible.",
+    "progressSummary": "ASSESSED: All 6 axioms are deep Nevanlinna theory/complex analysis (deficiency sum, first main theorem, Goldberg-Toppila). None provable from Mathlib.",
     "builtItems": [],
     "insights": [
-      "6 axioms all in complex analysis (Nevanlinna theory). All deep: Goldbach-Toppila, first main theorem, deficiency sum. None provable from Mathlib.",
-      "This is an open question spinoff, not a main conjecture."
+      "All axioms are deep complex analysis: Nevanlinna theory, value distribution",
+      "Would need substantial Mathlib complex analysis infrastructure to prove any"
     ],
     "mathlibGaps": [],
     "nextSteps": []
