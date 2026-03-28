@@ -205,3 +205,40 @@ theorem smoothComponent_prime (t p : ℕ) (hp : p.Prime) :
   split <;> rename_i h
   · simp [List.prod_cons]
   · simp
+
+/-- For a prime p ≥ t, the smooth component is 1. -/
+theorem smoothComponent_prime_ge (t p : ℕ) (hp : p.Prime) (hpt : t ≤ p) :
+    smoothComponent t p = 1 := by
+  rw [smoothComponent_prime t p hp, if_neg (by omega)]
+
+/-- If all prime factors of n are < t, then smoothComponent t n = n. -/
+theorem smoothComponent_id_of_smooth (t n : ℕ) (hn : n ≠ 0)
+    (h : ∀ p ∈ n.factors, p < t) : smoothComponent t n = n := by
+  unfold smoothComponent
+  rw [show n.factors.filter (· < t) = n.factors from
+    List.filter_eq_self.mpr (fun x hx => by simpa using h x hx)]
+  exact Nat.prod_factors hn
+
+/-- If n < t (and n > 0), then smoothComponent t n = n
+    (all prime factors of n are ≤ n < t). -/
+theorem smoothComponent_id_of_lt (t n : ℕ) (hn : 0 < n) (hnt : n < t) :
+    smoothComponent t n = n :=
+  smoothComponent_id_of_smooth t n (by omega) fun p hp =>
+    lt_of_le_of_lt (Nat.le_of_dvd hn (Nat.dvd_of_mem_factors hp)) hnt
+
+/-- For t ≥ 1 and any n, there is at least one smooth component value. -/
+theorem smoothDistinctCount_pos (n t : ℕ) (ht : 1 ≤ t) :
+    0 < smoothDistinctCount n t := by
+  unfold smoothDistinctCount
+  exact Finset.card_pos.mpr ((Finset.nonempty_Icc.mpr (by omega)).image _)
+
+/-- For t ≤ 1, all smooth components are 1, so at most 1 distinct value. -/
+theorem smoothDistinctCount_t_le_one (n t : ℕ) (ht : t ≤ 1) :
+    smoothDistinctCount n t ≤ 1 := by
+  unfold smoothDistinctCount
+  calc ((Finset.Icc (n + 1) (n + t)).image (smoothComponent t)).card
+      ≤ ({1} : Finset ℕ).card := Finset.card_le_card (fun x hx => by
+        simp only [Finset.mem_image] at hx
+        obtain ⟨m, _, rfl⟩ := hx
+        simp [smoothComponent_t_le_one m ht])
+      _ = 1 := by simp
