@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1166,
     "erdosUrl": "https://erdosproblems.com/1166",
     "erdosProblemStatus": "proved",
@@ -78,7 +78,7 @@
       "mostVisitedSet_nonempty"
     ],
     "axiomCount": 7,
-    "lineCount": 324,
+    "lineCount": 537,
     "assumptions": "8 assumptions (7 axiom declarations + 1 structure field): 3 probability framework (AlmostSurely, almostSurely_mono, almostSurely_and), 1 structural (mostVisited_bounded_eventually), 3 deep results (erdos1166_main, polya_recurrence, erdosTaylor_constant), 1 structure field (starts_at_origin). Former axioms converted to definitions."
   },
   "overview": {
@@ -207,7 +207,7 @@
       "Real"
     ],
     "namespace": "Erdos1166",
-    "lineCount": 324,
+    "lineCount": 537,
     "axiomCount": 8,
     "theoremCount": 10,
     "definitionCount": 1
