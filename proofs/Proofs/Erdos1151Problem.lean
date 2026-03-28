@@ -147,7 +147,7 @@ noncomputable def chebyshevInterpSeq (f : ℝ → ℝ) (x : ℝ) : ℕ → ℝ :
 axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     let x := Real.cos (p * Real.pi / q)
-    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ x' ∈ Set.Icc (-1 : ℝ) 1, True) ∧
+    ∃ f : ℝ → ℝ, Continuous f ∧
       ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterpSeq f x n
 
 /-- **The Erdős Conjecture (Problem #1151, [Va99, 2.41]):**
