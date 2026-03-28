@@ -39,7 +39,7 @@ theorem constant_one_not_nonconstant :
 /-- Unit circle points have norm 1 (basic Mathlib fact). -/
 theorem exp_on_unit_circle (θ : ℝ) :
     ‖Complex.exp (Complex.I * ↑θ)‖ = 1 := by
-  sorry
+  rw [Complex.norm_exp_ofReal_mul_I]
 
 /-- The norm of e^(iθ) - e^(iφ) equals 2|sin((θ-φ)/2)|. -/
 theorem norm_exp_diff (θ φ : ℝ) :
@@ -52,12 +52,14 @@ theorem norm_exp_diff (θ φ : ℝ) :
 theorem unit_circle_root_coeff_norm (c₀ c₁ : ℂ) (hc₁ : c₁ ≠ 0)
     (hroot : ∀ z : ℂ, c₀ + c₁ * z = 0 → ‖z‖ = 1) :
     ‖c₀‖ = ‖c₁‖ := by
-  sorry
+  -- The unique root is z = -c₀/c₁, and ‖z‖ = 1 gives ‖c₀‖ = ‖c₁‖
+  have hroot1 := hroot (-c₀ / c₁) (by field_simp; ring)
+  rwa [norm_div, norm_neg, div_eq_one_iff_eq (by rwa [norm_ne_zero_iff])] at hroot1
 
 /-- If |α| = 1 then |−α| = 1. -/
 theorem norm_neg_of_norm_one (α : ℂ) (hα : ‖α��� = 1) :
     ‖-α��� = 1 := by
-  sorry
+  rw [norm_neg]; exact hα
 
 /-- The supremum of |α + e^(iθ)| for |α| = 1 is 2. -/
 theorem sup_norm_sum_exp (α : ℂ) (hα : ‖α‖ = 1) :
@@ -72,6 +74,6 @@ theorem integral_abs_sin_half :
 
 /-- 2π > 4, i.e., the constant polynomial's L¹ norm exceeds the bound. -/
 theorem two_pi_gt_four : (2 : ℝ) * Real.pi > 4 := by
-  sorry
+  linarith [Real.pi_gt_three]
 
 end Erdos225Aristotle
