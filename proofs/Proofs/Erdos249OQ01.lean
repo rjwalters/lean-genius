@@ -81,28 +81,58 @@ theorem totientPowerSum_gt_one : totientPowerSum > 1 := by
   linarith [totientPowerSum_ge_five_fourths]
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Strict Upper Bound
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The comparison series Σ n * (1/2)^n has sum exactly 2. -/
+private theorem hasSum_n_mul_half :
+    HasSum (fun n : ℕ => (n : ℝ) * (1 / 2) ^ n) 2 := by
+  convert hasSum_coe_mul_geometric_of_norm_lt_one (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
+    using 1
+  norm_num
+
+/-- At n = 4: φ(4)/2^4 = 1/8 < 4/16 = 1/4 = 4 * (1/2)^4.
+    This strict gap witnesses that Σ φ(n)/2^n < Σ n/2^n. -/
+private theorem termFn_four_lt : termFn 4 < 4 * (1 / 2 : ℝ) ^ 4 := by
+  rw [termFn_four]; norm_num
+
+/-- **Strict upper bound**: ∑ φ(n)/2^n < 2.
+
+    Since φ(n) ≤ n for all n (so each term ≤ n * (1/2)^n)
+    and φ(4) = 2 < 4 (strict gap at n = 4),
+    the sum is strictly less than ∑ n * (1/2)^n = 2. -/
+theorem totientPowerSum_lt_two : totientPowerSum < 2 := by
+  unfold totientPowerSum
+  exact hasSum_lt (i := 4) termFn_four_lt termFn_le_n_mul_half_pow
+    totientPowerSum_summable.hasSum hasSum_n_mul_half
+
+/-- The sum is not an integer: 5/4 ≤ ∑ φ(n)/2^n < 2 rules out all integers. -/
+theorem totientPowerSum_not_int : ¬∃ m : ℤ, totientPowerSum = ↑m := by
+  intro ⟨m, hm⟩
+  have h1 := totientPowerSum_ge_five_fourths
+  have h2 := totientPowerSum_lt_two
+  rw [hm] at h1 h2
+  -- m ≥ 5/4 and m < 2, so m = 1. But m ≥ 5/4 > 1.
+  have : (1 : ℝ) < m := by linarith
+  have : (m : ℝ) < 2 := h2
+  have : m = 1 := by omega
+  linarith
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary
 -- ══════════════════════════════════════════════════════════════════
 
 /-
-**Extended bounds**: 5/4 ≤ ∑ φ(n)/2^n ≤ 2
+**Tight bounds**: 5/4 ≤ ∑ φ(n)/2^n < 2
 
-**Term values**:
-  n  | φ(n) | φ(n)/2^n
-  0  |   0  |     0
-  1  |   1  |   1/2
-  2  |   1  |   1/4
-  3  |   2  |   1/4
-  4  |   2  |   1/8
-  5  |   4  |   1/8
+The sum is:
+- At least 5/4 (from partial sum computation)
+- Strictly less than 2 (from strict gap at n = 4 in comparison with Σ n/2^n)
+- Not an integer (since 5/4 ≤ x < 2 has no integer solutions)
+- Positive (> 1)
 
-  Partial sum (n ≤ 5) = 5/4 = 1.25
-
-**Status**: OPEN — irrationality still unknown.
-The sum is not 0 or 1. Whether it equals 2 (the upper bound from
-∑ n/2^n = 2) would require showing φ(n) < n for some n,
-which is true (φ(4) = 2 < 4) but the formal machinery for strict
-inequality of infinite sums needs tsum_lt_tsum.
+**Status**: OPEN — irrationality still unknown, but the value is now pinned
+to the interval [5/4, 2) and confirmed non-integer.
 -/
 
 end Erdos249OQ01
