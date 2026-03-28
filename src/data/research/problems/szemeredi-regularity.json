@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Removed unused sorry-bearing energy_increment_step (abandoned direct-proof approach). Main results regularity_lemma_strong and regularity_lemma_full fully proved via Mathlib bridge. Also fixed Mathlib API breakage (supParts→sup_parts). 17 theorems, 501 lines.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (proved)",
       "edgeDensity_le_one: edgeDensity G A B ≤ 1 (proved)",
@@ -91,12 +91,7 @@
       "energy_increment_step was unused by main results and potentially false for 1/k² normalization (refinement k→k+1 dilutes normalizer). Full energy increment is internal to Mathlib szemeredi_regularity proof."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "HIGH PRIORITY: Consider changing partitionEnergy to size-weighted definition Σ(|Pᵢ||Pⱼ|/|V|²)d². This makes energy monotone under refinement and the standard eps^5 bound applies directly. Would require updating ~3 downstream theorems.",
-      "ALTERNATIVE: For Case A, try constructing parts' with same k parts but rearranged vertices (no normalization change). Use irregular witnesses to improve d² sum within fixed k.",
-      "Case B (non-equitable): prove by splitting the larger part, or by equitizing. Lower priority than Case A.",
-      "All algebraic infrastructure complete: split_energy_identity, split_energy_excess_bound, unweighted_density_sq_split, card_split_le_bound."
-    ]
+    "nextSteps": []
   },
   "tags": [
     "szemeredi",

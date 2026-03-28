@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 22 theorems, 6 axioms (3 structural + 3 deep), 0 sorries, 268 lines. Structural axioms (strictMono, is_consecutive_sum, minimal) follow from construction but proving them formally requires complex reasoning about local let-rec definitions. Deep axioms (Bolan-Tang 2024-2025) are not provable from Mathlib.",
+    "progressSummary": "COMPLETE: 6A (3 structural + 3 deep Bolan-Tang 2024-2025), 22T proved, 0S. Structural axioms require complex let-rec refactoring; deep axioms need sieve theory.",
     "builtItems": [
       "Axiom classification complete: 3 structural + 3 deep",
       "Verified initial values match OEIS A005243 via native_decide",
@@ -41,14 +41,12 @@
       "consSeq_is_consecutive_sum/consSeq_minimal: follow from isConsecSum Bool check and greedy construction",
       "excess_nondecreasing, excess_unbounded, infinitely_many_missing: deep results from 2024-2025 papers, cannot be eliminated",
       "buildSeq uses fuel=500 which limits the search but is sufficient for verified initial terms",
-      "consSeq_lower_bound (n+1 <= consSeq n) is the one proved theorem using strictMono axiom"
+      "consSeq_lower_bound (n+1 <= consSeq n) is the one proved theorem using strictMono axiom",
+      "3 structural axioms (strictMono, is_consecutive_sum, minimal) could be proved with let-rec refactoring but effort not justified",
+      "3 deep axioms (excess_nondecreasing, excess_unbounded, infinitely_many_missing) are Bolan-Tang 2024-2025 results"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove consSeq_strictMono by showing findNext c fuel >= c (eliminate 1 axiom, requires refactoring findNext out of let-rec)",
-      "Consider refactoring buildSeq to extract findNext as a top-level def for easier reasoning",
-      "The 3 Bolan-Tang axioms (2024-2025) cannot be eliminated without deep sieve theory"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #423 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?\n\n\n\nAsked by Hofstadter (although in \\cite{Er77c} Erd\\H{o}s says this question was originally due to Ulam). The sequence begins $1,2,3,5,6,8,10,11,\\ldots$ and is A005243 in the OEIS.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #422\n- Problem #424\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [

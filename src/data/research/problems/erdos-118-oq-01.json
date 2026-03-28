@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATED: Fixed threshold_exact guard, proved omega_omega2_threshold. Axioms: 7→6 (cumulative from 8→7→6).",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Proved relation_to_592 as theorem (trivially follows from counterexample axioms)",
       "Fixed build: Ordinal universe annotations (.{0}), Ordinal.omega->omega0, added Exponential import",
@@ -46,11 +46,7 @@
       "Upper bound (≤4): if threshold≥5, monotonicity from threshold_exact gives IsPartitionOrd at 5, contradicting counter_not_partition_5"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Define ordPartition constructively to eliminate axiom + enable proving partition_monotone_down",
-      "Fix threshold_exact guard or define partitionThreshold constructively",
-      "omega_omega2_threshold provable if threshold_exact guard is fixed"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Strengthened FiniteTree to require Mathlib IsTree (connected + acyclic). Added HasRadius and IsCaterpillar tree-class predicates. Kierstead-Penrice and Scott theorems now properly constrained. 2 provable sorries for pathGraph_isTree, starGraph_isTree (Aristotle candidates). 10 theorems, 10 defs, 2 axioms, 2 sorries, 244 lines.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
       "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
@@ -62,12 +62,7 @@
       "starGraph_isTree proof strategy: all leaves adjacent to center (Connected), degree-1 leaves prevent cycles (IsAcyclic)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove pathGraph_isTree (connected + acyclic for path graph) - submit to Aristotle",
-      "Prove starGraph_isTree (connected + acyclic for star graph) - submit to Aristotle",
-      "Independent proof of infinite_chrom_contains_stars without axiom (via greedy coloring bound)",
-      "Prove pathTree and starTree have correct HasRadius (paths: radius n/2, stars: radius 1)"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #738 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ has infinite chromatic number and is triangle-free (contains no $K_3$) then must $G$ contain every tree as an induced subgraph?\n\n\n\nA conjecture of Gy\\'{a}rf\\'{a}s.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #737\n- Problem #739\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [

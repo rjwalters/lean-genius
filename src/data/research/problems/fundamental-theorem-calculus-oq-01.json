@@ -27,13 +27,8 @@
       "What specific Lebesgue generalization is needed beyond what Mathlib already provides?",
       "Does Mathlib have the Lebesgue differentiation theorem for absolutely continuous functions?"
     ],
-    "nextSteps": [
-      "PREREQUISITE: Formalize Jordan decomposition for BV functions (BV → monotone₁ - monotone₂)",
-      "PREREQUISITE: Prove AC → BV using AC definition + partition argument",
-      "THEN: Combine to prove lebesgue_ftc_differentiable without axiom",
-      "SEPARATE: Construct Cantor function for counterexample sorry (non-blocking)"
-    ],
-    "progressSummary": "SURVEYED: Both axioms blocked on missing Jordan decomposition in Mathlib. Cantor function sorry needs ~200L construction. Infrastructure assessment complete."
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: 2A blocked on missing Mathlib Jordan decomposition, 14T proved, 2S (blocked). Infrastructure assessment done."
   },
   "leanFiles": [
     {

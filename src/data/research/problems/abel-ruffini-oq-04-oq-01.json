@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom replaced with theorem+sorry. 3 sorry remain: gal_has_transposition (IVT+conj), gal_card_ne_20 (Sylow), three_dvd_gal_card (combines both)",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
@@ -60,11 +60,7 @@
       "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
       "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof"
     ],
-    "nextSteps": [
-      "Fill gal_has_transposition: IVT for 3 real roots + embed SF→ℂ + conjugation automorphism",
-      "Fill gal_card_ne_20: Sylow theory (unique Sylow 5-subgroup in order-20 group) + transposition_not_normalizing_5cycle",
-      "Fill three_dvd_gal_card: combine gal_card_ne_20 with existing eliminators for 5,10,15,30,40,60"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "algebra",

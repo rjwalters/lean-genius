@@ -44,8 +44,9 @@
       "Proved harmonicInterval_singleton via Finset.Icc_self and dif_pos",
       "Proved harmonicInterval_pos via Finset.sum_pos with inv_pos",
       "Proved harmonicInterval_from_one via Finset.sum_congr with dif_pos",
-      "Proved harmonicInterval_growth from harmonicInterval_pos (trivially > 0)",
-      "Proved example_sum_one by reducing Finset.Icc and norm_num"
+      "Proved harmonicInterval_ge_inv_first via Finset.single_le_sum (lower bound H(a,b) >= 1/a)",
+      "Proved example_sum_one by reducing Finset.Icc and norm_num",
+      "Proved example_sum_one_v2: H(2,3) + H(6,6) = 1 (second verified example)"
     ],
     "axiomCount": 3,
     "prerequisites": [
@@ -55,7 +56,7 @@
       "Set finiteness (Set.Finite in Lean 4)",
       "Finset.sum over intervals"
     ],
-    "lineCount": 194,
+    "lineCount": 217,
     "assumptions": "3 axioms (all OPEN conjectures): erdos_288, erdos_288_singleton, erdos_288_k_intervals.",
     "mathlib_version": "4.26.0"
   },
@@ -96,37 +97,37 @@
     },
     {
       "id": "example",
-      "title": "Part III: The Known Example",
+      "title": "Part III: The Known Examples",
       "startLine": 66,
-      "endLine": 73,
-      "summary": "Axiom example_sum_one: H(3,6) + H(20,20) = 1, encoding the decomposition 1/3+1/4+1/5+1/6+1/20 = 1."
+      "endLine": 94,
+      "summary": "Two verified examples: example_sum_one (H(3,6)+H(20,20)=1) and example_sum_one_v2 (H(2,3)+H(6,6)=1)."
     },
     {
       "id": "singleton-variant",
       "title": "Part IV: Variant — Single Element I₂",
-      "startLine": 74,
-      "endLine": 85,
+      "startLine": 96,
+      "endLine": 107,
       "summary": "Defines singletonPairs (restricted to |I₂|=1). Axiom erdos_288_singleton: the finiteness conjecture remains open even in this restricted case."
     },
     {
       "id": "k-intervals",
       "title": "Part V: Variant — k Intervals",
-      "startLine": 86,
-      "endLine": 104,
+      "startLine": 109,
+      "endLine": 127,
       "summary": "Defines kIntervalSum (Σ over Fin k → ℕ+ × ℕ+) and kIntervalPairs. Axiom erdos_288_k_intervals: generalization conjectured for all k."
     },
     {
       "id": "properties",
       "title": "Part VI: Properties of Harmonic Sums",
-      "startLine": 105,
-      "endLine": 123,
-      "summary": "Four axioms establishing harmonic sum properties: singleton value (1/a), positivity, harmonic numbers from 1, and logarithmic growth."
+      "startLine": 129,
+      "endLine": 180,
+      "summary": "Four proved properties: harmonicInterval_singleton (H(a,a)=1/a), harmonicInterval_pos (positivity), harmonicInterval_from_one (harmonic number form), harmonicInterval_ge_inv_first (lower bound H(a,b)>=1/a)."
     },
     {
       "id": "summary",
       "title": "Part VII: Summary",
-      "startLine": 124,
-      "endLine": 161,
+      "startLine": 182,
+      "endLine": 217,
       "summary": "erdos_288_statement proved by simp (unfolds to Set.Finite). erdos_288_summary packages the equivalence. Problem remains OPEN."
     }
   ],
@@ -176,9 +177,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos288",
-    "lineCount": 194,
+    "lineCount": 217,
     "axiomCount": 3,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 9
   },
   "references": [

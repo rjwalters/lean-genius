@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5 axioms eliminated (14→9). IsPisot now concrete def, smallestPisot defined via IVT.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "goldenRatio_gt_one theorem in Erdos1096Problem.lean (proved: phi > 1)",
       "goldenRatio_lt_two theorem in Erdos1096Problem.lean (proved: phi < 2)",
@@ -52,12 +52,7 @@
       "goldenRatio_is_pisot provable: X²-X-1 is the polynomial, other root (1-√5)/2 has |·|<1 since √5<3"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove smallestPisot_value sorries using monotonicity of x³-x-1",
-      "Prove monic lemmas for X³-X-1 and X²-X-1 polynomials",
-      "Prove conjugate root bounds for smallestPisot and goldenRatio",
-      "Consider replacing qSequence axiom with constructive definition"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",

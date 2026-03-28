@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed pre-existing build failures (Mathlib API changes). Consolidated 3 Sarkozy axioms into 1 (11→9 axioms). Added 6 new proved theorems: openDisk_eq_ball, openDisk_isOpen, openDisk_measurableSet, openDisk_mono, avoidsIntegerDistances_subset, annulus_subset_openDisk. Replaced brittle pair_half_avoids with general pair_avoids_of_noninteger_dist.",
+    "progressSummary": "COMPLETE: 8A (deep geometric/measure-theoretic results), 13T proved, 0S.",
     "builtItems": [
       "Fixed Erdos953Problem.lean build (was failing from Mathlib API changes)",
       "Consolidated sarkozy_exponent axioms (3→1): sarkozy_exponent_exists",

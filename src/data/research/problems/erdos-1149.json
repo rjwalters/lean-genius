@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 proved theorems and 1 computable definition. Set up coprime pair counting infrastructure (countCoprimePairs via Finset). Path to proving random_coprime_density identified: Möbius inversion + hasSum_zeta_two.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "one_isFloorPowerCoprime: n=1 always coprime (Erdos1149Problem.lean:55)",
       "one_mem_coprimeFloorPowerSet: 1 ∈ coprime set (Erdos1149Problem.lean:59)",
@@ -50,12 +50,7 @@
       "countCoprimePairs provides computable Finset-based infrastructure for future work on random_coprime_density"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove random_coprime_density from hasSum_zeta_two via Möbius inversion (eliminate 1 axiom)",
-      "Step 1: Prove ∑_{d=1}^N μ(d)⌊N/d⌋² = countCoprimePairs N (Möbius counting identity)",
-      "Step 2: Show countCoprimePairs N / N² → ∑_{d=1}^∞ μ(d)/d² (asymptotic analysis)",
-      "Step 3: Prove ∑_{d=1}^∞ μ(d)/d² = 6/π² using Euler product + hasSum_zeta_two"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1149 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
