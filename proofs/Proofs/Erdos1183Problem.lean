@@ -28,6 +28,7 @@ Reference: [Er78, p.39], https://erdosproblems.com/1183
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Lattice
 import Mathlib.Data.Fintype.Basic
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
 
 namespace Erdos1183
@@ -197,25 +198,78 @@ theorem erdos1183_F_chain_bound (n : ℕ) (χ : SubsetColoring n) :
   obtain ⟨F, ⟨hU, _⟩, hM, hS⟩ := erdos1183_chain_bound n χ
   exact ⟨F, hU, hM, hS⟩
 
-/-! ## Part VI: Open Questions (Formal Statements) -/
+/-! ## Part VI: Abstract Definitions and Bounds
 
-/-- f(n): max guaranteed monochromatic sublattice size under any 2-coloring. -/
-noncomputable def erdos1183_f (n : ℕ) : ℕ :=
-  sInf { k : ℕ | ∀ (χ : SubsetColoring n),
+The previous version used `sInf` for the definitions of f(n) and F(n), which gave
+the infimum (= 0) of a downward-closed set. The correct definition uses `sSup`:
+f(n) is the *largest* k such that every 2-coloring admits a monochromatic
+sublattice of size ≥ k.
+-/
+
+/-- The set of achievable lower bounds for sublattice Ramsey numbers:
+    k is achievable if EVERY 2-coloring admits a monochromatic sublattice of size ≥ k. -/
+def achievableSublattice (n : ℕ) : Set ℕ :=
+  { k : ℕ | ∀ (χ : SubsetColoring n),
     ∃ F : Finset (Finset (Fin n)), IsSublattice F ∧
       (∃ c : Fin 2, IsMonochromatic χ F c) ∧ F.card ≥ k }
 
-/-- F(n): max guaranteed monochromatic union-closed family size. -/
-noncomputable def erdos1183_F (n : ℕ) : ℕ :=
-  sInf { k : ℕ | ∀ (χ : SubsetColoring n),
+/-- The set of achievable lower bounds for union-closed Ramsey numbers. -/
+def achievableUnionClosed (n : ℕ) : Set ℕ :=
+  { k : ℕ | ∀ (χ : SubsetColoring n),
     ∃ F : Finset (Finset (Fin n)), IsUnionClosed F ∧
       (∃ c : Fin 2, IsMonochromatic χ F c) ∧ F.card ≥ k }
 
-/-- Open: What is the growth rate of f(n)? Erdős had no conjecture. -/
+/-- The achievable sublattice set is bounded above (any family has ≤ 2^n elements). -/
+theorem achievableSublattice_bddAbove (n : ℕ) : BddAbove (achievableSublattice n) := by
+  refine ⟨(Finset.univ : Finset (Finset (Fin n))).card, fun k hk => ?_⟩
+  obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
+  exact le_trans hcard (Finset.card_le_card (Finset.subset_univ F))
+
+/-- The achievable union-closed set is bounded above. -/
+theorem achievableUnionClosed_bddAbove (n : ℕ) : BddAbove (achievableUnionClosed n) := by
+  refine ⟨(Finset.univ : Finset (Finset (Fin n))).card, fun k hk => ?_⟩
+  obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
+  exact le_trans hcard (Finset.card_le_card (Finset.subset_univ F))
+
+/-- f(n): the largest k such that every 2-coloring of P(Fin n) admits
+    a monochromatic sublattice of size ≥ k. -/
+noncomputable def erdos1183_f (n : ℕ) : ℕ :=
+  sSup (achievableSublattice n)
+
+/-- F(n): the largest k such that every 2-coloring of P(Fin n) admits
+    a monochromatic union-closed family of size ≥ k. -/
+noncomputable def erdos1183_F (n : ℕ) : ℕ :=
+  sSup (achievableUnionClosed n)
+
+/-- **f(n) ≥ ⌈(n+1)/2⌉** by the chain argument (Part V). -/
+theorem erdos1183_f_lower_bound (n : ℕ) : erdos1183_f n ≥ (n + 2) / 2 := by
+  unfold erdos1183_f
+  exact le_csSup (achievableSublattice_bddAbove n) (fun χ => erdos1183_chain_bound n χ)
+
+/-- Every achievable sublattice bound is also achievable for union-closed families,
+    since every sublattice is union-closed. -/
+theorem achievableSublattice_subset_unionClosed (n : ℕ) :
+    achievableSublattice n ⊆ achievableUnionClosed n := by
+  intro k hk χ
+  obtain ⟨F, ⟨hU, _⟩, hM, hS⟩ := hk χ
+  exact ⟨F, hU, hM, hS⟩
+
+/-- F(n) ≥ f(n), since every sublattice is union-closed. -/
+theorem erdos1183_F_ge_f (n : ℕ) : erdos1183_F n ≥ erdos1183_f n := by
+  unfold erdos1183_f erdos1183_F
+  apply csSup_le_csSup (achievableUnionClosed_bddAbove n)
+  · -- achievableSublattice n is nonempty: 0 is achievable (empty family works)
+    refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+  · exact achievableSublattice_subset_unionClosed n
+
+/-- Open: What is the growth rate of f(n)? (Erdős had no conjecture.) -/
 axiom erdos1183_f_growth :
     ∃ C : ℕ, 0 < C ∧ ∀ n : ℕ, erdos1183_f n ≤ C * (n + 1)
 
-/-- Open: Is F(n) superpolynomial? I.e. F(n) ≥ n^{ω(n)} with ω → ∞. -/
+/-- Open: Is F(n) superpolynomial? I.e., F(n) ≥ n^{ω(n)} with ω → ∞. -/
 axiom erdos1183_F_superpolynomial :
     ∃ ω : ℕ → ℕ, (∀ M, ∃ N, ∀ n, n ≥ N → ω n ≥ M) ∧
       ∀ n : ℕ, 2 ≤ n → erdos1183_F n ≥ n ^ ω n
