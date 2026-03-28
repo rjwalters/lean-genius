@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 3 theorems fully proved, 0 sorries. Last sorry (log l/l → 0) proved using Mathlib isLittleO_log_rpow_atTop.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "increment_bound in Erdos1014OQ01.lean: R(3,l+1) ≤ R(3,l) + (l+1)",
       "ratio_abs_eq in Erdos1014OQ01.lean: absolute value identity",
@@ -53,9 +53,7 @@
       "Nat.le_ceil transfers ℝ thresholds to ℕ; div_le_iff₀ converts division to multiplication"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider extending approach to k=4 using R(3,l) bounds"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",
