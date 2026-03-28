@@ -259,6 +259,77 @@ if [[ -n "$SUBJECT" ]]; then
     fi
 fi
 
+# Verify proof page URLs point to deployed content
+# Extract proof slugs from leangenius.org/proof/<slug> URLs in the post text
+_proof_slugs=()
+while IFS= read -r _slug; do
+    [[ -n "$_slug" ]] && _proof_slugs+=("$_slug")
+done < <(echo "$TEXT" | grep -oE 'leangenius\.org/proof/[a-zA-Z0-9_-]+' | sed 's|leangenius\.org/proof/||' | sort -u)
+
+if [[ ${#_proof_slugs[@]} -gt 0 ]]; then
+    _verify_failed=false
+    for _slug in "${_proof_slugs[@]}"; do
+        _meta="$REPO_ROOT/src/data/proofs/$_slug/meta.json"
+
+        # Check 1: meta.json exists
+        if [[ ! -f "$_meta" ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  meta.json not found: $_meta${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+
+        # Check 2: leanFile is an object with lineCount > 0
+        _has_lean_file=$(jq '(.leanFile | type) == "object" and (.leanFile.lineCount > 0)' "$_meta" 2>/dev/null)
+        if [[ "$_has_lean_file" != "true" ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  meta.json leanFile is missing or has lineCount 0${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+
+        # Check 3: Listed in listings.json
+        _listings="$REPO_ROOT/src/data/proofs/listings.json"
+        if [[ ! -f "$_listings" ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  listings.json not found${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+        _in_listings=$(jq --arg s "$_slug" '[.[] | select(.slug == $s)] | length' "$_listings" 2>/dev/null)
+        if [[ "$_in_listings" -eq 0 ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  Proof '$_slug' not found in listings.json${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+
+        # Check 4: Lean source file exists
+        # Convert slug to a case-insensitive search pattern (remove hyphens)
+        _lean_pattern=$(echo "$_slug" | tr -d '-')
+        _lean_found=false
+        # Search proofs/Proofs/ for a .lean file matching the slug (case-insensitive)
+        while IFS= read -r _match; do
+            _lean_found=true
+            break
+        done < <(find "$REPO_ROOT/proofs/Proofs" -maxdepth 1 -iname "${_lean_pattern}.lean" -type f 2>/dev/null)
+        if [[ "$_lean_found" != "true" ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  Lean source file not found in proofs/Proofs/ (searched for ${_lean_pattern}.lean)${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+
+        echo -e "${GREEN}Verified proof page: $_slug${NC}"
+    done
+
+    if [[ "$_verify_failed" == "true" ]]; then
+        echo -e "${RED}Aborting: One or more proof page URLs point to content that may not be deployed.${NC}" >&2
+        echo -e "${YELLOW}Ensure the proof has a complete meta.json, is in listings.json, and has a Lean source file.${NC}" >&2
+        exit 1
+    fi
+fi
+
 # Dry run: show what would happen
 if [[ "$DRY_RUN" == "true" ]]; then
     echo -e "${YELLOW}[DRY RUN] Would post ($CHAR_COUNT chars):${NC}"
