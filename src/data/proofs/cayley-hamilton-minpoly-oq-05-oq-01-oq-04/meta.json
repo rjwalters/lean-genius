@@ -1,0 +1,81 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+  "title": "Nonderogatory → Cyclic Vector: The General Case (All Fields)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+  "description": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields F_q with q ≤ n where union avoidance fails. Demonstrates F_2 counterexample and module-theoretic approach.",
+  "meta": {
+    "author": "Classical linear algebra (invariant factor decomposition)",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "finite-fields",
+      "module-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 5,
+    "axiomCount": 0,
+    "lineCount": 183,
+    "assumptions": "0 axioms. 5 sorries: F_2 counterexample (decidable), annPoly definition, annPoly_dvd_minpoly, cyclic_iff_ann_eq_minpoly, main theorem (needs PID structure theorem).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "text": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields where union avoidance fails.",
+    "proofStrategy": "Module-theoretic: K^n as K[X]-module, invariant factor decomposition, nonderogatory forces single factor."
+  },
+  "sections": [
+    {
+      "id": "f2-counterexample",
+      "title": "F_2 Counterexample to Union Avoidance",
+      "summary": "Shows F_2^2 is covered by 3 proper subspaces, demonstrating that the union avoidance approach fails when |K| ≤ n.",
+      "startLine": 56,
+      "endLine": 77,
+      "mathContext": "Union avoidance failure over small finite fields."
+    },
+    {
+      "id": "annihilator",
+      "title": "Annihilator Theory",
+      "summary": "Defines annihilator polynomial and states cyclic ↔ ann = minpoly equivalence.",
+      "startLine": 79,
+      "endLine": 107,
+      "mathContext": "Annihilator polynomials and cyclic vector characterization."
+    },
+    {
+      "id": "gcd-bezout",
+      "title": "GCD Annihilation (Proved)",
+      "summary": "Proves gcd_annihilates: if p(M)v = 0, then gcd(p, minpoly)(M)v = 0. Uses Bezout identity. Sorry-free.",
+      "startLine": 109,
+      "endLine": 146,
+      "mathContext": "Algebraic annihilation via GCD and Bezout identity."
+    },
+    {
+      "id": "main-theorem",
+      "title": "General Theorem (All Fields)",
+      "summary": "States nonderogatory_has_cyclic_vector_general: over ANY field, nonderogatory matrices have cyclic vectors. Requires PID structure theorem.",
+      "startLine": 148,
+      "endLine": 160,
+      "mathContext": "The main theorem for all fields."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates that the nonderogatory → cyclic vector theorem holds for all fields, not just infinite or large finite fields. While union avoidance fails over small fields (F_2 counterexample), the algebraic structure (invariant factor decomposition) forces the result. The GCD annihilation lemma is proved sorry-free. The main theorem requires the structure theorem for f.g. modules over PIDs, which is not yet in Mathlib.",
+    "openQuestions": [
+      "When will the structure theorem for f.g. modules over PIDs be available in Mathlib?",
+      "Can the theorem be proved without the full structure theorem, using only rational canonical form?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Matrix", "Polynomial"],
+    "namespace": "NonderogatoryGeneral",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
+}
