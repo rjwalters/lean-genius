@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/104",
     "date": "1975",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos104Problem.lean",
+    "proofRepoPath": "Proofs/Erdos104Problem.lean",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/104",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
-    "axiomCount": 12,
-    "lineCount": 202,
-    "assumptions": "12 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "axiomCount": 11,
+    "lineCount": 218,
+    "assumptions": "11 axiom(s) and 1 sorry(s). two_points_no_circle proved from triangle inequality (was axiom). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
