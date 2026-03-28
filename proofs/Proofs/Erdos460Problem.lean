@@ -15,6 +15,8 @@ Does Σ (1/aᵢ) → ∞ as n → ∞ (summing over 0 < aᵢ < n)?
 Proved: sieve_initial (a₀ = 0, a₁ = 1) — follows from the constructive definition.
 The sieve is now implemented as a proper well-founded recursive function
 (was previously a dummy fun _ => 0 with all behavior axiomatized).
+Axioms: 3 (sieve_greedy, eggleton_erdos_selfridge, filtered_sum_implies_full)
+Note: sieve_conjectured_bound demoted from axiom to def — it's an open conjecture.
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -104,8 +106,9 @@ axiom eggleton_erdos_selfridge (n : ℕ) (hn : n ≥ 2) :
       ∃ K₀ : ℕ, ∀ k : ℕ, k ≥ K₀ →
         (greedyCoprimeSieve n k : ℝ) < (k : ℝ) ^ ((2 : ℝ) + ε)
 
-/-- Conjectured stronger bound: aₖ ≪ k log k. -/
-axiom sieve_conjectured_bound :
+/-- Conjectured stronger bound: aₖ ≪ k log k.
+    This is an OPEN CONJECTURE, not a proved result. -/
+def SieveConjecturedBound : Prop :=
     ∃ C : ℝ, C > 0 ∧
       ∀ n : ℕ, n ≥ 2 → ∀ k : ℕ, k ≥ 2 →
         (greedyCoprimeSieve n k : ℝ) ≤ C * (k : ℝ) * Real.log (k : ℝ)
