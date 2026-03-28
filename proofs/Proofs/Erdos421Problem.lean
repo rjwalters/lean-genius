@@ -231,6 +231,78 @@ theorem distinct_products_growth_lower (d : ℕ → ℕ) (hd : IsValidSequence d
   omega
 
 /-
+# Part 4f: Advanced Structural Properties
+
+Deeper structural results about sequences with distinct products.
+-/
+
+/-- Interval products split at a midpoint: ∏[u,v] = ∏[u,w] * ∏[w+1,v]. -/
+theorem intervalProduct_split (d : ℕ → ℕ) {u w v : ℕ} (huw : u ≤ w) (hwv : w < v) :
+    intervalProduct d u v = intervalProduct d u w * intervalProduct d (w + 1) v := by
+  simp only [intervalProduct]
+  have hunion : Finset.Icc u w ∪ Finset.Icc (w + 1) v = Finset.Icc u v := by
+    ext i; simp only [Finset.mem_union, Finset.mem_Icc]; omega
+  have hdisj : Disjoint (Finset.Icc u w) (Finset.Icc (w + 1) v) := by
+    rw [Finset.disjoint_left]
+    intro i hi1 hi2
+    simp only [Finset.mem_Icc] at hi1 hi2; omega
+  rw [← hunion, Finset.prod_union hdisj]
+
+/-- The product of the first n terms of a valid sequence is at least n!.
+    Follows from d(i) ≥ i+1 for all i. -/
+theorem total_product_ge_factorial (d : ℕ → ℕ) (hd : IsValidSequence d) (n : ℕ) :
+    n ! ≤ ∏ i ∈ Finset.range n, d i := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Nat.factorial_succ, Finset.prod_range_succ]
+    exact Nat.mul_le_mul (valid_seq_ge_succ d hd n) ih
+
+/-- For distinct products, d(0) ≥ 2. If d(0) = 1, then
+    intervalProduct [0,1] = 1 * d(1) = d(1) = intervalProduct [1,1],
+    contradicting distinctness. -/
+theorem first_term_ge_two (d : ℕ → ℕ) (hd : IsValidSequence d)
+    (hdist : HasDistinctProducts d) : 2 ≤ d 0 := by
+  by_contra h
+  push_neg at h
+  have hd0 : d 0 = 1 := by
+    have := hd.2; omega
+  -- intervalProduct [0,1] = d(0) * d(1) = d(1)
+  have h01 : productMap d (0, 1) = d 1 := by
+    simp only [productMap, intervalProduct]
+    have hIcc : Finset.Icc 0 1 = {0, 1} := by
+      ext i; simp only [Finset.mem_Icc, Finset.mem_insert, Finset.mem_singleton]; omega
+    rw [hIcc, Finset.prod_pair (by omega : (0 : ℕ) ≠ 1), hd0, one_mul]
+  -- intervalProduct [1,1] = d(1)
+  have h11 : productMap d (1, 1) = d 1 := by
+    simp [productMap]
+  -- Same product, different valid pairs → contradiction
+  have hpairs : (0, 1) ≠ (1, 1 : ℕ × ℕ) := by simp
+  exact hpairs (hdist (show (0 : ℕ) ≤ 1 by omega) le_rfl (h01.trans h11.symm))
+
+/-- For distinct products, d(i) ≥ i + 2 for all i (strengthening valid_seq_ge_succ).
+    Proof: d(0) ≥ 2 and d strictly increasing with d(i) ≥ i+1, so d(i) ≥ i+2. -/
+theorem distinct_products_stronger_growth (d : ℕ → ℕ) (hd : IsValidSequence d)
+    (hdist : HasDistinctProducts d) (i : ℕ) :
+    i + 2 ≤ d i := by
+  induction i with
+  | zero => exact first_term_ge_two d hd hdist
+  | succ n ih =>
+    have hlt := hd.1 (show n < n + 1 by omega)
+    omega
+
+/-- With distinct products, the product of first n terms grows at least as fast as (n+1)!.
+    This is strictly stronger than n! because d(i) ≥ i+2. -/
+theorem total_product_ge_shifted_factorial (d : ℕ → ℕ) (hd : IsValidSequence d)
+    (hdist : HasDistinctProducts d) (n : ℕ) :
+    (n + 1) ! ≤ ∏ i ∈ Finset.range n, d i := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Nat.factorial_succ, Finset.prod_range_succ]
+    exact Nat.mul_le_mul (distinct_products_stronger_growth d hd hdist n) ih
+
+/-
 # Part 5: The Main Conjecture
 
 Existence of a density-1 sequence with distinct products.

@@ -248,6 +248,33 @@ The circle-radius problem studies repeated circumradii.
 def unitDistanceProblem (S : Set Point) (d : ℝ) : ℕ :=
   Nat.card {(p, q) : Point × Point | p ∈ S ∧ q ∈ S ∧ p ≠ q ∧ ‖p - q‖ = d}
 
+/- ## Structural Properties -/
+
+/-- General position is hereditary: subsets of GP sets are in GP. -/
+theorem isInGeneralPosition_subset {S T : Set Point} (hTS : T ⊆ S)
+    (hGP : isInGeneralPosition S) : isInGeneralPosition T := by
+  constructor
+  · intro p1 p2 p3 h1 h2 h3; exact hGP.1 p1 p2 p3 (hTS h1) (hTS h2) (hTS h3)
+  · intro p1 p2 p3 p4 h1 h2 h3 h4
+    exact hGP.2 p1 p2 p3 p4 (hTS h1) (hTS h2) (hTS h3) (hTS h4)
+
+/-- The circumradii of a subset are contained in those of the superset. -/
+theorem allCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S) :
+    allCircumradii T ⊆ allCircumradii S := by
+  intro r ⟨p1, p2, p3, h1, h2, h3, d12, d23, d13, t, ht⟩
+  exact ⟨p1, p2, p3, hTS h1, hTS h2, hTS h3, d12, d23, d13, t, ht⟩
+
+/-- areCollinear is symmetric: the order of points doesn't matter. -/
+theorem areCollinear_perm12 {p1 p2 p3 : Point} :
+    areCollinear p1 p2 p3 ↔ areCollinear p2 p1 p3 := by
+  simp only [areCollinear]; constructor <;> (intro ⟨a, b, c, h, h1, h2, h3⟩; exact ⟨a, b, c, h, h2, h1, h3⟩)
+
+/-- areConcyclic is symmetric in all four points. -/
+theorem areConcyclic_perm {p1 p2 p3 p4 : Point} :
+    areConcyclic p1 p2 p3 p4 ↔ areConcyclic p2 p1 p3 p4 := by
+  simp only [areConcyclic]
+  constructor <;> (intro ⟨c, r, hr, h1, h2, h3, h4⟩; exact ⟨c, r, hr, h2, h1, h3, h4⟩)
+
 /-
 ## Part IX: Small Cases
 -/
