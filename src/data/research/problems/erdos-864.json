@@ -29,23 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Removed false axiom almost_sidon_sum_range (4A→3A). Collision multiplicity r can be |B| >> 2 in reflected construction, violating the claimed bound. Remaining: erdos_freud_lower_bound (deep), sidon_upper_bound (classical), reflected_construction_valid (construction).",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
       "isAlmostSidon_subset: almost-Sidon is monotone under subsets",
       "isAlmostSidon_empty: empty set is almost-Sidon",
-      "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range"
+      "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range",
+      "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)",
+      "REMOVED false axiom almost_sidon_sum_range: |A|(|A|+1)/2-1 ≤ 2N-1 is false when collision multiplicity r > 2"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
       "multiRepSet A ⊆ multiRepSet B when A ⊆ B — follows from sumRepCount monotonicity",
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
-      "All 5 axioms are deep results: asymptotic bounds (EF lower, Sidon upper, comparison) and combinatorial arguments (sum range, reflected construction)",
-      "almost_sidon_sum_range might have an off-by-one for large collision multiplicity r — worth verifying",
-      "almost_sidon_sum_range axiom is likely INCORRECT for high collision multiplicity r≥3: counting gives |A|(|A|+1)/2 ≤ 2N+r-2, not ≤ 2N",
-      "Added correct provable bound distinct_sums_bounded: image of sum map has ≤ 2N-1 elements",
-      "All 5 axioms are deep: 3 asymptotic bounds + 2 combinatorial arguments. None trivially in Mathlib."
+      "almost_sidon_sum_range was FALSE: claimed |A|(|A|+1)/2 ≤ 2N but reflected construction has collision multiplicity |B| at sum N",
+      "Correct bound: |A|(|A|+1)/2 ≤ 2N + r - 2 where r is max collision multiplicity. Use distinct_sums_bounded for correct count.",
+      "Remaining 3 axioms are all deep results: EF lower bound (asymptotic construction), Sidon upper (classical), reflected construction (nontrivial case analysis)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -72,9 +72,9 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 220,
-      "theoremCount": 9,
-      "axiomCount": 5,
+      "lineCount": 269,
+      "theoremCount": 10,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
