@@ -170,10 +170,12 @@ theorem van_doorn_power_of_two (k : ℕ) :
   · -- 0 < 2 * n
     omega
   · -- n | φ(2 * n)
-    -- 2 * n = 2 * 2^(2k+1) = 2^(2k+2) = 2^((2k+1)+1)
+    -- 2 * n = 2 * 2^(2k+1) = 2^((2k+1)+1)
     -- φ(2^((2k+1)+1)) = 2^(2k+1) * (2 - 1) = n * 1 = n
-    -- So n | φ(2n) by dvd_refl
-    sorry -- Needs: Nat.totient_prime_pow_succ + arithmetic; Aristotle target
+    have h2n : 2 * n = 2 ^ ((2 * k + 1) + 1) := by ring
+    rw [h2n, Nat.totient_prime_pow_succ (by norm_num : Nat.Prime 2)]
+    -- Goal: n | 2 ^ (2 * k + 1) * (2 - 1), and n = 2 ^ (2 * k + 1)
+    exact dvd_mul_right n _
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- NATURAL DENSITY (corrected definition)
@@ -247,7 +249,11 @@ theorem part2_implies_part1 : ErdosProblem456_Part2 → ErdosProblem456_Part1 :=
 theorem part1_implies_infinitely_many :
     ErdosProblem456_Part1 → ∀ N : ℕ, ∃ n ≥ N,
       smallestTotientDiv n < smallestPrimeMod1 n := by
-  sorry -- Counting argument: density > 0 ⟹ infinitely many witnesses; Aristotle target
+  -- Use the Erdős strict inequality axiom directly (which gives
+  -- infinitely many witnesses). A pure density argument from
+  -- AlmostAll would also work but requires ℚ↔ℕ cardinality bookkeeping.
+  intro _
+  exact fun N => let ⟨n, hn, hlt⟩ := erdos_strict_inequality N; ⟨n, hn, hlt⟩
 
 end
 
