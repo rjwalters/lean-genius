@@ -19,13 +19,13 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 12,
+    "axiomCount": 11,
     "erdosNumber": 1160,
     "erdosUrl": "https://erdosproblems.com/1160",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-24",
     "mathlib_version": "4.26.0",
-    "lineCount": 205,
+    "lineCount": 222,
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -56,7 +56,9 @@
       "strong_implies_original: proved stronger conjecture implies original",
       "erdos_1160_n_eq_one: proved conjecture for n=1",
       "erdos_1160_prime: proved conjecture for prime n",
-      "pantelidakis_odd: axiomatized partial result for odd n"
+      "pantelidakis_odd: axiomatized partial result for odd n",
+      "numGroups_prime_power_pos: proved positivity for prime powers from numGroups_prime + monotonicity",
+      "erdos_1160_m_eq_two: proved conjecture for all n ≤ 4 (m=2 case)"
     ],
     "assumptions": [
       "numGroups is axiomatized (Lean/Mathlib lacks group enumeration)",
@@ -97,9 +99,9 @@
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 62,
-      "endLine": 77,
-      "summary": "Fundamental properties: positivity of g(n) for n ≥ 1 (every positive integer is the order of at least ℤ/nℤ) and monotonicity of g(p^k) in k for fixed prime p.",
-      "mathContext": "$g(n) > 0$ for $n \\geq 1$ and $g(p^{k_1}) \\leq g(p^{k_2})$ for $k_1 \\leq k_2$"
+      "endLine": 84,
+      "summary": "Monotonicity of g(p^k) in k for fixed prime p (axiom), positivity of g(p^k) for k ≥ 1 (proved from g(p)=1 + monotonicity), and g(2^m) ≥ 1 (proved without general positivity axiom).",
+      "mathContext": "$g(p^{k_1}) \\leq g(p^{k_2})$ for $k_1 \\leq k_2$; $g(p^k) > 0$ for $k \\geq 1$; $g(2^m) \\geq 1$"
     },
     {
       "id": "conjecture",
@@ -135,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies base cases (n = 1, prime n), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. The 13 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
+    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies base cases (n = 0, 1, prime n, m ≤ 2), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. The 11 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
     "implications": "A proof of the full conjecture would establish that 2-groups are the dominant source of finite group diversity at every scale — a fundamental structural fact about finite group theory. The BNV stronger form would imply that the diversity of 2-groups grows so fast that a single order $2^m$ harbors more non-isomorphic groups than all smaller orders combined. Progress on this conjecture is closely tied to advances in $p$-group enumeration and nilpotent Lie algebra classification.",
     "openQuestions": [
       "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",

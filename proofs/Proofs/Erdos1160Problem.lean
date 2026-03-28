@@ -62,14 +62,25 @@ axiom numGroups_thirtytwo : numGroups 32 = 51
 ## Section II: Basic Properties
 -/
 
-/-- The group counting function is always positive for n ≥ 1.
-    (Every positive integer is the order of at least one group: ℤ/nℤ.) -/
-axiom numGroups_pos (n : ℕ) (hn : 0 < n) : 0 < numGroups n
-
 /-- For prime powers p^k, the number of groups grows with k.
     This captures the fact that higher prime powers have richer group structure. -/
 axiom numGroups_prime_power_mono (p : ℕ) (hp : Nat.Prime p) (k₁ k₂ : ℕ)
     (hk : k₁ ≤ k₂) (hk₁ : 0 < k₁) : numGroups (p ^ k₁) ≤ numGroups (p ^ k₂)
+
+/-- For prime powers p^k with k ≥ 1, the group counting function is positive.
+    Derived from numGroups_prime (g(p)=1) and prime power monotonicity. -/
+theorem numGroups_prime_power_pos (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 0 < k) :
+    0 < numGroups (p ^ k) := by
+  calc 0 < 1 := by omega
+    _ = numGroups (p ^ 1) := by rw [pow_one, numGroups_prime p hp]
+    _ ≤ numGroups (p ^ k) := numGroups_prime_power_mono p hp 1 k hk (by omega)
+
+/-- g(2^m) ≥ 1 for all m ≥ 0. Proved without any axiom about general positivity:
+    derived from numGroups_one (m=0) and numGroups_prime_power_pos (m≥1). -/
+theorem numGroups_two_power_pos (m : ℕ) : 0 < numGroups (2 ^ m) := by
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · simp [pow_zero, numGroups_one]
+  · exact numGroups_prime_power_pos 2 (by norm_num) m hm
 
 /-
 ## Section III: The Conjecture
@@ -129,15 +140,13 @@ axiom pantelidakis_odd (m n : ℕ) (hm : 3619 ≤ m) (hn : n ≤ 2 ^ m)
 theorem erdos_1160_n_eq_one (m : ℕ) :
     numGroups 1 ≤ numGroups (2 ^ m) := by
   rw [numGroups_one]
-  have := numGroups_pos (2 ^ m) (by positivity)
-  omega
+  exact numGroups_two_power_pos m
 
 /-- The conjecture holds for prime n (since g(p) = 1 ≤ g(2^m)). -/
 theorem erdos_1160_prime (m : ℕ) (p : ℕ) (hp : Nat.Prime p) :
     numGroups p ≤ numGroups (2 ^ m) := by
   rw [numGroups_prime p hp]
-  have := numGroups_pos (2 ^ m) (by positivity)
-  omega
+  exact numGroups_two_power_pos m
 
 /-
 ## Section VI: Asymptotic Growth
@@ -178,10 +187,6 @@ theorem erdos_1160_self (m : ℕ) :
     numGroups (2 ^ m) ≤ numGroups (2 ^ m) :=
   le_refl _
 
-/-- g(2^m) ≥ 1 for all m ≥ 0. -/
-theorem numGroups_two_power_pos (m : ℕ) : 0 < numGroups (2 ^ m) :=
-  numGroups_pos (2 ^ m) (by positivity)
-
 /-- The conjecture for all n ≤ 2 follows from g(0)=0, g(1)=1, g(2)=1. -/
 theorem erdos_1160_m_eq_one (n : ℕ) (hn : n ≤ 2) :
     numGroups n ≤ numGroups (2 ^ 1) := by
@@ -189,6 +194,18 @@ theorem erdos_1160_m_eq_one (n : ℕ) (hn : n ≤ 2) :
   interval_cases n
   · rw [numGroups_zero, numGroups_two]; omega
   · rw [numGroups_one, numGroups_two]
+  · exact le_refl _
+
+/-- The conjecture for all n ≤ 4 (m = 2). Uses g(3) = 1 from numGroups_prime. -/
+theorem erdos_1160_m_eq_two (n : ℕ) (hn : n ≤ 4) :
+    numGroups n ≤ numGroups (2 ^ 2) := by
+  have h4 : (2 : ℕ) ^ 2 = 4 := by norm_num
+  rw [h4]
+  interval_cases n
+  · rw [numGroups_zero]; exact Nat.zero_le _
+  · rw [numGroups_one, numGroups_four]; omega
+  · rw [numGroups_two, numGroups_four]; omega
+  · rw [numGroups_prime 3 (by norm_num), numGroups_four]; omega
   · exact le_refl _
 
 /-- If the conjecture holds for m, and g(2^m) ≤ g(2^(m+1)),
