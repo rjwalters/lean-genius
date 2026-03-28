@@ -29,16 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "4A->2A, 0S->1S. Proved sidon_sumset_card (modulo card lemma sorry) via Sidon injectivity argument. Proved average_gap_bounded trivially (C depends on N).",
+    "progressSummary": "2A->2A, 0S->0S. Proved card_upper_triangle lemma eliminating the last sorry in sidon_sumset_card. Three new helper lemmas: diag_card_eq, card_lt_swap, card_upper_triangle.",
     "builtItems": [
       "sidon_sumset_card: converted axiom to theorem with injectivity proof (1 sorry in card computation)",
-      "average_gap_bounded: proved trivially from sumset nonemptiness"
+      "average_gap_bounded: proved trivially from sumset nonemptiness",
+      "diag_card_eq: diagonal cardinality lemma",
+      "card_lt_swap: swap bijection between lower and upper strict triangles",
+      "card_upper_triangle: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2"
     ],
     "insights": [
       "sidon_sumset_card: key step is showing sum map injective on ordered pairs - this IS the Sidon condition",
       "average_gap_bounded is trivially true: existential over C allows C = 2N+1",
       "ess_1994_result is a legitimate cited deep theorem (ESS 1994)",
-      "infinite_sidon_gap_question is an open conjecture - appropriate as axiom"
+      "infinite_sidon_gap_question is an open conjecture - appropriate as axiom",
+      "Upper triangle cardinality lemma: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2 proved via partition into {a<b}, {a=b}, {a>b} with swap bijection",
+      "omega tactic handles the final arithmetic: 2*U = n*(n+1) implies U = n*(n+1)/2"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
