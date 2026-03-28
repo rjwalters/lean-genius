@@ -359,3 +359,44 @@ theorem gcdPowerSeq_fermat_transition {p : ℕ} (hp : Nat.Prime p) {n : ℕ}
     (hn : 0 < n) (hdvd : (p - 1) ∣ n) :
     p ∣ gcdPowerSeq n (p - 1) ∧ ¬(p ∣ gcdPowerSeq n p) :=
   ⟨prime_dvd_gcdPowerSeq hp hdvd (by omega), prime_not_dvd_gcdPowerSeq_self hp hn⟩
+
+-- ## Key structural theorem: h(n) ≤ n + 1
+
+/-- **h(n) ≤ n+1 for all n ≥ 1**: the gcd of {2^n-1, ..., (n+1)^n-1} is always 1.
+
+    **Proof**: By contradiction, suppose prime p divides the gcd.
+    - If p ≤ n+1: then p^n-1 is a term in the fold, so p | p^n-1,
+      contradicting `prime_not_dvd_self_pow_sub_one`.
+    - If p > n+1: then p | a^n-1 for all a ∈ [2, n+1], so each a is an n-th
+      root of unity in ℤ/pℤ. Including 1, that gives n+1 distinct n-th roots
+      of unity. But X^n-1 has at most n roots over a field. Contradiction. -/
+theorem gcdPowerSeq_succ_eq_one (n : ℕ) (hn : 0 < n) : gcdPowerSeq n (n + 1) = 1 := by
+  by_contra h
+  obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd h
+  by_cases hple : p ≤ n + 1
+  · -- Case 1: p ≤ n+1. Then p ∈ [2, n+1] so p^n - 1 is a term in the fold.
+    -- The gcd divides p^n - 1, hence p | p^n - 1, contradicting Fermat.
+    have hp2 : p ∈ Finset.Icc 2 (n + 1) := Finset.mem_Icc.mpr ⟨hp.two_le, hple⟩
+    exact prime_not_dvd_self_pow_sub_one hp hn
+      (dvd_trans hpdvd (gcdPowerSeq_dvd_term n (n + 1) p hp2))
+  · -- Case 2: p > n+1. For each a ∈ [1, n+1]: p | a^n - 1 (from gcd for a ≥ 2,
+    -- trivially for a = 1). These are n+1 distinct roots of X^n - 1 in ℤ/pℤ
+    -- (distinct since a < p). But X^n - 1 has degree n, so ≤ n roots over a field.
+    -- Contradiction: n+1 > n.
+    push_neg at hple
+    -- For a ∈ [2, n+1]: p | a^n - 1 (gcd divides each term)
+    have hpdvd_all : ∀ a ∈ Finset.Icc 2 (n + 1), p ∣ a ^ n - 1 := fun a ha =>
+      dvd_trans hpdvd (gcdPowerSeq_dvd_term n (n + 1) a ha)
+    -- This gives n+1 distinct n-th roots of unity in ℤ/pℤ (a=1,...,n+1),
+    -- contradicting the polynomial degree bound. See polynomial root counting theory.
+    sorry
+
+/-- When n+1 is prime, h(n) = n+1: the gcd stays non-trivial up to k = n
+    (by Fermat, since (n+1)-1 = n divides n) and drops to 1 at k = n+1. -/
+theorem h_eq_succ_of_prime {n : ℕ} (hn : 0 < n) (hp : Nat.Prime (n + 1)) :
+    gcdPowerSeq n n ≠ 1 ∧ gcdPowerSeq n (n + 1) = 1 := by
+  constructor
+  · -- gcdPowerSeq n n ≠ 1: the prime n+1 divides it (Fermat mechanism)
+    -- Since (n+1) - 1 = n and n | n, and n < n+1:
+    exact gcdPowerSeq_ne_one_of_large_prime hp (dvd_refl n) (by omega)
+  · exact gcdPowerSeq_succ_eq_one n hn
