@@ -37,6 +37,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Nat.Prime.Nth
+import Mathlib.Data.Nat.Factorization.Basic
 
 open Nat BigOperators Finset Real
 
@@ -119,9 +120,61 @@ theorem primeSeq_gt_one : ∀ n, primeSeq n > 1 := by
   simp only [primeSeq]
   exact_mod_cast (primeSeq_isPrime n).one_lt
 
+/-- The factorization of a product of indexed prime powers, evaluated at the nth prime,
+    gives the exponent of that index. This is the key step for unique factorization:
+    distinct Finsupp exponent tuples yield distinct natural number products. -/
+private lemma factorization_prod_at (S : Finset ℕ) (e : ℕ → ℕ) (n : ℕ) :
+    (∏ i ∈ S, (Nat.nth Nat.Prime i) ^ (e i)).factorization (Nat.nth Nat.Prime n) =
+      if n ∈ S then e n else 0 := by
+  induction S using Finset.induction with
+  | empty => simp [Nat.factorization_one]
+  | insert j s hjs ih =>
+    have ha : (Nat.nth Nat.Prime j) ^ (e j) ≠ 0 :=
+      Nat.pos_iff_ne_zero.mp
+        (pow_pos (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j).pos _)
+    have hb : (∏ i ∈ s, (Nat.nth Nat.Prime i) ^ (e i)) ≠ 0 :=
+      Nat.pos_iff_ne_zero.mp (Finset.prod_pos fun i _ =>
+        pow_pos (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime i).pos _)
+    rw [Finset.prod_insert hjs, Nat.factorization_mul ha hb, Finsupp.add_apply, ih,
+        Nat.factorization_pow, Finsupp.smul_apply, smul_eq_mul,
+        Nat.factorization_prime (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j),
+        Finsupp.single_apply]
+    have h_inj := (Nat.nth_strictMono Nat.infinite_setOf_prime).injective
+    by_cases hn : j = n
+    · subst hn; simp [hjs]
+    · simp [show Nat.nth Nat.Prime j ≠ Nat.nth Nat.Prime n from fun h => hn (h_inj h),
+            hn, Ne.symm hn]
+
 /-- The ordinary primes have well-separated products by the
-    Fundamental Theorem of Arithmetic. -/
-axiom primeSeq_well_separated : WellSeparatedProducts primeSeq
+    Fundamental Theorem of Arithmetic: distinct exponent tuples yield
+    distinct natural number products, and distinct naturals differ by ≥ 1. -/
+theorem primeSeq_well_separated : WellSeparatedProducts primeSeq := by
+  intro k ℓ hne
+  simp only [WellSeparatedProducts, primeSeq]
+  -- Define the products as natural numbers
+  set Pk := ∏ i ∈ k.support, (Nat.nth Nat.Prime i) ^ (k i) with hPk_def
+  set Pℓ := ∏ j ∈ ℓ.support, (Nat.nth Nat.Prime j) ^ (ℓ j) with hPℓ_def
+  -- Step 1: Products are distinct (by unique prime factorization)
+  have hne_prod : Pk ≠ Pℓ := by
+    intro heq
+    apply hne; ext n
+    have h := congr_arg (fun m => Nat.factorization m (Nat.nth Nat.Prime n)) heq
+    rw [factorization_prod_at, factorization_prod_at] at h
+    simpa [Finsupp.mem_support_iff] using h
+  -- Step 2: The real-valued products equal the natural products cast to ℝ
+  have h_cast_k :
+      ∏ i ∈ k.support, (↑(Nat.nth Nat.Prime i) : ℝ) ^ (k i) = (↑Pk : ℝ) := by
+    norm_cast
+  have h_cast_ℓ :
+      ∏ j ∈ ℓ.support, (↑(Nat.nth Nat.Prime j) : ℝ) ^ (ℓ j) = (↑Pℓ : ℝ) := by
+    norm_cast
+  rw [h_cast_k, h_cast_ℓ]
+  -- Step 3: Distinct natural numbers cast to ℝ differ by at least 1
+  rcases hne_prod.lt_or_lt with h | h
+  · rw [abs_of_nonpos (sub_nonpos.mpr (Nat.cast_le.mpr h.le))]
+    linarith [show (↑Pk : ℝ) + 1 ≤ ↑Pℓ from by exact_mod_cast Nat.succ_le_of_lt h]
+  · rw [abs_of_nonneg (sub_nonneg.mpr (Nat.cast_le.mpr h.le))]
+    linarith [show (↑Pℓ : ℝ) + 1 ≤ ↑Pk from by exact_mod_cast Nat.succ_le_of_lt h]
 
 /-- The ordinary primes form a Beurling prime sequence. -/
 noncomputable def actualPrimes : BeurlingPrimes where
@@ -183,8 +236,9 @@ def IsBeurlingInteger (a : ℕ → ℝ) (x : ℝ) : Prop :=
 noncomputable def beurlingN (a : ℕ → ℝ) (x : ℝ) : ℕ :=
   Set.ncard {y : ℝ | IsBeurlingInteger a y ∧ 1 ≤ y ∧ y ≤ x}
 
-/-- Beurlings conjecture: if N_a(x) = x + o(log x), then a_i must be the primes. -/
-axiom beurlings_conjecture :
+/-- Beurlings conjecture: if N_a(x) = x + o(log x), then a_i must be the primes.
+    This is an open conjecture; we state it as a Prop without asserting truth. -/
+def beurlings_conjecture : Prop :=
     ∀ bp : BeurlingPrimes,
       (∀ ε > 0, ∃ X : ℝ, ∀ x ≥ X, |beurlingN bp.a x - x| ≤ ε * Real.log x) →
       bp.a = primeSeq
