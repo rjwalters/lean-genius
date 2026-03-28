@@ -88,6 +88,21 @@ theorem reprCount_empty_nonzero {G : Type*} [AddCommGroup G] [DecidableEq G]
     (g : G) (hg : g ≠ 0) : reprCount (∅ : Finset G) g = 0 := by
   simp [reprCount, powerset_empty, filter_singleton, sum_empty, hg.symm]
 
+/-- Every element has at most 2^|A| representations (each subset counted ≤ once). -/
+theorem reprCount_le_pow {G : Type*} [AddCommGroup G] [DecidableEq G]
+    (A : Finset G) (g : G) : reprCount A g ≤ 2 ^ A.card := by
+  unfold reprCount
+  calc (A.powerset.filter (fun S => S.sum id = g)).card
+      ≤ A.powerset.card := Finset.card_filter_le _ _
+      _ = 2 ^ A.card := Finset.card_powerset A
+
+/-- The expected representation count is positive for N ≥ 1. -/
+theorem expectedReprCount_pos {k N : ℕ} (hN : 1 ≤ N) :
+    0 < expectedReprCount k N := by
+  unfold expectedReprCount
+  apply div_pos (pow_pos (by norm_num : (0:ℝ) < 2) k)
+  exact_mod_cast Nat.lt_of_lt_pred (by omega : 0 < N)
+
 /- ## Part IV: The Function g_ε(N) -/
 
 -- g_ε(N) is the minimal k such that a random k-subset of any abelian group
