@@ -62,7 +62,15 @@ def CanReduceChromatic {n : ℕ} (G : SGraph n) (k r : ℕ) : Prop :=
 
 /-- f_r(n): the maximum k such that if every m-vertex induced subgraph
     of G can have its chromatic number reduced to ≤ r by removing ≤ k edges,
-    then G has chromatic number ≤ r + 1. -/
+    then G has chromatic number ≤ r + 1.
+
+    **Important**: This definition uses `sSup` on `ℕ`, which is only
+    well-defined (via `ConditionallyCompleteLattice`) when the defining set
+    is nonempty and bounded above. The set is bounded iff there exists an
+    `SGraph n` that is NOT `(r+1)`-colorable, which requires `r + 2 ≤ n`
+    (since `K_n` has chromatic number `n`). When `r + 1 ≥ n`, every `SGraph n`
+    is `(r+1)`-colorable, the set equals all of `ℕ`, and `sSup` returns a
+    junk value. Axioms about `fThreshold` must include `r + 2 ≤ n`. -/
 noncomputable def fThreshold (r n : ℕ) : ℕ :=
   sSup { k : ℕ | ∀ G : SGraph n,
     (∀ S : Finset (Fin n), CanReduceChromatic
@@ -121,8 +129,7 @@ ConditionallyCompleteLinearOrderBot.
 - So 2 ≤ 0 is false
 
 Note: A correct formulation would either use ℕ∞ (extended naturals) for
-the threshold, or restrict to r + 2 ≤ n to ensure both sets are bounded.
--/
+the threshold, or restrict to r + 2 ≤ n to ensure both sets are bounded.-/
 
 /-
 ## Structural Properties of Colorings
@@ -148,3 +155,17 @@ theorem canReduce_zero {n : ℕ} (G : SGraph n) (r : ℕ) (hc : G.hasColoring r)
     CanReduceChromatic G 0 r := by
   obtain ⟨c, hc⟩ := hc
   exact ⟨∅, by simp, c, fun u v ⟨hadj, _, _⟩ => hc u v hadj⟩
+
+/-- Monotonicity of CanReduceChromatic in edge budget: if we can reduce
+    chromatic number by removing k edges, we can also do it with k' ≥ k. -/
+theorem CanReduceChromatic_mono_k {n : ℕ} (G : SGraph n) {k k' r : ℕ}
+    (hk : k ≤ k') (h : CanReduceChromatic G k r) : CanReduceChromatic G k' r := by
+  obtain ⟨removed, hcard, hcol⟩ := h
+  exact ⟨removed, le_trans hcard hk, hcol⟩
+
+/-- Monotonicity of CanReduceChromatic in color count: if the reduced graph
+    is r-colorable, it is also r'-colorable for r' ≥ r. -/
+theorem CanReduceChromatic_mono_r {n : ℕ} (G : SGraph n) {k r r' : ℕ}
+    (hr : r ≤ r') (h : CanReduceChromatic G k r) : CanReduceChromatic G k r' := by
+  obtain ⟨removed, hcard, hcol⟩ := h
+  exact ⟨removed, hcard, SGraph.hasColoring_mono _ hr hcol⟩

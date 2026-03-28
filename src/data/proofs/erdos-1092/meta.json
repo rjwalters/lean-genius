@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 150,
+    "lineCount": 171,
     "assumptions": "1 axiom: rodl_upper_bound (Rödl 1982 O(n·polylog) bound). Removed: f_trivial_lower (FALSE — K₃+isolated counterexample for r=1,n=4), erdos_744_connection (FALSE — sSup pathology when r+1≥n). Questions 1 & 2 previously removed (disproved by Rödl).",
     "mathlib_version": "4.26.0"
   },
@@ -87,11 +87,11 @@
     },
     {
       "id": "rodl-bounds",
-      "title": "Rödl's Construction and Bounds",
-      "startLine": 76,
-      "endLine": 102,
-      "summary": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$ (sole remaining axiom). Former axioms f_trivial_lower and erdos_744_connection removed with documented counterexamples.",
-      "mathContext": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$ (sole remaining axiom). Former axioms f_trivial_lower and erdos_744_connection removed with documented counterexamples."
+      "title": "Rödl's Construction and Structural Properties",
+      "startLine": 94,
+      "endLine": 171,
+      "summary": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$ (sole remaining axiom). Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection).",
+      "mathContext": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$ (sole remaining axiom). Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection)."
     }
   ],
   "conclusion": {
@@ -195,9 +195,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 150,
+    "lineCount": 171,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 5
   }
 }
