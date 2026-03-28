@@ -193,6 +193,54 @@ theorem infinite_of_diffSet_bounded_gaps (A : Set ℕ)
   rw [← diffSet_nonempty_iff]
   exact hasBoundedGaps_nonempty _ h
 
+/- ## Density–finiteness connection -/
+
+/-- The counting function is bounded by N: at most N elements in {1,...,N}. -/
+theorem countingFn_le (A : Set ℕ) (N : ℕ) : countingFn A N ≤ N := by
+  unfold countingFn
+  have h1 : (Finset.Icc 1 N |>.filter (· ∈ A)).card ≤ (Finset.Icc 1 N).card :=
+    Finset.card_filter_le _ _
+  have h2 : (Finset.Icc 1 N).card ≤ N := by simp [Finset.card_Icc]; omega
+  omega
+
+/-- Positive upper density implies A is infinite.
+    Proof: if A were finite, countingFn A N ≤ |A| for all N, but
+    density gives δ * N ≤ countingFn A N for arbitrarily large N,
+    contradicting the Archimedean property. -/
+theorem positive_upper_density_infinite (A : Set ℕ)
+    (h : HasPositiveUpperDensity A) : Set.Infinite A := by
+  obtain ⟨δ, hδ, hdens⟩ := h
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  set C := hfin.toFinset.card with hC_def
+  have hcf_bound : ∀ N, countingFn A N ≤ C := by
+    intro N
+    unfold countingFn
+    exact Finset.card_le_card
+      (fun hx => hfin.mem_toFinset.mpr ((Finset.mem_filter.mp hx).2))
+  obtain ⟨N₀, hN₀⟩ := exists_nat_gt ((C : ℚ) / δ)
+  obtain ⟨N, hN, hδN⟩ := hdens N₀
+  have h1 : (C : ℚ) / δ < (N : ℚ) := lt_of_lt_of_le hN₀ (by exact_mod_cast hN)
+  have h2 : (C : ℚ) < δ * (N : ℚ) := by rwa [div_lt_iff hδ] at h1
+  have h3 : δ * (N : ℚ) ≤ (C : ℚ) := le_trans hδN (by exact_mod_cast hcf_bound N)
+  linarith
+
+/-- Positive upper density implies D(A) is nonempty (contains zero).
+    Completes the chain: density → infinite → D(A) nonempty. -/
+theorem positive_upper_density_diffSet_nonempty (A : Set ℕ)
+    (h : HasPositiveUpperDensity A) : (diffSet A).Nonempty :=
+  diffSet_nonempty_of_infinite A (positive_upper_density_infinite A h)
+
+/-- Full implication chain for Erdős 332:
+    positive upper density → A infinite → D(A) nonempty → D(A) syndetic.
+    The last step uses the Prikry axiom. -/
+theorem density_chain (A : Set ℕ)
+    (h : HasPositiveUpperDensity A) :
+    Set.Infinite A ∧ (diffSet A).Nonempty ∧ HasBoundedGaps (diffSet A) :=
+  ⟨positive_upper_density_infinite A h,
+   positive_upper_density_diffSet_nonempty A h,
+   positive_density_bounded_gaps A h⟩
+
 /- ## Main problem -/
 
 /-- Erdős Problem 332: What conditions on `A ⊆ ℕ` are sufficient to
