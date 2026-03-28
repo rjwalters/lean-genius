@@ -144,8 +144,33 @@ axiom erdos_155_strong (ε : ℝ) (hε : ε > 0) :
 
 /- ## Consequences -/
 
-/-- If the conjecture holds, then F(N+1) = F(N) for "most" values of N:
-    the set of N where F increases has density 0. -/
+/-- The number of increase points N < M where F(N+1) > F(N) is at most F(M).
+    Proof by induction: F increases by at most 1 (maxSidon_step), so the total
+    increase F(M) - F(0) = F(M) bounds the number of steps where F goes up. -/
+theorem increase_count_le (M : ℕ) :
+    (Finset.filter (fun N => maxSidonSize (N + 1) > maxSidonSize N)
+      (Finset.range M)).card ≤ maxSidonSize M := by
+  induction M with
+  | zero => simp
+  | succ M ih =>
+    rw [Finset.range_succ, Finset.filter_insert]
+    split_ifs with h
+    · -- F(M+1) > F(M): count increases by 1
+      have hnotmem : M ∉ Finset.filter (fun N => maxSidonSize (N + 1) > maxSidonSize N)
+          (Finset.range M) :=
+        fun hmem => absurd (Finset.mem_range.mp (Finset.mem_of_mem_filter _ hmem)) (lt_irrefl _)
+      rw [Finset.card_insert_of_not_mem hnotmem]
+      -- F(M+1) = F(M) + 1 from h and maxSidon_step
+      have : maxSidonSize (M + 1) = maxSidonSize M + 1 :=
+        le_antisymm (maxSidon_step M) h
+      omega
+    · -- F(M+1) = F(M): count unchanged, bound follows from monotonicity
+      exact le_trans ih (maxSidon_monotone M)
+
+/-- F(N+1) = F(N) for "most" values of N: the number of increase points
+    below M is at most (1+ε)√M. Follows from increase_count_le (count ≤ F(M))
+    and erdos_turan_upper (F(M) ≤ √M + M^{1/4} + 1). The remaining gap is
+    the elementary inequality M^{1/4} + 1 ≤ ε√M for large M. -/
 axiom increase_points_sparse :
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ M : ℕ, M ≥ N₀ →
       (Finset.card (Finset.filter

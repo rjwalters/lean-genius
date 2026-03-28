@@ -60,7 +60,8 @@
       "turanHypergraph_graph_ge follows immediately from cliqueFree_le_turan + bipartite construction",
       "Three sorries needed for full axiom elimination: (1) bipartite clique-free (pigeonhole), (2) bipartite edge count, (3) upper bound (needs SimpleGraph bridge)",
       "completeBipartiteHypergraph_cliqueFree proved via: card_eq_three decomposition → 8-way case split on parities → Finset.card_pair + completeClique membership → filter condition contradiction",
-      "Key Mathlib lemmas: Finset.card_eq_three, Nat.mod_two_eq_zero_or_one, Finset.card_pair"
+      "Key Mathlib lemmas: Finset.card_eq_three, Nat.mod_two_eq_zero_or_one, Finset.card_pair",
+      "Both sorries (completeBipartiteHypergraph_card, turanHypergraph_graph_le) require combinatorial counting arguments. Edge count needs bijection with evens×odds product. Upper bound needs SimpleGraph bridge to Mathlib Turán. Neither tractable without build testing."
     ],
     "mathlibGaps": [
       "No Mathlib API for r-uniform hypergraphs (only SimpleGraph)",
