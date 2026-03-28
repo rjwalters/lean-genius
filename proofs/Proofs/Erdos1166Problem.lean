@@ -40,32 +40,57 @@ axiom walk_starts_at_origin (ω : RandomWalk) : trajectory ω 0 = origin
 
 -- ## Visit Counts
 
-/-- f_k(x, ω): number of visits to point x through step k in walk ω. -/
-noncomputable axiom visitCount : RandomWalk → ℕ → LatticePoint → ℕ
+/-- f_k(x, ω): number of visits to point x through step k in walk ω.
+    Defined as |{n ∈ {0,...,k} | trajectory ω n = x}|. -/
+noncomputable def visitCount (ω : RandomWalk) (k : ℕ) (x : LatticePoint) : ℕ :=
+  ((Finset.range (k + 1)).filter (fun n => trajectory ω n = x)).card
 
 /-- Visit count is non-negative (trivially, since it's ℕ). -/
 theorem visitCount_nonneg (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
     0 ≤ visitCount ω k x := Nat.zero_le _
 
 /-- Visit count is monotone in k: more steps means at least as many visits. -/
-axiom visitCount_mono (ω : RandomWalk) (k₁ k₂ : ℕ) (x : LatticePoint)
-    (h : k₁ ≤ k₂) : visitCount ω k₁ x ≤ visitCount ω k₂ x
+theorem visitCount_mono (ω : RandomWalk) (k₁ k₂ : ℕ) (x : LatticePoint)
+    (h : k₁ ≤ k₂) : visitCount ω k₁ x ≤ visitCount ω k₂ x := by
+  unfold visitCount
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (by
+    intro n hn; simp only [Finset.mem_range] at *; omega))
 
 /-- The origin is visited at step 0. -/
-axiom visitCount_origin (ω : RandomWalk) : visitCount ω 0 origin ≥ 1
+theorem visitCount_origin (ω : RandomWalk) : visitCount ω 0 origin ≥ 1 := by
+  unfold visitCount
+  exact Finset.card_pos.mpr ⟨0, Finset.mem_filter.mpr
+    ⟨Finset.mem_range.mpr (by omega), walk_starts_at_origin ω⟩⟩
 
 -- ## Maximum Visit Count
 
-/-- T_k(ω): the maximum number of visits to any single point through step k. -/
-noncomputable axiom maxVisitCount : RandomWalk → ℕ → ℕ
+/-- T_k(ω): the maximum number of visits to any single point through step k.
+    Defined as the supremum of visitCount over all visited points.
+    Uses ℕ's OrderBot (⊥ = 0) for Finset.sup. -/
+noncomputable def maxVisitCount (ω : RandomWalk) (k : ℕ) : ℕ :=
+  ((Finset.range (k + 1)).image (trajectory ω)).sup (visitCount ω k)
 
 /-- T_k achieves the maximum over all points. -/
-axiom maxVisitCount_is_max (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
-    visitCount ω k x ≤ maxVisitCount ω k
+theorem maxVisitCount_is_max (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
+    visitCount ω k x ≤ maxVisitCount ω k := by
+  unfold maxVisitCount
+  by_cases hx : x ∈ (Finset.range (k + 1)).image (trajectory ω)
+  · exact Finset.le_sup hx
+  · -- x not visited in first k+1 steps: visitCount = 0
+    suffices visitCount ω k x = 0 by omega
+    unfold visitCount; rw [Finset.card_eq_zero, Finset.filter_eq_empty]
+    intro n hn heq
+    exact hx (Finset.mem_image.mpr ⟨n, hn, heq⟩)
 
 /-- T_k is achieved by some point. -/
-axiom maxVisitCount_achieved (ω : RandomWalk) (k : ℕ) :
-    ∃ x : LatticePoint, visitCount ω k x = maxVisitCount ω k
+theorem maxVisitCount_achieved (ω : RandomWalk) (k : ℕ) :
+    ∃ x : LatticePoint, visitCount ω k x = maxVisitCount ω k := by
+  unfold maxVisitCount
+  set visited := (Finset.range (k + 1)).image (trajectory ω)
+  have hne : visited.Nonempty :=
+    ⟨trajectory ω 0, Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (by omega), rfl⟩⟩
+  obtain ⟨x, hx, hmax⟩ := Finset.exists_max_image visited (visitCount ω k) hne
+  exact ⟨x, (le_antisymm (Finset.sup_le fun y hy => hmax y hy) (Finset.le_sup hx)).symm⟩
 
 /-- T_k ≥ 1 for all k ≥ 0 (at least the origin is visited). -/
 theorem maxVisitCount_pos (ω : RandomWalk) (k : ℕ) :
@@ -77,14 +102,27 @@ theorem maxVisitCount_pos (ω : RandomWalk) (k : ℕ) :
 
 -- ## Set of Most-Visited Points
 
-/-- F(k, ω): the set of points achieving the maximum visit count at step k.
-    Since this is a finite subset of Z² (only finitely many points are visited),
-    we axiomatize it as a Finset. -/
-noncomputable axiom mostVisitedSet : RandomWalk → ℕ → Finset LatticePoint
+/-- F(k, ω): the set of visited points achieving the maximum visit count.
+    Defined as the filter of visited points where visitCount equals maxVisitCount. -/
+noncomputable def mostVisitedSet (ω : RandomWalk) (k : ℕ) : Finset LatticePoint :=
+  ((Finset.range (k + 1)).image (trajectory ω)).filter
+    (fun x => visitCount ω k x = maxVisitCount ω k)
 
 /-- A point is in F(k) iff it achieves the maximum visit count. -/
-axiom mem_mostVisitedSet (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
-    x ∈ mostVisitedSet ω k ↔ visitCount ω k x = maxVisitCount ω k
+theorem mem_mostVisitedSet (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
+    x ∈ mostVisitedSet ω k ↔ visitCount ω k x = maxVisitCount ω k := by
+  unfold mostVisitedSet
+  constructor
+  · exact fun hx => (Finset.mem_filter.mp hx).2
+  · intro heq
+    apply Finset.mem_filter.mpr
+    refine ⟨?_, heq⟩
+    -- x must be visited since visitCount > 0
+    have hpos : 0 < visitCount ω k x := heq ▸ maxVisitCount_pos ω k
+    unfold visitCount at hpos
+    obtain ⟨n, hn⟩ := Finset.card_pos.mp hpos
+    have := Finset.mem_filter.mp hn
+    exact Finset.mem_image.mpr ⟨n, this.1, this.2⟩
 
 /-- F(k) is nonempty (the maximum is achieved). -/
 theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
