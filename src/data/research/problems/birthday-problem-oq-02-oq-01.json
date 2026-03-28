@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No Lean file. Parent OQ02 has upper bound but not matching lower. Tractable: needs Taylor remainder of ln(1-x) from Mathlib.",
+    "progressSummary": "SURVEYED: Proof strategy identified (f(0)=0, f'≥0 approach). Needs ~150 lines without Docker testing. Deferred for session with build access.",
     "builtItems": [
       "Assessment: tractable new formalization, needs Taylor remainder infrastructure"
     ],
@@ -39,7 +39,11 @@
       "OQ-02-OQ-01 asks: formalize matching lower bound via second-order Taylor of ln(1-x)",
       "Key math: ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²))",
       "Tractable: needs ln(1-x) ≥ -x - x²/2 (Taylor with remainder), then product bound",
-      "Would need Mathlib Real.log bounds + Taylor/Lagrange remainder for ln"
+      "Would need Mathlib Real.log bounds + Taylor/Lagrange remainder for ln",
+      "Cleanest proof: define f(x) = x + x²/(2(1-x)) + log(1-x). Then f(0)=0, f'(x) = x²/(2(1-x)²) ≥ 0, so f(x) ≥ 0 on [0,1). This avoids integrals.",
+      "In Lean this needs: HasDerivAt for f, nonnegativity of f' on [0,1), MonotonOn argument",
+      "Key Mathlib deps: Real.log, HasDerivAt, deriv_log, MonotonOn",
+      "Estimated effort: ~150 lines for log lower bound + product bound"
     ],
     "mathlibGaps": [],
     "nextSteps": []
