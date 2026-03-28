@@ -16,6 +16,7 @@ a monochromatic triangle.
 **Status:** OPEN
 
 **Proved in this file:**
+- forcing_set_nonempty: Ramsey's theorem for triangles (pigeonhole induction)
 - R(3;1) = 3 (trivial: 1 color)
 - R(3;2) = 6 (classical R(3,3): pigeonhole upper bound + C₅ lower bound)
 - Monotonicity: k₁ ≤ k₂ → R(3;k₁) ≤ R(3;k₂)
@@ -70,9 +71,113 @@ R(3;k) is the minimum n such that every k-coloring of K_n has a monochromatic tr
 def ForcesMonochromaticTriangle (n k : ℕ) : Prop :=
   k ≥ 1 → ∀ c : EdgeColoring n k, IsSymmetric c → HasSomeMonochromaticTriangle c
 
-/-- The set of n that force monochromatic triangles is nonempty (for k ≥ 1) -/
-axiom forcing_set_nonempty (k : ℕ) (hk : k ≥ 1) :
-  ∃ n : ℕ, ForcesMonochromaticTriangle n k
+/-! ### Proof of forcing_set_nonempty (Ramsey's theorem for triangles)
+
+By induction on k: base case k=1 uses K₃, inductive step uses pigeonhole
+to find ≥ m same-colored neighbors of a fixed vertex, then either an edge
+among them completes a triangle or the remaining k-1 colors force one.
+-/
+
+/-- Map Fin (k+1) to Fin k by collapsing color c₀.
+    Injective on values ≠ c₀. Used for color relabeling in the inductive step. -/
+private def mapColor {k : ℕ} (c₀ x : Fin (k + 1)) : Fin k :=
+  if h : x = c₀ then ⟨0, by omega⟩
+  else ⟨if x.val < c₀.val then x.val else x.val - 1, by
+    have := x.isLt; have := c₀.isLt; have : x.val ≠ c₀.val := Fin.val_ne_of_ne h
+    split <;> omega⟩
+
+/-- mapColor is injective on arguments ≠ c₀ -/
+private lemma mapColor_injective_ne {k : ℕ} {c₀ x y : Fin (k + 1)}
+    (hx : x ≠ c₀) (hy : y ≠ c₀) (heq : mapColor c₀ x = mapColor c₀ y) : x = y := by
+  simp only [mapColor, dif_neg hx, dif_neg hy, Fin.mk.injEq] at heq
+  have : x.val ≠ c₀.val := Fin.val_ne_of_ne hx
+  have : y.val ≠ c₀.val := Fin.val_ne_of_ne hy
+  ext; split_ifs at heq <;> omega
+
+/-- ForcesMonochromaticTriangle m k with k ≥ 1 requires m ≥ 3 (need 3 distinct vertices) -/
+private lemma forces_imp_ge_three {m k : ℕ} (hk : k ≥ 1)
+    (hf : ForcesMonochromaticTriangle m k) : m ≥ 3 := by
+  by_contra hlt; push_neg at hlt
+  obtain ⟨_, i, j, l, hij, hjl, hil, _, _, _⟩ :=
+    hf hk (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+  interval_cases m
+  · exact i.elim0
+  · exact hij (Subsingleton.elim i j)
+  · have : i = j ∨ i = l ∨ j = l := by
+      rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩; rcases l with ⟨l, hl⟩
+      simp only [Fin.mk.injEq]; omega
+    rcases this with rfl | rfl | rfl <;> contradiction
+
+/-- The forcing set is nonempty for all k ≥ 1 (Ramsey's theorem for triangles).
+    Proved by induction on k using the pigeonhole principle. -/
+theorem forcing_set_nonempty (k : ℕ) (hk : k ≥ 1) :
+    ∃ n : ℕ, ForcesMonochromaticTriangle n k := by
+  induction k with
+  | zero => omega
+  | succ k' ih =>
+    by_cases hk' : k' = 0
+    · -- Base: k=1, K₃ suffices (1 color means all edges monochromatic)
+      subst hk'; exact ⟨3, fun _ c _ =>
+        ⟨⟨0, by omega⟩, ⟨0, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
+         by decide, by decide, by decide,
+         Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩⟩
+    · -- Inductive step: k'+1 ≥ 2 colors
+      have hk'1 : k' ≥ 1 := by omega
+      obtain ⟨m, hm⟩ := ih hk'1
+      have hm3 : m ≥ 3 := forces_imp_ge_three hk'1 hm
+      -- N = (k'+1)·(m-1)+2 suffices: v₀ has N-1 = (k'+1)·(m-1)+1 neighbors,
+      -- pigeonhole gives ≥ m same-colored neighbors
+      refine ⟨(k' + 1) * (m - 1) + 2, fun hk1 c hsym => ?_⟩
+      -- Fix vertex v₀
+      let v₀ : Fin ((k' + 1) * (m - 1) + 2) := ⟨0, by omega⟩
+      let others := (Finset.univ : Finset (Fin ((k' + 1) * (m - 1) + 2))).erase v₀
+      have hoc : others.card = (k' + 1) * (m - 1) + 1 := by
+        simp [others, Finset.card_erase_of_mem (Finset.mem_univ v₀), Fintype.card_fin]
+      -- Pigeonhole: some color c₀ appears on ≥ m edges from v₀
+      have h_pig : (Finset.univ : Finset (Fin (k' + 1))).card • (m - 1) < others.card := by
+        rw [Finset.card_univ, Fintype.card_fin, hoc, smul_eq_mul]; omega
+      obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
+        (f := fun u => c (v₀, u)) (fun _ _ => Finset.mem_univ _) h_pig
+      -- The fiber: vertices connected to v₀ by color c₀
+      let S := others.filter (fun u => c (v₀, u) = c₀)
+      have hSm : S.card ≥ m := by change m - 1 < S.card at h_fib; omega
+      -- Embed Fin m into the fiber (following RamseyR4k pattern)
+      obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq hSm
+      let iso := T.orderIsoOfFin hTcard
+      let e : Fin m → Fin ((k' + 1) * (m - 1) + 2) := fun i => (iso i).val
+      have e_inj : Function.Injective e :=
+        fun a b h => iso.injective (Subtype.val_injective h)
+      have e_in_S : ∀ i, e i ∈ S := fun i => hTsub (iso i).prop
+      have e_ne : ∀ i, e i ≠ v₀ := fun i => by
+        have := e_in_S i
+        simp only [S, others, Finset.mem_filter, Finset.mem_erase] at this
+        exact this.1.1
+      have e_col : ∀ i, c (v₀, e i) = c₀ := fun i => by
+        have := e_in_S i
+        simp only [S, Finset.mem_filter] at this; exact this.2
+      -- Case: does any edge among embedded vertices have color c₀?
+      by_cases h_c₀ : ∃ i j : Fin m, i ≠ j ∧ c (e i, e j) = c₀
+      · -- Triangle with v₀
+        obtain ⟨i, j, hij, hcij⟩ := h_c₀
+        exact ⟨c₀, v₀, e i, e j, e_ne i, e_inj.ne hij, e_ne j,
+          e_col i, hcij, e_col j⟩
+      · -- No c₀-edge among embedded vertices: relabel to k'-coloring
+        push_neg at h_c₀
+        let g : EdgeColoring m k' := fun p => mapColor c₀ (c (e p.1, e p.2))
+        have g_sym : IsSymmetric g := fun i j =>
+          show mapColor c₀ (c (e i, e j)) = mapColor c₀ (c (e j, e i)) from
+            congr_arg (mapColor c₀) (hsym (e i) (e j))
+        -- Apply inductive hypothesis: k'-coloring of K_m has a monochromatic triangle
+        obtain ⟨color', i, j, l, hij, hjl, hil, hcij', hcjl', hcil'⟩ :=
+          hm hk'1 g g_sym
+        -- All three edges have the same original color (mapColor injective on ≠ c₀)
+        have h_ij_jl := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ j l hjl)
+          (hcij'.trans hcjl'.symm)
+        have h_ij_il := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ i l hil)
+          (hcij'.trans hcil'.symm)
+        exact ⟨c (e i, e j), e i, e j, e l,
+          e_inj.ne hij, e_inj.ne hjl, e_inj.ne hil,
+          rfl, h_ij_jl.symm, h_ij_il.symm⟩
 
 /-- Definition of R(3;k) as the minimum n forcing a monochromatic triangle -/
 noncomputable def R3k (k : ℕ) : ℕ :=
