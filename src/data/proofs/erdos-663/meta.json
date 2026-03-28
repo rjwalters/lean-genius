@@ -20,9 +20,9 @@
     "erdosNumber": 663,
     "erdosUrl": "https://erdosproblems.com/663",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 140,
-    "assumptions": "5 axioms: smallestMissingPrime (def), smallestMissingPrime_prime, smallestMissingPrime_not_dvd, smallestMissingPrime_least, q_mono_k. See Lean source for complete statements.",
+    "assumptions": "4 axioms: smallestMissingPrime (def), smallestMissingPrime_prime, smallestMissingPrime_not_dvd, smallestMissingPrime_least. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -129,7 +129,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 127,
-    "axiomCount": 7,
+    "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 4
   },

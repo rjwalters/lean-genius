@@ -96,7 +96,11 @@ def hasSmallSumset (A : Finset ℤ) (K : ℝ) : Prop :=
 -/
 theorem productSet_upper_bound (A : Finset ℤ) :
     (productSet A).card ≤ A.card ^ 2 := by
-  sorry
+  unfold productSet
+  calc (A ×ˢ A).image (fun p => p.1 * p.2) |>.card
+      ≤ (A ×ˢ A).card := Finset.card_image_le
+    _ = A.card * A.card := Finset.card_product A A
+    _ = A.card ^ 2 := by ring
 
 /-
 ## Part III: The Original Conjecture

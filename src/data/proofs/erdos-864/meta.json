@@ -51,9 +51,9 @@
       "Axiomatized Erdős-Freud lower bound with explicit (2/√3 − ε)·√N form",
       "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}"
     ],
-    "axiomCount": 4,
-    "lineCount": 219,
-    "assumptions": "4 axioms: erdos_freud_lower_bound, sidon_upper_bound, almost_sidon_sum_range, reflected_construction_valid. Previously 5; almost_sidon_exceeds_sidon proved from erdos_freud_lower_bound.",
+    "axiomCount": 3,
+    "lineCount": 269,
+    "assumptions": "3 axioms: erdos_freud_lower_bound, sidon_upper_bound, reflected_construction_valid. Previously 4; almost_sidon_sum_range proved FALSE (counterexample: A={1,2,4,6,7}, N=7, collision at sum 8 with multiplicity 3).",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -101,7 +101,7 @@
     "keyInsights": [
       "Almost-Sidon allows one collision; the reflected construction achieves $2/\\sqrt{3} \\approx 1.155$ times the Sidon bound by concentrating all collisions at a single sum value $N$",
       "The reflected construction $B \\cup (N - B)$: when $B$ is Sidon in $\\{1, \\ldots, N/3\\}$, the set has size $\\approx 2\\sqrt{N/3} = (2/\\sqrt{3})\\sqrt{N}$, and the only collision is at sum $N$ since $b + (N-b) = N$ for all $b \\in B$",
-      "The sum range constraint: an almost-Sidon set of size $k$ produces $\\geq \\binom{k}{2} + k - 1$ distinct sums in $[2, 2N]$, giving $k(k+1)/2 - 1 \\leq 2N - 1$, hence $k \\leq O(\\sqrt{N})$",
+      "The naive sum range bound $k(k+1)/2 - 1 \\leq 2N - 1$ is FALSE: counterexample $A = \\{1,2,4,6,7\\} \\subseteq [1,7]$ has collision multiplicity 3 at sum 8. The correct bound accounts for collision multiplicity $c$: $k(k+1)/2 - (c-1) \\leq 2N - 1$",
       "The gap between Sidon ($\\sqrt{N}$) and almost-Sidon ($(2/\\sqrt{3})\\sqrt{N}$) is precisely the factor $2/\\sqrt{3}$: one collision is worth a multiplicative factor of $\\approx 1.155$",
       "For differences instead of sums, Erdős-Freud proved the maximum is asymptotically $\\sqrt{N}$ — the difference version does not benefit from allowing one collision"
     ],
@@ -111,7 +111,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #864 is formalized with concrete definitions of sum representation counting, almost-Sidon and Sidon properties, the maximum function, and the Erdős-Freud reflected construction. The key theorem sidon_is_almost_sidon is proved; bounds and construction validity are axiomatized. The file has 0 sorries and 7 axioms (including 2 placeholder True).",
+    "summary": "Erdős Problem #864 is formalized with concrete definitions of sum representation counting, almost-Sidon and Sidon properties, the maximum function, and the Erdős-Freud reflected construction. The key theorem sidon_is_almost_sidon is proved; bounds and construction validity are axiomatized. The file has 0 sorries and 3 axioms. The false axiom almost_sidon_sum_range was identified and removed (counterexample: A={1,2,4,6,7}, N=7).",
     "implications": "A resolution would precisely quantify the value of allowing one sum collision in additive combinatorics. The factor 2/√3 would establish a sharp phase transition: zero collisions gives √N, one collision gives (2/√3)√N, and understanding k collisions would complete the picture of B_2^+ set theory.",
     "openQuestions": [
       "Is |A| ≤ (1+o(1))·(2/√3)·√N the correct upper bound for almost-Sidon sets?",
