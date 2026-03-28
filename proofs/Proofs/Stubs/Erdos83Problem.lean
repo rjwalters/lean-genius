@@ -219,11 +219,11 @@ theorem erdos83_answer (n : ℕ) (hn : n ≥ 1) : erdos83Question n := by
 /--
 **Bound for Small n:**
 -/
-axiom erdos83_bound_n1 : erdos83Bound 1 = 0
--- When n=1: 2-subsets of [4] with pairwise 2-intersection is very restrictive
+theorem erdos83_bound_n1 : erdos83Bound 1 = 1 := by native_decide
+-- C(4,2) = 6, C(2,1)^2 = 4, (6-4)/2 = 1
 
-axiom erdos83_bound_n2 : erdos83Bound 2 = 20
--- C(8,4) = 70, C(4,2) = 6, so (70 - 36)/2 = 17... needs verification
+theorem erdos83_bound_n2 : erdos83Bound 2 = 17 := by native_decide
+-- C(8,4) = 70, C(4,2)^2 = 36, (70 - 36)/2 = 17
 
 /--
 **Asymptotic Growth:**
