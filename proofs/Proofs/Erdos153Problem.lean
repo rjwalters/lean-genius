@@ -13,8 +13,9 @@ Results:
 - sidon_sumset_card: fully proved via upper triangle cardinality lemma
 - sidon_sumset_range: proved
 - average_gap_bounded: proved (trivially: C can depend on N)
-Axioms: 1 (infinite_sidon_gap_question)
+Axioms: 1 (erdos_153_conjecture — the main open conjecture)
 Sorries: 0
+Derived: infinite_sidon_gap_from_finite (infinite case follows from finite)
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -322,7 +323,20 @@ theorem ess_1994_result :
     _ ≤ ↑(gapSquaredSum A) / (↑(sumset A).card - 1) := by gcongr
 
 /-
-## Section VII: Infinite Sidon Sets
+## Section VII: The Main Conjecture (Axiomatized)
+-/
+
+/-- **Erdős Problem #153** (axiomatized): The mean squared gap in the sumset
+of a Sidon set tends to infinity as the set grows. This is an open problem. -/
+axiom erdos_153_conjecture : ErdosProblem153
+
+/-
+## Section VIII: Infinite Sidon Sets (Derived from Finite Conjecture)
+
+The infinite variant follows from the finite conjecture via three steps:
+1. Finite restrictions of infinite Sidon sets inherit the Sidon property
+2. Infinite subsets of ℕ have arbitrarily large finite restrictions
+3. Combining these with the finite conjecture yields the infinite result
 -/
 
 /-- An infinite Sidon set: all pairwise sums from the set are distinct. -/
@@ -331,11 +345,73 @@ def IsInfiniteSidon (S : Set ℕ) : Prop :=
   ∀ a ∈ S, ∀ b ∈ S, ∀ c ∈ S, ∀ d ∈ S,
     a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
 
-/-- A similar question for infinite Sidon sets: do the gaps in the
-sumset restricted to {1,...,N} have growing variance as N → ∞? -/
-axiom infinite_sidon_gap_question :
-  ∀ S : Set ℕ, IsInfiniteSidon S →
-    ∀ M : ℝ, M > 0 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀,
-        let A := (Finset.range (N + 1)).filter (· ∈ S)
-        A.card ≥ 2 → meanGapSquared A > M
+/-- Any finite restriction of an infinite Sidon set inherits the Sidon property. -/
+lemma infinite_sidon_restriction (S : Set ℕ) (hS : IsInfiniteSidon S) (N : ℕ) :
+    IsSidon ((Finset.range (N + 1)).filter (· ∈ S)) := by
+  intro a ha b hb c hc d hd hle1 hle2 heq
+  simp only [Finset.mem_filter, Finset.mem_range] at ha hb hc hd
+  exact hS.2 a ha.2 b hb.2 c hc.2 d hd.2 hle1 hle2 heq
+
+/-- An infinite subset of ℕ has a finite subset of any given cardinality. -/
+private lemma infinite_set_exists_finset (S : Set ℕ) (hS : S.Infinite) :
+    ∀ k : ℕ, ∃ (u : Finset ℕ), (↑u : Set ℕ) ⊆ S ∧ u.card = k := by
+  intro k
+  induction k with
+  | zero => exact ⟨∅, Set.empty_subset _, Finset.card_empty⟩
+  | succ n ih =>
+    obtain ⟨u, hu_sub, hu_card⟩ := ih
+    have hS' : (S \ ↑u).Infinite := hS.diff u.finite_toSet
+    obtain ⟨x, hx_diff⟩ := hS'.nonempty
+    have hx_S : x ∈ S := hx_diff.1
+    have hx_u : x ∉ u := fun h => hx_diff.2 (Finset.mem_coe.mpr h)
+    exact ⟨u.cons x hx_u,
+      fun y hy => by
+        rw [Finset.mem_coe, Finset.mem_cons] at hy
+        rcases hy with rfl | hy
+        · exact hx_S
+        · exact hu_sub (Finset.mem_coe.mpr hy),
+      by simp [hu_card]⟩
+
+/-- For an infinite subset of ℕ, the restriction to {0,...,N}
+    has cardinality growing without bound as N → ∞. -/
+private lemma infinite_set_card_grows (S : Set ℕ) (hS : S.Infinite) :
+    ∀ k : ℕ, ∃ N₀ : ℕ, ∀ N ≥ N₀,
+      ((Finset.range (N + 1)).filter (· ∈ S)).card ≥ k := by
+  intro k
+  rcases k with _ | k
+  · exact ⟨0, fun _ _ => Nat.zero_le _⟩
+  · obtain ⟨u, hu_sub, hu_card⟩ := infinite_set_exists_finset S hS (k + 1)
+    have hne : u.Nonempty := Finset.card_pos.mp (by omega)
+    use u.max' hne
+    intro N hN
+    have : u ⊆ (Finset.range (N + 1)).filter (· ∈ S) := by
+      intro x hx
+      simp only [Finset.mem_filter, Finset.mem_range]
+      exact ⟨by have := Finset.le_max' u x hx; omega,
+             hu_sub (Finset.mem_coe.mpr hx)⟩
+    calc ((Finset.range (N + 1)).filter (· ∈ S)).card
+        ≥ u.card := Finset.card_le_card this
+      _ = k + 1 := hu_card
+
+/-- The infinite Sidon gap conjecture follows from the finite one (Erdős #153).
+    For any infinite Sidon set S, the mean squared gap in S ∩ {0,...,N}
+    diverges as N → ∞. This reduces the infinite variant to a consequence
+    of the finite conjecture.
+
+    Proof: Given M > 0, the finite conjecture provides n₀ such that any
+    Sidon set of size ≥ n₀ has mean gap² > M. Since S is infinite,
+    the restriction to {0,...,N} eventually has ≥ n₀ elements, and it
+    inherits the Sidon property from S. -/
+theorem infinite_sidon_gap_from_finite :
+    ∀ S : Set ℕ, IsInfiniteSidon S →
+      ∀ M : ℝ, M > 0 →
+        ∃ N₀ : ℕ, ∀ N ≥ N₀,
+          let A := (Finset.range (N + 1)).filter (· ∈ S)
+          A.card ≥ 2 → meanGapSquared A > M := by
+  intro S hS M hM
+  -- Get n₀ from the finite conjecture
+  obtain ⟨n₀, hn₀⟩ := erdos_153_conjecture M hM
+  -- Get N₁ such that the restriction has ≥ n₀ elements for all N ≥ N₁
+  obtain ⟨N₁, hN₁⟩ := infinite_set_card_grows S hS.1 n₀
+  -- For N ≥ N₁: the restriction is Sidon with ≥ n₀ elements → apply conjecture
+  exact ⟨N₁, fun N hN _ => hn₀ _ (infinite_sidon_restriction S hS N) (hN₁ N hN)⟩
