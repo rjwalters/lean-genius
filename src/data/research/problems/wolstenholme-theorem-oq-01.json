@@ -1,0 +1,122 @@
+{
+  "slug": "wolstenholme-theorem-oq-01",
+  "title": "Infinitely Many Wolstenholme Primes",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Infinitely Many Wolstenholme Primes.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T17:58:20.662Z",
+    "iteration": 1,
+    "focus": "Formalization complete: infinitude conjecture, dichotomy proof, connections",
+    "blockers": [],
+    "nextAction": "Build verification, potential Bernoulli characterization proof",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created WolstenholmeTheoremOQ01.lean (222 lines, 23 theorems, 4 axioms, 0 sorries). Formalized the infinitude conjecture with finite/infinite dichotomy proof, conditional bounds, Bernoulli number characterization, and Wieferich prime parallel.",
+    "builtItems": [
+      "WolstenholmeTheoremOQ01.lean: InfinitelyManyWP, BoundedWP definitions",
+      "bounded_iff_not_infinite: logical equivalence proof",
+      "at_least_two_wp: existence proof from axiomatized known WPs",
+      "bounded_implies_large: conditional N ≥ 2124679",
+      "third_wp_large: any third WP exceeds 10⁹",
+      "bernoulli_characterization: axiom stating p|B_{p-3} equivalence",
+      "isWieferich_1093, isWieferich_3511: Wieferich prime verification via native_decide",
+      "wp_satisfies_wolstenholme, wp_satisfies_babbage: divisibility chain theorems",
+      "Gallery entry: meta.json, annotations.json, index.ts for wolstenholme-theorem-oq-01"
+    ],
+    "insights": [
+      "The finite/infinite dichotomy (BoundedWP ↔ ¬InfinitelyManyWP) is provable via classical push_neg",
+      "Bernoulli characterization p|B_{p-3} links WPs to irregular prime theory — every WP is (p-3)-irregular",
+      "Wieferich prime parallel is structurally precise: 2 known examples, density ≈ 1/p, same open status",
+      "Divisibility chain p⁴ → p³ → p² connects WP definition to Wolstenholme and Babbage theorems",
+      "Heuristic ln(ln N) growth predicts only ≈3.1 WPs below 10⁹, consistent with 2 observed"
+    ],
+    "mathlibGaps": [
+      "No Mathlib theorem connecting Bernoulli numbers to binomial coefficient mod p⁴",
+      "No irregular prime predicate in Mathlib connected to specific Bernoulli indices"
+    ],
+    "nextSteps": [
+      "Try to prove the Bernoulli characterization from Mathlib (currently axiom)",
+      "Attempt to formally prove WPs are irregular primes as a theorem",
+      "Explore whether the ABC conjecture implies infinitely many WPs (conditional result)"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "wolstenholme-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.662Z",
+  "lastUpdate": "2026-03-28T19:30:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/WolstenholmeTheorem.lean",
+      "filename": "WolstenholmeTheorem.lean",
+      "lineCount": 221,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02OQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ01.lean",
+      "filename": "WolstenholmeTheoremOQ01.lean",
+      "lineCount": 222,
+      "theoremCount": 23,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
+    }
+  ]
+}
