@@ -44,10 +44,27 @@ noncomputable def harmonicNumber (n : ℕ) : ℝ :=
 noncomputable def partialHarmonicSum (n m : ℕ) : ℝ :=
   ∑ k ∈ Finset.Icc n m, (1 : ℝ) / k
 
+/-- The harmonic number as a sum over Icc 1 n -/
+private lemma harmonicNumber_eq_sum_Icc (n : ℕ) :
+    harmonicNumber n = ∑ k ∈ Finset.Icc 1 n, (1 : ℝ) / k := by
+  unfold harmonicNumber
+  rw [show Finset.Icc 1 n = (Finset.range n).image (· + 1) from by
+    ext x; simp [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]; omega]
+  rw [Finset.sum_image (by intro a _ b _ h; omega)]
+  congr 1; ext k; push_cast; ring
+
 /-- Alternative form: H_m - H_{n-1} -/
 lemma partialHarmonicSum_as_difference (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ n) :
     partialHarmonicSum n m = harmonicNumber m - harmonicNumber (n - 1) := by
-  sorry
+  unfold partialHarmonicSum
+  rw [harmonicNumber_eq_sum_Icc m, harmonicNumber_eq_sum_Icc (n - 1)]
+  rw [← Finset.sum_sdiff (show Finset.Icc 1 (n - 1) ⊆ Finset.Icc 1 m from by
+    apply Finset.Icc_subset_Icc_right; omega)]
+  ring_nf
+  congr 1
+  ext k
+  simp only [Finset.mem_sdiff, Finset.mem_Icc]
+  omega
 
 /- ## The Function m(n)
 
@@ -85,10 +102,49 @@ theorem epsilon_nonneg : ∀ n : ℕ, n ≥ 1 → epsilon n ≥ 0 := by
   unfold epsilon
   linarith [m_of_n_achieves n hn]
 
+/-- m(n) ≥ n: if m < n then Icc n m is empty giving sum = 0, contradicting ≥ 1 -/
+lemma m_of_n_ge (n : ℕ) (hn : n ≥ 1) : m_of_n n ≥ n := by
+  by_contra h
+  push_neg at h
+  have hempty : Finset.Icc n (m_of_n n) = ∅ := by
+    rw [Finset.Icc_eq_empty_iff]; omega
+  have := m_of_n_achieves n hn
+  unfold partialHarmonicSum at this
+  rw [hempty, Finset.sum_empty] at this
+  linarith
+
+/-- Splitting the last term: ∑_{k=n}^{m} = ∑_{k=n}^{m-1} + 1/m when m ≥ n -/
+private lemma partialHarmonicSum_split_last (n m : ℕ) (hm : m ≥ n) :
+    partialHarmonicSum n m = partialHarmonicSum n (m - 1) + (1 : ℝ) / m := by
+  unfold partialHarmonicSum
+  rcases Nat.eq_or_gt_of_le hm with rfl | hgt
+  · -- m = n: Icc n (n-1) is empty, Icc n n is {n}
+    simp [Finset.Icc_eq_empty (by omega : ¬(n ≤ n - 1)), Finset.sum_empty]
+  · -- m > n: split off last element
+    have : Finset.Icc n m = insert m (Finset.Icc n (m - 1)) := by
+      ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [this, Finset.sum_insert (by simp [Finset.mem_Icc]; omega)]
+    ring
+
+/-- ε(n) is at most 1/m(n): the overshoot is bounded by the last term -/
+lemma epsilon_le_inv_m (n : ℕ) (hn : n ≥ 1) : epsilon n ≤ 1 / (m_of_n n) := by
+  unfold epsilon
+  have hge := m_of_n_ge n hn
+  rw [partialHarmonicSum_split_last n (m_of_n n) hge]
+  have hmin := m_of_n_minimal n hn
+  linarith
+
 /-- ε(n) is at most 1/n (we add at most 1/m(n) ≤ 1/n to exceed 1) -/
 theorem epsilon_upper_bound : ∀ n : ℕ, n ≥ 1 → epsilon n ≤ 1 / n := by
   intro n hn
-  sorry -- Requires showing 1/m(n) ≤ 1/n
+  have hge := m_of_n_ge n hn
+  have heps := epsilon_le_inv_m n hn
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast show 0 < n by omega
+  have hm_pos : (0 : ℝ) < m_of_n n := by exact_mod_cast show 0 < m_of_n n by omega
+  calc epsilon n ≤ 1 / (m_of_n n) := heps
+    _ ≤ 1 / n := by
+        apply div_le_div_of_nonneg_left one_pos hn_pos
+        exact_mod_cast hge
 
 /- ## Approximation of m(n)
 

@@ -16,20 +16,20 @@
       "sumsets"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 153,
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 183,
-    "assumptions": "2 axiom(s) and 1 sorry(s). Axioms: ess_1994_result, infinite_sidon_gap_question. Sorry in sidon_sumset_card_lower (combinatorial card lemma).",
+    "lineCount": 277,
+    "assumptions": "2 axiom(s) and 0 sorry(s). Axioms: ess_1994_result (ESS 1994 lower bound), infinite_sidon_gap_question (open conjecture for infinite Sidon sets).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
     "problemStatement": "Let $A$ be a finite Sidon set and $A+A = \\{s_1 < s_2 < \\cdots < s_t\\}$. Is it true that $\\frac{1}{t} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2 \\to \\infty$ as $|A| \\to \\infty$?",
     "text": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
-    "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties (sumset cardinality $\\ge n(n+1)/2$, range bound, bounded average gap) are axiomatized, along with the Erdős–Sárközy–Sós positive lower bound. The infinite Sidon set variant is also formalized.",
+    "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties are fully proved: sumset cardinality $|A+A| \\ge n(n+1)/2$ via an injection argument and an upper triangle cardinality lemma (partition into strict triangles + diagonal with swap bijection), range bound $A+A \\subseteq [0,2N]$, and bounded average gap. The Erdős–Sárközy–Sós (1994) positive lower bound is axiomatized as a deep published result. The infinite Sidon set variant is also formalized.",
     "keyInsights": [
       "**Sidon property forces quadratic sumset growth**: A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ — every unordered pair yields a distinct sum, so the sumset is as large as possible given the representation constraint",
       "**Bounded mean vs unbounded variance**: For a maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the average gap in $A+A$ is $\\Theta(1)$, yet the conjecture predicts the variance diverges — a striking separation between first and second moments",
@@ -85,26 +85,34 @@
       "mathContext": "Mathematical content: States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
     },
     {
+      "id": "upper-triangle",
+      "title": "Upper Triangle Cardinality",
+      "startLine": 87,
+      "endLine": 182,
+      "summary": "Proves three helper lemmas establishing $|\\{(a,b) \\in A \\times A : a \\le b\\}| = n(n+1)/2$: diagonal cardinality (`diag_card_eq`), swap bijection (`card_lt_swap`), and the main counting lemma (`card_upper_triangle`) via partition into strict upper triangle, diagonal, and strict lower triangle.",
+      "mathContext": "Proved: The upper triangle $\\{(a,b) : a \\le b\\}$ of $A \\times A$ has exactly $n(n+1)/2$ elements, established via partition $A \\times A = \\{a < b\\} \\sqcup \\{a = b\\} \\sqcup \\{b < a\\}$, a swap bijection $\\{b < a\\} \\cong \\{a < b\\}$, and the identity $2|\\{a \\le b\\}| = n^2 + n$."
+    },
+    {
       "id": "sumset-properties",
       "title": "Sidon Set Sumset Properties",
-      "startLine": 78,
-      "endLine": 92,
-      "summary": "Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$.",
-      "mathContext": "Axiomatized: Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$."
+      "startLine": 184,
+      "endLine": 223,
+      "summary": "Proves two structural properties: (1) `sidon_sumset_card`: $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$ (fully proved via injection + upper triangle lemma), and (2) `sidon_sumset_range`: $A+A \\subseteq \\{0,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$.",
+      "mathContext": "Proved: Both structural properties are fully machine-checked. The sumset cardinality bound follows from injectivity of the sum map on ordered pairs (Sidon condition) combined with the upper triangle cardinality lemma."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 93,
-      "endLine": 112,
-      "summary": "Axiomatizes the bounded average gap ($\\bar{g} = O(1)$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets.",
-      "mathContext": "Axiomatizes the bounded average gap ($\\bar{g} = $O(1)$$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets."
+      "startLine": 225,
+      "endLine": 257,
+      "summary": "Proves `average_gap_bounded` (trivially: $C$ may depend on $N$) and axiomatizes the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets.",
+      "mathContext": "Mixed: `average_gap_bounded` is fully proved. The ESS 1994 result is axiomatized as a deep published theorem."
     },
     {
       "id": "infinite-sidon",
       "title": "Infinite Sidon Sets",
-      "startLine": 113,
-      "endLine": 130,
+      "startLine": 259,
+      "endLine": 277,
       "summary": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$.",
       "mathContext": "Formal definition: Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
     }
@@ -131,9 +139,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 183,
+    "lineCount": 277,
     "axiomCount": 2,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 8
   },
   "crossReferences": [

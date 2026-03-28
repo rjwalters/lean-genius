@@ -27,7 +27,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 -- Routine: Triangle-free implies no 3-clique
 theorem triangleFree_isCliqueFree_three (G : SimpleGraph V) [DecidableRel G.Adj]
     (hG : G.CliqueFree 3) : ∀ (s : Finset V), s.card = 3 → ¬G.IsClique s := by
-  sorry
+  intro s hs hcl
+  exact hG s hs hcl
 
 -- Routine: In a triangle-free graph, the neighborhood of any vertex is independent
 -- This is a fundamental graph theory fact: if N(v) had an edge {a,b},
@@ -35,7 +36,19 @@ theorem triangleFree_isCliqueFree_three (G : SimpleGraph V) [DecidableRel G.Adj]
 theorem triangleFree_neighborhood_independent (G : SimpleGraph V) [DecidableRel G.Adj]
     (hG : G.CliqueFree 3) (v : V) :
     ∀ a b : V, G.Adj v a → G.Adj v b → a ≠ b → ¬G.Adj a b := by
-  sorry
+  intro a b hva hvb hab hfab
+  -- {v, a, b} forms a triangle, contradicting CliqueFree 3
+  apply hG {v, a, b}
+  · -- card = 3
+    rw [Finset.card_insert_of_not_mem (by simp [G.ne_of_adj hva, hab]),
+        Finset.card_insert_of_not_mem (by simp [hab]),
+        Finset.card_singleton]
+  · -- is clique
+    intro x hx y hy hxy
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
+    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
+      first | exact absurd rfl hxy | exact hva | exact hva.symm |
+              exact hvb | exact hvb.symm | exact hfab | exact hfab.symm
 
 -- Routine: A sum-free set in {1,...,n} has size at most n/2
 -- The odd numbers form a sum-free set of size ⌈n/2⌉, and this is optimal.
@@ -51,7 +64,10 @@ theorem sumFree_card_bound (n : ℕ) (S : Finset ℕ)
 theorem odd_set_sumFree (n : ℕ) :
     let S := (Finset.range (n + 1)).filter (fun x => x > 0 ∧ x % 2 = 1)
     ∀ a ∈ S, ∀ b ∈ S, a + b ∉ S := by
-  sorry
+  intro S a ha b hb
+  simp only [S, Finset.mem_filter, Finset.mem_range] at ha hb ⊢
+  intro ⟨_, ⟨_, hmod⟩⟩
+  omega
 
 -- Routine: Cardinality of odd numbers in {1,...,n}
 -- There are ⌈n/2⌉ odd numbers in {1,...,n}.
@@ -64,7 +80,7 @@ theorem odd_count_in_range (n : ℕ) :
 theorem additive_triple_bound (n : ℕ) (a b : ℕ) (ha : a < n) (hb : b < n)
     (hab : a + b < n) (hpa : a > 0) (hpb : b > 0) :
     a + b > 0 ∧ a + b < n := by
-  sorry
+  exact ⟨by omega, hab⟩
 
 -- Routine: Independent set in complement has clique in original
 -- If S is independent in G, then S is a clique in Gᶜ.
@@ -72,7 +88,9 @@ theorem independent_is_complement_clique (G : SimpleGraph V) [DecidableRel G.Adj
     (S : Finset V)
     (hind : ∀ a ∈ S, ∀ b ∈ S, a ≠ b → ¬G.Adj a b) :
     Gᶜ.IsClique (S : Set V) := by
-  sorry
+  intro a ha b hb hab
+  simp only [SimpleGraph.compl_adj]
+  exact ⟨hab, hind a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb) hab⟩
 
 -- Routine: Schur's theorem for 2 colors — S(2) = 4
 -- Any 2-coloring of {1,2,3,4,5} contains a monochromatic Schur triple.

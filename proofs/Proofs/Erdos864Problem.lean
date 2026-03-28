@@ -74,10 +74,50 @@ axiom sidon_upper_bound :
       IsSidon A → (A.card : ℝ) ≤ Real.sqrt (N : ℝ) + C * (N : ℝ) ^ (1/4 : ℝ)
 
 /-- Almost-Sidon sets can be larger than Sidon sets by a factor of 2/√3 ≈ 1.155.
-    One extra collision allows ~15.5% more elements. -/
-axiom almost_sidon_exceeds_sidon :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-    (maxAlmostSidon N : ℝ) > Real.sqrt (N : ℝ) + 1
+    Proof: erdos_freud_lower_bound gives maxAlmostSidon(N) ≥ (2/√3 - ε)√N.
+    Since 2/√3 > 1 (as √3 < 2), taking ε = 1/10 gives coefficient > 1,
+    so (2/√3 - 1/10)√N > √N + 1 for N ≥ 400. -/
+theorem almost_sidon_exceeds_sidon :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      (maxAlmostSidon N : ℝ) > Real.sqrt (N : ℝ) + 1 := by
+  obtain ⟨N₀, hN₀⟩ := erdos_freud_lower_bound (1/10) (by norm_num)
+  use max N₀ 400
+  intro N hN
+  have hge := hN₀ N (le_trans (le_max_left _ _) hN)
+  have hNge : (N : ℝ) ≥ 400 := by exact_mod_cast le_trans (le_max_right N₀ 400) hN
+  -- Key: √3 < 40/23 (since 3 < 1600/529), so 2/√3 > 23/20
+  have h_sqrt3_pos : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos_of_pos (by norm_num)
+  have h_sqrt3_bound : Real.sqrt 3 < 40 / 23 := by
+    rw [show (40 : ℝ) / 23 = Real.sqrt ((40 / 23) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 40 / 23)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have h_coeff : 2 / Real.sqrt 3 - 1 / 10 > 1 := by
+    rw [gt_iff_lt, sub_lt_iff_lt_add]; linarith [div_lt_div_left (by norm_num : (0:ℝ) < 2) h_sqrt3_pos (by norm_num : (0:ℝ) < 23/20)]
+  -- √N ≥ 20 (since N ≥ 400 = 20²)
+  have h_sqrtN : Real.sqrt (N : ℝ) ≥ 20 := by
+    calc Real.sqrt N ≥ Real.sqrt 400 :=
+          Real.sqrt_le_sqrt (by exact_mod_cast hNge)
+      _ = 20 := by rw [show (400 : ℝ) = 20 ^ 2 from by norm_num];
+                    exact Real.sqrt_sq (by norm_num)
+  -- Main bound: (2/√3 - 1/10) * √N > √N + 1
+  suffices h : (2 / Real.sqrt 3 - 1 / 10) * Real.sqrt N > Real.sqrt N + 1 by linarith
+  have h_pos : Real.sqrt (N : ℝ) > 0 := Real.sqrt_pos_of_pos (by linarith)
+  -- 2/√3 > 23/20 (from √3 < 40/23)
+  have h_23_20 : 2 / Real.sqrt 3 > 23 / 20 := by
+    rw [gt_iff_lt, div_lt_div_iff (by norm_num : (0:ℝ) < 20) h_sqrt3_pos]
+    linarith
+  -- (2/√3 - 11/10) > 1/20
+  have h_gap : 2 / Real.sqrt 3 - 11 / 10 > 1 / 20 := by linarith
+  -- (2/√3 - 1/10) * √N = √N + (2/√3 - 11/10) * √N
+  -- ≥ √N + (1/20) * 20 = √N + 1 (strict since gap > 1/20 and √N ≥ 20)
+  have h1 : (2 / Real.sqrt 3 - 11 / 10) * Real.sqrt N > 1 :=
+    calc (2 / Real.sqrt 3 - 11 / 10) * Real.sqrt N
+        > (1 / 20) * Real.sqrt N :=
+          mul_lt_mul_of_pos_right h_gap h_pos
+      _ ≥ (1 / 20) * 20 :=
+          mul_le_mul_of_nonneg_left h_sqrtN (by norm_num)
+      _ = 1 := by norm_num
+  linarith
 
 /-- Every Sidon set is also almost-Sidon (trivially). -/
 theorem sidon_is_almost_sidon (A : Finset ℕ) (h : IsSidon A) : IsAlmostSidon A := by
