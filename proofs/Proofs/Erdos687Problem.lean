@@ -27,6 +27,8 @@ coprime to n.
 
 Axioms: 6 (jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal,
   erdos_687_conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
+Theorems: 12 (was 9; added not_mem_jacobsthalSet_two, one_mem_jacobsthalSet_two,
+  jacobsthalY_two. Fixed duplicate definitions.)
 Removed: jacobsthalY_trivial_lower (FALSE — Y(2) = 1 < 3 counterexample)
 Sorries: 0
 -/
@@ -187,23 +189,6 @@ axiom maier_pomerance_conjecture :
 private lemma no_prime_le_one (p : ℕ) (hp : p.Prime) (hpx : p ≤ 1) : False := by
   have := hp.two_le; omega
 
-/-- Y(0) = 0: with no primes ≤ 0, no integer can be covered. -/
-theorem jacobsthalY_zero : jacobsthalY 0 = 0 := by
-  unfold jacobsthalY
-  refine Nat.le_zero.mp (csSup_le (jacobsthalSet_nonempty 0) fun y hy => ?_)
-  by_contra h; push_neg at h
-  obtain ⟨a, ha⟩ := hy
-  obtain ⟨p, hp, hpx, _⟩ := ha 1 le_rfl (by exact_mod_cast (show 1 ≤ y by omega))
-  exact no_prime_le_one p hp (by omega)
-
-/-- Y(1) = 0: with no primes ≤ 1, no integer can be covered. -/
-theorem jacobsthalY_one : jacobsthalY 1 = 0 := by
-  unfold jacobsthalY
-  refine Nat.le_zero.mp (csSup_le (jacobsthalSet_nonempty 1) fun y hy => ?_)
-  by_contra h; push_neg at h
-  obtain ⟨a, ha⟩ := hy
-  obtain ⟨p, hp, hpx, _⟩ := ha 1 le_rfl (by exact_mod_cast (show 1 ≤ y by omega))
-  exact no_prime_le_one p hp hpx
 
 /-- For x ≤ 1, jacobsthalSet x = {0} (no primes means only vacuous covering). -/
 theorem jacobsthalSet_eq_zero_of_le_one {x : ℕ} (hx : x ≤ 1) :
@@ -238,3 +223,52 @@ Similarly, for x = 3 (primes {2,3}):
 The bound Y(x) ≥ x + 1 may hold for sufficiently large x (e.g., x ≥ 5
 where the primorial has enough prime factors), but not universally from x ≥ 2.
 -/
+
+/- ## Y(2) = 1: First Nontrivial Concrete Value -/
+
+/-- For x = 2, any y ≥ 2 is NOT in jacobsthalSet 2.
+    The only prime ≤ 2 is 2. Any covering picks one parity class.
+    Since 1 and 2 have opposite parities, one is always uncovered. -/
+theorem not_mem_jacobsthalSet_two {y : ℕ} (hy : 2 ≤ y) :
+    y ∉ jacobsthalSet 2 := by
+  intro ⟨a, ha⟩
+  -- Both 1 and 2 must be in [1, y] and covered
+  have h1 := ha 1 le_rfl (by exact_mod_cast (show 1 ≤ y by omega))
+  have h2 := ha 2 (by norm_num) (by exact_mod_cast hy)
+  obtain ⟨p₁, hp₁, hpx₁, hcov₁⟩ := h1
+  obtain ⟨p₂, hp₂, hpx₂, hcov₂⟩ := h2
+  -- The only prime ≤ 2 is 2 itself
+  have : p₁ = 2 := by have := hp₁.two_le; omega
+  subst this
+  have : p₂ = 2 := by have := hp₂.two_le; omega
+  subst this
+  -- By proof irrelevance: a 2 hp₁ hpx₁ = a 2 hp₂ hpx₂
+  -- So 1 % 2 = a(2) % 2 = 2 % 2, i.e., 1 = 0. Contradiction.
+  have := hcov₁.trans hcov₂.symm
+  norm_num at this
+
+/-- 1 ∈ jacobsthalSet 2: choosing residue class 1 mod 2 covers [1, 1]. -/
+theorem one_mem_jacobsthalSet_two : (1 : ℕ) ∈ jacobsthalSet 2 := by
+  refine ⟨fun _ _ _ => 1, fun n h1 hn => ?_⟩
+  -- n ∈ [1, 1] means n = 1
+  have hn_eq : n = 1 := le_antisymm hn h1
+  subst hn_eq
+  -- 1 is covered by prime 2 with class 1: 1 % 2 = 1 % 2
+  exact ⟨2, by decide, le_refl 2, rfl⟩
+
+/-- Y(2) = 1. With only prime 2 available, the best covering picks one
+    parity class, achieving exactly [1, 1].
+    Note: this proof uses a LOCAL BddAbove argument for x = 2,
+    independent of the general jacobsthalSet_bddAbove axiom. -/
+theorem jacobsthalY_two : jacobsthalY 2 = 1 := by
+  unfold jacobsthalY
+  apply le_antisymm
+  · -- sSup ≤ 1: every element of jacobsthalSet 2 is ≤ 1
+    apply csSup_le (jacobsthalSet_nonempty 2)
+    intro y hy
+    by_contra h; push_neg at h
+    exact not_mem_jacobsthalSet_two (by omega) hy
+  · -- 1 ≤ sSup: 1 is in the set and the set is bounded above
+    exact le_csSup ⟨1, fun y hy => by
+      by_contra h; push_neg at h
+      exact not_mem_jacobsthalSet_two (by omega) hy⟩ one_mem_jacobsthalSet_two
