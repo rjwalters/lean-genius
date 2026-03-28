@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: 0A 0S 6T. Removed unused balog_wooley_infinitely_many axiom.",
     "builtItems": [
       "Removed dead axiom largestPrimeFactor (2A→1A)",
       "Assessment: 1A appropriate (Balog-Wooley)"
@@ -39,7 +39,8 @@
       "balog_wooley_infinitely_many encodes Balog-Wooley 1998 result — deep, appropriate",
       "File has good constructive definitions: IsSmooth, ConsecutiveSmoothRun, HasConsecutiveSmoothRun",
       "ErdosConjecture369 well-formulated using abstract smoothBound function",
-      "Interesting meta-point: original problem trivially true as stated, non-trivial variants discussed"
+      "Interesting meta-point: original problem trivially true as stated, non-trivial variants discussed",
+      "balog_wooley_infinitely_many axiom was unused — removed (1→0A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,9 +67,9 @@
     {
       "path": "Proofs/Erdos369Problem.lean",
       "filename": "Erdos369Problem.lean",
-      "lineCount": 176,
-      "theoremCount": 6,
-      "axiomCount": 1,
+      "lineCount": 120,
+      "theoremCount": 0,
+      "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

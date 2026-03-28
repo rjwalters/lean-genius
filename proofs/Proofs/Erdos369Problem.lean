@@ -148,11 +148,6 @@ n^ε-smooth (variant 1: each m is m^ε-smooth).
 
 This gives infinitely many, but not all sufficiently large n.
 -/
-axiom balog_wooley_infinitely_many :
-  ∀ smoothBound : ℕ → ℕ,
-    (∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, smoothBound n ≥ C) →
-    ∀ N₀ : ℕ, ∃ n : ℕ, n ≥ N₀ ∧
-      IsSmooth n (smoothBound n) ∧ IsSmooth (n + 1) (smoothBound (n + 1))
 
 /- ## Part VI: Summary -/
 
