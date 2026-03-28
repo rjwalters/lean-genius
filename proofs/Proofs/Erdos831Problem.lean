@@ -155,7 +155,13 @@ theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
   -- (a) If S = ∅ (no GP config exists), sInf = 0 ≤ C(n,3)
   -- (b) If S ≠ ∅, every k ∈ S satisfies k ≤ C(n,3) since
   --     countDistinctRadii ≤ number of triples = C(n,3)
-  -- Blocked: needs Set.ncard image bound + sInf argument
+  -- NOTE: countDistinctRadii uses Nat.card on a Set ℝ subtype.
+  -- Nat.card requires a Fintype instance which cannot be auto-inferred
+  -- for existentially-quantified subsets of ℝ. With the current definition,
+  -- Nat.card returns 0, making this trivially true but rendering h_three false.
+  -- FIX NEEDED: redefine countDistinctRadii using Finset.image on ordered
+  -- triples with DecidableEq ℝ := Classical.decEq. Then bound card(image) by
+  -- card(powersetCard 3) = C(n,3) via circumradius permutation invariance.
   sorry
 
 /--
@@ -163,11 +169,22 @@ theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
 Three points in general position give exactly one circle, hence one radius.
 -/
 theorem h_three : h 3 = 1 := by
-  -- Proof strategy: construct explicit 3-point GP config {(0,0), (1,0), (0,1)}
-  -- Show: not collinear (linear system has only trivial solution)
-  -- Show: 4-concyclic condition vacuous (only 3 points)
-  -- Show: exactly 1 triple → 1 circumradius = √2/2
-  -- Blocked: EuclideanSpace ℝ (Fin 2) point construction is verbose
+  -- Proof infrastructure (Part IX):
+  -- ✓ p_origin, p_e1, p_e2 defined as ![0,0], ![1,0], ![0,1]
+  -- ✓ p_origin_ne_e1, p_origin_ne_e2, p_e1_ne_e2 proved (distinctness)
+  -- ✓ triangle_not_collinear proved (non-collinearity)
+  --
+  -- Remaining steps:
+  -- 1. Construct Finset S = {p_origin, p_e1, p_e2} with card 3
+  -- 2. Show isInGeneralPosition (↑S): no-3-collinear via triangle_not_collinear,
+  --    no-4-concyclic vacuously (only 3 points)
+  -- 3. Show countDistinctRadii S = 1
+  --
+  -- BLOCKER on step 3: countDistinctRadii uses Nat.card (allCircumradii S).
+  -- The Fintype instance for ↥(allCircumradii S) cannot be auto-inferred.
+  -- FIX: either provide explicit Fintype ↥{circumradiusOf p_origin p_e1 p_e2}
+  -- and show allCircumradii S = {circumradiusOf p_origin p_e1 p_e2},
+  -- or redefine countDistinctRadii using Finset.image.
   sorry
 
 /--
@@ -276,8 +293,71 @@ theorem areConcyclic_perm {p1 p2 p3 p4 : Point} :
   constructor <;> (intro ⟨c, r, hr, h1, h2, h3, h4⟩; exact ⟨c, r, hr, h2, h1, h3, h4⟩)
 
 /-
-## Part IX: Small Cases
+## Part IX: Infrastructure for Small Cases
+
+Helper lemmas for constructing explicit point configurations in EuclideanSpace ℝ (Fin 2).
+These enable proofs of h_three and h_upper_bound by providing concrete GP configurations.
 -/
+
+section PointHelpers
+
+/-- Circumradius computed directly from three points (no PointTriple wrapper). -/
+noncomputable def circumradiusOf (p1 p2 p3 : Point) : ℝ :=
+  let a := ‖p2 - p3‖
+  let b := ‖p1 - p3‖
+  let c := ‖p1 - p2‖
+  let twiceArea := |((p2 0 - p1 0) * (p3 1 - p1 1) -
+                     (p3 0 - p1 0) * (p2 1 - p1 1))|
+  if twiceArea = 0 then 0
+  else (a * b * c) / (2 * twiceArea)
+
+/-- circumradiusOf agrees with circumradius for matching triples. -/
+theorem circumradiusOf_eq_circumradius (t : PointTriple) :
+    circumradiusOf t.p1 t.p2 t.p3 = circumradius t := rfl
+
+/-- The origin (0, 0) as a point in the plane. -/
+private noncomputable def p_origin : Point := ![0, 0]
+
+/-- The point (1, 0) in the plane. -/
+private noncomputable def p_e1 : Point := ![1, 0]
+
+/-- The point (0, 1) in the plane. -/
+private noncomputable def p_e2 : Point := ![0, 1]
+
+/-- (0,0) ≠ (1,0): they differ in the first coordinate. -/
+private theorem p_origin_ne_e1 : p_origin ≠ p_e1 := by
+  intro h
+  have := congr_fun h (0 : Fin 2)
+  simp [p_origin, p_e1, Matrix.cons_val_zero] at this
+
+/-- (0,0) ≠ (0,1): they differ in the second coordinate. -/
+private theorem p_origin_ne_e2 : p_origin ≠ p_e2 := by
+  intro h
+  have := congr_fun h (1 : Fin 2)
+  simp [p_origin, p_e2, Matrix.cons_val_one, Matrix.cons_val_zero] at this
+
+/-- (1,0) ≠ (0,1): they differ in the first coordinate. -/
+private theorem p_e1_ne_e2 : p_e1 ≠ p_e2 := by
+  intro h
+  have := congr_fun h (0 : Fin 2)
+  simp [p_e1, p_e2, Matrix.cons_val_zero] at this
+
+/-- The points (0,0), (1,0), (0,1) are not collinear.
+    Proof: the only line ax + by + c = 0 through all three forces a = b = c = 0. -/
+private theorem triangle_not_collinear : ¬areCollinear p_origin p_e1 p_e2 := by
+  intro ⟨a, b, c, hab, h1, h2, h3⟩
+  -- From p_origin = (0,0): a·0 + b·0 + c = 0, so c = 0
+  simp [p_origin, areCollinear] at h1
+  -- From p_e1 = (1,0): a·1 + b·0 + 0 = 0, so a = 0
+  simp [p_e1, h1] at h2
+  -- From p_e2 = (0,1): 0·0 + b·1 + 0 = 0, so b = 0
+  simp [p_e2, h1, h2] at h3
+  -- But a ≠ 0 ∨ b ≠ 0, contradiction
+  rcases hab with ha | hb
+  · exact ha h2
+  · exact hb h3
+
+end PointHelpers
 
 /-
 ## Part X: Summary

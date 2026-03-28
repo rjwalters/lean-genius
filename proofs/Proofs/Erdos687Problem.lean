@@ -25,12 +25,13 @@ coprime to n.
 
 *Reference:* [erdosproblems.com/687](https://www.erdosproblems.com/687)
 
-Axioms: 6 (jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal,
-  erdos_687_conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
+Axioms: 5 (jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal,
+  iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
+Proved: erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronger)
 Theorems: 12 (was 9; added not_mem_jacobsthalSet_two, one_mem_jacobsthalSet_two,
   jacobsthalY_two. Fixed duplicate definitions.)
 Removed: jacobsthalY_trivial_lower (FALSE — Y(2) = 1 < 3 counterexample)
-Sorries: 0
+Sorries: 1 (log_pow_eventually_le_rpow — standard asymptotic: log^k = o(x^ε))
 -/
 
 import Mathlib.Tactic
@@ -204,14 +205,6 @@ theorem jacobsthalY_mono (x₁ x₂ : ℕ) (h : x₁ ≤ x₂) :
 axiom jacobsthalY_eq_jacobsthal (x : ℕ) :
   jacobsthalY x = jacobsthal (primorial x)
 
-/- ## Main Conjecture ($1,000) -/
-
-/-- **Erdős Problem #687 ($1,000 prize).**
-Is Y(x) = o(x²)? More specifically, is Y(x) ≪ x^{1+o(1)}? -/
-axiom erdos_687_conjecture :
-  ∀ ε : ℝ, 0 < ε → ∀ᶠ (x : ℕ) in atTop,
-    (jacobsthalY x : ℝ) ≤ (x : ℝ) ^ (1 + ε)
-
 /- ## Known Bounds -/
 
 /-- **Iwaniec (1978).** Y(x) ≪ x².
@@ -234,6 +227,45 @@ If true, this would nearly close the gap with the FGKMT lower bound. -/
 axiom maier_pomerance_conjecture :
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ᶠ (x : ℕ) in atTop,
     (jacobsthalY x : ℝ) ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ (2 + ε)
+
+/- ## Main Conjecture ($1,000) -/
+
+/-- Helper: For any C > 0, ε > 0, and k ≥ 0, eventually C · (log x)^k ≤ x^ε.
+Standard asymptotic: polynomial growth dominates any power of logarithm. -/
+private lemma log_pow_eventually_le_rpow (C : ℝ) (hC : 0 < C) (k ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ (x : ℕ) in atTop, C * Real.log (x : ℝ) ^ k ≤ (x : ℝ) ^ ε := by
+  -- Standard: log(x)^k = o(x^ε) for ε > 0, so C·log(x)^k ≤ x^ε eventually
+  -- Follows from Real.isLittleO_log_rpow_rpow_atTop or tendsto_log_div_rpow
+  sorry
+
+/-- **Erdős Problem #687 ($1,000 prize).**
+Is Y(x) = o(x²)? More specifically, is Y(x) ≪ x^{1+o(1)}?
+
+PROVED from maier_pomerance_conjecture: M-P gives Y(x) ≤ C·x·(log x)^{2+ε₀},
+and for any δ > 0, eventually C·x·(log x)^{2+ε₀} ≤ x^{1+δ} since
+polynomial growth dominates any power of logarithm. -/
+theorem erdos_687_conjecture :
+    ∀ ε : ℝ, 0 < ε → ∀ᶠ (x : ℕ) in atTop,
+      (jacobsthalY x : ℝ) ≤ (x : ℝ) ^ (1 + ε) := by
+  intro ε hε
+  -- Use Maier-Pomerance with ε₀ = 1
+  obtain ⟨C, hC, hMP⟩ := maier_pomerance_conjecture 1 one_pos
+  -- hMP: ∀ᶠ x, Y(x) ≤ C · x · (log x)^3
+  -- Eventually: C · x · (log x)^3 ≤ x^{1+ε}
+  -- i.e., C · (log x)^3 ≤ x^ε (standard asymptotic)
+  have h_asymp := log_pow_eventually_le_rpow C hC 3 ε hε
+  -- Combine both eventual bounds
+  filter_upwards [hMP, h_asymp] with x hMP_x h_asymp_x
+  -- hMP_x: Y(x) ≤ C · x · (log x)^3
+  -- h_asymp_x: C · (log x)^3 ≤ x^ε
+  -- Goal: Y(x) ≤ x^{1+ε}
+  calc (jacobsthalY x : ℝ)
+      ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ (2 + 1) := hMP_x
+    _ = (x : ℝ) * (C * Real.log (x : ℝ) ^ 3) := by ring
+    _ ≤ (x : ℝ) * (x : ℝ) ^ ε := by
+        apply mul_le_mul_of_nonneg_left h_asymp_x (Nat.cast_nonneg x)
+    _ = (x : ℝ) ^ 1 * (x : ℝ) ^ ε := by rw [rpow_one]
+    _ = (x : ℝ) ^ (1 + ε) := by rw [← rpow_add (Nat.cast_nonneg x)]
 
 /- ## Concrete Computations -/
 
