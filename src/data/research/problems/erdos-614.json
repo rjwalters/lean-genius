@@ -29,19 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Eliminated false axiom f_mono_k (counterexample f(6,3)=7<8≤f(6,2)), proved 3 new theorems (edge monotonicity, P(1) characterization, non-neighbor clique property). Axioms reduced from 3 to 2.",
     "builtItems": [
       "erdos_614_existence: proved from f_upper_bound",
-      "f_max_k: removed as false with documented counterexample"
+      "f_max_k: removed as false with documented counterexample",
+      "f_mono_k_false_note: removed false axiom, documented counterexample",
+      "hasPropertyP_supgraph: proved edge monotonicity of P(k)",
+      "hasPropertyP_one_triple_has_edge: proved P(1) characterization",
+      "non_neighbors_form_clique: proved structural property of P(1)"
     ],
     "insights": [
       "f_max_k is FALSE: star graph K_{1,n-1} satisfies P(n-2) with only n-1 edges (center degree n-1 >= n-2)",
       "P(n-2) only requires one vertex of degree >= n-2 in the whole graph",
       "erdos_614_existence follows trivially from f_upper_bound (K_n is always a witness)",
-      "f_mono_k proof requires careful induced subgraph extension argument"
+      "f_mono_k proof requires careful induced subgraph extension argument",
+      "f_mono_k is FALSE: counterexample f(6,3)=7 < 8≤f(6,2). The graph {a-b,a-c,a-d,a-e,b-c,b-d,b-e} on 6 vertices has P(3) with 7 edges, but no 7-edge graph on 6 vertices has P(2).",
+      "P(k) IS monotone in edges: adding edges preserves P(k) (hasPropertyP_supgraph proved)",
+      "P(1) ↔ no independent triple (hasPropertyP_one_triple_has_edge proved)",
+      "Non-neighbors form a clique under P(1) (non_neighbors_form_clique proved)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove f_case_k_eq_1 using non_neighbors_form_clique + min-degree argument",
+      "Prove f_lower_bound via double-counting argument",
+      "Create Aristotle companion file with supporting lemmas"
+    ],
     "markdown": "# Erdős #614 - Knowledge Base\n\n## Problem Statement\n\nLet f(n,k)\" role=\"presentation\" style=\"position: relative;\">f(n,k)f(n,k)f(n,k) be minimal such that there is a graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and f(n,k)\" role=\"presentation\" style=\"position: relative;\">f(n,k)f(n,k)f(n,k) edges where every set of k+2\" role=\"presentation\" style=\"position: relative;\">k+2k+2k+2 vertices induces a subgraph with maximum degree at least k\" role=\"presentation\" style=\"position: relative;\">kkk. Determine f(n,k)\" role=\"presentation\" style=\"position: relative;\">f(n,k)f(n,k)f(n,k). See also the entry in the graphs problem collection. View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #613\n- Problem #615\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- FRS97\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -65,9 +77,9 @@
     {
       "path": "Proofs/Erdos614Problem.lean",
       "filename": "Erdos614Problem.lean",
-      "lineCount": 257,
-      "theoremCount": 4,
-      "axiomCount": 3,
+      "lineCount": 386,
+      "theoremCount": 8,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

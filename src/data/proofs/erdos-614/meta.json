@@ -46,14 +46,17 @@
       "f_lower_bound axiom: kn/2 lower bound on edges",
       "f_upper_bound axiom: complete graph upper bound",
       "f_case_k_eq_1 axiom: k=1 requires n-2 edges",
-      "f_max_k axiom: k=n-2 requires complete graph",
-      "f_mono_k axiom: monotonicity in k",
-      "erdos_614_existence axiom: well-definedness of f(n,k)",
+      "f_max_k FALSE: k=n-2 does NOT require complete graph (star suffices)",
+      "f_mono_k FALSE: f is NOT monotone in k (f(6,3)=7 < 8≤f(6,2))",
+      "hasPropertyP_supgraph theorem: adding edges preserves P(k)",
+      "hasPropertyP_one_triple_has_edge theorem: P(1) implies every triple has an edge",
+      "non_neighbors_form_clique theorem: non-neighbors form a clique under P(1)",
+      "erdos_614_existence theorem: well-definedness of f(n,k)",
       "erdos_614_summary theorem: combines existence and upper bound"
     ],
-    "axiomCount": 3,
-    "lineCount": 256,
-    "assumptions": "3 axioms: f_lower_bound, f_case_k_eq_1, f_mono_k. f_upper_bound proved via complete graph construction."
+    "axiomCount": 2,
+    "lineCount": 387,
+    "assumptions": "2 axioms: f_lower_bound, f_case_k_eq_1. f_upper_bound proved via complete graph construction. f_mono_k identified as FALSE and removed (counterexample: f(6,3)=7 < 8≤f(6,2))."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #614** is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\n**Background:** The problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size). It was referenced in [FRS97] by Füredi, Ruszinkó, and Selkow.\n\n**Current Status:** The problem remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood. Basic bounds and monotonicity properties have been established, but the exact determination of f(n,k) for general n, k is an unsolved problem.",
@@ -65,8 +68,10 @@
       "**Turán Connection:** Related to avoiding sparse induced subgraphs; Turán numbers give related bounds",
       "**Ramsey Flavor:** Property must hold for ALL subsets of size k+2, not just one — a strong universal condition",
       "**Trivial Bounds:** 0 ≤ f(n,k) ≤ n(n-1)/2 — from empty graph to complete graph",
-      "**Special Cases:** f(n,0) = 0 trivially; f(n,n-2) = n(n-1)/2 forces the complete graph",
-      "**Monotonicity:** f is non-decreasing in k — stronger degree requirements need more edges"
+      "**Special Cases:** f(n,0) = 0 trivially; f(n,n-2) ≤ n-1 (star graph suffices)",
+      "**NON-Monotonicity:** f is NOT monotone in k — counterexample f(6,3)=7 < 8≤f(6,2)",
+      "**Edge Monotonicity:** P(k) IS monotone in edges — adding edges preserves the property",
+      "**P(1) Structure:** P(1) implies independence number ≤ 2; non-neighbors form cliques"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -116,11 +121,11 @@
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity",
-      "startLine": 122,
-      "endLine": 133,
-      "summary": "f is non-decreasing in k: P(k+1) implies P(k).",
-      "mathContext": "Mathematical content: f is non-decreasing in k: P(k+1) implies P(k)."
+      "title": "Monotonicity (Corrected)",
+      "startLine": 203,
+      "endLine": 337,
+      "summary": "f_mono_k is FALSE (counterexample given). P(k) IS monotone in edges (hasPropertyP_supgraph). P(1) structural properties proved.",
+      "mathContext": "Mathematical content: f NOT monotone in k (f(6,3)=7<8≤f(6,2)). P(k) monotone in edges (proved). P(1) implies no independent triple and non-neighbors form clique (proved)."
     },
     {
       "id": "open-problem",
@@ -161,8 +166,8 @@
     ],
     "namespace": "Erdos614",
     "lineCount": 256,
-    "axiomCount": 3,
-    "theoremCount": 3,
+    "axiomCount": 2,
+    "theoremCount": 8,
     "definitionCount": 7
   },
   "crossReferences": [
