@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-bpg04-chebyshev-functions",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 67, "endLine": 88 },
+    "type": "definition",
+    "title": "Chebyshev ψ Functions and Prime Counting",
+    "content": "Defines three fundamental counting functions from analytic number theory. The Chebyshev function $\\psi(x) = \\sum_{n \\leq x} \\Lambda(n)$ sums the von Mangoldt function, weighting each prime power $p^k$ by $\\log p$. Its restriction $\\psi(x; q, a)$ counts only terms $n \\equiv a \\pmod{q}$, and $\\pi(x; q, a)$ counts unweighted primes in the progression. The expected main term $x / \\varphi(q)$ reflects Dirichlet's equidistribution: each coprime residue class gets proportion $1/\\varphi(q)$ of all primes.",
+    "mathContext": "$\\psi(x) = \\sum_{n \\leq x} \\Lambda(n) \\sim x$ by the PNT. The restricted version $\\psi(x; q, a) = \\sum_{\\substack{n \\leq x \\\\ n \\equiv a(q)}} \\Lambda(n) \\sim \\frac{x}{\\varphi(q)}$ when $\\gcd(a, q) = 1$ (Dirichlet's theorem in quantitative form).",
+    "significance": "key",
+    "relatedConcepts": ["von Mangoldt function", "prime number theorem", "Dirichlet's theorem", "Euler totient function"],
+    "prerequisites": ["analytic number theory", "arithmetic functions"]
+  },
+  {
+    "id": "ann-bpg04-basic-properties",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 94, "endLine": 126 },
+    "type": "technique",
+    "title": "Basic Properties of Chebyshev Functions",
+    "content": "Establishes foundational facts: $\\psi(0) = 0$ (from $\\Lambda(0) = 0$), nonnegativity of $\\psi(x; q, a)$ (since $\\Lambda(n) \\geq 0$), the identity $\\psi(x; 1, 0) = \\psi(x)$ (trivial progression captures everything), and bounds on $\\pi(x; q, a)$. Also records standard facts about Euler's totient: $\\varphi(1) = 1$, $\\varphi(p) = p - 1$ for primes, and $\\varphi(q) > 0$ for $q \\geq 1$. These are used as supporting lemmas throughout.",
+    "mathContext": "Key identities: $\\Lambda(1) = 0$ (since 1 is not a prime power), $\\Lambda(n) \\geq 0$ for all $n$, and $\\varphi(p) = p - 1$ for prime $p$ (all non-zero residues are coprime to $p$).",
+    "significance": "supporting",
+    "relatedConcepts": ["totient function", "von Mangoldt function", "sum bounds"],
+    "prerequisites": ["number theory basics"]
+  },
+  {
+    "id": "ann-bpg04-bv-axiom",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 128, "endLine": 170 },
+    "type": "insight",
+    "title": "The Bombieri-Vinogradov Theorem (Axiom)",
+    "content": "The centerpiece of this file: the BV theorem stated as an axiom. For every $A > 0$, there exists $C > 0$ such that eventually $\\sum_{q \\leq \\sqrt{x}} \\|\\psi(x; q, 1) - x/\\varphi(q)\\| \\leq Cx / (\\log x)^A$. This says primes equidistribute in arithmetic progressions *on average* over moduli up to $\\sqrt{x}$, giving 'Riemann Hypothesis quality' results unconditionally. The axiom is necessary because its proof requires the large sieve inequality, Siegel-Walfisz theorem, and zero density estimates — none currently in Mathlib.",
+    "mathContext": "BV theorem: $\\sum_{q \\leq Q} \\max_{\\gcd(a,q)=1} \\left|\\psi(x; q, a) - \\frac{x}{\\varphi(q)}\\right| \\ll_A \\frac{x}{(\\log x)^A}$ where $Q = \\sqrt{x}/(\\log x)^B$. This matches what GRH gives for individual $q$, but only on average.",
+    "significance": "key",
+    "relatedConcepts": ["Riemann Hypothesis", "large sieve inequality", "Siegel-Walfisz theorem", "equidistribution"],
+    "prerequisites": ["analytic number theory", "L-functions", "sieve theory"]
+  },
+  {
+    "id": "ann-bpg04-bv-consequences",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 172, "endLine": 191 },
+    "type": "technique",
+    "title": "Consequences of BV",
+    "content": "Two immediate corollaries. First, `bv_implies_eventual_bound` unwraps the axiom: for each fixed $A > 0$, the error sum is eventually at most $Cx/(\\log x)^A$. This is just the axiom applied directly. Second, `bv_A2` specializes to $A = 2$, giving quadratic-logarithmic savings. In applications to sieve methods, one typically needs $A$ slightly larger than the sieve dimension — for the Maynard-Tao sieve, $A = 2$ suffices.",
+    "mathContext": "With $A = 2$: the total error over all progressions mod $q \\leq \\sqrt{x}$ is $O(x / (\\log x)^2)$, which is negligible compared to the main term $\\sim x \\cdot \\sum_{q \\leq \\sqrt{x}} 1/\\varphi(q) \\sim x \\log \\sqrt{x}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sieve dimension", "error term asymptotics"],
+    "prerequisites": ["analytic number theory"]
+  },
+  {
+    "id": "ann-bpg04-level-of-distribution",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 209, "endLine": 231 },
+    "type": "concept",
+    "title": "Level of Distribution and Elliott-Halberstam",
+    "content": "Introduces the key concept connecting BV to bounded prime gaps. The *level of distribution* $\\theta$ is the supremum such that the BV-type estimate holds for moduli up to $x^\\theta$. BV gives $\\theta = 1/2$ (proved in `bv_gives_half_level`). The Elliott-Halberstam conjecture (1968) asserts $\\theta = 1 - \\varepsilon$ for any $\\varepsilon > 0$, i.e., equidistribution for moduli up to nearly $x$ itself. Under EH, the Maynard-Tao sieve works with tuples of size $k = 5$, improving the gap bound from 246 to 12.",
+    "mathContext": "Level of distribution $\\theta$: primes have level $\\theta$ if $\\sum_{q \\leq x^\\theta} \\max_{(a,q)=1} |\\psi(x;q,a) - x/\\varphi(q)| \\ll x/(\\log x)^A$ for all $A > 0$. BV: $\\theta \\geq 1/2$. EH conjecture: $\\theta = 1^-$. GPY/Maynard-Tao: any $\\theta > 1/2$ suffices for bounded gaps, but the bound depends on $\\theta$.",
+    "significance": "key",
+    "relatedConcepts": ["Elliott-Halberstam conjecture", "Maynard-Tao sieve", "GPY sieve", "admissible tuples"],
+    "prerequisites": ["sieve methods", "prime distribution"]
+  },
+  {
+    "id": "ann-bpg04-prerequisite-layers",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 279, "endLine": 298 },
+    "type": "context",
+    "title": "Prerequisite Roadmap: Four Layers to BV",
+    "content": "Encodes the formalization roadmap as a concrete Lean type `BVPrerequisiteLayer` with four constructors and line-count estimates. Layer 1 (character sums, ~2000 lines) includes Gauss sums, orthogonality, and Pólya-Vinogradov. Layer 2 (analytic core, ~5000 lines) covers Perron's formula, zero-free regions, and Siegel-Walfisz. Layer 3 (sieve methods, ~3000 lines) covers Selberg sieve, large sieve, and Vaughan's identity. Layer 4 (assembly, ~2000 lines) combines everything. The total ~12000 lines is comparable to the Polynomial Freiman-Ruzsa project.",
+    "mathContext": "Dependency order: Layer 1 $\\to$ Layer 2 $\\to$ Layer 3 $\\to$ Layer 4. Mathlib coverage as of March 2026: Layer 1 (~40%), Layer 2 (~20%), Layer 3 (~5%), Layer 4 (~0%). The critical path for formalization runs through Pólya-Vinogradov $\\to$ zero-free regions $\\to$ large sieve.",
+    "significance": "context",
+    "relatedConcepts": ["formalization effort", "Mathlib", "PFR project"],
+    "prerequisites": ["familiarity with Lean/Mathlib ecosystem"]
+  },
+  {
+    "id": "ann-bpg04-polya-vinogradov",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 307, "endLine": 326 },
+    "type": "concept",
+    "title": "Pólya-Vinogradov Inequality",
+    "content": "Defines and applies the Pólya-Vinogradov inequality: for any non-principal Dirichlet character $\\chi \\pmod{q}$, partial sums satisfy $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$. This is the Layer 1 cornerstone and the 'single most impactful missing result for number theory in Mathlib.' The proof requires expressing $\\chi$ via Gauss sums, completing to a geometric series, and bounding the resulting exponential sums. The `pv_uniform_bound` theorem shows the bound is uniform over all intervals.",
+    "mathContext": "Pólya-Vinogradov (1918): $\\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\leq \\sqrt{q} \\log q$ for non-principal $\\chi \\pmod{q}$. The key is the Gauss sum identity $\\chi(n) = \\tau(\\chi)^{-1} \\sum_{a=1}^{q} \\overline{\\chi}(a) e(an/q)$, where $|\\tau(\\chi)| = \\sqrt{q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss sum", "character sum", "Dirichlet character", "exponential sum"],
+    "prerequisites": ["Dirichlet characters", "Fourier analysis on finite groups"]
+  },
+  {
+    "id": "ann-bpg04-large-sieve",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 328, "endLine": 337 },
+    "type": "concept",
+    "title": "Large Sieve Inequality (Placeholder)",
+    "content": "States the large sieve inequality as a Prop placeholder. The full statement bounds $\\sum_{q \\leq Q} \\varphi(q)^{-1} \\sum_{(a,q)=1} |\\sum_{n \\leq N} a_n e(na/q)|^2 \\leq (N + Q^2 - 1) \\sum |a_n|^2$. This is the Layer 3 workhorse that makes BV work by controlling bilinear sums on average over moduli. The placeholder `True` reflects that a precise formalization requires exponential sum infrastructure not yet available in Mathlib.",
+    "mathContext": "Large sieve inequality (Bombieri 1965): $\\sum_{q \\leq Q} \\frac{1}{\\varphi(q)} \\sum_{\\substack{a=1 \\\\ (a,q)=1}}^{q} \\left|\\sum_{n=1}^{N} a_n e(na/q)\\right|^2 \\leq (N - 1 + Q^2) \\sum_{n=1}^{N} |a_n|^2$. The duality principle converts this into bounds on character sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential sums", "duality principle", "bilinear forms", "Vaughan's identity"],
+    "prerequisites": ["harmonic analysis", "analytic number theory"]
+  },
+  {
+    "id": "ann-bpg04-maynard-tao-connection",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 193, "endLine": 207 },
+    "type": "context",
+    "title": "How BV Enables the Maynard-Tao Sieve",
+    "content": "This extended comment explains the mechanism by which BV feeds into bounded prime gaps. Given an admissible $k$-tuple $\\mathcal{H} = \\{h_1, \\ldots, h_k\\}$, Selberg-type sieve weights $W(n)$ detect when many translates $n + h_i$ are prime. Evaluating $\\sum_n W(n)$ requires equidistribution of primes in arithmetic progressions mod $q$ for 'most' moduli $q \\leq \\sqrt{x}$. BV provides exactly this. Zhang's variant used 'smooth moduli' (all prime factors below $x^\\delta$) to work with a weaker distributional input.",
+    "mathContext": "The Maynard-Tao approach: optimize $\\sum_n W(n) \\cdot (\\sum_{i=1}^k \\mathbf{1}_{n+h_i \\text{ prime}} - m)$ where $W(n) = (\\sum_{d | P(n)} \\lambda_d)^2$ are Selberg weights. The key evaluation uses $\\sum_{n \\leq x, n \\equiv a(q)} W(n) \\approx \\text{main term}$ which BV validates.",
+    "significance": "key",
+    "relatedConcepts": ["Selberg sieve", "admissible tuples", "Zhang's theorem", "Polymath 8"],
+    "prerequisites": ["sieve methods", "combinatorial number theory"]
+  }
+]
