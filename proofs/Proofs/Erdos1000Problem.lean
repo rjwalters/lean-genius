@@ -1083,3 +1083,37 @@ theorem density_somewhere_pos (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
     _ ≤ ∑ k ∈ range N, densityRatio A k := by
         apply Finset.single_le_sum (fun k _ => densityRatio_nonneg A k)
         exact Finset.mem_range.mpr hN
+
+/- ## Part XIV: Euler-Totient Bridge for Dichotomy -/
+
+/-- **Low density implies small Euler ratio**: If ρ_A(k) < ε, then
+    the classical Euler ratio φ(n_k)/n_k < ε as well.
+    This is the key bridge to the prime factorization: by the Euler product
+    φ(n)/n = ∏_{p | n}(1 - 1/p), having φ(n)/n < ε forces n to be
+    divisible by many small primes.
+    Named corollary of densityRatio_ge_totient_ratio for use in dichotomy analysis. -/
+theorem low_density_euler_bound (A : IncreasingSeq) (k : ℕ)
+    (ε : ℝ) (hρ : densityRatio A k < ε) :
+    (Nat.totient (A.seq k) : ℝ) / (A.seq k : ℝ) < ε :=
+  lt_of_le_of_lt (densityRatio_ge_totient_ratio A k) hρ
+
+/-- **Density recovery from fast growth**: If the sequence growth at index k+1
+    satisfies n_{k+1} > C · n_k for some C > 0, then ρ_A(k+1) ≥ 1 - (k+1)/C.
+    In particular, when C is much larger than k, the density is close to 1.
+    This is the mechanism by which low-density periods (slow growth) are
+    followed by density recovery (when growth resumes). -/
+theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
+    (C : ℝ) (hC : 0 < C)
+    (hgrow : C * (A.seq k : ℝ) < (A.seq (k + 1) : ℝ)) :
+    1 - (k + 1 : ℝ) / C ≤ densityRatio A (k + 1) := by
+  have hge := densityRatio_ge_one_sub_growth A (k + 1) (by omega)
+  simp only [Nat.add_sub_cancel] at hge
+  calc 1 - (k + 1 : ℝ) / C
+      ≤ 1 - (k + 1 : ℝ) * (A.seq k : ℝ) / (A.seq (k + 1) : ℝ) := by
+        apply sub_le_sub_left
+        have hn_pos : (0 : ℝ) < A.seq (k + 1) := Nat.cast_pos.mpr (A.pos (k + 1))
+        rw [div_le_div_iff hC hn_pos]
+        nlinarith
+    _ ≤ densityRatio A (k + 1) := hge
+
+end Erdos1000

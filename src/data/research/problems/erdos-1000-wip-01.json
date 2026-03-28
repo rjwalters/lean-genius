@@ -51,7 +51,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 6 added 6 new infrastructure theorems for erdos_dichotomy approach: growth constraints from low density (slow growth forced when ρ is small), Cesaro-deficit duality, deficit counting bounds. Two deep axioms remain: erdos_dichotomy, haight_resolution.",
+    "progressSummary": "PROGRESS: Session 7 added Euler-totient bridge (ρ < ε ⟹ φ(n)/n < ε, connecting to prime factorization) and density recovery theorem (fast growth forces high ρ). Total: 1119 lines, 56 theorems, 0 sorries, 2 deep axioms remain.",
     "builtItems": [
       {
         "name": "phiA_ge_totient",
@@ -128,7 +128,9 @@
       "consecutive_low_density_ratio: n_{k+1}/n_k < (k+1)/(1-ε) when ρ < ε",
       "cesaroAvg_eq_one_sub_avg_deficit: C_A = 1 - avg(1-ρ)",
       "deficit_count_bound: m(1-ε) ≤ Σ(1-ρ) for m low-ρ indices",
-      "density_somewhere_pos: Σ ρ_k > 0"
+      "density_somewhere_pos: Σ ρ_k > 0",
+      "low_density_euler_bound: ρ < ε ⟹ φ(n)/n < ε (bridge to prime factorization)",
+      "densityRatio_recovery_from_growth: n_{k+1} > C·n_k ⟹ ρ_{k+1} ≥ 1-(k+1)/C"
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
