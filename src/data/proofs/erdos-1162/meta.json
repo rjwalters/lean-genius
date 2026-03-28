@@ -83,64 +83,64 @@
       "id": "subgroups-sn",
       "title": "Part I: Subgroups of S_n",
       "summary": "Sn definition, numSubgroups axiom, positivity.",
-      "startLine": 30,
-      "endLine": 42,
+      "startLine": 41,
+      "endLine": 52,
       "mathContext": "$S_n = \\text{Equiv.Perm}(\\text{Fin } n)$. $f(n) = |\\{H : H \\leq S_n\\}|$."
     },
     {
       "id": "trivial-bounds",
       "title": "Part II: Trivial Bounds",
       "summary": "f(n) ≤ 2^(n!) upper bound.",
-      "startLine": 43,
-      "endLine": 52,
+      "startLine": 54,
+      "endLine": 65,
       "mathContext": "Each subgroup is a subset of $S_n$ ($|S_n| = n!$), giving $f(n) \\leq 2^{n!}$."
     },
     {
       "id": "asymptotic-constant",
       "title": "Part III: The Asymptotic Constant 1/16 (Roney-Dougal-Tracey 2025)",
       "summary": "roney_dougal_tracey theorem, rdt_implies_pyber (PROVED).",
-      "startLine": 64,
-      "endLine": 107,
+      "startLine": 66,
+      "endLine": 110,
       "mathContext": "$\\log f(n) / n^2 \\to 1/16$ as $n \\to \\infty$ [Roney-Dougal-Tracey 2025]. Convergence implies eventual bounds (proved)."
     },
     {
       "id": "pyber",
       "title": "Part IV: Pyber's Theorem (1993)",
       "summary": "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey.",
-      "startLine": 109,
-      "endLine": 119,
+      "startLine": 111,
+      "endLine": 121,
       "mathContext": "Pyber (1993): $\\exists c_1, c_2 > 0$ such that $c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$ for large $n$. Now a corollary of RDT."
     },
     {
       "id": "elem2-groups",
       "title": "Part V: Elementary Abelian 2-Groups",
       "summary": "maxElem2Rank, numSubgroupsElem2, constant_explanation.",
-      "startLine": 83,
-      "endLine": 105,
+      "startLine": 123,
+      "endLine": 146,
       "mathContext": "$(\\mathbb{Z}/2\\mathbb{Z})^k$ has $\\sim 2^{k^2/4}$ subgroups. For $k = n/4$, this gives $\\log_2 f \\approx (n/4)^2/4 = n^2/64$."
     },
     {
       "id": "subgroup-orders",
       "title": "Part VI: Subgroup Orders",
       "summary": "Statistical theorem on orders: most subgroups are 2-groups.",
-      "startLine": 106,
-      "endLine": 117,
+      "startLine": 148,
+      "endLine": 157,
       "mathContext": "The fraction of subgroups of $S_n$ whose order is a power of 2 approaches 1."
     },
     {
       "id": "small-cases",
       "title": "Part VII: Small Cases",
       "summary": "f(1)=1, f(2)=2, f(3)=6, f(4)=30.",
-      "startLine": 118,
-      "endLine": 132,
+      "startLine": 159,
+      "endLine": 171,
       "mathContext": "Exact values: $f(1)=1$, $f(2)=2$, $f(3)=6$, $f(4)=30$."
     },
     {
       "id": "summary",
       "title": "Part VIII: Growth Rate Summary",
       "summary": "erdos1162_asymptotic and erdos_1162 main theorem.",
-      "startLine": 133,
-      "endLine": 155,
+      "startLine": 173,
+      "endLine": 187,
       "mathContext": "$\\log f(n) = (1/16 + o(1))n^2$. Erdős's asymptotic formula question is answered."
     }
   ],
@@ -207,6 +207,6 @@
     "lineCount": 187,
     "axiomCount": 10,
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 4
   }
 }
