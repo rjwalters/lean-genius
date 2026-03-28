@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Axiom reduction 4\u21923: demoted sieve_conjectured_bound from axiom to def (was open conjecture incorrectly axiomatized). 0 sorries.",
+    "progressSummary": "PROGRESS: Added 4 structural theorems (reciprocal sum nonneg, 3 leastPrimeFactor properties). Total: 9 theorems, 2 axioms, 0 sorries.",
     "builtItems": [
       "Proved smallPrime_le_sieveReciprocal and largePrime_le_sieveReciprocal (sub-sum lemmas)",
       "Proved erdos_460_restricted_question theorem (was axiom \u2014 eliminated 1 axiom)",
-      "sieve_conjectured_bound: axiom\u2192def (open conjecture correction)"
+      "sieve_conjectured_bound: axiom\u2192def (open conjecture correction)",
+      "sieveReciprocalSum_nonneg (Erdos460Problem.lean:141)",
+      "leastPrimeFactor_prime (Erdos460Problem.lean:158)",
+      "leastPrimeFactor_dvd (Erdos460Problem.lean:164)",
+      "leastPrimeFactor_le (Erdos460Problem.lean:170)"
     ],
     "insights": [
       "greedyCoprimeSieve is a dummy (fun _ => 0) \u2014 all behavior axiomatized, no routine axioms to eliminate",
@@ -44,7 +48,9 @@
       "erdos_460_restricted_question proved: restricted sums (smallPrime, largePrime) are sub-sums of sieveReciprocalSum, so divergence of either implies the full sum diverges",
       "Proof technique: Finset.sum_le_sum with termwise comparison \u2014 filter condition P\u2227Q implies P, and 1/a \u2265 0 for natural a",
       "sieve_conjectured_bound was incorrectly axiomatized \u2014 it is an open conjecture, not a proved result. Demoted to def.",
-      "All 4 axioms were unused by any theorem \u2014 documentation-only. Removed 1 (open conjecture)."
+      "All 4 axioms were unused by any theorem \u2014 documentation-only. Removed 1 (open conjecture).",
+      "sieveReciprocalSum_nonneg: sum of 1/a_i is non-negative",
+      "leastPrimeFactor_prime/_dvd/_le: basic properties of least prime factor via Nat.minFac"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -64,16 +70,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-03-28T23:30:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos460Problem.lean",
       "filename": "Erdos460Problem.lean",
-      "lineCount": 201,
-      "theoremCount": 2,
-      "axiomCount": 4,
+      "lineCount": 274,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
