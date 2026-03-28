@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: No Lean file. Parent OQ02 has upper bound but not matching lower. Tractable: needs Taylor remainder of ln(1-x) from Mathlib.",
+    "builtItems": [
+      "Assessment: tractable new formalization, needs Taylor remainder infrastructure"
+    ],
+    "insights": [
+      "No Lean file for OQ-02-OQ-01. Parent files: 5 files, 0A, 0S, 119T — fully proved",
+      "OQ02 has upper bound P(all distinct) ≤ exp(-k(k-1)/(2d)) but NOT matching lower bound",
+      "OQ-02-OQ-01 asks: formalize matching lower bound via second-order Taylor of ln(1-x)",
+      "Key math: ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²))",
+      "Tractable: needs ln(1-x) ≥ -x - x²/2 (Taylor with remainder), then product bound",
+      "Would need Mathlib Real.log bounds + Taylor/Lagrange remainder for ln"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -50,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.431Z",
-  "lastUpdate": "2026-03-26T20:00:24.431Z",
+  "lastUpdate": "2026-03-28T06:00:00Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [

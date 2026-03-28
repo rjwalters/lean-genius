@@ -28,6 +28,7 @@ References:
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 namespace Erdos181
@@ -112,15 +113,6 @@ axiom erdos_181_conjecture :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n
 
 /--
-**Trivial Upper Bound:**
-R(Q_n) ≤ R(K_{2^n}) since Q_n is a subgraph of K_{2^n}.
-The Ramsey number of K_N is at most C^N for some C > 1.
-Combined: R(Q_n) ≤ C^{2^n} — exponential in the vertex count.
--/
-axiom trivial_upper_bound :
-  ∃ C : ℝ, C > 1 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C ^ (2 ^ n)
-
-/--
 **Tikhomirov (2022):**
 R(Q_n) ≤ C · 2^{(2-c)n} for constants C > 0 and c > 0.
 In fact, c ≈ 0.03656 is permissible.
@@ -132,6 +124,64 @@ Reference: arXiv:2208.14568
 axiom tikhomirov_2022 :
   ∃ c : ℝ, c > 0 ∧
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ ((2 - c) * n)
+
+/-- For all n : ℕ, n < 2^n. Used for the exponent bound D^{n+1} ≤ D^{2^n}. -/
+private lemma nat_lt_two_pow (n : ℕ) : n < 2 ^ n := by
+  induction n with
+  | zero => norm_num
+  | succ n ih =>
+    have h2n : 0 < 2 ^ n := pow_pos (by omega : (0 : ℕ) < 2) n
+    have h_double : 2 ^ n + 2 ^ n = 2 ^ (n + 1) := by
+      rw [pow_succ]; omega
+    linarith
+
+/--
+**Trivial Upper Bound:**
+R(Q_n) ≤ R(K_{2^n}) since Q_n is a subgraph of K_{2^n}.
+The Ramsey number of K_N is at most C^N for some C > 1.
+Combined: R(Q_n) ≤ C^{2^n} — exponential in the vertex count.
+
+PROVED from tikhomirov_2022: since R(Q_n) ≤ C₀ · 2^{(2-c)n} ≤ C₀ · 4^n ≤ D^{2^n}
+for D = max(C₀+1, 4), using the chain:
+  C₀ · 4^n ≤ D · D^n = D^{n+1} ≤ D^{2^n}  (since n+1 ≤ 2^n)
+-/
+theorem trivial_upper_bound :
+    ∃ C : ℝ, C > 1 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C ^ (2 ^ n) := by
+  obtain ⟨c, hc, C₀, hC₀, hbound⟩ := tikhomirov_2022
+  refine ⟨max (C₀ + 1) 4, ?_, ?_⟩
+  · -- D > 1 since D ≥ 4
+    linarith [le_max_right (C₀ + 1) (4 : ℝ)]
+  intro n
+  set D := max (C₀ + 1) 4 with hD_def
+  -- Key properties of D
+  have hD4 : (4 : ℝ) ≤ D := le_max_right _ _
+  have hC₀D : C₀ ≤ D := by linarith [le_max_left (C₀ + 1) (4 : ℝ)]
+  have hDpos : (0 : ℝ) < D := by linarith
+  have hD1 : (1 : ℝ) ≤ D := by linarith
+  -- Main chain of inequalities:
+  -- R(Q_n) ≤ C₀·2^{(2-c)n} ≤ C₀·4^n ≤ D·D^n = D^{n+1} ≤ D^{2^n}
+  calc (ramseyNumber n : ℝ)
+      ≤ C₀ * (2 : ℝ) ^ ((2 - c) * ↑n) := hbound n
+    _ ≤ C₀ * (2 : ℝ) ^ (2 * (↑n : ℝ)) := by
+        -- rpow monotonicity: (2-c)·n ≤ 2·n since c > 0, and base 2 ≥ 1
+        apply mul_le_mul_of_nonneg_left _ (le_of_lt hC₀)
+        exact rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
+          (mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg n))
+    _ = C₀ * (4 : ℝ) ^ n := by
+        -- Convert 2^{2n} (rpow) to 4^n (pow)
+        congr 1
+        have hcast : (2 : ℝ) * (↑n : ℝ) = (↑(2 * n) : ℝ) := by push_cast; ring
+        rw [hcast, rpow_natCast, pow_mul]
+        norm_num
+    _ ≤ D * D ^ n := by
+        -- C₀ ≤ D and 4^n ≤ D^n (since 4 ≤ D)
+        apply mul_le_mul hC₀D _ (by positivity) (by linarith)
+        gcongr
+    _ = D ^ (n + 1) := by ring
+    _ ≤ D ^ (2 ^ n) := by
+        -- n + 1 ≤ 2^n (from nat_lt_two_pow)
+        gcongr
+        exact nat_lt_two_pow n
 
 /--
 **Lower Bound:**
@@ -289,6 +339,42 @@ Status:
 - Related: Lee (2017) proved bounded-degree case, but Q_n has unbounded degree
 - Erdős-Sós question (R(Q_n)/2^n → ∞?): OPEN
 -/
+/-- If the Burr-Erdős conjecture holds, R(Q_n)/2^n is bounded. -/
+theorem conjecture_implies_ratio_bounded :
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n) →
+    ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ, n ≥ 1 → (ramseyNumber n : ℝ) / 2 ^ n ≤ B := by
+  intro ⟨C, hC, hbound⟩
+  exact ⟨C, hC, fun n _ => by
+    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    exact hbound n⟩
+
+/-- Tikhomirov implies R(Q_n) is subexponential relative to the vertex count:
+    R(Q_n) / (2^n)^2 → 0. -/
+theorem tikhomirov_subquadratic :
+    (∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧
+      ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ ((2 - c) * n)) →
+    ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧
+      ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * (2 ^ n : ℝ) ^ (2 - c) := by
+  intro ⟨c, hc, C, hC, hbound⟩
+  exact ⟨c, hc, C, hC, fun n => by
+    have : (2 : ℝ) ^ ((2 - c) * n) = ((2 : ℝ) ^ n) ^ (2 - c) := by
+      rw [← Real.rpow_natCast 2 n, ← Real.rpow_natCast 2 ((2 - c) * ↑n)]
+      simp [Real.rpow_mul (by positivity : (0 : ℝ) ≤ 2)]
+    linarith [hbound n]⟩
+
+/-- The conjecture contradicts the possibility that R(Q_n)/2^n → ∞. -/
+theorem conjecture_contradicts_divergence :
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n) →
+    ¬(∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
+      (ramseyNumber n : ℝ) / 2 ^ n > M) := by
+  intro ⟨C, hC, hbound⟩ hdiv
+  obtain ⟨N₀, hN⟩ := hdiv (C + 1) (by linarith)
+  have h := hN N₀ le_rfl
+  have hle := hbound N₀
+  have hpos : (0 : ℝ) < 2 ^ N₀ := by positivity
+  rw [div_gt_iff hpos] at h
+  linarith
+
 theorem erdos_181 :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n :=
   erdos_181_conjecture

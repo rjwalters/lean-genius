@@ -83,6 +83,39 @@ the empty subset is AP-free) and bounded above by N. -/
 noncomputable def gk (k N : ℕ) : ℕ :=
   sSup { m : ℕ | gk_prop k N m }
 
+/-- gk_prop k N 0 always holds: the empty set is always AP-free. -/
+theorem gk_prop_zero (k N : ℕ) : gk_prop k N 0 := by
+  intro S _
+  exact ⟨∅, Finset.empty_subset _, isAPFree_empty k, by omega⟩
+
+/-- The set of valid lower bounds for G_k(N) is bounded above by N. -/
+private lemma gk_bddAbove (k N : ℕ) : BddAbove {m : ℕ | gk_prop k N m} := by
+  use N; intro m hm
+  set S := (Finset.range N).image (fun i : ℕ => (i : ℤ))
+  have hS_card : S.card = N := by
+    rw [Finset.card_image_of_injective _ (fun a b h => by exact_mod_cast h)]
+    exact Finset.card_range N
+  obtain ⟨A, hA_sub, _, hA_card⟩ := hm S hS_card
+  linarith [Finset.card_le_card hA_sub]
+
+/-- G_k(N) ≥ 1 for N ≥ 1 and k ≥ 2: any nonempty set has a singleton
+    AP-free subset. -/
+theorem gk_ge_one (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : gk k N ≥ 1 := by
+  unfold gk
+  apply le_csSup (gk_bddAbove k N)
+  intro S hS
+  obtain ⟨x, hx⟩ := Finset.card_pos.mp (by omega : 0 < S.card)
+  exact ⟨{x}, Finset.singleton_subset_iff.mpr hx, isAPFree_singleton x k hk, by simp⟩
+
+/-- G_k(N) is anti-monotone in k: larger k means harder AP avoidance,
+    but any l-AP-free set is also k-AP-free when k ≤ l. -/
+theorem gk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) : gk l N ≤ gk k N := by
+  unfold gk
+  apply csSup_le_csSup (gk_bddAbove k N) ⟨0, gk_prop_zero l N⟩
+  intro m hm S hS
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := hm S hS
+  exact ⟨A, hA_sub, isAPFree_of_le hkl hk1 hA_free, hA_card⟩
+
 /-
 ## Basic bounds
 -/
@@ -221,6 +254,57 @@ theorem rk_pos (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : rk k N ≥ 1 := by
   calc Finset.sup ((Finset.Icc (1 : ℤ) ↑N).powerset.filter fun A => IsAPFree A k) Finset.card
       ≥ Finset.card ({1} : Finset ℤ) := Finset.le_sup hmem
     _ = 1 := by simp
+
+/-- A two-element set is always k-AP-free for k ≥ 3.
+    Three AP elements are distinct (d ≠ 0), so they can't fit in a 2-element set. -/
+theorem isAPFree_pair (x y : ℤ) (hxy : x ≠ y) (k : ℕ) (hk : k ≥ 3) :
+    IsAPFree {x, y} k := by
+  intro ⟨a, d, hd, _, hmem⟩
+  have h0 := hmem ⟨0, by omega⟩
+  have h1 := hmem ⟨1, by omega⟩
+  have h2 := hmem ⟨2, by omega⟩
+  simp at h0 h1 h2
+  rcases h0 with rfl | rfl <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> linarith
+
+/-- G_k(0) = 0: the only 0-element set is ∅, whose only subset is ∅. -/
+theorem gk_zero (k : ℕ) : gk k 0 = 0 := by
+  unfold gk
+  apply le_antisymm
+  · apply csSup_le ⟨0, fun S hS => ⟨∅, Finset.empty_subset _, isAPFree_empty k, by omega⟩⟩
+    intro m hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm ∅ rfl
+    rw [Finset.subset_empty.mp hA_sub] at hA_card; simp at hA_card
+  · exact Nat.zero_le _
+
+/-- gk_prop is anti-monotone in k: if every N-set has a k-AP-free subset of size m,
+    then every N-set has an l-AP-free subset of size m (for l ≥ k). -/
+theorem gk_prop_anti_k {k l N m : ℕ} (hkl : k ≤ l) (hk1 : k ≥ 1)
+    (h : gk_prop k N m) : gk_prop l N m := by
+  intro S hS
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := h S hS
+  exact ⟨A, hA_sub, isAPFree_of_le hkl hk1 hA_free, hA_card⟩
+
+/-- gk_prop is monotone in N: if every M-set has a k-AP-free subset of size m,
+    and M ≤ N, then every N-set also does (by restricting to an M-element subset). -/
+theorem gk_prop_mono_N {k M N m : ℕ} (hMN : M ≤ N) (h : gk_prop k M m) :
+    gk_prop k N m := by
+  intro S hS
+  -- S has N ≥ M elements; take any M-element subset
+  have ⟨S', hS'_sub, hS'_card⟩ := Finset.exists_subset_card_le (by omega : M ≤ S.card)
+  obtain ⟨A, hA_sub, hA_free, hA_card⟩ := h S' hS'_card
+  exact ⟨A, le_trans hA_sub hS'_sub, hA_free, hA_card⟩
+
+/-- R_k(N) ≥ 2 for N ≥ 2 and k ≥ 3: any two distinct elements are k-AP-free. -/
+theorem rk_ge_two (k N : ℕ) (hN : N ≥ 2) (hk : k ≥ 3) : rk k N ≥ 2 := by
+  unfold rk
+  have hmem : ({1, 2} : Finset ℤ) ∈ (Finset.Icc (1 : ℤ) N).powerset.filter
+      (fun A => IsAPFree A k) := by
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, isAPFree_pair 1 2 (by omega) k hk⟩
+    intro x hx; simp at hx; rcases hx with rfl | rfl <;> simp [Finset.mem_Icc] <;> omega
+  calc Finset.sup ((Finset.Icc (1 : ℤ) ↑N).powerset.filter fun A => IsAPFree A k) Finset.card
+      ≥ Finset.card ({1, 2} : Finset ℤ) := Finset.le_sup hmem
+    _ = 2 := by simp
 
 /-- Summary of Erdős Problem 201. -/
 theorem erdos_201_summary :

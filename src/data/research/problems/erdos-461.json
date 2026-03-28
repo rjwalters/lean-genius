@@ -29,20 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 structural theorems (10→15T). Identity, corollaries, count bounds. 1A deep (unchanged).",
+    "progressSummary": "PROGRESS: Added 3 structural theorems (15→18T). Multiplicativity, unit characterization, divisibility. 1A deep (unchanged).",
     "builtItems": [
       "Assessment: 1A deep, well-developed file",
       "smoothComponent_prime_ge: clean corollary for primes ≥ t",
       "smoothComponent_id_of_smooth: identity when all factors < t",
       "smoothComponent_id_of_lt: identity when n < t (all factors trivially bounded)",
       "smoothDistinctCount_pos: count ≥ 1 for non-empty intervals (t ≥ 1)",
-      "smoothDistinctCount_t_le_one: count ≤ 1 for trivial smoothness bound (t ≤ 1)"
+      "smoothDistinctCount_t_le_one: count ≤ 1 for trivial smoothness bound (t ≤ 1)",
+      "smoothComponent_mul: multiplicativity for any m,n ≠ 0 (no coprimality needed)",
+      "smoothComponent_eq_one_iff: characterization of unit smooth components",
+      "smoothComponent_dvd_mul_left: divisibility corollary"
     ],
     "insights": [
       "1 axiom (erdos_graham_lower — deep). 10T, 0S. Clean.",
       "smoothComponent_id_of_lt via Nat.le_of_dvd: prime factor p ≤ n < t gives p < t",
       "smoothDistinctCount bounded: 0 (t=0) ≤ count ≤ t, with count ≥ 1 for t ≥ 1 and count ≤ 1 for t ≤ 1",
-      "Next infrastructure: smoothComponent_mul (multiplicativity for coprime inputs) needs Nat.factors_mul perm lemma from Mathlib"
+      "Next infrastructure: smoothComponent_mul (multiplicativity for coprime inputs) needs Nat.factors_mul perm lemma from Mathlib",
+      "smoothComponent_mul proved: fully multiplicative via Nat.factors_mul permutation",
+      "smoothComponent_eq_one_iff: 1 iff no prime factor < t, via List.dvd_prod contradiction",
+      "smoothComponent_dvd_mul_left: smooth component divides product smooth component"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-28T05:30:00Z",
+  "lastUpdate": "2026-03-28T05:34:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "The Lemma That Made Economics Nearly Convex",
+    "content": "The Shapley-Folkman lemma answers a deceptively simple question: when you add up many sets in $\\mathbb{R}^d$, how 'non-convex' can the result be?\n\nThe answer is striking: **the dimension $d$ controls non-convexity, not the number of sets.** No matter how many non-convex sets you sum, at most $d$ of the summands need to come from convex hulls rather than the original sets.\n\nThis is why large economies work: even if each consumer's preferences are non-convex (think indivisible goods), the aggregate demand of many consumers behaves as if it were convex, because the 'convexification error' is bounded by dimension, not population.",
+    "mathContext": "For $S_1, \\ldots, S_N \\subseteq \\mathbb{R}^d$ and $x \\in \\text{conv}(\\sum S_i)$: $\\exists x_i \\in \\text{conv}(S_i)$ with $\\sum x_i = x$ and $|\\{i : x_i \\notin S_i\\}| \\leq d$.",
+    "significance": "key",
+    "prerequisites": [
+      "convex hull",
+      "Minkowski sum",
+      "dimension"
+    ],
+    "relatedConcepts": [
+      "Caratheodory's theorem",
+      "Radon's theorem",
+      "convex relaxation"
+    ]
+  },
+  {
+    "id": "ann-decomposition",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 42,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Decomposition Structure",
+    "content": "The `Decomposition` structure records a decomposition $x = \\sum x_i$ where each $x_i \\in \\text{conv}(S_i)$. The `excessIndices` function identifies which indices $i$ have $x_i \\notin S_i$.\n\nThis structure is the combinatorial bookkeeping for the proof: we want to find a decomposition that *minimizes* the number of excess indices, and the Shapley-Folkman lemma says this minimum is $\\leq d$.",
+    "mathContext": "A decomposition consists of: (1) points $x_i$ for each index, (2) proof each $x_i \\in \\text{conv}(S_i)$, (3) proof $\\sum x_i = x$. The excess set is $\\{i : x_i \\notin S_i\\}$.",
+    "significance": "standard",
+    "prerequisites": [
+      "convex hull membership",
+      "Lean structures"
+    ],
+    "relatedConcepts": [
+      "Caratheodory representation",
+      "convex combination"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 71,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "The Main Lemma",
+    "content": "The heart of the formalization: for any point expressible as a sum of convex hull elements, there exists a decomposition where at most $\\text{finrank}(\\mathbb{R}, E)$ summands are not in their original sets.\n\n**Proof sketch**: Choose the decomposition minimizing total Caratheodory vertices. If $> d$ indices are excess, each contributes $\\geq 1$ extra vertex. Collecting $> d$ extra vertices from distinct indices gives $> d$ points in $\\mathbb{R}^d$, which must be affinely dependent. The affine dependence lets us redistribute weights and reduce the vertex count, contradicting minimality.",
+    "mathContext": "$\\exists$ decomposition $d$ with $|d.\\text{excessIndices}| \\leq \\text{Module.finrank}\\;\\mathbb{R}\\;E$.",
+    "significance": "key",
+    "prerequisites": [
+      "Caratheodory's theorem",
+      "affine independence",
+      "finite dimension"
+    ],
+    "relatedConcepts": [
+      "minimality argument",
+      "affine dependence reduction"
+    ]
+  },
+  {
+    "id": "ann-reduction",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 95,
+      "endLine": 118
+    },
+    "type": "technique",
+    "title": "The Caratheodory Reduction Technique",
+    "content": "The key lemmas share the same proof technique used by Caratheodory in 1911:\n\n1. **Too many points $\\Rightarrow$ affine dependence**: In $\\mathbb{R}^d$, any $d + 2$ or more points are affinely dependent: there exist $\\lambda_i$ (not all zero) with $\\sum \\lambda_i = 0$ and $\\sum \\lambda_i p_i = 0$.\n\n2. **Dependence $\\Rightarrow$ reduction**: Given such a relation, shift the convex combination weights: $w_i \\mapsto w_i - t\\lambda_i$ for the largest $t > 0$ that keeps all weights non-negative. This zeroes out at least one weight, reducing the vertex count.\n\nShapley-Folkman applies this across multiple sets simultaneously, which is what makes the dimension bound apply globally.",
+    "mathContext": "If $n > d$ points $f_1, \\ldots, f_n \\in \\mathbb{R}^d$, then $\\neg \\text{AffineIndependent}(\\mathbb{R}, f)$. Combined with the convex combination structure, this yields a strict reduction in total representation size.",
+    "significance": "key",
+    "prerequisites": [
+      "affine independence",
+      "linear algebra",
+      "convex combination"
+    ],
+    "relatedConcepts": [
+      "Caratheodory's theorem",
+      "Radon's partition theorem",
+      "Helly's theorem"
+    ]
+  },
+  {
+    "id": "ann-economics",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 130,
+      "endLine": 148
+    },
+    "type": "application",
+    "title": "The Economic Application",
+    "content": "The corollary `repeated_sum_nearly_convex` is the form most used in economics. For $n$ copies of a set $S$ (representing $n$ identical agents), the fraction of agents needing 'convexified' allocations is at most $d/n$, which vanishes as $n \\to \\infty$.\n\nThis is why **large economies are nearly convex**: even with indivisible goods ($d$ commodities), in a market with $n \\gg d$ agents, at most $d$ agents need fractional allocations. The aggregate demand is essentially convex.\n\nStartr (1969) used this to prove existence of $\\epsilon$-equilibria with $\\epsilon \\to 0$ as the economy grows. Anderson (1978) used it for core convergence. The result remains central to general equilibrium theory.",
+    "mathContext": "For $S \\subseteq \\mathbb{R}^d$ and $x \\in \\text{conv}(nS)$: $\\exists f_1, \\ldots, f_n$ with $f_i \\in \\text{conv}(S)$, $\\sum f_i = x$, and at most $d$ of the $f_i$ not in $S$. The 'convexification ratio' $d/n \\to 0$ as $n \\to \\infty$.",
+    "significance": "key",
+    "prerequisites": [
+      "Minkowski sum",
+      "basic economics (preferences, allocations)"
+    ],
+    "relatedConcepts": [
+      "general equilibrium",
+      "core convergence",
+      "convex relaxation"
+    ]
+  }
+]

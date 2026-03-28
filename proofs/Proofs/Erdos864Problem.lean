@@ -67,11 +67,12 @@ axiom erdos_freud_lower_bound :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxAlmostSidon N : ℝ) ≥ (2 / Real.sqrt 3 - ε) * Real.sqrt (N : ℝ)
 
-/-- Sidon set upper bound: |A| ≤ √N + O(N^{1/4}) for Sidon sets. -/
-axiom sidon_upper_bound :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ (N : ℕ) (A : Finset ℕ), (∀ a ∈ A, a ∈ Finset.Icc 1 N) →
-      IsSidon A → (A.card : ℝ) ≤ Real.sqrt (N : ℝ) + C * (N : ℝ) ^ (1/4 : ℝ)
+/-- **Note**: The Lindström (1969) bound |A| ≤ √N + O(N^{1/4}) for Sidon sets
+    requires Fourier-analytic methods not yet available in Mathlib v4.26.0.
+    The elementary difference-counting bound k² ≤ 2N + k (proved below as
+    `sidon_card_sq_le_2N`) gives |A| ≤ √(2N), improving `sidon_card_sq_le`
+    (k² ≤ 4N) by ~2×. See also `Erdos340GreedySidon.sidon_upper_bound_weak`
+    for the equivalent |A| ≤ √(2N) + 1. -/
 
 /-- Almost-Sidon sets can be larger than Sidon sets by a factor of 2/√3 ≈ 1.155.
     Proof: erdos_freud_lower_bound gives maxAlmostSidon(N) ≥ (2/√3 - ε)√N.
@@ -261,13 +262,10 @@ theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         have := hA a ha; have := hA b hb; omega
     _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
 
-/-- **Elementary Sidon counting bound**: For a Sidon set A ⊆ {1,...,N},
-    the pairwise sum count |A|(|A|+1)/2 ≤ 2N-1.
-    This gives |A| ≤ ~2√N. Weaker than `sidon_upper_bound` but fully proved.
-
-    Proof idea: in a Sidon set, the sum function (a,b) ↦ a+b is injective on
-    the upper triangle {(a,b) | a ≤ b}. So the number of pairs equals the number
-    of distinct sums, which is at most 2N-1. -/
+/-- **Sidon counting bound (sums)**: For a Sidon set A ⊆ {1,...,N}, the sum
+    map (a,b) ↦ a+b is injective on the upper triangle {(a,b) | a ≤ b}, so
+    |A|(|A|+1)/2 ≤ 2N-1. This gives |A| ≤ ~2√N. The tighter difference-counting
+    bound k² ≤ 2N+k (see `sidon_card_sq_le_2N`) improves this by ~2×. -/
 theorem sidon_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) (hS : IsSidon A) :
     A.card * (A.card + 1) / 2 ≤ 2 * N - 1 := by
@@ -310,6 +308,182 @@ theorem sidon_card_sq_le (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   -- k^2 = k*k ≤ 2*(k*k/2)+1 ≤ 2*(2N-1)+1 = 4N-1 ≤ 4N
   have h3 : k ^ 2 = k * k := by ring
   omega
+
+/- ## Difference Counting (Improved Sidon Bound)
+
+Sum-Sidon (all pairwise sums a+b with a≤b distinct) implies difference-Sidon
+(all pairwise differences a-b with a>b distinct). The k(k-1)/2 positive
+differences lie in {1,...,N-1}, giving the tighter bound k(k-1) ≤ 2(N-1),
+i.e., k² ≤ 2N + k. This improves sidon_card_sq_le (k² ≤ 4N) by ~2×.
+-/
+
+/-- Sum-Sidon implies difference-uniqueness: if a₁-b₁ = a₂-b₂ with a₁>b₁
+    and a₂>b₂, then a₁=a₂ and b₁=b₂. Proof: derive a₁+b₂=a₂+b₁, then
+    apply sumRepCount ≤ 1 to identify the pairs. -/
+private theorem isSidon_diff_injective {A : Finset ℕ} (hS : IsSidon A)
+    {a₁ b₁ a₂ b₂ : ℕ} (ha1 : a₁ ∈ A) (hb1 : b₁ ∈ A) (ha2 : a₂ ∈ A) (hb2 : b₂ ∈ A)
+    (hgt1 : b₁ < a₁) (hgt2 : b₂ < a₂) (heq : a₁ - b₁ = a₂ - b₂) :
+    a₁ = a₂ ∧ b₁ = b₂ := by
+  have hsum : a₁ + b₂ = a₂ + b₁ := by omega
+  have hle := isSidon_sumRepCount_le_one hS (a₁ + b₂)
+  unfold sumRepCount at hle
+  -- Case split on orderings: each case constructs two pairs in the filter,
+  -- Sidon forces them equal, yielding the conclusion or a contradiction.
+  by_cases h1 : a₁ ≤ b₂
+  · by_cases h2 : a₂ ≤ b₁
+    · -- Pairs (a₁, b₂) and (a₂, b₁)
+      have hp1 : (a₁, b₂) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨ha1, hb2⟩, h1, rfl⟩
+      have hp2 : (a₂, b₁) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨ha2, hb1⟩, h2, by omega⟩
+      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      simp only [Prod.mk.injEq] at heqp
+      exact ⟨heqp.1, heqp.2.symm⟩
+    · -- Pairs (a₁, b₂) and (b₁, a₂) — gives a₁=b₁ contradiction
+      push_neg at h2
+      have hp1 : (a₁, b₂) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨ha1, hb2⟩, h1, rfl⟩
+      have hp2 : (b₁, a₂) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨hb1, ha2⟩, le_of_lt h2, by omega⟩
+      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      simp only [Prod.mk.injEq] at heqp
+      omega -- a₁ = b₁ contradicts hgt1
+  · push_neg at h1
+    by_cases h2 : b₁ ≤ a₂
+    · -- Pairs (b₂, a₁) and (b₁, a₂) — gives conclusion directly
+      have hp1 : (b₂, a₁) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨hb2, ha1⟩, le_of_lt h1, by omega⟩
+      have hp2 : (b₁, a₂) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨hb1, ha2⟩, h2, by omega⟩
+      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      simp only [Prod.mk.injEq] at heqp
+      exact ⟨heqp.2.symm, heqp.1.symm⟩
+    · -- Pairs (b₂, a₁) and (a₂, b₁) — gives a₁=b₁ contradiction
+      push_neg at h2
+      have hp1 : (b₂, a₁) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨hb2, ha1⟩, le_of_lt h1, by omega⟩
+      have hp2 : (a₂, b₁) ∈ (A ×ˢ A).filter
+          (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a₁ + b₂) := by
+        simp only [Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨ha2, hb1⟩, le_of_lt h2, by omega⟩
+      have heqp := Finset.card_le_one.mp hle hp1 hp2
+      simp only [Prod.mk.injEq] at heqp
+      omega -- b₂=a₂ and a₁=b₁ contradicts hgt1
+
+/-- **Sidon counting bound (differences)**: For Sidon A ⊆ {1,...,N}, the k(k-1)/2
+    positive pairwise differences are all distinct (by `isSidon_diff_injective`)
+    and lie in {1,...,N-1}. Therefore k(k-1) ≤ 2(N-1). -/
+theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) (hS : IsSidon A) :
+    A.card * (A.card - 1) ≤ 2 * (N - 1) := by
+  set k := A.card with hk
+  -- The strict lower triangle: ordered pairs (a,b) with b < a
+  set L := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1)
+  -- Step 1: The difference map is injective on L
+  have h_inj : Set.InjOn (fun p : ℕ × ℕ => p.1 - p.2) ↑L := by
+    intro ⟨a₁, b₁⟩ h1 ⟨a₂, b₂⟩ h2 heq
+    rw [Finset.mem_coe] at h1 h2
+    simp only [Finset.mem_filter, Finset.mem_product] at h1 h2
+    have ⟨rfl, rfl⟩ := isSidon_diff_injective hS h1.1.1 h1.1.2 h2.1.1 h2.1.2 h1.2 h2.2 heq
+    rfl
+  -- Step 2: Image lies in {1,...,N-1}
+  have h_range : L.image (fun p : ℕ × ℕ => p.1 - p.2) ⊆ Finset.Icc 1 (N - 1) := by
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨a, b⟩, hp, rfl⟩ := hd
+    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    simp only [Finset.mem_Icc]
+    have := (Finset.mem_Icc.mp (hA a hp.1.1))
+    have := (Finset.mem_Icc.mp (hA b hp.1.2))
+    omega
+  -- Step 3: |image| = |L| by injectivity, and |image| ≤ N-1
+  have h_card_img := Finset.card_image_of_injOn h_inj
+  have h_le : L.card ≤ N - 1 := by
+    rw [← h_card_img]
+    calc (L.image _).card ≤ (Finset.Icc 1 (N - 1)).card := Finset.card_le_card h_range
+      _ = N - 1 := by rw [Finset.Nat.card_Icc]; omega
+  -- Step 4: 2*|L| + k = k*k (partition into lower triangle, diagonal, upper triangle)
+  have h_2L : 2 * L.card + k = k * k := by
+    set U := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)
+    set D := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 = p.2)
+    -- |L| = |U| via the swap bijection (a,b) ↦ (b,a)
+    have h_LU : L.card = U.card := by
+      have : L = U.image (fun p : ℕ × ℕ => (p.2, p.1)) := by
+        ext ⟨x, y⟩
+        simp only [L, U, Finset.mem_filter, Finset.mem_product,
+          Finset.mem_image, Prod.exists]
+        constructor
+        · rintro ⟨⟨hx, hy⟩, hlt⟩; exact ⟨y, x, ⟨hy, hx⟩, hlt, rfl, rfl⟩
+        · rintro ⟨a, b, ⟨ha, hb⟩, hab, rfl, rfl⟩; exact ⟨⟨hb, ha⟩, hab⟩
+      rw [this]; exact Finset.card_image_of_injective _
+        (fun ⟨a, b⟩ ⟨c, d⟩ h => by simpa using h)
+    -- |D| = k (diagonal)
+    have h_D : D.card = k := by
+      have : D = A.image (fun a => (a, a)) := by
+        ext ⟨x, y⟩
+        simp only [D, Finset.mem_filter, Finset.mem_product, Finset.mem_image]
+        constructor
+        · rintro ⟨⟨hx, _⟩, rfl⟩; exact ⟨x, hx, rfl⟩
+        · rintro ⟨a, ha, h⟩; rw [Prod.mk.injEq] at h
+          obtain ⟨rfl, rfl⟩ := h; exact ⟨⟨ha, ha⟩, rfl⟩
+      rw [this]; exact Finset.card_image_of_injective _
+        (fun a b h => by simpa using h)
+    -- Partition: A×A = L ∪ D ∪ U
+    have h_part : A ×ˢ A = L ∪ D ∪ U := by
+      ext ⟨x, y⟩
+      simp only [L, U, D, Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+      constructor
+      · intro ⟨hx, hy⟩; rcases lt_trichotomy y x with h | h | h
+        · left; left; exact ⟨⟨hx, hy⟩, h⟩
+        · left; right; exact ⟨⟨hx, hy⟩, h.symm⟩
+        · right; exact ⟨⟨hx, hy⟩, h⟩
+      · rintro ((⟨m, _⟩ | ⟨m, _⟩) | ⟨m, _⟩) <;> exact m
+    have h_disj1 : Disjoint L D := by
+      simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega
+    have h_disj2 : Disjoint (L ∪ D) U := by
+      rw [Finset.disjoint_union_left]
+      exact ⟨by simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega,
+             by simp only [Finset.disjoint_filter]; intro ⟨x, y⟩ _; omega⟩
+    have h_total : (A ×ˢ A).card = k * k := by simp [Finset.card_product]
+    rw [h_part, Finset.card_union_of_disjoint h_disj2,
+        Finset.card_union_of_disjoint h_disj1, h_D, h_LU] at h_total
+    omega
+  -- Combine: k*(k-1) ≤ 2*(N-1)
+  rcases k with _ | n
+  · simp
+  · -- From 2*L.card + (n+1) = (n+1)*(n+1), derive 2*L.card = n*(n+1)
+    -- Combined with L.card ≤ N-1: n*(n+1) ≤ 2*(N-1)
+    -- Goal: (n+1)*n ≤ 2*(N-1)
+    have h_eq : (n + 1) * (n + 1) = (n + 1) * n + (n + 1) := by ring
+    omega
+
+/-- **Improved Sidon square bound**: |A|² ≤ 2N + |A| for Sidon A ⊆ {1,...,N}.
+    Corollary of the difference counting bound k(k-1) ≤ 2(N-1).
+    Improves `sidon_card_sq_le` (k² ≤ 4N) by nearly a factor of 2. -/
+theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) (hS : IsSidon A) :
+    A.card ^ 2 ≤ 2 * N + A.card := by
+  have h := sidon_diff_counting_bound A N hN hA hS
+  set k := A.card
+  -- k^2 = k*(k-1) + k ≤ 2*(N-1) + k ≤ 2*N + k
+  rcases k with _ | n
+  · simp
+  · have h_eq : (n + 1) ^ 2 = (n + 1) * n + (n + 1) := by ring
+    omega
 
 /-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.

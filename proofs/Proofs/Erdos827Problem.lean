@@ -133,3 +133,45 @@ theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
 
 /-- n_k ≥ k trivially. -/
 axiom nk_ge_k (k : ℕ) (hk : 3 ≤ k) : k ≤ minimalNk k
+
+/- ## Structural Properties -/
+
+/-- Squared distance is symmetric. -/
+theorem distSq_comm (p q : Point) : distSq p q = distSq q p := by
+  simp only [distSq]; ring
+
+/-- Squared distance from a point to itself is 0. -/
+theorem distSq_self (p : Point) : distSq p p = 0 := by
+  simp only [distSq]; ring
+
+/-- Squared distance is non-negative. -/
+theorem distSq_nonneg (p q : Point) : 0 ≤ distSq p q := by
+  simp only [distSq]; positivity
+
+/-- Squared distance is 0 iff points coincide. -/
+theorem distSq_eq_zero_iff (p q : Point) :
+    distSq p q = 0 ↔ p = q := by
+  constructor
+  · intro h
+    simp only [distSq] at h
+    have h1 : (p.1 - q.1) ^ 2 = 0 := by nlinarith [sq_nonneg (p.2 - q.2)]
+    have h2 : (p.2 - q.2) ^ 2 = 0 := by nlinarith [sq_nonneg (p.1 - q.1)]
+    have := sq_eq_zero_iff.mp h1
+    have := sq_eq_zero_iff.mp h2
+    ext <;> linarith
+  · rintro rfl; exact distSq_self _
+
+/-- General position is hereditary: subsets of GP sets are in GP. -/
+theorem generalPosition_subset {S T : Finset Point} (hTS : T ⊆ S)
+    (hGP : GeneralPosition S) : GeneralPosition T :=
+  fun p hp q hq r hr => hGP p (hTS hp) q (hTS hq) r (hTS hr)
+
+/-- AllDistinctCircumradii is hereditary: subsets inherit the property. -/
+theorem allDistinctCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S)
+    (h : AllDistinctCircumradii S) : AllDistinctCircumradii T :=
+  fun p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂ =>
+    h p₁ (hTS hp₁) q₁ (hTS hq₁) r₁ (hTS hr₁) p₂ (hTS hp₂) q₂ (hTS hq₂) r₂ (hTS hr₂)
+
+/-- NkExists is proved for all k ≥ 3 using the axioms. -/
+theorem nkExists_of_axioms (k : ℕ) (hk : 3 ≤ k) : NkExists k :=
+  ⟨minimalNk k, minimalNk_valid k hk⟩
