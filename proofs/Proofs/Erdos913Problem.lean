@@ -13,8 +13,9 @@ is proved in detail below.
 
 This remains an open problem.
 
-Axioms: 3 (infinite_8p_sq_minus_1_primes, erdos_913_conditional, exponent_structure)
+Axioms: 2 (infinite_8p_sq_minus_1_primes, erdos_913_conditional)
 Sorries: 0
+Proved: exponent_structure — prime factorization of n(n+1) for n=8p²-1
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -227,9 +228,47 @@ factorization map follows from these exponents being pairwise distinct.
 -/
 
 /-- When p is prime and 8p²-1 is prime, n = 8p²-1 gives a product
-    n(n+1) with exactly three prime factors and exponents {1,2,3}. -/
-axiom exponent_structure (p : ℕ) (hp : p.Prime) (hp' : (8 * p ^ 2 - 1).Prime) (hp'' : p ≠ 2) :
+    n(n+1) with exactly three prime factors and exponents {1,2,3}.
+
+    Proof: n+1 = 8p² = 2³·p², so n(n+1) = (8p²-1)·2³·p². The prime
+    factorization has primes {8p²-1, p, 2} since n and n+1 are coprime
+    (consecutive integers), and 2 and p are coprime (p odd prime). -/
+theorem exponent_structure (p : ℕ) (hp : p.Prime) (hp' : (8 * p ^ 2 - 1).Prime) (hp'' : p ≠ 2) :
   let n := 8 * p ^ 2 - 1
-  (n * (n + 1)).primeFactors = {8 * p ^ 2 - 1, p, 2}
+  (n * (n + 1)).primeFactors = {8 * p ^ 2 - 1, p, 2} := by
+  simp only
+  have hp_ge : p ≥ 3 := by have := hp.two_le; omega
+  have hn1_eq : 8 * p ^ 2 - 1 + 1 = 8 * p ^ 2 := by omega
+  have hprod_ne : (8 * p ^ 2 - 1) * (8 * p ^ 2 - 1 + 1) ≠ 0 := by positivity
+  ext q
+  simp only [Nat.mem_primeFactors, hprod_ne, ne_eq, not_false_eq_true, and_true,
+             Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · -- Forward: q prime and q ∣ n(n+1) → q ∈ {8p²-1, p, 2}
+    intro ⟨hq, hq_dvd⟩
+    rw [hn1_eq] at hq_dvd
+    -- q ∣ (8p²-1)(8p²). Since gcd(8p²-1, 8p²) = 1, q ∣ one factor.
+    have hcop : Nat.Coprime (8 * p ^ 2 - 1) (8 * p ^ 2) := by
+      rw [← hn1_eq]; exact Nat.coprime_succ_self _
+    rcases hq.dvd_mul.mp hq_dvd with hq_left | hq_right
+    · -- q ∣ (8p²-1) and 8p²-1 is prime → q = 8p²-1
+      left; exact (hp'.eq_one_or_self_of_dvd q hq_left).resolve_left hq.one_lt.ne'
+    · -- q ∣ 8p² = 2³·p² and q prime → q = 2 or q = p
+      rw [show 8 * p ^ 2 = 2 ^ 3 * p ^ 2 from by ring] at hq_right
+      rcases hq.dvd_mul.mp hq_right with hq_2 | hq_p
+      · -- q ∣ 2³ and q prime → q = 2
+        right; right; exact (hq.eq_of_dvd_of_prime Nat.prime_two (hq.dvd_of_dvd_pow hq_2)).symm
+      · -- q ∣ p² and q prime → q = p
+        right; left; exact (hq.eq_of_dvd_of_prime hp (hq.dvd_of_dvd_pow hq_p)).symm
+  · -- Backward: q ∈ {8p²-1, p, 2} → q prime and q ∣ n(n+1)
+    intro hq
+    rw [hn1_eq]
+    rcases hq with rfl | rfl | rfl
+    · -- 8p²-1 is prime and divides the left factor
+      exact ⟨hp', dvd_mul_right _ _⟩
+    · -- p is prime and p ∣ 8p² → p ∣ (8p²-1)·(8p²)
+      exact ⟨hp, dvd_mul_of_dvd_right (⟨8 * p, by ring⟩ : p ∣ 8 * p ^ 2) _⟩
+    · -- 2 is prime and 2 ∣ 8p² → 2 ∣ (8p²-1)·(8p²)
+      exact ⟨Nat.prime_two, dvd_mul_of_dvd_right (⟨4 * p ^ 2, by ring⟩ : 2 ∣ 8 * p ^ 2) _⟩
 
 end Erdos913

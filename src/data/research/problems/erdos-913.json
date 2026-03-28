@@ -29,19 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 theorems (4T→8T). Triple-factor helper enables verification of 8p²-1 construction instances. 3 axioms remain: 1 open conjecture + 2 provable-but-deep.",
+    "progressSummary": "PROGRESS: Eliminated exponent_structure axiom (3A→2A). Proved via prime factor ext argument.",
     "builtItems": [
       "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
       "Proved example_n31: 31·32 = 2^5·31^1",
       "Proved example_n71: 71·72 = 2^3·3^2·71^1 (first 3-factor example, from 8p²-1 with p=3)",
-      "Proved example_n127: 127·128 = 2^7·127^1"
+      "Proved example_n127: 127·128 = 2^7·127^1",
+      "exponent_structure: proved via Finset.ext + Nat.mem_primeFactors + coprimality"
     ],
     "insights": [
       "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
       "erdos_913_conditional could be proved from exponent_structure + Set.Infinite image argument",
       "exponent_structure is provable but needs heavy Mathlib factorization API (Nat.primeFactors_mul, Coprime, etc.)",
       "n=71 demonstrates the 8p²-1 construction (p=3): 71·72 = 71·2³·3² with exponents {1,3,2}",
-      "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime"
+      "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime",
+      "exponent_structure PROVED: n=8p²-1 gives n(n+1)=(8p²-1)·2³·p² with primeFactors={8p²-1,p,2}. Proof by ext + coprimality of consecutive integers + prime dvd analysis."
     ],
     "mathlibGaps": [],
     "nextSteps": [
