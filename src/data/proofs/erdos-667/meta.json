@@ -20,8 +20,8 @@
     "erdosNumber": 667,
     "erdosUrl": "https://erdosproblems.com/667",
     "erdosProblemStatus": "open",
-    "axiomCount": 8,
-    "lineCount": 444,
+    "axiomCount": 4,
+    "lineCount": 515,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -50,7 +50,11 @@
       "cpq_gap_pos: the gap is strictly positive",
       "erdos667_at_least_one_strict_step: existence of strict increase in c(p,·)",
       "erdos667_weak_evidence: c(p,1) < 1 = c(p,q_max) from Ramsey upper bound",
-      "erdos667_summary: packaging of all known structural results"
+      "erdos667_summary: packaging of all known structural results",
+      "cpq defined via Filter.liminf (was axiom): c(p,q) = liminf log(H(n))/log(n), eliminates 1 axiom",
+      "cpq_nonneg PROVED from definition: liminf of nonneg sequence is nonneg, eliminates 1 axiom",
+      "cpq_le_one PROVED from definition: liminf of sequence ≤ 1 is ≤ 1, eliminates 1 axiom",
+      "cpq_mono_q PROVED from definition: H(n,p,q) ≤ H(n,p,q+1) implies liminf monotonicity, eliminates 1 axiom"
     ],
     "prerequisites": [
       "Graph theory: simple graphs, cliques, induced subgraphs",
@@ -58,7 +62,7 @@
       "Extremal graph theory: Turán-type density conditions",
       "Combinatorics: binomial coefficients C(n,k)"
     ],
-    "assumptions": "8 axiom declarations (cpq, cpq_nonneg, cpq_le_one, cpq_mono_q, cpq_lower_ramsey, cpq_upper_ramsey, cpq_at_max, efrs_bound) and 1 sorry (cliqueGuarantee_mono_n: comap castSucc density transfer). cliqueGuarantee_zero and cliqueGuarantee_max resolved.",
+    "assumptions": "4 axiom declarations (cpq_lower_ramsey, cpq_upper_ramsey, cpq_at_max, efrs_bound) encoding deep mathematical results. Previously 8 axioms; 4 eliminated by defining cpq via Filter.liminf and proving cpq_nonneg, cpq_le_one, cpq_mono_q from the definition.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -165,7 +169,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 667 in 374 lines with 8 axiom declarations and 3 sorries (reduced from 14 axioms by concretizing cliqueGuarantee via sSup and proving cliqueGuarantee_pos + extended monotonicity), encoding the extremal function H(n;p,q) and its exponent c(p,q), and 30 proved theorems. Key results: axiom elimination via induction, strict increase at top step (EFRS + boundary), small cases (p=3 fully resolved, p=4 and p=5 at top), and structural gap analysis. The main conjecture — strict monotonicity of c(p,q) in q — remains open.",
+    "summary": "This formalization captures Erdős Problem 667 in 515 lines with 4 axiom declarations (deep math results only) and 0 sorries. The exponent c(p,q) is now defined concretely via Filter.liminf of log(H(n))/log(n), eliminating 4 structural axioms (cpq, cpq_nonneg, cpq_le_one, cpq_mono_q) that were previously unverified assumptions. 36 proved theorems including strict increase at top step (EFRS + boundary), small cases (p=3 fully resolved, p=4 and p=5 at top), and structural gap analysis. The main conjecture — strict monotonicity of c(p,q) in q — remains open.",
     "implications": "Strict monotonicity would establish that every additional edge per p-set produces a measurably larger polynomial clique guarantee, ruling out 'plateaus' in the density-to-structure transfer function. This would provide a fine-grained understanding of how local graph density translates to global clique structure, connecting Ramsey theory (q=1) to Turán-type extremal problems (q near maximum) through a monotone interpolation.",
     "openQuestions": [
       "Is c(p,q) strictly increasing in q for all 1 ≤ q < C(p-1,2)+1? The formalization proves this at the top step and for p=3, but the general case remains open",
@@ -185,13 +189,14 @@
     ],
     "opens": [
       "Finset",
-      "SimpleGraph"
+      "SimpleGraph",
+      "Filter"
     ],
     "namespace": "Erdos667",
-    "lineCount": 444,
-    "axiomCount": 8,
-    "theoremCount": 30,
-    "definitionCount": 4
+    "lineCount": 515,
+    "axiomCount": 4,
+    "theoremCount": 36,
+    "definitionCount": 6
   },
   "references": [
     {
