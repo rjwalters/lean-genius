@@ -1,7 +1,9 @@
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Order.Basic
@@ -128,33 +130,41 @@ def PrimeNumberTheorem_Li : Prop :=
 PART III: EQUIVALENCE OF FORMULATIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Ratio-Equivalence Correspondence**
+/-- **Proved: Ratio-Equivalence Correspondence**
 
 The ratio formulation (π(x)·ln(x)/x → 1) is equivalent to asymptotic equivalence
-(π(x) ~ x/ln(x)). This follows from the definition of asymptotic equivalence
-in terms of the ratio tending to 1.
+(π(x) ~ x/ln(x)). Uses `isEquivalent_iff_tendsto_one` from Mathlib and the
+algebraic identity π(x)/(x/ln(x)) = π(x)·ln(x)/x. -/
+theorem ratio_iff_equiv : PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv := by
+  unfold PrimeNumberTheorem_Ratio PrimeNumberTheorem_Equiv
+  have hpa : ∀ᶠ x : ℝ in atTop, primeApprox x ≠ 0 := by
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+    simp only [primeApprox, if_pos hx]
+    exact div_ne_zero (ne_of_gt (by linarith)) (ne_of_gt (Real.log_pos hx))
+  rw [Asymptotics.isEquivalent_iff_tendsto_one hpa]
+  constructor <;> intro h
+  · -- Ratio → Quotient: show primePi/primeApprox = primePi*log/x eventually
+    refine h.congr' ?_
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+    simp only [Pi.div_apply, primeApprox, if_pos hx]
+    have hlog : Real.log x ≠ 0 := ne_of_gt (Real.log_pos hx)
+    have hx_ne : (x : ℝ) ≠ 0 := ne_of_gt (by linarith)
+    field_simp
+  · -- Quotient → Ratio: reverse direction, same algebra
+    refine h.congr' ?_
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+    simp only [Pi.div_apply, primeApprox, if_pos hx]
+    have hlog : Real.log x ≠ 0 := ne_of_gt (Real.log_pos hx)
+    have hx_ne : (x : ℝ) ≠ 0 := ne_of_gt (by linarith)
+    field_simp
 
-Proof requires unwinding the definitions of Tendsto and IsEquivalent,
-showing they express the same limit condition. -/
-axiom ratio_iff_equiv_axiom : PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv
+/-- **Proved: Equivalence-Error Correspondence**
 
-/-- The ratio and asymptotic equivalence formulations are equivalent -/
-theorem ratio_iff_equiv : PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv :=
-  ratio_iff_equiv_axiom
-
-/-- **Axiom: Equivalence-Error Correspondence**
-
-Asymptotic equivalence f ~ g is equivalent to having f - g = o(g).
-This is a standard result in asymptotic analysis: f ~ g means f/g → 1,
-which is equivalent to (f - g)/g → 0, i.e., f - g = o(g).
-
-A full proof would use the characterization of IsEquivalent and IsLittleO
-from Mathlib's Asymptotics library. -/
-axiom equiv_iff_error_axiom : PrimeNumberTheorem_Equiv ↔ PrimeNumberTheorem_Error
-
-/-- The asymptotic equivalence and error term formulations are equivalent -/
-theorem equiv_iff_error : PrimeNumberTheorem_Equiv ↔ PrimeNumberTheorem_Error :=
-  equiv_iff_error_axiom
+`IsEquivalent l u v` is defined as `(u - v) =o[l] v`, which is exactly the
+error term formulation. The two definitions are definitionally equal. -/
+theorem equiv_iff_error : PrimeNumberTheorem_Equiv ↔ PrimeNumberTheorem_Error := by
+  unfold PrimeNumberTheorem_Equiv PrimeNumberTheorem_Error Asymptotics.IsEquivalent
+  rfl
 
 /-- **Axiom: Logarithmic Integral Asymptotics**
 
@@ -172,20 +182,20 @@ axiom li_equiv_approx_axiom : logIntegral ~[atTop] primeApprox
 theorem li_equiv_approx : logIntegral ~[atTop] primeApprox :=
   li_equiv_approx_axiom
 
-/-- **Axiom: Li-Equiv Correspondence**
+/-- **Proved: Li-Equiv Correspondence**
 
 The Li formulation (π(x) ~ Li(x)) is equivalent to the basic asymptotic
-formulation (π(x) ~ x/ln(x)), because Li(x) ~ x/ln(x).
-
-This uses transitivity of asymptotic equivalence together with li_equiv_approx. -/
-axiom li_iff_equiv_axiom : PrimeNumberTheorem_Li ↔ PrimeNumberTheorem_Equiv
+formulation (π(x) ~ x/ln(x)), because Li(x) ~ x/ln(x) (axiomatized as
+`li_equiv_approx_axiom`). Uses transitivity and symmetry of `~[l]`. -/
+theorem li_iff_equiv : PrimeNumberTheorem_Li ↔ PrimeNumberTheorem_Equiv :=
+  ⟨fun h => h.trans li_equiv_approx_axiom, fun h => h.trans li_equiv_approx_axiom.symm⟩
 
 /-- All formulations of PNT are equivalent -/
 theorem all_formulations_equiv :
     (PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv) ∧
     (PrimeNumberTheorem_Equiv ↔ PrimeNumberTheorem_Error) ∧
     (PrimeNumberTheorem_Li ↔ PrimeNumberTheorem_Equiv) :=
-  ⟨ratio_iff_equiv, equiv_iff_error, li_iff_equiv_axiom⟩
+  ⟨ratio_iff_equiv, equiv_iff_error, li_iff_equiv⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: THE MAIN THEOREM (AXIOMATIZED)
@@ -213,29 +223,29 @@ theorem prime_asymptotic : PrimeNumberTheorem_Equiv :=
 
 /-- Corollary: π(x) ~ Li(x) -/
 theorem prime_li_asymptotic : PrimeNumberTheorem_Li :=
-  li_iff_equiv_axiom.mpr prime_asymptotic
+  li_iff_equiv.mpr prime_asymptotic
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART V: CONSEQUENCES OF PNT
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Prime Density Limit**
+/-- **Proved: Prime Density Limit**
 
 The density of primes π(x)/x tends to zero as x tends to infinity.
-This follows from the Prime Number Theorem: π(x) ~ x/ln(x), so
-π(x)/x ~ 1/ln(x) → 0 as x → ∞.
-
-A full proof combines the PNT with the fact that 1/ln(x) → 0. -/
-axiom prime_density_tends_to_zero_axiom :
-    Tendsto (fun x : ℝ => (primePi x : ℝ) / x) atTop (𝓝 0)
-
-/-- **Density of primes goes to zero**
-
-The "probability" that a random number near x is prime is approximately 1/ln(x),
-which tends to 0 as x → ∞. -/
+Proved from the axiomatized PNT: π(x)·ln(x)/x → 1 implies
+π(x)/x = (π(x)·ln(x)/x) · (1/ln(x)) → 1 · 0 = 0, since ln(x) → ∞. -/
 theorem prime_density_tends_to_zero :
-    Tendsto (fun x : ℝ => (primePi x : ℝ) / x) atTop (𝓝 0) :=
-  prime_density_tends_to_zero_axiom
+    Tendsto (fun x : ℝ => (primePi x : ℝ) / x) atTop (𝓝 0) := by
+  -- Strategy: π(x)/x = (π(x)·log(x)/x) · (1/log(x))
+  -- The first factor → 1 (PNT), the second → 0 (log → ∞)
+  suffices h : Tendsto (fun x : ℝ => (primePi x : ℝ) * log x / x * (1 / log x)) atTop (𝓝 0) by
+    refine h.congr' ?_
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+    have hlog : Real.log x ≠ 0 := ne_of_gt (Real.log_pos hx)
+    have hx_ne : (x : ℝ) ≠ 0 := ne_of_gt (by linarith)
+    field_simp
+  rw [show (0 : ℝ) = 1 * 0 from by ring]
+  exact primeNumberTheorem.mul (tendsto_const_nhds.div_atTop Real.tendsto_log_atTop)
 
 /-- **Axiom: Nth Prime Asymptotics**
 
@@ -379,26 +389,15 @@ theorem chebyshev_bounds :
       0.92 < (primePi x : ℝ) * log x / x ∧ (primePi x : ℝ) * log x / x < 1.11 :=
   chebyshev_bounds_axiom
 
-/-- **Axiom: Prime Counting Tends to Infinity**
+/-- **Proved: Prime Counting Tends to Infinity**
 
 The prime counting function π(x) tends to infinity as x tends to infinity.
-
-This is a consequence of Euclid's theorem on the infinitude of primes.
-For any bound N, there are more than N primes (since there are infinitely many),
-so we can choose x large enough that π(x) > N.
-
-A full proof would use Nat.infinite_setOf_prime from Mathlib and convert
-between the cardinality of finite sets and the limit. -/
-axiom prime_counting_tendsto_top_axiom :
-    Tendsto (fun x : ℝ => (primePi x : ℝ)) atTop atTop
-
-/-- **primePi(x) grows without bound**
-
-The number of primes up to x tends to infinity.
-This is a weak consequence of PNT, but can be proved directly from
-the infinitude of primes. -/
+Proved by composing three Mathlib results:
+1. `tendsto_nat_floor_atTop`: ⌊x⌋₊ → ∞ as x → ∞
+2. `Nat.tendsto_primeCounting`: π(n) → ∞ as n → ∞
+3. `tendsto_natCast_atTop_iff`: ℕ → ℝ cast preserves atTop -/
 theorem prime_counting_tendsto_top : Tendsto (fun x : ℝ => (primePi x : ℝ)) atTop atTop :=
-  prime_counting_tendsto_top_axiom
+  tendsto_natCast_atTop_iff.mpr (Nat.tendsto_primeCounting.comp tendsto_nat_floor_atTop)
 
 /-- **Euler's product formula connection**
 
