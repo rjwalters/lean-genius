@@ -1,0 +1,64 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+  "title": "Certified Jacobi Symbol Computation via Euclidean Reduction",
+  "slug": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+  "description": "Demonstrates that the verified Euclidean reduction steps (periodicity, multiplicativity, reciprocity, supplements) can be assembled into a certified computation function for the Jacobi symbol in Lean 4.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "jacobi-symbol",
+      "computational-number-theory",
+      "certified-computation",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 196,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Reusable reduce_step, extract_two_step, reciprocity_step lemmas",
+      "Certified computation chain for J(7,13) via explicit Euclidean steps",
+      "Certified computation chain for J(1001, 9907) via factorization",
+      "one_step_reduction: combined reciprocity+reduction theorem",
+      "one_step_decreasing: termination guarantee for the algorithm",
+      "extractTwos helper function with concrete verification"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Jacobi symbol extends the Legendre symbol to composite moduli and can be computed efficiently via a generalized Euclidean algorithm using quadratic reciprocity, the supplements, and modular reduction.",
+    "problemStatement": "Can the verified Euclidean reduction steps from the parent proof be assembled into a certified computation function in Lean 4?",
+    "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log² n) computation algorithm for the Jacobi symbol.",
+    "proofStrategy": "Define reusable reduction lemmas, then compose them into certified computation chains that prove specific Jacobi symbol values step by step. Define helper functions (extractTwos, recipSign) and prove the one-step reduction theorem that enables recursive certified computation."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "JacobiCertifiedComputation",
+    "lineCount": 196,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Extends the multiplicativity structure proof by assembling the reduction steps into certified computation chains"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "extends",
+      "description": "Answers the original question about Jacobi symbol reciprocity proof completion"
+    }
+  ]
+}

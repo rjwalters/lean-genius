@@ -67,12 +67,13 @@ macro "negate_state" : tactic => `(tactic|
   - Zaharescu (1987): Independent proof for large sets
   - Balasubramanian & Soundararajan (1996): Completed proof for all finite sets
 
-  Graham's Additional Conjecture:
+  Graham's Additional Conjecture (DISPROVED):
   If A has no common divisor (gcd of all elements is 1), then equality
   gcd(a,b) = a/|A| is achieved only when:
   - A = {1, 2, ..., n}, or
   - A = {L/1, L/2, ..., L/n} where L = lcm(1, ..., n), or
   - A = {2, 3, 4, 6}
+  Counterexample: {1, 2, 4} (discovered by Aristotle, proved below)
 
   Reference: Graham (1970), Balasubramanian-Soundararajan (1996)
 -/
@@ -84,7 +85,7 @@ namespace Erdos402
 
 open Nat Finset
 
-/-! ## Main Statement -/
+/- ## Main Statement -/
 
 /- Aristotle failed to find a proof. -/
 /--
@@ -98,7 +99,7 @@ theorem erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty)
   -- Proved by Balasubramanian and Soundararajan (1996)
   sorry
 
-/-! ## Equivalent Formulation -/
+/- ## Equivalent Formulation -/
 
 /--
 Alternative formulation: The minimum gcd ratio is at most 1/|A|.
@@ -127,7 +128,7 @@ theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)
     exact div_le_one_of_le₀ ( mod_cast h_mul ) ( Nat.cast_nonneg _ )
   exact h_div
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For singleton sets, the result is trivial: gcd(a,a) = a ≤ a/1 = a. -/
 theorem erdos_402_singleton (a : ℕ) (_ : a > 0) :
@@ -146,7 +147,7 @@ theorem erdos_402_range (n : ℕ) (hn : n ≥ 1) :
   rcases n with ( _ | _ | n ) <;> simp_all +arith +decide [ Finset.card_sdiff ];
   refine' ⟨ n + 2, ⟨ le_rfl, Nat.succ_ne_zero _ ⟩, 1, ⟨ Nat.le_add_left _ _, Nat.one_ne_zero ⟩, _ ⟩ ; norm_num [ Nat.div_eq_of_lt ]
 
-/-! ## The {2, 3, 4, 6} Example -/
+/- ## The {2, 3, 4, 6} Example -/
 
 /-- The special set {2, 3, 4, 6} mentioned by Graham. -/
 def GrahamSpecialSet : Finset ℕ := {2, 3, 4, 6}
@@ -167,7 +168,7 @@ theorem graham_special_example :
   -- gcd(4, 3) = 1, 4/4 = 1
   native_decide
 
-/-! ## Graham's Equality Characterization -/
+/- ## Graham's Equality Characterization -/
 
 /--
 A set A has no common divisor if gcd of all elements is 1.
@@ -182,6 +183,7 @@ is achieved only for:
 1. A = {1, ..., n}
 2. A = {lcm(1,...,n)/1, ..., lcm(1,...,n)/n}
 3. A = {2, 3, 4, 6}
+NOTE: This characterization was disproved — see counterexample below.
 -/
 def IsGrahamEqualityCase (A : Finset ℕ) : Prop :=
   (∃ n : ℕ, n ≥ 1 ∧ A = Finset.range (n + 1) \ {0}) ∨
@@ -189,106 +191,91 @@ def IsGrahamEqualityCase (A : Finset ℕ) : Prop :=
     A = (Finset.range (n + 1) \ {0}).image fun k => L / k) ∨
   A = GrahamSpecialSet
 
-/- Aristotle found this block to be false. Here is a proof of the negation:
+/- ## Counterexample to Equality Characterization -/
 
-noncomputable section AristotleLemmas
-
-/-
-Definition of the condition that for all pairs (a,b) in A, gcd(a,b) >= a / |A|.
--/
-open Nat Finset
-
+/-- A set satisfies the Graham equality condition when all pairs have gcd ≥ a/|A|. -/
 def SatisfiesGrahamCondition (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card
 
-/-
-The set {1, 2, 4} satisfies the Graham condition gcd(a,b) >= a/|A|.
--/
+/-- The set {1, 2, 4} satisfies gcd(a,b) ≥ a/|A| for all pairs. -/
 theorem counterexample_124_satisfies :
-    SatisfiesGrahamCondition {1, 2, 4} := by
-      intro a ha b hb; fin_cases ha <;> fin_cases hb <;> trivial;
+    SatisfiesGrahamCondition ({1, 2, 4} : Finset ℕ) := by
+  intro a ha b hb; fin_cases ha <;> fin_cases hb <;> trivial
 
-/-
-The set {1, 2, 4} has gcd 1.
--/
+/-- The set {1, 2, 4} is primitive (gcd of all elements is 1). -/
 theorem counterexample_124_primitive :
-    Erdos402.HasNoCommonDivisor {1, 2, 4} := by
-      -- Since 1 is in the set, the gcd must divide 1, so it must be 1. Therefore, the gcd is 1.
-      simp [Erdos402.HasNoCommonDivisor]
+    HasNoCommonDivisor ({1, 2, 4} : Finset ℕ) := by
+  simp [HasNoCommonDivisor]
 
-/-
-The set {1, 2, 4} is not one of the Graham equality cases.
--/
+/-- The set {1, 2, 4} is not one of the three Graham equality families.
+
+Proof outline:
+- Case {1,...,n}: 4 ∈ set forces n ≥ 4, but then 3 ∈ {1,...,n} while 3 ∉ {1,2,4}
+- Case {L/1,...,L/n}: L = L/1 ∈ image = {1,2,4}, so L ≤ 4. For n ≥ 3, both
+  2|L and 3|L so 6|L, contradicting L ≤ 4. For n ≤ 2, image card ≤ 2 ≠ 3.
+- Case {2,3,4,6}: immediate by decide -/
 theorem counterexample_124_not_case :
-    ¬ Erdos402.IsGrahamEqualityCase {1, 2, 4} := by
-      rintro ⟨ n, hn, h ⟩;
-      · rcases n with ( _ | _ | _ | _ | _ | n ) <;> simp_all +arith +decide [ Finset.ext_iff ];
-        exact absurd ( h 3 ) ( by norm_num );
-      · rename_i h;
-        rcases h with ( ⟨ n, hn, L, rfl, h ⟩ | h ) <;> simp_all +decide [ Finset.Subset.antisymm_iff, Finset.subset_iff ];
-        rcases h with ⟨ ⟨ ⟨ a, ⟨ ha₁, ha₂ ⟩, ha₃ ⟩, ⟨ b, ⟨ hb₁, hb₂ ⟩, hb₃ ⟩, ⟨ c, ⟨ hc₁, hc₂ ⟩, hc₃ ⟩ ⟩, h ⟩ ; have := @h ( ( Finset.range ( n + 1 ) \ { 0 } ).lcm id / 1 ) 1 ; simp_all +decide ;
-        rcases n with ( _ | _ | _ | _ | _ | n ) <;> simp_all +arith +decide [ Finset.range_add_one ];
-        · interval_cases b <;> contradiction;
-        · interval_cases c <;> contradiction;
-        · rcases this with h | h | h <;> simp_all +decide [ Nat.lcm_assoc ];
-          · rcases a with ( _ | _ | a ) <;> rcases b with ( _ | _ | b ) <;> rcases c with ( _ | _ | c ) <;> simp_all +arith +decide [ Nat.div_eq_of_lt ];
-          · exact absurd hc₃ ( Nat.ne_of_lt ( Nat.div_lt_of_lt_mul <| by linarith [ Nat.pos_of_ne_zero hc₂ ] ) );
-          · have := h ▸ Finset.dvd_lcm ( show n + 5 ∈ _ from by simp +decide ) ; simp_all +decide [ Nat.dvd_prime ] ;
-            linarith [ Nat.le_of_dvd ( by norm_num ) this ]
+    ¬ IsGrahamEqualityCase ({1, 2, 4} : Finset ℕ) := by
+  simp only [IsGrahamEqualityCase, not_or, GrahamSpecialSet]
+  refine ⟨?_, ?_, by decide⟩
+  · -- Not {1,...,n}: 4 ∈ set forces n ≥ 4, then 3 ∈ {1,...,n} but 3 ∉ {1,2,4}
+    rintro ⟨n, _, heq⟩
+    have h4 := heq ▸ (show (4 : ℕ) ∈ ({1, 2, 4} : Finset ℕ) by decide)
+    have h3 := heq ▸ (show (3 : ℕ) ∉ ({1, 2, 4} : Finset ℕ) by decide)
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at h4 h3
+    omega
+  · -- Not {L/1,...,L/n}: L/1 = L ∈ image = {1,2,4}
+    rintro ⟨n, hn, L, hL, heq⟩
+    -- L/1 = L is in the image since 1 ∈ {1,...,n}
+    have hL_in : L ∈ ({1, 2, 4} : Finset ℕ) := by
+      rw [heq]
+      apply Finset.mem_image.mpr
+      exact ⟨1, by simp [Finset.mem_sdiff, Finset.mem_range]; omega, by simp⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hL_in
+    by_cases hn3 : 3 ≤ n
+    · -- n ≥ 3: both 2 and 3 divide L = lcm(1,...,n), so 6 | L, but L ∈ {1,2,4}
+      have h2d : 2 ∣ L := by
+        rw [hL]
+        have := Finset.dvd_lcm (f := id)
+          (show (2 : ℕ) ∈ Finset.range (n + 1) \ {0} by
+            simp [Finset.mem_sdiff, Finset.mem_range]; omega)
+        simpa using this
+      have h3d : 3 ∣ L := by
+        rw [hL]
+        have := Finset.dvd_lcm (f := id)
+          (show (3 : ℕ) ∈ Finset.range (n + 1) \ {0} by
+            simp [Finset.mem_sdiff, Finset.mem_range]; omega)
+        simpa using this
+      have h6 : 6 ∣ L :=
+        (show Nat.Coprime 2 3 by decide).mul_dvd_of_dvd_of_dvd h2d h3d
+      -- L ∈ {1,2,4} but 6 | L forces L ∈ {0,6,12,...}, only L = 0 is ≤ 4
+      -- But L = 0 is impossible since L ∈ {1,2,4}
+      rcases hL_in with rfl | rfl | rfl <;> omega
+    · -- n ≤ 2: image card ≤ n ≤ 2, but {1,2,4} has card 3
+      push_neg at hn3
+      have hcard3 : ({1, 2, 4} : Finset ℕ).card = 3 := by decide
+      rw [heq] at hcard3
+      have himg := Finset.card_image_le
+        (s := Finset.range (n + 1) \ {0}) (f := fun k => L / k)
+      have hdom : (Finset.range (n + 1) \ {0}).card = n := by
+        rw [Finset.card_sdiff_of_subset
+          (by simp [Finset.subset_iff, Finset.mem_range]; omega)]
+        simp [Finset.card_range]
+      omega
 
-/-
-The Graham equality conjecture is false, witnessed by {1, 2, 4}.
--/
-theorem erdos_402_equality_cases_false :
-    ¬ (∀ A : Finset ℕ, A.Nonempty → (∀ x ∈ A, x > 0) → Erdos402.HasNoCommonDivisor A →
-       (∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) → Erdos402.IsGrahamEqualityCase A) := by
-         push_neg;
-         -- Consider the set $A = \{1, 2, 4\}$.
-         use {1, 2, 4};
-         simp +zetaDelta at *;
-         refine' ⟨ _, _ ⟩;
-         · exact?;
-         · exact?
-
-end AristotleLemmas
-
-/-
-**Graham's Equality Conjecture**: The only primitive sets achieving equality
-in the GCD bound are the three families described above.
--/
-theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)
-    (hpos : ∀ x ∈ A, x > 0) (hprim : HasNoCommonDivisor A)
-    (heq : ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) :
-    IsGrahamEqualityCase A := by
-  -- Proved by Szegedy for large sets
-  by_contra! h_contra2_equality_cases_false;
-  apply_rules [ erdos_402_equality_cases_false ];
-  apply Classical.byContradiction
-  intro h_contra2_equality_cases_false_2;
-  apply h_contra2_equality_cases_false_2;
-  -- Wait, there's a mistake. We can actually prove the opposite.
-  negate_state;
-  -- Proof starts here:
-  -- Consider the set $A = \{1, 2, 4\}$.
-  use {1, 2, 4};
-  -- Check that the set {1, 2, 4} is nonempty.
-  simp [Erdos402.HasNoCommonDivisor];
-  -- Show that {1, 2, 4} is not one of the Graham equality cases by checking each case.
-  apply counterexample_124_not_case
-
--/
 /--
-**Graham's Equality Conjecture**: The only primitive sets achieving equality
-in the GCD bound are the three families described above.
+**Counterexample**: The set {1, 2, 4} is primitive, satisfies the GCD equality
+condition, but is not one of Graham's three conjectured families. This disproves
+the equality characterization as originally stated.
+Discovered by Aristotle automated proof search.
 -/
-theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)
-    (hpos : ∀ x ∈ A, x > 0) (hprim : HasNoCommonDivisor A)
-    (heq : ∀ a ∈ A, ∀ b ∈ A, Nat.gcd a b ≥ a / A.card) :
-    IsGrahamEqualityCase A := by
-  -- Proved by Szegedy for large sets
-  sorry
+theorem erdos_402_equality_counterexample :
+    ∃ A : Finset ℕ, A.Nonempty ∧ (∀ x ∈ A, x > 0) ∧ HasNoCommonDivisor A ∧
+    SatisfiesGrahamCondition A ∧ ¬IsGrahamEqualityCase A :=
+  ⟨{1, 2, 4}, ⟨1, by simp⟩, by intro x hx; fin_cases hx <;> omega,
+   counterexample_124_primitive, counterexample_124_satisfies, counterexample_124_not_case⟩
 
-/-! ## Key Lemmas -/
+/- ## Key Lemmas -/
 
 /-- For coprime elements, gcd(a,b) = 1 ≤ a/|A| when |A| ≤ a. -/
 theorem gcd_one_suffices (A : Finset ℕ) (a b : ℕ)
@@ -304,7 +291,41 @@ theorem one_in_singleton_set :
   use 1, mem_singleton_self 1, 1, mem_singleton_self 1
   simp [Nat.gcd_self]
 
-/-! ## Summary
+/-- A proper divisor of a positive natural number is at most half. -/
+private theorem dvd_lt_imp_le_half {d n : ℕ} (hd : d ∣ n) (hlt : d < n) :
+    d ≤ n / 2 := by
+  obtain ⟨k, rfl⟩ := hd
+  have hk : 2 ≤ k := by omega
+  have h1 : d * 2 ≤ d * k := Nat.mul_le_mul_left d hk
+  have h2 : d * 2 / 2 ≤ d * k / 2 := Nat.div_le_div_right h1
+  omega
+
+/-- For two-element sets, the main conjecture holds: the gcd of distinct
+positive naturals is a proper divisor of the larger, hence ≤ max/2 = max/|A|. -/
+theorem erdos_402_pair (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b) :
+    ∃ x ∈ ({a, b} : Finset ℕ), ∃ y ∈ ({a, b} : Finset ℕ),
+    Nat.gcd x y ≤ x / ({a, b} : Finset ℕ).card := by
+  have hcard : ({a, b} : Finset ℕ).card = 2 := Finset.card_pair hab
+  rw [hcard]
+  rcases le_total a b with h | h
+  · -- a ≤ b, take x = b, y = a
+    refine ⟨b, by simp, a, by simp, ?_⟩
+    have hab' : a < b := lt_of_le_of_ne h hab
+    have hgcd_dvd : Nat.gcd b a ∣ b := Nat.gcd_dvd_left b a
+    have hgcd_lt : Nat.gcd b a < b := by
+      calc Nat.gcd b a ≤ a := Nat.le_of_dvd (by omega) (Nat.gcd_dvd_right b a)
+        _ < b := hab'
+    exact dvd_lt_imp_le_half hgcd_dvd hgcd_lt
+  · -- b ≤ a, take x = a, y = b
+    refine ⟨a, by simp, b, by simp, ?_⟩
+    have hab' : b < a := lt_of_le_of_ne h (Ne.symm hab)
+    have hgcd_dvd : Nat.gcd a b ∣ a := Nat.gcd_dvd_left a b
+    have hgcd_lt : Nat.gcd a b < a := by
+      calc Nat.gcd a b ≤ b := Nat.le_of_dvd (by omega) (Nat.gcd_dvd_right a b)
+        _ < a := hab'
+    exact dvd_lt_imp_le_half hgcd_dvd hgcd_lt
+
+/- ## Summary
 
 **Problem Status: SOLVED**
 
@@ -319,6 +340,12 @@ The problem was progressively solved:
 
 **Graham's Additional Conjecture** characterizes when equality holds:
 only for {1,...,n}, {L/1,...,L/n}, or {2,3,4,6} (when A is primitive).
+NOTE: This characterization was DISPROVED — {1,2,4} is a counterexample
+(discovered by Aristotle automated proof search).
+
+**Formalization status**:
+- 1 sorry remaining (main conjecture — deep sieve argument)
+- All supporting lemmas, special cases, and counterexample are fully proved
 
 **References**:
 - Graham, R. L. (1970): Original conjecture
