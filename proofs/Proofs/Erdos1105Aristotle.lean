@@ -38,7 +38,13 @@ theorem card_strict_pairs_eq (n : ℕ) :
 -/
 theorem card_diag_pairs_eq (n : ℕ) :
     (Finset.univ.filter (fun e : Fin n × Fin n => e.1 = e.2)).card = n := by
-  sorry
+  -- Bijection with Fin n: i ↦ (i, i)
+  convert Fintype.card_fin n using 1
+  rw [← Finset.card_univ (α := Fin n)]
+  apply Finset.card_nbij (fun i _ => (i, i))
+  · intro i _; simp
+  · intro i _ j _ h; exact Prod.mk.inj h |>.1
+  · intro ⟨i, j⟩ h; simp at h; exact ⟨i, Finset.mem_univ _, by rw [h]⟩
 
 /-
   Target 3: Gauss sum for Fin values.
@@ -46,6 +52,7 @@ theorem card_diag_pairs_eq (n : ℕ) :
 -/
 theorem sum_fin_val_eq_choose (n : ℕ) :
     ∑ j : Fin n, (j : ℕ) = n.choose 2 := by
-  sorry
+  simp only [Finset.sum_fin_eq_sum_range, Finset.sum_range_id]
+  rw [Nat.choose_two_right]
 
 end Erdos1105Aristotle
