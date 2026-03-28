@@ -380,9 +380,71 @@ The inductive bound: R(3;k) ≤ 2 + k(R(3;k-1) - 1)
 This yields R(3;k) ≤ ⌈e·k!⌉.
 -/
 
-/-- Inductive upper bound on R(3;k) -/
-axiom R3k_inductive_upper (k : ℕ) (hk : k ≥ 2) :
-  R3k k ≤ 2 + k * (R3k (k - 1) - 1)
+/-- The pigeonhole step extracted from forcing_set_nonempty:
+    if m vertices force a triangle with k colors, then
+    (k+1)*(m-1)+2 vertices force a triangle with k+1 colors. -/
+private lemma forcing_step (k m : ℕ) (hk : k ≥ 1) (hm : ForcesMonochromaticTriangle m k) :
+    ForcesMonochromaticTriangle ((k + 1) * (m - 1) + 2) (k + 1) := by
+  have hm3 : m ≥ 3 := forces_imp_ge_three hk hm
+  intro hk1 c hsym
+  let v₀ : Fin ((k + 1) * (m - 1) + 2) := ⟨0, by omega⟩
+  let others := (Finset.univ : Finset (Fin ((k + 1) * (m - 1) + 2))).erase v₀
+  have hoc : others.card = (k + 1) * (m - 1) + 1 := by
+    simp [others, Finset.card_erase_of_mem (Finset.mem_univ v₀), Fintype.card_fin]
+  have h_pig : (Finset.univ : Finset (Fin (k + 1))).card • (m - 1) < others.card := by
+    rw [Finset.card_univ, Fintype.card_fin, hoc, smul_eq_mul]; omega
+  obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
+    (f := fun u => c (v₀, u)) (fun _ _ => Finset.mem_univ _) h_pig
+  let S := others.filter (fun u => c (v₀, u) = c₀)
+  have hSm : S.card ≥ m := by change m - 1 < S.card at h_fib; omega
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq hSm
+  let iso := T.orderIsoOfFin hTcard
+  let e : Fin m → Fin ((k + 1) * (m - 1) + 2) := fun i => (iso i).val
+  have e_inj : Function.Injective e :=
+    fun a b h => iso.injective (Subtype.val_injective h)
+  have e_in_S : ∀ i, e i ∈ S := fun i => hTsub (iso i).prop
+  have e_ne : ∀ i, e i ≠ v₀ := fun i => by
+    have := e_in_S i
+    simp only [S, others, Finset.mem_filter, Finset.mem_erase] at this
+    exact this.1.1
+  have e_col : ∀ i, c (v₀, e i) = c₀ := fun i => by
+    have := e_in_S i
+    simp only [S, Finset.mem_filter] at this; exact this.2
+  by_cases h_c₀ : ∃ i j : Fin m, i ≠ j ∧ c (e i, e j) = c₀
+  · obtain ⟨i, j, hij, hcij⟩ := h_c₀
+    exact ⟨c₀, v₀, e i, e j, e_ne i, e_inj.ne hij, e_ne j,
+      e_col i, hcij, e_col j⟩
+  · push_neg at h_c₀
+    let g : EdgeColoring m k := fun p => mapColor c₀ (c (e p.1, e p.2))
+    have g_sym : IsSymmetric g := fun i j =>
+      show mapColor c₀ (c (e i, e j)) = mapColor c₀ (c (e j, e i)) from
+        congr_arg (mapColor c₀) (hsym (e i) (e j))
+    obtain ⟨color', i, j, l, hij, hjl, hil, hcij', hcjl', hcil'⟩ :=
+      hm hk g g_sym
+    have h_ij_jl := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ j l hjl)
+      (hcij'.trans hcjl'.symm)
+    have h_ij_il := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ i l hil)
+      (hcij'.trans hcil'.symm)
+    exact ⟨c (e i, e j), e i, e j, e l,
+      e_inj.ne hij, e_inj.ne hjl, e_inj.ne hil,
+      rfl, h_ij_jl.symm, h_ij_il.symm⟩
+
+/-- Inductive upper bound on R(3;k): R(3;k) ≤ 2 + k·(R(3;k-1) - 1).
+    Proved from the pigeonhole step using Nat.find_min'. -/
+theorem R3k_inductive_upper (k : ℕ) (hk : k ≥ 2) :
+    R3k k ≤ 2 + k * (R3k (k - 1) - 1) := by
+  have hk1 : k ≥ 1 := by omega
+  have hkm1 : k - 1 ≥ 1 := by omega
+  unfold R3k
+  rw [dif_pos hk1, dif_pos hkm1]
+  apply Nat.find_min'
+  have hm := Nat.find_spec (forcing_set_nonempty (k - 1) hkm1)
+  -- forcing_step gives: ForcesMonochromaticTriangle ((k-1+1)*(find...-1)+2) (k-1+1)
+  -- Since k-1+1 = k, this is ForcesMonochromaticTriangle (k*(find...-1)+2) k
+  have : k - 1 + 1 = k := by omega
+  rw [← this]
+  convert forcing_step (k - 1) _ hkm1 hm using 2
+  omega
 
 /-- The upper bound via pigeonhole: R(3;k) ≤ e·k! + O(1) -/
 axiom R3k_factorial_upper :

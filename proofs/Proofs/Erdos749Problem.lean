@@ -268,6 +268,15 @@ theorem sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
 axiom erdos_turan_conjecture_28 :
     ∀ A : Set ℕ, lowerDensity (sumSet A) = 1 → ¬ HasBoundedRep A
 
+/-- The Erdős–Turán conjecture implies #749 is false at ε = 0:
+    if every basis of order 2 has unbounded representation, then
+    no set achieves lowerDensity(A+A) = 1 with bounded r(n). -/
+theorem erdos_749_false_at_zero_from_ET :
+    ∀ A : Set ℕ, HasDenseSumset A 0 → ¬ HasBoundedRep A := by
+  intro A hd
+  have h1 : lowerDensity (sumSet A) ≥ 1 := by unfold HasDenseSumset at hd; linarith
+  exact erdos_turan_conjecture_28 A (le_antisymm (lowerDensity_le_one _) h1)
+
 /- ## Upper Density Variant -/
 
 /-- Similar question for upper density: does there exist A with
