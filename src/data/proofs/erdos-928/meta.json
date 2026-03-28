@@ -64,7 +64,7 @@
     ],
     "axiomCount": 14,
     "assumptions": "14 axiom declarations: lpf_divides (largest prime divides n), lpf_prime (largest prime factor is prime), lpf_of_prime (P(p)=p for primes), dickman_function (Dickman rho function), dickman_at_one (rho(1)=1), dickman_at_two (rho(2) value), dickman_positive (rho positive), dickman_decreasing (rho decreasing), dickman_theorem (Psi asymptotic), infinitely_many_exist (Schinzel existence), teravainen_log_density (log density result), wang_conditional (natural density under EH), elliott_halberstam_conjecture (EH statement), schinzel_product (product smoothness)",
-    "lineCount": 276
+    "lineCount": 259
   },
   "overview": {
     "historicalContext": "Smooth numbers — integers whose prime factors are all 'small' — have been central to analytic number theory since Karl Dickman's 1930 paper 'On the frequency of numbers containing prime factors of a certain relative magnitude', which established the density $\\rho(1/\\alpha)$ for $\\alpha$-smooth numbers. The Dickman function $\\rho$ was later studied rigorously by Nicolaas de Bruijn (1951), who gave precise asymptotic expansions. Erdős Problem #928 asks about a natural bivariate extension: when both $n$ and $n+1$ are smooth. The heuristic that consecutive integers should behave independently (since $\\gcd(n, n+1) = 1$) suggests density $\\rho(1/\\alpha)\\rho(1/\\beta)$. Andrzej Schinzel (1967) proved infinitely many such pairs exist using sieve methods applied to $P(n(n+1))$. The breakthrough came from Joni Teräväinen (2018), who established the logarithmic density using the pretentious approach to multiplicative functions developed by Granville and Soundararajan. Zhiwei Wang (2021) proved the natural density conditionally, assuming the Elliott-Halberstam conjecture for friable integers. The unconditional natural density remains one of the most natural open questions in the theory of smooth numbers.",
@@ -198,7 +198,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos928",
-    "lineCount": 276,
+    "lineCount": 259,
     "axiomCount": 14,
     "theoremCount": 2,
     "definitionCount": 8

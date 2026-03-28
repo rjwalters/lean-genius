@@ -56,7 +56,7 @@
     ],
     "axiomCount": 9,
     "assumptions": "9 axiom declarations: lin_theorem_finiteness (m <= 7 for 2^m = sum of factorials), lin_two_adic_bound (v_2(sum factorials) <= 254), power_of_two_bound (2^m = sum with 2 in S implies m <= 254), lin_theorem_powers_of_three (3^m = sum factorials iff m in {0,1,2,3,6}), factorial_dominates_exponential (a! > 2^(a+c) for large a), few_terms_in_solution (max >= 8 implies |S| <= 8), max_element_bound (max element <= 13 in any solution), lin_f22_bound (f(2,2) <= 254), problem_404_generalizes_403 (Problem 403 embeds in Problem 404)",
-    "lineCount": 356
+    "lineCount": 339
   },
   "overview": {
     "historicalContext": "**Erdős Problem #403: Powers of 2 as Factorial Sums**\n\nThis problem asks whether the equation 2^m = a₁! + a₂! + ... + aₖ! (with distinct positive integers aᵢ) has only finitely many solutions.\n\n**Historical Development:**\n- **Burr and Erdős** posed the question\n- **Lin (1976):** Proved finiteness, showing m ≤ 7 is maximal\n- **Frankl:** Independently obtained the same result\n- **Lin's stronger result:** The 2-adic valuation of any such sum is ≤ 254\n\n**The Answer:**\nYES, there are only finitely many solutions. The largest is:\n**2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128**\n\n**Reference:**\nLin, S., 'On two problems of Erdős concerning sums of distinct factorials.'\nBell Laboratories internal memorandum (1960/1976).\nAlso in Erdős-Graham [ErGr80, p.79].",
@@ -183,7 +183,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos403",
-    "lineCount": 356,
+    "lineCount": 339,
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 8

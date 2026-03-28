@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 114,
+    "lineCount": 125,
     "assumptions": "6 axioms: erdos_1016_conjecture, excess_beyond_log, bondy_lower_bound, gkw_upper_bound, triangle_pancyclic, small_case_4. bondy_quadratic_threshold PROVED (was axiom): n²/4 ≥ n + log₂ n for n ≥ 7, by interval_cases for n ≤ 15 + nlinarith/Nat.log_lt for n ≥ 16.",
     "mathlib_version": "4.26.0"
   },
@@ -232,7 +232,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 114,
+    "lineCount": 125,
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 3
