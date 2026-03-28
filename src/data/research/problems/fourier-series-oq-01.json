@@ -29,11 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Created comprehensive formalization of Carleson theorem. Defined Carleson maximal operator and partial sums. Axiomatized Carleson-Hunt maximal inequality. Proved structural lemmas and reduction framework. 5 axioms, 4 sorries remain.",
+    "builtItems": [
+      "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
+      "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
+      "Defined carlesonMaximal: supremum of partial sum norms (ℝ≥0∞-valued)",
+      "Defined IsTrigPoly: predicate for trigonometric polynomial functions",
+      "Defined divergenceSet and fullDivergenceSet: where convergence fails",
+      "Proved fourierPartialSum_continuous, le_carlesonMaximal, carlesonMaximal_zero",
+      "Proved divergenceSet_subset_of_approx: decomposition of bad set",
+      "Stated carleson_ae_convergence: the main Carleson theorem",
+      "Stated carleson_continuous: corollary for continuous functions",
+      "Stated carleson_and_parseval: joint L²+pointwise convergence",
+      "Created gallery data: meta.json, index.ts, annotations.json, tacticStates.json"
+    ],
+    "insights": [
+      "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
+      "Key architecture: Carleson maximal operator S*f(x) = sup_N |S_N f(x)|",
+      "Carleson-Hunt weak-type (2,2) inequality is the deep part — axiomatized",
+      "Reduction from maximal inequality to a.e. convergence via density argument is provable",
+      "Trigonometric polynomials are dense in L² (Stone-Weierstrass/Mathlib) and converge exactly",
+      "No Carleson formalization in current Mathlib v4.26.0; external Carleson4 project exists"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove carleson_ae_convergence from the axioms (fill sorry)",
+      "Prove divergenceSet_measure_bound using Carleson-Hunt + Chebyshev",
+      "Replace trigPoly_dense_L2 axiom with proof from span_fourier_closure_eq_top",
+      "Replace trigPoly_partialSum_eq axiom with proof from Fourier coefficient vanishing",
+      "Submit companion file to Aristotle for routine lemmas"
+    ],
     "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
