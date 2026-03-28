@@ -46,10 +46,12 @@
       "ErdosProblem380 conjecture as ratio convergence",
       "erdos_graham_lower axiom: B(x) > x^{1-o(1)}",
       "gpfSquare_asymptotic axiom: x/exp(c√(log x · log log x)) growth",
-      "bad_interval_no_prime axiom: short bad intervals are prime-free"
+      "bad_interval_no_prime: short bad intervals (v<2u) are prime-free",
+      "bad_interval_no_prime_general: ALL bad intervals are prime-free (via Bertrand's postulate)",
+      "bad_interval_v_bound: bad intervals satisfy v < 2u (Bertrand + no-prime)"
     ],
     "axiomCount": 2,
-    "lineCount": 181,
+    "lineCount": 259,
     "assumptions": "3 axioms: erdos_graham_lower (deep analytic result), gpfSquare_asymptotic (deep analytic result), bad_interval_no_prime (elementary but requires p-adic valuation infrastructure). Previously 7 axioms; 4 eliminated by defining greatestPrimeFactor via Nat.primeFactors.max' with proved properties."
   },
   "overview": {
@@ -145,7 +147,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 181,
+    "lineCount": 259,
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 5
