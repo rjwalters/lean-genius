@@ -51,13 +51,14 @@
       "Question1: lim sup(a_n/n) = ∞ for all valid sequences",
       "Question2: logarithmic density vanishes",
       "upperDensity: via Filter.limsup",
-      "7 fully proved structural theorems (no sorry/axiom)",
-      "satisfiesConditionR / F_r: generalization to r-products"
+      "12 fully proved theorems/lemmas (no sorry/axiom)",
+      "liminf_finite: derived from freud_density via counting argument",
+      "term_le_of_count_gt: counting function bounds sequence terms"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 5,
-    "lineCount": 164,
-    "assumptions": "5 axioms: liminf_finite, reciprocal_sum_lower, freud_density, erdos_839_question1, erdos_839_question2. freud_counterexample is now a theorem (proved from freud_density since 19/36 > 1/2)."
+    "axiomCount": 4,
+    "lineCount": 267,
+    "assumptions": "4 axioms: reciprocal_sum_lower, freud_density, erdos_839_question1, erdos_839_question2. liminf_finite is now a theorem (proved from freud_density via counting argument: positive density forces bounded ratio). freud_counterexample proved from freud_density since 19/36 > 1/2."
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's work on additive restrictions in integer sequences, closely related to his broader program on sum-free sets and primitive sets. A 'primitive' set has no element dividing another; here the condition is additive: no term equals the sum of a contiguous block of earlier terms. Erdős posed two questions: whether such sequences must grow super-linearly ($\\limsup a_n/n = \\infty$) and whether their logarithmic density must vanish. He also conjectured the upper density is at most $1/2$, but Freud disproved this by constructing a valid sequence with upper density $19/36 \\approx 0.528$, exploiting the fact that only contiguous block sums (not arbitrary subset sums) are forbidden. The problem connects to Problems #359 (sum-free sets) and #867 in Erdős's catalog. Both growth-rate questions remain open, making this one of the more delicate problems in additive combinatorial number theory. The formalization is notable for including seven fully proved structural theorems about valid sequences, alongside the axiomatized deep results.",
@@ -103,22 +104,29 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 124,
-      "endLine": 139,
-      "summary": "Axiomatized results: $\\liminf(a_n/n)$ can be finite (valid sequences need not grow super-linearly everywhere), and the reciprocal sum $\\sum 1/a_n$ can grow as $\\Omega(c \\cdot \\log \\log x)$."
+      "startLine": 122,
+      "endLine": 131,
+      "summary": "Axiomatized result: the reciprocal sum $\\sum 1/a_n$ can grow as $\\Omega(c \\cdot \\log \\log x)$."
     },
     {
       "id": "upper-density",
       "title": "Upper Density and Freud's Counterexample",
-      "startLine": 140,
-      "endLine": 156,
-      "summary": "The upper density $\\overline{d}(a)$ defined via `Filter.limsup`, and Freud's construction achieving $\\overline{d}(a) = 19/36 > 1/2$, disproving Erdős's density conjecture."
+      "startLine": 132,
+      "endLine": 151,
+      "summary": "The upper density $\\overline{d}(a)$ defined via `Filter.limsup`, Freud's axiomatized density $19/36$, and the proved counterexample to Erdős's $1/2$ conjecture."
+    },
+    {
+      "id": "liminf-finite",
+      "title": "Deriving liminf_finite from freud_density",
+      "startLine": 152,
+      "endLine": 256,
+      "summary": "Key axiom elimination: `liminf_finite` proved from `freud_density` via counting argument. Positive upper density forces a(n)/(n+1) < 4 infinitely often. Includes helper lemmas: `countRatio_isCoboundedUnder` (Filter coboundedness), `frequently_lt_of_lt_limsup` (contrapositive extraction), and `term_le_of_count_gt` (counting function bounds terms by contradiction on monotonicity)."
     },
     {
       "id": "main-questions",
       "title": "Main Open Questions",
-      "startLine": 157,
-      "endLine": 163,
+      "startLine": 258,
+      "endLine": 265,
       "summary": "Both questions axiomatized as open: `erdos_839_question1` ($\\limsup$ growth) and `erdos_839_question2` (vanishing logarithmic density). These reflect the OPEN status of Problem #839."
     }
   ],
@@ -139,10 +147,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 164,
-    "axiomCount": 5,
-    "theoremCount": 9,
-    "definitionCount": 6
+    "lineCount": 267,
+    "axiomCount": 4,
+    "theoremCount": 14,
+    "definitionCount": 7
   },
   "crossReferences": [
     {
