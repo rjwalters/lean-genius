@@ -32,13 +32,20 @@ i.e., for all `a, b ∈ A`, `a + b` is squarefree. -/
 def SquarefreeSumset (A : Set ℕ) : Prop :=
     ∀ a ∈ A, ∀ b ∈ A, Squarefree (a + b)
 
-/-- An increasing enumeration of a set: `enumSet A j` is the `j`-th smallest element.
-We axiomatize this as a strictly monotone bijection onto `A`. -/
-axiom enumSet : Set ℕ → ℕ → ℕ
+/-- Increasing enumeration of an infinite set: `enumSet A j` is the `j`-th smallest
+element of `A`. Previously axiomatized (2 axioms); now defined via Mathlib's `Nat.nth`
+with properties proved from `Nat.nth_strictMono`, `Nat.nth_mem_of_infinite`, `Nat.nth_count`. -/
+noncomputable def enumSet (A : Set ℕ) (j : ℕ) : ℕ := Nat.nth (· ∈ A) j
 
 /-- The enumeration is strictly monotone and surjects onto `A`. -/
-axiom enumSet_spec (A : Set ℕ) (hA : A.Infinite) :
-    StrictMono (enumSet A) ∧ Set.range (enumSet A) = A
+theorem enumSet_spec (A : Set ℕ) (hA : A.Infinite) :
+    StrictMono (enumSet A) ∧ Set.range (enumSet A) = A := by
+  constructor
+  · exact Nat.nth_strictMono hA
+  · ext n; simp only [Set.mem_range, enumSet]
+    constructor
+    · rintro ⟨j, rfl⟩; exact Nat.nth_mem_of_infinite hA j
+    · intro hn; exact ⟨Nat.count (· ∈ A) n, Nat.nth_count hn⟩
 
 /- ## Main conjecture -/
 

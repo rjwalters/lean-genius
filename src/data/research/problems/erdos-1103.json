@@ -29,16 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 5A appropriate, 4T proved, 0S.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (5→3) via Nat.nth definition for enumSet",
     "builtItems": [
       "Proved squarefreeSumset_singleton (axiom → theorem) in Erdos1103Problem.lean:78",
       "Fixed type annotation for ErdosProblem1103 (j : ℕ)",
-      "Fixed deprecated Set.not_mem_empty → Set.notMem_empty"
+      "Fixed deprecated Set.not_mem_empty → Set.notMem_empty",
+      "enumSet: replaced axiom with noncomputable def via Nat.nth (· ∈ A)",
+      "enumSet_spec: replaced axiom with theorem (5→3 axioms)"
     ],
     "insights": [
       "squarefreeSumset_singleton proved by simp [SquarefreeSumset] which unfolds definition and simplifies singleton membership",
       "Pre-existing build error: j was inferred as Real in atTop filter due to C^j expression - fixed with explicit (j : ℕ) annotation",
-      "Set.not_mem_empty deprecated to Set.notMem_empty in current Mathlib"
+      "Set.not_mem_empty deprecated to Set.notMem_empty in current Mathlib",
+      "Eliminated 2 axioms (enumSet + enumSet_spec) by defining enumSet via Nat.nth",
+      "Nat.nth_count provides surjectivity: for m ∈ A, Nat.nth_count gives enumSet A (count m) = m",
+      "Nat.nth_strictMono + Nat.nth_mem_of_infinite provide monotonicity and membership"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,9 +71,9 @@
     {
       "path": "Proofs/Erdos1103Problem.lean",
       "filename": "Erdos1103Problem.lean",
-      "lineCount": 93,
-      "theoremCount": 4,
-      "axiomCount": 5,
+      "lineCount": 99,
+      "theoremCount": 5,
+      "axiomCount": 3,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
