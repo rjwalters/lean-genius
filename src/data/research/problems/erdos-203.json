@@ -29,18 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed unused covering_implies_sierpinski axiom (2→1A). 32T 1A 0S.",
+    "progressSummary": "PROGRESS: 1A→0A. Proved selfridge_sierpinski_is_sierpinski via covering system {3,5,7,13,19,37,73} with period 36. File now fully verified (0A 0S 36T).",
     "builtItems": [
       "def Covers2D, IsCoveringSystem2D",
       "theorems twentyfive_fails through thirtyseven_fails",
-      "theorems candidate_mono_k, candidate_mono_l"
+      "theorems candidate_mono_k, candidate_mono_l",
+      "Proved selfridge_sierpinski_is_sierpinski: covering system verification",
+      "pow2_mod_period: periodicity of 2^k mod p when p | 2^36-1",
+      "covering_prime: computational verification of 36 covering cases"
     ],
     "insights": [
       "Both axioms (selfridge_sierpinski, covering_implies_sierpinski) are established results not in Mathlib",
       "Added 2D covering system definition (IsCoveringSystem2D, Covers2D)",
       "Added 5 more small case eliminations (m=25,29,31,35,37), now 13 total",
       "Added candidate monotonicity lemmas (candidate_mono_k, candidate_mono_l)",
-      "covering_implies_sierpinski axiom was unused — removed (2→1A)"
+      "covering_implies_sierpinski axiom was unused — removed (2→1A)",
+      "78557 Sierpiński covering system: period 36, primes {3,5,7,13,19,37,73}. All primes divide 2^36-1."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,9 +71,9 @@
     {
       "path": "Proofs/Erdos203Problem.lean",
       "filename": "Erdos203Problem.lean",
-      "lineCount": 300,
-      "theoremCount": 32,
-      "axiomCount": 1,
+      "lineCount": 350,
+      "theoremCount": 36,
+      "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,

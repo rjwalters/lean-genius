@@ -64,8 +64,59 @@ def SierpinskiSet : Set ℕ := {m | IsSierpinskiNumber m}
 -- The smallest known Sierpinski number (Selfridge 1962)
 def selfridge_sierpinski : ℕ := 78557
 
--- Selfridge's result: 78557 is Sierpinski (established via covering system)
-axiom selfridge_sierpinski_is_sierpinski : IsSierpinskiNumber selfridge_sierpinski
+/- Selfridge's proof via covering system {3, 5, 7, 13, 19, 37, 73}, period 36.
+   For each k, one of these primes divides 2^k * 78557 + 1:
+     k ≡ 0 (mod 2)  → 3   k ≡ 1 (mod 4)  → 5   k ≡ 7 (mod 12) → 7
+     k ≡ 11 (mod 12) → 13  k ≡ 15 (mod 36) → 19  k ≡ 27 (mod 36) → 37
+     k ≡ 3 (mod 36)  → 73 -/
+
+/-- Power periodicity: if 2^36 % p = 1 % p, then 2^k % p = 2^(k % 36) % p. -/
+private lemma pow2_mod_period (p : ℕ) (hp : 2 ^ 36 % p = 1 % p) (k : ℕ) :
+    2 ^ k % p = 2 ^ (k % 36) % p := by
+  have key : ∀ n, (2 ^ 36) ^ n % p = 1 % p := by
+    intro n; induction n with
+    | zero => simp
+    | succ n ih =>
+      rw [pow_succ, Nat.mul_mod, ih, hp, ← Nat.mul_mod, one_mul]
+  conv_lhs => rw [show k = 36 * (k / 36) + k % 36 from (Nat.div_add_mod k 36).symm,
+    pow_add, pow_mul, Nat.mul_mod, key, ← Nat.mul_mod, one_mul]
+
+/-- Divisibility transfer via modular periodicity. -/
+private lemma dvd_of_pow2_mod_eq {p m k r : ℕ}
+    (hmod : 2 ^ k % p = 2 ^ r % p)
+    (hdvd : p ∣ (2 ^ r * m + 1)) : p ∣ (2 ^ k * m + 1) := by
+  obtain ⟨c, hc⟩ := hdvd
+  apply Nat.dvd_of_mod_eq_zero
+  calc (2 ^ k * m + 1) % p
+      = ((2 ^ k % p) * (m % p) + 1 % p) % p := by rw [Nat.add_mod, Nat.mul_mod]
+    _ = ((2 ^ r % p) * (m % p) + 1 % p) % p := by rw [hmod]
+    _ = (2 ^ r * m + 1) % p := by rw [← Nat.mul_mod, ← Nat.add_mod]
+    _ = 0 := by rw [hc, Nat.mul_mod_right]
+
+/-- For each residue r < 36, a covering prime ≤ 73 divides 2^r * 78557 + 1. -/
+private lemma covering_prime (r : ℕ) (hr : r < 36) :
+    ∃ p, Nat.Prime p ∧ p ∣ (2 ^ r * 78557 + 1) ∧ 2 ^ 36 % p = 1 % p ∧ p ≤ 73 := by
+  interval_cases r <;> first
+    | exact ⟨3, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨5, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨7, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨13, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨19, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨37, by decide, by native_decide, by native_decide, by omega⟩
+    | exact ⟨73, by decide, by native_decide, by native_decide, by omega⟩
+
+/-- Selfridge (1962): 78557 is a Sierpiński number, proved via covering system. -/
+theorem selfridge_sierpinski_is_sierpinski : IsSierpinskiNumber selfridge_sierpinski := by
+  refine ⟨by decide, fun k => ?_⟩
+  obtain ⟨p, hp_prime, hp_dvd, hp_period, hp_le⟩ :=
+    covering_prime (k % 36) (Nat.mod_lt k (by omega))
+  have hdvd := dvd_of_pow2_mod_eq (pow2_mod_period p hp_period k) hp_dvd
+  intro hprime
+  have hpn := hprime.eq_one_or_self_of_dvd p hdvd
+  have hlt := hp_prime.one_lt
+  have hge : 78558 ≤ 2 ^ k * 78557 + 1 := by
+    nlinarith [Nat.one_le_pow k 2 (by omega)]
+  rcases hpn with rfl | rfl <;> omega
 
 -- Sierpinski numbers exist (consequence of the above)
 theorem sierpinski_exists : SierpinskiSet.Nonempty :=
