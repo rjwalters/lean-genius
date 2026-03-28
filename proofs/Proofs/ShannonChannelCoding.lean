@@ -8,9 +8,10 @@
 
   Claude Shannon (1948)
 
-  Axioms: 5 (capacity_nonneg, fano_inequality, channel_coding_achievability,
+  Axioms: 5 (channelMI_le_log_card, fano_inequality, channel_coding_achievability,
     channel_coding_converse, bsc_capacity_eq)
-  Theorems: 3 (rate_of_code_pos, bsc_capacity_le_one, bsc_capacity_nonneg)
+  Theorems: 7 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+    capacity_nonneg, rate_of_code_pos, bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
@@ -57,12 +58,54 @@ noncomputable def channelCapacity {α β : Type*} [Fintype α] [Fintype β]
     (ch : DMChannel α β) : ℝ :=
   sSup { r : ℝ | ∃ inp : InputDist α, channelMI ch inp = r }
 
+/- ## Joint distribution properties -/
+
+/-- Joint distribution is non-negative. -/
+theorem jointDist_nonneg {α β : Type*} [Fintype α] [Fintype β]
+    (ch : DMChannel α β) (inp : InputDist α) (xy : α × β) :
+    0 ≤ jointDist ch inp xy :=
+  mul_nonneg (inp.nonneg xy.1) (ch.nonneg xy.1 xy.2)
+
+/-- Joint distribution sums to 1. -/
+theorem jointDist_sum_one {α β : Type*} [Fintype α] [Fintype β]
+    (ch : DMChannel α β) (inp : InputDist α) :
+    ∑ xy : α × β, jointDist ch inp xy = 1 := by
+  simp only [jointDist, Fintype.sum_prod_type]
+  conv_lhs => arg 2; ext x; rw [← Finset.mul_sum]
+  rw [show ∀ x, ∑ y : β, ch.W x y = 1 from fun x => ch.sum_one x]
+  simp [inp.sum_one]
+
+/-- Channel mutual information is non-negative. -/
+theorem channelMI_nonneg {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (ch : DMChannel α β) (inp : InputDist α) : 0 ≤ channelMI ch inp :=
+  mutual_info_nonneg (jointDist_nonneg ch inp) (jointDist_sum_one ch inp)
+
 /- ## Channel capacity is non-negative -/
 
-/-- Channel capacity is non-negative: I(X;Y) ≥ 0 for all input distributions. -/
-axiom capacity_nonneg {α β : Type*} [Fintype α] [Fintype β]
+/-- Mutual information is bounded by log of the output alphabet size.
+    I(X;Y) ≤ H(Y) ≤ log|β|. Proof uses chain rule and entropy_le_log_card. -/
+axiom channelMI_le_log_card {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (ch : DMChannel α β) (inp : InputDist α) :
+    channelMI ch inp ≤ Real.log (Fintype.card β)
+
+/-- Channel capacity is non-negative: I(X;Y) ≥ 0 for all input distributions,
+    and the supremum over a non-empty set of non-negatives is non-negative. -/
+theorem capacity_nonneg {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β] [Nonempty α]
-    (ch : DMChannel α β) : 0 ≤ channelCapacity ch
+    (ch : DMChannel α β) : 0 ≤ channelCapacity ch := by
+  unfold channelCapacity
+  have ⟨a⟩ := ‹Nonempty α›
+  let inp₀ : InputDist α :=
+    { p := fun x => if x = a then 1 else 0
+      nonneg := fun x => by split_ifs <;> norm_num
+      sum_one := by simp [Finset.sum_ite_eq', Finset.mem_univ] }
+  apply le_csSup_of_le
+  · exact ⟨Real.log (Fintype.card β), fun _ ⟨inp, hr⟩ =>
+      hr ▸ channelMI_le_log_card ch inp⟩
+  · exact ⟨inp₀, rfl⟩
+  · exact channelMI_nonneg ch inp₀
 
 /- ## Block codes -/
 
