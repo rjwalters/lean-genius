@@ -145,8 +145,46 @@ theorem cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
   refine ⟨Fintype.equivFin V, fun i => Or.inr (fun u v hu hv huv => ?_)⟩
   exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) huv
 
+/-- The dichromatic number is at most k for any k-colorable graph: a proper
+    k-coloring has no monochromatic edges, hence is acyclic for any
+    orientation. This generalizes dichrom_le_chrom (which uses |V| colors). -/
+theorem dichrom_le_colorable {V : Type*} (G : SimpleGraph V) {k : ℕ}
+    (hk : G.Colorable k) :
+    G.dichromNumber ≤ k := by
+  unfold SimpleGraph.dichromNumber
+  apply Nat.sInf_le
+  intro O
+  obtain ⟨c⟩ := hk
+  exact ⟨c, isAcyclicColoring_of_no_mono_edge O c fun u v hdir =>
+    c.valid (O.consistent u v hdir)⟩
+
+/-- The cochromatic number is at most k for any k-colorable graph: a proper
+    k-coloring has independent-set color classes, which vacuously satisfy
+    the cochromatic condition. Generalizes cochrom_le_chrom. -/
+theorem cochrom_le_colorable {V : Type*} (G : SimpleGraph V) {k : ℕ}
+    (hk : G.Colorable k) :
+    G.cochromNumber ≤ k := by
+  unfold SimpleGraph.cochromNumber
+  apply Nat.sInf_le
+  obtain ⟨c⟩ := hk
+  exact ⟨c, fun i => Or.inr fun u v hu hv _huv hadj =>
+    c.valid hadj (hu.trans hv.symm)⟩
+
+/-- An edgeless graph has dichromatic number at most 1: with no edges,
+    no orientation has directed edges, so any 1-coloring is vacuously
+    acyclic. -/
+theorem dichrom_le_one_of_edgeless {V : Type*} (G : SimpleGraph V)
+    (h : ∀ u v, ¬G.Adj u v) :
+    G.dichromNumber ≤ 1 := by
+  unfold SimpleGraph.dichromNumber
+  apply Nat.sInf_le
+  intro O
+  refine ⟨fun _ => 0, isAcyclicColoring_of_no_mono_edge O _ fun u v hdir => ?_⟩
+  exact absurd (O.consistent u v hdir) (h u v)
+
 /-- Bipartite graphs have dichromatic number at most 2: a proper 2-coloring
-    has no monochromatic edges, hence no monochromatic cycles. -/
+    has no monochromatic edges, hence no monochromatic cycles.
+    (Special case of dichrom_le_colorable.) -/
 theorem bipartite_dichrom_le_two {V : Type*} (G : SimpleGraph V)
     (hBip : G.Colorable 2) :
     G.dichromNumber ≤ 2 := by

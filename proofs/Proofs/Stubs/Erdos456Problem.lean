@@ -108,6 +108,17 @@ theorem smallestTotientDiv_minimal (n : ℕ) (hn : 1 ≤ n) (m : ℕ)
   unfold smallestTotientDiv
   exact Nat.sInf_le ⟨hm, hdiv⟩
 
+/-- For n ≥ 2, mₙ ≥ 2: m = 1 would require n | φ(1) = 1, impossible. -/
+theorem smallestTotientDiv_ge_two (n : ℕ) (hn : 2 ≤ n) :
+    2 ≤ smallestTotientDiv n := by
+  by_contra h
+  push_neg at h
+  have hm := smallestTotientDiv_pos n (by omega : 1 ≤ n)
+  have hdvd := smallestTotientDiv_divides n (by omega : 1 ≤ n)
+  have : smallestTotientDiv n = 1 := by omega
+  rw [this, Nat.totient_one] at hdvd
+  exact absurd (Nat.le_of_dvd one_pos hdvd) (by omega)
+
 /-
 # Part 4: Known Results
 -/
@@ -121,6 +132,43 @@ theorem m_le_p (n : ℕ) (hn : 1 ≤ n) :
   · exact (smallestPrimeMod1_prime n hn).pos
   · rw [Nat.totient_prime (smallestPrimeMod1_prime n hn)]
     exact smallestPrimeMod1_cong n hn
+
+/-- When q ≥ 3 is prime and n = q − 1, both mₙ = q and pₙ = q.
+    Since q ≡ 1 (mod q−1) and is the smallest such prime (p−1 ≥ n means p ≥ q),
+    pₙ = q. Since φ(m) < n for all 1 ≤ m ≤ n, no smaller m works, so mₙ = q. -/
+theorem m_eq_p_of_prime_pred {q : ℕ} (hq : q.Prime) (hq3 : 3 ≤ q) :
+    smallestTotientDiv (q - 1) = q ∧ smallestPrimeMod1 (q - 1) = q := by
+  set n := q - 1 with hn_def
+  have hn : 1 ≤ n := by omega
+  have hn2 : 2 ≤ n := by omega
+  constructor
+  · -- mₙ = q
+    apply le_antisymm
+    · -- mₙ ≤ q: m_le_p gives mₙ ≤ pₙ, and pₙ ≤ q (q is prime with n | q-1)
+      calc smallestTotientDiv n ≤ smallestPrimeMod1 n := m_le_p n hn
+        _ ≤ q := smallestPrimeMod1_minimal n hn q hq (dvd_refl n)
+    · -- q ≤ mₙ: no m < q has n | φ(m)
+      suffices h : ∀ m, 0 < m → n ∣ m.totient → q ≤ m from
+        h _ (smallestTotientDiv_pos n hn) (smallestTotientDiv_divides n hn)
+      intro m hm hdvd
+      by_contra hlt; push_neg at hlt
+      -- m < q means m ≤ n = q-1, so φ(m) < n
+      have hm_le_n : m ≤ n := by omega
+      have htot_lt : m.totient < n := by
+        rcases le_or_lt m 1 with hm1 | hm2
+        · have : m = 1 := by omega; rw [this, Nat.totient_one]; omega
+        · calc m.totient < m := Nat.totient_lt hm2
+            _ ≤ n := hm_le_n
+      -- But n | φ(m) and φ(m) > 0 gives n ≤ φ(m) — contradiction
+      exact absurd (Nat.le_of_dvd (Nat.totient_pos hm) hdvd) (by omega)
+  · -- pₙ = q: q is the smallest prime ≡ 1 (mod n)
+    apply le_antisymm
+    · exact smallestPrimeMod1_minimal n hn q hq (dvd_refl n)
+    · -- pₙ ≥ q: pₙ is prime with n | pₙ-1, so pₙ-1 ≥ n, hence pₙ ≥ n+1 = q
+      have hpn_pos : 0 < smallestPrimeMod1 n - 1 := by
+        have := (smallestPrimeMod1_prime n hn).two_le; omega
+      have := Nat.le_of_dvd hpn_pos (smallestPrimeMod1_cong n hn)
+      omega
 
 /-- Linnik's theorem: pₙ = O(n^L) for some constant L -/
 axiom linnik_bound :
