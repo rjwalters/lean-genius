@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 1096,
     "erdosUrl": "https://erdosproblems.com/1096",
     "erdosProblemStatus": "open",
@@ -50,9 +50,9 @@
       "ejs_refinement axiom: for q < φ, only need m = 2"
     ],
     "axiomCount": 9,
-    "lineCount": 304,
-    "assumptions": "Nine axioms remain: qSequence (ordered enumeration), qSequence_initial (initial values), smallestPisot_minimal (Siegel theorem), pisot_no_gap_property (EJK 1990), gap_universal_bound (EJK 1990), bugeaud_characterization (Bugeaud 1996), ejs_refinement (EJS 1996), density_near_one (density result), qSequenceM (m-digit enumeration). Five axioms eliminated: IsPisot (now concrete def via polynomial roots), smallestPisot (now def via IVT for x^3-x-1=0), smallestPisot_value/smallestPisot_is_pisot/goldenRatio_is_pisot (now theorems with sorry).",
-    "theoremCount": 14,
+    "lineCount": 438,
+    "assumptions": "9 axioms: qSequence (ordered enumeration), qSequence_initial (initial values), smallestPisot_minimal (Siegel theorem), pisot_no_gap_property (EJK 1990), gap_universal_bound (EJK 1990), bugeaud_characterization (Bugeaud 1996), ejs_refinement (EJS 1996), density_near_one (density result), qSequenceM (m-digit enumeration). 0 sorries.",
+    "theoremCount": 13,
     "definitionCount": 9
   },
   "overview": {
