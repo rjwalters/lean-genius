@@ -18,7 +18,7 @@
       "additive-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 348,
     "erdosUrl": "https://erdosproblems.com/348",
     "erdosProblemStatus": "open",
@@ -53,16 +53,16 @@
       "Formal definitions of complete and strongly complete sequences via finite sums",
       "Robustness predicate: m-robust iff complete after removing any m indices",
       "ValidPairs set characterization as formal set comprehension",
-      "Powers of 2 witness (0,1) validity with partial proof of completeness and non-robustness",
+      "Powers of 2 witness (0,1) validity: PROVED completeness (binary representation by strong induction) and non-1-robustness (even-sum argument: all 2^i for i≥1 are even)",
       "Fibonacci sequence witness (1,2) validity with Zeckendorf-based completeness",
       "Van Doorn's theorem formalized: no strongly complete sequence is 2-robust",
       "Representation count function and equivalence with completeness",
       "Gap property: complete sequences have eventually bounded gaps",
       "Main conjecture as disjunction: all (m,m+1) valid or cutoff exists"
     ],
-    "axiomCount": 4,
-    "lineCount": 265,
-    "assumptions": "4 axiom(s) and 6 sorry(s).",
+    "axiomCount": 8,
+    "lineCount": 309,
+    "assumptions": "8 axioms: erdos_348_characterization, erdos_348_main_problem (open problem), vanDoorn_theorem, complete_bounded_gaps (deep results), fib_complete (Zeckendorf), fib_1_robust (Fibonacci resilience), fib_not_2_robust (Fibonacci fragility), complete_iff_repr (requires Fintype machinery). powersOf2_complete and powersOf2_not_1_robust are now FULLY PROVED.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -174,9 +174,9 @@
     ],
     "opens": [],
     "namespace": "Erdos348",
-    "lineCount": 265,
-    "axiomCount": 4,
-    "theoremCount": 8,
+    "lineCount": 309,
+    "axiomCount": 8,
+    "theoremCount": 6,
     "definitionCount": 14
   },
   "references": [

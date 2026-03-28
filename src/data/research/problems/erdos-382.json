@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated cramer_implies_q1 axiom (4A→3A). Proved as theorem: under Cramér, the condition forces [u,v] within a single prime gap of O((log v)²) < v^ε. 3 sorries on standard growth rate facts.",
+    "progressSummary": "COMPLETE: 1S (case split), 3A. Proved log_sq_lt_rpow (C*log²v < v^ε for large v, ~45 lines using isLittleO_log_rpow_atTop). Proved V₂ bound (v-√v > C*log²v). 3S→1S.",
     "builtItems": [
       "Proved prodInterval_factorial by induction with Finset.prod_insert",
       "Fixed largestPrimeDivisor: List.foldl max 0 replaces removed List.maximum?",
@@ -39,7 +39,10 @@
       "Proved largestPrimeDivisor_prime via foldl_max_mem_primeFactorsList + Nat.prime_of_mem_primeFactorsList",
       "Proved prime_le_largestPrimeDivisor via Nat.mem_primeFactorsList + foldl_max_ge_of_mem",
       "Helper lemmas: foldl_max_ge_init, foldl_max_ge_of_mem, foldl_max_eq_init_or_mem, primeFactorsList_ne_nil, foldl_max_mem_primeFactorsList",
-      "cramer_implies_q1 (THEOREM): eliminated axiom — Cramér gap bound + no_prime_in_upper_half gives v-u < v^ε"
+      "cramer_implies_q1 (THEOREM): eliminated axiom — Cramér gap bound + no_prime_in_upper_half gives v-u < v^ε",
+      "PROVED log_sq_lt_rpow: C*(log v)² < v^ε for large v, using isLittleO_log_rpow_atTop with ε/4 splitting",
+      "PROVED V₂ bound: v - √v > C*(log v)² for large v, via log_sq_lt_rpow with ε=1/2 and √v ≥ 2 for v ≥ 4",
+      "Added imports: Pow.Asymptotics, Log.Deriv for isLittleO_log_rpow_atTop"
     ],
     "insights": [
       "12 axioms remain (was 13). prodInterval_factorial proved by induction",
@@ -50,7 +53,10 @@
       "exponentInProduct_sum axiom has pre-existing bug: wrong when u=0 (product is 0 but sum of valuations is positive)",
       "exp_ge_two_needs_square axiom is also incorrect: exponent ≥ 2 can come from two separate multiples of p, not requiring p²|k",
       "cramer_implies_q1 is provable: condition forces u > √v (else gap too long), then Cramér gives v-u ≤ C(log v)² = o(v^ε)",
-      "3 sorries remain: (1) C(log v)² < v^ε for large v, (2) v - √v > C(log v)² for large v, (3) case split + Cramér gap arithmetic"
+      "3 sorries remain: (1) C(log v)² < v^ε for large v, (2) v - √v > C(log v)² for large v, (3) case split + Cramér gap arithmetic",
+      "isLittleO_log_rpow_atTop pattern: .bound δ gives |log x| ≤ δ*x^p eventually, then Filter.eventually_atTop.mp extracts the ℝ threshold",
+      "For C*log²<v^ε: split ε as ε/4+ε/4+ε/2; first two for log² via squaring, last for absorbing C via C^(2/ε) threshold",
+      "Real.sqrt_eq_rpow connects √v = v^(1/2) for rpow ↔ sqrt conversions"
     ],
     "mathlibGaps": [],
     "nextSteps": [
