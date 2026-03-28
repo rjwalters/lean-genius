@@ -183,6 +183,28 @@ axiom turan_extremal :
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
       (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G)
 
+/-- Edge-disjointness is symmetric. -/
+theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :
+    edgeDisjoint T₁ T₂ ↔ edgeDisjoint T₂ T₁ := by
+  simp [edgeDisjoint, Finset.inter_comm]
+
+/-- turanThreshold 0 = 0. -/
+@[simp] theorem turanThreshold_zero : turanThreshold 0 = 0 := by
+  simp [turanThreshold]
+
+/-- turanThreshold 1 = 0. -/
+@[simp] theorem turanThreshold_one : turanThreshold 1 = 0 := by
+  simp [turanThreshold]
+
+/-- For n ≥ 2, the Turán threshold is positive. -/
+theorem turanThreshold_pos {n : ℕ} (hn : 2 ≤ n) : 0 < turanThreshold n := by
+  unfold turanThreshold; omega
+
+/-- The Turán threshold is monotone non-decreasing. -/
+theorem turanThreshold_mono {m n : ℕ} (h : m ≤ n) :
+    turanThreshold m ≤ turanThreshold n := by
+  unfold turanThreshold; exact Nat.div_le_div_right (Nat.pow_le_pow_left h 2)
+
 /-- Every graph exceeding Turán bound contains a triangle -/
 theorem exceeds_turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : numEdges G > turanThreshold (numVertices G)) :

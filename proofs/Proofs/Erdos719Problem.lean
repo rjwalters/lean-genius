@@ -129,6 +129,101 @@ theorem choose_succ_self (r : ℕ) : Nat.choose (r + 1) r = r + 1 := by
   rw [Nat.choose_symm (Nat.le_succ r)]
   simp [Nat.choose]
 
+/-- Edges in a complete clique are subsets of the vertex set. -/
+theorem completeClique_subset {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    ∀ e ∈ completeClique r S, e ⊆ S := by
+  intro e he
+  simp [completeClique, Finset.mem_filter, Finset.mem_powerset] at he
+  exact he.1
+
+/-- Edges in a complete clique have exactly r elements. -/
+theorem completeClique_uniform {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    ∀ e ∈ completeClique r S, e.card = r := by
+  intro e he
+  simp [completeClique, Finset.mem_filter] at he
+  exact he.2
+
+/-- PiecesEdgeDisjoint is symmetric. -/
+theorem piecesEdgeDisjoint_comm {V : Type*} [DecidableEq V]
+    (p₁ p₂ : Finset (Finset V)) :
+    PiecesEdgeDisjoint p₁ p₂ ↔ PiecesEdgeDisjoint p₂ p₁ := by
+  simp only [PiecesEdgeDisjoint, and_comm]
+
+-- ## Clique Cardinality
+
+/-- completeClique r S equals powersetCard r S: the family of all r-element
+    subsets of S. This connects our definition to Mathlib's combinatorial API. -/
+theorem completeClique_eq_powersetCard {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    completeClique r S = S.powersetCard r := by
+  ext e
+  simp [completeClique, Finset.mem_powersetCard, Finset.mem_filter, Finset.mem_powerset]
+
+/-- The number of r-edges in a complete clique on S equals C(|S|, r). -/
+theorem completeClique_card {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V) :
+    (completeClique r S).card = Nat.choose S.card r := by
+  rw [completeClique_eq_powersetCard, Finset.card_powersetCard]
+
+/-- A complete (r+1)-clique K_{r+1}^r has exactly r+1 hyperedges. -/
+theorem fullClique_edge_count {V : Type*} [DecidableEq V] (r : ℕ) (S : Finset V)
+    (hS : S.card = r + 1) :
+    (completeClique r S).card = r + 1 := by
+  rw [completeClique_card, hS, Nat.choose_succ_self_right]
+
+/-- completeClique is monotone: larger vertex sets yield more r-edges. -/
+theorem completeClique_mono {V : Type*} [DecidableEq V] (r : ℕ) {S T : Finset V} (h : S ⊆ T) :
+    completeClique r S ⊆ completeClique r T := by
+  intro e he
+  rw [completeClique_eq_powersetCard] at he ⊢
+  exact Finset.powersetCard_mono h he
+
+/-- Each piece in a valid decomposition has at most r + 1 edges:
+    single edges contribute 1, full cliques contribute r + 1. -/
+theorem decomp_piece_card_le {V : Type*} [DecidableEq V] [Fintype V] (r : ℕ)
+    (H : RUniformHypergraph V r) (pieces : Finset (Finset (Finset V)))
+    (hdecomp : IsValidDecomp r H pieces)
+    (p : Finset (Finset V)) (hp : p ∈ pieces) :
+    p.card ≤ r + 1 := by
+  rcases hdecomp.pieces_valid p hp with ⟨e, he⟩ | ⟨S, hS⟩
+  · -- p = {e}: a single r-edge
+    have : p = {e} := he.2
+    subst this; simp
+  · -- p = completeClique r S with |S| = r+1
+    have hcard : S.card = r + 1 := hS.1
+    have : p = completeClique r S := hS.2
+    subst this
+    rw [completeClique_card, hcard, Nat.choose_succ_self_right]
+
+-- ## Edge Counting and Turán Bound
+
+/-- Any r-uniform hypergraph on Fin n has at most C(n, r) edges,
+    since each edge is an r-element subset of an n-element set. -/
+theorem edges_le_choose (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
+    H.edges.card ≤ Nat.choose n r := by
+  calc H.edges.card
+      ≤ ((Finset.univ : Finset (Fin n)).powersetCard r).card := by
+        apply Finset.card_le_card
+        intro e he
+        rw [Finset.mem_powersetCard]
+        exact ⟨Finset.subset_univ e, H.uniform e he⟩
+    _ = Nat.choose n r := by
+        rw [Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+
+/-- The set of edge counts of clique-free r-uniform hypergraphs on Fin n
+    is bounded above by C(n, r). -/
+theorem cliqueFree_edgeCounts_bddAbove (n r : ℕ) :
+    BddAbove {m : ℕ | ∃ (H : RUniformHypergraph (Fin n) r),
+      IsCliqueFree r H ∧ H.edges.card = m} := by
+  refine ⟨Nat.choose n r, fun m hm => ?_⟩
+  obtain ⟨G, -, rfl⟩ := hm
+  exact edges_le_choose n r G
+
+/-- Any clique-free r-uniform hypergraph has at most turanHypergraph n r edges.
+    This is the fundamental property of the Turán number as a supremum. -/
+theorem cliqueFree_le_turan (n r : ℕ) (H : RUniformHypergraph (Fin n) r)
+    (hcf : IsCliqueFree r H) :
+    H.edges.card ≤ turanHypergraph n r :=
+  le_csSup (cliqueFree_edgeCounts_bddAbove n r) ⟨H, hcf, rfl⟩
+
 -- ## Empty and Trivial Cases
 
 /-- The empty hypergraph trivially satisfies the Erdős–Sauer conjecture. -/
