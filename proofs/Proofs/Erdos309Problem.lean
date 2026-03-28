@@ -166,7 +166,7 @@ noncomputable def harmonicNumber (N : ℕ) : ℚ :=
 H_1 = 1.
 -/
 theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
-  sorry
+  simp [harmonicNumber, sumUnitFractions, denominatorRange, unitFraction]
 
 /--
 **Trivial Upper Bound:**
