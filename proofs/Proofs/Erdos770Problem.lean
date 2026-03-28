@@ -29,6 +29,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
 
 open Finset
