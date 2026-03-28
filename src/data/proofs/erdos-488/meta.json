@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/488",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos488Problem.lean",
     "tags": [
       "erdos",
@@ -15,21 +15,21 @@
       "density",
       "inclusion-exclusion"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 488,
     "erdosUrl": "https://erdosproblems.com/488",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 182,
-    "assumptions": "1 axiom: multiplesSet_density_exists (Davenport's density theorem). 4 former axioms now proved: constant_2_optimal (optimality via Archimedean choice + singleton_multiplesCount), singleton count formula, monotonicity, subset monotonicity.",
+    "axiomCount": 0,
+    "lineCount": 322,
+    "assumptions": "None. All 5 former axioms fully proved: multiplesSet_density_exists (Davenport's density via periodicity), constant_2_optimal (optimality via Archimedean choice), singleton count formula (bijection), monotonicity, subset monotonicity.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1961, asking whether the density of multiples of a finite set satisfies a doubling inequality. The 1961 formulation contained a likely typographic error (writing $a \\nmid n$ instead of $a \\mid n$), corrected in a 1966 paper. The problem sits within the classical theory of sequences of multiples, initiated by Davenport's 1933 theorem that the natural density of the set of multiples of any sequence exists (extending Schnirelmann density ideas). Besicovitch (1935) showed that for infinite sets, the asymptotic density of multiples need not exist, making the finite-set case fundamentally different. The optimality claim — that the constant 2 cannot be improved — connects to the behavior of the floor function $\\lfloor N/a \\rfloor$ near the transition points $N = 2a - 1$ and $N = 2a$, where the density ratio jumps discontinuously. Halberstam and Roth's 1966 monograph 'Sequences' provides the definitive treatment of this circle of ideas, placing Erdős's question in the context of additive and multiplicative number theory.",
     "problemStatement": "Let $A$ be a finite set of integers $\\geq 2$ and $B = \\{n \\geq 1 : a \\mid n \\text{ for some } a \\in A\\}$. Is it true that for every $m > n \\geq \\max(A)$, $\\frac{|B \\cap [1,m]|}{m} < 2 \\cdot \\frac{|B \\cap [1,n]|}{n}$?",
     "text": "Let A be a finite set and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)? The constant 2 is optimal.",
-    "proofStrategy": "The formalization defines the multiples set $B(A)$ as a set comprehension, then introduces a counting function `multiplesCount` using `Finset.filter` on `Finset.Icc 1 N`, and the density ratio as a rational quotient. The main conjecture is stated as a universal inequality over all finite $A$ and valid pairs $(n, m)$. Supporting results include the singleton count formula $|B(\\{a\\}) \\cap [1, N]| = \\lfloor N/a \\rfloor$, monotonicity of the counting function, and Davenport's theorem on the existence of asymptotic density. The optimality of the constant 2 is axiomatized via the singleton example $A = \\{a\\}$ with $n = 2a - 1$, $m = 2a$.",
+    "proofStrategy": "The formalization defines the multiples set $B(A)$ as a set comprehension, introduces a counting function `multiplesCount` using `Finset.filter` on `Finset.Icc 1 N`, and the density ratio as a rational quotient. The main conjecture is stated as a universal inequality. All supporting results are fully proved: the singleton count formula via bijection, monotonicity, subset monotonicity, optimality of constant 2 via Archimedean argument, and Davenport's density existence theorem via periodicity of $B(A)$ modulo $\\text{lcm}(A)$.",
     "keyInsights": [
       "**Multiples set as union of arithmetic progressions**: $B(A) = \\bigcup_{a \\in A} a\\mathbb{Z}_{>0}$, so $|B \\cap [1,N]|$ can be computed by inclusion-exclusion over the $\\lfloor N/a \\rfloor$ terms",
       "**Density stabilization beyond max(A)**: For $N \\geq \\max(A)$, every element of $A$ contributes at least one multiple to $[1, N]$, and the density ratio $|B \\cap [1,N]|/N$ begins to stabilize toward its asymptotic limit",
@@ -86,39 +86,31 @@
       "summary": "Three proved theorems (formerly axioms): the singleton count formula $|B(\\{a\\}) \\cap [1,N]| = \\lfloor N/a \\rfloor$ via bijection, monotonicity of `multiplesCount` in $N$, and monotonicity in $A$ (adding elements increases the count)."
     },
     {
-      "id": "davenport-density",
-      "title": "Davenport's Density Theorem",
-      "startLine": 86,
-      "endLine": 92,
-      "summary": "Axiom `multiplesSet_density_exists`: the asymptotic density $\\delta(B(A))$ exists in $(0, 1]$ for any finite $A$ with all elements $\\geq 1$, and the density ratio converges to $\\delta$."
-    },
-    {
       "id": "counting-bijection",
       "title": "Counting Multiples: Bijection and Cardinality",
-      "startLine": 86,
-      "endLine": 112,
-      "summary": "Completes the proof of `count_multiples_of_single`: $|\\{n \\in [1,N] : a \\mid n\\}| = \\lfloor N/a \\rfloor$ via an explicit bijection $k \\mapsto (k+1) \\cdot a$ between `Finset.range (N/a)` and the filtered set. Establishes injectivity via `mul_right_cancel₀` and surjectivity by extracting the quotient.",
+      "startLine": 56,
+      "endLine": 101,
+      "summary": "Proves `singleton_multiplesCount`: $|\\{n \\in [1,N] : a \\mid n\\}| = \\lfloor N/a \\rfloor$ via an explicit bijection $k \\mapsto (k+1) \\cdot a$ between `Finset.range (N/a)` and the filtered set.",
       "mathContext": "The bijection: multiples of $a$ in $[1,N]$ are $a, 2a, \\ldots, \\lfloor N/a \\rfloor \\cdot a$, giving exactly $\\lfloor N/a \\rfloor$ elements."
     },
     {
       "id": "monotonicity-subset",
       "title": "Monotonicity and Subset Properties",
-      "startLine": 114,
-      "endLine": 131,
-      "summary": "Two structural lemmas: `multiplesCount_mono` (increasing $N$ only increases the count, via `Finset.card_le_card` on the interval extension) and `multiplesCount_subset` (adding elements to $A$ only increases the multiples count).",
-      "mathContext": "$M \\leq N \\Rightarrow |B(A) \\cap [1,M]| \\leq |B(A) \\cap [1,N]|$ and $A \\subseteq B \\Rightarrow |B(A) \\cap [1,N]| \\leq |B(B) \\cap [1,N]|$."
+      "startLine": 102,
+      "endLine": 119,
+      "summary": "Two structural lemmas: `multiplesCount_mono` (increasing $N$ only increases the count) and `multiplesCount_subset` (adding elements to $A$ only increases the multiples count)."
     },
     {
-      "id": "density-exists",
-      "title": "Davenport's Density Existence (Axiom)",
-      "startLine": 132,
-      "endLine": 141,
-      "summary": "Axiomatizes `multiplesSet_density_exists`: for any finite $A \\subseteq \\mathbb{N}_{\\geq 1}$, the asymptotic density of $B(A) = \\{n : \\exists a \\in A, a \\mid n\\}$ exists and lies in $(0, 1]$. The density can be computed by inclusion-exclusion over the elements of $A$.",
-      "mathContext": "Davenport's theorem (1933): the Schnirelmann density of the set of multiples $B(A)$ equals its asymptotic density, which exists by inclusion-exclusion: $\\delta(B(A)) = \\sum_{\\emptyset \\neq S \\subseteq A} (-1)^{|S|+1} / \\text{lcm}(S)$."
+      "id": "davenport-density",
+      "title": "Davenport's Density Theorem (Proved)",
+      "startLine": 174,
+      "endLine": 322,
+      "summary": "Fully proves `multiplesSet_density_exists`: the asymptotic density $\\delta(B(A)) = |B(A) \\cap [1,P]| / P$ exists (where $P = \\text{lcm}(A)$) via a periodicity argument. The proof shows $B(A)$ membership is periodic with period $P$, derives the counting function decomposition $|B(A) \\cap [1,N]| = \\lfloor N/P \\rfloor \\cdot c + |B(A) \\cap [1, N \\bmod P]|$, and bounds the convergence error by $O(P/N)$.",
+      "mathContext": "Davenport's theorem (1933): the asymptotic density of the set of multiples of a finite set $A$ exists. The proof here uses the periodicity of divisibility modulo $\\text{lcm}(A)$ rather than Davenport's original inclusion-exclusion approach."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 488 on the density regularity of multiples of finite sets, defining the key objects (multiples set, counting function, density ratio) and stating the main doubling inequality as a universal proposition. Supporting axioms establish the singleton count formula, monotonicity properties, the optimality of the constant 2, and Davenport's theorem on asymptotic density existence.",
+    "summary": "This formalization captures Erdős Problem 488 on the density regularity of multiples of finite sets, defining the key objects (multiples set, counting function, density ratio) and stating the main doubling inequality as a universal proposition. All supporting infrastructure is fully proved (0 axioms, 0 sorries): singleton count formula, monotonicity, subset monotonicity, optimality of constant 2, and Davenport's density existence via periodicity.",
     "implications": "A proof of the conjecture would establish a fundamental uniformity property for the density of divisibility sequences: the density ratio can fluctuate but never more than doubles past the threshold $\\max(A)$. This connects to broader questions about the regularity of arithmetic functions and sieve methods, and would complement Davenport's density theorem with a quantitative stability bound.",
     "openQuestions": [
       "Can the density doubling inequality be proved using sieve methods (e.g., the Selberg sieve or Brun's sieve applied to multiples)?",
@@ -133,9 +125,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 182,
-    "axiomCount": 1,
-    "theoremCount": 4,
+    "lineCount": 322,
+    "axiomCount": 0,
+    "theoremCount": 12,
     "definitionCount": 4
   },
   "references": [
