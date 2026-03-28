@@ -126,3 +126,49 @@ theorem intervalSum_nonneg (a b : ℕ) : 0 ≤ intervalSum a b := by
   apply Finset.sum_nonneg
   intro n _
   exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/- ## Additional structural properties -/
+
+/-- The least prime factor of `n ≥ 2` is at most `n`. -/
+theorem leastPrimeFactor_le_self (n : ℕ) (hn : 2 ≤ n) :
+    leastPrimeFactor n ≤ n := by
+  have hdvd := leastPrimeFactor_dvd n hn
+  exact Nat.le_of_dvd (by omega) hdvd
+
+/-- For even `n ≥ 2`, the least prime factor is 2. -/
+theorem leastPrimeFactor_even (n : ℕ) (hn : 2 ≤ n) (heven : 2 ∣ n) :
+    leastPrimeFactor n = 2 := by
+  have hge := leastPrimeFactor_ge_two n hn
+  have hle := leastPrimeFactor_le n 2 hn Nat.prime_two heven
+  omega
+
+/-- Each term `p(n)/n` in the interval sum is at most 1 for `n ≥ 2`. -/
+theorem leastPrimeFactor_div_le_one (n : ℕ) (hn : 2 ≤ n) :
+    (leastPrimeFactor n : ℝ) / (n : ℝ) ≤ 1 := by
+  rw [div_le_one (Nat.cast_pos.mpr (by omega))]
+  exact Nat.cast_le.mpr (leastPrimeFactor_le_self n hn)
+
+/-- Enlarging the interval increases the sum (all terms non-negative). -/
+theorem intervalSum_mono {a₁ b₁ a₂ b₂ : ℕ} (ha : a₂ ≤ a₁) (hb : b₁ ≤ b₂) :
+    intervalSum a₁ b₁ ≤ intervalSum a₂ b₂ := by
+  unfold intervalSum
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro n hn; simp only [Finset.mem_Icc] at *; omega
+  · intro n _ _
+    exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- The interval sum over a single point `{n}` for `n ≥ 2`. -/
+theorem intervalSum_singleton (n : ℕ) (hn : 2 ≤ n) :
+    intervalSum n n = (leastPrimeFactor n : ℝ) / (n : ℝ) := by
+  unfold intervalSum
+  simp [Finset.Icc_self]
+
+/-- Splitting an interval sum at a midpoint. -/
+theorem intervalSum_split (a m b : ℕ) (ham : a ≤ m + 1) (hmb : m + 1 ≤ b) :
+    intervalSum a b = intervalSum a m + intervalSum (m + 1) b := by
+  unfold intervalSum
+  rw [← Finset.sum_union]
+  congr 1
+  ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
+  · rw [Finset.disjoint_left]
+    intro n hn₁ hn₂; simp only [Finset.mem_Icc] at *; omega
