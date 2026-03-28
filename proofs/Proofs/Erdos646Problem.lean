@@ -25,12 +25,7 @@ References:
 - Berend, D. (1997): "On the parity of exponents in the factorization of n!"
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Algebra.Ring.Parity
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Interval.Finset.Nat
+import Mathlib
 
 open Nat BigOperators Finset
 
@@ -99,8 +94,14 @@ Concrete examples demonstrating the phenomenon.
 /--
 For p = 2: v₂(n!) follows the formula n - s₂(n), where s₂(n) is the digit sum in base 2.
 -/
-axiom padic_val_2_formula (n : ℕ) :
-    padicValNat 2 (n.factorial) = n - (Nat.digits 2 n).sum
+/-- Proved from Mathlib's sub_one_mul_padicValNat_factorial with p=2.
+    Since 2-1=1, the formula simplifies to ν₂(n!) = n - s₂(n). -/
+theorem padic_val_2_formula (n : ℕ) :
+    padicValNat 2 (n.factorial) = n - (Nat.digits 2 n).sum := by
+  haveI : Fact (Nat.Prime 2) := Fact.mk (by decide)
+  have h := sub_one_mul_padicValNat_factorial (p := 2) n
+  simp at h
+  exact h
 
 /--
 **Example:** v₂(4!) = 4 - 1 = 3 (odd).
