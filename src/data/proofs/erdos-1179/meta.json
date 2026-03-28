@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "proved",
@@ -58,9 +58,9 @@
       "uniform_implies_spanning: ε-uniform ⟹ spanning",
       "gEps_mono: monotonicity in ε"
     ],
-    "axiomCount": 6,
-    "lineCount": 276,
-    "assumptions": "6 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, main_asymptotic, gEps_mono. gEps_pos proved from trivial_lower_bound. 2 sorries remain: logloglog_div_loglog_tendsto_zero (line 233), main_asymptotic_derived squeeze step (line 265).",
+    "axiomCount": 5,
+    "lineCount": 300,
+    "assumptions": "5 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, gEps_mono. Eliminated: main_asymptotic (now derived via squeeze theorem from trivial_lower_bound + erdos_hall_upper). 1 sorry remains: logloglog_div_loglog_tendsto_zero (standard analysis fact).",
     "theoremCount": 5
   },
   "overview": {
