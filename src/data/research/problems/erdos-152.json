@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_set_range_lower_bound (2→1 axioms) via distinct differences injection into {1,...,max(A)}.",
+    "progressSummary": "ASSESSED: 1 axiom (gap_existence_pigeonhole) requires deep combinatorial argument. Simple packing works for n≤6 but not n≥7.",
     "builtItems": [
       "sumset_mem: a+b in A+A for a,b in A (trivial from Pointwise)",
       "sumset_self_double: 2a in A+A for a in A",
@@ -51,7 +51,12 @@
       "sidon_set_range_lower_bound had off-by-one: {0,1} is Sidon with max=1 but n(n-1)/2+1=2",
       "Correct bound is a_max ≥ n(n-1)/2 (without +1)",
       "Ordered pair bijection: upper triangular pairs from A×A biject with A+A for Sidon sets",
-      "sidon_set_range_lower_bound proved via: n(n-1)/2 distinct positive differences ≤ max(A), using Finset.card_le_card_of_injOn"
+      "sidon_set_range_lower_bound proved via: n(n-1)/2 distinct positive differences ≤ max(A), using Finset.card_le_card_of_injOn",
+      "gap_existence_pigeonhole (1 remaining axiom): requires non-trivial combinatorial argument",
+      "Simple packing bound works for n≤6: max non-isolated in interval ≤ ⌊2(L+1)/3⌋ < |A+A|",
+      "For n≥7: packing bound is insufficient (28 vs 28 at n=7). Need Sidon-specific structure.",
+      "In Sidon sets, at most 1 pair of consecutive elements (difference 1 appears at most once)",
+      "2·min(A) is isolated unless min(A)+1∈A; similarly 2·max(A) isolated unless max(A)-1∈A"
     ],
     "mathlibGaps": [],
     "nextSteps": [
