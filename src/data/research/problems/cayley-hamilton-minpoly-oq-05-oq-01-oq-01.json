@@ -1,0 +1,40 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+  "title": "Weaken infinite field to |K| > n for cyclic vectors",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:50:00Z", "iteration": 1,
+    "focus": "Created proof skeleton with key lemmas identified.",
+    "blockers": ["card_normalizedFactors_le_natDegree needs degree-sum argument", "not_union_proper_subspaces_finite needs finite line counting"],
+    "nextAction": "Fill in the 3 sorries",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created CayleyHamiltonMinpolyOQ05OQ01OQ01.lean with proof skeleton (3 sorries). Key insight: replace [Infinite K] with |K| > n. Identified 3 needed lemmas: (1) #irreducible factors ≤ degree, (2) finite union avoidance with cardinality bound, (3) main theorem assembly.",
+    "builtItems": [
+      "CayleyHamiltonMinpolyOQ05OQ01OQ01.lean: 97 lines, proof skeleton",
+      "card_normalizedFactors_le_natDegree: statement (sorry)",
+      "not_union_proper_subspaces_finite: finite union avoidance (sorry)",
+      "nonderogatory_has_cyclic_vector_finite: main theorem (sorry)"
+    ],
+    "insights": [
+      "The infinite field hypothesis is only needed in union avoidance",
+      "Union avoidance over k subspaces needs |K| > k",
+      "Number of irreducible factors of degree-n polynomial ≤ n (each factor has degree ≥ 1)",
+      "So |K| > n suffices for the nonderogatory cyclic vector theorem",
+      "The proof architecture is modular: replace one lemma, keep the rest"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma directly bounding #normalizedFactors by natDegree"
+    ],
+    "nextSteps": [
+      "Prove card_normalizedFactors_le_natDegree via degree sum argument",
+      "Prove not_union_proper_subspaces_finite via finite line counting",
+      "Assemble main theorem from components"
+    ]
+  },
+  "tags": ["linear-algebra", "abstract-algebra", "minimal-polynomial", "cyclic-vector", "research", "seeker-selected"],
+  "relatedProofs": ["cayley-hamilton-minpoly-oq-05-oq-01", "cayley-hamilton-minpoly-oq-05-oq-01-oq-02"],
+  "started": "2026-03-28T20:47:00Z", "lastUpdate": "2026-03-28T20:52:00Z",
+  "significance": 7, "tractability": 5
+}
