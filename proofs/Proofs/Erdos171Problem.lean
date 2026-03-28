@@ -94,6 +94,20 @@ def IsProperColoring (c : EuclideanSpace ℝ (Fin 2) → Fin k) : Prop :=
 noncomputable def chromaticNumberPlane : ℕ :=
   sInf { k : ℕ | ∃ c : EuclideanSpace ℝ (Fin 2) → Fin k, IsProperColoring c }
 
+/- ## Upper Bounds -/
+
+/-- A proper 7-coloring of the plane exists (Isbell 1950, hexagonal tiling).
+    This witnesses the colorability set as nonempty, enabling lower bound proofs. -/
+axiom isbell_coloring :
+  ∃ c : EuclideanSpace ℝ (Fin 2) → Fin 7, IsProperColoring c
+
+/-- **Isbell (1950)**: χ(ℝ²) ≤ 7.
+    Proof: Tile the plane with regular hexagons of diameter slightly less than 1.
+    Color each hexagon with one of 7 colors so adjacent hexagons differ. -/
+theorem isbell_upper_bound : chromaticNumberPlane ≤ 7 := by
+  unfold chromaticNumberPlane
+  exact Nat.sInf_le isbell_coloring
+
 /- ## Lower Bounds -/
 
 /-- **Nelson (1950)**: The Moser spindle shows 4 colors are necessary.
@@ -103,9 +117,19 @@ axiom moser_spindle :
     V.card = 7 ∧
     (∀ c : V → Fin 3, ∃ x y : V, dist x.val y.val = 1 ∧ c x = c y)
 
-/-- The Moser spindle implies χ ≥ 4. -/
+/-- The Moser spindle implies χ ≥ 4: any proper k-coloring of the plane restricts
+    to a proper coloring of the Moser spindle vertices, but 3 colors don't suffice. -/
 theorem lower_bound_4 : chromaticNumberPlane ≥ 4 := by
-  sorry
+  unfold chromaticNumberPlane
+  apply le_csInf ⟨7, isbell_coloring⟩
+  intro k ⟨c, hc⟩
+  by_contra hlt
+  push_neg at hlt
+  have hle : k ≤ 3 := by omega
+  obtain ⟨V, -, hno⟩ := moser_spindle
+  obtain ⟨x, y, hdist, heq⟩ :=
+    hno (fun v => ⟨(c v.val).val, lt_of_lt_of_le (c v.val).isLt hle⟩)
+  exact absurd (Fin.ext (congr_arg Fin.val heq)) (hc x.val y.val hdist)
 
 /-- **de Grey (2018)**: There exists a finite graph in ℝ² requiring 5 colors. -/
 axiom de_grey_graph :
@@ -113,17 +137,19 @@ axiom de_grey_graph :
     V.card < 2000 ∧
     (∀ c : V → Fin 4, ∃ x y : V, dist x.val y.val = 1 ∧ c x = c y)
 
-/-- **de Grey's Theorem**: χ(ℝ²) ≥ 5.
-    This was a major breakthrough in 2018. -/
+/-- **de Grey's Theorem**: χ(ℝ²) ≥ 5. Proved from axiom that 4 colors don't suffice
+    on a finite subgraph discovered by de Grey in 2018. -/
 theorem de_grey : chromaticNumberPlane ≥ 5 := by
-  sorry
-
-/- ## Upper Bounds -/
-
-/-- **Isbell (1950)**: χ(ℝ²) ≤ 7.
-    Proof: Tile the plane with regular hexagons of diameter slightly less than 1.
-    Color each hexagon with one of 7 colors so adjacent hexagons differ. -/
-axiom isbell_upper_bound : chromaticNumberPlane ≤ 7
+  unfold chromaticNumberPlane
+  apply le_csInf ⟨7, isbell_coloring⟩
+  intro k ⟨c, hc⟩
+  by_contra hlt
+  push_neg at hlt
+  have hle : k ≤ 4 := by omega
+  obtain ⟨V, -, hno⟩ := de_grey_graph
+  obtain ⟨x, y, hdist, heq⟩ :=
+    hno (fun v => ⟨(c v.val).val, lt_of_lt_of_le (c v.val).isLt hle⟩)
+  exact absurd (Fin.ext (congr_arg Fin.val heq)) (hc x.val y.val hdist)
 
 /- ## Current State -/
 
