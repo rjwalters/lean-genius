@@ -44,24 +44,42 @@ def IsRegular (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) : Prop :=
 /-- Regular graphs have exactly 1 distinct degree. -/
 theorem regular_one_degree (G : SimpleGraph V) [DecidableRel G.Adj]
     (k : ℕ) (h : IsRegular G k) [Nonempty V] :
-    numDistinctDegrees G = 1 := by sorry
+    numDistinctDegrees G = 1 := by
+  unfold numDistinctDegrees distinctDegrees
+  have : Finset.image (vertexDegree G) Finset.univ = {k} := by
+    ext d; simp [Finset.mem_image, Finset.mem_singleton]
+    constructor
+    · rintro ⟨v, _, rfl⟩; exact h v
+    · intro hd; exact ⟨Classical.arbitrary V, Finset.mem_univ _, hd ▸ (h _).symm⟩
+  rw [this, Finset.card_singleton]
 
 -- Degree bounds
 /-- The number of distinct degrees is at most n (number of vertices). -/
 theorem numDistinctDegrees_le_card (G : SimpleGraph V) [DecidableRel G.Adj] :
-    numDistinctDegrees G ≤ Fintype.card V := by sorry
+    numDistinctDegrees G ≤ Fintype.card V := by
+  unfold numDistinctDegrees distinctDegrees
+  calc (Finset.image (vertexDegree G) Finset.univ).card
+      ≤ Finset.univ.card := Finset.card_image_le
+    _ = Fintype.card V := Finset.card_univ
 
 /-- The number of distinct degrees is at most n (the max possible degree is n-1). -/
 theorem numDistinctDegrees_le_card' (G : SimpleGraph V) [DecidableRel G.Adj] :
-    numDistinctDegrees G ≤ Fintype.card V := by sorry
+    numDistinctDegrees G ≤ Fintype.card V :=
+  numDistinctDegrees_le_card G
 
 /-- Every vertex has degree at most n-1. -/
 theorem degree_lt_card (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
-    vertexDegree G v < Fintype.card V := by sorry
+    vertexDegree G v < Fintype.card V := by
+  unfold vertexDegree
+  exact G.degree_lt_card v
 
 /-- If the graph has at least one vertex, it has at least one distinct degree. -/
 theorem numDistinctDegrees_pos (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] :
-    numDistinctDegrees G ≥ 1 := by sorry
+    numDistinctDegrees G ≥ 1 := by
+  unfold numDistinctDegrees distinctDegrees
+  have : (Finset.image (vertexDegree G) Finset.univ).Nonempty :=
+    Finset.Nonempty.image (Finset.univ_nonempty) _
+  exact Finset.Nonempty.card_pos this
 
 -- Induced subgraph degrees
 /-- An induced subgraph on a vertex set S. -/
@@ -77,10 +95,18 @@ theorem induced_degree_le (G : SimpleGraph V) [DecidableRel G.Adj]
 
 -- The empty graph
 /-- The empty graph (no edges) is 0-regular. -/
-theorem bot_regular : IsRegular (⊥ : SimpleGraph V) (DecidableRel := Classical.decRel _) 0 := by sorry
+theorem bot_regular : IsRegular (⊥ : SimpleGraph V) (DecidableRel := Classical.decRel _) 0 := by
+  intro v; unfold vertexDegree
+  have : (⊥ : SimpleGraph V).neighborFinset v = ∅ := by
+    ext w; simp [SimpleGraph.mem_neighborFinset]
+  simp [SimpleGraph.degree, this]
 
 /-- The complete graph on n vertices is (n-1)-regular. -/
 theorem top_regular [Nonempty V] :
-    IsRegular (⊤ : SimpleGraph V) (DecidableRel := Classical.decRel _) (Fintype.card V - 1) := by sorry
+    IsRegular (⊤ : SimpleGraph V) (DecidableRel := Classical.decRel _) (Fintype.card V - 1) := by
+  intro v; unfold vertexDegree
+  have : (⊤ : SimpleGraph V).neighborFinset v = Finset.univ.erase v := by
+    ext w; simp [SimpleGraph.mem_neighborFinset, Finset.mem_erase, ne_comm]
+  simp [SimpleGraph.degree, this, Finset.card_erase_of_mem (Finset.mem_univ v)]
 
 end Erdos637Aristotle

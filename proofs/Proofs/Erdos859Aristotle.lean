@@ -37,7 +37,9 @@ def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
 /- Target 1: Divisor count is multiplicative for coprime arguments -/
 
 theorem divisors_mul_coprime {m n : ℕ} (hmn : Nat.Coprime m n) (hm : m > 0) (hn : n > 0) :
-    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card := by sorry
+    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card := by
+  rw [Nat.Coprime.divisors_mul hmn]
+  exact Finset.card_product _ _
 
 /- Target 2: Divisors of a prime power form {1, p, p^2, ..., p^a} -/
 
@@ -68,6 +70,7 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 /- Target 7: tau(p^a) = a + 1 -/
 
 theorem tau_prime_power (p : ℕ) (hp : p.Prime) (a : ℕ) :
-    tau (p ^ a) = a + 1 := by sorry
+    tau (p ^ a) = a + 1 := by
+  simp [tau, Nat.divisors_prime_pow hp]
 
 end Erdos859Aristotle

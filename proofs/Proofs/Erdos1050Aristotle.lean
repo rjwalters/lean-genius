@@ -44,21 +44,51 @@ def oeis_A331372 : ℕ → ℤ
   | n + 1 => 2^(n+1) - 3
 
 -- Routine: 2^n - 3 ≠ 0 for n ≥ 2 (simple power arithmetic)
-theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by sorry
+theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
+  have h : (2 : ℝ)^n ≥ 4 := by
+    calc (2 : ℝ)^n ≥ 2^2 := by
+          apply pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) hn
+      _ = 4 := by norm_num
+  linarith
 
 -- Routine: the OEIS sequence equals 2^n - 3 (simple case analysis on def)
 theorem denom_sequence (n : ℕ) (hn : n ≥ 1) :
-    oeis_A331372 n = 2^n - 3 := by sorry
+    oeis_A331372 n = 2^n - 3 := by
+  cases n with
+  | zero => omega
+  | succ m => simp [oeis_A331372]
 
 -- Routine: 2^n - 3 > 2^(n-1) for n ≥ 3 (power inequality)
 theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
-    (oeis_A331372 n : ℝ) > 2^(n-1) := by sorry
+    (oeis_A331372 n : ℝ) > 2^(n-1) := by
+  cases n with
+  | zero => omega
+  | succ m =>
+    simp [oeis_A331372]
+    push_cast
+    have hm : m ≥ 2 := by omega
+    have h2m : (2 : ℝ)^(m + 1) = 2 * 2^m := by ring
+    rw [h2m]
+    have h2pos : (2 : ℝ)^m ≥ 4 := by
+      calc (2 : ℝ)^m ≥ 2^2 := pow_le_pow_right (by norm_num) hm
+        _ = 4 := by norm_num
+    linarith
 
 -- Routine: the two definitions of S agree (unfold T and simplify)
-theorem S_eq_sumTwoMinusThree : S = sumTwoMinusThree := by sorry
+theorem S_eq_sumTwoMinusThree : S = sumTwoMinusThree := by
+  simp only [S, sumTwoMinusThree, T]
+  congr 1; ext n
+  split
+  · simp
+  · push_cast; ring_nf
 
 -- Routine: T(q, -1) = S_1049(q) for integer q (definitional equality)
-theorem T_eq_S_1049 (q : ℕ) (hq : q ≥ 2) : T q (-1) = S_1049 q := by sorry
+theorem T_eq_S_1049 (q : ℕ) (hq : q ≥ 2) : T q (-1) = S_1049 q := by
+  simp only [T, S_1049]
+  congr 1; ext n
+  split
+  · simp
+  · push_cast; ring_nf
 
 -- Routine: transcendental implies irrational (known mathematical fact)
 theorem transcendence_implies_irrationality :
@@ -67,6 +97,8 @@ theorem transcendence_implies_irrationality :
       Transcendental ℚ (T q r)) →
     ∀ q : ℕ, q ≥ 2 → ∀ r : ℚ, r ≠ 0 →
       (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) →
-      Irrational (T q r) := by sorry
+      Irrational (T q r) := by
+  intro hT q hq r hr hn
+  exact (hT q hq r hr hn).irrational
 
 end Erdos1050

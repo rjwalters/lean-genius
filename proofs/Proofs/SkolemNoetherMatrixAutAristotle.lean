@@ -63,7 +63,12 @@ theorem isUnit_of_linearIndependent_cols
   This is the standard basis decomposition for matrices.
 -/
 theorem matrix_eq_sum_stdBasisMatrix (A : Matrix n n K) :
-    A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by sorry
+    A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by
+  ext a b
+  simp [Matrix.stdBasisMatrix, Finset.sum_apply, smul_apply, smul_eq_mul]
+  rw [Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]
+  rw [Finset.sum_eq_single b (fun j _ hj => by simp [hj]) (by simp)]
+  simp
 
 /-
   Lemma 4: mulVec distributes over Finset.sum with smul
@@ -72,6 +77,7 @@ theorem matrix_eq_sum_stdBasisMatrix (A : Matrix n n K) :
 -/
 theorem mulVec_finset_sum_smul (M : Matrix n n K) (c : n → K)
     (v : n → (n → K)) :
-    M.mulVec (∑ j : n, c j • v j) = ∑ j : n, c j • M.mulVec (v j) := by sorry
+    M.mulVec (∑ j : n, c j • v j) = ∑ j : n, c j • M.mulVec (v j) := by
+  simp [Matrix.mulVec_sum, Matrix.mulVec_smul]
 
 end SkolemNoetherAristotle

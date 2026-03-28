@@ -30,10 +30,13 @@ theorem reciprocal_log_comparison (a_n b_n C : ℕ) (hC : C > 0)
 
 /-- For a, C : ℕ with a ≤ C·b and C > 0, we have b ≥ 1. -/
 theorem dominated_implies_b_pos (a b C : ℕ) (hC : C > 0) (hdom : a ≤ C * b) (ha : a ≥ 2) :
-    b ≥ 1 := by sorry
+    b ≥ 1 := by
+  by_contra h; push_neg at h
+  interval_cases b; simp at hdom; omega
 
 /-- log is monotone: if a ≤ b, then log a ≤ log b (for positive reals). -/
 theorem log_mono_nat (a b : ℕ) (ha : a ≥ 2) (hab : a ≤ b) :
-    Real.log (a : ℝ) ≤ Real.log (b : ℝ) := by sorry
+    Real.log (a : ℝ) ≤ Real.log (b : ℝ) := by
+  apply Real.log_le_log (by positivity) (by exact_mod_cast hab)
 
 end Erdos892Aristotle

@@ -38,7 +38,11 @@ def TripleDistinct.toFinset (T : TripleDistinct V) : Finset V :=
   {T.v1, T.v2, T.v3}
 
 /-- A triple of distinct elements has cardinality 3. -/
-theorem triple_card (T : TripleDistinct V) : T.toFinset.card = 3 := by sorry
+theorem triple_card (T : TripleDistinct V) : T.toFinset.card = 3 := by
+  simp only [TripleDistinct.toFinset]
+  rw [Finset.card_insert_of_not_mem (by simp [T.distinct12, T.distinct13]),
+      Finset.card_insert_of_not_mem (by simp [T.distinct23]),
+      Finset.card_singleton]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 2: Adjacency Counting
@@ -51,11 +55,14 @@ def adjCount (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) (y : V) : �
 /-- If y is adjacent to all elements of S, adjCount = |S|. -/
 theorem adjCount_eq_card_of_all_adj (G : SimpleGraph V) [DecidableRel G.Adj]
     (S : Finset V) (y : V)
-    (h : ∀ v ∈ S, G.Adj y v) : adjCount G S y = S.card := by sorry
+    (h : ∀ v ∈ S, G.Adj y v) : adjCount G S y = S.card := by
+  simp only [adjCount]
+  congr 1; ext v; simp [h v]
 
 /-- adjCount is at most |S|. -/
 theorem adjCount_le_card (G : SimpleGraph V) [DecidableRel G.Adj]
-    (S : Finset V) (y : V) : adjCount G S y ≤ S.card := by sorry
+    (S : Finset V) (y : V) : adjCount G S y ≤ S.card := by
+  simp only [adjCount]; exact Finset.card_filter_le S _
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Numerical Constants
@@ -68,18 +75,48 @@ noncomputable def maTangConstant : ℝ := 2 - Real.sqrt (5/2)
 noncomputable def k4FreeConstant : ℝ := 2 * Real.sqrt 3 - 3
 
 /-- Ma-Tang constant is positive. -/
-theorem maTangConstant_pos : maTangConstant > 0 := by sorry
+theorem maTangConstant_pos : maTangConstant > 0 := by
+  unfold maTangConstant
+  -- Need sqrt(5/2) < 2, i.e., 5/2 < 4
+  have hsq : Real.sqrt (5/2) ^ 2 = 5/2 := Real.sq_sqrt (by positivity)
+  nlinarith [sq_nonneg (Real.sqrt (5/2) - 2)]
 
 /-- K₄-free constant is positive. -/
-theorem k4FreeConstant_pos : k4FreeConstant > 0 := by sorry
+theorem k4FreeConstant_pos : k4FreeConstant > 0 := by
+  unfold k4FreeConstant
+  have hsq : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by positivity)
+  have hpos : Real.sqrt 3 > 0 := Real.sqrt_pos.mpr (by positivity)
+  -- sqrt(3) > 3/2 since 3 > 9/4
+  nlinarith [sq_nonneg (Real.sqrt 3 - 3/2)]
 
 /-- K₄-free bound is worse (higher) than general bound. -/
-theorem k4free_gt_maTang : k4FreeConstant > maTangConstant := by sorry
+theorem k4free_gt_maTang : k4FreeConstant > maTangConstant := by
+  unfold k4FreeConstant maTangConstant
+  -- Need 2*sqrt(3) - 3 > 2 - sqrt(5/2), i.e., 2*sqrt(3) + sqrt(5/2) > 5
+  have hsq3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by positivity)
+  have hsq52 : Real.sqrt (5/2) ^ 2 = 5/2 := Real.sq_sqrt (by positivity)
+  have hpos3 : Real.sqrt 3 > 0 := Real.sqrt_pos.mpr (by positivity)
+  have hpos52 : Real.sqrt (5/2) > 0 := Real.sqrt_pos.mpr (by positivity)
+  -- sqrt(3) > 1.7 and sqrt(5/2) > 1.5, so 2*1.7 + 1.5 = 4.9... hmm not quite > 5
+  -- Actually: 2*sqrt(3) + sqrt(5/2) > 5?
+  -- sqrt(3) ≈ 1.732, sqrt(5/2) ≈ 1.581, so 2*1.732 + 1.581 = 5.045 > 5. Yes.
+  nlinarith [sq_nonneg (Real.sqrt 3 - 7/4), sq_nonneg (Real.sqrt (5/2) - 3/2)]
 
 /-- Both constants are less than 1/2. -/
-theorem maTangConstant_lt_half : maTangConstant < 1/2 := by sorry
+theorem maTangConstant_lt_half : maTangConstant < 1/2 := by
+  unfold maTangConstant
+  -- Need sqrt(5/2) > 3/2, i.e., 5/2 > 9/4
+  have hsq : Real.sqrt (5/2) ^ 2 = 5/2 := Real.sq_sqrt (by positivity)
+  nlinarith [sq_nonneg (Real.sqrt (5/2) - 3/2)]
 
 /-- The gap between 1/6 and the Ma-Tang constant. -/
-theorem gap_bounds : maTangConstant - 1/6 > 1/4 ∧ maTangConstant - 1/6 < 3/10 := by sorry
+theorem gap_bounds : maTangConstant - 1/6 > 1/4 ∧ maTangConstant - 1/6 < 3/10 := by
+  unfold maTangConstant
+  have hsq : Real.sqrt (5/2) ^ 2 = 5/2 := Real.sq_sqrt (by positivity)
+  constructor
+  · -- 2 - sqrt(5/2) - 1/6 > 1/4, i.e., sqrt(5/2) < 2 - 1/6 - 1/4 = 19/12
+    nlinarith [sq_nonneg (Real.sqrt (5/2) - 19/12)]
+  · -- 2 - sqrt(5/2) - 1/6 < 3/10, i.e., sqrt(5/2) > 2 - 1/6 - 3/10 = 46/30 = 23/15
+    nlinarith [sq_nonneg (Real.sqrt (5/2) - 23/15)]
 
 end Erdos1034Aristotle
