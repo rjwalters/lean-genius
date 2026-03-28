@@ -257,3 +257,32 @@ theorem bad_interval_v_bound (u v : ℕ) (hbad : IsBadInterval u v) (hu : 1 ≤ 
   push_neg at h
   obtain ⟨q, hq_prime, huq, hq2u⟩ := Nat.exists_prime_lt_and_le_two_mul u (by omega)
   exact bad_interval_no_prime_general u v hbad q hq_prime (by omega) (le_trans hq2u h)
+
+/- ## Singleton intervals -/
+
+/-- A singleton interval [n,n] is bad iff P(n)² | n (for n ≥ 2).
+    This directly links bad intervals to the gpfSquare counting function. -/
+theorem singleton_bad_iff (n : ℕ) (hn : 2 ≤ n) :
+    IsBadInterval n n ↔ greatestPrimeFactor n ^ 2 ∣ n := by
+  constructor
+  · intro ⟨_, h⟩
+    simp only [Finset.Icc_self, Finset.prod_singleton, id] at h
+    exact h
+  · intro h
+    exact ⟨le_refl n, by simp only [Finset.Icc_self, Finset.prod_singleton, id]; exact h⟩
+
+/-- Every n with P(n)² | n is in the bad interval [n,n]. -/
+theorem gpfSquare_in_bad (n : ℕ) (hn : 2 ≤ n)
+    (h : greatestPrimeFactor n ^ 2 ∣ n) : InBadInterval n :=
+  ⟨n, n, le_refl n, le_refl n, (singleton_bad_iff n hn).mpr h⟩
+
+/-- B(x) ≥ #{n ≤ x : P(n)² | n}: the bad count dominates the gpfSquare count.
+    Each n ∈ [2,x] with P(n)²|n is witnessed by the singleton bad interval [n,n]. -/
+theorem badCount_ge_gpfSquareCount (x : ℕ) :
+    gpfSquareCount x ≤ badCount x := by
+  unfold badCount gpfSquareCount
+  apply Finset.card_le_card
+  intro n
+  simp only [Finset.mem_filter, Finset.mem_Icc]
+  rintro ⟨⟨hn2, hnx⟩, hgpf⟩
+  exact ⟨⟨by omega, hnx⟩, gpfSquare_in_bad n hn2 hgpf⟩
