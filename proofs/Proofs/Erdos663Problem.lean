@@ -27,21 +27,37 @@ import Mathlib.Tactic
 noncomputable def consecutiveProduct (n k : ℕ) : ℕ :=
   (Finset.range k).prod (fun i => n + i + 1)
 
-/-- q(n,k) is the least prime that does not divide ∏_{1 ≤ i ≤ k} (n+i). -/
-axiom smallestMissingPrime : ℕ → ℕ → ℕ
+/-- There exists a prime not dividing any consecutive product.
+    Proof: by infinitude of primes, take a prime p > the product; then p ∤ product. -/
+theorem exists_prime_not_dvd_consecutiveProduct (n k : ℕ) :
+    ∃ p, p.Prime ∧ ¬(p ∣ consecutiveProduct n k) := by
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (consecutiveProduct n k + 1)
+  exact ⟨p, hp_prime, fun h_dvd => by
+    have h_pos : 0 < consecutiveProduct n k := by
+      unfold consecutiveProduct; apply Finset.prod_pos; intro i _; omega
+    exact absurd (Nat.le_of_dvd h_pos h_dvd) (by omega)⟩
+
+/-- q(n,k): The least prime not dividing ∏_{1 ≤ i ≤ k} (n+i).
+    Defined concretely via `Nat.find` using infinitude of primes. -/
+noncomputable def smallestMissingPrime (n k : ℕ) : ℕ :=
+  Nat.find (exists_prime_not_dvd_consecutiveProduct n k)
 
 /-- q(n,k) is always prime. -/
-axiom smallestMissingPrime_prime (n k : ℕ) (hk : 0 < k) :
-    (smallestMissingPrime n k).Prime
+theorem smallestMissingPrime_prime (n k : ℕ) (hk : 0 < k) :
+    (smallestMissingPrime n k).Prime :=
+  (Nat.find_spec (exists_prime_not_dvd_consecutiveProduct n k)).1
 
 /-- q(n,k) does not divide the consecutive product. -/
-axiom smallestMissingPrime_not_dvd (n k : ℕ) (hk : 0 < k) :
-    ¬(smallestMissingPrime n k ∣ consecutiveProduct n k)
+theorem smallestMissingPrime_not_dvd (n k : ℕ) (hk : 0 < k) :
+    ¬(smallestMissingPrime n k ∣ consecutiveProduct n k) :=
+  (Nat.find_spec (exists_prime_not_dvd_consecutiveProduct n k)).2
 
 /-- q(n,k) is the least such prime: every smaller prime divides the product. -/
-axiom smallestMissingPrime_least (n k : ℕ) (hk : 0 < k) (p : ℕ)
+theorem smallestMissingPrime_least (n k : ℕ) (hk : 0 < k) (p : ℕ)
     (hp : p.Prime) (hlt : p < smallestMissingPrime n k) :
-    p ∣ consecutiveProduct n k
+    p ∣ consecutiveProduct n k := by
+  by_contra h
+  exact absurd hlt (not_lt.mpr (Nat.find_min' _ ⟨hp, h⟩))
 
 /- ## Main Conjecture -/
 

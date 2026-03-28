@@ -35,7 +35,8 @@
     ],
     "insights": [
       "almost_all_covered follows from density_one (convergence → eventually > 1-ε). Proved (5A→4A).",
-      "Remaining 4 axioms: brun_selberg_bound (deep), density_one (deep), selfridge_wagstaff_conjecture (open), erdos_minimal_conjecture (open)"
+      "Remaining 4 axioms: brun_selberg_bound (deep), density_one (deep), selfridge_wagstaff_conjecture (open), erdos_minimal_conjecture (open)",
+      "density_one is provable from brun_selberg_bound: if E(x)≤x/(log x)^c then E(x)/x≤1/(log x)^c→0, so (x-E(x))/x→1. Proof needs Metric.tendsto_atTop + squeeze argument (~40 lines Lean)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
