@@ -1,0 +1,31 @@
+{
+  "slug": "erdos-45-incomplete-01",
+  "title": "Erdős #45: Monochromatic Egyptian Fractions",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:25:00Z", "iteration": 1,
+    "focus": "Assessed — sorry and axioms are all deep results.",
+    "blockers": ["croot_existence: probabilistic method (Croot)", "case_k_2 axiom could be proved computationally but needs reformulation"],
+    "nextAction": "Convert case_k_2 axiom to theorem via finite check",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "SURVEYED: 1 sorry (croot_existence — deep), 3 axioms. The case_k_2 axiom (HasKEgyptianProperty 120 2) is the most tractable: it's a finite combinatorial check over 2^15 colorings of properDivisors(120). But the ∀ c : ℕ → Fin 2 quantifier has infinite domain, requiring reformulation before decide/native_decide.",
+    "builtItems": [],
+    "insights": [
+      "properDivisors(120) = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60} — 15 elements",
+      "case_k_2 could be proved by restricting c to properDivisors and checking all 2^15 = 32768 colorings",
+      "croot_existence requires probabilistic method with highly composite numbers — not provable",
+      "sawhney bounds are state-of-the-art results, axiomatized correctly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Reformulate case_k_2 to use finite domain (Fin 15 → Fin 2) and prove via native_decide",
+      "The main sorry (croot_existence) is beyond current formalization capacity"
+    ]
+  },
+  "tags": ["erdos", "number-theory", "combinatorics", "ramsey-theory", "egyptian-fractions", "incomplete", "seeker-selected"],
+  "relatedProofs": ["erdos-45"],
+  "started": "2026-03-28T20:20:00Z", "lastUpdate": "2026-03-28T20:30:00Z",
+  "significance": 5, "tractability": 6
+}

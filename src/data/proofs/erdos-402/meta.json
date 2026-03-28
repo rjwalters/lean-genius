@@ -7,7 +7,7 @@
     "author": "Graham (1970), solved by Balasubramanian–Soundararajan (1996)",
     "sourceUrl": "https://erdosproblems.com/402",
     "date": "1970",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos402Problem.lean",
     "tags": [
       "erdos",
@@ -16,8 +16,8 @@
       "combinatorics",
       "solved"
     ],
-    "badge": "axiom",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "erdosNumber": 402,
     "erdosUrl": "https://erdosproblems.com/402",
     "erdosProblemStatus": "solved",
@@ -53,15 +53,11 @@
       "IsGrahamEqualityCase characterization (3 families)",
       "gcd_one_suffices coprime reduction lemma",
       "Aristotle: ratio_bound proof, range case proof",
-      "Aristotle: {1,2,4} counterexample falsifying equality characterization",
-      "Proved counterexample_124_not_case: {1,2,4} is not a Graham equality case",
-      "Proved erdos_402_equality_counterexample: complete disproof of equality conjecture",
-      "Proved erdos_402_pair: main conjecture for two-element sets",
-      "Proved dvd_lt_imp_le_half: proper divisors are at most half"
+      "Aristotle: {1,2,4} counterexample falsifying equality characterization"
     ],
-    "axiomCount": 1,
-    "lineCount": 355,
-    "assumptions": "1 axiom: erdos_402_graham_conjecture (Balasubramanian-Soundararajan 1996, deep sieve methods). 0 sorries."
+    "axiomCount": 0,
+    "lineCount": 327,
+    "assumptions": "3 sorry(s)."
   },
   "overview": {
     "historicalContext": "Graham posed this conjecture in 1970 as an **extremal problem** on GCD structure in finite sets. The conjecture attracted attention because it connects the multiplicative structure (GCD) of a set to its combinatorial size. **Szegedy** (1986) proved the conjecture for sets larger than an effective constant $N_0$, using a probabilistic argument on prime factorizations. **Zaharescu** (1987) obtained an independent proof for large sets via analytic methods. **Balasubramanian and Soundararajan** (1996) completed the proof for all finite sets by a refined sieve argument, handling the difficult small-set cases. Graham also conjectured that equality $\\gcd(a,b) = \\lfloor a/|A| \\rfloor$ for the optimal pair occurs only for three families of primitive sets, but Aristotle's automated proof search discovered that $\\{1, 2, 4\\}$ is a counterexample to this characterization.",
@@ -177,10 +173,10 @@
       "Finset"
     ],
     "namespace": "Erdos402",
-    "lineCount": 355,
-    "axiomCount": 1,
+    "lineCount": 327,
+    "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 6
+    "definitionCount": 5
   },
   "references": [
     {
