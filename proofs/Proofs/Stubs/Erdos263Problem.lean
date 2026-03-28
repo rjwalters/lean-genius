@@ -82,9 +82,21 @@ theorem folklore_irrationality (a : PosIntSeq)
     Irrational (∑' n, (1 : ℝ) / (a n : ℕ)) := by
   sorry
 
-/-- Double exponential satisfies folklore condition. -/
-theorem doubleExp_has_folklore_growth : HasFolkloreGrowth doubleExp := by
+/-- Double exponential does NOT satisfy the folklore condition.
+    (2^{2^n})^{1/2^n} = 2^(2^n/2^n) = 2^1 = 2, which is constant, not → ∞.
+    The irrationality of Σ 1/2^{2^n} follows instead from the Sylvester-type
+    condition a_{n+1} ≈ a_n² (see doubleExp_sylvester_growth). -/
+theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
   sorry
+
+/-- For double exponential, a_{n+1} = a_n²: the sequence satisfies a_{n+1} = a_n².
+    This implies irrationality of Σ 1/a_n by the Sylvester argument
+    (a_{n+1} ≥ a_n² - a_n + 1 with equality approached). -/
+theorem doubleExp_square_growth (n : ℕ) :
+    (doubleExp (n + 1) : ℕ) = ((doubleExp n : ℕ)) ^ 2 := by
+  change 2 ^ (2 ^ (n + 1)) = (2 ^ (2 ^ n)) ^ 2
+  have : 2 ^ (n + 1) = 2 ^ n * 2 := by ring
+  rw [this, pow_mul]
 
 /- ## Part V: Kovač-Tao Result (2024) -/
 
@@ -135,13 +147,29 @@ noncomputable def tower : ℕ → ℕ
   | 0 => 1
   | n + 1 => 2 ^ tower n
 
-/-- Double exponential is strictly increasing. -/
+/-- Double exponential is strictly increasing: n < m → 2^{2^n} < 2^{2^m}. -/
 theorem doubleExp_strictly_increasing : IsStrictlyIncreasing doubleExp := by
-  sorry
+  intro n m hnm
+  -- Goal: (doubleExp n : ℕ) < (doubleExp m : ℕ), i.e., 2^{2^n} < 2^{2^m}
+  change (2 : ℕ) ^ 2 ^ n < 2 ^ 2 ^ m
+  exact Nat.pow_lt_pow_right (by norm_num) (Nat.pow_lt_pow_right (by norm_num) hnm)
 
-/-- Double exponential sum converges (rapidly). -/
+/-- Double exponential sum converges: Σ 1/2^{2^n} converges.
+    Proof: n ≤ 2^n for all n, so 2^n ≤ 2^{2^n}, giving
+    1/2^{2^n} ≤ 1/2^n = (1/2)^n. The geometric series Σ (1/2)^n converges. -/
 theorem doubleExp_convergent : HasConvergentSum doubleExp := by
-  sorry
+  apply Summable.of_norm_bounded (fun n => ((1 : ℝ) / 2) ^ n)
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+  intro n
+  simp only [doubleExp, PNat.val_mk]
+  rw [Real.norm_of_nonneg (by positivity)]
+  have h_le : n ≤ 2 ^ n := (Nat.lt_pow_self (by norm_num : 1 < 2) n).le
+  calc (1 : ℝ) / ((2 ^ 2 ^ n : ℕ) : ℝ)
+      = 1 / (2 : ℝ) ^ (2 ^ n) := by push_cast; ring
+    _ ≤ 1 / (2 : ℝ) ^ n :=
+        one_div_le_one_div_of_le (pow_pos (by norm_num) n)
+          (pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) h_le)
+    _ = (1 / 2) ^ n := by rw [one_div, inv_pow]
 
 /- ## Part VIII: Characterization Attempts -/
 
@@ -168,11 +196,11 @@ def connection_264 : Prop :=
 
 /- ## Part X: Cannot Be Resolved by Finite Computation -/
 
-/-- Irrationality is a global property requiring infinite information. -/
-theorem irrationality_not_finitely_decidable :
-    ¬∃ (decide : (ℕ → ℕ+) → Bool),
-      ∀ a, decide a = true ↔ IsIrrationalitySequence a := by
-  sorry
+-- NOTE: The following theorem was removed because it is FALSE in classical logic.
+-- In Lean 4 with Classical axioms, for any predicate P : α → Prop, one can define
+-- `fun a => if P a then true else false : α → Bool` using LEM. The intended
+-- statement is about computability (no computable decision procedure exists),
+-- which would require Lean's Computability framework.
 
 /-- Any finite truncation loses irrationality information. -/
 theorem truncation_insufficient (N : ℕ) :
@@ -212,10 +240,19 @@ end Erdos263
   6. Connections to Problems #262 and #264
   7. Non-computability of the property
 
-  **Key sorries**:
-  - `folklore_irrationality`: The folklore sufficient condition
-  - `kovac_tao_not_irrationality`: The 2024 negative result
-  - `positive_condition_irrationality`: Sufficient condition for irrationality
+  **Proved**:
+  - `doubleExp_strictly_increasing`: 2^{2^n} is strictly increasing
+  - `doubleExp_square_growth`: a_{n+1} = a_n² for double exponential
+
+  **Bug fixed**: `doubleExp_has_folklore_growth` was FALSE (2^{2^n})^{1/2^n} = 2,
+  not → ∞. Replaced with correct `doubleExp_not_folklore_growth`.
+
+  **Key sorries** (8 remaining):
+  - `folklore_irrationality`: The folklore sufficient condition (deep)
+  - `kovac_tao_not_irrationality`: The 2024 negative result (deep)
+  - `positive_condition_irrationality`: Sufficient condition for irrationality (deep)
+  - `doubleExp_convergent`: Comparison with geometric series (routine)
+  - `doubleExp_not_folklore_growth`: Constant limit = 2 (routine)
 
   **Related**: Problems #262, #264 (other irrationality sequence questions)
 -/
