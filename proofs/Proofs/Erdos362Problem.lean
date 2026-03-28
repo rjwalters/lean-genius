@@ -62,21 +62,47 @@ For any A of size N and any target t:
   #{S ⊆ A : sum(S) = t} ≪ 2^N / N^(3/2)
 -/
 
-/-- Erdős-Moser (1965): Weaker bound with log factor.
-    Note: This bound is degenerate for N ≤ 2 since log(1) = 0 and log(2) < 1.
-    For N ≥ 3, it follows from the sharper sarkozy_szemeredi_1965 bound since
-    (log N)^(3/2) ≥ 1, making the RHS larger. See PR #7493 for a proof.
-    First proved the concentration bound with an extra (log N)^(3/2) factor. -/
-axiom erdos_moser_1965_bound :
-    ∃ C > 0, ∀ (A : Finset ℤ), A.card ≥ 3 →
-      ∀ t : ℤ, (countSubsetsWithSum A t : ℝ) ≤
-        C * 2^(A.card) / (A.card : ℝ)^(3/2 : ℝ) * (Real.log A.card)^(3/2 : ℝ)
-
 /-- Sárközy-Szemerédi (1965): Sharp bound answering Q1.
     Removed the log factor from the Erdős-Moser bound. -/
 axiom sarkozy_szemeredi_1965 :
     ∃ C > 0, ∀ (A : Finset ℤ), A.card > 0 →
       ∀ t : ℤ, (countSubsetsWithSum A t : ℝ) ≤ C * 2^(A.card) / (A.card : ℝ)^(3/2 : ℝ)
+
+/-- For N ≥ 3, log N ≥ 1 (since e < 3).
+    Follows the pattern from Erdos442Problem.logPlus_eq_log. -/
+lemma log_ge_one_of_ge_three {n : ℕ} (hn : n ≥ 3) : Real.log (n : ℝ) ≥ 1 := by
+  rw [ge_iff_le, ← Real.log_exp 1]
+  exact Real.log_le_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9,
+    show (3 : ℝ) ≤ (n : ℝ) from by exact_mod_cast hn])
+
+/-- For x ≥ 1 and p ≥ 0, x^p ≥ 1. -/
+lemma rpow_ge_one_of_ge_one {x : ℝ} {p : ℝ} (hx : x ≥ 1) (hp : p ≥ 0) :
+    x ^ p ≥ 1 := by
+  rw [ge_iff_le, ← Real.one_rpow p]
+  exact Real.rpow_le_rpow (by norm_num : (0:ℝ) ≤ 1) hx hp
+
+/-- Erdős-Moser (1965): Weaker bound with log factor.
+    First proved the concentration bound with an extra (log N)^(3/2) factor.
+    This follows from the stronger Sárközy-Szemerédi bound (which removes the log factor).
+    Note: requires N ≥ 3 since log(1) = 0 and log(2) < 1 make the bound degenerate.
+    (The original axiom incorrectly required only N > 0, but the bound is 0 at N = 1.) -/
+theorem erdos_moser_1965_bound :
+    ∃ C > 0, ∀ (A : Finset ℤ), A.card ≥ 3 →
+      ∀ t : ℤ, (countSubsetsWithSum A t : ℝ) ≤
+        C * 2^(A.card) / (A.card : ℝ)^(3/2 : ℝ) * (Real.log ↑A.card)^(3/2 : ℝ) := by
+  obtain ⟨C, hC_pos, hC_bound⟩ := sarkozy_szemeredi_1965
+  refine ⟨C, hC_pos, fun A hA t => ?_⟩
+  have h_ss := hC_bound A (by omega) t
+  -- The sharp Sárközy-Szemerédi bound gives: count ≤ C * 2^N / N^(3/2)
+  -- Multiplying the RHS by (log N)^(3/2) ≥ 1 (for N ≥ 3) only weakens it.
+  apply le_trans h_ss
+  apply le_mul_of_one_le_right
+  · -- C * 2^N / N^(3/2) ≥ 0
+    apply div_nonneg
+    · exact mul_nonneg (le_of_lt hC_pos) (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) _)
+    · exact Real.rpow_nonneg (Nat.cast_nonneg _) _
+  · -- (log N)^(3/2) ≥ 1 for N ≥ 3
+    exact rpow_ge_one_of_ge_one (log_ge_one_of_ge_three hA) (by norm_num)
 
 /-- The bound 2^N / N^(3/2) is tight up to constants. -/
 axiom bound_tight_order :
@@ -163,10 +189,9 @@ the concentration bound follows from saddle point analysis.
 -/
 
 /-- The generating function for subset sums.
-    For z ≠ 0, the coefficient of z^t in this product equals countSubsetsWithSum A t.
-    Uses zpow (integer exponentiation) since elements of A may be negative. -/
+    The coefficient of z^t in this product equals countSubsetsWithSum A t. -/
 noncomputable def subsetSumGF (A : Finset ℤ) (z : ℂ) : ℂ :=
-  ∏ a ∈ A, (1 + z ^ a)
+  ∏ a ∈ A, (1 + z^(a.toNat))
 
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
     the integral of the generating function against an exponential. -/

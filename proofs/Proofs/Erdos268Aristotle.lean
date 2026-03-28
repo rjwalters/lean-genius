@@ -66,15 +66,21 @@ theorem shiftedHarmonicSum_antitone (A : Set ℕ) (hA : A.Infinite)
 
 -- Routine: The squares set is infinite
 theorem squaresSet_infinite : squaresSet.Infinite := by
-  sorry
+  rw [Set.infinite_iff_exists_gt]
+  intro n
+  exact ⟨(n + 1) ^ 2, ⟨n + 1, by omega, rfl⟩, by nlinarith⟩
 
 -- Routine: The powers of 2 set is infinite
 theorem powersOf2Set_infinite : powersOf2Set.Infinite := by
-  sorry
+  rw [Set.infinite_iff_exists_gt]
+  intro n
+  obtain ⟨k, hk⟩ := Nat.exists_lt_pow (b := 2) (by omega) n
+  exact ⟨2 ^ k, ⟨k, rfl⟩, hk⟩
 
 -- Routine: 1/(n+k) ≤ 1/n for k ≥ 0 and n ≥ 1
 theorem inv_shift_le (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
     (1 : ℝ) / (n + k) ≤ 1 / n := by
-  sorry
+  apply div_le_div_of_nonneg_left (by positivity) (by positivity)
+  exact_mod_cast Nat.le_add_right n k
 
 end Erdos268Aristotle

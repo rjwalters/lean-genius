@@ -23,7 +23,13 @@ theorem transfinite_induction (P : Ordinal → Prop)
     (hS : ∀ α, P α → P (α + 1))
     (hL : ∀ α, α.IsLimit → (∀ β < α, P β) → P α) :
     ∀ α, P α := by
-  sorry
+  intro α
+  induction α using Ordinal.induction with
+  | h α ih =>
+    rcases Ordinal.zero_or_succ_or_limit α with rfl | ⟨β, rfl⟩ | hα
+    · exact h0
+    · exact hS β (ih β (Ordinal.lt_succ β))
+    · exact hL α hα ih
 
 /-- The ordinal hierarchy: ω < ω₁. -/
 theorem omega_lt_omega1 : ω < Ordinal.omega1 := by
@@ -42,18 +48,19 @@ theorem omega1_pow_succ_lt : Ordinal.omega1 ^ (ω + 1) < Ordinal.omega1 ^ (ω + 
   sorry
 
 /-- A disjunction P ∨ Q is equivalent to (¬P → Q) when decidable. -/
-theorem or_iff_not_imp {P Q : Prop} : (P ∨ Q) ↔ (¬P → Q) := by
-  sorry
+theorem or_iff_not_imp {P Q : Prop} : (P ∨ Q) ↔ (¬P → Q) :=
+  or_iff_not_imp_left
 
 /-- If a set is finite, it has no injective map from ℕ. -/
 theorem Finite.no_injective_nat {V : Type*} [Finite V] :
     ¬∃ f : ℕ → V, Function.Injective f := by
-  sorry
+  intro ⟨f, hf⟩
+  exact not_injective_infinite_finite f hf
 
-/-- No infinite path in a graph on a finite vertex set.
-    An "infinite path" is an injective ℕ-indexed sequence of adjacent vertices. -/
+/-- No infinite path in a graph on a finite vertex set. -/
 theorem finite_no_infinite_path {V : Type*} [Finite V] (G : SimpleGraph V) :
     ¬∃ f : ℕ → V, Function.Injective f ∧ ∀ n, G.Adj (f n) (f (n + 1)) := by
-  sorry
+  intro ⟨f, hf, _⟩
+  exact not_injective_infinite_finite f hf
 
 end Erdos601Aristotle

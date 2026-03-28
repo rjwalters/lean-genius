@@ -32,6 +32,7 @@ Tags: group-theory, graph-theory, non-commuting-graph
 import Mathlib.Data.Nat.Basic
 import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.GroupTheory.Index
+import Mathlib.GroupTheory.QuotientGroup.Basic
 
 open Subgroup
 
@@ -158,7 +159,7 @@ axiom neumann_bound (G : Type*) [Group G] (n : ℕ)
 -/
 theorem finite_index_implies_finite_clique (G : Type*) [Group G]
     (h : centerHasFiniteIndex G) : hasFiniteCliqueNumber G := by
-  sorry
+  exact ⟨(Subgroup.center G).index, neumann_bound G _ rfl⟩
 
 /--
 **Answer to Erdős' Question:**
@@ -179,7 +180,12 @@ So if g and h are in the same coset, they commute!
 -/
 theorem same_coset_commute (g h : G)
     (hcoset : ∃ z ∈ Subgroup.center G, g * z = h) : commuting g h := by
-  sorry
+  obtain ⟨z, hz, rfl⟩ := hcoset
+  unfold commuting
+  -- Goal: g * (g * z) = (g * z) * g
+  -- From center: g * z = z * g, equivalently z * g = g * z
+  have hzc := Subgroup.mem_center_iff.mp hz g  -- g * z = z * g
+  rw [mul_assoc g z g, hzc.symm]
 
 /--
 **Clique Members in Different Cosets:**
@@ -188,7 +194,19 @@ If S is a clique, distinct elements must be in different cosets of Z(G).
 theorem clique_different_cosets (S : Set G) (hS : isClique S) :
     ∀ g ∈ S, ∀ h ∈ S, g ≠ h →
     (Subgroup.center G).quotient.mk g ≠ (Subgroup.center G).quotient.mk h := by
-  sorry
+  intro g hg h hh hne heq
+  -- Distinct clique members must not commute
+  have hnc : nonCommuting g h := hS g hg h hh hne
+  -- But same coset ⇒ they commute, contradiction
+  have hcomm : commuting g h := by
+    apply same_coset_commute
+    use g⁻¹ * h
+    refine ⟨?_, by group⟩
+    -- g⁻¹ * h ∈ center G from quotient equality
+    have hrel := Quotient.exact heq
+    rwa [QuotientGroup.leftRel_apply] at hrel
+  unfold nonCommuting at hnc; unfold commuting at hcomm
+  exact hnc hcomm
 
 /--
 **Corollary:**
