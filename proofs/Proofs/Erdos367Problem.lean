@@ -137,14 +137,35 @@ For k ≤ 2, the strong bound holds because B₂(n) ≤ n.
 
 B₂(n) ≤ n ≤ n², so strongBound(1) holds.
 -/
-axiom strong_bound_k1 : strongBound 1
+theorem strong_bound_k1 : strongBound 1 := by
+  refine ⟨1, one_pos, fun n hn => ?_⟩
+  unfold productTwoFullParts
+  have hIco : Finset.Ico n (n + 1) = {n} := by
+    ext m; simp only [Finset.mem_Ico, Finset.mem_singleton]; omega
+  rw [hIco, Finset.prod_singleton]
+  have h1 : (twoFullPart n : ℝ) ≤ (n : ℝ) := by exact_mod_cast twoFullPart_le n
+  have hn' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  nlinarith [sq_nonneg ((n : ℝ) - 1)]
 
 /--
 **Trivial Case: k = 2**
 
 B₂(n) · B₂(n+1) ≤ n · (n+1) < 2n², so strongBound(2) holds.
 -/
-axiom strong_bound_k2 : strongBound 2
+theorem strong_bound_k2 : strongBound 2 := by
+  refine ⟨2, by norm_num, fun n hn => ?_⟩
+  unfold productTwoFullParts
+  have hIco : Finset.Ico n (n + 2) = {n, n + 1} := by
+    ext m; simp only [Finset.mem_Ico, Finset.mem_insert, Finset.mem_singleton]; omega
+  rw [hIco, Finset.prod_insert (show n ∉ ({n + 1} : Finset ℕ) by simp; omega),
+      Finset.prod_singleton]
+  simp only [Nat.cast_mul]
+  have h1 : (twoFullPart n : ℝ) ≤ (n : ℝ) := by exact_mod_cast twoFullPart_le n
+  have h2 : (twoFullPart (n + 1) : ℝ) ≤ (n : ℝ) + 1 := by exact_mod_cast twoFullPart_le (n + 1)
+  have hn' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  nlinarith [mul_le_mul h1 h2 (Nat.cast_nonneg (twoFullPart (n + 1)))
+               (by linarith : (0 : ℝ) ≤ (n : ℝ)),
+             sq_nonneg ((n : ℝ) - 1)]
 
 /-
 # Part 6: Known Results — Failure of Strong Bound
