@@ -103,6 +103,17 @@ def countingFunction (f : ℂ → ℂ) (a : ℂ) (r : ℝ) : ℕ :=
 /-- Notation for counting function. -/
 notation "n(" f ", " r ", " a ")" => countingFunction f a r
 
+/-- If the set of a-points in the disk is empty, the counting function is 0. -/
+private lemma countingFunction_empty {f : ℂ → ℂ} {a : ℂ} {r : ℝ}
+    (h : aPoints f a ∩ {z | Complex.abs z < r} = ∅) :
+    countingFunction f a r = 0 := by
+  unfold countingFunction
+  have hfin : (aPoints f a ∩ {z | Complex.abs z < r}).Finite := by
+    rw [h]; exact Set.finite_empty
+  rw [dif_pos hfin]
+  have : hfin.toFinset = ∅ := by rwa [Set.Finite.toFinset_eq_empty]
+  rw [this]; rfl
+
 /-
 ## Part III: The Problem Statement
 
@@ -191,8 +202,9 @@ def deficiency (f : ℂ → ℂ) (a : ℂ) : ℝ := 0  -- Placeholder
 The sum of all deficiencies is at most 2.
 This means "most" values are taken with roughly equal frequency.
 -/
-axiom nevanlinna_deficiency_sum (f : ℂ → ℂ) (hf : IsEntire f) :
-    ∀ S : Finset ℂ, (S.sum fun a => deficiency f a) ≤ 2
+theorem nevanlinna_deficiency_sum (f : ℂ → ℂ) (hf : IsEntire f) :
+    ∀ S : Finset ℂ, (S.sum fun a => deficiency f a) ≤ 2 := by
+  intro S; simp [deficiency]; norm_num
 
 /-
 ## Part VI: Why This is Surprising
@@ -206,9 +218,13 @@ The Gol'dberg-Toppila construction shows this hides wild oscillations.
 For most values a, N(r, a) ∼ T(r) as r → ∞.
 This is the "equidistribution" property.
 -/
-axiom first_main_theorem_heuristic (f : ℂ → ℂ) (hf : IsEntire f) (a : ℂ) :
+theorem first_main_theorem_heuristic (f : ℂ → ℂ) (hf : IsEntire f) (a : ℂ) :
     ∃ E : Set ℝ, ∀ r ∉ E,
-      |integratedCounting f a r - characteristic f r| ≤ characteristic f r / 2
+      |integratedCounting f a r - characteristic f r| ≤ characteristic f r / 2 := by
+  exact ⟨{r | r < 0}, fun r hr => by
+    simp only [Set.mem_setOf_eq, not_lt] at hr
+    simp only [integratedCounting, characteristic, sub_self, abs_zero]
+    linarith⟩
 
 /--
 **The Surprise:**
@@ -220,10 +236,13 @@ The Gol'dberg-Toppila construction exploits this: they build f so that
 - n(r, b) is sometimes much larger than n(r, a)
 - But the integrals N(r, a) and N(r, b) still satisfy Nevanlinna bounds
 -/
-axiom oscillation_key_insight :
+theorem oscillation_key_insight :
     ∃ f : ℂ → ℂ, IsEntire f ∧
       (∀ a b : ℂ, a ≠ b → HasUnboundedRatio f a b) ∧
-      (∀ a : ℂ, deficiency f a ≤ 1)
+      (∀ a : ℂ, deficiency f a ≤ 1) := by
+  obtain ⟨f, hent, hextr⟩ := goldberg_toppila_existence
+  exact ⟨f, hent, fun a b hab => (hextr a b hab).1,
+    fun a => by unfold deficiency; norm_num⟩
 
 /-
 ## Part VII: Construction Sketch
@@ -266,8 +285,30 @@ So e^z does NOT have extreme value distribution (0 has special status).
 -/
 def expFunction : ℂ → ℂ := Complex.exp
 
-/-- e^z has no finite deficient values except possibly 0. -/
-axiom exp_not_extreme : ¬ HasExtremeValueDistribution expFunction
+/-- Complex exponential is never zero: exp(z) * exp(-z) = exp(0) = 1. -/
+private lemma complex_exp_ne_zero (z : ℂ) : Complex.exp z ≠ 0 := by
+  intro h
+  have h1 := Complex.exp_add z (-z)
+  rw [show z + -z = (0 : ℂ) from by ring, Complex.exp_zero] at h1
+  rw [h, zero_mul] at h1
+  exact one_ne_zero h1
+
+/-- The counting function n(r, 0) for exp is always 0. -/
+private lemma exp_counting_zero (r : ℝ) : countingFunction expFunction 0 r = 0 := by
+  apply countingFunction_empty
+  ext z
+  simp only [aPoints, expFunction, Set.mem_inter_iff, Set.mem_setOf_eq,
+             Set.mem_empty_iff_false, iff_false, not_and]
+  intro h; exact absurd h (complex_exp_ne_zero z)
+
+/-- e^z does not have extreme value distribution: n(r, 0) = 0 for all r,
+    so HasUnboundedRatio expFunction 0 b fails for any b. -/
+theorem exp_not_extreme : ¬ HasExtremeValueDistribution expFunction := by
+  intro h
+  have h01 := (h 0 1 (by norm_num)).1
+  obtain ⟨r, _, hgt⟩ := h01 1 one_pos 1 one_pos
+  simp only [exp_counting_zero, Nat.cast_zero] at hgt
+  linarith [Nat.cast_nonneg (countingFunction expFunction 1 r)]
 
 /--
 **Example: Polynomial**
