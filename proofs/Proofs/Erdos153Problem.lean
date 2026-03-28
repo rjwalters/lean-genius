@@ -13,7 +13,7 @@ Results:
 - sidon_sumset_card: fully proved via upper triangle cardinality lemma
 - sidon_sumset_range: proved
 - average_gap_bounded: proved (trivially: C can depend on N)
-Axioms: 2 (ess_1994_result, infinite_sidon_gap_question)
+Axioms: 1 (infinite_sidon_gap_question)
 Sorries: 0
 -/
 
@@ -248,13 +248,78 @@ theorem average_gap_bounded (A : Finset ℕ) (N : ℕ) (_h : IsSidon A)
     _ = 2 * N := by ring
     _ ≤ 2 * N + 1 := by linarith
 
+/-- For a sorted list of naturals with no duplicates, consecutive pairs
+    in the zip-with-tail differ by ≥ 1, so the accumulated sum of squared
+    gaps is at least the number of gaps. -/
+private lemma foldl_sq_gap_ge (l : List ℕ) (hs : l.Pairwise (· ≤ ·)) (hd : l.Nodup) :
+    ∀ acc : ℕ,
+    (l.zip l.tail).foldl (fun a (p : ℕ × ℕ) => a + (p.2 - p.1) ^ 2) acc ≥
+    acc + (l.zip l.tail).length := by
+  induction l with
+  | nil => intro acc; simp
+  | cons a t ih =>
+    intro acc
+    cases t with
+    | nil => simp
+    | cons b u =>
+      simp only [List.tail_cons, List.zip_cons_cons, List.foldl_cons, List.length_cons]
+      have hpw := List.pairwise_cons.mp hs
+      have hab : a ≤ b := hpw.1 b List.mem_cons_self
+      have hne : a ≠ b := by
+        intro heq; subst heq
+        exact (List.nodup_cons.mp hd).1 List.mem_cons_self
+      have hd' : (b :: u).Nodup := (List.nodup_cons.mp hd).2
+      have ih_step := ih hpw.2 hd' (acc + (b - a) ^ 2)
+      simp only [List.tail_cons] at ih_step
+      have hgap : (b - a) ^ 2 ≥ 1 := by
+        have h1 : 1 ≤ b - a := by omega
+        rw [sq]; exact Nat.mul_le_mul h1 h1
+      linarith
+
+/-- The gap squared sum is at least (|A+A| - 1), since each consecutive
+    pair in the sorted sumset contributes a squared gap ≥ 1. -/
+private lemma gapSquaredSum_ge_card_sub_one (A : Finset ℕ) :
+    gapSquaredSum A ≥ (sumset A).card - 1 := by
+  unfold gapSquaredSum sortedSumset
+  have hs := (sumset A).pairwise_sort (· ≤ ·)
+  have hd := (sumset A).sort_nodup (· ≤ ·)
+  have key := foldl_sq_gap_ge _ hs hd 0
+  simp only [Nat.zero_add] at key
+  have hzip_len : (((sumset A).sort (· ≤ ·)).zip ((sumset A).sort (· ≤ ·)).tail).length =
+      (sumset A).card - 1 := by
+    rw [List.length_zip, List.length_tail, (sumset A).length_sort]
+    exact min_eq_right (Nat.sub_le _ _)
+  linarith
+
 /-- Erdős, Sárközy, and Sós (1994) studied the gap distribution
-in sumsets of Sidon sets and posed this problem about the
-variance growing without bound. -/
-axiom ess_1994_result :
+in sumsets of Sidon sets. The mean squared gap is at least 1,
+since consecutive elements of a sorted set of naturals differ by ≥ 1.
+(The ESS result is actually stronger, but c = 1 suffices here.) -/
+theorem ess_1994_result :
   ∃ c : ℝ, c > 0 ∧
     ∀ A : Finset ℕ, IsSidon A → A.card ≥ 4 →
-      meanGapSquared A ≥ c
+      meanGapSquared A ≥ c := by
+  refine ⟨1, one_pos, fun A hsidon hn => ?_⟩
+  have hcard : (sumset A).card ≥ 10 := by
+    have h := sidon_sumset_card A hsidon
+    have : A.card * (A.card + 1) ≥ 20 := by nlinarith
+    omega
+  unfold meanGapSquared
+  rw [if_neg (by omega : ¬(sumset A).card ≤ 1)]
+  have hgs := gapSquaredSum_ge_card_sub_one A
+  have hd_pos : (0 : ℝ) < ((sumset A).card : ℝ) - 1 := by
+    have : (2 : ℕ) ≤ (sumset A).card := by omega
+    have : (2 : ℝ) ≤ ↑(sumset A).card := by exact_mod_cast this
+    linarith
+  -- Cast the ℕ inequality to ℝ
+  have hgs_real : (↑(sumset A).card : ℝ) - 1 ≤ ↑(gapSquaredSum A) := by
+    have h_cast : (↑((sumset A).card - 1 : ℕ) : ℝ) ≤ ↑(gapSquaredSum A) :=
+      Nat.cast_le.mpr hgs
+    rwa [Nat.cast_sub (by omega : 1 ≤ (sumset A).card), Nat.cast_one] at h_cast
+  -- 1 = d/d ≤ g/d by monotonicity (d ≤ g)
+  calc (1 : ℝ) = (↑(sumset A).card - 1) / (↑(sumset A).card - 1) :=
+          (div_self (ne_of_gt hd_pos)).symm
+    _ ≤ ↑(gapSquaredSum A) / (↑(sumset A).card - 1) := by gcongr
 
 /-
 ## Section VII: Infinite Sidon Sets
