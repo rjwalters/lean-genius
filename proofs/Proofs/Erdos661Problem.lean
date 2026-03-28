@@ -59,6 +59,23 @@ theorem distSq_comm (p q : Point2) : distSq p q = distSq q p := by
   unfold distSq
   ring
 
+/-- Squared distance is zero iff points are equal. -/
+theorem distSq_eq_zero_iff (p q : Point2) : distSq p q = 0 ↔ p = q := by
+  constructor
+  · intro h
+    unfold distSq at h
+    have h1 : (p.1 - q.1) ^ 2 = 0 := by nlinarith [sq_nonneg (p.2 - q.2)]
+    have h2 : (p.2 - q.2) ^ 2 = 0 := by nlinarith [sq_nonneg (p.1 - q.1)]
+    exact Prod.ext (sub_eq_zero.mp (sq_eq_zero_iff.mp h1))
+                   (sub_eq_zero.mp (sq_eq_zero_iff.mp h2))
+  · rintro rfl; exact distSq_self q
+
+/-- Distinct points have positive squared distance. -/
+theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
+  rcases lt_or_eq_of_le (distSq_nonneg p q) with hlt | heq
+  · exact hlt
+  · exact absurd ((distSq_eq_zero_iff p q).mp heq.symm) h
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #661**: Is F(2n) = o(f(2n))?
@@ -93,6 +110,13 @@ theorem bipartiteDistSet_card_le (X Y : Finset Point2) :
   calc (X ×ˢ Y).image (fun p => distSq p.1 p.2) |>.card
       ≤ (X ×ˢ Y).card := Finset.card_image_le
     _ = X.card * Y.card := Finset.card_product X Y
+
+/-- Bipartite distances are monotone under taking subsets. -/
+theorem bipartiteDistSet_mono {X₁ X₂ Y₁ Y₂ : Finset Point2}
+    (hX : X₁ ⊆ X₂) (hY : Y₁ ⊆ Y₂) :
+    bipartiteDistSet X₁ Y₁ ⊆ bipartiteDistSet X₂ Y₂ := by
+  unfold bipartiteDistSet
+  exact Finset.image_subset_image (Finset.product_subset_product hX hY)
 
 /- ## Higher Dimensions -/
 
