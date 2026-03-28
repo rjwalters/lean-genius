@@ -1,6 +1,6 @@
 {
   "slug": "erdos-450",
-  "title": "Erdős #450",
+  "title": "Erd\u0151s #450",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-13T04:11:10.511Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,12 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 3A all genuinely deep (Cambie, Ford), 16T already proved. Well-structured file.",
+    "builtItems": [
+      "Survey: file well-structured with 16 proved theorems"
+    ],
+    "insights": [
+      "3 axioms all genuinely deep: cambie_no_y_for_all (averaging + Ford), cambie_small_epsilon (small \u03b5 regime), ford_divisor_distribution (2008 result)",
+      "16 theorems cover: count bounds, interval monotonicity, problem formulations, corollaries from axioms",
+      "No easy axiom elimination path \u2014 all require deep analytic number theory"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #450 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?\n\n\n\nIt is not clear what the intended quantifier on $x$ is. Cambie has observed that if this is intended to hold for all $x$ then, provided\\[\\epsilon(\\log n)^\\delta (\\log\\log n)^{3/2}\\to \\infty\\]as $n\\to \\infty$, where $\\delta=0.086\\cdots$, there is no such $y$, which follows from an averaging argument and the work of Ford \\cite{Fo08}.\n\nOn the other hand, Cambie has observed that if $\\epsilon\\ll 1/n$ then $y(\\epsilon,n)\\sim 2n$: indeed, if $y<2n$ then this is impossible taking $x+n$ to be a multiple of the lowest common multiple of $\\{n+1,\\ldots,2n-1\\}$. On the other hand, for every fixed $\\delta\\in (0,1)$ and $n$ large every $2(1+\\delta)n$ consecutive elements contains many elements which are a multiple of an element in $(n,2n)$.\n\n\n\n\nReferences\n\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #449\n- Problem #451\n- Problem #39\n- Problem #1\n\n## References\n\n- Fo08\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "nextSteps": [
+      "No immediate path for axiom reduction without new Mathlib infrastructure for Ford's divisor results"
+    ],
+    "markdown": "# Erd\u0151s #450 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?\n\n\n\nIt is not clear what the intended quantifier on $x$ is. Cambie has observed that if this is intended to hold for all $x$ then, provided\\[\\epsilon(\\log n)^\\delta (\\log\\log n)^{3/2}\\to \\infty\\]as $n\\to \\infty$, where $\\delta=0.086\\cdots$, there is no such $y$, which follows from an averaging argument and the work of Ford \\cite{Fo08}.\n\nOn the other hand, Cambie has observed that if $\\epsilon\\ll 1/n$ then $y(\\epsilon,n)\\sim 2n$: indeed, if $y<2n$ then this is impossible taking $x+n$ to be a multiple of the lowest common multiple of $\\{n+1,\\ldots,2n-1\\}$. On the other hand, for every fixed $\\delta\\in (0,1)$ and $n$ large every $2(1+\\delta)n$ consecutive elements contains many elements which are a multiple of an element in $(n,2n)$.\n\n\n\n\nReferences\n\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #449\n- Problem #451\n- Problem #39\n- Problem #1\n\n## References\n\n- Fo08\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
