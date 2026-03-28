@@ -148,16 +148,15 @@ theorem equilateral_side_length_axiom :
     simp only [Q, equilateralVertex]
     rw [← Complex.exp_nat_mul]
     simp only [Nat.cast_ofNat]
-    have : (3 : ℂ) * (Complex.I * (2 * ↑π * ↑(1 : ℕ) / 3)) = ↑(2 * π) * Complex.I := by
+    have : (3 : ℂ) * (Complex.I * (2 * ↑π * ↑(1 : ℕ) / 3)) = 2 * ↑Real.pi * Complex.I := by
       push_cast; ring
-    rw [this, Complex.exp_ofReal_mul_I_re_eq_cos_add, Complex.ofReal_re]
-    simp [Complex.cos_ofReal_re, Complex.sin_ofReal_im]
-    sorry -- exp(2πi) = 1
+    rw [this]
+    exact Complex.exp_two_pi_mul_I
   -- P - R = Q² * (Q - P)
   have h2 : P - R = Q ^ 2 * (Q - P) := by
     rw [hP, hR]
-    have h3 := hQ3
-    nlinarith
+    have : Q ^ 2 * (Q - 1) = Q ^ 3 - Q ^ 2 := by ring
+    rw [this, hQ3]; ring
   constructor
   · rw [h1, map_mul, hQ_abs, one_mul]
   · rw [h1, h2, map_mul, map_mul, Complex.abs_pow, hQ_abs, one_pow, one_mul, one_mul]

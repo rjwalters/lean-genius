@@ -49,11 +49,13 @@ theorem sigma_one : sigma 1 = 1 := by
 
 /-- σ(p) = p + 1 for prime p. -/
 theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
-  sorry
+  simp [sigma, hp.divisors, add_comm]
 
 /-- σ(n) ≥ n for all n ≥ 1. -/
 theorem sigma_ge_self (n : ℕ) (hn : n ≥ 1) : sigma n ≥ n := by
-  sorry
+  unfold sigma
+  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _)
+    (Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩)
 
 /-- The abundancy ratio σ(n)/n. -/
 noncomputable def abundancyRatio (n : ℕ) : ℝ :=
