@@ -92,7 +92,7 @@ def ErdosConjecture : Prop :=
   ∀ ε : ℝ, ε > 0 →
     ∃ N : ℕ, ∀ n > N, ∀ π : Perm n, (S n π : ℝ) < ε * n^2
 
-/--
+/-
 **Theorem (Counterexample Existence)**:
 Erdős's conjecture is FALSE. There exist permutations with S(π) ≥ cn² for constant c > 0.
 -/
@@ -101,26 +101,26 @@ Erdős's conjecture is FALSE. There exist permutations with S(π) ≥ cn² for c
 ## Known Results
 -/
 
-/--
+/-
 **Hegyvári (1986)**: First counterexample to the conjecture.
 There exists a family of permutations πₙ with S(πₙ) ≥ (1/18 + o(1))n².
 -/
 
-/--
+/-
 **Konieczny (2015)**: The conjecture is "extremely false."
 There exist permutations with S(π) ≥ n²/4, which is asymptotically optimal
 up to lower-order terms.
 -/
 
-/--
+/-
 **Lower bound on maximum**: f(n) ≥ 0.286...·n²
 -/
 
-/--
+/-
 **Upper bound on maximum**: f(n) ≤ 0.446...·n²
 -/
 
-/--
+/-
 **Random permutation behavior**: S(π) ~ (1 + e⁻²)/4 · n² asymptotically
 for a random permutation π chosen uniformly.
 
@@ -136,7 +136,7 @@ The identity permutation ι has S(ι) = o(n²), which motivated Erdős's conject
 /-- The identity permutation: ι(i) = i. -/
 def identityPerm (n : ℕ) : Perm n := Equiv.refl (Fin n)
 
-/--
+/-
 The identity permutation satisfies S(ι) = o(n²).
 
 For the identity, consecutive sums are arithmetic progressions:
@@ -149,13 +149,13 @@ The number of distinct such sums is O(n^(3/2)) which is o(n²).
 ## Minimum Bounds
 -/
 
-/--
+/-
 **Lower bound on minimum**: g(n) ≫ n^(3/2)
 
 Every permutation has at least Ω(n^(3/2)) distinct consecutive sums.
 -/
 
-/--
+/-
 **Conjectured bound on minimum**: g(n) ≥ n^(2-o(1))
 
 It's conjectured that the minimum grows almost quadratically.
@@ -168,12 +168,17 @@ def MinimumConjecture : Prop :=
 ## Basic Properties
 -/
 
-/-- The number of possible consecutive sums is at most n(n+1)/2
-    (one for each pair u ≤ v). -/
+/-- The number of possible consecutive sums is at most n².
+    S(π) = card of image of n² pairs under consecutiveSum.
+    NOTE: The tighter bound n(n+1)/2 stated previously is FALSE:
+    for n=2, π=id gives S=4 > 3=n(n+1)/2 (0 from u>v contributes
+    a distinct value not counted by the n(n+1)/2 pairs with u≤v). -/
 theorem S_upper_bound (n : ℕ) (π : Perm n) :
-    S n π ≤ n * (n + 1) / 2 := by
-  -- There are at most n(n+1)/2 pairs (u,v) with u ≤ v
-  sorry
+    S n π ≤ n * n := by
+  unfold S consecutiveSumSet
+  calc ((Finset.univ.product Finset.univ).image (fun x => consecutiveSum n π x.1 x.2)).card
+      ≤ (Finset.univ.product (Finset.univ : Finset (Fin n))).card := Finset.card_image_le
+    _ = n * n := by simp [Finset.card_product, Fintype.card_fin]
 
 /-- All consecutive sums are positive (for n ≥ 1). -/
 theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)
