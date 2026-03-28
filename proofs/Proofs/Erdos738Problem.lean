@@ -185,23 +185,114 @@ private lemma pathGraph_reachable_zero {n : ℕ} (i : Fin (n + 1)) :
       ⟨Walk.cons (show (pathGraph (n + 1)).Adj ⟨k, by omega⟩ ⟨k + 1, hk⟩ from Or.inl rfl)
         Walk.nil⟩
 
+/-- Discrete IVT for path graph (descending): any walk from a to b passes through
+    every vertex c with b.val < c.val < a.val. -/
+private lemma pathGraph_walk_visits_desc {n : ℕ} {a b : Fin (n + 1)}
+    (w : (pathGraph (n + 1)).Walk a b)
+    {c : Fin (n + 1)} (hac : c.val + 1 ≤ a.val) (hcb : b.val + 1 ≤ c.val) :
+    c ∈ w.support := by
+  induction w with
+  | nil => omega
+  | @cons u d _ hadj p ih =>
+    simp only [Walk.support_cons, List.mem_cons]
+    rcases hadj with h | h
+    · -- u.val + 1 = d.val (going up, further from b)
+      right; exact ih (by omega) hcb
+    · -- d.val + 1 = u.val (going down)
+      by_cases hdc : d = c
+      · right; rw [← hdc]; exact Walk.start_mem_support p
+      · right; exact ih (by have := Fin.val_ne_of_ne hdc; omega) hcb
+
+/-- Discrete IVT for path graph (ascending): any walk from a to b passes through
+    every vertex c with a.val < c.val < b.val. -/
+private lemma pathGraph_walk_visits_asc {n : ℕ} {a b : Fin (n + 1)}
+    (w : (pathGraph (n + 1)).Walk a b)
+    {c : Fin (n + 1)} (hac : a.val + 1 ≤ c.val) (hcb : c.val + 1 ≤ b.val) :
+    c ∈ w.support := by
+  induction w with
+  | nil => omega
+  | @cons u d _ hadj p ih =>
+    simp only [Walk.support_cons, List.mem_cons]
+    rcases hadj with h | h
+    · -- u.val + 1 = d.val (going up)
+      by_cases hdc : d = c
+      · right; rw [← hdc]; exact Walk.start_mem_support p
+      · right; exact ih (by have := Fin.val_ne_of_ne hdc; omega) hcb
+    · -- d.val + 1 = u.val (going down, further from b)
+      right; exact ih (by omega) hcb
+
 /-- The path graph on n+1 ≥ 1 vertices is a tree (connected and acyclic).
     Connected: vertices 0-1-2-...-n form a path connecting all vertices.
-    Acyclic: adjacent vertices differ by exactly 1, so any closed walk must
-    revisit an edge (forward and backward steps on the same edge). -/
+    Acyclic: in the path graph, vertex values change by ±1 at each step.
+    In any cycle with distinct support, the walk is forced monotone (going
+    back would revisit a vertex). But monotone walks can't return to start. -/
 theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree where
   isConnected := by
     refine Connected.mk fun u v => ?_
     exact (pathGraph_reachable_zero u).symm.trans (pathGraph_reachable_zero v)
   IsAcyclic := by
-    -- In the path graph, every edge is a bridge: removing edge {k,k+1}
-    -- disconnects vertices {0,...,k} from {k+1,...,n}. A graph where every
-    -- edge is a bridge is acyclic.
-    -- The key insight: adjacent vertices differ by exactly 1 in value,
-    -- so any closed trail would need to traverse an edge in both directions
-    -- (forward k→k+1 and backward k+1→k), but these are the same undirected
-    -- edge — violating the trail property.
-    sorry
+    intro v c hcyc
+    have htrl := hcyc.isCircuit.isTrail
+    have hne := hcyc.isCircuit.ne_nil
+    have hnd := hcyc.support_nodup
+    cases c with
+    | nil => exact hne rfl
+    | @cons _ w _ hadj p =>
+      cases p with
+      | nil => exact absurd hadj ((pathGraph (n + 1)).loopless v)
+      | @cons _ w' _ hadj' p' =>
+        cases p' with
+        | nil =>
+          -- Length 2: v → w → v. Same edge used twice, not a trail.
+          have hedges := htrl.edges_nodup
+          simp only [Walk.edges_cons, Walk.edges_nil] at hedges
+          exact absurd (List.mem_cons.mpr (Or.inl Sym2.eq_swap))
+            (List.nodup_cons.mp hedges).1
+        | @cons _ w'' _ hadj'' p'' =>
+          -- Length ≥ 3: v → w → w' → w'' → [p''] → v
+          simp only [Walk.support_cons, List.tail_cons] at hnd
+          -- hnd : (w :: w' :: p''.support).Nodup  (note: p''.support = [w'', ..., v])
+          have hnd_w : w ∉ (w' :: p''.support) := (List.nodup_cons.mp hnd).1
+          have hnd_w' : w' ∉ p''.support :=
+            (List.nodup_cons.mp (List.nodup_cons.mp hnd).2).1
+          -- Derive vertex values
+          rcases hadj with h_up | h_down
+          · -- Case 1: v.val + 1 = w.val (first step goes up)
+            -- w' must continue up: w'.val = v.val + 2
+            -- (going down would give w'.val = v.val, but w' ∉ p''.support
+            --  and v ∈ p''.support, so w' ≠ v, contradiction)
+            have hw'_val : w'.val = v.val + 2 := by
+              rcases hadj' with h | h
+              · omega  -- w.val + 1 = w'.val, and w.val = v.val + 1
+              · -- w'.val + 1 = w.val = v.val + 1, so w'.val = v.val
+                -- But v ∈ p''.support (end vertex) and w' ∉ p''.support
+                exfalso; apply hnd_w'
+                have : w' = v := Fin.ext (by omega)
+                rw [this]; exact Walk.end_mem_support p''
+            -- w'' must continue up: w''.val = v.val + 3
+            have hw''_val : w''.val = v.val + 3 := by
+              rcases hadj'' with h | h
+              · omega  -- w'.val + 1 = w''.val
+              · -- w''.val + 1 = w'.val, so w''.val = v.val + 1 = w.val
+                exfalso; apply hnd_w
+                have : w'' = w := Fin.ext (by omega)
+                exact List.mem_cons_of_mem _ (this ▸ Walk.start_mem_support p'')
+            -- p'' walks from w'' (val = v+3) to v (val = v). By IVT, w' (val = v+2) ∈ p''.support.
+            exact hnd_w' (pathGraph_walk_visits_desc p'' (by omega) (by omega))
+          · -- Case 2: w.val + 1 = v.val (first step goes down) — symmetric
+            have hw'_val : w'.val + 2 = v.val := by
+              rcases hadj' with h | h
+              · exfalso; apply hnd_w'
+                have : w' = v := Fin.ext (by omega)
+                rw [this]; exact Walk.end_mem_support p''
+              · omega
+            have hw''_val : w''.val + 3 = v.val := by
+              rcases hadj'' with h | h
+              · exfalso; apply hnd_w
+                have : w'' = w := Fin.ext (by omega)
+                exact List.mem_cons_of_mem _ (this ▸ Walk.start_mem_support p'')
+              · omega
+            exact hnd_w' (pathGraph_walk_visits_asc p'' (by omega) (by omega))
 
 /-- Path on n+1 vertices as a FiniteTree. -/
 def pathTree (n : ℕ) : FiniteTree (n + 1) :=
