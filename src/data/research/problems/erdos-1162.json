@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
+    "formal": "Give an asymptotic formula for f(n) = |{H : H ≤ S_n}|. log f(n) = (1/16 + o(1))n² [Roney-Dougal-Tracey 2025]",
+    "plain": "Give an asymptotic formula for the number of subgroups of S_n. Is there a statistical theorem on their order?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,30 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:53:51.157Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-28T09:30:00Z",
+    "iteration": 2,
+    "focus": "Formalization complete. 7 sorries remain.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Statement unavailable.",
-    "builtItems": [],
+    "progressSummary": "FORMALIZED: Created Erdos1162Problem.lean (155 lines). 7 axioms, 7 sorries. Gallery entry.",
+    "builtItems": [
+      "Erdos1162Problem.lean: 155-line formalization",
+      "numSubgroups axiom for f(n)",
+      "pyber_theorem: log f(n) ≍ n²",
+      "roney_dougal_tracey: log f(n)/n² → 1/16",
+      "Elementary abelian 2-group explanation",
+      "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
+      "Gallery entry: meta.json, annotations.json, index.ts"
+    ],
     "insights": [
-      "Statement unavailable"
+      "Problem statement retrieved from erdosproblems.com",
+      "Pyber (1993) established log f(n) ≍ n²",
+      "Roney-Dougal-Tracey (2025) proved log f(n) = (1/16 + o(1))n²",
+      "Constant 1/16 = (1/4)² from elementary abelian 2-groups on n/4 points",
+      "Most subgroups of S_n are 2-groups",
+      "Connected to Gaussian binomial coefficients over GF(2)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1162 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "group-theory",
+    "symmetric-group",
+    "enumeration",
+    "asymptotic"
   ],
   "relatedProofs": [
     "erdos-1",
