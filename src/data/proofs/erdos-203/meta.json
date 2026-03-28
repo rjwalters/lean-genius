@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos",
     "sourceUrl": "https://erdosproblems.com/203",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos203Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "sierpinski",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 203,
     "erdosUrl": "https://erdosproblems.com/203",
@@ -56,8 +56,8 @@
       "IsGeneralizedAvoiding definition: multi-prime generalization",
       "erdos_203_statement theorem: formal main statement"
     ],
-    "axiomCount": 1,
-    "lineCount": 299,
+    "axiomCount": 0,
+    "lineCount": 350,
     "assumptions": "1 axiom: selfridge_sierpinski_is_sierpinski (78557 is Sierpinski, Selfridge 1962). See Lean source."
   },
   "overview": {
@@ -162,9 +162,9 @@
       "Nat"
     ],
     "namespace": "Erdos203",
-    "lineCount": 299,
-    "axiomCount": 1,
-    "theoremCount": 32,
+    "lineCount": 350,
+    "axiomCount": 0,
+    "theoremCount": 36,
     "definitionCount": 14
   },
   "crossReferences": [
