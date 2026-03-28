@@ -198,7 +198,30 @@ Apply the criteria from your role definition (herald.md):
 
 Skip if nothing meets the threshold.
 
-### 7. Compose and post
+### 7. Verify the proof page is deployed (MANDATORY)
+
+Before composing any post that links to a proof page (leangenius.org/proof/<slug>), you MUST verify the proof data is complete. For each proof slug you plan to link:
+
+```bash
+# All four checks must pass:
+# 1. meta.json exists
+test -f ${REPO_ROOT}/src/data/proofs/<slug>/meta.json
+
+# 2. leanFile has lineCount > 0
+jq '(.leanFile | type) == "object" and (.leanFile.lineCount > 0)' ${REPO_ROOT}/src/data/proofs/<slug>/meta.json
+
+# 3. Proof is in listings.json
+jq --arg s "<slug>" '[.[] | select(.slug == $s)] | length' ${REPO_ROOT}/src/data/proofs/listings.json
+
+# 4. Lean source file exists
+ls ${REPO_ROOT}/proofs/Proofs/*.lean | grep -i "<name>"
+```
+
+If ANY check fails, do NOT post about that proof. The post-mathstodon.sh script also enforces this as a hard gate, but you should check first to avoid wasting a dry-run cycle.
+
+**Why this matters**: The site is an SPA, so any route returns HTML. A proof page can appear to exist but show "coming soon" if the data is incomplete or was not included in the last deploy.
+
+### 8. Compose and post
 
 If a significant result is found:
 
@@ -232,13 +255,13 @@ The script will:
 - Update the state file with the post record and daily count
 - Append `[automated post]` tag to the text
 
-### 8. Sleep until next cycle
+### 9. Sleep until next cycle
 ```bash
 echo "Next scan in ${INTERVAL} minutes..."
 sleep ${INTERVAL}m
 ```
 
-### 9. Repeat from step 1
+### 10. Repeat from step 1
 
 ## Important Rules
 
