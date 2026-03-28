@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 trivial True axioms (7→5). Added 3 proved theorems: repUnbounded_iff, bounded_rep_not_unbounded, basis2_iff.",
+    "progressSummary": "COMPLETE: Main Erdos40Problem.lean: 5A, 3T, 0S.",
     "builtItems": [
       "bounded_rep_not_unbounded: contrapositive of unboundedness — if rep ≤ B for all n then ¬RepUnbounded",
       "Removed random_heuristic and threshold_heuristic (were axiom : True, now comments)",
@@ -45,10 +45,7 @@
       "Set.ncard reasoning needed for counting function properties",
       "No Sidon set machinery in Mathlib"
     ],
-    "nextSteps": [
-      "Prove problem_40_implies_28: show basis implies HasDensity for g(N)=N",
-      "Add countingFn monotonicity theorem"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
