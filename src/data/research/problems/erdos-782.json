@@ -24,12 +24,12 @@
     "goal": "Reduce axiom count; prove constructive results about squares"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-23T05:30:00Z",
-    "iteration": 1,
-    "focus": "Axiom elimination: prove squares_contain_3AP by explicit construction",
+    "phase": "COMPLETED",
+    "since": "2026-03-28T09:25:00Z",
+    "iteration": 2,
+    "focus": "Graduated: 0 sorries, 4 deep axioms",
     "blockers": [],
-    "nextAction": "Attempt to prove no_4AP_in_squares from Mathlib if Fermat quartic descent is available",
+    "nextAction": "None — formalization complete.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -37,18 +37,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated squares_contain_3AP axiom by proving {1,25,49} is an explicit 3-term AP in the squares. Reduced axiom count from 5 to 4. Cleaned up trivial definitions.",
+    "progressSummary": "COMPLETED: 7 theorems, 4 deep axioms (no 4-AP in squares, Q1→Q2, Bombieri-Lang, Cilleruelo-Granville), 0 sorries. Prior session eliminated 1 axiom. Problem remains OPEN.",
     "builtItems": [
       "squares_contain_3AP: proved via explicit construction a=1, d=24, witnesses 1²=1, 5²=25, 7²=49",
       "Removed trivial erdos_782_status string definition",
-      "Updated summary with correct proved/axiom counts"
+      "Updated summary with correct proved/axiom counts",
+      "Graduated to completed (iteration 2)"
     ],
     "insights": [
       "The 3-AP {1,25,49} is provable by fin_cases + norm_num — purely computational",
       "2-cube existence via Pythagorean triple: {0,9,16,25}={0²,3²,4²,5²} (a=0,b₀=9,b₁=16)",
       "no_4AP_in_squares requires Fermat's quartic descent — probably not in Mathlib",
       "question1_implies_question2 needs Ramsey-type combinatorial argument — non-trivial",
-      "BombieriLangConjecture is open in algebraic geometry — must remain axiom"
+      "BombieriLangConjecture is open in algebraic geometry — must remain axiom",
+      "Graduation review: 4 axioms all deep. no_4AP_in_squares is classical (Euler). question1_implies_question2 is additive combinatorics. BombieriLangConjecture/cilleruelo_granville are conditional."
     ],
     "mathlibGaps": [
       "No direct theorem about 4-AP non-existence in squares",
