@@ -56,7 +56,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Gram (1883) and Schmidt (1907) developed the orthogonalization process that bears their name. The process converts any basis into an orthogonal (or orthonormal) basis by iteratively subtracting projections. The projection operator relies on the inner product, and Cauchy-Schwarz provides the quantitative bound that ensures the process is well-conditioned.",
+    "historicalContext": "Jørgen Pedersen Gram (1883) introduced the orthogonalization procedure in his study of least-squares approximations to real functions, publishing in Crelle's Journal (*J. reine angew. Math.*). Erhard Schmidt (1907) independently rediscovered and generalized the method in his foundational work on integral equations (*Math. Ann.*), extending it to infinite-dimensional function spaces. The process converts any linearly independent set into an orthogonal set by iteratively subtracting projections, and it became a cornerstone of functional analysis and numerical linear algebra.\n\nThe connection to Cauchy-Schwarz is fundamental: the projection coefficient $\\langle v, u \\rangle / \\langle v, v \\rangle$ is bounded in absolute value by $\\|u\\|/\\|v\\|$, which is precisely the Cauchy-Schwarz inequality divided by $\\|v\\|^2$. This bound ensures numerical stability — the projection never amplifies norms. In practice, the classical Gram-Schmidt algorithm suffers from floating-point error accumulation, leading Åke Björck (1967) and others to develop the modified Gram-Schmidt variant with better numerical properties. Both variants rely on the same Cauchy-Schwarz projection bound at their core.",
     "problemStatement": "**Open Question**: Can the complex Gram-Schmidt process be formalized using this Cauchy-Schwarz bound as the key projection estimate?\n\n**Answer**: YES. The projection coefficient c = <v,u>/<v,v> has |c| <= ||u||/||v|| by Cauchy-Schwarz. This bounds the projection norm, ensures the residual norm does not increase, and provides the Pythagorean decomposition.",
     "text": "The Gram-Schmidt orthogonalization process uses orthogonal projection at each step. The projection coefficient is bounded by Cauchy-Schwarz, ensuring numerical stability. This formalization builds the one-step and multi-step Gram-Schmidt process from the inner product axioms.",
     "proofStrategy": "Build Gram-Schmidt from first principles: (1) define orthogonal projection, (2) prove Cauchy-Schwarz bounds the projection coefficient, (3) prove the residual is orthogonal (one-step GS), (4) prove Pythagoras for the decomposition, (5) extend to multi-step via list induction.",
@@ -156,6 +156,16 @@
       "targetId": "cauchy-schwarz",
       "relationship": "uses",
       "description": "The foundational Cauchy-Schwarz inequality that underlies the entire projection bound analysis."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral form of Cauchy-Schwarz. The Gram-Schmidt process in L² function spaces uses this form, as the inner product becomes an integral."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "Further extensions of Cauchy-Schwarz. The projection bound proved here is one of many applications of the base inequality."
     }
   ],
   "references": [
@@ -168,6 +178,16 @@
       "key": "Sc1907",
       "citation": "Schmidt, E., Zur Theorie der linearen und nichtlinearen Integralgleichungen, Math. Ann. 63 (1907), 433-476.",
       "type": "paper"
+    },
+    {
+      "key": "Bj1967",
+      "citation": "Björck, Å., Solving linear least squares problems by Gram-Schmidt orthogonalization, BIT Numerical Mathematics 7 (1967), 1-21.",
+      "type": "paper"
+    },
+    {
+      "key": "TB1997",
+      "citation": "Trefethen, L.N. and Bau, D., Numerical Linear Algebra, SIAM, 1997. Lecture 8: Gram-Schmidt orthogonalization.",
+      "type": "book"
     }
   ]
 }
