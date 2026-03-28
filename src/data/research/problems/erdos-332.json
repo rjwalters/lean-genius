@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 16 theorems, 3 deep axioms, 0 sorries. Complete D(A) characterization + bounded gaps properties. All structural results for the problem are in place.",
+    "progressSummary": "PROGRESS: 20 theorems, 3 deep axioms, 0 sorries. Complete D(A) characterization + density-finiteness connection + full implication chain. All provable structural results are now in place.",
     "builtItems": [
       "Assessment: all 3A appropriate and deep",
       "Proved diffSet_mono in Erdos332Problem.lean:102",
@@ -45,7 +45,11 @@
       "diffSet_union_subset: D(A)∪D(B) ⊆ D(A∪B)",
       "hasBoundedGaps_nonempty: syndetic sets are nonempty",
       "hasBoundedGaps_mono: bounded gaps is upward closed",
-      "infinite_of_diffSet_bounded_gaps: D(A) syndetic ⟹ A infinite"
+      "infinite_of_diffSet_bounded_gaps: D(A) syndetic ⟹ A infinite",
+      "countingFn_le in Erdos332Problem.lean",
+      "positive_upper_density_infinite in Erdos332Problem.lean",
+      "positive_upper_density_diffSet_nonempty in Erdos332Problem.lean",
+      "density_chain in Erdos332Problem.lean"
     ],
     "insights": [
       "3 axioms all deep: positive_density_bounded_gaps (Furstenberg), positive_density_diffset_dense (additive combinatorics), diffSet_harmonic_diverges. None provable from Mathlib.",
@@ -55,7 +59,10 @@
       "Proved lower_density_implies_upper: liminf > 0 → limsup > 0, connects density definitions",
       "Proved positive_lower_density_bounded_gaps: lower density suffices for bounded gaps (combines with Prikry axiom)",
       "D(A) characterization is now sharp: ∅ iff A finite, nonempty iff A infinite, syndetic if density positive",
-      "D(A) characterization is now complete: empty↔finite, nonempty↔infinite, syndetic↔positive density"
+      "D(A) characterization is now complete: empty↔finite, nonempty↔infinite, syndetic↔positive density",
+      "Proved positive_upper_density_infinite: positive upper density → A infinite via Archimedean contradiction on bounded countingFn",
+      "Completed full implication chain: density → infinite → D(A) nonempty → D(A) syndetic",
+      "Added countingFn_le: elementary bound countingFn A N ≤ N"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -82,8 +89,8 @@
     {
       "path": "Proofs/Erdos332Problem.lean",
       "filename": "Erdos332Problem.lean",
-      "lineCount": 215,
-      "theoremCount": 16,
+      "lineCount": 263,
+      "theoremCount": 20,
       "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
