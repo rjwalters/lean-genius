@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T04:11:10.512Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Infrastructure building: structural theorems for smooth components",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,15 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 1A deep, 10T, 0S.",
+    "progressSummary": "PROGRESS: Added 5 structural theorems (10→15T). Identity, corollaries, count bounds. 1A deep (unchanged).",
     "builtItems": [
-      "Assessment: 1A deep, well-developed file"
+      "Assessment: 1A deep, well-developed file",
+      "smoothComponent_prime_ge: clean corollary for primes ≥ t",
+      "smoothComponent_id_of_smooth: identity when all factors < t",
+      "smoothComponent_id_of_lt: identity when n < t (all factors trivially bounded)",
+      "smoothDistinctCount_pos: count ≥ 1 for non-empty intervals (t ≥ 1)",
+      "smoothDistinctCount_t_le_one: count ≤ 1 for trivial smoothness bound (t ≤ 1)"
     ],
     "insights": [
-      "1 axiom (erdos_graham_lower — deep). 10T, 0S. Clean."
+      "1 axiom (erdos_graham_lower — deep). 10T, 0S. Clean.",
+      "smoothComponent_id_of_lt via Nat.le_of_dvd: prime factor p ≤ n < t gives p < t",
+      "smoothDistinctCount bounded: 0 (t=0) ≤ count ≤ t, with count ≥ 1 for t ≥ 1 and count ≤ 1 for t ≤ 1",
+      "Next infrastructure: smoothComponent_mul (multiplicativity for coprime inputs) needs Nat.factors_mul perm lemma from Mathlib"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove smoothComponent_mul: multiplicativity for coprime inputs (needs List.Perm infrastructure for Nat.factors_mul)",
+      "erdos_graham_lower axiom is deep — stays as axiom"
+    ],
     "markdown": "# Erdős #461 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #460\n- Problem #462\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -54,15 +65,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-03-28T05:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos461Problem.lean",
       "filename": "Erdos461Problem.lean",
-      "lineCount": 208,
-      "theoremCount": 10,
+      "lineCount": 244,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,

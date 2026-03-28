@@ -129,6 +129,22 @@ axiom atherfold_upper_bound :
 theorem partialSum_zero (f : ℕ → ℤ) : partialSum f 0 = 0 := by
   simp [partialSum]
 
+/-- The partial sum at 1 is 0 (range 1 = {0}, filtered to ∅). -/
+theorem partialSum_one (f : ℕ → ℤ) : partialSum f 1 = 0 := by
+  simp [partialSum]
+
+/-- The partial sum at 2 equals f(1). -/
+theorem partialSum_two (f : ℕ → ℤ) : partialSum f 2 = f 1 := by
+  simp [partialSum, Finset.range_succ, Finset.filter_insert, Finset.sum_singleton]
+
+/-- Recursion: partialSum f (N+1) = partialSum f N + f N for N ≥ 1. -/
+theorem partialSum_succ (f : ℕ → ℤ) (N : ℕ) (hN : 1 ≤ N) :
+    partialSum f (N + 1) = partialSum f N + f N := by
+  simp only [partialSum, Finset.range_succ, Finset.filter_insert, show N ≥ 1 from hN,
+    ite_true]
+  rw [Finset.sum_insert (by simp [Finset.mem_filter, Finset.mem_range])]
+  ring
+
 /-- NOTE: A previous version stated that Atherfold's bound gives subpolynomial
     growth for ALL Rademacher multiplicative functions. This is FALSE:
     the constant function f ≡ 1 is Rademacher multiplicative (f(p) = 1 for

@@ -67,6 +67,18 @@ theorem collinear₃_perm12 (p q r : ℝ × ℝ) : collinear₃ p q r ↔ collin
 theorem collinear₃_self_left (p q : ℝ × ℝ) : collinear₃ p p q := by
   unfold collinear₃; ring
 
+/-- Collinearity under cyclic permutation of all three arguments. -/
+theorem collinear₃_cycle (p q r : ℝ × ℝ) : collinear₃ p q r ↔ collinear₃ q r p := by
+  rw [collinear₃_perm12, collinear₃_comm]
+
+/-- Any point is collinear with q and itself (degenerate triangle). -/
+theorem collinear₃_self_right (p q : ℝ × ℝ) : collinear₃ p q p := by
+  unfold collinear₃; ring
+
+/-- q is collinear with p and q (degenerate triangle). -/
+theorem collinear₃_self_mid (p q : ℝ × ℝ) : collinear₃ p q q := by
+  unfold collinear₃; ring
+
 /- ## Known Results -/
 
 /-- **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
@@ -114,6 +126,36 @@ theorem connection_101_for_same_c (c : ℝ) (hc : c > 0)
     by_contra hge
     push_neg at hge
     exact absurd (hN₀ P hsize hge) (by omega)⟩
+
+/-- **Proved**: The same-c connection extends to all ε ≥ c.
+    If h_c(n) → ∞, then for any ε ≥ c, configurations with max collinear ≤ 4
+    have < ε·n² rich lines (since c·n² ≤ ε·n²). -/
+theorem connection_101_for_larger_eps (c : ℝ) (hc : c > 0) (ε : ℝ) (hεc : c ≤ ε)
+    (hdiv : ∀ M : ℕ, ∃ N₀ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₀ → (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
+        maxCollinear P ≥ M) :
+    ∃ N₁ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₁ → maxCollinear P ≤ 4 →
+        (richLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2 := by
+  obtain ⟨N₁, hN₁⟩ := connection_101_for_same_c c hc hdiv
+  exact ⟨N₁, fun P hsize hmax =>
+    calc (richLineCount P : ℝ) < c * (P.points.card : ℝ) ^ 2 := hN₁ P hsize hmax
+      _ ≤ ε * (P.points.card : ℝ) ^ 2 := by nlinarith [sq_nonneg (P.points.card : ℝ)]⟩
+
+/-- **Key Insight (PROVED)**: The `connection_101` axiom (∀ε conclusion from single-c
+    divergence) is actually derivable from the FULL conjecture (divergence ∀c).
+    For any ε > 0, apply the full conjecture with c' = ε to get the bound.
+    This shows connection_101 is not an independent assumption. -/
+theorem connection_101_from_full_divergence
+    (hdiv_all : ∀ c : ℝ, c > 0 → ∀ M : ℕ, ∃ N₀ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₀ →
+      (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
+        maxCollinear P ≥ M) :
+    ∀ c : ℝ, c > 0 → ∀ ε > 0, ∃ N₁ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₁ → maxCollinear P ≤ 4 →
+        (richLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2 := by
+  intro c _ ε hε
+  exact connection_101_for_same_c ε hε (hdiv_all ε hε)
 
 /- ## Observations -/
 

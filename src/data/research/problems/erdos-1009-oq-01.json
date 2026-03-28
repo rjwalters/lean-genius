@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-24T00:48:59.901Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 8A all appropriate.",
+    "progressSummary": "PROGRESS: Added 5 structural theorems (1T→6T). Turán threshold properties + edge-disjoint symmetry. 8A unchanged.",
     "builtItems": [
-      "Assessment: 8A all appropriate (opaque function + deep results)"
+      "Assessment: 8A all appropriate (opaque function + deep results)",
+      "edgeDisjoint_comm: symmetry of edge-disjointness",
+      "turanThreshold_zero, turanThreshold_one: small value computations",
+      "turanThreshold_pos: positivity for n≥2",
+      "turanThreshold_mono: monotonicity of Turán threshold"
     ],
     "insights": [
-      "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate."
+      "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",
+      "turanThreshold is n²/4 rounded down — monotone, positive for n≥2, zero for n≤1",
+      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -59,15 +65,15 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.901Z",
-  "lastUpdate": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-28T05:55:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1009Problem.lean",
       "filename": "Erdos1009Problem.lean",
-      "lineCount": 195,
-      "theoremCount": 1,
+      "lineCount": 216,
+      "theoremCount": 6,
       "axiomCount": 8,
       "defCount": 9,
       "sorryCount": 0,

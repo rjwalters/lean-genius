@@ -16,24 +16,51 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-14T21:21:40.197Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Structural theorems and Mathlib bridge identification",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Build graph-hypergraph bridge for r=2 to prove turan_graph axiom",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: 11 proved theorems (0 sorries). Key results: clique cardinality via powersetCard, decomposition piece bound, universal edge bound C(n,r), and cliqueFree_le_turan connecting IsCliqueFree to turanHypergraph sSup. Next: bridge to Mathlib SimpleGraph for turan_graph axiom elimination.",
+    "builtItems": [
+      "completeClique_eq_powersetCard: bridge to Mathlib powersetCard",
+      "completeClique_card: |completeClique r S| = C(|S|, r)",
+      "fullClique_edge_count: K_{r+1}^r has r+1 edges",
+      "completeClique_mono: monotonicity in vertex set",
+      "decomp_piece_card_le: piece cardinality bound",
+      "completeClique_subset: edges are subsets of vertex set",
+      "completeClique_uniform: edges have exactly r elements",
+      "piecesEdgeDisjoint_comm: symmetry of edge-disjointness",
+      "edges_le_choose: universal edge count bound C(n,r)",
+      "cliqueFree_edgeCounts_bddAbove: BddAbove for the Turán sSup",
+      "cliqueFree_le_turan: clique-free → edges ≤ turanHypergraph n r"
+    ],
+    "insights": [
+      "completeClique r S equals Finset.powersetCard r S — bridges to Mathlib combinatorial API",
+      "Each decomposition piece has at most r+1 edges (single edges: 1, full cliques: r+1)",
+      "Mathlib has full Turán theorem (SimpleGraph.Extremal.Turan) but bridging RUniformHypergraph to SimpleGraph for r=2 is non-trivial",
+      "turan_graph axiom could be proved by building RUniformHypergraph-to-SimpleGraph bridge and using card_edgeFinset_turanGraph",
+      "edges_le_choose: any r-uniform hypergraph on Fin n has ≤ C(n,r) edges, since edges ⊆ univ.powersetCard r",
+      "cliqueFree_le_turan: fundamental Turán bound from sSup definition, using BddAbove + le_csSup on ℕ",
+      "ℕ has ConditionallyCompleteLinearOrderBot, so sSup and le_csSup work for the Turán number definition"
+    ],
+    "mathlibGaps": [
+      "No Mathlib API for r-uniform hypergraphs (only SimpleGraph)",
+      "SimpleGraph.Extremal.Turan has card_edgeFinset_turanGraph but needs bridge to RUniformHypergraph"
+    ],
+    "nextSteps": [
+      "Build RUniformHypergraph-to-SimpleGraph bridge for r=2 to prove turan_graph axiom",
+      "Create Aristotle companion file for routine supporting lemmas",
+      "Prove that valid decompositions have total edge count equal to H.edges.card"
+    ],
     "markdown": "# Erdős #719 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathrm{ex}_r(n;K_{r+1}^r)$ be the maximum number of $r$-edges that can be placed on $n$ vertices without forming a $K_{r+1}^r$ (the $r$-uniform complete graph on $r+1$ vertices).\n\nIs every $r$-hypergraph $G$ on $n$ vertices the union of at most $\\mathrm{ex}_{r}(n;K_{r+1}^r)$ many copies of $K_r^r$ and $K_{r+1}^r$, no two of which share a $K_r^r$?\n\n\n\nA conjecture of Erd\\H{o}s and Sauer.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #718\n- Problem #720\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -50,15 +77,15 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:21:40.197Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-27T01:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos719Problem.lean",
       "filename": "Erdos719Problem.lean",
-      "lineCount": 196,
-      "theoremCount": 4,
+      "lineCount": 290,
+      "theoremCount": 15,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
