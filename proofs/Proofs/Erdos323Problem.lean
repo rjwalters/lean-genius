@@ -17,6 +17,10 @@ Erdős and Graham described this as "unattackable by the methods at our
 disposal."
 
 Reference: https://erdosproblems.com/323
+
+Axioms: 1 (landau_two_squares)
+Proved: 4 theorems (isSumOfPowers_one, first_power_count, isSumOfPowers_succ, power_sum_count_mono)
+Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -36,14 +40,38 @@ noncomputable def powerSumCount (k m x : ℕ) : ℕ :=
 
 /- ## Basic properties -/
 
-/-- Every nonneg integer is a sum of itself many 1st powers: f_{1,m} grows
-    linearly for m large enough. -/
-axiom first_power_count (m x : ℕ) (hm : 1 ≤ m) (hx : m ≤ x) :
-    m ≤ powerSumCount 1 m x
+/-- Every nonneg integer is a sum of m first powers (k=1): n = n + 0 + ··· + 0. -/
+theorem isSumOfPowers_one (n m : ℕ) (hm : 1 ≤ m) : IsSumOfPowers n 1 m := by
+  use fun i => if i = ⟨0, by omega⟩ then n else 0
+  simp [pow_one, Finset.sum_ite_eq', Finset.mem_univ]
+
+/-- f_{1,m}(x) ≥ m for x ≥ m: every integer is a sum of m 1st powers. -/
+theorem first_power_count (m x : ℕ) (hm : 1 ≤ m) (hx : m ≤ x) :
+    m ≤ powerSumCount 1 m x := by
+  have h_full : powerSumCount 1 m x = x + 1 := by
+    unfold powerSumCount
+    rw [Finset.filter_true_of_mem (fun n _ => isSumOfPowers_one n m hm)]
+    exact Finset.card_range (x + 1)
+  omega
+
+/-- If n is a sum of m k-th powers, it is also a sum of (m+1) k-th powers
+    (append a 0^k = 0 term). -/
+theorem isSumOfPowers_succ {n k m : ℕ} (h : IsSumOfPowers n k m) :
+    IsSumOfPowers n k (m + 1) := by
+  obtain ⟨xs, hxs⟩ := h
+  use Fin.snoc xs 0
+  rw [hxs]
+  rw [Fin.sum_univ_snoc]
+  simp [Fin.snoc_last, Fin.snoc_castSucc]
 
 /-- Monotonicity: f_{k,m}(x) ≤ f_{k,m+1}(x). -/
-axiom power_sum_count_mono (k m x : ℕ) :
-    powerSumCount k m x ≤ powerSumCount k (m + 1) x
+theorem power_sum_count_mono (k m x : ℕ) :
+    powerSumCount k m x ≤ powerSumCount k (m + 1) x := by
+  unfold powerSumCount
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro n hn
+  exact isSumOfPowers_succ hn
 
 /- ## Landau's theorem for sums of two squares -/
 
