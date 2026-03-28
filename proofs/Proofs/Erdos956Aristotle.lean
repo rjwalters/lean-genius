@@ -48,17 +48,19 @@ theorem translate_compact (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanS
 -- Routine: Translation preserves nonemptiness
 theorem translate_nonempty (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))
     (hC : C.Nonempty) : (translate C x).Nonempty := by
-  sorry
+  obtain ⟨c, hc⟩ := hC
+  exact ⟨c + x, ⟨c, hc, rfl⟩⟩
 
--- Routine: Distance between translated sets equals distance between translation vectors
--- when sets are singletons
+-- Routine: Distance between singletons equals point distance
 theorem setDistance_singletons {X : Type*} [PseudoMetricSpace X] (a b : X) :
     setDistance {a} {b} = dist a b := by
-  sorry
+  simp [setDistance]
+  rw [show { x | ∃ c ∈ ({a} : Set X), ∃ d ∈ ({b} : Set X), x = dist c d } = {dist a b}
+    from by ext; simp]
+  exact csInf_singleton _
 
 -- Routine: The general convex set exponent 7/5 exceeds the translate exponent 4/3
-theorem general_exponent_larger : (7 : ℝ) / 5 > 4 / 3 := by
-  sorry
+theorem general_exponent_larger : (7 : ℝ) / 5 > 4 / 3 := by norm_num
 
 -- Routine: For large n, n^(4/3) > n * log n / log log n
 theorem power_dominates_log_ratio (n : ℕ) (hn : n ≥ 100) :

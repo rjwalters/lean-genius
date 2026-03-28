@@ -1,0 +1,85 @@
+{
+  "slug": "hilbert-20-oq-01",
+  "title": "hilbert-20-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T06:54:31-07:00",
+    "iteration": 2,
+    "focus": "Formalized problem and stated characterization",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized Nirenberg-Treves characterization of locally solvable operators.",
+    "builtItems": [
+      "Hilbert20LocalSolvability.lean: formalization (181 lines)",
+      "Defs: LinearPDO, principalSymbol, IsPrincipalType, ConditionPsi, IsElliptic",
+      "Main theorem: nirenberg_treves_characterization (iff)",
+      "Corollary: elliptic_locally_solvable",
+      "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json"
+    ],
+    "insights": [
+      "Local solvability = distribution solution exists for every smooth RHS",
+      "Condition (\u03a8): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (\u03a8) iff locally solvable for principal type",
+      "Elliptic operators satisfy (\u03a8) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (\u03a8) trivially - Im = 0",
+      "Full proof requires microlocal analysis not in Mathlib"
+    ],
+    "mathlibGaps": [
+      "No distribution theory in Mathlib",
+      "No microlocal analysis",
+      "No pseudodifferential operators",
+      "No Hamilton flow on cotangent bundles"
+    ],
+    "nextSteps": [
+      "Build distribution theory infrastructure in Mathlib",
+      "Formalize Hamilton flow and bicharacteristic curves",
+      "Prove real_symbol_satisfies_psi (remove the 1 sorry)"
+    ],
+    "markdown": "# Knowledge Base: hilbert-20-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "hilbert-20"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T14:26:43.165Z",
+  "lastUpdate": "2026-03-28T14:26:43.174Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert20BoundaryValue.lean",
+      "filename": "Hilbert20BoundaryValue.lean",
+      "lineCount": 245,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20BoundaryValue.lean"
+    }
+  ]
+}

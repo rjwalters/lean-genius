@@ -115,9 +115,6 @@ theorem two_lt_omega : (2 : Ordinal) < omegaOrd := by
 
 /- ## Part VI: Monotonicity -/
 
-axiom partition_mono_source (α α' β γ : Ordinal.{0}) (h : α ≤ α')
-    (hp : OrdPartitionRel α β γ) : OrdPartitionRel α' β γ
-
 axiom partition_mono_target (α β γ β' γ' : Ordinal.{0}) (hβ : β' ≤ β) (hγ : γ' ≤ γ)
     (hp : OrdPartitionRel α β γ) : OrdPartitionRel α β' γ'
 
@@ -126,11 +123,6 @@ axiom partition_mono_target (α β γ β' γ' : Ordinal.{0}) (hβ : β' ≤ β) 
 /-- **Erdős-Dushnik-Miller Theorem** (1941): λ → (λ, ω)² for infinite λ. -/
 axiom erdos_dushnik_miller (lam : Ordinal.{0}) (hlam : ω ≤ lam) :
     OrdPartitionRel lam lam ω
-
-/-- **Erdős-Rado strengthening**: κ → (κ, ω + 1)² for regular uncountable κ. -/
-axiom erdos_rado_regular (kap : Ordinal.{0})
-    (hkap : ω < kap) (hreg : kap.cof = kap.card) :
-    OrdPartitionRel kap kap (ω + 1)
 
 /- ## Part VIII: Proved Theorems -/
 
@@ -170,13 +162,7 @@ theorem q2_weakened_first
   partition_mono_target omega3 (omega2 + omega1) (omega2 + omegaOrd) omega2
     (omega2 + omegaOrd) le_self_add (le_refl _) h
 
-/- ## Part IX: Stepping-Up Lemma -/
-
-axiom stepping_up_negative (kap alpha beta : Ordinal.{0})
-    (h : ¬ OrdPartitionRel kap alpha beta) :
-    ∃ alpha' beta', ¬ OrdPartitionRel (kap + 1) alpha' beta'
-
-/- ## Part X: Independence Results -/
+/- ## Part IX: Independence Results -/
 
 /-- **Todorcevic (1989)**: Under b = ω₁, ω₁ ↛ (ω₁, ω + 2)². -/
 axiom todorcevic_negative :
@@ -192,7 +178,7 @@ theorem partition_independence :
     ¬ OrdPartitionRel omega1 omega1 (omegaOrd + 2) :=
   ⟨pfa_positive, todorcevic_negative⟩
 
-/- ## Part XI: Summary -/
+/- ## Part X: Summary -/
 
 def erdos_1172_all_questions : Prop :=
   question1 ∧ question2 ∧ question3 ∧ question4
