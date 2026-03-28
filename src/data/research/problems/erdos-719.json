@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 11 proved theorems (0 sorries). Key results: clique cardinality via powersetCard, decomposition piece bound, universal edge bound C(n,r), and cliqueFree_le_turan connecting IsCliqueFree to turanHypergraph sSup. Next: bridge to Mathlib SimpleGraph for turan_graph axiom elimination.",
+    "progressSummary": "PROGRESS: 20 theorems, 2 axioms, 3 sorries. Complete axiom elimination roadmap: bipartite construction + clique-free + edge count + upper bound = turan_graph axiom proved. Three targeted sorries remain.",
     "builtItems": [
       "completeClique_eq_powersetCard: bridge to Mathlib powersetCard",
       "completeClique_card: |completeClique r S| = C(|S|, r)",
@@ -41,7 +41,11 @@
       "piecesEdgeDisjoint_comm: symmetry of edge-disjointness",
       "edges_le_choose: universal edge count bound C(n,r)",
       "cliqueFree_edgeCounts_bddAbove: BddAbove for the Turán sSup",
-      "cliqueFree_le_turan: clique-free → edges ≤ turanHypergraph n r"
+      "cliqueFree_le_turan: clique-free → edges ≤ turanHypergraph n r",
+      "completeBipartiteHypergraph: bipartite K_{n/2,n/2} as RUniformHypergraph",
+      "turanHypergraph_graph_ge: lower bound n²/4 ≤ turanHypergraph n 2 (sorry-backed)",
+      "turanHypergraph_graph_le: upper bound stub (sorry)",
+      "turan_graph_proved: clean path to replace turan_graph axiom"
     ],
     "insights": [
       "completeClique r S equals Finset.powersetCard r S — bridges to Mathlib combinatorial API",
@@ -50,7 +54,10 @@
       "turan_graph axiom could be proved by building RUniformHypergraph-to-SimpleGraph bridge and using card_edgeFinset_turanGraph",
       "edges_le_choose: any r-uniform hypergraph on Fin n has ≤ C(n,r) edges, since edges ⊆ univ.powersetCard r",
       "cliqueFree_le_turan: fundamental Turán bound from sSup definition, using BddAbove + le_csSup on ℕ",
-      "ℕ has ConditionallyCompleteLinearOrderBot, so sSup and le_csSup work for the Turán number definition"
+      "ℕ has ConditionallyCompleteLinearOrderBot, so sSup and le_csSup work for the Turán number definition",
+      "completeBipartiteHypergraph: direct construction of K_{n/2,n/2} as RUniformHypergraph using parity filter on powersetCard 2",
+      "turanHypergraph_graph_ge follows immediately from cliqueFree_le_turan + bipartite construction",
+      "Three sorries needed for full axiom elimination: (1) bipartite clique-free (pigeonhole), (2) bipartite edge count, (3) upper bound (needs SimpleGraph bridge)"
     ],
     "mathlibGaps": [
       "No Mathlib API for r-uniform hypergraphs (only SimpleGraph)",
@@ -77,18 +84,18 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:21:40.197Z",
-  "lastUpdate": "2026-03-27T01:00:00.000Z",
+  "lastUpdate": "2026-03-27T02:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos719Problem.lean",
       "filename": "Erdos719Problem.lean",
-      "lineCount": 290,
-      "theoremCount": 15,
+      "lineCount": 344,
+      "theoremCount": 20,
       "axiomCount": 2,
       "defCount": 7,
-      "sorryCount": 0,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos719Problem.lean"
     }

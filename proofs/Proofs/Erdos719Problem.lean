@@ -288,3 +288,57 @@ theorem trivial_decomp_exists (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
     - #718: Lower bounds on Turán numbers for hypergraphs
     - #720: Turán densities for higher uniformity
     - #83: Triangle decomposition problems for dense graphs -/
+
+-- ## Turán's Theorem for Graphs — Axiom Elimination Path
+-- Goal: prove `turanHypergraph n 2 = n ^ 2 / 4` to replace the `turan_graph` axiom.
+-- Strategy: construct the bipartite hypergraph, prove clique-free, count edges.
+
+/-- The complete bipartite hypergraph on Fin n: edges are 2-element subsets
+    {v, w} where v and w have different parity (v % 2 ≠ w % 2).
+    This is the hypergraph analogue of Mathlib's `turanGraph n 2`. -/
+def completeBipartiteHypergraph (n : ℕ) : RUniformHypergraph (Fin n) 2 where
+  edges := ((Finset.univ : Finset (Fin n)).powersetCard 2).filter
+    (fun e => ∃ v ∈ e, ∃ w ∈ e, v ≠ w ∧ (v : ℕ) % 2 ≠ (w : ℕ) % 2)
+  uniform := by
+    intro e he
+    simp only [Finset.mem_filter, Finset.mem_powersetCard] at he
+    exact he.1.2
+
+/-- The complete bipartite hypergraph is triangle-free (K₃²-free).
+    Proof sketch: Among 3 vertices, two share parity mod 2 (pigeonhole).
+    Their pair is not a bipartite edge, contradicting coverage. -/
+theorem completeBipartiteHypergraph_cliqueFree (n : ℕ) :
+    IsCliqueFree 2 (completeBipartiteHypergraph n) := by
+  intro S hS hcontain
+  -- S has 3 elements. The map (· : Fin n).val % 2 : S → {0, 1} is not injective.
+  -- Two vertices v, w ∈ S satisfy v % 2 = w % 2.
+  -- The edge {v, w} ∈ completeClique 2 S, so {v, w} ∈ (completeBipartiteHypergraph n).edges.
+  -- But bipartite edges require v % 2 ≠ w % 2: contradiction.
+  sorry
+
+/-- The complete bipartite hypergraph has ⌊n²/4⌋ edges.
+    This equals ⌊n/2⌋ * ⌈n/2⌉ = ⌊n/2⌋ * (n - ⌊n/2⌋). -/
+theorem completeBipartiteHypergraph_card (n : ℕ) :
+    (completeBipartiteHypergraph n).edges.card = n ^ 2 / 4 := by
+  sorry
+
+/-- Lower bound on the graph Turán number: turanHypergraph n 2 ≥ ⌊n²/4⌋.
+    Follows from cliqueFree_le_turan applied to the bipartite construction. -/
+theorem turanHypergraph_graph_ge (n : ℕ) :
+    n ^ 2 / 4 ≤ turanHypergraph n 2 := by
+  rw [← completeBipartiteHypergraph_card n]
+  exact cliqueFree_le_turan n 2 _ (completeBipartiteHypergraph_cliqueFree n)
+
+/-- Upper bound on the graph Turán number: turanHypergraph n 2 ≤ ⌊n²/4⌋.
+    This is the hard direction of Turán's theorem for graphs.
+    Can be proved via bridge to Mathlib's SimpleGraph.CliqueFree.card_edgeFinset_le
+    (import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan). -/
+theorem turanHypergraph_graph_le (n : ℕ) :
+    turanHypergraph n 2 ≤ n ^ 2 / 4 := by
+  sorry
+
+/-- **Turán's theorem for graphs**: the 2-uniform Turán number equals ⌊n²/4⌋.
+    Once the three sorries above are resolved, this replaces the `turan_graph` axiom. -/
+theorem turan_graph_proved (n : ℕ) :
+    turanHypergraph n 2 = n ^ 2 / 4 :=
+  le_antisymm (turanHypergraph_graph_le n) (turanHypergraph_graph_ge n)
