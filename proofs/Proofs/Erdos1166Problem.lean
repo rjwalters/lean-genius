@@ -16,9 +16,13 @@
 --
 -- Status: PROVED
 -- Axioms: 7 declarations + 1 structure field = 8 (down from 12)
+-- Sorries: 1 (cumulative_card_bound — nesting counting argument)
 -- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
 --   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
 --   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence)
+-- New: maxVisitCount_mono_succ, maxVisitCount_le_of_le, mostVisited_nesting,
+--   mostVisited_nesting_range, biUnion_subset_last_of_constant_T,
+--   mostVisited_subset_trajectory, erdos1166_from_ingredients (restructured)
 -- Reference: erdosproblems.com/1166, Erdős–Révész [Va99, 6.78]
 
 import Mathlib
@@ -105,6 +109,22 @@ theorem maxVisitCount_pos (ω : RandomWalk) (k : ℕ) :
   have hm := visitCount_mono ω 0 k origin (Nat.zero_le k)
   omega
 
+/-- T_k is non-decreasing: maxVisitCount at step k ≤ maxVisitCount at step k+1. -/
+theorem maxVisitCount_mono_succ (ω : RandomWalk) (k : ℕ) :
+    maxVisitCount ω k ≤ maxVisitCount ω (k + 1) := by
+  obtain ⟨x, hx⟩ := maxVisitCount_achieved ω k
+  calc maxVisitCount ω k = visitCount ω k x := hx.symm
+    _ ≤ visitCount ω (k + 1) x := visitCount_mono ω k (k + 1) x (Nat.le_succ k)
+    _ ≤ maxVisitCount ω (k + 1) := maxVisitCount_is_max ω (k + 1) x
+
+/-- T is monotone: a ≤ b → T_a ≤ T_b. -/
+theorem maxVisitCount_le_of_le (ω : RandomWalk) {a b : ℕ} (h : a ≤ b) :
+    maxVisitCount ω a ≤ maxVisitCount ω b := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
+  induction d with
+  | zero => exact le_rfl
+  | succ n ih => exact le_trans ih (maxVisitCount_mono_succ ω (a + n))
+
 -- ## Set of Most-Visited Points
 
 /-- F(k, ω): the set of visited points achieving the maximum visit count.
@@ -135,6 +155,34 @@ theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
   obtain ⟨x, hx⟩ := maxVisitCount_achieved ω k
   exact ⟨x, (mem_mostVisitedSet ω k x).mpr hx⟩
 
+/-- If T_k = T_{k+1}, then F(k) ⊆ F(k+1). When the maximum visit count
+    doesn't change, all previous maximizers remain maximizers. -/
+theorem mostVisited_nesting (ω : RandomWalk) (k : ℕ)
+    (hT : maxVisitCount ω k = maxVisitCount ω (k + 1)) :
+    mostVisitedSet ω k ⊆ mostVisitedSet ω (k + 1) := by
+  intro x hx
+  rw [mem_mostVisitedSet] at hx ⊢
+  have h1 := maxVisitCount_is_max ω (k + 1) x
+  have h2 := visitCount_mono ω k (k + 1) x (Nat.le_succ k)
+  omega
+
+/-- If T is constant on [a, b], then F(a) ⊆ F(b). -/
+theorem mostVisited_nesting_range (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
+    (hT : maxVisitCount ω a = maxVisitCount ω b) :
+    mostVisitedSet ω a ⊆ mostVisitedSet ω b := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hab
+  induction d with
+  | zero => exact Subset.rfl
+  | succ n ih =>
+    have hTn : maxVisitCount ω a = maxVisitCount ω (a + n) := by
+      apply le_antisymm (maxVisitCount_le_of_le ω (Nat.le_add_right a n))
+      have := maxVisitCount_le_of_le ω (show a + n ≤ a + (n + 1) by omega)
+      omega
+    exact Subset.trans (ih hTn) (mostVisited_nesting ω (a + n) (by
+      apply le_antisymm (maxVisitCount_mono_succ ω (a + n))
+      have := maxVisitCount_le_of_le ω (show a ≤ a + n by omega)
+      omega))
+
 -- ## Cumulative Most-Visited Points
 
 /-- The cumulative set of most-visited points through step n:
@@ -162,6 +210,48 @@ theorem cumulativeMostVisited_mono (ω : RandomWalk) (m n : ℕ) (h : m ≤ n) :
   intro x hx
   obtain ⟨k, hk, hkx⟩ := cumulativeMostVisited_subset ω m x hx
   exact cumulativeMostVisited_contains ω n k (le_trans hk h) hkx
+
+-- ## Nesting-Based Cumulative Bounds
+
+/-- When T is constant on [a, b], the biUnion of F(k) is contained in F(b).
+    This is key: within a "regime" where the max visit count doesn't change,
+    the F sets are nested, so their union equals the last one. -/
+theorem biUnion_subset_last_of_constant_T (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
+    (hT : maxVisitCount ω a = maxVisitCount ω b) :
+    (Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω) ⊆ mostVisitedSet ω b := by
+  intro x hx
+  obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
+  have hak : a ≤ k := (Finset.mem_Ico.mp hk).1
+  have hkb : k ≤ b := by omega
+  have hTk : maxVisitCount ω k = maxVisitCount ω b := by
+    apply le_antisymm (maxVisitCount_le_of_le ω hkb)
+    calc maxVisitCount ω b = maxVisitCount ω a := hT.symm
+      _ ≤ maxVisitCount ω k := maxVisitCount_le_of_le ω hak
+  exact mostVisited_nesting_range ω k b hkb hTk hxk
+
+/-- Every point in mostVisitedSet ω k is a visited point (in the trajectory image). -/
+theorem mostVisited_subset_trajectory (ω : RandomWalk) (k : ℕ) :
+    mostVisitedSet ω k ⊆ (Finset.range (k + 1)).image ω.trajectory := by
+  intro x hx
+  exact (Finset.mem_filter.mp (by unfold mostVisitedSet at hx; exact hx)).1
+
+/-- Counting bound (nesting argument): when |F(k)| ≤ 3 throughout [a, b],
+    the cumulative set has card ≤ 3 * (T_b - T_a + 1).
+
+    Proof sketch: Group steps by T-value. Within each constant-T interval,
+    F sets are nested (by mostVisited_nesting), so the union equals the last F.
+    Each group contributes ≤ 3 points. The number of groups ≤ T_b - T_a + 1.
+
+    This is the core of the Erdős #1166 counting argument. -/
+theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
+    (hcard : ∀ k, a ≤ k → k ≤ b → (mostVisitedSet ω k).card ≤ 3) :
+    ((Finset.Ico a (b + 1)).biUnion (mostVisitedSet ω)).card ≤
+      3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by
+  -- Strong induction on T_b - T_a.
+  -- Base (T constant): biUnion ⊆ F(b) by nesting, card ≤ 3 = 3*(0+1).
+  -- Step (T increases): split at last T-increase c. [a,c] by IH, [c+1,b] constant.
+  -- Total ≤ 3*(T_c-T_a+1) + 3 ≤ 3*(T_b-T_a+1) since T_c+1 ≤ T_b.
+  sorry
 
 -- ## Almost Sure Events
 
@@ -261,7 +351,73 @@ theorem erdos1166_from_ingredients :
   have h12 := almostSurely_and h1 h2
   apply almostSurely_mono _ h12
   intro ω ⟨⟨N₁, hN₁⟩, C, hC, N₂, hN₂⟩
-  exact ⟨3 * C, by positivity, max N₁ N₂, fun n hn => by sorry⟩
+  -- Strategy: split cumulative set into early (k < N₁) and late (k ≥ N₁) parts.
+  -- Early: ≤ N₁ points (all visited points before step N₁).
+  -- Late: ≤ 3*(T_n - T_{N₁} + 1) ≤ 3*(T_n + 1) by nesting (cumulative_card_bound).
+  -- Total ≤ N₁ + 3*T_n + 3 ≤ N₁ + 3*C*(log n)² + 3.
+  -- Choose threshold large enough that N₁ + 3 ≤ (log n)², giving total ≤ (3*C+1)*(log n)².
+  let N₃ := Nat.ceil (Real.exp (↑N₁ + 4)) + 1
+  refine ⟨3 * C + 1, by linarith, max (max N₁ N₂) N₃, fun n hn => ?_⟩
+  have hN₁n : N₁ ≤ n := le_trans (le_max_left _ _) (le_trans (le_max_left _ _) hn)
+  have hN₂n : N₂ ≤ n := le_trans (le_max_right _ _) (le_trans (le_max_left _ _) hn)
+  have hN₃n : N₃ ≤ n := le_trans (le_max_right _ _) hn
+  -- T_n is bounded by C * (log n)²
+  have hTn : (maxVisitCount ω n : ℝ) ≤ C * (Real.log ↑n) ^ 2 := hN₂ n hN₂n
+  -- n > exp(N₁ + 4), so log n > N₁ + 4, so (log n)² > (N₁ + 4)² ≥ N₁ + 3
+  have hn_large : (Real.exp (↑N₁ + 4) : ℝ) < ↑n := by
+    calc Real.exp (↑N₁ + 4) ≤ ↑(Nat.ceil (Real.exp (↑N₁ + 4))) := Nat.le_ceil _
+      _ < ↑(Nat.ceil (Real.exp (↑N₁ + 4)) + 1) := by exact_mod_cast Nat.lt_succ_of_le le_rfl
+      _ ≤ (n : ℝ) := by exact_mod_cast hN₃n
+  have hlog_large : (↑N₁ + 4 : ℝ) < Real.log ↑n := by
+    rw [← Real.log_exp (↑N₁ + 4)]
+    exact Real.log_lt_log (Real.exp_pos _) hn_large
+  have hlog_pos : (0 : ℝ) < Real.log ↑n := by linarith
+  -- (log n)² ≥ N₁ + 4 > N₁ + 3
+  have hlog_sq_ge : (↑N₁ + 3 : ℝ) ≤ (Real.log ↑n) ^ 2 := by
+    have h1 : (1 : ℝ) ≤ ↑N₁ + 4 := by positivity
+    nlinarith [sq_nonneg (Real.log (↑n : ℝ) - 1)]
+  -- The cumulative set card bound (combines early + late parts)
+  -- This is the key step using the nesting argument infrastructure
+  have hcard_bound : ((cumulativeMostVisited ω n).card : ℝ) ≤
+      ↑N₁ + 3 * ↑(maxVisitCount ω n) + 3 := by
+    -- Suffices to prove in ℕ: card ≤ N₁ + 3*(T_n + 1)
+    suffices hnat : (cumulativeMostVisited ω n).card ≤ N₁ + 3 * (maxVisitCount ω n + 1) by
+      push_cast [Nat.cast_le] at hnat ⊢; linarith
+    -- Split range(n+1) = range(N₁) ∪ Ico(N₁, n+1)
+    have hrange : Finset.range (n + 1) = Finset.range N₁ ∪ Finset.Ico N₁ (n + 1) := by
+      rw [Finset.range_eq_Ico, Finset.range_eq_Ico]
+      exact (Finset.Ico_union_Ico_eq_Ico (Nat.zero_le N₁) (by omega)).symm
+    unfold cumulativeMostVisited
+    rw [hrange, Finset.biUnion_union]
+    -- Card of union ≤ sum of cards
+    calc ((Finset.range N₁).biUnion (mostVisitedSet ω) ∪
+            (Finset.Ico N₁ (n + 1)).biUnion (mostVisitedSet ω)).card
+        ≤ ((Finset.range N₁).biUnion (mostVisitedSet ω)).card +
+          ((Finset.Ico N₁ (n + 1)).biUnion (mostVisitedSet ω)).card :=
+          Finset.card_union_le _ _
+      _ ≤ N₁ + 3 * (maxVisitCount ω n - maxVisitCount ω N₁ + 1) := by
+          apply Nat.add_le_add
+          -- Early: every point in F(k) for k < N₁ is trajectory(j) for some j < N₁
+          · calc ((Finset.range N₁).biUnion (mostVisitedSet ω)).card
+                ≤ ((Finset.range N₁).image ω.trajectory).card := by
+                  apply Finset.card_le_card; intro x hx
+                  obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
+                  have hxv := mostVisited_subset_trajectory ω k hxk
+                  obtain ⟨j, hj, hjx⟩ := Finset.mem_image.mp hxv
+                  exact Finset.mem_image.mpr ⟨j, Finset.mem_range.mpr (by omega), hjx⟩
+              _ ≤ (Finset.range N₁).card := Finset.card_image_le
+              _ = N₁ := Finset.card_range N₁
+          -- Late: by cumulative_card_bound (nesting argument)
+          · exact cumulative_card_bound ω N₁ n hN₁n (fun k hak hkn => hN₁ k hak)
+      _ ≤ N₁ + 3 * (maxVisitCount ω n + 1) := by
+          apply Nat.add_le_add_left; apply Nat.mul_le_mul_left; omega
+  -- Final assembly: N₁ + 3*T_n + 3 ≤ (3*C+1)*(log n)²
+  calc ((cumulativeMostVisited ω n).card : ℝ)
+      ≤ ↑N₁ + 3 * ↑(maxVisitCount ω n) + 3 := hcard_bound
+    _ ≤ ↑N₁ + 3 * (C * (Real.log ↑n) ^ 2) + 3 := by linarith [hTn]
+    _ = (↑N₁ + 3) + 3 * C * (Real.log ↑n) ^ 2 := by ring
+    _ ≤ (Real.log ↑n) ^ 2 + 3 * C * (Real.log ↑n) ^ 2 := by linarith [hlog_sq_ge]
+    _ = (3 * C + 1) * (Real.log ↑n) ^ 2 := by ring
 
 -- ## Connection to Erdős Problem #1165
 
