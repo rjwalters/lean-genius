@@ -93,9 +93,6 @@ theorem legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
   rw [h1]
   exact Finset.sum_congr rfl fun k _ => by rw [add_comm]
 
-axiom padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
-    Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1)))
-
 /- ## Part V: Structure of Factorial Sums -/
 
 /-- For a₁ ≤ a₂, a₁! + a₂! = a₁! * (1 + a₂!/a₁!) since a₁! | a₂!. -/

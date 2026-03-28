@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4A (deep results — Lin 1976, padic asymptotics), 2T proved, 0S.",
+    "progressSummary": "COMPLETE: 2A (lin_bound used, lin_bound_meaning used), 0S.",
     "builtItems": [
       "Proved lin_bound from lin_bound_meaning via csSup_le (axiom eliminated)"
     ],
@@ -39,7 +39,8 @@
       "padic_val_factorial_asymp needs real analysis: sum 1/p^i = 1/(p-1) via geometric series + Legendre",
       "factorial_sum_factored already proved — clean factoring via factorial divisibility",
       "native_decide examples verify small cases nicely",
-      "Well-structured file with good definitions (StrictIncSeq, factorialSum, divisiblePowers)"
+      "Well-structured file with good definitions (StrictIncSeq, factorialSum, divisiblePowers)",
+      "padic_val_factorial_asymp axiom unused — removed (3→2A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,9 +67,9 @@
     {
       "path": "Proofs/Erdos404Problem.lean",
       "filename": "Erdos404Problem.lean",
-      "lineCount": 117,
-      "theoremCount": 3,
-      "axiomCount": 3,
+      "lineCount": 97,
+      "theoremCount": 2,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
