@@ -167,12 +167,13 @@ def goodSetDensity (F : SetFamily α) : ℚ :=
 -- SECTION V: The Main Conjecture and Solution
 -- ============================================================
 
-/-- **Erdős Problem #1027 (Conjecture)**: For every c > 0, there exists
-    δ = δ(c) > 0 and N such that for all n ≥ N, every n-uniform family F
-    with |F| ≤ c · 2^n has at least δ · 2^|X| good subsets of X = ∪F.
+/-- **Erdős Problem #1027 (Conjecture Statement)**: For every c > 0, there
+    exists δ = δ(c) > 0 and N such that for all n ≥ N, every n-uniform family
+    F with |F| ≤ c · 2^n has at least δ · 2^|X| good subsets of X = ∪F.
 
-    This is the quantitative supersaturation of Property B. -/
-axiom erdos_1027_conjecture :
+    This is the quantitative supersaturation of Property B. Defined as a Prop
+    rather than an axiom — the actual solution is the axiom below. -/
+def Erdos1027Statement : Prop :=
   ∀ (c : ℝ) (_ : 0 < c), ∃ (δ : ℝ) (_ : 0 < δ), ∃ (N : ℕ),
     ∀ (n : ℕ) (_ : N ≤ n)
       (α : Type*) [DecidableEq α] [Fintype α]
@@ -180,20 +181,13 @@ axiom erdos_1027_conjecture :
     δ * 2 ^ (familyUnion F).card ≤ (goodSetCount F : ℝ)
 
 /-- **Koishi Chan's Theorem**: The conjecture holds. Every bounded n-uniform
-    family has a constant fraction of good subsets. -/
-axiom erdos_1027_solution :
-  ∀ (c : ℝ) (_ : 0 < c), ∃ (δ : ℝ) (_ : 0 < δ), ∃ (N : ℕ),
-    ∀ (n : ℕ) (_ : N ≤ n)
-      (α : Type*) [DecidableEq α] [Fintype α]
-      (F : SetFamily α) (_ : IsNUniform F n) (_ : (F.card : ℝ) ≤ c * 2 ^ n),
-    δ * 2 ^ (familyUnion F).card ≤ (goodSetCount F : ℝ)
+    family has a constant fraction of good subsets.
+
+    This is the single axiom encoding the external mathematical result. -/
+axiom erdos_1027_solution : Erdos1027Statement
 
 /-- The conjecture is solved: it follows directly from Koishi Chan's theorem. -/
-theorem erdos_1027_solved : (∀ (c : ℝ) (_ : 0 < c), ∃ (δ : ℝ) (_ : 0 < δ), ∃ (N : ℕ),
-    ∀ (n : ℕ) (_ : N ≤ n)
-      (α : Type*) [DecidableEq α] [Fintype α]
-      (F : SetFamily α) (_ : IsNUniform F n) (_ : (F.card : ℝ) ≤ c * 2 ^ n),
-    δ * 2 ^ (familyUnion F).card ≤ (goodSetCount F : ℝ)) :=
+theorem erdos_1027_solved : Erdos1027Statement :=
   erdos_1027_solution
 
 -- ============================================================
@@ -228,11 +222,10 @@ theorem abundance_implies_propertyB (F : SetFamily α)
 - `singleton_family_propertyB`: singleton family with |A| ≥ 2 has Property B
 - `abundance_implies_propertyB`: abundance → Property B
 
-**Axiomatized (2 axioms)**:
-- `erdos_1027_conjecture`: the conjecture statement
-- `erdos_1027_solution`: Koishi Chan's affirmative answer
+**Axiomatized (1 axiom)**:
+- `erdos_1027_solution`: Koishi Chan's affirmative answer (= `Erdos1027Statement`)
 
-**Status**: axiomatized (2 axioms encoding the solved conjecture)
+**Status**: axiomatized (1 axiom encoding the solved conjecture)
 -/
 
 end Erdos1027
