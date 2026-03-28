@@ -200,6 +200,22 @@ theorem bbmst_upper_bound_exists :
 ## The Gap Between Flat and Ultraflat
 -/
 
+/-- Parseval implies the sup-norm-to-sqrt-degree ratio is at least 1
+    for any Littlewood polynomial with degree ≥ 1. This is the key
+    lower bound ingredient for the ultraflat ↔ conjecture squeeze argument. -/
+theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial p)
+    (hn : p.natDegree ≥ 1) :
+    supNorm p / Real.sqrt ↑p.natDegree ≥ 1 := by
+  have hpb := parseval_lower_bound p hp
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑p.natDegree :=
+    Real.sqrt_pos_of_pos (Nat.cast_pos.mpr (by omega))
+  have hsqrt_le : Real.sqrt ↑p.natDegree ≤ Real.sqrt (↑p.natDegree + 1) :=
+    Real.sqrt_le_sqrt (by linarith)
+  calc (1 : ℝ) = Real.sqrt ↑p.natDegree / Real.sqrt ↑p.natDegree :=
+        (div_self (ne_of_gt hsqrt_pos)).symm
+    _ ≤ supNorm p / Real.sqrt ↑p.natDegree :=
+        (div_le_div_right hsqrt_pos).mpr (by linarith)
+
 /-- The key open question is about the gap between BBMST and ultraflat.
     BBMST shows c₁√n ≤ max|P| ≤ c₂√n for SOME P. But:
     - Can we make c₂ → 1? (ultraflat) Probably NOT for ±1.
