@@ -67,20 +67,32 @@ theorem rademacher_abs_one {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
     {n : ℕ} (hn : 0 < n) : |f n| = 1 := by
   obtain h | h := rademacher_values_pm1 hf hn <;> simp [h]
 
-/-- f(0) = 0 for any completely multiplicative function
-(since f(0) = f(0 * 1) = f(0) * f(1) = f(0) * 1 = f(0),
-but also f(0) = f(0 * 0) = f(0)², so f(0) ∈ {0, 1}).
-We record the standard convention. -/
-theorem completely_mult_zero {f : ℕ → ℤ}
-    (hf : IsCompletelyMultiplicative f) : f 0 = 0 := by
+/-- For a completely multiplicative function, f(0) ∈ {0, 1}
+(since f(0) = f(0 * 0) = f(0)², so f(0)(f(0) - 1) = 0).
+Note: both values are achievable — f ≡ 1 has f(0) = 1. -/
+theorem completely_mult_zero_or_one {f : ℕ → ℤ}
+    (hf : IsCompletelyMultiplicative f) : f 0 = 0 ∨ f 0 = 1 := by
   have h := hf.2 0 0
   simp [mul_zero] at h
-  -- f(0) = f(0)², so f(0)(f(0) - 1) = 0
-  have : f 0 * (f 0 - 1) = 0 := by ring_nf; omega
+  have : f 0 * (f 0 - 1) = 0 := by nlinarith
   rcases mul_eq_zero.mp this with h0 | h1
-  · exact h0
-  · -- f(0) = 1 contradicts f(0) = f(0)² via our equation
-    omega
+  · exact Or.inl h0
+  · exact Or.inr (by omega)
+
+/-- Completely multiplicative functions preserve powers: f(n^k) = (f n)^k.
+    Proof by induction on k, using f(m·n) = f(m)·f(n). -/
+theorem completely_mult_pow {f : ℕ → ℤ} (hf : IsCompletelyMultiplicative f)
+    (n k : ℕ) : f (n ^ k) = (f n) ^ k := by
+  induction k with
+  | zero => simp [hf.1]
+  | succ k ih => rw [pow_succ, hf.2, ih, pow_succ]
+
+/-- For a Rademacher multiplicative function, f(n²) = 1 for all positive n.
+    Since f(n) ∈ {±1}, we have f(n²) = f(n)² = 1. -/
+theorem rademacher_sq_one {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
+    {n : ℕ} (hn : 0 < n) : f (n ^ 2) = 1 := by
+  rw [completely_mult_pow hf.1 n 2]
+  obtain h | h := rademacher_values_pm1 hf hn <;> simp [h]
 
 -- ## The Conjecture
 
@@ -131,21 +143,24 @@ theorem partialSum_zero (f : ℕ → ℤ) : partialSum f 0 = 0 := by
 
 /-- The partial sum at 1 is 0 (range 1 = {0}, filtered to ∅). -/
 theorem partialSum_one (f : ℕ → ℤ) : partialSum f 1 = 0 := by
-  simp [partialSum]
+  simp only [partialSum, Finset.sum_filter, Finset.sum_range_one]
+  simp
 
 /-- The partial sum at 2 equals f(1). -/
 theorem partialSum_two (f : ℕ → ℤ) : partialSum f 2 = f 1 := by
-  simp [partialSum, Finset.range_succ, Finset.filter_insert, Finset.sum_singleton]
+  simp only [partialSum, Finset.sum_filter, show (2 : ℕ) = 1 + 1 from rfl,
+    Finset.sum_range_succ]
+  simp
 
 /-- Recursion: partialSum f (N+1) = partialSum f N + f N for N ≥ 1. -/
 theorem partialSum_succ (f : ℕ → ℤ) (N : ℕ) (hN : 1 ≤ N) :
     partialSum f (N + 1) = partialSum f N + f N := by
-  simp only [partialSum, Finset.range_succ, Finset.filter_insert, show N ≥ 1 from hN,
+  simp only [partialSum, Finset.range_add_one, Finset.filter_insert, show N ≥ 1 from hN,
     ite_true]
   rw [Finset.sum_insert (by simp [Finset.mem_filter, Finset.mem_range])]
   ring
 
-/-- NOTE: A previous version stated that Atherfold's bound gives subpolynomial
+/- NOTE: A previous version stated that Atherfold's bound gives subpolynomial
     growth for ALL Rademacher multiplicative functions. This is FALSE:
     the constant function f ≡ 1 is Rademacher multiplicative (f(p) = 1 for
     all primes), and its partial sum is N−1 (linear growth), exceeding
@@ -168,10 +183,9 @@ theorem partialSum_trivial_bound {f : ℕ → ℤ} (hf : IsRademacherMultiplicat
          by rcases rademacher_values_pm1 hf (Finset.mem_filter.mp hm |>.2) with h | h <;>
             norm_num [h]⟩
     exact le_trans (mod_cast Finset.abs_sum_le_sum_abs _ _) (Finset.sum_le_sum h_each)
-  exact le_trans (h_bound N)
-    (by simpa [Finset.sum_filter] using Finset.card_le_card
-      (show Finset.filter (fun x => x ≥ 1) (Finset.range N) ⊆ Finset.range N from
-        Finset.filter_subset _ _))
+  exact le_trans (h_bound N) (by
+    simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
+    exact_mod_cast (Finset.card_filter_le _ _).trans (le_of_eq (Finset.card_range N)))
 
 /-- The conjecture, if true, would mean the growth rate is exactly √N
 up to logarithmic factors: between C·√N (infinitely often, from conjecture)
