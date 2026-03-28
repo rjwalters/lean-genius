@@ -7,7 +7,7 @@
     "author": "Erdős, Lovász (1968)",
     "sourceUrl": "https://erdosproblems.com/1022",
     "date": "1971",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1022Problem.lean",
     "tags": [
       "combinatorics",
@@ -16,15 +16,15 @@
       "property-b",
       "set-families"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1022,
     "erdosUrl": "https://erdosproblems.com/1022",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 0,
-    "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 1,
+    "lineCount": 103,
+    "assumptions": "1 axiom: erdos_1022_conjecture (open conjecture: c_t → ∞ threshold for property B). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
