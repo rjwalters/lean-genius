@@ -128,9 +128,20 @@ axiom hajnal_free_set_theorem (κ : Cardinal) (hκ : κ.IsRegular) :
 -- ============================================================
 
 /-- Under GCH, ℵ_ω is a strong limit cardinal:
-    for all n : ℕ, 2^(ℵ_n) < ℵ_ω. -/
-axiom gch_aleph_omega_strong_limit :
-  GCH → ∀ n : ℕ, (2 : Cardinal) ^ Cardinal.aleph n < aleph_omega
+    for all n : ℕ, 2^(ℵ_n) < ℵ_ω.
+
+    Proof: GCH gives 2^ℵ_n = ℵ_{n+1}, and ℵ_{n+1} < ℵ_ω since n+1 < ω. -/
+theorem gch_aleph_omega_strong_limit :
+    GCH → ∀ n : ℕ, (2 : Cardinal) ^ Cardinal.aleph n < aleph_omega := by
+  intro hgch n
+  -- GCH: 2^ℵ_n = ℵ_{n+1}
+  rw [hgch ↑n]
+  -- ℵ_{n+1} < ℵ_ω iff (n+1 : Ordinal) < ω
+  show Cardinal.aleph ((↑n : Ordinal) + 1) < Cardinal.aleph Ordinal.omega0
+  rw [Cardinal.aleph_lt]
+  -- (n : Ordinal) + 1 < ω
+  have : ↑(n + 1 : ℕ) < Ordinal.omega0 := Ordinal.nat_lt_omega0 (n + 1)
+  rwa [Nat.cast_add, Nat.cast_one] at this
 
 /-- The almost disjoint condition means the "overlap" between any two
     images is strictly bounded by ℵ_ω. Since cf(ℵ_ω) = ω, this overlap
