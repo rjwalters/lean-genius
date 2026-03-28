@@ -223,7 +223,8 @@ noncomputable def coveringLCM (S : Finset Congruence) : ℕ :=
 /-- If all moduli divide n, then lcm(moduli) divides n. -/
 theorem lcm_divides_of_all_divide (S : Finset Congruence) (n : ℕ)
     (h : AllModuliDivide S n) : coveringLCM S ∣ n := by
-  sorry
+  show S.lcm (fun c => c.modulus) ∣ n
+  exact Finset.lcm_dvd (fun c hc => h c hc)
 
 /-- Highly composite numbers have many divisors. -/
 def IsHighlyComposite (n : ℕ) : Prop :=
