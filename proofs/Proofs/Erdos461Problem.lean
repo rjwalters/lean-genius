@@ -231,6 +231,38 @@ theorem smoothComponent_id_of_lt (t n : ℕ) (hn : 0 < n) (hnt : n < t) :
   smoothComponent_id_of_smooth t n (by omega) fun p hp =>
     lt_of_le_of_lt (Nat.le_of_dvd hn (Nat.dvd_of_mem_factors hp)) hnt
 
+/-- Smooth component is fully multiplicative over factors:
+    factors(m*n) is a permutation of factors(m) ++ factors(n),
+    so filtering by (· < t) and taking products distributes. -/
+theorem smoothComponent_mul (t m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) :
+    smoothComponent t (m * n) = smoothComponent t m * smoothComponent t n := by
+  unfold smoothComponent
+  have hperm := (Nat.factors_mul hm hn).filter (· < t)
+  rw [List.filter_append] at hperm
+  exact hperm.prod_eq.trans (List.prod_append _ _)
+
+/-- The smooth component is 1 iff no prime factor of n is less than t. -/
+theorem smoothComponent_eq_one_iff (t n : ℕ) (hn : n ≠ 0) :
+    smoothComponent t n = 1 ↔ ∀ p ∈ n.factors, ¬(p < t) := by
+  constructor
+  · intro h p hp hpt
+    have hmem : p ∈ n.factors.filter (· < t) := List.mem_filter.mpr ⟨hp, by simpa⟩
+    have hp_dvd : p ∣ (n.factors.filter (· < t)).prod := List.dvd_prod hmem
+    unfold smoothComponent at h; rw [h] at hp_dvd
+    exact absurd (Nat.le_of_dvd one_pos hp_dvd)
+      (by have := (Nat.prime_of_mem_factors hp).two_le; omega)
+  · intro h
+    unfold smoothComponent
+    have : n.factors.filter (· < t) = [] :=
+      List.filter_eq_nil.mpr (fun p hp => by simpa using h p hp)
+    simp [this]
+
+/-- Smooth component of m divides smooth component of m*n. -/
+theorem smoothComponent_dvd_mul_left (t m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) :
+    smoothComponent t m ∣ smoothComponent t (m * n) := by
+  rw [smoothComponent_mul t m n hm hn]
+  exact dvd_mul_right _ _
+
 /-- For t ≥ 1 and any n, there is at least one smooth component value. -/
 theorem smoothDistinctCount_pos (n t : ℕ) (ht : 1 ≤ t) :
     0 < smoothDistinctCount n t := by
