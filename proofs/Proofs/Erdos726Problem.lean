@@ -89,8 +89,17 @@ theorem dvd_not_upper_half (n p : ℕ) (h : p ∣ n) : ¬isUpperHalfResidue n p 
   omega
 
 /-- For prime p ≥ 3, the upper half (p/2, p) has exactly ⌊(p-1)/2⌋ elements. -/
-axiom upper_half_count (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
-    ((Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r)).card = (p - 1) / 2
+theorem upper_half_count (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
+    ((Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r)).card = (p - 1) / 2 := by
+  have hp_odd : p % 2 = 1 := by
+    rcases Nat.even_or_odd p with ⟨k, hk⟩ | ⟨k, hk⟩
+    · have := hp.eq_one_or_self_of_dvd 2 ⟨k, by omega⟩; omega
+    · omega
+  have h_eq : (Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r) =
+      Finset.Icc (p / 2 + 1) (p - 1) := by
+    ext r; simp only [Finset.mem_filter, Finset.mem_Icc]; omega
+  rw [h_eq, Finset.Nat.card_Icc]
+  omega
 
 /-
 ## Sum Partition Properties
