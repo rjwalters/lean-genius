@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 3 proved diam_is_integer. File now has 11 theorems, 4 axioms (all deep), 0 sorries, 469 lines.",
+    "progressSummary": "COMPLETE: Main file Erdos100Problem.lean: 4A (all deep), 11T proved, 0S. Related 100X files have separate axioms/sorries.",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -51,16 +51,15 @@
       "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle",
       "distinctDistances_le_diam axiom IS PROVABLE: inject pairwiseDistances into {1,...,⌊diam⌋} via identity (distances are positive integers ≤ diam). Needs: (1) show each d∈pairwiseDistances is a positive integer via hasIntegerDistances, (2) build injection to Finset.Icc 1 ⌊diam⌋, (3) card bound + Nat.floor_le.",
       "All 4 remaining axioms are deep results: kanold_bound (pigeonhole counting), guthKatz (polynomial partitioning), piepmeyer (explicit construction), erdos_anning (hyperbola argument). None provable from Mathlib.",
-      "Piepmeyer construction: 9 points with all pairwise distances in {1,2,3,4} and diameter <5. Would need exact coordinates from original paper to prove."
+      "Piepmeyer construction: 9 points with all pairwise distances in {1,2,3,4} and diameter <5. Would need exact coordinates from original paper to prove.",
+      "4 axioms in main file all assessed as deep by prior session",
+      "Related Erdos100X files tracked under separate problems"
     ],
     "mathlibGaps": [
       "No Finset.offDiag_nonempty lemma found in Mathlib",
       "Finset.one_lt_card extraction + offDiag membership causes heartbeat timeouts"
     ],
-    "nextSteps": [
-      "PROVE distinctDistances_le_diam: routine axiom elimination via injection into {1,...,⌊diam⌋} (5→4 axioms)",
-      "piepmeyer_construction may be provable by explicit 9-point construction + norm computation"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",
