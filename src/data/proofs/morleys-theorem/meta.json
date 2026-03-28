@@ -19,7 +19,7 @@
       "classic"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
@@ -58,9 +58,9 @@
       "definitions": 14,
       "instances": 0
     },
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 384,
-    "assumptions": "2 axiom(s): equilateral_side_length_axiom, morleys_theorem_axiom. See Lean source for complete statements.",
+    "assumptions": "1 axiom: morleys_theorem_axiom. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -226,9 +226,9 @@
       "Real"
     ],
     "namespace": "MorleysTheorem",
-    "lineCount": 352,
-    "axiomCount": 2,
-    "theoremCount": 7,
+    "lineCount": 384,
+    "axiomCount": 1,
+    "theoremCount": 8,
     "definitionCount": 15
   },
   "references": [
