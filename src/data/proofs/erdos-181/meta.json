@@ -53,17 +53,21 @@
       "erdos_181_conjecture: ∃ C > 0, ∀ n, R(Q_n) ≤ C · 2^n",
       "tikhomirov_2022: R(Q_n) ≤ C · 2^{(2-c)n} for c > 0",
       "lower_bound: R(Q_n) ≥ 2^n from vertex count",
-      "bound_gap_description: 2^n ≤ 2^{2n} proved (gap illustration)"
+      "bound_gap_description: 2^n ≤ 2^{2n} proved (gap illustration)",
+      "no_embedding_small: pigeonhole — no injective Fin(2^n) → Fin(N) when N < 2^n",
+      "ramsey_property_mono: Ramsey property monotone via Fin.castLE restriction",
+      "lower_bound_conditional: R(Q_n) ≥ 2^n from Ramsey set nonemptiness + pigeonhole",
+      "ramseyNumber_zero_eq: exact computation R(Q_0) = 1"
     ],
     "axiomCount": 4,
-    "lineCount": 213,
-    "assumptions": "7 axioms: erdos_181_conjecture, trivial_upper_bound, tikhomirov_2022, and 4 more. See Lean source for complete statements."
+    "lineCount": 287,
+    "assumptions": "4 axioms: erdos_181_conjecture (OPEN), trivial_upper_bound (needs Ramsey theorem), tikhomirov_2022 (deep result), lower_bound (needs Ramsey existence). All genuinely deep."
   },
   "overview": {
     "historicalContext": "Burr and Erdős conjectured in 1975 that the Ramsey number of the $n$-dimensional hypercube $Q_n$ is at most linear in its vertex count $2^n$. The hypercube $Q_n$ has $2^n$ vertices (binary strings of length $n$) with edges between strings differing in exactly one coordinate, giving each vertex degree $n$. The 2-color Ramsey number $R(Q_n)$ is the minimum $N$ such that every 2-coloring of $K_N$'s edges contains a monochromatic copy of $Q_n$.\n\nThe conjecture is part of the broader Burr-Erdős program on Ramsey numbers of sparse graphs. For bounded-degree graphs $G$ on $m$ vertices, Burr and Erdős conjectured $R(G) = O(m)$, which Lee proved in 2017 using the regularity method. However, $Q_n$ has degree $n = \\log_2(2^n)$, which grows with the graph size, so Lee's result does not apply. The hypercube sits precisely at the boundary between bounded and unbounded degree, making it a critical test case for extending Ramsey-linear behavior.\n\nThe trivial bound $R(Q_n) \\leq R(K_{2^n})$ is doubly-exponential in $n$. Tikhomirov (2022) obtained the best current bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$, which is subquadratic in $2^n$ but still superlinear. The lower bound $R(Q_n) \\geq 2^n$ is immediate from the vertex count. Erdős and Sós raised the question of whether $R(Q_n)/2^n \\to \\infty$; the conjecture would imply this ratio is bounded, but current bounds show it still diverges.\n\nThe gap between the trivial lower bound $2^n$ and Tikhomirov's upper bound $2^{(2-c)n}$ (exponent gap between 1 and $\\approx 1.964$) remains one of the most prominent open problems in Ramsey theory.\n\n**Status**: OPEN — The Burr-Erdős conjecture for hypercubes is unresolved.",
     "problemStatement": "**Problem (OPEN)**\n\nLet $Q_n$ be the $n$-dimensional hypercube graph with $2^n$ vertices.\n\nProve that $R(Q_n) \\ll 2^n$, i.e., $\\exists C > 0 : \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n**Known Results:**\n- Lower bound: $R(Q_n) \\geq 2^n$ (trivial, from vertex count)\n- Best upper bound: $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$ (Tikhomirov 2022)\n- Trivial upper bound: $R(Q_n) \\leq C^{2^n}$ (from Ramsey number of $K_{2^n}$)\n- Lee (2017) proved $R(G) = O(|V(G)|)$ for bounded-degree $G$, but $Q_n$ has degree $n \\to \\infty$\n\n**Open**: Close the exponent gap between 1 and $2-c \\approx 1.964$.",
     "text": "Prove R(Q_n) ≪ 2^n (Burr-Erdős). Best known: R(Q_n) ≪ 2^{(2-c)n} (Tikhomirov 2022). The conjecture says the Ramsey number is linear in the vertex count. Open.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (211 lines) formalizes the problem in five parts with several actual proofs:\n\n1. **Hypercube graph** (lines 33–71): Defines `hypercubeAdj n x y` via $\\exists! i : \\text{Fin } n$ with differing bit at position $i$, using integer division and modular arithmetic on `Fin (2^n)`. Proves symmetry (`hypercubeAdj_symm`), irreflexivity (`hypercubeAdj_irrefl`), vertex count $|V(Q_n)| = 2^n$ (`hypercube_vertex_count`), and edge count formula $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$ (`hypercube_edge_count_formula`).\n\n2. **Ramsey number** (lines 73–97): Defines `ramseyNumber n` as `sInf` over $N$ such that every 2-coloring $c : \\text{Fin } N \\to \\text{Fin } N \\to \\text{Fin } 2$ contains an injective monochromatic $Q_n$-copy. Proves $R(Q_0) \\leq 1$ constructively.\n\n3. **Main conjecture** (lines 99–112): Axiomatizes `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n4. **Known bounds** (lines 114–144): Axiomatizes the trivial upper bound $R(Q_n) \\leq C^{2^n}$, Tikhomirov's bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$, and the lower bound $R(Q_n) \\geq 2^n$.\n\n5. **Context and gap** (lines 146–211): Axiomatizes Lee's bounded-degree result (simplified), the Erdős-Sós divergence question, proves the bound gap $2^n \\leq 2^{2n}$, and restates the main conjecture as `erdos_181`.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (287 lines) formalizes the problem in six parts with 10 proved theorems:\n\n1. **Hypercube graph** (lines 33–71): Defines `hypercubeAdj n x y` via $\\exists! i : \\text{Fin } n$ with differing bit at position $i$. Proves symmetry, irreflexivity, vertex count, and edge count formula.\n\n2. **Ramsey number** (lines 73–97): Defines `ramseyNumber n` as `sInf` over valid $N$. Proves $R(Q_0) \\leq 1$.\n\n3. **Main conjecture** (lines 99–112): Axiomatizes `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n4. **Known bounds** (lines 114–144): Axiomatizes the trivial upper bound, Tikhomirov bound, and lower bound.\n\n5. **Context and gap** (lines 146–196): Lee's bounded-degree result, Erdős-Sós question, bound gap illustration.\n\n6. **Structural lemmas** (lines 197–287): Four fully proved theorems: `no_embedding_small` (pigeonhole for embeddings), `ramsey_property_mono` (monotonicity via Fin.castLE), `lower_bound_conditional` (R(Q_n) ≥ 2^n from nonemptiness), `ramseyNumber_zero_eq` (R(Q_0) = 1 exactly).",
     "keyInsights": [
       "The hypercube $Q_n$ has degree $n = \\log_2 |V(Q_n)|$, placing it exactly at the boundary of the Burr-Erdős bounded-degree conjecture proved by Lee (2017). The conjecture asks whether Ramsey-linear behavior extends to this logarithmic-degree regime.",
       "Tikhomirov's bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ with $c \\approx 0.0366$ is subquadratic in vertex count $2^n$ (exponent $2-c < 2$) but still superlinear, leaving an exponent gap between 1 and $\\approx 1.964$",
@@ -118,8 +122,15 @@
       "id": "context-and-gap",
       "title": "Context, Related Results, and Gap Analysis",
       "startLine": 146,
-      "endLine": 211,
-      "summary": "Axiomatizes Lee's bounded-degree Ramsey result (which does not apply to $Q_n$ since $\\deg(Q_n) = n \\to \\infty$) and the Erdős-Sós divergence question ($R(Q_n)/2^n \\to \\infty$?). Proves the bound gap illustration $2^n \\leq 2^{2n}$. Restates the main conjecture as `erdos_181`."
+      "endLine": 196,
+      "summary": "Axiomatizes Lee's bounded-degree Ramsey result (which does not apply to $Q_n$ since $\\deg(Q_n) = n \\to \\infty$) and the Erdős-Sós divergence question ($R(Q_n)/2^n \\to \\infty$?). Proves the bound gap illustration $2^n \\leq 2^{2n}$."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas",
+      "startLine": 197,
+      "endLine": 287,
+      "summary": "Four fully proved structural theorems: `no_embedding_small` (pigeonhole — Q_n requires ≥ 2^n vertices for embedding), `ramsey_property_mono` (Ramsey property is upward closed via Fin.castLE), `lower_bound_conditional` (R(Q_n) ≥ 2^n assuming Ramsey set nonemptiness, using pigeonhole), and `ramseyNumber_zero_eq` (R(Q_0) = 1 exactly). These theorems have zero sorries and do not depend on the axioms. Restates the main conjecture as `erdos_181`."
     }
   ],
   "conclusion": {
@@ -142,9 +153,9 @@
     ],
     "opens": [],
     "namespace": "Erdos181",
-    "lineCount": 213,
+    "lineCount": 287,
     "axiomCount": 4,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 2
   },
   "references": [
