@@ -45,6 +45,12 @@ theorem exp_on_unit_circle (θ : ℝ) :
 theorem norm_exp_diff (θ φ : ℝ) :
     ‖Complex.exp (Complex.I * ↑θ) - Complex.exp (Complex.I * ↑φ)‖ =
     2 * |Real.sin ((θ - φ) / 2)| := by
+  -- Proof: ‖a - b‖² = 2(1 - cos(θ-φ)) = 4sin²((θ-φ)/2), take sqrt
+  -- Step 1: ‖exp(iθ) - exp(iφ)‖² = 2 - 2cos(θ-φ) via inner product
+  -- Step 2: 2 - 2cos(x) = 4sin²(x/2) via half-angle identity
+  -- Step 3: Both sides ≥ 0, so ‖·‖ = 2|sin((θ-φ)/2)|
+  -- Key Mathlib lemmas needed: Complex.norm_exp_ofReal_mul_I,
+  -- Complex.exp_ofReal_mul_I_re, Real.cos_sub, Real.cos_sq_half (if available)
   sorry
 
 /-- For a degree-1 polynomial p(z) = c₀ + c₁z with c₁ ≠ 0,
