@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/687",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 165,
-    "assumptions": "7 axioms: jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal, erdos_687_conjecture, and 4 more. See Lean source for complete statements.",
+    "lineCount": 274,
+    "assumptions": "6 axioms: jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal, erdos_687_conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -138,9 +138,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 165,
+    "lineCount": 274,
     "axiomCount": 6,
-    "theoremCount": 3,
+    "theoremCount": 14,
     "definitionCount": 5
   },
   "crossReferences": [
