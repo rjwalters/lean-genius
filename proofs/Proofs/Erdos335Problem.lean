@@ -178,3 +178,26 @@ theorem additive_achieves_lower_bound (A B : Set ℕ)
     (hA : DensityExists A) (hB : DensityExists B) (h : DensityAdditive A B) :
     asympDensity (Sumset A B) ≥ min (asympDensity A + asympDensity B) 1 := by
   rw [additive_implies_tight A B h]
+
+/-- If both A and B have positive density and are density-additive,
+    then their sumset also has positive density. -/
+theorem density_additive_pos (A B : Set ℕ)
+    (h : DensityAdditive A B) (hA : HasPositiveDensity A) (hB : HasPositiveDensity B) :
+    HasPositiveDensity (Sumset A B) := by
+  unfold HasPositiveDensity at *
+  rw [h.2.2.2]
+  linarith
+
+/-- If one set has zero density in a density-additive pair,
+    the sumset density equals the other set's density. -/
+theorem density_additive_zero (A B : Set ℕ) (h : DensityAdditive A B)
+    (hB : asympDensity B = 0) : asympDensity (Sumset A B) = asympDensity A := by
+  rw [h.2.2.2, hB, add_zero]
+
+/-- Sumset with the empty set is empty. -/
+theorem Sumset_empty_left (B : Set ℕ) : Sumset ∅ B = ∅ := by
+  ext n; simp [Sumset]
+
+/-- Sumset with the empty set on the right is empty. -/
+theorem Sumset_empty_right (A : Set ℕ) : Sumset A ∅ = ∅ := by
+  ext n; simp [Sumset]

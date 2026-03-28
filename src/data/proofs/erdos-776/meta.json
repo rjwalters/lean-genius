@@ -45,11 +45,17 @@
       "Axiomatized the size-variety tradeoff and size availability constraints",
       "Proved size_variety_tradeoff via partition-by-cardinality counting argument",
       "Proved middle_layer_antichain by constructing powersetCard family",
-      "Proved size_availability (trivially True conclusion)"
+      "Proved size_availability (trivially True conclusion)",
+      "Renamed IsAntichain to IsAntichainFamily to fix Mathlib name collision",
+      "Proved empty_not_in_nontrivial_antichain: ∅ excluded from non-trivial antichains",
+      "Proved univ_not_in_nontrivial_antichain: Finset.univ excluded from non-trivial antichains",
+      "Proved same_size_is_antichain: equal-cardinality families are antichains",
+      "Proved zero_not_in_antichain_sizes: size 0 excluded from antichain distinct sizes",
+      "Proved n_not_in_antichain_sizes: size n excluded from antichain distinct sizes"
     ],
     "axiomCount": 4,
-    "lineCount": 184,
-    "assumptions": "5 axioms: erdos_trotter_r1, erdos_trotter_upper, erdos_trotter_achievable, erdos_776_threshold (open), sperner_theorem. See Lean source.",
+    "lineCount": 261,
+    "assumptions": "4 axioms: erdos_trotter_r1 (known, Griggs 1983), erdos_trotter_upper (known), erdos_trotter_achievable (known), erdos_776_threshold (OPEN conjecture). sperner_theorem is proved via Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -108,12 +114,12 @@
       "title": "Structural Observations",
       "startLine": 94,
       "endLine": 118,
-      "summary": "Axiomatizes Sperner's theorem ($|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$). Proves the middle layer antichain (constructing powersetCard family), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$) via partition counting, and size availability (trivially True).",
-      "mathContext": "Sperner: $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2\\rfloor}$. Middle layer: $d = 1$, $|\\mathcal{F}| = \\binom{n}{\\lfloor n/2\\rfloor}$. Tradeoff: $|\\mathcal{F}| \\geq r \\cdot d$. Availability: layer $k$ usable iff $\\binom{n}{k} \\geq r$."
+      "summary": "Proves Sperner's theorem via Mathlib bridge, the middle layer antichain (constructing powersetCard family), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$) via partition counting, and 5 structural lemmas: empty/full set exclusion from antichains, same-size antichain property, and size-0/size-n exclusion from distinct sizes.",
+      "mathContext": "Sperner: $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2\\rfloor}$. Middle layer: $d = 1$, $|\\mathcal{F}| = \\binom{n}{\\lfloor n/2\\rfloor}$. Tradeoff: $|\\mathcal{F}| \\geq r \\cdot d$. Structural: $|F| > 1 \\Rightarrow 0, n \\notin \\text{distinctSizes}(F)$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #776 is formalized with 6 definitions, 4 proved theorems, and 5 axioms. The theorem `erdos_trotter_exact` is proved from axiomatized bounds, `size_variety_tradeoff` is proved via partition-by-cardinality counting, `middle_layer_antichain` is proved constructively, and `size_availability` is trivially proved. The open question is to determine the threshold $N(r)$ as a function of $r$.",
+    "summary": "Erdős Problem #776 is formalized with 6 definitions, 10 proved theorems, and 4 axioms. The theorem `erdos_trotter_exact` is proved from axiomatized bounds, `size_variety_tradeoff` is proved via partition-by-cardinality counting, `middle_layer_antichain` is proved constructively, and 5 structural lemmas establish that antichains exclude sizes 0 and n (empty_not_in_nontrivial_antichain, univ_not_in_nontrivial_antichain, zero_not_in_antichain_sizes, n_not_in_antichain_sizes, same_size_is_antichain). The open question is to determine the threshold $N(r)$ as a function of $r$.",
     "implications": "**Theoretical Significance**: Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results.\n\nThe threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
     "openQuestions": [
       "What is the precise threshold $N(r)$ as a function of $r$? Is it polynomial, exponential, or something else?",
@@ -160,9 +166,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 184,
+    "lineCount": 261,
     "axiomCount": 4,
-    "theoremCount": 4,
+    "theoremCount": 10,
     "definitionCount": 6
   }
 }
