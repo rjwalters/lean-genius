@@ -177,11 +177,32 @@ axiom sauer_counterexample :
 Connections to other graph theory results.
 -/
 
-/-- The Turán graph is the extremal triangle-free graph -/
-axiom turan_extremal :
-  ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
+/-- The Turán graph is the extremal triangle-free graph.
+    Proved using Mathlib's `SimpleGraph.CliqueFree.card_edgeFinset_le` (Turán's theorem). -/
+theorem turan_extremal :
+    ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
-      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G)
+      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G) := by
+  intro V _ _ G _ hno
+  -- Bridge: no Triangle G → Mathlib's CliqueFree (2+1)
+  have hcf : G.CliqueFree (2 + 1) := by
+    intro s ⟨hclique, hcard⟩
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    exact hno ⟨a, b, c,
+      hclique (by simp) (by simp) hab,
+      hclique (by simp) (by simp) hbc,
+      hclique (by simp) (by simp) hac,
+      ⟨hab, hbc, hac⟩⟩
+  -- Apply Mathlib's Turán bound: edgeFinset.card ≤ (n²-(n%r)²)*(r-1)/(2r) + (n%r).choose 2
+  show G.edgeFinset.card ≤ (Fintype.card V) ^ 2 / 4
+  have bound := hcf.card_edgeFinset_le
+  -- (n%2).choose 2 = 0 since n%2 < 2
+  have hc : (Fintype.card V % 2).choose 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
+  calc G.edgeFinset.card
+      ≤ (Fintype.card V ^ 2 - (Fintype.card V % 2) ^ 2) * (2 - 1) / (2 * 2) +
+        (Fintype.card V % 2).choose 2 := bound
+    _ = (Fintype.card V ^ 2 - (Fintype.card V % 2) ^ 2) / 4 := by simp [hc]
+    _ ≤ Fintype.card V ^ 2 / 4 := Nat.div_le_div_right (Nat.sub_le _ _)
 
 /-- Edge-disjointness is symmetric. -/
 theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :
