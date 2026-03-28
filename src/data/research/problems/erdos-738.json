@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved starGraph_isTree (eliminating 1 of 2 non-axiom sorries). pathGraph_isTree remains sorry.",
+    "progressSummary": "COMPLETE: 0S, 2A appropriate (gyarfas_conjecture — open, gyarfas_finite_version — deep published result).",
     "builtItems": [
       "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
       "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
@@ -99,7 +99,7 @@
       "theoremCount": 10,
       "axiomCount": 2,
       "defCount": 10,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos738Problem.lean"
     }
