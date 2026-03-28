@@ -213,9 +213,28 @@ theorem folkman_ratio_rpow (n : ℕ) (_hn : n > 0) :
   rw [← Real.rpow_mul hn']
   norm_num
 
-/-- Folkman bound: the optimal constant is at most 1
-    (the exact upper bound from K_{n,n²}) -/
-axiom folkman_upper_bound : optimalConstant ≤ 1
+/-- Folkman bound: the optimal constant is at most 1.
+    Proof: specialize any admissible c to completeGraph (Fin 2) (1 edge).
+    Any subgraph has ≤ 1 edge, so c * 1^{2/3} ≤ 1, hence c ≤ 1.
+    Since every element of the set is ≤ 1, the sSup is ≤ 1. -/
+theorem folkman_upper_bound : optimalConstant ≤ 1 := by
+  unfold optimalConstant
+  by_cases hne : {c : ℝ | IsAdmissibleConstant c}.Nonempty
+  · apply csSup_le hne
+    intro c hc
+    obtain ⟨H, hdr, hsub, _, hge⟩ := hc.2 (Fin 2) (completeGraph (Fin 2))
+    letI := hdr
+    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by native_decide
+    have hle : H ≤ completeGraph (Fin 2) := hsub
+    have hH_sub : H.edgeFinset ⊆ (completeGraph (Fin 2)).edgeFinset := by
+      intro e he; rw [SimpleGraph.mem_edgeFinset] at he ⊢
+      exact SimpleGraph.edgeSet_mono hle he
+    have hH_card : H.edgeFinset.card ≤ 1 := by linarith [Finset.card_le_card hH_sub]
+    simp only [hone, Nat.cast_one, Real.one_rpow, mul_one] at hge
+    linarith [show (H.edgeFinset.card : ℝ) ≤ 1 from by exact_mod_cast hH_card]
+  · push_neg at hne
+    rw [Set.not_nonempty_iff_eq_empty.mp hne]
+    simp [Real.sSup_empty]
 
 /-
 ## Part V: Conlon-Fox-Sudakov Lower Bound

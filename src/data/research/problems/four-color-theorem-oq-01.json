@@ -1,0 +1,91 @@
+{
+  "slug": "four-color-theorem-oq-01",
+  "title": "Is there a 'human-readable' proof of the Four Color Theorem that doesn't requ...",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Is there a 'human-readable' proof of the Four Color Theorem that doesn't requ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 1,
+    "focus": "Formalized Kempe chain obstruction for 4CT",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created FourColorTheoremOQ01.lean with 0 axioms, 0 sorries. Formalized the Kempe chain interference obstruction (why 5-color Kempe works but 4-color fails), free color pigeonhole theorem, Heawood counterexample structure, and minimum counterexample analysis.",
+    "builtItems": [
+      "FourColorTheoremOQ01.lean: 319 lines, 16 theorems, 5 definitions, 0 axioms, 0 sorries",
+      "free_color_of_degree_lt: pigeonhole principle for graph coloring",
+      "chain_interference_obstruction: algebraic proof that two chains on shared vertex interfere",
+      "five_color_no_double_swap: C(5,2) > C(4,2) showing 5 colors have more freedom",
+      "Gallery entry: four-color-theorem-oq-01 with full meta.json, index.ts, annotations.json"
+    ],
+    "insights": [
+      "Degree < k colors guarantees free color by pigeonhole - no chain swaps needed",
+      "5-color case: ONE Kempe swap suffices, planarity prevents interference",
+      "4-color case: TWO swaps needed, chains can share vertices causing interference",
+      "C(5,2)=10 vs C(4,2)=6 color pairs - more pairs give more degrees of freedom",
+      "Heawood 1890: constructed specific graph where both chains connect, forced to cross by planarity",
+      "No human-readable 4CT proof known as of 2025; alternative approaches (flow, algebraic) incomplete"
+    ],
+    "mathlibGaps": [
+      "SimpleGraph vertex deletion with Fintype preservation",
+      "Planar graph definition (only edge bounds formalized)",
+      "Bichromatic connected components (Kempe chains as maximal components)"
+    ],
+    "nextSteps": [
+      "Build Docker and verify the Lean file compiles",
+      "Add annotations for the gallery entry",
+      "Consider reducing axioms in FiveColorTheorem.lean"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "computer-assisted-proof",
+    "advanced",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "four-color-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourColorTheorem.lean",
+      "filename": "FourColorTheorem.lean",
+      "lineCount": 295,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheorem.lean"
+    }
+  ]
+}

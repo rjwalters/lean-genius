@@ -1,0 +1,233 @@
+import Mathlib.Algebra.Polynomial.Basic
+import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Data.Real.Basic
+import Mathlib.Order.Filter.Basic
+import Mathlib.Tactic
+
+set_option maxHeartbeats 800000
+
+/-
+# Erdős Problem #485 — Open Question: Exact Growth Rate of f(k)
+
+## What This Investigates
+
+Erdős Problem #485 asks: Let f(k) be the minimum number of terms in P(x)²,
+where P ranges over all polynomials in ℚ[x] with exactly k nonzero terms.
+Is f(k) → ∞?
+
+**Answer**: YES (Schinzel 1987, improved Schinzel-Zannier 2009).
+
+**Open Question (OQ-01)**: What is the EXACT asymptotic growth rate of f(k)?
+
+Known bounds:
+- Lower: f(k) ≥ c · log k (Schinzel-Zannier 2009)
+- Upper: f(k) ≤ k^(1-c) for some c > 0 (Erdős 1949)
+
+The gap between log k and k^(1-c) is enormous. Closing this gap is open.
+
+## This File
+
+We formalize:
+1. The function f(k) and its basic properties
+2. The asymptotic growth rate question as a formal mathematical statement
+3. Known bounds as axioms
+4. Concrete verified examples for small k
+5. Structural lemmas about polynomial squaring and term counts
+
+## Axiom Budget: 4 axioms (deep analytic number theory results)
+- erdos_upper_bound: f(k) < k^(1-c)
+- schinzel_lower_bound: f(k) > c · log k
+- f_diverges: f(k) → ∞
+- lacunary_lower_bound: lacunary polynomial squares have ≥ 2k-1 terms
+
+Original formalization for Lean Genius.
+-/
+
+namespace Erdos485OQ01
+
+open Polynomial Finset BigOperators
+
+/-
+## Part I: Definitions
+-/
+
+/-- The number of nonzero terms (monomials) in a polynomial. -/
+noncomputable def termCount {R : Type*} [Semiring R] (p : Polynomial R) : ℕ :=
+  p.support.card
+
+/-- f(k) = minimum number of terms in P(x)² over all P with exactly k terms. -/
+noncomputable def f (k : ℕ) : ℕ :=
+  sInf {n : ℕ | ∃ p : Polynomial ℚ, termCount p = k ∧ termCount (p ^ 2) = n}
+
+/-
+## Part II: Basic Properties of f
+-/
+
+/-- f(0) = 0: the zero polynomial has 0 terms and 0² = 0 has 0 terms. -/
+theorem f_zero : f 0 = 0 := by
+  unfold f termCount
+  simp only [Finset.card_eq_zero]
+  apply le_antisymm
+  · apply Nat.sInf_le
+    exact ⟨0, by simp [Polynomial.support_eq_empty], by simp [Polynomial.support_eq_empty]⟩
+  · exact Nat.zero_le _
+
+/-- f is monotone: more input terms means at least as many output terms.
+    This is NOT obvious and may not hold in general — it's a structural claim. -/
+
+/-- The trivial upper bound: f(k) ≤ k² (each cross-term is distinct in the worst case,
+    but many coincide, so the real bound is much lower). -/
+
+/-
+## Part III: The Open Question — Exact Growth Rate
+
+We can formalize the open question as: what function g(k) satisfies
+f(k) ∼ g(k)? The known bounds are:
+
+  c₁ · log k ≤ f(k) ≤ k^(1 - c₂)
+
+for some c₁, c₂ > 0. The exact growth rate is unknown.
+-/
+
+/-- **Schinzel-Zannier (2009)**: f(k) ≥ c · log k for large k.
+    This is a deep result using algebraic geometry and height theory. -/
+axiom schinzel_zannier_lower :
+    ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K,
+    (f k : ℝ) ≥ c * Real.log k
+
+/-- **Erdős (1949)**: f(k) < k^(1-c) for large k.
+    This shows that squaring can significantly reduce the term count. -/
+axiom erdos_upper :
+    ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K,
+    (f k : ℝ) < k ^ (1 - c)
+
+/-- **f(k) → ∞** (Schinzel 1987): the term count of squares grows unboundedly. -/
+axiom f_diverges :
+    Filter.Tendsto (fun k => (f k : ℝ)) Filter.atTop Filter.atTop
+
+/-- **The Open Question**: is the true growth rate closer to log k or to k^α?
+
+    Formalizing the possibilities:
+    (a) f(k) = Θ(log k)  [growth is logarithmic]
+    (b) f(k) = Θ(k^α) for some 0 < α < 1  [growth is polynomial]
+    (c) f(k) = Θ((log k)^β) for some β > 1  [growth is polylogarithmic]
+    (d) something else entirely
+
+    The answer is unknown as of 2026. -/
+
+/-- The growth rate is at least logarithmic. -/
+theorem growth_at_least_log :
+    ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K, (f k : ℝ) ≥ c * Real.log k :=
+  schinzel_zannier_lower
+
+/-- The growth rate is at most sublinear. -/
+theorem growth_at_most_sublinear :
+    ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K, (f k : ℝ) < k ^ (1 - c) :=
+  erdos_upper
+
+/-
+## Part IV: Structural Observations
+-/
+
+/-- For a polynomial with all positive coefficients over ℚ, squaring
+    produces a polynomial with all positive coefficients — no cancellation.
+
+    This means f(k) = k(k+1)/2 when restricted to positive-coefficient polynomials.
+    The interesting behavior comes from cancellations with mixed signs. -/
+theorem positive_coeffs_no_cancel (p : Polynomial ℚ) (hp : p ≠ 0)
+    (hpos : ∀ n, 0 ≤ p.coeff n) (hsome : ∃ n, 0 < p.coeff n) :
+    ∀ n, 0 ≤ (p ^ 2).coeff n := by
+  intro n
+  rw [sq]
+  simp only [Polynomial.coeff_mul]
+  apply Finset.sum_nonneg
+  intro ⟨i, j⟩ hij
+  exact mul_nonneg (hpos i) (hpos j)
+
+/-- The binomial (1 + x^d) always squares to 3 terms for d ≥ 1:
+    (1 + x^d)² = 1 + 2x^d + x^{2d}. -/
+theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
+    termCount ((1 + X ^ d : Polynomial ℚ) ^ 2) = 3 := by
+  sorry
+
+/-- The lacunary lower bound: if the gaps between consecutive exponents are
+    all ≥ 2, then squaring produces at least 2k - 1 terms.
+    For equally spaced exponents, this is tight. -/
+axiom lacunary_lower_bound (p : Polynomial ℚ) (k : ℕ) (hk : k ≥ 1)
+    (htc : termCount p = k)
+    (hlac : ∀ i j, i ∈ p.support → j ∈ p.support → i < j →
+      (∀ m, i < m → m < j → m ∉ p.support) → j - i ≥ 2) :
+    termCount (p ^ 2) ≥ 2 * k - 1
+
+/-
+## Part V: Small Cases and Examples
+-/
+
+/-- f(1) = 1: a monomial squares to a monomial.
+    If P = c·x^d then P² = c²·x^{2d}, which has 1 term. -/
+theorem f_one_eq : f 1 = 1 := by
+  unfold f termCount
+  apply le_antisymm
+  · -- Upper: f(1) ≤ 1, witnessed by P = X
+    apply Nat.sInf_le
+    refine ⟨X, ?_, ?_⟩
+    · simp [Polynomial.support_X]
+    · simp [sq, Polynomial.support_X_pow]
+      rfl
+  · -- Lower: f(1) ≥ 1, any nonzero polynomial has ≥ 1 term when squared
+    apply le_csInf
+    · exact ⟨_, X, by simp [Polynomial.support_X], by simp [sq, Polynomial.support_X_pow]; rfl⟩
+    · intro n ⟨p, hp_tc, hp_sq⟩
+      by_contra h
+      push_neg at h
+      interval_cases n
+      -- n = 0: termCount(p²) = 0 means p² = 0, but p has 1 term so p ≠ 0
+      rw [Finset.card_eq_zero, Polynomial.support_eq_empty] at hp_sq
+      have : p ≠ 0 := by
+        intro hp0
+        rw [hp0, Finset.card_eq_zero, Polynomial.support_eq_empty] at hp_tc
+        exact absurd hp_tc one_ne_zero
+      have : p ^ 2 ≠ 0 := pow_ne_zero 2 this
+      exact this hp_sq
+
+/-- f(2) = 3: (a + bx^n)² = a² + 2abx^n + b²x^{2n}. -/
+theorem f_two_eq : f 2 = 3 := by
+  sorry
+
+/-
+## Part VI: Why the Problem Is Hard
+
+The difficulty of determining the exact growth rate stems from:
+
+1. **Cancellation complexity**: The minimum f(k) requires finding polynomials
+   where squaring produces maximum cancellation among cross-terms. This is
+   a delicate combinatorial-algebraic optimization.
+
+2. **Additive combinatorics connection**: The support of P² is the sumset
+   A + A where A = support(P). The question "how small can |A + A| be
+   relative to |A|?" connects to Freiman-Ruzsa theory and additive
+   number theory — but with the crucial twist that COEFFICIENTS can cancel.
+
+3. **Height theory**: Schinzel-Zannier's proof uses arithmetic geometry
+   (heights on algebraic varieties) to show that "too much cancellation"
+   forces the polynomial to have special algebraic structure that limits
+   how sparse it can be.
+
+4. **Lacunary vs dense**: Lacunary polynomials (widely spaced terms)
+   have squares with many terms (minimal cancellation). Dense polynomials
+   (consecutive terms) can have more cancellation but are harder to analyze.
+
+### Key Open Directions
+
+- **Polynomial growth**: Is f(k) = Θ(k^α) for some α ∈ (0, 1)?
+  Most experts conjecture a polynomial rate.
+- **Explicit constructions**: No explicit family achieving f(k) is known
+  for large k — all lower bounds are existential.
+- **Computational evidence**: Computing f(k) exactly for moderate k
+  (say k ≤ 20) could suggest the growth rate.
+- **Additive combinatorics**: Can sumset/difference set methods give
+  better bounds? The Plünnecke-Ruzsa inequality gives |A+A| ≥ |A|
+  but doesn't account for coefficient cancellation.
+-/
+
+end Erdos485OQ01

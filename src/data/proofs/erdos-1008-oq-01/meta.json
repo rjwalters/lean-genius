@@ -24,9 +24,9 @@
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "open-question",
-    "axiomCount": 2,
-    "lineCount": 355,
-    "assumptions": "Two axioms: folkman_upper_bound (c* ≤ 1, requires full KST formalization) and cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). 17 theorems fully proved including K_{2,2}=C₄ equivalence, common neighbor uniqueness, c4free_of_few_edges, and optimal_constant_pos.",
+    "axiomCount": 1,
+    "lineCount": 373,
+    "assumptions": "One axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). folkman_upper_bound now proved via completeGraph(Fin 2) specialization. 18 theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
