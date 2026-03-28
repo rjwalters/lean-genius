@@ -116,3 +116,56 @@ theorem lcmInterval_pos (n k : ℕ) (hk : 0 < k) : 0 < lcmInterval n k := by
       exact Finset.prod_pos (fun i _ => by omega)
     omega
   · exact h
+
+/- ## Structural properties -/
+
+/-- Recursion: `lcmInterval n (k+1) = lcm(n + k + 1, lcmInterval n k)`. -/
+theorem lcmInterval_succ (n k : ℕ) :
+    lcmInterval n (k + 1) = Nat.lcm (n + k + 1) (lcmInterval n k) := by
+  unfold lcmInterval
+  rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+
+/-- Each element `n + i + 1` (for `i < k`) divides `lcmInterval n k`. -/
+theorem dvd_lcmInterval (n k i : ℕ) (hi : i < k) :
+    n + i + 1 ∣ lcmInterval n k := by
+  induction k with
+  | zero => omega
+  | succ k ih =>
+    rw [lcmInterval_succ]
+    rcases (Nat.lt_succ_iff.mp hi).eq_or_lt with rfl | hi'
+    · exact Nat.dvd_lcm_left _ _
+    · exact dvd_trans (ih hi') (Nat.dvd_lcm_right _ _)
+
+/-- `lcmInterval n k` divides `lcmInterval n (k + 1)`. -/
+theorem lcmInterval_dvd_succ (n k : ℕ) :
+    lcmInterval n k ∣ lcmInterval n (k + 1) := by
+  rw [lcmInterval_succ]
+  exact Nat.dvd_lcm_right _ _
+
+/-- Monotonicity: `lcmInterval n k` divides `lcmInterval n (k + j)` for any `j`. -/
+theorem lcmInterval_dvd_add (n k j : ℕ) :
+    lcmInterval n k ∣ lcmInterval n (k + j) := by
+  induction j with
+  | zero => simp
+  | succ j ih =>
+    rw [Nat.add_succ]
+    exact dvd_trans ih (lcmInterval_dvd_succ n (k + j))
+
+/-- The largest element `n + k` divides `lcmInterval n k` when `k > 0`. -/
+theorem last_dvd_lcmInterval (n k : ℕ) (hk : 0 < k) :
+    n + k ∣ lcmInterval n k := by
+  have h := dvd_lcmInterval n k (k - 1) (by omega)
+  have : n + (k - 1) + 1 = n + k := by omega
+  rwa [this] at h
+
+/-- `consecutiveProduct` recursion: `consecutiveProduct n (k+1) = consecutiveProduct n k * (n+k+1)`. -/
+theorem consecutiveProduct_succ (n k : ℕ) :
+    consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
+  unfold consecutiveProduct
+  rw [Finset.range_succ, Finset.prod_insert (Finset.not_mem_range_self)]
+  ring
+
+/-- `consecutiveProduct` is positive. -/
+theorem consecutiveProduct_pos (n k : ℕ) : 0 < consecutiveProduct n k := by
+  unfold consecutiveProduct
+  exact Finset.prod_pos (fun i _ => by omega)

@@ -89,6 +89,32 @@ theorem lowerDensity_le_one (S : Set ℕ) : lowerDensity S ≤ 1 :=
 
 /- ## Structural Properties -/
 
+/-- The sumset of the empty set is empty. -/
+theorem sumSet_empty : sumSet ∅ = ∅ := by
+  ext n; simp [sumSet]
+
+/-- The representation function is zero for the empty set. -/
+theorem repFunction_empty (n : ℕ) : repFunction ∅ n = 0 := by
+  simp [repFunction]
+
+/-- The representation function is monotone under set inclusion. -/
+theorem repFunction_mono {A B : Set ℕ} (h : A ⊆ B) (n : ℕ) :
+    repFunction A n ≤ repFunction B n := by
+  apply Finset.card_le_card
+  intro a
+  simp only [Finset.mem_filter, Finset.mem_range]
+  rintro ⟨hr, ha, hna, hle⟩
+  exact ⟨hr, h ha, h hna, hle⟩
+
+/-- If n ∉ A + A then the representation function is zero. -/
+theorem repFunction_eq_zero_of_not_mem (A : Set ℕ) (n : ℕ) (h : n ∉ sumSet A) :
+    repFunction A n = 0 := by
+  rw [Finset.card_eq_zero]
+  ext a
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty, iff_false]
+  rintro ⟨_, ha, hna, _⟩
+  exact h ⟨a, n - a, ha, hna, by omega⟩
+
 /-- n is in the sumset A + A if and only if the representation function is positive. -/
 theorem mem_sumSet_iff_repFunction_pos (A : Set ℕ) (n : ℕ) :
     n ∈ sumSet A ↔ 0 < repFunction A n := by

@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "assumptions": "1 axiom: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k). Four former axioms now proved: lcmInterval_example1/2 (native_decide), lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity).",
-    "lineCount": 118,
+    "lineCount": 172,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -79,13 +79,21 @@
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 74,
-      "endLine": 97,
-      "summary": "Proves lcmInterval_zero/one, consecutiveProduct_zero/one. States divisibility and positivity.",
+      "endLine": 118,
+      "summary": "Proves lcmInterval_zero/one, consecutiveProduct_zero/one, divisibility, and positivity.",
       "mathContext": "$M(n, 0) = 1$, $M(n, 1) = n + 1$, $\\prod_{i=1}^{0}(n+i) = 1$, $\\prod_{i=1}^{1}(n+i) = n + 1$. $M(n,k) \\mid \\prod_{i=1}^k (n+i)$ and $M(n,k) > 0$ for $k > 0$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 120,
+      "endLine": 172,
+      "summary": "Recursion (lcmInterval_succ), element divisibility (dvd_lcmInterval), monotonicity in k (lcmInterval_dvd_succ/add), and consecutiveProduct recursion/positivity.",
+      "mathContext": "$M(n, k+1) = \\text{lcm}(n+k+1, M(n,k))$. For $i < k$: $(n+i+1) \\mid M(n,k)$. $M(n,k) \\mid M(n, k+j)$ for all $j$. $\\prod_{i=1}^{k+1}(n+i) = \\prod_{i=1}^k (n+i) \\cdot (n+k+1)$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, and Thue–Siegel finiteness. 0 sorries.",
+    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, Thue–Siegel finiteness, and structural properties including recursion, element divisibility, and monotonicity. 0 sorries, 15 theorems.",
     "implications": "Resolution would advance understanding of multiplicative structure of consecutive integers and connect to Diophantine equations.",
     "openQuestions": [
       "Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
@@ -104,9 +112,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 118,
-    "axiomCount": 5,
-    "theoremCount": 4,
+    "lineCount": 172,
+    "axiomCount": 1,
+    "theoremCount": 15,
     "definitionCount": 5
   },
   "crossReferences": [

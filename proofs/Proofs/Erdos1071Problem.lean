@@ -125,6 +125,16 @@ theorem disjoint_implies_endpoint_disjoint (s t : UnitSegment) :
   exfalso
   exact Set.disjoint_iff.mp h ⟨hp.1, hp.2⟩
 
+/-- The segment set is nonempty (contains at least the left endpoint). -/
+theorem segmentSet_nonempty (p q : ℝ × ℝ) : (segmentSet p q).Nonempty :=
+  ⟨p, left_endpoint_mem_segment p q⟩
+
+/-- A segment is not disjoint from itself (it intersects at its own endpoints). -/
+theorem not_areDisjoint_self (s : UnitSegment) : ¬AreDisjoint s s := by
+  intro h
+  have := Set.disjoint_left.mp h (left_endpoint_mem_segment s.x1 s.x2)
+  exact this (left_endpoint_mem_segment s.x1 s.x2)
+
 /- Part 4b: Euclidean Distance Properties -/
 
 /-- Euclidean distance is symmetric -/
@@ -195,6 +205,18 @@ theorem exists_nonempty_packing :
     ∃ S : Set UnitSegment, IsPacking S ∧ S.Nonempty :=
   ⟨{horizontalMidSegment}, packing_singleton _ horizontalMidSegment_in_square,
    Set.singleton_nonempty _⟩
+
+/-- A maximal packing in the unit square must be nonempty.
+    (If S were empty, any unit segment could be added, contradicting maximality.) -/
+theorem maximal_packing_nonempty (S : Set UnitSegment) (hmax : IsMaximalPacking S) :
+    S.Nonempty := by
+  by_contra h
+  rw [Set.not_nonempty_iff_eq_empty] at h
+  have hblock := hmax.2 horizontalMidSegment horizontalMidSegment_in_square
+    (by rw [h]; exact Set.not_mem_empty _)
+  obtain ⟨t, ht, _⟩ := hblock
+  rw [h] at ht
+  exact Set.not_mem_empty _ ht
 
 /-
 # Part 5: Danzer's Result (SOLVED)
