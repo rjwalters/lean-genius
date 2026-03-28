@@ -62,9 +62,16 @@ axiom prime_divides_central_iff (p n : ℕ) (hp : Nat.Prime p) (hle : p ≤ 2 * 
     -- At least one digit of n in base p is ≥ ⌈p/2⌉
     ∃ k : ℕ, (n / p ^ k) % p ≥ (p + 1) / 2
 
-/-- Small primes always divide C(2n, n) for large n. -/
-axiom small_primes_divide (p : ℕ) (hp : Nat.Prime p) :
-  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → p ∣ centralBinom n
+/-- The claim "for each prime p, p | C(2n,n) for all sufficiently large n"
+    is FALSE for p ≥ 3. Counterexample: n = p^k gives 0 carries in base-p
+    addition (Kummer), so p ∤ C(2·p^k, p^k) for all k.
+    Concrete: C(6,3) = 20 and 3 ∤ 20. The correct statement is that
+    the set {n : p ∤ C(2n,n)} has density 0 (most n have a large digit). -/
+theorem small_primes_divide_false :
+    ¬(3 ∣ centralBinom 3) ∧ centralBinom 3 = 20 := by
+  constructor
+  · unfold centralBinom; native_decide
+  · unfold centralBinom; native_decide
 
 /-- C(2n, n) is always even for n ≥ 1.
     Proof: By Pascal's rule, C(2n, n) = C(2n-1, n-1) + C(2n-1, n).
