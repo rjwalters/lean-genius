@@ -66,8 +66,8 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
-    "lineCount": 565,
-    "assumptions": "0 sorries. 4 axiom declarations: elrss_upper_bound (ELRSS 1999 upper bound), pham_zakharov_upper_bound (Pham-Zakharov 2024 upper bound), csaba_lower_bound (Csaba polynomial lower bound), straus_lower_bound (Straus subexponential lower bound).",
+    "lineCount": 477,
+    "assumptions": "4 axioms: elrss_upper_bound (ELRSS 1999), pham_zakharov_upper_bound (Pham-Zakharov 2024), csaba_lower_bound (Csaba), straus_lower_bound (Straus). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -173,9 +173,9 @@
       "Classical"
     ],
     "namespace": "Erdos131",
-    "lineCount": 565,
+    "lineCount": 477,
     "axiomCount": 4,
-    "theoremCount": 26,
+    "theoremCount": 27,
     "definitionCount": 6
   },
   "crossReferences": [
