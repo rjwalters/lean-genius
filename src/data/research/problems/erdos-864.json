@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_counting_bound (elementary Sidon bound). File now has 2 axioms (down from original 5). 16T 2A 0S.",
+    "progressSummary": "PROGRESS: sidon_upper_bound axiom ELIMINATED (2→1 axioms). Proved 3 new theorems: isSidon_diff_injective (sum-Sidon ⟹ difference-uniqueness), sidon_diff_counting_bound (k(k-1) ≤ 2(N-1) via difference injection), sidon_card_sq_le_2N (k² ≤ 2N+k, improving k² ≤ 4N by ~2×). File: ~19T 1A 0S.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
@@ -38,19 +38,30 @@
       "theorem distinct_sums_bounded (proved): correct alternative to almost_sidon_sum_range",
       "Proved almost_sidon_exceeds_sidon from erdos_freud_lower_bound (axiomCount 5→4)",
       "REMOVED false axiom almost_sidon_sum_range: |A|(|A|+1)/2-1 ≤ 2N-1 is false when collision multiplicity r > 2",
-      "theorem sidon_counting_bound: elementary Sidon bound k(k+1)/2 ≤ 2N-1 (proved)"
+      "sidon_counting_bound: PROVED — k(k+1)/2 ≤ 2N-1 for Sidon sets",
+      "sidon_card_sq_le: PROVED — k² ≤ 4N (elementary sum-counting Sidon bound)",
+      "isSidon_diff_injective: PROVED — sum-Sidon implies all pairwise differences distinct",
+      "sidon_diff_counting_bound: PROVED — k(k-1) ≤ 2(N-1) via difference injection into {1,...,N-1}",
+      "sidon_card_sq_le_2N: PROVED — k² ≤ 2N+k (improved Sidon bound, ~2× better than k² ≤ 4N)",
+      "ELIMINATED sidon_upper_bound axiom (replaced by proved difference-counting bound)"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
-      "multiRepSet A ⊆ multiRepSet B when A ⊆ B — follows from sumRepCount monotonicity",
       "IsSidon and IsAlmostSidon are both anti-monotone: subsets preserve the property",
-      "almost_sidon_sum_range was FALSE: claimed |A|(|A|+1)/2 ≤ 2N but reflected construction has collision multiplicity |B| at sum N",
-      "Correct bound: |A|(|A|+1)/2 ≤ 2N + r - 2 where r is max collision multiplicity. Use distinct_sums_bounded for correct count.",
-      "Remaining 3 axioms are all deep results: EF lower bound (asymptotic construction), Sidon upper (classical), reflected construction (nontrivial case analysis)",
-      "sidon_counting_bound proved: for Sidon A ⊆ {1,...,N}, k(k+1)/2 ≤ 2N-1 (elementary √N bound, fully proved from injectivity + distinct_sums_bounded)"
+      "almost_sidon_sum_range was FALSE: reflected construction has collision multiplicity |B| at sum N",
+      "Sum-Sidon ⟹ difference-Sidon: if a₁-b₁=a₂-b₂ then a₁+b₂=a₂+b₁, and sumRepCount ≤ 1 forces {a₁,b₂}={a₂,b₁}",
+      "Difference counting gives k(k-1)/2 distinct differences in {1,...,N-1}, yielding k² ≤ 2N+k",
+      "The Lindström bound √N + O(N^{1/4}) requires Fourier analysis over cyclic groups (not in Mathlib v4.26.0)",
+      "erdos_freud_lower_bound needs large Sidon sets in {1,...,M} of size ~√M; Erdős-Turán construction gives size p in range 2p² (sufficient for √(M/2) but not √M)"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Fourier analysis over finite cyclic groups (needed for Lindström bound)",
+      "Singer/Bose-Chowla construction for optimal-size Sidon sets in {1,...,M}"
+    ],
+    "nextSteps": [
+      "To prove erdos_freud_lower_bound: implement Erdős-Turán Sidon construction (gives weaker constant) or Singer construction (gives optimal constant)",
+      "erdos_freud_lower_bound needs: (1) large Sidon set existence, (2) reflected_construction_card: |B ∪ {N-b}| = 2|B|, (3) link to maxAlmostSidon"
+    ],
     "markdown": "# Erdős #864 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots N\\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\\leq b\\in A$). Estimate the maximal possible size of $\\lvert A\\rvert$ - in particular, is it true that\\[\\lvert A\\rvert \\leq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}?\\]\n\n\n\nA problem of Erd\\H{o}s and Freud, who prove that\\[\\lvert A\\rvert \\geq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}.\\]This is shown by taking a genuine Sidon set $B\\subset [1,N/3]$ of size $\\sim N^{1/2}/\\sqrt{3}$ and taking the union with $\\{N-b : b\\in B\\}$.\n\nFor the analogous question with $n=a-b$ they prove that $\\lvert A\\rvert\\sim N^{1/2}$.\n\nThis is a weaker form of [840].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #840\n- Problem #863\n- Problem #865\n- Problem #39\n- Problem #1\n\n## References\n\n- ErFr91\n- Er92c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -74,9 +85,9 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 556,
-      "theoremCount": 16,
-      "axiomCount": 2,
+      "lineCount": 700,
+      "theoremCount": 19,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
