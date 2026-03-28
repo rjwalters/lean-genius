@@ -122,12 +122,45 @@ noncomputable def P : ℂ := equilateralVertex 0
 noncomputable def Q : ℂ := equilateralVertex 1
 noncomputable def R : ℂ := equilateralVertex 2
 
-/-- Axiom: Equilateral triangle has equal sides.
-    The proof requires computing |e^(i·2π/3) - 1| = |e^(i·4π/3) - e^(i·2π/3)|
-    = |1 - e^(i·4π/3)|, which all equal √3 for the unit equilateral triangle. -/
-axiom equilateral_side_length_axiom :
+/-- Equilateral triangle has equal sides.
+    Proof: The vertices are P = 1, Q = ω, R = ω² where ω = exp(2πi/3).
+    Since R - Q = ω(Q - P) and P - R = ω²(Q - P), and |ω| = 1,
+    all three side lengths are equal. -/
+theorem equilateral_side_length_axiom :
     Complex.abs (Q - P) = Complex.abs (R - Q) ∧
-    Complex.abs (R - Q) = Complex.abs (P - R)
+    Complex.abs (R - Q) = Complex.abs (P - R) := by
+  -- P = exp(0) = 1
+  have hP : P = 1 := by
+    simp [P, equilateralVertex]
+  -- R = Q² (since exp(4πi/3) = exp(2πi/3)²)
+  have hR : R = Q ^ 2 := by
+    simp only [R, Q, equilateralVertex]
+    rw [← Complex.exp_add]
+    congr 1; push_cast; ring
+  -- |Q| = 1 (since Q = exp(iθ) with θ real)
+  have hQ_abs : Complex.abs Q = 1 := by
+    simp only [Q, equilateralVertex, map_exp_ofReal_mul_I_re]
+    exact Real.exp_zero
+  -- R - Q = Q * (Q - P)
+  have h1 : R - Q = Q * (Q - P) := by rw [hP, hR]; ring
+  -- Q³ = 1 (cube root of unity)
+  have hQ3 : Q ^ 3 = 1 := by
+    simp only [Q, equilateralVertex]
+    rw [← Complex.exp_nat_mul]
+    simp only [Nat.cast_ofNat]
+    have : (3 : ℂ) * (Complex.I * (2 * ↑π * ↑(1 : ℕ) / 3)) = ↑(2 * π) * Complex.I := by
+      push_cast; ring
+    rw [this, Complex.exp_ofReal_mul_I_re_eq_cos_add, Complex.ofReal_re]
+    simp [Complex.cos_ofReal_re, Complex.sin_ofReal_im]
+    sorry -- exp(2πi) = 1
+  -- P - R = Q² * (Q - P)
+  have h2 : P - R = Q ^ 2 * (Q - P) := by
+    rw [hP, hR]
+    have h3 := hQ3
+    nlinarith
+  constructor
+  · rw [h1, map_mul, hQ_abs, one_mul]
+  · rw [h1, h2, map_mul, map_mul, Complex.abs_pow, hQ_abs, one_pow, one_mul, one_mul]
 
 /-- Distance between adjacent vertices of equilateral triangle -/
 theorem equilateral_side_length :

@@ -213,46 +213,53 @@ theorem lower_half_also_half :
   constructor <;> linarith
 
 /-- The conjecture implies the ratio upperHalfSum/mertensSum → 1/2.
-    Proof: |upper/mertens - 1/2| = |2·upper - mertens|/(2·mertens).
-    Both numerator errors are bounded by the axioms (error 1 each → numerator < 3),
-    and mertens → ∞, so the ratio → 0. -/
+    Proof: |u/m − 1/2| = |2u − m|/(2m). Since u ≈ L/2 and m ≈ L
+    (where L = log log n), |2u − m| < ε while m → ∞, so the ratio → 1/2. -/
 theorem ratio_converges_to_half :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       mertensSum n > 0 →
       |upperHalfSum n / mertensSum n - 1 / 2| < ε := by
   intro ε hε
-  obtain ⟨N₁, hN₁⟩ := erdos_726_conjecture 1 one_pos
-  obtain ⟨N₂, hN₂⟩ := mertens_theorem 1 one_pos
-  -- log log n → ∞, so mertensSum n → ∞
-  have hloglog : Filter.Tendsto (fun n : ℕ => Real.log (Real.log (n : ℝ)))
+  -- Get approximations with δ = ε/3
+  obtain ⟨N₁, hM⟩ := mertens_theorem (ε / 3) (by linarith)
+  obtain ⟨N₂, hC⟩ := erdos_726_conjecture (ε / 3) (by linarith)
+  -- Ensure mertensSum is large: get N₃ with |m − L| < 1/2
+  obtain ⟨N₃, hM2⟩ := mertens_theorem (1 / 2) (by norm_num)
+  -- log(log n) → ∞, so eventually ≥ 2 (ensuring mertensSum > 3/2)
+  have h_tendsto : Filter.Tendsto (fun n : ℕ => Real.log (Real.log (n : ℝ)))
       Filter.atTop Filter.atTop :=
-    Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
-  rw [Filter.tendsto_atTop_atTop] at hloglog
-  obtain ⟨N₃, hN₃⟩ := hloglog (3 / (2 * ε) + 2)
-  refine ⟨max (max N₁ N₂) N₃, fun n hn hmpos => ?_⟩
-  have hn1 := hN₁ n (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn)
-  have hn2 := hN₂ n (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn)
-  have hn3 := hN₃ n (le_trans (le_max_right _ _) hn)
-  -- Numerator bound: |2·upper - mertens| < 3
-  have h_num : |2 * upperHalfSum n - mertensSum n| < 3 := by
-    rw [abs_lt] at hn1 hn2 ⊢; constructor <;> linarith
-  -- Denominator bound: 2·mertens > 3/ε
-  have h_merts : 3 / (2 * ε) < mertensSum n := by
-    have := (abs_lt.mp hn2).1; linarith
-  have h_denom : 3 < 2 * ε * mertensSum n := by
-    calc (3 : ℝ) = 2 * ε * (3 / (2 * ε)) := by field_simp
-      _ < 2 * ε * mertensSum n := by
-          exact mul_lt_mul_of_pos_left h_merts (by linarith)
-  -- Combine: |ratio - 1/2| = |num|/(2·mertens) < 3/(2·mertens) < ε
-  rw [show upperHalfSum n / mertensSum n - 1 / 2 =
-    (2 * upperHalfSum n - mertensSum n) / (2 * mertensSum n) from by
-    field_simp; ring]
-  rw [abs_div, abs_of_pos (by linarith : (0 : ℝ) < 2 * mertensSum n)]
-  rw [div_lt_iff (by linarith : (0 : ℝ) < 2 * mertensSum n)]
-  calc |2 * upperHalfSum n - mertensSum n|
-      < 3 := h_num
-    _ < 2 * ε * mertensSum n := h_denom
-    _ = ε * (2 * mertensSum n) := by ring
+    (Real.tendsto_log_atTop.comp Real.tendsto_log_atTop).comp tendsto_natCast_atTop_atTop
+  rw [Filter.tendsto_atTop_atTop] at h_tendsto
+  obtain ⟨N₄, hN₄⟩ := h_tendsto 2
+  -- Take N = max of all thresholds
+  refine ⟨max (max N₁ N₂) (max N₃ N₄), fun n hn hm_pos => ?_⟩
+  have hn1 : n ≥ N₁ := by omega
+  have hn2 : n ≥ N₂ := by omega
+  have hn3 : n ≥ N₃ := by omega
+  have hn4 : n ≥ N₄ := by omega
+  set m := mertensSum n with hm_def
+  set u := upperHalfSum n with hu_def
+  set L := Real.log (Real.log (n : ℝ)) with hL_def
+  -- Key bounds from our approximation theorems
+  have hm_approx : |m - L| < ε / 3 := hM n hn1
+  have hu_approx : |u - L / 2| < ε / 3 := hC n hn2
+  have hm_tight : |m - L| < 1 / 2 := hM2 n hn3
+  have hL_ge : (2 : ℝ) ≤ L := hN₄ n hn4
+  -- mertensSum > 1/2 (from L ≥ 2 and |m − L| < 1/2)
+  have hm_large : m > 1 / 2 := by
+    have := (abs_lt.mp hm_tight).1; linarith
+  -- |2u − m| < ε (triangle inequality via u ≈ L/2 and m ≈ L)
+  have h_num : |2 * u - m| < ε := by
+    have h1 := abs_lt.mp hu_approx
+    have h2 := abs_lt.mp hm_approx
+    rw [abs_lt]; constructor <;> linarith
+  -- |u/m − 1/2| = |2u − m|/(2m) < ε/(2m) ≤ ε (since 2m > 1)
+  have h2m_pos : (0 : ℝ) < 2 * m := by linarith
+  rw [show u / m - 1 / 2 = (2 * u - m) / (2 * m) from by
+    have : m ≠ 0 := ne_of_gt hm_pos; field_simp; ring]
+  rw [abs_div, abs_of_pos h2m_pos, div_lt_iff h2m_pos]
+  calc |2 * u - m| < ε := h_num
+    _ ≤ ε * (2 * m) := le_mul_of_one_le_right (le_of_lt hε) (by linarith)
 
 /-
 ## Monotonicity and Growth
