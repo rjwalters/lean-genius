@@ -61,17 +61,7 @@ theorem trivial_upper (n : ℕ) :
     S_n contains (Z/2Z)^⌊n/2⌋ as a subgroup (transpositions on disjoint pairs).
     This subgroup has 2^⌊n/2⌋ elements and hence many subgroups. -/
 
-/- ## Part III: Pyber's Theorem (1993) -/
-
-/-- **Pyber's Theorem (1993):** log f(n) ≍ n².
-    There exist constants c₁, c₂ > 0 such that
-    c₁ · n² ≤ log f(n) ≤ c₂ · n² for all sufficiently large n. -/
-axiom pyber_theorem :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-    c₁ * (n : ℝ)^2 ≤ Real.log (numSubgroups n : ℝ) ∧
-    Real.log (numSubgroups n : ℝ) ≤ c₂ * (n : ℝ)^2
-
-/- ## Part IV: The Asymptotic Constant 1/16 -/
+/- ## Part III: The Asymptotic Constant 1/16 (Roney-Dougal-Tracey 2025) -/
 
 /-- The asymptotic constant: 1/16.
     This arises because the dominant contribution to subgroup count comes from
@@ -86,13 +76,47 @@ theorem roney_dougal_tracey :
     Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16)) := by
   sorry
 
-/-- The asymptotic formula implies Pyber's theorem. -/
+/-- **The asymptotic formula implies Pyber's theorem.**
+    If f(n)/n² → 1/16, then choosing ε = 1/32 gives eventual bounds
+    (1/32)n² ≤ log f(n) ≤ (3/32)n². -/
 theorem rdt_implies_pyber :
     (Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16))) →
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
       c₁ * (n : ℝ)^2 ≤ Real.log (numSubgroups n : ℝ) ∧
       Real.log (numSubgroups n : ℝ) ≤ c₂ * (n : ℝ)^2 := by
-  sorry
+  intro h
+  -- Witness: c₁ = 1/32, c₂ = 3/32 (from ε = 1/32 around L = 1/16)
+  refine ⟨1 / 32, 3 / 32, by norm_num, by norm_num, ?_⟩
+  rw [Metric.tendsto_nhds] at h
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (h (1 / 32) (by norm_num))
+  exact ⟨N, fun n hn => by
+    have hd := hN n hn
+    rw [Real.dist_eq] at hd
+    have hab := abs_lt.mp hd
+    -- hab.1 : -(1/32) < f(n) - 1/16  ⟹  f(n) > 1/32
+    -- hab.2 : f(n) - 1/16 < 1/32     ⟹  f(n) < 3/32
+    have h_lo : Real.log (numSubgroups n : ℝ) / (n : ℝ) ^ 2 > 1 / 32 := by linarith [hab.1]
+    have h_hi : Real.log (numSubgroups n : ℝ) / (n : ℝ) ^ 2 < 3 / 32 := by linarith [hab.2]
+    -- f(n)/n² > 0 forces n² > 0 (since f(0)/0 = 0 < 1/32)
+    have hn2 : (0 : ℝ) < (n : ℝ) ^ 2 := by
+      by_contra hle; push_neg at hle
+      have := le_antisymm hle (sq_nonneg _)
+      rw [this, div_zero] at h_lo; linarith
+    constructor
+    · rw [lt_div_iff hn2] at h_lo; linarith
+    · rw [div_lt_iff hn2] at h_hi; linarith⟩
+
+/- ## Part IV: Pyber's Theorem (1993) -/
+
+/-- **Pyber's Theorem (1993):** log f(n) ≍ n².
+    There exist constants c₁, c₂ > 0 such that
+    c₁ · n² ≤ log f(n) ≤ c₂ · n² for all sufficiently large n.
+    This follows from the stronger Roney-Dougal-Tracey asymptotic (2025). -/
+theorem pyber_theorem :
+  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+    c₁ * (n : ℝ)^2 ≤ Real.log (numSubgroups n : ℝ) ∧
+    Real.log (numSubgroups n : ℝ) ≤ c₂ * (n : ℝ)^2 :=
+  rdt_implies_pyber roney_dougal_tracey
 
 /- ## Part V: Elementary Abelian 2-Groups -/
 
@@ -124,12 +148,11 @@ theorem constant_explanation :
 /-- The "statistical theorem on their order" part of the problem:
     What is the distribution of |H| as H ranges over subgroups of S_n? -/
 
-/-- Most subgroups of S_n are 2-groups.
-    This is because the elementary abelian 2-subgroups dominate the count. -/
-axiom most_subgroups_are_2groups :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    -- The fraction of subgroups whose order is a power of 2 approaches 1
-    True  -- Placeholder: the precise formalization requires defining the proportion
+/-- Most subgroups of S_n are 2-groups (qualitative observation).
+    The elementary abelian 2-subgroups dominate the count.
+    A precise formalization would require defining the proportion of 2-group
+    subgroups among all subgroups of S_n, which needs a Fintype instance
+    for Subgroup (Equiv.Perm (Fin n)). -/
 
 /- ## Part VII: Small Cases -/
 

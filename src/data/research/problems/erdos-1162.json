@@ -19,21 +19,22 @@
     "phase": "ACT",
     "since": "2026-03-28T09:30:00Z",
     "iteration": 2,
-    "focus": "Formalization complete. 7 sorries remain.",
+    "focus": "Axiom elimination: 7→5 axioms, 6→5 sorries. Proved rdt_implies_pyber.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Remaining sorries: trivial_upper, roney_dougal_tracey, f1, f2, f3.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZED: Created Erdos1162Problem.lean (155 lines). 7 axioms, 7 sorries. Gallery entry.",
+    "progressSummary": "PROGRESS: Axiom elimination 7→5, sorry elimination 6→5. Proved rdt_implies_pyber (convergence → eventual bounds). Derived pyber_theorem from RDT. Removed trivially True most_subgroups_are_2groups.",
     "builtItems": [
-      "Erdos1162Problem.lean: 155-line formalization",
+      "Erdos1162Problem.lean: 185-line formalization (5 axioms, 5 sorries)",
       "numSubgroups axiom for f(n)",
-      "pyber_theorem: log f(n) ≍ n²",
+      "rdt_implies_pyber: PROVED — convergence to 1/16 implies Pyber bounds via ε=1/32",
+      "pyber_theorem: now derived from rdt_implies_pyber + roney_dougal_tracey (no longer axiom)",
       "roney_dougal_tracey: log f(n)/n² → 1/16",
       "Elementary abelian 2-group explanation",
       "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
@@ -45,7 +46,10 @@
       "Roney-Dougal-Tracey (2025) proved log f(n) = (1/16 + o(1))n²",
       "Constant 1/16 = (1/4)² from elementary abelian 2-groups on n/4 points",
       "Most subgroups of S_n are 2-groups",
-      "Connected to Gaussian binomial coefficients over GF(2)"
+      "Connected to Gaussian binomial coefficients over GF(2)",
+      "rdt_implies_pyber proved: convergence to L>0 implies eventual bounds with c₁=L/2, c₂=3L/2",
+      "pyber_theorem is redundant as a separate axiom — it follows from the stronger RDT asymptotic",
+      "most_subgroups_are_2groups was asserting ∀ ε > 0, ∃ N, ∀ n ≥ N, True — trivially true, removed"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -69,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.157Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-28T09:35:00.000Z",
   "significance": 7,
   "tractability": 6
 }
