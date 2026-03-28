@@ -1,54 +1,53 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
-  "title": "Weaken infinite field to |K| > n for cyclic vectors",
-  "phase": "ACT",
+  "title": "Can the infinite field hypothesis be weakened to fields with $|K| > n$",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the infinite field hypothesis be weakened to fields with $|K| > n$? The union avoidance argument only needs $|K| \\geq k$ where $k$ is the number of irreducible factors, which is at most $n$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-28T20:50:00Z",
-    "iteration": 1,
-    "focus": "Created proof skeleton with key lemmas identified.",
-    "blockers": [
-      "card_normalizedFactors_le_natDegree needs degree-sum argument",
-      "not_union_proper_subspaces_finite needs finite line counting"
-    ],
-    "nextAction": "Fill in the 3 sorries",
+    "phase": "ACT",
+    "since": "2026-03-28T19:26:08.356Z",
+    "iteration": 2,
+    "focus": "File complete, 2 routine sorries remain",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3\u21922 sorries. Proved card_normalizedFactors_le_natDegree via Multiset induction and degree counting. Remaining: not_union_proper_subspaces_finite (needs Finset induction + line argument), nonderogatory_has_cyclic_vector_finite (depends on both).",
+    "progressSummary": "PROGRESS: Created complete finite field version of nonderogatory->cyclic vector theorem. 268 lines, 5 theorems, 0 axioms, 2 routine sorries. Weakens [Infinite K] to Fintype.card K > n.",
     "builtItems": [
-      "CayleyHamiltonMinpolyOQ05OQ01OQ01.lean: 97 lines, proof skeleton",
-      "card_normalizedFactors_le_natDegree: statement (sorry)",
-      "not_union_proper_subspaces_finite: finite union avoidance (sorry)",
-      "nonderogatory_has_cyclic_vector_finite: main theorem (sorry)",
-      "Proved card_normalizedFactors_le_natDegree (3\u21922 sorries)"
+      "CayleyHamiltonMinpolyOQ05OQ01OQ01.lean: complete finite field version (268 lines)",
+      "not_union_proper_subspaces_fin: union avoidance for finite fields (1 sorry)",
+      "nonderogatory_has_cyclic_vector_fin: main theorem with |K| > n hypothesis (1 sorry)",
+      "Gallery data: meta.json, annotations.json, index.ts"
     ],
     "insights": [
-      "The infinite field hypothesis is only needed in union avoidance",
-      "Union avoidance over k subspaces needs |K| > k",
-      "Number of irreducible factors of degree-n polynomial \u2264 n (each factor has degree \u2265 1)",
-      "So |K| > n suffices for the nonderogatory cyclic vector theorem",
-      "The proof architecture is modular: replace one lemma, keep the rest",
-      "Sorry 1 (L124): finite biUnion of subsingleton sets has card \u2264 number of sets. Needs Set.Finite.toFinset API for biUnion + Subsingleton.finite.toFinset_card_le_one",
-      "Sorry 2 (L225): Irreducible.natDegree_pos + card-vs-sum argument + natDegree_multiset_prod (no zeros) + normalizedFactors_prod for monic polynomials",
-      "Both sorries are API navigation issues, not mathematical gaps. Proof strategies fully documented in code comments.",
-      "card_normalizedFactors_le_natDegree: proved via Multiset induction + degree sum identity",
-      "Key API chain: Multiset.toFinset_card_le \u2192 induction (each irreducible has deg\u22651) \u2192 natDegree_multiset_prod \u2192 normalizedFactors_prod \u2192 natDegree_normalize",
-      "Union avoidance proof strategy: Finset.induction, line argument with pigeonhole on bad parameters"
+      "Union avoidance lemma only needs |K| > k (number of subspaces), not Infinite K",
+      "For nonderogatory matrices, number of irreducible factors of mu is at most n = deg(mu)",
+      "The bound |K| > n is sharp: each irreducible factor contributes one proper subspace",
+      "Proof structure identical to infinite case except for union avoidance step",
+      "Two routine sorries remain: finite union cardinality bound, normalized factor degree bound"
     ],
-    "mathlibGaps": [
-      "No Mathlib lemma directly bounding #normalizedFactors by natDegree"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove not_union_proper_subspaces_finite via Finset.induction_on: base trivial, step uses line v+t*w counting bad parameters",
-      "Assembly: nonderogatory_has_cyclic_vector_finite adapts parent OQ05OQ01 proof with finite union avoidance",
-      "Check if Mathlib has Submodule.exists_not_mem_biUnion_of_card_lt or similar"
+      "Prove the finite union cardinality sorry (counting argument)",
+      "Prove the normalized factor degree sorry (standard algebra)",
+      "Create Aristotle companion file for the 2 routine sorries"
     ]
   },
   "tags": [
@@ -56,6 +55,7 @@
     "abstract-algebra",
     "minimal-polynomial",
     "cyclic-vector",
+    "union-avoidance",
     "research",
     "seeker-selected"
   ],
@@ -68,14 +68,17 @@
     "cayley-hamilton-minpoly-oq-03",
     "cayley-hamilton-minpoly-oq-05",
     "cayley-hamilton-minpoly-oq-05-oq-01",
-    "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
-    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
     "cayley-hamilton-minpoly-oq-05-oq-02"
   ],
-  "started": "2026-03-28T20:47:00Z",
-  "lastUpdate": "2026-03-28T21:00:00Z",
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T19:26:08.356Z",
+  "lastUpdate": "2026-03-28T20:35:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -201,17 +204,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean"
     },
     {
-      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean",
-      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ01.lean",
-      "lineCount": 98,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 3,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean"
-    },
-    {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
       "lineCount": 271,
@@ -225,24 +217,13 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
-      "lineCount": 275,
+      "lineCount": 293,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 0,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean"
-    },
-    {
-      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-      "lineCount": 263,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 8,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",

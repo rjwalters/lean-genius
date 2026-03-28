@@ -71,6 +71,17 @@ roots of the associated polynomial P(z) = Σ cₖ zᵏ all lying on ‖z‖ = 1.
 def HasUnitCircleRoots (p : TrigPoly n) : Prop :=
   ∀ z : ℂ, (∑ k : Fin (n + 1), p k * z ^ (k : ℕ)) = 0 → OnUnitCircle z
 
+/--
+A trigonometric polynomial is nonconstant if the associated algebraic polynomial
+P(z) = Σ cₖ zᵏ has at least one root. This excludes the constant polynomial
+case that is a counterexample to the original formulation.
+
+Equivalently, we require n ≥ 1 AND the leading coefficient is nonzero (so
+the polynomial genuinely has degree ≥ 1 and therefore at least one root in ℂ).
+-/
+def Nonconstant (p : TrigPoly n) : Prop :=
+  ∃ z : ℂ, (∑ k : Fin (n + 1), p k * z ^ (k : ℕ)) = 0
+
 /- ## Norms -/
 
 /--
@@ -88,23 +99,33 @@ noncomputable def TrigPoly.l1Norm (p : TrigPoly n) : ℝ :=
 /- ## The Main Theorem -/
 
 /--
-**Erdős Problem #225**: If a trigonometric polynomial has all roots on the
-unit circle and supremum norm 1, then its L¹ norm is at most 4.
-
-**Formalization Note**: Aristotle found a counterexample showing this statement
-as formalized is FALSE. The constant polynomial p(θ) = 1 satisfies `HasUnitCircleRoots`
-vacuously (it has no roots), has supNorm = 1, but L¹ norm = 2π > 4.
-
-The mathematical theorem requires the polynomial to have degree ≥ 1 (i.e., have
-at least one root). The definition `HasUnitCircleRoots` needs refinement to
-exclude the trivial case of constant polynomials.
+**Erdős Problem #225 (ORIGINAL — KNOWN BUG)**: This version is false as stated.
+Aristotle found a counterexample: the constant polynomial p(θ) = 1 satisfies
+`HasUnitCircleRoots` vacuously (no roots), has supNorm = 1, but L¹ norm = 2π > 4.
+Retained for historical reference; use `erdos_225` instead.
 -/
 theorem erdos_225_main (n : ℕ) (p : TrigPoly n)
     (hroots : HasUnitCircleRoots p)
     (hsup : p.supNorm = 1) :
     p.l1Norm ≤ 4 := by
-  -- Proved by Kristiansen (1974) and Saff-Sheil-Small (1973)
-  -- TODO: Fix formalization to require polynomial has at least one root
+  sorry
+
+/--
+**Erdős Problem #225 (CORRECTED)**: If a nonconstant trigonometric polynomial
+has all roots on the unit circle and supremum norm 1, then its L¹ norm is at
+most 4. The `Nonconstant` hypothesis fixes the bug found by Aristotle.
+
+Proved by Kristiansen (1974) for real coefficients and Saff–Sheil-Small (1973)
+for complex coefficients. The bound 4 is sharp (achieved at degree 1).
+-/
+theorem erdos_225 (n : ℕ) (p : TrigPoly n)
+    (hroots : HasUnitCircleRoots p)
+    (hnc : Nonconstant p)
+    (hsup : p.supNorm = 1) :
+    p.l1Norm ≤ 4 := by
+  -- The proof uses the factorization P(z) = cₙ ∏(z - zⱼ) with |zⱼ| = 1,
+  -- combined with the identity ∫₀²π |e^(iθ) - α| dθ = 4 for |α| = 1
+  -- and the sub-multiplicativity of L¹ norms under convolution.
   sorry
 
 /- ## Optimality -/
@@ -128,17 +149,64 @@ theorem erdos_225_optimal :
     norm_num [ Erdos225.TrigPoly.eval ];
     exact Or.inl ( by linarith [ Real.pi_gt_three ] )
 
-/- ## Special Cases -/
+/- ## Key Lemmas -/
 
-/-- The constant polynomial f(θ) = 1 has L¹ norm 2π ≈ 6.28. -/
+/--
+The constant polynomial f(θ) = 1 demonstrates the necessity of the `Nonconstant`
+hypothesis: it has L¹ norm 2π > 4.
+-/
 theorem constant_l1_norm : (2 : ℝ) * Real.pi > 4 := by
-  -- π > 3 > 2, so 2π > 4
   have hpi : Real.pi > 3 := Real.pi_gt_three
   linarith
 
-/-- For the polynomial f(θ) = e^(iθ), we have |f(θ)| = 1 for all θ,
-    so ∫|f| = 2π. But this has a root at 0 (as a polynomial in z). -/
-example : (1 : ℝ) ≤ 1 := le_refl 1
+/--
+The constant polynomial is not `Nonconstant`: the polynomial P(z) = 1
+has no roots in ℂ.
+-/
+theorem constant_not_nonconstant : ¬ Nonconstant (fun (_ : Fin 1) => (1 : ℂ)) := by
+  intro ⟨z, hz⟩
+  simp [Fin.sum_univ_one] at hz
+
+/--
+**Key integral identity**: For any α on the unit circle (|α| = 1),
+∫₀²π |e^(iθ) − α| dθ = 8.
+
+Proof sketch: Write α = e^(iφ). Then |e^(iθ) − e^(iφ)| = 2|sin((θ−φ)/2)|.
+By periodicity, ∫₀²π 2|sin((θ−φ)/2)| dθ = 4∫₀^π |sin u| du = 4·2 = 8.
+-/
+theorem unit_circle_difference_integral (α : ℂ) (hα : ‖α‖ = 1) :
+    ∫ θ in Set.Icc (0 : ℝ) (2 * Real.pi),
+      ‖Complex.exp (Complex.I * θ) - α‖ = 8 := by
+  sorry
+
+/--
+**L¹ norm of a degree-1 polynomial with unit circle root equals 4**.
+
+If p(z) = c₀ + c₁z has its root z₀ = −c₀/c₁ on the unit circle and
+sup norm 1, then ∫₀²π |p(e^(iθ))| dθ = 4.
+
+Proof: Since c₁ ≠ 0 and |z₀| = 1, we have |c₀| = |c₁|.
+The sup norm is |c₁| · sup|c₀/c₁ + e^(iθ)| = |c₁| · (1 + 1) = 2|c₁| = 1,
+so |c₁| = 1/2. The L¹ norm is |c₁| · ∫₀²π |c₀/c₁ + e^(iθ)| dθ = (1/2) · 8 = 4,
+using the unit_circle_difference_integral identity.
+
+This shows the bound in Erdős #225 is tight and achieved exactly at degree 1.
+-/
+theorem degree_one_l1_norm_eq_four (p : TrigPoly 1)
+    (hroots : HasUnitCircleRoots p) (hnc : Nonconstant p)
+    (hsup : p.supNorm = 1) :
+    p.l1Norm = 4 := by
+  sorry
+
+/--
+**Corrected optimality**: The bound 4 in `erdos_225` is achieved by degree-1
+polynomials. Unlike the original `erdos_225_optimal` (which exploited the
+constant-polynomial bug), this uses a genuine nonconstant polynomial.
+-/
+theorem erdos_225_tight :
+    ∃ n : ℕ, ∃ p : TrigPoly n,
+    HasUnitCircleRoots p ∧ Nonconstant p ∧ p.supNorm = 1 ∧ p.l1Norm = 4 := by
+  sorry
 
 /- ## Equivalent Formulations -/
 
@@ -218,21 +286,25 @@ axiom littlewood_lower_bound :
 
 **Problem Status: SOLVED**
 
-Erdős Problem #225 asks: if a trigonometric polynomial f(θ) = Σ cₖ e^(ikθ)
-has all its roots on the unit circle and max|f(θ)| = 1, is ∫|f(θ)| dθ ≤ 4?
+Erdős Problem #225 asks: if a nonconstant trigonometric polynomial
+f(θ) = Σ cₖ e^(ikθ) has all its roots on the unit circle and max|f(θ)| = 1,
+is ∫|f(θ)| dθ ≤ 4?
 
-**Answer: YES**
+**Answer: YES** (Kristiansen 1974, Saff–Sheil-Small 1973)
 
-The problem was solved independently:
-- Kristiansen (1974): Proved for real coefficients
-- Saff & Sheil-Small (1973): Proved for complex coefficients
+The bound 4 is optimal and achieved exactly at degree 1.
 
-The bound 4 is optimal.
+**Formalization History**:
+- Original statement omitted the nonconstant hypothesis
+- Aristotle (Harmonic) found the counterexample: constant polynomial has L¹ = 2π > 4
+- Corrected theorem `erdos_225` adds `Nonconstant p` hypothesis
+- Key identity: ∫₀²π |e^(iθ) − α| dθ = 8 for |α| = 1
 
-**Key Ideas**:
-- "Real roots" means roots on the unit circle |z| = 1
-- The L∞ → L¹ bound of 4 is specific to unit-circle-root polynomials
-- For general polynomials, the L¹ norm can be much larger
+**Proof Architecture** (for the corrected theorem):
+- Factor P(z) = cₙ ∏ⱼ(z − αⱼ) with |αⱼ| = 1
+- L¹ norm = |cₙ| · ∫₀²π ∏ⱼ|e^(iθ) − αⱼ| dθ
+- Use sub-multiplicativity and the integral identity
+- The key inequality: for degree n ≥ 1, L¹ ≤ 4
 
 **References**:
 - Hayman, W.K. (1974): Research Problems in Function Theory, Problem 4.20

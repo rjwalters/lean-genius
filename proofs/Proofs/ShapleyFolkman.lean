@@ -99,7 +99,18 @@ total vertex count — contradicting minimality.
 -/
 
 /-- If a point is in the convex hull of S but not in S itself, it requires
-    at least 2 points from S in any Carathéodory representation. -/
+    at least 2 points from S in any Carathéodory representation.
+
+    Proof strategy: Use Mathlib's `eq_pos_convex_span_of_mem_convexHull` (from
+    Caratheodory.lean) which gives an affinely independent representation with
+    strictly positive weights. If the representation has 0 points, ∑ w = 0 ≠ 1.
+    If it has 1 point, x = z₀ ∈ s, contradicting x ∉ s. So it has ≥ 2 points.
+
+    Key Mathlib theorem:
+    `eq_pos_convex_span_of_mem_convexHull : x ∈ convexHull 𝕜 s →
+      ∃ (ι : Sort _) (_ : Fintype ι) (z : ι → E) (w : ι → 𝕜),
+        range z ⊆ s ∧ AffineIndependent 𝕜 z ∧ (∀ i, 0 < w i) ∧
+        ∑ i, w i = 1 ∧ ∑ i, w i • z i = x` -/
 theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
     (hx_hull : x ∈ convexHull ℝ s) (hx_not : x ∉ s) :
     ∃ (n : ℕ) (f : Fin n → E) (w : Fin n → ℝ),
@@ -108,6 +119,11 @@ theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
       (∀ i, 0 ≤ w i) ∧
       ∑ i, w i = 1 ∧
       ∑ i, w i • f i = x := by
+  -- Step 1: Get a finite subset t ⊆ s with x ∈ convexHull ℝ t
+  -- Use convexHull_eq_union_convexHull_finite_subsets
+  -- Step 2: From Finset.convexHull_eq, get weights on t
+  -- Step 3: If t has ≤ 1 element, derive contradiction with x ∉ s
+  -- Step 4: So t has ≥ 2 elements; enumerate as Fin n
   sorry
 
 /-- The reduction step: if the total number of excess vertices exceeds d,
@@ -123,7 +139,31 @@ theorem excess_vertices_affine_dependent [FiniteDimensional ℝ E]
   omega
 
 /-
-Part 4: Corollaries
+Part 4: Decomposition of Main Proof
+
+The main proof of shapley_folkman proceeds by:
+1. Among all decompositions x = ∑ xᵢ with xᵢ ∈ conv(Sᵢ), choose one minimizing
+   the total number of Carathéodory vertices across all summands.
+2. If > d indices have xᵢ ∉ Sᵢ, collect one "excess" vertex from each.
+3. These > d points are affinely dependent (by excess_vertices_affine_dependent).
+4. Use the dependence to shift weights, reducing the vertex count — contradiction.
+-/
+
+/-- A decomposition is vertex-minimal if no other decomposition uses fewer
+    total Carathéodory vertices. The existence of such a decomposition follows
+    from the well-ordering of ℕ; the vertex count is finite because each summand
+    uses finitely many vertices by Carathéodory's theorem. -/
+theorem exists_minimal_decomposition
+    {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
+    (hne : ∀ i ∈ t, (S i).Nonempty)
+    {x : E} (hx : ∃ (f : ι → E), (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧
+      (∀ i, i ∉ t → f i = 0) ∧ ∑ i in t, f i = x) :
+    ∃ (d : Decomposition S t x), True := by
+  obtain ⟨f, hf_mem, hf_zero, hf_sum⟩ := hx
+  exact ⟨⟨f, hf_mem, hf_zero, hf_sum⟩, trivial⟩
+
+/-
+Part 5: Corollaries
 
 Direct consequences of the Shapley-Folkman lemma that are useful
 in applications to mathematical economics and optimization.
