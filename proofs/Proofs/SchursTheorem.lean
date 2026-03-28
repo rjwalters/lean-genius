@@ -382,10 +382,18 @@ def schurNumber : ℕ → ℕ
   | 5 => 161
   | _ => 0  -- unknown
 
-/-- S(3) = 14: proven by exhaustive analysis (Baumert, 1965) -/
-axiom schur_3 :
+/-- A sum-free 3-coloring of {1,...,13}: {1,4,10,13} / {2,3,11,12} / {5,...,9}. -/
+def sumFree3Coloring13 : IntegerColoring 13 3 := fun i =>
+  if i.val = 0 ∨ i.val = 3 ∨ i.val = 9 ∨ i.val = 12 then (0 : Fin 3)
+  else if i.val = 1 ∨ i.val = 2 ∨ i.val = 10 ∨ i.val = 11 then (1 : Fin 3)
+  else (2 : Fin 3)
+
+/-- S(3) = 14: proven by exhaustive analysis (Baumert, 1965).
+    Upper bound by native_decide, lower bound via explicit witness. -/
+theorem schur_3 :
     (∀ c : IntegerColoring 14 3, HasMonochromaticSchurTriple c) ∧
-    (∃ c : IntegerColoring 13 3, ¬HasMonochromaticSchurTriple c)
+    (∃ c : IntegerColoring 13 3, ¬HasMonochromaticSchurTriple c) :=
+  ⟨fun c => by native_decide, ⟨sumFree3Coloring13, by native_decide⟩⟩
 
 /-- S(4) = 45: proven by Fredricksen and Sweet (1993) -/
 axiom schur_4 :
@@ -468,14 +476,12 @@ axiom rado_theorem {n : ℕ} (eq : LinearEquation n) :
 def schurEquation : LinearEquation 3 where
   coefficients := ![1, 1, -1]
 
-/-- Schur's equation satisfies the columns condition -/
+/-- Schur's equation satisfies the columns condition.
+    Partition: B₁ = {x, z} (indices 0, 2) with coefficients 1 + (-1) = 0,
+    B₂ = {y} (index 1) with coefficient 1. -/
 theorem schur_columns_condition : ColumnsCondition schurEquation := by
-  use 1, le_refl 1
-  use fun _ => 0
-  -- All three coefficients sum to 0: 1 + 1 + (-1) = 0 ??? Wait, = 1, not 0
-  -- Actually the columns condition for a single block requires the full sum = 0
-  -- For Schur: 1 + 1 + (-1) = 1 ≠ 0, so we need k ≥ 2
-  sorry
+  refine ⟨2, by omega, ![(0 : Fin 2), 1, 0], ?_⟩
+  native_decide
 
 /-- Schur's theorem follows from Rado's theorem -/
 theorem schur_from_rado :
