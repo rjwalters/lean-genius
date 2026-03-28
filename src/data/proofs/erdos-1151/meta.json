@@ -43,7 +43,7 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axioms: chebyshevNodes_injective, limitPointSet_isClosed, erdos_1941_divergence, erdos_1151_conjecture (the open problem).",
-    "lineCount": 146,
+    "lineCount": 145,
     "prerequisites": [
       "Polynomial interpolation (Lagrange basis)",
       "Trigonometric functions (Chebyshev nodes)",
@@ -101,7 +101,7 @@
     "imports": ["Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic", "Mathlib.Topology.Order.Basic", "Mathlib.Topology.MetricSpace.Basic", "Mathlib.Data.Finset.Card", "Mathlib.Tactic"],
     "opens": ["Finset", "Real"],
     "namespace": "Erdos1151",
-    "lineCount": 146,
+    "lineCount": 145,
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 8
