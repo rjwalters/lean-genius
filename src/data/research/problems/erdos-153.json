@@ -1,6 +1,6 @@
 {
   "slug": "erdos-153",
-  "title": "Erd\u0151s #153",
+  "title": "Erdős #153",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,29 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "1A->1A, 0S->0S. Proved ess_1994_result (c=1 via gap>=1 argument).",
+    "progressSummary": "Restructured axiom: replaced infinite_sidon_gap_question with erdos_153_conjecture (the primary problem). Proved finite→infinite implication via 3 helper lemmas. Still 1 axiom, 0 sorries.",
     "builtItems": [
       "sidon_sumset_card: converted axiom to theorem with injectivity proof (1 sorry in card computation)",
       "average_gap_bounded: proved trivially from sumset nonemptiness",
       "diag_card_eq: diagonal cardinality lemma",
       "card_lt_swap: swap bijection between lower and upper strict triangles",
-      "card_upper_triangle: |{(a,b) \u2208 A\u00d7A : a \u2264 b}| = n(n+1)/2",
+      "card_upper_triangle: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2",
       "ess_1994_result: proved ESS 1994 lower bound (c=1 works since gaps between distinct naturals >= 1)",
       "foldl_sq_gap_ge: inductive proof that sorted nodup list gap sum >= gap count",
-      "gapSquaredSum_ge_card_sub_one: gapSquaredSum A >= |A+A| - 1"
+      "gapSquaredSum_ge_card_sub_one: gapSquaredSum A >= |A+A| - 1",
+      "erdos_153_conjecture: axiom stating the main finite conjecture (replaces infinite_sidon_gap_question)",
+      "infinite_sidon_restriction: any restriction of an infinite Sidon set is Sidon",
+      "infinite_set_exists_finset: infinite subset of N has finite subsets of any cardinality",
+      "infinite_set_card_grows: restriction to {0,...,N} grows without bound",
+      "infinite_sidon_gap_from_finite: derives infinite variant from finite conjecture"
     ],
     "insights": [
       "sidon_sumset_card: key step is showing sum map injective on ordered pairs - this IS the Sidon condition",
       "average_gap_bounded is trivially true: existential over C allows C = 2N+1",
       "ess_1994_result is a legitimate cited deep theorem (ESS 1994)",
       "infinite_sidon_gap_question is an open conjecture - appropriate as axiom",
-      "Upper triangle cardinality lemma: |{(a,b) \u2208 A\u00d7A : a \u2264 b}| = n(n+1)/2 proved via partition into {a<b}, {a=b}, {a>b} with swap bijection",
+      "Upper triangle cardinality lemma: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2 proved via partition into {a<b}, {a=b}, {a>b} with swap bijection",
       "omega tactic handles the final arithmetic: 2*U = n*(n+1) implies U = n*(n+1)/2",
-      "ess_1994_result is trivially c=1: sorted distinct naturals have consecutive gaps >= 1, so squared gaps >= 1, mean >= 1"
+      "ess_1994_result is trivially c=1: sorted distinct naturals have consecutive gaps >= 1, so squared gaps >= 1, mean >= 1",
+      "Finite conjecture implies infinite variant: restriction of infinite Sidon set is Sidon, and has growing cardinality",
+      "infinite_set_exists_finset proved by induction using Set.Infinite.diff for fresh elements"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #153 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite Sidon set and $A+A=\\{s_1<\\cdots<s_t\\}$. Is it true that\\[\\frac{1}{t}\\sum_{1\\leq i<t}(s_{i+1}-s_i)^2 \\to \\infty\\]as $\\lvert A\\rvert\\to \\infty$?\n\n\n\nA similar problem can be asked for infinite Sidon sets.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #152\n- Problem #154\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #153 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite Sidon set and $A+A=\\{s_1<\\cdots<s_t\\}$. Is it true that\\[\\frac{1}{t}\\sum_{1\\leq i<t}(s_{i+1}-s_i)^2 \\to \\infty\\]as $\\lvert A\\rvert\\to \\infty$?\n\n\n\nA similar problem can be asked for infinite Sidon sets.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #152\n- Problem #154\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -67,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T09:56:05.235Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-03-28T01:23:59.133245Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
