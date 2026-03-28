@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:01:50.837Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: 5 -> 2 axioms",
+    "phase": "COMPLETED",
+    "since": "2026-03-28T09:10:00Z",
+    "iteration": 4,
+    "focus": "Graduated: 0 sorries, 2 deep axioms",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — formalization complete. 2 deep axioms (Erdős-Graham three-set, Stanley sequence existence).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETED: 9 theorems, 2 deep axioms, 0 sorries. Eliminated 3 false/unused axioms in prior sessions. Remaining axioms: erdos_graham_three_sets (published result), stanley_avoids_3AP (Stanley sequence existence). Problem (two-set partition) remains OPEN.",
     "builtItems": [
       "Proved powers_of_2_avoid_3AP: 2^n avoids 3-APs (since j<k => 2^k >= 2*2^j)",
       "Proved erdos_197_conjecture from Classical.em + De Morgan",
       "Fixed constant_has_3AP (was incorrectly claiming constant sequences avoid 3-APs)",
       "Fixed isStanleySequence definition (Nat.find API change)",
       "Proved avoids3AP_of_comp: subsequence of 3-AP-free sequence is 3-AP-free",
-      "Proved stanley_implies_avoids3AP: documents redundancy in stanley_avoids_3AP axiom"
+      "Proved stanley_implies_avoids3AP: documents redundancy in stanley_avoids_3AP axiom",
+      "Graduated to completed (iteration 4)"
     ],
     "insights": [
       "2^i + 2^k = 2*2^j is impossible for i<j<k because 2^k >= 2*2^j and 2^i >= 1",
@@ -45,7 +46,8 @@
       "constant_avoids_3AP was a false theorem: constant sequences DO have 3-APs",
       "avoids3AP_of_comp: subsequences of 3-AP-free sequences are 3-AP-free (key structural property)",
       "stanley_avoids_3AP axiom has redundant conjunction: isStanleySequence already includes avoids3AP",
-      "fast_growing_avoids_3AP is FALSE: e.g. f=(1,3,5) has 2^n ≤ f(n) but 1+5=2*3 is an AP"
+      "fast_growing_avoids_3AP is FALSE: e.g. f=(1,3,5) has 2^n ≤ f(n) but 1+5=2*3 is an AP",
+      "Graduation review: 2 remaining axioms are both deep published results. erdos_graham_three_sets is the Erdős-Graham three-set theorem. stanley_avoids_3AP asserts Stanley sequence existence."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
