@@ -49,14 +49,17 @@
       "Definition of asymptotic density and density zero",
       "Definition of sumsets A +ₛ B",
       "CoversAllButFinitely predicate for cofinite coverage",
-      "Greedy construction of Lorentz complement B via well-founded recursion",
-      "Proof of coverage: every n ≥ sInf A is in A + B",
+      "Sumset monotonicity in both arguments",
+      "Subset density zero lemma (B ⊆ C, C density 0 → B density 0)",
+      "Erdős #31 monotonicity: theorem transfers to supersets of A",
+      "Finite density zero: any finite set has density 0 (squeeze theorem)",
+      "Bounded-gap special case proved via finite B = {0,...,M-1}",
       "Proof that coverage requires at least one infinite set (from finite sets)",
       "Proof that optimal B-density is 0 (using non-negativity of density)",
       "Connection to asymptotic additive bases of order 2"
     ],
     "axiomCount": 1,
-    "lineCount": 786,
+    "lineCount": 833,
     "prerequisites": [
       "Additive complements of sets",
       "Asymptotic density",
@@ -155,7 +158,7 @@
       "Filter"
     ],
     "namespace": "Erdos31",
-    "lineCount": 786,
+    "lineCount": 833,
     "axiomCount": 1,
     "theoremCount": 28,
     "definitionCount": 14

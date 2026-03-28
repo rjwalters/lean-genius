@@ -547,19 +547,66 @@ theorem erdos31_bounded_gaps (A : Set ℕ) (M : ℕ) (hM : 0 < M)
       obtain ⟨a, haA, hle, hlt⟩ := hgap n hn
       exact ⟨a, haA, n - a, Set.mem_Iio.mpr (by omega), by omega⟩⟩
 
-/-- The Lorentz theorem affirms Erdős Problem #31. -/
+/- ## Sumset Properties -/
+
+/-- Sumset is monotone in the left argument: A ⊆ A' → A +ₛ B ⊆ A' +ₛ B. -/
+theorem sumset_mono_left {A A' : Set ℕ} (h : A ⊆ A') (B : Set ℕ) :
+    A +ₛ B ⊆ A' +ₛ B :=
+  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, h ha, b, hb, hab⟩
+
+/-- Sumset is monotone in the right argument: B ⊆ B' → A +ₛ B ⊆ A +ₛ B'. -/
+theorem sumset_mono_right (A : Set ℕ) {B B' : Set ℕ} (h : B ⊆ B') :
+    A +ₛ B ⊆ A +ₛ B' :=
+  fun _ ⟨a, ha, b, hb, hab⟩ => ⟨a, ha, b, h hb, hab⟩
+
+/- ## Density Monotonicity -/
+
+/-- Counting function is monotone in the set: A ⊆ B → countingFn A N ≤ countingFn B N. -/
+theorem countingFn_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    countingFn A N ≤ countingFn B N :=
+  Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+    ((Set.Icc_finite 1 N).subset Set.inter_subset_right)
+
+/-- Subsets of density-zero sets have density zero. -/
+theorem subset_density_zero {A B : Set ℕ} (h : A ⊆ B) (hB : HasDensityZero B) :
+    HasDensityZero A := by
+  unfold HasDensityZero HasDensity at *
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hB
+    (by filter_upwards with N using div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+    (by filter_upwards with N
+        rcases Nat.eq_zero_or_pos N with rfl | hN
+        · simp [div_zero]
+        · exact div_le_div_of_nonneg_right
+            (Nat.cast_le.mpr (countingFn_mono h N))
+            (Nat.cast_pos.mpr hN))
+
+/-- Erdős #31 is monotone: if it holds for A, it holds for any superset A' ⊇ A.
+    Since A +ₛ B ⊆ A' +ₛ B, coverage transfers immediately. -/
+theorem erdos31_mono {A A' : Set ℕ} (h : A ⊆ A') (hA' : A'.Infinite)
+    (hA : ∃ B, HasDensityZero B ∧ CoversAllButFinitely A B) :
+    ∃ B, HasDensityZero B ∧ CoversAllButFinitely A' B := by
+  obtain ⟨B, hdens, hcov⟩ := hA
+  refine ⟨B, hdens, ?_⟩
+  unfold CoversAllButFinitely at *
+  exact Set.Finite.subset hcov (by
+    intro n hn
+    simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, true_and,
+               Set.mem_setOf_eq] at hn ⊢
+    exact ⟨fun hmem => hn.1 (sumset_mono_left h B hmem), hn.2⟩)
+
+/-- The Lorentz theorem affirms Erdős Problem #31.
+
+    **Proof strategy** (Lorentz 1954): For infinite A = {a₀ < a₁ < ...}, construct B
+    via a "set-cover greedy": process n = a₀, a₀+1, ... and for each uncovered n,
+    add b = n - (nearest A-element below n) to B. Each new b covers {a + b : a ∈ A},
+    which is infinitely many values. The density bound |B ∩ [0,N]|/N → 0 follows from
+    the fact that each b-element covers ≈ A(N) new values on average.
+
+    **Important**: The naive "Lorentz greedy" (add b iff b + a₀ is uncovered) does NOT
+    always give density 0. Counterexample: A = {0} ∪ {odd positives}, the naive greedy
+    gives B = {even numbers} (density 1/2), while B = {0, 1} suffices (density 0).
+    The correct construction must use ALL elements of A for coverage, not just a₀. -/
 axiom lorentz_theorem : Erdos31Statement
-
-/- ## Lorentz's Construction
-
-The proof constructs B as follows:
-1. Enumerate A = {a₁ < a₂ < a₃ < ...}
-2. For each aᵢ, include in B certain "gaps" that need filling
-3. The sparseness of A (infinite but thin) allows B to be chosen sparse
-
-Key insight: If A is very sparse, B can be dense (worst case).
-If A is dense, B can be very sparse. The balance works out.
--/
 
 /- ## Special Cases -/
 
@@ -770,7 +817,19 @@ cover almost all of ℕ using a density-0 set B.
 **Formalization Status:**
 - 1 axiom: lorentz_theorem (the main theorem, Lorentz 1954 construction)
 - 0 sorries
-- primes_density_zero: PROVED via Chebyshev theta bound
+- 25 theorems proved, including:
+  - primes_density_zero via Chebyshev theta bound
+  - finite_has_density_zero via squeeze theorem
+  - erdos31_bounded_gaps (special case for bounded-gap sets)
+  - erdos31_mono (theorem transfers to supersets)
+  - subset_density_zero (density-zero monotonicity)
+  - sumset_mono_left/right (sumset monotonicity)
+
+**Why the greedy construction doesn't suffice:**
+The naive "Lorentz greedy" (b ∈ B iff b + a₀ uncovered) only checks a₀ for
+coverage decisions. For A = {0} ∪ {odd positives}, this gives B = {evens}
+(density 1/2), while B = {0,1} suffices. The correct construction must
+distribute coverage across ALL A-elements, not just the minimum.
 
 **Implications:**
 - Sparse sets can "complete" each other in a very efficient way
