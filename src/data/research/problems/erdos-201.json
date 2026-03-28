@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 structural theorems about G_k (10→14T). gk_prop_zero, gk_bddAbove, gk_ge_one, gk_anti_k. 5A unchanged (4 computational, 1 deep).",
+    "progressSummary": "PROGRESS: Proved r3_5_eq (R₃(5)=4). Axioms 5→4. 4A, 0S.",
     "builtItems": [
       "DEFINED gk via sSup (was axiom)",
       "PROVED gk_le_rk from definition (universal → specific set)",
       "gk_prop_zero: 0 is always a valid lower bound for G_k(N)",
       "gk_bddAbove: {m | gk_prop k N m} is bounded above by N",
       "gk_ge_one: G_k(N) ≥ 1 for N ≥ 1, k ≥ 2 (singletons are AP-free)",
-      "gk_anti_k: G_l(N) ≤ G_k(N) for k ≤ l (larger k = harder avoidance)"
+      "gk_anti_k: G_l(N) ≤ G_k(N) for k ≤ l (larger k = harder avoidance)",
+      "PROVED r3_5_eq: R₃(5)=4 via witness {1,2,4,5} AP-free + {1,...,5} contains 3-AP {1,3,5}"
     ],
     "insights": [
       "7 axioms: gk function (opaque), gk_le_rk (follows from gk definition), 4 specific values, komlos_sulyok_szemeredi (deep). All appropriate since gk is axiomatized.",

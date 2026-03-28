@@ -160,7 +160,45 @@ theorem gk_le_rk (k N : ℕ) (hk : 3 ≤ k) : gk k N ≤ rk k N := by
 
 /-- Strict inequality example: G_3(5) = 3 while R_3(5) = 4. -/
 axiom g3_5_eq : gk 3 5 = 3
-axiom r3_5_eq : rk 3 5 = 4
+
+/-- R_3(5) = 4: the maximum 3-AP-free subset of {1,...,5} has size 4.
+    Witness: {1,2,4,5} is 3-AP-free. Upper bound: {1,...,5} contains {1,3,5} (a 3-AP).
+    Previously axiomatized; now proved from definitions. -/
+theorem r3_5_eq : rk 3 5 = 4 := by
+  apply Nat.le_antisymm
+  · -- Upper bound: rk 3 5 ≤ 4
+    apply Finset.sup_le
+    intro A hA
+    simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+    obtain ⟨hA_sub, hA_free⟩ := hA
+    by_contra h; push_neg at h
+    -- A.card ≥ 5, but A ⊆ Icc 1 5 (card 5), so A = Icc 1 5
+    have hA5 : A.card = 5 := by
+      have := Finset.card_le_card hA_sub
+      simp only [Finset.card_Icc] at this; omega
+    have hA_eq : A = Finset.Icc (1 : ℤ) 5 :=
+      Finset.eq_of_subset_of_card_le hA_sub (by simp [Finset.card_Icc, hA5])
+    -- But Icc 1 5 contains the 3-AP {1, 3, 5} (a=1, d=2)
+    exact hA_free ⟨1, 2, by omega, by omega, fun ⟨i, hi⟩ => by
+      fin_cases ⟨i, hi⟩ <;> simp_all [Finset.mem_Icc] <;> omega⟩
+  · -- Lower bound: rk 3 5 ≥ 4 via witness {1, 2, 4, 5}
+    have hA_mem : ({1, 2, 4, 5} : Finset ℤ) ∈
+        (Finset.Icc (1 : ℤ) 5).powerset.filter (IsAPFree · 3) := by
+      simp only [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨?_, ?_⟩
+      · intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        simp only [Finset.mem_Icc]
+        rcases hx with rfl | rfl | rfl | rfl <;> omega
+      · intro ⟨a, d, hd, _, hmem⟩
+        have h0 := hmem ⟨0, by omega⟩; simp at h0
+        have h1 := hmem ⟨1, by omega⟩; simp at h1
+        have h2 := hmem ⟨2, by omega⟩; simp at h2
+        simp only [Finset.mem_insert, Finset.mem_singleton] at h0 h1 h2
+        rcases h0 with rfl | rfl | rfl | rfl <;>
+          rcases h1 with h1 | h1 | h1 | h1 <;> omega
+    calc (4 : ℕ) = ({1, 2, 4, 5} : Finset ℤ).card := by native_decide
+      _ ≤ rk 3 5 := Finset.le_sup hA_mem
 
 /-- G_3(14) ≤ 7 while R_3(14) = 8. -/
 axiom g3_14_le : gk 3 14 ≤ 7
