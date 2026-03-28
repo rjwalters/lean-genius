@@ -167,8 +167,8 @@ theorem degree_diversity_no_ramsey_help :
 
 /-- Sum of all degrees equals 2|E|. -/
 theorem degree_sum_eq_twice_edges :
-    (Finset.univ.sum (fun v => G.degree v)) = 2 * G.edgeFinset.card := by
-  sorry
+    (Finset.univ.sum (fun v => G.degree v)) = 2 * G.edgeFinset.card :=
+  G.sum_degrees_eq_twice_card_edges
 
 /-- With limited multiplicity, distinct degrees ≤ n/2 + 1. -/
 theorem limited_multiplicity_bound :
