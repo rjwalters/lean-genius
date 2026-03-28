@@ -29,16 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "SURVEY: All 3 axioms require substantial proofs. f_case_k_eq_1 needs Turán/independence number bound. f_lower_bound needs double-counting. f_mono_k needs subtle subset extension argument.",
     "builtItems": [
       "erdos_614_existence: proved from f_upper_bound",
-      "f_max_k: removed as false with documented counterexample"
+      "f_max_k: removed as false with documented counterexample",
+      "Assessment: axioms blocked on Turán theorem / counting arguments not in Mathlib"
     ],
     "insights": [
-      "f_max_k is FALSE: star graph K_{1,n-1} satisfies P(n-2) with only n-1 edges (center degree n-1 >= n-2)",
-      "P(n-2) only requires one vertex of degree >= n-2 in the whole graph",
-      "erdos_614_existence follows trivially from f_upper_bound (K_n is always a witness)",
-      "f_mono_k proof requires careful induced subgraph extension argument"
+      "f_case_k_eq_1 (n-2 bound for k=1): P(1) ↔ α(G)≤2. Complement is triangle-free → Turán gives |E|≥n(n-2)/4≥n-2 for n≥4. n=3 by cases.",
+      "f_mono_k (P(k+1)→P(k)): extend (k+2)-subset S by v. If max-deg vertex in S∪{v} is in S, done (deg_S≥k). If it is v, need alternate argument. Subtle.",
+      "All 3 axioms require real mathematical proofs not available as Mathlib lookups. f_case_k_eq_1 closest to tractable (via Turán) but Turán not in Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -58,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:05:31.780Z",
-  "lastUpdate": "2026-03-13T07:52:17.050Z",
+  "lastUpdate": "2026-03-27T05:45:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
