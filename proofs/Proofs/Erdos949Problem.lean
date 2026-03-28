@@ -121,6 +121,26 @@ theorem open_interval_sum_free : IsSumFreeSet (Set.Ioo (1/3 : ℝ) (2/3)) := by
   intro a ⟨_, ha2⟩ b ⟨hb1, _⟩ ⟨_, hc2⟩
   linarith
 
+/-- The sumset of the empty set is empty. -/
+theorem realSumset_empty : realSumset ∅ = ∅ := by
+  ext x; simp [realSumset]
+
+/-- The sumset of a singleton {x} is {2x}. -/
+theorem realSumset_singleton (x : ℝ) : realSumset {x} = {x + x} := by
+  ext y; simp [realSumset]
+  constructor
+  · rintro ⟨a, rfl, b, rfl, rfl⟩; rfl
+  · rintro rfl; exact ⟨x, rfl, x, rfl, rfl⟩
+
+/-- The sumset contains all doubles: if a ∈ A then 2a ∈ A + A. -/
+theorem mem_realSumset_of_mem {A : Set ℝ} {a : ℝ} (ha : a ∈ A) :
+    a + a ∈ realSumset A :=
+  ⟨a, ha, a, ha, rfl⟩
+
+/-- {0} is NOT sum-free: 0 + 0 = 0. -/
+theorem zero_not_sum_free : ¬IsSumFreeSet {(0 : ℝ)} := by
+  intro h; exact h 0 rfl 0 rfl rfl
+
 -- ## The Sidon Variant (Solved by Dillies/AlphaProof)
 
 /-- The Sidon variant: if S is Sidon, then a continuum-sized
