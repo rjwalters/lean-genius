@@ -17,7 +17,7 @@
       "hadwiger-nelson"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 171,
     "erdosUrl": "https://erdosproblems.com/171",
     "erdosProblemStatus": "solved",
@@ -56,7 +56,7 @@
       "Aristotle-verified: no_4_clique (no tetrahedron in ℝ²)"
     ],
     "axiomCount": 3,
-    "lineCount": 183,
+    "lineCount": 209,
     "references": [
       {
         "title": "The chromatic number of the plane is at least 5",
@@ -82,13 +82,13 @@
         "description": "Optimizes de Grey's construction to 553 vertices requiring 5 colors"
       }
     ],
-    "assumptions": "3 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "3 axioms: isbell_coloring (7-coloring exists), moser_spindle (Moser spindle non-3-colorable), de_grey_graph (de Grey graph non-4-colorable). 0 sorries."
   },
   "overview": {
     "historicalContext": "The **Hadwiger-Nelson problem** asks for the chromatic number χ(ℝ²) of the unit distance graph: the minimum number of colors needed to color the plane so no two points at distance 1 share a color.\n\n**Historical Timeline**:\n- **1950**: Edward Nelson proved χ ≥ 4 using a 7-vertex graph (later called the Moser spindle)\n- **1950**: John Isbell proved χ ≤ 7 using a hexagonal tiling\n- **1950-2018**: No progress on the bounds for 68 years!\n- **2018**: Aubrey de Grey proved χ ≥ 5, finding a unit distance graph with ~1581 vertices that requires 5 colors\n\n**The de Grey Breakthrough**: After nearly 70 years with no improvement, de Grey used computer-aided construction to find a graph embedding where 4 colors are insufficient. This was later optimized to 553 vertices by Exoo and Ismailescu.\n\n**Current State**: 5 ≤ χ(ℝ²) ≤ 7. The exact value remains unknown.",
     "problemStatement": "**Erdős Problem #171**: What is the chromatic number $\\chi(\\mathbb{R}^2)$ of the unit distance graph?\n\n**Definition**: The **unit distance graph** $G$ has:\n- Vertices: All points in $\\mathbb{R}^2$\n- Edges: Connect points at Euclidean distance exactly 1\n\n**Question**: What is $\\chi(G)$, the minimum number of colors needed for a proper coloring (adjacent vertices have different colors)?\n\n**Known Bounds**:\n- **Lower**: $\\chi \\geq 5$ (de Grey 2018)\n- **Upper**: $\\chi \\leq 7$ (Isbell 1950)\n\n**Related Results**:\n- Clique number $\\omega = 3$ (equilateral triangle)\n- Fractional chromatic number $\\chi_f = 4$",
     "text": "What is the chromatic number χ(ℝ²) of the unit distance graph? The Hadwiger-Nelson problem. Nelson (1950): χ ≥ 4. Isbell (1950): χ ≤ 7. de Grey (2018): χ ≥ 5. Current knowledge: 5 ≤ χ(ℝ²) ≤ 7.",
-    "proofStrategy": "The formalization captures the structure of the problem and known results:\n\n1. **Core Definitions**:\n   - `UnitDistanceGraph`: SimpleGraph on EuclideanSpace ℝ (Fin 2)\n   - `IsProperColoring`: No adjacent vertices share colors\n   - `chromaticNumberPlane`: sInf of valid coloring counts\n\n2. **Lower Bounds**:\n   - `moser_spindle`: 7-vertex graph requiring 4 colors (axiom)\n   - `lower_bound_4`: χ ≥ 4 (from Moser spindle, sorry)\n   - `de_grey_graph`: <2000 vertex graph requiring 5 colors (axiom)\n   - `de_grey`: χ ≥ 5 (from de Grey graph, sorry)\n\n3. **Upper Bound**:\n   - `isbell_upper_bound`: χ ≤ 7 via hexagonal tiling (axiom)\n\n4. **Clique Results** (Aristotle verified):\n   - `clique_number_3`: Equilateral triangle is a 3-clique\n   - `no_4_clique`: No 4-clique exists in ℝ²",
+    "proofStrategy": "The formalization captures the structure of the problem and known results:\n\n1. **Core Definitions**:\n   - `UnitDistanceGraph`: SimpleGraph on EuclideanSpace ℝ (Fin 2)\n   - `IsProperColoring`: No adjacent vertices share colors\n   - `chromaticNumberPlane`: sInf of valid coloring counts\n\n2. **Lower Bounds** (proved):\n   - `moser_spindle`: 7-vertex graph requiring 4 colors (axiom)\n   - `lower_bound_4`: χ ≥ 4 (proved from Moser spindle via le_csInf + Fin restriction)\n   - `de_grey_graph`: <2000 vertex graph requiring 5 colors (axiom)\n   - `de_grey`: χ ≥ 5 (proved from de Grey graph via same pattern)\n\n3. **Upper Bound**:\n   - `isbell_coloring`: Witness axiom — a proper 7-coloring exists\n   - `isbell_upper_bound`: χ ≤ 7 (proved from isbell_coloring via Nat.sInf_le)\n\n4. **Clique Results** (Aristotle verified):\n   - `clique_number_3`: Equilateral triangle is a 3-clique\n   - `no_4_clique`: No 4-clique exists in ℝ²",
     "keyInsights": [
       "**The 68-year gap**: From 1950 to 2018, the best known bounds were 4 ≤ χ ≤ 7. De Grey's improvement to χ ≥ 5 was a major breakthrough.",
       "**Why is this hard?**: The graph is uncountable and highly symmetric. Local constructions (like Moser spindle) give limited information about the global chromatic number.",
@@ -197,9 +197,9 @@
       "Metric"
     ],
     "namespace": "Erdos171",
-    "lineCount": 183,
+    "lineCount": 209,
     "axiomCount": 3,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 3
   },
   "crossReferences": [
