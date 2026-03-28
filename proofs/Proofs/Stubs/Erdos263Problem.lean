@@ -186,11 +186,11 @@ def connection_264 : Prop :=
 
 /- ## Part X: Cannot Be Resolved by Finite Computation -/
 
-/-- Irrationality is a global property requiring infinite information. -/
-theorem irrationality_not_finitely_decidable :
-    ¬∃ (decide : (ℕ → ℕ+) → Bool),
-      ∀ a, decide a = true ↔ IsIrrationalitySequence a := by
-  sorry
+-- NOTE: The following theorem was removed because it is FALSE in classical logic.
+-- In Lean 4 with Classical axioms, for any predicate P : α → Prop, one can define
+-- `fun a => if P a then true else false : α → Bool` using LEM. The intended
+-- statement is about computability (no computable decision procedure exists),
+-- which would require Lean's Computability framework.
 
 /-- Any finite truncation loses irrationality information. -/
 theorem truncation_insufficient (N : ℕ) :
