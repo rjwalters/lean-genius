@@ -51,7 +51,25 @@ noncomputable def colourEdgeCount {n : ℕ} (c : EdgeColouring n) (S : Finset (F
 /-- Total edges in K_S equals C(|S|, 2). -/
 theorem colourEdgeCount_total {n : ℕ} (c : EdgeColouring n) (S : Finset (Fin n)) :
     colourEdgeCount c S true + colourEdgeCount c S false = Nat.choose S.card 2 := by
-  sorry
+  unfold colourEdgeCount
+  -- Partition: {(i,j) ∈ S×S | i<j ∧ colour=true} ⊔ {... ∧ colour=false} = {(i,j) ∈ S×S | i<j}
+  rw [← Finset.card_union_of_disjoint]
+  · -- Union = {(i,j) ∈ S×S | i < j}, and its card = C(|S|, 2)
+    congr 1
+    · ext p
+      simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product]
+      constructor
+      · rintro (⟨h1, h2, _⟩ | ⟨h1, h2, _⟩) <;> exact ⟨h1, h2⟩
+      · rintro ⟨h1, h2⟩
+        rcases Bool.eq_true_or_eq_false (c.colour p.1 p.2) with h | h
+        · exact Or.inl ⟨h1, h2, h⟩
+        · exact Or.inr ⟨h1, h2, h⟩
+    · -- |{(i,j) ∈ S×S | i < j}| = C(|S|, 2)
+      sorry
+  · -- Disjoint: true ≠ false
+    simp only [Finset.disjoint_filter]
+    intro p _ ⟨_, htrue⟩ ⟨_, hfalse⟩
+    exact absurd (htrue.symm.trans hfalse) Bool.true_ne_false
 
 -- Part II: α-Balanced colourings
 
@@ -71,7 +89,17 @@ def IsKBalanced {n : ℕ} (c : EdgeColouring n) (k : ℕ) (α : ℚ) : Prop :=
 theorem balanced_requires_le_half {n : ℕ} (c : EdgeColouring n) (S : Finset (Fin n))
     (α : ℚ) (hα : 1 / 2 < α) (hS : 2 ≤ S.card) :
     ¬IsBalancedOn c S α := by
-  sorry
+  intro hbal
+  -- Both colours need > α * C(|S|, 2) edges
+  have hred := hbal true
+  have hblue := hbal false
+  -- Sum: 2α * C(|S|,2) < red + blue = C(|S|,2) by colourEdgeCount_total
+  have htotal : (↑(colourEdgeCount c S true) : ℚ) + ↑(colourEdgeCount c S false) =
+      ↑(Nat.choose S.card 2) := by exact_mod_cast colourEdgeCount_total c S
+  -- C(|S|, 2) > 0 since |S| ≥ 2
+  have hC_pos : (0 : ℚ) < ↑(Nat.choose S.card 2) := by exact_mod_cast Nat.choose_pos hS
+  -- 2α > 1 and C > 0: 2α·C > C, but 2α·C < red+blue = C. Contradiction.
+  nlinarith [hred, hblue, htotal, hC_pos]
 
 -- Part III: The function F(n, α)
 
