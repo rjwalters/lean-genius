@@ -71,9 +71,9 @@ theorem descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)
         simp [Fin.lt_iff_val_lt_val]; omega
       have hlt2 : j < (⟨j.val + 1, by omega⟩ : Fin k) := by
         simp [Fin.lt_iff_val_lt_val]; omega
-      have h1 := hinc _ _ hlt1
-      have h2 := hinc _ _ hlt2
-      have hw := hwave j hj0 hjk
+      have h1 := hinc _ _ hlt1  -- seq(j-1) < seq(j)
+      have h2 := hinc _ _ hlt2  -- seq(j) < seq(j+1)
+      have hw := hwave j hj0 hjk  -- 2*seq(j) ≥ seq(j-1) + seq(j+1)
       omega
   · intro h
     rcases h with hk | hgaps
