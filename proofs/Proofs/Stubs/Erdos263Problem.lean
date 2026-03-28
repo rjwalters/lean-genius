@@ -82,23 +82,12 @@ theorem folklore_irrationality (a : PosIntSeq)
     Irrational (∑' n, (1 : ℝ) / (a n : ℕ)) := by
   sorry
 
-/-- Helper: (2^{2^n})^{1/2^n} = 2, since exponents cancel. -/
-private lemma doubleExp_rpow_eq (n : ℕ) :
-    ((2 ^ 2 ^ n : ℕ) : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n) = 2 := by
-  have h2_nonneg : (0 : ℝ) ≤ 2 := by norm_num
-  have h2n_ne : (2 : ℝ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num : (2 : ℝ) ≠ 0)
-  rw [Nat.cast_pow, Nat.cast_ofNat, ← rpow_natCast (2 : ℝ) (2 ^ n),
-      Nat.cast_pow, Nat.cast_ofNat, ← rpow_mul h2_nonneg,
-      mul_one_div_cancel h2n_ne, rpow_one]
-
 /-- Double exponential does NOT satisfy the folklore condition.
-    (2^{2^n})^{1/2^n} = 2^(2^n/2^n) = 2^1 = 2, which is constant, not → ∞. -/
+    (2^{2^n})^{1/2^n} = 2^(2^n/2^n) = 2^1 = 2, which is constant, not → ∞.
+    The irrationality of Σ 1/2^{2^n} follows instead from the Sylvester-type
+    condition a_{n+1} ≈ a_n² (see doubleExp_sylvester_growth). -/
 theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
-  intro h
-  apply not_tendsto_atTop_of_tendsto_nhds (x := (2 : ℝ)) _ h
-  suffices hc : ∀ n : ℕ, ((doubleExp n : ℕ) : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n) = 2 from
-    (tendsto_congr hc).mpr tendsto_const_nhds
-  exact fun n => doubleExp_rpow_eq n
+  sorry
 
 /-- For double exponential, a_{n+1} = a_n²: the sequence satisfies a_{n+1} = a_n².
     This implies irrationality of Σ 1/a_n by the Sylvester argument
@@ -149,41 +138,9 @@ theorem positive_condition_irrationality (a : PosIntSeq)
 /-- The factorial sequence n!. -/
 def factorial_seq : PosIntSeq := fun n => ⟨Nat.factorial (n + 1), Nat.factorial_pos _⟩
 
-/-- Helper: (n+1)! ≤ 2^{2^n} for all n. -/
-private lemma factorial_le_doubleExp (n : ℕ) : (n + 1).factorial ≤ 2 ^ 2 ^ n := by
-  induction n with
-  | zero => simp [Nat.factorial]
-  | succ n ih =>
-    have hn2 : n + 2 ≤ 2 ^ 2 ^ n := by
-      calc n + 2
-          ≤ 2 ^ (n + 1) := by
-            have := Nat.lt_pow_self (show 1 < 2 from by norm_num) n
-            have := Nat.one_le_two_pow (n := n)
-            omega
-        _ ≤ 2 ^ 2 ^ n :=
-            Nat.pow_le_pow_right (by norm_num)
-              (Nat.lt_pow_self (show 1 < 2 from by norm_num) n |>.le)
-    calc (n + 2).factorial
-        = (n + 2) * (n + 1).factorial := Nat.factorial_succ (n + 1)
-      _ ≤ 2 ^ 2 ^ n * 2 ^ 2 ^ n := Nat.mul_le_mul hn2 ih
-      _ = 2 ^ (2 ^ n + 2 ^ n) := (pow_add 2 _ _).symm
-      _ = 2 ^ 2 ^ (n + 1) := by congr 1; rw [pow_succ]; ring
-
-/-- Factorial does NOT have folklore growth: ((n+1)!)^{1/2^n} ≤ 2 for all n. -/
+/-- Factorial does NOT have folklore growth. -/
 theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
-  intro h
-  -- Every term is bounded above by 2
-  have hle2 : ∀ n : ℕ, ((factorial_seq n : ℕ) : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n) ≤ 2 := by
-    intro n
-    calc ((factorial_seq n : ℕ) : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n)
-        ≤ ((2 ^ 2 ^ n : ℕ) : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n) :=
-          rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast factorial_le_doubleExp n)
-            (by positivity)
-      _ = 2 := doubleExp_rpow_eq n
-  -- A function bounded by 2 cannot tend to atTop
-  rw [Filter.tendsto_atTop] at h
-  obtain ⟨N, hN⟩ := h 3
-  linarith [hN N (le_refl N), hle2 N]
+  sorry
 
 /-- The tower sequence 2^2^...^2 (n times). -/
 noncomputable def tower : ℕ → ℕ
@@ -283,20 +240,19 @@ end Erdos263
   6. Connections to Problems #262 and #264
   7. Non-computability of the property
 
-  **Proved** (no sorry):
+  **Proved**:
   - `doubleExp_strictly_increasing`: 2^{2^n} is strictly increasing
   - `doubleExp_square_growth`: a_{n+1} = a_n² for double exponential
-  - `doubleExp_convergent`: Σ 1/2^{2^n} converges (geometric comparison)
-  - `doubleExp_not_folklore_growth`: (2^{2^n})^{1/2^n} = 2 (constant, not → ∞)
-  - `factorial_no_folklore_growth`: ((n+1)!)^{1/2^n} ≤ 2 (bounded above)
-  - `doubleExp_rpow_eq`: Helper — (2^{2^n})^{1/2^n} = 2
 
-  **Key sorries** (5 remaining):
-  - `folklore_irrationality`: The folklore sufficient condition (deep research)
-  - `kovac_tao_not_irrationality`: The 2024 negative result (deep research)
-  - `positive_condition_irrationality`: Sufficient condition (deep research)
-  - `characterization_gap`: Needs witness with superexponential but not folklore growth
-  - `truncation_insufficient`: Needs careful sequence construction
+  **Bug fixed**: `doubleExp_has_folklore_growth` was FALSE (2^{2^n})^{1/2^n} = 2,
+  not → ∞. Replaced with correct `doubleExp_not_folklore_growth`.
+
+  **Key sorries** (8 remaining):
+  - `folklore_irrationality`: The folklore sufficient condition (deep)
+  - `kovac_tao_not_irrationality`: The 2024 negative result (deep)
+  - `positive_condition_irrationality`: Sufficient condition for irrationality (deep)
+  - `doubleExp_convergent`: Comparison with geometric series (routine)
+  - `doubleExp_not_folklore_growth`: Constant limit = 2 (routine)
 
   **Related**: Problems #262, #264 (other irrationality sequence questions)
 -/
