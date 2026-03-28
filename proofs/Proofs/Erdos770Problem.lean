@@ -30,6 +30,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.Tactic
 
 open Finset
@@ -359,3 +360,125 @@ theorem gcdPowerSeq_fermat_transition {p : ℕ} (hp : Nat.Prime p) {n : ℕ}
     (hn : 0 < n) (hdvd : (p - 1) ∣ n) :
     p ∣ gcdPowerSeq n (p - 1) ∧ ¬(p ∣ gcdPowerSeq n p) :=
   ⟨prime_dvd_gcdPowerSeq hp hdvd (by omega), prime_not_dvd_gcdPowerSeq_self hp hn⟩
+
+-- ## Key Structural Result: h(n) ≤ n + 1
+--
+-- For every n ≥ 1, gcdPowerSeq(n, n+1) = 1. This means h(n) ≤ n+1.
+-- The proof: any prime q dividing the gcd leads to contradiction.
+--   - If q ≤ n+1: q is in the fold, so q | q^n - 1. But q | q^n, so q | 1.
+--   - If q > n+1: the n+1 distinct values {1,...,n+1} are all roots of x^n - 1
+--     in ZMod q, but a degree-n polynomial has at most n roots.
+
+/-- Any prime q in [2, n+1] cannot divide gcdPowerSeq n (n+1),
+    because it would require q | q^n - 1, hence q | 1. -/
+private theorem no_small_prime_dvd_gcdPowerSeq_succ {n q : ℕ}
+    (hn : 0 < n) (hq : Nat.Prime q) (hq_le : q ≤ n + 1) (hq_dvd : q ∣ gcdPowerSeq n (n + 1)) :
+    False := by
+  have hq_mem : q ∈ Finset.Icc 2 (n + 1) :=
+    Finset.mem_Icc.mpr ⟨hq.two_le, hq_le⟩
+  have h1 : q ∣ (q ^ n - 1) := dvd_trans hq_dvd (gcdPowerSeq_dvd_term n (n + 1) q hq_mem)
+  have h2 : q ∣ q ^ n := dvd_pow_self q hn.ne'
+  have h3 : 1 ≤ q ^ n := Nat.one_le_pow n q hq.pos
+  have h4 : q ∣ q ^ n - (q ^ n - 1) := Nat.dvd_sub' h2 h1
+  have h5 : q ^ n - (q ^ n - 1) = 1 := by omega
+  rw [h5] at h4
+  exact absurd (Nat.le_of_dvd one_pos h4) (by omega)
+
+/-- If q is prime and q ∣ (a^n - 1), then (a : ZMod q)^n = 1. -/
+private theorem zmod_pow_eq_one_of_dvd {q a n : ℕ} [Fact (Nat.Prime q)]
+    (h_ge : 1 ≤ a ^ n) (h_dvd : q ∣ (a ^ n - 1)) :
+    ((a : ℕ) : ZMod q) ^ n = 1 := by
+  have h0 : ((a ^ n - 1 : ℕ) : ZMod q) = 0 :=
+    (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr h_dvd
+  rw [Nat.cast_sub h_ge, Nat.cast_one] at h0
+  rwa [sub_eq_zero, Nat.cast_pow] at h0
+
+/-- Any prime q > n+1 cannot divide gcdPowerSeq n (n+1).
+    Proof: the polynomial X^n - 1 over ZMod q has degree n, so at most n roots.
+    But {1, 2, ..., n+1} gives n+1 distinct roots (they are distinct mod q
+    since q > n+1, and each satisfies x^n = 1 by Fermat/gcd divisibility). -/
+private theorem no_large_prime_dvd_gcdPowerSeq_succ {n q : ℕ}
+    (hn : 0 < n) (hq : Nat.Prime q) (hq_gt : q > n + 1)
+    (hq_dvd : q ∣ gcdPowerSeq n (n + 1)) : False := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  haveI : NeZero q := ⟨hq.ne_zero⟩
+  -- Define polynomial f = X^n - 1 over ZMod q
+  set f : (ZMod q)[X] := Polynomial.X ^ n - 1 with hf_def
+  -- f has degree n (leading coeff 1 ≠ 0 in ZMod q, constant term doesn't affect degree)
+  have hf_deg : f.natDegree = n :=
+    Polynomial.natDegree_sub_eq_left_of_natDegree_lt (by
+      simp [Polynomial.natDegree_one, Polynomial.natDegree_X_pow]; exact hn)
+  -- f ≠ 0
+  have hf_ne : f ≠ 0 := by intro h; rw [h, Polynomial.natDegree_zero] at hf_deg; omega
+  -- Each a ∈ [1, n+1] satisfies f.IsRoot (a : ZMod q), i.e., a^n = 1 in ZMod q
+  have is_root : ∀ a ∈ Finset.Icc 1 (n + 1), f.IsRoot ((a : ℕ) : ZMod q) := by
+    intro a ha
+    rw [Polynomial.IsRoot, hf_def, Polynomial.eval_sub, Polynomial.eval_pow,
+        Polynomial.eval_X, Polynomial.eval_one, sub_eq_zero]
+    rw [Finset.mem_Icc] at ha
+    by_cases ha1 : a = 1
+    · subst ha1; simp
+    · have ha_ge2 : 2 ≤ a := by omega
+      have ha_mem : a ∈ Finset.Icc 2 (n + 1) := Finset.mem_Icc.mpr ⟨ha_ge2, ha.2⟩
+      exact zmod_pow_eq_one_of_dvd
+        (Nat.one_le_pow n a (by omega))
+        (dvd_trans hq_dvd (gcdPowerSeq_dvd_term n (n + 1) a ha_mem))
+  -- Each a ∈ [1, n+1] is a member of f.roots
+  have mem_roots : ∀ a ∈ Finset.Icc 1 (n + 1), ((a : ℕ) : ZMod q) ∈ f.roots.toFinset := by
+    intro a ha
+    rw [Multiset.mem_toFinset, Polynomial.mem_roots hf_ne]
+    exact is_root a ha
+  -- The image of [1, n+1] in ZMod q is injective (all values < q)
+  set S := (Finset.Icc 1 (n + 1)).image (Nat.cast : ℕ → ZMod q) with hS_def
+  have hS_card : S.card = n + 1 := by
+    rw [hS_def, Finset.card_image_of_injOn]
+    · simp [Finset.card_Icc]
+    · intro a ha b hb hab
+      rw [Finset.mem_Icc] at ha hb
+      have := congr_arg ZMod.val hab
+      rwa [ZMod.val_natCast_of_lt (by omega : a < q),
+           ZMod.val_natCast_of_lt (by omega : b < q)] at this
+  -- S ⊆ f.roots.toFinset
+  have hS_sub : S ⊆ f.roots.toFinset := by
+    intro x hx
+    rw [hS_def, Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    exact mem_roots a ha
+  -- Root count: n+1 = |S| ≤ |f.roots.toFinset| ≤ |f.roots| ≤ natDegree(f) = n
+  have h1 : S.card ≤ f.roots.toFinset.card := Finset.card_le_card hS_sub
+  have h2 : f.roots.toFinset.card ≤ f.natDegree := by
+    calc f.roots.toFinset.card
+        ≤ Multiset.card f.roots :=
+          Multiset.card_le_card (Multiset.dedup_le f.roots)
+      _ ≤ f.natDegree := Polynomial.card_roots_le_degree f
+  rw [hS_card] at h1; rw [hf_deg] at h2; omega
+
+/-- **Main structural theorem**: gcdPowerSeq n (n+1) = 1 for all n ≥ 1.
+    Equivalently, h(n) ≤ n + 1 for all positive n.
+    Any prime dividing the gcd leads to contradiction:
+    small primes (q ≤ n+1) self-divide, large primes (q > n+1) violate root counting. -/
+theorem gcdPowerSeq_at_succ_eq_one {n : ℕ} (hn : 0 < n) :
+    gcdPowerSeq n (n + 1) = 1 := by
+  by_contra hne
+  -- gcdPowerSeq n (n+1) ≥ 1 since it divides 2^n - 1 > 0
+  have h_pos : 0 < gcdPowerSeq n (n + 1) := by
+    have h2_mem : 2 ∈ Finset.Icc 2 (n + 1) := Finset.mem_Icc.mpr ⟨le_refl _, by omega⟩
+    have h2n : 0 < 2 ^ n - 1 := by
+      have : 2 ^ n ≥ 2 := Nat.one_le_pow n 2 (by omega) |>.trans_lt (by omega) |>.le
+      omega
+    exact Nat.pos_of_dvd_of_pos (gcdPowerSeq_dvd_term n (n + 1) 2 h2_mem) h2n
+  have h_ge2 : gcdPowerSeq n (n + 1) ≥ 2 := by omega
+  -- Extract a prime divisor
+  obtain ⟨q, hq_prime, hq_dvd⟩ := Nat.exists_prime_and_dvd (by omega : gcdPowerSeq n (n + 1) ≠ 1)
+  -- Case split: q ≤ n+1 or q > n+1
+  by_cases hle : q ≤ n + 1
+  · exact no_small_prime_dvd_gcdPowerSeq_succ hn hq_prime hle hq_dvd
+  · exact no_large_prime_dvd_gcdPowerSeq_succ hn hq_prime (by omega) hq_dvd
+
+/-- When n+1 is prime, h(n) = n + 1.
+    The gcd at n is ≠ 1 (Fermat: (n+1) divides all terms), and
+    the gcd at n+1 equals 1 (by gcdPowerSeq_at_succ_eq_one). -/
+theorem h_eq_succ_of_prime {n : ℕ} (hn : 0 < n) (hp : Nat.Prime (n + 1)) :
+    gcdPowerSeq n n ≠ 1 ∧ gcdPowerSeq n (n + 1) = 1 :=
+  ⟨gcdPowerSeq_ne_one_of_large_prime hp (dvd_refl (n + 1 - 1)) (by omega),
+   gcdPowerSeq_at_succ_eq_one hn⟩

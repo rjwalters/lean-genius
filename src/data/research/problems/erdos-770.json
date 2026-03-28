@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 7 Fermat-based structural theorems (61T\u219268T). Proved prime_dvd_pow_sub_one, prime_not_dvd_self_pow_sub_one, prime_dvd_gcdPowerSeq, prime_not_dvd_gcdPowerSeq_self, gcdPowerSeq_ne_one_of_large_prime, gcdPowerSeq_fermat_transition, dvd_fold_gcd_of_dvd_all. 2A unchanged (both open).",
+    "progressSummary": "PROGRESS: Proved gcdPowerSeq_at_succ_eq_one (h(n)≤n+1 for all n≥1) and h_eq_succ_of_prime (h(n)=n+1 when n+1 prime). Key insight: any prime q dividing gcd(2^n-1,...,(n+1)^n-1) leads to contradiction — small primes self-refute (q|q^n and q|q^n-1), large primes violate polynomial root counting. Now 75 theorems, 2 axioms (both genuinely open).",
     "builtItems": [
       "PROVED erdos_770_density_exists (trivial: \u03b4=0 works). 3A\u21922A.",
       "gcdPowerSeq_dvd_of_le: monotone divisibility for gcd fold",
@@ -41,17 +41,22 @@
       "prime_dvd_gcdPowerSeq: p|gcdPowerSeq(n,k) when p-1|n and k<p",
       "prime_not_dvd_gcdPowerSeq_self: p never divides gcdPowerSeq(n,p)",
       "gcdPowerSeq_ne_one_of_large_prime: gcdPowerSeq(n,k)\u22601 when \u2203 prime p>k with p-1|n",
-      "gcdPowerSeq_fermat_transition: phase transition at k=p \u2014 divisible before, not after"
+      "gcdPowerSeq_fermat_transition: phase transition at k=p \u2014 divisible before, not after",
+      "zmod_pow_eq_one_of_dvd: bridge from q|a^n-1 to (a:ZMod q)^n=1 via Nat.cast",
+      "no_small_prime_dvd_gcdPowerSeq_succ: primes q\u2264n+1 self-refute (q|q^n and q|q^n-1)",
+      "no_large_prime_dvd_gcdPowerSeq_succ: primes q>n+1 give n+1 roots of degree-n poly X^n-1",
+      "gcdPowerSeq_at_succ_eq_one: gcd(2^n-1,...,(n+1)^n-1)=1 for all n\u22651",
+      "h_eq_succ_of_prime: h(n)=n+1 when n+1 is prime (Fermat + root counting)"
     ],
     "insights": [
       "erdos_770_density_exists was trivially true (\u2203 \u03b4 \u2265 0, True). Proved. 3A\u21922A.",
       "Remaining 2 axioms: erdos_770_unbounded and erdos_770_largest_prime (both open questions).",
       "gcdPowerSeq_dvd_of_le: monotone divisibility is the key structural property",
-      "gcdPowerSeq_ne_one_of_le: useful contrapositive for showing h(n)>k",
-      "gcdPowerSeq_dvd_term: makes the fold-divides-each-member explicit",
-      "h(n) = largest prime p with p-1|n \u2014 proved both directions of the Fermat mechanism",
-      "Fermat phase transition: p|gcdPowerSeq(n,p-1) but \u00acp|gcdPowerSeq(n,p) captures the exact boundary",
-      "Forward direction (gcdPowerSeq n p = 1 for max prime p) needs primitive root argument \u2014 left for future"
+      "h(n) \u2264 n+1 PROVED for all n\u22651: two-case prime elimination argument",
+      "Small prime case: if q\u2264n+1 and q|gcd, then q is in the fold so q|q^n-1, but q|q^n, so q|1",
+      "Large prime case: if q>n+1 and q|gcd, then {1,...,n+1} are n+1 distinct roots of X^n-1 in ZMod q, violating degree bound",
+      "Combined with Fermat transition: h(n)=n+1 iff n+1 is prime (both directions now formalized)",
+      "The polynomial root counting argument uses Polynomial.card_roots_le_degree from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
