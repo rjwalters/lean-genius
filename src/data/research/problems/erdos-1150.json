@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1150",
-  "title": "Erd\u0151s #1150",
+  "title": "Erdős #1150",
   "phase": "ACT",
   "status": "in-progress",
   "tier": "A",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T16:24:55.487Z",
-    "iteration": 4,
-    "focus": "Session 4: Added parseval_ratio_ge_one. Axioms are deep (Parseval, BBMST, Kahane, Rudin-Shapiro) or open.",
+    "iteration": 5,
+    "focus": "Session 5: Proved no_ultraflat_implies_conjecture, eliminating 1 axiom. Axioms: 5→4.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,28 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 7 theorems, 5 axioms. Added parseval_ratio_ge_one. All axioms deep/open.",
+    "progressSummary": "PROGRESS: 8 theorems, 4 axioms. Proved backward direction of ultraflat equivalence via contrapositive diagonal extraction + squeeze.",
     "builtItems": [
       "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
       "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward",
       "supNorm redesigned to use unit circle subtype for clean ciSup_le interaction",
       "bbmst_upper_bound_exists: eliminated sorry via ciSup_le on subtype",
       "IsUltraflat corrected: subsequence-based (Tendsto degree atTop atTop) instead of all-n",
-      "Proved parseval_ratio_ge_one: supNorm(P)/sqrt(deg P) \u2265 1 via div_self + div_le_div_right"
+      "Proved parseval_ratio_ge_one: supNorm(P)/sqrt(deg P) ≥ 1 via div_self + div_le_div_right",
+      "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem"
     ],
     "insights": [
-      "Forward direction is clean: supNorm/\u221an > 1+c eventually contradicts Tendsto ... (nhds 1)",
+      "Forward direction is clean: supNorm/√n > 1+c eventually contradicts Tendsto ... (nhds 1)",
       "Backward direction needs countable choice: extract witnesses for 1/k, build ultraflat sequence",
-      "Old IsUltraflat requiring degree=n for ALL n was mathematically incorrect: \u00acConjecture gives witnesses for infinitely many n only, so backward direction was unprovable",
-      "supNorm defined over subtype {z : \u2102 // \u2016z\u2016 = 1} avoids ciSup empty-index issues entirely",
+      "Old IsUltraflat requiring degree=n for ALL n was mathematically incorrect: ¬Conjecture gives witnesses for infinitely many n only, so backward direction was unprovable",
+      "supNorm defined over subtype {z : ℂ // ‖z‖ = 1} avoids ciSup empty-index issues entirely",
       "Parseval axiom potentially provable if Mathlib has circle integration theory",
-      "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio \u2265 1 from Parseval, \u2264 1+1/k from construction \u2192 ratio \u2192 1"
+      "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio ≥ 1 from Parseval, ≤ 1+1/k from construction → ratio → 1",
+      "Backward direction proved without dependent choice: Filter.frequently_atTop gives ∃ m ≥ k directly, no need for strictly increasing extraction",
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze"
     ],
     "mathlibGaps": [
       "Integration on unit circle (for Parseval)"
     ],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -67,16 +70,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:24:55.487Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-03-28T08:15:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1150Problem.lean",
       "filename": "Erdos1150Problem.lean",
-      "lineCount": 271,
-      "theoremCount": 6,
-      "axiomCount": 5,
+      "lineCount": 327,
+      "theoremCount": 8,
+      "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
