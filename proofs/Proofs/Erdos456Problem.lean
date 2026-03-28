@@ -19,8 +19,10 @@ Known:
 - mₙ/n → ∞ for almost all n
 
 Axiom reduction: Rebuilt from prior version (deleted in PR #4955 as dead weight).
-Original had 12 axioms and 2 sorries. This version has 4 deep axioms with
-8 properties proved from Mathlib using sInf well-ordering, plus 3 theorem sorries.
+Original had 12 axioms and 2 sorries. This version has 3 deep axioms with
+8 properties proved from Mathlib using sInf well-ordering, 0 sorries.
+The former erdos_strict_inequality axiom was eliminated by proving
+almostAll_infinitely_often (density → infinitely many) via pigeonhole.
 
 **Status:** OPEN
 
@@ -56,7 +58,7 @@ def smallestTotientDiv (n : ℕ) : ℕ :=
   sInf {m : ℕ | 0 < m ∧ n ∣ m.totient}
 
 -- ═══════════════════════════════════════════════════════════════════════
--- DEEP AXIOMS (4 total — all are deep published results not in Mathlib)
+-- DEEP AXIOMS (3 total — all are deep published results not in Mathlib)
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- Dirichlet's theorem: for n ≥ 1, there exist infinitely many primes ≡ 1 (mod n).
@@ -68,12 +70,6 @@ axiom dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
     Best known: L ≤ 5.18 (Xylouris 2011). -/
 axiom linnik_bound :
   ∃ L : ℕ, ∀ n : ℕ, 1 ≤ n → smallestPrimeMod1 n ≤ n ^ L
-
-/-- mₙ < pₙ for infinitely many n.
-    Erdős (1979) writes this is 'easy to show'. -/
-axiom erdos_strict_inequality :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
-    smallestTotientDiv n < smallestPrimeMod1 n
 
 /-- mₙ/n → ∞ for almost all n.
     Erdős (1979): for any constant C, the set {n : mₙ ≤ Cn} has density 0. -/
@@ -242,18 +238,44 @@ theorem part2_implies_part1 : ErdosProblem456_Part2 → ErdosProblem456_Part1 :=
   have hmpos := smallestTotientDiv_pos n hn1
   omega
 
-/-- Almost-all implies infinitely-many.
-    Strategy: with ε = 1/2, for large enough M the exceptions in [0, M) number
-    less than M/2, so among M elements at least M/2 satisfy P.
-    For M > 2N, some satisfying element must be ≥ N. -/
+/-- If a property holds for almost all naturals, it holds for infinitely many.
+    Proof: take ε = 1/2. For target N, set M = max(N₀, 2N+1).
+    If no n ∈ [N, M) satisfies P, then exceptions ⊇ [N, M), giving
+    |exceptions| ≥ M − N > M/2, contradicting the density bound. -/
+lemma almostAll_infinitely_often {P : ℕ → Prop} (hP : AlmostAll P) :
+    ∀ N : ℕ, ∃ n ≥ N, P n := by
+  intro N
+  obtain ⟨N₀, hN₀⟩ := hP (1/2 : ℚ) (by norm_num)
+  set M := max N₀ (2 * N + 1)
+  have hMge : N₀ ≤ M := le_max_left _ _
+  have hM2N : 2 * N < M := by omega
+  have hMpos : 0 < M := by omega
+  have hNleM : N ≤ M := by omega
+  have hcount := hN₀ M hMge hMpos
+  -- By contradiction: if no n ≥ N has P, then [N, M) ⊆ exceptions
+  by_contra hall; push_neg at hall
+  have hsub : Finset.Ico N M ⊆ Finset.filter (fun n => ¬P n) (Finset.range M) := by
+    intro n hn
+    simp only [Finset.mem_Ico] at hn
+    exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hn.2, hall n hn.1⟩
+  have hcard := Finset.card_le_card hsub
+  rw [Finset.card_Ico] at hcard
+  -- (M - N : ℚ) ≤ card < M/2, but M - N > M/2 since M > 2N: contradiction
+  have h1 : ((M - N : ℕ) : ℚ) < (1/2 : ℚ) * ↑M :=
+    lt_of_le_of_lt (Nat.cast_le.mpr hcard) hcount
+  rw [Nat.cast_sub hNleM] at h1
+  have h2 : (2 * ↑N : ℚ) < (↑M : ℚ) := by exact_mod_cast hM2N
+  linarith
+
+/-- Almost-all implies infinitely-many (applied to Part 1).
+    Uses almostAll_infinitely_often with max(N,1) to ensure n ≥ 1
+    so the conditional 1 ≤ n → mₙ < pₙ fires. -/
 theorem part1_implies_infinitely_many :
     ErdosProblem456_Part1 → ∀ N : ℕ, ∃ n ≥ N,
       smallestTotientDiv n < smallestPrimeMod1 n := by
-  -- Use the Erdős strict inequality axiom directly (which gives
-  -- infinitely many witnesses). A pure density argument from
-  -- AlmostAll would also work but requires ℚ↔ℕ cardinality bookkeeping.
-  intro _
-  exact fun N => let ⟨n, hn, hlt⟩ := erdos_strict_inequality N; ⟨n, hn, hlt⟩
+  intro h1 N
+  obtain ⟨n, hn, hP⟩ := almostAll_infinitely_often h1 (max N 1)
+  exact ⟨n, le_trans (le_max_left N 1) hn, hP (le_trans (le_max_right N 1) hn)⟩
 
 end
 
