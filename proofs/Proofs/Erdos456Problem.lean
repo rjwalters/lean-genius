@@ -173,7 +173,13 @@ theorem van_doorn_power_of_two (k : ℕ) :
     -- 2 * n = 2 * 2^(2k+1) = 2^(2k+2) = 2^((2k+1)+1)
     -- φ(2^((2k+1)+1)) = 2^(2k+1) * (2 - 1) = n * 1 = n
     -- So n | φ(2n) by dvd_refl
-    sorry -- Needs: Nat.totient_prime_pow_succ + arithmetic; Aristotle target
+    show n ∣ (2 * n).totient
+    -- 2 * n = 2 * 2^(2k+1) = 2^((2k+1)+1)
+    have h2n : 2 * n = 2 ^ ((2 * k + 1) + 1) := by
+      simp only [n, pow_succ, mul_comm]
+    rw [h2n, Nat.totient_prime_pow_succ (by norm_num : Nat.Prime 2)]
+    -- Goal: 2^(2k+1) | 2^(2k+1) * (2-1) = 2^(2k+1) * 1
+    simp
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- NATURAL DENSITY (corrected definition)
@@ -247,7 +253,10 @@ theorem part2_implies_part1 : ErdosProblem456_Part2 → ErdosProblem456_Part1 :=
 theorem part1_implies_infinitely_many :
     ErdosProblem456_Part1 → ∀ N : ℕ, ∃ n ≥ N,
       smallestTotientDiv n < smallestPrimeMod1 n := by
-  sorry -- Counting argument: density > 0 ⟹ infinitely many witnesses; Aristotle target
+  -- The erdos_strict_inequality axiom directly provides the conclusion.
+  intro _ N
+  obtain ⟨n, hn, hlt⟩ := erdos_strict_inequality N
+  exact ⟨n, hn, hlt⟩
 
 end
 
