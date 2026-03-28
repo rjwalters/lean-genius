@@ -213,16 +213,36 @@ def import_problem_details(conn: sqlite3.Connection):
 
         # If problem doesn't exist yet, insert it
         if cursor.rowcount == 0:
+            # Map non-standard statuses to schema-valid values
+            raw_status = data.get("status", "available")
+            status_map = {
+                "active": "available",
+                "successful": "completed",
+            }
+            mapped_status = status_map.get(raw_status, raw_status)
+            # Final fallback to 'available' if still not valid
+            valid_statuses = {'available', 'in-progress', 'graduated', 'blocked', 'skipped', 'completed', 'surveyed'}
+            if mapped_status not in valid_statuses:
+                mapped_status = "available"
+
+            # Clamp significance and tractability to 1-10
+            sig = data.get("significance")
+            tract = data.get("tractability")
+            if sig is not None:
+                sig = max(1, min(10, sig))
+            if tract is not None:
+                tract = max(1, min(10, tract))
+
             cursor.execute("""
                 INSERT INTO problems (slug, title, status, tier, significance, tractability)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, (
                 slug,
                 data.get("title", slug),
-                data.get("status", "available"),
+                mapped_status,
                 data.get("tier"),
-                data.get("significance"),
-                data.get("tractability"),
+                sig,
+                tract,
             ))
 
         problem_count += 1
