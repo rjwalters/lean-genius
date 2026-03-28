@@ -1,6 +1,6 @@
 {
   "slug": "erdos-952",
-  "title": "Erdős #952",
+  "title": "Erd\u0151s #952",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Added monotonicity infrastructure, assessed all axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,18 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 2 axioms as consequences of tsuchimura (6A→4A). 3T, 1 sorry (def).",
+    "progressSummary": "PROGRESS: Added canEscapeMoat_mono and no_walk_up_to_sqrt26 theorems (+2T). 4A all deep/appropriate. Definition sorry (splitPrime) needs Fermat two-square from Mathlib.",
     "builtItems": [
-      "PROVED jordan_rabung from tsuchimura (axiom→theorem)",
-      "PROVED gethner_et_al from tsuchimura (axiom→theorem)"
+      "PROVED jordan_rabung from tsuchimura (axiom\u2192theorem)",
+      "PROVED gethner_et_al from tsuchimura (axiom\u2192theorem)",
+      "canEscapeMoat_mono: monotonicity of moat escape (larger step => easier)",
+      "no_walk_up_to_sqrt26: blocks all step sizes \u226427 via Tsuchimura + mono"
     ],
     "insights": [
-      "jordan_rabung and gethner_et_al are weaker results than tsuchimura — proved as consequences (6A→4A)",
-      "Remaining 4 axioms: gaussian_prime_classification (deep), tsuchimura (computational), gaussian_prime_theorem (analytic NT), primes_mod_4_connection (structural)"
+      "jordan_rabung and gethner_et_al are weaker results than tsuchimura \u2014 proved as consequences (6A\u21924A)",
+      "Remaining 4 axioms: gaussian_prime_classification (deep), tsuchimura (computational), gaussian_prime_theorem (analytic NT), primes_mod_4_connection (structural)",
+      "4 remaining axioms all appropriate: gaussian_prime_classification (could use Mathlib GaussianInt.prime_iff), tsuchimura (computational), gaussian_prime_theorem (analytic), primes_mod_4_connection (structural)",
+      "splitPrime def sorry: Fermat two-square theorem in Mathlib (Nat.Prime.sq_add_sq or similar), but exact API name uncertain",
+      "canEscapeMoat_mono subsumes jordan_rabung and gethner_et_al proofs (they are special cases)",
+      "gaussian_prime_classification might be provable from Mathlib GaussianInt API but would need careful definitional matching"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -56,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-03-28T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

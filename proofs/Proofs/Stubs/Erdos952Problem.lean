@@ -123,6 +123,18 @@ theorem gethner_et_al : ¬ ∃ x : ℕ → GaussianInt,
 -- Current state: unknown for larger step sizes
 def CurrentBestBound : ℕ := 27
 
+/-- Moat escape monotonicity: if we can escape with step size k₁,
+    we can escape with any larger step size k₂ ≥ k₁. -/
+theorem canEscapeMoat_mono {k₁ k₂ : ℕ} (h : k₁ ≤ k₂) :
+    CanEscapeMoat k₁ → CanEscapeMoat k₂ := by
+  intro ⟨x, hwalk, hgaps⟩
+  exact ⟨x, hwalk, fun n => lt_of_lt_of_le (hgaps n) h⟩
+
+/-- Tsuchimura's result blocks all step sizes up to √26. -/
+theorem no_walk_up_to_sqrt26 (k : ℕ) (hk : k ≤ 27) :
+    ¬CanEscapeMoat k :=
+  fun h => tsuchimura (canEscapeMoat_mono hk h)
+
 /-
 # Part 5: The Moat Width
 
