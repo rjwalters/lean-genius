@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "Fixed BESConjecture def bug (extremalNumber t -> r). Proved bes_conjecture_3_uniform. Fixed stale metadata. 2 axioms, 0 sorries.",
     "builtItems": [
       "besExponent_lt_two_at_bes_threshold: BUGFIX — correct bound replaces wrong ≤ 1 claim",
       "isLittleO_zero: zero function is little-o of anything",
@@ -37,7 +37,9 @@
       "bes_monotone_in_s: BES conjecture monotone in number of forbidden edges",
       "besExponent_at_threshold_one: exponent = 1 when k = rs - s + 1",
       "PROVED ruzsa_szemeredi_bes from delcourt_postle_theorem (axiom→theorem)",
-      "PROVED glock_bes_k4 from delcourt_postle_theorem (axiom→theorem)"
+      "PROVED glock_bes_k4 from delcourt_postle_theorem (axiom→theorem)",
+      "bes_conjecture_3_uniform: proves BESConjecture 2 3 s k from delcourt_postle_theorem (r=3 BES resolved)",
+      "Fixed BESConjecture definition: extremalNumber t -> extremalNumber r"
     ],
     "insights": [
       "BUG FIXED: besExponent_le_one_at_bes_threshold was mathematically wrong (claimed 3/2 ≤ 1). Corrected to besExponent_lt_two (< 2 is correct)",
@@ -47,7 +49,9 @@
       "besExponent_at_threshold_one: when k = rs-s+1, exponent = 1 exactly (s-1 cancels)",
       "ruzsa_szemeredi_bes and glock_bes_k4 are both special cases of delcourt_postle_theorem — proved and converted from axioms",
       "Reduced axiom count from 7 to 5 by proving 2 axioms",
-      "Remaining 5 axioms: extremalNumber function, 2 monotonicity properties, BES lower bound, Delcourt-Postle theorem"
+      "Remaining 5 axioms: extremalNumber function, 2 monotonicity properties, BES lower bound, Delcourt-Postle theorem",
+      "BUG FIXED: BESConjecture used extremalNumber t (host uniformity) but should use extremalNumber r (the r-uniform extremal number). Fixed to be consistent with delcourt_postle_theorem.",
+      "With corrected BESConjecture, can prove 3-uniform case directly from delcourt_postle_theorem: parameter constraint k >= (3-2)*s+2+1 = s+3 matches exactly."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,16 +72,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:46:42.684Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-03-28T01:32:10.974954+00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1157Problem.lean",
       "filename": "Erdos1157Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 16,
-      "axiomCount": 7,
+      "lineCount": 327,
+      "theoremCount": 23,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

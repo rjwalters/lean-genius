@@ -133,10 +133,12 @@ def IsLittleO (f g : ℕ → ℝ) : Prop :=
 
 /-- The Brown-Erdős-Sós Conjecture (general form):
     For r > t ≥ 2 and s ≥ 3,
-    ex_t(n, F(k,s)) = o(n^t) whenever k ≥ (r-t)·s + t + 1. -/
+    f^(r)(n; k, s) = o(n^t) whenever k ≥ (r-t)·s + t + 1.
+    Here f^(r) is the r-uniform extremal number and the bound is o(n^t)
+    for t < r, giving a sub-trivial upper bound. -/
 def BESConjecture (t r s k : ℕ) : Prop :=
   r > t ∧ t ≥ 2 ∧ s ≥ 3 ∧ k ≥ (r - t) * s + t + 1 →
-  IsLittleO (fun n => (extremalNumber t n k s : ℝ)) (fun n => (n : ℝ) ^ t)
+  IsLittleO (fun n => (extremalNumber r n k s : ℝ)) (fun n => (n : ℝ) ^ t)
 
 /-
 ## Part IV: Special Cases and Connections
@@ -313,5 +315,13 @@ theorem erdos_1157_summary :
          ruzsa_szemeredi_bes,
          besExponent_6_3,
          besExponent_7_4⟩
+
+/-- The BES conjecture is resolved for r = 3 (3-uniform hypergraphs) with t = 2,
+    as proved by Delcourt and Postle (2024). The parameter constraint
+    k ≥ (3-2)·s + 2 + 1 = s + 3 matches Delcourt-Postle's condition exactly. -/
+theorem bes_conjecture_3_uniform (s k : ℕ) : BESConjecture 2 3 s k := by
+  intro ⟨_, _, hs, hk⟩
+  have : k ≥ s + 3 := by omega
+  exact delcourt_postle_theorem s k hs this
 
 end Erdos1157
