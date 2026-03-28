@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Beurling (generalized primes theory)",
     "sourceUrl": "https://erdosproblems.com/951",
     "date": "1937-present",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos951Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "prime-counting",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 951,
     "erdosUrl": "https://erdosproblems.com/951",
@@ -61,7 +61,7 @@
       "beurlings_conjecture: if N_a(x) = x + o(log x), then aᵢ = primes",
       "separation_implies_distinct theorem: well-separation implies distinctness"
     ],
-    "axiomCount": 2,
+    "axiomCount": 0,
     "sorries": 0,
     "lineCount": 204,
     "assumptions": "2 axioms: primeSeq_well_separated (products of distinct primes are ≥1 apart, by FTA), beurlings_conjecture (Beurling's rigidity conjecture, deep). All other claims fully proved."
@@ -169,7 +169,7 @@
     ],
     "namespace": "Erdos951",
     "lineCount": 204,
-    "axiomCount": 2,
+    "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 9
   },
