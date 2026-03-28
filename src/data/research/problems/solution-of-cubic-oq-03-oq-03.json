@@ -1,0 +1,35 @@
+{
+  "slug": "solution-of-cubic-oq-03-oq-03",
+  "title": "Resolvent Cubic Reduces to Cardano's Formula",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "isResolventRoot p q r (t - 5p/6) ↔ t^3 + At + B = 0",
+    "plain": "Prove the resolvent cubic for the general quartic reduces to Cardano's formula.",
+    "whyMatters": ["Completes the radical solution chain for quartic equations", "Connects Ferrari's method to Cardano's formula"]
+  },
+  "knownResults": {
+    "proven": ["Depression via m = t - 5p/6", "Ring identity: resolvent = 8 * depressed", "Cardano root recovery", "Complete quartic-to-Cardano chain"],
+    "open": [],
+    "goal": "Connect resolvent cubic to Cardano's depressed form"
+  },
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:30:00Z", "iteration": 1, "focus": "9 theorems, 0 sorries, 0 axioms", "blockers": [], "nextAction": "None", "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "COMPLETED: 9 theorems, 262 lines, 0 sorries, 0 axioms.",
+    "builtItems": ["proofs/Proofs/SolutionOfCubicOQ03OQ03.lean", "src/data/proofs/solution-of-cubic-oq-03-oq-03/"],
+    "insights": ["ring tactic verifies the depression identity automatically", "mul_eq_zero handles the 8x factor cleanly", "Depression shift -5p/6 eliminates m^2 term"],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": ["algebra", "polynomials", "cubic-equations", "cardano-formula", "symmetric-polynomials", "research", "seeker-selected"],
+  "relatedProofs": ["solution-of-cubic-oq-03", "general-quartic", "solution-of-cubic"],
+  "references": {"papers": [], "urls": [], "mathlib": []},
+  "started": "2026-03-28T20:20:00Z",
+  "lastUpdate": "2026-03-28T20:30:00Z",
+  "completed": "2026-03-28T20:30:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [{"path": "Proofs/SolutionOfCubicOQ03OQ03.lean", "filename": "SolutionOfCubicOQ03OQ03.lean", "lineCount": 262, "theoremCount": 9, "axiomCount": 0, "defCount": 5, "sorryCount": 0, "isAristotle": false}]
+}
