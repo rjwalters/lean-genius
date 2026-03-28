@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Extended verified range to n=1..6 + Borwein-Loring instances (11,26). 2 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Proved n=1,2,3,4 all representable. n=2 via weight coincidence w(1)=w(2), n=3 via {4,6,8}, n=4 via BL family. 2 axioms unchanged (tengely_ulas_zygadlo, ErdosProblem261_all).",
     "builtItems": [
       "recipPow2Weight_zero: w(0) = 0",
       "recipPow2Weight_three: w(3) = 3/8",
@@ -43,10 +43,11 @@
       "Eliminated ErdosProblem261_two_reps axiom (trivially provable from incomplete def)",
       "Proved icc_recipPow2_sum: sum over Icc(a+1,a+m) = (a+2)/2^a - (a+m+2)/2^(a+m) by induction",
       "Proved borwein_loring_family: m=1 via representable_one, m≥2 via Icc witness + telescoping identity",
-      "representable_five: 5/32 = 6/64+7/128+11/2048+13/8192+14/16384",
-      "representable_six: 6/64 = 7/128+8/256+11/2048+13/8192+14/16384",
-      "representable_le_6: all n from 1 to 6 are representable",
-      "representable_eleven, representable_26: from Borwein-Loring"
+      "representable_of_eq_weight: general transfer via equal weight",
+      "representable_two: n=2 via weight coincidence with n=1",
+      "representable_three: n=3 via explicit set {4,6,8}",
+      "representable_four: n=4 from BL family m=2",
+      "representable_le_4: all n in [1,4] are representable"
     ],
     "insights": [
       "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
@@ -63,7 +64,9 @@
       "A proper formalization needs Filter.Tendsto or tsum to express convergence of sum a(k)/2^{a(k)} to x",
       "borwein_loring_family proof key: n+m+2 = 2^{m+1} makes (n+m+2)/2^{n+m} = 2/2^n, collapsing to n/2^n",
       "Finset.Icc decomposition via ext+omega avoids needing exact Mathlib lemma names for insert/snoc",
-      "n=5,6 witnesses involve k=11,13,14 (large exponents): subset sum over k/2^k with target 5/32 and 3/32"
+      "w(1) = w(2) = 1/2 means representable_one implies representable_two via weight transfer",
+      "n=3: representation {4,6,8} found by search: 4/16 + 6/64 + 8/256 = 3/8 = w(3)",
+      "n=4: directly from BL family (m=2), 4 = 2^3 - 2 - 2, set {5,6}"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,15 +90,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:30:27.389Z",
-  "lastUpdate": "2026-03-28T01:47:02.517352+00:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.044Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos261Problem.lean",
       "filename": "Erdos261Problem.lean",
-      "lineCount": 352,
-      "theoremCount": 28,
+      "lineCount": 113,
+      "theoremCount": 2,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
