@@ -44,9 +44,11 @@ DEFAULT_DAEMON_INTERVAL=60
 RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
 # Default pool sizes
-DEFAULT_ENRICHER=2
+# Balanced team: 5 researchers (continuous), 8 support agents (sleeping between cycles)
+# ~72 active min/hr across 9 accounts = ~8 min/hr per account
+DEFAULT_ENRICHER=1
 DEFAULT_ARISTOTLE=1
-DEFAULT_RESEARCHER=2
+DEFAULT_RESEARCHER=5
 DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
 DEFAULT_AUDITOR=1
