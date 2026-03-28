@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "IsCyclicVector T v \u2194 \u2200 w, \u2203 p : K[X], (aeval T p) v = w",
+    "formal": "IsCyclicVector T v ↔ ∀ w, ∃ p : K[X], (aeval T p) v = w",
     "plain": "AVAILABLE: Extend to nonderogatory operators on infinite-dimensional spaces, where the structure theorem for modules over PIDs gives a countable invariant factor decomposition.",
     "whyMatters": [
       "Provides the correct infinite-dimensional generalization of nonderogatory",
@@ -22,27 +22,24 @@
       "minpoly(T) annihilates every vector",
       "Annihilator is closed under polynomial multiplication (ideal)",
       "v cyclic iff evalMap surjective",
-      "v cyclic iff every w = p(T)v for some p",
-      "Orbit dimension bound: cyclicSubspace = span{v, Tv, ..., T^{d-1}v} for integral T",
-      "ker(polynomialAction) = annihilatorIdeal (as sets)",
-      "T^n v expressible via polynomial remainder: T^n v = (X^n mod mu)(T) v"
+      "v cyclic iff every w = p(T)v for some p"
     ],
     "open": [
-      "Linear independence of Krylov vectors for cyclic vectors (dimension = d exactly)",
-      "Explicit quotient isomorphism using Mathlib LinearMap.quotKerEquivRange",
-      "Connection to Module.IsTorsion for torsion K[X]-modules"
+      "Orbit dimension bound (T^k v reduces for k >= deg minpoly)",
+      "Countable union avoidance for uncountable fields",
+      "Full structure theorem connection (invariant factors)"
     ],
     "goal": "Complete module-theoretic framework for cyclic vectors in all dimensions"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T20:32:09.037545+00:00",
-    "iteration": 4,
-    "focus": "Orbit dimension bound and first isomorphism theorem",
+    "iteration": 3,
+    "focus": "Module-theoretic framework: evalMap, cyclic subspace, annihilator ideal",
     "blockers": [
       "Structure theorem for f.g. modules over PIDs not in Mathlib v4.26"
     ],
-    "nextAction": "Prove Krylov linear independence for cyclic vectors; formalize quotient iso",
+    "nextAction": "Prove orbit dimension bound; attempt countable union avoidance for uncountable fields",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -50,27 +47,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added orbit dimension bound (Section VI) and first isomorphism theorem setup (Section VII). File now 389 lines, 24 theorems, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added finiteSpan_le_cyclicSubspace lemma (proved). Documented proof strategy for orbit dimension bound. 3 sorries remain.",
     "builtItems": [
       "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean (262 lines)",
       "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-03/ (gallery data)",
-      "finiteSpan_le_cyclicSubspace: finite span contained in cyclic subspace (proved)",
-      "orbitSpan: K-span of finite Krylov vectors {v, Tv, ..., T^{d-1}v}",
-      "pow_mem_orbitSpan: T^n v in orbitSpan via polynomial modular arithmetic (proved)",
-      "cyclicSubspace_eq_orbitSpan: cyclic subspace = orbit span for integral T (proved)",
-      "mem_ker_polynomialAction_iff: kernel = annihilator characterization (proved)",
-      "polynomialAction_surj_onto_cyclicSubspace: range = cyclic subspace (proved)"
+      "finiteSpan_le_cyclicSubspace: finite span contained in cyclic subspace (proved)"
     ],
     "insights": [
       "In infinite dimensions, nonderogatory = cyclic K[X]-module (no charpoly needed)",
       "Countable union avoidance is FALSE for general infinite-dim spaces (R[X] counterexample)",
       "The evaluation map phi_v : K[X] -> V is the central construction bridging algebra and geometry",
-      "annihilator of v is a K[X]-ideal, not just a K-submodule \u2014 key module-theoretic upgrade",
+      "annihilator of v is a K[X]-ideal, not just a K-submodule — key module-theoretic upgrade",
       "Structure theorem for f.g. modules over PIDs is not in Mathlib v4.26",
-      "cyclicSubspace_le_minpoly_degree proof strategy documented: T-invariance of finite span via monic minpoly relation",
-      "Polynomial modular arithmetic is the cleanest route to the orbit bound: X^n mod mu has degree < d, so T^n v = r(T)v with r of low degree",
-      "The d=0 edge case (minpoly=1) forces V to be trivial (id=0)",
-      "The orbit dimension bound connects the abstract infinite-dim theory back to concrete linear algebra"
+      "cyclicSubspace_le_minpoly_degree proof strategy documented: T-invariance of finite span via monic minpoly relation"
     ],
     "mathlibGaps": [
       "Structure theorem for finitely generated modules over PIDs",
@@ -78,9 +67,9 @@
       "Smith normal form"
     ],
     "nextSteps": [
-      "Prove linear independence of {v, Tv, ..., T^{d-1}v} when v is cyclic (dimension = d exactly)",
-      "Formalize the explicit quotient isomorphism K[X]/Ann(v) \u2245 cyclic(T,v) using LinearMap.quotKerEquivRange",
-      "Connect to Module.IsTorsion for torsion K[X]-modules"
+      "Prove cyclicSubspace_le_minpoly_degree (orbit dimension bound)",
+      "Investigate countable union avoidance for specific module-theoretic subspaces",
+      "Connect to Mathlib Module.IsTorsion for torsion K[X]-modules"
     ]
   },
   "tags": [
