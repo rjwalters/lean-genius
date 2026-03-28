@@ -160,6 +160,13 @@ theorem primeGap_three : primeGap 3 = 4 := by
   unfold primeGap
   rw [nth_prime_three, nth_prime_four]
 
+/-- The maximum gap function is monotone: maxGap x ≤ maxGap y whenever x ≤ y.
+    Taking the supremum over a larger Finset can only increase the value. -/
+theorem maxGap_mono : Monotone maxGap := by
+  intro x y hxy
+  unfold maxGap
+  exact Finset.sup_mono (Finset.range_mono hxy)
+
 -- ## Part V: Main Conjecture
 
 /-- **Erdős Problem #1137 (OPEN)**:
@@ -292,6 +299,7 @@ of consecutive prime gaps to the square of the maximum gap tends to 0.
 - All 13 original theorems about prime gaps (positivity, parity, specific values)
 - dvd_factorial: k divides n! when 1 ≤ k ≤ n
 - not_prime_factorial_add: n!+k is composite for 2 ≤ k ≤ n
+- maxGap_mono: maxGap is monotone non-decreasing (via Finset.sup_mono)
 - erdosRatio_le_one: ratio ≤ 1 (previously axiom, now PROVED)
 - primeGap_unbounded: ∀ B, ∃ n, primeGap n ≥ B (factorial + Galois connection)
 - maxGap_tendsto_atTop: max gap → ∞ (previously axiom, now PROVED)

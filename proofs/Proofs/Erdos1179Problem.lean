@@ -212,22 +212,65 @@ axiom gEps_mono (ε₁ ε₂ : ℝ) (N : ℕ) (h : ε₁ ≤ ε₂)
     (hε₁ : 0 < ε₁) (hε₂ : ε₂ < 1) (hN : N ≥ 2) :
     gEps ε₁ N ≥ gEps ε₂ N
 
-/- ## Part X: Summary -/
+/- ## Part X: Axiom Elimination — Deriving main_asymptotic -/
 
--- **Summary of Erdős Problem #1179:**
+-- The main_asymptotic axiom can be derived from trivial_lower_bound and
+-- erdos_hall_upper via the squeeze theorem:
+--   Lower: gEps ε N ≥ log₂ N → ratio ≥ 1
+--   Upper: gEps ε N ≤ (1 + C·f(N))·log₂ N → ratio ≤ 1 + C·f(N)
+--   where f(N) = log(log(log N))/log(log N) → 0 as N → ∞
 --
--- The function g_ε(N) satisfies:
--- - Lower bound: g_ε(N) ≥ log₂ N (trivial, from counting)
--- - Upper bound: g_ε(N) ≤ (1 + o(1)) log₂ N (Erdős-Hall 1976)
--- - Main result: g_ε(N) ~ log₂ N as N → ∞
---
--- In contrast to Problem #543 (spanning) where f(N) = log₂ N + Θ(log log N),
--- the extra log log N is needed for spanning but NOT for approximate uniformity.
+-- The limit f(N) → 0 follows from log(x)/x → 0 (Mathlib: isLittleO_log_rpow_atTop)
+-- composed with log(log N) → ∞.
+
+/-- Standard analysis fact: log(log(log N))/log(log N) → 0 as N → ∞.
+    Follows from log(x)/x → 0 composed with log ∘ log → ∞.
+    Uses Mathlib's isLittleO_log_rpow_atTop with exponent 1. -/
+theorem logloglog_div_loglog_tendsto_zero :
+    ∀ c : ℝ, c > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      Real.log (Real.log ↑N) > 0 →
+        |Real.log (Real.log (Real.log ↑N)) / Real.log (Real.log ↑N)| < c := by
+  sorry -- Standard: log(x)/x → 0 (isLittleO_log_rpow_atTop) ∘ (log ∘ log → ∞)
+
+/-- **Axiom elimination**: main_asymptotic is derivable from trivial_lower_bound
+    and erdos_hall_upper via the squeeze theorem.
+    Structure: lower bound gives ratio ≥ 1, upper bound gives ratio ≤ 1 + error,
+    and the error → 0 by the limit lemma. So ratio → 1. -/
+theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
+    ∀ δ : ℝ, δ > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      |((gEps ε N : ℝ) / Real.logb 2 ↑N) - 1| < δ := by
+  intro δ hδ
+  obtain ⟨C, hC, hUB⟩ := erdos_hall_upper ε hε hε1
+  obtain ⟨N₁, hN₁⟩ := logloglog_div_loglog_tendsto_zero (δ / C) (div_pos hδ hC)
+  -- N₀ must be large enough for bounds to apply AND for the limit to kick in
+  -- We need N ≥ 2 (for lower bound) and N ≥ N₁ (for limit), and N large enough
+  -- that log(log N) > 0 (N ≥ 3 suffices since log(3) > 1)
+  use max N₁ 3
+  intro N hN
+  have hN3 : N ≥ 3 := le_trans (le_max_right _ _) hN
+  have hN2 : N ≥ 2 := by omega
+  have hN1_le : N₁ ≤ N := le_trans (le_max_left _ _) hN
+  -- Key facts: log₂ N > 0, log(log N) > 0 for N ≥ 3
+  have hlog_pos : 0 < Real.logb 2 ↑N := by
+    rw [Real.logb]
+    exact div_pos (Real.log_pos (by exact_mod_cast (show 1 < N by omega)))
+                   (Real.log_pos (by norm_num : (1:ℝ) < 2))
+  -- Squeeze: 1 ≤ ratio ≤ 1 + error, error < δ → |ratio - 1| < δ
+  -- Lower bound → ratio ≥ 1
+  have h_lower := trivial_lower_bound ε N hε hε1 hN2
+  -- Upper bound → ratio ≤ 1 + C·f(N)
+  have h_upper := hUB N hN2
+  -- Limit → C·|f(N)| < δ for our N
+  -- Combine: |ratio - 1| = ratio - 1 ∈ [0, C·|f(N)|) ⊂ [0, δ)
+  sorry -- Squeeze: routine real arithmetic combining h_lower, h_upper, hN₁
+
+/- ## Part XI: Summary -/
+
 theorem erdos_1179_summary (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     (∀ N : ℕ, N ≥ 2 → (gEps ε N : ℝ) ≥ Real.logb 2 ↑N) ∧
     (∀ δ : ℝ, δ > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       |((gEps ε N : ℝ) / Real.logb 2 ↑N) - 1| < δ) :=
   ⟨fun N hN => trivial_lower_bound ε N hε hε1 hN,
-   main_asymptotic ε hε hε1⟩
+   main_asymptotic ε hε hε1⟩  -- Can use main_asymptotic_derived once sorry is cleared
 
 end Erdos1179

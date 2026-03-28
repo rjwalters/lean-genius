@@ -29,15 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 2 theorems (6T→8T). reprCount bound + expectedReprCount positivity. 6A unchanged.",
+    "progressSummary": "PROGRESS: Added main_asymptotic_derived — reduces main_asymptotic axiom to standard limit. Squeeze theorem: lower bound gives ratio>=1, Erdos-Hall upper gives ratio<=1+error, limit gives error->0. 2 sorries remain. 6A->5A once cleared.",
     "builtItems": [
       "Assessment: 6A all appropriate",
       "reprCount_le_pow: each element has ≤ 2^|A| representations",
-      "expectedReprCount_pos: expected count positive for N≥1"
+      "expectedReprCount_pos: expected count positive for N≥1",
+      "logloglog_div_loglog_tendsto_zero: standard limit log(log(log N))/log(log N)->0 (sorry)",
+      "main_asymptotic_derived: proves main_asymptotic from trivial_lower_bound + erdos_hall_upper (2 sorries)"
     ],
     "insights": [
-      "6 axioms: gEps (opaque function) + 5 properties. All appropriate.",
-      "main_asymptotic axiom is potentially provable from trivial_lower_bound + erdos_hall_upper via log(log(log N))/log(log N) → 0, but requires complex limit manipulation",
+      "6 axioms: gEps (opaque function) + 5 properties. gEps_mono is hard without definition.",
+      "main_asymptotic IS derivable from trivial_lower_bound + erdos_hall_upper via squeeze theorem",
+      "Proof structure: 1<=ratio<=1+C*f(N), where f(N)=log(log(log N))/log(log N)->0",
+      "Remaining sorries: (a) the limit fact, provable via isLittleO_log_rpow_atTop; (b) real arithmetic",
       "OQ01 sorries are deep: Fourier character expansion + error bound assembly over ZMod p"
     ],
     "mathlibGaps": [],

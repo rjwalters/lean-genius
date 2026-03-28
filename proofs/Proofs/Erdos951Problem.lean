@@ -66,32 +66,33 @@ noncomputable def beurlingPi (a : ℕ → ℝ) (x : ℝ) : ℕ :=
     Nat.primeCounting n counts primes ≤ n (unfolding: count Prime (n+1) = #{p < n+1 | Prime p}). -/
 noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x)
 
+/-- Consecutive Beurling primes differ by at least 1.
+    This follows from well-separation applied to single-element Finsupp representations. -/
+theorem beurling_consec_gap (bp : BeurlingPrimes) (n : ℕ) :
+    bp.a (n + 1) ≥ bp.a n + 1 := by
+  have hne : Finsupp.single (n + 1) (1 : ℕ) ≠ Finsupp.single n 1 :=
+    fun h => absurd (Finsupp.single_left_injective (by omega) h) (by omega)
+  have hsep := bp.well_separated _ _ hne
+  have hs1 : (Finsupp.single (n + 1) (1 : ℕ)).support = {n + 1} :=
+    Finsupp.support_single_ne_zero _ (by omega)
+  have hs2 : (Finsupp.single n (1 : ℕ)).support = {n} :=
+    Finsupp.support_single_ne_zero _ (by omega)
+  rw [hs1, hs2, Finset.prod_singleton, Finset.prod_singleton] at hsep
+  simp only [Finsupp.single_eq_same] at hsep
+  rw [abs_of_pos (by linarith [bp.strictly_increasing n (n + 1) (by omega)])] at hsep
+  linarith
+
 /-- The counting set {n | a n <= x} is finite for Beurling prime sequences.
     Since a is strictly increasing with all a_n > 1, only finitely many
     indices satisfy a_n <= x. -/
 theorem beurlingPi_finite (bp : BeurlingPrimes) (x : ℝ) :
     Set.Finite {n : ℕ | bp.a n ≤ x} := by
-  -- Step 1: consecutive terms differ by ≥ 1 (from well-separated products
-  -- applied to single-element Finsupp representations)
-  have step : ∀ n : ℕ, bp.a (n + 1) ≥ bp.a n + 1 := by
-    intro n
-    have hne : Finsupp.single (n + 1) (1 : ℕ) ≠ Finsupp.single n 1 :=
-      fun h => absurd (Finsupp.single_left_injective (by omega) h) (by omega)
-    have hsep := bp.well_separated _ _ hne
-    have hs1 : (Finsupp.single (n + 1) (1 : ℕ)).support = {n + 1} :=
-      Finsupp.support_single_ne_zero _ (by omega)
-    have hs2 : (Finsupp.single n (1 : ℕ)).support = {n} :=
-      Finsupp.support_single_ne_zero _ (by omega)
-    rw [hs1, hs2, Finset.prod_singleton, Finset.prod_singleton] at hsep
-    simp only [Finsupp.single_eq_same] at hsep
-    rw [abs_of_pos (by linarith [bp.strictly_increasing n (n + 1) (by omega)])] at hsep
-    linarith
-  -- Step 2: a_n ≥ a_0 + n (by induction on the step bound)
+  -- Step 1: a_n ≥ a_0 + n (by induction using beurling_consec_gap)
   have growth : ∀ n : ℕ, bp.a n ≥ bp.a 0 + n := by
     intro n; induction n with
     | zero => simp
-    | succ k ih => push_cast at *; linarith [step k]
-  -- Step 3: the set is a bounded subset of ℕ, hence finite
+    | succ k ih => push_cast at *; linarith [beurling_consec_gap bp k]
+  -- Step 2: the set is a bounded subset of ℕ, hence finite
   apply Set.Finite.subset (Set.finite_Iic ⌊x⌋₊)
   intro n hn
   simp only [Set.mem_setOf_eq] at hn
