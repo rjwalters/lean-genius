@@ -101,6 +101,13 @@ theorem upper_half_count (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
   rw [h_eq, Finset.Nat.card_Icc]
   omega
 
+/-- For p = 2, no integer is in the upper half: n % 2 ∈ {0, 1} and
+    2/2 = 1, so the upper half condition 1 < n%2 is never met. -/
+theorem two_not_upper_half_residue (n : ℕ) : ¬isUpperHalfResidue n 2 := by
+  unfold isUpperHalfResidue
+  have : n % 2 < 2 := Nat.mod_lt n (by omega)
+  omega
+
 /-
 ## Sum Partition Properties
 -/
@@ -210,6 +217,25 @@ theorem lower_half_also_half :
     (mertensSum n - Real.log (Real.log n)) -
     (upperHalfSum n - Real.log (Real.log n) / 2) from by ring]
   rw [abs_lt] at h1 h2 ⊢
+  constructor <;> linarith
+
+/-- The upper and lower half sums are asymptotically equal: their
+    difference → 0. Follows from Mertens + conjecture via partition. -/
+theorem upper_lower_asymptotic :
+    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
+      |upperHalfSum n - lowerHalfSum n| < ε := by
+  intro ε hε
+  obtain ⟨N₁, hN₁⟩ := mertens_theorem (ε / 3) (by linarith)
+  obtain ⟨N₂, hN₂⟩ := erdos_726_conjecture (ε / 3) (by linarith)
+  refine ⟨max N₁ N₂, fun n hn => ?_⟩
+  have h1 := hN₁ n (le_trans (le_max_left _ _) hn)
+  have h2 := hN₂ n (le_trans (le_max_right _ _) hn)
+  have hpart := sum_partition n
+  have heq : upperHalfSum n - lowerHalfSum n =
+    2 * (upperHalfSum n - Real.log (Real.log n) / 2) -
+    (mertensSum n - Real.log (Real.log n)) := by linarith
+  rw [heq, abs_lt]
+  rw [abs_lt] at h1 h2
   constructor <;> linarith
 
 /-- The conjecture implies the ratio upperHalfSum/mertensSum → 1/2.

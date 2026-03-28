@@ -38,11 +38,26 @@ def HasBoundedGaps (S : Set ℤ) : Prop :=
     ∃ M : ℕ, 0 < M ∧
       ∀ z : ℤ, ∃ s ∈ S, z ≤ s ∧ s < z + (M : ℤ)
 
+/-- The empty set has empty difference set. -/
+theorem diffSet_empty : diffSet ∅ = ∅ :=
+  diffSet_finite_eq_empty ∅ Set.finite_empty
+
 /- ## Density conditions -/
 
 /-- The counting function: `|A ∩ {1,…,N}|`. -/
 noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
     (Finset.Icc 1 N |>.filter (· ∈ A)).card
+
+/-- The counting function at zero is zero: `{1,...,0} = ∅`. -/
+theorem countingFn_zero (A : Set ℕ) : countingFn A 0 = 0 := by
+  simp [countingFn, Finset.Icc_eq_empty (by omega : ¬(1 ≤ 0))]
+
+/-- The counting function is monotone: `N ≤ M → |A ∩ {1,...,N}| ≤ |A ∩ {1,...,M}|`. -/
+theorem countingFn_mono (A : Set ℕ) {N M : ℕ} (h : N ≤ M) :
+    countingFn A N ≤ countingFn A M := by
+  unfold countingFn
+  exact Finset.card_le_card (Finset.filter_subset_filter _
+    (Finset.Icc_subset_Icc_right h))
 
 /-- `A` has positive upper density: `limsup |A ∩ {1,…,N}| / N > 0`. -/
 def HasPositiveUpperDensity (A : Set ℕ) : Prop :=
@@ -117,6 +132,26 @@ theorem diffSet_finite_eq_empty (A : Set ℕ) (hA : A.Finite) : diffSet A = ∅ 
 theorem diffSet_nonempty_of_infinite (A : Set ℕ) (hA : Set.Infinite A) :
     (diffSet A).Nonempty :=
   ⟨0, zero_mem_diffSet A hA⟩
+
+/-- Complete characterization: `0 ∈ D(A)` if and only if `A` is infinite. -/
+theorem zero_mem_diffSet_iff (A : Set ℕ) :
+    (0 : ℤ) ∈ diffSet A ↔ Set.Infinite A := by
+  refine ⟨?_, zero_mem_diffSet A⟩
+  intro h0
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  rw [diffSet_finite_eq_empty A hfin] at h0
+  exact absurd h0 (Set.not_mem_empty 0)
+
+/-- `D(A)` is nonempty if and only if `A` is infinite. -/
+theorem diffSet_nonempty_iff (A : Set ℕ) :
+    (diffSet A).Nonempty ↔ Set.Infinite A := by
+  refine ⟨?_, diffSet_nonempty_of_infinite A⟩
+  rintro ⟨d, hd⟩
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  rw [diffSet_finite_eq_empty A hfin] at hd
+  exact absurd hd (Set.not_mem_empty d)
 
 /-- Positive lower density implies positive upper density. -/
 theorem lower_density_implies_upper (A : Set ℕ) :
