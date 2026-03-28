@@ -88,9 +88,18 @@ theorem cliqueGuarantee_mono_n (p q n : ℕ) :
       have hcf := hm (G.comap Fin.castSucc) (by
         intro S hS
         -- edgeCount (G.comap castSucc) S = edgeCount G (S.map castSucc) ≥ q
-        -- The filter on S×S with (a ≠ b ∧ G.Adj (f a) (f b)) bijects via f×f
-        -- with the filter on (S.map f)×(S.map f) with (a ≠ b ∧ G.Adj a b)
-        sorry)
+        let emb : Fin n ↪ Fin (n + 1) := ⟨Fin.castSucc, Fin.castSucc_injective n⟩
+        suffices h : edgeCount (G.comap Fin.castSucc) S =
+            edgeCount G (S.map emb) by
+          rw [h]; exact hd _ (by rw [Finset.card_map]; exact hS)
+        -- Edge count preserved: comap pullback bijects with mapped product
+        simp only [edgeCount, ← Finset.prodMap_map_product emb emb,
+          Finset.filter_map, Finset.card_map]
+        congr 1
+        apply Finset.filter_congr
+        intro ⟨a, b⟩ _
+        simp only [Function.comp, Function.Embedding.prodMap_apply, Prod.map,
+          SimpleGraph.comap_adj, (Fin.castSucc_injective n).ne_iff])
       -- Lift: ¬CliqueFree (G.comap castSucc) m → ¬CliqueFree G m
       intro hcfG
       apply hcf
