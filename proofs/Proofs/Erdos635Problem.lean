@@ -200,25 +200,6 @@ allows b - a = 1 to be "free," meaning consecutive elements can coexist.
 Erdős showed one can improve beyond N/2 by augmenting the odd set with
 certain powers of 2. -/
 
-/-- For t = 2, one can do slightly better than N/2.
-
-    The logarithmic improvement comes from adding elements of the form
-    2^k (for odd k) to the odd set, contributing c·log(N) extra elements. -/
-axiom f_t2_lower (N : ℕ) (hN : N ≥ 2) :
-    ∃ c : ℝ, c > 0 ∧ (f N 2 : ℝ) ≥ N / 2 + c * Real.log N
-
-/-- The explicit construction: odd numbers plus certain powers of 2.
-
-    Take A = {odd numbers in {1,...,N}} ∪ {2^k : k odd, 2^k ≤ N}.
-    This gives |A| ≥ N/2 + c·log(N).
-
-    Why it works: For the newly added even elements 2^k (k odd),
-    any difference b - a ≥ 2 with b = 2^k either doesn't divide b
-    or involves a pair where both are powers of 2 with controlled gaps. -/
-axiom erdos_construction_t2 (N : ℕ) (hN : N ≥ 2) :
-    ∃ A : Finset ℕ, IsAdmissible A N 2 ∧
-    ∃ c : ℝ, c > 0 ∧ (A.card : ℝ) ≥ N / 2 + c * Real.log N
-
 /- ## Part V: The Main Conjecture (OPEN)
 
 The central question: does the density of the extremal set always

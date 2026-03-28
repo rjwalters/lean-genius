@@ -53,6 +53,20 @@ axiom erdos_102_divergence (c : ℝ) (hc : c > 0) :
     (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
       maxCollinear P ≥ M
 
+/- ## Collinearity Properties -/
+
+/-- Collinearity is symmetric: swapping the last two arguments. -/
+theorem collinear₃_comm (p q r : ℝ × ℝ) : collinear₃ p q r ↔ collinear₃ p r q := by
+  unfold collinear₃; exact eq_comm
+
+/-- Collinearity is invariant under swapping the first two arguments. -/
+theorem collinear₃_perm12 (p q r : ℝ × ℝ) : collinear₃ p q r ↔ collinear₃ q p r := by
+  simp only [collinear₃]; constructor <;> intro h <;> nlinarith
+
+/-- Any point is collinear with itself and any other point. -/
+theorem collinear₃_self_left (p q : ℝ × ℝ) : collinear₃ p p q := by
+  unfold collinear₃; ring
+
 /- ## Known Results -/
 
 /-- **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
@@ -84,6 +98,22 @@ axiom connection_101 (c : ℝ) (hc : c > 0) :
   ∀ ε > 0, ∃ N₁ : ℕ, ∀ P : PointConfig,
     P.points.card ≥ N₁ → maxCollinear P ≤ 4 →
       (richLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2
+
+/-- **Proved**: If h_c(n) → ∞, configurations with max collinear ≤ 4 have
+    < cn² rich lines for large n. This is the contrapositive of h_c(n) → ∞
+    applied with M = 5: if richLineCount ≥ cn², then maxCollinear ≥ 5. -/
+theorem connection_101_for_same_c (c : ℝ) (hc : c > 0)
+    (hdiv : ∀ M : ℕ, ∃ N₀ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₀ → (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
+        maxCollinear P ≥ M) :
+    ∃ N₁ : ℕ, ∀ P : PointConfig,
+      P.points.card ≥ N₁ → maxCollinear P ≤ 4 →
+        (richLineCount P : ℝ) < c * (P.points.card : ℝ) ^ 2 := by
+  obtain ⟨N₀, hN₀⟩ := hdiv 5
+  exact ⟨N₀, fun P hsize hmax => by
+    by_contra hge
+    push_neg at hge
+    exact absurd (hN₀ P hsize hge) (by omega)⟩
 
 /- ## Observations -/
 

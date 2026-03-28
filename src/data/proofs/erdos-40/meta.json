@@ -18,9 +18,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/40",
     "erdosUrl": "https://erdosproblems.com/40",
-    "axiomCount": 5,
-    "assumptions": "5 axiom declarations: erdos_turan_conjecture (basis implies unbounded), erdos_40_conjecture (density forces unbounded), problem_40_implies_28 (P40 implies P28), sidon_density_bound (Sidon set sqrt bound), b2g_density_bound (B2[g] density bound). Removed 2 trivial True axioms (random_heuristic, threshold_heuristic) and added 3 proved theorems.",
-    "lineCount": 125,
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: erdos_turan_conjecture (OPEN), erdos_40_conjecture (OPEN), sidon_density_bound (classical), b2g_density_bound (classical). problem_40_implies_28 PROVED from definitions.",
+    "lineCount": 171,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
   },
@@ -192,9 +192,9 @@
     ],
     "opens": [],
     "namespace": "",
-    "lineCount": 125,
-    "axiomCount": 5,
-    "theoremCount": 3,
+    "lineCount": 171,
+    "axiomCount": 4,
+    "theoremCount": 4,
     "definitionCount": 5,
     "mainTheorems": [
       {

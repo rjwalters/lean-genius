@@ -32,21 +32,6 @@ import Mathlib.Tactic
     in the factorisation of n. Axiomatised as a function ℕ → ℕ. -/
 axiom powerfulPart : ℕ → ℕ
 
-/-- Q₂(1) = 1. -/
-axiom powerfulPart_one : powerfulPart 1 = 1
-
-/-- Q₂(n) divides n for all n. -/
-axiom powerfulPart_dvd (n : ℕ) : powerfulPart n ∣ n
-
-/-- Q₂(n) is powerful: every prime dividing Q₂(n) divides it to at least
-    the second power. -/
-axiom powerfulPart_is_powerful (n : ℕ) (p : ℕ) (hp : p.Prime)
-    (hd : p ∣ powerfulPart n) : p ^ 2 ∣ powerfulPart n
-
-/-- Q₂ is multiplicative. -/
-axiom powerfulPart_mul (a b : ℕ) (hab : Nat.Coprime a b) :
-    powerfulPart (a * b) = powerfulPart a * powerfulPart b
-
 /- ## Consecutive products -/
 
 /-- The product n(n+1)⋯(n+ℓ). -/
@@ -58,13 +43,6 @@ noncomputable def Q2consec (n ℓ : ℕ) : ℕ :=
     powerfulPart (consecutiveProduct n ℓ)
 
 /- ## Mahler's result -/
-
-/-- Mahler: for every ℓ ≥ 1, lim sup Q₂(n(n+1)⋯(n+ℓ)) / n² ≥ 1.
-    Formally: for every ℓ ≥ 1 and every N₀, there exists n ≥ N₀ with
-    Q₂(⋯) ≥ n². -/
-axiom mahler_lower_bound (ℓ : ℕ) (hℓ : 1 ≤ ℓ) :
-    ∀ N₀ : ℕ, ∃ n : ℕ, N₀ ≤ n ∧ 1 ≤ n ∧
-      (n : ℚ) ^ 2 ≤ (Q2consec n ℓ : ℚ)
 
 /- ## Main conjectures -/
 

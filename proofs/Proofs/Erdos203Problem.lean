@@ -87,10 +87,6 @@ def PrimeCovering (S : Finset (ℕ × ℕ)) (P : ℕ × ℕ → ℕ) : Prop :=
   (∀ p ∈ S, (P p).Prime) ∧
   (∀ p ∈ S, P p ∣ (2^(p.2) - 1))
 
--- If we have a prime covering, we can construct Sierpinski numbers
-axiom covering_implies_sierpinski :
-  ∀ S P, PrimeCovering S P → ∃ m, IsSierpinskiNumber m
-
 /- Part 5: The Extended Problem — 2D Covering Systems -/
 
 -- For the extended problem, we'd need primes dividing 2^a * 3^b - 1

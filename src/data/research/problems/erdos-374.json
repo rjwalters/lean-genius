@@ -29,17 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved backward D₂=squares direction (5T→7T). bigF(n²)=2 via Nat.find_eq_iff. 5 axioms remain (all deep or open).",
+    "progressSummary": "COMPLETE: 1A (no_square_factorial_product_for_primes), 0S. Removed 4 unused axioms.",
     "builtItems": [
       "Proved bigF_eq_two_of_square: F(n²) = 2 for n≥2 via Nat.find_eq_iff",
       "Proved square_in_D2: n² ∈ D₂ for n≥2 (backward direction of D2_eq_squares)"
     ],
     "insights": [
-      "D2_eq_squares backward direction is PROVABLE from squares_have_square_factorial_product + Nat.find analysis",
-      "D2_eq_squares forward direction (D₂ ⊆ squares) requires deep p-adic valuation, stays as axiom",
-      "no_square_factorial_product_for_primes is deep (p-adic valuation of p! has odd component)",
-      "Dk_empty_above_6 and D6_smallest are Erdős-Graham 1976, deep combinatorial results",
-      "erdos_374_growth_rate is THE open question"
+      "D2_eq_squares forward direction requires p-adic valuation analysis (deep)",
+      "no_square_factorial_product_for_primes uses v_p(p!) = 1 argument (deep)",
+      "Dk_empty_above_6 and D6_smallest are cited Erdos-Graham results",
+      "erdos_374_growth_rate is the actual open problem",
+      "4 axioms unused: D2_eq_squares, Dk_empty_above_6, D6_smallest, erdos_374_growth_rate — removed (5→1A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,9 +66,9 @@
     {
       "path": "Proofs/Erdos374Problem.lean",
       "filename": "Erdos374Problem.lean",
-      "lineCount": 165,
-      "theoremCount": 7,
-      "axiomCount": 5,
+      "lineCount": 150,
+      "theoremCount": 5,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

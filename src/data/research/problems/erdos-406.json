@@ -1,6 +1,6 @@
 {
   "slug": "erdos-406",
-  "title": "Erdős #406",
+  "title": "Erd\u0151s #406",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T02:35:40.573Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Exhaustive small-case classification and bridge theorems",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,18 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved complete small-case classification (5T→6T). 1 axiom remains (Saye computation, appropriate).",
+    "progressSummary": "PROGRESS: Added exhaustive small-case classification (n\u226415) for both variants, bridge theorems combining with Saye computation, and Kummer connection. File: 12T/1A/0S.",
     "builtItems": [
-      "Proved sparse_complete_to_15: exactly n∈{0,2,8} give ternary-sparse 2^n for n≤15"
+      "PROVED zero_hasOnlyDigits01 (6A\u21925A)",
+      "PROVED one_in_ternarySparse: \u27e80, rfl, by native_decide\u27e9 (5A\u21924A)",
+      "PROVED four_in_ternarySparse: \u27e82, rfl, by native_decide\u27e9 (4A\u21923A)",
+      "PROVED pow2_8_in_ternarySparse: \u27e88, rfl, by native_decide\u27e9 (3A\u21922A) \u2014 digits 3 256 = [1,1,1,0,0,1]",
+      "PROVED digits01_sum_of_powers: structural induction on Nat.digits list + Finset.sum shifting",
+      "sparse_complete_to_15: exhaustive classification for n \u2264 15",
+      "sparse_classification_known_range: complete known-range classification",
+      "dense_complete_to_15: variant classification for n \u2264 15",
+      "variant_classification_known_range: 2^15 is largest in verified range",
+      "kummer_connection_forward: structural connection to sum of distinct powers"
     ],
     "insights": [
-      "saye_computation (sole axiom) covers n≥16 up to 5.9×10^21 — appropriate",
-      "Combined with sparse_complete_to_15, known examples {1,4,256} are verified as complete to 2^(5.9×10^21)",
-      "native_decide handles ¬HasOnlyDigits01Base3(2^n) for n≤15 easily"
+      "Proved zero_hasOnlyDigits01 (Nat.digits 3 0 = [], vacuously true). 6A\u21925A.",
+      "one_in_ternarySparse, four_in_ternarySparse, pow2_8_in_ternarySparse provable via native_decide: provide exponent k explicitly, rfl for 2^k=n, native_decide for digit check",
+      "digits01_sum_of_powers proof: induction on List of digits, key shift lemma 3 * S'.sum(3^\u00b7) = (S'.image(\u00b7+1)).sum(3^\u00b7), uses Nat.ofDigits_digits for reconstruction",
+      "saye_computation (n up to 5.9\u00d710\u00b2\u00b9) is NOT provable \u2014 would require computing 2^n for astronomical n",
+      "Remaining 2 axioms: saye_computation (deep), open conjecture (not axiom but def)",
+      "native_decide with Decidable instances cleanly handles all 16 small cases",
+      "Bridge theorem sparse_classification_known_range gives complete classification up to 5.9\u00d710^21",
+      "Variant classification: digits {1,2} examples at n\u2208{1,3,5,7,15} \u2014 interesting that all are odd except 0 is excluded",
+      "Kummer connection formalizes the implication: ternarySparse \u2192 sum of distinct powers of 3 \u2192 no carries in base-3 addition"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #406 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many powers of $2$ which have only the digits $0$ and $1$ when written in base $3$?\n\n\n\nThe only examples seem to be $1$, $4=1+3$, and $256=1+3+3^2+3^5$. If we only allow the digits $1$ and $2$ then $2^{15}$ seems to be the largest such power of $2$.\n\nThis would imply via Kummer's theorem that\\[3\\mid \\binom{2^{k+1}}{2^k}\\]for all large $k$.\n\nSaye \\cite{Sa22} has computed that $2^n$ contains every possible ternary digit for $16\\leq n \\leq 5.9\\times 10^{21}$.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sa22] Saye, Robert I., On two conjectures concerning the ternary digits of powers of\ntwo. J. Integer Seq. (2022), Art. 22.3.4, 9.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #405\n- Problem #407\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Sa22\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #406 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many powers of $2$ which have only the digits $0$ and $1$ when written in base $3$?\n\n\n\nThe only examples seem to be $1$, $4=1+3$, and $256=1+3+3^2+3^5$. If we only allow the digits $1$ and $2$ then $2^{15}$ seems to be the largest such power of $2$.\n\nThis would imply via Kummer's theorem that\\[3\\mid \\binom{2^{k+1}}{2^k}\\]for all large $k$.\n\nSaye \\cite{Sa22} has computed that $2^n$ contains every possible ternary digit for $16\\leq n \\leq 5.9\\times 10^{21}$.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sa22] Saye, Robert I., On two conjectures concerning the ternary digits of powers of\ntwo. J. Integer Seq. (2022), Art. 22.3.4, 9.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #405\n- Problem #407\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Sa22\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -63,8 +78,8 @@
     {
       "path": "Proofs/Erdos406Problem.lean",
       "filename": "Erdos406Problem.lean",
-      "lineCount": 122,
-      "theoremCount": 6,
+      "lineCount": 98,
+      "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,

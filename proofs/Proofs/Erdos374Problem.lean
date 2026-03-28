@@ -116,41 +116,6 @@ theorem square_in_D2 (n : ℕ) (hn : 2 ≤ n) : inDk 2 (n * n) :=
 
 /- ## Known Results (Axiomatized — deep results from Erdős-Graham 1976) -/
 
-/-- D₂ consists of all perfect squares > 1 (Erdős-Graham 1976).
-    The backward direction (squares ∈ D₂) is proved above as
-    squares_have_square_factorial_product. The forward direction
-    (D₂ ⊆ squares) requires deeper p-adic valuation analysis. -/
-axiom D2_eq_squares (m : ℕ) (hm : 2 ≤ m) :
-  inDk 2 m ↔ IsPerfectSquare m
-
-/-- factorialProduct distributes: factorialProduct (xs ++ [a]) = factorialProduct xs * a! -/
-private lemma factorialProduct_append (xs : List ℕ) (a : ℕ) :
-    factorialProduct (xs ++ [a]) = factorialProduct xs * a.factorial := by
-  simp only [factorialProduct, List.foldl_append, List.foldl_cons, List.foldl_nil]
-
-/-- factorialProduct of a cons: factorialProduct (x :: xs) = x! * factorialProduct xs -/
-private lemma factorialProduct_cons (x : ℕ) (xs : List ℕ) :
-    factorialProduct (x :: xs) = x.factorial * factorialProduct xs := by
-  induction xs generalizing x with
-  | nil => simp [factorialProduct, List.foldl]
-  | cons y ys ih =>
-    rw [show x :: y :: ys = [x] ++ (y :: ys) from rfl, factorialProduct_append]
-    simp [factorialProduct, List.foldl]
-
-/-- A prime p does not divide the factorial product of a list whose elements are all < p. -/
-private lemma not_prime_dvd_factorialProduct {p : ℕ} (hp : p.Prime)
-    (xs : List ℕ) (h : ∀ a ∈ xs, a < p) : ¬(p ∣ factorialProduct xs) := by
-  induction xs with
-  | nil =>
-    simp [factorialProduct, List.foldl]
-    exact Nat.Prime.one_lt hp |>.ne'
-  | cons x xs ih =>
-    rw [factorialProduct_cons]
-    intro hdvd
-    rcases hp.dvd_mul.mp hdvd with hx | hxs
-    · exact absurd (hp.dvd_factorial.mp hx) (by omega)
-    · exact ih (fun a ha => h a (List.mem_cons_of_mem x ha)) hxs
-
 /-- For primes, no strictly increasing sequence ending at p has a
     factorial product that is a perfect square.
     Proof: v_p(product) = 1 (odd) since p! contributes one factor of p
@@ -208,13 +173,6 @@ theorem no_square_factorial_product_for_primes (p : ℕ) (hp : p.Prime)
   rw [show p * m * (p * m) = p * (p * (m * m)) from by ring] at h_eq
   exact ⟨m * m, mul_left_cancel₀ hp.ne_zero h_eq⟩
 
-/-- Dₖ = ∅ for k > 6 (Erdős-Graham 1976). -/
-axiom Dk_empty_above_6 (k : ℕ) (hk : 7 ≤ k) (m : ℕ) :
-  ¬inDk k m
-
-/-- The smallest element of D₆ is 527. -/
-axiom D6_smallest : inDk 6 527 ∧ ∀ m : ℕ, m < 527 → ¬inDk 6 m
-
 /- ## Derived Theorems -/
 
 /-- For primes, F is undefined: bigF returns 0 (the sentinel value). -/
@@ -235,10 +193,3 @@ theorem no_prime_in_Dk (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : 2 ≤ k) :
 
 /- ## The Open Question -/
 
-/-- Erdős Problem #374: Determine the growth rate of |Dₖ ∩ {1,...,n}|
-    for 3 ≤ k ≤ 6. -/
-axiom erdos_374_growth_rate (k : ℕ) (hk : 3 ≤ k) (hk' : k ≤ 6) :
-  ∃ α : ℝ, 0 < α ∧ α ≤ 1 ∧
-    ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-      (Finset.card ((Finset.range n).filter (fun m => inDk k (m + 1))) : ℝ)
-      ≤ (n : ℝ) ^ (α + ε)

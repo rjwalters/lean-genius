@@ -1,13 +1,13 @@
 {
   "slug": "erdos-102-oq-03",
-  "title": "Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen...",
+  "title": "Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen...",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen....",
+    "plain": "Formal mathematical investigation: Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen....",
     "whyMatters": []
   },
   "knownResults": {
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-24T00:48:59.903Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Structural collinearity properties and proved connection theorem",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,13 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 11A all appropriate (f axiomatized).",
+    "progressSummary": "PROGRESS: Added 4 theorems (1T\u21925T). 5A unchanged (all deep/open). Proved connection_101_for_same_c.",
     "builtItems": [
-      "Assessment: 11A all appropriate, f is opaque"
+      "Assessment: 11A all appropriate, f is opaque",
+      "collinear\u2083_comm: symmetry in last two args",
+      "collinear\u2083_perm12: invariance swapping first two args",
+      "collinear\u2083_self_left: p is collinear with itself and any q",
+      "connection_101_for_same_c: proved contrapositive of divergence"
     ],
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
-      "Could potentially reduce by defining f from Finset.sup, but would be major rewrite."
+      "Could potentially reduce by defining f from Finset.sup, but would be major rewrite.",
+      "connection_101 axiom is over-strong: states \u2200\u03b5>0 but hypothesis only supports \u03b5\u2265c. The \u2200\u03b5 version requires divergence for all c, not just one.",
+      "connection_101_for_same_c: correct provable version via contrapositive with M=5",
+      "collinear\u2083 is preserved under all 6 permutations of 3 points (proved comm and perm12)"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -45,7 +52,7 @@
     "combinatorial-geometry",
     "incidence-geometry",
     "collinearity",
-    "Szemerédi-Trotter",
+    "Szemer\u00e9di-Trotter",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -208,8 +215,8 @@
     {
       "path": "Proofs/Erdos102Problem.lean",
       "filename": "Erdos102Problem.lean",
-      "lineCount": 125,
-      "theoremCount": 1,
+      "lineCount": 154,
+      "theoremCount": 5,
       "axiomCount": 5,
       "defCount": 3,
       "sorryCount": 0,

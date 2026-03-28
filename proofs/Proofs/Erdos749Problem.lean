@@ -87,6 +87,39 @@ theorem upperDensity_le_one (S : Set ℕ) : upperDensity S ≤ 1 := by
 theorem lowerDensity_le_one (S : Set ℕ) : lowerDensity S ≤ 1 :=
   le_trans (lower_le_upper S) (upperDensity_le_one S)
 
+/- ## Structural Properties -/
+
+/-- n is in the sumset A + A if and only if the representation function is positive. -/
+theorem mem_sumSet_iff_repFunction_pos (A : Set ℕ) (n : ℕ) :
+    n ∈ sumSet A ↔ 0 < repFunction A n := by
+  simp only [sumSet, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨a, b, ha, hb, hab⟩
+    simp only [repFunction, Finset.card_pos, Finset.Nonempty]
+    by_cases h : a ≤ b
+    · refine ⟨a, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), ha, ?_, by omega⟩⟩
+      have : n - a = b := by omega
+      rw [this]; exact hb
+    · push_neg at h
+      refine ⟨b, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hb, ?_, by omega⟩⟩
+      have : n - b = a := by omega
+      rw [this]; exact ha
+  · intro h
+    simp only [repFunction, Finset.card_pos, Finset.Nonempty] at h
+    obtain ⟨a, ha⟩ := h
+    simp only [Finset.mem_filter, Finset.mem_range] at ha
+    exact ⟨a, n - a, ha.2.1, ha.2.2.1, by omega⟩
+
+/-- Every element of A contributes a self-sum: 2a ∈ A + A whenever a ∈ A. -/
+theorem mem_sumSet_double (A : Set ℕ) (a : ℕ) (ha : a ∈ A) :
+    2 * a ∈ sumSet A :=
+  ⟨a, a, ha, ha, by ring⟩
+
+/-- The sumset is monotone: A ⊆ B implies A + A ⊆ B + B. -/
+theorem sumSet_monotone {A B : Set ℕ} (h : A ⊆ B) : sumSet A ⊆ sumSet B := by
+  intro n ⟨a, b, ha, hb, hab⟩
+  exact ⟨a, b, h ha, h hb, hab⟩
+
 /- ## The Representation Bounded Property -/
 
 /-- A set A has bounded representation function: there exists C such that

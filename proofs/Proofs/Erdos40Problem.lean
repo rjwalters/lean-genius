@@ -23,6 +23,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Set.Basic
+import Mathlib.Data.Set.Card
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -66,15 +67,60 @@ axiom erdos_40_conjecture :
   ∀ (g : ℕ → ℝ), (∀ M : ℝ, ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ → g N > M) →
     ∀ A : Set ℕ, HasDensity A g → RepUnbounded A
 
-/- ## Connection to Problem #28 -/
+/- ## Proving #40 ⟹ #28 -/
 
-/-- Problem #40 (for any g → ∞) implies Problem #28:
-    An additive basis of order 2 has |A ∩ {1,...,N}| >> N^{1/2}
-    (or more), so taking g(N) = N^{1/2} suffices. -/
-axiom problem_40_implies_28
+/-- The representation set for n is finite (bounded by [0,n]²). -/
+private lemma rep_set_finite (A : Set ℕ) (n : ℕ) :
+    {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = n}.Finite := by
+  apply (Set.Finite.prod (Set.finite_Icc 0 n) (Set.finite_Icc 0 n)).subset
+  rintro ⟨a, b⟩ ⟨-, -, -, hab⟩
+  exact ⟨Set.mem_Icc.mpr ⟨by omega, by omega⟩, Set.mem_Icc.mpr ⟨by omega, by omega⟩⟩
+
+/-- From a positive representation count, extract a witness in {1,...,n}. -/
+private lemma basis_has_element {A : Set ℕ} {n : ℕ} (hn : 1 ≤ n)
+    (hrep : repCount A n ≥ 1) : ∃ b ∈ A, 1 ≤ b ∧ b ≤ n := by
+  unfold repCount at hrep
+  obtain ⟨⟨a, b⟩, -, hbA, -, hsum⟩ :=
+    (Set.ncard_pos (rep_set_finite A n)).mp (by omega)
+  exact ⟨b, hbA, by omega, by omega⟩
+
+/-- If a ∈ A ∩ {1,...,N}, then countingFn A N ≥ 1. -/
+private lemma countingFn_pos {A : Set ℕ} {a N : ℕ}
+    (ha : a ∈ A) (ha1 : 1 ≤ a) (haN : a ≤ N) : 1 ≤ countingFn A N := by
+  unfold countingFn
+  have hfin : (A ∩ Set.Icc 1 N).Finite :=
+    (Set.finite_Icc 1 N).subset Set.inter_subset_right
+  have := (Set.ncard_pos hfin).mpr
+    ⟨a, Set.mem_inter ha (Set.mem_Icc.mpr ⟨ha1, haN⟩)⟩
+  omega
+
+/-- **PROVED**: Problem #40 (for any g → ∞) implies Problem #28.
+    Proof: take g(N) = N. Any basis has countingFn ≥ 1 for large N,
+    and 1 ≥ √N/N, so the density condition is trivially satisfied. -/
+theorem problem_40_implies_28
     (h40 : ∀ (g : ℕ → ℝ), (∀ M : ℝ, ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ → g N > M) →
       ∀ A : Set ℕ, HasDensity A g → RepUnbounded A) :
-  ∀ A : Set ℕ, IsAdditiveBasis2 A → RepUnbounded A
+  ∀ A : Set ℕ, IsAdditiveBasis2 A → RepUnbounded A := by
+  intro A ⟨N₀, hbasis⟩
+  obtain ⟨a₀, ha₀A, ha₀_ge1, ha₀_le⟩ := basis_has_element
+    (le_max_right N₀ 1) (hbasis _ (le_max_left N₀ 1))
+  apply h40 (fun N => (N : ℝ))
+  · -- g(N) = N → ∞ (Archimedean property)
+    intro M
+    obtain ⟨n, hn⟩ := exists_nat_gt M
+    exact ⟨n, fun N hN => lt_trans hn (by exact_mod_cast hN)⟩
+  · -- HasDensity A (fun N => ↑N)
+    refine ⟨1, one_pos, max N₀ 1, fun N hN => ?_⟩
+    simp only [one_mul]
+    have hN_pos : (0 : ℝ) < ↑N := by positivity
+    have hcf : (1 : ℝ) ≤ ↑(countingFn A N) := by
+      exact_mod_cast countingFn_pos ha₀A ha₀_ge1 (by omega)
+    have hsqrt_le : Real.sqrt ↑N ≤ ↑N := by
+      nlinarith [Real.mul_self_sqrt (show (0 : ℝ) ≤ ↑N from by positivity),
+                 Real.sqrt_nonneg (↑N : ℝ),
+                 mul_self_nonneg (Real.sqrt ↑N - 1),
+                 show (1 : ℝ) ≤ ↑N from by exact_mod_cast (show 1 ≤ N from by omega)]
+    linarith [(div_le_one hN_pos).mpr hsqrt_le]
 
 /- ## Known Partial Results -/
 
