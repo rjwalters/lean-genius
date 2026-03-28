@@ -32,7 +32,7 @@ open Finset
 def SubsetFamily (n : ℕ) := Finset (Finset (Fin n))
 
 /-- A family is an antichain: no set contains another. -/
-def IsAntichain {n : ℕ} (F : SubsetFamily n) : Prop :=
+def IsAntichainFamily {n : ℕ} (F : SubsetFamily n) : Prop :=
   ∀ A ∈ F, ∀ B ∈ F, A ≠ B → ¬(A ⊆ B)
 
 /-- The set of distinct cardinalities appearing in a family. -/
@@ -51,7 +51,7 @@ def HasMultiplicity {n : ℕ} (F : SubsetFamily n) (r : ℕ) : Prop :=
     in 2^{[n]} where every size has multiplicity ≥ r. -/
 noncomputable def maxDistinctSizes (n r : ℕ) : ℕ :=
   Finset.sup (Finset.univ.filter (fun (F : SubsetFamily n) =>
-    IsAntichain F ∧ HasMultiplicity F r)) numDistinctSizes
+    IsAntichainFamily F ∧ HasMultiplicity F r)) numDistinctSizes
 
 /- ## Main Results -/
 
@@ -95,13 +95,13 @@ axiom erdos_776_threshold :
 /- ## Structural Observations -/
 
 /-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋).
-    Bridges our custom IsAntichain to Mathlib's IsAntichain, then applies
+    Bridges our custom IsAntichainFamily to Mathlib's IsAntichain, then applies
     Mathlib's IsAntichain.sperner (proved via the LYM inequality). -/
 theorem sperner_theorem (n : ℕ) :
-    ∀ (F : SubsetFamily n), IsAntichain F →
+    ∀ (F : SubsetFamily n), IsAntichainFamily F →
       F.card ≤ Nat.choose n (n / 2) := by
   intro F hF
-  -- Bridge custom IsAntichain to Mathlib's IsAntichain (· ⊆ ·)
+  -- Bridge custom IsAntichainFamily to Mathlib's IsAntichain (· ⊆ ·)
   have h : _root_.IsAntichain (· ⊆ ·) (↑F : Set (Finset (Fin n))) := by
     intro A hA B hB hne hsub
     exact hF A (Finset.mem_coe.mp hA) B (Finset.mem_coe.mp hB) hne hsub
@@ -113,13 +113,13 @@ theorem sperner_theorem (n : ℕ) :
 /-- The middle layer has the most sets: all sets of size ⌊n/2⌋ form
     an antichain with one distinct size and multiplicity C(n, ⌊n/2⌋). -/
 theorem middle_layer_antichain (n : ℕ) :
-    ∃ F : SubsetFamily n, IsAntichain F ∧
+    ∃ F : SubsetFamily n, IsAntichainFamily F ∧
       numDistinctSizes F = 1 ∧
       F.card = Nat.choose n (n / 2) := by
   -- Take F = all (n/2)-element subsets of Fin n
   use (Finset.univ : Finset (Fin n)).powersetCard (n / 2)
   refine ⟨?_, ?_, ?_⟩
-  · -- IsAntichain: same-size sets can't have proper subset relation
+  · -- IsAntichainFamily: same-size sets can't have proper subset relation
     intro A hA B hB hne hsub
     rw [Finset.mem_powersetCard] at hA hB
     exact hne (Finset.eq_of_subset_of_card_le hsub (hB.2 ▸ hA.2 ▸ le_refl _))
@@ -148,7 +148,7 @@ theorem middle_layer_antichain (n : ℕ) :
 /-- To get many distinct sizes, we need sets from many different layers.
     The antichain constraint limits how sets from different layers interact. -/
 theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
-    ∀ F : SubsetFamily n, IsAntichain F → HasMultiplicity F r →
+    ∀ F : SubsetFamily n, IsAntichainFamily F → HasMultiplicity F r →
       F.card ≥ r * numDistinctSizes F := by
   intro F _ hmult
   unfold numDistinctSizes
@@ -182,3 +182,80 @@ theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
 theorem size_availability (n r k : ℕ) (hk : k ≤ n) :
   Nat.choose n k ≥ r → True := by
   intro; trivial
+
+/- ## Structural Lemmas for Axiom Elimination
+
+These lemmas decompose the path toward proving the known-result axioms
+(erdos_trotter_r1, erdos_trotter_upper, erdos_trotter_achievable).
+Key infrastructure: empty/full set exclusion, same-size antichain property,
+and size bounds on distinct sizes in antichains. -/
+
+/-- The empty set cannot appear in an antichain that contains any non-empty set,
+    since ∅ ⊆ A for all A. -/
+theorem empty_not_in_nontrivial_antichain {n : ℕ} {F : Finset (Finset (Fin n))}
+    (hF : IsAntichainFamily F) (hA : ∃ A ∈ F, A ≠ ∅) : ∅ ∉ F := by
+  unfold IsAntichainFamily at hF
+  intro hempty
+  obtain ⟨A, hAF, hAne⟩ := hA
+  exact absurd (Finset.empty_subset A) (hF ∅ hempty A hAF (Ne.symm hAne))
+
+/-- The full set cannot appear in an antichain that contains any proper subset,
+    since A ⊆ Finset.univ for all A. -/
+theorem univ_not_in_nontrivial_antichain {n : ℕ} {F : Finset (Finset (Fin n))}
+    (hF : IsAntichainFamily F) (hA : ∃ A ∈ F, A ≠ Finset.univ) :
+    Finset.univ ∉ F := by
+  unfold IsAntichainFamily at hF
+  intro huniv
+  obtain ⟨A, hAF, hAne⟩ := hA
+  exact absurd (Finset.subset_univ A) (hF A hAF Finset.univ huniv hAne)
+
+/-- Any family of distinct sets with the same cardinality is automatically
+    an antichain: if A ⊆ B and |A| = |B| then A = B. -/
+theorem same_size_is_antichain {n : ℕ} {F : Finset (Finset (Fin n))} (k : ℕ)
+    (hk : ∀ A ∈ F, A.card = k) : IsAntichainFamily F := by
+  unfold IsAntichainFamily
+  intro A hA B hB hne hsub
+  have hAk := hk A hA
+  have hBk := hk B hB
+  exact hne (Finset.eq_of_subset_of_card_le hsub (by omega))
+
+/-- In an antichain with at least two sets, size 0 cannot appear among the
+    distinct sizes (since ∅ is a subset of every other set). -/
+theorem zero_not_in_antichain_sizes {n : ℕ} {F : Finset (Finset (Fin n))}
+    (hF : IsAntichainFamily F) (hcard : 1 < F.card) :
+    0 ∉ distinctSizes F := by
+  unfold IsAntichainFamily at hF
+  intro h0
+  unfold distinctSizes at h0
+  rw [Finset.mem_image] at h0
+  obtain ⟨A, hAF, hAcard⟩ := h0
+  have hAeq : A = ∅ := Finset.card_eq_zero.mp hAcard
+  subst hAeq
+  have ⟨B, hBF, hBne⟩ : ∃ B ∈ F, B ≠ ∅ := by
+    by_contra hall
+    push_neg at hall
+    have : F.card ≤ 1 :=
+      Finset.card_le_one.mpr fun a ha b hb => (hall a ha).trans (hall b hb).symm
+    omega
+  exact absurd (Finset.empty_subset B) (hF ∅ hAF B hBF (Ne.symm hBne))
+
+/-- In an antichain with at least two sets over Fin n, size n cannot appear
+    among the distinct sizes (since Finset.univ contains every other set). -/
+theorem n_not_in_antichain_sizes {n : ℕ} {F : Finset (Finset (Fin n))}
+    (hF : IsAntichainFamily F) (hcard : 1 < F.card) :
+    n ∉ distinctSizes F := by
+  unfold IsAntichainFamily at hF
+  intro hn
+  unfold distinctSizes at hn
+  rw [Finset.mem_image] at hn
+  obtain ⟨A, hAF, hAcard⟩ := hn
+  have hAeq : A = Finset.univ :=
+    Finset.eq_univ_of_card A (hAcard.trans (Fintype.card_fin n).symm)
+  subst hAeq
+  have ⟨B, hBF, hBne⟩ : ∃ B ∈ F, B ≠ Finset.univ := by
+    by_contra hall
+    push_neg at hall
+    have : F.card ≤ 1 :=
+      Finset.card_le_one.mpr fun a ha b hb => (hall a ha).trans (hall b hb).symm
+    omega
+  exact absurd (Finset.subset_univ B) (hF B hBF Finset.univ hAF hBne)
