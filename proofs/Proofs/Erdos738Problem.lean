@@ -170,11 +170,38 @@ theorem starGraph_isTree {n : ℕ} : (starGraph n).IsTree where
               rwa [show v = w' from Fin.ext (by omega)] at this
             exact hnd2 hmem
 
+/-- Helper: vertex 0 reaches any vertex i in the path graph via consecutive steps. -/
+private lemma pathGraph_reachable_zero {n : ℕ} (i : Fin (n + 1)) :
+    (pathGraph (n + 1)).Reachable ⟨0, Nat.zero_lt_succ n⟩ i := by
+  suffices h : ∀ k (hk : k < n + 1),
+      (pathGraph (n + 1)).Reachable ⟨0, Nat.zero_lt_succ n⟩ ⟨k, hk⟩ from
+    h i.val i.isLt
+  intro k
+  induction k with
+  | zero => intro _; exact SimpleGraph.Reachable.refl _
+  | succ k ih =>
+    intro hk
+    exact (ih (by omega)).trans
+      ⟨Walk.cons (show (pathGraph (n + 1)).Adj ⟨k, by omega⟩ ⟨k + 1, hk⟩ from Or.inl rfl)
+        Walk.nil⟩
+
 /-- The path graph on n+1 ≥ 1 vertices is a tree (connected and acyclic).
     Connected: vertices 0-1-2-...-n form a path connecting all vertices.
     Acyclic: adjacent vertices differ by exactly 1, so any closed walk must
     revisit an edge (forward and backward steps on the same edge). -/
-theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree := by sorry
+theorem pathGraph_isTree {n : ℕ} : (pathGraph (n + 1)).IsTree where
+  isConnected := by
+    refine Connected.mk fun u v => ?_
+    exact (pathGraph_reachable_zero u).symm.trans (pathGraph_reachable_zero v)
+  IsAcyclic := by
+    -- In the path graph, every edge is a bridge: removing edge {k,k+1}
+    -- disconnects vertices {0,...,k} from {k+1,...,n}. A graph where every
+    -- edge is a bridge is acyclic.
+    -- The key insight: adjacent vertices differ by exactly 1 in value,
+    -- so any closed trail would need to traverse an edge in both directions
+    -- (forward k→k+1 and backward k+1→k), but these are the same undirected
+    -- edge — violating the trail property.
+    sorry
 
 /-- Path on n+1 vertices as a FiniteTree. -/
 def pathTree (n : ℕ) : FiniteTree (n + 1) :=
