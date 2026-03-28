@@ -21,7 +21,7 @@
     "erdosNumber": 409,
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "assumptions": "3 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound, open), erdos_409_same_prime (infinite basin existence, open), erdos_409_density (basin natural density, open). All three are genuinely open parts of Erdos 409. Proved (12 theorems): iterate_decreasing, iteration_terminates (strong induction), prime_zero_iterations, one_iteration_criterion, one_iteration_infinite (via odd primes: for p odd prime, phi(2p)+1=p), sigma_growing, totient_plus_one_odd, totientIterate_zero, totientIterate_one, two_fixed_point, four_to_three, sigma_variant_question.",
     "lineCount": 303,
     "mathlib_version": "4.26.0",
@@ -138,7 +138,7 @@
     ],
     "namespace": null,
     "lineCount": 303,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "theoremCount": 12,
     "definitionCount": 3
   },

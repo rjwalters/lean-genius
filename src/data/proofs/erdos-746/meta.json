@@ -80,7 +80,7 @@
         "description": "Chromatic number problems — connected via random graph thresholds for coloring"
       }
     ],
-    "axiomCount": 9,
+    "axiomCount": 1,
     "lineCount": 234,
     "assumptions": "9 axiom declarations (all with non-trivial mathematical content), 5 sorries, 2 opaque framework predicates (AlmostSurely, ProbInGnm). Axioms encode: Dirac's theorem, Erdős-Rényi matching threshold, Pósa's theorem, Korshunov's sharp threshold, Komlós-Szemerédi limiting probability, asymptotic limit behavior of limitingProbability, connectivity threshold, and minimum degree concentration. Probabilistic statements use opaque AlmostSurely/ProbInGnm predicates since full formalization requires a measure space on graphs."
   },
@@ -227,7 +227,7 @@
     ],
     "namespace": "Erdos746",
     "lineCount": 234,
-    "axiomCount": 9,
+    "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 19
   },
