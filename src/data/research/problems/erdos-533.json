@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4A→3A. Removed unused erdos_rogers_counterexample axiom. 3 remaining: ehsss_result (used), k4_free_triangle_free_subset (used), erdos_533_conjecture (OPEN).",
+    "progressSummary": "PROGRESS: 3A (all deep), 20T+1L, 0S. Proved edgeCount_le (tight n*(n-1)/2 bound, improves edgeCount_le_sq).",
     "builtItems": [
       "isTriangleFree_subset: monotonicity of triangle-free sets (line 84-88)",
       "isClique_subset: monotonicity of cliques (line 90-93)",
@@ -40,7 +40,9 @@
       "isTriangleFree_of_no_triangle: no K3 implies all subsets triangle-free (line 119-134)",
       "Proved not_hasClique_mono (contrapositive clique-free monotonicity)",
       "Proved k5_free_implies_k7_free",
-      "Proved erdos_533_for_large_delta (partial resolution using ehsss axiom)"
+      "Proved erdos_533_for_large_delta (partial resolution using ehsss axiom)",
+      "private lemma card_strict_upper_tri: counting ordered pairs via off-diagonal symmetry (proved)",
+      "theorem edgeCount_le: tight n*(n-1)/2 edge bound for SGraph (proved)"
     ],
     "insights": [
       "Axioms are all deep published results (EHSSS, K4-free case, Erdos-Rogers counterex, main conjecture) - none provable from Mathlib",
@@ -54,7 +56,9 @@
       "K5-free implies K7-free, so the Erdos-Rogers counterexample (K7-free) does not obstruct Problem 533",
       "All 4 axioms appropriate: ehsss_result (deep), k4_free_triangle_free_subset (deep), erdos_rogers_counterexample (construction), erdos_533_conjecture (open)",
       "File has 14 proved theorems (metadata claimed 0). Good structure.",
-      "erdos_rogers_counterexample axiom was unused — removed (4→3A)"
+      "erdos_rogers_counterexample axiom was unused — removed (4→3A)",
+      "edgeCount_le proved: tight n*(n-1)/2 bound on edge count (improves edgeCount_le_sq which gave n²)",
+      "card_strict_upper_tri helper: |{(i,j) in Fin n × Fin n | i < j}| = n*(n-1)/2 via off-diagonal symmetry"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,8 +89,8 @@
     {
       "path": "Proofs/Erdos533Problem.lean",
       "filename": "Erdos533Problem.lean",
-      "lineCount": 223,
-      "theoremCount": 18,
+      "lineCount": 265,
+      "theoremCount": 20,
       "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
