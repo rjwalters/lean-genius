@@ -24,14 +24,14 @@
       "Proofs/AbelRuffiniOQ04OQ01.lean"
     ],
     "badge": "formalized",
-    "sorries": 1,
+    "sorries": 6,
     "axiomCount": 1,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. Transitive dependency axiom: InverseGaloisA5.lean (1 axiom: three_dvd_gal_card). AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved. Note: InverseGalois.lean is a sibling file (not imported by this file).",
+    "assumptions": "0 axioms declared in this file. 6 sorry(s): the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. Transitive dependency axiom: InverseGaloisA5.lean (1 axiom: three_dvd_gal_card). AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved. Note: InverseGalois.lean is a sibling file (not imported by this file).",
     "leanFile": {
       "lineCount": 723,
       "theoremCount": 46,
