@@ -141,6 +141,34 @@ theorem representable_one : IsRepresentable 1 := by
                 Finset.sum_singleton]
     norm_num
 
+/-- Representability transfers via equal weight: if w(n) = w(m) and m is
+    representable, then n is representable using the same witness set. -/
+theorem representable_of_eq_weight {n m : ℕ}
+    (hw : recipPow2Weight n = recipPow2Weight m)
+    (hm : IsRepresentable m) : IsRepresentable n := by
+  obtain ⟨S, hcard, hpos, hsum⟩ := hm
+  exact ⟨S, hcard, hpos, hsum.trans hw.symm⟩
+
+/-- n = 2 is representable: w(2) = w(1) = 1/2, so the same witness works. -/
+theorem representable_two : IsRepresentable 2 :=
+  representable_of_eq_weight recipPow2Weight_one_eq_two.symm representable_one
+
+/-- n = 3 is representable: 3/8 = 4/16 + 6/64 + 8/256. -/
+theorem representable_three : IsRepresentable 3 := by
+  refine ⟨{4, 6, 8}, ?_, ?_, ?_⟩
+  · -- card ≥ 2
+    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · -- all ≥ 1
+    intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl <;> omega
+  · -- sum = recipPow2Weight 3
+    show recipPow2Sum {4, 6, 8} = recipPow2Weight 3
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (4 : ℕ) ∉ ({6, 8} : Finset ℕ) by decide),
+                Finset.sum_insert (show (6 : ℕ) ∉ ({8} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
 /-- Sum over consecutive block {a+1, ..., a+m} as a telescoping difference.
     ∑_{k=a+1}^{a+m} k/2^k = (a+2)/2^a - (a+m+2)/2^(a+m). -/
 private lemma icc_recipPow2_sum (a m : ℕ) :
@@ -218,6 +246,19 @@ theorem cusick_infinitely_many :
   refine ⟨2 ^ (m + 1) - m - 2, ?_, borwein_loring_family m hm⟩
   calc N ≤ m := le_max_left N 1
     _ ≤ 2 ^ (m + 1) - m - 2 := borwein_loring_value_ge m hm
+
+/-- n = 4 is representable, from the Borwein-Loring family with m = 2:
+    4 = 2³ - 2 - 2, and 4/16 = 5/32 + 6/64. -/
+theorem representable_four : IsRepresentable 4 :=
+  borwein_loring_family 2 (by omega)
+
+/-- All n from 1 to 4 are representable. -/
+theorem representable_le_4 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 4) : IsRepresentable n := by
+  interval_cases n
+  · exact representable_one
+  · exact representable_two
+  · exact representable_three
+  · exact representable_four
 
 /-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
 axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
