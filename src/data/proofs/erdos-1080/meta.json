@@ -19,7 +19,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 2,
     "erdosNumber": 1080,
     "erdosUrl": "https://erdosproblems.com/1080",
     "erdosProblemStatus": "disproved",
@@ -62,8 +62,8 @@
       "erdos_1080_summary: combined summary theorem"
     ],
     "axiomCount": 7,
-    "lineCount": 310,
-    "assumptions": "7 axiom(s) and 4 sorry(s). See the Lean source for details."
+    "lineCount": 336,
+    "assumptions": "7 axioms (published results: De Caen-Székely, Lazebnik-Ustimenko-Woldar, Kővári-Sós-Turán, Erdős C_8 observation). 2 sorries: erdos_conjecture_false (main disproof), c4_free_iff_no_K22 (structural equivalence)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1080**\n\nThis problem explores the threshold for forcing six-cycles in bipartite graphs with an imbalanced partition.\n\n**Key History:**\n- Erdős [Er75]: Posed the problem; noted that C_8 is forced\n- De Caen & Székely [DeSz92]: Disproved the conjecture, established bounds on f(n,m)\n- Faudree & Simonovits: Independently proved the general upper bound\n- Lazebnik, Ustimenko & Woldar [LUW94]: Improved the lower bound using algebraic constructions\n\n**Mathematical Setting:**\nThe problem concerns bipartite graphs G = (X ∪ Y, E) where |X| = ⌊n^(2/3)⌋ and the total vertex count is n. The question asks whether O(n) edges suffice to guarantee a 6-cycle.",
@@ -264,7 +264,7 @@
       "Set"
     ],
     "namespace": "Erdos1080",
-    "lineCount": 310,
+    "lineCount": 336,
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7

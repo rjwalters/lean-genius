@@ -37,6 +37,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
 
 open SimpleGraph Set
 
@@ -82,6 +83,30 @@ A graph is bipartite if it admits some bipartition.
 def IsBipartite {V : Type*} (G : SimpleGraph V) : Prop :=
   ∃ X Y : Set V, IsBipartition G X Y
 
+/--
+In a bipartition, no vertex in X is adjacent to another vertex in X.
+-/
+theorem bipartition_no_edge_within_X {V : Type*} {G : SimpleGraph V} {X Y : Set V}
+    (h : IsBipartition G X Y) {u v : V} (hu : u ∈ X) (hv : v ∈ X) :
+    ¬G.Adj u v := by
+  intro hadj
+  -- h.2.2 hadj : u ∈ X ↔ v ∈ Y, so hu gives v ∈ Y
+  have hvy : v ∈ Y := (h.2.2 hadj).mp hu
+  -- But v ∈ X and X ∩ Y = ∅, contradiction
+  exact Set.disjoint_left.mp h.1 hv hvy
+
+/--
+In a bipartition, no vertex in Y is adjacent to another vertex in Y.
+-/
+theorem bipartition_no_edge_within_Y {V : Type*} {G : SimpleGraph V} {X Y : Set V}
+    (h : IsBipartition G X Y) {u v : V} (hu : u ∈ Y) (hv : v ∈ Y) :
+    ¬G.Adj u v := by
+  intro hadj
+  -- h.2.2 hadj : u ∈ X ↔ v ∈ Y, so hv (backward) gives u ∈ X
+  have hux : u ∈ X := (h.2.2 hadj).mpr hv
+  -- But u ∈ Y and X ∩ Y = ∅, contradiction
+  exact Set.disjoint_left.mp h.1 hux hu
+
 /-
 ## Part II: Cycles in Graphs
 -/
@@ -120,10 +145,13 @@ def C4C6Free {V : Type*} (G : SimpleGraph V) : Prop := C4Free G ∧ C6Free G
 The maximum number of edges in a bipartite graph with parts of size n and m
 that contains no C_4 or C_6.
 
-This is denoted f(n,m) in the literature.
+This is denoted f(n,m) in the literature. Defined as `sSup` of achievable
+edge counts; for `ℕ`, `sSup` returns 0 for empty sets. Properties are
+established by axioms below.
 -/
-def maxC4C6FreeEdges (n m : ℕ) : ℕ :=
-  sorry -- Defined as supremum; axiomatized below
+noncomputable def maxC4C6FreeEdges (n m : ℕ) : ℕ :=
+  sSup {e : ℕ | ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (X Y : Set V),
+    IsBipartition G X Y ∧ X.ncard = n ∧ Y.ncard = m ∧ C4C6Free G ∧ G.edgeSet.ncard = e}
 
 /--
 f(n,m) is achieved by some bipartite graph.
@@ -180,10 +208,11 @@ axiom faudree_simonovits_bound (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1)
 **Lazebnik-Ustimenko-Woldar Lower Bound (1994):**
 f(n, ⌊n^(2/3)⌋) ≫ n^(16/15 + o(1))
 
-This improves De Caen-Székely's lower bound.
+This improves De Caen-Székely's lower bound. The constant c is uniform
+(independent of n), which is essential for the disproof argument.
 -/
-axiom lazebnik_ustimenko_woldar_bound (n : ℕ) (hn : n ≥ 2) :
-    ∃ c : ℝ, c > 0 ∧
+axiom lazebnik_ustimenko_woldar_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ (n : ℕ), n ≥ 2 →
       (maxC4C6FreeEdges n ⌊(n : ℝ) ^ (2/3 : ℝ)⌋₊ : ℝ) ≥ c * (n : ℝ) ^ (16/15 : ℝ)
 
 /-
@@ -223,14 +252,11 @@ This is because C_4,C_6-free bipartite graphs can have superlinearly
 many edges (specifically, Ω(n^(16/15)) edges).
 -/
 theorem erdos_1080 :
-    answer(false) ↔
-    ∃ c > (0 : ℝ), ∀ (V : Type) [Fintype V] [Nonempty V] (G : SimpleGraph V) (X Y : Set V),
+    ¬∃ c > (0 : ℝ), ∀ (V : Type) [Fintype V] [Nonempty V] (G : SimpleGraph V) (X Y : Set V),
       IsBipartition G X Y → X.ncard = ⌊(Fintype.card V : ℝ) ^ (2/3 : ℝ)⌋₊ →
       G.edgeSet.ncard ≥ c * Fintype.card V →
-        HasCycleOfLength G 6 := by
-  -- answer(false) means the answer to the question is NO
-  -- The question asks if such c exists; the answer is NO
-  sorry
+        HasCycleOfLength G 6 :=
+  erdos_conjecture_false
 
 /-
 ## Part VII: The C_8 Observation
