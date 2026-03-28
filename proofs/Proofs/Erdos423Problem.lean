@@ -51,6 +51,14 @@ where
       if check a 1 rest then true
       else go rest
 
+/-- Find the least candidate ≥ start that is a consecutive sum of elements from arr.
+    Returns candidate unchanged if fuel runs out. -/
+def findNextElem (arr : List ℕ) (candidate : ℕ) : ℕ → ℕ
+  | 0 => candidate
+  | fuel + 1 =>
+    if isConsecSum arr candidate then candidate
+    else findNextElem arr (candidate + 1) fuel
+
 /-- Build the Erdős-Hofstadter sequence (OEIS A005243) up to n+1 terms.
     a₁ = 1, a₂ = 2, and for k ≥ 3, aₖ is the least integer > a_{k-1}
     that is a sum of at least two consecutive previous terms. -/
@@ -60,14 +68,7 @@ def buildSeq : ℕ → List ℕ
   | n + 2 =>
     let prev := buildSeq (n + 1)
     let last := prev.getLast!
-    let rec findNext (candidate : ℕ) (fuel : ℕ) : ℕ :=
-      match fuel with
-      | 0 => candidate
-      | fuel + 1 =>
-        if isConsecSum prev candidate then candidate
-        else findNext (candidate + 1) fuel
-    let next := findNext (last + 1) 500
-    prev ++ [next]
+    prev ++ [findNextElem prev (last + 1) 500]
 
 /-- The Erdős-Hofstadter sequence: the nth term (0-indexed).
     Computable definition that generates the sequence by greedy construction. -/
@@ -132,9 +133,61 @@ theorem consSeq_strictMono_initial :
     consSeq 4 < consSeq 5 ∧ consSeq 5 < consSeq 6 ∧
     consSeq 6 < consSeq 7 := by native_decide
 
-/-- The sequence is strictly increasing (follows from definition: each term
+/-- findNextElem always returns a value ≥ the starting candidate. -/
+theorem findNextElem_ge (arr : List ℕ) (candidate fuel : ℕ) :
+    findNextElem arr candidate fuel ≥ candidate := by
+  induction fuel generalizing candidate with
+  | zero => simp [findNextElem]
+  | succ n ih =>
+    unfold findNextElem
+    split
+    · exact Nat.le_refl _
+    · have := ih (candidate + 1)
+      omega
+
+/-- buildSeq always produces a non-empty list. -/
+private theorem buildSeq_ne_nil (n : ℕ) : buildSeq n ≠ [] := by
+  match n with
+  | 0 => simp [buildSeq]
+  | 1 => simp [buildSeq]
+  | n + 2 =>
+    simp only [buildSeq]
+    exact List.append_ne_nil_of_right_ne_nil _ (List.cons_ne_nil _ _)
+
+/-- getLast! of a list appended with a singleton is that element. -/
+private theorem getLast!_append_singleton (l : List ℕ) (a : ℕ) :
+    (l ++ [a]).getLast! = a := by
+  simp [List.getLast!_eq_getLast?_getD, List.getLast?_concat]
+
+/-- Key equation: consSeq (n+2) equals the findNextElem starting after consSeq (n+1). -/
+private theorem consSeq_succ_eq (n : ℕ) :
+    consSeq (n + 2) = findNextElem (buildSeq (n + 1)) (consSeq (n + 1) + 1) 500 := by
+  -- Unfold consSeq on both sides to work with buildSeq and getLast!
+  show (buildSeq (n + 2)).getLast! =
+    findNextElem (buildSeq (n + 1)) ((buildSeq (n + 1)).getLast! + 1) 500
+  -- buildSeq (n+2) is definitionally buildSeq (n+1) ++ [findNextElem prev (last+1) 500]
+  -- so getLast! of the append is just the appended element
+  exact getLast!_append_singleton _ _
+
+/-- Each term is strictly greater than the previous. -/
+theorem consSeq_succ_gt (n : ℕ) : consSeq (n + 1) > consSeq n := by
+  match n with
+  | 0 => native_decide
+  | n + 1 =>
+    rw [consSeq_succ_eq]
+    have h := findNextElem_ge (buildSeq (n + 1)) (consSeq (n + 1) + 1) 500
+    omega
+
+/-- The sequence is strictly increasing (proved from definition: each term
     is the LEAST integer GREATER than the previous). -/
-axiom consSeq_strictMono : StrictMono consSeq
+theorem consSeq_strictMono : StrictMono consSeq := by
+  intro a b hab
+  induction b with
+  | zero => omega
+  | succ n ih =>
+    rcases Nat.eq_or_lt_of_le (Nat.lt_succ_iff.mp hab) with rfl | h
+    · exact consSeq_succ_gt n
+    · exact lt_trans (ih h) (consSeq_succ_gt n)
 
 /- ## Part V: Consecutive Sum Predicate -/
 
@@ -255,6 +308,7 @@ FORMALIZED:
 - Computable sequence definition (verified against OEIS A005243)
 - First 8 terms proved correct via native_decide
 - Consecutive sum verifications proved computationally
+- Strict monotonicity proved from definition (6A→5A)
 - Linear lower bound proved from strict monotonicity
 - Missing numbers (4, 7, 9) proved from computation + monotonicity
 - Growth properties (Bolan-Tang) stated as axioms
