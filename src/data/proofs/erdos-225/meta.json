@@ -18,26 +18,27 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 5,
     "erdosNumber": 225,
     "erdosUrl": "https://erdosproblems.com/225",
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "lineCount": 243,
-    "assumptions": "2 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "assumptions": "2 axiom(s) and 5 sorry(s). Axioms encode related theorems (Fejér–Riesz, Littlewood); sorries include corrected main theorem, integral identity, and degree-1 case.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture — that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ — was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",
     "problemStatement": "Let $f(\\theta) = \\sum_{k=0}^{n} c_k e^{ik\\theta}$ be a trigonometric polynomial all of whose roots are real (i.e., lie on the unit circle), such that $\\max|f(\\theta)| = 1$. Then $\\int_0^{2\\pi} |f(\\theta)| \\, d\\theta \\leq 4$.",
     "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
-    "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) → ℂ`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. Norms use Mathlib's `iSup` and Bochner integration. The main theorem has a `sorry` due to the constant-polynomial formalization bug. Aristotle proved optimality and the supremum equivalence theorem.",
+    "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) → ℂ`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. A `Nonconstant` predicate (requiring at least one root) fixes the constant-polynomial bug found by Aristotle. The corrected theorem `erdos_225` adds this hypothesis. Key infrastructure: the integral identity $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$, and the degree-1 extremal case where $\\|f\\|_1 = 4$ exactly.",
     "keyInsights": [
       "**Terminological trap**: 'Real roots' means roots on the unit circle $|z| = 1$, not roots in $\\mathbb{R}$ — a common source of confusion in the literature",
       "**Formalization bug found by Aristotle**: Constant polynomials vacuously satisfy `HasUnitCircleRoots` but have $L^1$ norm $= 2\\pi > 4$, requiring a degree $\\geq 1$ hypothesis",
       "**Sharp bound**: The constant 4 cannot be improved to $4 - \\varepsilon$ for any $\\varepsilon > 0$, as demonstrated by explicit extremal sequences",
       "**Contrasting results**: Erdős #225 gives an $L^1$ **upper** bound of 4 for unit-circle-root polynomials, while Littlewood's conjecture (proved 1981) gives an $L^1$ **lower** bound of $C \\log n$ for unimodular polynomials",
-      "**Fejér–Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory"
+      "**Fejér–Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory",
+      "**Degree-1 extremal**: The bound 4 is achieved exactly at degree 1, where $\\|f\\|_1 = 4$. For degree $\\geq 2$, the bound is strict ($< 4$). The identity $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$ is the key computation"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,89 +50,65 @@
       "id": "aristotle-header",
       "title": "Aristotle Contributions",
       "startLine": 1,
-      "endLine": 12,
+      "endLine": 11,
       "summary": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample.",
-      "mathContext": "Mathematical content: Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample."
+      "mathContext": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug."
     },
     {
       "id": "problem-statement",
       "title": "Problem Statement and History",
       "startLine": 13,
-      "endLine": 39,
-      "summary": "Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973). Hayman Problem 4.20.",
-      "mathContext": "Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$."
+      "endLine": 38,
+      "summary": "Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973).",
+      "mathContext": "Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$."
     },
     {
-      "id": "trig-poly",
-      "title": "Trigonometric Polynomials",
+      "id": "definitions",
+      "title": "Definitions: TrigPoly, Roots, Nonconstant, Norms",
       "startLine": 40,
-      "endLine": 57,
-      "summary": "Defines `TrigPoly n` as `Fin (n+1) → ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`.",
-      "mathContext": "Defines `TrigPoly n` as `Fin (n+1) $\\to$ ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`."
+      "endLine": 97,
+      "summary": "Defines `TrigPoly n`, `HasUnitCircleRoots`, `Nonconstant` (at least one root exists), `supNorm`, and `l1Norm`. The `Nonconstant` predicate fixes the constant-polynomial bug.",
+      "mathContext": "Defines trigonometric polynomials, unit-circle-root condition, nonconstancy predicate, and $L^1$/$L^\\infty$ norms."
     },
     {
-      "id": "unit-circle",
-      "title": "Roots on the Unit Circle",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "Defines `OnUnitCircle z` ($\\|z\\| = 1$) and `HasUnitCircleRoots p` (all roots of $P(z) = \\sum c_k z^k$ satisfy $|z| = 1$). The vacuous truth issue for constant polynomials is noted.",
-      "mathContext": "Formal definition: Defines `OnUnitCircle z` ($\\|z\\| = 1$) and `HasUnitCircleRoots p` (all roots of $P(z) = \\sum c_k z^k$ satisfy $|z| = 1$). The vacuous truth issue for constant polynomials is noted."
-    },
-    {
-      "id": "norms",
-      "title": "Norm Definitions",
-      "startLine": 74,
-      "endLine": 87,
-      "summary": "Defines $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\pi]} \\|f(\\theta)\\|$ via `iSup` and $\\|f\\|_1 = \\int_0^{2\\pi} \\|f(\\theta)\\| \\, d\\theta$ via Bochner integration.",
-      "mathContext": "Defines $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\$\\pi$]} \\|f(\\theta)\\|$ via `iSup` and $\\|f\\|_1 = \\int_0^{2\\$\\pi$} \\|f(\\theta)\\| \\, d\\theta$ via Bochner integration."
-    },
-    {
-      "id": "main-theorem",
-      "title": "Main Theorem (Sorry — Bug)",
-      "startLine": 88,
-      "endLine": 109,
-      "summary": "States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis.",
-      "mathContext": "Mathematical content: States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis."
+      "id": "main-theorems",
+      "title": "Main Theorems (Original Bug + Corrected)",
+      "startLine": 99,
+      "endLine": 129,
+      "summary": "Original `erdos_225_main` (known false, retained for reference) and corrected `erdos_225` with `Nonconstant` hypothesis. Both have `sorry`.",
+      "mathContext": "Corrected theorem: $\\|f\\|_1 \\leq 4$ for nonconstant trigonometric polynomials with unit-circle roots and $\\|f\\|_\\infty = 1$."
     },
     {
       "id": "optimality",
-      "title": "Optimality (Proved by Aristotle)",
-      "startLine": 110,
-      "endLine": 130,
-      "summary": "Aristotle proved: for all $\\varepsilon > 0$, there exists a polynomial achieving $\\|f\\|_1 > 4 - \\varepsilon$. Witness: the constant polynomial $f = 1$ with $\\|f\\|_1 = 2\\pi$.",
-      "mathContext": "Aristotle proved: for all $\\varepsilon > 0$, there exists a polynomial achieving $\\|f\\|_1 > 4 - \\varepsilon$. Witness: the constant polynomial $f = 1$ with $\\|f\\|_1 = 2\\$\\pi$$."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
+      "title": "Optimality (Aristotle + Corrected)",
       "startLine": 131,
-      "endLine": 142,
-      "summary": "Proves $2\\pi > 4$ via `Real.pi_gt_three`, confirming the constant polynomial exceeds the bound.",
-      "mathContext": "Proves $2\\$\\pi$ > 4$ via `Real.pi_gt_three`, confirming the constant polynomial exceeds the bound."
+      "endLine": 209,
+      "summary": "Aristotle's original optimality proof (uses constant polynomial). New: `constant_not_nonconstant` (proved), `unit_circle_difference_integral`, `degree_one_l1_norm_eq_four`, `erdos_225_tight`.",
+      "mathContext": "Key identity: $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$. Degree-1 polynomials achieve $\\|f\\|_1 = 4$ exactly."
     },
     {
       "id": "equivalences",
       "title": "Equivalent Formulations and Supremum Equivalence",
-      "startLine": 143,
-      "endLine": 190,
-      "summary": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$, via bijection $z = e^{i\\theta}$.",
-      "mathContext": "Formal definition: Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$, via bijection $z = e^{i\\theta}$."
+      "startLine": 211,
+      "endLine": 257,
+      "summary": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$.",
+      "mathContext": "Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$."
     },
     {
       "id": "related-results",
       "title": "Related Results: Fejér–Riesz and Littlewood",
-      "startLine": 191,
-      "endLine": 243,
-      "summary": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients). Summary section reviews the solved status.",
+      "startLine": 259,
+      "endLine": 315,
+      "summary": "Axiomatizes the Fejér–Riesz theorem and Littlewood's lower bound. Summary reviews the solved status and proof architecture.",
       "mathContext": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for trigonometric polynomials of degree $\\geq 1$ with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The formalization captures definitions, norms, and related results. Aristotle proved optimality and the supremum equivalence, and discovered that the formalized statement needs a degree $\\geq 1$ hypothesis to exclude the constant-polynomial counterexample.",
+    "summary": "Erdős Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for nonconstant trigonometric polynomials with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The corrected theorem `erdos_225` adds a `Nonconstant` predicate (at least one root exists). Key infrastructure: the identity $\\int |e^{i\\theta} - \\alpha| = 8$ for $|\\alpha| = 1$, and the degree-1 extremal case. Aristotle proved optimality and the supremum equivalence.",
     "implications": "**Theoretical Significance**: The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$).\n\nThe unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fejér–Riesz theorem provides a structural explanation via spectral factorization.",
     "openQuestions": [
       "What are the degree-$n$ extremal polynomials that maximize $\\|f\\|_1$ under the unit-circle-roots and $\\|f\\|_\\infty = 1$ constraints?",
-      "Can the formalization be completed by adding the degree $\\geq 1$ hypothesis and proving the corrected main theorem in Lean?",
+      "Can the corrected main theorem `erdos_225` be proved in Lean using the factorization approach (P(z) = cₙ ∏(z − αⱼ) with |αⱼ| = 1)?",
       "Does an analogous bound hold for polynomials whose roots lie on a curve other than $S^1$ (e.g., an ellipse)?",
       "What is the precise rate at which the extremal $L^1$ norm approaches 4 as $n \\to \\infty$?"
     ]
@@ -144,10 +121,10 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos225",
-    "lineCount": 243,
+    "lineCount": 315,
     "axiomCount": 2,
-    "theoremCount": 4,
-    "definitionCount": 7
+    "theoremCount": 9,
+    "definitionCount": 8
   },
   "references": [
     "Erdős (1940, 1957, 1961): early work on trigonometric polynomial norms",
