@@ -22,9 +22,11 @@ namespace Erdos345
 
 /- ## Subset sums and completeness -/
 
-/-- The set of finite subset sums of `A ⊆ ℕ`. -/
+/-- The set of finite nonempty subset sums of `A ⊆ ℕ`.
+    We require `S.Nonempty` to match the standard convention where
+    the empty sum (0) is not counted as a representation. -/
 def subsetSums (A : Set ℕ) : Set ℕ :=
-    { s | ∃ (S : Finset ℕ), (↑S : Set ℕ) ⊆ A ∧ S.sum id = s }
+    { s | ∃ (S : Finset ℕ), S.Nonempty ∧ (↑S : Set ℕ) ⊆ A ∧ S.sum id = s }
 
 /-- A sequence `A` is complete if all sufficiently large integers are
 in `P(A)`. -/
@@ -34,19 +36,34 @@ def IsCompleteSeq (A : Set ℕ) : Prop :=
 /- ## Completeness threshold -/
 
 /-- The threshold of completeness `T(A)`: the least `m` such that all
-`n ≥ m` are subset sums of `A`. Axiomatised since computing the
-minimum requires decidability. -/
-axiom threshold : Set ℕ → ℕ
+    `n ≥ m` are in `P(A)`. Defined via `Nat.find` when `A` is complete. -/
+open Classical in
+noncomputable def threshold (A : Set ℕ) : ℕ :=
+    if h : IsCompleteSeq A then Nat.find h else 0
 
 /-- `threshold A` is correct: all `n ≥ T(A)` are in `P(A)`. -/
-axiom threshold_spec (A : Set ℕ) (hA : IsCompleteSeq A) :
-    ∀ n : ℕ, threshold A ≤ n → n ∈ subsetSums A
+theorem threshold_spec (A : Set ℕ) (hA : IsCompleteSeq A) :
+    ∀ n : ℕ, threshold A ≤ n → n ∈ subsetSums A := by
+  simp only [threshold, dif_pos hA]
+  exact Nat.find_spec hA
 
 /-- `threshold A` is minimal: some `n < T(A)` is not in `P(A)`,
 unless `T(A) = 0`. -/
-axiom threshold_minimal (A : Set ℕ) (hA : IsCompleteSeq A)
+theorem threshold_minimal (A : Set ℕ) (hA : IsCompleteSeq A)
     (ht : 0 < threshold A) :
-    ∃ n : ℕ, n < threshold A ∧ n ∉ subsetSums A
+    ∃ n : ℕ, n < threshold A ∧ n ∉ subsetSums A := by
+  simp only [threshold, dif_pos hA] at ht ⊢
+  -- Nat.find hA > 0, so Nat.find hA - 1 < Nat.find hA
+  have hlt : Nat.find hA - 1 < Nat.find hA := by omega
+  have hmin := Nat.find_min hA hlt
+  -- ¬(∀ n ≥ Nat.find hA - 1, n ∈ subsetSums A)
+  push_neg at hmin
+  obtain ⟨n, hn_ge, hn_not⟩ := hmin
+  refine ⟨n, ?_, hn_not⟩
+  -- n ∉ subsetSums A, but all n ≥ Nat.find hA are in subsetSums A
+  by_contra h
+  push_neg at h
+  exact hn_not (Nat.find_spec hA n h)
 
 /- ## Power sequences -/
 
@@ -58,12 +75,37 @@ def powerSeq (k : ℕ) : Set ℕ :=
     Every n ≥ 1 is a subset sum of {1^1, 2^1, 3^1, ...} via the singleton {n}. -/
 theorem powerSeq_1_complete : IsCompleteSeq (powerSeq 1) := by
   refine ⟨1, fun n hn => ?_⟩
-  refine ⟨{n}, ?_, ?_⟩
+  refine ⟨{n}, Finset.singleton_nonempty n, ?_, ?_⟩
   · simp only [Finset.coe_singleton, Set.singleton_subset_iff]
     exact ⟨n, hn, (pow_one n).symm⟩
   · simp
 
-axiom threshold_powerSeq_1 : threshold (powerSeq 1) = 1
+/-- `T(n) = 1`: the threshold of {1, 2, 3, ...} is 1.
+    Proof: all n ≥ 1 are subset sums (singletons), and 0 is not a nonempty
+    subset sum (every element of powerSeq 1 is ≥ 1). -/
+theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
+  simp only [threshold, dif_pos powerSeq_1_complete]
+  apply Nat.find_eq_iff.mpr
+  constructor
+  · -- All n ≥ 1 are in subsetSums(powerSeq 1)
+    exact fun n hn => (powerSeq_1_complete).choose_spec n hn
+  · -- For m = 0: not all n ≥ 0 are in subsetSums(powerSeq 1)
+    intro m hm
+    interval_cases m
+    -- Show ¬(∀ n ≥ 0, n ∈ subsetSums(powerSeq 1))
+    intro h0
+    have h := h0 0 (le_refl 0)
+    obtain ⟨S, hne, hS_sub, hS_sum⟩ := h
+    -- S is nonempty, S ⊆ powerSeq 1, S.sum id = 0
+    -- But every element of S is in powerSeq 1, so every element ≥ 1
+    -- Therefore S.sum id ≥ 1, contradicting S.sum id = 0
+    obtain ⟨x, hx_mem⟩ := hne
+    have hx_in : x ∈ (↑S : Set ℕ) := Finset.mem_coe.mpr hx_mem
+    have ⟨n, hn_pos, hn_eq⟩ := hS_sub hx_in
+    have hx_pos : 1 ≤ x := by rw [hn_eq, pow_one]; exact hn_pos
+    have := Finset.single_le_sum (fun a _ => Nat.zero_le a) hx_mem
+    simp [id] at this
+    omega
 
 /- ## Known threshold values -/
 

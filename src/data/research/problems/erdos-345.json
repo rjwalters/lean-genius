@@ -29,15 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 11 to 9. Proved completeness of linear powers and monotonicity of thresholds.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms (9→5). Defined threshold via Nat.find, proved threshold_spec/minimal/powerSeq_1 from definition. Fixed subsetSums to require nonempty subsets (standard convention).",
     "builtItems": [
       "Proved powerSeq_1_complete in Erdos345Problem.lean",
-      "Proved threshold_mono_small in Erdos345Problem.lean"
+      "Proved threshold_mono_small in Erdos345Problem.lean",
+      "Defined threshold : Set ℕ → ℕ via Nat.find (was axiom)",
+      "Proved threshold_spec from Nat.find_spec (was axiom)",
+      "Proved threshold_minimal from Nat.find_min (was axiom)",
+      "Proved threshold_powerSeq_1 : threshold (powerSeq 1) = 1 (was axiom)",
+      "Fixed subsetSums to require S.Nonempty (standard convention)"
     ],
     "insights": [
       "Proved powerSeq_1_complete: {n^1 : n ≥ 1} is complete (every n ≥ 1 = sum of {n})",
       "Proved threshold_mono_small from concrete values via omega",
-      "Renamed IsComplete → IsCompleteSeq to avoid Mathlib conflict, added Erdos345 namespace"
+      "Renamed IsComplete → IsCompleteSeq to avoid Mathlib conflict, added Erdos345 namespace",
+      "subsetSums with empty sum gives T(powerSeq 1) = 0, contradicting known T(n)=1. Requiring S.Nonempty fixes the off-by-one to match mathematical convention.",
+      "threshold defined via Nat.find (Classical): when IsCompleteSeq, find the least m; otherwise 0",
+      "threshold_spec proved from Nat.find_spec: the found m satisfies the completeness predicate",
+      "threshold_minimal proved from Nat.find_min + Nat.find_spec: any m below find fails the predicate, and all counterexamples must be below find",
+      "threshold_powerSeq_1 proved: 0 is not a nonempty subset sum (elements of powerSeq 1 are ≥ 1), so T = 1 is the least m"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -64,9 +74,9 @@
     {
       "path": "Proofs/Erdos345Problem.lean",
       "filename": "Erdos345Problem.lean",
-      "lineCount": 111,
+      "lineCount": 152,
       "theoremCount": 2,
-      "axiomCount": 9,
+      "axiomCount": 5,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

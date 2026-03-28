@@ -123,17 +123,7 @@ theorem chebyshev_nodes_in_interval (n : ℕ) (hn : n > 0) :
 The Lebesgue constant must grow logarithmically with n.
 -/
 
-/--
-**Faber's Theorem (1914):**
-For any choice of n nodes in [-1, 1]:
-  Λ(x₁,...,xₙ) ≫ log n
-
-No interpolation scheme can achieve bounded Lebesgue constant as n → ∞.
--/
-axiom faber_lower_bound :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ nodes : Fin n → ℝ,
-    NodesInInterval nodes → DistinctNodes nodes →
-    LebesgueConstant nodes > (1 - ε) * Real.log n
+/- Faber's Theorem (1914): Λ ≫ log n. Subsumed by the sharper Erdős bound below. -/
 
 /--
 **Erdős Lower Bound (1961):**
@@ -191,28 +181,9 @@ axiom kilgore_cheney_existence (n : ℕ) (hn : n > 0) :
     ∀ nodes' : Fin n → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
     LebesgueConstant nodes ≤ LebesgueConstant nodes'
 
-/--
-**Kilgore's Characterization (1977):**
-Optimal nodes are characterized by the equal-height property.
--/
-axiom kilgore_characterization (n : ℕ) (hn : n > 0) :
-    ∀ nodes : Fin n → ℝ, NodesInInterval nodes → DistinctNodes nodes →
-    (∀ nodes' : Fin n → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
-     LebesgueConstant nodes ≤ LebesgueConstant nodes') →
-    EqualHeightProperty nodes
-
-/--
-**de Boor-Pinkus Uniqueness (1978):**
-For canonical configurations (endpoints fixed at ±1, symmetric), the minimizer is unique.
--/
-axiom de_boor_pinkus_uniqueness (n : ℕ) (hn : n > 0) :
-    ∃! nodes : Fin n → ℝ,
-      NodesInInterval nodes ∧ DistinctNodes nodes ∧
-      nodes ⟨0, hn⟩ = -1 ∧ nodes ⟨n - 1, Nat.sub_lt hn Nat.one_pos⟩ = 1 ∧
-      (∀ i : Fin n, nodes i = -nodes ⟨n - 1 - i.val, by omega⟩) ∧
-      (∀ nodes' : Fin n → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
-       nodes' ⟨0, hn⟩ = -1 → nodes' ⟨n - 1, Nat.sub_lt hn Nat.one_pos⟩ = 1 →
-       LebesgueConstant nodes ≤ LebesgueConstant nodes')
+/- Kilgore (1977): optimal nodes satisfy the equal-height (equioscillation) property.
+   de Boor-Pinkus (1978): the minimizer is unique for canonical (symmetric, endpoint-fixed) configurations.
+   These characterization and uniqueness results are known but not used in the proofs below. -/
 
 /-
 ## Part VI: Known Exact Solutions
@@ -378,18 +349,7 @@ theorem optimal_n3 : NodesInInterval (![(-1 : ℝ), 0, 1]) ∧
     · exact le_csSup lebesgue_set_n3_bddAbove
         ⟨1 / 2, by norm_num, by norm_num, lebesgue_fn_n3_at_half.symm⟩
 
-/--
-**n = 4:**
-Optimal nodes: {-1, -t, t, 1} where t ≈ 0.4177
-with Λ ≈ 1.4229.
-Proved by Rack-Vajda (2015).
--/
-axiom optimal_n4_exists :
-    ∃ t : ℝ, 0 < t ∧ t < 1/2 ∧
-    ∃ nodes : Fin 4 → ℝ, nodes = ![(-1 : ℝ), -t, t, 1] ∧
-    NodesInInterval nodes ∧
-    (∀ nodes' : Fin 4 → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
-     LebesgueConstant nodes ≤ LebesgueConstant nodes')
+/- n = 4: Optimal nodes are {-1, -t, t, 1} with t ≈ 0.4177, Λ ≈ 1.4229 (Rack-Vajda 2015). -/
 
 /-
 ## Part VII: Complex Variant

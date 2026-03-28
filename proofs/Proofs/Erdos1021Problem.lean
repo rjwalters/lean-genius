@@ -51,27 +51,34 @@ def pairVertexCount (k : ℕ) : ℕ := Nat.choose k 2
 /-- Total vertices in G_k: k + C(k,2). -/
 def Gk_vertexCount (k : ℕ) : ℕ := k + pairVertexCount k
 
-/-- The vertex type for G_k: either a primary (left) or pair (right) vertex. -/
-abbrev Gk_vertex (k : ℕ) := Fin k ⊕ Fin (pairVertexCount k)
+/-- The vertex type for G_k: primary vertices (Fin k) or pair vertices.
+    Each pair vertex represents an unordered pair {a,b} ⊂ Fin k, encoded as (a,b) with a < b. -/
+abbrev Gk_vertex (k : ℕ) := Fin k ⊕ { p : Fin k × Fin k // p.1 < p.2 }
 
-/-- G_k is the bipartite pair graph. -/
+/-- G_k is the bipartite pair graph.
+    Each pair vertex ⟨(a, b), _⟩ is adjacent to exactly primary vertices a and b.
+    (Previously this was incorrectly defined as K_{k,C(k,2)} with all cross-edges.) -/
 def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
   Adj v w := match v, w with
-    | Sum.inl _, Sum.inr _ => True  -- Primary to pair connections
-    | Sum.inr _, Sum.inl _ => True  -- Symmetric
-    | _, _ => False  -- No edges within parts
-  symm := fun v w h => by cases v <;> cases w <;> simp_all
-  loopless := fun v h => by cases v <;> simp at h
+    | Sum.inl i, Sum.inr ⟨(a, b), _⟩ => i = a ∨ i = b
+    | Sum.inr ⟨(a, b), _⟩, Sum.inl i => i = a ∨ i = b
+    | _, _ => False
+  symm := by
+    intro v w h
+    rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩ <;> exact h
+  loopless := by
+    intro v h
+    rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> exact h
 
-/-- G_k is bipartite by construction. -/
+/-- G_k is bipartite by construction: every edge connects a primary to a pair vertex. -/
 theorem Gk_bipartite (k : ℕ) : ∀ v w : Gk_vertex k,
     (Gk k).Adj v w → (∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j) := by
   intro v w h
-  rcases v with i | i <;> rcases w with j | j
-  · exact h.elim        -- inl/inl: Adj is definitionally False
-  · simp                 -- inl/inr: both existentials are True
-  · simp                 -- inr/inl: both existentials are False (Sum.inr ≠ Sum.inl)
-  · exact h.elim         -- inr/inr: Adj is definitionally False
+  rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩
+  · simp [Gk] at h       -- inl/inl: Adj is False
+  · simp                  -- inl/inr: both existentials hold
+  · simp                  -- inr/inl: both existentials fail
+  · simp [Gk] at h       -- inr/inr: Adj is False
 
 /-
 ## Special Case: G_3 = C_6
@@ -184,9 +191,6 @@ theorem strong_implies_weak : erdos_1021_conjecture → weak_conjecture := by
   have ⟨hn₀, hn₁⟩ := max_le_iff.mp hn
   exact le_trans (hN₀ n hn₀) (hN₁ n hn₁)
 
-/-- Even the weak conjecture is open. -/
-axiom weak_conjecture_open : ¬∃ (proof : weak_conjecture), True
-
 /-
 ## The C_6 Case (k = 3)
 
@@ -207,21 +211,6 @@ theorem c3_value : (7 : ℝ) / 6 = 3/2 - 1/3 := by norm_num
 theorem k3_case_solved : ∃ c : ℝ, c > 0 ∧
     (fun n => exGk 3 n) ≪ (fun n => powerBound c n) := by
   sorry
-
-/-
-## Connection to Problem 926
-
-G_k is H_k (from Problem 926) with vertex x removed.
--/
-
-/-- H_k has one additional vertex x connected to all primary vertices. -/
-def Hk_vertexCount (k : ℕ) : ℕ := k + pairVertexCount k + 1
-
-/-- Removing the central vertex from H_k gives G_k. -/
-axiom Gk_from_Hk (k : ℕ) :
-  ∃ (f : Gk_vertex k → Fin (Hk_vertexCount k)),
-    Function.Injective f
-    -- G_k embeds into H_k minus vertex x
 
 /-
 ## Trivial Bounds
@@ -245,21 +234,6 @@ axiom kovari_sos_turan (s t : ℕ) (hs : s ≥ 2) (ht : t ≥ s) :
 /-- G_k contains K_{2, C(k,2)}, giving a trivial n^(3/2) bound. -/
 theorem trivial_bound (k : ℕ) (hk : k ≥ 3) :
     ∃ C > 0, ∀ n, exGk k n ≤ C * (n : ℝ) ^ (3/2 : ℝ) := by
-  sorry
-
-/-
-## The Gap
-
-The conjecture asks for improvement over n^(3/2).
--/
-
-/-- The gap from n^(3/2) that the conjecture claims.
-    Axiomatized since the exact constants c_k are unknown. -/
-axiom conjecturedGap (k : ℕ) : ℝ
-
-/-- The conjecture is that this gap is positive for all k. -/
-theorem gap_positive_conjecture :
-    erdos_1021_conjecture ↔ ∀ k ≥ 3, conjecturedGap k > 0 := by
   sorry
 
 /-

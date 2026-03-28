@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Removed 4 unused axioms (9→5): faber_lower_bound (subsumed by erdos_lower_bound), kilgore_characterization, de_boor_pinkus_uniqueness, optimal_n4_exists. Preserved mathematical content as comments.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "faber_lower_bound subsumed by erdos_lower_bound (sharper constant 2/pi vs 1-eps)",
+      "kilgore_characterization and de_boor_pinkus_uniqueness document important results but are not used in any proof",
+      "optimal_n4_exists (n=4 specific case) not used in any proof",
+      "Remaining 5 axioms: erdos_lower_bound, chebyshev_upper_bound, kilgore_cheney_existence, brutman_odd, brutman_pinkus_even — all used in proved theorems"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
