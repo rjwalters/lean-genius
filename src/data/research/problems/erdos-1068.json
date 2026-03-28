@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1068",
-  "title": "Erdős #1068",
+  "title": "Erd\u0151s #1068",
   "phase": "ACT",
   "status": "in-progress",
   "tier": "A",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-15T14:38:41.571Z",
     "iteration": 1,
-    "focus": "Axiom elimination: reduced 6→3 axioms",
+    "focus": "Axiom elimination: reduced 6\u21923 axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: 6T (was 5), 3A, 0S. Added k-connectivity theorem.",
     "builtItems": [
-      "Proved set_theoretic_sensitivity (was axiom True → theorem trivial)",
-      "Proved bowler_pikhurko_simplified_construction (was axiom True → theorem trivial)",
-      "Partial proof of inf_connected_no_finite_separator (axiom→theorem with 2 sorries)",
+      "Proved set_theoretic_sensitivity (was axiom True \u2192 theorem trivial)",
+      "Proved bowler_pikhurko_simplified_construction (was axiom True \u2192 theorem trivial)",
+      "Partial proof of inf_connected_no_finite_separator (axiom\u2192theorem with 2 sorries)",
       "Proved hbad_finite: Set.Finite bad via biUnion over S with subsingleton fibers",
-      "Proved vertex classification: head?=some w via mem_cons + resolve_right, getLast?=some w via dropLast_append_getLast"
+      "Proved vertex classification: head?=some w via mem_cons + resolve_right, getLast?=some w via dropLast_append_getLast",
+      "inf_connected_k_connected: finite k-connectivity from infinite connectivity"
     ],
     "insights": [
       "inf_connected_no_finite_separator is provable from definitions via pigeonhole: infinitely many disjoint paths, finite separator blocks at most finitely many, so one path avoids S",
@@ -43,11 +44,13 @@
       "Remaining 3 axioms are genuinely deep: the open conjecture, Soukup 2015, and problem 1067 disproof",
       "Set.Finite.biUnion + Set.Subsingleton.finite pattern works for bounding path sets by separator size",
       "List.dropLast_append_getLast is key for proving vertex is endpoint when not in dropLast",
-      "need Mathlib.Tactic import for Set.Finite.biUnion (not transitively imported by Set.Countable)"
+      "need Mathlib.Tactic import for Set.Finite.biUnion (not transitively imported by Set.Countable)",
+      "File actually has 0 sorries (prior count of 1 was a comment mentioning sorry)",
+      "inf_connected_k_connected follows trivially from no_finite_separator"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1068 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nSee also [1067].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1067\n- Problem #1069\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErHa66\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1068 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nSee also [1067].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1067\n- Problem #1069\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErHa66\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
