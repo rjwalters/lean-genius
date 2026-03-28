@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cycle_lemma",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ01.lean",
     "tags": [
       "combinatorics",
@@ -18,8 +18,8 @@
       "finset",
       "research"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Finset.max'_mem",
@@ -66,7 +66,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "0 axioms, 0 sorries. Fully machine-checked. Two auxiliary theorems are trivial placeholders (rfl); the substantive content is ballot_discrete_ivt.",
+    "assumptions": "2 sorry(s) remain in the formalization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
