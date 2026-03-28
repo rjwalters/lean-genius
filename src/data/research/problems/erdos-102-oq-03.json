@@ -1,13 +1,13 @@
 {
   "slug": "erdos-102-oq-03",
-  "title": "Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen...",
+  "title": "Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen...",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergen....",
+    "plain": "Formal mathematical investigation: Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergen....",
     "whyMatters": []
   },
   "knownResults": {
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-24T00:48:59.903Z",
-    "iteration": 3,
-    "focus": "Structural collinearity properties and proved connection theorem",
+    "iteration": 4,
+    "focus": "Sorry elimination in Erdos1021/1020 + Aristotle companion file",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,30 +29,45 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 theorems (1T→5T). 5A unchanged (all deep/open). Proved connection_101_for_same_c.",
+    "progressSummary": "PROGRESS: Proved Gk_bipartite (1 sorry eliminated in Erdos1021). Reduced strong_implies_weak to 1 rpow-decay sorry. Created Erdos1021Aristotle.lean companion. Documented proof strategy for upper_bound_tight_construction2.",
     "builtItems": [
       "Assessment: 11A all appropriate, f is opaque",
-      "collinear₃_comm: symmetry in last two args",
-      "collinear₃_perm12: invariance swapping first two args",
-      "collinear₃_self_left: p is collinear with itself and any q",
-      "connection_101_for_same_c: proved contrapositive of divergence"
+      "collinear\u2083_comm: symmetry in last two args",
+      "collinear\u2083_perm12: invariance swapping first two args",
+      "collinear\u2083_self_left: p is collinear with itself and any q",
+      "connection_101_for_same_c: proved contrapositive of divergence",
+      "Gk_bipartite: proved G_k bipartiteness by case analysis on Sum type (Erdos1021Problem.lean)",
+      "strong_implies_weak: reduced to 1 sorry (rpow decay C*n^{-c}\u21920) via max N argument (Erdos1021Problem.lean)",
+      "Erdos1021Aristotle.lean: companion file with 7 routine lemmas for automated proof search",
+      "upper_bound_tight_construction2: documented telescoping proof strategy (Erdos1020Problem.lean)"
     ],
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
       "Could potentially reduce by defining f from Finset.sup, but would be major rewrite.",
-      "connection_101 axiom is over-strong: states ∀ε>0 but hypothesis only supports ε≥c. The ∀ε version requires divergence for all c, not just one.",
+      "connection_101 axiom is over-strong: states \u2200\u03b5>0 but hypothesis only supports \u03b5\u2265c. The \u2200\u03b5 version requires divergence for all c, not just one.",
       "connection_101_for_same_c: correct provable version via contrapositive with M=5",
-      "collinear₃ is preserved under all 6 permutations of 3 points (proved comm and perm12)"
+      "collinear\u2083 is preserved under all 6 permutations of 3 points (proved comm and perm12)",
+      "Erdos1021 Gk_bipartite: 4-way case split on Sum.inl/inr reduces to trivial goals; definitional reduction handles False cases",
+      "strong_implies_weak reduces to showing C*n^{3/2-c} <= eps*n^{3/2} for large n, i.e. n^c >= C/eps \u2014 standard rpow decay",
+      "upper_bound_tight_construction2 proof strategy: induction on k using Pascal C(n+1,r+1)-C(n,r+1)=C(n,r) and Nat.choose monotonicity",
+      "Erdos1021 k3_case_solved needs graph isomorphism invariance of extremal numbers \u2014 not yet formalized",
+      "gap_positive_conjecture unprovable: conjecturedGap is opaque axiom, no definitional content to work with"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Integrate Aristotle results from Erdos1021Aristotle.lean into main file",
+      "Complete upper_bound_tight_construction2 proof by induction (need choose_succ_sub and nat_sub_split helpers)",
+      "Prove k3_case_solved: formalize extremal number isomorphism invariance, then chain G3_is_C6 with C6_extremal_bound",
+      "Resolve rpow_decay_bound sorry in strong_implies_weak (Aristotle target)",
+      "For trivial_bound: need K_{2,t} embedding into G_k to chain with kovari_sos_turan"
+    ]
   },
   "tags": [
     "erdos",
     "combinatorial-geometry",
     "incidence-geometry",
     "collinearity",
-    "Szemerédi-Trotter",
+    "Szemer\u00e9di-Trotter",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -76,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.903Z",
-  "lastUpdate": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-27T23:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
