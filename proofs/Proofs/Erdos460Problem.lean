@@ -15,7 +15,8 @@ Does Σ (1/aᵢ) → ∞ as n → ∞ (summing over 0 < aᵢ < n)?
 Proved: sieve_initial (a₀ = 0, a₁ = 1) — follows from the constructive definition.
 The sieve is now implemented as a proper well-founded recursive function
 (was previously a dummy fun _ => 0 with all behavior axiomatized).
-Axioms: 3 (sieve_greedy, eggleton_erdos_selfridge, filtered_sum_implies_full)
+Axioms: 2 (eggleton_erdos_selfridge, filtered_sum_implies_full)
+Proved: sieve_greedy (from constructive def, with hactive guard for sentinel case)
 Note: sieve_conjectured_bound demoted from axiom to def — it's an open conjecture.
 -/
 
@@ -51,15 +52,57 @@ theorem sieve_initial (n : ℕ) (hn : n ≥ 2) :
     greedyCoprimeSieve n 0 = 0 ∧ greedyCoprimeSieve n 1 = 1 := by
   constructor <;> simp [greedyCoprimeSieve]
 
-/-- Each subsequent term is the least integer > previous term
-such that n - aₖ is coprime to all previous n - aᵢ.
-Provable from the construction when candidates are nonempty. -/
-axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2) :
+/-- Each subsequent term is the least integer > previous term such that
+n - aₖ is coprime to all previous n - aᵢ, and minimal with this property.
+Proved from the constructive sieve definition when the sieve is active
+(result ≤ n, not the n+1 sentinel).
+
+The original axiom (without `hactive`) was false for n=2, k=2:
+the sieve returns sentinel 3, but Coprime(2-3, 2-0) = Coprime(0,2) fails in ℕ. -/
+theorem sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2)
+    (hactive : greedyCoprimeSieve n k ≤ n) :
     let a := greedyCoprimeSieve n
     a k > a (k - 1) ∧
     (∀ i, i < k → Nat.Coprime (n - a k) (n - a i)) ∧
     (∀ m, a (k - 1) < m → m < a k →
-      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i))
+      ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i)) := by
+  obtain ⟨k', rfl⟩ : ∃ k', k = k' + 2 := ⟨k - 2, by omega⟩
+  simp only [show k' + 2 - 1 = k' + 1 from by omega]
+  dsimp only []  -- inline the let a := greedyCoprimeSieve n binding
+  -- Define candidate set matching the sieve definition body
+  set cands := (Finset.range (n + 1)).filter fun m =>
+    greedyCoprimeSieve n (k' + 1) < m ∧
+    ∀ i : Fin (k' + 2), Nat.Coprime (n - m) (n - greedyCoprimeSieve n i.val) with hcands
+  -- Candidates must be nonempty: else sieve returns n+1, contradicting hactive
+  have hne : cands.Nonempty := by
+    by_contra hempty
+    have hge : greedyCoprimeSieve n (k' + 2) = n + 1 := by
+      simp only [greedyCoprimeSieve, ← hcands, dif_neg hempty]
+    omega
+  -- The sieve value equals min' of candidates
+  have hval : greedyCoprimeSieve n (k' + 2) = cands.min' hne := by
+    simp only [greedyCoprimeSieve, ← hcands, dif_pos hne]
+  -- Extract properties from min' ∈ cands
+  have hmem := Finset.mem_filter.mp (Finset.min'_mem cands hne)
+  obtain ⟨_, hincr, hcop⟩ := hmem
+  refine ⟨?_, ?_, ?_⟩
+  -- (1) Strictly increasing: a(k'+2) > a(k'+1)
+  · rw [hval]; exact hincr
+  -- (2) Coprimality with all previous terms
+  · intro i hi; rw [hval]; exact hcop ⟨i, hi⟩
+  -- (3) Minimality: any m in (a(k'+1), a(k'+2)) fails coprimality
+  · intro m hm_gt hm_lt
+    have hm_not : m ∉ cands := by
+      intro hm
+      have := Finset.min'_le hne hm
+      rw [← hval] at this
+      omega
+    have : ∃ i : Fin (k' + 2),
+        ¬Nat.Coprime (n - m) (n - greedyCoprimeSieve n i.val) := by
+      by_contra hall; push_neg at hall
+      exact hm_not (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hm_gt, hall⟩)
+    obtain ⟨i, hi⟩ := this
+    exact ⟨i.val, i.isLt, hi⟩
 
 /-
 ## Section II: The Sequence Terminates Before n
