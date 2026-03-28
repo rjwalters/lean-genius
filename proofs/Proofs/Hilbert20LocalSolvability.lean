@@ -105,6 +105,14 @@ axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
 axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
     (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
 
+/-- **Bridge axiom:** The imaginary part of the principal symbol evaluated
+    along a bicharacteristic curve at time t equals Im(p_m) at some point
+    (x(t), ξ(t)) on the curve. This connects the opaque `imSymbolAlongCurve`
+    to the concrete `principalSymbol`. -/
+axiom imSymbolAlongCurve_eq {n m : ℕ} {P : LinearPDO n m}
+    (γ : BicharacteristicCurve P) (t : ℝ) :
+    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im
+
 /-- **Condition (Ψ) — Nirenberg-Treves (1963):**
     The imaginary part of p_m does not change sign from − to +
     along oriented bicharacteristic curves of Re(p_m).
@@ -154,11 +162,11 @@ theorem nirenberg_treves_characterization {n m : ℕ} (P : LinearPDO n m)
 theorem real_symbol_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
     (hreal : ∀ x ξ : Fin n → ℝ, (principalSymbol P x ξ).im = 0) :
     ConditionPsi P := by
-  intro γ t₁ t₂ _ hneg hpos
-  -- If Im p_m = 0 along all bicharacteristics, it cannot be negative
-  -- This requires connecting imSymbolAlongCurve to principalSymbol.im
-  -- which involves the axiom structure
-  sorry
+  intro γ t₁ t₂ _ hneg _
+  -- imSymbolAlongCurve γ t₁ < 0, but the principal symbol has zero imaginary part
+  obtain ⟨x, ξ, heq⟩ := imSymbolAlongCurve_eq γ t₁
+  -- imSymbolAlongCurve γ t₁ = (principalSymbol P x ξ).im = 0
+  linarith [hreal x ξ]
 
 /-- Elliptic operators are always locally solvable.
     An operator is elliptic if its principal symbol never vanishes
