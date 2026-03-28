@@ -20,9 +20,9 @@
     "erdosNumber": 234,
     "erdosUrl": "https://erdosproblems.com/234",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 363,
-    "assumptions": "4 axioms: gallagher_conditional (RH→exponential distribution), small_gaps_exist (GPY/Maynard-Tao), large_gaps_exist (FGKT/Maynard), average_normalized_gap (PNT). density_at_infinity was proved from average_normalized_gap via Markov's inequality.",
+    "axiomCount": 3,
+    "lineCount": 437,
+    "assumptions": "3 axioms: gallagher_conditional (RH→exponential distribution), large_gaps_exist (FGKT/Maynard), average_normalized_gap (PNT). Previously 5 axioms: density_at_infinity proved via Markov (session 2), small_gaps_exist proved via Cesàro contrapositive (session 3).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -112,8 +112,8 @@
       "title": "Partial Results on Gap Distribution",
       "startLine": 324,
       "endLine": 341,
-      "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT.",
-      "mathContext": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\$\\log n$$), (3) average $g_n/\\$\\log n$ \\to 1$ by PNT."
+      "summary": "Axiomatizes: (1) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (2) average $g_n/\\log n \\to 1$ by PNT. Then proves small_gaps_exist from average_normalized_gap via Cesàro contrapositive argument, reducing axiom count from 4 to 3.",
+      "mathContext": "Axiomatizes: (1) large_gaps_exist (FGKT: unbounded $g_n/\\$\\log n$$), (2) average $g_n/\\$\\log n$ \\to 1$ by PNT. Then proves small_gaps_exist from average_normalized_gap via Cesàro contrapositive argument, reducing axiom count from 4 to 3."
     },
     {
       "id": "cramer-properties",
@@ -175,9 +175,9 @@
       "Set"
     ],
     "namespace": null,
-    "lineCount": 363,
-    "axiomCount": 4,
-    "theoremCount": 20,
+    "lineCount": 437,
+    "axiomCount": 3,
+    "theoremCount": 21,
     "definitionCount": 8
   },
   "references": [

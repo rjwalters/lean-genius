@@ -321,11 +321,6 @@ theorem gallagher_implies_conjecture (hRH : RiemannHypothesis) :
 ## Section VII: Partial Results on Gap Distribution
 -/
 
-/-- Small gaps exist: for any ε > 0, infinitely many primes have
-g_n < (1 + ε) log p_n (toward the twin prime conjecture). -/
-axiom small_gaps_exist (ε : ℝ) (hε : ε > 0) :
-    {n : ℕ | (primeGap n : ℝ) < (1 + ε) * Real.log (nthPrime n)}.Infinite
-
 /-- Large gaps exist: g_n/log n can be made arbitrarily large.
 (Rankin, Pintz, Ford–Green–Konyagin–Tao, Maynard) -/
 axiom large_gaps_exist :
@@ -334,6 +329,106 @@ axiom large_gaps_exist :
 /-- The average normalized gap tends to 1 by the Prime Number Theorem. -/
 axiom average_normalized_gap :
     Tendsto (fun N => (∑ n ∈ Finset.range N, normalizedGap n) / N) atTop (nhds 1)
+
+/-
+## Section VII': Small gaps from average gap (axiom elimination)
+
+Reduces axiom count from 4 to 3 by deriving small_gaps_exist from
+average_normalized_gap. If only finitely many n had normalizedGap n < 1+ε,
+the Cesàro average would exceed 1, contradicting average_normalized_gap.
+-/
+
+/-- The nth prime is at least n (primes form an infinite, strictly increasing subset of ℕ). -/
+private lemma nthPrime_ge (n : ℕ) : n ≤ nthPrime n := by
+  induction n with
+  | zero => exact Nat.zero_le _
+  | succ k ih =>
+    have h_infinite : (setOf Nat.Prime).Infinite := by
+      intro hf; obtain ⟨N, hN⟩ := hf.bddAbove
+      obtain ⟨p, hp, hpp⟩ := Nat.exists_infinite_primes (N + 1)
+      have := hN hpp; omega
+    have : nthPrime k < nthPrime (k + 1) :=
+      Nat.nth_strictMono h_infinite (by omega : k < k + 1)
+    omega
+
+/-- If {n | normalizedGap n < c} were finite for c > 1, the Cesàro average
+of normalizedGap would exceed 1, contradicting average_normalized_gap. -/
+private lemma infinite_normalizedGap_lt (c : ℝ) (hc : c > 1) :
+    {n : ℕ | normalizedGap n < c}.Infinite := by
+  by_contra h_fin
+  rw [Set.not_infinite] at h_fin
+  obtain ⟨M, hM⟩ := h_fin.bddAbove
+  -- For n > M: normalizedGap n ≥ c
+  have h_ge : ∀ n : ℕ, M < n → normalizedGap n ≥ c := by
+    intro n hn; by_contra hlt; push_neg at hlt
+    exact absurd (hM hlt) (by omega)
+  -- Sum lower bound: for N > M+1, ∑ normalizedGap ≥ (N-(M+1))·c
+  have h_sum : ∀ N : ℕ, M + 1 < N →
+      (∑ n ∈ Finset.range N, normalizedGap n) ≥ ↑(N - (M + 1)) * c := by
+    intro N hN
+    calc ∑ n ∈ Finset.range N, normalizedGap n
+        ≥ ∑ n ∈ Finset.Ico (M + 1) N, normalizedGap n :=
+          Finset.sum_le_sum_of_subset_of_nonneg
+            (fun x hx => Finset.mem_range.mpr ((Finset.mem_Ico.mp hx).2))
+            (fun i _ _ => normalizedGap_nonneg i)
+      _ ≥ ∑ _n ∈ Finset.Ico (M + 1) N, c :=
+          Finset.sum_le_sum fun n hn =>
+            h_ge n (by have := (Finset.mem_Ico.mp hn).1; omega)
+      _ = ↑(N - (M + 1)) * c := by
+          rw [Finset.sum_const, Finset.card_Ico, nsmul_eq_mul]
+  -- avg → 1 by average_normalized_gap, so eventually avg < (c+1)/2
+  have h_mid : (1 : ℝ) < (c + 1) / 2 := by linarith
+  have h_upper := average_normalized_gap.eventually (Iio_mem_nhds h_mid)
+  -- Pick N satisfying: avg < (c+1)/2, N > M+1, and N large enough for sum bound
+  have h_big : ∀ᶠ N in atTop, M + 1 < (N : ℕ) :=
+    eventually_atTop.mpr ⟨M + 2, fun N hN => by omega⟩
+  obtain ⟨K, hK⟩ := exists_nat_gt (2 * c * (↑M + 1) / (c - 1))
+  have h_vbig : ∀ᶠ N in atTop, K ≤ (N : ℕ) :=
+    eventually_atTop.mpr ⟨K, fun N hN => hN⟩
+  obtain ⟨N, ⟨hN_avg, hNM⟩, hNK⟩ := ((h_upper.and h_big).and h_vbig).exists
+  -- Derive contradiction: sum bound + avg bound + N size bound are incompatible
+  have hN_pos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have hS := h_sum N hNM
+  have h_avg_lt : (∑ n ∈ Finset.range N, normalizedGap n) < (c + 1) / 2 * ↑N :=
+    (div_lt_iff hN_pos).mp hN_avg
+  -- (N-(M+1))*c ≤ ∑ < (c+1)/2 * N, so (N-(M+1))*c < (c+1)/2 * N
+  have hNM_cast : (↑(N - (M + 1)) : ℝ) = ↑N - ↑(M + 1) := Nat.cast_sub (by omega)
+  rw [hNM_cast] at hS
+  -- N*(c-1) > 2c*(M+1) from the Archimedean bound
+  have hN_ge_K : (↑N : ℝ) ≥ ↑K := Nat.cast_le.mpr hNK
+  have hN_real : (↑N : ℝ) > 2 * c * (↑M + 1) / (c - 1) := lt_of_lt_of_le hK hN_ge_K
+  have hN_cleared : 2 * c * (↑M + 1) < ↑N * (c - 1) := by
+    rwa [div_lt_iff (by linarith : (c : ℝ) - 1 > 0)] at hN_real
+  -- (↑N - ↑(M+1))*c ≤ ∑ < (c+1)/2*↑N, but ↑N*(c-1) > 2c*(↑M+1) makes this impossible
+  nlinarith
+
+/-- For n ≥ 2 with normalizedGap n < c (c > 0), primeGap n < c · log(p_n),
+since log(p_n) ≥ log(n) (the nth prime is at least n). -/
+private lemma primeGap_lt_of_normalizedGap_lt (n : ℕ) (c : ℝ) (hn : n ≥ 2) (hc : c > 0)
+    (h : normalizedGap n < c) :
+    (primeGap n : ℝ) < c * Real.log (nthPrime n) := by
+  have hlog_n_pos : Real.log (↑n) > 0 :=
+    Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  have hlog_ge : Real.log (↑(nthPrime n)) ≥ Real.log (↑n) :=
+    Real.log_le_log (by positivity) (Nat.cast_le.mpr (nthPrime_ge n))
+  unfold normalizedGap at h
+  simp only [show ¬(n ≤ 1) by omega, ↓reduceIte] at h
+  rw [div_lt_iff hlog_n_pos] at h
+  linarith [mul_le_mul_of_nonneg_left hlog_ge hc.le]
+
+/-- **small_gaps_exist** (previously axiom, now theorem):
+For any ε > 0, infinitely many n have g_n < (1+ε) · log(p_n).
+Derived from average_normalized_gap via Cesàro contrapositive. -/
+theorem small_gaps_exist (ε : ℝ) (hε : ε > 0) :
+    {n : ℕ | (primeGap n : ℝ) < (1 + ε) * Real.log (nthPrime n)}.Infinite := by
+  have h_inf := infinite_normalizedGap_lt (1 + ε) (by linarith)
+  -- Remove n ≤ 1 from the infinite set (they may not satisfy the log bound)
+  have h_inf2 : ({n : ℕ | normalizedGap n < 1 + ε} \ {n : ℕ | n < 2}).Infinite :=
+    h_inf.diff (Set.toFinite _)
+  apply h_inf2.mono
+  intro n hn
+  obtain ⟨hn_ng, hn_ge⟩ := Set.mem_diff.mp hn
+  exact primeGap_lt_of_normalizedGap_lt n (1 + ε) (by omega) (by linarith) hn_ng
 
 /-
 ## Section VIII: Additional Properties of Cramér's Model
