@@ -69,6 +69,10 @@ theorem tau_255 : tau 255 = 8 := by native_decide
 theorem tau_prime_eq_two {p : ℕ} (hp : Nat.Prime p) : tau p = 2 := by
   simp [tau, Nat.Prime.divisors hp]
 
+/-- τ(n) > 0 for n ≥ 1: every positive number has at least one divisor. -/
+theorem tau_pos {n : ℕ} (hn : 0 < n) : 0 < tau n :=
+  Finset.card_pos.mpr ⟨1, Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩⟩
+
 /-
 ## Part III: The Cumulative Sum f(n)
 -/
@@ -108,6 +112,15 @@ theorem f_initial_values :
     f 5 = 11 ∧ f 6 = 17 ∧ f 7 = 19 ∧ f 8 = 27 :=
   ⟨f_one, f_two, f_three, f_four, f_five, f_six, f_seven, f_eight⟩
 
+/-- Recurrence: f(n+1) = f(n) + τ(2^(n+1) - 1). -/
+theorem f_succ (n : ℕ) : f (n + 1) = f n + tau (2 ^ (n + 1) - 1) := by
+  unfold f
+  have h : Finset.Icc 1 (n + 1) = Finset.Icc 1 n ∪ {n + 1} := by
+    ext x; simp only [Finset.mem_Icc, Finset.mem_union, Finset.mem_singleton]; omega
+  have hdisj : Disjoint (Finset.Icc 1 n) {n + 1} := by
+    simp only [Finset.disjoint_singleton_right, Finset.mem_Icc, not_and, not_le]; intro; omega
+  rw [h, Finset.sum_union hdisj, Finset.sum_singleton]
+
 /-
 ## Part IV: Monotonicity
 -/
@@ -122,6 +135,19 @@ theorem f_mono {m n : ℕ} (h : m ≤ n) : f m ≤ f n := by
 theorem f_pos {n : ℕ} (hn : 1 ≤ n) : 0 < f n := by
   calc 0 < f 1 := by rw [f_one]; omega
     _ ≤ f n := f_mono hn
+
+/-- f(n) ≥ n for all n: each term τ(2^k - 1) ≥ 1. -/
+theorem f_ge (n : ℕ) : n ≤ f n := by
+  unfold f
+  calc n = (Finset.Icc 1 n).card := by simp [Finset.card_Icc]; omega
+    _ = ∑ _ ∈ Finset.Icc 1 n, 1 := by rw [Finset.sum_const]; simp
+    _ ≤ ∑ k ∈ Finset.Icc 1 n, tau (2 ^ k - 1) := by
+        apply Finset.sum_le_sum; intro k hk
+        have hk1 : 1 ≤ k := (Finset.mem_Icc.mp hk).1
+        have : 2 ≤ 2 ^ k := by
+          calc 2 = 2 ^ 1 := by norm_num
+            _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk1
+        exact tau_pos (by omega)
 
 /-
 ## Part V: The Ratio f(2n)/f(n)
