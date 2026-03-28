@@ -96,6 +96,41 @@ theorem zero_mem_diffSet (A : Set ℕ) (hA : Set.Infinite A) :
   exact hA ((hfin.image Prod.fst).subset
     (fun a ha => ⟨⟨a, a⟩, ⟨ha, ha, by push_cast; ring⟩, rfl⟩))
 
+/- ## Structural properties -/
+
+/-- Monotonicity: if `A ⊆ B` then `D(A) ⊆ D(B)`. -/
+theorem diffSet_mono (A B : Set ℕ) (h : A ⊆ B) : diffSet A ⊆ diffSet B := by
+  intro d hd
+  simp only [diffSet, Set.mem_setOf_eq] at hd ⊢
+  intro hfin
+  exact hd (hfin.subset (fun ⟨a₁, a₂⟩ ⟨ha₁, ha₂, hd⟩ => ⟨h ha₁, h ha₂, hd⟩))
+
+/-- A finite set has empty difference set: no difference can occur
+    infinitely often among finitely many pairs. -/
+theorem diffSet_finite_eq_empty (A : Set ℕ) (hA : A.Finite) : diffSet A = ∅ := by
+  ext d
+  simp only [diffSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  intro hinf
+  exact hinf ((hA.prod hA).subset (fun ⟨a₁, a₂⟩ ⟨ha₁, ha₂, _⟩ => ⟨ha₁, ha₂⟩))
+
+/-- If `A` is infinite, `D(A)` is nonempty (it contains zero). -/
+theorem diffSet_nonempty_of_infinite (A : Set ℕ) (hA : Set.Infinite A) :
+    (diffSet A).Nonempty :=
+  ⟨0, zero_mem_diffSet A hA⟩
+
+/-- Positive lower density implies positive upper density. -/
+theorem lower_density_implies_upper (A : Set ℕ) :
+    HasPositiveLowerDensity A → HasPositiveUpperDensity A := by
+  rintro ⟨δ, hδ, N₀, hN₀⟩
+  exact ⟨δ, hδ, fun M => ⟨max N₀ M, le_max_right _ _, hN₀ (max N₀ M) (le_max_left _ _)⟩⟩
+
+/-- Positive lower density implies `D(A)` has bounded gaps:
+    a corollary combining `lower_density_implies_upper` with the
+    Prikry–Tijdeman–Stewart result. -/
+theorem positive_lower_density_bounded_gaps (A : Set ℕ) :
+    HasPositiveLowerDensity A → HasBoundedGaps (diffSet A) :=
+  fun h => positive_density_bounded_gaps A (lower_density_implies_upper A h)
+
 /- ## Main problem -/
 
 /-- Erdős Problem 332: What conditions on `A ⊆ ℕ` are sufficient to

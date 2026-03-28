@@ -29,13 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 3A all deep/appropriate. 2T, 0S.",
+    "progressSummary": "PROGRESS: 5 new theorems proved (diffSet_mono, diffSet_finite_eq_empty, diffSet_nonempty_of_infinite, lower_density_implies_upper, positive_lower_density_bounded_gaps). 7T total, 3A (all deep), 0S.",
     "builtItems": [
-      "Assessment: all 3A appropriate and deep"
+      "Assessment: all 3A appropriate and deep",
+      "Proved diffSet_mono in Erdos332Problem.lean:102",
+      "Proved diffSet_finite_eq_empty in Erdos332Problem.lean:110",
+      "Proved diffSet_nonempty_of_infinite in Erdos332Problem.lean:117",
+      "Proved lower_density_implies_upper in Erdos332Problem.lean:122",
+      "Proved positive_lower_density_bounded_gaps in Erdos332Problem.lean:130"
     ],
     "insights": [
       "3 axioms all deep: positive_density_bounded_gaps (Furstenberg), positive_density_diffset_dense (additive combinatorics), diffSet_harmonic_diverges. None provable from Mathlib.",
-      "2 theorems proved, 0 sorries. File is clean but minimal."
+      "2 theorems proved, 0 sorries. File is clean but minimal.",
+      "Proved diffSet_mono: monotonicity A ⊆ B → D(A) ⊆ D(B) via subset transfer on infinite fibres",
+      "Proved diffSet_finite_eq_empty: D(A) = ∅ for finite A using Set.Finite.prod bound",
+      "Proved lower_density_implies_upper: liminf > 0 → limsup > 0, connects density definitions",
+      "Proved positive_lower_density_bounded_gaps: lower density suffices for bounded gaps (combines with Prikry axiom)",
+      "D(A) characterization is now sharp: ∅ iff A finite, nonempty iff A infinite, syndetic if density positive"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -62,8 +72,8 @@
     {
       "path": "Proofs/Erdos332Problem.lean",
       "filename": "Erdos332Problem.lean",
-      "lineCount": 119,
-      "theoremCount": 2,
+      "lineCount": 154,
+      "theoremCount": 7,
       "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
