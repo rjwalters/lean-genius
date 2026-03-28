@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/462",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "dateUpdated": "2026-02-14",
+    "dateUpdated": "2026-03-28",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -47,11 +47,12 @@
       "Separate compositeSum (filtering primes) and intervalSum (full interval) for distinct analytical roles",
       "Two-sided Θ-bound for compositeSum axiomatized with existential constants",
       "Formal statement of ErdosProblem462 with Nat floor for the interval endpoint",
-      "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites"
+      "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites",
+      "Structural lemmas: p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1, interval sum monotonicity/splitting/singleton"
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: compositeSum_asymptotic (deep analytic number theory: Θ(√x/(log x)²) two-sided bound for composite least-prime-factor sum, Alladi–Erdős 1977)",
-    "lineCount": 128
+    "lineCount": 175
   },
   "leanFile": {
     "path": "Proofs/Erdos462Problem.lean",
@@ -60,9 +61,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 128,
+    "lineCount": 175,
     "axiomCount": 1,
-    "theoremCount": 6,
+    "theoremCount": 15,
     "definitionCount": 4
   },
   "crossReferences": [
@@ -147,6 +148,13 @@
       "startLine": 76,
       "endLine": 100,
       "summary": "p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites — all proved from Mathlib"
+    },
+    {
+      "id": "structural-properties",
+      "title": "Additional Structural Properties",
+      "startLine": 130,
+      "endLine": 175,
+      "summary": "p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1 bound, interval sum monotonicity, singleton evaluation, and interval splitting — all proved from Mathlib"
     }
   ],
   "conclusion": {

@@ -157,8 +157,8 @@ theorem intervalSum_mono {a₁ b₁ a₂ b₂ : ℕ} (ha : a₂ ≤ a₁) (hb : 
   · intro n _ _
     exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
 
-/-- The interval sum over a single point `{n}` for `n ≥ 2`. -/
-theorem intervalSum_singleton (n : ℕ) (hn : 2 ≤ n) :
+/-- The interval sum over a single point `{n}`. -/
+theorem intervalSum_singleton (n : ℕ) :
     intervalSum n n = (leastPrimeFactor n : ℝ) / (n : ℝ) := by
   unfold intervalSum
   simp [Finset.Icc_self]
@@ -167,8 +167,9 @@ theorem intervalSum_singleton (n : ℕ) (hn : 2 ≤ n) :
 theorem intervalSum_split (a m b : ℕ) (ham : a ≤ m + 1) (hmb : m + 1 ≤ b) :
     intervalSum a b = intervalSum a m + intervalSum (m + 1) b := by
   unfold intervalSum
-  rw [← Finset.sum_union]
-  congr 1
-  ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
-  · rw [Finset.disjoint_left]
+  have hdisj : Disjoint (Finset.Icc a m) (Finset.Icc (m + 1) b) := by
+    rw [Finset.disjoint_left]
     intro n hn₁ hn₂; simp only [Finset.mem_Icc] at *; omega
+  have hunion : Finset.Icc a m ∪ Finset.Icc (m + 1) b = Finset.Icc a b := by
+    ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
+  rw [← hunion, Finset.sum_union hdisj]
