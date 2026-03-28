@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved 3 axioms, removed 2 incorrect. Axioms: 9→4. Latest: removed condition_iff_no_large_prime (backward direction disproved by counterexample [24,28]).",
+    "progressSummary": "PROGRESS: Eliminated cramer_implies_q1 axiom (4A→3A). Proved as theorem: under Cramér, the condition forces [u,v] within a single prime gap of O((log v)²) < v^ε. 3 sorries on standard growth rate facts.",
     "builtItems": [
       "Proved prodInterval_factorial by induction with Finset.prod_insert",
       "Fixed largestPrimeDivisor: List.foldl max 0 replaces removed List.maximum?",
@@ -38,7 +38,8 @@
       "Proved largestPrimeDivisor_dvd via foldl_max_mem_primeFactorsList + Nat.dvd_of_mem_primeFactorsList",
       "Proved largestPrimeDivisor_prime via foldl_max_mem_primeFactorsList + Nat.prime_of_mem_primeFactorsList",
       "Proved prime_le_largestPrimeDivisor via Nat.mem_primeFactorsList + foldl_max_ge_of_mem",
-      "Helper lemmas: foldl_max_ge_init, foldl_max_ge_of_mem, foldl_max_eq_init_or_mem, primeFactorsList_ne_nil, foldl_max_mem_primeFactorsList"
+      "Helper lemmas: foldl_max_ge_init, foldl_max_ge_of_mem, foldl_max_eq_init_or_mem, primeFactorsList_ne_nil, foldl_max_mem_primeFactorsList",
+      "cramer_implies_q1 (THEOREM): eliminated axiom — Cramér gap bound + no_prime_in_upper_half gives v-u < v^ε"
     ],
     "insights": [
       "12 axioms remain (was 13). prodInterval_factorial proved by induction",
@@ -47,7 +48,9 @@
       "Pre-existing API breakage: List.maximum? and Nat.nth removed from Lean/Mathlib",
       "foldl max 0 of primeFactorsList is a member when n > 1: proved via induction (foldl_max_eq_init_or_mem) + primeFactorsList nonempty + all elements ≥ 2",
       "exponentInProduct_sum axiom has pre-existing bug: wrong when u=0 (product is 0 but sum of valuations is positive)",
-      "exp_ge_two_needs_square axiom is also incorrect: exponent ≥ 2 can come from two separate multiples of p, not requiring p²|k"
+      "exp_ge_two_needs_square axiom is also incorrect: exponent ≥ 2 can come from two separate multiples of p, not requiring p²|k",
+      "cramer_implies_q1 is provable: condition forces u > √v (else gap too long), then Cramér gives v-u ≤ C(log v)² = o(v^ε)",
+      "3 sorries remain: (1) C(log v)² < v^ε for large v, (2) v - √v > C(log v)² for large v, (3) case split + Cramér gap arithmetic"
     ],
     "mathlibGaps": [],
     "nextSteps": [
