@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T00:04:50.018Z",
-    "iteration": 2,
-    "focus": "Session 2: Assessed axioms — all 4 are deep results. No axiom elimination possible.",
+    "iteration": 3,
+    "focus": "Session 3: Removed unused axiom, proved density_additive_comm",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,19 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Removed unused plunnecke_ruzsa_lower axiom (4→3A). Proved density_additive_comm (DensityAdditive is symmetric).",
     "builtItems": [
       "density_nonneg (PROVED) - ge_of_tendsto + div_nonneg",
       "density_le_one (PROVED) - le_of_tendsto + countingFn_le",
       "additive_sum_le_one (PROVED) - from density_le_one + DensityAdditive",
-      "countingFn_le (helper) - Set.ncard_le_ncard + Nat.card_Icc"
+      "countingFn_le (helper) - Set.ncard_le_ncard + Nat.card_Icc",
+      "density_additive_comm (PROVED) - DensityAdditive is symmetric via Sumset_comm"
     ],
     "insights": [
       "limUnder requires Mathlib.Topology.Basic import (not in original file)",
       "countingFn A N ≤ N: A∩Icc 1 N ⊆ Icc 1 N, ncard(Icc 1 N) = N",
       "density_nonneg needs DensityExists assumption for proper statement (limUnder of non-convergent filter is arbitrary)",
       "additive_sum_le_one follows trivially from density_le_one applied to Sumset A B",
-      "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Plünnecke-Ruzsa. None are routine Mathlib proofs."
+      "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Plünnecke-Ruzsa. None are routine Mathlib proofs.",
+      "plunnecke_ruzsa_lower axiom was unused by any theorem - removed (4→3 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,9 +70,9 @@
     {
       "path": "Proofs/Erdos335Problem.lean",
       "filename": "Erdos335Problem.lean",
-      "lineCount": 181,
-      "theoremCount": 8,
-      "axiomCount": 4,
+      "lineCount": 180,
+      "theoremCount": 9,
+      "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,

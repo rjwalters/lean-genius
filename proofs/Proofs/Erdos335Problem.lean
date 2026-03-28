@@ -134,14 +134,8 @@ theorem additive_sum_le_one (A B : Set ℕ) :
   rw [← heq]
   exact density_le_one (Sumset A B) hAB_exists
 
-/-- **Plünnecke–Ruzsa lower bound** (simplified):
-    d(A + B) ≥ min(d(A) + d(B), 1) for sets with density. -/
-axiom plunnecke_ruzsa_lower (A B : Set ℕ)
-    (hA : DensityExists A) (hB : DensityExists B)
-    (hAB : DensityExists (Sumset A B)) :
-  asympDensity (Sumset A B) ≥ min (asympDensity A + asympDensity B) 1
-
-/-- Density additivity implies the Plünnecke–Ruzsa bound is tight. -/
+/-- Density additivity implies the Plünnecke–Ruzsa bound is tight:
+    d(A + B) = min(d(A) + d(B), 1). -/
 theorem additive_implies_tight (A B : Set ℕ) (h : DensityAdditive A B) :
     asympDensity (Sumset A B) = min (asympDensity A + asympDensity B) 1 := by
   have hle := additive_sum_le_one A B h
@@ -171,6 +165,12 @@ theorem Sumset_comm (A B : Set ℕ) : Sumset A B = Sumset B A := by
     exact ⟨b, hb, a, ha, by omega⟩
   · rintro ⟨b, hb, a, ha, hn⟩
     exact ⟨a, ha, b, hb, by omega⟩
+
+/-- Density additivity is symmetric: if d(A+B) = d(A) + d(B), then d(B+A) = d(B) + d(A). -/
+theorem density_additive_comm (A B : Set ℕ) (h : DensityAdditive A B) :
+    DensityAdditive B A := by
+  obtain ⟨hA, hB, hAB, heq⟩ := h
+  exact ⟨hB, hA, Sumset_comm B A ▸ hAB, by rw [Sumset_comm B A]; linarith⟩
 
 /-- Density additivity with the Plünnecke–Ruzsa bound: additive pairs are
     extremal (they achieve the minimum possible sumset density). -/
