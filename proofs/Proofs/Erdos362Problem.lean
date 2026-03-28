@@ -189,7 +189,8 @@ the concentration bound follows from saddle point analysis.
 -/
 
 /-- The generating function for subset sums.
-    The coefficient of z^t in this product equals countSubsetsWithSum A t. -/
+    For z ≠ 0, the coefficient of z^t in this product equals countSubsetsWithSum A t.
+    Uses zpow (integer exponentiation) since elements of A may be negative. -/
 noncomputable def subsetSumGF (A : Finset ℤ) (z : ℂ) : ℂ :=
   ∏ a ∈ A, (1 + z ^ a)
 
