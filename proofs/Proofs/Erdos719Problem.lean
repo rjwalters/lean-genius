@@ -193,6 +193,37 @@ theorem decomp_piece_card_le {V : Type*} [DecidableEq V] [Fintype V] (r : ℕ)
     subst this
     rw [completeClique_card, hcard, Nat.choose_succ_self_right]
 
+-- ## Edge Counting and Turán Bound
+
+/-- Any r-uniform hypergraph on Fin n has at most C(n, r) edges,
+    since each edge is an r-element subset of an n-element set. -/
+theorem edges_le_choose (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
+    H.edges.card ≤ Nat.choose n r := by
+  calc H.edges.card
+      ≤ ((Finset.univ : Finset (Fin n)).powersetCard r).card := by
+        apply Finset.card_le_card
+        intro e he
+        rw [Finset.mem_powersetCard]
+        exact ⟨Finset.subset_univ e, H.uniform e he⟩
+    _ = Nat.choose n r := by
+        rw [Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+
+/-- The set of edge counts of clique-free r-uniform hypergraphs on Fin n
+    is bounded above by C(n, r). -/
+theorem cliqueFree_edgeCounts_bddAbove (n r : ℕ) :
+    BddAbove {m : ℕ | ∃ (H : RUniformHypergraph (Fin n) r),
+      IsCliqueFree r H ∧ H.edges.card = m} := by
+  refine ⟨Nat.choose n r, fun m hm => ?_⟩
+  obtain ⟨G, -, rfl⟩ := hm
+  exact edges_le_choose n r G
+
+/-- Any clique-free r-uniform hypergraph has at most turanHypergraph n r edges.
+    This is the fundamental property of the Turán number as a supremum. -/
+theorem cliqueFree_le_turan (n r : ℕ) (H : RUniformHypergraph (Fin n) r)
+    (hcf : IsCliqueFree r H) :
+    H.edges.card ≤ turanHypergraph n r :=
+  le_csSup (cliqueFree_edgeCounts_bddAbove n r) ⟨H, hcf, rfl⟩
+
 -- ## Empty and Trivial Cases
 
 /-- The empty hypergraph trivially satisfies the Erdős–Sauer conjecture. -/

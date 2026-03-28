@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 structural theorems connecting hypergraph clique definitions to Mathlib. Key: completeClique = powersetCard, piece cardinality bound. Identified path to eliminate turan_graph axiom via SimpleGraph bridge.",
+    "progressSummary": "PROGRESS: 11 proved theorems (0 sorries). Key results: clique cardinality via powersetCard, decomposition piece bound, universal edge bound C(n,r), and cliqueFree_le_turan connecting IsCliqueFree to turanHypergraph sSup. Next: bridge to Mathlib SimpleGraph for turan_graph axiom elimination.",
     "builtItems": [
       "completeClique_eq_powersetCard: bridge to Mathlib powersetCard",
       "completeClique_card: |completeClique r S| = C(|S|, r)",
@@ -38,13 +38,19 @@
       "decomp_piece_card_le: piece cardinality bound",
       "completeClique_subset: edges are subsets of vertex set",
       "completeClique_uniform: edges have exactly r elements",
-      "piecesEdgeDisjoint_comm: symmetry of edge-disjointness"
+      "piecesEdgeDisjoint_comm: symmetry of edge-disjointness",
+      "edges_le_choose: universal edge count bound C(n,r)",
+      "cliqueFree_edgeCounts_bddAbove: BddAbove for the Turán sSup",
+      "cliqueFree_le_turan: clique-free → edges ≤ turanHypergraph n r"
     ],
     "insights": [
       "completeClique r S equals Finset.powersetCard r S — bridges to Mathlib combinatorial API",
       "Each decomposition piece has at most r+1 edges (single edges: 1, full cliques: r+1)",
       "Mathlib has full Turán theorem (SimpleGraph.Extremal.Turan) but bridging RUniformHypergraph to SimpleGraph for r=2 is non-trivial",
-      "turan_graph axiom could be proved by building RUniformHypergraph-to-SimpleGraph bridge and using card_edgeFinset_turanGraph"
+      "turan_graph axiom could be proved by building RUniformHypergraph-to-SimpleGraph bridge and using card_edgeFinset_turanGraph",
+      "edges_le_choose: any r-uniform hypergraph on Fin n has ≤ C(n,r) edges, since edges ⊆ univ.powersetCard r",
+      "cliqueFree_le_turan: fundamental Turán bound from sSup definition, using BddAbove + le_csSup on ℕ",
+      "ℕ has ConditionallyCompleteLinearOrderBot, so sSup and le_csSup work for the Turán number definition"
     ],
     "mathlibGaps": [
       "No Mathlib API for r-uniform hypergraphs (only SimpleGraph)",
@@ -71,15 +77,15 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:21:40.197Z",
-  "lastUpdate": "2026-03-27T00:00:00.000Z",
+  "lastUpdate": "2026-03-27T01:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos719Problem.lean",
       "filename": "Erdos719Problem.lean",
-      "lineCount": 259,
-      "theoremCount": 12,
+      "lineCount": 290,
+      "theoremCount": 15,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
