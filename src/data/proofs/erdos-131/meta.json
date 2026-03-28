@@ -7,7 +7,7 @@
     "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/131",
     "date": "1975",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos131Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "non-averaging-sets",
       "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 131,
     "erdosUrl": "https://erdosproblems.com/131",
     "erdosProblemStatus": "open",
@@ -65,9 +65,9 @@
       "erdos_131_open_question: formal statement of remaining open problem"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 0,
-    "lineCount": 477,
-    "assumptions": "5 sorry(s). No axioms.",
+    "axiomCount": 4,
+    "lineCount": 565,
+    "assumptions": "0 sorries. 4 axiom declarations: elrss_upper_bound (ELRSS 1999 upper bound), pham_zakharov_upper_bound (Pham-Zakharov 2024 upper bound), csaba_lower_bound (Csaba polynomial lower bound), straus_lower_bound (Straus subexponential lower bound).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -173,9 +173,9 @@
       "Classical"
     ],
     "namespace": "Erdos131",
-    "lineCount": 569,
-    "axiomCount": 0,
-    "theoremCount": 29,
+    "lineCount": 565,
+    "axiomCount": 4,
+    "theoremCount": 26,
     "definitionCount": 6
   },
   "crossReferences": [
