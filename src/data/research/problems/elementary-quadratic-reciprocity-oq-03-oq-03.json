@@ -1,0 +1,21 @@
+{
+  "slug": "elementary-quadratic-reciprocity-oq-03-oq-03",
+  "title": "Jacobi-Hilbert symbol connection and local-global principles",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-28T20:20:00Z", "iteration": 1,
+    "focus": "Survey with axiomatized Hilbert symbol.", "blockers": ["p-adic infrastructure for full Hilbert symbol formalization"],
+    "nextAction": "Await Mathlib class field theory", "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "SURVEY: Proved Legendre-QR connections from Mathlib (legendreSym.quadratic_reciprocity, legendreSym.at_neg_one). Axiomatized Hilbert symbol and product formula. Documented the Jacobi→Hilbert→CFT bridge.",
+    "builtItems": ["legendre_characterizes_qr: Legendre symbol ↔ quadratic residuacity", "qr_legendre: QR in Legendre form (from Mathlib)", "first_supplement: (-1/p) formula", "HilbertSymbol axiom + product formula axiom"],
+    "insights": ["Mathlib has full QR for Legendre and Jacobi symbols", "Hilbert symbols require p-adic numbers (Padic in Mathlib) but the symbol itself is not yet defined", "The product formula ∏(a,b)_v = 1 IS quadratic reciprocity in local-global form", "Full class field theory (Artin reciprocity) is not in Mathlib"],
+    "mathlibGaps": ["Hilbert symbol definition over Q_p", "Product formula for Hilbert symbols", "Local-global principle for quadratic forms"],
+    "nextSteps": ["When Mathlib adds Hilbert symbols, convert axioms to theorems", "Formalize Hilbert symbol over Q_p using Padic"]
+  },
+  "tags": ["number-theory", "quadratic-reciprocity", "hilbert-symbol", "class-field-theory", "research", "seeker-selected"],
+  "relatedProofs": ["elementary-quadratic-reciprocity", "elementary-quadratic-reciprocity-oq-03"],
+  "started": "2026-03-28T20:15:00Z", "lastUpdate": "2026-03-28T20:25:00Z",
+  "significance": 7, "tractability": 5
+}
