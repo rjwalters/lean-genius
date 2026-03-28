@@ -41,7 +41,7 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 SESSION_NAME="tester-agent"
 LOG_FILE="$LOGS_DIR/tester-agent.log"
-INTERVAL="${TESTER_INTERVAL:-30}"
+INTERVAL="${TESTER_INTERVAL:-60}"
 COUNT="${TESTER_COUNT:-20}"
 BASE_URL="${TESTER_URL:-https://leangenius.org}"
 
