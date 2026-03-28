@@ -15947,8 +15947,9 @@ theorem orbit_grows_with_N (N₁ N₂ V : ℕ) (hN : N₂ > N₁) (hN1 : N₁ �
     gaugeOrbitDim N₂ V > gaugeOrbitDim N₁ V := by
   unfold gaugeOrbitDim
   apply Nat.mul_lt_mul_of_pos_right _ hV
-  have : N₁ ^ 2 < N₂ ^ 2 := Nat.pow_lt_pow_left hN (by norm_num)
-  sorry
+  have h_sq : N₁ ^ 2 < N₂ ^ 2 := Nat.pow_lt_pow_left hN (by norm_num)
+  have h_ge : N₁ ^ 2 ≥ 4 := by nlinarith
+  omega
 
 /-- A gauge-variant observable has ⟨O⟩ = 0 in finite volume.
     We model this as: if an observable transforms non-trivially
@@ -16767,7 +16768,13 @@ theorem lorentz_4d : lorentzDim 4 = 6 := by unfold lorentzDim; norm_num
 
 /-- Translation generators: d (one per dimension). -/
 theorem translations (d : ℕ) : poincareDim d = lorentzDim d + d := by
-  sorry -- Nat division: d*(d+1)/2 = d*(d-1)/2 + d
+  unfold poincareDim lorentzDim
+  cases d with
+  | zero => simp
+  | succ n =>
+    simp only [Nat.succ_sub_one]
+    have h : (n + 1) * (n + 2) = (n + 1) * n + (n + 1) * 2 := by ring
+    rw [h, Nat.add_mul_div_right _ _ (by omega : (0 : ℕ) < 2)]
 
 /-- Internal symmetry group dimension for SU(N): N²-1. -/
 def internalDim (N : ℕ) : ℕ := N ^ 2 - 1
@@ -16812,12 +16819,18 @@ theorem conformal_4d : conformalDim 4 = 15 := by unfold conformalDim; norm_num
 /-- Conformal > Poincaré: mass gap forbids this extension. -/
 theorem conformal_larger (d : ℕ) (hd : d ≥ 3) :
     conformalDim d > poincareDim d := by
-  sorry -- Nat division arithmetic: (d+1)(d+2)/2 > d(d+1)/2
+  unfold conformalDim poincareDim
+  have h1 : (d + 1) * (d + 2) = d * (d + 1) + (d + 1) * 2 := by ring
+  rw [h1, Nat.add_mul_div_right _ _ (by omega : (0 : ℕ) < 2)]
+  omega
 
 /-- The extra conformal generators: d+1 (dilatation + d special conformal). -/
 theorem conformal_extra (d : ℕ) (hd : d ≥ 3) :
     conformalDim d - poincareDim d = d + 1 := by
-  sorry -- Nat division arithmetic: (d+1)(d+2)/2 - d(d+1)/2 = d+1
+  unfold conformalDim poincareDim
+  have h1 : (d + 1) * (d + 2) = d * (d + 1) + (d + 1) * 2 := by ring
+  rw [h1, Nat.add_mul_div_right _ _ (by omega : (0 : ℕ) < 2)]
+  omega
 
 /-- In 4D: 5 extra conformal generators (1 dilatation + 4 SCT). -/
 theorem conformal_extra_4d : conformalDim 4 - poincareDim 4 = 5 := by
@@ -22215,7 +22228,9 @@ theorem steps_from_100gev_to_300mev :
     σ(u, a/L) = σ_cont(u) + c(u)·(a/L)² + O((a/L)⁴). -/
 theorem step_scaling_continuum (sigma_cont c a_over_L : ℝ)
     (ha : a_over_L > 0) (hc : c > 0) :
-    sigma_cont + c * a_over_L ^ 2 > sigma_cont := by sorry -- MATHLIB-DRIFT
+    sigma_cont + c * a_over_L ^ 2 > sigma_cont := by
+      have : c * a_over_L ^ 2 > 0 := mul_pos hc (sq_pos_of_pos ha)
+      linarith
 
 /-- Walking behavior: if the coupling runs slowly (near a fixed point),
     σ(u) ≈ u (walking) for an extended range. This does NOT happen
@@ -24290,7 +24305,7 @@ theorem rgz_uv_behavior (r : RGZParams) (p_sq : ℝ) (hp : p_sq > 0) :
   · linarith [r.hM]
   · positivity
   · have : (r.M_sq + r.m_sq) * p_sq + r.lambda4 > 0 := by
-      have : (r.M_sq + r.m_sq) * p_sq ≥ 0 := by sorry
+      have : (r.M_sq + r.m_sq) * p_sq ≥ 0 := mul_nonneg (by linarith [r.hM, r.hm]) (le_of_lt hp)
       linarith [r.hL]
     linarith [this]
 
@@ -24385,7 +24400,11 @@ theorem horizon_condition_dof (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
     -- d=4, N=3: 4·8 = 32 gluon DOF (before gauge fixing)
     -- d=4, N=2: 4·3 = 12 gluon DOF
     -- d=3, N=2: 3·3 = 9 gluon DOF
-    d * (N ^ 2 - 1) ≥ 9 := by sorry -- Nat: d≥3, N≥2 → d*(N²-1) ≥ 3*3 = 9
+    d * (N ^ 2 - 1) ≥ 9 := by
+      have hN2 : N ^ 2 ≥ 4 := by nlinarith
+      have hN2m : N ^ 2 - 1 ≥ 3 := by omega
+      calc d * (N ^ 2 - 1) ≥ 3 * 3 := Nat.mul_le_mul hd hN2m
+        _ = 9 := by norm_num
 
 theorem part_cxxxvii_summary : (10 : ℕ) = 10 := rfl
 
@@ -24659,14 +24678,17 @@ noncomputable def softWallMassSq (p : SoftWallParams) (n : ℕ) : ℝ :=
 theorem softWallMassSq_pos (p : SoftWallParams) (n : ℕ) :
     softWallMassSq p n > 0 := by
   unfold softWallMassSq
-  sorry
+  apply mul_pos (mul_pos (by norm_num : (4 : ℝ) > 0) (sq_pos_of_pos p.hc))
+  positivity
 
 /-- Soft-wall masses increase with excitation number. -/
 theorem softWallMassSq_monotone (p : SoftWallParams) (n : ℕ) :
     softWallMassSq p n < softWallMassSq p (n + 1) := by
   unfold softWallMassSq
-  have hc : p.c ^ 2 > 0 := by sorry
-  sorry
+  have hc : p.c ^ 2 > 0 := sq_pos_of_pos p.hc
+  have h4c : 4 * p.c ^ 2 > 0 := by linarith
+  have : (↑n : ℝ) + 1 < ↑(n + 1) + 1 := by push_cast; linarith
+  exact mul_lt_mul_of_pos_left this h4c
 
 /-- Klebanov-Strassler geometry: the warped deformed conifold.
     ds² = h(τ)^{-1/2} dx² + h(τ)^{1/2} ds₆²
@@ -24806,7 +24828,7 @@ noncomputable def mpsCorrelationLength (p : MPSParams) : ℝ :=
 /-- MPS correlation length is positive (eigenvalue ratio < 1 → log < 0 → 1/|log| > 0). -/
 theorem mpsCorrelationLength_pos (p : MPSParams) : mpsCorrelationLength p > 0 := by
   unfold mpsCorrelationLength
-  sorry -- MATHLIB-DRIFT: div_neg_of_neg_of_pos broke
+  exact div_pos_of_neg_of_neg (by norm_num) (Real.log_neg p.hratio p.hratio_lt)
 
 /-- The mass gap from MPS correlation length: Δ = v/ξ where v is the velocity. -/
 theorem mps_mass_gap_pos (p : MPSParams) (v : ℝ) (hv : v > 0) :
@@ -24991,7 +25013,9 @@ theorem ym_anomaly_free (N : ℕ) (hN : N ≥ 2) :
     -- Therefore: quantum master equation solvable
     -- Therefore: BRST cohomology well-defined
     -- Therefore: mass gap is a physical, gauge-invariant observable
-    N ^ 2 - 1 ≥ 3 := by sorry -- Nat: N≥2 → N²-1 ≥ 3
+    N ^ 2 - 1 ≥ 3 := by
+      have : N ^ 2 ≥ 4 := by nlinarith
+      omega
 
 /-- The Zinn-Justin equation: the effective action Γ satisfies
     (Γ, Γ) = 0 (at the quantum level, after integrating out fluctuations).
