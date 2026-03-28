@@ -38,7 +38,8 @@
     "insights": [
       "6 axioms: gEps (opaque function) + 5 properties. All appropriate.",
       "main_asymptotic axiom is potentially provable from trivial_lower_bound + erdos_hall_upper via log(log(log N))/log(log N) → 0, but requires complex limit manipulation",
-      "OQ01 sorries are deep: Fourier character expansion + error bound assembly over ZMod p"
+      "OQ01 sorries are deep: Fourier character expansion + error bound assembly over ZMod p",
+      "main_asymptotic proof strategy confirmed: lower bound gEps ≥ logb 2 N (trivial), upper bound gEps ≤ (1+error)*logb 2 N (Erdős-Hall), squeeze gives ratio → 1. Key step: log(x)/x → 0 as x → ∞, applied with x = log(log N). Needs Mathlib Filter.Tendsto for iterated logs."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
