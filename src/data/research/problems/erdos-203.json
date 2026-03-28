@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T16:01:50.837Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 2D covering system definitions and 7 new theorems. 32T 2A 0S.",
+    "progressSummary": "PROGRESS: Removed unused covering_implies_sierpinski axiom (2→1A). 32T 1A 0S.",
     "builtItems": [
       "def Covers2D, IsCoveringSystem2D",
       "theorems twentyfive_fails through thirtyseven_fails",
@@ -39,7 +39,8 @@
       "Both axioms (selfridge_sierpinski, covering_implies_sierpinski) are established results not in Mathlib",
       "Added 2D covering system definition (IsCoveringSystem2D, Covers2D)",
       "Added 5 more small case eliminations (m=25,29,31,35,37), now 13 total",
-      "Added candidate monotonicity lemmas (candidate_mono_k, candidate_mono_l)"
+      "Added candidate monotonicity lemmas (candidate_mono_k, candidate_mono_l)",
+      "covering_implies_sierpinski axiom was unused — removed (2→1A)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,9 +67,9 @@
     {
       "path": "Proofs/Erdos203Problem.lean",
       "filename": "Erdos203Problem.lean",
-      "lineCount": 304,
+      "lineCount": 299,
       "theoremCount": 32,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
