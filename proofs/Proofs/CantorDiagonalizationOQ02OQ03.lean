@@ -1,132 +1,142 @@
+/-
+Cantor Diagonal Argument Generalized to Regular Cardinals (OQ-02-OQ-03)
+
+The parent formalization (OQ-02) proves the diagonal argument for countable ordinals
+using ω₁ and the regularity of ℵ₁. Here we generalize: for ANY regular uncountable
+cardinal κ, the ordinals below κ.ord cannot be enumerated by a set of size < κ.
+
+The key insight: regularity of κ means cof(κ.ord) = κ, so any family of ordinals
+below κ.ord indexed by a set of size < κ has supremum still below κ.ord.
+This is the abstract form of the Cantor diagonal argument.
+
+Main results:
+1. `regular_sup_bounded`: for regular κ, sup of < κ-many ordinals below κ.ord is bounded
+2. `card_succ_lt_of_lt_infinite`: μ < κ implies μ + 1 < κ for infinite κ
+3. `regular_diagonal`: for any < κ-sized family below κ.ord, there's an ordinal above all
+4. `regular_no_surjection`: no < κ-sized family below κ.ord can surject onto ordinals below κ.ord
+
+All results proved from Mathlib with 0 axioms and 0 sorries.
+
+References:
+- Hausdorff (1908): Regular and singular cardinals
+- Mathlib: SetTheory.Cardinal.Cofinality
+-/
+
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Ordinal.Basic
 import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.Tactic
 
-/-
-# Diagonal Argument Generalized to Regular Cardinals (OQ-02 → OQ-03)
-
-## Research Question
-
-Does the Cantor diagonal argument for countable ordinals (OQ-02) generalize to
-arbitrary regular cardinals?
-
-## Answer: Yes
-
-For any regular cardinal κ, the "diagonal step" generalizes perfectly:
-- Let S be a set of ordinals below κ.ord with #S < κ
-- Then sup(S) < κ.ord (by regularity/cofinality)
-- So S fails to cover all ordinals below κ.ord
-
-This is the defining property of regular cardinals: cf(κ) = κ means
-the ordinal κ.ord cannot be reached as a supremum of fewer than κ ordinals.
-
-The case κ = ℵ₁ recovers OQ-02 (countable ordinals have cardinality ℵ₁).
-
-## Key Mathlib Results Used
-
-- `Cardinal.IsRegular`: κ is regular iff ℵ₀ ≤ κ and cf(κ.ord) = κ
-- `Cardinal.sup_lt_ord_of_isRegular`: the generalized diagonal step
-- `Cardinal.lsub_lt_ord_of_isRegular`: strict sup version
-- `Ordinal.lt_lsub`: each element is strictly below lsub
--/
+namespace CantorDiagonalizationOQ02OQ03
 
 open Cardinal Ordinal
 
-namespace CantorDiagRegular
-
 -- ══════════════════════════════════════════════════════════════════
--- § 1: The Generalized Diagonal Step
+-- § Part I: Regular Cardinals — Bounded Suprema
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **The generalized diagonal step**: For a regular cardinal κ, any family
-    of fewer than κ ordinals below κ.ord has its supremum still below κ.ord.
+/-- For a regular cardinal κ, any family of ordinals below κ.ord
+    indexed by a type of size < κ has supremum still below κ.ord.
 
-    This directly generalizes the countable ordinal diagonal argument:
-    "a countable union of countable ordinals is countable."
-    For regular κ: "a <κ-sized union of <κ.ord ordinals stays below κ.ord." -/
-theorem diagonal_step {κ : Cardinal} (hκ : κ.IsRegular)
-    {ι : Type*} (hι : #ι < κ)
-    (f : ι → Ordinal) (hf : ∀ i, f i < κ.ord) :
-    Ordinal.sup f < κ.ord :=
-  sup_lt_ord_of_isRegular hκ hι hf
+    This is the abstract engine behind all Cantor-type diagonal arguments:
+    regular cardinals cannot be "reached from below" by fewer elements. -/
+theorem regular_sup_bounded {κ : Cardinal.{u}} (hκ : κ.IsRegular)
+    {ι : Type u} (hι : #ι < κ) (f : ι → Ordinal.{u})
+    (hf : ∀ i, f i < κ.ord) : iSup f < κ.ord :=
+  Ordinal.iSup_lt_ord (hκ.cof_eq ▸ hι) hf
 
 -- ══════════════════════════════════════════════════════════════════
--- § 2: No Small Enumeration Suffices
+-- § Part II: Successor Cardinals Below Infinite Cardinals
 -- ══════════════════════════════════════════════════════════════════
 
-/-- For regular κ, no function from a <κ-sized index set can cover all
-    ordinals below κ.ord. For every such function f, there exists β < κ.ord
-    strictly above every f(i).
+/-- For infinite κ, μ < κ implies μ + 1 < κ.
+    Either μ is infinite (so μ + 1 = μ < κ) or finite (so μ + 1 < ℵ₀ ≤ κ). -/
+theorem card_succ_lt_of_lt_infinite {κ : Cardinal.{u}} (hκ_inf : ℵ₀ ≤ κ)
+    {μ : Cardinal.{u}} (hμ : μ < κ) : μ + 1 < κ := by
+  by_cases h : ℵ₀ ≤ μ
+  · rwa [Cardinal.add_one_of_aleph0_le h]
+  · push_neg at h
+    exact lt_of_lt_of_le (Cardinal.add_lt_aleph0 h Cardinal.one_lt_aleph0) hκ_inf
 
-    Uses `lsub` (strict sup = sup of successors) as the witness:
-    lsub f > f(i) for all i, and lsub f < κ.ord by regularity. -/
-theorem no_small_surjection {κ : Cardinal} (hκ : κ.IsRegular)
-    {ι : Type*} (hι : #ι < κ)
-    (f : ι → Ordinal) (hf : ∀ i, f i < κ.ord) :
-    ∃ β : Ordinal, β < κ.ord ∧ ∀ i, f i < β :=
-  ⟨Ordinal.lsub f, lsub_lt_ord_of_isRegular hκ hι hf,
-    fun i => Ordinal.lt_lsub f i⟩
-
--- ══════════════════════════════════════════════════════════════════
--- § 3: Recovering OQ-02 as a Special Case
--- ══════════════════════════════════════════════════════════════════
-
-/-- ℵ₁ is regular. -/
-theorem aleph_one_regular : (Cardinal.aleph 1).IsRegular :=
-  Cardinal.isRegular_aleph_one
-
-/-- Special case κ = ℵ₁: a countable set of countable ordinals has
-    countable supremum. This is the diagonal step from OQ-02. -/
-theorem countable_ordinals_diagonal_step
-    {ι : Type*} (hι : #ι < Cardinal.aleph 1)
-    (f : ι → Ordinal) (hf : ∀ i, f i < (Cardinal.aleph 1).ord) :
-    Ordinal.sup f < (Cardinal.aleph 1).ord :=
-  diagonal_step aleph_one_regular hι f hf
-
-/-- No countable enumeration can cover all countable ordinals. -/
-theorem countable_ordinals_no_enum
-    {ι : Type*} (hι : #ι < Cardinal.aleph 1)
-    (f : ι → Ordinal) (hf : ∀ i, f i < (Cardinal.aleph 1).ord) :
-    ∃ β : Ordinal, β < (Cardinal.aleph 1).ord ∧ ∀ i, f i < β :=
-  no_small_surjection aleph_one_regular hι f hf
+/-- For infinite κ, κ.ord is a limit ordinal: α < κ.ord implies α + 1 < κ.ord. -/
+theorem ord_succ_lt {κ : Cardinal.{u}} (hκ_inf : ℵ₀ ≤ κ)
+    {α : Ordinal.{u}} (hα : α < κ.ord) : α + 1 < κ.ord := by
+  rw [Cardinal.lt_ord] at hα ⊢
+  rw [Ordinal.add_one_eq_succ, Ordinal.card_succ]
+  exact card_succ_lt_of_lt_infinite hκ_inf hα
 
 -- ══════════════════════════════════════════════════════════════════
--- § 4: The Aleph Hierarchy is Regular
+-- § Part III: The Generalized Diagonal Argument
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Every successor aleph ℵ_{n+1} is regular. -/
-theorem aleph_succ_regular (n : ℕ) : (Cardinal.aleph (n + 1)).IsRegular :=
-  Cardinal.isRegular_aleph_succ n
+/-- **Generalized Cantor Diagonal Argument**: For any regular uncountable cardinal κ,
+    any family of ordinals below κ.ord indexed by a type of size < κ
+    has an ordinal below κ.ord that strictly exceeds all members.
 
-/-- The diagonal step for any successor aleph ℵ_{n+1}. -/
-theorem aleph_succ_diagonal_step (n : ℕ)
-    {ι : Type*} (hι : #ι < Cardinal.aleph (n + 1))
-    (f : ι → Ordinal) (hf : ∀ i, f i < (Cardinal.aleph (n + 1)).ord) :
-    Ordinal.sup f < (Cardinal.aleph (n + 1)).ord :=
-  diagonal_step (aleph_succ_regular n) hι f hf
+    This unifies the classical diagonal argument (κ = ℵ₁, index = ℕ)
+    with arguments for higher regular cardinals (κ = ℵ_{α+1}). -/
+theorem regular_diagonal {κ : Cardinal.{u}} (hκ : κ.IsRegular)
+    (hκ_inf : ℵ₀ ≤ κ) {ι : Type u} (hι : #ι < κ)
+    (f : ι → Ordinal.{u}) (hf : ∀ i, f i < κ.ord) :
+    ∃ β : Ordinal.{u}, β < κ.ord ∧ ∀ i, f i < β := by
+  have hsup : iSup f < κ.ord := regular_sup_bounded hκ hι f hf
+  have hsucc : iSup f + 1 < κ.ord := ord_succ_lt hκ_inf hsup
+  have hbdd : BddAbove (Set.range f) :=
+    ⟨κ.ord, fun x ⟨i, hi⟩ => hi ▸ le_of_lt (hf i)⟩
+  exact ⟨iSup f + 1, hsucc, fun i =>
+    lt_of_le_of_lt (le_ciSup hbdd i) (lt_add_of_pos_right _ zero_lt_one)⟩
 
-/-- The diagonal argument works at every level of the aleph hierarchy:
-    for each n, no set of fewer than ℵ_{n+1} ordinals below ℵ_{n+1}.ord
-    can cover all ordinals below ℵ_{n+1}.ord. -/
-theorem aleph_hierarchy_diagonal (n : ℕ)
-    {ι : Type*} (hι : #ι < Cardinal.aleph (n + 1))
-    (f : ι → Ordinal) (hf : ∀ i, f i < (Cardinal.aleph (n + 1)).ord) :
-    ∃ β, β < (Cardinal.aleph (n + 1)).ord ∧ ∀ i, f i < β :=
-  no_small_surjection (aleph_succ_regular n) hι f hf
+/-- **No surjection from small families**: For regular uncountable κ,
+    no family of ordinals below κ.ord indexed by a type of size < κ
+    can surject onto all ordinals below κ.ord. -/
+theorem regular_no_surjection {κ : Cardinal.{u}} (hκ : κ.IsRegular)
+    (hκ_inf : ℵ₀ ≤ κ) {ι : Type u} (hι : #ι < κ)
+    (f : ι → Ordinal.{u}) (hf : ∀ i, f i < κ.ord) :
+    ¬ (∀ α, α < κ.ord → ∃ i, f i = α) := by
+  intro hf_surj
+  obtain ⟨β, hβlt, hβgt⟩ := regular_diagonal hκ hκ_inf hι f hf
+  obtain ⟨i, hi⟩ := hf_surj β hβlt
+  exact absurd (hi ▸ hβgt i) (lt_irrefl _)
 
 -- ══════════════════════════════════════════════════════════════════
--- § 5: Summary
+-- § Part IV: Recovering the ℵ₁ Case
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **Main theorem**: The Cantor diagonal argument generalizes to all regular
-    cardinals. For regular κ and any <κ-sized family of ordinals < κ.ord,
-    there exists an ordinal < κ.ord not covered by the family. -/
-theorem cantor_diagonal_generalized (κ : Cardinal) (hκ : κ.IsRegular) :
-    ∀ {ι : Type*}, #ι < κ →
-    ∀ f : ι → Ordinal, (∀ i, f i < κ.ord) →
-    ∃ β : Ordinal, β < κ.ord ∧ ∀ i, f i < β :=
-  fun hι f hf => no_small_surjection hκ hι f hf
+/-- ℵ₀ < ℵ₁ (used to instantiate the general theorem). -/
+private theorem aleph0_lt_aleph1 : (ℵ₀ : Cardinal.{0}) < Cardinal.aleph 1 := by
+  rw [show ℵ₀ = Cardinal.aleph 0 from Cardinal.aleph_zero.symm]
+  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
-end CantorDiagRegular
+/-- The ℵ₁ case: the classical diagonal argument for countable ordinals.
+    For any countable sequence of countable ordinals, there exists a countable
+    ordinal strictly above all of them. -/
+theorem aleph1_diagonal (f : ℕ → Ordinal.{0})
+    (hf : ∀ n, f n < (Cardinal.aleph 1).ord) :
+    ∃ β, β < (Cardinal.aleph 1).ord ∧ ∀ n, f n < β := by
+  exact regular_diagonal Cardinal.isRegular_aleph_one
+    (le_of_lt aleph0_lt_aleph1)
+    (Cardinal.mk_nat ▸ aleph0_lt_aleph1) f hf
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Summary
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+**The Generalized Cantor Diagonal Argument**:
+
+For any regular uncountable cardinal κ:
+- The initial ordinal κ.ord is a limit ordinal (ord_succ_lt)
+- Any < κ-sized family of ordinals below κ.ord has bounded sup (regularity)
+- Therefore there exists an ordinal below κ.ord above the entire family
+- No < κ-sized set can surject onto ordinals below κ.ord
+
+The key property is REGULARITY, not mere uncountability. Singular cardinals
+(like ℵ_ω) do NOT satisfy this — there IS a countable cofinal sequence.
+
+Applications:
+- κ = ℵ₁: "countable ordinals are uncountable" (parent OQ-02)
+- κ = ℵ_{α+1}: successor alephs are always regular (Hausdorff)
+- Captures the common structure of all diagonal-type arguments
+-/
+
+end CantorDiagonalizationOQ02OQ03
