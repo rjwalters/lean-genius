@@ -12,6 +12,8 @@ Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that
 Results:
 - sidon_sumset_card: fully proved via upper triangle cardinality lemma
 - sidon_sumset_range: proved
+- sidon_distinct_differences: B₂ distinct differences characterization
+- sidon_density_bound: density bound n(n+1)/2 ≤ 2N+1
 - average_gap_bounded: proved (trivially: C can depend on N)
 Axioms: 1 (erdos_153_conjecture — the main open conjecture)
 Sorries: 0
@@ -224,7 +226,45 @@ theorem sidon_sumset_range (A : Finset ℕ) (N : ℕ) (_h : IsSidon A)
   linarith [hN a ha, hN b hb]
 
 /-
-## Section VI: Known Bounds
+## Section VI.5: Distinct Differences and Density
+-/
+
+/-- For a Sidon set, distinct ordered pairs yield distinct differences:
+    if a < b and c < d are in A with b - a = d - c, then (a,b) = (c,d).
+    This is the "B₂ ↔ distinct differences" characterization. -/
+theorem sidon_distinct_differences (A : Finset ℕ) (h : IsSidon A)
+    (a b c d : ℕ) (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hd : d ∈ A)
+    (hab : a < b) (hcd : c < d) (heq : b - a = d - c) : a = c ∧ b = d := by
+  -- Case split on relative orderings, apply IsSidon in each case
+  rcases le_or_lt a d with had | had
+  · rcases le_or_lt c b with hcb | hcb
+    · -- a ≤ d, c ≤ b: IsSidon on pairs (a,d) and (c,b)
+      have := h a ha d hd c hc b hb had hcb (by omega)
+      exact ⟨this.1, this.2.symm⟩
+    · -- a ≤ d, b < c: IsSidon on (a,d) and (b,c) gives a = b, contradiction
+      obtain ⟨h1, _⟩ := h a ha d hd b hb c hc had (le_of_lt hcb) (by omega)
+      omega
+  · rcases le_or_lt c b with hcb | hcb
+    · -- d < a, c ≤ b: IsSidon on (d,a) and (c,b) gives a = b, contradiction
+      obtain ⟨_, h2⟩ := h d hd a ha c hc b hb (le_of_lt had) hcb (by omega)
+      omega
+    · -- d < a, b < c, a < b, c < d forms a cycle: impossible
+      omega
+
+/-- The density bound for Sidon sets: a Sidon set A ⊆ {0,...,N}
+    satisfies n(n+1)/2 ≤ 2N + 1, i.e., |A| ≤ √(2N) + O(1). -/
+theorem sidon_density_bound (A : Finset ℕ) (N : ℕ) (h : IsSidon A)
+    (hN : ∀ a ∈ A, a ≤ N) :
+    A.card * (A.card + 1) / 2 ≤ 2 * N + 1 := by
+  have hrange : sumset A ⊆ Finset.range (2 * N + 1) := fun s hs =>
+    Finset.mem_range.mpr (by have := sidon_sumset_range A N h hN s hs; omega)
+  calc A.card * (A.card + 1) / 2
+      ≤ (sumset A).card := sidon_sumset_card A h
+    _ ≤ (Finset.range (2 * N + 1)).card := Finset.card_le_card hrange
+    _ = 2 * N + 1 := Finset.card_range _
+
+/-
+## Section VII: Known Bounds
 -/
 
 /-- The sumset has size Θ(n²) while lying in an interval of length
@@ -323,7 +363,7 @@ theorem ess_1994_result :
     _ ≤ ↑(gapSquaredSum A) / (↑(sumset A).card - 1) := by gcongr
 
 /-
-## Section VII: The Main Conjecture (Axiomatized)
+## Section VIII: The Main Conjecture (Axiomatized)
 -/
 
 /-- **Erdős Problem #153** (axiomatized): The mean squared gap in the sumset
@@ -331,7 +371,7 @@ of a Sidon set tends to infinity as the set grows. This is an open problem. -/
 axiom erdos_153_conjecture : ErdosProblem153
 
 /-
-## Section VIII: Infinite Sidon Sets (Derived from Finite Conjecture)
+## Section IX: Infinite Sidon Sets (Derived from Finite Conjecture)
 
 The infinite variant follows from the finite conjecture via three steps:
 1. Finite restrictions of infinite Sidon sets inherit the Sidon property
