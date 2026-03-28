@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Noisy-channel_coding_theorem",
     "date": "1948",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ShannonChannelCoding.lean",
     "tags": [
       "information-theory",
@@ -16,7 +16,7 @@
       "coding-theory",
       "advanced"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,12 +39,10 @@
       "Channel capacity definition (placeholder returning 0)",
       "Theorem statements for Fano inequality, achievability, converse, and BSC capacity (all placeholder stubs proving True)"
     ],
-    "assumptions": [
-      "All four theorems and the capacity definition are placeholder stubs — no actual proofs exist yet"
-    ],
+    "assumptions": "5 axioms: channelMI_le_log_card, fano_inequality, channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 7 theorems proved (jointDist properties, capacity_nonneg, rate/BSC bounds). 0 sorries.",
     "dateAdded": "2026-03-21",
-    "axiomCount": 0,
-    "lineCount": 53,
+    "axiomCount": 5,
+    "lineCount": 213,
     "prerequisites": [
       "Shannon entropy and mutual information",
       "Discrete memoryless channels and capacity",

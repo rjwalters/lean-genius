@@ -1,7 +1,7 @@
 {
   "slug": "buffons-needle-oq-01-oq-02",
   "title": "Buffon's Needle Higher-Dimensional: Hyperplane Arrangements",
-  "phase": "COMPLETED",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created BuffonsNeedleOQ01OQ02.lean (237 lines, 21 theorems, 5 axioms, 0 sorries). Defined the Buffon dimensional constant c_n via Gamma functions, proved c₂=2/π, c₃=1, c₄=4/π, c₅=2/3, c₆=3/π. Established structural properties and mean width connection.",
+    "progressSummary": "BUG: buffonConstant definition missing 1/(n-1) factor. Code: c_n=2Γ(n/2)/(√π·Γ((n-1)/2)), correct: c_n=2Γ(n/2)/((n-1)·√π·Γ((n-1)/2)). c₂=2/π is correct (n-1=1 cancels), but c₃=1 (should be 1/2), c₄=4/π (should be 4/(3π)). Code gives c₄>1 contradicting buffonConstant_le_one axiom. Recurrence also wrong ((n-1)/n should be n/(n+1)). Needs rewrite.",
     "builtItems": [
       "BuffonsNeedleOQ01OQ02.lean: buffonConstant definition via Gamma functions",
       "Proved buffonConstant_two = 2/π, buffonConstant_three = 1, buffonConstant_four = 4/π",
@@ -44,16 +44,21 @@
       "c₃ = 1 is the unique maximum — 3D gives the simplest formula E = L/d",
       "Recurrence c_{n+2} = ((n-1)/n)·c_n shows c_n → 0 (concentration of measure)",
       "Only one axiom (Γ(1/2)=√π) beyond Mathlib is needed to prove c₂, c₃, c₄",
-      "Mean width interpretation: E = meanWidth/d is the Cauchy-Crofton formula for line segments"
+      "Mean width interpretation: E = meanWidth/d is the Cauchy-Crofton formula for line segments",
+      "BUG: The formula 2Γ(n/2)/(√π·Γ((n-1)/2)) = 2|S^{n-2}|/|S^{n-1}| is NOT the expected |cos θ|. The correct Buffon constant is E[|cos θ|] = 2|S^{n-2}|/((n-1)|S^{n-1}|). Factor 1/(n-1) missing.",
+      "BUG evidence: code gives c₃=1 but E[|cos θ|] in 3D = ∫|cosθ|sinθ dθ / ∫sinθ dθ = 1/2. And c₄=4/π≈1.27>1 contradicts buffonConstant_le_one.",
+      "BUG: recurrence axiom says c_{n+2}=(n-1)/n·c_n but correct recurrence is c_{n+2}=n/(n+1)·c_n (from Γ functional equation). Derived values c₅=2/3, c₆=3/π are wrong."
     ],
     "mathlibGaps": [
       "No direct lemma Real.Gamma_half for Γ(1/2) = √π",
       "No sphere surface area function in Mathlib"
     ],
     "nextSteps": [
-      "Prove Γ(1/2)=√π from the Gaussian integral (eliminate axiom)",
-      "Extend to convex bodies beyond needles (Cauchy-Crofton for general K)",
-      "Formalize non-parallel hyperplane arrangements (general position)"
+      "FIX BUG: Change buffonConstant to include 1/(n-1) factor: c_n = 2Γ(n/2)/((n-1)√π·Γ((n-1)/2)). Then c₃=1/2, c₄=4/(3π), c₅=3/8.",
+      "FIX BUG: Change recurrence axiom to c_{n+2} = n/(n+1)·c_n and re-derive c₅, c₆",
+      "FIX BUG: buffonConstant_le_one becomes provable once definition is correct",
+      "Prove Γ(1/2)=√π from Mathlib (check Real.Gamma_one_half_eq or derive from reflection formula)",
+      "Extend to convex bodies beyond needles (Cauchy-Crofton for general K)"
     ]
   },
   "tags": [

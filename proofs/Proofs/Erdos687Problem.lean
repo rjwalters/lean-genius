@@ -25,13 +25,13 @@ coprime to n.
 
 *Reference:* [erdosproblems.com/687](https://www.erdosproblems.com/687)
 
-Axioms: 5 (jacobsthalSet_bddAbove, jacobsthalY_eq_jacobsthal,
+Axioms: 4 (jacobsthalY_eq_jacobsthal,
   iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
-Proved: erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronger)
-Theorems: 12 (was 9; added not_mem_jacobsthalSet_two, one_mem_jacobsthalSet_two,
-  jacobsthalY_two. Fixed duplicate definitions.)
-Removed: jacobsthalY_trivial_lower (FALSE — Y(2) = 1 < 3 counterexample)
-Sorries: 0 (was 1; proved log_pow_eventually_le_rpow via isLittleO_log_rpow_atTop)
+Proved: jacobsthalSet_bddAbove (CRT induction: any covering leaves gaps within primorial)
+  erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronger)
+Theorems: 14 (plus private CRT helper lemmas)
+Removed: jacobsthalSet_bddAbove axiom → proved as theorem
+Sorries: 0
 -/
 
 import Mathlib.Tactic
@@ -80,12 +80,98 @@ theorem jacobsthalSet_nonempty (x : ℕ) : (jacobsthalSet x).Nonempty := by
   simp only [Set.mem_setOf_eq, Nat.cast_zero]
   exact ⟨fun _ _ _ => 0, fun n h1 h2 => by omega⟩
 
+/- ## CRT induction: proving jacobsthalSet is bounded -/
+
+/-- Product of primes in a Finset (as integers) is positive. -/
+private lemma prod_primes_pos' (S : Finset ℕ) (hS : ∀ p ∈ S, Nat.Prime p) :
+    (0 : ℤ) < ∏ p ∈ S, (p : ℤ) :=
+  Finset.prod_pos fun p hp => Int.natCast_pos.mpr (hS p hp).pos
+
+/-- A prime not in a Finset of primes doesn't divide their integer product. -/
+private lemma prime_not_dvd_int_prod
+    (S : Finset ℕ) (hS : ∀ p ∈ S, Nat.Prime p)
+    (q : ℕ) (hq : q.Prime) (hq_not : q ∉ S) :
+    ¬ (q : ℤ) ∣ ∏ p ∈ S, (p : ℤ) := by
+  rw [← Nat.cast_prod, Int.natCast_dvd_natCast]
+  intro hdvd
+  obtain ⟨r, hrS, hqr⟩ := hq.prime.dvd_finset_prod_iff.mp hdvd
+  have : q = r := ((hS r hrS).eq_one_or_self_of_dvd q hqr).resolve_left hq.ne_one
+  subst this
+  exact hq_not hrS
+
+/-- CRT induction: for any Finset of primes and covering function,
+    some integer in [1, product] avoids all residue classes.
+
+    Proof: Finset.induction. If m avoids primes in S', check m mod q.
+    If m already avoids a(q), done. Otherwise m + P' avoids a(q)
+    (since gcd(P', q) = 1 implies adding P' changes residue mod q)
+    while still avoiding S' (since P' ≡ 0 mod each p ∈ S'). -/
+private lemma exists_uncovered_in_prod
+    (S : Finset ℕ) (hS : ∀ p ∈ S, Nat.Prime p) (a : ℕ → ℕ) :
+    ∃ n : ℤ, 1 ≤ n ∧ n ≤ ∏ p ∈ S, (p : ℤ) ∧
+      ∀ p ∈ S, n % (p : ℤ) ≠ (a p : ℤ) % (p : ℤ) := by
+  induction S using Finset.induction with
+  | empty =>
+    exact ⟨1, le_rfl, by simp, fun _ hp => absurd hp (Finset.not_mem_empty _)⟩
+  | insert hq_not ih =>
+    rename_i q S'
+    have hS' : ∀ p ∈ S', Nat.Prime p := fun p hp => hS p (Finset.mem_insert_of_mem hp)
+    have hq : q.Prime := hS q (Finset.mem_insert_self q S')
+    obtain ⟨m, hm1, hm2, hm_avoid⟩ := ih hS' a
+    set P' : ℤ := ∏ p ∈ S', (p : ℤ) with hP'_def
+    have hP'_pos : (0 : ℤ) < P' := prod_primes_pos' S' hS'
+    have hq2 : (2 : ℤ) ≤ (q : ℤ) := by exact_mod_cast hq.two_le
+    rw [Finset.prod_insert hq_not]
+    by_cases hcase : m % (q : ℤ) = (a q : ℤ) % (q : ℤ)
+    · -- m matches a(q) mod q: use m + P' instead
+      refine ⟨m + P', by linarith, by nlinarith, ?_⟩
+      intro p hp
+      rcases Finset.mem_insert.mp hp with rfl | hp'
+      · -- p = q: (m + P') % q ≠ (a q) % q because q ∤ P'
+        intro heq
+        have hmod : (m + P') % (q : ℤ) = m % (q : ℤ) := heq.trans hcase.symm
+        have hq_dvd : (q : ℤ) ∣ P' := by
+          have h_neg := Int.modEq_iff_dvd.mp hmod
+          -- h_neg : q ∣ (m - (m + P')) = -P'
+          rwa [show m - (m + P') = -P' from by ring, dvd_neg] at h_neg
+        exact prime_not_dvd_int_prod S' hS' q hq hq_not hq_dvd
+      · -- p ∈ S': (m + P') % p = m % p since p | P'
+        obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem (fun i => (i : ℤ)) hp'
+        rw [show m + P' = m + (p : ℤ) * k from by rw [hk], Int.add_mul_emod_self_left]
+        exact hm_avoid p hp'
+    · -- m already avoids a(q) mod q: use m directly
+      exact ⟨m, hm1, le_trans hm2 (le_mul_of_one_le_left hP'_pos.le (by linarith)),
+        fun p hp => by
+          rcases Finset.mem_insert.mp hp with rfl | hp'
+          · exact hcase
+          · exact hm_avoid p hp'⟩
+
 /-- The Jacobsthal set is bounded above by the primorial.
-After primorial(x) steps, the CRT covering pattern repeats, so any
-uncovered integer would imply infinitely many uncovered integers
-in any interval of length primorial(x). -/
-axiom jacobsthalSet_bddAbove (x : ℕ) :
-  BddAbove (jacobsthalSet x)
+    Proof: by CRT induction, for any covering system, some integer
+    in [1, primorial(x)] is uncovered. So no y > primorial(x) is
+    achievable. -/
+theorem jacobsthalSet_bddAbove (x : ℕ) :
+    BddAbove (jacobsthalSet x) := by
+  refine ⟨primorial x, fun y hy => ?_⟩
+  by_contra h
+  push_neg at h
+  -- h : primorial x < y, hy : y ∈ jacobsthalSet x
+  obtain ⟨a, ha⟩ := hy
+  -- Extract simple function from dependent covering
+  let a' : ℕ → ℕ := fun p =>
+    if h : p.Prime ∧ p ≤ x then a p h.1 h.2 else 0
+  set S := (Finset.range (x + 1)).filter Nat.Prime with hS_def
+  have hS_prime : ∀ p ∈ S, Nat.Prime p := fun p hp => (Finset.mem_filter.mp hp).2
+  have hprod_eq : ∏ p ∈ S, (p : ℤ) = (primorial x : ℤ) :=
+    Nat.cast_prod.symm
+  obtain ⟨n, hn1, hn2, hn_avoid⟩ := exists_uncovered_in_prod S hS_prime a'
+  rw [hprod_eq] at hn2
+  have hny : n ≤ (y : ℤ) := le_trans hn2 (by exact_mod_cast h.le)
+  obtain ⟨p, hp, hpx, hcov⟩ := ha n hn1 hny
+  have hpS : p ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩
+  have ha'_eq : (a' p : ℤ) % (p : ℤ) = (a p hp hpx : ℤ) % (p : ℤ) := by
+    congr 1; exact_mod_cast show a' p = a p hp hpx from dif_pos ⟨hp, hpx⟩
+  exact hn_avoid p hpS (by rwa [ha'_eq])
 
 /- ## Structural Properties -/
 
