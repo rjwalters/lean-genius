@@ -173,10 +173,17 @@ theorem doubleExp_convergent : HasConvergentSum doubleExp := by
 
 /- ## Part VIII: Characterization Attempts -/
 
-/-- Gap between sufficient and necessary conditions. -/
-theorem characterization_gap :
-    ∃ a : PosIntSeq, HasSuperexponentialGrowth a ∧ ¬HasFolkloreGrowth a := by
+/-- Double exponential has superexponential growth: (2^{2^n})^{1/n} → ∞.
+    Proof: (2^{2^n})^{1/n} = 2^{2^n/n}, and 2^n/n → ∞. -/
+theorem doubleExp_superexponential : HasSuperexponentialGrowth doubleExp := by
   sorry
+
+/-- Gap between sufficient and necessary conditions.
+    Witness: doubleExp = 2^{2^n} has superexponential growth but NOT folklore growth.
+    This shows the folklore condition is strictly stronger than superexponential growth. -/
+theorem characterization_gap :
+    ∃ a : PosIntSeq, HasSuperexponentialGrowth a ∧ ¬HasFolkloreGrowth a :=
+  ⟨doubleExp, doubleExp_superexponential, doubleExp_not_folklore_growth⟩
 
 /-- The main open question formalized. -/
 def MainQuestion : Prop :=
