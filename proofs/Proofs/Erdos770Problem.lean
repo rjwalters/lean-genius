@@ -245,6 +245,11 @@ private theorem fold_gcd_dvd_of_subset {S T : Finset ℕ} (hST : S ⊆ T) (f : �
     · exact fold_gcd_dvd_mem (hST (Finset.mem_cons_self a S')) f
     · exact ih (fun x hx => hST (Finset.mem_cons_of_mem hx))
 
+/-- Monotone divisibility: extending the range preserves divisibility. -/
+theorem gcdPowerSeq_dvd_of_le (n : ℕ) {j k : ℕ} (hjk : j ≤ k) :
+    gcdPowerSeq n k ∣ gcdPowerSeq n j :=
+  fold_gcd_dvd_of_subset (Finset.Icc_subset_Icc_right hjk) _
+
 /-- Once gcd reaches 1, it stays 1. Adding more terms to a gcd that is
     already 1 keeps it at 1. -/
 theorem gcdPowerSeq_stable (n k j : ℕ) (hk : gcdPowerSeq n k = 1) (hj : k ≤ j) :
@@ -252,3 +257,14 @@ theorem gcdPowerSeq_stable (n k j : ℕ) (hk : gcdPowerSeq n k = 1) (hj : k ≤ 
   apply Nat.eq_one_of_dvd_one
   rw [← hk]
   exact fold_gcd_dvd_of_subset (Finset.Icc_subset_Icc_right hj) _
+
+/-- Stability contrapositive: if gcd is not 1 at k, it wasn't 1 at any j ≤ k. -/
+theorem gcdPowerSeq_ne_one_of_le (n : ℕ) {j k : ℕ} (hjk : j ≤ k)
+    (hk : gcdPowerSeq n k ≠ 1) : gcdPowerSeq n j ≠ 1 := by
+  intro hj
+  exact hk (gcdPowerSeq_stable n j k hj hjk)
+
+/-- Each term a^n - 1 is divisible by the gcd fold value (when a is in range). -/
+theorem gcdPowerSeq_dvd_term (n k a : ℕ) (ha : a ∈ Finset.Icc 2 k) :
+    gcdPowerSeq n k ∣ (a ^ n - 1) :=
+  fold_gcd_dvd_mem ha _
