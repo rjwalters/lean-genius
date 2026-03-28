@@ -394,14 +394,64 @@ def Question2 : Prop :=
 There are some constructions that partially address these questions.
 -/
 
+/-- The Erdős-Hajnal graph on ω₂²: two pairs (α₁,β₁) and (α₂,β₂)
+    are adjacent iff one coordinate increases while the other decreases.
+    This is the natural generalization of `erdosHajnalGraph` from ω₁² to ω₂². -/
+def erdosHajnalGraph2 : GraphOn omega2Squared where
+  adj := fun p q => (p.1 < q.1 ∧ q.2 < p.2) ∨ (q.1 < p.1 ∧ p.2 < q.2)
+  symm := fun _ _ h => Or.comm.mp h
+  loopless := fun _ h => by rcases h with ⟨h, _⟩ | ⟨h, _⟩ <;> exact lt_irrefl _ h
+
+/-- mk(omega2.ToType) = ℵ₂ -/
+private theorem mk_omega2_ToType : Cardinal.mk omega2.ToType = aleph 2 := by
+  unfold omega2
+  rw [Cardinal.mk_toType, Cardinal.ord_aleph, Ordinal.card_omega]
+
+/-- The ω₂² E-H graph is ℵ₂-colorable: color each vertex (α, β) by β. -/
+private theorem isColorable_erdosHajnal2_aleph2 :
+    IsColorable erdosHajnalGraph2 (aleph 2) := by
+  refine ⟨omega2.ToType, mk_omega2_ToType, Prod.snd, fun p q hadj hfeq => ?_⟩
+  rcases hadj with ⟨_, hlt⟩ | ⟨_, hlt⟩
+  · exact absurd hfeq (ne_of_gt hlt)
+  · exact absurd hfeq (ne_of_lt hlt)
+
+/-- Helper: κ < ℵ₂ implies κ ≤ ℵ₁ -/
+private theorem le_aleph1_of_lt_aleph2 {κ : Cardinal} (h : κ < aleph 2) : κ ≤ ℵ₁ := by
+  rw [show (2 : Ordinal) = Order.succ 1 by rw [Order.succ_eq_add_one]; norm_num,
+      aleph_succ] at h
+  exact Order.lt_succ_iff.mp h
+
+/-- Subsets of ω₂² with fewer than ℵ₂ elements have chromatic number ≤ ℵ₁
+    in the E-H graph. Proof: χ(G[S]) ≤ |S| ≤ ℵ₁ since |S| < ℵ₂ = succ(ℵ₁). -/
+theorem erdosHajnal2_subgraph (S : Set omega2Squared)
+    (hS : Cardinal.mk S < aleph 2) :
+    chromaticNumber (inducedSubgraph erdosHajnalGraph2 S) ≤ ℵ₁ := by
+  have h1 : chromaticNumber (inducedSubgraph erdosHajnalGraph2 S) ≤ Cardinal.mk ↥S :=
+    csInf_le (OrderBot.bddBelow _) (isColorable_mk _)
+  exact le_trans h1 (le_aleph1_of_lt_aleph2 hS)
+
+/-- The ω₂² E-H graph has chromatic number exactly ℵ₂. The upper bound
+    follows from ℵ₂-colorability (proved above). The lower bound requires
+    a Ramsey-type argument on ω₂² that is axiomatized here. -/
+axiom erdosHajnalGraph2_chromatic_lower :
+  chromaticNumber erdosHajnalGraph2 ≥ aleph 2
+
+/-- The ω₂² E-H graph has chromatic number = ℵ₂. -/
+theorem erdosHajnalGraph2_chromatic :
+    chromaticNumber erdosHajnalGraph2 = aleph 2 := by
+  apply le_antisymm
+  · exact csInf_le (OrderBot.bddBelow _) isColorable_erdosHajnal2_aleph2
+  · exact erdosHajnalGraph2_chromatic_lower
+
 /-- A graph on ω₂² with χ = ℵ₂ where smaller subgraphs have χ ≤ ℵ₁.
     This gives a weaker bound (≤ ℵ₁ instead of ≤ ℵ₀) so it does not directly
     answer Question1. The gap between ℵ₀ and ℵ₁ is precisely what makes
     Question1 open. -/
-axiom partialConstruction : ∃ G : GraphOn omega2Squared,
+theorem partialConstruction : ∃ G : GraphOn omega2Squared,
   chromaticNumber G = aleph 2 ∧
   ∀ S : Set omega2Squared, Cardinal.mk S < aleph 2 →
-    chromaticNumber (inducedSubgraph G S) ≤ ℵ₁
+    chromaticNumber (inducedSubgraph G S) ≤ ℵ₁ :=
+  ⟨erdosHajnalGraph2, erdosHajnalGraph2_chromatic, erdosHajnal2_subgraph⟩
 
 /-
 # Part 7: Generalization to Higher Cardinals

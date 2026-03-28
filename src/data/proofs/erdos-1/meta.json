@@ -7,7 +7,7 @@
     "author": "Erdős (1931)",
     "sourceUrl": "https://erdosproblems.com/1",
     "date": "1931",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "subset-sums",
       "extremal-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1,
     "erdosUrl": "https://erdosproblems.com/1",
@@ -40,13 +40,14 @@
       }
     ],
     "originalContributions": [
-      "Formalization of distinct subset sums property",
-      "Proof of the basic 2^(n-1) lower bound",
-      "Connection between max element and subset sum spacing"
+      "Corrected formalization of distinct subset sums property (fixed broken Aristotle definition)",
+      "Proof of the counting bound 2^n ≤ n·N + 1 via pigeonhole",
+      "Discovery that previous N ≥ 2^(n-1) claim was FALSE (counterexample: {3,5,6,7})",
+      "Formal statement of the $500 conjecture"
     ],
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. All three theorems were proved by Aristotle automated proof search. No structure-encoded assumptions.",
-    "lineCount": 82,
+    "assumptions": "None. 0 axioms, 0 sorries. Previous Aristotle proofs were vacuously true due to broken definition. Corrected version proves the weaker but correct counting bound.",
+    "lineCount": 120,
     "prerequisites": [
       "Finite set theory (Finset operations, powerset, filter)",
       "Injective functions and the pigeonhole principle",
@@ -56,7 +57,7 @@
   },
   "overview": {
     "historicalContext": "Erdős called this 'perhaps my first serious problem,' posing it in 1931 at age 18. A set $A \\subseteq \\{1, \\ldots, N\\}$ has distinct subset sums if the map $S \\mapsto \\sum_{a \\in S} a$ is injective on subsets of $A$. The powers of 2, $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$, trivially satisfy this with $N = 2^{n-1}$, and Erdős conjectured this is essentially optimal: $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$. He offered \\$500 for a proof or disproof. The basic lower bound $N \\geq 2^{n-1}$ was known early via a counting/pigeonhole argument. Conway and Guy (1968) constructed sets with $N < 0.22002 \\cdot 2^n$, showing the constant $c$ (if it exists) is at most $0.22$. Lunnon (1988) computed optimal sets for small $n$. The best lower bound is due to Dubroff, Fox, and Xu (2021): $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$, which still has a $1/\\sqrt{n}$ gap from the conjectured $c \\cdot 2^n$. The problem connects to Sidon sets ($B_2$ sequences), uniquely decodable codes in information theory, and the knapsack problem in computational complexity.",
-    "problemStatement": "Let $A \\subseteq \\{1, 2, \\ldots, N\\}$ with $|A| = n$. If all $2^n$ subset sums $\\{\\sum_{a \\in S} a : S \\subseteq A\\}$ are distinct, must $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$? The basic bound $N \\geq 2^{n-1}$ is proved here; the full conjecture remains open with a \\$500 prize.",
+    "problemStatement": "Let $A \\subseteq \\{1, 2, \\ldots, N\\}$ with $|A| = n$. If all $2^n$ subset sums $\\{\\sum_{a \\in S} a : S \\subseteq A\\}$ are distinct, must $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$? The counting bound $N \\geq (2^n - 1)/n$ is proved here; the full conjecture remains open with a \\$500 prize.",
     "text": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erdős's 'first serious problem' (1931). OPEN with $500 prize.",
     "proofStrategy": "The formalization defines `hasDistinctSubsetSums A` as injectivity of the function $S \\mapsto (S \\cap A).\\text{sum}\\,\\text{id}$ on `Finset N`. Three theorems are proved by Aristotle: (1) `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ via a powerset cardinality argument; (2) `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ by reducing to the lower bound with $N = \\max(A)$; (3) `subset_sums_spacing`: distinct subsets $S \\neq T$ of $A$ have $\\sum S \\neq \\sum T$, extracted from the injectivity definition.",
     "keyInsights": [
