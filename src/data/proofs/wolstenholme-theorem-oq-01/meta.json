@@ -21,10 +21,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 4,
-    "theoremCount": 22,
-    "defCount": 6,
-    "lineCount": 248,
+    "axiomCount": 3,
+    "theoremCount": 24,
+    "defCount": 7,
+    "lineCount": 268,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -57,10 +57,12 @@
       "Wieferich prime parallel: definition, two known examples (1093, 3511)",
       "Computational verification that 1093 and 3511 are Wieferich primes",
       "Divisibility chain: WP implies Wolstenholme theorem implies Babbage theorem",
-      "Structural gap analysis: the two known WPs differ by over 2 million"
+      "Structural gap analysis: the two known WPs differ by over 2 million",
+      "Efficient O(k) binomial coefficient computation (choose_fast) enabling native_decide verification",
+      "Axiom elimination: cb_16843 proved via choose_fast, reducing axiom count from 4 to 3"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "4 axiom(s): cb_16843, cb_2124679 (binomial coefficients too large for kernel), no_wp_below_billion (McIntosh-Roettger 2007 search), bernoulli_characterization (McIntosh 1995 equivalence). No sorries.",
+    "assumptions": "3 axiom(s): cb_2124679 (binomial too large for native_decide in reasonable time), no_wp_below_billion (McIntosh-Roettger 2007 search), bernoulli_characterization (McIntosh 1995 equivalence). cb_16843 proved via choose_fast + native_decide. No sorries.",
     "prerequisites": [
       "Binomial coefficients and Wolstenholme's theorem",
       "Bernoulli numbers and irregular primes",
@@ -181,10 +183,10 @@
       "Nat"
     ],
     "namespace": "WolstenholmeInfinitude",
-    "lineCount": 248,
-    "axiomCount": 4,
-    "theoremCount": 22,
-    "definitionCount": 6
+    "lineCount": 268,
+    "axiomCount": 3,
+    "theoremCount": 24,
+    "definitionCount": 7
   },
   "crossReferences": [
     {
