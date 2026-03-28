@@ -107,11 +107,90 @@ example : HasSquareFactorialProduct 4 2 :=
 axiom D2_eq_squares (m : ℕ) (hm : 2 ≤ m) :
   inDk 2 m ↔ IsPerfectSquare m
 
+/-- factorialProduct distributes: factorialProduct (xs ++ [a]) = factorialProduct xs * a! -/
+private lemma factorialProduct_append (xs : List ℕ) (a : ℕ) :
+    factorialProduct (xs ++ [a]) = factorialProduct xs * a.factorial := by
+  simp only [factorialProduct, List.foldl_append, List.foldl_cons, List.foldl_nil]
+
+/-- factorialProduct of a cons: factorialProduct (x :: xs) = x! * factorialProduct xs -/
+private lemma factorialProduct_cons (x : ℕ) (xs : List ℕ) :
+    factorialProduct (x :: xs) = x.factorial * factorialProduct xs := by
+  induction xs generalizing x with
+  | nil => simp [factorialProduct, List.foldl]
+  | cons y ys ih =>
+    rw [show x :: y :: ys = [x] ++ (y :: ys) from rfl, factorialProduct_append]
+    simp [factorialProduct, List.foldl]
+
+/-- A prime p does not divide the factorial product of a list whose elements are all < p. -/
+private lemma not_prime_dvd_factorialProduct {p : ℕ} (hp : p.Prime)
+    (xs : List ℕ) (h : ∀ a ∈ xs, a < p) : ¬(p ∣ factorialProduct xs) := by
+  induction xs with
+  | nil =>
+    simp [factorialProduct, List.foldl]
+    exact Nat.Prime.one_lt hp |>.ne'
+  | cons x xs ih =>
+    rw [factorialProduct_cons]
+    intro hdvd
+    rcases hp.dvd_mul.mp hdvd with hx | hxs
+    · exact absurd (hp.dvd_factorial.mp hx) (by omega)
+    · exact ih (fun a ha => h a (List.mem_cons_of_mem x ha)) hxs
+
 /-- For primes, no strictly increasing sequence ending at p has a
-    factorial product that is a perfect square (Erdős-Graham 1976).
-    Key insight: v_p(p!) = 1 forces odd p-adic valuation. -/
-axiom no_square_factorial_product_for_primes (p : ℕ) (hp : p.Prime)
-    (k : ℕ) (hk : 2 ≤ k) : ¬HasSquareFactorialProduct p k
+    factorial product that is a perfect square.
+    Proof: v_p(product) = 1 (odd) since p! contributes one factor of p
+    and all other terms a_i! with a_i < p contribute zero. -/
+theorem no_square_factorial_product_for_primes (p : ℕ) (hp : p.Prime)
+    (k : ℕ) (hk : 2 ≤ k) : ¬HasSquareFactorialProduct p k := by
+  intro ⟨seq, hlen, hlast, hpw, n, hn⟩
+  -- Decompose: seq = init ++ [p]
+  have hne : seq ≠ [] := by intro h; simp [h] at hlast
+  have hget : seq.getLast hne = p := by
+    rwa [List.getLast?_eq_getLast hne, Option.some_inj] at hlast
+  set init := seq.dropLast with hinit_def
+  have hseq : seq = init ++ [p] := by
+    rw [hinit_def, ← hget]; exact (List.dropLast_append_getLast hne).symm
+  -- All elements of init are < p (from Pairwise strict increasing + last = p)
+  have hlt : ∀ a ∈ init, a < p := by
+    intro a ha
+    have hpw' := hseq ▸ hpw
+    rw [List.pairwise_append] at hpw'
+    exact hpw'.2.2 a ha p (List.mem_singleton.mpr rfl)
+  -- factorialProduct seq = factorialProduct init * p!
+  have hprod : factorialProduct seq = factorialProduct init * p.factorial := by
+    rw [hseq, factorialProduct_append]
+  -- p! = p * (p-1)!
+  have hfact : p.factorial = p * (p - 1).factorial := by
+    have := Nat.factorial_succ (p - 1)
+    rwa [Nat.succ_eq_add_one, Nat.sub_add_cancel hp.pos] at this
+  -- p does not divide factorialProduct init (all elements < p)
+  have hndvd_init : ¬(p ∣ factorialProduct init) :=
+    not_prime_dvd_factorialProduct hp init hlt
+  -- p does not divide (p-1)!
+  have hndvd_prev : ¬(p ∣ (p - 1).factorial) := by
+    intro h; exact absurd (hp.dvd_factorial.mp h) (by omega)
+  -- Combine: factorialProduct seq = p * M where M = factorialProduct init * (p-1)!
+  set M := factorialProduct init * (p - 1).factorial with hM_def
+  have hprod2 : factorialProduct seq = p * M := by
+    rw [hprod, hfact, hM_def]; ring
+  -- p does not divide M
+  have hndvd_M : ¬(p ∣ M) := by
+    rw [hM_def]; intro h
+    rcases hp.dvd_mul.mp h with h | h
+    · exact hndvd_init h
+    · exact hndvd_prev h
+  -- From perfect square: product = n * n
+  -- p divides n (since p | p * M = n * n, and p is prime)
+  have hp_dvd_n : p ∣ n := by
+    have h1 : n * n = p * M := hn.symm.trans hprod2
+    have h2 : p ∣ n * n := ⟨M, h1⟩
+    exact (hp.dvd_mul.mp h2).elim id id
+  -- So p² divides n², but p² does not divide p * M
+  obtain ⟨m, rfl⟩ := hp_dvd_n
+  -- product = (p*m)² = p²m²; product = p*M; so M = p*m², hence p | M
+  exfalso; apply hndvd_M
+  have h_eq : p * M = p * m * (p * m) := by linarith [hprod2, hn]
+  rw [show p * m * (p * m) = p * (p * (m * m)) from by ring] at h_eq
+  exact ⟨m * m, mul_left_cancel₀ hp.ne_zero h_eq⟩
 
 /-- Dₖ = ∅ for k > 6 (Erdős-Graham 1976). -/
 axiom Dk_empty_above_6 (k : ℕ) (hk : 7 ≤ k) (m : ℕ) :
