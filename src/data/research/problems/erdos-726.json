@@ -29,12 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved heuristic_half_fraction (6A→5A).",
+    "progressSummary": "PROGRESS: Eliminated 1 axiom (4A→3A). Proved sum_partition (key structural lemma) and lower_half_also_half (limit arithmetic from other axioms).",
     "builtItems": [
-      "PROVED heuristic_half_fraction from upper_half_count (6A→5A)"
+      "Proved sum_partition: upperHalfSum + lowerHalfSum = mertensSum (Finset partition)",
+      "Proved lower_half_also_half from mertens_theorem + erdos_726_conjecture (eliminated axiom)"
     ],
     "insights": [
-      "heuristic_half_fraction follows from upper_half_count + Nat.cast_div. 6A→5A."
+      "lower_half_also_half follows from sum_partition + limit arithmetic (triangle inequality with ε/2)",
+      "ratio_converges_to_half also derivable but needs limit division (more complex, left as axiom)",
+      "sum_partition uses Finset.filter_filter + sum_filter_add_sum_filter_not"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -61,9 +64,9 @@
     {
       "path": "Proofs/Erdos726Problem.lean",
       "filename": "Erdos726Problem.lean",
-      "lineCount": 209,
-      "theoremCount": 12,
-      "axiomCount": 4,
+      "lineCount": 246,
+      "theoremCount": 16,
+      "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

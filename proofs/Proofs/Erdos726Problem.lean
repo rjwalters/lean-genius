@@ -181,13 +181,35 @@ theorem heuristic_half_fraction (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
   field_simp
 
 /-
-## Implications of the Conjecture
+## Sum Partition and Implications
 -/
 
-/-- The conjecture implies the lower half also contributes ~ (log log n)/2. -/
-axiom lower_half_also_half :
+/-- The upper and lower half sums partition the Mertens sum:
+    every prime p ∈ [2,n] is in exactly one half. -/
+theorem sum_partition (n : ℕ) :
+    upperHalfSum n + lowerHalfSum n = mertensSum n := by
+  simp only [upperHalfSum, lowerHalfSum, mertensSum, primesUpTo]
+  convert (Finset.sum_filter_add_sum_filter_not
+    ((Finset.Icc 2 n).filter Nat.Prime)
+    (fun p => isUpperHalfResidue n p)
+    (fun p => (1 : ℝ) / p)).symm using 2
+  all_goals { rw [Finset.filter_filter]; congr }
+
+/-- The conjecture + Mertens' theorem imply the lower half also
+    contributes ~ (log log n)/2. Proved from sum_partition. -/
+theorem lower_half_also_half :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |lowerHalfSum n - Real.log (Real.log n) / 2| < ε
+      |lowerHalfSum n - Real.log (Real.log n) / 2| < ε := by
+  intro ε hε
+  obtain ⟨N₁, hN₁⟩ := mertens_theorem (ε / 2) (by linarith)
+  obtain ⟨N₂, hN₂⟩ := erdos_726_conjecture (ε / 2) (by linarith)
+  exact ⟨max N₁ N₂, fun n hn => by
+    have h1 := abs_lt.mp (hN₁ n (le_trans (le_max_left _ _) hn))
+    have h2 := abs_lt.mp (hN₂ n (le_trans (le_max_right _ _) hn))
+    have hpart : lowerHalfSum n = mertensSum n - upperHalfSum n := by
+      linarith [sum_partition n]
+    rw [hpart, abs_lt]
+    constructor <;> linarith⟩
 
 /-- The conjecture implies the ratio upperHalfSum/mertensSum → 1/2. -/
 axiom ratio_converges_to_half :
