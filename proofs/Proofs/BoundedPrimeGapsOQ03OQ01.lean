@@ -23,6 +23,13 @@ The current best bound 246 uses k=50. Improving below 246 requires EITHER:
 - `BoundedPrimeGaps.lean`: Core definitions of admissible tuples, Zhang/Maynard/Polymath bounds
 - `BoundedPrimeGapsOQ03.lean`: Engelsma 50-tuple, optimality of 246 for k=50
 - **This file**: General theory of k-tuple diameter bounds and barrier analysis
+
+## Axiom Status (March 2026)
+
+Previously 3 axioms for D(2), D(3), D(50). Now:
+- D(2) = 2: PROVED (consecutive non-admissibility + witness {0,2})
+- D(3) = 6: PROVED (parity argument + witness {0,2,6})
+- D(50) = 246: axiom (Engelsma 2013 exhaustive computation)
 -/
 
 namespace BoundedPrimeGapsOQ03OQ01
@@ -33,24 +40,162 @@ open Nat Finset BoundedPrimeGaps
 -- Part I: Minimum Diameter of Admissible k-Tuples
 -- ============================================================
 
-/-- The minimum diameter of an admissible k-tuple is the key function
-    relating tuple size to gap bounds. We denote it D(k).
-    This is the quantity that Engelsma computed for k = 50.
+/-- The diameter of a finset: max - min. Returns 0 for empty sets. -/
+def fsDiameter (H : Finset ℕ) : ℕ :=
+  if h : H.Nonempty then H.max' h - H.min' h else 0
 
-    D(k) = min { max(H) - min(H) : H admissible, |H| = k }
+/-- The minimum diameter of an admissible k-tuple:
+    D(k) = inf { max(H) - min(H) : H admissible, |H| = k }
+    Equals 0 when no admissible k-tuple of size k exists. -/
+noncomputable def minAdmissibleDiameter (k : ℕ) : ℕ :=
+  sInf {d | ∃ H : Finset ℕ, H.card = k ∧ IsAdmissible H ∧ fsDiameter H = d}
 
-    We represent this abstractly as a function ℕ → ℕ. -/
-opaque minAdmissibleDiameter : ℕ → ℕ
+-- ============================================================
+-- Part I-a: Non-Admissibility Lemmas
+-- ============================================================
 
--- For concrete proofs, we axiomatize known values from exhaustive computation.
+/-- No pair of consecutive natural numbers is admissible:
+    {a, a+1} mod 2 = {0, 1}, covering all residues mod 2. -/
+theorem not_admissible_consecutive (a : ℕ) :
+    ¬IsAdmissible ({a, a + 1} : Finset ℕ) := by
+  intro hadm
+  have h2 := hadm 2 (by norm_num)
+  simp only [Finset.image_insert, Finset.image_singleton] at h2
+  rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton] at h2
+  omega
 
-/-- D(2) = 2 (the smallest admissible pair is {0, 2}, i.e., twin primes). -/
-axiom minAdmissibleDiameter_2 : minAdmissibleDiameter 2 = 2
+/-- No arithmetic progression {a, a+2, a+4} is admissible:
+    mod 3, the residues {a%3, (a+2)%3, (a+4)%3} always cover {0,1,2}
+    since gcd(2,3) = 1. -/
+theorem not_admissible_ap_diff2 (a : ℕ) :
+    ¬IsAdmissible ({a, a + 2, a + 4} : Finset ℕ) := by
+  intro hadm
+  have h3 := hadm 3 (by norm_num)
+  simp only [Finset.image_insert, Finset.image_singleton] at h3
+  rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+      Finset.card_singleton] at h3
+  · omega
+  · simp only [Finset.mem_singleton]; omega
+  · simp only [Finset.mem_insert, Finset.mem_singleton]
+    push_neg; exact ⟨by omega, by omega⟩
 
-/-- D(3) = 6 (the smallest admissible triple is {0, 2, 6} or {0, 4, 6}). -/
-axiom minAdmissibleDiameter_3 : minAdmissibleDiameter 3 = 6
+-- ============================================================
+-- Part I-b: Diameter Bounds for Admissible Sets
+-- ============================================================
 
-/-- D(50) = 246 (Engelsma 2013 exhaustive computation). -/
+/-- Any finset of ℕ has card ≤ diameter + 1 (pigeonhole on intervals). -/
+theorem finset_card_le_diameter_succ (H : Finset ℕ) (hne : H.Nonempty) :
+    H.card ≤ fsDiameter H + 1 := by
+  unfold fsDiameter; simp only [hne, dite_true]
+  have hsub : H ⊆ Finset.Icc (H.min' hne) (H.max' hne) :=
+    fun x hx => Finset.mem_Icc.mpr ⟨Finset.min'_le H x hx, Finset.le_max' H x hx⟩
+  have hle := Finset.card_le_card hsub
+  simp only [Finset.card_Icc] at hle
+  omega
+
+/-- Any admissible pair has diameter ≥ 2.
+    Proof: diameter 0 impossible (card 2 needs distinct elements),
+    diameter 1 means consecutive → not admissible. -/
+private theorem admissible_pair_diam_ge_2 (H : Finset ℕ) (hcard : H.card = 2)
+    (hadm : IsAdmissible H) : fsDiameter H ≥ 2 := by
+  have hne : H.Nonempty := Finset.card_pos.mp (by omega)
+  unfold fsDiameter; simp only [hne, dite_true]
+  by_contra h_lt; push_neg at h_lt
+  -- max - min < 2
+  have hge : H.min' hne ≤ H.max' hne := Finset.min'_le H _ (Finset.max'_mem H hne)
+  -- Case max = min: card ≤ 1, contradicts card = 2
+  have hne0 : H.max' hne ≠ H.min' hne := by
+    intro h0
+    have hsub : H ⊆ {H.min' hne} := fun x hx => by
+      simp; have := Finset.min'_le H x hx; have := Finset.le_max' H x hx; omega
+    have := Finset.card_le_card hsub; simp at this; omega
+  -- So max = min + 1: H = {min, min+1}, consecutive → not admissible
+  have hdiff : H.max' hne = H.min' hne + 1 := by omega
+  have hsub : H ⊆ {H.min' hne, H.min' hne + 1} := fun x hx => by
+    simp; have := Finset.min'_le H x hx; have := Finset.le_max' H x hx; omega
+  have hpc : ({H.min' hne, H.min' hne + 1} : Finset ℕ).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton]
+  have heq := Finset.eq_of_subset_of_card_le hsub (by rw [hpc, hcard])
+  rw [heq] at hadm
+  exact not_admissible_consecutive _ hadm
+
+/-- Any admissible triple has diameter ≥ 6.
+    Proof by parity argument:
+    - Mixed parity → image mod 2 covers {0,1} → not admissible
+    - Same parity + diameter ≤ 5 → H = {a, a+2, a+4} → mod 3 covers {0,1,2} -/
+private theorem admissible_triple_diam_ge_6 (H : Finset ℕ) (hcard : H.card = 3)
+    (hadm : IsAdmissible H) : fsDiameter H ≥ 6 := by
+  have hne : H.Nonempty := Finset.card_pos.mp (by omega)
+  unfold fsDiameter; simp only [hne, dite_true]
+  by_contra h_lt; push_neg at h_lt
+  -- max - min ≤ 5
+  by_cases hmixed : ∃ x ∈ H, ∃ y ∈ H, x % 2 ≠ y % 2
+  · -- Mixed parity: image mod 2 has card ≥ 2 = p, not admissible
+    obtain ⟨x, hx, y, hy, hneq⟩ := hmixed
+    have h2 := hadm 2 (by norm_num)
+    have hsub : {x % 2, y % 2} ⊆ H.image (· % 2) := by
+      rw [Finset.insert_subset_iff, Finset.singleton_subset_iff]
+      exact ⟨Finset.mem_image_of_mem _ hx, Finset.mem_image_of_mem _ hy⟩
+    have hcard2 : ({x % 2, y % 2} : Finset ℕ).card = 2 := by
+      rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton]
+    linarith [Finset.card_le_card hsub]
+  · -- Same parity: all elements have parity = min' % 2
+    push_neg at hmixed
+    have hparity : ∀ x ∈ H, x % 2 = H.min' hne % 2 :=
+      fun x hx => hmixed x hx (H.min' hne) (Finset.min'_mem H hne)
+    -- H ⊆ {min, min+2, min+4}: same parity elements in interval of length ≤ 5
+    have hsub : H ⊆ ({H.min' hne, H.min' hne + 2, H.min' hne + 4} : Finset ℕ) := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      have hmin_le := Finset.min'_le H x hx
+      have hmax_le := Finset.le_max' H x hx
+      have hpar := hparity x hx
+      -- x - min is even and ≤ 5, so x - min ∈ {0, 2, 4}
+      set d := x - H.min' hne with hd_def
+      have hd_le : d ≤ 5 := by omega
+      have hd_even : d % 2 = 0 := by omega
+      interval_cases d <;> omega
+    have hcard3 : ({H.min' hne, H.min' hne + 2, H.min' hne + 4} : Finset ℕ).card = 3 := by
+      rw [Finset.card_insert_of_not_mem (by simp; omega),
+          Finset.card_insert_of_not_mem (by simp; omega),
+          Finset.card_singleton]
+    have heq := Finset.eq_of_subset_of_card_le hsub (by rw [hcard3, hcard])
+    rw [heq] at hadm
+    exact not_admissible_ap_diff2 _ hadm
+
+-- ============================================================
+-- Part I-c: D(2) = 2, D(3) = 6 (proved), D(50) = 246 (axiom)
+-- ============================================================
+
+/-- D(2) = 2 (the smallest admissible pair is {0, 2}, i.e., twin primes).
+    Proved: {0,2} witnesses the upper bound; consecutive non-admissibility
+    gives the lower bound. -/
+theorem minAdmissibleDiameter_2 : minAdmissibleDiameter 2 = 2 := by
+  apply le_antisymm
+  · -- Upper: {0,2} witnesses D(2) ≤ 2
+    apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
+    exact ⟨{0, 2}, by decide, admissible_twin, by native_decide⟩
+  · -- Lower: every admissible pair has diameter ≥ 2
+    apply le_csInf ⟨2, ⟨{0, 2}, by decide, admissible_twin, by native_decide⟩⟩
+    rintro d ⟨H, hcard, hadm, rfl⟩
+    exact admissible_pair_diam_ge_2 H hcard hadm
+
+/-- D(3) = 6 (the smallest admissible triple is {0, 2, 6} or {0, 4, 6}).
+    Proved: {0,2,6} witnesses the upper bound; parity argument shows no
+    admissible triple has diameter < 6. -/
+theorem minAdmissibleDiameter_3 : minAdmissibleDiameter 3 = 6 := by
+  apply le_antisymm
+  · -- Upper: {0,2,6} witnesses D(3) ≤ 6
+    apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
+    exact ⟨{0, 2, 6}, by decide, admissible_triple_0_2_6, by native_decide⟩
+  · -- Lower: every admissible triple has diameter ≥ 6
+    apply le_csInf ⟨6, ⟨{0, 2, 6}, by decide, admissible_triple_0_2_6, by native_decide⟩⟩
+    rintro d ⟨H, hcard, hadm, rfl⟩
+    exact admissible_triple_diam_ge_6 H hcard hadm
+
+/-- D(50) = 246 (Engelsma 2013 exhaustive computation).
+    The lower bound (no admissible 50-tuple with diameter < 246)
+    was verified by exhaustive computer search. -/
 axiom minAdmissibleDiameter_50 : minAdmissibleDiameter 50 = 246
 
 -- ============================================================
@@ -88,11 +233,23 @@ theorem smallQuad_diameter : smallQuad.max' (by simp [smallQuad]) -
 -- ============================================================
 
 /-- The minimum admissible k-tuple diameter grows at least as fast as k.
-    This follows because the elements must avoid covering all residues
-    mod any prime p ≤ k. -/
+    This follows because k distinct natural numbers span at least k - 1. -/
 theorem diameter_lower_bound (k : ℕ) (hk : 2 ≤ k) :
     k ≤ minAdmissibleDiameter k + 1 := by
-  sorry
+  unfold minAdmissibleDiameter
+  by_cases hne : Set.Nonempty {d | ∃ H : Finset ℕ, H.card = k ∧ IsAdmissible H ∧ fsDiameter H = d}
+  · -- Every achievable diameter d satisfies k ≤ d + 1
+    have hbound : ∀ d ∈ {d | ∃ H : Finset ℕ, H.card = k ∧ IsAdmissible H ∧ fsDiameter H = d},
+        k ≤ d + 1 := by
+      rintro d ⟨H, hcard, _, rfl⟩
+      have hne' : H.Nonempty := Finset.card_pos.mp (by omega)
+      rw [hcard]
+      exact finset_card_le_diameter_succ H hne'
+    linarith [le_csInf hne hbound]
+  · -- Empty set: sInf = 0. Need k ≤ 1, but k ≥ 2.
+    -- This case requires showing admissible k-tuples exist for all k ≥ 2.
+    exfalso; apply hne
+    sorry -- TODO: prove admissible k-tuples exist for general k ≥ 1
 
 /-- The prime number theorem implies D(k) ≤ C · k(log k)² for some constant C.
     This is the upper bound from greedy admissible tuple construction. -/

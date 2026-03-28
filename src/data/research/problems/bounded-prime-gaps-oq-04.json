@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated 1 of 4 axioms (maynard_under_eh). Remaining 3 axioms and 2 sorries blocked by opaque minAdmissibleDiameter.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (D(2), D(3)) via sInf definition + parity argument. 3A→1A.",
     "builtItems": [
       "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
       "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
@@ -38,7 +38,11 @@
       "BoundedPrimeGapsOQ04.lean: BVPrerequisiteLayer with effort estimates (12000 lines)",
       "Gallery entry with meta.json and index.ts",
       "Eliminated maynard_under_eh axiom (proved from minAdmissibleDiameter_3)",
-      "Replaced trivial elliott_halberstam_improvement with eh_improvement_ratio and eh_bound_lt_unconditional"
+      "Replaced trivial elliott_halberstam_improvement with eh_improvement_ratio and eh_bound_lt_unconditional",
+      "Replaced opaque minAdmissibleDiameter with noncomputable def via sInf",
+      "PROVED D(2)=2: consecutive non-admissibility + {0,2} witness",
+      "PROVED D(3)=6: parity argument (mixed→mod2, same→AP diff 2→mod3) + {0,2,6} witness",
+      "New lemmas: not_admissible_consecutive, not_admissible_ap_diff2, finset_card_le_diameter_succ"
     ],
     "insights": [
       "BV gives RH-quality results without RH — primes equidistribute on average over moduli q <= sqrt(x)",
@@ -48,7 +52,9 @@
       "Mathlib already has Dirichlet characters, L-functions, primes in AP, PNT — roughly 70% coverage",
       "maynard_under_eh axiom is redundant: D(3)=6≤12 witnesses it directly from minAdmissibleDiameter_3",
       "Remaining 3 axioms are opaque function values that cannot be eliminated without making minAdmissibleDiameter computable",
-      "2 sorries (diameter_lower_bound, diameter_upper_bound_exists) also blocked by opaque function"
+      "2 sorries (diameter_lower_bound, diameter_upper_bound_exists) also blocked by opaque function",
+      "Key insight for D(3)≥6: 3 same-parity elements in interval ≤5 must form {a,a+2,a+4}, which is non-admissible mod 3",
+      "diameter_lower_bound mostly proved — only missing piece is existence of admissible k-tuples for general k"
     ],
     "mathlibGaps": [
       "Polya-Vinogradov inequality (character sum bounds)",
@@ -79,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.432Z",
-  "lastUpdate": "2026-03-26T20:00:24.432Z",
+  "lastUpdate": "2026-03-27T05:30:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -153,8 +159,8 @@
       "path": "Proofs/BoundedPrimeGapsTPC.lean",
       "filename": "BoundedPrimeGapsTPC.lean",
       "lineCount": 282,
-      "theoremCount": 13,
-      "axiomCount": 0,
+      "theoremCount": 18,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
