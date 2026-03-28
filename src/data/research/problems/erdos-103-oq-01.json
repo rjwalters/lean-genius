@@ -1,13 +1,13 @@
 {
   "slug": "erdos-103-oq-01",
-  "title": "Does h(n) → ∞ as n → ∞",
+  "title": "Does h(n) \u2192 \u221e as n \u2192 \u221e",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Does h(n) → ∞ as n → ∞.",
+    "plain": "Formal investigation in geometry: Does h(n) \u2192 \u221e as n \u2192 \u221e.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.903Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved 14 of 17 Aristotle companion lemmas",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved all 9 sorries in Erdos1033Aristotle.lean (numerical estimates, graph theory). Proved 5 of 8 sorries in Erdos1037Aristotle.lean (handshake lemma, degree bounds, degree range).",
+    "builtItems": [
+      "Erdos1033Aristotle: proved triangle_min_degree via neighborFinset/card_pair",
+      "Erdos1033Aristotle: proved triangle_sum_min from triangle_min_degree",
+      "Erdos1033Aristotle: proved erdosLaskar_gt (>1.46) via sqrt comparison",
+      "Erdos1033Aristotle: proved erdosLaskar_lt (<1.47) via sqrt comparison",
+      "Erdos1033Aristotle: proved fan_gt_one, fan_value via norm_num",
+      "Erdos1033Aristotle: proved gap_positive, erdosLaskar_gt_fan, erdosLaskar_pos",
+      "Erdos1037Aristotle: proved degree_sum_eq_twice_edges via Mathlib handshake lemma",
+      "Erdos1037Aristotle: proved degree_le_card_sub_one via degree_lt_card",
+      "Erdos1037Aristotle: proved distinctDegrees_le_card via card_image_le",
+      "Erdos1037Aristotle: proved degree_range via degree_lt_card",
+      "Erdos1037Aristotle: proved three_fourths_gt_two_thirds via norm_num"
+    ],
+    "insights": [
+      "sqrt comparison technique: to show c < sqrt d, rewrite c = sqrt(c^2) then use sqrt_lt_sqrt",
+      "SimpleGraph.degree_lt_card is key for degree bounds in Mathlib",
+      "SimpleGraph.sum_degrees_eq_twice_card_edges is the handshake lemma in Mathlib",
+      "Finset.card_image_le gives |image f S| <= |S|, useful for distinct value counts"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove complement_degree (needs Mathlib API for complement graph degree)",
+      "Prove pigeonhole_distinct_count and limited_mult_bound_from_pigeonhole",
+      "Work on main file sorries: Erdos1033Problem.lean (14 sorries), Erdos1034Problem.lean (12 sorries)",
+      "Check if any main file axioms can be eliminated"
+    ]
   },
   "tags": [
     "erdos",
@@ -64,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.903Z",
-  "lastUpdate": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-28T14:55:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

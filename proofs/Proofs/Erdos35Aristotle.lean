@@ -21,18 +21,19 @@ open Finset Set
 -- Used in: schnirelmannDensity_le_one (counting function on {1}).
 theorem filter_singleton_card_le (P : ℕ → Prop) [DecidablePred P] :
     ((Finset.range 2 \ {0}).filter P).card ≤ 1 := by
-  sorry
+  rw [range2_sdiff_zero]
+  simp [Finset.filter_singleton]
+  split <;> simp
 
 -- Routine: Finset.range 2 \ {0} = {1}
--- Needed for density calculations at N=1.
 theorem range2_sdiff_zero : Finset.range 2 \ {0} = {1} := by
-  sorry
+  ext x; simp [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton]; omega
 
 -- Routine: If 0 ∈ B and a ∈ A, then a ∈ A + B (sumset).
 -- Used in: density_mono_sumset (A ⊆ A + B when 0 ∈ B).
 theorem mem_sumset_of_zero_mem (A B : Set ℕ) (h0 : (0 : ℕ) ∈ B) (a : ℕ) (ha : a ∈ A) :
     a ∈ {n | ∃ x ∈ A, ∃ y ∈ B, n = x + y} := by
-  sorry
+  exact ⟨a, ha, 0, h0, by omega⟩
 
 -- Routine: The counting function is monotone in N.
 -- |A ∩ {1,...,N}| ≤ |A ∩ {1,...,M}| when N ≤ M.
@@ -45,7 +46,13 @@ theorem counting_mono (A : Set ℕ) (N M : ℕ) (hNM : N ≤ M) :
 -- |A ∩ {1,...,N}| ≤ N for any A.
 theorem counting_le_N (A : Set ℕ) (N : ℕ) :
     ((Finset.range (N + 1) \ {0}).filter (· ∈ A)).card ≤ N := by
-  sorry
+  calc ((Finset.range (N + 1) \ {0}).filter (· ∈ A)).card
+      ≤ (Finset.range (N + 1) \ {0}).card := Finset.card_filter_le _ _
+    _ ≤ N := by
+        have h : (Finset.range (N + 1) \ {0}).card ≤ (Finset.range (N + 1)).card :=
+          Finset.card_sdiff_le
+        rw [Finset.card_range] at h
+        omega
 
 -- Routine: For α ∈ [0,1] and k = 1, the power bound is trivial.
 -- α^0 = 1 ≥ α + α(1-α)/1 = α(2-α) for α ∈ [0,1].
@@ -54,27 +61,24 @@ theorem power_bound_k1 (α : ℝ) (hα0 : 0 ≤ α) (hα1 : α ≤ 1) :
   sorry
 
 -- Routine: For α = 0, the power bound holds trivially.
--- 0^anything = 0 ≥ 0 + 0/k = 0.
 theorem power_bound_alpha_zero (k : ℕ) (hk : k ≥ 1) :
     (0 : ℝ) ^ (1 - 1 / (k : ℝ)) ≥ 0 + 0 * (1 - 0) / k := by
-  sorry
+  simp
 
 -- Routine: For α = 1, both sides equal 1.
--- 1^anything = 1, and 1 + 1*(1-1)/k = 1.
 theorem power_bound_alpha_one (k : ℕ) (hk : k ≥ 1) :
     (1 : ℝ) ^ (1 - 1 / (k : ℝ)) ≥ 1 + 1 * (1 - 1) / k := by
-  sorry
+  simp [one_rpow]
 
--- Routine: Infimum of values in [0,1] is in [0,1].
--- Used to show Schnirelmann density is in [0,1].
+-- Routine: Infimum of nonneg values is nonneg.
 theorem iInf_nonneg_of_nonneg {ι : Type*} [Nonempty ι] (f : ι → ℝ)
-    (hf : ∀ i, 0 ≤ f i) : 0 ≤ ⨅ i, f i := by
-  sorry
+    (hf : ∀ i, 0 ≤ f i) : 0 ≤ ⨅ i, f i :=
+  le_ciInf hf
 
--- Routine: division by positive number preserves ≤.
--- If a/n ≤ 1 when a ≤ n, for density ratio computations.
+-- Routine: a/n ≤ 1 when a ≤ n for positive n.
 theorem ratio_le_one_of_card_le (a n : ℕ) (hn : n > 0) (h : a ≤ n) :
     (a : ℝ) / n ≤ 1 := by
-  sorry
+  rw [div_le_one (Nat.cast_pos.mpr hn)]
+  exact Nat.cast_le.mpr h
 
 end Erdos35Aristotle
