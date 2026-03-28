@@ -19,14 +19,14 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "theoremCount": 30,
-    "lineCount": 904,
-    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_sq_expansion (DCT Parseval identity — needs Lagrange interpolation of Chebyshev polynomials, substantial infrastructure). All other sorries proved: dct_offdiag (product-to-sum + parity), integral_cos_substitution (change of variables), integral_chebyshev_sq (cos² + FTC), chebyshev_integral_trace (trace formula).",
+    "lineCount": 958,
+    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 2 sorries: chebyshev_interp (Chebyshev polynomial interpolation at nodes), chebyshev_sq_expansion (DCT Parseval identity — needs Lagrange interpolation of Chebyshev polynomials, substantial infrastructure).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -199,7 +199,7 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 904,
+    "lineCount": 958,
     "axiomCount": 1,
     "sorryCount": 1,
     "theoremCount": 30,
