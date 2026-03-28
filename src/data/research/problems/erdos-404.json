@@ -29,9 +29,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 2A (lin_bound used, lin_bound_meaning used), 0S.",
+    "progressSummary": "AXIOM ELIMINATED: legendre_formula proved from Mathlib padicValNat_factorial (4->3 axioms). Remaining: lin_bound (Lin 1976), lin_bound_meaning, padic_val_factorial_asymp.",
     "builtItems": [
-      "Proved lin_bound from lin_bound_meaning via csSup_le (axiom eliminated)"
+      "Assessment: 4A all appropriate",
+      "PROVED legendre_formula: padicValNat p n! = legendreSum n p (was axiom, now theorem)"
     ],
     "insights": [
       "lin_bound and lin_bound_meaning both encode Lin 1976 result (f(2,2) ≤ 254) — deep, appropriate",
@@ -40,7 +41,8 @@
       "factorial_sum_factored already proved — clean factoring via factorial divisibility",
       "native_decide examples verify small cases nicely",
       "Well-structured file with good definitions (StrictIncSeq, factorialSum, divisiblePowers)",
-      "padic_val_factorial_asymp axiom unused — removed (3→2A)"
+      "legendre_formula PROVED from Mathlib padicValNat_factorial — reindex Ico to range via sum_Ico_eq_sum_range",
+      "Key: padicValNat_factorial gives sum over Ico 1 b; our legendreSum uses range with shifted index; these match after reindexing"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,9 +69,9 @@
     {
       "path": "Proofs/Erdos404Problem.lean",
       "filename": "Erdos404Problem.lean",
-      "lineCount": 118,
-      "theoremCount": 4,
-      "axiomCount": 1,
+      "lineCount": 97,
+      "theoremCount": 2,
+      "axiomCount": 4,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
