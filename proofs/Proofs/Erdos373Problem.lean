@@ -97,8 +97,9 @@ The main question: does S have only finitely many elements?
 Erdős showed the problem reduces to bounds on largest prime factors.
 -/
 
-/-- The largest prime factor of n (axiomatized). -/
-axiom maxPrimeFactor : ℕ → ℕ
+/-- The largest prime factor of n.
+    Defined using Mathlib's `Nat.primeFactorsList`. Returns 0 for n ≤ 1. -/
+def maxPrimeFactor (n : ℕ) : ℕ := n.primeFactorsList.getLast?.getD 0
 
 /-
 ## Part V: Luca's Theorem (Conditional on ABC)
@@ -106,8 +107,9 @@ axiom maxPrimeFactor : ℕ → ℕ
 Florian Luca proved finiteness assuming the ABC conjecture.
 -/
 
-/-- The radical of n: product of distinct prime factors (axiomatized). -/
-axiom radical : ℕ → ℕ
+/-- The radical of n: product of distinct prime factors.
+    Defined as the product of elements in `Nat.primeFactors`. -/
+def radical (n : ℕ) : ℕ := n.primeFactors.prod id
 
 /-- The ABC conjecture (simplified form). -/
 def ABCConjecture : Prop :=

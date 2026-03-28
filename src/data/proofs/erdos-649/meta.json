@@ -50,9 +50,9 @@
       "Mahler's growth theorem for P(n(n+1))",
       "Positive examples: (2,3) and (3,2) work"
     ],
-    "axiomCount": 11,
+    "axiomCount": 6,
     "lineCount": 345,
-    "assumptions": "17 axioms: greatestPrimeFactor, gpf_prime, gpf_prime_power, and 14 more. See Lean source for complete statements.",
+    "assumptions": "6 axioms: gpf_mul, gpf_eq_two_iff, consecutive_gpf_divides, tong_theorem, no_solution_19_2, mahler_growth. P(n) function and 5 properties now proved from Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -164,7 +164,7 @@
     ],
     "namespace": "Erdos649",
     "lineCount": 345,
-    "axiomCount": 11,
+    "axiomCount": 6,
     "theoremCount": 14,
     "definitionCount": 1
   },

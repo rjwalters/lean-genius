@@ -54,31 +54,50 @@ Examples:
 - P(100) = P(2² · 5²) = 5
 - P(2^k) = 2 for all k ≥ 1
 -/
-axiom greatestPrimeFactor : ℕ → ℕ
+/-- Greatest prime factor of n: the last element of the sorted prime factorization.
+    Returns 0 for n ≤ 1. Defined using Mathlib's `Nat.primeFactorsList`. -/
+def greatestPrimeFactor (n : ℕ) : ℕ := n.primeFactorsList.getLast?.getD 0
 
 -- Notation for greatest prime factor
 notation "P(" m ")" => greatestPrimeFactor m
+
+/-- The primeFactorsList of n > 1 is nonempty. -/
+private lemma primeFactorsList_ne_nil' {n : ℕ} (hn : n > 1) :
+    n.primeFactorsList ≠ [] := by
+  intro h; have := Nat.primeFactorsList_eq_nil.mp h; omega
+
+/-- P(n) is a member of primeFactorsList when n > 1. -/
+private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
+    P(n) ∈ n.primeFactorsList := by
+  unfold greatestPrimeFactor
+  have hne := primeFactorsList_ne_nil' hn
+  have : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
+    List.getLast?_eq_getLast hne
+  simp [this]; exact List.getLast_mem hne
+
+/-- P(1) = 0 by convention. Proved by computation. -/
+theorem gpf_one : P(1) = 0 := by native_decide
+
+/-- P(m) divides m for m > 1. Proved from Mathlib's primeFactorsList API. -/
+theorem gpf_divides (m : ℕ) (hm : m > 1) : P(m) ∣ m :=
+  (Nat.mem_primeFactorsList (by omega) |>.mp (gpf_mem_factors' hm)).2
+
+/-- P(m) is prime for m > 1. Proved from Mathlib's primeFactorsList API. -/
+theorem gpf_is_prime (m : ℕ) (hm : m > 1) : (P(m)).Prime :=
+  (Nat.mem_primeFactorsList (by omega) |>.mp (gpf_mem_factors' hm)).1
+
+/-- P(p^k) = p for prime p and k ≥ 1. -/
+theorem gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p := by
+  simp [greatestPrimeFactor, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
 
 /-- P(p) = p for prime p. -/
 theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
   have h := gpf_prime_power p 1 hp (by omega)
   simpa [pow_one] using h
 
-/-- P(p^k) = p for prime p and k ≥ 1. -/
-axiom gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p
-
 /-- P(m * n) = max(P(m), P(n)) for m, n > 1. -/
 axiom gpf_mul (m n : ℕ) (hm : m > 1) (hn : n > 1) :
     P(m * n) = max (P(m)) (P(n))
-
-/-- P(m) divides m for m > 1. -/
-axiom gpf_divides (m : ℕ) (hm : m > 1) : P(m) ∣ m
-
-/-- P(m) is prime for m > 1. -/
-axiom gpf_is_prime (m : ℕ) (hm : m > 1) : (P(m)).Prime
-
-/-- P(1) = 0 by convention. -/
-axiom gpf_one : P(1) = 0
 
 /-
 ## Part II: The Erdős Conjecture

@@ -50,23 +50,49 @@ open Nat Finset BigOperators
 /- ## Greatest Prime Factor -/
 
 /-- The greatest prime factor of n (0 if n ≤ 1).
-    We axiomatize this for simplicity since Mathlib's primeFactors API varies. -/
-axiom gpf (n : ℕ) : ℕ
+    Defined using Mathlib's `Nat.primeFactorsList`, which returns the sorted
+    list of prime factors with multiplicity. -/
+def gpf (n : ℕ) : ℕ := n.primeFactorsList.getLast?.getD 0
 
-/-- gpf returns 0 for n ≤ 1. -/
-axiom gpf_le_one (n : ℕ) (hn : n ≤ 1) : gpf n = 0
+/-- gpf returns 0 for n ≤ 1. Proved by computation. -/
+theorem gpf_le_one (n : ℕ) (hn : n ≤ 1) : gpf n = 0 := by
+  have : n = 0 ∨ n = 1 := by omega
+  rcases this with rfl | rfl <;> native_decide
 
-/-- gpf of n > 1 divides n. -/
-axiom gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n
+/-- The primeFactorsList of n > 1 is nonempty. -/
+private lemma primeFactorsList_ne_nil {n : ℕ} (hn : n > 1) :
+    n.primeFactorsList ≠ [] := by
+  intro h
+  have := Nat.primeFactorsList_eq_nil.mp h
+  omega
 
-/-- gpf of n > 1 is prime. -/
-axiom gpf_prime_of_gt_one (n : ℕ) (hn : n > 1) : (gpf n).Prime
+/-- gpf n is a member of primeFactorsList n when n > 1. -/
+private lemma gpf_mem_primeFactorsList {n : ℕ} (hn : n > 1) :
+    gpf n ∈ n.primeFactorsList := by
+  unfold gpf
+  have hne := primeFactorsList_ne_nil hn
+  have hls : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
+    List.getLast?_eq_getLast hne
+  simp [hls]
+  exact List.getLast_mem hne
+
+/-- gpf of n > 1 divides n. Proved from Mathlib's primeFactorsList API. -/
+theorem gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n := by
+  have hne : n ≠ 0 := by omega
+  exact (Nat.mem_primeFactorsList hne |>.mp (gpf_mem_primeFactorsList hn)).2
+
+/-- gpf of n > 1 is prime. Proved from Mathlib's primeFactorsList API. -/
+theorem gpf_prime_of_gt_one (n : ℕ) (hn : n > 1) : (gpf n).Prime := by
+  have hne : n ≠ 0 := by omega
+  exact (Nat.mem_primeFactorsList hne |>.mp (gpf_mem_primeFactorsList hn)).1
 
 /-- gpf of a prime is itself. -/
-axiom gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p
+theorem gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p := by
+  simp [gpf, Nat.primeFactorsList_prime hp]
 
 /-- gpf of a prime power is the prime. -/
-axiom gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^ k) = p
+theorem gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^ k) = p := by
+  simp [gpf, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
 
 /-- gpf of a product is at most the max of the gpfs. -/
 axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
@@ -116,11 +142,11 @@ theorem steinerberger_succ (m : ℕ) (hm : m ≥ 2) :
 /-- Example: 63 = 8² - 1 works. -/
 example : SteinerbergerConstruction 8 = 63 := by native_decide
 
-/-- gpf(63) = gpf(7·9) = 7. -/
-axiom gpf_63 : gpf 63 = 7
+/-- gpf(63) = gpf(7·9) = 7. Proved by computation. -/
+theorem gpf_63 : gpf 63 = 7 := by native_decide
 
-/-- gpf(64) = gpf(2⁶) = 2. -/
-axiom gpf_64 : gpf 64 = 2
+/-- gpf(64) = gpf(2⁶) = 2. Proved by computation. -/
+theorem gpf_64 : gpf 64 = 2 := by native_decide
 
 /-- 63 is √63-smooth: 7 < √63 ≈ 7.94. -/
 theorem n63_sqrt_smooth : IsSqrtSmooth 63 := by
