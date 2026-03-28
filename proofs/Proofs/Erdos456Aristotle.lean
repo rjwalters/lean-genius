@@ -44,12 +44,12 @@ def smallestPrimeMod1 (n : ℕ) : ℕ :=
     From Nat.totient_prime_pow_succ with p = 2. -/
 theorem totient_two_pow_succ (m : ℕ) :
     Nat.totient (2 ^ (m + 1)) = 2 ^ m := by
-  sorry
+  rw [Nat.totient_prime_pow_succ Nat.prime_two]; simp
 
 /-- 2 * 2^k = 2^(k+1) — basic power arithmetic. -/
 theorem two_mul_two_pow (k : ℕ) :
     2 * 2 ^ k = 2 ^ (k + 1) := by
-  sorry
+  ring
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- Target 2: AlmostAll counting argument
@@ -66,7 +66,16 @@ theorem density_implies_witness (P : ℕ → Prop) (N M : ℕ)
     (hM : 2 * N < M)
     (hcount : (Finset.filter (fun n => ¬P n) (Finset.range M)).card * 2 < M) :
     ∃ n, N ≤ n ∧ n < M ∧ P n := by
-  sorry
+  by_contra h
+  push_neg at h
+  -- Every n in [N, M) fails P, so [N, M) ⊆ exceptions
+  have hsub : Finset.Ico N M ⊆ Finset.filter (fun n => ¬P n) (Finset.range M) := by
+    intro n hn
+    rw [Finset.mem_Ico] at hn
+    exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), h n hn.1 hn.2⟩
+  have hle := Finset.card_le_card hsub
+  rw [Finset.card_Ico] at hle
+  omega
 
 end
 
