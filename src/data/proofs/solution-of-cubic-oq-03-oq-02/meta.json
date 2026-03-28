@@ -1,0 +1,44 @@
+{
+  "id": "solution-of-cubic-oq-03-oq-02",
+  "title": "Casus Irreducibilis: When Real Roots Require Complex Cube Roots",
+  "slug": "solution-of-cubic-oq-03-oq-02",
+  "description": "Formalizes the casus irreducibilis: when the depressed cubic x³+px+q=0 has three distinct real roots (Δ>0), Cardano's formula necessarily involves non-real complex cube roots. Proves D<0 implies non-real arguments, verifies a concrete example (x³-7x+6=0), and states Wantzel's impossibility theorem.",
+  "meta": {
+    "author": "Cardano (1545), Bombelli (1572), Wantzel (1843); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Casus_irreducibilis",
+    "date": "1545",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ02.lean",
+    "tags": ["algebra", "cubic-equations", "complex-numbers", "cardano-formula", "casus-irreducibilis", "galois-theory", "research"],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "theoremCount": 13,
+    "defCount": 8,
+    "lineCount": 195,
+    "dateAdded": "2026-03-28",
+    "assumptions": "3 axioms: trigRoots_distinct (cosine injectivity), trigRoot_is_root (triple angle identity), wantzel_casus_irreducibilis (Galois theory). No sorries.",
+    "prerequisites": ["Depressed cubic and Cardano's formula", "Complex numbers and cube roots", "Discriminant of polynomial equations"],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The casus irreducibilis was discovered by Cardano in 1545 when he found that some cubic equations with three real roots led to square roots of negative numbers in his formula. Bombelli (1572) showed how to work with these complex expressions to recover the real roots. Wantzel (1843) proved that the passage through complex numbers is unavoidable — it's the simplest example of a real mathematical result that requires non-real intermediate computation.",
+    "problemStatement": "For the depressed cubic $x^3 + px + q = 0$ with discriminant $\\Delta = -4p^3 - 27q^2 > 0$ (three distinct real roots), Cardano's formula: $x = \\sqrt[3]{-q/2 + \\sqrt{D}} + \\sqrt[3]{-q/2 - \\sqrt{D}}$ where $D = q^2/4 + p^3/27 < 0$, necessarily involves non-real cube roots.",
+    "text": "Formalizes the casus irreducibilis with proofs that D<0, Cardano's arguments are non-real, and a concrete example x³-7x+6=0.",
+    "proofStrategy": "1. Prove D<0 from Δ>0 using nlinarith. 2. Show Cardano's arguments have nonzero imaginary part from √(-D)>0. 3. Give trigonometric form of real roots. 4. State Wantzel's impossibility.",
+    "keyInsights": [
+      "D = q²/4 + p³/27 < 0 when Δ > 0: proved by a single nlinarith from the discriminant relation",
+      "The Cardano argument -q/2 + i√(-D) is non-real iff √(-D) > 0, which follows from D < 0",
+      "The trigonometric form x_k = 2√(-p/3)·cos((θ+2πk)/3) bypasses complex numbers entirely",
+      "Wantzel's theorem is Galois-theoretic: the splitting field has group S₃, preventing real radical resolution",
+      "x³ - 7x + 6 = 0 is a concrete casus irreducibilis: three real roots (1,2,-3) but Δ = 400 > 0"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The casus irreducibilis demonstrates that complex numbers are not just a convenience but a necessity: some real polynomial equations with entirely real roots cannot be solved without passing through the complex numbers.",
+    "openQuestions": ["Formalize Wantzel's theorem using Lean's Galois theory infrastructure", "Extend to quartics: when does the quartic casus irreducibilis occur?"]
+  },
+  "leanFile": {"imports": ["Mathlib.Analysis.SpecialFunctions.Pow.Complex", "Mathlib.Data.Complex.Basic"], "namespace": "CasusIrreducibilis", "lineCount": 195, "axiomCount": 3, "theoremCount": 13, "definitionCount": 8},
+  "crossReferences": [{"targetId": "solution-of-cubic", "relationship": "extends", "description": "The casus irreducibilis is a fundamental limitation of Cardano's cubic formula from the parent proof"}]
+}
