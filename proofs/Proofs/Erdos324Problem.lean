@@ -100,6 +100,34 @@ theorem quartics_not_distinct : ¬PowerPairSumDistinct 4 := by
     simp [pairSumFn, eval_pow, eval_X]
   exact absurd (h hp1 hp2 heq) (by decide)
 
+/-- For n = 0, the property fails: 0⁰ + 1⁰ = 0⁰ + 2⁰ = 2. -/
+theorem zeroth_power_not_distinct : ¬PowerPairSumDistinct 0 := by
+  intro h
+  have hp1 : ((0 : ℕ), (1 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((0 : ℕ), (2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (X ^ 0 : ℤ[X]) (0, 1) = pairSumFn (X ^ 0 : ℤ[X]) (0, 2) := by
+    simp [pairSumFn, pow_zero, eval_one]
+  exact absurd (h hp1 hp2 heq) (by decide)
+
+/-- For n = 1, the property fails: 0 + 3 = 1 + 2 = 3. -/
+theorem first_power_not_distinct : ¬PowerPairSumDistinct 1 := by
+  intro h
+  have hp1 : ((0 : ℕ), (3 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((1 : ℕ), (2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (X ^ 1 : ℤ[X]) (0, 3) = pairSumFn (X ^ 1 : ℤ[X]) (1, 2) := by
+    simp [pairSumFn, pow_one, eval_X]
+  exact absurd (h hp1 hp2 heq) (by decide)
+
+/-- Complete characterization: xⁿ fails for all n < 5. -/
+theorem power_below_five_not_distinct (n : ℕ) (hn : n < 5) :
+    ¬PowerPairSumDistinct n := by
+  interval_cases n
+  · exact zeroth_power_not_distinct
+  · exact first_power_not_distinct
+  · exact squares_not_distinct
+  · exact cubes_not_distinct
+  · exact quartics_not_distinct
+
 /-
 ## Section V: Lower Degree Impossibility
 -/
