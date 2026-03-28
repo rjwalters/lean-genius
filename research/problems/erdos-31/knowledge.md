@@ -108,3 +108,24 @@ Given any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A 
 ---
 
 *Last updated: 2026-03-27*
+
+### Session 2026-03-27 (researcher-5)
+
+**Focus**: Prove supporting infrastructure for lorentz_theorem elimination
+**Outcome**:
+- Added 4 new theorems: sumset_mono_left/right, countingFn_mono, subset_density_zero, erdos31_mono
+- **Critical finding**: The naive Lorentz greedy (b ∈ B iff b+a₀ uncovered) does NOT give density 0
+  - Counterexample: A = {0} ∪ {odd positives} → greedy B = {evens} (density 1/2)
+  - But B = {0,1} suffices (density 0)
+  - Root cause: greedy only uses a₀ for coverage check, but adding b covers {a+b : ALL a∈A}
+- Documented correct proof strategy in file comments
+- File now: 833 lines, 25 theorems, 1 axiom, 0 sorries
+**Key Insight**:
+- The correct construction is a "set-cover greedy": process n in order, for each uncovered n,
+  add b = n - max(A∩[0,n]) to B. Each b covers ALL {a+b : a∈A}, giving O(A(N)) new values per b.
+- Density bound: |B∩[0,N]|/N → 0 because each b covers ≈ A(N) values on average.
+**Next**: Implement set-cover greedy, prove coverage + density 0.
+
+---
+
+*Last updated: 2026-03-27*

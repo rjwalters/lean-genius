@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\forall A \\subseteq \\mathbb{N} \\text{ infinite}, \\exists B \\subseteq \\mathbb{N} : d(B) = 0 \\land |(\\mathbb{N} \\setminus (A+B)) \\cap \\mathbb{N}^+| < \\infty",
-    "plain": "Given any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.",
+    "plain": "Given any infinite set A \u2282 \u2115, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.",
     "whyMatters": []
   },
   "knownResults": {
@@ -32,35 +32,46 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (lorentz_theorem — solved by Lorentz, deep combinatorial construction), 22T proved, 0S in main file.",
+    "progressSummary": "25T proved, 1A (lorentz_theorem). Added 4 infrastructure theorems. Key insight: naive greedy fails for density, need set-cover greedy.",
     "builtItems": [
-      "primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (Chebyshev splitting argument, ~70 lines)",
+      "primeCounting_le_chebyshev: \u03c0(N) \u2264 2N\u00b7log(4)/log(N) + \u221aN + 1 (Chebyshev splitting argument, ~70 lines)",
       "theorem sumset_comm: A+B = B+A (proved via omega)",
       "theorem sumset_mono_left/right: sumset monotone in both args (proved, term-mode)",
       "theorem sumset_empty_left/right: empty sumset is empty (proved via simp)",
       "theorem coversCofinite_implies_allButFinitely: threshold coverage implies finiteness of exceptions",
       "harmonicNumber_eq_sum_Icc: reindexing harmonic numbers",
-      "m_of_n_ge: m(n) ≥ n from achieves axiom",
+      "m_of_n_ge: m(n) \u2265 n from achieves axiom",
       "partialHarmonicSum_split_last: split off last term of Icc sum",
       "epsilon_le_inv_m: overshoot bounded by last term",
       "partialHarmonicSum_as_difference: proved H_m - H_{n-1} identity",
-      "epsilon_upper_bound: proved ε(n) ≤ 1/n"
+      "epsilon_upper_bound: proved \u03b5(n) \u2264 1/n",
+      "sumset_mono_left: A \u2286 A' \u2192 A +\u209b B \u2286 A' +\u209b B (term-mode proof)",
+      "sumset_mono_right: B \u2286 B' \u2192 A +\u209b B \u2286 A +\u209b B' (term-mode proof)",
+      "countingFn_mono: A \u2286 B \u2192 countingFn A N \u2264 countingFn B N (via ncard_le_ncard)",
+      "subset_density_zero: A \u2286 B, B density 0 \u2192 A density 0 (squeeze theorem)",
+      "erdos31_mono: theorem for A transfers to any superset A' \u2287 A"
     ],
     "insights": [
-      "Proved primeCounting_le_chebyshev via small/large prime splitting — completing the full proof of primes have density zero",
+      "Proved primeCounting_le_chebyshev via small/large prime splitting \u2014 completing the full proof of primes have density zero",
       "Proof pattern was already in Erdos31Problem.lean (main file) but was missing from the standalone PrimesDensity file",
-      "CoversCofinite is strictly stronger than CoversAllButFinitely — the former gives a threshold N₀",
+      "CoversCofinite is strictly stronger than CoversAllButFinitely \u2014 the former gives a threshold N\u2080",
       "Sumset is commutative (add_comm), monotone in both arguments (subset preservation)",
       "Problem is fully axiomatized with minimal assumptions - only the deep Lorentz 1954 construction remains as axiom",
       "partialHarmonicSum_as_difference: reindex via Finset.Icc sum_sdiff",
-      "m_of_n_ge derived from axioms: if m<n then Icc empty giving sum=0, contradicting ≥1",
-      "epsilon_upper_bound: split last term + minimality gives ε(n) ≤ 1/m(n) ≤ 1/n",
-      "lorentz_theorem: Lorentz proved Erdős #31 — the proof is a constructive combinatorial argument too deep to formalize",
-      "Main file Erdos31Problem.lean is clean: 22 theorems, 1 appropriate axiom, 0 sorries"
+      "m_of_n_ge derived from axioms: if m<n then Icc empty giving sum=0, contradicting \u22651",
+      "epsilon_upper_bound: split last term + minimality gives \u03b5(n) \u2264 1/m(n) \u2264 1/n",
+      "lorentz_theorem: Lorentz proved Erd\u0151s #31 \u2014 the proof is a constructive combinatorial argument too deep to formalize",
+      "Main file Erdos31Problem.lean is clean: 22 theorems, 1 appropriate axiom, 0 sorries",
+      "CRITICAL: The naive Lorentz greedy (b \u2208 B iff b+a\u2080 uncovered) does NOT give density 0 for all infinite A. Counterexample: A = {0} \u222a {odd positives} \u2192 greedy B = {evens} (density 1/2), while B = {0,1} suffices. The greedy only checks a\u2080 for coverage, but adding b covers ALL {a+b : a\u2208A}. Correct construction must use a 'set-cover greedy' that distributes coverage across all A-elements."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| countingFn | def | Counting function |A ∩ {1,...,N}| | Erdos31Problem.lean:31 |\n| HasDensity | def | A set has density d | Erdos31Problem.lean:35 |\n| HasDensityZero | def | A set has density 0 | Erdos31Problem.lean:39 |\n| upperDensity | def | Upper density via limsup | Erdos31Problem.lean:42 |\n| Sumset | def | A + B sumset | Erdos31Problem.lean:51 |\n| CoversCofinite | def | A + B covers cofinite set | Erdos31Problem.lean:56 |\n| CoversAllButFinitely | def | A + B omits only finitely many | Erdos31Problem.lean:60 |\n| Erdos31Statement | def | Main theorem statement | Erdos31Problem.lean:87 |\n| OptimalBDensity | def | Optimal density for complement | Erdos31Problem.lean:133 |\n| IsAsymptoticBasis | def | Asymptotic additive basis | Erdos31Problem.lean:171 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| powers_of_2_in_Icc_eq | PROVED | Bijection: powers of 2 in [1,N] = image of {0,...,log₂N} |\n| powers_of_2_count_bound | PROVED | Count of powers of 2 ≤ log₂N + 1 |\n| squares_in_Icc_eq | PROVED | Bijection: squares in [1,N] = image of {1,...,√N} |\n| squares_count_bound | PROVED | Count of squares ≤ √N + 1 |\n| tendsto_sqrt_inv | PROVED | (√N + 1)/N → 0 as N → ∞ |\n| tendsto_log_inv | PROVED | (log₂N + 1)/N → 0 as N → ∞ |\n| powers_of_2_density_zero | PROVED | Powers of 2 have density 0 |\n| squares_density_zero | PROVED | Squares have density 0 |\n| primes_density_zero | AXIOM | Primes have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| optimal_B_density_zero | AXIOM | Optimal B-density is 0 |\n| lorentz_strengthened | AXIOM | Strengthened version |\n| infinite_set_augmentable | AXIOM | Connection to additive bases |\n\n## Insights\n\n1. **Lorentz Construction**: Build B iteratively to fill gaps left by A\n2. **Density Trade-off**: Sparse A needs denser B; dense A allows sparser B\n3. **Optimal Bound**: |B ∩ [1,N]| = O(N/log N) is essentially optimal\n4. **Additive Basis Connection**: A ∪ B becomes an asymptotic basis of order 2\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- density\n- sumsets\n\n## Related Problems\n\n- Problem #221 (similar questions about density)\n\n## References\n\n- Lorentz, G.G. (1954): \"On a problem of additive number theory\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 210+ lines, 5 axioms, 6 sorries\n**Next**: Submit HARD sorries to Aristotle for proof search\n\n### Session 2026-01-16\n\n**Focus**: Prove counting bound lemmas\n**Outcome**:\n- Proved `powers_of_2_count_bound` using bijection with {0,...,log₂N}\n- Proved `squares_count_bound` using bijection with {1,...,√N}\n- Proved density-zero results for powers of 2 and squares\n- File now has 499 lines, 7 axioms, 0 sorries\n**Key Techniques**:\n- Used `Set.ncard_image_le` for counting images of finite sets\n- Used `Nat.log_mono_right` and `Nat.pow_log_le_self` for log bounds\n- Used `Nat.le_sqrt` and `Nat.sqrt_le_self` for sqrt bounds\n**Next**: Remaining 7 axioms are \"deep\" results (Lorentz 1954 theorem, prime density)\n\n---\n\n*Last updated: 2026-01-16*\n"
+    "nextSteps": [
+      "Implement set-cover greedy: process n in order, for uncovered n add b = n - max(A\u2229[0,n])",
+      "Each new b covers {a+b : a\u2208A} \u2248 A(N) values, giving density 0",
+      "Alternative: cyclic assignment (n mod k(n)) distributing across A-elements",
+      "Prove density via: each b covers \u2265 1 new value, total coverage \u2248 N, so |B| \u2264 N/avg_coverage"
+    ],
+    "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A \u2282 \u2115, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| countingFn | def | Counting function |A \u2229 {1,...,N}| | Erdos31Problem.lean:31 |\n| HasDensity | def | A set has density d | Erdos31Problem.lean:35 |\n| HasDensityZero | def | A set has density 0 | Erdos31Problem.lean:39 |\n| upperDensity | def | Upper density via limsup | Erdos31Problem.lean:42 |\n| Sumset | def | A + B sumset | Erdos31Problem.lean:51 |\n| CoversCofinite | def | A + B covers cofinite set | Erdos31Problem.lean:56 |\n| CoversAllButFinitely | def | A + B omits only finitely many | Erdos31Problem.lean:60 |\n| Erdos31Statement | def | Main theorem statement | Erdos31Problem.lean:87 |\n| OptimalBDensity | def | Optimal density for complement | Erdos31Problem.lean:133 |\n| IsAsymptoticBasis | def | Asymptotic additive basis | Erdos31Problem.lean:171 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| powers_of_2_in_Icc_eq | PROVED | Bijection: powers of 2 in [1,N] = image of {0,...,log\u2082N} |\n| powers_of_2_count_bound | PROVED | Count of powers of 2 \u2264 log\u2082N + 1 |\n| squares_in_Icc_eq | PROVED | Bijection: squares in [1,N] = image of {1,...,\u221aN} |\n| squares_count_bound | PROVED | Count of squares \u2264 \u221aN + 1 |\n| tendsto_sqrt_inv | PROVED | (\u221aN + 1)/N \u2192 0 as N \u2192 \u221e |\n| tendsto_log_inv | PROVED | (log\u2082N + 1)/N \u2192 0 as N \u2192 \u221e |\n| powers_of_2_density_zero | PROVED | Powers of 2 have density 0 |\n| squares_density_zero | PROVED | Squares have density 0 |\n| primes_density_zero | AXIOM | Primes have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| optimal_B_density_zero | AXIOM | Optimal B-density is 0 |\n| lorentz_strengthened | AXIOM | Strengthened version |\n| infinite_set_augmentable | AXIOM | Connection to additive bases |\n\n## Insights\n\n1. **Lorentz Construction**: Build B iteratively to fill gaps left by A\n2. **Density Trade-off**: Sparse A needs denser B; dense A allows sparser B\n3. **Optimal Bound**: |B \u2229 [1,N]| = O(N/log N) is essentially optimal\n4. **Additive Basis Connection**: A \u222a B becomes an asymptotic basis of order 2\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- density\n- sumsets\n\n## Related Problems\n\n- Problem #221 (similar questions about density)\n\n## References\n\n- Lorentz, G.G. (1954): \"On a problem of additive number theory\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 210+ lines, 5 axioms, 6 sorries\n**Next**: Submit HARD sorries to Aristotle for proof search\n\n### Session 2026-01-16\n\n**Focus**: Prove counting bound lemmas\n**Outcome**:\n- Proved `powers_of_2_count_bound` using bijection with {0,...,log\u2082N}\n- Proved `squares_count_bound` using bijection with {1,...,\u221aN}\n- Proved density-zero results for powers of 2 and squares\n- File now has 499 lines, 7 axioms, 0 sorries\n**Key Techniques**:\n- Used `Set.ncard_image_le` for counting images of finite sets\n- Used `Nat.log_mono_right` and `Nat.pow_log_le_self` for log bounds\n- Used `Nat.le_sqrt` and `Nat.sqrt_le_self` for sqrt bounds\n**Next**: Remaining 7 axioms are \"deep\" results (Lorentz 1954 theorem, prime density)\n\n---\n\n*Last updated: 2026-01-16*\n"
   },
   "tags": [
     "erdos",
@@ -216,8 +227,8 @@
     {
       "path": "Proofs/Erdos31Problem.lean",
       "filename": "Erdos31Problem.lean",
-      "lineCount": 787,
-      "theoremCount": 22,
+      "lineCount": 834,
+      "theoremCount": 27,
       "axiomCount": 1,
       "defCount": 12,
       "sorryCount": 0,
