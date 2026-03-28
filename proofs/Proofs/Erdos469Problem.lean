@@ -127,6 +127,32 @@ theorem not_pseudoperfect_14 : ¬IsPseudoperfect 14 := by
   have : (14 : ℕ).properDivisors.sum id = 10 := by decide
   omega
 
+-- Non-pseudoperfect: proper divisors of 88
+
+theorem not_pseudoperfect_8 : ¬IsPseudoperfect 8 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 8 S hS_sub
+  have : (8 : ℕ).properDivisors.sum id = 7 := by decide
+  omega
+
+theorem not_pseudoperfect_11 : ¬IsPseudoperfect 11 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 11 S hS_sub
+  have : (11 : ℕ).properDivisors.sum id = 1 := by decide
+  omega
+
+theorem not_pseudoperfect_22 : ¬IsPseudoperfect 22 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 22 S hS_sub
+  have : (22 : ℕ).properDivisors.sum id = 14 := by decide
+  omega
+
+theorem not_pseudoperfect_44 : ¬IsPseudoperfect 44 := by
+  intro ⟨S, hS_sub, hS_sum⟩
+  have := subset_sum_le_total 44 S hS_sub
+  have : (44 : ℕ).properDivisors.sum id = 40 := by decide
+  omega
+
 -- ## Key Structural Results
 
 /-- The smallest pseudoperfect number is 6 -/
@@ -178,6 +204,26 @@ theorem primitive_pseudoperfect_28 : IsPrimitivePseudoperfect 28 := by
     first
     | exact absurd hps not_pseudoperfect_7
     | exact absurd hps not_pseudoperfect_14
+    | exact absurd hdvd (by decide)
+
+/-- 88 is pseudoperfect: 88 = 1 + 2 + 8 + 11 + 22 + 44 -/
+theorem pseudoperfect_88 : IsPseudoperfect 88 :=
+  ⟨{1, 2, 8, 11, 22, 44}, by decide, by decide⟩
+
+/-- 88 is the fourth primitive pseudoperfect number (A006036):
+    88 = 2³ × 11. Proper divisors: {1, 2, 4, 8, 11, 22, 44}, all deficient.
+    σ₀(8) = 7, σ₀(11) = 1, σ₀(22) = 14, σ₀(44) = 40 — all less than the number. -/
+theorem primitive_pseudoperfect_88 : IsPrimitivePseudoperfect 88 := by
+  refine ⟨by norm_num, pseudoperfect_88, ?_⟩
+  intro m hm hdvd hps
+  have hge := pseudoperfect_ge_six m hps
+  -- m ≥ 6, m < 88, m ∣ 88 → m ∈ {8, 11, 22, 44}, all deficient
+  interval_cases m <;>
+    first
+    | exact absurd hps not_pseudoperfect_8
+    | exact absurd hps not_pseudoperfect_11
+    | exact absurd hps not_pseudoperfect_22
+    | exact absurd hps not_pseudoperfect_44
     | exact absurd hdvd (by decide)
 
 -- ## Structural Theorems
