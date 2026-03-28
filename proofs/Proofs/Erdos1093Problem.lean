@@ -10,6 +10,10 @@ deficiency > 1?
 
 ## References
 - Erdős, Lacampagne, Selfridge (1988, 1993)
+
+Axioms: 2 (els_upper_bound, many_deficiency_one_examples)
+Proved: 11 theorems (deficiency computations, structural properties)
+Sorries: 0
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
@@ -118,3 +122,27 @@ theorem large_factor_no_contribution (n k i : ℕ) (hi : i < k)
   intro h
   have := h p hp hd
   omega
+
+/-- The deficiency is at most k: it counts a subset of {0, 1, ..., k-1}. -/
+theorem deficiency_le_k (n k : ℕ) : deficiency n k ≤ k :=
+  (Finset.card_filter_le _ _).trans (Finset.card_range k).le
+
+/-- 1 is k-smooth for any k: it has no prime factors at all. -/
+theorem isKSmooth_one (k : ℕ) : IsKSmooth k 1 := by
+  intro p hp hd
+  exact absurd (Nat.dvd_one.mp hd) (Nat.Prime.ne_one hp)
+
+/-- C(44, 8) has deficiency 2 — one of the smallest examples with deficiency > 1. -/
+theorem deficiency_44_8 : deficiency 44 8 = 2 := by native_decide
+
+/-- C(46, 10) has deficiency 3. -/
+theorem deficiency_46_10 : deficiency 46 10 = 3 := by native_decide
+
+/-- C(47, 11) has deficiency 4 — the unique known example with this deficiency. -/
+theorem deficiency_47_11 : deficiency 47 11 = 4 := by native_decide
+
+/-- C(23, 5) has deficiency 1. -/
+theorem deficiency_23_5 : deficiency 23 5 = 1 := by native_decide
+
+/-- C(62, 6) has deficiency 1. -/
+theorem deficiency_62_6 : deficiency 62 6 = 1 := by native_decide
