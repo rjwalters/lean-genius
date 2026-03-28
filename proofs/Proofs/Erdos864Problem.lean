@@ -295,6 +295,22 @@ theorem sidon_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         Finset.card_le_card (Finset.image_subset_image (Finset.filter_subset _ _))
     _ ≤ 2 * N - 1 := distinct_sums_bounded A N hN hA
 
+/-- **Sidon square bound**: For Sidon A ⊆ {1,...,N}, |A|² ≤ 4N.
+    Corollary of `sidon_counting_bound`: k·k/2 ≤ k·(k+1)/2 ≤ 2N−1,
+    so k² ≤ 2·(k²/2)+1 ≤ 4N−1 ≤ 4N. Gives |A| < 2√N + 1. -/
+theorem sidon_card_sq_le (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
+    (hA : ∀ a ∈ A, a ∈ Finset.Icc 1 N) (hS : IsSidon A) :
+    A.card ^ 2 ≤ 4 * N := by
+  have h := sidon_counting_bound A N hN hA hS
+  set k := A.card
+  -- k*k/2 ≤ k*(k+1)/2 ≤ 2N-1 (monotonicity of / + counting bound)
+  have h1 : k * k / 2 ≤ k * (k + 1) / 2 :=
+    Nat.div_le_div_right (by rw [mul_add, mul_one]; exact Nat.le_add_right _ _)
+  have h2 : k * k / 2 ≤ 2 * N - 1 := le_trans h1 h
+  -- k^2 = k*k ≤ 2*(k*k/2)+1 ≤ 2*(2N-1)+1 = 4N-1 ≤ 4N
+  have h3 : k ^ 2 = k * k := by ring
+  omega
+
 /-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.
 
