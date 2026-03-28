@@ -222,16 +222,29 @@ theorem annihilator_congr (T : Module.End K V) (v : V)
 -- SECTION VII: Orbit Dimension Bound
 -- ============================================================
 
+/-- The finite span of the first d powers is contained in the cyclic subspace. -/
+theorem finiteSpan_le_cyclicSubspace (T : Module.End K V) (v : V) (d : ℕ) :
+    Submodule.span K (Set.range fun i : Fin d => (T ^ (i : ℕ)) v) ≤
+      cyclicSubspace T v := by
+  apply Submodule.span_le.mpr
+  rintro w ⟨i, rfl⟩
+  exact pow_mem_cyclicSubspace T v i
+
 /-- For an integral endomorphism, the cyclic subspace of v is
     finite-dimensional with dimension ≤ deg(minpoly T). This
     bounds the "size" of any single orbit, even in infinite
-    dimensions. -/
+    dimensions.
+
+    Proof strategy: Since (minpoly K T)(T) = 0 and minpoly is monic
+    of degree d, we get T^d v = -(a_{d-1}T^{d-1}v + ... + a_0 v).
+    This makes span{v, Tv, ..., T^{d-1}v} T-invariant, so by
+    induction T^k v lies in this span for all k ≥ d. -/
 theorem cyclicSubspace_le_minpoly_degree (T : Module.End K V)
     (hT : IsIntegral K T) (v : V) :
     ∀ k : ℕ, (minpoly K T).natDegree ≤ k →
       (T ^ k) v ∈ Submodule.span K (Set.range fun i : Fin (minpoly K T).natDegree =>
         (T ^ (i : ℕ)) v) := by
-  sorry -- Requires showing T^k v is expressible via lower powers using minpoly
+  sorry
 
 -- ============================================================
 -- SECTION VIII: Relating to Finite-Dimensional Case
