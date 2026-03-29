@@ -171,8 +171,9 @@ theorem lower_beats_n : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N, h n ≥ n := by
   obtain ⟨c, hc, N, hN⟩ := erdos_laskar_lower
   use c, hc, N
   intro n hn
-  have := hN n hn
-  sorry
+  have hle := hN n hn
+  -- (h n : ℝ) ≥ (1 + c) * n ≥ 1 * n = n, so h n ≥ n as naturals
+  exact_mod_cast le_trans (by exact_mod_cast le_refl n) (le_trans (by nlinarith) hle)
 
 /-
 ## Fan's Improved Lower Bound (1988)
@@ -209,12 +210,17 @@ noncomputable def boundGap : ℝ := erdosLaskarConstant - fanConstant
 
 /-- The gap is positive: problem is open. -/
 theorem gap_positive : boundGap > 0 := by
-  unfold boundGap erdosLaskarConstant fanConstant
-  sorry
+  unfold boundGap
+  have h := erdosLaskar_approx
+  have : (fanConstant : ℝ) = 21 / 16 := by norm_num [fanConstant]
+  linarith [h.1, this]
 
 /-- Numerical gap ≈ 0.15. -/
 theorem gap_approx : boundGap > 0.15 ∧ boundGap < 0.16 := by
-  sorry
+  unfold boundGap
+  have h := erdosLaskar_approx
+  have hfan : (fanConstant : ℝ) = 21 / 16 := by norm_num [fanConstant]
+  constructor <;> linarith [h.1, h.2, hfan]
 
 /-
 ## The Main Conjecture
@@ -235,7 +241,21 @@ def h_asymptotic : Prop :=
 /-- The conjecture implies exact asymptotics. -/
 theorem conjecture_gives_asymptotic :
     erdos_1033_conjecture → h_asymptotic := by
-  sorry
+  intro hconj ε hε
+  obtain ⟨N, hN⟩ := hconj (ε / 2) (by linarith)
+  use max N 3
+  intro n hn
+  have hn3 : n ≥ 3 := le_trans (le_max_right N 3) hn
+  have hnN : n ≥ N := le_trans (le_max_left N 3) hn
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  have h_lower := hN n hnN
+  have h_upper := erdos_laskar_upper n hn3
+  have h_div_le : (h n : ℝ) / n ≤ erdosLaskarConstant := by
+    rwa [div_le_iff hn_pos, mul_comm]
+  have h_div_ge : erdosLaskarConstant - ε / 2 ≤ (h n : ℝ) / n := by
+    rwa [le_div_iff hn_pos, mul_comm]
+  rw [abs_lt]
+  constructor <;> linarith
 
 /-
 ## Degree Sum Properties

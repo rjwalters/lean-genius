@@ -422,7 +422,11 @@ Note: Expected a function because this term is being applied to the argument
 theorem book_pages_are_good (G : SimpleGraph V) [DecidableRel G.Adj]
     (T : Triangle G) (pages : Finset V) (hBook : isBook G T pages) :
     ∀ p ∈ pages, p ∉ T.vertices → isGoodNeighbor G T p := by
-  sorry
+  intro p hp _
+  obtain ⟨h1, h2, h3⟩ := hBook p hp
+  unfold isGoodNeighbor
+  have := fully_adjacent_is_good G T p h1 h2 h3
+  omega
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -513,7 +517,15 @@ unexpected token '['; expected command-/
 
 /-- K₄-free bound is worse (higher) than general bound. -/
 theorem k4free_worse : k4FreeConstant > maTangConstant := by
-  sorry
+  unfold k4FreeConstant maTangConstant
+  -- Need: 2√3 - 3 > 2 - √(5/2), i.e., 2√3 + √(5/2) > 5
+  have h1 : (1.73 : ℝ) < Real.sqrt 3 := by
+    rw [← Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1.73)]
+    exact Real.sqrt_lt_sqrt (sq_nonneg _) (by norm_num)
+  have h2 : (1.58 : ℝ) < Real.sqrt (5 / 2 : ℝ) := by
+    rw [← Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1.58)]
+    exact Real.sqrt_lt_sqrt (sq_nonneg _) (by norm_num)
+  linarith
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -728,7 +740,10 @@ theorem book_subset_good (G : SimpleGraph V) [DecidableRel G.Adj]
     (T : Triangle G) (pages : Finset V) (hBook : isBook G T pages)
     (hDisjoint : Disjoint pages T.vertices) :
     pages ⊆ goodNeighbors G T := by
-  sorry
+  intro p hp
+  simp only [goodNeighbors, Finset.mem_filter, Finset.mem_univ, true_and]
+  have hp_not_in : p ∉ T.vertices := Finset.disjoint_left.mp hDisjoint hp
+  exact ⟨book_pages_are_good G T pages hBook p hp hp_not_in, hp_not_in⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
