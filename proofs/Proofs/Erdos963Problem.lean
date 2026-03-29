@@ -13,7 +13,7 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 5 (was 7; proved log_base_gap, dissociated_subset_sum_count)
+Axiom count: 3 (was 7; proved log_base_gap, dissociated_subset_sum_count, maxDissociatedSize_mono)
 Sorry count: 0
 
 ## References
@@ -213,9 +213,32 @@ theorem powers_of_two_dissociated :
   rw [cast_eq, cast_eq] at hsum
   exact_mod_cast hsum
 
-/-- Monotonicity: f is non-decreasing. -/
-axiom maxDissociatedSize_mono :
-  ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n
+/-- Monotonicity: f is non-decreasing.
+    If m ≤ n, any n-element set contains an m-element subset,
+    so the guaranteed dissociated subset size can only grow. -/
+theorem maxDissociatedSize_mono :
+    ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n := by
+  intro m n hmn
+  unfold maxDissociatedSize
+  apply csSup_le_csSup
+  · -- BddAbove: every k in S_n satisfies k ≤ n
+    refine ⟨n, fun k hk => ?_⟩
+    have hinj : Function.Injective ((↑) : ℕ → ℝ) := fun a b h => by exact_mod_cast h
+    set A := (Finset.range n).image ((↑) : ℕ → ℝ)
+    have hAcard : A.card = n := by
+      rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
+    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hAcard
+    calc k ≤ B.card := hBcard
+      _ ≤ A.card := Finset.card_le_card hBsub
+      _ ≤ n := le_of_eq hAcard
+  · -- S_m ⊆ S_n: every n-element set contains an m-element subset
+    intro k hk A hA
+    obtain ⟨A', hA'sub, hA'card⟩ := Finset.exists_smaller_set A m (by omega)
+    obtain ⟨B, ⟨hBsub, hBdiss⟩, hBcard⟩ := hk A' hA'card
+    exact ⟨B, ⟨hBsub.trans hA'sub, hBdiss⟩, hBcard⟩
+  · -- S_m nonempty: 0 ∈ S_m (∅ is dissociated in any set)
+    exact ⟨0, fun A _ => ⟨∅, ⟨Finset.empty_subset A, fun S T hS hT _ => by
+      rw [Finset.subset_empty.mp hS, Finset.subset_empty.mp hT]⟩, Nat.zero_le _⟩⟩
 
 /-- **PROVED** (was axiom): The gap between the greedy bound and the
     conjecture: log₂ vs log₃. Since 2 ≤ 3, log₃ n ≤ log₂ n for all n. -/

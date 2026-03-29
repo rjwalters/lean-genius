@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved log_base_gap axiom (7→6 axioms remaining)",
+    "progressSummary": "PROGRESS: Proved maxDissociatedSize_mono (4A→3A). Remaining: erdos_963_conjecture (open), greedy_lower_bound (deep), trivial_upper_bound (counting argument).",
     "builtItems": [
-      "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n"
+      "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n",
+      "PROVED maxDissociatedSize_mono: axiom→theorem via csSup_le_csSup + Finset.exists_smaller_set (4A→3A)"
     ],
     "insights": [
-      "Nat.log_anti_left provides log base monotonicity"
+      "Nat.log_anti_left provides log base monotonicity",
+      "maxDissociatedSize_mono proved: any n-set contains m-subset, so S_m ⊆ S_n; BddAbove via card_le_card on constructed witness set"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
