@@ -225,7 +225,25 @@ instance (f : α → Bool) (A : Finset α) :
 lemma card_constOn_le (A : Finset α) (b : Bool) :
     (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b)).card
     ≤ 2 ^ (Fintype.card α - A.card) := by
-  sorry
+  -- Functions constant b on A are determined by their values on α \ A.
+  -- Inject the filtered set into functions on the complement.
+  let restrict : (α → Bool) → ({x : α // x ∉ A} → Bool) := fun f x => f x.val
+  have hinj : Set.InjOn restrict
+      (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b) : Finset (α → Bool)) := by
+    intro f₁ hf₁ f₂ hf₂ heq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hf₁ hf₂
+    funext x
+    by_cases hx : x ∈ A
+    · exact (hf₁ x hx).trans (hf₂ x hx).symm
+    · exact congr_fun heq ⟨x, hx⟩
+  calc (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b)).card
+      ≤ Fintype.card ({x : α // x ∉ A} → Bool) := by
+        rw [← Finset.card_univ (α := {x : α // x ∉ A} → Bool)]
+        exact Finset.card_le_card_of_injOn restrict (fun _ _ => Finset.mem_univ _) hinj
+    _ = 2 ^ Fintype.card {x : α // x ∉ A} := by
+        simp [Fintype.card_fun, Fintype.card_bool]
+    _ = 2 ^ (Fintype.card α - A.card) := by
+        congr 1; simp [Fintype.card_subtype_compl, Fintype.card_coe_sort]
 
 /-- Monochromatic colorings on A number at most 2 · 2^(|α| - |A|):
     at most 2^(|α| - |A|) for all-true plus 2^(|α| - |A|) for all-false. -/
