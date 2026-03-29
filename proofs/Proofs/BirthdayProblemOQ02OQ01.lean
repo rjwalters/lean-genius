@@ -81,7 +81,24 @@ theorem sum_sq_formula (k : ℕ) :
     (This follows from k(k-1)(2k-1)/6 ≤ k²(k-1)²/4, i.e., 2(2k-1)/3 ≤ k(k-1).) -/
 theorem sum_sq_le_quartic (k : ℕ) (hk : 1 ≤ k) :
     ∑ i ∈ Finset.range k, (i : ℝ) ^ 2 ≤ (k : ℝ) ^ 2 * (k - 1) ^ 2 / 4 := by
-  sorry -- Arithmetic from sum_sq_formula; needs nlinarith with specific case analysis
+  -- From sum_sq_formula: 6·∑i² = k(k-1)(2k-1)
+  -- Need: k(k-1)(2k-1)/6 ≤ k²(k-1)²/4, i.e., 4(2k-1) ≤ 6k(k-1) for k ≥ 2
+  have hsf := sum_sq_formula k
+  -- Express ∑i² from the formula
+  have h6 : (6 : ℝ) ≠ 0 := by norm_num
+  have hsum : ∑ i ∈ Finset.range k, (i : ℝ) ^ 2 = (k : ℝ) * (k - 1) * (2 * k - 1) / 6 := by
+    linarith
+  rw [hsum]
+  -- Need: k(k-1)(2k-1)/6 ≤ k²(k-1)²/4
+  -- Equivalently: 4k(k-1)(2k-1) ≤ 6k²(k-1)² = 6k(k-1)·k(k-1)
+  -- For k ≥ 2: cancel k(k-1) > 0 to get 4(2k-1) ≤ 6k(k-1)
+  -- For k = 1: both sides are 0
+  rcases Nat.eq_or_gt_of_le hk with rfl | hk2
+  · simp
+  · push_cast
+    have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+    have hk2r : (2 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk2
+    nlinarith [sq_nonneg ((k : ℝ) - 2), sq_nonneg ((k : ℝ) - 1)]
 
 /- ## Main Lower Bound -/
 
@@ -118,5 +135,13 @@ theorem birthdayProduct_two_sided {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k) (hkd
       _ = Real.exp (∑ i ∈ Finset.range k, (-(↑i : ℝ) / ↑d)) := by
           rw [Real.exp_sum]
       _ = Real.exp (-(↑k : ℝ) * (↑k - 1) / (2 * ↑d)) := by
-          congr 1; sorry -- Gauss sum arithmetic
+          congr 1
+          -- ∑_{i<k} (-i/d) = -(1/d) · ∑_{i<k} i = -(1/d) · k(k-1)/2
+          rw [show ∀ i : ℕ, -(↑i : ℝ) / ↑d = -(1 / ↑d) * ↑i from fun i => by ring]
+          rw [← Finset.mul_sum]
+          rw [show ∑ i ∈ Finset.range k, (i : ℝ) = (k : ℝ) * (↑k - 1) / 2 from by
+            have := Finset.sum_range_id_eq_sum_range_succ_div_two k
+            push_cast at this ⊢
+            linarith]
+          ring
   ⟩
