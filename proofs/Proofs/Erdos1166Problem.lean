@@ -15,11 +15,13 @@
 -- (2) Erdős–Taylor: max visit count T_n satisfies T_n ≪ (log n)² a.s.
 --
 -- Status: PROVED
--- Axioms: 7 declarations + 1 structure field = 8 (down from 12)
+-- Axioms: 5 declarations + 1 structure field = 6 (down from 12)
 -- Sorries: 0 (cumulative_card_bound proved via induction on interval length)
 -- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
 --   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
---   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence)
+--   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence),
+--   polya_recurrence (orphan: not used by proof chain),
+--   erdos1166_main (now theorem: follows from ingredients + Erdős-Taylor)
 -- New: maxVisitCount_mono_succ, maxVisitCount_le_of_le, mostVisited_nesting,
 --   mostVisited_nesting_range, biUnion_subset_last_of_constant_T,
 --   mostVisited_subset_trajectory, erdos1166_from_ingredients (restructured)
@@ -348,10 +350,12 @@ axiom mostVisited_bounded_eventually :
     The key idea: since |F(k)| ≤ 3 for large k, and the maximum visit count
     T_n ≤ C · (log n)², only O((log n)²) different "regimes" of most-visited
     points can occur, bounding the cumulative set size. -/
-axiom erdos1166_main :
+theorem erdos1166_main :
     AlmostSurely (fun ω =>
       ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2)
+        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2) :=
+  erdos1166_from_ingredients mostVisited_bounded_eventually
+    (erdosTaylor_implies_bound erdosTaylor_constant)
 
 /-- The bound in explicit polylogarithmic form:
     |⋃_{k ≤ n} F(k)| ≤ (log n)^{O(1)} a.s.
@@ -485,16 +489,10 @@ theorem connection_to_1165 :
       (mostVisitedSet ω n).card ≤ 3) :=
   mostVisited_bounded_eventually
 
--- ## Recurrence of Z² Random Walk
-
-/-- A 2D simple random walk is recurrent: it returns to the origin
-    infinitely often, almost surely. (Pólya, 1921) -/
-axiom polya_recurrence :
-    AlmostSurely (fun ω =>
-      ∀ N : ℕ, ∃ n ≥ N, ω.trajectory n = origin)
-
--- [Formerly axiom maxVisitCount_tendsto_infty — follows from polya_recurrence
---  by inductively finding M distinct return times. Removed as unused.]
+-- [Pólya recurrence and maxVisitCount_tendsto_infty removed as orphan axioms:
+--  not used by the main proof chain. Pólya's theorem (Z² walk is recurrent)
+--  would imply max visit count → ∞, but the Erdős–Taylor constant axiom
+--  already provides the quantitative bound we need.]
 
 -- ## The Erdős–Taylor Constant
 
