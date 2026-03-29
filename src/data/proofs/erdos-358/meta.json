@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 358,
     "erdosUrl": "https://erdosproblems.com/358",
     "erdosProblemStatus": "open",
@@ -58,8 +58,8 @@
       "Classical characterization: n = sum of >=2 consecutive iff n != 2^k"
     ],
     "axiomCount": 1,
-    "lineCount": 343,
-    "assumptions": "1 axiom: naturals_count_odd_divisors. 1 sorry remaining. consecutive_sum_char axiom removed. power_of_two_obstruction and naturals_always_representable proved. strong_implies_weak proved via Filter.tendsto_atTop_atTop."
+    "lineCount": 422,
+    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdos Problem #358 was posed in 1977 [Er77c] and revisited in Erdos-Graham (1980). It asks a deceptively simple question about how many ways an integer can be written as a sum of consecutive terms from a fixed sequence.\n\nErdos himself remarked: \"This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me.\"\n\nThe problem connects to classical results about sums of consecutive integers (which relate to odd divisors) and to the Erdos-Moser conjecture (1963) about consecutive prime sums.",
@@ -167,7 +167,7 @@
       "Finset"
     ],
     "namespace": "Erdos358",
-    "lineCount": 343,
+    "lineCount": 422,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 9
