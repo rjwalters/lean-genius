@@ -248,11 +248,44 @@ theorem h_three : h 3 = 1 := by
         | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
         | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
     · -- countDistinctRadii S = 1
-      -- allCircumradiiFinset S = {circumradiusOf p_origin p_e1 p_e2} (singleton)
-      -- All 6 ordered triples map to same value by circumradiusOf_perm12/cycle
-      sorry
+      -- allCircumradiiFinset = {circumradiusOf p_origin p_e1 p_e2} (singleton)
+      -- because all 6 ordered triples map to same value by permutation invariance
+      show (allCircumradiiFinset {p_origin, p_e1, p_e2}).card = 1
+      rw [Finset.card_eq_one]
+      refine ⟨circumradiusOf p_origin p_e1 p_e2,
+        Finset.eq_singleton_iff_unique_mem.mpr ⟨?mem, ?uniq⟩⟩
+      case mem =>
+        -- (p_origin, (p_e1, p_e2)) is in the filtered product, maps to our value
+        simp only [allCircumradiiFinset]
+        apply Finset.mem_image_of_mem (a := (p_origin, (p_e1, p_e2)))
+        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_insert,
+                   Finset.mem_singleton]
+        exact ⟨⟨Or.inl rfl, Or.inr (Or.inl rfl), Or.inr (Or.inr rfl)⟩,
+               p_origin_ne_e1, p_e1_ne_e2, p_origin_ne_e2⟩
+      case uniq =>
+        -- Every element equals circumradiusOf p_origin p_e1 p_e2
+        -- (all 6 permutations map to the same value)
+        intro r hr
+        simp only [allCircumradiiFinset, Finset.mem_image, Finset.mem_filter,
+                   Finset.mem_product, Finset.mem_insert, Finset.mem_singleton] at hr
+        obtain ⟨⟨p, q, s⟩, ⟨⟨hp, hq, hs⟩, hdpq, hdqs, hdps⟩, heq⟩ := hr
+        rw [← heq]
+        -- 27-way case split on which points p, q, s are; 21 eliminated by
+        -- distinctness, 6 valid permutations closed by circumradiusOf_perm*
+        rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
+          rcases hs with rfl | rfl | rfl <;>
+        first
+        | exact absurd rfl hdpq | exact absurd rfl hdqs | exact absurd rfl hdps
+        | exact absurd rfl (Ne.symm hdpq) | exact absurd rfl (Ne.symm hdqs)
+        | exact absurd rfl (Ne.symm hdps)
+        | rfl                                       -- (O, E1, E2): identity
+        | rw [circumradiusOf_perm12]                -- (E1, O, E2): swap 1↔2
+        | rw [circumradiusOf_perm23]                -- (O, E2, E1): swap 2↔3
+        | rw [circumradiusOf_perm13]                -- (E2, E1, O): swap 1↔3
+        | rw [circumradiusOf_cycle]                 -- (E2, O, E1): one cycle
+        | rw [circumradiusOf_cycle, circumradiusOf_cycle]  -- (E1, E2, O): two cycles
   · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
-    -- Proof: S.card = 3 gives ≥ 1 ordered distinct triple → image nonempty → card ≥ 1
+    -- (the image of a nonempty set is nonempty → card ≥ 1)
     sorry
 
 /--
