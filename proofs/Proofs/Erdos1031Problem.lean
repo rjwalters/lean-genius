@@ -480,7 +480,51 @@ theorem erdos_1031_via_promel_rodl :
     ∀ G : SimpleGraph V,
     noLargeTrivial G (Nat.ceil (c * Real.log n)) →
     ∃ S : Finset V, isNontrivialRegular G S ∧ (S.card : ℝ) ≥ c' * Real.log n := by
-  sorry
+  intro c hc
+  -- Apply Prömel-Rödl to get universality constant c'' and threshold N₁
+  obtain ⟨c'', hc'', N₁, hPR⟩ := promel_rodl c hc
+  -- Output constant c' = c''/2
+  refine ⟨c'' / 2, by linarith, ?_⟩
+  -- Choose N large enough: c'' * log n ≥ 6 for n ≥ N
+  refine ⟨max N₁ (Nat.ceil (Real.exp (6 / c'')) + 1), ?_⟩
+  intro n hn V _ _ hV G hG
+  have hn1 : n ≥ N₁ := le_trans (le_max_left _ _) hn
+  have hn2 : n ≥ Nat.ceil (Real.exp (6 / c'')) + 1 := le_trans (le_max_right _ _) hn
+  -- Key bound: c'' * log n ≥ 6
+  have hn_pos : (0 : ℝ) < ↑n := by
+    have : 0 < n := by omega
+    exact_mod_cast this
+  have hexp_le : Real.exp (6 / c'') ≤ ↑n := by
+    calc Real.exp (6 / c'')
+        ≤ ↑(Nat.ceil (Real.exp (6 / c''))) := Nat.le_ceil _
+      _ < ↑(Nat.ceil (Real.exp (6 / c'')) + 1) := by push_cast; linarith
+      _ ≤ ↑n := by exact_mod_cast hn2
+  have hlog_bound : c'' * Real.log ↑n ≥ 6 := by
+    calc c'' * Real.log ↑n
+        ≥ c'' * Real.log (Real.exp (6 / c'')) := by
+          apply mul_le_mul_of_nonneg_left _ (le_of_lt hc'')
+          exact Real.log_le_log (Real.exp_pos _) hexp_le
+      _ = c'' * (6 / c'') := by rw [Real.log_exp]
+      _ = 6 := by field_simp
+  -- ⌊c'' * log n⌋₊ ≥ 6
+  set k := Nat.floor (c'' * Real.log ↑n)
+  have hk_ge : k ≥ 6 := by
+    exact Nat.le_floor (by push_cast; linarith)
+  -- G is k-universal from Prömel-Rödl
+  have huniv : isKUniversal G k := hPR n hn1 V hV G hG
+  -- Universal → regular subgraph
+  obtain ⟨S, hS, hScard⟩ := universal_has_regular G k hk_ge huniv
+  refine ⟨S, hS, ?_⟩
+  -- S.card = k ≥ c''/2 * log n
+  rw [hScard]
+  have hfloor_ge : (k : ℝ) ≥ c'' * Real.log ↑n - 1 := by
+    have h := Nat.lt_floor_add_one (c'' * Real.log ↑n)
+    change c'' * Real.log ↑n < ↑(k + 1) at h
+    push_cast at h
+    linarith
+  calc (k : ℝ) ≥ c'' * Real.log ↑n - 1 := hfloor_ge
+    _ ≥ c'' * Real.log ↑n / 2 := by linarith
+    _ = c'' / 2 * Real.log ↑n := by ring
 
 /-- The conjecture is true. -/
 theorem erdos_1031_solved : erdos_1031_conjecture := by
