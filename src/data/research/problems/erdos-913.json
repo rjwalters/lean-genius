@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 3 axioms (3A→1A). Proved exponent_structure and erdos_913_conditional. Only the open Bunyakovsky-type conjecture remains.",
+    "progressSummary": "PROGRESS: Restored Mersenne conditional proof section + 3 new examples. Two independent conditional proofs of Erdős #913. File: 363 lines, 0 sorries, 1 axiom.",
     "builtItems": [
       "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
       "Proved example_n31: 31·32 = 2^5·31^1",
       "Proved example_n71: 71·72 = 2^3·3^2·71^1 (first 3-factor example, from 8p²-1 with p=3)",
-      "Proved example_n127: 127·128 = 2^7·127^1"
+      "Proved example_n127: 127·128 = 2^7·127^1",
+      "Restored Section 7 (Mersenne conditional) missing from branch: MersennePrimeExponents, injective_mersenne, hasDistinctExponents_mersenne, erdos_913_conditional_mersenne, nonempty_distinctExponentSet",
+      "example_n24: 24·25=600=2³·3·5², exponents {3,1,2}",
+      "example_n48: 48·49=2352=2⁴·3·7², exponents {4,1,2}",
+      "example_n199: 199·200=39800=199·2³·5², exponents {1,3,2} (8p²-1 pattern with p=5)"
     ],
     "insights": [
       "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
@@ -44,7 +48,9 @@
       "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime",
       "Proved exponent_structure: primeFactors of (8p²-1)(8p²) = {8p²-1, p, 2} using Mathlib factorization API",
       "Proved erdos_913_conditional via Set.Infinite.image + coprime factorization arithmetic",
-      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples"
+      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples",
+      "Two independent conditional proofs: (1) Bunyakovsky for 8p²-1, (2) infinite Mersenne primes — neither implies the other",
+      "New 3-factor examples: n=24 ({3,1,2}), n=48 ({4,1,2}), n=199 ({1,3,2}) expand the evidence base"
     ],
     "mathlibGaps": [],
     "nextSteps": [
