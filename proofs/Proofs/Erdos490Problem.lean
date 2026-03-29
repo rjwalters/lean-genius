@@ -222,14 +222,21 @@ theorem distinct_minimal_energy (A B : Finset ℕ) :
 theorem trivial_bound (N : ℕ) (A B : Finset ℕ)
     (hA : IsSubsetUpTo A N) (hB : IsSubsetUpTo B N) :
     A.card * B.card ≤ N^2 := by
-  sorry
+  have hAN : A.card ≤ N :=
+    (Finset.card_le_card (fun a ha => Finset.mem_Icc.mpr (hA a ha))).trans
+      (by simp [Finset.card_Icc]; omega)
+  have hBN : B.card ≤ N :=
+    (Finset.card_le_card (fun b hb => Finset.mem_Icc.mpr (hB b hb))).trans
+      (by simp [Finset.card_Icc]; omega)
+  calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAN hBN
+    _ = N ^ 2 := (sq N).symm
 
 /-- Counting bound: |A||B| ≤ N² (since products are ≤ N²). -/
 theorem counting_bound (N : ℕ) (A B : Finset ℕ)
     (hA : IsSubsetUpTo A N) (hB : IsSubsetUpTo B N)
     (h : HasDistinctProducts A B) :
-    A.card * B.card ≤ N^2 := by
-  sorry
+    A.card * B.card ≤ N^2 :=
+  trivial_bound N A B hA hB
 
 /-- Szemerédi's improvement: |A||B| ≤ C·N²/log N. -/
 theorem szemeredi_bound (N : ℕ) (hN : N ≥ 2) (A B : Finset ℕ)
