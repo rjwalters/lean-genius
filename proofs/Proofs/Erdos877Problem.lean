@@ -129,7 +129,11 @@ noncomputable def f_m (n : ℕ) : ℕ :=
 Every maximal sum-free set is sum-free, so f_m(n) ≤ f(n).
 -/
 theorem f_m_le_f (n : ℕ) : f_m n ≤ f n := by
-  sorry
+  unfold f_m f
+  apply Finset.card_le_card
+  intro A
+  simp only [Finset.mem_filter]
+  exact fun ⟨hpow, hmax⟩ => ⟨hpow, hmax.2.1⟩
 
 /-
 ## Part IV: The Cameron-Erdős Lower Bound

@@ -146,7 +146,7 @@ theorem limit_determines_base (L : ℝ) (hL : L > 0)
   refine ⟨Real.exp L, ?_, ?_⟩
   · exact Real.exp_pos L |>.trans_le (Real.exp_le_exp.mpr (le_of_lt (by linarith))) |>.le |>.lt_of_lt' (by
       rw [Real.exp_zero]; linarith)
-  · sorry -- need Real.log (exp L) = L
+  · rwa [Real.log_exp]
 
 /-- Convergence implies exponential behavior:
     for all ε > 0, (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ eventually -/

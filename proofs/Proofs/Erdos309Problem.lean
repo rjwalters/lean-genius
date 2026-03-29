@@ -176,7 +176,14 @@ The largest representable integer is at most H_N (the sum using all denominators
 -/
 theorem max_representable_le_harmonic (N k : ℕ) (hk : IsRepresentable N k) :
     (k : ℚ) ≤ harmonicNumber N := by
-  sorry
+  obtain ⟨S, hS, hsum⟩ := hk
+  rw [← hsum, harmonicNumber]
+  simp only [sumUnitFractions]
+  apply Finset.sum_le_sum_of_subset_of_nonneg hS
+  intro i hi _
+  have ⟨hi1, _⟩ := (mem_denominatorRange N i).mp hi
+  simp only [unitFraction, if_neg (by omega : i ≠ 0)]
+  positivity
 
 /-
 ## Part VI: Asymptotic Bounds
