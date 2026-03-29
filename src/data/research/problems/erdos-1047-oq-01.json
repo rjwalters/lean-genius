@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 more axioms (12→10). nonconvex_exists_degree_ge_4 trivially provable (omega). lemniscate_isClosed proved via continuous preimage. Total: 6 axioms proved across sessions.",
+    "progressSummary": "COMPLETED: 2 irreducible axioms remain (complex analysis counterexamples). 0 sorries. Meta.json fully corrected.",
     "builtItems": [
       "Proved pommerenkePolynomial_degree: deg(X^k(X-a)) = k+1",
       "Proved goodmanPolynomial_monic: (X²+1)(X-2)² is monic",
       "Proved refereePolynomial_monic: X(X⁵-1) is monic",
       "Proved goodmanPolynomial_degree_pos: degree > 0 via eval-at-0 contradiction with Monic.natDegree_pos",
       "nonconvex_exists_degree_ge_4: proved trivially (maxNonConvexComponents d = d by definition, so d ≥ 4 → d ≥ 1)",
-      "lemniscate_isClosed: proved via isClosed_le + fun_prop (continuous preimage of closed set)"
+      "lemniscate_isClosed: proved via isClosed_le + fun_prop (continuous preimage of closed set)",
+      "Updated meta.json: assumptions text, lineCount, theoremCount, openQuestions to reflect 6 sessions of axiom elimination (14→2 axioms)"
     ],
     "insights": [
       "pommerenkePolynomial_degree provable via natDegree_mul + natDegree_pow",
@@ -45,7 +46,9 @@
       "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p ≠ 1 which requires eval-based contradiction",
       "Monic.natDegree_pos is an iff in current Mathlib (not implication), need show + rw pattern",
       "nonconvex_exists_degree_ge_4 was trivially provable: maxNonConvexComponents is defined as d (placeholder), making the axiom just d ≥ 1 when d ≥ 4",
-      "lemniscate_isClosed: {z | ‖f.eval z‖ ≤ c} is closed because z ↦ ‖f.eval z‖ is continuous and Iic c is closed"
+      "lemniscate_isClosed: {z | ‖f.eval z‖ ≤ c} is closed because z ↦ ‖f.eval z‖ is continuous and Iic c is closed",
+      "Both axioms (grunskyConjecture_false, goodman_counterexample) are independent — goodman_counterexample provides one c value but grunskyConjecture_false requires arbitrarily small c",
+      "meta.json assumptions text corrected from stale 14-axiom count to accurate 2-axiom description, theoremCount 9→11"
     ],
     "mathlibGaps": [],
     "nextSteps": []
