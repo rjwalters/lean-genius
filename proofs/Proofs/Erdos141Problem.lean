@@ -96,7 +96,12 @@ theorem three_five_seven_is_ap : IsArithmeticProgression [3, 5, 7] 2 := by
 
 /-- There exist 3 consecutive primes in arithmetic progression: (3, 5, 7).
     Verified by showing primes 1, 2, 3 (which are 3, 5, 7) form an AP with d=2. -/
-axiom exists_3_consecutive_in_ap : ExistsConsecutivePrimesInAP 3
+theorem exists_3_consecutive_in_ap : ExistsConsecutivePrimesInAP 3 := by
+  refine ⟨1, 2, by omega, ?_⟩
+  suffices h : ConsecutivePrimeSequence 1 3 = [3, 5, 7] by rw [h]; exact three_five_seven_is_ap
+  simp only [ConsecutivePrimeSequence]
+  have hr : List.range 3 = [0, 1, 2] := by decide
+  rw [hr]; simp [nthPrime_1, nthPrime_2, nthPrime_3]
 
 /- ## The Erdős Conjecture -/
 

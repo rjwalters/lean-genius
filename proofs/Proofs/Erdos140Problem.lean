@@ -259,8 +259,27 @@ def ErdosAPConjecture : Prop :=
   ∀ k ≥ 3, ∀ C > 0, ∃ K > 0, ∀ N ≥ 3, (rk k N : ℝ) ≤ K * N / (Real.log N)^C
 
 /-- Finset3APFree is equivalent to FinsetkAPFree 3 (modulo formulation details). -/
-axiom finset3APFree_eq_finsetkAPFree_3 : ∀ A : Finset ℕ,
-    Finset3APFree A ↔ FinsetkAPFree 3 A
+theorem finset3APFree_eq_finsetkAPFree_3 : ∀ A : Finset ℕ,
+    Finset3APFree A ↔ FinsetkAPFree 3 A := by
+  intro A
+  constructor
+  · -- Forward: Finset3APFree → FinsetkAPFree 3
+    -- Given no 3-AP in A (by triple), show no 3-AP in A (by Fin 3 → ℕ)
+    intro h3AP vals hvals hAPk
+    obtain ⟨_, a, d, hd, hform⟩ := hAPk
+    -- Extract values: vals(0) = a, vals(1) = a + d, vals(2) = a + 2*d
+    have h0 := hform ⟨0, by omega⟩; simp at h0
+    have h1 := hform ⟨1, by omega⟩; simp at h1
+    have h2 := hform ⟨2, by omega⟩; simp at h2
+    -- Build IsAP3 and derive contradiction from h3AP
+    exact h3AP _ _ _ (hvals ⟨0, by omega⟩) (hvals ⟨1, by omega⟩) (hvals ⟨2, by omega⟩)
+      ⟨by omega, by omega, by omega⟩
+  · -- Backward: FinsetkAPFree 3 → Finset3APFree
+    -- Given no 3-AP in A (by Fin 3 → ℕ), show no 3-AP in A (by triple)
+    intro hkAP a b c ha hb hc ⟨h2b, hab, hbc⟩
+    exact hkAP ![a, b, c]
+      (by intro i; fin_cases i <;> simp_all)
+      ⟨by omega, a, b - a, by omega, by intro i; fin_cases i <;> simp_all <;> omega⟩
 
 /-- r3 equals rk 3 (the Roth numbers are the same for both formulations). -/
 theorem r3_eq_rk_3 (N : ℕ) : r3 N = rk 3 N := by
