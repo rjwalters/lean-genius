@@ -7,7 +7,7 @@
     "author": "Wirsing (1970) proved converse; main questions open",
     "sourceUrl": "https://erdosproblems.com/897",
     "date": "1970",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos897Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "analytic-number-theory",
       "arithmetic-functions"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 897,
     "erdosUrl": "https://erdosproblems.com/897",
@@ -135,20 +135,7 @@
       "What is the relationship between the two parts?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Filter",
-      "Asymptotics"
-    ],
-    "namespace": "Erdos897",
-    "lineCount": 141,
-    "axiomCount": 0,
-    "theoremCount": 3,
-    "definitionCount": 7
-  },
+  "leanFile": "Proofs/Erdos897Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-1122",

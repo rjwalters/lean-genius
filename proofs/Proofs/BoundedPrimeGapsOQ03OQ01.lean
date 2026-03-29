@@ -303,11 +303,14 @@ theorem diameter_lower_bound (k : ℕ) (hk : 2 ≤ k) :
     exact ⟨fsDiameter H, H, hcard, hadm, rfl⟩
 
 /-- The prime number theorem implies D(k) ≤ C · k(log k)² for some constant C.
-    This is the upper bound from greedy admissible tuple construction. -/
-theorem diameter_upper_bound_exists :
+    This is the upper bound from the greedy admissible tuple construction:
+    take the first k integers not filling any residue class mod p for p ≤ k.
+    The PNT ensures the "sieve" removes ~k/p elements mod p, leaving enough
+    survivors in an interval of size ~C·k·(log k)². Proving this requires
+    the PNT and Mertens estimates, which are not trivially available. -/
+axiom diameter_upper_bound_exists :
     ∃ C : ℝ, 0 < C ∧ ∀ k : ℕ, 2 ≤ k →
-      (minAdmissibleDiameter k : ℝ) ≤ C * k * (Real.log k) ^ 2 := by
-  sorry
+      (minAdmissibleDiameter k : ℝ) ≤ C * k * (Real.log k) ^ 2
 
 -- ============================================================
 -- Part IV: The Maynard-Tao Barrier

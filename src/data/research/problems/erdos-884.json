@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (erdos_884 — open conjecture), 15T proved, 0S. Previous sessions eliminated 8 of 9 axioms.",
+    "progressSummary": "PROGRESS: Added divisor_strictMono, pairwise_lt_getD_ge_diff, generalGap_ge_diff. Total: 23 theorems, 1 axiom, 0 sorries.",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -47,7 +47,10 @@
       "theorem prime_case_equality: Ioo reduction (Ioo 0 2 = {1}, Ioo 1 2 = ∅)",
       "helper generalGap_zero_one: definitional rfl",
       "theorem sigma_zero_eq_card: σ₀ = divisors.card via ArithmeticFunction.sigma_apply",
-      "theorem numDivisors_mul_coprime: via σ₀ multiplicativity (isMultiplicative_sigma)"
+      "theorem numDivisors_mul_coprime: via σ₀ multiplicativity (isMultiplicative_sigma)",
+      "divisor_strictMono: strict monotonicity (Erdos884Problem.lean:268)",
+      "pairwise_lt_getD_ge_diff: list gap lower bound (Erdos884Problem.lean:273)",
+      "generalGap_ge_diff: gap >= index diff (Erdos884Problem.lean:284)"
     ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
@@ -65,7 +68,10 @@
       "For 2-element finset sort: use length_sort + List.length_eq_two to extract elements, then case analysis with mem_sort + sort_nodup + sort_sorted",
       "σ₀(n) = n.divisors.card proved via ArithmeticFunction.sigma_apply + Finset.card_eq_sum_ones",
       "ArithmeticFunction.isMultiplicative_sigma gives τ multiplicativity for free (σ₀ is σ at k=0)",
-      "Only the open conjecture erdos_884 remains — no further elimination possible"
+      "Only the open conjecture erdos_884 remains — no further elimination possible",
+      "divisor_strictMono: clean wrapper for divisor(n,i) < divisor(n,j) when i < j",
+      "pairwise_lt_getD_ge_diff: in strictly increasing list, l[i] + (j-i) <= l[j] — proved by induction on j",
+      "generalGap_ge_diff: general gap d_j - d_i >= j - i — divisors grow at least 1 per step"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -85,15 +91,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:46:46.306Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-03-28T23:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos884Problem.lean",
       "filename": "Erdos884Problem.lean",
-      "lineCount": 294,
-      "theoremCount": 15,
+      "lineCount": 323,
+      "theoremCount": 17,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,

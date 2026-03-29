@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/51",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos51Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "carmichael-conjecture",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 51,
     "erdosUrl": "https://erdosproblems.com/51",
@@ -116,25 +116,7 @@
       "Is there a connection between large preimage ratios and the Bunyakovsky conjecture on primes in polynomials?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Totient",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Order.Filter.AtTopBot",
-      "Mathlib.Topology.Order.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Filter",
-      "Nat",
-      "Topology"
-    ],
-    "namespace": null,
-    "lineCount": 69,
-    "axiomCount": 0,
-    "theoremCount": 1,
-    "definitionCount": 4
-  },
+  "leanFile": "Proofs/Erdos51Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-48",

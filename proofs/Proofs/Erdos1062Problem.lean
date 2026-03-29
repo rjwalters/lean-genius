@@ -176,6 +176,21 @@ theorem maxNDTOSize_mono {m n : ℕ} (hmn : m ≤ n) : maxNDTOSize m ≤ maxNDTO
   simp only [Finset.mem_Icc] at this ⊢
   omega
 
+/-- Any singleton set satisfies NDTO (fewer than 3 distinct elements). -/
+theorem ndto_singleton (x : ℕ) : NoDividesTwoOthers ({x} : Finset ℕ) := by
+  intro a b _ ha hb _ _ _ hne_ab _ _
+  exact hne_ab (Finset.mem_singleton.mp ha ▸ (Finset.mem_singleton.mp hb).symm)
+
+/-- f(n) ≥ 1 for n ≥ 1: the singleton {1} is a valid NDTO subset. -/
+theorem maxNDTOSize_ge_one (n : ℕ) (hn : n ≥ 1) : maxNDTOSize n ≥ 1 := by
+  have : ({1} : Finset ℕ).card ≤ maxNDTOSize n :=
+    Finset.le_sup (Finset.mem_filter.mpr
+      ⟨Finset.mem_powerset.mpr (fun x hx => by
+        simp only [Finset.mem_singleton] at hx; subst hx
+        simp only [Finset.mem_Icc]; omega),
+       ndto_singleton 1⟩)
+  simpa using this
+
 /-- f(n) ≤ n: a subset of {1,…,n} has at most n elements. -/
 theorem maxNDTOSize_le (n : ℕ) : maxNDTOSize n ≤ n := by
   unfold maxNDTOSize

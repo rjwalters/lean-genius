@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/563",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos563Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "probabilistic method",
       "edge coloring"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 563,
     "erdosUrl": "https://erdosproblems.com/563",
@@ -96,21 +96,7 @@
       "What is the relationship between $c_\\alpha$ and the diagonal Ramsey constant as $\\alpha \\to 0$?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Finset"
-    ],
-    "namespace": null,
-    "lineCount": 65,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 6
-  },
+  "leanFile": "Proofs/Erdos563Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-1013",

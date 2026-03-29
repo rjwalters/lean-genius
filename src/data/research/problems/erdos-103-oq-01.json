@@ -1,13 +1,13 @@
 {
   "slug": "erdos-103-oq-01",
-  "title": "Does h(n) \u2192 \u221e as n \u2192 \u221e",
+  "title": "Does h(n) → ∞ as n → ∞",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Does h(n) \u2192 \u221e as n \u2192 \u221e.",
+    "plain": "Formal investigation in geometry: Does h(n) → ∞ as n → ∞.",
     "whyMatters": []
   },
   "knownResults": {
@@ -93,11 +93,11 @@
     {
       "path": "Proofs/Erdos1030Problem.lean",
       "filename": "Erdos1030Problem.lean",
-      "lineCount": 257,
+      "lineCount": 313,
       "theoremCount": 8,
       "axiomCount": 7,
       "defCount": 16,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1030Problem.lean"
     },
@@ -126,22 +126,22 @@
     {
       "path": "Proofs/Erdos1033Aristotle.lean",
       "filename": "Erdos1033Aristotle.lean",
-      "lineCount": 90,
+      "lineCount": 128,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 9,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1033Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1033Problem.lean",
       "filename": "Erdos1033Problem.lean",
-      "lineCount": 359,
+      "lineCount": 368,
       "theoremCount": 16,
       "axiomCount": 6,
       "defCount": 17,
-      "sorryCount": 14,
+      "sorryCount": 13,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1033Problem.lean"
     },
@@ -192,11 +192,11 @@
     {
       "path": "Proofs/Erdos1037Aristotle.lean",
       "filename": "Erdos1037Aristotle.lean",
-      "lineCount": 67,
+      "lineCount": 72,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 8,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1037Aristotle.lean"
     },
@@ -207,7 +207,7 @@
       "theoremCount": 12,
       "axiomCount": 5,
       "defCount": 20,
-      "sorryCount": 9,
+      "sorryCount": 8,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1037Problem.lean"
     },
@@ -236,11 +236,11 @@
     {
       "path": "Proofs/Erdos103Problem.lean",
       "filename": "Erdos103Problem.lean",
-      "lineCount": 260,
+      "lineCount": 267,
       "theoremCount": 6,
       "axiomCount": 6,
       "defCount": 17,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos103Problem.lean"
     }

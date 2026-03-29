@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Added 3 structural lemmas (segmentSet_nonempty, not_areDisjoint_self, maximal_packing_nonempty). Total: 20 theorems, 3 axioms, 0 sorries.",
     "builtItems": [
       "euclidDist definition",
       "segmentSet definition (convex combination)",
@@ -83,7 +83,10 @@
         "name": "exists_nonempty_packing",
         "type": "theorem",
         "description": "Non-empty packing exists"
-      }
+      },
+      "segmentSet_nonempty (Erdos1071Problem.lean:99)",
+      "not_areDisjoint_self (Erdos1071Problem.lean:103)",
+      "maximal_packing_nonempty (Erdos1071Problem.lean:210)"
     ],
     "insights": [
       "Eliminated 3 axioms (AreDisjoint, disjoint_symm, EndpointDisjoint) → definitions/theorems",
@@ -95,7 +98,10 @@
       "Only deep axioms remain: Danzer result, open problem, variant",
       "Unit square convexity proved via nlinarith — all convex combos stay in [0,1]²",
       "Concrete horizontalMidSegment witnesses non-empty packing",
-      "endpoints_ne: unit_length=1 contradicts euclidDist_self=0 if endpoints equal"
+      "endpoints_ne: unit_length=1 contradicts euclidDist_self=0 if endpoints equal",
+      "segmentSet_nonempty: segment set always nonempty (contains left endpoint)",
+      "not_areDisjoint_self: a segment is never disjoint from itself (intersects at endpoints)",
+      "maximal_packing_nonempty: any maximal packing is nonempty (empty set contradicts maximality via horizontalMidSegment witness)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -116,15 +122,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:38:41.571Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-03-28T23:10:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1071Problem.lean",
       "filename": "Erdos1071Problem.lean",
-      "lineCount": 246,
-      "theoremCount": 17,
+      "lineCount": 268,
+      "theoremCount": 20,
       "axiomCount": 3,
       "defCount": 13,
       "sorryCount": 0,

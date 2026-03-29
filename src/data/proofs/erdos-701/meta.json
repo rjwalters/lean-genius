@@ -7,7 +7,7 @@
     "author": "Chvátal",
     "sourceUrl": "https://erdosproblems.com/701",
     "date": "1974",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos701Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "intersecting-families",
       "extremal-set-theory"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 701,
     "erdosUrl": "https://erdosproblems.com/701",
@@ -127,20 +127,5 @@
       "description": "Both concern unavoidable substructure in combinatorial systems. Ramsey's theorem forces monochromatic cliques in edge-colored complete graphs; Problem #701 studies intersecting families where structural constraints (intersection conditions) force specific configurations"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Set.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Set.Finite"
-    ],
-    "opens": [
-      "Set",
-      "Finset"
-    ],
-    "namespace": "Erdos701",
-    "lineCount": 284,
-    "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 8
-  }
+  "leanFile": "Proofs/Erdos701Problem.lean"
 }

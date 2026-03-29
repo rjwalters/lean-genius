@@ -279,6 +279,35 @@ theorem numDivisors_mul_coprime (m n : ℕ) (_hm : m > 0) (_hn : n > 0)
   rw [← sigma_zero_eq_card, ← sigma_zero_eq_card, ← sigma_zero_eq_card]
   exact ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime hcop
 
+/-- Strict monotonicity of divisor indexing. -/
+theorem divisor_strictMono (n : ℕ) {i j : ℕ} (hij : i < j) (hj : j < numDivisors n) :
+    divisor n i < divisor n j := by
+  unfold divisor
+  have hlen := divisorList_length n
+  exact pairwise_getD_lt (divisorList_pairwise_lt n) hij (by omega)
+
+/-- In a strictly increasing ℕ list, elements grow by at least one per index step. -/
+private theorem pairwise_lt_getD_ge_diff {l : List ℕ} (hs : l.Pairwise (· < ·))
+    {i j : ℕ} (hij : i ≤ j) (hj : j < l.length) :
+    l.getD i 0 + (j - i) ≤ l.getD j 0 := by
+  induction j with
+  | zero => omega
+  | succ k ih =>
+    rcases eq_or_lt_of_le hij with rfl | hik
+    · omega
+    · have hk : k < l.length := by omega
+      have ih_res := ih (by omega : i ≤ k) hk
+      have hlt := pairwise_getD_lt hs (by omega : k < k + 1) hj
+      omega
+
+/-- The general gap d_j - d_i is at least j - i (divisors grow by ≥ 1 per step). -/
+theorem generalGap_ge_diff (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < numDivisors n) :
+    j - i ≤ generalGap n i j := by
+  unfold generalGap divisor
+  have hlen := divisorList_length n
+  have h := pairwise_lt_getD_ge_diff (divisorList_pairwise_lt n) hij (by omega)
+  omega
+
 /- ## Connections -/
 
 /-- The harmonic sum over divisors: σ_{-1}(n) = Σ_{d|n} 1/d. -/

@@ -39,10 +39,10 @@
     ],
     "insights": [
       "Local solvability = distribution solution exists for every smooth RHS",
-      "Condition (\u03a8): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
-      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (\u03a8) iff locally solvable for principal type",
-      "Elliptic operators satisfy (\u03a8) vacuously - principal symbol never vanishes",
-      "Operators with real principal symbol satisfy (\u03a8) trivially - Im = 0",
+      "Condition (Ψ): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
+      "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
       "Full proof requires microlocal analysis not in Mathlib"
     ],
     "mathlibGaps": [
@@ -60,7 +60,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "hilbert-20"
+    "hilbert-20",
+    "hilbert-20-oq-01"
   ],
   "references": {
     "papers": [],
@@ -80,6 +81,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20BoundaryValue.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20LocalSolvability.lean",
+      "filename": "Hilbert20LocalSolvability.lean",
+      "lineCount": 190,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20LocalSolvability.lean"
     }
   ]
 }

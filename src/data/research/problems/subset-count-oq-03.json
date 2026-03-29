@@ -1,0 +1,70 @@
+{
+  "slug": "subset-count-oq-03",
+  "title": "What Counting Problems Reduce to Subset Counting",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: What Counting Problems Reduce to Subset Counting.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T17:58:20.662Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: File fully proved (0A, 0S, 10T). Standard combinatorial identities.",
+    "builtItems": [],
+    "insights": [
+      "SubsetCount.lean is fully proved: 0A, 0S, 10 theorems about powerset cardinality",
+      "Key results: |P(S)| = 2^|S|, Σ C(n,k) = 2^n, |P(insert a S)| = 2·|P(S)|",
+      "All results are standard Mathlib wrappers — no open questions remain"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "subset-count"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.662Z",
+  "lastUpdate": "2026-03-28T17:58:20.662Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SubsetCount.lean",
+      "filename": "SubsetCount.lean",
+      "lineCount": 179,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCount.lean"
+    }
+  ]
+}

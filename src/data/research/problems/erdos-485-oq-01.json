@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-485-oq-01",
+  "title": "What is the exact asymptotic growth rate of f(k)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: What is the exact asymptotic growth rate of f(k).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:57:10.257Z",
+    "iteration": 1,
+    "focus": "Survey complete, easy computations remain",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Formalized exact growth rate question. f(1)=1 proved, known bounds axiomatized. Gap between log k and k^(1-c) documented.",
+    "builtItems": [
+      "proofs/Proofs/Erdos485OQ01.lean (233 lines, 7 theorems, 4 axioms)",
+      "src/data/proofs/erdos-485-oq-01/ (gallery entry)",
+      "f_one_eq: proved f(1) = 1",
+      "positive_coeffs_no_cancel: structural observation about positive coefficients",
+      "growth_at_least_log, growth_at_most_sublinear: wrapper theorems for axioms"
+    ],
+    "insights": [
+      "Exact growth rate of f(k) is wide open: gap between log k and k^(1-c)",
+      "Positive coefficients prevent all cancellation — interesting behavior requires mixed signs",
+      "Deep bounds (Schinzel-Zannier, Erdos) use height theory and algebraic geometry",
+      "Connection to additive combinatorics: sumset theory with coefficient cancellation",
+      "No explicit extremal constructions known for large k"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove f_two_eq and binomial_square_three_terms (computational)",
+      "Investigate if lacunary_lower_bound can be proved for specific cases",
+      "Compute f(k) for k=3,4,5 to gather data on growth rate"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "algebra",
+    "polynomials",
+    "sparse-polynomials",
+    "asymptotics",
+    "solved"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-48",
+    "erdos-485",
+    "erdos-485-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos485OQ01.lean",
+      "filename": "Erdos485OQ01.lean",
+      "lineCount": 234,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos485Problem.lean",
+      "filename": "Erdos485Problem.lean",
+      "lineCount": 281,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485Problem.lean"
+    }
+  ]
+}

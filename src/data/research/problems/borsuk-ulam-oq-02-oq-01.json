@@ -1,8 +1,8 @@
 {
   "slug": "borsuk-ulam-oq-02-oq-01",
   "title": "For non-prime |G|: what is the optimal equivariant Borsuk-Ulam dimension",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-26T20:00:24.432Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalization complete: 151 lines, 6 theorems, 0 sorries, 6 axioms (5 known + 1 open conjecture).",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Created BorsukUlamOQ02OQ01.lean with abstract BU dimension framework. 6 theorems proved (Z/4, Z/6, Z/pq bounds), 6 axioms (5 known results + 1 open conjecture), 0 sorries.",
+    "builtItems": [
+      "BorsukUlamOQ02OQ01.lean: 151 lines, abstract BU dimension framework",
+      "Gallery data: meta.json, annotations.json, index.ts",
+      "Theorems: z4_lower_bound, z6_lower_bound_z2, z6_lower_bound_z3, z6_combined_bound, zpq_lower_bound, buDim_composite_has_prime_bound"
+    ],
+    "insights": [
+      "Monotonicity under divisibility is the key structural principle for composite BU dimensions",
+      "Both prime subgroups of Z/6 give the same bound 2n-1: no additional info from two primes",
+      "The open question reduces to whether composite groups have strictly higher BU dims than all prime subgroups",
+      "Abstract axiomatization avoids topological infrastructure while capturing algebraic structure",
+      "ZMod type-class issues (additive vs multiplicative group) make direct Lean formalization tricky"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize Fadell-Husseini index to resolve specific cases",
+      "Investigate exotic representations where composite order might give higher bounds",
+      "Extend to non-cyclic groups (dihedral, symmetric)"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -42,6 +56,7 @@
   "relatedProofs": [
     "borsuk-ulam",
     "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-02",
     "borsuk-ulam-oq-03",
     "borsuk-ulam-oq-03-oq-01",
     "borsuk-ulam-oq-03-oq-01-oq-01",
@@ -90,6 +105,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ02.lean"
     },
     {
       "path": "Proofs/BorsukUlamOQ03.lean",
@@ -145,6 +171,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 6,
+      "axiomCount": 6,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
     }
   ]
 }

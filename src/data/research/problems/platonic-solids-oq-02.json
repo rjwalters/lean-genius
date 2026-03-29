@@ -54,7 +54,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "platonic-solids"
+    "platonic-solids",
+    "platonic-solids-oq-02"
   ],
   "references": {
     "papers": [],
@@ -80,10 +81,10 @@
     {
       "path": "Proofs/PlatonicSolidsOQ02.lean",
       "filename": "PlatonicSolidsOQ02.lean",
-      "lineCount": 210,
-      "theoremCount": 22,
+      "lineCount": 232,
+      "theoremCount": 21,
       "axiomCount": 1,
-      "defCount": 20,
+      "defCount": 31,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PlatonicSolidsOQ02.lean"

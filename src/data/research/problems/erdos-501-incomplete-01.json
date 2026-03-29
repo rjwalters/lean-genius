@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-501-incomplete-01",
+  "title": "Complete proof of Erdős #501: Independent Sets for Outer Measure Families",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in set theory: Complete proof of Erdős #501: Independent Sets for Outer Measure Families.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 3,
+    "focus": "Proved structural theorem, fixed bug. Remaining sorries need deep math.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved max_size_infinite (sorry→proof) in both files. Fixed CH bug in Provable (theorem→def). Main file: 4 sorries, 1 axiom. Provable: 4 sorries, 0 axioms.",
+    "builtItems": [
+      "Proved max_size_infinite in Erdos501Problem.lean (by_contra + le_iSup₂ + omega)",
+      "Proved max_size_infinite in Erdos501ProblemProvable.lean (same proof)",
+      "Fixed continuum_hypothesis: def (not theorem/sorry) with set-theoretic formulation"
+    ],
+    "insights": [
+      "Answer depends on set-theoretic axioms (CH): NO under CH (Hechler 1972), YES for closed sets (NPS 1987)",
+      "Main file has 5 sorries, 1 axiom (continuum_hypothesis). Provable file has 6 sorries, 0 axioms.",
+      "Erdos-Hajnal result (arbitrarily large finite independent sets) is the most tractable sorry",
+      "The CH-dependent answer makes this unusual — full resolution requires model-theoretic techniques",
+      "BUG: continuum_hypothesis defined as \"theorem : Prop := by sorry\" — should be def/axiom",
+      "Fix: def continuum_hypothesis : Prop := Cardinal.aleph 1 = Cardinal.continuum",
+      "Provable file has 6 sorries: erdos_hajnal_finite, hechler_under_CH, gladysz_pairs, nps_closed_infinite, continuum_hypothesis (buggy), max_size_infinite",
+      "All proofs need deep math: probabilistic (EH), model theory (Hechler), descriptive set theory (NPS)",
+      "Proved max_size_infinite: erdos_hajnal_finite (arb large finite sets) implies iSup of independent set sizes = ⊤ in ℕ∞",
+      "Fixed CH bug in Provable file: theorem → def with proper formulation as ∀ uncountable S ⊆ ℝ, ∃ surjection ℝ → S"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove Erdos-Hajnal: arbitrarily large finite independent sets exist (probabilistic/greedy argument)",
+      "Consider proving the closed-set case (NPS 1987) separately",
+      "Assess whether CH axiom can be made into a hypothesis instead of global axiom"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "set-theory",
+    "measure-theory",
+    "combinatorics",
+    "independence",
+    "incomplete"
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-50",
+    "erdos-501"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-28T21:30:00Z",
+  "significance": 6,
+  "tractability": 5
+}

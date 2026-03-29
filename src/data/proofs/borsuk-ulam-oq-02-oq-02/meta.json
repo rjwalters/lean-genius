@@ -1,0 +1,70 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-02",
+  "title": "Equivariant Borsuk-Ulam for Compact Lie Groups",
+  "slug": "borsuk-ulam-oq-02-oq-02",
+  "description": "Survey of equivariant Borsuk-Ulam for compact Lie groups (SO(n), U(n)). Formalizes equivariant map definitions, fixed-point subspace properties, and identifies ~2000 lines of infrastructure needed for the full theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ02.lean",
+    "tags": [
+      "topology",
+      "equivariant topology",
+      "Borsuk-Ulam",
+      "representation theory",
+      "Lie groups"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 155,
+    "assumptions": "None. Survey file with basic definitions proved from Mathlib.",
+    "theoremCount": 7,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem (1933) for the antipodal Z/2-action generalizes to equivariant maps for arbitrary compact group actions. Yang's theorem (1954) handles Z/p, and the general case for compact Lie groups involves equivariant degree theory and cohomology.",
+    "problemStatement": "For compact Lie groups SO(n), U(n): do equivariant maps between representations satisfy dimension-reduction properties analogous to Borsuk-Ulam?",
+    "text": "Surveys the equivariant Borsuk-Ulam generalization for compact Lie groups.",
+    "proofStrategy": "Defines equivariant maps and fixed-point subspaces. The full theorem requires equivariant cohomology (~2000 lines infrastructure) not yet in Mathlib.",
+    "keyInsights": [
+      "Equivariant maps preserve fixed-point subspaces",
+      "The dimension-reduction principle generalizes BU: dim V > dim W implies zero exists",
+      "Full proof needs equivariant cohomology or degree theory (~2000 lines)",
+      "Mathlib has basic representations but not equivariant cohomology"
+    ]
+  },
+  "conclusion": {
+    "summary": "The equivariant Borsuk-Ulam CAN be formalized in principle, but requires ~2000 lines of equivariant topology infrastructure. Basic definitions are immediately formalizable; the dimension-reduction principle requires equivariant cohomology.",
+    "openQuestions": [
+      "Can equivariant cohomology be built on Mathlib's existing cohomology?",
+      "Is there a simpler proof route via equivariant K-theory?",
+      "Can the Z/p case (Yang's theorem) be proved without equivariant cohomology?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.ContinuousMap.Basic",
+      "Mathlib.GroupTheory.GroupAction.Basic",
+      "Mathlib.RepresentationTheory.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "BorsukUlamOQ02OQ02",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "extends",
+      "description": "Specializes the general equivariant BU question to compact Lie groups"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The classical Z/2 Borsuk-Ulam that this generalizes"
+    }
+  ]
+}

@@ -29,11 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4A appropriate (2 open conjectures + maynard_tao_bounded_gaps + cramer_conjecture_bound), 24T proved, 1S (r_upper_bound needs pigeonhole for odd x).",
+    "progressSummary": "PROGRESS: Added r_upper_bound_even (even case). Odd case sorry remains. 26T, 4A, 1S.",
     "builtItems": [
       "Proved gap_lt_prime: prime gaps are < the prime (Bertrand postulate)",
       "Proved gapSet_lt: all gaps in gapSet(x) are < x",
-      "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)"
+      "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)",
+      "r_upper_bound_even: even case of upper bound (Erdos853Problem.lean:257)"
     ],
     "insights": [
       "r(x) is an opaque axiom function - should ideally be defined via Nat.find",
@@ -51,7 +52,8 @@
       "For even x≥4: r(x)≤x because x is even, ≥2, and x∉gapSet(x) since gaps<x",
       "For odd x≥5: counting argument needed - number of distinct gaps < number of even values ≤ x",
       "r_upper_bound sorry: even x case trivial (x not in gapSet by gapSet_lt), odd x needs counting argument",
-      "All 4 axioms appropriate: erdos_853_weak/strong (open), maynard_tao (deep), cramer_conjecture (deep)"
+      "All 4 axioms appropriate: erdos_853_weak/strong (open), maynard_tao (deep), cramer_conjecture (deep)",
+      "r_upper_bound_even: proved r(x) ≤ x for even x ≥ 4 via x ∉ gapSet(x) + minimality of r"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -73,15 +75,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:25:45.156Z",
-  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "lastUpdate": "2026-03-28T23:25:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos853Problem.lean",
       "filename": "Erdos853Problem.lean",
-      "lineCount": 328,
-      "theoremCount": 24,
+      "lineCount": 340,
+      "theoremCount": 25,
       "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 2,

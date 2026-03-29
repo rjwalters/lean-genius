@@ -94,8 +94,10 @@
   "relatedProofs": [
     "descartes-rule-of-signs",
     "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
     "descartes-rule-of-signs-oq-02",
-    "descartes-rule-of-signs-oq-03"
+    "descartes-rule-of-signs-oq-03",
+    "descartes-rule-of-signs-oq-04"
   ],
   "references": {
     "papers": [
@@ -140,6 +142,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
     },
     {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02.lean",
       "lineCount": 699,
@@ -160,6 +173,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
     }
   ]
 }

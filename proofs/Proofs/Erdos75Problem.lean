@@ -76,10 +76,26 @@ axiom finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : chromaticNum G
 
 /-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
-axiom erdos_hajnal_related :
-  True  -- stated for context only
+theorem erdos_hajnal_related :
+  True := trivial  -- stated for context only
 
 /- ## The Erdős Problem -/
+
+/-- The strong form (linear independence) implies the basic form. -/
+theorem linear_implies_large (G : Graph) :
+    HasLinearIndepSets G → HasLargeIndepSets G := by
+  intro ⟨c, hc_pos, N, hN⟩ ε _ _
+  refine ⟨max N 1, fun n hn H => ?_⟩
+  have hcn := hN n (le_of_max_le_left hn) H
+  have hn1 : (1 : ℚ) ≤ (n : ℚ) := by exact_mod_cast le_of_max_le_right hn
+  exact Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos hc_pos (lt_of_lt_of_le one_pos hn1)) hcn)
+
+/-- The strong conjecture implies the basic conjecture. -/
+theorem strong_implies_basic :
+    (∃ G : Graph, HasUncountableChromaticNum G ∧ HasLinearIndepSets G) →
+    (∃ G : Graph, HasUncountableChromaticNum G ∧ HasLargeIndepSets G) := by
+  intro ⟨G, hchrom, hlin⟩
+  exact ⟨G, hchrom, linear_implies_large G hlin⟩
 
 /-- Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/

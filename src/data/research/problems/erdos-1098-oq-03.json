@@ -40,7 +40,7 @@
       "Extended non-commuting graph from groups to rings",
       "Ring commutator [x,y] = xy - yx satisfies Jacobi identity",
       "Central elements form a subring (closed under +, *, -)",
-      "\u03c9(\u0393(R)) = 0 iff R commutative (trivial characterization)"
+      "ω(Γ(R)) = 0 iff R commutative (trivial characterization)"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -78,6 +78,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098OQ03.lean",
+      "filename": "Erdos1098OQ03.lean",
+      "lineCount": 160,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ03.lean"
     },
     {
       "path": "Proofs/Erdos1098Problem.lean",

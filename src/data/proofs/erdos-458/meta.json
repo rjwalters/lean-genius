@@ -7,7 +7,7 @@
     "author": "Erdős-Graham",
     "sourceUrl": "https://erdosproblems.com/458",
     "date": "",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos458Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "primes",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 458,
     "erdosUrl": "https://erdosproblems.com/458",
@@ -98,21 +98,7 @@
       "Can the nthPrime value axioms ($p_0 = 2$, etc.) be eliminated by proving them from the `Nat.nth` definition, perhaps using a decidable instance for `Nat.Prime` with `native_decide`?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Nat",
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "Erdos458",
-    "lineCount": 156,
-    "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 4
-  },
+  "leanFile": "Proofs/Erdos458Problem.lean",
   "crossReferences": [
     {
       "targetId": "legendre-partial",

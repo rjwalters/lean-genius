@@ -35,10 +35,10 @@
       "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy"
     ],
     "insights": [
-      "Sylow theorems are fully in Mathlib \u2014 file wraps existing API in gallery format",
+      "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
       "Key Mathlib lemmas: Sylow.nonempty, Sylow.card_eq_multiplicity, Sylow.conj_eq",
       "Sylow.card_sylow_dvd_index, Sylow.card_sylow_modEq_one, exists_prime_orderOf_dvd_card",
-      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| \u2192 \u2203 H of order p^k"
+      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -74,6 +74,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
     },
     {
       "path": "Proofs/LagrangeTheoremOQ03.lean",

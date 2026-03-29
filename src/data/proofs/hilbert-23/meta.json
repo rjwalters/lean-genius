@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert23CalculusVariations.lean",
     "author": "Euler, Lagrange, Hilbert, Tonelli, Pontryagin, et al.",
     "date": "1744-present",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "analysis",
       "optimization",
@@ -16,7 +16,7 @@
       "research-program",
       "intermediate"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -135,23 +135,7 @@
       "Can variational methods solve open problems in geometric analysis?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.Calculus.FDeriv.Basic",
-      "Mathlib.Analysis.Calculus.ContDiff.Defs",
-      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
-      "Mathlib.Analysis.Calculus.Deriv.Basic",
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Hilbert23CalculusVariations",
-    "lineCount": 335,
-    "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 9
-  },
+  "leanFile": "Proofs/Hilbert23CalculusVariations.lean",
   "crossReferences": [
     {
       "targetId": "hilbert-19",

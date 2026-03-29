@@ -34,20 +34,20 @@
       "Proved finite_index_implies_finite_clique (line 161)",
       "Proved same_coset_commute (line 181)",
       "Proved clique_different_cosets (line 194)",
-      "Updated meta.json: sorries 5\u21922",
+      "Updated meta.json: sorries 5→2",
       "Created Erdos1098OQ01.lean: 8 theorems, 0 axioms, 0 sorries, 122 lines",
-      "clique_zero_iff_abelian: \u03c9=0 iff abelian",
+      "clique_zero_iff_abelian: ω=0 iff abelian",
       "center_not_in_clique: center elements excluded from large cliques",
       "abelian_clique_bound: CommGroup implies clique size <= 1"
     ],
     "insights": [
       "finite_index_implies_finite_clique follows trivially from neumann_bound axiom",
       "same_coset_commute: if h = g*z with z central, then g*(g*z) = (g*z)*g by center commutativity and associativity",
-      "clique_different_cosets: contrapositive \u2014 same coset implies commuting, contradicts clique membership",
+      "clique_different_cosets: contrapositive — same coset implies commuting, contradicts clique membership",
       "clique_size_bound still needs injection argument: S injects into G/Z(G) via quotient map",
-      "finite_group_finite_index needs Mathlib API clarification for Subgroup.index type (\u2115 vs \u2115\u221e)",
+      "finite_group_finite_index needs Mathlib API clarification for Subgroup.index type (ℕ vs ℕ∞)",
       "Added QuotientGroup.Basic import for quotient API",
-      "\u03c9(\u0393(G))=0 iff G abelian \u2014 proved as clique_zero_iff_abelian (biconditional)",
+      "ω(Γ(G))=0 iff G abelian — proved as clique_zero_iff_abelian (biconditional)",
       "Center elements never appear in cliques of size >= 2",
       "Abelian groups have clique bound 1 (CommGroup instance)",
       "nonCommuting is symmetric (key for clique definition)"
@@ -55,7 +55,7 @@
     "mathlibGaps": [],
     "nextSteps": [
       "Verify Docker build compiles",
-      "Prove clique_size_bound: injection argument S \u2192 G/Z(G)",
+      "Prove clique_size_bound: injection argument S → G/Z(G)",
       "Prove finite_group_finite_index: needs Subgroup.index API for finite groups"
     ],
     "markdown": "# Knowledge Base: erdos-1098-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -76,13 +76,35 @@
   "lastUpdate": "2026-03-28T14:26:43.173Z",
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1098OQ01.lean",
+      "filename": "Erdos1098OQ01.lean",
+      "lineCount": 123,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098OQ03.lean",
+      "filename": "Erdos1098OQ03.lean",
+      "lineCount": 160,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ03.lean"
+    },
+    {
       "path": "Proofs/Erdos1098Problem.lean",
       "filename": "Erdos1098Problem.lean",
-      "lineCount": 338,
+      "lineCount": 351,
       "theoremCount": 12,
       "axiomCount": 8,
       "defCount": 10,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098Problem.lean"
     }

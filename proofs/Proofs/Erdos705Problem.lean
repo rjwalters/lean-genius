@@ -96,6 +96,16 @@ Returns ⊤ (infinity) if G is acyclic.
 def hasGirthAtLeast {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
   (k : ℕ∞) ≤ G.girth
 
+/-- k-colorability is monotone: if χ(G) ≤ k and k ≤ l then χ(G) ≤ l. -/
+theorem isKColorable_mono {V : Type*} [Fintype V] (G : SimpleGraph V)
+    {k l : ℕ} (hkl : k ≤ l) (hk : isKColorable G k) : isKColorable G l :=
+  le_trans hk hkl
+
+/-- Girth constraint is monotone: if girth ≥ k and l ≤ k then girth ≥ l. -/
+theorem hasGirthAtLeast_mono {V : Type*} (G : SimpleGraph V)
+    {k l : ℕ} (hkl : l ≤ k) (hk : hasGirthAtLeast G k) : hasGirthAtLeast G l :=
+  le_trans (Nat.cast_le.mpr hkl) hk
+
 /-
 # Part 3: Known 4-Chromatic Constructions
 

@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-13T04:11:10.512Z",
     "iteration": 1,
-    "focus": "6 axioms proved, 1 remains (deep analytic)",
+    "focus": "1A 0S 15T — 6 new structural lemmas",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 structural lemmas (compositeSum_nonneg, compositeSum_mono, intervalSum_nonneg). File now has 9 theorems + 1 deep axiom (compositeSum_asymptotic).",
+    "progressSummary": "PROGRESS: Added 6 structural lemmas (15T total). 1 deep axiom remains (compositeSum_asymptotic).",
     "builtItems": [
       "Proved leastPrimeFactor_prime via Nat.minFac_prime",
       "Proved leastPrimeFactor_dvd via Nat.minFac_dvd",
@@ -39,11 +39,20 @@
       "Proved leastPrimeFactor_le_sqrt via minFac_sq_le_self + Real.sqrt_le_sqrt",
       "compositeSum_nonneg: proved composite sum is non-negative",
       "compositeSum_mono: proved composite sum is monotonically non-decreasing",
-      "intervalSum_nonneg: proved interval sum is non-negative"
+      "intervalSum_nonneg: proved interval sum is non-negative",
+      "leastPrimeFactor_le_self: p(n) ≤ n for n ≥ 2",
+      "leastPrimeFactor_even: p(n) = 2 for even n ≥ 2",
+      "leastPrimeFactor_div_le_one: p(n)/n ≤ 1 for n ≥ 2",
+      "intervalSum_mono: enlarging interval increases sum",
+      "intervalSum_singleton: singleton interval evaluation",
+      "intervalSum_split: splitting interval sum at a midpoint"
     ],
     "insights": [
       "All minFac axioms follow trivially from Mathlib: unfold leastPrimeFactor, simp away the ≤1 guard, then apply the Nat.minFac lemma",
-      "sqrt proof: minFac²≤n (Nat.minFac_sq_le_self) → sqrt(minFac²)≤sqrt(n) (Real.sqrt_le_sqrt) → minFac≤sqrt(n) (Real.sqrt_sq)"
+      "sqrt proof: minFac²≤n (Nat.minFac_sq_le_self) → sqrt(minFac²)≤sqrt(n) (Real.sqrt_le_sqrt) → minFac≤sqrt(n) (Real.sqrt_sq)",
+      "leastPrimeFactor_le_self follows from divisibility: p(n) | n implies p(n) ≤ n",
+      "leastPrimeFactor_even: squeeze between ge_two and le(2,prime_two,heven)",
+      "intervalSum_split via Finset.sum_union + Icc decomposition at midpoint"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -72,8 +81,8 @@
     {
       "path": "Proofs/Erdos462Problem.lean",
       "filename": "Erdos462Problem.lean",
-      "lineCount": 129,
-      "theoremCount": 9,
+      "lineCount": 176,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,

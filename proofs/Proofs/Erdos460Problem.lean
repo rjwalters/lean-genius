@@ -156,6 +156,15 @@ def SieveConjecturedBound : Prop :=
       ∀ n : ℕ, n ≥ 2 → ∀ k : ℕ, k ≥ 2 →
         (greedyCoprimeSieve n k : ℝ) ≤ C * (k : ℝ) * Real.log (k : ℝ)
 
+/-- The reciprocal sum is non-negative. -/
+theorem sieveReciprocalSum_nonneg (n : ℕ) : 0 ≤ sieveReciprocalSum n := by
+  unfold sieveReciprocalSum
+  apply Finset.sum_nonneg
+  intro k _
+  split_ifs with h
+  · exact div_nonneg one_pos.le (Nat.cast_nonneg _)
+  · exact le_refl _
+
 /-
 ## Section VI: Least Prime Factor Connection
 -/
@@ -164,6 +173,25 @@ def SieveConjecturedBound : Prop :=
 noncomputable def leastPrimeFactor (n : ℕ) : ℕ :=
   if n ≤ 1 then 0
   else Nat.minFac n
+
+/-- The least prime factor of n ≥ 2 is prime. -/
+theorem leastPrimeFactor_prime (n : ℕ) (hn : n ≥ 2) :
+    Nat.Prime (leastPrimeFactor n) := by
+  unfold leastPrimeFactor
+  rw [if_neg (by omega)]
+  exact Nat.minFac_prime (by omega)
+
+/-- The least prime factor divides n (for n ≥ 2). -/
+theorem leastPrimeFactor_dvd (n : ℕ) (hn : n ≥ 2) :
+    leastPrimeFactor n ∣ n := by
+  unfold leastPrimeFactor
+  rw [if_neg (by omega)]
+  exact Nat.minFac_dvd n
+
+/-- The least prime factor is at most n (for n ≥ 2). -/
+theorem leastPrimeFactor_le (n : ℕ) (hn : n ≥ 2) :
+    leastPrimeFactor n ≤ n :=
+  Nat.le_of_dvd (by omega) (leastPrimeFactor_dvd n hn)
 
 /-- The function f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a, where P⁻ denotes
 the least prime factor. A sufficient condition for Problem 460 is that
