@@ -308,6 +308,52 @@ theorem generalGap_ge_diff (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < numDi
   have h := pairwise_lt_getD_ge_diff (divisorList_pairwise_lt n) hij (by omega)
   omega
 
+/- ## Telescoping -/
+
+/-- Additive decomposition of general gaps at a midpoint.
+    d_k - d_i = (d_j - d_i) + (d_k - d_j) when i ≤ j ≤ k. -/
+theorem generalGap_add_mid (n : ℕ) {i j k : ℕ} (hij : i ≤ j) (hjk : j ≤ k)
+    (hk : k < numDivisors n) :
+    generalGap n i k = generalGap n i j + generalGap n j k := by
+  unfold generalGap divisor
+  have hlen := divisorList_length n
+  have h1 := pairwise_getD_le (divisorList_pairwise_lt n) hjk (by omega)
+  have h2 := pairwise_getD_le (divisorList_pairwise_lt n) hij (by omega)
+  omega
+
+/-- The general gap telescopes into a sum of consecutive gaps.
+    d_j - d_i = Σ_{k=i}^{j-1} (d_{k+1} - d_k). -/
+theorem generalGap_telescope (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < numDivisors n) :
+    generalGap n i j = ∑ k ∈ Finset.Ico i j, consecutiveGap n k := by
+  have hlen := divisorList_length n
+  induction j with
+  | zero =>
+    have : i = 0 := by omega
+    subst this; simp [generalGap]
+  | succ j ih =>
+    rcases eq_or_lt_of_le hij with rfl | hlt
+    · simp [generalGap]
+    · have hij' : i ≤ j := by omega
+      have hj' : j < numDivisors n := by omega
+      -- Split Ico i (j+1) = Ico i j ∪ {j}
+      have hsplit : Finset.Ico i (j + 1) = insert j (Finset.Ico i j) := by
+        ext x; simp only [Finset.mem_Ico, Finset.mem_insert]; omega
+      rw [hsplit, Finset.sum_insert (by simp [Finset.mem_Ico]; omega)]
+      rw [ih hij' hj', add_comm]
+      -- d_{j+1} - d_i = (d_j - d_i) + (d_{j+1} - d_j)
+      exact generalGap_add_mid n hij' (Nat.le_succ j) (by omega)
+
+/-- Each all-pairs reciprocal is at most any consecutive reciprocal in the range.
+    1/(d_j - d_i) ≤ 1/(d_{k+1} - d_k) for i ≤ k < j. -/
+theorem inv_generalGap_le_inv_consecutiveGap (n : ℕ) {i j k : ℕ}
+    (hik : i ≤ k) (hkj : k < j) (hj : j < numDivisors n) :
+    (1 : ℝ) / (generalGap n i j) ≤ 1 / (consecutiveGap n k) := by
+  apply div_le_div_of_nonneg_left one_pos (by positivity) (by positivity)
+  · exact Nat.cast_le.mpr (Nat.cast_le.mp (by
+      push_cast
+      exact_mod_cast gap_lower_bound n k j (by omega) hj))
+  sorry -- TODO: need generalGap ≥ consecutiveGap for arbitrary k in range
+
 /- ## Connections -/
 
 /-- The harmonic sum over divisors: σ_{-1}(n) = Σ_{d|n} 1/d. -/

@@ -208,11 +208,116 @@ theorem abundance_implies_propertyB (F : SetFamily α)
     rw [IsGoodSet] at hBgood ⊢
     exact hBgood⟩
 
+-- ============================================================
+-- SECTION VII: Erdős Classical Bound (1963)
+-- ============================================================
+
+/-- A coloring is monochromatic on A if all elements get the same color. -/
+def IsMonochromatic (f : α → Bool) (A : Finset α) : Prop :=
+  (∀ x ∈ A, f x = true) ∨ (∀ x ∈ A, f x = false)
+
+instance (f : α → Bool) (A : Finset α) :
+    Decidable (IsMonochromatic f A) :=
+  inferInstanceAs (Decidable (_ ∨ _))
+
+/-- The set of functions α → Bool constantly b on A has at most 2^(|α| - |A|)
+    elements: each element outside A is free, elements in A are fixed to b. -/
+lemma card_constOn_le (A : Finset α) (b : Bool) :
+    (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b)).card
+    ≤ 2 ^ (Fintype.card α - A.card) := by
+  sorry
+
+/-- Monochromatic colorings on A number at most 2 · 2^(|α| - |A|):
+    at most 2^(|α| - |A|) for all-true plus 2^(|α| - |A|) for all-false. -/
+lemma card_monochromatic_le (A : Finset α) :
+    (Finset.univ.filter (fun f : α → Bool => IsMonochromatic f A)).card
+    ≤ 2 * 2 ^ (Fintype.card α - A.card) := by
+  calc (Finset.univ.filter (fun f => IsMonochromatic f A)).card
+      ≤ (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = true) ∪
+         Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = false)).card := by
+        apply Finset.card_le_card
+        intro f
+        simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_univ, true_and,
+                    IsMonochromatic]
+        exact id
+    _ ≤ (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = true)).card +
+        (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = false)).card :=
+      Finset.card_union_le _ _
+    _ ≤ 2 ^ (Fintype.card α - A.card) + 2 ^ (Fintype.card α - A.card) := by
+        linarith [card_constOn_le A true, card_constOn_le A false]
+    _ = 2 * 2 ^ (Fintype.card α - A.card) := by ring
+
+/-- **Erdős Classical Bound (1963)**: If F is a family of sets where every
+    member has size ≥ t and |F| · 2 < 2^t, then F is 2-colorable.
+
+    This is the first application of the probabilistic method in combinatorics.
+    Among all 2^|α| colorings, the number making some set monochromatic is
+    less than 2^|α|, so a proper coloring must exist. -/
+theorem erdos_classical_bound (F : SetFamily α) (t : ℕ)
+    (hsize : ∀ A ∈ F, t ≤ A.card)
+    (hbound : F.card * 2 < 2 ^ t) :
+    Is2Colorable F := by
+  -- Trivial case: F empty
+  by_cases hFne : F = ∅
+  · exact ⟨fun _ => true, fun A hA => absurd hA (hFne ▸ Finset.not_mem_empty A)⟩
+  -- For nonempty F: t ≤ |α|
+  have ht_le : t ≤ Fintype.card α := by
+    obtain ⟨A, hA⟩ := Finset.nonempty_of_ne_empty hFne
+    exact le_trans (hsize A hA) (Finset.card_le_univ A)
+  -- Bad colorings: those making some A ∈ F monochromatic
+  set bad := F.biUnion (fun A => Finset.univ.filter
+    (fun f : α → Bool => IsMonochromatic f A)) with hbad_def
+  -- Union bound: |bad| ≤ ∑_A |mono(A)| ≤ |F| · (2 · 2^(n-t))
+  have hbad_bound : bad.card ≤ F.card * (2 * 2 ^ (Fintype.card α - t)) := by
+    calc bad.card
+        ≤ F.sum (fun A => (Finset.univ.filter
+            (fun f : α → Bool => IsMonochromatic f A)).card) :=
+          Finset.card_biUnion_le
+      _ ≤ F.sum (fun _ => 2 * 2 ^ (Fintype.card α - t)) := by
+          apply Finset.sum_le_sum
+          intro A hA
+          calc _ ≤ 2 * 2 ^ (Fintype.card α - A.card) := card_monochromatic_le A
+            _ ≤ 2 * 2 ^ (Fintype.card α - t) := by
+              have : Fintype.card α - A.card ≤ Fintype.card α - t := by
+                have h1 := hsize A hA; have h2 := Finset.card_le_univ A; omega
+              exact Nat.mul_le_mul_left 2 (Nat.pow_le_pow_right (by norm_num) this)
+      _ = F.card * (2 * 2 ^ (Fintype.card α - t)) := by
+          simp [Finset.sum_const, smul_eq_mul]
+  -- |bad| < 2^n = |total colorings|
+  have hbad_lt : bad.card < 2 ^ Fintype.card α := by
+    have hpos : 0 < 2 ^ (Fintype.card α - t) := pow_pos (by norm_num) _
+    calc bad.card
+        ≤ F.card * (2 * 2 ^ (Fintype.card α - t)) := hbad_bound
+      _ = F.card * 2 * 2 ^ (Fintype.card α - t) := by ring
+      _ < 2 ^ t * 2 ^ (Fintype.card α - t) :=
+          mul_lt_mul_of_pos_right hbound hpos
+      _ = 2 ^ Fintype.card α := by rw [← pow_add]; congr 1; omega
+  -- Since |bad| < |total|, there exists a non-bad coloring
+  have hgood : ∃ f : α → Bool, f ∉ bad := by
+    by_contra h
+    push_neg at h
+    have : bad = Finset.univ := Finset.eq_univ_iff_forall.mpr h
+    rw [this, Finset.card_univ, Fintype.card_fun, Fintype.card_bool] at hbad_lt
+    exact lt_irrefl _ hbad_lt
+  obtain ⟨f, hf⟩ := hgood
+  -- f is not monochromatic on any A ∈ F, hence a proper 2-coloring
+  refine ⟨f, fun A hA => ?_⟩
+  have hfA : ¬ IsMonochromatic f A := by
+    intro h
+    exact hf (Finset.mem_biUnion.mpr ⟨A, hA, Finset.mem_filter.mpr ⟨Finset.mem_univ f, h⟩⟩)
+  simp only [IsMonochromatic, not_or] at hfA
+  obtain ⟨hnt, hnf⟩ := hfA
+  push_neg at hnt hnf
+  obtain ⟨y, hyA, hyf⟩ := hnt
+  obtain ⟨x, hxA, hxf⟩ := hnf
+  exact ⟨⟨x, hxA, by cases h : f x <;> simp_all⟩,
+         ⟨y, hyA, by cases h : f y <;> simp_all⟩⟩
+
 /- ## Summary
 
 **Problem**: Erdős #1027 — abundance of good sets for bounded n-uniform families.
 
-**Formalization**: ~200 lines across 6 sections.
+**Formalization**: ~320 lines across 7 sections.
 
 **Proved (sorry-free)**:
 - `propertyB_implies_2colorable`: good set → proper 2-coloring
@@ -221,11 +326,16 @@ theorem abundance_implies_propertyB (F : SetFamily α)
 - `empty_family_all_good`: every subset is good for ∅
 - `singleton_family_propertyB`: singleton family with |A| ≥ 2 has Property B
 - `abundance_implies_propertyB`: abundance → Property B
+- `card_monochromatic_le`: bound on monochromatic colorings (modulo `card_constOn_le`)
+- `erdos_classical_bound`: Erdős 1963 probabilistic method bound (modulo `card_constOn_le`)
 
 **Axiomatized (1 axiom)**:
 - `erdos_1027_solution`: Koishi Chan's affirmative answer (= `Erdos1027Statement`)
 
-**Status**: axiomatized (1 axiom encoding the solved conjecture)
+**Open sorries (1)**:
+- `card_constOn_le`: counting functions constant on a subset (routine combinatorics)
+
+**Status**: axiomatized (1 axiom encoding the solved conjecture, 1 routine sorry)
 -/
 
 end Erdos1027

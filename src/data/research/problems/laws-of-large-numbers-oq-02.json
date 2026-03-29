@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 1,
+    "iteration": 3,
     "focus": "Surveyed convergence rate landscape. Chebyshev rate is next tractable step.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
@@ -29,23 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Convergence rates require CLT which is not in Mathlib. Documented Chebyshev rate O(1/n), CLT O(1/sqrt(n)), Berry-Esseen explicit bound. WLLN axiom is NOT redundant (weaker hypotheses than SLLN). Path: prove Chebyshev rate first, then CLT as axiom.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Eliminated 1 axiom (integral_sampleMean\u2192theorem) and 2 sorries (chebyshev_convergence_rate, chebyshev_rate_implies_convergence). File now: 13 axioms, 0 sorries.",
+    "builtItems": [
+      "integral_sampleMean: axiom \u2192 theorem (proved via integral linearity)",
+      "chebyshev_convergence_rate: sorry \u2192 proved (Chebyshev + axiom substitution)",
+      "chebyshev_rate_implies_convergence: sorry \u2192 proved (ENNReal.ofReal continuity + tendsto_const_div)"
+    ],
     "insights": [
       "WLLN axiom is NOT redundant: it requires only same mean + variance (not full IdentDistrib), so SLLN does not directly imply it",
-      "sampleMean definition uses (1/n)*sum, SLLN uses n^{-1} smul sum — these are equal by ring but need bridging lemma",
-      "WLLN axiom uses strict P(|X| > ε), TendstoInMeasure uses P(ε ≤ |X|) — monotonicity bridges these",
-      "Chebyshev rate: P(|X̄ₙ - μ| > ε) ≤ σ²/(nε²) — provable from Mathlib meas_ge_le_variance_div_sq + variance of sampleMean",
+      "sampleMean definition uses (1/n)*sum, SLLN uses n^{-1} smul sum \u2014 these are equal by ring but need bridging lemma",
+      "WLLN axiom uses strict P(|X| > \u03b5), TendstoInMeasure uses P(\u03b5 \u2264 |X|) \u2014 monotonicity bridges these",
+      "Chebyshev rate: P(|X\u0304\u2099 - \u03bc| > \u03b5) \u2264 \u03c3\u00b2/(n\u03b5\u00b2) \u2014 provable from Mathlib meas_ge_le_variance_div_sq + variance of sampleMean",
       "CLT is NOT in Mathlib (as of v4.26). Would need characteristic functions or Lindeberg method",
-      "Berry-Esseen gives |P(√n(X̄ₙ-μ)/σ ≤ x) - Φ(x)| ≤ C·E[|X₁|³]/(σ³√n) — requires third moment + CLT proof",
-      "Three refinement levels: Chebyshev O(1/n) < CLT O(1/√n) normal approx < Berry-Esseen explicit bound",
-      "Most tractable next step: prove the Chebyshev rate as a theorem (quantitative WLLN), which directly answers how fast"
+      "Berry-Esseen gives |P(\u221an(X\u0304\u2099-\u03bc)/\u03c3 \u2264 x) - \u03a6(x)| \u2264 C\u00b7E[|X\u2081|\u00b3]/(\u03c3\u00b3\u221an) \u2014 requires third moment + CLT proof",
+      "Three refinement levels: Chebyshev O(1/n) < CLT O(1/\u221an) normal approx < Berry-Esseen explicit bound",
+      "Most tractable next step: prove the Chebyshev rate as a theorem (quantitative WLLN), which directly answers how fast",
+      "integral_sampleMean is provable: integral_mul_left + integral_finset_sum + field_simp",
+      "chebyshev_convergence_rate proved from meas_ge_le_variance_div_sq + axiom substitution",
+      "chebyshev_rate_implies_convergence proved: chebyshevBound \u2192 constant/n \u2192 tendsto_const_div",
+      "Mem\u2112p.integrable one_le_two bridges L\u00b2 to Integrable for integral_finset_sum"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove chebyshev_rate: P(|sampleMean X n - μ| > ε) ≤ σ²/(n*ε²) from Mathlib Chebyshev + variance_sum_indep",
-      "State CLT as axiom: √n*(X̄ₙ - μ)/σ converges in distribution to N(0,1)",
-      "State Berry-Esseen as axiom: quantitative CLT with explicit O(1/√n) rate"
+      "Prove sampleMean_memLp: Mem\u2112p.const_smul + mem\u2112p_finset_sum",
+      "Prove variance_sampleMean: IndepFun.variance_sum + variance_smul",
+      "standardNormalCDF: requires characteristic functions (not in Mathlib v4.26)"
     ],
     "markdown": "# Knowledge Base: laws-of-large-numbers-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

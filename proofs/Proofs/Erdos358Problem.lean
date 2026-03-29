@@ -84,12 +84,44 @@ theorem consecutive_sum_formula (u v : ℕ) (huv : u ≤ v) :
   have h2 := consecutive_sum_double u v huv
   omega
 
+/-- If n is not a power of 2, then n can be written as a sum of ≥2 consecutive
+    positive integers.
+
+    **Proof idea**: n has an odd factor d ≥ 3 (since n is not a power of 2).
+    Write 2n = s · t where s, t have different parities and s ≥ 2.
+    - n odd: s = 2, t = n. Terms: (n-1)/2 and (n+1)/2.
+    - n even (n = 2^a · m, m odd ≥ 3): s = min(m, 2^(a+1)), t = max(m, 2^(a+1)).
+    Then u = (t - s - 1)/2, v = (s + t - 3)/2 give the representation. -/
+private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ, n = 2^k) :
+    ∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i := by
+  -- Handle odd n: use two consecutive terms
+  rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
+  · -- n even, not a power of 2: need odd factor analysis
+    sorry
+  · -- n odd: n = (n-1)/2 + (n+1)/2 = 2m+1
+    -- Use u = m-1, v = m. Then Icc (m) (m+1) has sum m + (m+1) = 2m+1 = n.
+    have hm1 : m ≥ 1 := by omega
+    refine ⟨m - 1, m, by omega, ?_⟩
+    have : m - 1 + 1 = m := by omega
+    rw [this]
+    have hIcc : Finset.Icc m (m + 1) = {m, m + 1} := by
+      ext x; simp [Finset.mem_Icc]; omega
+    rw [hIcc, Finset.sum_pair (by omega : m ≠ m + 1)]
+    omega
+
 /-- The classic result: n = sum of at least two consecutive positive integers
-    if and only if n is not a power of 2. Deep number theory result requiring
-    odd factorization analysis: if n has an odd factor d, use d consecutive
-    integers centered near n/d; conversely, 2^k has no such representation. -/
-axiom consecutive_sum_char (n : ℕ) (hn : n ≥ 3) :
-    (∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i) ↔ ¬∃ k : ℕ, n = 2^k
+    if and only if n is not a power of 2.
+
+    **→ direction**: proved via `power_of_two_obstruction` (both factors of
+    2·2^k would need an odd factor ≥ 2, contradiction).
+    **← direction**: constructive via odd factorization (odd case proved,
+    even case requires extracting odd part of n). -/
+theorem consecutive_sum_char (n : ℕ) (hn : n ≥ 3) :
+    (∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i) ↔ ¬∃ k : ℕ, n = 2^k := by
+  constructor
+  · intro ⟨u, v, huv, hsum⟩ ⟨k, hk⟩
+    exact power_of_two_obstruction k u v huv (hk ▸ hsum)
+  · exact not_pow2_representable n hn
 
 /-- For natural numbers, f(n) equals the number of odd divisors of n. -/
 axiom naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
