@@ -107,10 +107,12 @@ theorem coveringCount_one (m : ℕ) (a : ℕ → ℕ) :
 -- ## Main Conjecture (OPEN)
 
 /-- Erdős Problem #689 (OPEN): For sufficiently large n, does there
-    exist a choice of congruence classes that 2-fold covers [1, n]? -/
-axiom erdos_689_double_cover :
+    exist a choice of congruence classes that 2-fold covers [1, n]?
+    This is the r=2 case of the r-fold generalization. -/
+theorem erdos_689_double_cover :
   ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    ∃ a : ℕ → ℕ, IsRFoldCover n 2 a
+    ∃ a : ℕ → ℕ, IsRFoldCover n 2 a :=
+  erdos_689_r_fold 2 (by norm_num)
 
 /-- r-fold generalization (OPEN): For any fixed r and sufficiently
     large n (depending on r), does an r-fold covering exist? -/
@@ -168,7 +170,8 @@ axiom jacobsthal_connection :
     ∃ a : ℕ → ℕ, IsRFoldCover n 1 a
 
 /-- Ben Green's variant: Problem 45 on Green's list asks the same question
-    with r = 10 instead of r = 2. -/
-axiom green_variant_r10 :
+    with r = 10 instead of r = 2. Derived from the r-fold generalization. -/
+theorem green_variant_r10 :
   ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    ∃ a : ℕ → ℕ, IsRFoldCover n 10 a
+    ∃ a : ℕ → ℕ, IsRFoldCover n 10 a :=
+  erdos_689_r_fold 10 (by norm_num)
