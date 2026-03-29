@@ -56,8 +56,9 @@ noncomputable def S (N : ℕ) : ℕ := (allSubsetSums N).card
 
 /-- S(N) is always positive (at least the empty sum = 0). -/
 theorem S_pos (N : ℕ) : S N > 0 := by
-  simp [S, allSubsetSums]
-  sorry  -- The empty set gives sum 0
+  simp only [S, allSubsetSums]
+  exact Finset.card_pos.mpr ⟨_, Finset.mem_image.mpr
+    ⟨∅, Finset.mem_powerset.mpr (Finset.empty_subset _), rfl⟩⟩
 
 /- ## Part II: Iterated Logarithms
 -/

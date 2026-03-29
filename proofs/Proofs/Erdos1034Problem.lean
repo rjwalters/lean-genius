@@ -655,7 +655,16 @@ Basic properties of good neighbors.
 /-- A vertex in the triangle is trivially a "good neighbor" of itself. -/
 theorem triangle_vertex_adjacent (G : SimpleGraph V) [DecidableRel G.Adj]
     (T : Triangle G) : adjacentToTriangleCount G T T.v1 ≥ 2 := by
-  sorry
+  simp only [adjacentToTriangleCount]
+  calc (T.vertices.filter (fun v => G.Adj T.v1 v)).card
+      ≥ ({T.v2, T.v3} : Finset V).card := Finset.card_le_card (by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        simp only [Finset.mem_filter, Triangle.vertices, Finset.mem_insert, Finset.mem_singleton]
+        rcases hx with rfl | rfl
+        · exact ⟨Or.inr (Or.inl rfl), T.adj12⟩
+        · exact ⟨Or.inr (Or.inr rfl), T.adj13⟩)
+    _ = 2 := Finset.card_pair T.distinct23
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -677,7 +686,19 @@ Note: Expected a function because this term is being applied to the argument
 theorem fully_adjacent_is_good (G : SimpleGraph V) [DecidableRel G.Adj]
     (T : Triangle G) (y : V) (h1 : G.Adj y T.v1) (h2 : G.Adj y T.v2) (h3 : G.Adj y T.v3) :
     adjacentToTriangleCount G T y = 3 := by
-  sorry
+  simp only [adjacentToTriangleCount]
+  have hsub : T.vertices ⊆ T.vertices.filter (fun v => G.Adj y v) := by
+    intro v hv
+    simp only [Triangle.vertices, Finset.mem_insert, Finset.mem_singleton] at hv
+    simp only [Finset.mem_filter, Triangle.vertices, Finset.mem_insert, Finset.mem_singleton]
+    rcases hv with rfl | rfl | rfl
+    · exact ⟨Or.inl rfl, h1⟩
+    · exact ⟨Or.inr (Or.inl rfl), h2⟩
+    · exact ⟨Or.inr (Or.inr rfl), h3⟩
+  have hle := Finset.card_le_card hsub
+  have hge := Finset.card_le_card (Finset.filter_subset _ T.vertices)
+  rw [Triangle.card_vertices] at hle hge
+  omega
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

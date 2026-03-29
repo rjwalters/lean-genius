@@ -15060,7 +15060,14 @@ theorem gap_linear_in_N (p1 p2 : KKNParams) (hg : p1.g_sq = p2.g_sq)
     Verified for SU(3)/SU(2) = 3/2. -/
 theorem gap_ratio (p1 p2 : KKNParams) (hg : p1.g_sq = p2.g_sq) :
     kknMassGap p2 / kknMassGap p1 = (p2.nColors : ℝ) / (p1.nColors : ℝ) := by
-  sorry -- MATHLIB-DRIFT: field_simp/ring proof broke
+  have hpi : (0 : ℝ) < 2 * Real.pi := by positivity
+  have hg_ne : p2.g_sq ≠ 0 := ne_of_gt p2.g_sq_pos
+  have hN1_ne : (p1.nColors : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (by linarith [p1.nc_ge])
+  unfold kknMassGap
+  rw [hg]
+  field_simp
+  ring
 
 /-- String tension in 2+1D: sigma = g4 N2 / (8 pi).
     This gives the confining potential V(r) = sigma * r. -/
@@ -15495,7 +15502,8 @@ theorem strong_gap_grows_with_N (g_sq : ℝ) (N1 N2 : ℕ) (hg : 0 < g_sq)
   rw [div_lt_div_iff₀ hd1 hd2]
   have hN1r : (N1 : ℝ) ≥ 2 := by exact_mod_cast hN1
   have hN2r : (N2 : ℝ) > (N1 : ℝ) := by exact_mod_cast hN2
-  sorry -- MATHLIB-DRIFT: was nlinarith [...]
+  nlinarith [sq_nonneg ((↑N2 : ℝ) - (↑N1 : ℝ)), mul_pos hN1_pos hN2_pos,
+             mul_pos hg (sub_pos.mpr (show (↑N1 : ℝ) < ↑N2 from hN2r))]
 
 /-- Weak coupling gap: Lambda * exp(-8pi2/(b0 * g2)). -/
 noncomputable def weakCouplingGap (Lambda g_sq : ℝ) (N : ℕ) : ℝ :=
@@ -18032,8 +18040,7 @@ theorem z2_free_energy_finite (d : ℕ) (hd : d ≥ 2) (beta : ℝ) (hb : beta >
   unfold z2FreeEnergyDensity
   apply mul_neg_of_neg_of_pos
   · apply div_neg_of_neg_of_pos
-    · sorry
-      -- [MATHLIB-DRIFT] sorry
+    · exact neg_lt_zero.mpr (Nat.cast_pos.mpr (Nat.mul_pos (by omega) (by omega)))
     · norm_num
   · apply Real.log_pos
     have : 1 ≤ Real.cosh beta := Real.one_le_cosh beta
@@ -18106,7 +18113,11 @@ noncomputable def holonomyPhase (N : ℕ) (k : ℕ) : ℝ :=
 /-- Adjacent holonomy phases are equally spaced by 2π/N. -/
 theorem holonomy_spacing (N : ℕ) (hN : N ≥ 2) (k : ℕ) :
     holonomyPhase N (k + 1) - holonomyPhase N k = 2 * Real.pi / (N : ℝ) := by
-  sorry -- MATHLIB-DRIFT: field_simp/ring broke
+  unfold holonomyPhase
+  have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  push_cast
+  field_simp
+  ring
 
 /-- The W-boson mass in the compactified theory.
     When the holonomy is center-symmetric, the lightest W-boson has mass:
@@ -22159,8 +22170,7 @@ theorem transfer_matrix_gap (lam0 lam1 : ℝ) (h0 : lam0 > 0) (h1 : lam1 > 0)
     Positive because λ₁/λ₀ < 1. -/
 theorem lattice_mass_gap_pos (ratio : ℝ) (h0 : 0 < ratio) (h1 : ratio < 1) :
     -Real.log ratio > 0 := by
-  sorry
-  -- [MATHLIB-DRIFT] exact Real.log_neg h0 h1
+  exact neg_pos.mpr (Real.log_neg h0 h1)
 
 end WilsonLatticeFormulation
 
@@ -22751,7 +22761,7 @@ theorem effective_spacing_grows' (p : BlockSpinRGParams) :
     effectiveSpacing' p ≥ p.a0 := by
   unfold effectiveSpacing'
   have : (2 : ℝ) ^ p.steps ≥ 1 := one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2)
-  sorry
+  exact le_mul_of_one_le_left (le_of_lt p.h_a0) this
 
 /-- The running coupling at step k:
     g²(k) = g₀² + β₀·g₀⁴·k·ln(2) + O(g₀⁶)
@@ -24182,7 +24192,9 @@ theorem level_rank_duality_dim (k N : ℕ) (hk : k ≥ 1) (hN : N ≥ 2) :
     -- dim H(SU(N)_k, S²) = C(k+N-1, N-1) = C(k+N-1, k) = dim H(SU(k)_N, S²)
     -- This follows from the symmetry of binomial coefficients
     Nat.choose (k + N - 1) (N - 1) = Nat.choose (k + N - 1) k := by
-  sorry -- MATHLIB-DRIFT: Nat.choose_symm broke
+  rw [Nat.choose_symm (by omega : N - 1 ≤ k + N - 1)]
+  congr 1
+  omega
 
 /-- The CS propagator in momentum space for topologically massive gauge theory.
     D_μν(p) ~ (δ_μν - p_μp_ν/p²)/(p² + m²) + ε_μνρ p^ρ m/(p²(p² + m²))
@@ -25716,7 +25728,7 @@ theorem bcs_gap_lt_mu (p : BCSGapParams) : bcsGap p < p.mu := by
     rw [Real.exp_lt_one_iff]
     have : 0 < Real.pi / (2 * p.coupling) :=
       div_pos Real.pi_pos (by linarith [p.g_pos])
-    sorry
+    simp only [neg_div]; linarith
   calc p.mu * Real.exp (-Real.pi / (2 * p.coupling))
       < p.mu * 1 := by exact mul_lt_mul_of_pos_left hexp p.mu_pos
     _ = p.mu := mul_one p.mu
@@ -25728,7 +25740,10 @@ theorem bcs_gap_increases_with_g (p1 p2 : BCSGapParams)
   unfold bcsGap
   rw [hmu]
   apply mul_lt_mul_of_pos_left _ p2.mu_pos
-  sorry -- MATHLIB-DRIFT: Real.exp_lt_exp + div_lt_div broke
+  apply Real.exp_lt_exp.mpr
+  simp only [neg_div]
+  exact neg_lt_neg (div_lt_div_of_pos_left Real.pi_pos
+    (by linarith [p1.g_pos]) (by linarith))
 
 /-- BCS gap increases with chemical potential (at fixed coupling). -/
 theorem bcs_gap_increases_with_mu (p1 p2 : BCSGapParams)
@@ -25849,8 +25864,8 @@ theorem speed_of_sound_conformal_limit (mu Δ : ℝ) (hmu : 0 < mu) (hΔ : 0 < �
     0 < speedOfSoundSq_CFL mu Δ := by
   unfold speedOfSoundSq_CFL
   have hmu2 : 0 < mu ^ 2 := sq_pos_of_pos hmu
-  sorry
-  -- [MATHLIB-DRIFT] nlinarith [sq_nonneg Δ, sq_nonneg mu, sq_nonneg (mu - 2*Δ)]
+  rw [sub_pos, div_lt_div_iff (by positivity : (0:ℝ) < 3 * mu ^ 2) (by norm_num : (0:ℝ) < 3)]
+  nlinarith [sq_nonneg (mu - 2 * Δ), mul_pos (show (0:ℝ) < mu - 2 * Δ by linarith) hΔ]
 
 /-- The CFL phase is a SUPERFLUID (broken U(1)_B).
     Superfluid velocity: v_s = ∇φ/μ where φ is the Goldstone boson.
@@ -27406,7 +27421,7 @@ theorem expansion_param_pos (p : SCExpansionParams) :
   apply div_pos p.hbeta
   apply mul_pos (by norm_num : (2 : ℝ) > 0)
   apply pow_pos
-  sorry
+  exact Nat.cast_pos.mpr (by linarith [p.hN])
 
 /-- At leading order in strong coupling, the plaquette expectation value
     is proportional to u = β/(2N²). This is the first non-trivial term
@@ -27415,9 +27430,10 @@ theorem expansion_param_pos (p : SCExpansionParams) :
     ⟨Tr U_P⟩ = N · u + O(u²) = β/(2N) + O(β²/N⁴) -/
 theorem leading_plaquette_value (p : SCExpansionParams) :
     (p.N : ℝ) * expansionParam p = p.beta / (2 * (p.N : ℝ)) := by
+  have hN_ne : (p.N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by linarith [p.hN])
   unfold expansionParam
   field_simp
-  -- [MATHLIB-DRIFT] ring
+  ring
 
 /-- The Wilson loop area law at strong coupling.
     For a rectangular R × T Wilson loop at leading order:
@@ -27441,14 +27457,13 @@ theorem sc_string_tension_pos' (p : SCExpansionParams)
     (hu : expansionParam p < 1) :
     scStringTension' p > 0 := by
   unfold scStringTension'
-  sorry
-  -- [MATHLIB-DRIFT] exact Real.log_neg (expansion_param_pos p) hu
+  exact neg_pos.mpr (Real.log_neg (expansion_param_pos p) hu)
 
 /-- The condition u < 1 is equivalent to β < 2N². -/
 theorem expansion_param_lt_one_iff (p : SCExpansionParams) :
     expansionParam p < 1 ↔ p.beta < 2 * (p.N : ℝ) ^ 2 := by
   unfold expansionParam
-  sorry -- MATHLIB-DRIFT: div_lt_one proof broke
+  rw [div_lt_one (by positivity : (0 : ℝ) < 2 * (↑p.N) ^ 2)]
 
 /-- For SU(2) at β = 1: u = 1/8, σ = ln(8) ≈ 2.08.
     Strong confinement! -/
