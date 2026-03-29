@@ -236,13 +236,65 @@ theorem quaternion_norm_mul (q₁ q₂ : Quaternion ℝ) :
   The 8-square identity (Degen 1818, Cayley-Dickson construction):
 
   For octonions, we have |o₁o₂| = |o₁||o₂|, which gives an 8-square identity.
-  The formula is complex, with 64 terms, each a sum of 8 products.
+  The formula has 8 components, each a sum of 8 signed products.
 
-  We state the existence here; the full formula is given in the references.
+  The multiplication comes from the Cayley-Dickson doubling of quaternions:
+    (p, q)(r, s) = (pr - s̄q, sp + qr̄)
+  where p, q, r, s are quaternions and ̄ denotes conjugation.
 -/
 
-/-- Statement that an 8-square identity exists (via octonions) -/
-axiom eight_square_identity_exists : NSquareIdentity 8
+/-- Octonion multiplication for the 8-square identity.
+    Derived from the Cayley-Dickson construction: (p,q)(r,s) = (pr - s̄q, sp + qr̄)
+    where p,q,r,s are quaternions. Each component is a bilinear form in 8 variables. -/
+def eightMul (a b : Fin 8 → ℝ) : Fin 8 → ℝ :=
+  ![-- Component 0: real part of pr - s̄q
+    a 0*b 0 - a 1*b 1 - a 2*b 2 - a 3*b 3 - a 4*b 4 - a 5*b 5 - a 6*b 6 - a 7*b 7,
+    -- Component 1
+    a 0*b 1 + a 1*b 0 + a 2*b 3 - a 3*b 2 + a 4*b 5 - a 5*b 4 - a 6*b 7 + a 7*b 6,
+    -- Component 2
+    a 0*b 2 - a 1*b 3 + a 2*b 0 + a 3*b 1 + a 4*b 6 + a 5*b 7 - a 6*b 4 - a 7*b 5,
+    -- Component 3
+    a 0*b 3 + a 1*b 2 - a 2*b 1 + a 3*b 0 + a 4*b 7 - a 5*b 6 + a 6*b 5 - a 7*b 4,
+    -- Component 4: real part of sp + qr̄
+    a 0*b 4 - a 1*b 5 - a 2*b 6 - a 3*b 7 + a 4*b 0 + a 5*b 1 + a 6*b 2 + a 7*b 3,
+    -- Component 5
+    a 0*b 5 + a 1*b 4 - a 2*b 7 + a 3*b 6 - a 4*b 1 + a 5*b 0 - a 6*b 3 + a 7*b 2,
+    -- Component 6
+    a 0*b 6 + a 1*b 7 + a 2*b 4 - a 3*b 5 - a 4*b 2 + a 5*b 3 + a 6*b 0 - a 7*b 1,
+    -- Component 7
+    a 0*b 7 - a 1*b 6 + a 2*b 5 + a 3*b 4 - a 4*b 3 - a 5*b 2 + a 6*b 1 + a 7*b 0]
+
+/-- Helper: expand ∑ i : Fin 8, f i into explicit sum -/
+private lemma sum_fin_eight {f : Fin 8 → ℝ} :
+    ∑ i : Fin 8, f i = f 0 + f 1 + f 2 + f 3 + f 4 + f 5 + f 6 + f 7 := by
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero]
+  abel
+
+set_option maxHeartbeats 16000000 in
+/-- Degen's 8-square identity (1818): the norm is multiplicative under octonion multiplication -/
+theorem eight_square_identity_norm (a b : Fin 8 → ℝ) :
+    normSq a * normSq b = normSq (eightMul a b) := by
+  simp only [normSq, eightMul, sq, sum_fin_eight]
+  simp (config := { decide := true }) only [Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_succ]
+  ring
+
+set_option maxHeartbeats 800000 in
+/-- The 8-square identity structure (octonions) -/
+def eightSquareIdentity : NSquareIdentity 8 where
+  mul := eightMul
+  add_left := fun a b c => by
+    funext i; fin_cases i <;> simp [eightMul, Pi.add_apply] <;> ring
+  add_right := fun a b c => by
+    funext i; fin_cases i <;> simp [eightMul, Pi.add_apply] <;> ring
+  smul_left := fun r a b => by
+    funext i; fin_cases i <;> simp [eightMul, Pi.smul_apply, smul_eq_mul] <;> ring
+  smul_right := fun r a b => by
+    funext i; fin_cases i <;> simp [eightMul, Pi.smul_apply, smul_eq_mul] <;> ring
+  norm_mul := eight_square_identity_norm
+
+/-- The 8-square identity exists (proved via octonion multiplication) -/
+theorem eight_square_identity_exists : NSquareIdentity 8 := eightSquareIdentity
 
 -- ============================================================
 -- PART 7: Non-Existence for n = 3
