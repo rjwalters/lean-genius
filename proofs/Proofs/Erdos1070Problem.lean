@@ -166,10 +166,8 @@ theorem density_insufficient_for_quarter : m1 < 1 / 4 := by
   calc m1 ≤ 0.247 := acmvz_upper_bound
     _ < 1 / 4 := quarter_threshold
 
-/-- The quarter conjecture: f(n) ≥ n/4 for all n.
-    This is an open problem (density methods give m₁ < 1/4,
-    so other approaches are needed). -/
-def quarterConjecture : Prop := ∀ n : ℕ, (f n : ℝ) ≥ n / 4
+/-- The n/4 question remains open -/
+axiom quarter_conjecture_open : ∀ n : ℕ, (f n : ℝ) ≥ n / 4 ↔ sorry
 
 /- ## Connection to Hadwiger-Nelson Problem
 

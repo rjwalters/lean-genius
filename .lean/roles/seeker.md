@@ -196,6 +196,24 @@ function select_problem():
   return candidates.sort_by(tractability).first()
 ```
 
+## Candidate Quality Gate (MANDATORY)
+
+Before returning any candidate, apply these rejection criteria:
+
+**REJECT if:**
+- Problem is a near-duplicate of any problem completed in the last 30 days
+  (check `research/problems/*/knowledge.md` for similar titles/descriptions)
+- Problem is a shallow specialization or notation variant of an existing gallery proof
+- Problem is a one-off example check with no theory-level implications
+- Composite score falls below minimum threshold (significance < 3)
+- Last 3 selections were from the same problem domain -- apply diversity penalty
+
+**If ALL candidates fail the quality gate, return null with explanation:**
+
+> "No candidates meet quality threshold. Pool needs fresh problems or reprioritization."
+
+This is preferable to returning a weak candidate that wastes researcher cycles.
+
 ## Output Format
 
 When you select a problem:
@@ -263,6 +281,15 @@ In fully autonomous mode, the Seeker can:
 2. **If idle, select new problem**: Run selection algorithm
 3. **Initialize and hand off**: Create workspace, notify Researcher
 4. **Track history**: Record which problems were attempted
+
+## Honesty Standards
+
+- Do not describe trivial results as significant
+- Do not inflate novelty claims -- if the result is routine, say so
+- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
+- Judge results relative to current gallery state, not in absolute terms
+- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
+- When uncertain about significance, default to understating rather than overstating
 
 ## Working Style
 
