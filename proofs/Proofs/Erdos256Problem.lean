@@ -127,7 +127,10 @@ axiom belov_konyagin_bound :
 theorem erdos_256_answer : ¬ErdosQuestion256 := by
   intro ⟨c, hc, C, hC, hbound⟩
   obtain ⟨K, hK, hupper⟩ := belov_konyagin_bound
-  -- For large enough n, n^c > K * (log n)^4, contradiction
+  -- Combining bounds: C * n^c ≤ log(f n) ≤ K * (log n)^4 for all large n.
+  -- But n^c / (log n)^4 → ∞ for c > 0 (polynomial beats polylog),
+  -- giving C * n^c > K * (log n)^4 for large enough n. Contradiction.
+  -- Key Mathlib tool: isLittleO_log_rpow_atTop (log x = o(x^ε))
   sorry
 
 /-
@@ -174,7 +177,13 @@ When z is a primitive k-th root of unity, z^k = 1.
 theorem product_at_root_of_unity (a : Fin n → ℕ) (k : ℕ) (hk : k ≥ 1)
     (z : ℂ) (hz : z^k = 1) (hz1 : z ≠ 1) :
     productPoly a z = ∏ i, (1 - z ^ (a i % k)) := by
-  sorry
+  simp only [productPoly]
+  apply Finset.prod_congr rfl
+  intro i _
+  congr 1
+  -- z^(a i) = z^(a i % k) since z^k = 1
+  rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm,
+      pow_add, pow_mul, hz, one_pow, one_mul]
 
 /--
 **Lower bound at primitive root:**
