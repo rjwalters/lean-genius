@@ -13,7 +13,8 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 5 (was 7; proved log_base_gap, dissociated_subset_sum_count)
+Axiom count: 3 (was 7; proved log_base_gap, dissociated_subset_sum_count,
+  powers_of_two_dissociated, maxDissociatedSize_mono)
 Sorry count: 0
 
 ## References
@@ -213,9 +214,37 @@ theorem powers_of_two_dissociated :
   rw [cast_eq, cast_eq] at hsum
   exact_mod_cast hsum
 
-/-- Monotonicity: f is non-decreasing. -/
-axiom maxDissociatedSize_mono :
-  ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n
+/-- **PROVED** (was axiom): Monotonicity — f is non-decreasing.
+    If m ≤ n then f(m) ≤ f(n), since any n-element set contains an
+    m-element subset, inheriting the dissociated subset guarantee. -/
+theorem maxDissociatedSize_mono :
+    ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n := by
+  intro m n hmn
+  unfold maxDissociatedSize
+  apply csSup_le_csSup
+  · -- BddAbove: the n-set is bounded above by n
+    refine ⟨n, fun k (hk : ∀ A : Finset ℝ, A.card = n →
+        ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k) => ?_⟩
+    -- Exhibit a specific n-element Finset ℝ to extract the bound
+    have ⟨A, hA⟩ : ∃ A : Finset ℝ, A.card = n :=
+      ⟨(Finset.range n).image ((↑) : ℕ → ℝ), by
+        rw [Finset.card_image_of_injOn]
+        · exact Finset.card_range n
+        · intro a _ b _ hab; exact_mod_cast hab⟩
+    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hA
+    exact le_trans hBcard (le_trans (Finset.card_le_card hBsub) (le_of_eq hA))
+  · -- Nonempty: 0 is in the m-set (empty set is dissociated in any set)
+    exact ⟨0, fun A _ => ⟨∅, empty_dissociated A, Nat.zero_le _⟩⟩
+  · -- Subset: the m-set ⊆ the n-set
+    intro k (hk : ∀ A : Finset ℝ, A.card = m →
+        ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k)
+    intro A (hA : A.card = n)
+    -- A has n ≥ m elements; extract an m-element subset A'
+    obtain ⟨A', hA'sub, hA'card⟩ := Finset.exists_smaller_set A m (hA ▸ hmn)
+    -- A' has a dissociated subset B of size ≥ k
+    obtain ⟨B, ⟨hBsub, hBdiss⟩, hBcard⟩ := hk A' hA'card
+    -- B ⊆ A' ⊆ A, and dissociatedness depends only on B
+    exact ⟨B, ⟨hBsub.trans hA'sub, hBdiss⟩, hBcard⟩
 
 /-- **PROVED** (was axiom): The gap between the greedy bound and the
     conjecture: log₂ vs log₃. Since 2 ≤ 3, log₃ n ≤ log₂ n for all n. -/
