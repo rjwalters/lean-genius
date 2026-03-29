@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ann-sylow-pq-unique-q",
+    "proofId": "sylow-theorems-oq-01",
+    "range": {"startLine": 45, "endLine": 70},
+    "type": "insight",
+    "title": "Why the Sylow q-Subgroup is Always Unique",
+    "body": "For p < q, the number n_q of Sylow q-subgroups satisfies n_q | p and n_q ≡ 1 (mod q). Since p < q, we can't have n_q = p (that would require p ≡ 1 mod q, impossible for p < q). So n_q = 1, meaning the Sylow q-subgroup is unique and therefore normal."
+  },
+  {
+    "id": "ann-sylow-pq-classification",
+    "proofId": "sylow-theorems-oq-01",
+    "range": {"startLine": 130, "endLine": 170},
+    "type": "insight",
+    "title": "The p | (q-1) Dichotomy",
+    "body": "The classification hinges on a single divisibility condition: does p divide q-1? If not, both Sylow subgroups are normal and G is cyclic. If yes, there exists a non-abelian semidirect product. The examples are illuminating: order 15 (3×5) is always cyclic since 3∤4, but order 6 (2×3) has S₃ since 2|2."
+  }
+]
