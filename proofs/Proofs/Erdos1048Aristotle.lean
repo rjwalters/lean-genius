@@ -33,7 +33,7 @@ theorem xpow_sub_const_degree (a : ℂ) (n : ℕ) (hn : n ≥ 1) :
 -- Routine: |r * exp(iθ)| = |r| for r : ℝ
 theorem abs_mul_exp (r : ℝ) (θ : ℝ) :
     Complex.abs (r * Complex.exp (θ * Complex.I)) = |r| := by
-  sorry
+  rw [map_mul, abs_exp_ofReal_mul_I, mul_one, abs_ofReal]
 
 -- Routine: If z^n = r^n for r > 0, then |z| = r
 theorem abs_root_of_pow_eq (z : ℂ) (r : ℝ) (n : ℕ) (hr : r > 0) (hn : n ≥ 1)
