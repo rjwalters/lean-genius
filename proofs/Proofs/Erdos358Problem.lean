@@ -127,10 +127,34 @@ f(n) ≥ 1 for all large n is trivially achieved by A = naturals,
 since every n ≥ 1 equals itself (the sum from n to n).
 -/
 /-- For the naturals sequence, every n ≥ 1 has at least one consecutive sum representation
-    (the trivial one: n = sum from (n-1) to (n-1) of (i+1)). The proof requires showing
-    the representation set is finite (bounded by n), which uses Set.ncard machinery. -/
-axiom naturals_always_representable (n : ℕ) (hn : n ≥ 1) :
-    consecutiveSumCount naturalsSeq n ≥ 1
+    (the trivial one: n = sum from (n-1) to (n-1) of (i+1)). -/
+theorem naturals_always_representable (n : ℕ) (hn : n ≥ 1) :
+    consecutiveSumCount naturalsSeq n ≥ 1 := by
+  unfold consecutiveSumCount
+  -- The set of valid representations
+  set S := {p : ℕ × ℕ | p.1 ≤ p.2 ∧
+    (∑ i ∈ Finset.Icc p.1 p.2, naturalsSeq.seq i) = ↑n}
+  -- Step 1: S is finite (all valid pairs have u, v < n)
+  have hfin : S.Finite := by
+    apply Set.Finite.subset ((Set.finite_Iio n).prod (Set.finite_Iio n))
+    rintro ⟨u, v⟩ ⟨huv, hsum⟩
+    simp only [Set.mem_prod, Set.mem_Iio]
+    -- The sum includes term at v: naturalsSeq.seq v = v+1
+    -- Since all terms are nonneg, sum ≥ v+1, so v+1 ≤ n
+    have hv_mem : v ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨huv, le_refl v⟩
+    have hv_le : naturalsSeq.seq v ≤ ∑ i ∈ Finset.Icc u v, naturalsSeq.seq i :=
+      Finset.single_le_sum (fun i _ => by simp [naturalsSeq]; positivity) hv_mem
+    rw [hsum] at hv_le
+    -- hv_le : naturalsSeq.seq v ≤ ↑n, i.e., ↑v + 1 ≤ ↑n
+    simp only [naturalsSeq] at hv_le
+    constructor <;> omega
+  -- Step 2: S is nonempty (witness: (n-1, n-1), single-term sum)
+  have hne : S.Nonempty :=
+    ⟨(n - 1, n - 1), le_refl _, by
+      simp only [Finset.Icc_self, Finset.sum_singleton, naturalsSeq]
+      push_cast; omega⟩
+  -- Step 3: ncard ≥ 1
+  exact Set.ncard_pos hfin |>.mpr hne
 
 /-- Gauss sum: twice the sum of integers from a to b equals (b-a+1)(a+b). -/
 private lemma two_mul_sum_Icc (a b : ℕ) (hab : a ≤ b) :
