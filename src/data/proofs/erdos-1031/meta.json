@@ -17,7 +17,7 @@
       "universality"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 1031,
     "erdosUrl": "https://erdosproblems.com/1031",
     "erdosProblemStatus": "solved",
@@ -25,8 +25,8 @@
       "erdos-82"
     ],
     "axiomCount": 6,
-    "lineCount": 312,
-    "assumptions": "6 axioms (deep: Ramsey bounds, Prömel-Rödl, non-Ramsey existence, regular graph existence). 3 sorries remain. 7 new structural theorems added (monotonicity, subset properties).",
+    "lineCount": 510,
+    "assumptions": "6 axiom declarations (deep: Ramsey bounds, Prömel-Rödl, non-Ramsey existence, regular graph existence). 2 sorries remain (main theorem statements). 17 theorems proved including Ramsey log-trivial bound, Prömel-Rödl universality derivation, and cycle graph regularity.",
     "mathlib_version": "4.29.0"
   },
   "overview": {
@@ -219,9 +219,9 @@
       "Finset"
     ],
     "namespace": "Erdos1031",
-    "lineCount": 280,
+    "lineCount": 510,
     "axiomCount": 6,
-    "theoremCount": 6,
-    "definitionCount": 16
+    "theoremCount": 17,
+    "definitionCount": 18
   }
 }
