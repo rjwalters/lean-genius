@@ -234,14 +234,46 @@ The smooth part is determined by primes in [2, k] dividing C(n,k).
 noncomputable def legendreExponent (n p : ℕ) : ℕ :=
   ∑ i ∈ Finset.range (Nat.log p n + 1), n / p^(i + 1)
 
--- Kummer's theorem: v_p(C(n,k)) = number of carries when adding k + (n-k) in base p
--- Equivalently: v_p(C(n,k)) = v_p(n!) - v_p(k!) - v_p((n-k)!)
--- NOTE: Mathlib has Nat.Prime.multiplicity_choose which expresses this via carries.
--- Converting between multiplicity and factorization uses Nat.multiplicity_eq_factorization.
--- TODO: Replace this axiom with Mathlib's version.
-axiom kummer_theorem (n k p : ℕ) (hp : p.Prime) (hk : k ≤ n) :
+-- Helper: factorization of m! equals the Legendre floor-sum formula
+-- Bridges Mathlib's multiplicity_factorial (PartENat/Ico form) to factorization/range form.
+private theorem factorization_factorial_eq_legendreExponent (m p : ℕ) (hp : p.Prime) :
+    (m !).factorization p = legendreExponent m p := by
+  -- Express factorization as Ico sum via multiplicity bridge
+  have h_ico : (m !).factorization p = ∑ i ∈ Ico 1 (Nat.log p m + 2), m / p ^ i := by
+    have h1 : (↑((m !).factorization p) : PartENat) = multiplicity p (m !) :=
+      (multiplicity_eq_factorization hp (factorial_ne_zero m)).symm
+    have h2 : multiplicity p (m !) =
+        (↑(∑ i ∈ Ico 1 (Nat.log p m + 2), m / p ^ i) : PartENat) :=
+      hp.multiplicity_factorial (by omega)
+    exact_mod_cast h1.trans h2
+  rw [h_ico, legendreExponent]
+  -- Re-index: ∑ i ∈ Ico 1 (N+2), m/p^i = ∑ j ∈ range (N+1), m/p^(j+1)
+  symm
+  exact Finset.sum_nbij (· + 1)
+    (fun a ha => mem_Ico.mpr ⟨by omega, by rw [mem_range] at ha; omega⟩)
+    (fun a _ b _ h => by omega)
+    (fun b hb => ⟨b - 1, mem_range.mpr (by rw [mem_Ico] at hb; omega), by omega⟩)
+    (fun _ _ => rfl)
+
+-- Kummer's theorem: v_p(C(n,k)) via Legendre's formula
+-- v_p(C(n,k)) = v_p(n!) - v_p(k!) - v_p((n-k)!)
+-- Proved from Nat.factorization_mul and the identity C(n,k) * k! * (n-k)! = n!.
+theorem kummer_theorem (n k p : ℕ) (hp : p.Prime) (hk : k ≤ n) :
     (Nat.choose n k).factorization p =
-    legendreExponent n p - legendreExponent k p - legendreExponent (n - k) p
+    legendreExponent n p - legendreExponent k p - legendreExponent (n - k) p := by
+  have hid := choose_mul_factorial_mul_factorial hk
+  have hcnk : Nat.choose n k ≠ 0 := (choose_pos hk).ne'
+  have hkf : k ! ≠ 0 := factorial_ne_zero k
+  have hnkf : (n - k) ! ≠ 0 := factorial_ne_zero (n - k)
+  have h_add : (n !).factorization p =
+      (Nat.choose n k).factorization p + (k !).factorization p + ((n - k) !).factorization p := by
+    rw [show n ! = Nat.choose n k * k ! * (n - k) ! from hid.symm,
+        factorization_mul (mul_ne_zero hcnk hkf) hnkf, Finsupp.add_apply,
+        factorization_mul hcnk hkf, Finsupp.add_apply]
+  rw [← factorization_factorial_eq_legendreExponent n p hp,
+      ← factorization_factorial_eq_legendreExponent k p hp,
+      ← factorization_factorial_eq_legendreExponent (n - k) p hp]
+  omega
 
 /-
 # Part 7: Special Cases
