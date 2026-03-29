@@ -13,11 +13,11 @@
       "continuum hypothesis",
       "independence"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 155,
-    "assumptions": "None. All results proved from Mathlib + parent file CantorsTheoremOQ01.lean.",
+    "assumptions": "0 axioms, 0 sorries. Core cardinal facts via Mathlib (Cardinal.cantor, mk_set, aleph_one_le_continuum) and parent file CantorsTheoremOQ01.lean (CH/GCH definitions, conditional results).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -38,10 +38,13 @@
   },
   "leanFile": {
     "imports": [
+      "Proofs.CantorsTheoremOQ01",
       "Mathlib.SetTheory.Cardinal.Basic",
       "Mathlib.SetTheory.Cardinal.Ordinal",
       "Mathlib.SetTheory.Cardinal.Continuum",
-      "Mathlib.SetTheory.Cardinal.Cofinality"
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": ["Cardinal"],
     "namespace": "CantorsTheoremOQ01OQ01",
