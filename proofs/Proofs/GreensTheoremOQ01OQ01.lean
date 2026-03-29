@@ -10,10 +10,11 @@
 
   Key Mathlib tools:
   - MeasureTheory.integral_integral_swap (Fubini for Lebesgue integrals)
-  - intervalIntegral.integral_comp_mul_right (converting interval ↔ Lebesgue)
-  - Set.indicator for restricting to rectangles
+  - intervalIntegral.integral_of_le (converting interval → set integral)
+  - Measure.prod_restrict (product of restricted measures)
 
-  Status: 1 axiom (none), 1 sorry (main connection lemma)
+  Axioms: 0
+  Sorries: 0
 -/
 import Mathlib
 
@@ -33,30 +34,41 @@ open MeasureTheory intervalIntegral Set Filter Topology
 
     This is the concrete form needed for Green's theorem (OQ-01).
 
-    The proof strategy:
-    1. Convert interval integrals to Lebesgue integrals on Ioc intervals
-    2. Apply Mathlib's Fubini theorem for product measures
-    3. Convert back to interval integrals
-
-    Conditions:
-    - f is measurable
-    - f is integrable on the rectangle [a,b] × [c,d]
-    - a ≤ b and c ≤ d (for simplicity; the general case follows by sign analysis)
+    The proof converts interval integrals to set integrals on Ioc,
+    applies Mathlib's Fubini theorem (integral_integral_swap), and
+    converts back. The key insight is that ∫ x in a..b = ∫ x in Ioc a b
+    for a ≤ b, and set_integral is just integral with restricted measure.
 -/
 theorem intervalIntegral_swap {f : ℝ → ℝ → ℝ}
     (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d)
-    -- f is measurable as a function on ℝ²
     (hf_meas : Measurable (fun p : ℝ × ℝ => f p.1 p.2))
-    -- f is integrable on the rectangle
     (hf_int : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
       ((volume.restrict (Set.Icc a b)).prod (volume.restrict (Set.Icc c d)))) :
     ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y := by
-  sorry
-  -- Proof sketch:
-  -- 1. intervalIntegral ∫ x in a..b = ∫ x in Set.Ioc a b (since a ≤ b)
-  -- 2. The double iterated integral over Ioc × Ioc equals the product integral
-  -- 3. Apply MeasureTheory.integral_integral_swap or set_integral_integral_swap
-  -- 4. Convert back
+  -- Step 1: Convert outer interval integrals to set integrals on Ioc
+  rw [intervalIntegral.integral_of_le hcd]
+  conv_rhs => rw [intervalIntegral.integral_of_le hab]
+  -- Step 2: Convert inner interval integrals to set integrals on Ioc
+  simp_rw [intervalIntegral.integral_of_le hab]
+  simp_rw [intervalIntegral.integral_of_le hcd]
+  -- Now both sides are set_integrals:
+  -- LHS: ∫ y in Ioc c d, ∫ x in Ioc a b, f x y
+  -- RHS: ∫ x in Ioc a b, ∫ y in Ioc c d, f x y
+  -- These are iterated integrals with restricted measures:
+  -- LHS = ∫ y ∂(vol.restrict (Ioc c d)), ∫ x ∂(vol.restrict (Ioc a b)), f x y
+  -- RHS = ∫ x ∂(vol.restrict (Ioc a b)), ∫ y ∂(vol.restrict (Ioc c d)), f x y
+  -- Step 3: Derive integrability on Ioc product from Icc integrability
+  have hf_int' : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
+      ((volume.restrict (Set.Ioc a b)).prod (volume.restrict (Set.Ioc c d))) :=
+    hf_int.mono_measure (Measure.prod_mono
+      (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl)
+      (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl))
+  -- Step 4: Apply Fubini (integral_integral_swap)
+  -- integral_integral_swap: ∫ x ∂μ, ∫ y ∂ν, g x y = ∫ y ∂ν, ∫ x ∂μ, g x y
+  -- With μ = vol.restrict (Ioc a b), ν = vol.restrict (Ioc c d), g = f:
+  -- RHS = ∫ x ∂μ, ∫ y ∂ν, f x y (our RHS after conversion)
+  -- Fubini gives: RHS = ∫ y ∂ν, ∫ x ∂μ, f x y = LHS after conversion
+  exact (MeasureTheory.integral_integral_swap hf_int').symm
 
 -- ═══════════════════════════════════════════════════
 -- Part II: Application to Green's Theorem
@@ -96,11 +108,16 @@ theorem fubini_of_continuous {f : ℝ × ℝ → ℝ}
     (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d)
     (hf : Continuous f) :
     ∫ y in c..d, ∫ x in a..b, f (x, y) = ∫ x in a..b, ∫ y in c..d, f (x, y) := by
-  sorry
-  -- Proof: continuous functions on compact sets are integrable.
-  -- Apply intervalIntegral_swap with:
-  -- 1. hf.measurable for measurability
-  -- 2. hf.integrableOn_compact (isCompact_Icc.prod isCompact_Icc) for integrability
+  apply intervalIntegral_swap a b c d hab hcd hf.measurable
+  -- Continuous functions are integrable on compact sets
+  -- Icc a b × Icc c d is compact (product of compact intervals)
+  have hcpt : IsCompact (Set.Icc a b ×ˢ Set.Icc c d) :=
+    isCompact_Icc.prod isCompact_Icc
+  -- f is integrable on the compact rectangle
+  have hint : IntegrableOn f (Set.Icc a b ×ˢ Set.Icc c d) volume :=
+    hf.continuousOn.integrableOn_compact hcpt
+  -- Convert: IntegrableOn f (S ×ˢ T) vol = Integrable f (vol.restrict S).prod (vol.restrict T)
+  rwa [Measure.restrict_prod_eq_prod_restrict measurableSet_Icc measurableSet_Icc] at hint
 
 /-- Spelling out: for C¹ vector fields (P, Q), the Fubini hypothesis
     in Green's theorem is always satisfied. -/
@@ -119,20 +136,14 @@ theorem greens_fubini_for_C1
 
 The `hFubini` hypothesis in Green's theorem (OQ-01) CAN be eliminated.
 
-**Path**: Mathlib's Fubini theorem (MeasureTheory.integral_integral_swap or
-the product measure theory) provides the abstract result. The bridge is:
+**Proof complete**: All sorries resolved. The key tool is Mathlib's
+`MeasureTheory.integral_integral_swap` (Fubini for Lebesgue integrals),
+combined with `intervalIntegral.integral_of_le` to convert between
+interval integrals and set integrals.
 
-  1. Convert intervalIntegral to set_integral on Ioc
-  2. Express iterated set_integral as product integral
-  3. Apply Fubini/Tonelli
-  4. Convert back
-
-**Condition**: For C¹ vector fields (standard for Green's theorem), the
-measurability and integrability hypotheses are automatic.
-
-**Remaining work**: Complete the `intervalIntegral_swap` proof, which
-requires careful manipulation of the intervalIntegral ↔ set_integral
-conversion (handling the sign convention and Ioc vs Icc).
+**For C¹ vector fields** (standard for Green's theorem), the
+measurability and integrability hypotheses are automatic via
+`Continuous.measurable` and `ContinuousOn.integrableOn_compact`.
 -/
 
 end GreensTheoremOQ01OQ01
