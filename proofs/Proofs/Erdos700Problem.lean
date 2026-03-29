@@ -275,14 +275,47 @@ private theorem gcd_choose_prime_pow_eq {p : ℕ} (hp : p.Prime) {a : ℕ} (ha :
     For prime powers n = p^a: k = p^(a-1) gives gcd = p ≤ n/P(n). -/
 theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
     fBinom n ≤ n / largestPrimeFactor n := by
-  -- The full proof requires extracting the largest prime factor of n,
-  -- its multiplicity, choosing the right k ∈ [2, n/2], and connecting
-  -- gcd(n, C(n,k)) to n/P(n) via gcd_choose_prime_pow_eq.
-  -- This infrastructure (working with largestPrimeFactor defined via Finset.sup,
-  -- extracting prime factorization, choosing k based on whether n is a prime power)
-  -- is substantial. The mathematical content is fully captured by
-  -- prime_not_dvd_choose_shift + gcd_choose_prime_pow_eq above.
-  sorry
+  -- Key insight: just use k = P (the largest prime factor, with exponent 1).
+  -- Since n is composite, n/P ≥ 2, so P ∈ [2, n/2].
+  -- gcd(n, C(n, P)) = n/P by gcd_choose_prime_pow_eq.
+  set P := largestPrimeFactor n
+  have h4 : 4 ≤ n := by
+    -- n ≥ 2 and not prime → n ≥ 4
+    interval_cases n <;> simp_all [Nat.Prime] <;> omega
+  have hP_prime : P.Prime := by
+    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).1
+  have hP_dvd : P ∣ n := by
+    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).2.1
+  -- n/P ≥ 2 since n is composite (if n/P = 1 then n = P is prime)
+  set q := n / P
+  have hPq : n = P * q := (Nat.div_mul_cancel hP_dvd).symm ▸ (mul_comm P q ▸ rfl)
+  have hq_ge2 : 2 ≤ q := by
+    by_contra h; push_neg at h
+    interval_cases q
+    · omega  -- q = 0: impossible since P ≥ 2 and n ≥ 4
+    · -- q = 1: n = P, but n is not prime
+      have : n = P := by omega
+      exact hn (this ▸ hP_prime)
+  -- P ∈ [2, n/2]
+  have hP_ge2 : 2 ≤ P := hP_prime.two_le
+  have hP_le_half : P ≤ n / 2 := by
+    rw [Nat.le_div_iff_mul_le (by norm_num : 0 < 2)]
+    calc P * 2 ≤ P * q := Nat.mul_le_mul_left P hq_ge2
+      _ = n := by omega
+  -- fBinom n ≤ gcd(n, C(n, P))
+  unfold fBinom; rw [dif_pos h4]
+  have hP_mem : P ∈ Finset.Icc 2 (n / 2) := Finset.mem_Icc.mpr ⟨hP_ge2, hP_le_half⟩
+  calc ((Finset.Icc 2 (n / 2)).image (fun k => Nat.gcd n (Nat.choose n k))).min' _
+      ≤ Nat.gcd n (Nat.choose n P) :=
+        Finset.min'_le _ _ (Finset.mem_image.mpr ⟨P, hP_mem, rfl⟩)
+    _ = q := by
+        -- gcd(P * q, C(P * q, P)) = q by gcd_choose_prime_pow_eq
+        have h_eq : P * q = P ^ 1 * q := by rw [pow_one]
+        conv_lhs => rw [show n = P * q from by omega, h_eq]
+        exact gcd_choose_prime_pow_eq hP_prime (le_refl 1) (by omega : 1 ≤ q)
+    _ = n / largestPrimeFactor n := by unfold_let q P
 
 /-- f(n) ≥ p(n), the smallest prime factor of n.
     For every 2 ≤ k ≤ n/2, gcd(n, C(n,k)) ≥ minFac(n).
