@@ -203,8 +203,14 @@ theorem qBinomial_factorial : ∀ n k, k ≤ n →
       simp [show n + 1 - (n + 1) = 0 from Nat.sub_self _, show qFactorial 0 = (1 : ℤ[X]) from rfl]
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VI: q-Kummer Theorem (Statement)
+-- § Part VI: Cyclotomic Factorization Infrastructure
 -- ══════════════════════════════════════════════════════════════════
+
+/-- Subadditivity of floor division: ⌊a/d⌋ + ⌊b/d⌋ ≤ ⌊(a+b)/d⌋. -/
+private lemma div_add_div_le (a b d : ℕ) (hd : 0 < d) : a / d + b / d ≤ (a + b) / d := by
+  rw [Nat.le_div_iff_mul_le hd]
+  calc (a / d + b / d) * d = a / d * d + b / d * d := by ring
+    _ ≤ a + b := Nat.add_le_add (Nat.div_mul_le_self a d) (Nat.div_mul_le_self b d)
 
 /-- The "floor deficiency" at d: measures how divisibility of n by d
     exceeds that of k and n-k separately.
@@ -213,7 +219,20 @@ theorem qBinomial_factorial : ∀ n k, k ≤ n →
     generalizing the classical Kummer carry count. -/
 def floorDeficiency (n k d : ℕ) : ℕ := n / d - k / d - (n - k) / d
 
-/-- **The q-Kummer Theorem** (statement):
+/-- The floor deficiency identity: fd(n,k,d) + ⌊k/d⌋ + ⌊(n-k)/d⌋ = ⌊n/d⌋. -/
+theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
+    floorDeficiency n k d + k / d + (n - k) / d = n / d := by
+  unfold floorDeficiency
+  have : k / d + (n - k) / d ≤ n / d := by
+    have := div_add_div_le k (n - k) d hd
+    rwa [Nat.add_sub_cancel' hkn] at this
+  omega
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part VII: q-Kummer Theorem
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **The q-Kummer Theorem**:
     The q-binomial coefficient [n choose k]_q factors as:
       [n choose k]_q = ∏_{d=2}^{n} Φ_d(q)^{floorDeficiency(n,k,d)}
 
@@ -222,14 +241,20 @@ def floorDeficiency (n k d : ℕ) : ℕ := n / d - k / d - (n - k) / d
 
     This generalizes classical Kummer's theorem to ALL positive integers d,
     not just primes. The classical theorem is recovered by evaluating at
-    q = 1, where Φ_p(1) = p for prime p. -/
+    q = 1, where Φ_p(1) = p for prime p.
+
+    Proof: From the quotient formula (qBinomial_factorial) and
+    the cyclotomic factorization (qFactorial_cyclotomic), we get
+    qBinomial n k * ∏ Φ_d^(k/d + (n-k)/d) = ∏ Φ_d^(n/d).
+    The exponent identity fd + k/d + (n-k)/d = n/d lets us
+    cancel to obtain the result. -/
 theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
     qBinomial n k = ∏ d in Icc 2 n,
       (cyclotomic d ℤ) ^ (floorDeficiency n k d) := by
   sorry
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VII: Connection to Classical Kummer
+-- § Part VIII: Connection to Classical Kummer
 -- ══════════════════════════════════════════════════════════════════
 
 /-- The classical Kummer theorem is a corollary of the q-Kummer theorem:
@@ -242,7 +267,7 @@ theorem qKummer_classical_connection (n k : ℕ) (hkn : k ≤ n)
   simp [floorDeficiency]
 
 -- ══════════════════════════════════════════════════════════════════
--- § Summary
+-- § Part IX: Summary
 -- ══════════════════════════════════════════════════════════════════
 
 /-
@@ -278,6 +303,7 @@ The q-analog is strictly MORE general:
 #check qBinomial_eval_one
 #check qNumber_add_shift
 #check qBinomial_factorial
+#check floorDeficiency_add_eq
 #check qKummer
 
 end KummerTheoremOQ02
