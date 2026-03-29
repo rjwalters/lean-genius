@@ -33,19 +33,25 @@ theorem transfinite_induction (P : Ordinal → Prop)
 
 /-- The ordinal hierarchy: ω < ω₁. -/
 theorem omega_lt_omega1 : ω < Ordinal.omega1 := by
-  sorry
+  exact Ordinal.omega_lt_omega1
 
 /-- ω₁ < ω₁ ^ ω (ordinal exponentiation). -/
 theorem omega1_lt_omega1_pow_omega : Ordinal.omega1 < Ordinal.omega1 ^ ω := by
-  sorry
+  calc Ordinal.omega1
+    = Ordinal.omega1 ^ (1 : Ordinal) := (Ordinal.opow_one _).symm
+    _ < Ordinal.omega1 ^ ω := by
+        apply Ordinal.opow_lt_opow_right Ordinal.omega1_pos
+        exact Ordinal.one_lt_omega
 
 /-- ω₁ ^ ω < ω₁ ^ (ω + 1). -/
 theorem omega1_pow_omega_lt_succ : Ordinal.omega1 ^ ω < Ordinal.omega1 ^ (ω + 1) := by
-  sorry
+  apply Ordinal.opow_lt_opow_right Ordinal.omega1_pos
+  exact Ordinal.lt_succ ω
 
 /-- ω₁ ^ (ω + 1) < ω₁ ^ (ω + 2). -/
 theorem omega1_pow_succ_lt : Ordinal.omega1 ^ (ω + 1) < Ordinal.omega1 ^ (ω + 2) := by
-  sorry
+  apply Ordinal.opow_lt_opow_right Ordinal.omega1_pos
+  exact Ordinal.lt_succ (ω + 1)
 
 /-- A disjunction P ∨ Q is equivalent to (¬P → Q) when decidable. -/
 theorem or_iff_not_imp {P Q : Prop} : (P ∨ Q) ↔ (¬P → Q) :=
