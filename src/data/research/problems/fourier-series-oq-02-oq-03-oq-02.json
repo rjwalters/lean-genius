@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
@@ -29,12 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized exponential Fourier decay for strip-analytic functions. 3 axioms (contour shift, rate sharpness, Paley-Wiener converse), structural properties, comparison with Holder decay, Poisson kernel example.",
+    "progressSummary": "PROGRESS: Created Aristotle companion file for 6 theorem sorries. 3 axioms are deep (contour shift, rate sharpness, Paley-Wiener). Main file has 10 proved theorems.",
     "builtItems": [
       "Created FourierSeriesOQ02OQ03OQ02.lean: 3 axioms, 10 theorems, 4 definitions, 5 sorries",
       "Defined IsStripAnalytic, stripNorm, sharpConstant, poissonKernelStripWidth",
       "Proved structural: exp_decay_pos, exp_decay_le_one, wider_strip_faster_decay, poissonKernel_strip_positive",
-      "Created gallery entry src/data/proofs/fourier-series-oq-02-oq-03-oq-02/meta.json"
+      "Created gallery entry src/data/proofs/fourier-series-oq-02-oq-03-oq-02/meta.json",
+      "Created FourierSeriesOQ02OQ03OQ02Aristotle.lean companion file with 6 theorem sorries for automated proof search"
     ],
     "insights": [
       "Contour shifting is the key technique: shift integration to Im z = delta-epsilon, periodicity cancels vertical edges",
@@ -42,7 +43,10 @@
       "Paley-Wiener converse: exponential Fourier decay completely characterizes strip analyticity",
       "The sharp constant K(f) = sup_n |c_n|*exp(2*pi*delta*|n|/T) equals the strip boundary norm for natural boundaries",
       "Strip width delta plays the same role as Holder exponent alpha but gives exponentially faster decay",
-      "The Poisson kernel P_r(x) with r in (0,1) has exact exponential decay with strip width -T*ln(r)/(2*pi)"
+      "The Poisson kernel P_r(x) with r in (0,1) has exact exponential decay with strip width -T*ln(r)/(2*pi)",
+      "exp_decay_summable: needs ℤ-indexed geometric series decomposition (split into n≥0 and n<0)",
+      "sharpConstant proofs: require ciSup_le / le_ciSup from ConditionallyCompleteLattice API",
+      "exp_dominates_polynomial: Real.tendsto_pow_mul_exp_neg_atTop_nhds in Mathlib may help"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -62,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.977Z",
-  "lastUpdate": "2026-03-29T04:28:18.987Z",
+  "lastUpdate": "2026-03-29T07:20:00Z",
   "leanFiles": [
     {
       "path": "Proofs/FourierSeries.lean",
