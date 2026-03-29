@@ -17,9 +17,9 @@
       "roth-number"
     ],
     "badge": "formalized",
-    "sorries": 6,
+    "sorries": 5,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 6 sorries: density_upper_bound_from_iteration (well-founded induction), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound, crude_sqrt_bound.",
+    "assumptions": "0 axioms. 5 sorries: density_upper_bound_from_iteration (density iteration needs M ≥ N^c), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -48,10 +48,10 @@
       "Proof that r₃(N) ≤ N (upper bound from Fintype.card)",
       "Proof that r₃(N) ≥ 1 for N ≥ 1 (singleton witness)",
       "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
-      "Formal statements of 5 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N"
+      "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
-    "lineCount": 196,
-    "theoremCount": 12,
+    "lineCount": 242,
+    "theoremCount": 19,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
   },
@@ -72,24 +72,24 @@
       "id": "roth-number-def",
       "title": "Part I: Roth Number Definition and Properties",
       "startLine": 1,
-      "endLine": 88,
-      "summary": "Defines APFree and the Roth number r₃(N) as Finset.sup over AP-free subsets. Proves: empty set is AP-free, singleton is AP-free, AP-free is closed under subsets, r₃(N) ≤ N, r₃(N) ≥ 1, card ≤ r₃(N) for AP-free sets. 0 sorries in proved results.",
+      "endLine": 134,
+      "summary": "Defines APFree and the Roth number r₃(N) as Finset.sup over AP-free subsets. Proves 14 theorems: AP-free properties, r₃(N) bounds, r₃(N) achieved, r₃(2) = 1, r₃(3) = 2. 0 sorries.",
       "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq \\mathbb{Z}/N\\mathbb{Z},\\; A \\text{ AP-free}\\}$. Basic bounds: $1 \\leq r_3(N) \\leq N$."
     },
     {
       "id": "iteration-bound",
       "title": "Part II: Iteration Bound from Density Increment",
-      "startLine": 89,
-      "endLine": 128,
-      "summary": "Proves max_iterations_bound: if δ + kδ²/100 > 1 then k > ⌊100/δ²⌋ (0 sorries). States density_upper_bound_from_iteration (1 sorry).",
+      "startLine": 135,
+      "endLine": 183,
+      "summary": "Proves max_iterations_bound and iterations_before_contradiction (0 sorries). States density_upper_bound_from_iteration (1 sorry — needs M ≥ N^c bound).",
       "mathContext": "Density increment $\\delta \\to \\delta + \\delta^2/100$ allows $\\leq \\lfloor 100/\\delta^2 \\rfloor$ iterations."
     },
     {
       "id": "quantitative-bounds",
       "title": "Part III: Quantitative Bounds",
-      "startLine": 129,
-      "endLine": 168,
-      "summary": "States five quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})), crude O(√N). All sorry — these require substantial proof effort.",
+      "startLine": 184,
+      "endLine": 242,
+      "summary": "States four quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})). All 4 sorry — these require substantial proof effort. Note: crude √N bound was removed as FALSE.",
       "mathContext": "History of bounds: Roth (1953) → Bourgain (1999) → Sanders (2011) → Bloom-Sisask (2020) → Kelley-Meka (2023)."
     }
   ],
@@ -139,9 +139,9 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 196,
+    "lineCount": 242,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 19,
     "definitionCount": 2
   }
 }
