@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 3→1 axioms. Proved halfInterval_egyptFree (no Egyptian decomposition when all elements > N/2) and maxEgyptFree_lower (f(N) ≥ N/2).",
+    "builtItems": [
+      "PROVED halfInterval_egyptFree: k=1 forces a=b contradiction, k≥2 gives sum ≥ 2/N > 1/a",
+      "PROVED maxEgyptFree_lower: half-interval witness + Finset.le_sup",
+      "Key ℚ arithmetic: div_eq_div_iff for singleton, inv_anti₀ for 1/b ≥ 1/N, div_lt_div_iff for 1/a < 2/N"
+    ],
+    "insights": [
+      "Half-interval EgyptFractionFree proof splits into k=1 (equality of reciprocals forces equal denominators) and k≥2 (pigeonhole: sum of ≥2 terms each ≥1/N exceeds 1/a)",
+      "Only vanDoorn_upper remains — published combinatorial result about density of Egyptian-fraction-free sets",
+      "The Icc filter equals Icc (N/2+1) N, simplifying cardinality computation via Nat.card_Icc"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #301 - Knowledge Base\n\n## Problem Statement\n\nLet f(N)\" role=\"presentation\" style=\"position: relative;\">f(N)f(N)f(N) be the size of the largest A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} such that there are no solutions to1a&#x2260;1b1+&#x22EF;+1bk\" role=\"presentation\" style=\"text-align: center; position: relative;\">1a≠1b1+⋯+1bk1a≠1b1+⋯+1bk\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #28\n- Problem #12\n- Problem #6\n- Problem #302\n- Problem #327\n- Problem #300\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
