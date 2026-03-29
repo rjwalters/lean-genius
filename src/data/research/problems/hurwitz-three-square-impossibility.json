@@ -31,9 +31,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Untried but may be more complex than rotation approach. Would need matrix formulation infrastructure.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ASSESSED: 2 axioms, 0 sorries. The n=3 impossibility proof is the crown jewel (fully proved). eight_square_identity_exists is eliminable but compute-heavy. hurwitz_only_if requires deep algebra.",
+    "builtItems": [
+      "Assessed both axioms: eight_square_identity_exists is routine but compute-heavy; hurwitz_only_if is deep algebra"
+    ],
+    "insights": [
+      "eight_square_identity_exists could be eliminated by writing the explicit Degen/Cayley 8-square formula (64 product terms, 8 components), but verification would be very compute-heavy (4-square already needs maxHeartbeats 800000)",
+      "hurwitz_only_if is the deep part (requires Clifford algebras for n=5,6,7 and n>8 cases)",
+      "Mathlib has no Cayley-Dickson construction or octonion type, so no shortcut available"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
       "~~Create approach directory for \"rotation-case-analysis\"~~ Done: using diagonal constraint approach",
