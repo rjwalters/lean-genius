@@ -76,7 +76,7 @@
       "conjectures_compatible theorem stub: compatibility of #457 and #1181"
     ],
     "axiomCount": 4,
-    "lineCount": 194,
+    "lineCount": 235,
     "assumptions": "4 axioms: trivial_upper_bound (primorial/PNT), erdos_1181 (main open conjecture), pnt_chebyshev (PNT for Chebyshev function), primorial_divides_bound (primorial divides product). Properties of q(n,k) proved constructively."
   },
   "overview": {
@@ -156,8 +156,8 @@
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 194,
-      "endLine": 220,
+      "startLine": 207,
+      "endLine": 235,
       "summary": "erdos_1181_main theorem. The (1+o(1)) vs (1-c) gap is the central open question.",
       "mathContext": "The gap between the trivial (1+o(1)) and conjectured (1-c) represents genuine content about prime distribution."
     }
@@ -184,10 +184,10 @@
       "Finset"
     ],
     "namespace": "Erdos1181",
-    "lineCount": 194,
+    "lineCount": 235,
     "axiomCount": 4,
-    "theoremCount": 5,
-    "definitionCount": 7
+    "theoremCount": 7,
+    "definitionCount": 6
   },
   "crossReferences": [
     {
