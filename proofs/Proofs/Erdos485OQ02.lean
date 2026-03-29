@@ -187,7 +187,37 @@ This is a special case of the Cauchy-Davenport theorem for ℤ
     giving at least 2|A| - 1 distinct elements. -/
 theorem sumset_card_lower_bound (A : Finset ℕ) (hA : A.Nonempty) :
     (A + A).card ≥ 2 * A.card - 1 := by
-  sorry
+  -- Left injection: a ↦ min(A) + a; right injection: a ↦ a + max(A)
+  -- These overlap in exactly {min(A) + max(A)}, giving 2|A| - 1 distinct elements.
+  have hLsub : A.image (A.min' hA + ·) ⊆ A + A := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    exact Finset.add_mem_add (Finset.min'_mem A hA) ha
+  have hRsub : A.image (· + A.max' hA) ⊆ A + A := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    exact Finset.add_mem_add ha (Finset.max'_mem A hA)
+  have hLcard : (A.image (A.min' hA + ·)).card = A.card :=
+    Finset.card_image_of_injective A (fun _ _ h => by omega)
+  have hRcard : (A.image (· + A.max' hA)).card = A.card :=
+    Finset.card_image_of_injective A (fun _ _ h => by omega)
+  have hIcard : (A.image (A.min' hA + ·) ∩ A.image (· + A.max' hA)).card ≤ 1 := by
+    rw [Finset.card_le_one]
+    intro x hx y hy
+    simp only [Finset.mem_inter, Finset.mem_image] at hx hy
+    obtain ⟨⟨a₁, ha₁, ha₁eq⟩, b₁, hb₁, hb₁eq⟩ := hx
+    obtain ⟨⟨a₂, ha₂, ha₂eq⟩, b₂, hb₂, hb₂eq⟩ := hy
+    have := Finset.min'_le A b₁ hb₁
+    have := Finset.le_max' A a₁ ha₁
+    have := Finset.min'_le A b₂ hb₂
+    have := Finset.le_max' A a₂ ha₂
+    omega
+  have hUcard := Finset.card_union_add_card_inter
+    (A.image (A.min' hA + ·)) (A.image (· + A.max' hA))
+  have h1 := Finset.card_le_card (Finset.union_subset hLsub hRsub)
+  omega
 
 /-
 ## Part VI: Combining — The Positive-Coefficient Result

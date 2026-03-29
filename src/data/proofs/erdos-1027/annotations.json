@@ -23,7 +23,7 @@
     "proofId": "erdos-1027",
     "type": "definition",
     "title": "Set Family, Union, and Uniformity",
-    "content": "`SetFamily α` is `Finset (Finset α)`—a finite collection of finite subsets. `familyUnion F` computes $X = \\bigcup \\mathcal{F}$ via `Finset.sup`. `isNUniform F n` requires every set $A \\in \\mathcal{F}$ to have $|A| = n$ (an $n$-uniform hypergraph). These are the basic objects: $\\mathcal{F}$ is the hypergraph, $X$ is the ground set, and $n$ is the uniformity parameter.",
+    "content": "`SetFamily α` is `Finset (Finset α)`—a finite collection of finite subsets. `familyUnion F` computes $X = \\bigcup \\mathcal{F}$ via `Finset.sup`. `IsNUniform F n` requires every set $A \\in \\mathcal{F}$ to have $|A| = n$ (an $n$-uniform hypergraph). These are the basic objects: $\\mathcal{F}$ is the hypergraph, $X$ is the ground set, and $n$ is the uniformity parameter.",
     "mathContext": "$\\mathcal{F} \\subseteq 2^\\alpha$ finite; $X = \\bigcup_{A \\in \\mathcal{F}} A$; $n$-uniform: $|A| = n \\; \\forall A \\in \\mathcal{F}$",
     "significance": "key",
     "relatedConcepts": [
@@ -41,7 +41,7 @@
     "proofId": "erdos-1027",
     "type": "definition",
     "title": "Good Sets: Intersecting All, Containing None",
-    "content": "The central definition. `intersectsAll B F` requires $(A \\cap B) \\ne \\emptyset$ for all $A \\in \\mathcal{F}$: $B$ 'hits' every hyperedge. `containsNone B F` requires $A \\not\\subseteq B$ for all $A \\in \\mathcal{F}$: $B$ does not swallow any hyperedge. A 'good' set $B$ satisfies both simultaneously—it is a transversal that is not a cover. `goodSets F` collects all good $B \\subseteq X$. In 2-coloring language, $B$ corresponds to the 'true' color class of a proper 2-coloring.",
+    "content": "The central definition. `IntersectsAll B F` requires $(A \\cap B) \\ne \\emptyset$ for all $A \\in \\mathcal{F}$: $B$ 'hits' every hyperedge. `ContainsNone B F` requires $A \\not\\subseteq B$ for all $A \\in \\mathcal{F}$: $B$ does not swallow any hyperedge. A 'good' set $B$ satisfies both simultaneously—it is a transversal that is not a cover. `goodSets F` collects all good $B \\subseteq X$. In 2-coloring language, $B$ corresponds to the 'true' color class of a proper 2-coloring.",
     "mathContext": "$B \\text{ good} \\iff \\forall A \\in \\mathcal{F}: A \\cap B \\ne \\emptyset \\wedge A \\not\\subseteq B$; equivalently, both color classes of $(B, X \\setminus B)$ hit every $A$",
     "significance": "key",
     "relatedConcepts": [
@@ -59,8 +59,8 @@
     "proofId": "erdos-1027",
     "type": "definition",
     "title": "Property B and 2-Colorability",
-    "content": "`hasPropertyB F` holds if at least one good set exists. `is2Colorable F` requires a function $f: \\alpha \\to \\text{Bool}$ such that every $A \\in \\mathcal{F}$ has both true-colored and false-colored elements. The theorem `propertyB_iff_2colorable` shows these are equivalent: a good set $B$ defines the coloring $f(x) = (x \\in B)$, and conversely $B = f^{-1}(\\text{true})$ is a good set. Property B (Bernstein 1908) is the foundational notion of hypergraph 2-colorability.",
-    "mathContext": "$\\text{hasPropertyB}(\\mathcal{F}) \\iff \\exists f: \\alpha \\to \\{0,1\\}, \\forall A \\in \\mathcal{F}: A \\not\\subseteq f^{-1}(0) \\wedge A \\not\\subseteq f^{-1}(1)$",
+    "content": "`HasPropertyB F` holds if at least one good set exists. `Is2Colorable F` requires a function $f: \\alpha \\to \\text{Bool}$ such that every $A \\in \\mathcal{F}$ has both true-colored and false-colored elements. `propertyB_implies_2colorable` and `coloring_implies_propertyB` prove the equivalence: a good set $B$ defines the coloring $f(x) = (x \\in B)$, and conversely $B = f^{-1}(\\text{true})$ is a good set. Both proofs are sorry-free.",
+    "mathContext": "$\\text{HasPropertyB}(\\mathcal{F}) \\iff \\text{Is2Colorable}(\\mathcal{F})$: good sets correspond to proper 2-colorings",
     "significance": "key",
     "relatedConcepts": [
       "Bernstein property",
@@ -77,7 +77,7 @@
     "proofId": "erdos-1027",
     "type": "definition",
     "title": "The Main Conjecture: Exponentially Many Good Sets",
-    "content": "`goodSetCount F` counts good sets via `Finset.filter` on the powerset. `erdos_1027_conjecture c` asserts: for $c > 0$, there exist $\\delta > 0$ and $N$ such that for $n \\ge N$, every $n$-uniform family $\\mathcal{F}$ with $|\\mathcal{F}| \\le c \\cdot 2^n$ has at least $\\delta \\cdot 2^{|X|}$ good sets. The key quantifier structure is: $\\delta$ depends on $c$ but not on $n$ or $\\mathcal{F}$—a constant fraction of all subsets of $X$ are good.",
+    "content": "`goodSetCount F` counts good sets. `goodSetDensity F` computes the ratio $|\\text{good}| / 2^{|X|}$. `Erdos1027Statement` asserts: for $c > 0$, there exist $\\delta > 0$ and $N$ such that for $n \\ge N$, every $n$-uniform family $\\mathcal{F}$ with $|\\mathcal{F}| \\le c \\cdot 2^n$ has at least $\\delta \\cdot 2^{|X|}$ good sets. The key quantifier structure is: $\\delta$ depends on $c$ but not on $n$ or $\\mathcal{F}$—a constant fraction of all subsets of $X$ are good.",
     "mathContext": "$\\forall c > 0, \\exists \\delta > 0, \\exists N, \\forall n \\ge N: |\\mathcal{F}| \\le c \\cdot 2^n \\wedge \\text{uniform}(n) \\Rightarrow |\\text{good}| \\ge \\delta \\cdot 2^{|X|}$",
     "significance": "key",
     "relatedConcepts": [
@@ -87,7 +87,7 @@
     ],
     "prerequisites": [
       "goodSetCount",
-      "isNUniform"
+      "IsNUniform"
     ]
   },
   {
@@ -95,8 +95,8 @@
     "proofId": "erdos-1027",
     "type": "technique",
     "title": "The Solution: Koishi Chan's Theorem",
-    "content": "`erdos_1027_solution` axiomatizes the affirmative answer (proved by Koishi Chan): for every $c > 0$, the conjecture holds. `erdos_1027_solved` derives the explicit statement: there exist $\\delta > 0$ and $N$ such that for all large enough $n$-uniform families of size $\\le c \\cdot 2^n$, the good set count is $\\ge \\delta \\cdot 2^{|X|}$. This resolves Erdős's question: not only does property B hold for bounded families, but the number of witnesses is exponentially large.",
-    "mathContext": "$\\forall c > 0: \\text{erdos\\_1027\\_conjecture}(c)$ holds; i.e., a $\\delta(c)$-fraction of all subsets of $X$ are good",
+    "content": "`erdos_1027_solution` axiomatizes the affirmative answer (proved by Koishi Chan): for every $c > 0$, the conjecture holds. `erdos_1027_solved` derives the explicit statement. This is the single axiom in the file, encoding the external mathematical result. This resolves Erdős's question: not only does property B hold for bounded families, but the number of witnesses is exponentially large.",
+    "mathContext": "$\\forall c > 0: \\text{Erdos1027Statement}$ holds; i.e., a $\\delta(c)$-fraction of all subsets of $X$ are good",
     "significance": "key",
     "relatedConcepts": [
       "abundance of colorings",
@@ -104,17 +104,16 @@
       "supersaturation"
     ],
     "prerequisites": [
-      "erdos_1027_conjecture",
-      "propertyB_for_bounded"
+      "Erdos1027Statement"
     ]
   },
   {
-    "id": "ann-1027-problem901",
+    "id": "ann-1027-abundance",
     "proofId": "erdos-1027",
     "type": "technique",
-    "title": "Connection to Erdős Problem #901",
-    "content": "Problem #901 asks about property B itself—whether bounded families are 2-colorable. Problem #1027 strengthens this: not just one 2-coloring, but exponentially many. `problem_901_connection` states `hasPropertyB F ↔ is2Colorable F` universally, and `problem_901` derives it from `propertyB_iff_2colorable`. This shows #1027 is a quantitative supersaturation of #901.",
-    "mathContext": "$\\text{Problem 901}: \\text{hasPropertyB} \\iff \\text{is2Colorable}$; Problem 1027: $|\\text{good sets}| \\gg_c 2^{|X|}$",
+    "title": "Abundance Implies Property B",
+    "content": "`abundance_implies_propertyB` proves that if `goodSetCount F > 0`, then F has Property B. This bridges the quantitative result (abundance of good sets) to the qualitative one (existence of at least one). It connects Problem #1027 (exponential abundance) to Problem #901 (existence of Property B). Sorry-free.",
+    "mathContext": "$|\\text{good sets}| > 0 \\Rightarrow \\text{HasPropertyB}(\\mathcal{F})$",
     "significance": "key",
     "relatedConcepts": [
       "supersaturation",
@@ -122,80 +121,28 @@
       "quantitative strengthening"
     ],
     "prerequisites": [
-      "hasPropertyB",
-      "is2Colorable"
-    ]
-  },
-  {
-    "id": "ann-1027-existence",
-    "proofId": "erdos-1027",
-    "type": "technique",
-    "title": "Existence and Abundance of Good Sets",
-    "content": "`propertyB_for_bounded` axiomatizes that for $c > 0$ and large $n$, every $n$-uniform family of size $\\le c \\cdot 2^n$ has property B—at least one good set. `single_implies_many` is the key structural insight: from *one* good set $B$, local perturbations (flipping elements near but not in $A$ for each $A$) produce exponentially many good sets. This 'amplification' from existence to abundance is the heart of Koishi Chan's argument.",
-    "mathContext": "$\\exists B \\text{ good} \\Rightarrow \\exists \\delta > 0: |\\text{good sets}| \\ge \\delta \\cdot 2^{|X|}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "amplification",
-      "local perturbation",
-      "density amplification"
-    ],
-    "prerequisites": [
-      "hasPropertyB",
+      "HasPropertyB",
       "goodSetCount"
     ]
   },
   {
-    "id": "ann-1027-probabilistic",
-    "proofId": "erdos-1027",
-    "type": "insight",
-    "title": "Probabilistic Intuition: Random Sets Are Often Good",
-    "content": "Defines the probability that a uniformly random subset $B \\subseteq X$ is good. For a single set $A$ of size $n$: $\\Pr[B \\cap A \\ne \\emptyset] = 1 - 2^{-n}$ and $\\Pr[A \\not\\subseteq B] = 1 - 2^{-n}$. For a family of $m \\le c \\cdot 2^n$ sets, a naive union bound gives $\\mathbb{E}[\\text{good}] \\approx 2^{|X|} \\cdot (1 - 2^{-n})^{2m} \\approx 2^{|X|} \\cdot e^{-2c}$ for large $n$. The theorem `expected_good_positive` formalizes that this expectation is positive for large $n$, but the actual proof requires handling dependencies via the Lovász Local Lemma or a more careful counting argument.",
-    "mathContext": "$\\Pr[B \\text{ good}] \\ge (1 - 2^{-n})^{2|\\mathcal{F}|} \\approx e^{-2c}$ for $|\\mathcal{F}| \\le c \\cdot 2^n$; $\\mathbb{E}[|\\text{good}|] \\approx e^{-2c} \\cdot 2^{|X|}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "first-moment method",
-      "union bound",
-      "Lovász Local Lemma"
-    ],
-    "prerequisites": [
-      "probIntersects",
-      "probNotContains"
-    ]
-  },
-  {
-    "id": "ann-1027-density",
-    "proofId": "erdos-1027",
-    "type": "definition",
-    "title": "Density of Good Sets",
-    "content": "`goodSetDensity F` $= |\\text{good sets}| / 2^{|X|}$: the fraction of all subsets of $X$ that are good. `goodSetDensity_lower` axiomatizes the main result in density form: for bounded families, the density is $\\ge \\delta(c) > 0$—a constant fraction depending only on $c$, not on $n$ or the specific family. This is the strongest form of the result: good sets are not merely numerous but *dense* among all subsets.",
-    "mathContext": "$\\text{density}(\\mathcal{F}) = |\\{B \\subseteq X : B \\text{ good}\\}| / 2^{|X|} \\ge \\delta(c) > 0$",
-    "significance": "key",
-    "relatedConcepts": [
-      "density",
-      "constant fraction",
-      "measure concentration"
-    ],
-    "prerequisites": [
-      "goodSetCount",
-      "familyUnion"
-    ]
-  },
-  {
-    "id": "ann-1027-specialcases",
+    "id": "ann-1027-classical",
     "proofId": "erdos-1027",
     "type": "technique",
-    "title": "Special Cases and Inclusion-Exclusion",
-    "content": "Three verification results. `empty_family_good`: when $\\mathcal{F} = \\emptyset$, all $2^{|\\alpha|}$ subsets are good (vacuously). `singleton_family_good`: for $\\mathcal{F} = \\{A\\}$, good sets are those intersecting $A$ but not containing it, giving $\\ge 2^{|A| - 1}$ good sets. `good_set_inclusion_exclusion`: a general lower bound via inclusion-exclusion, showing $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X| - 1}$, which is positive when $|\\mathcal{F}| < \\frac{1}{2}$—a very rough bound that the main theorem far surpasses.",
-    "mathContext": "$\\mathcal{F} = \\emptyset \\Rightarrow |\\text{good}| = 2^{|\\alpha|}$; $\\mathcal{F} = \\{A\\} \\Rightarrow |\\text{good}| \\ge 2^{|A|-1}$; general: $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$",
-    "significance": "supporting",
+    "title": "Erdős Classical Bound (1963) via the Probabilistic Method",
+    "content": "The largest section. Defines `IsMonochromatic` (all elements of $A$ get the same color). Proves three results: (1) `card_constOn_le`: functions constant $b$ on $A$ number at most $2^{|\\alpha| - |A|}$, proved by injecting into complement functions $(A^c \\to \\text{Bool})$. (2) `card_monochromatic_le`: monochromatic colorings on $A$ bounded by $2 \\cdot 2^{|\\alpha| - |A|}$ (union of all-true and all-false). (3) `erdos_classical_bound`: if $|\\mathcal{F}| \\cdot 2 < 2^t$ and all sets have size $\\ge t$, then F is 2-colorable. The proof counts bad colorings via union bound: each set contributes $\\le 2 \\cdot 2^{|\\alpha| - t}$ bad colorings, total $< 2^{|\\alpha|}$, so a good coloring exists. All sorry-free.",
+    "mathContext": "$|\\mathcal{F}| \\cdot 2 < 2^t, |A| \\ge t \\; \\forall A \\in \\mathcal{F} \\Rightarrow \\text{Is2Colorable}(\\mathcal{F})$. Proof: $|\\text{bad}| \\le \\sum_A 2 \\cdot 2^{|\\alpha| - |A|} \\le |\\mathcal{F}| \\cdot 2 \\cdot 2^{|\\alpha| - t} < 2^{|\\alpha|}$",
+    "significance": "key",
     "relatedConcepts": [
-      "inclusion-exclusion",
-      "base cases",
-      "counting argument"
+      "probabilistic method",
+      "union bound",
+      "monochromatic coloring",
+      "injection argument"
     ],
     "prerequisites": [
-      "goodSetCount",
-      "Finset.powerset"
+      "Finset.biUnion",
+      "Fintype.card_fun",
+      "Finset.card_compl"
     ]
   }
 ]

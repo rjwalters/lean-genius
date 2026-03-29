@@ -101,6 +101,27 @@ if [ -f "research/knowledge/patterns.md" ]; then
 fi
 ```
 
+### Step 3b: Theory Context & Deduplication
+
+Before writing the report:
+1. Check `research/problems/<id>/knowledge.md` -- has this proof been cited before?
+2. List ALL gallery proofs in the same topic area (not just keyword matches)
+3. For each found proof, note:
+   - What techniques it uses
+   - Whether those techniques could transfer to the target problem
+   - What the "first hard blocking step" would be
+
+### Step 3c: Adjacent Entry Consolidation
+
+Group found proofs by technique family:
+- Parity/counting arguments
+- Induction strategies
+- Algebraic manipulations
+- Topological methods
+- Probabilistic method
+
+Flag which group is most likely applicable to the target.
+
 ### Step 4: Literature Survey (Web Search)
 
 Search for external resources relevant to the problem:
@@ -220,9 +241,26 @@ Based on this exploration:
 ### Search Queries Used
 - <list of all web searches performed>
 
+### Reusable Verified Results
+- [list specific theorems from gallery that could be imported directly]
+
+### First Hard Blocking Step
+- [identify the single most difficult step in the proposed approach]
+
 ### Potential Lemmas to Build
 - <specific lemma ideas that could be useful>
 ```
+
+---
+
+## Honesty Standards
+
+- Do not describe trivial results as significant
+- Do not inflate novelty claims -- if the result is routine, say so
+- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
+- Judge results relative to current gallery state, not in absolute terms
+- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
+- When uncertain about significance, default to understating rather than overstating
 
 ---
 

@@ -233,17 +233,15 @@ theorem f_3_value : f 3 = 3 := by
         -- Key fact: convexHull ℝ {q,r} ⊆ affineSpan ℝ {q,r},
         -- and ¬Collinear ℝ {p,q,r} → p ∉ affineSpan ℝ {q,r}.
 
-/-- Lower bound for f(4): 4 points may form only triangles.
-    Proof: triangle with interior point has no convex quadrilateral. -/
+/-- Lower bound for f(4): f(4) > 4.
+    Proof: Immediate from Klein's theorem f(4) = 5. -/
 theorem f_4_lb : 4 < f 4 := by
-  -- Four points in convex position form a quadrilateral
-  -- But 4 points with one inside don't
-  sorry
+  rw [f_four_eq]; norm_num
 
-/-- Upper bound for f(4): Any 5 points contain a quadrilateral. -/
+/-- Upper bound for f(4): Any 5 points contain a quadrilateral.
+    Proof: Immediate from Klein's theorem f(4) = 5. -/
 theorem f_4_ub : f 4 ≤ 5 := by
-  -- Klein's argument: case analysis on convex hull of 5 points
-  sorry
+  rw [f_four_eq]
 
 /- ## Historical Notes
 

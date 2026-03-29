@@ -41,8 +41,4 @@ import Mathlib.Topology.MetricSpace.Basic
 example {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {m : ℕ} (pts : Fin m → E) :
     IsClosed (convexHull ℝ (Set.range pts)) := by
-  -- The convex hull of finitely many points is the image of the standard simplex
-  -- under the map w ↦ Σ wᵢ · ptsᵢ
-  -- stdSimplex is compact, and the map is continuous, so the image is compact
-  -- Compact in a Hausdorff space implies closed
-  sorry
+  exact (Set.finite_range pts).isCompact_convexHull.isClosed

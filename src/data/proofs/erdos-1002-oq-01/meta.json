@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1002",
     "date": "",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1002OQ01.lean",
     "tags": [
       "analysis",
@@ -16,14 +16,14 @@
       "distribution-functions",
       "axiom-elimination"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1002,
     "erdosUrl": "https://erdosproblems.com/1002",
     "erdosProblemStatus": "open",
     "relatedProblems": ["erdos-1002"],
     "axiomCount": 0,
-    "lineCount": 130,
+    "lineCount": 140,
     "assumptions": "No axioms. All results proved from Mathlib: Cauchy CDF validity via arctan monotonicity and limits, inner sum periodicity via fractional part invariance under integer shifts."
   },
   "overview": {
@@ -79,7 +79,7 @@
     "imports": ["Mathlib"],
     "opens": ["Real", "Filter"],
     "namespace": "Erdos1002OQ01",
-    "lineCount": 130,
+    "lineCount": 140,
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 4

@@ -180,10 +180,43 @@ axiom cambie_lower_bound :
 /-- Why 5/8: N/8 odd integers plus N/2 upper integers -/
 theorem cambie_count_estimate (N : ℕ) (hN : N ≥ 8) :
     (cambie_set N).card ≥ 5 * N / 8 - 2 := by
-  -- odd integers ≤ N/4: about N/8 elements
-  -- integers in [N/2, N]: about N/2 elements
-  -- Total: about N/8 + N/2 = 5N/8
-  sorry
+  unfold cambie_set
+  -- Step 1: The two sets are disjoint (oddIntegers ≤ N/4 < N/2 ≤ upperHalf)
+  have hdisj : Disjoint (oddIntegers (N / 4)) (upperHalf N) := by
+    rw [Finset.disjoint_left]
+    intro x hx_odd hx_upper
+    simp only [oddIntegers, Finset.mem_filter, Finset.mem_range] at hx_odd
+    simp only [upperHalf, Finset.mem_filter, Finset.mem_range] at hx_upper
+    omega
+  rw [Finset.card_union_of_disjoint hdisj]
+  -- Step 2: Lower bound on oddIntegers(N/4) via injection i ↦ 2i+1
+  have h_odd_lb : (oddIntegers (N / 4)).card ≥ (N / 4 + 1) / 2 := by
+    have hsub : Finset.image (fun i => 2 * i + 1) (Finset.range ((N / 4 + 1) / 2))
+        ⊆ oddIntegers (N / 4) := by
+      intro x hx
+      simp only [Finset.mem_image, Finset.mem_range] at hx
+      obtain ⟨i, hi, rfl⟩ := hx
+      simp only [oddIntegers, Finset.mem_filter, Finset.mem_range]
+      omega
+    have hcard : (Finset.image (fun i => 2 * i + 1)
+        (Finset.range ((N / 4 + 1) / 2))).card = (N / 4 + 1) / 2 := by
+      rw [Finset.card_image_of_injective _ (fun a b (h : 2 * a + 1 = 2 * b + 1) => by omega),
+        Finset.card_range]
+    linarith [Finset.card_le_card hsub]
+  -- Step 3: Lower bound on upperHalf(N) via injection i ↦ i + N/2
+  have h_upper_lb : (upperHalf N).card ≥ N / 2 + 1 := by
+    have hsub : Finset.image (· + N / 2) (Finset.range (N / 2 + 1)) ⊆ upperHalf N := by
+      intro x hx
+      simp only [Finset.mem_image, Finset.mem_range] at hx
+      obtain ⟨i, hi, rfl⟩ := hx
+      simp only [upperHalf, Finset.mem_filter, Finset.mem_range]
+      omega
+    have hcard : (Finset.image (· + N / 2) (Finset.range (N / 2 + 1))).card = N / 2 + 1 := by
+      rw [Finset.card_image_of_injective _ (fun a b (h : a + N / 2 = b + N / 2) => by omega),
+        Finset.card_range]
+    linarith [Finset.card_le_card hsub]
+  -- Step 4: Combine: (N/4+1)/2 + N/2 + 1 ≥ 5*N/8 - 2 for N ≥ 8
+  omega
 
 /-
 ## Part 4: Upper Bound (van Doorn)
@@ -292,14 +325,39 @@ theorem algebraic_form (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0) :
     rw [unit_fraction_equiv a b c ha hb hc]
     linarith [Nat.left_distrib a b c]
 
-/-- If 1/a = 1/b + 1/c with a < b < c, then a < b < c ≤ 2a
-    NOTE: This bound is incorrect as stated. Counterexample: 1/2 = 1/3 + 1/6
-    gives c = 6 > 2a = 4. The correct bound is c ≤ a(a+1) (since b < 2a
-    when b < c forces b-a < a, giving c = ab/(b-a) > 2a). -/
-theorem solution_constraints (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
+/-- If 1/a = 1/b + 1/c with a < b < c, then b < 2a.
+    From bc = ab + ac and 2a ≤ b: 2ac ≤ bc = ab + ac, so ac ≤ ab, c ≤ b. Contradiction. -/
+theorem solution_b_lt_2a (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
     (hab : a < b) (hbc : b < c) (hsum : UnitFractionSum a b c) :
-    c ≤ 2 * a := by
-  sorry -- False as stated; see docstring
+    b < 2 * a := by
+  obtain ⟨_, _, _, heq⟩ := hsum
+  rw [unit_fraction_equiv a b c ha hb hc] at heq
+  -- heq : b * c = a * (b + c)
+  by_contra h; push_neg at h -- h : 2 * a ≤ b
+  have h1 : b * c = a * b + a * c := by linarith [mul_add a b c]
+  have h2 : 2 * (a * c) ≤ b * c := by
+    calc 2 * (a * c) = (2 * a) * c := by ring
+      _ ≤ b * c := Nat.mul_le_mul_right c h
+  have h3 : a * c ≤ a * b := by linarith
+  exact absurd (Nat.le_of_mul_le_mul_left h3 ha) (by omega)
+
+/-- If 1/a = 1/b + 1/c with a < b < c, then c ≤ a*(a+1).
+    Over ℤ: (b-a-1)(c-a) = a(a+1) - c ≥ 0, so c ≤ a(a+1). -/
+theorem solution_c_bound (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
+    (hab : a < b) (hbc : b < c) (hsum : UnitFractionSum a b c) :
+    c ≤ a * (a + 1) := by
+  obtain ⟨_, _, _, heq⟩ := hsum
+  rw [unit_fraction_equiv a b c ha hb hc] at heq
+  have hb_lt : b < 2 * a := solution_b_lt_2a a b c ha hb hc hab hbc hsum
+  -- Work over ℤ to avoid ℕ subtraction issues
+  suffices h : (c : ℤ) ≤ ↑a * (↑a + 1) by exact_mod_cast h
+  have heq' : (b : ℤ) * c = ↑a * (↑b + ↑c) := by exact_mod_cast heq
+  -- Key identity: (b-a-1)(c-a) = a(a+1) - c, using bc = a(b+c)
+  have hprod_eq : (↑b - ↑a - 1 : ℤ) * (↑c - ↑a) = ↑a * (↑a + 1) - ↑c := by nlinarith
+  -- Both factors are non-negative: b ≥ a+1 and c > a
+  have hprod_nn : (0 : ℤ) ≤ (↑b - ↑a - 1) * (↑c - ↑a) :=
+    mul_nonneg (by omega) (by omega)
+  linarith
 
 /-
 ## Part 9: Examples of Solutions
