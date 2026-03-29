@@ -1,0 +1,94 @@
+{
+  "id": "erdos-19-oq-01",
+  "title": "Erdős #19 OQ: Explicit EFL Threshold Bounds",
+  "slug": "erdos-19-oq-01",
+  "description": "What is the explicit threshold N such that the Kang-Kelly-Kühn-Methuku-Osthus (2021) proof of the Erdős-Faber-Lovász conjecture holds for all n ≥ N? The absorbing method gives very large implicit constants. Formalizes EFL families, union graphs, and basic structural properties.",
+  "meta": {
+    "author": "Erdős, Faber, Lovász (1972); Kang, Kelly, Kühn, Methuku, Osthus (2021)",
+    "sourceUrl": "https://erdosproblems.com/19",
+    "erdosUrl": "https://erdosproblems.com/19",
+    "date": "2021",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos19OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "combinatorics",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 19,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "EFLFamily: structure for n edge-disjoint K_n's (self-contained)",
+      "eflUnionGraph: union graph definition",
+      "EFLHoldsFor: per-n conjecture predicate",
+      "ExplicitBoundQuestion: formalization of the threshold question",
+      "complete_graph_n_colorable: PROVED — K_n has n-coloring (identity)",
+      "efl_clique_adj: PROVED — same-clique vertices are adjacent",
+      "efl_shared_vertex_unique: PROVED — distinct cliques share ≤ 1 vertex",
+      "efl_vertex_clique_membership: PROVED — vertex in ≤ n cliques",
+      "colorable_succ: PROVED — n-colorable implies (n+1)-colorable",
+      "efl_colorable_monotone: PROVED — colorability monotone in colors",
+      "efl_holds_1: PROVED — EFL holds for n=1"
+    ],
+    "axiomCount": 1,
+    "lineCount": 176,
+    "assumptions": "1 axiom: efl_large_n (Kang-Kelly-Kühn-Methuku-Osthus 2021 asymptotic result)"
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Background Definitions",
+      "startLine": 18,
+      "endLine": 64,
+      "summary": "Self-contained definitions for simple graphs, proper coloring, k-colorability, complete graphs, EFL families (n edge-disjoint K_n's), and the union graph.",
+      "mathContext": "An EFL family consists of n copies of $K_n$ sharing at most one vertex pairwise. The union graph has adjacency: $x \\sim y$ iff they share a clique."
+    },
+    {
+      "id": "threshold",
+      "title": "The Explicit Bound Question",
+      "startLine": 66,
+      "endLine": 82,
+      "summary": "Formalizes the EFL conjecture per-n, the asymptotic theorem (axiomatized), and the explicit bound question: is N ≤ 10^7?",
+      "mathContext": "The 2021 proof shows $\\exists N$ such that EFL holds for all $n \\geq N$. The open question asks for the smallest such $N$."
+    },
+    {
+      "id": "structural",
+      "title": "Basic Structural Results",
+      "startLine": 84,
+      "endLine": 150,
+      "summary": "PROVES: K_n is n-colorable, clique adjacency, shared vertex uniqueness, vertex-clique membership bound, colorability monotonicity, EFL for n=1.",
+      "mathContext": "Structural facts about EFL families: each vertex in $\\leq n$ cliques, distinct cliques share $\\leq 1$ vertex, colorability is monotone in the number of colors."
+    }
+  ],
+  "overview": {
+    "problemStatement": "What is the explicit threshold N such that the Erdős-Faber-Lovász conjecture (any union of n edge-disjoint K_n's is n-colorable) holds for all n ≥ N via the Kang-Kelly-Kühn-Methuku-Osthus proof?",
+    "text": "The EFL conjecture was proved for sufficiently large n in 2021 using the absorbing method, but no explicit threshold N is published. This formalizes the question and proves basic structural properties of EFL families."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-19",
+      "relationship": "parent",
+      "description": "This is an open question derived from Erdős Problem #19 (Erdős-Faber-Lovász Conjecture)"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "Function", "Set"],
+    "namespace": "Erdos19OQ01",
+    "lineCount": 176,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 8
+  },
+  "references": [
+    "Kang, Kelly, Kühn, Methuku, Osthus (2021): 'A proof of the Erdős-Faber-Lovász conjecture', Annals of Mathematics",
+    "Hindman: EFL verified for n < 10",
+    "https://erdosproblems.com/19"
+  ]
+}

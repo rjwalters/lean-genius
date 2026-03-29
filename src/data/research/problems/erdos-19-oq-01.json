@@ -1,0 +1,197 @@
+{
+  "slug": "erdos-19-oq-01",
+  "title": "Explicit bounds on the threshold N where the asymptotic proof takes over",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-29T05:28:39-07:00",
+    "iteration": 1,
+    "focus": "Initial formalization complete. 11 theorems proved.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created formalization with 11 proved theorems, 1 axiom. EFL structural properties proved. Explicit bound question stated.",
+    "builtItems": [
+      "Created Erdos19OQ01Problem.lean (176 lines, 11 theorems, 1 axiom)",
+      "complete_graph_n_colorable (PROVED) - identity coloring",
+      "efl_clique_adj (PROVED) - same-clique adjacency",
+      "efl_vertex_clique_membership (PROVED) - vertex in <=n cliques",
+      "colorable_succ (PROVED) - colorability monotonicity",
+      "efl_holds_1 (PROVED) - base case n=1"
+    ],
+    "insights": [
+      "EFL conjecture: union of n edge-disjoint K_n has chi=n",
+      "Kang et al. 2021 proved for all sufficiently large n via absorbing method",
+      "No explicit threshold N is published in the paper",
+      "Hindman verified n<10, so gap is roughly 10 to ~10^7",
+      "Key structural fact: vertex in at most n cliques, distinct cliques share <=1 vertex"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-19-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-19",
+    "erdos-190",
+    "erdos-191",
+    "erdos-192",
+    "erdos-193",
+    "erdos-194",
+    "erdos-195",
+    "erdos-196",
+    "erdos-197",
+    "erdos-198",
+    "erdos-199"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T12:35:42.848Z",
+  "lastUpdate": "2026-03-29T12:35:42.860Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos190Problem.lean",
+      "filename": "Erdos190Problem.lean",
+      "lineCount": 353,
+      "theoremCount": 7,
+      "axiomCount": 6,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos190Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos191Problem.lean",
+      "filename": "Erdos191Problem.lean",
+      "lineCount": 372,
+      "theoremCount": 10,
+      "axiomCount": 7,
+      "defCount": 13,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos191Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos192Problem.lean",
+      "filename": "Erdos192Problem.lean",
+      "lineCount": 108,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos192Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos193Problem.lean",
+      "filename": "Erdos193Problem.lean",
+      "lineCount": 404,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos193Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos194Problem.lean",
+      "filename": "Erdos194Problem.lean",
+      "lineCount": 315,
+      "theoremCount": 4,
+      "axiomCount": 7,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos194Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos195Problem.lean",
+      "filename": "Erdos195Problem.lean",
+      "lineCount": 135,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos195Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos196Problem.lean",
+      "filename": "Erdos196Problem.lean",
+      "lineCount": 172,
+      "theoremCount": 4,
+      "axiomCount": 4,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos196Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos197Problem.lean",
+      "filename": "Erdos197Problem.lean",
+      "lineCount": 308,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos197Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos198Problem.lean",
+      "filename": "Erdos198Problem.lean",
+      "lineCount": 159,
+      "theoremCount": 2,
+      "axiomCount": 5,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos198Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos199Problem.lean",
+      "filename": "Erdos199Problem.lean",
+      "lineCount": 186,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos199Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos19Problem.lean",
+      "filename": "Erdos19Problem.lean",
+      "lineCount": 256,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos19Problem.lean"
+    }
+  ]
+}
