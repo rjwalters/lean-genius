@@ -286,14 +286,22 @@ theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] :
 **Commuting Probability:**
 For finite G, Pr(G) = |{(g,h) : gh = hg}| / |G|².
 -/
-axiom commutingProbability (G : Type*) [Group G] [Finite G] : ℚ
+/-- Commuting probability: |{(g,h) : gh = hg}| / |G|². -/
+noncomputable def commutingProbability (G : Type*) [Group G] [Finite G] : ℚ :=
+  (Nat.card {p : G × G | p.1 * p.2 = p.2 * p.1} : ℚ) / ((Nat.card G : ℚ) ^ 2)
 
 /--
 **Relation to Clique Number:**
 Higher commuting probability → smaller clique number.
 -/
-axiom prob_clique_relation (G : Type*) [Group G] [Finite G] :
-    hasFiniteCliqueNumber G
+/-- Every finite group has finite clique number (bounded by |G|). -/
+theorem prob_clique_relation (G : Type*) [Group G] [Finite G] :
+    hasFiniteCliqueNumber G := by
+  use Nat.card G
+  intro S _ _
+  calc S.ncard
+      ≤ (Set.univ : Set G).ncard := Set.ncard_le_ncard (Set.subset_univ S) Set.finite_univ
+    _ = Nat.card G := Set.ncard_univ G
 
 /--
 **BFC-Groups:**
