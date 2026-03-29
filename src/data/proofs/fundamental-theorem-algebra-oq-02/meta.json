@@ -1,0 +1,106 @@
+{
+  "id": "fundamental-theorem-algebra-oq-02",
+  "title": "FTA OQ-02: Gauss's Algebraic Approach — Conjugate Roots and Square Roots",
+  "slug": "fundamental-theorem-algebra-oq-02",
+  "description": "Key lemmas for Gauss's algebraic proof of the Fundamental Theorem of Algebra: the conjugate root theorem for real polynomials, complex square root existence, and the architectural reduction showing how these combine with the IVT-based odd-degree root theorem.",
+  "meta": {
+    "author": "Gauss",
+    "sourceUrl": "",
+    "date": "",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+    "tags": [
+      "algebra",
+      "complex-analysis",
+      "fundamental-theorem",
+      "conjugate-roots",
+      "gauss"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "relatedProblems": ["fundamental-theorem-algebra", "fundamental-theorem-algebra-oq-04"],
+    "axiomCount": 0,
+    "lineCount": 150,
+    "assumptions": "No axioms. 1 sorry: odd_degree_real_root (needs IVT for polynomials). All other results proved from Mathlib."
+  },
+  "overview": {
+    "historicalContext": "Gauss gave four proofs of the Fundamental Theorem of Algebra. His 1816 proof (the second) is often described as 'purely algebraic' because it reduces FTA to a single analytical fact: every odd-degree real polynomial has a real root. The rest is algebra: complex conjugation pairs roots, square roots exist in ℂ, and a resolvent polynomial construction halves the power of 2 in the degree.",
+    "problemStatement": "Formalize the key supporting lemmas for Gauss's algebraic approach to the Fundamental Theorem of Algebra.",
+    "text": "Proves the conjugate root theorem (complex roots of real polynomials come in pairs), complex square root existence, and documents the full algebraic reduction strategy.",
+    "proofStrategy": "The conjugate root theorem is proved by induction on the polynomial structure, showing that complex conjugation commutes with evaluation of real polynomials. Complex square roots follow from ℂ being algebraically closed (X² - w has a root). The odd-degree root theorem requires IVT (the sole analytical ingredient).",
+    "keyInsights": [
+      "Complex conjugation commutes with evaluation of real polynomials: conj(p(z)) = p(conj(z))",
+      "Non-real roots of real polynomials always come with their conjugate partner",
+      "Every complex number has a square root (algebraic consequence of algebraic closure)",
+      "The only analytical ingredient in Gauss's proof is: odd-degree real polynomials have real roots"
+    ],
+    "prerequisites": [
+      "Polynomial algebra (Mathlib Polynomial API)",
+      "Complex numbers and conjugation",
+      "Algebraic closure of ℂ (from Mathlib)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "conjugate-root",
+      "title": "Conjugate Root Theorem",
+      "summary": "If p ∈ ℝ[X] and p(z) = 0, then p(z̄) = 0",
+      "startLine": 1,
+      "endLine": 65,
+      "mathContext": "For $p \\in \\mathbb{R}[X]$: $\\overline{p(z)} = p(\\bar{z})$ because conjugation is an $\\mathbb{R}$-algebra endomorphism. If $p(z) = 0$, then $p(\\bar{z}) = \\overline{0} = 0$."
+    },
+    {
+      "id": "complex-sqrt",
+      "title": "Complex Square Roots",
+      "summary": "Every complex number has a square root (from algebraic closure)",
+      "startLine": 67,
+      "endLine": 85,
+      "mathContext": "Since $\\mathbb{C}$ is algebraically closed, $X^2 - w$ has a root for any $w \\in \\mathbb{C}$."
+    },
+    {
+      "id": "odd-degree",
+      "title": "Odd-Degree Real Root Theorem",
+      "summary": "Every odd-degree real polynomial has a real root (1 sorry — needs IVT)",
+      "startLine": 87,
+      "endLine": 118,
+      "mathContext": "For odd-degree $p \\in \\mathbb{R}[X]$: $p(x) \\to +\\infty$ as $x \\to +\\infty$ and $p(x) \\to -\\infty$ as $x \\to -\\infty$. By IVT, $p$ has a real root."
+    },
+    {
+      "id": "gauss-reduction",
+      "title": "Gauss's Algebraic Reduction",
+      "summary": "How the three ingredients combine for FTA (architectural statement)",
+      "startLine": 120,
+      "endLine": 150,
+      "mathContext": "Gauss's degree-halving: given $\\deg p = 2^k \\cdot m$ ($m$ odd), the resolvent polynomial (formed from pairwise sums/products of roots) has degree $2^{k-1} \\cdot m'$. Induction on $k$ reduces to the odd-degree base case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves 5 theorems supporting Gauss's algebraic FTA approach: conjugate root commutativity, conjugate root theorem, distinct conjugate roots for non-real roots, complex square root existence, and polynomial continuity. The odd-degree root theorem (1 sorry) awaits polynomial limit behavior from Mathlib.",
+    "implications": "Provides the algebraic infrastructure for Gauss's 1816 proof. Completing the odd-degree root theorem and the resolvent polynomial construction would give a fully alternative proof of FTA.",
+    "openQuestions": [
+      "Prove odd_degree_real_root using Polynomial.tendsto + IVT from Mathlib",
+      "Formalize the resolvent polynomial construction using symmetric polynomials",
+      "Complete the 2-adic induction for the full algebraic reduction"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Alternative proof approach for the same theorem proved analytically in the parent file",
+      "targetId": "fundamental-theorem-algebra"
+    },
+    {
+      "relationship": "Complements the algebraic closure uniqueness result for ℂ over ℝ",
+      "targetId": "fundamental-theorem-algebra-oq-04"
+    }
+  ],
+  "references": [],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial", "Complex"],
+    "namespace": "GaussAlgebraicFTA",
+    "lineCount": 150,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  }
+}

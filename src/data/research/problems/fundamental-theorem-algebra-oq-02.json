@@ -1,0 +1,118 @@
+{
+  "slug": "fundamental-theorem-algebra-oq-02",
+  "title": "Formalize Gauss's purely algebraic proof of FTA",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove supporting lemmas for Gauss's algebraic FTA proof}",
+    "plain": "Formalize key lemmas for Gauss's algebraic approach: conjugate root theorem, complex square roots, and the architectural reduction.",
+    "whyMatters": ["Provides an alternative proof strategy for FTA independent of complex analysis", "Identifies the minimal analytical input needed (IVT for odd-degree polynomials)"]
+  },
+  "knownResults": {
+    "proven": [
+      "aeval_conj: complex conjugation commutes with real polynomial evaluation",
+      "conj_root: conjugate root theorem for real polynomials",
+      "conj_root_ne: non-real roots produce distinct conjugate roots",
+      "complex_sqrt_exists: every complex number has a square root",
+      "polynomial_continuous: real polynomial evaluation is continuous"
+    ],
+    "open": [
+      "odd_degree_real_root: every odd-degree real polynomial has a real root (needs IVT + polynomial limits)",
+      "Resolvent polynomial construction using symmetric polynomials",
+      "2-adic induction for the full algebraic reduction"
+    ],
+    "goal": "Complete formalization of Gauss's algebraic FTA proof"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T15:55:00.000Z",
+    "iteration": 1,
+    "focus": "Key supporting lemmas proved, architecture documented",
+    "blockers": [],
+    "nextAction": "Prove odd_degree_real_root using Polynomial.tendsto + IVT",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved 5 theorems for Gauss FTA approach. 1 sorry remaining (odd_degree_real_root). Architecture documented.",
+    "builtItems": [
+      "FundamentalTheoremAlgebraOQ02.lean: aeval_conj (conjugation commutes with eval)",
+      "FundamentalTheoremAlgebraOQ02.lean: conj_root (conjugate root theorem)",
+      "FundamentalTheoremAlgebraOQ02.lean: conj_root_ne (distinct conjugate roots)",
+      "FundamentalTheoremAlgebraOQ02.lean: complex_sqrt_exists (square roots in ℂ)",
+      "FundamentalTheoremAlgebraOQ02.lean: gauss_fta_from_ingredients (architectural statement)",
+      "Gallery data: src/data/proofs/fundamental-theorem-algebra-oq-02/"
+    ],
+    "insights": [
+      "Conjugate root theorem proved by induction on polynomial structure (monomial + add cases)",
+      "Complex.conj_ofReal is the key lemma: conjugation fixes real coefficients",
+      "Complex square roots follow trivially from algebraic closure (X² - w has a root)",
+      "The odd-degree root theorem is the ONLY analytical ingredient in Gauss's proof",
+      "Full algebraic reduction requires symmetric polynomial infrastructure not yet in gallery"
+    ],
+    "mathlibGaps": [
+      "Polynomial.tendsto_atTop_of_leadingCoeff_pos (or equivalent) for polynomial limits",
+      "Symmetric polynomial API for resolvent construction"
+    ],
+    "nextSteps": [
+      "Prove odd_degree_real_root using IVT + polynomial behavior at infinity",
+      "Formalize the resolvent polynomial construction",
+      "Complete the 2-adic degree induction"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "complex-analysis",
+    "seeker-selected",
+    "gauss",
+    "fundamental-theorem"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Polynomial.induction_on'",
+      "Complex.conj_ofReal",
+      "Complex.exists_root",
+      "Polynomial.aeval_monomial",
+      "starRingEnd"
+    ]
+  },
+  "started": "2026-03-29T14:32:06.055Z",
+  "lastUpdate": "2026-03-29T15:55:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremAlgebra.lean",
+      "filename": "FundamentalTheoremAlgebra.lean",
+      "lineCount": 215,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+      "filename": "FundamentalTheoremAlgebraOQ02.lean",
+      "lineCount": 150,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ02.lean"
+    }
+  ]
+}
