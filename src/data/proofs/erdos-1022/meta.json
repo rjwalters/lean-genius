@@ -17,13 +17,13 @@
       "set-families"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1022,
     "erdosUrl": "https://erdosproblems.com/1022",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 3,
-    "lineCount": 321,
+    "axiomCount": 2,
+    "lineCount": 327,
     "assumptions": "3 axioms: erdos_1022_conjecture (open conjecture), lovasz_theorem (c(2)=1, Lovász 1968), erdos_first_moment_bound (|F| < 2^{t-1} implies Property B, Erdős 1963). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -244,11 +244,18 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Fintype.Basic", "Mathlib.Tactic"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "Erdos1022",
-    "lineCount": 321,
-    "axiomCount": 3,
+    "lineCount": 327,
+    "axiomCount": 2,
     "theoremCount": 22,
     "definitionCount": 5
   }
