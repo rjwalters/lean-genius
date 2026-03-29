@@ -92,7 +92,9 @@ def coprimeSet (k : ℕ) : Finset ℕ :=
 -/
 theorem coprime_set_card (k : ℕ) :
     (coprimeSet k).card = primorialTotient k := by
-  sorry
+  simp only [coprimeSet, primorialTotient, Nat.totient]
+  congr 1
+  exact Finset.filter_congr fun a _ => Nat.coprime_comm
 
 /--
 **Sorted coprime sequence:**
@@ -182,7 +184,13 @@ axiom hooley_theorem :
 **Exponential CDF is continuous:**
 -/
 theorem exponential_cdf_continuous : Continuous exponentialCDF := by
-  sorry
+  have key : exponentialCDF = fun c => 1 - Real.exp (-max c 0) := by
+    ext c; simp only [exponentialCDF]; split_ifs with hc
+    · rw [max_eq_right (le_of_lt hc), neg_zero, Real.exp_zero, sub_self]
+    · rw [max_eq_left (le_of_not_lt hc)]
+  rw [key]
+  exact continuous_const.sub
+    (Real.continuous_exp.comp ((continuous_id.max continuous_const).neg))
 
 /--
 **Erdős #235 is PROVED:**
@@ -210,14 +218,25 @@ f(c) → 1 as c → ∞
 -/
 theorem distribution_at_infinity :
     Tendsto exponentialCDF atTop (nhds 1) := by
-  sorry
+  have h_eq : exponentialCDF =ᶠ[atTop] (fun c => 1 - Real.exp (-c)) :=
+    (eventually_ge_atTop (0 : ℝ)).mono fun c hc => by
+      show exponentialCDF c = 1 - Real.exp (-c)
+      simp only [exponentialCDF, if_neg (not_lt.mpr hc)]
+  rw [Filter.tendsto_congr' h_eq]
+  have h_exp : Tendsto (fun c : ℝ => Real.exp (-c)) atTop (nhds 0) :=
+    Real.tendsto_exp_atBot.comp tendsto_neg_atTop_atBot
+  have := tendsto_const_nhds.sub h_exp
+  rwa [sub_zero] at this
 
 /--
 **Median gap:**
 f(c) = 1/2 when c = ln(2)
 -/
 theorem median_gap : exponentialCDF (Real.log 2) = 1/2 := by
-  sorry
+  have hlog : ¬(Real.log 2 < 0) := not_lt.mpr (Real.log_nonneg (by norm_num : (1:ℝ) ≤ 2))
+  simp only [exponentialCDF, if_neg hlog]
+  rw [Real.exp_neg, Real.exp_log (by norm_num : (0:ℝ) < 2)]
+  norm_num
 
 /--
 **Mean of exponential:**

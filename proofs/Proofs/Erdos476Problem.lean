@@ -91,8 +91,9 @@ For a set with at least 2 elements, the restricted sumset is nonempty.
 -/
 theorem restrictedSumset_nonempty_of_card_ge_two (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
     (restrictedSumset p A).Nonempty := by
-  rw [Finset.card_eq_succ] at h
-  sorry -- Technical: extract two distinct elements
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < A.card)
+  exact ⟨a + b, Finset.mem_image.mpr
+    ⟨(a, b), Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, hab⟩, rfl⟩⟩
 
 /-
 ## Part III: The Erdős-Heilbronn Bound
