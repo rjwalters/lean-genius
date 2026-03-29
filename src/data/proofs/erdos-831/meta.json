@@ -16,7 +16,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 4,
     "erdosNumber": 831,
     "erdosUrl": "https://erdosproblems.com/831",
     "erdosProblemStatus": "open",
@@ -55,8 +55,8 @@
       "erdos_831_summary theorem: known bounds"
     ],
     "axiomCount": 1,
-    "lineCount": 398,
-    "assumptions": "1 axiom: h_four_lower (h(4)≥2, used in summary theorem). All other axioms eliminated as unused."
+    "lineCount": 436,
+    "assumptions": "1 axiom: h_four_lower (h(4)≥2, used in summary theorem). 4 sorries: h_upper_bound (circumradius permutation invariance), h_three_eq_one (same), circumradiusOf_perm12 (det sign change), circumradiusOf_cycle (det rotation). All other axioms eliminated as unused."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #831**\n\nThis geometric extremal problem was posed by Erdős in the 1970s and revisited in the 1990s, documented in [Er75h] and [Er92e].\n\n**Key History:**\n- Erdős asked about the minimum number of distinct circumradii from point configurations\n- Related to classical problems about point-line and point-circle incidences\n- Connects to the unit distance problem and orchard problem\n\n**Mathematical Setting:**\nGiven n points in general position (no three collinear, no four concyclic), each triple determines a unique circumcircle. The question is: over all such configurations, what is the minimum number of distinct radii among these circles?",
@@ -185,10 +185,10 @@
       "Finset"
     ],
     "namespace": "Erdos831",
-    "lineCount": 398,
+    "lineCount": 436,
     "axiomCount": 1,
-    "theoremCount": 5,
-    "definitionCount": 10
+    "theoremCount": 16,
+    "definitionCount": 12
   },
   "crossReferences": [
     {
