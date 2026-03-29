@@ -152,12 +152,20 @@ axiom finite_ramsey (r k n : ℕ) (hk : 1 ≤ k) (hn : 1 ≤ n) :
 
 /--
 **Ramsey's Theorem** (specific case):
-For 3-subsets with 2 colors, R(3,3) = 6.
-Any 2-coloring of 3-subsets of a 6-set has a monochromatic 3-subset.
+For 3-subsets with 2 colors, any 2-coloring of 3-subsets of a 6-set
+has a monochromatic 3-subset. (Trivially true: any 3-element set has
+exactly one 3-subset — itself — so it is homogeneous for its own color.)
 -/
-axiom ramsey_3_3 : ∀ (c : Coloring (Fin 6) 3 2),
+theorem ramsey_3_3 : ∀ (c : Coloring (Fin 6) 3 2),
     ∃ (H : Finset (Fin 6)) (i : Fin 2), H.card ≥ 3 ∧
-      FinsetIsHomogeneous H 3 2 c i
+      FinsetIsHomogeneous H 3 2 c i := by
+  intro c
+  have hcard : ({0, 1, 2} : Finset (Fin 6)).card = 3 := by decide
+  refine ⟨{0, 1, 2}, c ⟨{0, 1, 2}, hcard⟩, by omega, ?_⟩
+  intro t ht hsub
+  have heq : t = {(0 : Fin 6), 1, 2} :=
+    Finset.eq_of_subset_of_card_le hsub (by omega)
+  subst heq; rfl
 
 /- ## Negative Results -/
 
@@ -180,12 +188,24 @@ theorem conjecture_xor_counterexample :
 /- ## Monotonicity -/
 
 /-- Partition arrows are monotonic in the ordinal parameter. -/
-axiom partition_arrow_mono_ordinal (κ : Cardinal) (α β : Ordinal) (m : ℕ)
-    (hαβ : α ≤ β) (h : PartitionArrow κ β m) : PartitionArrow κ α m
+theorem partition_arrow_mono_ordinal (κ : Cardinal) (α β : Ordinal) (m : ℕ)
+    (hαβ : α ≤ β) (h : PartitionArrow κ β m) : PartitionArrow κ α m := by
+  intro S _ hS c
+  rcases h S hS c with ⟨H, hord, hhom⟩ | ⟨H, hcard, hhom⟩
+  · left
+    exact ⟨H, le_trans (Ordinal.card_le_card hαβ) hord, hhom⟩
+  · right
+    exact ⟨H, hcard, hhom⟩
 
 /-- Partition arrows are monotonic in the size parameter. -/
-axiom partition_arrow_mono_size (κ : Cardinal) (α : Ordinal) (m n : ℕ)
-    (hmn : m ≤ n) (h : PartitionArrow κ α n) : PartitionArrow κ α m
+theorem partition_arrow_mono_size (κ : Cardinal) (α : Ordinal) (m n : ℕ)
+    (hmn : m ≤ n) (h : PartitionArrow κ α n) : PartitionArrow κ α m := by
+  intro S _ hS c
+  rcases h S hS c with ⟨H, hord, hhom⟩ | ⟨H, hcard, hhom⟩
+  · left
+    exact ⟨H, hord, hhom⟩
+  · right
+    exact ⟨H, le_trans hmn hcard, hhom⟩
 
 /- ## Related Ordinal Arithmetic -/
 
