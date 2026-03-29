@@ -32,16 +32,20 @@ def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 -- Routine: Finite sets have convergent harmonic subseries
 theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
     HasConvergentHarmonicSubseries A := by
-  simp only [HasConvergentHarmonicSubseries]
-  haveI : Finite ↥A := hA.to_subtype
-  haveI := Fintype.ofFinite ↥A
-  exact (hasSum_fintype _).summable
+  unfold HasConvergentHarmonicSubseries
+  haveI := hA.to_subtype
+  exact summable_of_finite _
 
 -- Routine: If A has convergent harmonic sum, shifted version is also summable
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
     (h : HasConvergentHarmonicSubseries A) :
     Summable (fun n : A => (1 : ℝ) / (n + k)) := by
-  sorry
+  apply Summable.of_nonneg_of_le
+  · intro n; exact div_nonneg one_nonneg (by positivity)
+  · intro ⟨n, hn⟩
+    exact div_le_div_of_nonneg_left (by positivity) (by positivity)
+      (by exact_mod_cast Nat.le_add_right n k)
+  · exact h
 
 -- Routine: The set of perfect squares has convergent harmonic subseries
 -- (this is ∑ 1/n² = π²/6, well-known convergence)
@@ -57,7 +61,7 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
 theorem shiftedHarmonicSum_nonneg (A : Set ℕ) (k : ℕ)
     (hA : A.Nonempty) (h : Summable (fun n : A => (1 : ℝ) / (n + k))) :
     shiftedHarmonicSum A k ≥ 0 := by
-  simp only [shiftedHarmonicSum]
+  unfold shiftedHarmonicSum
   exact tsum_nonneg (fun n => div_nonneg one_nonneg (by positivity))
 
 -- Routine: Shifted harmonic sum is decreasing in k
