@@ -183,11 +183,13 @@ axiom covering_reciprocal_bound (S : Finset Congruence)
     (hCover : IsCoveringSystem S) (hDistinct : HasDistinctModuli S) :
     reciprocalSum S ≥ 1
 
-/-- This is related to the "Chinese Remainder" aspect of coverings. -/
-axiom covering_crt_connection :
-  ∀ S : Finset Congruence, IsCoveringSystem S →
-    ∀ m, m ∈ moduliSet S →
-      ∃ a, (⟨a, m, by sorry⟩ : Congruence) ∈ S
+/-- This is related to the "Chinese Remainder" aspect of coverings:
+    every modulus that appears in the system has some residue class in S. -/
+theorem covering_crt_connection :
+    ∀ S : Finset Congruence, IsCoveringSystem S →
+      ∀ m ∈ moduliSet S, ∃ c ∈ S, c.modulus = m := by
+  intro S _ m hm
+  exact Finset.mem_image.mp hm
 
 /-
 ## Part VII: Why Haight's Result Works
