@@ -15,10 +15,11 @@ Reference: https://erdosproblems.com/1031
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
-open Finset
+open Finset Classical
 
 namespace Erdos1031
 
@@ -89,6 +90,16 @@ theorem singleton_is_trivial (G : SimpleGraph V) (v : V) :
   Or.inl (fun x hx y hy hne => by
     rw [Finset.mem_singleton] at hx hy; exact absurd (hx.trans hy.symm) hne)
 
+/-
+## The Non-Ramsey Property
+
+G has no large trivial subgraph.
+-/
+
+/-- G has no trivial subgraph of size ≥ k. -/
+def noLargeTrivial (G : SimpleGraph V) (k : ℕ) : Prop :=
+  ∀ S : Finset V, S.card ≥ k → ¬isTrivialInduced G S
+
 /-- If noLargeTrivial holds for k, it holds for any k' ≥ k. -/
 theorem noLargeTrivial_mono (G : SimpleGraph V) (k k' : ℕ) (hk : k ≤ k')
     (h : noLargeTrivial G k) : noLargeTrivial G k' :=
@@ -101,7 +112,7 @@ A graph is regular if all vertices have the same degree.
 -/
 
 /-- Degree of a vertex in the induced subgraph on S. -/
-def inducedDegree (G : SimpleGraph V) (S : Finset V) (v : V) : ℕ :=
+noncomputable def inducedDegree (G : SimpleGraph V) (S : Finset V) (v : V) : ℕ :=
   (S.filter (fun u => G.Adj v u)).card
 
 /-- An induced subgraph is k-regular. -/
@@ -115,16 +126,6 @@ def isRegularInduced (G : SimpleGraph V) (S : Finset V) : Prop :=
 /-- A non-trivial regular subgraph (not 0-regular on ≥2 vertices, not complete). -/
 def isNontrivialRegular (G : SimpleGraph V) (S : Finset V) : Prop :=
   isRegularInduced G S ∧ ¬isTrivialInduced G S
-
-/-
-## The Non-Ramsey Property
-
-G has no large trivial subgraph.
--/
-
-/-- G has no trivial subgraph of size ≥ k. -/
-def noLargeTrivial (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∀ S : Finset V, S.card ≥ k → ¬isTrivialInduced G S
 
 /-- The Ramsey bound: every graph has a trivial subgraph of size ≫ log n. -/
 axiom ramsey_trivial_bound : ∃ c > 0, ∀ n : ℕ, ∀ (V : Type*) [DecidableEq V] [Fintype V],
@@ -183,7 +184,7 @@ The conjecture follows from Prömel-Rödl.
 
 /-- Any k ≥ 3 has a non-trivial k-regular graph. -/
 axiom exists_nontrivial_regular (k : ℕ) (hk : k ≥ 3) :
-  ∃ (W : Type*) [DecidableEq W] [Fintype W],
+  ∃ (W : Type*) (_ : DecidableEq W) (_ : Fintype W),
   ∃ H : SimpleGraph W, Fintype.card W ≤ 2 * k ∧
     (∀ v : W, H.degree v = k) ∧
     ¬(∀ x y : W, x ≠ y → H.Adj x y) ∧
@@ -217,7 +218,24 @@ noncomputable def ramseyNumber (k : ℕ) : ℕ :=
     Fintype.card V ≥ N →
     ∀ G : SimpleGraph V,
     ∃ S : Finset V, S.card = k ∧ isTrivialInduced G S := by
-    sorry
+    obtain ⟨c, hc, hbound⟩ := ramsey_trivial_bound
+    refine ⟨Nat.ceil (Real.exp (↑k / c)) + 1, ?_⟩
+    intro V _ _ hV G
+    obtain ⟨S, htriv, hsize⟩ := hbound (Fintype.card V) V rfl G
+    have hk_le : k ≤ S.card := by
+      suffices h : (↑k : ℝ) ≤ ↑(S.card) by exact_mod_cast h
+      calc (↑k : ℝ) = c * (↑k / c) := by field_simp
+        _ = c * Real.log (Real.exp (↑k / c)) := by rw [Real.log_exp]
+        _ ≤ c * Real.log ↑(Fintype.card V) := by
+            apply mul_le_mul_of_nonneg_left _ (le_of_lt hc)
+            apply Real.log_le_log (Real.exp_pos _)
+            calc Real.exp (↑k / c)
+                ≤ ↑(Nat.ceil (Real.exp (↑k / c))) := Nat.le_ceil _
+              _ ≤ ↑(Nat.ceil (Real.exp (↑k / c)) + 1) := by push_cast; linarith
+              _ ≤ ↑(Fintype.card V) := by exact_mod_cast hV
+        _ ≤ ↑(S.card) := hsize
+    obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq hk_le
+    exact ⟨T, hTcard, isTrivialInduced_subset G T S hTsub htriv⟩
 
 /-- R(k,k) ≤ 4^k (crude bound). -/
 axiom ramsey_upper_bound (k : ℕ) : ramseyNumber k ≤ 4^k
@@ -231,7 +249,19 @@ theorem ramsey_log_trivial (n : ℕ) (hn : n ≥ 4) :
     Fintype.card V = n →
     ∀ G : SimpleGraph V,
     ∃ S : Finset V, isTrivialInduced G S ∧ S.card ≥ Nat.log 4 n / 2 := by
-  sorry
+  intro V _ _ hVn G
+  set k := Nat.log 4 n / 2 with hk_def
+  have hRk_le_n : ramseyNumber k ≤ n := calc
+    ramseyNumber k ≤ 4 ^ k := ramsey_upper_bound k
+    _ ≤ 4 ^ (Nat.log 4 n) := by
+        apply Nat.pow_le_pow_right (by norm_num : 1 ≤ 4)
+        exact Nat.div_le_self _ _
+    _ ≤ n := Nat.pow_log_le_self 4 (by omega)
+  have hV_ge : Fintype.card V ≥ ramseyNumber k := by omega
+  have hSpec := Nat.find_spec (ramseyNumber.ramsey_exists k)
+  have hV_ge' : Fintype.card V ≥ Nat.find (ramseyNumber.ramsey_exists k) := hV_ge
+  obtain ⟨S, hScard, hStriv⟩ := hSpec V hV_ge' G
+  exact ⟨S, hStriv, by omega⟩
 
 /-
 ## Non-Ramsey Graphs
@@ -246,7 +276,7 @@ def isNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
 /-- Non-Ramsey graphs are rare but exist. -/
 axiom nonRamsey_exist (c : ℝ) (hc : c > 0) :
   ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) [DecidableEq V] [Fintype V],
+  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
   Fintype.card V = n ∧
   ∃ G : SimpleGraph V, isNonRamsey G c
 
@@ -264,10 +294,11 @@ theorem nonRamsey_universal (c : ℝ) (hc : c > 0) :
     ∀ G : SimpleGraph V,
     isNonRamsey G c →
     isKUniversal G (Nat.floor (c' * Real.log n)) := by
-  intro c hc
   obtain ⟨c', hc', N, hN⟩ := promel_rodl c hc
   use c', hc', N
   intro n hn V _ _ hV G hG
+  unfold isNonRamsey at hG
+  rw [hV] at hG
   exact hN n hn V hV G hG
 
 /-
