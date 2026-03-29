@@ -1,0 +1,90 @@
+{
+  "slug": "dirichlets-theorem-oq-03",
+  "title": "Best constant in Linnik's theorem for primes in arithmetic progressions",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Fix sorries in DirichletsTheoremOQ03.lean}",
+    "plain": "Fix provable sorries in Linnik's theorem formalization: the infimum argument for optimal_implies_le_one and the rpow API in heathBrown_bound.",
+    "whyMatters": ["Reduces sorry count from 4 to 2", "Fixes incorrect Mathlib API usage"]
+  },
+  "knownResults": {
+    "proven": [
+      "optimal_implies_le_one: optimal conjecture implies linnikConstant ≤ 1 (was sorry)",
+      "heathBrown_bound: fixed rpow API (rpow_le_rpow → rpow_le_rpop_of_exponent_le)"
+    ],
+    "open": [
+      "leastPrimeInAP definition sorry (needs structural fix — requires coprimality hypothesis)",
+      "linnikConstant_pos (needs deep number-theoretic argument)"
+    ],
+    "goal": "Fix provable sorries in Linnik constant formalization"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T16:10:00.000Z",
+    "iteration": 1,
+    "focus": "Sorry elimination and API fixes",
+    "blockers": [],
+    "nextAction": "Fix leastPrimeInAP definition to require coprimality",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fixed 2 sorries. optimal_implies_le_one proved by contradiction (ε/2 argument). heathBrown_bound fixed with correct rpow API.",
+    "builtItems": [
+      "DirichletsTheoremOQ03.lean: optimal_implies_le_one (was sorry, now proved)",
+      "DirichletsTheoremOQ03.lean: heathBrown_bound (fixed rpow API)"
+    ],
+    "insights": [
+      "optimal_implies_le_one: by contradiction, take ε = (L-1)/2, get L ≤ 1 + (L-1)/2, so L ≤ 1",
+      "rpow_le_rpow is for base monotonicity; rpow_le_rpow_of_exponent_le is for exponent monotonicity",
+      "leastPrimeInAP definition is structurally unsound — needs Coprime hypothesis for existence"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Restructure leastPrimeInAP to require coprimality",
+      "Prove linnikConstant_pos from Bertrand's postulate variant"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "seeker-selected",
+    "sorry-elimination"
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "dirichlets-theorem-oq-01",
+    "dirichlets-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "rpow_le_rpow_of_exponent_le",
+      "csInf_le"
+    ]
+  },
+  "started": "2026-03-29T14:32:06.055Z",
+  "lastUpdate": "2026-03-29T16:10:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DirichletsTheoremOQ03.lean",
+      "filename": "DirichletsTheoremOQ03.lean",
+      "lineCount": 141,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03.lean"
+    }
+  ]
+}

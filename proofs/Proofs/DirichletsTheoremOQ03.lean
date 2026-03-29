@@ -79,7 +79,8 @@ theorem heathBrown_bound : (5.5 : ℝ) ∈ admissibleExponents := by
   obtain ⟨hL, c, hc, hbound⟩ := h
   exact ⟨by norm_num, c, hc, fun a q hq hcop => le_trans (hbound a q hq hcop) (by
     apply mul_le_mul_of_nonneg_left
-    · exact Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num : (5:ℝ) ≤ 5.5)
+    · exact rpow_le_rpow_of_exponent_le (by exact_mod_cast hq : (1 : ℝ) ≤ (q : ℝ))
+        (by norm_num : (5:ℝ) ≤ 5.5)
     · linarith)⟩
 
 /-- The Linnik constant is at most 5 (from Xylouris) -/
@@ -104,15 +105,21 @@ def GRHImpliesSmallLinnik : Prop :=
 def optimalLinnikConjecture : Prop :=
   ∀ ε > 0, (1 + ε) ∈ admissibleExponents
 
-/-- The optimal conjecture implies linnikConstant ≤ 1 -/
+/-- The optimal conjecture implies linnikConstant ≤ 1.
+    Proof: if ∀ ε > 0, (1+ε) is admissible, then inf ≤ 1+ε for all ε > 0,
+    hence inf ≤ 1 by taking ε → 0. -/
 theorem optimal_implies_le_one (h : optimalLinnikConjecture) :
     linnikConstant ≤ 1 := by
-  apply csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩
-  have := h (1/2) (by norm_num : (1:ℝ)/2 > 0)
-  -- 1 + 1/2 = 3/2 ∈ admissibleExponents, and 3/2 > 1
-  -- But we need something ≤ 1... The conjecture says ∀ ε > 0, 1+ε admissible
-  -- Taking limit: linnikConstant ≤ 1 + ε for all ε > 0
-  sorry
+  by_contra hgt
+  push_neg at hgt
+  -- linnikConstant > 1. Take ε = (linnikConstant - 1) / 2 > 0
+  have hε : (linnikConstant - 1) / 2 > 0 := by linarith
+  have h1 := h ((linnikConstant - 1) / 2) hε
+  -- 1 + (linnikConstant - 1)/2 ∈ admissibleExponents
+  have h2 : linnikConstant ≤ 1 + (linnikConstant - 1) / 2 :=
+    csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ h1
+  -- But 1 + (linnikConstant - 1)/2 = 1/2 + linnikConstant/2 < linnikConstant
+  linarith
 
 /-- Known range: 1 ≤ linnikConstant ≤ 5 -/
 theorem linnikConstant_range :
