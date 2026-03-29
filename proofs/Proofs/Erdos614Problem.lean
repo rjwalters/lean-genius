@@ -22,7 +22,7 @@ Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
 Results:
 - erdos_614_existence: proved from f_upper_bound
 - f_max_k: identified as FALSE and removed (star graph counterexample)
-Axioms: 4 (f_lower_bound, f_upper_bound, f_case_k_eq_1, f_mono_k)
+Axioms: 2 (f_lower_bound, f_mono_k)
 Sorries: 0
 -/
 
@@ -86,7 +86,7 @@ noncomputable def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
 
 /-- A graph on n vertices exists with m edges having property P(k). -/
 def existsGraphWithPropertyP (n k m : ℕ) : Prop :=
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (_ : LinearOrder V),
     Fintype.card V = n ∧
     ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       edgeCount G = m ∧ hasPropertyP G k
@@ -186,19 +186,209 @@ theorem f_upper_bound :
   ∀ n k : ℕ, k + 2 ≤ n →
     existsGraphWithPropertyP n k (n * (n - 1) / 2) := by
   intro n k hnk
-  exact ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n,
+  exact ⟨Fin n, inferInstance, inferInstance, inferInstance, Fintype.card_fin n,
     ⊤, inferInstance, edgeCount_complete n, complete_hasPropertyP n k hnk⟩
 
 /-
 ## Part 5: Special Cases
 -/
 
+/-- If G has property P(1), any 3 distinct vertices span at least one edge.
+    Proof: by contradiction — if no edge, inducedMaxDegree = 0 < 1. -/
+private lemma hasPropertyP_one_adj_of_triple
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hP : hasPropertyP G 1)
+    {a b c : V} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    G.Adj a b ∨ G.Adj a c ∨ G.Adj b c := by
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨hab', hac', hbc'⟩ := hcon
+  have hcard : ({a, b, c} : Finset V).card = 1 + 2 := by
+    have h1 : a ∉ ({b, c} : Finset V) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨hab, hac⟩
+    have h2 : b ∉ ({c} : Finset V) := by simp [hbc]
+    rw [Finset.card_insert_of_not_mem h1, Finset.card_insert_of_not_mem h2,
+        Finset.card_singleton]
+  have h_le : inducedMaxDegree G {a, b, c} ≤ 0 := by
+    unfold inducedMaxDegree
+    have hne : ({a, b, c} : Finset V).Nonempty := ⟨a, Finset.mem_insert_self a _⟩
+    simp only [dif_pos hne]
+    apply Finset.sup'_le
+    intro v hv
+    simp only [Nat.le_zero, Finset.card_eq_zero]
+    ext u
+    simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false, not_and]
+    intro hu_mem hu_ne
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hv hu_mem
+    rcases hv with rfl | rfl | rfl <;> rcases hu_mem with rfl | rfl | rfl
+    · exact absurd rfl hu_ne
+    · exact hab'
+    · exact hac'
+    · exact fun h => hab' (G.symm h)
+    · exact absurd rfl hu_ne
+    · exact hbc'
+    · exact fun h => hac' (G.symm h)
+    · exact fun h => hbc' (G.symm h)
+    · exact absurd rfl hu_ne
+  have h_ge := hP {a, b, c} hcard
+  omega
+
+/-- Under P(1), non-neighbors of any vertex are pairwise adjacent. -/
+private lemma nonNeighbors_adj
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hP : hasPropertyP G 1)
+    {v a b : V} (hva : v ≠ a) (hvb : v ≠ b) (hab : a ≠ b)
+    (hna : ¬G.Adj v a) (hnb : ¬G.Adj v b) :
+    G.Adj a b := by
+  rcases hasPropertyP_one_adj_of_triple G hP hva hvb hab with h | h | h
+  · exact absurd h hna
+  · exact absurd h hnb
+  · exact h
+
+/-- Map adjacent vertices to their canonical edge pair (smaller first). -/
+private noncomputable def edgePairOf [LinearOrder V] (a b : V) : V × V :=
+  if a < b then (a, b) else (b, a)
+
+/-- edgePairOf maps adjacent vertices into the edge count filter. -/
+private lemma edgePairOf_mem_edgeFilter [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {a b : V} (hadj : G.Adj a b) :
+    edgePairOf a b ∈ Finset.univ.filter
+      (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2) := by
+  simp only [edgePairOf, Finset.mem_filter, Finset.mem_univ, true_and]
+  split_ifs with h
+  · exact ⟨h, hadj⟩
+  · push_neg at h
+    exact ⟨lt_of_le_of_ne h (fun he => G.loopless b (he ▸ hadj)), G.symm hadj⟩
+
+/-- edgePairOf is injective in the second argument (first fixed). -/
+private lemma edgePairOf_injective [LinearOrder V] (v : V) :
+    Function.Injective (edgePairOf v) := by
+  intro u₁ u₂ h
+  simp only [edgePairOf] at h
+  split_ifs at h with h₁ h₂ h₁ h₂ <;> simp only [Prod.mk.injEq] at h
+  · exact h.2
+  · exact (h.2.trans h.1)
+  · exact (h.1.trans h.2)
+  · exact h.1
+
+/-- Edge pair images from non-adjacent vertices are disjoint. -/
+private lemma edgePairOf_images_disjoint [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {v w : V} (hne : v ≠ w) (hnadj : ¬G.Adj v w) :
+    Disjoint
+      ((Finset.univ.filter (G.Adj v)).image (edgePairOf v))
+      ((Finset.univ.filter (G.Adj w)).image (edgePairOf w)) := by
+  rw [Finset.disjoint_left]
+  intro p hpv hpw
+  simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hpv hpw
+  obtain ⟨u, hu, rfl⟩ := hpv
+  obtain ⟨x, hx, heq⟩ := hpw
+  simp only [edgePairOf] at heq
+  split_ifs at heq with h₁ h₂ h₁ h₂ <;> simp only [Prod.mk.injEq] at heq
+  · exact absurd heq.1 hne
+  · rw [heq.2] at hu; exact hnadj hu
+  · rw [heq.1] at hu; exact hnadj hu
+  · exact absurd heq.2 hne
+
 /-- Case k = 1: every 3 vertices must span at least one edge.
-    This means the graph has no independent triple, requiring
-    at least n - 2 edges (a path achieves this). -/
-axiom f_case_k_eq_1 :
+    The edge count is at least n - 2.
+
+    **Proof strategy**: Pick any vertex v. Its non-neighbors form a clique
+    (any two non-neighbors must be adjacent, else {v, a, b} is independent).
+    Pick a non-neighbor w (if any). The edges from v and edges from w are
+    disjoint (since v ≁ w). So edgeCount ≥ deg(v) + deg(w) ≥ d + (k-1) = n-2
+    where d = deg(v) and k = number of non-neighbors. -/
+private lemma edgeCount_ge_of_hasPropertyP_one [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hP : hasPropertyP G 1) (hn : Fintype.card V ≥ 3) :
+    edgeCount G ≥ Fintype.card V - 2 := by
+  -- Pick a vertex
+  haveI : Nonempty V := Fintype.card_pos_iff.mp (by omega)
+  let v : V := Classical.arbitrary V
+  -- Define neighbors and non-neighbors
+  set N := Finset.univ.filter (G.Adj v) with hN_def
+  set M := Finset.univ.filter (fun u => u ≠ v ∧ ¬G.Adj v u) with hM_def
+  -- Partition V \ {v} into N and M
+  have hNS : N = (Finset.univ.erase v).filter (G.Adj v) := by
+    ext u; simp only [hN_def, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]
+    exact ⟨fun h => ⟨fun he => G.loopless v (he ▸ h), h⟩, And.right⟩
+  have hMS : M = (Finset.univ.erase v).filter (fun u => ¬G.Adj v u) := by
+    ext u; simp only [hM_def, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]
+    exact ⟨fun ⟨hne, hnadj⟩ => ⟨hne, hnadj⟩, fun ⟨hne, hnadj⟩ => ⟨hne, hnadj⟩⟩
+  have hpart : N.card + M.card = Fintype.card V - 1 := by
+    conv_lhs => rw [hNS, hMS]
+    rw [Finset.filter_card_add_filter_neg_card_eq_card,
+        Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ]
+  -- edgeCount ≥ N.card (injection from neighbors to edge pairs)
+  have h_deg_v : edgeCount G ≥ N.card := by
+    unfold edgeCount
+    calc _ ≥ (N.image (edgePairOf v)).card :=
+          Finset.card_le_card (fun p hp => by
+            simp only [Finset.mem_image, hN_def, Finset.mem_filter, Finset.mem_univ,
+                        true_and] at hp
+            obtain ⟨u, hu, rfl⟩ := hp
+            exact edgePairOf_mem_edgeFilter G hu)
+      _ = N.card :=
+          Finset.card_image_of_injective _ (edgePairOf_injective v)
+  -- If N.card ≥ card V - 2, done immediately
+  by_cases hcase : N.card ≥ Fintype.card V - 2
+  · omega
+  -- Otherwise, M has ≥ 2 non-neighbors
+  push_neg at hcase
+  -- Pick a non-neighbor w
+  have hMne : M.Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty, ne_eq, Finset.card_eq_zero]; omega
+  obtain ⟨w, hw⟩ := hMne
+  simp only [hM_def, Finset.mem_filter, Finset.mem_univ, true_and] at hw
+  obtain ⟨hwv, hwnadj⟩ := hw
+  -- w's neighbors include all other non-neighbors (clique property)
+  set Nw := Finset.univ.filter (G.Adj w) with hNw_def
+  have hMw_sub : M.erase w ⊆ Nw := by
+    intro x hx
+    simp only [Finset.mem_erase, hM_def, Finset.mem_filter, Finset.mem_univ, true_and] at hx
+    simp only [hNw_def, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact G.symm (nonNeighbors_adj G hP (Ne.symm hwv) hx.2.1 (Ne.symm hx.1) hwnadj hx.2.2)
+  have hNw_card : Nw.card ≥ M.card - 1 := by
+    calc Nw.card ≥ (M.erase w).card := Finset.card_le_card hMw_sub
+      _ = M.card - 1 := Finset.card_erase_of_mem
+            (hM_def ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ w, hwv, hwnadj⟩)
+  -- edgeCount ≥ N.card + Nw.card (disjoint since v ≁ w)
+  have h_total : edgeCount G ≥ N.card + Nw.card := by
+    unfold edgeCount
+    calc _ ≥ (N.image (edgePairOf v) ∪ Nw.image (edgePairOf w)).card :=
+          Finset.card_le_card (Finset.union_subset
+            (fun p hp => by
+              simp only [Finset.mem_image, hN_def, Finset.mem_filter, Finset.mem_univ,
+                          true_and] at hp
+              obtain ⟨u, hu, rfl⟩ := hp
+              exact edgePairOf_mem_edgeFilter G hu)
+            (fun p hp => by
+              simp only [Finset.mem_image, hNw_def, Finset.mem_filter, Finset.mem_univ,
+                          true_and] at hp
+              obtain ⟨u, hu, rfl⟩ := hp
+              exact edgePairOf_mem_edgeFilter G hu))
+      _ = (N.image (edgePairOf v)).card + (Nw.image (edgePairOf w)).card :=
+          Finset.card_union_of_disjoint
+            (edgePairOf_images_disjoint G (Ne.symm hwv) (fun h => hwnadj (G.symm h)))
+      _ = N.card + Nw.card := by
+          rw [Finset.card_image_of_injective _ (edgePairOf_injective v),
+              Finset.card_image_of_injective _ (edgePairOf_injective w)]
+  -- Combine: N.card + Nw.card ≥ N.card + (M.card - 1) = (card V - 1) - 1 = card V - 2
+  omega
+
+/-- Case k = 1: every 3 vertices must span at least one edge,
+    requiring at least n - 2 edges.
+
+    **Proved** from the non-neighbor clique structure:
+    pick vertex v, its non-neighbors form a clique, giving
+    deg(v) + (k-1) = n-2 disjoint edges. -/
+theorem f_case_k_eq_1 :
   ∀ n : ℕ, n ≥ 3 →
-    ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2
+    ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2 := by
+  intro n hn m ⟨V, hfin, hdec, hord, hcard, G, hdecrel, hedge, hprop⟩
+  haveI := hfin; haveI := hdec; haveI := hord; haveI := hdecrel
+  have h := edgeCount_ge_of_hasPropertyP_one G hprop (by rw [hcard]; exact hn)
+  rw [hcard] at h; omega
 
 /-- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
     COUNTEREXAMPLE: The star graph K_{1,n-1} has n-1 edges and satisfies P(n-2),

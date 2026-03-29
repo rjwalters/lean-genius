@@ -29,16 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: All 3 axioms require substantial proofs. f_case_k_eq_1 needs Turán/independence number bound. f_lower_bound needs double-counting. f_mono_k needs subtle subset extension argument.",
+    "progressSummary": "PROGRESS: Eliminated f_case_k_eq_1 axiom (3→2 axioms). Proved via non-neighbor clique: pick vertex v, non-neighbors form clique by P(1), edges from v + clique vertex give n-2 disjoint edges. Also fixed existsGraphWithPropertyP to require LinearOrder V.",
     "builtItems": [
       "erdos_614_existence: proved from f_upper_bound",
       "f_max_k: removed as false with documented counterexample",
-      "Assessment: axioms blocked on Turán theorem / counting arguments not in Mathlib"
+      "Assessment: axioms blocked on Turán theorem / counting arguments not in Mathlib",
+      "f_case_k_eq_1: proved (was axiom) via non-neighbor clique structure",
+      "hasPropertyP_one_adj_of_triple: P(1) implies every 3 vertices span an edge",
+      "nonNeighbors_adj: non-neighbors form clique under P(1)",
+      "edgePairOf + injectivity + disjointness lemmas for edge counting",
+      "edgeCount_ge_of_hasPropertyP_one: main edge counting lemma"
     ],
     "insights": [
       "f_case_k_eq_1 (n-2 bound for k=1): P(1) ↔ α(G)≤2. Complement is triangle-free → Turán gives |E|≥n(n-2)/4≥n-2 for n≥4. n=3 by cases.",
       "f_mono_k (P(k+1)→P(k)): extend (k+2)-subset S by v. If max-deg vertex in S∪{v} is in S, done (deg_S≥k). If it is v, need alternate argument. Subtle.",
-      "All 3 axioms require real mathematical proofs not available as Mathlib lookups. f_case_k_eq_1 closest to tractable (via Turán) but Turán not in Mathlib."
+      "All 3 axioms require real mathematical proofs not available as Mathlib lookups. f_case_k_eq_1 closest to tractable (via Turán) but Turán not in Mathlib.",
+      "f_case_k_eq_1 proved: non-neighbor clique argument. Pick vertex v, non-neighbors form clique by P(1). Edges from v (d) + edges from clique vertex w (k-1) = n-2, disjoint since v not adj w.",
+      "existsGraphWithPropertyP needs LinearOrder V for edgeCount (uses < on V). Added to existential."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,7 +74,7 @@
       "filename": "Erdos614Problem.lean",
       "lineCount": 270,
       "theoremCount": 5,
-      "axiomCount": 3,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
