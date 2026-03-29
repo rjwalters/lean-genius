@@ -81,9 +81,20 @@ theorem cantorSeq_rational_sum :
   rw [key, TriangularNumberReciprocals.tsum_reciprocals_triangular]
   norm_num
 
-/-- Cantor's sequence has rational shifted reciprocal sum -/
-axiom cantorSeq_shifted_rational :
-  ∃ q : ℚ, shiftedReciprocalSum (fun n => cantorSeq n + 1) = q
+/-- Cantor's sequence has rational shifted reciprocal sum.
+    Proof: shiftedReciprocalSum (fun n => cantorSeq n + 1)
+    = ∑' n, 1/((cantorSeq n + 1) - 1) = ∑' n, 1/(cantorSeq n)
+    = reciprocalSum cantorSeq, which is rational by cantorSeq_rational_sum. -/
+theorem cantorSeq_shifted_rational :
+    ∃ q : ℚ, shiftedReciprocalSum (fun n => cantorSeq n + 1) = q := by
+  obtain ⟨q, hq⟩ := cantorSeq_rational_sum
+  refine ⟨q, ?_⟩
+  -- The shifted sum with a+1 reduces to the original sum since (a+1)-1 = a in ℝ
+  have key : ∀ n, (1 : ℝ) / ((↑(cantorSeq n + 1) : ℝ) - 1) =
+      (1 : ℝ) / ↑(cantorSeq n) := by
+    intro n; congr 1; push_cast; ring
+  simp only [shiftedReciprocalSum, key]
+  exact hq
 
 /-
 ## Growth Rates
@@ -112,7 +123,10 @@ Erdős made two conjectures about the growth rate:
 2. aₙ^(1/2ⁿ) → 1 is necessary
 -/
 
-/-- Erdős's first conjecture: single exponential growth is achievable -/
+/-- Erdős's first conjecture: single exponential growth is achievable.
+    NOTE: This follows from kovac_tao_theorem — if a_n^{1/β^n} → ∞ for some β > 1,
+    then a_n^{1/n} → ∞ since a_n^{1/n} ≥ a_n^{1/β^n} for large n (when β^n ≥ n).
+    See Erdos265Aristotle.lean for the reduction. -/
 axiom erdos_265_singleExp_achievable :
   ∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
     hasBothRationalSums a ∧

@@ -220,4 +220,12 @@ theorem erdos_362_summary :
         C * 2^(A.card) / (A.card : ℝ)^2) := by
   exact ⟨sarkozy_szemeredi_1965, halasz_1977⟩
 
+/-- The number of subsets summing to any fixed target is at most 2^|A|. -/
+theorem subset_count_le_pow (A : Finset ℤ) (t : ℤ) :
+    countSubsetsWithSum A t ≤ 2 ^ A.card := by
+  unfold countSubsetsWithSum subsetsWithSum
+  calc (A.powerset.filter fun S => setSum S = t).card
+      ≤ A.powerset.card := Finset.card_filter_le _ _
+    _ = 2 ^ A.card := Finset.card_powerset A
+
 end Erdos362
