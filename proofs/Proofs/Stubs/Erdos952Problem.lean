@@ -360,7 +360,7 @@ A "moat" is a region around 0 containing no Gaussian primes beyond a certain nor
 
 -- The critical moat width (if it exists)
 noncomputable def criticalMoatWidth : ℕ :=
-  Nat.find (⟨0, fun x hx => hx.1 0⟩ : ∃ k, ¬ CanEscapeMoat k)
+  Nat.find ⟨0, not_canEscapeMoat_le_27 0 (Nat.zero_le 27)⟩
 
 -- If no walk exists for any k, the conjecture is false
 def StrongNegation : Prop := ∀ k, ¬ CanEscapeMoat k
@@ -379,8 +379,8 @@ noncomputable def gaussianPrimeCount (R : ℕ) : ℕ :=
       IsGaussianPrime z ∧ z.norm ≤ R ^ 2)).card
 
 -- Asymptotic: π_ℤ[i](x) ~ x / log(x)
--- Similar to rational prime counting function
-axiom gaussian_prime_theorem : ∀ ε > 0, ∃ N : ℕ,
+-- Similar to rational prime counting function (analytic number theory, not formalized here)
+def GaussianPrimeTheorem : Prop := ∀ ε > 0, ∃ N : ℕ,
   ∀ R ≥ N, |((gaussianPrimeCount R : ℝ) / R ^ 2) - 1 / Real.log R| < ε
 
 /-
@@ -501,9 +501,11 @@ def RationalPrimeMoat : Prop :=
 - Whether any bounded step size suffices
 - The critical moat width (if the answer is NO)
 
-**Axioms (2):**
+**Axioms (1):**
 - tsuchimura: computational verification (no walk ≤ √26)
-- gaussian_prime_theorem: asymptotic density (analytic number theory)
+
+**Stated (not axiomatized):**
+- GaussianPrimeTheorem: asymptotic density (analytic number theory, as Prop def)
 
 **Proved from Mathlib:**
 - Full Gaussian prime classification (both directions):
