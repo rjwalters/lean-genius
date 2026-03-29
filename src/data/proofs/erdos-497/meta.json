@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/497",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos497Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "Sperner theory",
       "Dedekind numbers"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 497,
     "erdosUrl": "https://erdosproblems.com/497",
@@ -123,21 +123,7 @@
       "What are the implications for counting monotone Boolean functions?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 51,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 3
-  },
+  "leanFile": "Proofs/Erdos497Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-1023",

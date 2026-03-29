@@ -7,7 +7,7 @@
     "author": "Dirac (1970), Brown (1992), Jensen (2002), Martinsson-Steiner (2025)",
     "sourceUrl": "https://erdosproblems.com/944",
     "date": "1970",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos944Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "critical-graphs",
       "vertex-critical"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 944,
     "erdosUrl": "https://erdosproblems.com/944",
@@ -122,17 +122,7 @@
       "Is there a structural characterization of when decoupling is possible?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [],
-    "namespace": "Erdos944",
-    "lineCount": 120,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
-  },
+  "leanFile": "Proofs/Erdos944Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-1032",

@@ -7,7 +7,7 @@
     "author": "Wintner (1944) initiated; Harper (2013+) recent progress",
     "sourceUrl": "https://erdosproblems.com/520",
     "date": "1944",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos520Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "random-multiplicative-functions",
       "law-of-iterated-logarithm"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 520,
     "erdosUrl": "https://erdosproblems.com/520",
@@ -151,25 +151,7 @@
       "How do the correlations from multiplicativity affect the limiting distribution?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "MeasureTheory",
-      "ProbabilityTheory",
-      "Nat",
-      "Real",
-      "Filter",
-      "Set",
-      "Finset"
-    ],
-    "namespace": "Erdos520",
-    "lineCount": 137,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 4
-  },
+  "leanFile": "Proofs/Erdos520Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-1138",

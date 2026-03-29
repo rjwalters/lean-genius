@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham",
     "sourceUrl": "https://erdosproblems.com/340",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos340Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "greedy-algorithms",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 340,
     "erdosUrl": "https://erdosproblems.com/340",
@@ -161,21 +161,5 @@
       "type": "book"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Order.Filter.AtTopBot",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Filter",
-      "Finset"
-    ],
-    "namespace": null,
-    "lineCount": 57,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 4
-  }
+  "leanFile": "Proofs/Erdos340Problem.lean"
 }

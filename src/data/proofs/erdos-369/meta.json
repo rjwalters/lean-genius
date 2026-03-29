@@ -5,7 +5,7 @@
   "description": "For ε > 0 and k ≥ 2, does {1,…,n} contain k consecutive n^ε-smooth integers for all large n? Open even for k=2. Balog-Wooley: infinitely many exist. OPEN.",
   "meta": {
     "erdosNumber": 369,
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "erdos",
       "number-theory",
@@ -16,7 +16,7 @@
       "Dickman-function",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosUrl": "https://erdosproblems.com/369",
     "sourceUrl": "https://erdosproblems.com/369",
@@ -212,22 +212,7 @@
       "Can the Dickman function heuristic be made rigorous via moment methods or the circle method adapted to smooth numbers?"
     ]
   },
-  "leanFile": {
-    "lineCount": 171,
-    "structureCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "lemmaCount": 0,
-    "defCount": 5,
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Tactic"
-    ],
-    "namespace": "Erdos369",
-    "opens": []
-  },
+  "leanFile": "Proofs/Erdos369Problem.lean",
   "references": [
     {
       "authors": "Erdős, Paul; Graham, Ronald L.",

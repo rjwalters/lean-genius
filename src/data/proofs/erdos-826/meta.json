@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (1974)",
     "sourceUrl": "https://erdosproblems.com/826",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos826Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "arithmetic-functions",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 826,
     "erdosUrl": "https://erdosproblems.com/826",
@@ -167,24 +167,7 @@
       "What is the relationship to the distribution of smooth numbers in short intervals?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.NumberTheory.ArithmeticFunction",
-      "Mathlib.Data.Nat.Defs",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Set.Infinite",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "ArithmeticFunction",
-      "Nat"
-    ],
-    "namespace": "Erdos826",
-    "lineCount": 320,
-    "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 10
-  },
+  "leanFile": "Proofs/Erdos826Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-122",

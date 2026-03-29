@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/10",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos10Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "powers of 2",
       "density"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 10,
     "erdosUrl": "https://erdosproblems.com/10",
@@ -187,21 +187,5 @@
       "note": "Conjectured k = 3 suffices for all odd integers > 1, with computational verification"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Tactic",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Topology.Algebra.InfiniteSum.Real",
-      "Mathlib.Order.Filter.AtTopBot.Group"
-    ],
-    "opens": [
-      "Set",
-      "Filter"
-    ],
-    "namespace": null,
-    "lineCount": 94,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 2
-  }
+  "leanFile": "Proofs/Erdos10Problem.lean"
 }

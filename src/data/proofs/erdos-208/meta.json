@@ -7,7 +7,7 @@
     "author": "Open problem; partial results by Filaseta-Trifonov (1992), Pandey (2024)",
     "sourceUrl": "https://erdosproblems.com/208",
     "date": "",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos208Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "gaps",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 208,
     "erdosUrl": "https://erdosproblems.com/208",
@@ -135,24 +135,7 @@
       "What about gaps in other sequences (powerful numbers, k-free numbers)?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Set",
-      "Filter",
-      "Real",
-      "Nat",
-      "Topology",
-      "Asymptotics"
-    ],
-    "namespace": "Erdos208",
-    "lineCount": 182,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 5
-  },
+  "leanFile": "Proofs/Erdos208Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-145",

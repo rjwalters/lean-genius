@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/856",
     "date": "1970",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos856Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "sunflower-conjecture",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 856,
     "erdosUrl": "https://erdosproblems.com/856",
@@ -136,27 +136,7 @@
       "Is there a polynomial-time algorithm to compute (or approximate) $f_k(N)$ for given $k$ and $N$?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Algebra.Order.BigOperators.Group.Finset"
-    ],
-    "opens": [
-      "Nat",
-      "Real",
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "Erdos856",
-    "lineCount": 267,
-    "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 10
-  },
+  "leanFile": "Proofs/Erdos856Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-855",
