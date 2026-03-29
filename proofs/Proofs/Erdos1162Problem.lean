@@ -13,7 +13,7 @@ A problem of Erdős and Turán.
 Known Results:
 - Pyber (1993): log f(n) ≍ n² (exact order of magnitude) [DERIVED from RDT]
 - Roney-Dougal-Tracey (2025): log f(n) = (1/16 + o(1))n² (asymptotic formula) [AXIOM]
-Axioms: 10 (all correct — numSubgroups is opaque so downstream facts must be axiomatized)
+Axioms: 7 (numSubgroups defined, numSubgroups_pos proved, trivial_upper proved)
 Sorries: 0
 
 The key insight is that most subgroups of S_n arise from subgroups of S_n
@@ -30,11 +30,16 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.GroupTheory.Perm.Basic
 import Mathlib.GroupTheory.Subgroup.Basic
+import Mathlib.GroupTheory.Subgroup.Finite
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
+import Mathlib.Data.Fintype.Card
+import Mathlib.Data.Finset.Powerset
 
 open Real Filter
+
+noncomputable section
 
 namespace Erdos1162
 
@@ -43,21 +48,56 @@ namespace Erdos1162
 /-- The symmetric group S_n, realized as permutations of Fin n. -/
 def Sn (n : ℕ) := Equiv.Perm (Fin n)
 
-/-- f(n) = the number of subgroups of S_n.
-    Axiomatized since Lean's Subgroup type is not Fintype for Equiv.Perm (Fin n)
-    in general, and the enumeration is computationally intractable. -/
-axiom numSubgroups (n : ℕ) : ℕ
+/-- The type of subgroups of a finite group is Finite, since subgroups inject
+    into Finset G via their carrier filtered from Finset.univ. -/
+instance instFiniteSubgroupPerm (n : ℕ) : Finite (Subgroup (Equiv.Perm (Fin n))) := by
+  classical
+  apply Finite.of_injective
+    (fun H : Subgroup (Equiv.Perm (Fin n)) => Finset.univ.filter (· ∈ H))
+  intro H₁ H₂ heq
+  ext x
+  have : x ∈ Finset.univ.filter (· ∈ H₁) ↔ x ∈ Finset.univ.filter (· ∈ H₂) := by rw [heq]
+  simpa using this
 
-/-- f(n) ≥ 1 since the trivial subgroup always exists. -/
-axiom numSubgroups_pos (n : ℕ) : numSubgroups n ≥ 1
+/-- f(n) = the number of subgroups of S_n.
+    Defined as the cardinality of the type of all subgroups of S_n. -/
+def numSubgroups (n : ℕ) : ℕ :=
+  @Fintype.card (Subgroup (Equiv.Perm (Fin n))) (Fintype.ofFinite _)
+
+/-- f(n) ≥ 1 since the trivial subgroup ⊥ always exists. -/
+theorem numSubgroups_pos (n : ℕ) : numSubgroups n ≥ 1 := by
+  unfold numSubgroups
+  exact Fintype.card_pos
 
 /- ## Part II: Trivial Bounds -/
 
 /-- **Trivial Upper Bound:**
     f(n) ≤ 2^(n!) since each subgroup is a subset of S_n.
-    Axiomatized since numSubgroups is opaque. -/
-axiom trivial_upper (n : ℕ) :
-    (numSubgroups n : ℝ) ≤ 2 ^ (n.factorial : ℝ)
+    Proved: subgroups inject into Finset G via carrier.toFinset,
+    and |Finset G| = 2^|G| = 2^(n!). -/
+theorem trivial_upper (n : ℕ) :
+    (numSubgroups n : ℝ) ≤ 2 ^ (n.factorial : ℝ) := by
+  unfold numSubgroups
+  suffices h : @Fintype.card (Subgroup (Equiv.Perm (Fin n))) (Fintype.ofFinite _) ≤ 2 ^ n.factorial by
+    have h2 : (@Fintype.card (Subgroup (Equiv.Perm (Fin n))) (Fintype.ofFinite _) : ℝ) ≤
+        (2 ^ n.factorial : ℝ) := by exact_mod_cast h
+    convert h2 using 1
+    push_cast
+    ring
+  -- Inject subgroups into Finset G via Finset.univ.filter
+  have hinj : Function.Injective (fun H : Subgroup (Equiv.Perm (Fin n)) =>
+      @Set.toFinset _ (H : Set (Equiv.Perm (Fin n))) (inferInstance)) := by
+    intro H₁ H₂ heq
+    ext x
+    have : x ∈ @Set.toFinset _ (H₁ : Set _) (inferInstance) ↔
+           x ∈ @Set.toFinset _ (H₂ : Set _) (inferInstance) := by rw [heq]
+    simp only [Set.mem_toFinset] at this
+    exact this
+  calc @Fintype.card (Subgroup (Equiv.Perm (Fin n))) (Fintype.ofFinite _)
+      ≤ @Fintype.card (Finset (Equiv.Perm (Fin n))) inferInstance :=
+        Fintype.card_le_of_injective _ hinj
+    _ = 2 ^ Fintype.card (Equiv.Perm (Fin n)) := Fintype.card_finset
+    _ = 2 ^ n.factorial := by rw [Fintype.card_perm]
 
 /-- **Lower Bound from Elementary Abelian 2-Groups:**
     S_n contains (Z/2Z)^⌊n/2⌋ as a subgroup (transpositions on disjoint pairs).
@@ -87,7 +127,6 @@ theorem rdt_implies_pyber :
       c₁ * (n : ℝ)^2 ≤ Real.log (numSubgroups n : ℝ) ∧
       Real.log (numSubgroups n : ℝ) ≤ c₂ * (n : ℝ)^2 := by
   intro h
-  -- Witness: c₁ = 1/32, c₂ = 3/32 (from ε = 1/32 around L = 1/16)
   refine ⟨1 / 32, 3 / 32, by norm_num, by norm_num, ?_⟩
   rw [Metric.tendsto_nhds] at h
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (h (1 / 32) (by norm_num))
@@ -95,11 +134,8 @@ theorem rdt_implies_pyber :
     have hd := hN n hn
     rw [Real.dist_eq] at hd
     have hab := abs_lt.mp hd
-    -- hab.1 : -(1/32) < f(n) - 1/16  ⟹  f(n) > 1/32
-    -- hab.2 : f(n) - 1/16 < 1/32     ⟹  f(n) < 3/32
     have h_lo : Real.log (numSubgroups n : ℝ) / (n : ℝ) ^ 2 > 1 / 32 := by linarith [hab.1]
     have h_hi : Real.log (numSubgroups n : ℝ) / (n : ℝ) ^ 2 < 3 / 32 := by linarith [hab.2]
-    -- f(n)/n² > 0 forces n² > 0 (since f(0)/0 = 0 < 1/32)
     have hn2 : (0 : ℝ) < (n : ℝ) ^ 2 := by
       by_contra hle; push_neg at hle
       have := le_antisymm hle (sq_nonneg _)
