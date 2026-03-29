@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 key supporting theorems (qBinomial_eq_zero, qBinomial_eval_one, qNumber_add_shift, qBinomial_factorial). The quotient formula is the key mathematical achievement. 1 sorry remains (qKummer theorem) — needs cyclotomic factorization of qFactorial.",
+    "progressSummary": "PROGRESS: 6 proved lemmas (qBinomial_eq_zero, qBinomial_eval_one, qNumber_add_shift, qBinomial_factorial, div_add_div_le, floorDeficiency_add_eq). 1 sorry (qKummer). Key gap: qFactorial_cyclotomic (product reindexing via Finset.prod_comm).",
     "builtItems": [
       "def qNumber: q-analog of natural numbers as polynomial in Z[X]",
       "def qFactorial: q-analog of factorial",
@@ -41,7 +41,9 @@
       "theorem qBinomial_eq_zero: qBinomial vanishes when k > n",
       "theorem qBinomial_eval_one: eval at q=1 gives ordinary binomial C(n,k)",
       "theorem qNumber_add_shift: [a]_q + q^a*[m]_q = [a+m]_q (partition identity)",
-      "theorem qBinomial_factorial: quotient formula [n choose k]_q * [k]_q! * [n-k]_q! = [n]_q!"
+      "theorem qBinomial_factorial: quotient formula [n choose k]_q * [k]_q! * [n-k]_q! = [n]_q!",
+      "lemma div_add_div_le: subadditivity of floor division a/d + b/d ≤ (a+b)/d",
+      "theorem floorDeficiency_add_eq: fd(n,k,d) + k/d + (n-k)/d = n/d"
     ],
     "insights": [
       "q-binomial coefficients (Gaussian binomials) not in Mathlib — defined from scratch",
@@ -52,7 +54,9 @@
       "qNumber_eval_one and qFactorial_eval_one verify the q-analog property",
       "Quotient formula proved by induction using qNumber_add_shift to combine terms",
       "linear_combination tactic handles the key algebraic step: factoring out qFactorial n",
-      "qKummer requires cyclotomic factorization of qFactorial (product reindexing) + cancellation in UFD"
+      "qKummer requires cyclotomic factorization of qFactorial (product reindexing) + cancellation in UFD",
+      "qKummer proof requires: (1) qFactorial_cyclotomic via Finset.prod_comm, (2) product range extension, (3) UFD cancellation",
+      "floorDeficiency_add_eq + quotient formula are the two key ingredients; cyclotomic factorization is the remaining gap"
     ],
     "mathlibGaps": [
       "No q-binomial coefficients in Mathlib",
