@@ -308,6 +308,22 @@ theorem generalGap_ge_diff (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < numDi
   have h := pairwise_lt_getD_ge_diff (divisorList_pairwise_lt n) hij (by omega)
   omega
 
+/-- Each all-pairs term is bounded by the corresponding consecutive term:
+    1/(d_j - d_i) ≤ 1/(d_{i+1} - d_i) for i < j < τ(n).
+    Key structural inequality: since general gaps are at least as large as
+    the first consecutive gap in the chain, 1/(larger gap) ≤ 1/(smaller gap). -/
+theorem allPairs_term_le_consecutive_term (n i j : ℕ) (hn : n > 1)
+    (hij : i < j) (hj : j < numDivisors n) :
+    (1 : ℝ) / (generalGap n i j : ℝ) ≤ 1 / (consecutiveGap n i : ℝ) := by
+  have hi1 : i + 1 < numDivisors n := by omega
+  have hcpos : (0 : ℝ) < (consecutiveGap n i : ℝ) :=
+    Nat.cast_pos.mpr (consecutiveGap_pos n i hn hi1)
+  have hgpos : (0 : ℝ) < (generalGap n i j : ℝ) :=
+    Nat.cast_pos.mpr (generalGap_pos n i j hn hij hj)
+  rw [div_le_div_iff hgpos hcpos]
+  simp only [one_mul]
+  exact_mod_cast gap_lower_bound n i j hij hj
+
 /- ## Connections -/
 
 /-- The harmonic sum over divisors: σ_{-1}(n) = Σ_{d|n} 1/d. -/
