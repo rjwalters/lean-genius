@@ -37,13 +37,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 3 axioms (25→22). Proved freeMixedMoments (trivial), semicircle_cumulant_one (from freeCumulant_one + semicircle_mean), semicircle_cumulant_two (from freeCumulant_two + moments). Remaining 22 axioms are foundational free probability (not in Mathlib).",
+    "progressSummary": "AXIOM HUNT: Eliminated 1 axiom (13→12). Proved integral_ofReal_eq_ofReal_integral via Complex.ofRealCLM.integral_comp_comm. Remaining 12 axioms are deep analysis/probability results not in Mathlib.",
     "builtItems": [
       "proofs/Proofs/CentralLimitTheoremOQ04.lean (648 lines, builds clean)",
       "src/data/proofs/central-limit-theorem-oq-04/ (gallery entry: meta.json, index.ts, annotations.json)",
       "freeMixedMoments: PROVED (was axiom) — trivial, 1 line",
       "semicircle_cumulant_one: PROVED (was axiom) — from freeCumulant_one + semicircle_mean",
-      "semicircle_cumulant_two: PROVED (was axiom) — from freeCumulant_two + moments + norm_num"
+      "semicircle_cumulant_two: PROVED (was axiom) — from freeCumulant_two + moments + norm_num",
+      "Proved integral_ofReal_eq_ofReal_integral via ofRealCLM.integral_comp_comm (CentralLimitTheorem.lean:148)"
     ],
     "insights": [
       "The semicircle R-transform R_w(z) = z is the simplest possible — only κ₂=1 nonzero, just like the Gaussian",
@@ -53,7 +54,9 @@
       "Free probability not in Mathlib — all core objects axiomatized, structural theorems proved from axioms",
       "freeMixedMoments axiom was trivial: conclusion f(a,b)=f(a,b) is tautological",
       "semicircle_cumulant_one/two derivable from freeCumulant_one/two + semicircle moment theorems",
-      "semicircle_fixed_point potentially provable via moment_cumulant_bijection but requires κ₀ handling"
+      "semicircle_fixed_point potentially provable via moment_cumulant_bijection but requires κ₀ handling",
+      "integral_ofReal_eq_ofReal_integral is provable via Complex.ofRealCLM.integral_comp_comm — the key is that ofReal is a ContinuousLinearMap from ℝ to ℂ",
+      "Remaining 12 axioms: stdGaussian (2), gaussian_fourier_identity, charFun_deriv_interchange, charFun_taylor_remainder, charFun_normalized_sum_limit, measureWeakTopology, levy_continuity, clt_general_case, renormalization_measure, gaussian_fixed_point, gaussian_attractor — all deep or structural"
     ],
     "mathlibGaps": [
       "No free probability theory in Mathlib (non-commutative probability spaces, free convolution, R-transforms)",
@@ -91,16 +94,16 @@
     "mathlib": []
   },
   "started": "2026-03-23T00:42:35.519Z",
-  "lastUpdate": "2026-03-24T12:00:00Z",
+  "lastUpdate": "2026-03-29T11:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/CentralLimitTheorem.lean",
       "filename": "CentralLimitTheorem.lean",
-      "lineCount": 619,
-      "theoremCount": 15,
-      "axiomCount": 13,
+      "lineCount": 620,
+      "theoremCount": 16,
+      "axiomCount": 12,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
