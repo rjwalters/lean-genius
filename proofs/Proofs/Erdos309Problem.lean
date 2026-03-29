@@ -104,7 +104,9 @@ The denominator range has N elements.
 -/
 theorem denominatorRange_card (N : ℕ) (hN : N ≥ 1) :
     (denominatorRange N).card = N := by
-  sorry
+  simp only [denominatorRange]
+  rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega))),
+      Finset.card_range, Finset.card_singleton]
 
 /-
 ## Part III: Representable Integers
@@ -280,8 +282,7 @@ With denominators {1, 2, 3, 4, 5, 6}, representable integers are:
 0 = (empty), 1 = 1, 2 = 1 + 1/2 + 1/3 + 1/6
 H_6 = 1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 = 49/20 = 2.45
 -/
-example : harmonicNumber 6 = 49 / 20 := by
-  sorry
+example : harmonicNumber 6 = 49 / 20 := by native_decide
 
 /--
 **Egyptian Fraction Representation:**

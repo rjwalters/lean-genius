@@ -301,12 +301,23 @@ def oeis_A331372 : ℕ → ℤ
 /-- The denominators form A000051 shifted: 2^n - 3. -/
 theorem denom_sequence (n : ℕ) (hn : n ≥ 1) :
     oeis_A331372 n = 2^n - 3 := by
-  sorry
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp [oeis_A331372]
 
 /-- Denominators grow exponentially. -/
 theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
     (oeis_A331372 n : ℝ) > 2^(n-1) := by
-  sorry
+  have hd := denom_sequence n (by omega)
+  simp only [hd]; push_cast
+  -- Goal: (2:ℝ)^n - 3 > (2:ℝ)^(n-1)
+  -- 2^n = 2 * 2^(n-1), so need 2^(n-1) - 3 > 0, i.e., 2^(n-1) > 3
+  have hpow : (2 : ℝ) ^ n = 2 * (2 : ℝ) ^ (n - 1) := by
+    rw [← pow_succ]; congr 1; omega
+  have hge : (2 : ℝ) ^ (n - 1) ≥ 4 := by
+    calc (2 : ℝ) ^ (n - 1) ≥ (2 : ℝ) ^ 2 :=
+          pow_le_pow_right (by norm_num) (by omega)
+      _ = 4 := by norm_num
+  linarith
 
 /-!
 ## Part X: Main Results

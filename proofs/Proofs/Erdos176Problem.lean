@@ -178,8 +178,12 @@ theorem spencer_power_of_two (t : ℕ) :
   have hk : 2^t > 0 := Nat.pos_pow_of_pos t (by norm_num)
   have := spencer_1973 (2^t) hk
   simp only at this
-  -- The factorization of 2^t at 2 is t
-  sorry
+  -- The 2-adic valuation of 2^t is t
+  have h_fact : (2 ^ t).factorization 2 = t := by
+    rw [Nat.factorization_pow, Finsupp.smul_apply, smul_eq_mul]
+    simp [Nat.Prime.factorization_self, Nat.prime_two]
+  rw [h_fact] at this
+  exact this
 
 /-
 ## Part VI: Erdős's Lower Bound (1963)
