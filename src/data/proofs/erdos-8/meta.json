@@ -44,7 +44,7 @@
       "Connection to Problem #2 documented"
     ],
     "dateAdded": "2025-01-14",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 237,
     "prerequisites": [
       "Covering systems and congruence classes",
@@ -52,7 +52,7 @@
       "Chinese Remainder Theorem",
       "Modular arithmetic"
     ],
-    "assumptions": "5 axioms: hough_minimum_modulus, balister_improved_bound, erdos_8_resolution, and 2 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: hough_minimum_modulus, erdos_8_resolution, density_conjecture_false, bottleneck_counterexample. balister_improved_bound proved from hough_minimum_modulus.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -161,8 +161,8 @@
     ],
     "namespace": "Erdos8",
     "lineCount": 237,
-    "axiomCount": 5,
-    "theoremCount": 2,
+    "axiomCount": 4,
+    "theoremCount": 3,
     "definitionCount": 15
   },
   "crossReferences": [
