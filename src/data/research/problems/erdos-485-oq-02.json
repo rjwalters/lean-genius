@@ -1,0 +1,81 @@
+{
+  "slug": "erdos-485-oq-02",
+  "title": "Is there a combinatorial (non-algebraic) proof of f(k) → ∞, e",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T05:28:39-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Converted 7 sorry theorems to appropriate axioms (deep published results). 0 sorries, 9 axioms, 3 proved theorems.",
+    "builtItems": [
+      "Converted 7 sorries to axioms (Erdős 1949, Schinzel 1987, Schinzel-Zannier 2009, etc.)"
+    ],
+    "insights": [
+      "All 7 sorries were deep published results — appropriate as axioms"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-485-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-48",
+    "erdos-485",
+    "erdos-485-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T12:35:42.849Z",
+  "lastUpdate": "2026-03-29T12:35:42.861Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos485OQ01.lean",
+      "filename": "Erdos485OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos485Problem.lean",
+      "filename": "Erdos485Problem.lean",
+      "lineCount": 281,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485Problem.lean"
+    }
+  ]
+}
