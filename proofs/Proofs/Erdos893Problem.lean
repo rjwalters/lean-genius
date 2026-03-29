@@ -73,6 +73,16 @@ theorem tau_prime_eq_two {p : ℕ} (hp : Nat.Prime p) : tau p = 2 := by
 theorem tau_pos {n : ℕ} (hn : 0 < n) : 0 < tau n :=
   Finset.card_pos.mpr ⟨1, Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩⟩
 
+/-- For n ≥ 2, τ(n) ≥ 2: 1 and n are distinct divisors. -/
+theorem tau_ge_two {n : ℕ} (hn : 2 ≤ n) : 2 ≤ tau n := by
+  simp only [tau]
+  have h1 : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_mem : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have : 1 < n.divisors.card := by
+    rw [Finset.one_lt_card]
+    exact ⟨1, h1, n, hn_mem, by omega⟩
+  omega
+
 /-
 ## Part III: The Cumulative Sum f(n)
 -/
@@ -148,6 +158,51 @@ theorem f_ge (n : ℕ) : n ≤ f n := by
           calc 2 = 2 ^ 1 := by norm_num
             _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk1
         exact tau_pos (by omega)
+
+/-- f(n) ≥ 2n - 1 for n ≥ 1: stronger bound using τ(2^k - 1) ≥ 2 for k ≥ 2. -/
+theorem f_lower_bound {n : ℕ} (hn : 1 ≤ n) : 2 * n - 1 ≤ f n := by
+  induction n with
+  | zero => omega
+  | succ m ih =>
+    cases m with
+    | zero => have := f_one; omega
+    | succ k =>
+      have hf := f_succ (k + 1)
+      have ih' : 2 * (k + 1) - 1 ≤ f (k + 1) := ih (by omega)
+      have hpow : 4 ≤ 2 ^ (k + 2) := by
+        calc (4 : ℕ) = 2 ^ 2 := by norm_num
+          _ ≤ 2 ^ (k + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+      have htau : 2 ≤ tau (2 ^ (k + 2) - 1) := tau_ge_two (by omega)
+      omega
+
+/-- f(2n) splits into f(n) plus the contribution from k ∈ [n+1, 2n]. -/
+theorem f_decomp (n : ℕ) :
+    f (2 * n) = f n + ∑ k ∈ Finset.Icc (n + 1) (2 * n), tau (2 ^ k - 1) := by
+  simp only [f]
+  have hsplit : Finset.Icc 1 (2 * n) = Finset.Icc 1 n ∪ Finset.Icc (n + 1) (2 * n) := by
+    ext x; simp only [Finset.mem_Icc, Finset.mem_union]; omega
+  have hdisj : Disjoint (Finset.Icc 1 n) (Finset.Icc (n + 1) (2 * n)) := by
+    simp only [Finset.disjoint_left, Finset.mem_Icc]
+    intro x ⟨_, hx⟩ ⟨hx', _⟩; omega
+  rw [hsplit, Finset.sum_union hdisj]
+
+/-- The extra terms in f(2n) beyond f(n) sum to at least 2n (for n ≥ 1). -/
+theorem f_gap_lower_bound {n : ℕ} (hn : 1 ≤ n) :
+    2 * n ≤ ∑ k ∈ Finset.Icc (n + 1) (2 * n), tau (2 ^ k - 1) := by
+  have hcard : (Finset.Icc (n + 1) (2 * n)).card = n := by
+    rw [Finset.card_Icc]; omega
+  calc 2 * n
+      = ∑ _ ∈ Finset.Icc (n + 1) (2 * n), 2 := by
+        rw [Finset.sum_const, hcard, smul_eq_mul]; ring
+    _ ≤ ∑ k ∈ Finset.Icc (n + 1) (2 * n), tau (2 ^ k - 1) := by
+        apply Finset.sum_le_sum
+        intro k hk
+        simp only [Finset.mem_Icc] at hk
+        apply tau_ge_two
+        have : 4 ≤ 2 ^ k := by
+          calc (4 : ℕ) = 2 ^ 2 := by norm_num
+            _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+        omega
 
 /-
 ## Part V: The Ratio f(2n)/f(n)
