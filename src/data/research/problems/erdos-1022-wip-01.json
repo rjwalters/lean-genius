@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended from 213 to 321 lines. Added element degree infrastructure, Lovász theorem (c(2)=1 axiom), union sparsity, Erdős first-moment bound (axiom), and 7 proved theorems. Total: 3 axioms, 22 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Added 3 proved lemmas + Aristotle companion with 11 sorries. Key target: isSparse_of_maxDeg_le (double counting). File: ~340 lines, 0 sorries, 3 axioms.",
     "builtItems": [
       "isSparse_mono: sparsity monotone in c (Erdos1022Problem.lean)",
       "isSparse_subset: subfamilies inherit sparsity (Erdos1022Problem.lean)",
@@ -49,7 +49,11 @@
       "isSparse_union: union sparsity is additive (Erdos1022Problem.lean)",
       "allSizeAtLeast_union: min-size preserved under union (Erdos1022Problem.lean)",
       "erdos_first_moment_bound: axiom for 2^{t-1} bound (Erdos1022Problem.lean)",
-      "hasPropertyB_card_le_one: families with ≤1 member have Property B (Erdos1022Problem.lean)"
+      "hasPropertyB_card_le_one: families with ≤1 member have Property B (Erdos1022Problem.lean)",
+      "degree_pos_of_mem: element in a family member has positive degree",
+      "degree_le_card: degree bounded by family size",
+      "sparse_global_bound: c-sparse implies |F| ≤ c·|universe|",
+      "Created Erdos1022Aristotle.lean companion with 11 sorries: powerset, filter, sparsity double-counting, 2^t bounds"
     ],
     "insights": [
       "Property B infrastructure well-suited for Finset-based formalization",

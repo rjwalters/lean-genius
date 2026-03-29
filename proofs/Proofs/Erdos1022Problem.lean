@@ -235,6 +235,21 @@ theorem degree_eq_zero_of_not_mem {F : Finset (Finset α)} {a : α}
   simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false, not_and]
   exact ha f
 
+/-- If a ∈ f ∈ F, then the degree of a is at least 1. -/
+theorem degree_pos_of_mem {F : Finset (Finset α)} {f : Finset α} {a : α}
+    (hf : f ∈ F) (ha : a ∈ f) : 0 < degree F a :=
+  Finset.card_pos.mpr ⟨f, Finset.mem_filter.mpr ⟨hf, ha⟩⟩
+
+/-- The degree of any element is bounded by |F|. -/
+theorem degree_le_card (F : Finset (Finset α)) (a : α) :
+    degree F a ≤ F.card :=
+  Finset.card_filter_le F _
+
+/-- If F is c-sparse with sets of size ≥ 1, then F.card ≤ c · |Finset.univ|. -/
+theorem sparse_global_bound [Fintype α] (F : Finset (Finset α)) (c : ℕ)
+    (hsp : IsSparse F c) : F.card ≤ c * Fintype.card α :=
+  sparse_family_size_bound F c hsp Finset.univ (fun _ _ => Finset.subset_univ _)
+
 -- ══════════════════════════════════════════════════════════════════
 -- § 10: Lovász Theorem (c(2) = 1)
 -- ══════════════════════════════════════════════════════════════════
