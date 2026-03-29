@@ -197,6 +197,36 @@ theorem uniqueProductCount_singletons (a b : ℕ) :
   simp [Finset.product_singleton_right, Finset.product_singleton_left,
         Finset.filter_singleton, Finset.image_singleton]
 
+/-- F({a}, B) = |B| for a ≥ 1: the map b ↦ ab is injective, so each product
+    has exactly one representation, making all products unique. -/
+theorem uniqueProductCount_singleton_left (a : ℕ) (B : Finset ℕ) (ha : 0 < a) :
+    uniqueProductCount {a} B = B.card := by
+  unfold uniqueProductCount reprCount
+  -- Image = B.image (a * ·) which has |B| elements by injectivity of (a * ·)
+  have h_img : ({a} ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2) = B.image (a * ·) := by
+    ext m; simp only [Finset.mem_image, Finset.mem_product, Finset.mem_singleton, Prod.exists]
+    constructor
+    · rintro ⟨x, y, ⟨rfl, hy⟩, hxy⟩; exact ⟨y, hy, hxy⟩
+    · rintro ⟨y, hy, rfl⟩; exact ⟨a, y, ⟨rfl, hy⟩, rfl⟩
+  -- Each product has reprCount = 1 (unique factorization since a > 0)
+  have h_repr : ∀ m ∈ B.image (a * ·),
+      (({a} ×ˢ B).filter (fun p => p.1 * p.2 = m)).card = 1 := by
+    intro m hm
+    obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hm
+    suffices ({a} ×ˢ B).filter (fun p => p.1 * p.2 = a * b) = {(a, b)} by rw [this]; simp
+    ext ⟨x, y⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨rfl, hy⟩, hxy⟩; exact ⟨rfl, Nat.eq_of_mul_eq_left ha hxy⟩
+    · rintro ⟨rfl, rfl⟩; exact ⟨⟨rfl, hb⟩, rfl⟩
+  rw [h_img, Finset.filter_true_of_mem h_repr,
+      Finset.card_image_of_injective B (fun _ _ h => Nat.eq_of_mul_eq_left ha h)]
+
+/-- F(A, {b}) = |A| for b ≥ 1, by commutativity. -/
+theorem uniqueProductCount_singleton_right (A : Finset ℕ) (b : ℕ) (hb : 0 < b) :
+    uniqueProductCount A {b} = A.card := by
+  rw [uniqueProductCount_comm]; exact uniqueProductCount_singleton_left b A hb
+
 /-- maxUniqueProducts N ≥ 1 for N ≥ 1: singleton subsets {1}×{1} give F = 1. -/
 theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
     1 ≤ maxUniqueProducts N := by

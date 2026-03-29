@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T11:22:53.229Z",
-    "iteration": 3,
-    "focus": "Proved linear lower bound maxF >= N and supporting singleton counting",
+    "iteration": 4,
+    "focus": "Generalized singleton counting to arbitrary sets",
     "blockers": [],
     "nextAction": "Generalize singleton counting, prove repr count bounds",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 15T (was 11), 1A, 0S. Added uniqueProductCount_range_one, maxUniqueProducts_ge_range (N <= max F), 2 helper lemmas.",
+    "progressSummary": "PROGRESS: 17T (was 15), 1A, 0S. Added singleton counting theorems and linear lower bound.",
     "builtItems": [
       "reprCount_comm: reprCount A B m = reprCount B A m (via Finset.card_bij)",
       "uniqueProductCount_comm: PROVED (was axiom) F(A,B) = F(B,A)",
@@ -42,7 +42,9 @@
       "uniqueProductCount_singletons: F({a},{b}) = 1",
       "maxUniqueProducts_pos: maxUniqueProducts N >= 1 for N >= 1",
       "uniqueProductCount_range_one: F(Icc 1 N, {1}) = N (all products a*1=a are unique)",
-      "maxUniqueProducts_ge_range: maxUniqueProducts N >= N for N >= 1"
+      "maxUniqueProducts_ge_range: maxUniqueProducts N >= N for N >= 1",
+      "uniqueProductCount_singleton_left: F({a}, B) = |B| for a >= 1 (injective mul)",
+      "uniqueProductCount_singleton_right: F(A, {b}) = |A| for b >= 1 (by commutativity)"
     ],
     "insights": [
       "uniqueProductCount_comm proved by showing reprCount is symmetric (Finset.card_bij with swap) then image sets are equal (mul_comm)",
@@ -59,7 +61,8 @@
       "reprCount = 0 when product not in A\u00b7B (clean characterization)",
       "F(A, {1}) = |A| since a*1=a is injective and each product has reprCount=1",
       "Linear lower bound maxF >= N is tight: van Doorn says true order is ~N^2/log N",
-      "Proof technique: show filter = {(m,1)} for each m, then filter_true_of_mem"
+      "Proof technique: show filter = {(m,1)} for each m, then filter_true_of_mem",
+      "Nat.eq_of_mul_eq_left is the key Mathlib lemma for cancellation in singleton proofs"
     ],
     "mathlibGaps": [],
     "nextSteps": [
