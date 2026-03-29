@@ -220,14 +220,15 @@ theorem gap_deviation_connection :
 
 /- ## Part VIII: Examples -/
 
-/-- Example: Computing f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
-                           = min(5+5, 7+3, 11+3) = min(10, 10, 14) = 10.
-    2*p_3 = 2*5 = 10, so deviation(3) = 0. -/
-theorem example_f_3 : f 3 = 10 := by
+/-- Example: Computing f(3) with 0-indexed primes (p_0=2, p_1=3, p_2=5, p_3=7):
+    f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
+         = min(7+7, 11+5, 13+3) = min(14, 16, 16) = 14.
+    2*p_3 = 2*7 = 14, so deviation(3) = 0. -/
+theorem example_f_3 : f 3 = 14 := by
   sorry
 
-/-- Example: 2*p_3 = 10 -/
-theorem example_twice_p3 : 2 * nthPrime 3 = 10 := by
+/-- Example: 2*p_3 = 14 (0-indexed: p_3 = 7) -/
+theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
   simp [nthPrime]
   native_decide
 
