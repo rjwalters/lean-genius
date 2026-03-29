@@ -100,11 +100,22 @@ axiom els_upper_bound :
     NoSmallPrimeFactors n k → deficiency n k ≥ 1 →
     (n : ℝ) ≤ C * 2 ^ k * Real.sqrt k
 
-/-- At least 58 examples with deficiency 1 are known for n ≤ 10⁵. -/
-axiom many_deficiency_one_examples :
-  58 ≤ Finset.card (Finset.filter
-    (fun p : ℕ × ℕ => 2 * p.1 ≤ p.2 ∧ deficiency p.2 p.1 = 1)
-    (Finset.range 100 ×ˢ Finset.range 100001))
+/-- Additional verified deficiency-1 examples spanning k = 4..19.
+    These replace the former axiom claiming ≥ 58 such examples for n ≤ 10⁵.
+    Each is individually verified by native_decide. -/
+theorem deficiency_14_4 : deficiency 14 4 = 1 := by native_decide
+theorem deficiency_23_5 : deficiency 23 5 = 1 := by native_decide
+theorem deficiency_62_6 : deficiency 62 6 = 1 := by native_decide
+theorem deficiency_143_7 : deficiency 143 7 = 1 := by native_decide
+theorem deficiency_89_8 : deficiency 89 8 = 1 := by native_decide
+theorem deficiency_319_9 : deficiency 319 9 = 1 := by native_decide
+theorem deficiency_94_10 : deficiency 94 10 = 1 := by native_decide
+theorem deficiency_1391_11 : deficiency 1391 11 = 1 := by native_decide
+theorem deficiency_188_12 : deficiency 188 12 = 1 := by native_decide
+theorem deficiency_719_14 : deficiency 719 14 = 1 := by native_decide
+theorem deficiency_719_15 : deficiency 719 15 = 1 := by native_decide
+theorem deficiency_566_16 : deficiency 566 16 = 1 := by native_decide
+theorem deficiency_2099_19 : deficiency 2099 19 = 1 := by native_decide
 
 /-
 ## Section VI: Structural Properties
