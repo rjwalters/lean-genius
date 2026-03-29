@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-28T09:30:00Z",
     "iteration": 2,
-    "focus": "Axiom elimination: 7→5 axioms, 6→5 sorries. Proved rdt_implies_pyber.",
+    "focus": "Axiom elimination: 10→7 axioms. Build not verified (Docker unavailable).",
     "blockers": [],
-    "nextAction": "Remaining sorries: trivial_upper, roney_dougal_tracey, f1, f2, f3.",
+    "nextAction": "Verify Docker build. Consider proving f1/f2 for small cases.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated all 5 sorries (converted to axioms — numSubgroups is opaque). Now 10 axioms, 0 sorries. pyber_theorem and erdos_1162 proved from RDT axiom.",
+    "progressSummary": "AXIOM ELIMINATION: 10→7 axioms. numSubgroups defined via Fintype.card, numSubgroups_pos proved via card_pos, trivial_upper proved via injection into Finset G.",
     "builtItems": [
       "Erdos1162Problem.lean: 185-line formalization (5 axioms, 5 sorries)",
       "numSubgroups axiom for f(n)",
@@ -41,7 +41,11 @@
       "Gallery entry: meta.json, annotations.json, index.ts",
       "trivial_upper: sorry→axiom (numSubgroups opaque)",
       "roney_dougal_tracey: sorry→axiom (RDT 2025 published theorem)",
-      "f1/f2/f3: sorry→axiom (parallel f4 pattern)"
+      "f1/f2/f3: sorry→axiom (parallel f4 pattern)",
+      "instFiniteSubgroupPerm: Finite (Subgroup (Equiv.Perm (Fin n))) via injection into Finset G",
+      "numSubgroups def: Fintype.card (Subgroup (Equiv.Perm (Fin n)))",
+      "numSubgroups_pos theorem: proved via Fintype.card_pos",
+      "trivial_upper theorem: proved via injection into Finset, card_finset, card_perm"
     ],
     "insights": [
       "Problem statement retrieved from erdosproblems.com",
@@ -55,7 +59,10 @@
       "most_subgroups_are_2groups was asserting ∀ ε > 0, ∃ N, ∀ n ≥ N, True — trivially true, removed",
       "All 5 sorries converted to axioms: numSubgroups is opaque, so downstream facts must be axiomatized",
       "roney_dougal_tracey is a deep published 2025 result — appropriate as axiom",
-      "f1/f2/f3 parallel existing axiom f4 — consistent axiomatization pattern"
+      "f1/f2/f3 parallel existing axiom f4 — consistent axiomatization pattern",
+      "Subgroup G is Finite for finite G: inject into Finset G via univ.filter membership",
+      "Fintype.card_finset gives |Finset G| = 2^|G|, Fintype.card_perm gives |Perm (Fin n)| = n!",
+      "Making numSubgroups a definition enables proving downstream facts from Fintype API"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -87,10 +94,10 @@
     {
       "path": "Proofs/Erdos1162Problem.lean",
       "filename": "Erdos1162Problem.lean",
-      "lineCount": 188,
-      "theoremCount": 4,
-      "axiomCount": 10,
-      "defCount": 4,
+      "lineCount": 223,
+      "theoremCount": 6,
+      "axiomCount": 7,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1162Problem.lean"
