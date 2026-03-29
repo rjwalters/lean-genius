@@ -14,7 +14,7 @@
   Proof: Partial fractions 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)), then rearrange
   using the alternating harmonic series ∑(-1)^{n+1}/n = log(2).
 
-  Axioms: 1 (alternating harmonic series, same as parent OQ03)
+  Axioms: 0 (imports from parent OQ03; parent has 2 axioms for the Mercator series)
   Extends: TriangularReciprocalAlternatingOQ03.lean
 -/
 import Proofs.TriangularReciprocalAlternatingOQ03
@@ -22,9 +22,7 @@ import Proofs.TriangularReciprocalAlternatingOQ03
 namespace AlternatingTriangularReciprocals.Generalized
 
 open Finset BigOperators Filter Topology Real
-open AlternatingTriangularReciprocals (alternating_harmonic_hasSum shifted_alternating_hasSum)
-
--- alternating_harmonic_hasSum imported from TriangularReciprocalAlternatingOQ03.lean
+open AlternatingTriangularReciprocals (alternating_harmonic_hasSum)
 
 -- ═══════════════════════════════════════════════════
 -- Part II: Alternating Harmonic Partial Sums
@@ -33,7 +31,7 @@ open AlternatingTriangularReciprocals (alternating_harmonic_hasSum shifted_alter
 /-- The k-th alternating harmonic partial sum:
     A_k = ∑_{m=1}^k (-1)^{m+1}/m = 1 - 1/2 + 1/3 - ... ± 1/k
 
-    Implementation: use 0-indexed range with shift to avoid m=0 division:
+    Implementation: 0-indexed range with shift to avoid m=0 division:
     A_k = ∑_{m=0}^{k-1} (-1)^{m+2}/(m+1) = ∑_{j=1}^k (-1)^{j+1}/j -/
 noncomputable def altHarmonicPartial (k : ℕ) : ℝ :=
   ∑ m ∈ Finset.range k, (-1 : ℝ) ^ (m + 2) / ((m : ℝ) + 1)
@@ -45,25 +43,43 @@ theorem altHarmonicPartial_one : altHarmonicPartial 1 = 1 := by
   simp [altHarmonicPartial, Finset.sum_range_one]
   norm_num
 
+/-- altHarmonicPartial k equals the partial sum of the alternating harmonic function
+    over range (k+1). This connects our definition to hasSum_nat_add_iff. -/
+private lemma partialSum_eq (k : ℕ) :
+    ∑ i in Finset.range (k + 1),
+      (fun n : ℕ => if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ)) i =
+    altHarmonicPartial k := by
+  rw [Finset.sum_range_succ']
+  simp only [↓reduceIte, zero_add]
+  unfold altHarmonicPartial
+  congr 1
+  ext i
+  rw [if_neg (Nat.succ_ne_zero i)]
+  have h1 : (i + 1) + 1 = i + 2 := by omega
+  have h2 : ((i + 1 : ℕ) : ℝ) = (i : ℝ) + 1 := by push_cast; ring
+  rw [h1, h2]
+
 -- ═══════════════════════════════════════════════════
 -- Part III: Tail of Alternating Harmonic Series
 -- ═══════════════════════════════════════════════════
 
-/-- The tail of the alternating harmonic series: ∑_{n=k+1}^∞ (-1)^{n+1}/n = log(2) - A_k.
-    This follows from HasSum.nat_add: shift the alternating harmonic series
-    by (k+1) terms to get the tail starting at index k+1.
+/-- The tail of the alternating harmonic series starting from index k+1:
+    ∑_{n=0}^∞ (-1)^{n+k+2}/(n+k+1) = log(2) - A_k.
 
-    Note: since n+(k+1) ≥ 1 for all n : ℕ, the terms are always well-defined. -/
+    Proof: By hasSum_nat_add_iff, shifting the alternating harmonic series
+    by (k+1) gives the tail. Since n+k+1 ≥ 1, all terms are well-defined. -/
 theorem alternating_harmonic_tail (k : ℕ) :
     HasSum (fun n : ℕ =>
-      (-1 : ℝ) ^ (n + k + 2) / ((n : ℝ) + k + 1))
+      (-1 : ℝ) ^ (n + k + 2) / ((n : ℝ) + ↑k + 1))
       (Real.log 2 - altHarmonicPartial k) := by
-  -- The alternating harmonic series: HasSum f (log 2)
-  -- where f(n) = if n = 0 then 0 else (-1)^(n+1)/n
-  -- HasSum.nat_add (k+1): HasSum (f ∘ (· + (k+1))) (log 2 - ∑ i ∈ range (k+1), f i)
-  -- f(n + k + 1) = (-1)^(n+k+2)/(n+k+1) since n+k+1 ≥ 1
-  -- ∑ i ∈ range (k+1), f i = f(0) + f(1) + ... + f(k) = 0 + A_k = A_k
-  sorry
+  have h_shifted := (hasSum_nat_add_iff (k + 1)).mpr (by
+    rw [partialSum_eq, sub_add_cancel]
+    exact alternating_harmonic_hasSum)
+  exact h_shifted.congr fun n => by
+    rw [if_neg (show n + (k + 1) ≠ 0 from by omega)]
+    have h1 : n + (k + 1) + 1 = n + k + 2 := by omega
+    have h2 : ((n + (k + 1) : ℕ) : ℝ) = (n : ℝ) + ↑k + 1 := by push_cast; ring
+    rw [h1, h2]
 
 -- ═══════════════════════════════════════════════════
 -- Part IV: Shifted Alternating Sum
@@ -71,14 +87,37 @@ theorem alternating_harmonic_tail (k : ℕ) :
 
 /-- The shifted alternating sum: ∑_{n=1}^∞ (-1)^{n+1}/(n+k) = (-1)^k(log 2 - A_k).
 
-    Proof: Let m = n+k. Then ∑_{n=1}^∞ (-1)^{n+1}/(n+k) = ∑_{m=k+1}^∞ (-1)^{m-k+1}/m.
-    Since (-1)^{m-k+1} = (-1)^k · (-1)^{m+1}, this equals
-    (-1)^k · ∑_{m=k+1}^∞ (-1)^{m+1}/m = (-1)^k · (log 2 - A_k). -/
+    Proof: The tail from index k+1 gives ∑ (-1)^{n+k+2}/(n+k+1) = log 2 - A_k.
+    Factor: (-1)^{n+k+2} = (-1)^k · (-1)^{n+2}, and n+k+1 = (n+1)+k.
+    So the tail = (-1)^k · ∑ g(n+1) where g(n) = (-1)^{n+1}/(n+k).
+    Factor out (-1)^k using its self-inverse property, then remove the +1 shift. -/
 theorem shifted_alternating_hasSum (k : ℕ) (hk : 0 < k) :
     HasSum (fun n : ℕ => if n = 0 then (0 : ℝ)
-      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) + k))
+      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) + ↑k))
       ((-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k)) := by
-  sorry -- Follows from alternating_harmonic_tail via index substitution
+  let g : ℕ → ℝ := fun n => if n = 0 then 0 else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) + ↑k)
+  -- Step 1: Rewrite tail as (-1)^k * g(n+1)
+  have h_factor : HasSum (fun n : ℕ => (-1 : ℝ) ^ k * g (n + 1))
+      (Real.log 2 - altHarmonicPartial k) :=
+    (alternating_harmonic_tail k).congr fun n => by
+      show (-1 : ℝ) ^ (n + k + 2) / ((n : ℝ) + ↑k + 1) = (-1 : ℝ) ^ k * g (n + 1)
+      simp only [g, show (n + 1 : ℕ) ≠ 0 from Nat.succ_ne_zero n, ↓reduceIte]
+      rw [show n + k + 2 = k + (n + 2) from by omega, pow_add,
+          show (n : ℝ) + ↑k + 1 = ↑(n + 1 : ℕ) + ↑k from by push_cast; ring,
+          mul_div_assoc]
+  -- Step 2: Factor out (-1)^k using (-1)^k * (-1)^k = 1
+  have h_unfactor : HasSum (fun n => g (n + 1))
+      ((-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k)) :=
+    (h_factor.mul_left ((-1 : ℝ) ^ k)).congr fun n => by
+      show (-1 : ℝ) ^ k * ((-1 : ℝ) ^ k * g (n + 1)) = g (n + 1)
+      rw [← mul_assoc,
+          show (-1 : ℝ) ^ k * (-1 : ℝ) ^ k = 1 from by
+            rw [← pow_add, show k + k = 2 * k from by omega, pow_mul, neg_one_sq, one_pow],
+          one_mul]
+  -- Step 3: Remove +1 shift via hasSum_nat_add_iff 1 (g(0) = 0)
+  have h_final := (hasSum_nat_add_iff 1).mp h_unfactor
+  simp only [Finset.sum_range_one, show g 0 = 0 from if_pos rfl, add_zero] at h_final
+  exact h_final
 
 -- ═══════════════════════════════════════════════════
 -- Part V: Partial Fractions
@@ -86,12 +125,11 @@ theorem shifted_alternating_hasSum (k : ℕ) (hk : 0 < k) :
 
 /-- Partial fraction decomposition: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) for k ≠ 0, n ≠ 0. -/
 theorem partial_fraction {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
-    (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + k)) =
-      (1 / k) * (1 / (n : ℝ) - 1 / ((n : ℝ) + k)) := by
+    (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) =
+      (1 / ↑k) * (1 / (n : ℝ) - 1 / ((n : ℝ) + ↑k)) := by
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn
-  have hk' : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hk
-  have hnk : (n : ℝ) + k ≠ 0 := by positivity
-  have hmul : (n : ℝ) * ((n : ℝ) + k) ≠ 0 := mul_ne_zero hn' hnk
+  have hk' : (↑k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hk
+  have hnk : (n : ℝ) + ↑k ≠ 0 := by positivity
   field_simp
   ring
 
@@ -106,22 +144,34 @@ theorem partial_fraction {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
 
     where A_k = ∑_{m=1}^k (-1)^{m+1}/m.
 
-    Special cases:
-    - k=1: log 2 - (-1)(log 2 - 1) = 2·log 2 - 1
-    - k=2: log 2 - (1)(log 2 - 1/2) = 1/2, divided by 2 = 1/4
-    - k even: A_k / k   (logarithmic terms cancel)
-    - k odd: (2·log 2 - A_k) / k -/
+    Proof: By partial fractions, (-1)^{n+1}/(n(n+k)) = (1/k)((-1)^{n+1}/n - (-1)^{n+1}/(n+k)).
+    Summing: (1/k)(log 2 - (-1)^k(log 2 - A_k)). -/
 theorem generalized_alternating_sum (k : ℕ) (hk : 0 < k) :
     HasSum (fun n : ℕ => if n = 0 then (0 : ℝ)
-      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) * ((n : ℝ) + k)))
-      ((1 / k) * (Real.log 2 - (-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k))) := by
-  sorry -- Combines partial_fraction with alternating_harmonic_hasSum and shifted_alternating_hasSum
+      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) * ((n : ℝ) + ↑k)))
+      ((1 / ↑k) * (Real.log 2 - (-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k))) := by
+  have h_feq : (fun n : ℕ => if n = 0 then (0 : ℝ)
+      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) * ((n : ℝ) + ↑k))) =
+    (fun n : ℕ => (1 / (↑k : ℝ)) *
+      ((if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ)) -
+       (if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) + ↑k)))) := by
+    ext n
+    by_cases hn : n = 0
+    · simp [hn]
+    · simp only [hn, ↓reduceIte]
+      have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn
+      have hk' : (↑k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+      have hnk : (n : ℝ) + ↑k ≠ 0 := by positivity
+      field_simp
+      ring
+  rw [h_feq]
+  exact (alternating_harmonic_hasSum.sub (shifted_alternating_hasSum k hk)).mul_left (1 / ↑k)
 
 /-- tsum version of the generalized formula. -/
 theorem generalized_alternating_tsum (k : ℕ) (hk : 0 < k) :
     ∑' n : ℕ, (if n = 0 then (0 : ℝ)
-      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) * ((n : ℝ) + k))) =
-      (1 / k) * (Real.log 2 - (-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k)) := by
+      else (-1 : ℝ) ^ (n + 1) / ((n : ℝ) * ((n : ℝ) + ↑k))) =
+      (1 / ↑k) * (Real.log 2 - (-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k)) := by
   exact (generalized_alternating_sum k hk).tsum_eq
 
 -- ═══════════════════════════════════════════════════
@@ -132,7 +182,7 @@ theorem generalized_alternating_tsum (k : ℕ) (hk : 0 < k) :
 theorem special_case_k1 :
     (1 / (1 : ℝ)) * (Real.log 2 - (-1 : ℝ) ^ 1 * (Real.log 2 - altHarmonicPartial 1)) =
     2 * Real.log 2 - 1 := by
-  simp [altHarmonicPartial_one]
+  rw [altHarmonicPartial_one]
   ring
 
 /-- k=2 case: logarithmic terms cancel, giving exactly 1/4.
@@ -142,6 +192,5 @@ theorem special_case_k2 :
     1 / 4 := by
   simp only [altHarmonicPartial, Finset.sum_range_succ, Finset.sum_range_one]
   norm_num
-  ring
 
 end AlternatingTriangularReciprocals.Generalized
