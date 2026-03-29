@@ -44,9 +44,14 @@ open Cardinal Ordinal
     a monochromatic-0 subset of order type β or a monochromatic-1 subset
     of size k.
 
-    We axiomatize this as it requires a substantial formal development
-    of coloring theory on well-ordered sets. -/
-axiom ordinalPartitionRel (α β : Ordinal) (k : ℕ) : Prop
+    Defined via strictly monotone embeddings: either there exists a
+    0-colored copy of order type β or a 1-colored clique of size k. -/
+def ordinalPartitionRel (α β : Ordinal) (k : ℕ) : Prop :=
+  ∀ c : Ordinal → Ordinal → Fin 2,
+    (∃ f : Ordinal → Ordinal, StrictMono f ∧ (∀ i, i < β → f i < α) ∧
+      ∀ i j, i < j → j < β → c (f i) (f j) = 0) ∨
+    (∃ g : Fin k → Ordinal, StrictMono g ∧ (∀ i, g i < α) ∧
+      ∀ i j : Fin k, i < j → c (g i) (g j) = 1)
 
 /-- The negative partition relation α ↛ (β, k)²: there exists a 2-coloring
     of pairs from α with no monochromatic-0 copy of type β and no
@@ -130,9 +135,16 @@ theorem erdos_1169_open_in_zfc :
 
 /-- The partition relation is monotone decreasing in the clique parameter:
     if α → (β, k)² and j ≤ k, then α → (β, j)². -/
-axiom partition_monotone_clique (α β : Ordinal) (k j : ℕ)
+/-- Proved from the definition by restricting the Fin k embedding to Fin j. -/
+theorem partition_monotone_clique (α β : Ordinal) (k j : ℕ)
     (hjk : j ≤ k) (hk : ordinalPartitionRel α β k) :
-    ordinalPartitionRel α β j
+    ordinalPartitionRel α β j := by
+  intro c
+  rcases hk c with ⟨f, hf_mono, hf_bound, hf_color⟩ | ⟨g, hg_mono, hg_bound, hg_color⟩
+  · left; exact ⟨f, hf_mono, hf_bound, hf_color⟩
+  · right
+    exact ⟨g ∘ Fin.castLE hjk, hg_mono.comp (fun _ _ h => h),
+      fun i => hg_bound _, fun i l hil => hg_color _ _ hil⟩
 
 /-- Monotonicity in the ordinal parameter.
 Property of partition relations; not used in proofs below. -/
