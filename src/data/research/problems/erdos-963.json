@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved log_base_gap axiom (7→6 axioms remaining)",
+    "progressSummary": "COMPLETED: Fixed open-conjecture axiom. File has strong infrastructure: binary uniqueness proved (70 lines), dissociated subset sum counting proved, powers of 2 dissociation proved.",
     "builtItems": [
-      "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n"
+      "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n",
+      "Converted axiom to def for open conjecture"
     ],
     "insights": [
-      "Nat.log_anti_left provides log base monotonicity"
+      "Nat.log_anti_left provides log base monotonicity",
+      "erdos_963_conjecture was incorrectly axiomatized — converted to def",
+      "Binary uniqueness (subset sums of powers of 2) is proved by strong induction on max element",
+      "dissociated_subset_sum_count proved via card_image_of_injOn"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

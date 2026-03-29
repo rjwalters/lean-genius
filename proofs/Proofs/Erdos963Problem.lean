@@ -58,10 +58,10 @@ theorem dissociated_subset_sum_count :
 
 /- ## Main Conjecture -/
 
-/-- **Erdős's Conjecture**: f(n) ≥ ⌊log₂ n⌋ for all n ≥ 1.
+/-- **Erdős's Conjecture (OPEN)**: f(n) ≥ ⌊log₂ n⌋ for all n ≥ 1.
     Every n-element set of reals contains a dissociated subset of size
-    at least ⌊log₂ n⌋. -/
-axiom erdos_963_conjecture :
+    at least ⌊log₂ n⌋. This is an open conjecture, not proved. -/
+def ErdosProblem963 : Prop :=
   ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 2 n
 
 /- ## Greedy Lower Bound -/
