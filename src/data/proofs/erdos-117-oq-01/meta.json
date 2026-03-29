@@ -1,0 +1,68 @@
+{
+  "id": "erdos-117-oq-01",
+  "title": "Erdős #117 OQ: Exponential Growth Rate Convergence",
+  "slug": "erdos-117-oq-01",
+  "description": "Does the exponential growth rate of the abelian covering number h(n) converge? Pyber (1987) showed c₁^n < h(n) < c₂^n. The open question is whether lim h(n)^{1/n} exists.",
+  "meta": {
+    "author": "Pyber (1987); Isaacs",
+    "sourceUrl": "https://erdosproblems.com/117",
+    "erdosUrl": "https://erdosproblems.com/117",
+    "date": "1987",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos117OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "abelian-subgroups",
+      "covering-number",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 117,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "ExponentialBaseExists: formal convergence predicate",
+      "NthRootConverges: alternative via Filter.Tendsto",
+      "h_pos_of_pyber: PROVED — lower bound extraction from Pyber",
+      "h_upper: PROVED — upper bound extraction from Pyber",
+      "nCommuting_mono: PROVED — n-commuting property is monotone",
+      "nCommuting_succ: PROVED — weakening the commuting parameter",
+      "abelian_has_nCommuting: PROVED — abelian groups satisfy all n-commuting",
+      "base_in_pyber_range: PROVED — convergent base in Pyber interval",
+      "h_tends_to_infinity: sorry (needs explicit analysis of c^n > M)",
+      "h_mono_conjecture: sorry (needs sInf reasoning)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 172,
+    "assumptions": "1 axiom: pyber_bounds (Pyber 1987 exponential bounds)"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-117",
+      "relationship": "parent",
+      "description": "Open question from Erdős Problem #117 (Covering Groups by Abelian Subgroups)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Subgroup.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos117OQ01",
+    "lineCount": 172,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 5
+  },
+  "references": [
+    "Pyber (1987): Abelian subgroup covering bounds",
+    "Isaacs: Earlier lower bound",
+    "https://erdosproblems.com/117"
+  ]
+}
