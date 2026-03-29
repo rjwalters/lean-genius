@@ -198,17 +198,60 @@ theorem example_length_4_exists :
 ## Part V: Lower Bounds on g(n)
 -/
 
-/-- g(n) ≥ 1 for n ≥ 3 (any single integer works). -/
-theorem g_ge_one (n : ℕ) (hn : n ≥ 3) : g n ≥ 1 := by sorry
+/-- The set of valid sequence lengths is bounded above by n.
+Proof: a strictly increasing list with all elements < n has length ≤ n
+(by nodup + subset of Finset.range n). -/
+private lemma g_bddAbove (n : ℕ) : BddAbove {t : ℕ | ∃ seq : List ℕ, seq.length = t ∧ isValidGPFSeq n seq} := by
+  refine ⟨n, fun t ⟨seq, hlen, ⟨hchain, _⟩, hbounds⟩ => ?_⟩
+  have hnodup : seq.Nodup :=
+    List.Pairwise.imp (fun h => ne_of_lt h) hchain.pairwise
+  calc t = seq.length := hlen.symm
+    _ = seq.toFinset.card := hnodup.card_toFinset.symm
+    _ ≤ (Finset.range n).card := Finset.card_le_card (fun a ha =>
+        Finset.mem_range.mpr ((hbounds a (List.mem_toFinset.mp ha)).2))
+    _ = n := Finset.card_range n
 
-/-- g(n) ≥ 2 for n ≥ 5 using [3, 4]. -/
-theorem g_ge_two (n : ℕ) (hn : n ≥ 5) : g n ≥ 2 := by sorry
+/-- If a valid GPF sequence of length k exists for n, then g(n) ≥ k. -/
+private lemma g_ge_of_witness (n k : ℕ) (seq : List ℕ)
+    (hlen : seq.length = k) (hvalid : isValidGPFSeq n seq) : g n ≥ k :=
+  le_csSup (g_bddAbove n) ⟨seq, hlen, hvalid⟩
 
-/-- g(n) ≥ 3 for n ≥ 17 using [7, 9, 16]. -/
-theorem g_ge_three (n : ℕ) (hn : n ≥ 17) : g n ≥ 3 := by sorry
+/-- g(n) ≥ 1 for n ≥ 3 (witness: [2]). -/
+theorem g_ge_one (n : ℕ) (hn : n ≥ 3) : g n ≥ 1 := by
+  apply g_ge_of_witness n 1 [2] rfl
+  refine ⟨⟨?_, ?_⟩, fun a ha => by simp at ha; subst ha; omega⟩
+  -- Singleton chain conditions are trivially true
+  all_goals (first | trivial | simp [List.map])
 
-/-- g(n) ≥ 4 for n ≥ 65 using [7, 10, 27, 64]. -/
-theorem g_ge_four (n : ℕ) (hn : n ≥ 65) : g n ≥ 4 := by sorry
+/-- g(n) ≥ 2 for n ≥ 5 (witness: [3, 4], gpf 3 = 3 > 2 = gpf 4). -/
+theorem g_ge_two (n : ℕ) (hn : n ≥ 5) : g n ≥ 2 := by
+  apply g_ge_of_witness n 2 [3, 4] rfl
+  refine ⟨⟨?_, ?_⟩, fun a ha => by simp at ha; rcases ha with rfl | rfl <;> omega⟩
+  · -- [3, 4] strictly increasing: 3 < 4
+    constructor <;> first | omega | trivial
+  · -- [gpf 3, gpf 4] strictly decreasing: 3 > 2
+    simp only [List.map, gpf_three, gpf_four]
+    constructor <;> first | omega | trivial
+
+/-- g(n) ≥ 3 for n ≥ 17 (witness: [7, 9, 16], gpf values 7 > 3 > 2). -/
+theorem g_ge_three (n : ℕ) (hn : n ≥ 17) : g n ≥ 3 := by
+  apply g_ge_of_witness n 3 [7, 9, 16] rfl
+  refine ⟨⟨?_, ?_⟩, fun a ha => by simp at ha; rcases ha with rfl | rfl | rfl <;> omega⟩
+  · -- [7, 9, 16] strictly increasing
+    constructor <;> first | omega | (constructor <;> first | omega | trivial)
+  · -- [7, 3, 2] strictly decreasing
+    simp only [List.map, gpf_prime 7 (by decide : Nat.Prime 7), gpf_nine, gpf_sixteen]
+    constructor <;> first | omega | (constructor <;> first | omega | trivial)
+
+/-- g(n) ≥ 4 for n ≥ 65 (witness: [7, 10, 27, 64], gpf values 7 > 5 > 3 > 2). -/
+theorem g_ge_four (n : ℕ) (hn : n ≥ 65) : g n ≥ 4 := by
+  apply g_ge_of_witness n 4 [7, 10, 27, 64] rfl
+  refine ⟨⟨?_, ?_⟩, fun a ha => by simp at ha; rcases ha with rfl | rfl | rfl | rfl <;> omega⟩
+  · -- [7, 10, 27, 64] strictly increasing
+    constructor <;> first | omega | (constructor <;> first | omega | (constructor <;> first | omega | trivial))
+  · -- [7, 5, 3, 2] strictly decreasing
+    simp only [List.map, gpf_prime 7 (by decide : Nat.Prime 7), gpf_ten, gpf_twentyseven, gpf_sixtyfour]
+    constructor <;> first | omega | (constructor <;> first | omega | (constructor <;> first | omega | trivial))
 
 /-
 ## Part VI: Smooth Numbers
