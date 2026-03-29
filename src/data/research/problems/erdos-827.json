@@ -29,14 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 7 axioms all appropriate — minimalNk is opaque so all properties must be axiomatized. Definitions and circumradius formula are correct.",
+    "progressSummary": "COMPLETE: 6→5 axioms. Proved nk_ge_k via parabola GP construction. Added parabolaPoint, parabolaSet, parabolaSet_gp infrastructure.",
     "builtItems": [
-      "Assessment: all axioms appropriate for opaque function design"
+      "Assessment: all axioms appropriate for opaque function design",
+      "PROVED nk_ge_k: k ≤ minimalNk k via parabola contradiction (axiom→theorem)",
+      "parabolaPoint/parabolaSet: reusable GP set construction for any size n",
+      "parabolaSet_gp: collinearity determinant factoring proof (ring + cast injection)"
     ],
     "insights": [
       "minimalNk is an axiom (opaque function), forcing all properties to be axioms too",
       "nk_ge_k and nk_monotone could be proved if minimalNk were a def with minimality built in",
-      "Definitions (GeneralPosition, circumRadiusSq, AllDistinctCircumradii) are mathematically correct"
+      "Definitions (GeneralPosition, circumRadiusSq, AllDistinctCircumradii) are mathematically correct",
+      "nk_ge_k proof strategy: construct GP set of size minimalNk k, apply minimalNk_valid, cardinality contradiction",
+      "Remaining 5 axioms are all deep: minimalNk (opaque function), valid/sharp (properties of opaque fn), martinez_roldan_pensado (published result), nk_three (specific value of opaque fn)",
+      "Further axiom reduction requires restructuring minimalNk as Nat.find (major refactor) or formalizing Martinez-Roldán-Pensado (paper-length proof)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -63,9 +69,9 @@
     {
       "path": "Proofs/Erdos827Problem.lean",
       "filename": "Erdos827Problem.lean",
-      "lineCount": 136,
+      "lineCount": 232,
       "theoremCount": 1,
-      "axiomCount": 6,
+      "axiomCount": 5,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
