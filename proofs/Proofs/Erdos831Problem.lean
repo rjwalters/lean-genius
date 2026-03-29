@@ -117,21 +117,36 @@ noncomputable def circumradius (t : PointTriple) : ℝ :=
 ## Part IV: Counting Distinct Radii
 -/
 
+-- DecidableEq instances for Finset operations
+noncomputable instance : DecidableEq Point := Classical.decEq _
+
+/-- Circumradius of three points (no PointTriple wrapper needed).
+    Returns 0 for collinear points. Formula: R = abc / (4·Area). -/
+private noncomputable def circumradiusTriple (p1 p2 p3 : Point) : ℝ :=
+  let a := ‖p2 - p3‖
+  let b := ‖p1 - p3‖
+  let c := ‖p1 - p2‖
+  let twiceArea := |((p2 0 - p1 0) * (p3 1 - p1 1) -
+                     (p3 0 - p1 0) * (p2 1 - p1 1))|
+  if twiceArea = 0 then 0
+  else (a * b * c) / (2 * twiceArea)
+
 /--
-**Set of All Circumradii:**
-For a finite point set S, the set of all circumradii from triples in S.
+**Finset of All Circumradii:**
+For a finite point set S, the Finset of all circumradii from distinct triples.
+Uses ordered triples → image (which collapses equal radii via S₃ invariance).
 -/
-noncomputable def allCircumradii (S : Finset Point) : Set ℝ :=
-  {r : ℝ | ∃ p1 p2 p3 : Point, p1 ∈ S ∧ p2 ∈ S ∧ p3 ∈ S ∧
-    p1 ≠ p2 ∧ p2 ≠ p3 ∧ p1 ≠ p3 ∧
-    ∃ t : PointTriple, t.p1 = p1 ∧ t.p2 = p2 ∧ t.p3 = p3 ∧ circumradius t = r}
+noncomputable def allCircumradiiFinset (S : Finset Point) : Finset ℝ :=
+  ((S ×ˢ (S ×ˢ S)).filter (fun t =>
+    t.1 ≠ t.2.1 ∧ t.2.1 ≠ t.2.2 ∧ t.1 ≠ t.2.2)).image (fun t =>
+    circumradiusTriple t.1 t.2.1 t.2.2)
 
 /--
 **Number of Distinct Radii:**
-The cardinality of the set of distinct circumradii.
+The cardinality of the Finset of distinct circumradii.
 -/
 noncomputable def countDistinctRadii (S : Finset Point) : ℕ :=
-  Nat.card (allCircumradii S)
+  (allCircumradiiFinset S).card
 
 /--
 **The h Function:**
@@ -148,43 +163,30 @@ noncomputable def h (n : ℕ) : ℕ :=
 
 /--
 **Number of Triples:**
-With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
+With n points, there are at most n³ ordered triples, hence at most n³ distinct radii.
+(The sharp bound C(n,3) requires the S₃ invariance of circumradius to factor
+through unordered triples — left for future strengthening.)
 -/
 theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  -- Proof strategy: sInf S ≤ C(n,3) because:
-  -- (a) If S = ∅ (no GP config exists), sInf = 0 ≤ C(n,3)
-  -- (b) If S ≠ ∅, every k ∈ S satisfies k ≤ C(n,3) since
-  --     countDistinctRadii ≤ number of triples = C(n,3)
-  -- NOTE: countDistinctRadii uses Nat.card on a Set ℝ subtype.
-  -- Nat.card requires a Fintype instance which cannot be auto-inferred
-  -- for existentially-quantified subsets of ℝ. With the current definition,
-  -- Nat.card returns 0, making this trivially true but rendering h_three false.
-  -- FIX NEEDED: redefine countDistinctRadii using Finset.image on ordered
-  -- triples with DecidableEq ℝ := Classical.decEq. Then bound card(image) by
-  -- card(powersetCard 3) = C(n,3) via circumradius permutation invariance.
+  -- h is sInf of countDistinctRadii values over all GP configs.
+  -- sInf S ≤ x holds if S = ∅ (sInf = 0) or if we find a GP config with count ≤ x.
+  -- For now, we use the trivial bound: sInf is ≤ any element of the set,
+  -- and for n < 3 there are 0 radii ≤ C(n,3) = 0.
   sorry
 
 /--
 **h(3) = 1:**
 Three points in general position give exactly one circle, hence one radius.
+Proof: Exhibit the GP config {(0,0), (1,0), (0,1)}. It has 6 ordered distinct
+triples, all mapping to the same circumradius by S₃ invariance, so
+countDistinctRadii = 1. Since sInf {1} = 1 and every 3-point GP config
+gives exactly 1 radius, h(3) = 1.
 -/
 theorem h_three : h 3 = 1 := by
-  -- Proof infrastructure (Part IX):
-  -- ✓ p_origin, p_e1, p_e2 defined as ![0,0], ![1,0], ![0,1]
-  -- ✓ p_origin_ne_e1, p_origin_ne_e2, p_e1_ne_e2 proved (distinctness)
-  -- ✓ triangle_not_collinear proved (non-collinearity)
-  --
-  -- Remaining steps:
-  -- 1. Construct Finset S = {p_origin, p_e1, p_e2} with card 3
-  -- 2. Show isInGeneralPosition (↑S): no-3-collinear via triangle_not_collinear,
-  --    no-4-concyclic vacuously (only 3 points)
-  -- 3. Show countDistinctRadii S = 1
-  --
-  -- BLOCKER on step 3: countDistinctRadii uses Nat.card (allCircumradii S).
-  -- The Fintype instance for ↥(allCircumradii S) cannot be auto-inferred.
-  -- FIX: either provide explicit Fintype ↥{circumradiusOf p_origin p_e1 p_e2}
-  -- and show allCircumradii S = {circumradiusOf p_origin p_e1 p_e2},
-  -- or redefine countDistinctRadii using Finset.image.
+  -- Strategy: show 1 ∈ the set defining h(3), and sInf ≥ 1
+  -- h 3 = sInf {k | ∃ S, S.card = 3 ∧ GP S ∧ countDistinctRadii S = k}
+  -- Step 1: show h(3) ≤ 1 by exhibiting a witness
+  -- Step 2: show h(3) ≥ 1 (any GP 3-point set has ≥ 1 radius)
   sorry
 
 /--
@@ -314,6 +316,10 @@ noncomputable def circumradiusOf (p1 p2 p3 : Point) : ℝ :=
 /-- circumradiusOf agrees with circumradius for matching triples. -/
 theorem circumradiusOf_eq_circumradius (t : PointTriple) :
     circumradiusOf t.p1 t.p2 t.p3 = circumradius t := rfl
+
+/-- circumradiusOf agrees with circumradiusTriple (same formula). -/
+theorem circumradiusOf_eq_triple (p1 p2 p3 : Point) :
+    circumradiusOf p1 p2 p3 = circumradiusTriple p1 p2 p3 := rfl
 
 /-- The origin (0, 0) as a point in the plane. -/
 private noncomputable def p_origin : Point := ![0, 0]
