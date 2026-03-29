@@ -107,6 +107,103 @@ theorem singleton_dissociated (A : Finset ℝ) (a : ℝ) (ha : a ∈ A) (ha0 : a
     · simp at hsum; exfalso; exact ha0 hsum
     · rfl
 
+/-- Any subset of a dissociated set is dissociated in the ambient set. -/
+theorem dissociated_subset {A B C : Finset ℝ}
+    (hB : IsDissociatedSubset A B) (hCB : C ⊆ B) :
+    IsDissociatedSubset A C :=
+  ⟨hCB.trans hB.1, fun S T hS hT hsum =>
+    hB.2 S T (hS.trans hCB) (hT.trans hCB) hsum⟩
+
+/-- A dissociated subset has at most as many elements as the ambient set. -/
+theorem dissociated_card_le {A B : Finset ℝ}
+    (hB : IsDissociatedSubset A B) : B.card ≤ A.card :=
+  Finset.card_le_card hB.1
+
+/- ## Extension Lemma for Greedy Construction -/
+
+/-- The difference-sum finset of B: all values `T.sum - S.sum` where S, T ⊆ B.
+    This includes 0 (take S = T). For a dissociated B, the nonzero elements
+    correspond to distinct (S, T) pairs with S ≠ T.
+    Its cardinality is at most 3^|B| since each element b ∈ B contributes
+    one of three roles: +b (in T only), -b (in S only), or 0 (both/neither). -/
+noncomputable def diffSumFinset (B : Finset ℝ) : Finset ℝ :=
+  (B.powerset ×ˢ B.powerset).image
+    (fun p : Finset ℝ × Finset ℝ => p.2.sum id - p.1.sum id)
+
+/-- Extension lemma: if B is dissociated in A and `a ∈ A \ B` avoids all
+    subset-sum differences of B, then `insert a B` is dissociated in A.
+    This is the key step in the greedy algorithm for building dissociated sets.
+
+    The hypothesis `hforbid` says `a ≠ T.sum - S.sum` for ALL S, T ⊆ B
+    (including S = T = ∅, which gives a ≠ 0). -/
+theorem dissociated_insert {A B : Finset ℝ} {a : ℝ}
+    (hB : IsDissociatedSubset A B)
+    (haA : a ∈ A) (haB : a ∉ B)
+    (hforbid : ∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → a ≠ T.sum id - S.sum id) :
+    IsDissociatedSubset A (insert a B) := by
+  -- Helper: subsets of insert a B not containing a are subsets of B
+  have not_mem_sub : ∀ U : Finset ℝ, U ⊆ insert a B → a ∉ U → U ⊆ B := by
+    intro U hU haU x hx
+    rcases Finset.mem_insert.mp (hU hx) with rfl | h
+    · exact absurd hx haU
+    · exact h
+  -- Helper: erase a from subsets of insert a B gives subsets of B
+  have erase_sub : ∀ U : Finset ℝ, U ⊆ insert a B → U.erase a ⊆ B := by
+    intro U hU x hx
+    have ⟨hne, hxU⟩ := Finset.mem_erase.mp hx
+    rcases Finset.mem_insert.mp (hU hxU) with rfl | h
+    · exact absurd rfl hne
+    · exact h
+  refine ⟨Finset.insert_subset_iff.mpr ⟨haA, hB.1⟩, ?_⟩
+  intro S T hS hT hsum
+  by_cases haS : a ∈ S <;> by_cases haT : a ∈ T
+  · -- Both contain a: erase a from both, reduce to original property
+    have heq : (S.erase a).sum id = (T.erase a).sum id := by
+      have := Finset.sum_erase_add S id haS
+      have := Finset.sum_erase_add T id haT
+      linarith
+    have := hB.2 _ _ (erase_sub S hS) (erase_sub T hT) heq
+    calc S = insert a (S.erase a) := (Finset.insert_erase haS).symm
+      _ = insert a (T.erase a) := by rw [this]
+      _ = T := Finset.insert_erase haT
+  · -- a ∈ S, a ∉ T: contradicts hforbid
+    exfalso
+    exact absurd (show a = T.sum id - (S.erase a).sum id by
+      have := Finset.sum_erase_add S id haS; linarith)
+      (hforbid _ _ (erase_sub S hS) (not_mem_sub T hT haT))
+  · -- a ∉ S, a ∈ T: symmetric contradiction
+    exfalso
+    exact absurd (show a = S.sum id - (T.erase a).sum id by
+      have := Finset.sum_erase_add T id haT; linarith)
+      (hforbid _ _ (erase_sub T hT) (not_mem_sub S hS haS))
+  · -- Neither contains a: both subsets of B
+    exact hB.2 S T (not_mem_sub S hS haS) (not_mem_sub T hT haT) hsum
+
+/-- The greedy extension step: if B is dissociated in A and there are more
+    elements in A \ B than differences of subset sums of B, then B can be
+    extended. In particular, if |A| - |B| > |diffSumFinset B|, then there
+    exists a ∈ A \ B with insert a B dissociated. -/
+theorem dissociated_extend {A B : Finset ℝ}
+    (hB : IsDissociatedSubset A B)
+    (hcard : (diffSumFinset B).card < (A \ B).card) :
+    ∃ a ∈ A \ B, IsDissociatedSubset A (insert a B) := by
+  -- Not every element of A \ B can be a difference of subset sums
+  have : ¬ (A \ B) ⊆ diffSumFinset B := by
+    intro hsub
+    exact absurd (Finset.card_le_card hsub) (not_le.mpr hcard)
+  -- Pick a ∈ (A \ B) \ diffSumFinset B
+  rw [Finset.not_subset] at this
+  obtain ⟨a, haAB, haDiff⟩ := this
+  have haA := (Finset.mem_sdiff.mp haAB).1
+  have haB := (Finset.mem_sdiff.mp haAB).2
+  refine ⟨a, haAB, dissociated_insert hB haA haB ?_⟩
+  -- a ∉ diffSumFinset B means a ≠ T.sum - S.sum for all S, T ⊆ B
+  intro S T hSB hTB heq
+  apply haDiff
+  rw [diffSumFinset, Finset.mem_image]
+  exact ⟨(S, T), Finset.mem_product.mpr
+    ⟨Finset.mem_powerset.mpr hSB, Finset.mem_powerset.mpr hTB⟩, heq.symm⟩
+
 /-- Auxiliary: ∑_{i<k} 2^i = 2^k - 1 (geometric series for ℕ). -/
 private lemma sum_range_pow_two (k : ℕ) :
     (Finset.range k).sum (fun i => (2 : ℕ) ^ i) + 1 = 2 ^ k := by
