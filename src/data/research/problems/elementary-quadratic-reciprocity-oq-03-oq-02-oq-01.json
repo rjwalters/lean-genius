@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 1,
-    "focus": "Surveyed multiplicativity proof path. Found potential axiom bug at n=-1,a=0.",
+    "since": "2026-03-29T06:30:00+00:00",
+    "iteration": 2,
+    "focus": "Session 2: Fixed 2 false axioms with counterexamples",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,20 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Kronecker multiplicativity requires case analysis on n=0,-1,1,general. Definition uses jacobiSym (multiplicative in Mathlib). Potential edge case bug: kroneckerNeg1(0)=1 may break mul_left at n=-1 when a=0.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: FIXED 2 incorrect axioms. kronecker_mul_left and kronecker_mul_right were FALSE as stated — found counterexamples involving kroneckerNeg1(0)=1 + zero multiplication. Added nonzero hypotheses (ha/hb and hm/hn). 3 axioms remain (corrected).",
+    "builtItems": [
+      "FIXED: kronecker_mul_left — added (ha : a ≠ 0) (hb : b ≠ 0)",
+      "FIXED: kronecker_mul_right — added (hm : m ≠ 0) (hn : n ≠ 0)"
+    ],
     "insights": [
       "kronecker defined via cases: n=0→kronecker0, n=-1→kroneckerNeg1, n=1→1, else→sign*jacobiSym",
       "jacobiSym from Mathlib is multiplicative in both arguments — base case for proof",
       "kroneckerNeg1(0)=1 (positive convention) may cause mul_left failure: kronecker(-3*0)(-1)=1 but kronecker(-3)(-1)*kronecker(0)(-1)=(-1)*1=-1",
       "Fix: either change kroneckerNeg1(0)=0 or add a≠0 hypothesis to mul_left",
-      "mul_right is more straightforward: products of moduli reduce to product of Jacobi symbols"
+      "mul_right is more straightforward: products of moduli reduce to product of Jacobi symbols",
+      "COUNTEREXAMPLE: kronecker_mul_left fails at a=-3, b=0, n=-1: LHS=1, RHS=-1",
+      "COUNTEREXAMPLE: kronecker_mul_right fails at a=-1, m=0, n=-1: LHS=1, RHS=-1",
+      "Root cause: kroneckerNeg1(0)=1 but zero-arg product maps through kronecker0 instead of kroneckerNeg1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify kronecker_mul_left counterexample: kronecker (-3*0) (-1) vs kronecker (-3) (-1) * kronecker 0 (-1)",
-      "If confirmed false, fix kroneckerNeg1 definition or add hypotheses to axiom",
-      "Prove kronecker_mul_right via case analysis: n*m=0, n*m=-1, general → jacobiSym.mul_right"
+      "Prove corrected kronecker_mul_right via case analysis on sign(m)*sign(n) + jacobiSym.mul_right",
+      "Prove corrected kronecker_mul_left via case analysis on n=0,-1,1,general + jacobiSym.mul_left",
+      "kronecker_reciprocity remains axiomatized (deep: requires Gauss sum argument)"
     ],
     "markdown": "# Knowledge Base: elementary-quadratic-reciprocity-oq-03-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
