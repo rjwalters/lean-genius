@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham–Dickson",
     "sourceUrl": "https://erdosproblems.com/341",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos341Problem.lean",
     "tags": [
       "erdos",
@@ -39,8 +39,8 @@
   "overview": {
     "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
     "problemStatement": "For any finite starting set A, is the sequence of consecutive differences in the Dickson extension eventually periodic?",
-    "text": "A 116-line formalization of Erdős Problem #341 (Dickson's sum-free extension, OPEN). Defines `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find` (the greedy choice of smallest non-sum), `dicksonDiff A0` for consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture (`erdos_341_conjecture`) universally quantifies over all nonempty finite starting sets. The 9 axioms encode structural properties (strict monotonicity, sum avoidance, greedy minimality) and empirical observations (slow periodicity for squares, period dependence on initial conditions, linear growth). The singleton {1} case recovers the Mian–Chowla sequence (Problem #340).",
-    "proofStrategy": "We formalize `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find`, `dicksonDiff A0` as the consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture universally quantifies over all nonempty finite starting sets. Structural properties (strict monotonicity, sum avoidance, minimality) are axiomatized, along with examples showing slow periodicity and period dependence on initial conditions.",
+    "text": "A 158-line formalization of Erdős Problem #341 (Dickson's sum-free extension, OPEN). Defines `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find` (the greedy choice of smallest non-sum), `dicksonDiff A0` for consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture (`erdos_341_conjecture`) universally quantifies over all nonempty finite starting sets. All structural properties (strict monotonicity, sum avoidance, greedy minimality, linear growth) are proved from the definition using `Nat.find_spec` and `Nat.find_min`. The singleton {1} case recovers the Mian–Chowla sequence (Problem #340).",
+    "proofStrategy": "We formalize `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find`, `dicksonDiff A0` as the consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture universally quantifies over all nonempty finite starting sets. Structural properties (strict monotonicity, sum avoidance, minimality, linear growth) are all proved from the definition using `Nat.find_spec` and `Nat.find_min`.",
     "keyInsights": [
       "The greedy rule — always pick the smallest non-sum — creates a partition of integers above the maximum into sequence elements and pairwise sums, with the minimality property ensuring no gaps",
       "The conjecture asserts universal eventual periodicity for ALL finite starting sets, making it analogous in spirit to the Collatz conjecture (simple rule, always reaches periodic behaviour)",
@@ -180,19 +180,5 @@
       "description": "The greedy Sidon construction formalizes the singleton case $A_0 = \\{1\\}$ of Dickson's extension, producing the Mian–Chowla sequence. Problem #341's eventual periodicity conjecture for the difference sequence specializes to asking whether the Mian–Chowla gaps eventually repeat — a question that remains open even for this single starting set"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "",
-    "lineCount": 158,
-    "theoremCount": 5,
-    "definitionCount": 8,
-    "mainTheorems": [
-      "erdos_341_conjecture"
-    ]
-  }
+  "leanFile": "Proofs/Erdos341Problem.lean"
 }
