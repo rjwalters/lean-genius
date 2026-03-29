@@ -430,18 +430,162 @@ theorem erdosHajnal2_subgraph (S : Set omega2Squared)
     csInf_le (OrderBot.bddBelow _) (isColorable_mk _)
   exact le_trans h1 (le_aleph1_of_lt_aleph2 hS)
 
-/-- The ω₂² E-H graph has chromatic number exactly ℵ₂. The upper bound
-    follows from ℵ₂-colorability (proved above). The lower bound requires
-    a Ramsey-type argument on ω₂² that is axiomatized here. -/
-axiom erdosHajnalGraph2_chromatic_lower :
-  chromaticNumber erdosHajnalGraph2 ≥ aleph 2
+/-
+# Part 6a: Infrastructure for ω₂² Chromatic Number Lower Bound
 
-/-- The ω₂² E-H graph has chromatic number = ℵ₂. -/
+We prove χ(E-H graph on ω₂²) = ℵ₂ via double pigeonhole at the ℵ₂ level.
+The argument is structurally identical to the ω₁² case but one cardinal level higher.
+-/
+
+/-- ℵ₁ < ℵ₂ -/
+private theorem aleph1_lt_aleph2 : (ℵ₁ : Cardinal) < aleph 2 := by
+  have : aleph 1 < aleph 2 := aleph_lt_aleph.mpr (by norm_num)
+  exact this
+
+/-- ω₂.ToType has cardinality > ℵ₁ -/
+private theorem mk_omega2_ToType_gt_aleph1 : ℵ₁ < Cardinal.mk omega2.ToType := by
+  rw [mk_omega2_ToType]; exact aleph1_lt_aleph2
+
+/-- Cardinal pigeonhole for > ℵ₁ → ≤ ℵ₁ maps:
+    If f : A → B with #A > ℵ₁ and #B ≤ ℵ₁, then some fiber has cardinality > ℵ₁. -/
+private theorem exists_large_fiber {A B : Type} (f : A → B)
+    (hA : ℵ₁ < Cardinal.mk A) (hB : Cardinal.mk B ≤ ℵ₁) :
+    ∃ b : B, ℵ₁ < Cardinal.mk (f ⁻¹' {b}) := by
+  by_contra hall
+  push_neg at hall
+  have hle : Cardinal.mk A ≤ Cardinal.mk B * ℵ₁ :=
+    mk_le_mk_mul_of_mk_preimage_le f hall
+  have hmul : Cardinal.mk B * ℵ₁ ≤ ℵ₁ := by
+    calc Cardinal.mk B * ℵ₁ ≤ ℵ₁ * ℵ₁ := mul_le_mul_right' hB ℵ₁
+      _ = ℵ₁ := mul_eq_self aleph0_lt_aleph1.le
+  exact absurd (lt_of_lt_of_le hA (le_trans hle hmul)) (lt_irrefl _)
+
+/-- Initial segments of omega2.ToType below any element have cardinality ≤ ℵ₁.
+    Uses: typein gives ordinal of element, which is < omega2, so its card < ℵ₂. -/
+private theorem mk_Iio_omega2_le_aleph1 (a : omega2.ToType) :
+    Cardinal.mk {x : omega2.ToType | x < a} ≤ ℵ₁ := by
+  have hlt : Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a < omega2 :=
+    Ordinal.typein_lt_type _ a
+  have hcard : (Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a).card =
+      Cardinal.mk {x : omega2.ToType | x < a} :=
+    Ordinal.card_type (Subrel (· < ·) {x : omega2.ToType | x < a})
+  have hcard_lt : (Ordinal.typein (· < · : omega2.ToType → omega2.ToType → Prop) a).card < aleph 2 := by
+    exact Cardinal.lt_ord.mp (by rwa [Cardinal.ord_aleph] at hlt)
+  rw [← hcard]
+  exact le_aleph1_of_lt_aleph2 hcard_lt
+
+/-- Sets of cardinality > ℵ₁ in omega2.ToType are cofinal. -/
+private theorem large_cofinal (S : Set omega2.ToType)
+    (hS : ℵ₁ < Cardinal.mk S) (a : omega2.ToType) :
+    ∃ s, s ∈ S ∧ a < s := by
+  by_contra hall
+  push_neg at hall
+  have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega2.ToType | x ≤ a} := by
+    apply Cardinal.mk_subtype_mono
+    intro x hx
+    exact le_of_not_lt (hall x hx)
+  have hiio : Cardinal.mk {x : omega2.ToType | x < a} ≤ ℵ₁ := mk_Iio_omega2_le_aleph1 a
+  have hiic : Cardinal.mk {x : omega2.ToType | x ≤ a} ≤ ℵ₁ := by
+    have : {x : omega2.ToType | x ≤ a} ⊆ {x | x < a} ∪ {a} := by
+      intro x hx
+      rcases lt_or_eq_of_le hx with h | h
+      · exact Or.inl h
+      · exact Or.inr h
+    calc Cardinal.mk {x : omega2.ToType | x ≤ a}
+        ≤ Cardinal.mk ({x : omega2.ToType | x < a} ∪ {a} : Set _) :=
+          Cardinal.mk_subtype_mono this
+      _ ≤ Cardinal.mk {x : omega2.ToType | x < a} + Cardinal.mk ({a} : Set _) :=
+          Cardinal.mk_union_le _ _
+      _ ≤ ℵ₁ + 1 := by
+          apply add_le_add hiio
+          rw [Cardinal.mk_singleton]
+      _ = ℵ₁ := Cardinal.add_one_of_aleph0_le aleph0_lt_aleph1.le
+  exact absurd (lt_of_lt_of_le hS (le_trans hle hiic)) (lt_irrefl _)
+
+/-- Two distinct elements exist in a set of cardinality > ℵ₁ -/
+private theorem exists_two_distinct_large {α : Type} [LinearOrder α] {S : Set α}
+    (h : ℵ₁ < Cardinal.mk S) :
+    ∃ a₁ a₂, a₁ ∈ S ∧ a₂ ∈ S ∧ a₁ < a₂ := by
+  have h1 : (1 : Cardinal) < Cardinal.mk S := lt_trans one_lt_aleph0 (lt_trans aleph0_lt_aleph1 h)
+  rw [Cardinal.one_lt_iff_nontrivial] at h1
+  obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ := h1.exists_pair_ne
+  simp only [Subtype.mk.injEq] at hab
+  rcases lt_or_gt_of_ne hab with h | h
+  · exact ⟨a, b, ha, hb, h⟩
+  · exact ⟨b, a, hb, ha, h⟩
+
+/-- Nonempty from large: #S > ℵ₁ implies S is nonempty -/
+private theorem nonempty_of_large {α : Type} {S : Set α}
+    (h : ℵ₁ < Cardinal.mk S) : S.Nonempty := by
+  rw [Set.nonempty_iff_ne_empty]
+  intro he
+  rw [he, Cardinal.mk_emptyCollection] at h
+  exact absurd h (not_lt.mpr (Cardinal.zero_le _))
+
+/-- The ω₂² E-H graph cannot be properly colored with ≤ ℵ₁ colors.
+    Proof by double pigeonhole at the ℵ₂ level:
+    1. Each row has a "dominant" color with fiber of size > ℵ₁
+    2. Some color is dominant for > ℵ₁ rows
+    3. Two such rows give a monochromatic adjacent pair via cofinality -/
+private theorem erdosHajnal2_not_aleph1_colorable
+    (C : Type) (hC : Cardinal.mk C ≤ ℵ₁)
+    (f : omega2Squared → C)
+    (hf : ∀ x y, erdosHajnalGraph2.adj x y → f x ≠ f y) :
+    False := by
+  set T := omega2.ToType
+  have hTunc : ℵ₁ < Cardinal.mk T := mk_omega2_ToType_gt_aleph1
+  -- Step 1: For each row α, some color has a fiber of size > ℵ₁
+  have hrow : ∀ α : T, ∃ c : C, ℵ₁ < Cardinal.mk (Set.preimage (fun β : T => f (α, β)) {c}) :=
+    fun α => exists_large_fiber (fun β => f (α, β)) hTunc hC
+  -- Step 2: Define dominant color for each row via Choice
+  let domColor : T → C := fun α => (hrow α).choose
+  have hdom_spec : ∀ α : T,
+      ℵ₁ < Cardinal.mk (Set.preimage (fun β : T => f (α, β)) {domColor α}) :=
+    fun α => (hrow α).choose_spec
+  -- Step 3: Pigeonhole on dominant colors — some color c₀ is dominant for > ℵ₁ rows
+  obtain ⟨c₀, hc₀⟩ := exists_large_fiber domColor hTunc hC
+  set Rows := domColor ⁻¹' {c₀} with hRows_def
+  have hRowsSet : ℵ₁ < Cardinal.mk {α : T | domColor α = c₀} := by
+    convert hc₀ using 1
+  -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
+  obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct_large hRowsSet
+  have hα₁_dom : domColor α₁ = c₀ := hα₁
+  have hα₂_dom : domColor α₂ = c₀ := hα₂
+  -- The c₀-fiber in row α₁ has size > ℵ₁
+  have hfiber₁ : ℵ₁ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
+    have := hdom_spec α₁; rw [hα₁_dom] at this
+    convert this using 1
+  -- The c₀-fiber in row α₂ has size > ℵ₁
+  have hfiber₂ : ℵ₁ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
+    have := hdom_spec α₂; rw [hα₂_dom] at this
+    convert this using 1
+  -- Pick any β₂ from the c₀-fiber of row α₂
+  obtain ⟨β₂, hβ₂⟩ := nonempty_of_large hfiber₂
+  -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁
+  obtain ⟨β₁, hβ₁, hlt_β⟩ := large_cofinal {β : T | f (α₁, β) = c₀} hfiber₁ β₂
+  -- Step 6: (α₁, β₁) and (α₂, β₂) are adjacent: α₁ < α₂ and β₂ < β₁
+  have hadj : erdosHajnalGraph2.adj (α₁, β₁) (α₂, β₂) := by
+    left; exact ⟨hlt_α, hlt_β⟩
+  -- But both have color c₀ — contradiction with proper coloring
+  have hcolor₁ : f (α₁, β₁) = c₀ := hβ₁
+  have hcolor₂ : f (α₂, β₂) = c₀ := hβ₂
+  exact hf _ _ hadj (by rw [hcolor₁, hcolor₂])
+
+/-- The ω₂² E-H graph has chromatic number exactly ℵ₂. The upper bound
+    follows from ℵ₂-colorability. The lower bound uses double pigeonhole
+    at the ℵ₂ level: any ≤ ℵ₁ coloring forces a monochromatic edge. -/
 theorem erdosHajnalGraph2_chromatic :
     chromaticNumber erdosHajnalGraph2 = aleph 2 := by
   apply le_antisymm
   · exact csInf_le (OrderBot.bddBelow _) isColorable_erdosHajnal2_aleph2
-  · exact erdosHajnalGraph2_chromatic_lower
+  · -- Lower bound: aleph 2 ≤ χ, i.e., for any κ-coloring, aleph 2 ≤ κ
+    apply le_csInf (colorable_nonempty erdosHajnalGraph2)
+    intro κ ⟨C, hCk, f, hf⟩
+    by_contra hlt
+    push_neg at hlt
+    have hle : κ ≤ ℵ₁ := le_aleph1_of_lt_aleph2 hlt
+    rw [← hCk] at hle
+    exact erdosHajnal2_not_aleph1_colorable C hle f hf
 
 /-- A graph on ω₂² with χ = ℵ₂ where smaller subgraphs have χ ≤ ℵ₁.
     This gives a weaker bound (≤ ℵ₁ instead of ≤ ℵ₀) so it does not directly

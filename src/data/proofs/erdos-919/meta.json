@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/919",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos919Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "ordinals",
       "infinite-combinatorics"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 919,
     "erdosUrl": "https://erdosproblems.com/919",
@@ -51,16 +51,16 @@
       "Erdős-Hajnal construction on ω₁²",
       "Generalization framework for cardinal parameters"
     ],
-    "axiomCount": 1,
-    "lineCount": 546,
-    "assumptions": "1 axiom: erdosHajnalGraph2_chromatic_lower (χ(E-H graph on ω₂²) ≥ ℵ₂). The graph is now explicitly defined with adjacency proved symmetric/loopless, ℵ₂-colorability proved, and subgraph bound proved. Only the lower bound on chromatic number remains axiomatized.",
-    "theoremCount": 32
+    "axiomCount": 0,
+    "lineCount": 690,
+    "assumptions": "None. All results are fully machine-checked. The Erdős-Hajnal graphs on ω₁² and ω₂² are proved to have chromatic numbers ℵ₁ and ℵ₂ respectively via double pigeonhole arguments. The open questions (Questions 1 and 2) are stated but not assumed.",
+    "theoremCount": 42
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
     "problemStatement": "Two questions about graphs on ordinal products:\n\n1. Is there a graph $G$ on vertex set $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ such that every subgraph whose vertices have lesser order type has $\\chi \\leq \\aleph_0$?\n\n2. What if we instead ask for $\\chi(G) = \\aleph_1$?\n\n**Known:** Erdős-Hajnal constructed $G$ on $\\omega_1^2$ with $\\chi(G) = \\aleph_1$ and smaller subgraphs having $\\chi \\leq \\aleph_0$.",
     "text": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
-    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and proves the Erdős-Hajnal construction has chromatic number exactly ℵ₁. The upper bound uses second-coordinate coloring; the lower bound (χ ≥ ℵ₁) is proved via a double pigeonhole argument:\n1. For each row α, some color has an uncountable fiber (pigeonhole on row)\n2. Some color is dominant for uncountably many rows (pigeonhole on colors)\n3. Two such rows yield a monochromatic adjacent pair via cofinality of uncountable subsets of ω₁\n\nKey infrastructure: cardinal pigeonhole for uncountable→countable maps, countability of initial segments of ω₁ (via typein/card_type), cofinality of uncountable subsets.",
+    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and proves both Erdős-Hajnal constructions have chromatic numbers exactly ℵ₁ and ℵ₂ respectively. Each proof uses second-coordinate coloring for the upper bound and a double pigeonhole argument for the lower bound:\n1. For each row α, some color has a large fiber (pigeonhole on row)\n2. Some color is dominant for many rows (pigeonhole on colors)\n3. Two such rows yield a monochromatic adjacent pair via cofinality\n\nThe ω₂² proof lifts the ω₁² argument one cardinal level: ℵ₁ plays the role of ℵ₀ throughout, using that initial segments of ω₂ have cardinality ≤ ℵ₁ and that sets of size > ℵ₁ are cofinal in ω₂.",
     "keyInsights": [
       "**Ordinal Products**: ω₁² = ω₁ × ω₁ has rich structure; vertices can be compared by lexicographic order, enabling order-type constraints",
       "**Babai's Failure**: The Erdős-Hajnal graph shows that chromatic constraints don't propagate from smaller to larger subgraphs at uncountable cardinals",
@@ -165,9 +165,9 @@
       "Set"
     ],
     "namespace": "Erdos919",
-    "lineCount": 546,
-    "axiomCount": 1,
-    "theoremCount": 32,
+    "lineCount": 690,
+    "axiomCount": 0,
+    "theoremCount": 42,
     "definitionCount": 15
   },
   "crossReferences": [
