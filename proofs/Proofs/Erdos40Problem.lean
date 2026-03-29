@@ -123,8 +123,9 @@ theorem problem_40_implies_28
 
 /-- For Sidon sets (r_A(n) ≤ 1 for all n), we have
     |A ∩ {1,...,N}| ≤ (1+o(1))N^{1/2}. So the N^{1/2} threshold
-    is natural: Sidon sets are exactly at this density. -/
-axiom sidon_density_bound :
+    is natural: Sidon sets are exactly at this density.
+    Classical result (Lindström 1969). Stated as Prop without proof. -/
+def SidonDensityBound : Prop :=
   ∀ A : Set ℕ, (∀ n : ℕ, repCount A n ≤ 1) →
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
       (countingFn A N : ℝ) ≤ (1 + ε) * Real.sqrt N
