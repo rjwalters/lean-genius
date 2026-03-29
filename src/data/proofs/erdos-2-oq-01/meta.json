@@ -29,15 +29,15 @@
       }
     ],
     "dateAdded": "2026-03-29",
-    "axiomCount": 4,
-    "lineCount": 170,
+    "axiomCount": 3,
+    "lineCount": 232,
     "prerequisites": [
       "Covering systems and congruence classes",
       "Well-ordering principle for natural numbers",
       "Basic properties of achievability (monotonicity)",
       "Erdős Problem #2 parent formalization"
     ],
-    "assumptions": "4 axioms (inherited from parent): hough_bound, balister_bound, owens_construction, reciprocal_sum_ge_one. All structural theorems proved from these axioms with 0 sorries.",
+    "assumptions": "3 axioms (inherited from parent): balister_bound, owens_construction, reciprocal_sum_ge_one. hough_bound is a proved theorem, not an axiom. All structural theorems proved from these axioms with 0 sorries.",
     "mathlib_version": "4.29.0",
     "originalContributions": [
       "Formal definition of IsExactMaxMinModulus with equivalent characterizations",
