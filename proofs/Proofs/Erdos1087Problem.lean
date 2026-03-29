@@ -248,9 +248,13 @@ An n-point set has C(n,4) = n(n-1)(n-2)(n-3)/24 quadruples.
 -/
 theorem total_quadruples (n : ℕ) (hn : n ≥ 4) :
     (n.choose 4) = n * (n-1) * (n-2) * (n-3) / 24 := by
-  rw [Nat.choose_eq_factorial_div_factorial (by omega : 4 ≤ n)]
-  ring_nf
-  sorry -- arithmetic details
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 4 := ⟨n - 4, by omega⟩
+  simp only [show m + 4 - 1 = m + 3 from by omega,
+             show m + 4 - 2 = m + 2 from by omega,
+             show m + 4 - 3 = m + 1 from by omega]
+  rw [Nat.choose_eq_descFactorial_div_factorial]
+  simp [Nat.descFactorial, Nat.factorial]
+  ring
 
 /--
 **Trivial Upper Bound:**
