@@ -278,4 +278,104 @@ theorem sidon_sum_count (S : Finset ℤ) (hS : IsSidon S) :
   rw [Finset.card_image_of_injOn (sidon_sum_injective S hS)]
   exact card_sorted_pairs S
 
+/-
+## Section 7: Corrected problem statement
+
+The original ErdosProblem530 above has a universal upper bound (∀ A, ℓ(A)² ≤ c₂|A|),
+which is FALSE: geometric sequences {1, 2, 4, ..., 2^(N-1)} are entirely Sidon
+(distinct binary representations give distinct pairwise sums), so maxSidonSize = N
+and N² ≫ c₂·N for large N.
+
+The correct formulation: the LOWER bound is universal (every set has big Sidon subset),
+while the UPPER bound is existential (some sets of each size have bounded Sidon subsets).
+-/
+
+/-- Erdős Problem 530 (corrected): ℓ(N) = Θ(√N).
+    Lower bound (∀): every N-element set has Sidon subset of size Ω(√N) — KSS.
+    Upper bound (∃): for each N, some set has maxSidonSize ≤ O(√N) — {1,...,N}. -/
+def ErdosProblem530Corrected : Prop :=
+  (∃ c₁ : ℕ, c₁ ≥ 1 ∧ ∀ A : Finset ℤ, A.card ≥ 4 →
+    maxSidonSize A * maxSidonSize A ≥ c₁ * A.card) ∧
+  (∃ c₂ : ℕ, c₂ ≥ 1 ∧ ∀ N : ℕ, N ≥ 4 →
+    ∃ A : Finset ℤ, A.card = N ∧ maxSidonSize A * maxSidonSize A ≤ c₂ * N)
+
+/-
+## Section 8: Upper bound for interval sets
+
+For a Sidon subset S of {1,...,N}, the k(k+1)/2 distinct pairwise sums
+all lie in {1,...,2N}. Since |{1,...,2N}| = 2N, we get k(k+1)/2 ≤ 2N.
+Using evenness of k(k+1), this gives k(k+1) ≤ 4N, hence k² ≤ 4N.
+-/
+
+/-- Any Sidon subset of {1,...,N} has |S|² ≤ 4N.
+    Proof: k(k+1)/2 distinct sums fit in {1,...,2N} of size 2N. -/
+theorem sidon_subset_interval_bound (S : Finset ℤ) (N : ℕ) (hN : 1 ≤ N)
+    (hS : IsSidon S) (hRange : ∀ x ∈ S, 1 ≤ x ∧ x ≤ ↑N) :
+    S.card * S.card ≤ 4 * N := by
+  set k := S.card with hk_def
+  have h_count := sidon_sum_count S hS
+  -- Sums of sorted pairs from S lie in [1, 2N]
+  have h_sub : ((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2) ⊆
+      Finset.Icc (1 : ℤ) (2 * ↑N) := by
+    intro s hs
+    simp only [Finset.mem_image, Prod.exists] at hs
+    obtain ⟨a, b, hab, rfl⟩ := hs
+    simp only [Finset.mem_filter, Finset.mem_product] at hab
+    rw [Finset.mem_Icc]
+    exact ⟨by linarith [(hRange a hab.1.1).1],
+           by linarith [(hRange a hab.1.1).2, (hRange b hab.1.2).2]⟩
+  -- |[1, 2N]| = 2N
+  have h_icc : (Finset.Icc (1 : ℤ) (2 * ↑N)).card = 2 * N := by
+    simp [Finset.card_Icc]; omega
+  -- k(k+1)/2 ≤ 2N
+  have h_sum_le : k * (k + 1) / 2 ≤ 2 * N := by
+    calc k * (k + 1) / 2
+        = (((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2)).card :=
+          h_count.symm
+      _ ≤ (Finset.Icc (1 : ℤ) (2 * ↑N)).card := Finset.card_le_card h_sub
+      _ = 2 * N := h_icc
+  -- k(k+1) is even (one of k, k+1 is even)
+  have h_even : 2 ∣ k * (k + 1) := by
+    rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+    · exact ⟨m * (k + 1), by rw [hm]; ring⟩
+    · exact ⟨k * (m + 1), by rw [hm]; ring⟩
+  -- k(k+1) = 2*(k(k+1)/2) ≤ 2*2N = 4N
+  have h_prod : k * (k + 1) ≤ 4 * N :=
+    calc k * (k + 1) = k * (k + 1) / 2 * 2 := (Nat.div_mul_cancel h_even).symm
+      _ ≤ (2 * N) * 2 := Nat.mul_le_mul_right 2 h_sum_le
+      _ = 4 * N := by ring
+  -- k² ≤ k(k+1) ≤ 4N
+  calc k * k ≤ k * (k + 1) := Nat.mul_le_mul_left k (Nat.le_succ k)
+    _ ≤ 4 * N := h_prod
+
+/-- The interval {1,...,N} has maxSidonSize² ≤ 4N. -/
+theorem interval_sidon_upper (N : ℕ) (hN : 1 ≤ N) :
+    maxSidonSize (Finset.Icc (1 : ℤ) ↑N) * maxSidonSize (Finset.Icc (1 : ℤ) ↑N) ≤ 4 * N := by
+  set A := Finset.Icc (1 : ℤ) ↑N
+  set ss := A.powerset.filter (fun S => IsSidon S)
+  by_cases hne : ss.Nonempty
+  · obtain ⟨S₀, hS₀_mem, hS₀_max⟩ := ss.exists_max_image Finset.card hne
+    have hsup : ss.sup Finset.card = S₀.card := le_antisymm
+      (Finset.sup_le fun S hS => hS₀_max S hS) (Finset.le_sup hS₀_mem)
+    show ss.sup Finset.card * ss.sup Finset.card ≤ 4 * N
+    rw [hsup]
+    have hf := Finset.mem_filter.mp hS₀_mem
+    exact sidon_subset_interval_bound S₀ N hN hf.2
+      (fun x hx => Finset.mem_Icc.mp (Finset.mem_powerset.mp hf.1 hx))
+  · rw [Finset.not_nonempty_iff_eq_empty] at hne
+    show ss.sup Finset.card * ss.sup Finset.card ≤ 4 * N
+    simp [hne]
+
+/-- The card of Finset.Icc 1 N equals N for integers. -/
+private theorem icc_one_card (N : ℕ) : (Finset.Icc (1 : ℤ) ↑N).card = N := by
+  simp [Finset.card_Icc]; omega
+
+/-- The corrected Erdős Problem 530 is proved: ℓ(N) = Θ(√N).
+    Lower bound from KSS axiom; upper bound from interval sum counting (proved).
+    With c₁ from KSS and c₂ = 4, the witness is A = {1,...,N}. -/
+theorem erdos530_corrected_proof : ErdosProblem530Corrected :=
+  ⟨komlos_sulyok_szemeredi,
+   ⟨4, by omega, fun N hN =>
+     ⟨Finset.Icc (1 : ℤ) ↑N, icc_one_card N, interval_sidon_upper N (by omega)⟩⟩⟩
+
 end Erdos530
