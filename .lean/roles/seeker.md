@@ -216,46 +216,110 @@ This is preferable to returning a weak candidate that wastes researcher cycles.
 
 ## Output Format
 
-When you select a problem:
+### Selection Report
 
 ```markdown
 # Problem Selection Report
 
-**Date**: [DATE]
-**Selected Problem**: [problem-id]
+**Date**: <today's date>
+**Mode**: SELECT
+**Pool Status**: <N available, M in-progress, K completed>
 
-## The Problem
+## Selected Problem
 
-**Title**: [title]
-**Source**: [source proof]
-**Category**: [category]
-**Tractability**: [tractability]
+- **ID**: <problem-id>
+- **Name**: <problem name>
+- **Tier**: <A/B/C>
+- **Significance**: <N/10>
+- **Tractability**: <N/10>
+- **Knowledge Score**: <N> (<EMPTY/WEAK/MODERATE/RICH>)
+- **Status**: <available/revisit>
 
-## Full Description
+## Selection Rationale
 
-[The complete problem description from the registry]
+1. <Why this problem was selected>
+2. <Knowledge tier justification>
+3. <Tractability assessment>
 
-## Why This Problem
+## Rejection Summary
 
-1. [Reason 1 - why it's a good fit]
-2. [Reason 2 - why it's tractable]
-3. [Reason 3 - related proofs exist]
+- **Candidates considered**: <total count>
+- **Candidates rejected**: <count and reasons>
+- **Confidence**: high|medium|low (based on score spread between top candidates)
 
 ## Related Gallery Proofs
 
-- [proof-1]: [how it relates]
-- [proof-2]: [how it relates]
+- <proof-1>: <relevance>
+- <proof-2>: <relevance>
 
 ## Suggested First Steps
 
-1. [First step - what to explore]
-2. [Second step - what to try]
+1. <First step - what to explore in OBSERVE>
+2. <Second step - Scout survey during ORIENT>
+3. <Third step - possible approach for DECIDE>
+
+## Pool Summary After Selection
+
+| Status | Count |
+|--------|-------|
+| Available | <N> |
+| In Progress | <N> |
+| Completed | <N> |
+| Surveyed | <N> |
+| Skipped | <N> |
+| Blocked | <N> |
+
+## Candidate Pool Health
+
+<Assessment of pool health>
+
+- Pool depth: <adequate/low/critical>
+- Recommendation: <"Pool healthy" or "Consider adding more problems from gallery">
+- Next refresh recommended: <when>
 
 ## Initialized
 
 - [ ] Research workspace created
 - [ ] problem.md populated
 - [ ] Ready for /researcher
+```
+
+### Status Report
+
+```markdown
+# Candidate Pool Status
+
+**Date**: <today's date>
+
+## Summary
+
+| Status | Count |
+|--------|-------|
+| Available | <N> |
+| In Progress | <N> |
+| Completed | <N> |
+| Surveyed | <N> |
+| Skipped | <N> |
+| Blocked | <N> |
+| **Total** | **<N>** |
+
+## Knowledge Distribution
+
+| Tier | Count | Description |
+|------|-------|-------------|
+| EMPTY | <N> | No research yet |
+| WEAK | <N> | 1-5 knowledge items |
+| MODERATE | <N> | 6-15 knowledge items |
+| RICH | <N> | 16+ knowledge items |
+
+## Active Claims
+
+<list of active claims with timestamps>
+
+## Recommendations
+
+- <recommendation 1>
+- <recommendation 2>
 ```
 
 ## Integration with Researcher
