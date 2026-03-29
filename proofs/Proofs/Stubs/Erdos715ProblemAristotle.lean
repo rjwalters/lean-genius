@@ -32,29 +32,37 @@ def K4 : SimpleGraph' (Fin 4) where
 instance : DecidableRel K4.adj := fun u v => inferInstanceAs (Decidable (u ≠ v))
 
 /-- K_4 is 3-regular: every vertex has degree 3. -/
-theorem K4_is_3_regular : IsRegular K4 3 := by sorry
+theorem K4_is_3_regular : IsRegular K4 3 := by
+  intro v; fin_cases v <;> native_decide
 
 /-- In K_4, every pair of distinct vertices is adjacent. -/
-theorem K4_complete (u v : Fin 4) (h : u ≠ v) : K4.adj u v := by sorry
+theorem K4_complete (u v : Fin 4) (h : u ≠ v) : K4.adj u v := h
 
 /-- K_4 has exactly 6 edges. -/
 theorem K4_edge_count :
     (Finset.filter (fun p : Fin 4 × Fin 4 => p.1 < p.2 ∧ K4.adj p.1 p.2)
-      Finset.univ).card = 6 := by sorry
+      Finset.univ).card = 6 := by native_decide
 
 /-- In any r-regular graph on n vertices, r * n is even (handshaking lemma). -/
-theorem regular_parity_helper (r n : ℕ) (h : 2 * e = r * n) : Even (r * n) := by sorry
+theorem regular_parity_helper (r n : ℕ) (h : 2 * e = r * n) : Even (r * n) :=
+  ⟨e, by omega⟩
 
 /-- Every vertex in a 4-regular graph has degree at least 3. -/
 theorem four_reg_ge_three {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph' V) [DecidableRel G.adj] (v : V)
-    (hG : IsRegular G 4) : degree G v ≥ 3 := by sorry
+    (hG : IsRegular G 4) : degree G v ≥ 3 := by
+  have := hG v; omega
 
 /-- If H is a subgraph of G, the degree of any vertex in H is ≤ its degree in G. -/
 theorem subgraph_degree_le {V : Type*} [Fintype V] [DecidableEq V]
     (G H : SimpleGraph' V) [DecidableRel G.adj] [DecidableRel H.adj]
     (hHG : ∀ u v, H.adj u v → G.adj u v) (v : V) :
-    degree H v ≤ degree G v := by sorry
+    degree H v ≤ degree G v := by
+  simp only [degree]
+  apply Finset.card_le_card
+  intro u
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact hHG v u
 
 /-- A 3-regular graph on n vertices has exactly 3n/2 edges. -/
 theorem three_regular_edge_formula {V : Type*} [Fintype V] [DecidableEq V]
