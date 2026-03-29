@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Axiom reduction 4\u21923: demoted sieve_conjectured_bound from axiom to def (was open conjecture incorrectly axiomatized). 0 sorries.",
+    "progressSummary": "COMPLETED: 5 proved theorems (sieve_initial, sieve_greedy, 2 sub-sum lemmas, restricted_question), 2 irreducible axioms (eggleton_erdos_selfridge published bound, filtered_sum_implies_full), 0 sorries, 9 defs.",
     "builtItems": [
       "Proved smallPrime_le_sieveReciprocal and largePrime_le_sieveReciprocal (sub-sum lemmas)",
       "Proved erdos_460_restricted_question theorem (was axiom \u2014 eliminated 1 axiom)",
@@ -71,10 +71,10 @@
     {
       "path": "Proofs/Erdos460Problem.lean",
       "filename": "Erdos460Problem.lean",
-      "lineCount": 201,
-      "theoremCount": 2,
+      "lineCount": 246,
+      "theoremCount": 5,
       "axiomCount": 4,
-      "defCount": 8,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos460Problem.lean"
