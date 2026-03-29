@@ -72,19 +72,6 @@ convex hulls can be written as a sum where at most d summands require
 convexification. The remaining n - d summands come from the original sets.
 -/
 
-/-- **Shapley-Folkman Lemma**: Let S₁, …, Sₙ be nonempty subsets of a
-    d-dimensional real vector space. For any point x in the Minkowski sum
-    ∑ conv(Sᵢ), there exists a decomposition x = ∑ xᵢ with xᵢ ∈ conv(Sᵢ)
-    such that xᵢ ∈ Sᵢ for all but at most d = finrank(ℝ, E) indices. -/
-theorem shapley_folkman [FiniteDimensional ℝ E]
-    {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
-    (hne : ∀ i ∈ t, (S i).Nonempty)
-    {x : E} (hx : ∃ (f : ι → E), (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧
-      (∀ i, i ∉ t → f i = 0) ∧ ∑ i in t, f i = x) :
-    ∃ (d : Decomposition S t x),
-      d.excessIndices.card ≤ Module.finrank ℝ E := by
-  sorry
-
 /-
 Part 3: Key Lemma — Reduction Step
 
@@ -178,31 +165,103 @@ theorem excess_vertices_affine_dependent [FiniteDimensional ℝ E]
   omega
 
 /-
-Part 4: Decomposition of Main Proof
+Part 4: Proof Architecture for the Main Theorem
 
-The main proof of shapley_folkman proceeds by:
-1. Among all decompositions x = ∑ xᵢ with xᵢ ∈ conv(Sᵢ), choose one minimizing
-   the total number of Carathéodory vertices across all summands.
-2. If > d indices have xᵢ ∉ Sᵢ, collect one "excess" vertex from each.
-3. These > d points are affinely dependent (by excess_vertices_affine_dependent).
-4. Use the dependence to shift weights, reducing the vertex count — contradiction.
+The proof of shapley_folkman uses a reduction argument:
+1. Start with any decomposition x = ∑ xᵢ with xᵢ ∈ conv(Sᵢ)
+2. If > d indices have xᵢ ∉ Sᵢ, reduce the excess count by 1
+3. Iterate until ≤ d excess indices remain
+
+The reduction step (reduce_excess_by_one) works as follows:
+  a. For each excess index i, xᵢ ∈ conv(Sᵢ) \ Sᵢ, so by convexHull_not_mem_requires_two,
+     xᵢ has a binary representation xᵢ = tᵢ·aᵢ + (1-tᵢ)·bᵢ with aᵢ,bᵢ ∈ Sᵢ, 0 < tᵢ < 1
+  b. Define δᵢ = bᵢ - aᵢ for each excess index
+  c. Since there are d+1 excess indices and dim E = d, the δᵢ are linearly dependent:
+     ∃ cᵢ not all zero with ∑ cᵢ·δᵢ = 0
+  d. Perturb: xᵢ' = xᵢ + ε·cᵢ·δᵢ for a scalar ε chosen so that one index
+     hits a boundary (xᵢ' = aᵢ or bᵢ ∈ Sᵢ)
+  e. Since ∑ cᵢ·δᵢ = 0, the perturbation preserves ∑ xᵢ = x
+  f. The result has one fewer excess index
 -/
 
-/-- A decomposition is vertex-minimal if no other decomposition uses fewer
-    total Carathéodory vertices. The existence of such a decomposition follows
-    from the well-ordering of ℕ; the vertex count is finite because each summand
-    uses finitely many vertices by Carathéodory's theorem. -/
-theorem exists_minimal_decomposition
+/-- A decomposition can always be constructed from the hypothesis. -/
+theorem exists_decomposition
     {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
-    (hne : ∀ i ∈ t, (S i).Nonempty)
     {x : E} (hx : ∃ (f : ι → E), (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧
       (∀ i, i ∉ t → f i = 0) ∧ ∑ i in t, f i = x) :
     ∃ (d : Decomposition S t x), True := by
   obtain ⟨f, hf_mem, hf_zero, hf_sum⟩ := hx
   exact ⟨⟨f, hf_mem, hf_zero, hf_sum⟩, trivial⟩
 
+/-- **Reduction step**: If a decomposition has more than d excess indices
+    (where d = Module.finrank ℝ E), there exists another decomposition of
+    the same point with strictly fewer excess indices.
+
+    This is the core of the Shapley-Folkman proof. The argument uses:
+    - Binary representations from convexHull_not_mem_requires_two
+    - Linear dependence of d+1 direction vectors in d-dimensional space
+    - A perturbation that collapses one excess index to an original point
+
+    Proof sketch:
+    1. Pick d+1 excess indices i₁,...,i_{d+1}
+    2. For each iₘ: point(iₘ) = tₘ·aₘ + (1-tₘ)·bₘ, aₘ bₘ ∈ S(iₘ), 0 < tₘ < 1
+    3. Let δₘ = bₘ - aₘ. By Fintype.linearIndependent_iff + dim bound:
+       ∃ c : Fin(d+1) → ℝ, ∑ cₘ·δₘ = 0, ∃ m, cₘ ≠ 0
+    4. Set ε = argmin over m of |boundary_distance(m)/cₘ| (only m with cₘ ≠ 0)
+    5. New point: point'(iₘ) = point(iₘ) + ε·cₘ·δₘ = aₘ + (1-tₘ+ε·cₘ)·δₘ
+    6. For the minimizing m: point'(iₘ) = aₘ ∈ S(iₘ) or bₘ ∈ S(iₘ)
+    7. ∑ point'(i) = ∑ point(i) + ε·∑ cₘ·δₘ = x + 0 = x  ✓
+    8. All point'(i) ∈ conv(S i) since they're still convex combinations  ✓ -/
+theorem reduce_excess_by_one [FiniteDimensional ℝ E]
+    {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
+    (hne : ∀ i ∈ t, (S i).Nonempty)
+    {x : E} (D : Decomposition S t x)
+    (hexcess : Module.finrank ℝ E < D.excessIndices.card) :
+    ∃ D' : Decomposition S t x, D'.excessIndices.card < D.excessIndices.card := by
+  sorry
+
 /-
-Part 5: Corollaries
+Part 5: Main Theorem Proof (from reduction step)
+-/
+
+/-- **Shapley-Folkman Lemma** (proved from the reduction step).
+
+    By induction on the excess count: start with any decomposition
+    (from the hypothesis), then repeatedly apply reduce_excess_by_one until
+    the excess count drops to ≤ d = finrank(ℝ, E). -/
+theorem shapley_folkman [FiniteDimensional ℝ E]
+    {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
+    (hne : ∀ i ∈ t, (S i).Nonempty)
+    {x : E} (hx : ∃ (f : ι → E), (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧
+      (∀ i, i ∉ t → f i = 0) ∧ ∑ i in t, f i = x) :
+    ∃ (d : Decomposition S t x),
+      d.excessIndices.card ≤ Module.finrank ℝ E := by
+  -- Construct initial decomposition from the hypothesis
+  obtain ⟨f, hf_mem, hf_zero, hf_sum⟩ := hx
+  let D₀ : Decomposition S t x := ⟨f, hf_mem, hf_zero, hf_sum⟩
+  -- Induction on the excess count: for any bound n, any decomposition with
+  -- excessIndices.card ≤ n can be reduced to one with ≤ d excess indices.
+  suffices ∀ n : ℕ, ∀ D : Decomposition S t x, D.excessIndices.card ≤ n →
+      ∃ D' : Decomposition S t x, D'.excessIndices.card ≤ Module.finrank ℝ E by
+    exact this D₀.excessIndices.card D₀ le_rfl
+  intro n
+  induction n with
+  | zero =>
+    -- Base case: 0 excess indices ≤ d (trivially)
+    intro D hD
+    exact ⟨D, by omega⟩
+  | succ n ih =>
+    intro D hD
+    -- If already ≤ d, done
+    by_cases hle : D.excessIndices.card ≤ Module.finrank ℝ E
+    · exact ⟨D, hle⟩
+    -- Otherwise excess > d, so reduce by one and apply IH
+    · push_neg at hle
+      obtain ⟨D', hD'lt⟩ := reduce_excess_by_one hne D hle
+      exact ih D' (by omega)
+
+/-
+Part 6: Corollaries
 
 Direct consequences of the Shapley-Folkman lemma that are useful
 in applications to mathematical economics and optimization.
@@ -211,7 +270,9 @@ in applications to mathematical economics and optimization.
 /-- **Shapley-Folkman-Starr Corollary (qualitative form)**:
     The Minkowski sum of many sets is "nearly convex" — its convex hull
     differs from the sum itself in a bounded way controlled by dimension,
-    not by the number of summands. -/
+    not by the number of summands.
+
+    Requires: convexHull(∑ Sᵢ) ⊆ ∑ convexHull(Sᵢ) (Minkowski sum identity). -/
 theorem sum_close_to_convexHull [FiniteDimensional ℝ E]
     {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
     (hne : ∀ i ∈ t, (S i).Nonempty)
