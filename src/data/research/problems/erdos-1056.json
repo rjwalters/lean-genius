@@ -29,10 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Aristotle companion file for Wilson constraint axiom elimination. Wilson theorem (Mathlib.NumberTheory.Wilson) can prove the axiom but direct import breaks existing native_decide proofs. Companion file bridges the gap.",
+    "progressSummary": "PROGRESS: Proved 3 Wilson theorem sorries in companion file (ico_prod_eq_factorial, wilson_nat, wilson_constraint) using Mathlib ZMod.wilsons_lemma bridge. 0 sorries remain in companion.",
     "builtItems": [
       "Created Erdos1056Aristotle.lean companion file with Wilson bridge lemmas",
-      "Identified Mathlib path: ZMod.prod_Ico_one_prime → wilson_constraint"
+      "Identified Mathlib path: ZMod.prod_Ico_one_prime → wilson_constraint",
+      "Proved ico_prod_eq_factorial by induction on p",
+      "Proved wilson_nat via ZMod.wilsons_lemma + ZMod.val bridge",
+      "Proved wilson_constraint: combines ico_prod_eq_factorial + wilson_nat"
     ],
     "insights": [
       "wilson_constraint axiom IS provable from Mathlib Wilson theorem (ZMod.prod_Ico_one_prime)",
