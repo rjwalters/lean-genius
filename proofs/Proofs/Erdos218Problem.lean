@@ -154,9 +154,17 @@ noncomputable def upperDensity (S : Set ℕ) : ℝ :=
 noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
   liminf (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N) atTop
 
-/-- A set has density d iff upper and lower densities both equal d. -/
-axiom hasDensity_iff_upper_lower (S : Set ℕ) (d : ℝ) :
-    HasDensity S d ↔ upperDensity S = d ∧ lowerDensity S = d
+/-- A set has density d iff upper and lower densities both equal d.
+    This follows from the standard analysis result: Tendsto f l (nhds a) ↔
+    limsup f l = a ∧ liminf f l = a. -/
+theorem hasDensity_iff_upper_lower (S : Set ℕ) (d : ℝ) :
+    HasDensity S d ↔ upperDensity S = d ∧ lowerDensity S = d := by
+  simp only [HasDensity, upperDensity, lowerDensity]
+  constructor
+  · intro h
+    exact ⟨h.limsup_eq, h.liminf_eq⟩
+  · rintro ⟨hsup, hinf⟩
+    exact tendsto_of_le_liminf_of_limsup_le (le_of_eq hinf.symm) (le_of_eq hsup)
 
 /- ## Part IV: The Sets of Interest -/
 
