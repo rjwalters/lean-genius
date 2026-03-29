@@ -14,7 +14,7 @@
     "sorries": 9,
     "axiomCount": 0,
     "assumptions": "0 axiom declarations. 9 sorries in Sylow counting arguments that need Mathlib's Sylow API. 4 concrete examples fully proved.",
-    "lineCount": 190
+    "lineCount": 187
   },
   "overview": {
     "historicalContext": "The classification of groups of order pq is one of the first applications of Sylow's theorems taught in abstract algebra. Burnside's 1911 textbook included this classification as a foundational result.",
@@ -37,7 +37,7 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "SylowPQ",
-    "lineCount": 190,
+    "lineCount": 187,
     "axiomCount": 0,
     "theoremCount": 14,
     "sorryTheorems": 9,
