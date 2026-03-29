@@ -20,7 +20,7 @@
 
   Status: AXIOMATIZED
   Axioms: 1 (primorial growth rate bound)
-  Sorries: 0
+  Sorries: 1 (mersenne_coprime_of_coprime)
 
   References:
   [Gar59] Garner "The residue number system" (1959)
