@@ -42,7 +42,10 @@ noncomputable def sumTwoMinusThree : ℝ :=
 
 /-- The two definitions agree. -/
 theorem S_eq_sumTwoMinusThree : S = sumTwoMinusThree := by
-  sorry
+  simp only [S, T, sumTwoMinusThree]
+  congr 1; ext n
+  split_ifs with h <;> simp_all
+  push_cast; ring
 
 /-!
 ## Part II: Convergence
@@ -62,7 +65,10 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
 
 /-- The denominators 2^n - 3 are nonzero for n ≥ 2. -/
 theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
-  sorry
+  have h : (2 : ℝ) ^ n ≥ 4 := by
+    calc (2 : ℝ) ^ n ≥ 2 ^ 2 := pow_le_pow_right (by norm_num) hn
+      _ = 4 := by norm_num
+  linarith
 
 /-- Note: 2^1 - 3 = -1, so the n=1 term is -1. -/
 theorem first_term : 1 / ((2 : ℝ)^1 - 3) = -1 := by
