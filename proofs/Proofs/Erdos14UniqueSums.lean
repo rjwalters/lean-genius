@@ -111,11 +111,133 @@ theorem sidon_all_unique (A : Set ℕ) (hS : IsSidon A) :
   rw [hset]
   simp
 
-/-- Sidon sets have size at most O(√N) in {1,...,N}.
-    This is a fundamental result in additive combinatorics. -/
-axiom sidon_size_bound :
-  ∀ A : Set ℕ, IsSidon A → ∀ N : ℕ,
-    Set.ncard (A ∩ Set.Icc 1 N) ≤ 2 * Nat.sqrt N
+/-- For a Sidon set, pairwise differences are injective: if a - b = c - d
+    with b < a, d < c, and all in a Sidon set, then (a, b) = (c, d). -/
+private lemma sidon_diff_injective {A : Set ℕ} (hA : IsSidon A)
+    {a b c d : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hd : d ∈ A)
+    (hba : b < a) (hdc : d < c) (heq : a - b = c - d) :
+    a = c ∧ b = d := by
+  -- a - b = c - d with b < a, d < c ⟹ a + d = c + b
+  have h_sum : a + d = c + b := by omega
+  -- Apply Sidon with appropriate ordering via case analysis
+  rcases le_or_gt b c with hbc | hbc
+  · rcases le_or_gt d a with hda | hda
+    · -- b ≤ c, d ≤ a: Sidon on (b,c) and (d,a) gives b = d, c = a
+      have := hA b c d a hb hc hd ha hbc hda (by omega)
+      exact ⟨this.2.symm, this.1⟩
+    · -- b ≤ c, a < d: Sidon on (b,c) and (a,d) gives b = a — contradicts b < a
+      have := hA b c a d hb hc ha hd hbc (le_of_lt hda) (by omega)
+      constructor <;> omega
+  · rcases le_or_gt d a with hda | hda
+    · -- c < b, d ≤ a: Sidon on (c,b) and (d,a) gives c = d, b = a — contradicts b < a
+      have := hA c b d a hc hb hd ha (le_of_lt hbc) hda (by omega)
+      constructor <;> omega
+    · -- c < b, a < d: Sidon on (c,b) and (a,d) gives c = a, b = d
+      have := hA c b a d hc hb ha hd (le_of_lt hbc) (le_of_lt hda) (by omega)
+      constructor <;> omega
+
+/-- Count of ordered pairs (a,b) with b < a in F equals F.card*(F.card-1)/2. -/
+private lemma card_strict_pairs (F : Finset ℕ) :
+    2 * ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1)).card =
+    F.card * (F.card - 1) := by
+  -- offDiag = {(a,b) | a ≠ b} splits as {b < a} ∪ {a < b}
+  have h_eq : F.offDiag =
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1)) ∪
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2)) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_offDiag, Finset.mem_union, Finset.mem_filter, Finset.mem_product]
+    constructor
+    · intro ⟨ha, hb, hne⟩
+      rcases lt_or_gt_of_ne hne with h | h
+      · exact Or.inr ⟨⟨ha, hb⟩, h⟩
+      · exact Or.inl ⟨⟨ha, hb⟩, h⟩
+    · rintro (⟨⟨ha, hb⟩, hlt⟩ | ⟨⟨ha, hb⟩, hlt⟩) <;> exact ⟨ha, hb, by omega⟩
+  -- The two halves are disjoint
+  have h_disj : Disjoint
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1))
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2)) := by
+    rw [Finset.disjoint_left]
+    intro ⟨a, b⟩ h₁ h₂
+    simp only [Finset.mem_filter] at h₁ h₂; omega
+  -- |{b<a}| = |{a<b}| via Prod.swap bijection
+  have h_swap :
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1)).card =
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2)).card :=
+    Finset.card_bij (fun p _ => (p.2, p.1))
+      (fun ⟨a, b⟩ h => by simp only [Finset.mem_filter, Finset.mem_product] at h ⊢; exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩)
+      (fun ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h => Prod.ext (by simp only [Prod.mk.injEq] at h; exact h.2) (by simp only [Prod.mk.injEq] at h; exact h.1))
+      (fun ⟨a, b⟩ h => ⟨(b, a), by simp only [Finset.mem_filter, Finset.mem_product] at h ⊢; exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩, rfl⟩)
+  -- Combine: 2 * |{b<a}| = |offDiag| = k*(k-1)
+  have h_card := Finset.card_union_of_disjoint h_disj
+  rw [← h_eq, Finset.card_offDiag] at h_card; omega
+
+/-- Sidon sets have size at most 2√N in {1,...,N}.
+
+    **Proof**: k elements in a Sidon set A ∩ {1,...,N} produce k(k-1)/2 distinct
+    pairwise differences in {1,...,N-1}. So k(k-1)/2 ≤ N-1. For k ≥ 2⌊√N⌋+1,
+    this gives k(k-1)/2 ≥ ⌊√N⌋(2⌊√N⌋+1) = 2s²+s ≥ N > N-1, a contradiction. -/
+theorem sidon_size_bound :
+    ∀ A : Set ℕ, IsSidon A → ∀ N : ℕ,
+      Set.ncard (A ∩ Set.Icc 1 N) ≤ 2 * Nat.sqrt N := by
+  intro A hSidon N
+  -- N = 0: empty interval
+  rcases N.eq_zero_or_pos with rfl | hN
+  · have : Set.Icc 1 0 = (∅ : Set ℕ) := Set.Icc_eq_empty (by omega)
+    simp [this]
+  -- S = A ∩ Icc 1 N is finite
+  have hfin : (A ∩ Set.Icc 1 N).Finite :=
+    (Set.finite_Icc 1 N).subset Set.inter_subset_right
+  rw [hfin.ncard_eq_toFinset_card']
+  set F := hfin.toFinset
+  -- Properties of F
+  have hF_mem : ∀ a, a ∈ F ↔ a ∈ A ∧ 1 ≤ a ∧ a ≤ N := by
+    intro a; simp [hfin.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc]
+  -- Handle empty case
+  rcases F.eq_empty_or_nonempty with rfl | hne
+  · simp
+  -- By contradiction: assume k > 2√N
+  set k := F.card; set s := Nat.sqrt N
+  by_contra hbig; push_neg at hbig
+  have hs1 : 1 ≤ s := Nat.one_le_sqrt.mpr hN
+  have hk_lb : k ≥ 2 * s + 1 := by omega
+  -- Define the difference map on ordered pairs {(a,b) ∈ F×F | b < a}
+  set P := (F ×ˢ F).filter (fun p : ℕ × ℕ => p.2 < p.1)
+  -- Step 1: the map (a,b) ↦ a-b is injective on P (Sidon property)
+  have h_inj : Set.InjOn (fun p : ℕ × ℕ => p.1 - p.2) ↑P := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at h₁ h₂
+    exact Prod.ext
+      (sidon_diff_injective hSidon ((hF_mem a₁).mp h₁.1.1).1 ((hF_mem b₁).mp h₁.1.2).1
+        ((hF_mem a₂).mp h₂.1.1).1 ((hF_mem b₂).mp h₂.1.2).1 h₁.2 h₂.2 heq).1
+      (sidon_diff_injective hSidon ((hF_mem a₁).mp h₁.1.1).1 ((hF_mem b₁).mp h₁.1.2).1
+        ((hF_mem a₂).mp h₂.1.1).1 ((hF_mem b₂).mp h₂.1.2).1 h₁.2 h₂.2 heq).2
+  -- Step 2: image of diff map ⊆ Finset.Ico 1 N = {1,...,N-1}
+  have h_img_sub : P.image (fun p : ℕ × ℕ => p.1 - p.2) ⊆ Finset.Ico 1 N := by
+    intro d hd
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product, Finset.mem_Ico] at hd ⊢
+    obtain ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, hlt⟩, rfl⟩ := hd
+    have ha' := (hF_mem a).mp ha; have hb' := (hF_mem b).mp hb
+    exact ⟨by omega, by omega⟩
+  -- Step 3: |P| = k(k-1)/2 (pair counting)
+  have h_pair_count : 2 * P.card = k * (k - 1) := card_strict_pairs F
+  -- Step 4: |P| ≤ |Ico 1 N| = N - 1
+  have h_bound : P.card ≤ N - 1 :=
+    calc P.card
+        = (P.image (fun p : ℕ × ℕ => p.1 - p.2)).card :=
+          (Finset.card_image_of_injOn h_inj).symm
+      _ ≤ (Finset.Ico 1 N).card := Finset.card_le_card h_img_sub
+      _ = N - 1 := by rw [Finset.card_Ico]; omega
+  -- Step 5: derive contradiction
+  -- k ≥ 2s+1, N < (s+1)², so k(k-1)/2 ≥ s(2s+1) ≥ N > N-1
+  have hN_lt : N ≤ s * s + 2 * s := by
+    have := Nat.lt_succ_sqrt' N -- N < (s+1)^2
+    have : (s + 1) ^ 2 = s * s + 2 * s + 1 := by ring
+    omega
+  -- (2s+1)*s = 2s²+s ≥ s²+2s ≥ N (using s ≥ 1 ⟹ s² ≥ s)
+  have h_big : (2 * s + 1) * s ≥ N := by nlinarith
+  -- k*(k-1) ≥ (2s+1)·2s ≥ 2N, so P.card = k*(k-1)/2 ≥ N > N-1
+  have h_prod : k * (k - 1) ≥ 2 * N := by nlinarith
+  omega
 
 /- ## Part IV: The Main Questions -/
 
