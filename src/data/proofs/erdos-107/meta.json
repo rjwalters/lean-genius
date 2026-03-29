@@ -16,7 +16,7 @@
       "convex-geometry"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
@@ -52,16 +52,19 @@
       "InGeneralPosition: general position predicate using Collinear",
       "IsConvexNGon: convex n-gon via extreme-point characterization",
       "CardSet and f(n): Ramsey-type threshold function",
+      "InGeneralPosition.mono: hereditary property (proved)",
+      "CardSet.mono: upward closure of threshold set (proved)",
+      "cardSet_three_lower_bound: f(3) >= 3 via witness construction (proved)",
       "Erdos-Szekeres lower bound 2^{n-2}+1 (axiomatized)",
       "Suk bound 2^{(1+o(1))n} with Filter.atTop formalization",
       "HMPT bound 2^{n+O(sqrt(n log n))} with existential constant",
       "HappyEndingConjecture as Prop (correctly open)"
     ],
     "leanFile": {
-      "lineCount": 188,
+      "lineCount": 265,
       "structureCount": 0,
       "axiomCount": 6,
-      "theoremCount": 5,
+      "theoremCount": 9,
       "defCount": 6,
       "imports": [
         "Mathlib"
@@ -69,8 +72,8 @@
     },
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 188,
-    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "lineCount": 265,
+    "assumptions": "6 axiom(s) and 4 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

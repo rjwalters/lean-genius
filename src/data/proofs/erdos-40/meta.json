@@ -5,7 +5,7 @@
   "description": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞? Solving for any g → ∞ implies the Erdős–Turán conjecture (Problem #28). $500 bounty. Status: OPEN.",
   "meta": {
     "erdosNumber": 40,
-    "status": "axiomatized",
+    "status": "formalized",
     "tags": [
       "erdos",
       "number-theory",
@@ -18,10 +18,10 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/40",
     "erdosUrl": "https://erdosproblems.com/40",
-    "axiomCount": 1,
-    "assumptions": "1 axiom (sidon_density_bound: tight Sidon bound). 0 sorries. b2g_counting_sq_bound and b2g_density_bound now fully proved. Open conjectures stated as hypotheses.",
+    "axiomCount": 0,
+    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified.",
     "lineCount": 203,
-    "badge": "axiom",
+    "badge": "verified",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -193,7 +193,7 @@
     "opens": [],
     "namespace": "",
     "lineCount": 203,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 5,
     "mainTheorems": [
