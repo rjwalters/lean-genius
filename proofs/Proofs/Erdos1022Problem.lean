@@ -263,7 +263,98 @@ def IsDegreeBounded [Fintype α] (F : Finset (Finset α)) (d : ℕ) : Prop :=
     put one element in S and the rest outside. Since sets are disjoint, this works. -/
 theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
     (hsize : AllSizeAtLeast F 2) (hdeg : IsDegreeBounded F 1) : HasPropertyB F := by
-  sorry -- Uses the disjointness from degree 1 + greedy coloring
+  induction F using Finset.induction_on with
+  | empty => exact hasPropertyB_empty
+  | insert hna ih =>
+    rename_i f₀ F'
+    -- Transfer hypotheses to F'
+    have hF'_size : AllSizeAtLeast F' 2 :=
+      fun f hf => hsize f (Finset.mem_insert_of_mem hf)
+    have hF'_deg : IsDegreeBounded F' 1 := by
+      intro x
+      have hsub : F'.filter (x ∈ ·) ⊆ (insert f₀ F').filter (x ∈ ·) := by
+        intro f hf; rw [Finset.mem_filter] at hf ⊢
+        exact ⟨Finset.mem_insert_of_mem hf.1, hf.2⟩
+      exact le_trans (Finset.card_le_card hsub) (hdeg x)
+    obtain ⟨S', hS'⟩ := ih hF'_size hF'_deg
+    have hf₀_card : 2 ≤ f₀.card := hsize f₀ (Finset.mem_insert_self f₀ F')
+    -- Key: degree ≤ 1 implies f₀ is disjoint from all members of F'
+    have hdisjoint : ∀ g ∈ F', Disjoint f₀ g := by
+      intro g hg; rw [Finset.disjoint_left]; intro x hxf₀ hxg
+      have h1 : f₀ ∈ (insert f₀ F').filter (x ∈ ·) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_insert_self _ _, hxf₀⟩
+      have h2 : g ∈ (insert f₀ F').filter (x ∈ ·) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_insert_of_mem hg, hxg⟩
+      have hne : f₀ ≠ g := fun h => hna (h ▸ hg)
+      have hsub : {f₀, g} ⊆ (insert f₀ F').filter (x ∈ ·) := by
+        intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+        exact hy.elim (· ▸ h1) (· ▸ h2)
+      have : 2 ≤ ((insert f₀ F').filter (x ∈ ·)).card := by
+        calc 2 = (insert f₀ ({g} : Finset _)).card := by
+                rw [Finset.card_insert_of_not_mem (Finset.not_mem_singleton.mpr hne),
+                    Finset.card_singleton]
+            _ ≤ _ := Finset.card_le_card hsub
+      linarith [hdeg x]
+    -- Pick two distinct elements a, b ∈ f₀ (since |f₀| ≥ 2)
+    have hne₀ : f₀.Nonempty := Finset.card_pos.mp (by omega)
+    obtain ⟨a, ha⟩ := hne₀
+    have hera_ne : (f₀.erase a).Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]; intro h
+      have := Finset.card_erase_of_mem ha; rw [h, Finset.card_empty] at this; omega
+    obtain ⟨b, hb_era⟩ := hera_ne
+    have hb : b ∈ f₀ := Finset.mem_of_mem_erase hb_era
+    have hba : b ≠ a := Finset.ne_of_mem_erase hb_era
+    -- Case split on how f₀ interacts with existing coloring S'
+    by_cases h_inter : (f₀ ∩ S').Nonempty
+    · by_cases h_diff : (f₀ \ S').Nonempty
+      · -- Both f₀ ∩ S' and f₀ \ S' nonempty: S' already works
+        exact ⟨S', fun f hf => by
+          rcases Finset.mem_insert.mp hf with rfl | hf
+          · exact ⟨h_inter, h_diff⟩
+          · exact hS' f hf⟩
+      · -- f₀ ⊆ S' (no element of f₀ is outside S'): remove element a from S'
+        have hf₀_sub : ∀ x ∈ f₀, x ∈ S' := by
+          intro x hx; by_contra hxn
+          exact h_diff ⟨x, Finset.mem_sdiff.mpr ⟨hx, hxn⟩⟩
+        refine ⟨S'.erase a, fun f hf => ?_⟩
+        rcases Finset.mem_insert.mp hf with rfl | hf
+        · -- For f₀: b ∈ f₀ ∩ (S' \ {a}), a ∈ f₀ \ (S' \ {a})
+          exact ⟨⟨b, Finset.mem_inter.mpr ⟨hb, Finset.mem_erase.mpr ⟨hba, hf₀_sub b hb⟩⟩⟩,
+                 ⟨a, Finset.mem_sdiff.mpr ⟨ha, Finset.not_mem_erase a S'⟩⟩⟩
+        · -- For g ∈ F': a ∉ g (disjointness), so erasing a doesn't affect g
+          have ha_not : a ∉ f := Finset.disjoint_left.mp (hdisjoint f hf) ha
+          constructor
+          · obtain ⟨c, hc⟩ := (hS' f hf).1
+            rw [Finset.mem_inter] at hc
+            exact ⟨c, Finset.mem_inter.mpr ⟨hc.1, Finset.mem_erase.mpr
+              ⟨fun hca => ha_not (hca ▸ hc.1), hc.2⟩⟩⟩
+          · obtain ⟨c, hc⟩ := (hS' f hf).2
+            rw [Finset.mem_sdiff] at hc
+            exact ⟨c, Finset.mem_sdiff.mpr ⟨hc.1, fun h =>
+              hc.2 (Finset.erase_subset a S' h)⟩⟩
+    · -- f₀ ∩ S' = ∅: add element a to S'
+      have hf₀_disj_S : ∀ x ∈ f₀, x ∉ S' := by
+        intro x hx hxS
+        exact h_inter ⟨x, Finset.mem_inter.mpr ⟨hx, hxS⟩⟩
+      refine ⟨insert a S', fun f hf => ?_⟩
+      rcases Finset.mem_insert.mp hf with rfl | hf
+      · -- For f₀: a ∈ f₀ ∩ S, b ∈ f₀ \ S (b ∉ S' and b ≠ a)
+        exact ⟨⟨a, Finset.mem_inter.mpr ⟨ha, Finset.mem_insert_self a S'⟩⟩,
+               ⟨b, Finset.mem_sdiff.mpr ⟨hb, fun h =>
+                  (Finset.mem_insert.mp h).elim (fun heq => hba heq)
+                    (hf₀_disj_S b hb)⟩⟩⟩
+      · -- For g ∈ F': a ∉ g, so adding a to S' doesn't affect g
+        have ha_not : a ∉ f := Finset.disjoint_left.mp (hdisjoint f hf) ha
+        constructor
+        · obtain ⟨c, hc⟩ := (hS' f hf).1
+          rw [Finset.mem_inter] at hc
+          exact ⟨c, Finset.mem_inter.mpr ⟨hc.1, Finset.mem_insert_of_mem hc.2⟩⟩
+        · obtain ⟨c, hc⟩ := (hS' f hf).2
+          rw [Finset.mem_sdiff] at hc
+          refine ⟨c, Finset.mem_sdiff.mpr ⟨hc.1, fun h => ?_⟩⟩
+          rcases Finset.mem_insert.mp h with rfl | hcS
+          · exact ha_not hc.1
+          · exact hc.2 hcS
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 11: Union and Combination of Families
