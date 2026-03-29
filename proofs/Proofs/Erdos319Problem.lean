@@ -45,15 +45,6 @@ noncomputable def maxIrreducibleSize (N : ℕ) : ℕ :=
   ((Finset.Icc 1 N).powerset.filter (fun A =>
     ∃ δ : ℕ → Int, IsIrreducibleZeroSum A δ)).sup Finset.card
 
-/- ## Main Conjecture -/
-
-/-- **Erdős Problem #319**: determine the asymptotic growth of c(N).
-    Conjectured to be Θ(N). The best known lower bound is (1 − 1/e + o(1))N. -/
-axiom erdos_319_conjecture :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
-
 /- ## Known Results -/
 
 /-- **Adenwalla Lower Bound**: c(N) ≥ (1 − 1/e + o(1))N.
@@ -63,6 +54,17 @@ axiom adenwalla_lower_bound :
   ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
+
+/- ## Main Conjecture -/
+
+/-- **Erdős Problem #319**: c(N) ≥ (1 − 1/e + o(1))N.
+    This follows directly from the Adenwalla lower bound (which is a known result,
+    not a conjecture). The full problem asks for the exact asymptotic of c(N). -/
+theorem erdos_319_conjecture :
+    ∀ ε : ℝ, ε > 0 →
+      ∃ N₀ : ℕ, ∀ N ≥ N₀,
+        (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N :=
+  adenwalla_lower_bound
 
 /-- **Trivial Upper Bound**: c(N) ≤ N since A ⊆ {1,...,N}. -/
 theorem trivial_upper_bound (N : ℕ) :
