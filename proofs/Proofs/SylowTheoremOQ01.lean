@@ -205,14 +205,103 @@ theorem both_normal_when_coprime (h : IsPQGroup G) (hpq : h.p < h.q)
     exact sylow_normal_of_card_one (unique_sylow_p_when_coprime h hpq hndvd)
   · exact sylow_q_normal h hpq
 
+/-- Core lemma: If both Sylow subgroups of a pq-group are normal, G is cyclic.
+    Proof sketch:
+    1. P ∩ Q = {1} (coprime orders)
+    2. Elements of P and Q commute (commutator ∈ P ∩ Q = {1})
+    3. Generators have order p and q, product has order pq = |G|
+    4. G is cyclic -/
+private theorem cyclic_of_both_sylow_normal (h : IsPQGroup G) (hpq : h.p < h.q)
+    (P : Sylow h.p G) (hPN : (P : Subgroup G).Normal)
+    (Q : Sylow h.q G) (hQN : (Q : Subgroup G).Normal) :
+    IsCyclic G := by
+  haveI : Fact h.p.Prime := ⟨h.hp⟩
+  haveI : Fact h.q.Prime := ⟨h.hq⟩
+  have hP_card := sylow_p_card h P
+  have hQ_card := sylow_q_card h Q
+  -- Step 1: P ⊓ Q = ⊥ (coprime orders → trivial intersection)
+  have hdisjoint : Disjoint (P : Subgroup G) (Q : Subgroup G) := by
+    rw [Subgroup.disjoint_def]
+    intro x hxP hxQ
+    have h1 : orderOf x ∣ h.p := by
+      have := orderOf_dvd_natCard (⟨x, hxP⟩ : (P : Subgroup G))
+      rwa [hP_card, Subgroup.orderOf_mk] at this
+    have h2 : orderOf x ∣ h.q := by
+      have := orderOf_dvd_natCard (⟨x, hxQ⟩ : (Q : Subgroup G))
+      rwa [hQ_card, Subgroup.orderOf_mk] at this
+    have hcop : Nat.Coprime h.p h.q :=
+      (h.hp.coprime_iff_not_dvd).mpr (fun hdvd =>
+        absurd (Nat.Prime.eq_of_dvd_of_prime h.hp h.hq hdvd) h.hpq)
+    exact (orderOf_eq_one_iff_eq_one).mp (Nat.eq_one_of_dvd_coprimes hcop h1 h2)
+  -- Step 2: Elements of P and Q commute (commutator argument)
+  have hcommute : ∀ g : G, g ∈ (P : Subgroup G) →
+      ∀ k : G, k ∈ (Q : Subgroup G) → Commute g k := by
+    intro g hg k hk
+    -- Commutator c = g⁻¹ * k⁻¹ * g * k is in P ∩ Q = {1}
+    -- c ∈ P: since P normal, k⁻¹*g*k ∈ P, and g⁻¹ ∈ P
+    -- c ∈ Q: since Q normal, g⁻¹*k⁻¹*g ∈ Q, and k ∈ Q
+    have h_conj_P : k⁻¹ * g * k ∈ (P : Subgroup G) := by
+      have := hPN.conj_mem g hg k⁻¹; simpa using this
+    have h_conj_Q : g⁻¹ * k⁻¹ * g ∈ (Q : Subgroup G) := by
+      have := hQN.conj_mem k⁻¹ ((Q : Subgroup G).inv_mem hk) g⁻¹; simpa using this
+    have hc_in_P : g⁻¹ * (k⁻¹ * g * k) ∈ (P : Subgroup G) :=
+      (P : Subgroup G).mul_mem ((P : Subgroup G).inv_mem hg) h_conj_P
+    have hc_in_Q : g⁻¹ * k⁻¹ * g * k ∈ (Q : Subgroup G) :=
+      (Q : Subgroup G).mul_mem h_conj_Q hk
+    -- Both are the same element (by associativity), and it's in P ∩ Q = {1}
+    have hc_one : g⁻¹ * (k⁻¹ * g * k) = 1 := by
+      have : g⁻¹ * k⁻¹ * g * k = g⁻¹ * (k⁻¹ * g * k) := by group
+      exact Subgroup.disjoint_def.mp hdisjoint _ hc_in_P (this ▸ hc_in_Q)
+    -- From g⁻¹ * (k⁻¹ * g * k) = 1, derive g = k⁻¹ * g * k
+    have h_conj_eq : k⁻¹ * g * k = g := by rwa [inv_mul_eq_one] at hc_one
+    -- Therefore g * k = k * g
+    show g * k = k * g
+    calc g * k = k * (k⁻¹ * g * k) := by group
+      _ = k * g := by rw [h_conj_eq]
+  -- Step 3: Get generators of P and Q
+  -- P is cyclic (prime order)
+  haveI : IsCyclic (P : Subgroup G) := isCyclic_of_prime_card (by
+    rw [← Nat.card_eq_fintype_card]; exact hP_card)
+  haveI : IsCyclic (Q : Subgroup G) := isCyclic_of_prime_card (by
+    rw [← Nat.card_eq_fintype_card]; exact hQ_card)
+  -- Get generators
+  obtain ⟨⟨g, hg_mem⟩, hg_gen⟩ := IsCyclic.exists_generator (α := (P : Subgroup G))
+  obtain ⟨⟨k, hk_mem⟩, hk_gen⟩ := IsCyclic.exists_generator (α := (Q : Subgroup G))
+  -- orderOf g = p (generator of cyclic group of order p)
+  have hg_ord : orderOf g = h.p := by
+    have h1 : orderOf (⟨g, hg_mem⟩ : (P : Subgroup G)) = h.p := by
+      rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hg_gen x)]
+      rw [← Nat.card_eq_fintype_card]; exact hP_card
+    rwa [Subgroup.orderOf_mk] at h1
+  -- orderOf k = q
+  have hk_ord : orderOf k = h.q := by
+    have h1 : orderOf (⟨k, hk_mem⟩ : (Q : Subgroup G)) = h.q := by
+      rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hk_gen x)]
+      rw [← Nat.card_eq_fintype_card]; exact hQ_card
+    rwa [Subgroup.orderOf_mk] at h1
+  -- g and k commute
+  have hgk_comm : Commute g k := hcommute g hg_mem k hk_mem
+  -- Step 4: orderOf (g * k) = p * q = |G|
+  have hcop_pq : Nat.Coprime h.p h.q :=
+    (h.hp.coprime_iff_not_dvd).mpr (fun hdvd =>
+      absurd (Nat.Prime.eq_of_dvd_of_prime h.hp h.hq hdvd) h.hpq)
+  have hord_mul : orderOf (g * k) = h.p * h.q := by
+    have := hgk_comm.orderOf_mul_eq_mul_orderOf_of_coprime (by rwa [hg_ord, hk_ord])
+    rwa [hg_ord, hk_ord] at this
+  -- G is cyclic: zpowers (g * k) has cardinality pq = |G|, so it's all of G
+  refine ⟨⟨g * k, fun x => ?_⟩⟩
+  have h_card_zpow : Nat.card (Subgroup.zpowers (g * k)) = Nat.card G := by
+    rw [Subgroup.card_zpowers, hord_mul, Nat.card_eq_fintype_card, h.hcard]
+  have h_top : Subgroup.zpowers (g * k) = ⊤ :=
+    Subgroup.eq_top_of_card_eq h_card_zpow
+  rw [h_top]; exact Subgroup.mem_top x
+
 /-- When p ∤ (q-1), G is cyclic of order pq -/
 theorem cyclic_when_coprime (h : IsPQGroup G) (hpq : h.p < h.q)
     (hndvd : ¬ (h.p ∣ h.q - 1)) :
     IsCyclic G := by
-  -- Both Sylow subgroups are normal with coprime orders p and q.
-  -- G ≅ P × Q ≅ ℤ/p × ℤ/q ≅ ℤ/pq (by CRT), which is cyclic.
-  -- Full proof requires internal direct product decomposition.
-  sorry
+  obtain ⟨⟨P, hPN⟩, ⟨Q, hQN⟩⟩ := both_normal_when_coprime h hpq hndvd
+  exact cyclic_of_both_sylow_normal h hpq P hPN Q hQN
 
 /-
 ## Part V: The Non-Abelian Case (when p | (q-1))
@@ -231,9 +320,15 @@ def nonAbelianPQExists (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
 theorem nonabelian_sylow_p_count (h : IsPQGroup G) (hpq : h.p < h.q)
     (hdvd : h.p ∣ h.q - 1) (hncyc : ¬ IsCyclic G) :
     Fintype.card (Sylow h.p G) = h.q := by
-  -- n_p ∈ {1, q}. If n_p = 1, both Sylow subgroups are normal,
-  -- making G cyclic (contradiction). So n_p = q.
-  sorry
+  -- n_p ∈ {1, q}. If n_p = 1, both Sylow subgroups normal → G cyclic → contradiction
+  haveI : Fact h.p.Prime := ⟨h.hp⟩
+  rcases sylow_p_count h hpq with h1 | hq
+  · -- n_p = 1 → P is normal, Q is always normal → G cyclic → contradiction
+    exfalso; apply hncyc
+    obtain ⟨P, hPN⟩ := sylow_normal_of_card_one h1
+    obtain ⟨Q, hQN⟩ := sylow_q_normal h hpq
+    exact cyclic_of_both_sylow_normal h hpq P hPN Q hQN
+  · exact hq
 
 /-
 ## Part VI: Complete Classification
@@ -260,7 +355,8 @@ theorem pq_cyclic_classification (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime 
     (hpq : p < q) (hndvd : ¬ (p ∣ q - 1)) :
     ∀ (G : Type*) [Group G] [Fintype G],
       Fintype.card G = p * q → IsCyclic G := by
-  sorry
+  intro G _ _ hcard
+  exact cyclic_when_coprime ⟨p, q, hp, hq, ne_of_lt hpq, hcard⟩ hpq hndvd
 
 /-
 ## Part VII: Concrete Examples
