@@ -29,12 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 5 to 4. Proved positivity of the series.",
+    "progressSummary": "COMPLETED: Fixed open-conjecture axiom, added 5 theorems (partial fraction, term bounds, exponential growth). File: 113→166 lines, 1→6 theorems, 4→3 axioms.",
     "builtItems": [
-      "Proved series_positive theorem in Erdos1051Problem.lean"
+      "Proved series_positive theorem in Erdos1051Problem.lean",
+      "partial_fraction: telescoping identity",
+      "term_pos, term_le_reciprocal_sq: term analysis",
+      "strict_mono_pos, exponential_growth_bound: sequence bounds"
     ],
     "insights": [
-      "Proved series_positive from series_converges using tsum_pos. Each term 1/(a_n*a_{n+1}) > 0 since a_n > 0."
+      "Proved series_positive from series_converges using tsum_pos. Each term 1/(a_n*a_{n+1}) > 0 since a_n > 0.",
+      "simple_series_question was incorrectly axiomatized as fact — converted to def (its an open conjecture)",
+      "Partial fraction 1/(xy) = 1/(y-x) · (1/x - 1/y) enables telescoping analysis",
+      "Term bound 1/(aₙ·aₙ₊₁) ≤ 1/aₙ² from strict monotonicity",
+      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

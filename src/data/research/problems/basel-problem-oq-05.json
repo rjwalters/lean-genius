@@ -29,13 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries in Aristotle companion need algebraic closure under composition. Strategy documented.",
+    "progressSummary": "COMPLETED: Created BaselProblemOQ05.lean (184 lines, 8T, 2A, 0S). Formalizes Euler proof structure via Weierstrass product. Key finding: product formula NOT in Mathlib — axiomatized.",
     "builtItems": [
-      "Documented proof strategy for zeta_two_transcendental and zeta_four_transcendental"
+      "Documented proof strategy for zeta_two_transcendental and zeta_four_transcendental",
+      "proofs/Proofs/BaselProblemOQ05.lean (184 lines, 8T, 2A, 0S)",
+      "Gallery: src/data/proofs/basel-problem-oq-05/"
     ],
     "insights": [
       "Both sorries reduce to: if p(a^n/c)=0 for c∈ℚ×, construct q(x) = c^d·p(x^n/c) vanishing at a",
-      "Key Mathlib tools needed: Transcendental.pow, polynomial composition, IsAlgebraic closure under field ops"
+      "Key Mathlib tools needed: Transcendental.pow, polynomial composition, IsAlgebraic closure under field ops",
+      "Weierstrass product sin(πx)/(πx) = ∏(1-x²/n²) is NOT in Mathlib as of 4.26.0",
+      "Taylor x² coefficient extraction (-π²/6) is purely algebraic, fully provable",
+      "Finite product x² coefficient = -∑1/n² is provable by induction",
+      "The infinite product coefficient passage requires dominated convergence — second gap",
+      "Partial product positivity: each factor 1-x²/n² > 0 for |x| < 1 is fully verified",
+      "Mathlib proves Basel via Bernoulli polynomials (hasSum_zeta_two), not Weierstrass products"
     ],
     "mathlibGaps": [],
     "nextSteps": []
