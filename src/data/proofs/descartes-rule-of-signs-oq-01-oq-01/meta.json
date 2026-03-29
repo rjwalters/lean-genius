@@ -1,56 +1,56 @@
 {
-  "id": "descartes-rule-of-signs-oq-01-oq-01",
-  "title": "Descartes Parity via Complex Root Theory",
-  "slug": "descartes-rule-of-signs-oq-01-oq-01",
-  "description": "Explores proving Descartes' parity result using complex conjugate root pairs. Proves the conjugate root theorem, non-real root pairing, and parity of real root counts. Shows the factoring approach is more direct for Lean.",
-  "meta": {
-    "author": "Lean Genius",
-    "status": "verified",
-    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
-    "tags": [
-      "algebra",
-      "polynomials",
-      "complex analysis",
-      "Descartes rule"
-    ],
-    "badge": "verified",
-    "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 160,
-    "assumptions": "None. All results proved from Mathlib.",
-    "theoremCount": 10,
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "problemStatement": "Can the Descartes parity result be proved using Mathlib's existing complex root theory?",
-    "text": "Proves conjugate root theorem, non-real root pairing, and parity connection. Assesses that the factoring approach is more direct.",
-    "keyInsights": [
-      "Conjugate root theorem: z root → z̄ root for real polynomials",
-      "Non-real roots come in pairs → count is always even",
-      "Real root count has same parity as degree",
-      "Factoring approach (existing proof) is more direct for Lean than complex root theory"
+    "id": "descartes-rule-of-signs-oq-01-oq-01",
+    "title": "Descartes Parity via Complex Root Theory",
+    "slug": "descartes-rule-of-signs-oq-01-oq-01",
+    "description": "Explores proving Descartes' parity result using complex conjugate root pairs. Proves the conjugate root theorem, non-real root pairing, and parity of real root counts. Shows the factoring approach is more direct for Lean.",
+    "meta": {
+        "author": "Lean Genius",
+        "status": "verified",
+        "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+        "tags": [
+            "algebra",
+            "polynomials",
+            "complex analysis",
+            "Descartes rule"
+        ],
+        "badge": "verified",
+        "sorries": 0,
+        "axiomCount": 0,
+        "lineCount": 154,
+        "assumptions": "None. All results proved from Mathlib.",
+        "theoremCount": 10,
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "problemStatement": "Can the Descartes parity result be proved using Mathlib's existing complex root theory?",
+        "text": "Proves conjugate root theorem, non-real root pairing, and parity connection. Assesses that the factoring approach is more direct.",
+        "keyInsights": [
+            "Conjugate root theorem: z root → z̄ root for real polynomials",
+            "Non-real roots come in pairs → count is always even",
+            "Real root count has same parity as degree",
+            "Factoring approach (existing proof) is more direct for Lean than complex root theory"
+        ]
+    },
+    "conclusion": {
+        "summary": "YES, the complex root theory approach can prove parity, but the factoring approach in OQ01 is more direct. The complex approach has pedagogical value: it explains WHY (non-real roots pair up)."
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+            "Mathlib.FieldTheory.IsAlgClosed.Basic",
+            "Mathlib.Tactic"
+        ],
+        "namespace": "DescartesRuleOfSignsOQ01OQ01",
+        "lineCount": 154,
+        "axiomCount": 0,
+        "theoremCount": 10,
+        "definitionCount": 0
+    },
+    "crossReferences": [
+        {
+            "targetId": "descartes-rule-of-signs-oq-01",
+            "relationship": "extends",
+            "description": "Alternative proof approach for the parity result"
+        }
     ]
-  },
-  "conclusion": {
-    "summary": "YES, the complex root theory approach can prove parity, but the factoring approach in OQ01 is more direct. The complex approach has pedagogical value: it explains WHY (non-real roots pair up)."
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
-      "Mathlib.FieldTheory.IsAlgClosed.Basic",
-      "Mathlib.Tactic"
-    ],
-    "namespace": "DescartesRuleOfSignsOQ01OQ01",
-    "lineCount": 154,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 0
-  },
-  "crossReferences": [
-    {
-      "targetId": "descartes-rule-of-signs-oq-01",
-      "relationship": "extends",
-      "description": "Alternative proof approach for the parity result"
-    }
-  ]
 }

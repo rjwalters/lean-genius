@@ -1,194 +1,194 @@
 {
-  "id": "erdos-485-oq-01",
-  "title": "Erdős #485 OQ: Exact Growth Rate of f(k) — Minimum Terms in Squared Polynomials",
-  "slug": "erdos-485-oq-01",
-  "description": "Open question about the exact asymptotic growth rate of f(k), the minimum number of terms in P(x)² over polynomials with k terms. Known: c·log k ≤ f(k) ≤ k^(1-c). The enormous gap between logarithmic and polynomial growth is unresolved.",
-  "meta": {
-    "author": "Erdős (1949); Schinzel (1987); Schinzel-Zannier (2009)",
-    "sourceUrl": "https://erdosproblems.com/485",
-    "date": "1949",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos485OQ01.lean",
-    "tags": [
-      "erdos",
-      "algebra",
-      "polynomials",
-      "sparse-polynomials",
-      "asymptotics",
-      "solved",
-      "open-problem",
-      "research"
+    "id": "erdos-485-oq-01",
+    "title": "Erdős #485 OQ: Exact Growth Rate of f(k) — Minimum Terms in Squared Polynomials",
+    "slug": "erdos-485-oq-01",
+    "description": "Open question about the exact asymptotic growth rate of f(k), the minimum number of terms in P(x)² over polynomials with k terms. Known: c·log k ≤ f(k) ≤ k^(1-c). The enormous gap between logarithmic and polynomial growth is unresolved.",
+    "meta": {
+        "author": "Erdős (1949); Schinzel (1987); Schinzel-Zannier (2009)",
+        "sourceUrl": "https://erdosproblems.com/485",
+        "date": "1949",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/Erdos485OQ01.lean",
+        "tags": [
+            "erdos",
+            "algebra",
+            "polynomials",
+            "sparse-polynomials",
+            "asymptotics",
+            "solved",
+            "open-problem",
+            "research"
+        ],
+        "badge": "axiom",
+        "sorries": 2,
+        "mathlibDependencies": [
+            {
+                "theorem": "Polynomial.support",
+                "description": "Support (set of nonzero coefficient indices) of a polynomial",
+                "module": "Mathlib.Algebra.Polynomial.Basic"
+            },
+            {
+                "theorem": "Polynomial.coeff_mul",
+                "description": "Coefficient of product via Cauchy convolution",
+                "module": "Mathlib.Algebra.Polynomial.Basic"
+            },
+            {
+                "theorem": "Filter.Tendsto",
+                "description": "Limit/convergence for filter-based topology",
+                "module": "Mathlib.Order.Filter.Basic"
+            }
+        ],
+        "originalContributions": [
+            "Formal statement of the exact growth rate open question",
+            "Formalization of Schinzel-Zannier lower bound (axiom) and Erdős upper bound (axiom)",
+            "Structural observation: positive coefficients prevent cancellation",
+            "Proof that f(1) = 1 (monomial squaring)",
+            "Lacunary polynomial lower bound formalization",
+            "Survey of connections to additive combinatorics and height theory"
+        ],
+        "dateAdded": "2026-03-28",
+        "axiomCount": 3,
+        "lineCount": 277,
+        "assumptions": "3 axioms: Schinzel-Zannier lower bound, Erdős upper bound, f(k)→∞. Lacunary lower bound was REMOVED (found to be false: counterexample p = 1-x²-(1/2)x⁴).",
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "Erdős Problem #485 originates from Rényi and Rédei (1947) who first studied the term count of squared polynomials. Erdős and Rényi conjectured that f(k) → ∞, which Schinzel confirmed in 1987 with the bound f(k) > (log log k)/log 2. Schinzel and Zannier improved this to f(k) ≫ log k in 2009 using height theory. Erdős himself proved f(k) < k^(1-c) in 1949, showing the term count CAN be reduced significantly by squaring.",
+        "problemStatement": "**Open Question (OQ-01)**: What is the exact asymptotic growth rate of f(k)?\n\nKnown: c₁ · log k ≤ f(k) ≤ k^(1-c₂) for constants c₁, c₂ > 0.\n\nThe gap between logarithmic and polynomial growth is enormous. No conjectured answer is widely accepted.",
+        "text": "This formalization investigates the exact growth rate of f(k), the minimum number of terms in the square of a k-term polynomial over ℚ. While f(k) → ∞ is known (Schinzel 1987, Schinzel-Zannier 2009), the precise rate is one of the major open problems in sparse polynomial theory.\n\nThe file formalizes the known bounds as axioms, proves basic properties (f(1) = 1, positive coefficients prevent cancellation), and surveys the mathematical landscape: connections to additive combinatorics, height theory, and explicit constructions.",
+        "proofStrategy": "The file takes a survey approach, formalizing the known results as axioms and proving structural observations. The deep bounds (Schinzel-Zannier, Erdős) require analytic number theory and algebraic geometry beyond current Mathlib capabilities.",
+        "keyInsights": [
+            "The gap between log k and k^(1-c) is the core mystery",
+            "Cancellation in polynomial squaring is the key phenomenon — positive-coefficient polynomials have no cancellation",
+            "The problem connects to additive combinatorics: |A+A| vs |A| with coefficient cancellation",
+            "Schinzel-Zannier's proof uses height theory from arithmetic geometry",
+            "No explicit optimal constructions are known for large k"
+        ],
+        "prerequisites": [
+            "Polynomial algebra over ℚ",
+            "Support and term counting",
+            "Asymptotic analysis"
+        ]
+    },
+    "sections": [
+        {
+            "id": "definitions",
+            "title": "Definitions",
+            "startLine": 50,
+            "endLine": 60,
+            "summary": "Core definitions: termCount (polynomial support cardinality) and f(k) (minimum squared term count).",
+            "mathContext": "For $P \\in \\mathbb{Q}[x]$, $\\text{termCount}(P) = |\\text{supp}(P)|$ counts nonzero monomials. $f(k) = \\min\\{\\text{termCount}(P^2) : \\text{termCount}(P) = k\\}$."
+        },
+        {
+            "id": "bounds",
+            "title": "Known Asymptotic Bounds",
+            "startLine": 80,
+            "endLine": 120,
+            "summary": "Axiomatized bounds: f(k) ≥ c·log k (Schinzel-Zannier) and f(k) < k^(1-c) (Erdős).",
+            "mathContext": "The Schinzel-Zannier bound uses height theory on algebraic varieties. The Erdős bound uses explicit constructions of polynomials with efficient squaring."
+        },
+        {
+            "id": "structure",
+            "title": "Structural Observations",
+            "startLine": 122,
+            "endLine": 170,
+            "summary": "Positive coefficients prevent cancellation. Lacunary polynomials have many-term squares.",
+            "mathContext": "If all $a_i \\geq 0$, then $(\\sum a_i x^{e_i})^2$ has all positive coefficients — no cancellation. The interesting behavior requires mixed signs."
+        },
+        {
+            "id": "small-cases",
+            "title": "Small Cases and Examples",
+            "startLine": 172,
+            "endLine": 200,
+            "summary": "Verified: f(1) = 1. Stated: f(2) = 3.",
+            "mathContext": "A monomial $cx^d$ squares to $c^2 x^{2d}$ (1 term). A binomial $(a + bx^n)^2 = a^2 + 2abx^n + b^2x^{2n}$ has 3 terms."
+        },
+        {
+            "id": "hardness",
+            "title": "Why the Problem Is Hard",
+            "startLine": 202,
+            "endLine": 233,
+            "summary": "Survey of why the exact growth rate is difficult: cancellation complexity, additive combinatorics, height theory.",
+            "mathContext": "The problem sits at the intersection of algebraic geometry (height bounds), additive combinatorics (sumset theory with cancellation), and sparse polynomial theory."
+        }
     ],
-    "badge": "axiom",
-    "sorries": 2,
-    "mathlibDependencies": [
-      {
-        "theorem": "Polynomial.support",
-        "description": "Support (set of nonzero coefficient indices) of a polynomial",
-        "module": "Mathlib.Algebra.Polynomial.Basic"
-      },
-      {
-        "theorem": "Polynomial.coeff_mul",
-        "description": "Coefficient of product via Cauchy convolution",
-        "module": "Mathlib.Algebra.Polynomial.Basic"
-      },
-      {
-        "theorem": "Filter.Tendsto",
-        "description": "Limit/convergence for filter-based topology",
-        "module": "Mathlib.Order.Filter.Basic"
-      }
+    "conclusion": {
+        "summary": "This formalization captures the state of the art for Erdős Problem #485 OQ-01. The exact growth rate of f(k) remains unknown, with a gap between logarithmic and polynomial bounds. The file formalizes the known results and identifies the key mathematical obstacles.",
+        "implications": "**Current State**: Wide open — the exact growth rate is unknown.\n\n**Most Likely Resolution**: Experts lean toward polynomial growth f(k) = Θ(k^α) for some small α, but no proof exists.\n\n**Needed Breakthroughs**: Better understanding of coefficient cancellation in polynomial products, or new applications of height theory.",
+        "openQuestions": [
+            "Is f(k) = Θ(log k), Θ((log k)^β), or Θ(k^α)?",
+            "Can additive combinatorics methods (Plünnecke-Ruzsa) give better lower bounds when accounting for coefficient cancellation?",
+            "What are the exact values of f(k) for 3 ≤ k ≤ 20?",
+            "Do extremal polynomials (achieving f(k)) have special algebraic structure?"
+        ]
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-485",
+            "relationship": "parent",
+            "description": "Parent problem: f(k) → ∞ as k → ∞. This OQ asks for the exact growth rate."
+        }
     ],
-    "originalContributions": [
-      "Formal statement of the exact growth rate open question",
-      "Formalization of Schinzel-Zannier lower bound (axiom) and Erdős upper bound (axiom)",
-      "Structural observation: positive coefficients prevent cancellation",
-      "Proof that f(1) = 1 (monomial squaring)",
-      "Lacunary polynomial lower bound formalization",
-      "Survey of connections to additive combinatorics and height theory"
+    "leanFile": {
+        "imports": [
+            "Mathlib.Algebra.Polynomial.Basic",
+            "Mathlib.Algebra.Polynomial.Eval.Defs",
+            "Mathlib.Data.Real.Basic",
+            "Mathlib.Order.Filter.Basic",
+            "Mathlib.Tactic"
+        ],
+        "opens": [
+            "Polynomial",
+            "Finset",
+            "BigOperators"
+        ],
+        "namespace": "Erdos485OQ01",
+        "lineCount": 277,
+        "axiomCount": 3,
+        "theoremCount": 7,
+        "definitionCount": 2
+    },
+    "references": [
+        {
+            "authors": "Schinzel, Andrzej; Zannier, Umberto",
+            "title": "On the number of terms of a power of a polynomial",
+            "year": "2009",
+            "venue": "Atti Accad. Naz. Lincei Cl. Sci. Fis. Mat. Natur. Rend. Lincei Mat. Appl. 20, 95-98",
+            "note": "Best known lower bound: f(k) ≫ log k"
+        },
+        {
+            "authors": "Schinzel, Andrzej",
+            "title": "On the number of terms of a power of a polynomial",
+            "year": "1987",
+            "venue": "Acta Arith. 49, 55-70",
+            "note": "First proof that f(k) → ∞: f(k) > (log log k)/log 2"
+        },
+        {
+            "authors": "Erdős, Paul",
+            "title": "On the number of terms of the square of a polynomial",
+            "year": "1949",
+            "venue": "Nieuw Arch. Wisk. 23, 63-65",
+            "note": "Upper bound: f(k) < k^(1-c) for some c > 0"
+        }
     ],
-    "dateAdded": "2026-03-28",
-    "axiomCount": 3,
-    "lineCount": 233,
-    "assumptions": "3 axioms: Schinzel-Zannier lower bound, Erdős upper bound, f(k)→∞. Lacunary lower bound was REMOVED (found to be false: counterexample p = 1-x²-(1/2)x⁴).",
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #485 originates from Rényi and Rédei (1947) who first studied the term count of squared polynomials. Erdős and Rényi conjectured that f(k) → ∞, which Schinzel confirmed in 1987 with the bound f(k) > (log log k)/log 2. Schinzel and Zannier improved this to f(k) ≫ log k in 2009 using height theory. Erdős himself proved f(k) < k^(1-c) in 1949, showing the term count CAN be reduced significantly by squaring.",
-    "problemStatement": "**Open Question (OQ-01)**: What is the exact asymptotic growth rate of f(k)?\n\nKnown: c₁ · log k ≤ f(k) ≤ k^(1-c₂) for constants c₁, c₂ > 0.\n\nThe gap between logarithmic and polynomial growth is enormous. No conjectured answer is widely accepted.",
-    "text": "This formalization investigates the exact growth rate of f(k), the minimum number of terms in the square of a k-term polynomial over ℚ. While f(k) → ∞ is known (Schinzel 1987, Schinzel-Zannier 2009), the precise rate is one of the major open problems in sparse polynomial theory.\n\nThe file formalizes the known bounds as axioms, proves basic properties (f(1) = 1, positive coefficients prevent cancellation), and surveys the mathematical landscape: connections to additive combinatorics, height theory, and explicit constructions.",
-    "proofStrategy": "The file takes a survey approach, formalizing the known results as axioms and proving structural observations. The deep bounds (Schinzel-Zannier, Erdős) require analytic number theory and algebraic geometry beyond current Mathlib capabilities.",
-    "keyInsights": [
-      "The gap between log k and k^(1-c) is the core mystery",
-      "Cancellation in polynomial squaring is the key phenomenon — positive-coefficient polynomials have no cancellation",
-      "The problem connects to additive combinatorics: |A+A| vs |A| with coefficient cancellation",
-      "Schinzel-Zannier's proof uses height theory from arithmetic geometry",
-      "No explicit optimal constructions are known for large k"
-    ],
-    "prerequisites": [
-      "Polynomial algebra over ℚ",
-      "Support and term counting",
-      "Asymptotic analysis"
+    "mainTheorems": [
+        {
+            "name": "growth_at_least_log",
+            "type": "core",
+            "description": "f(k) ≥ c·log k (from Schinzel-Zannier axiom)",
+            "leanType": "∃ c > 0, ∃ K, ∀ k ≥ K, f(k) ≥ c · log k"
+        },
+        {
+            "name": "growth_at_most_sublinear",
+            "type": "core",
+            "description": "f(k) < k^(1-c) (from Erdős axiom)",
+            "leanType": "∃ c > 0, ∃ K, ∀ k ≥ K, f(k) < k^(1-c)"
+        },
+        {
+            "name": "f_one_eq",
+            "type": "supporting",
+            "description": "f(1) = 1 — monomial squares to monomial",
+            "leanType": "f 1 = 1"
+        }
     ]
-  },
-  "sections": [
-    {
-      "id": "definitions",
-      "title": "Definitions",
-      "startLine": 50,
-      "endLine": 60,
-      "summary": "Core definitions: termCount (polynomial support cardinality) and f(k) (minimum squared term count).",
-      "mathContext": "For $P \\in \\mathbb{Q}[x]$, $\\text{termCount}(P) = |\\text{supp}(P)|$ counts nonzero monomials. $f(k) = \\min\\{\\text{termCount}(P^2) : \\text{termCount}(P) = k\\}$."
-    },
-    {
-      "id": "bounds",
-      "title": "Known Asymptotic Bounds",
-      "startLine": 80,
-      "endLine": 120,
-      "summary": "Axiomatized bounds: f(k) ≥ c·log k (Schinzel-Zannier) and f(k) < k^(1-c) (Erdős).",
-      "mathContext": "The Schinzel-Zannier bound uses height theory on algebraic varieties. The Erdős bound uses explicit constructions of polynomials with efficient squaring."
-    },
-    {
-      "id": "structure",
-      "title": "Structural Observations",
-      "startLine": 122,
-      "endLine": 170,
-      "summary": "Positive coefficients prevent cancellation. Lacunary polynomials have many-term squares.",
-      "mathContext": "If all $a_i \\geq 0$, then $(\\sum a_i x^{e_i})^2$ has all positive coefficients — no cancellation. The interesting behavior requires mixed signs."
-    },
-    {
-      "id": "small-cases",
-      "title": "Small Cases and Examples",
-      "startLine": 172,
-      "endLine": 200,
-      "summary": "Verified: f(1) = 1. Stated: f(2) = 3.",
-      "mathContext": "A monomial $cx^d$ squares to $c^2 x^{2d}$ (1 term). A binomial $(a + bx^n)^2 = a^2 + 2abx^n + b^2x^{2n}$ has 3 terms."
-    },
-    {
-      "id": "hardness",
-      "title": "Why the Problem Is Hard",
-      "startLine": 202,
-      "endLine": 233,
-      "summary": "Survey of why the exact growth rate is difficult: cancellation complexity, additive combinatorics, height theory.",
-      "mathContext": "The problem sits at the intersection of algebraic geometry (height bounds), additive combinatorics (sumset theory with cancellation), and sparse polynomial theory."
-    }
-  ],
-  "conclusion": {
-    "summary": "This formalization captures the state of the art for Erdős Problem #485 OQ-01. The exact growth rate of f(k) remains unknown, with a gap between logarithmic and polynomial bounds. The file formalizes the known results and identifies the key mathematical obstacles.",
-    "implications": "**Current State**: Wide open — the exact growth rate is unknown.\n\n**Most Likely Resolution**: Experts lean toward polynomial growth f(k) = Θ(k^α) for some small α, but no proof exists.\n\n**Needed Breakthroughs**: Better understanding of coefficient cancellation in polynomial products, or new applications of height theory.",
-    "openQuestions": [
-      "Is f(k) = Θ(log k), Θ((log k)^β), or Θ(k^α)?",
-      "Can additive combinatorics methods (Plünnecke-Ruzsa) give better lower bounds when accounting for coefficient cancellation?",
-      "What are the exact values of f(k) for 3 ≤ k ≤ 20?",
-      "Do extremal polynomials (achieving f(k)) have special algebraic structure?"
-    ]
-  },
-  "crossReferences": [
-    {
-      "targetId": "erdos-485",
-      "relationship": "parent",
-      "description": "Parent problem: f(k) → ∞ as k → ∞. This OQ asks for the exact growth rate."
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Algebra.Polynomial.Basic",
-      "Mathlib.Algebra.Polynomial.Eval.Defs",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Polynomial",
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "Erdos485OQ01",
-    "lineCount": 277,
-    "axiomCount": 3,
-    "theoremCount": 7,
-    "definitionCount": 2
-  },
-  "references": [
-    {
-      "authors": "Schinzel, Andrzej; Zannier, Umberto",
-      "title": "On the number of terms of a power of a polynomial",
-      "year": "2009",
-      "venue": "Atti Accad. Naz. Lincei Cl. Sci. Fis. Mat. Natur. Rend. Lincei Mat. Appl. 20, 95-98",
-      "note": "Best known lower bound: f(k) ≫ log k"
-    },
-    {
-      "authors": "Schinzel, Andrzej",
-      "title": "On the number of terms of a power of a polynomial",
-      "year": "1987",
-      "venue": "Acta Arith. 49, 55-70",
-      "note": "First proof that f(k) → ∞: f(k) > (log log k)/log 2"
-    },
-    {
-      "authors": "Erdős, Paul",
-      "title": "On the number of terms of the square of a polynomial",
-      "year": "1949",
-      "venue": "Nieuw Arch. Wisk. 23, 63-65",
-      "note": "Upper bound: f(k) < k^(1-c) for some c > 0"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "growth_at_least_log",
-      "type": "core",
-      "description": "f(k) ≥ c·log k (from Schinzel-Zannier axiom)",
-      "leanType": "∃ c > 0, ∃ K, ∀ k ≥ K, f(k) ≥ c · log k"
-    },
-    {
-      "name": "growth_at_most_sublinear",
-      "type": "core",
-      "description": "f(k) < k^(1-c) (from Erdős axiom)",
-      "leanType": "∃ c > 0, ∃ K, ∀ k ≥ K, f(k) < k^(1-c)"
-    },
-    {
-      "name": "f_one_eq",
-      "type": "supporting",
-      "description": "f(1) = 1 — monomial squares to monomial",
-      "leanType": "f 1 = 1"
-    }
-  ]
 }
