@@ -71,7 +71,7 @@
       "fourierPartialSum_zero_fn: partial sums of zero"
     ],
     "axiomCount": 5,
-    "lineCount": 440,
+    "lineCount": 441,
     "assumptions": "5 axioms: carlesonConstant (existence of universal constant), carlesonConstant_pos (positivity), carleson_hunt_weak_type (Carleson-Hunt weak-type (2,2) maximal inequality), trigPoly_partialSum_eq (partial sums reproduce trig polys), trigPoly_dense_L2 (density of trig polys in L²). The first 3 encode the deep Carleson-Hunt theorem. The last 2 are provable from Mathlib but axiomatized for interface clarity."
   },
   "overview": {
