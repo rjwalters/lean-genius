@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 theorems, 4 axioms. Proved backward direction of ultraflat equivalence via contrapositive diagonal extraction + squeeze.",
+    "progressSummary": "SURVEYED: 4 axioms (Parseval, BBMST, Kahane, Rudin-Shapiro) — all deep results, not routine. Core conjecture↔no-ultraflat equivalence fully proved. Parseval potentially provable via discrete Fourier (roots of unity orthogonality) in ~100 lines.",
     "builtItems": [
       "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
       "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward",
@@ -47,7 +47,8 @@
       "Parseval axiom potentially provable if Mathlib has circle integration theory",
       "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio ≥ 1 from Parseval, ≤ 1+1/k from construction → ratio → 1",
       "Backward direction proved without dependent choice: Filter.frequently_atTop gives ∃ m ≥ k directly, no need for strictly increasing extraction",
-      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze"
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze",
+      "Parseval axiom approachable via discrete Fourier: evaluate at (n+1)th roots of unity, use orthogonality ∑ω^{jm}=0 for N∤m, get ∑|P(ωj)|²=N·∑|ak|²=(n+1)², then max≥avg gives max|P|≥√(n+1)"
     ],
     "mathlibGaps": [
       "Integration on unit circle (for Parseval)"

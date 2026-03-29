@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Only 2 real sorries (metadata says 8 but 6 are in comments). Both are deep: smallest_above_is_smaller (geometric confinement, HARD) and descent_chains_from_coverage (induction, MEDIUM but needs floor management). 0 axioms in OQ03 file.",
+    "builtItems": [
+      "Identified: only 2 actual sorry tokens in proof positions (lines 390, 422)",
+      "Classified: smallest_above_is_smaller=HARD, descent_chains_from_coverage=MEDIUM-HARD"
+    ],
+    "insights": [
+      "Metadata sorryCount=8 is misleading: 6 occurrences are in comments/docs, only 2 actual sorries",
+      "smallest_above_is_smaller: needs 2D tiling argument showing cube above top face is smaller",
+      "descent_chains_from_coverage: induction on chain length using smallest_above_is_smaller",
+      "Induction subtlety: need h_not_top (c.z+c.side<1) at each step, and smallest_on_floor condition",
+      "Alternative approach: use well-founded recursion on Finset.card (finitely many cubes, each used once)"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

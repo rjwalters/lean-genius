@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0A 0S verified. gap_existence_pigeonhole proved via endpoint+Sidon diff injectivity argument.",
+    "progressSummary": "COMPLETED: File fully verified (0 axioms, 0 sorries, 7 theorems). Supporting results for open Erdős #152 all proved. stale axiomCount=1 in research metadata was incorrect.",
     "builtItems": [
       "sumset_mem: a+b in A+A for a,b in A (trivial from Pointwise)",
       "sumset_self_double: 2a in A+A for a in A",
@@ -91,7 +91,7 @@
       "filename": "Erdos152Problem.lean",
       "lineCount": 357,
       "theoremCount": 7,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
