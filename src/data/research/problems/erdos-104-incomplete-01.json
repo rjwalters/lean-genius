@@ -1,13 +1,13 @@
 {
   "slug": "erdos-104-incomplete-01",
-  "title": "Complete proof of Erd\u0151s Problem #104: Unit Circles Through Three Points",
+  "title": "Complete proof of Erdős Problem #104: Unit Circles Through Three Points",
   "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Complete proof of Erd\u0151s Problem #104: Unit Circles Through Three Points.",
+    "plain": "Formal mathematical investigation: Complete proof of Erdős Problem #104: Unit Circles Through Three Points.",
     "whyMatters": []
   },
   "knownResults": {
@@ -34,16 +34,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved two_points_no_circle from triangle inequality (axiom to theorem). Created main proof file from stub. Identified bug in strong_implies_weak. Axioms: 12 to 11.",
+    "progressSummary": "PROGRESS: Added quadratic_at_most_two_roots theorem (new tool for axiom elimination). Fixed broken circle_incidence_bound. Updated metadata. 10A→10A, 3T→4T.",
     "builtItems": [
       "proofs/Proofs/Erdos104Problem.lean (218 lines, promoted from stub)",
-      "two_points_no_circle: proved from norm_add_le (triangle inequality)"
+      "two_points_no_circle: proved from norm_add_le (triangle inequality)",
+      "quadratic_at_most_two_roots: new proved theorem (factoring + pigeonhole argument)",
+      "incidenceCount: new definition for point-circle incidence counting",
+      "Fixed circle_incidence_bound axiom to use incidenceCount instead of vacuous condition"
     ],
     "insights": [
       "The stub dist definition shadows Mathlib dist, renamed to eucDist",
       "strong_implies_weak as stated is false for epsilon > 1/2",
       "two_points_no_circle is a direct consequence of triangle inequality",
-      "Most remaining axioms are deep results or computational values"
+      "Most remaining axioms are deep results or computational values",
+      "quadratic_at_most_two_roots proved: key algebraic tool for circle intersection bounds",
+      "circle_incidence_bound axiom was broken (vacuously true condition). Fixed to use proper incidenceCount definition.",
+      "At-most-2-circles proof reduces to: all centers on perpendicular bisector with fixed norm, component constraint gives quadratic → at most 2 solutions"
     ],
     "mathlibGaps": [],
     "nextSteps": [

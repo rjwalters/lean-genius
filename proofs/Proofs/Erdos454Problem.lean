@@ -80,7 +80,22 @@ noncomputable def f' (n : ℕ) : ℕ :=
 
 /-- The two definitions are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
-  sorry
+  simp only [f, f']
+  split
+  · rfl
+  · rename_i h
+    have hn : 0 < n := Nat.pos_of_ne_zero h
+    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+    have hbdd : BddBelow (Set.range (fun i : Fin n =>
+        nthPrime (n + ↑i) + nthPrime (n - ↑i))) :=
+      ⟨0, fun _ _ => Nat.zero_le _⟩
+    apply le_antisymm
+    · -- ⨅ i : Fin n, g i ≤ (range n).inf' _ h
+      apply Finset.le_inf'
+      intro j hj
+      exact ciInf_le hbdd ⟨j, Finset.mem_range.mp hj⟩
+    · -- (range n).inf' _ h ≤ ⨅ i : Fin n, g i
+      exact le_ciInf (fun i => Finset.inf'_le _ (Finset.mem_range.mpr i.isLt))
 
 /- ## Part III: The Deviation from 2p_n -/
 

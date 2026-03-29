@@ -50,15 +50,79 @@ def ErdosProblem411 : Prop :=
     S.Nonempty
 
 /-
-## Section IV: Known Solutions
+## Section IV: Doubling Propagation
+
+The key structural lemma: g(2m) = 2·g(m) for even m,
+which makes the doubling relation self-perpetuating.
 -/
 
-/-- For r = 2, it is known that n = 10 and n = 94 are solutions:
-g_{k+2}(n) = 2·g_k(n) for all large k. -/
-axiom doubling_r2_n10 : DoublingRelation 10 2
+/-- φ(2m) = 2·φ(m) when m is even and positive.
+    From the prime power decomposition: if m = 2^a·k (a ≥ 1, k odd),
+    then φ(2m) = 2^a·φ(k) = 2·(2^{a-1}·φ(k)) = 2·φ(m). -/
+theorem totient_double_even {m : ℕ} (hm : 2 ∣ m) (hm_pos : 0 < m) :
+    (2 * m).totient = 2 * m.totient :=
+  Nat.totient_mul_of_prime_of_dvd Nat.prime_two hm
 
-/-- n = 94 is also a solution with period r = 2. -/
-axiom doubling_r2_n94 : DoublingRelation 94 2
+/-- g(2m) = 2·g(m) for even m > 0: the self-similar doubling property. -/
+theorem totientStep_double_even {m : ℕ} (hm : 2 ∣ m) (hm_pos : 0 < m) :
+    totientStep (2 * m) = 2 * totientStep m := by
+  unfold totientStep
+  rw [totient_double_even hm hm_pos]
+  ring
+
+/-- The iterates are always ≥ the starting value. -/
+theorem iteratedTotientStep_ge_start (n k : ℕ) :
+    iteratedTotientStep k n ≥ n := by
+  induction k with
+  | zero => simp [iteratedTotientStep]
+  | succ k ih =>
+    simp [iteratedTotientStep]
+    have := totientStep_ge (iteratedTotientStep k n)
+    omega
+
+/-- The iterates of totientStep stay even when starting from even n > 2. -/
+theorem iteratedTotientStep_even {n : ℕ} (hn_even : 2 ∣ n) (hn : n > 2)
+    (k : ℕ) : 2 ∣ iteratedTotientStep k n := by
+  induction k with
+  | zero => exact hn_even
+  | succ k ih =>
+    show 2 ∣ totientStep (iteratedTotientStep k n)
+    have h_gt : iteratedTotientStep k n > 2 := by
+      have := iteratedTotientStep_ge_start n k; omega
+    exact totientStep_even_of_even ih h_gt
+
+/-- If the doubling base case holds for even n > 2, it propagates to all k.
+    Key: g(2m) = 2·g(m) makes one step of doubling imply the next. -/
+private theorem doubling_propagation (n : ℕ) (hn_even : 2 ∣ n) (hn_gt : n > 2)
+    (hbase : iteratedTotientStep 2 n = 2 * n) :
+    ∀ k, iteratedTotientStep (k + 2) n = 2 * iteratedTotientStep k n := by
+  intro k
+  induction k with
+  | zero => exact hbase
+  | succ k ih =>
+    calc iteratedTotientStep (k + 3) n
+        = totientStep (iteratedTotientStep (k + 2) n) := rfl
+      _ = totientStep (2 * iteratedTotientStep k n) := by rw [ih]
+      _ = 2 * totientStep (iteratedTotientStep k n) :=
+          totientStep_double_even
+            (iteratedTotientStep_even hn_even hn_gt k)
+            (by have := iteratedTotientStep_ge_start n k; omega)
+      _ = 2 * iteratedTotientStep (k + 1) n := rfl
+
+/-
+## Section V: Known Solutions (PROVED)
+-/
+
+/-- For r = 2, n = 10 is a solution: g_{k+2}(10) = 2·g_k(10) for all k.
+    PROVED: base case g_2(10)=20=2·10 by native computation,
+    then induction via g(2m) = 2·g(m) for even m. -/
+theorem doubling_r2_n10 : DoublingRelation 10 2 :=
+  ⟨0, fun k _ => doubling_propagation 10 (by norm_num) (by omega) (by native_decide) k⟩
+
+/-- n = 94 is also a solution with period r = 2.
+    PROVED: base case g_2(94)=188=2·94, then same induction. -/
+theorem doubling_r2_n94 : DoublingRelation 94 2 :=
+  ⟨0, fun k _ => doubling_propagation 94 (by norm_num) (by omega) (by native_decide) k⟩
 
 /-- Cambie found: g_{k+4}(738) = 3·g_k(738), which gives a ratio-3
 solution. More generally, non-doubling ratios exist. -/
