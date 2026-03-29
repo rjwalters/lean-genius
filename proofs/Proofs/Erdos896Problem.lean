@@ -304,6 +304,52 @@ theorem uniqueProductCount_le_image_card (A B : Finset ℕ) :
   Finset.card_filter_le _ _
 
 /-
+## Representation Count Structural Properties
+-/
+
+/-- reprCount A B (a*b) > 0 when a ∈ A and b ∈ B: the pair (a,b) itself
+    is a representation. -/
+theorem reprCount_pos_of_mem {A B : Finset ℕ} {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ B) : 0 < reprCount A B (a * b) := by
+  unfold reprCount
+  rw [Finset.card_pos]
+  exact ⟨⟨a, b⟩, Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, rfl⟩⟩
+
+/-- maxUniqueProducts N ≤ N²: trivial quadratic upper bound.
+    Each A, B ⊆ {1,...,N} has at most N elements, so F(A,B) ≤ N·N = N². -/
+theorem maxUniqueProducts_le_sq (N : ℕ) :
+    maxUniqueProducts N ≤ N ^ 2 := by
+  unfold maxUniqueProducts
+  apply Finset.sup_le
+  intro ⟨A, B⟩ hmem
+  simp only [Finset.mem_product, Finset.mem_powerset] at hmem
+  calc uniqueProductCount A B
+      ≤ A.card * B.card := uniqueProductCount_le_product A B
+    _ ≤ (Finset.Icc 1 N).card * (Finset.Icc 1 N).card :=
+        Nat.mul_le_mul (Finset.card_le_card hmem.1) (Finset.card_le_card hmem.2)
+    _ = N * N := by rw [Finset.card_Icc]; ring_nf; omega
+    _ = N ^ 2 := by ring
+
+/-- The image of A × B under multiplication has at most |A|·|B| elements
+    (with equality iff all products are distinct). -/
+theorem product_image_card_le (A B : Finset ℕ) :
+    ((A ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2)).card ≤ A.card * B.card := by
+  calc ((A ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2)).card
+      ≤ (A ×ˢ B).card := Finset.card_image_le
+    _ = A.card * B.card := Finset.card_product A B
+
+/-- F(A, B) = 0 when either set is empty. -/
+theorem uniqueProductCount_eq_zero_of_empty_left' (B : Finset ℕ) :
+    uniqueProductCount ∅ B = 0 :=
+  uniqueProductCount_empty_left B
+
+/-- Combining linear lower and quadratic upper:
+    N ≤ maxF(N) ≤ N² for N ≥ 1. -/
+theorem maxUniqueProducts_bounds (N : ℕ) (hN : 1 ≤ N) :
+    N ≤ maxUniqueProducts N ∧ maxUniqueProducts N ≤ N ^ 2 :=
+  ⟨maxUniqueProducts_ge_range N hN, maxUniqueProducts_le_sq N⟩
+
+/-
 ## Gap Between Bounds and Conjecture
 
 The lower bound ~N²/log N and upper bound ~N²/(log N)^{0.086} leave
