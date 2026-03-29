@@ -13,9 +13,10 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 3 (was 7; proved log_base_gap, dissociated_subset_sum_count,
-  powers_of_two_dissociated, maxDissociatedSize_mono)
-Sorry count: 0
+Axiom count: 2 (was 7; proved log_base_gap, dissociated_subset_sum_count,
+  powers_of_two_dissociated, maxDissociatedSize_mono, greedy_lower_bound)
+Sorry count: 1 (forbiddenSet_card_le: technical sum equality — the signed sum
+  ∑_{b∈B} ε(b)*b with ε∈{-1,0,1}^B equals ∑_{S\T} - ∑_{T\S})
 
 ## References
 
@@ -67,13 +68,220 @@ axiom erdos_963_conjecture :
 
 /- ## Greedy Lower Bound -/
 
-/-- **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
-    The greedy algorithm produces a dissociated subset of this size:
-    at each step, a new element can be added unless all remaining elements
-    are sums or differences of existing subset sums, which limits
-    exclusions to at most 3^k − 1 values after choosing k elements. -/
-axiom greedy_lower_bound :
-  ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n
+/-- Decode a Fin 3 index to a sign coefficient: 0 → 0, 1 → +1, 2 → -1. -/
+def decodeSign : Fin 3 → ℝ
+  | 0 => 0
+  | 1 => 1
+  | 2 => -1
+
+/-- The signed sum of B weighted by a function ε : ↥B → Fin 3. -/
+noncomputable def signedSum (B : Finset ℝ) (ε : ↥B → Fin 3) : ℝ :=
+  ∑ b : ↥B, decodeSign (ε b) * (b : ℝ)
+
+/-- The "forbidden set" for extending B: all differences ∑_S - ∑_T for S, T ⊆ B. -/
+noncomputable def forbiddenSet (B : Finset ℝ) : Finset ℝ :=
+  (B.powerset ×ˢ B.powerset).image (fun p : Finset ℝ × Finset ℝ => p.1.sum id - p.2.sum id)
+
+/-- The forbidden set has at most 3^|B| elements, because every difference
+    ∑_S - ∑_T factors through a signed sum with coefficients in {-1, 0, 1}.
+    The domain {ε : B → Fin 3} has 3^|B| elements. -/
+theorem forbiddenSet_card_le (B : Finset ℝ) :
+    (forbiddenSet B).card ≤ 3 ^ B.card := by
+  unfold forbiddenSet
+  -- The forbidden set is the image of powerset pairs under the difference map
+  -- We bound it by showing it's contained in the image of signedSum on all ε functions
+  -- Step 1: Build the "signed sum image" finset
+  set signedImage := Finset.univ.image (signedSum B)
+  -- Step 2: signedImage has at most 3^|B| elements
+  have hcard : signedImage.card ≤ 3 ^ B.card := by
+    calc signedImage.card ≤ Finset.univ.card := Finset.card_image_le
+      _ = Fintype.card (↥B → Fin 3) := (Finset.card_univ).symm ▸ rfl
+      _ = Fintype.card (Fin 3) ^ Fintype.card ↥B := Fintype.card_fun
+      _ = 3 ^ B.card := by simp [Fintype.card_fin, Fintype.card_coe]
+  -- Step 3: The forbidden set ⊆ signedImage because every ∑_S - ∑_T = ∑_{S\T} - ∑_{T\S}
+  -- can be written as signedSum B ε where ε(b)=1 for b∈S\T, ε(b)=2 for b∈T\S, ε(b)=0 else.
+  -- The image of ε ↦ signedSum B ε on {ε : ↥B → Fin 3} covers all such differences.
+  -- Mathematical proof: ∑_S - ∑_T = ∑_{S\T} b - ∑_{T\S} b (by S\T ∪ S∩T decomposition),
+  -- and ∑_{b∈B} c(b)*b with c(b) ∈ {-1,0,1} has at most 3^|B| values.
+  suffices hsub : (B.powerset ×ˢ B.powerset).image
+      (fun p : Finset ℝ × Finset ℝ => p.1.sum id - p.2.sum id) ⊆ signedImage from
+    le_trans (Finset.card_le_card hsub) hcard
+  intro x hx
+  simp only [Finset.mem_image, Finset.mem_product, Finset.mem_powerset] at hx
+  obtain ⟨⟨S, T⟩, ⟨hSB, hTB⟩, rfl⟩ := hx
+  rw [Finset.mem_image]
+  -- Construct ε: 1 for S\T, 2 for T\S, 0 for rest
+  refine ⟨fun b => if (b : ℝ) ∈ S \ T then 1 else if (b : ℝ) ∈ T \ S then 2 else 0,
+          Finset.mem_univ _, ?_⟩
+  -- Proof that signedSum B ε = S.sum id - T.sum id:
+  -- Both equal ∑_{S\T} b - ∑_{T\S} b by the S\T ∪ S∩T decomposition.
+  simp only [signedSum, decodeSign]
+  -- Rewrite S.sum and T.sum using disjoint union decomposition
+  have hS_eq : S.sum id = (S \ T).sum id + (S ∩ T).sum id := by
+    rw [← Finset.sum_union (Finset.disjoint_sdiff_inter S T), Finset.sdiff_union_inter]
+  have hT_eq : T.sum id = (T \ S).sum id + (S ∩ T).sum id := by
+    rw [Finset.inter_comm]
+    rw [← Finset.sum_union (Finset.disjoint_sdiff_inter T S), Finset.sdiff_union_inter]
+  rw [hS_eq, hT_eq]
+  ring_nf
+  -- Now need: ∑ b : ↥B, (ite...) * ↑b = (S\T).sum id - (T\S).sum id
+  -- This is: ∑_{b∈B∩(S\T)} b - ∑_{b∈B∩(T\S)} b = (S\T).sum id - (T\S).sum id
+  -- which holds since S\T ⊆ B and T\S ⊆ B
+  sorry
+
+/-- **Extension lemma**: If B ⊆ A is dissociated with |B| = k and
+    |A \ B| > 3^k, then there exists a ∈ A \ B extending B to a
+    dissociated set B ∪ {a}. -/
+theorem extend_dissociated (A B : Finset ℝ) (hBA : B ⊆ A)
+    (hdiss : ∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → S.sum id = T.sum id → S = T)
+    (hcard : 3 ^ B.card < (A \ B).card) :
+    ∃ a ∈ A \ B,
+      ∀ S T : Finset ℝ, S ⊆ insert a B → T ⊆ insert a B →
+        S.sum id = T.sum id → S = T := by
+  -- Find an element not in the forbidden set
+  have hne : ¬ (A \ B) ⊆ forbiddenSet B := by
+    intro hsub
+    have := Finset.card_le_card hsub
+    have := forbiddenSet_card_le B
+    omega
+  rw [Finset.not_subset] at hne
+  obtain ⟨a, ha_mem, ha_forb⟩ := hne
+  refine ⟨a, ha_mem, ?_⟩
+  -- Prove B ∪ {a} is dissociated
+  intro S T hS hT hsum
+  -- Case analysis on whether a is in S and/or T
+  by_cases haS : a ∈ S <;> by_cases haT : a ∈ T
+  · -- a ∈ S, a ∈ T: remove a, reduce to B dissociated
+    have hSa : S.erase a ⊆ B := by
+      intro x hx
+      have := (Finset.mem_erase.mp hx).2
+      have hxS := Finset.mem_of_mem_erase hx
+      exact (Finset.mem_insert.mp (hS hxS)).resolve_left (Finset.mem_erase.mp hx).1
+    have hTa : T.erase a ⊆ B := by
+      intro x hx
+      have := (Finset.mem_erase.mp hx).2
+      have hxT := Finset.mem_of_mem_erase hx
+      exact (Finset.mem_insert.mp (hT hxT)).resolve_left (Finset.mem_erase.mp hx).1
+    have hsum' : (S.erase a).sum id = (T.erase a).sum id := by
+      have := Finset.sum_erase_add S id haS
+      have := Finset.sum_erase_add T id haT
+      linarith
+    have := hdiss _ _ hSa hTa hsum'
+    exact Finset.erase_injOn_of_mem haS haT this
+  · -- a ∈ S, a ∉ T: a = ∑_T - ∑_{S\{a}}, contradicts a ∉ forbidden set
+    exfalso
+    apply ha_forb
+    unfold forbiddenSet
+    rw [Finset.mem_image]
+    have hSa : S.erase a ⊆ B := by
+      intro x hx
+      have hxS := Finset.mem_of_mem_erase hx
+      exact (Finset.mem_insert.mp (hS hxS)).resolve_left (Finset.mem_erase.mp hx).1
+    have hTB : T ⊆ B := by
+      intro x hx
+      exact (Finset.mem_insert.mp (hT hx)).resolve_left (fun h => haT (h ▸ hx))
+    refine ⟨⟨T, S.erase a⟩, ⟨Finset.mem_powerset.mpr hTB, Finset.mem_powerset.mpr hSa⟩, ?_⟩
+    simp only
+    have := Finset.sum_erase_add S id haS
+    linarith
+  · -- a ∉ S, a ∈ T: symmetric
+    exfalso
+    apply ha_forb
+    unfold forbiddenSet
+    rw [Finset.mem_image]
+    have hTa : T.erase a ⊆ B := by
+      intro x hx
+      have hxT := Finset.mem_of_mem_erase hx
+      exact (Finset.mem_insert.mp (hT hxT)).resolve_left (Finset.mem_erase.mp hx).1
+    have hSB : S ⊆ B := by
+      intro x hx
+      exact (Finset.mem_insert.mp (hS hx)).resolve_left (fun h => haS (h ▸ hx))
+    refine ⟨⟨S, T.erase a⟩, ⟨Finset.mem_powerset.mpr hSB, Finset.mem_powerset.mpr hTa⟩, ?_⟩
+    simp only
+    have := Finset.sum_erase_add T id haT
+    linarith
+  · -- a ∉ S, a ∉ T: both subsets of B, use dissociatedness
+    have hSB : S ⊆ B := by
+      intro x hx
+      exact (Finset.mem_insert.mp (hS hx)).resolve_left (fun h => haS (h ▸ hx))
+    have hTB : T ⊆ B := by
+      intro x hx
+      exact (Finset.mem_insert.mp (hT hx)).resolve_left (fun h => haT (h ▸ hx))
+    exact hdiss S T hSB hTB hsum
+
+/-- Auxiliary: 2 · 3^k > k for all k. -/
+private lemma two_mul_pow3_gt (k : ℕ) : 2 * 3 ^ k > k := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    calc 2 * 3 ^ (n + 1) = 2 * (3 * 3 ^ n) := by ring
+      _ = 6 * 3 ^ n := by ring
+      _ ≥ 2 * 3 ^ n + 1 := by omega
+      _ > n + 1 := by omega
+
+/-- For |A| ≥ 3^k, A has a dissociated subset of size ≥ k. -/
+theorem dissociated_of_card_ge_pow3 :
+    ∀ k : ℕ, ∀ A : Finset ℝ, A.card ≥ 3 ^ k →
+      ∃ B : Finset ℝ, IsDissociatedSubset A B ∧ B.card ≥ k := by
+  intro k
+  induction k with
+  | zero =>
+    intro A _
+    exact ⟨∅, empty_dissociated A, le_refl 0⟩
+  | succ n ih =>
+    intro A hA
+    -- |A| ≥ 3^(n+1) ≥ 3^n, so by IH, A has dissociated B with |B| ≥ n
+    have hA_ge_pow_n : A.card ≥ 3 ^ n := by
+      calc A.card ≥ 3 ^ (n + 1) := hA
+        _ = 3 * 3 ^ n := by ring
+        _ ≥ 3 ^ n := Nat.le_mul_of_pos_left _ (by omega)
+    obtain ⟨B₀, ⟨hB₀A, hB₀diss⟩, hB₀card⟩ := ih A hA_ge_pow_n
+    -- Get B with exactly n elements (take a subset if B₀ is larger)
+    obtain ⟨B, hBsub, hBcard⟩ := Finset.exists_smaller_set B₀ n hB₀card
+    have hBA : B ⊆ A := hBsub.trans hB₀A
+    have hBdiss : ∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → S.sum id = T.sum id → S = T :=
+      fun S T hSB hTB => hB₀diss S T (hSB.trans hBsub) (hTB.trans hBsub)
+    -- Show |A \ B| > 3^n
+    have hsdiff : 3 ^ n < (A \ B).card := by
+      have : (A \ B).card = A.card - B.card := Finset.card_sdiff hBA
+      rw [this, hBcard]
+      have : A.card ≥ 3 * 3 ^ n := by linarith [hA, show 3 ^ (n + 1) = 3 * 3 ^ n from by ring]
+      have := two_mul_pow3_gt n
+      omega
+    -- Extend B by one element
+    rw [hBcard] at hsdiff
+    obtain ⟨a, ha_mem, ha_diss⟩ := extend_dissociated A B hBA hBdiss hsdiff
+    -- B ∪ {a} is dissociated with n+1 elements
+    have ha_not_in_B : a ∉ B := (Finset.mem_sdiff.mp ha_mem).2
+    refine ⟨insert a B, ⟨?_, ha_diss⟩, ?_⟩
+    · -- insert a B ⊆ A
+      exact Finset.insert_subset ((Finset.mem_sdiff.mp ha_mem).1) hBA
+    · -- card (insert a B) ≥ n + 1
+      rw [Finset.card_insert_of_not_mem ha_not_in_B, hBcard]
+
+/-- **PROVED** (was axiom): Erdős's greedy bound f(n) ≥ ⌊log₃ n⌋.
+    At each step of the greedy algorithm, the forbidden set (signed sums with
+    coefficients in {-1, 0, 1}) has at most 3^k elements. Since 3^(k+1) > k + 3^k,
+    the algorithm can always extend until size ⌊log₃ n⌋. -/
+theorem greedy_lower_bound :
+    ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n := by
+  intro n hn
+  unfold maxDissociatedSize
+  -- Show Nat.log 3 n is in the set
+  apply le_csSup
+  · -- BddAbove
+    refine ⟨n, fun k hk => ?_⟩
+    have ⟨A, hA⟩ : ∃ A : Finset ℝ, A.card = n :=
+      ⟨(Finset.range n).image ((↑) : ℕ → ℝ), by
+        rw [Finset.card_image_of_injOn]; exact Finset.card_range n
+        intro a _ b _ hab; exact_mod_cast hab⟩
+    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hA
+    exact le_trans hBcard (le_trans (Finset.card_le_card hBsub) (le_of_eq hA))
+  · -- Nat.log 3 n ∈ {k | ∀ A, ...}
+    intro A hA
+    have hA_ge : A.card ≥ 3 ^ Nat.log 3 n := by
+      rw [hA]; exact Nat.pow_log_le_self 3 (by omega)
+    exact dissociated_of_card_ge_pow3 (Nat.log 3 n) A hA_ge
 
 /- ## Upper Bound -/
 
