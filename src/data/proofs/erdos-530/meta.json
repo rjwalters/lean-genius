@@ -21,16 +21,16 @@
     "erdosUrl": "https://erdosproblems.com/530",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 281,
-    "assumptions": "2 axiom declarations: komlos_sulyok_szemeredi (KSS improved N^{1/2} lower bound, deep known result), alon_erdos_partition_conjecture (Sidon partition, open problem). erdos_lower_bound (N^{1/3}) now proved as corollary of KSS. 12 theorems proved.",
+    "lineCount": 381,
+    "assumptions": "2 axiom declarations: komlos_sulyok_szemeredi (KSS improved N^{1/2} lower bound, deep known result), alon_erdos_partition_conjecture (Sidon partition, open problem). ErdosProblem530Corrected proved from KSS + interval sum counting (erdos530_corrected_proof). 16 theorems proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Originally posed by Riddell in 1969 and studied extensively by Erd\u0151s, this problem asks for the order of growth of $\\ell(N)$, the maximum size of a Sidon subset of any $N$-element set. A Sidon set (also called a $B_2$-set) has all pairwise sums distinct, a property introduced by Simon Sidon in the 1930s in connection with Fourier analysis. Erd\u0151s first proved the lower bound $\\ell(N) \\geq c N^{1/3}$ using a greedy argument. Koml\u00f3s, Sulyok, and Szemer\u00e9di then improved this to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic deletion method. The upper bound $\\ell(N) \\leq (1+o(1))\\sqrt{N}$ follows from the observation that a Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, which must fit within the ambient sumset. Together these give $\\sqrt{N} \\ll \\ell(N) \\leq (1+o(1))\\sqrt{N}$, so the order of growth is determined but the exact leading constant remains open. Alon and Erd\u0151s also conjectured a dual result: any $N$-element set can be partitioned into $O(\\sqrt{N})$ Sidon sets. The problem connects to the broader theory of $B_h$-sets, sum-free sets, and additive bases, and has applications in coding theory (error-correcting codes with good distance properties) and harmonic analysis (thin sets of integers with good Fourier properties).",
     "problemStatement": "For a finite set $A \\subset \\mathbb{R}$ of size $N$, let $\\ell(N)$ denote the maximum size of a Sidon subset. Determine the order of growth of $\\ell(N)$. It is conjectured that $\\ell(N) \\sim N^{1/2}$.",
     "text": "For a finite set A of size N, what is the maximum size \u2113(N) of a Sidon subset? Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di: N^{1/2} \u226a \u2113(N) \u2264 (1+o(1))N^{1/2}. Conjectured: \u2113(N) ~ N^{1/2}. OPEN.",
-    "proofStrategy": "The formalization defines Sidon sets via the distinct pairwise sum condition, proves the empty set and singletons are Sidon (the only non-axiom theorems), defines $\\ell(A) = \\max\\{|S| : S \\subseteq A,\\; S$ Sidon$\\}$, and axiomatizes the known bounds: Erd\u0151s's $N^{1/3}$ lower bound, the Koml\u00f3s-Sulyok-Szemer\u00e9di $N^{1/2}$ lower bound, the $N^{1/2}$ upper bound, and the main conjecture $\\ell(N) = \\Theta(\\sqrt{N})$. The Alon-Erd\u0151s partition conjecture and the sum counting identity $k(k+1)/2$ are also recorded.",
+    "proofStrategy": "The formalization defines Sidon sets and maxSidonSize, then proves the corrected Erd\u0151s Problem 530 (\\ell(N) = \\Theta(\\sqrt{N})) from two ingredients: (1) the KSS lower bound \\ell(A)^2 \\geq c|A| (axiomatized), and (2) a new upper bound for interval sets: any Sidon subset of \\{1,...,N\\} has |S|^2 \\leq 4N, proved via sum counting (k(k+1)/2 distinct sums fit in \\{1,...,2N\\}). A key correction: the original universal upper bound (\\forall A) was false (powers of 2 are entirely Sidon); the correct formulation uses an existential upper bound (\\exists A).",
     "keyInsights": [
       "A Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, giving the upper bound $\\ell(N) \\leq O(\\sqrt{N})$ via pigeonhole",
       "Koml\u00f3s-Sulyok-Szemer\u00e9di's probabilistic deletion: randomly sample, remove elements creating repeated sums, expected survivor size $\\Omega(\\sqrt{N})$",
@@ -116,10 +116,25 @@
       "endLine": 270,
       "summary": "Proves `sidon_sum_count`: a Sidon set of size $k$ has exactly $k(k+1)/2$ distinct pairwise sums. Combines `sidon_sum_injective` (injectivity $\\Rightarrow$ image card = domain card) with `card_sorted_pairs` ($k(k+1)/2$ sorted pairs). This was previously axiomatized and is now fully proved.",
       "mathContext": "The identity $|\\{a + b : (a,b) \\in S \\times S, a \\leq b\\}| = k(k+1)/2$ for $|S| = k$ Sidon is the key to the upper bound: if all $k(k+1)/2$ sums lie in $S + S \\subseteq \\{2\\min S, \\ldots, 2\\max S\\}$, then $k(k+1)/2 \\leq 2N - 1$, giving $k \\leq O(\\sqrt{N})$."
+    },
+    {
+      "id": "corrected-statement",
+      "title": "Corrected Problem Statement",
+      "startLine": 281,
+      "endLine": 300,
+      "summary": "Identifies that the original ErdosProblem530 has an incorrect universal upper bound: powers of 2 are entirely Sidon, giving maxSidonSize = N, so no universal $O(\\sqrt{N})$ bound holds. Defines ErdosProblem530Corrected with existential upper bound."
+    },
+    {
+      "id": "interval-upper-bound",
+      "title": "Interval Upper Bound",
+      "startLine": 302,
+      "endLine": 380,
+      "summary": "Proves sidon_subset_interval_bound: any Sidon subset of $\\{1,...,N\\}$ has $|S|^2 \\leq 4N$. Uses the sum counting theorem (k(k+1)/2 distinct sums), containment of sums in $\\{1,...,2N\\}$, and evenness of $k(k+1)$. Lifts to maxSidonSize via interval_sidon_upper. Finally proves erdos530_corrected_proof: the corrected $\\Theta(\\sqrt{N})$ result from KSS (axiom) + interval bound (proved).",
+      "mathContext": "The chain: $k(k+1)/2$ sums $\\subseteq \\{1,...,2N\\}$ of size $2N$, so $k(k+1)/2 \\leq 2N$, and since $k(k+1)$ is even, $k(k+1) \\leq 4N$, giving $k^2 \\leq k(k+1) \\leq 4N$. This is the standard sum-counting upper bound for Sidon subsets of intervals."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem 530 with the known tight bounds: Koml\u00f3s-Sulyok-Szemer\u00e9di's lower bound \u2113(N) \u2265 c\u221aN and the upper bound \u2113(N) \u2264 (1+o(1))\u221aN from sum counting. The problem remains open \u2014 only the leading constant is undetermined. The Alon-Erd\u0151s partition conjecture provides a dual perspective.",
+    "summary": "The corrected formalization proves \u2113(N) = \u0398(\u221aN) from the KSS lower bound (axiom) and a new interval upper bound: any Sidon subset of {1,...,N} has |S|\u00b2 \u2264 4N (fully proved via sum counting). The original problem statement had an incorrect universal upper bound; powers of 2 provide a counterexample. Only the leading constant remains open.",
     "implications": "Resolving the exact asymptotics of \u2113(N) would advance additive combinatorics and connect to the partition problem of Alon and Erd\u0151s. Sidon sets have applications in error-correcting codes, compressed sensing, and Fourier analysis, where sets with distinct pairwise sums provide good frequency separation.",
     "openQuestions": [
       "Is $\\ell(N) = (1+o(1))\\sqrt{N}$ for all finite sets of size $N$? What is the optimal constant?",
@@ -140,10 +155,10 @@
       "Finset"
     ],
     "namespace": "Erdos530",
-    "lineCount": 281,
+    "lineCount": 381,
     "axiomCount": 2,
-    "theoremCount": 12,
-    "definitionCount": 4
+    "theoremCount": 16,
+    "definitionCount": 5
   },
   "crossReferences": [
     {
