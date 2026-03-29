@@ -161,24 +161,36 @@ theorem erdos_964_true : ErdosConjecture964 := by
 τ(2) = 2, τ(1) = 1, so ratio = 2.
 -/
 example : divisorRatio 1 = 2 := by
-  simp [divisorRatio, tau]
-  sorry
+  have h1 : tau 1 ≠ 0 := by native_decide
+  have h2 : tau 1 = 1 := by native_decide
+  have h3 : tau 2 = 2 := by native_decide
+  simp only [divisorRatio, show (1 : ℕ) + 1 = 2 from rfl, h1, h2, h3,
+    ne_eq, not_false_eq_true, dite_true, Nat.cast_ofNat, Nat.cast_one]
+  norm_num
 
 /--
 **Example: τ(3)/τ(2) = 1:**
 τ(3) = 2, τ(2) = 2, so ratio = 1.
 -/
 example : divisorRatio 2 = 1 := by
-  simp [divisorRatio, tau]
-  sorry
+  have h1 : tau 2 ≠ 0 := by native_decide
+  have h2 : tau 2 = 2 := by native_decide
+  have h3 : tau 3 = 2 := by native_decide
+  simp only [divisorRatio, show (2 : ℕ) + 1 = 3 from rfl, h1, h2, h3,
+    ne_eq, not_false_eq_true, dite_true, Nat.cast_ofNat]
+  norm_num
 
 /--
 **Example: τ(4)/τ(3) = 3/2:**
 τ(4) = 3, τ(3) = 2, so ratio = 3/2.
 -/
 example : divisorRatio 3 = 3/2 := by
-  simp [divisorRatio, tau]
-  sorry
+  have h1 : tau 3 ≠ 0 := by native_decide
+  have h2 : tau 3 = 2 := by native_decide
+  have h3 : tau 4 = 3 := by native_decide
+  simp only [divisorRatio, show (3 : ℕ) + 1 = 4 from rfl, h1, h2, h3,
+    ne_eq, not_false_eq_true, dite_true, Nat.cast_ofNat]
+  norm_num
 
 /--
 **Small ratios:**
