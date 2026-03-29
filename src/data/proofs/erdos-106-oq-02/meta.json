@@ -1,0 +1,61 @@
+{
+  "id": "erdos-106-oq-02",
+  "title": "Erdős #106 OQ: Rotated vs Axis-Parallel Square Packings",
+  "slug": "erdos-106-oq-02",
+  "description": "Can rotated squares beat axis-parallel packings in the unit square? For n non-overlapping squares, is max-sum-of-sides f(n) > g(n) for some n, where g restricts to axis-parallel? No example is known.",
+  "meta": {
+    "author": "Erdős (1994); Baek, Koizumi, Ueoro (2024)",
+    "sourceUrl": "https://erdosproblems.com/106",
+    "erdosUrl": "https://erdosproblems.com/106",
+    "date": "2024",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos106OQ02Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "packing",
+      "squares",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 106,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "GeneralSquare: rotated square definition (center, side, angle)",
+      "f/g: general vs axis-parallel packing functions",
+      "RotationHelps: formal predicate for f(n) > g(n)",
+      "g_tight_at_perfect_squares: PROVED — Cauchy-Schwarz tight at k²",
+      "g_plateau: PROVED — g(k²+1) = g(k²) from BKU",
+      "no_rotation_benefit: PROVED — f=g implies no rotation benefit",
+      "gap_bounded: PROVED — gap ≤ √n",
+      "perfect_square_optimal: PROVED — axis-parallel optimal at k²"
+    ],
+    "axiomCount": 4,
+    "lineCount": 170,
+    "assumptions": "4 axioms: Cauchy-Schwarz bounds (f,g ≤ √n), g(k²) = k, BKU theorem"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-106",
+      "relationship": "parent",
+      "description": "Open question from Erdős Problem #106 (Square Packing)"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Set", "Real"],
+    "namespace": "Erdos106OQ02",
+    "lineCount": 170,
+    "axiomCount": 4,
+    "theoremCount": 9,
+    "definitionCount": 8
+  },
+  "references": [
+    "Erdős (1994): 'Some old and new problems in combinatorial geometry'",
+    "Baek, Koizumi, Ueoro (2024): Axis-parallel case resolution",
+    "https://erdosproblems.com/106"
+  ]
+}
