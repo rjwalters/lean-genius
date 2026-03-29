@@ -10,7 +10,8 @@ Main results:
 3. q-binomial at q=1 recovers the ordinary binomial coefficient (qBinomial_eval_one)
 4. q-number split identity: [a]_q + q^a · [m]_q = [a+m]_q (qNumber_add_shift)
 5. Quotient formula: [n choose k]_q · [k]_q! · [n-k]_q! = [n]_q! (qBinomial_factorial)
-6. Statement of the q-Kummer theorem: cyclotomic factorization of q-binomials
+6. Cyclotomic factorization of q-factorials (qFactorial_cyclotomic)
+7. Proof of the q-Kummer theorem
 
 The q-Kummer theorem states that for any d ≥ 2:
   multiplicity(Φ_d, [n choose k]_q) = ⌊n/d⌋ - ⌊k/d⌋ - ⌊(n-k)/d⌋
@@ -229,7 +230,81 @@ theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
   omega
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VII: q-Kummer Theorem
+-- § Part VII: Cyclotomic Factorization of q-Factorials
+-- ══════════════════════════════════════════════════════════════════
+
+/-- qFactorial as a product over Icc 1 n. -/
+private theorem qFactorial_eq_prod (n : ℕ) :
+    qFactorial n = ∏ j in Icc 1 n, qNumber j := by
+  induction n with
+  | zero => simp [qFactorial]
+  | succ n ih =>
+    rw [show qFactorial (n + 1) = qFactorial n * qNumber (n + 1) from rfl, ih,
+        Finset.prod_Icc_succ_top (by omega : 1 ≤ n + 1)]
+
+/-- Step identity for natural division: (n+1)/d = n/d + (1 if d ∣ n+1, else 0). -/
+private theorem succ_div_step (n d : ℕ) (hd : 0 < d) :
+    (n + 1) / d = n / d + if d ∣ (n + 1) then 1 else 0 := by
+  split
+  · next h =>
+    have hmod : (n + 1) % d = 0 := Nat.mod_eq_zero_iff_dvd.mpr h
+    have hmod' : n % d = d - 1 := by omega
+    omega
+  · next h =>
+    have hmod : (n + 1) % d ≠ 0 := fun hc => h (Nat.dvd_of_mod_eq_zero hc)
+    omega
+
+/-- The cyclotomic factorization of q-factorials:
+    [n]_q! = ∏_{d=2}^{n} Φ_d^{⌊n/d⌋}. -/
+theorem qFactorial_cyclotomic : ∀ n,
+    qFactorial n = ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (n / d) := by
+  intro n
+  induction n with
+  | zero => simp [qFactorial]
+  | succ n ih =>
+    rw [show qFactorial (n + 1) = qFactorial n * qNumber (n + 1) from rfl, ih]
+    -- Split the product using the step identity
+    conv_rhs =>
+      arg 2; ext d
+      rw [succ_div_step n d (by omega), pow_add]
+    rw [Finset.prod_mul_distrib]
+    congr 1
+    · -- ∏ Φ_d^(n/d) over Icc 2 (n+1) = ∏ Φ_d^(n/d) over Icc 2 n
+      symm
+      apply Finset.prod_subset (Finset.Icc_subset_Icc_right (by omega : n ≤ n + 1))
+      intro d hd hdn
+      simp only [Finset.mem_Icc] at hd hdn
+      push_neg at hdn
+      have : n / d = 0 := Nat.div_eq_of_lt (by omega)
+      simp [this]
+    · -- ∏ Φ_d^(if d ∣ n+1 then 1 else 0) over Icc 2 (n+1) = qNumber (n+1)
+      by_cases hn : n + 1 < 2
+      · interval_cases n; simp [qNumber]
+      · push_neg at hn
+        rw [qNumber_eq_prod_cyclotomic (by omega : 0 < n + 1)]
+        symm
+        rw [← Finset.prod_filter_mul_prod_filter_not (Icc 2 (n + 1)) (· ∣ (n + 1))]
+        simp only [ite_true, pow_one, ite_false, pow_zero, Finset.prod_const_one, mul_one]
+        congr 1; ext d
+        simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_erase, Nat.mem_divisors]
+        constructor
+        · rintro ⟨⟨hd2, hdn⟩, hdvd⟩
+          exact ⟨by omega, hdvd, by omega⟩
+        · rintro ⟨hd1, hdvd, hne⟩
+          exact ⟨⟨by omega, Nat.le_of_dvd (by omega) hdvd⟩, hdvd⟩
+
+/-- Extend a cyclotomic product to a larger range. -/
+private theorem qFactorial_cyclotomic_ext (m n : ℕ) (hmn : m ≤ n) :
+    qFactorial m = ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (m / d) := by
+  rw [qFactorial_cyclotomic]
+  apply Finset.prod_subset (Finset.Icc_subset_Icc_right hmn)
+  intro d hd hdm
+  simp only [Finset.mem_Icc] at hd hdm
+  push_neg at hdm
+  simp [Nat.div_eq_of_lt (by omega)]
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part VIII: q-Kummer Theorem
 -- ══════════════════════════════════════════════════════════════════
 
 /-- **The q-Kummer Theorem**:
@@ -251,10 +326,37 @@ theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
 theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
     qBinomial n k = ∏ d in Icc 2 n,
       (cyclotomic d ℤ) ^ (floorDeficiency n k d) := by
-  sorry
+  -- From qBinomial_factorial: qBinomial * qFactorial k * qFactorial (n-k) = qFactorial n
+  have hfact := qBinomial_factorial n k hkn
+  -- Rewrite all qFactorials using cyclotomic products over Icc 2 n
+  rw [qFactorial_cyclotomic_ext k n hkn,
+      qFactorial_cyclotomic_ext (n - k) n (Nat.sub_le n k),
+      qFactorial_cyclotomic n] at hfact
+  -- Merge the LHS products: ∏ Φ_d^(k/d) * ∏ Φ_d^((n-k)/d) = ∏ Φ_d^(k/d + (n-k)/d)
+  have merge : (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d)) *
+      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ ((n - k) / d)) =
+      ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d) := by
+    rw [← Finset.prod_mul_distrib]
+    congr 1; ext d; exact (pow_add _ _ _).symm
+  rw [mul_assoc, merge] at hfact
+  -- Factor RHS: ∏ Φ_d^(n/d) = ∏ Φ_d^(k/d + (n-k)/d) * ∏ Φ_d^(floorDeficiency)
+  have split_exp : ∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (n / d) =
+      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ (k / d + (n - k) / d)) *
+      (∏ d in Icc 2 n, (cyclotomic d ℤ) ^ floorDeficiency n k d) := by
+    rw [← Finset.prod_mul_distrib]
+    congr 1; ext d; rw [← pow_add, floorDeficiency]
+    congr 1
+    have := div_add_div_le k (n - k) d (by
+      by_contra h; push_neg at h; interval_cases d; simp)
+    rw [Nat.add_sub_cancel' hkn] at this; omega
+  rw [split_exp] at hfact
+  -- Cancel: qBinomial * P = P * Q → qBinomial = Q (in integral domain ℤ[X])
+  exact mul_left_cancel₀
+    (Finset.prod_ne_zero _ fun d _ => pow_ne_zero _ (Polynomial.cyclotomic_ne_zero d ℤ))
+    hfact
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VIII: Connection to Classical Kummer
+-- § Part IX: Connection to Classical Kummer
 -- ══════════════════════════════════════════════════════════════════
 
 /-- The classical Kummer theorem is a corollary of the q-Kummer theorem:
@@ -267,7 +369,7 @@ theorem qKummer_classical_connection (n k : ℕ) (hkn : k ≤ n)
   simp [floorDeficiency]
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part IX: Summary
+-- § Part X: Summary
 -- ══════════════════════════════════════════════════════════════════
 
 /-
@@ -304,6 +406,7 @@ The q-analog is strictly MORE general:
 #check qNumber_add_shift
 #check qBinomial_factorial
 #check floorDeficiency_add_eq
+#check qFactorial_cyclotomic
 #check qKummer
 
 end KummerTheoremOQ02
