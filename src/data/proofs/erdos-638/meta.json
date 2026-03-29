@@ -77,14 +77,14 @@
       "title": "Classical Ramsey Theorem",
       "startLine": 67,
       "endLine": 78,
-      "summary": "Axiomatizes the classical Ramsey theorem for triangles and the fact that the family of complete graphs forms a Ramsey family."
+      "summary": "Axiomatizes the classical Ramsey theorem for triangles (ramsey_triangle). Proves complete_graphs_ramsey: the family of complete graphs forms a Ramsey family. Proves ramsey_triangle_base and ramsey_triangle_one_proved: the n=1 case without axiom."
     },
     {
       "id": "basic-observations",
       "title": "Monotonicity",
       "startLine": 79,
       "endLine": 84,
-      "summary": "Axiomatizes colour monotonicity: the n-colour Ramsey property implies the m-colour property for m ≤ n."
+      "summary": "Proves colour monotonicity (triangle_ramsey_mono): the n-colour Ramsey property implies the m-colour property for m ≤ n, via Fin.castLE injection."
     }
   ],
   "conclusion": {
@@ -109,7 +109,7 @@
     "namespace": null,
     "lineCount": 107,
     "axiomCount": 1,
-    "theoremCount": 2,
+    "theoremCount": 4,
     "definitionCount": 5
   },
   "crossReferences": [
