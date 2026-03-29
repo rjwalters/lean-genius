@@ -246,12 +246,28 @@ Basic properties of degree sums in triangles.
 /-- Each vertex in triangle contributes at least 2 to its degree. -/
 theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :
     vertexDegree G T.v1 ≥ 2 ∧ vertexDegree G T.v2 ≥ 2 ∧ vertexDegree G T.v3 ≥ 2 := by
-  sorry
+  -- Each vertex is adjacent to the other 2 (distinct) vertices of the triangle.
+  suffices h : ∀ (v a b : V), G.Adj v a → G.Adj v b → a ≠ b → vertexDegree G v ≥ 2 by
+    exact ⟨h _ _ _ T.adj12 T.adj13 T.distinct23,
+           h _ _ _ (G.symm T.adj12) T.adj23 T.distinct13,
+           h _ _ _ (G.symm T.adj13) (G.symm T.adj23) T.distinct12⟩
+  intro v a b ha hb hab
+  simp only [vertexDegree]
+  calc G.degree v = (G.neighborFinset v).card := rfl
+    _ ≥ ({a, b} : Finset V).card := Finset.card_le_card (by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact G.mem_neighborFinset.mpr ha
+        · exact G.mem_neighborFinset.mpr hb)
+    _ = 2 := by rw [Finset.card_pair hab]
 
 /-- Triangle degree sum is at least 6. -/
 theorem triangle_sum_min (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :
     triangleDegreeSum G T ≥ 6 := by
-  sorry
+  simp only [triangleDegreeSum]
+  have ⟨h1, h2, h3⟩ := triangle_min_degree G T
+  omega
 
 /-- In dense graphs, average degree is high. -/
 theorem dense_average_degree (G : SimpleGraph V) [DecidableRel G.Adj]
