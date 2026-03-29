@@ -167,15 +167,57 @@ theorem increase_count_le (M : ℕ) :
     · -- F(M+1) = F(M): count unchanged, bound follows from monotonicity
       exact le_trans ih (maxSidon_monotone M)
 
+/-- Elementary inequality: M^{1/4} + 1 ≤ ε√M for large M.
+    For t = M^{1/4} ≥ 2/ε ≥ 1: ε·t² ≥ (ε·t)·t ≥ 2t ≥ t + 1. -/
+private lemma rpow_quarter_plus_one_le {ε : ℝ} (hε : 0 < ε) {M : ℕ}
+    (hM : M ≥ 1) (ht : 2 / ε ≤ (M : ℝ) ^ ((1 : ℝ) / 4)) :
+    (M : ℝ) ^ ((1 : ℝ) / 4) + 1 ≤ ε * Real.sqrt (M : ℝ) := by
+  set t := (M : ℝ) ^ ((1 : ℝ) / 4) with ht_def
+  have ht_one : 1 ≤ t := le_trans (by positivity : (1 : ℝ) ≤ 2 / ε) ht
+  have het : 2 ≤ ε * t := by rw [div_le_iff hε] at ht; linarith
+  -- √M = t² because sqrt(M) = M^{1/2} = (M^{1/4})² = t²
+  have hM_pos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
+  have hsqrt : Real.sqrt (M : ℝ) = t ^ 2 := by
+    rw [sq, ht_def, ← Real.rpow_add (by linarith)]
+    norm_num
+    exact (Real.sqrt_eq_rpow (M : ℝ)).symm
+  rw [hsqrt]
+  -- Goal: t + 1 ≤ ε * t²
+  -- From het: ε·t ≥ 2, so ε·t² = (ε·t)·t ≥ 2t ≥ t + 1
+  nlinarith [sq_nonneg t]
+
 /-- F(N+1) = F(N) for "most" values of N: the number of increase points
-    below M is at most (1+ε)√M. Follows from increase_count_le (count ≤ F(M))
-    and erdos_turan_upper (F(M) ≤ √M + M^{1/4} + 1). The remaining gap is
-    the elementary inequality M^{1/4} + 1 ≤ ε√M for large M. -/
-axiom increase_points_sparse :
+    below M is at most (1+ε)√M. Previously axiomatized; now proved from
+    increase_count_le and erdos_turan_upper. -/
+theorem increase_points_sparse :
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ M : ℕ, M ≥ N₀ →
       (Finset.card (Finset.filter
         (fun N => maxSidonSize (N + 1) > maxSidonSize N)
-        (Finset.range M)) : ℝ) ≤ (1 + ε) * Real.sqrt (M : ℝ)
+        (Finset.range M)) : ℝ) ≤ (1 + ε) * Real.sqrt (M : ℝ) := by
+  intro ε hε
+  -- Choose N₀ so that M^{1/4} ≥ 2/ε (i.e., M ≥ (2/ε)^4)
+  use max (Nat.ceil ((2 / ε) ^ 4) + 1) 1
+  intro M hM
+  have hM1 : M ≥ 1 := by omega
+  -- count ≤ F(M) (increase_count_le)
+  have h_count := Nat.cast_le (α := ℝ) |>.mpr (increase_count_le M)
+  -- F(M) ≤ √M + M^{1/4} + 1 (erdos_turan_upper)
+  have h_et := erdos_turan_upper M hM1
+  -- M^{1/4} + 1 ≤ ε√M (from M being large enough)
+  have h_ineq : (M : ℝ) ^ ((1 : ℝ) / 4) + 1 ≤ ε * Real.sqrt (M : ℝ) := by
+    apply rpow_quarter_plus_one_le hε hM1
+    -- Need: 2/ε ≤ M^{1/4}
+    -- From M ≥ ⌈(2/ε)^4⌉ + 1 ≥ (2/ε)^4
+    have hM_real : (2 / ε) ^ 4 ≤ (M : ℝ) := by
+      calc (2 / ε) ^ 4 ≤ ↑(Nat.ceil ((2 / ε) ^ 4)) := Nat.le_ceil _
+        _ ≤ (M : ℝ) := by exact_mod_cast (show Nat.ceil ((2 / ε) ^ 4) ≤ M by omega)
+    calc 2 / ε = ((2 / ε) ^ 4) ^ ((1 : ℝ) / 4) := by
+          rw [← Real.rpow_natCast (2 / ε) 4, ← Real.rpow_mul (by positivity)]
+          norm_num
+      _ ≤ (M : ℝ) ^ ((1 : ℝ) / 4) :=
+          Real.rpow_le_rpow (by positivity) hM_real (by positivity)
+  -- Chain: count ≤ F(M) ≤ √M + M^{1/4} + 1 ≤ √M + ε√M = (1+ε)√M
+  linarith
 
 /- ## Small Values (OEIS A003022) -/
 

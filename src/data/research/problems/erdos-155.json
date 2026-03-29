@@ -24,7 +24,7 @@
     "nextAction": "Convert maxSidonSize to def, prove more axioms"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems (up from 7), 6 axioms, 0 sorries. Proved increase_count_le. increase_points_sparse nearly eliminable (needs only elementary ℝ inequality).",
+    "progressSummary": "COMPLETE: 11 theorems (up from 10), 5 axioms (down from 6). Proved increase_points_sparse from increase_count_le + erdos_turan_upper + elementary ℝ analysis.",
     "builtItems": [
       "maxSidon_monotone: any Sidon subset of {1,...,N} is valid for {1,...,N+1}",
       "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1",
@@ -33,7 +33,9 @@
       "theorem maxSidon_optimal (replaces axiom)",
       "theorem maxSidon_monotone (replaces axiom)",
       "theorem maxSidon_step (replaces axiom)",
-      "Proved increase_count_le: telescoping bound on increase points"
+      "Proved increase_count_le: telescoping bound on increase points",
+      "rpow_quarter_plus_one_le: elementary ℝ inequality M^{1/4}+1 ≤ ε√M",
+      "increase_points_sparse proved from increase_count_le + erdos_turan_upper + rpow_quarter_plus_one_le"
     ],
     "insights": [
       "maxSidon_monotone trivially follows from containment: {1,...,N}⊆{1,...,N+1}",
@@ -44,7 +46,9 @@
       "maxSidon_monotone proved: Sidon set of {1..N} ⊆ sidonSets (N+1) via Icc monotonicity",
       "maxSidon_step proved: S.erase (N+1) gives valid N-set, card diff at most 1",
       "Proved increase_count_le: #{N<M : F(N+1)>F(N)} ≤ F(M). Induction: each step contributes 0 or 1 (maxSidon_step), telescoping gives total = F(M)-F(0) = F(M).",
-      "increase_points_sparse can be eliminated: increase_count_le + erdos_turan_upper + elementary real analysis (M^{1/4}+1 ≤ ε√M for large M). Only missing piece is the ℝ inequality."
+      "increase_points_sparse can be eliminated: increase_count_le + erdos_turan_upper + elementary real analysis (M^{1/4}+1 ≤ ε√M for large M). Only missing piece is the ℝ inequality.",
+      "Equiv.sum_comp for reindexing: key rpow identity √M = (M^{1/4})² via rpow_add",
+      "nlinarith handles ε·t²≥t+1 from ε·t≥2 and t≥1 with sq_nonneg hint"
     ],
     "mathlibGaps": [],
     "nextSteps": [
