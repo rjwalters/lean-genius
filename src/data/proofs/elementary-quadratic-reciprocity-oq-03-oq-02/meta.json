@@ -17,12 +17,12 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "theoremCount": 13,
+    "axiomCount": 2,
+    "theoremCount": 16,
     "defCount": 4,
-    "lineCount": 175,
+    "lineCount": 246,
     "dateAdded": "2026-03-28",
-    "assumptions": "3 axioms: kronecker_mul_left, kronecker_mul_right (multiplicativity), kronecker_reciprocity (generalized QR). No sorries.",
+    "assumptions": "2 axioms: kronecker_mul_right (second-argument multiplicativity), kronecker_reciprocity (generalized QR). kronecker_mul_left PROVED via jacobiSym.mul_left + sign multiplicativity.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

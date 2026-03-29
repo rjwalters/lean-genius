@@ -145,20 +145,82 @@ theorem kronecker_neg4_values :
 -- Section 6: Multiplicativity
 -- ============================================================
 
-/-- The Kronecker symbol is completely multiplicative in the first argument:
-    (ab/n) = (a/n)(b/n), provided a*b ≠ 0 or |n| ≤ 1.
+/-- kroneckerNeg1 is multiplicative when the product is nonzero.
+    Sign of a product equals product of signs for nonzero factors. -/
+private theorem kroneckerNeg1_mul (a b : ℤ) (hab : a * b ≠ 0) :
+    kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b := by
+  have ha : a ≠ 0 := left_ne_zero_of_mul hab
+  have hb : b ≠ 0 := right_ne_zero_of_mul hab
+  unfold kroneckerNeg1
+  by_cases ha' : a < 0 <;> by_cases hb' : b < 0
+  · -- a < 0, b < 0: a*b > 0
+    have : ¬(a * b < 0) := not_lt.mpr (le_of_lt (mul_pos_of_neg_of_neg ha' hb'))
+    simp [ha', hb', this]
+  · -- a < 0, b ≥ 0: b > 0 (b ≠ 0), a*b < 0
+    have hb_pos : 0 < b := by omega
+    have : a * b < 0 := mul_neg_of_neg_of_pos ha' hb_pos
+    simp [ha', hb', this]
+  · -- a ≥ 0, b < 0: a > 0 (a ≠ 0), a*b < 0
+    have ha_pos : 0 < a := by omega
+    have : a * b < 0 := mul_neg_of_pos_of_neg ha_pos hb'
+    simp [ha', hb', this]
+  · -- a ≥ 0, b ≥ 0: a, b > 0, a*b > 0
+    have ha_pos : 0 < a := by omega
+    have hb_pos : 0 < b := by omega
+    have : ¬(a * b < 0) := not_lt.mpr (le_of_lt (mul_pos ha_pos hb_pos))
+    simp [ha', hb', this]
 
-    **Bug fix**: The original unconditional statement was FALSE.
-    Counterexample: a = -3, b = 0, n = -1.
-      LHS: kronecker(-3*0)(-1) = kroneckerNeg1(0) = 1
-      RHS: kronecker(-3)(-1) * kronecker(0)(-1) = (-1)*1 = -1
-    This is because kroneckerNeg1(0) = 1 but the product -1 * 1 = -1.
-    Fix: require a * b ≠ 0 (standard for multiplicative characters). -/
-axiom kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
-    kronecker (a * b) n = kronecker a n * kronecker b n
+/-- kronecker0 is multiplicative (unconditionally).
+    a*b is a unit in ℤ iff both a and b are units (i.e. ±1). -/
+private theorem kronecker0_mul (a b : ℤ) :
+    kronecker0 (a * b) = kronecker0 a * kronecker0 b := by
+  unfold kronecker0
+  -- Handle a = ±1 first (units)
+  rcases eq_or_ne a 1 with rfl | h1
+  · simp
+  rcases eq_or_ne a (-1) with rfl | hm1
+  · simp
+  -- a ≠ ±1: kronecker0(a) = 0, so RHS = 0
+  -- Also a*b ≠ ±1 (since a is not a unit)
+  have ha : ¬(a = 1 ∨ a = -1) := fun h => h.elim h1 hm1
+  have hab : ¬(a * b = 1 ∨ a * b = -1) := by
+    rintro (h | h)
+    · exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a b h))
+    · have : a * (-b) = 1 := by linarith
+      exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a (-b) this))
+  simp [ha, hab]
+
+/-- The Kronecker symbol is completely multiplicative in the first argument:
+    (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
+
+    Proof by case splitting on n, using multiplicativity of jacobiSym
+    (from Mathlib) and kroneckerNeg1 (sign character). -/
+theorem kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
+    kronecker (a * b) n = kronecker a n * kronecker b n := by
+  -- Case split on the special values of n
+  rcases eq_or_ne n 0 with rfl | hn0
+  · -- n = 0: reduces to kronecker0 multiplicativity
+    simp [kronecker, kronecker0_mul]
+  rcases eq_or_ne n (-1) with rfl | hnm1
+  · -- n = -1: reduces to kroneckerNeg1 multiplicativity
+    simp [kronecker, kroneckerNeg1_mul a b hab]
+  rcases eq_or_ne n 1 with rfl | hn1
+  · -- n = 1: both sides are 1
+    simp [kronecker]
+  · -- General case: n ≠ 0, -1, 1
+    -- Unfold and reduce the if-chain to the else branch
+    simp only [kronecker, if_neg hn0, if_neg hnm1, if_neg hn1]
+    by_cases hn : n < 0
+    · -- n < 0: sign factor is kroneckerNeg1
+      simp only [if_pos hn]
+      rw [kroneckerNeg1_mul a b hab, jacobiSym.mul_left]
+      ring
+    · -- n ≥ 0: sign factor is 1
+      simp only [if_neg hn, one_mul]
+      exact jacobiSym.mul_left a b n.natAbs
 
 /-- The Kronecker symbol is completely multiplicative in the second argument:
-    (a/mn) = (a/m)(a/n), provided m * n ≠ 0 or |a| ≤ 1.
+    (a/mn) = (a/m)(a/n), provided m * n ≠ 0.
 
     Same edge case as kronecker_mul_left: kroneckerNeg1(0) = 1 causes
     issues when one of m, n is -1 and the other introduces a 0.
