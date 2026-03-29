@@ -40,7 +40,11 @@ theorem mem_sumset_of_zero_mem (A B : Set ℕ) (h0 : (0 : ℕ) ∈ B) (a : ℕ) 
 theorem counting_mono (A : Set ℕ) (N M : ℕ) (hNM : N ≤ M) :
     ((Finset.range (N + 1) \ {0}).filter (· ∈ A)).card ≤
     ((Finset.range (M + 1) \ {0}).filter (· ∈ A)).card := by
-  sorry
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro x
+  simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton]
+  exact fun ⟨hlt, hne⟩ => ⟨by omega, hne⟩
 
 -- Routine: The counting function is bounded by N.
 -- |A ∩ {1,...,N}| ≤ N for any A.
@@ -58,7 +62,8 @@ theorem counting_le_N (A : Set ℕ) (N : ℕ) :
 -- α^0 = 1 ≥ α + α(1-α)/1 = α(2-α) for α ∈ [0,1].
 theorem power_bound_k1 (α : ℝ) (hα0 : 0 ≤ α) (hα1 : α ≤ 1) :
     α ^ (1 - 1 / (1 : ℝ)) ≥ α + α * (1 - α) / 1 := by
-  sorry
+  simp only [div_one, sub_self, rpow_zero]
+  nlinarith [sq_nonneg (1 - α)]
 
 -- Routine: For α = 0, the power bound holds trivially.
 theorem power_bound_alpha_zero (k : ℕ) (hk : k ≥ 1) :
