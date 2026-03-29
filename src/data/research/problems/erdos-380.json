@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Formalized very bad intervals and powerful numbers from original problem statement. Added 5 definitions, 7 proved theorems, 1 conjecture definition. Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount. File now covers both conjectures from Erdős #380 with 0 sorries, 2 deep axioms.",
+    "progressSummary": "PROGRESS: Eliminated erdos_graham_lower axiom by deriving it from gpfSquare_asymptotic + badCount_ge_gpfSquareCount. Axiom count reduced from 2 to 1. File has 17 proved theorems, 12 definitions, 0 sorries, 1 deep axiom (gpfSquare_asymptotic).",
     "builtItems": [
       "Proved gpf_prime (theorem, 4 lines)",
       "Proved gpf_dvd (theorem, 4 lines)",
@@ -49,7 +49,8 @@
       "veryBadCount_le_badCount: inequality (proved)",
       "veryBadCount_ge_powerfulCount: inequality (proved)",
       "counting_chain: summary of all counting inequalities (proved)",
-      "VeryBadConjecture: secondary conjecture statement"
+      "VeryBadConjecture: secondary conjecture statement",
+      "erdos_graham_lower: derived from gpfSquare_asymptotic + badCount_ge_gpfSquareCount (axiom→theorem)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max, eliminating 4 axioms",
@@ -66,7 +67,8 @@
       "IsPowerful n: 1 < n ∧ ∀ p prime, p|n → p²|n — standard definition for powerful/squareful numbers",
       "veryBad → bad: powerful product implies P²|product for GPF, so every very bad interval is bad",
       "Singleton [n,n] is very bad ↔ n is powerful — parallels singleton_bad_iff for bad intervals",
-      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount"
+      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount",
+      "erdos_graham_lower is redundant given gpfSquare_asymptotic: chain x^{1-ε} ≤ gpfSquareCount(x) ≤ badCount(x) gives the bound directly"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -93,9 +95,9 @@
     {
       "path": "Proofs/Erdos380Problem.lean",
       "filename": "Erdos380Problem.lean",
-      "lineCount": 402,
-      "theoremCount": 16,
-      "axiomCount": 2,
+      "lineCount": 396,
+      "theoremCount": 17,
+      "axiomCount": 1,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
