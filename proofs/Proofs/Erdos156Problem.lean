@@ -140,9 +140,46 @@ theorem greedySidon_subset_interval (N : ℕ) : greedySidon N ⊆ Interval N := 
     · -- Case: didn't add
       exact ⟨(ih hx).1, le_trans (ih hx).2 (Nat.le_succ n)⟩
 
-/-- The greedy construction is maximal -/
+/-- Monotonicity: the greedy construction only adds elements, never removes. -/
+private lemma greedySidon_mono (m n : ℕ) (hmn : m ≤ n) :
+    greedySidon m ⊆ greedySidon n := by
+  induction n with
+  | zero => simp only [Nat.le_zero] at hmn; subst hmn
+  | succ k ih =>
+    rcases eq_or_lt_of_le hmn with rfl | hlt
+    · exact Set.Subset.rfl
+    · exact Set.Subset.trans (ih (by omega)) (by
+        unfold greedySidon; split_ifs <;> [exact Set.subset_union_left; exact Set.Subset.rfl])
+
+/-- If x was not added at its step, the Sidon check failed. -/
+private lemma greedySidon_rejected (n : ℕ) (h : n + 1 ∉ greedySidon (n + 1)) :
+    ¬IsSidonSet (greedySidon n ∪ {n + 1}) := by
+  unfold greedySidon at h
+  split_ifs at h with h_check
+  · exact absurd (Set.mem_union_right _ rfl) h
+  · exact h_check
+
+/-- The greedy construction is maximal: no element from {1,...,N} can be added. -/
 theorem greedySidon_maximal (N : ℕ) : IsMaximalSidonSet (greedySidon N) N := by
-  sorry -- Proof requires detailed analysis of the greedy construction
+  refine ⟨greedySidon_subset_interval N, greedySidon_is_sidon N, ?_⟩
+  intro x hx hx_not
+  simp only [Interval, Set.mem_setOf_eq] at hx
+  -- Write x = x' + 1 (since x ≥ 1)
+  obtain ⟨x', rfl⟩ : ∃ x', x = x' + 1 := ⟨x - 1, by omega⟩
+  -- x'+1 ∉ greedySidon (x'+1) (from monotonicity and x'+1 ∉ greedySidon N)
+  have h_step : x' + 1 ∉ greedySidon (x' + 1) :=
+    fun h => hx_not (greedySidon_mono (x' + 1) N (by omega) h)
+  -- The Sidon check failed at step x'+1
+  have h_reject := greedySidon_rejected x' h_step
+  -- Non-Sidon-ness is upward closed: greedySidon x' ∪ {x'+1} ⊆ greedySidon N ∪ {x'+1}
+  intro h_sidon
+  exact h_reject (fun a b c d ha hb hc hd hab hcd heq =>
+    h_sidon a b c d
+      (Set.union_subset_union_left _ (greedySidon_mono x' N (by omega)) ha)
+      (Set.union_subset_union_left _ (greedySidon_mono x' N (by omega)) hb)
+      (Set.union_subset_union_left _ (greedySidon_mono x' N (by omega)) hc)
+      (Set.union_subset_union_left _ (greedySidon_mono x' N (by omega)) hd)
+      hab hcd heq)
 
 /-
 ## Known Bounds

@@ -71,7 +71,10 @@ theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
 
 /-- f(n) ≤ 2p_n, since the infimum includes the i=0 term. -/
 theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) :
-    f n ≤ 2 * nthPrime n := by sorry
+    f n ≤ 2 * nthPrime n := by
+  simp only [f, if_neg (by omega : n ≠ 0)]
+  refine (ciInf_le ⟨0, by rintro _ ⟨_, rfl⟩; exact Nat.zero_le _⟩ ⟨0, hn⟩).trans ?_
+  simp [symmetric_sum_at_zero n hn]
 
 /-- The two definitions of f are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by sorry
