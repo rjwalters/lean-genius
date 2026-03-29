@@ -185,6 +185,36 @@ private lemma card_upper_triangle (A : Finset ℕ) :
   omega
 
 /-
+## Section V.5: General Sumset Cardinality Bound
+-/
+
+/-- The sumset A+A equals the image of the upper triangle {(a,b) : a ≤ b}
+    under addition, since a+b = b+a. -/
+private theorem sumset_eq_upper_image (A : Finset ℕ) :
+    sumset A = ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).image
+      (fun p => p.1 + p.2) := by
+  ext m
+  simp only [sumset, Finset.mem_image, Finset.mem_filter, Finset.mem_product, Prod.exists]
+  constructor
+  · rintro ⟨a, b, ⟨ha, hb⟩, hab⟩
+    rcases le_total a b with h | h
+    · exact ⟨a, b, ⟨⟨ha, hb⟩, h⟩, hab⟩
+    · exact ⟨b, a, ⟨⟨hb, ha⟩, h⟩, by omega⟩
+  · rintro ⟨a, b, ⟨⟨ha, hb⟩, _⟩, hab⟩
+    exact ⟨a, b, ⟨ha, hb⟩, hab⟩
+
+/-- Upper bound on sumset cardinality: |A+A| ≤ n(n+1)/2 for any A with n = |A|.
+    Since a+b = b+a, distinct sums come only from the upper triangle. -/
+theorem sumset_card_le (A : Finset ℕ) :
+    (sumset A).card ≤ A.card * (A.card + 1) / 2 := by
+  rw [sumset_eq_upper_image]
+  calc (((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).image
+          (fun p => p.1 + p.2)).card
+      ≤ ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card :=
+        Finset.card_image_le
+    _ = A.card * (A.card + 1) / 2 := card_upper_triangle A
+
+/-
 ## Section VI: Sidon Set Sumset Properties
 -/
 
@@ -214,6 +244,13 @@ theorem sidon_sumset_card (A : Finset ℕ) (h : IsSidon A) :
   calc A.card * (A.card + 1) / 2
       = S.card := (card_upper_triangle A).symm
     _ ≤ (sumset A).card := hge
+
+/-- Exact sumset cardinality for Sidon sets: |A+A| = n(n+1)/2.
+    Combines the lower bound (Sidon injectivity) with the general upper bound
+    (commutativity of addition). -/
+theorem sidon_sumset_card_eq (A : Finset ℕ) (h : IsSidon A) :
+    (sumset A).card = A.card * (A.card + 1) / 2 :=
+  le_antisymm (sumset_card_le A) (sidon_sumset_card A h)
 
 /-- If A ⊆ {1,...,N} is Sidon, then A+A ⊆ {2,...,2N} so gaps can be
 computed within a bounded range. -/

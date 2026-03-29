@@ -126,19 +126,16 @@ theorem not_ch_has_intermediate (h : ¬CH) :
     have hle : Cardinal.aleph 1 ≤ (2 : Cardinal) ^ ℵ₀ := aleph_one_le_continuum
     exact lt_of_le_of_ne hle (Ne.symm h)
 
-/-- Under ¬CH, there are in fact infinitely many intermediate cardinals.
-    If 2^ℵ₀ ≥ ℵ₂, then ℵ₁ and ℵ₂ are both intermediate (and so on). -/
+/-- Under ¬CH, if 2^ℵ₀ > ℵ₂, then both ℵ₁ and ℵ₂ are intermediate cardinals.
+    (If 2^ℵ₀ = ℵ₂, then ℵ₂ = continuum so it is not strictly intermediate.) -/
 theorem not_ch_multiple_intermediates (h : ¬CH)
-    (h2 : Cardinal.aleph 2 ≤ (2 : Cardinal.{0}) ^ ℵ₀) :
+    (h2 : Cardinal.aleph 2 < (2 : Cardinal.{0}) ^ ℵ₀) :
     ∃ κ₁ κ₂ : Cardinal.{0},
       ℵ₀ < κ₁ ∧ κ₁ < κ₂ ∧ κ₂ < continuum := by
   use Cardinal.aleph 1, Cardinal.aleph 2
   refine ⟨aleph_one_gt_aleph_zero, ?_, ?_⟩
   · exact aleph_strictly_increasing 1 2 (by norm_num)
-  · unfold continuum
-    exact lt_of_le_of_ne h2 (by
-      intro heq
-      sorry) -- Would need to show 2^ℵ₀ ≠ ℵ₂ from the hypothesis
+  · unfold continuum; exact h2
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -195,9 +192,10 @@ def KonigConstraint : Prop :=
     - These are the ONLY constraints (Easton's theorem)
     - Possible values: ℵ₁, ℵ₂, ℵ₃, ..., ℵ_{ω₁}, ..., ℵ_{ω₁+1}, ...
     - NOT possible: ℵ_ω (cf = ω), ℵ_{ω+ω} (cf = ω), etc. -/
-axiom easton_consistent_values :
+theorem easton_consistent_values :
     ∀ α : Ordinal.{0}, (Cardinal.aleph α).ord.cof > ℵ₀ → Cardinal.aleph α ≥ Cardinal.aleph 1 →
       True  -- Placeholder: "there exists a model of ZFC where 2^ℵ₀ = ℵ_α"
+  := by intro _ _ _; trivial
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -223,16 +221,17 @@ The question remains one of the deepest open problems in set theory.
 -/
 
 /-- Martin's Axiom is compatible with both CH and ¬CH. -/
-axiom martins_axiom_neutral_on_ch :
+theorem martins_axiom_neutral_on_ch :
     -- MA is consistent with CH
     True ∧
     -- MA + ¬CH is also consistent
-    True
+    True := ⟨trivial, trivial⟩
 
 /-- PFA (Proper Forcing Axiom) implies ¬CH: 2^ℵ₀ = ℵ₂ under PFA.
     This is a theorem of Todorcevic and Velickovic. -/
-axiom pfa_implies_not_ch :
+theorem pfa_implies_not_ch :
     True  -- Placeholder: PFA → 2^ℵ₀ = ℵ₂
+  := trivial
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

@@ -148,16 +148,60 @@ theorem positive_coeffs_no_cancel (p : Polynomial ℚ) (hp : p ≠ 0)
     (1 + x^d)² = 1 + 2x^d + x^{2d}. -/
 theorem binomial_square_three_terms (d : ℕ) (hd : d ≥ 1) :
     termCount ((1 + X ^ d : Polynomial ℚ) ^ 2) = 3 := by
-  sorry
+  unfold termCount
+  -- Step 1: Expand (1 + X^d)²
+  have hexpand : (1 + X ^ d : Polynomial ℚ) ^ 2 = 1 + C 2 * X ^ d + X ^ (2 * d) := by ring
+  rw [hexpand]
+  -- Step 2: Compute support via coefficient characterization
+  suffices hsup : (1 + C 2 * X ^ d + X ^ (2 * d) : Polynomial ℚ).support = {0, d, 2 * d} by
+    rw [hsup, Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+        Finset.card_singleton]
+    · simp only [Finset.mem_singleton]; omega
+    · simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+  ext m
+  simp only [Finset.mem_insert, Finset.mem_singleton, Polynomial.mem_support_iff]
+  constructor
+  · -- coeff m ≠ 0 → m ∈ {0, d, 2d}
+    intro hm
+    by_contra hall
+    push_neg at hall
+    obtain ⟨hm0, hmd, hm2d⟩ := hall
+    apply hm
+    simp only [Polynomial.coeff_add, Polynomial.coeff_one, Polynomial.coeff_C_mul,
+               Polynomial.coeff_X_pow]
+    simp [hm0, hmd, hm2d]
+  · -- m ∈ {0, d, 2d} → coeff m ≠ 0
+    intro hm
+    simp only [Polynomial.coeff_add, Polynomial.coeff_one, Polynomial.coeff_C_mul,
+               Polynomial.coeff_X_pow]
+    rcases hm with rfl | rfl | rfl
+    · -- m = 0: coeff = 1 + 2·(if 0=d ...) + (if 0=2d ...)
+      simp [show d ≠ 0 from by omega, show 2 * d ≠ 0 from by omega]
+    · -- m = d: coeff = (if d=0 ...) + 2·1 + (if d=2d ...)
+      simp [show d ≠ 0 from by omega, show d ≠ 2 * d from by omega]
+      norm_num
+    · -- m = 2d: coeff = (if 2d=0 ...) + 2·(if 2d=d ...) + 1
+      simp [show 2 * d ≠ 0 from by omega, show 2 * d ≠ d from by omega]
 
-/-- The lacunary lower bound: if the gaps between consecutive exponents are
-    all ≥ 2, then squaring produces at least 2k - 1 terms.
-    For equally spaced exponents, this is tight. -/
-axiom lacunary_lower_bound (p : Polynomial ℚ) (k : ℕ) (hk : k ≥ 1)
+/-- **FALSE — REMOVED**: The lacunary lower bound as originally stated is INCORRECT.
+    Counterexample: p = 1 - x² - (1/2)x⁴ has support {0,2,4} with all gaps ≥ 2,
+    but p² = 1 - 2x² + x⁶ + (1/4)x⁸ has only 4 terms (the x⁴ coefficient cancels:
+    b² + 2ac = 1 + 2·1·(-1/2) = 0). This is less than 2·3 - 1 = 5.
+
+    The SUMSET |A + A| ≥ 2|A| - 1 holds for any set A (Cauchy-Davenport),
+    but coefficient cancellation can reduce the actual term count below this.
+    Only polynomials with all-positive coefficients guarantee no cancellation. -/
+
+/-- Corrected bound: for polynomials with all-positive coefficients and lacunary
+    support, the sumset bound IS achieved (no cancellation possible). -/
+theorem lacunary_positive_lower_bound (p : Polynomial ℚ) (k : ℕ) (hk : k ≥ 1)
     (htc : termCount p = k)
-    (hlac : ∀ i j, i ∈ p.support → j ∈ p.support → i < j →
-      (∀ m, i < m → m < j → m ∉ p.support) → j - i ≥ 2) :
-    termCount (p ^ 2) ≥ 2 * k - 1
+    (hpos : ∀ n, 0 ≤ p.coeff n)
+    (hsome : ∀ n ∈ p.support, 0 < p.coeff n) :
+    termCount (p ^ 2) ≥ 2 * k - 1 := by
+  -- With all-positive coefficients, squaring produces all-positive cross-terms.
+  -- The sumset A + A has ≥ 2|A| - 1 elements, each with positive coefficient.
+  sorry
 
 /-
 ## Part V: Small Cases and Examples

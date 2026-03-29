@@ -54,7 +54,7 @@
     "axiomCount": 1,
     "lineCount": 546,
     "assumptions": "1 axiom: erdosHajnalGraph2_chromatic_lower (χ(E-H graph on ω₂²) ≥ ℵ₂). The graph is now explicitly defined with adjacency proved symmetric/loopless, ℵ₂-colorability proved, and subgraph bound proved. Only the lower bound on chromatic number remains axiomatized.",
-    "theoremCount": 30
+    "theoremCount": 32
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
@@ -167,7 +167,7 @@
     "namespace": "Erdos919",
     "lineCount": 546,
     "axiomCount": 1,
-    "theoremCount": 25,
+    "theoremCount": 32,
     "definitionCount": 15
   },
   "crossReferences": [

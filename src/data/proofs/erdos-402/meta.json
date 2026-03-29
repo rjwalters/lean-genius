@@ -53,7 +53,11 @@
       "IsGrahamEqualityCase characterization (3 families)",
       "gcd_one_suffices coprime reduction lemma",
       "Aristotle: ratio_bound proof, range case proof",
-      "Aristotle: {1,2,4} counterexample falsifying equality characterization"
+      "Aristotle: {1,2,4} counterexample falsifying equality characterization",
+      "dvd_lt_imp_le_half: proper divisors bounded by half",
+      "erdos_402_pair: conjecture proved for two-element sets",
+      "max_ge_card_of_pos: max of positive Finset ≥ cardinality",
+      "erdos_402_contains_one: conjecture proved when 1 ∈ A"
     ],
     "axiomCount": 0,
     "lineCount": 327,
@@ -173,9 +177,9 @@
       "Finset"
     ],
     "namespace": "Erdos402",
-    "lineCount": 327,
+    "lineCount": 347,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 18,
     "definitionCount": 5
   },
   "references": [
