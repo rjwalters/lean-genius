@@ -7,7 +7,7 @@
     "author": "Gabriel Cramer (1750); Carl Friedrich Gauss",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Complexity",
     "date": "1750/1800s",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CramersRuleOQ01OQ03.lean",
     "tags": [
       "linear-algebra",
@@ -19,10 +19,10 @@
       "open-problem"
     ],
     "badge": "verified",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding).",
-    "lineCount": 216
+    "lineCount": 228
   },
   "overview": {
     "historicalContext": "**Why Cramer's Rule is Beautiful but Impractical**\n\nCramer's Rule provides elegant closed-form solutions to linear systems via determinants. However, the Leibniz formula for determinants sums over all n! permutations, making it computationally prohibitive for large n. Gaussian elimination, developed systematically by Gauss in the early 1800s, solves the same problem in O(n³) operations.",
@@ -130,10 +130,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Nat", "BigOperators"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "BigOperators"
+    ],
     "namespace": "CramersRuleComplexity",
-    "lineCount": 216,
+    "lineCount": 228,
     "axiomCount": 0,
     "theoremCount": 13,
     "substantiveTheoremCount": 10,
