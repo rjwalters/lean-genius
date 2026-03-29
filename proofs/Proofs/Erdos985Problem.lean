@@ -46,9 +46,12 @@ def primesWithPrimePrimitiveRoot : Set ℕ :=
 axiom exists_primitive_root (p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2) :
     ∃ g : ℕ, 0 < g ∧ g < p ∧ orderOf (g : ZMod p) = p - 1
 
-/-- The multiplicative group of a finite field is cyclic. -/
-axiom zmod_units_cyclic (p : ℕ) (hp : p.Prime) :
-    IsCyclic (ZMod p)ˣ
+/-- The multiplicative group of a finite field is cyclic.
+    Proved via Mathlib's instance for finite fields. -/
+theorem zmod_units_cyclic (p : ℕ) (hp : p.Prime) :
+    IsCyclic (ZMod p)ˣ := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  infer_instance
 
 /- ## Small Prime Examples -/
 
