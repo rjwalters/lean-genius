@@ -16,13 +16,13 @@
       "number theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 963,
     "erdosUrl": "https://erdosproblems.com/963",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 430,
-    "assumptions": "2 axioms: greedy_lower_bound (known result), trivial_upper_bound (known result). 1 sorry: disjoint_pairs_card (combinatorial counting lemma). Conjecture stated as def ErdosProblem963 (not an axiom). Proved: dissociated_subset_sum_count, log_base_gap, powers_of_two_dissociated, maxDissociatedSize_mono, dissociated_subset, dissociated_card_le, dissociated_insert (extension lemma), dissociated_extend (greedy step), diffSumFinset_card_le, greedy_dissociated.",
+    "assumptions": "2 axioms: greedy_lower_bound (known result), trivial_upper_bound (known result). 0 sorries (disjoint_pairs_card now proved). Conjecture stated as def ErdosProblem963 (not an axiom). Proved: dissociated_subset_sum_count, log_base_gap, powers_of_two_dissociated, maxDissociatedSize_mono, dissociated_subset, dissociated_card_le, dissociated_insert (extension lemma), dissociated_extend (greedy step), diffSumFinset_card_le, greedy_dissociated.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
