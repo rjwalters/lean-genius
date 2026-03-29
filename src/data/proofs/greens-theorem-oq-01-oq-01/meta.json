@@ -16,7 +16,7 @@
       "integration",
       "greens-theorem"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "No axioms. 0 sorries. All theorems fully proved using Mathlib's integral_integral_swap and ContinuousOn.integrableOn_compact.",
@@ -61,7 +61,7 @@
       "title": "Part I: Fubini for Interval Integrals",
       "startLine": 1,
       "endLine": 55,
-      "summary": "States intervalIntegral_swap: swap iterated interval integrals under measurability + integrability. 1 sorry.",
+      "summary": "Proves intervalIntegral_swap: swap iterated interval integrals under measurability + integrability via Mathlib's integral_integral_swap.",
       "mathContext": "$\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$"
     },
     {
@@ -77,7 +77,7 @@
       "title": "Part III: Sufficient Conditions",
       "startLine": 81,
       "endLine": 120,
-      "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. 1 sorry.",
+      "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. Fully proved via ContinuousOn.integrableOn_compact.",
       "mathContext": "$f \\in C^0([a,b] \\times [c,d]) \\implies$ Fubini holds."
     }
   ],
