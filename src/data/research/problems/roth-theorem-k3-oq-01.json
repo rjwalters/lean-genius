@@ -1,0 +1,73 @@
+{
+  "slug": "roth-theorem-k3-oq-01",
+  "title": "What quantitative bounds can we formalize",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 3,
+    "focus": "Analyzed density_increment_lemma API and proof structure for crude_sqrt_bound",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Defined r₃(N) formally, proved 5 properties, stated 5 quantitative bounds",
+    "builtItems": [
+      "Created RothTheoremQuantitative.lean with r₃(N) definition",
+      "Proved rothNumber_le: r₃(N) ≤ N",
+      "Proved rothNumber_pos: r₃(N) ≥ 1 for N ≥ 1",
+      "Proved card_le_rothNumber: |A| ≤ r₃(N) for AP-free A",
+      "Proved max_iterations_bound: k > ⌊100/δ²⌋ if δ + kδ²/100 > 1",
+      "Stated 5 quantitative bounds (Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N)"
+    ],
+    "insights": [
+      "r₃(N) definition as Finset.sup over AP-free subsets of ZMod N is novel formalization",
+      "Density increment gives M < N but no lower bound on M - need M ≥ √N for quantitative bounds",
+      "max_iterations_bound (pure arithmetic) is the key provable link to initial density",
+      "Behrend lower bound (sphere construction) is most tractable next target among sorry bounds",
+      "Iteration theorem for arbitrary k is FALSE - modulus reaches 1 and blocks continuation",
+      "density_increment_lemma gives M < N and M > 0 with density ≥ δ + δ²/100 — critical API for all bounds",
+      "crude_sqrt_bound proof: iterate density_increment N-1 times, density grows by ≥ k·δ²/100, must stay ≤ 1, so N ≥ 100/δ²",
+      "For N ≤ 100: r₃(N) ≤ N ≤ 10√N trivially (since √N ≤ 10). For N > 100: use iteration bound.",
+      "rothNumber is Finset.sup so supremum is achieved — need Finset.exists_max_image for witness"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove crude_sqrt_bound from density_upper_bound_from_iteration (simple logical implication)",
+      "Prove density_upper_bound_from_iteration via well-founded induction using density_increment_lemma",
+      "The iteration: apply density_increment_lemma k times until modulus reaches 1, then k ≤ N-1 and density ≤ 1",
+      "Behrend lower bound: sphere AP-free property is algebraic (‖a-c‖² = 0 on sphere forces a=c)"
+    ],
+    "markdown": "# Knowledge Base: roth-theorem-k3-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.926Z",
+  "lastUpdate": "2026-03-29T04:28:18.986Z"
+}
