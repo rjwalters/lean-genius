@@ -307,11 +307,178 @@ theorem nonRamsey_universal (c : ℝ) (hc : c > 0) :
 Universality implies regular subgraphs exist.
 -/
 
+/-- Cycle adjacency: i and j are adjacent iff they differ by 1 mod k. -/
+private def cycleAdj (k : ℕ) (i j : Fin k) : Prop :=
+  (i.val + 1) % k = j.val ∨ (j.val + 1) % k = i.val
+
+private theorem cycleAdj_symm (k : ℕ) (i j : Fin k) :
+    cycleAdj k i j → cycleAdj k j i := by
+  intro h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
+
+private theorem cycleAdj_loopless (k : ℕ) (hk : k ≥ 3) (i : Fin k) :
+    ¬cycleAdj k i i := by
+  intro h
+  have h' : (i.val + 1) % k = i.val := by rcases h with h | h <;> exact h
+  have := i.isLt
+  by_cases h2 : i.val + 1 < k
+  · rw [Nat.mod_eq_of_lt h2] at h'; omega
+  · rw [show i.val + 1 = k from by omega, Nat.mod_self] at h'; omega
+
+/-- The predecessor cycles back: ((i + k - 1) % k + 1) % k = i. -/
+private theorem pred_succ_cancel (i k : ℕ) (hi : i < k) (hk : k ≥ 3) :
+    ((i + k - 1) % k + 1) % k = i := by
+  by_cases h : i = 0
+  · rw [h, show 0 + k - 1 = k - 1 from by omega,
+        Nat.mod_eq_of_lt (show k - 1 < k by omega),
+        show k - 1 + 1 = k from by omega, Nat.mod_self]
+  · rw [show i + k - 1 = (i - 1) + k from by omega, Nat.add_mod_right,
+        Nat.mod_eq_of_lt (show i - 1 < k by omega),
+        show i - 1 + 1 = i from by omega, Nat.mod_eq_of_lt hi]
+
+/-- Successor and predecessor are distinct when k ≥ 3. -/
+private theorem succ_ne_pred (i k : ℕ) (hi : i < k) (hk : k ≥ 3) :
+    (i + 1) % k ≠ (i + k - 1) % k := by
+  by_cases h0 : i = 0
+  · rw [h0, show 0 + 1 = 1 from rfl, Nat.mod_eq_of_lt (show 1 < k by omega),
+        show 0 + k - 1 = k - 1 from by omega,
+        Nat.mod_eq_of_lt (show k - 1 < k by omega)]; omega
+  · by_cases h1 : i + 1 < k
+    · rw [Nat.mod_eq_of_lt h1,
+          show i + k - 1 = (i - 1) + k from by omega, Nat.add_mod_right,
+          Nat.mod_eq_of_lt (show i - 1 < k by omega)]; omega
+    · rw [show i + 1 = k from by omega, Nat.mod_self,
+          show i + k - 1 = (k - 2) + k from by omega, Nat.add_mod_right,
+          Nat.mod_eq_of_lt (show k - 2 < k by omega)]; omega
+
+/-- If (j+1)%k = i then j = (i+k-1)%k. -/
+private theorem adj_gives_pred (i j k : ℕ) (hi : i < k) (hj : j < k) (hk : k ≥ 3)
+    (h : (j + 1) % k = i) : j = (i + k - 1) % k := by
+  by_cases hj1 : j + 1 < k
+  · rw [Nat.mod_eq_of_lt hj1] at h
+    rw [← h, show j + 1 + k - 1 = j + k from by omega, Nat.add_mod_right,
+        Nat.mod_eq_of_lt hj]
+  · rw [show j + 1 = k from by omega, Nat.mod_self] at h
+    rw [← h, show 0 + k - 1 = k - 1 from by omega,
+        Nat.mod_eq_of_lt (show k - 1 < k by omega)]
+    omega
+
+/-- The cycle graph on k vertices. -/
+private def cycleGraph' (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
+  Adj := cycleAdj k
+  symm := cycleAdj_symm k
+  loopless := cycleAdj_loopless k hk
+
 /-- Universal graphs contain regular subgraphs. -/
 theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
     isKUniversal G k →
     ∃ S : Finset V, isNontrivialRegular G S ∧ S.card ≥ 3 := by
-  sorry
+  intro huniv
+  have hk3 : k ≥ 3 := by omega
+  -- Lift cycle to universe of V
+  let W := ULift.{_, 0} (Fin k)
+  let H : SimpleGraph W := {
+    Adj := fun a b => cycleAdj k a.down b.down
+    symm := fun a b h => cycleAdj_symm k a.down b.down h
+    loopless := fun a h => cycleAdj_loopless k hk3 a.down h
+  }
+  have hWcard : Fintype.card W = k := by
+    change Fintype.card (ULift (Fin k)) = k
+    rw [Fintype.card_ulift, Fintype.card_fin]
+  -- Get embedding of cycle into G
+  obtain ⟨S, hScard, f, hf⟩ := huniv W hWcard H
+  -- S has k ≥ 6 ≥ 3 vertices
+  refine ⟨S, ⟨⟨2, ?reg⟩, ?nontriv⟩, ?size⟩
+  case size => rw [hScard, hWcard]; omega
+  case nontriv =>
+    -- Not trivial: has both edges and non-edges
+    let v0 : W := ULift.up ⟨0, by omega⟩
+    let v1 : W := ULift.up ⟨1, by omega⟩
+    let v2 : W := ULift.up ⟨2, by omega⟩
+    intro htriv
+    rcases htriv with hInd | hClq
+    · -- Not independent: 0 and 1 are adjacent in the cycle
+      have h01 : H.Adj v0 v1 := by
+        show cycleAdj k (⟨0, by omega⟩ : Fin k) ⟨1, by omega⟩
+        left; rw [show (0 : ℕ) + 1 = 1 from rfl, Nat.mod_eq_of_lt (show 1 < k by omega)]
+      have hadj := (hf v0 v1).mp h01
+      have hne : (f v0).val ≠ (f v1).val := by
+        intro heq
+        have h := congrArg (fun (w : W) => w.down.val) (f.injective (Subtype.val_injective heq))
+        dsimp [v0, v1] at h; omega
+      exact hInd _ (f v0).prop _ (f v1).prop hne hadj
+    · -- Not complete: 0 and 2 are NOT adjacent in the cycle
+      have h02 : ¬H.Adj v0 v2 := by
+        intro h
+        change cycleAdj k (⟨0, by omega⟩ : Fin k) ⟨2, by omega⟩ at h
+        rcases h with h | h
+        · simp only [cycleAdj] at h
+          rw [show (0 : ℕ) + 1 = 1 from rfl, Nat.mod_eq_of_lt (show 1 < k from by linarith)] at h
+          exact absurd h (by norm_num)
+        · simp only [cycleAdj] at h
+          rw [show (2 : ℕ) + 1 = 3 from rfl, Nat.mod_eq_of_lt (show 3 < k from by linarith)] at h
+          exact absurd h (by norm_num)
+      have hne : (f v0).val ≠ (f v2).val := by
+        intro heq
+        have h := congrArg (fun (w : W) => w.down.val) (f.injective (Subtype.val_injective heq))
+        dsimp [v0, v2] at h; omega
+      exact h02 ((hf v0 v2).mpr (hClq _ (f v0).prop _ (f v2).prop hne))
+  case reg =>
+    -- Each vertex in S has induced degree 2
+    intro v hv
+    -- v = (f w).val for some w : W
+    have ⟨w, hw⟩ : ∃ w : W, (f w).val = v := ⟨f.symm ⟨v, hv⟩, by simp⟩
+    subst hw
+    let i := w.down  -- the Fin k index
+    -- inducedDegree counts neighbors in S
+    unfold inducedDegree
+    -- The filter {u ∈ S | G.Adj (f w).val u} bijects with {j : W | H.Adj w j}
+    have hfilt : S.filter (fun u => G.Adj (f w).val u) =
+        (Finset.univ.filter (fun j : W => H.Adj w j)).map
+          ⟨fun j => (f j).val, fun a b h => by
+            have := f.injective (Subtype.val_injective h); exact this⟩ := by
+      ext u
+      simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_univ, true_and,
+        Function.Embedding.coeFn_mk]
+      constructor
+      · intro ⟨hu, hadj⟩
+        exact ⟨f.symm ⟨u, hu⟩, (hf w _).mpr (by simp [hadj]), by simp⟩
+      · intro ⟨j, hadj, hj⟩
+        exact ⟨hj ▸ (f j).prop, hj ▸ (hf w j).mp hadj⟩
+    rw [hfilt, Finset.card_map]
+    -- Count cycle neighbors: exactly 2
+    -- Neighbors of i in cycle are (i+1)%k and (i+k-1)%k
+    have succ_val : ((i.val + 1) % k) < k := Nat.mod_lt _ (by omega)
+    have pred_val : ((i.val + k - 1) % k) < k := Nat.mod_lt _ (by omega)
+    let succW : W := ULift.up ⟨(i.val + 1) % k, succ_val⟩
+    let predW : W := ULift.up ⟨(i.val + k - 1) % k, pred_val⟩
+    -- succ is a neighbor
+    have h_succ : H.Adj w succW := by
+      show cycleAdj k i ⟨(i.val + 1) % k, succ_val⟩
+      left; rfl
+    -- pred is a neighbor
+    have h_pred : H.Adj w predW := by
+      show cycleAdj k i ⟨(i.val + k - 1) % k, pred_val⟩
+      right; exact pred_succ_cancel i.val k i.isLt hk3
+    -- succ ≠ pred (requires k ≥ 3)
+    have h_ne : succW ≠ predW := by
+      intro heq
+      have hvals : (i.val + 1) % k = (i.val + k - 1) % k := by
+        have := congrArg (fun w : W => w.down.val) heq; simpa [succW, predW] using this
+      exact absurd hvals (succ_ne_pred i.val k i.isLt hk3)
+    -- No other neighbors
+    have h_only : ∀ j : W, H.Adj w j → j = succW ∨ j = predW := by
+      intro j haj
+      have haj' : cycleAdj k i j.down := haj
+      rcases haj' with h1 | h2
+      · left; apply ULift.ext; apply Fin.ext; simpa [succW] using h1.symm
+      · right; apply ULift.ext; apply Fin.ext; simp [predW]
+        exact adj_gives_pred i.val j.down.val k i.isLt j.down.isLt hk3 h2
+    -- Filter equals {succW, predW}
+    have hfilt_eq : Finset.univ.filter (fun j => H.Adj w j) = {succW, predW} := by
+      ext j; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
+        Finset.mem_singleton]
+      exact ⟨h_only j, fun h => by rcases h with rfl | rfl; exact h_succ; exact h_pred⟩
+    rw [hfilt_eq, Finset.card_pair h_ne]
 
 /-
 ## Summary
