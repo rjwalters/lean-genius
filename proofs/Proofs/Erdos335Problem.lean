@@ -201,3 +201,51 @@ theorem Sumset_empty_left (B : Set ℕ) : Sumset ∅ B = ∅ := by
 /-- Sumset with the empty set on the right is empty. -/
 theorem Sumset_empty_right (A : Set ℕ) : Sumset A ∅ = ∅ := by
   ext n; simp [Sumset]
+
+/- ## Sumset Algebraic Properties -/
+
+/-- Sumset is associative: (A + B) + C = A + (B + C). -/
+theorem Sumset_assoc (A B C : Set ℕ) :
+    Sumset (Sumset A B) C = Sumset A (Sumset B C) := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨ab, ⟨a, ha, b, hb, rfl⟩, c, hc, rfl⟩
+    exact ⟨a, ha, b + c, ⟨b, hb, c, hc, rfl⟩, by omega⟩
+  · rintro ⟨a, ha, bc, ⟨b, hb, c, hc, rfl⟩, rfl⟩
+    exact ⟨a + b, ⟨a, ha, b, hb, rfl⟩, c, hc, by omega⟩
+
+/-- A sum a + b is in the sumset when a ∈ A and b ∈ B. -/
+theorem Sumset_mem_of_mem {A B : Set ℕ} {a b : ℕ} (ha : a ∈ A) (hb : b ∈ B) :
+    a + b ∈ Sumset A B :=
+  ⟨a, ha, b, hb, rfl⟩
+
+/-- Sumset with a singleton is a translation. -/
+theorem Sumset_singleton_left (a : ℕ) (B : Set ℕ) :
+    Sumset {a} B = (fun b => a + b) '' B := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq, Set.mem_singleton_iff, Set.mem_image]
+  constructor
+  · rintro ⟨_, rfl, b, hb, rfl⟩; exact ⟨b, hb, rfl⟩
+  · rintro ⟨b, hb, rfl⟩; exact ⟨a, rfl, b, hb, rfl⟩
+
+/- ## Counting Function Properties -/
+
+/-- The counting function is monotone in the set argument. -/
+theorem countingFn_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    countingFn A N ≤ countingFn B N := by
+  unfold countingFn
+  exact Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+    ((Set.finite_Icc 1 N).subset Set.inter_subset_right)
+
+/-- The counting function of the empty set is zero. -/
+theorem countingFn_empty (N : ℕ) : countingFn ∅ N = 0 := by
+  unfold countingFn
+  simp [Set.empty_inter]
+
+/-- The counting function is monotone in N: if M ≤ N, then countingFn A M ≤ countingFn A N. -/
+theorem countingFn_mono_N (A : Set ℕ) {M N : ℕ} (h : M ≤ N) :
+    countingFn A M ≤ countingFn A N := by
+  unfold countingFn
+  exact Set.ncard_le_ncard (Set.inter_subset_inter_right _ (Set.Icc_subset_Icc_right h))
+    ((Set.finite_Icc 1 N).subset Set.inter_subset_right)
