@@ -29,13 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Erdos368Problem.lean axiom elimination 11→5 (6 eliminated). Proved coprime factorization from Mathlib.",
+    "progressSummary": "PROGRESS: Fixed stub definitions (maxOverlap, M). Proved constant_bounds + product_card. File: 162 lines, 6 axioms, 0 sorries, 2 theorems, 7 defs.",
     "builtItems": [
       "Proved primeFactors_product_coprime from Mathlib Nat.primeFactors_mul",
-      "Converted 5 unused axiom propositions to def Prop"
+      "Converted 5 unused axiom propositions to def Prop",
+      "Fixed maxOverlap: real Finset.sup definition over difference image",
+      "Defined M via Finset.min on overlapValues (constructive, not stub)",
+      "Proved constant_bounds theorem from white_lower + upper_bound axioms",
+      "Added interval, partitions, overlapValues helper definitions"
     ],
     "insights": [
-      "Erdos368Problem.lean: 6 axioms eliminated (11→5). primeFactors_product_coprime proved from Nat.primeFactors_mul (Mathlib). 5 unused axioms converted to def Prop."
+      "Erdos368Problem.lean: 6 axioms eliminated (11→5). primeFactors_product_coprime proved from Nat.primeFactors_mul (Mathlib). 5 unused axioms converted to def Prop.",
+      "maxOverlap and minMaxOverlap were stubs (returning 0), making axioms inconsistent — fixed with proper definitions",
+      "M(N) now constructively defined via Finset.min over partition overlap image",
+      "constant_bounds proved: if c = lim M(N)/N then 0.379005 ≤ c ≤ 0.380876 (from axiom sandwich)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

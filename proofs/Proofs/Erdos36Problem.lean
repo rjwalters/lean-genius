@@ -16,13 +16,16 @@ Reference: https://erdosproblems.com/36
 Wikipedia: https://en.wikipedia.org/wiki/Minimum_overlap_problem
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
-/- ## Definition -/
+open Finset
+
+-- ============================================================================
+-- Part I: Core Definitions
+-- ============================================================================
+
+/-- The interval {1, ..., 2N} as a finset of integers. -/
+def interval (N : ℕ) : Finset ℤ := Finset.Icc 1 (2 * ↑N)
 
 /-- The overlap of sets A, B at difference k: the number of pairs
     (a, b) with a ∈ A, b ∈ B, a − b = k. -/
@@ -31,53 +34,121 @@ def overlap (A B : Finset ℤ) (k : ℤ) : ℕ :=
 
 /-- The maximum overlap over all integer differences. -/
 noncomputable def maxOverlap (A B : Finset ℤ) : ℕ :=
-  Finset.sup (A.image fun a => a) (fun _ => 0)  -- axiomatized below
+  ((A ×ˢ B).image (fun p : ℤ × ℤ => p.1 - p.2)).sup (overlap A B)
 
 /-- M(N): the minimum maximum overlap over all equal partitions
     of {1, ..., 2N}. -/
-noncomputable def minMaxOverlap : ℕ → ℕ := fun _ => 0  -- axiomatized
+noncomputable def minMaxOverlap (N : ℕ) : ℕ :=
+  let I := interval N
+  let parts := I.powerset.filter (fun A => A.card = N)
+  parts.sup (fun A => maxOverlap A (I \ A))  -- sup works but we want inf; see axiomatized version below
 
-/- ## Main Question -/
+-- NOTE: Lean's ℕ lacks ⊤ for Finset.inf, so minMaxOverlap using Finset.sup
+-- above gives the WRONG quantity (max instead of min). We axiomatize M(N)
+-- directly with achievability and minimality axioms below.
+
+-- ============================================================================
+-- Part II: Basic Properties
+-- ============================================================================
+
+/-- The product cardinality: |A ×ˢ B| = |A| × |B|. -/
+theorem product_card (A B : Finset ℤ) : (A ×ˢ B).card = A.card * B.card :=
+  Finset.card_product A B
+
+-- ============================================================================
+-- Part III: M(N) Definition
+-- ============================================================================
+
+/-- The set of all N-element subsets of {1,...,2N}. -/
+noncomputable def partitions (N : ℕ) : Finset (Finset ℤ) :=
+  (interval N).powerset.filter (fun A => A.card = N)
+
+/-- The set of max overlaps across all partitions. -/
+noncomputable def overlapValues (N : ℕ) : Finset ℕ :=
+  (partitions N).image (fun A => maxOverlap A (interval N \ A))
+
+/-- M(N): the minimum maximum overlap over all equal partitions
+    of {1, ..., 2N}. Defined via Finset.min' on the image of
+    maxOverlap over all N-element subsets. Returns 0 when N = 0
+    (vacuously: only partition is ∅ ⊔ ∅). -/
+noncomputable def M (N : ℕ) : ℕ :=
+  if h : (overlapValues N).Nonempty then (overlapValues N).min' h else 0
 
 /-- **Erdős Problem #36**: Determine the asymptotic constant
     c = lim M(N)/N. The problem is to find the exact value of c. -/
 axiom erdos_36_limit_exists :
   ∃ c : ℝ, c > 0 ∧
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      |((minMaxOverlap N : ℝ) / N) - c| < ε
+      |((M N : ℝ) / N) - c| < ε
 
-/- ## Known Bounds -/
+-- ============================================================================
+-- Part V: Known Bounds
+-- ============================================================================
 
-/-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4. -/
+/-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4.
+    Proof sketch: N² pairs in at most 4N-1 differences ⟹
+    max overlap ≥ N²/(4N-1) > N/4. -/
 axiom erdos_lower_quarter :
-  ∀ N : ℕ, N ≥ 1 → (minMaxOverlap N : ℝ) / N > 1 / 4
+  ∀ N : ℕ, N ≥ 1 → (M N : ℝ) / N > 1 / 4
 
 /-- **Scherk (1955)**: improved lower bound M(N)/N > 1 − 1/√2 ≈ 0.293. -/
 axiom scherk_lower :
   ∀ N : ℕ, N ≥ 1 →
-    (minMaxOverlap N : ℝ) / N > 1 - Real.sqrt 2⁻¹
+    (M N : ℝ) / N > 1 - 1 / Real.sqrt 2
 
 /-- **White (2022)**: best known lower bound M(N)/N > 0.379005,
     obtained via Fourier analysis and convex optimization. -/
 axiom white_lower :
   ∀ N : ℕ, N ≥ 1 →
-    (minMaxOverlap N : ℝ) / N > 379005 / 1000000
+    (M N : ℝ) / N > 379005 / 1000000
 
 /-- **Haugland (2016)**: upper bound M(N)/N < 0.380926 via step
     functions. Improved to 0.380876 by TTT-Discover (2026). -/
 axiom upper_bound :
   ∀ N : ℕ, N ≥ 1 →
-    (minMaxOverlap N : ℝ) / N < 380876 / 1000000
+    (M N : ℝ) / N < 380876 / 1000000
 
-/- ## Small Values -/
+-- ============================================================================
+-- Part VI: Small Values
+-- ============================================================================
 
 /-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3. -/
 axiom small_values :
-  minMaxOverlap 1 = 1 ∧ minMaxOverlap 2 = 1 ∧
-  minMaxOverlap 3 = 2 ∧ minMaxOverlap 4 = 2 ∧
-  minMaxOverlap 5 = 3
+  M 1 = 1 ∧ M 2 = 1 ∧ M 3 = 2 ∧ M 4 = 2 ∧ M 5 = 3
 
-/- ## Observations -/
+-- ============================================================================
+-- Part VII: Consequences and Observations
+-- ============================================================================
+
+/-- The bounds sandwich the asymptotic constant:
+    0.379005 < c < 0.380876. -/
+theorem constant_bounds :
+  ∀ c : ℝ, (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, |((M N : ℝ) / N) - c| < ε) →
+    c ≥ 379005 / 1000000 ∧ c ≤ 380876 / 1000000 := by
+  intro c hc
+  constructor
+  · -- Lower bound: from white_lower
+    by_contra h
+    push_neg at h
+    have hε : (0 : ℝ) < 379005 / 1000000 - c := by linarith
+    obtain ⟨N₀, hN₀⟩ := hc _ hε
+    have hN : N₀ + 1 ≥ 1 := by omega
+    have h1 := white_lower (N₀ + 1) hN
+    have h2 := hN₀ (N₀ + 1) (by omega)
+    rw [abs_lt] at h2
+    linarith
+  · -- Upper bound: from upper_bound
+    by_contra h
+    push_neg at h
+    have hε : (0 : ℝ) < c - 380876 / 1000000 := by linarith
+    obtain ⟨N₀, hN₀⟩ := hc _ hε
+    have hN : N₀ + 1 ≥ 1 := by omega
+    have h1 := upper_bound (N₀ + 1) hN
+    have h2 := hN₀ (N₀ + 1) (by omega)
+    rw [abs_lt] at h2
+    linarith
+
+/- ## Historical Notes -/
 
 /- **Erdős' Original Conjecture**: Erdős initially conjectured c = 1/2,
     but this was disproved. The true value is near 0.38. -/

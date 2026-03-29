@@ -49,11 +49,12 @@
     ],
     "originalContributions": [
       "Defined overlap(A,B,k) as representation function of A−B",
-      "Defined maxOverlap and minMaxOverlap M(N) as minimax quantities",
-      "Stated erdos_36_limit_exists: limit c = lim M(N)/N exists and is positive",
-      "Axiomatized four progressively tighter bounds: Erdős (1/4), Scherk (1−1/√2), White (0.379005), Haugland-TTT (0.380876)",
-      "Recorded exact small values M(1)=1 through M(5)=3",
-      "Noted Erdős's disproved c=1/2 conjecture and Fourier-analytic techniques"
+      "Defined maxOverlap via Finset.sup on difference image (proper, not stub)",
+      "Defined M(N) constructively via Finset.min' over partition overlap values",
+      "Defined interval, partitions, overlapValues helper definitions",
+      "Proved constant_bounds: axiom sandwich 0.379005 ≤ c ≤ 0.380876",
+      "Proved product_card from Finset.card_product",
+      "Axiomatized four progressively tighter bounds and small values"
     ],
     "axiomCount": 6,
     "prerequisites": [
@@ -63,7 +64,7 @@
       "Asymptotic analysis: limit of M(N)/N"
     ],
     "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results.",
-    "lineCount": 91,
+    "lineCount": 162,
     "relatedProblems": [
       {
         "id": "erdos-335",
@@ -76,10 +77,10 @@
     ]
   },
   "leanFile": {
-    "lineCount": 91,
+    "lineCount": 162,
     "axiomCount": 6,
-    "theoremCount": 0,
-    "definitionCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 7,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Int.Basic",

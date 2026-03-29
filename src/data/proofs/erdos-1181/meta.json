@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 1181,
     "erdosUrl": "https://erdosproblems.com/1181",
     "erdosProblemStatus": "open",
@@ -73,11 +73,13 @@
       "chebyshev_theta definition: Chebyshev function θ(x)",
       "pnt_chebyshev axiom: PNT for Chebyshev function",
       "erdos457_conjecture definition: related lower bound conjecture",
-      "conjectures_compatible theorem stub: compatibility of #457 and #1181"
+      "conjectures_compatible theorem: proved compatibility of #457 and #1181 (infinite ∩ cofinite)",
+      "iterated_log_sublinear theorem: isolated growth comparison for Aristotle",
+      "tao_implies_erdos1181: restructured with iterated_log_sublinear, main calc proved"
     ],
     "axiomCount": 4,
-    "lineCount": 235,
-    "assumptions": "4 axioms: trivial_upper_bound (primorial/PNT), erdos_1181 (main open conjecture), pnt_chebyshev (PNT for Chebyshev function), primorial_divides_bound (primorial divides product). Properties of q(n,k) proved constructively."
+    "lineCount": 261,
+    "assumptions": "4 axioms: trivial_upper_bound (primorial/PNT), erdos_1181 (main open conjecture), pnt_chebyshev (PNT for Chebyshev function), primorial_divides_bound (primorial divides product). Properties of q(n,k) proved constructively. 1 sorry: iterated_log_sublinear (growth rate comparison for Aristotle)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1181** appears in Erdős [Er79d, p.78] and asks for an upper bound on q(n, log n), the least prime not dividing a product of consecutive integers. The trivial upper bound q(n, log n) ≤ (1+o(1))(log n)² follows from the primorial argument combined with the Prime Number Theorem. The conjecture asks whether the constant can be improved from (1+o(1)) to (1-c) for some fixed c > 0.\n\nThis is the companion upper bound question to Erdős Problem #457, which asks about lower bounds. Together they aim to pin down the growth rate of q(n, log n) between Ω(log n) and O((log n)²). Probabilistic heuristics described by Tao in the context of Problem #457 suggest a much stronger bound of q(n, log n) ≪ (log log n / log log log n) · log n.",
@@ -132,10 +134,10 @@
     {
       "id": "tao-heuristic",
       "title": "Part V: Tao's Heuristic Bound",
-      "startLine": 116,
-      "endLine": 140,
-      "summary": "Tao's heuristic: q ≪ (log log n / log log log n) · log n. Theorem stub: this implies #1181.",
-      "mathContext": "Probabilistic heuristics predict a bound dramatically stronger than the conjecture."
+      "startLine": 118,
+      "endLine": 158,
+      "summary": "Tao's heuristic: q ≪ (log log n / log log log n) · log n. tao_implies_erdos1181 proved modulo iterated_log_sublinear.",
+      "mathContext": "Probabilistic heuristics predict a bound dramatically stronger than the conjecture. The implication is proved by reducing to a growth rate comparison of iterated logarithms."
     },
     {
       "id": "chebyshev-pnt",
@@ -148,10 +150,10 @@
     {
       "id": "connection-457",
       "title": "Part VII: Connection to Problem #457",
-      "startLine": 168,
-      "endLine": 193,
-      "summary": "erdos457_conjecture definition. conjectures_compatible theorem stub.",
-      "mathContext": "Problem #457 (lower bound) and #1181 (upper bound) together sandwich q(n, log n) between Ω(log n) and O((log n)²)."
+      "startLine": 188,
+      "endLine": 231,
+      "summary": "erdos457_conjecture definition. conjectures_compatible theorem proved (infinite ∩ cofinite argument).",
+      "mathContext": "Problem #457 (lower bound) and #1181 (upper bound) together sandwich q(n, log n) between Ω(log n) and O((log n)². Proved that both conjectures holding simultaneously gives infinitely many n with both bounds."
     },
     {
       "id": "summary",
@@ -184,9 +186,9 @@
       "Finset"
     ],
     "namespace": "Erdos1181",
-    "lineCount": 235,
+    "lineCount": 261,
     "axiomCount": 4,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 6
   },
   "crossReferences": [

@@ -12,7 +12,7 @@ Is it true that there exists some c > 0 such that, for all large n,
 **Formalization Status**: COMPLETE (axiomatized)
 
 **Tractability Score**: 6/10
-**Aristotle Suitable**: Yes (2 theorem sorries)
+**Aristotle Suitable**: Yes (1 theorem sorry: iterated_log_sublinear)
 
 ## Tags
 
@@ -49,6 +49,8 @@ Would be dramatically stronger than the (1-c)(log n)² conjecture.
 - q_prime: from Nat.find_spec
 - q_not_dvd: from Nat.find_spec
 - q_minimal: from Nat.find_min
+- **conjectures_compatible**: infinite set ∩ cofinite set is infinite (Set.Infinite.diff + Filter.eventually_atTop)
+- **tao_implies_erdos1181**: calc proof complete (modulo iterated_log_sublinear)
 
 ### Axioms (4)
 1. trivial_upper_bound: (1+o(1))(log n)² bound via primorial/PNT
@@ -56,9 +58,12 @@ Would be dramatically stronger than the (1-c)(log n)² conjecture.
 3. pnt_chebyshev: PNT for Chebyshev function θ(x) ~ x
 4. primorial_divides_bound: if all primes < q divide m, then θ(q) ≤ log m
 
-### Sorries (2 theorem stubs)
-1. tao_implies_erdos1181: asymptotic comparison (Aristotle candidate)
-2. conjectures_compatible: intersection of infinite set with cofinite set
+### Sorries (1 theorem)
+1. iterated_log_sublinear: C·(loglog n / logloglog n) < (1/2)·log n eventually
+
+### Notes on Axioms
+- **pnt_chebyshev**: PNT is NOT in base Mathlib. The PrimeNumberTheoremAnd external project has it, but it's not integrated.
+- **primorial_divides_bound**: Potential issue — θ sums primes ≤ q_val (inclusive via Icc) but hypothesis covers primes < q_val (strict).
 
 ## References
 
@@ -74,6 +79,12 @@ Would be dramatically stronger than the (1-c)(log n)² conjecture.
 - Built constructive q(n,k) definition (Nat.find, no axioms)
 - Created gallery entry with full annotations
 - 2 Aristotle-suitable theorem sorries identified
+
+### Session 2 (2026-03-29, researcher-6)
+- **Proved conjectures_compatible** (eliminated 1 sorry): Set.Infinite.diff + Filter.eventually_atTop
+- **Restructured tao_implies_erdos1181**: isolated growth comparison as iterated_log_sublinear, proved calc steps
+- Net result: 2 sorries → 1, 7 theorems → 8, 235 → 261 lines
+- Investigated PNT in Mathlib — not in base Mathlib, axiom stays
 
 ---
 

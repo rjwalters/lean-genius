@@ -131,16 +131,31 @@ def tao_heuristic_bound : Prop :=
     (q n ⌊Real.log (n : ℝ)⌋₊ : ℝ) ≤
       C * (Real.log (Real.log n) / Real.log (Real.log (Real.log n))) * Real.log n
 
+/-- Iterated logarithms grow slower than log:
+    C · (log log n / log log log n) < (1/2) · log n eventually.
+    This is because log n → ∞ while log log n / log log log n grows much slower. -/
+theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
+    ∀ᶠ (n : ℕ) in atTop,
+      C * (Real.log (Real.log (n : ℝ)) / Real.log (Real.log (Real.log (n : ℝ)))) <
+        (1 : ℝ) / 2 * Real.log (n : ℝ) := by
+  sorry
+
 /-- If Tao's heuristic holds, then Erdős #1181 follows.
     Proof sketch: C · (log log n / log log log n) · log n ≪ (log n)²
     since (log log n / log log log n) → ∞ much slower than log n. -/
 theorem tao_implies_erdos1181 (h : tao_heuristic_bound) : erdos1181_conjecture := by
   obtain ⟨C, hC, hev⟩ := h
   refine ⟨1/2, by norm_num, ?_⟩
-  filter_upwards [hev] with n hn
+  -- For large n, the Tao bound implies the Erdős bound:
+  -- q ≤ C·(loglog/logloglog)·log n < (1/2)·(log n)² when C·(loglog/logloglog) < (1/2)·log n
+  filter_upwards [hev, iterated_log_sublinear C hC,
+    Filter.eventually_ge_atTop 3] with n hn hgrowth hn3
+  have hln_pos : (0 : ℝ) < Real.log (n : ℝ) := by
+    apply Real.log_pos; push_cast; omega
   calc (q n ⌊Real.log (↑n : ℝ)⌋₊ : ℝ)
       ≤ C * (Real.log (Real.log n) / Real.log (Real.log (Real.log n))) * Real.log n := hn
-    _ < (1 - 1/2) * (Real.log n) ^ 2 := by sorry
+    _ < (1 : ℝ) / 2 * Real.log (n : ℝ) * Real.log (n : ℝ) := by nlinarith
+    _ = (1 - 1 / 2) * (Real.log (n : ℝ)) ^ 2 := by ring
 
 -- ============================================================================
 -- Part VI: Connection to Primorials and PNT
@@ -198,11 +213,22 @@ theorem conjectures_compatible (h457 : erdos457_conjecture) (h1181 : erdos1181_c
   obtain ⟨ε, hε, h457_inf⟩ := h457
   obtain ⟨c, hc, h1181_ev⟩ := h1181
   refine ⟨ε, c, hε, hc, ?_⟩
-  -- The set of n satisfying both conditions is infinite:
-  -- #457 gives infinitely many n with the lower bound,
-  -- #1181 gives all large n satisfy the upper bound,
-  -- so their intersection is infinite.
-  sorry
+  -- The set satisfying the upper bound is cofinite (from the eventually condition).
+  -- The set satisfying the lower bound is infinite (from #457).
+  -- An infinite set minus a finite set is infinite.
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp h1181_ev
+  have h_comp_finite :
+      {n : ℕ | ¬((q n ⌊Real.log (↑n : ℝ)⌋₊ : ℝ) <
+        (1 - c) * (Real.log (↑n : ℝ)) ^ 2)}.Finite := by
+    apply Set.Finite.subset (Set.finite_Iio N)
+    intro n hn
+    simp only [Set.mem_setOf_eq] at hn
+    simp only [Set.mem_Iio]
+    by_contra h_ge
+    push_neg at h_ge
+    exact hn (hN n h_ge)
+  exact (h457_inf.diff h_comp_finite).mono fun n hn =>
+    ⟨hn.1, not_not.mp hn.2⟩
 
 -- ============================================================================
 -- Part VIII: Summary
