@@ -132,15 +132,14 @@ theorem error_bound_from_correction (n : ℕ) (hn : n ≥ 2)
   have hn2 : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
   calc (stirlingSeq n / Real.sqrt π - (1 + 1 / (12 * ↑n))) + 1 / (12 * ↑n)
       ≤ 1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ)) := by linarith
-    _ ≤ 1 / (n : ℝ) + 1 / (12 * (n : ℝ)) := by
-        apply add_le_add_right
-        rw [div_le_div_iff hn2 hn_pos]
-        nlinarith
     _ ≤ 1 / (n : ℝ) := by
-        -- 1/n + 1/(12n) = 13/(12n) ... wait, that's > 1/n
-        -- We need a different decomposition. Let me use:
-        -- error ≤ 1/n² + 1/(12n) ≤ 1/(2n) + 1/(12n) = 8/(12n) < 1/n for n ≥ 2
-        sorry -- Need tighter bound: error = O(1/n²) and 1/(12n) + C/n² ≤ 1/n
+        -- 1/n - (1/n² + 1/(12n)) = (11n - 12)/(12n²) ≥ 0 for n ≥ 2
+        have hn_ge2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        suffices h : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) ≥ 0 by linarith
+        have heq : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) =
+            (11 * (n : ℝ) - 12) / (12 * (n : ℝ) ^ 2) := by field_simp; ring
+        rw [heq]
+        exact div_nonneg (by nlinarith) (by positivity)
 
 -- ═══════════════════════════════════════════════════
 -- Part V: Numerical Verification
