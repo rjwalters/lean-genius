@@ -18,8 +18,8 @@
     ],
     "badge": "formalized",
     "sorries": 6,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: density_increment (proved in RothTheorem.lean, axiomatized here for modularity). 6 sorries: rothNumber_mono (embedding), density_upper_bound_from_iteration (well-founded induction), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound, crude_sqrt_bound.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 6 sorries: density_upper_bound_from_iteration (well-founded induction), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound, crude_sqrt_bound.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -50,7 +50,7 @@
       "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
       "Formal statements of 5 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N"
     ],
-    "lineCount": 168,
+    "lineCount": 196,
     "theoremCount": 12,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -139,8 +139,8 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 168,
-    "axiomCount": 1,
+    "lineCount": 196,
+    "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2
   }

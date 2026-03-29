@@ -18,8 +18,8 @@
     ],
     "badge": "formalized",
     "sorries": 3,
-    "axiomCount": 0,
-    "assumptions": "1 axiom: alternating_harmonic_hasSum (same as parent OQ03, boundary convergence of Mercator series requires Abel's theorem). 3 sorries: alternating_harmonic_tail, shifted_alternating_hasSum, generalized_alternating_sum (core HasSum manipulation).",
+    "axiomCount": 1,
+    "assumptions": "1 transitive axiom: alternating_harmonic_hasSum (imported from parent OQ03, boundary convergence of Mercator series requires Abel's theorem). 3 sorries: alternating_harmonic_tail, shifted_alternating_hasSum, generalized_alternating_sum (core HasSum manipulation).",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -40,7 +40,7 @@
       "Verification that k=1 gives 2\u00b7log 2 - 1 and k=2 gives 1/4",
       "Even k: logarithmic terms cancel, giving rational answer A_k/k"
     ],
-    "lineCount": 140,
+    "lineCount": 135,
     "theoremCount": 10,
     "definitionCount": 1,
     "mathlib_version": "4.26.0"
@@ -132,7 +132,7 @@
       "Real"
     ],
     "namespace": "AlternatingTriangularReciprocals.Generalized",
-    "lineCount": 140,
+    "lineCount": 135,
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 1
