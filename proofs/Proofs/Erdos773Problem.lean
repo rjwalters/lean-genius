@@ -60,14 +60,21 @@ def IsSidonAlt (A : Finset ℕ) : Prop :=
 The set {1², 2², ..., N²} = {1, 4, 9, ..., N²}.
 -/
 def squaresUpTo (N : ℕ) : Finset ℕ :=
-  (Finset.range (N + 1)).image (fun k => (k + 1)^2)
+  (Finset.range N).image (fun k => (k + 1)^2)
 
 /--
 **Size of squaresUpTo:**
 |squaresUpTo N| = N.
 -/
 theorem squaresUpTo_card (N : ℕ) : (squaresUpTo N).card = N := by
-  sorry
+  unfold squaresUpTo
+  have hinj : Function.Injective (fun k : ℕ => (k + 1) ^ 2) := by
+    intro a b h
+    by_contra hab
+    rcases lt_or_gt_of_ne hab with hab | hab
+    · exact absurd h (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
+    · exact absurd h.symm (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
+  rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
 
 /-
 ## Part III: The Main Question
