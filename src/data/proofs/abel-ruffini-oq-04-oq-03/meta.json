@@ -7,7 +7,12 @@
     "author": "Galois",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ03.lean",
-    "tags": ["algebra", "galois theory", "solvability", "radicals"],
+    "tags": [
+      "algebra",
+      "galois theory",
+      "solvability",
+      "radicals"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
@@ -16,16 +21,30 @@
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
-    "imports": ["Mathlib.FieldTheory.AbelRuffini", "Mathlib.GroupTheory.Solvable", "Mathlib.FieldTheory.Galois.Basic"],
-    "opens": ["Polynomial"],
+    "imports": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.FieldTheory.Galois.Basic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "GaloisCriterion",
-    "lineCount": 152,
+    "lineCount": 165,
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 0
   },
   "crossReferences": [
-    {"targetId": "abel-ruffini", "relationship": "extends", "description": "States the full iff version of the Galois-radical bridge"},
-    {"targetId": "abel-ruffini-oq-04", "relationship": "extends", "description": "Extends the A5 simplicity chain with the converse direction"}
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "States the full iff version of the Galois-radical bridge"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Extends the A5 simplicity chain with the converse direction"
+    }
   ]
 }

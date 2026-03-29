@@ -74,8 +74,13 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Matrix", "Polynomial"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
     "namespace": "NonderogatoryFinite",
     "lineCount": 268,
     "axiomCount": 0,

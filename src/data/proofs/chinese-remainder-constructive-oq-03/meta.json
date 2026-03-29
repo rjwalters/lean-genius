@@ -9,7 +9,12 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ03.lean",
-    "tags": ["number-theory", "modular-arithmetic", "algorithms", "classical"],
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "algorithms",
+      "classical"
+    ],
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 1,
@@ -24,5 +29,8 @@
   "sections": [],
   "conclusion": {
     "summary": "RNS arithmetic formalized with correctness proofs for addition and multiplication."
+  },
+  "leanFile": {
+    "lineCount": 216
   }
 }

@@ -1,1 +1,38 @@
-{"id":"bezout-identity-oq-03-oq-04","title":"Efficient Verified CRT via Direct Bézout","slug":"bezout-identity-oq-03-oq-04","description":"Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.","meta":{"author":"Lean Genius","status":"verified","proofRepoPath":"Proofs/BezoutIdentityOQ03OQ04.lean","tags":["number theory","CRT","Bézout","algorithms"],"badge":"verified","sorries":0,"axiomCount":0,"lineCount":150,"assumptions":"None.","theoremCount":8,"mathlib_version":"4.26.0"},"leanFile":{"namespace":"BezoutIdentityOQ03OQ04","lineCount":150,"axiomCount":0,"theoremCount":8,"definitionCount":1},"crossReferences":[{"targetId":"bezout-identity-oq-03","relationship":"extends","description":"Efficient CRT implementation"}]}
+{
+  "id": "bezout-identity-oq-03-oq-04",
+  "title": "Efficient Verified CRT via Direct Bézout",
+  "slug": "bezout-identity-oq-03-oq-04",
+  "description": "Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ04.lean",
+    "tags": [
+      "number theory",
+      "CRT",
+      "Bézout",
+      "algorithms"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 150,
+    "assumptions": "None.",
+    "theoremCount": 8,
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "namespace": "BezoutIdentityOQ03OQ04",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "extends",
+      "description": "Efficient CRT implementation"
+    }
+  ]
+}

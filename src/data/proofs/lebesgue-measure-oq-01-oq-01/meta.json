@@ -86,9 +86,14 @@
       "Mathlib.Data.Rat.Cast.Defs",
       "Mathlib.Tactic"
     ],
-    "opens": ["MeasureTheory", "Measure", "Set", "Filter"],
+    "opens": [
+      "MeasureTheory",
+      "Measure",
+      "Set",
+      "Filter"
+    ],
     "namespace": "LebesgueMeasureOQ01OQ01",
-    "lineCount": 149,
+    "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
