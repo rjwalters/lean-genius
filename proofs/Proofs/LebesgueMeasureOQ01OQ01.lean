@@ -115,11 +115,7 @@ theorem thomae_integral_zero : ∫ x, thomae x ∂volume = 0 := by
 theorem thomae_integral_unit_interval :
     ∫ x in Set.Icc (0 : ℝ) 1, thomae x ∂volume = 0 := by
   apply integral_eq_zero_of_ae
-  rw [ae_restrict_iff_subtype]
-  · exact ae_of_all _ (fun ⟨x, _⟩ => by
-      suffices h : ∀ᵐ y ∂volume, thomae y = 0 from by
-        exact Filter.Eventually.filter_mono (ae_restrict_le_ae) thomae_ae_zero)
-  sorry
+  exact ae_restrict_of_ae thomae_ae_zero
 
 /-
 ## Part IV: Comparison with Standard Dirichlet Function

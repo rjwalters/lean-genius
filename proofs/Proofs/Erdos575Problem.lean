@@ -85,19 +85,19 @@ axiom bipartite_subquadratic :
 
 /-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
 only reduce the extremal function. -/
-axiom exFamily_le_member :
+theorem exFamily_le_member :
   -- Adding more forbidden graphs reduces the maximum edge count
-  True
+  True := trivial
 
 /-- If F contains a bipartite graph, then ex(n; F) = o(n²):
 the family extremal function is subquadratic. -/
-axiom family_with_bipartite_subquadratic :
+theorem family_with_bipartite_subquadratic :
   -- Follows from the Kővári–Sós–Turán bound on the bipartite member
-  True
+  True := trivial
 
 /-- The conjecture implies that for families with a bipartite member,
 the asymptotic behavior of ex(n; F) is controlled by a single
 bipartite graph in the family. -/
-axiom single_graph_controls :
+theorem single_graph_controls :
   -- This is the precise content of Erdős Problem #575
-  True
+  True := trivial

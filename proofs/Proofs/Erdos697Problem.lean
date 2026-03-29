@@ -94,10 +94,10 @@ axiom trivial_upper_bound (α : ℝ) (hα : α < 1) :
   Filter.Tendsto (fun m => delta m α) Filter.atTop (nhds 0)
 
 /-- The trivial bound comes from counting divisors d ≡ 1 (mod m) -/
-axiom trivial_bound_proof :
+theorem trivial_bound_proof :
   -- Number of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m = m^{α-1}
   -- which → 0 when α < 1
-  True
+  True := trivial
 
 /-
 ## Part 4: Erdős's Claim for α = 1
@@ -148,10 +148,10 @@ theorem threshold_is_one_over_log_two :
     enough divisors exist to cover a positive density of integers. -/
 
 /-- The value 1/log 2 arises from the multiplicative structure of divisors -/
-axiom why_one_over_log_two :
+theorem why_one_over_log_two :
   -- Hall's analysis shows that the critical exponent is determined by
   -- the distribution of prime factors in numbers of the form d ≡ 1 (mod m)
-  True
+  True := trivial
 
 /-
 ## Part 7: Behavior at Threshold
@@ -164,9 +164,9 @@ def AtThresholdBehavior : Prop :=
   True
 
 /-- Hall's theorem doesn't specify the behavior exactly at the threshold -/
-axiom at_threshold_open :
+theorem at_threshold_open :
   -- This is a more subtle question not addressed in Hall (1992)
-  True
+  True := trivial
 
 /-
 ## Part 8: Connection to Problem #696

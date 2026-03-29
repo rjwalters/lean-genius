@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Thomae%27s_function",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01.lean",
     "tags": [
       "measure-theory",
@@ -18,11 +18,11 @@
       "countable-sets",
       "real-analysis"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 149,
-    "assumptions": "0 axioms. 1 sorry in thomae_integral_unit_interval (restricted integral). Main result thomae_integral_zero is sorry-free.",
+    "lineCount": 153,
+    "assumptions": "0 axioms, 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -60,7 +60,7 @@
       "title": "Part III: The Lebesgue Integral",
       "startLine": 101,
       "endLine": 120,
-      "summary": "Main result: ∫ thomae = 0 via integral_eq_zero_of_ae. Unit interval version has 1 sorry."
+      "summary": "Main result: ∫ thomae = 0 via integral_eq_zero_of_ae. Unit interval version proved via ae_restrict_of_ae."
     },
     {
       "id": "comparison",
@@ -73,7 +73,6 @@
   "conclusion": {
     "summary": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function.",
     "openQuestions": [
-      "Can the unit interval restriction be proved without the sorry?",
       "Can we formalize the Riemann integrability of Thomae's function?",
       "Can we prove that Thomae's function is continuous at every irrational?"
     ]
@@ -93,7 +92,7 @@
       "Filter"
     ],
     "namespace": "LebesgueMeasureOQ01OQ01",
-    "lineCount": 157,
+    "lineCount": 153,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
