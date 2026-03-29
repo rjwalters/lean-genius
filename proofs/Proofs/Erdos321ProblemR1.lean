@@ -44,10 +44,13 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
 /- ## Main Question -/
 
 /-- **Erdős Problem #321**: Determine the asymptotic behavior of R(N).
-    The current bounds differ by essentially one iterated logarithm. -/
-axiom erdos_321_asymptotics :
-  ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) = f N
+    The current bounds differ by essentially one iterated logarithm.
+    Note: This existence statement is tautological — just take f = maxDistinctReciprocal.
+    The real problem is to find an explicit closed-form asymptotic for f. -/
+theorem erdos_321_asymptotics :
+    ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
+      (maxDistinctReciprocal N : ℝ) = f N :=
+  ⟨fun N => (maxDistinctReciprocal N : ℝ), fun _ _ => rfl⟩
 
 /- ## Known Bounds -/
 
