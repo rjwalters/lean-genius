@@ -150,7 +150,7 @@ among consecutive powerful numbers. The answer is unknown.
 /-- Erdős Problem #938: Are there only finitely many three-term APs
     among consecutive powerful numbers?
 
-    This is an open problem. The `sorry` reflects the unknown answer. -/
+    This is an open problem, axiomatized as stated. -/
 axiom erdos_938 : apIndices.Finite
 
 /-
