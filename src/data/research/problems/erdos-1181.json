@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created full formalization of Erdős #1181 (upper bound on q(n,log n)). Lean file with constructive q definition, trivial upper bound axiom, main conjecture, Tao heuristic, Chebyshev/PNT connection, and link to #457.",
+    "progressSummary": "PROGRESS: Proved conjectures_compatible (sorry eliminated). Restructured tao_implies_erdos1181 — calc proof complete, isolated iterated_log_sublinear as sole remaining sorry. File: 261 lines, 4 axioms, 1 sorry, 8 theorems.",
     "builtItems": [
       "Created proofs/Proofs/Erdos1181Problem.lean (194 lines)",
       "Created src/data/proofs/erdos-1181/ gallery entry (meta.json, annotations.json, index.ts)",
       "Defined consecutiveProduct, q(n,k), chebyshev_theta, erdos1181_conjecture, tao_heuristic_bound, erdos457_conjecture",
       "Proved consecutiveProduct_pos, q_prime, q_not_dvd, q_minimal constructively",
-      "2 theorem sorries: tao_implies_erdos1181 (asymptotic comparison), conjectures_compatible (infinite intersection)"
+      "2 theorem sorries: tao_implies_erdos1181 (asymptotic comparison), conjectures_compatible (infinite intersection)",
+      "Proved conjectures_compatible theorem (was sorry, now complete)",
+      "Created iterated_log_sublinear lemma (Aristotle target, 1 sorry)",
+      "Restructured tao_implies_erdos1181: calc proof complete modulo iterated_log_sublinear"
     ],
     "insights": [
       "No formalization exists - problem needs initial Lean file creation",
@@ -43,13 +46,16 @@
       "Trivial bound (1+o(1))(log n)² follows from primorial argument + PNT",
       "Tao heuristic suggests much stronger bound: q ≪ (log log n / log log log n) · log n",
       "q(n,k) defined constructively via Nat.find (no axioms needed for definition)",
-      "Key properties q_prime, q_not_dvd, q_minimal all proved constructively"
+      "Key properties q_prime, q_not_dvd, q_minimal all proved constructively",
+      "conjectures_compatible proved: infinite set (lower bound) intersected with cofinite set (upper bound eventually) is infinite, using Set.Infinite.diff and Filter.eventually_atTop",
+      "iterated_log_sublinear isolated as standalone lemma for Aristotle — the sole remaining sorry in the file",
+      "PNT is NOT in base Mathlib — pnt_chebyshev axiom must remain until PrimeNumberTheoremAnd or equivalent is integrated"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Submit 2 theorem sorries to Aristotle (tao_implies_erdos1181, conjectures_compatible)",
-      "Investigate if primorial_divides_bound can be proved from Mathlib",
-      "Connect chebyshev_theta to Mathlib ArithmeticFunction if available"
+      "Submit iterated_log_sublinear to Aristotle (growth comparison: C·loglog/logloglog < (1/2)·log n eventually)",
+      "Investigate primorial_divides_bound axiom — may have a bug (θ sums ≤q but hypothesis is <q)",
+      "Long-term: integrate PrimeNumberTheoremAnd to eliminate pnt_chebyshev axiom"
     ],
     "markdown": "# Erdős #1181 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
