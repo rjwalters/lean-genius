@@ -52,7 +52,7 @@
       "lin_bound_meaning axiom: 2^255 never divides such sums",
       "legendreSum: Legendre's formula computation",
       "legendre_formula theorem: v_p(n!) = Σ⌊n/p^i⌋ (proved via Mathlib's padicValNat_factorial)",
-      "padic_val_factorial_asymp axiom: v_p(n!)/n → 1/(p-1)",
+      "padic_val_factorial_asymp theorem (3 sorries): v_p(n!)/n → 1/(p-1) squeeze argument",
       "factorial_sum_factored theorem: factorization a₁! + a₂! = a₁!(1 + a₂!/a₁!)",
       "Two proved examples by native_decide",
       "erdos_404_summary: proved conjunction of Lin's bounds"
