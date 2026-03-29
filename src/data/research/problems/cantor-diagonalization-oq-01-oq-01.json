@@ -1,6 +1,6 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-01",
-  "title": "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀",
+  "title": "Does there exist a cardinal \u03ba with \u2135\u2080 < \u03ba < 2^\u2135\u2080",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Definitive answer to CH research question.",
+    "progressSummary": "COMPLETED: Eliminated 1 sorry (fixed hypothesis bug in not_ch_multiple_intermediates) and 3 vacuous axioms (converted True-returning axioms to theorems). File now 0 sorries, 0 axioms.",
     "builtItems": [
       "Created CantorDiagonalizationOQ01OQ01.lean (307 lines, 13 theorems, 3 axioms)",
       "Proved intermediate_iff_not_ch: central equivalence",
       "Proved complete_answer: definitive 3-part answer",
-      "Full gallery integration"
+      "Full gallery integration",
+      "Fixed not_ch_multiple_intermediates: h2 changed from \u2264 to < (the correct formulation)",
+      "Converted easton_consistent_values axiom to theorem (returned True)",
+      "Converted martins_axiom_neutral_on_ch axiom to theorem (returned True \u2227 True)",
+      "Converted pfa_implies_not_ch axiom to theorem (returned True)"
     ],
     "insights": [
       "Existence of intermediate cardinal is EXACTLY equivalent to not-CH",
@@ -42,7 +46,9 @@
       "Under not-CH: aleph-1 is explicitly intermediate",
       "Konig constraint limits possible values of continuum",
       "GCH eliminates intermediates at all levels",
-      "Large cardinals alone do not settle CH"
+      "Large cardinals alone do not settle CH",
+      "The sorry was a formalization bug: \u2135\u2082 \u2264 2^\u2135\u2080 allows \u2135\u2082 = continuum (not intermediate), need strict <",
+      "All 3 axioms were vacuous placeholders returning True \u2014 not real mathematical assumptions"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
