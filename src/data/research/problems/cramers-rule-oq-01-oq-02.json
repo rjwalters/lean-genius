@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: Assessed feasibility. Requires defining quasideterminants and proving Gelfand-Retakh identities. Mathlib has Matrix/DivisionRing infrastructure but no quasideterminant theory. Estimated 200-400 lines for basic formalization.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "insights": [
+      "Quasideterminants (Gelfand-Retakh 1991) generalize determinants to matrices over non-commutative rings/division rings",
+      "For an n\u00d7n matrix A over a division ring, the (i,j)-quasideterminant is |A|_ij = a_ij - r_i * (A^ij)^{-1} * c_j where A^ij is the submatrix with row i, col j removed",
+      "Non-commutative Cramer rule: if Ax = b over a division ring, then x_j = |A_j|_ij^{-1} * |A|_ij for appropriate column replacement A_j",
+      "Mathlib has Matrix over non-commutative rings but no quasideterminant infrastructure - would need custom definitions",
+      "Key prerequisite: Mathlib DivisionRing + Matrix + invertibility of submatrices. All partially available.",
+      "Formalization would require ~200-400 lines: quasideterminant def, basic properties (heredity, Sylvester identity), non-commutative Cramer analog"
+    ],
+    "mathlibGaps": [
+      "Quasideterminants (Gelfand-Retakh)",
+      "Non-commutative Cramer rule"
+    ],
+    "nextSteps": [
+      "Define quasideterminant: |A|_ij = a_ij - row_i * (submatrix A^ij)^{-1} * col_j",
+      "Prove heredity identity: quasideterminants of quasideterminants",
+      "State and prove non-commutative Cramer rule for DivisionRing",
+      "Connect to commutative case: when ring is commutative, |A|_ij = det(A) / det(A^ij)"
+    ],
     "markdown": "# Knowledge Base: cramers-rule-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

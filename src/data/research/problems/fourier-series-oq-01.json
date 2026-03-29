@@ -29,35 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created comprehensive formalization of Carleson theorem. Defined Carleson maximal operator and partial sums. Axiomatized Carleson-Hunt maximal inequality. Proved structural lemmas and reduction framework. 5 axioms, 4 sorries remain.",
+    "progressSummary": "SURVEYED: Deep analysis of axiom structure. 3 axioms are Carleson-Hunt (deep, unprovable). 2 axioms (trigPoly_dense_L2, trigPoly_partialSum_eq) are provable with careful Mathlib bridging. 4 sorries identified with fix strategies.",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
-      "Defined carlesonMaximal: supremum of partial sum norms (ℝ≥0∞-valued)",
+      "Defined carlesonMaximal: supremum of partial sum norms (\u211d\u22650\u221e-valued)",
       "Defined IsTrigPoly: predicate for trigonometric polynomial functions",
       "Defined divergenceSet and fullDivergenceSet: where convergence fails",
       "Proved fourierPartialSum_continuous, le_carlesonMaximal, carlesonMaximal_zero",
       "Proved divergenceSet_subset_of_approx: decomposition of bad set",
       "Stated carleson_ae_convergence: the main Carleson theorem",
       "Stated carleson_continuous: corollary for continuous functions",
-      "Stated carleson_and_parseval: joint L²+pointwise convergence",
+      "Stated carleson_and_parseval: joint L\u00b2+pointwise convergence",
       "Created gallery data: meta.json, index.ts, annotations.json, tacticStates.json"
     ],
     "insights": [
-      "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
+      "Carleson theorem (1966) states L\u00b2 Fourier series converge pointwise a.e.",
       "Key architecture: Carleson maximal operator S*f(x) = sup_N |S_N f(x)|",
-      "Carleson-Hunt weak-type (2,2) inequality is the deep part — axiomatized",
+      "Carleson-Hunt weak-type (2,2) inequality is the deep part \u2014 axiomatized",
       "Reduction from maximal inequality to a.e. convergence via density argument is provable",
-      "Trigonometric polynomials are dense in L² (Stone-Weierstrass/Mathlib) and converge exactly",
-      "No Carleson formalization in current Mathlib v4.26.0; external Carleson4 project exists"
+      "Trigonometric polynomials are dense in L\u00b2 (Stone-Weierstrass/Mathlib) and converge exactly",
+      "No Carleson formalization in current Mathlib v4.26.0; external Carleson4 project exists",
+      "trigPoly_dense_L2 provable from Mathlib span_fourier_closure_eq_top (wrapped as span_fourier_dense in FourierSeries.lean:258). Use hasSum_fourier_series_L2 for L2 convergence, then g = fourierPartialSum f N for large N.",
+      "fourierPartialSum_add and divergenceSet_subset_of_approx need Mem\u2112p hypotheses added (f,g integrability). divergenceSet_measure_bound already provides these via its caller. fourierCoeff linearity follows from integral_sub with L2 integrability.",
+      "3 of 5 axioms are deep (carlesonConstant, carlesonConstant_pos, carleson_hunt_weak_type) \u2014 Carleson-Hunt theorem needs ~50-page time-frequency analysis proof. Max achievable: 5\u21923 axioms.",
+      "trigPoly_partialSum_eq has subtle issue: IsTrigPoly only constrains Fourier coefficients, not pointwise representation. \u2200 x equality needs continuity of g or a.e. version."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove carleson_ae_convergence from the axioms (fill sorry)",
-      "Prove divergenceSet_measure_bound using Carleson-Hunt + Chebyshev",
-      "Replace trigPoly_dense_L2 axiom with proof from span_fourier_closure_eq_top",
-      "Replace trigPoly_partialSum_eq axiom with proof from Fourier coefficient vanishing",
-      "Submit companion file to Aristotle for routine lemmas"
+      "Prove trigPoly_dense_L2: use hasSum_fourier_series_L2 f, g=fourierPartialSum f N, show IsTrigPoly (straightforward), Mem\u2112p (continuous\u2192L2), and integral bound (Parseval tail)",
+      "Add Mem\u2112p f 2 and Mem\u2112p g 2 to divergenceSet_subset_of_approx, then prove sorry via fourierCoeff linearity (integral_sub) + triangle inequality",
+      "Fix fourierPartialSum_add: add Integrable hypotheses, prove using integral_add of fourier(-n)*f and fourier(-n)*g",
+      "Consider changing trigPoly_partialSum_eq to use \u2200\u1d50 x instead of \u2200 x, or add Continuous g hypothesis"
     ],
     "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
