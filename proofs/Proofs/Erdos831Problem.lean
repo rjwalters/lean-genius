@@ -202,24 +202,58 @@ theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
 Three points in general position give exactly one circle, hence one radius.
 -/
 theorem h_three : h 3 = 1 := by
-  -- Now feasible with Finset-based countDistinctRadii.
-  -- Proof infrastructure (Part IX):
-  -- ✓ p_origin, p_e1, p_e2 defined as ![0,0], ![1,0], ![0,1]
-  -- ✓ p_origin_ne_e1, p_origin_ne_e2, p_e1_ne_e2 proved (distinctness)
-  -- ✓ triangle_not_collinear proved (non-collinearity)
-  --
-  -- Proof plan:
-  -- 1. Construct S = {p_origin, p_e1, p_e2} with card 3
-  -- 2. Show GP: no-3-collinear via triangle_not_collinear,
-  --    no-4-concyclic vacuous (only 3 points, need 4 for concyclicity)
-  -- 3. Show countDistinctRadii S = 1:
-  --    allCircumradiiFinset S = {circumradiusOf p_origin p_e1 p_e2}
-  --    This follows from circumradiusOf permutation invariance:
-  --    all 6 ordered triples of 3 points map to the same circumradius
-  -- 4. h(3) ≤ 1 since 1 ∈ {k | ∃ S, |S|=3 ∧ GP(S) ∧ count(S) = k}
-  -- 5. h(3) ≥ 1 since any GP 3-point set has ≥ 1 triple hence ≥ 1 radius
-  -- REQUIRES: circumradiusOf permutation invariance (see h_upper_bound notes)
-  sorry
+  apply le_antisymm
+  · -- h 3 ≤ 1: exhibit a 3-point GP config with exactly 1 distinct radius
+    apply Nat.sInf_le
+    refine ⟨{p_origin, p_e1, p_e2}, ?_, ?_, ?_⟩
+    · -- card = 3
+      have h1 : p_e1 ∉ ({p_e2} : Finset Point) := by
+        simp [Finset.mem_singleton, p_e1_ne_e2]
+      have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
+        simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
+      rw [Finset.card_insert_of_not_mem h2, Finset.card_insert_of_not_mem h1,
+          Finset.card_singleton]
+    · -- isInGeneralPosition
+      constructor
+      · -- No 3 collinear: all permutations of (p_origin, p_e1, p_e2) are non-collinear
+        intro q1 q2 q3 hq1 hq2 hq3 hd12 hd23 hd13
+        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+                   Set.mem_singleton_iff] at hq1 hq2 hq3
+        -- Case split on membership (27 cases); 21 have qi=qj, 6 are permutations
+        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+          rcases hq3 with rfl | rfl | rfl <;>
+        -- First try distinctness contradictions, then reduce to triangle_not_collinear
+        first
+        | exact absurd rfl hd12 | exact absurd rfl hd23 | exact absurd rfl hd13
+        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd23)
+        | exact absurd rfl (Ne.symm hd13)
+        | (intro ⟨a, b, c, hab, h1, h2, h3⟩; exact triangle_not_collinear
+            (by first | exact ⟨a, b, c, hab, h1, h2, h3⟩
+                      | exact ⟨a, b, c, hab, h1, h3, h2⟩
+                      | exact ⟨a, b, c, hab, h2, h1, h3⟩
+                      | exact ⟨a, b, c, hab, h2, h3, h1⟩
+                      | exact ⟨a, b, c, hab, h3, h1, h2⟩
+                      | exact ⟨a, b, c, hab, h3, h2, h1⟩))
+      · -- No 4 concyclic: vacuously true (4 distinct from 3-element set is impossible)
+        intro q1 q2 q3 q4 hq1 hq2 hq3 hq4 hd12 hd23 hd34 hd13 hd14 hd24
+        simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+                   Set.mem_singleton_iff] at hq1 hq2 hq3 hq4
+        -- Pigeonhole: 4 values from 3 options, two must be equal
+        rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+          rcases hq3 with rfl | rfl | rfl <;> rcases hq4 with rfl | rfl | rfl <;>
+        first
+        | exact absurd rfl hd12 | exact absurd rfl hd13 | exact absurd rfl hd14
+        | exact absurd rfl hd23 | exact absurd rfl hd24 | exact absurd rfl hd34
+        | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
+        | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
+        | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
+    · -- countDistinctRadii S = 1
+      -- allCircumradiiFinset S = {circumradiusOf p_origin p_e1 p_e2} (singleton)
+      -- All 6 ordered triples map to same value by circumradiusOf_perm12/cycle
+      sorry
+  · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
+    -- Proof: S.card = 3 gives ≥ 1 ordered distinct triple → image nonempty → card ≥ 1
+    sorry
 
 /--
 **h(4) ≥ 2:**
