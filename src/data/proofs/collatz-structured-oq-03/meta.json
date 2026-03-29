@@ -1,20 +1,45 @@
 {
   "id": "collatz-structured-oq-03",
-  "title": "Growth Rate of Average Collatz Stopping Time",
+  "title": "Collatz OQ-03: Average Stopping Time Growth Rate",
   "slug": "collatz-structured-oq-03",
-  "description": "Formalizes the average Collatz stopping time S(N) and asks whether S(N) ~ c·log N. Defines stopping time via Nat.find, heuristic constant 1/log₂(4/3), and states the asymptotic growth question. Axiomatizes Terras density result.",
+  "description": "Defines the Collatz stopping time, average stopping time σ(n), and states the conjectured logarithmic growth rate σ(n) ~ c·log(n).",
   "meta": {
+    "author": "",
+    "sourceUrl": "",
+    "date": "",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/CollatzStructuredOQ03.lean",
-    "tags": [
-      "number-theory",
-      "collatz",
-      "stopping-time",
-      "research"
-    ],
+    "tags": ["number-theory", "collatz", "stopping-time", "growth-rate"],
     "badge": "axiom",
     "sorries": 0,
+    "relatedProblems": ["collatz-structured"],
     "axiomCount": 1,
-    "lineCount": 145
+    "lineCount": 105,
+    "assumptions": "Inherits collatz_conjecture axiom from parent (the unsolved Collatz conjecture). All definitions and proved results depend on this axiom for well-definedness."
+  },
+  "overview": {
+    "historicalContext": "The average Collatz stopping time has been studied computationally. Numerical evidence suggests σ(n) grows logarithmically, consistent with the heuristic that each Collatz step multiplies by ~3/4 on average.",
+    "problemStatement": "Define and study the average stopping time σ(n) = (1/n) Σ T(k) for k=1,...,n.",
+    "text": "Defines stopping time, average stopping time, and conjectures about logarithmic growth rate.",
+    "proofStrategy": "Definitions use Nat.find with the Collatz conjecture axiom. Bounds for powers of 2 follow from the parent file.",
+    "keyInsights": ["Stopping time T(2^k) = k by repeated halving", "Average stopping time conjectured to grow as c·log(n) with c ≈ 9.97"],
+    "prerequisites": ["Collatz function definition", "Nat.find for well-definedness"]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "Formalizes the average Collatz stopping time and states growth rate conjectures.",
+    "implications": "Provides infrastructure for studying quantitative aspects of the Collatz conjecture.",
+    "openQuestions": ["Exact growth constant c in σ(n) ~ c·log(n)", "Whether σ(n) = O(log n) unconditionally"]
+  },
+  "crossReferences": [{"relationship": "Extends the parent Collatz formalization", "targetId": "collatz-structured"}],
+  "references": [],
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.CollatzStructured"],
+    "opens": ["Collatz"],
+    "namespace": "CollatzStoppingTime",
+    "lineCount": 105,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }
