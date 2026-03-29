@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T17:14:37.756Z",
     "iteration": 3,
     "focus": "Axiom elimination",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built complete inductive proof structure for ramsey_triangle axiom elimination. ramsey_mono (monotonicity) fully proved. ramsey_triangle_proved gives inductive skeleton. 1 sorry remains in ramsey_inductive_step (pigeonhole + subgraph extraction). File: 108→162 lines, 4→7 theorems.",
+    "progressSummary": "COMPLETED: Eliminated ramsey_triangle axiom. File 0 axioms, 0 sorries. Proved ramsey_inductive_step via pigeonhole + shrinkFin + IH.",
     "builtItems": [
       "theorem complete_graphs_ramsey: proved from ramsey_triangle via Set.mem_singleton",
       "theorem triangle_ramsey_mono: proved via Fin.castLE injection",
@@ -38,7 +38,11 @@
       "Proved ramsey_triangle_one_proved: instantiates axiom for n=1 without axiom",
       "PROVED ramsey_mono: transferring Ramsey property from K_N to K_M when N ≤ M via Fin.castLE",
       "BUILT ramsey_triangle_proved: full inductive structure (base=K_3, step uses ramsey_inductive_step)",
-      "BUILT ramsey_inductive_step: core lemma skeleton (sorry) — needs pigeonhole + case analysis"
+      "BUILT ramsey_inductive_step: core lemma skeleton (sorry) — needs pigeonhole + case analysis",
+      "PROVED ramsey_inductive_step: pigeonhole + shrinkFin + Ramsey IH",
+      "PROVED shrinkFin_injective",
+      "ELIMINATED ramsey_triangle axiom: 0 axioms 0 sorries",
+      "Fixed declaration order: ramsey_triangle_base before ramsey_triangle"
     ],
     "insights": [
       "complete_graphs_ramsey follows directly from ramsey_triangle: just instantiate with K_N",
@@ -47,7 +51,11 @@
       "Set literal syntax changed in Lean 4: {⊤ : T} → ({⊤} : Set T)",
       "Fin.castLE_injective replaces manual congrArg proof for injectivity",
       "ramsey_triangle axiom n=1 case is provable: K_3 with Fin 1 colors is trivially monochromatic",
-      "ramsey_triangle: classical Ramsey theorem for n colors — appropriate (n-color iteration is non-trivial)"
+      "ramsey_triangle: classical Ramsey theorem for n colors — appropriate (n-color iteration is non-trivial)",
+      "ramsey_inductive_step proved: pigeonhole gives large mono neighborhood, case split on same-color edges",
+      "shrinkFin helper removes one color from Fin (n+2), with proven injectivity",
+      "Key deps: Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to, Finset.orderIsoOfFin",
+      "ramsey_triangle axiom ELIMINATED: fully proved by induction"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
