@@ -1,0 +1,82 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+  "title": "Multiplicativity of the Kronecker Symbol (First Argument)",
+  "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+  "description": "Proves that the Kronecker symbol is completely multiplicative in the first argument: (ab/n) = (a/n)(b/n) for all integers with ab != 0. Uses case analysis on n with kronecker0 and kroneckerNeg1 multiplicativity for special cases, and Jacobi symbol multiplicativity for the general case.",
+  "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+  "mainTheorems": [
+    {
+      "name": "kronecker_mul_left_proved",
+      "statement": "kronecker (a * b) n = kronecker a n * kronecker b n",
+      "description": "Complete multiplicativity of the Kronecker symbol in the first argument, for nonzero a*b."
+    },
+    {
+      "name": "kronecker0_mul_of_ne_zero",
+      "statement": "kronecker0 (a * b) = kronecker0 a * kronecker0 b",
+      "description": "Multiplicativity of kronecker0 (the unit character at modulus 0)."
+    },
+    {
+      "name": "kroneckerNeg1_mul_of_ne_zero",
+      "statement": "kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b",
+      "description": "Multiplicativity of kroneckerNeg1 (the sign character at modulus -1)."
+    }
+  ],
+  "meta": {
+    "author": "Kronecker (1885); formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kronecker_symbol",
+    "date": "1885",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "kronecker-symbol",
+      "multiplicative-functions",
+      "research",
+      "open-problem"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym.mul_left",
+        "description": "Jacobi symbol multiplicativity in first argument",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      }
+    ],
+    "originalContributions": [
+      "kronecker0_mul_of_ne_zero: multiplicativity of the unit character at modulus 0",
+      "kroneckerNeg1_mul_of_ne_zero: multiplicativity of the sign character at modulus -1",
+      "kronecker_mul_left_proved: full Kronecker symbol multiplicativity via case analysis + Jacobi"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kronecker0-mul",
+      "title": "Multiplicativity of kronecker0",
+      "description": "The unit character at modulus 0: (ab/0) = (a/0)(b/0)"
+    },
+    {
+      "id": "kronecker-neg1-mul",
+      "title": "Multiplicativity of kroneckerNeg1",
+      "description": "The sign character at modulus -1: (ab/-1) = (a/-1)(b/-1)"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "description": "Complete multiplicativity by case analysis on n"
+    }
+  ],
+  "overview": {
+    "text": "Proves the Kronecker symbol is completely multiplicative in the first argument, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
+    "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib."
+  },
+  "references": [
+    {
+      "title": "Zur Theorie der elliptischen Functionen",
+      "authors": "L. Kronecker",
+      "year": 1885
+    }
+  ]
+}
