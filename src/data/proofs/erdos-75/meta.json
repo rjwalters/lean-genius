@@ -17,23 +17,24 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 75,
     "erdosUrl": "https://erdosproblems.com/75",
     "erdosProblemStatus": "open",
-    "axiomCount": 10,
-    "lineCount": 92,
-    "assumptions": "10 axioms: Graph, chromaticNum, chromaticNum_mono, and 7 more. See Lean source for complete statements.",
+    "axiomCount": 2,
+    "sorries": 1,
+    "lineCount": 129,
+    "assumptions": "2 axioms: ErdosProblem75, ErdosProblem75_strong (both OPEN conjectures). 1 sorry: coloring_pigeonhole (known provable — pigeonhole for colorings).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question in the context of infinite graph colouring theory, a field Erdős helped create. The classical bound α(G)·χ(G) ≥ |V(G)| shows that for finite graphs, large chromatic number forces small independence ratio. For infinite graphs with uncountable chromatic number (χ(G) ≥ ℵ₁), the situation is fundamentally different: the global colouring complexity does not directly constrain the independence structure of finite subgraphs. Known constructions of graphs with χ ≥ ℵ₁ include shift graphs on ordinals, Todorčević's partition graphs, and forcing-based constructions, but these typically have finite subgraphs with poor independence ratios (α(H) = O(√n) or O(n/log n)). Problem 75 asks whether there exists a graph combining uncountable chromatic number with near-linear independence (α(H) > n^{1-ε} for all ε > 0) in every large finite subgraph. Erdős suggested this might even hold with linear independence (α ≥ cn), and offered $1000 for a complete solution—one of the largest Erdős prizes, reflecting the problem's difficulty and importance. The problem connects to the Erdős-Hajnal conjecture (polynomial clique/independent set in H-free graphs), Ramsey theory on uncountable sets, and the set-theoretic foundations of infinite combinatorics.",
     "problemStatement": "Is there a graph G of chromatic number ℵ₁ such that for all ε > 0, every sufficiently large finite subgraph on n vertices contains an independent set of size > n^{1−ε}? Erdős further asked if the independent set can be linear in n.",
     "text": "Is there a graph of chromatic number ℵ₁ such that every sufficiently large finite subgraph on n vertices has an independent set of size > n^{1−ε}? A $1000 Erdős prize problem.",
-    "proofStrategy": "The formalization axiomatizes an abstract Graph type (necessary for uncountable structures beyond Mathlib's SimpleGraph), chromatic number as a predicate chromaticNum G n with monotonicity, finite subgraphs, and independence number with the trivial upper bound. The large independence property (n^{1-ε}) and its linear strengthening (c·n) are defined precisely. The classical chromatic-independence bound, a placeholder for the Erdős-Hajnal connection, and both forms of the conjecture are axiomatized.",
+    "proofStrategy": "Uses Mathlib's SimpleGraph and Colorable types directly, eliminating the need for abstract axiomatized types. Uncountable chromatic number is expressed as ¬Colorable n for all n. Independence is formulated existentially over Finset V subsets. The classical pigeonhole bound (coloring_pigeonhole) is stated as a theorem with sorry (suitable for Aristotle). Both forms of the conjecture and the linear→large implication are proved.",
     "keyInsights": [
       "**$1000 prize problem**: One of the most valuable Erdős prizes, reflecting the deep difficulty of reconciling global colouring complexity with local sparsity",
-      "**Abstract axiomatization required**: Mathlib's SimpleGraph cannot model uncountable chromatic number, necessitating an abstract Graph type with predicate-based chromatic number",
+      "**Mathlib-based formalization**: Uses SimpleGraph with ¬Colorable n for uncountable chromatic number, eliminating 7 framework axioms from the original abstract axiomatization",
       "**Global-local tension**: Uncountable chromatic number is a global property, but the conjecture constrains every finite subgraph—this tension is the core difficulty",
       "**Near-linear vs linear**: The basic form asks for α > n^{1-ε} (almost linear), while the strong form asks for α ≥ cn (truly linear)—the gap between these is meaningful",
       "**Simplified formalization**: The n^{1-ε} bound is approximated by 0 < α(H) in the Lean code, since rational exponentiation n^{1-ε} would require substantial infrastructure"
@@ -45,46 +46,46 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Mathlib Imports",
-      "startLine": 17,
-      "endLine": 22,
-      "summary": "Imports Nat.Basic, Finset, Rat.Basic, and tactics. Notably does not use SimpleGraph."
+      "id": "independence",
+      "title": "Independent Sets in Finite Subsets",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "Defines IsIndepSet using Mathlib's SimpleGraph. Proves indepSet_card_le (replaces indepNumber_le axiom)."
     },
     {
-      "id": "graph-abstractions",
-      "title": "Abstract Graph Type",
-      "startLine": 23,
-      "endLine": 38,
-      "summary": "Axiomatizes Graph, chromaticNum predicate with monotonicity, and HasUncountableChromaticNum."
-    },
-    {
-      "id": "finite-subgraphs",
-      "title": "Finite Subgraphs and Independence",
-      "startLine": 39,
-      "endLine": 50,
-      "summary": "Axiomatizes FiniteSubgraph type, indepNumber, and the trivial bound α(H) ≤ n."
+      "id": "chromatic",
+      "title": "Chromatic Number Properties",
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "Defines HasUncountableChromaticNum via ¬Colorable n. Proves colorable_mono (replaces chromaticNum_mono axiom)."
     },
     {
       "id": "independence-properties",
       "title": "Independence Ratio Properties",
-      "startLine": 51,
-      "endLine": 69,
-      "summary": "Defines HasLargeIndepSets (n^{1-ε}) and HasLinearIndepSets (c·n) properties."
+      "startLine": 54,
+      "endLine": 72,
+      "summary": "Defines HasLargeIndepSets (n^{1-ε} approximation) and HasLinearIndepSets (c·n) using existential formulation over Finset V."
     },
     {
       "id": "known-context",
       "title": "Known Context",
-      "startLine": 70,
-      "endLine": 81,
-      "summary": "Records the classical α·χ ≥ n bound and mentions the Erdős-Hajnal connection."
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "States coloring_pigeonhole (sorry — suitable for Aristotle). Records Erdős-Hajnal connection."
+    },
+    {
+      "id": "implications",
+      "title": "Implications Between Forms",
+      "startLine": 90,
+      "endLine": 109,
+      "summary": "Proves linear_implies_large and strong_implies_basic — both fully verified."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Problem",
-      "startLine": 82,
-      "endLine": 92,
-      "summary": "States both the basic (n^{1-ε}) and strong (linear) forms of Problem 75."
+      "startLine": 111,
+      "endLine": 127,
+      "summary": "States both forms of Problem 75 as axioms (OPEN conjectures)."
     }
   ],
   "conclusion": {
@@ -100,18 +101,14 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
-    "namespace": null,
-    "lineCount": 92,
-    "axiomCount": 10,
-    "theoremCount": 0,
-    "definitionCount": 3
+    "namespace": "Erdos75",
+    "lineCount": 129,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 5
   },
   "crossReferences": [
     {

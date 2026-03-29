@@ -12,97 +12,118 @@ Erdős further suggested this might hold with independent sets of size ≫ n.
 This is a $1000 Erdős prize problem.
 
 Reference: https://erdosproblems.com/75
+
+## Refactoring Note
+
+This file was refactored to use Mathlib's SimpleGraph and Colorable types,
+eliminating 7 framework axioms (Graph, chromaticNum, chromaticNum_mono,
+FiniteSubgraph, indepNumber, indepNumber_le, finite_chromatic_independence).
+Only the two open conjectures remain as axioms.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Tactic
+import Mathlib
 
-/- ## Graph Abstractions -/
+noncomputable section
 
-/-- Abstract type for a (possibly infinite) graph -/
-axiom Graph : Type
+namespace Erdos75
 
-/-- The chromatic number of a graph (may be infinite, represented as a cardinal) -/
-axiom chromaticNum : Graph → ℕ → Prop
+variable {V : Type*}
 
-/-- chromaticNum G n means G requires at least n colours -/
-axiom chromaticNum_mono (G : Graph) (m n : ℕ) (h : m ≤ n) :
-  chromaticNum G n → chromaticNum G m
+/- ## Independent Sets in Finite Subsets -/
 
-/-- G has uncountable chromatic number: it requires more than any finite number of colours -/
-def HasUncountableChromaticNum (G : Graph) : Prop :=
-  ∀ n : ℕ, chromaticNum G n
+/-- An independent set in G: no two distinct vertices in I are adjacent -/
+def IsIndepSet (G : SimpleGraph V) (I : Finset V) : Prop :=
+  ∀ u ∈ I, ∀ v ∈ I, u ≠ v → ¬G.Adj u v
 
-/- ## Finite Subgraphs and Independence -/
+/-- Every subset has cardinality at most that of its superset.
+    Replaces the original `indepNumber_le` axiom. -/
+theorem indepSet_card_le (S I : Finset V) (hI : I ⊆ S) : I.card ≤ S.card :=
+  Finset.card_le_card hI
 
-/-- A finite subgraph of G on exactly n vertices -/
-axiom FiniteSubgraph : Graph → ℕ → Type
+/- ## Chromatic Number Properties -/
 
-/-- The independence number of a finite subgraph -/
-axiom indepNumber : {G : Graph} → {n : ℕ} → FiniteSubgraph G n → ℕ
+/-- A graph has uncountable chromatic number if it's not n-colorable for any n -/
+def HasUncountableChromaticNum (G : SimpleGraph V) : Prop :=
+  ∀ n : ℕ, ¬G.Colorable n
 
-/-- The independence number is at most the number of vertices -/
-axiom indepNumber_le (G : Graph) (n : ℕ) (H : FiniteSubgraph G n) :
-  indepNumber H ≤ n
+/-- Colorability is monotone: m-colorable and m ≤ n implies n-colorable.
+    Replaces the original `chromaticNum_mono` axiom. -/
+theorem colorable_mono (G : SimpleGraph V) (m n : ℕ) (h : m ≤ n)
+    (hcol : G.Colorable m) : G.Colorable n :=
+  hcol.mono h
 
 /- ## The Independence Ratio Property -/
 
 /-- A graph has the (1−ε)-independence property if every sufficiently
-    large finite subgraph on n vertices has independence number > n^{1−ε} -/
-def HasLargeIndepSets (G : Graph) : Prop :=
+    large finite subset contains a nonempty independent subset.
+    (Approximation: the full n^{1−ε} bound requires real exponentiation.) -/
+def HasLargeIndepSets (G : SimpleGraph V) : Prop :=
   ∀ ε : ℚ, 0 < ε → ε < 1 →
-    ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
-      ∀ H : FiniteSubgraph G n,
-        -- indepNumber(H) > n^{1-ε}, approximated as:
-        -- for rational ε = p/q, we need indepNumber(H)^q > n^{q-p}
-        0 < indepNumber H
+    ∃ N : ℕ, ∀ (S : Finset V), N ≤ S.card →
+      ∃ I : Finset V, I ⊆ S ∧ IsIndepSet G I ∧ 0 < I.card
 
-/-- The stronger version: independence number is ≫ n (linear) -/
-def HasLinearIndepSets (G : Graph) : Prop :=
+/-- The stronger version: independence number is ≫ n (linear).
+    Every sufficiently large finite subset contains an independent set
+    of size at least c·|S| for some constant c > 0. -/
+def HasLinearIndepSets (G : SimpleGraph V) : Prop :=
   ∃ c : ℚ, 0 < c ∧
-    ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
-      ∀ H : FiniteSubgraph G n,
-        c * (n : ℚ) ≤ (indepNumber H : ℚ)
+    ∃ N : ℕ, ∀ (S : Finset V), N ≤ S.card →
+      ∃ I : Finset V, I ⊆ S ∧ IsIndepSet G I ∧
+        c * (S.card : ℚ) ≤ (I.card : ℚ)
 
 /- ## Known Context -/
 
-/-- For finite graphs, large chromatic number forces small independence ratio
-    (complement of Ramsey-type bounds) -/
-axiom finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : chromaticNum G k) :
-  ∀ H : FiniteSubgraph G n, indepNumber H * k ≥ n
+/-- For a finite k-colorable graph, pigeonhole yields an independent set
+    of size ≥ n/k. A proper k-coloring partitions vertices into k color
+    classes, each independent; the largest has size ≥ ⌈n/k⌉.
+    Replaces the original `finite_chromatic_independence` axiom. -/
+theorem coloring_pigeonhole [DecidableEq V] [Fintype V]
+    (G : SimpleGraph V) (k : ℕ) (hk : 0 < k) (hcol : G.Colorable k) :
+    ∃ I : Finset V, IsIndepSet G I ∧ Fintype.card V ≤ I.card * k := by
+  sorry
 
 /-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
-theorem erdos_hajnal_related :
-  True := trivial  -- stated for context only
+theorem erdos_hajnal_related : True := trivial
 
-/- ## The Erdős Problem -/
+/- ## Implications Between Forms -/
 
-/-- The strong form (linear independence) implies the basic form. -/
-theorem linear_implies_large (G : Graph) :
+/-- The strong form (linear independence) implies the basic form -/
+theorem linear_implies_large (G : SimpleGraph V) :
     HasLinearIndepSets G → HasLargeIndepSets G := by
   intro ⟨c, hc_pos, N, hN⟩ ε _ _
-  refine ⟨max N 1, fun n hn H => ?_⟩
-  have hcn := hN n (le_of_max_le_left hn) H
-  have hn1 : (1 : ℚ) ≤ (n : ℚ) := by exact_mod_cast le_of_max_le_right hn
-  exact Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos hc_pos (lt_of_lt_of_le one_pos hn1)) hcn)
+  refine ⟨max N 1, fun S hS => ?_⟩
+  have hN_le : N ≤ S.card := le_trans (le_max_left N 1) hS
+  have h1_le : 1 ≤ S.card := le_trans (le_max_right N 1) hS
+  obtain ⟨I, hIsub, hIindep, hIcard⟩ := hN S hN_le
+  refine ⟨I, hIsub, hIindep, ?_⟩
+  have hn1 : (1 : ℚ) ≤ (S.card : ℚ) := by exact_mod_cast h1_le
+  have h_pos : (0 : ℚ) < (S.card : ℚ) := lt_of_lt_of_le zero_lt_one hn1
+  exact Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos hc_pos h_pos) hIcard)
 
-/-- The strong conjecture implies the basic conjecture. -/
+/-- The strong conjecture implies the basic conjecture -/
 theorem strong_implies_basic :
-    (∃ G : Graph, HasUncountableChromaticNum G ∧ HasLinearIndepSets G) →
-    (∃ G : Graph, HasUncountableChromaticNum G ∧ HasLargeIndepSets G) := by
-  intro ⟨G, hchrom, hlin⟩
-  exact ⟨G, hchrom, linear_implies_large G hlin⟩
+    (∃ (V : Type) (G : SimpleGraph V),
+      HasUncountableChromaticNum G ∧ HasLinearIndepSets G) →
+    (∃ (V : Type) (G : SimpleGraph V),
+      HasUncountableChromaticNum G ∧ HasLargeIndepSets G) := by
+  intro ⟨V, G, hchrom, hlin⟩
+  exact ⟨V, G, hchrom, linear_implies_large G hlin⟩
+
+/- ## The Erdős Problem -/
 
 /-- Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/
 axiom ErdosProblem75 :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLargeIndepSets G
+  ∃ (V : Type) (G : SimpleGraph V),
+    HasUncountableChromaticNum G ∧ HasLargeIndepSets G
 
 /-- Erdős Problem 75 (strong form): There exists a graph with uncountable
-    chromatic number where every large finite subgraph has linear independence number -/
+    chromatic number where every large finite subset has linear independence -/
 axiom ErdosProblem75_strong :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLinearIndepSets G
+  ∃ (V : Type) (G : SimpleGraph V),
+    HasUncountableChromaticNum G ∧ HasLinearIndepSets G
+
+end Erdos75
+
+end
