@@ -50,12 +50,49 @@ theorem shifted_summable (A : Set ℕ) (k : ℕ)
 -- Routine: The set of perfect squares has convergent harmonic subseries
 -- (this is ∑ 1/n² = π²/6, well-known convergence)
 theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  -- Build bijection ℕ ≃ squaresSet via k ↦ (k+1)²
+  let e : ℕ → squaresSet := fun k => ⟨(k+1)^2, k+1, by omega, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h; simp only [e, Subtype.ext_iff] at h; omega
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk, hkn⟩; exact ⟨k - 1, by simp only [e, Subtype.ext_iff]; omega⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  -- Reindexed series: fun k => 1/((k+1)² : ℝ)
+  -- Bounded by p-series ∑ 1/n² (p=2>1, convergent)
+  have hpseries : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
+    Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
+  apply Summable.of_nonneg_of_le
+  · intro k; positivity
+  · intro k
+    show (1 : ℝ) / ↑((k + 1) ^ 2) ≤ ((↑(k + 1) : ℝ) ^ (2 : ℝ))⁻¹
+    rw [Nat.cast_pow, one_div]
+    congr 1
+    push_cast; ring
+  · exact hpseries.comp_injective (fun a b h => by omega : Function.Injective (· + 1))
 
 -- Routine: Powers of 2 have convergent harmonic subseries
 -- (geometric series ∑ 1/2^k = 1)
 theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  -- Build bijection ℕ ≃ powersOf2Set via k ↦ 2^k
+  let e : ℕ → powersOf2Set := fun k => ⟨2^k, k, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk⟩
+    exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  -- Reindexed: fun k => 1/(2^k : ℝ) = (1/2)^k, geometric series
+  have : ((fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘ (Equiv.ofBijective e ⟨hinj, hsurj⟩)) =
+      fun k => ((1 : ℝ) / 2) ^ k := by
+    ext k
+    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.val]
+    rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
+  rw [this]
+  exact summable_geometric_of_lt_one (by positivity) (by norm_num)
 
 -- Routine: Shifted harmonic sum is non-negative for non-empty A
 theorem shiftedHarmonicSum_nonneg (A : Set ℕ) (k : ℕ)

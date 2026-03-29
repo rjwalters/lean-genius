@@ -46,7 +46,14 @@ noncomputable def t (n : ℕ) : ℕ :=
 -- Lattice grid properties
 /-- The lattice grid {1,...,n}^2 has n^2 points. -/
 theorem latticeGrid_card (n : ℕ) (hn : n ≥ 1) :
-    (latticeGrid n).ncard = n ^ 2 := by sorry
+    (latticeGrid n).ncard = n ^ 2 := by
+  have heq : latticeGrid n = (Set.Icc (1 : ℤ) ↑n) ×ˢ (Set.Icc (1 : ℤ) ↑n) := by
+    ext ⟨x, y⟩; simp [latticeGrid, Set.mem_prod, Set.mem_Icc]
+  rw [heq, Set.ncard_prod (Set.finite_Icc _ _) (Set.finite_Icc _ _)]
+  suffices h : (Set.Icc (1 : ℤ) ↑n).ncard = n by rw [h]; ring
+  rw [Set.ncard_eq_toFinset_card’ (Set.Icc (1 : ℤ) ↑n)]
+  simp only [Set.toFinset_Icc, Finset.card_Icc]
+  omega
 
 /-- The lattice grid is finite. -/
 theorem latticeGrid_finite (n : ℕ) :

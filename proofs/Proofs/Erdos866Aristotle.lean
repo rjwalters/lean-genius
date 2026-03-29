@@ -64,6 +64,15 @@ theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by
 -- Routine lemma: parity pigeonhole — among any 3 integers,
 -- two share parity, so their sum is even and not in oddNumbers
 theorem oddNumbers_no_triple (N : ℕ) :
-    ¬∃ b : Fin 3 → ℤ, HasAllPairwiseSums (oddNumbers N) b := by sorry
+    ¬∃ b : Fin 3 → ℤ, HasAllPairwiseSums (oddNumbers N) b := by
+  intro ⟨b, hb⟩
+  have h01 := hb 0 1 (by omega)
+  have h02 := hb 0 2 (by omega)
+  have h12 := hb 1 2 (by omega)
+  simp only [oddNumbers, Interval, Finset.mem_filter, Finset.mem_range] at h01 h02 h12
+  obtain ⟨⟨_, _⟩, _⟩ := h01
+  obtain ⟨⟨_, _⟩, _⟩ := h02
+  obtain ⟨⟨_, _⟩, _⟩ := h12
+  omega
 
 end Erdos866
