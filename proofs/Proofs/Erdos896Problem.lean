@@ -209,6 +209,49 @@ theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
         (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩))⟩)
   exact le_of_eq (uniqueProductCount_singletons 1 1).symm
 
+/-- F(Icc 1 N, {1}) = card(Icc 1 N): for B = {1}, every product a·1 = a
+    has exactly one representation, so all products are unique. -/
+theorem uniqueProductCount_range_one (N : ℕ) :
+    uniqueProductCount (Finset.Icc 1 N) {1} = (Finset.Icc 1 N).card := by
+  unfold uniqueProductCount reprCount
+  -- Image = Icc 1 N (since a·1 = a)
+  have h_img : (Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).image
+      (fun p : ℕ × ℕ => p.1 * p.2) = Finset.Icc 1 N := by
+    ext m
+    simp only [Finset.mem_image, Finset.mem_product, Finset.mem_Icc,
+      Finset.mem_singleton, Prod.exists]
+    constructor
+    · rintro ⟨a, b, ⟨ha, rfl⟩, hab⟩; simp only [mul_one] at hab; rwa [← hab]
+    · intro hm; exact ⟨m, 1, ⟨hm, rfl⟩, mul_one m⟩
+  -- Each m ∈ Icc 1 N has exactly one pair (m, 1) in the filter
+  have h_repr : ∀ m ∈ Finset.Icc 1 N,
+      ((Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).filter
+        (fun p => p.1 * p.2 = m)).card = 1 := by
+    intro m hm
+    suffices (Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).filter
+        (fun p => p.1 * p.2 = m) = {(m, 1)} by rw [this]; simp
+    ext ⟨x, y⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc,
+      Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨hx, rfl⟩, hxy⟩; exact ⟨by omega, rfl⟩
+    · rintro ⟨rfl, rfl⟩; exact ⟨⟨hm, rfl⟩, by simp⟩
+  rw [h_img, Finset.filter_true_of_mem h_repr]
+
+/-- maxUniqueProducts N ≥ N for N ≥ 1: the pair A = {1,...,N}, B = {1}
+    gives F(A,{1}) = N since each product a·1 = a is unique. -/
+theorem maxUniqueProducts_ge_range (N : ℕ) (hN : 1 ≤ N) :
+    N ≤ maxUniqueProducts N := by
+  have hcard : (Finset.Icc 1 N).card = N := by rw [Finset.card_Icc]; omega
+  calc N = (Finset.Icc 1 N).card := hcard.symm
+    _ = uniqueProductCount (Finset.Icc 1 N) {1} := (uniqueProductCount_range_one N).symm
+    _ ≤ maxUniqueProducts N := by
+        unfold maxUniqueProducts
+        exact Finset.le_sup (Finset.mem_product.mpr
+          ⟨Finset.mem_powerset.mpr le_rfl,
+           Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr
+            (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩))⟩)
+
 /-
 ## Monotonicity and Bounds
 -/
