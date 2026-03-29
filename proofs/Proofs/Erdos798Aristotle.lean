@@ -80,7 +80,19 @@ theorem mem_lineThroughPoints_right (p q : ℤ × ℤ) :
 
 /-- Lines are symmetric: the line through p,q equals the line through q,p. -/
 theorem lineThroughPoints_symm (p q : ℤ × ℤ) :
-    lineThroughPoints p q = lineThroughPoints q p := by sorry
+    lineThroughPoints p q = lineThroughPoints q p := by
+  simp only [lineThroughPoints]
+  split_ifs with h1 h2 h2
+  · rw [h1]
+  · exact absurd h1.symm h2
+  · exact absurd h2.symm h1
+  · ext r
+    simp only [Set.mem_setOf_eq]
+    constructor
+    · rintro ⟨t, ht1, ht2⟩
+      exact ⟨1 - t, by push_cast; linarith, by push_cast; linarith⟩
+    · rintro ⟨t, ht1, ht2⟩
+      exact ⟨1 - t, by push_cast; linarith, by push_cast; linarith⟩
 
 -- Combinatorial bound
 /-- k points determine at most k*(k-1)/2 lines. -/

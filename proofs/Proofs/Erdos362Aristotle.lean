@@ -64,6 +64,16 @@ theorem gf_disjoint_union (B C : Finset ℤ) (z : ℂ) (h : Disjoint B C) :
 
 -- TARGET 5: Product expansion of GF as sum over powerset
 theorem gf_expansion (A : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
-    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by sorry
+    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by
+  simp only [subsetSumGF, setSum]
+  -- Rewrite (1 + z^a) as (z^a + 1) to match prod_add convention
+  rw [show ∏ a ∈ A, ((1 : ℂ) + z ^ a) = ∏ a ∈ A, (z ^ a + 1) from
+    prod_congr rfl (fun a _ => add_comm _ _)]
+  -- Apply the product expansion: ∏(f + g) = Σ_{T⊆A} (∏_T f)(∏_{A\T} g)
+  rw [prod_add (fun a => z ^ a) (fun _ => (1 : ℂ)) A]
+  apply sum_congr rfl
+  intro T _
+  simp only [prod_const_one, mul_one]
+  exact (zpow_finset_sum T z hz).symm
 
 end Erdos362Aristotle
