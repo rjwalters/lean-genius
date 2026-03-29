@@ -15,7 +15,7 @@ f(n) ≥ ⌊log₂ n⌋.
 
 Axiom count: 3 (was 7; proved log_base_gap, dissociated_subset_sum_count,
   powers_of_two_dissociated, maxDissociatedSize_mono)
-Sorry count: 0
+Sorry count: 1 (disjoint_pairs_card)
 
 ## References
 
