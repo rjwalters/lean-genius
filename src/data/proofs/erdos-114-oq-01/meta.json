@@ -1,0 +1,65 @@
+{
+  "id": "erdos-114-oq-01",
+  "title": "Explicit Bounds on Tao's Lemniscate Threshold",
+  "slug": "erdos-114-oq-01",
+  "description": "Can Tao's threshold N\u2080, above which z\u207f-1 uniquely maximizes lemniscate length, be made explicit? This formalization defines the threshold via Nat.find, proves finite reduction (the full conjecture reduces to checking finitely many cases in [3, N\u2080)), and establishes structural bounds using known results of Dolzhenko, Danchenko, Fryntov-Nazarov, and Eremenko-Hayman.",
+  "meta": {
+    "author": "Tao (2025); Fryntov-Nazarov (2009); Danchenko (2007); Eremenko-Hayman (1999)",
+    "sourceUrl": "https://erdosproblems.com/114",
+    "date": "2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos114OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "extremal-problems",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 12,
+    "assumptions": [
+      "lemniscateLength: arc length of polynomial lemniscate (definitional)",
+      "lemniscateLength_nonneg: non-negativity of arc length",
+      "maxLemniscateLength: supremum over monic polynomials (definitional)",
+      "maxLemniscateLength_nonneg: non-negativity of supremum",
+      "maxLemniscateLength_upper: upper bound property of supremum",
+      "dolzhenko_bound: f(n) <= 4*pi*n (Dolzhenko 1961)",
+      "danchenko_bound: f(n) <= 2*pi*n (Danchenko 2007)",
+      "tao_asymptotic: z^n-1 uniquely maximizes for large n (Tao 2025)",
+      "znMinus1_achieves_max: z^n-1 achieves the supremum (known result)",
+      "eremenko_hayman_n2: uniqueness for n=2 (Eremenko-Hayman 1999)",
+      "unique_max_one: uniqueness for n=1 (elementary)",
+      "fryntov_nazarov_bound: f(n) <= 2n + O(n^{7/8}) (Fryntov-Nazarov 2009)"
+    ],
+    "erdosNumber": 114,
+    "erdosUrl": "https://erdosproblems.com/114",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.find",
+        "description": "Minimum natural number satisfying a decidable predicate",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "pi > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Nat.one_le_cast",
+        "description": "1 <= (n : R) iff 1 <= n",
+        "module": "Mathlib.Data.Nat.Cast.Order.Basic"
+      }
+    ],
+    "parentProof": "erdos-114",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-114"
+  }
+}
