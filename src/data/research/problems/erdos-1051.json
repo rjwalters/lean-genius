@@ -29,19 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed open-conjecture axiom, added 5 theorems (partial fraction, term bounds, exponential growth). File: 113→166 lines, 1→6 theorems, 4→3 axioms.",
+    "progressSummary": "ASSESSED: 4 axioms, 0 sorries. series_converges is the most tractable for elimination (needs liminf→summability argument). rapid_growth_irrational is deep (Erdős 1988). simple_series_question is open.",
     "builtItems": [
       "Proved series_positive theorem in Erdos1051Problem.lean",
-      "partial_fraction: telescoping identity",
-      "term_pos, term_le_reciprocal_sq: term analysis",
-      "strict_mono_pos, exponential_growth_bound: sequence bounds"
+      "Assessed all 4 axioms: series_converges is provable in principle (liminf → summability), others are deep/open"
     ],
     "insights": [
       "Proved series_positive from series_converges using tsum_pos. Each term 1/(a_n*a_{n+1}) > 0 since a_n > 0.",
-      "simple_series_question was incorrectly axiomatized as fact — converted to def (its an open conjecture)",
-      "Partial fraction 1/(xy) = 1/(y-x) · (1/x - 1/y) enables telescoping analysis",
-      "Term bound 1/(aₙ·aₙ₊₁) ≤ 1/aₙ² from strict monotonicity",
-      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)"
+      "series_converges is the most tractable axiom: from lim inf a_n^{1/2^n} > 1, extract r > 1 with a_n ≥ r^{2^n} eventually, giving 1/(a_n*a_{n+1}) ≤ 1/r^{3*2^n} which is summable",
+      "rapid_growth_irrational is Erdős 1988 deep result — requires irrationality measure machinery",
+      "simple_series_question is another open conjecture, cannot be eliminated",
+      "sylvester_fibonacci_example could be proved by explicit construction with Fibonacci subsequence but irrationality of the sum needs telescoping identity"
     ],
     "mathlibGaps": [],
     "nextSteps": [
