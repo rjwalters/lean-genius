@@ -271,4 +271,74 @@ for irreducible polynomials satisfying a fixed-divisor condition.
     This is a weaker form than the full Bunyakovsky conjecture. -/
 def Bunyakovsky8 : Prop := PrimePairs8.Infinite
 
+/-
+## Section 7: Mersenne prime conditional
+
+For k ≥ 2 with 2^k - 1 prime (Mersenne prime), n = 2^k - 1 gives
+n(n+1) = (2^k - 1)·2^k with exponents {1, k}, automatically distinct.
+This provides a second conditional path to Erdős #913, independent of
+the 8p²-1 hypothesis: if infinitely many Mersenne primes exist, the
+conjecture is true.
+-/
+
+/-- The set of exponents k ≥ 2 where 2^k - 1 is a Mersenne prime. -/
+def MersennePrimeExponents : Set ℕ := { k | k ≥ 2 ∧ (2 ^ k - 1).Prime }
+
+/-- The map k ↦ 2^k - 1 is injective on ℕ. -/
+private theorem injective_mersenne : Function.Injective (fun k : ℕ => 2 ^ k - 1) := by
+  intro a b hab
+  simp only at hab
+  by_contra hne
+  rcases Nat.lt_or_gt_of_ne hne with h | h
+  · have : 2 ^ a < 2 ^ b := Nat.pow_lt_pow_right (by norm_num : 1 < 2) h
+    omega
+  · have : 2 ^ b < 2 ^ a := Nat.pow_lt_pow_right (by norm_num : 1 < 2) h
+    omega
+
+/-- For a Mersenne prime 2^k - 1 with k ≥ 2, n = 2^k - 1 has distinct exponents:
+    n(n+1) = (2^k - 1)·2^k with exponents {1, k}. -/
+theorem hasDistinctExponents_mersenne (k : ℕ) (hk : k ≥ 2) (hp : (2 ^ k - 1).Prime) :
+    HasDistinctExponents (2 ^ k - 1) := by
+  have hne1 : 2 ^ k - 1 ≠ 0 := hp.ne_zero
+  have hne2 : (2 : ℕ) ^ k ≠ 0 := pow_ne_zero k (by norm_num)
+  have hm : (2 ^ k - 1) * ((2 ^ k - 1) + 1) = (2 ^ k - 1) * 2 ^ k := by congr 1; omega
+  set m := (2 ^ k - 1) * 2 ^ k with hm_def
+  -- (2^k - 1) doesn't divide 2^k: it's an odd prime > 2
+  have hndvd : ¬((2 ^ k - 1) ∣ 2 ^ k) := by
+    intro h
+    have := Nat.le_of_dvd (by positivity) (hp.dvd_of_dvd_pow h)
+    omega
+  -- Factorization at (2^k - 1) = 1
+  have hv1 : m.factorization (2 ^ k - 1) = 1 := by
+    rw [hm_def, factorization_mul hne1 hne2, Finsupp.add_apply,
+        hp.factorization, Finsupp.single_apply, if_pos rfl,
+        factorization_eq_zero_of_not_dvd hndvd, add_zero]
+  -- Factorization at 2 = k
+  have hv2 : m.factorization 2 = k := by
+    rw [hm_def, factorization_mul hne1 hne2, Finsupp.add_apply,
+        hp.factorization, Finsupp.single_apply, if_neg (show 2 ^ k - 1 ≠ 2 from by omega),
+        zero_add]
+    simp only [Nat.factorization_pow, Finsupp.smul_apply, smul_eq_mul,
+        Nat.prime_two.factorization, Finsupp.single_eq_same, mul_one]
+  -- Prime factors
+  have hpf : m.primeFactors = {2 ^ k - 1, 2} := by
+    rw [hm_def, primeFactors_mul hne1 hne2, hp.primeFactors,
+        primeFactors_pow (show (2 : ℕ) ≠ 0 from by norm_num) (show k ≠ 0 from by omega),
+        Nat.prime_two.primeFactors, Finset.singleton_union]
+  exact hasDistinctExponents_of_primeFactors_pair hm hpf (by omega)
+
+/-- Conditional: infinitely many Mersenne primes implies Erdős #913 is true. -/
+theorem erdos_913_conditional_mersenne (h : MersennePrimeExponents.Infinite) :
+    DistinctExponentSet.Infinite := by
+  have hinj : Set.InjOn (fun k => 2 ^ k - 1) MersennePrimeExponents :=
+    fun _ _ _ _ h => injective_mersenne h
+  have himg : ((fun k => 2 ^ k - 1) '' MersennePrimeExponents).Infinite := h.image hinj
+  exact himg.mono (by
+    rintro _ ⟨k, hk_mem, rfl⟩
+    exact hasDistinctExponents_mersenne k hk_mem.1 hk_mem.2)
+
+/-- The distinct exponent set is nonempty (witnessed by n = 3). -/
+theorem nonempty_distinctExponentSet : DistinctExponentSet.Nonempty :=
+  ⟨3, example_n3⟩
+
 end Erdos913
