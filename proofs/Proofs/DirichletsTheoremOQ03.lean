@@ -29,9 +29,11 @@ namespace LinnikConstant
 ## Part I: The Least Prime in an Arithmetic Progression
 -/
 
-/-- The least prime p ≡ a (mod q) -/
+/-- The least prime p ≡ a (mod q), for coprime a, q. Returns 0 otherwise. -/
 noncomputable def leastPrimeInAP (a q : ℕ) : ℕ :=
-  Nat.find (⟨sorry, sorry⟩ : ∃ p, p.Prime ∧ p ≡ a [MOD q])
+  if h : Nat.Coprime a q ∧ q ≠ 0 then
+    Nat.find ((Nat.infinite_setOf_prime_and_modEq h.2 h.1).nonempty)
+  else 0
 
 /-- Linnik's theorem: there exist c, L such that p(a,q) ≤ c · q^L -/
 axiom linnik_theorem :
@@ -107,12 +109,13 @@ def optimalLinnikConjecture : Prop :=
 /-- The optimal conjecture implies linnikConstant ≤ 1 -/
 theorem optimal_implies_le_one (h : optimalLinnikConjecture) :
     linnikConstant ≤ 1 := by
-  apply csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩
-  have := h (1/2) (by norm_num : (1:ℝ)/2 > 0)
-  -- 1 + 1/2 = 3/2 ∈ admissibleExponents, and 3/2 > 1
-  -- But we need something ≤ 1... The conjecture says ∀ ε > 0, 1+ε admissible
-  -- Taking limit: linnikConstant ≤ 1 + ε for all ε > 0
-  sorry
+  by_contra hlt
+  push_neg at hlt
+  -- hlt : 1 < linnikConstant
+  have hε : (linnikConstant - 1) / 2 > 0 := by linarith
+  have hle := csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ (h _ hε)
+  -- hle : linnikConstant ≤ 1 + (linnikConstant - 1) / 2
+  linarith
 
 /-- Known range: 1 ≤ linnikConstant ≤ 5 -/
 theorem linnikConstant_range :
