@@ -278,7 +278,18 @@ A ball of radius 1/2 is unit-distance free.
 -/
 theorem small_ball_unitDistanceFree (c : EuclideanSpace ℝ (Fin 2)) :
     IsUnitDistanceFree (ball c (1/2 : ℝ)) := by
-  sorry
+  intro p q hp hq hdist
+  -- hp : dist p c < 1/2, hq : dist q c < 1/2
+  rw [Metric.mem_ball] at hp hq
+  -- hdist : euclideanDist p q = 1, i.e., dist p q = 1
+  simp only [IsUnitDistance, euclideanDist] at hdist
+  -- By triangle inequality: dist p q ≤ dist p c + dist c q < 1/2 + 1/2 = 1
+  have h : dist p q < 1 := calc
+    dist p q ≤ dist p c + dist c q := dist_triangle p c q
+    _ = dist p c + dist q c := by rw [dist_comm c q]
+    _ < 1 / 2 + 1 / 2 := by linarith
+    _ = 1 := by norm_num
+  linarith
 
 /-
 ## Part XI: Connection to Chromatic Number
