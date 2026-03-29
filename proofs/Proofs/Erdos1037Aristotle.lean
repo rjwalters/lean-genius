@@ -43,7 +43,24 @@ theorem distinctDegrees_le_card :
 theorem pigeonhole_distinct_count (f : V → ℕ) (k : ℕ) (hk : k ≥ 1)
     (h : ∀ d : ℕ, (Finset.univ.filter (fun v => f v = d)).card ≤ k) :
     (Finset.univ.image f).card ≥ Fintype.card V / k := by
-  sorry
+  suffices Fintype.card V ≤ k * (Finset.univ.image f).card by
+    calc Fintype.card V / k
+        ≤ (k * (Finset.univ.image f).card) / k := Nat.div_le_div_right this
+      _ = (Finset.univ.image f).card := Nat.mul_div_cancel_left _ (by omega)
+  rw [← Finset.card_univ]
+  have hpart : (Finset.univ : Finset V) =
+      (Finset.univ.image f).biUnion (fun d => Finset.univ.filter (fun v => f v = d)) := by
+    ext v; simp
+  rw [hpart, Finset.card_biUnion]
+  · calc ∑ d ∈ Finset.univ.image f, (Finset.univ.filter (fun v => f v = d)).card
+        ≤ ∑ _ ∈ Finset.univ.image f, k := Finset.sum_le_sum (fun d _ => h d)
+      _ = (Finset.univ.image f).card * k := by rw [Finset.sum_const, smul_eq_mul]
+      _ = k * (Finset.univ.image f).card := mul_comm _ _
+  · intro d _ e _ hde
+    rw [Finset.disjoint_left]
+    intro v hv1 hv2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv1 hv2
+    exact hde (hv1.symm.trans hv2)
 
 -- Routine: Degree values range in {0, ..., n-1}
 theorem degree_range :
@@ -56,14 +73,55 @@ theorem degree_range :
 -- Routine: The complement graph has degree (n-1) - deg_G(v)
 -- Aristotle target: needs SimpleGraph.degree_compl or manual neighborFinset argument
 theorem complement_degree (v : V) :
-    Gᶜ.degree v = Fintype.card V - 1 - G.degree v := by sorry
+    Gᶜ.degree v = Fintype.card V - 1 - G.degree v := by
+  simp only [SimpleGraph.degree]
+  have hv_G : v ∉ G.neighborFinset v := G.not_mem_neighborFinset_self v
+  have hv_C : v ∉ Gᶜ.neighborFinset v := Gᶜ.not_mem_neighborFinset_self v
+  have hunion : Gᶜ.neighborFinset v ∪ G.neighborFinset v = Finset.univ.erase v := by
+    ext w
+    simp only [Finset.mem_union, SimpleGraph.mem_neighborFinset, SimpleGraph.compl_adj,
+               Finset.mem_erase, Finset.mem_univ, and_true]
+    constructor
+    · rintro (⟨hvw, _⟩ | hadj)
+      · exact hvw.symm
+      · exact (G.ne_of_adj hadj).symm
+    · intro hwv
+      by_cases h : G.Adj v w
+      · exact Or.inr h
+      · exact Or.inl ⟨hwv.symm, h⟩
+  have hdisj : Disjoint (Gᶜ.neighborFinset v) (G.neighborFinset v) := by
+    rw [Finset.disjoint_left]
+    intro w hw1 hw2
+    rw [SimpleGraph.mem_neighborFinset] at hw1 hw2
+    rw [SimpleGraph.compl_adj] at hw1
+    exact hw1.2 hw2
+  have hcard := Finset.card_union_of_disjoint hdisj
+  rw [hunion, Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ] at hcard
+  omega
 
 -- Routine: If every degree appears at most twice and degrees ∈ {0,...,n-1},
 -- then the number of distinct degrees ≤ n, and n ≤ 2 * distinctDegrees
 theorem limited_mult_bound_from_pigeonhole
     (h : ∀ d : ℕ, (Finset.univ.filter (fun v => G.degree v = d)).card ≤ 2) :
     Fintype.card V ≤ 2 * (Finset.univ.image (fun v => G.degree v)).card := by
-  sorry
+  rw [← Finset.card_univ]
+  have hpart : (Finset.univ : Finset V) =
+      (Finset.univ.image (fun v => G.degree v)).biUnion
+        (fun d => Finset.univ.filter (fun v => G.degree v = d)) := by
+    ext v; simp
+  rw [hpart, Finset.card_biUnion]
+  · calc ∑ d ∈ Finset.univ.image (fun v => G.degree v),
+          (Finset.univ.filter (fun v => G.degree v = d)).card
+        ≤ ∑ _ ∈ Finset.univ.image (fun v => G.degree v), 2 :=
+          Finset.sum_le_sum (fun d _ => h d)
+      _ = (Finset.univ.image (fun v => G.degree v)).card * 2 := by
+          rw [Finset.sum_const, smul_eq_mul]
+      _ = 2 * (Finset.univ.image (fun v => G.degree v)).card := mul_comm _ _
+  · intro d _ e _ hde
+    rw [Finset.disjoint_left]
+    intro v hv1 hv2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv1 hv2
+    exact hde (hv1.symm.trans hv2)
 
 -- Routine: 3/4 > 2/3 (comparing optimal bounds)
 theorem three_fourths_gt_two_thirds : (3 : ℝ) / 4 > 2 / 3 := by norm_num
