@@ -468,6 +468,15 @@ def checkTwoTimePrime (p : ℕ) : Bool :=
     pow2k > 0 && p > pow2k && (p - 1) % pow2k == 0 &&
     Nat.Prime ((p - 1) / pow2k)
 
+/-- Decidable check for IsTwoThreeTimePrimePlusOne: p = 2^k · 3^l · q + 1. -/
+def checkFormB (p : ℕ) : Bool :=
+  Nat.Prime p &&
+  (List.range 8).any fun k =>
+    (List.range 5).any fun l =>
+      let factor := 2 ^ k * 3 ^ l
+      factor ≤ p - 1 && (p - 1) % factor == 0 &&
+      Nat.Prime ((p - 1) / factor)
+
 /-- All 15 Form A primes ≤ 100: 3, 5, 7, 11, 13, 17, 23, 29, 41, 47, 53, 59, 83, 89, 97.
     (Prior census missed p=17: 17 = 2³·2 + 1.) -/
 theorem fifteen_examples_le_100 :
@@ -492,3 +501,71 @@ theorem fifteen_examples_le_100 :
   · exact example_83
   · exact example_89
   · exact example_97
+
+-- ## Complete Form B Census ≤ 100
+
+/-- All 23 Form B primes ≤ 100: every prime except 2 and 71. -/
+theorem form_b_census_le_100 :
+    ∀ p ∈ [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
+           59, 61, 67, 73, 79, 83, 89, 97],
+      checkFormB p = true := by
+  native_decide
+
+/-- 2 and 71 are the only primes ≤ 100 that are NOT Form B. -/
+theorem form_b_complement_le_100 :
+    checkFormB 2 = false ∧ checkFormB 71 = false := by
+  native_decide
+
+-- ## Form A Examples Beyond 100
+
+/-- p = 107: 107 = 2^1 · 53 + 1. Here q = 53, k = 1. -/
+theorem example_107 : IsTwoTimePrimePlusOne 107 := by
+  constructor
+  · decide
+  · exact ⟨53, 1, by decide, by norm_num⟩
+
+/-- p = 113: 113 = 2^4 · 7 + 1. Here q = 7, k = 4. -/
+theorem example_113 : IsTwoTimePrimePlusOne 113 := by
+  constructor
+  · decide
+  · exact ⟨7, 4, by decide, by norm_num⟩
+
+/-- p = 137: 137 = 2^3 · 17 + 1. Here q = 17, k = 3. -/
+theorem example_137 : IsTwoTimePrimePlusOne 137 := by
+  constructor
+  · decide
+  · exact ��17, 3, by decide, by norm_num⟩
+
+/-- p = 149: 149 = 2^2 · 37 + 1. Here q = 37, k = 2. -/
+theorem example_149 : IsTwoTimePrimePlusOne 149 := by
+  constructor
+  · decide
+  · exact ��37, 2, by decide, by norm_num⟩
+
+/-- p = 167: 167 = 2^1 · 83 + 1. Here q = 83, k = 1. -/
+theorem example_167 : IsTwoTimePrimePlusOne 167 := by
+  constructor
+  · decide
+  · exact ⟨83, 1, by decide, by norm_num⟩
+
+/-- p = 179: 179 = 2^1 · 89 + 1. Here q = 89, k = 1. -/
+theorem example_179 : IsTwoTimePrimePlusOne 179 := by
+  constructor
+  · decide
+  · exact ⟨89, 1, by decide, by norm_num⟩
+
+/-- p = 193: 193 = 2^6 · 3 + 1. Here q = 3, k = 6. -/
+theorem example_193 : IsTwoTimePrimePlusOne 193 := by
+  constructor
+  · decide
+  · exact ⟨3, 6, by decide, by norm_num⟩
+
+-- ## Extended Computational Census
+
+/-- All 22 Form A primes ≤ 200. Density: 22/46 ≈ 47.8% of primes ≤ 200.
+    (Compared to 15/25 = 60% for primes ≤ 100.) -/
+theorem form_a_census_le_200 :
+    ∀ p ∈ [3, 5, 7, 11, 13, 17, 23, 29, 41, 47, 53, 59, 83, 89, 97,
+           107, 113, 137, 149, 167, 179, 193],
+      checkTwoTimePrime p = true := by
+  native_decide

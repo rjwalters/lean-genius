@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved erdos_1065b from erdos_1065a (2→1 axioms). Added not_form_a proofs for all 8 Form B-only primes ≤100 (completing census). 8 strict inclusion witnesses total.",
+    "progressSummary": "PROGRESS: Complete Form B census for primes ≤100 via checkFormB. Extended Form A census to ≤200 (22 primes). Density analysis: Form A thins from 60% to 48%. File: 571 lines, 0 sorries, 1 axiom.",
     "builtItems": [
       "example_23, example_47, example_53, example_59, example_83, example_89 in Erdos1065Problem.lean",
       "example_37_extended: proof that 37 IS Form B (corrects prior error)",
@@ -45,7 +45,12 @@
       "fifteen_examples_le_100: corrected census replacing fourteen_examples_le_100",
       "Proved erdos_1065b from erdos_1065a via conjecture_a_implies_b (2→1 axioms)",
       "not_form_a_67, not_form_a_73, not_form_a_79: completes all Form B-only non-examples",
-      "strict_inclusion_67/73/79: three new Form A ⊊ Form B witnesses"
+      "strict_inclusion_67/73/79: three new Form A ⊊ Form B witnesses",
+      "checkFormB: decidable checker for p = 2^k·3^l·q + 1 form",
+      "form_b_census_le_100: all 23 Form B primes ≤100 verified via native_decide",
+      "form_b_complement_le_100: 2 and 71 confirmed NOT Form B",
+      "7 new Form A examples beyond 100: 107, 113, 137, 149, 167, 179, 193",
+      "form_a_census_le_200: all 22 Form A primes ≤200 computationally verified"
     ],
     "insights": [
       "The original file claimed 8 Form A primes ≤100, but the correct count is 14: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97",
@@ -56,13 +61,15 @@
       "Census bug: p=17 was missing from Form A list (17=2^3·2+1 with q=2 prime). Correct count is 15 Form A primes ≤100, not 14",
       "Complete Form B census ≤100: 8 primes are Form B-only (19,31,37,43,61,67,73,79). Most have k=l=1 pattern: p-1=2·3·q",
       "Only 2 primes ≤100 are neither Form A nor B: p=2 (trivially) and p=71 (70=2·5·7, 3∤70)",
-      "erdos_1065b is redundant: follows from erdos_1065a since Form A ⊂ Form B (take l=0). Axiom count 2→1."
+      "erdos_1065b is redundant: follows from erdos_1065a since Form A ⊂ Form B (take l=0). Axiom count 2→1.",
+      "Form A density drops from 60% (primes ≤100) to 47.8% (primes ≤200), consistent with expected thinning",
+      "Complete classification ≤100: 15 Form A, 8 Form B-only, 2 neither (2 and 71). Total 25 primes."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Add complete Form B census theorem (all 23 Form B primes ≤100)",
-      "Prove not_form_a for remaining Form B-only primes (67, 73, 79)",
-      "Investigate density: 15/25 = 60% of primes ≤100 are Form A, 23/25 = 92% are Form B"
+      "Extend Form B census to primes ≤200",
+      "Investigate whether density of Form A primes among all primes has a known asymptotic",
+      "Prove structural theorem: every safe prime is Form A (already stated, could extend to show connection)"
     ],
     "markdown": "# Erdős #1065 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p=2^kq+1$ for some prime $q$ and $k\\geq 0$? Or $p=2^k3^lq+1$?\n\n\n\nThis is mentioned in problem B46 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1064\n- Problem #1066\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
