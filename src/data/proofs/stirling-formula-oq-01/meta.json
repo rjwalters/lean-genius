@@ -19,7 +19,7 @@
     "badge": "formalized",
     "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "No axioms. 3 sorries: stirling_first_correction (core expansion), stirling_two_term_expansion (restatement), error_bound_from_correction tail step.",
+    "assumptions": "No axioms. 2 sorries: stirling_first_correction (core expansion requiring Euler-Maclaurin), stirling_two_term_expansion (restatement of first correction).",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -78,7 +78,7 @@
       "title": "Part IV: Error Bound (Axiom Replacement)",
       "startLine": 111,
       "endLine": 145,
-      "summary": "Shows first correction implies the axiomatized error bound. 1 sorry in tail step.",
+      "summary": "Shows first correction implies the axiomatized error bound. Fully proved (0 sorries).",
       "mathContext": "$\\frac{\\text{stirlingSeq}(n)}{\\sqrt{\\pi}} - 1 \\leq \\frac{1}{n}$ for $n \\geq 2$"
     }
   ],
