@@ -107,7 +107,15 @@ theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
 
 /-- The minimum is at most 2p_n (achieved at i = 0). -/
 theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) : f n ≤ 2 * nthPrime n := by
-  sorry
+  simp only [f, dif_neg (show n ≠ 0 by omega)]
+  -- The infimum over Fin n is ≤ the value at index 0
+  have hbdd : BddBelow (Set.range fun i : Fin n =>
+      nthPrime (n + ↑i) + nthPrime (n - ↑i)) :=
+    ⟨0, fun _ _ => Nat.zero_le _⟩
+  calc ⨅ i : Fin n, nthPrime (n + ↑i) + nthPrime (n - ↑i)
+      ≤ nthPrime (n + ↑(⟨0, hn⟩ : Fin n)) + nthPrime (n - ↑(⟨0, hn⟩ : Fin n)) :=
+        ciInf_le hbdd ⟨0, hn⟩
+    _ = 2 * nthPrime n := by simp [two_mul]
 
 /-- For i > 0, by strict monotonicity of primes:
     p_{n+i} > p_n and p_{n-i} < p_n (assuming n - i ≥ 0). -/
@@ -134,7 +142,26 @@ theorem limsup_pos : 0 < limsup deviationENat atTop := by
 /-- Corollary: Infinitely many n have deviation at least 2. -/
 theorem infinitely_many_deviation_ge_2 :
     {n : ℕ | deviationENat n ≥ 2}.Infinite := by
-  sorry
+  -- Proof by contradiction: if the set were finite, limsup ≤ 1 < 2
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  -- A finite subset of ℕ is bounded above: ∃ M, ∀ n ∈ S, n ≤ M
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  -- For n > M, n ∉ S, so deviationENat n < 2
+  have hev : ∀ᶠ n in atTop, deviationENat n ≤ 1 := by
+    rw [Filter.eventually_atTop]
+    refine ⟨M + 1, fun n hn => ?_⟩
+    by_contra hgt
+    push_neg at hgt -- hgt : 1 < deviationENat n
+    have hmem : n ∈ {n : ℕ | deviationENat n ≥ 2} := by
+      simp only [Set.mem_setOf_eq]
+      exact Order.succ_le_of_lt hgt
+    exact absurd (hM hmem) (by omega)
+  -- From the eventual bound, limsup ≤ 1
+  have hls : limsup deviationENat atTop ≤ 1 :=
+    limsup_le_of_le ⟨⊥, eventually_of_forall (fun _ => bot_le)⟩ hev
+  -- But pomerance_1979 says limsup ≥ 2, contradiction: 2 ≤ 1
+  exact absurd (pomerance_1979.trans hls) (by norm_num)
 
 /- ## Part VI: The Main Conjecture -/
 
