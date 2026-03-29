@@ -45,6 +45,7 @@ import Mathlib.Analysis.Fourier.AddCircle
 import Mathlib.Analysis.Fourier.FourierTransform
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Topology.Algebra.InfiniteSum.NatInt
 import Mathlib.Tactic
 
 noncomputable section
@@ -133,10 +134,34 @@ theorem wider_strip_faster_decay (δ₁ δ₂ : ℝ) (hδ₁ : 0 < δ₁) (hδ�
 /-- Exponential decay is summable (the series ∑ e^{-c|n|} converges for c > 0). -/
 theorem exp_decay_summable (δ : ℝ) (hδ : 0 < δ) :
     Summable (fun n : ℤ => Real.exp (-(2 * Real.pi * δ * |↑n|) / T)) := by
-  have hc : 0 < 2 * Real.pi * δ / T := by positivity
-  -- e^{-c|n|} is summable over ℤ when c > 0
-  -- Split into n ≥ 0 and n < 0, each is a geometric series with ratio e^{-c} < 1
-  sorry -- Geometric series summability; requires Summable.of_nat_of_sum_le or similar
+  -- Decompose ℤ-summability into positive and negative ℕ-parts
+  rw [summable_int_iff_summable_nat_and_neg]
+  -- Set c = 2πδ/T > 0, so exp(-c) ∈ (0,1) and the geometric series ∑ exp(-c)^n converges
+  set c := 2 * Real.pi * δ / T with hc_def
+  have hc_pos : 0 < c := by positivity
+  -- exp(-c * n) = (exp(-c))^n, a geometric series with ratio exp(-c) < 1
+  have hsumm : Summable (fun n : ℕ => Real.exp (-c * ↑n)) := by
+    have heq : ∀ n : ℕ, Real.exp (-c * ↑n) = Real.exp (-c) ^ n := fun n => by
+      rw [show -c * (↑n : ℝ) = ↑n * (-c) from by ring, Real.exp_nat_mul]
+    simp_rw [heq]
+    exact summable_geometric_of_lt_one (le_of_lt (Real.exp_pos _))
+      (Real.exp_lt_one_iff.mpr (by linarith))
+  -- Both halves reduce to exp(-c * n) after simplifying absolute values
+  refine ⟨?_, ?_⟩
+  · -- Positive half: f(↑n) for n : ℕ, where |↑(↑n)| = n
+    have heq : (fun n : ℕ => Real.exp (-(2 * Real.pi * δ * |(↑(↑n : ℤ) : ℝ)|) / T)) =
+               (fun n : ℕ => Real.exp (-c * ↑n)) := by
+      ext n; congr 1
+      rw [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n)]
+      unfold_let c; ring
+    rw [heq]; exact hsumm
+  · -- Negative half: f(-↑n) for n : ℕ, where |↑(-↑n)| = n
+    have heq : (fun n : ℕ => Real.exp (-(2 * Real.pi * δ * |(↑(-↑n : ℤ) : ℝ)|) / T)) =
+               (fun n : ℕ => Real.exp (-c * ↑n)) := by
+      ext n; congr 1
+      rw [Int.cast_neg, Int.cast_natCast, abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]
+      unfold_let c; ring
+    rw [heq]; exact hsumm
 
 /-- Exponential decay of Fourier coefficients implies absolute convergence
     of the Fourier series (a much stronger property than L² convergence). -/
@@ -145,7 +170,22 @@ theorem exp_decay_abs_convergence (f : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 
     (hdecay : ∀ n : ℤ, n ≠ 0 →
       ‖fourierCoeff f n‖ ≤ M * Real.exp (-(2 * Real.pi * δ * |↑n|) / T)) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖) := by
-  sorry -- Follows from hdecay and exp_decay_summable; comparison test
+  -- Compare with (M + ‖ĉ₀‖) * exp(-c|n|), which handles n = 0 automatically
+  set K := M + ‖fourierCoeff f 0‖
+  have hK : 0 < K := by positivity
+  apply Summable.of_nonneg_of_le (fun n => norm_nonneg _) _ ((exp_decay_summable δ hδ).mul_left K)
+  intro n
+  by_cases hn : n = 0
+  · -- n = 0: ‖ĉ₀‖ ≤ K * exp(0) = K = M + ‖ĉ₀‖
+    subst hn
+    simp only [Int.cast_zero, abs_zero, mul_zero, neg_zero, zero_div, Real.exp_zero, mul_one]
+    linarith [hM.le]
+  · -- n ≠ 0: ‖ĉ_n‖ ≤ M * exp(-c|n|) ≤ K * exp(-c|n|) since M ≤ K
+    calc ‖fourierCoeff f n‖
+        ≤ M * Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := hdecay n hn
+      _ ≤ K * Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := by
+          apply mul_le_mul_of_nonneg_right _ (le_of_lt (Real.exp_pos _))
+          linarith [norm_nonneg (fourierCoeff f 0)]
 
 -- ============================================================================
 -- § 4. SHARPNESS OF THE EXPONENTIAL RATE
