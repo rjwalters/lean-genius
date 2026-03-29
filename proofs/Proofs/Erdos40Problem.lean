@@ -129,12 +129,46 @@ axiom sidon_density_bound :
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
       (countingFn A N : ℝ) ≤ (1 + ε) * Real.sqrt N
 
-/-- For B₂[g] sets (r_A(n) ≤ g for all n), the density is
-    bounded by |A ∩ {1,...,N}| ≤ c·N^{1/2} for a constant
-    depending on g. -/
-axiom b2g_density_bound (g : ℕ) :
+/-- Counting inequality for B₂[g] density: k² ≤ 2g(2N-1) where k = |A ∩ {1,...,N}|.
+
+    The k elements form k(k+1)/2 ≥ k²/2 ordered pairs (a,b) with a ≤ b (by swap
+    symmetry: the upper-triangular part of S×S has at least half the elements).
+    Each pair has sum a+b ∈ {2,...,2N} and contributes to repCount(A, a+b).
+    Since repCount ≤ g and there are 2N-1 possible sums: k²/2 ≤ g(2N-1). -/
+private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (_ : N ≥ 1)
+    (hrep : ∀ n : ℕ, repCount A n ≤ g) :
+    countingFn A N * countingFn A N ≤ 2 * g * (2 * N - 1) := by
+  sorry -- Needs: Finset pair counting via swap injection + fiber decomposition by sum
+
+/-- **PROVED** (modulo counting lemma): For B₂[g] sets (r_A(n) ≤ g for all n),
+    the counting function satisfies |A ∩ {1,...,N}| ≤ 2(g+1)·√N.
+
+    Uses: k² ≤ 2g(2N-1) ≤ 4gN ≤ 4(g+1)²N, so k ≤ 2(g+1)·√N. -/
+theorem b2g_density_bound (g : ℕ) :
   ∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, (∀ n : ℕ, repCount A n ≤ g) →
-    ∀ N : ℕ, N ≥ 1 → (countingFn A N : ℝ) ≤ c * Real.sqrt N
+    ∀ N : ℕ, N ≥ 1 → (countingFn A N : ℝ) ≤ c * Real.sqrt N := by
+  refine ⟨2 * (↑g + 1), by positivity, fun A hrep N hN => ?_⟩
+  set k := countingFn A N
+  -- Step 1: k² ≤ 2g(2N-1) from counting lemma
+  have h_count := b2g_counting_sq_bound A g N hN hrep
+  -- Step 2: k² ≤ 4(g+1)²N
+  have h_ksq : k * k ≤ 4 * (g + 1) ^ 2 * N := by
+    calc k * k ≤ 2 * g * (2 * N - 1) := h_count
+      _ ≤ 2 * g * (2 * N) := by apply Nat.mul_le_mul_left; exact Nat.sub_le _ _
+      _ = 4 * g * N := by ring
+      _ ≤ 4 * (g + 1) ^ 2 * N := by nlinarith
+  -- Step 3: (k:ℝ)² ≤ (2(g+1))²·N
+  have h_real : (↑k : ℝ) ^ 2 ≤ (2 * ((↑g : ℝ) + 1)) ^ 2 * ↑N := by
+    have : (k : ℝ) * k ≤ 4 * ((↑g : ℝ) + 1) ^ 2 * ↑N := by exact_mod_cast h_ksq
+    nlinarith
+  -- Step 4: k ≤ 2(g+1)·√N via square root monotonicity
+  calc (↑k : ℝ)
+      = Real.sqrt ((↑k : ℝ) ^ 2) := (Real.sqrt_sq (Nat.cast_nonneg _)).symm
+    _ ≤ Real.sqrt ((2 * ((↑g : ℝ) + 1)) ^ 2 * ↑N) := Real.sqrt_le_sqrt h_real
+    _ = Real.sqrt ((2 * ((↑g : ℝ) + 1)) ^ 2) * Real.sqrt ↑N :=
+        Real.sqrt_mul (by positivity) _
+    _ = 2 * ((↑g : ℝ) + 1) * Real.sqrt ↑N := by
+        rw [Real.sqrt_sq (by positivity : (0 : ℝ) ≤ 2 * ((↑g : ℝ) + 1))]
 
 /- ## Proved Properties -/
 
