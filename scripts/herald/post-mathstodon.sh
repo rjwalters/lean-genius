@@ -345,40 +345,31 @@ fi
 # Load token (only needed for actual posting)
 load_token
 
-# Post via Mastodon API
-# Use jq for proper JSON escaping of the status text
-JSON_PAYLOAD=$(jq -n --arg status "$TEXT" '{"status": $status, "visibility": "public"}')
-
-RESPONSE=$(curl -s -w "\n%{http_code}" \
-    -X POST \
-    -H "Authorization: Bearer $MATHSTODON_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$JSON_PAYLOAD" \
-    "$MASTODON_INSTANCE/api/v1/statuses")
-
-HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-BODY=$(echo "$RESPONSE" | sed '$d')
-
-if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
-    POST_URL=$(echo "$BODY" | jq -r '.url // empty')
-    POST_ID=$(echo "$BODY" | jq -r '.id // empty')
-    echo -e "${GREEN}Posted successfully ($CHAR_COUNT chars)${NC}"
-    if [[ -n "$POST_URL" ]]; then
-        echo "$POST_URL"
-    fi
-    echo "$POST_ID"
-
-    # Update state file
-    if [[ -n "$SUBJECT" ]]; then
-        update_state "$SUBJECT" "$TEXT" "${POST_URL:-""}" "$ARC"
-        echo -e "${BLUE}State updated: subject='$SUBJECT'${ARC:+", arc='$ARC'"}${NC}"
-    else
-        # No subject: just increment daily count
-        increment_daily_count
-        echo -e "${YELLOW}Warning: No --subject provided. Post tracked in daily count but not in dedup history.${NC}"
-    fi
-else
-    ERROR_MSG=$(echo "$BODY" | jq -r '.error // "Unknown error"' 2>/dev/null || echo "$BODY")
-    echo -e "${RED}Error posting (HTTP $HTTP_CODE): $ERROR_MSG${NC}" >&2
+# Post via TypeScript Mastodon client (uses masto.js under the hood)
+# The --no-state flag tells the TS client to skip state updates — we handle state here.
+TS_CLIENT="$REPO_ROOT/scripts/herald/mastodon-client.ts"
+TS_OUTPUT=$(MATHSTODON_TOKEN="$MATHSTODON_TOKEN" npx tsx "$TS_CLIENT" post --no-state "$TEXT" 2>&1) || {
+    echo -e "${RED}Error posting via mastodon-client.ts:${NC}" >&2
+    echo "$TS_OUTPUT" >&2
     exit 1
+}
+
+# Parse output: line 1 = "Posted successfully (N chars)", line 2 = URL (optional), last line = ID
+POST_URL=$(echo "$TS_OUTPUT" | grep -E '^https://' | head -1)
+POST_ID=$(echo "$TS_OUTPUT" | tail -1)
+
+echo -e "${GREEN}Posted successfully ($CHAR_COUNT chars)${NC}"
+if [[ -n "$POST_URL" ]]; then
+    echo "$POST_URL"
+fi
+echo "$POST_ID"
+
+# Update state file
+if [[ -n "$SUBJECT" ]]; then
+    update_state "$SUBJECT" "$TEXT" "${POST_URL:-""}" "$ARC"
+    echo -e "${BLUE}State updated: subject='$SUBJECT'${ARC:+", arc='$ARC'"}${NC}"
+else
+    # No subject: just increment daily count
+    increment_daily_count
+    echo -e "${YELLOW}Warning: No --subject provided. Post tracked in daily count but not in dedup history.${NC}"
 fi
