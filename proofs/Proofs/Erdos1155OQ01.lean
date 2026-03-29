@@ -2,104 +2,29 @@
 Erdős Problem #1155 OQ-01: Triangle Removal Process — Exact Asymptotics
 
 Extension of Erdos1155Problem.lean focusing on:
-1. Proving the parent file's sorries (triangleFree_iff_cliqueFree3, complete_has_triangles)
-2. Formalizing the gap between BFL n^{3/2+o(1)} and the conjectured Θ(n^{3/2})
-3. Proving structural lemmas about the asymptotic characterization
+1. Formalizing the gap between BFL n^{3/2+o(1)} and the conjectured Θ(n^{3/2})
+2. Proving structural lemmas about the asymptotic characterization
+3. Hierarchy of bounds: Conjecture ⟹ BFL ⟹ Grable
+4. Ratio characterization and sufficient conditions
 
 The main open question: Does E[f(n)] ≍ n^{3/2} hold with explicit constants?
 BFL (2015) showed f(n) = n^{3/2+o(1)} a.s., but the conjecture asks for
 c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} with fixed constants c₁, c₂ > 0.
+
+Axioms: 0 (all imported from Erdos1155Problem.lean)
+Sorries: 0
 -/
 
-import Mathlib
+import Proofs.Erdos1155Problem
 
 open Filter SimpleGraph Finset
 
--- ============================================================================
--- § 1. Triangle definitions and equivalences
--- ============================================================================
+-- Triangle definitions and equivalences are imported from Erdos1155Problem.lean
+-- (IsTriangle, IsTriangleFree', triangleFree_iff_cliqueFree3, complete_has_triangles)
 
-/-- A triangle in a graph: three distinct mutually adjacent vertices. -/
-def IsTriangle' {V : Type*} (G : SimpleGraph V) (a b c : V) : Prop :=
-  a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
-
-/-- A graph is triangle-free if it contains no triangles. -/
-def IsTriangleFree {V : Type*} (G : SimpleGraph V) : Prop :=
-  ∀ a b c : V, ¬IsTriangle' G a b c
-
-/-- Triangle-free ↔ CliqueFree 3 for simple graphs.
-    Forward: if no pointwise triangle, then no 3-element clique.
-    Backward: if no 3-clique, then no pointwise triangle. -/
-theorem triangleFree_iff_cliqueFree3 {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) : IsTriangleFree G ↔ G.CliqueFree 3 := by
-  constructor
-  · -- IsTriangleFree → CliqueFree 3
-    intro htf s hs
-    obtain ⟨hclique, hcard⟩ := hs
-    rw [Finset.card_eq_three] at hcard
-    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := hcard
-    have mem_a : a ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
-    have mem_b : b ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
-    have mem_c : c ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
-    exact htf a b c ⟨hab, hbc, hac,
-      hclique mem_a mem_b hab,
-      hclique mem_b mem_c hbc,
-      hclique mem_a mem_c hac⟩
-  · -- CliqueFree 3 → IsTriangleFree
-    intro hcf a b c ⟨hab, hbc, hac, hadj_ab, hadj_bc, hadj_ac⟩
-    apply hcf {a, b, c}
-    refine ⟨?_, by rw [Finset.card_eq_three]; exact ⟨a, b, c, hab, hac, hbc, rfl⟩⟩
-    intro x hx y hy hxy
-    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
-               Set.mem_singleton_iff] at hx hy
-    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
-      first | exact absurd rfl hxy | exact hadj_ab | exact hadj_ac |
-              exact hadj_bc | exact G.symm hadj_ab | exact G.symm hadj_ac |
-              exact G.symm hadj_bc
-
-/-- The complete graph on n ≥ 3 vertices contains a triangle. -/
-theorem complete_has_triangles' {n : ℕ} (hn : 3 ≤ n) :
-    ¬IsTriangleFree (⊤ : SimpleGraph (Fin n)) := by
-  intro h
-  let v0 : Fin n := ⟨0, by omega⟩
-  let v1 : Fin n := ⟨1, by omega⟩
-  let v2 : Fin n := ⟨2, by omega⟩
-  have h01 : v0 ≠ v1 := by intro heq; simp [v0, v1] at heq
-  have h12 : v1 ≠ v2 := by intro heq; simp [v1, v2] at heq
-  have h02 : v0 ≠ v2 := by intro heq; simp [v0, v2] at heq
-  have adj01 : (⊤ : SimpleGraph (Fin n)).Adj v0 v1 := by
-    simp only [SimpleGraph.top_adj]; exact h01
-  have adj12 : (⊤ : SimpleGraph (Fin n)).Adj v1 v2 := by
-    simp only [SimpleGraph.top_adj]; exact h12
-  have adj02 : (⊤ : SimpleGraph (Fin n)).Adj v0 v2 := by
-    simp only [SimpleGraph.top_adj]; exact h02
-  exact h v0 v1 v2 ⟨h01, h12, h02, adj01, adj12, adj02⟩
-
--- ============================================================================
--- § 2. Asymptotic infrastructure
--- ============================================================================
-
--- Import the axiomatized function from the parent file
-axiom triangleRemovalEdges : ℕ → ℝ
-axiom triangleRemovalEdges_le_complete (n : ℕ) :
-    triangleRemovalEdges n ≤ (n * (n - 1) : ℝ) / 2
-
-axiom bfl_upper_bound :
-    ∀ ε : ℝ, 0 < ε →
-      ∀ᶠ (n : ℕ) in atTop,
-        triangleRemovalEdges n ≤ (n : ℝ) ^ ((3 : ℝ) / 2 + ε)
-
-axiom bfl_lower_bound :
-    ∀ ε : ℝ, 0 < ε →
-      ∀ᶠ (n : ℕ) in atTop,
-        (n : ℝ) ^ ((3 : ℝ) / 2 - ε) ≤ triangleRemovalEdges n
-
-/-- The Erdős conjecture: f(n) = Θ(n^{3/2}) with explicit constants. -/
-def erdos_1155_conjecture : Prop :=
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-    ∀ᶠ (n : ℕ) in atTop,
-      c₁ * (n : ℝ) ^ ((3 : ℝ) / 2) ≤ triangleRemovalEdges n ∧
-      triangleRemovalEdges n ≤ c₂ * (n : ℝ) ^ ((3 : ℝ) / 2)
+-- Axiomatized function and known results imported from Erdos1155Problem.lean:
+-- triangleRemovalEdges, triangleRemovalEdges_nonneg, triangleRemovalEdges_le_complete,
+-- bfl_upper_bound, bfl_lower_bound, triangleRemoval_mantel_bound, erdos_1155_conjecture
 
 -- ============================================================================
 -- § 3. OQ-01: Gap analysis — what separates BFL from the full conjecture
@@ -377,10 +302,7 @@ theorem bfl_eventually_exceeds_power :
 -- ⌊n²/4⌋ edges. Since our axiomatized f(n) counts edges in the terminal
 -- (triangle-free) graph, this gives a trivial upper bound.
 
-/-- Mantel's bound applied to the triangle removal process:
-    the terminal graph is triangle-free, so f(n) ≤ n²/4. -/
-axiom triangleRemoval_mantel_bound (n : ℕ) :
-    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4
+-- triangleRemoval_mantel_bound imported from Erdos1155Problem.lean
 
 /-- The Mantel bound holds for all n (not just eventually). -/
 theorem mantel_bound_forall :
