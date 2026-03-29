@@ -182,20 +182,36 @@ theorem erdos_537_disproved : ¬Erdos537Conjecture := by
   intro hConj
   -- Get the set with positive density but no three products
   obtain ⟨ε, hε, hDense⟩ := ruzsa_set_positive_density
-  obtain ⟨N₀, hLarge⟩ := ruzsa_set_large_intersection (ε / 2) (by linarith)
-  -- The conjecture says we should find three products for large enough N
-  obtain ⟨N₁, hConj'⟩ := hConj (ε / 2) (by linarith)
-  -- For N = max(N₀, N₁) + 1, we have a contradiction
-  let N := max N₀ N₁ + 1
+  -- Use ε for the large intersection: A.card ≥ ε * (N/2)
+  obtain ⟨N₀, hLarge⟩ := ruzsa_set_large_intersection ε hε
+  -- Use ε/3 for the conjecture: need A.card ≥ (ε/3) * N
+  -- Since ε * (N/2) ≥ (ε/3) * N for N ≥ 3, this works
+  obtain ⟨N₁, hConj'⟩ := hConj (ε / 3) (by linarith)
+  -- Pick N large enough for all bounds
+  let N := max N₀ (max N₁ 3) + 1
   have hN₀ : N ≥ N₀ := by omega
   have hN₁ : N ≥ N₁ := by omega
   have hN_pos : N > 0 := by omega
+  have hN3 : N ≥ 3 := by omega
   -- Ruzsa's set is dense enough
   have hA := hLarge N hN₀
   -- But has no three products
   have hNoProducts := ruzsa_no_three_products N hN_pos
-  -- Contradiction with the conjecture
-  sorry -- The formal contradiction requires careful bookkeeping
+  -- Build IsDenseSubset: A ⊆ Icc 1 N and A.card ≥ (ε/3) * N
+  have hSub : (Finset.Ioc (N / 2) N).filter IsLacunarySquarefree ⊆ Finset.Icc 1 N := by
+    intro x hx
+    simp only [Finset.mem_filter, Finset.mem_Ioc] at hx
+    simp only [Finset.mem_Icc]
+    omega
+  have hN2_bound : 3 * (N / 2) ≥ N := by omega
+  have hCard : ((Finset.Ioc (N / 2) N).filter IsLacunarySquarefree).card ≥ ε / 3 * ↑N := by
+    have h1 : (3 : ℝ) * ↑(N / 2) ≥ ↑N := by exact_mod_cast hN2_bound
+    have h2 : (↑(N / 2) : ℝ) ≥ ↑N / 3 := by linarith
+    calc ((Finset.Ioc (N / 2) N).filter IsLacunarySquarefree).card
+          ≥ ε * ↑(N / 2) := hA
+      _ ≥ ε * (↑N / 3) := by nlinarith
+      _ = ε / 3 * ↑N := by ring
+  exact hNoProducts (hConj' N hN₁ _ ⟨hSub, hCard⟩)
 
 /-
 ## Part VI: Understanding Ruzsa's Construction
