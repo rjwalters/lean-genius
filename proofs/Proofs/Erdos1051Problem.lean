@@ -99,8 +99,9 @@ under the same growth condition. -/
 noncomputable def simpleReciprocalSeries (a : ℕ → ℤ) : ℝ :=
   ∑' n : ℕ, (1 : ℝ) / (a n : ℝ)
 
-/-- Erdős also asked about Σ 1/aₙ under similar growth conditions. -/
-axiom simple_series_question :
+/-- Erdős also asked about Σ 1/aₙ under similar growth conditions.
+    This is an OPEN CONJECTURE (not proved). -/
+def SimpleSeriesConjecture : Prop :=
     ∀ a : ℕ → ℤ, StrictMono a → GrowthCondition a →
       Irrational (simpleReciprocalSeries a)
 
@@ -110,3 +111,56 @@ the growth condition and Σ 1/(aₙ · aₙ₊₁) is known to be irrational
 axiom sylvester_fibonacci_example :
     ∃ a : ℕ → ℤ, StrictMono a ∧ GrowthCondition a ∧
       Irrational (erdosSeries a)
+
+/-
+## Section VII: Telescoping and Partial Fraction Identity
+-/
+
+/-- **Partial fraction decomposition**: 1/(aₙ · aₙ₊₁) = 1/(aₙ₊₁ - aₙ) · (1/aₙ - 1/aₙ₊₁)
+    when aₙ ≠ aₙ₊₁. This is the telescoping identity. -/
+theorem partial_fraction {x y : ℝ} (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x ≠ y) :
+    1 / (x * y) = (1 / (y - x)) * (1 / x - 1 / y) := by
+  field_simp
+  ring
+
+/-- **Individual terms are positive** for positive sequences. -/
+theorem term_pos {a : ℕ → ℤ} (h_pos : ∀ n, a n > 0) (n : ℕ) :
+    (0 : ℝ) < 1 / ((a n : ℝ) * (a (n + 1) : ℝ)) := by
+  apply div_pos one_pos
+  exact mul_pos (Int.cast_pos.mpr (h_pos n)) (Int.cast_pos.mpr (h_pos (n + 1)))
+
+/-- **Monotonicity implies positive terms**: If the sequence is strictly
+    increasing and starts positive, all terms are positive. -/
+theorem strict_mono_pos (a : ℕ → ℤ) (h_mono : StrictMono a) (h_pos : a 0 > 0) :
+    ∀ n, a n > 0 := by
+  intro n
+  induction n with
+  | zero => exact h_pos
+  | succ k ih => exact lt_trans ih (h_mono (Nat.lt_succ_of_le le_rfl))
+
+/-- **Upper bound on terms**: For a strictly increasing positive integer
+    sequence, 1/(aₙ · aₙ₊₁) ≤ 1/(aₙ)² since aₙ₊₁ > aₙ. -/
+theorem term_le_reciprocal_sq {a : ℕ → ℤ} (h_mono : StrictMono a)
+    (h_pos : ∀ n, a n > 0) (n : ℕ) :
+    1 / ((a n : ℝ) * (a (n + 1) : ℝ)) ≤ 1 / ((a n : ℝ) * (a n : ℝ)) := by
+  apply div_le_div_of_nonneg_left one_pos
+  · exact mul_pos (Int.cast_pos.mpr (h_pos n)) (Int.cast_pos.mpr (h_pos n))
+  · apply mul_le_mul_of_nonneg_left
+    · exact Int.cast_le.mpr (le_of_lt (h_mono (Nat.lt_succ_of_le le_rfl)))
+    · exact le_of_lt (Int.cast_pos.mpr (h_pos n))
+
+/-- **Rapid growth implies geometric decay**: If aₙ₊₁ ≥ 2·aₙ for all n
+    (exponential growth), then aₙ ≥ a₀ · 2ⁿ. -/
+theorem exponential_growth_bound {a : ℕ → ℤ}
+    (h_double : ∀ n, a (n + 1) ≥ 2 * a n) (h_pos : a 0 > 0) :
+    ∀ n, (a n : ℝ) ≥ (a 0 : ℝ) * 2 ^ n := by
+  intro n
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    have := h_double k
+    push_cast at this ⊢
+    calc (a (k + 1) : ℝ)
+        ≥ 2 * (a k : ℝ) := by exact_mod_cast this
+      _ ≥ 2 * ((a 0 : ℝ) * 2 ^ k) := by linarith
+      _ = (a 0 : ℝ) * 2 ^ (k + 1) := by ring
