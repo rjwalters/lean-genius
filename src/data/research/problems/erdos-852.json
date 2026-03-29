@@ -29,17 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: Eliminated 4 axioms (7→3) by defining maxDistinctRun via sSup. Remaining axioms are deep results (Brun sieve) and open conjectures.",
     "builtItems": [
       "nthPrime defined as Nat.nth Nat.Prime (was axiom)",
       "nthPrime_prime proved from Nat.nth_mem_of_infinite",
       "nthPrime_strictMono proved from Nat.nth_strictMono",
       "nthPrime_initial proved via Nat.nth_prime_zero_eq_two/three",
-      "distinct_run_bounded_by_max_gap proved via Finset.card_image_of_injOn pigeonhole"
+      "distinct_run_bounded_by_max_gap proved via Finset.card_image_of_injOn pigeonhole",
+      "validRunLengths definition (achievable distinct run lengths bounded by x)",
+      "nat_sSup_mem lemma (sSup membership for ℕ)",
+      "maxDistinctRun defined as sSup(validRunLengths x)",
+      "maxDistinctRun_witness proved from nat_sSup_mem",
+      "maxDistinctRun_optimal proved from le_csSup",
+      "maxDistinctRun_le_x proved from csSup_le"
     ],
     "insights": [
       "Nat.nth Nat.Prime is the standard Mathlib way to enumerate primes",
-      "Pigeonhole for distinct runs: k distinct elements in {1,...,M} implies k ≤ M via Finset.card_le_card"
+      "Pigeonhole for distinct runs: k distinct elements in {1,...,M} implies k ≤ M via Finset.card_le_card",
+      "Defined maxDistinctRun as sSup of validRunLengths (set of achievable distinct run lengths bounded by x)",
+      "Proved nat_sSup_mem: in ℕ, sSup of nonempty bounded-above set is a member (by contradiction: if not, sSup-1 is a smaller upper bound)",
+      "Eliminated 4 axioms (maxDistinctRun, witness, optimal, le_x) by defining h(x) via sSup and proving all properties"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -66,10 +75,10 @@
     {
       "path": "Proofs/Erdos852Problem.lean",
       "filename": "Erdos852Problem.lean",
-      "lineCount": 198,
+      "lineCount": 248,
       "theoremCount": 17,
-      "axiomCount": 7,
-      "defCount": 3,
+      "axiomCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos852Problem.lean"
