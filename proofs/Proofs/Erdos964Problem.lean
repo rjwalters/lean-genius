@@ -60,7 +60,7 @@ theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
 
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
     tau (p ^ k) = k + 1 := by
-  sorry
+  simp [tau, Nat.divisors_prime_pow hp, Finset.card_map]
 
 /--
 **Multiplicativity:**
@@ -68,7 +68,7 @@ theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
 -/
 theorem tau_multiplicative (m n : ℕ) (h : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
-  sorry
+  simp only [tau, h.divisors_mul, Finset.card_product]
 
 /-
 ## Part II: Ratios of Consecutive Values
@@ -123,12 +123,13 @@ axiom eberhard_theorem :
 theorem rationals_in_ratio_set (p q : ℕ) (hp : p ≥ 1) (hq : q ≥ 1) :
     (p : ℝ) / q ∈ ratioSet := by
   obtain ⟨n, hn, heq⟩ := eberhard_theorem p q hp hq
-  use n
-  simp [ratioSet, divisorRatio]
-  constructor
-  · exact hn
-  · -- Need to show divisorRatio n = p/q
-    sorry
+  refine ⟨n, hn, ?_⟩
+  have htau_ne : tau n ≠ 0 := by
+    unfold tau
+    exact ne_of_gt (Finset.card_pos.mpr ⟨1, Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩⟩)
+  simp only [divisorRatio, htau_ne, ne_eq, not_false_eq_true, dite_true]
+  rw [div_eq_div_iff (Nat.cast_ne_zero.mpr htau_ne) (Nat.cast_ne_zero.mpr (by omega : q ≠ 0))]
+  exact_mod_cast heq.trans (mul_comm (tau n) p)
 
 /--
 **Rationals are dense in (0, ∞):**
@@ -136,8 +137,39 @@ theorem rationals_in_ratio_set (p q : ℕ) (hp : p ≥ 1) (hq : q ≥ 1) :
 theorem rationals_dense_in_positives :
     isDenseInPositives {r : ℝ | ∃ p q : ℕ, p ≥ 1 ∧ q ≥ 1 ∧ r = (p : ℝ) / q} := by
   intro r hr ε hε
-  -- Standard density argument
-  sorry
+  -- Find q large enough that 1/q < ε, and p = ⌈r*q⌉
+  obtain ⟨q, hq⟩ := exists_nat_gt (max (1 / ε) 1)
+  have hq_pos : (0 : ℝ) < ↑q := by
+    calc (0 : ℝ) < 1 := one_pos
+      _ ≤ max (1 / ε) 1 := le_max_right _ _
+      _ < ↑q := hq
+  have hq_ge : q ≥ 1 := by
+    have : q ≠ 0 := by exact_mod_cast hq_pos.ne'
+    omega
+  set p := Nat.ceil (r * ↑q)
+  have hrq_pos : r * ↑q > 0 := mul_pos hr hq_pos
+  have hp_ge : p ≥ 1 := by
+    have := Nat.ceil_pos.mpr hrq_pos
+    omega
+  -- The approximation ⌈r*q⌉/q is within 1/q of r
+  have hceil_ge : r * ↑q ≤ ↑p := Nat.le_ceil _
+  have hceil_lt : (↑p : ℝ) < r * ↑q + 1 := Nat.ceil_lt_add_one (le_of_lt hrq_pos)
+  -- 1/q < ε since q > 1/ε
+  have h_inv_lt : 1 / (↑q : ℝ) < ε := by
+    rw [div_lt_iff hq_pos, mul_comm ε ↑q]
+    exact (div_lt_iff hε).mp (lt_of_le_of_lt (le_max_left _ _) hq)
+  use ↑p / ↑q
+  refine ⟨⟨p, q, hp_ge, hq_ge, rfl⟩, ?_⟩
+  -- |p/q - r| = p/q - r (since p/q ≥ r) and p/q - r < 1/q < ε
+  have h_nonneg : (↑p : ℝ) / ↑q - r ≥ 0 := by
+    rw [sub_nonneg, le_div_iff hq_pos]
+    exact hceil_ge
+  rw [abs_of_nonneg h_nonneg]
+  calc (↑p : ℝ) / ↑q - r
+      < (r * ↑q + 1) / ↑q - r := by
+        exact sub_lt_sub_right ((div_lt_div_right hq_pos).mpr hceil_lt) r
+    _ = 1 / ↑q := by field_simp; ring
+    _ < ε := h_inv_lt
 
 /--
 **Main theorem: The conjecture is TRUE**
@@ -252,11 +284,13 @@ def AllRationalsAppear : Prop :=
 theorem eberhard_strong : AllRationalsAppear := by
   intro p q hp hq
   obtain ⟨n, hn, heq⟩ := eberhard_theorem p q hp hq
-  use n
-  constructor
-  · exact hn
-  · simp [divisorRatio]
-    sorry
+  refine ⟨n, hn, ?_⟩
+  have htau_ne : tau n ≠ 0 := by
+    unfold tau
+    exact ne_of_gt (Finset.card_pos.mpr ⟨1, Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩⟩)
+  simp only [divisorRatio, htau_ne, ne_eq, not_false_eq_true, dite_true]
+  rw [div_eq_div_iff (Nat.cast_ne_zero.mpr htau_ne) (Nat.cast_ne_zero.mpr (by omega : q ≠ 0))]
+  exact_mod_cast heq.trans (mul_comm (tau n) p)
 
 /--
 **Related: Problem #946:**
