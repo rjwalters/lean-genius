@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T17:01:06.709Z",
-    "iteration": 3,
-    "focus": "Fourier infrastructure for reprCount_fourier_expansion",
+    "iteration": 4,
+    "focus": "Factored Fourier proof: character_orthogonality added as modular step",
     "blockers": [],
     "nextAction": "Prove character orthogonality (ω≠1 via exp_eq_one_iff + geom sum) and subset product identity, then combine for full proof",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 Fourier infrastructure lemmas (ψ additivity, sum distribution). 1 sorry remains: reprCount_fourier_expansion needs character orthogonality + subset product.",
+    "progressSummary": "PROGRESS: Added character_orthogonality lemma (c=0 case proved, c≠0 is geom sum sorry). Factored Fourier expansion proof into modular steps.",
     "builtItems": [
       "Assessment: 6A all appropriate",
       "reprCount_le_pow: each element has ≤ 2^|A| representations",
@@ -40,7 +40,8 @@
       "ωp_pow_mod: ω^{a%p} = ω^a from ω^p = 1 (Erdos1179OQ01.lean)",
       "ψp_add: ψ(x+y) = ψ(x)·ψ(y) character property (Erdos1179OQ01.lean)",
       "ψp_neg_mul: ψ(-x)·ψ(x) = 1 (Erdos1179OQ01.lean)",
-      "ψp_sum: ψ(∑f) = ∏ψ(f_i) via induction (Erdos1179OQ01.lean)"
+      "ψp_sum: ψ(∑f) = ∏ψ(f_i) via induction (Erdos1179OQ01.lean)",
+      "character_orthogonality: ∑_j ψ(jc) = p·[c=0] stub with c=0 case proved (Erdos1179OQ01.lean:252)"
     ],
     "insights": [
       "5 axioms: gEps (opaque function) + 4 properties. main_asymptotic eliminated.",
@@ -49,10 +50,16 @@
       "Key step: log(log N)>0 for N≥3 proved using Real.exp_one_lt_d9 from Mathlib",
       "Case split on sign of f(N): if f≥0 then C*f < δ by limit; if f<0 then ratio-1 ≤ C*f < 0 ≤ δ",
       "OQ01 sorries are deep: Fourier character expansion + error bound assembly over ZMod p",
-      "reprCount_fourier_expansion proof path: need character orthogonality (∑_j ψ(jc) = p·[c=0] via geometric sum and bijection on ZMod p) + subset product identity (∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a))"
+      "reprCount_fourier_expansion proof path: need character orthogonality (∑_j ψ(jc) = p·[c=0] via geometric sum and bijection on ZMod p) + subset product identity (∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a))",
+      "character_orthogonality c≠0 case: need ψ(j*c)=ψ(c)^{val(j)} + ZMod-to-range sum conversion + geom_sum_eq + ψ(c)^p=1",
+      "Finset.prod_add may give subset product identity: ∏(f+g) = ∑_{S⊆A} ∏_S f · ∏_{A\\S} g — set g=1 for our case"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove character_orthogonality c≠0: convert ZMod sum to range sum, apply geom_sum_eq",
+      "Prove/find subset product identity: ∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a)",
+      "Combine in reprCount_fourier_expansion: expand product, exchange sums, apply orthogonality"
+    ],
     "markdown": "# Erdős #1179 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -71,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T17:01:06.709Z",
-  "lastUpdate": "2026-03-28T06:00:00Z",
+  "lastUpdate": "2026-03-29T23:30:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

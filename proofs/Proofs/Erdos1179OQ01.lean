@@ -243,6 +243,21 @@ private lemma ψp_sum {p : ℕ} [NeZero p] {ι : Type*} (s : Finset ι) (f : ι 
   | empty => simp [ψp_zero]
   | cons a s ha ih => rw [Finset.sum_cons, ψp_add, ih, Finset.prod_cons]
 
+/-- Character orthogonality on ℤ/pℤ:
+    ∑_j ψ(j·c) = p if c = 0, and 0 if c ≠ 0.
+    The c≠0 case uses the geometric sum formula with ψ(c)^p = 1. -/
+private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) :
+    ∑ j : ZMod p, ψp (j * c) = if c = 0 then ↑p else 0 := by
+  split
+  · -- c = 0: each term is ψ(0) = 1, sum = p
+    rename_i hc; subst hc
+    simp only [mul_zero, ψp_zero, Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul,
+      mul_one]
+  · -- c ≠ 0: geometric sum with ratio ψ(c) ≠ 1
+    -- ψ(j*c) = ψ(c)^{val(j)}, sum over j gives ∑_{k=0}^{p-1} ψ(c)^k
+    -- = (ψ(c)^p - 1)/(ψ(c) - 1) = 0 since ψ(c)^p = (ω^{val c})^p = 1
+    sorry
+
 /-- Fourier expansion of reprCount.
     reprCount A g = (1/p) ∑_j ω^{val(-j·g)} · ∏_{a∈A} (1 + ω^{val(j·a)})
 
