@@ -15,6 +15,9 @@
   L* is optimal code length, and L_S is Shannon code length.
 
   Claude Shannon (1948), David Huffman (1952)
+
+  Axioms: 1 (huffman_optimal — requires formalizing Huffman tree construction)
+  Sorries: 0
 -/
 import Mathlib
 
@@ -219,9 +222,89 @@ theorem shannon_code_length_bound {n : ℕ} {p : Fin n → ℝ}
     Proof: If pᵢ > pⱼ but lᵢ > lⱼ, swapping the codewords
     strictly decreases the average code length, contradicting optimality.
     (Exchange argument.) -/
-axiom optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
-    (hp : ∀ i, 0 ≤ p i) {l : Fin n → ℕ} (hopt : IsOptimal p l)
-    {i j : Fin n} (hij : p i > p j) : l i ≤ l j
+theorem optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
+    (_hp : ∀ i, 0 ≤ p i) {l : Fin n → ℕ} (hopt : IsOptimal p l)
+    {i j : Fin n} (hij : p i > p j) : l i ≤ l j := by
+  by_contra h
+  push_neg at h
+  -- h : l j < l i. Define l' by swapping lengths of i and j.
+  let l' : Fin n → ℕ := Function.update (Function.update l i (l j)) j (l i)
+  -- Step 1: l' is Kraft-valid (swapping doesn't change the Kraft sum)
+  have hkraft : KraftValid l' := by
+    unfold KraftValid
+    -- The Kraft sum ∑ 2^(-l'_k) = ∑ 2^(-l_k) because we only swapped two terms
+    have : ∑ k, ((2 : ℝ)⁻¹) ^ (l' k) = ∑ k, ((2 : ℝ)⁻¹) ^ (l k) := by
+      by_cases hij_eq : i = j
+      · -- If i = j, l' = l
+        subst hij_eq
+        congr 1; ext k
+        simp [l', Function.update_apply]
+      · -- i ≠ j: swap is a transposition of two Kraft terms
+        have hne : i ≠ j := hij_eq
+        have hl'_i : l' i = l j := by
+          simp [l', Function.update_apply, hne]
+        have hl'_j : l' j = l i := by
+          simp [l', Function.update_apply, Ne.symm hne]
+        have hl'_other : ∀ k, k ≠ i → k ≠ j → l' k = l k := by
+          intro k hki hkj
+          simp [l', Function.update_apply, hki, hkj]
+        calc ∑ k, ((2 : ℝ)⁻¹) ^ (l' k)
+            = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l' k) := rfl
+          _ = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l k) := by
+              apply Finset.sum_equiv (Equiv.swap i j) (fun _ _ => Finset.mem_univ _)
+              intro k _
+              simp only [Equiv.swap_apply_def]
+              split_ifs with h1 h2
+              · rw [h1, hl'_i]
+              · rw [h2, hl'_j]
+              · rw [hl'_other k (by intro heq; exact h1 heq) (by intro heq; exact h2 heq)]
+    rw [this]; exact hopt.1
+  -- Step 2: avgCodeLength p l' < avgCodeLength p l
+  have havg : avgCodeLength p l' < avgCodeLength p l := by
+    unfold avgCodeLength
+    by_cases hij_eq : i = j
+    · exfalso; subst hij_eq; exact lt_irrefl _ hij
+    · have hne : i ≠ j := hij_eq
+      have hl'_i : l' i = l j := by simp [l', Function.update_apply, hne]
+      have hl'_j : l' j = l i := by simp [l', Function.update_apply, Ne.symm hne]
+      have hl'_other : ∀ k, k ≠ i → k ≠ j → l' k = l k := by
+        intro k hki hkj; simp [l', Function.update_apply, hki, hkj]
+      -- The difference: ∑ p_k * l'_k - ∑ p_k * l_k
+      -- = p_i * (l_j - l_i) + p_j * (l_i - l_j) = (p_j - p_i) * (l_i - l_j)
+      -- Since p_i > p_j and l_i > l_j, this is negative.
+      suffices hsuff : ∑ k, p k * (l' k : ℝ) < ∑ k, p k * (l k : ℝ) from hsuff
+      have : ∑ k, p k * (l' k : ℝ) - ∑ k, p k * (l k : ℝ) =
+          p i * ((l j : ℝ) - l i) + p j * ((l i : ℝ) - l j) := by
+        rw [← Finset.sum_sub_distrib]
+        have hsplit : ∀ k, p k * (l' k : ℝ) - p k * (l k : ℝ) =
+            p k * ((l' k : ℝ) - l k) := fun k => by ring
+        simp_rw [hsplit]
+        have : ∀ k, k ≠ i → k ≠ j → (l' k : ℝ) - (l k : ℝ) = 0 := by
+          intro k hki hkj; rw [hl'_other k hki hkj]; simp
+        -- Sum reduces to just the i and j terms
+        rw [show ∑ k, p k * ((l' k : ℝ) - (l k : ℝ)) =
+            p i * ((l' i : ℝ) - l i) + p j * ((l' j : ℝ) - l j) +
+            ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) from by
+          rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+          congr 1
+          rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)]
+        ]
+        simp only [hl'_i, hl'_j]
+        have hrest : ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) = 0 := by
+          apply Finset.sum_eq_zero
+          intro k hk
+          rw [Finset.mem_erase] at hk
+          have hki : k ≠ i := hk.1
+          have hkj : k ≠ j := by
+            intro heq; exact (Finset.mem_erase.mp hk.2).1 heq
+          rw [this k hki hkj, mul_zero]
+        rw [hrest, add_zero]
+      linarith [show (p j - p i) * ((l i : ℝ) - l j) < 0 from by
+        apply mul_neg_of_neg_of_pos
+        · linarith
+        · exact sub_pos.mpr (Nat.cast_lt.mpr h)]
+  -- Step 3: This contradicts optimality
+  exact absurd (hopt.2 l' hkraft) (not_le.mpr havg)
 
 -- ============================================================
 -- Huffman Coding Optimality (Axiomatized)
