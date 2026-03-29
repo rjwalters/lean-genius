@@ -101,7 +101,7 @@ def StrongErdosPachQuestion : Prop :=
 
 /-- The largest distance in a point set. -/
 noncomputable def maxDistance (A : PointSet) : ℝ :=
-  (allDistances A).sup' (by sorry) id
+  if h : (allDistances A).Nonempty then (allDistances A).sup' h id else 0
 
 /-- Hopf-Pannwitz (1934): The largest distance occurs at most n times. -/
 axiom hopf_pannwitz (A : PointSet) (hA : A.card ≥ 2) :

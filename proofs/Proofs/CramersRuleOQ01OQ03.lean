@@ -116,11 +116,23 @@ theorem back_sub_formula (n : ℕ) :
 theorem gaussian_cubic_bound (n : ℕ) (hn : n ≥ 1) :
     gaussianOperations n ≤ n ^ 3 := by
   unfold gaussianOperations forwardElimOps backSubOps
-  induction n with
-  | zero => omega
-  | succ m =>
-    simp only [Finset.sum_range_succ]
-    sorry -- Requires detailed combinatorial bound
+  -- Each forward-elimination term (n-1-k)*(n-k) ≤ n*n since both factors ≤ n
+  have h1 : ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k) ≤ (n - 1) * (n * n) :=
+    calc ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k)
+        ≤ ∑ _k ∈ range (n - 1), (n * n) :=
+          Finset.sum_le_sum fun k _ => Nat.mul_le_mul (by omega) (by omega)
+      _ = (n - 1) * (n * n) := by
+          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  -- Each back-substitution term k < n, so k ≤ n
+  have h2 : ∑ k ∈ range n, k ≤ n * n :=
+    calc ∑ k ∈ range n, k
+        ≤ ∑ _k ∈ range n, n :=
+          Finset.sum_le_sum fun k hk => le_of_lt (Finset.mem_range.mp hk)
+      _ = n * n := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  -- Combine: (n-1)*n² + n² = n²*(n-1+1) = n³
+  calc ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k) + ∑ k ∈ range n, k
+      ≤ (n - 1) * (n * n) + n * n := add_le_add h1 h2
+    _ = n ^ 3 := by cases n with | zero => omega | succ m => ring
 
 /-
 ## Part IV: Factorial Dominates Polynomial
@@ -205,7 +217,7 @@ theorem single_component_formula (n : ℕ) :
 3. cramer_lower_bound: Cramer uses ≥ (n+1)(n!-1) ops
 4. factorial_ge_cube: n! ≥ n³ for n ≥ 6
 5. Exact operation counts: cramer_ops_{1,2,3,4}
-6. gaussian_cubic_bound: Gaussian is O(n³) (sorry)
+6. gaussian_cubic_bound: Gaussian is O(n³) (proved)
 7. cramer_exceeds_gaussian: Cramer > Gaussian for n ≥ 6 (sorry)
 -/
 

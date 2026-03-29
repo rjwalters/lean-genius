@@ -19,7 +19,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (exponential bounds). 5 sorries in analysis lemmas (liminf/limsup properties, Fekete's lemma, limit characterizations).",
     "erdosNumber": 117,
@@ -114,8 +114,13 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
     "namespace": "Erdos117OQ01",
     "lineCount": 195,
     "axiomCount": 3,

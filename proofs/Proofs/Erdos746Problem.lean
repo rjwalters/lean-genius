@@ -199,7 +199,9 @@ def thresholdCoincidence : Prop :=
 
 /-- Minimum degree for Hamiltonicity. -/
 def MinDegree (G : GraphOnN n) : ℕ :=
-  (Finset.univ : Finset (Fin n)).inf' (by sorry) (fun v => G.degree v)
+  if h : (Finset.univ : Finset (Fin n)).Nonempty then
+    (Finset.univ : Finset (Fin n)).inf' h (fun v => G.degree v)
+  else 0
 
 /-
 ## Part XII: Summary
