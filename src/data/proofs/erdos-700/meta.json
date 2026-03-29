@@ -19,9 +19,12 @@
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 257,
-    "assumptions": "3 axioms: f_upper_bound (needs Kummer's theorem), erdos_700_question2, erdos_700_question3 (both open problems). f_lower_bound PROVED via absorption identity + coprime cancellation. f_30 PROVED computationally. f_semiprime proved from bounds.",
+    "axiomCount": 2,
+    "sorryCount": 1,
+    "lineCount": 393,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "assumptions": "2 axioms: erdos_700_question2, erdos_700_question3 (both open problems). f_upper_bound PROVED via Kummer zero-carry argument (1 sorry in definition glue). f_lower_bound, f_semiprime, f_30, f_prime_square all fully proved.",
     "mathlib_version": "4.26.0"
   },
   "sections": [

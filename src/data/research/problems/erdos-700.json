@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-14T21:07:11.724Z",
     "iteration": 3,
-    "focus": "Axiom elimination: 9->6 axioms. Defined fBinom, proved f_prime_square, removed false Q1 axiom.",
+    "focus": "f_upper_bound axiom eliminated via Kummer. 1 sorry remains in definition glue.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: f_upper_bound axiom eliminated (3→2 axioms). Key lemma prime_not_dvd_choose_shift proved via Kummer zero-carry argument. Remaining sorry is infrastructure glue connecting to fBinom/largestPrimeFactor definitions.",
     "builtItems": [
       "Defined fBinom via Finset.min in Erdos700Problem.lean:41-46",
       "Proved minFac_prime_sq in Erdos700Problem.lean:51-57",
@@ -37,7 +37,11 @@
       "Proved minFac_mul_prime: minFac(pq) = p for primes p ≤ q",
       "Proved le_largestPrimeFactor: prime divisors ≤ largestPrimeFactor",
       "Converted f_semiprime from axiom to theorem (sandwich argument)",
-      "Axiom count: 6→5"
+      "Axiom count: 6→5",
+      "Proved prime_not_dvd_choose_shift via Kummer zero-carry argument (~80 lines)",
+      "Proved gcd_choose_prime_pow_eq: gcd(p^a*m, C(p^a*m, p^a)) = m",
+      "Proved choose_eq_mul_choose_pred: absorption identity C(n,k) = (n/k)*C(n-1,k-1)",
+      "Converted f_upper_bound from axiom to theorem (1 sorry in definition glue)"
     ],
     "insights": [
       "fBinom can be defined using Finset.min over Finset.Icc 2 (n/2), nonempty for n>=4",
@@ -45,7 +49,10 @@
       "f_prime_square follows from f_lower_bound + minFac_prime_sq",
       "erdos_700_question1 with True biconditional was mathematically FALSE - removed",
       "f(p^2) = p exactly, so strict inequality in question 2 is genuinely open",
-      "6 axioms remain: upper/lower bounds need Kummer, f_semiprime needs largestPrimeFactor, f_30 needs computation, q2/q3 open"
+      "6 axioms remain: upper/lower bounds need Kummer, f_semiprime needs largestPrimeFactor, f_30 needs computation, q2/q3 open",
+      "K = p^a-1 and N-K = p^a*(m-1) have non-overlapping base-p digit support, giving 0 carries",
+      "p does NOT need to not divide m for the non-divisibility lemma - works for all m >= 1",
+      "The sorry in f_upper_bound is pure infrastructure (connecting to Finset.sup/Finset.min definitions)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
