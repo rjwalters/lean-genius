@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T09:46:19.704Z",
-    "iteration": 6,
-    "focus": "Proved h_three fully (both directions). Only h_upper_bound sorry remains.",
+    "iteration": 7,
+    "focus": "All sorries eliminated. h_upper_bound proved via powersetCard 3 factoring.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4→1 sorry. h_three fully proved (le_antisymm: ≤1 via witness, ≥1 via Nat.sInf_eq_zero contrapositive). Extracted standard_triangle_card/gp lemmas. Only h_upper_bound sorry remains — needs factoring through S.powersetCard 3.",
+    "progressSummary": "COMPLETE: 4→0 sorries. h_three fully proved. h_upper_bound proved via tripleCircumradius on S.powersetCard 3, using circumradiusOf_eq_of_mem_triple for S₃ invariance. Only axiom: h_four_lower.",
     "builtItems": [
       "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction",
       "Proved circumradiusOf_perm12: swap first two args preserves circumradius (signed area negates, |area| preserved)",
@@ -41,7 +41,11 @@
       "Proved card=3 for {p_origin, p_e1, p_e2} via card_insert_of_not_mem",
       "Proved 1≤h(3) via Nat.sInf_eq_zero: if sInf=0, either 0∈set (3-point config has ≥1 radius, contradiction) or set=∅ (standard triangle exists, contradiction)",
       "Extracted standard_triangle_card, standard_triangle_gp as reusable private lemmas",
-      "Proved countDistinctRadii=1 via eq_singleton_iff_unique_mem: membership witness + uniqueness by permutation invariance over 6 valid orderings"
+      "Proved countDistinctRadii=1 via eq_singleton_iff_unique_mem: membership witness + uniqueness by permutation invariance over 6 valid orderings",
+      "Proved circumradiusOf_eq_of_mem_triple: general S₃ invariance for abstract 3-point sets (27-case analysis)",
+      "Defined tripleCircumradius via Multiset.toList extraction, proved allCircumradiiFinset ⊆ powersetCard 3 image",
+      "Proved countDistinctRadii_le_choose: card(allCircumradiiFinset) ≤ C(n,3) via image chain",
+      "Proved h_upper_bound: sInf bound via by_cases on Set.Nonempty + Nat.sInf_eq_zero"
     ],
     "insights": [
       "regular_polygon_not_general proved: 4 points on same circle are concyclic, contradicting GP",
@@ -57,11 +61,7 @@
       "Key difficulty in h_upper_bound: proving tripleCircumradius well-defined (toList permutation + S₃ invariance case analysis)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove h_upper_bound: factor allCircumradiiFinset through (S.powersetCard 3).image",
-      "Define tripleCircumradius using Multiset.toList extraction",
-      "Prove well-definedness via circumradiusOf S₃ invariance"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -78,18 +78,18 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:46:19.704Z",
-  "lastUpdate": "2026-03-29T12:00:00.000Z",
+  "lastUpdate": "2026-03-29T13:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos831Problem.lean",
       "filename": "Erdos831Problem.lean",
-      "lineCount": 612,
-      "theoremCount": 18,
+      "lineCount": 704,
+      "theoremCount": 23,
       "axiomCount": 1,
       "defCount": 11,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos831Problem.lean"
     }

@@ -186,16 +186,17 @@ noncomputable def h (n : ℕ) : ℕ :=
 With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
 -/
 theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  -- Proof strategy (now feasible with Finset-based countDistinctRadii):
-  -- 1. If {k | ∃ S, ...} = ∅, then sInf = 0 ≤ C(n,3)  ✓
-  -- 2. If non-empty, any k in the set has k = (allCircumradiiFinset S).card
-  --    Since allCircumradiiFinset is an image of ordered triples, and
-  --    circumradiusOf is permutation-invariant, the image has at most
-  --    C(n,3) elements (one per unordered triple).
-  -- 3. So sInf ≤ k ≤ C(n,3)
-  -- REQUIRES: circumradiusOf permutation invariance (swapping arguments
-  -- preserves side length product and absolute area)
-  sorry
+  -- sInf {k | ...} ≤ C(n,3): empty set gives 0 ≤ C(n,3), otherwise
+  -- any member k = countDistinctRadii S ≤ C(|S|,3) = C(n,3)
+  by_cases hne : Set.Nonempty {k : ℕ | ∃ S : Finset Point, S.card = n ∧
+      isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k}
+  · obtain ⟨k, S, hcard, hGP, hcount⟩ := hne
+    calc h n ≤ k := Nat.sInf_le ⟨S, hcard, hGP, hcount⟩
+      _ ≤ Nat.choose n 3 := by
+          rw [hcount, ← hcard]; exact countDistinctRadii_le_choose S
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    have h0 : h n = 0 := by unfold h; rw [hne]; exact Nat.sInf_eq_zero.mpr (Or.inr rfl)
+    omega
 
 /--
 **h(3) = 1:**
@@ -570,6 +571,97 @@ private theorem standard_triangle_gp :
     | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
     | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
     | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
+
+/-- circumradiusOf is invariant under all S₃ permutations of elements from a 3-element set.
+    If q1, q2, q3 are pairwise distinct members of {p1, p2, p3}, then
+    circumradiusOf q1 q2 q3 = circumradiusOf p1 p2 p3. -/
+private theorem circumradiusOf_eq_of_mem_triple
+    {p1 p2 p3 q1 q2 q3 : Point}
+    (hq1 : q1 ∈ ({p1, p2, p3} : Finset Point))
+    (hq2 : q2 ∈ ({p1, p2, p3} : Finset Point))
+    (hq3 : q3 ∈ ({p1, p2, p3} : Finset Point))
+    (dq12 : q1 ≠ q2) (dq23 : q2 ≠ q3) (dq13 : q1 ≠ q3) :
+    circumradiusOf q1 q2 q3 = circumradiusOf p1 p2 p3 := by
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hq1 hq2 hq3
+  rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+    rcases hq3 with rfl | rfl | rfl <;>
+  first
+  | exact absurd rfl dq12 | exact absurd rfl dq23 | exact absurd rfl dq13
+  | exact absurd rfl (Ne.symm dq12) | exact absurd rfl (Ne.symm dq23)
+  | exact absurd rfl (Ne.symm dq13)
+  | rfl
+  | rw [circumradiusOf_perm12]
+  | rw [circumradiusOf_perm23]
+  | rw [circumradiusOf_perm13]
+  | rw [circumradiusOf_cycle]
+  | rw [circumradiusOf_cycle, circumradiusOf_cycle]
+
+/-- Circumradius of a triple, extracted via Multiset.toList.
+    Well-defined by circumradiusOf S₃ invariance. -/
+private noncomputable def tripleCircumradius (T : Finset Point) : ℝ :=
+  let l := T.val.toList
+  if h : l.length ≥ 3 then
+    circumradiusOf (l.get ⟨0, by omega⟩) (l.get ⟨1, by omega⟩) (l.get ⟨2, by omega⟩)
+  else 0
+
+/-- allCircumradiiFinset S is contained in the image of S.powersetCard 3
+    under tripleCircumradius. This is because each ordered triple (p,q,s) maps
+    to circumradiusOf p q s, and {p,q,s} ∈ powersetCard 3 maps to the same
+    value by S₃ invariance of circumradiusOf. -/
+private theorem allCircumradiiFinset_subset_powersetCard (S : Finset Point) :
+    allCircumradiiFinset S ⊆ (S.powersetCard 3).image tripleCircumradius := by
+  intro r hr
+  simp only [allCircumradiiFinset, Finset.mem_image, Finset.mem_filter,
+             Finset.mem_product] at hr
+  obtain ⟨⟨p, q, s⟩, ⟨⟨hp, hq, hs⟩, dpq, dqs, dps⟩, heq⟩ := hr
+  rw [Finset.mem_image]
+  refine ⟨{p, q, s}, ?mem, ?val⟩
+  case mem =>
+    rw [Finset.mem_powersetCard]
+    constructor
+    · exact Finset.insert_subset_iff.mpr ⟨hp,
+        Finset.insert_subset_iff.mpr ⟨hq, Finset.singleton_subset_iff.mpr hs⟩⟩
+    · rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+          Finset.card_singleton]
+      · exact Finset.not_mem_singleton.mpr dqs
+      · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
+  case val =>
+    rw [← heq]
+    simp only [tripleCircumradius]
+    -- l = ({p,q,s}).val.toList has length 3 (since card = 3)
+    set T : Finset Point := {p, q, s}
+    set l := T.val.toList
+    have hcard : T.card = 3 := by
+      rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+          Finset.card_singleton]
+      · exact Finset.not_mem_singleton.mpr dqs
+      · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
+    have hlen : l.length = 3 := by
+      rw [show l.length = T.val.card from (Multiset.length_toList T.val).symm]
+      exact hcard
+    simp only [dif_pos (show l.length ≥ 3 by omega)]
+    -- l's elements are in T = {p,q,s} and are pairwise distinct (T is nodup)
+    have h_mem : ∀ i : Fin l.length, l.get i ∈ T := by
+      intro i
+      exact Finset.mem_def.mpr (Multiset.mem_toList.mp (List.get_mem l i.val i.isLt))
+    have h_nodup : l.Nodup := by
+      rw [show l = T.val.toList from rfl, ← Multiset.coe_nodup, Multiset.coe_toList]
+      exact T.nodup
+    -- Apply S₃ invariance
+    exact circumradiusOf_eq_of_mem_triple
+      (h_mem ⟨0, by omega⟩) (h_mem ⟨1, by omega⟩) (h_mem ⟨2, by omega⟩)
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+
+/-- The number of distinct circumradii of S is at most C(|S|, 3). -/
+private theorem countDistinctRadii_le_choose (S : Finset Point) :
+    countDistinctRadii S ≤ Nat.choose S.card 3 := by
+  calc (allCircumradiiFinset S).card
+      ≤ ((S.powersetCard 3).image tripleCircumradius).card :=
+        Finset.card_le_card (allCircumradiiFinset_subset_powersetCard S)
+    _ ≤ (S.powersetCard 3).card := Finset.card_image_le
+    _ = Nat.choose S.card 3 := S.card_powersetCard 3
 
 end PointHelpers
 
