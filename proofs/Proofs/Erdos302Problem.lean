@@ -72,7 +72,19 @@ noncomputable def f (N : ℕ) : ℕ :=
 
 /-- Trivial upper bound: f(N) ≤ N -/
 theorem f_le_N (N : ℕ) : f N ≤ N := by
-  sorry
+  unfold f
+  apply Finset.sup_le
+  intro A hA
+  split_ifs with h
+  · -- A ⊆ {1,...,N} has at most N elements
+    have hA_sub : A ⊆ Finset.range (N + 1) \ {0} :=
+      Finset.mem_powerset.mp hA
+    have hcard : (Finset.range (N + 1) \ {0}).card = N := by
+      rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega)))]
+      simp [Finset.card_range]
+    calc A.card ≤ (Finset.range (N + 1) \ {0}).card := Finset.card_le_card hA_sub
+      _ = N := hcard
+  · exact Nat.zero_le N
 
 /-
 ## Part 3: Lower Bound Constructions
@@ -84,19 +96,74 @@ def oddIntegers (N : ℕ) : Finset ℕ :=
 
 /-- Odd integers are unit-fraction-sum-free -/
 theorem odd_integers_sum_free (N : ℕ) : IsUnitFractionSumFree (oddIntegers N) := by
-  -- If 1/a = 1/b + 1/c and a, b, c are odd, then bc = a(b+c)
-  -- But b*c is odd and a*(b+c) is even (sum of two odds), contradiction
-  sorry
+  intro a b c ha hb hc _ _ _
+  simp only [oddIntegers, Finset.mem_filter, Finset.mem_range] at ha hb hc
+  intro ⟨ha_pos, hb_pos, hc_pos, heq⟩
+  -- a, b, c are all odd
+  have ha_odd := ha.2.2
+  have hb_odd := hb.2.2
+  have hc_odd := hc.2.2
+  -- From 1/a = 1/b + 1/c, we get bc = a(b+c)
+  rw [unit_fraction_equiv a b c ha_pos hb_pos hc_pos] at heq
+  -- b*c is odd (product of two odds)
+  have hbc_odd : (b * c) % 2 = 1 := by omega
+  -- b+c is even (sum of two odds)
+  have hbc_even : (b + c) % 2 = 0 := by omega
+  -- a*(b+c) is even (product with an even number)
+  have habceven : (a * (b + c)) % 2 = 0 := by omega
+  -- But bc = a(b+c): odd = even, contradiction
+  omega
 
 /-- The set of integers in [N/2, N] -/
 def upperHalf (N : ℕ) : Finset ℕ :=
   (Finset.range (N + 1)).filter (fun n => n ≥ N / 2)
 
-/-- Upper half integers are unit-fraction-sum-free -/
+/-- Upper half integers are unit-fraction-sum-free.
+    Key identity: bc = a(b+c) implies (b-a)(c-a) = a² over ℤ.
+    With b-a, c-a ∈ [1, a+1] and product = a², both must equal a, giving b = c. -/
 theorem upper_half_sum_free (N : ℕ) (hN : N ≥ 4) : IsUnitFractionSumFree (upperHalf N) := by
-  -- If a, b, c ≥ N/2 and 1/a = 1/b + 1/c, then 1/a ≤ 2/N and 1/b + 1/c ≥ 4/N
-  -- This forces N ≤ 2, contradiction for N ≥ 4
-  sorry
+  intro a b c ha hb hc hab hbc hac
+  simp only [upperHalf, Finset.mem_filter, Finset.mem_range] at ha hb hc
+  intro ⟨ha_pos, hb_pos, hc_pos, heq⟩
+  rw [unit_fraction_equiv a b c ha_pos hb_pos hc_pos] at heq
+  -- From bc = ab + ac: a ≤ b and a ≤ c, hence a < b and a < c (by distinctness)
+  have hab_strict : a < b := Nat.lt_of_le_of_ne (by nlinarith) hab
+  have hac_strict : a < c := Nat.lt_of_le_of_ne (by nlinarith) hac
+  -- Work over ℤ for clean subtraction
+  -- Key identity: (b-a)(c-a) = a² (from bc = a(b+c))
+  have identity : ((b : ℤ) - a) * ((c : ℤ) - a) = (a : ℤ) ^ 2 := by push_cast; nlinarith
+  -- Bounds: 1 ≤ b-a, c-a ≤ N-a ≤ a+1
+  have hba_pos : (1 : ℤ) ≤ (b : ℤ) - a := by omega
+  have hca_pos : (1 : ℤ) ≤ (c : ℤ) - a := by omega
+  have hba_ub : (b : ℤ) - a ≤ (a : ℤ) + 1 := by
+    -- b ≤ N and a ≥ N/2, so b - a ≤ N - N/2. Need N - N/2 ≤ a + 1.
+    -- N/2 ≤ a, so N - a ≤ N - N/2 = ⌈N/2⌉ ≤ N/2 + 1 ≤ a + 1.
+    omega
+  have hca_ub : (c : ℤ) - a ≤ (a : ℤ) + 1 := by omega
+  -- From (b-a)(c-a) = a² and c-a ≤ a+1: b-a ≥ a²/(a+1) > a-1, so b-a ≥ a
+  have hba_lb : (a : ℤ) ≤ (b : ℤ) - a := by
+    by_contra h; push_neg at h
+    -- b-a ≤ a-1, so c-a = a²/(b-a) ≥ a²/(a-1) > a+1 (for a ≥ 2)
+    have hba_small : (b : ℤ) - a ≤ a - 1 := by omega
+    have hba_pos' : (0 : ℤ) < (b : ℤ) - a := by omega
+    have : (a : ℤ) + 1 < (c : ℤ) - a := by
+      -- (c-a)(b-a) = a², c-a ≤ a+1 and b-a ≤ a-1
+      -- But (a+1)(a-1) = a²-1 < a², so (c-a) > a+1 when b-a ≤ a-1
+      nlinarith [sq_nonneg ((b : ℤ) - a - 1)]
+    linarith
+  -- Similarly c-a ≥ a
+  have hca_lb : (a : ℤ) ≤ (c : ℤ) - a := by
+    by_contra h; push_neg at h
+    have hca_small : (c : ℤ) - a ≤ a - 1 := by omega
+    have hca_pos' : (0 : ℤ) < (c : ℤ) - a := by omega
+    have : (a : ℤ) + 1 < (b : ℤ) - a := by nlinarith [sq_nonneg ((c : ℤ) - a - 1)]
+    linarith
+  -- Now b-a ≥ a, c-a ≥ a, and (b-a)(c-a) = a², so both equal a
+  have hba_eq : (b : ℤ) - a = a := by nlinarith
+  have hca_eq : (c : ℤ) - a = a := by nlinarith
+  -- Therefore b = c, contradiction
+  have : b = c := by omega
+  exact absurd this hbc
 
 /-- Basic lower bound: f(N) ≥ (1/2 + o(1))N -/
 axiom basic_lower_bound :
@@ -142,10 +209,28 @@ def original_question : Prop :=
 
 /-- The answer: NO (since Cambie showed f(N) ≥ (5/8 + o(1))N) -/
 theorem original_question_false : ¬original_question := by
-  -- f(N) ≥ (5/8)N for large N
-  -- But 5/8 > 1/2, so f(N)/N > 1/2 + 1/16 for large N
-  -- This contradicts f(N)/N → 1/2
-  sorry
+  intro hoq
+  -- hoq says f(N)/N → 1/2, so for ε = 1/32, f(N)/N < 1/2 + 1/32 = 17/32 for large N
+  obtain ⟨N₁, hN₁⟩ := hoq (1/32) (by norm_num)
+  -- Cambie: f(N) ≥ (5/8 - 1/32)*N = 19/32*N for large N
+  obtain ⟨N₂, hN₂⟩ := cambie_lower_bound (1/32) (by norm_num)
+  -- Take N = max(N₁, N₂, 1) to ensure N > 0
+  set M := max (max N₁ N₂) 1
+  have hM1 : M ≥ N₁ := le_trans (le_max_left _ _) (le_max_left _ _)
+  have hM2 : M ≥ N₂ := le_trans (le_max_right _ _) (le_max_left _ _)
+  have hM_pos : (M : ℚ) > 0 := by exact_mod_cast (show 0 < M by omega)
+  have h1 := hN₁ M hM1
+  have h2 := hN₂ M hM2
+  -- h1: |f(M)/M - 1/2| < 1/32, so f(M)/M < 1/2 + 1/32 = 17/32
+  -- h2: f(M) ≥ (5/8 - 1/32) * M = 19/32 * M, so f(M)/M ≥ 19/32
+  -- But 19/32 > 17/32, contradiction
+  rw [abs_lt] at h1
+  have h_upper : (f M : ℚ) / M < 1/2 + 1/32 := by linarith
+  have h_lower : (f M : ℚ) ≥ (5/8 - 1/32) * M := h2
+  have h_div : (f M : ℚ) / M ≥ 19/32 := by
+    rw [ge_iff_le, div_le_iff hM_pos] at *
+    linarith
+  linarith
 
 /-- The refined question: What is lim f(N)/N? -/
 def density_question : Prop :=
@@ -197,17 +282,24 @@ axiom brown_rodl_coloring :
 /-- The equation 1/a = 1/b + 1/c is equivalent to bc = ab + ac -/
 theorem algebraic_form (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0) :
     UnitFractionSum a b c ↔ b * c = a * b + a * c := by
-  sorry
+  unfold UnitFractionSum
+  constructor
+  · rintro ⟨_, _, _, h⟩
+    have := (unit_fraction_equiv a b c ha hb hc).mp h
+    linarith [Nat.mul_comm a (b + c), Nat.left_distrib a b c]
+  · intro h
+    refine ⟨ha, hb, hc, ?_⟩
+    rw [unit_fraction_equiv a b c ha hb hc]
+    linarith [Nat.left_distrib a b c]
 
-/-- If 1/a = 1/b + 1/c with a < b < c, then a < b < c ≤ 2a -/
+/-- If 1/a = 1/b + 1/c with a < b < c, then a < b < c ≤ 2a
+    NOTE: This bound is incorrect as stated. Counterexample: 1/2 = 1/3 + 1/6
+    gives c = 6 > 2a = 4. The correct bound is c ≤ a(a+1) (since b < 2a
+    when b < c forces b-a < a, giving c = ab/(b-a) > 2a). -/
 theorem solution_constraints (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
     (hab : a < b) (hbc : b < c) (hsum : UnitFractionSum a b c) :
     c ≤ 2 * a := by
-  -- 1/c = 1/a - 1/b > 0 requires a < b
-  -- 1/c < 1/b < 1/a, so c > b > a
-  -- 1/c = 1/a - 1/b ≥ 1/a - 1/(a+1) > 1/(2a) for large a
-  -- So c < 2a
-  sorry
+  sorry -- False as stated; see docstring
 
 /-
 ## Part 9: Examples of Solutions
@@ -228,7 +320,11 @@ example : (1 : ℚ) / 4 = 1 / 5 + 1 / 20 := by norm_num
 /-- Pattern: 1/n = 1/(n+1) + 1/(n(n+1)) -/
 theorem standard_pattern (n : ℕ) (hn : n > 0) :
     (1 : ℚ) / n = 1 / (n + 1) + 1 / (n * (n + 1)) := by
-  sorry
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hn1 : (n : ℚ) + 1 ≠ 0 := by positivity
+  have hnm : (n : ℚ) * ((n : ℚ) + 1) ≠ 0 := mul_ne_zero hn' hn1
+  field_simp
+  ring
 
 /-
 ## Part 10: Why the Problem is Hard
