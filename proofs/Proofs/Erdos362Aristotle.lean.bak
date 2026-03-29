@@ -9,7 +9,13 @@
   - Clean theorem statements with no definition sorries
   - No axiom declarations
 -/
-import Mathlib
+import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.GroupPower.Basic
+import Mathlib.Data.Complex.Basic
+import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Int.Basic
+import Mathlib.Tactic
 
 namespace Erdos362Aristotle
 
@@ -40,7 +46,7 @@ theorem gf_at_one (A : Finset ℤ) :
     subsetSumGF A 1 = (2 : ℂ) ^ A.card := by
   unfold subsetSumGF
   have h : ∀ a ∈ A, (1 : ℂ) + (1 : ℂ) ^ a = 2 := by
-    intros a _; simp [one_zpow]; norm_num
+    intros a _; simp [one_zpow]
   rw [prod_congr rfl h, prod_const]
 
 -- TARGET 3: zpow distributes over finset sum (for nonzero base)
@@ -56,25 +62,8 @@ theorem gf_disjoint_union (B C : Finset ℤ) (z : ℂ) (h : Disjoint B C) :
   unfold subsetSumGF
   exact prod_union h
 
-/-
-PROBLEM
-TARGET 5: Product expansion of GF as sum over powerset
-
-PROVIDED SOLUTION
-By induction on A using Finset.cons_induction.
-
-Base case (A = ∅): Both sides equal 1 (empty product = 1, only subset is ∅ with setSum = 0, z^0 = 1).
-
-Inductive step (A = {a} ∪ S, a ∉ S):
-subsetSumGF ({a} ∪ S) z = (1 + z^a) * subsetSumGF S z (by prod_cons)
-= (1 + z^a) * ∑ T ∈ S.powerset, z^(setSum T)  (by IH)
-= ∑ T ∈ S.powerset, z^(setSum T) + ∑ T ∈ S.powerset, z^a * z^(setSum T)
-
-The RHS is ∑ T ∈ ({a} ∪ S).powerset, z^(setSum T). Use Finset.powerset_cons to split ({a} ∪ S).powerset into subsets not containing a (= S.powerset) and subsets containing a (= S.powerset.map (cons embedding)). The sum over the first part gives ∑ T ∈ S.powerset, z^(setSum T). The sum over the second part: for each T in S.powerset, the corresponding subset is {a} ∪ T with setSum = a + setSum T, so the sum is ∑ T ∈ S.powerset, z^(a + setSum T) = ∑ T, z^a * z^(setSum T). Combine using add_mul or mul_add.
--/
+-- TARGET 5: Product expansion of GF as sum over powerset
 theorem gf_expansion (A : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
-    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by
-      unfold subsetSumGF setSum;
-      simp +decide [ add_comm ( 1 : ℂ ), Finset.prod_add, zpow_finset_sum _ _ hz ]
+    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by sorry
 
 end Erdos362Aristotle
