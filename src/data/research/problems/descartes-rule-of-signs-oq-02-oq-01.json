@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Proof scaffold for Budan upper bound. Strong induction framework + building blocks identified. Full proof ~240-410 lines. Key gap: sign-change accounting across derivative levels.",
+    "progressSummary": "PROGRESS: 2 of 3 building blocks proved (rolle_polynomial, root_of_sign_change). 1 sorry remains (linear_at_most_one_root). Full Budan proof still needs sign-change accounting (~200+ lines).",
     "builtItems": [
       "Created DescartesRuleOfSignsOQ02OQ01.lean: proof scaffold with 5 theorems, 3 sorries",
       "Proved constant_no_roots base case",
-      "Documented proof completion roadmap with line estimates"
+      "Documented proof completion roadmap with line estimates",
+      "Proved rolle_polynomial from Mathlib exists_deriv_eq_zero",
+      "Proved root_of_sign_change from IVT (intermediate_value_Icc)"
     ],
     "insights": [
       "Proof by strong induction on deg(p): base deg≤1 trivial, inductive step uses Rolle",

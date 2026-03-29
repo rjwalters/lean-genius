@@ -74,22 +74,43 @@ theorem linear_at_most_one_root (p : ℝ[X]) (hp : p.natDegree = 1) (a b : ℝ) 
   sorry -- Linear polynomial has exactly one root; at most one in any interval
 
 /-- Rolle's theorem for polynomials: if p has roots at r₁ < r₂,
-    then p' has a root in (r₁, r₂). -/
+    then p' has a root in (r₁, r₂).
+    Proved from Mathlib's `exists_deriv_eq_zero`. -/
 theorem rolle_polynomial (p : ℝ[X]) (r₁ r₂ : ℝ) (hr : r₁ < r₂)
     (h₁ : p.eval r₁ = 0) (h₂ : p.eval r₂ = 0) :
     ∃ c, r₁ < c ∧ c < r₂ ∧ (derivative p).eval c = 0 := by
-  sorry -- From Mathlib's Rolle theorem applied to polynomial evaluation
+  have hcont : ContinuousOn (fun x => p.eval x) (Set.Icc r₁ r₂) :=
+    p.continuous.continuousOn
+  have heq : p.eval r₁ = p.eval r₂ := h₁.trans h₂.symm
+  obtain ⟨c, ⟨hac, hcb⟩, hderiv⟩ := exists_deriv_eq_zero hr hcont heq
+  exact ⟨c, hac, hcb, by simp only [Polynomial.deriv] at hderiv; exact hderiv⟩
 
 -- ============================================================================
 -- § 2. SIGN CHANGE PROPERTIES
 -- ============================================================================
 
 /-- When a polynomial changes sign between a and b, it has a root in (a, b).
-    This is the intermediate value theorem for polynomials. -/
+    Proved from the intermediate value theorem for continuous functions. -/
 theorem root_of_sign_change (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     (ha : p.eval a < 0) (hb : 0 < p.eval b) :
     ∃ c, a < c ∧ c < b ∧ p.eval c = 0 := by
-  sorry -- From IVT applied to the continuous function p.eval
+  have hcont : Continuous (fun x => p.eval x) := p.continuous
+  -- IVT: there exists c in [a,b] with p.eval c = 0
+  have := intermediate_value_Icc (le_of_lt hab) hcont.continuousOn
+  -- p.eval a < 0 < p.eval b, so 0 is in the range on [a,b]
+  have h0_mem : (0 : ℝ) ∈ Set.Icc (p.eval a) (p.eval b) := by
+    constructor <;> linarith
+  obtain ⟨c, ⟨hca, hcb⟩, hc⟩ := this h0_mem
+  -- c ∈ [a, b] and p.eval c = 0. Need c ∈ (a, b).
+  have hca' : a < c := by
+    rcases eq_or_lt_of_le hca with rfl | h
+    · linarith -- p.eval a < 0 but p.eval c = 0
+    · exact h
+  have hcb' : c < b := by
+    rcases eq_or_lt_of_le hcb with rfl | h
+    · linarith -- p.eval b > 0 but p.eval c = 0
+    · exact h
+  exact ⟨c, hca', hcb', hc⟩
 
 /-- Removing a root factor reduces sign changes.
     If p(r) = 0 and p = (x - r) · q, then the sign changes of q at r
