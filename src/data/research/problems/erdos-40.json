@@ -1,13 +1,13 @@
 {
   "slug": "erdos-40",
-  "title": "Erd\u0151s #40",
+  "title": "Erdős #40",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "For what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erd\u0151s-Tur\u00e1n conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source",
+    "plain": "For what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source",
     "whyMatters": []
   },
   "knownResults": {
@@ -17,35 +17,39 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-29T01:11:23.654482+00:00",
-    "iteration": 3,
-    "focus": "Session 3: Eliminated 2 unused axioms (open conjectures -> comments)",
+    "since": "2026-03-29T06:05:00+00:00",
+    "iteration": 4,
+    "focus": "Session 4: Converted b2g_density_bound from axiom to theorem",
     "blockers": [],
     "nextAction": "Prove sidon_density_bound from counting argument (known result)",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4\u21922 axioms. Removed erdos_turan_conjecture and erdos_40_conjecture (unused open-problem axioms, now comments). Remaining: sidon_density_bound, b2g_density_bound (known results, not yet proved).",
+    "progressSummary": "PROGRESS: b2g_density_bound converted from axiom to theorem (1 sorry in counting lemma). Arithmetic chain fully proved. Now: 1 axiom (sidon_density_bound), 1 sorry.",
     "builtItems": [
-      "bounded_rep_not_unbounded: contrapositive of unboundedness \u2014 if rep \u2264 B for all n then \u00acRepUnbounded",
+      "bounded_rep_not_unbounded: contrapositive of unboundedness — if rep ≤ B for all n then ¬RepUnbounded",
       "Removed random_heuristic and threshold_heuristic (were axiom : True, now comments)",
       "repUnbounded_iff and basis2_iff: definition unfoldings for API",
-      "problem_40_implies_28 (PROVED) \u2014 if #40 holds for any g\u2192\u221e then #28 holds, via g(N)=N and countingFn\u22651",
+      "problem_40_implies_28 (PROVED) — if #40 holds for any g→∞ then #28 holds, via g(N)=N and countingFn≥1",
       "rep_set_finite, basis_has_element, countingFn_pos (helper lemmas)",
-      "Removed 2 unused open-conjecture axioms (erdos_turan_conjecture, erdos_40_conjecture)"
+      "Removed 2 unused open-conjecture axioms (erdos_turan_conjecture, erdos_40_conjecture)",
+      "b2g_density_bound: axiom -> theorem via counting lemma + sqrt arithmetic (Erdos40Problem.lean:147)",
+      "b2g_counting_sq_bound: counting lemma (sorry) for k^2 <= 2g(2N-1)"
     ],
     "insights": [
-      "random_heuristic and threshold_heuristic were literally True \u2014 pure comment axioms adding to count for zero value",
-      "problem_40_implies_28 requires showing a basis of order 2 has density \u2265 N^{1/2}/g(N) for some g\u2192\u221e; argument: use g(N)=N, then density condition becomes trivial since basis is infinite",
-      "Sidon set bound axiom is a classical result \u2014 likely not in Mathlib but deep",
-      "The $500 prize is for the strongest form (all g\u2192\u221e); weaker forms may be approachable",
-      "problem_40_implies_28 proof: take g(N)=N, basis gives countingFn\u22651\u2265\u221aN/N for large N",
+      "random_heuristic and threshold_heuristic were literally True — pure comment axioms adding to count for zero value",
+      "problem_40_implies_28 requires showing a basis of order 2 has density ≥ N^{1/2}/g(N) for some g→∞; argument: use g(N)=N, then density condition becomes trivial since basis is infinite",
+      "Sidon set bound axiom is a classical result — likely not in Mathlib but deep",
+      "The $500 prize is for the strongest form (all g→∞); weaker forms may be approachable",
+      "problem_40_implies_28 proof: take g(N)=N, basis gives countingFn≥1≥√N/N for large N",
       "Both open-conjecture axioms were completely unused by any theorem - pure documentation artifacts",
-      "The 2 remaining axioms (sidon_density_bound, b2g_density_bound) are known results provable via counting arguments"
+      "The 2 remaining axioms (sidon_density_bound, b2g_density_bound) are known results provable via counting arguments",
+      "b2g proof chain: k^2 <= 2g(2N-1) <= 4gN <= 4(g+1)^2*N, then sqrt gives k <= 2(g+1)*sqrt(N)",
+      "Counting lemma needs: Finset pair counting via swap injection + fiber decomposition by sum + repCount bound"
     ],
     "mathlibGaps": [
       "Set.ncard reasoning needed for counting function properties",
@@ -56,7 +60,7 @@
       "Prove b2g_density_bound: generalize Sidon argument with multiplicity g",
       "Both proofs need Finset/Set.ncard machinery for pair counting"
     ],
-    "markdown": "# Erd\u0151s #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erd\u0151s-Tur\u00e1n conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"

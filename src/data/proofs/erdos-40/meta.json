@@ -15,12 +15,12 @@
       "open"
     ],
     "proofRepoPath": "Proofs/Erdos40Problem.lean",
-    "sorries": 0,
+    "sorries": 1,
     "sourceUrl": "https://erdosproblems.com/40",
     "erdosUrl": "https://erdosproblems.com/40",
-    "axiomCount": 2,
-    "assumptions": "2 axioms (known results: sidon_density_bound, b2g_density_bound), 0 sorries. Open conjectures (Erdos-Turan #28, Erdos #40) stated as hypotheses, not global axioms.",
-    "lineCount": 171,
+    "axiomCount": 1,
+    "assumptions": "1 axiom (sidon_density_bound: tight Sidon bound), 1 sorry (b2g_counting_sq_bound: pair counting lemma). b2g_density_bound now a theorem. Open conjectures stated as hypotheses.",
+    "lineCount": 203,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
   },
@@ -68,10 +68,10 @@
     {
       "id": "partial-results",
       "title": "Known Partial Results",
-      "summary": "Sidon set bound: $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq (1+o(1))\\sqrt{N}$ (Erdős-Turán 1941, Lindström 1969). $B_2[g]$ bound: $r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g\\sqrt{N}$. Shows $\\sqrt{N}$ is the natural threshold.",
-      "startLine": 79,
-      "endLine": 95,
-      "mathContext": "Sidon ($B_2$) sets: $r_A(n) \\leq 1 \\implies A(N) \\leq (1+o(1))\\sqrt{N}$. $B_2[g]$ sets: $r_A(n) \\leq g \\implies A(N) \\leq c_g \\sqrt{N}$. These establish $\\sqrt{N}$ as the critical density threshold."
+      "summary": "Sidon set bound (axiom): $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq (1+o(1))\\sqrt{N}$ (tight bound, Lindström 1969). $B_2[g]$ bound (**proved** modulo counting lemma): $r_A(n) \\leq g \\Rightarrow A(N) \\leq 2(g+1)\\sqrt{N}$ via pair counting argument.",
+      "startLine": 122,
+      "endLine": 171,
+      "mathContext": "Sidon ($B_2$) sets: $r_A(n) \\leq 1 \\implies A(N) \\leq (1+o(1))\\sqrt{N}$ (axiom: tight bound needs Lindström's argument). $B_2[g]$ sets: $r_A(n) \\leq g \\implies A(N) \\leq 2(g+1)\\sqrt{N}$ (theorem: proved from counting inequality $k^2 \\leq 2g(2N-1) \\leq 4(g+1)^2 N$, sorry in pair counting lemma)."
     },
     {
       "id": "heuristic",
@@ -192,9 +192,9 @@
     ],
     "opens": [],
     "namespace": "",
-    "lineCount": 168,
-    "axiomCount": 4,
-    "theoremCount": 4,
+    "lineCount": 203,
+    "axiomCount": 1,
+    "theoremCount": 5,
     "definitionCount": 5,
     "mainTheorems": [
       {
