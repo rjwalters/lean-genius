@@ -73,7 +73,30 @@ theorem odd_set_sumFree (n : ℕ) :
 -- There are ⌈n/2⌉ odd numbers in {1,...,n}.
 theorem odd_count_in_range (n : ℕ) :
     ((Finset.range (n + 1)).filter (fun x => x > 0 ∧ x % 2 = 1)).card = (n + 1) / 2 := by
-  sorry
+  -- Bijection: positive odd x ↦ (x-1)/2 maps into [0, (n+1)/2), injectively
+  set S := (Finset.range (n + 1)).filter (fun x => x > 0 ∧ x % 2 = 1)
+  apply le_antisymm
+  · -- ≤: inject into [0, (n+1)/2)
+    calc S.card
+      = (S.image (fun x => (x - 1) / 2)).card := by
+          apply (Finset.card_image_of_injOn _).symm
+          intro a ha b hb hab
+          simp only [S, Finset.mem_filter, Finset.mem_range] at ha hb; omega
+      _ ≤ (Finset.range ((n + 1) / 2)).card := by
+          apply Finset.card_le_card; intro k hk
+          simp only [Finset.mem_image, S, Finset.mem_filter, Finset.mem_range] at hk ⊢
+          obtain ⟨x, ⟨_, _, _⟩, rfl⟩ := hk; omega
+      _ = (n + 1) / 2 := Finset.card_range _
+  · -- ≥: inject [0, (n+1)/2) into S via k ↦ 2k+1
+    calc (n + 1) / 2
+      = (Finset.range ((n + 1) / 2)).card := (Finset.card_range _).symm
+      _ = ((Finset.range ((n + 1) / 2)).image (fun k => 2 * k + 1)).card := by
+          apply (Finset.card_image_of_injOn _).symm
+          intro a _ b _ hab; omega
+      _ ≤ S.card := by
+          apply Finset.card_le_card; intro x hx
+          simp only [Finset.mem_image, Finset.mem_range, S, Finset.mem_filter] at hx ⊢
+          obtain ⟨k, hk, rfl⟩ := hx; omega
 
 -- Routine: If a, b, a+b are all in {0,...,n-1} then a+b < n
 -- Simple arithmetic used in Fin-based additive triple definitions.
@@ -105,6 +128,22 @@ theorem schur_two_colors :
 -- some color class has at least ⌈n/k⌉ items.
 theorem pigeonhole_coloring (n k : ℕ) (hk : k > 0) (c : Fin n → Fin k) :
     ∃ color : Fin k, ((Finset.univ.filter (fun i => c i = color)).card : ℕ) * k ≥ n := by
-  sorry
+  -- Pigeonhole: if ∀ color, |fiber| * k < n, then n = ∑ |fiber| < n, contradiction
+  by_contra h; push_neg at h
+  have h_each : ∀ color : Fin k, (Finset.univ.filter (fun i => c i = color)).card * k < n :=
+    fun color => (h color)
+  have h_sum : n = ∑ color : Fin k, (Finset.univ.filter (fun i => c i = color)).card := by
+    rw [← Finset.card_univ (α := Fin n)]
+    rw [← Finset.card_biUnion (fun i _ j _ hij => Finset.disjoint_filter.mpr
+      (fun v _ h1 h2 => hij (h1 ▸ h2)))]
+    congr 1; ext i; simp
+  have h_bound : (∑ color : Fin k, (Finset.univ.filter (fun i => c i = color)).card) * k < n * k := by
+    rw [Finset.sum_mul]
+    calc ∑ color ∈ Finset.univ, (Finset.univ.filter (fun i => c i = color)).card * k
+      < ∑ _ ∈ (Finset.univ : Finset (Fin k)), n :=
+        Finset.sum_lt_sum (fun color _ => le_of_lt (h_each color))
+          ⟨⟨0, hk⟩, Finset.mem_univ _, h_each ⟨0, hk⟩⟩
+      _ = n * k := by simp [Finset.card_fin]
+  linarith [h_sum]
 
 end Erdos895Aristotle
