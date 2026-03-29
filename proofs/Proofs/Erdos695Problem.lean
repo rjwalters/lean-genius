@@ -140,6 +140,66 @@ theorem cunningham_is_prime_chain (p : ℕ → ℕ) (h : IsCunninghamChainFirst 
         Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by have := hodd i; omega)]
 
 /-
+# Part 4.5: Exponential Lower Bound (PROVED, was axiom)
+
+For odd prime p₀, any prime q ≡ 1 (mod p₀) satisfies q ≥ 2p₀ + 1.
+This gives exponential growth: p(k) ≥ 2^k for any prime chain.
+-/
+
+/-- For odd prime p₀ (≥ 3), any prime q with q ≡ 1 (mod p₀) satisfies q ≥ 2p₀ + 1.
+    Proof: q = k·p₀ + 1. If k = 0 then q = 1 (not prime). If k = 1 then
+    q = p₀ + 1 is even and ≥ 4 (not prime since p₀ is odd). So k ≥ 2. -/
+theorem chain_step_ge {p₀ q : ℕ} (hp₀ : p₀.Prime) (hq : q.Prime)
+    (hp₀3 : 3 ≤ p₀) (hmod : q % p₀ = 1) : 2 * p₀ + 1 ≤ q := by
+  suffices 2 ≤ q / p₀ by
+    have := Nat.div_mul_le_self q p₀
+    omega
+  by_contra hlt
+  push_neg at hlt
+  have hlt1 : q / p₀ ≤ 1 := by omega
+  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hlt1 with rfl | rfl
+  · -- k = 0: q = 0·p₀ + 1 = 1, not prime
+    have : q < p₀ := Nat.div_eq_zero_iff hp₀.pos |>.mp rfl
+    have : q = 1 := by omega
+    subst this; exact absurd hq (by decide)
+  · -- k = 1: q = p₀ + 1, which is even (p₀ odd) and ≥ 4, not prime
+    have hqeq : q = p₀ + 1 := by
+      have := Nat.div_add_mod q p₀; omega
+    subst hqeq
+    have hdvd : 2 ∣ (p₀ + 1) := by
+      obtain ⟨k, rfl⟩ := hp₀.odd_of_ne_two (by omega)
+      exact ⟨k + 1, by ring⟩
+    rcases hq.eq_one_or_self_of_dvd 2 hdvd with h | h <;> omega
+
+/-- Every prime chain grows at least exponentially: p(k) ≥ 2^k.
+    Proved from chain_step_ge (no axioms needed). -/
+theorem exponential_lower_bound : ∃ c : ℝ, c > 1 ∧
+    ∀ p : ℕ → ℕ, IsPrimeChain p → ∀ k, (p k : ℝ) ≥ c ^ k := by
+  refine ⟨2, by norm_num, fun p ⟨hm, hp, hmod⟩ => ?_⟩
+  -- Auxiliary: p(k) ≥ k + 2 (strict monotonicity + p(0) ≥ 2)
+  have hge : ∀ k, k + 2 ≤ p k := by
+    intro k
+    induction k with
+    | zero => exact (hp 0).two_le
+    | succ n ih => exact Nat.succ_le_of_lt (lt_of_le_of_lt ih (hm (Nat.lt.base n)))
+  -- Main: p(k) ≥ 2^k (in ℕ, then cast to ℝ)
+  suffices hnat : ∀ k, 2 ^ k ≤ p k from
+    fun k => by exact_mod_cast hnat k
+  intro k
+  induction k with
+  | zero => simpa using (hp 0).one_lt.le
+  | succ n ih =>
+    rcases n with _ | m
+    · -- n = 0: 2^1 = 2 ≤ p(1), since p(1) ≥ 3
+      simpa using (show 2 ≤ p 1 from by have := hge 1; omega)
+    · -- n = m + 1 ≥ 1: p(m+1) ≥ 3, apply chain_step_ge
+      have hpm3 : 3 ≤ p (m + 1) := by have := hge (m + 1); omega
+      have step := chain_step_ge (hp (m + 1)) (hp (m + 2)) hpm3 (hmod (m + 1))
+      calc 2 ^ (m + 2) = 2 * 2 ^ (m + 1) := by ring
+        _ ≤ 2 * p (m + 1) := Nat.mul_le_mul_left 2 ih
+        _ ≤ p (m + 2) := by omega
+
+/-
 # Part 5: The Ford-Konyagin-Luca Analysis
 
 FKL (2010) conducted an extensive study of prime chain growth.
@@ -150,10 +210,6 @@ axiom fkl_analysis : ∃ f : ℕ → ℕ,
   (∀ n, ∃ p : ℕ → ℕ, IsPrimeChain p ∧ p 0 = 2 ∧
     (∀ k < f n, p k ≤ n)) ∧
   Tendsto f atTop atTop
-
--- Lower bound: every prime chain grows at least exponentially
-axiom exponential_lower_bound : ∃ c : ℝ, c > 1 ∧
-  ∀ p : ℕ → ℕ, IsPrimeChain p → ∀ k, (p k : ℝ) ≥ c ^ k
 
 /-
 # Part 6: Problem Status
