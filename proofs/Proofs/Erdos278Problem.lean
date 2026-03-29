@@ -392,11 +392,9 @@ private lemma prod_sub_one_div (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0
 
 -- ## Simpson's Theorem (1986)
 
-/-- Simpson's theorem: the minimum coverage density is achieved when
-    all residues are equal. -/
-axiom simpson_theorem (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
-    ∀ r : ℕ → ℕ,
-      coverageDensity ⟨moduli, (fun _ => 0), hpos⟩ ≤ coverageDensity ⟨moduli, r, hpos⟩
+-- Simpson's theorem (1986): the minimum coverage density is achieved when
+-- all residues are equal. Deep combinatorial result.
+-- Not axiomatized since it is not used by any theorem in this file.
 
 /-- Helper: (x % n + y) % n = (x + y) % n -/
 private lemma mod_add_right (x y n : ℕ) : (x % n + y) % n = (x + y) % n := by

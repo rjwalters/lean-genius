@@ -163,12 +163,11 @@ axiom f_four : f 4 = 1
 axiom four_config_unique (S T : Finset Plane) :
     S.card = 4 → T.card = 4 → isExtremal S → isExtremal T → areCongruent S T
 
-/-- u(4) = 5: Four points in the plane can have at most 5 unit distances. -/
-axiom u_four : u 4 = 5
+-- u(4) = 5: Four points in the plane can have at most 5 unit distances.
+-- Known result, not used by any theorem in this file.
 
-/-- For 5 <= n <= 21, computational evidence shows f(n) >= 1. -/
-axiom computational_evidence :
-  ∀ n : ℕ, 5 ≤ n → n ≤ 21 → f n ≥ 1
+-- For 5 <= n <= 21, computational evidence shows f(n) >= 1.
+-- Computational result, not used by any theorem in this file.
 
 /-- Question 1: Does f(n) tend to infinity as n tends to infinity? -/
 def question_one : Prop :=
@@ -249,11 +248,10 @@ theorem extremalConfigs_nonempty (n : ℕ) (hn : n ≥ 1) : (extremalConfigs n).
   show unitDistanceCount S = u S.card
   rw [hcard]; exact hcount
 
-/-- u(n) >= n - 1 for n >= 2. -/
-axiom u_lower_bound (n : ℕ) (hn : n ≥ 2) : u n ≥ n - 1
+-- u(n) >= n - 1 for n >= 2. Known result, not used by any theorem in this file.
 
-/-- u(n) < c * n^(4/3) for some constant c > 0 (Spencer-Szemeredi-Trotter). -/
-axiom u_upper_bound : ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 → (u n : ℝ) < c * n ^ (4/3 : ℝ)
+-- u(n) < c * n^(4/3) for some constant c > 0 (Spencer-Szemeredi-Trotter).
+-- Known result, not used by any theorem in this file.
 
 /-- Summary: f(4) = 1 and the 4-point extremal configuration is unique. -/
 theorem erdos_668_summary :
