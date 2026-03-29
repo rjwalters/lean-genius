@@ -84,11 +84,105 @@ axiom croot_unit_fraction_theorem :
 
 /- ## Observations -/
 
-/-- **Small Example**: A = {1, 2} with δ(1) = 1, δ(2) = −1 gives
-    1/1 − 1/2 = 1/2 ≠ 0. Need at least 3 elements for a zero sum. -/
-axiom small_example :
-  ∃ A : Finset ℕ, ∃ δ : ℕ → Int,
-    A ⊆ Finset.Icc 1 6 ∧ IsIrreducibleZeroSum A δ
+/-- **PROVED** (was axiom): A = {2, 3, 6} with δ(2) = −1, δ(3) = δ(6) = 1 gives
+    −1/2 + 1/3 + 1/6 = 0, and every proper non-empty subset sums to
+    ±1/6, ±1/3, or ±1/2 (all non-zero). -/
+theorem small_example :
+    ∃ A : Finset ℕ, ∃ δ : ℕ → Int,
+      A ⊆ Finset.Icc 1 6 ∧ IsIrreducibleZeroSum A δ := by
+  refine ⟨{2, 3, 6}, fun n => if n = 2 then -1 else 1, ?_, ?_, ?_, ?_⟩
+  -- (1) A ⊆ Icc 1 6
+  · intro n hn
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+    rcases hn with rfl | rfl | rfl <;> simp [Finset.mem_Icc] <;> omega
+  -- (2) IsSigning: all δ values are ±1
+  · intro n hn
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+    rcases hn with rfl | rfl | rfl <;> simp
+  -- (3) signedSum = 0: −1/2 + 1/3 + 1/6 = 0
+  · unfold signedSum
+    simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({3, 6} : Finset ℕ) from by decide),
+               Finset.sum_insert (show (3 : ℕ) ∉ ({6} : Finset ℕ) from by decide),
+               Finset.sum_singleton]
+    push_cast; norm_num
+  -- (4) Irreducibility: no proper non-empty subset sums to zero
+  · intro A' hss hne
+    have hmem : ∀ x ∈ A', x = 2 ∨ x = 3 ∨ x = 6 := fun x hx => by
+      have := hss.1 hx; simp only [Finset.mem_insert, Finset.mem_singleton] at this; exact this
+    by_cases h2 : 2 ∈ A' <;> by_cases h3 : 3 ∈ A' <;> by_cases h6 : 6 ∈ A'
+    -- {2,3,6}: full set, contradicts proper subset
+    · exfalso; exact hss.not_subset fun x hx => by
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl <;> assumption
+    -- {2,3}: sum = −1/6 ≠ 0
+    · have hA' : A' = {2, 3} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · left; rfl; · right; rfl; · contradiction)
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption)
+      rw [hA']; unfold signedSum
+      simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({3} : Finset ℕ) from by decide),
+                 Finset.sum_singleton]
+      push_cast; norm_num
+    -- {2,6}: sum = −1/3 ≠ 0
+    · have hA' : A' = {2, 6} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · left; rfl; · contradiction; · right; rfl)
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption)
+      rw [hA']; unfold signedSum
+      simp only [Finset.sum_insert (show (2 : ℕ) ∉ ({6} : Finset ℕ) from by decide),
+                 Finset.sum_singleton]
+      push_cast; norm_num
+    -- {2}: sum = −1/2 ≠ 0
+    · have hA' : A' = {2} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · rfl; · contradiction; · contradiction)
+        (Finset.singleton_subset_iff.mpr h2)
+      rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
+      push_cast; norm_num
+    -- {3,6}: sum = 1/2 ≠ 0
+    · have hA' : A' = {3, 6} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · contradiction; · left; rfl; · right; rfl)
+        (fun x hx => by
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption)
+      rw [hA']; unfold signedSum
+      simp only [Finset.sum_insert (show (3 : ℕ) ∉ ({6} : Finset ℕ) from by decide),
+                 Finset.sum_singleton]
+      push_cast; norm_num
+    -- {3}: sum = 1/3 ≠ 0
+    · have hA' : A' = {3} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · contradiction; · rfl; · contradiction)
+        (Finset.singleton_subset_iff.mpr h3)
+      rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
+      push_cast; norm_num
+    -- {6}: sum = 1/6 ≠ 0
+    · have hA' : A' = {6} := le_antisymm
+        (fun x hx => by
+          simp only [Finset.mem_singleton]
+          rcases hmem x hx with rfl | rfl | rfl
+          · contradiction; · contradiction; · rfl)
+        (Finset.singleton_subset_iff.mpr h6)
+      rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
+      push_cast; norm_num
+    -- ∅: contradicts A'.Nonempty
+    · obtain ⟨x, hx⟩ := hne
+      rcases hmem x hx with rfl | rfl | rfl <;> contradiction
 
 /- **Connection to Unit Fractions**: the problem is closely related to
     Egyptian fraction representations and signed unit-fraction decompositions.
