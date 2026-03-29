@@ -80,11 +80,10 @@ theorem digitalRoot_single (n : ℕ) (hn : 1 ≤ n) (h9 : n ≤ 9) :
 n ≡ digitSum(n) (mod 9)
 -/
 
-/-- n is congruent to its digit sum mod 9 -/
-theorem digitSum_mod9 (n : ℕ) : n % 9 = digitSum n % 9 := by
-  -- Since 10 ≡ 1 (mod 9), we have 10^k ≡ 1 (mod 9)
-  -- So n = ∑ dᵢ · 10^i ≡ ∑ dᵢ (mod 9)
-  sorry -- Requires detailed digit expansion argument
+/-- n is congruent to its digit sum mod 9.
+Proved from Mathlib's `modEq_nine_digits_sum`. -/
+theorem digitSum_mod9 (n : ℕ) : n % 9 = digitSum n % 9 :=
+  (Nat.modEq_nine_digits_sum n).symm
 
 /-- n ≡ digitalRootFormula(n) (mod 9) -/
 theorem congruence (n : ℕ) : n % 9 = digitalRootFormula n % 9 := by
@@ -138,16 +137,52 @@ theorem digitalRoot_add (a b : ℕ) :
   · simp [digitalRootFormula]
   · simp [digitalRootFormula]
   · simp [digitalRootFormula]; ring_nf; omega
-  · -- Both positive
-    unfold digitalRootFormula
-    simp only [show a + 1 ≠ 0 by omega, show b + 1 ≠ 0 by omega,
-               show a + 1 + (b + 1) ≠ 0 by omega, ↓reduceIte]
-    sorry -- Requires careful mod 9 arithmetic
+  · -- Both positive: use congruence mod 9
+    -- dr(a+b) and dr(dr(a)+dr(b)) are both in [1,9] and congruent to a+b mod 9
+    have ha : a + 1 > 0 := by omega
+    have hb : b + 1 > 0 := by omega
+    have hab : a + 1 + (b + 1) > 0 := by omega
+    have hdra : digitalRootFormula (a + 1) > 0 := by unfold digitalRootFormula; simp; omega
+    have hdrb : digitalRootFormula (b + 1) > 0 := by unfold digitalRootFormula; simp; omega
+    have hsum : digitalRootFormula (a + 1) + digitalRootFormula (b + 1) > 0 := by omega
+    -- Both sides are in [1,9] and congruent mod 9
+    have lhs_cong := congruence (a + 1 + (b + 1))
+    have rhs_cong := congruence (digitalRootFormula (a + 1) + digitalRootFormula (b + 1))
+    have cong_a := congruence (a + 1)
+    have cong_b := congruence (b + 1)
+    have lhs_range := digitalRoot_range (a + 1 + (b + 1))
+    have rhs_range := digitalRoot_range (digitalRootFormula (a + 1) + digitalRootFormula (b + 1))
+    have lhs_pos : digitalRootFormula (a + 1 + (b + 1)) ≥ 1 := by
+      unfold digitalRootFormula; simp [show a + 1 + (b + 1) ≠ 0 by omega]; omega
+    have rhs_pos : digitalRootFormula (digitalRootFormula (a + 1) + digitalRootFormula (b + 1)) ≥ 1 := by
+      unfold digitalRootFormula; simp [show digitalRootFormula (a + 1) + digitalRootFormula (b + 1) ≠ 0 by omega]; omega
+    -- Both are in [1,9] and ≡ a+1+b+1 (mod 9)
+    omega
 
 /-- Digital root of a product: dr(a · b) = dr(dr(a) · dr(b)) -/
 theorem digitalRoot_mul (a b : ℕ) :
     digitalRootFormula (a * b) = digitalRootFormula (digitalRootFormula a * digitalRootFormula b) := by
-  sorry -- Follows from a*b ≡ a*b (mod 9) and the congruence property
+  -- Both sides are in [0,9] and congruent to a*b mod 9
+  rcases a with _ | a
+  · simp [digitalRootFormula]
+  · rcases b with _ | b
+    · simp [digitalRootFormula]
+    · -- Both positive
+      have hab : (a + 1) * (b + 1) > 0 := by positivity
+      have hdra : digitalRootFormula (a + 1) > 0 := by unfold digitalRootFormula; simp; omega
+      have hdrb : digitalRootFormula (b + 1) > 0 := by unfold digitalRootFormula; simp; omega
+      have hprod : digitalRootFormula (a + 1) * digitalRootFormula (b + 1) > 0 := by positivity
+      have lhs_cong := congruence ((a + 1) * (b + 1))
+      have rhs_cong := congruence (digitalRootFormula (a + 1) * digitalRootFormula (b + 1))
+      have cong_a := congruence (a + 1)
+      have cong_b := congruence (b + 1)
+      have lhs_range := digitalRoot_range ((a + 1) * (b + 1))
+      have rhs_range := digitalRoot_range (digitalRootFormula (a + 1) * digitalRootFormula (b + 1))
+      have lhs_pos : digitalRootFormula ((a + 1) * (b + 1)) ≥ 1 := by
+        unfold digitalRootFormula; simp [show (a + 1) * (b + 1) ≠ 0 by omega]; omega
+      have rhs_pos : digitalRootFormula (digitalRootFormula (a + 1) * digitalRootFormula (b + 1)) ≥ 1 := by
+        unfold digitalRootFormula; simp [show digitalRootFormula (a + 1) * digitalRootFormula (b + 1) ≠ 0 by omega]; omega
+      omega
 
 /-
 ## Part V: Computational Examples
@@ -186,11 +221,14 @@ in constant time using `1 + ((n-1) mod 9)`, avoiding iterative summation.
 - div9, div3: divisibility characterizations
 - 5 concrete examples
 
-**Sorry** (4):
-- digitSum_mod9: n ≡ digitSum(n) (mod 9)
+**Sorry** (1):
 - digitalRoot decreasing_by: digitSum n < n for n ≥ 10
-- digitalRoot_add: dr(a+b) = dr(dr(a) + dr(b))
-- digitalRoot_mul: dr(a·b) = dr(dr(a) · dr(b))
+  (termination proof — requires Nat.digits length bounds)
+
+**Previously sorry, now proved** (3):
+- digitSum_mod9: via Mathlib's modEq_nine_digits_sum
+- digitalRoot_add: via mod 9 congruence + range analysis
+- digitalRoot_mul: via mod 9 congruence + range analysis
 -/
 
 #check digitalRootFormula
