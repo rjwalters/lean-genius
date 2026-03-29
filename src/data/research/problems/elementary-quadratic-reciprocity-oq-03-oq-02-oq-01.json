@@ -1,0 +1,168 @@
+{
+  "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+  "title": "Prove multiplicativity from the definition",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 1,
+    "focus": "Surveyed multiplicativity proof path. Found potential axiom bug at n=-1,a=0.",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Kronecker multiplicativity requires case analysis on n=0,-1,1,general. Definition uses jacobiSym (multiplicative in Mathlib). Potential edge case bug: kroneckerNeg1(0)=1 may break mul_left at n=-1 when a=0.",
+    "builtItems": [],
+    "insights": [
+      "kronecker defined via cases: n=0→kronecker0, n=-1→kroneckerNeg1, n=1→1, else→sign*jacobiSym",
+      "jacobiSym from Mathlib is multiplicative in both arguments — base case for proof",
+      "kroneckerNeg1(0)=1 (positive convention) may cause mul_left failure: kronecker(-3*0)(-1)=1 but kronecker(-3)(-1)*kronecker(0)(-1)=(-1)*1=-1",
+      "Fix: either change kroneckerNeg1(0)=0 or add a≠0 hypothesis to mul_left",
+      "mul_right is more straightforward: products of moduli reduce to product of Jacobi symbols"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify kronecker_mul_left counterexample: kronecker (-3*0) (-1) vs kronecker (-3) (-1) * kronecker 0 (-1)",
+      "If confirmed false, fix kroneckerNeg1 definition or add hypotheses to axiom",
+      "Prove kronecker_mul_right via case analysis: n*m=0, n*m=-1, general → jacobiSym.mul_right"
+    ],
+    "markdown": "# Knowledge Base: elementary-quadratic-reciprocity-oq-03-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "elementary-quadratic-reciprocity",
+    "elementary-quadratic-reciprocity-oq-01",
+    "elementary-quadratic-reciprocity-oq-03",
+    "elementary-quadratic-reciprocity-oq-03-oq-01",
+    "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
+    "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "elementary-quadratic-reciprocity-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.977Z",
+  "lastUpdate": "2026-03-29T04:28:18.987Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocity.lean",
+      "filename": "ElementaryQuadraticReciprocity.lean",
+      "lineCount": 358,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocity.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01.lean",
+      "lineCount": 629,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01.lean",
+      "lineCount": 312,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 13,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ03.lean",
+      "lineCount": 114,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean"
+    }
+  ]
+}

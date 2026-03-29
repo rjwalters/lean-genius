@@ -271,20 +271,107 @@ def SpansAtMost2D {d : ℕ} (S : StepSet d) : Prop :=
     ∃ (v₁ v₂ : LatPoint d), ∀ s ∈ S,
       ∃ (a b : ℤ), ∀ j : Fin d, s j = a * v₁ j + b * v₂ j
 
+/-- Accumulated 2D coordinates along a walk in a 2D-spanning step set.
+    Defined recursively by adding step-vector coordinates at each step. -/
+private noncomputable def accumCoords
+    {S : StepSet 3} {w : Walk 3} {v₁ v₂ : LatPoint 3}
+    (hspan : ∀ s ∈ S, ∃ (a b : ℤ), ∀ j : Fin 3, s j = a * v₁ j + b * v₂ j)
+    (hw : IsStepWalk S w) : ℕ → ℤ × ℤ
+  | 0 => (0, 0)
+  | n + 1 =>
+    let prev := accumCoords hspan hw n
+    (prev.1 + (hspan _ (hw n)).choose,
+     prev.2 + (hspan _ (hw n)).choose_spec.choose)
+
+/-- The accumulated coordinates faithfully represent the walk position:
+    w(n)(j) = w(0)(j) + coordA(n) · v₁(j) + coordB(n) · v₂(j). -/
+private theorem accumCoords_repr
+    {S : StepSet 3} {w : Walk 3} {v₁ v₂ : LatPoint 3}
+    (hspan : ∀ s ∈ S, ∃ (a b : ℤ), ∀ j : Fin 3, s j = a * v₁ j + b * v₂ j)
+    (hw : IsStepWalk S w) (n : ℕ) (j : Fin 3) :
+    w n j = w 0 j + (accumCoords hspan hw n).1 * v₁ j +
+      (accumCoords hspan hw n).2 * v₂ j := by
+  induction n with
+  | zero => simp [accumCoords]
+  | succ n ih =>
+    have hs := (hspan _ (hw n)).choose_spec.choose_spec j
+    have h1 : (accumCoords hspan hw (n + 1)).1 =
+        (accumCoords hspan hw n).1 + (hspan _ (hw n)).choose := rfl
+    have h2 : (accumCoords hspan hw (n + 1)).2 =
+        (accumCoords hspan hw n).2 + (hspan _ (hw n)).choose_spec.choose := rfl
+    linarith
+
 /-- When the step set spans at most a 2D subspace, the conjecture holds
     by reduction to the 2D case (Gerver-Ramsey).
 
-    The proof idea: the walk stays in the 2D affine plane through w(0)
-    spanned by v₁, v₂. Project onto ℤ² via the coordinate map
-    (a, b) ↦ a * v₁ + b * v₂. The projected walk is an S'-walk in ℤ²
-    for a finite step set S'. Apply gerver_ramsey_2d, then lift back.
-
-    Axiom: requires constructing the projection/embedding explicitly and
-    verifying the step-walk and injectivity properties transfer. -/
-axiom erdos193_rank_le_2 :
+    Proof: project the walk onto ℤ² via accumulated step coordinates.
+    The projection is an S'-walk (for a finite projected step set) and
+    injective. Apply gerver_ramsey_2d, then lift collinearity back
+    using collinear_from_2d_coords. -/
+theorem erdos193_rank_le_2 :
     ∀ (S : StepSet 3) (w : Walk 3),
       SpansAtMost2D S →
-      IsStepWalk S w → IsInjective w → HasThreeCollinear w
+      IsStepWalk S w → IsInjective w → HasThreeCollinear w := by
+  intro S w ⟨v₁, v₂, hspan⟩ hw hinj
+  -- Accumulated 2D coordinates along the walk
+  set coords := accumCoords hspan hw with hcoords_def
+  -- Projected walk in ℤ²
+  let w' : Walk 2 := fun n (j : Fin 2) =>
+    if j = 0 then (coords n).1 else (coords n).2
+  -- Project each 3D step vector to its 2D coordinates
+  let projS : LatPoint 3 → LatPoint 2 := fun s =>
+    if hs : s ∈ S then
+      fun (j : Fin 2) =>
+        if j = 0 then (hspan s hs).choose else (hspan s hs).choose_spec.choose
+    else 0
+  let S' : StepSet 2 := S.image projS
+  -- (1) w' is an S'-walk
+  have hw' : IsStepWalk S' w' := by
+    intro n
+    suffices h : (fun j : Fin 2 => w' (n + 1) j - w' n j) =
+        projS (fun k => w (n + 1) k - w n k) by
+      rw [h]; exact Finset.mem_image_of_mem projS (hw n)
+    ext ⟨j, hj⟩; interval_cases j
+    · -- j = 0: difference of first coordinates = step's first coordinate
+      show (coords (n + 1)).1 - (coords n).1 =
+        (if hs : _ ∈ S then fun j : Fin 2 => if j = 0 then _ else _ else 0)
+          ⟨0, by omega⟩
+      simp only [dif_pos (hw n)]
+      rfl
+    · -- j = 1: difference of second coordinates = step's second coordinate
+      show (coords (n + 1)).2 - (coords n).2 =
+        (if hs : _ ∈ S then fun j : Fin 2 => if j = 0 then _ else _ else 0)
+          ⟨1, by omega⟩
+      simp only [dif_pos (hw n), show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, if_false]
+      rfl
+  -- (2) w' is injective (from injectivity of w and the representation)
+  have hinj' : IsInjective w' := by
+    intro i j (hij : w' i = w' j)
+    apply hinj; ext c
+    have hA : (coords i).1 = (coords j).1 := by
+      have := congr_fun hij (⟨0, by omega⟩ : Fin 2); simp only [w', ite_true] at this; exact this
+    have hB : (coords i).2 = (coords j).2 := by
+      have := congr_fun hij (⟨1, by omega⟩ : Fin 2)
+      simp only [w', show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, ite_false] at this
+      exact this
+    linarith [accumCoords_repr hspan hw i c, accumCoords_repr hspan hw j c]
+  -- (3) Apply Gerver-Ramsey to the projected walk in ℤ²
+  obtain ⟨i, j, k, hij, hjk, α, β, hαβ, hcol⟩ := gerver_ramsey_2d S' w' hw' hinj'
+  -- (4) Lift 2D collinearity back to ℤ³ via the coordinate representation
+  exact ⟨i, j, k, hij, hjk,
+    collinear_from_2d_coords (w 0) v₁ v₂
+      (coords i).1 (coords i).2
+      (coords j).1 (coords j).2
+      (coords k).1 (coords k).2
+      α β hαβ
+      (by have := hcol ⟨0, by omega⟩; simp only [w', ite_true] at this; linarith)
+      (by have := hcol ⟨1, by omega⟩
+          simp only [w', show (⟨1, by omega⟩ : Fin 2) ≠ 0 from by decide, ite_false] at this
+          linarith)
+      (w i) (w j) (w k)
+      (accumCoords_repr hspan hw i)
+      (accumCoords_repr hspan hw j)
+      (accumCoords_repr hspan hw k)⟩
 
 /-- The conjecture reduces to the full-rank case: step sets that span
     all of ℤ³. This is the genuinely 3-dimensional case that remains open.
@@ -308,8 +395,9 @@ The conjecture ErdosProblem193 (for ℤ³) has been proved in these cases:
 1. d = 1: trivially, all triples in ℤ¹ are collinear (erdos193_dim1)
 2. Singleton step sets: the walk is a line (erdos193_singleton)
 3. Parallel step sets: all steps ∈ ℤ·v, walk lies on a line (erdos193_parallel)
-4. Rank ≤ 2 step sets: walk in 2D subspace → Gerver-Ramsey (erdos193_rank_le_2, axiom)
+4. Rank ≤ 2 step sets: walk in 2D subspace → project to ℤ² + Gerver-Ramsey (erdos193_rank_le_2, proved)
 
 The open case: step sets spanning all of ℤ³ (full rank 3).
 By erdos193_reduces_to_full_rank, this is the only remaining case.
+The only axiom is gerver_ramsey_2d (the published Gerver-Ramsey theorem for ℤ²).
 -/
