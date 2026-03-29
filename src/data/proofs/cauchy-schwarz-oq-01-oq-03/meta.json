@@ -1,1 +1,51 @@
-{"id":"cauchy-schwarz-oq-01-oq-03","title":"Heisenberg Uncertainty from Complex Cauchy-Schwarz","slug":"cauchy-schwarz-oq-01-oq-03","description":"Derives the Heisenberg uncertainty principle σ_x·σ_p ≥ ℏ/2 from the complex Cauchy-Schwarz inequality. Pure algebraic derivation in abstract inner product spaces.","meta":{"author":"Lean Genius","status":"verified","proofRepoPath":"Proofs/CauchySchwarzOQ01OQ03.lean","tags":["analysis","quantum mechanics","uncertainty principle","Cauchy-Schwarz","inner product spaces"],"badge":"verified","sorries":0,"axiomCount":0,"lineCount":155,"assumptions":"None.","theoremCount":8,"mathlib_version":"4.26.0"},"overview":{"problemStatement":"Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz inequality?","keyInsights":["Cauchy-Schwarz: |⟨f,g⟩|² ≤ ‖f‖²·‖g‖²","Im bound: (Im⟨f,g⟩)² ≤ |⟨f,g⟩|²","Commutator substitution: Im⟨Δx·ψ, Δp·ψ⟩ = ℏ/2","Pure algebraic derivation — works in any complex inner product space"]},"conclusion":{"summary":"YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound."},"leanFile":{"namespace":"CauchySchwarzOQ01OQ03","lineCount":155,"axiomCount":0,"theoremCount":8,"definitionCount":0},"crossReferences":[{"targetId":"cauchy-schwarz-oq-01","relationship":"extends","description":"Derives uncertainty principle from complex Cauchy-Schwarz"}]}
+{
+  "id": "cauchy-schwarz-oq-01-oq-03",
+  "title": "Heisenberg Uncertainty from Complex Cauchy-Schwarz",
+  "slug": "cauchy-schwarz-oq-01-oq-03",
+  "description": "Derives the Heisenberg uncertainty principle σ_x·σ_p ≥ ℏ/2 from the complex Cauchy-Schwarz inequality. Pure algebraic derivation in abstract inner product spaces.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "quantum mechanics",
+      "uncertainty principle",
+      "Cauchy-Schwarz",
+      "inner product spaces"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 155,
+    "assumptions": "Uses Mathlib's Cauchy-Schwarz inequality (inner_mul_le_norm_mul_sq) as the foundation of the derivation chain.",
+    "theoremCount": 7,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz inequality?",
+    "keyInsights": [
+      "Cauchy-Schwarz: |⟨f,g⟩|² ≤ ‖f‖²·‖g‖²",
+      "Im bound: (Im⟨f,g⟩)² ≤ |⟨f,g⟩|²",
+      "Commutator substitution: Im⟨Δx·ψ, Δp·ψ⟩ = ℏ/2",
+      "Pure algebraic derivation — works in any complex inner product space"
+    ]
+  },
+  "conclusion": {
+    "summary": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound."
+  },
+  "leanFile": {
+    "namespace": "CauchySchwarzOQ01OQ03",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extends",
+      "description": "Derives uncertainty principle from complex Cauchy-Schwarz"
+    }
+  ]
+}
