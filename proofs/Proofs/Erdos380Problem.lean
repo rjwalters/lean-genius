@@ -286,3 +286,103 @@ theorem badCount_ge_gpfSquareCount (x : ℕ) :
   simp only [Finset.mem_filter, Finset.mem_Icc]
   rintro ⟨⟨hn2, hnx⟩, hgpf⟩
   exact ⟨⟨by omega, hnx⟩, gpfSquare_in_bad n hn2 hgpf⟩
+
+/- ## Very bad intervals and powerful numbers
+
+Erdős and Graham also asked about "very bad" intervals `[u,v]` where
+`∏{u ≤ m ≤ v} m` is powerful (every prime factor has exponent ≥ 2).
+They conjectured that the count of `n ≤ x` in some very bad interval
+is asymptotic to the count of powerful numbers `≤ x`, which is `∼ c√x`. -/
+
+/-- A positive integer `n > 1` is powerful if every prime factor appears
+    with exponent at least 2: `∀ p prime, p ∣ n → p² ∣ n`. -/
+def IsPowerful (n : ℕ) : Prop :=
+  1 < n ∧ ∀ p : ℕ, p.Prime → p ∣ n → p ^ 2 ∣ n
+
+/-- An interval `[u, v]` is "very bad" if the product `∏{u ≤ m ≤ v} m`
+    is powerful. Stronger than bad: all prime exponents ≥ 2, not just the
+    largest. -/
+def IsVeryBadInterval (u v : ℕ) : Prop :=
+  u ≤ v ∧ IsPowerful ((Finset.Icc u v).prod id)
+
+/-- An integer `n` is in a very bad interval if `∃ u ≤ n ≤ v` with
+    `[u, v]` very bad. -/
+def InVeryBadInterval (n : ℕ) : Prop :=
+  ∃ (u v : ℕ), u ≤ n ∧ n ≤ v ∧ IsVeryBadInterval u v
+
+/-- Count of integers `n ≤ x` in some very bad interval. -/
+noncomputable def veryBadCount (x : ℕ) : ℕ :=
+  ((Finset.Icc 1 x).filter InVeryBadInterval).card
+
+/-- Count of powerful numbers in `[2, x]`. -/
+noncomputable def powerfulCount (x : ℕ) : ℕ :=
+  ((Finset.Icc 2 x).filter IsPowerful).card
+
+/-- Every very bad interval is bad: if the product is powerful then
+    `P² | product` where `P` is the greatest prime factor. -/
+theorem veryBad_is_bad (u v : ℕ) (h : IsVeryBadInterval u v) :
+    IsBadInterval u v := by
+  obtain ⟨huv, hpow⟩ := h
+  have hlt := hpow.1
+  have h2 : 2 ≤ (Finset.Icc u v).prod id := by omega
+  constructor
+  · exact huv
+  · exact hpow.2 _ (gpf_prime _ h2) (gpf_dvd _ h2)
+
+/-- Very bad intervals contain no primes (corollary). -/
+theorem veryBad_interval_no_prime (u v : ℕ) (hvb : IsVeryBadInterval u v) :
+    ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → False :=
+  bad_interval_no_prime_general u v (veryBad_is_bad u v hvb)
+
+/-- A singleton `[n, n]` is very bad iff `n` is powerful (for `n ≥ 2`). -/
+theorem singleton_veryBad_iff (n : ℕ) (hn : 2 ≤ n) :
+    IsVeryBadInterval n n ↔ IsPowerful n := by
+  constructor
+  · intro ⟨_, hpow⟩
+    simp only [Finset.Icc_self, Finset.prod_singleton, id] at hpow
+    exact hpow
+  · intro h
+    exact ⟨le_refl n, by simp only [Finset.Icc_self, Finset.prod_singleton, id]; exact h⟩
+
+/-- Every powerful `n ≥ 2` is in the very bad interval `[n, n]`. -/
+theorem powerful_in_veryBad (n : ℕ) (hn : 2 ≤ n) (h : IsPowerful n) :
+    InVeryBadInterval n :=
+  ⟨n, n, le_refl n, le_refl n, (singleton_veryBad_iff n hn).mpr h⟩
+
+/-- `veryBadCount(x) ≤ badCount(x)`: every very bad interval is bad. -/
+theorem veryBadCount_le_badCount (x : ℕ) : veryBadCount x ≤ badCount x := by
+  unfold veryBadCount badCount
+  apply Finset.card_le_card
+  intro n
+  simp only [Finset.mem_filter, Finset.mem_Icc]
+  rintro ⟨hn, hvb⟩
+  refine ⟨hn, ?_⟩
+  obtain ⟨u, v, hu, hv, hvb⟩ := hvb
+  exact ⟨u, v, hu, hv, veryBad_is_bad u v hvb⟩
+
+/-- `powerfulCount(x) ≤ veryBadCount(x)`: every powerful number is in
+    the singleton very bad interval. -/
+theorem veryBadCount_ge_powerfulCount (x : ℕ) :
+    powerfulCount x ≤ veryBadCount x := by
+  unfold veryBadCount powerfulCount
+  apply Finset.card_le_card
+  intro n
+  simp only [Finset.mem_filter, Finset.mem_Icc]
+  rintro ⟨⟨hn2, hnx⟩, hpow⟩
+  exact ⟨⟨by omega, hnx⟩, powerful_in_veryBad n hn2 hpow⟩
+
+/-- Full chain of counting inequalities:
+    `powerfulCount ≤ veryBadCount ≤ badCount` and `gpfSquareCount ≤ badCount`. -/
+theorem counting_chain (x : ℕ) :
+    powerfulCount x ≤ veryBadCount x ∧
+    veryBadCount x ≤ badCount x ∧
+    gpfSquareCount x ≤ badCount x :=
+  ⟨veryBadCount_ge_powerfulCount x, veryBadCount_le_badCount x, badCount_ge_gpfSquareCount x⟩
+
+/-- Secondary conjecture: `veryBadCount(x) ∼ powerfulCount(x)`.
+    The very bad count should be asymptotic to the powerful number count. -/
+def VeryBadConjecture : Prop :=
+  ∀ (ε : ℚ), 0 < ε →
+    ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
+      0 < powerfulCount x ∧
+        |(veryBadCount x : ℚ) / (powerfulCount x : ℚ) - 1| < ε
