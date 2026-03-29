@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Added general structural theorems — ulam_seq_ge_three, ulam_seq_ne_two, ulam_seq_odd, ulam35_seed_ge_three. Total: 23 theorems, 1 axiom (open conjecture), 0 sorries.",
     "builtItems": [
       "Fixed seed_two_gives_even: added missing Odd p hypothesis (theorem was false for even p)",
       "Replaced deprecated List.Sorted with List.Pairwise (3 occurrences)",
-      "Consolidated imports to import Mathlib"
+      "Consolidated imports to import Mathlib",
+      "ulam_seq_ge_three: all terms ≥ 3 when seed primes ≥ 3 (induction + monotonicity)",
+      "ulam_seq_ne_two: no term = 2, corollary of ge_three",
+      "ulam_seq_odd: all terms odd (prime ≥ 3 → odd, via even/odd dichotomy)",
+      "ulam35_seed_ge_three: {3,5} seed satisfies ≥ 3 condition (by decide)"
     ],
     "insights": [
       "File is well-developed: 19 theorems including computational verification of 8 terms",
@@ -41,7 +45,9 @@
       "The {3,5} Ulam sequence is conjectured to contain all odd primes",
       "Computational step function (ulamNextCandidate, ulamStep, ulamExtend) enables native_decide verification",
       "List.Sorted deprecated in current Mathlib in favor of List.Pairwise",
-      "seed_two_gives_even was incorrectly stated for all p >= 3 - only true for odd p"
+      "seed_two_gives_even was incorrectly stated for all p >= 3 - only true for odd p",
+      "General structural bound: for seeds with all primes ≥ 3, strict monotonicity gives f(n) ≥ 3 for all n",
+      "Oddness preserved: since 2 is the only even prime and all terms are ≥ 3, all terms are odd — this means the parity argument in odd_candidate_from_odd applies to every step"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
