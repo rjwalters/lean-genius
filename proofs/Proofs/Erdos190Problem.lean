@@ -22,7 +22,8 @@ Known Results:
 Key Insight:
 This is a "canonical" Ramsey theory problem. Unlike van der Waerden numbers
 (which only require monochromatic APs), H(k) allows rainbow APs as an
-alternative "win condition". This weakens the requirement, so H(k) ≤ W(k).
+alternative "win condition". However, H(k) ≥ W(k;2): for 2-colorings,
+rainbow k-APs are impossible for k ≥ 3, so canonical = monochromatic.
 
 References:
 - Erdős-Graham [ErGr79, p.333]
@@ -170,8 +171,44 @@ axiom vanDerWaerden_exists (k : ℕ) :
 noncomputable def W (k : ℕ) : ℕ :=
   Nat.find (vanDerWaerden_exists k)
 
-/-- H(k) ≤ W(k) because rainbow APs give an easier win condition. -/
-axiom H_le_W (k : ℕ) (hk : k ≥ 3) : H k ≤ W k
+/-- W(k) ≤ H(k): for 2-colorings, rainbow k-APs (k ≥ 3) are impossible since Bool
+    has only 2 elements. So the canonical condition reduces to monochromatic, meaning
+    H(k) satisfies the van der Waerden property. -/
+theorem W_le_H (k : ℕ) (hk : k ≥ 3) : W k ≤ H k := by
+  -- Show H k satisfies the van der Waerden property, then Nat.find_min'
+  apply Nat.find_min' (vanDerWaerden_exists k)
+  intro χ
+  -- Get canonical AP from H_spec
+  obtain ⟨f, hAP, hColor⟩ := H_spec k (H k) le_rfl Bool χ
+  obtain ⟨a, d, hd, hf⟩ := hAP
+  -- Provide the Finset and properties
+  refine ⟨image f univ, ?_, ?_⟩
+  · -- isArithmeticProgression (s.image Fin.val) k
+    refine ⟨a, d, hd, ?_⟩
+    rw [image_image]
+    ext x
+    simp only [mem_image, mem_univ, true_and, mem_range]
+    constructor
+    · rintro ⟨i, rfl⟩; exact ⟨i.val, i.isLt, hf i⟩
+    · rintro ⟨i, hi, rfl⟩; exact ⟨⟨i, hi⟩, hf ⟨i, hi⟩⟩
+  · -- isMonochromatic χ s (rainbow is impossible for Bool with k ≥ 3)
+    rcases hColor with hMono | hRain
+    · exact hMono
+    · -- Rainbow: s.card = (s.image χ).card, but s.card ≥ 3 and (s.image χ).card ≤ 2
+      exfalso
+      unfold isRainbow at hRain
+      have hf_inj : Function.Injective f := by
+        intro i j hij
+        have := congr_arg Fin.val hij
+        rw [hf i, hf j] at this
+        exact Fin.ext (by omega)
+      have hs : (image f univ).card = k := by
+        rw [card_image_of_injective _ hf_inj, card_univ, Fintype.card_fin]
+      have himg : ((image f univ).image χ).card ≤ 2 := by
+        calc ((image f univ).image χ).card
+            ≤ (univ : Finset Bool).card := card_le_card (subset_univ _)
+          _ = 2 := by decide
+      rw [hs] at hRain; omega
 
 /-- H(k) ≥ k for k ≥ 1: a k-term AP a, a+d, ..., a+(k-1)d with d ≥ 1
     requires N ≥ k (since the max value a+(k-1)d ≥ k-1).
@@ -293,7 +330,7 @@ theorem H_pos (k : ℕ) (hk : k ≥ 1) : H k > 0 := by
 **Known:**
 - H(k) exists (via Szemerédi's theorem)
 - H(k)^{1/k} → ∞
-- H(k) ≤ W(k) (van der Waerden number)
+- W(k) ≤ H(k) (proved: canonical reduces to monochromatic for 2-colorings)
 
 **Key Challenge:**
 Determining whether the growth rate is super-exponential in a
@@ -304,9 +341,9 @@ theorem erdos_190_summary :
     (∀ k, k ≥ 1 → H k > 0) ∧
     -- H(k)^{1/k} → ∞
     (∀ M : ℕ, ∃ K, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) > M) ∧
-    -- H(k) ≤ W(k) for k ≥ 3
-    (∀ k, k ≥ 3 → H k ≤ W k) :=
-  ⟨H_pos, H_root_to_infinity, H_le_W⟩
+    -- W(k) ≤ H(k) for k ≥ 3
+    (∀ k, k ≥ 3 → W k ≤ H k) :=
+  ⟨H_pos, H_root_to_infinity, W_le_H⟩
 
 /-- The main conjecture (OPEN): H(k)^{1/k}/k → ∞, i.e., H(k) grows
     faster than k^k. This follows from erdos_190 axiom. -/
