@@ -354,6 +354,37 @@ theorem consecutiveGap_le_generalGap (n : ℕ) {i j k : ℕ}
         have := generalGap_add_mid n hik (le_of_lt hkj) hj
         omega
 
+/- ## Per-Pair Bounds -/
+
+/-- Index bound: each pair's contribution 1/(d_j - d_i) is bounded by 1/(j - i),
+    since divisors are strictly increasing (grow at least 1 per step).
+    This is the key step toward showing allPairsSum ≤ Σ_{s=1}^{τ-1} (τ-s)/s. -/
+theorem reciprocal_gap_index_bound (n : ℕ) {i j : ℕ} (hn : n > 1) (hij : i < j)
+    (hj : j < numDivisors n) :
+    (1 : ℝ) / (generalGap n i j : ℝ) ≤ 1 / ((j - i : ℕ) : ℝ) := by
+  have hge := generalGap_ge_diff n (le_of_lt hij) hj
+  have hgap_pos := generalGap_pos n i j hn hij hj
+  have hji_pos : (0 : ℕ) < j - i := by omega
+  rw [div_le_div_iff (by exact_mod_cast hgap_pos : (0 : ℝ) < (generalGap n i j : ℝ))
+      (by exact_mod_cast hji_pos : (0 : ℝ) < ((j - i : ℕ) : ℝ))]
+  simp only [one_mul]
+  exact_mod_cast hge
+
+/-- Consecutive bound: each pair's contribution 1/(d_j - d_i) is bounded by the
+    reciprocal of the first consecutive gap 1/(d_{i+1} - d_i), since general gaps
+    dominate consecutive gaps. Combined with the index bound, these give:
+    1/(d_j - d_i) ≤ min(1/(j-i), 1/g_i). -/
+theorem reciprocal_gap_consecutive_bound (n : ℕ) {i j : ℕ} (hn : n > 1) (hij : i < j)
+    (hj : j < numDivisors n) :
+    (1 : ℝ) / (generalGap n i j : ℝ) ≤ 1 / (consecutiveGap n i : ℝ) := by
+  have hge := gap_lower_bound n i j hij hj
+  have hgap_pos := generalGap_pos n i j hn hij hj
+  have hcons_pos := consecutiveGap_pos n i hn (by omega : i + 1 < numDivisors n)
+  rw [div_le_div_iff (by exact_mod_cast hgap_pos : (0 : ℝ) < (generalGap n i j : ℝ))
+      (by exact_mod_cast hcons_pos : (0 : ℝ) < (consecutiveGap n i : ℝ))]
+  simp only [one_mul]
+  exact_mod_cast hge
+
 /- ## Connections -/
 
 /-- The harmonic sum over divisors: σ_{-1}(n) = Σ_{d|n} 1/d. -/
