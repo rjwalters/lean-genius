@@ -57,9 +57,9 @@
       "optimalPackingDensity definition: π/(2√3)",
       "diameter_asymptotic axiom: relation to packing"
     ],
-    "axiomCount": 6,
-    "lineCount": 259,
-    "assumptions": "6 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "axiomCount": 4,
+    "lineCount": 266,
+    "assumptions": "4 axioms: h_pos (existence of optimal configs), h_2/h_3 (small case values), diameter_asymptotic (packing relation). h is now a noncomputable def via Nat.card."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erdős Problem #99. Even very weak versions of the conjecture remain open.",
@@ -260,8 +260,8 @@
       "Finset"
     ],
     "namespace": "Erdos103",
-    "lineCount": 259,
-    "axiomCount": 6,
+    "lineCount": 266,
+    "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 17
   }

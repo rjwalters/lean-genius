@@ -47,14 +47,9 @@ noncomputable def maxIrreducibleSize (N : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #319**: determine the asymptotic growth of c(N).
-    Conjectured to be Θ(N). The best known lower bound is (1 − 1/e + o(1))N. -/
-axiom erdos_319_conjecture :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
-
 /- ## Known Results -/
+-- NOTE: The conjecture c(N) ≥ (1 − 1/e + o(1))N was identical to
+-- Adenwalla's lower bound below, so it was removed as redundant.
 
 /-- **Adenwalla Lower Bound**: c(N) ≥ (1 − 1/e + o(1))N.
     Construction: take B ⊆ [(1/e − o(1))N, N] with Σ_{b ∈ B} 1/b = 1,

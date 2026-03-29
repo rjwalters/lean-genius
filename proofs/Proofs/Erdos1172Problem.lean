@@ -44,8 +44,17 @@ noncomputable def omegaOrd : Ordinal.{0} := ω
 
 /- ## Part II: Partition Relation -/
 
-/-- The unbalanced ordinal partition relation α → (β, γ)². -/
-axiom OrdPartitionRel (α β γ : Ordinal.{0}) : Prop
+/-- The unbalanced ordinal partition relation α → (β, γ)²:
+    for every 2-coloring of pairs below α, there exists either
+    a 0-homogeneous set of order type β or a 1-homogeneous set
+    of order type γ. A homogeneous set of order type δ is given
+    by a strictly monotone embedding f : [0,δ) → [0,α). -/
+def OrdPartitionRel (α β γ : Ordinal.{0}) : Prop :=
+  ∀ c : Ordinal → Ordinal → Fin 2,
+    (∃ f : Ordinal → Ordinal, StrictMono f ∧ (∀ i, i < β → f i < α) ∧
+      ∀ i j, i < j → j < β → c (f i) (f j) = 0) ∨
+    (∃ g : Ordinal → Ordinal, StrictMono g ∧ (∀ i, i < γ → g i < α) ∧
+      ∀ i j, i < j → j < γ → c (g i) (g j) = 1)
 
 /-- The balanced partition relation: α → (β)₂² means α → (β, β)². -/
 def BalancedPartitionRel (α β : Ordinal.{0}) : Prop :=
@@ -115,8 +124,18 @@ theorem two_lt_omega : (2 : Ordinal) < omegaOrd := by
 
 /- ## Part VI: Monotonicity -/
 
-axiom partition_mono_target (α β γ β' γ' : Ordinal.{0}) (hβ : β' ≤ β) (hγ : γ' ≤ γ)
-    (hp : OrdPartitionRel α β γ) : OrdPartitionRel α β' γ'
+/-- Monotonicity: if α → (β, γ)² and β' ≤ β, γ' ≤ γ, then α → (β', γ')².
+    Proved by restricting the homogeneous embedding to a smaller domain. -/
+theorem partition_mono_target (α β γ β' γ' : Ordinal.{0}) (hβ : β' ≤ β) (hγ : γ' ≤ γ)
+    (hp : OrdPartitionRel α β γ) : OrdPartitionRel α β' γ' := by
+  intro c
+  rcases hp c with ⟨f, hf_mono, hf_bound, hf_color⟩ | ⟨g, hg_mono, hg_bound, hg_color⟩
+  · left
+    exact ⟨f, hf_mono, fun i hi => hf_bound i (lt_of_lt_of_le hi hβ),
+      fun i j hij hj => hf_color i j hij (lt_of_lt_of_le hj hβ)⟩
+  · right
+    exact ⟨g, hg_mono, fun i hi => hg_bound i (lt_of_lt_of_le hi hγ),
+      fun i j hij hj => hg_color i j hij (lt_of_lt_of_le hj hγ)⟩
 
 /- ## Part VII: Known Results -/
 
