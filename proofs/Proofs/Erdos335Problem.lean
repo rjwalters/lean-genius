@@ -280,3 +280,36 @@ theorem Sumset_singleton (a b : ℕ) :
   constructor
   · rintro ⟨x, rfl, y, rfl, rfl⟩; rfl
   · intro h; exact ⟨a, rfl, b, rfl, h⟩
+
+/- ## Sumset Identity and Further Properties -/
+
+/-- {0} is a right identity for sumsets: A + {0} = A. -/
+theorem Sumset_zero_right (A : Set ℕ) : Sumset A {0} = A := by
+  ext n; constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩
+    rw [Set.mem_singleton_iff] at hb; subst hb; simpa
+  · intro hn; exact ⟨n, hn, 0, rfl, by omega⟩
+
+/-- {0} is a left identity for sumsets: {0} + A = A. -/
+theorem Sumset_zero_left (A : Set ℕ) : Sumset {0} A = A := by
+  rw [Sumset_comm]; exact Sumset_zero_right A
+
+/-- Density additivity composes along a chain:
+    if d(A+B) = d(A)+d(B) and d((A+B)+C) = d(A+B)+d(C),
+    then d(A+B+C) = d(A)+d(B)+d(C). -/
+theorem density_additive_chain (A B C : Set ℕ)
+    (h1 : DensityAdditive A B) (h2 : DensityAdditive (Sumset A B) C) :
+    asympDensity (Sumset (Sumset A B) C) =
+      asympDensity A + asympDensity B + asympDensity C := by
+  rw [h2.2.2.2, h1.2.2.2]
+
+/-- In a density-additive pair, d(B) ≤ 1 - d(A). -/
+theorem density_additive_complement_bound (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity B ≤ 1 - asympDensity A := by
+  have := additive_sum_le_one A B h
+  linarith
+
+/-- The double sumset A + A has density 2·d(A) when density-additive with itself. -/
+theorem density_double_sumset (A : Set ℕ) (h : DensityAdditive A A) :
+    asympDensity (Sumset A A) = 2 * asympDensity A := by
+  rw [h.2.2.2]; ring
