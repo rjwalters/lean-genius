@@ -156,6 +156,17 @@ def Question2 : Prop :=
 -- 2-cube example: {a, a+b₁, a+b₂, a+b₁+b₂} all squares
 -- This means finding a, b₁, b₂ with all four being squares
 
+/-- Every element of a cube vertex set is at least a (the base). -/
+theorem cubeVertices_ge_base {k : ℕ} {a : ℕ} {b : Fin k → ℕ} {n : ℕ}
+    (hn : n ∈ CubeVertices k a b) : a ≤ n := by
+  obtain ⟨S, rfl⟩ := hn
+  exact Nat.le_add_right a _
+
+/-- The base a is always in the cube vertex set (corresponding to S = ∅). -/
+theorem cubeVertices_mem_base {k : ℕ} {a : ℕ} {b : Fin k → ℕ} :
+    a ∈ CubeVertices k a b :=
+  ⟨∅, by simp⟩
+
 /-
 # Part 5: Relationship Between Questions
 
@@ -265,6 +276,27 @@ noncomputable def numSquaresUpTo (n : ℕ) : ℕ :=
 
 -- Asymptotic: numSquaresUpTo(n) ~ √n
 -- This sparsity is why finding structures in squares is hard
+
+/-- The number of perfect squares up to n is at most √n + 1. -/
+theorem numSquaresUpTo_le (n : ℕ) : numSquaresUpTo n ≤ Nat.sqrt n + 1 := by
+  unfold numSquaresUpTo
+  calc (Finset.filter IsSquare (Finset.range (n + 1))).card
+      ≤ (Finset.range (Nat.sqrt n + 1)).card := by
+        apply Finset.card_le_card_of_injOn (fun m => Nat.sqrt m) (fun m hm => by
+          rw [Finset.mem_filter] at hm
+          rw [Finset.mem_range]
+          obtain ⟨k, hk⟩ := hm.2
+          rw [hk, Nat.sqrt_sq]
+          rw [Finset.mem_range] at hm
+          have : k^2 ≤ n := by omega
+          exact Nat.lt_succ_of_le (Nat.sqrt_le_sqrt this))
+          (fun a ha b hb hab => by
+            rw [Finset.mem_filter] at ha hb
+            obtain ⟨ka, hka⟩ := ha.2
+            obtain ⟨kb, hkb⟩ := hb.2
+            rw [hka, hkb, Nat.sqrt_sq, Nat.sqrt_sq] at hab
+            omega)
+    _ = Nat.sqrt n + 1 := Finset.card_range _
 
 -- Quasi-progressions of length k need ~k elements in interval of length ~k*d
 -- If d is small, interval has ~√(k*d) squares, need k of them

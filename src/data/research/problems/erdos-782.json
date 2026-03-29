@@ -37,12 +37,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3 axioms (all appropriate: no_4AP deep but provable via FLT42, other 2 are deep). 0 sorries. Well-formalized.",
+    "progressSummary": "PROGRESS: Added 3 structural lemmas (square counting bound, cube vertex properties). no_4AP axiom hunt deferred (50-100 line FLT4 reduction). File: 360 lines, 0 sorries, 3 axioms.",
     "builtItems": [
       "squares_contain_3AP: proved via explicit construction a=1, d=24, witnesses 1²=1, 5²=25, 7²=49",
       "Removed trivial erdos_782_status string definition",
       "Updated summary with correct proved/axiom counts",
-      "Graduated to completed (iteration 2)"
+      "Graduated to completed (iteration 2)",
+      "numSquaresUpTo_le: proved |squares ≤ n| ≤ √n + 1 via injection into range",
+      "cubeVertices_ge_base: proved base a is lower bound for all cube vertices",
+      "cubeVertices_mem_base: proved base a ∈ CubeVertices (S = ∅)"
     ],
     "insights": [
       "Actual axiom count is 3 (not 4): previous session eliminated 1",
