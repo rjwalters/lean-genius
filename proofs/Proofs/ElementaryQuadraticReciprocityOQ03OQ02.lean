@@ -146,15 +146,24 @@ theorem kronecker_neg4_values :
 -- ============================================================
 
 /-- The Kronecker symbol is completely multiplicative in the first argument:
-    (ab/n) = (a/n)(b/n).
-    Axiomatized: the proof requires case analysis on n = 0, -1, 2, odd. -/
-axiom kronecker_mul_left (a b n : ℤ) :
+    (ab/n) = (a/n)(b/n), provided a*b ≠ 0 or |n| ≤ 1.
+
+    **Bug fix**: The original unconditional statement was FALSE.
+    Counterexample: a = -3, b = 0, n = -1.
+      LHS: kronecker(-3*0)(-1) = kroneckerNeg1(0) = 1
+      RHS: kronecker(-3)(-1) * kronecker(0)(-1) = (-1)*1 = -1
+    This is because kroneckerNeg1(0) = 1 but the product -1 * 1 = -1.
+    Fix: require a * b ≠ 0 (standard for multiplicative characters). -/
+axiom kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
     kronecker (a * b) n = kronecker a n * kronecker b n
 
 /-- The Kronecker symbol is completely multiplicative in the second argument:
-    (a/mn) = (a/m)(a/n).
-    This is the key extension property that unifies Legendre, Jacobi, and Kronecker. -/
-axiom kronecker_mul_right (a m n : ℤ) :
+    (a/mn) = (a/m)(a/n), provided m * n ≠ 0 or |a| ≤ 1.
+
+    Same edge case as kronecker_mul_left: kroneckerNeg1(0) = 1 causes
+    issues when one of m, n is -1 and the other introduces a 0.
+    Fix: require m * n ≠ 0. -/
+axiom kronecker_mul_right (a m n : ℤ) (hmn : m * n ≠ 0) :
     kronecker a (m * n) = kronecker a m * kronecker a n
 
 -- ============================================================
