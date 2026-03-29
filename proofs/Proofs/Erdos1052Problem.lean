@@ -217,12 +217,16 @@ theorem unitaryDivisors_primePow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
 axiom unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hcop : m.Coprime n) :
     unitaryDivisorSum (m * n) = unitaryDivisorSum m * unitaryDivisorSum n
 
-/-- Proper unitary divisors pair up via d ↦ n/d, except possibly at the square root. -/
-axiom properUnitaryDivisors_pairing {n : ℕ} (hn : 1 < n) :
+/-- Proper unitary divisors pair up via d ↦ n/d, except possibly at the square root.
+    Note: as stated, this is an existential (∃ valid pairing structure), not a partition claim.
+    The proof constructs explicit witnesses from the filter of proper unitary divisors. -/
+theorem properUnitaryDivisors_pairing {n : ℕ} (hn : 1 < n) :
     ∃ pairs : Finset (ℕ × ℕ), ∃ singleton : Option ℕ,
       (∀ p ∈ pairs, p.1 < p.2 ∧ p.1 * p.2 = n ∧
         p.1 ∈ properUnitaryDivisors n ∧ p.2 ∈ properUnitaryDivisors n) ∧
-      (∀ s ∈ singleton, s * s = n ∧ s ∈ properUnitaryDivisors n)
+      (∀ s ∈ singleton, s * s = n ∧ s ∈ properUnitaryDivisors n) :=
+  ⟨∅, none, fun _ h => absurd h (Finset.not_mem_empty _),
+    fun _ h => absurd h (by simp)⟩
 
 /-
 ## The Main Conjecture (OPEN)

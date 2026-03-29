@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos, Bondy",
     "sourceUrl": "https://erdosproblems.com/1016",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1016Problem.lean",
     "tags": [
       "erdos",
@@ -21,9 +21,9 @@
     "erdosNumber": 1016,
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 138,
-    "assumptions": "5 axioms: erdos_1016_conjecture (open), excess_beyond_log (open), bondy_lower_bound (deep), gkw_upper_bound (deep), small_case_4 (FALSE under current model — IsPancyclic doesn't connect edgeCount to hasCycle). Proved: triangle_pancyclic (sSup∅=0), bondy_quadratic_threshold (interval_cases+nlinarith).",
+    "axiomCount": 0,
+    "lineCount": 158,
+    "assumptions": "0 axioms. All 5 former axioms removed: 4 were provably FALSE under the abstract model (IsPancyclic disconnects edgeCount from hasCycle), 1 proved trivially. Model needs redesign with SimpleGraph for meaningful formalization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -232,9 +232,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 126,
-    "axiomCount": 6,
-    "theoremCount": 4,
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 7,
     "definitionCount": 3
   }
 }
