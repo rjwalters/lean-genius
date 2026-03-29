@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Fully formalized. 3 axioms (2 open conjectures + BHP 2001 deep result), 0 sorries. Gallery entries verified.",
+    "builtItems": [
+      "Verified: Erdos1138Problem.lean — 2 axioms (open), 20 theorems, 0 sorries",
+      "Verified: Erdos1138OQ03.lean — 1 axiom (BHP), 12 theorems, 0 sorries",
+      "Gallery entries erdos-1138 and erdos-1138-oq-03 both correct"
+    ],
+    "insights": [
+      "erdos_1138 and cramer_conjecture are open conjectures — axioms are appropriate",
+      "baker_harman_pintz (2001) is a deep unconditional result not in Mathlib — axiom is appropriate",
+      "OQ03 file proves Bertrand-based gap bounds, monotonicity, Cramér sublinearity from scratch",
+      "All 3 sorries from OQ03 have been resolved in prior sessions"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1138 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
@@ -63,7 +72,7 @@
       "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1138OQ03.lean"
     },
