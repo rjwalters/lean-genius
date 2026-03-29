@@ -17,21 +17,14 @@
   Axioms: 1 (alternating harmonic series, same as parent OQ03)
   Extends: TriangularReciprocalAlternatingOQ03.lean
 -/
-import Mathlib
+import Proofs.TriangularReciprocalAlternatingOQ03
 
 namespace AlternatingTriangularReciprocals.Generalized
 
 open Finset BigOperators Filter Topology Real
+open AlternatingTriangularReciprocals (alternating_harmonic_hasSum shifted_alternating_hasSum)
 
--- ═══════════════════════════════════════════════════
--- Part I: Alternating Harmonic Series (Axiom)
--- ═══════════════════════════════════════════════════
-
-/-- The alternating harmonic series: ∑_{n=1}^∞ (-1)^{n+1}/n = ln(2).
-    Axiomatized (boundary convergence of Mercator series requires Abel's theorem). -/
-axiom alternating_harmonic_hasSum :
-    HasSum (fun n : ℕ => if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ))
-      (Real.log 2)
+-- alternating_harmonic_hasSum imported from TriangularReciprocalAlternatingOQ03.lean
 
 -- ═══════════════════════════════════════════════════
 -- Part II: Alternating Harmonic Partial Sums
