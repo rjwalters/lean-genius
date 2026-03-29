@@ -25,7 +25,15 @@
     "axiomCount": 6,
     "lineCount": 233,
     "assumptions": "6 axioms: ramseyNumber (definition), ramsey_monotone_right, ramsey_recurrence, ramsey_k2, ramsey_symm, R3_lower_bound. 2 sorries in conditional general-k rate theorem (growth ratio bound and 3-factor combination).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "leanFiles": [
+      {
+        "sorryCount": 2
+      }
+    ],
+    "originalContributions": [
+      "Audit: 2 actual sorries in conditional_rate_general_k (Bernoulli bound + ratio decomposition). Main results sorry-free."
+    ]
   },
   "crossReferences": [
     {
