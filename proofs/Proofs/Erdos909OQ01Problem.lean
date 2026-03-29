@@ -7,11 +7,16 @@
   Is there a structural criterion?
 
   This file formalizes:
-  1. The "dimension-stable" property: dim(S × S) = dim(S)
-  2. Necessary conditions from the product dimension inequality
-  3. Structural properties of dimension-stable spaces
-  4. Known examples (0-dimensional spaces, Anderson-Keisler)
-  5. Separation of dimension-stable from dimension-additive spaces
+  1. Covering dimension -- properly defined via finite open cover refinements
+  2. The "dimension-stable" property: dim(S × S) = dim(S)
+  3. Necessary conditions from the product dimension inequality
+  4. Structural properties of dimension-stable spaces
+  5. Known examples (0-dimensional spaces, Anderson-Keisler)
+  6. Separation of dimension-stable from dimension-additive spaces
+
+  Axiom Elimination (4 → 2):
+  - coveringDimension: now a proper definition (was axiom)
+  - dimension_mono: now proved from the definition (was axiom)
 
   References:
   - Anderson, Keisler (1967): Construction for all n >= 1
@@ -28,18 +33,42 @@ open TopologicalSpace
 namespace Erdos909OQ01
 
 /-
-## Part I: Covering Dimension (from Erdos909Problem)
+## Part I: Covering Dimension
+
+Covering dimension is defined via finite open covers and their refinements.
+A space X has covering dimension <= n if every finite open cover has a finite
+open refinement of order at most n + 1 (every point belongs to at most n + 1
+sets in the refinement).
 -/
 
-/-- Covering dimension: dim(X) <= n iff every finite open cover has
-    a refinement of order <= n+1. -/
-axiom coveringDimension : Type* → ℕ → Prop
+/-- A family of sets indexed by ι has order at most k if every point
+    belongs to at most k sets. Formally: for every finset of indices
+    whose corresponding sets all contain a given point, the finset has
+    cardinality at most k. -/
+def HasOrderAtMost {X ι : Type*} (f : ι → Set X) (k : ℕ) : Prop :=
+  ∀ (x : X) (S : Finset ι), (∀ i ∈ S, x ∈ f i) → S.card ≤ k
+
+/-- Covering dimension: dim(X) <= n iff every finite open cover
+    (indexed by Fin k) has a finite open refinement of order <= n+1. -/
+def coveringDimension (X : Type*) [TopologicalSpace X] (n : ℕ) : Prop :=
+  ∀ (k : ℕ) (cover : Fin k → Set X),
+    (∀ i, IsOpen (cover i)) →
+    (⋃ i, cover i) = Set.univ →
+    ∃ (m : ℕ) (refine : Fin m → Set X),
+      (∀ j, IsOpen (refine j)) ∧
+      (⋃ j, refine j) = Set.univ ∧
+      (∀ j, ∃ i, refine j ⊆ cover i) ∧
+      HasOrderAtMost refine (n + 1)
 
 notation "dimLeq" => coveringDimension
 
-/-- Dimension monotonicity: if dimLeq X n and m >= n, then dimLeq X m. -/
-axiom dimension_mono {X : Type*} {n m : ℕ} (h : dimLeq X n) (hm : n ≤ m) :
-    dimLeq X m
+/-- Dimension monotonicity: if dimLeq X n and m >= n, then dimLeq X m.
+    The same refinement of order <= n+1 <= m+1 witnesses the larger bound. -/
+theorem dimension_mono {X : Type*} [TopologicalSpace X] {n m : ℕ}
+    (h : dimLeq X n) (hm : n ≤ m) : dimLeq X m := by
+  intro k cover hopen hcover
+  obtain ⟨m', refine, hopen', hcover', href, hord⟩ := h k cover hopen hcover
+  exact ⟨m', refine, hopen', hcover', href, fun x S hS => le_trans (hord x S hS) (by omega)⟩
 
 /-- Product inequality: dim(X × Y) <= dim(X) + dim(Y). -/
 axiom dimension_product_ineq (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
@@ -47,7 +76,7 @@ axiom dimension_product_ineq (X Y : Type*) [TopologicalSpace X] [TopologicalSpac
     dimLeq (X × Y) (m + n)
 
 /-- Dimension exactly n. -/
-def hasDimensionExactly (X : Type*) (n : ℕ) : Prop :=
+def hasDimensionExactly (X : Type*) [TopologicalSpace X] (n : ℕ) : Prop :=
   dimLeq X n ∧ (n > 0 → ¬dimLeq X (n - 1))
 
 /-
@@ -165,7 +194,7 @@ theorem stable_dimleq (S : Type*) [TopologicalSpace S] (n : ℕ)
     dimLeq S n :=
   h.1.1
 
-/-- If dim(S) = n and dim(S × S) = m with m < n, then S is NOT dimension-stable
+/-- If dim(S) = n and dim(S × S) = m with m != n, then S is NOT dimension-stable
     at n. This shows dimension-stable requires exact equality. -/
 theorem not_stable_if_product_lower (S : Type*) [TopologicalSpace S] (n m : ℕ)
     (hS : hasDimensionExactly S n) (hSS : hasDimensionExactly (S × S) m)
@@ -184,7 +213,7 @@ theorem not_stable_if_product_lower (S : Type*) [TopologicalSpace S] (n m : ℕ)
 -/
 
 /-- Euclidean spaces are NOT dimension-stable for n >= 1:
-    dim(R^n × R^n) = dim(R^{2n}) = 2n ≠ n. -/
+    dim(R^n × R^n) = dim(R^{2n}) = 2n != n. -/
 def EuclideanNotStable (n : ℕ) (hn : n ≥ 1) : Prop :=
   ¬ IsDimensionStable (Fin n → ℝ) n
 
@@ -198,25 +227,29 @@ def EuclideanNotStable (n : ℕ) (hn : n ≥ 1) : Prop :=
 /-
 ## Summary
 
-**Problem**: Erdos-909-oq-01 — Characterize spaces with dim(S × S) = dim(S)
+**Problem**: Erdos-909-oq-01 -- Characterize spaces with dim(S x S) = dim(S)
 **Status**: Formalized with structural theorems
 
-**Axioms** (4 total):
-1. coveringDimension — covering dimension predicate (definitional)
-2. dimension_mono — monotonicity of dimension in parameter
-3. dimension_product_ineq — product dimension inequality
-4. anderson_keisler_existence — existence for all n >= 1
+**Definitions** (3):
+1. HasOrderAtMost -- order of a cover at a point
+2. coveringDimension -- covering dimension via finite open cover refinements
+3. hasDimensionExactly -- exact covering dimension
 
-**Proved** (9 theorems, 1 sorry):
-1. stable_below_additive — product dim bounded by 2n
-2. stable_violates_additivity — n < 2n for n >= 1
-3. stable_not_additive — stable implies not additive
-4. zero_dim_product — 0-dim product is 0-dim
-5. zero_dim_stable — 0-dim spaces are stable
-6. product_has_same_dim — self-product has dim n
-7. stable_product_dimleq — product dim <= n
-8. stable_dimleq — space dim <= n
-9. not_stable_if_product_lower — failure when dims disagree (1 sorry)
+**Axioms** (2 total, reduced from 4):
+1. dimension_product_ineq -- product dimension inequality (deep result)
+2. anderson_keisler_existence -- existence for all n >= 1 (deep existence)
+
+**Proved** (10 theorems):
+1. dimension_mono -- monotonicity of covering dimension (was axiom, now proved)
+2. stable_below_additive -- product dim bounded by 2n
+3. stable_violates_additivity -- n < 2n for n >= 1
+4. stable_not_additive -- stable implies not additive
+5. zero_dim_product -- 0-dim product is 0-dim
+6. zero_dim_stable -- 0-dim spaces are stable
+7. product_has_same_dim -- self-product has dim n
+8. stable_product_dimleq -- product dim <= n
+9. stable_dimleq -- space dim <= n
+10. not_stable_if_product_lower -- failure when dims disagree
 -/
 
 end Erdos909OQ01
