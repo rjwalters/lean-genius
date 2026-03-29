@@ -30,6 +30,7 @@
   - CayleyHamiltonMinpolyOQ05.lean: K-algebra minpoly reduction
 -/
 import Mathlib
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01
 
 noncomputable section
 
@@ -310,11 +311,8 @@ def IsNonderogatoryMatrix (M : Matrix (Fin n) (Fin n) K) : Prop :=
     structure theorem, but requires more infrastructure. -/
 theorem matrix_nonderogatory_implies_module [Infinite K] (hn : 0 < n)
     (M : Matrix (Fin n) (Fin n) K) (hM : IsNonderogatoryMatrix M) :
-    ∃ v, IsCyclicVectorMatrix M v := by
-  -- This is proved in CayleyHamiltonMinpolyOQ05OQ01.lean
-  -- (nonderogatory_has_cyclic_vector) using union avoidance
-  -- over the finitely many irreducible factors of the minimal polynomial.
-  sorry
+    ∃ v, IsCyclicVectorMatrix M v :=
+  NonderogatoryComplete.nonderogatory_has_cyclic_vector M hM
 
 end FiniteDimensional
 
@@ -322,25 +320,25 @@ end FiniteDimensional
 -- SECTION IX: Invariant Factor Decomposition (Stated)
 -- ============================================================
 
-/-- The structure theorem for finitely generated torsion modules over K[X]
-    decomposes V into cyclic summands. The number of summands (invariant
-    factors) determines whether T has a cyclic vector.
+/-- The minimal polynomial is the unique monic polynomial of smallest
+    degree annihilating T. In particular, no nonzero polynomial of
+    smaller degree can annihilate T. This is a consequence of the
+    minimality property, not of the structure theorem.
 
-    In the finite-dimensional case:
-    - V ≅ ⊕ᵢ K[X]/(fᵢ) with f₁ | f₂ | ⋯ | fᵣ
-    - minpoly T = fᵣ, charpoly T = ∏ fᵢ
-    - T nonderogatory ⟺ r = 1 ⟺ cyclic K[X]-module
-
-    In the infinite-dimensional case with countably many invariant factors:
-    - V ≅ ⊕ᵢ K[X]/(fᵢ) with f₁ | f₂ | ⋯ (countable)
-    - T has cyclic vector ⟺ decomposition has single factor
-    - Construction of cyclic vector may require countable union avoidance
-      (needs uncountable base field for constructive existence) -/
-theorem structure_theorem_cyclic_iff [Module.Finite K V]
+    Note: The original statement here claimed this was equivalent to
+    IsNonderogatory, but the RHS holds for ALL integral endomorphisms
+    (by minimality of minpoly), not just nonderogatory ones. The
+    correct characterization of nonderogatory requires the structure
+    theorem: T is nonderogatory iff V has a single invariant factor,
+    equivalently iff finrank K V = (minpoly K T).natDegree. -/
+theorem minpoly_minimal_degree [Module.Finite K V]
     (T : Module.End K V) (hT : IsIntegral K T) :
-    IsNonderogatory T ↔ ∀ p : K[X], p ≠ 0 → p.natDegree < (minpoly K T).natDegree →
+    ∀ p : K[X], p ≠ 0 → p.natDegree < (minpoly K T).natDegree →
       aeval T p ≠ 0 := by
-  sorry -- Requires structure theorem for f.g. modules over PIDs
+  intro p hp hdeg haeval
+  have hdvd : minpoly K T ∣ p := minpoly.dvd K T haeval
+  have hle := Polynomial.natDegree_le_of_dvd hdvd hp
+  omega
 
 end NonderogatoryModule
 
