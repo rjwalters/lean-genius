@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: Extended to 14 proved theorems (from 9). Added parallel step sets, dimension reduction framework. File: 159→267 lines. Axiom count: 2 (gerver_ramsey_2d + erdos193_rank_le_2). 0 sorries.",
+    "progressSummary": "COMPLETED: Proved erdos193_rank_le_2 from gerver_ramsey_2d. 0 sorries, 1 axiom (was 2). Only remaining axiom: gerver_ramsey_2d (deep published result).",
     "builtItems": [
       "collinear_perm12: swap first two points in collinearity (line 94)",
       "collinear_dim1: all triples in ℤ¹ are collinear (line 109)",
@@ -43,7 +43,8 @@
       "parallel_step_collinear: collinearity for non-degenerate parallel walks (line 197)",
       "erdos193_parallel: HasThreeCollinear for parallel step walks (line 206)",
       "SpansAtMost2D: step set spans ≤ 2D subspace (line 215)",
-      "erdos193_reduces_to_full_rank: reduction theorem — conjecture reduces to rank-3 case (line 234)"
+      "erdos193_reduces_to_full_rank: reduction theorem — conjecture reduces to rank-3 case (line 234)",
+      "PROVED erdos193_rank_le_2 from gerver_ramsey_2d (2→1 axioms, +88 lines)"
     ],
     "insights": [
       "Collinearity permutation: AreCollinear p q r → AreCollinear q p r via witnesses (b-a, b)",
@@ -53,7 +54,8 @@
       "Parallel step sets generalize singleton case cleanly using line_points_collinear helper",
       "Key proof technique: extract accumulated coefficient via induction, then use coefficient inequality for collinearity witness",
       "The conjecture reduces to full-rank (3D) step sets via erdos193_rank_le_2",
-      "The rank ≤ 2 case (axiomatized) would follow from Gerver-Ramsey via projection to ℤ²"
+      "The rank ≤ 2 case (axiomatized) would follow from Gerver-Ramsey via projection to ℤ²",
+      "erdos193_rank_le_2 proved from gerver_ramsey_2d by projecting walk to 2D via accumulated step coordinates, proving injectivity transfers, applying Gerver-Ramsey, lifting collinearity back via collinear_from_2d_coords"
     ],
     "mathlibGaps": [],
     "nextSteps": [
