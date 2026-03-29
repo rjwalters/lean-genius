@@ -392,4 +392,39 @@ theorem f_le_sqrt (n : ℕ) (hn : n > 0) : f n ≤ Nat.sqrt n := by
     _ ≤ Nat.sqrt n := by
         simp only [Finset.card_Icc]; omega
 
+/-
+## Part X: Computed Values of f
+
+Using the computable f' to verify specific values of the counting function.
+-/
+
+/-- g(12) = 12·28 = 336 and g(14) = 14·24 = 336. -/
+theorem g_12 : g 12 = 336 := by native_decide
+theorem g_14 : g 14 = 336 := by native_decide
+
+/-- f(336) = 2: the smallest n with f(n) > 1.
+    The two solutions are k = 12 (σ(12) = 28) and k = 14 (σ(14) = 24). -/
+theorem f_of_336 : f' 336 = 2 := by native_decide
+
+/-- f(6) = 1: only k = 2 satisfies g(2) = 6. -/
+theorem f_of_6 : f' 6 = 1 := by native_decide
+
+/-- f(12) = 1: only k = 3 satisfies g(3) = 12. -/
+theorem f_of_12 : f' 12 = 1 := by native_decide
+
+/-- f(72) = 1: only k = 6 satisfies g(6) = 72. -/
+theorem f_of_72 : f' 72 = 1 := by native_decide
+
+/-- f(2) = 0: no solution exists for k·σ(k) = 2. -/
+theorem f_of_2 : f' 2 = 0 := by native_decide
+
+/-- f(3) = 0: no solution exists for k·σ(k) = 3. -/
+theorem f_of_3 : f' 3 = 0 := by native_decide
+
+/-- f(4) = 0: no solution exists for k·σ(k) = 4. -/
+theorem f_of_4 : f' 4 = 0 := by native_decide
+
+/-- f(5) = 0: no solution exists for k·σ(k) = 5. -/
+theorem f_of_5 : f' 5 = 0 := by native_decide
+
 end Erdos1060

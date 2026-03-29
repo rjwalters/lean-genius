@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Added 10 computed f(n) values. Found smallest collision: f(336)=2 from k=12,14. File: 430 lines, 0 sorries, 2 axioms.",
     "builtItems": [
       "sigma_mul_coprime (Erdos1060Problem.lean:57): σ multiplicativity via ArithmeticFunction bridge",
       "f_eq_f (Erdos1060Problem.lean:142): Set.ncard = Finset.card for f(n)",
@@ -38,7 +38,11 @@
       "sigma_ge_self (Erdos1060Problem.lean:110): σ(k) ≥ k",
       "g_ge_sq (Erdos1060Problem.lean:123): g(k) ≥ k²",
       "solution_le_sqrt (Erdos1060Problem.lean:325): k ≤ √n for solutions",
-      "f_le_sqrt (Erdos1060Problem.lean:337): f(n) ≤ √n bound"
+      "f_le_sqrt (Erdos1060Problem.lean:337): f(n) ≤ √n bound",
+      "f_of_336: computed f(336) = 2, the smallest n with f(n) > 1",
+      "g_12 and g_14: explicit witnesses g(12) = g(14) = 336",
+      "f_of_6/12/72: verified f = 1 for these values",
+      "f_of_2/3/4/5: verified no solutions exist for these n"
     ],
     "insights": [
       "sigma_mul_coprime proved via bridge to ArithmeticFunction.isMultiplicative_sigma",
@@ -46,7 +50,9 @@
       "mem_A327153_iff requires n > 0 (unprovable for n=0 since f(0)=1 but no k>0 with g(k)=0)",
       "Mathlib v4.26: Nat.Coprime.divisors_mul removed, sigma_isMultiplicative renamed",
       "sigma_ge_self proved: σ(k) ≥ k for k > 0 (k divides itself)",
-      "f_le_sqrt proved: f(n) ≤ √n via g(k) ≥ k², improving trivial f(n) ≤ n"
+      "f_le_sqrt proved: f(n) ≤ √n via g(k) ≥ k², improving trivial f(n) ≤ n",
+      "n=336 is the smallest value with f(n) > 1: g(12)=12·28=336 and g(14)=14·24=336",
+      "g(k) values for small k are mostly distinct — collisions are rare, consistent with conjectured slow growth of f"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
