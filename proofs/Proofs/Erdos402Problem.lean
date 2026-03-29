@@ -270,6 +270,60 @@ theorem one_in_singleton_set :
   use 1, mem_singleton_self 1, 1, mem_singleton_self 1
   simp [Nat.gcd_self]
 
+/-- A proper divisor of a positive number is at most half that number.
+    If d ∣ n and d < n, then n = d·k with k ≥ 2, so d·2 ≤ n, hence d ≤ n/2. -/
+theorem dvd_lt_imp_le_half {d n : ℕ} (hd : d ∣ n) (hlt : d < n) : d ≤ n / 2 := by
+  obtain ⟨k, rfl⟩ := hd
+  have hk : 2 ≤ k := by
+    rcases k with _ | _ | k
+    · simp at hlt
+    · simp at hlt
+    · omega
+  calc d = d * 2 / 2 := by omega
+    _ ≤ d * k / 2 := Nat.div_le_div_right (Nat.mul_le_mul_left d hk)
+
+/-- Graham's conjecture for two-element sets. For distinct positive naturals,
+    gcd is a proper divisor of the larger, hence ≤ max/2 = max/|{a,b}|. -/
+theorem erdos_402_pair (a b : ℕ) (ha : a > 0) (hb : b > 0) (hab : a ≠ b) :
+    ∃ x ∈ ({a, b} : Finset ℕ), ∃ y ∈ ({a, b} : Finset ℕ),
+    Nat.gcd x y ≤ x / ({a, b} : Finset ℕ).card := by
+  have hcard : ({a, b} : Finset ℕ).card = 2 := Finset.card_pair hab
+  rcases le_or_lt a b with h | h
+  · -- a ≤ b, a ≠ b ⟹ a < b. Use x = b, y = a.
+    have hlt : a < b := lt_of_le_of_ne h hab
+    refine ⟨b, by simp, a, by simp, ?_⟩
+    rw [hcard]
+    exact dvd_lt_imp_le_half (Nat.gcd_dvd_left b a)
+      (lt_of_le_of_lt (Nat.le_of_dvd ha (Nat.gcd_dvd_right b a)) hlt)
+  · -- b < a. Use x = a, y = b.
+    refine ⟨a, by simp, b, by simp, ?_⟩
+    rw [hcard]
+    exact dvd_lt_imp_le_half (Nat.gcd_dvd_left a b)
+      (lt_of_le_of_lt (Nat.le_of_dvd hb (Nat.gcd_dvd_right a b)) h)
+
+/-- The maximum of a nonempty Finset of positive naturals is at least its cardinality.
+    Proof: A injects into {1, ..., max(A)}, which has exactly max(A) elements. -/
+theorem max_ge_card_of_pos (A : Finset ℕ) (hA : A.Nonempty)
+    (hpos : ∀ x ∈ A, x > 0) : A.card ≤ A.max' hA := by
+  have hsub : A ⊆ Finset.range (A.max' hA + 1) \ {0} := by
+    intro x hx
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton]
+    exact ⟨Nat.lt_succ_of_le (Finset.le_max' A x hx), Nat.pos_iff_ne_zero.mp (hpos x hx)⟩
+  have hle := Finset.card_le_card hsub
+  rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega))),
+      Finset.card_range, Finset.card_singleton] at hle
+  omega
+
+/-- Graham's conjecture holds when 1 ∈ A: gcd(max, 1) = 1 ≤ max/|A|
+    since max(A) ≥ |A| for any nonempty set of positive naturals. -/
+theorem erdos_402_contains_one (A : Finset ℕ) (hA : A.Nonempty)
+    (hpos : ∀ x ∈ A, x > 0) (h1 : (1 : ℕ) ∈ A) :
+    ∃ a ∈ A, ∃ b ∈ A, Nat.gcd a b ≤ a / A.card := by
+  refine ⟨A.max' hA, Finset.max'_mem A hA, 1, h1, ?_⟩
+  rw [Nat.gcd_one_right]
+  have := Nat.div_pos (max_ge_card_of_pos A hA hpos) (Finset.card_pos.mpr hA)
+  omega
+
 /-! ## Summary
 
 **Problem Status: SOLVED**

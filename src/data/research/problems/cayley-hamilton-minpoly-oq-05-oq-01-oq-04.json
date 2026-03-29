@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ v : Fin 2 → ZMod 2, v ∈ L1 ∨ v ∈ L2 ∨ v ∈ L3",
+    "formal": "\u2200 v : Fin 2 \u2192 ZMod 2, v \u2208 L1 \u2228 v \u2208 L2 \u2228 v \u2208 L3",
     "plain": "AVAILABLE: Over finite fields $\\mathbb{F}_q$ with $q \\leq n$, the union avoidance lemma fails.",
     "whyMatters": [
       "Shows union avoidance fails for small finite fields",
@@ -39,10 +39,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Recreated file (183 lines). GCD annihilation proved. F_2 counterexample stated. Main theorem blocked on PID structure theorem.",
+    "progressSummary": "BLOCKED: 1 sorry remains (not 4 \u2014 metadata stale). Requires PID structure theorem (f.g. modules over K[X]), which is not in Mathlib. All other theorems fully proved.",
     "builtItems": [
       "annihilator_dvd_minpoly: GCD annihilation via Bezout (sorry-free)",
-      "cyclic_iff_ann_eq_minpoly: cyclic ⟺ ann = minpoly (sorry-free forward, partial backward)",
+      "cyclic_iff_ann_eq_minpoly: cyclic \u27fa ann = minpoly (sorry-free forward, partial backward)",
       "nonderogatory_has_cyclic_vector_any_field: main theorem statement (1 sorry: needs structure thm)",
       "F2_union_covers: counterexample showing union avoidance fails over F_2 (partial)",
       "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean (185 lines)",
@@ -51,15 +51,17 @@
       "Gallery data: meta.json, annotations.json, index.ts"
     ],
     "insights": [
-      "The nonderogatory⟹cyclic vector theorem holds for ALL fields, including finite fields with |K|≤n",
+      "The nonderogatory\u27f9cyclic vector theorem holds for ALL fields, including finite fields with |K|\u2264n",
       "Union avoidance fails over small fields (e.g., F_2^2 is covered by 3 proper subspaces) but the theorem still holds",
       "The correct proof uses module theory: K^n as K[X]-module via M, structure theorem for f.g. modules over PID",
       "Nonderogatory (minpoly=charpoly) forces the invariant factor decomposition to have r=1, giving cyclic module",
-      "v is cyclic ⟺ ann(v) = (minpoly(M)) — proved as cyclic_iff_ann_eq_minpoly",
+      "v is cyclic \u27fa ann(v) = (minpoly(M)) \u2014 proved as cyclic_iff_ann_eq_minpoly",
       "Key missing infrastructure: structure theorem for f.g. modules over PID (not in Mathlib)",
       "The GCD/Bezout annihilation lemma works over any field (proved sorry-free)",
       "F_2^2 counterexample: 3 lines through origin (span e1, span e2, span e1+e2) cover all 4 points",
-      "GCD annihilation proved sorry-free using Bezout identity over any field"
+      "GCD annihilation proved sorry-free using Bezout identity over any field",
+      "File has 1 sorry (nonderogatory_has_cyclic_vector_any_field), not 4 as leanFiles metadata claims",
+      "Alternative proof via companion matrix similarity also requires rational canonical form \ufffd\ufffd\ufffd PID structure theorem"
     ],
     "mathlibGaps": [
       "Structure theorem for finitely generated modules over PID",
@@ -67,10 +69,9 @@
       "Invariant factor decomposition for matrices"
     ],
     "nextSteps": [
-      "Formalize structure theorem for f.g. modules over PID (major project)",
-      "Alternative: prove via rational canonical form (companion matrix similarity)",
-      "Prove aeval_conj and cyclic_vector_of_similar completely",
-      "Consider proving the F_2 counterexample via native_decide"
+      "BLOCKED: PID structure theorem for f.g. modules (~500+ lines, deep algebra)",
+      "If Mathlib adds Module.InvariantFactors, this sorry becomes trivial",
+      "Companion matrix approach is equivalent (needs same infrastructure)"
     ]
   },
   "tags": [

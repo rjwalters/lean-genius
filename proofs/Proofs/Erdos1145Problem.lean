@@ -206,11 +206,44 @@ def ruzsaA : Set ℕ := {n | ∀ k : ℕ, (n / 2^(2*k+1)) % 2 = 0}
 /-- Ruzsa's B: numbers with nonzero binary digits only in odd positions. -/
 def ruzsaB : Set ℕ := {n | ∀ k : ℕ, (n / 2^(2*k)) % 2 = 0}
 
+/-- Powers of 4 are in ruzsaA: 4^m = 2^(2m) has only even-position bits. -/
+theorem pow4_mem_ruzsaA (m : ℕ) : 4 ^ m ∈ ruzsaA := by
+  intro k
+  -- 4^m = 2^(2m), need (2^(2m) / 2^(2k+1)) % 2 = 0
+  rw [show (4 : ℕ) ^ m = 2 ^ (2 * m) from by rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul]]
+  rcases le_or_lt (2 * k + 1) (2 * m) with hle | hlt
+  · -- 2^(2m) / 2^(2k+1) = 2^(2m-(2k+1)), which is even since 2m-(2k+1) ≥ 1
+    rw [Nat.pow_div hle (by norm_num : 0 < 2)]
+    have hge : 1 ≤ 2 * m - (2 * k + 1) := by omega
+    exact Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : 2 * m - (2 * k + 1) ≠ 0))
+  · -- 2^(2m) < 2^(2k+1), so quotient is 0
+    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]; rfl
+
 /-- Ruzsa's A is infinite (it contains all powers of 4). -/
-axiom ruzsaA_infinite : ruzsaA.Infinite
+theorem ruzsaA_infinite : ruzsaA.Infinite :=
+  (Set.infinite_range_of_injective (Nat.pow_left_injective (by norm_num : 1 < 4))).mono
+    (fun _ ⟨m, hm⟩ => hm ▸ pow4_mem_ruzsaA m)
+
+/-- 2 * 4^m is in ruzsaB: 2·4^m = 2^(2m+1) has only odd-position bits. -/
+theorem mul2_pow4_mem_ruzsaB (m : ℕ) : 2 * 4 ^ m ∈ ruzsaB := by
+  intro k
+  -- 2·4^m = 2^(2m+1), need (2^(2m+1) / 2^(2k)) % 2 = 0
+  rw [show 2 * (4 : ℕ) ^ m = 2 ^ (2 * m + 1) from by
+    rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul, ← pow_succ]]
+  rcases le_or_lt (2 * k) (2 * m + 1) with hle | hlt
+  · -- 2^(2m+1) / 2^(2k) = 2^(2m+1-2k), which is even since 2m+1-2k ≥ 1
+    rw [Nat.pow_div hle (by norm_num : 0 < 2)]
+    have hge : 1 ≤ 2 * m + 1 - 2 * k := by omega
+    exact Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : 2 * m + 1 - 2 * k ≠ 0))
+  · -- 2^(2m+1) < 2^(2k), so quotient is 0
+    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]; rfl
 
 /-- Ruzsa's B is infinite (it contains all numbers 2 * 4^k). -/
-axiom ruzsaB_infinite : ruzsaB.Infinite
+theorem ruzsaB_infinite : ruzsaB.Infinite :=
+  (Set.infinite_range_of_injective (fun m n (h : 2 * 4 ^ m = 2 * 4 ^ n) =>
+    Nat.pow_left_injective (by norm_num : 1 < 4)
+      (Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) h))).mono
+    (fun _ ⟨m, hm⟩ => hm ▸ mul2_pow4_mem_ruzsaB m)
 
 /-- Every positive integer has a unique representation as a + b with
     a ∈ ruzsaA and b ∈ ruzsaB. -/
@@ -275,9 +308,11 @@ theorem ratio_condition_necessary :
 
     This is a basic counting identity: each pair (a,b) with a ∈ A, b ∈ B,
     a + b ≤ N contributes exactly 1 to the left side. -/
-axiom sum_of_reps_bound (A B : Set ℕ) (N : ℕ) :
+/-- The sum of representations is nonneg (the RHS simplifies to x - x = 0). -/
+theorem sum_of_reps_bound (A B : Set ℕ) (N : ℕ) :
     (Finset.range (N + 1)).sum (fun n => twoSetRepFunc A B n) ≥
-      countingFn A N * countingFn B N - countingFn A N * countingFn B N
+      countingFn A N * countingFn B N - countingFn A N * countingFn B N := by
+  simp [Nat.sub_self]
 
 /-- If A + B is a basis and both sets have density ≫ √N, then the average
     representation grows without bound. -/
