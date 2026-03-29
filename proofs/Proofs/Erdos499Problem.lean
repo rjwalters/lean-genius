@@ -227,7 +227,15 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
     let M : Matrix (Fin 2) (Fin 2) ℝ := !![a, 1-a; 1-a, a]
     (diagonalProduct M 1 = a * a) ∧
     (∃ σ : Equiv.Perm (Fin 2), diagonalProduct M σ = (1-a) * (1-a)) := by
-  sorry
+  refine ⟨?_, ?_⟩
+  · -- Identity permutation: M 0 0 * M 1 1 = a * a
+    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+  · -- Swap permutation: M 0 1 * M 1 0 = (1-a) * (1-a)
+    refine ⟨Equiv.swap (0 : Fin 2) 1, ?_⟩
+    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
+      Equiv.swap_apply_right, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.head_fin_const]
 
 /--
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
