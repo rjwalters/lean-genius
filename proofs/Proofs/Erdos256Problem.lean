@@ -130,8 +130,66 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
   -- Combining bounds: C * n^c ≤ log(f n) ≤ K * (log n)^4 for all large n.
   -- But n^c / (log n)^4 → ∞ for c > 0 (polynomial beats polylog),
   -- giving C * n^c > K * (log n)^4 for large enough n. Contradiction.
-  -- Key Mathlib tool: isLittleO_log_rpow_atTop (log x = o(x^ε))
-  sorry
+  -- Step 1: From isLittleO_log_rpow_atTop, log x ≤ x^(c/8) for large x
+  have hc8 : (0 : ℝ) < c / 8 := by linarith
+  obtain ⟨R, hR⟩ := Filter.eventually_atTop.mp
+    ((isLittleO_log_rpow_atTop hc8).bound (show (0 : ℝ) < 1 by norm_num))
+  -- Step 2: Choose N large enough for log bound and constant absorption
+  set N := max ⌈R⌉₊ (max (⌈(K / C) ^ (2 / c)⌉₊ + 1) 2) with hN_def
+  have hN2 : N ≥ 2 := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) le_rfl
+  have hN_pos : (0 : ℝ) < (↑N : ℝ) := by positivity
+  have hN_nn : (0 : ℝ) ≤ (↑N : ℝ) := le_of_lt hN_pos
+  have hN1 : (1 : ℝ) ≤ (↑N : ℝ) := by exact_mod_cast show 1 ≤ N by omega
+  -- Step 3: log N ≤ N^(c/8) from isLittleO bound
+  have hR_le : (R : ℝ) ≤ (↑N : ℝ) :=
+    le_trans (Nat.le_ceil R) (by exact_mod_cast (show ⌈R⌉₊ ≤ N from le_max_left _ _))
+  have hlog_raw := hR (↑N : ℝ) hR_le
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (Real.log_nonneg hN1),
+      abs_of_nonneg (rpow_nonneg hN_nn _)] at hlog_raw
+  have hlog : Real.log (↑N : ℝ) ≤ (↑N : ℝ) ^ (c / 8) := by linarith
+  -- Step 4: (log N)^4 ≤ N^(c/2) by squaring the bound twice
+  have hlog_nn : (0 : ℝ) ≤ Real.log (↑N : ℝ) := Real.log_nonneg hN1
+  have hlog_sq : (Real.log (↑N : ℝ)) ^ 2 ≤ (↑N : ℝ) ^ (c / 4) := by
+    calc (Real.log (↑N : ℝ)) ^ 2
+        = Real.log ↑N * Real.log ↑N := by ring
+      _ ≤ (↑N : ℝ) ^ (c / 8) * (↑N : ℝ) ^ (c / 8) :=
+          mul_le_mul hlog hlog hlog_nn (rpow_nonneg hN_nn _)
+      _ = (↑N : ℝ) ^ (c / 4) := by
+          rw [← rpow_add hN_pos]; congr 1; ring
+  have hlog4 : (Real.log (↑N : ℝ)) ^ 4 ≤ (↑N : ℝ) ^ (c / 2) := by
+    calc (Real.log (↑N : ℝ)) ^ 4
+        = (Real.log ↑N) ^ 2 * (Real.log ↑N) ^ 2 := by ring
+      _ ≤ (↑N : ℝ) ^ (c / 4) * (↑N : ℝ) ^ (c / 4) :=
+          mul_le_mul hlog_sq hlog_sq (pow_nonneg hlog_nn _) (rpow_nonneg hN_nn _)
+      _ = (↑N : ℝ) ^ (c / 2) := by
+          rw [← rpow_add hN_pos]; congr 1; ring
+  -- Step 5: K/C < N^(c/2) from N > (K/C)^(2/c)
+  have hKC_pos : (0 : ℝ) < K / C := div_pos hK hC
+  have hN_gt_KC : (↑N : ℝ) > (K / C) ^ (2 / c) := by
+    have h1 : ⌈(K / C) ^ (2 / c)⌉₊ + 1 ≤ N :=
+      le_trans (le_max_left _ _) (le_max_right _ _)
+    calc (↑N : ℝ) ≥ ↑(⌈(K / C) ^ (2 / c)⌉₊ + 1) := by exact_mod_cast h1
+      _ = ↑⌈(K / C) ^ (2 / c)⌉₊ + 1 := by push_cast; ring
+      _ > (K / C) ^ (2 / c) := by linarith [Nat.le_ceil ((K / C) ^ (2 / c))]
+  have hKC_lt : K / C < (↑N : ℝ) ^ (c / 2) := by
+    have h_exp : (2 : ℝ) / c * (c / 2) = 1 := by field_simp
+    have h_eq : K / C = ((K / C) ^ (2 / c)) ^ (c / 2) := by
+      rw [← rpow_mul hKC_pos.le, h_exp, rpow_one]
+    rw [h_eq]
+    exact rpow_lt_rpow (rpow_nonneg hKC_pos.le _) hN_gt_KC (by linarith)
+  -- Step 6: Combine for contradiction
+  have hK_lt : K < C * (↑N : ℝ) ^ (c / 2) := by
+    have := (div_lt_iff hC).mp hKC_lt; linarith
+  have key : K * (Real.log (↑N : ℝ)) ^ 4 < C * (↑N : ℝ) ^ c := by
+    calc K * (Real.log (↑N : ℝ)) ^ 4
+        ≤ K * (↑N : ℝ) ^ (c / 2) :=
+          mul_le_mul_of_nonneg_left hlog4 hK.le
+      _ < C * (↑N : ℝ) ^ (c / 2) * (↑N : ℝ) ^ (c / 2) := by
+          nlinarith [rpow_pos_of_pos hN_pos (c / 2)]
+      _ = C * (↑N : ℝ) ^ c := by
+          rw [mul_assoc]; congr 1; rw [← rpow_add hN_pos]; congr 1; ring
+  linarith [hbound N hN2, hupper N hN2]
 
 /-
 ## Part V: The Distinct Case
