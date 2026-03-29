@@ -50,7 +50,32 @@ theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
 
 /- Target 3: Density of the full set is 1 -/
 
-theorem density_univ_one : HasNaturalDensity Set.univ 1 := by sorry
+theorem density_univ_one : HasNaturalDensity Set.univ 1 := by
+  unfold HasNaturalDensity
+  -- Simplify: filter on Set.univ is identity, card of range(N+1) is N+1
+  have hsimp : ∀ N : ℕ,
+      (((Finset.range (N + 1)).filter (· ∈ Set.univ)).card : ℝ) = ↑N + 1 := by
+    intro N
+    rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _), Finset.card_range]
+    push_cast; ring
+  simp_rw [hsimp]
+  -- Goal: Tendsto (fun N => (↑N + 1) / ↑N) atTop (𝓝 1)
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  refine ⟨⌈ε⁻¹⌉₊ + 1, fun n hn => ?_⟩
+  have hn_pos : (0 : ℝ) < ↑n := by exact_mod_cast (show 0 < n by omega)
+  rw [Real.dist_eq]
+  have hsub : (↑n + 1 : ℝ) / ↑n - 1 = 1 / ↑n := by
+    have : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+    field_simp; ring
+  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff hn_pos, one_mul]
+  -- Goal: 1 < ε * ↑n (since ε⁻¹ < ↑n)
+  calc (1 : ℝ) = ε * ε⁻¹ := (mul_inv_cancel₀ (ne_of_gt hε)).symm
+    _ < ε * ↑n := by
+        apply mul_lt_mul_of_pos_left _ hε
+        calc ε⁻¹ ≤ ↑⌈ε⁻¹⌉₊ := Nat.le_ceil _
+          _ < ↑⌈ε⁻¹⌉₊ + 1 := lt_add_one _
+          _ ≤ ↑n := by exact_mod_cast hn
 
 /- Target 4: Powerset of divisors has size 2^tau(n) -/
 
