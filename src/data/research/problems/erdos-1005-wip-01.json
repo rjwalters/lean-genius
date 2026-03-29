@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1005-wip-01",
-  "title": "Complete Erdős #1005: Farey Fractions and Similar Ordering",
+  "title": "Complete Erd\u0151s #1005: Farey Fractions and Similar Ordering",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Complete Erdős #1005: Farey Fractions and Similar Ordering.",
+    "plain": "Formal mathematical investigation: Complete Erd\u0151s #1005: Farey Fractions and Similar Ordering.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-28T17:58:20.661Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Constructive Farey pair infrastructure with proved properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove totient sum formula, add DecidableEq for FareyFraction",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,19 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created Erdos1005Problem.lean from stub. Defined Farey fractions, mediant property, conjecture. 4A, 0S.",
+    "progressSummary": "Fixed 4 syntax errors in ProblemProvable. Added constructive fareyPairs Finset with 7 proved lemmas (membership, nonempty, monotonicity, zero case). Added product form of similarlyOrdered, pair-based Decidable similarity, sorted pair list, pair run definition. Connected to Euler totient sum formula.",
     "builtItems": [
       "Erdos1005Problem.lean: FareyFraction, IsConsecutiveFarey, longestSimilarRun",
-      "erdos_1005_conjecture: f(n) ~ c·n",
-      "consecutive_farey_gap: spacing = 1/(bd) for consecutive a/b < c/d"
+      "erdos_1005_conjecture: f(n) ~ c*n",
+      "consecutive_farey_gap: spacing = 1/(bd) for consecutive a/b < c/d",
+      "fareyPairs: constructive Finset (N x N) of Farey pairs of order n",
+      "mem_fareyPairs + 6 membership lemmas (zero_one, one_one, one_b, nonempty, zero, mono)",
+      "similarlyOrdered_iff_product: product form (a-c)(b-d) >= 0",
+      "pairSimilarlyOrdered + Decidable instance",
+      "fareySortedPairs: constructive sorted pair list via mergeSort",
+      "isPairSimOrdered: pair-based run definition"
     ],
     "insights": [
-      "Farey sequence F_n: fractions p/q with 0 ≤ p ≤ q ≤ n, gcd(p,q)=1, sorted",
+      "Farey sequence F_n: fractions p/q with 0 <= p <= q <= n, gcd(p,q)=1, sorted",
       "Consecutive Farey fractions satisfy bc - ad = 1 (mediant property)",
-      "f(n) ∈ [n/12, n/4 + O(1)] — linear in n with unknown constant"
+      "f(n) in [n/12, n/4 + O(1)] \u2014 linear in n with unknown constant",
+      "Similarly ordered = product form (a-c)(b-d) >= 0 = mul_nonneg_iff from Mathlib",
+      "fareyPairs count = 1 + sum of totients phi(1..n) \u2014 connects to Nat.totient",
+      "Mathlib has NO Farey sequence infrastructure \u2014 must build from scratch",
+      "FareyFraction structure needs DecidableEq for Finset; pair-based approach avoids this",
+      "4 syntax errors in original ProblemProvable (type after := by sorry) fixed"
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "No Farey sequence infrastructure in Mathlib (confirmed via search)",
+      "Nat.totient available but needs manual Finset decomposition to prove card formula",
+      "mul_nonneg_iff perfectly captures similarly ordered product form"
+    ],
+    "nextSteps": [
+      "Prove fareyPairs_card (totient sum formula) \u2014 needs Finset decomposition by denominator",
+      "Add DecidableEq FareyFraction instance to enable Finset FareyFraction construction",
+      "Prove fareySortedPairs properties: elements match fareyPairs, sorted by rational value",
+      "Connect pair-based definitions to FareyFraction-based ones",
+      "Build Aristotle companion for routine supporting lemmas"
+    ]
   },
   "tags": [
     "seeker-selected"

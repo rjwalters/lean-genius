@@ -15,8 +15,11 @@ Reference: https://erdosproblems.com/1005
 
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Card
 import Mathlib.NumberTheory.Divisors
+import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Real.Basic
+import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 open Finset
@@ -38,16 +41,84 @@ structure FareyFraction where
   num_le_denom : num ≤ denom
   coprime : Nat.Coprime num denom
 
-/-- The Farey sequence of order n: all Farey fractions with denominator ≤ n. -/
+-- ══════════════════════════════════════════════════════════════════
+-- § 1b: Constructive Farey Pairs
+-- ══════════════════════════════════════════════════════════════════
+
+/-- Farey pairs of order n: coprime pairs (a, b) with 1 ≤ b ≤ n, 0 ≤ a ≤ b.
+    This is the constructive representation of the Farey sequence F_n. -/
+def fareyPairs (n : ℕ) : Finset (ℕ × ℕ) :=
+  ((Finset.range (n + 1)) ×ˢ (Finset.range (n + 1))).filter fun p =>
+    0 < p.2 ∧ p.1 ≤ p.2 ∧ Nat.Coprime p.1 p.2
+
+@[simp]
+theorem mem_fareyPairs {n a b : ℕ} :
+    (a, b) ∈ fareyPairs n ↔ b ≤ n ∧ 0 < b ∧ a ≤ b ∧ Nat.Coprime a b := by
+  simp only [fareyPairs, Finset.mem_filter, Finset.mem_product, Finset.mem_range]
+  constructor
+  · rintro ⟨⟨ha, hb⟩, hpos, hle, hcop⟩
+    exact ⟨by omega, hpos, hle, hcop⟩
+  · rintro ⟨hbn, hpos, hle, hcop⟩
+    exact ⟨⟨by omega, by omega⟩, hpos, hle, hcop⟩
+
+/-- (0, 1) is a Farey pair for n ≥ 1 (represents the fraction 0/1). -/
+theorem zero_one_mem_fareyPairs {n : ℕ} (hn : 1 ≤ n) :
+    (0, 1) ∈ fareyPairs n := by
+  rw [mem_fareyPairs]
+  exact ⟨hn, one_pos, zero_le 1, rfl⟩
+
+/-- (1, 1) is a Farey pair for n ≥ 1 (represents the fraction 1/1). -/
+theorem one_one_mem_fareyPairs {n : ℕ} (hn : 1 ≤ n) :
+    (1, 1) ∈ fareyPairs n := by
+  rw [mem_fareyPairs]
+  exact ⟨hn, one_pos, le_refl 1, rfl⟩
+
+/-- (1, b) is a Farey pair when b ≤ n (represents 1/b). -/
+theorem one_b_mem_fareyPairs {n b : ℕ} (hb : 1 ≤ b) (hbn : b ≤ n) :
+    (1, b) ∈ fareyPairs n := by
+  rw [mem_fareyPairs]
+  exact ⟨hbn, hb, hb, Nat.coprime_one_left b⟩
+
+/-- The Farey pairs set is nonempty for n ≥ 1. -/
+theorem fareyPairs_nonempty {n : ℕ} (hn : 1 ≤ n) : (fareyPairs n).Nonempty :=
+  ⟨(0, 1), zero_one_mem_fareyPairs hn⟩
+
+/-- Farey pairs for n = 0 is empty (no positive denominators ≤ 0). -/
+theorem fareyPairs_zero : fareyPairs 0 = ∅ := by
+  ext ⟨a, b⟩
+  simp [mem_fareyPairs]
+  omega
+
+/-- Monotonicity: fareyPairs n ⊆ fareyPairs (n + 1). -/
+theorem fareyPairs_mono {n : ℕ} : fareyPairs n ⊆ fareyPairs (n + 1) := by
+  intro ⟨a, b⟩ h
+  rw [mem_fareyPairs] at h ⊢
+  exact ⟨by omega, h.2.1, h.2.2.1, h.2.2.2⟩
+
+/-- The count of Farey pairs equals 1 + sum of Euler totients:
+    |F_n| = 1 + Σ_{k=1}^{n} φ(k).
+    The extra 1 accounts for 0/1 which is coprime but not counted by totient. -/
+theorem fareyPairs_card (n : ℕ) :
+    (fareyPairs n).card = 1 + ∑ k in Finset.Icc 1 n, Nat.totient k := by sorry
+
+/-- The rational value of a Farey pair. -/
+def pairRatVal (p : ℕ × ℕ) : ℚ := p.1 / p.2
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 1c: Farey Sequence (FareyFraction-based, partially constructive)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The Farey sequence of order n: all Farey fractions with denominator ≤ n.
+    TODO: Define constructively from fareyPairs once DecidableEq FareyFraction is added. -/
 def fareySequence (n : ℕ) : Finset FareyFraction :=
-  sorry  -- Complex construction of ordered Farey fractions
+  sorry
 
 /-- The number of Farey fractions of order n. -/
 def fareyCount (n : ℕ) : ℕ := (fareySequence n).card
 
 /-- Farey count is asymptotically 3n²/π². -/
-theorem farey_count_asymptotic (n : ℕ) : := by sorry
-  ∃ C : ℝ, |fareyCount n - 3 * n^2 / Real.pi^2| ≤ C * n * Real.log n
+theorem farey_count_asymptotic (n : ℕ) :
+    ∃ C : ℝ, |(fareyCount n : ℝ) - 3 * n^2 / Real.pi^2| ≤ C * n * Real.log n := by sorry
 
 /-
 ## Similarly Ordered Fractions
@@ -77,6 +148,38 @@ lemma similarlyOrdered_refl (f : FareyFraction) : similarlyOrdered f f := by
   left
   constructor <;> linarith
 
+/-- Product form: similarly ordered iff (a-c)(b-d) ≥ 0. -/
+theorem similarlyOrdered_iff_product (f g : FareyFraction) :
+    similarlyOrdered f g ↔
+    ((f.num : ℤ) - g.num) * ((f.denom : ℤ) - g.denom) ≥ 0 := by
+  simp only [similarlyOrdered, ge_iff_le]
+  exact mul_nonneg_iff.symm
+
+/-- Similarly ordered on pairs: (a-c)(b-d) ≥ 0. -/
+def pairSimilarlyOrdered (p q : ℕ × ℕ) : Prop :=
+  ((p.1 : ℤ) - q.1) * ((p.2 : ℤ) - q.2) ≥ 0
+
+instance (p q : ℕ × ℕ) : Decidable (pairSimilarlyOrdered p q) :=
+  inferInstanceAs (Decidable (_ ≥ 0))
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 2b: Pair-Based Runs (constructive alternative)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- Sort Farey pairs by rational value: a/b ≤ c/d iff a·d ≤ c·b. -/
+private def fareyPairLE : ℕ × ℕ → ℕ × ℕ → Bool :=
+  fun p q => decide (p.1 * q.2 ≤ q.1 * p.2)
+
+/-- The sorted list of Farey pairs of order n (sorted by rational value). -/
+def fareySortedPairs (n : ℕ) : List (ℕ × ℕ) :=
+  (fareyPairs n).val.toList.mergeSort fareyPairLE
+
+/-- A run of length k in a pair list is similarly ordered. -/
+def isPairSimOrdered (pairs : List (ℕ × ℕ)) (i k : ℕ) : Prop :=
+  ∀ j₁ j₂, i ≤ j₁ → j₁ < j₂ → j₂ ≤ i + k →
+    ∀ p₁ p₂, pairs[j₁]? = some p₁ → pairs[j₂]? = some p₂ →
+    pairSimilarlyOrdered p₁ p₂
+
 /-
 ## Consecutive Similarly Ordered Runs
 
@@ -84,9 +187,10 @@ A run of consecutive Farey fractions is similarly ordered if every
 pair in the run satisfies the similarly ordered property.
 -/
 
-/-- The Farey sequence as a list (for indexing). -/
+/-- The Farey sequence as a list (for indexing).
+    See fareySortedPairs for the constructive pair-based version. -/
 def fareyList (n : ℕ) : List FareyFraction :=
-  sorry  -- Ordered list of Farey fractions
+  sorry  -- Requires DecidableEq FareyFraction for full construction
 
 /-- A run of length k starting at index i is similarly ordered. -/
 def isSimOrdered (n : ℕ) (i k : ℕ) : Prop :=
@@ -125,12 +229,12 @@ van Doorn established the best known bounds for f(n).
 -/
 
 /-- van Doorn (2025): Lower bound f(n) ≥ (1/12 - o(1))n. -/
-theorem vanDoorn_lower_bound : := by sorry
-  ∀ ε > 0, ∃ N, ∀ n ≥ N, (mayerErdosF n : ℝ) ≥ (1/12 - ε) * n
+theorem vanDoorn_lower_bound :
+    ∀ ε > 0, ∃ N, ∀ n ≥ N, (mayerErdosF n : ℝ) ≥ (1/12 - ε) * n := by sorry
 
 /-- van Doorn (2025): Upper bound f(n) ≤ n/4 + O(1). -/
-theorem vanDoorn_upper_bound : := by sorry
-  ∃ C : ℝ, ∀ n : ℕ, (mayerErdosF n : ℝ) ≤ n / 4 + C
+theorem vanDoorn_upper_bound :
+    ∃ C : ℝ, ∀ n : ℕ, (mayerErdosF n : ℝ) ≤ n / 4 + C := by sorry
 
 /-- Combined: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1). -/
 theorem vanDoorn_bounds :
@@ -170,11 +274,11 @@ def mediant (f g : FareyFraction) : ℚ :=
   (f.num + g.num) / (f.denom + g.denom)
 
 /-- Adjacent Farey fractions satisfy |ad - bc| = 1. -/
-theorem farey_adjacent_property (n : ℕ) (i : ℕ) : := by sorry
-  ∀ (f g : FareyFraction), (fareyList n)[i]? = some f →
+theorem farey_adjacent_property (n : ℕ) (i : ℕ) :
+    ∀ (f g : FareyFraction), (fareyList n)[i]? = some f →
          (fareyList n)[i + 1]? = some g →
          (f.num : ℤ) * g.denom - f.denom * g.num = 1 ∨
-         (f.num : ℤ) * g.denom - f.denom * g.num = -1
+         (f.num : ℤ) * g.denom - f.denom * g.num = -1 := by sorry
 
 /-
 ## Geometric Interpretation
