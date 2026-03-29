@@ -48,10 +48,9 @@ def RepUnbounded (A : Set ℕ) : Prop :=
 
 /- ## Erdős–Turán Conjecture (Problem #28) -/
 
-/-- **Erdős–Turán Conjecture** (Problem #28, OPEN):
-    Every additive basis of order 2 has unbounded representation function. -/
-axiom erdos_turan_conjecture :
-  ∀ A : Set ℕ, IsAdditiveBasis2 A → RepUnbounded A
+-- **Erdős–Turán Conjecture** (Problem #28, OPEN):
+-- Every additive basis of order 2 has unbounded representation function.
+-- Stated as a hypothesis where needed (not as a global axiom).
 
 /- ## Problem #40: Strengthened Form -/
 
@@ -60,12 +59,10 @@ def HasDensity (A : Set ℕ) (g : ℕ → ℝ) : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
     (countingFn A N : ℝ) ≥ c * Real.sqrt N / g N
 
-/-- **Erdős Problem #40** (OPEN, $500): For which g(N) → ∞ does
-    |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞?
-    The strongest form asks: does this hold for ALL g → ∞? -/
-axiom erdos_40_conjecture :
-  ∀ (g : ℕ → ℝ), (∀ M : ℝ, ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ → g N > M) →
-    ∀ A : Set ℕ, HasDensity A g → RepUnbounded A
+-- **Erdős Problem #40** (OPEN, $500): For which g(N) → ∞ does
+-- |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞?
+-- The strongest form asks: does this hold for ALL g → ∞?
+-- Stated as a hypothesis where needed (not as a global axiom).
 
 /- ## Proving #40 ⟹ #28 -/
 
