@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (sidon_size_bound) via counting argument. File: 4\u21923 axioms.",
+    "progressSummary": "PROGRESS: Eliminated 3 sorries in Erdos140Problem.lean (3->0). Proved r3_superlogarithmic and r3_density_vanishes as corollaries of Kelley-Meka. Completed greedyAP3Free definition.",
     "builtItems": [
       "Proved non_unique_monotone in Erdos14Problem.lean:102 (3-line proof)",
       "Fixed import: Asymptotics.Asymptotics -> Asymptotics.Defs in Erdos14Problem.lean:24",
-      "Proved sidon_size_bound theorem in Erdos14UniqueSums.lean (replacing axiom), +3 helper lemmas (~120 lines)"
+      "Proved sidon_size_bound theorem in Erdos14UniqueSums.lean (replacing axiom), +3 helper lemmas (~120 lines)",
+      "Proved r3_superlogarithmic in Erdos140Problem.lean:132 (corollary of Kelley-Meka)",
+      "Proved r3_density_vanishes in Erdos140Problem.lean:165 (limit theorem)",
+      "Defined toBase3Binary helper in Erdos140Problem.lean:225 (Stanley sequence)",
+      "Completed greedyAP3Free definition in Erdos140Problem.lean:236 (no sorry)"
     ],
     "insights": [
       "12 associated Lean files - largest problem family encountered",
@@ -44,7 +48,13 @@
       "sidon_size_bound (UniqueSums) could be proved from Erdos340GreedySidon sidon_upper_bound_weak but needs Set/Finset conversion",
       "Most axioms in Erdos14Problem.lean are deep results (open conjectures, deep theorems) that must stay as axioms",
       "erdos_freud_finite duplicated between Erdos14Problem.lean and Erdos14UniqueSums.lean",
-      "sidon_size_bound axiom eliminated: proved from Sidon difference-counting argument (k(k-1)/2 \u2264 N-1 via injective diff map)"
+      "sidon_size_bound axiom eliminated: proved from Sidon difference-counting argument (k(k-1)/2 \u2264 N-1 via injective diff map)",
+      "Erdos140Problem.lean had 3 provable sorries: r3_superlogarithmic, r3_density_vanishes, greedyAP3Free definition",
+      "r3_superlogarithmic proved via Kelley-Meka(C+1) + log N > K/eps for large N",
+      "r3_density_vanishes proved using r3_superlogarithmic as a building block",
+      "greedyAP3Free defined via binary-to-base-3 (Stanley sequence A005836 + 1)",
+      "Erdos14Problem.lean: remaining 6 axioms are all deep (2 open conjectures, 3 published results, 1 structural)",
+      "Erdos14UniqueSums.lean: remaining 3 axioms are all deep published results"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
