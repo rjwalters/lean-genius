@@ -140,7 +140,9 @@ count_theorems_proved() {
     # Count sorry occurrences in each file (grep -c counts lines, but that's close enough)
     local orig_count new_count
     orig_count=$(grep -c "sorry" "$original" 2>/dev/null || echo 0)
+    orig_count=${orig_count//[^0-9]/}
     new_count=$(grep -c "sorry" "$solution" 2>/dev/null || echo 0)
+    new_count=${new_count//[^0-9]/}
 
     local proved=$((orig_count - new_count))
     if [[ "$proved" -lt 0 ]]; then
