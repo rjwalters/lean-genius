@@ -139,12 +139,12 @@ noncomputable instance congruenceSetoid (n : ℕ) : Setoid (PointConfig n) where
 
 def IncongruentOptimal (n : ℕ) := Quotient (congruenceSetoid n)
 
--- h(n) = number of incongruent optimal configurations
--- We axiomatize this as a function (actual computation is complex)
-axiom h : ℕ → ℕ
+-- h(n) = number of optimal configurations (up to the natural cardinality)
+noncomputable def h (n : ℕ) : ℕ := Nat.card {P : PointConfig n // IsOptimal n P}
 
--- h(n) counts optimal configurations up to congruence
-axiom h_counts_optimal : ∀ n, h n = Nat.card {P : PointConfig n // IsOptimal n P}
+-- h(n) counts optimal configurations by definition
+theorem h_counts_optimal : ∀ n, h n = Nat.card {P : PointConfig n // IsOptimal n P} :=
+  fun _ => rfl
 
 /-
 # Part 5: The Main Conjecture
