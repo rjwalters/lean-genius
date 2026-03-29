@@ -1,0 +1,58 @@
+{
+  "annotations": [
+    {
+      "line": 38,
+      "type": "definition",
+      "content": "A natural number $m$ is **achievable** if some covering system has minimum modulus $\\geq m$.",
+      "symbol": "Achievable"
+    },
+    {
+      "line": 45,
+      "type": "theorem",
+      "content": "Achievability is downward-monotone: if $m$ is achievable and $m' \\leq m$, then $m'$ is achievable.",
+      "symbol": "achievable_mono"
+    },
+    {
+      "line": 65,
+      "type": "definition",
+      "content": "$M$ is the **exact maximum minimum modulus** iff $\\text{Achievable}(M) \\wedge \\lnot\\text{Achievable}(M+1)$.",
+      "symbol": "IsExactMaxMinModulus"
+    },
+    {
+      "line": 71,
+      "type": "theorem",
+      "content": "Equivalent formulation: $M$ is exact max iff some covering system achieves min modulus $M$ and every covering system has a modulus $\\leq M$.",
+      "symbol": "isExactMax_iff"
+    },
+    {
+      "line": 89,
+      "type": "theorem",
+      "content": "The exact maximum minimum modulus is **unique**: if both $M_1$ and $M_2$ satisfy the definition, then $M_1 = M_2$.",
+      "symbol": "exact_max_unique"
+    },
+    {
+      "line": 100,
+      "type": "theorem",
+      "content": "The exact maximum **exists** by the well-ordering principle: $\\texttt{Nat.find}$ extracts the smallest non-achievable value $n_0$, giving $M = n_0 - 1$.",
+      "symbol": "exists_exact_max"
+    },
+    {
+      "line": 130,
+      "type": "theorem",
+      "content": "**Gap theorem**: $42 \\leq M \\leq 616{,}000$ from Owens' construction and Balister et al.'s bound.",
+      "symbol": "gap_bounds"
+    },
+    {
+      "line": 155,
+      "type": "theorem",
+      "content": "The achievable set is exactly $\\{0, 1, \\ldots, M\\}$: $\\text{Achievable}(m) \\iff m \\leq M$.",
+      "symbol": "achievable_iff_le_max"
+    },
+    {
+      "line": 165,
+      "type": "theorem",
+      "content": "**Gap narrowing**: any improved achievability bound $L$ or non-achievability bound $U+1$ constrains $L \\leq M \\leq U$.",
+      "symbol": "gap_narrowing"
+    }
+  ]
+}
