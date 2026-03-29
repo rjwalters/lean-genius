@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ann-erdos1098-oq01-cosets",
+    "proofId": "erdos-1098-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "The Coset Structure of Non-Commuting Cliques",
+    "body": "The key structural theorem: if g and h are in a clique (gh ≠ hg), they must lie in different cosets of Z(G). If they were in the same coset, g⁻¹h would be central, and g and h would commute — contradicting the clique property. This gives the injection bound ω(Γ(G)) ≤ [G:Z(G)]."
+  },
+  {
+    "id": "ann-erdos1098-oq01-abelian",
+    "proofId": "erdos-1098-oq-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 55
+    },
+    "type": "insight",
+    "title": "ω = 0 Characterizes Abelianness",
+    "body": "The non-commuting graph has no edges (empty clique) precisely when every pair of elements commutes — i.e., when G is abelian. This is a clean biconditional that captures the zeroth level of the clique-number hierarchy."
+  }
+]
