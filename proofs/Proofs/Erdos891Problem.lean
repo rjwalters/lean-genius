@@ -150,6 +150,34 @@ lemma primorial_pos (k : ℕ) : 0 < primorial k := by
   intro i _
   exact (nthPrime_prime i).pos
 
+/-- Each nthPrime is positive (follows from primality). -/
+lemma nthPrime_pos (n : ℕ) : 0 < nthPrime n :=
+  (nthPrime_prime n).pos
+
+/-- Each nthPrime is at least 2. -/
+lemma nthPrime_ge_two (n : ℕ) : 2 ≤ nthPrime n :=
+  (nthPrime_prime n).two_le
+
+/-- The primorial of zero is the empty product. -/
+lemma primorial_zero : primorial 0 = 1 :=
+  Finset.prod_range_zero _
+
+/-- Primorial recurrence: primorial(k+1) = primorial(k) · p_k. -/
+lemma primorial_succ (k : ℕ) : primorial (k + 1) = primorial k * nthPrime k := by
+  simp [primorial, Finset.prod_range_succ]
+
+/-- primorial 1 = nthPrime 0 (the first prime). -/
+lemma primorial_one : primorial 1 = nthPrime 0 := by
+  rw [primorial_succ, primorial_zero, one_mul]
+
+/-- The primorial is at least 2^k (since each prime factor ≥ 2). -/
+lemma primorial_ge_pow_two (k : ℕ) : 2 ^ k ≤ primorial k := by
+  induction k with
+  | zero => simp [primorial_zero]
+  | succ k ih =>
+    rw [primorial_succ, pow_succ]
+    exact Nat.mul_le_mul ih (nthPrime_ge_two k)
+
 /--
 **HasManyFactors n k (general):**
 There exists m ∈ [n, n + primorial(k)) with Ω(m) > k.
@@ -225,9 +253,9 @@ theorem k2_fails_small : hasThreeFactorsInSix 0 = false
     ∧ hasThreeFactorsInSix 1 = false
     ∧ hasThreeFactorsInSix 2 = false := by native_decide
 
-/-- The k=2 check succeeds for all n ∈ [3, 1002].
+/-- The k=2 check succeeds for all n ∈ [3, 3002].
 This provides strong computational evidence for the k=2 conjecture. -/
-theorem k2_verified_range : ∀ n : Fin 1000, hasThreeFactorsInSix (n.val + 3) = true := by
+theorem k2_verified_range : ∀ n : Fin 3000, hasThreeFactorsInSix (n.val + 3) = true := by
   native_decide
 
 /--
@@ -270,6 +298,23 @@ theorem interval_contains_mult4 (n : ℕ) :
     ∃ m, n ≤ m ∧ m < n + 6 ∧ 4 ∣ m := by
   use 4 * ((n + 3) / 4)
   refine ⟨by omega, by omega, dvd_mul_right 4 _⟩
+
+/-- Every interval of length 6 contains a multiple of 3. -/
+theorem interval_contains_mult3 (n : ℕ) :
+    ∃ m, n ≤ m ∧ m < n + 6 ∧ 3 ∣ m := by
+  use 3 * ((n + 2) / 3)
+  refine ⟨by omega, by omega, dvd_mul_right 3 _⟩
+
+/-- Every interval of length 6 contains a multiple of 6. -/
+theorem interval_contains_mult6 (n : ℕ) :
+    ∃ m, n ≤ m ∧ m < n + 6 ∧ 6 ∣ m := by
+  use 6 * ((n + 5) / 6)
+  refine ⟨by omega, by omega, dvd_mul_right 6 _⟩
+
+/-- The primorial grows: primorial(k+1) ≥ 2 · primorial(k). -/
+theorem primorial_succ_ge_double (k : ℕ) : 2 * primorial k ≤ primorial (k + 1) := by
+  rw [primorial_succ]
+  exact Nat.mul_le_mul_right _ (nthPrime_ge_two k)
 
 /-
 ## Part VII: Schinzel's Weaker Result
@@ -388,7 +433,7 @@ the interval [n, n + p₁···pₖ) contains an integer with > k prime factors?
 Status:
 - Main conjecture: OPEN
 - k = 2 case: OPEN (intervals of length 6)
-  - Computationally verified for n ∈ [3, 1002] (k2_verified_range)
+  - Computationally verified for n ∈ [3, 3002] (k2_verified_range)
   - Fails for n ∈ {0, 1, 2} (k2_fails_small)
 - Schinzel's result: Holds with larger interval p₁···pₖ₋₁·pₖ₊₁
 - Weisenberg: FALSE (conditionally) with interval p₁···pₖ - 1
