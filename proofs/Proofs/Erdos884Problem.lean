@@ -343,16 +343,16 @@ theorem generalGap_telescope (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < num
       -- d_{j+1} - d_i = (d_j - d_i) + (d_{j+1} - d_j)
       exact generalGap_add_mid n hij' (Nat.le_succ j) (by omega)
 
-/-- Each all-pairs reciprocal is at most any consecutive reciprocal in the range.
-    1/(d_j - d_i) ≤ 1/(d_{k+1} - d_k) for i ≤ k < j. -/
-theorem inv_generalGap_le_inv_consecutiveGap (n : ℕ) {i j k : ℕ}
+/-- Any interior consecutive gap is dominated by the general gap.
+    d_{k+1} - d_k ≤ d_j - d_i for i ≤ k < j. -/
+theorem consecutiveGap_le_generalGap (n : ℕ) {i j k : ℕ}
     (hik : i ≤ k) (hkj : k < j) (hj : j < numDivisors n) :
-    (1 : ℝ) / (generalGap n i j) ≤ 1 / (consecutiveGap n k) := by
-  apply div_le_div_of_nonneg_left one_pos (by positivity) (by positivity)
-  · exact Nat.cast_le.mpr (Nat.cast_le.mp (by
-      push_cast
-      exact_mod_cast gap_lower_bound n k j (by omega) hj))
-  sorry -- TODO: need generalGap ≥ consecutiveGap for arbitrary k in range
+    consecutiveGap n k ≤ generalGap n i j := by
+  calc consecutiveGap n k
+      ≤ generalGap n k j := gap_lower_bound n k j hkj hj
+    _ ≤ generalGap n i j := by
+        have := generalGap_add_mid n hik (le_of_lt hkj) hj
+        omega
 
 /- ## Connections -/
 
