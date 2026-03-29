@@ -15,6 +15,10 @@ integers as possible? The conjecture says primes are optimal.
 
 ## Status: OPEN
 
+## Axiom Reduction
+maxPrimeCount and maxPrimeCount_spec were originally axioms (4 total).
+Now proved from Mathlib's prime reciprocal divergence, reducing to 2 axioms.
+
 Reference: https://erdosproblems.com/783
 -/
 
@@ -125,14 +129,115 @@ theorem primeSievingSet_pairwise_coprime (k : ℕ) :
   have hpb := primeSievingSet_all_prime k b hb
   exact (Nat.coprime_primes hpa hpb).mpr hab
 
-/-- The maximal k such that the first k prime reciprocals sum to ≤ C.
-    This exists because prime reciprocals diverge (Euler), so for any C
-    there is a finite k beyond which the sum exceeds C. -/
-axiom maxPrimeCount (C : ℝ) : ℕ
+/- ## Constructing maxPrimeCount from prime reciprocal divergence
 
-axiom maxPrimeCount_spec (C : ℝ) (hC : C > 0) :
+The following lemmas prove that the partial sums of prime reciprocals
+are unbounded (a consequence of Euler's theorem, available in Mathlib as
+`not_summable_one_div_on_primes`). This lets us construct `maxPrimeCount`
+via `Nat.find` instead of axiomatizing it. -/
+
+/-- Primes up to n (inclusive), used locally for the divergence bridge. -/
+private noncomputable def primesBelow (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter Nat.Prime
+
+/-- The sum of prime reciprocals diverges: for any C > 0, there exists N
+    such that the sum of 1/p over primes p ≤ N exceeds C.
+    Proved from Mathlib's `not_summable_one_div_on_primes`. -/
+private lemma primeReciprocalSumDiverges :
+    ∀ C : ℝ, 0 < C → ∃ N : ℕ, C < (primesBelow N).sum (fun p => (1 : ℝ) / p) := by
+  intro C _
+  have hns := not_summable_one_div_on_primes
+  have hnn : ∀ i, 0 ≤ ({p : ℕ | p.Prime}.indicator fun n : ℕ => (1 : ℝ) / ↑n) i :=
+    fun i => Set.indicator_apply_nonneg (fun _ => by positivity)
+  rw [not_summable_iff_tendsto_nat_atTop_of_nonneg hnn] at hns
+  rw [Filter.tendsto_atTop_atTop] at hns
+  obtain ⟨N, hN⟩ := hns (C + 1)
+  use N
+  have h_bound := hN N le_rfl
+  have h_ind_eq : ∀ x, ({p : ℕ | p.Prime}.indicator fun n : ℕ => (1 : ℝ) / ↑n) x =
+      if x.Prime then (1 : ℝ) / ↑x else 0 := fun x => by
+    simp [Set.indicator_apply]
+  simp_rw [h_ind_eq, ← Finset.sum_filter] at h_bound
+  have h_sub : (Finset.range N).filter Nat.Prime ⊆ primesBelow N := by
+    intro p hp
+    simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp ⊢
+    exact ⟨by omega, hp.2⟩
+  have h_le := Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)
+  linarith
+
+/-- The number of primes below p is strictly less than p for any prime p,
+    since {0, ..., p-1} contains non-primes (at least 0 and 1). -/
+private lemma count_primes_lt (p : ℕ) (hp : Nat.Prime p) :
+    Nat.count Nat.Prime p < p := by
+  rw [Nat.count_eq_card_filter_range, ← Finset.card_range p]
+  by_contra h
+  push_neg at h
+  have heq := Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) h
+  have h0 : 0 ∈ (Finset.range p).filter Nat.Prime := by
+    rw [heq]; exact Finset.mem_range.mpr hp.pos
+  exact Nat.not_prime_zero (Finset.mem_filter.mp h0).2
+
+/-- Every prime ≤ N is among the first N values of nthPrime.
+    Uses `Nat.nth_count`: for prime p, nthPrime(count(p)) = p,
+    and count(p) < p ≤ N. -/
+private lemma primesBelow_subset_primeSievingSet (N : ℕ) :
+    primesBelow N ⊆ primeSievingSet N := by
+  intro p hp
+  simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
+  simp only [primeSievingSet, Finset.mem_image, Finset.mem_range]
+  refine ⟨Nat.count Nat.Prime p, ?_, ?_⟩
+  · calc Nat.count Nat.Prime p < p := count_primes_lt p hp.2
+      _ ≤ N := by omega
+  · exact Nat.nth_count hp.2
+
+/-- The partial sums ∑_{i<k} 1/nthPrime(i) are unbounded.
+    Bridges from primesBelow-based divergence to nthPrime-indexed sums
+    via the subset relation primesBelow N ⊆ primeSievingSet N. -/
+private lemma primeSumUnbounded (C : ℝ) (hC : 0 < C) :
+    ∃ k, C < (Finset.range k).sum (fun i => (1 : ℝ) / (nthPrime i)) := by
+  obtain ⟨N, hN⟩ := primeReciprocalSumDiverges C hC
+  exact ⟨N, by
+    calc C < (primesBelow N).sum (fun p => (1 : ℝ) / p) := hN
+      _ ≤ (primeSievingSet N).sum (fun p => (1 : ℝ) / p) :=
+          Finset.sum_le_sum_of_subset_of_nonneg (primesBelow_subset_primeSievingSet N)
+            (fun _ _ _ => by positivity)
+      _ = (Finset.range N).sum (fun i => (1 : ℝ) / (nthPrime i)) := by
+          unfold primeSievingSet
+          rw [Finset.sum_image (fun i _ j _ h => nthPrime_injective h)]⟩
+
+/-- Shifted version: for any C > 0, ∃ k with sum of first k+1 prime reciprocals > C. -/
+private lemma exists_prime_sum_exceeds (C : ℝ) (hC : 0 < C) :
+    ∃ k, (Finset.range (k + 1)).sum (fun i => (1 : ℝ) / (nthPrime i)) > C := by
+  obtain ⟨m, hm⟩ := primeSumUnbounded C hC
+  cases m with
+  | zero => simp at hm; linarith
+  | succ n => exact ⟨n, hm⟩
+
+/-- The maximal k such that the first k prime reciprocals sum to ≤ C.
+    Constructed from the divergence of ∑1/p via `Nat.find`, replacing
+    the former axiom. For C ≤ 0, returns 0 (spec only used with C > 0). -/
+noncomputable def maxPrimeCount (C : ℝ) : ℕ :=
+  if h : C > 0 then Nat.find (exists_prime_sum_exceeds C h) else 0
+
+/-- The maximal prime count satisfies: sum of first k ≤ C, sum of first k+1 > C.
+    Proved from `Nat.find_spec` and `Nat.find_min`. -/
+theorem maxPrimeCount_spec (C : ℝ) (hC : C > 0) :
     ((Finset.range (maxPrimeCount C)).sum (fun i => (1 : ℝ) / (nthPrime i))) ≤ C ∧
-    ((Finset.range (maxPrimeCount C + 1)).sum (fun i => (1 : ℝ) / (nthPrime i))) > C
+    ((Finset.range (maxPrimeCount C + 1)).sum (fun i => (1 : ℝ) / (nthPrime i))) > C := by
+  have hdef : maxPrimeCount C = Nat.find (exists_prime_sum_exceeds C hC) := by
+    simp only [maxPrimeCount, dif_pos hC]
+  rw [hdef]
+  constructor
+  · -- Sum of first k₀ terms ≤ C (from minimality of Nat.find)
+    set k₀ := Nat.find (exists_prime_sum_exceeds C hC)
+    cases k₀ with
+    | zero => simp; linarith
+    | succ n =>
+      have h_min := Nat.find_min (exists_prime_sum_exceeds C hC) (Nat.lt_succ_self n)
+      push_neg at h_min
+      exact h_min
+  · -- Sum of first k₀ + 1 terms > C (from Nat.find_spec)
+    exact Nat.find_spec (exists_prime_sum_exceeds C hC)
 
 /-- The prime sieving set has reciprocal sum ≤ C for the appropriate k. -/
 theorem primeSievingSet_reciprocal_sum (C : ℝ) (hC : C > 0) :
