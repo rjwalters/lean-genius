@@ -1,0 +1,26 @@
+{
+  "slug": "erdos-1070-incomplete-01",
+  "title": "Complete proof: Independence Number of Unit Distance Graphs (1 sorry)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {"formal": "", "plain": "Fix malformed sorry in Erdős #1070 formalization.", "whyMatters": []},
+  "knownResults": {"proven": ["Fixed malformed axiom quarter_conjecture_open (sorry inside Iff → clean def)"], "open": [], "goal": ""},
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-29T16:25:00.000Z", "iteration": 1, "focus": "Sorry fix", "blockers": [], "nextAction": "None", "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}},
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fixed malformed sorry (axiom with sorry inside Iff → proper def). Sorries: 1→0.",
+    "builtItems": ["Erdos1070Problem.lean: replaced malformed axiom with clean quarterConjecture def"],
+    "insights": ["The sorry was inside an Iff in an axiom declaration — not a provable sorry but a syntax error"],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": ["combinatorics", "discrete-geometry", "erdos", "seeker-selected"],
+  "relatedProofs": [],
+  "references": {"papers": [], "urls": [], "mathlib": []},
+  "started": "2026-03-29T14:32:06.055Z",
+  "lastUpdate": "2026-03-29T16:25:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [{"path": "Proofs/Erdos1070Problem.lean", "filename": "Erdos1070Problem.lean", "lineCount": 208, "theoremCount": 6, "axiomCount": 15, "defCount": 5, "sorryCount": 0, "isAristotle": false}]
+}
