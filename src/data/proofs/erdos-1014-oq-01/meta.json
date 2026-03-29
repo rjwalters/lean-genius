@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1014",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-24",
-    "axiomCount": 6,
-    "lineCount": 197,
-    "assumptions": "6 axioms: ramseyNumber (definition), ramsey_pos, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower_bound. All theorems fully proved.",
+    "axiomCount": 1,
+    "lineCount": 365,
+    "assumptions": "1 axiom: R3_lower_bound (Kim-Shearer lower bound R(3,l) ≥ c·l²/log l). The Ramsey number is now defined via Nat.find from RamseysTheorem.lean. Properties (positivity, monotonicity, recurrence, R(2,l)=l) are proved from the definition.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -44,41 +44,57 @@
       "id": "header-setup",
       "title": "File Header and Setup",
       "startLine": 1,
-      "endLine": 32,
-      "summary": "Documentation header summarizing the proof strategy, imports Mathlib, opens the `Real` namespace for `log`, and defines the `Erdos1014OQ01` namespace. References Kim (1995), Shearer (1995), and Mattheus–Verstraëte (2024).",
-      "mathContext": "The proof operates in $\\mathbb{R}$ after casting $\\mathbb{N}$-valued Ramsey numbers, using `Real.log` for the Kim–Shearer bound."
+      "endLine": 34,
+      "summary": "Documentation header, imports Mathlib and RamseysTheorem. Opens Real, RamseysTheorem, Finset, and Classical namespaces.",
+      "mathContext": "Imports the complete proof of Ramsey's theorem to provide a foundation for defining R(r,s) as Nat.find."
     },
     {
-      "id": "axioms",
-      "title": "Axioms from Parent Formalization",
-      "startLine": 34,
-      "endLine": 64,
-      "summary": "Ramsey number axioms: definition, positivity $R(k,l) \\geq 1$, monotonicity $R(k,l) \\leq R(k,l+1)$, recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$, trivial case $R(2,l) = l$, and the Kim-Shearer lower bound $R(3,l) \\geq c \\cdot l^2 / \\log l$.",
-      "mathContext": "Standard Ramsey number properties plus the asymptotically tight lower bound from Kim (1995) and Shearer (1995)."
+      "id": "ramsey-definition",
+      "title": "Ramsey Number Definition and Infrastructure",
+      "startLine": 36,
+      "endLine": 61,
+      "summary": "**Proved.** Defines ramseyNumber(r,s) as the minimum n with HasRamseyProperty, using Nat.find from RamseysTheorem. Proves the definition satisfies the Ramsey property and is minimal.",
+      "mathContext": "$R(r,s) = \\min\\{n : \\text{HasRamseyProperty}(\\text{Fin } n, r, s)\\}$. Existence from ramsey_theorem, minimality from Nat.find."
+    },
+    {
+      "id": "ramsey-properties",
+      "title": "Ramsey Number Properties (formerly axioms)",
+      "startLine": 63,
+      "endLine": 252,
+      "summary": "**Proved.** Five formerly-axiomatized properties proved from the definition: (1) R(k,l) ≥ 1, (2) R(k,l) ≤ R(k,l+1), (3) R(2,l) = l, (4) R(k,l+1) ≤ R(k,l) + R(k-1,l+1). The recurrence proof adapts the pigeonhole + clique extension argument from RamseysTheorem.",
+      "mathContext": "Standard Ramsey theory. The recurrence proof uses neighborhood partition: pick vertex v, partition others into red/blue neighborhoods, apply induction on each."
+    },
+    {
+      "id": "lower-bound-axiom",
+      "title": "Kim-Shearer Lower Bound (sole remaining axiom)",
+      "startLine": 254,
+      "endLine": 262,
+      "summary": "The only remaining axiom: R(3,l) ≥ c·l²/log l (Kim 1995, Shearer 1995). This is a deep result requiring the semi-random method.",
+      "mathContext": "Kim's lower bound $R(3,l) \\geq c \\cdot l^2/\\log l$ proved using the triangle-free process (semi-random method). Not feasible to formalize."
     },
     {
       "id": "increment-bound",
       "title": "Linear Increment Bound",
-      "startLine": 69,
-      "endLine": 81,
-      "summary": "**Proved.** The recurrence gives $R(3,l+1) \\leq R(3,l) + (l+1)$, bounding consecutive increments by a linear function.",
-      "mathContext": "Key structural insight: from $R(3,l+1) \\leq R(3,l) + R(2,l+1) = R(3,l) + (l+1)$. While $R(3,l) = \\Theta(l^2/\\log l)$, the increment is only $O(l)$."
+      "startLine": 264,
+      "endLine": 276,
+      "summary": "**Proved.** Combines recurrence + R(2,l)=l to get R(3,l+1) ≤ R(3,l) + (l+1).",
+      "mathContext": "From $R(3,l+1) \\leq R(3,l) + R(2,l+1) = R(3,l) + (l+1)$."
     },
     {
       "id": "analysis-lemma",
       "title": "Analysis Lemma",
-      "startLine": 86,
-      "endLine": 124,
-      "summary": "**Proved.** Shows $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$, using Mathlib's `isLittleO_log_rpow_atTop` ($\\log x = o(x)$).",
-      "mathContext": "Standard result from real analysis. The bound follows from $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
+      "startLine": 278,
+      "endLine": 310,
+      "summary": "**Proved.** Shows $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for large $l$, using Mathlib's isLittleO_log_rpow_atTop.",
+      "mathContext": "Standard real analysis: $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
-      "startLine": 129,
-      "endLine": 197,
-      "summary": "**Fully proved.** Combines the increment bound, lower bound, and analysis to show $|R(3,l+1)/R(3,l) - 1| \\leq (l+1) \\cdot \\log l / (c \\cdot l^2) \\to 0$.",
-      "mathContext": "The proof chain: monotonicity gives $|R(3,l+1)/R(3,l) - 1| = (R(3,l+1) - R(3,l))/R(3,l)$; the increment bound gives $\\leq (l+1)/R(3,l)$; the lower bound gives $\\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$; analysis gives $\\to 0$. This shows $\\Theta$ bounds suffice for $k=3$ when combined with the recurrence."
+      "startLine": 312,
+      "endLine": 365,
+      "summary": "**Fully proved.** Combines increment bound, lower bound, and analysis to show $|R(3,l+1)/R(3,l) - 1| \\leq O(\\log l / l) \\to 0$.",
+      "mathContext": "Squeeze argument: $1 \\leq R'/R \\leq 1 + O(\\log l/l)$."
     }
   ],
   "overview": {
@@ -109,13 +125,13 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": ["Mathlib", "Proofs.RamseysTheorem"],
+    "opens": ["Real", "RamseysTheorem", "Finset", "Classical"],
     "namespace": "Erdos1014OQ01",
-    "lineCount": 197,
-    "axiomCount": 6,
-    "theoremCount": 3,
-    "definitionCount": 0
+    "lineCount": 365,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 1
   },
   "references": [
     "Erdős [Er71], Problem 1014",
