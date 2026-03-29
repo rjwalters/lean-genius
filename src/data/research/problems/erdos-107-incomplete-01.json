@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved cardSet_three_lower_bound (1 sorry eliminated), added InGeneralPosition.mono and CardSet.mono infrastructure. 4 sorries remain, all needing geometric reasoning about convex hulls or Collinear API.",
+    "progressSummary": "PROGRESS: 2 sorries eliminated (f_4_lb, f_4_ub from f_four_eq axiom). 2 sorries remain: f_finite (ES existence), f_3_value (triangle convex hull). 6 axioms all deep results.",
     "builtItems": [
       "Proved cardSet_three_lower_bound in Erdos107Problem.lean:170-206",
       "Proved InGeneralPosition.mono in Erdos107Problem.lean:165-167",
-      "Proved CardSet.mono in Erdos107Problem.lean:172-178"
+      "Proved CardSet.mono in Erdos107Problem.lean:172-178",
+      "Proved f_4_lb (4 < f 4) from f_four_eq axiom",
+      "Proved f_4_ub (f 4 ≤ 5) from f_four_eq axiom"
     ],
     "insights": [
       "5 sorries: f_three_eq (duplicate of f_3_value), f_finite, f_3_value, f_4_lb, f_4_ub",
@@ -56,7 +58,8 @@
       "CardSet.mono PROVED: threshold set is upward-closed via Finset.exists_smaller_set",
       "For f_3_value, key missing piece: Collinear definition in Mathlib4",
       "convexHull_subset_affineSpan available - chain to Collinear is sole gap for f_3_value",
-      "Docker unavailable for build verification - proof needs compilation check"
+      "Docker unavailable for build verification - proof needs compilation check",
+      "f_4_lb and f_4_ub are trivial consequences of f_four_eq axiom; 2 sorries eliminated"
     ],
     "mathlibGaps": [
       "Need Collinear for EuclideanSpace ℝ (Fin 2) — should be in Mathlib.Analysis.InnerProductSpace",
@@ -88,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.257Z",
-  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-29T18:50:00.000Z",
   "significance": 6,
   "tractability": 5
 }
