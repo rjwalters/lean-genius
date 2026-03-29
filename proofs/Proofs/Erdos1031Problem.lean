@@ -190,20 +190,6 @@ axiom exists_nontrivial_regular (k : ℕ) (hk : k ≥ 3) :
     ¬(∀ x y : W, x ≠ y → H.Adj x y) ∧
     ¬(∀ x y : W, x ≠ y → ¬H.Adj x y)
 
-/-- The conjecture is true. -/
-theorem erdos_1031_solved : erdos_1031_conjecture := by
-  sorry
-
-/-- Simplified statement using Prömel-Rödl. -/
-theorem erdos_1031_via_promel_rodl :
-    ∀ c > 0, ∃ c' > 0, ∃ N : ℕ, ∀ n ≥ N,
-    ∀ (V : Type*) [DecidableEq V] [Fintype V],
-    Fintype.card V = n →
-    ∀ G : SimpleGraph V,
-    noLargeTrivial G (Nat.ceil (c * Real.log n)) →
-    ∃ S : Finset V, isNontrivialRegular G S ∧ (S.card : ℝ) ≥ c' * Real.log n := by
-  sorry
-
 /-
 ## Connection to Ramsey Theory
 
@@ -371,7 +357,7 @@ private def cycleGraph' (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
 /-- Universal graphs contain regular subgraphs. -/
 theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
     isKUniversal G k →
-    ∃ S : Finset V, isNontrivialRegular G S ∧ S.card ≥ 3 := by
+    ∃ S : Finset V, isNontrivialRegular G S ∧ S.card = k := by
   intro huniv
   have hk3 : k ≥ 3 := by omega
   -- Lift cycle to universe of V
@@ -388,7 +374,7 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
   obtain ⟨S, hScard, f, hf⟩ := huniv W hWcard H
   -- S has k ≥ 6 ≥ 3 vertices
   refine ⟨S, ⟨⟨2, ?reg⟩, ?nontriv⟩, ?size⟩
-  case size => rw [hScard, hWcard]; omega
+  case size => rw [hScard, hWcard]
   case nontriv =>
     -- Not trivial: has both edges and non-edges
     let v0 : W := ULift.up ⟨0, by omega⟩
@@ -479,6 +465,26 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
         Finset.mem_singleton]
       exact ⟨h_only j, fun h => by rcases h with rfl | rfl; exact h_succ; exact h_pred⟩
     rw [hfilt_eq, Finset.card_pair h_ne]
+
+/-
+## The Solution (continued)
+
+Using universal_has_regular + Prömel-Rödl.
+-/
+
+/-- Simplified statement using Prömel-Rödl. -/
+theorem erdos_1031_via_promel_rodl :
+    ∀ c > 0, ∃ c' > 0, ∃ N : ℕ, ∀ n ≥ N,
+    ∀ (V : Type*) [DecidableEq V] [Fintype V],
+    Fintype.card V = n →
+    ∀ G : SimpleGraph V,
+    noLargeTrivial G (Nat.ceil (c * Real.log n)) →
+    ∃ S : Finset V, isNontrivialRegular G S ∧ (S.card : ℝ) ≥ c' * Real.log n := by
+  sorry
+
+/-- The conjecture is true. -/
+theorem erdos_1031_solved : erdos_1031_conjecture := by
+  sorry
 
 /-
 ## Summary
