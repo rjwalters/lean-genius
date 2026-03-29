@@ -442,20 +442,69 @@ theorem fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k
   intro A hAk g
   haveI : NeZero p := ⟨hp.ne_zero⟩
   have hp_pos : (0 : ℝ) < ↑p := Nat.cast_pos.mpr hp.pos
-  -- Step 1: Fourier expansion in ℂ
+  have hp_ne_c : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
+  -- Fourier expansion and product bound
   have hfourier := reprCount_fourier_expansion hp A g
-  -- Step 2: The error (reprCount - 2^k/p) in ℂ equals (1/p) times the
-  -- sum over nonzero characters j ≠ 0
-  -- Step 3: |error|_ℝ ≤ |error|_ℂ ≤ (1/p) ∑_{j≠0} |product|
-  -- Step 4: Each |product| ≤ 2^k · cos(π/p)^(k-1) by fourier_product_bound
-  -- Step 5: (p-1) terms gives the final bound
-  -- Full assembly from the helper lemmas:
   have h_prod_bound := fun j (hj : j ≠ (0 : ZMod p)) =>
     fourier_product_bound hp A k hAk hk j hj
-  -- The remainder of this proof assembles the Fourier expansion,
-  -- triangle inequality, and product bounds. Each individual step
-  -- is routine real/complex analysis once the key lemmas are established.
-  sorry
+  -- Per-character Fourier term
+  set f : ZMod p → ℂ := fun j =>
+    (ωp p) ^ ZMod.val (-j * g) * ∏ a ∈ A, (1 + (ωp p) ^ ZMod.val (j * a)) with hf_def
+  -- Nonzero characters
+  set S := Finset.univ.erase (0 : ZMod p) with hS_def
+  -- f(0) = 2^k
+  have hf0 : f 0 = ↑(2 ^ A.card) := fourier_j_zero_term A g
+  -- Split sum: ∑ f = f(0) + ∑_{j≠0} f(j)
+  have hsplit : ∑ j : ZMod p, f j = f 0 + ∑ j ∈ S, f j :=
+    (Finset.add_sum_erase Finset.univ f (Finset.mem_univ 0)).symm
+  -- Error in ℂ: reprCount - 2^k/p = (1/p) ∑_{j≠0} f(j)
+  have herror : (reprCount A g : ℂ) - ↑(2 ^ k : ℕ) / (p : ℂ) =
+      (1 / (p : ℂ)) * ∑ j ∈ S, f j := by
+    rw [hfourier, hsplit, mul_add, hf0, hAk]
+    field_simp [hp_ne_c]
+  -- |S| = p - 1
+  have hS_card : S.card = p - 1 := by
+    rw [hS_def, Finset.card_erase_of_mem (Finset.mem_univ _), ZMod.card]
+  -- Helper: ‖∏ h(a)‖ = ∏ ‖h(a)‖ (norm is multiplicative in normed fields)
+  have norm_finset_prod : ∀ (T : Finset (ZMod p)) (h : ZMod p → ℂ),
+      ‖∏ a ∈ T, h a‖ = ∏ a ∈ T, ‖h a‖ := by
+    intro T h
+    induction T using Finset.cons_induction with
+    | empty => simp
+    | cons a s ha ih => rw [Finset.prod_cons, Finset.prod_cons, norm_mul, ih]
+  -- ‖f(j)‖ ≤ 2^k * |cos(π/p)|^{k-1} for j ≠ 0
+  have hf_bound : ∀ j ∈ S, ‖f j‖ ≤ (2 : ℝ) ^ k * |Real.cos (π / ↑p)| ^ (k - 1) := by
+    intro j hj
+    have hj_ne : j ≠ 0 := Finset.ne_of_mem_erase hj
+    simp only [hf_def]
+    rw [norm_mul, ωp_pow_norm, one_mul, norm_finset_prod]
+    exact h_prod_bound j hj_ne
+  -- ‖1/p‖ = 1/p
+  have h1p : ‖(1 / (p : ℂ))‖ = 1 / (↑p : ℝ) := by
+    rw [norm_div, Complex.norm_one, Complex.norm_natCast]
+  -- Bridge ℂ → ℝ: real absolute value equals complex norm (both sides are real)
+  have hbridge : |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p| =
+      ‖(↑((reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p) : ℂ)‖ := by
+    rw [Complex.norm_real, Real.norm_eq_abs]
+  have hcast : (↑((reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p) : ℂ) =
+      (reprCount A g : ℂ) - ↑(2 ^ k : ℕ) / (p : ℂ) := by
+    push_cast
+    rw [Nat.cast_pow, Nat.cast_ofNat]
+  -- Main calculation
+  rw [hbridge, hcast, herror]
+  calc ‖(1 / (p : ℂ)) * ∑ j ∈ S, f j‖
+      = ‖(1 / (p : ℂ))‖ * ‖∑ j ∈ S, f j‖ := norm_mul _ _
+    _ ≤ (1 / ↑p) * ∑ j ∈ S, ‖f j‖ := by
+        rw [h1p]
+        exact mul_le_mul_of_nonneg_left (norm_sum_le _ _)
+          (div_nonneg zero_le_one (Nat.cast_nonneg p))
+    _ ≤ (1 / ↑p) * ∑ j ∈ S, ((2 : ℝ) ^ k * |Real.cos (π / ↑p)| ^ (k - 1)) :=
+        mul_le_mul_of_nonneg_left (Finset.sum_le_sum hf_bound)
+          (div_nonneg zero_le_one (Nat.cast_nonneg p))
+    _ = (↑p - 1) * |Real.cos (π / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p) := by
+        rw [Finset.sum_const, hS_card, nsmul_eq_mul]
+        field_simp
+        ring
 
 /-- For k ≥ clog₂ p + C, the Fourier error decays to at most ε · 2^k/p.
     This is the core of the Erdős-Rényi (1965) approach.
