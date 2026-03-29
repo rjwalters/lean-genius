@@ -247,9 +247,15 @@ axiom coprime_upper_bound :
 
 /- ## Properties of primeSquares3mod4 -/
 
-/-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem) -/
-axiom infinitely_many_primes_3mod4 :
-  Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3}
+/-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem).
+    Proved from Mathlib's Nat.infinite_setOf_prime_and_modEq. -/
+theorem infinitely_many_primes_3mod4 :
+    Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3} := by
+  have h := Nat.infinite_setOf_prime_and_modEq (show (4 : ℕ) ≠ 0 by omega)
+    (show Nat.Coprime 3 4 by decide)
+  -- p ≡ 3 [MOD 4] unfolds to p % 4 = 3 % 4 = 3
+  simp only [Nat.ModEq, show (3 : ℕ) % 4 = 3 from by omega] at h
+  exact h
 
 /-- Primes ≡ 3 (mod 4) squared is an infinite set.
 

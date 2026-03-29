@@ -10,11 +10,11 @@
     "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
     "tags": ["algebra", "polynomials", "real-algebraic-geometry", "root-isolation"],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 140,
+    "lineCount": 185,
     "dateAdded": "2026-03-28",
-    "assumptions": "3 sorry lemmas: linear_at_most_one_root, rolle_polynomial, root_of_sign_change. All provable from Mathlib (Rolle's theorem, IVT). The full Budan upper bound proof requires ~240-410 more lines.",
+    "assumptions": "1 sorry: linear_at_most_one_root (linear polynomial root bound). rolle_polynomial and root_of_sign_change have been proved.",
     "relatedProblems": [
       {"id": "descartes-rule-of-signs-oq-02", "relationship": "Proves the budan_upper_bound_axiom from OQ-02"}
     ]
@@ -26,15 +26,16 @@
   },
   "leanFile": {
     "namespace": "BudanUpperBound",
-    "lineCount": 140,
+    "lineCount": 185,
     "axiomCount": 0,
     "theoremCount": 5,
     "defCount": 1,
-    "sorries": 3,
+    "sorries": 1,
     "mainTheorems": [
       {"name": "constant_no_roots", "type": "proved", "description": "Constant nonzero polynomials have no roots"},
-      {"name": "rolle_polynomial", "type": "sorry", "description": "Rolle's theorem for polynomials (building block)"},
-      {"name": "root_of_sign_change", "type": "sorry", "description": "IVT: sign change implies root"}
+      {"name": "rolle_polynomial", "type": "proved", "description": "Rolle's theorem for polynomials"},
+      {"name": "root_of_sign_change", "type": "proved", "description": "IVT: sign change implies root"},
+      {"name": "linear_at_most_one_root", "type": "sorry", "description": "Linear polynomial has at most one root in interval"}
     ]
   }
 }

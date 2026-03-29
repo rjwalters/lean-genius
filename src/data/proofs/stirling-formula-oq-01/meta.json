@@ -40,7 +40,7 @@
       "Path to axiom elimination: first correction implies stirling_error_bound_ge_2",
       "error_bound_from_correction: structured proof reducing axiom to first correction"
     ],
-    "lineCount": 160,
+    "lineCount": 177,
     "theoremCount": 9,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -107,7 +107,7 @@
     "imports": ["Mathlib.Analysis.SpecialFunctions.Stirling", "Mathlib.Analysis.Asymptotics.Defs", "Mathlib.Data.Real.Basic", "Mathlib.Tactic"],
     "opens": ["Stirling", "Real", "Filter"],
     "namespace": "StirlingExpansion",
-    "lineCount": 160,
+    "lineCount": 177,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2

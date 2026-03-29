@@ -20,7 +20,7 @@
 
   Status: AXIOMATIZED
   Axioms: 1 (primorial growth rate bound)
-  Sorries: 0
+  Sorries: 1 (mersenne_coprime_of_coprime)
 
   References:
   [Gar59] Garner "The residue number system" (1959)
@@ -54,19 +54,45 @@ def RNSBase.dynamicRange (b : RNSBase) : ℕ := b.moduli.prod
 /-- Maximum channel width. -/
 def RNSBase.maxWidth (b : RNSBase) : ℕ := b.moduli.foldl max 0
 
+/-- Helper: foldl max init is at least init. -/
+private theorem foldl_max_ge_init : ∀ (l : List ℕ) (init : ℕ),
+    init ≤ l.foldl max init
+  | [], _ => le_refl _
+  | _ :: as, init => le_trans (le_max_left init _) (foldl_max_ge_init as _)
+
+/-- Helper: foldl max init is at least any element of the list. -/
+private theorem foldl_max_ge_of_mem : ∀ {l : List ℕ} {x : ℕ}, x ∈ l →
+    ∀ init, x ≤ l.foldl max init
+  | _ :: _, _, List.Mem.head _ => fun init =>
+    le_trans (le_max_right init _) (foldl_max_ge_init _ _)
+  | _ :: _, _, List.Mem.tail _ hx => fun init =>
+    foldl_max_ge_of_mem hx _
+
+/-- Helper: foldl max is monotone in the initial value. -/
+private theorem foldl_max_mono : ∀ (l : List ℕ) {a b : ℕ}, a ≤ b →
+    l.foldl max a ≤ l.foldl max b
+  | [], _, _, h => h
+  | _ :: as, _, _, h => foldl_max_mono as (max_le_max_right _ h)
+
+/-- Helper: list product ≤ (foldl max 0)^length. -/
+private theorem list_prod_le_foldl_max_pow : ∀ (l : List ℕ),
+    l.prod ≤ (l.foldl max 0) ^ l.length
+  | [] => by simp
+  | m :: ms => by
+    simp only [List.prod_cons, List.length_cons, pow_succ]
+    apply Nat.mul_le_mul
+    · exact foldl_max_ge_of_mem (List.mem_cons_self m ms) 0
+    · calc ms.prod ≤ (ms.foldl max 0) ^ ms.length := list_prod_le_foldl_max_pow ms
+        _ ≤ ((m :: ms).foldl max 0) ^ ms.length := by
+          apply Nat.pow_le_pow_left
+          simp only [List.foldl_cons]
+          exact foldl_max_mono ms (le_max_right 0 m ▸ Nat.zero_le _)
+
 /-- An RNS base with k channels and max width w has dynamic range ≤ w^k. -/
 theorem dynamicRange_le_pow (b : RNSBase) :
     b.dynamicRange ≤ b.maxWidth ^ b.channels := by
-  unfold RNSBase.dynamicRange RNSBase.channels
-  induction b.moduli with
-  | nil => simp
-  | cons m ms ih =>
-    simp only [List.prod_cons, List.length_cons, pow_succ]
-    apply Nat.mul_le_mul
-    · unfold RNSBase.maxWidth
-      simp only [List.foldl_cons]
-      exact le_max_left m _  |>.trans (le_foldl_max _ _)
-    · sorry -- Need to relate ih to the tail, blocked by structure definition
+  unfold RNSBase.dynamicRange RNSBase.channels RNSBase.maxWidth
+  exact list_prod_le_foldl_max_pow b.moduli
 
 -- ============================================================
 -- SECTION II: Concrete RNS Bases
@@ -114,14 +140,35 @@ theorem mersenne_7 : mersenne 7 = 127 := by unfold mersenne; norm_num
 /-- mersenne 13 = 8191. -/
 theorem mersenne_13 : mersenne 13 = 8191 := by unfold mersenne; norm_num
 
+/-- Key identity: 2^a ≡ 2^(a % b) [MOD 2^b - 1] for b ≥ 1.
+    Proof: 2^b ≡ 1 [MOD 2^b-1], so 2^a = 2^(b*q+r) = (2^b)^q · 2^r ≡ 2^r. -/
+private theorem pow_two_mod_mersenne {a b : ℕ} (hb : b ≥ 1) :
+    2 ^ a % (2 ^ b - 1) = 2 ^ (a % b) % (2 ^ b - 1) := by
+  have hm : 2 ^ b - 1 ≥ 1 := by omega_nat -- 2^b ≥ 2 for b ≥ 1
+  conv_lhs => rw [show a = b * (a / b) + a % b from (Nat.div_add_mod a b).symm]
+  rw [pow_add, pow_mul]
+  have h1 : 2 ^ b % (2 ^ b - 1) = 1 := by
+    have : 2 ^ b = (2 ^ b - 1) * 1 + 1 := by omega
+    rw [show 2 ^ b = (2 ^ b - 1) + 1 from by omega]
+    simp [Nat.add_mod]
+  rw [Nat.mul_mod, Nat.pow_mod, h1, one_pow, Nat.one_mod, Nat.one_mul, Nat.mod_mod_of_dvd]
+  exact dvd_refl _
+
 /-- Mersenne numbers at coprime exponents are coprime.
     Key property: gcd(2^a - 1, 2^b - 1) = 2^gcd(a,b) - 1.
-    So if gcd(a,b) = 1, then gcd(2^a-1, 2^b-1) = 2^1-1 = 1. -/
+    So if gcd(a,b) = 1, then gcd(2^a-1, 2^b-1) = 2^1-1 = 1.
+
+    Proof: By the Euclidean algorithm on the exponents. The reduction
+    2^a - 1 ≡ 2^(a mod b) - 1 [MOD 2^b - 1] mirrors the GCD recursion. -/
 theorem mersenne_coprime_of_coprime {a b : ℕ} (ha : a ≥ 2) (hb : b ≥ 2)
     (hc : Nat.Coprime a b) : Nat.Coprime (mersenne a) (mersenne b) := by
   unfold mersenne Nat.Coprime
-  -- gcd(2^a - 1, 2^b - 1) = 2^gcd(a,b) - 1 = 2^1 - 1 = 1
-  -- This is a classical number theory result
+  -- For specific small Mersenne primes used in RNS, this can be verified directly.
+  -- The general proof requires the Euclidean algorithm identity.
+  -- Since all uses in this file involve small coprime exponents, we use omega/decide
+  -- for the general case we state this as:
+  -- gcd(2^a-1, 2^b-1) | 2^gcd(a,b)-1, and if gcd(a,b)=1 then 2^1-1=1
+  -- Full proof: by well-founded induction on (a,b) mirroring Euclidean algorithm
   sorry
 
 /-- RNS base from Mersenne numbers with coprime exponents: {3, 7, 31, 127}.

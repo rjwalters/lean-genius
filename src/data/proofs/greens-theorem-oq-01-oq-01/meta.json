@@ -7,7 +7,7 @@
     "author": "Fubini (1907), Tonelli (1909)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
     "date": "1907",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01.lean",
     "tags": [
       "analysis",
@@ -16,10 +16,10 @@
       "integration",
       "greens-theorem"
     ],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "mathlib",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "No axioms. 2 sorries: intervalIntegral_swap (main Fubini bridge), fubini_of_continuous (continuous case). Both follow from Mathlib's measure-theoretic Fubini.",
+    "assumptions": "No axioms. 0 sorries. All theorems fully proved using Mathlib's integral_integral_swap and ContinuousOn.integrableOn_compact.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -39,7 +39,7 @@
       "Application: eliminates hFubini hypothesis from Green's theorem (OQ-01)",
       "Sufficient condition: C¹ vector fields always satisfy Fubini for Green's theorem"
     ],
-    "lineCount": 120,
+    "lineCount": 149,
     "theoremCount": 4,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -61,7 +61,7 @@
       "title": "Part I: Fubini for Interval Integrals",
       "startLine": 1,
       "endLine": 55,
-      "summary": "States intervalIntegral_swap: swap iterated interval integrals under measurability + integrability. 1 sorry.",
+      "summary": "Proves intervalIntegral_swap: swap iterated interval integrals under measurability + integrability via Mathlib's integral_integral_swap.",
       "mathContext": "$\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$"
     },
     {
@@ -77,7 +77,7 @@
       "title": "Part III: Sufficient Conditions",
       "startLine": 81,
       "endLine": 120,
-      "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. 1 sorry.",
+      "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. Fully proved via ContinuousOn.integrableOn_compact.",
       "mathContext": "$f \\in C^0([a,b] \\times [c,d]) \\implies$ Fubini holds."
     }
   ],
@@ -105,7 +105,7 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "intervalIntegral", "Set", "Filter", "Topology"],
     "namespace": "GreensTheoremOQ01OQ01",
-    "lineCount": 120,
+    "lineCount": 149,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0

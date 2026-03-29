@@ -19,10 +19,11 @@ Known:
 - mₙ/n → ∞ for almost all n
 
 Axiom reduction: Rebuilt from prior version (deleted in PR #4955 as dead weight).
-Original had 12 axioms and 2 sorries. This version has 3 deep axioms with
+Original had 12 axioms and 2 sorries. Now down to 2 deep axioms with
 8 properties proved from Mathlib using sInf well-ordering, 0 sorries.
-The former erdos_strict_inequality axiom was eliminated by proving
-almostAll_infinitely_often (density → infinitely many) via pigeonhole.
+Dirichlet's theorem axiom eliminated using Mathlib's PrimesInAP
+(Nat.forall_exists_prime_gt_and_modEq). The former erdos_strict_inequality
+axiom was eliminated by proving almostAll_infinitely_often via pigeonhole.
 
 **Status:** OPEN
 
@@ -36,6 +37,7 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Data.Rat.Order
 import Mathlib.Data.Finset.Card
+import Mathlib.NumberTheory.LSeries.PrimesInAP
 
 open Nat Set
 
@@ -58,13 +60,19 @@ def smallestTotientDiv (n : ℕ) : ℕ :=
   sInf {m : ℕ | 0 < m ∧ n ∣ m.totient}
 
 -- ═══════════════════════════════════════════════════════════════════════
--- DEEP AXIOMS (3 total — all are deep published results not in Mathlib)
+-- DEEP AXIOMS (2 remaining — Dirichlet proved from Mathlib)
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- Dirichlet's theorem: for n ≥ 1, there exist infinitely many primes ≡ 1 (mod n).
-    This is the core existence axiom; all sInf properties derive from it. -/
-axiom dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
-  ∀ N : ℕ, ∃ p : ℕ, N ≤ p ∧ p.Prime ∧ n ∣ (p - 1)
+    Proved from Mathlib's formalization of Dirichlet's theorem on primes in
+    arithmetic progressions (Nat.forall_exists_prime_gt_and_modEq). -/
+theorem dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
+    ∀ N : ℕ, ∃ p : ℕ, N ≤ p ∧ p.Prime ∧ n ∣ (p - 1) := by
+  intro N
+  have hn0 : n ≠ 0 := by omega
+  have hcop : Nat.Coprime 1 n := by simp [Nat.Coprime]
+  obtain ⟨p, hpN, hp, hmod⟩ := Nat.forall_exists_prime_gt_and_modEq N hn0 hcop
+  exact ⟨p, hpN.le, hp, (Nat.modEq_iff_dvd' hp.one_lt.le).mp hmod.symm⟩
 
 /-- Linnik's theorem: pₙ = O(n^L) for some constant L.
     Best known: L ≤ 5.18 (Xylouris 2011). -/
@@ -79,10 +87,10 @@ axiom m_over_n_diverges :
       (Finset.range M)).card : ℚ) < ε * ↑M
 
 -- ═══════════════════════════════════════════════════════════════════════
--- PROVED PROPERTIES (8 total — formerly axioms, now proved via sInf)
+-- PROVED PROPERTIES (9 total — formerly axioms, now proved)
 --
 -- Key insight: sInf-based definitions + well-ordering of ℕ make the
--- former axiom properties provable from just the Dirichlet existence axiom.
+-- former axiom properties provable from Dirichlet (now proved from Mathlib).
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- Any Set ℕ is bounded below (by 0). -/

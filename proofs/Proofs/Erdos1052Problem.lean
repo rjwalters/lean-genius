@@ -10,6 +10,8 @@ Main Results:
 - Sum-of-odd-parity lemma (proved by induction)
 - Unitary complement theorem (proved)
 - Coprime characterization of unitary divisors (proved)
+- Multiplicativity of unitary divisor sum (proved)
+- Prime power formula: σ*(p^k) = 1 + p^k (proved)
 - All unitary perfect numbers are even (axiom with proof sketch)
 
 Known unitary perfect numbers: 6, 60, 90, 87360, 146361946186458562560000
@@ -138,23 +140,81 @@ def unitaryDivisorSum (n : ℕ) : ℕ :=
   ((Finset.Ico 1 (n + 1)).filter (fun d => d ∣ n ∧ d.Coprime (n / d))).sum id
 
 /-
+## Supporting Lemmas for Multiplicativity
+-/
+
+/-- gcd(d₁ * d₂, m) = d₁ when d₁ | m and d₂ is coprime to m. -/
+private lemma gcd_mul_left_eq {d₁ d₂ m : ℕ} (hd₁ : d₁ ∣ m) (hcop : d₂.Coprime m) :
+    (d₁ * d₂).gcd m = d₁ := by
+  apply Nat.dvd_antisymm
+  · have hcop_gcd : ((d₁ * d₂).gcd m).Coprime d₂ :=
+      hcop.symm.coprime_dvd_left (Nat.gcd_dvd_right (d₁ * d₂) m)
+    exact hcop_gcd.dvd_of_dvd_mul_right (Nat.gcd_dvd_left (d₁ * d₂) m)
+  · exact Nat.dvd_gcd (dvd_mul_right d₁ d₂) hd₁
+
+/-- For coprime m, n: d / gcd(d, m) divides n when d divides m * n. -/
+private lemma div_gcd_dvd_right {m n d : ℕ} (hm : 0 < m) (hcop : m.Coprime n) (hd : d ∣ m * n) :
+    d / d.gcd m ∣ n := by
+  have hg_pos : 0 < d.gcd m := by
+    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
+    · exact h
+  have hcop_quot := Nat.coprime_div_gcd_div_gcd hg_pos
+  have hdg : d.gcd m ∣ d := Nat.gcd_dvd_left d m
+  have hgm : d.gcd m ∣ m := Nat.gcd_dvd_right d m
+  have h1 : d / d.gcd m ∣ (m / d.gcd m) * n := by
+    have : d.gcd m * (d / d.gcd m) ∣ d.gcd m * ((m / d.gcd m) * n) := by
+      rw [Nat.mul_div_cancel' hgm, ← mul_assoc, Nat.mul_div_cancel' hdg]
+      exact hd
+    exact (Nat.mul_dvd_mul_iff_left hg_pos).mp this
+  exact hcop_quot.dvd_of_dvd_mul_left h1
+
+/-- For coprime m, n: if d is a unitary divisor of m*n, then gcd(d,m) is
+    a unitary divisor of m (coprime to m/gcd(d,m)). -/
+private lemma gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 < n)
+    (hcop : m.Coprime n) (hd : d ∣ m * n) (hunit : d.Coprime (m * n / d)) :
+    (d.gcd m).Coprime (m / d.gcd m) := by
+  have hg_pos : 0 < d.gcd m := by
+    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
+    · exact h
+  have h1 : (d.gcd m).Coprime (m * n / d) :=
+    hunit.coprime_dvd_left (Nat.gcd_dvd_left d m)
+  have h_div_n := div_gcd_dvd_right hm hcop hd
+  have h2 : m / d.gcd m ∣ m * n / d := by
+    conv_lhs => rw [show d = d.gcd m * (d / d.gcd m) from
+      (Nat.mul_div_cancel' (Nat.gcd_dvd_left d m)).symm]
+    rw [Nat.mul_div_mul_comm (Nat.gcd_dvd_right d m) h_div_n]
+    exact dvd_mul_right _ _
+  exact h1.coprime_dvd_right h2
+
+/-- For coprime m, n: if d is a unitary divisor of m*n, then d/gcd(d,m) is
+    a unitary divisor of n (coprime to n/(d/gcd(d,m))). -/
+private lemma div_gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 < n)
+    (hcop : m.Coprime n) (hd : d ∣ m * n) (hunit : d.Coprime (m * n / d)) :
+    (d / d.gcd m).Coprime (n / (d / d.gcd m)) := by
+  have hg_pos : 0 < d.gcd m := by
+    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
+    · exact h
+  have h1 : (d / d.gcd m).Coprime (m * n / d) :=
+    hunit.coprime_dvd_left (Nat.div_dvd_of_dvd (Nat.gcd_dvd_left d m))
+  have h_div_n := div_gcd_dvd_right hm hcop hd
+  have h2 : n / (d / d.gcd m) ∣ m * n / d := by
+    conv_lhs => rw [show d = d.gcd m * (d / d.gcd m) from
+      (Nat.mul_div_cancel' (Nat.gcd_dvd_left d m)).symm]
+    rw [Nat.mul_div_mul_comm (Nat.gcd_dvd_right d m) h_div_n]
+    exact dvd_mul_left _ _
+  exact h1.coprime_dvd_right h2
+
+/-
 ## Main Theorem: All Unitary Perfect Numbers are Even
 
-**Proof:**
-For n = p₁^a₁ · ... · pₖ^aₖ with pᵢ distinct primes, the unitary divisor
-sum factors as σ*(n) = ∏ᵢ(1 + pᵢ^aᵢ).
-
+**Proof sketch** (requires multiplicativity, proved below):
+For n = p₁^a₁ · ... · pₖ^aₖ with pᵢ distinct primes, σ*(n) = ∏ᵢ(1 + pᵢ^aᵢ).
 For unitary perfect n: σ*(n) = 2n.
-
-If n were odd, every pᵢ would be odd, so each factor 1 + pᵢ^aᵢ is even.
-With k = ω(n) distinct prime factors, σ*(n) is divisible by 2^k.
-
-Case k ≥ 2: Then 2^k | σ*(n) = 2n, so 2^(k-1) | n. But n is odd, contradiction.
-
-Case k = 1: Then n = p^a for odd prime p. σ*(p^a) = 1 + p^a = 2p^a,
-giving 1 = p^a, impossible since p ≥ 2 and a ≥ 1.
-
-Case k = 0: n = 1, but σ*(1) = 1 ≠ 2 = 2·1, so 1 isn't unitary perfect.
+If n were odd: Case k=0: impossible. Case k=1: 1+p^a=2p^a gives 1=p^a.
+Case k≥2: 4|σ*(n)=2n, so 2|n, contradiction.
 -/
 axiom even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n
 
@@ -213,9 +273,85 @@ theorem unitaryDivisors_primePow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
       rw [Nat.div_self (Nat.pos_of_ne_zero (pow_ne_zero k hp.ne_zero))]
       exact Nat.coprime_one_right _
 
-/-- The unitary divisor sum is multiplicative for coprime arguments. -/
-axiom unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hcop : m.Coprime n) :
-    unitaryDivisorSum (m * n) = unitaryDivisorSum m * unitaryDivisorSum n
+/-- For prime power p^k, σ*(p^k) = 1 + p^k. -/
+theorem unitaryDivisorSum_prime_pow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
+    unitaryDivisorSum (p ^ k) = 1 + p ^ k := by
+  unfold unitaryDivisorSum
+  rw [unitaryDivisors_primePow hp hk,
+    Finset.sum_pair (ne_of_lt (Nat.one_lt_pow hk.ne' hp.one_lt))]
+
+/-- The unitary divisor sum is multiplicative for coprime arguments.
+    Proof via bijection: unitary divisors of m*n biject with pairs of
+    unitary divisors of m and n, via (d₁, d₂) ↦ d₁*d₂. -/
+theorem unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hcop : m.Coprime n) :
+    unitaryDivisorSum (m * n) = unitaryDivisorSum m * unitaryDivisorSum n := by
+  unfold unitaryDivisorSum
+  set S_mn := (Finset.Ico 1 (m * n + 1)).filter (fun d => d ∣ m * n ∧ d.Coprime (m * n / d))
+  set S_m := (Finset.Ico 1 (m + 1)).filter (fun d => d ∣ m ∧ d.Coprime (m / d))
+  set S_n := (Finset.Ico 1 (n + 1)).filter (fun d => d ∣ n ∧ d.Coprime (n / d))
+  -- Step 1: Bijection: S_mn.sum id = (S_m ×ˢ S_n).sum (fun p => p.1 * p.2)
+  -- Step 2: Algebra: (S_m ×ˢ S_n).sum (fun p => p.1 * p.2) = S_m.sum id * S_n.sum id
+  suffices h : S_mn.sum id = (S_m ×ˢ S_n).sum (fun p : ℕ × ℕ => p.1 * p.2) by
+    rw [h, Finset.sum_product']; simp only [id]
+    simp_rw [← Finset.mul_sum, ← Finset.sum_mul]
+  -- Establish bijection
+  apply Finset.sum_nbij' (fun d => (d.gcd m, d / d.gcd m)) (fun p => p.1 * p.2)
+  · -- Forward: d ∈ S_mn → (gcd(d,m), d/gcd(d,m)) ∈ S_m ×ˢ S_n
+    intro d hd
+    simp only [S_mn, Finset.mem_filter, Finset.mem_Ico] at hd
+    obtain ⟨⟨hd_pos, hd_le⟩, hd_dvd, hd_cop⟩ := hd
+    rw [Finset.mem_product]
+    have hg_pos : 0 < d.gcd m := by
+      rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+      · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
+      · exact h
+    have h_div_n := div_gcd_dvd_right hm hcop hd_dvd
+    have h_gcd_cop := gcd_coprime_div_of_unitary hm hn hcop hd_dvd hd_cop
+    have h_div_cop := div_gcd_coprime_div_of_unitary hm hn hcop hd_dvd hd_cop
+    constructor
+    · simp only [S_m, Finset.mem_filter, Finset.mem_Ico]
+      exact ⟨⟨hg_pos, Nat.lt_succ_of_le (Nat.le_of_dvd (by omega) (Nat.gcd_dvd_right d m))⟩,
+        Nat.gcd_dvd_right d m, h_gcd_cop⟩
+    · simp only [S_n, Finset.mem_filter, Finset.mem_Ico]
+      have h_dg_pos : 0 < d / d.gcd m :=
+        Nat.div_pos (Nat.le_of_dvd (by omega) (Nat.gcd_dvd_left d m)) hg_pos
+      exact ⟨⟨h_dg_pos, Nat.lt_succ_of_le (Nat.le_of_dvd (by omega) h_div_n)⟩,
+        h_div_n, h_div_cop⟩
+  · -- Backward: (d₁,d₂) ∈ S_m ×ˢ S_n → d₁*d₂ ∈ S_mn
+    intro ⟨d₁, d₂⟩ hprod
+    rw [Finset.mem_product] at hprod
+    obtain ⟨hd₁_mem, hd₂_mem⟩ := hprod
+    simp only [S_m, Finset.mem_filter, Finset.mem_Ico] at hd₁_mem
+    simp only [S_n, Finset.mem_filter, Finset.mem_Ico] at hd₂_mem
+    obtain ⟨⟨hd₁_pos, hd₁_le⟩, hd₁_dvd, hd₁_cop⟩ := hd₁_mem
+    obtain ⟨⟨hd₂_pos, hd₂_le⟩, hd₂_dvd, hd₂_cop⟩ := hd₂_mem
+    simp only [S_mn, Finset.mem_filter, Finset.mem_Ico]
+    have hd₁d₂_dvd : d₁ * d₂ ∣ m * n := Nat.mul_dvd_mul hd₁_dvd hd₂_dvd
+    refine ⟨⟨by omega, Nat.lt_succ_of_le (Nat.le_of_dvd (by omega) hd₁d₂_dvd)⟩,
+      hd₁d₂_dvd, ?_⟩
+    rw [Nat.mul_div_mul_comm hd₁_dvd hd₂_dvd]
+    have hd₁_cop_n : d₁.Coprime (n / d₂) :=
+      (hcop.coprime_dvd_left hd₁_dvd).coprime_dvd_right (Nat.div_dvd_of_dvd hd₂_dvd)
+    have hd₂_cop_m : d₂.Coprime (m / d₁) :=
+      (hcop.symm.coprime_dvd_left hd₂_dvd).coprime_dvd_right (Nat.div_dvd_of_dvd hd₁_dvd)
+    exact (hd₁_cop.mul_right hd₁_cop_n).mul_left (hd₂_cop_m.mul_right hd₂_cop)
+  · -- Left inverse: gcd(d,m) * (d / gcd(d,m)) = d
+    intro d _
+    exact Nat.mul_div_cancel' (Nat.gcd_dvd_left d m)
+  · -- Right inverse: (gcd(d₁*d₂,m), (d₁*d₂)/gcd(d₁*d₂,m)) = (d₁,d₂)
+    intro ⟨d₁, d₂⟩ hprod
+    rw [Finset.mem_product] at hprod
+    obtain ⟨hd₁_mem, hd₂_mem⟩ := hprod
+    simp only [S_m, Finset.mem_filter, Finset.mem_Ico] at hd₁_mem
+    simp only [S_n, Finset.mem_filter, Finset.mem_Ico] at hd₂_mem
+    obtain ⟨⟨hd₁_pos, _⟩, hd₁_dvd, _⟩ := hd₁_mem
+    obtain ⟨⟨_, _⟩, hd₂_dvd, _⟩ := hd₂_mem
+    have hgcd_eq : (d₁ * d₂).gcd m = d₁ :=
+      gcd_mul_left_eq hd₁_dvd (hcop.symm.coprime_dvd_left hd₂_dvd)
+    ext <;> simp [hgcd_eq, Nat.mul_div_cancel_left d₂ hd₁_pos]
+  · -- Value: id d = gcd(d,m) * (d / gcd(d,m))
+    intro d _
+    simp [id, Nat.mul_div_cancel' (Nat.gcd_dvd_left d m)]
 
 /-- Proper unitary divisors pair up via d ↦ n/d, except possibly at the square root.
     Note: as stated, this is an existential (∃ valid pairing structure), not a partition claim.

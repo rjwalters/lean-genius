@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added divisor_strictMono, pairwise_lt_getD_ge_diff, generalGap_ge_diff. Total: 23 theorems, 1 axiom, 0 sorries.",
+    "progressSummary": "PROGRESS: Added telescoping section — generalGap_add_mid, generalGap_telescope, consecutiveGap_le_generalGap. Total: 26 theorems, 1 axiom (open conjecture), 0 sorries.",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -50,7 +50,10 @@
       "theorem numDivisors_mul_coprime: via σ₀ multiplicativity (isMultiplicative_sigma)",
       "divisor_strictMono: strict monotonicity (Erdos884Problem.lean:268)",
       "pairwise_lt_getD_ge_diff: list gap lower bound (Erdos884Problem.lean:273)",
-      "generalGap_ge_diff: gap >= index diff (Erdos884Problem.lean:284)"
+      "generalGap_ge_diff: gap >= index diff (Erdos884Problem.lean:284)",
+      "generalGap_add_mid: additive decomposition d_k-d_i = (d_j-d_i)+(d_k-d_j) (Erdos884Problem.lean:315)",
+      "generalGap_telescope: telescoping d_j-d_i = Σ_{k=i}^{j-1} g_k by induction (Erdos884Problem.lean:326)",
+      "consecutiveGap_le_generalGap: any interior consecutive gap ≤ general gap (Erdos884Problem.lean:348)"
     ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
@@ -71,7 +74,10 @@
       "Only the open conjecture erdos_884 remains — no further elimination possible",
       "divisor_strictMono: clean wrapper for divisor(n,i) < divisor(n,j) when i < j",
       "pairwise_lt_getD_ge_diff: in strictly increasing list, l[i] + (j-i) <= l[j] — proved by induction on j",
-      "generalGap_ge_diff: general gap d_j - d_i >= j - i — divisors grow at least 1 per step"
+      "generalGap_ge_diff: general gap d_j - d_i >= j - i — divisors grow at least 1 per step",
+      "Telescoping identity: generalGap decomposes into sum of consecutiveGaps — proved by induction on j with generalGap_add_mid as the key step",
+      "consecutiveGap_le_generalGap: any consecutive gap in [i,j) is dominated by the general gap — proved via gap_lower_bound + generalGap_add_mid",
+      "AM-HM approach gives 1/(d_j-d_i) ≤ (Σ 1/g_k)/(j-i)² but summing gives O(log τ) factor, not constant — insufficient for full conjecture"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
