@@ -55,6 +55,14 @@ theorem apFree_subset {N : ℕ} {A B : Finset (ZMod N)} (h : B ⊆ A) (hA : APFr
     APFree B :=
   fun a d hd ha had hadd => hA a d hd (h ha) (h had) (h hadd)
 
+/-- For N ≥ 2, ZMod N contains the 3-AP {0, 1, 2}, so is not AP-free. -/
+theorem not_apFree_univ {N : ℕ} (hN : 1 < N) :
+    ¬APFree (Finset.univ : Finset (ZMod N)) := by
+  haveI : NeZero N := ⟨by omega⟩
+  haveI : Fact (1 < N) := ⟨hN⟩
+  intro h
+  exact h 0 1 one_ne_zero (Finset.mem_univ _) (Finset.mem_univ _) (Finset.mem_univ _)
+
 /-- r₃(N) ≤ N: no AP-free subset of ZMod N can exceed N elements. -/
 theorem rothNumber_le (N : ℕ) [NeZero N] : rothNumber N ≤ N := by
   unfold rothNumber
@@ -63,6 +71,22 @@ theorem rothNumber_le (N : ℕ) [NeZero N] : rothNumber N ≤ N := by
   rw [Finset.mem_filter] at hA
   calc A.card ≤ Fintype.card (ZMod N) := Finset.card_le_univ A
     _ = N := ZMod.card N
+
+/-- r₃(N) < N for N ≥ 2: the full ZMod N is never AP-free. -/
+theorem rothNumber_lt {N : ℕ} (hN : 1 < N) : rothNumber N < N := by
+  haveI : NeZero N := ⟨by omega⟩
+  unfold rothNumber
+  rw [Finset.sup_lt_iff (show (0 : ℕ) < N by omega)]
+  intro A hA
+  rw [Finset.mem_filter] at hA
+  by_contra hge; push_neg at hge
+  have hcard : A.card = Fintype.card (ZMod N) :=
+    le_antisymm (Finset.card_le_univ A) (ZMod.card N ▸ hge)
+  exact absurd (Finset.eq_univ_of_card A hcard ▸ hA.2) (not_apFree_univ hN)
+
+/-- r₃(N) ≤ N - 1 for N ≥ 2 (corollary of the strict bound). -/
+theorem rothNumber_le_sub_one {N : ℕ} (hN : 1 < N) : rothNumber N ≤ N - 1 := by
+  have := rothNumber_lt hN; omega
 
 /-- r₃(N) ≥ 1 when N ≥ 1: any singleton is AP-free. -/
 theorem rothNumber_pos (N : ℕ) [NeZero N] : 1 ≤ rothNumber N := by
@@ -82,6 +106,31 @@ theorem card_le_rothNumber {N : ℕ} (A : Finset (ZMod N)) (hA : APFree A) :
   apply Finset.le_sup
   rw [Finset.mem_filter]
   exact ⟨Finset.mem_powerset.mpr (Finset.subset_univ _), hA⟩
+
+/-- The Roth number is achieved: there exists an AP-free set of maximum size. -/
+theorem rothNumber_achieved {N : ℕ} [NeZero N] :
+    ∃ A : Finset (ZMod N), APFree A ∧ A.card = rothNumber N := by
+  set S := Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A)
+  have hne : S.Nonempty :=
+    ⟨∅, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (Finset.empty_subset _), apFree_empty⟩⟩
+  obtain ⟨A, hAS, hmax⟩ := Finset.exists_max_image S Finset.card hne
+  exact ⟨A, (Finset.mem_filter.mp hAS).2,
+    le_antisymm (Finset.le_sup hAS) (Finset.sup_le fun B hB => hmax B hB)⟩
+
+/-- r₃(2) = 1: in ZMod 2, every 2-element set contains the AP {0, 1, 0}. -/
+theorem rothNumber_two : rothNumber 2 = 1 := by
+  have h1 : rothNumber 2 < 2 := rothNumber_lt (by omega)
+  have h2 : 1 ≤ rothNumber 2 := rothNumber_pos 2
+  omega
+
+/-- r₃(3) = 2: {0, 1} is AP-free in ZMod 3, and the full set is not. -/
+theorem rothNumber_three : rothNumber 3 = 2 := by
+  have hlt : rothNumber 3 < 3 := rothNumber_lt (by omega)
+  suffices 2 ≤ rothNumber 3 by omega
+  apply card_le_rothNumber ({0, 1} : Finset (ZMod 3))
+  intro a d hd ha had hadd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha had hadd
+  fin_cases a <;> fin_cases d <;> simp_all
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: ITERATION BOUND FROM DENSITY INCREMENT
@@ -129,7 +178,8 @@ theorem density_upper_bound_from_iteration {N : ℕ} (hN : 1 < N) (delta : ℝ)
     (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
     (h_exists : ∃ (A : Finset (ZMod N)), APFree A ∧ (A.card : ℝ) ≥ delta * N) :
     delta ^ 2 ≤ 100 / N := by
-  sorry -- Requires well-founded induction tracking the modulus decay through N steps
+  sorry -- BLOCKED: density_increment_lemma gives M < N with no lower bound on M.
+        -- Need M ≥ √N (or M ≥ N^c) at each step for quantitative iteration.
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: QUANTITATIVE BOUNDS (STATEMENTS)
@@ -183,14 +233,10 @@ theorem kelley_meka_upper_bound :
       (rothNumber N : ℝ) ≤ N * Real.exp (-c * (Real.log N) ^ (1/12 : ℝ)) := by
   sorry
 
-/-- **Crude bound from well-founded iteration**: r₃(N) ≤ 10√N.
-
-    The simplest bound from the density increment: each iteration
-    gives M < N, so at most N iterations are possible. Combined with
-    the density bound k ≤ 100/δ², this gives δ ≤ 10/√N. -/
-theorem crude_sqrt_bound :
-    ∀ N : ℕ, 2 ≤ N →
-      (rothNumber N : ℝ) ≤ 10 * Real.sqrt N := by
-  sorry
+-- NOTE: The previously stated crude_sqrt_bound (r₃(N) ≤ 10√N) was FALSE.
+-- Behrend's lower bound gives r₃(N) ≥ N·exp(-c√(log N)) >> √N for large N.
+-- The proof sketch (iterate density_increment N times) does not work because
+-- density_increment_lemma gives M < N with no lower bound on M.
+-- For quantitative bounds, need M ≥ N^c (e.g., M ≥ N^{2/3} in Roth's analysis).
 
 end Szemeredi.Roth.Quantitative
