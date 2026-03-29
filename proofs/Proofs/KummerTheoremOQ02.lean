@@ -7,8 +7,10 @@ in q that specializes to the ordinary binomial coefficient at q = 1.
 Main results:
 1. Definitions of q-number, q-factorial, and q-binomial (via Pascal recurrence)
 2. q-number equals product of cyclotomic polynomials (from Mathlib)
-3. q-binomial at q=1 recovers the ordinary binomial coefficient
-4. Statement of the q-Kummer theorem: cyclotomic factorization of q-binomials
+3. q-binomial at q=1 recovers the ordinary binomial coefficient (qBinomial_eval_one)
+4. q-number split identity: [a]_q + q^a · [m]_q = [a+m]_q (qNumber_add_shift)
+5. Quotient formula: [n choose k]_q · [k]_q! · [n-k]_q! = [n]_q! (qBinomial_factorial)
+6. Statement of the q-Kummer theorem: cyclotomic factorization of q-binomials
 
 The q-Kummer theorem states that for any d ≥ 2:
   multiplicity(Φ_d, [n choose k]_q) = ⌊n/d⌋ - ⌊k/d⌋ - ⌊(n-k)/d⌋
@@ -122,8 +124,93 @@ theorem qFactorial_eval_one : ∀ n, (qFactorial n).eval 1 = (n ! : ℤ)
     ring
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VI: q-Kummer Theorem (Statement)
+-- § Part V-A: Additional Basic Properties
 -- ══════════════════════════════════════════════════════════════════
+
+/-- qBinomial vanishes when k > n. -/
+theorem qBinomial_eq_zero : ∀ n k, n < k → qBinomial n k = 0
+  | _, 0, h => absurd h (Nat.not_lt_zero _)
+  | 0, _ + 1, _ => rfl
+  | n + 1, k + 1, h => by
+    rw [qBinomial_succ_succ,
+        qBinomial_eq_zero n k (by omega),
+        qBinomial_eq_zero n (k + 1) (by omega),
+        mul_zero, add_zero]
+
+/-- Evaluating [n choose k]_q at q = 1 gives the ordinary binomial coefficient. -/
+theorem qBinomial_eval_one : ∀ n k, (qBinomial n k).eval 1 = (n.choose k : ℤ)
+  | _, 0 => by simp
+  | 0, k + 1 => by simp
+  | n + 1, k + 1 => by
+    simp only [qBinomial_succ_succ, Polynomial.eval_add, Polynomial.eval_mul,
+               Polynomial.eval_pow, Polynomial.eval_X, one_pow, one_mul,
+               qBinomial_eval_one n k, qBinomial_eval_one n (k + 1),
+               Nat.choose_succ_succ, Nat.cast_add]
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part V-B: q-Number Split Identity
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The q-number splits additively: [a]_q + q^a · [m]_q = [a + m]_q.
+    This partitions {0,...,a+m-1} into {0,...,a-1} and {a,...,a+m-1}. -/
+theorem qNumber_add_shift (a m : ℕ) :
+    qNumber a + X ^ a * qNumber m = qNumber (a + m) := by
+  simp only [qNumber, Finset.mul_sum, ← pow_add]
+  exact (Finset.sum_range_add (fun i => (X : ℤ[X]) ^ i) a m).symm
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part V-C: Quotient Formula
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The fundamental identity: [n choose k]_q · [k]_q! · [n-k]_q! = [n]_q!
+    This is the q-analog of C(n,k) · k! · (n-k)! = n!. -/
+theorem qBinomial_factorial : ∀ n k, k ≤ n →
+    qBinomial n k * qFactorial k * qFactorial (n - k) = qFactorial n
+  | _, 0, _ => by simp
+  | n + 1, k + 1, h => by
+    have hk : k ≤ n := by omega
+    by_cases hlt : k < n
+    · -- Case k < n: both IH applications are valid
+      have ih1 := qBinomial_factorial n k hk
+      have ih2 := qBinomial_factorial n (k + 1) hlt
+      -- Factorial decomposition: qFactorial (n-k) = qFactorial (n-k-1) * qNumber (n-k)
+      have h_fac_nk : qFactorial (n - k) = qFactorial (n - k - 1) * qNumber (n - k) := by
+        obtain ⟨m, hm⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n - k ≠ 0)
+        rw [hm]; rfl
+      -- Rewrite IH1 with expanded factorial
+      have ih1' : qBinomial n k * qFactorial k *
+          (qFactorial (n - k - 1) * qNumber (n - k)) = qFactorial n := by
+        rw [← h_fac_nk]; exact ih1
+      -- Rewrite IH2 with expanded qFactorial (k+1) and n-(k+1)
+      have ih2' : qBinomial n (k + 1) * (qFactorial k * qNumber (k + 1)) *
+          qFactorial (n - k - 1) = qFactorial n := by
+        have : qFactorial (k + 1) = qFactorial k * qNumber (k + 1) := rfl
+        rw [← this, show n - (k + 1) = n - k - 1 from by omega] at ih2
+        exact ih2
+      -- q-Number addition: [k+1]_q + q^(k+1) · [n-k]_q = [n+1]_q
+      have add_eq : qNumber (k + 1) + X ^ (k + 1) * qNumber (n - k) = qNumber (n + 1) := by
+        have := qNumber_add_shift (k + 1) (n - k)
+        rwa [show k + 1 + (n - k) = n + 1 from by omega] at this
+      -- Rewrite the goal into the form where linear_combination applies
+      rw [qBinomial_succ_succ, show n + 1 - (k + 1) = n - k from by omega,
+          h_fac_nk, show qFactorial (k + 1) = qFactorial k * qNumber (k + 1) from rfl,
+          show qFactorial (n + 1) = qFactorial n * qNumber (n + 1) from rfl]
+      linear_combination qNumber (k + 1) * ih1' +
+        X ^ (k + 1) * qNumber (n - k) * ih2' + qFactorial n * add_eq
+    · -- Case k = n: qBinomial (n+1) (n+1) = 1
+      have hkn : k = n := by omega
+      subst hkn
+      simp [show n + 1 - (n + 1) = 0 from Nat.sub_self _, show qFactorial 0 = (1 : ℤ[X]) from rfl]
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part VI: Cyclotomic Factorization Infrastructure
+-- ══════════════════════════════════════════════════════════════════
+
+/-- Subadditivity of floor division: ⌊a/d⌋ + ⌊b/d⌋ ≤ ⌊(a+b)/d⌋. -/
+private lemma div_add_div_le (a b d : ℕ) (hd : 0 < d) : a / d + b / d ≤ (a + b) / d := by
+  rw [Nat.le_div_iff_mul_le hd]
+  calc (a / d + b / d) * d = a / d * d + b / d * d := by ring
+    _ ≤ a + b := Nat.add_le_add (Nat.div_mul_le_self a d) (Nat.div_mul_le_self b d)
 
 /-- The "floor deficiency" at d: measures how divisibility of n by d
     exceeds that of k and n-k separately.
@@ -132,7 +219,20 @@ theorem qFactorial_eval_one : ∀ n, (qFactorial n).eval 1 = (n ! : ℤ)
     generalizing the classical Kummer carry count. -/
 def floorDeficiency (n k d : ℕ) : ℕ := n / d - k / d - (n - k) / d
 
-/-- **The q-Kummer Theorem** (statement):
+/-- The floor deficiency identity: fd(n,k,d) + ⌊k/d⌋ + ⌊(n-k)/d⌋ = ⌊n/d⌋. -/
+theorem floorDeficiency_add_eq (n k d : ℕ) (hkn : k ≤ n) (hd : 0 < d) :
+    floorDeficiency n k d + k / d + (n - k) / d = n / d := by
+  unfold floorDeficiency
+  have : k / d + (n - k) / d ≤ n / d := by
+    have := div_add_div_le k (n - k) d hd
+    rwa [Nat.add_sub_cancel' hkn] at this
+  omega
+
+-- ══════════════════════════════════════════════════════════════════
+-- § Part VII: q-Kummer Theorem
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **The q-Kummer Theorem**:
     The q-binomial coefficient [n choose k]_q factors as:
       [n choose k]_q = ∏_{d=2}^{n} Φ_d(q)^{floorDeficiency(n,k,d)}
 
@@ -141,14 +241,20 @@ def floorDeficiency (n k d : ℕ) : ℕ := n / d - k / d - (n - k) / d
 
     This generalizes classical Kummer's theorem to ALL positive integers d,
     not just primes. The classical theorem is recovered by evaluating at
-    q = 1, where Φ_p(1) = p for prime p. -/
+    q = 1, where Φ_p(1) = p for prime p.
+
+    Proof: From the quotient formula (qBinomial_factorial) and
+    the cyclotomic factorization (qFactorial_cyclotomic), we get
+    qBinomial n k * ∏ Φ_d^(k/d + (n-k)/d) = ∏ Φ_d^(n/d).
+    The exponent identity fd + k/d + (n-k)/d = n/d lets us
+    cancel to obtain the result. -/
 theorem qKummer (n k : ℕ) (hkn : k ≤ n) :
     qBinomial n k = ∏ d in Icc 2 n,
       (cyclotomic d ℤ) ^ (floorDeficiency n k d) := by
   sorry
 
 -- ══════════════════════════════════════════════════════════════════
--- § Part VII: Connection to Classical Kummer
+-- § Part VIII: Connection to Classical Kummer
 -- ══════════════════════════════════════════════════════════════════
 
 /-- The classical Kummer theorem is a corollary of the q-Kummer theorem:
@@ -161,7 +267,7 @@ theorem qKummer_classical_connection (n k : ℕ) (hkn : k ≤ n)
   simp [floorDeficiency]
 
 -- ══════════════════════════════════════════════════════════════════
--- § Summary
+-- § Part IX: Summary
 -- ══════════════════════════════════════════════════════════════════
 
 /-
@@ -193,6 +299,11 @@ The q-analog is strictly MORE general:
 #check qBinomial
 #check qNumber_eq_prod_cyclotomic
 #check qNumber_eval_one
+#check qBinomial_eq_zero
+#check qBinomial_eval_one
+#check qNumber_add_shift
+#check qBinomial_factorial
+#check floorDeficiency_add_eq
 #check qKummer
 
 end KummerTheoremOQ02

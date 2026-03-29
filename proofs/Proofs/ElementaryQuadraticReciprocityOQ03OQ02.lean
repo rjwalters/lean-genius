@@ -145,17 +145,68 @@ theorem kronecker_neg4_values :
 -- Section 6: Multiplicativity
 -- ============================================================
 
-/-- The Kronecker symbol is completely multiplicative in the first argument:
-    (ab/n) = (a/n)(b/n), provided a*b ≠ 0 or |n| ≤ 1.
+/-- kroneckerNeg1 is multiplicative for nonzero arguments.
+    Uses the fact that sign(a·b) = sign(a)·sign(b). -/
+private theorem kroneckerNeg1_mul (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
+    kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b := by
+  simp only [kroneckerNeg1]
+  by_cases ha0 : a < 0 <;> by_cases hb0 : b < 0 <;> simp_all
+  · -- a < 0, b < 0 → a*b > 0
+    constructor
+    · intro h; exact absurd (Int.mul_pos_of_neg_of_neg ha0 hb0) (not_lt.mpr (le_of_lt h))
+    · ring
+  · -- a < 0, b ≥ 0 → b > 0 → a*b < 0
+    have : 0 < b := lt_of_le_of_ne (not_lt.mp hb0) (Ne.symm hb)
+    exact ⟨Int.mul_neg_of_neg_of_pos ha0 this, by ring⟩
+  · -- a ≥ 0, b < 0 → a > 0 → a*b < 0
+    have : 0 < a := lt_of_le_of_ne (not_lt.mp ha0) (Ne.symm ha)
+    exact ⟨Int.mul_neg_of_pos_of_neg this hb0, by ring⟩
+  · -- a ≥ 0, b ≥ 0 → a*b ≥ 0
+    have ha' : 0 < a := lt_of_le_of_ne (not_lt.mp ha0) (Ne.symm ha)
+    have hb' : 0 < b := lt_of_le_of_ne (not_lt.mp hb0) (Ne.symm hb)
+    exact ⟨fun h => absurd (Int.mul_pos ha' hb') (not_lt.mpr (le_of_lt h)), by ring⟩
 
-    **Bug fix**: The original unconditional statement was FALSE.
-    Counterexample: a = -3, b = 0, n = -1.
-      LHS: kronecker(-3*0)(-1) = kroneckerNeg1(0) = 1
-      RHS: kronecker(-3)(-1) * kronecker(0)(-1) = (-1)*1 = -1
-    This is because kroneckerNeg1(0) = 1 but the product -1 * 1 = -1.
-    Fix: require a * b ≠ 0 (standard for multiplicative characters). -/
-axiom kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
-    kronecker (a * b) n = kronecker a n * kronecker b n
+/-- kronecker0 is multiplicative for nonzero arguments.
+    Uses: |a·b| = 1 iff |a| = 1 ∧ |b| = 1 (units in ℤ). -/
+private theorem kronecker0_mul (a b : ℤ) (hab : a * b ≠ 0) :
+    kronecker0 (a * b) = kronecker0 a * kronecker0 b := by
+  simp only [kronecker0]
+  by_cases hab1 : a * b = 1 ∨ a * b = -1
+  · -- |a*b| = 1 implies |a| = 1 and |b| = 1
+    have ha1 : a = 1 ∨ a = -1 := by
+      rcases hab1 with h | h
+      · exact Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ h)
+      · have := Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ (neg_eq_iff_eq_neg.mpr h ▸
+          show a * b * -1 = 1 from by linarith))
+        rcases this with h1 | h1 <;> [right; left] <;> linarith
+    have hb1 : b = 1 ∨ b = -1 := by
+      rcases ha1 with rfl | rfl <;> simp_all
+    simp [ha1, hb1]
+  · -- |a*b| ≠ 1
+    simp [hab1]
+    by_cases ha1 : a = 1 ∨ a = -1
+    · -- |a| = 1 but |a*b| ≠ 1, so |b| ≠ 1
+      rcases ha1 with rfl | rfl <;> simp_all
+    · simp [ha1]
+
+/-- The Kronecker symbol is completely multiplicative in the first argument:
+    (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
+
+    Proof: case split on n = 0, -1, 1, general. The general case
+    uses Jacobi symbol multiplicativity (jacobiSym.mul_left). -/
+theorem kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
+    kronecker (a * b) n = kronecker a n * kronecker b n := by
+  have ha : a ≠ 0 := left_ne_zero_of_mul hab
+  have hb : b ≠ 0 := right_ne_zero_of_mul hab
+  simp only [kronecker]
+  split_ifs with h0 hm1 h1 h0' hm1' h1' h0'' hm1'' h1''
+  -- Many cases from nested if-then-else; most are contradictions
+  all_goals try (simp_all; done)
+  all_goals try (rw [kronecker0_mul a b hab]; done)
+  all_goals try (rw [kroneckerNeg1_mul a b ha hb]; done)
+  -- General case: sign * jacobiSym
+  · rw [jacobiSym.mul_left, kroneckerNeg1_mul a b ha hb]; ring
+  · rw [jacobiSym.mul_left]; ring
 
 /-- The Kronecker symbol is completely multiplicative in the second argument:
     (a/mn) = (a/m)(a/n), provided m * n ≠ 0 or |a| ≤ 1.

@@ -272,24 +272,62 @@ theorem exists_prime_between_of_large_prime_factor
     _ ≤ n₂ + k₂ := by omega
 
 /-
-## Open Question: Prime Between Blocks (Remaining Hard Case)
+## Prime Between Blocks: Proved from Refined Axiom
 
-The theorems above prove exists_prime_between_blocks when:
-  (a) k₁ ≥ n₁ (Bertrand guarantees a prime in the first block), OR
-  (b) the first product has any prime factor > n₁ (which includes case (a))
+We reduce the general prime-between-blocks claim to a precise hard case:
+  Case 1: k₁ ≥ n₁ → first block contains a Bertrand prime (proved above)
+  Case 2: n₂+k₂ ≥ 2n₁ → Bertrand prime in (n₁, 2n₁] fits in range
+  Case 3: first product has a prime factor > n₁ → transfer via SamePrimeFactors
+  Case 4 (axiom): n₁ > k₁, n₂+k₂ < 2n₁, all prime factors ≤ n₁
+    → both blocks are n₁-smooth, requires Størmer-type smooth number theory
 
-The remaining hard case: n₁ > k₁, ALL elements of {n₁+1,...,n₁+k₁} are composite,
-AND all prime factors of the first product are ≤ n₁. In this case, by
-SamePrimeFactors, the second block is also n₁-smooth. Empirically, having
-k₂ ≥ 3 consecutive n₁-smooth numbers with the exact same prime factor set as
-a block of k₁ composites appears impossible for all tested n₁ values
-(by Størmer-type arguments on consecutive smooth numbers).
+The hard case is extremely constrained: k₁+k₂ < n₁ (so n₁ ≥ 7), the first
+block is entirely composite, and the gap between blocks is tight. Under
+SamePrimeFactors, the second block must also be n₁-smooth. By Størmer-type
+results on consecutive smooth numbers, this case is likely vacuously true
+(the hypotheses are mutually inconsistent for large n₁).
 -/
-axiom exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
+
+/-- Refined axiom: the remaining hard case for prime-between-blocks.
+    All three conditions hold simultaneously:
+    - The first block is entirely composite (k₁ < n₁, so no Bertrand prime in block)
+    - The gap is tight (n₂+k₂ < 2n₁, so Bertrand's (n₁, 2n₁] overshoots)
+    - No large prime factor (all factors ≤ n₁, so SamePrimeFactors transfer fails)
+    Under these constraints, SamePrimeFactors forces both blocks to be n₁-smooth.
+    Proving this requires smooth number theory not yet in Mathlib. -/
+axiom exists_prime_between_blocks_hard (k₁ k₂ n₁ n₂ : ℕ)
+    (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₅ : k₁ < n₁)
+    (h₆ : n₂ + k₂ < 2 * n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂
+
+/-- **Prime between blocks** (general case): proved by case analysis.
+    Reduces the general claim to the hard-case axiom above. -/
+theorem exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
     (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
     (h₃ : n₁ + k₁ ≤ n₂)
     (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂) :
-    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂ := by
+  -- Case 1: k₁ ≥ n₁ (Bertrand gives a prime in the first block)
+  by_cases hkn : n₁ ≤ k₁
+  · exact exists_prime_between_blocks_small k₁ k₂ n₁ n₂ (le_trans h₁ h₂) hkn h₃
+  push_neg at hkn
+  -- Case 2: n₂ + k₂ ≥ 2n₁ (Bertrand prime fits in range)
+  by_cases hlarge : 2 * n₁ ≤ n₂ + k₂
+  · obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul n₁ (by omega)
+    exact ⟨p, hp, hlt, by omega⟩
+  push_neg at hlarge
+  -- Case 3: first product has a prime factor > n₁
+  by_cases hpf : ∃ q ∈ consecutivePrimeFactors n₁ k₁, n₁ < q
+  · obtain ⟨q, hq_mem, hq_lo⟩ := hpf
+    exact exists_prime_between_of_large_prime_factor k₁ k₂ n₁ n₂ q
+      (prime_factor_is_prime n₁ k₁ q hq_mem) hq_lo hq_mem h₃ h₄
+  -- Case 4: hard case (all three constraints active)
+  push_neg at hpf
+  exact exists_prime_between_blocks_hard k₁ k₂ n₁ n₂ h₁ h₂ h₃ h₄ hkn hlarge hpf
 
 /-
 ## Problem Status
