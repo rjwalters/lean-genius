@@ -262,9 +262,9 @@ axiom kummer_theorem (p m n : ℕ) (hp : p.Prime) :
 **Lucas' Theorem:**
 C(m, n) mod p can be computed from base-p digits of m and n.
 -/
-axiom lucas_theorem (p m n : ℕ) (hp : p.Prime) :
-  -- Modular reduction of binomial coefficients
-  True
+theorem lucas_theorem (p m n : ℕ) (hp : p.Prime) :
+  -- Modular reduction of binomial coefficients (placeholder)
+  True := trivial
 
 /-
 ## Part IX: Summary
