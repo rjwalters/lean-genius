@@ -285,8 +285,38 @@ theorem h_three : h 3 = 1 := by
         | rw [circumradiusOf_cycle]                 -- (E2, O, E1): one cycle
         | rw [circumradiusOf_cycle, circumradiusOf_cycle]  -- (E1, E2, O): two cycles
   · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
-    -- (the image of a nonempty set is nonempty → card ≥ 1)
-    sorry
+    suffices h 3 ≠ 0 by omega
+    intro h0
+    unfold h at h0
+    rw [Nat.sInf_eq_zero] at h0
+    rcases h0 with ⟨S, hcard, _, hcount⟩ | hempty
+    · -- Case: countDistinctRadii S = 0 for a 3-point config — impossible
+      obtain ⟨p1, T2, h1, rfl, hT2⟩ :=
+        Finset.card_eq_succ.mp (show S.card = 2 + 1 by omega)
+      obtain ⟨p2, T1, h2, rfl, hT1⟩ :=
+        Finset.card_eq_succ.mp (show T2.card = 1 + 1 by omega)
+      obtain ⟨p3, rfl⟩ := Finset.card_eq_one.mp (show T1.card = 1 by omega)
+      have d12 : p1 ≠ p2 := fun h => h1 (by rw [h]; exact Finset.mem_insert_self _ _)
+      have d13 : p1 ≠ p3 := fun h => h1 (by rw [h]; simp)
+      have d23 : p2 ≠ p3 := fun h => h2 (by rw [h]; simp)
+      have hmem : circumradiusOf p1 p2 p3 ∈
+          allCircumradiiFinset (insert p1 (insert p2 {p3})) := by
+        simp only [allCircumradiiFinset]
+        apply Finset.mem_image_of_mem (a := (p1, (p2, p3)))
+        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_insert,
+                   Finset.mem_singleton]
+        exact ⟨⟨Or.inl rfl, Or.inr (Or.inl rfl), Or.inr (Or.inr rfl)⟩,
+               d12, d23, d13⟩
+      simp only [countDistinctRadii, Finset.card_eq_zero] at hcount
+      rw [hcount] at hmem
+      exact absurd hmem (Finset.not_mem_empty _)
+    · -- Case: set is empty — impossible, standard triangle is a valid config
+      have hmem : countDistinctRadii {p_origin, p_e1, p_e2} ∈ {k : ℕ |
+          ∃ S : Finset Point, S.card = 3 ∧
+            isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k} :=
+        ⟨{p_origin, p_e1, p_e2}, standard_triangle_card, standard_triangle_gp, rfl⟩
+      rw [hempty] at hmem
+      exact absurd hmem (Set.not_mem_empty _)
 
 /--
 **h(4) ≥ 2:**
@@ -498,6 +528,48 @@ private theorem triangle_not_collinear : ¬areCollinear p_origin p_e1 p_e2 := by
   rcases hab with ha | hb
   · exact ha h2
   · exact hb h3
+
+/-- The standard triangle {(0,0), (1,0), (0,1)} has cardinality 3. -/
+private theorem standard_triangle_card :
+    ({p_origin, p_e1, p_e2} : Finset Point).card = 3 := by
+  have h1 : p_e1 ∉ ({p_e2} : Finset Point) := by
+    simp [Finset.mem_singleton, p_e1_ne_e2]
+  have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
+    simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
+  rw [Finset.card_insert_of_not_mem h2, Finset.card_insert_of_not_mem h1,
+      Finset.card_singleton]
+
+/-- The standard triangle {(0,0), (1,0), (0,1)} is in general position. -/
+private theorem standard_triangle_gp :
+    isInGeneralPosition (↑({p_origin, p_e1, p_e2} : Finset Point) : Set Point) := by
+  constructor
+  · intro q1 q2 q3 hq1 hq2 hq3 hd12 hd23 hd13
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hq1 hq2 hq3
+    rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+      rcases hq3 with rfl | rfl | rfl <;>
+    first
+    | exact absurd rfl hd12 | exact absurd rfl hd23 | exact absurd rfl hd13
+    | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd23)
+    | exact absurd rfl (Ne.symm hd13)
+    | (intro ⟨a, b, c, hab, h1, h2, h3⟩; exact triangle_not_collinear
+        (by first | exact ⟨a, b, c, hab, h1, h2, h3⟩
+                  | exact ⟨a, b, c, hab, h1, h3, h2⟩
+                  | exact ⟨a, b, c, hab, h2, h1, h3⟩
+                  | exact ⟨a, b, c, hab, h2, h3, h1⟩
+                  | exact ⟨a, b, c, hab, h3, h1, h2⟩
+                  | exact ⟨a, b, c, hab, h3, h2, h1⟩))
+  · intro q1 q2 q3 q4 hq1 hq2 hq3 hq4 hd12 hd23 hd34 hd13 hd14 hd24
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hq1 hq2 hq3 hq4
+    rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+      rcases hq3 with rfl | rfl | rfl <;> rcases hq4 with rfl | rfl | rfl <;>
+    first
+    | exact absurd rfl hd12 | exact absurd rfl hd13 | exact absurd rfl hd14
+    | exact absurd rfl hd23 | exact absurd rfl hd24 | exact absurd rfl hd34
+    | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
+    | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
+    | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
 
 end PointHelpers
 
