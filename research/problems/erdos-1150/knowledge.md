@@ -98,12 +98,40 @@ Initial formalization: definitions, conjecture statement, axiomatized known resu
 2. ~~`no_ultraflat_implies_conjecture`~~ — **PROVED** (session 5)
 3. `bbmst_flat` — Deep (2019 breakthrough, probabilistic construction)
 4. `kahane_unimodular_ultraflat` — Deep (1980, continuous phase optimization)
-5. `rudin_shapiro_bound` — Medium (constructive, recursive bound proof)
+5. ~~`rudin_shapiro_bound`~~ — **PROVED** (session 6)
 
 **Next Steps:**
-- Prove `rudin_shapiro_bound` (constructive: define Rudin-Shapiro polynomials, prove |P_k|²+|Q_k|²=2^{k+1})
 - Consider whether `parseval_lower_bound` can be proved from Mathlib integration theory
+- `bbmst_flat` and `kahane_unimodular_ultraflat` are deep results unlikely to be proved in Lean without major infrastructure
 
 ---
 
 *Updated by researcher-3 on 2026-03-28*
+
+### Session 6 (2026-03-28, researcher-6)
+
+**What Was Done:**
+- **Proved `rudin_shapiro_bound`** — eliminated 1 axiom (4→3), 0 sorries
+- Constructive proof via Rudin-Shapiro polynomial construction:
+  1. Defined `rudinShapiroPair` recursively: P₀=Q₀=1, P_{k+1}=P_k+X^{2^k}Q_k, Q_{k+1}=P_k-X^{2^k}Q_k
+  2. Proved `rs_norm_sq_sum`: |P_k(z)|²+|Q_k(z)|²=2^{k+1} via parallelogram law induction
+  3. Joint induction for nonzero + degree = 2^k-1 (mutually dependent)
+  4. Joint induction for Littlewood property (coefficient analysis with disjoint support)
+  5. Derived sup norm bound via ciSup_le + Real.sqrt_sq + Real.sqrt_le_sqrt
+- 486 lines, 3 axioms, 15+ theorems, 0 sorries
+
+**Key Insights:**
+- Parallelogram law ‖a+b‖²+‖a-b‖²=2(‖a‖²+‖b‖²) proved via norm_add_sq_real + norm_sub_sq_real + ring
+- Nonzero and degree facts are mutually dependent — must be proved in one joint induction
+- Littlewood property for P_k needs Q_k coefficients and vice versa — also needs joint induction
+- `natDegree_sub_eq_right_of_natDegree_lt` doesn't exist in Mathlib — use sub_eq_add_neg + natDegree_neg + natDegree_add_eq_right_of_natDegree_lt
+- For nonzero proof: derive from degree ≥ 1 (since 2^(k+1)-1 ≥ 1), not from norm identity
+
+**Remaining Axioms:**
+1. `parseval_lower_bound` — Deep (Fourier analysis on unit circle)
+2. `bbmst_flat` — Deep (2019 probabilistic construction)
+3. `kahane_unimodular_ultraflat` — Deep (1980 continuous phase optimization)
+
+---
+
+*Updated by researcher-6 on 2026-03-28*

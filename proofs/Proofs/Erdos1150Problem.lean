@@ -270,17 +270,173 @@ theorem flat_does_not_imply_ultraflat :
   intro _; trivial
 
 /-
-## Rudin-Shapiro Bound
+## Rudin-Shapiro Construction
 -/
 
-/-- **Rudin-Shapiro polynomials** give a concrete family with
-    max_{|z|=1} |P(z)| ≤ √(2(n+1)) for degree n.
-    These are Littlewood polynomials with bounded sup norm. -/
-axiom rudin_shapiro_bound :
+/-- Rudin-Shapiro polynomial pair (P_k, Q_k), defined recursively:
+    P₀ = Q₀ = 1,
+    P_{k+1} = P_k + X^{2^k} · Q_k,
+    Q_{k+1} = P_k - X^{2^k} · Q_k. -/
+noncomputable def rudinShapiroPair : ℕ → Polynomial ℂ × Polynomial ℂ
+  | 0 => (C 1, C 1)
+  | k + 1 =>
+    ((rudinShapiroPair k).1 + X ^ (2 ^ k) * (rudinShapiroPair k).2,
+     (rudinShapiroPair k).1 - X ^ (2 ^ k) * (rudinShapiroPair k).2)
+
+noncomputable def rsP (k : ℕ) : Polynomial ℂ := (rudinShapiroPair k).1
+noncomputable def rsQ (k : ℕ) : Polynomial ℂ := (rudinShapiroPair k).2
+
+@[simp] lemma rsP_zero : rsP 0 = C 1 := rfl
+@[simp] lemma rsQ_zero : rsQ 0 = C 1 := rfl
+@[simp] lemma rsP_succ (k : ℕ) : rsP (k + 1) = rsP k + X ^ (2 ^ k) * rsQ k := rfl
+@[simp] lemma rsQ_succ (k : ℕ) : rsQ (k + 1) = rsP k - X ^ (2 ^ k) * rsQ k := rfl
+
+/-- Parallelogram law: ‖a+b‖² + ‖a-b‖² = 2(‖a‖² + ‖b‖²). -/
+private lemma parallelogram_complex (a b : ℂ) :
+    ‖a + b‖ ^ 2 + ‖a - b‖ ^ 2 = 2 * (‖a‖ ^ 2 + ‖b‖ ^ 2) := by
+  simp only [norm_add_sq_real, norm_sub_sq_real]; ring
+
+/-- Key identity: on the unit circle, |P_k(z)|² + |Q_k(z)|² = 2^{k+1}.
+    Proof by induction using the parallelogram law. -/
+theorem rs_norm_sq_sum (k : ℕ) (z : ℂ) (hz : ‖z‖ = 1) :
+    ‖(rsP k).eval z‖ ^ 2 + ‖(rsQ k).eval z‖ ^ 2 = 2 * (2 : ℝ) ^ k := by
+  induction k with
+  | zero =>
+    simp [rsP, rsQ, rudinShapiroPair, eval_C, norm_one]; norm_num
+  | succ k ih =>
+    simp only [rsP_succ, rsQ_succ, eval_add, eval_sub, eval_mul, eval_pow, eval_X]
+    have hpar := parallelogram_complex ((rsP k).eval z) (z ^ (2 ^ k) * (rsQ k).eval z)
+    have hnb : ‖z ^ (2 ^ k) * (rsQ k).eval z‖ = ‖(rsQ k).eval z‖ := by
+      rw [norm_mul, norm_pow, hz, one_pow, one_mul]
+    calc ‖(rsP k).eval z + z ^ (2 ^ k) * (rsQ k).eval z‖ ^ 2 +
+          ‖(rsP k).eval z - z ^ (2 ^ k) * (rsQ k).eval z‖ ^ 2
+        = 2 * (‖(rsP k).eval z‖ ^ 2 + ‖z ^ (2 ^ k) * (rsQ k).eval z‖ ^ 2) := hpar
+      _ = 2 * (‖(rsP k).eval z‖ ^ 2 + ‖(rsQ k).eval z‖ ^ 2) := by rw [hnb]
+      _ = 2 * (2 * (2 : ℝ) ^ k) := by rw [ih]
+      _ = 2 * (2 : ℝ) ^ (k + 1) := by ring
+
+/-- Combined: RS polynomials are nonzero and have degree 2^k - 1. -/
+private lemma rs_ne_zero_and_degree : ∀ k : ℕ,
+    rsP k ≠ 0 ∧ rsQ k ≠ 0 ∧
+    (rsP k).natDegree = 2 ^ k - 1 ∧ (rsQ k).natDegree = 2 ^ k - 1 := by
+  intro k
+  induction k with
+  | zero =>
+    refine ⟨C_ne_zero.mpr one_ne_zero, C_ne_zero.mpr one_ne_zero, ?_, ?_⟩ <;>
+      simp [rsP, rsQ, rudinShapiroPair, natDegree_C]
+  | succ k ih =>
+    obtain ⟨hPne, hQne, hdP, hdQ⟩ := ih
+    have hdeg_xq : (X ^ (2 ^ k) * rsQ k).natDegree = 2 ^ k + (2 ^ k - 1) := by
+      rw [natDegree_mul (pow_ne_zero _ X_ne_zero) hQne, natDegree_X_pow, hdQ]
+    have hdeg_p_lt : (rsP k).natDegree < (X ^ (2 ^ k) * rsQ k).natDegree := by
+      rw [hdP, hdeg_xq]; omega
+    have h2le : 2 ≤ 2 ^ (k + 1) := by
+      calc (2 : ℕ) = 2 ^ 1 := by norm_num
+        _ ≤ 2 ^ (k + 1) := pow_le_pow_right (by norm_num) (by omega)
+    have hdP' : (rsP (k + 1)).natDegree = 2 ^ (k + 1) - 1 := by
+      rw [rsP_succ, natDegree_add_eq_right_of_natDegree_lt hdeg_p_lt, hdeg_xq]; omega
+    have hdQ' : (rsQ (k + 1)).natDegree = 2 ^ (k + 1) - 1 := by
+      rw [rsQ_succ, sub_eq_add_neg, natDegree_add_eq_right_of_natDegree_lt
+        (by rwa [natDegree_neg]), natDegree_neg, hdeg_xq]; omega
+    refine ⟨?_, ?_, hdP', hdQ'⟩
+    · intro h; rw [h, natDegree_zero] at hdP'; omega
+    · intro h; rw [h, natDegree_zero] at hdQ'; omega
+
+private lemma rsP_ne_zero (k : ℕ) : rsP k ≠ 0 := (rs_ne_zero_and_degree k).1
+private lemma rsQ_ne_zero (k : ℕ) : rsQ k ≠ 0 := (rs_ne_zero_and_degree k).2.1
+lemma rs_natDegree_P (k : ℕ) : (rsP k).natDegree = 2 ^ k - 1 :=
+  (rs_ne_zero_and_degree k).2.2.1
+lemma rs_natDegree_Q (k : ℕ) : (rsQ k).natDegree = 2 ^ k - 1 :=
+  (rs_ne_zero_and_degree k).2.2.2
+
+/-- Coefficients of X^n * p at i < n are 0. -/
+private lemma coeff_X_pow_mul_of_lt {R : Type*} [Semiring R] (p : Polynomial R)
+    (n i : ℕ) (hi : i < n) : (X ^ n * p).coeff i = 0 := by
+  rw [Polynomial.coeff_mul]
+  apply Finset.sum_eq_zero
+  intro ⟨a, b⟩ hab
+  rw [Finset.Nat.mem_antidiagonal] at hab
+  have : (X ^ n : Polynomial R).coeff a = 0 := by
+    rw [Polynomial.coeff_X_pow, if_neg (by omega)]
+  rw [this, zero_mul]
+
+/-- Coefficients of X^n * p at n + i equal coeff p i. -/
+private lemma coeff_X_pow_mul_add {R : Type*} [CommSemiring R] (p : Polynomial R)
+    (n i : ℕ) : (X ^ n * p).coeff (n + i) = p.coeff i := by
+  rw [mul_comm, show n + i = i + n from by omega, Polynomial.coeff_mul_X_pow]
+
+/-- P_k and Q_k are both Littlewood polynomials (joint induction). -/
+private lemma rs_littlewood_PQ : ∀ k : ℕ,
+    IsLittlewoodPolynomial (rsP k) ∧ IsLittlewoodPolynomial (rsQ k) := by
+  intro k
+  induction k with
+  | zero =>
+    constructor <;> (intro i hi;
+      simp [rsP, rsQ, rudinShapiroPair, natDegree_C] at hi;
+      simp [rsP, rsQ, rudinShapiroPair, coeff_C, Nat.le_zero.mp hi])
+  | succ k ih =>
+    obtain ⟨ihP, ihQ⟩ := ih
+    have hj_bound : ∀ j : ℕ, 2 ^ k + j ≤ 2 ^ (k + 1) - 1 → j ≤ 2 ^ k - 1 := by omega
+    constructor
+    · -- P_{k+1} = P_k + X^{2^k} * Q_k
+      intro i hi
+      rw [rsP_succ] at hi ⊢; simp only [coeff_add]
+      by_cases hlt : i < 2 ^ k
+      · rw [coeff_X_pow_mul_of_lt _ _ _ hlt, add_zero]
+        exact ihP i (by rw [rs_natDegree_P]; omega)
+      · push_neg at hlt
+        rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [rs_natDegree_P]; omega), zero_add]
+        obtain ⟨j, rfl⟩ : ∃ j, i = 2 ^ k + j := ⟨i - 2 ^ k, by omega⟩
+        rw [coeff_X_pow_mul_add]
+        have hdeg_sum : (rsP k + X ^ (2 ^ k) * rsQ k).natDegree = 2 ^ (k + 1) - 1 := by
+          rw [natDegree_add_eq_right_of_natDegree_lt (by
+            rw [rs_natDegree_P, natDegree_mul (pow_ne_zero _ X_ne_zero) (rsQ_ne_zero k),
+                natDegree_X_pow, rs_natDegree_Q]; omega),
+            natDegree_mul (pow_ne_zero _ X_ne_zero) (rsQ_ne_zero k),
+            natDegree_X_pow, rs_natDegree_Q]; omega
+        exact ihQ j (by rw [rs_natDegree_Q]; rw [hdeg_sum] at hi; exact hj_bound j hi)
+    · -- Q_{k+1} = P_k - X^{2^k} * Q_k
+      intro i hi
+      rw [rsQ_succ] at hi ⊢; simp only [coeff_sub]
+      by_cases hlt : i < 2 ^ k
+      · rw [coeff_X_pow_mul_of_lt _ _ _ hlt, sub_zero]
+        exact ihP i (by rw [rs_natDegree_P]; omega)
+      · push_neg at hlt
+        rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [rs_natDegree_P]; omega), zero_sub]
+        obtain ⟨j, rfl⟩ : ∃ j, i = 2 ^ k + j := ⟨i - 2 ^ k, by omega⟩
+        rw [coeff_X_pow_mul_add]
+        have hdeg_sub : (rsP k - X ^ (2 ^ k) * rsQ k).natDegree = 2 ^ (k + 1) - 1 := by
+          rw [sub_eq_add_neg, natDegree_add_eq_right_of_natDegree_lt (by
+            rw [natDegree_neg, rs_natDegree_P,
+                natDegree_mul (pow_ne_zero _ X_ne_zero) (rsQ_ne_zero k),
+                natDegree_X_pow, rs_natDegree_Q]; omega),
+            natDegree_neg, natDegree_mul (pow_ne_zero _ X_ne_zero) (rsQ_ne_zero k),
+            natDegree_X_pow, rs_natDegree_Q]; omega
+        have hq := ihQ j (by rw [rs_natDegree_Q]; rw [hdeg_sub] at hi; exact hj_bound j hi)
+        rcases hq with h | h
+        · right; rw [h]; ring  -- coeff = 1 → -coeff = -1
+        · left; rw [h]; ring   -- coeff = -1 → -coeff = 1
+
+lemma rs_littlewood_P (k : ℕ) : IsLittlewoodPolynomial (rsP k) := (rs_littlewood_PQ k).1
+
+/-- **Rudin-Shapiro bound** (proved constructively): For k ≥ 1,
+    there exists a degree-(2^k-1) Littlewood polynomial with
+    sup norm ≤ √(2·2^k). -/
+theorem rudin_shapiro_bound :
     ∀ k : ℕ, k ≥ 1 →
     ∃ p : Polynomial ℂ, p.natDegree = 2^k - 1 ∧
       IsLittlewoodPolynomial p ∧
-      supNorm p ≤ Real.sqrt (2 * 2^k)
+      supNorm p ≤ Real.sqrt (2 * 2^k) := by
+  intro k hk
+  refine ⟨rsP k, rs_natDegree_P k, rs_littlewood_P k, ?_⟩
+  apply ciSup_le
+  intro ⟨z, hz⟩
+  have hsq := rs_norm_sq_sum k z hz
+  have hle : ‖(rsP k).eval z‖ ^ 2 ≤ 2 * (2 : ℝ) ^ k := by
+    linarith [sq_nonneg ‖(rsQ k).eval z‖]
+  calc ‖(rsP k).eval z‖
+      = Real.sqrt (‖(rsP k).eval z‖ ^ 2) := (Real.sqrt_sq (norm_nonneg _)).symm
+    _ ≤ Real.sqrt (2 * (2 : ℝ) ^ k) := Real.sqrt_le_sqrt hle
 
 /-
 ## Summary
@@ -309,6 +465,8 @@ ultraflat ±1 polynomials exist. Erdős conjectured they don't.
    Backward: contrapositive diagonal extraction + squeeze theorem.
    Uses subsequence-based ultraflat definition for mathematical correctness.
 6. BBMST implies supNorm bound (proved from pointwise bound)
+7. Rudin-Shapiro bound (constructive: recursive definition, parallelogram law
+   induction for norm bound, joint induction for degree and Littlewood property)
 -/
 theorem erdos_1150_summary :
     -- Parseval lower bound holds

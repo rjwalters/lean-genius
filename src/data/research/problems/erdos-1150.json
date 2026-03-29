@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1150",
-  "title": "Erdős #1150",
+  "title": "Erd\u0151s #1150",
   "phase": "ACT",
   "status": "in-progress",
   "tier": "A",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T16:24:55.487Z",
-    "iteration": 5,
-    "focus": "Session 5: Proved no_ultraflat_implies_conjecture, eliminating 1 axiom. Axioms: 5→4.",
+    "iteration": 6,
+    "focus": "Session 6: Proved rudin_shapiro_bound, eliminating 1 axiom (4\u21923). Constructive RS polynomial construction.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,31 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 theorems, 4 axioms. Proved backward direction of ultraflat equivalence via contrapositive diagonal extraction + squeeze.",
+    "progressSummary": "PROGRESS: 9+ theorems, 3 axioms (down from 4). Proved rudin_shapiro_bound constructively via Rudin-Shapiro polynomial construction with parallelogram law induction.",
     "builtItems": [
       "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
       "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward",
       "supNorm redesigned to use unit circle subtype for clean ciSup_le interaction",
       "bbmst_upper_bound_exists: eliminated sorry via ciSup_le on subtype",
       "IsUltraflat corrected: subsequence-based (Tendsto degree atTop atTop) instead of all-n",
-      "Proved parseval_ratio_ge_one: supNorm(P)/sqrt(deg P) ≥ 1 via div_self + div_le_div_right",
-      "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem"
+      "Proved parseval_ratio_ge_one: supNorm(P)/sqrt(deg P) \u2265 1 via div_self + div_le_div_right",
+      "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem",
+      "rudinShapiroPair: recursive definition of RS polynomials",
+      "rs_norm_sq_sum: |P_k(z)|\u00b2+|Q_k(z)|\u00b2=2^{k+1} on unit circle (parallelogram law induction)",
+      "rs_ne_zero_and_degree: joint induction for nonzero + degree = 2^k-1",
+      "rs_littlewood_PQ: joint induction for Littlewood property of P_k and Q_k",
+      "rudin_shapiro_bound: replaced axiom with constructive proof"
     ],
     "insights": [
-      "Forward direction is clean: supNorm/√n > 1+c eventually contradicts Tendsto ... (nhds 1)",
+      "Forward direction is clean: supNorm/\u221an > 1+c eventually contradicts Tendsto ... (nhds 1)",
       "Backward direction needs countable choice: extract witnesses for 1/k, build ultraflat sequence",
-      "Old IsUltraflat requiring degree=n for ALL n was mathematically incorrect: ¬Conjecture gives witnesses for infinitely many n only, so backward direction was unprovable",
-      "supNorm defined over subtype {z : ℂ // ‖z‖ = 1} avoids ciSup empty-index issues entirely",
+      "Old IsUltraflat requiring degree=n for ALL n was mathematically incorrect: \u00acConjecture gives witnesses for infinitely many n only, so backward direction was unprovable",
+      "supNorm defined over subtype {z : \u2102 // \u2016z\u2016 = 1} avoids ciSup empty-index issues entirely",
       "Parseval axiom potentially provable if Mathlib has circle integration theory",
-      "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio ≥ 1 from Parseval, ≤ 1+1/k from construction → ratio → 1",
-      "Backward direction proved without dependent choice: Filter.frequently_atTop gives ∃ m ≥ k directly, no need for strictly increasing extraction",
-      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze"
+      "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio \u2265 1 from Parseval, \u2264 1+1/k from construction \u2192 ratio \u2192 1",
+      "Backward direction proved without dependent choice: Filter.frequently_atTop gives \u2203 m \u2265 k directly, no need for strictly increasing extraction",
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze",
+      "RS norm bound proof: parallelogram law \u2016a+b\u2016\u00b2+\u2016a-b\u2016\u00b2=2(\u2016a\u2016\u00b2+\u2016b\u2016\u00b2) + unit circle \u2016z^n\u2016=1 gives clean induction",
+      "Nonzero and degree facts are mutually dependent \u2014 must prove jointly",
+      "Littlewood property for P_k needs Q_k and vice versa \u2014 joint induction required",
+      "natDegree_sub_eq_right_of_natDegree_lt does not exist in Mathlib \u2014 use sub_eq_add_neg + natDegree_neg + natDegree_add_eq_right_of_natDegree_lt"
     ],
     "mathlibGaps": [
       "Integration on unit circle (for Parseval)"
     ],
     "nextSteps": [],
-    "markdown": "# Erdős #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -77,9 +86,9 @@
     {
       "path": "Proofs/Erdos1150Problem.lean",
       "filename": "Erdos1150Problem.lean",
-      "lineCount": 328,
-      "theoremCount": 8,
-      "axiomCount": 4,
+      "lineCount": 486,
+      "theoremCount": 15,
+      "axiomCount": 3,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
