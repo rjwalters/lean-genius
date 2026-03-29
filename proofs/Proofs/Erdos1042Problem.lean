@@ -23,8 +23,12 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Topology.Connected.Clopen
+import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib.Algebra.BigOperators.Group.Finset
 
-open Complex
+open Complex BigOperators
 
 namespace Erdos1042
 
@@ -60,13 +64,22 @@ structure PolynomialWithRoots (F : Set ℂ) where
 def lemniscate (f : ℂ → ℂ) : Set ℂ :=
   {z : ℂ | Complex.abs (f z) < 1}
 
-/-- Number of connected components of a set in ℂ. Axiomatized since
-the full topological definition requires ConnectedComponent machinery. -/
-axiom numComponents (S : Set ℂ) : ℕ
+/-- Number of connected components of a set S ⊆ ℂ. Defined as the
+cardinality of the quotient by the connected component equivalence
+on the subspace ↥S. Returns 0 if the number of components is infinite. -/
+noncomputable def numComponents (S : Set ℂ) : ℕ :=
+  Nat.card (ConnectedComponents ↥S)
+
+/-- The monic polynomial f(z) = ∏ᵢ(z - zᵢ) associated with a set of roots. -/
+noncomputable def monicPoly {F : Set ℂ} (p : PolynomialWithRoots F) (z : ℂ) : ℂ :=
+  ∏ i : Fin p.degree, (z - p.roots i)
 
 /-- Maximum number of connected components achievable by lemniscates
-of degree-n polynomials with roots in F. -/
-axiom maxComponents (F : Set ℂ) (n : ℕ) : ℕ
+of degree-n polynomials with roots in F. Defined as the supremum over
+all such polynomials. Returns 0 if no polynomials of that degree exist. -/
+noncomputable def maxComponents (F : Set ℂ) (n : ℕ) : ℕ :=
+  sSup {k : ℕ | ∃ p : PolynomialWithRoots F, p.degree = n ∧
+    numComponents (lemniscate (monicPoly p)) = k}
 
 /- ## The Original Problem -/
 
