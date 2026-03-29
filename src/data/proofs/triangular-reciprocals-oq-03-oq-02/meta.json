@@ -18,8 +18,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 transitive axiom: alternating_harmonic_hasSum (imported from parent OQ03, boundary convergence of Mercator series requires Abel's theorem). 0 sorries — all 3 previously sorry'd theorems now fully proved.",
+    "axiomCount": 2,
+    "assumptions": "2 transitive axioms from parent OQ03: alternating_harmonic_hasSum (Mercator series, requires Abel's theorem), shifted_alternating_hasSum (shifted alternating harmonic series). 0 direct axioms, 0 sorries — all theorems fully proved modulo parent axioms.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -133,7 +133,7 @@
     ],
     "namespace": "AlternatingTriangularReciprocals.Generalized",
     "lineCount": 196,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1
   }
