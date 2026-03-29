@@ -1,0 +1,84 @@
+{
+  "id": "erdos-8-oq-01",
+  "title": "Erdős #8 OQ: Optimal Minimum Modulus Bound",
+  "slug": "erdos-8-oq-01",
+  "description": "What is the optimal minimum modulus bound for covering systems? The current best (616,000) enables the counterexample to the Erdős-Graham conjecture on monochromatic covering systems. Equivalent to Erdős #2 OQ-01.",
+  "meta": {
+    "author": "Hough (2015); Balister et al. (2022)",
+    "sourceUrl": "https://erdosproblems.com/8",
+    "erdosUrl": "https://erdosproblems.com/8",
+    "date": "2022",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos8OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "covering-systems",
+      "combinatorics",
+      "coloring",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 8,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "UniversalBound: formal universal bound predicate",
+      "CounterexampleExists: formal counterexample existence predicate",
+      "singleton_monochromatic: PROVED — singletons are monochromatic",
+      "empty_monochromatic: PROVED — empty sets are monochromatic",
+      "monochromatic_subset: PROVED — monochromaticity is hereditary",
+      "universal_bound_monotone: PROVED — bounds are upward-monotone",
+      "no_cs_above_bound: PROVED — bound forces contradiction",
+      "no_cs_above_616000: PROVED — concrete impossibility",
+      "cs_moduli_ge_two: PROVED — all moduli ≥ 2",
+      "bound_determines_colors: PROVED — bound-counterexample relationship"
+    ],
+    "axiomCount": 1,
+    "lineCount": 175,
+    "assumptions": "1 axiom: current_bound (Balister et al. 2022 bound of 616,000)"
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 18,
+      "endLine": 62,
+      "summary": "Self-contained definitions for covering systems, colorings, monochromaticity, and universal bounds."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "startLine": 74,
+      "endLine": 148,
+      "summary": "PROVES: monochromatic set properties (singleton, empty, subset), bound monotonicity, impossibility above 616,000, bound-counterexample relationship."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-8",
+      "relationship": "parent",
+      "description": "Open question from Erdős Problem #8 (Monochromatic Covering Systems)"
+    },
+    {
+      "targetId": "erdos-2-oq-01",
+      "relationship": "equivalent",
+      "description": "Equivalent to the exact maximum minimum modulus question from Erdős #2"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Set", "Finset", "Function"],
+    "namespace": "Erdos8OQ01",
+    "lineCount": 175,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 8
+  },
+  "references": [
+    "Hough (2015): 'A solution to the minimum modulus problem for covering systems'",
+    "Balister et al. (2022): 'Covering systems with restricted divisibility'",
+    "https://erdosproblems.com/8"
+  ]
+}
