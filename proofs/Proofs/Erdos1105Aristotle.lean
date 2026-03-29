@@ -16,7 +16,8 @@ open Finset BigOperators Classical
 namespace Erdos1105Aristotle
 
 /-
-  Target 1: Number of strict order pairs equals binomial coefficient.
+PROBLEM
+Target 1: Number of strict order pairs equals binomial coefficient.
   |{(i,j) : Fin n × Fin n | i < j}| = C(n,2)
 
   Proof strategy (for human reference):
@@ -27,32 +28,44 @@ namespace Erdos1105Aristotle
   Alternative strategy:
   - Group by second coordinate: |{(i,j) | i < j}| = Σ_j |{i | i < j}| = Σ_j j = 0+1+...+(n-1)
   - Apply Gauss sum formula
+
+PROVIDED SOLUTION
+Use Finset.card_filter_lt_eq_choose to show this directly, or alternatively use the Gauss sum approach: biject filtered pairs to sum of range, then use sum_range_id and choose_two_right.
 -/
 theorem card_strict_pairs_eq (n : ℕ) :
     (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card = n.choose 2 := by
-  sorry
+  erw [ Finset.card_filter ];
+  erw [ Finset.sum_product ];
+  simp +decide [ Nat.choose_two_right, Finset.filter_lt_eq_Ioi ];
+  convert Finset.sum_range_id n using 1;
+  rw [ ← Finset.sum_range_reflect, Finset.sum_range ]
 
 /-
-  Target 2: Diagonal pairs count equals n.
+PROBLEM
+Target 2: Diagonal pairs count equals n.
   |{(i,j) : Fin n × Fin n | i = j}| = n
+
+PROVIDED SOLUTION
+The diagonal {(i,i) | i : Fin n} bijects with Fin n. Use Finset.card_filter to reduce to showing the fiber has card n, or construct an explicit bijection via the embedding i ↦ (i,i).
 -/
 theorem card_diag_pairs_eq (n : ℕ) :
     (Finset.univ.filter (fun e : Fin n × Fin n => e.1 = e.2)).card = n := by
-  -- Bijection with Fin n: i ↦ (i, i)
-  convert Fintype.card_fin n using 1
-  rw [← Finset.card_univ (α := Fin n)]
-  apply Finset.card_nbij (fun i _ => (i, i))
-  · intro i _; simp
-  · intro i _ j _ h; exact Prod.mk.inj h |>.1
-  · intro ⟨i, j⟩ h; simp at h; exact ⟨i, Finset.mem_univ _, by rw [h]⟩
+  convert Finset.card_image_of_injective _ ( show Function.Injective ( fun i : Fin n => ( i, i ) ) from fun i j hij => by simpa using hij ) using 1;
+  any_goals exact Finset.univ;
+  · congr with x ; aesop;
+  · norm_num [ Finset.card_univ ]
 
 /-
-  Target 3: Gauss sum for Fin values.
+PROBLEM
+Target 3: Gauss sum for Fin values.
   Σ_{j : Fin n} j = C(n, 2)
+
+PROVIDED SOLUTION
+Rewrite the sum over Fin n as sum over range n using Finset.sum_fin_eq_sum_range, simplify the coercion, then use Finset.sum_range_id_eq_sum_range_pred or similar, and finally Nat.choose_two_right to conclude.
 -/
 theorem sum_fin_val_eq_choose (n : ℕ) :
     ∑ j : Fin n, (j : ℕ) = n.choose 2 := by
-  simp only [Finset.sum_fin_eq_sum_range, Finset.sum_range_id]
-  rw [Nat.choose_two_right]
+  rw [ Nat.choose_two_right ];
+  convert Finset.sum_range_id n using 1 ; rw [ Finset.sum_range ]
 
 end Erdos1105Aristotle
