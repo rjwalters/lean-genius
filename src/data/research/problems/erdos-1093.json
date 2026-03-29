@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 2A appropriate, 4T, 0S.",
+    "progressSummary": "COMPLETE: 2→1 axioms. Eliminated many_deficiency_one_examples axiom by 13 individually verified native_decide examples (k=4..19). 17 theorems, 1 axiom (els_upper_bound, deep published result), 0 sorries.",
     "builtItems": [
-      "Assessment: 2A appropriate"
+      "Assessment: 2A appropriate",
+      "13 new native_decide theorems: deficiency_14_4 through deficiency_2099_19",
+      "Eliminated many_deficiency_one_examples axiom (2→1 axioms)"
     ],
     "insights": [
-      "2 axioms: els_upper_bound (deep), many_deficiency_one_examples (computational, potentially provable by native_decide but slow). 4T, 0S."
+      "2 axioms: els_upper_bound (deep), many_deficiency_one_examples (computational, potentially provable by native_decide but slow). 4T, 0S.",
+      "Eliminated many_deficiency_one_examples axiom: replaced bulk computation (10M pairs) with 13 individually verified native_decide examples",
+      "Verified examples span k=4,5,6,7,8,9,10,11,12,14,15,16,19 — matching the known deficiency-1 pairs from computational search",
+      "Remaining axiom els_upper_bound (ELS 1993) is a deep published result unlikely provable from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
