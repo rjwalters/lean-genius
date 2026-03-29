@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Fully verified (0A, 23T, 0S). No further work needed.",
+    "progressSummary": "COMPLETED: Created AngleTrisectionOQ03.lean (163 lines, 9T, 0A, 0S). Formalizes computational complexity of constructibility: power-of-2 testing, degree/Galois hierarchy, small-degree decidability.",
     "builtItems": [
-      "Survey: file already fully verified"
+      "Survey: file already fully verified",
+      "proofs/Proofs/AngleTrisectionOQ03.lean (163 lines, 9T, 0A, 0S)",
+      "Gallery: src/data/proofs/angle-trisection-oq-03/"
     ],
     "insights": [
-      "0 axioms, 23 theorems, 0 sorries — nothing to improve"
+      "0 axioms, 23 theorems, 0 sorries — nothing to improve",
+      "Constructibility decision has two-level structure: fast degree check + slow Galois computation",
+      "Degree check (power of 2?) catches all degree-3 obstructions immediately",
+      "Galois check refines degree check: divisor of 2^k is 2^j (Nat.dvd_prime_pow)",
+      "Degrees 1-2 always constructible, degree 3 never, degree 4+ needs Galois group"
     ],
     "mathlibGaps": [],
     "nextSteps": []

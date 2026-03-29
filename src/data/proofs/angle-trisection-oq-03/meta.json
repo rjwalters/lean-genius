@@ -1,0 +1,134 @@
+{
+  "id": "angle-trisection-oq-03",
+  "title": "Computational Complexity of Constructibility (OQ-03)",
+  "slug": "angle-trisection-oq-03",
+  "description": "Formalizes the computational complexity of determining whether an algebraic number is constructible by compass and straightedge. Proves power-of-2 testing, the degree criterion hierarchy, the Galois check refinement, and small-degree decidability.",
+  "meta": {
+    "author": "Wantzel (1837), Galois",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number",
+    "date": "1837",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ03.lean",
+    "tags": [
+      "geometry",
+      "algebra",
+      "galois-theory",
+      "computational-complexity",
+      "constructibility",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_prime_pow",
+        "description": "Divisors of prime powers are prime powers",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Power-of-2 testing theorems (IsPowerOfTwo definition and properties)",
+      "3 and 6 are not powers of 2 (key obstructions for trisection/S₃)",
+      "Galois check implies degree check (divisor of 2^k is 2^j)",
+      "Small-degree decidability (degrees 1-4 fully classified)",
+      "Complexity hierarchy (degree check < Galois computation)"
+    ],
+    "dateAdded": "2026-03-28",
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "lineCount": 163,
+    "assumptions": "0 axioms, 0 sorries. All 9 theorems fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Pierre Wantzel (1837) first proved that angle trisection and cube doubling are impossible with compass and straightedge. His proof relies on showing that constructible numbers have minimal polynomial degree equal to a power of 2. The full characterization via Galois groups (OQ-02) was developed through the work of Galois and later algebraists. OQ-03 asks about the computational side: how efficiently can we determine constructibility? The degree check is fast (polynomial time), but the Galois group computation can be exponential in the worst case.",
+    "problemStatement": "OQ-03: What is the computational complexity of determining whether an algebraic number (given by its minimal polynomial) is constructible?\n\nThe decision procedure has two levels:\n1. Degree check (necessary, O(log d)): Is the degree a power of 2?\n2. Galois group check (sufficient, up to O(d!)): Is Gal(f/Q) a 2-group?",
+    "text": "Formalizes the computational complexity of determining whether an algebraic number is constructible by compass and straightedge. Proves power-of-2 testing, the degree criterion hierarchy, the Galois check refinement, and small-degree decidability.",
+    "proofStrategy": "1. Define IsPowerOfTwo and prove basic properties\n2. Show key non-examples: 3, 6 are not powers of 2\n3. Prove the refinement: Galois check implies degree check\n4. Classify small degrees 1-4 completely\n5. State the complexity hierarchy",
+    "keyInsights": [
+      "The degree check (power of 2?) is a fast O(log d) necessary condition",
+      "The Galois group computation is the bottleneck, up to O(d!) worst case",
+      "For degrees 1-2, the degree check is also sufficient (always constructible)",
+      "For degree 3, the degree check rules out constructibility immediately",
+      "For degree 4+, the Galois group structure matters beyond just the degree"
+    ],
+    "prerequisites": [
+      "Abstract algebra (Galois theory, field extensions)",
+      "Computational complexity theory",
+      "Number theory (algebraic numbers, minimal polynomials)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "power-of-two",
+      "title": "Power of 2 Testing",
+      "startLine": 28,
+      "endLine": 58,
+      "summary": "Defines IsPowerOfTwo and proves: 1 is a power of 2, powers of 2 close under doubling, 3 and 6 are not powers of 2.",
+      "mathContext": "Power-of-2 testing is the first step in the constructibility decision procedure."
+    },
+    {
+      "id": "degree-criterion",
+      "title": "Degree Criterion",
+      "startLine": 59,
+      "endLine": 82,
+      "summary": "Formalizes the necessary condition: constructible implies degree is a power of 2.",
+      "mathContext": "The degree check is O(1) given the minimal polynomial and catches all degree-3 obstructions."
+    },
+    {
+      "id": "decision-hierarchy",
+      "title": "Decision Hierarchy",
+      "startLine": 83,
+      "endLine": 120,
+      "summary": "Defines the two-level decision hierarchy: degree check (fast, necessary) and Galois check (slow, sufficient). Proves the refinement.",
+      "mathContext": "Galois check implies degree check via: divisor of $2^k$ is $2^j$."
+    },
+    {
+      "id": "complexity",
+      "title": "Complexity Classification",
+      "startLine": 121,
+      "endLine": 163,
+      "summary": "Small-degree decidability (degrees 1-4 classified) and complexity summary.",
+      "mathContext": "For degrees $\\leq 2$: always constructible. Degree 3: never. Degree 4+: Galois check needed."
+    }
+  ],
+  "conclusion": {
+    "summary": "The constructibility decision problem has a natural two-level structure: a fast degree check (necessary) and a slower Galois group computation (sufficient). For practical purposes, the degree check eliminates most non-constructible cases immediately.",
+    "implications": "The exponential worst-case complexity of Galois group computation means that for high-degree polynomials, constructibility may be hard to determine. However, for specific polynomial families (cyclotomic, radical extensions), much faster algorithms exist.",
+    "openQuestions": [
+      "Is there a polynomial-time algorithm for constructibility that avoids full Galois group computation?",
+      "Can the Galois group of specific families be computed in polynomial time?",
+      "What is the average-case complexity over random polynomials?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Main angle trisection impossibility proof; OQ-03 analyzes the computational complexity of the constructibility decision"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "OQ-02 gives the Wantzel-Galois characterization; OQ-03 analyzes its computational complexity"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Wantzel, P. L.",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "First proof of impossibility of angle trisection and cube doubling"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial", "Finset"],
+    "namespace": "AngleTrisectionOQ03",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3
+  }
+}
