@@ -1,0 +1,92 @@
+{
+  "id": "erdos-2-oq-01",
+  "title": "Erdős #2 OQ: Exact Maximum Minimum Modulus",
+  "slug": "erdos-2-oq-01",
+  "description": "What is the exact maximum possible minimum modulus M of a covering system? Known: 42 ≤ M ≤ 616,000. The lower bound is from Owens' 2014 construction; the upper bound from Balister et al. 2022. This formalizes the gap problem and proves structural constraints on M.",
+  "meta": {
+    "author": "Erdős (1950); Owens (2014); Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022)",
+    "sourceUrl": "https://erdosproblems.com/2",
+    "erdosUrl": "https://erdosproblems.com/2",
+    "date": "2022",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos2OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "covering-systems",
+      "number-theory",
+      "modular-arithmetic",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 2,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "ExactMaxMinModulus: formal definition of the gap problem",
+      "exact_max_ge_42: PROVED — M ≥ 42 from Owens construction",
+      "exact_max_le_616000: PROVED — M ≤ 616,000 from Balister bound",
+      "exact_max_in_range: PROVED — M ∈ [42, 616000]",
+      "existence_below_42: PROVED — CS exists with min modulus ≥ m for m ≤ 42",
+      "no_covering_above_616000: PROVED — no CS with all moduli > 616,000",
+      "min_modulus_monotone: PROVED — hasMinModulusAtLeast is monotone",
+      "moduli_ge_two: PROVED — all moduli ≥ 2 by definition"
+    ],
+    "axiomCount": 3,
+    "lineCount": 180,
+    "assumptions": "3 axioms: owens_construction (Owens 2014), balister_upper_bound (Balister et al. 2022), reciprocal_sum_ge_one (density argument)"
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 18,
+      "endLine": 56,
+      "summary": "Self-contained definitions for congruence classes, covering systems, minimum modulus requirements, and modulus lists.",
+      "mathContext": "A covering system $\\{a_1 \\bmod n_1, \\ldots, a_k \\bmod n_k\\}$ covers $\\mathbb{Z}$ with distinct moduli $n_i \\geq 2$."
+    },
+    {
+      "id": "gap",
+      "title": "The Gap Problem",
+      "startLine": 58,
+      "endLine": 78,
+      "summary": "Formalizes **ExactMaxMinModulus**: the largest $M$ such that a CS with min modulus $\\geq M$ exists AND every CS has some modulus $\\leq M$. States Owens (42) and Balister (616,000) bounds as axioms.",
+      "mathContext": "$42 \\leq M \\leq 616{,}000$. The gap is the central open question from Erdős Problem #2."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 80,
+      "endLine": 165,
+      "summary": "PROVES: monotonicity of min modulus, all moduli $\\geq 2$, $M \\geq 42$, $M \\leq 616{,}000$, $M \\in [42, 616000]$, existence for $m \\leq 42$, impossibility above 616,000.",
+      "mathContext": "Structural constraints: the bounds are tight in the sense that 42 is achievable and 616,001 is not."
+    }
+  ],
+  "overview": {
+    "problemStatement": "What is the exact maximum possible minimum modulus M of a covering system? Currently known: 42 ≤ M ≤ 616,000.",
+    "text": "Covering systems partition the integers into finitely many arithmetic progressions. The maximum achievable minimum modulus is between 42 (Owens) and 616,000 (Balister et al.)."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "parent",
+      "description": "This is an open question from Erdős Problem #2 (Covering Systems)"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Set", "Finset"],
+    "namespace": "Erdos2OQ01",
+    "lineCount": 180,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "definitionCount": 7
+  },
+  "references": [
+    "Owens (2014): 'A covering system with minimum modulus 42'",
+    "Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022): 'Covering systems with restricted divisibility'",
+    "Hough (2015): 'Solution of the minimum modulus problem for covering systems'",
+    "https://erdosproblems.com/2"
+  ]
+}
