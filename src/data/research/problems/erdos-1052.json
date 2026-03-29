@@ -29,15 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced from 5 to 4. unitaryDivisors_primePow proved via Nat.dvd_prime_pow + coprimality argument. Fixed pre-existing Even.not_odd API issues.",
+    "progressSummary": "PROGRESS: Axiom count reduced from 4 to 3. properUnitaryDivisors_pairing proved (trivial existential). Aristotle companion created with multiplicativity + simpler lemmas.",
     "builtItems": [
       "Proved unitaryDivisors_primePow (Erdos1052Problem.lean:175-213)",
-      "Fixed sum_odd_parity parity lemmas (Erdos1052Problem.lean:76-106)"
+      "Fixed sum_odd_parity parity lemmas (Erdos1052Problem.lean:76-106)",
+      "Proved properUnitaryDivisors_pairing (Erdos1052Problem.lean:223-229)",
+      "Created Erdos1052Aristotle.lean with 6 supporting lemmas for Aristotle"
     ],
     "insights": [
       "unitaryDivisors_primePow proved: d|p^k and coprime(d,p^k/d) iff d in {1,p^k}",
       "Proof uses Nat.dvd_prime_pow decomposition + coprimality contradiction for 0<j<k",
-      "Fixed pre-existing sum_odd_parity Even.not_odd errors using omega on Even+Odd existentials"
+      "Fixed pre-existing sum_odd_parity Even.not_odd errors using omega on Even+Odd existentials",
+      "properUnitaryDivisors_pairing proved: existential witnessed with empty pairs (statement is trivially satisfiable)",
+      "Remaining 3 axioms: even_of_isUnitaryPerfect (needs multiplicativity), unitaryDivisorSum_mul_coprime (substantial proof), erdos_1052_conjecture (OPEN)",
+      "Created Aristotle companion file with 6 lemmas including unitaryDivisorSum_one/prime/prime_pow"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -65,9 +70,9 @@
     {
       "path": "Proofs/Erdos1052Problem.lean",
       "filename": "Erdos1052Problem.lean",
-      "lineCount": 237,
-      "theoremCount": 10,
-      "axiomCount": 4,
+      "lineCount": 240,
+      "theoremCount": 11,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
