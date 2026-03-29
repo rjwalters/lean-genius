@@ -245,10 +245,184 @@ theorem ruzsaB_infinite : ruzsaB.Infinite :=
       (Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) h))).mono
     (fun _ ⟨m, hm⟩ => hm ▸ mul2_pow4_mem_ruzsaB m)
 
+/-- Elements of ruzsaA have a % 4 ∈ {0, 1} (bit at position 1 is 0). -/
+lemma ruzsaA_mod4 (a : ℕ) (ha : a ∈ ruzsaA) : a % 4 = 0 ∨ a % 4 = 1 := by
+  have h0 := ha 0; simp at h0; omega
+
+/-- Elements of ruzsaB have b % 2 = 0 (bit at position 0 is 0). -/
+lemma ruzsaB_even (b : ℕ) (hb : b ∈ ruzsaB) : b % 2 = 0 := by
+  have h0 := hb 0; simp at h0; exact h0
+
+/-- Elements of ruzsaB have b % 4 ∈ {0, 2}. -/
+lemma ruzsaB_mod4 (b : ℕ) (hb : b ∈ ruzsaB) : b % 4 = 0 ∨ b % 4 = 2 := by
+  have := ruzsaB_even b hb; omega
+
+/-- 0 is in ruzsaA. -/
+lemma zero_mem_ruzsaA : (0 : ℕ) ∈ ruzsaA := fun k => by simp
+
+/-- 0 is in ruzsaB. -/
+lemma zero_mem_ruzsaB : (0 : ℕ) ∈ ruzsaB := fun k => by simp
+
+/-- 1 is in ruzsaA (only bit 0 is set). -/
+lemma one_mem_ruzsaA : (1 : ℕ) ∈ ruzsaA := by
+  intro k; rcases k with _ | k
+  · simp
+  · simp [Nat.div_eq_of_lt (show 1 < 2 ^ (2 * (k + 1) + 1) from by positivity)]
+
+/-- 2 is in ruzsaB (only bit 1 is set). -/
+lemma two_mem_ruzsaB : (2 : ℕ) ∈ ruzsaB := by
+  intro k; rcases k with _ | k
+  · simp
+  · simp [Nat.div_eq_of_lt (show 2 < 2 ^ (2 * (k + 1)) from by positivity)]
+
+/-- 2 is NOT in ruzsaA (bit 1 is set). -/
+lemma two_not_mem_ruzsaA : (2 : ℕ) ∉ ruzsaA := by
+  intro h; have := h 0; simp at this
+
+/-- 3 is NOT in ruzsaA (bit 1 is set). -/
+lemma three_not_mem_ruzsaA : (3 : ℕ) ∉ ruzsaA := by
+  intro h; have := h 0; simp at this
+
+/-- Dividing an element of ruzsaA by 4 stays in ruzsaA. -/
+lemma ruzsaA_div4 (a : ℕ) (ha : a ∈ ruzsaA) : a / 4 ∈ ruzsaA := by
+  intro k
+  have := ha (k + 1)
+  rw [show 2 * (k + 1) + 1 = 2 * k + 1 + 2 from by ring] at this
+  rwa [show (4 : ℕ) = 2 ^ 2 from by norm_num,
+       Nat.div_div_eq_div_mul, show 2 ^ 2 * 2 ^ (2 * k + 1) = 2 ^ (2 * k + 1 + 2) from by
+         rw [← pow_add]]
+
+/-- Dividing an element of ruzsaB by 4 stays in ruzsaB. -/
+lemma ruzsaB_div4 (b : ℕ) (hb : b ∈ ruzsaB) : b / 4 ∈ ruzsaB := by
+  intro k
+  have := hb (k + 1)
+  rw [show 2 * (k + 1) = 2 * k + 2 from by ring] at this
+  rwa [show (4 : ℕ) = 2 ^ 2 from by norm_num,
+       Nat.div_div_eq_div_mul, show 2 ^ 2 * 2 ^ (2 * k) = 2 ^ (2 * k + 2) from by
+         rw [← pow_add]]
+
+/-- Key: (4 * a + r) / 4 = a when r < 4. -/
+lemma mul4_add_div4 (a r : ℕ) (hr : r < 4) : (4 * a + r) / 4 = a := by
+  rw [show 4 * a + r = r + a * 4 from by ring]
+  rw [Nat.add_mul_div_right _ _ (by norm_num : (0 : ℕ) < 4)]
+  simp [Nat.div_eq_of_lt hr]
+
+/-- Building an element of ruzsaA: 4 * a' + r with a' ∈ ruzsaA and r ∈ {0, 1}. -/
+lemma ruzsaA_build (a' : ℕ) (r : ℕ) (ha' : a' ∈ ruzsaA) (hr : r = 0 ∨ r = 1) :
+    4 * a' + r ∈ ruzsaA := by
+  have hrlt : r < 4 := by omega
+  intro k; rcases k with _ | k
+  · -- k = 0: need ((4*a' + r) / 2) % 2 = 0
+    rcases hr with rfl | rfl <;> simp <;> omega
+  · -- k + 1: reduces to (a' / 2^(2*k+1)) % 2 = 0
+    have h_exp : 2 ^ (2 * (k + 1) + 1) = 4 * 2 ^ (2 * k + 1) := by
+      rw [show 2 * (k + 1) + 1 = (2 * k + 1) + 2 from by ring, pow_add]; norm_num
+    rw [h_exp, ← Nat.div_div_eq_div_mul, mul4_add_div4 _ _ hrlt]
+    exact ha' k
+
+/-- Building an element of ruzsaB: 4 * b' + s with b' ∈ ruzsaB and s ∈ {0, 2}. -/
+lemma ruzsaB_build (b' : ℕ) (s : ℕ) (hb' : b' ∈ ruzsaB) (hs : s = 0 ∨ s = 2) :
+    4 * b' + s ∈ ruzsaB := by
+  have hslt : s < 4 := by omega
+  intro k; rcases k with _ | k
+  · -- k = 0: need (4*b' + s) % 2 = 0
+    rcases hs with rfl | rfl <;> simp <;> omega
+  · -- k + 1: reduces to (b' / 2^(2*k)) % 2 = 0
+    have h_exp : 2 ^ (2 * (k + 1)) = 4 * 2 ^ (2 * k) := by
+      rw [show 2 * (k + 1) = 2 * k + 2 from by ring, pow_add]; norm_num
+    rw [h_exp, ← Nat.div_div_eq_div_mul, mul4_add_div4 _ _ hslt]
+    exact hb' k
+
 /-- Every positive integer has a unique representation as a + b with
-    a ∈ ruzsaA and b ∈ ruzsaB. -/
-axiom ruzsa_unique_rep (n : ℕ) (hn : n ≥ 1) :
-    ∃! p : ℕ × ℕ, p.1 ∈ ruzsaA ∧ p.2 ∈ ruzsaB ∧ p.1 + p.2 = n
+    a ∈ ruzsaA and b ∈ ruzsaB.
+    Previously axiomatized; now proved via strong induction on n/4.
+
+    Proof: n = 4q + r. By IH on q, decompose q = a' + b' uniquely.
+    Then a = 4a' + (r%2), b = 4b' + 2(r/2) works, and uniqueness
+    follows because the bottom 2 bits are forced (no carry mod 4). -/
+theorem ruzsa_unique_rep (n : ℕ) (hn : n ≥ 1) :
+    ∃! p : ℕ × ℕ, p.1 ∈ ruzsaA ∧ p.2 ∈ ruzsaB ∧ p.1 + p.2 = n := by
+  revert hn
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+  intro hn
+  rcases Nat.lt_or_ge n 4 with h4 | h4
+  · -- Base cases: 1 ≤ n < 4
+    interval_cases n
+    · -- n = 1: pair (1, 0)
+      exact ⟨(1, 0), ⟨one_mem_ruzsaA, zero_mem_ruzsaB, rfl⟩, fun ⟨a, b⟩ ⟨ha, hb, hab⟩ => by
+        have := ruzsaB_even b hb; simp at hab ⊢; omega⟩
+    · -- n = 2: pair (0, 2)
+      exact ⟨(0, 2), ⟨zero_mem_ruzsaA, two_mem_ruzsaB, rfl⟩, fun ⟨a, b⟩ ⟨ha, hb, hab⟩ => by
+        have hbe := ruzsaB_even b hb; simp at hab ⊢
+        have : a ≤ 2 := by omega
+        interval_cases a
+        · omega
+        · omega
+        · exact absurd ha two_not_mem_ruzsaA⟩
+    · -- n = 3: pair (1, 2)
+      exact ⟨(1, 2), ⟨one_mem_ruzsaA, two_mem_ruzsaB, rfl⟩, fun ⟨a, b⟩ ⟨ha, hb, hab⟩ => by
+        have hbe := ruzsaB_even b hb; simp at hab ⊢
+        have : a ≤ 3 := by omega
+        interval_cases a
+        · omega
+        · omega
+        · exact absurd ha two_not_mem_ruzsaA
+        · exact absurd ha three_not_mem_ruzsaA⟩
+  · -- Inductive step: n ≥ 4
+    set q := n / 4 with hq_def
+    set r := n % 4 with hr_def
+    have hn_eq : n = 4 * q + r := (Nat.div_add_mod n 4).symm
+    have hq_pos : q ≥ 1 := by omega
+    have hq_lt : q < n := Nat.div_lt_self (by omega) (by norm_num)
+    -- Apply IH to get unique decomposition of q
+    obtain ⟨⟨a', b'⟩, ⟨ha', hb', hab'⟩, huniq'⟩ := ih q hq_lt hq_pos
+    simp at ha' hb' hab' huniq'
+    -- Define the decomposition of n
+    set ra := r % 2 with hra_def
+    set sb := r / 2 * 2 with hsb_def
+    -- Existence
+    refine ⟨(4 * a' + ra, 4 * b' + sb), ⟨?_, ?_, ?_⟩, ?_⟩
+    · -- 4*a' + ra ∈ ruzsaA
+      apply ruzsaA_build _ _ ha'
+      have : r < 4 := Nat.mod_lt n (by norm_num)
+      omega
+    · -- 4*b' + sb ∈ ruzsaB
+      apply ruzsaB_build _ _ hb'
+      have : r < 4 := Nat.mod_lt n (by norm_num)
+      omega
+    · -- sum equals n
+      rw [hn_eq]
+      have : ra + sb = r := by
+        have : r < 4 := Nat.mod_lt n (by norm_num)
+        omega
+      linarith [hab']
+    · -- Uniqueness
+      intro ⟨a'', b''⟩ ⟨ha'', hb'', hab''⟩
+      simp at ha'' hb'' hab'' ⊢
+      -- Bottom 2 bits are forced by no-carry
+      have ha''_mod := ruzsaA_mod4 a'' ha''
+      have hb''_mod := ruzsaB_mod4 b'' hb''
+      -- a'' % 4 ∈ {0,1}, b'' % 4 ∈ {0,2}, and their sum mod 4 = n mod 4 = r
+      -- Since a''%4 + b''%4 < 4, no carry: (a''+b'')%4 = a''%4 + b''%4
+      have hno_carry : a'' % 4 + b'' % 4 < 4 := by omega
+      have hmod_sum : a'' % 4 + b'' % 4 = r := by
+        have h4 : (a'' + b'') % 4 = r := by rw [hab'']; exact hr_def.symm
+        omega
+      -- Force: a'' % 4 = ra and b'' % 4 = sb
+      have ha''_r : a'' % 4 = ra := by omega
+      have hb''_r : b'' % 4 = sb := by omega
+      -- Quotients: a''/4 + b''/4 = q
+      have ha''_eq : a'' = 4 * (a'' / 4) + a'' % 4 := (Nat.div_add_mod a'' 4).symm
+      have hb''_eq : b'' = 4 * (b'' / 4) + b'' % 4 := (Nat.div_add_mod b'' 4).symm
+      have hq_sum : a'' / 4 + b'' / 4 = q := by omega
+      -- a''/4 ∈ ruzsaA and b''/4 ∈ ruzsaB
+      have ha''4 := ruzsaA_div4 a'' ha''
+      have hb''4 := ruzsaB_div4 b'' hb''
+      -- By IH uniqueness: a''/4 = a' and b''/4 = b'
+      have huniq_app := huniq' (a'' / 4, b'' / 4) ⟨ha''4, hb''4, hq_sum⟩
+      simp at huniq_app
+      constructor <;> omega
 
 /-- Consequently, r_{A,B}(n) = 1 for all n ≥ 1. The representation function
     is bounded (in fact constant).
