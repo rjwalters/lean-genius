@@ -117,9 +117,11 @@ axiom hough_minimum_modulus (cs : CoveringSystem) (hd : cs.hasDistinctModuli) :
 /--
 **Improved Bound** (Balister et al.):
 The minimum modulus bound has been further refined.
+(Currently stated with same bound as Hough; derived from `hough_minimum_modulus`.)
 -/
-axiom balister_improved_bound (cs : CoveringSystem) (hd : cs.hasDistinctModuli) :
-    cs.minModulus ≤ 616000
+theorem balister_improved_bound (cs : CoveringSystem) (hd : cs.hasDistinctModuli) :
+    cs.minModulus ≤ 616000 :=
+  hough_minimum_modulus cs hd
 
 /- ## The Counterexample Construction -/
 
