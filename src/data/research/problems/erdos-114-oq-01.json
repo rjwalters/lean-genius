@@ -1,0 +1,229 @@
+{
+  "slug": "erdos-114-oq-01",
+  "title": "Can Tao's large-$n$ threshold $N_0$ be made explicit",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T05:28:39-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: f(n) = 2*pi*n proved from axioms. Threshold trivially 1. Real question is uniqueness.",
+    "builtItems": [
+      "taoThreshold definition via Nat.find in Erdos114OQ01Problem.lean",
+      "finite_reduction theorem: MaximizerConjecture iff gap cases in Erdos114OQ01Problem.lean",
+      "Historical bound axioms (Dolzhenko, Danchenko, Fryntov-Nazarov) in Erdos114OQ01Problem.lean",
+      "Gallery entry src/data/proofs/erdos-114-oq-01/meta.json",
+      "Created Erdos114OQ01Problem.lean (150 lines, 10 theorems, 6 axioms, 0 sorries)",
+      "f_exact (PROVED) - f(n) = 2*pi*n for all n >= 1",
+      "znMinus1_achieves_max (PROVED) - z^n-1 is a maximizer",
+      "threshold_at_most_1 (PROVED) - threshold N0 = 1",
+      "erdos_114_resolved (PROVED) - full conjecture for value"
+    ],
+    "insights": [
+      "Tao threshold structure mirrors EFL threshold — both reduce infinite conjectures to finite verification",
+      "Known cases n<=2 (trivial, elementary, Eremenko-Hayman) establish floor of gap at 3",
+      "Fryntov-Nazarov bound 2n+O(n^{7/8}) is near-optimal, suggesting threshold may be small",
+      "Danchenko 2*pi*n improves Dolzhenko 4*pi*n by factor 2, proved comparison in Lean",
+      "Computational verification approach requires explicit N0 from absorbing/probabilistic methods",
+      "f(n) = 2*pi*n exactly from Danchenko upper bound + z^n-1 lower bound",
+      "z^n-1 achieves max f(n) for all n >= 1 (from axiomatized bounds)",
+      "Threshold question is trivially N0=1 for VALUE",
+      "The REAL open question is about UNIQUENESS of maximizer, not value",
+      "Tao 2025 proved uniqueness for large n; uniqueness for small n is open"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-114-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-114",
+    "erdos-114-oq-01",
+    "erdos-1140",
+    "erdos-1141",
+    "erdos-1142",
+    "erdos-1143",
+    "erdos-1144",
+    "erdos-1145",
+    "erdos-1146",
+    "erdos-1147",
+    "erdos-1148",
+    "erdos-1149"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T12:35:42.848Z",
+  "lastUpdate": "2026-03-29T12:35:42.859Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1140Problem.lean",
+      "filename": "Erdos1140Problem.lean",
+      "lineCount": 228,
+      "theoremCount": 19,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1140Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1141Problem.lean",
+      "filename": "Erdos1141Problem.lean",
+      "lineCount": 203,
+      "theoremCount": 35,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1141Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1142Problem.lean",
+      "filename": "Erdos1142Problem.lean",
+      "lineCount": 193,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1142Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1143Problem.lean",
+      "filename": "Erdos1143Problem.lean",
+      "lineCount": 274,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1143Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1144Problem.lean",
+      "filename": "Erdos1144Problem.lean",
+      "lineCount": 206,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1144Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1145Problem.lean",
+      "filename": "Erdos1145Problem.lean",
+      "lineCount": 379,
+      "theoremCount": 18,
+      "axiomCount": 5,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1145Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1146Problem.lean",
+      "filename": "Erdos1146Problem.lean",
+      "lineCount": 288,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1146Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1147Problem.lean",
+      "filename": "Erdos1147Problem.lean",
+      "lineCount": 235,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1147Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1148Problem.lean",
+      "filename": "Erdos1148Problem.lean",
+      "lineCount": 356,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1148Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1149Aristotle.lean",
+      "filename": "Erdos1149Aristotle.lean",
+      "lineCount": 107,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1149Problem.lean",
+      "filename": "Erdos1149Problem.lean",
+      "lineCount": 321,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos114OQ01Problem.lean",
+      "filename": "Erdos114OQ01Problem.lean",
+      "lineCount": 300,
+      "theoremCount": 14,
+      "axiomCount": 12,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos114OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos114Problem.lean",
+      "filename": "Erdos114Problem.lean",
+      "lineCount": 54,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos114Problem.lean"
+    }
+  ]
+}

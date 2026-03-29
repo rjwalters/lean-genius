@@ -1,0 +1,67 @@
+{
+  "id": "erdos-114-oq-01",
+  "title": "Erdős #114 OQ: Explicit Lemniscate Maximizer Threshold",
+  "slug": "erdos-114-oq-01",
+  "description": "Can Tao's large-n threshold for lemniscate length maximization be made explicit? We show f(n) = 2πn for all n ≥ 1 from Danchenko's bound and the z^n-1 construction. The deeper question is about uniqueness of the maximizer.",
+  "meta": {
+    "author": "Erdős, Herzog, Piranian (1958); Danchenko (2007); Tao (2025)",
+    "sourceUrl": "https://erdosproblems.com/114",
+    "erdosUrl": "https://erdosproblems.com/114",
+    "date": "2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos114OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 114,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "ExplicitThreshold: formal threshold predicate",
+      "f_exact: PROVED — f(n) = 2πn for all n ≥ 1 (from Danchenko + z^n-1)",
+      "znMinus1_achieves_max: PROVED — z^n-1 achieves maximum",
+      "threshold_at_most_1: PROVED — threshold is 1 (trivially)",
+      "erdos_114_resolved: PROVED — full conjecture for value (not uniqueness)",
+      "threshold_monotone: PROVED — thresholds are upward-monotone",
+      "f_nonneg: PROVED — non-negativity",
+      "f_lower_bound: PROVED — f(n) ≥ 2πn"
+    ],
+    "axiomCount": 6,
+    "lineCount": 150,
+    "assumptions": "6 axioms: lemniscateLength (definition), lemniscateLength_nonneg, f (definition), f_is_max, danchenko_upper (2007 bound), znMinus1_length (arc length computation)"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-114",
+      "relationship": "parent",
+      "description": "Open question from Erdős Problem #114 (Lemniscate Length Maximization)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos114OQ01",
+    "lineCount": 150,
+    "axiomCount": 6,
+    "theoremCount": 10,
+    "definitionCount": 5
+  },
+  "references": [
+    "Danchenko (2007): f(n) ≤ 2πn upper bound",
+    "Tao (2025): z^n-1 uniquely maximizes for large n",
+    "Eremenko-Hayman (1999): n=2 case",
+    "https://erdosproblems.com/114"
+  ]
+}
