@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/638",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos638Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "infinite combinatorics",
       "cardinals"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "erdosNumber": 638,
     "erdosUrl": "https://erdosproblems.com/638",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 162,
-    "assumptions": "1 axiom: ramsey_triangle (classical Ramsey theorem for triangles — inductive proof structure complete, 1 sorry in pigeonhole+case analysis step). complete_graphs_ramsey proved from ramsey_triangle. triangle_ramsey_mono proved via Fin.castLE injection. ramsey_triangle_proved provides full inductive structure pending sorry fill.",
+    "axiomCount": 0,
+    "lineCount": 242,
+    "assumptions": "None. The classical Ramsey theorem for triangles is fully proved by induction with the pigeonhole principle. All supporting lemmas (monotonicity, base case, inductive step) are proved from Mathlib. 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -100,17 +100,19 @@
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.Pigeonhole",
       "Mathlib.Data.Fin.Basic",
+      "Mathlib.Order.Fin.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 162,
-    "axiomCount": 1,
-    "theoremCount": 4,
-    "definitionCount": 5
+    "lineCount": 242,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 8
   },
   "crossReferences": [
     {
