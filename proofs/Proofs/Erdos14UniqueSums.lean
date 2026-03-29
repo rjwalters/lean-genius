@@ -111,8 +111,7 @@ theorem sidon_all_unique (A : Set ℕ) (hS : IsSidon A) :
   rw [hset]
   simp
 
-/-- Sidon sets have size at most O(√N) in {1,...,N}.
-    This is a fundamental result in additive combinatorics. -/
+/-- TEST MARKER -/
 axiom sidon_size_bound :
   ∀ A : Set ℕ, IsSidon A → ∀ N : ℕ,
     Set.ncard (A ∩ Set.Icc 1 N) ≤ 2 * Nat.sqrt N
