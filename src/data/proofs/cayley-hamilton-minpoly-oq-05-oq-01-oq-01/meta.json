@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 362,
-    "assumptions": "0 axioms, 0 sorries. Fully machine-verified proof.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -45,29 +45,29 @@
       "id": "union-avoidance",
       "title": "Finite Union Avoidance Lemma",
       "summary": "Proves that a vector space over a finite field K cannot be covered by k proper subspaces when |K| > k. Uses induction with a counting argument replacing the infinite field argument.",
-      "startLine": 48,
-      "endLine": 159,
+      "startLine": 57,
+      "endLine": 138,
       "mathContext": "Union avoidance with finite field bound."
     },
     {
       "id": "helpers",
       "title": "Helper Lemmas",
       "summary": "Reuses helper lemmas from the infinite field version: aeval_ne_zero_of_ne_zero, gcd_aeval_mulVec_eq_zero, ker_mulVecLin_ne_top.",
-      "startLine": 161,
-      "endLine": 207,
+      "startLine": 140,
+      "endLine": 195,
       "mathContext": "Polynomial evaluation and kernel theory."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Finite Field Version)",
       "summary": "Proves nonderogatory_has_cyclic_vector_fin: over a field K with |K| > n, nonderogatory matrices have cyclic vectors. Uses the finite union avoidance lemma.",
-      "startLine": 209,
-      "endLine": 358,
+      "startLine": 197,
+      "endLine": 268,
       "mathContext": "Nonderogatory → cyclic vector over finite fields."
     }
   ],
   "conclusion": {
-    "summary": "Fully machine-verified proof that over a field K with |K| > n, nonderogatory matrices have cyclic vectors. Generalizes the infinite field version using a finite union avoidance lemma. 0 sorries, 0 axioms.",
+    "summary": "This formalization proves the nonderogatory → cyclic vector theorem over finite fields with |K| > n, generalizing the infinite field version. Two routine sorries remain: a finite union cardinality bound and a normalized factor degree bound.",
     "openQuestions": [
       "Is the bound |K| > n tight, or can it be weakened further to |K| > k where k is the number of distinct irreducible factors (which may be much less than n)?",
       "Can the union avoidance approach be replaced by a direct algebraic argument that works for all fields?"
@@ -77,7 +77,7 @@
     "imports": ["Mathlib"],
     "opens": ["Matrix", "Polynomial"],
     "namespace": "NonderogatoryFinite",
-    "lineCount": 362,
+    "lineCount": 268,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 2
