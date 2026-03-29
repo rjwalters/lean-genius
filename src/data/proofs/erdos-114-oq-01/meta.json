@@ -27,7 +27,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250",
     "dateAdded": "2026-03-29",
-    "lineCount": 300,
+    "lineCount": 299,
     "mathlibDependencies": [
       {
         "theorem": "Nat.find",
@@ -181,35 +181,49 @@
   ],
   "references": [
     {
-      "authors": ["T. Tao"],
+      "authors": [
+        "T. Tao"
+      ],
       "title": "On the maximization of the lemniscate length",
       "venue": "Preprint",
       "year": "2025",
       "note": "Proves z^n-1 uniquely maximizes lemniscate length for all sufficiently large n"
     },
     {
-      "authors": ["A. Fryntov", "F. Nazarov"],
+      "authors": [
+        "A. Fryntov",
+        "F. Nazarov"
+      ],
       "title": "New variations on the theme of polynomial lemniscates",
       "venue": "Lecture Notes in Mathematics",
       "year": "2009",
       "note": "Near-optimal upper bound f(n) ≤ 2n + O(n^{7/8})"
     },
     {
-      "authors": ["V.I. Danchenko"],
+      "authors": [
+        "V.I. Danchenko"
+      ],
       "title": "On lengths of lemniscates",
       "venue": "Mat. Zametki",
       "year": "2007",
       "note": "Improved upper bound f(n) ≤ 2πn"
     },
     {
-      "authors": ["A. Eremenko", "W.K. Hayman"],
+      "authors": [
+        "A. Eremenko",
+        "W.K. Hayman"
+      ],
       "title": "On the length of lemniscates",
       "venue": "Michigan Math. J.",
       "year": "1999",
       "note": "Resolved the n=2 case"
     },
     {
-      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "venue": "J. Analyse Math.",
       "year": "1958",
@@ -217,10 +231,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Polynomial"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial"
+    ],
     "namespace": "Erdos114OQ01",
-    "lineCount": 300,
+    "lineCount": 299,
     "axiomCount": 12,
     "theoremCount": 14,
     "substantiveTheoremCount": 12,
