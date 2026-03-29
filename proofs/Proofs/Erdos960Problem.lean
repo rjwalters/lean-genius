@@ -97,15 +97,12 @@ axiom erdos_960_littleo_conjecture : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 →
 
 -- ## Part VI: Turán Upper Bound
 
-/-- Turán's theorem gives an upper bound on the threshold.
-    For r ≥ 2, f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
-    Axiomatized: consequence of Turán's extremal theorem (1941).
-    The ordinary-line graph on n points with no r-clique (= no r-element
-    all-ordinary subset) has at most (1 - 1/(r-1)) · n²/2 edges.
-    Mathlib has Turán's theorem (SimpleGraph.Extremal.Turan) but bridging
-    from SimpleGraph to PointConfig requires substantial infrastructure. -/
-axiom turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
-  (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 + 1
+-- Turán's theorem gives an upper bound on the threshold.
+-- For r ≥ 2, f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
+-- This is a consequence of Turán's extremal theorem (1941).
+-- Mathlib has Turán's theorem (SimpleGraph.Extremal.Turan) but bridging
+-- from SimpleGraph to PointConfig requires substantial infrastructure.
+-- Not axiomatized since it is not used by any theorem in this file.
 
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 theorem trivial_bound (P : PointConfig) :
@@ -189,14 +186,10 @@ theorem threshold_r2 (k n : ℕ) (_hk : k ≥ 2) (_hn : n ≥ 2) :
     rw [hne, csSup_empty]
     exact bot_le
 
-/-- The Sylvester-Gallai theorem: any finite non-collinear point set
-    in ℝ² has at least one ordinary line. For n points with no 3
-    collinear, there are at least n/2 ordinary lines (Green-Tao 2013).
-    Axiomatized: this is a deep result from Green-Tao (2013), "On the
-    strict Erdős-Gallai conjecture", Acta Math. 208(1), 1-36. -/
-axiom green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
-    (h3 : NoKCollinear P 3) :
-  ordinaryLineCount P ≥ P.n / 2
+-- The Sylvester-Gallai / Green-Tao theorem: for n ≥ 13 points with no 3
+-- collinear, there are at least n/2 ordinary lines (Green-Tao 2013,
+-- "On the strict Erdős-Gallai conjecture", Acta Math. 208(1), 1-36).
+-- Not axiomatized since it is not used by any theorem in this file.
 
 /-- An all-ordinary subset of r points has r*(r-1) ordered ordinary pairs. -/
 theorem ordinary_pairs_count (r : ℕ) (_hr : r ≥ 2) :
