@@ -69,10 +69,39 @@ def catalanNumber (n : ℕ) : ℕ := Nat.choose (2 * n) n / (n + 1)
 
 /- ## Basic Properties -/
 
+/-- Every element in a ±1 list is counted by count 1 or count (-1). -/
+private lemma count_pm_eq_length :
+    ∀ (l : List ℤ), (∀ x ∈ l, x = 1 ∨ x = (-1 : ℤ)) →
+      l.count 1 + l.count (-1 : ℤ) = l.length := by
+  intro l hvals
+  induction l with
+  | nil => simp
+  | cons x xs ih =>
+    have hxs : ∀ y ∈ xs, y = (1 : ℤ) ∨ y = -1 := fun y hy => hvals y (List.mem_cons_of_mem x hy)
+    rcases hvals x (List.mem_cons_self x xs) with rfl | rfl <;>
+      simp [List.count_cons, List.length_cons, ih hxs] <;> omega
+
+/-- The sum of a ±1 list equals count(1) - count(-1). -/
+private lemma sum_eq_count_diff :
+    ∀ (l : List ℤ), (∀ x ∈ l, x = 1 ∨ x = (-1 : ℤ)) →
+      l.sum = (l.count 1 : ℤ) - (l.count (-1 : ℤ) : ℤ) := by
+  intro l hvals
+  induction l with
+  | nil => simp
+  | cons x xs ih =>
+    have hxs : ∀ y ∈ xs, y = (1 : ℤ) ∨ y = -1 := fun y hy => hvals y (List.mem_cons_of_mem x hy)
+    rcases hvals x (List.mem_cons_self x xs) with rfl | rfl <;>
+      simp [List.count_cons, List.sum_cons, ih hxs] <;> omega
+
 /-- A balanced path has n upsteps and n downsteps. -/
 theorem balanced_path_counts {l : List ℤ} {n : ℕ} (h : IsBalancedPath l n) :
     l.count 1 = n ∧ l.count (-1 : ℤ) = n := by
-  sorry
+  obtain ⟨hlen, hvals, hsum⟩ := h
+  have hcl := count_pm_eq_length l hvals
+  have hsd := sum_eq_count_diff l hvals
+  rw [hsum] at hsd -- 0 = count 1 - count (-1), so count 1 = count (-1)
+  rw [hlen] at hcl -- count 1 + count (-1) = 2 * n
+  constructor <;> omega
 
 /-- The total number of balanced paths of length 2n is C(2n,n). -/
 theorem balanced_paths_count (n : ℕ) :
