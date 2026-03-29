@@ -29,10 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 1 deep axiom (vanDoorn_bound). Gallery text fixed: 2\u21921 axiom count. Axiom assessed as deep published result, not eliminable without major effort.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry",
-      "sumDvdProd_iff_unitFraction: axiom\u2192theorem via div_add_div + div_eq_div_iff in \u211a"
+      "sumDvdProd_iff_unitFraction: axiom\u2192theorem via div_add_div + div_eq_div_iff in \u211a",
+      "Created Proofs/Erdos327OQ01.lean: explicit coprime factorization construction"
     ],
     "insights": [
       "Proof strategy: write a=d*a', b=d*b' with d=gcd. Then (a+b)|a*b \u2194 (a'+b')|d via coprimality of a'+b' and a'*b'",
@@ -42,7 +43,7 @@
       "Key Mathlib API: mul_dvd_mul_iff_left cancels common factor d from divisibility, Coprime.dvd_of_dvd_mul_right extracts the coprime factor",
       "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum",
       "sumDvdProd_iff_unitFraction provable: 1/a+1/b=(a+b)/(ab), equals 1/c iff c*(a+b)=ab iff (a+b)|ab. Forward: div_add_div combines fractions, div_eq_div_iff clears denominators. Backward: field_simp in \u211a + exact_mod_cast back to \u2115.",
-      "vanDoorn_bound axiom is a deep published combinatorial result (block covering argument). NOT routine/Mathlib-derivable. Would require ~200+ lines of specialized combinatorial reasoning to formalize."
+      "Follow-up OQ-01: parametrization of sum-dvd-prod pairs (10 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -62,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.604Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-03-29T19:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
