@@ -35,11 +35,13 @@ References:
 
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Measure.MeasureSpace
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Order.LiminfLimsup
 
-open MeasureTheory Set Metric
+open MeasureTheory Set Metric Filter
 
 namespace Erdos232
 
@@ -104,9 +106,17 @@ def ballR (R : ℝ) : Set (EuclideanSpace ℝ (Fin 2)) :=
 /--
 **Area of ball:**
 The Lebesgue measure of B_R is π R².
+Proved from `EuclideanSpace.volume_closedBall` in Mathlib.
 -/
-axiom lebesgue_ball_area (R : ℝ) (hR : R > 0) :
-    MeasureTheory.volume (ballR R) = ENNReal.ofReal (Real.pi * R ^ 2)
+theorem lebesgue_ball_area (R : ℝ) (hR : R > 0) :
+    MeasureTheory.volume (ballR R) = ENNReal.ofReal (Real.pi * R ^ 2) := by
+  unfold ballR
+  rw [EuclideanSpace.volume_closedBall]
+  simp only [Fintype.card_fin, Nat.cast_ofNat]
+  have harg : (2 : ℝ) / 2 + 1 = 2 := by norm_num
+  rw [harg, Real.Gamma_two, div_one, Real.sq_sqrt (le_of_lt Real.pi_pos),
+      ← ENNReal.ofReal_pow (le_of_lt hR), ← ENNReal.ofReal_mul (sq_nonneg R)]
+  congr 1; ring
 
 /-
 ## Part IV: Upper Density
@@ -118,9 +128,10 @@ The asymptotic density of a set A as R → ∞.
 δ̄(A) = lim sup_{R→∞} λ(A ∩ B_R) / λ(B_R)
 -/
 noncomputable def upperDensity (A : Set (EuclideanSpace ℝ (Fin 2))) : ℝ :=
-  -- The limit superior of the density ratio
-  -- This is well-defined for measurable sets
-  0  -- Placeholder for the actual limsup definition
+  Filter.limsup (fun R : ℝ =>
+    (MeasureTheory.volume (A ∩ Metric.closedBall 0 R)).toReal /
+    (MeasureTheory.volume (Metric.closedBall (0 : EuclideanSpace ℝ (Fin 2)) R)).toReal
+  ) Filter.atTop
 
 /--
 Upper density is always in [0, 1].
