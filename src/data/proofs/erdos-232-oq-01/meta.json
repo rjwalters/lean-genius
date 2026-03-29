@@ -1,0 +1,47 @@
+{
+  "id": "erdos-232-oq-01",
+  "title": "Erdős #232 OQ: Exact Value of m₁",
+  "slug": "erdos-232-oq-01",
+  "description": "What is the exact value of the maximum density m₁ of unit-distance-free sets in ℝ²? Is it algebraic or transcendental? Known: 0.22936 ≤ m₁ ≤ 0.247.",
+  "meta": {
+    "author": "Moser (1966); Croft (1967); Ambrus et al. (2023)",
+    "sourceUrl": "https://erdosproblems.com/232",
+    "erdosUrl": "https://erdosproblems.com/232",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos232OQ01Problem.lean",
+    "tags": ["erdos", "combinatorial-geometry", "measure-theory", "unit-distance-graphs", "open-problem", "research"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 232,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "originalContributions": [
+      "m₁_lt_quarter: PROVED — m₁ < 1/4",
+      "m₁_pos: PROVED — m₁ > 0",
+      "chromatic_at_least_5: PROVED — χ ≥ 5 if m₁ = 1/χ",
+      "not_chromatic_4: PROVED — m₁ ≠ 1/4",
+      "small_ball_unitFree: PROVED — balls of radius < 1/2 are unit-free",
+      "IsHexagonalDensity/IsReciprocalChromatic/m₁IsAlgebraic: formal predicates"
+    ],
+    "axiomCount": 4,
+    "lineCount": 145,
+    "assumptions": "4 axioms: m₁ (value), m₁_in_unit, m₁_lower (Croft), m₁_upper (Ambrus)"
+  },
+  "crossReferences": [
+    {"targetId": "erdos-232", "relationship": "parent", "description": "Open question from Erdős #232"}
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.Analysis.InnerProductSpace.EuclideanDist", "Mathlib.Data.Real.Basic", "Mathlib.Data.Real.Irrational", "Mathlib.Tactic"],
+    "namespace": "Erdos232OQ01",
+    "lineCount": 145,
+    "axiomCount": 4,
+    "theoremCount": 10,
+    "definitionCount": 6
+  },
+  "references": [
+    "Croft (1967): 'Incidence incidents' — m₁ ≥ 0.22936",
+    "Ambrus et al. (2023): 'The density of planar sets avoiding unit distances' — m₁ ≤ 0.247",
+    "https://erdosproblems.com/232"
+  ]
+}
