@@ -111,8 +111,24 @@ theorem density_pos_of_one_mem (A : Set ℕ) (h : 1 ∈ A) :
 /-- Adding a basis can only increase density. -/
 theorem density_mono_sumset (A B : Set ℕ) (h0 : 0 ∈ B) :
     d_s A ≤ d_s (A + B) := by
-  -- A ⊆ A + B when 0 ∈ B, so density increases
-  sorry
+  -- A ⊆ A + B when 0 ∈ B: for any a ∈ A, a = a + 0 ∈ A + B
+  have hsub : A ⊆ (A + B : Set ℕ) := fun n hn => ⟨n, hn, 0, h0, (add_zero n).symm⟩
+  -- Counting function is monotone w.r.t. subsets
+  have hcount : ∀ N, countingFunction A N ≤ countingFunction (A + B : Set ℕ) N :=
+    fun N => Finset.card_le_card (Finset.filter_subset_filter _ hsub)
+  -- Schnirelmann density (infimum of ratios) is monotone
+  unfold schnirelmannDensity
+  apply ciInf_mono
+  · -- BddBelow: density ratios are ≥ 0
+    exact ⟨0, by rintro _ ⟨⟨N, hN⟩, rfl⟩; unfold densityRatio;
+              split_ifs <;> [exact zero_le_one;
+                exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)]⟩
+  · -- Pointwise: densityRatio A N ≤ densityRatio (A + B) N for all N ≥ 1
+    intro ⟨N, hN⟩
+    unfold densityRatio
+    have hNne : N ≠ 0 := by omega
+    simp only [hNne, ↓reduceIte]
+    exact div_le_div_of_nonneg_right (by exact_mod_cast hcount N) (Nat.cast_nonneg _)
 
 /- ## Part IV: Erdős's Original Result -/
 

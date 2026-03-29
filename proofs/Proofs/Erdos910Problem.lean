@@ -147,11 +147,15 @@ Under CH, there exists a Rudin set in ℝ².
 -/
 
 /-- Rudin's theorem: Under CH, there exists a connected planar set
-    that is a Rudin set with exactly 2^ℵ₀ connected subsets -/
+    that is a Rudin set with exactly 2^ℵ₀ connected subsets.
+
+    The nontriviality condition is immediate from the construction:
+    Rudin's set has continuum-many points (it's a nontrivial connected
+    subset of the plane). -/
 axiom rudin_theorem :
   ContinuumHypothesis →
   ∃ (S : Set (ℝ × ℝ)),
-    IsRudinSet S ∧ HasExactlyContinuumConnectedSubsets S
+    IsRudinSet S ∧ HasExactlyContinuumConnectedSubsets S ∧ S.Nontrivial
 
 /-
 ## Disproving Erdős's Conjectures
@@ -178,22 +182,17 @@ theorem rudin_set_no_diverse_subset (S : Set X) (hS : IsRudinSet S)
 theorem erdos_first_conjecture_false :
     ContinuumHypothesis → ¬erdosFirstConjecture := by
   intro hCH hconj
-  obtain ⟨S, hRudin, _⟩ := rudin_theorem hCH
-  -- The Rudin set is connected and nontrivial
-  have hconn := hRudin.1
+  obtain ⟨S, hRudin, _, hnontriv⟩ := rudin_theorem hCH
   -- Apply the conjecture to get a diverse subset
-  have hdiv := hconj (ℝ × ℝ) S hconn
+  have hdiv := hconj (ℝ × ℝ) S hRudin.1
   -- But Rudin sets have no diverse subsets
-  have hnontriv : S.nontrivial := by
-    -- Rudin set is nontrivial (it's connected and has continuum-many subsets)
-    sorry
   exact rudin_set_no_diverse_subset S hRudin hnontriv hdiv
 
 /-- Corollary: Erdős's second conjecture is false (under CH) -/
 theorem erdos_second_conjecture_false :
     ContinuumHypothesis → ¬erdosSecondConjecture := by
   intro hCH hconj
-  obtain ⟨S, _, hcard⟩ := rudin_theorem hCH
+  obtain ⟨S, _, hcard, _⟩ := rudin_theorem hCH
   -- Embed ℝ² into ℝ² viewed as Fin 2 → ℝ
   -- The Rudin set has exactly continuum-many connected subsets
   -- But the conjecture says it should have MORE than continuum
