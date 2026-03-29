@@ -1,0 +1,81 @@
+{
+  "slug": "roth-theorem-k3-oq-01",
+  "title": "What quantitative bounds can we formalize",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 4,
+    "focus": "Proved 3 new theorems, identified crude_sqrt_bound as false",
+    "blockers": [],
+    "nextAction": "Strengthen density increment for quantitative bounds; prove Behrend",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Proved not_apFree_univ, rothNumber_lt, rothNumber_achieved. Identified crude_sqrt_bound as FALSE (contradicts Behrend). Documented density_increment_lemma gap: no lower bound on M blocks quantitative bounds.",
+    "builtItems": [
+      "Created RothTheoremQuantitative.lean with r\u2083(N) definition",
+      "Proved rothNumber_le: r\u2083(N) \u2264 N",
+      "Proved rothNumber_pos: r\u2083(N) \u2265 1 for N \u2265 1",
+      "Proved card_le_rothNumber: |A| \u2264 r\u2083(N) for AP-free A",
+      "Proved max_iterations_bound: k > \u230a100/\u03b4\u00b2\u230b if \u03b4 + k\u03b4\u00b2/100 > 1",
+      "Stated 5 quantitative bounds (Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude \u221aN)",
+      "not_apFree_univ: ZMod N not AP-free for N >= 2 (uses {0,1,2} AP)",
+      "rothNumber_lt: r_3(N) < N for N >= 2 (strict, not just <=)",
+      "rothNumber_achieved: exists AP-free A with |A| = r_3(N) (maximizer)"
+    ],
+    "insights": [
+      "r\u2083(N) definition as Finset.sup over AP-free subsets of ZMod N is novel formalization",
+      "Density increment gives M < N but no lower bound on M - need M \u2265 \u221aN for quantitative bounds",
+      "max_iterations_bound (pure arithmetic) is the key provable link to initial density",
+      "Behrend lower bound (sphere construction) is most tractable next target among sorry bounds",
+      "Iteration theorem for arbitrary k is FALSE - modulus reaches 1 and blocks continuation",
+      "density_increment_lemma gives M < N and M > 0 with density \u2265 \u03b4 + \u03b4\u00b2/100 \u2014 critical API for all bounds",
+      "crude_sqrt_bound proof: iterate density_increment N-1 times, density grows by \u2265 k\u00b7\u03b4\u00b2/100, must stay \u2264 1, so N \u2265 100/\u03b4\u00b2",
+      "For N \u2264 100: r\u2083(N) \u2264 N \u2264 10\u221aN trivially (since \u221aN \u2264 10). For N > 100: use iteration bound.",
+      "rothNumber is Finset.sup so supremum is achieved \u2014 need Finset.exists_max_image for witness",
+      "crude_sqrt_bound (r_3(N) <= 10*sqrt(N)) is FALSE for large N \u2014 Behrend gives r_3(N) >> sqrt(N)",
+      "density_upper_bound_from_iteration unprovable from current API: density_increment gives M < N but no M >= sqrt(N)",
+      "For quantitative Roth bounds, need density increment with M >= N^c (c=2/3 in Roth original analysis)",
+      "rothNumber_lt proof: via Finset.sup_lt_iff + eq_univ_of_card + not_apFree_univ",
+      "rothNumber_achieved: via Finset.exists_max_image + le_antisymm of le_sup and sup_le"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Strengthen density_increment_lemma to give M >= N^(2/3) or M >= sqrt(N) for quantitative bounds",
+      "Fix crude_sqrt_bound statement: either remove or change to roth_quantitative_upper_bound proof",
+      "Prove Behrend lower bound construction (sphere AP-free property)",
+      "Consider proving r_3(N) <= N-1 for N >= 3 (trivial from rothNumber_lt but with explicit witness)"
+    ],
+    "markdown": "# Knowledge Base: roth-theorem-k3-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.926Z",
+  "lastUpdate": "2026-03-29T04:28:18.986Z"
+}
