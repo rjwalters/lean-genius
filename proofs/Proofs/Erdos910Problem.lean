@@ -188,43 +188,48 @@ theorem erdos_first_conjecture_false :
   -- But Rudin sets have no diverse subsets
   exact rudin_set_no_diverse_subset S hRudin hnontriv hdiv
 
-/-- Corollary: Erdős's second conjecture is false (under CH)
+/-- Homeomorphisms preserve connected subset cardinality. -/
+private theorem connectedSubsetCardinality_image_homeomorph
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    (e : X ≃ₜ Y) (S : Set X) :
+    connectedSubsetCardinality (e '' S) = connectedSubsetCardinality S := by
+  unfold connectedSubsetCardinality
+  apply Cardinal.mk_congr
+  exact {
+    toFun := fun ⟨T', hT'⟩ => ⟨e.symm '' T', by
+      refine ⟨?_, hT'.2.image _ e.symm.continuous.continuousOn⟩
+      calc ⇑e.symm '' T'
+          ⊆ ⇑e.symm '' (⇑e '' S) := Set.image_subset _ hT'.1
+        _ = (⇑e.symm ∘ ⇑e) '' S := (Set.image_image _ _ _).symm
+        _ = id '' S := by rw [show ⇑e.symm ∘ ⇑e = id from funext e.symm_apply_apply]
+        _ = S := Set.image_id _⟩
+    invFun := fun ⟨T, hT⟩ =>
+      ⟨e '' T, Set.image_subset _ hT.1, hT.2.image _ e.continuous.continuousOn⟩
+    left_inv := fun ⟨T', _⟩ => Subtype.ext <| by
+      rw [Set.image_image, show ⇑e ∘ ⇑e.symm = id from funext e.apply_symm_apply, Set.image_id]
+    right_inv := fun ⟨T, _⟩ => Subtype.ext <| by
+      rw [Set.image_image, show ⇑e.symm ∘ ⇑e = id from funext e.symm_apply_apply, Set.image_id]
+  }
 
-    The conjecture claims EVERY connected set in ℝⁿ (n≥2) has > continuum
-    connected subsets. But a singleton {x} ⊆ Fin 2 → ℝ is connected and has
-    exactly one connected subset ({x} itself), giving cardinality 1 ≤ continuum.
-
-    Note: The "real" mathematical disproof uses Rudin's nontrivial construction.
-    The singleton argument works because the formalization doesn't exclude
-    trivial (single-point) connected sets. -/
+/-- Corollary: Erdős's second conjecture is false (under CH) -/
 theorem erdos_second_conjecture_false :
     ContinuumHypothesis → ¬erdosSecondConjecture := by
-  intro _ hconj
-  -- Apply conjecture to a singleton, which is trivially connected
-  let x : Fin 2 → ℝ := 0
-  have hgt := hconj 2 (by norm_num) {x} isConnected_singleton
-  -- hgt : connectedSubsetCardinality {x} > continuum
-  -- This is absurd: any T ⊆ {x} with T connected must equal {x}
-  suffices h : connectedSubsetCardinality ({x} : Set (Fin 2 → ℝ)) ≤ continuum from
-    absurd hgt (not_lt.mpr h)
-  -- Any nonempty subset of {x} must equal {x}
-  have singleton_sub : ∀ T : Set (Fin 2 → ℝ), T ⊆ {x} → T.Nonempty → T = {x} := by
-    intro T hTsub ⟨t, ht⟩
-    apply Set.Subset.antisymm hTsub
-    intro y hy
-    rw [Set.mem_singleton_iff.mp hy, ← Set.mem_singleton_iff.mp (hTsub ht)]
-    exact ht
-  -- The connected subsets of {x} form a subsingleton (only {x} qualifies)
-  have hsub : Subsingleton (connectedSubsetsOf ({x} : Set (Fin 2 → ℝ))) := by
-    constructor
-    intro ⟨T₁, hT₁sub, hT₁conn⟩ ⟨T₂, hT₂sub, hT₂conn⟩
-    exact Subtype.ext (by rw [singleton_sub T₁ hT₁sub hT₁conn.nonempty,
-                               singleton_sub T₂ hT₂sub hT₂conn.nonempty])
-  -- Cardinal ≤ 1 for subsingletons, and 1 ≤ #ℝ = continuum
-  unfold connectedSubsetCardinality
-  calc #(connectedSubsetsOf ({x} : Set (Fin 2 → ℝ)))
-      ≤ 1 := Cardinal.le_one_iff_subsingleton.mpr hsub
-    _ ≤ #ℝ := Cardinal.one_le_iff_nonempty.mpr ⟨(0 : ℝ)⟩
+  intro hCH hconj
+  obtain ⟨S, hRudin, hcard, _⟩ := rudin_theorem hCH
+  -- Build homeomorphism ℝ × ℝ ≃ₜ (Fin 2 → ℝ)
+  let e : (ℝ × ℝ) ≃ₜ (Fin 2 → ℝ) :=
+    { toEquiv := (piFinTwoEquiv (fun _ => ℝ)).symm
+      continuous_toFun :=
+        continuous_pi (fun i => Fin.cases continuous_fst (fun _ => continuous_snd) i)
+      continuous_invFun := (continuous_apply 0).prod_mk (continuous_apply 1) }
+  -- Transfer the Rudin set to Fin 2 → ℝ
+  have hconn : IsConnected (e '' S) := hRudin.1.image _ e.continuous.continuousOn
+  -- The conjecture claims > continuum connected subsets
+  have hgt := hconj 2 (by omega) (e '' S) hconn
+  -- But the homeomorphism preserves connected subset cardinality
+  have hcard' : connectedSubsetCardinality S = continuum := hcard
+  rw [connectedSubsetCardinality_image_homeomorph e S, hcard'] at hgt
+  exact lt_irrefl _ hgt
 
 #check rudin_theorem
 #check erdos_first_conjecture_false
