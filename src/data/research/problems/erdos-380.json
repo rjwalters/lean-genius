@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T00:59:36.242Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Axiom elimination via Mathlib definitions",
     "blockers": [],
     "nextAction": "Verify build, consider proving bad_interval_no_prime",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 structural theorems linking singleton bad intervals to gpfSquare count. Proved B(x) ≥ #{P(n)²|n}, supporting the conjecture B(x) ~ #{P(n)²|n}.",
+    "progressSummary": "PROGRESS: Formalized very bad intervals and powerful numbers from original problem statement. Added 5 definitions, 7 proved theorems, 1 conjecture definition. Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount. File now covers both conjectures from Erdős #380 with 0 sorries, 2 deep axioms.",
     "builtItems": [
       "Proved gpf_prime (theorem, 4 lines)",
       "Proved gpf_dvd (theorem, 4 lines)",
@@ -39,7 +39,17 @@
       "bad_interval_v_bound: structural bound v<2u for bad intervals",
       "singleton_bad_iff: [n,n] bad ↔ P(n)²|n for n≥2",
       "gpfSquare_in_bad: P(n)²|n → InBadInterval n",
-      "badCount_ge_gpfSquareCount: B(x) ≥ #{n≤x: P(n)²|n}"
+      "badCount_ge_gpfSquareCount: B(x) ≥ #{n≤x: P(n)²|n}",
+      "IsPowerful, IsVeryBadInterval, InVeryBadInterval (definitions)",
+      "veryBadCount, powerfulCount (counting functions)",
+      "veryBad_is_bad: very bad → bad (proved)",
+      "veryBad_interval_no_prime: corollary of bad_interval_no_prime_general (proved)",
+      "singleton_veryBad_iff: [n,n] very bad ↔ n powerful (proved)",
+      "powerful_in_veryBad: powerful n → InVeryBadInterval (proved)",
+      "veryBadCount_le_badCount: inequality (proved)",
+      "veryBadCount_ge_powerfulCount: inequality (proved)",
+      "counting_chain: summary of all counting inequalities (proved)",
+      "VeryBadConjecture: secondary conjecture statement"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max, eliminating 4 axioms",
@@ -52,7 +62,11 @@
       "Key insight: by Bertrand, largest prime ≤ v is > v/2, so GPF has unique multiple in [u,v], giving v_P(product)=1, contradiction with bad",
       "Singleton [n,n] bad iff P(n)²|n — directly links IsBadInterval to gpfSquareCount",
       "B(x) ≥ #{n≤x: P(n)²|n} via singleton bad intervals — lower bound on the conjecture ratio",
-      "Both axioms (erdos_graham_lower, gpfSquare_asymptotic) are deep analytic results — not eliminable"
+      "Both axioms (erdos_graham_lower, gpfSquare_asymptotic) are deep analytic results — not eliminable",
+      "IsPowerful n: 1 < n ∧ ∀ p prime, p|n → p²|n — standard definition for powerful/squareful numbers",
+      "veryBad → bad: powerful product implies P²|product for GPF, so every very bad interval is bad",
+      "Singleton [n,n] is very bad ↔ n is powerful — parallels singleton_bad_iff for bad intervals",
+      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -72,17 +86,17 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:59:36.242Z",
-  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "lastUpdate": "2026-03-29T07:10:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos380Problem.lean",
       "filename": "Erdos380Problem.lean",
-      "lineCount": 289,
-      "theoremCount": 9,
+      "lineCount": 402,
+      "theoremCount": 16,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos380Problem.lean"
