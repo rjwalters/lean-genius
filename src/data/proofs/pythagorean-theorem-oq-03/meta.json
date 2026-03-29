@@ -7,7 +7,7 @@
     "author": "Lobachevsky & Bolyai (1830s), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hyperbolic_law_of_cosines",
     "date": "c. 1830",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/PythagoreanTheoremOQ03.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "pythagorean-theorem",
       "generalization"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -255,24 +255,5 @@
       "description": "Heron's formula computes Euclidean triangle area from side lengths alone. The non-Euclidean Pythagorean theorems here generalize the side-length relations that underpin Heron's formula, and the hyperbolic/spherical area-defect formulas provide the non-Euclidean analogues of area computation."
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Real.Sqrt",
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
-      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Analysis.Calculus.MeanValue",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Real"
-    ],
-    "namespace": "PythagoreanNonEuclidean",
-    "lineCount": 1431,
-    "axiomCount": 0,
-    "theoremCount": 105,
-    "definitionCount": 18
-  }
+  "leanFile": "Proofs/PythagoreanTheoremOQ03.lean"
 }

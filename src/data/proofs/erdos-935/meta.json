@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/935",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos935Problem.lean",
     "tags": [
       "erdos",
@@ -14,7 +14,7 @@
       "powerful-numbers",
       "consecutive-products"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 935,
     "erdosUrl": "https://erdosproblems.com/935",
@@ -139,20 +139,7 @@
       "description": "Both connect to the distribution of primes — the Prime Number Theorem provides the asymptotic framework underlying the number-theoretic estimates relevant to this problem"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Factorization.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 154,
-    "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 7
-  },
+  "leanFile": "Proofs/Erdos935Problem.lean",
   "references": [
     {
       "title": "Some problems and results on consecutive integers",

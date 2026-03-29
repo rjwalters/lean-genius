@@ -7,7 +7,7 @@
     "author": "Erdős & Hajnal",
     "sourceUrl": "https://erdosproblems.com/65",
     "date": "",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos65Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "extremal-combinatorics",
       "cycles"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 65,
     "erdosUrl": "https://erdosproblems.com/65",
@@ -213,18 +213,5 @@
       "note": "The Regularity Lemma, a key structural tool underlying density-based cycle arguments in extremal graph theory."
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "Erdos65",
-    "lineCount": 217,
-    "axiomCount": 0,
-    "theoremCount": 1,
-    "definitionCount": 9
-  }
+  "leanFile": "Proofs/Erdos65Problem.lean"
 }

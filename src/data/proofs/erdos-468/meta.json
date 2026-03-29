@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/468",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos468Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "partial-sums",
       "combinatorial-number-theory"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 468,
     "erdosUrl": "https://erdosproblems.com/468",
@@ -152,19 +152,5 @@
       "description": "Both formalize properties of the divisor function τ(n); #444 studies τ-iteration while #468 studies partial sums of ordered divisors"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Divisors",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Finset.Sort",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 56,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 5
-  }
+  "leanFile": "Proofs/Erdos468Problem.lean"
 }

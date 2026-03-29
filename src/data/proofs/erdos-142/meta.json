@@ -5,9 +5,9 @@
   "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
   "meta": {
     "erdosNumber": 142,
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos142Problem.lean",
-    "badge": "axiom",
+    "badge": "verified",
     "erdosProblemStatus": "open",
     "tags": [
       "erdos",
@@ -142,20 +142,7 @@
       "Does the inverse theorem for Gowers U^{k-1} norms yield effective quantitative bounds for general k?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Tactic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Order.Filter.Basic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 54,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 3
-  },
+  "leanFile": "Proofs/Erdos142Problem.lean",
   "references": [
     "Szemerédi (1975): On sets of integers containing no k elements in arithmetic progression",
     "Roth (1953): On certain sets of integers (Fourier-analytic proof for k=3)",

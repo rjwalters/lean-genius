@@ -7,7 +7,7 @@
     "author": "Erdős-Szemerédi (1973), Freiman-Lev (improvement)",
     "sourceUrl": "https://erdosproblems.com/539",
     "date": "1973",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos539Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "additive-combinatorics",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 539,
     "erdosUrl": "https://erdosproblems.com/539",
@@ -173,24 +173,5 @@
       "description": "The Euclidean GCD algorithm is the computational backbone for Problem #539's GCD-reduced quotients. The problem studies the structure of a/gcd(a,n) as a ranges over {1,...,n}, connecting GCD computation to the distribution of reduced fractions"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Algebra.BigOperators.Group.Finset"
-    ],
-    "opens": [
-      "Finset",
-      "BigOperators",
-      "Nat"
-    ],
-    "namespace": "Erdos539",
-    "lineCount": 188,
-    "axiomCount": 0,
-    "theoremCount": 5,
-    "definitionCount": 13
-  }
+  "leanFile": "Proofs/Erdos539Problem.lean"
 }

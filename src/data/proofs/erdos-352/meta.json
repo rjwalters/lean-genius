@@ -7,7 +7,7 @@
     "author": "Freiling-Mauldin (2002 partial), Erdős (unpublished special cases)",
     "sourceUrl": "https://erdosproblems.com/352",
     "date": "1978-present",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos352Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "lebesgue-measure",
       "convexity"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 352,
     "erdosUrl": "https://erdosproblems.com/352",
@@ -167,24 +167,7 @@
       "What happens in higher dimensions (tetrahedra of volume 1 in R^3)?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.LinearAlgebra.Determinant",
-      "Mathlib.Data.Real.Sqrt",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "MeasureTheory",
-      "Set"
-    ],
-    "namespace": "Erdos352",
-    "lineCount": 236,
-    "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 10
-  },
+  "leanFile": "Proofs/Erdos352Problem.lean",
   "crossReferences": [
     {
       "targetId": "erdos-351",
