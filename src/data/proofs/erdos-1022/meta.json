@@ -17,14 +17,14 @@
       "set-families"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1022,
     "erdosUrl": "https://erdosproblems.com/1022",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 3,
-    "lineCount": 321,
-    "assumptions": "3 axioms: erdos_1022_conjecture (open conjecture), lovasz_theorem (c(2)=1, Lovász 1968), erdos_first_moment_bound (|F| < 2^{t-1} implies Property B, Erdős 1963). 0 sorries.",
+    "axiomCount": 2,
+    "lineCount": 327,
+    "assumptions": "2 axioms: erdos_1022_conjecture (open conjecture), erdos_first_moment_bound (|F| < 2^{t-1} implies Property B, Erdős 1963). 1 sorry: matching_has_propertyB (degree-1 matching coloring). Note: lovász_theorem axiom was removed — K₃ is a counterexample to the stated IsSparse formulation.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -128,30 +128,30 @@
     {
       "id": "lovasz",
       "title": "§ 10: Lovász Theorem (c(2) = 1)",
-      "summary": "Axiomatizes Lovász's theorem: every 1-sparse family of sets of size ≥ 2 has Property B. Application: 1-sparse graphs are 2-colorable.",
+      "summary": "Documents the removal of the incorrect lovász_theorem axiom (K₃ counterexample). Introduces IsDegreeBounded and proves matching_has_propertyB (1 sorry). The correct Lovász result uses degree, not sparsity.",
       "startLine": 238,
-      "endLine": 260,
+      "endLine": 266,
       "mathContext": "The base case c(2) = 1 of Erdős #1022 (Lovász 1968)."
     },
     {
       "id": "union",
       "title": "§ 11: Union and Combination of Families",
       "summary": "Proves the union of a c-sparse and d-sparse family is (c+d)-sparse (`isSparse_union`), and AllSizeAtLeast is preserved under union.",
-      "startLine": 262,
-      "endLine": 286,
+      "startLine": 268,
+      "endLine": 292,
       "mathContext": "Sparsity and size bounds are preserved under family union."
     },
     {
       "id": "first-moment",
       "title": "§ 12: Erdős First-Moment Threshold",
       "summary": "Axiomatizes the Erdős 2^{t-1} bound and proves Property B for families with ≤ 1 member of size ≥ 2.",
-      "startLine": 287,
-      "endLine": 321,
+      "startLine": 293,
+      "endLine": 327,
       "mathContext": "Erdős (1963): |F| < 2^{t-1} with min size ≥ t implies Property B."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1022 on property B for sparse set families in 213 lines across 8 sections. It defines `HasPropertyB` and `IsSparse`, states the open conjecture as an axiom, and proves 15 structural theorems: monotonicity of sparsity and Property B, size bounds from sparsity, singleton Property B, empty-set exclusion, and filter-count monotonicity. 1 axiom (the open conjecture), 0 sorries.",
+    "summary": "This formalization captures Erdős Problem #1022 on property B for sparse set families in 327 lines across 12 sections. It defines `HasPropertyB`, `IsSparse`, and `IsDegreeBounded`, states the open conjecture and Erdős first-moment bound as axioms, and proves 22 structural theorems. 2 axioms, 1 sorry (matching_has_propertyB). Note: the original lovász_theorem axiom was removed after finding K₃ is a counterexample to the IsSparse formulation.",
     "implications": "**Theoretical Significance**: This problem sits at a nexus of several major areas in combinatorics:\n\n1. **Hypergraph coloring theory**: Property B is the simplest case of hypergraph chromatic number theory. The Erdős-Hajnal conjecture on $\\chi(\\mathcal{F})$ for $t$-uniform families, the Lovász Local Lemma, and the Hales-Jewett theorem all connect to understanding when hypergraphs are $k$-colorable under structural constraints.\n\n2. **The probabilistic method and the Local Lemma**: The first-moment bound ($\\mathbb{E}[\\text{mono}] < 1 \\Rightarrow$ property B) is the simplest probabilistic tool. The Lovász Local Lemma (1975) extends this to handle dependencies: if each set $A$ shares elements with few other sets, a 2-coloring exists even when the expectation is large.\n\nThe sparseness condition in Problem #1022 is a global version of the dependency condition in the Local Lemma.\n\n3. **VC dimension and trace theory**: The sparseness condition bounds the 'trace' of $\\mathcal{F}$ on supersets. The Sauer-Shelah lemma bounds traces by VC dimension: a family with VC dimension $d$ has $|\\{A \\cap X : A \\in \\mathcal{F}\\}| \\le \\binom{|X|}{\\le d}$. While the subset-count condition in Problem #1022 is different (counting $A \\subseteq X$ rather than traces), the two are related through inclusion-exclusion.\n\n4. **Combinatorial group testing**: Cover-free families, which imply sparseness, are the mathematical foundation of non-adaptive group testing—identifying $d$ defective items among $n$ by pooling tests. The bound $r$-cover-free $\\Rightarrow$ $(r+1)$-sparse connects 2-colorability to testability.",
     "openQuestions": [
       "Does $c_t \\to \\infty$ as $t \\to \\infty$? This is the core of Problem #1022. Even showing $c_3 > 1$ (that the $t = 3$ threshold strictly exceeds Lovász's $t = 2$ threshold) would be significant progress.",
@@ -247,9 +247,9 @@
     "imports": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Fintype.Basic", "Mathlib.Tactic"],
     "opens": ["Finset"],
     "namespace": "Erdos1022",
-    "lineCount": 321,
-    "axiomCount": 3,
+    "lineCount": 327,
+    "axiomCount": 2,
     "theoremCount": 22,
-    "definitionCount": 5
+    "definitionCount": 6
   }
 }
