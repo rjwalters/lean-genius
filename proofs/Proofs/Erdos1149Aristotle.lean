@@ -19,7 +19,19 @@ namespace Erdos1149Aristotle
     Standard number theory counting result. -/
 theorem card_multiples (d N : ℕ) (hd : 0 < d) :
     (Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N)).card = N / d := by
-  sorry
+  -- Bijection: multiples of d in [1,N] ↔ {1, ..., N/d} via k ↦ k*d
+  have h_eq : Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N) =
+      (Finset.Icc 1 (N / d)).image (· * d) := by
+    ext a
+    simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_image]
+    constructor
+    · rintro ⟨⟨h1, hN⟩, ⟨k, rfl⟩⟩
+      exact ⟨k, ⟨by omega, (Nat.le_div_iff_mul_le hd).mpr hN⟩, rfl⟩
+    · rintro ⟨k, ⟨hk1, hkN⟩, rfl⟩
+      exact ⟨⟨by omega, (Nat.le_div_iff_mul_le hd).mp hkN⟩, ⟨k, rfl⟩⟩
+  rw [h_eq, Finset.card_image_of_injective _ (mul_right_injective₀ (by omega : d ≠ 0)),
+    Finset.card_Icc]
+  omega
 
 /-- gcd(n, 1) = 1 for all n. -/
 theorem gcd_one_right (n : ℕ) : Nat.gcd n 1 = 1 :=
@@ -84,6 +96,11 @@ theorem moebius_prime (p : ℕ) (hp : Nat.Prime p) :
 /-- |μ(n)| ≤ 1 for all n. -/
 theorem abs_moebius_le_one (n : ℕ) :
     |ArithmeticFunction.moebius n| ≤ 1 := by
-  sorry -- Needs case analysis on squarefree/non-squarefree
+  rcases n with _ | n
+  · simp [ArithmeticFunction.map_zero]
+  · by_cases h : Squarefree (n + 1)
+    · rw [ArithmeticFunction.moebius_apply_of_squarefree h]
+      simp [abs_pow, abs_neg, abs_one]
+    · simp [ArithmeticFunction.moebius_eq_zero_of_squarefree h]
 
 end Erdos1149Aristotle
