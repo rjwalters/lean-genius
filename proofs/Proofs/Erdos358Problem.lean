@@ -127,18 +127,105 @@ f(n) ≥ 1 for all large n is trivially achieved by A = naturals,
 since every n ≥ 1 equals itself (the sum from n to n).
 -/
 /-- For the naturals sequence, every n ≥ 1 has at least one consecutive sum representation
-    (the trivial one: n = sum from (n-1) to (n-1) of (i+1)). The proof requires showing
-    the representation set is finite (bounded by n), which uses Set.ncard machinery. -/
-axiom naturals_always_representable (n : ℕ) (hn : n ≥ 1) :
-    consecutiveSumCount naturalsSeq n ≥ 1
+    (the trivial one: n = sum from (n-1) to (n-1) of (i+1)). -/
+theorem naturals_always_representable (n : ℕ) (hn : n ≥ 1) :
+    consecutiveSumCount naturalsSeq n ≥ 1 := by
+  unfold consecutiveSumCount
+  -- The set of valid representations
+  set S := {p : ℕ × ℕ | p.1 ≤ p.2 ∧
+    (∑ i ∈ Finset.Icc p.1 p.2, naturalsSeq.seq i) = ↑n}
+  -- Step 1: S is finite (all valid pairs have u, v < n)
+  have hfin : S.Finite := by
+    apply Set.Finite.subset ((Set.finite_Iio n).prod (Set.finite_Iio n))
+    rintro ⟨u, v⟩ ⟨huv, hsum⟩
+    simp only [Set.mem_prod, Set.mem_Iio]
+    -- The sum includes term at v: naturalsSeq.seq v = v+1
+    -- Since all terms are nonneg, sum ≥ v+1, so v+1 ≤ n
+    have hv_mem : v ∈ Finset.Icc u v := Finset.mem_Icc.mpr ⟨huv, le_refl v⟩
+    have hv_le : naturalsSeq.seq v ≤ ∑ i ∈ Finset.Icc u v, naturalsSeq.seq i :=
+      Finset.single_le_sum (fun i _ => by simp [naturalsSeq]; positivity) hv_mem
+    rw [hsum] at hv_le
+    -- hv_le : naturalsSeq.seq v ≤ ↑n, i.e., ↑v + 1 ≤ ↑n
+    simp only [naturalsSeq] at hv_le
+    constructor <;> omega
+  -- Step 2: S is nonempty (witness: (n-1, n-1), single-term sum)
+  have hne : S.Nonempty :=
+    ⟨(n - 1, n - 1), le_refl _, by
+      simp only [Finset.Icc_self, Finset.sum_singleton, naturalsSeq]
+      push_cast; omega⟩
+  -- Step 3: ncard ≥ 1
+  exact Set.ncard_pos hfin |>.mpr hne
 
-/--
-**The power of 2 obstruction:**
-For A = naturals restricted to sums of ≥2 terms, powers of 2 have no representation.
-This is the only obstruction.
--/
-axiom power_of_two_obstruction :
-    ∀ k : ℕ, ∀ u v : ℕ, u < v → (∑ i ∈ Finset.Icc (u+1) (v+1), i) ≠ 2^k
+/-- Gauss sum: twice the sum of integers from a to b equals (b-a+1)(a+b). -/
+private lemma two_mul_sum_Icc (a b : ℕ) (hab : a ≤ b) :
+    2 * (∑ i ∈ Finset.Icc a b, i) = (b - a + 1) * (a + b) := by
+  induction b with
+  | zero =>
+    interval_cases a
+    simp [Finset.Icc_self]
+  | succ n ih =>
+    by_cases h : a ≤ n
+    · have hmem : n + 1 ∉ Finset.Icc a n := by simp [Finset.mem_Icc]; omega
+      have hIcc : Finset.Icc a (n + 1) = insert (n + 1) (Finset.Icc a n) := by
+        ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
+      rw [hIcc, Finset.sum_insert hmem]
+      set S := ∑ i ∈ Finset.Icc a n, i with hS_def
+      have h_ih := ih h
+      zify [h, show a ≤ n + 1 from by omega] at h_ih ⊢
+      nlinarith
+    · have : a = n + 1 := by omega
+      subst this
+      simp [Finset.Icc_self]
+
+/-- An odd divisor of a power of 2 must be 1. -/
+private lemma odd_dvd_two_pow_eq_one {m j : ℕ} (hm : Odd m) (hdvd : m ∣ 2 ^ j) :
+    m = 1 := by
+  induction j with
+  | zero => simpa using hdvd
+  | succ j ih =>
+    apply ih
+    have hcop : Nat.Coprime m 2 := by
+      unfold Nat.Coprime
+      rw [Nat.gcd_comm, Nat.gcd_rec, Nat.odd_iff.mp hm]
+      norm_num
+    rw [pow_succ] at hdvd
+    exact hcop.dvd_of_dvd_mul_right hdvd
+
+/-- Powers of 2 cannot be expressed as sums of ≥2 consecutive positive integers.
+    Proof: 2·S = (v-u+1)(u+v+2) with sum of factors = 2v+3 (odd), so one factor
+    is odd. An odd divisor of 2^(k+1) is 1, but both factors are ≥ 2. -/
+theorem power_of_two_obstruction :
+    ∀ k : ℕ, ∀ u v : ℕ, u < v → (∑ i ∈ Finset.Icc (u+1) (v+1), i) ≠ 2^k := by
+  intro k u v huv hsum
+  have hab : u + 1 ≤ v + 1 := by omega
+  have h2S := two_mul_sum_Icc (u + 1) (v + 1) hab
+  rw [hsum] at h2S
+  -- Simplify: 2 * 2^k = (v - u + 1) * (u + v + 2)
+  have hvu : v + 1 - (u + 1) + 1 = v - u + 1 := by omega
+  have huv2 : (u + 1) + (v + 1) = u + v + 2 := by omega
+  rw [hvu, huv2] at h2S
+  -- Both factors are at least 2
+  have hf1 : v - u + 1 ≥ 2 := by omega
+  have hf2 : u + v + 2 ≥ 2 := by omega
+  -- Their sum is 2v+3 (odd), so they have different parities
+  rcases Nat.even_or_odd (v - u + 1) with h_even | h_odd
+  · -- (v-u+1) even ⟹ (u+v+2) odd
+    have h_odd2 : Odd (u + v + 2) := by
+      rw [Nat.odd_iff_not_even]
+      intro h_even2
+      have := h_even.add h_even2
+      -- (v-u+1) + (u+v+2) = 2v+3 would be even — contradiction
+      obtain ⟨d, hd⟩ := this
+      omega
+    have h_dvd : (u + v + 2) ∣ 2 ^ (k + 1) :=
+      ⟨v - u + 1, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S, mul_comm]⟩
+    have := odd_dvd_two_pow_eq_one h_odd2 h_dvd
+    omega
+  · -- (v-u+1) odd ⟹ contradicts being ≥ 2 and dividing 2^(k+1)
+    have h_dvd : (v - u + 1) ∣ 2 ^ (k + 1) :=
+      ⟨u + v + 2, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S]⟩
+    have := odd_dvd_two_pow_eq_one h_odd h_dvd
+    omega
 
 /- ## Part V: The Prime Case -/
 
