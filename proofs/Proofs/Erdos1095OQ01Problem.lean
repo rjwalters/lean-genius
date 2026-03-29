@@ -41,17 +41,29 @@ g(k) is the smallest n > k+1 such that all prime factors of C(n,k) exceed k.
 Existence follows from known upper bounds: g(k) ≤ exp((1+o(1))k).
 -/
 
-/-- The function g(k): smallest n > k+1 with all prime factors of C(n,k) > k. -/
-axiom gFunc : ℕ → ℕ
+/-- Existence: for each k, there exists n > k+1 with all prime factors
+    of C(n,k) exceeding k. Follows from the Ecklund-Erdős-Selfridge
+    upper bound: g(k) ≤ exp((1+o(1))k). -/
+axiom gFunc_exists (k : ℕ) :
+    ∃ n, n > k + 1 ∧ AllPrimesExceed (choose n k) k
 
-/-- g(k) > k + 1 (by definition). -/
-axiom gFunc_gt : ∀ k, gFunc k > k + 1
+/-- The function g(k): smallest n > k+1 with all prime factors of C(n,k) > k.
+    Defined constructively via Nat.find from the existence axiom. -/
+noncomputable def gFunc (k : ℕ) : ℕ :=
+  Nat.find (gFunc_exists k)
 
-/-- All prime factors of C(g(k), k) exceed k. -/
-axiom gFunc_spec : ∀ k, AllPrimesExceed (choose (gFunc k) k) k
+/-- g(k) > k + 1 (from Nat.find_spec). -/
+theorem gFunc_gt (k : ℕ) : gFunc k > k + 1 :=
+  (Nat.find_spec (gFunc_exists k)).1
 
-/-- g(k) is minimal: no smaller n > k+1 satisfies the condition. -/
-axiom gFunc_minimal : ∀ k n, n > k + 1 → AllPrimesExceed (choose n k) k → gFunc k ≤ n
+/-- All prime factors of C(g(k), k) exceed k (from Nat.find_spec). -/
+theorem gFunc_spec (k : ℕ) : AllPrimesExceed (choose (gFunc k) k) k :=
+  (Nat.find_spec (gFunc_exists k)).2
+
+/-- g(k) is minimal: no smaller n > k+1 satisfies the condition (from Nat.find_min'). -/
+theorem gFunc_minimal (k n : ℕ) (hn : n > k + 1) (h : AllPrimesExceed (choose n k) k) :
+    gFunc k ≤ n :=
+  Nat.find_min' (gFunc_exists k) ⟨hn, h⟩
 
 /-
 # Part 3: Basic Lemmas about AllPrimesExceed
