@@ -19,7 +19,7 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : p.divisors.card = 2 := by
 
 /-- τ(p²) = 3 for prime p. -/
 theorem tau_prime_sq (p : ℕ) (hp : p.Prime) : (p ^ 2).divisors.card = 3 := by
-  sorry -- Needs factorization of p^2; Aristotle target
+  rw [Nat.divisors_prime_pow hp, Finset.card_map, Finset.card_range]
 
 /-- τ(6) = 4. -/
 theorem tau_6 : (6 : ℕ).divisors.card = 4 := by native_decide

@@ -30,7 +30,26 @@ namespace Erdos1105Aristotle
 -/
 theorem card_strict_pairs_eq (n : ℕ) :
     (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card = n.choose 2 := by
-  sorry
+  rw [← sum_fin_val_eq_choose]
+  -- Decompose the product filter by second coordinate
+  have : (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card =
+      ∑ j : Fin n, ((Finset.univ : Finset (Fin n)).filter (· < j)).card := by
+    rw [← Finset.card_biUnion]
+    · congr 1; ext ⟨i, j⟩
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_biUnion]
+      exact ⟨fun h => ⟨j, Finset.mem_univ _, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩⟩,
+             fun ⟨j', _, hj'⟩ => by simpa using hj'⟩
+    · intro i _ j _ hij s hs
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.inf_eq_inter,
+                 Finset.mem_inter] at hs
+      exact absurd (show i = j from by ext; exact Fin.val_injective (by omega)) hij
+  rw [this]
+  congr 1; ext j
+  -- |{i : Fin n | i < j}| = j.val
+  simp only [Finset.card_filter, Finset.sum_boole, Nat.cast_id]
+  rw [show (Finset.univ.filter (fun x : Fin n => x < j)) = Finset.Iio j from by
+    ext; simp [Finset.mem_Iio]]
+  exact Fin.card_Iio j
 
 /-
   Target 2: Diagonal pairs count equals n.

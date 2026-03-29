@@ -49,7 +49,21 @@ theorem subset_range_card_bound (A : Finset ℕ) (N : ℕ) (h : A ⊆ Finset.ran
 -- Routine: Odd integers in [1,N] have cardinality approximately N/2
 theorem odd_count_bound (N : ℕ) :
     ((Finset.range (N + 1)).filter (fun n => n > 0 ∧ n % 2 = 1)).card ≤ (N + 1) / 2 := by
-  sorry -- Needs careful counting argument
+  -- Inject positive odd numbers into [0, (N+1)/2) via n ↦ (n-1)/2
+  set S := (Finset.range (N + 1)).filter (fun n => n > 0 ∧ n % 2 = 1)
+  calc S.card
+    = (S.image (fun n => (n - 1) / 2)).card := by
+        apply (Finset.card_image_of_injOn _).symm
+        intro a ha b hb hab
+        simp only [S, Finset.mem_filter, Finset.mem_range] at ha hb
+        omega
+    _ ≤ (Finset.range ((N + 1) / 2)).card := by
+        apply Finset.card_le_card
+        intro k hk
+        simp only [Finset.mem_image, S, Finset.mem_filter, Finset.mem_range] at hk ⊢
+        obtain ⟨n, ⟨_, _, _⟩, rfl⟩ := hk
+        omega
+    _ = (N + 1) / 2 := Finset.card_range _
 
 -- Routine: The product of two odd numbers is odd
 theorem odd_mul_odd (a b : ℕ) (ha : a % 2 = 1) (hb : b % 2 = 1) :
