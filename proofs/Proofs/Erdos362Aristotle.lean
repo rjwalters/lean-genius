@@ -74,13 +74,8 @@ The RHS is ∑ T ∈ ({a} ∪ S).powerset, z^(setSum T). Use Finset.powerset_con
 -/
 theorem gf_expansion (A : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
     subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by
-<<<<<<< HEAD
   simp only [subsetSumGF, setSum]
   rw [Finset.prod_one_add]
   exact Finset.sum_congr rfl fun S _ => zpow_finset_sum S z hz
-=======
-      unfold subsetSumGF setSum;
-      simp +decide [ add_comm ( 1 : ℂ ), Finset.prod_add, zpow_finset_sum _ _ hz ]
->>>>>>> e268711a0d (Research: erdos-335 — 12 structural theorems for density additivity (#7874))
 
 end Erdos362Aristotle
