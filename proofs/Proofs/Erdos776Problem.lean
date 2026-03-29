@@ -85,12 +85,17 @@ theorem erdos_trotter_exact (r : ℕ) (hr : r > 1) :
 
 /-- **Erdős Problem #776** (OPEN): Determine the threshold N(r) as a
     function of r such that for all n ≥ N(r) and r ≥ 2, the maximum
-    number of distinct sizes in a multiplicity-r antichain is n − 3. -/
-axiom erdos_776_threshold :
-  ∀ r : ℕ, r ≥ 2 →
-    ∃ N : ℕ, (∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3) ∧
-      -- N is the smallest such threshold
-      ∀ M : ℕ, (∀ n : ℕ, n ≥ M → maxDistinctSizes n r = n - 3) → N ≤ M
+    number of distinct sizes in a multiplicity-r antichain is n − 3.
+    Existence follows from erdos_trotter_exact; minimality from Nat.find. -/
+open Classical in
+theorem erdos_776_threshold :
+    ∀ r : ℕ, r ≥ 2 →
+      ∃ N : ℕ, (∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3) ∧
+        -- N is the smallest such threshold
+        ∀ M : ℕ, (∀ n : ℕ, n ≥ M → maxDistinctSizes n r = n - 3) → N ≤ M := by
+  intro r hr
+  have h_exact := erdos_trotter_exact r (by omega)
+  exact ⟨Nat.find h_exact, Nat.find_spec h_exact, fun M hM => Nat.find_min' h_exact hM⟩
 
 /- ## Structural Observations -/
 

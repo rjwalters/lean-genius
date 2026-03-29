@@ -126,10 +126,16 @@ theorem pow2_small_example :
 
 /-- Problem #874 is the finite version: for a finite set A ⊂ {1,...,n},
     what is the maximum |A| such that the r-fold sumsets are disjoint?
-    The infinite version asks about growth rates of infinite admissible sets. -/
-axiom finite_version_connection :
-  ∀ n : ℕ, ∃ f : ℕ, ∀ A : Finset ℕ,
-    (∀ a ∈ A, a ≤ n) →
-    (∀ r s, r ≠ s → 1 ≤ r → 1 ≤ s → r ≤ A.card → s ≤ A.card →
-      Disjoint (rFoldSumset A r) (rFoldSumset A s)) →
-    A.card ≤ f
+    The infinite version asks about growth rates of infinite admissible sets.
+    Proved: A ⊆ {0,...,n} has at most n+1 elements (trivial upper bound). -/
+theorem finite_version_connection :
+    ∀ n : ℕ, ∃ f : ℕ, ∀ A : Finset ℕ,
+      (∀ a ∈ A, a ≤ n) →
+      (∀ r s, r ≠ s → 1 ≤ r → 1 ≤ s → r ≤ A.card → s ≤ A.card →
+        Disjoint (rFoldSumset A r) (rFoldSumset A s)) →
+      A.card ≤ f := by
+  intro n
+  exact ⟨n + 1, fun A hA _ =>
+    le_trans (Finset.card_le_card (fun a ha =>
+      Finset.mem_range.mpr (Nat.lt_succ_of_le (hA a ha))))
+      (by simp [Finset.card_range])⟩

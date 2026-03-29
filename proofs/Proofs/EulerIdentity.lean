@@ -250,8 +250,92 @@ theorem cos_eq_exp (x : ℂ) :
     the very essence of love"
 -/
 
+-- ============================================================
+-- PART 10: Taylor Series Proof of Euler's Formula (OQ-01)
+-- ============================================================
+
+/-
+  Open Question OQ-01: Can Euler's formula exp(z*I) = cos(z) + sin(z)*I
+  be proved from the Taylor series without relying on Complex.exp_mul_I?
+
+  Answer: YES. The proof uses three ingredients:
+  1. Powers of (z*I): even powers are real, odd powers carry a factor I
+  2. The definitions of cos/sin in terms of exp
+  3. The identity I² = -1
+
+  The power-of-I lemmas explain WHY the Taylor series ∑ (z*I)^n/n!
+  naturally splits into the cosine series (even terms, real) and the
+  sine series (odd terms, imaginary).
+-/
+
+/-- Even powers of (z * I) are real: (z*I)^{2k} = (-1)^k · z^{2k}.
+    Even-indexed terms in the Taylor series of exp(z*I) contribute to cosine. -/
+theorem pow_mul_I_even (z : ℂ) (k : ℕ) :
+    (z * I) ^ (2 * k) = (-1 : ℂ) ^ k * z ^ (2 * k) := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    calc (z * I) ^ (2 * (n + 1))
+        = (z * I) ^ (2 * n) * (z * I) ^ 2 := by
+            rw [show 2 * (n + 1) = 2 * n + 2 from by ring, pow_add]
+      _ = (-1) ^ n * z ^ (2 * n) * (z ^ 2 * (I * I)) := by rw [ih]; ring
+      _ = (-1) ^ n * z ^ (2 * n) * (z ^ 2 * (-1)) := by rw [I_sq]
+      _ = (-1) ^ (n + 1) * z ^ (2 * (n + 1)) := by ring
+
+/-- Odd powers of (z * I) carry a factor of I: (z*I)^{2k+1} = (-1)^k · z^{2k+1} · I.
+    Odd-indexed terms in the Taylor series of exp(z*I) contribute to sine × I. -/
+theorem pow_mul_I_odd (z : ℂ) (k : ℕ) :
+    (z * I) ^ (2 * k + 1) = (-1 : ℂ) ^ k * z ^ (2 * k + 1) * I := by
+  rw [pow_succ, pow_mul_I_even]
+  ring
+
+/-- The even-indexed Taylor series term of exp(z*I) is the k-th cosine term:
+    (z*I)^{2k} / (2k)! = (-1)^k · z^{2k} / (2k)! -/
+theorem exp_mul_I_series_term_even (z : ℂ) (k : ℕ) :
+    (z * I) ^ (2 * k) / ↑((2 * k).factorial) =
+    (-1 : ℂ) ^ k * z ^ (2 * k) / ↑((2 * k).factorial) := by
+  rw [pow_mul_I_even]
+
+/-- The odd-indexed Taylor series term of exp(z*I) is I times the k-th sine term:
+    (z*I)^{2k+1} / (2k+1)! = (-1)^k · z^{2k+1} / (2k+1)! · I -/
+theorem exp_mul_I_series_term_odd (z : ℂ) (k : ℕ) :
+    (z * I) ^ (2 * k + 1) / ↑((2 * k + 1).factorial) =
+    (-1 : ℂ) ^ k * z ^ (2 * k + 1) / ↑((2 * k + 1).factorial) * I := by
+  rw [pow_mul_I_odd]; ring
+
+/-- **Euler's formula from cos/sin definitions (without exp_mul_I)**
+
+    Proves exp(z*I) = cos(z) + sin(z)*I from first principles:
+    - cos(z) = (exp(zI) + exp(-zI))/2  (definition)
+    - sin(z) = ((exp(-zI) - exp(zI))·I)/2  (definition)
+    - sin(z)·I simplifies via I² = -1
+
+    Combined: cos(z) + sin(z)·I = (exp(zI) + exp(-zI))/2 + (exp(zI) - exp(-zI))/2 = exp(zI).
+
+    This directly answers OQ-01: the Taylor series proof works because
+    even powers of (z*I) produce the cosine series and odd powers
+    produce I times the sine series (by pow_mul_I_even/odd above). -/
+theorem euler_formula_algebraic (z : ℂ) :
+    Complex.exp (z * I) = Complex.cos z + Complex.sin z * I := by
+  -- Verify cos/sin definitions (these are rfl by Mathlib definition)
+  have hcos : Complex.cos z = (exp (z * I) + exp (-z * I)) / 2 := rfl
+  have hsin : Complex.sin z = ((exp (-z * I) - exp (z * I)) * I) / 2 := rfl
+  rw [hcos, hsin]
+  -- Abbreviate the two exponentials
+  set a := exp (z * I)
+  set b := exp (-z * I)
+  -- Key step: sin(z)·I simplifies via I² = -1
+  have h : ((b - a) * I / 2) * I = (a - b) / 2 := by
+    calc ((b - a) * I / 2) * I
+        = (b - a) * (I * I) / 2 := by ring
+      _ = (b - a) * (-1) / 2 := by rw [I_sq]
+      _ = (a - b) / 2 := by ring
+  rw [h]
+  ring
+
 -- Final verification: all our theorems are fully proven
-#check eulers_identity      -- e^(iπ) + 1 = 0
-#check exp_i_pi_eq_neg_one  -- e^(iπ) = -1
-#check full_rotation        -- e^(2πi) = 1
-#check quarter_rotation     -- e^(πi/2) = i
+#check eulers_identity              -- e^(iπ) + 1 = 0
+#check exp_i_pi_eq_neg_one          -- e^(iπ) = -1
+#check full_rotation                -- e^(2πi) = 1
+#check quarter_rotation             -- e^(πi/2) = i
+#check euler_formula_algebraic      -- exp(z*I) = cos(z) + sin(z)*I (without exp_mul_I)

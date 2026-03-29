@@ -72,8 +72,34 @@ theorem legendre_formula (n p : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
   rw [h1]
   exact Finset.sum_congr rfl fun k _ => by rw [add_comm]
 
-axiom padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
-    Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1)))
+/-- ν_p(n!)/n → 1/(p-1) as n → ∞.
+    Proof: By Legendre's formula, ν_p(n!) = ∑_{k=1}^{L} ⌊n/p^k⌋ where L = ⌊log_p n⌋ + 1.
+    Upper bound: ⌊n/p^k⌋ ≤ n/p^k, so ν_p(n!)/n ≤ ∑ 1/p^k = 1/(p-1).
+    Lower bound: ⌊n/p^k⌋ ≥ n/p^k - 1, so ν_p(n!)/n ≥ 1/(p-1) - L/n - 1/(p^L(p-1)).
+    Since L = O(log n), both L/n → 0 and 1/p^L → 0. Squeeze gives the result. -/
+theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
+    Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1))) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
+  have hp_one_lt : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
+  have hpp1 : (0 : ℝ) < p - 1 := by linarith
+  -- Upper bound: ν_p(n!)/n ≤ 1/(p-1) for all n ≥ 1
+  have h_upper : ∀ᶠ n in atTop, (padicValNat p n.factorial : ℝ) / n ≤ 1 / (p - 1) := by
+    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+    sorry -- Legendre + ⌊n/p^k⌋ ≤ n/p^k + geometric series ≤ n/(p-1)
+  -- Lower bound: ν_p(n!)/n ≥ 1/(p-1) - (log_p n + 1)/n for all n ≥ 1
+  have h_lower_tendsto : Tendsto (fun n : ℕ =>
+      1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / n) atTop (nhds (1 / (p - 1))) := by
+    have : Tendsto (fun n : ℕ => ((Nat.log p n : ℝ) + 1) / n) atTop (nhds 0) := by
+      sorry -- log_p(n)/n → 0
+    rw [show (1 : ℝ) / (p - 1) = 1 / (p - 1) - 0 from by ring]
+    exact Tendsto.sub tendsto_const_nhds this
+  have h_lower : ∀ᶠ n in atTop, 1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / n ≤
+      (padicValNat p n.factorial : ℝ) / n := by
+    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+    sorry -- Legendre + ⌊n/p^k⌋ ≥ n/p^k - 1 + sum over L terms
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le h_lower_tendsto tendsto_const_nhds
+    h_lower h_upper
 
 /- ## Part V: Structure of Factorial Sums -/
 

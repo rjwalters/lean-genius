@@ -1,0 +1,161 @@
+{
+  "id": "basel-problem-oq-05",
+  "title": "Euler's Proof via Weierstrass Product (OQ-05)",
+  "slug": "basel-problem-oq-05",
+  "description": "Euler's original 1734 proof of the Basel problem via the Weierstrass factorization sin(πx)/(πx) = ∏(1 - x²/n²). Axiomatizes the product formula (not in Mathlib) and proves Taylor coefficient extraction, partial product properties, and the proof structure connecting the product representation to ∑1/n² = π²/6.",
+  "meta": {
+    "author": "Euler (1734), Weierstrass (1876)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Basel_problem",
+    "date": "1734",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BaselProblemOQ05.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "infinite-products",
+      "zeta-values",
+      "historical-proofs",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "The Basel identity: ∑ 1/n² = π²/6",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "Real.pi_ne_zero",
+        "description": "π ≠ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized Weierstrass product formula for sin(πx)/(πx)",
+      "Taylor coefficient extraction: x² coefficient is -π²/6",
+      "Finite product x² coefficient equals -∑ 1/n² (algebraic identity)",
+      "Euler's proof structure theorem connecting product and Taylor representations",
+      "Partial product positivity and boundedness for |x| < 1"
+    ],
+    "dateAdded": "2026-03-28",
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "lineCount": 184,
+    "assumptions": "2 axioms: weierstrass_sin_product (Weierstrass product formula for sin), product_x2_coefficient (infinite product coefficient extraction). Both are deep results in complex analysis not yet in Mathlib.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Leonhard Euler solved the Basel problem in 1734, launching his career as the most prolific mathematician in history. His original proof used the infinite product representation sin(πx)/(πx) = ∏(1 - x²/n²), which he discovered by analogy with polynomial factorization. By expanding this product and comparing the x² coefficient with the Taylor expansion of sin(πx)/(πx), he deduced ∑1/n² = π²/6. While initially not rigorous by modern standards (the product formula required Weierstrass's theory of entire functions, developed 140 years later), Euler's insight was correct and profoundly influential. This formalization axiomatizes the product formula and verifies the algebraic steps of Euler's argument.",
+    "problemStatement": "OQ-05: Can Euler's original proof of the Basel problem via the Weierstrass factorization sin(πx)/(πx) = ∏(1 - x²/n²) be formalized in Lean 4?\n\nPartial answer: Yes, but the Weierstrass product formula itself is not yet in Mathlib. We axiomatize it and prove the other steps.",
+    "text": "Euler's original 1734 proof of the Basel problem via the Weierstrass factorization sin(πx)/(πx) = ∏(1 - x²/n²). Axiomatizes the product formula (not in Mathlib) and proves Taylor coefficient extraction, partial product properties, and the proof structure connecting the product representation to ∑1/n² = π²/6.",
+    "proofStrategy": "Euler's proof in three steps:\n1. **Product formula** (axiom): sin(πx)/(πx) = ∏(1 - x²/n²)\n2. **Taylor side** (proved): sin(πx)/(πx) = 1 - π²x²/6 + O(x⁴), so x² coefficient is -π²/6\n3. **Product side** (axiom + algebra): ∏(1 - x²/n²) = 1 - (∑1/n²)x² + O(x⁴)\n4. **Equate** (proved): π²/6 = ∑1/n²",
+    "keyInsights": [
+      "The Weierstrass product for sin is NOT in Mathlib — this is the key gap for formalizing Euler's proof",
+      "The Taylor coefficient extraction step is purely algebraic and fully provable",
+      "The coefficient extraction from infinite products requires dominated convergence — a second gap",
+      "Mathlib proves the Basel problem via Bernoulli polynomials and Fourier analysis instead",
+      "Partial product positivity (each factor 1 - x²/n² > 0 for |x| < 1) is fully verified"
+    ],
+    "prerequisites": [
+      "Complex analysis (Weierstrass factorization theorem)",
+      "Real analysis (Taylor series, infinite products)",
+      "Number theory (Bernoulli numbers, zeta values)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "weierstrass-product",
+      "title": "Weierstrass Product Formula",
+      "startLine": 28,
+      "endLine": 47,
+      "summary": "Axiomatizes the Weierstrass product: $\\sin(\\pi x)/(\\pi x) = \\prod_{n=1}^\\infty (1 - x^2/n^2)$. Not yet in Mathlib.",
+      "mathContext": "The Weierstrass factorization theorem applied to the entire function $\\sin(\\pi z)/(\\pi z)$, which has simple zeros at $z = \\pm 1, \\pm 2, \\ldots$"
+    },
+    {
+      "id": "taylor-coefficient",
+      "title": "Taylor Side: x² Coefficient",
+      "startLine": 48,
+      "endLine": 82,
+      "summary": "Proves the x² coefficient of $\\sin(\\pi x)/(\\pi x)$ is $-\\pi^2/6$ from the Taylor expansion.",
+      "mathContext": "$\\sin(\\pi x)/(\\pi x) = 1 - \\pi^2 x^2/6 + O(x^4)$"
+    },
+    {
+      "id": "product-coefficient",
+      "title": "Product Side: Coefficient Extraction",
+      "startLine": 83,
+      "endLine": 112,
+      "summary": "Finite product x² coefficient identity (proved) and infinite product coefficient extraction (axiomatized).",
+      "mathContext": "For finite products: $\\prod_{n=1}^N (1-x^2/n^2) = 1 - (\\sum_{n=1}^N 1/n^2) x^2 + O(x^4)$"
+    },
+    {
+      "id": "euler-proof",
+      "title": "Euler's Proof Structure",
+      "startLine": 113,
+      "endLine": 160,
+      "summary": "Combines the product formula and Taylor expansion to show $\\sum 1/n^2 = \\pi^2/6$.",
+      "mathContext": "Equating x² coefficients from both representations yields the Basel identity."
+    },
+    {
+      "id": "partial-products",
+      "title": "Partial Product Properties",
+      "startLine": 161,
+      "endLine": 184,
+      "summary": "Proves each factor $1 - x^2/n^2 > 0$ for $|x| < 1$ and $\\leq 1$ for all $x$.",
+      "mathContext": "Partial product convergence analysis supporting the Weierstrass product."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's proof via Weierstrass products can be partially formalized: the algebraic steps are provable, but the product formula itself is not yet in Mathlib. Full formalization requires either: (1) proving the Weierstrass factorization theorem for entire functions of finite order, or (2) a specialized proof of the sin product.",
+    "implications": "This identifies a concrete Mathlib gap: the Weierstrass product for sin. Adding this to Mathlib would unlock not only Euler's Basel proof but also related results like the reflection formula for the Gamma function and the product representation of other special functions.",
+    "openQuestions": [
+      "Can the Weierstrass product for sin be added to Mathlib?",
+      "Can the infinite product coefficient extraction be proved from existing Mathlib results?",
+      "Is there a direct proof of sin(πx) = πx∏(1-x²/n²) avoiding general entire function theory?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "extends",
+      "description": "The main Basel problem proof uses Mathlib's hasSum_zeta_two; this OQ-05 explores Euler's original proof approach via Weierstrass products"
+    },
+    {
+      "targetId": "basel-problem-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 explores generalizations of the Basel result; both connect to the theory of zeta values"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euler, L.",
+      "title": "De summis serierum reciprocarum",
+      "year": "1734",
+      "venue": "Commentarii academiae scientiarum Petropolitanae, 7, 123–134",
+      "note": "Euler's original proof of the Basel problem via the sin product factorization"
+    },
+    {
+      "authors": "Weierstrass, K.",
+      "title": "Zur Theorie der eindeutigen analytischen Funktionen",
+      "year": "1876",
+      "venue": "Abhandlungen der Königl. Akad. der Wissenschaften, Berlin",
+      "note": "The Weierstrass factorization theorem that rigorously justifies Euler's product formula"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Real",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "BaselOQ05",
+    "lineCount": 184,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
+}

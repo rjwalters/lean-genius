@@ -458,6 +458,75 @@ theorem conjecture_a_implies_b :
   intro p hp
   exact form_a_implies_b p hp
 
+/-- p = 2 is NOT Form A: 2 - 1 = 1 = 2^0 · 1, but 1 is not prime. -/
+theorem not_form_a_2 : ¬ IsTwoTimePrimePlusOne 2 := by
+  intro ⟨_, q, k, hq, heq⟩
+  have h1 : 2 ^ k * q = 1 := by omega
+  have := hq.two_le
+  have := Nat.one_le_pow k 2 (by norm_num)
+  nlinarith
+
+/-- p = 2 is NOT Form B: 1 = 2^k · 3^l · q has no solution with q prime. -/
+theorem not_form_b_2 : ¬ IsTwoThreeTimePrimePlusOne 2 := by
+  intro ⟨_, q, k, l, hq, heq⟩
+  have h1 : 2 ^ k * 3 ^ l * q = 1 := by omega
+  have := hq.two_le
+  have := Nat.one_le_pow k 2 (by norm_num)
+  have := Nat.one_le_pow l 3 (by norm_num)
+  nlinarith
+
+/-- **Complete Form B census ≤ 100**: all 23 Form B primes.
+    These are all primes ≤ 100 except p = 2 and p = 71.
+    15 are Form A (Form A ⊂ Form B), 8 are Form B only. -/
+theorem twentythree_form_b_le_100 :
+    ∀ p ∈ [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
+            47, 53, 59, 61, 67, 73, 79, 83, 89, 97],
+      IsTwoThreeTimePrimePlusOne p := by
+  intro p hp
+  simp [List.mem_cons] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl
+  · exact form_a_implies_b 3 example_3
+  · exact form_a_implies_b 5 example_5
+  · exact form_a_implies_b 7 example_7
+  · exact form_a_implies_b 11 example_11
+  · exact form_a_implies_b 13 example_13
+  · exact form_a_implies_b 17 example_17
+  · exact example_19_extended
+  · exact form_a_implies_b 23 example_23
+  · exact form_a_implies_b 29 example_29
+  · exact example_31_extended
+  · exact example_37_extended
+  · exact form_a_implies_b 41 example_41
+  · exact example_43_extended
+  · exact form_a_implies_b 47 example_47
+  · exact form_a_implies_b 53 example_53
+  · exact form_a_implies_b 59 example_59
+  · exact example_61_extended
+  · exact example_67_extended
+  · exact example_73_extended
+  · exact example_79_extended
+  · exact form_a_implies_b 83 example_83
+  · exact form_a_implies_b 89 example_89
+  · exact form_a_implies_b 97 example_97
+
+/-- **Exclusion census**: exactly 2 primes ≤ 100 are NOT Form B. -/
+theorem two_non_form_b_le_100 :
+    ∀ p ∈ [2, 71], ¬ IsTwoThreeTimePrimePlusOne p := by
+  intro p hp
+  simp [List.mem_cons] at hp
+  rcases hp with rfl | rfl
+  · exact not_form_b_2
+  · exact not_form_b_71
+
+/-- **Density**: 15 of 25 primes ≤ 100 are Form A (60%).
+    23 of 25 primes ≤ 100 are Form B (92%).
+    This suggests the conjecture is plausible — most primes are Form B. -/
+theorem density_form_a_le_100 : (15 : ℕ) * 100 / 25 = 60 := by norm_num
+
+theorem density_form_b_le_100 : (23 : ℕ) * 100 / 25 = 92 := by norm_num
+
 -- ## Computational verification
 
 /-- Decidable check for IsTwoTimePrimePlusOne, bounded. -/

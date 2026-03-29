@@ -1,0 +1,97 @@
+{
+  "slug": "chinese-remainder-constructive-oq-04-oq-03",
+  "title": "Can the pairwise coprimality condition be weakened",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 1,
+    "focus": "Surveyed non-coprime CRT generalization path",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Non-coprime CRT for arbitrary lists requires compatibility conditions (gcd(mᵢ,mⱼ) | aᵢ-aⱼ). OQ03 has 1 axiom (primorial_growth_lower) and 2 sorries. Generalizing to lists needs careful induction + compatibility checking.",
+    "builtItems": [],
+    "insights": [
+      "OQ04 (CRT for arbitrary lists) is clean: 0A 0S 4T. The coprime case is fully solved.",
+      "OQ03 (efficiency/bounds) has 1 axiom primorial_growth_lower (k≥1 → primorial k ≥ 2^k) and 2 sorries",
+      "Non-coprime CRT: system x ≡ aᵢ (mod mᵢ) solvable iff gcd(mᵢ,mⱼ) | (aᵢ - aⱼ) for all i,j",
+      "Mathlib has ZMod.chineseRemainder for coprime case. Non-coprime generalization not available.",
+      "List generalization needs: (1) compatibility check function, (2) inductive solver reducing to 2-moduli case, (3) uniqueness mod lcm"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "State non_coprime_crt_list theorem: given compatibility, solve system with solution unique mod lcm",
+      "Reduce to 2-moduli case: merge first two congruences, then recurse",
+      "The 2-moduli non-coprime CRT should already exist in ChineseRemainderConstructive or be in Mathlib"
+    ],
+    "markdown": "# Knowledge Base: chinese-remainder-constructive-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.979Z",
+  "lastUpdate": "2026-03-29T04:28:18.988Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 417,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
+    }
+  ]
+}

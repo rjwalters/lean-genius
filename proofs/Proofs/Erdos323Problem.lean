@@ -37,13 +37,34 @@ noncomputable def powerSumCount (k m x : ℕ) : ℕ :=
 /- ## Basic properties -/
 
 /-- Every nonneg integer is a sum of itself many 1st powers: f_{1,m} grows
-    linearly for m large enough. -/
-axiom first_power_count (m x : ℕ) (hm : 1 ≤ m) (hx : m ≤ x) :
-    m ≤ powerSumCount 1 m x
+    linearly for m large enough.
+    Proof: every n is IsSumOfPowers n 1 m (put n on index 0, rest 0),
+    so the filter keeps all of {0,...,x}, giving card = x+1 ≥ m. -/
+theorem first_power_count (m x : ℕ) (hm : 1 ≤ m) (hx : m ≤ x) :
+    m ≤ powerSumCount 1 m x := by
+  unfold powerSumCount
+  suffices h : ∀ n, IsSumOfPowers n 1 m by
+    rw [Finset.filter_true_of_mem (fun n _ => h n), Finset.card_range]; omega
+  intro n
+  exact ⟨fun i => if i = ⟨0, by omega⟩ then n else 0, by
+    simp [pow_one, Finset.sum_ite_eq', Finset.mem_univ]⟩
 
-/-- Monotonicity: f_{k,m}(x) ≤ f_{k,m+1}(x). -/
-axiom power_sum_count_mono (k m x : ℕ) :
-    powerSumCount k m x ≤ powerSumCount k (m + 1) x
+/-- Monotonicity: f_{k,m}(x) ≤ f_{k,m+1}(x) for k ≥ 1.
+    Proof: extend witness by appending 0 (0^k = 0 when k ≥ 1).
+    Note: requires k ≥ 1 since for k = 0, IsSumOfPowers n 0 m ↔ n = m
+    (each term is 0^0 = 1), so f_{0,m}(x) counts only {m} while
+    f_{0,m+1}(x) counts only {m+1}, violating monotonicity at m = x. -/
+theorem power_sum_count_mono (k m x : ℕ) (hk : 1 ≤ k) :
+    powerSumCount k m x ≤ powerSumCount k (m + 1) x := by
+  unfold powerSumCount
+  apply Finset.card_le_card
+  intro n hn
+  simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+  exact ⟨hn.1, by
+    obtain ⟨xs, hxs⟩ := hn.2
+    exact ⟨Fin.snoc xs 0, by
+      rw [hxs, Fin.sum_univ_castSucc]
+      simp [Fin.snoc_castSucc, Fin.snoc_last, zero_pow (show k ≠ 0 by omega)]⟩⟩
 
 /- ## Landau's theorem for sums of two squares -/
 

@@ -21,7 +21,7 @@
       "open-question"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-03-28",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -66,8 +66,8 @@
       "minkowski_linfty: L∞ special case from pointwise triangle"
     ],
     "axiomCount": 0,
-    "lineCount": 393,
-    "assumptions": "0 axioms. 2 sorries in ENNReal rpow arithmetic (routine calculations about a^p = a · a^{p-1} and the final division step)."
+    "lineCount": 402,
+    "assumptions": "0 axioms. 1 sorry in minkowski_from_holder_explicit (ENNReal arithmetic combining split + Hölder steps with division)."
   },
   "overview": {
     "historicalContext": "**The Young-Hölder-Minkowski Chain**\n\nThree fundamental inequalities form a logical chain:\n- **Young (1912)**: $ab \\leq a^p/p + b^q/q$ for conjugate exponents\n- **Hölder (1889)**: $\\int|fg| \\leq \\|f\\|_p \\cdot \\|g\\|_q$ for $1/p + 1/q = 1$\n- **Minkowski (1896)**: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$\n\nIn modern Lean/Mathlib, Minkowski is embedded inside the `NormedAddCommGroup` instance for `Lp` spaces, making the chain invisible. This formalization makes each step explicit.",
@@ -148,10 +148,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Answers YES to the open question: the full Lp Minkowski proof via the Hölder chain IS available in Lean 4 without the black-box NormedAddCommGroup instance. The chain Young → Hölder → Minkowski is made explicit, with the factoring trick (splitting |f+g|^p and applying Hölder twice) as the key step. Two sorries remain in ENNReal rpow arithmetic.",
+    "summary": "Answers YES to the open question: the full Lp Minkowski proof via the Hölder chain IS available in Lean 4 without the black-box NormedAddCommGroup instance. The chain Young → Hölder → Minkowski is made explicit, with the factoring trick (splitting |f+g|^p and applying Hölder twice) as the key step. One sorry remains in the final ENNReal division step.",
     "implications": "Making the chain explicit serves both pedagogy and formalization quality. Students see exactly where each inequality is used. Formal verification confirms the logical dependencies are correct. The factoring trick pattern (Hölder → norm inequality) recurs throughout analysis: Sobolev embeddings, interpolation theorems, and more.",
     "openQuestions": [
-      "Can the two remaining sorries (ENNReal rpow arithmetic) be closed with tactic automation?",
+      "Can the remaining sorry (ENNReal rpow division step) be closed with tactic automation?",
       "Can the chain be extended to include Sobolev embeddings as a fourth step?",
       "What is the optimal way to handle the division step when ‖f+g‖_p = 0 or ∞?"
     ]

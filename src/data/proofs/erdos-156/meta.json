@@ -19,7 +19,7 @@
       "extremal-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 156,
     "erdosUrl": "https://erdosproblems.com/156",
     "erdosProblemStatus": "open",
@@ -67,9 +67,9 @@
       "Growth exponent conjecture via Filter.Tendsto of log ratio",
       "Infimum formulation using iInf over all maximal Sidon sets"
     ],
-    "axiomCount": 7,
-    "lineCount": 260,
-    "assumptions": "7 axiom(s) and 3 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "axiomCount": 6,
+    "lineCount": 273,
+    "assumptions": "6 axioms and 2 sorries. random_sidon_barrier proved (was trivially True), minMaximalSidonSize sorry eliminated via greedySidon_subset_interval.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -188,8 +188,8 @@
     ],
     "opens": [],
     "namespace": "Erdos156",
-    "lineCount": 260,
-    "axiomCount": 7,
+    "lineCount": 273,
+    "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
   },

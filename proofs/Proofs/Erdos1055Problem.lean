@@ -18,6 +18,12 @@ Classify primes by the factorization structure of p+1:
 
 ## Status: OPEN
 
+Axioms: 2 (infinitely_many_in_each_class, class_density_subpolynomial — both open)
+Sorries: 0
+
+Note: Erdős and Selfridge made CONTRADICTORY conjectures about p_r^{1/r}.
+Both are stated as `def` (not axiom) with a mutual exclusivity proof.
+
 Reference: https://erdosproblems.com/1055
 -/
 
@@ -204,17 +210,43 @@ theorem many_class3_primes :
 axiom infinitely_many_in_each_class (r : ℕ) (hr : r ≥ 1) :
     Set.Infinite {p : ℕ | p.Prime ∧ primeClass p = r}
 
-axiom erdos_growth_conjecture :
+/-- Erdős's conjecture: p_r^{1/r} → ∞ where p_r is the least prime in class r.
+    This CONTRADICTS selfridge_bounded_conjecture; at most one can hold. -/
+def erdos_growth_conjecture : Prop :=
     ∀ M : ℝ, ∃ R : ℕ, ∀ r ≥ R,
       ∀ p : ℕ, p.Prime → primeClass p = r →
         (∀ q : ℕ, q.Prime → primeClass q = r → p ≤ q) →
         ((p : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≥ M
 
-axiom selfridge_bounded_conjecture :
+/-- Selfridge's conjecture: p_r^{1/r} is bounded.
+    This CONTRADICTS erdos_growth_conjecture; at most one can hold. -/
+def selfridge_bounded_conjecture : Prop :=
     ∃ M : ℝ, ∀ r : ℕ, r ≥ 1 →
       ∀ p : ℕ, p.Prime → primeClass p = r →
         (∀ q : ℕ, q.Prime → primeClass q = r → p ≤ q) →
         ((p : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≤ M
+
+/-- The Erdős and Selfridge conjectures are mutually exclusive:
+    given each class has infinitely many primes, both cannot hold.
+    Proof: Selfridge gives bound M; Erdős gives threshold R exceeding M+1.
+    For r ≥ max(R,1), the least prime p_r satisfies both p_r^{1/r} ≤ M
+    and p_r^{1/r} ≥ M+1. Contradiction. -/
+theorem erdos_selfridge_mutex (h_erdos : erdos_growth_conjecture)
+    (h_selfridge : selfridge_bounded_conjecture) : False := by
+  obtain ⟨M, hM⟩ := h_selfridge
+  obtain ⟨R, hR⟩ := h_erdos (M + 1)
+  set r := max R 1
+  obtain ⟨p₀, hp₀_prime, hp₀_class⟩ :=
+    (infinitely_many_in_each_class r (le_max_right R 1)).nonempty
+  have h_exists : ∃ n, n.Prime ∧ primeClass n = r := ⟨p₀, hp₀_prime, hp₀_class⟩
+  have hp := Nat.find_spec h_exists
+  have hp_min : ∀ q : ℕ, q.Prime → primeClass q = r → Nat.find h_exists ≤ q := by
+    intro q hq_prime hq_class
+    by_contra h_lt
+    push_neg at h_lt
+    exact Nat.find_min h_exists h_lt ⟨hq_prime, hq_class⟩
+  linarith [hR r (le_max_left R 1) (Nat.find h_exists) hp.1 hp.2 hp_min,
+            hM r (le_max_right R 1) (Nat.find h_exists) hp.1 hp.2 hp_min]
 
 axiom class_density_subpolynomial (r : ℕ) (hr : r ≥ 1) :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →

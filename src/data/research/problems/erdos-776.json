@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Added 5 structural lemmas + IsAntichain rename fix. 4 axioms remain (3 known results + 1 open).",
+    "progressSummary": "AXIOM ELIMINATION: Proved erdos_776_threshold from erdos_trotter_exact (4→3 axioms)",
     "builtItems": [
       "Proved size_availability (axiom->theorem) in Erdos776Problem.lean",
       "Proved size_variety_tradeoff (axiom->theorem) via Finset.card_biUnion + Finset.sum_le_sum",
@@ -40,7 +40,8 @@
       "Proved univ_not_in_nontrivial_antichain via Finset.subset_univ + antichain contradiction",
       "Proved same_size_is_antichain via Finset.eq_of_subset_of_card_le + omega",
       "Proved zero_not_in_antichain_sizes via Finset.card_eq_zero + card_le_one",
-      "Proved n_not_in_antichain_sizes via Finset.eq_univ_of_card + card_le_one"
+      "Proved n_not_in_antichain_sizes via Finset.eq_univ_of_card + card_le_one",
+      "erdos_776_threshold proved from erdos_trotter_exact + Nat.find (was axiom)"
     ],
     "insights": [
       "size_availability axiom has trivially True conclusion — provable with intro; trivial",
@@ -53,7 +54,8 @@
       "Key structural results proved: ∅ and univ excluded from non-trivial antichains",
       "Sizes 0 and n excluded from distinctSizes of antichains with ≥2 sets",
       "Same-size families are automatically antichains (via Finset.eq_of_subset_of_card_le)",
-      "Remaining 3 known-result axioms require substantial combinatorial constructions to prove"
+      "Remaining 3 known-result axioms require substantial combinatorial constructions to prove",
+      "erdos_776_threshold follows from erdos_trotter_exact via Nat.find — the threshold is just the minimum N"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -77,16 +79,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:39:26.858Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-28T21:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos776Problem.lean",
       "filename": "Erdos776Problem.lean",
-      "lineCount": 262,
-      "theoremCount": 10,
-      "axiomCount": 4,
+      "lineCount": 266,
+      "theoremCount": 5,
+      "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

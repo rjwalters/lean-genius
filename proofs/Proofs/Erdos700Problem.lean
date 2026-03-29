@@ -22,6 +22,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Multiplicity
 
 /- ## Definitions -/
 
@@ -141,12 +142,180 @@ private theorem gcd_choose_ge_minFac {n k : ℕ} (hn : 4 ≤ n) (hk : 2 ≤ k) (
 
 /- ## Basic Bounds -/
 
+/- ## Upper Bound: f(n) ≤ n/P(n)
+
+Strategy: For composite n with largest prime factor p and p^a ‖ n:
+- Non-prime-power case (n = p^a * m, m ≥ 2): k = p^a gives
+  gcd(n, C(n,k)) = n/p^a ≤ n/p via absorption identity + non-divisibility.
+- Prime power case (n = p^a, a ≥ 2): k = p^(a-1) similarly gives
+  gcd(n, C(n,k)) = p ≤ p^(a-1) = n/p.
+
+The key lemma: p ∤ C(p^a*m - 1, p^a - 1) when p ∤ m.
+Proof: By Legendre's formula, (p-1) * v_p(C(N,K)) = S_p(K) + S_p(N-K) - S_p(N).
+Digit sum computation shows S_p(p^a-1) + S_p(p^a*(m-1)) = S_p(p^a*m-1),
+so the difference is 0, hence v_p = 0, hence p ∤ C(N,K). -/
+
+/-- Non-divisibility: p ∤ C(p^a * m - 1, p^a - 1) for any prime p, a ≥ 1, m ≥ 1.
+    Proof via Kummer's theorem: K = p^a - 1 has base-p support at positions 0..a-1,
+    while N-K = p^a*(m-1) has support at positions ≥ a. Their digit supports don't
+    overlap, so adding them in base p produces zero carries, giving v_p(C(N,K)) = 0. -/
+private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (ha : 1 ≤ a)
+    {m : ℕ} (hm_pos : 1 ≤ m) :
+    ¬(p ∣ Nat.choose (p ^ a * m - 1) (p ^ a - 1)) := by
+  -- Setup: N = p^a*m - 1, K = p^a - 1, N - K = p^a*(m-1)
+  set N := p ^ a * m - 1
+  set K := p ^ a - 1
+  have hp2 : 2 ≤ p := hp.two_le
+  have hpa_pos : 0 < p ^ a := Nat.pos_of_ne_zero (by positivity)
+  have hKN : K ≤ N := by unfold_let K N; omega
+  have hNK_eq : N - K = p ^ a * (m - 1) := by unfold_let N K; omega
+  have hC_pos : 0 < Nat.choose N K := Nat.choose_pos hKN
+  -- Use Kummer: multiplicity p (C(N,K)) = |{carries}|
+  set b := Nat.log p N + 2
+  have hNb : Nat.log p N < b := by unfold_let b; omega
+  have h_kummer := Nat.Prime.multiplicity_choose hp hKN hNb
+  -- Step 1: Show the carry set is empty (no carry at any position)
+  have h_no_carry : ∀ i, i ∈ Finset.Ico 1 b →
+      K % p ^ i + (N - K) % p ^ i < p ^ i := by
+    intro i hi
+    rw [Finset.mem_Ico] at hi
+    rw [hNK_eq]
+    by_cases hia : i ≤ a
+    · -- Case i ≤ a: (N-K) % p^i = 0 since p^i | p^a*(m-1)
+      have : p ^ a * (m - 1) % p ^ i = 0 :=
+        Nat.mod_eq_zero_of_dvd (dvd_mul_of_dvd_left (pow_dvd_pow p hia) _)
+      rw [this, add_zero]
+      exact Nat.mod_lt K (by positivity)
+    · -- Case i > a: K < p^i, and mod of (p^a*(m-1)) bounded
+      push_neg at hia
+      -- K % p^i = K = p^a - 1
+      have hK_mod : K % p ^ i = K := Nat.mod_eq_of_lt (by
+        calc K = p ^ a - 1 := rfl
+          _ < p ^ a := by omega
+          _ ≤ p ^ i := Nat.pow_le_pow_right (by omega) (le_of_lt hia))
+      -- (p^a*(m-1)) % p^i = p^a * ((m-1) % p^(i-a))
+      have hia_sub : a + (i - a) = i := by omega
+      set r := (m - 1) % p ^ (i - a)
+      have hr_lt : r < p ^ (i - a) := Nat.mod_lt _ (by positivity)
+      have h_pa_r_lt : p ^ a * r < p ^ i := by
+        calc p ^ a * r < p ^ a * p ^ (i - a) := Nat.mul_lt_mul_left hpa_pos hr_lt
+          _ = p ^ i := by rw [← pow_add, hia_sub]
+      have h_mod_NK : p ^ a * (m - 1) % p ^ i = p ^ a * r := by
+        have h_eq : p ^ a * (m - 1) = (m - 1) / p ^ (i - a) * p ^ i + p ^ a * r := by
+          calc p ^ a * (m - 1)
+              = p ^ a * (p ^ (i - a) * ((m - 1) / p ^ (i - a)) + r) := by
+                rw [Nat.div_add_mod]
+            _ = p ^ a * p ^ (i - a) * ((m - 1) / p ^ (i - a)) + p ^ a * r := by ring
+            _ = p ^ i * ((m - 1) / p ^ (i - a)) + p ^ a * r := by
+                rw [← pow_add, hia_sub]
+            _ = (m - 1) / p ^ (i - a) * p ^ i + p ^ a * r := by ring
+        rw [h_eq, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt h_pa_r_lt]
+      rw [hK_mod, h_mod_NK]
+      -- K + p^a * r = (p^a - 1) + p^a * r ≤ p^i - 1 < p^i
+      have : p ^ a * r ≤ p ^ i - p ^ a := by
+        calc p ^ a * r ≤ p ^ a * (p ^ (i - a) - 1) :=
+              Nat.mul_le_mul_left _ (by omega)
+          _ = p ^ a * p ^ (i - a) - p ^ a * 1 := by rw [Nat.mul_sub_one]
+          _ = p ^ i - p ^ a := by rw [← pow_add, hia_sub, mul_one]
+      unfold_let K; omega
+  -- Step 2: Empty carry set → multiplicity 0 → ¬(p | C(N,K))
+  have h_filter_empty : ((Finset.Ico 1 b).filter fun i =>
+      p ^ i ≤ K % p ^ i + (N - K) % p ^ i) = ∅ := by
+    rw [Finset.filter_eq_empty_iff]
+    intro i hi; exact not_le.mpr (h_no_carry i hi)
+  -- multiplicity p C(N,K) = 0
+  intro h_dvd
+  have h_one_le : (1 : PartENat) ≤ multiplicity (p : ℕ) (Nat.choose N K) :=
+    multiplicity.le_multiplicity_of_pow_dvd (show p ^ 1 ∣ _ from by rwa [pow_one])
+  rw [h_kummer, h_filter_empty, Finset.card_empty, Nat.cast_zero] at h_one_le
+  exact absurd h_one_le (by norm_num)
+
+/-- The absorption identity: C(n, k) = (n/k) * C(n-1, k-1) when k | n and k ≥ 1. -/
+private theorem choose_eq_mul_choose_pred {n k : ℕ} (hk : 1 ≤ k) (hkn : k ≤ n)
+    (hdvd : k ∣ n) :
+    Nat.choose n k = (n / k) * Nat.choose (n - 1) (k - 1) := by
+  have hk_pos : 0 < k := by omega
+  have h := Nat.succ_mul_choose_eq (n - 1) (k - 1)
+  have hn' : n - 1 + 1 = n := by omega
+  have hk' : k - 1 + 1 = k := by omega
+  rw [hn', hk'] at h
+  -- h : n * C(n-1, k-1) = C(n, k) * k
+  obtain ⟨q, hq⟩ := hdvd
+  have hq_eq : n / k = q := by rw [hq]; exact Nat.mul_div_cancel_left q hk_pos
+  rw [hq_eq]
+  have : k * (q * Nat.choose (k * q - 1) (k - 1)) = k * Nat.choose (k * q) k := by
+    rw [← mul_assoc]; linarith [hq ▸ h]
+  exact Nat.eq_of_mul_eq_mul_left hk_pos this.symm
+
+/-- For a prime power p^a, if ¬(p ∣ x) then gcd(p^a, x) = 1. -/
+private theorem coprime_prime_pow_of_not_dvd {p a x : ℕ} (hp : p.Prime) (hx : ¬(p ∣ x)) :
+    Nat.gcd (p ^ a) x = 1 := by
+  rw [Nat.Coprime.comm]
+  exact (hp.coprime_iff_not_dvd.mpr hx).pow_right a
+
+/-- For p^a * m with p prime, a ≥ 1, m ≥ 1: gcd(p^a*m, C(p^a*m, p^a)) = m.
+    Combines absorption identity, GCD factoring, and non-divisibility. -/
+private theorem gcd_choose_prime_pow_eq {p : ℕ} (hp : p.Prime) {a : ℕ} (ha : 1 ≤ a)
+    {m : ℕ} (hm_pos : 1 ≤ m) :
+    Nat.gcd (p ^ a * m) (Nat.choose (p ^ a * m) (p ^ a)) = m := by
+  have hpa_pos : 0 < p ^ a := Nat.pos_of_ne_zero (by positivity)
+  have hk : 1 ≤ p ^ a := by omega
+  have hkn : p ^ a ≤ p ^ a * m := Nat.le_mul_of_pos_right _ (by omega)
+  have hdvd : p ^ a ∣ p ^ a * m := dvd_mul_right _ _
+  have hchoose := choose_eq_mul_choose_pred hk hkn hdvd
+  have hdiv : p ^ a * m / p ^ a = m := Nat.mul_div_cancel_left m hpa_pos
+  rw [hdiv] at hchoose
+  rw [hchoose, mul_comm (p ^ a) m, Nat.gcd_mul_left]
+  have h_not_dvd := prime_not_dvd_choose_shift hp ha hm_pos
+  rw [coprime_prime_pow_of_not_dvd hp h_not_dvd, mul_one]
+
 /-- f(n) ≤ n/P(n) for all composite n.
-    Follows from Kummer's theorem: choosing k = p^a where p^a ‖ n
-    gives exactly one carry in base-p addition, so v_p(C(n,k)) = 1,
-    hence gcd(n, C(n, p^a)) = n/p^a ≤ n/P(n). -/
-axiom f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
-  fBinom n ≤ n / largestPrimeFactor n
+    For non-prime-powers: k = P(n)^a with P(n)^a ‖ n gives
+    gcd(n, C(n,k)) = n/P(n)^a ≤ n/P(n).
+    For prime powers n = p^a: k = p^(a-1) gives gcd = p ≤ n/P(n). -/
+theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
+    fBinom n ≤ n / largestPrimeFactor n := by
+  -- Key insight: just use k = P (the largest prime factor, with exponent 1).
+  -- Since n is composite, n/P ≥ 2, so P ∈ [2, n/2].
+  -- gcd(n, C(n, P)) = n/P by gcd_choose_prime_pow_eq.
+  set P := largestPrimeFactor n
+  have h4 : 4 ≤ n := by
+    -- n ≥ 2 and not prime → n ≥ 4
+    interval_cases n <;> simp_all [Nat.Prime] <;> omega
+  have hP_prime : P.Prime := by
+    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).1
+  have hP_dvd : P ∣ n := by
+    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).2.1
+  -- n/P ≥ 2 since n is composite (if n/P = 1 then n = P is prime)
+  set q := n / P
+  have hPq : n = P * q := (Nat.div_mul_cancel hP_dvd).symm ▸ (mul_comm P q ▸ rfl)
+  have hq_ge2 : 2 ≤ q := by
+    by_contra h; push_neg at h
+    interval_cases q
+    · omega  -- q = 0: impossible since P ≥ 2 and n ≥ 4
+    · -- q = 1: n = P, but n is not prime
+      have : n = P := by omega
+      exact hn (this ▸ hP_prime)
+  -- P ∈ [2, n/2]
+  have hP_ge2 : 2 ≤ P := hP_prime.two_le
+  have hP_le_half : P ≤ n / 2 := by
+    rw [Nat.le_div_iff_mul_le (by norm_num : 0 < 2)]
+    calc P * 2 ≤ P * q := Nat.mul_le_mul_left P hq_ge2
+      _ = n := by omega
+  -- fBinom n ≤ gcd(n, C(n, P))
+  unfold fBinom; rw [dif_pos h4]
+  have hP_mem : P ∈ Finset.Icc 2 (n / 2) := Finset.mem_Icc.mpr ⟨hP_ge2, hP_le_half⟩
+  calc ((Finset.Icc 2 (n / 2)).image (fun k => Nat.gcd n (Nat.choose n k))).min' _
+      ≤ Nat.gcd n (Nat.choose n P) :=
+        Finset.min'_le _ _ (Finset.mem_image.mpr ⟨P, hP_mem, rfl⟩)
+    _ = q := by
+        -- gcd(P * q, C(P * q, P)) = q by gcd_choose_prime_pow_eq
+        have h_eq : P * q = P ^ 1 * q := by rw [pow_one]
+        conv_lhs => rw [show n = P * q from by omega, h_eq]
+        exact gcd_choose_prime_pow_eq hP_prime (le_refl 1) (by omega : 1 ≤ q)
+    _ = n / largestPrimeFactor n := by unfold_let q P
 
 /-- f(n) ≥ p(n), the smallest prime factor of n.
     For every 2 ≤ k ≤ n/2, gcd(n, C(n,k)) ≥ minFac(n).

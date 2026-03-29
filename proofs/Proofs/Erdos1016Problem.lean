@@ -47,35 +47,61 @@ noncomputable def iteratedLog : ℕ → ℕ
   | 1 => 0
   | (n + 2) => 1 + iteratedLog (Nat.log 2 (n + 2))
 
-/- ## Main Conjecture -/
+/- ## Model Flaw and Consequences
 
-/-- **Erdős's Conjecture**: h(n) ≥ log₂ n + log* n − O(1).
-    The pancyclic excess requires not just logarithmically many extra edges,
-    but an additional iterated-logarithmic correction. -/
-axiom erdos_1016_conjecture :
+**CRITICAL**: The abstract IsPancyclic definition above takes `hasCycleOfLength` as
+an unconstrained parameter, disconnected from `edgeCount`. This means we can always
+choose edgeCount = 0 and hasCycle = (fun _ => True), satisfying IsPancyclic while
+violating any lower bound on edges. Consequently:
+
+1. pancyclicExcess n = 0 for ALL n ≥ 1 (the defining set is always empty)
+2. The lower bound axioms are FALSE under this model
+3. The upper bound is trivially true
+
+To properly formalize h(n), one needs SimpleGraph (Fin n) with Walk.IsCycle and
+edgeFinset — approximately 200+ lines of graph-theoretic infrastructure.
+
+The mathematical results (Bondy 1971, Griffin 2013, GKW 2016) are correct;
+only the Lean encoding is flawed. The statements below are preserved as comments
+for future reference when the model is redesigned.
+-/
+
+/-- The defining set for pancyclicExcess is empty for all n ≥ 1, because
+    (edgeCount := 0, hasCycle := fun _ => True) satisfies IsPancyclic
+    but violates edgeCount ≥ n + h for any h. Thus sSup ∅ = 0. -/
+theorem pancyclicExcess_eq_zero (n : ℕ) (hn : 1 ≤ n) : pancyclicExcess n = 0 := by
+  unfold pancyclicExcess
+  suffices h : {h : ℕ | ∀ (edgeCount : ℕ) (hasCycle : ℕ → Prop),
+      IsPancyclic n edgeCount hasCycle → edgeCount ≥ n + h} = ∅ by
+    rw [h]; simp [csSup_empty (α := ℕ)]
+  ext h
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  intro hh
+  have := hh 0 (fun _ => True) (fun _ _ _ => trivial)
+  omega
+
+/-- The GKW upper bound is trivially true under the current model
+    since pancyclicExcess n = 0 for all n ≥ 1. -/
+theorem gkw_upper_bound :
   ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →
-    pancyclicExcess n + C ≥ Nat.log 2 n + iteratedLog n
+    pancyclicExcess n ≤ Nat.log 2 n + iteratedLog n + C :=
+  ⟨0, fun n hn => by rw [pancyclicExcess_eq_zero n (by omega)]; exact Nat.zero_le _⟩
 
-/-- **Weaker open question**: Does h(n) − log₂ n → ∞?
-    Erdős could not prove even this weaker statement. -/
-axiom excess_beyond_log :
-  ∀ M : ℕ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    pancyclicExcess n ≥ Nat.log 2 n + M
+/-
+**Disabled axioms** (FALSE under current abstract model, mathematically correct):
 
-/- ## Known Bounds -/
+-- Erdős's Conjecture (OPEN): h(n) ≥ log₂ n + log* n − O(1)
+-- erdos_1016_conjecture : ∃ C, ∀ n ≥ 3, pancyclicExcess n + C ≥ Nat.log 2 n + iteratedLog n
 
-/-- **Bondy's lower bound** (Griffin 2013): h(n) ≥ ⌊log₂(n−1)⌋ − 1.
-    Any pancyclic graph on n vertices has at least n + ⌊log₂(n−1)⌋ − 1 edges. -/
-axiom bondy_lower_bound :
-  ∀ n : ℕ, n ≥ 3 →
-    pancyclicExcess n + 1 ≥ Nat.log 2 (n - 1)
+-- Weaker open question: h(n) − log₂ n → ∞
+-- excess_beyond_log : ∀ M, ∃ N, ∀ n ≥ N, pancyclicExcess n ≥ Nat.log 2 n + M
 
-/-- **George–Khodkar–Wallis upper bound** (2016):
-    h(n) ≤ ⌊log₂ n⌋ + log* n + O(1).
-    There exist pancyclic graphs achieving this bound. -/
-axiom gkw_upper_bound :
-  ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →
-    pancyclicExcess n ≤ Nat.log 2 n + iteratedLog n + C
+-- Bondy's lower bound (Griffin 2013): h(n) ≥ ⌊log₂(n−1)⌋ − 1
+-- bondy_lower_bound : ∀ n ≥ 3, pancyclicExcess n + 1 ≥ Nat.log 2 (n - 1)
+
+-- Small case: h(4) = 1 (false: pancyclicExcess 4 = 0 under current model)
+-- small_case_4 : pancyclicExcess 4 = 1
+-/
 
 /- ## Structural Properties -/
 
@@ -125,13 +151,7 @@ theorem triangle_pancyclic : pancyclicExcess 3 = 0 := by
   have := hh 0 (fun _ => True) (fun _ _ _ => trivial)
   omega
 
-/-- For n = 4, a pancyclic graph needs a 3-cycle and a 4-cycle.
-    K₄ works with 6 = 4 + 2 edges, but 5 edges suffice. -/
-axiom small_case_4 :
-  pancyclicExcess 4 = 1
-
-/-- The upper and lower bounds differ by at most log* n + O(1).
-    Follows directly from bondy_lower_bound and gkw_upper_bound. -/
+/-- Bounds gap is trivial since pancyclicExcess = 0 under current model. -/
 theorem bounds_gap :
     ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →
     pancyclicExcess n ≤ pancyclicExcess n + C :=

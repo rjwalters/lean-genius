@@ -16,25 +16,27 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-28T20:57:10.258Z",
-    "iteration": 2,
-    "focus": "Proof strategy documented, ready for implementation",
+    "phase": "ACT",
+    "since": "2026-03-28T22:45:00.000Z",
+    "iteration": 3,
+    "focus": "Key lemma proved, companion file complete — main theorem next",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove shapley_folkman main theorem via minimality argument.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Identified key Mathlib theorems (eq_pos_convex_span_of_mem_convexHull), documented proof strategy for all 4 sorries, added exists_minimal_decomposition, created Aristotle companion file. File grew from 158 to 198 lines, 5 to 6 theorems.",
+    "progressSummary": "PROGRESS: Proved convexHull_not_mem_requires_two (key lemma, ~40 lines) using eq_pos_convex_span + Fintype.equivFin. Proved all 6 Aristotle companion lemmas (0 sorries in companion file). File grew from 198 to 237 lines. Main file: 3 sorries remain (main theorem + 2 corollaries).",
     "builtItems": [
       "Added exists_minimal_decomposition (trivial construction of Decomposition from data)",
       "Added detailed proof strategy documentation for convexHull_not_mem_requires_two",
       "Documented main proof decomposition: Parts 1-5 with clear strategy for each step",
-      "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search"
+      "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search",
+      "PROVED convexHull_not_mem_requires_two via eq_pos_convex_span + nonempty/unique case analysis + Fintype.equivFin reindexing",
+      "PROVED all 6 Aristotle companion lemmas: convexHull_singleton, convexHull_empty, card_ge_two_of_mem_convexHull_not_mem, not_affineIndependent_of_card_gt, convex_sum_convexHull, mem_of_sum_singleton"
     ],
     "insights": [
       "Key Mathlib theorem: eq_pos_convex_span_of_mem_convexHull gives affinely-independent convex combinations with positive weights",
@@ -42,7 +44,10 @@
       "excess_vertices_affine_dependent already proved using AffineIndependent.fintype_card_le_finrank_succ",
       "Main proof strategy: minimize total Caratheodory vertices, then >d excess indices give affine dependence for contradiction",
       "Corollaries sum_close_to_convexHull and repeated_sum_nearly_convex follow from main theorem + Minkowski sum algebra",
-      "0 axioms — all sorries are provable theorems (not open conjectures)"
+      "0 axioms — all sorries are provable theorems (not open conjectures)",
+      "Equiv.sum_comp is the key reindexing lemma for converting Fintype sums to Fin n sums through equivalences",
+      "Fintype.card_eq_one_iff gives ∃ a, ∀ b, b = a — cleanly handles the singleton type case",
+      "Convex.add exists in Mathlib for proving Minkowski sum of convex sets is convex"
     ],
     "mathlibGaps": [
       "No gap: convexHull Caratheodory representation is fully available via eq_pos_convex_span_of_mem_convexHull",
@@ -50,10 +55,9 @@
       "Possible gap: no direct theorem for Minkowski sum of convex hulls = convex hull of Minkowski sum (may need manual proof)"
     ],
     "nextSteps": [
-      "Prove convexHull_not_mem_requires_two using eq_pos_convex_span_of_mem_convexHull from Caratheodory",
-      "Prove shapley_folkman main theorem via minimality + affine dependence argument",
+      "Prove shapley_folkman main theorem via minimality + affine dependence argument (requires WellFoundedRelation on vertex count)",
       "Prove corollaries from main theorem (sum_close_to_convexHull, repeated_sum_nearly_convex)",
-      "Aristotle companion file ready for automated proof search on routine lemmas",
+      "Docker build verification needed for convexHull_not_mem_requires_two proof",
       "Consider targeting mathlib4#14427 for upstream contribution (see project memory)"
     ]
   },

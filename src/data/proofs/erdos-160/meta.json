@@ -21,9 +21,10 @@
       "van-der-waerden",
       "open"
     ],
-    "axiomCount": 6,
-    "lineCount": 252,
-    "assumptions": "6 axioms (h, h_achievable, h_minimal, upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp) and 2 sorries (h_sublinear, h_superlog). See the Lean source for details.",
+    "axiomCount": 3,
+    "theoremCount": 16,
+    "lineCount": 256,
+    "assumptions": "3 axioms (upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp — deep published results) and 2 sorries (h_sublinear, h_superlog). Former axioms h, h_achievable, h_minimal eliminated via constructive sInf definition.",
     "mathlib_version": "4.26.0"
   },
   "sections": [

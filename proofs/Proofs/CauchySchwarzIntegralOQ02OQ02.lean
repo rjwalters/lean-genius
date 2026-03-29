@@ -216,8 +216,17 @@ theorem lintegral_rpow_le_split {p : ℝ} (hp : 1 ≤ p)
   calc ∫⁻ x, (f x + g x) ^ p ∂μ
       = ∫⁻ x, (f x + g x) * (f x + g x) ^ (p - 1) ∂μ := by
         congr 1; ext x
-        rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast]
-        sorry -- rpow arithmetic: a^p = a · a^{p-1} for p ≥ 1
+        -- a^p = a · a^{p-1} for a : ℝ≥0∞, p ≥ 1
+        -- Split: p = 1 + (p - 1), then rpow_add + rpow_one
+        set a := f x + g x with ha_def
+        rw [show (p : ℝ) = 1 + (p - 1) from by linarith]
+        rcases eq_or_ne a 0 with h0 | h0
+        · simp [h0, ENNReal.zero_rpow (by linarith : (1 : ℝ) + (p - 1) ≠ 0),
+                ENNReal.zero_rpow (show (p - 1 : ℝ) ≠ 0 from by linarith)]
+        rcases eq_or_ne a ⊤ with htop | htop
+        · simp [htop, ENNReal.top_rpow_of_pos (by linarith : (0 : ℝ) < 1 + (p - 1)),
+                ENNReal.top_rpow_of_pos (show (0 : ℝ) < p - 1 from by linarith)]
+        · rw [ENNReal.rpow_add h0 htop, ENNReal.rpow_one]
     _ ≤ ∫⁻ x, (f x + g x) * (f x + g x) ^ (p - 1) ∂μ := le_rfl
     _ = ∫⁻ x, f x * (f x + g x) ^ (p - 1) ∂μ +
         ∫⁻ x, g x * (f x + g x) ^ (p - 1) ∂μ := by
