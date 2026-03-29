@@ -17570,8 +17570,7 @@ theorem lambdaQCD_small (μ α₀ b : ℝ) (hμ : μ > 0) (hα : α₀ > 0)
   unfold lambdaQCD_af
   have h1 : Real.exp (-1 / (2 * b * α₀)) < 1 := by
     rw [Real.exp_lt_one_iff]
-    have : 0 < 1 / (2 * b * α₀) := div_pos one_pos (by positivity)
-    sorry
+    linarith [div_pos one_pos (mul_pos (mul_pos (by linarith : (0 : ℝ) < 2) hb) hα)]
   nlinarith
 
 /-- Two-loop beta function: β(g) = -β₀g³/(16π²) - β₁g⁵/(16π²)² + ...
@@ -21072,7 +21071,11 @@ noncomputable def wignerDensity (R x : ℝ) : ℝ :=
 /-- The Wigner density at the center (x = 0). -/
 theorem wigner_density_center (R : ℝ) (hR : R > 0) :
     wignerDensity R 0 = 2 / (Real.pi * R) := by
-  sorry -- MATHLIB-DRIFT: was unfold wignerDensity; simp [Real.sqrt_sq ...]
+  unfold wignerDensity
+  simp only [zero_pow, sub_zero]
+  rw [Real.sqrt_sq (le_of_lt hR)]
+  field_simp
+  ring
 
 /-- The eigenvalue density vanishes at the edge: ρ(R) = 0. -/
 theorem wigner_density_edge (R : ℝ) :
@@ -21247,7 +21250,7 @@ theorem mass_gap_ratio_robust : massGapTensionRatio > 3 := by
     The mass gap survives the large-N limit. -/
 theorem large_N_mass_gap_stable :
     |(3.55 : ℝ) - 3.56| < 0.02 ∧ |(3.56 : ℝ) - 3.56| < 0.02 ∧ |(3.56 : ℝ) - 3.55| < 0.02 := by
-  sorry -- MATHLIB-DRIFT: abs/norm_num issue with decimal literals
+  refine ⟨?_, ?_, ?_⟩ <;> simp only [abs_lt] <;> constructor <;> norm_num
 
 /-- The string tension in physical units: √σ ≈ 440 MeV.
     This gives σ ≈ (440 MeV)² ≈ 0.194 GeV². -/
@@ -21321,7 +21324,8 @@ theorem massive_kernel_at_zero (m : ℝ) (hm : m > 0) :
 theorem pert_kernel_diverges_at_zero (eps : ℝ) (heps : eps > 0) (heps1 : eps < 1) :
     perturbativeKernel eps heps > 1 / 2 := by
   unfold perturbativeKernel
-  sorry
+  rw [div_lt_div_iff₀ (by norm_num : (0 : ℝ) < 2) (by linarith : 0 < 2 * eps)]
+  nlinarith
 
 /-- The vacuum energy functional E₀ = ½ ∫ |B[A]|² + ½ ∫ (δ/δA)².
     Minimizing over Ψ gives the ground state. -/
@@ -21593,7 +21597,7 @@ theorem plaquette_continuous (p_beta1 p_beta2 : ℝ) (hp1 : 0 < p_beta1)
     (hp2 : p_beta2 ≤ 1) (hp1b : p_beta1 ≤ 1) :
     |p_beta1 - p_beta2| ≤ 1 := by
   rw [abs_le]
-  sorry
+  constructor <;> linarith
 
 /-- Contrast: U(1) compact gauge theory DOES have a phase transition
     at β_c ≈ 1.01. SU(N) for N ≥ 2 does NOT.
@@ -22034,8 +22038,7 @@ theorem lambda_qcd_small' (mu alpha_mu b0 : ℝ) (hmu : mu > 0)
   unfold lambdaQCD'
   have hexp : Real.exp (-1 / (2 * b0 * alpha_mu)) < 1 := by
     rw [Real.exp_lt_one_iff]
-    have : 0 < 1 / (2 * b0 * alpha_mu) := div_pos one_pos (by positivity)
-    sorry
+    linarith [div_pos one_pos (mul_pos (mul_pos (by linarith : (0 : ℝ) < 2) hb) halpha)]
   nlinarith
 
 /-- Physical value: Λ_QCD ≈ 300 MeV (MS-bar scheme, N_f = 0). -/
@@ -22200,7 +22203,7 @@ theorem step_scaling_grows (u b0 : ℝ) (hu : u > 0) (hb : b0 > 0) :
     stepScaling1Loop u b0 > u := by
   unfold stepScaling1Loop
   have hlog : Real.log 2 > 0 := Real.log_pos (by norm_num)
-  sorry
+  linarith [mul_pos (mul_pos (mul_pos (by linarith : (0 : ℝ) < 2) hb) hlog) (sq_pos_of_pos hu)]
 
 /-- The Schrödinger functional: Yang-Mills with Dirichlet BCs in time.
     The coupling is defined via the response to boundary perturbations:
@@ -22462,7 +22465,8 @@ theorem one_loop_running (a Lambda : ℝ) (ha : a > 0) (hL : Lambda > 0) :
 theorem su2_one_instanton_suppressed (a Lambda : ℝ) (ha : a > 0) (hL : Lambda > 0)
     (h : Lambda < a) : Lambda ^ 4 / (2 * a ^ 2) < a ^ 2 / 2 := by
   rw [div_lt_div_iff₀ (by positivity) (by positivity)]
-  sorry
+  nlinarith [sq_nonneg (a - Lambda), sq_nonneg (a + Lambda),
+             sq_nonneg a, sq_nonneg Lambda, sq_abs a, sq_abs Lambda]
 
 /-- The Nekrasov conjecture (proved by Nekrasov-Okounkov 2006):
     lim_{ε₁,ε₂→0} ε₁ε₂ · ln Z_Nek = F_SW
@@ -22812,7 +22816,7 @@ theorem small_field_d3 (g a C : ℝ) (hg : g > 0) (ha : 0 < a) (ha1 : a < 1) (hC
 theorem large_field_suppressed (c g_sq : ℝ) (hc : c > 0) (hg : g_sq > 0) (hg1 : g_sq < c) :
     Real.exp (-c / g_sq) < 1 := by
   rw [Real.exp_lt_one_iff]
-  sorry
+  exact neg_neg_of_neg (div_pos hc hg)
 
 /-- Balaban's KEY RESULT in d=2: The continuum limit of 2D lattice YM
     exists and equals the EXACT solution (Migdal 1975).
@@ -22836,7 +22840,7 @@ theorem balaban_3d_uv_bound (g C V : ℝ)
     have : g ^ 3 = g ^ 2 * g := by ring
     rw [this]
     exact mul_lt_of_lt_one_right hg2 hg1
-  sorry
+  nlinarith
 
 /-- Balaban's partial result in d=4 (1985-1989):
     UV stability for the FIRST k₀ RG steps, where k₀ depends on g₀.
@@ -24506,7 +24510,7 @@ theorem susy_instanton_small (a : ℝ) (ha : a > 1) :
     -- But it's ALWAYS positive — the gap never closes
     Real.exp (-(4 * a ^ 3 / 3)) < 1 := by
   rw [Real.exp_lt_one_iff]
-  sorry
+  linarith [mul_pos (by norm_num : (0 : ℝ) < 4) (pow_pos (by linarith : a > 0) 3)]
 
 /-- SUSY QM partner potentials and spectral relation.
     V₊(x) = W'(x)² + W''(x)  (bosonic)
@@ -25454,7 +25458,7 @@ theorem physics_ansatz_richer (numLinks layers : ℕ)
     hardwareEfficientParams numLinks layers ≤ numLinks * numLinks := by
   unfold hardwareEfficientParams
   apply Nat.mul_le_mul_left
-  sorry
+  omega
 
 /-- Gate complexity for one Trotter step:
     Electric part: O(links) gates (diagonal, single-qubit rotations)
@@ -25542,7 +25546,7 @@ theorem gapped_bounded_entanglement (chi : ℕ) (hchi : chi ≥ 2) :
     -- Polynomial bond dimension suffices!
     maxEntanglement chi ≥ 1 := by
   unfold maxEntanglement
-  sorry
+  exact Nat.log2_pos (by omega)
 
 /-- Schwinger model (QED in 1+1D) on quantum hardware:
     The Schwinger model has been simulated on quantum computers!
@@ -25979,8 +25983,8 @@ theorem cgc_highly_occupied (alpha_s : ℝ) (k Qs : ℝ)
     1 < cgcOccupation alpha_s k Qs := by
   unfold cgcOccupation
   simp [hk]
-  sorry
-  -- [MATHLIB-DRIFT] linarith
+  rw [lt_div_iff₀ halpha]
+  linarith
 
 /-- The glasma: longitudinal flux tubes formed in the collision.
     Initial field strengths: E_z ~ B_z ~ Q_s²/g
@@ -26036,8 +26040,7 @@ theorem faster_at_higher_energy (Qs1 Qs2 alpha_s : ℝ)
   unfold bottomUpThermTime
   rw [div_lt_div_iff₀ (mul_pos (pow_pos halpha 3) (by linarith))
       (mul_pos (pow_pos halpha 3) h1)]
-  simp
-  sorry
+  nlinarith [pow_pos halpha 3]
 
 /-- Weibel instability growth rate in the glasma:
     γ ~ g · √(f · Q_s) where f is the occupation number.
@@ -26198,8 +26201,8 @@ theorem magnetic_mass_pos (g T : ℝ) (hg : 0 < g) (hT : 0 < T) :
 theorem magnetic_lt_electric (g T : ℝ) (hg : 0 < g) (hg1 : g < 1) (hT : 0 < T) :
     magneticMass g T < g * T := by
   unfold magneticMass
-  rw [show g ^ 2 * T = g * (g * T) by ring, show g * T = 1 * (g * T) by ring]
-  sorry
+  have hgT : 0 < g * T := mul_pos hg hT
+  nlinarith [sq_nonneg g, sq_nonneg (1 - g)]
 
 /-- The dimensional reduction hierarchy at high T:
     4D YM at temperature T → 3D YM + adjoint Higgs (EQCD) → 3D YM (MQCD)
@@ -26355,7 +26358,7 @@ theorem selfEnergy_at_zero_pos (params : GluonDSEParams) :
   apply div_pos
   · apply mul_pos
     apply mul_pos params.h_m params.h_g
-    sorry
+    exact Nat.cast_pos.mpr (by omega)
   · apply mul_pos (by norm_num : (16 : ℝ) > 0)
     exact sq_pos_of_pos Real.pi_pos
 
@@ -27975,7 +27978,7 @@ theorem vortex_area_law (f : ℝ) (hf0 : 0 < f) (hf1 : f < 1) (area : ℕ) (ha :
     -- then ⟨W(C)⟩ = (1-2f)^Area → area law with σ = -ln(1-2f)
     -- For small f: σ ≈ 2f (linear in vortex density)
     (1 - 2 * f) ^ area < 1 := by
-  sorry
+  apply pow_lt_one (by linarith) (by linarith) (by omega)
 
 /-- The Casimir scaling criterion.
     At intermediate distances, the string tension for representation R

@@ -206,8 +206,26 @@ The LUW exponent is always less than or equal to the conjectured exponent.
 theorem luw_weaker_than_conjectured (k : ℕ) (hk : k ≥ 3) :
     luwExponent k ≤ conjecturedExponent k := by
   unfold luwExponent conjecturedExponent
-  -- For k ≥ 3, we have 3k - 3 + ν ≥ 2k, so 2/(3k-3+ν) ≤ 1/k
-  sorry
+  -- Need: 1 + 2/(3k-3+ν) ≤ 1 + 1/k, i.e., 2/(3k-3+ν) ≤ 1/k
+  -- Equivalently: 2k ≤ 3k-3+ν, which holds for k ≥ 3
+  have hk_pos : (k : ℝ) > 0 := by positivity
+  have hk_ne : (k : ℝ) ≠ 0 := ne_of_gt hk_pos
+  apply add_le_add_left
+  split_ifs with heven
+  · -- k even: ν = 1, denominator = 3k - 3 + 1 = 3k - 2
+    have hdenom : (3 * (k : ℝ) - 3 + 1) > 0 := by
+      have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+      linarith
+    rw [div_le_div_iff (by positivity) hk_pos]
+    have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+    nlinarith
+  · -- k odd: ν = 0, denominator = 3k - 3
+    have hdenom : (3 * (k : ℝ) - 3 + 0) > 0 := by
+      have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+      linarith
+    rw [div_le_div_iff (by positivity) hk_pos]
+    have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+    nlinarith
 
 /--
 For k = 3 (odd), LUW gives exponent 1 + 2/6 = 4/3, matching the conjecture.
