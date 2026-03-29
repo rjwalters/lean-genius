@@ -22,22 +22,22 @@
     "erdosUrl": "https://erdosproblems.com/1012",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 5,
-    "lineCount": 345,
-    "assumptions": "5 axioms: ore_theorem, bondy_theorem, woodall_theorem, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "lineCount": 353,
+    "assumptions": "4 axioms: ore_theorem, bondy_theorem, woodall_pancyclic, threshold_tight. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem belongs to the rich tradition of extremal graph theory initiated by Turán (1941), who asked: how many edges can a graph on $n$ vertices have without containing a complete subgraph $K_r$? Erdős generalized this to cycles, asking: how many edges force a cycle of a specific length?\n\nThe Hamiltonian cycle case ($k=0$) was resolved by Ore (1961), who proved that if $\\deg(u) + \\deg(v) \\ge n$ for every pair of non-adjacent vertices, then the graph is Hamiltonian. Dirac (1952) had earlier shown that minimum degree $\\ge n/2$ suffices. These are the foundational results of Hamiltonian graph theory.\n\nBondy (1971) extended to $k=1$ and formulated his influential metaconjecture: 'almost any condition implying a graph is Hamiltonian also implies it is pancyclic (has cycles of all lengths $3, 4, \\ldots, n$).' Woodall (1972) proved the complete result for all $k$, showing $f(k) \\le 2k+3$, and confirmed Bondy's metaconjecture in this setting by proving pancyclicity from $3$ to $n-k$.\n\nErdős (1962) had earlier proved that $f(k)$ exists for all $k$ using a compactness argument, but determining its value required the structural analysis of Woodall. The edge threshold $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ is motivated by the extremal construction $K_{n-k-1} \\vee K_{k+2}$ (two cliques sharing a vertex), which has exactly $T(n,k) - 1$ edges and avoids $(n-k)$-cycles.",
     "problemStatement": "Let $k \\ge 0$. Define $f(k)$ as the minimum $n_0$ such that every graph on $n \\ge n_0$ vertices with at least\n$$\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$$\nedges contains a cycle on $n-k$ vertices.\n\n**Question**: Determine or estimate $f(k)$.\n\n**Status**: SOLVED (Woodall 1972)\n\n**Answer**: $f(k) \\le 2k+3$, and such graphs are pancyclic from $3$ to $n-k$.",
     "text": "Let f(k) be such that every graph on n ≥ f(k) vertices with ≥ C(n-k-1,2) + C(k+2,2) + 1 edges has an (n-k)-cycle. Woodall (1972) proved f(k) ≤ 2k+3 and such graphs are pancyclic from 3 to n-k.",
-    "proofStrategy": "The formalization takes a layered approach with 5 axioms encoding the deep graph theory results and 29 proved theorems analyzing the structural consequences.\n\n1. **Foundation**: Define edge counts, the threshold $T(n,k) = \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$, cycles via injective cyclic maps, and the key properties (Hamiltonian, pancyclic, long cycle).\n2. **Deep theorems (axiomatized)**: Ore's theorem ($f(0) = 1$), Bondy's theorem ($f(1) = 1$), Woodall's cycle theorem ($f(k) \\le 2k+3$), Woodall's pancyclicity result, and threshold tightness.\n3. **Structural analysis (proved)**: Derive that Ore and Bondy improve Woodall for small $k$, that pancyclicity implies long cycles, and extensive threshold analysis including closed forms, monotonicity, boundary symmetry ($T(2k+3,k) = 2\\binom{k+2}{2}+1$), and triangle forcing.",
+    "proofStrategy": "The formalization takes a layered approach with 4 axioms encoding the deep graph theory results and 29 proved theorems analyzing the structural consequences.\n\n1. **Foundation**: Define edge counts, the threshold $T(n,k) = \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$, cycles via injective cyclic maps, and the key properties (Hamiltonian, pancyclic, long cycle).\n2. **Deep theorems (axiomatized)**: Ore's theorem ($f(0) = 1$), Bondy's theorem ($f(1) = 1$), Woodall's cycle theorem ($f(k) \\le 2k+3$), Woodall's pancyclicity result, and threshold tightness.\n3. **Structural analysis (proved)**: Derive that Ore and Bondy improve Woodall for small $k$, that pancyclicity implies long cycles, and extensive threshold analysis including closed forms, monotonicity, boundary symmetry ($T(2k+3,k) = 2\\binom{k+2}{2}+1$), and triangle forcing.",
     "keyInsights": [
       "**Threshold from extremal construction**: The edge count $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ corresponds to exceeding the extremal graph $K_{n-k-1} \\vee K_{k+2}$ by one edge. This graph is the densest $(n-k)$-cycle-free construction.",
       "**Boundary symmetry**: At $n = 2k+3$, both binomial terms in the threshold equal $\\binom{k+2}{2}$, giving the symmetric formula $T(2k+3,k) = 2\\binom{k+2}{2}+1$. This explains why $2k+3$ is the critical vertex count.",
       "**Bondy's metaconjecture confirmed**: Woodall proved not just the asked-for long cycle, but the full pancyclicity spectrum from $3$ to $n-k$. This is a dramatic strengthening—one threshold condition forces an entire family of cycles.",
       "**Ore and Bondy improve small $k$**: For $k=0$, Ore gives $f(0)=1$ while Woodall gives $n \\ge 3$; for $k=1$, Bondy gives $f(1)=1$ while Woodall gives $n \\ge 5$. The general bound is optimal only for $k \\ge 2$.",
-      "**Clean axiom architecture**: The file uses 5 axioms (not sorry) for deep results and proves 29 theorems from them. This cleanly separates what requires deep graph theory from what follows by combinatorial analysis."
+      "**Clean axiom architecture**: The file uses 4 axioms (not sorry) for deep results and proves 29 theorems from them. This cleanly separates what requires deep graph theory from what follows by combinatorial analysis."
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -79,11 +79,11 @@
     },
     {
       "id": "axioms",
-      "title": "Deep Theorems (5 Axioms)",
-      "summary": "Axiomatizes Ore's theorem ($k=0$), Bondy's theorem ($k=1$), Woodall's cycle theorem ($f(k) \\le 2k+3$), Woodall's pancyclicity, and threshold tightness.",
+      "title": "Deep Theorems (4 Axioms)",
+      "summary": "Axiomatizes Ore's theorem ($k=0$), Bondy's theorem ($k=1$), Woodall's pancyclicity, and threshold tightness.",
       "startLine": 131,
       "endLine": 170,
-      "mathContext": "Verified: Axiomatizes Ore's theorem ($k=0$), Bondy's theorem ($k=1$), Woodall's cycle theorem ($f(k) \\le 2k+3$), Woodall's pancyclicity, and threshold tightness."
+      "mathContext": "Verified: Axiomatizes Ore's theorem ($k=0$), Bondy's theorem ($k=1$), Woodall's pancyclicity, and threshold tightness."
     },
     {
       "id": "consequences",
@@ -104,14 +104,14 @@
     {
       "id": "summary",
       "title": "File Summary",
-      "summary": "Recapitulates the formalization: 5 axioms, 29 proved theorems, 0 sorries. Status: solved (Woodall 1972).",
+      "summary": "Recapitulates the formalization: 4 axioms, 29 proved theorems, 0 sorries. Status: solved (Woodall 1972).",
       "startLine": 327,
       "endLine": 345,
-      "mathContext": "Verified: Recapitulates the formalization: 5 axioms, 29 proved theorems, 0 sorries. Status: solved (Woodall 1972)."
+      "mathContext": "Verified: Recapitulates the formalization: 4 axioms, 29 proved theorems, 0 sorries. Status: solved (Woodall 1972)."
     }
   ],
   "conclusion": {
-    "summary": "This 345-line formalization captures Erdős Problem #1012 on long cycles in dense graphs. The layered approach uses 5 axioms for deep graph theory results (Ore, Bondy, Woodall) and proves 29 structural theorems analyzing the edge threshold. Woodall's 1972 solution gives $f(k) \\le 2k+3$ with the bonus pancyclicity result, confirming Bondy's metaconjecture. The threshold $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ is shown to be tight via extremal constructions.",
+    "summary": "This 353-line formalization captures Erdős Problem #1012 on long cycles in dense graphs. The layered approach uses 4 axioms for deep graph theory results (Ore, Bondy, Woodall) and proves 29 structural theorems analyzing the edge threshold. Woodall's 1972 solution gives $f(k) \\le 2k+3$ with the bonus pancyclicity result, confirming Bondy's metaconjecture. The threshold $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ is shown to be tight via extremal constructions.",
     "implications": "**Theoretical Significance**: This result sits at the intersection of several major themes in combinatorics:\n\n1. **Extremal graph theory**: Determines the exact edge threshold for $(n-k)$-cycle containment, extending the Turán-type program to cycle problems.\n**2. Hamiltonian cycle theory**: Generalizes Ore's classical theorem (1961) from $k=0$ to all $k$, establishing a complete hierarchy of long cycle conditions.\n3. **Pancyclicity phenomenon**: Confirms Bondy's metaconjecture—conditions forcing long cycles actually force the complete cycle spectrum, revealing deep structural consequences of edge density.\n4. **Threshold symmetry**: The boundary formula $T(2k+3,k) = 2\\binom{k+2}{2}+1$ exhibits an elegant duality between the 'large component' and 'small component' terms.",
     "openQuestions": [
       "What are the exact values of $f(k)$ for $k \\ge 2$? Woodall gives $f(k) \\le 2k+3$, but the true values may be smaller.",
@@ -209,7 +209,7 @@
     ],
     "namespace": "Erdos1012",
     "lineCount": 353,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "theoremCount": 34,
     "definitionCount": 7
   }
