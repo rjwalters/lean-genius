@@ -7,14 +7,14 @@
     "author": "Burnside (1911); Sylow (1872)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems#Examples",
     "date": "1872/1911",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SylowTheoremOQ01.lean",
     "tags": ["group-theory", "finite-groups", "sylow", "classification", "research"],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. 3 sorries remaining: cyclic_when_coprime (needs internal direct product), nonabelian_sylow_p_count, pq_cyclic_classification. 6 Sylow counting arguments fully proved using Mathlib's Sylow API.",
-    "lineCount": 291
+    "assumptions": "0 axiom declarations, 0 sorries. All 3 previously sorry'd theorems proved: cyclic_when_coprime via commutator argument + order calculation, nonabelian_sylow_p_count by contradiction, pq_cyclic_classification by universal instantiation.",
+    "lineCount": 387
   },
   "overview": {
     "historicalContext": "The classification of groups of order pq is one of the first applications of Sylow's theorems taught in abstract algebra. Burnside's 1911 textbook included this classification as a foundational result.",
@@ -33,7 +33,9 @@
     {"name": "unique_sylow_p_when_coprime", "type": "core", "description": "If p ∤ (q-1), the Sylow p-subgroup is also unique"},
     {"name": "both_normal_when_coprime", "type": "core", "description": "If p ∤ (q-1), both Sylow subgroups are normal"},
     {"name": "sylow_p_count", "type": "supporting", "description": "n_p ∈ {1, q} for groups of order pq"},
-    {"name": "pq_cyclic_classification", "type": "core", "description": "p ∤ (q-1) → every group of order pq is cyclic (sorry)"},
+    {"name": "cyclic_when_coprime", "type": "core", "description": "p ∤ (q-1) → G is cyclic (proved via commutator + order argument)"},
+    {"name": "nonabelian_sylow_p_count", "type": "core", "description": "p | (q-1) and ¬cyclic → n_p = q (proved by contradiction)"},
+    {"name": "pq_cyclic_classification", "type": "core", "description": "p ∤ (q-1) → every group of order pq is cyclic (proved)"},
     {"name": "order_15_cyclic", "type": "supporting", "description": "Groups of order 15 are cyclic (3 ∤ 4)"}
   ],
   "crossReferences": [
@@ -42,10 +44,10 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "SylowPQ",
-    "lineCount": 291,
+    "lineCount": 387,
     "axiomCount": 0,
     "theoremCount": 20,
-    "sorryTheorems": 3,
+    "sorryTheorems": 0,
     "definitionCount": 3
   }
 }
