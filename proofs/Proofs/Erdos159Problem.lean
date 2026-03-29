@@ -222,3 +222,71 @@ theorem ramseyC4Kn_ge (n : ℕ) (hn : 1 ≤ n) : n ≤ ramseyC4Kn n := by
     have hfin : Fintype.card (Fin (ramseyC4Kn n)) = ramseyC4Kn n :=
       Fintype.card_fin _
     omega
+
+/- ## Computed Ramsey values -/
+
+/-- R(C₄, K₁) = 1: any graph on a single vertex trivially has a 1-clique
+    in its complement. On 0 vertices, no Finset has cardinality 1. -/
+theorem ramseyC4Kn_one : ramseyC4Kn 1 = 1 := by
+  classical
+  unfold ramseyC4Kn
+  rw [dif_pos (le_refl 1)]
+  apply Nat.find_eq_iff.mpr
+  refine ⟨fun G => Or.inr ⟨{0}, Finset.card_singleton _,
+    fun u hu v hv huv => absurd (Finset.mem_singleton.mp hu ▸
+      Finset.mem_singleton.mp hv) huv⟩, ?_⟩
+  intro k hk hprop
+  have hk0 : k = 0 := by omega
+  subst hk0
+  rcases hprop ⊥ with ⟨a, _⟩ | ⟨S, hcard, _⟩
+  · exact Fin.elim0 a
+  · have := S.card_le_univ; rw [Fintype.card_fin] at this; omega
+
+/-- R(C₄, K₂) = 4: at 4 vertices, every graph either has C₄ (if complete)
+    or has two non-adjacent vertices (K₂ in complement). Below 4, the complete
+    graph on k vertices has no C₄ and its complement has no K₂. -/
+theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
+  classical
+  unfold ramseyC4Kn
+  rw [dif_pos (by omega : 1 ≤ 2)]
+  apply Nat.find_eq_iff.mpr
+  constructor
+  · -- At N = 4: every graph has C₄ or K₂ in complement
+    intro G
+    by_cases h : ∀ u v : Fin 4, u ≠ v → G.Adj u v
+    · -- G is complete ⟹ has C₄ (K₄ ⊇ C₄)
+      left
+      exact HasClique_four_hasC4
+        ⟨Finset.univ, Finset.card_fin 4, fun u _ v _ huv => h u v huv⟩
+    · -- G is not complete ⟹ Gᶜ has K₂
+      push_neg at h
+      right
+      obtain ⟨u, v, huv, hnadj⟩ := h
+      refine ⟨{u, v}, ?_, ?_⟩
+      · rw [Finset.card_insert_of_not_mem (Finset.not_mem_singleton.mpr huv),
+            Finset.card_singleton]
+      · intro x hx y hy hxy
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
+        rw [compl_adj]
+        refine ⟨hxy, ?_⟩
+        rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+        · exact absurd rfl hxy
+        · exact hnadj
+        · exact fun hadj => hnadj (G.adj_comm.mp hadj)
+        · exact absurd rfl hxy
+  · -- Below N = 4: ⊤ (complete graph) on Fin k is a counterexample
+    intro k hk
+    push_neg
+    refine ⟨⊤, ?_, ?_⟩
+    · -- ¬HasC4 ⊤: need 4 distinct vertices but Fin k has k < 4
+      rintro ⟨a, b, c, d, hab, hbc, hcd, hac, had, hbd, -⟩
+      have := a.isLt; have := b.isLt; have := c.isLt; have := d.isLt
+      interval_cases k <;>
+        simp only [Fin.ext_iff] at hab hbc hcd hac had hbd <;>
+        omega
+    · -- ¬HasClique ⊤ᶜ 2: ⊤ᶜ = ⊥ has no edges
+      rintro ⟨S, hcard, hadj⟩
+      obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+      have := hadj x hx y hy hxy
+      rw [compl_top] at this
+      exact this
