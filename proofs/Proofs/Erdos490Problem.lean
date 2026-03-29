@@ -73,7 +73,21 @@ where
     HasDistinctProducts A B → A.card * B.card ≤ k := by
     intro N
     use N^2  -- trivial bound
-    sorry
+    intro A B hA hB _
+    have hAcard : A.card ≤ N := by
+      have hsub : A ⊆ Finset.Icc 1 N :=
+        fun a ha => Finset.mem_Icc.mpr (hA a ha)
+      calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N := by omega
+    have hBcard : B.card ≤ N := by
+      have hsub : B ⊆ Finset.Icc 1 N :=
+        fun b hb => Finset.mem_Icc.mpr (hB b hb)
+      calc B.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N := by omega
+    calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAcard hBcard
+      _ = N ^ 2 := by ring
 
 /-- Erdős's Question: Is |A||B| ≪ N²/log N? -/
 def ErdosQuestion490 : Prop :=
