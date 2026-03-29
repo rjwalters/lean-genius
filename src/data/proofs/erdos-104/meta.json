@@ -17,14 +17,14 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 104,
     "erdosUrl": "https://erdosproblems.com/104",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
-    "axiomCount": 11,
-    "lineCount": 218,
-    "assumptions": "11 axiom(s) and 1 sorry(s). two_points_no_circle proved from triangle inequality (was axiom). See the Lean source for details.",
+    "axiomCount": 10,
+    "lineCount": 317,
+    "assumptions": "10 axiom(s) and 0 sorry(s). two_points_no_circle proved from triangle inequality (was axiom). two_points_one_circle proved via parallelogram law (was axiom). strong_implies_weak proved (was sorry). erdos104WeakConjecture definition corrected to properly formalize o(n²). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -143,10 +143,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 218,
-    "axiomCount": 12,
-    "theoremCount": 1,
-    "definitionCount": 11
+    "lineCount": 317,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 12
   },
   "references": [
     {

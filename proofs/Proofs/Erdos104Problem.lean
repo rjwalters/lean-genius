@@ -28,8 +28,10 @@
 
   Tags: discrete-geometry, incidences, unit-circles, open-problem
 
-  Proved results (from axioms in stub):
+  Proved results:
   - two_points_no_circle: triangle inequality proof (was axiom)
+  - two_points_one_circle: midpoint + parallelogram law proof (was axiom)
+  - strong_implies_weak: O(n^{3/2}) → o(n²) (was sorry; also fixed weak conjecture def)
 -/
 
 import Mathlib
@@ -90,10 +92,63 @@ axiom two_points_two_circles :
     ∃! (S : Finset UnitCircle), S.card = 2 ∧
       ∀ c ∈ S, OnCircle p c ∧ OnCircle q c
 
-/-- Two points at distance exactly 2 determine exactly 1 unit circle -/
-axiom two_points_one_circle :
-  ∀ p q : Point, eucDist p q = 2 →
-    ∃! c : UnitCircle, OnCircle p c ∧ OnCircle q c
+/-- Two points at distance exactly 2 determine exactly 1 unit circle.
+    PROVED: The unique center is the midpoint m = (p+q)/2.
+    Existence: ‖p - m‖ = ‖(p-q)/2‖ = 1. Uniqueness: by the parallelogram law,
+    ‖u+v‖² + ‖u-v‖² = 2(‖u‖² + ‖v‖²) with u = p-c, v = q-c gives
+    ‖u+v‖² = 0, so (p-c) + (q-c) = 0, hence c = (p+q)/2. -/
+theorem two_points_one_circle :
+    ∀ p q : Point, eucDist p q = 2 →
+      ∃! c : UnitCircle, OnCircle p c ∧ OnCircle q c := by
+  intro p q hdist
+  unfold eucDist at hdist
+  -- The unique center is the midpoint m = (p+q)/2
+  set m : Point := (2 : ℝ)⁻¹ • (p + q) with hm_def
+  refine ⟨⟨m⟩, ?_, ?_⟩
+  · -- Existence: midpoint is at distance 1 from both points
+    unfold OnCircle eucDist
+    have hpm : p - m = (2 : ℝ)⁻¹ • (p - q) := by rw [hm_def]; module
+    have hqm : q - m = (2 : ℝ)⁻¹ • (q - p) := by rw [hm_def]; module
+    constructor
+    · -- ‖p - m‖ = (1/2) * ‖p - q‖ = (1/2) * 2 = 1
+      rw [hpm, norm_smul, Real.norm_of_nonneg (by norm_num : (0 : ℝ) ≤ 2⁻¹)]
+      linarith
+    · -- ‖q - m‖ = (1/2) * ‖q - p‖ = (1/2) * 2 = 1
+      rw [hqm, norm_smul, Real.norm_of_nonneg (by norm_num : (0 : ℝ) ≤ 2⁻¹), norm_sub_rev]
+      linarith
+  · -- Uniqueness: any center must equal the midpoint (parallelogram law argument)
+    rintro ⟨c⟩ ⟨hpc, hqc⟩
+    simp only [UnitCircle.mk.injEq]
+    unfold OnCircle eucDist at hpc hqc
+    -- Set u = p - c, v = q - c
+    set u := p - c with hu_def
+    set v := q - c with hv_def
+    have hu : ‖u‖ = 1 := hpc
+    have hv : ‖v‖ = 1 := hqc
+    have huv_eq : u - v = p - q := by show (p - c) - (q - c) = p - q; abel
+    have huv : ‖u - v‖ = 2 := by rw [huv_eq]; exact hdist
+    -- By parallelogram law: ‖u+v‖² + ‖u-v‖² = 2(‖u‖² + ‖v‖²)
+    -- Substituting: ‖u+v‖² + 4 = 2(1 + 1) = 4, so ‖u+v‖² = 0, hence u + v = 0
+    have h_zero : u + v = 0 := by
+      have h_sq : ‖u + v‖ ^ 2 = 0 := by
+        have h1 := norm_add_sq_real u v
+        have h2 := norm_sub_sq_real u v
+        -- h1 + h2 eliminates inner product:
+        -- ‖u+v‖² + ‖u-v‖² = 2‖u‖² + 2‖v‖²
+        -- ‖u+v‖² = 2·1 + 2·1 - 4 = 0
+        nlinarith [show ‖u‖ ^ 2 = 1 from by rw [hu]; norm_num,
+                   show ‖v‖ ^ 2 = 1 from by rw [hv]; norm_num,
+                   show ‖u - v‖ ^ 2 = 4 from by rw [huv]; norm_num]
+      have : ‖u + v‖ = 0 := by
+        nlinarith [sq_nonneg ‖u + v‖, norm_nonneg (u + v)]
+      exact norm_eq_zero.mp this
+    -- From (p-c) + (q-c) = 0, component-wise: c i = (p i + q i) / 2 = m i
+    ext i
+    have hi := congr_fun h_zero i
+    -- PiLp operations are pointwise, so we can reason component-wise
+    change (p i - c i) + (q i - c i) = 0 at hi
+    change c i = 2⁻¹ * (p i + q i)
+    linarith
 
 /-- Two points at distance > 2 determine no unit circles through both.
     PROVED: by triangle inequality. If p and q both lie on a unit circle
@@ -155,21 +210,65 @@ def erdos104Conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ P : PointSet,
     (countUnitCircles3 P : ℝ) ≤ C * P.card^(3/2 : ℝ)
 
-/-- Weaker conjecture: o(n²) -/
+/-- Weaker conjecture: o(n²) — for every ε > 0, eventually f(n) ≤ ε · n².
+    This properly captures "o(n²)": the ratio f(n)/n² → 0 as n → ∞.
+    The previous formalization "∀ε>0, ∃C, f(P) ≤ C·n^{2-ε}" was too strong
+    for ε > 1/2 (it would require sublinear growth, which O(n^{3/2}) does not give). -/
 def erdos104WeakConjecture : Prop :=
-  ∀ ε > 0, ∃ C : ℝ, ∀ P : PointSet,
-    (countUnitCircles3 P : ℝ) ≤ C * P.card^(2 - ε : ℝ)
+  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ P : PointSet, P.card ≥ N₀ →
+    (countUnitCircles3 P : ℝ) ≤ ε * (P.card : ℝ) ^ 2
 
 /-- The strong conjecture implies the weak one.
-    NOTE: The weak conjecture definition is slightly non-standard; the proof
-    requires showing n^{3/2} ≤ C_ε * n^{2-ε} for all n, which works for
-    ε ≤ 1/2 directly and requires choosing a larger C_ε for ε > 1/2. -/
+    PROVED: Given f(P) ≤ C·n^{3/2}, for n ≥ (C/ε)² we have
+    C·n^{3/2} = C·n·√n ≤ ε·n·n = ε·n², since √n ≥ C/ε. -/
 theorem strong_implies_weak : erdos104Conjecture → erdos104WeakConjecture := by
   intro ⟨C, hC, h⟩ ε hε
-  -- For ε ≤ 1/2: n^{3/2} ≤ n^{2-ε} for n ≥ 1, so C works directly
-  -- For ε > 1/2: the definition requires a uniform constant, which is
-  -- not achievable; this is a defect in the formalization of o(n²)
-  sorry
+  -- Choose N₀ > (C/ε)² so that for n ≥ N₀, √n > C/ε
+  obtain ⟨N₀, hN₀⟩ := exists_nat_gt ((C / ε) ^ 2)
+  use N₀
+  intro P hP
+  have hbound := h P
+  -- Handle n = 0
+  rcases Nat.eq_zero_or_pos P.card with hn | hn
+  · -- n = 0: f(P) ≤ C * 0^{3/2} = 0 ≤ ε * 0² = 0
+    have h0 : (P.card : ℝ) = 0 := by exact_mod_cast hn
+    rw [h0, zero_rpow (by norm_num : (3 : ℝ) / 2 ≠ 0), mul_zero] at hbound
+    rw [h0, zero_pow (by norm_num : 2 ≠ 0), mul_zero]
+    linarith [Nat.cast_nonneg (countUnitCircles3 P)]
+  · -- n ≥ 1
+    set n : ℝ := P.card with hn_def
+    have hn_pos : 0 < n := Nat.cast_pos.mpr hn
+    -- n > (C/ε)² since n ≥ N₀ > (C/ε)²
+    have hn_gt : n > (C / ε) ^ 2 :=
+      lt_of_lt_of_le hN₀ (Nat.cast_le.mpr hP)
+    -- √n > C/ε
+    have hsqrt_gt : Real.sqrt n > C / ε := by
+      rw [show C / ε = Real.sqrt ((C / ε) ^ 2) from
+        (Real.sqrt_sq (div_nonneg hC.le hε.le)).symm]
+      exact Real.sqrt_lt_sqrt (sq_nonneg _) hn_gt
+    -- C < ε * √n, hence C ≤ ε * √n
+    have hC_le : C ≤ ε * Real.sqrt n := by
+      have : C < ε * Real.sqrt n := by
+        calc C = ε * (C / ε) := by field_simp
+          _ < ε * Real.sqrt n := by
+              exact mul_lt_mul_of_pos_left hsqrt_gt hε
+      linarith
+    -- Rewrite n^{3/2} = n * √n
+    have h_rpow : n ^ ((3 : ℝ) / 2) = n * Real.sqrt n := by
+      rw [show (3 : ℝ) / 2 = 1 + 1 / 2 from by norm_num,
+          rpow_add hn_pos, rpow_one, ← Real.sqrt_eq_rpow]
+    -- √n * √n = n
+    have h_sqrt_sq : Real.sqrt n * Real.sqrt n = n :=
+      Real.mul_self_sqrt hn_pos.le
+    -- Main inequality chain
+    calc (countUnitCircles3 P : ℝ)
+        ≤ C * n ^ ((3 : ℝ) / 2) := hbound
+      _ = C * (n * Real.sqrt n) := by rw [h_rpow]
+      _ ≤ (ε * Real.sqrt n) * (n * Real.sqrt n) := by
+          exact mul_le_mul_of_nonneg_right hC_le (by positivity)
+      _ = ε * n * (Real.sqrt n * Real.sqrt n) := by ring
+      _ = ε * n * n := by rw [h_sqrt_sq]
+      _ = ε * n ^ 2 := by ring
 
 /-
 ## Connections to Incidence Geometry
