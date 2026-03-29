@@ -16,10 +16,10 @@
       "classical"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 1,
-    "lineCount": 210,
-    "assumptions": "1 axiom (primorial growth lower bound). 2 sorries: dynamicRange_le_pow (list induction), mersenne_coprime_of_coprime (gcd(2^a-1,2^b-1) identity). Multiple theorems proved: concrete base ranges, Mersenne values, RNS encode/add/mul correctness, pairwise coprimality.",
+    "lineCount": 263,
+    "assumptions": "1 axiom (primorial growth lower bound). 1 sorry: mersenne_coprime_of_coprime (gcd(2^a-1,2^b-1) identity). dynamicRange_le_pow now fully proved. Multiple theorems proved: concrete base ranges, Mersenne values, RNS encode/add/mul correctness, pairwise coprimality.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -31,6 +31,6 @@
     "summary": "RNS arithmetic formalized with correctness proofs for addition and multiplication."
   },
   "leanFile": {
-    "lineCount": 216
+    "lineCount": 263
   }
 }
