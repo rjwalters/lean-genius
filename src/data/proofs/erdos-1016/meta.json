@@ -21,9 +21,9 @@
     "erdosNumber": 1016,
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 138,
-    "assumptions": "5 axioms: erdos_1016_conjecture (open), excess_beyond_log (open), bondy_lower_bound (deep), gkw_upper_bound (deep), small_case_4 (FALSE under current model — IsPancyclic doesn't connect edgeCount to hasCycle). Proved: triangle_pancyclic (sSup∅=0), bondy_quadratic_threshold (interval_cases+nlinarith).",
+    "axiomCount": 0,
+    "lineCount": 158,
+    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). The mathematical results (Bondy, Griffin, GKW) are correct but require a proper SimpleGraph-based model to formalize.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -232,8 +232,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 126,
-    "axiomCount": 6,
+    "lineCount": 158,
+    "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 3
   }
