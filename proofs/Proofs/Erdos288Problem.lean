@@ -99,11 +99,9 @@ theorem example_sum_one_v2 :
 def singletonPairs : Set (ℕ+ × ℕ+ × ℕ+) :=
   {p | ∃ n : ℕ+, harmonicInterval p.1 p.2.1 + (p.2.2 : ℚ)⁻¹ = (n : ℚ)}
 
-/--
-**Variant (OPEN):**
-The conjecture is still open even when |I₂| = 1.
--/
-axiom erdos_288_singleton : Set.Finite singletonPairs
+-- **Variant (OPEN):**
+-- The conjecture is still open even when |I₂| = 1.
+-- Not axiomatized since it is not used by any theorem in this file.
 
 /- ## Part V: Variant — k Intervals -/
 
@@ -116,13 +114,10 @@ def kIntervalSum (k : ℕ) (I : Fin k → ℕ+ × ℕ+) : ℚ :=
 def kIntervalPairs (k : ℕ) : Set (Fin k → ℕ+ × ℕ+) :=
   {I | ∃ n : ℕ+, kIntervalSum k I = (n : ℚ)}
 
-/--
-**Extended Conjecture (OPEN):**
-For any k, there are only finitely many k-tuples of intervals
-whose harmonic sums add to a positive integer.
--/
-axiom erdos_288_k_intervals :
-    ∀ k : ℕ, Set.Finite (kIntervalPairs k)
+-- **Extended Conjecture (OPEN):**
+-- For any k, there are only finitely many k-tuples of intervals
+-- whose harmonic sums add to a positive integer.
+-- Not axiomatized since it is not used by any theorem in this file.
 
 /- ## Part VI: Properties of Harmonic Sums -/
 
