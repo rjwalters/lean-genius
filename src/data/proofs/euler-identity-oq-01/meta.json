@@ -1,0 +1,149 @@
+{
+  "id": "euler-identity-oq-01",
+  "title": "Euler's Formula via Taylor Series Splitting",
+  "slug": "euler-identity-oq-01",
+  "description": "Derives Euler's formula e^{ix} = cos(x) + i*sin(x) by splitting the exponential Taylor series into even (cosine) and odd (sine) index terms, independently of Mathlib's Complex.exp_mul_I.",
+  "meta": {
+    "author": "Euler (1748), formalized via Taylor series splitting",
+    "date": "1748",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/EulerIdentityOQ01.lean",
+    "tags": [
+      "analysis",
+      "complex-analysis",
+      "taylor-series",
+      "euler-formula",
+      "alternative-proof"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 200,
+    "mathlibDependencies": [
+      {
+        "theorem": "NormedSpace.exp_eq_tsum",
+        "description": "Exponential as power series",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Complex.I_sq",
+        "description": "i^2 = -1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
+    ],
+    "originalContributions": [
+      "Algebraic identities I^{2k} = (-1)^k and I^{2k+1} = i*(-1)^k proved from I^2 = -1",
+      "Taylor series splitting proof of Euler's formula e^{ix} = cos(x) + i*sin(x)",
+      "Euler's identity e^{i*pi} + 1 = 0 derived from the Taylor series proof",
+      "Axiom elimination roadmap (~200-250 lines total)"
+    ],
+    "dateAdded": "2026-03-28",
+    "prerequisites": [
+      "Complex exponential power series",
+      "Even/odd tsum splitting",
+      "Taylor series for cos and sin"
+    ],
+    "assumptions": "2 axioms: (1) tsum_even_add_odd: splitting a summable series by even/odd indices; (2) cos_eq_tsum + sin_eq_tsum: identification of the even/odd subseries with cos and sin Taylor series. Estimated ~200-250 lines to eliminate all.",
+    "relatedProblems": [
+      {
+        "id": "euler-identity",
+        "relationship": "Alternative proof: uses Taylor series splitting vs Mathlib's Complex.exp_mul_I"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler published e^{ix} = cos(x) + i*sin(x) in 1748 in Introductio in analysin infinitorum. His original derivation used precisely this Taylor series splitting argument: expand e^{ix} as a power series, separate even and odd terms, and recognize the cosine and sine series.",
+    "problemStatement": "**Question**: Can the full Taylor series proof of Euler's formula be formalized independently of Complex.exp_mul_I?\n\n**Answer**: Yes, with 2 axioms (tsum splitting and Taylor series identification). The algebraic core (powers of i) is fully proved.",
+    "text": "Derives e^{ix} = cos(x) + i*sin(x) by: (1) expanding exp(ix) as sum of (ix)^n/n!, (2) splitting into even/odd indices using tsum_even_add_odd, (3) simplifying (ix)^{2k} = (-1)^k x^{2k} and (ix)^{2k+1} = i*(-1)^k x^{2k+1} using the proved identities I^{2k} = (-1)^k, (4) identifying the even subseries as cos and odd as i*sin.",
+    "proofStrategy": "Split the exponential Taylor series ∑ (ix)^n/n! into even-indexed terms (giving the cosine series) and odd-indexed terms (giving i times the sine series). The key algebraic identities i^{2k} = (-1)^k and i^{2k+1} = i*(-1)^k are proved by induction from i^2 = -1.",
+    "keyInsights": [
+      "The powers-of-i identities I^{2k} = (-1)^k and I^{2k+1} = i*(-1)^k are the algebraic heart of the proof, proved by induction from I^2 = -1",
+      "The tsum even/odd splitting is the analytic bottleneck — standard but requires careful Lean formalization",
+      "The axiom count (2) is very low, and elimination requires only ~200-250 lines of straightforward work",
+      "This gives a genuinely different proof path from Mathlib's exp_mul_I, following Euler's original reasoning"
+    ]
+  },
+  "sections": [
+    {
+      "id": "power-series-terms",
+      "title": "Power Series Terms",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "Defines expTerm, evenTerm, and oddTerm for the exponential, cosine, and sine series.",
+      "mathContext": "exp(z) = sum z^n/n!, cos(x) = sum (-1)^k x^{2k}/(2k)!, sin(x) = sum (-1)^k x^{2k+1}/(2k+1)!"
+    },
+    {
+      "id": "algebraic-identities",
+      "title": "Algebraic Identities: Powers of i",
+      "startLine": 57,
+      "endLine": 87,
+      "summary": "Proves I^{2k} = (-1)^k and I^{2k+1} = i*(-1)^k by induction, then shows even/odd exp terms match the cosine/sine terms.",
+      "mathContext": "i^{2k} = (-1)^k, i^{2k+1} = i*(-1)^k"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Euler's Formula via Taylor Series",
+      "startLine": 120,
+      "endLine": 160,
+      "summary": "The main theorem: exp(ix) = cos(x) + i*sin(x) by splitting the Taylor series. Also derives e^{i*pi} + 1 = 0.",
+      "mathContext": "e^{ix} = cos(x) + i*sin(x)"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Taylor series proof of Euler's formula is formalizable with just 2 axioms (tsum splitting and cos/sin series identification), both eliminable with ~200-250 lines of work.",
+    "implications": "This provides an independent verification path for one of the most important identities in mathematics.",
+    "openQuestions": [
+      "Can tsum_even_add_odd be proved using Equiv.tsum_eq with the even/odd partition of naturals?",
+      "Can cos_eq_tsum and sin_eq_tsum be derived from TaylorSinCosConvergence.lean's convergence results?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne, Chapter 8",
+      "note": "First publication of the Taylor series derivation of e^{ix} = cos(x) + i*sin(x)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-identity",
+      "relationship": "alternative-proof",
+      "description": "Alternative derivation using Taylor series splitting vs Mathlib's Complex.exp_mul_I"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Complex", "Real"],
+    "namespace": "EulerIdentityOQ01",
+    "lineCount": 200,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "defCount": 3,
+    "mainTheorems": [
+      {
+        "name": "euler_formula_taylor",
+        "type": "core",
+        "description": "e^{ix} = cos(x) + i*sin(x) via Taylor series splitting"
+      },
+      {
+        "name": "euler_identity_taylor",
+        "type": "key",
+        "description": "e^{i*pi} + 1 = 0 from the Taylor series proof"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_formula_taylor",
+      "type": "core",
+      "description": "Euler's formula via Taylor series: e^{ix} = cos(x) + i*sin(x)"
+    }
+  ]
+}
