@@ -119,12 +119,51 @@ theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
       (∀ i, 0 ≤ w i) ∧
       ∑ i, w i = 1 ∧
       ∑ i, w i • f i = x := by
-  -- Step 1: Get a finite subset t ⊆ s with x ∈ convexHull ℝ t
-  -- Use convexHull_eq_union_convexHull_finite_subsets
-  -- Step 2: From Finset.convexHull_eq, get weights on t
-  -- Step 3: If t has ≤ 1 element, derive contradiction with x ∉ s
-  -- Step 4: So t has ≥ 2 elements; enumerate as Fin n
-  sorry
+  classical
+  -- Get Carathéodory representation: affinely independent, strictly positive weights
+  obtain ⟨ι, hfin, z, w, hz_range, _, hw_pos, hw_sum, hw_eq⟩ :=
+    eq_pos_convex_span_of_mem_convexHull hx_hull
+  haveI := hfin
+  -- ι must be nonempty (weights sum to 1 ≠ 0)
+  have hne : Nonempty ι := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    have : (Finset.univ : Finset ι) = ∅ := Finset.univ_eq_empty
+    simp [Finset.sum_eq_zero_iff, this] at hw_sum
+  -- ι must have ≥ 2 elements (if |ι| = 1, then x = z(a) ∈ s, contradiction)
+  have hcard : 2 ≤ Fintype.card ι := by
+    by_contra hlt
+    push_neg at hlt
+    have h1 : Fintype.card ι = 1 := by
+      have := Fintype.card_pos_iff.mpr hne
+      omega
+    obtain ⟨a, ha⟩ := Fintype.card_eq_one_iff.mp h1
+    have hw1 : w a = 1 := by
+      have hsingle : ∑ i : ι, w i = w a :=
+        Fintype.sum_eq_single a (fun b hb => absurd (ha b) hb)
+      linarith
+    have hxa : x = z a := by
+      have hsingle : ∑ i : ι, w i • z i = w a • z a :=
+        Fintype.sum_eq_single a (fun b hb => absurd (ha b) hb)
+      rw [hsingle, hw1, one_smul] at hw_eq
+      exact hw_eq.symm
+    exact hx_not (hxa ▸ hz_range (Set.mem_range_self a))
+  -- Transfer to Fin n via the canonical equivalence
+  let e := Fintype.equivFin ι
+  refine ⟨Fintype.card ι, z ∘ e.symm, w ∘ e.symm, hcard, ?_, ?_, ?_, ?_⟩
+  · -- Each point lies in s
+    intro i; exact hz_range (Set.mem_range_self (e.symm i))
+  · -- Weights are non-negative (in fact positive)
+    intro i; exact le_of_lt (hw_pos (e.symm i))
+  · -- Weights sum to 1: reindex through equivalence
+    show ∑ j, w (e.symm j) = 1
+    have := Equiv.sum_comp e.symm w
+    linarith
+  · -- Weighted sum equals x: reindex through equivalence
+    show ∑ j, w (e.symm j) • z (e.symm j) = x
+    have := Equiv.sum_comp e.symm (fun i => w i • z i)
+    rw [this]
+    exact hw_eq
 
 /-- The reduction step: if the total number of excess vertices exceeds d,
     an affine dependence exists among them, enabling a vertex reduction. -/
