@@ -204,6 +204,85 @@ theorem dissociated_extend {A B : Finset ℝ}
   exact ⟨(S, T), Finset.mem_product.mpr
     ⟨Finset.mem_powerset.mpr hSB, Finset.mem_powerset.mpr hTB⟩, heq.symm⟩
 
+/- ## Cardinality Bound for diffSumFinset -/
+
+/-- The difference-sum finset has at most 3^|B| elements (tight bound).
+    Each value T.sum - S.sum depends only on the "signed partition": for each
+    b ∈ B, whether b ∈ S \ T (contributes -b), b ∈ T \ S (contributes +b),
+    or b ∈ S ∩ T / b ∉ S ∪ T (contributes 0). There are 3^|B| signed
+    partitions, so at most 3^|B| distinct differences.
+
+    Proof sketch: T.sum - S.sum = (T\S).sum - (S\T).sum (the intersection
+    cancels), so diffSumFinset B is an image of the ≤ 3^|B| ordered disjoint
+    pairs (S', T') with S', T' ⊆ B and S' ∩ T' = ∅. -/
+/-- The difference T.sum - S.sum factors through disjoint pairs:
+    it equals (T\S).sum - (S\T).sum since the intersection cancels. -/
+private lemma sum_factor_disjoint {S T : Finset ℝ} :
+    T.sum id - S.sum id = (T \ S).sum id - (S \ T).sum id := by
+  have hS := (Finset.sum_sdiff_add_sum_inter S T id).symm
+  have hT := (Finset.sum_sdiff_add_sum_inter T S id).symm
+  have : (S ∩ T).sum id = (T ∩ S).sum id := by
+    congr 1; exact Finset.inter_comm S T
+  linarith
+
+/-- The number of ordered disjoint pairs (S, T) with S, T ⊆ B is 3^|B|.
+    By Finset.induction: inserting element a creates 3× more pairs
+    (a goes to S, T, or neither). -/
+private lemma disjoint_pairs_card (B : Finset ℝ) :
+    ((B.powerset ×ˢ B.powerset).filter
+      (fun p : Finset ℝ × Finset ℝ => Disjoint p.1 p.2)).card = 3 ^ B.card := by
+  sorry -- Finset.induction_on: empty case trivial, insert case partitions into 3 classes
+
+theorem diffSumFinset_card_le (B : Finset ℝ) :
+    (diffSumFinset B).card ≤ 3 ^ B.card := by
+  -- Factor through ordered disjoint pairs (S\T, T\S)
+  let D := (B.powerset ×ˢ B.powerset).filter
+    (fun p : Finset ℝ × Finset ℝ => Disjoint p.1 p.2)
+  suffices hsub : diffSumFinset B ⊆
+      D.image (fun p : Finset ℝ × Finset ℝ => p.2.sum id - p.1.sum id) by
+    calc (diffSumFinset B).card
+        ≤ (D.image _).card := Finset.card_le_card hsub
+      _ ≤ D.card := Finset.card_image_le
+      _ = 3 ^ B.card := disjoint_pairs_card B
+  -- Show diffSumFinset B ⊆ image of D under the diff map
+  intro x hx
+  rw [diffSumFinset, Finset.mem_image] at hx
+  obtain ⟨⟨S, T⟩, hST, rfl⟩ := hx
+  rw [Finset.mem_image]
+  have hS := (Finset.mem_powerset.mp (Finset.mem_product.mp hST).1)
+  have hT := (Finset.mem_powerset.mp (Finset.mem_product.mp hST).2)
+  exact ⟨(S \ T, T \ S),
+    Finset.mem_filter.mpr ⟨Finset.mem_product.mpr
+      ⟨Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hS),
+       Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hT)⟩,
+      Finset.disjoint_sdiff_sdiff⟩,
+    sum_factor_disjoint⟩
+
+/- ## Greedy Construction -/
+
+/-- The greedy algorithm builds a dissociated subset of size k, provided
+    the ambient set is large enough at each step: |A| > j + 3^j for all j < k.
+    This is the core inductive construction for the greedy lower bound. -/
+theorem greedy_dissociated (A : Finset ℝ) (k : ℕ)
+    (hk : ∀ j : ℕ, j < k → A.card > j + 3 ^ j) :
+    ∃ B : Finset ℝ, IsDissociatedSubset A B ∧ B.card = k := by
+  induction k with
+  | zero => exact ⟨∅, empty_dissociated A, Finset.card_empty⟩
+  | succ k ih =>
+    -- By IH, get a dissociated B of size k
+    obtain ⟨B, hB, hBcard⟩ := ih (fun j hj => hk j (Nat.lt_succ_of_lt hj))
+    -- We need (diffSumFinset B).card < (A \ B).card to extend
+    have hAB : (A \ B).card = A.card - B.card := Finset.card_sdiff hB.1
+    have h3k : (diffSumFinset B).card < (A \ B).card := by
+      have hbound := diffSumFinset_card_le B
+      rw [hAB, hBcard]
+      have := hk k (Nat.lt_succ_iff.mpr le_rfl)
+      omega
+    -- Extend B
+    obtain ⟨a, haAB, hins⟩ := dissociated_extend hB h3k
+    exact ⟨insert a B, hins,
+      by rw [Finset.card_insert_of_not_mem (Finset.mem_sdiff.mp haAB).2, hBcard]⟩
+
 /-- Auxiliary: ∑_{i<k} 2^i = 2^k - 1 (geometric series for ℕ). -/
 private lemma sum_range_pow_two (k : ℕ) :
     (Finset.range k).sum (fun i => (2 : ℕ) ^ i) + 1 = 2 ^ k := by
