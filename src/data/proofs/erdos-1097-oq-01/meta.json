@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (generalized)",
     "sourceUrl": "https://erdosproblems.com/1097",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1097OQ01.lean",
     "tags": [
       "erdos",
@@ -23,7 +23,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "assumptions": "No axioms. All 17 theorems are fully proved from Mathlib. The main open question (growth exponent α(k) for k ≥ 4) is stated as a definition, not an axiom.",
-    "lineCount": 180,
+    "lineCount": 207,
     "relatedProblems": [
       {
         "id": "erdos-1097",
@@ -103,7 +103,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 180,
+    "lineCount": 207,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 17,
