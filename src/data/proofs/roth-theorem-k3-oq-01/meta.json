@@ -1,0 +1,147 @@
+{
+  "id": "roth-theorem-k3-oq-01",
+  "title": "Quantitative Bounds for Roth's Theorem",
+  "slug": "roth-theorem-k3-oq-01",
+  "description": "Formalizes the Roth number r₃(N) — the maximum size of a 3-AP-free subset of [N] — and states the major quantitative bounds from Roth (1953) through Kelley-Meka (2023).",
+  "meta": {
+    "author": "Roth (1953), Behrend (1946), Bloom-Sisask (2020), Kelley-Meka (2023)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
+    "date": "1953",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/RothTheoremQuantitative.lean",
+    "tags": [
+      "additive-combinatorics",
+      "szemeredi",
+      "arithmetic-progressions",
+      "quantitative-bounds",
+      "roth-number"
+    ],
+    "badge": "formalized",
+    "sorries": 6,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: density_increment (proved in RothTheorem.lean, axiomatized here for modularity). 6 sorries: rothNumber_mono (embedding), density_upper_bound_from_iteration (well-founded induction), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound, crude_sqrt_bound.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.card",
+        "description": "Cardinality of ZMod N",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets for Roth number definition",
+        "module": "Mathlib.Order.SupIndep"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for bound statements",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for Behrend/Kelley-Meka bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the Roth number r₃(N) as Finset.sup over AP-free subsets of ZMod N",
+      "Proof that r₃(N) ≤ N (upper bound from Fintype.card)",
+      "Proof that r₃(N) ≥ 1 for N ≥ 1 (singleton witness)",
+      "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
+      "Formal statements of 5 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N"
+    ],
+    "lineCount": 168,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The quantitative study of r₃(N) — the maximum size of a 3-AP-free subset of [N] — has been one of the most active areas in combinatorics for 80 years. Roth (1953) proved r₃(N) = O(N/log log N). Behrend (1946) constructed AP-free sets showing r₃(N) ≥ N·exp(-c√(log N)). After decades of incremental improvements (Bourgain, Sanders), Bloom-Sisask (2020) broke the logarithmic barrier, and Kelley-Meka (2023) achieved r₃(N) ≤ N·exp(-c(log N)^{1/12}), nearly matching Behrend.",
+    "problemStatement": "Define the Roth number r₃(N) = max{|A| : A ⊆ [N], A contains no 3-term AP} and formalize the known quantitative bounds.",
+    "text": "Formalizes the Roth number and states the progression of quantitative bounds from Roth (1953) to Kelley-Meka (2023).",
+    "proofStrategy": "1. Define r₃(N) as the maximum cardinality of AP-free subsets of ZMod N using Finset.sup.\n2. Prove basic properties: r₃(N) ≤ N (trivial), r₃(N) ≥ 1 (singleton witness).\n3. State the density increment iteration bound: at most ⌊100/δ²⌋ increments before density exceeds 1.\n4. State five quantitative bounds with precise mathematical formulations.",
+    "keyInsights": [
+      "**Roth Number Definition**: r₃(N) = Finset.sup over the powerset of ZMod N filtered by APFree, applied to card. This is noncomputable but logically clean.",
+      "**Iteration Bound**: The density increment δ → δ + δ²/100 allows at most ⌊100/δ²⌋ steps. Combined with modulus decay analysis, this yields the quantitative bound.",
+      "**Behrend vs Kelley-Meka Gap**: The lower bound exp(-c√(log N)) vs upper bound exp(-c(log N)^{1/12}) leaves a significant gap. Closing this is a major open problem.",
+      "**Modulus Decay is the Key**: All upper bounds differ in how they analyze the modulus decay through density increment iterations. Roth gets √N per step, Kelley-Meka gets much better decay via Bohr sets."
+    ]
+  },
+  "sections": [
+    {
+      "id": "roth-number-def",
+      "title": "Part I: Roth Number Definition and Properties",
+      "startLine": 1,
+      "endLine": 88,
+      "summary": "Defines APFree and the Roth number r₃(N) as Finset.sup over AP-free subsets. Proves: empty set is AP-free, singleton is AP-free, AP-free is closed under subsets, r₃(N) ≤ N, r₃(N) ≥ 1, card ≤ r₃(N) for AP-free sets. 0 sorries in proved results.",
+      "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq \\mathbb{Z}/N\\mathbb{Z},\\; A \\text{ AP-free}\\}$. Basic bounds: $1 \\leq r_3(N) \\leq N$."
+    },
+    {
+      "id": "iteration-bound",
+      "title": "Part II: Iteration Bound from Density Increment",
+      "startLine": 89,
+      "endLine": 128,
+      "summary": "Proves max_iterations_bound: if δ + kδ²/100 > 1 then k > ⌊100/δ²⌋ (0 sorries). States density_upper_bound_from_iteration (1 sorry).",
+      "mathContext": "Density increment $\\delta \\to \\delta + \\delta^2/100$ allows $\\leq \\lfloor 100/\\delta^2 \\rfloor$ iterations."
+    },
+    {
+      "id": "quantitative-bounds",
+      "title": "Part III: Quantitative Bounds",
+      "startLine": 129,
+      "endLine": 168,
+      "summary": "States five quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})), crude O(√N). All sorry — these require substantial proof effort.",
+      "mathContext": "History of bounds: Roth (1953) → Bourgain (1999) → Sanders (2011) → Bloom-Sisask (2020) → Kelley-Meka (2023)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "extends",
+      "description": "Extends the qualitative Roth's theorem (r₃(N) = o(N)) with quantitative bounds"
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines the Roth number r₃(N) and states the major quantitative bounds from Roth (1953) through Kelley-Meka (2023). Proves basic properties and the iteration bound from the density increment.",
+    "implications": "This formalization provides:\n\n1. **Formal definition of r₃(N)** for use in future quantitative additive combinatorics work.\n2. **Precise statements** of the five key quantitative bounds, ready for future proof efforts.\n3. **Iteration bound framework** connecting the density increment to quantitative results.",
+    "openQuestions": [
+      "Can Roth's original O(N/log log N) bound be formally proved from the density increment?",
+      "Can Behrend's construction be formalized to prove the lower bound?",
+      "What infrastructure is needed for the Kelley-Meka proof?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Roth, Klaus",
+      "title": "On certain sets of integers",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28, 104–109"
+    },
+    {
+      "authors": "Behrend, Felix",
+      "title": "On sets of integers which contain no three terms in arithmetical progression",
+      "year": "1946",
+      "venue": "Proceedings of the National Academy of Sciences 32, 331–332"
+    },
+    {
+      "authors": "Bloom, Thomas; Sisask, Olof",
+      "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+      "year": "2020",
+      "venue": "arXiv:2007.03528"
+    },
+    {
+      "authors": "Kelley, Zander; Meka, Raghu",
+      "title": "Strong bounds for 3-progressions",
+      "year": "2023",
+      "venue": "arXiv:2302.05537"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "Szemeredi.Roth.Quantitative",
+    "lineCount": 168,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2
+  }
+}

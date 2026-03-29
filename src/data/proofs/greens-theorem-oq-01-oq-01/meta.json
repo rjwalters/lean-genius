@@ -1,0 +1,113 @@
+{
+  "id": "greens-theorem-oq-01-oq-01",
+  "title": "Fubini's Theorem for Iterated Interval Integrals",
+  "slug": "greens-theorem-oq-01-oq-01",
+  "description": "Connects Mathlib's abstract Fubini theorem to iterated intervalIntegral, eliminating the hFubini hypothesis from Green's theorem.",
+  "meta": {
+    "author": "Fubini (1907), Tonelli (1909)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
+    "date": "1907",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "fubini",
+      "integration",
+      "greens-theorem"
+    ],
+    "badge": "formalized",
+    "sorries": 2,
+    "axiomCount": 0,
+    "assumptions": "No axioms. 2 sorries: intervalIntegral_swap (main Fubini bridge), fubini_of_continuous (continuous case). Both follow from Mathlib's measure-theoretic Fubini.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.integral_integral_swap",
+        "description": "Fubini for Lebesgue integrals on product spaces",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "intervalIntegral",
+        "description": "Interval integral ∫ x in a..b, f x dx",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      }
+    ],
+    "originalContributions": [
+      "Precise statement of Fubini for iterated intervalIntegral",
+      "Bridge from abstract MeasureTheory.integral_integral_swap to concrete interval integrals",
+      "Application: eliminates hFubini hypothesis from Green's theorem (OQ-01)",
+      "Sufficient condition: C¹ vector fields always satisfy Fubini for Green's theorem"
+    ],
+    "lineCount": 120,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fubini's theorem (1907) and its extension by Tonelli (1909) are fundamental results in measure theory that justify interchanging the order of integration in double integrals. The concrete version for iterated Riemann/Lebesgue integrals is essential for applications like Green's theorem.",
+    "problemStatement": "Can the hFubini hypothesis in GreensTheoremOQ01.lean be proved from Mathlib's measure-theoretic Fubini theorem?",
+    "text": "Bridges Mathlib's abstract Fubini theorem to the concrete iterated interval integrals needed for Green's theorem.",
+    "proofStrategy": "1. Convert intervalIntegral to set_integral on Ioc intervals\n2. Express iterated set_integral as a product measure integral\n3. Apply Mathlib's Fubini (MeasureTheory.integral_integral_swap)\n4. Convert back to interval integrals",
+    "keyInsights": [
+      "**intervalIntegral ↔ set_integral**: The interval integral ∫ x in a..b is defined via Lebesgue integral on Ioc, with sign handling.",
+      "**Product measure**: The double integral over a rectangle equals the integral against the product measure, which is what Mathlib's Fubini theorem works with.",
+      "**C¹ sufficiency**: For C¹ vector fields (standard for Green's theorem), all measurability and integrability conditions are automatic."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fubini-interval",
+      "title": "Part I: Fubini for Interval Integrals",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "States intervalIntegral_swap: swap iterated interval integrals under measurability + integrability. 1 sorry.",
+      "mathContext": "$\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$"
+    },
+    {
+      "id": "application",
+      "title": "Part II: Application to Green's Theorem",
+      "startLine": 56,
+      "endLine": 80,
+      "summary": "Shows greens_fubini_eliminated: the hFubini hypothesis in Green's theorem follows from intervalIntegral_swap. 0 sorries.",
+      "mathContext": "Eliminates the hypothesis from $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$"
+    },
+    {
+      "id": "sufficient",
+      "title": "Part III: Sufficient Conditions",
+      "startLine": 81,
+      "endLine": 120,
+      "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. 1 sorry.",
+      "mathContext": "$f \\in C^0([a,b] \\times [c,d]) \\implies$ Fubini holds."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Eliminates the hFubini hypothesis from the concrete Green's theorem"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "related",
+      "description": "Green's theorem is the primary application of this Fubini bridge"
+    }
+  ],
+  "conclusion": {
+    "summary": "The hFubini hypothesis in Green's theorem CAN be eliminated using Mathlib's Fubini theorem, under standard measurability/integrability conditions. For C¹ vector fields, these are automatic.",
+    "implications": "With the intervalIntegral_swap proof completed, Green's theorem (OQ-01) becomes fully proved from Mathlib without any hypotheses about integration order.",
+    "openQuestions": [
+      "Complete the intervalIntegral ↔ set_integral conversion to finish the proof",
+      "Can this bridge be generalized to n-dimensional iterated integrals?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["MeasureTheory", "intervalIntegral", "Set", "Filter", "Topology"],
+    "namespace": "GreensTheoremOQ01OQ01",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
+}

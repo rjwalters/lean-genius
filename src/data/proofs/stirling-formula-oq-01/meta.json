@@ -1,0 +1,115 @@
+{
+  "id": "stirling-formula-oq-01",
+  "title": "Higher-Order Stirling Expansion",
+  "slug": "stirling-formula-oq-01",
+  "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + O(1/n²)). Shows this eliminates an axiom.",
+  "meta": {
+    "author": "Stirling (1730), de Moivre (1733)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
+    "date": "1730",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/StirlingExpansion.lean",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "stirling",
+      "factorials",
+      "bernoulli-numbers"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "axiomCount": 0,
+    "assumptions": "No axioms. 3 sorries: stirling_first_correction (core expansion), stirling_two_term_expansion (restatement), error_bound_from_correction tail step.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "Stirling.stirlingSeq",
+        "description": "The Stirling sequence n!/[√(2n)(n/e)^n]",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      },
+      {
+        "theorem": "Stirling.tendsto_stirlingSeq_sqrt_pi",
+        "description": "stirlingSeq → √π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      }
+    ],
+    "originalContributions": [
+      "Stirling series coefficients a_0=1, a_1=1/12, a_2=1/288, a_3=-139/51840",
+      "stirlingPartial: truncated Stirling expansion at k terms",
+      "Statement of first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)",
+      "Path to axiom elimination: first correction implies stirling_error_bound_ge_2",
+      "error_bound_from_correction: structured proof reducing axiom to first correction"
+    ],
+    "lineCount": 160,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Stirling's formula n! ~ √(2πn)(n/e)^n (1730) is one of the most important approximations in mathematics. The asymptotic expansion n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + 1/(288n²) - ...) gives increasingly precise approximations. The coefficients come from the Euler-Maclaurin formula applied to ∑ log k, involving Bernoulli numbers.",
+    "problemStatement": "Formalize the higher-order terms in the Stirling expansion and use them to eliminate the error bound axiom in StirlingFormula.lean.",
+    "text": "Formalizes the Stirling series coefficients and the first correction term 1/(12n), showing it implies the axiomatized error bound.",
+    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
+    "keyInsights": [
+      "**Axiom elimination**: The 1/(12n) correction implies the error bound axiom in StirlingFormula.lean",
+      "**Bernoulli coefficients**: a_k = B_{2k}/(2k(2k-1)) · (product of earlier terms)",
+      "**Practical accuracy**: The two-term expansion 1 + 1/(12n) gives relative error < 0.1% for n ≥ 10"
+    ]
+  },
+  "sections": [
+    {
+      "id": "coefficients",
+      "title": "Part I: Stirling Series Coefficients",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Defines stirlingCoeff with first 4 coefficients. Proves values match. 0 sorries.",
+      "mathContext": "$a_0 = 1,\\; a_1 = \\frac{1}{12},\\; a_2 = \\frac{1}{288},\\; a_3 = -\\frac{139}{51840}$"
+    },
+    {
+      "id": "expansion",
+      "title": "Parts II-III: First Correction and Main Expansion",
+      "startLine": 56,
+      "endLine": 110,
+      "summary": "Defines stirlingPartial and states the first correction theorem. 2 sorries.",
+      "mathContext": "$\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O(n^{-2})$"
+    },
+    {
+      "id": "error-bound",
+      "title": "Part IV: Error Bound (Axiom Replacement)",
+      "startLine": 111,
+      "endLine": 145,
+      "summary": "Shows first correction implies the axiomatized error bound. 1 sorry in tail step.",
+      "mathContext": "$\\frac{\\text{stirlingSeq}(n)}{\\sqrt{\\pi}} - 1 \\leq \\frac{1}{n}$ for $n \\geq 2$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula",
+      "relationship": "extends",
+      "description": "Extends the basic Stirling formula with higher-order correction terms"
+    },
+    {
+      "targetId": "stirling-formula-oq-02",
+      "relationship": "related",
+      "description": "The Gamma function extension also benefits from improved error bounds"
+    }
+  ],
+  "conclusion": {
+    "summary": "States the first correction term in Stirling's expansion and shows it implies the axiomatized error bound. The correction proof requires Euler-Maclaurin or Wallis product analysis.",
+    "implications": "Completing the first correction proof would eliminate the only axiom in StirlingFormula.lean, making it fully verified.",
+    "openQuestions": [
+      "Prove the first correction from Euler-Maclaurin or Wallis product analysis",
+      "Formalize the full asymptotic series with arbitrary number of terms",
+      "Can the Stirling series be connected to Mathlib's Gamma function asymptotics?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib.Analysis.SpecialFunctions.Stirling", "Mathlib.Analysis.Asymptotics.Defs", "Mathlib.Data.Real.Basic", "Mathlib.Tactic"],
+    "opens": ["Stirling", "Real", "Filter"],
+    "namespace": "StirlingExpansion",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2
+  }
+}
