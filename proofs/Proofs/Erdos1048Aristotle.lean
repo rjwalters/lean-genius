@@ -22,13 +22,18 @@ theorem polynomial_sublevel_isOpen (f : ℂ[X]) (c : ℝ) (hc : c > 0) :
 
 -- Routine: X^n - C a is monic for n ≥ 1
 theorem xpow_sub_const_monic (a : ℂ) (n : ℕ) (hn : n ≥ 1) :
-    (X ^ n - C a : ℂ[X]).leadingCoeff = 1 := by
-  sorry
+    (X ^ n - C a : ℂ[X]).leadingCoeff = 1 :=
+  (Polynomial.monic_X_pow_sub_C a (by omega : n ≠ 0)).leadingCoeff
 
 -- Routine: Degree of X^n - C a is n for n ≥ 1
 theorem xpow_sub_const_degree (a : ℂ) (n : ℕ) (hn : n ≥ 1) :
     (X ^ n - C a : ℂ[X]).degree = n := by
-  sorry
+  rw [Polynomial.degree_sub_eq_left_of_degree_lt]
+  · exact Polynomial.degree_X_pow n
+  · calc (C a : ℂ[X]).degree
+        ≤ 0 := Polynomial.degree_C_le
+      _ < ↑n := by exact_mod_cast (show (0 : ℕ) < n from by omega)
+      _ = (X ^ n : ℂ[X]).degree := (Polynomial.degree_X_pow n).symm
 
 -- Routine: |r * exp(iθ)| = |r| for r : ℝ
 theorem abs_mul_exp (r : ℝ) (θ : ℝ) :

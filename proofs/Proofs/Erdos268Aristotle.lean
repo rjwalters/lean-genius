@@ -32,7 +32,10 @@ def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 -- Routine: Finite sets have convergent harmonic subseries
 theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
     HasConvergentHarmonicSubseries A := by
-  sorry
+  simp only [HasConvergentHarmonicSubseries]
+  haveI : Finite ↥A := hA.to_subtype
+  haveI := Fintype.ofFinite ↥A
+  exact (hasSum_fintype _).summable
 
 -- Routine: If A has convergent harmonic sum, shifted version is also summable
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
@@ -54,7 +57,8 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
 theorem shiftedHarmonicSum_nonneg (A : Set ℕ) (k : ℕ)
     (hA : A.Nonempty) (h : Summable (fun n : A => (1 : ℝ) / (n + k))) :
     shiftedHarmonicSum A k ≥ 0 := by
-  sorry
+  simp only [shiftedHarmonicSum]
+  exact tsum_nonneg (fun n => div_nonneg one_nonneg (by positivity))
 
 -- Routine: Shifted harmonic sum is decreasing in k
 -- (1/(n+j) < 1/(n+i) when i < j)

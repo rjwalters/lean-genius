@@ -85,7 +85,9 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 theorem tau_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
     (hcop : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
-  sorry
+  simp only [tau]
+  rw [hcop.divisors_mul]
+  exact Finset.card_product _ _
 
 -- Routine lemma: G(n) ≥ 0 for all n (sum of nonneg ratios)
 theorem G_nonneg (n : ℕ) : G n ≥ 0 := by
