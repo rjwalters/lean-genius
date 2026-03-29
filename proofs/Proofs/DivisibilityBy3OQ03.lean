@@ -81,10 +81,8 @@ n ≡ digitSum(n) (mod 9)
 -/
 
 /-- n is congruent to its digit sum mod 9 -/
-theorem digitSum_mod9 (n : ℕ) : n % 9 = digitSum n % 9 := by
-  -- Since 10 ≡ 1 (mod 9), we have 10^k ≡ 1 (mod 9)
-  -- So n = ∑ dᵢ · 10^i ≡ ∑ dᵢ (mod 9)
-  sorry -- Requires detailed digit expansion argument
+theorem digitSum_mod9 (n : ℕ) : n % 9 = digitSum n % 9 :=
+  Nat.modEq_nine_digits_sum n
 
 /-- n ≡ digitalRootFormula(n) (mod 9) -/
 theorem congruence (n : ℕ) : n % 9 = digitalRootFormula n % 9 := by
@@ -92,6 +90,44 @@ theorem congruence (n : ℕ) : n % 9 = digitalRootFormula n % 9 := by
   split
   · next h => subst h; simp
   · next h => omega
+
+/-- digitalRootFormula n = 0 iff n = 0 -/
+private theorem digitalRootFormula_eq_zero_iff (n : ℕ) :
+    digitalRootFormula n = 0 ↔ n = 0 := by
+  unfold digitalRootFormula
+  split
+  · next h => simp [h]
+  · next h => constructor <;> omega
+
+/-- If n % 9 = m % 9 and both are positive, then (n-1) % 9 = (m-1) % 9 -/
+private theorem mod9_pred_eq {n m : ℕ} (hn : 0 < n) (hm : 0 < m)
+    (hmod : n % 9 = m % 9) : (n - 1) % 9 = (m - 1) % 9 := by
+  set a := (n - 1) % 9 with ha_def
+  set b := (m - 1) % 9 with hb_def
+  have ha : a < 9 := Nat.mod_lt _ (by omega)
+  have hb : b < 9 := Nat.mod_lt _ (by omega)
+  have h1 : n % 9 = (a + 1) % 9 := by
+    have h := Nat.add_mod (n - 1) 1 9
+    rw [Nat.sub_add_cancel (show 1 ≤ n by omega)] at h
+    simpa using h
+  have h2 : m % 9 = (b + 1) % 9 := by
+    have h := Nat.add_mod (m - 1) 1 9
+    rw [Nat.sub_add_cancel (show 1 ≤ m by omega)] at h
+    simpa using h
+  have h3 : (a + 1) % 9 = (b + 1) % 9 := by rw [← h1, ← h2]; exact hmod
+  interval_cases a <;> interval_cases b <;> omega
+
+/-- digitalRootFormula gives same result for values with same mod 9 and zero-status -/
+private theorem digitalRootFormula_eq_of_congr {n m : ℕ}
+    (hmod : n % 9 = m % 9) (h0 : n = 0 ↔ m = 0) :
+    digitalRootFormula n = digitalRootFormula m := by
+  by_cases hn : n = 0
+  · simp [digitalRootFormula, hn, h0.mp hn]
+  · have hm : m ≠ 0 := fun hm => hn (h0.mpr hm)
+    unfold digitalRootFormula
+    simp only [hn, hm, ↓reduceIte]
+    congr 1
+    exact mod9_pred_eq (by omega) (by omega) hmod
 
 /-
 ## Part IV: Properties of the Digital Root
@@ -134,20 +170,41 @@ theorem digitalRoot_div3 (n : ℕ) :
 /-- Digital root of a sum: dr(a + b) = dr(dr(a) + dr(b)) -/
 theorem digitalRoot_add (a b : ℕ) :
     digitalRootFormula (a + b) = digitalRootFormula (digitalRootFormula a + digitalRootFormula b) := by
-  rcases a with _ | a <;> rcases b with _ | b
-  · simp [digitalRootFormula]
-  · simp [digitalRootFormula]
-  · simp [digitalRootFormula]; ring_nf; omega
-  · -- Both positive
-    unfold digitalRootFormula
-    simp only [show a + 1 ≠ 0 by omega, show b + 1 ≠ 0 by omega,
-               show a + 1 + (b + 1) ≠ 0 by omega, ↓reduceIte]
-    sorry -- Requires careful mod 9 arithmetic
+  apply digitalRootFormula_eq_of_congr
+  · calc (a + b) % 9
+        = ((a % 9) + (b % 9)) % 9 := Nat.add_mod a b 9
+      _ = ((digitalRootFormula a % 9) + (digitalRootFormula b % 9)) % 9 := by
+            rw [congruence a, congruence b]
+      _ = (digitalRootFormula a + digitalRootFormula b) % 9 := (Nat.add_mod _ _ 9).symm
+  · constructor
+    · intro h
+      have ha : a = 0 := by omega
+      have hb : b = 0 := by omega
+      simp [ha, hb, digitalRootFormula]
+    · intro h
+      have ha : digitalRootFormula a = 0 := by omega
+      have hb : digitalRootFormula b = 0 := by omega
+      exact Nat.add_eq_zero.mpr
+        ⟨(digitalRootFormula_eq_zero_iff a).mp ha, (digitalRootFormula_eq_zero_iff b).mp hb⟩
 
 /-- Digital root of a product: dr(a · b) = dr(dr(a) · dr(b)) -/
 theorem digitalRoot_mul (a b : ℕ) :
     digitalRootFormula (a * b) = digitalRootFormula (digitalRootFormula a * digitalRootFormula b) := by
-  sorry -- Follows from a*b ≡ a*b (mod 9) and the congruence property
+  apply digitalRootFormula_eq_of_congr
+  · calc (a * b) % 9
+        = ((a % 9) * (b % 9)) % 9 := Nat.mul_mod a b 9
+      _ = ((digitalRootFormula a % 9) * (digitalRootFormula b % 9)) % 9 := by
+            rw [congruence a, congruence b]
+      _ = (digitalRootFormula a * digitalRootFormula b) % 9 := (Nat.mul_mod _ _ 9).symm
+  · constructor
+    · intro h
+      rcases mul_eq_zero.mp h with ha | hb
+      · simp [show digitalRootFormula a = 0 from (digitalRootFormula_eq_zero_iff a).mpr ha]
+      · simp [show digitalRootFormula b = 0 from (digitalRootFormula_eq_zero_iff b).mpr hb]
+    · intro h
+      rcases mul_eq_zero.mp h with ha | hb
+      · simp [(digitalRootFormula_eq_zero_iff a).mp ha]
+      · simp [(digitalRootFormula_eq_zero_iff b).mp hb]
 
 /-
 ## Part V: Computational Examples
@@ -179,18 +236,18 @@ theorem example_18 : digitalRootFormula 18 = 9 := by
 **O(1) Digital Root**: digitalRootFormula computes the digital root
 in constant time using `1 + ((n-1) mod 9)`, avoiding iterative summation.
 
-**Proved** (10 theorems):
+**Proved** (13 theorems):
+- digitSum_mod9: n ≡ digitSum(n) (mod 9) (from Mathlib)
 - digitalRoot_range, zero, single: basic properties
 - congruence: n ≡ dr(n) (mod 9)
 - idempotent: dr(dr(n)) = dr(n)
 - div9, div3: divisibility characterizations
-- 5 concrete examples
-
-**Sorry** (4):
-- digitSum_mod9: n ≡ digitSum(n) (mod 9)
-- digitalRoot decreasing_by: digitSum n < n for n ≥ 10
 - digitalRoot_add: dr(a+b) = dr(dr(a) + dr(b))
 - digitalRoot_mul: dr(a·b) = dr(dr(a) · dr(b))
+- 5 concrete examples
+
+**Sorry** (1):
+- digitalRoot decreasing_by: digitSum n < n for n ≥ 10 (termination of iterative def)
 -/
 
 #check digitalRootFormula

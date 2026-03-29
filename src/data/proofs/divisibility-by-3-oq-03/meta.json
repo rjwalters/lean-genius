@@ -11,9 +11,9 @@
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03.lean",
     "tags": ["number-theory", "divisibility", "digital-root", "modular-arithmetic", "algorithms", "research"],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. 4 sorries: digitSum_mod9, digitalRoot decreasing_by, digitalRoot_add, digitalRoot_mul.",
+    "assumptions": "0 axiom declarations. 1 sorry: digitalRoot decreasing_by (termination of iterative definition).",
     "lineCount": 200
   },
   "overview": {
@@ -47,7 +47,7 @@
     "lineCount": 200,
     "axiomCount": 0,
     "theoremCount": 15,
-    "sorryTheorems": 4,
+    "sorryTheorems": 1,
     "definitionCount": 3
   }
 }
