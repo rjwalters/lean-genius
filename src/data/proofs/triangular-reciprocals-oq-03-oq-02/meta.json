@@ -7,7 +7,7 @@
     "author": "Generalization of Mercator (1668) / Euler series identities",
     "sourceUrl": "https://en.wikipedia.org/wiki/Harmonic_number#Alternating_harmonic_numbers",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/TriangularReciprocalGeneralized.lean",
     "tags": [
       "analysis",
@@ -16,10 +16,10 @@
       "harmonic-numbers",
       "partial-fractions"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 transitive axiom: alternating_harmonic_hasSum (imported from parent OQ03, boundary convergence of Mercator series requires Abel's theorem). All 3 former sorries (alternating_harmonic_tail, shifted_alternating_hasSum, generalized_alternating_sum) have been proved.",
+    "assumptions": "1 transitive axiom: alternating_harmonic_hasSum (imported from parent OQ03, boundary convergence of Mercator series requires Abel's theorem). 0 sorries — all 3 previously sorry'd theorems now fully proved.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -40,7 +40,7 @@
       "Verification that k=1 gives 2\u00b7log 2 - 1 and k=2 gives 1/4",
       "Even k: logarithmic terms cancel, giving rational answer A_k/k"
     ],
-    "lineCount": 135,
+    "lineCount": 196,
     "theoremCount": 10,
     "definitionCount": 1,
     "mathlib_version": "4.26.0"
@@ -132,7 +132,7 @@
       "Real"
     ],
     "namespace": "AlternatingTriangularReciprocals.Generalized",
-    "lineCount": 135,
+    "lineCount": 196,
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 1
