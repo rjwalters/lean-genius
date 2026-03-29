@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved trivial_upper_bound (5A→4A).",
+    "progressSummary": "COMPLETED: Fixed open-conjecture axiom, added need_at_least_three and maxIrreducibleSize_mono. File: 96→145 lines, 1→3 theorems, 4→3 axioms.",
     "builtItems": [
-      "PROVED trivial_upper_bound (5A→4A)"
+      "PROVED trivial_upper_bound (5A→4A)",
+      "need_at_least_three: minimum cardinality bound",
+      "maxIrreducibleSize_mono: monotonicity of c(N)"
     ],
     "insights": [
-      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A."
+      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A.",
+      "erdos_319_conjecture was incorrectly axiomatized — converted to def",
+      "Need at least 2 elements for irreducible zero sum (singleton gives δ(n)/n ≠ 0)",
+      "c(N) is monotone: {1,...,N} ⊆ {1,...,N+1} preserves valid configurations",
+      "Concrete example: {2,3,6} with δ=(-1,1,1) gives irreducible zero sum -1/2+1/3+1/6=0"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

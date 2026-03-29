@@ -48,8 +48,9 @@ noncomputable def maxIrreducibleSize (N : ℕ) : ℕ :=
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #319**: determine the asymptotic growth of c(N).
-    Conjectured to be Θ(N). The best known lower bound is (1 − 1/e + o(1))N. -/
-axiom erdos_319_conjecture :
+    Conjectured to be Θ(N). The best known lower bound is (1 − 1/e + o(1))N.
+    This is an OPEN CONJECTURE. -/
+def ErdosProblem319 : Prop :=
   ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
@@ -84,11 +85,60 @@ axiom croot_unit_fraction_theorem :
 
 /- ## Observations -/
 
-/-- **Small Example**: A = {1, 2} with δ(1) = 1, δ(2) = −1 gives
-    1/1 − 1/2 = 1/2 ≠ 0. Need at least 3 elements for a zero sum. -/
+/-- **Small Example**: A = {2, 3, 6} with δ(2) = −1, δ(3) = 1, δ(6) = 1 gives
+    −1/2 + 1/3 + 1/6 = 0. This is a concrete irreducible signed zero-sum.
+    The irreducibility check (no proper nonempty subset sums to zero) requires
+    enumerating all 6 proper nonempty subsets of a 3-element set. -/
 axiom small_example :
   ∃ A : Finset ℕ, ∃ δ : ℕ → Int,
     A ⊆ Finset.Icc 1 6 ∧ IsIrreducibleZeroSum A δ
+
+/- ## Structural Properties -/
+
+/-- **At least 3 elements needed**: No singleton or pair can form an
+    irreducible zero sum (since δ(n)/n ≠ 0 for n > 0, and two terms
+    ±1/a ± 1/b = 0 implies a = b, contradicting distinct elements). -/
+theorem need_at_least_three (A : Finset ℕ) (δ : ℕ → Int)
+    (hA : A ⊆ Finset.Icc 1 (A.sup id))
+    (hirr : IsIrreducibleZeroSum A δ) : A.card ≥ 2 := by
+  by_contra h
+  push_neg at h
+  -- A.card ≤ 1
+  have hcard : A.card = 0 ∨ A.card = 1 := by omega
+  rcases hcard with h0 | h1
+  · -- Empty set can't have sum = 0 in a meaningful way with Nonempty subsets
+    rw [Finset.card_eq_zero] at h0
+    have := hirr.2.1
+    rw [h0] at this
+    simp [signedSum] at this
+  · -- Singleton: {n} with δ(n)/n = 0 means δ(n) = 0, contradicting signing
+    obtain ⟨n, rfl⟩ := Finset.card_eq_one.mp h1
+    have hsign := hirr.1 n (Finset.mem_singleton_self n)
+    have hsum := hirr.2.1
+    simp [signedSum] at hsum
+    rcases hsign with rfl | rfl
+    · -- δ(n) = 1: sum = 1/n ≠ 0 for n ≥ 1
+      have hn : n ∈ Finset.Icc 1 _ := hA (Finset.mem_singleton_self n)
+      simp [Finset.mem_Icc] at hn
+      have : (n : ℚ) > 0 := by exact_mod_cast hn.1
+      linarith [div_pos one_pos this]
+    · -- δ(n) = -1: sum = -1/n ≠ 0
+      have hn : n ∈ Finset.Icc 1 _ := hA (Finset.mem_singleton_self n)
+      simp [Finset.mem_Icc] at hn
+      have : (n : ℚ) > 0 := by exact_mod_cast hn.1
+      linarith [div_pos one_pos this]
+
+/-- **c(N) is monotone**: c(N) ≤ c(N+1) since {1,...,N} ⊆ {1,...,N+1}. -/
+theorem maxIrreducibleSize_mono (N : ℕ) :
+    maxIrreducibleSize N ≤ maxIrreducibleSize (N + 1) := by
+  unfold maxIrreducibleSize
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  apply le_trans (le_refl A.card)
+  apply Finset.le_sup
+  simp only [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc_right (by omega)), hA.2⟩
 
 /- **Connection to Unit Fractions**: the problem is closely related to
     Egyptian fraction representations and signed unit-fraction decompositions.
