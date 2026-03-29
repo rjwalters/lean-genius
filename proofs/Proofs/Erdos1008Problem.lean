@@ -186,14 +186,118 @@ theorem folkman_ratio (n : ℕ) (_hn : n > 0) :
   rw [← Real.rpow_natCast (n : ℝ) 3, ← Real.rpow_mul (Nat.cast_nonneg n)]
   norm_num
 
--- ## Main Theorems (Axiomatized)
+-- ## Kővári-Sós-Turán Theorem (Proved)
+-- Proof by double counting (cherry argument) + Cauchy-Schwarz.
+-- Key insight: in C₄-free graphs, any two vertices share at most one
+-- common neighbor, making the offDiag neighborhoods pairwise disjoint.
 
-/-- Kővári-Sós-Turán theorem (C₄ case): every n-vertex C₄-free graph
-    has O(n^{3/2}) edges. The precise bound is
-    |E| ≤ (1/2)(1 + √(4n-3))√n, simplified here. -/
-axiom kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] :
-  IsC4Free G → (G.edgeFinset.card : ℝ) ≤ (Fintype.card V : ℝ) ^ ((3 : ℝ) / 2) / Real.sqrt 2 +
-    (Fintype.card V : ℝ) / 2
+/-- In a C₄-free graph, the offDiag neighborhoods are pairwise disjoint.
+    If (a,b) appears in offDiag(N(v₁)) ∩ offDiag(N(v₂)), then v₁ and v₂
+    are distinct common neighbors of a,b, forming a C₄. -/
+private theorem cherry_disjoint (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : IsC4Free G) {v₁ v₂ : V} (hne : v₁ ≠ v₂) :
+    Disjoint ((G.neighborFinset v₁).offDiag) ((G.neighborFinset v₂).offDiag) := by
+  rw [Finset.disjoint_left]
+  rintro ⟨a, b⟩ h₁ h₂
+  rw [Finset.mem_offDiag] at h₁ h₂
+  exact absurd
+    (c4free_common_neighbor_unique hfree a b h₁.2.2 v₁ v₂
+      (G.mem_neighborFinset.mp h₁.1).symm (G.mem_neighborFinset.mp h₁.2.1).symm
+      (G.mem_neighborFinset.mp h₂.1).symm (G.mem_neighborFinset.mp h₂.2.1).symm)
+    hne
+
+/-- Cherry count: ∑_v |offDiag(N(v))| ≤ |offDiag(V)| for C₄-free graphs.
+    The disjoint union of cherry triples injects into ordered vertex pairs. -/
+private theorem cherry_count_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : IsC4Free G) :
+    ∑ v : V, (G.neighborFinset v).offDiag.card ≤
+    (Finset.univ : Finset V).offDiag.card := by
+  calc ∑ v : V, (G.neighborFinset v).offDiag.card
+      = (Finset.univ.biUnion fun v => (G.neighborFinset v).offDiag).card :=
+        (Finset.card_biUnion fun _ _ _ _ h => cherry_disjoint G hfree h).symm
+    _ ≤ (Finset.univ : Finset V).offDiag.card :=
+        Finset.card_le_card (by
+          intro ⟨a, b⟩ hp
+          rw [Finset.mem_biUnion] at hp
+          obtain ⟨_, _, hv⟩ := hp
+          rw [Finset.mem_offDiag] at hv ⊢
+          exact ⟨Finset.mem_univ a, Finset.mem_univ b, hv.2.2⟩)
+
+/-- Cherry count (ℕ form): ∑_v d(v)(d(v)-1) ≤ n(n-1). -/
+private theorem cherry_count_nat (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : IsC4Free G) :
+    ∑ v : V, G.degree v * (G.degree v - 1) ≤
+    Fintype.card V * (Fintype.card V - 1) := by
+  have h := cherry_count_le G hfree
+  simp only [Finset.card_offDiag, Finset.card_univ] at h
+  exact h
+
+/-- Cast helper: ↑(d*(d-1)) = (↑d)*(↑d - 1) for d : ℕ. -/
+private theorem nat_cast_mul_pred (d : ℕ) : (↑(d * (d - 1)) : ℝ) = (↑d : ℝ) * ((↑d : ℝ) - 1) := by
+  cases d with
+  | zero => simp
+  | succ n => push_cast [Nat.succ_sub_one]; ring
+
+/-- Cauchy-Schwarz for sums: (∑ f(v))² ≤ |V| · ∑ f(v)².
+    Proof via non-negativity of ∑_i ∑_j (f_i - f_j)². -/
+private theorem sq_sum_le (f : V → ℝ) :
+    (∑ v : V, f v) ^ 2 ≤ (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+  suffices h : (0 : ℝ) ≤ ∑ i : V, ∑ j : V, (f i - f j) ^ 2 by
+    have hexp : ∑ i : V, ∑ j : V, (f i - f j) ^ 2 =
+        (2 : ℝ) * ((Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 - (∑ v : V, f v) ^ 2) := by
+      trans ∑ i : V, ((Fintype.card V : ℝ) * f i ^ 2 -
+            2 * f i * ∑ j : V, f j + ∑ j : V, f j ^ 2)
+      · congr 1; ext i
+        simp only [sub_sq, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+          Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]
+        ring
+      · simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib,
+          ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+        ring
+    linarith
+  exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+
+/-- Kővári-Sós-Turán theorem (C₄ case, quadratic form): for any C₄-free
+    graph on n vertices with m edges, 4m² ≤ n²(n−1) + 2mn.
+    This gives the classical bound m = O(n^{3/2}). -/
+theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : IsC4Free G) :
+    (4 : ℝ) * (G.edgeFinset.card : ℝ) ^ 2 ≤
+    (Fintype.card V : ℝ) ^ 2 * ((Fintype.card V : ℝ) - 1) +
+    (2 : ℝ) * (Fintype.card V : ℝ) * (G.edgeFinset.card : ℝ) := by
+  set n := (Fintype.card V : ℝ)
+  set m := (G.edgeFinset.card : ℝ)
+  -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) in ℝ
+  have hcherry_real : ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤ n * (n - 1) := by
+    have hnat := cherry_count_nat G hfree
+    simp_rw [show ∀ d : ℕ, (d : ℝ) * ((d : ℝ) - 1) = ↑(d * (d - 1)) from
+      fun d => (nat_cast_mul_pred d).symm]
+    exact_mod_cast hnat
+  -- Step 2: ∑ d² ≤ n(n-1) + 2m via d² = d(d-1) + d and handshaking
+  have hhand : (∑ v : V, (G.degree v : ℝ)) = 2 * m := by
+    exact_mod_cast G.sum_degrees_eq_twice_card_edges
+  have hsum_sq : ∑ v : V, (G.degree v : ℝ) ^ 2 ≤ n * (n - 1) + 2 * m := by
+    have hid : ∀ v : V, (G.degree v : ℝ) ^ 2 =
+        (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + (G.degree v : ℝ) := by
+      intro v; ring
+    calc ∑ v : V, (G.degree v : ℝ) ^ 2
+        = ∑ v, ((G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + (G.degree v : ℝ)) := by
+          congr 1; ext v; exact hid v
+      _ = ∑ v, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + ∑ v, (G.degree v : ℝ) :=
+          Finset.sum_add_distrib
+      _ ≤ n * (n - 1) + 2 * m := by linarith [hcherry_real]
+  -- Step 3: CS: (2m)² ≤ n · ∑ d²
+  have hcs := sq_sum_le (fun v : V => (G.degree v : ℝ))
+  rw [hhand] at hcs
+  -- Step 4: Combine: 4m² = (2m)² ≤ n·∑d² ≤ n·(n(n-1)+2m) = n²(n-1)+2nm
+  calc (4 : ℝ) * m ^ 2
+      = (2 * m) ^ 2 := by ring
+    _ ≤ n * ∑ v : V, (G.degree v : ℝ) ^ 2 := hcs
+    _ ≤ n * (n * (n - 1) + 2 * m) :=
+        mul_le_mul_of_nonneg_left hsum_sq (Nat.cast_nonneg _)
+    _ = n ^ 2 * (n - 1) + 2 * n * m := by ring
+
+-- ## Main Theorems (Partially Axiomatized)
 
 /-- Erdős Problem #1008 (Conlon-Fox-Sudakov 2014):
     Every graph with m edges has a C₄-free subgraph with Ω(m^{2/3}) edges.
@@ -225,6 +329,6 @@ theorem c4free_subgraph_exists (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 #check @erdos_1008
 #check @exponent_optimal
-#check @kovari_sos_turan
+#check @kovari_sos_turan  -- Now proved! (was axiom)
 
 end Erdos1008
