@@ -202,10 +202,10 @@ update_jobs_file() {
 
         local new_status
         case "$status" in
-            COMPLETE) new_status="completed" ;;
-            FAILED) new_status="failed" ;;
-            NOT_FOUND) new_status="expired" ;;
-            *) continue ;;  # Don't update in-progress jobs
+            COMPLETE|COMPLETE_WITH_ERRORS) new_status="completed" ;;
+            FAILED|OUT_OF_BUDGET) new_status="failed" ;;
+            NOT_FOUND|CANCELED) new_status="expired" ;;
+            *) continue ;;  # Don't update in-progress jobs (QUEUED, IN_PROGRESS, NOT_STARTED)
         esac
 
         # For failed/expired jobs, categorize the failure and count submissions
@@ -425,11 +425,14 @@ main() {
                 QUEUED|NOT_STARTED)
                     echo -e "  ${CYAN}$prob${NC}: QUEUED"
                     ;;
-                FAILED)
-                    echo -e "  ${RED}$prob${NC}: FAILED"
+                COMPLETE_WITH_ERRORS)
+                    echo -e "  ${YELLOW}$prob${NC}: COMPLETE_WITH_ERRORS (results may be partial)"
                     ;;
-                NOT_FOUND)
-                    echo -e "  ${RED}$prob${NC}: NOT_FOUND (expired?)"
+                FAILED|OUT_OF_BUDGET)
+                    echo -e "  ${RED}$prob${NC}: $status"
+                    ;;
+                NOT_FOUND|CANCELED)
+                    echo -e "  ${RED}$prob${NC}: $status (expired?)"
                     ;;
                 *)
                     echo -e "  $prob: $status ($percent%)"
