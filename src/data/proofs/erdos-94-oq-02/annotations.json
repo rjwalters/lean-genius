@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-erdos94-oq02-header",
+    "proofId": "erdos-94-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "context",
+    "title": "The Quantitative Follow-Up to Fishburn's Theorem",
+    "body": "After Fishburn proved ∑f(u)² = O(n³) for convex polygons, the natural question is: what is the exact constant? The regular n-gon achieves Θ(n³), and analysis of its distance structure suggests the asymptotic constant is 1/2."
+  },
+  {
+    "id": "ann-erdos94-oq02-dominant",
+    "proofId": "erdos-94-oq-02",
+    "range": {
+      "startLine": 113,
+      "endLine": 145
+    },
+    "type": "insight",
+    "title": "Why c = 1/2: The Regular n-gon Distance Structure",
+    "body": "For a regular n-gon, there are ⌊n/2⌋ distinct distances d₁, ..., d_{⌊n/2⌋}. For k < n/2, the multiplicity of d_k is n (each vertex has exactly one pair at distance d_k in each direction). Only the diameter (when n is even) has multiplicity n/2. So ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, giving c = 1/2."
+  },
+  {
+    "id": "ann-erdos94-oq02-bridge",
+    "proofId": "erdos-94-oq-02",
+    "range": {
+      "startLine": 149,
+      "endLine": 200
+    },
+    "type": "insight",
+    "title": "Erdős-Fishburn Bridge: Extremality → Sharp Bound",
+    "body": "The Erdős-Fishburn conjecture asserts the regular n-gon maximizes ∑f(u)² among convex n-gons. If true, and if c = 1/2, then S(P) ≤ (1/2 + ε)·n³ for ALL large convex polygons P. This would be the tight form of Fishburn's theorem."
+  }
+]
