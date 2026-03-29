@@ -244,7 +244,82 @@ theorem cyclicSubspace_le_minpoly_degree (T : Module.End K V)
     ∀ k : ℕ, (minpoly K T).natDegree ≤ k →
       (T ^ k) v ∈ Submodule.span K (Set.range fun i : Fin (minpoly K T).natDegree =>
         (T ^ (i : ℕ)) v) := by
-  sorry
+  set d := (minpoly K T).natDegree
+  set S := Submodule.span K (Set.range fun i : Fin d => (T ^ (i : ℕ)) v)
+  -- Step 1: T^d v ∈ S (from minpoly relation)
+  have hd_mem : (T ^ d) v ∈ S := by
+    have hμ_zero := minpoly.aeval K T
+    have hμ_monic := minpoly.monic hT
+    -- Expand aeval T μ as a sum over range(d+1)
+    have h_expand : aeval T (minpoly K T) =
+        ∑ i ∈ Finset.range (d + 1),
+          (minpoly K T).coeff i • T ^ i := by
+      rw [aeval_def, eval₂_eq_sum_range]
+      congr 1; ext i
+      rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+    -- Apply to v: 0 = T^d v + ∑_{i<d} coeff_i • T^i v
+    have h_zero_v : (aeval T (minpoly K T)) v = 0 := by
+      rw [hμ_zero, LinearMap.zero_apply]
+    rw [h_expand] at h_zero_v
+    -- Distribute the sum application and split off the d-th term
+    rw [Finset.sum_range_succ, LinearMap.add_apply] at h_zero_v
+    simp only [LinearMap.smul_apply] at h_zero_v
+    -- Distribute sum application using linear map sum lemma
+    have h_sum_app : (∑ i ∈ Finset.range d, (minpoly K T).coeff i • T ^ i) v =
+        ∑ i ∈ Finset.range d, (minpoly K T).coeff i • (T ^ i) v := by
+      induction Finset.range d using Finset.induction_on with
+      | empty => simp
+      | insert ha ih => rw [Finset.sum_insert ha, LinearMap.add_apply,
+                             LinearMap.smul_apply, ih, Finset.sum_insert ha]
+    rw [h_sum_app] at h_zero_v
+    -- Use monic: coeff d = 1
+    rw [show (minpoly K T).coeff d = 1 from hμ_monic, one_smul] at h_zero_v
+    -- h_zero_v : (∑ ... + T^d v = 0), so T^d v = -∑ ...
+    have h_eq := eq_neg_of_add_eq_zero_right h_zero_v
+    rw [h_eq]
+    apply S.neg_mem
+    apply Submodule.sum_mem
+    intro i hi
+    exact S.smul_mem _ (Submodule.subset_span ⟨⟨i, Finset.mem_range.mp hi⟩, rfl⟩)
+  -- Step 2: S is T-invariant
+  have hS_inv : ∀ w ∈ S, T w ∈ S := by
+    intro w hw
+    refine Submodule.span_induction hw ?_ ?_ ?_ ?_
+    · -- Generators: T(T^i v) = T^{i+1} v
+      rintro _ ⟨i, rfl⟩
+      rw [← LinearMap.mul_apply, ← pow_succ']
+      by_cases h : (↑i : ℕ) + 1 < d
+      · exact Submodule.subset_span ⟨⟨↑i + 1, h⟩, rfl⟩
+      · -- i + 1 ≥ d, and i < d (since i : Fin d), so i + 1 = d
+        have : (↑i : ℕ) + 1 = d := by have := i.isLt; omega
+        rw [this]; exact hd_mem
+    · show T 0 ∈ S; rw [map_zero]; exact S.zero_mem
+    · intro x y hx hy; show T (x + y) ∈ S
+      rw [map_add]; exact S.add_mem hx hy
+    · intro a x hx; show T (a • x) ∈ S
+      rw [map_smul]; exact S.smul_mem a hx
+  -- Step 3: Induction on k
+  intro k hk
+  induction k with
+  | zero =>
+    simp only [Nat.le_zero] at hk; rw [pow_zero]
+    -- d = 0: minpoly = 1, so V = {0}
+    suffices v = 0 by rw [this]; exact S.zero_mem
+    have h_deg0 : (minpoly K T).natDegree = 0 := hk
+    have h_one : minpoly K T = 1 := by
+      have := Polynomial.eq_C_of_natDegree_eq_zero h_deg0
+      rw [this]; convert Polynomial.C_1
+      exact show (minpoly K T).coeff 0 = 1 by
+        have := (minpoly.monic hT : (minpoly K T).leadingCoeff = 1)
+        rwa [Polynomial.leadingCoeff, h_deg0] at this
+    have := minpoly.aeval K T; rw [h_one, map_one] at this
+    have := congr_arg (· v) this; simpa [LinearMap.one_apply] using this
+  | succ k ih =>
+    by_cases hk' : d ≤ k
+    · rw [pow_succ', LinearMap.mul_apply]
+      exact hS_inv _ (ih hk')
+    · have : k + 1 = d := by omega
+      rw [this]; exact hd_mem
 
 -- ============================================================
 -- SECTION VIII: Relating to Finite-Dimensional Case

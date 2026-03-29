@@ -44,18 +44,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created 326-line Lean formalization of Krylov method for minpoly computation. 12 theorems (9 proved, 3 sorry). Proved Krylov recurrence, annihilation, M-invariance, deg bound. Created Aristotle companion file. Gallery entry complete.",
+    "progressSummary": "PROGRESS: Eliminated 3 sorries across 2 files. OQ05OQ01OQ01 now sorry-free. Key techniques: multiset induction for factor counting, injection argument for union avoidance, T-invariance of finite span.",
     "builtItems": [
       "proofs/Proofs/CayleyHamiltonMinpolyOQ03.lean (326 lines, 12 theorems, 3 sorry)",
       "proofs/Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean (companion for Aristotle)",
-      "src/data/proofs/cayley-hamilton-minpoly-oq-03/ (full gallery entry)"
+      "src/data/proofs/cayley-hamilton-minpoly-oq-03/ (full gallery entry)",
+      "Eliminated 2 sorries in CayleyHamiltonMinpolyOQ05OQ01OQ01.lean (now 0 sorry)",
+      "Eliminated 1 sorry in CayleyHamiltonMinpolyOQ05OQ01OQ03.lean (2 remain: cross-file ref + PID structure theorem)"
     ],
     "insights": [
       "The Krylov sequence v, Mv, M²v, ... becomes dependent at step d = deg(minpoly) because the monic minpoly provides a nontrivial linear relation with leading coefficient 1",
       "Key technical gap: proving aeval_mulVec_eq_krylov_sum requires distributing Polynomial.eval₂ as a Finset.sum through Matrix.mulVec -- needs eval₂_eq_sum_range and mulVec linearity",
       "OQ-04 already has cyclic vector definitions (IsCyclicVector, IsCyclicVectorLI) that directly relate to Krylov sequences",
       "The nonderogatory_krylov_optimal theorem is essentially IsCyclicVector → IsCyclicVectorLI, connecting the annihilator formulation to linear independence",
-      "For sparse matrices, Wiedemann's algorithm exploits Krylov structure for O(n·s) complexity where s = nnz(M)"
+      "For sparse matrices, Wiedemann's algorithm exploits Krylov structure for O(n·s) complexity where s = nnz(M)",
+      "PROVED: normalizedFactors card ≤ natDegree via multiset induction (eliminated sorry in OQ05OQ01OQ01)",
+      "PROVED: union avoidance for finite fields via injection argument (eliminated sorry in OQ05OQ01OQ01)",
+      "PROVED: cyclicSubspace_le_minpoly_degree via T-invariance of finite span + minpoly relation (eliminated sorry in OQ05OQ01OQ03)"
     ],
     "mathlibGaps": [
       "No Finset.sum_mulVec lemma (sum of matrices applied to vector = sum of each applied to vector)",

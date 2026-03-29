@@ -117,16 +117,26 @@ theorem not_union_proper_subspaces_fin {V : Type*} [AddCommGroup V] [Module K V]
       -- The bad set is not all of K (since |K| > |s'|)
       have h_bad_ne_univ : (⋃ i ∈ s', {t : K | v + t • w ∈ S i}) ≠ Set.univ := by
         intro h_eq
-        -- The bad set is finite (h_bad_finite) but K is finite with |K| > |s|
-        -- Actually, the finite bad set has at most s'.card elements
-        -- while Set.univ has Fintype.card K elements, and |K| > s'.card
-        have : (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card ≤ s'.card := by
-          sorry -- Each set is a subsingleton, biUnion of s'.card singletons has ≤ s'.card elements
-        have : Fintype.card K ≤ s'.card := by
-          calc Fintype.card K = Set.univ.toFinset.card := by simp
-            _ = (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card := by rw [h_eq]
-            _ ≤ s'.card := this
-        omega
+        -- If the bad set = K, build an injection K → s' via Choice,
+        -- contradicting |K| > s'.card
+        suffices h : Fintype.card K ≤ s'.card from absurd hcard' (not_lt.mpr h)
+        -- Every t ∈ K is bad for some i ∈ s'
+        have h_all_bad : ∀ t : K, ∃ i ∈ s', v + t • w ∈ S i := by
+          intro t
+          have := h_eq ▸ Set.mem_univ t
+          rwa [Set.mem_iUnion₂] at this
+        choose f hf_mem hf_in using h_all_bad
+        -- f is injective: if f t₁ = f t₂, then t₁ and t₂ are both in
+        -- the subsingleton {t | v + tw ∈ S (f t₁)}, so t₁ = t₂
+        have hf_inj : Function.Injective f := by
+          intro t₁ t₂ hfeq
+          exact h_bad_subsingleton (f t₁) (hf_mem t₁) (hf_in t₁) (hfeq ▸ hf_in t₂)
+        -- Injection from K to ↑s' gives |K| ≤ |s'|
+        calc Fintype.card K
+          ≤ Fintype.card ↑s' :=
+            Fintype.card_le_of_injective (fun t => ⟨f t, hf_mem t⟩)
+              (fun t₁ t₂ h => hf_inj (Subtype.mk.inj h))
+          _ = s'.card := Fintype.card_coe s'
       obtain ⟨t, ht⟩ := Set.nonempty_compl.mpr h_bad_ne_univ
       rw [Set.mem_compl_iff, Set.mem_iUnion₂] at ht
       push_neg at ht
@@ -222,7 +232,39 @@ theorem nonderogatory_has_cyclic_vector_fin
     calc nf.card ≤ (normalizedFactors μ).card :=
           Multiset.toFinset_card_le_card _
       _ ≤ μ.natDegree := by
-          sorry -- Each normalized factor has degree ≥ 1; total degree = μ.natDegree
+          -- Each irreducible factor has degree ≥ 1; card ≤ sum of degrees = natDegree
+          suffices hsuff : ∀ (m : Multiset K[X]), (∀ q ∈ m, Irreducible q) →
+              (∀ q ∈ m, q ≠ 0) → m.card ≤ m.prod.natDegree by
+            have h_bound := hsuff (normalizedFactors μ)
+              (fun q hq => (prime_of_normalized_factor q hq).irreducible)
+              (fun q hq => ne_zero_of_mem_normalizedFactors hq)
+            calc (normalizedFactors μ).card
+              ≤ (normalizedFactors μ).prod.natDegree := h_bound
+              _ = μ.natDegree := by
+                  obtain ⟨u, hu⟩ := normalizedFactors_prod hμ_ne
+                  rw [hu, natDegree_mul hμ_ne (IsUnit.ne_zero u.isUnit),
+                      natDegree_eq_zero_of_isUnit u.isUnit, add_zero]
+          intro m hm_irr hm_ne
+          induction m using Multiset.induction_on with
+          | empty => simp
+          | cons a s ih =>
+            simp only [Multiset.prod_cons, Multiset.card_cons]
+            have ha_irr := hm_irr a (Multiset.mem_cons_self a s)
+            have ha_ne := hm_ne a (Multiset.mem_cons_self a s)
+            have hs_irr := fun q hq => hm_irr q (Multiset.mem_cons_of_mem hq)
+            have hs_ne := fun q hq => hm_ne q (Multiset.mem_cons_of_mem hq)
+            have hs_prod_ne : s.prod ≠ 0 :=
+              Multiset.prod_induction s (· ≠ 0)
+                (fun a b ha hb => mul_ne_zero ha hb) one_ne_zero hs_ne
+            have ha_deg : 1 ≤ a.natDegree := by
+              rcases Nat.eq_zero_or_pos a.natDegree with h0 | hpos
+              · exfalso; exact ha_irr.1 (by
+                  rw [Polynomial.eq_C_of_natDegree_eq_zero h0]
+                  exact isUnit_C.mpr (IsUnit.mk0 _ (fun hc =>
+                    ha_ne (by rw [Polynomial.eq_C_of_natDegree_eq_zero h0, hc, map_zero]))))
+              · exact hpos
+            rw [natDegree_mul ha_ne hs_prod_ne]
+            linarith [ih hs_irr hs_ne]
       _ = n := h_deg
   have h_nf_lt_K : nf.card < Fintype.card K := by omega
   -- Phase 2: For each factor q, the cofactor's kernel is a proper subspace
