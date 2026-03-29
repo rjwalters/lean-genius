@@ -17,8 +17,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 200,
+    "axiomCount": 3,
+    "lineCount": 213,
     "mathlibDependencies": [
       {
         "theorem": "NormedSpace.exp_eq_tsum",
@@ -43,7 +43,7 @@
       "Even/odd tsum splitting",
       "Taylor series for cos and sin"
     ],
-    "assumptions": "2 axioms: (1) tsum_even_add_odd: splitting a summable series by even/odd indices; (2) cos_eq_tsum + sin_eq_tsum: identification of the even/odd subseries with cos and sin Taylor series. Estimated ~200-250 lines to eliminate all.",
+    "assumptions": "3 axioms: (1) tsum_even_add_odd: splitting a summable series by even/odd indices; (2) cos_eq_tsum: cosine as Taylor series; (3) sin_eq_tsum: sine as Taylor series. Estimated ~200-250 lines to eliminate all.",
     "relatedProblems": [
       {
         "id": "euler-identity",
@@ -120,10 +120,13 @@
       "Mathlib.Topology.Algebra.InfiniteSum.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Complex", "Real"],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
     "namespace": "EulerIdentityOQ01",
-    "lineCount": 200,
-    "axiomCount": 2,
+    "lineCount": 213,
+    "axiomCount": 3,
     "theoremCount": 8,
     "defCount": 3,
     "mainTheorems": [
