@@ -48,17 +48,18 @@
       "HasBoundedGaps definition: consecutive norm differences bounded",
       "GaussianMoatConjecture definition: existence of bounded walk",
       "jordan_rabung theorem: no walk with steps ≤ 2 (proved from tsuchimura)",
-      "tsuchimura axiom: no walk with steps ≤ √26",
+      "tsuchimura axiom: no walk with steps ≤ √26 (only remaining axiom)",
+      "GaussianPrimeTheorem: asymptotic density stated as Prop def (not axiomatized)",
       "gethner_et_al theorem: step size 4 insufficient (proved from tsuchimura)",
       "CanEscapeMoat definition: moat escapability",
       "criticalMoatWidth definition: smallest non-escapable moat",
       "gaussianPrimeCount definition: counting function",
-      "gaussian_prime_theorem axiom: asymptotic density",
+      "GaussianPrimeTheorem def: asymptotic density (Prop, not axiomatized)",
       "primes_mod_4_connection theorem: proved via factorial construction (arbitrarily long prime-free intervals)"
     ],
-    "axiomCount": 2,
-    "lineCount": 510,
-    "assumptions": "2 axioms: tsuchimura (computational verification), gaussian_prime_theorem (analytic number theory). gaussian_prime_classification proved (both directions). primes_mod_4_connection proved via factorial construction. jordan_rabung and gethner_et_al proved from tsuchimura."
+    "axiomCount": 1,
+    "lineCount": 530,
+    "assumptions": "1 axiom: tsuchimura (computational verification — no walk ≤ √26). GaussianPrimeTheorem stated as Prop def (not axiomatized). gaussian_prime_classification proved (both directions). primes_mod_4_connection proved via factorial construction. jordan_rabung and gethner_et_al proved from tsuchimura."
   },
   "overview": {
     "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",
@@ -170,10 +171,10 @@
       "GaussianInt"
     ],
     "namespace": "Erdos952",
-    "lineCount": 510,
-    "axiomCount": 2,
+    "lineCount": 530,
+    "axiomCount": 1,
     "theoremCount": 16,
-    "definitionCount": 19
+    "definitionCount": 20
   },
   "crossReferences": [
     {

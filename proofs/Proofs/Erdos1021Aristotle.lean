@@ -45,12 +45,29 @@ Supporting lemmas for strong_implies_weak.
     Equivalently: for any C, ε > 0, eventually C · n^{3/2-c} ≤ ε · n^{3/2}. -/
 theorem rpow_decay_bound (C : ℝ) (hC : C > 0) (c : ℝ) (hc : c > 0) (ε : ℝ) (hε : ε > 0) :
     ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      C * (n : ℝ) ^ (3/2 - c) ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by sorry
+      C * (n : ℝ) ^ (3/2 - c) ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by
+  obtain ⟨N, hN⟩ := rpow_eventually_large c hc (C / ε)
+  refine ⟨max N 1, fun n hn => ?_⟩
+  have hn_ge : n ≥ N := (le_max_left N 1).trans hn
+  have hn1 : 1 ≤ n := (le_max_right N 1).trans hn
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hkey : C / ε ≤ (n : ℝ) ^ c := hN n hn_ge
+  have hC_le : C ≤ ε * (n : ℝ) ^ c := by rwa [div_le_iff hε] at hkey
+  calc C * (n : ℝ) ^ (3/2 - c)
+      ≤ ε * (n : ℝ) ^ c * (n : ℝ) ^ (3/2 - c) :=
+        mul_le_mul_of_nonneg_right hC_le (Real.rpow_nonneg hn_pos.le _)
+    _ = ε * ((n : ℝ) ^ c * (n : ℝ) ^ (3/2 - c)) := by ring
+    _ = ε * (n : ℝ) ^ (c + (3/2 - c)) := by rw [← Real.rpow_add hn_pos]
+    _ = ε * (n : ℝ) ^ (3/2 : ℝ) := by congr 1; ring
 
 /-- n^α is eventually larger than any constant for α > 0.
     Aristotle target: needs Filter.Tendsto + rpow API. -/
 theorem rpow_eventually_large (α : ℝ) (hα : α > 0) (M : ℝ) :
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (n : ℝ) ^ α ≥ M := by sorry
+    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (n : ℝ) ^ α ≥ M := by
+  have htend : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ α) Filter.atTop Filter.atTop :=
+    (Real.tendsto_rpow_atTop hα).comp tendsto_natCast_atTop_atTop
+  rw [Filter.tendsto_atTop_atTop] at htend
+  exact htend M
 
 /-
 ## Bipartite graph lemmas
