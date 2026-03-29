@@ -169,3 +169,27 @@ theorem consecutiveProduct_succ (n k : ℕ) :
 theorem consecutiveProduct_pos (n k : ℕ) : 0 < consecutiveProduct n k := by
   unfold consecutiveProduct
   exact Finset.prod_pos (fun i _ => by omega)
+
+/- ## Prime divisibility -/
+
+/-- Among any `k` consecutive integers starting at `n+1`, at least one is
+    divisible by `p`, provided `p ≤ k` and `p > 0`. -/
+theorem exists_dvd_in_range (n k p : ℕ) (hp : 0 < p) (hpk : p ≤ k) :
+    ∃ i, i < k ∧ p ∣ (n + i + 1) := by
+  rcases Nat.eq_zero_or_pos ((n + 1) % p) with hr | hr
+  · exact ⟨0, by omega, Nat.dvd_of_mod_eq_zero hr⟩
+  · have hmod := Nat.mod_lt (n + 1) hp
+    refine ⟨p - (n + 1) % p, by omega, ?_⟩
+    rw [Nat.dvd_iff_mod_eq_zero,
+        show n + (p - (n + 1) % p) + 1 = (n + 1) + (p - (n + 1) % p) from by omega,
+        Nat.add_mod,
+        Nat.mod_eq_of_lt (show p - (n + 1) % p < p from by omega),
+        show (n + 1) % p + (p - (n + 1) % p) = p from by omega,
+        Nat.mod_self]
+
+/-- Every prime `p ≤ k` divides `lcmInterval n k`:
+    among `k` consecutive integers, at least one is divisible by `p`. -/
+theorem prime_le_dvd_lcmInterval (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
+    p ∣ lcmInterval n k := by
+  obtain ⟨i, hi, hpi⟩ := exists_dvd_in_range n k p hp.pos hpk
+  exact dvd_trans hpi (dvd_lcmInterval n k i hi)
