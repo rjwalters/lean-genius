@@ -132,7 +132,11 @@ Note: Expected a function because this term is being applied to the argument
   G-/
 /-- Triangle has exactly 3 vertices. -/
 theorem Triangle.card_vertices (T : Triangle G) : T.vertices.card = 3 := by
-  sorry
+  simp only [Triangle.vertices]
+  rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem, Finset.card_singleton]
+  · exact Finset.not_mem_singleton.mpr T.distinct23
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨T.distinct12, T.distinct13⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
