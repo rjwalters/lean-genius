@@ -52,7 +52,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "3 axioms: erdos_319_conjecture (open), adenwalla_lower_bound (deep result), croot_unit_fraction_theorem (deep result). Proved: trivial_upper_bound (Finset.sup_le), small_example (explicit construction {2,3,6} with case analysis).",
-    "lineCount": 189
+    "lineCount": 191
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80]. It asks for the largest subset $A$ of $\\{1,\\ldots,N\\}$ that supports an irreducible signed unit-fraction vanishing sum—a signing $\\delta : A \\to \\{\\pm 1\\}$ such that $\\sum_{n \\in A} \\delta(n)/n = 0$, but no proper nonempty subset of $A$ satisfies this.\n\nThe irreducibility condition is the key constraint: it means the vanishing is tight—removing any element breaks the zero sum. Without this condition, one could trivially achieve $|A| = N$ by combining independent zero sums. Irreducibility captures a notion of minimal rational dependence among the reciprocals $1/n$.\n\nAdenwalla achieved the best known lower bound $c(N) \\geq (1 - 1/e + o(1))N \\approx 0.632N$ using Croot's (2001) unit-fraction theorem. The construction takes $B \\subseteq [(1/e - o(1))N, N]$ with $\\sum_{b \\in B} 1/b = 1$ (which exists by Croot's result), then sets $A = B \\cup \\{1\\}$ with $\\delta(1) = +1$ and $\\delta(b) = -1$ for $b \\in B$, giving $\\sum \\delta(n)/n = 1 - 1 = 0$. The set $B$ has $|B| \\geq (1 - 1/e - o(1))N$ elements since all denominators are $\\geq (1/e)N$.\n\nThe gap between $(1 - 1/e)N \\approx 0.632N$ and the trivial upper bound $N$ remains open. The central question is whether $c(N) = (1 - o(1))N$ or whether there is a strict constant gap.\n\n**Status**: OPEN — The exact asymptotic constant is unknown.",
@@ -129,7 +129,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 184,
+    "lineCount": 191,
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 4
