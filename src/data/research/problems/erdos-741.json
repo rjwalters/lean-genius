@@ -29,8 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: 5 of 7 axioms are provable from limsup definition. density_empty/univ need limsup_const, density_mono needs limsup_le_limsup, density_le_one follows from mono+univ.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: 7→3 axioms. Proved density_empty (limsup_const 0), density_univ (ncard_Iic + limsup_const 1), density_mono (limsup_le_limsup + ncard_le_ncard), density_le_one (mono+univ).",
+    "builtItems": [
+      "PROVED density_empty via Filter.limsup_const after simp",
+      "PROVED density_univ via Set.ncard_Iic + div_eq_one_iff_eq + Filter.limsup_const",
+      "PROVED density_mono via Filter.limsup_le_limsup + ncard monotonicity",
+      "PROVED density_le_one := density_univ ▸ density_mono (subset_univ A)"
+    ],
     "insights": [
       "upperDensity is a concrete def (limsup of ncard(A∩Iic n)/(n+1)), so density axioms ARE provable",
       "density_empty: simp to limsup(fun _ => 0), then Filter.limsup_const",
