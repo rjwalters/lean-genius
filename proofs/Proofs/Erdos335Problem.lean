@@ -201,3 +201,82 @@ theorem Sumset_empty_left (B : Set ℕ) : Sumset ∅ B = ∅ := by
 /-- Sumset with the empty set on the right is empty. -/
 theorem Sumset_empty_right (A : Set ℕ) : Sumset A ∅ = ∅ := by
   ext n; simp [Sumset]
+
+/- ## Deeper Structural Results -/
+
+/-- Sumset is associative: (A + B) + C = A + (B + C). -/
+theorem Sumset_assoc (A B C : Set ℕ) :
+    Sumset (Sumset A B) C = Sumset A (Sumset B C) := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨ab, ⟨a, ha, b, hb, rfl⟩, c, hc, hn⟩
+    exact ⟨a, ha, b + c, ⟨b, hb, c, hc, rfl⟩, by omega⟩
+  · rintro ⟨a, ha, bc, ⟨b, hb, c, hc, rfl⟩, hn⟩
+    exact ⟨a + b, ⟨a, ha, b, hb, rfl⟩, c, hc, by omega⟩
+
+/-- Sumset with the universal set contains all sufficiently large numbers.
+    If a ∈ A, then for all n ≥ a, n ∈ Sumset A univ. -/
+theorem Sumset_univ_right (A : Set ℕ) (a : ℕ) (ha : a ∈ A) (n : ℕ) (hn : a ≤ n) :
+    n ∈ Sumset A Set.univ := by
+  exact ⟨a, ha, n - a, Set.mem_univ _, by omega⟩
+
+/-- Sumset is monotone in both arguments. -/
+theorem Sumset_mono_left {A A' B : Set ℕ} (hA : A ⊆ A') :
+    Sumset A B ⊆ Sumset A' B :=
+  Sumset_mono hA (Set.Subset.refl B)
+
+/-- Sumset is monotone in both arguments. -/
+theorem Sumset_mono_right {A B B' : Set ℕ} (hB : B ⊆ B') :
+    Sumset A B ⊆ Sumset A B' :=
+  Sumset_mono (Set.Subset.refl A) hB
+
+/-- In a density-additive pair, both sets have density at most 1. -/
+theorem density_additive_parts_le_one (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity A ≤ 1 ∧ asympDensity B ≤ 1 :=
+  ⟨density_le_one A h.1, density_le_one B h.2.1⟩
+
+/-- In a density-additive pair, both sets have non-negative density. -/
+theorem density_additive_parts_nonneg (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity A ≥ 0 ∧ asympDensity B ≥ 0 :=
+  ⟨density_nonneg A h.1, density_nonneg B h.2.1⟩
+
+/-- If d(A) + d(B) = 1 in a density-additive pair, the sumset has full density. -/
+theorem density_additive_full (A B : Set ℕ) (h : DensityAdditive A B)
+    (hfull : asympDensity A + asympDensity B = 1) :
+    asympDensity (Sumset A B) = 1 := by
+  rw [h.2.2.2, hfull]
+
+/-- Density additivity with the empty set: d(A + ∅) = d(∅) + d(A) holds vacuously
+    since ∅ has density 0 and A + ∅ = ∅. -/
+theorem density_sumset_empty (A : Set ℕ) :
+    Sumset A ∅ = ∅ ∧ Sumset ∅ A = ∅ :=
+  ⟨Sumset_empty_right A, Sumset_empty_left A⟩
+
+/-- Counting function is zero for the empty set. -/
+theorem countingFn_empty (N : ℕ) : countingFn ∅ N = 0 := by
+  simp [countingFn]
+
+/-- Counting function is monotone in the set argument. -/
+theorem countingFn_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    countingFn A N ≤ countingFn B N := by
+  unfold countingFn
+  exact Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+    ((Set.finite_Icc 1 N).subset Set.inter_subset_right)
+
+/-- Counting function is monotone in N when A is fixed. -/
+theorem countingFn_mono_N (A : Set ℕ) {M N : ℕ} (h : M ≤ N) :
+    countingFn A M ≤ countingFn A N := by
+  unfold countingFn
+  apply Set.ncard_le_ncard
+  · exact Set.inter_subset_inter_right A (Set.Icc_subset_Icc_right h)
+  · exact (Set.finite_Icc 1 N).subset Set.inter_subset_right
+
+/-- The sumset of singletons is a singleton. -/
+theorem Sumset_singleton (a b : ℕ) :
+    Sumset {a} {b} = {a + b} := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨x, rfl, y, rfl, rfl⟩; rfl
+  · intro h; exact ⟨a, rfl, b, rfl, h⟩
