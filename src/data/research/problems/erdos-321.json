@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Identified proof strategy for main_term_n_over_log_n elimination (3A→2A). Needs ~55 lines including R(N)≥1.",
     "builtItems": [
       "erdos_321_asymptotics: proved by taking f = maxDistinctReciprocal",
       "subset_pair_cases: helper classifying S ⊆ {a,b} into 4 cases",
@@ -41,7 +41,8 @@
       "main_term_n_over_log_n could potentially be derived from bleicher_erdos_lower + bleicher_erdos_upper",
       "For {m,n} with m < n: 0 < 1/n < 1/m < 1/m + 1/n gives all 4 subset sums distinct",
       "Finset.sum_pair hmn_ne + linarith handles all 12 non-trivial cross-cases",
-      "div_lt_div_of_pos_left is the correct Mathlib v4.26.0 name for reciprocal ordering"
+      "div_lt_div_of_pos_left is the correct Mathlib v4.26.0 name for reciprocal ordering",
+      "main_term_n_over_log_n is derivable: c₁ = log2/(2N₀) from bleicher_erdos_lower(k=4), c₂ = C from bleicher_erdos_upper. Key step: R(N)≥1 for N≥1 via singleton {1}. Two cases: N≥N₀ uses lower bound, N<N₀ uses c₁·N/logN ≤ 1/2 ≤ R(N)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
