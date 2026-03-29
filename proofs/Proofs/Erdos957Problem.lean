@@ -97,14 +97,14 @@ noncomputable def distanceFrequency (A : Finset Point) (d : ℝ) : ℕ :=
 d₁ = min{d(p,q) : p ≠ q ∈ A}
 -/
 noncomputable def minDistance (A : Finset Point) : ℝ :=
-  (pairwiseDistances A).min' (by sorry) -- Nonempty assumption
+  if h : (pairwiseDistances A).Nonempty then (pairwiseDistances A).min' h else 0
 
 /--
 **Maximum distance (diameter):**
 dₖ = max{d(p,q) : p, q ∈ A} = diam(A)
 -/
 noncomputable def maxDistance (A : Finset Point) : ℝ :=
-  (pairwiseDistances A).max' (by sorry) -- Nonempty assumption
+  if h : (pairwiseDistances A).Nonempty then (pairwiseDistances A).max' h else 0
 
 /-
 ## Part III: The Erdős-Pach Question
