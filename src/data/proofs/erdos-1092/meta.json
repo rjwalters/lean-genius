@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Hajnal–Szemerédi",
     "sourceUrl": "https://erdosproblems.com/1092",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1092Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "extremal-graph-theory",
       "open"
     ],
-    "badge": "verified",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 1092,
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 162,
-    "assumptions": "No axioms, no sorries. Fully verified. Definitions and 5 structural theorems proved. Main conjectures (Questions 1&2) disproved by Rödl (1982); false axioms removed with documented counterexamples.",
+    "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. 2 True-stub documentation markers for disproved claims (Q1, Q2 refuted by Rödl 1982). Main conjectures removed; file is primarily graph coloring infrastructure.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
