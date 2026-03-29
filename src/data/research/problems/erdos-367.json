@@ -1,6 +1,6 @@
 {
   "slug": "erdos-367",
-  "title": "Erdős #367",
+  "title": "Erd\u0151s #367",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-13T00:59:36.242Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Eliminated strong_bound_fails_k3 axiom via log\u2192\u221e argument",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove twoFullPart_eq_one_iff and twoFullPart_mul_coprime",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,25 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 7 to 5. Proved strong_bound_k1 and strong_bound_k2 from twoFullPart_le. Total 8 theorems proved, 5 axioms remain.",
+    "progressSummary": "PROGRESS: 9T (was 8), 4A (was 5), 0S. Proved strong_bound_fails_k3 from van_doorn_lower_bound via log\u2192\u221e argument. Eliminated 1 axiom.",
     "builtItems": [
       "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean",
       "Proved strong_bound_k1 in Erdos367Problem.lean:140",
-      "Proved strong_bound_k2 in Erdos367Problem.lean:155"
+      "Proved strong_bound_k2 in Erdos367Problem.lean:155",
+      "Proved strong_bound_fails_k3 from van_doorn_lower_bound (was axiom) \u2014 log goes to infinity contradicts fixed C"
     ],
     "insights": [
       "4 axioms proved from Mathlib: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq",
       "Proved strong_bound_k1 (k=1) from twoFullPart_le via Finset.Ico singleton and nlinarith",
       "Proved strong_bound_k2 (k=2) from twoFullPart_le via Finset.prod_insert, mul_le_mul, and nlinarith",
-      "Key Mathlib API for twoFullPart_eq_one_iff: Nat.squarefree_iff_factorization_le_one, Nat.factorization_prod_pow_eq_self, Nat.support_factorization, Finset.filter_true_of_mem"
+      "Key Mathlib API for twoFullPart_eq_one_iff: Nat.squarefree_iff_factorization_le_one, Nat.factorization_prod_pow_eq_self, Nat.support_factorization, Finset.filter_true_of_mem",
+      "strong_bound_fails_k3 follows from van_doorn_lower_bound: if C*n^2 >= c*n^2*log(n), then C >= c*log(n) for unbounded n, contradiction. Used exp/log monotonicity from Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove twoFullPart_eq_one_iff via Nat.squarefree_iff_factorization_le_one + Nat.factorization_prod_pow_eq_self (backward: squarefree → all exps 1 → filter identity → product = n → division = 1; forward: division = 1 → n = squarefreePart → Prime.dvd_finset_prod shows all primes in filter → all exps 1 → squarefree)",
-      "Prove twoFullPart_mul_coprime via coprime factorization splitting (Nat.factorization_mul_coprime)",
-      "average_twoFullPart_bounded requires deep analytic number theory — likely unprovable in Lean without extensive infrastructure"
+      "Prove twoFullPart_eq_one_iff (squarefree characterization) \u2014 needs Nat.factorization_prod_pow_eq_self",
+      "Prove twoFullPart_mul_coprime (coprime multiplicativity) \u2014 needs Nat.factorization_mul + coprime splitting",
+      "average_twoFullPart_bounded is deep analytic NT \u2014 likely stays as axiom"
     ],
-    "markdown": "# Erdős #367 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_2(n)$ be the 2-full part of $n$ (that is, $B_2(n)=n/n'$ where $n'$ is the product of all primes that divide $n$ exactly once). Is it true that, for every fixed $k\\geq 1$,\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2+o(1)}?\\]Or perhaps even $\\ll_k n^2$?\n\n\n\nIt would also be interesting to find upper and lower bounds for the analogous product with $B_r$ for $r\\geq 3$, where $B_r(n)$ is the $r$-full part of $n$ (that is, the product of prime powers $p^a \\mid n$ such that $p^{a+1}\\nmid n$ and $a\\geq r$). Is it true that, for every fixed $r,k\\geq 2$ and $\\epsilon>0$,\\[\\limsup \\frac{\\prod_{n\\leq m<n+k}B_r(m) }{n^{1+\\epsilon}}\\to\\infty?\\]van Doorn notes in the comments that for $k\\leq 2$ we trivially have\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2},\\]but that this fails for all $k\\geq 3$, and in fact\\[\\prod_{n\\leq m<n+3}B_2(m) \\gg n^{2}\\log n\\]infinitely often.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #366\n- Problem #368\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erd\u0151s #367 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_2(n)$ be the 2-full part of $n$ (that is, $B_2(n)=n/n'$ where $n'$ is the product of all primes that divide $n$ exactly once). Is it true that, for every fixed $k\\geq 1$,\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2+o(1)}?\\]Or perhaps even $\\ll_k n^2$?\n\n\n\nIt would also be interesting to find upper and lower bounds for the analogous product with $B_r$ for $r\\geq 3$, where $B_r(n)$ is the $r$-full part of $n$ (that is, the product of prime powers $p^a \\mid n$ such that $p^{a+1}\\nmid n$ and $a\\geq r$). Is it true that, for every fixed $r,k\\geq 2$ and $\\epsilon>0$,\\[\\limsup \\frac{\\prod_{n\\leq m<n+k}B_r(m) }{n^{1+\\epsilon}}\\to\\infty?\\]van Doorn notes in the comments that for $k\\leq 2$ we trivially have\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2},\\]but that this fails for all $k\\geq 3$, and in fact\\[\\prod_{n\\leq m<n+3}B_2(m) \\gg n^{2}\\log n\\]infinitely often.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #366\n- Problem #368\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
