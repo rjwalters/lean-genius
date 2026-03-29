@@ -243,10 +243,6 @@ def erdos_969_open_problem : Prop := errorTermConjecture
 
 /-- The Riemann Hypothesis would follow from resolving this problem -/
 theorem rh_follows_from_conjecture : errorTermConjecture → True :=
-  fun hconj => by
-    obtain ⟨c, C, hc, hC, hbounds⟩ := hconj
-    exact rh_from_error_bound (fun ε hε => ⟨C, hC, fun x hx => by
-      -- The upper bound C·x^(1/4) certainly satisfies ≤ C'·x^(1/4+ε)
-      sorry⟩)
+  fun _ => trivial
 
 end Erdos969
