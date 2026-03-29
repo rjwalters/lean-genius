@@ -38,16 +38,26 @@ structure FareyFraction where
   num_le_denom : num ≤ denom
   coprime : Nat.Coprime num denom
 
-/-- The Farey sequence of order n: all Farey fractions with denominator ≤ n. -/
+/-- The Farey sequence of order n: all Farey fractions with denominator ≤ n.
+    Constructed from the fareyList by converting to a Finset via List.toFinset.
+    Note: this requires DecidableEq FareyFraction, which we provide below. -/
+private instance : DecidableEq FareyFraction := fun f g =>
+  if h1 : f.num = g.num then
+    if h2 : f.denom = g.denom then
+      isTrue (by cases f; cases g; simp_all)
+    else isFalse (by intro h; cases h; exact h2 rfl)
+  else isFalse (by intro h; cases h; exact h1 rfl)
+
 def fareySequence (n : ℕ) : Finset FareyFraction :=
-  sorry  -- Complex construction of ordered Farey fractions
+  (fareyList n).toFinset
 
 /-- The number of Farey fractions of order n. -/
 def fareyCount (n : ℕ) : ℕ := (fareySequence n).card
 
 /-- Farey count is asymptotically 3n²/π². -/
-theorem farey_count_asymptotic (n : ℕ) : := by sorry
-  ∃ C : ℝ, |fareyCount n - 3 * n^2 / Real.pi^2| ≤ C * n * Real.log n
+theorem farey_count_asymptotic (n : ℕ) :
+    ∃ C : ℝ, |fareyCount n - 3 * n^2 / Real.pi^2| ≤ C * n * Real.log n := by
+  sorry
 
 /-
 ## Similarly Ordered Fractions
@@ -84,9 +94,19 @@ A run of consecutive Farey fractions is similarly ordered if every
 pair in the run satisfies the similarly ordered property.
 -/
 
-/-- The Farey sequence as a list (for indexing). -/
+/-- The Farey sequence as a sorted list (for indexing).
+    Constructed by enumerating all coprime pairs (a,b) with 0 ≤ a ≤ b ≤ n, b ≥ 1,
+    then sorting by rational value a/b (via cross-multiplication: a₁b₂ ≤ a₂b₁). -/
 def fareyList (n : ℕ) : List FareyFraction :=
-  sorry  -- Ordered list of Farey fractions
+  let pairs : List (ℕ × ℕ) := do
+    let b ← (List.range (n + 1)).filter (· > 0)
+    let a ← (List.range (b + 1)).filter (Nat.Coprime · b)
+    return (a, b)
+  let sorted := pairs.mergeSort fun p q => p.1 * q.2 ≤ q.1 * p.2
+  sorted.filterMap fun ⟨a, b⟩ =>
+    if h : b > 0 ∧ a ≤ b ∧ Nat.Coprime a b then
+      some ⟨a, b, h.1, h.2.1, h.2.2⟩
+    else none
 
 /-- A run of length k starting at index i is similarly ordered. -/
 def isSimOrdered (n : ℕ) (i k : ℕ) : Prop :=
@@ -125,12 +145,14 @@ van Doorn established the best known bounds for f(n).
 -/
 
 /-- van Doorn (2025): Lower bound f(n) ≥ (1/12 - o(1))n. -/
-theorem vanDoorn_lower_bound : := by sorry
-  ∀ ε > 0, ∃ N, ∀ n ≥ N, (mayerErdosF n : ℝ) ≥ (1/12 - ε) * n
+theorem vanDoorn_lower_bound :
+    ∀ ε > 0, ∃ N, ∀ n ≥ N, (mayerErdosF n : ℝ) ≥ (1/12 - ε) * n := by
+  sorry
 
 /-- van Doorn (2025): Upper bound f(n) ≤ n/4 + O(1). -/
-theorem vanDoorn_upper_bound : := by sorry
-  ∃ C : ℝ, ∀ n : ℕ, (mayerErdosF n : ℝ) ≤ n / 4 + C
+theorem vanDoorn_upper_bound :
+    ∃ C : ℝ, ∀ n : ℕ, (mayerErdosF n : ℝ) ≤ n / 4 + C := by
+  sorry
 
 /-- Combined: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1). -/
 theorem vanDoorn_bounds :
@@ -170,11 +192,12 @@ def mediant (f g : FareyFraction) : ℚ :=
   (f.num + g.num) / (f.denom + g.denom)
 
 /-- Adjacent Farey fractions satisfy |ad - bc| = 1. -/
-theorem farey_adjacent_property (n : ℕ) (i : ℕ) : := by sorry
-  ∀ (f g : FareyFraction), (fareyList n)[i]? = some f →
+theorem farey_adjacent_property (n : ℕ) (i : ℕ) :
+    ∀ (f g : FareyFraction), (fareyList n)[i]? = some f →
          (fareyList n)[i + 1]? = some g →
          (f.num : ℤ) * g.denom - f.denom * g.num = 1 ∨
-         (f.num : ℤ) * g.denom - f.denom * g.num = -1
+         (f.num : ℤ) * g.denom - f.denom * g.num = -1 := by
+  sorry
 
 /-
 ## Geometric Interpretation

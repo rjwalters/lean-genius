@@ -239,25 +239,31 @@ theorem degree_eq_zero_of_not_mem {F : Finset (Finset α)} {a : α}
 -- § 10: Lovász Theorem (c(2) = 1)
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **Lovász's theorem** (1968): Every 1-sparse family of sets of size ≥ 2
-    has Property B.
+/-  **REMOVED**: The previous `lovász_theorem` axiom was incorrectly stated.
+    It claimed: IsSparse F 1 ∧ AllSizeAtLeast F 2 → HasPropertyB F.
 
-    This is the base case c(2) = 1 of Erdős #1022. It establishes that the
-    conjecture holds for t = 2 with the smallest possible sparsity constant.
+    Counterexample: The triangle K₃ = {{0,1}, {0,2}, {1,2}} on Fin 3.
+    - AllSizeAtLeast K₃ 2: all edges have cardinality 2 ✓
+    - IsSparse K₃ 1: for X = {0,1,2}, 3 edges ≤ 1·3 = 3 ✓
+    - ¬HasPropertyB K₃: any S splits 3 vertices into 2 groups (1,2 or 2,1).
+      The group of 2 contains an edge from the triangle.
 
-    The proof uses a greedy argument: consider a maximal proper 2-coloring
-    and show that 1-sparsity prevents any uncolored element from being forced
-    into a monochromatic configuration.
+    The ACTUAL Lovász result uses a DEGREE condition (maximum number of sets
+    containing any one element), not the IsSparse condition (edges in induced
+    subhypergraphs). The degree condition is strictly stronger than IsSparse
+    for this purpose. The correct Lovász Local Lemma version for Property B:
+    if every set has size ≥ t and intersects at most d other sets, then for
+    d ≤ 2^{t-2} - 1, Property B holds. -/
 
-    Reference: Lovász, L. "On decomposition of graphs." Studia Sci. Math.
-    Hungar. 1 (1966), 237-238. -/
-axiom lovasz_theorem [Fintype α] (F : Finset (Finset α))
-    (hsize : AllSizeAtLeast F 2) (hsparse : IsSparse F 1) : HasPropertyB F
+/-- Degree-bounded condition: every element appears in at most d members of F. -/
+def IsDegreeBounded [Fintype α] (F : Finset (Finset α)) (d : ℕ) : Prop :=
+  ∀ x : α, (F.filter (x ∈ ·)).card ≤ d
 
-/-- Application: if a graph (sets of size exactly 2) is 1-sparse, it is 2-colorable. -/
-theorem graph_sparse_propertyB [Fintype α] (F : Finset (Finset α))
-    (hsize : ∀ f ∈ F, f.card = 2) (hsparse : IsSparse F 1) : HasPropertyB F :=
-  lovasz_theorem F (fun f hf => by rw [hsize f hf]) hsparse
+/-- A matching (degree 1) of ≥ 2-sets has Property B: for each set,
+    put one element in S and the rest outside. Since sets are disjoint, this works. -/
+theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 2) (hdeg : IsDegreeBounded F 1) : HasPropertyB F := by
+  sorry -- Uses the disjointness from degree 1 + greedy coloring
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 11: Union and Combination of Families

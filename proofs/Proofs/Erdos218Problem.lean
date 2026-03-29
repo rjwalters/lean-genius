@@ -308,11 +308,29 @@ axiom green_tao (k : ℕ) : ∃ a d : ℕ, d > 0 ∧
 While exact density 1/2 is unknown, we can show that both
 gapIncreasingSet and gapDecreasingSet are infinite.
 -/
-/-- The set of gap-increasing indices is infinite (follows from PNT: gaps grow on average). -/
-axiom gapIncreasingSet_infinite : gapIncreasingSet.Infinite
+/-- A set with positive density is infinite. Proof: a finite set has density 0
+    (counting function → 0), but density > 0 by assumption, contradiction. -/
+private theorem infinite_of_hasDensity_pos {S : Set ℕ} {d : ℝ} (hd : 0 < d)
+    (hdens : HasDensity S d) : S.Infinite := by
+  by_contra hfin
+  push_neg at hfin
+  -- S is finite. For large N, |S ∩ [0,N)| is bounded by |S.toFinset|
+  have hfin' := Set.Finite.ofFinset hfin.toFinset (fun x => by simp [Set.Finite.mem_toFinset])
+  -- The counting function is eventually constant, hence → 0
+  -- This contradicts Tendsto to nhds d with d > 0
+  -- The formal proof requires showing finite-set counting function → 0
+  -- then using tendsto_nhds_unique
+  sorry
 
-/-- The set of gap-decreasing indices is infinite (after large gaps, smaller gaps follow). -/
-axiom gapDecreasingSet_infinite : gapDecreasingSet.Infinite
+/-- The set of gap-increasing indices is infinite.
+    Follows from Erdős's conjecture that this set has density 1/2. -/
+theorem gapIncreasingSet_infinite : gapIncreasingSet.Infinite :=
+  infinite_of_hasDensity_pos (by norm_num : (0 : ℝ) < 1/2) erdos_218a
+
+/-- The set of gap-decreasing indices is infinite.
+    Follows from Erdős's conjecture that this set has density 1/2. -/
+theorem gapDecreasingSet_infinite : gapDecreasingSet.Infinite :=
+  infinite_of_hasDensity_pos (by norm_num : (0 : ℝ) < 1/2) erdos_218b
 
 /--
 **Average Gap Growth**
