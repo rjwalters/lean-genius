@@ -41,10 +41,8 @@ theorem counting_mono (A : Set ℕ) (N M : ℕ) (hNM : N ≤ M) :
     ((Finset.range (N + 1) \ {0}).filter (· ∈ A)).card ≤
     ((Finset.range (M + 1) \ {0}).filter (· ∈ A)).card := by
   apply Finset.card_le_card
-  apply Finset.filter_subset_filter
-  intro x
-  simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton]
-  exact fun ⟨hlt, hne⟩ => ⟨by omega, hne⟩
+  apply Finset.filter_subset_filter _
+  apply Finset.sdiff_subset_sdiff (Finset.range_mono (by omega)) Subset.rfl
 
 -- Routine: The counting function is bounded by N.
 -- |A ∩ {1,...,N}| ≤ N for any A.
@@ -62,8 +60,10 @@ theorem counting_le_N (A : Set ℕ) (N : ℕ) :
 -- α^0 = 1 ≥ α + α(1-α)/1 = α(2-α) for α ∈ [0,1].
 theorem power_bound_k1 (α : ℝ) (hα0 : 0 ≤ α) (hα1 : α ≤ 1) :
     α ^ (1 - 1 / (1 : ℝ)) ≥ α + α * (1 - α) / 1 := by
-  simp only [div_one, sub_self, rpow_zero]
-  nlinarith [sq_nonneg (1 - α)]
+  -- 1 - 1/1 = 0, so α^0 = 1; RHS = 2α - α²; need 1 ≥ 2α - α², i.e., (α-1)² ≥ 0
+  have h1 : (1 : ℝ) - 1 / 1 = 0 := by norm_num
+  rw [h1, rpow_zero]
+  nlinarith [sq_nonneg (α - 1)]
 
 -- Routine: For α = 0, the power bound holds trivially.
 theorem power_bound_alpha_zero (k : ℕ) (hk : k ≥ 1) :

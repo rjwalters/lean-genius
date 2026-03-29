@@ -96,8 +96,35 @@ private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ
     ∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i := by
   -- Handle odd n: use two consecutive terms
   rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
-  · -- n even, not a power of 2: need odd factor analysis
-    sorry
+  · -- n = 2*m, even case. Since n ≥ 3 and even, m ≥ 2.
+    -- Since n is not a power of 2, m is not a power of 2.
+    have hm_ge2 : m ≥ 2 := by omega
+    have hm_not_pow : ¬∃ k, m = 2 ^ k := by
+      intro ⟨k, hk⟩; exact h ⟨k + 1, by rw [pow_succ]; omega⟩
+    rcases Nat.even_or_odd m with ⟨m2, hm2⟩ | ⟨k, hk⟩
+    · -- m = 2*m2 (even sub-case). n = 4*m2.
+      -- m2 ≥ 2 (m2=1 gives m=2, n=4=2², contradiction)
+      -- m2 not a power of 2 (else m=2^(j+1), n=2^(j+2))
+      -- Requires deeper odd factor extraction — candidate for Aristotle
+      sorry
+    · -- m = 2*k+1 (odd sub-case). n = 2*(2k+1) = 4k+2.
+      -- m ≥ 3 (m ≥ 2, m odd ⟹ m ≥ 3), so k ≥ 1.
+      have hk_ge1 : k ≥ 1 := by omega
+      rcases eq_or_lt_of_le hk_ge1 with rfl | hk_ge2
+      · -- k = 1: n = 6. Use 3 terms: 1+2+3 = 6.
+        refine ⟨0, 2, by omega, ?_⟩
+        have h_sum := two_mul_sum_Icc 1 3 (by omega)
+        -- 2 * ∑[1..3] = (3-1+1)*(1+3) = 12, so ∑ = 6 = n
+        omega
+      · -- k ≥ 2: n = 4k+2. Use 4 terms from (k-1) to (k+2).
+        -- Sum = (k-1)+k+(k+1)+(k+2) = 4k+2 = n.
+        refine ⟨k - 2, k + 1, by omega, ?_⟩
+        have hk_sub : k - 2 + 1 = k - 1 := by omega
+        rw [hk_sub]
+        have h_sum := two_mul_sum_Icc (k - 1) (k + 2) (by omega)
+        -- 2*∑[k-1..k+2] = (k+2-(k-1)+1)*(k-1+k+2) = 4*(2k+1)
+        -- So ∑ = 2*(2k+1) = n
+        omega
   · -- n odd: n = (n-1)/2 + (n+1)/2 = 2m+1
     -- Use u = m-1, v = m. Then Icc (m) (m+1) has sum m + (m+1) = 2m+1 = n.
     have hm1 : m ≥ 1 := by omega

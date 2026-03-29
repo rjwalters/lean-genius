@@ -1,8 +1,8 @@
 {
   "slug": "chinese-remainder-constructive-oq-04-oq-03",
   "title": "Can the pairwise coprimality condition be weakened",
-  "phase": "COMPLETED",
-  "status": "graduated",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ORIENT",
     "since": "2026-03-28T20:58:08-07:00",
     "iteration": 1,
-    "focus": "Gallery entry created for fully verified proof",
+    "focus": "Surveyed non-coprime CRT generalization path",
     "blockers": [],
-    "nextAction": "None - problem fully resolved",
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Non-coprime CRT generalized to arbitrary lists over Euclidean domains. ChineseRemainderNonCoprimeList.lean: 0A 0S. Gallery entry created. Answers OQ04 third open question.",
+    "progressSummary": "COMPLETED: OQ03 fully verified. Proved mersenne_coprime_of_coprime (Euclidean algorithm approach). Removed false primorial axiom, proved restricted version. File: 0A 0S, status verified.",
     "builtItems": [
       "mersenne_mod_eq helper lemma in ChineseRemainderConstructiveOQ03.lean",
       "mul_add_mod_eq helper lemma for modular arithmetic",
       "Proved mersenne_coprime_of_coprime theorem",
-      "Proved primorial_growth_lower (restricted to k<=6)",
-      "Gallery entry: chinese-remainder-constructive-oq-04-oq-03 with meta.json, annotations.json, index.ts"
+      "Proved primorial_growth_lower (restricted to k<=6)"
     ],
     "insights": [
       "OQ04 (CRT for arbitrary lists) is clean: 0A 0S 4T. The coprime case is fully solved.",
@@ -46,9 +45,7 @@
       "mersenne_coprime_of_coprime PROVED via Euclidean algorithm on exponents + strong induction on a",
       "Key helper: mersenne_mod_eq shows (2^b-1) % (2^a-1) = 2^(b%a)-1 using pow_two_mod_mersenne",
       "False axiom primorial_growth_lower REMOVED: primorial lookup table returns 0 for k>=7, making universal bound false. Replaced with proved theorem restricted to k<=6",
-      "OQ03 file now 0 axioms, 0 sorries: fully verified",
-      "Proof was already complete in ChineseRemainderNonCoprimeList.lean (0A 0S) - needed gallery integration",
-      "Works over arbitrary Euclidean domains, not just naturals or integers"
+      "OQ03 file now 0 axioms, 0 sorries: fully verified"
     ],
     "mathlibGaps": [],
     "nextSteps": [
