@@ -7,7 +7,7 @@
     "author": "Euclid; formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_lemma",
     "date": "~300 BCE",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -15,8 +15,8 @@
       "algorithms",
       "research"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Int.mul_ediv_cancel'",
