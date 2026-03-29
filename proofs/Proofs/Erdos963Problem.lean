@@ -107,6 +107,182 @@ theorem singleton_dissociated (A : Finset ℝ) (a : ℝ) (ha : a ∈ A) (ha0 : a
     · simp at hsum; exfalso; exact ha0 hsum
     · rfl
 
+/-- Any subset of a dissociated set is dissociated in the ambient set. -/
+theorem dissociated_subset {A B C : Finset ℝ}
+    (hB : IsDissociatedSubset A B) (hCB : C ⊆ B) :
+    IsDissociatedSubset A C :=
+  ⟨hCB.trans hB.1, fun S T hS hT hsum =>
+    hB.2 S T (hS.trans hCB) (hT.trans hCB) hsum⟩
+
+/-- A dissociated subset has at most as many elements as the ambient set. -/
+theorem dissociated_card_le {A B : Finset ℝ}
+    (hB : IsDissociatedSubset A B) : B.card ≤ A.card :=
+  Finset.card_le_card hB.1
+
+/- ## Extension Lemma for Greedy Construction -/
+
+/-- The difference-sum finset of B: all values `T.sum - S.sum` where S, T ⊆ B.
+    This includes 0 (take S = T). For a dissociated B, the nonzero elements
+    correspond to distinct (S, T) pairs with S ≠ T.
+    Its cardinality is at most 3^|B| since each element b ∈ B contributes
+    one of three roles: +b (in T only), -b (in S only), or 0 (both/neither). -/
+noncomputable def diffSumFinset (B : Finset ℝ) : Finset ℝ :=
+  (B.powerset ×ˢ B.powerset).image
+    (fun p : Finset ℝ × Finset ℝ => p.2.sum id - p.1.sum id)
+
+/-- Extension lemma: if B is dissociated in A and `a ∈ A \ B` avoids all
+    subset-sum differences of B, then `insert a B` is dissociated in A.
+    This is the key step in the greedy algorithm for building dissociated sets.
+
+    The hypothesis `hforbid` says `a ≠ T.sum - S.sum` for ALL S, T ⊆ B
+    (including S = T = ∅, which gives a ≠ 0). -/
+theorem dissociated_insert {A B : Finset ℝ} {a : ℝ}
+    (hB : IsDissociatedSubset A B)
+    (haA : a ∈ A) (haB : a ∉ B)
+    (hforbid : ∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → a ≠ T.sum id - S.sum id) :
+    IsDissociatedSubset A (insert a B) := by
+  -- Helper: subsets of insert a B not containing a are subsets of B
+  have not_mem_sub : ∀ U : Finset ℝ, U ⊆ insert a B → a ∉ U → U ⊆ B := by
+    intro U hU haU x hx
+    rcases Finset.mem_insert.mp (hU hx) with rfl | h
+    · exact absurd hx haU
+    · exact h
+  -- Helper: erase a from subsets of insert a B gives subsets of B
+  have erase_sub : ∀ U : Finset ℝ, U ⊆ insert a B → U.erase a ⊆ B := by
+    intro U hU x hx
+    have ⟨hne, hxU⟩ := Finset.mem_erase.mp hx
+    rcases Finset.mem_insert.mp (hU hxU) with rfl | h
+    · exact absurd rfl hne
+    · exact h
+  refine ⟨Finset.insert_subset_iff.mpr ⟨haA, hB.1⟩, ?_⟩
+  intro S T hS hT hsum
+  by_cases haS : a ∈ S <;> by_cases haT : a ∈ T
+  · -- Both contain a: erase a from both, reduce to original property
+    have heq : (S.erase a).sum id = (T.erase a).sum id := by
+      have := Finset.sum_erase_add S id haS
+      have := Finset.sum_erase_add T id haT
+      linarith
+    have := hB.2 _ _ (erase_sub S hS) (erase_sub T hT) heq
+    calc S = insert a (S.erase a) := (Finset.insert_erase haS).symm
+      _ = insert a (T.erase a) := by rw [this]
+      _ = T := Finset.insert_erase haT
+  · -- a ∈ S, a ∉ T: contradicts hforbid
+    exfalso
+    exact absurd (show a = T.sum id - (S.erase a).sum id by
+      have := Finset.sum_erase_add S id haS; linarith)
+      (hforbid _ _ (erase_sub S hS) (not_mem_sub T hT haT))
+  · -- a ∉ S, a ∈ T: symmetric contradiction
+    exfalso
+    exact absurd (show a = S.sum id - (T.erase a).sum id by
+      have := Finset.sum_erase_add T id haT; linarith)
+      (hforbid _ _ (erase_sub T hT) (not_mem_sub S hS haS))
+  · -- Neither contains a: both subsets of B
+    exact hB.2 S T (not_mem_sub S hS haS) (not_mem_sub T hT haT) hsum
+
+/-- The greedy extension step: if B is dissociated in A and there are more
+    elements in A \ B than differences of subset sums of B, then B can be
+    extended. In particular, if |A| - |B| > |diffSumFinset B|, then there
+    exists a ∈ A \ B with insert a B dissociated. -/
+theorem dissociated_extend {A B : Finset ℝ}
+    (hB : IsDissociatedSubset A B)
+    (hcard : (diffSumFinset B).card < (A \ B).card) :
+    ∃ a ∈ A \ B, IsDissociatedSubset A (insert a B) := by
+  -- Not every element of A \ B can be a difference of subset sums
+  have : ¬ (A \ B) ⊆ diffSumFinset B := by
+    intro hsub
+    exact absurd (Finset.card_le_card hsub) (not_le.mpr hcard)
+  -- Pick a ∈ (A \ B) \ diffSumFinset B
+  rw [Finset.not_subset] at this
+  obtain ⟨a, haAB, haDiff⟩ := this
+  have haA := (Finset.mem_sdiff.mp haAB).1
+  have haB := (Finset.mem_sdiff.mp haAB).2
+  refine ⟨a, haAB, dissociated_insert hB haA haB ?_⟩
+  -- a ∉ diffSumFinset B means a ≠ T.sum - S.sum for all S, T ⊆ B
+  intro S T hSB hTB heq
+  apply haDiff
+  rw [diffSumFinset, Finset.mem_image]
+  exact ⟨(S, T), Finset.mem_product.mpr
+    ⟨Finset.mem_powerset.mpr hSB, Finset.mem_powerset.mpr hTB⟩, heq.symm⟩
+
+/- ## Cardinality Bound for diffSumFinset -/
+
+/-- The difference-sum finset has at most 3^|B| elements (tight bound).
+    Each value T.sum - S.sum depends only on the "signed partition": for each
+    b ∈ B, whether b ∈ S \ T (contributes -b), b ∈ T \ S (contributes +b),
+    or b ∈ S ∩ T / b ∉ S ∪ T (contributes 0). There are 3^|B| signed
+    partitions, so at most 3^|B| distinct differences.
+
+    Proof sketch: T.sum - S.sum = (T\S).sum - (S\T).sum (the intersection
+    cancels), so diffSumFinset B is an image of the ≤ 3^|B| ordered disjoint
+    pairs (S', T') with S', T' ⊆ B and S' ∩ T' = ∅. -/
+/-- The difference T.sum - S.sum factors through disjoint pairs:
+    it equals (T\S).sum - (S\T).sum since the intersection cancels. -/
+private lemma sum_factor_disjoint {S T : Finset ℝ} :
+    T.sum id - S.sum id = (T \ S).sum id - (S \ T).sum id := by
+  have hS := (Finset.sum_sdiff_add_sum_inter S T id).symm
+  have hT := (Finset.sum_sdiff_add_sum_inter T S id).symm
+  have : (S ∩ T).sum id = (T ∩ S).sum id := by
+    congr 1; exact Finset.inter_comm S T
+  linarith
+
+/-- The number of ordered disjoint pairs (S, T) with S, T ⊆ B is 3^|B|.
+    By Finset.induction: inserting element a creates 3× more pairs
+    (a goes to S, T, or neither). -/
+private lemma disjoint_pairs_card (B : Finset ℝ) :
+    ((B.powerset ×ˢ B.powerset).filter
+      (fun p : Finset ℝ × Finset ℝ => Disjoint p.1 p.2)).card = 3 ^ B.card := by
+  sorry -- Finset.induction_on: empty case trivial, insert case partitions into 3 classes
+
+theorem diffSumFinset_card_le (B : Finset ℝ) :
+    (diffSumFinset B).card ≤ 3 ^ B.card := by
+  -- Factor through ordered disjoint pairs (S\T, T\S)
+  let D := (B.powerset ×ˢ B.powerset).filter
+    (fun p : Finset ℝ × Finset ℝ => Disjoint p.1 p.2)
+  suffices hsub : diffSumFinset B ⊆
+      D.image (fun p : Finset ℝ × Finset ℝ => p.2.sum id - p.1.sum id) by
+    calc (diffSumFinset B).card
+        ≤ (D.image _).card := Finset.card_le_card hsub
+      _ ≤ D.card := Finset.card_image_le
+      _ = 3 ^ B.card := disjoint_pairs_card B
+  -- Show diffSumFinset B ⊆ image of D under the diff map
+  intro x hx
+  rw [diffSumFinset, Finset.mem_image] at hx
+  obtain ⟨⟨S, T⟩, hST, rfl⟩ := hx
+  rw [Finset.mem_image]
+  have hS := (Finset.mem_powerset.mp (Finset.mem_product.mp hST).1)
+  have hT := (Finset.mem_powerset.mp (Finset.mem_product.mp hST).2)
+  exact ⟨(S \ T, T \ S),
+    Finset.mem_filter.mpr ⟨Finset.mem_product.mpr
+      ⟨Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hS),
+       Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hT)⟩,
+      Finset.disjoint_sdiff_sdiff⟩,
+    sum_factor_disjoint⟩
+
+/- ## Greedy Construction -/
+
+/-- The greedy algorithm builds a dissociated subset of size k, provided
+    the ambient set is large enough at each step: |A| > j + 3^j for all j < k.
+    This is the core inductive construction for the greedy lower bound. -/
+theorem greedy_dissociated (A : Finset ℝ) (k : ℕ)
+    (hk : ∀ j : ℕ, j < k → A.card > j + 3 ^ j) :
+    ∃ B : Finset ℝ, IsDissociatedSubset A B ∧ B.card = k := by
+  induction k with
+  | zero => exact ⟨∅, empty_dissociated A, Finset.card_empty⟩
+  | succ k ih =>
+    -- By IH, get a dissociated B of size k
+    obtain ⟨B, hB, hBcard⟩ := ih (fun j hj => hk j (Nat.lt_succ_of_lt hj))
+    -- We need (diffSumFinset B).card < (A \ B).card to extend
+    have hAB : (A \ B).card = A.card - B.card := Finset.card_sdiff hB.1
+    have h3k : (diffSumFinset B).card < (A \ B).card := by
+      have hbound := diffSumFinset_card_le B
+      rw [hAB, hBcard]
+      have := hk k (Nat.lt_succ_iff.mpr le_rfl)
+      omega
+    -- Extend B
+    obtain ⟨a, haAB, hins⟩ := dissociated_extend hB h3k
+    exact ⟨insert a B, hins,
+      by rw [Finset.card_insert_of_not_mem (Finset.mem_sdiff.mp haAB).2, hBcard]⟩
+
 /-- Auxiliary: ∑_{i<k} 2^i = 2^k - 1 (geometric series for ℕ). -/
 private lemma sum_range_pow_two (k : ℕ) :
     (Finset.range k).sum (fun i => (2 : ℕ) ^ i) + 1 = 2 ^ k := by
