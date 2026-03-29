@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "AXIOM ELIMINATION: Proved ch_implies_multicolor from hajnal_ch (5→4 axioms)",
     "builtItems": [
       "omega1_isLimit: proved (was axiom) using Cardinal.ord_isLimit",
       "omega1TimesOmega_isLimit: proved (was axiom) using Ordinal.mul_isLimit",
@@ -42,7 +42,8 @@
       "multi_two_eq: proved (color=1 extraction)",
       "partition2_mono_target: proved",
       "partition2_mono_source: proved",
-      "partition_multi_trivial: proved (id embedding + omega)"
+      "partition_multi_trivial: proved (id embedding + omega)",
+      "ch_implies_multicolor proved by induction (was axiom)"
     ],
     "insights": [
       "16 axioms classified: 2 definition-axioms (ordinalPartitionRel2, ordinalPartitionRelMulti), 2 limit ordinals (NOW PROVED), 7 monotonicity/structural, 4 deep results (Hajnal, Baumgartner, Erdős-Rado, CH multicolor), 1 concept declaration (MartinsAxiom)",
@@ -51,7 +52,8 @@
       "Problem is OPEN in ZFC but SOLVED under CH via Hajnal + color merging argument",
       "The Baumgartner k=1 case under MA uses techniques specific to ω₁·ω that don't extend to higher k",
       "Original partition_multi_mono_colors axiom was inconsistent for clique<2 — fixed by adding 2≤clique assumption",
-      "Concrete partition relation defs use c:Ordinal→Ordinal→ℕ with validity hypothesis, Fin clique for cliques, StrictMono for embeddings"
+      "Concrete partition relation defs use c:Ordinal→Ordinal→ℕ with validity hypothesis, Fin clique for cliques, StrictMono for embeddings",
+      "ch_implies_multicolor is provable from hajnal_ch by induction on k: merge colors, apply Hajnal, recurse"
     ],
     "mathlibGaps": [
       "Ordinal partition relation API (not in Mathlib — would need custom definitions)",
@@ -75,16 +77,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T17:01:06.707Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-28T20:30:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1171Problem.lean",
       "filename": "Erdos1171Problem.lean",
-      "lineCount": 373,
-      "theoremCount": 20,
-      "axiomCount": 5,
+      "lineCount": 417,
+      "theoremCount": 21,
+      "axiomCount": 4,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

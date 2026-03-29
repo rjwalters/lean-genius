@@ -125,6 +125,21 @@ theorem greedySidon_is_sidon (N : ℕ) : IsSidonSet (greedySidon N) := by
     · exact h
     · exact ih
 
+/-- The greedy construction produces elements in {1,...,N}. -/
+theorem greedySidon_subset_interval (N : ℕ) : greedySidon N ⊆ Interval N := by
+  induction N with
+  | zero => intro x hx; simp [greedySidon] at hx
+  | succ n ih =>
+    intro x hx
+    unfold greedySidon at hx
+    split_ifs at hx with h
+    · -- Case: added n+1
+      rcases Set.mem_union.mp hx with hx' | hx'
+      · exact ⟨(ih hx').1, le_trans (ih hx').2 (Nat.le_succ n)⟩
+      · exact ⟨by omega, le_of_eq (Set.mem_singleton_iff.mp hx').symm⟩
+    · -- Case: didn't add
+      exact ⟨(ih hx).1, le_trans (ih hx).2 (Nat.le_succ n)⟩
+
 /-- The greedy construction is maximal -/
 theorem greedySidon_maximal (N : ℕ) : IsMaximalSidonSet (greedySidon N) N := by
   sorry -- Proof requires detailed analysis of the greedy construction
@@ -193,7 +208,7 @@ The current state of knowledge shows a significant gap:
 /-- The minimum size of a maximal Sidon set in {1,...,N} -/
 noncomputable def minMaximalSidonSize (N : ℕ) : ℕ :=
   Nat.find (⟨greedySidon N, greedySidon_is_sidon N,
-    sorry⟩ : ∃ A, IsSidonSet A ∧ A ⊆ Interval N)
+    greedySidon_subset_interval N⟩ : ∃ A, IsSidonSet A ∧ A ⊆ Interval N)
 
 /-- The exponent of the minimum size growth -/
 axiom minMaximalSidon_exponent :
@@ -230,11 +245,9 @@ Random constructions can inform us about typical sizes of maximal Sidon sets.
 A random subset of {1,...,N} of density p is typically a Sidon set if p << N^{-1/2}.
 -/
 
-/-- Expected size of random Sidon sets suggests barriers -/
-axiom random_sidon_barrier :
-  ∀ ε > 0, ∃ C : ℝ, 
-    -- A random maximal Sidon set has size roughly N^{1/2}
-    True
+/-- Expected size of random Sidon sets suggests barriers (trivially true as stated). -/
+theorem random_sidon_barrier :
+    ∀ ε > 0, ∃ C : ℝ, True := fun _ _ => ⟨0, trivial⟩
 
 /-
 ## The Main Problem Refined

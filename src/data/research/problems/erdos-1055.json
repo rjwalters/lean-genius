@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETED: Fixed critical inconsistency — Erdős/Selfridge contradictory axioms converted to defs with mutual exclusivity proof. 2 axioms remain (infinitely_many_in_each_class, class_density_subpolynomial). 0 sorries.",
     "builtItems": [
       "def primeClass: WF recursion via termination_by p (replaces fuel-based primeClassAux)",
       "lemma nonSmooth_factor_lt: q < p for nonSmooth prime factors of p+1 (fully proved)",
       "theorem primeClass_pos_of_prime: primeClass p >= 1 for primes (proved)",
       "theorem class_of_factor_lt: structural - reduced to foldl bound sorry",
       "private foldl_max_ge_init, foldl_max_ge_of_mem: helper lemmas (term-mode)",
-      "All native_decide class values verified (class 1-5, OEIS A005113)"
+      "All native_decide class values verified (class 1-5, OEIS A005113)",
+      "erdos_selfridge_mutex: proved the competing Erdős/Selfridge conjectures are mutually exclusive",
+      "Eliminated 2 axioms by converting to defs (4→2 axioms)"
     ],
     "insights": [
       "class_of_factor_lt needs fuel convergence: primeClassAux 30 p ≥ 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
@@ -49,7 +51,9 @@
       "Fuel-based class_of_factor_lt cannot be proved without fuel convergence (primeClassAux 29 q = primeClassAux 30 q)",
       "primeClassWF.eq_1 is the auto-generated equation lemma for WF unfolding",
       "WF recursion eliminates fuel limitation entirely - class_of_factor_lt no longer needs fuel convergence",
-      "foldl with have proof term is definitionally equal to version without have, but Lean type checker needs explicit help to see this"
+      "foldl with have proof term is definitionally equal to version without have, but Lean type checker needs explicit help to see this",
+      "CRITICAL: erdos_growth_conjecture and selfridge_bounded_conjecture are CONTRADICTORY when combined with infinitely_many_in_each_class. Having both as axioms made False provable.",
+      "Fixed by converting both competing conjectures to defs and adding erdos_selfridge_mutex theorem proving their mutual exclusivity via Nat.find on the least prime in class r"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

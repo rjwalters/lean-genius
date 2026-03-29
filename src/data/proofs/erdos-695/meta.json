@@ -58,7 +58,7 @@
       "fkl_analysis axiom: Ford-Konyagin-Luca results",
       "exponential_lower_bound axiom: p_k ≥ c^k"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "prerequisites": [
       "Elementary number theory (primes, divisibility, modular arithmetic)",
       "Analytic number theory (Linnik's theorem, primes in arithmetic progressions)",
@@ -66,8 +66,8 @@
       "Asymptotic notation (big-O, little-o)",
       "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
     ],
-    "lineCount": 203,
-    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "lineCount": 259,
+    "assumptions": "5 axioms (linnik_bound, greedy_chain_exists, greedy_doubly_exponential, small_prime_conjecture, fkl_analysis) and 3 sorries. exponential_lower_bound proved from chain_step_ge (p₀+1 even for odd p₀)."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains. Cunningham chains, studied by A.J.C. Cunningham in 1881, are special prime chains of the form p, 2p+1, 4p+3, ... where each term is 2·(previous term)+1; these satisfy the divisibility condition and are the subject of longstanding conjectures about their unbounded length. Linnik's theorem (1944) guarantees the existence of primes in arithmetic progressions, and its quantitative form (Linnik's constant L, conjectured to equal 2) directly controls the greedy construction of prime chains.",
@@ -182,8 +182,8 @@
       "Real"
     ],
     "namespace": "Erdos695",
-    "lineCount": 203,
-    "axiomCount": 6,
+    "lineCount": 259,
+    "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 10
   }

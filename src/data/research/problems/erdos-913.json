@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Two independent conditional proofs complete. 8p²-1 path (exponents {1,2,3}) and Mersenne path (exponents {1,k}). 1 axiom remains (Bunyakovsky-type, genuinely open). 0 sorries.",
+    "progressSummary": "COMPLETED: Two independent conditional proofs complete. 8p²-1 path (exponents {1,2,3}) and Mersenne path (exponents {1,k}). 1 axiom remains (Bunyakovsky-type, genuinely open). 0 sorries. Meta.json fully corrected.",
     "builtItems": [
       "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
       "Proved example_n31: 31·32 = 2^5·31^1",
@@ -39,7 +39,8 @@
       "Proved hasDistinctExponents_mersenne: Mersenne primes give exponents {1,k}",
       "Proved erdos_913_conditional_mersenne: infinitely many Mersenne primes ⟹ Erdős #913",
       "Proved nonempty_distinctExponentSet from example_n3",
-      "Proved injective_mersenne: k↦2^k-1 is injective"
+      "Proved injective_mersenne: k↦2^k-1 is injective",
+      "Updated meta.json sections: added sec-913-mersenne, corrected sec-913-examples to show 6 proved examples including n=71 3-factor case"
     ],
     "insights": [
       "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
@@ -52,7 +53,9 @@
       "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples",
       "Mersenne primes provide a second independent conditional path: 2^k-1 prime gives n(n+1)=(2^k-1)·2^k with exponents {1,k}",
       "Neither the Bunyakovsky-type nor Mersenne prime hypothesis implies the other — both are independent open conjectures",
-      "The existing examples n=31,127 are exactly Mersenne prime instances (2^5-1, 2^7-1)"
+      "The existing examples n=31,127 are exactly Mersenne prime instances (2^5-1, 2^7-1)",
+      "Meta.json corrected: leanFile.axiomCount 3→1, lineCount 274→344, theoremCount 8→16, definitionCount 5→6, removed stale PrimeNormNum import, updated sections to cover Mersenne path",
+      "proofStrategy text corrected: exponent_structure is a proved theorem, not an axiom; both conditional paths are now described"
     ],
     "mathlibGaps": [],
     "nextSteps": [
