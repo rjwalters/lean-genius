@@ -210,6 +210,27 @@ theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
   exact le_of_eq (uniqueProductCount_singletons 1 1).symm
 
 /-
+## Monotonicity and Bounds
+-/
+
+/-- maxUniqueProducts is monotone in N: enlarging the range gives more
+    subset pairs to optimize over. -/
+theorem maxUniqueProducts_mono {N₁ N₂ : ℕ} (h : N₁ ≤ N₂) :
+    maxUniqueProducts N₁ ≤ maxUniqueProducts N₂ := by
+  unfold maxUniqueProducts
+  apply Finset.sup_le
+  intro ⟨A, B⟩ hmem
+  apply Finset.le_sup (f := fun p : Finset ℕ × Finset ℕ => uniqueProductCount p.1 p.2)
+  simp only [Finset.mem_product, Finset.mem_powerset] at hmem ⊢
+  exact ⟨hmem.1.trans (Finset.Icc_subset_Icc_right h),
+         hmem.2.trans (Finset.Icc_subset_Icc_right h)⟩
+
+/-- F(A,B) ≤ |A·B|: unique products are a subset of all products. -/
+theorem uniqueProductCount_le_image_card (A B : Finset ℕ) :
+    uniqueProductCount A B ≤ ((A ×ˢ B).image (fun p => p.1 * p.2)).card :=
+  Finset.card_filter_le _ _
+
+/-
 ## Gap Between Bounds and Conjecture
 
 The lower bound ~N²/log N and upper bound ~N²/(log N)^{0.086} leave

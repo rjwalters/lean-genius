@@ -214,6 +214,64 @@ theorem gFunc_four : gFunc 4 = 7 := by
     exact fun h6 => not_allPrimesExceed_choose_6_4 (h6 ▸ gFunc_spec 4)
 
 /-
+# Part 5c: Computing g(5) = 23
+
+g(5) is the smallest n > 6 with all prime factors of C(n,5) exceeding 5.
+C(n,5) has a factor ≤ 5 for n = 7..22 (all even or divisible by 3).
+C(23,5) = 33649 = 7·11·19·23 has all primes > 5.
+-/
+
+/-- AllPrimesExceed (C(23,5)) 5: C(23,5) = 33649 = 7·11·19·23, no prime ≤ 5. -/
+private theorem allPrimesExceed_choose_23_5 : AllPrimesExceed (choose 23 5) 5 := by
+  intro p hp hpk hpdvd
+  have := hp.two_le
+  interval_cases p <;> exact absurd hpdvd (by decide)
+
+/-- g(5) = 23: for n=7..22, C(n,5) always has a prime factor ≤ 5. -/
+theorem gFunc_five : gFunc 5 = 23 := by
+  apply le_antisymm
+  · exact gFunc_minimal 5 23 (by omega) allPrimesExceed_choose_23_5
+  · have hgt := gFunc_gt 5
+    by_contra hlt
+    push_neg at hlt
+    suffices h : ∀ n, 7 ≤ n → n ≤ 22 → ¬AllPrimesExceed (choose n 5) 5 by
+      exact h (gFunc 5) (by omega) (by omega) (gFunc_spec 5)
+    intro n hn1 hn2
+    interval_cases n <;>
+    first
+    | exact not_allPrimesExceed_of_prime_dvd Nat.prime_two (by omega) (by decide)
+    | exact not_allPrimesExceed_of_prime_dvd (by decide : Nat.Prime 3) (by omega) (by decide)
+
+/-
+# Part 5d: Computing g(6) = 62
+
+g(6) is the smallest n > 7 with all prime factors of C(n,6) exceeding 6.
+C(62,6) = 61474519 = 19·29·31·59·61 has all primes > 6.
+-/
+
+/-- AllPrimesExceed (C(62,6)) 6: C(62,6) = 61474519 = 19·29·31·59·61, no prime ≤ 6. -/
+private theorem allPrimesExceed_choose_62_6 : AllPrimesExceed (choose 62 6) 6 := by
+  intro p hp hpk hpdvd
+  have := hp.two_le
+  interval_cases p <;> exact absurd hpdvd (by decide)
+
+/-- g(6) = 62: for n=8..61, C(n,6) always has a prime factor ≤ 6. -/
+theorem gFunc_six : gFunc 6 = 62 := by
+  apply le_antisymm
+  · exact gFunc_minimal 6 62 (by omega) allPrimesExceed_choose_62_6
+  · have hgt := gFunc_gt 6
+    by_contra hlt
+    push_neg at hlt
+    suffices h : ∀ n, 8 ≤ n → n ≤ 61 → ¬AllPrimesExceed (choose n 6) 6 by
+      exact h (gFunc 6) (by omega) (by omega) (gFunc_spec 6)
+    intro n hn1 hn2
+    interval_cases n <;>
+    first
+    | exact not_allPrimesExceed_of_prime_dvd Nat.prime_two (by omega) (by decide)
+    | exact not_allPrimesExceed_of_prime_dvd (by decide : Nat.Prime 3) (by omega) (by decide)
+    | exact not_allPrimesExceed_of_prime_dvd (by decide : Nat.Prime 5) (by omega) (by decide)
+
+/-
 # Part 6: Structural properties of g(k)
 -/
 
@@ -256,5 +314,7 @@ example : gFunc 1 = 3 := gFunc_one
 example : gFunc 2 = 6 := gFunc_two
 example : gFunc 3 = 7 := gFunc_three
 example : gFunc 4 = 7 := gFunc_four
+example : gFunc 5 = 23 := gFunc_five
+example : gFunc 6 = 62 := gFunc_six
 
 end Erdos1095OQ01
