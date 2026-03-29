@@ -7,7 +7,7 @@
     "author": "Garner (1959), Szabó-Tanaka (1967)",
     "sourceUrl": "",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ03.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "algorithms",
       "classical"
     ],
-    "badge": "axiom",
-    "sorries": 1,
-    "axiomCount": 1,
-    "lineCount": 263,
-    "assumptions": "1 axiom (primorial growth lower bound). 1 sorry: mersenne_coprime_of_coprime (gcd(2^a-1,2^b-1) identity). dynamicRange_le_pow now fully proved. Multiple theorems proved: concrete base ranges, Mersenne values, RNS encode/add/mul correctness, pairwise coprimality.",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 318,
+    "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k ≤ 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
