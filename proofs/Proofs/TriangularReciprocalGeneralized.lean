@@ -31,28 +31,39 @@ open AlternatingTriangularReciprocals (alternating_harmonic_hasSum shifted_alter
 -- ═══════════════════════════════════════════════════
 
 /-- The k-th alternating harmonic partial sum:
-    A_k = ∑_{m=1}^k (-1)^{m+1}/m = 1 - 1/2 + 1/3 - ... ± 1/k -/
+    A_k = ∑_{m=1}^k (-1)^{m+1}/m = 1 - 1/2 + 1/3 - ... ± 1/k
+
+    Implementation: use 0-indexed range with shift to avoid m=0 division:
+    A_k = ∑_{m=0}^{k-1} (-1)^{m+2}/(m+1) = ∑_{j=1}^k (-1)^{j+1}/j -/
 noncomputable def altHarmonicPartial (k : ℕ) : ℝ :=
-  (Finset.range k).sum (fun m =>
-    if m = 0 then 0 else (-1 : ℝ) ^ (m + 1) / (m : ℝ))
+  ∑ m ∈ Finset.range k, (-1 : ℝ) ^ (m + 2) / ((m : ℝ) + 1)
 
 theorem altHarmonicPartial_zero : altHarmonicPartial 0 = 0 := by
   simp [altHarmonicPartial]
 
 theorem altHarmonicPartial_one : altHarmonicPartial 1 = 1 := by
   simp [altHarmonicPartial, Finset.sum_range_one]
+  norm_num
 
 -- ═══════════════════════════════════════════════════
 -- Part III: Tail of Alternating Harmonic Series
 -- ═══════════════════════════════════════════════════
 
 /-- The tail of the alternating harmonic series: ∑_{n=k+1}^∞ (-1)^{n+1}/n = log(2) - A_k.
-    This follows from HasSum = finite sum + tail. -/
+    This follows from HasSum.nat_add: shift the alternating harmonic series
+    by (k+1) terms to get the tail starting at index k+1.
+
+    Note: since n+(k+1) ≥ 1 for all n : ℕ, the terms are always well-defined. -/
 theorem alternating_harmonic_tail (k : ℕ) :
-    HasSum (fun n : ℕ => if n + k = 0 then (0 : ℝ)
-      else (-1 : ℝ) ^ (n + k + 1) / ((n : ℝ) + k))
+    HasSum (fun n : ℕ =>
+      (-1 : ℝ) ^ (n + k + 2) / ((n : ℝ) + k + 1))
       (Real.log 2 - altHarmonicPartial k) := by
-  sorry -- Uses HasSum.nat_add: if HasSum f s then HasSum (f ∘ (· + k)) (s - ∑ i ∈ range k, f i)
+  -- The alternating harmonic series: HasSum f (log 2)
+  -- where f(n) = if n = 0 then 0 else (-1)^(n+1)/n
+  -- HasSum.nat_add (k+1): HasSum (f ∘ (· + (k+1))) (log 2 - ∑ i ∈ range (k+1), f i)
+  -- f(n + k + 1) = (-1)^(n+k+2)/(n+k+1) since n+k+1 ≥ 1
+  -- ∑ i ∈ range (k+1), f i = f(0) + f(1) + ... + f(k) = 0 + A_k = A_k
+  sorry
 
 -- ═══════════════════════════════════════════════════
 -- Part IV: Shifted Alternating Sum
@@ -124,12 +135,13 @@ theorem special_case_k1 :
   simp [altHarmonicPartial_one]
   ring
 
-/-- k=2 case: logarithmic terms cancel, giving exactly 1/4. -/
+/-- k=2 case: logarithmic terms cancel, giving exactly 1/4.
+    A_2 = 1 - 1/2 = 1/2, so (1/2)(log 2 - 1·(log 2 - 1/2)) = (1/2)(1/2) = 1/4. -/
 theorem special_case_k2 :
     (1 / (2 : ℝ)) * (Real.log 2 - (-1 : ℝ) ^ 2 * (Real.log 2 - altHarmonicPartial 2)) =
     1 / 4 := by
-  simp [altHarmonicPartial]
-  simp [Finset.sum_range_succ, Finset.sum_range_one]
+  simp only [altHarmonicPartial, Finset.sum_range_succ, Finset.sum_range_one]
+  norm_num
   ring
 
 end AlternatingTriangularReciprocals.Generalized
