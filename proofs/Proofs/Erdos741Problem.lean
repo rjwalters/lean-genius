@@ -184,19 +184,35 @@ theorem syndetic_infinite {S : Set ℕ} (h : IsSyndetic S) : S.Infinite := by
 -/
 
 /-- The empty set has zero density. -/
-axiom density_empty : upperDensity ∅ = 0
+theorem density_empty : upperDensity ∅ = 0 := by
+  simp only [upperDensity, Set.empty_inter, Set.ncard_empty, Nat.cast_zero, zero_div]
+  exact Filter.limsup_const 0
+
+/-- ℕ has density 1. -/
+theorem density_univ : upperDensity Set.univ = 1 := by
+  simp only [upperDensity, Set.univ_inter]
+  suffices h : (fun n : ℕ => ((Set.Iic n).ncard : ℝ) / ((n : ℝ) + 1)) = fun _ => 1 by
+    rw [h]; exact Filter.limsup_const 1
+  ext n
+  have hn : (n : ℝ) + 1 ≠ 0 := by positivity
+  rw [Set.ncard_Iic, div_eq_one_iff_eq hn]
+  push_cast; ring
+
+/-- Density is monotone: A ⊆ B implies upperDensity A ≤ upperDensity B. -/
+theorem density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B := by
+  unfold upperDensity
+  apply Filter.limsup_le_limsup
+  · exact Filter.eventually_of_forall (fun n => by
+      apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
+      exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+        ((Set.Iic n).toFinite.subset Set.inter_subset_right))
+
+/-- Upper density is at most 1 for any set. -/
+theorem density_le_one (A : Set ℕ) : upperDensity A ≤ 1 :=
+  density_univ ▸ density_mono (Set.subset_univ A)
 
 /-- Every finite set has zero upper density. -/
 axiom density_finite (A : Set ℕ) (hA : A.Finite) : upperDensity A = 0
-
-/-- Density is monotone: A ⊆ B implies upperDensity A ≤ upperDensity B. -/
-axiom density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B
-
-/-- ℕ has density 1. -/
-axiom density_univ : upperDensity Set.univ = 1
-
-/-- Upper density is at most 1 for any set. -/
-axiom density_le_one (A : Set ℕ) : upperDensity A ≤ 1
 
 /-
 ## Basis Properties

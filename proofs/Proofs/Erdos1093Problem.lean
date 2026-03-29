@@ -118,7 +118,25 @@ theorem deficiency_566_16 : deficiency 566 16 = 1 := by native_decide
 theorem deficiency_2099_19 : deficiency 2099 19 = 1 := by native_decide
 
 /-
-## Section VI: Structural Properties
+## Section VI: Verified Deficiency > 1 Examples
+
+These are the known examples from ELS (1988) and computational searches.
+The conjecture asks whether there are only finitely many with deficiency > 1.
+-/
+
+/-- C(44,8): deficiency 2. -/
+theorem deficiency_44_8 : deficiency 44 8 = 2 := by native_decide
+/-- C(74,10): deficiency 2. -/
+theorem deficiency_74_10 : deficiency 74 10 = 2 := by native_decide
+/-- C(46,10): deficiency 3. -/
+theorem deficiency_46_10 : deficiency 46 10 = 3 := by native_decide
+/-- C(47,10): deficiency 3. -/
+theorem deficiency_47_10 : deficiency 47 10 = 3 := by native_decide
+/-- C(47,11): deficiency 4 — highest known deficiency for small parameters. -/
+theorem deficiency_47_11 : deficiency 47 11 = 4 := by native_decide
+
+/-
+## Section VII: Structural Properties
 -/
 
 /-- If n - i has a prime factor > k, it is not k-smooth,
@@ -129,3 +147,21 @@ theorem large_factor_no_contribution (n k i : ℕ) (hi : i < k)
   intro h
   have := h p hp hd
   omega
+
+/-- Trivial upper bound: the deficiency is at most k. -/
+theorem deficiency_le (n k : ℕ) : deficiency n k ≤ k := by
+  unfold deficiency
+  calc Finset.card (Finset.filter (fun i => IsKSmooth k (n - i)) (Finset.range k))
+      ≤ Finset.card (Finset.range k) := Finset.card_filter_le _ _
+    _ = k := Finset.card_range k
+
+/-- 1 is k-smooth for any k (vacuously: 1 has no prime factors). -/
+theorem isKSmooth_one (k : ℕ) : IsKSmooth k 1 := by
+  intro p hp hd
+  exact absurd (Nat.le_of_dvd (by omega) hd) (by omega)
+
+/-- 0 is not k-smooth for any k (every prime divides 0). -/
+theorem not_isKSmooth_zero (k : ℕ) : ¬IsKSmooth k 0 := by
+  intro h
+  obtain ⟨p, hpk, hp⟩ := Nat.exists_infinite_primes (k + 1)
+  exact absurd (h p hp (dvd_zero p)) (by omega)

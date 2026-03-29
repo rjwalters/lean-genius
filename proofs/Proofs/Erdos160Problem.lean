@@ -15,6 +15,9 @@ The problem asks to close the gap between upper and lower bounds.
 Status: OPEN
 Reference: https://erdosproblems.com/160
 
+The function h(N) is constructively defined via sInf (well-ordering of ℕ),
+eliminating 3 former axioms (h, h_achievable, h_minimal).
+
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
@@ -105,18 +108,34 @@ theorem achievable_mono_n {n m k : ℕ} (hmn : m ≤ n) (h : Achievable n k) :
 # Part 3: The function h(N)
 
 h(N) is the minimum k such that Achievable N k holds.
-We axiomatize its existence since Nat.find requires decidability.
+Defined via sInf on ℕ (well-ordering principle), no axioms needed.
 -/
 
+/-- Every n-element set can be colored with n colors (identity coloring).
+    Establishes that {k | Achievable n k} is nonempty for all n. -/
+theorem achievable_self (n : ℕ) : Achievable n n := by
+  use fun i => i
+  intro a d ⟨hd, ha, hle⟩ ha' ha1' ha2' ha3'
+  unfold colorCount4
+  rw [Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+      Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+      Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega)]
+  simp
+
 /-- h(N): the minimum number of colors for a 3-diverse coloring on 4-APs.
-    This is axiomatized as a function with the key properties. -/
-axiom h : ℕ → ℕ
+    Defined as the infimum of {k | Achievable n k}, which is well-defined
+    since ℕ is well-ordered and the set is nonempty (achievable_self). -/
+noncomputable def h (n : ℕ) : ℕ :=
+  sInf {k | Achievable n k}
 
-/-- h(N) is achievable. -/
-axiom h_achievable (n : ℕ) : Achievable n (h n)
+/-- h(N) is achievable: the minimum is attained (Nat.sInf_mem). -/
+theorem h_achievable (n : ℕ) : Achievable n (h n) :=
+  Nat.sInf_mem ⟨n, achievable_self n⟩
 
-/-- h(N) is minimal: no smaller k works. -/
-axiom h_minimal (n : ℕ) : ∀ k < h n, ¬Achievable n k
+/-- h(N) is minimal: no smaller k works (Nat.sInf_le). -/
+theorem h_minimal (n : ℕ) : ∀ k < h n, ¬Achievable n k := by
+  intro k hk hak
+  exact absurd (Nat.sInf_le hak) (not_le_of_lt hk)
 
 /-- h(N) ≥ 1 for N ≥ 4 (at least one color needed, and the problem
     is nontrivial once there exist 4-APs). -/
@@ -151,23 +170,8 @@ theorem h_le_one_small (n : ℕ) (_hn : 1 ≤ n) (hn3 : n ≤ 3) : h n ≤ 1 := 
   exact this (achievable_small hn3 (by omega))
 
 /-- h(N) ≤ N: using N colors (one per element) always works. -/
-theorem h_le_n (n : ℕ) : h n ≤ n := by
-  by_contra h_lt
-  push_neg at h_lt
-  have := h_minimal n n (by omega)
-  apply this
-  use fun i => i
-  intro a d ⟨hd, ha, hle⟩ ha' ha1' ha2' ha3'
-  unfold colorCount4
-  -- The identity coloring maps distinct elements to distinct colors.
-  -- With 4 distinct indices, we get 4 distinct colors ≥ 3.
-  have : ({(⟨a - 1, ha'⟩ : Fin n), ⟨a + d - 1, ha1'⟩, ⟨a + 2 * d - 1, ha2'⟩,
-    ⟨a + 3 * d - 1, ha3'⟩} : Finset (Fin n)).card ≥ 3 := by
-    rw [Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega)]
-    rw [Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega)]
-    rw [Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega)]
-    simp
-  exact this
+theorem h_le_n (n : ℕ) : h n ≤ n :=
+  Nat.sInf_le (achievable_self n)
 
 /-
 # Part 4: Known Upper Bounds

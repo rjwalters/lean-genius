@@ -310,12 +310,56 @@ theorem erdos_1171_implies_k2 (h : erdos_1171_statement) :
 -- ============================================================
 
 /-- Under CH, Hajnal's theorem gives ω₁² → (ω₁², k)² for all k ≥ 2.
-    A color-merging argument extends this to multicolor:
-    given a (k+1)-coloring, merge colors 1..k into one color.
-    By Hajnal, either color 0 has order type ω₁² (hence ω₁·ω),
-    or the merged color has a triangle, monochromatic in some original color. -/
-axiom ch_implies_multicolor (h : CH) (k : ℕ) :
-    ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)
+    A color-merging argument extends this to multicolor by induction on k:
+    merge colors {0..n} vs {n+1}, apply Hajnal for a 2-coloring.
+    Case 1: ω₁²-copy in merged color → apply IH.
+    Case 2: triangle in color n+1 → done. -/
+theorem ch_implies_multicolor (h : CH) (k : ℕ) :
+    ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1) := by
+  induction k with
+  | zero =>
+    exact partition_multi_trivial omega1Sq omega1TimesOmega 3
+      (le_of_lt omega1TimesOmega_lt_omega1Sq)
+  | succ n ih =>
+    -- (n+2)-coloring c with colors {0, 1, ..., n+1}
+    intro c hc
+    -- 2-coloring: color 0 if c ≤ n, color 1 if c = n+1
+    let c' : Ordinal → Ordinal → ℕ := fun i j => if c i j ≤ n then 0 else 1
+    have hc' : ∀ i j, i < j → j < omega1Sq → c' i j < 2 := by
+      intro i j _ _; simp only [c']; split_ifs <;> omega
+    -- Hajnal: ω₁² → (ω₁², 3)²
+    rcases hajnal_ch h 3 (by norm_num) c' hc' with
+      ⟨f, hf_mono, hf_bnd, hf_col⟩ | ⟨S, hS_mono, hS_bnd, hS_col⟩
+    · -- Case 1: ω₁²-copy in c'-color 0. All pairs have c ≤ n.
+      -- Pull back coloring through f to get (n+1)-coloring c''
+      let c'' : Ordinal → Ordinal → ℕ := fun a b => c (f a) (f b)
+      have hc'' : ∀ i j, i < j → j < omega1Sq → c'' i j < n + 1 := by
+        intro i j hij hj; simp only [c'']
+        have := hf_col i j hij hj  -- c' (f i) (f j) = 0
+        simp only [c'] at this; split_ifs at this with hle
+        · omega
+        · omega
+      -- IH on c'': either mono-0 of type ω₁·ω or triangle in color 1..n
+      rcases ih c'' hc'' with
+        ⟨g, hg_mono, hg_bnd, hg_col⟩ | ⟨col, hcol_pos, hcol_lt, T, hT_mono, hT_bnd, hT_col⟩
+      · -- Mono-0 copy of ω₁·ω in c'': compose f ∘ g
+        left
+        exact ⟨f ∘ g, hf_mono.comp hg_mono,
+          fun x hx => hf_bnd (g x) (hg_bnd x hx),
+          fun i j hij hj => hg_col i j hij hj⟩
+      · -- Triangle in color col ∈ {1..n} in c'': map through f
+        right
+        exact ⟨col, hcol_pos, by omega, fun i => f (T i), hf_mono.comp hT_mono,
+          fun i => hf_bnd (T i) (hT_bnd i), fun i j hij => hT_col i j hij⟩
+    · -- Case 2: triangle in c'-color 1. All pairs have c = n+1.
+      right
+      refine ⟨n + 1, by omega, by omega, S, hS_mono, hS_bnd, fun i j hij => ?_⟩
+      have := hS_col i j hij  -- c' (S i) (S j) = 1
+      simp only [c'] at this; split_ifs at this with hle
+      · omega  -- 0 = 1, contradiction
+      · push_neg at hle
+        have := hc (S i) (S j) (hS_mono hij) (hS_bnd j)
+        omega  -- n < c(S i, S j) < n + 2, so c(S i, S j) = n + 1
 
 /-- Under CH, Problem #1171 is fully resolved. -/
 theorem erdos_1171_under_ch (h : CH) : erdos_1171_statement := by
@@ -364,8 +408,9 @@ for all finite k.
    from ZFC: without CH or MA, we lack the tools to control colorings
    of ω₁².
 
-### Axiom Count: 5 axioms, 19 theorems (16 with non-trivial proofs)
-### Proved 9 axioms by defining ordinalPartitionRel2/Multi concretely (was 14 axioms)
+### Axiom Count: 4 axioms, 20 theorems (17 with non-trivial proofs)
+### Proved ch_implies_multicolor from hajnal_ch by induction on k (was 5 axioms)
+### Previously proved 9 axioms by defining ordinalPartitionRel2/Multi concretely (was 14 axioms)
 ### Previously proved omega1_isLimit and omega1TimesOmega_isLimit (was 16 axioms)
 -/
 

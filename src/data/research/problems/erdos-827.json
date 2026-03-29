@@ -29,21 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 6→5 axioms. Proved nk_ge_k from minimalNk_valid via parabola GP construction.",
+    "progressSummary": "COMPLETE: 6→5 axioms. Proved nk_ge_k via parabola GP construction. Added parabolaPoint, parabolaSet, parabolaSet_gp infrastructure.",
     "builtItems": [
       "Assessment: all axioms appropriate for opaque function design",
-      "PROVED nk_ge_k: k ≤ minimalNk k (6→5 axioms)",
-      "parabola_injective theorem: injectivity of i ↦ (i, i²)",
-      "parabola_general_position theorem: points on y=x² are in GP",
-      "parabola_card theorem: |parabola set| = n"
+      "PROVED nk_ge_k: k ≤ minimalNk k via parabola contradiction (axiom→theorem)",
+      "parabolaPoint/parabolaSet: reusable GP set construction for any size n",
+      "parabolaSet_gp: collinearity determinant factoring proof (ring + cast injection)"
     ],
     "insights": [
       "minimalNk is an axiom (opaque function), forcing all properties to be axioms too",
       "nk_ge_k and nk_monotone could be proved if minimalNk were a def with minimality built in",
       "Definitions (GeneralPosition, circumRadiusSq, AllDistinctCircumradii) are mathematically correct",
-      "nk_ge_k proved: if minimalNk k < k, parabola GP set of size minimalNk k contradicts minimalNk_valid (requires k-subset of smaller set)",
-      "Parabola y=x² points are in GP: collinearity determinant is (a-c)(b-c)(b-a)≠0 for distinct a,b,c",
-      "parabola_injective, parabola_general_position, parabola_card: reusable infrastructure for constructing GP sets"
+      "nk_ge_k proof strategy: construct GP set of size minimalNk k, apply minimalNk_valid, cardinality contradiction",
+      "Parabola y=x² points are in GP: collinearity determinant is (a-c)(b-c)(b-a)!=0 for distinct a,b,c",
+      "Remaining 5 axioms are all deep: minimalNk (opaque function), valid/sharp (properties of opaque fn), martinez_roldan_pensado (published result), nk_three (specific value of opaque fn)",
+      "Further axiom reduction requires restructuring minimalNk as Nat.find (major refactor) or formalizing Martinez-Roldán-Pensado (paper-length proof)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -70,9 +70,9 @@
     {
       "path": "Proofs/Erdos827Problem.lean",
       "filename": "Erdos827Problem.lean",
-      "lineCount": 178,
-      "theoremCount": 8,
-      "axiomCount": 6,
+      "lineCount": 232,
+      "theoremCount": 1,
+      "axiomCount": 5,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,

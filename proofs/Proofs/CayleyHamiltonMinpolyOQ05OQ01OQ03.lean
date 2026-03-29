@@ -244,7 +244,49 @@ theorem cyclicSubspace_le_minpoly_degree (T : Module.End K V)
     ∀ k : ℕ, (minpoly K T).natDegree ≤ k →
       (T ^ k) v ∈ Submodule.span K (Set.range fun i : Fin (minpoly K T).natDegree =>
         (T ^ (i : ℕ)) v) := by
-  sorry
+  set d := (minpoly K T).natDegree
+  set μ := minpoly K T
+  set W := Submodule.span K (Set.range fun i : Fin d => (T ^ (i : ℕ)) v)
+  -- Base: T^d v ∈ W from the minimal polynomial relation μ(T)v = 0
+  have h_Td : (T ^ d) v ∈ W := by
+    have hmonic := minpoly.monic hT
+    -- Express (aeval T μ) v = ∑_{i≤d} μ.coeff i • (T^i v) = 0
+    have h0 : ∑ i ∈ Finset.range (d + 1), μ.coeff i • ((T ^ i) v) = 0 := by
+      have haeval : aeval T μ = 0 := minpoly.aeval K T
+      have := congr_arg (· v) haeval
+      simp only [LinearMap.zero_apply] at this
+      rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum_range] at this
+      convert this using 1
+      apply Finset.sum_congr rfl; intro i _
+      simp [Algebra.algebraMap_eq_smul_one, mul_comm, LinearMap.smul_apply,
+            LinearMap.mul_apply, LinearMap.one_apply]
+    -- Split sum at i = d: ∑_{i<d} (coeff i • T^i v) + coeff d • T^d v = 0
+    rw [Finset.sum_range_succ] at h0
+    -- μ.coeff d = 1 (monic), so T^d v + ∑_{i<d} ... = 0
+    rw [hmonic.leadingCoeff, one_smul] at h0
+    -- T^d v = -∑_{i<d} μ.coeff i • (T^i v)
+    have := eq_neg_of_add_eq_zero_right h0
+    rw [this]
+    exact W.neg_mem (Submodule.sum_mem W fun i hi =>
+      W.smul_mem _ (Submodule.subset_span ⟨⟨i, Finset.mem_range.mp hi⟩, rfl⟩))
+  -- T maps W into W (cyclic subspace is T-invariant)
+  have hT_inv : ∀ w ∈ W, T w ∈ W := by
+    intro w hw
+    refine Submodule.span_induction hw ?_ ?_ ?_ ?_
+    · rintro _ ⟨⟨i, hi⟩, rfl⟩
+      rw [← pow_succ']
+      by_cases hi1 : (i : ℕ) + 1 < d
+      · exact Submodule.subset_span ⟨⟨i + 1, hi1⟩, rfl⟩
+      · have : (i : ℕ) + 1 = d := by omega
+        rw [this]; exact h_Td
+    · simp [map_zero, W.zero_mem]
+    · intro x y hx hy; rw [map_add]; exact W.add_mem hx hy
+    · intro c x hx; rw [map_smul]; exact W.smul_mem c hx
+  -- Main proof by induction on the ≤ proof
+  intro k hk
+  induction hk with
+  | refl => exact h_Td
+  | @step k _ ih => rw [pow_succ']; exact hT_inv _ ih
 
 -- ============================================================
 -- SECTION VIII: Relating to Finite-Dimensional Case

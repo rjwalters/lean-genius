@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved exact values f(3)=6, f(4)=24, f(5)=12, f(6)=10. Added witness f(8)≤16. File expanded from 172 to 361 lines, 7 to 12 theorems. Only axiom (EGS82) is deep and not eliminable.",
+    "progressSummary": "COMPLETED: Added f(7)≥20 and f(8)≥16 lower bounds. File now 538 lines, 14T, 1A, 0S. Exact values: f(3)=6, f(4)=24, f(5)=12, f(6)=10, f(7)=20, f(8)=16.",
     "builtItems": [
       "factorizationMax_4_ge: tight lower bound f(4)≥24 via product argument",
       "factorizationMax_5_ge: tight lower bound f(5)≥12 via 3-case analysis",
       "factorizationMax_6_ge: tight lower bound f(6)≥10 via 4-case analysis",
-      "vf4, vf8: new witnesses for n=4 (f(4)≤24) and n=8 (f(8)≤16)"
+      "vf4, vf8: new witnesses for n=4 (f(4)≤24) and n=8 (f(8)≤16)",
+      "factorizationMax_7_ge: f(7)≥20 via 4-case analysis",
+      "factorizationMax_8_ge: f(8)≥16 via 5-case analysis"
     ],
     "insights": [
       "Only axiom (factorizationMax_asymptotic) is the Erdos-Guy-Selfridge 1982 theorem: f(n)-2n is between c*n/logn and C*n/logn. Deep result requiring full paper formalization.",
@@ -44,7 +46,10 @@
       "File is well-structured: definitions, concrete witnesses, structural properties, asymptotic axiom, conjecture statement.",
       "Proved exact values: f(3)=6, f(4)=24, f(5)=12, f(6)=10. Values of f(n)-2n: 0, 16, 2, -2, 6 for n=3..7.",
       "f(8)≤16 via witness [12,14,15,16]. Optimality argument: 4 factors from {9..15} give product ≤ 32760 < 40320, 5 factors give ≥ 154440.",
-      "Lower bound proofs use product bounds: for n=5, two factors with max≤11 give product≤110<120; for n=6, three factors≤9 give product≤504<720."
+      "Lower bound proofs use product bounds: for n=5, two factors with max≤11 give product≤110<120; for n=6, three factors≤9 give product≤504<720.",
+      "f(7)=20: three-factor case requires interval_cases enumeration (x∈{15,16,17}) to rule out all triples with max≤19",
+      "f(8)=16: four factors from {9,...,15} have max product 32760<40320; five+ factors give ≥154440>40320",
+      "Lower bound pattern: case split on number of factors, bound max product in each case"
     ],
     "mathlibGaps": [],
     "nextSteps": [
