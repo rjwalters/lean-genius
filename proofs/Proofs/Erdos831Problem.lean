@@ -113,25 +113,60 @@ noncomputable def circumradius (t : PointTriple) : ℝ :=
   if twiceArea = 0 then 0  -- degenerate case (collinear)
   else (a * b * c) / (2 * twiceArea)
 
+/-- Circumradius computed directly from three points (no PointTriple wrapper).
+    Uses the formula R = abc / (4·Area) where a,b,c are side lengths
+    and Area is the triangle area from the cross product. -/
+noncomputable def circumradiusOf (p1 p2 p3 : Point) : ℝ :=
+  let a := ‖p2 - p3‖
+  let b := ‖p1 - p3‖
+  let c := ‖p1 - p2‖
+  let twiceArea := |((p2 0 - p1 0) * (p3 1 - p1 1) -
+                     (p3 0 - p1 0) * (p2 1 - p1 1))|
+  if twiceArea = 0 then 0
+  else (a * b * c) / (2 * twiceArea)
+
 /-
 ## Part IV: Counting Distinct Radii
 -/
 
 /--
-**Set of All Circumradii:**
+**Set of All Circumradii (propositional):**
 For a finite point set S, the set of all circumradii from triples in S.
+Used for subset/containment reasoning.
 -/
 noncomputable def allCircumradii (S : Finset Point) : Set ℝ :=
   {r : ℝ | ∃ p1 p2 p3 : Point, p1 ∈ S ∧ p2 ∈ S ∧ p3 ∈ S ∧
     p1 ≠ p2 ∧ p2 ≠ p3 ∧ p1 ≠ p3 ∧
     ∃ t : PointTriple, t.p1 = p1 ∧ t.p2 = p2 ∧ t.p3 = p3 ∧ circumradius t = r}
 
+-- Classical DecidableEq needed for Finset operations on ℝ and Point
+noncomputable instance : DecidableEq Point := Classical.decEq _
+noncomputable instance : DecidableEq ℝ := Classical.decEq _
+
+/--
+**Finset of All Circumradii:**
+For a finite point set S, the finset of all circumradii from ordered
+triples of distinct points in S. This is the computational version
+of allCircumradii, using Finset.image for correct cardinality.
+
+Note: circumradiusOf is permutation-invariant, so each unordered triple
+contributes one element to the image even though it appears in 6 ordered forms.
+-/
+noncomputable def allCircumradiiFinset (S : Finset Point) : Finset ℝ :=
+  ((S ×ˢ (S ×ˢ S)).filter (fun p : Point × (Point × Point) =>
+    p.1 ≠ p.2.1 ∧ p.2.1 ≠ p.2.2 ∧ p.1 ≠ p.2.2)).image
+    (fun p : Point × (Point × Point) => circumradiusOf p.1 p.2.1 p.2.2)
+
 /--
 **Number of Distinct Radii:**
-The cardinality of the set of distinct circumradii.
+The cardinality of the finset of distinct circumradii.
+
+FIXED: Previously used Nat.card on a Set ℝ subtype, which always returned 0
+(no Fintype instance available for existentially-quantified subsets of ℝ).
+Now uses Finset.card on a properly computed Finset ℝ.
 -/
 noncomputable def countDistinctRadii (S : Finset Point) : ℕ :=
-  Nat.card (allCircumradii S)
+  (allCircumradiiFinset S).card
 
 /--
 **The h Function:**
@@ -151,17 +186,15 @@ noncomputable def h (n : ℕ) : ℕ :=
 With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
 -/
 theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  -- Proof strategy: sInf S ≤ C(n,3) because:
-  -- (a) If S = ∅ (no GP config exists), sInf = 0 ≤ C(n,3)
-  -- (b) If S ≠ ∅, every k ∈ S satisfies k ≤ C(n,3) since
-  --     countDistinctRadii ≤ number of triples = C(n,3)
-  -- NOTE: countDistinctRadii uses Nat.card on a Set ℝ subtype.
-  -- Nat.card requires a Fintype instance which cannot be auto-inferred
-  -- for existentially-quantified subsets of ℝ. With the current definition,
-  -- Nat.card returns 0, making this trivially true but rendering h_three false.
-  -- FIX NEEDED: redefine countDistinctRadii using Finset.image on ordered
-  -- triples with DecidableEq ℝ := Classical.decEq. Then bound card(image) by
-  -- card(powersetCard 3) = C(n,3) via circumradius permutation invariance.
+  -- Proof strategy (now feasible with Finset-based countDistinctRadii):
+  -- 1. If {k | ∃ S, ...} = ∅, then sInf = 0 ≤ C(n,3)  ✓
+  -- 2. If non-empty, any k in the set has k = (allCircumradiiFinset S).card
+  --    Since allCircumradiiFinset is an image of ordered triples, and
+  --    circumradiusOf is permutation-invariant, the image has at most
+  --    C(n,3) elements (one per unordered triple).
+  -- 3. So sInf ≤ k ≤ C(n,3)
+  -- REQUIRES: circumradiusOf permutation invariance (swapping arguments
+  -- preserves side length product and absolute area)
   sorry
 
 /--
@@ -169,22 +202,23 @@ theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
 Three points in general position give exactly one circle, hence one radius.
 -/
 theorem h_three : h 3 = 1 := by
+  -- Now feasible with Finset-based countDistinctRadii.
   -- Proof infrastructure (Part IX):
   -- ✓ p_origin, p_e1, p_e2 defined as ![0,0], ![1,0], ![0,1]
   -- ✓ p_origin_ne_e1, p_origin_ne_e2, p_e1_ne_e2 proved (distinctness)
   -- ✓ triangle_not_collinear proved (non-collinearity)
   --
-  -- Remaining steps:
-  -- 1. Construct Finset S = {p_origin, p_e1, p_e2} with card 3
-  -- 2. Show isInGeneralPosition (↑S): no-3-collinear via triangle_not_collinear,
-  --    no-4-concyclic vacuously (only 3 points)
-  -- 3. Show countDistinctRadii S = 1
-  --
-  -- BLOCKER on step 3: countDistinctRadii uses Nat.card (allCircumradii S).
-  -- The Fintype instance for ↥(allCircumradii S) cannot be auto-inferred.
-  -- FIX: either provide explicit Fintype ↥{circumradiusOf p_origin p_e1 p_e2}
-  -- and show allCircumradii S = {circumradiusOf p_origin p_e1 p_e2},
-  -- or redefine countDistinctRadii using Finset.image.
+  -- Proof plan:
+  -- 1. Construct S = {p_origin, p_e1, p_e2} with card 3
+  -- 2. Show GP: no-3-collinear via triangle_not_collinear,
+  --    no-4-concyclic vacuous (only 3 points, need 4 for concyclicity)
+  -- 3. Show countDistinctRadii S = 1:
+  --    allCircumradiiFinset S = {circumradiusOf p_origin p_e1 p_e2}
+  --    This follows from circumradiusOf permutation invariance:
+  --    all 6 ordered triples of 3 points map to the same circumradius
+  -- 4. h(3) ≤ 1 since 1 ∈ {k | ∃ S, |S|=3 ∧ GP(S) ∧ count(S) = k}
+  -- 5. h(3) ≥ 1 since any GP 3-point set has ≥ 1 triple hence ≥ 1 radius
+  -- REQUIRES: circumradiusOf permutation invariance (see h_upper_bound notes)
   sorry
 
 /--
@@ -301,19 +335,23 @@ These enable proofs of h_three and h_upper_bound by providing concrete GP config
 
 section PointHelpers
 
-/-- Circumradius computed directly from three points (no PointTriple wrapper). -/
-noncomputable def circumradiusOf (p1 p2 p3 : Point) : ℝ :=
-  let a := ‖p2 - p3‖
-  let b := ‖p1 - p3‖
-  let c := ‖p1 - p2‖
-  let twiceArea := |((p2 0 - p1 0) * (p3 1 - p1 1) -
-                     (p3 0 - p1 0) * (p2 1 - p1 1))|
-  if twiceArea = 0 then 0
-  else (a * b * c) / (2 * twiceArea)
-
 /-- circumradiusOf agrees with circumradius for matching triples. -/
 theorem circumradiusOf_eq_circumradius (t : PointTriple) :
     circumradiusOf t.p1 t.p2 t.p3 = circumradius t := rfl
+
+/-- circumradiusOf is invariant under swapping the first two arguments.
+    Proof: side lengths {‖p2-p3‖, ‖p1-p3‖, ‖p1-p2‖} are permuted but
+    the product abc is unchanged (commutativity of multiplication), and
+    |det(p2-p1, p3-p1)| = |det(p1-p2, p3-p2)| (signed area changes sign). -/
+theorem circumradiusOf_perm12 (p1 p2 p3 : Point) :
+    circumradiusOf p1 p2 p3 = circumradiusOf p2 p1 p3 := by
+  sorry
+
+/-- circumradiusOf is invariant under cyclic permutation (1→2→3→1).
+    Combined with perm12, this generates all 6 permutations. -/
+theorem circumradiusOf_cycle (p1 p2 p3 : Point) :
+    circumradiusOf p1 p2 p3 = circumradiusOf p2 p3 p1 := by
+  sorry
 
 /-- The origin (0, 0) as a point in the plane. -/
 private noncomputable def p_origin : Point := ![0, 0]
