@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved trivial_upper_bound (5A→4A).",
+    "progressSummary": "PROGRESS: Eliminated erdos_319_conjecture (duplicate of adenwalla_lower_bound). 4A→3A.",
     "builtItems": [
-      "PROVED trivial_upper_bound (5A→4A)"
+      "PROVED trivial_upper_bound (5A→4A)",
+      "PROVED erdos_319_conjecture: identical to adenwalla_lower_bound — trivial derivation (4A→3A)"
     ],
     "insights": [
-      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A."
+      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A.",
+      "erdos_319_conjecture and adenwalla_lower_bound have identical formal statements — deduplicated as axiom→theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
