@@ -19,7 +19,24 @@ namespace Erdos1149Aristotle
     Standard number theory counting result. -/
 theorem card_multiples (d N : ℕ) (hd : 0 < d) :
     (Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N)).card = N / d := by
-  sorry
+  -- Bijection: multiples of d in [1,N] ↔ [1, N/d] via a ↦ a/d
+  rw [show N / d = (Finset.Icc 1 (N / d)).card from by simp [Finset.card_Icc]]
+  apply Finset.card_nbij (fun a => a / d)
+  · intro a ha
+    simp only [Finset.mem_filter, Finset.mem_Icc] at ha
+    simp only [Finset.mem_Icc]
+    obtain ⟨⟨ha1, haN⟩, hd_dvd⟩ := ha
+    constructor
+    · exact Nat.one_le_div_of_dvd (by omega) hd_dvd
+    · exact Nat.div_le_div_right haN
+  · intro a₁ ha₁ a₂ ha₂ h
+    simp only [Finset.mem_filter, Finset.mem_Icc] at ha₁ ha₂
+    obtain ⟨_, hd₁⟩ := ha₁; obtain ⟨_, hd₂⟩ := ha₂
+    exact Nat.eq_of_dvd_of_div_eq_div hd hd₁ hd₂ h
+  · intro k hk
+    simp only [Finset.mem_Icc] at hk
+    exact ⟨d * k, by simp [Finset.mem_filter, Finset.mem_Icc, Nat.mul_div_cancel_left _ hd]; omega,
+           Nat.mul_div_cancel_left k hd⟩
 
 /-- gcd(n, 1) = 1 for all n. -/
 theorem gcd_one_right (n : ℕ) : Nat.gcd n 1 = 1 :=
