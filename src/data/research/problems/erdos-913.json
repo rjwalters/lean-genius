@@ -29,12 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 3 axioms (3A→1A). Proved exponent_structure and erdos_913_conditional. Only the open Bunyakovsky-type conjecture remains.",
+    "progressSummary": "COMPLETED: Two independent conditional proofs (8p²-1 and Mersenne). 0 sorries, 1 genuinely open axiom (Bunyakovsky-type). Meta.json fully corrected and up-to-date.",
     "builtItems": [
       "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
       "Proved example_n31: 31·32 = 2^5·31^1",
       "Proved example_n71: 71·72 = 2^3·3^2·71^1 (first 3-factor example, from 8p²-1 with p=3)",
-      "Proved example_n127: 127·128 = 2^7·127^1"
+      "Proved example_n127: 127·128 = 2^7·127^1",
+      "Updated meta.json sections: added sec-913-mersenne, corrected sec-913-examples to show 6 proved examples including n=71 3-factor case"
     ],
     "insights": [
       "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
@@ -44,7 +45,9 @@
       "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime",
       "Proved exponent_structure: primeFactors of (8p²-1)(8p²) = {8p²-1, p, 2} using Mathlib factorization API",
       "Proved erdos_913_conditional via Set.Infinite.image + coprime factorization arithmetic",
-      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples"
+      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples",
+      "Meta.json corrected: leanFile.axiomCount 3→1, lineCount 274→344, theoremCount 8→16, definitionCount 5→6, removed stale PrimeNormNum import, updated sections to cover Mersenne path",
+      "proofStrategy text corrected: exponent_structure is a proved theorem, not an axiom; both conditional paths are now described"
     ],
     "mathlibGaps": [],
     "nextSteps": [
