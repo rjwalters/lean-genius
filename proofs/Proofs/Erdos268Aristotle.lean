@@ -107,7 +107,18 @@ theorem shiftedHarmonicSum_antitone (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
-  sorry
+  unfold shiftedHarmonicSum
+  -- Each term: 1/(n+j) < 1/(n+i) since j > i
+  apply tsum_lt_tsum
+  · -- ∀ n, 1/(n+j) ≤ 1/(n+i)
+    intro ⟨n, hn⟩
+    apply div_le_div_of_nonneg_left (by positivity : (0:ℝ) < 1) (by positivity) (by positivity)
+    exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+  · -- ∃ n ∈ A, 1/(n+j) < 1/(n+i)
+    obtain ⟨n, hn⟩ := hA.nonempty
+    exact ⟨⟨n, hn⟩, div_lt_div_of_pos_left (by positivity : (0:ℝ) < 1) (by positivity)
+      (by exact_mod_cast Nat.add_lt_add_left hij n)⟩
+  · exact shifted_summable A i hconv
 
 -- Routine: The squares set is infinite
 theorem squaresSet_infinite : squaresSet.Infinite := by

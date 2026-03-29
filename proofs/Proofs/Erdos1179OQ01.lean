@@ -219,15 +219,41 @@ private lemma ψp_norm {p : ℕ} [NeZero p] (x : ZMod p) : ‖ψp x‖ = 1 :=
 private lemma ψp_zero {p : ℕ} [NeZero p] : ψp (0 : ZMod p) = 1 := by
   simp [ψp, ZMod.val_zero]
 
+/-- ω^{a % p} = ω^a, since ω^p = 1. -/
+private lemma ωp_pow_mod (p a : ℕ) [NeZero p] : ωp p ^ (a % p) = ωp p ^ a := by
+  conv_rhs => rw [← Nat.div_add_mod a p]
+  rw [pow_add, pow_mul, ωp_pow_eq_one, one_pow, one_mul]
+
+/-- ψ is an additive character: ψ(x + y) = ψ(x) · ψ(y). -/
+private lemma ψp_add {p : ℕ} [NeZero p] (x y : ZMod p) :
+    ψp (x + y) = ψp x * ψp y := by
+  simp only [ψp, ← pow_add]
+  rw [ZMod.val_add x y]
+  exact ωp_pow_mod p (ZMod.val x + ZMod.val y)
+
+/-- ψ distributes over negation: ψ(-x) · ψ(x) = 1. -/
+private lemma ψp_neg_mul {p : ℕ} [NeZero p] (x : ZMod p) :
+    ψp (-x) * ψp x = 1 := by
+  rw [← ψp_add, neg_add_cancel, ψp_zero]
+
+/-- ψ distributes over Finset.sum: ψ(∑ f) = ∏ ψ(f i). -/
+private lemma ψp_sum {p : ℕ} [NeZero p] {ι : Type*} (s : Finset ι) (f : ι → ZMod p) :
+    ψp (s.sum f) = ∏ i ∈ s, ψp (f i) := by
+  induction s using Finset.cons_induction with
+  | empty => simp [ψp_zero]
+  | cons a s ha ih => rw [Finset.sum_cons, ψp_add, ih, Finset.prod_cons]
+
 /-- Fourier expansion of reprCount.
     reprCount A g = (1/p) ∑_j ω^{val(-j·g)} · ∏_{a∈A} (1 + ω^{val(j·a)})
 
-    Proof outline:
-    1. reprCount A g = #{S ⊆ A : ∑S = g}
-    2. By character orthogonality: δ(∑S = g) = (1/p)∑_j ω^{j(g-∑S)}
-    3. Swap sums and use subset product identity (Mathlib's prod_add):
-       ∑_{S⊆A} ∏_{a∈S} ω^{ja} = ∏_{a∈A} (1 + ω^{ja})
-    4. Rearrange to get the stated formula. -/
+    Proof uses three key ingredients:
+    1. ψ additivity (ψp_add, ψp_sum): character property of ω^{val(·)}
+    2. Character orthogonality: ∑_j ψ(j·c) = p·[c=0] via geometric sum
+    3. Subset product identity: ∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a)
+
+    Infrastructure (ωp_pow_mod, ψp_add, ψp_sum) is proved above;
+    the remaining steps need character orthogonality on ZMod p
+    and the subset product identity (Finset.prod_add or by induction). -/
 private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
     (A : Finset (ZMod p)) (g : ZMod p) :
     (reprCount A g : ℂ) =
