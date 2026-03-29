@@ -267,16 +267,30 @@ theorem erdos_conjecture_false : ¬erdosOriginalConjecture := by
   · norm_num
   · use 100  -- Any M > 3 = f_4(n) for large n
     intro N₀
-    -- For large enough n, f_4(n) = 3 ≤ 100
-    sorry
+    -- f 4 n = 3 for all n (by definition), and 3 ≤ 100
+    exact ⟨N₀, le_refl _, by simp [f]⟩
 
 /-- The log conjecture is also false: f_4(n) = 3 cannot grow as C·log(n). -/
 theorem log_conjecture_false : ¬erdosLogConjecture := by
   unfold erdosLogConjecture
   push_neg
   intro C hC
-  -- For large n, C * log(n) > 3 = f_4(n), contradicting the bound
-  sorry
+  -- f 4 n = 3 for all n. Need ∃ n ≥ 2, 3 < C * log n.
+  -- Choose n > exp(3/C) so log n > 3/C and C * log n > 3.
+  obtain ⟨n, hn⟩ := exists_nat_gt (Real.exp (3 / C))
+  refine ⟨max n 2, le_max_right _ _, ?_⟩
+  simp only [f, show ¬(4 < 3) from by omega, show ¬(4 = 3) from by omega, ite_false]
+  push_neg
+  have hmax_pos : (0 : ℝ) < ↑(max n 2) := by positivity
+  have hlog : 3 / C < Real.log ↑(max n 2) := by
+    calc 3 / C = Real.log (Real.exp (3 / C)) := (Real.log_exp _).symm
+      _ < Real.log ↑(max n 2) := by
+        apply Real.log_lt_log (Real.exp_pos _)
+        exact_mod_cast show Real.exp (3 / C) < ↑(max n 2) from
+          calc Real.exp (3 / C) < ↑n := by exact_mod_cast hn
+            _ ≤ ↑(max n 2) := by exact_mod_cast le_max_left n 2
+  calc (3 : ℝ) = C * (3 / C) := by field_simp
+    _ < C * Real.log ↑(max n 2) := by exact mul_lt_mul_of_pos_left hlog hC
 
 /-
 # Part 9: The Complete Picture
