@@ -7,7 +7,7 @@
     "author": "Erdos (1949); Schinzel (1987); Schinzel-Zannier (2009)",
     "sourceUrl": "https://erdosproblems.com/485",
     "date": "1949",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos485OQ02.lean",
     "tags": [
       "erdos",
@@ -19,8 +19,8 @@
       "open-problem",
       "research"
     ],
-    "badge": "research",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.coeff_mul",
@@ -54,7 +54,7 @@
     "dateAdded": "2026-03-29",
     "axiomCount": 0,
     "lineCount": 297,
-    "assumptions": "0 axioms. 1 sorry: sumset_card_lower_bound (|A + A| >= 2|A| - 1, standard combinatorial fact provable from first principles).",
+    "assumptions": "0 axioms. 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

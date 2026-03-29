@@ -7,14 +7,14 @@
     "author": "Classical result",
     "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root",
     "date": "Classical",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03.lean",
     "tags": ["number-theory", "divisibility", "digital-root", "modular-arithmetic", "algorithms", "research"],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. 1 sorry: digitalRoot decreasing_by (termination of iterative definition).",
-    "lineCount": 200
+    "assumptions": "Fully verified: 0 axiom declarations, 0 sorries.",
+    "lineCount": 210
   },
   "overview": {
     "historicalContext": "The digital root (iterative digit sum) has been used for centuries in 'casting out nines' to check arithmetic. The closed-form formula digitalRoot(n) = 1 + ((n-1) mod 9) reduces this to O(1).",
@@ -47,7 +47,7 @@
     "lineCount": 200,
     "axiomCount": 0,
     "theoremCount": 15,
-    "sorryTheorems": 1,
+    "sorryTheorems": 0,
     "definitionCount": 3
   }
 }

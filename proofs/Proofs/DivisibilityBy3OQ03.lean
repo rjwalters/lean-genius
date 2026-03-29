@@ -31,6 +31,17 @@ Sum of digits in base 10.
 /-- Sum of digits of n in base 10 -/
 def digitSum (n : ℕ) : ℕ := (Nat.digits 10 n).sum
 
+/-- Sum of digits is at most n for all n. -/
+private theorem digitSum_le_self (n : ℕ) : digitSum n ≤ n := by
+  unfold digitSum
+  rcases le_or_lt 10 n with h | h
+  · exact le_of_lt (Nat.sum_digits_lt n 10 (by omega) h)
+  · interval_cases n <;> native_decide
+
+/-- digitSum n < n for n ≥ 10. -/
+private theorem digitSum_lt_of_ge_ten (n : ℕ) (h : 10 ≤ n) : digitSum n < n := by
+  unfold digitSum; exact Nat.sum_digits_lt n 10 (by omega) h
+
 /-- The digital root: iterate digit summation until single digit -/
 noncomputable def digitalRoot : ℕ → ℕ
   | 0 => 0
@@ -39,7 +50,9 @@ noncomputable def digitalRoot : ℕ → ℕ
     if s < 10 then s else digitalRoot s
   termination_by n => n
   decreasing_by
-    sorry -- Need: digitSum n < n for n ≥ 10
+    simp_wf
+    have h_le := digitSum_le_self (n + 1)
+    exact digitSum_lt_of_ge_ten (n + 1) (by omega)
 
 /-
 ## Part II: Closed-Form Formula
@@ -246,8 +259,8 @@ in constant time using `1 + ((n-1) mod 9)`, avoiding iterative summation.
 - digitalRoot_mul: dr(a·b) = dr(dr(a) · dr(b))
 - 5 concrete examples
 
-**Sorry** (1):
-- digitalRoot decreasing_by: digitSum n < n for n ≥ 10 (termination of iterative def)
+**Previously Sorry** (now resolved):
+- digitalRoot decreasing_by: digitSum n < n for n ≥ 10 (proved via Nat.sum_digits_lt)
 -/
 
 #check digitalRootFormula
