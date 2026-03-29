@@ -151,10 +151,28 @@ def Erdos454Conjecture : Prop :=
 def Erdos454Negation : Prop :=
   ∃ M : ℕ, limsup deviationENat atTop ≤ M
 
-/-- The conjecture and its negation are complementary. -/
+/-- The conjecture and its negation are complementary.
+
+    limsup f = ⊤ ↔ ¬∃ M : ℕ, limsup f ≤ ↑M.
+    Forward: ⊤ is not ≤ any finite value.
+    Backward: if limsup is finite, it's ≤ itself. -/
 theorem conjecture_iff_not_negation :
     Erdos454Conjecture ↔ ¬Erdos454Negation := by
-  sorry
+  simp only [Erdos454Conjecture, Erdos454Negation]
+  constructor
+  · -- If limsup = ⊤, no finite bound exists
+    rintro rfl ⟨M, hM⟩
+    exact absurd hM (not_le.mpr (WithTop.coe_lt_top M))
+  · -- If no finite bound exists, limsup = ⊤
+    intro h
+    by_contra hne
+    -- limsup ≠ ⊤, so it's some finite value m
+    have : ∃ m : ℕ, limsup deviationENat atTop = ↑m := by
+      rcases limsup deviationENat atTop with _ | m
+      · exact absurd rfl hne
+      · exact ⟨m, rfl⟩
+    obtain ⟨m, hm⟩ := this
+    exact h ⟨m, le_of_eq hm.symm⟩
 
 /- ## Part VII: Heuristic Analysis -/
 
