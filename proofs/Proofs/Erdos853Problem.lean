@@ -72,6 +72,30 @@ theorem primeGap_zero : primeGap 0 = 1 := by
   show nthPrime 1 - nthPrime 0 = 1
   rw [nthPrime_zero, nthPrime_one]
 
+/-- p_2 = 5. -/
+theorem nthPrime_two : nthPrime 2 = 5 := by
+  unfold nthPrime
+  -- Upper bound via count/nth Galois connection: #{primes < 6} ≥ 3
+  have hc5 : 1 < Nat.count Nat.Prime 5 :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr
+      (by rw [Nat.nth_prime_one_eq_three]; omega)
+  have hc6 : Nat.count Nat.Prime 6 = Nat.count Nat.Prime 5 + 1 :=
+    by rw [Nat.count_succ, if_pos (by decide : Nat.Prime 5)]
+  have h_upper : Nat.nth Nat.Prime 2 < 6 :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by omega)
+  -- Lower bound: > 3 and 4 is not prime
+  have h_gt3 : 3 < Nat.nth Nat.Prime 2 :=
+    Nat.nth_prime_one_eq_three ▸ Nat.nth_strictMono Nat.infinite_setOf_prime (by omega : 1 < 2)
+  have h_ne4 : Nat.nth Nat.Prime 2 ≠ 4 :=
+    fun h => absurd (h ▸ Nat.nth_mem_of_infinite Nat.infinite_setOf_prime 2)
+      (by decide : ¬Nat.Prime 4)
+  omega
+
+/-- d_1 = p_2 - p_1 = 5 - 3 = 2 (the first twin prime gap). -/
+theorem primeGap_one : primeGap 1 = 2 := by
+  show nthPrime 2 - nthPrime 1 = 2
+  rw [nthPrime_one, nthPrime_two]
+
 /-- All prime gaps for n >= 1 are even (both p_n, p_{n+1} are odd primes). -/
 theorem primeGap_even (n : ℕ) (hn : n ≥ 1) : 2 ∣ primeGap n := by
   unfold primeGap nthPrime
@@ -138,6 +162,10 @@ theorem gapSet_ge_two {t : ℕ} {x : ℕ} (ht : t ∈ gapSet x) : t ≥ 2 := by
   obtain ⟨n, hn1, _, hn3⟩ := ht
   rw [← hn3]
   exact primeGap_ge_two n hn1
+
+/-- 2 ∈ gapSet(x) for x ≥ 3 (the twin primes 3, 5 witness gap 2). -/
+theorem two_mem_gapSet (x : ℕ) (hx : x ≥ 3) : 2 ∈ gapSet x :=
+  ⟨1, le_refl 1, by rw [nthPrime_one]; omega, primeGap_one⟩
 
 -- ## Defining r(x) via Nat.find
 
@@ -403,6 +431,13 @@ theorem r_upper_bound (x : ℕ) (hx : x ≥ 4) : r x ≤ x := by
         exact absurd hxm2_prime (by
           intro hp; exact absurd (hp.eq_one_or_self_of_dvd 3 h3dvd) (by omega))
 
+/-- r(x) ≥ 4 for x ≥ 3: gap 2 always appears (from primes 3, 5), so the
+    smallest missing even gap is at least 4. -/
+theorem r_ge_four (x : ℕ) (hx : x ≥ 3) : r x ≥ 4 := by
+  have ⟨hr2, hr_even⟩ := r_even_pos x hx
+  have h_ne : r x ≠ 2 := fun h => (h ▸ r_not_gap x hx) (two_mem_gapSet x hx)
+  omega
+
 -- ## Main Conjectures (OPEN)
 
 /-- **Erdos Problem #853, Weak Form** (OPEN): r(x) -> infinity as x -> infinity.
@@ -440,6 +475,20 @@ axiom maynard_tao_bounded_gaps :
   ∃ t : ℕ, t ≤ 246 ∧ t % 2 = 0 ∧
     ∀ X : ℕ, ∃ n : ℕ, nthPrime n > X ∧ primeGap n = t
 
+/-- Maynard-Tao implies some even gap ≤ 246 persists in gapSet(x) for all
+    sufficiently large x. -/
+theorem maynard_tao_gap_persistent :
+    ∃ t : ℕ, t ≤ 246 ∧ t % 2 = 0 ∧
+      ∀ X : ℕ, ∃ x : ℕ, x ≥ X ∧ t ∈ gapSet x := by
+  obtain ⟨t, ht246, hteven, hinf⟩ := maynard_tao_bounded_gaps
+  exact ⟨t, ht246, hteven, fun X => by
+    obtain ⟨n, hn_gt, hn_gap⟩ := hinf X
+    have hn1 : n ≥ 1 := by
+      rcases n with _ | n
+      · exfalso; rw [primeGap_zero] at hn_gap; omega
+      · omega
+    exact ⟨nthPrime n, le_of_lt hn_gt, n, hn1, le_refl _, hn_gap⟩⟩
+
 /-- Cramer's conjecture (OPEN): the largest prime gap below x is O((log x)^2).
     Combined with the weak conjecture, this would give r(x) <= O((log x)^2). -/
 axiom cramer_conjecture_bound :
@@ -449,30 +498,26 @@ axiom cramer_conjecture_bound :
 /-
 ## Summary
 
-**Proved from Mathlib** (14 theorems):
-- nthPrime_prime, nthPrime_strictMono, nthPrime_mono
-- nthPrime_zero, nthPrime_one
-- primeGap_pos, primeGap_zero, primeGap_even, primeGap_ge_two
-- gapSet_mono, gapSet_even, gapSet_pos, gapSet_ge_two
-- r_monotone (from axioms about r)
-- weak_implies_all_even_gaps (consequence of weak conjecture)
+**Proved theorems** (31 total, 0 sorries):
+- Prime infrastructure: nthPrime_prime, nthPrime_strictMono, nthPrime_mono,
+  nthPrime_zero (p₀=2), nthPrime_one (p₁=3), nthPrime_two (p₂=5), nthPrime_ge
+- Gap basics: primeGap_pos, primeGap_zero (d₀=1), primeGap_one (d₁=2),
+  primeGap_even, primeGap_ge_two
+- Gap set: gapSet_mono, gapSet_even, gapSet_pos, gapSet_ge_two, two_mem_gapSet,
+  gapSet_finite, gapSet_lt, exists_even_not_in_gapSet
+- r(x) properties: r_even_pos, r_not_gap, r_minimal, r_monotone,
+  r_upper_bound_even, r_upper_bound, r_ge_four
+- Consequences: weak_implies_all_even_gaps, maynard_tao_gap_persistent
+- Utilities: nthPrime_succ_le_of_prime_gt, not_prime_of_even_ge_four, gap_lt_prime
 
-**Axioms** (4 deep results):
+**Axioms** (4 — all appropriate):
 - erdos_853_weak, erdos_853_strong: the OPEN conjectures
 - maynard_tao_bounded_gaps: deep result (Maynard-Tao 2014)
-- cramer_conjecture_bound: OPEN conjecture (Cramer)
+- cramer_conjecture_bound: OPEN conjecture (Cramér)
 
-**0 sorries** — r_upper_bound proved via:
-- Even case: x ∉ gapSet(x) since gaps < x
-- Odd x=5: Bertrand bound via prime 7
-- Odd x=7: Bertrand bound via prime 11
-- Odd x≥9: triple-prime (x, x-2, x-4) mod 3 contradiction
-
-**New infrastructure**:
-- nthPrime_succ_le_of_prime_gt: next-prime bound via count/nth Galois connection
-- not_prime_of_even_ge_four: even numbers ≥ 4 are composite
-- gap_lt_prime: d_n < p_n for n ≥ 1 (from Bertrand's postulate)
-- gapSet_lt: all gaps in gapSet(x) are < x
-
-**Bugfix**: r_upper_bound was FALSE at x = 3 (r(3) = 4). Fixed hypothesis to x ≥ 4.
+**Key results**:
+- r(x) defined via Nat.find (not axiomatized)
+- r(x) ≤ x for x ≥ 4 (even: gaps < x; odd: triple-prime mod 3 argument)
+- r(x) ≥ 4 for x ≥ 3 (gap 2 always appears from twin primes 3, 5)
+- Maynard-Tao ⟹ some gap ≤ 246 persists forever
 -/
