@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (ramsey_triangle — classical n-color Ramsey theorem for triangles), 4T proved, 0S.",
+    "progressSummary": "PROGRESS: Built complete inductive proof structure for ramsey_triangle axiom elimination. ramsey_mono (monotonicity) fully proved. ramsey_triangle_proved gives inductive skeleton. 1 sorry remains in ramsey_inductive_step (pigeonhole + subgraph extraction). File: 108→162 lines, 4→7 theorems.",
     "builtItems": [
       "theorem complete_graphs_ramsey: proved from ramsey_triangle via Set.mem_singleton",
       "theorem triangle_ramsey_mono: proved via Fin.castLE injection",
       "Fixed 2 pre-existing build failures (set literal syntax, Fin.castLE injectivity)",
       "Proved ramsey_triangle_base: K_3 has 1-color Ramsey property",
-      "Proved ramsey_triangle_one_proved: instantiates axiom for n=1 without axiom"
+      "Proved ramsey_triangle_one_proved: instantiates axiom for n=1 without axiom",
+      "PROVED ramsey_mono: transferring Ramsey property from K_N to K_M when N ≤ M via Fin.castLE",
+      "BUILT ramsey_triangle_proved: full inductive structure (base=K_3, step uses ramsey_inductive_step)",
+      "BUILT ramsey_inductive_step: core lemma skeleton (sorry) — needs pigeonhole + case analysis"
     ],
     "insights": [
       "complete_graphs_ramsey follows directly from ramsey_triangle: just instantiate with K_N",
