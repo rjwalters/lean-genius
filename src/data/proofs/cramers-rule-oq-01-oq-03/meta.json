@@ -19,10 +19,10 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. 2 sorries: gaussian_cubic_bound (combinatorial sum bound), cramer_exceeds_gaussian (comparison for n ≥ 6, removed but was originally planned). All definitions and key theorems are fully proved.",
-    "lineCount": 210
+    "assumptions": "0 axiom declarations. 1 sorry: gaussian_cubic_bound (combinatorial sum bound). cramer_exceeds_gaussian was removed. All other definitions and key theorems are fully proved.",
+    "lineCount": 216
   },
   "overview": {
     "historicalContext": "**Why Cramer's Rule is Beautiful but Impractical**\n\nCramer's Rule provides elegant closed-form solutions to linear systems via determinants. However, the Leibniz formula for determinants sums over all n! permutations, making it computationally prohibitive for large n. Gaussian elimination, developed systematically by Gauss in the early 1800s, solves the same problem in O(n³) operations.",
@@ -133,7 +133,7 @@
     "imports": ["Mathlib"],
     "opens": ["Finset", "Nat", "BigOperators"],
     "namespace": "CramersRuleComplexity",
-    "lineCount": 210,
+    "lineCount": 216,
     "axiomCount": 0,
     "theoremCount": 13,
     "substantiveTheoremCount": 10,
