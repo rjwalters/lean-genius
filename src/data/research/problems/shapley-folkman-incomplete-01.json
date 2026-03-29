@@ -29,12 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Identified key Mathlib theorems (eq_pos_convex_span_of_mem_convexHull), documented proof strategy for all 4 sorries, added exists_minimal_decomposition, created Aristotle companion file. File grew from 158 to 198 lines, 5 to 6 theorems.",
+    "progressSummary": "PROGRESS: Eliminated all 6 sorries in Aristotle companion file. Main file still has 4 sorries. Key lemma convexHull_not_mem_requires_two restructured with Fin n transport proved.",
     "builtItems": [
       "Added exists_minimal_decomposition (trivial construction of Decomposition from data)",
       "Added detailed proof strategy documentation for convexHull_not_mem_requires_two",
       "Documented main proof decomposition: Parts 1-5 with clear strategy for each step",
-      "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search"
+      "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search",
+      "Proved convexHull_singleton (Aristotle companion)",
+      "Proved card_ge_two_of_mem_convexHull_not_mem (Aristotle companion)",
+      "Proved not_affineIndependent_of_card_gt (Aristotle companion)",
+      "Proved convexHull_empty (Aristotle companion)",
+      "Proved convex_sum_convexHull (Aristotle companion)",
+      "Proved mem_of_sum_singleton (Aristotle companion)",
+      "Structured convexHull_not_mem_requires_two proof: Fin n transport proved, sorry reduced to card≤1 case"
     ],
     "insights": [
       "Key Mathlib theorem: eq_pos_convex_span_of_mem_convexHull gives affinely-independent convex combinations with positive weights",
@@ -42,7 +49,11 @@
       "excess_vertices_affine_dependent already proved using AffineIndependent.fintype_card_le_finrank_succ",
       "Main proof strategy: minimize total Caratheodory vertices, then >d excess indices give affine dependence for contradiction",
       "Corollaries sum_close_to_convexHull and repeated_sum_nearly_convex follow from main theorem + Minkowski sum algebra",
-      "0 axioms — all sorries are provable theorems (not open conjectures)"
+      "0 axioms — all sorries are provable theorems (not open conjectures)",
+      "convexHull_singleton, convexHull_empty are direct Mathlib lemmas (_root_ prefix needed in namespace)",
+      "card_ge_two_of_mem_convexHull_not_mem: case-split on card ≤ 1, use Finset.card_le_one.mp for singleton deduction",
+      "Equiv.sum_comp e.symm f transports sums from Fin n to original fintype",
+      "convex_sum_convexHull follows from Convex.add on convex_convexHull"
     ],
     "mathlibGaps": [
       "No gap: convexHull Caratheodory representation is fully available via eq_pos_convex_span_of_mem_convexHull",

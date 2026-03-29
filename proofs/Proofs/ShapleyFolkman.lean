@@ -101,16 +101,10 @@ total vertex count — contradicting minimality.
 /-- If a point is in the convex hull of S but not in S itself, it requires
     at least 2 points from S in any Carathéodory representation.
 
-    Proof strategy: Use Mathlib's `eq_pos_convex_span_of_mem_convexHull` (from
-    Caratheodory.lean) which gives an affinely independent representation with
-    strictly positive weights. If the representation has 0 points, ∑ w = 0 ≠ 1.
-    If it has 1 point, x = z₀ ∈ s, contradicting x ∉ s. So it has ≥ 2 points.
-
-    Key Mathlib theorem:
-    `eq_pos_convex_span_of_mem_convexHull : x ∈ convexHull 𝕜 s →
-      ∃ (ι : Sort _) (_ : Fintype ι) (z : ι → E) (w : ι → 𝕜),
-        range z ⊆ s ∧ AffineIndependent 𝕜 z ∧ (∀ i, 0 < w i) ∧
-        ∑ i, w i = 1 ∧ ∑ i, w i • z i = x` -/
+    Strategy: Use `eq_pos_convex_span_of_mem_convexHull` to get an affinely
+    independent representation with strictly positive weights. Card = 0 gives
+    empty sum = 0 ≠ 1; card = 1 gives x = z₀ ∈ s, contradiction. So card ≥ 2.
+    Transport via `Fintype.equivFin` to get a `Fin n` representation. -/
 theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
     (hx_hull : x ∈ convexHull ℝ s) (hx_not : x ∉ s) :
     ∃ (n : ℕ) (f : Fin n → E) (w : Fin n → ℝ),
@@ -119,12 +113,24 @@ theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
       (∀ i, 0 ≤ w i) ∧
       ∑ i, w i = 1 ∧
       ∑ i, w i • f i = x := by
-  -- Step 1: Get a finite subset t ⊆ s with x ∈ convexHull ℝ t
-  -- Use convexHull_eq_union_convexHull_finite_subsets
-  -- Step 2: From Finset.convexHull_eq, get weights on t
-  -- Step 3: If t has ≤ 1 element, derive contradiction with x ∉ s
-  -- Step 4: So t has ≥ 2 elements; enumerate as Fin n
-  sorry
+  -- Get Carathéodory representation with positive weights and affine independence
+  obtain ⟨ι, _, z, w, hz_sub, _, hw_pos, hw_sum, hw_eq⟩ :=
+    eq_pos_convex_span_of_mem_convexHull hx_hull
+  -- Show the index type has at least 2 elements
+  have hn : 2 ≤ Fintype.card ι := by
+    by_contra hlt
+    push_neg at hlt
+    have hle : Fintype.card ι ≤ 1 := by omega
+    -- card = 0 gives empty sum = 0, contradicting ∑ w = 1
+    -- card = 1 gives x = z(unique element) ∈ s, contradicting x ∉ s
+    sorry
+  -- Transport to Fin n via the canonical equivalence
+  let e := Fintype.equivFin ι
+  refine ⟨Fintype.card ι, z ∘ e.symm, w ∘ e.symm, hn, ?_, ?_, ?_, ?_⟩
+  · intro i; exact hz_sub ⟨e.symm i, rfl⟩
+  · intro i; exact le_of_lt (hw_pos _)
+  · rw [← Equiv.sum_comp e.symm]; exact hw_sum
+  · rw [← Equiv.sum_comp e.symm (fun i => w i • z i)]; exact hw_eq
 
 /-- The reduction step: if the total number of excess vertices exceeds d,
     an affine dependence exists among them, enabling a vertex reduction. -/
