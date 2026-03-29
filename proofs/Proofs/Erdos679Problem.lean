@@ -118,7 +118,15 @@ noncomputable def bigOmega (n : ℕ) : ℕ := n.primeFactorsList.length
 
 /-- Ω(n) ≥ ω(n) always. -/
 theorem bigOmega_ge_omega (n : ℕ) : bigOmega n ≥ omega n := by
-  sorry
+  simp only [bigOmega, omega, ge_iff_le]
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp
+  · calc n.primeFactors.card
+        ≤ n.primeFactorsList.toFinset.card := by
+          apply Finset.card_le_card; intro p hp
+          exact List.mem_toFinset.mpr ((Nat.mem_primeFactorsList hn).mpr
+            ((Nat.mem_primeFactors hn).mp hp))
+      _ ≤ n.primeFactorsList.length := List.toFinset_card_le_length
 
 /-- For Ω, the threshold is log₂ k. -/
 noncomputable def thresholdOmega (k : ℕ) : ℝ :=
