@@ -104,7 +104,8 @@ theorem one_le_triangleFreeMaxChi {n : ℕ} (hn : 0 < n) :
   · -- witness: the empty graph
     exact ⟨⊥, Classical.decRel _, emptyGraph_triangleFree n, rfl⟩
   · -- 1 ≤ chromaticNumber of empty graph on n ≥ 1 vertices
-    sorry -- needs detailed API work
+    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+    exact (⊥ : SimpleGraph (Fin n)).chromaticNumber_pos
 
 /- ## Ramsey Duality -/
 
