@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 3 axioms (3A→1A). Proved exponent_structure and erdos_913_conditional. Only the open Bunyakovsky-type conjecture remains.",
+    "progressSummary": "PROGRESS: Two independent conditional proofs complete. 8p²-1 path (exponents {1,2,3}) and Mersenne path (exponents {1,k}). 1 axiom remains (Bunyakovsky-type, genuinely open). 0 sorries.",
     "builtItems": [
       "Proved hasDistinctExponents_of_primeFactors_triple: helper for 3-prime-factor cases",
       "Proved example_n31: 31·32 = 2^5·31^1",
       "Proved example_n71: 71·72 = 2^3·3^2·71^1 (first 3-factor example, from 8p²-1 with p=3)",
-      "Proved example_n127: 127·128 = 2^7·127^1"
+      "Proved example_n127: 127·128 = 2^7·127^1",
+      "Added MersennePrimeExponents definition: {k | k ≥ 2 ∧ (2^k-1).Prime}",
+      "Proved hasDistinctExponents_mersenne: Mersenne primes give exponents {1,k}",
+      "Proved erdos_913_conditional_mersenne: infinitely many Mersenne primes ⟹ Erdős #913",
+      "Proved nonempty_distinctExponentSet from example_n3",
+      "Proved injective_mersenne: k↦2^k-1 is injective"
     ],
     "insights": [
       "infinite_8p_sq_minus_1_primes is a Bunyakovsky-type conjecture — open",
@@ -44,7 +49,10 @@
       "All 2-prime-factor examples come from Mersenne-prime-minus-1 patterns: n = 2^k - 1 prime",
       "Proved exponent_structure: primeFactors of (8p²-1)(8p²) = {8p²-1, p, 2} using Mathlib factorization API",
       "Proved erdos_913_conditional via Set.Infinite.image + coprime factorization arithmetic",
-      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples"
+      "Fixed pre-existing build issues: removed deprecated PrimeNormNum import, fixed Nat.pow_left_injective signature change, added explicit type hints for native_decide examples",
+      "Mersenne primes provide a second independent conditional path: 2^k-1 prime gives n(n+1)=(2^k-1)·2^k with exponents {1,k}",
+      "Neither the Bunyakovsky-type nor Mersenne prime hypothesis implies the other — both are independent open conjectures",
+      "The existing examples n=31,127 are exactly Mersenne prime instances (2^5-1, 2^7-1)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -75,10 +83,10 @@
     {
       "path": "Proofs/Erdos913Problem.lean",
       "filename": "Erdos913Problem.lean",
-      "lineCount": 275,
-      "theoremCount": 8,
+      "lineCount": 344,
+      "theoremCount": 16,
       "axiomCount": 1,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos913Problem.lean"
