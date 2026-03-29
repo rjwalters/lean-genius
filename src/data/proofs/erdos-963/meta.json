@@ -20,9 +20,9 @@
     "erdosNumber": 963,
     "erdosUrl": "https://erdosproblems.com/963",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 225,
-    "assumptions": "5 axioms: erdos_963_conjecture, greedy_lower_bound, trivial_upper_bound, powers_of_two_dissociated, maxDissociatedSize_mono. Proved: dissociated_subset_sum_count (card_image_of_injOn), log_base_gap (Nat.log_anti_left).",
+    "axiomCount": 3,
+    "lineCount": 254,
+    "assumptions": "3 axioms: erdos_963_conjecture (main open conjecture), greedy_lower_bound (known result), trivial_upper_bound (known result). Proved: dissociated_subset_sum_count, log_base_gap, powers_of_two_dissociated, maxDissociatedSize_mono (via csSup_le_csSup + Finset.exists_smaller_set).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -136,9 +136,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 225,
-    "axiomCount": 5,
-    "theoremCount": 4,
+    "lineCount": 254,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 2
   },
   "crossReferences": [

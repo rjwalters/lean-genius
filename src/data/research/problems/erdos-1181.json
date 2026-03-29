@@ -29,13 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No Lean file exists for this problem.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Created full formalization of Erdős #1181 (upper bound on q(n,log n)). Lean file with constructive q definition, trivial upper bound axiom, main conjecture, Tao heuristic, Chebyshev/PNT connection, and link to #457.",
+    "builtItems": [
+      "Created proofs/Proofs/Erdos1181Problem.lean (194 lines)",
+      "Created src/data/proofs/erdos-1181/ gallery entry (meta.json, annotations.json, index.ts)",
+      "Defined consecutiveProduct, q(n,k), chebyshev_theta, erdos1181_conjecture, tao_heuristic_bound, erdos457_conjecture",
+      "Proved consecutiveProduct_pos, q_prime, q_not_dvd, q_minimal constructively",
+      "2 theorem sorries: tao_implies_erdos1181 (asymptotic comparison), conjectures_compatible (infinite intersection)"
+    ],
     "insights": [
-      "No formalization exists - problem needs initial Lean file creation"
+      "No formalization exists - problem needs initial Lean file creation",
+      "Problem is the upper bound sub-question from Erdős #457: is q(n,log n) < (1-c)(log n)² for all large n?",
+      "Trivial bound (1+o(1))(log n)² follows from primorial argument + PNT",
+      "Tao heuristic suggests much stronger bound: q ≪ (log log n / log log log n) · log n",
+      "q(n,k) defined constructively via Nat.find (no axioms needed for definition)",
+      "Key properties q_prime, q_not_dvd, q_minimal all proved constructively"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Submit 2 theorem sorries to Aristotle (tao_implies_erdos1181, conjectures_compatible)",
+      "Investigate if primorial_divides_bound can be proved from Mathlib",
+      "Connect chebyshev_theta to Mathlib ArithmeticFunction if available"
+    ],
     "markdown": "# Erdős #1181 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
   "tags": [
