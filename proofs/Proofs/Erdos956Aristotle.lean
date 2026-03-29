@@ -28,22 +28,44 @@ def translate (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fi
 -- Routine: Symmetry of set distance (follows from dist_comm)
 theorem setDistance_symm {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
     setDistance C D = setDistance D C := by
-  sorry
+  unfold setDistance
+  congr 1
+  ext x
+  simp only [Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨c, d, hc, hd, rfl⟩
+    exact ⟨d, c, hd, hc, (dist_comm c d).symm⟩
+  · rintro ⟨d, c, hd, hc, rfl⟩
+    exact ⟨c, d, hc, hd, (dist_comm c d)⟩
 
 -- Routine: Non-negativity of set distance (dist is non-negative, so is its infimum)
 theorem setDistance_nonneg {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
     setDistance C D ≥ 0 := by
-  sorry
+  unfold setDistance
+  rcases Set.eq_empty_or_nonempty { x | ∃ c ∈ C, ∃ d ∈ D, x = dist c d } with h | h
+  · rw [h]; simp [Real.sInf_empty]
+  · exact le_csInf h (by rintro _ ⟨c, _, d, _, rfl⟩; exact dist_nonneg)
 
 -- Routine: Translates preserve convexity
 theorem translate_convex (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))
     (hC : Convex ℝ C) : Convex ℝ (translate C x) := by
-  sorry
+  intro a ha b hb t₁ t₂ ht₁ ht₂ ht
+  obtain ⟨ca, hca, rfl⟩ := ha
+  obtain ⟨cb, hcb, rfl⟩ := hb
+  refine ⟨t₁ • ca + t₂ • cb, hC hca hcb ht₁ ht₂ ht, ?_⟩
+  simp only [smul_add]
+  have : t₁ • ca + t₁ • x + (t₂ • cb + t₂ • x) =
+      (t₁ • ca + t₂ • cb) + (t₁ • x + t₂ • x) := by abel
+  rw [this, ← add_smul, ht, one_smul]
 
 -- Routine: Translates preserve compactness
 theorem translate_compact (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))
     (hC : IsCompact C) : IsCompact (translate C x) := by
-  sorry
+  -- translate C x is the image of C under the continuous map (· + x)
+  have : translate C x = (· + x) '' C := by
+    ext y; simp [translate, Set.mem_image]
+  rw [this]
+  exact hC.image (continuous_id.add continuous_const)
 
 -- Routine: Translation preserves nonemptiness
 theorem translate_nonempty (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))

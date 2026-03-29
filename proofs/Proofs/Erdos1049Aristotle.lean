@@ -22,7 +22,9 @@ def tau (n : ℕ) : ℕ := n.divisors.card
 -- Routine: τ is multiplicative for coprime arguments
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     tau (m * n) = tau m * tau n := by
-  sorry
+  simp only [tau]
+  rw [hmn.divisors_mul]
+  exact Finset.card_product _ _
 
 -- Routine: The series ∑ 1/t^n converges for t > 1
 theorem inv_pow_summable (t : ℝ) (ht : t > 1) :
