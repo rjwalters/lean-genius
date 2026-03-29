@@ -456,4 +456,111 @@ theorem conditioning_reduces_entropy {α β : Type*} [Fintype α] [Fintype β]
   have hchain := chain_rule hp hsum
   linarith
 
+-- ============================================================
+-- Conditional Entropy Non-negativity
+-- ============================================================
+
+-- Conditional entropy H(X|Y) is non-negative for valid joint distributions.
+-- Proof: each term p(x,y)*log(p(x,y)/p(y)) ≤ 0 since p(x,y) ≤ p(y),
+-- so the negated sum is non-negative.
+theorem conditionalEntropy_nonneg {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    0 ≤ conditionalEntropy pXY := by
+  unfold conditionalEntropy
+  rw [neg_nonneg]
+  apply Finset.sum_nonpos
+  intro x _
+  apply Finset.sum_nonpos
+  intro y _
+  by_cases hpxy : pXY (x, y) = 0
+  · simp [hpxy]
+  · simp [hpxy]
+    have hpxy_pos : 0 < pXY (x, y) :=
+      lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+    have hpy_pos : 0 < ∑ x' : α, pXY (x', y) :=
+      calc 0 < pXY (x, y) := hpxy_pos
+        _ ≤ ∑ x' : α, pXY (x', y) :=
+          Finset.single_le_sum (f := fun x' => pXY (x', y))
+            (fun x' _ => hp (x', y)) (Finset.mem_univ x)
+    have hle : pXY (x, y) / (∑ x' : α, pXY (x', y)) ≤ 1 :=
+      div_le_one_of_le
+        (Finset.single_le_sum (f := fun x' => pXY (x', y))
+          (fun x' _ => hp (x', y)) (Finset.mem_univ x))
+        (le_of_lt hpy_pos)
+    exact mul_nonpos_of_nonneg_of_nonpos (le_of_lt hpxy_pos)
+      (Real.log_nonpos (le_of_lt (div_pos hpxy_pos hpy_pos)) hle)
+
+-- ============================================================
+-- Mutual Information Symmetry via Transposition
+-- ============================================================
+
+-- Transpose a joint distribution: swap the two variables.
+noncomputable def transposeJoint {α β : Type*} (pXY : α × β → ℝ) : β × α → ℝ :=
+  fun ⟨y, x⟩ => pXY (x, y)
+
+-- Transposed distribution preserves non-negativity.
+theorem transposeJoint_nonneg {α β : Type*}
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy) :
+    ∀ yx, 0 ≤ transposeJoint pXY yx := by
+  intro ⟨y, x⟩; exact hp (x, y)
+
+-- Transposed distribution preserves sum.
+theorem transposeJoint_sum {α β : Type*} [Fintype α] [Fintype β]
+    {pXY : α × β → ℝ} (hsum : ∑ xy : α × β, pXY xy = 1) :
+    ∑ yx : β × α, transposeJoint pXY yx = 1 := by
+  have key : ∑ yx : β × α, transposeJoint pXY yx = ∑ xy : α × β, pXY xy := by
+    rw [Fintype.sum_prod_type, Fintype.sum_prod_type]
+    -- LHS: ∑ y, ∑ x, transposeJoint pXY (y, x)  RHS: ∑ x, ∑ y, pXY (x, y)
+    unfold transposeJoint; dsimp only
+    -- Goal: ∑ y, ∑ x, pXY (x, y) = ∑ x, ∑ y, pXY (x, y)
+    exact Finset.sum_comm
+  rw [key, hsum]
+
+-- Mutual information is symmetric: I(X;Y) = I(Y;X).
+-- The MI formula is symmetric in x and y since it involves
+-- p(x,y) * log(p(x,y) / (p_X(x) * p_Y(y))), and the product
+-- p_X(x) * p_Y(y) is commutative.
+theorem mutual_info_symm {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (pXY : α × β → ℝ) :
+    mutualInformation pXY = mutualInformation (transposeJoint pXY) := by
+  unfold mutualInformation transposeJoint
+  dsimp only
+  conv_rhs => rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro x _
+  apply Finset.sum_congr rfl; intro y _
+  by_cases hpxy : pXY (x, y) = 0
+  · simp [hpxy]
+  · rw [if_neg hpxy, if_neg hpxy]
+    congr 1; congr 1; congr 1
+    exact mul_comm _ _
+
+-- Mutual information is bounded by the entropy of the second marginal:
+-- I(X;Y) ≤ H(Y). This follows from the symmetric chain rule and
+-- conditional entropy non-negativity.
+theorem mutual_info_le_entropy_snd {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    mutualInformation pXY ≤
+    shannonEntropy (fun y => ∑ x : α, pXY (x, y)) := by
+  -- Step 1: MI(X;Y) = MI(Y;X)
+  rw [mutual_info_symm]
+  -- Step 2: Apply chain rule to transposed distribution
+  -- MI(Y;X) = H(Y) - H(Y|X)
+  have hp' := transposeJoint_nonneg hp
+  have hsum' := transposeJoint_sum hsum
+  have hchain := chain_rule hp' hsum'
+  -- Step 3: H(Y|X) ≥ 0
+  have hcond := conditionalEntropy_nonneg hp' hsum'
+  -- Step 4: MI(Y;X) = H(Y) - H(Y|X) ≤ H(Y)
+  -- The Y-marginal of transposeJoint pXY is (fun y => ∑ x, pXY(x,y))
+  have hmarg : (fun y => ∑ x : α, transposeJoint pXY (y, x)) =
+      (fun y => ∑ x : α, pXY (x, y)) := by
+    ext y; rfl
+  rw [hchain, hmarg]
+  linarith
+
 end InformationTheory
