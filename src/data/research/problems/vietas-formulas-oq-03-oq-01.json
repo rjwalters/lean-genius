@@ -1,0 +1,95 @@
+{
+  "slug": "vietas-formulas-oq-03-oq-01",
+  "title": "Generalize to $n$ variables using `MvPolynomial",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 1,
+    "focus": "Surveyed: Mathlib has general Newton identities, needs bridging",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Generalized Newton identities to n variables via MvPolynomial evaluation bridge. 14 theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "Proofs/VietasFormulasOQ03OQ01.lean: general Newton identities",
+      "powerSum and elemSymm definitions for Fin n → R",
+      "aeval_psum_eq and aeval_esymm_eq evaluation bridge theorems",
+      "newton_identity and newton_identity_psum general theorems",
+      "Gallery entry: src/data/proofs/vietas-formulas-oq-03-oq-01/"
+    ],
+    "insights": [
+      "Mathlib v4.26.0 likely has MvPolynomial.NewtonIdentities module with general psum/esymm",
+      "Existing proofs are case-by-case (2, 3, 4 vars) using ring tactic",
+      "elemSymm already defined in AmgmInequalityOQ02.lean for Fin n -> R",
+      "Main challenge: bridging MvPolynomial abstract type to concrete Fin n -> R functions",
+      "No axioms or sorries to eliminate - this is pure BUILD work",
+      "MvPolynomial.mul_esymm_eq_sum is the key Mathlib theorem (esymm recurrence)",
+      "Evaluation bridge: aeval x distributes over sums/products converting MvPolynomial to Fin n → R",
+      "Mathlib path: Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities",
+      "14 theorems, 0 sorries, 0 axioms"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Import Mathlib.RingTheory.MvPolynomial.NewtonIdentities",
+      "Specialize MvPolynomial.psum and MvPolynomial.esymm to Fin n -> R",
+      "Prove equivalence between abstract and concrete formulations"
+    ],
+    "markdown": "# Knowledge Base: vietas-formulas-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "vietas-formulas",
+    "vietas-formulas-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.978Z",
+  "lastUpdate": "2026-03-29T04:28:18.988Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/VietasFormulas.lean",
+      "filename": "VietasFormulas.lean",
+      "lineCount": 180,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulas.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ03.lean",
+      "filename": "VietasFormulasOQ03.lean",
+      "lineCount": 384,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
+    }
+  ]
+}
