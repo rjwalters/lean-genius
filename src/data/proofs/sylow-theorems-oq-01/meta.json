@@ -7,14 +7,14 @@
     "author": "Burnside (1911); Sylow (1872)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems#Examples",
     "date": "1872/1911",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/SylowTheoremOQ01.lean",
     "tags": ["group-theory", "finite-groups", "sylow", "classification", "research"],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 9,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 sorries and 0 axioms. IsPQGroup structure encodes only the pq-group hypothesis (not an assumption).",
-    "lineCount": 319
+    "assumptions": "0 axiom declarations. 9 sorries in Sylow counting arguments that need Mathlib's Sylow API. 4 concrete examples fully proved.",
+    "lineCount": 190
   },
   "overview": {
     "historicalContext": "The classification of groups of order pq is one of the first applications of Sylow's theorems taught in abstract algebra. Burnside's 1911 textbook included this classification as a foundational result.",
@@ -37,10 +37,10 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "SylowPQ",
-    "lineCount": 319,
+    "lineCount": 190,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "sorryTheorems": 0,
-    "definitionCount": 2
+    "theoremCount": 14,
+    "sorryTheorems": 9,
+    "definitionCount": 3
   }
 }

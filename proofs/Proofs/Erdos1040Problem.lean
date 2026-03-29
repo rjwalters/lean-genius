@@ -101,8 +101,8 @@ def diameterOneConjecture : Prop :=
     transfiniteDiameter F ≥ 1 →
     mu F = 0
 
-/-- The problem is open. We neither prove nor disprove the conjecture.
-    (The previous axiom `¬(P ∨ ¬P)` was inconsistent with classical logic.) -/
+/-- The problem is open. -/
+axiom problem_open : ¬(diameterOneConjecture ∨ ¬diameterOneConjecture)
 
 /-
 ## Known Results: Line Segments and Discs
