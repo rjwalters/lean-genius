@@ -121,7 +121,29 @@ theorem not_union_proper_subspaces_fin {V : Type*} [AddCommGroup V] [Module K V]
         -- Actually, the finite bad set has at most s'.card elements
         -- while Set.univ has Fintype.card K elements, and |K| > s'.card
         have : (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card ≤ s'.card := by
-          sorry -- Each set is a subsingleton, biUnion of s'.card singletons has ≤ s'.card elements
+          -- Reduce to Finset.biUnion: Set.toFinset of biUnion ⊆ biUnion of Set.toFinset
+          have hsub : (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset ⊆
+              s'.biUnion (fun i => ({t : K | v + t • w ∈ S i}).toFinset) := by
+            intro t ht
+            rw [Set.mem_toFinset, Set.mem_iUnion₂] at ht
+            rw [Finset.mem_biUnion]
+            obtain ⟨i, hi, hti⟩ := ht
+            exact ⟨i, hi, Set.mem_toFinset.mpr hti⟩
+          -- Each subsingleton set has toFinset.card ≤ 1
+          have hcard1 : ∀ i ∈ s', ({t : K | v + t • w ∈ S i}).toFinset.card ≤ 1 := by
+            intro i hi
+            by_cases he : ({t : K | v + t • w ∈ S i} : Set K).Nonempty
+            · obtain ⟨x, hx⟩ := he
+              have := (h_bad_subsingleton i hi).eq_singleton_of_mem hx
+              simp [this]
+            · rw [Set.not_nonempty_iff_eq_empty] at he; simp [he]
+          calc (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card
+              ≤ (s'.biUnion (fun i => ({t : K | v + t • w ∈ S i}).toFinset)).card :=
+                Finset.card_le_card hsub
+            _ ≤ ∑ i ∈ s', ({t : K | v + t • w ∈ S i}).toFinset.card :=
+                Finset.card_biUnion_le
+            _ ≤ ∑ _i ∈ s', 1 := Finset.sum_le_sum hcard1
+            _ = s'.card := by simp
         have : Fintype.card K ≤ s'.card := by
           calc Fintype.card K = Set.univ.toFinset.card := by simp
             _ = (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card := by rw [h_eq]
@@ -222,7 +244,33 @@ theorem nonderogatory_has_cyclic_vector_fin
     calc nf.card ≤ (normalizedFactors μ).card :=
           Multiset.toFinset_card_le_card _
       _ ≤ μ.natDegree := by
-          sorry -- Each normalized factor has degree ≥ 1; total degree = μ.natDegree
+          -- Each irreducible factor has degree ≥ 1; sum of degrees = μ.natDegree
+          suffices hsuff : ∀ (s : Multiset K[X]),
+              (∀ q ∈ s, Irreducible q) → (∀ q ∈ s, q ≠ 0) →
+              s.card ≤ (s.map Polynomial.natDegree).sum by
+            have hirr := fun q (hq : q ∈ normalizedFactors μ) =>
+              (prime_of_normalized_factor q hq).irreducible
+            have hne := fun q (hq : q ∈ normalizedFactors μ) =>
+              ne_zero_of_mem_normalizedFactors hq
+            calc (normalizedFactors μ).card
+                ≤ ((normalizedFactors μ).map Polynomial.natDegree).sum :=
+                  hsuff _ hirr hne
+              _ = μ.natDegree := by
+                  rw [← Polynomial.natDegree_multiset_prod hne]
+                  exact (normalizedFactors_prod hμ_ne).symm.natDegree_eq
+          intro s hirr hne
+          induction s using Multiset.induction with
+          | empty => simp
+          | cons a t ih =>
+            rw [Multiset.card_cons, Multiset.map_cons, Multiset.sum_cons]
+            have ha_irr := hirr a (Multiset.mem_cons_self a t)
+            have := ih (fun q hq => hirr q (Multiset.mem_cons_of_mem hq))
+                        (fun q hq => hne q (Multiset.mem_cons_of_mem hq))
+            have ha_deg : 1 ≤ a.natDegree := by
+              rcases Nat.eq_zero_or_pos a.natDegree with h0 | hpos
+              · exfalso; exact ha_irr.1 (isUnit_of_natDegree_eq_zero h0)
+              · exact hpos
+            omega
       _ = n := h_deg
   have h_nf_lt_K : nf.card < Fintype.card K := by omega
   -- Phase 2: For each factor q, the cofactor's kernel is a proper subspace
