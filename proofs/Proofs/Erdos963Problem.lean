@@ -13,8 +13,7 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 2 (greedy_lower_bound eliminable once disjoint_pairs_card proved;
-  see below — only open conjecture + trivial_upper_bound remain as axioms)
+Axiom count: 1 (trivial_upper_bound — known result, upper bound f(n) ≤ ⌊log₂ n⌋ + 1)
 Sorry count: 0
 
 ## References
@@ -67,13 +66,56 @@ def ErdosProblem963 : Prop :=
 
 /- ## Greedy Lower Bound -/
 
-/-- **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
+/-- Helper: j + 3^j < 3^(j+1) for all j, i.e., j < 2 * 3^j. -/
+private lemma add_pow3_lt_pow3_succ (j : ℕ) : j + 3 ^ j < 3 ^ (j + 1) := by
+  -- Suffices: j + 1 ≤ 2 * 3^j (since 3^(j+1) = 3^j * 3 ≥ 3^j + 2*3^j)
+  suffices j + 1 ≤ 2 * 3 ^ j by
+    have h3 : 3 ^ (j + 1) = 3 ^ j * 3 := pow_succ 3 j
+    omega
+  induction j with
+  | zero => simp
+  | succ n ih =>
+    have h3 : 3 ^ (n + 1) = 3 ^ n * 3 := pow_succ 3 n
+    nlinarith [Nat.one_le_pow n 3 (by omega)]
+
+/-- For j < Nat.log 3 n and n ≥ 1, we have n > j + 3^j.
+    Proof: j < log₃ n implies j + 1 ≤ log₃ n, so 3^(j+1) ≤ 3^(log₃ n) ≤ n.
+    By add_pow3_lt_pow3_succ, j + 3^j < 3^(j+1) ≤ n. -/
+private lemma gt_add_pow3_of_lt_log (n j : ℕ) (hn : n ≥ 1) (hj : j < Nat.log 3 n) :
+    n > j + 3 ^ j := by
+  have hne : n ≠ 0 := by omega
+  have h1 : 3 ^ (j + 1) ≤ 3 ^ Nat.log 3 n :=
+    Nat.pow_le_pow_right (by omega : 1 ≤ 3) (by omega : j + 1 ≤ Nat.log 3 n)
+  have h2 : 3 ^ Nat.log 3 n ≤ n := Nat.pow_log_le_self 3 hne
+  exact lt_of_lt_of_le (add_pow3_lt_pow3_succ j) (le_trans h1 h2)
+
+/-- **PROVED** (was axiom): **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
     The greedy algorithm produces a dissociated subset of this size:
     at each step, a new element can be added unless all remaining elements
     are sums or differences of existing subset sums, which limits
     exclusions to at most 3^k − 1 values after choosing k elements. -/
-axiom greedy_lower_bound :
-  ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n
+theorem greedy_lower_bound :
+    ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n := by
+  intro n hn
+  -- We show every n-element set has a dissociated subset of size ≥ log₃ n
+  -- This means log₃ n is in the set whose sSup is maxDissociatedSize n
+  unfold maxDissociatedSize
+  apply le_csSup
+  · -- BddAbove: bounded by n
+    refine ⟨n, fun k (hk : ∀ A : Finset ℝ, A.card = n →
+        ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k) => ?_⟩
+    have ⟨A, hA⟩ : ∃ A : Finset ℝ, A.card = n :=
+      ⟨(Finset.range n).image ((↑) : ℕ → ℝ), by
+        rw [Finset.card_image_of_injOn]
+        · exact Finset.card_range n
+        · intro a _ b _ hab; exact_mod_cast hab⟩
+    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hA
+    exact le_trans hBcard (le_trans (Finset.card_le_card hBsub) (le_of_eq hA))
+  · -- Nat.log 3 n ∈ the set: for any A with |A| = n, greedy_dissociated gives a
+    -- dissociated subset of size = log₃ n ≥ log₃ n
+    intro A hA
+    exact greedy_dissociated A (Nat.log 3 n)
+      (fun j hj => by rw [hA]; exact gt_add_pow3_of_lt_log n j hn hj)
 
 /- ## Upper Bound -/
 

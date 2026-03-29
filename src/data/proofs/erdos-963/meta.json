@@ -20,9 +20,9 @@
         "erdosNumber": 963,
         "erdosUrl": "https://erdosproblems.com/963",
         "erdosProblemStatus": "open",
-        "axiomCount": 2,
-        "lineCount": 591,
-        "assumptions": "2 axioms: greedy_lower_bound (known result), trivial_upper_bound (known result). 0 sorries (disjoint_pairs_card now proved). Conjecture stated as def ErdosProblem963 (not an axiom). Proved: dissociated_subset_sum_count, log_base_gap, powers_of_two_dissociated, maxDissociatedSize_mono, dissociated_subset, dissociated_card_le, dissociated_insert (extension lemma), dissociated_extend (greedy step), diffSumFinset_card_le, greedy_dissociated.",
+        "axiomCount": 1,
+        "lineCount": 625,
+        "assumptions": "1 axiom: trivial_upper_bound (known result, f(n) ≤ ⌊log₂ n⌋ + 1). greedy_lower_bound now fully proved via greedy_dissociated + Nat.log arithmetic. 0 sorries. Conjecture stated as def ErdosProblem963 (not an axiom).",
         "mathlib_version": "4.26.0"
     },
     "overview": {
