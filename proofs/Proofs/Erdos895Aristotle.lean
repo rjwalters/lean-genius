@@ -73,7 +73,16 @@ theorem odd_set_sumFree (n : ℕ) :
 -- There are ⌈n/2⌉ odd numbers in {1,...,n}.
 theorem odd_count_in_range (n : ℕ) :
     ((Finset.range (n + 1)).filter (fun x => x > 0 ∧ x % 2 = 1)).card = (n + 1) / 2 := by
-  sorry
+  have : (Finset.range (n + 1)).filter (fun x => x > 0 ∧ x % 2 = 1) =
+      (Finset.range ((n + 1) / 2)).image (fun k => 2 * k + 1) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+    constructor
+    · intro ⟨hlt, hpos, hodd⟩
+      exact ⟨x / 2, by omega, by omega⟩
+    · rintro ⟨k, hk, rfl⟩
+      exact ⟨by omega, by omega, by omega⟩
+  rw [this, Finset.card_image_of_injective _ (by intro a b h; omega), Finset.card_range]
 
 -- Routine: If a, b, a+b are all in {0,...,n-1} then a+b < n
 -- Simple arithmetic used in Fin-based additive triple definitions.

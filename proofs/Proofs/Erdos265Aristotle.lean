@@ -51,6 +51,7 @@ theorem eventually_pow_ge_id (β : ℝ) (hβ : β > 1) :
 -- Strategy: This should be in Mathlib as Real.rpow_le_rpow_of_exponent_le
 -- Key tools: Real.rpow_le_rpow_of_exponent_le
 theorem rpow_mono_exponent (x : ℝ) (hx : 1 ≤ x) (p q : ℝ) (hpq : p ≤ q) :
-    x ^ p ≤ x ^ q := by sorry
+    x ^ p ≤ x ^ q :=
+  Real.rpow_le_rpow_of_exponent_le hx hpq
 
 end Erdos265Aristotle
