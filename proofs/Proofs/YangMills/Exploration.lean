@@ -18040,8 +18040,7 @@ theorem z2_free_energy_finite (d : ℕ) (hd : d ≥ 2) (beta : ℝ) (hb : beta >
   unfold z2FreeEnergyDensity
   apply mul_neg_of_neg_of_pos
   · apply div_neg_of_neg_of_pos
-    · sorry
-      -- [MATHLIB-DRIFT] sorry
+    · exact neg_lt_zero.mpr (Nat.cast_pos.mpr (Nat.mul_pos (by omega) (by omega)))
     · norm_num
   · apply Real.log_pos
     have : 1 ≤ Real.cosh beta := Real.one_le_cosh beta
@@ -22762,7 +22761,7 @@ theorem effective_spacing_grows' (p : BlockSpinRGParams) :
     effectiveSpacing' p ≥ p.a0 := by
   unfold effectiveSpacing'
   have : (2 : ℝ) ^ p.steps ≥ 1 := one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2)
-  sorry
+  exact le_mul_of_one_le_left (le_of_lt p.h_a0) this
 
 /-- The running coupling at step k:
     g²(k) = g₀² + β₀·g₀⁴·k·ln(2) + O(g₀⁶)
