@@ -61,6 +61,30 @@ def IsMonochromatic {n : ℕ} (χ : SubsetColoring n)
 def IsChain {n : ℕ} (F : Finset (Finset (Fin n))) : Prop :=
   ∀ A ∈ F, ∀ B ∈ F, A ⊆ B ∨ B ⊆ A
 
+/-
+## Part Ia: Basic Properties of Sublattices
+-/
+
+/-- The empty family is vacuously a sublattice. -/
+theorem empty_isSublattice {n : ℕ} : IsSublattice (∅ : Finset (Finset (Fin n))) :=
+  ⟨fun A hA => absurd hA (Finset.not_mem_empty A),
+   fun A hA => absurd hA (Finset.not_mem_empty A)⟩
+
+/-- Any singleton family is a sublattice (A ∪ A = A, A ∩ A = A). -/
+theorem singleton_isSublattice {n : ℕ} (A : Finset (Fin n)) :
+    IsSublattice ({A} : Finset (Finset (Fin n))) := by
+  constructor <;> intro X hX Y hY <;>
+    simp only [Finset.mem_singleton] at hX hY ⊢ <;>
+    subst hX <;> subst hY <;> simp
+
+/-- Every sublattice is union-closed. -/
+theorem sublattice_isUnionClosed {n : ℕ} {F : Finset (Finset (Fin n))}
+    (h : IsSublattice F) : IsUnionClosed F := h.1
+
+/-- Every sublattice is intersection-closed. -/
+theorem sublattice_isInterClosed {n : ℕ} {F : Finset (Finset (Fin n))}
+    (h : IsSublattice F) : IsInterClosed F := h.2
+
 /-! ## Part II: Chains Are Sublattices -/
 
 /-- In a chain, union of two elements equals the larger one. -/
@@ -133,6 +157,18 @@ theorem stdChain_card (n : ℕ) : (stdChain n).card = n + 1 := by
   simp only [stdChain]
   rw [Finset.card_image_of_injective _ (initialSeg_injective n)]
   exact Finset.card_fin (n + 1)
+
+/-- The initial segment of index 0 is the empty set. -/
+theorem initialSeg_zero (n : ℕ) : initialSeg n ⟨0, Nat.zero_lt_succ n⟩ = ∅ := by
+  ext x; simp [initialSeg]
+
+/-- The initial segment of the full index n is Finset.univ. -/
+theorem initialSeg_full (n : ℕ) : initialSeg n ⟨n, Nat.lt_succ_of_le (le_refl n)⟩ = Finset.univ := by
+  ext x; simp [initialSeg]; omega
+
+/-- The standard chain is a sublattice. -/
+theorem stdChain_isSublattice (n : ℕ) : IsSublattice (stdChain n) :=
+  chain_isSublattice (stdChain_isChain n)
 
 /-! ## Part IV: Pigeonhole on the Chain -/
 
