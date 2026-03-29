@@ -69,9 +69,30 @@ theorem constant_no_roots (p : ℝ[X]) (hp : p.natDegree = 0) (x : ℝ) (hpne : 
   rw [eq_C_of_natDegree_eq_zero hp, h, map_zero]
 
 /-- Linear polynomials have at most one root. -/
-theorem linear_at_most_one_root (p : ℝ[X]) (hp : p.natDegree = 1) (a b : ℝ) (hab : a < b) :
+theorem linear_at_most_one_root (p : ℝ[X]) (hp : p.natDegree = 1) (a b : ℝ) (_hab : a < b) :
     Set.ncard {x : ℝ | a < x ∧ x ≤ b ∧ p.eval x = 0} ≤ 1 := by
-  sorry -- Linear polynomial has exactly one root; at most one in any interval
+  -- A degree-1 polynomial has at most 1 root anywhere, so at most 1 in any interval.
+  -- Strategy: show the set is subsingleton (any two elements are equal).
+  have hp_ne : p ≠ 0 := by intro h; rw [h] at hp; simp at hp
+  apply Set.Subsingleton.ncard_le_one
+  intro x ⟨_, _, hx⟩ y ⟨_, _, hy⟩
+  -- x and y are both roots of p. Since p has degree 1, it has at most 1 root.
+  -- Two distinct roots would give card(roots) ≥ 2 > 1 = natDegree, contradiction.
+  by_contra hne
+  have hx_mem : x ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hx
+  have hy_mem : y ∈ p.roots := (Polynomial.mem_roots hp_ne).mpr hy
+  have hcard := Polynomial.card_roots_le_degree p
+  -- {x, y} as a multiset has card ≥ 2 since x ≠ y
+  have h2 : 2 ≤ (p.roots.toFinset).card := by
+    have hx_fs : x ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hx_mem
+    have hy_fs : y ∈ p.roots.toFinset := Multiset.mem_toFinset.mpr hy_mem
+    calc 2 = ({x, y} : Finset ℝ).card := by rw [Finset.card_pair hne]
+      _ ≤ p.roots.toFinset.card := Finset.card_le_card (by
+          intro z hz
+          rw [Finset.mem_insert, Finset.mem_singleton] at hz
+          rcases hz with rfl | rfl <;> assumption)
+  have h3 : p.roots.toFinset.card ≤ p.roots.card := Multiset.toFinset_card_le_card _
+  rw [hp] at hcard; omega
 
 /-- Rolle's theorem for polynomials: if p has roots at r₁ < r₂,
     then p' has a root in (r₁, r₂).
