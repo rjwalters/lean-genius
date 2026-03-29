@@ -108,20 +108,9 @@ axiom erdos_sauer_conjecture :
 -- ## Graph Case (r = 2)
 
 /-- For graphs (r = 2), the Turán number ex₂(n; K₃) equals ⌊n²/4⌋.
-    This is Turán's theorem (1941), proved by showing the complete
-    bipartite graph K_{⌊n/2⌋,⌈n/2⌉} achieves the maximum. -/
-axiom turan_graph : ∀ n : ℕ, turanHypergraph n 2 = n ^ 2 / 4
-
-/-- The graph case of the Erdős–Sauer conjecture specializes to:
-    every graph on n vertices is decomposable into at most ⌊n²/4⌋
-    edges and triangles with no two pieces sharing an edge. -/
-theorem graph_case_bound (n : ℕ) (H : RUniformHypergraph (Fin n) 2)
-    (hdecomp : ∃ pieces, IsValidDecomp 2 H pieces ∧
-      pieces.card ≤ turanHypergraph n 2) :
-    ∃ pieces, IsValidDecomp 2 H pieces ∧
-      pieces.card ≤ n ^ 2 / 4 := by
-  obtain ⟨pieces, hvalid, hbound⟩ := hdecomp
-  exact ⟨pieces, hvalid, turan_graph n ▸ hbound⟩
+    This is Turán's theorem (1941), proved below via the bipartite
+    construction (lower bound) and Mathlib's SimpleGraph Turán bound (upper bound).
+    See turan_graph at the end of this file. -/
 
 -- ## Structural Results
 
@@ -491,10 +480,67 @@ theorem turanHypergraph_graph_ge (n : ℕ) :
     - The Mathlib formula equals n²/4 in ℕ for all n -/
 theorem turanHypergraph_graph_le (n : ℕ) :
     turanHypergraph n 2 ≤ n ^ 2 / 4 := by
-  sorry
+  -- The Turán number is a supremum; show every member ≤ n²/4
+  unfold turanHypergraph
+  apply csSup_le
+  · -- Nonempty: the empty hypergraph has 0 edges
+    refine ⟨0, ⟨⟨∅, fun _ h => absurd h (Finset.not_mem_empty _)⟩, ?_, rfl⟩⟩
+    intro S hS hc
+    have ⟨e, he⟩ : (completeClique 2 S).Nonempty := by
+      rw [← Finset.card_pos, completeClique_card, hS]; norm_num
+    exact absurd (hc he) (Finset.not_mem_empty _)
+  · -- For each clique-free H, show H.edges.card ≤ n²/4
+    rintro m ⟨H, hcf, rfl⟩
+    -- Bridge: build a SimpleGraph with the same edge structure
+    let G : SimpleGraph (Fin n) where
+      Adj v w := ({v, w} : Finset (Fin n)) ∈ H.edges
+      symm := fun h => by rwa [Finset.pair_comm]
+      loopless v h := by have := H.uniform _ h; simp at this
+    haveI : DecidableRel G.Adj := fun v w => Finset.decidableMem _ _
+    -- G is triangle-free (CliqueFree 3)
+    have hcf3 : G.CliqueFree 3 := by
+      intro t ⟨hclique, hcard⟩
+      apply hcf t hcard
+      intro e he
+      rw [completeClique_eq_powersetCard, Finset.mem_powersetCard] at he
+      obtain ⟨hsub, hcard_e⟩ := he
+      obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard_e
+      exact hclique (hsub (Finset.mem_insert_self a _))
+        (hsub (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self b)))) hab
+    -- H.edges embeds into G.edgeFinset via Sym2.toFinset
+    have h_sub : H.edges ⊆ G.edgeFinset.image Sym2.toFinset := by
+      intro e he
+      obtain ⟨v, w, _, rfl⟩ := Finset.card_eq_two.mp (H.uniform e he)
+      exact Finset.mem_image.mpr ⟨s(v, w),
+        SimpleGraph.mem_edgeFinset.mpr (SimpleGraph.mem_edgeSet.mpr he),
+        Sym2.toFinset_mk_eq⟩
+    -- Chain: |H.edges| ≤ |image| ≤ |G.edgeFinset| ≤ n²/4
+    calc H.edges.card
+        ≤ (G.edgeFinset.image Sym2.toFinset).card := Finset.card_le_card h_sub
+      _ ≤ G.edgeFinset.card := Finset.card_image_le
+      _ ≤ n ^ 2 / 4 := by
+          -- Apply Mathlib's Turán bound for triangle-free graphs
+          have hb := hcf3.card_edgeFinset_le
+          simp only [Fintype.card_fin] at hb
+          exact le_trans hb (by
+            rcases Nat.mod_two_eq_zero_or_one n with h | h
+            · simp [h]
+            · simp [h, Nat.choose]
+              exact Nat.div_le_div_right (Nat.sub_le _ _))
 
 /-- **Turán's theorem for graphs**: the 2-uniform Turán number equals ⌊n²/4⌋.
-    Once the three sorries above are resolved, this replaces the `turan_graph` axiom. -/
-theorem turan_graph_proved (n : ℕ) :
+    Proved by the bipartite lower bound and Mathlib's SimpleGraph upper bound. -/
+theorem turan_graph (n : ℕ) :
     turanHypergraph n 2 = n ^ 2 / 4 :=
   le_antisymm (turanHypergraph_graph_le n) (turanHypergraph_graph_ge n)
+
+/-- The graph case of the Erdős–Sauer conjecture specializes to:
+    every graph on n vertices is decomposable into at most ⌊n²/4⌋
+    edges and triangles with no two pieces sharing an edge. -/
+theorem graph_case_bound (n : ℕ) (H : RUniformHypergraph (Fin n) 2)
+    (hdecomp : ∃ pieces, IsValidDecomp 2 H pieces ∧
+      pieces.card ≤ turanHypergraph n 2) :
+    ∃ pieces, IsValidDecomp 2 H pieces ∧
+      pieces.card ≤ n ^ 2 / 4 := by
+  obtain ⟨pieces, hvalid, hbound⟩ := hdecomp
+  exact ⟨pieces, hvalid, turan_graph n ▸ hbound⟩
