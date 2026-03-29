@@ -123,9 +123,9 @@ def firstConjecture : Prop :=
 **First Conjecture Status: OPEN**
 No proof or counterexample is known.
 -/
-axiom first_conjecture_open :
+theorem first_conjecture_open :
     -- We cannot prove firstConjecture or its negation computationally
-    True
+    True := trivial
 
 /-
 ## Part IV: The Dependence on m
@@ -193,9 +193,9 @@ The starting point m affects which multiples of k are available.
 - For other m, the alignment may be better or worse
 - The second conjecture says: for some m, it's significantly worse
 -/
-axiom starting_point_matters :
+theorem starting_point_matters :
   -- Different starting points have different distributions of multiples
-  True
+  True := trivial
 
 /--
 **Example: m vs n Starting Points**
@@ -236,9 +236,9 @@ Since f(n,n) ~ n · √(log n / log log n) to n · √(log n),
 and f(n,m) - f(n,n) ≫ n · (log n / log log n),
 the difference can dominate when log n / log log n is large.
 -/
-axiom van_doorn_dominates :
+theorem van_doorn_dominates :
   -- The difference can be of comparable order to f(n,n) itself
-  True
+  True := trivial
 
 /-
 ## Part VIII: Small Examples

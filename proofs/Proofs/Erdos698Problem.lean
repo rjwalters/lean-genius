@@ -254,9 +254,9 @@ The GCD of binomial coefficients relates to:
 The largest power of prime p dividing C(m+n, m) equals
 the number of carries in adding m and n in base p.
 -/
-axiom kummer_theorem (p m n : ℕ) (hp : p.Prime) :
-  -- The p-adic valuation relates to carry count
-  True
+theorem kummer_theorem (p m n : ℕ) (hp : p.Prime) :
+  -- The p-adic valuation relates to carry count (placeholder)
+  True := trivial
 
 /--
 **Lucas' Theorem:**
