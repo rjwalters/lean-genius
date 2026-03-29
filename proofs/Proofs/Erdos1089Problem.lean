@@ -300,19 +300,35 @@ private lemma embedPoint_injective {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) :
 /-- embedPoint preserves Euclidean distance -/
 private lemma embedPoint_dist {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
     (p q : Point d₁) : eucDist (embedPoint hd p) (embedPoint hd q) = eucDist p q := by
-  simp only [eucDist, embedPoint]
+  simp only [eucDist]
+  -- Express both norms using EuclideanSpace.norm_eq: ‖v‖ = √(∑ i, ‖v i‖²)
+  rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   congr 1
-  -- ‖embed(p) - embed(q)‖ = ‖p - q‖ via the PiLp norm
-  have : (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ else 0) -
-    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩ else 0) =
-    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then
-        (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ - (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩
-      else 0) := by
-    simp only [map_sub]; ext j; simp [EuclideanSpace.equiv]; split_ifs <;> ring
-  sorry -- norm equality: ‖(padded difference)‖ = ‖(original difference)‖
+  -- Goal: ∑ i, ‖(embedPoint hd p - embedPoint hd q) i‖² = ∑ i, ‖(p - q) i‖²
+  -- Step 1: Simplify LHS coordinates using the zero-padding structure
+  have hcoord : ∀ j : Fin d₂,
+      ‖(embedPoint hd p - embedPoint hd q) j‖ ^ 2 =
+        if j.val < d₁ then ‖(p - q) (⟨j.val, by omega⟩ : Fin d₁)‖ ^ 2 else 0 := by
+    intro j
+    simp only [embedPoint, Pi.sub_apply, EuclideanSpace.equiv, PiLp.equiv_symm_apply]
+    split_ifs with h <;> simp
+  simp_rw [hcoord]
+  -- Step 2: Convert to range sums and decompose
+  rw [Fin.sum_univ_eq_sum_range, Fin.sum_univ_eq_sum_range]
+  -- LHS: ∑ k ∈ range d₂, (if k < d₁ then ‖(p-q) ⟨k, _⟩‖² else 0)
+  -- RHS: ∑ k ∈ range d₁, ‖(p-q) ⟨k, _⟩‖²
+  -- Split range d₂ = range d₁ + range [d₁, d₂)
+  conv_lhs => rw [show d₂ = d₁ + (d₂ - d₁) from by omega, Finset.sum_range_add]
+  -- Second part is 0 (all indices ≥ d₁)
+  have hzero : ∀ k ∈ Finset.range (d₂ - d₁),
+      (if (d₁ + k) < d₁ then ‖(p - q) ⟨d₁ + k, by omega⟩‖ ^ 2 else 0) = 0 := by
+    intro k _; simp [show ¬(d₁ + k < d₁) from by omega]
+  rw [Finset.sum_eq_zero hzero, add_zero]
+  -- First part matches: both sum the same values over range d₁
+  apply Finset.sum_congr rfl
+  intro k hk
+  simp only [Finset.mem_range] at hk
+  simp [hk]
 
 /-- g_d(n) is non-decreasing in d: more dimensions → more equidistant configurations →
     more points needed to guarantee n distinct distances.
