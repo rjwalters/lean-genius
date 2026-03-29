@@ -1,0 +1,229 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "context",
+    "title": "Module Overview and Import",
+    "content": "This file extends the non-coprime CRT from two-three moduli (OQ03) to arbitrary-length lists over Euclidean domains. The key import is `ChineseRemainderNonCoprimeOQ03`, which provides the two-moduli non-coprime CRT (`ed_crt_sufficient`) and the distributive law `gcd(lcm(a,b), c) | lcm(gcd(a,c), gcd(b,c))`.\n\nThe result is parameterized over `R : EuclideanDomain` with `DecidableEq R`, making it applicable to integers, Gaussian integers, polynomial rings, and any other Euclidean domain. This algebraic generality goes beyond the parent proof's restriction to natural numbers.",
+    "mathContext": "For a Euclidean domain $R$, the system $m_i \\mid (x - a_i)$ for $i = 1, \\ldots, k$ is solvable iff $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all pairs. Solutions are unique modulo $\\mathrm{lcm}(m_1, \\ldots, m_k)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Euclidean domain theory",
+      "Non-coprime CRT for two moduli (OQ03)",
+      "GCD-LCM distributive law"
+    ],
+    "relatedConcepts": [
+      "Euclidean domains",
+      "simultaneous congruences",
+      "algebraic generalization"
+    ]
+  },
+  {
+    "id": "ann-listlcm",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 24,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "List LCM and Basic Properties",
+    "content": "Defines `listLcm` as the iterated LCM of a list, with the empty list having LCM equal to 1. Two key properties are proved:\n\n- `dvd_listLcm`: Each element $m_i$ divides $\\mathrm{lcm}(m_1, \\ldots, m_k)$. Proof by list induction: the head divides by `dvd_lcm_left`, and tail elements divide by IH plus `dvd_lcm_right`.\n\n- `listLcm_dvd`: If every element divides $d$, then $\\mathrm{lcm}$ divides $d$. This is the universal property making `listLcm` the least common multiple. Proved using `lcm_dvd` at each step.",
+    "mathContext": "$\\mathrm{listLcm}([]) = 1$, $\\mathrm{listLcm}(m :: ms) = \\mathrm{lcm}(m, \\mathrm{listLcm}(ms))$.\n\n$m_i \\in [m_1, \\ldots, m_k] \\Longrightarrow m_i \\mid \\mathrm{listLcm}([m_1, \\ldots, m_k])$.\n\n$(\\forall i,\\; m_i \\mid d) \\Longrightarrow \\mathrm{listLcm}([m_1, \\ldots, m_k]) \\mid d$.",
+    "significance": "key",
+    "prerequisites": [
+      "EuclideanDomain.lcm",
+      "EuclideanDomain.dvd_lcm_left/right",
+      "EuclideanDomain.lcm_dvd"
+    ],
+    "relatedConcepts": [
+      "least common multiple",
+      "universal property",
+      "list recursion"
+    ]
+  },
+  {
+    "id": "ann-system-defs",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "System, Satisfies, Compatible",
+    "content": "Three definitions encode congruence systems:\n\n- `System R`: A list of `(target, modulus)` pairs in $R$.\n- `Satisfies x sys`: $x$ satisfies all congruences, i.e., $m_i \\mid (x - a_i)$ for all $(a_i, m_i)$ in the system.\n- `Compatible sys`: Pairwise GCD divisibility holds: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all pairs.\n\nNote that `Satisfies` uses divisibility ($m \\mid (x - a)$) rather than modular congruence notation ($x \\equiv a \\pmod{m}$), which is the natural formulation in a general Euclidean domain where `ModEq` may not be directly available.",
+    "mathContext": "$\\text{Compatible}(\\text{sys}) \\iff \\forall i, j,\\; \\gcd(m_i, m_j) \\mid (a_i - a_j)$.\n\nThis is the necessary and sufficient condition for solvability of the system.",
+    "significance": "key",
+    "prerequisites": [
+      "EuclideanDomain.gcd",
+      "divisibility in rings"
+    ],
+    "relatedConcepts": [
+      "compatibility condition",
+      "simultaneous congruences",
+      "GCD divisibility"
+    ]
+  },
+  {
+    "id": "ann-distributive",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 102
+    },
+    "type": "technique",
+    "title": "Extended Distributive Law for Lists",
+    "content": "**Key technical lemma**: $\\gcd(\\mathrm{listLcm}(ms), c) \\mid \\mathrm{listLcm}(ms.\\mathrm{map}(\\gcd(\\cdot, c)))$.\n\nThis extends the two-element distributive identity $\\gcd(\\mathrm{lcm}(a, b), c) \\mid \\mathrm{lcm}(\\gcd(a, c), \\gcd(b, c))$ from OQ03 to arbitrary lists. The proof is by list induction:\n\n- **Base**: $\\gcd(1, c) \\mid 1$ since $\\gcd(1, c)$ is a unit.\n- **Step**: Apply OQ03's `gcd_lcm_dvd_lcm_gcd` to get $\\gcd(\\mathrm{lcm}(m, L), c) \\mid \\mathrm{lcm}(\\gcd(m, c), \\gcd(L, c))$. The IH gives $\\gcd(L, c) \\mid \\mathrm{listLcm}(\\text{rest})$. LCM monotonicity (`lcm_dvd_lcm_right`) completes the chain.",
+    "mathContext": "$\\gcd(\\mathrm{lcm}(m_1, \\ldots, m_k), c) \\mid \\mathrm{lcm}(\\gcd(m_1, c), \\ldots, \\gcd(m_k, c))$.\n\nThis is a multivariate extension of the GCD-LCM distributive law. It ensures that the composite GCD (arising in the inductive step) can be bounded by individual GCDs.",
+    "significance": "key",
+    "prerequisites": [
+      "gcd_lcm_dvd_lcm_gcd from OQ03",
+      "lcm_dvd_lcm_right (monotonicity)",
+      "list induction"
+    ],
+    "relatedConcepts": [
+      "distributive law",
+      "GCD-LCM duality",
+      "lattice theory of divisibility"
+    ]
+  },
+  {
+    "id": "ann-transfer",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 104,
+      "endLine": 134
+    },
+    "type": "technique",
+    "title": "Transfer Lemma: gcd_listLcm_dvd_sub",
+    "content": "**The bridge between individual and composite compatibility**.\n\nGiven:\n- $x$ satisfies a system: $m_j \\mid (x - a_j)$ for all $j$\n- Each modulus is compatible with a new target: $\\gcd(m_j, c) \\mid (a_j - a)$ for all $j$\n\nConclusion: $\\gcd(\\mathrm{listLcm}(\\text{moduli}), c) \\mid (x - a)$.\n\nThe proof chains: $\\gcd(m_j, c) \\mid m_j \\mid (x - a_j)$ and $\\gcd(m_j, c) \\mid (a_j - a)$, so $\\gcd(m_j, c) \\mid (x - a)$ by linearity. Then $\\mathrm{listLcm}(\\gcd(m_j, c))_j \\mid (x - a)$ by the universal property. The extended distributive law gives the final divisibility.",
+    "mathContext": "If $m_j \\mid (x - a_j)$ and $\\gcd(m_j, c) \\mid (a_j - a)$ for all $j$, then $\\gcd(\\mathrm{lcm}(m_1, \\ldots, m_k), c) \\mid (x - a)$.\n\nThis is the key step enabling induction: it produces the GCD divisibility condition needed to apply the two-moduli non-coprime CRT.",
+    "significance": "key",
+    "prerequisites": [
+      "gcd_listLcm_dvd_listLcm_gcd",
+      "listLcm_dvd",
+      "divisibility algebra (dvd_add, dvd_trans)"
+    ],
+    "relatedConcepts": [
+      "inductive compatibility transfer",
+      "divisibility chain",
+      "GCD properties"
+    ]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 140,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "Existence: ed_crt_list_sufficient",
+    "content": "**Theorem**: If all pairs satisfy the GCD compatibility condition, a simultaneous solution exists.\n\nProof by list induction:\n1. **Base**: Empty system, $x = 0$ is a trivial solution.\n2. **Step**: Given `(a, c) :: rest`, the IH gives $y$ satisfying the tail. The transfer lemma `gcd_listLcm_dvd_sub` produces $\\gcd(\\mathrm{listLcm}(\\text{rest moduli}), c) \\mid (y - a)$, which is exactly the condition for `ed_crt_sufficient` (two-moduli non-coprime CRT). This yields $x$ with $\\mathrm{listLcm}(\\text{rest}) \\mid (x - y)$ and $c \\mid (x - a)$.\n\nFor tail congruences: $m_j \\mid \\mathrm{listLcm}(\\text{rest})$ (by `dvd_listLcm`), so $m_j \\mid (x - y)$. Combined with $m_j \\mid (y - a_j)$ from the IH, we get $m_j \\mid (x - a_j)$ by linearity.",
+    "mathContext": "$\\text{Compatible}(\\text{sys}) \\Longrightarrow \\exists x,\\; \\text{Satisfies}(x, \\text{sys})$.\n\nThe inductive construction mirrors the coprime CRT but uses $\\mathrm{lcm}$ instead of products, and the transfer lemma instead of direct coprimality.",
+    "significance": "key",
+    "prerequisites": [
+      "ed_crt_sufficient (two-moduli case)",
+      "gcd_listLcm_dvd_sub",
+      "dvd_listLcm",
+      "list induction"
+    ],
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "constructive existence",
+      "inductive construction"
+    ]
+  },
+  {
+    "id": "ann-necessity",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 172,
+      "endLine": 182
+    },
+    "type": "theorem",
+    "title": "Necessity: ed_crt_list_necessary",
+    "content": "**Theorem**: If a solution exists, pairwise GCD conditions hold.\n\nSimple proof: if $x$ is a solution, then $m_i \\mid (x - a_i)$ and $m_j \\mid (x - a_j)$. Since $\\gcd(m_i, m_j)$ divides both $m_i$ and $m_j$, it divides both $(x - a_i)$ and $(x - a_j)$, hence their difference $(a_i - a_j) = (x - a_j) - (x - a_i)$.",
+    "mathContext": "$\\exists x,\\; \\text{Satisfies}(x, \\text{sys}) \\Longrightarrow \\text{Compatible}(\\text{sys})$.\n\nEquivalently: $\\gcd(m_i, m_j) \\mid (x - a_i)$ and $\\gcd(m_i, m_j) \\mid (x - a_j)$ imply $\\gcd(m_i, m_j) \\mid (a_i - a_j)$.",
+    "significance": "key",
+    "prerequisites": [
+      "EuclideanDomain.gcd_dvd_left/right",
+      "dvd_sub",
+      "dvd_trans"
+    ],
+    "relatedConcepts": [
+      "necessary condition",
+      "GCD divisibility",
+      "contrapositive obstruction"
+    ]
+  },
+  {
+    "id": "ann-iff",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 184,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "Full Characterization: ed_crt_list_iff",
+    "content": "**Theorem**: A system of congruences over a Euclidean domain is solvable if and only if all pairs satisfy the GCD compatibility condition. This is the complete generalization of the Chinese Remainder Theorem.\n\nThe proof is simply the conjunction of `ed_crt_list_sufficient` and `ed_crt_list_necessary`.",
+    "mathContext": "$\\exists x,\\; \\text{Satisfies}(x, \\text{sys}) \\iff \\text{Compatible}(\\text{sys})$.\n\nThis is the definitive characterization of solvability for simultaneous linear congruences.",
+    "significance": "key",
+    "prerequisites": [
+      "ed_crt_list_sufficient",
+      "ed_crt_list_necessary"
+    ],
+    "relatedConcepts": [
+      "if and only if characterization",
+      "general Chinese Remainder Theorem"
+    ]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 189,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Uniqueness: ed_crt_list_unique",
+    "content": "**Theorem**: Any two solutions agree modulo listLcm of all moduli.\n\nProof: For each modulus $m_j$, both $x$ and $y$ satisfy $m_j \\mid (x - a_j)$ and $m_j \\mid (y - a_j)$, so $m_j \\mid (x - y)$. Since every modulus divides $(x - y)$, their LCM divides $(x - y)$ by the universal property (`listLcm_dvd`).\n\nThis is the tightest possible uniqueness bound. For coprime moduli, $\\mathrm{lcm} = \\prod$, recovering the classical result. For non-coprime moduli, $\\mathrm{lcm} < \\prod$, giving a strictly tighter bound.",
+    "mathContext": "$\\text{Satisfies}(x, \\text{sys}) \\land \\text{Satisfies}(y, \\text{sys}) \\Longrightarrow \\mathrm{lcm}(m_1, \\ldots, m_k) \\mid (x - y)$.\n\nFor coprime moduli: $\\mathrm{lcm}(m_1, \\ldots, m_k) = \\prod m_i$, recovering classical CRT uniqueness.",
+    "significance": "key",
+    "prerequisites": [
+      "listLcm_dvd",
+      "dvd_sub"
+    ],
+    "relatedConcepts": [
+      "uniqueness modulo LCM",
+      "tightest bound",
+      "universal property of LCM"
+    ]
+  },
+  {
+    "id": "ann-coprime-connection",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-03",
+    "range": {
+      "startLine": 202,
+      "endLine": 215
+    },
+    "type": "insight",
+    "title": "Coprime Case as Corollary",
+    "content": "**Theorem** (`coprime_implies_compatible`): When all pairwise GCDs are units (i.e., the moduli are pairwise coprime), compatibility is automatic.\n\nThis recovers the classical coprime CRT as a special case: if moduli are pairwise coprime, then `Compatible` holds vacuously (units divide everything), so `ed_crt_list_sufficient` guarantees a solution. The uniqueness modulus $\\mathrm{lcm}(m_1, \\ldots, m_k) = \\prod m_i$ in the coprime case.\n\nThis demonstrates that the non-coprime CRT is a strict generalization: it handles all cases the coprime CRT does, plus many more.",
+    "mathContext": "$\\text{IsUnit}(\\gcd(m_i, m_j))$ for all $i \\neq j$ $\\Longrightarrow$ $\\text{Compatible}(\\text{sys})$.\n\nIn a Euclidean domain, $\\text{IsUnit}(\\gcd(a, b))$ is the generalization of $\\gcd(a, b) = 1$ from the integers.",
+    "significance": "supporting",
+    "prerequisites": [
+      "IsUnit",
+      "IsUnit.dvd",
+      "Compatible"
+    ],
+    "relatedConcepts": [
+      "coprimality",
+      "special case recovery",
+      "units in Euclidean domains"
+    ]
+  }
+]
