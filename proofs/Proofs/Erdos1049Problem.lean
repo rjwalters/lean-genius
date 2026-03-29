@@ -52,7 +52,9 @@ theorem tau_prime_pow (p k : ℕ) (hp : p.Prime) : τ (p ^ k) = k + 1 := by
 /-- τ is multiplicative: τ(mn) = τ(m)τ(n) for coprime m, n. -/
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     τ (m * n) = τ m * τ n := by
-  sorry
+  simp only [tau]
+  rw [hmn.divisors_mul]
+  exact Finset.card_product _ _
 
 /-- τ(n) ≥ 1 for n ≥ 1. -/
 theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
