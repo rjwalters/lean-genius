@@ -57,12 +57,12 @@
     "relatedProblems": [
       {
         "id": "erdos-90",
-        "relationship": "Erd\u0151s Problem #90 (maximum unit distances u(n)) is the prerequisite problem \u2014 #668 studies uniqueness of configurations achieving u(n)"
+        "relationship": "Erdős Problem #90 (maximum unit distances u(n)) is the prerequisite problem — #668 studies uniqueness of configurations achieving u(n)"
       }
     ],
     "axiomCount": 3,
     "lineCount": 284,
-    "assumptions": "3 axioms (f_four, four_config_unique, extremalQuotient_finite \u2014 all used by proved theorems), 0 sorries. Previously 7 axioms \u2014 removed 4 unused axioms."
+    "assumptions": "3 axioms (f_four, four_config_unique, extremalQuotient_finite — all used by proved theorems), 0 sorries. Previously 7 axioms — removed 4 unused axioms."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #668**\n\nThis problem explores the structure of extremal configurations for the classical unit distance problem in the plane.\n\n**Background:**\nThe unit distance problem (Erdos Problem #90) asks: what is the maximum number u(n) of unit distances among n points in the plane? Problem #668 goes further, asking about the UNIQUENESS of configurations achieving this maximum.\n\n**Historical Development:**\n- The unit distance problem was posed by Erdos in 1946\n- The case n=4 is fully understood: exactly one configuration (the double triangle)\n- Computational work by Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25] and Alexeev, Mixon, Parshall [AMP25] suggests uniqueness for 5 <= n <= 21\n\n**Status:** OPEN",
@@ -167,12 +167,12 @@
     {
       "targetId": "erdos-646",
       "relationship": "related",
-      "description": "Both are Erd\u0151s problems from the combinatorial number theory/geometry domain with axiomatized deep results"
+      "description": "Both are Erdős problems from the combinatorial number theory/geometry domain with axiomatized deep results"
     },
     {
       "targetId": "erdos-224",
       "relationship": "related",
-      "description": "Both are discrete geometry problems about point configurations and metric properties. Problem #224 concerns obtuse angles in point sets, while #668 concerns distance problems \u2014 both study how the geometry of finite point sets constrains distance/angle distributions"
+      "description": "Both are discrete geometry problems about point configurations and metric properties. Problem #224 concerns obtuse angles in point sets, while #668 concerns distance problems — both study how the geometry of finite point sets constrains distance/angle distributions"
     }
   ],
   "conclusion": {
@@ -200,7 +200,7 @@
       "Finset"
     ],
     "namespace": "Erdos668",
-    "lineCount": 284,
+    "lineCount": 282,
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 12

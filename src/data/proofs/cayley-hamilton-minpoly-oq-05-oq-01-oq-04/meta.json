@@ -70,10 +70,15 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Matrix", "Polynomial"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
     "namespace": "NonderogatoryGeneral",
-    "lineCount": 183,
+    "lineCount": 262,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 2

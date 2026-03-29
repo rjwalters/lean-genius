@@ -212,10 +212,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "Erdos1027",
-    "lineCount": 240,
+    "lineCount": 233,
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 10

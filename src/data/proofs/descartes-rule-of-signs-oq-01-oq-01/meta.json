@@ -7,7 +7,12 @@
     "author": "Lean Genius",
     "status": "verified",
     "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
-    "tags": ["algebra", "polynomials", "complex analysis", "Descartes rule"],
+    "tags": [
+      "algebra",
+      "polynomials",
+      "complex analysis",
+      "Descartes rule"
+    ],
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
@@ -30,14 +35,22 @@
     "summary": "YES, the complex root theory approach can prove parity, but the factoring approach in OQ01 is more direct. The complex approach has pedagogical value: it explains WHY (non-real roots pair up)."
   },
   "leanFile": {
-    "imports": ["Mathlib.Analysis.SpecialFunctions.Complex.Analytic", "Mathlib.FieldTheory.IsAlgClosed.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
     "namespace": "DescartesRuleOfSignsOQ01OQ01",
-    "lineCount": 160,
+    "lineCount": 154,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
   },
   "crossReferences": [
-    {"targetId": "descartes-rule-of-signs-oq-01", "relationship": "extends", "description": "Alternative proof approach for the parity result"}
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "extends",
+      "description": "Alternative proof approach for the parity result"
+    }
   ]
 }
