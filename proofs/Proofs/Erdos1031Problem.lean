@@ -62,6 +62,38 @@ theorem trivial_iff_ind_or_clique (G : SimpleGraph V) (S : Finset V) :
     isTrivialInduced G S ↔ isIndependentSet G S ∨ isClique G S := by
   rfl
 
+/-- The trivial property is monotone: subsets of trivial sets are trivial. -/
+theorem isTrivialInduced_subset (G : SimpleGraph V) (S T : Finset V)
+    (hST : S ⊆ T) (hT : isTrivialInduced G T) : isTrivialInduced G S := by
+  rcases hT with hInd | hClq
+  · left; intro x hx y hy hne; exact hInd x (hST hx) y (hST hy) hne
+  · right; intro x hx y hy hne; exact hClq x (hST hx) y (hST hy) hne
+
+/-- Independent sets are monotone: subsets of independent sets are independent. -/
+theorem isIndependentSet_subset (G : SimpleGraph V) (S T : Finset V)
+    (hST : S ⊆ T) (hT : isIndependentSet G T) : isIndependentSet G S :=
+  fun x hx y hy hne => hT x (hST hx) y (hST hy) hne
+
+/-- Cliques are monotone: subsets of cliques are cliques. -/
+theorem isClique_subset (G : SimpleGraph V) (S T : Finset V)
+    (hST : S ⊆ T) (hT : isClique G T) : isClique G S :=
+  fun x hx y hy hne => hT x (hST hx) y (hST hy) hne
+
+/-- The empty set is trivially independent (vacuous truth). -/
+theorem empty_is_trivial (G : SimpleGraph V) : isTrivialInduced G ∅ :=
+  Or.inl (fun _ h => absurd h (Finset.not_mem_empty _))
+
+/-- A singleton set is trivially both independent and a clique. -/
+theorem singleton_is_trivial (G : SimpleGraph V) (v : V) :
+    isTrivialInduced G {v} :=
+  Or.inl (fun x hx y hy hne => by
+    rw [Finset.mem_singleton] at hx hy; exact absurd (hx.trans hy.symm) hne)
+
+/-- If noLargeTrivial holds for k, it holds for any k' ≥ k. -/
+theorem noLargeTrivial_mono (G : SimpleGraph V) (k k' : ℕ) (hk : k ≤ k')
+    (h : noLargeTrivial G k) : noLargeTrivial G k' :=
+  fun S hS => h S (le_trans hk hS)
+
 /-
 ## Regular Subgraphs
 

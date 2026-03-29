@@ -71,7 +71,13 @@ def rootsOfUnity (n : ℕ) (hn : n > 0) : UnitDiscPolynomial where
   roots_in_disc := by
     intro i
     simp only [Complex.abs_exp]
-    sorry
+    -- The argument is purely imaginary: rewrite as (real * I), then re = 0
+    have heq : 2 * ↑Real.pi * Complex.I * ↑↑(i : ℕ) / ↑(n : ℕ) =
+      ↑(2 * Real.pi * (↑(i : ℕ) : ℝ) / (↑n : ℝ)) * Complex.I := by
+      push_cast; ring
+    rw [heq, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        Complex.I_re, Complex.I_im]
+    simp [Real.exp_zero]
 
 /-- The benchmark upper bound: ρ(zⁿ - 1) ≤ π/(2n). -/
 axiom benchmark_upper (n : ℕ) (hn : n > 0) :
@@ -112,9 +118,8 @@ def ehpConjecture : Prop :=
   ∃ c > 0, ∀ (f : UnitDiscPolynomial), f.degree > 0 →
     rho f ≥ c / f.degree
 
-/-- The conjecture remains open. -/
-axiom ehp_open : ¬(ehpConjecture ∨ ¬ehpConjecture)
-  -- This is a placeholder to indicate the problem is open
+/-- The EHP conjecture is an open problem. We neither prove nor disprove it.
+    (The previous axiom `¬(P ∨ ¬P)` was inconsistent with classical logic.) -/
 
 /-
 ## Comparison of Bounds
@@ -136,8 +141,8 @@ noncomputable def conjecturedBound (c : ℝ) (n : ℕ) : ℝ :=
 noncomputable def benchmarkBound (n : ℕ) : ℝ :=
   Real.pi / (2 * n)
 
-/-- The gap between known lower and upper bounds. -/
-theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : c > 0) :
+/-- For small enough c (c < π/2), the KLR bound is below the benchmark. -/
+theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Real.pi / 2) :
     klrBound c n < benchmarkBound n := by
   sorry
 
@@ -149,19 +154,26 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : c > 0) :
 def lemniscate : Set ℂ :=
   {z : ℂ | Complex.abs (f.eval z) = 1}
 
-/-- The sublevel set is open. -/
+/-- The sublevel set is open (preimage of (-∞, 1) under the continuous map |f|). -/
 theorem sublevelSet_isOpen : IsOpen (sublevelSet f) := by
-  sorry
+  simp only [sublevelSet, UnitDiscPolynomial.eval]
+  exact isOpen_lt
+    (Complex.continuous_abs.comp
+      (continuous_finset_prod Finset.univ fun i _ => continuous_id.sub continuous_const))
+    continuous_const
+
+/-- Each root is in the sublevel set (f(zᵢ) = 0 since the product has a zero factor). -/
+theorem root_in_sublevelSet (i : Fin f.degree) :
+    f.roots i ∈ sublevelSet f := by
+  simp only [sublevelSet, Set.mem_setOf_eq, UnitDiscPolynomial.eval]
+  have : ∏ j : Fin f.degree, (f.roots i - f.roots j) = 0 :=
+    Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)
+  simp [this]
 
 /-- The sublevel set is non-empty (contains the roots). -/
 theorem sublevelSet_nonempty (hf : f.degree > 0) :
-    (sublevelSet f).Nonempty := by
-  sorry
-
-/-- Each root is in the sublevel set. -/
-theorem root_in_sublevelSet (i : Fin f.degree) :
-    f.roots i ∈ sublevelSet f := by
-  sorry
+    (sublevelSet f).Nonempty :=
+  ⟨f.roots ⟨0, hf⟩, root_in_sublevelSet f ⟨0, hf⟩⟩
 
 /-
 ## Area Bounds
