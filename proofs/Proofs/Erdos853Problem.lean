@@ -263,12 +263,145 @@ theorem r_upper_bound_even (x : ℕ) (hx : x ≥ 4) (heven : x % 2 = 0) : r x �
   have hr := r_even_pos x hx3
   exact hx_not_gap (r_minimal x hx3 x (by omega) h heven)
 
+/-- If q is prime and nthPrime n < q, then nthPrime (n+1) ≤ q.
+    Uses the Nat.nth/Nat.count Galois connection. -/
+theorem nthPrime_succ_le_of_prime_gt {n : ℕ} {q : ℕ}
+    (hq : Nat.Prime q) (hgt : nthPrime n < q) :
+    nthPrime (n + 1) ≤ q := by
+  unfold nthPrime at *
+  have h_count : n < Nat.count Nat.Prime q :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr hgt
+  have h_count_succ : Nat.count Nat.Prime (q + 1) = Nat.count Nat.Prime q + 1 := by
+    rw [Nat.count_succ, if_pos hq]
+  have h_lt : n + 1 < Nat.count Nat.Prime (q + 1) := by omega
+  have h_nth_lt : Nat.nth Nat.Prime (n + 1) < q + 1 :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp h_lt
+  omega
+
+/-- An even number ≥ 4 is not prime. -/
+private theorem not_prime_of_even_ge_four {m : ℕ} (hm4 : m ≥ 4) (heven : m % 2 = 0) :
+    ¬ Nat.Prime m := by
+  intro hp
+  have h2 := hp.eq_one_or_self_of_dvd 2 (Nat.dvd_of_mod_eq_zero heven)
+  omega
+
 /-- r(x) ≤ x for x ≥ 4.
     Note: FALSE at x = 3 (r(3) = 4 since gapSet(3) = {2}).
-    For even x: x ∉ gapSet(x) since gaps < x, so r ≤ x.
-    For odd x: needs a counting argument (number of primes < number of even values). -/
+    Even case: x ∉ gapSet(x) since gaps < x.
+    Odd case: assume r(x) = x+1, derive x-1 ∈ gapSet, then:
+      x=5,7: Bertrand-style bound on next prime
+      x≥9: triple-prime mod 3 contradiction -/
 theorem r_upper_bound (x : ℕ) (hx : x ≥ 4) : r x ≤ x := by
-  sorry
+  by_cases heven : x % 2 = 0
+  · exact r_upper_bound_even x hx heven
+  · -- x is odd, x ≥ 5
+    have hx5 : x ≥ 5 := by omega
+    have hx3 : x ≥ 3 := by omega
+    -- r(x) ≤ x+1 via monotonicity and even case on x+1
+    have hrx_le : r x ≤ x + 1 := by
+      calc r x ≤ r (x + 1) := r_monotone (Nat.le_succ x) hx3 (by omega)
+        _ ≤ x + 1 := r_upper_bound_even (x + 1) (by omega) (by omega)
+    have ⟨hrx2, hrx_even⟩ := r_even_pos x hx3
+    -- Suppose r(x) > x. Since r(x) even and x odd: r(x) = x+1
+    by_contra h_gt
+    push_neg at h_gt
+    have hrx_eq : r x = x + 1 := by omega
+    -- x-1 ∈ gapSet(x) (even, ≥ 2, < r(x) = x+1)
+    have hxm1_gap : x - 1 ∈ gapSet x :=
+      r_minimal x hx3 (x - 1) (by omega) (by omega) (by omega)
+    obtain ⟨n, hn1, hn2, hn3⟩ := hxm1_gap
+    -- gap_lt_prime: x-1 < nthPrime n ≤ x → nthPrime n = x
+    have hgap_lt := gap_lt_prime n hn1
+    have hpn_eq : nthPrime n = x := by omega
+    -- nthPrime(n+1) = 2x - 1
+    have hpn_lt_pn1 : nthPrime n < nthPrime (n + 1) :=
+      nthPrime_strictMono (Nat.lt_succ_self n)
+    have hpn1_eq : nthPrime (n + 1) = 2 * x - 1 := by
+      unfold primeGap at hn3; omega
+    -- x is prime (since nthPrime n = x)
+    have hx_prime : Nat.Prime x := hpn_eq ▸ nthPrime_prime n
+    -- Case x = 5: prime 7 bounds nthPrime(n+1) ≤ 7 < 9 = 2*5-1
+    by_cases hx_le7 : x ≤ 7
+    · -- x ∈ {5, 7} (odd, ≥ 5, ≤ 7)
+      by_cases hx_eq5 : x = 5
+      · -- nthPrime(n+1) = 9, but prime 7 > nthPrime n = 5 gives nthPrime(n+1) ≤ 7
+        have h7 := nthPrime_succ_le_of_prime_gt (by decide : Nat.Prime 7)
+          (show nthPrime n < 7 by omega)
+        omega
+      · -- x = 7 (odd, ≥ 5, ≤ 7, ≠ 5)
+        have hx_eq7 : x = 7 := by omega
+        -- nthPrime(n+1) = 13, but prime 11 > nthPrime n = 7 gives nthPrime(n+1) ≤ 11
+        have h11 := nthPrime_succ_le_of_prime_gt (by decide : Nat.Prime 11)
+          (show nthPrime n < 11 by omega)
+        omega
+    · -- x ≥ 9: triple-prime mod 3 argument
+      push_neg at hx_le7
+      have hx9 : x ≥ 9 := by omega
+      -- x-3 ∈ gapSet(x) (even since x odd, ≥ 2 since x ≥ 5, < x+1)
+      have hxm3_gap : x - 3 ∈ gapSet x :=
+        r_minimal x hx3 (x - 3) (by omega) (by omega) (by omega)
+      obtain ⟨n', hn1', hn2', hn3'⟩ := hxm3_gap
+      have hgap_lt' := gap_lt_prime n' hn1'
+      -- x-3 < nthPrime n' ≤ x, so nthPrime n' ∈ {x-2, x-1, x}
+      -- x-1 is even ≥ 8, not prime
+      have hxm1_not_prime : ¬ Nat.Prime (x - 1) :=
+        not_prime_of_even_ge_four (by omega) (by omega)
+      -- If nthPrime n' = x, then n' = n (injective), so primeGap n' = x-1 ≠ x-3
+      have hpn'_ne_x : nthPrime n' ≠ x := by
+        intro h_eq
+        have : n' = n := nthPrime_strictMono.injective (by rw [h_eq, hpn_eq])
+        rw [this] at hn3'; omega
+      -- So nthPrime n' = x - 2 (only remaining option since x-1 not prime)
+      have hpn'_eq : nthPrime n' = x - 2 := by
+        have hp := nthPrime_prime n'
+        have : nthPrime n' ≠ x - 1 := fun h => hxm1_not_prime (h ▸ hp)
+        omega
+      -- x - 2 is prime
+      have hxm2_prime : Nat.Prime (x - 2) := hpn'_eq ▸ nthPrime_prime n'
+      -- x-5 ∈ gapSet(x) (even, ≥ 2 since x ≥ 9, < x+1)
+      have hxm5_gap : x - 5 ∈ gapSet x :=
+        r_minimal x hx3 (x - 5) (by omega) (by omega) (by omega)
+      obtain ⟨n'', hn1'', hn2'', hn3''⟩ := hxm5_gap
+      have hgap_lt'' := gap_lt_prime n'' hn1''
+      -- x-5 < nthPrime n'' ≤ x
+      -- x-3 is even ≥ 6, not prime
+      have hxm3_not_prime : ¬ Nat.Prime (x - 3) :=
+        not_prime_of_even_ge_four (by omega) (by omega)
+      -- If nthPrime n'' = x: n'' = n, primeGap n'' = x-1 ≠ x-5
+      have hpn''_ne_x : nthPrime n'' ≠ x := by
+        intro h_eq
+        have : n'' = n := nthPrime_strictMono.injective (by rw [h_eq, hpn_eq])
+        rw [this] at hn3''; omega
+      -- If nthPrime n'' = x-2: n'' = n' (injective), primeGap n'' = x-3 ≠ x-5
+      have hpn''_ne_xm2 : nthPrime n'' ≠ x - 2 := by
+        intro h_eq
+        have : n'' = n' := nthPrime_strictMono.injective (by rw [h_eq, hpn'_eq])
+        rw [this] at hn3''; omega
+      -- x-1 not prime, x-3 not prime. So nthPrime n'' = x - 4
+      have hpn''_eq : nthPrime n'' = x - 4 := by
+        have hp := nthPrime_prime n''
+        have : nthPrime n'' ≠ x - 1 := fun h => hxm1_not_prime (h ▸ hp)
+        have : nthPrime n'' ≠ x - 3 := fun h => hxm3_not_prime (h ▸ hp)
+        omega
+      -- x - 4 is prime
+      have hxm4_prime : Nat.Prime (x - 4) := hpn''_eq ▸ nthPrime_prime n''
+      -- Now x, x-2, x-4 are all prime with x ≥ 9
+      -- Among three consecutive odd numbers, one is divisible by 3
+      -- Since all ≥ 5 > 3, the one divisible by 3 is composite
+      have hmod3 : x % 3 = 0 ∨ x % 3 = 1 ∨ x % 3 = 2 := by omega
+      rcases hmod3 with h0 | h1 | h2
+      · -- x ≡ 0 mod 3: x divisible by 3, x ≥ 9 > 3, not prime
+        have h3dvd : 3 ∣ x := Nat.dvd_of_mod_eq_zero h0
+        exact absurd hx_prime (by
+          intro hp; exact absurd (hp.eq_one_or_self_of_dvd 3 h3dvd) (by omega))
+      · -- x ≡ 1 mod 3: x-4 ≡ 0 mod 3, x-4 ≥ 5 > 3, not prime
+        have h3dvd : 3 ∣ (x - 4) := Nat.dvd_of_mod_eq_zero (by omega)
+        exact absurd hxm4_prime (by
+          intro hp; exact absurd (hp.eq_one_or_self_of_dvd 3 h3dvd) (by omega))
+      · -- x ≡ 2 mod 3: x-2 ≡ 0 mod 3, x-2 ≥ 7 > 3, not prime
+        have h3dvd : 3 ∣ (x - 2) := Nat.dvd_of_mod_eq_zero (by omega)
+        exact absurd hxm2_prime (by
+          intro hp; exact absurd (hp.eq_one_or_self_of_dvd 3 h3dvd) (by omega))
 
 -- ## Main Conjectures (OPEN)
 
@@ -329,9 +462,15 @@ axiom cramer_conjecture_bound :
 - maynard_tao_bounded_gaps: deep result (Maynard-Tao 2014)
 - cramer_conjecture_bound: OPEN conjecture (Cramer)
 
-**1 sorry** (r_upper_bound: correct for x ≥ 4, proof infrastructure built)
+**0 sorries** — r_upper_bound proved via:
+- Even case: x ∉ gapSet(x) since gaps < x
+- Odd x=5: Bertrand bound via prime 7
+- Odd x=7: Bertrand bound via prime 11
+- Odd x≥9: triple-prime (x, x-2, x-4) mod 3 contradiction
 
 **New infrastructure**:
+- nthPrime_succ_le_of_prime_gt: next-prime bound via count/nth Galois connection
+- not_prime_of_even_ge_four: even numbers ≥ 4 are composite
 - gap_lt_prime: d_n < p_n for n ≥ 1 (from Bertrand's postulate)
 - gapSet_lt: all gaps in gapSet(x) are < x
 
