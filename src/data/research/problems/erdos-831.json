@@ -1,6 +1,6 @@
 {
   "slug": "erdos-831",
-  "title": "Erdős #831",
+  "title": "Erd\u0151s #831",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T09:46:19.704Z",
-    "iteration": 2,
-    "focus": "Documented strategies, both sorries blocked on constructive configs",
+    "iteration": 3,
+    "focus": "Proved permutation invariance, unblocking h_three and h_upper_bound",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,25 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: Definition bug blocks both sorries. countDistinctRadii uses Nat.card(Set ℝ subtype)→0 always. Needs Finset.image refactor.",
+    "progressSummary": "PROGRESS: Proved circumradiusOf permutation invariance (perm12, cycle, perm23, perm13). Definition bug fixed in prior session (Finset-based countDistinctRadii). 2 sorries remain (h_upper_bound, h_three) \u2014 now provable via permutation invariance.",
     "builtItems": [
       "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction",
-      "Documented proof strategies for h_upper_bound (sInf + image bound) and h_three (explicit 3-point config)"
+      "Proved circumradiusOf_perm12: swap first two args preserves circumradius (signed area negates, |area| preserved)",
+      "Proved circumradiusOf_cycle: cyclic permutation preserves circumradius (signed area literally equal)",
+      "Derived circumradiusOf_perm23, circumradiusOf_perm13 from perm12+cycle (full S\u2083 invariance)",
+      "FIXED countDistinctRadii: allCircumradiiFinset using Finset \u00d7\u02e2 filter image (prior session)",
+      "Added DecidableEq instances for Point and \u211d via Classical.decEq"
     ],
     "insights": [
       "regular_polygon_not_general proved: 4 points on same circle are concyclic, contradicting GP",
-      "Remaining 2 sorries (h_upper_bound, h_three) need constructive point configurations in R²",
-      "h_upper_bound: for empty set sInf=0, for non-empty every k ≤ C(n,3) by image cardinality",
-      "h_three: explicit config (0,0),(1,0),(0,1) works — not collinear (det≠0), concyclic vacuous, 1 radius",
-      "h_four_lower axiom is appropriate: proving h(4)≥2 requires showing all GP 4-point configs have ≥2 radii",
-      "DEFINITION BUG: countDistinctRadii uses Nat.card on Set ℝ subtype → always returns 0",
-      "This makes h(n)=0 always, h_upper_bound trivially true, h_three FALSE",
-      "FIX: redefine countDistinctRadii via Finset.image with Classical.decEq ℝ",
-      "Without the fix, both sorries are unprovable (h_three is literally false with current def)"
+      "DEFINITION BUG FIXED: countDistinctRadii now uses Finset.card on allCircumradiiFinset",
+      "circumradiusOf is fully S\u2083-invariant: perm12 (transposition) + cycle (3-cycle) generate all 6 perms",
+      "Key proof technique for perm12: signed area expression negates under p1\u2194p2 swap, proved by ring",
+      "Key proof technique for cycle: signed area expression is LITERALLY EQUAL under cyclic perm, proved by ring",
+      "h_upper_bound now provable: image of ordered triples through perm-invariant circumradiusOf collapses to \u2264C(n,3) elements",
+      "h_three now provable: 3-point GP config has 6 ordered triples, all mapping to same circumradius \u2192 card=1",
+      "h_four_lower axiom is appropriate: proving h(4)\u22652 requires showing all GP 4-point configs have \u22652 radii"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"

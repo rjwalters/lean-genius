@@ -340,18 +340,55 @@ theorem circumradiusOf_eq_circumradius (t : PointTriple) :
     circumradiusOf t.p1 t.p2 t.p3 = circumradius t := rfl
 
 /-- circumradiusOf is invariant under swapping the first two arguments.
-    Proof: side lengths {‖p2-p3‖, ‖p1-p3‖, ‖p1-p2‖} are permuted but
-    the product abc is unchanged (commutativity of multiplication), and
-    |det(p2-p1, p3-p1)| = |det(p1-p2, p3-p2)| (signed area changes sign). -/
+    Proof: side lengths are permuted but the product abc is unchanged
+    (commutativity), and the signed area negates (absolute value preserved). -/
 theorem circumradiusOf_perm12 (p1 p2 p3 : Point) :
     circumradiusOf p1 p2 p3 = circumradiusOf p2 p1 p3 := by
-  sorry
+  simp only [circumradiusOf]
+  -- The cross product for (p2,p1,p3) is the negative of that for (p1,p2,p3)
+  have h_neg : (p1 0 - p2 0) * (p3 1 - p2 1) - (p3 0 - p2 0) * (p1 1 - p2 1) =
+    -((p2 0 - p1 0) * (p3 1 - p1 1) - (p3 0 - p1 0) * (p2 1 - p1 1)) := by ring
+  rw [h_neg, abs_neg, norm_sub_rev p2 p1]
+  -- Now conditions and denominators match; numerators differ by mul_comm
+  split_ifs with h
+  · rfl
+  · have h_mul : ‖p2 - p3‖ * ‖p1 - p3‖ * ‖p1 - p2‖ =
+        ‖p1 - p3‖ * ‖p2 - p3‖ * ‖p1 - p2‖ := by ring
+    rw [h_mul]
 
 /-- circumradiusOf is invariant under cyclic permutation (1→2→3→1).
-    Combined with perm12, this generates all 6 permutations. -/
+    Combined with perm12, this generates all of S₃. The signed area is
+    literally equal (not just up to sign) under cyclic permutation. -/
 theorem circumradiusOf_cycle (p1 p2 p3 : Point) :
     circumradiusOf p1 p2 p3 = circumradiusOf p2 p3 p1 := by
-  sorry
+  simp only [circumradiusOf]
+  -- The cross product is literally equal under cyclic permutation
+  have h_cross : (p3 0 - p2 0) * (p1 1 - p2 1) - (p1 0 - p2 0) * (p3 1 - p2 1) =
+    (p2 0 - p1 0) * (p3 1 - p1 1) - (p3 0 - p1 0) * (p2 1 - p1 1) := by ring
+  rw [h_cross, norm_sub_rev p3 p1, norm_sub_rev p2 p1]
+  -- Conditions and denominators now match; numerators differ by mul_comm
+  split_ifs with h
+  · rfl
+  · have h_mul : ‖p2 - p3‖ * ‖p1 - p3‖ * ‖p1 - p2‖ =
+        ‖p1 - p3‖ * ‖p1 - p2‖ * ‖p2 - p3‖ := by ring
+    rw [h_mul]
+
+/-- circumradiusOf is invariant under swapping the last two arguments.
+    Derived from perm12 and cycle. -/
+theorem circumradiusOf_perm23 (p1 p2 p3 : Point) :
+    circumradiusOf p1 p2 p3 = circumradiusOf p1 p3 p2 := by
+  calc circumradiusOf p1 p2 p3
+      = circumradiusOf p2 p3 p1 := circumradiusOf_cycle p1 p2 p3
+    _ = circumradiusOf p3 p2 p1 := circumradiusOf_perm12 p2 p3 p1
+    _ = circumradiusOf p1 p3 p2 := (circumradiusOf_cycle p1 p3 p2).symm
+
+/-- circumradiusOf is invariant under swapping the first and third arguments.
+    Derived from perm12 and cycle. -/
+theorem circumradiusOf_perm13 (p1 p2 p3 : Point) :
+    circumradiusOf p1 p2 p3 = circumradiusOf p3 p2 p1 := by
+  calc circumradiusOf p1 p2 p3
+      = circumradiusOf p2 p3 p1 := circumradiusOf_cycle p1 p2 p3
+    _ = circumradiusOf p3 p2 p1 := circumradiusOf_perm12 p2 p3 p1
 
 /-- The origin (0, 0) as a point in the plane. -/
 private noncomputable def p_origin : Point := ![0, 0]
