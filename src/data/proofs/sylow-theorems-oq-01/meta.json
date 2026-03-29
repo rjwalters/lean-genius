@@ -1,0 +1,46 @@
+{
+  "id": "sylow-theorems-oq-01",
+  "title": "Classification of Groups of Order pq via Sylow Theorems",
+  "slug": "sylow-theorems-oq-01",
+  "description": "For distinct primes p < q: if p ∤ (q-1), the only group of order pq is cyclic. If p | (q-1), there are exactly two groups (cyclic + non-abelian semidirect product). Formalizes the Sylow counting argument, proves the unique Sylow q-subgroup, and states the classification theorem with concrete examples (orders 6, 15, 21, 35).",
+  "meta": {
+    "author": "Burnside (1911); Sylow (1872)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems#Examples",
+    "date": "1872/1911",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SylowTheoremOQ01.lean",
+    "tags": ["group-theory", "finite-groups", "sylow", "classification", "research"],
+    "badge": "axiom",
+    "sorries": 8,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations. 8 sorries in Sylow counting arguments that need Mathlib's Sylow API. 4 concrete examples fully proved.",
+    "lineCount": 190
+  },
+  "overview": {
+    "historicalContext": "The classification of groups of order pq is one of the first applications of Sylow's theorems taught in abstract algebra. Burnside's 1911 textbook included this classification as a foundational result.",
+    "problemStatement": "Classify all groups of order pq for distinct primes p < q.",
+    "text": "Formalizes the pq-group classification using Sylow counting arguments.",
+    "keyInsights": [
+      "The Sylow q-subgroup is always unique (n_q | p and n_q ≡ 1 mod q, with p < q)",
+      "The classification depends solely on whether p | (q-1)",
+      "Concrete examples verify the theory: order 15 cyclic, order 6 has S₃"
+    ]
+  },
+  "mainTheorems": [
+    {"name": "pq_cyclic_classification", "type": "core", "description": "p ∤ (q-1) → every group of order pq is cyclic"},
+    {"name": "unique_sylow_q", "type": "core", "description": "The Sylow q-subgroup is always unique (n_q = 1)"},
+    {"name": "order_15_cyclic", "type": "supporting", "description": "Groups of order 15 are cyclic (3 ∤ 4)"}
+  ],
+  "crossReferences": [
+    {"targetId": "sylow-theorem", "relationship": "extends", "description": "Applies Sylow theorems to classify groups of order pq"}
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "SylowPQ",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "sorryTheorems": 8,
+    "definitionCount": 3
+  }
+}
