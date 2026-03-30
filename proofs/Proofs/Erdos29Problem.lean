@@ -348,14 +348,44 @@ Why explicit matters:
 
 /- ## Lower Bounds -/
 
-/- **Important correction**: The uniform lower bound |A ∩ [1,N]| ≥ √N for ALL N ≥ 1
-   was previously stated here with a sorry. Aristotle found a **counterexample**:
+noncomputable section AristotleLemmas
 
-   A = {0,1} ∪ {n | 3 ≤ n} is a basis with |A ∩ [1,2]| = 1 < √2.
+def CounterexampleA : Set ℕ := {0, 1} ∪ {n | 3 ≤ n}
 
-   The correct statement is: for any basis A, the counting bound
-   |A ∩ [0,N]|² ≥ N + 1 holds for all N (since every n ≤ N has a representation
-   a+b=n with a,b ≤ N, so the sumset of A ∩ [0,N] covers [0,N]). -/
+/-- The counterexample set is an additive basis that violates |A ∩ [1,N]| ≥ √N at N=2.
+    Originally proved by Aristotle proof search. -/
+theorem counterexample_to_lower_bound :
+    ∃ A, IsAdditiveBasis A ∧ ∃ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) < Real.sqrt N := by
+  use CounterexampleA
+  constructor
+  · -- A is an additive basis
+    rw [IsAdditiveBasis, Doubling, Sumset]
+    ext n
+    simp only [Set.mem_univ, iff_true, Set.mem_setOf_eq]
+    by_cases hn : n ≤ 1;
+    · interval_cases n <;> [ exact ⟨ 0, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ; exact ⟨ 1, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ];
+    · by_cases hn3 : n ≥ 3;
+      · use n, by
+          exact Or.inr hn3, 0, by
+          exact Or.inl <| by norm_num;
+        norm_num;
+      · interval_cases n ; exists 1, by simp +decide [ Erdos29.CounterexampleA ], 1, by simp +decide [ Erdos29.CounterexampleA ] ;
+  · use 2
+    constructor
+    · norm_num
+    · rw [CounterexampleA]
+      rw [ show ( { 0, 1 } ∪ { n | 3 ≤ n } : Set ℕ ) ∩ Set.Icc 1 2 = { 1 } by ext ( _ | _ | _ | k ) <;> simp +arith +decide ] ; norm_num [ Real.lt_sqrt ]
+
+end AristotleLemmas
+
+/-- The claim "any additive basis has |A ∩ [1,N]| ≥ √N for all N" is FALSE.
+    Counterexample: A = {0,1} ∪ {n | 3 ≤ n} is a basis with |A ∩ [1,2]| = 1 < √2. -/
+theorem basis_size_lower_bound_false :
+    ¬(∀ A : Set ℕ, IsAdditiveBasis A →
+      ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N) := by
+  intro h
+  obtain ⟨A, hA, N, hN, hlt⟩ := counterexample_to_lower_bound
+  exact absurd (h A hA N hN) (not_le.mpr hlt)
 
 /-- The Erdős probabilistic existence follows from the JPSZ construction.
     This was previously a separate axiom (erdos_probabilistic_existence)
