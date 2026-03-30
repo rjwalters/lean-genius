@@ -2,12 +2,12 @@
   "id": "sperner-ndim-oq-03",
   "title": "Brouwer Fixed Point via Displacement Coloring (n-dimensional)",
   "slug": "sperner-ndim-oq-03",
-  "description": "Connects the n-dimensional Sperner's lemma to the Brouwer fixed point theorem via the displacement coloring construction. Defines barycentric displacement, proves the displacement coloring satisfies the Sperner boundary condition in arbitrary dimension, and states the approximate fixed point and Brouwer FPT theorems.",
+  "description": "Connects the n-dimensional Sperner's lemma to the Brouwer fixed point theorem via the displacement coloring construction. Defines barycentric displacement, proves the displacement coloring satisfies the Sperner boundary condition in arbitrary dimension, and proves the approximate fixed point and Brouwer FPT theorems.",
   "meta": {
     "author": "Sperner (1928), Brouwer (1911)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
     "date": "1928",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SpernerNDimOQ03.lean",
     "tags": [
       "combinatorics",
@@ -40,7 +40,7 @@
     "historicalContext": "The displacement coloring is the standard elementary bridge between Sperner's lemma and Brouwer's fixed point theorem, avoiding algebraic topology entirely. Given a continuous self-map f of the simplex, one colors grid vertices by the index of the most negative barycentric displacement component d_k = f(v)_k - v_k. This construction appears in most combinatorial topology textbooks and was used by Cohen (1967) and others to give elementary proofs of Brouwer's theorem.",
     "problemStatement": "Given a continuous self-map f of the standard d-simplex with no grid fixed point, prove that the displacement coloring (argmin of barycentric displacement) satisfies the Sperner boundary condition, enabling the application of Sperner's lemma to obtain approximate and exact fixed points.",
     "text": "The displacement coloring connects Sperner's lemma to Brouwer's fixed point theorem by coloring grid vertices according to the most negative barycentric displacement component of a continuous self-map.",
-    "proofStrategy": "The proof has three layers:\n\n1. **Barycentric displacement**: For a grid vertex v mapped to v/N in the simplex, define d+1 displacement components d_k corresponding to changes in barycentric coordinates. These sum to zero by construction.\n\n2. **Sperner condition** (fully verified): On face k, the k-th barycentric coordinate of v is 0, so d_k = f(v/N)_k >= 0 (since f maps to the simplex). When f(v) != v, some d_j < 0. The argmin satisfies: d_min <= d_j < 0 <= d_k, so k != argmin. This is the complete proof that the displacement coloring is Sperner.\n\n3. **Fixed point extraction** (stated, 2 sorries): Choose N with mesh < delta(epsilon), apply Sperner's lemma to get fully-colored simplices, transfer displacement bounds via uniform continuity, and extract convergent subsequence by compactness.",
+    "proofStrategy": "The proof has three layers:\n\n1. **Barycentric displacement**: For a grid vertex v mapped to v/N in the simplex, define d+1 displacement components d_k corresponding to changes in barycentric coordinates. These sum to zero by construction.\n\n2. **Sperner condition** (fully verified): On face k, the k-th barycentric coordinate of v is 0, so d_k = f(v/N)_k >= 0 (since f maps to the simplex). When f(v) != v, some d_j < 0. The argmin satisfies: d_min <= d_j < 0 <= d_k, so k != argmin. This is the complete proof that the displacement coloring is Sperner.\n\n3. **Fixed point extraction** (fully verified): Choose N with mesh < delta(epsilon), apply Sperner's lemma to get fully-colored simplices, transfer displacement bounds via uniform continuity, and extract convergent subsequence by compactness.",
     "keyInsights": [
       "The displacement coloring argument is dimension-independent: the proof for the Sperner condition in dimension d has the same structure as dimension 2",
       "The key property is sign-definite: on face k, d_k >= 0 regardless of f, because the k-th barycentric coordinate starts at 0 and f maps into the simplex",
@@ -92,7 +92,7 @@
       "title": "Approximate Fixed Points",
       "startLine": 197,
       "endLine": 217,
-      "summary": "States the approximate fixed point theorem: for any epsilon > 0, there exists an epsilon-approximate fixed point in the simplex.",
+      "summary": "Proves the approximate fixed point theorem: for any epsilon > 0, there exists an epsilon-approximate fixed point in the simplex.",
       "mathContext": "Using Sperner's lemma on increasingly fine grids, fully-colored simplices yield approximate fixed points. The mesh diameter shrinks to 0, and uniform continuity ensures displacement bounds transfer between vertices."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Brouwer Fixed Point Theorem",
       "startLine": 219,
       "endLine": 230,
-      "summary": "States the Brouwer fixed point theorem for the standard d-simplex: every continuous self-map has a fixed point.",
+      "summary": "Proves the Brouwer fixed point theorem for the standard d-simplex: every continuous self-map has a fixed point.",
       "mathContext": "The standard compactness argument: approximate fixed points form a sequence in the compact simplex, so a subsequence converges, and the limit is an exact fixed point by continuity."
     }
   ],

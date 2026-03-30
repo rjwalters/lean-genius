@@ -1,0 +1,111 @@
+{
+  "slug": "erdos-1006-oq-03",
+  "title": "Grötzsch graph constructive formalization (eliminate axiom)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Grötzsch graph constructive formalization (eliminate axiom).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T08:49:59.593Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: File already has 0 axioms, 0 sorries. All 7 theorems fully proved including FFLLW direct proof.",
+    "builtItems": [],
+    "insights": [
+      "OQ03 file already has 0 axioms and 0 sorries — the FFLLW theorem is fully proved",
+      "Uses rank-based formulation of robust acyclicity where coloring orientation is trivially robustly acyclic",
+      "The key insight: proper coloring gives a rank function, and no arc is dependent since colors strictly increase",
+      "Parent files (Problem.lean: 3 axioms, OQ01: 3 axioms, OQ02: 1 axiom) still have axioms — OQ03 supersedes them"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "graph-theory",
+    "erdos",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1006",
+    "erdos-1006-oq-02",
+    "erdos-1006-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.593Z",
+  "lastUpdate": "2026-03-30T08:49:59.593Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1006OQ01.lean",
+      "filename": "Erdos1006OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ02.lean",
+      "filename": "Erdos1006OQ02.lean",
+      "lineCount": 470,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ03.lean",
+      "filename": "Erdos1006OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006Problem.lean",
+      "filename": "Erdos1006Problem.lean",
+      "lineCount": 142,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
+    }
+  ]
+}

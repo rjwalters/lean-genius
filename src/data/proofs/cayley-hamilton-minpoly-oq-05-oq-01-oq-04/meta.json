@@ -1,8 +1,8 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-  "title": "Nonderogatory → Cyclic Vector: The General Case (All Fields)",
+  "title": "Nonderogatory \u2192 Cyclic Vector: The General Case (All Fields)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-  "description": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields F_q with q ≤ n where union avoidance fails. Demonstrates F_2 counterexample and module-theoretic approach.",
+  "description": "The nonderogatory \u2192 cyclic vector theorem holds for ALL fields, including finite fields F_q with q \u2264 n where union avoidance fails. Demonstrates F_2 counterexample and module-theoretic approach.",
   "meta": {
     "author": "Classical linear algebra (invariant factor decomposition)",
     "sourceUrl": "",
@@ -25,16 +25,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "text": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields where union avoidance fails.",
+    "text": "The nonderogatory \u2192 cyclic vector theorem holds for ALL fields, including finite fields where union avoidance fails.",
     "proofStrategy": "Module-theoretic: K^n as K[X]-module, invariant factor decomposition, nonderogatory forces single factor.",
     "keyInsights": [],
-    "historicalContext": ""
+    "historicalContext": "",
+    "problemStatement": "See the description field for the problem statement."
   },
   "sections": [
     {
       "id": "f2-counterexample",
       "title": "F_2 Counterexample to Union Avoidance",
-      "summary": "Shows F_2^2 is covered by 3 proper subspaces, demonstrating that the union avoidance approach fails when |K| ≤ n.",
+      "summary": "Shows F_2^2 is covered by 3 proper subspaces, demonstrating that the union avoidance approach fails when |K| \u2264 n.",
       "startLine": 56,
       "endLine": 77,
       "mathContext": "Union avoidance failure over small finite fields."
@@ -42,7 +43,7 @@
     {
       "id": "annihilator",
       "title": "Annihilator Theory",
-      "summary": "Defines annihilator polynomial and states cyclic ↔ ann = minpoly equivalence.",
+      "summary": "Defines annihilator polynomial and states cyclic \u2194 ann = minpoly equivalence.",
       "startLine": 79,
       "endLine": 107,
       "mathContext": "Annihilator polynomials and cyclic vector characterization."
@@ -65,12 +66,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates that the nonderogatory → cyclic vector theorem holds for all fields, not just infinite or large finite fields. While union avoidance fails over small fields (F_2 counterexample), the algebraic structure (invariant factor decomposition) forces the result. The GCD annihilation lemma is proved sorry-free. The main theorem requires the structure theorem for f.g. modules over PIDs, which is not yet in Mathlib.",
+    "summary": "This formalization demonstrates that the nonderogatory \u2192 cyclic vector theorem holds for all fields, not just infinite or large finite fields. While union avoidance fails over small fields (F_2 counterexample), the algebraic structure (invariant factor decomposition) forces the result. The GCD annihilation lemma is proved sorry-free. The main theorem requires the structure theorem for f.g. modules over PIDs, which is not yet in Mathlib.",
     "openQuestions": [
       "When will the structure theorem for f.g. modules over PIDs be available in Mathlib?",
       "Can the theorem be proved without the full structure theorem, using only rational canonical form?"
     ],
-    "implications": "This formalization demonstrates that the nonderogatory → cyclic vector theorem holds for all fields, not just infinite or large finite fields. While union avoidance fails over small fields (F_2 counterexample), the algebraic structure (invariant factor decomposition) forces the result. The GCD annihilation lemma is proved sorry-free. The main theorem requires the structure theorem for f.g. modules over PIDs, which is not yet in Mathlib."
+    "implications": "This formalization demonstrates that the nonderogatory \u2192 cyclic vector theorem holds for all fields, not just infinite or large finite fields. While union avoidance fails over small fields (F_2 counterexample), the algebraic structure (invariant factor decomposition) forces the result. The GCD annihilation lemma is proved sorry-free. The main theorem requires the structure theorem for f.g. modules over PIDs, which is not yet in Mathlib."
   },
   "leanFile": {
     "imports": [

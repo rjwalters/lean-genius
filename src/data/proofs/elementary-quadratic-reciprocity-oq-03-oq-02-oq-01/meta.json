@@ -76,7 +76,8 @@
     "text": "Proves the Kronecker symbol is completely multiplicative in the first argument, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
     "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib.",
     "keyInsights": [],
-    "historicalContext": ""
+    "historicalContext": "",
+    "problemStatement": "See the description field for the problem statement."
   },
   "references": [
     {

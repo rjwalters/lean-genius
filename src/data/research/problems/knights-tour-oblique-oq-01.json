@@ -40,7 +40,7 @@
     "insights": [
       "For n >= 5, each corner of the n*n board has exactly 2 knight-adjacent squares (6 of 8 offsets produce negative coordinates, impossible in Fin n)",
       "The dot product of entry/exit move vectors at any corner is always -4, independent of board size: (-offset1) . offset2 = -(1*2 + 2*1) = -4",
-      "The corner-forcing mechanism is purely algebraic \u2014 no native_decide or enumeration needed, unlike the 8x8 parent proof",
+      "The corner-forcing mechanism is purely algebraic — no native_decide or enumeration needed, unlike the 8x8 parent proof",
       "The bound 4 is tight: the 8x8 board achieves exactly 4 oblique turns via Knuth's unique minimum tour"
     ],
     "mathlibGaps": [],
@@ -52,7 +52,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "knights-tour-oblique"
+    "knights-tour-oblique",
+    "knights-tour-oblique-oq-01"
   ],
   "references": {
     "papers": [],
@@ -72,6 +73,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourOblique.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ01.lean",
+      "filename": "KnightsTourObliqueOQ01.lean",
+      "lineCount": 513,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01.lean"
     }
   ]
 }

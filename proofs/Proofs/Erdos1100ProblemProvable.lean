@@ -80,8 +80,8 @@ theorem tau_perp_lower_bound (n : ℕ) (hn : n > 0) : tauPerp n ≥ omega n := b
 **Equality achieved infinitely often:**
 There exist infinitely many n with τ⊥(n) = ω(n).
 -/
-theorem tau_perp_equality_infinitely_often : := by sorry
-  ∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n
+theorem tau_perp_equality_infinitely_often :
+    ∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n := by sorry
 
 /-
 ## Part III: Question 1 - Almost All Growth
@@ -125,9 +125,9 @@ def question2_upper_bound : Prop :=
 For all ε > 0 and sufficiently large x:
   max_{n<x} τ⊥(n) > exp((log log x)^(2-ε))
 -/
-theorem erdos_hall_max_lower_bound : := by sorry
-  ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
-    ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε))
+theorem erdos_hall_max_lower_bound :
+    ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
+      ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε)) := by sorry
 
 /--
 **Status of Question 2: OPEN**
@@ -148,14 +148,14 @@ noncomputable def g (k : ℕ) : ℕ :=
 **Erdős-Simonovits bounds on g(k):**
 (√2 + o(1))^k < g(k) < (2-c)^k for some constant c > 0.
 -/
-theorem erdos_simonovits_bounds : := by sorry
-  ∃ c : ℝ, c > 0 ∧
-    -- Lower bound
-    (∀ ε > 0, ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-      (g k : ℝ) > (Real.sqrt 2 - ε)^k) ∧
-    -- Upper bound
-    (∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-      (g k : ℝ) < (2 - c)^k)
+theorem erdos_simonovits_bounds :
+    ∃ c : ℝ, c > 0 ∧
+      -- Lower bound
+      (∀ ε > 0, ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
+        (g k : ℝ) > (Real.sqrt 2 - ε)^k) ∧
+      -- Upper bound
+      (∃ K : ℕ, ∀ k : ℕ, k ≥ K →
+        (g k : ℝ) < (2 - c)^k) := by sorry
 
 /--
 **The growth rate of g(k):**

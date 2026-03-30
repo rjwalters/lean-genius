@@ -1,0 +1,98 @@
+{
+  "slug": "hilbert-20-oq-01-oq-03",
+  "title": "Dencker proof of locally solvable operators (Hilbert 20th extension)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Dencker proof of locally solvable operators (Hilbert 20th extension).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:07:48.620Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated 4 of 7 axioms in Hilbert20LocalSolvability.lean by concretizing BicharacteristicCurve as a structure. Proved elliptic_satisfies_psi and imSymbolAlongCurve_eq. 3 deep axioms remain (IsLocallySolvable, hormander_necessity, dencker_sufficiency).",
+    "builtItems": [
+      "Proved elliptic_satisfies_psi (was axiom) in Hilbert20LocalSolvability.lean:194",
+      "Proved imSymbolAlongCurve_eq (was axiom) in Hilbert20LocalSolvability.lean:123",
+      "Defined BicharacteristicCurve structure in Hilbert20LocalSolvability.lean:104",
+      "Defined imSymbolAlongCurve as concrete def in Hilbert20LocalSolvability.lean:116"
+    ],
+    "insights": [
+      "7 axioms all require microlocal analysis infrastructure not in Mathlib",
+      "Condition (Psi) characterization (Dencker 2006) is the deepest result - needs FBI transform + bicharacteristic flow",
+      "LinearPDO structure + MultiIndex + principal symbol defined but proofs fully axiomatized",
+      "No tractable axiom elimination path without microlocal analysis in Mathlib",
+      "Concretized BicharacteristicCurve from opaque axiom to structure with fields (x, ξ, ξ_ne_zero, symbol_vanishes)",
+      "Eliminated 4 axioms: BicharacteristicCurve, imSymbolAlongCurve, imSymbolAlongCurve_eq, elliptic_satisfies_psi",
+      "elliptic_satisfies_psi proved by contradiction: elliptic ⟹ symbol ≠ 0 for ξ ≠ 0, but BicharacteristicCurve requires symbol = 0",
+      "real_symbol_satisfies_psi proof updated to use concrete imSymbolAlongCurve definition"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Monitor Mathlib for microlocal analysis additions",
+      "Consider stating Lewy example (simpler special case) as separate problem"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "functional-analysis",
+    "pde",
+    "hilbert-problems"
+  ],
+  "relatedProofs": [
+    "hilbert-20",
+    "hilbert-20-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.620Z",
+  "lastUpdate": "2026-03-30T14:50:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert20BoundaryValue.lean",
+      "filename": "Hilbert20BoundaryValue.lean",
+      "lineCount": 245,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20BoundaryValue.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20LocalSolvability.lean",
+      "filename": "Hilbert20LocalSolvability.lean",
+      "lineCount": 209,
+      "theoremCount": 5,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20LocalSolvability.lean"
+    }
+  ]
+}

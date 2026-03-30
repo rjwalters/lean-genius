@@ -1,26 +1,79 @@
 {
-  "id": "euler-totient-oq-01",
-  "name": "Carmichael's Function: a^lambda(n) equiv 1 (mod n)",
-  "parentId": "euler-totient",
-  "status": "completed",
-  "phase": "COMPLETED",
+  "slug": "euler-totient-oq-01",
+  "title": "Carmichael's Function: a^λ(n) ≡ 1 (mod n)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Carmichael's Function: a^λ(n) ≡ 1 (mod n).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:49:26.404Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
   "knowledge": {
-    "score": 6,
-    "insights": [
-      "Carmichael's function = Monoid.exponent of (ZMod n) units in Mathlib",
-      "carmichael_dvd_totient from Monoid.exponent_dvd_card (Lagrange)",
-      "carmichael_pow_eq_one from Monoid.pow_exponent_eq_one",
-      "carmichael_prime sorry: need exponent of cyclic group = order, requires IsCyclic + exponent_eq_card"
-    ],
-    "builtItems": [
-      "EulerTotientOQ01.lean: 0A/1S, 88 lines, 6 theorems",
-      "carmichael definition via Monoid.exponent",
-      "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal proved",
-      "carmichael_one, carmichael_two: special values proved"
-    ],
-    "progressSummary": "COMPLETED: 0A/1S. Defined Carmichael function via Monoid.exponent. 5 theorems proved, 1 sorry (prime case needs cyclic group exponent).",
-    "nextSteps": [
-      "Prove carmichael_prime via IsCyclic + Monoid.exponent_eq_card_of_isCyclic"
-    ]
-  }
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "euler-totient"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-03-30T13:49:26.404Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 137,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04.lean",
+      "filename": "EulerTotientOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    }
+  ]
 }

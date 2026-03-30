@@ -42,7 +42,8 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "hilbert-22"
+    "hilbert-22",
+    "hilbert-22-oq-01"
   ],
   "references": {
     "papers": [],
@@ -52,6 +53,17 @@
   "started": "2026-03-30T06:03:08.378Z",
   "lastUpdate": "2026-03-30T06:03:08.396Z",
   "leanFiles": [
+    {
+      "path": "Proofs/Hilbert22OQ01.lean",
+      "filename": "Hilbert22OQ01.lean",
+      "lineCount": 156,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01.lean"
+    },
     {
       "path": "Proofs/Hilbert22Uniformization.lean",
       "filename": "Hilbert22Uniformization.lean",

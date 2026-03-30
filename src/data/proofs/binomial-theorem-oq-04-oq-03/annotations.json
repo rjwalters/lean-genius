@@ -1,0 +1,88 @@
+[
+  {
+    "id": "ann-qvandermonde-main",
+    "proofId": "binomial-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "q-Vandermonde Identity",
+    "content": "The q-Vandermonde identity $\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$ is the fundamental convolution identity for Gaussian binomial coefficients. The factor $q^{(k-j)(m-j)}$ has no classical analog — at $q=1$ it vanishes. Geometrically, when $q$ is a prime power, this identity counts $k$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$ by the dimension $j$ of their intersection with a fixed $m$-dimensional subspace. The weight $q^{(k-j)(m-j)}$ reflects the number of ways the complementary $(k-j)$-dimensional part can be positioned relative to the $m$-dimensional subspace.",
+    "mathContext": "$\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian binomial coefficient",
+      "q-analog",
+      "convolution",
+      "subspace lattice"
+    ],
+    "prerequisites": [
+      "q-binomial coefficients",
+      "q-Pascal recurrence"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-classical",
+    "proofId": "binomial-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "Classical Recovery at q=1",
+    "content": "Specializing $q = 1$ makes all $q$-powers equal to 1 and all Gaussian binomials equal to ordinary binomials: $\\binom{n}{k}_1 = \\binom{n}{k}$. The q-Vandermonde identity reduces to the classical $\\sum \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$. This specialization principle — proving a q-analog and recovering the classical result at $q=1$ — is a recurring technique in combinatorics that often yields cleaner proofs than direct arguments.",
+    "mathContext": "At $q=1$: $\\binom{n}{k}_1 = \\binom{n}{k}$, recovering $\\sum \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "specialization",
+      "q-analog",
+      "Vandermonde identity"
+    ],
+    "prerequisites": [
+      "q-binomial at q=1"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-squares",
+    "proofId": "binomial-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 70,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "q-Sum-of-Squares Corollary",
+    "content": "Setting $m = n = k$ in the q-Vandermonde identity and applying symmetry $\\binom{n}{n-j}_q = \\binom{n}{j}_q$ yields the q-sum-of-squares identity: $\\sum_{j=0}^{n} q^{(n-j)^2} \\binom{n}{j}_q^2 = \\binom{2n}{n}_q$. At $q=1$, this is the classical $\\sum \\binom{n}{k}^2 = \\binom{2n}{n}$. The squared q-binomials weighted by $q^{(n-j)^2}$ arise naturally in the representation theory of quantum groups and in the analysis of random subspaces over finite fields.",
+    "mathContext": "$\\sum_{j=0}^{n} q^{(n-j)^2} \\binom{n}{j}_q^2 = \\binom{2n}{n}_q$",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "sum of squares",
+      "quantum group",
+      "Grassmannian"
+    ],
+    "prerequisites": [
+      "q-Vandermonde identity",
+      "q-binomial symmetry"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-verifications",
+    "proofId": "binomial-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 125,
+      "endLine": 156
+    },
+    "type": "context",
+    "title": "Concrete Verifications",
+    "content": "Numerical checks over $\\mathbb{Z}$ at $q=2$ verify the identity for specific parameter values. For example, with $m=n=k=2$: the sum $2^4 \\cdot 1 + 2^1 \\cdot 3 \\cdot 3 + 2^0 \\cdot 1 = 16 + 18 + 1 = 35 = \\binom{4}{2}_2$, counting the 2-dimensional subspaces of $\\mathbb{F}_2^4$. The `native_decide` tactic reduces these to kernel computation.",
+    "mathContext": "At $q=2$: $\\binom{4}{2}_2 = 35$ counts 2-dimensional subspaces of $\\mathbb{F}_2^4$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite field geometry",
+      "subspace counting",
+      "decidable equality"
+    ],
+    "prerequisites": []
+  }
+]

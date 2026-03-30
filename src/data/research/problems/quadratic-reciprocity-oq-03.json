@@ -48,7 +48,8 @@
   "tags": [],
   "relatedProofs": [
     "quadratic-reciprocity",
-    "quadratic-reciprocity-algorithm"
+    "quadratic-reciprocity-algorithm",
+    "quadratic-reciprocity-algorithm-oq-01"
   ],
   "references": {
     "papers": [],
@@ -68,6 +69,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocity.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ01.lean"
     },
     {
       "path": "Proofs/QuadraticReciprocityOQ03.lean",

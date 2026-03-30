@@ -1,0 +1,70 @@
+{
+  "slug": "erdos-1134-oq-04",
+  "title": "Can the analytic estimates (Crampin-Hilton theorem, zero density) be fully fo...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T00:13:04-07:00",
+    "iteration": 1,
+    "focus": "Eliminated 1 axiom. Remaining axioms are deep.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated elements_have_representation axiom (9→8) by induction on InA. Remaining 8 axioms are deep results (Klarner-Rado, Crampin-Hilton) or consequences that need non-trivial real analysis.",
+    "builtItems": [
+      "Proved elements_have_representation by induction on InA (base=[], step appends operation)"
+    ],
+    "insights": [
+      "elements_have_representation follows directly from InA inductive structure: base gives [], each step appends the operation to the list"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1134-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1134"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T07:24:09.592Z",
+  "lastUpdate": "2026-03-30T07:24:09.603Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1134Problem.lean",
+      "filename": "Erdos1134Problem.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 4,
+      "defCount": 15,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1134Problem.lean"
+    }
+  ]
+}

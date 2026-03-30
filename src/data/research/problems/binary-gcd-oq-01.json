@@ -1,0 +1,83 @@
+{
+  "slug": "binary-gcd-oq-01",
+  "title": "binary-gcd-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T04:42:49-07:00",
+    "iteration": 1,
+    "focus": "Both bounds proved, 0 sorries",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Both logarithmic bounds proved. Lamé bound via bridge to GCDAlgorithmOQ01.euclideanSteps_log_bound. Binary GCD bound via strong induction tracking log-decrease at each step. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "Proved euclidSteps_le_log: Lamé bound via bridge lemma (euclidSteps = euclideanSteps on ordered inputs)",
+      "Proved binaryGcdSteps_le_log: strong induction with Nat.log_div_base potential",
+      "Added binaryGcdSteps_zero_right simp lemma",
+      "Fixed concrete step count examples (original values were incorrect)"
+    ],
+    "insights": [
+      "File has 2 sorries: euclidSteps_le_log (Lamé bound) and binaryGcdSteps_le_log",
+      "Lamé proof needs: Fibonacci lower bound on Euclidean inputs + F_k >= 2^(k/2)",
+      "Binary GCD proof needs: each step removes a factor of 2 or halves the max value",
+      "Both proofs are ~100-150 lines each requiring strong induction matching the recursion",
+      "The step counting definitions and concrete verifications are already complete",
+      "euclidSteps(a,b) = euclideanSteps(max a b, min a b) — handles swap internally, saving 1 step",
+      "Binary GCD bound: each step reduces Nat.log of one argument by ≥1 (halving or subtract-and-halve)",
+      "Original file had incorrect native_decide examples — never compiled on Lean 4.26",
+      "Nat.log_div_base is the key Mathlib lemma: log(n/b) = log(n) - 1"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define Fibonacci sequence and prove F_k >= 2^(k/2)",
+      "Prove: if euclidSteps takes k steps on (a,b) then a >= F_{k+1} and b >= F_k",
+      "Combine for Lamé bound: k <= 2 * log2(min(a,b)) + 2"
+    ],
+    "markdown": "# Knowledge Base: binary-gcd-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.382Z",
+  "lastUpdate": "2026-03-30T11:59:37.396Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    }
+  ]
+}

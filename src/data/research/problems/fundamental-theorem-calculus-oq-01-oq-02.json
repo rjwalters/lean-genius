@@ -1,0 +1,126 @@
+{
+  "slug": "fundamental-theorem-calculus-oq-01-oq-02",
+  "title": "FTC Lebesgue generalization via Jordan decomposition",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in measure theory: FTC Lebesgue generalization via Jordan decomposition.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T13:07:48.619Z",
+    "iteration": 2,
+    "focus": "Proved stokes_2d_rectangle. Remaining: dd_eq_zero_2D (Clairaut bridge from fderiv to deriv).",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: stokes_2d_rectangle proved (was sorry) via GreensTheoremOQ01. Sorries 2→1 in Stokes file. Remaining sorry: dd_eq_zero_2D (Clairaut theorem).",
+    "builtItems": [
+      "Proved stokes_2d_rectangle with corrected hypotheses (FundamentalTheoremCalculusStokes.lean)",
+      "Updated Aristotle companion: removed proved stokes_2d_rectangle, kept dd_eq_zero_2D",
+      "Proved stokes_2d_rectangle via greens_theorem_concrete (was sorry)",
+      "import Proofs.GreensTheoremOQ01 added to Stokes file"
+    ],
+    "insights": [
+      "Axioms (lebesgue_ftc_differentiable, lebesgue_ftc_integral) are deep published results - appropriate as axioms",
+      "cantor_function_not_ac sorry needs Cantor set construction + function limit machinery",
+      "dd_eq_zero_2D blocked on connecting iteratedFDeriv API to partial derivatives",
+      "stokes_2d_rectangle has full proof in GreensTheoremOQ01.lean (0 sorries) - could reference",
+      "stokes_2d_rectangle: definitions lineIntegralRect and areaIntegralRect are identical to GreensTheoremOQ01 rectLineIntegral and rectDoubleIntegral. Proof is: unfold, show definitional match, apply greens_theorem_concrete.",
+      "dd_eq_zero_2D: needs Clairaut from ContDiff.isSymmetric_iteratedFDeriv, requires unfolding iteratedFDeriv to concrete partial derivatives — nontrivial API bridge",
+      "stokes_2d_rectangle required 6 additional hypotheses (boundary integrability, outer integrability) — original hypothesis set was insufficient for any proof approach",
+      "Proof of stokes_2d_rectangle follows exact same structure as greens_theorem_concrete in GreensTheoremOQ01.lean: split inner integral, split outer integral, FTC for Q, Fubini, FTC for P, ring",
+      "stokes_2d_rectangle proved by connecting to GreensTheoremOQ01.greens_theorem_concrete",
+      "Added 6 integrability hypotheses to stokes_2d_rectangle (boundary + outer integrability)",
+      "isKAPFreeZMod_three_of_apFree reverse bridge proved",
+      "Remaining sorry: dd_eq_zero_2D needs Mathlib iteratedFDeriv → concrete deriv bridge"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "dd_eq_zero_2D: implement the fderiv/deriv bridge for partial derivatives of product-type functions",
+      "dd_eq_zero_2D: find exact Mathlib4 names for HasFDerivAt.comp with Prod.mk embedding",
+      "dd_eq_zero_2D: connect iteratedFDeriv symmetry to concrete partial derivative equality"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "measure-theory",
+    "analysis",
+    "lebesgue-integral"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.619Z",
+  "lastUpdate": "2026-03-30T15:30:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremCalculus.lean",
+      "filename": "FundamentalTheoremCalculus.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculus.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+      "filename": "FundamentalTheoremCalculusLebesgue.lean",
+      "lineCount": 277,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
+      "filename": "FundamentalTheoremCalculusStokes.lean",
+      "lineCount": 346,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
+      "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
+    }
+  ]
+}

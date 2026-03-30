@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ04OQ01.lean",
     "badge": "formalized",
-    "sorries": 7,
+    "sorries": 6,
     "mathlibDependencies": [
       {
         "theorem": "IsPGroup.isSolvable",
@@ -48,7 +48,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 311,
-    "assumptions": "No axioms. 7 sorries for deep theorems requiring Mathlib API glue: finrank multiplicativity for intermediate fields, index-2 subgroup existence, both directions of Tower ↔ Galois, and concrete examples.",
+    "assumptions": "No axioms. 6 sorries for deep theorems requiring Mathlib API glue: finrank multiplicativity for intermediate fields, index-2 subgroup existence, both directions of Tower ↔ Galois, and concrete examples.",
     "originalContributions": [
       "Proper inductive definition of QuadraticTower replacing the alias TowerCriterion = DegreeCriterion",
       "Statement and proof structure of Tower ↔ Galois 2-group equivalence",

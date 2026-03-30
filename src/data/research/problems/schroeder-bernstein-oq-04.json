@@ -53,6 +53,7 @@
   "tags": [],
   "relatedProofs": [
     "schroeder-bernstein",
+    "schroeder-bernstein-oq-02",
     "schroeder-bernstein-oq-04"
   ],
   "references": {
@@ -73,6 +74,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernstein.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ02.lean",
+      "filename": "SchroederBernsteinOQ02.lean",
+      "lineCount": 224,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ02.lean"
     },
     {
       "path": "Proofs/SchroederBernsteinOQ04.lean",

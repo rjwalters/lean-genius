@@ -1,0 +1,121 @@
+{
+  "id": "amgm-inequality-oq-02-oq-03",
+  "title": "Maclaurin Chain from Newton's Log-Concavity",
+  "slug": "amgm-inequality-oq-02-oq-03",
+  "description": "Derives the Maclaurin mean chain Mₖ ≥ Mₖ₊₁ from Newton's log-concavity of normalized elementary symmetric polynomials, eliminating the maclaurin_step axiom.",
+  "meta": {
+    "author": "Maclaurin (1729) / Hardy-Littlewood-Pólya (1934), formalized in Lean 4",
+    "sourceUrl": "",
+    "date": "1729",
+    "status": "formalized",
+    "tags": [
+      "combinatorics",
+      "inequalities",
+      "symmetric-polynomials",
+      "maclaurin",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03.lean",
+    "badge": "original",
+    "sorries": 1,
+    "axioms": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Power inequality: aₖ^{k+1} ≥ aₖ₊₁^k by induction from log-concavity",
+      "Maclaurin step Mₖ ≥ Mₖ₊₁ derived via rpow monotonicity",
+      "Eliminates maclaurin_step axiom from AmgmInequalityOQ02.lean"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 193,
+    "assumptions": "Depends on newton_log_concavity axiom from AmgmInequalityOQ02.lean. 1 sorry remaining (elemSymm zero propagation).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Maclaurin inequalities M₁ ≥ M₂ ≥ ... ≥ Mₙ, where Mₖ = (eₖ/C(n,k))^{1/k} is the k-th Maclaurin mean, generalize AM-GM. Newton's inequalities on log-concavity of normalized elementary symmetric polynomials — (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) — were proved by Newton and refined by Maclaurin (1729). The derivation of the Maclaurin chain from log-concavity is classical, appearing in Hardy-Littlewood-Pólya (1934).",
+    "problemStatement": "**Maclaurin Step**: For non-negative reals $x_1, \\ldots, x_n$ and $1 \\leq k < n$:\n$$M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\geq \\left(\\frac{e_{k+1}}{\\binom{n}{k+1}}\\right)^{1/(k+1)} = M_{k+1}$$\nDerived from Newton's log-concavity of the normalized elementary symmetric polynomials.",
+    "text": "Proves the Maclaurin step inequality from Newton's log-concavity via the power inequality.",
+    "proofStrategy": "The key lemma is the **power inequality** $a_k^{k+1} \\geq a_{k+1}^k$ (where $a_k = e_k/\\binom{n}{k}$), proved by induction on $k$. The base case is trivial ($a_0 = 1$). The inductive step raises log-concavity to the $k$-th power and combines with the IH: $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} \\cdot a_{k+2}^{k+1} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$, then cancels $a_{k+1}^k$. The Maclaurin step $M_k \\geq M_{k+1}$ follows by taking the $1/(k(k+1))$-th power.",
+    "keyInsights": [
+      "The power inequality aₖ^{k+1} ≥ aₖ₊₁^k is the natural bridge between log-concavity and the Maclaurin chain.",
+      "The induction exploits a telescoping structure: raising LC to the k-th power creates exactly the right exponent to combine with the IH.",
+      "The zero case requires careful treatment: if aₖ₊₁ = 0, elemSymm zero propagation ensures aₖ₊₂ = 0 too."
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials",
+      "Inequalities",
+      "Real analysis (power functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "power-inequality",
+      "title": "Power Inequality",
+      "summary": "The key lemma aₖ^{k+1} ≥ aₖ₊₁^k, proved by induction from Newton's log-concavity.",
+      "startLine": 60,
+      "endLine": 120,
+      "mathContext": "If $a_k^2 \\geq a_{k-1} a_{k+1}$ for all $k$, then $a_k^{k+1} \\geq a_{k+1}^k$ by induction."
+    },
+    {
+      "id": "maclaurin-step",
+      "title": "Maclaurin Step from Power Inequality",
+      "summary": "Derives Mₖ ≥ Mₖ₊₁ from the power inequality via rpow monotonicity.",
+      "startLine": 122,
+      "endLine": 160,
+      "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ implies $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$ by taking the $1/(k(k+1))$-th root."
+    }
+  ],
+  "conclusion": {
+    "summary": "The maclaurin_step axiom is eliminated: Mₖ ≥ Mₖ₊₁ is now proved from Newton's log-concavity. 1 sorry remains for elemSymm zero propagation (a routine supporting lemma).",
+    "implications": "Reduces the axiom count of the Maclaurin inequality formalization by 1. The remaining newton_log_concavity axiom is the deeper result (requires polarization + induction on n).",
+    "openQuestions": [
+      "Can the remaining sorry (elemSymm zero propagation) be eliminated?",
+      "Can newton_log_concavity itself be proved in Lean?",
+      "Can the full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ be stated as a single theorem?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "extends",
+      "description": "Eliminates the maclaurin_step axiom from the parent Maclaurin inequality formalization"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "foundational",
+      "description": "The Maclaurin chain generalizes AM-GM (M₁ ≥ Mₙ)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.AmgmInequalityOQ02Defs",
+      "Proofs.AmgmInequalityOQ02"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "AmgmInequalityOQ02"
+    ],
+    "namespace": "AmgmInequalityOQ02OQ03",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "§2.22: Newton's inequalities and the Maclaurin chain"
+    },
+    {
+      "authors": "Maclaurin, Colin",
+      "title": "A Second Letter to Martin Folkes, Esq.",
+      "year": "1729",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Original statement of the Maclaurin inequalities"
+    }
+  ]
+}

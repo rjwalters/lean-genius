@@ -1,6 +1,6 @@
 {
   "slug": "erdos-374",
-  "title": "Erd\u0151s #374",
+  "title": "Erdős #374",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -31,8 +31,8 @@
   "knowledge": {
     "progressSummary": "COMPLETE: 0A, 12T (4 new), 0S. Added F(1)=2 edge case, one_in_D2.",
     "builtItems": [
-      "Proved bigF_eq_two_of_square: F(n\u00b2) = 2 for n\u22652 via Nat.find_eq_iff",
-      "Proved square_in_D2: n\u00b2 \u2208 D\u2082 for n\u22652 (backward direction of D2_eq_squares)",
+      "Proved bigF_eq_two_of_square: F(n²) = 2 for n≥2 via Nat.find_eq_iff",
+      "Proved square_in_D2: n² ∈ D₂ for n≥2 (backward direction of D2_eq_squares)",
       "one_has_square_factorial_product: [0,1] witnesses HasSquareFactorialProduct 1 2",
       "bigF_one_eq_two: F(1) = 2 (the edge case)",
       "one_in_D2: 1 is the smallest element of D_2"
@@ -42,7 +42,7 @@
       "no_square_factorial_product_for_primes uses v_p(p!) = 1 argument (deep)",
       "Dk_empty_above_6 and D6_smallest are cited Erdos-Graham results",
       "erdos_374_growth_rate is the actual open problem",
-      "4 axioms unused: D2_eq_squares, Dk_empty_above_6, D6_smallest, erdos_374_growth_rate \u2014 removed (5\u21921A)",
+      "4 axioms unused: D2_eq_squares, Dk_empty_above_6, D6_smallest, erdos_374_growth_rate — removed (5→1A)",
       "F(1) = 2 via [0,1]: 0!*1! = 1 = 1^2. This is the smallest D_2 element.",
       "D_2 = {perfect squares} confirmed for m=1,4,9,16,...  (1=1^2, 4=2^2, etc.)"
     ],
@@ -52,7 +52,7 @@
       "Prove D_k = empty for k > 6",
       "Compute F for small composites (m=6,8,10,...)"
     ],
-    "markdown": "# Erd\u0151s #374 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $m\\in \\mathbb{N}$, let $F(m)$ be the minimal $k\\geq 2$ (if it exists) such that there are $a_1<\\cdots <a_k=m$ with $a_1!\\cdots a_k!$ a square. Let $D_k=\\{ m : F(m)=k\\}$. What is the order of growth of $\\lvert D_k\\cap\\{1,\\ldots,n\\}\\rvert$ for $3\\leq k\\leq 6$? For example, is it true that $\\lvert D_6\\cap \\{1,\\ldots,n\\}\\rvert \\gg n$?\n\n\n\nStudied by Erd\\H{o}s and Graham \\cite{ErGr76} (see also \\cite{LSS14}). It is known, for example, that:\n{UL}\n{LI}no $D_k$ contains a prime,{/LI}\n{LI}$D_2=\\{ n^2 : n>1\\}$,{/LI}\n{LI} $\\lvert D_3\\cap \\{1,\\ldots,n\\}\\rvert = o(\\lvert D_4\\cap \\{1,\\ldots,n\\}\\rvert)$,{/LI}\n{LI} the least element of $D_6$ is $527$, and{/LI}\n{LI} $D_k=\\emptyset$ for $k>6$.{/LI}\n{/UL}\n\n\n\n\nReferences\n\n\n[ErGr76] Erd\\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337-355.\n\n[LSS14] Luca, F. and Saradha, N. and Shorey, T. N., Squares and factorials in products of factorials. Monatsh. Math. (2014), 385-400.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #373\n- Problem #375\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #14\n\n## References\n\n- ErGr76\n- ErGr80\n- LSS14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #374 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $m\\in \\mathbb{N}$, let $F(m)$ be the minimal $k\\geq 2$ (if it exists) such that there are $a_1<\\cdots <a_k=m$ with $a_1!\\cdots a_k!$ a square. Let $D_k=\\{ m : F(m)=k\\}$. What is the order of growth of $\\lvert D_k\\cap\\{1,\\ldots,n\\}\\rvert$ for $3\\leq k\\leq 6$? For example, is it true that $\\lvert D_6\\cap \\{1,\\ldots,n\\}\\rvert \\gg n$?\n\n\n\nStudied by Erd\\H{o}s and Graham \\cite{ErGr76} (see also \\cite{LSS14}). It is known, for example, that:\n{UL}\n{LI}no $D_k$ contains a prime,{/LI}\n{LI}$D_2=\\{ n^2 : n>1\\}$,{/LI}\n{LI} $\\lvert D_3\\cap \\{1,\\ldots,n\\}\\rvert = o(\\lvert D_4\\cap \\{1,\\ldots,n\\}\\rvert)$,{/LI}\n{LI} the least element of $D_6$ is $527$, and{/LI}\n{LI} $D_k=\\emptyset$ for $k>6$.{/LI}\n{/UL}\n\n\n\n\nReferences\n\n\n[ErGr76] Erd\\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337-355.\n\n[LSS14] Luca, F. and Saradha, N. and Shorey, T. N., Squares and factorials in products of factorials. Monatsh. Math. (2014), 385-400.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #373\n- Problem #375\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #14\n\n## References\n\n- ErGr76\n- ErGr80\n- LSS14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -75,8 +75,8 @@
     {
       "path": "Proofs/Erdos374Problem.lean",
       "filename": "Erdos374Problem.lean",
-      "lineCount": 196,
-      "theoremCount": 8,
+      "lineCount": 266,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,

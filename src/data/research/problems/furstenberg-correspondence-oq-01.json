@@ -1,0 +1,112 @@
+{
+  "slug": "furstenberg-correspondence-oq-01",
+  "title": "Shift Dynamics on Cantor Space: Toward Furstenberg Correspondence",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Define shift T on \\Omega = \\{0,1\\}^\\mathbb{N}, prove T continuous/measurable, build cylinder sets, prove k-fold return property connecting T^{-id}(B_0) intersections to k-APs in A",
+    "plain": "Build the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle. All results proved from Mathlib with 0 axioms.",
+    "whyMatters": [
+      "Infrastructure for eliminating the correspondence axiom in the parent proof",
+      "First verified (0-axiom) Lean 4 formalization of shift dynamics on Cantor space",
+      "k-fold return property directly bridges dynamics and arithmetic progressions"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:39:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created FurstenbergCorrespondenceOQ01.lean (250 lines, 0 axioms, 0 sorries). Shift dynamics, cylinder sets, return property, orbit-density connection, compactness all proved.",
+    "builtItems": [
+      "shift_continuous, shift_measurable: shift on Cantor space is continuous/measurable",
+      "cylinder_isClopen, cylinder_measurableSet: cylinder sets are clopen and measurable",
+      "shift_iterate: T^n(x)(k) = x(k+n)",
+      "shift_indicator_zero: T^n(1_A)(0) = true iff n in A",
+      "indicator_in_kfold_return: k-fold dynamical intersections <-> AP membership",
+      "orbit_indicator_hits: orbit hits count set membership",
+      "CompactSpace CantorSpace: Tychonoff gives compactness"
+    ],
+    "insights": [
+      "continuous_pi + continuous_apply gives shift continuity in one line",
+      "Cylinder sets are clopen because Bool has discrete topology",
+      "The k-fold return property is the key bridge: all combinatorial content flows through it",
+      "Main gap for full correspondence: weak-* sequential compactness for probability measures on compact metrizable spaces"
+    ],
+    "mathlibGaps": [
+      "Weak-* sequential compactness for probability measures on compact metrizable spaces",
+      "Cesaro averaging of Dirac measures",
+      "T-invariance of weak-* limits of Cesaro averages"
+    ],
+    "nextSteps": [
+      "Define Dirac measures on Cantor space and Cesaro averages",
+      "Investigate Mathlib for Prokhorov-type compactness results",
+      "Attempt to prove T-invariance of Cesaro limits"
+    ],
+    "markdown": "# Knowledge Base: furstenberg-correspondence-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "furstenberg-correspondence",
+    "furstenberg-correspondence-oq-01",
+    "furstenberg-correspondence-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/FurstenbergCorrespondence.lean",
+      "filename": "FurstenbergCorrespondence.lean",
+      "lineCount": 253,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondence.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
+      "filename": "FurstenbergCorrespondenceOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ02.lean",
+      "filename": "FurstenbergCorrespondenceOQ02.lean",
+      "lineCount": 414,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ02.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T07:00:00.000Z"
+}

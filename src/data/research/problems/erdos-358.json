@@ -1,6 +1,6 @@
 {
   "slug": "erdos-358",
-  "title": "Erd\u0151s #358",
+  "title": "Erdős #358",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -31,35 +31,35 @@
   "knowledge": {
     "progressSummary": "PROGRESS: 0 sorries remain (even-even case proved via odd divisor construction). 1 axiom (naturals_count_odd_divisors). exists_odd_divisor_ge3 + two-case construction eliminates last sorry.",
     "builtItems": [
-      "Proved two_mul_sum_Icc: Gauss sum formula 2*\u03a3 = (b-a+1)(a+b) by induction + zify",
+      "Proved two_mul_sum_Icc: Gauss sum formula 2*Σ = (b-a+1)(a+b) by induction + zify",
       "Proved odd_dvd_two_pow_eq_one: odd divisor of 2^j is 1, by induction on j + coprimality",
       "Proved power_of_two_obstruction: parity argument on consecutive sum double formula",
       "Proved naturals_always_representable: Set.ncard finiteness via Finset.single_le_sum bounding v<n",
       "not_pow2_representable: odd case proved (2 consecutive terms), even case sorry",
-      "consecutive_sum_char: axiom \u2192 theorem (biconditional proved structurally)",
+      "consecutive_sum_char: axiom → theorem (biconditional proved structurally)",
       "not_pow2_representable m-odd sub-case PROVED: n=2(2k+1) represented as 4 consecutive terms from k-1 to k+2",
-      "exists_odd_divisor_ge3: recursive extraction of odd factor \u2265 3 for non-powers-of-2",
-      "not_pow2_representable even case: Case A (d\u22642q) centered construction + Case B (d>2q) offset construction"
+      "exists_odd_divisor_ge3: recursive extraction of odd factor ≥ 3 for non-powers-of-2",
+      "not_pow2_representable even case: Case A (d≤2q) centered construction + Case B (d>2q) offset construction"
     ],
     "insights": [
       "consecutive_sum_formula sorry is standard arithmetic (Gauss sum) - needs Finset.sum_Icc manipulation",
       "power_of_two_obstruction axiom is a well-known result about consecutive sum representations",
       "primesSeq axiomatized because Nat.nth is complex - could be defined directly",
-      "power_of_two_obstruction proved: key insight is (v-u+1)+(u+v+2)=2v+3 (odd), forcing one factor odd, which must be 1 but both \u22652",
-      "consecutive_sum_char \u2192 direction proved from power_of_two_obstruction",
-      "consecutive_sum_char \u2190 direction for odd n: sum of 2 terms m + (m+1) = 2m+1",
+      "power_of_two_obstruction proved: key insight is (v-u+1)+(u+v+2)=2v+3 (odd), forcing one factor odd, which must be 1 but both ≥2",
+      "consecutive_sum_char → direction proved from power_of_two_obstruction",
+      "consecutive_sum_char ← direction for odd n: sum of 2 terms m + (m+1) = 2m+1",
       "Even non-power-of-2 case needs odd part extraction (Nat.factorization API)",
       "For n=2m, m odd >= 5: 4 consecutive terms (k-1,k,k+1,k+2) sum to 4k+2=n via Gauss formula. k=1 special case: 1+2+3=6",
-      "Odd divisor construction: d terms centered at q=n/d (Case A when d\u22642q), or 2q terms starting at (d-2q+1)/2 (Case B when d>2q)",
+      "Odd divisor construction: d terms centered at q=n/d (Case A when d≤2q), or 2q terms starting at (d-2q+1)/2 (Case B when d>2q)",
       "Both cases reduce to 2*sum = 2n via two_mul_sum_Icc + ring rewriting of d*(2q)=2*(d*q)=2n",
       "naturals_count_odd_divisors proof strategy: each valid (u,v) pair gives factorization 2n = (v-u+1)(u+v+2) with different parities. Bijection to odd divisors by extracting the odd factor."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "PROVE naturals_count_odd_divisors: bijection between (u,v) with u\u2264v, \u03a3(i+1)=n and odd divisors of n. Strategy: factor 2n=d\u00b7s with d<s, different parity, map to the odd factor. Inverse: odd divisor q\u2192(d,s)=(min(q,2n/q),max(q,2n/q)). Need Set.ncard finiteness for the pair set (bounded by v\u2264n).",
+      "PROVE naturals_count_odd_divisors: bijection between (u,v) with u≤v, Σ(i+1)=n and odd divisors of n. Strategy: factor 2n=d·s with d<s, different parity, map to the odd factor. Inverse: odd divisor q→(d,s)=(min(q,2n/q),max(q,2n/q)). Need Set.ncard finiteness for the pair set (bounded by v≤n).",
       "Proof complexity: ~80 lines, requires Set.ncard_image_of_injective and bijection construction"
     ],
-    "markdown": "# Erd\u0151s #358 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots\\}$ be an infinite sequence of integers. Let $f(n)$ count the number of solutions to\\[n=\\sum_{u\\leq i\\leq v}a_i.\\]Is there such an $A$ for which $f(n)\\to \\infty$ as $n\\to \\infty$? Or even where $f(n)\\geq 2$ for all large $n$?\n\n\n\n\n\nWhen $a_n=n$ the function $f(n)$ counts the number of odd divisors of $n$.\n\nIn modern language, this asks for the existence of a convex set $A$ such that $1_A\\circ 1_A(n)\\to \\infty$ as $n\\to \\infty$.\n\nErd\\H{o}s and Moser \\cite{Mo63} considered the case when $A$ is the set of primes, and conjectured that the $\\limsup$ of the number of such representations in this case is infinite. They could not even prove that the upper density of the set of integers representable in this form is positive.\n\nIn \\cite{ErGr80} they further asked whether $f(n)\\geq 1$ for all large $n$ is possible, but Egami observed the answer to this is trivially yes, taking $a_n=n$. Perhaps they intended to restrict $f(n)$ to only count those representatives as the sum of at least two consecutive terms. (It is a classical fact that $n$ can be expressed as a sum of at least two consecutive positive integers if and only if $n\\neq 2^k$.)\n\nIn \\cite{Er77c} Erd\\H{o}s writes 'This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me'.\n\nWeisenberg observes that the finite analogue of this problem, asking how many integers up to some $x$ can be written as the sum of consecutive elements, is very similar to [356].\n\nThis is reported in problem C2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo63] Moser, L., Notes on number theory. III. On the sum of consecutive primes. Canad. Math. Bull. (1963), 159-161.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #356\n- Problem #357\n- Problem #359\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- Mo63\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #358 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots\\}$ be an infinite sequence of integers. Let $f(n)$ count the number of solutions to\\[n=\\sum_{u\\leq i\\leq v}a_i.\\]Is there such an $A$ for which $f(n)\\to \\infty$ as $n\\to \\infty$? Or even where $f(n)\\geq 2$ for all large $n$?\n\n\n\n\n\nWhen $a_n=n$ the function $f(n)$ counts the number of odd divisors of $n$.\n\nIn modern language, this asks for the existence of a convex set $A$ such that $1_A\\circ 1_A(n)\\to \\infty$ as $n\\to \\infty$.\n\nErd\\H{o}s and Moser \\cite{Mo63} considered the case when $A$ is the set of primes, and conjectured that the $\\limsup$ of the number of such representations in this case is infinite. They could not even prove that the upper density of the set of integers representable in this form is positive.\n\nIn \\cite{ErGr80} they further asked whether $f(n)\\geq 1$ for all large $n$ is possible, but Egami observed the answer to this is trivially yes, taking $a_n=n$. Perhaps they intended to restrict $f(n)$ to only count those representatives as the sum of at least two consecutive terms. (It is a classical fact that $n$ can be expressed as a sum of at least two consecutive positive integers if and only if $n\\neq 2^k$.)\n\nIn \\cite{Er77c} Erd\\H{o}s writes 'This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me'.\n\nWeisenberg observes that the finite analogue of this problem, asking how many integers up to some $x$ can be written as the sum of consecutive elements, is very similar to [356].\n\nThis is reported in problem C2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo63] Moser, L., Notes on number theory. III. On the sum of consecutive primes. Canad. Math. Bull. (1963), 159-161.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #356\n- Problem #357\n- Problem #359\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- Mo63\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"

@@ -19,7 +19,11 @@
       "kAPCount converted from axiom to constructive def: E_{x,d} prod_i f_i(x + i*d)",
       "IsKAPFreeZMod: properly typed k-AP-free predicate for Finset (ZMod N), bridges to Szemeredi.Roth.APFree for k=3",
       "density_increment_k3_explicit proved from Szemeredi.Roth.density_increment_lemma via type bridge",
-      "szemeredi_from_density_increment needs quantitative density increment bound (not just delta_prime > delta) and AP-free conclusion for iteration"
+      "szemeredi_from_density_increment needs quantitative density increment bound (not just delta_prime > delta) and AP-free conclusion for iteration",
+      "density_increment_kAP strengthened with IsKAPFreeZMod A' k in conclusion — enables iteration",
+      "isKAPFreeZMod_three_of_apFree: reverse bridge APFree → IsKAPFreeZMod for k=3",
+      "density_increment_k3_explicit now captures APFree from density_increment_lemma and converts back to IsKAPFreeZMod",
+      "Remaining sorry blocker: szemeredi_from_density_increment needs quantitative iteration bound (M not just < N but large enough for enough steps)"
     ],
     "builtItems": [
       "RothTheoremOQ03.lean: 195 lines, 7 axioms, 2 sorries",
@@ -31,9 +35,12 @@
       "kAPCount: constructive k-AP counting operator as finite sum over ZMod N",
       "IsKAPFreeZMod: local k-AP-free predicate for ZMod N with Fin k AP structure",
       "apFree_of_isKAPFreeZMod_three: bridge lemma to Szemeredi.Roth.APFree",
-      "density_increment_k3_explicit: proved (was sorry) using RothTheorem infrastructure"
+      "density_increment_k3_explicit: proved (was sorry) using RothTheorem infrastructure",
+      "isKAPFreeZMod_three_of_apFree: reverse bridge lemma in RothTheoremOQ03.lean",
+      "Strengthened density_increment_kAP with AP-free preservation in conclusion",
+      "Strengthened density_increment_k3_explicit with IsKAPFreeZMod A' 3 from Roth APFree"
     ],
-    "progressSummary": "PROGRESS: Axioms 4→2 (gowersNorm, kAPCount now constructive defs). Sorries 2→1 (density_increment_k3_explicit proved). Fixed type issue: SzemerediTheorem.IsAPFree replaced with properly-typed IsKAPFreeZMod.",
+    "progressSummary": "PROGRESS: density_increment_kAP and density_increment_k3_explicit now include AP-free preservation. Reverse bridge isKAPFreeZMod_three_of_apFree proved. Still 2 axioms, 1 sorry. Sorry blocked on quantitative iteration bound for szemeredi_from_density_increment.",
     "nextSteps": [
       "Define Gowers norms constructively using iterated expectations",
       "Prove Gowers-Cauchy-Schwarz inequality (monotonicity)",

@@ -1,6 +1,6 @@
 {
   "slug": "lhopital-oq-02",
-  "title": "Formalize the $\\infty/\\infty$ form of L'Hopital's rule in Lean \u2014 Mathlib curr...",
+  "title": "Formalize the $\\infty/\\infty$ form of L'Hopital's rule in Lean — Mathlib curr...",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -35,16 +35,16 @@
       "lhopital_infty_right: general case via c=0 reduction (~20 lines)"
     ],
     "insights": [
-      "Mathlib has 26 L Hopital variants but ALL are 0/0 form \u2014 genuine gap for infinity/infinity",
-      "Only g \u2192 \u221e needed (not both f and g), making this more general than naive 1/f 1/g reduction",
-      "Proof requires two-variable Cauchy MVT: fix x0, let x \u2192 a, then optimize x0",
+      "Mathlib has 26 L Hopital variants but ALL are 0/0 form — genuine gap for infinity/infinity",
+      "Only g → ∞ needed (not both f and g), making this more general than naive 1/f 1/g reduction",
+      "Proof requires two-variable Cauchy MVT: fix x0, let x → a, then optimize x0",
       "Four sorries: main proof + 3 reductions (left via negation, atTop via 1/x, atBot via -x)",
-      "Proof structure for lhopital_infty_right fully mapped: Cauchy MVT application on [x,x\u2080] gives ratio, algebraic decomposition gives bound, g\u2192\u221e controls correction terms. Key Mathlib APIs: exists_ratio_hasDerivAt_eq_ratio_slope, Metric.tendsto_nhdsWithin_nhds, Filter.Tendsto.eventually_ge_atTop",
-      "Main barrier: converting between Filter.Eventually on \ud835\udcdd[>]a and delta-neighborhoods requires careful API navigation (eventually_nhdsWithin_iff, Metric.eventually_nhds_iff). Needs iterative REPL debugging.",
-      "c=0 reduction is key: define h=f-cg, prove h/g\u21920, then f/g=h/g+c\u2192c",
-      "For c=0 case: Cauchy MVT gives f(x)/g(x) = R\u00b7(1-g(x\u2080)/g(x)) + f(x\u2080)/g(x), bound each term by \u03b5/2",
-      "Metric.mem_nhdsWithin_iff extracts delta from filter eventually for g\u2192\u221e",
-      "g(x)>g(x\u2080) gives both g(x)\u2260g(x\u2080) and 0\u22641-g(x\u2080)/g(x)\u22641 without Rolle argument"
+      "Proof structure for lhopital_infty_right fully mapped: Cauchy MVT application on [x,x₀] gives ratio, algebraic decomposition gives bound, g→∞ controls correction terms. Key Mathlib APIs: exists_ratio_hasDerivAt_eq_ratio_slope, Metric.tendsto_nhdsWithin_nhds, Filter.Tendsto.eventually_ge_atTop",
+      "Main barrier: converting between Filter.Eventually on 𝓝[>]a and delta-neighborhoods requires careful API navigation (eventually_nhdsWithin_iff, Metric.eventually_nhds_iff). Needs iterative REPL debugging.",
+      "c=0 reduction is key: define h=f-cg, prove h/g→0, then f/g=h/g+c→c",
+      "For c=0 case: Cauchy MVT gives f(x)/g(x) = R·(1-g(x₀)/g(x)) + f(x₀)/g(x), bound each term by ε/2",
+      "Metric.mem_nhdsWithin_iff extracts delta from filter eventually for g→∞",
+      "g(x)>g(x₀) gives both g(x)≠g(x₀) and 0≤1-g(x₀)/g(x)≤1 without Rolle argument"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -57,7 +57,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "lhopital"
+    "lhopital",
+    "lhopital-oq-02"
   ],
   "references": {
     "papers": [],

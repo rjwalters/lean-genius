@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 6: Eliminated 2 trivial axioms (lineSegment_determined, disc_determined), proved muPosDeg_pos_of_small_diameter sorry. Now 7 axioms (all deep potential theory), 3 sorries (BddAbove, nthDiameter_eq_zero_of_finite, transfiniteDiameter_scale).",
+    "progressSummary": "SORRY ELIMINATION: Proved nthDiameter_eq_zero_of_finite via pigeonhole (3→2 sorries)",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -56,7 +56,8 @@
       "Proved disc_determined from mu_eq_zero (axiom→theorem)",
       "Proved lineSegment_determined trivially (axiom→theorem): ⟨fun _ => muPosDeg F, rfl⟩",
       "Proved disc_determined trivially (axiom→theorem): same pattern",
-      "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball"
+      "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball",
+      "nthDiameter_eq_zero_of_finite: proved via pigeonhole + Finset.prod_eq_zero + zero_rpow (was sorry)"
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
@@ -78,13 +79,15 @@
       "File has pre-existing compilation errors from Mathlib API changes (Complex.abs renamed, ENNReal notation issues, Subtype.Simps changes). Needs mechanic repair before further research.",
       "lineSegment_determined and disc_determined axioms are vacuously true: for fixed F, ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f(ρ) is trivially satisfied by f = const. Proved as theorems.",
       "muPosDeg_pos_of_small_diameter PROVED: from small_diameter_disc (uniform ball containment), Complex.volume_ball (center-independent: vol(ball a r) = ofReal(r)^2 * π), and Metric.measure_ball_pos. Gives uniform lower bound on muPosDeg.",
-      "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain."
+      "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain.",
+      "Pigeonhole for nth diameter: n > |F| implies repeated points, making product 0 via Finset.prod_eq_zero",
+      "Remaining 2 sorries: BddAbove for monotonicity (line 297), transfiniteDiameter_scale (line 400)",
+      "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove BddAbove sorry (line ~297): bound pairwise distances by diam(G) for bounded G",
-      "Prove nthDiameter_eq_zero_of_finite (line ~347): pigeonhole gives repeated point → product 0 → rpow 0",
-      "Prove transfiniteDiameter_scale (line ~369): factor |c| through product and sSup"
+      "BddAbove sorry (line 297): needs bounded set implies bounded products — nontrivial",
+      "transfiniteDiameter_scale: needs careful manipulation of sSup/iInf with scaling"
     ]
   },
   "tags": [
@@ -113,22 +116,22 @@
     {
       "path": "Proofs/Erdos1040Aristotle.lean",
       "filename": "Erdos1040Aristotle.lean",
-      "lineCount": 137,
+      "lineCount": 140,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 0,
+      "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1040Problem.lean",
       "filename": "Erdos1040Problem.lean",
-      "lineCount": 462,
-      "theoremCount": 18,
-      "axiomCount": 7,
+      "lineCount": 654,
+      "theoremCount": 21,
+      "axiomCount": 4,
       "defCount": 19,
-      "sorryCount": 4,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Problem.lean"
     }

@@ -254,12 +254,153 @@ theorem sumset_finite (A : Set ℕ) (hfin : A.Finite) : (sumset A).Finite := by
   obtain ⟨a, b, ha, hb, rfl⟩ := hs
   exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
 
-/-- For Sidon sets, |A + A| = |A| choose 2 + |A| -/
+/-- The sum map on ordered pairs is injective for Sidon sets:
+    if a + b = c + d with a ≤ b, c ≤ d, then (a,b) = (c,d). -/
+private lemma sidon_sum_injOn (A : Set ℕ) (hA : IsSidonSet A) :
+    Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2)
+      {p | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} := by
+  intro ⟨a, b⟩ hab ⟨c, d⟩ hcd heq
+  simp only [Set.mem_setOf_eq] at hab hcd
+  have hset := hA a b c d hab.1 hab.2.1 hcd.1 hcd.2.1 hab.2.2 hcd.2.2 heq
+  -- From {a,b} = {c,d}, extract a = c ∧ b = d (using a ≤ b and c ≤ d)
+  simp only [Set.ext_iff, Set.mem_insert_iff, Set.mem_singleton_iff] at hset
+  have hac := (hset a).mp (Or.inl rfl)
+  have hbd := (hset b).mp (Or.inr rfl)
+  rcases hac with rfl | rfl
+  · -- a = c: then from hbd, b = c or b = d
+    rcases hbd with hbc | rfl
+    · -- b = c = a, so from heq: a + a = a + d, hence d = a = b
+      subst hbc; ext <;> simp; linarith
+    · rfl  -- a = c, b = d
+  · -- a = d: from heq, d + b = c + d, so b = c
+    rcases hbd with rfl | hbd
+    · -- b = c and a = d, with a ≤ b and b ≤ a, so a = b
+      have hab' : a = b := le_antisymm hab.2.2 (by linarith [hcd.2.2])
+      ext <;> simp [hab']
+    · -- a = d and b = d, so a = b = d, and from heq c = d too
+      subst hbd
+      ext <;> simp; linarith
+
+/-- The sumset equals the image of the sum map on ordered pairs. -/
+private lemma sumset_eq_image (A : Set ℕ) :
+    sumset A = (fun p : ℕ × ℕ => p.1 + p.2) '' {p | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} := by
+  ext s
+  simp only [sumset, Set.mem_setOf_eq, Set.mem_image, Prod.exists]
+  constructor
+  · rintro ⟨a, b, ha, hb, rfl⟩
+    by_cases h : a ≤ b
+    · exact ⟨a, b, ⟨ha, hb, h⟩, rfl⟩
+    · exact ⟨b, a, ⟨hb, ha, le_of_not_le h⟩, by ring⟩
+  · rintro ⟨a, b, ⟨ha, hb, _⟩, rfl⟩
+    exact ⟨a, b, ha, hb, rfl⟩
+
+/-- Upper-triangular pairs in a product have cardinality n*(n+1)/2.
+    Proof: three-way partition of s×s into {a<b}, {a=b}, {a>b},
+    then use Prod.swap symmetry between {<} and {>}. -/
+private lemma card_upper_tri (s : Finset ℕ) :
+    ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card = s.card * (s.card + 1) / 2 := by
+  -- Prove 2 * card = s.card * (s.card + 1) to avoid Nat division issues
+  suffices h2 : 2 * ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card =
+      s.card * (s.card + 1) by omega
+  -- Decompose ≤ into < and =
+  have h_le_eq : (s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) =
+      (s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2) ∪
+      (s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+    constructor
+    · rintro ⟨hmem, hab⟩
+      rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+      · exact Or.inr ⟨hmem, rfl⟩
+      · exact Or.inl ⟨hmem, hlt⟩
+    · rintro (⟨hmem, hlt⟩ | ⟨hmem, rfl⟩)
+      · exact ⟨hmem, Nat.le_of_lt hlt⟩
+      · exact ⟨hmem, Nat.le_refl _⟩
+  have h_disj_lt_eq : Disjoint
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2))
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2)) :=
+    Finset.disjoint_filter.2 fun ⟨a, b⟩ _ h1 h2 => by omega
+  rw [h_le_eq, Finset.card_union_of_disjoint h_disj_lt_eq]
+  -- Count diagonal: |{(a,a) | a ∈ s}| = s.card
+  have h_diag : ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2)).card = s.card := by
+    have h_eq_map : (s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2) =
+        s.map ⟨fun a => (a, a), fun a b h => by simpa using h⟩ := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_map,
+                  Function.Embedding.coeFn_mk, Prod.mk.injEq]
+      constructor
+      · rintro ⟨⟨ha, _⟩, rfl⟩; exact ⟨a, ha, rfl, rfl⟩
+      · rintro ⟨c, hc, rfl, rfl⟩; exact ⟨⟨hc, hc⟩, rfl⟩
+    rw [h_eq_map, Finset.card_map]
+  -- Symmetry: |{a < b}| = |{a > b}| via Prod.swap
+  have h_sym : ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2)).card =
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.2 < p.1)).card := by
+    have h_eq_map : (s ×ˢ s).filter (fun p : ℕ × ℕ => p.2 < p.1) =
+        ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2)).map
+          ⟨Prod.swap, Prod.swap_injective⟩ := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_map,
+                  Function.Embedding.coeFn_mk, Prod.swap, Prod.mk.injEq]
+      constructor
+      · intro ⟨⟨ha, hb⟩, hab⟩
+        exact ⟨⟨b, a⟩, ⟨⟨hb, ha⟩, hab⟩, rfl, rfl⟩
+      · rintro ⟨⟨c, d⟩, ⟨⟨hc, hd⟩, hcd⟩, rfl, rfl⟩
+        exact ⟨⟨hd, hc⟩, hcd⟩
+    rw [h_eq_map, Finset.card_map]
+  -- Three-way partition: |s×s| = |{<}| + |{=}| + |{>}|
+  have h_three : (s ×ˢ s).card =
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2)).card +
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2)).card +
+      ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.2 < p.1)).card := by
+    have h_total_eq : s ×ˢ s =
+        (s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 < p.2) ∪
+        ((s ×ˢ s).filter (fun p : ℕ × ℕ => p.1 = p.2) ∪
+         (s ×ˢ s).filter (fun p : ℕ × ℕ => p.2 < p.1)) := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+      constructor
+      · intro hmem
+        rcases lt_trichotomy a b with hlt | rfl | hgt
+        · exact Or.inl ⟨hmem, hlt⟩
+        · exact Or.inr (Or.inl ⟨hmem, rfl⟩)
+        · exact Or.inr (Or.inr ⟨hmem, hgt⟩)
+      · rintro (⟨hmem, _⟩ | ⟨hmem, _⟩ | ⟨hmem, _⟩) <;> exact hmem
+    rw [h_total_eq,
+      Finset.card_union_of_disjoint (by
+        rw [Finset.disjoint_left]; intro ⟨a, b⟩ h1 h2
+        simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product] at h1 h2
+        rcases h2 with ⟨_, hab⟩ | ⟨_, hab⟩ <;> omega),
+      Finset.card_union_of_disjoint (Finset.disjoint_filter.2 fun ⟨a, b⟩ _ h1 h2 => by omega)]
+  -- Combine: from h_three and symmetry, 2*|{<}| + |diag| = s.card²
+  rw [Finset.card_product, h_diag, h_sym] at h_three
+  -- h_three: s.card * s.card = |{<}| + s.card + |{<}|
+  -- Goal: 2 * (|{<}| + s.card) = s.card * (s.card + 1)
+  rw [h_diag]; linarith
+
+/-- For Sidon sets, |A + A| = |A| choose 2 + |A| = |A|*(|A|+1)/2.
+
+    Proof structure:
+    1. sumset A = image of (a,b) ↦ a+b on {(a,b) | a,b ∈ A, a ≤ b}
+    2. This map is injective (Sidon property, proved in sidon_sum_injOn)
+    3. Therefore |sumset A| = |{ordered pairs with a ≤ b}| = |A|*(|A|+1)/2 -/
 theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (sumset A).Finite ∧
     (sumset A).ncard = A.ncard * (A.ncard + 1) / 2 := by
   refine ⟨sumset_finite A hfin, ?_⟩
-  sorry -- Counting: Sidon property gives injection from ordered pairs to sums
+  rw [sumset_eq_image]
+  have hpairs_fin : Set.Finite {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} :=
+    (hfin.prod hfin).subset (fun p hp => ⟨hp.1, hp.2.1⟩)
+  rw [Set.ncard_image_of_injOn (sidon_sum_injOn A hA) hpairs_fin]
+  -- Convert Set.ncard to Finset.card
+  rw [hpairs_fin.ncard_eq_toFinset_card', hfin.ncard_eq_toFinset_card']
+  -- Show the pair set's toFinset equals the filtered product
+  have h_eq : hpairs_fin.toFinset =
+      (hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) := by
+    ext ⟨a, b⟩
+    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq,
+               Finset.mem_filter, Finset.mem_product]
+  rw [h_eq]
+  exact card_upper_tri hfin.toFinset
 
 /-- B₂ sets are precisely Sidon sets -/
 def IsB2Set (A : Set ℕ) : Prop := IsSidonSet A

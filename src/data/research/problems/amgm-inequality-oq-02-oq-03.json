@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-02-oq-03",
   "title": "Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved maclaurin_step from newton_log_concavity via power inequality induction. 1 sorry remains (elemSymm zero propagation for non-negative inputs).",
+    "builtItems": [
+      "AmgmInequalityOQ02OQ03.lean: power inequality + Maclaurin step (1 sorry, 0 axioms)",
+      "Gallery entry src/data/proofs/amgm-inequality-oq-02-oq-03/",
+      "normElemSymm definition for cleaner statement"
+    ],
+    "insights": [
+      "Power inequality a_k^{k+1} >= a_{k+1}^k is the key bridge from log-concavity to Maclaurin chain",
+      "Induction on k: raise LC to k-th power, combine with IH, cancel common factor",
+      "Zero case: if a_{k+1} = 0 and inputs non-negative, then a_{k+2} = 0 (elemSymm propagation)",
+      "Final step: take 1/(k(k+1))-th root via rpow_le_rpow monotonicity"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove elemSymm zero propagation lemma to eliminate the remaining sorry",
+      "Prove newton_log_concavity itself (the deeper remaining axiom)",
+      "State full Maclaurin chain as single theorem"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -42,6 +55,7 @@
   "relatedProofs": [
     "amgm-inequality",
     "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-03",
     "amgm-inequality-oq-03",
     "amgm-inequality-oq-03-oq-01",
     "amgm-inequality-oq-03-oq-03"
@@ -52,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.430Z",
-  "lastUpdate": "2026-03-26T20:00:24.430Z",
+  "lastUpdate": "2026-03-30T14:40:00Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -101,6 +115,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 194,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/AmgmInequalityOQ03.lean",
       "filename": "AmgmInequalityOQ03.lean",
       "lineCount": 373,
@@ -114,9 +139,9 @@
     {
       "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
       "filename": "AmgmInequalityOQ03OQ03.lean",
-      "lineCount": 81,
+      "lineCount": 58,
       "theoremCount": 2,
-      "axiomCount": 3,
+      "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 2,
       "isAristotle": false,
