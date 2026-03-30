@@ -249,8 +249,11 @@ theorem simplyConnected_curlIntegral (F : ℝ × ℝ → ℝ) (R : TypeIRegion) 
 /-
 ## Part V: Green's Theorem — The Main Result
 
-For a multiply-connected region D with outer boundary ∂D₀ and
-hole boundaries ∂H₁,...,∂Hₙ:
+The proof proceeds in two steps:
+1. **Per-region axiom**: For each TypeI region, the full line integral
+   around its boundary equals the double integral of curl over the region.
+2. **Linearity** (proved): For a multiply-connected region D = D_outer \ (H₁ ∪ ... ∪ Hₙ),
+   apply step 1 to D_outer and each Hᵢ, then subtract.
 
   ∮_{∂D₀} (P dx + Q dy) - Σᵢ ∮_{∂Hᵢ} (P dx + Q dy)
     = ∬_D (∂Q/∂x - ∂P/∂y) dA
