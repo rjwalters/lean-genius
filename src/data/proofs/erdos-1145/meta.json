@@ -18,8 +18,8 @@
         "sourceUrl": "https://erdosproblems.com/1145",
         "erdosUrl": "https://erdosproblems.com/1145",
         "proofRepoPath": "Proofs/Erdos1145Problem.lean",
-        "axiomCount": 5,
-        "assumptions": "5 axioms: erdos_sarkozy_conjecture (main open conjecture), ruzsa_unique_rep, ruzsa_ratio_not_one, average_rep_grows, grekos_two_set. Eliminated 3 axioms: ruzsaA_infinite (proved via powers of 4), ruzsaB_infinite (proved via 2·4^k), sum_of_reps_bound (was vacuously true: RHS = 0).",
+        "axiomCount": 4,
+        "assumptions": "4 axioms: erdos_sarkozy_conjecture (main open conjecture), ruzsa_ratio_not_one, average_rep_grows, grekos_two_set. Eliminated 4 axioms: ruzsaA_infinite (proved via powers of 4), ruzsaB_infinite (proved via 2·4^k), sum_of_reps_bound (was vacuously true: RHS = 0), ruzsa_unique_rep (proved).",
         "badge": "axiom",
         "prerequisites": [
             "Additive number theory (sumsets, representation functions)",
@@ -188,7 +188,7 @@
         ],
         "namespace": "Erdos1145",
         "lineCount": 552,
-        "axiomCount": 5,
+        "axiomCount": 4,
         "theoremCount": 10,
         "definitionCount": 10
     }
