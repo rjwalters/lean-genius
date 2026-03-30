@@ -1,106 +1,109 @@
 {
-    "id": "borsuk-ulam-oq-02-oq-03",
-    "title": "Dold's Theorem: Cohomological Index for Free G-Spaces",
-    "slug": "borsuk-ulam-oq-02-oq-03",
-    "description": "Axiomatized formalization of Dold's theorem (1983), which provides a unified cohomological index framework for Borsuk-Ulam type results. The Dold index assigns a numerical invariant to free G-spaces on spheres and shows equivariant maps respect it. From 5 axioms, we derive 11 theorems: classical Borsuk-Ulam (Z/2), Yang-Borsuk (Z/p), composite group bounds, and unification of the buDim framework from OQ02OQ01.",
-    "meta": {
-        "author": "Lean Genius (after Dold 1983)",
-        "status": "axiomatized",
-        "proofRepoPath": "Proofs/BorsukUlamOQ02OQ03.lean",
-        "tags": [
-            "topology",
-            "algebraic-topology",
-            "borsuk-ulam",
-            "equivariant",
-            "cohomology",
-            "group-actions",
-            "dold-theorem",
-            "research"
-        ],
-        "badge": "axiom",
-        "sorries": 0,
-        "axiomCount": 5,
-        "lineCount": 251,
-        "assumptions": "doldIndex function (cohomological index), doldIndex_one (trivial group), doldIndex_z2 (Z/2 antipodal = n), doldIndex_prime (Z/p rotation = 2n-1), doldIndex_dvd_mono (Dold's theorem: subgroup monotonicity).",
-        "originalContributions": [
-            "Axiomatized Dold cohomological index with 5 axioms (1 fewer than OQ02OQ01)",
-            "Proved borsuk_ulam_from_dold: classical BU as consequence of Dold index",
-            "Proved yang_borsuk_from_dold: Yang-Borsuk as consequence of Dold index",
-            "Proved z4_index_bound, z6_index_from_z2, z6_index_from_z3: composite bounds",
-            "Proved zpq_index_bound: general product-of-primes bound",
-            "Proved buDim unification: OQ02OQ01 axioms follow from Dold axioms",
-            "Complete formalizability assessment with ~1800 line gap analysis"
-        ],
-        "mathlibDependencies": [
-            {
-                "theorem": "Nat.Prime",
-                "description": "Primality predicate for natural numbers",
-                "module": "Mathlib.Data.Nat.Prime.Basic"
-            },
-            {
-                "theorem": "Nat.exists_prime_and_dvd",
-                "description": "Every natural number >= 2 has a prime divisor",
-                "module": "Mathlib.Data.Nat.Prime.Basic"
-            }
-        ]
-    },
-    "sections": [
-        {
-            "id": "dold-index",
-            "title": "The Dold Cohomological Index",
-            "startLine": 43,
-            "endLine": 60,
-            "summary": "Axiomatizes the cohomological index doldIndex(g, n) = ind_{Z/g}(S^n) as a function of group order and sphere dimension.",
-            "mathContext": "The cohomological index is defined via Borel equivariant cohomology: ind_G(X) = sup{k : H^k(BG) -> H^k_G(X) is injective}. We axiomatize rather than construct it."
-        },
-        {
-            "id": "axiom-properties",
-            "title": "Axiomatized Properties",
-            "startLine": 62,
-            "endLine": 92,
-            "summary": "Four properties: trivial group (index = 0), Z/2 (index = n), Z/p prime (index = 2n-1), and Dold's theorem (subgroup monotonicity).",
-            "mathContext": "These encode the classical values computed by Borsuk, Yang, and Dold, plus the core transfer-map argument that is Dold's main theorem."
-        },
-        {
-            "id": "borsuk-ulam-corollary",
-            "title": "Classical Borsuk-Ulam from Dold",
-            "startLine": 94,
-            "endLine": 108,
-            "summary": "Derives the Borsuk-Ulam theorem (no odd map S^n -> S^{n-1}) from the Dold index.",
-            "mathContext": "If an odd map S^n -> S^{n-1} existed, it would be Z/2-equivariant, contradicting ind_{Z/2}(S^n) = n > n-1 = ind_{Z/2}(S^{n-1})."
-        },
-        {
-            "id": "yang-borsuk-corollary",
-            "title": "Yang-Borsuk from Dold",
-            "startLine": 110,
-            "endLine": 122,
-            "summary": "Derives the Yang-Borsuk theorem (Z/p-equivariant obstruction) from the Dold index.",
-            "mathContext": "For prime p, the Z/p-equivariant Borsuk-Ulam follows from ind_{Z/p}(S^{2n-1}) = 2n-1 strictly exceeding ind_{Z/p}(S^{2n-3})."
-        },
-        {
-            "id": "composite-bounds",
-            "title": "Composite Group Bounds",
-            "startLine": 124,
-            "endLine": 160,
-            "summary": "Derives index bounds for Z/4, Z/6, Z/pq, and general composite groups from prime subgroup monotonicity.",
-            "mathContext": "Every composite group inherits index bounds from its prime subgroups via Dold's subgroup monotonicity. These bounds are tight for standard representations."
-        },
-        {
-            "id": "budim-unification",
-            "title": "Unification with buDim (OQ02OQ01)",
-            "startLine": 162,
-            "endLine": 200,
-            "summary": "Shows buDim(g, d) = doldIndex(g, d-1) and derives all OQ02OQ01 axioms from Dold axioms.",
-            "mathContext": "The buDim function from OQ02OQ01 is a repackaging of the Dold index. This unification reduces 6 axioms to 5 while preserving all consequences."
-        },
-        {
-            "id": "formalizability",
-            "title": "Formalizability Assessment",
-            "startLine": 202,
-            "endLine": 226,
-            "summary": "Complete gap analysis: ~1800 lines of equivariant cohomology needed to remove all axioms. Priority: transfer maps (~200 lines) for highest value per effort.",
-            "mathContext": "The axioms can be proved from singular cohomology + Borel construction + transfer maps. Mathlib currently lacks all three, but they are constructible."
-        }
+  "id": "borsuk-ulam-oq-02-oq-03",
+  "title": "Dold's Theorem: Cohomological Index for Free G-Spaces",
+  "slug": "borsuk-ulam-oq-02-oq-03",
+  "description": "Axiomatized formalization of Dold's theorem (1983), which provides a unified cohomological index framework for Borsuk-Ulam type results. The Dold index assigns a numerical invariant to free G-spaces on spheres and shows equivariant maps respect it. From 5 axioms, we derive 11 theorems: classical Borsuk-Ulam (Z/2), Yang-Borsuk (Z/p), composite group bounds, and unification of the buDim framework from OQ02OQ01.",
+  "meta": {
+    "author": "Lean Genius (after Dold 1983)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ03.lean",
+    "tags": [
+      "topology",
+      "algebraic-topology",
+      "borsuk-ulam",
+      "equivariant",
+      "cohomology",
+      "group-actions",
+      "dold-theorem",
+      "research"
     ],
-    "openQuestions": []
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 251,
+    "assumptions": "doldIndex function (cohomological index), doldIndex_one (trivial group), doldIndex_z2 (Z/2 antipodal = n), doldIndex_prime (Z/p rotation = 2n-1), doldIndex_dvd_mono (Dold's theorem: subgroup monotonicity).",
+    "originalContributions": [
+      "Axiomatized Dold cohomological index with 5 axioms (1 fewer than OQ02OQ01)",
+      "Proved borsuk_ulam_from_dold: classical BU as consequence of Dold index",
+      "Proved yang_borsuk_from_dold: Yang-Borsuk as consequence of Dold index",
+      "Proved z4_index_bound, z6_index_from_z2, z6_index_from_z3: composite bounds",
+      "Proved zpq_index_bound: general product-of-primes bound",
+      "Proved buDim unification: OQ02OQ01 axioms follow from Dold axioms",
+      "Complete formalizability assessment with ~1800 line gap analysis"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "Every natural number >= 2 has a prime divisor",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "dold-index",
+      "title": "The Dold Cohomological Index",
+      "startLine": 43,
+      "endLine": 60,
+      "summary": "Axiomatizes the cohomological index doldIndex(g, n) = ind_{Z/g}(S^n) as a function of group order and sphere dimension.",
+      "mathContext": "The cohomological index is defined via Borel equivariant cohomology: ind_G(X) = sup{k : H^k(BG) -> H^k_G(X) is injective}. We axiomatize rather than construct it."
+    },
+    {
+      "id": "axiom-properties",
+      "title": "Axiomatized Properties",
+      "startLine": 62,
+      "endLine": 92,
+      "summary": "Four properties: trivial group (index = 0), Z/2 (index = n), Z/p prime (index = 2n-1), and Dold's theorem (subgroup monotonicity).",
+      "mathContext": "These encode the classical values computed by Borsuk, Yang, and Dold, plus the core transfer-map argument that is Dold's main theorem."
+    },
+    {
+      "id": "borsuk-ulam-corollary",
+      "title": "Classical Borsuk-Ulam from Dold",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "Derives the Borsuk-Ulam theorem (no odd map S^n -> S^{n-1}) from the Dold index.",
+      "mathContext": "If an odd map S^n -> S^{n-1} existed, it would be Z/2-equivariant, contradicting ind_{Z/2}(S^n) = n > n-1 = ind_{Z/2}(S^{n-1})."
+    },
+    {
+      "id": "yang-borsuk-corollary",
+      "title": "Yang-Borsuk from Dold",
+      "startLine": 110,
+      "endLine": 122,
+      "summary": "Derives the Yang-Borsuk theorem (Z/p-equivariant obstruction) from the Dold index.",
+      "mathContext": "For prime p, the Z/p-equivariant Borsuk-Ulam follows from ind_{Z/p}(S^{2n-1}) = 2n-1 strictly exceeding ind_{Z/p}(S^{2n-3})."
+    },
+    {
+      "id": "composite-bounds",
+      "title": "Composite Group Bounds",
+      "startLine": 124,
+      "endLine": 160,
+      "summary": "Derives index bounds for Z/4, Z/6, Z/pq, and general composite groups from prime subgroup monotonicity.",
+      "mathContext": "Every composite group inherits index bounds from its prime subgroups via Dold's subgroup monotonicity. These bounds are tight for standard representations."
+    },
+    {
+      "id": "budim-unification",
+      "title": "Unification with buDim (OQ02OQ01)",
+      "startLine": 162,
+      "endLine": 200,
+      "summary": "Shows buDim(g, d) = doldIndex(g, d-1) and derives all OQ02OQ01 axioms from Dold axioms.",
+      "mathContext": "The buDim function from OQ02OQ01 is a repackaging of the Dold index. This unification reduces 6 axioms to 5 while preserving all consequences."
+    },
+    {
+      "id": "formalizability",
+      "title": "Formalizability Assessment",
+      "startLine": 202,
+      "endLine": 226,
+      "summary": "Complete gap analysis: ~1800 lines of equivariant cohomology needed to remove all axioms. Priority: transfer maps (~200 lines) for highest value per effort.",
+      "mathContext": "The axioms can be proved from singular cohomology + Borel construction + transfer maps. Mathlib currently lacks all three, but they are constructible."
+    }
+  ],
+  "openQuestions": [],
+  "leanFile": {
+    "axiomCount": 5
+  }
 }
