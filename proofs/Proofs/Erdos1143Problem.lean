@@ -202,23 +202,47 @@ axiom covering_asymptotic (primes : Finset ℕ) (hprime : ∀ p ∈ primes, Nat.
 -/
 
 /-- When k = αpᵤ with α > 2, the interval contains at least 2 complete
-    periods of pᵤ. Erdős-Selfridge found the exact bound for 2 < α < 3. -/
-axiom erdos_selfridge_exact (primes : Finset ℕ)
-    (hprime : ∀ p ∈ primes, Nat.Prime p)
-    (hne : primes.Nonempty)
-    (α : ℝ) (hα_lo : 2 < α) (hα_hi : α < 3)
-    (k : ℕ) (hk : k = Nat.floor (α * primes.max' hne)) :
-    ∃ exact_val : ℕ, coveringFunction primes k = exact_val
+    periods of pᵤ. Erdős-Selfridge found the exact bound for 2 < α < 3.
+    Note: The conclusion is trivially true (any ℕ-valued function has a value).
+    The mathematical content is the *formula* for exact_val, not its existence. -/
+theorem erdos_selfridge_exact (primes : Finset ℕ)
+    (_hprime : ∀ p ∈ primes, Nat.Prime p)
+    (_hne : primes.Nonempty)
+    (_α : ℝ) (_hα_lo : 2 < _α) (_hα_hi : _α < 3)
+    (k : ℕ) (_hk : k = Nat.floor (_α * primes.max' _hne)) :
+    ∃ exact_val : ℕ, coveringFunction primes k = exact_val :=
+  ⟨coveringFunction primes k, rfl⟩
 
-/-- For α > 3, very little is known about the exact value of F_k. -/
-axiom alpha_gt_3_open (primes : Finset ℕ)
+/-- Lower bound: k * (density - 1) ≤ F_k. Trivially true since density < 1
+    implies LHS ≤ 0 and F_k ≥ 0. -/
+theorem covering_lower_bound (primes : Finset ℕ)
+    (hprime : ∀ p ∈ primes, Nat.Prime p)
+    (hne : primes.Nonempty) (k : ℕ) :
+    k * (expectedDensity primes - 1) ≤ (coveringFunction primes k : ℝ) :=
+  le_trans
+    (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _)
+      (by linarith [expectedDensity_lt_one primes hne hprime]))
+    (Nat.cast_nonneg _)
+
+/-- Upper bound: F_k ≤ k * density + |primes|. Requires inclusion-exclusion
+    with periodicity argument (the average of covered(a,k) over one period
+    equals k * density, so the infimum ≤ average). -/
+axiom covering_upper_bound (primes : Finset ℕ)
+    (hprime : ∀ p ∈ primes, Nat.Prime p)
+    (hne : primes.Nonempty) (k : ℕ) :
+    (coveringFunction primes k : ℝ) ≤ k * expectedDensity primes + primes.card
+
+/-- For α > 3, F_k is bounded between density bounds. -/
+theorem alpha_gt_3_open (primes : Finset ℕ)
     (hprime : ∀ p ∈ primes, Nat.Prime p)
     (hne : primes.Nonempty) :
     ∀ α : ℝ, α > 3 →
     ∀ k : ℕ, k = Nat.floor (α * primes.max' hne) →
-    -- The covering function is bounded between the density bounds
     k * (expectedDensity primes - 1) ≤ (coveringFunction primes k : ℝ) ∧
-    (coveringFunction primes k : ℝ) ≤ k * expectedDensity primes + primes.card
+    (coveringFunction primes k : ℝ) ≤ k * expectedDensity primes + primes.card := by
+  intro _ _ k _
+  exact ⟨covering_lower_bound primes hprime hne k,
+         covering_upper_bound primes hprime hne k⟩
 
 /-
 ## Concrete Examples
