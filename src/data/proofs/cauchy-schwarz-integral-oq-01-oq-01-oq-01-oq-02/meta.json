@@ -123,7 +123,8 @@
   ],
   "conclusion": {
     "summary": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries.",
-    "openQuestions": []
+    "openQuestions": [],
+    "implications": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries."
   },
   "crossReferences": [
     {
@@ -139,7 +140,11 @@
   ],
   "references": [
     {
-      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
@@ -147,8 +152,12 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "namespace": "PowerMeanChain",
     "lineCount": 217,
     "axiomCount": 0,
