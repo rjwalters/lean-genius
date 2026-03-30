@@ -1,0 +1,69 @@
+{
+  "id": "lhopital-oq-02",
+  "title": "L'Hopital's Rule: ∞/∞ Form",
+  "slug": "lhopital-oq-02",
+  "description": "The ∞/∞ indeterminate form of L'Hopital's rule: if g(x) → +∞ and f'(x)/g'(x) → c, then f(x)/g(x) → c. Not in Mathlib as of v4.26.",
+  "meta": {
+    "status": "axiomatized",
+    "tags": ["analysis", "calculus", "limits", "lhopital"],
+    "proofRepoPath": "Proofs/LHopitalOQ02.lean",
+    "sorries": 0,
+    "badge": "axiom",
+    "axiomCount": 3,
+    "lineCount": 87,
+    "assumptions": "3 axioms: lhopital_infty_right (right limit), lhopital_infty_left (left limit), lhopital_infty_atTop (limit at +∞). All state the ∞/∞ form of L'Hopital. Provable from Cauchy MVT."
+  },
+  "sections": [
+    {
+      "id": "main-theorems",
+      "title": "∞/∞ L'Hopital Variants",
+      "startLine": 25,
+      "endLine": 75,
+      "summary": "Three variants of L'Hopital's rule for the ∞/∞ form: right limit (x → a⁺), left limit (x → b⁻), and at infinity (x → +∞). Axiomatized with proof sketches via CMVT."
+    },
+    {
+      "id": "applications",
+      "title": "Growth Rate Comparison",
+      "startLine": 77,
+      "endLine": 87,
+      "summary": "Proves that if f/g → 0 and g → +∞, then eventually f < g. A direct application of ratio limit philosophy."
+    }
+  ],
+  "overview": {
+    "text": "The ∞/∞ indeterminate form of L'Hopital's rule: if g(x) → +∞ and f'(x)/g'(x) → c, then f(x)/g(x) → c.",
+    "proofStrategy": "The ∞/∞ form follows from the Cauchy Mean Value Theorem. The key trick: write f(x)/g(x) as a CMVT ratio times a correction that tends to 1, plus a remainder that tends to 0.",
+    "prerequisites": ["Calculus (derivatives, limits)", "Analysis (filters, convergence)"]
+  },
+  "conclusion": {
+    "summary": "States the ∞/∞ L'Hopital rule in three variants, with one proved corollary on growth comparison. The axioms are provable from Cauchy MVT but require careful ε-δ formalization.",
+    "openQuestions": [
+      "Prove the axioms from Cauchy MVT (exists_ratio_deriv_eq_ratio_slope in Mathlib)",
+      "Contribute the ∞/∞ form to Mathlib (currently missing from Mathlib.Analysis.Calculus.LHopital)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.MeanValue",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "lineCount": 87,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "lhopital",
+      "relationship": "extends",
+      "description": "Extends the 0/0 form from the parent proof with the ∞/∞ form"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "depends-on",
+      "description": "The ∞/∞ form proof relies on the Cauchy Mean Value Theorem"
+    }
+  ]
+}
