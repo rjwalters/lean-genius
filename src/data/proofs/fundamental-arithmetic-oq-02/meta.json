@@ -19,8 +19,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "summary": "Formalizes the classic counterexample to unique factorization: 6 = 2·3 = (1+√(-5))·(1-√(-5)) in ℤ[√(-5)]. Proves both factorizations, norm computations, non-unit status of all factors, and that the factorizations are essentially different (2 does not divide 1+√(-5)).",
-    "text": "Formalizes the failure of unique factorization in Z[sqrt(-5)] as a counterexample showing it is not a UFD."
+    "historicalContext": "The ring Z[sqrt(-5)] is the classical example of a Dedekind domain that is not a UFD, dating back to Kummer's work on ideal numbers in the 1840s.",
+    "problemStatement": "Show that 6 admits two essentially different factorizations into irreducibles in Z[sqrt(-5)]: 6 = 2*3 = (1+sqrt(-5))*(1-sqrt(-5)).",
+    "proofStrategy": "Define Z[sqrt(-5)] as pairs (a,b) with norm N(a+b*sqrt(-5)) = a^2+5b^2. Use multiplicativity of the norm to prove irreducibility of factors and show the two factorizations are essentially different by proving 2 does not divide 1+sqrt(-5).",
+    "keyInsights": [
+      "The norm function N(a+b*sqrt(-5)) = a^2+5b^2 is multiplicative and detects units (N(u)=1) and irreducibles",
+      "Both 2*3 and (1+sqrt(-5))*(1-sqrt(-5)) equal 6, but 2 does not divide 1+sqrt(-5) in the ring",
+      "This provides a concrete, machine-checked counterexample to unique factorization outside Z"
+    ]
   },
   "sections": [],
   "crossReferences": [
@@ -28,6 +34,7 @@
   ],
   "conclusion": {
     "summary": "172 lines, 19 declarations, 0 axioms, 1 sorry. Proves two distinct factorizations of 6, non-unit status of all factors, and essential difference of the factorizations.",
+    "implications": "Demonstrates that unique factorization fails in Z[sqrt(-5)], motivating the theory of ideal class groups and Dedekind domains.",
     "openQuestions": []
   }
 }

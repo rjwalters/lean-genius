@@ -100,7 +100,8 @@
   ],
   "conclusion": {
     "text": "The oblique lower bound of 4 generalizes from the 8\u00d78 board to all n\u00d7n boards with n \u2265 5. The proof is purely algebraic and shows that the corner-forcing mechanism is a universal feature of knight's tours, not an artifact of the standard 8\u00d78 board. The bound 4 is tight, as demonstrated by the unique minimum-oblique tour on the 8\u00d78 board.",
-    "opens": []
+    "opens": [],
+    "implications": "See the parent entry for broader implications."
   },
   "openQuestions": [
     "Does the minimum number of oblique turns increase for larger boards? For n >> 8, are there tours with exactly 4 oblique turns, or is the minimum higher?",

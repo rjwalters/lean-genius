@@ -9,7 +9,12 @@
     "date": "2015",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos100OQ01.lean",
-    "tags": ["discrete-geometry", "erdos", "distance-sets", "guth-katz"],
+    "tags": [
+      "discrete-geometry",
+      "erdos",
+      "distance-sets",
+      "guth-katz"
+    ],
     "badge": "formalized",
     "sorries": 1,
     "axiomCount": 0,
@@ -21,16 +26,32 @@
   "overview": {
     "historicalContext": "Erd\u0151s Problem #100 asks whether n-point integer distance sets must have diameter \u226b n. The Guth\u2013Katz 2015 distinct distances theorem gives diam \u2265 cn/log n. The conjecture is diam \u2265 cn (linear). The gap is exactly log n.",
     "problemStatement": "**Question**: Is the diameter of n-point integer distance sets \u0398(n) or \u0398(n/log n)?",
-    "text": "Formalizes the growth rate gap between known and conjectured bounds for integer distance set diameters."
+    "text": "Formalizes the growth rate gap between known and conjectured bounds for integer distance set diameters.",
+    "proofStrategy": "See the overview summary for the proof approach.",
+    "keyInsights": [
+      "See the parent entry for related insights."
+    ]
   },
   "crossReferences": [
-    {"targetId": "erdos-100", "relationship": "extends", "description": "Parent: Erd\u0151s #100 integer distance sets"}
+    {
+      "targetId": "erdos-100",
+      "relationship": "extends",
+      "description": "Parent: Erd\u0151s #100 integer distance sets"
+    }
   ],
   "references": [
-    {"authors": "Guth, L. and Katz, N. H.", "title": "On the Erd\u0151s distinct distances problem in the plane", "year": "2015", "venue": "Annals of Mathematics 181(1):155\u2013190"}
+    {
+      "authors": "Guth, L. and Katz, N. H.",
+      "title": "On the Erd\u0151s distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1):155\u2013190"
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Tactic", "Mathlib.Analysis.SpecialFunctions.Log.Basic"],
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
     "namespace": "Erdos100OQ01",
     "lineCount": 162,
     "axiomCount": 0,
