@@ -48,24 +48,26 @@
     ],
     "originalContributions": [
       "Formal definitions of sigma, IsAbundant, IsPseudoperfect, and IsWeird",
+      "Decidable instances for IsPseudoperfect and IsWeird enabling native_decide proofs",
       "Statement of both OPEN Erdős questions in Lean 4",
-      "Definition of IsPrimitiveWeird and the primitive weird set",
-      "Axiomatization of Benkoski-Erdős positive density result",
-      "Axiomatization of Fang's computational bound (no odd weird below 10^21)",
-      "Axiomatization of Liddy-Riedl result (odd weird has ≥6 prime divisors)",
-      "Axiomatization of Melfi's conditional infinitude result",
-      "Theorem: 70 is the smallest weird number",
+      "Proved: 70 is abundant (native_decide), not pseudoperfect (powerset exhaustion)",
+      "Proved: no weird number below 70 (exhaustive computation via native_decide)",
+      "Proved: 70 is the smallest weird number and primitive weird",
+      "Proved: 945 is odd and abundant, 945 is semiperfect (hence not weird)",
+      "Proved: no odd number below 945 is abundant (native_decide)",
+      "Proved: any odd weird number exceeds 945",
+      "Axiomatization of Liddy-Riedl, Melfi, Benkoski-Erdős deep results",
       "erdos_470 summary theorem combining key results"
     ],
-    "axiomCount": 5,
-    "lineCount": 337,
-    "assumptions": "17 axioms: seventy_is_abundant, seventy_not_pseudoperfect, no_weird_below_70, and 14 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 344,
+    "assumptions": "4 axioms: nthPrime (n-th prime function), liddy_riedl_6_primes (odd weird has ≥6 prime divisors), melfi_conditional (prime gap hypothesis implies infinitely many primitive weirds), benkoski_erdos_density (weird numbers have positive density). All deep results; no routine axioms remain."
   },
   "overview": {
     "historicalContext": "A number n is called **weird** if it is abundant (σ(n) > 2n, or equivalently the sum of proper divisors exceeds n) but not pseudoperfect (n cannot be written as the sum of any subset of its proper divisors). Weird numbers are the 'leftover' abundant numbers that can't achieve self-representation.\n\nWeird numbers were introduced and studied by Benkoski and Erdős [BeEr74], who proved that weird numbers have **positive asymptotic density**—a surprising result meaning a positive fraction of all integers are weird.\n\nThe smallest weird number is **70**:\n- Divisors of 70: 1, 2, 5, 7, 10, 14, 35, 70\n- σ(70) = 144 > 140 = 2×70 ✓ (abundant)\n- No subset of {1, 2, 5, 7, 10, 14, 35} sums to exactly 70 ✓ (not pseudoperfect)\n\nThe sequence of weird numbers (OEIS A006037) begins: 70, 836, 4030, 5830, 7192, 7912, 9272, ...\n\n**Remarkably, all known weird numbers are even!** This leads to Erdős's first question.",
     "problemStatement": "**Two OPEN Questions from Erdős**:\n\n1. **Odd Weird Numbers**: Are there any odd weird numbers?\n   - All weird numbers found so far are even\n   - Fang (2022) showed: No odd weird below 10^21\n   - Liddy-Riedl (2018) showed: Any odd weird must have at least 6 prime divisors\n\n2. **Primitive Weird Numbers**: Are there infinitely many primitive weird numbers?\n   - A weird number is **primitive** if none of its proper divisors is weird\n   - 70 is trivially primitive (no weird numbers below it)\n   - Melfi (2015) proved infinitely many primitive weirds exist conditionally on a prime gap hypothesis\n\n**Status**: Both questions remain OPEN as of 2024.\n\n**Erdős offered $10 for solving the odd weird question.**",
     "text": "A number n is called weird if σ(n) ≥ 2n (abundant) but n is not pseudoperfect (cannot be expressed as the sum of any subset of its proper divisors). Erdős asked two OPEN questions: (1) Are there any odd weird numbers? (2) Are there infinitely many primitive weird numbers?",
-    "proofStrategy": "We formalize both open questions by:\n\n1. **Defining the divisor sum function**: σ(n) = Σ_{d|n} d using Mathlib's divisors\n\n2. **Defining abundance**: n is abundant iff σ(n) > 2n\n\n3. **Defining pseudoperfectness**: n is pseudoperfect iff some subset of its proper divisors sums to n\n\n4. **Defining weirdness**: n is weird iff n is abundant AND n is not pseudoperfect\n\n5. **Defining primitive weirdness**: n is primitive weird iff n is weird AND no proper divisor of n is weird\n\n6. **Stating the open questions**:\n   - erdos_470_part1: ∃ n, IsWeird n ∧ Odd n\n   - erdos_470_part2: PrimitiveWeirdSet.Infinite\n\n7. **Recording known results as axioms**: Benkoski-Erdős density, Fang bound, Liddy-Riedl, Melfi conditional",
+    "proofStrategy": "We formalize both open questions with a combination of computational verification and axiomatization of deep results:\n\n1. **Core definitions** with Decidable instances enabling native_decide proofs\n2. **70 is the smallest weird number**: proved computationally (was previously axiomatized)\n3. **945 is the smallest odd abundant number**: proved via native_decide over all odd n < 945\n4. **945 is semiperfect**: proved by subset-sum exhaustion, so 945 is not weird\n5. **Any odd weird > 945**: structural theorem combining the above\n6. **Deep results axiomatized**: Liddy-Riedl (6 prime divisors), Melfi (conditional infinitude), Benkoski-Erdős (positive density)",
     "keyInsights": [
       "**Why 70 is weird**: The proper divisors {1, 2, 5, 7, 10, 14, 35} sum to 74 > 70 (abundant), but no subset sums to exactly 70. Key observation: 35 is needed (without it, max sum is 39), but with 35 you need the remaining divisors to sum to 35, which is impossible from {1,2,5,7,10,14}.",
       "**Positive density paradox**: Despite being unable to represent themselves as subset sums, weird numbers are actually common! Benkoski and Erdős proved they have positive density, meaning infinitely many exist with positive proportion.",
@@ -82,75 +84,51 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Core Definitions",
+      "title": "Core Definitions and Decidability",
       "startLine": 45,
-      "endLine": 69,
-      "summary": "Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird.",
-      "mathContext": "Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird."
+      "endLine": 78,
+      "summary": "Definitions of $\\sigma(n)$, IsAbundant, IsPseudoperfect, IsWeird, plus Decidable instances enabling computational verification via native_decide.",
+      "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Decidability of IsPseudoperfect: enumerate all subsets of $n.\\text{properDivisors}$ via powerset."
     },
     {
       "id": "smallest-weird",
       "title": "The Smallest Weird Number: 70",
-      "startLine": 70,
-      "endLine": 100,
-      "summary": "Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird.",
-      "mathContext": "Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird."
-    },
-    {
-      "id": "oeis-sequence",
-      "title": "The Weird Number Sequence",
-      "startLine": 101,
-      "endLine": 119,
-      "summary": "OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ...",
-      "mathContext": "OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ..."
+      "startLine": 80,
+      "endLine": 116,
+      "summary": "Proves 70 is abundant (native_decide), not pseudoperfect (powerset exhaustion), and no number below 70 is weird (exhaustive computation). Formerly axiomatized, now fully proved.",
+      "mathContext": "$\\sigma(70) = 144 > 140 = 2 \\times 70$. No subset of $\\{1,2,5,7,10,14,35\\}$ sums to 70."
     },
     {
       "id": "odd-weird",
       "title": "Open Question 1: Odd Weird Numbers",
-      "startLine": 120,
-      "endLine": 161,
-      "summary": "Formal statement of the odd weird question with Fang and Liddy-Riedl bounds.",
-      "mathContext": "Formal statement of the odd weird question with Fang and Liddy-Riedl bounds."
+      "startLine": 127,
+      "endLine": 214,
+      "summary": "Formal statement of the odd weird question. Proves 945 is the smallest odd abundant number, 945 is semiperfect (hence not weird), and any odd weird number must exceed 945. Axiomatizes Liddy-Riedl's 6-prime-divisor bound.",
+      "mathContext": "$945 = 3^3 \\times 5 \\times 7$, $\\sigma(945) = 1920 > 1890 = 2 \\times 945$. Proper divisors minus $\\{3, 27\\}$ sum to 945. Any odd weird $n > 945$."
     },
     {
       "id": "primitive-weird",
       "title": "Primitive Weird Numbers",
-      "startLine": 162,
-      "endLine": 204,
-      "summary": "Definition of IsPrimitiveWeird, Open Question 2, and seventy_is_primitive_weird proof.",
-      "mathContext": "Definition of IsPrimitiveWeird, Open Question 2, and seventy_is_primitive_weird proof."
+      "startLine": 216,
+      "endLine": 259,
+      "summary": "Definition of IsPrimitiveWeird, Open Question 2 (infinitely many?), and proof that 70 is primitive weird.",
+      "mathContext": "70 is primitive weird: it is weird and every proper divisor $d < 70$ is not weird."
     },
     {
       "id": "conditional-results",
-      "title": "Conditional Results: Prime Gaps",
-      "startLine": 207,
-      "endLine": 237,
-      "summary": "Melfi's conditional infinitude result based on prime gap hypothesis.",
-      "mathContext": "Melfi's conditional infinitude result based on prime gap hypothesis."
-    },
-    {
-      "id": "density",
-      "title": "Positive Density of Weird Numbers",
-      "startLine": 238,
-      "endLine": 254,
-      "summary": "Benkoski-Erdős theorem: weird numbers have positive asymptotic density.",
-      "mathContext": "Benkoski-Erdős theorem: weird numbers have positive asymptotic density."
-    },
-    {
-      "id": "detailed-analysis",
-      "title": "Why 70 is Weird: Detailed Analysis",
-      "startLine": 294,
-      "endLine": 320,
-      "summary": "Complete analysis of why no subset of 70's proper divisors sums to 70.",
-      "mathContext": "Complete analysis of why no subset of 70's proper divisors sums to 70."
+      "title": "Conditional Results and Density",
+      "startLine": 262,
+      "endLine": 304,
+      "summary": "Melfi's conditional infinitude of primitive weirds (from prime gap hypothesis) and Benkoski-Erdős positive density theorem.",
+      "mathContext": "If $p_{n+1} - p_n < \\sqrt{p_n}/10$ eventually, then PrimitiveWeirdSet is infinite. Weird numbers have positive asymptotic density."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 321,
-      "endLine": 346,
-      "summary": "erdos_470 summary theorem combining key established results.",
-      "mathContext": "erdos_470 summary theorem combining key established results."
+      "startLine": 319,
+      "endLine": 344,
+      "summary": "The erdos_470 summary theorem combining: 70 is smallest weird, 70 is primitive weird, positive density, Melfi conditional.",
+      "mathContext": "Combined theorem asserting all key established results about Erdős Problem #470."
     }
   ],
   "conclusion": {
@@ -179,9 +157,9 @@
       "Set"
     ],
     "namespace": "Erdos470",
-    "lineCount": 337,
-    "axiomCount": 5,
-    "theoremCount": 3,
+    "lineCount": 344,
+    "axiomCount": 4,
+    "theoremCount": 12,
     "definitionCount": 13
   },
   "crossReferences": [
