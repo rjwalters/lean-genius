@@ -384,8 +384,10 @@ theorem carleson_and_parseval
 PART VIII: STRUCTURAL LEMMAS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Linearity of partial sums: S_N(f + g) = S_N f + S_N g. -/
-theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T) :
+/-- Linearity of partial sums: S_N(f + g) = S_N f + S_N g.
+    Requires integrability for the Fourier coefficient linearity (integral_add). -/
+theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T)
+    (hf : Integrable f haarAddCircle) (hg : Integrable g haarAddCircle) :
     fourierPartialSum (f + g) N x =
       fourierPartialSum f N x + fourierPartialSum g N x := by
   simp only [fourierPartialSum, fourierCoeff, Pi.add_apply]
@@ -395,14 +397,20 @@ theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCirc
   simp [mul_comm, mul_add, add_mul]
   ring_nf
   congr 1
-  rw [MeasureTheory.integral_add]
-  · ring
-  all_goals {
-    apply Integrable.const_mul
-    exact (map_continuous (fourier (-n))).integrable_of_hasCompactSupport
-      (isCompact_range (map_continuous (fourier (-n)))).of_isClosed_subset
-      sorry sorry
-  }
+  -- Linearity reduces to integral_add, which needs integrability of each integrand.
+  -- fourier(-n) is a character: ‖fourier(-n) t‖ = 1 for all t.
+  -- So fourier(-n) * h is integrable whenever h is integrable.
+  -- TODO: replace sorry with the correct Mathlib lemma for ‖fourier n t‖ ≤ 1
+  -- (likely AddCircle.norm_fourier or via fourier_apply + Complex.norm_exp)
+  have hfourier_bound : ∀ (t : AddCircle T), ‖fourier (-n) t‖ ≤ 1 := by
+    intro t; sorry
+  have hint : ∀ h : AddCircle T → ℂ, Integrable h haarAddCircle →
+      Integrable (fun t => fourier (-n) t * h t) haarAddCircle := by
+    intro h hh
+    apply hh.bdd_mul' (map_continuous (fourier (-n))).aestronglyMeasurable
+    exact ⟨1, ae_of_all _ hfourier_bound⟩
+  rw [MeasureTheory.integral_add (hint f hf) (hint g hg)]
+  ring
 
 /-- Linearity of partial sums: S_N(c • f) = c • S_N f. -/
 theorem fourierPartialSum_smul (c : ℂ) (f : AddCircle T → ℂ) (N : ℕ)
