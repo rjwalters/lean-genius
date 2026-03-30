@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ann-chred-oq01-oq01-01-header",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 64
+    },
+    "type": "context",
+    "title": "From Cayley-Hamilton to Compact Operators: The Infinite-Dimensional Bridge",
+    "content": "The header frames the central question: the parent OQ-01 showed efficient Cayley-Hamilton reduction for sparse matrices. In infinite dimensions, there is no finite-degree characteristic polynomial. The file identifies compact operators as the natural setting for the analog, and outlines the three-part answer: discrete spectrum (Riesz-Schauder), Fredholm alternative, and spectral projection decomposition. The formalization uses Mathlib's ContinuousLinearMap, InnerProductSpace, and IsCompact.",
+    "mathContext": "In finite dimensions, $A \\in M_n(\\mathbb{R})$ satisfies its characteristic polynomial: $\\text{charpoly}(A)(A) = 0$. This fails in infinite dimensions: a bounded operator $T: H \\to H$ on an infinite-dimensional Hilbert space has no finite-degree characteristic polynomial. The remedy: restrict to **compact operators** (those mapping bounded sets to relatively compact sets), which inherit a 'discrete' spectral theory analogous to the finite-dimensional case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "compact operators",
+      "Hilbert spaces",
+      "ContinuousLinearMap",
+      "spectral theory"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.NormedSpace.OperatorNorm.Basic",
+      "Cayley-Hamilton theorem"
+    ]
+  },
+  {
+    "id": "ann-chred-oq01-oq01-02-compact",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Compact Operators: The 'Good' Infinite-Dimensional Operators",
+    "content": "IsCompactOp T is defined as IsCompact (closure (T '' Metric.closedBall 0 1)). This is the standard definition: T maps the closed unit ball to a relatively compact set. Proved: compactOp_zero (zero maps everything to the compact set {0}), compactOp_smul (scalar multiples preserve compactness via continuous image), compactOp_comp_left (bounded composed with compact is compact, since continuous images of compact sets are compact). Three sorries: compactOp_sum and compactOp_comp_right require Minkowski sum and generalized ball arguments.",
+    "mathContext": "$T \\in \\mathcal{B}(H)$ is **compact** if $\\overline{T(B_1)}$ is compact, where $B_1 = \\{x : \\|x\\| \\leq 1\\}$. Equivalently: $T$ is the norm-limit of finite-rank operators. The compact operators $\\mathcal{K}(H)$ form a closed two-sided ideal in $\\mathcal{B}(H)$: $\\mathcal{K}(H)$ is closed under $+$, $\\cdot$, and $S \\circ T$ and $T \\circ S$ for $S \\in \\mathcal{B}(H)$, $T \\in \\mathcal{K}(H)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsCompactOp",
+      "ContinuousLinearMap",
+      "Metric.closedBall",
+      "IsCompact",
+      "closure"
+    ],
+    "prerequisites": [
+      "ContinuousLinearMap type",
+      "IsCompact predicate",
+      "Metric.closedBall",
+      "continuous_const_smul"
+    ]
+  },
+  {
+    "id": "ann-chred-oq01-oq01-03-spectral",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-01",
+    "range": {
+      "startLine": 174,
+      "endLine": 250
+    },
+    "type": "insight",
+    "title": "Discrete Spectrum: The Infinite-Dimensional Characteristic Polynomial",
+    "content": "Defines IsEigenvalue and Eigenspace. Proves eigenspace_is_subspace: eigenspaces are closed under 0, addition, and scalar multiplication (using map_zero, map_add, map_smul, smul_comm). compact_spectrum_discrete (axiom): the eigenvalues of a compact operator form a sequence converging to 0. finite_multiplicity: each nonzero eigenvalue has finite-dimensional eigenspace (stated via a cardinality bound on orthogonal sets). The discrete spectrum replaces the roots of the characteristic polynomial.",
+    "mathContext": "For compact $T \\in \\mathcal{K}(H)$: $\\sigma(T) \\setminus \\{0\\}$ is at most countable, each point is an eigenvalue with finite multiplicity, and $0$ is the only possible accumulation point. This is the **Riesz-Schauder theorem**. Compare: in $M_n$, $\\text{charpoly}(A)$ has at most $n$ roots; for compact $T$, the 'roots' (eigenvalues) converge to $0$. The eigenspace $\\ker(\\lambda I - T)$ is finite-dimensional for $\\lambda \\neq 0$, analogous to multiplicity $\\leq n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsEigenvalue",
+      "Eigenspace",
+      "Riesz-Schauder theorem",
+      "Filter.Tendsto",
+      "nhds 0"
+    ],
+    "prerequisites": [
+      "IsCompactOp",
+      "eigenvalue definition",
+      "convergence to 0"
+    ]
+  },
+  {
+    "id": "ann-chred-oq01-oq01-04-fredholm",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-01",
+    "range": {
+      "startLine": 252,
+      "endLine": 302
+    },
+    "type": "insight",
+    "title": "The Fredholm Alternative: Precisely Analogous to Cayley-Hamilton",
+    "content": "fredholm_alternative (axiom): for compact T and nonzero lambda, either (lambda I - T) is bijective or lambda is an eigenvalue. No continuous spectrum. no_continuous_spectrum_at_nonzero is proved by case analysis on the Fredholm alternative using absurd. This is the precise analog: Cayley-Hamilton says the eigenvalues are exactly the spectral obstructions; the Fredholm alternative says the same for compact operators, with the additional guarantee of no continuous spectrum.",
+    "mathContext": "**Fredholm alternative** (1903): For compact $T$ and $\\lambda \\neq 0$: $\\lambda I - T$ is bijective $\\iff$ $\\ker(\\lambda I - T) = 0$ $\\iff$ $\\lambda \\notin \\sigma_p(T)$. **No continuous spectrum**: for compact $T$, $\\sigma(T) \\setminus \\{0\\} = \\sigma_p(T) \\setminus \\{0\\}$ (point spectrum only). In finite dimensions, this is trivially true by rank-nullity. In infinite dimensions, it requires compactness of $T$ and fails for general bounded operators.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fredholm alternative",
+      "resolvent set",
+      "point spectrum",
+      "continuous spectrum",
+      "Function.Injective"
+    ],
+    "prerequisites": [
+      "IsCompactOp",
+      "Riesz-Schauder theory",
+      "open mapping theorem"
+    ]
+  },
+  {
+    "id": "ann-chred-oq01-oq01-05-analogy",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-01",
+    "range": {
+      "startLine": 358,
+      "endLine": 443
+    },
+    "type": "insight",
+    "title": "The Three-Pillar Analogy: Cayley-Hamilton vs Compact Operator Spectral Theory",
+    "content": "cayley_hamilton_analogy packages the three analogs: (1) Fredholm alternative at every nonzero lambda, (2) discrete spectrum with eigenvalues converging to 0, (3) spectral projections at each eigenvalue. Proved by combining fredholm_alternative, compact_spectrum_discrete, and spectral_decomposition_exists. The summary table maps: charpoly -> spectral structure, roots -> eigenvalues, degree n -> eigenvalues -> 0, polynomial reduction -> spectral projection decomposition.",
+    "mathContext": "| **Finite dim** | **Compact operator** |\n|---|---|\n| $\\text{charpoly}(A)$ degree $n$ | $\\sigma(T)$ at most countable, $\\lambda_k \\to 0$ |\n| $\\text{charpoly}(A)(A) = 0$ | Fredholm: $\\lambda I - T$ bijective or eigenvalue |\n| $f(A) \\equiv f \\mod \\text{charpoly}$ | $f(T) P_\\lambda$ depends on $f$ near $\\lambda$ |\n\nCompact operators bridge the gap because $\\mathcal{K}(H) = \\overline{\\mathcal{F}(H)}$ (norm-closure of finite-rank operators).",
+    "significance": "key",
+    "relatedConcepts": [
+      "cayley_hamilton_analogy",
+      "HasAnnihilatingPoly",
+      "HasFiniteDimSpectralSubspaces",
+      "SpectralProjection",
+      "finite-rank operators"
+    ],
+    "prerequisites": [
+      "fredholm_alternative",
+      "compact_spectrum_discrete",
+      "spectral_decomposition_exists"
+    ]
+  }
+]

@@ -1,0 +1,184 @@
+{
+  "id": "cayley-hamilton-reduction-oq-01-oq-01",
+  "title": "The Infinite-Dimensional Cayley-Hamilton Analog: Compact Operators on Hilbert Spaces",
+  "slug": "cayley-hamilton-reduction-oq-01-oq-01",
+  "description": "The Cayley-Hamilton theorem (charpoly(A)(A) = 0) has no direct analog in infinite dimensions because there is no finite-degree characteristic polynomial. For compact operators on Hilbert spaces, the analog is the Fredholm alternative and spectral projection decomposition: the spectrum is discrete with eigenvalues converging to 0, and each nonzero spectral value admits a finite-dimensional spectral projection.",
+  "meta": {
+    "author": "Riesz (1918), Schauder (1930), Fredholm (1903), Hilbert (1906)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Compact_operator_on_Hilbert_space",
+    "date": "1918",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ01OQ01.lean",
+    "tags": [
+      "functional-analysis",
+      "compact-operators",
+      "hilbert-spaces",
+      "spectral-theory",
+      "fredholm-alternative",
+      "linear-algebra",
+      "operator-theory",
+      "extension"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "ContinuousLinearMap",
+        "description": "Bounded linear operators between normed spaces",
+        "module": "Mathlib.Analysis.NormedSpace.OperatorNorm.Basic"
+      },
+      {
+        "theorem": "InnerProductSpace",
+        "description": "Hilbert space structure (inner product + completeness)",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "IsCompact",
+        "description": "Topological compactness predicate",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "isCompact_singleton",
+        "description": "Singleton sets are compact (used for zero operator compactness)",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsCompactOp as a predicate on ContinuousLinearMap using closure of unit ball image",
+      "Proof that zero operator, scalar multiples, and left-compositions with bounded operators are compact",
+      "Eigenspace subspace structure theorem (closed under addition and scalar multiplication)",
+      "Precise analogy table: Cayley-Hamilton (finite dim) vs Fredholm alternative + spectral decomposition (infinite dim)",
+      "SpectralProjection structure capturing idempotency and commutativity with the operator",
+      "Summary theorem (cayley_hamilton_analogy) packaging all three infinite-dimensional analogs"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 3,
+    "lineCount": 453,
+    "assumptions": "3 axioms: compact_spectrum_discrete (Riesz-Schauder), fredholm_alternative, spectral_decomposition_exists. 3 sorries: compactOp_sum, compactOp_comp_right, finite_multiplicity.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fredholm (1903) studied integral equations and discovered the alternative: either a unique solution exists or the homogeneous equation has nontrivial solutions. Hilbert (1906) proved the spectral theorem for compact self-adjoint operators. Riesz (1918) extended this to general compact operators with his theory of compact operators on Banach spaces. Schauder (1930) further developed the Riesz-Schauder theory. The modern formulation uses continuous linear maps on Hilbert spaces.",
+    "problemStatement": "**Open Question**: What is the analog of Cayley-Hamilton reduction for infinite-dimensional operators (compact operators on Hilbert spaces)?\n\n**Answer**: The Cayley-Hamilton theorem (charpoly(A)(A) = 0) generalizes to three key results for compact operators: (1) the spectrum is discrete with eigenvalues converging to 0, (2) the Fredholm alternative holds at each nonzero spectral value, and (3) spectral projections provide the decomposition analogous to polynomial reduction.",
+    "text": "The Cayley-Hamilton theorem has no direct analog in infinite dimensions because there is no finite-degree characteristic polynomial. For compact operators on Hilbert spaces, the analog is the Fredholm alternative and spectral projection decomposition: the spectrum is discrete with eigenvalues converging to 0, and each nonzero spectral value admits a finite-dimensional spectral projection.",
+    "proofStrategy": "We define compact operators as bounded operators mapping the closed unit ball to a relatively compact set, then establish algebraic closure properties (zero, scalar, composition). We axiomatize the three deep theorems (Riesz-Schauder, Fredholm alternative, spectral decomposition) and prove structural consequences. The analogy theorem packages the three infinite-dimensional analogs of the finite-dimensional Cayley-Hamilton features.",
+    "keyInsights": [
+      "Compact operators are 'close to finite-dimensional': they are norm-limits of finite-rank operators, inheriting finite-like spectral theory",
+      "The Fredholm alternative is the precise analog of Cayley-Hamilton: at each nonzero lambda, (lambda I - T) is either invertible or has nontrivial kernel, with no continuous spectrum",
+      "Spectral projections (via Riesz contour integrals) replace polynomial reduction: instead of reducing mod charpoly, decompose the operator into spectral components",
+      "Each nonzero eigenvalue of a compact operator has finite multiplicity (finite-dimensional eigenspace), exactly paralleling the finite degree of the characteristic polynomial",
+      "The spectrum of a compact operator is at most countable with 0 as the only possible accumulation point, giving a 'discrete characteristic polynomial'"
+    ],
+    "prerequisites": [
+      "Inner product spaces and Hilbert space completeness",
+      "Bounded (continuous) linear operators and operator norm",
+      "Topological compactness and the Heine-Borel property",
+      "Eigenvalues and eigenspaces for linear operators",
+      "The finite-dimensional Cayley-Hamilton theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "compact-operators",
+      "title": "Compact Operators: Definition and Algebraic Properties",
+      "startLine": 66,
+      "endLine": 172,
+      "summary": "Defines IsCompactOp as a predicate on ContinuousLinearMap. Proves closure properties: zero is compact, scalar multiples are compact, left-composition with bounded is compact.",
+      "mathContext": "A bounded operator $T: H \\to H$ is **compact** if $\\overline{T(\\overline{B_1(0)})}$ is compact. Compact operators form a two-sided ideal in $\\mathcal{B}(H)$: closed under sum, scalar multiplication, and composition with bounded operators."
+    },
+    {
+      "id": "spectral-properties",
+      "title": "Spectral Properties: Discrete Spectrum and Finite Multiplicity",
+      "startLine": 174,
+      "endLine": 250,
+      "summary": "Defines eigenvalues and eigenspaces. Proves eigenspace is a subspace. Axiomatizes the Riesz-Schauder theorem (discrete spectrum with eigenvalues converging to 0). States finite multiplicity for nonzero eigenvalues.",
+      "mathContext": "**Riesz-Schauder theorem**: For compact $T$, $\\sigma(T) \\setminus \\{0\\}$ is at most countable with 0 as the only accumulation point. Each $\\lambda \\neq 0$ in $\\sigma(T)$ is an eigenvalue with finite-dimensional eigenspace. This parallels the finite-dimensional case where $\\text{deg}(\\text{charpoly}) = n$ bounds the multiplicity."
+    },
+    {
+      "id": "fredholm-alternative",
+      "title": "The Fredholm Alternative: The Infinite-Dimensional Cayley-Hamilton",
+      "startLine": 252,
+      "endLine": 302,
+      "summary": "Axiomatizes the Fredholm alternative: for compact T and nonzero lambda, either (lambda I - T) is invertible or lambda is an eigenvalue. Proves the corollary: no continuous spectrum at nonzero values.",
+      "mathContext": "**Fredholm alternative** (1903): For compact $T$ and $\\lambda \\neq 0$: either $\\lambda I - T$ is bijective (resolvent point) or $\\ker(\\lambda I - T) \\neq 0$ (eigenvalue). No third case. This is the precise analog of Cayley-Hamilton: the characteristic polynomial's roots are exactly the eigenvalues, and all other scalars give invertible $(\\lambda I - A)$."
+    },
+    {
+      "id": "spectral-projections",
+      "title": "Spectral Projection Decomposition",
+      "startLine": 304,
+      "endLine": 356,
+      "summary": "Defines SpectralProjection structure (idempotent, commutes with T). Axiomatizes existence of spectral projections at each eigenvalue. This replaces polynomial reduction in finite dimensions.",
+      "mathContext": "The **Riesz spectral projection** for isolated eigenvalue $\\lambda$ of compact $T$: $P_\\lambda = \\frac{1}{2\\pi i} \\oint_\\gamma (\\mu I - T)^{-1} d\\mu$ where $\\gamma$ encircles $\\lambda$ only. Properties: $P_\\lambda^2 = P_\\lambda$, $P_\\lambda T = T P_\\lambda$, $\\text{range}(P_\\lambda)$ is the generalized eigenspace. This replaces polynomial reduction: instead of $f(A) \\equiv f \\mod \\text{charpoly}(A)$, we have $f(T) P_\\lambda$ depending only on $f$ near $\\lambda$."
+    },
+    {
+      "id": "analogy",
+      "title": "The Precise Analogy: Finite vs Infinite Dimensions",
+      "startLine": 358,
+      "endLine": 443,
+      "summary": "Defines HasAnnihilatingPoly and HasFiniteDimSpectralSubspaces. Proves the cayley_hamilton_analogy theorem packaging all three infinite-dimensional analogs: Fredholm alternative, discrete spectrum, and spectral projections.",
+      "mathContext": "The three pillars of the analogy: (1) Cayley-Hamilton ($p(A) = 0$) $\\leftrightarrow$ Fredholm alternative (resolvent/eigenvalue dichotomy), (2) finite-degree charpoly $\\leftrightarrow$ eigenvalues converging to 0, (3) polynomial reduction $\\leftrightarrow$ spectral projection decomposition. Compact operators bridge finite and infinite dimensions because they are norm-limits of finite-rank operators."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cayley-Hamilton theorem for finite-dimensional matrices generalizes to compact operators on Hilbert spaces via three key results: the Riesz-Schauder theorem (discrete spectrum), the Fredholm alternative (invertible-or-eigenvalue dichotomy), and spectral projection decomposition (Riesz projections). Compact operators are the natural infinite-dimensional setting because they are 'close to finite-dimensional' as norm-limits of finite-rank operators.",
+    "implications": "This answers the parent's open question: the computational efficiency of Cayley-Hamilton reduction for sparse matrices has an infinite-dimensional analog when the operator is compact. The spectral projection decomposition decomposes the operator into finite-dimensional pieces (one per eigenvalue), each of which can be analyzed using finite-dimensional techniques.",
+    "openQuestions": [
+      "Can the spectral decomposition be made computationally efficient for specific classes of compact operators (e.g., integral operators with smooth kernels)?",
+      "What is the analog for non-compact operators with essential spectrum?",
+      "Can Fredholm determinants provide a true infinite-dimensional 'characteristic polynomial'?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.NormedSpace.OperatorNorm.Basic",
+      "Mathlib.Topology.Compactness.Compact",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Algebra.Module.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "(none)"
+    ],
+    "namespace": "CayleyHamiltonReductionOQ01OQ01",
+    "lineCount": 453,
+    "axiomCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization: efficient Cayley-Hamilton reduction for sparse matrices (upper triangular, block triangular, nilpotent). This entry answers the parent's open question about the infinite-dimensional analog."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Grandparent: the Cayley-Hamilton theorem (charpoly(A)(A) = 0). This entry shows what replaces charpoly in infinite dimensions."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "Inner product space infrastructure. The Cauchy-Schwarz inequality and inner product structure are prerequisites for Hilbert space theory."
+    }
+  ],
+  "references": [
+    {
+      "key": "RS80",
+      "citation": "Reed, M. and Simon, B., Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1980). Standard reference for compact operators and spectral theory.",
+      "type": "book"
+    },
+    {
+      "key": "Ri18",
+      "citation": "Riesz, F., Uber lineare Funktionalgleichungen, Acta Mathematica 41 (1918), 71-98. Foundation of compact operator theory.",
+      "type": "paper"
+    },
+    {
+      "key": "Fr03",
+      "citation": "Fredholm, I., Sur une classe d'equations fonctionnelles, Acta Mathematica 27 (1903), 365-390. The Fredholm alternative for integral equations.",
+      "type": "paper"
+    }
+  ]
+}
