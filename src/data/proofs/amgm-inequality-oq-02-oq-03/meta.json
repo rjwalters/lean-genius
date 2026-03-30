@@ -7,7 +7,7 @@
     "author": "Maclaurin (1729) / Hardy-Littlewood-Pólya (1934), formalized in Lean 4",
     "sourceUrl": "",
     "date": "1729",
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "combinatorics",
       "inequalities",
@@ -16,8 +16,8 @@
       "research"
     ],
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "axioms": 0,
     "mathlibDependencies": [],
     "originalContributions": [
@@ -27,8 +27,8 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 193,
-    "assumptions": "Depends on newton_log_concavity axiom from AmgmInequalityOQ02.lean. 1 sorry remaining (elemSymm zero propagation).",
+    "lineCount": 226,
+    "assumptions": "Depends on newton_log_concavity axiom from AmgmInequalityOQ02.lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -66,7 +66,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The maclaurin_step axiom is eliminated: Mₖ ≥ Mₖ₊₁ is now proved from Newton's log-concavity. 1 sorry remains for elemSymm zero propagation (a routine supporting lemma).",
+    "summary": "The maclaurin_step axiom is eliminated: Mₖ ≥ Mₖ₊₁ is now proved from Newton's log-concavity (including the elemSymm zero propagation lemma).",
     "implications": "Reduces the axiom count of the Maclaurin inequality formalization by 1. The remaining newton_log_concavity axiom is the deeper result (requires polarization + induction on n).",
     "openQuestions": [
       "Can the remaining sorry (elemSymm zero propagation) be eliminated?",
@@ -97,7 +97,7 @@
       "AmgmInequalityOQ02"
     ],
     "namespace": "AmgmInequalityOQ02OQ03",
-    "lineCount": 193,
+    "lineCount": 226,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 1
