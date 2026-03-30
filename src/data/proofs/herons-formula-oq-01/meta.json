@@ -1,0 +1,53 @@
+{
+  "id": "herons-formula-oq-01",
+  "title": "Brahmagupta's Formula for Cyclic Quadrilaterals",
+  "slug": "herons-formula-oq-01",
+  "description": "Brahmagupta's formula: Area = √((s-a)(s-b)(s-c)(s-d)) for cyclic quadrilaterals. Proves algebraic identities, reduction to Heron, positivity, concrete examples, and the key factored form.",
+  "meta": {
+    "author": "Brahmagupta (628 CE)",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ01.lean",
+    "tags": ["geometry", "brahmagupta", "cyclic-quadrilateral", "research"],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 212,
+    "assumptions": "2 axioms (Ptolemy's theorem, area via diagonals — geometric placeholders). 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Brahmagupta product expansion and factored forms",
+      "Reduction to Heron when d=0",
+      "Key identity: 16·product = (2ab+2cd)² - (a²+b²-c²-d²)²",
+      "Concrete examples: unit square (area=1), 3×4 rectangle (area=12)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Brahmagupta (628 CE) generalized Heron's formula to cyclic quadrilaterals in his Brāhmasphuṭasiddhānta. The formula gives the area in terms of the four sides and the semi-perimeter.",
+    "problemStatement": "Formalize Brahmagupta's formula for cyclic quadrilaterals.",
+    "text": "Defines the Brahmagupta product, proves algebraic identities, shows reduction to Heron, and verifies concrete examples.",
+    "proofStrategy": "All algebraic identities proved by ring. Positivity from quadrilateral inequality. Concrete examples by norm_num + sqrt_sq.",
+    "keyInsights": [
+      "16·(s-a)(s-b)(s-c)(s-d) = (2ab+2cd)² - (a²+b²-c²-d²)² — key for proofs",
+      "Setting d=0 recovers Heron: product becomes s(s-a)(s-b)(s-c)",
+      "The factored form ((a+b)²-(c-d)²)((c+d)²-(a-b)²) is useful for inequalities"
+    ]
+  },
+  "sections": [
+    {"id": "semiperimeter", "title": "Semi-Perimeter", "startLine": 25, "endLine": 38},
+    {"id": "product", "title": "Brahmagupta Product", "startLine": 40, "endLine": 73},
+    {"id": "formula", "title": "Brahmagupta's Formula", "startLine": 75, "endLine": 96},
+    {"id": "positivity", "title": "Positivity", "startLine": 98, "endLine": 123},
+    {"id": "examples", "title": "Concrete Examples", "startLine": 125, "endLine": 149},
+    {"id": "identity", "title": "Algebraic Identity", "startLine": 151, "endLine": 185}
+  ],
+  "conclusion": {
+    "summary": "Brahmagupta's formula formalized with algebraic identities, reduction to Heron, and concrete examples. Full geometric proof (via Ptolemy) remains for future work.",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {"targetId": "herons-formula", "relationship": "parent-problem", "description": "Parent: Heron's formula (Wiedijk #57)"}
+  ],
+  "leanFile": {"imports": ["Mathlib"], "namespace": "BrahmaguptaFormula", "lineCount": 212, "axiomCount": 2, "theoremCount": 10, "definitionCount": 4}
+}
