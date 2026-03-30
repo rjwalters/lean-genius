@@ -52,13 +52,20 @@ noncomputable def shiftedHarmonicSum (A : Set ℕ) (k : ℕ) : ℝ :=
 /-- Finite sets have convergent harmonic subseries (trivially). -/
 theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
     HasConvergentHarmonicSubseries A := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  haveI := hA.to_subtype
+  exact summable_of_finite _
 
 /-- If A has convergent sum, so does any shifted version. -/
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
     (h : HasConvergentHarmonicSubseries A) :
     Summable (fun n : A => (1 : ℝ) / (n + k)) := by
-  sorry
+  apply Summable.of_nonneg_of_le
+  · intro n; exact div_nonneg one_nonneg (by positivity)
+  · intro ⟨n, hn⟩
+    exact div_le_div_of_nonneg_left (by positivity) (by positivity)
+      (by exact_mod_cast Nat.le_add_right n k)
+  · exact h
 
 /- ## Part II: The Point Set X -/
 
@@ -113,13 +120,15 @@ theorem contains_open_ball (d : ℕ) :
     The 2-dimensional version: X ⊆ ℝ² has nonempty interior.
     This was the first case solved, before the general result.
 -/
-axiom erdos_straus_2d : (interior (harmonicPointSet 2)).Nonempty
+theorem erdos_straus_2d : (interior (harmonicPointSet 2)).Nonempty :=
+  erdos_268_solved 2
 
 /-- In dimension 2, the point is (Σ 1/n, Σ 1/(n+1)). -/
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
     harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
-  sorry
+  ext i
+  fin_cases i <;> simp [harmonicPoint, shiftedHarmonicSum, harmonicSubseriesSum, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
 
 /- ## Part V: The 3-Dimensional Case (Kovač 2024) -/
 
@@ -128,7 +137,8 @@ theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     The 3-dimensional case with explicit open ball construction.
     Kovač gave a constructive proof finding an explicit center and radius.
 -/
-axiom kovac_3d : (interior (harmonicPointSet 3)).Nonempty
+theorem kovac_3d : (interior (harmonicPointSet 3)).Nonempty :=
+  erdos_268_solved 3
 
 /-- Kovač's explicit construction gives a specific open ball. -/
 def kovacBallCenter : Fin 3 → ℝ := ![1.5, 1.2, 1.0]  -- Placeholder values
@@ -158,7 +168,8 @@ def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
 /-- X is non-empty (take any convergent subseries). -/
 theorem harmonicPointSet_nonempty (d : ℕ) :
     (harmonicPointSet d).Nonempty := by
-  sorry
+  have h := erdos_268_solved d
+  exact ⟨_, interior_subset h.some_mem⟩
 
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
@@ -172,15 +183,13 @@ theorem harmonicPointSet_dense_somewhere (d : ℕ) :
   have h := erdos_268_solved d
   obtain ⟨x, hx⟩ := h
   use interior (harmonicPointSet d)
-  constructor
-  · exact isOpen_interior
-  constructor
-  · exact ⟨x, hx⟩
-  · intro y hy
-    rw [mem_closure_iff]
-    intro U hU hyU
-    have := interior_subset (s := harmonicPointSet d)
-    sorry
+  refine ⟨isOpen_interior, ⟨x, hx⟩, ?_⟩
+  rw [dense_iff_inter_open]
+  intro U hU ⟨y, hy⟩
+  have hI := isOpen_interior (s := harmonicPointSet d)
+  have hUI : IsOpen (U ∩ interior (harmonicPointSet d)) := hU.inter hI
+  rcases hy with ⟨hyU, hyI���
+  exact ⟨y, ⟨⟨interior_subset hyI, hyI⟩, hyU⟩⟩
 
 /- ## Part VIII: Coordinate Properties -/
 
@@ -189,20 +198,36 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
-  sorry
+  unfold shiftedHarmonicSum
+  apply tsum_lt_tsum
+  · intro ⟨n, hn⟩
+    apply div_le_div_of_nonneg_left (by positivity : (0:ℝ) < 1) (by positivity) (by positivity)
+    exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+  · obtain ⟨n, hn⟩ := hA.nonempty
+    exact ⟨⟨n, hn⟩, div_lt_div_of_pos_left (by positivity : (0:ℝ) < 1) (by positivity)
+      (by exact_mod_cast Nat.add_lt_add_left hij n)⟩
+  · exact shifted_summable A i hconv
 
 /-- The first coordinate is always the largest. -/
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
     (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A) :
     ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
-  sorry
+  intro i
+  simp only [harmonicPoint]
+  by_cases hi : i.val = 0
+  · simp [hi]
+  · exact le_of_lt (coordinate_decreasing A hA hconv 0 i.val (Nat.pos_of_ne_zero hi))
 
 /-- All coordinates are positive (for non-empty A). -/
 theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
     (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
     (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
-  sorry
+  simp only [harmonicPoint, shiftedHarmonicSum]
+  apply tsum_pos (shifted_summable A i.val hconv)
+    (fun n => div_nonneg one_nonneg (by positivity))
+  obtain ⟨n, hn⟩ := hA
+  exact ⟨⟨n, hn⟩, div_pos one_pos (by positivity)⟩
 
 /- ## Part IX: Dimension Monotonicity -/
 
@@ -213,7 +238,12 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 /-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂. -/
 theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
     projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
-  sorry
+  intro x ⟨y, hy, hxy⟩
+  obtain ⟨A, hAinf, hAconv, hAeq⟩ := hy
+  refine ⟨A, hAinf, hAconv, ?_⟩
+  subst hxy hAeq
+  ext i
+  simp [projectionMap, harmonicPoint]
 
 /- ## Part X: Specific Examples -/
 
@@ -222,7 +252,23 @@ theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
 def squaresSet : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k ^ 2}
 
 theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  let e : ℕ → squaresSet := fun k => ⟨(k+1)^2, k+1, by omega, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h; simp only [e, Subtype.ext_iff] at h; omega
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk, hkn⟩; exact ⟨k - 1, by simp only [e, Subtype.ext_iff]; omega⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  have hpseries : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
+    Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
+  apply Summable.of_nonneg_of_le
+  · intro k; positivity
+  · intro k
+    show (1 : ℝ) / ↑((k + 1) ^ 2) ≤ ((↑(k + 1) : ℝ) ^ (2 : ℝ))⁻¹
+    rw [Nat.cast_pow, one_div]
+    congr 1
+    push_cast; ring
+  · exact hpseries.comp_injective (fun a b h => by omega : Function.Injective (· + 1))
 
 /-- The harmonic point for the squares set. -/
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
@@ -232,7 +278,23 @@ noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
 def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 
 theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  let e : ℕ → powersOf2Set := fun k => ⟨2^k, k, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk⟩
+    exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  have : ((fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘ (Equiv.ofBijective e ⟨hinj, hsurj⟩)) =
+      fun k => ((1 : ℝ) / 2) ^ k := by
+    ext k
+    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.val]
+    rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
+  rw [this]
+  exact summable_geometric_of_lt_one (by positivity) (by norm_num)
 
 /-- The harmonic point for powers of 2.
     Σ 1/2^k = 1, so first coordinate is 1. -/
@@ -273,6 +335,10 @@ harmonic analysis with topology of number-theoretic sets.
 6. Coordinate properties (decreasing, positive)
 7. Examples: squares, powers of 2
 
-**Key axiom**:
-- `erdos_268_solved`: The main result for all dimensions
+**Axioms** (2):
+- `erdos_268_solved`: The main result for all dimensions (Kovač-Tao 2024)
+- `kovac_explicit_ball`: Specific ball in d=3 case (Kovač 2024)
+
+**Sorry** (1):
+- `harmonicPointSet_path_connected`: Requires continuous interpolation of infinite sets
 -/
