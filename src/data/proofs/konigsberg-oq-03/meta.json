@@ -2,23 +2,17 @@
   "id": "konigsberg-oq-03",
   "title": "Eulerian Paths in Hypergraphs and Infinite Graphs",
   "slug": "konigsberg-oq-03",
-  "description": "Generalizes Euler's theorem to r-uniform hypergraphs (NP-complete for r\u22653) and infinite graphs (Erd\u0151s-Gr\u00fcnwald-Weiszfeld characterization).",
+  "description": "Generalizes Euler's theorem to r-uniform hypergraphs (NP-complete for r≥3) and infinite graphs (Erdős-Grünwald-Weiszfeld characterization).",
   "meta": {
-    "author": "Erd\u0151s-Gr\u00fcnwald-Weiszfeld (1936), Lonc-Naroski (2010)",
+    "author": "Erdős-Grünwald-Weiszfeld (1936), Lonc-Naroski (2010)",
     "date": "1936",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/KonigsbergOQ03.lean",
-    "tags": [
-      "graph-theory",
-      "euler-paths",
-      "hypergraphs",
-      "infinite-graphs"
-    ],
+    "tags": ["graph-theory", "euler-paths", "hypergraphs", "infinite-graphs"],
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 4,
     "lineCount": 110
-  },
-  "sections": []
+  }
 }
