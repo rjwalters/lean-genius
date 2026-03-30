@@ -23,11 +23,11 @@ non-zero polynomial with integer (or equivalently, rational) coefficients.
   contraposition arguments, connections to Euler's identity.
 
 ## Status
-- [ ] Complete proof
+- [x] Complete proof (modulo Lindemann's theorem axiom)
 - [x] Uses Mathlib for main result
 - [x] Proves extensions/corollaries
 - [x] Pedagogical example
-- [ ] Incomplete (has sorries)
+- [x] pi_transcendental proved from lindemann_theorem
 
 ## Mathlib Dependencies
 - `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic`
@@ -129,8 +129,42 @@ axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic �
 
     This follows from Lindemann's theorem and Euler's identity e^(iπ) = -1.
     Since -1 is algebraic, and e^(iπ) = -1, if iπ were algebraic (which it
-    would be if π were algebraic), we'd contradict Lindemann's theorem. -/
-axiom pi_transcendental : Transcendental ℤ Real.pi
+    would be if π were algebraic), we'd contradict Lindemann's theorem.
+
+    Proof:
+    1. Assume π is algebraic over ℤ (in ℝ)
+    2. Then (↑π : ℂ) is algebraic over ℤ (in ℂ) via the embedding ℝ → ℂ
+    3. i is algebraic over ℤ (root of X² + 1)
+    4. So π·i is algebraic over ℤ (algebraic numbers form a ring)
+    5. π·i ≠ 0 (since π > 0 and i ≠ 0)
+    6. By Lindemann's theorem, e^(πi) is transcendental
+    7. But e^(πi) = -1 by Euler's identity
+    8. -1 is algebraic (root of X + 1) — contradiction -/
+theorem pi_transcendental : Transcendental ℤ Real.pi := by
+  intro halg
+  -- Step 2: Transfer algebraicity from ℝ to ℂ via the embedding ℝ → ℂ
+  have hpi_C : IsAlgebraic ℤ (↑(Real.pi) : ℂ) := by
+    obtain ⟨p, hp_ne, hp_eval⟩ := halg
+    refine ⟨p, hp_ne, ?_⟩
+    -- aeval (↑π : ℂ) p = ↑(aeval π p : ℝ) = ↑0 = 0
+    have h : Polynomial.aeval (algebraMap ℝ ℂ Real.pi) p =
+        algebraMap ℝ ℂ (Polynomial.aeval Real.pi p) :=
+      (Polynomial.aeval_algebraMap_apply ℤ Real.pi p).symm
+    rw [h, hp_eval, map_zero]
+  -- Step 3: i is algebraic
+  have hi := I_algebraic
+  -- Step 4: π·i is algebraic (algebraic numbers form a ring)
+  have hpi_i : IsAlgebraic ℤ ((↑Real.pi : ℂ) * Complex.I) := hpi_C.mul hi
+  -- Step 5: π·i ≠ 0
+  have hne : (↑Real.pi : ℂ) * Complex.I ≠ 0 :=
+    mul_ne_zero (Complex.ofReal_ne_zero.mpr (ne_of_gt Real.pi_pos)) Complex.I_ne_zero
+  -- Step 6: By Lindemann's theorem, e^(πi) is transcendental
+  have h_trans := lindemann_theorem ((↑Real.pi : ℂ) * Complex.I) hne hpi_i
+  -- Step 7: But e^(πi) = -1 (Euler's identity)
+  rw [show (↑Real.pi : ℂ) * Complex.I = ↑Real.pi * Complex.I from rfl,
+      Complex.exp_pi_mul_I] at h_trans
+  -- Step 8: -1 is algebraic — contradiction
+  exact h_trans neg_one_algebraic
 
 /-- π is transcendental over ℚ.
     Derived from pi_transcendental (over ℤ): if π were algebraic over ℚ,
