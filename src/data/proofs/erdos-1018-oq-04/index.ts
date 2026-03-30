@@ -3,7 +3,7 @@ import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
 // Type assertion for JSON import
-const meta = metaJson as unknown as {
+const meta = metaJson as {
   id: string
   title: string
   slug: string
