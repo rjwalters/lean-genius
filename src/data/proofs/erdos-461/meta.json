@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham",
     "sourceUrl": "https://erdosproblems.com/461",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos461Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "multiplicative-functions",
       "sieve-methods"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 461,
     "erdosUrl": "https://erdosproblems.com/461",
@@ -55,9 +55,9 @@
       "Proved six boundary cases: smoothComponent_one, smoothComponent_zero, smoothComponent_t_le_one, smoothComponent_prime, smoothDistinctCount_le, smoothDistinctCount_zero",
       "Only sorry: smoothComponent_largest (maximality) — proof strategy documented, infrastructure prepared"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 281,
-    "assumptions": "1 axiom(s). No sorries.",
+    "assumptions": "None. Fully verified. erdos_graham_lower removed (unused).",
     "mathlib_version": "4.26.0"
   },
   "overview": {

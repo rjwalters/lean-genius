@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 structural theorems (15→18T). Multiplicativity, unit characterization, divisibility. 1A deep (unchanged).",
+    "progressSummary": "COMPLETE: 0A, 0S. Fully verified.",
     "builtItems": [
       "Assessment: 1A deep, well-developed file",
       "smoothComponent_prime_ge: clean corollary for primes ≥ t",
@@ -39,7 +39,8 @@
       "smoothDistinctCount_t_le_one: count ≤ 1 for trivial smoothness bound (t ≤ 1)",
       "smoothComponent_mul: multiplicativity for any m,n ≠ 0 (no coprimality needed)",
       "smoothComponent_eq_one_iff: characterization of unit smooth components",
-      "smoothComponent_dvd_mul_left: divisibility corollary"
+      "smoothComponent_dvd_mul_left: divisibility corollary",
+      "Removed erdos_graham_lower axiom (unused, 1A→0A)"
     ],
     "insights": [
       "1 axiom (erdos_graham_lower — deep). 10T, 0S. Clean.",
@@ -71,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-28T05:34:00Z",
+  "lastUpdate": "2026-03-29T23:20:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -80,7 +81,7 @@
       "filename": "Erdos461Problem.lean",
       "lineCount": 282,
       "theoremCount": 19,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

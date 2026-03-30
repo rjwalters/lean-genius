@@ -157,11 +157,7 @@ def ErdosProblem461 : Prop :=
 
 /- ## Known results -/
 
-/-- Erdős–Graham: `f(n, t) ≫ t / log t`. -/
-axiom erdos_graham_lower :
-    ∃ C : ℝ, 0 < C ∧
-      ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t →
-        ∀ n : ℕ, C * (t : ℝ) / Real.log (t : ℝ) ≤ (smoothDistinctCount n t : ℝ)
+/- **Erdős–Graham**: f(n, t) ≫ t / log t. Not axiomatized (unused). -/
 
 /- ## Basic properties -/
 
