@@ -100,3 +100,26 @@ theorem subsetSums_mono (A B : Set ℕ) (h : A ⊆ B) :
     subsetSums A ⊆ subsetSums B := by
   intro s ⟨S, hS, hs⟩
   exact ⟨S, Set.Subset.trans hS h, hs⟩
+
+/-- Any element of `A` is in `P(A)` (singleton subset sum). -/
+theorem mem_subsetSums_of_mem (A : Set ℕ) (a : ℕ) (ha : a ∈ A) :
+    a ∈ subsetSums A :=
+  ⟨{a}, by simpa using ha, by simp⟩
+
+/-- Disjoint witnesses combine: `∑S + ∑T ∈ P(A)` when `S, T ⊆ A` are disjoint. -/
+theorem subsetSums_add_of_disjoint (A : Set ℕ) (S T : Finset ℕ)
+    (hS : (↑S : Set ℕ) ⊆ A) (hT : (↑T : Set ℕ) ⊆ A) (hdisj : Disjoint S T) :
+    S.sum id + T.sum id ∈ subsetSums A := by
+  refine ⟨S ∪ T, ?_, Finset.sum_union hdisj⟩
+  simp only [Finset.coe_union]
+  exact Set.union_subset hS hT
+
+/-- The image of a cofinite subsequence is contained in the range of `a`. -/
+theorem cofiniteImage_subset (a ι : ℕ → ℕ) :
+    cofiniteImage a ι ⊆ Set.range a := by
+  intro x ⟨n, hn⟩
+  exact ⟨ι n, hn⟩
+
+/-- The identity is a cofinite subsequence (keeps all indices). -/
+theorem isCofiniteSubseq_id (a : ℕ → ℕ) : IsCofiniteSubseq a id :=
+  ⟨strictMono_id, by simp [Set.range_id]⟩
