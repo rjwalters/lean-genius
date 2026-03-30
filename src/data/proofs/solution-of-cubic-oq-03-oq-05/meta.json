@@ -2,7 +2,7 @@
   "id": "solution-of-cubic-oq-03-oq-05",
   "title": "Vieta's Formulas for the General Cubic",
   "slug": "solution-of-cubic-oq-03-oq-05",
-  "description": "For the general cubic x\u00b3 + ax\u00b2 + bx + c = (x-r\u2081)(x-r\u2082)(x-r\u2083), Vieta's formulas give a = -(r\u2081+r\u2082+r\u2083), b = r\u2081r\u2082+r\u2081r\u2083+r\u2082r\u2083, c = -r\u2081r\u2082r\u2083. Proved over any commutative ring by polynomial coefficient comparison.",
+  "description": "For the general cubic x³ + ax² + bx + c = (x-r₁)(x-r₂)(x-r₃), Vieta's formulas give a = -(r₁+r₂+r₃), b = r₁r₂+r₁r₃+r₂r₃, c = -r₁r₂r₃. Proved over any commutative ring by polynomial coefficient comparison.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vieta%27s_formulas",
@@ -35,8 +35,9 @@
   },
   "overview": {
     "problemStatement": "Verify Vieta's formulas for the general (non-depressed) cubic over a commutative ring.",
-    "proofStrategy": "Expand (x-r\u2081)(x-r\u2082)(x-r\u2083) via ring, then extract coefficients at each degree to obtain the three Vieta relations.",
-    "keyInsights": []
+    "proofStrategy": "Expand (x-r₁)(x-r₂)(x-r₃) via ring, then extract coefficients at each degree to obtain the three Vieta relations.",
+    "keyInsights": [],
+    "historicalContext": ""
   },
   "sorryCount": 0,
   "status": "verified",

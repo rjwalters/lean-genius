@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-01-oq-03",
   "title": "Heisenberg Uncertainty from Complex Cauchy-Schwarz",
   "slug": "cauchy-schwarz-oq-01-oq-03",
-  "description": "Derives the Heisenberg uncertainty principle \u03c3_x\u00b7\u03c3_p \u2265 \u210f/2 from the complex Cauchy-Schwarz inequality. Pure algebraic derivation in abstract inner product spaces.",
+  "description": "Derives the Heisenberg uncertainty principle σ_x·σ_p ≥ ℏ/2 from the complex Cauchy-Schwarz inequality. Pure algebraic derivation in abstract inner product spaces.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -25,12 +25,13 @@
   "overview": {
     "problemStatement": "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz inequality?",
     "keyInsights": [
-      "Cauchy-Schwarz: |\u27e8f,g\u27e9|\u00b2 \u2264 \u2016f\u2016\u00b2\u00b7\u2016g\u2016\u00b2",
-      "Im bound: (Im\u27e8f,g\u27e9)\u00b2 \u2264 |\u27e8f,g\u27e9|\u00b2",
-      "Commutator substitution: Im\u27e8\u0394x\u00b7\u03c8, \u0394p\u00b7\u03c8\u27e9 = \u210f/2",
-      "Pure algebraic derivation \u2014 works in any complex inner product space"
+      "Cauchy-Schwarz: |⟨f,g⟩|² ≤ ‖f‖²·‖g‖²",
+      "Im bound: (Im⟨f,g⟩)² ≤ |⟨f,g⟩|²",
+      "Commutator substitution: Im⟨Δx·ψ, Δp·ψ⟩ = ℏ/2",
+      "Pure algebraic derivation — works in any complex inner product space"
     ],
-    "proofStrategy": ""
+    "proofStrategy": "",
+    "historicalContext": ""
   },
   "conclusion": {
     "summary": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound.",
