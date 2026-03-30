@@ -82,12 +82,14 @@
       "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain.",
       "Pigeonhole for nth diameter: n > |F| implies repeated points, making product 0 via Finset.prod_eq_zero",
       "Remaining 2 sorries: BddAbove for monotonicity (line 297), transfiniteDiameter_scale (line 400)",
-      "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)"
+      "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)",
+      "BddAbove sorry (line 284): extract D from IsBounded G, bound each distance factor by D, product by D^(n*(n-1)/2), then rpow with e<=1 gives bound max(D^(n*(n-1)/2), 1). Needs Metric.isBounded API.",
+      "transfiniteDiameter_scale sorry (line 387): FALSE for n<=1 (rpow exponent 2/0=0 gives 1, not |c|*1). Proof strategy: show nthDiameter(cF, n) = |c| * nthDiameter(F, n) for n>=2, then pull |c| from iInf over n>=2 (n=0,1 dont affect inf since they equal 1)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "BddAbove sorry (line 297): needs bounded set implies bounded products — nontrivial",
-      "transfiniteDiameter_scale: needs careful manipulation of sSup/iInf with scaling"
+      "BddAbove sorry: use Metric.isBounded_iff.mp hG to extract diameter D, bound Finset product by D^(n choose 2), rpow mono for exponent in [0,1]",
+      "transfiniteDiameter_scale: prove nthDiameter_scale for n>=2 via Complex.abs_mul + Finset.prod scaling + rpow_mul, then use iInf on n>=2"
     ]
   },
   "tags": [
