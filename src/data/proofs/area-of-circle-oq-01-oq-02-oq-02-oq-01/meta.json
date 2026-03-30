@@ -64,7 +64,6 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The isoperimetric inequality — that among all closed curves of a given length, the circle encloses the maximum area — was known to the ancient Greeks. The first rigorous proof using Fourier analysis was given by Adolf Hurwitz in 1901, building on Wirtinger's inequality. This formalization follows the Hurwitz proof chain explicitly.",
     "summary": "Proves the isoperimetric inequality L² ≥ 4πA for smooth closed curves using the explicit Hurwitz 1901 proof chain: IBP for Fourier coefficients + Parseval's identity → Wirtinger's inequality → isoperimetric inequality. The file is self-contained (imports only Mathlib) with 11 theorems, 0 axioms, and 1 sorry.",
     "problemStatement": "**Open Question**: Can the isoperimetric inequality C² ≥ 4πA be assembled from IBP + Wirtinger + Parseval?\n\n**Answer**: Yes. This file provides the explicit chain:\n1. IBP: ĉₙ(f') = in·ĉₙ(f) (proved from Mathlib's fourierCoeffOn_of_hasDerivAt)\n2. Wirtinger: ∫f² ≤ ∫(f')² for mean-zero periodic f (from IBP + Parseval)\n3. Isoperimetric: L² ≥ 4πA (from Wirtinger + Cauchy-Schwarz + Green's theorem)",
     "text": "Proves the isoperimetric inequality L² ≥ 4πA for smooth closed curves by making the classical Hurwitz (1901) proof chain fully explicit: integration by parts for Fourier coefficients + Parseval's identity implies Wirtinger's inequality, which combined with Cauchy-Schwarz and Green's theorem yields the isoperimetric inequality.",
