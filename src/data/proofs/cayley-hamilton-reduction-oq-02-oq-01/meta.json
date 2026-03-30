@@ -16,7 +16,7 @@
       "rational-canonical-form"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "Matrix.aeval_self_charpoly",
@@ -48,8 +48,8 @@
       "instances": 0
     },
     "axiomCount": 0,
-    "lineCount": 188,
-    "assumptions": "0 axioms. 2 sorries (charpoly and minpoly of companion matrix). Definition and basic properties proved.",
+    "lineCount": 230,
+    "assumptions": "0 axioms. 3 sorries (aeval, charpoly, minpoly — restructured without circular dependency). Orbit infrastructure fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

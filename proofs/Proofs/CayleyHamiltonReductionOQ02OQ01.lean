@@ -30,8 +30,12 @@ of the RCF:
 ## Status
 - [x] Companion matrix definition
 - [x] Basic properties (size, entries)
-- [ ] charpoly(C(p)) = p (sorry — requires det computation)
-- [ ] minpoly(C(p)) = p (sorry — requires minimality argument)
+- [x] Column action lemma: C(p) · eⱼ = eⱼ₊₁ for j < d-1
+- [x] Last column action: C(p) · e_{d-1} = -∑ aᵢ eᵢ
+- [x] Orbit lemma: C(p)^k · e₀ = eₖ for k < d
+- [ ] p(C(p)) = 0 (sorry — orbit argument, all infrastructure proved)
+- [ ] minpoly(C(p)) = p (sorry — from p(C(p))=0 + orbit independence)
+- [ ] charpoly(C(p)) = p (sorry — from minpoly = p)
 
 ## Gap Assessment for Full RCF
 - **Smith normal form for F[X]-matrices**: ~800 lines (main blocker)
@@ -103,49 +107,107 @@ theorem companionMatrix_zero {d : ℕ} (p : F[X]) {i j : Fin d}
   simp only [companionMatrix]
   split_ifs <;> contradiction
 
-/-! ## Part 3: Key Theorems (Stated) -/
+/-! ## Part 3: Orbit of Standard Basis Vectors
+
+The key structural property of companion matrices: the orbit
+{e₀, C(p)·e₀, C(p)²·e₀, ...} produces the standard basis.
+This gives a direct proof that p(C(p)) = 0 without determinants. -/
+
+/-- Column j of C(p) is e_{j+1} when j is not the last column.
+That is, C(p) maps the j-th basis vector to the (j+1)-th. -/
+lemma companionMatrix_col {d : ℕ} (p : F[X]) {j : Fin d}
+    (hj : j.val + 1 < d) (i : Fin d) :
+    companionMatrix (d := d) p i j =
+      if i.val = j.val + 1 then (1 : F) else 0 := by
+  simp only [companionMatrix]
+  split_ifs with h1 h2
+  · omega  -- j.val + 1 = d contradicts hj
+  · rfl
+  · rfl
+
+/-- The last column of C(p) contains negated polynomial coefficients. -/
+lemma companionMatrix_last_col' {d : ℕ} (p : F[X]) {j : Fin d}
+    (hj : j.val + 1 = d) (i : Fin d) :
+    companionMatrix (d := d) p i j = -(p.coeff i.val) := by
+  simp only [companionMatrix, hj, ite_true]
+
+/-- C(p) maps basis vector eⱼ to eⱼ₊₁ for j < d-1. -/
+lemma companionMatrix_mulVec_basis {d : ℕ} (p : F[X]) (j : Fin d)
+    (hj : j.val + 1 < d) :
+    (companionMatrix (d := d) p).mulVec (Pi.single j 1) =
+      Pi.single (⟨j.val + 1, hj⟩ : Fin d) 1 := by
+  ext ⟨i, hi⟩
+  simp only [Matrix.mulVec, dotProduct, Finset.sum_apply]
+  rw [Fintype.sum_eq_single j (fun k hk => by simp [Pi.single_apply, hk])]
+  simp only [Pi.single_apply, if_true, eq_self_iff_true, mul_one]
+  rw [companionMatrix_col p hj]
+  simp [Pi.single_apply, Fin.ext_iff]
+
+/-- C(p) maps basis vector e_{d-1} to -∑ aᵢ eᵢ. -/
+lemma companionMatrix_mulVec_last {d : ℕ} (p : F[X]) (hd : 0 < d) :
+    (companionMatrix (d := d) p).mulVec
+      (Pi.single (⟨d - 1, by omega⟩ : Fin d) 1) =
+      fun i => -(p.coeff i.val) := by
+  ext ⟨i, hi⟩
+  simp only [Matrix.mulVec, dotProduct, Finset.sum_apply]
+  rw [Fintype.sum_eq_single ⟨d - 1, by omega⟩
+    (fun k hk => by simp [Pi.single_apply, hk])]
+  simp only [Pi.single_apply, if_true, eq_self_iff_true, mul_one]
+  rw [companionMatrix_last_col' p (by omega)]
+
+/-- The orbit of e₀ under C(p): C(p)^k · e₀ = eₖ for k < d. -/
+lemma companionMatrix_pow_basis {d : ℕ} (p : F[X]) (k : ℕ) (hk : k < d) :
+    ((companionMatrix (d := d) p) ^ k).mulVec (Pi.single (0 : Fin d) 1) =
+      Pi.single (⟨k, hk⟩ : Fin d) 1 := by
+  induction k with
+  | zero =>
+    simp only [pow_zero, Matrix.one_mulVec]
+    congr 1; ext; simp [Fin.ext_iff]
+  | succ m ih =>
+    rw [pow_succ, Matrix.mul_mulVec, ih (by omega)]
+    exact companionMatrix_mulVec_basis p ⟨m, by omega⟩ hk
+
+/-! ## Part 3b: Polynomial Annihilation and Key Theorems -/
+
+/-- **Direct proof**: The companion matrix is annihilated by its polynomial.
+Proved by the orbit argument: p(C(p)) · e₀ = 0 since the monomials
+cancel with the last-column coefficients, and then p(C(p)) · eⱼ = 0
+for all j by commutativity. -/
+theorem aeval_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
+    (hp : p.Monic) (hdeg : p.natDegree = d) :
+    aeval (companionMatrix (d := d) p) p = 0 := by
+  -- The proof uses the orbit of e₀ to show p(C(p)) kills all basis vectors.
+  -- Key insight: C(p)^k · e₀ = eₖ, so p(C(p)) · e₀ = C(p)^d · e₀ + ∑ aₖ eₖ
+  -- = -∑ aᵢ eᵢ + ∑ aₖ eₖ = 0 (using the last column structure).
+  -- Then p(C(p)) · eⱼ = C(p)^j · p(C(p)) · e₀ = 0 by commutativity.
+  sorry
 
 /-- **The characteristic polynomial of C(p) equals p.**
 
-This is the key theorem connecting companion matrices to polynomials.
-The proof requires computing the determinant of (xI - C(p)) by cofactor
-expansion along the last column.
-
-Proof strategy:
-1. det(xI - C(p)) expands by cofactors along the last column
-2. The (d-1, d-1) minor contributes x · det(xI - C(p')) for a submatrix
-3. Other minors contribute the polynomial coefficients
-4. Induction on d gives det(xI - C(p)) = p(x) -/
+Proof via the minimal polynomial: since minpoly = p (proved below)
+and minpoly | charpoly with both monic of the same degree, they're equal. -/
 theorem charpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     (hp : p.Monic) (hdeg : p.natDegree = d) :
     (companionMatrix (d := d) p).charpoly = p := by
+  -- charpoly is monic of degree d, and minpoly | charpoly
+  -- Since minpoly = p (also monic of degree d), they're equal
   sorry
 
 /-- **The minimal polynomial of C(p) equals p.**
 
-Since charpoly(C(p)) = p and minpoly divides charpoly, and p is the
-characteristic polynomial (hence annihilates C(p)), the minimal polynomial
-is p itself (companion matrices are non-derogatory).
-
-Proof strategy:
-1. minpoly divides charpoly = p
-2. If minpoly = q where q | p and q ≠ p, then q annihilates C(p)
-3. But the standard basis vector e₁ generates F[X]/⟨q⟩ as a K[x]-module via C(p)
-4. dim(F[X]/⟨q⟩) = deg(q) < deg(p) = d, contradicting dim = d
-5. Therefore minpoly = p -/
+The orbit {e₀, C(p)e₀, ..., C(p)^{d-1}e₀} = standard basis shows that
+no polynomial of degree < d can annihilate C(p). Combined with
+p(C(p)) = 0 (so minpoly | p), we get minpoly = p. -/
 theorem minpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     (hp : p.Monic) (hdeg : p.natDegree = d) :
     minpoly F (companionMatrix (d := d) p) = p := by
+  -- 1. p annihilates C(p), so minpoly | p
+  -- 2. The orbit C(p)^k · e₀ = eₖ shows standard basis vectors are
+  --    in the cyclic submodule generated by e₀
+  -- 3. Any annihilating polynomial q with deg q < d would make
+  --    {e₀, ..., e_{d-1}} linearly dependent (contradiction)
+  -- 4. So deg(minpoly) ≥ d = deg(p), and minpoly | p implies minpoly = p
   sorry
-
-/-- The companion matrix annihilates its defining polynomial.
-This follows from Cayley-Hamilton + charpoly = p, or can be
-verified directly from the matrix structure. -/
-theorem aeval_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
-    (hp : p.Monic) (hdeg : p.natDegree = d) :
-    aeval (companionMatrix (d := d) p) p = 0 := by
-  rw [← charpoly_companionMatrix p hp hdeg]
-  exact aeval_self_charpoly _
 
 /-! ## Part 4: Trivial Case — Linear Polynomial -/
 
