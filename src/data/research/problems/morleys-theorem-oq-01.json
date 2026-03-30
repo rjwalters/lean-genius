@@ -1,51 +1,63 @@
 {
   "slug": "morleys-theorem-oq-01",
-  "title": "Morley's Theorem: Conway Backward Proof",
+  "title": "morleys-theorem-oq-01",
   "phase": "OBSERVE",
-  "status": "in-progress",
-  "tier": "A",
+  "status": "active",
+  "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "Prove morleys_theorem_axiom: the Morley triangle has equal sides",
-    "plain": "Prove Morley's theorem using Conway's backward proof: start with an equilateral triangle, construct the original triangle around it, and verify the trisector property.",
-    "whyMatters": [
-      "Wiedijk #84 — on the famous 100 theorems list",
-      "Would reduce axiom count from 1 to 0, making the file fully verified",
-      "Conway's backward proof is an elegant geometric argument"
-    ]
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T19:03:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: File has 1 axiom (morleys_theorem_axiom), 0 sorries. Equilateral triangle infrastructure proved (side lengths via complex exponentials and cube roots of unity). Conway backward proof approach documented but not implemented.",
-    "builtItems": [
-      "Assessment: 1 axiom (morleys_theorem_axiom) to eliminate",
-      "Existing: equilateral_side_length_axiom PROVED via ω³=1",
-      "Existing: MorleyTriangle structure with angle constraints"
-    ],
-    "insights": [
-      "The equilateral triangle uses P=1, Q=ω, R=ω² where ω=exp(2πi/3). Side equality via |ω|=1.",
-      "The Conway backward proof constructs A, B, C from the Morley triangle using angle-dependent rotations",
-      "Key challenge: the reconstruction requires showing that the constructed triangle has the correct angles AND the Morley points are the trisector intersections",
-      "The side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) is symmetric, which ensures equilateral",
-      "Alternative: the trigonometric proof via Morley side length = 8R·∏sin(θ/3) may be more direct in Lean than Conway's geometric argument"
-    ],
-    "mathlibGaps": [
-      "No trisector intersection computation in Mathlib",
-      "Complex-number based geometric constructions need custom infrastructure"
-    ],
-    "nextSteps": [
-      "Implement the Morley side length formula: d = 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
-      "Prove the formula is symmetric in the three Morley sides (ensures equilateral)",
-      "Alternatively: implement Conway's backward proof with isosceles triangle construction",
-      "The trigonometric approach may be more tractable than the geometric one"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: morleys-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": ["geometry", "triangle", "axiom-elimination"],
-  "relatedProofs": ["morleys-theorem"],
+  "tags": [],
+  "relatedProofs": [
+    "morleys-theorem"
+  ],
   "references": {
-    "papers": ["Conway & Doyle, 'Morley's Theorem Revisited'"],
+    "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-03-30T04:17:00Z",
-  "lastUpdate": "2026-03-30T04:17:00Z"
+  "started": "2026-03-30T02:13:21.170Z",
+  "lastUpdate": "2026-03-30T02:13:21.223Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/MorleysTheorem.lean",
+      "filename": "MorleysTheorem.lean",
+      "lineCount": 385,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 15,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheorem.lean"
+    }
+  ]
 }

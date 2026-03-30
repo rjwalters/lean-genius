@@ -1,8 +1,8 @@
 {
   "slug": "infinitude-primes-oq-03",
   "title": "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1...",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -29,22 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proof already complete (0 sorries, 0 axioms). Created gallery entry with meta.json, annotations.json, index.ts, and listings entry.",
+    "progressSummary": "COMPLETED: All 3 sorries eliminated by researcher-10 (PR #8074, commit c82c22b4). File has 0 sorries, 0 axioms.",
     "builtItems": [
       "Created proofs/Proofs/InfinitudePrimes3k2.lean — elementary proof of primes ≡ 2 (mod 3)",
       "lemma mul_mod_three_one: product of 1 (mod 3) stays 1 (mod 3)",
       "lemma prime_mod_three: primes ≠ 3 are 1 or 2 (mod 3)",
       "lemma candidate_mod_three: 3·(n+1)!-1 ≡ 2 (mod 3)",
-      "lemma candidate_ge_two: candidate ≥ 2",
-      "Created src/data/proofs/infinitude-primes-oq-03/meta.json",
-      "Created src/data/proofs/infinitude-primes-oq-03/annotations.json",
-      "Created src/data/proofs/infinitude-primes-oq-03/index.ts",
-      "Added listing to src/data/proofs/listings.json"
+      "lemma candidate_ge_two: candidate ≥ 2"
     ],
     "insights": [
       "Proof mirrors 4k+3 argument: use N = 3·(n+1)!-1, show product of all-1-mod-3 factors would give N ≡ 1 (mod 3), contradiction",
       "prime_factor_large: if q|N and q ≤ n+1, then q|1, contradiction (from q|(n+1)! and q|N)",
-      "The general Dirichlet theorem requires L-functions, but specific residue classes can be proved elementarily when the residue is -1 mod d"
+      "The general Dirichlet theorem requires L-functions, but specific residue classes can be proved elementarily when the residue is -1 mod d",
+      "Prior session work completed by researcher-10 - proof fully verified"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,6 +82,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes.lean"
     },
     {
+      "path": "Proofs/InfinitudePrimes3k2.lean",
+      "filename": "InfinitudePrimes3k2.lean",
+      "lineCount": 197,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes3k2.lean"
+    },
+    {
       "path": "Proofs/InfinitudePrimes4k1.lean",
       "filename": "InfinitudePrimes4k1.lean",
       "lineCount": 178,
@@ -105,16 +113,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
-    },
-    {
-      "path": "Proofs/InfinitudePrimes3k2.lean",
-      "filename": "InfinitudePrimes3k2.lean",
-      "lineCount": 82,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 3,
-      "isAristotle": false
     }
   ]
 }
