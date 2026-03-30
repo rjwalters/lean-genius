@@ -112,11 +112,27 @@ theorem maxEgyptFree_lower (N : ℕ) (hN : 0 < N) :
     _ ≤ ((Icc 1 N).powerset.filter EgyptFractionFree).sup Finset.card :=
         Finset.le_sup hmem
 
-/- ## Upper bound (van Doorn) -/
+/- ## Upper bound -/
 
-/-- Van Doorn's upper bound: `f(N) ≤ (25/28 + o(1)) * N`. -/
-axiom vanDoorn_upper (N : ℕ) (hN : 0 < N) :
-    (maxEgyptFree N : ℝ) ≤ (25 / 28 + 1) * N
+/-- `f(N) ≤ N`: any EgyptFractionFree subset of `{1,...,N}` has at most N elements. -/
+theorem maxEgyptFree_le (N : ℕ) : maxEgyptFree N ≤ N := by
+  unfold maxEgyptFree
+  apply Finset.sup_le
+  intro A hA
+  simp only [mem_filter, mem_powerset] at hA
+  calc A.card ≤ (Icc 1 N).card := Finset.card_le_card hA.1
+    _ = N := by rw [Nat.card_Icc]; omega
+
+/-- Van Doorn's upper bound: `f(N) ≤ (25/28 + o(1)) * N`.
+    The formalized bound `(25/28 + 1) * N` is weaker than the trivial `f(N) ≤ N`,
+    so it follows immediately. The actual result uses o(1) → 0 as N → ∞. -/
+theorem vanDoorn_upper (N : ℕ) (hN : 0 < N) :
+    (maxEgyptFree N : ℝ) ≤ (25 / 28 + 1) * N := by
+  calc (maxEgyptFree N : ℝ) ≤ (N : ℝ) := by exact_mod_cast maxEgyptFree_le N
+    _ = 1 * N := by ring
+    _ ≤ (25 / 28 + 1) * N := by
+        apply mul_le_mul_of_nonneg_right _ (by positivity)
+        norm_num
 
 /- ## Basic properties -/
 
