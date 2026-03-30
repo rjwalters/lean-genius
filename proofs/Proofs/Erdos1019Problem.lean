@@ -11,9 +11,12 @@ Reference: https://erdosproblems.com/1019
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic
 
 open SimpleGraph
 
@@ -110,10 +113,26 @@ abbrev K3 : SimpleGraph (Fin 3) := completeGraph 3
 /-- K₃ is a saturated planar graph. -/
 axiom K3_saturated_planar : isSaturatedPlanar K3
 
-/-- Turán's theorem: graphs with > n²/4 edges contain triangles. -/
-axiom turan_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
-  edgeCount G > turanEdges (Fintype.card V) →
-  ∃ S : Finset V, S.card = 3 ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
+/-- Turán's theorem: graphs with > n²/4 edges contain triangles.
+    PROVED via Mathlib's CliqueFree.card_edgeFinset_le (Turán bound). -/
+theorem turan_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
+    edgeCount G > turanEdges (Fintype.card V) →
+    ∃ S : Finset V, S.card = 3 ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v := by
+  intro hedge
+  by_contra h
+  push_neg at h
+  -- h : ∀ S, S.card = 3 → ∃ u ∈ S, ∃ v ∈ S, u ≠ v ∧ ¬G.Adj u v
+  -- Derive CliqueFree 3
+  have hcf : G.CliqueFree 3 := by
+    intro S ⟨hClique, hCard⟩
+    obtain ⟨u, hu, v, hv, huv, hnadj⟩ := h S hCard
+    exact hnadj (hClique (Finset.mem_coe.mpr hu) (Finset.mem_coe.mpr hv) huv)
+  -- By Mathlib Turán bound, |E| ≤ n²/4
+  unfold edgeCount turanEdges at hedge
+  have hbound := hcf.card_edgeFinset_le
+  set n := Fintype.card V
+  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+  rcases hmod with hm | hm <;> simp only [hm] at hbound <;> omega
 
 /-
 ## The Induced Subgraph
