@@ -128,17 +128,18 @@
     },
     "leanFile": {
         "imports": [
-            "Mathlib.Combinatorics.Additive.Dissociated",
             "Mathlib.Data.Finset.Card",
+            "Mathlib.Data.Finset.Powerset",
             "Mathlib.Data.Real.Basic",
+            "Mathlib.Data.Nat.Log",
             "Mathlib.Analysis.SpecialFunctions.Log.Basic",
             "Mathlib.Tactic"
         ],
         "opens": [],
         "namespace": null,
-        "lineCount": 633,
-        "axiomCount": 2,
-        "theoremCount": 17,
+        "lineCount": 672,
+        "axiomCount": 1,
+        "theoremCount": 22,
         "definitionCount": 4
     },
     "crossReferences": [
