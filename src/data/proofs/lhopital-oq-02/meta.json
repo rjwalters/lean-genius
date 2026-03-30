@@ -17,7 +17,7 @@
       "indeterminate-forms"
     ],
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
@@ -40,21 +40,21 @@
       "Statement of ∞/∞ L'Hôpital's rule for left approach (𝓝[<] b)",
       "Statement of ∞/∞ L'Hôpital's rule at +∞ (atTop)",
       "Statement of ∞/∞ L'Hôpital's rule at -∞ (atBot)",
-      "Proof sketch: two-variable Cauchy MVT argument with explicit epsilon management",
+      "Complete proof of right approach via two-variable Cauchy MVT with explicit epsilon management",
       "Documentation of why ∞/∞ needs a separate proof from 0/0"
     ],
     "dateAdded": "2026-03-30",
     "leanFile": {
-      "lineCount": 195,
+      "lineCount": 364,
       "structures": 0,
       "axioms": 0,
-      "theorems": 4,
+      "theorems": 5,
       "definitions": 0,
       "instances": 0
     },
     "axiomCount": 0,
-    "lineCount": 206,
-    "assumptions": "0 axioms. 4 sorries (proof bodies pending). Theorem statements are complete.",
+    "lineCount": 364,
+    "assumptions": "0 axioms. 3 sorries (left, atTop, atBot variants pending). Right approach fully proved via Cauchy MVT.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -100,7 +100,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Theorem statements for the ∞/∞ L'Hôpital's rule are formalized in four variants (right, left, at +∞, at -∞). Proof bodies are pending (4 sorries). The proof strategy via two-variable Cauchy MVT is documented.",
+    "summary": "The ∞/∞ L'Hôpital's rule is fully proved for the right approach case via two-variable Cauchy MVT. Three variants (left, at +∞, at -∞) have statements formalized with proof bodies pending (3 sorries).",
     "implications": "Completing the proofs would fill a genuine gap in Mathlib's calculus library: 26 variants of the 0/0 form but zero variants of the ∞/∞ form.",
     "openQuestions": [
       "Can the proof be done by reducing to the 0/0 form via substitution u = 1/g(x)?"
