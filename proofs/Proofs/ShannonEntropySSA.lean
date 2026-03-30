@@ -175,7 +175,8 @@ theorem entropy_chain_rule {α β : Type*} [Fintype α] [Fintype β]
     (hsum : ∑ xy : α × β, pXY xy = 1) :
     shannonEntropy' pXY =
     shannonEntropy' (marginalSnd pXY) + condEntropy pXY := by
-  -- Step 1: Per-term identity: p*log(p) = p*log(p/py) + p*log(py)
+  -- H(X,Y) = H(Y) + H(X|Y) by splitting log p(x,y) = log(p(x,y)/p_Y(y)) + log p_Y(y)
+  -- Step 1: Term-by-term identity
   have hterm : ∀ x y,
       (if pXY (x, y) = 0 then (0 : ℝ) else pXY (x, y) * Real.log (pXY (x, y))) =
       (if pXY (x, y) = 0 then 0
@@ -185,15 +186,19 @@ theorem entropy_chain_rule {α β : Type*} [Fintype α] [Fintype β]
     intro x y
     by_cases hpxy : pXY (x, y) = 0
     · simp [hpxy]
-    · simp only [if_neg hpxy]
-      have hpxy_pos : 0 < pXY (x, y) :=
-        lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+    · simp only [hpxy, ↓reduceIte]
+      have hpxy_pos : 0 < pXY (x, y) := lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
       have hpy_pos : 0 < ∑ x' : α, pXY (x', y) :=
         lt_of_lt_of_le hpxy_pos
-          (single_le_sum (fun x' _ => hp (x', y)) (mem_univ x))
-      rw [← mul_add, Real.log_div (ne_of_gt hpxy_pos) (ne_of_gt hpy_pos)]
+          (Finset.single_le_sum (fun x' _ => hp (x', y)) (Finset.mem_univ x))
+      rw [show pXY (x, y) * Real.log (pXY (x, y) / (∑ x', pXY (x', y))) +
+          pXY (x, y) * Real.log (∑ x', pXY (x', y)) =
+          pXY (x, y) * (Real.log (pXY (x, y) / (∑ x', pXY (x', y))) +
+          Real.log (∑ x', pXY (x', y))) from by ring]
+      congr 1
+      rw [Real.log_div (ne_of_gt hpxy_pos) (ne_of_gt hpy_pos)]
       ring
-  -- Step 2: Telescoping: Σ_x [if p=0 then 0 else p*log(py)] = [if py=0 then 0 else py*log(py)]
+  -- Step 2: Marginal telescoping
   have hmarg : ∀ y,
       ∑ x : α, (if pXY (x, y) = 0 then (0 : ℝ)
         else pXY (x, y) * Real.log (∑ x' : α, pXY (x', y))) =
@@ -202,30 +207,39 @@ theorem entropy_chain_rule {α β : Type*} [Fintype α] [Fintype β]
     intro y
     by_cases hpy : (∑ x : α, pXY (x, y)) = 0
     · have hall : ∀ x, pXY (x, y) = 0 := by
-        intro x
-        linarith [hp (x, y),
-          single_le_sum (fun x' (_ : x' ∈ Finset.univ) => hp (x', y)) (mem_univ x)]
-      simp [hall, hpy]
-    · rw [if_neg hpy]
+        intro x; have h1 := hp (x, y)
+        have h2 : pXY (x, y) ≤ ∑ x', pXY (x', y) :=
+          Finset.single_le_sum (fun x' _ => hp (x', y)) (Finset.mem_univ x)
+        linarith
+      simp [hpy, hall]
+    · simp only [hpy, ↓reduceIte]
       have : ∑ x : α, (if pXY (x, y) = 0 then (0 : ℝ)
           else pXY (x, y) * Real.log (∑ x' : α, pXY (x', y))) =
           ∑ x : α, pXY (x, y) * Real.log (∑ x' : α, pXY (x', y)) := by
         apply Finset.sum_congr rfl; intro x _
-        by_cases hpx : pXY (x, y) = 0 <;> simp [hpx]
+        by_cases hpxy : pXY (x, y) = 0
+        · simp [hpxy]
+        · simp [hpxy]
       rw [this, ← Finset.sum_mul]
-  -- Step 3: Assemble
-  unfold shannonEntropy' condEntropy marginalSnd; dsimp only
-  rw [show ∑ xy : α × β, (if pXY xy = 0 then (0:ℝ) else pXY xy * Real.log (pXY xy)) =
-      ∑ y : β, ∑ x : α, (if pXY (x, y) = 0 then (0:ℝ)
-        else pXY (x, y) * Real.log (pXY (x, y))) from by
-    rw [Fintype.sum_prod_type, Finset.sum_comm]]
-  simp_rw [hterm, Finset.sum_add_distrib, hmarg]
-  rw [show ∑ y : β, ∑ x : α, (if pXY (x, y) = 0 then (0:ℝ)
-      else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y)))) =
-      ∑ x : α, ∑ y : β, (if pXY (x, y) = 0 then (0:ℝ)
-        else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y)))) from
-    Finset.sum_comm]
-  linarith
+  -- Step 3: Assembly
+  unfold shannonEntropy' condEntropy marginalSnd
+  dsimp only
+  -- Convert product-type sum to nested sum
+  conv_lhs =>
+    rw [show ∑ xy : α × β, (if pXY xy = 0 then (0 : ℝ)
+        else pXY xy * Real.log (pXY xy)) =
+        ∑ x : α, ∑ y : β, (if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y))) from Fintype.sum_prod_type _]
+  -- Apply the term splitting and distribute sums
+  simp_rw [hterm]
+  simp only [Finset.sum_add_distrib]
+  -- Swap sum order and apply marginal telescoping
+  rw [show ∑ x : α, ∑ y : β, (if pXY (x, y) = 0 then (0 : ℝ) else
+      pXY (x, y) * Real.log (∑ x', pXY (x', y))) =
+      ∑ y : β, (if (∑ x, pXY (x, y)) = 0 then 0 else
+      (∑ x, pXY (x, y)) * Real.log (∑ x, pXY (x, y))) from by
+    rw [Finset.sum_comm]; congr 1; ext y; exact hmarg y]
+  ring
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: Subadditivity from Chain Rule
@@ -242,18 +256,17 @@ theorem subadditivity {α β : Type*} [Fintype α] [Fintype β]
     shannonEntropy' pXY ≤
     shannonEntropy' (fun x => ∑ y : β, pXY (x, y)) +
     shannonEntropy' (marginalSnd pXY) := by
-  -- H(X,Y) = H(Y) + H(X|Y) by chain rule, and H(X|Y) ≤ H(X) by conditioning.
+  -- From chain rule: H(X,Y) = H(Y) + H(X|Y)
+  -- From conditioning reduces entropy: H(X|Y) ≤ H(X)
+  -- Combined: H(X,Y) ≤ H(Y) + H(X) = H(X) + H(Y)
   rw [entropy_chain_rule hp hsum]
-  suffices h : condEntropy pXY ≤ shannonEntropy' (fun x => ∑ y : β, pXY (x, y)) by linarith
-  -- Bridge: condEntropy and conditionalEntropy have identical definitions, as do
-  -- shannonEntropy' and shannonEntropy. Rewrite to use the main file's theorems.
-  have hce : condEntropy pXY = conditionalEntropy pXY := by
-    simp only [condEntropy, conditionalEntropy]
-  have hse : shannonEntropy' (fun x => ∑ y : β, pXY (x, y)) =
-      shannonEntropy (fun x => ∑ y : β, pXY (x, y)) := by
-    simp only [shannonEntropy', shannonEntropy]
-  rw [hce, hse]
-  exact conditioning_reduces_entropy hp hsum
+  -- Goal: H(Y) + H(X|Y) ≤ H(X) + H(Y)
+  -- shannonEntropy' = shannonEntropy and condEntropy = conditionalEntropy by def
+  -- Use conditioning_reduces_entropy from ShannonEntropy.lean
+  have hcond : condEntropy pXY ≤ shannonEntropy' (fun x => ∑ y : β, pXY (x, y)) := by
+    -- condEntropy and conditionalEntropy are definitionally equal, as are shannonEntropy' and shannonEntropy
+    exact conditioning_reduces_entropy hp hsum
+  linarith
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART V: Strong Subadditivity
@@ -283,49 +296,10 @@ theorem strong_subadditivity {α β γ : Type*}
     (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
     shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤
     shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ) := by
-  -- SSA is equivalent to: conditioning on more reduces entropy: H(X|Y,Z) ≤ H(X|Y).
-  -- We prove: H(XY) + H(YZ) - H(XYZ) - H(Y) ≥ 0 by showing this equals the
-  -- conditional mutual information I(X;Z|Y), which decomposes as a weighted
-  -- sum of MI terms, each ≥ 0 by mutual_info_nonneg.
-  --
-  -- Proof sketch: For each y with p(y) > 0, the conditional distribution
-  -- q_y(x,z) = p(x,y,z)/p(y) has non-negative mutual information.
-  -- The deficit = Σ_y p(y) * I(X;Z|Y=y) ≥ 0.
-  --
-  -- Implementation: We use the pointwise KL bound directly.
-  -- For p,q > 0: p*log(p/q) ≥ p - q.
-  -- The deficit = Σ_{xyz} [if p=0 then 0 else p*log(p*pY/(pXY*pYZ))]
-  -- Each nonzero term ≥ p - pXY*pYZ/pY, and these bounds sum to 1-1 = 0.
-  suffices h : 0 ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ) -
-      shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ) by linarith
-  -- Pointwise KL bound (reproved locally since it's private in ShannonEntropy.lean)
-  have kl_bound : ∀ (a b : ℝ), 0 < a → 0 < b → a * Real.log (a / b) ≥ a - b := by
-    intro a b ha hb
-    have h1 := Real.log_le_sub_one_of_pos (div_pos hb ha)
-    have h2 : a * Real.log (b / a) ≤ b - a :=
-      calc a * Real.log (b / a) ≤ a * (b / a - 1) :=
-            mul_le_mul_of_nonneg_left h1 (le_of_lt ha)
-        _ = b - a := by field_simp
-    have h3 : a * Real.log (a / b) = -(a * Real.log (b / a)) := by
-      rw [show Real.log (a / b) = -Real.log (b / a) from by
-        rw [Real.log_div (ne_of_gt ha) (ne_of_gt hb),
-            Real.log_div (ne_of_gt hb) (ne_of_gt ha)]; ring]; ring
-    linarith
-  -- Marginal positivity from joint positivity
-  have mxy_pos : ∀ x y z, 0 < pXYZ (x, y, z) → 0 < marginalXY pXYZ (x, y) := by
-    intro x y z hxyz; unfold marginalXY
-    exact lt_of_lt_of_le hxyz (single_le_sum (fun z' _ => hp (x, y, z')) (mem_univ z))
-  have myz_pos : ∀ x y z, 0 < pXYZ (x, y, z) → 0 < marginalYZ pXYZ (y, z) := by
-    intro x y z hxyz; unfold marginalYZ
-    exact lt_of_lt_of_le hxyz (single_le_sum (fun x' _ => hp (x', y, z)) (mem_univ x))
-  have my_pos : ∀ x y z, 0 < pXYZ (x, y, z) → 0 < marginalY_3 pXYZ y := by
-    intro x y z hxyz; unfold marginalY_3
-    exact lt_of_lt_of_le hxyz
-      (le_trans (single_le_sum (fun z' _ => hp (x, y, z')) (mem_univ z))
-        (single_le_sum (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (mem_univ x)))
-  -- Telescoping helper: Σ_z [if p(x,y,z)=0 then 0 else p(x,y,z)*C] = mxy(x,y)*C
-  -- when C doesn't depend on z, and all p ≥ 0
-  -- This converts marginal entropy sums to triple sums.
+  -- Express the deficit as conditional mutual information I(X;Z|Y):
+  -- I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y)
+  --           = Σ_y p(y) D(p(x,z|y) || p(x|y)·p(z|y))
+  --           ≥ 0 since D(·||·) ≥ 0 for each y.
   sorry
 
 -- ═══════════════════════════════════════════════════════════════

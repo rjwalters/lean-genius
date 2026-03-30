@@ -242,22 +242,29 @@ theorem exceptional_density_zero :
       (exceptionalCount X : ℝ) / X < ε := by
   intro ε hε
   obtain ⟨C, hC, hbound⟩ := gafni_tao_upper_bound
-  -- For large enough X, C/(log X)² < ε
+  -- Proof outline: choose N > exp(√(C/ε)) + 3.
+  -- For X ≥ N: log X > √(C/ε), so (log X)² > C/ε, so C/(log X)² < ε.
+  -- Then E(X)/X ≤ (C·X/(log X)²)/X = C/(log X)² < ε.
+  -- Requires: Real.log monotonicity, division by positive X, exp/log inverse.
   sorry
 
 /--
 **Most Gaps Contain Rough Numbers:**
-For most n, the interval (p_n, p_{n+1}) contains an integer whose
-smallest prime factor is at least the gap size.
+Non-exceptional indices + exceptional indices = total,
+so non-exceptional count ≥ total - exceptional count.
 -/
 theorem most_gaps_have_rough :
-    ∀ X : ℕ, X ≥ 10 →
-      (Finset.filter hasRoughNumberInGap (Finset.range X)).card >
+    ∀ X : ℕ,
+      (Finset.filter hasRoughNumberInGap (Finset.range X)).card ≥
       X - exceptionalCount X := by
-  intro X hX
-  simp [exceptionalCount]
-  -- Tautology from definitions
-  sorry
+  intro X
+  simp only [exceptionalCount, isExceptional]
+  have h : (Finset.filter hasRoughNumberInGap (Finset.range X)).card +
+    (Finset.filter (fun n => ¬hasRoughNumberInGap n) (Finset.range X)).card =
+    (Finset.range X).card :=
+    Finset.filter_card_add_filter_neg_card_eq_card
+  simp only [Finset.card_range] at h
+  omega
 
 /-
 ## Part IX: Related Results

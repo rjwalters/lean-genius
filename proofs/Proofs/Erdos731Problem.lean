@@ -41,6 +41,28 @@ noncomputable def leastNonDivisor (m : ℕ) : ℕ :=
 noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
   leastNonDivisor (centralBinom n)
 
+/-- C(2n, n) > 0 for all n. -/
+theorem centralBinom_pos (n : ℕ) : 0 < centralBinom n := by
+  unfold centralBinom; exact Nat.choose_pos (by omega)
+
+/-- C(0, 0) = 1. -/
+theorem centralBinom_zero : centralBinom 0 = 1 := by native_decide
+
+/-- C(2, 1) = 2. -/
+theorem centralBinom_one : centralBinom 1 = 2 := by native_decide
+
+/-- C(4, 2) = 6. -/
+theorem centralBinom_two : centralBinom 2 = 6 := by native_decide
+
+/-- C(6, 3) = 20. -/
+theorem centralBinom_three : centralBinom 3 = 20 := by native_decide
+
+/-- C(8, 4) = 70. -/
+theorem centralBinom_four : centralBinom 4 = 70 := by native_decide
+
+/-- C(10, 5) = 252. -/
+theorem centralBinom_five : centralBinom 5 = 252 := by native_decide
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
@@ -137,6 +159,21 @@ theorem bertrand_central (n : ℕ) (hn : n ≥ 1) :
   have h2n : 2 * n = n + n := by omega
   rw [h2n]
   exact hp.dvd_choose_add hnp hnp (by omega)
+
+/-- A prime larger than 2n does not divide C(2n, n).
+    Proof: C(2n,n) · n! · n! = (2n)!, so C(2n,n) | (2n)!.
+    But primes > 2n do not divide (2n)! (Legendre). -/
+theorem prime_gt_not_dvd_central {p n : ℕ} (hp : Nat.Prime p) (hpn : 2 * n < p) :
+    ¬(p ∣ centralBinom n) := by
+  unfold centralBinom
+  intro hd
+  have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at hfact
+  have hdvd_fact : p ∣ (2 * n).factorial := by
+    have h1 : p ∣ Nat.choose (2 * n) n * n.factorial * n.factorial :=
+      dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hd _) _
+    rwa [hfact] at h1
+  exact absurd (hp.dvd_factorial.mp hdvd_fact) (by omega)
 
 /-- The central binomial satisfies C(2n, n) ≥ 4^n / (2n+1) for n ≥ 0.
     Proof: Σ_{k=0}^{2n} C(2n,k) = 4^n (binomial theorem). This sum has 2n+1

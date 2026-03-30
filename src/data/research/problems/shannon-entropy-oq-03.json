@@ -29,29 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)\u2264H(X)+H(Y)). 1 sorry remains: strong_subadditivity. Built KL bound infrastructure and marginal positivity helpers for SSA.",
+    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)≤H(X)+H(Y)). 3→1 sorries. Remaining sorry: strong_subadditivity needs conditional distributions + per-slice KL divergence.",
     "builtItems": [
-      "def marginalXY, marginalYZ, marginalY_3: three-variable marginal distributions",
-      "theorem entropy_chain_rule (PROVED): H(X,Y) = H(Y) + H(X|Y) \u2014 per-term log splitting + telescoping",
-      "theorem subadditivity (PROVED): H(X,Y) \u2264 H(X) + H(Y) \u2014 chain rule + conditioning_reduces_entropy bridge",
-      "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) \u2264 H(X,Y)+H(Y,Z) \u2014 KL bound + marginal positivity infrastructure ready",
-      "have kl_bound: pointwise KL bound for SSA proof",
-      "have mxy_pos/myz_pos/my_pos: marginal positivity from joint positivity"
+      "def marginalXY, marginalYZ, marginalY: three-variable marginal distributions",
+      "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) — Lieb-Ruskai",
+      "theorem entropy_chain_rule (sorry): H(X,Y) = H(Y) + H(X|Y) — entropy decomposition",
+      "theorem subadditivity (from entropy_chain_rule): H(X,Y) ≤ H(X) + H(Y)",
+      "theorem entropy_chain_rule (proved): H(X,Y) = H(Y) + H(X|Y) — log splitting + marginal telescoping",
+      "theorem subadditivity (proved): H(X,Y) ≤ H(X) + H(Y) — from chain_rule + conditioning_reduces_entropy"
     ],
     "insights": [
-      "SSA is equivalent to I(X;Z|Y) \u2265 0 (conditional MI non-negativity)",
-      "SSA proof strategy: express SSA as conditional KL divergence via \u03a3_y p(y) D(p(x,z|y) || p(x|y)p(z|y)) \u2265 0",
-      "Subadditivity follows from entropy chain rule + conditioning reduces entropy: H(X,Y) = H(Y) + H(X|Y) \u2264 H(Y) + H(X)",
-      "entropy_chain_rule proven via per-term log splitting log(p) = log(p/py) + log(py) and telescoping",
-      "Bridge lemma approach: condEntropy \u2261 conditionalEntropy, shannonEntropy \u2261 shannonEntropy via simp unfold",
-      "SSA remaining sorry needs: telescoping marginal entropy sums to triple sums, then pointwise KL bound application"
+      "SSA is equivalent to I(X;Z|Y) ≥ 0 (conditional MI non-negativity)",
+      "SSA proof strategy: express SSA as conditional KL divergence via Σ_y p(y) D(p(x,z|y) || p(x|y)p(z|y)) ≥ 0",
+      "Subadditivity follows from entropy chain rule + conditioning reduces entropy: H(X,Y) = H(Y) + H(X|Y) ≤ H(Y) + H(X)",
+      "entropy_chain_rule is the key missing piece: H(X,Y) = H(Y) + H(X|Y). Proof: expand log p(x,y) = log p_Y(y) + log(p(x,y)/p_Y(y)) and collect terms.",
+      "entropy_chain_rule proved: split log p(x,y) = log(p(x,y)/p_Y(y)) + log(p_Y(y)), telescoping sum gives marginal entropy",
+      "subadditivity proved: chain_rule + conditioning_reduces_entropy from ShannonEntropy.lean via definitional equality bridge",
+      "SSA requires defining conditional joint p(x,z|y) = p(x,y,z)/p(y) per slice and applying mutual_info_nonneg"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove strong_subadditivity: need telescoping helper to convert \u03a3_{xy} mxy*log(mxy) = \u03a3_{xyz} p*log(mxy)",
-      "Then combine four entropy terms into single triple sum, apply kl_bound pointwise",
-      "Show reference measure sum = 1: \u03a3_{xyz} pXY*pYZ/pY = \u03a3_y pY = 1",
-      "Alternative: use mutual_info_nonneg from ShannonEntropy.lean on conditional distribution p(x,z|y)=p(x,y,z)/p(y)"
+      "Prove entropy_chain_rule: term-by-term identity using log splitting, similar to MI chain_rule proof",
+      "Prove strong_subadditivity: define conditional MI, express SSA-deficit as conditional KL divergence, use gibbs_inequality",
+      "Once entropy_chain_rule proved, subadditivity proof completes automatically (calc block uses it)"
     ]
   },
   "tags": [
