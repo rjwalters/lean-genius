@@ -1,0 +1,95 @@
+{
+  "id": "mathematical-induction-oq-05",
+  "title": "Universal Fintype Induction Principle",
+  "slug": "mathematical-induction-oq-05",
+  "description": "A unified framework for 'induction on size' for all finite mathematical objects. Well-founded induction on any measure function f : α → ℕ provides a universal induction principle that recovers Finset.induction, List.induction, and structural induction on graphs, matroids, etc. as special cases.",
+  "meta": {
+    "status": "verified",
+    "proofRepoPath": "Proofs/MathematicalInductionOQ05.lean",
+    "tags": [
+      "foundations",
+      "induction",
+      "fintype",
+      "well-founded",
+      "framework"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems are fully proved using Lean's built-in well-founded induction.",
+    "dateAdded": "2026-03-30",
+    "lineCount": 130,
+    "mathlibDependencies": [
+      {
+        "theorem": "WellFounded.induction",
+        "description": "Well-founded induction principle",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Structural induction on data types (lists, trees, Finsets) is well-established in type theory. The question is whether a single principle can unify induction across all finite mathematical structures — graphs, matroids, polytopes, etc. The answer is yes: well-founded induction on any measure function provides the general framework.",
+    "problemStatement": "Can a unified framework formalize 'induction on size' for all finite mathematical objects via a universal Fintype induction principle?",
+    "text": "Yes. Well-founded induction on any measure function f : α → ℕ gives a universal induction principle. For Finsets, use card; for lists, use length; for graphs, use vertex count.",
+    "proofStrategy": "Show that `WellFounded.induction` on the inverse image of `<` under any measure `f : α → ℕ` provides induction for arbitrary types. Then demonstrate recovering Finset.induction as a special case.",
+    "keyInsights": [
+      "Any function f : α → ℕ gives well-founded induction via InvImage.wf",
+      "Finset.induction is the special case where f = Finset.card",
+      "The framework extends to any finite mathematical structure with a notion of 'size'",
+      "Lean's WellFoundedRelation typeclass makes this generic"
+    ],
+    "prerequisites": [
+      "Type theory (well-founded relations)",
+      "Basic set theory (Finsets, cardinality)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "universal-induction",
+      "title": "Universal Fintype Induction",
+      "startLine": 30,
+      "endLine": 55,
+      "summary": "Well-founded induction on cardinality for all Fintype instances."
+    },
+    {
+      "id": "finset-recovery",
+      "title": "Recovering Finset Induction",
+      "startLine": 57,
+      "endLine": 75,
+      "summary": "Finset.induction as a special case of cardinality induction."
+    },
+    {
+      "id": "measure-induction",
+      "title": "Measure-Based Induction",
+      "startLine": 100,
+      "endLine": 130,
+      "summary": "The general pattern: any f : α → ℕ gives an induction principle."
+    }
+  ],
+  "conclusion": {
+    "text": "Well-founded induction on measure functions provides a universal framework for induction on finite mathematical objects. The specific measure depends on the structure, but the principle is the same: InvImage.wf lifts well-foundedness of < on ℕ to any type.",
+    "opens": [],
+    "implications": "Any formalization involving finite structures can use this pattern."
+  },
+  "crossReferences": [
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "extends",
+      "description": "Generalizes the parent's induction principles to all finite mathematical structures"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "measure_induction",
+      "type": "core",
+      "statement": "∀ (f : α → ℕ) (P : α → Prop), (∀ x, (∀ y, f y < f x → P y) → P x) → ∀ x, P x",
+      "description": "Universal measure-based induction.",
+      "significance": "Answers OQ-05 affirmatively"
+    }
+  ]
+}
