@@ -1,0 +1,47 @@
+{
+  "id": "prime-reciprocal-divergence-oq-03",
+  "title": "Erdős's Elementary Proof of Prime Divergence",
+  "slug": "prime-reciprocal-divergence-oq-03",
+  "description": "Erdős's elementary proof that there are infinitely many primes via smooth number counting, without analytic infrastructure.",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_theorem#Erdős's_proof",
+    "date": "1938",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
+    "tags": ["number-theory", "primes", "combinatorics", "erdos", "elementary"],
+    "badge": "formalized",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {"theorem": "Nat.Prime", "description": "Prime number predicate", "module": "Mathlib.Data.Nat.Prime.Basic"},
+      {"theorem": "Finset", "description": "Finite sets for counting", "module": "Mathlib.Data.Finset.Basic"}
+    ],
+    "originalContributions": [
+      "Smooth number definition and counting framework",
+      "Proof that infinitely many primes exist via smooth number bound",
+      "Alternative proof path avoiding Mathlib's analytic machinery"
+    ],
+    "dateAdded": "2026-03-30",
+    "leanFile": {"lineCount": 220, "structures": 0, "axioms": 0, "theorems": 5, "definitions": 4, "instances": 0},
+    "axiomCount": 0,
+    "lineCount": 220,
+    "assumptions": "0 axioms. 2 sorries (smooth_count_bound, multiples_count).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős developed this elementary proof as part of his program to find 'proofs from THE BOOK' — the simplest possible proofs of fundamental results.",
+    "problemStatement": "Prove that there are infinitely many primes using only combinatorial counting, without real analysis.",
+    "text": "Elementary proof of infinitely many primes via smooth number counting.",
+    "proofStrategy": "By contradiction: if all primes ≤ N, then every integer is N-smooth. But smooth numbers up to n are bounded by √n · 2^{π(N)}, which is < n for large n.",
+    "keyInsights": [
+      "Any N-smooth integer k = m²·s with m ≤ √n and s squarefree with factors ≤ N",
+      "At most √n · 2^{π(N)} smooth numbers up to n",
+      "Contradiction for n > (2^{π(N)+1})²"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős's combinatorial proof of infinitely many primes is formalized. The proof depends on 2 sorry'd lemmas (smooth counting bound, multiples counting).",
+    "openQuestions": ["Can smooth_count_bound be proved by constructing the explicit (m,S) injection?"]
+  },
+  "crossReferences": [{"relationship": "Alternative proof to the analytic approach", "sharedConcepts": ["primes", "divergence"], "targetId": "prime-reciprocal-divergence"}]
+}
