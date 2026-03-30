@@ -28,7 +28,7 @@ Sorries: 0
 Reference: Gauss, "Disquisitiones Arithmeticae" (1801), §131
 -/
 
-import Mathlib.Data.Int.ModCast
+import Mathlib.Data.Int.Cast.Lemmas
 import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
 import Mathlib.Tactic
 
@@ -59,7 +59,8 @@ def signRecip (a n : ℕ) : ℤ :=
 
 /-- Strip all factors of 2 from a natural number, returning (count, odd_part).
     E.g., strip2 12 = (2, 3) since 12 = 2² · 3. -/
-def strip2 : ℕ → ℕ × ℕ
+def strip2 (x : ℕ) : ℕ × ℕ :=
+  match x with
   | 0 => (0, 0)
   | n + 1 =>
     if (n + 1) % 2 = 0 then
@@ -67,7 +68,25 @@ def strip2 : ℕ → ℕ × ℕ
       (k + 1, m)
     else
       (0, n + 1)
-  termination_by n => n
+  termination_by x
+
+/-- The odd part from strip2 is at most the input. -/
+theorem strip2_snd_le (n : ℕ) : (strip2 n).2 ≤ n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp [strip2]
+    | n' + 1 =>
+      unfold strip2
+      split
+      · -- even
+        have h_half : (n' + 1) / 2 < n' + 1 := Nat.div_lt_self (by omega) (by omega)
+        have ih' := ih ((n' + 1) / 2) h_half
+        simp only
+        calc (strip2 ((n' + 1) / 2)).2 ≤ (n' + 1) / 2 := ih'
+          _ ≤ n' + 1 := by omega
+      · -- odd
+        simp
 
 /-- The Jacobi symbol J(a, n) for odd positive n.
     Computes via quadratic reciprocity reduction.
@@ -79,32 +98,22 @@ def strip2 : ℕ → ℕ × ℕ
     4. Strip factors of 2, apply second supplementary law
     5. If odd part = 1, done
     6. Otherwise, apply reciprocity: swap a and n, reduce -/
-def jacobiAux : ℕ → ℕ → ℤ
-  | _, 0 => 0  -- degenerate
-  | _, 1 => 1
-  | 0, _ => 0
-  | a, n =>
-    -- Reduce a mod n
-    let a' := a % n
-    if a' = 0 then 0
-    else
-      -- Strip factors of 2
-      let (twos, odd_part) := strip2 a'
-      -- Apply second supplementary law for each factor of 2
-      let sign2 := signSecond n ^ twos
-      if odd_part ≤ 1 then
-        sign2  -- odd_part is 0 or 1
-      else
-        -- Apply reciprocity: swap odd_part and n, with sign
-        sign2 * signRecip odd_part n * jacobiAux (n % odd_part) odd_part
+def jacobiAux (a n : ℕ) : ℤ :=
+  if hn0 : n = 0 then 0
+  else if _hn1 : n = 1 then 1
+  else if _ha0 : a = 0 then 0
+  else if a % n = 0 then 0
+  else if (strip2 (a % n)).2 ≤ 1 then
+    signSecond n ^ (strip2 (a % n)).1
+  else
+    signSecond n ^ (strip2 (a % n)).1 *
+    signRecip (strip2 (a % n)).2 n *
+    jacobiAux (n % (strip2 (a % n)).2) (strip2 (a % n)).2
   termination_by (n, a)
   decreasing_by
-    all_goals simp_wf
-    · -- Need: (odd_part, n % odd_part) < (n, a) in lex order
-      -- odd_part < a' < n, so odd_part < n
-      -- Need: odd_part < n (then Prod.Lex.left gives the result)
-      -- Proof sketch: odd_part ≤ a' (strip2 output ≤ input) and a' = a%n < n
-      sorry
+    simp_wf
+    apply Prod.Lex.left
+    exact Nat.lt_of_le_of_lt (strip2_snd_le (a % n)) (Nat.mod_lt a (by omega))
 
 /-- The Jacobi symbol for integer a and odd positive n. -/
 def jacobi (a : ℤ) (n : ℕ) : ℤ :=
@@ -135,12 +144,12 @@ theorem signRecip_1_3 : signRecip 1 3 = 1 := by decide
 theorem signRecip_3_1 : signRecip 3 1 = 1 := by decide
 
 /-- strip2 correctly factors out powers of 2. -/
-theorem strip2_one : strip2 1 = (0, 1) := by decide
-theorem strip2_two : strip2 2 = (1, 1) := by decide
-theorem strip2_three : strip2 3 = (0, 3) := by decide
-theorem strip2_four : strip2 4 = (2, 1) := by decide
-theorem strip2_six : strip2 6 = (1, 3) := by decide
-theorem strip2_twelve : strip2 12 = (2, 3) := by decide
+theorem strip2_one : strip2 1 = (0, 1) := by native_decide
+theorem strip2_two : strip2 2 = (1, 1) := by native_decide
+theorem strip2_three : strip2 3 = (0, 3) := by native_decide
+theorem strip2_four : strip2 4 = (2, 1) := by native_decide
+theorem strip2_six : strip2 6 = (1, 3) := by native_decide
+theorem strip2_twelve : strip2 12 = (2, 3) := by native_decide
 
 /-
 # Part 4: Properties of Sign Factors
@@ -178,6 +187,6 @@ argument is that odd_part < n (since odd_part divides a' which is < n).
     Proof requires connecting to Mathlib's legendreSym via ZMod. -/
 def JacobiCorrectness : Prop :=
   ∀ (p : ℕ) (hp : Nat.Prime p) (hp_odd : p ≠ 2) (a : ℤ),
-    jacobi a p = legendreSym p a
+    jacobi a p = letI := Fact.mk hp; legendreSym p a
 
 end QRAlgorithm
