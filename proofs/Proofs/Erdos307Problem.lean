@@ -371,34 +371,12 @@ theorem no_size_two_solution :
   linarith
 
 /-- No solution with |P| = 2 and |Q| = 3 exists among primes.
-    PROVED: for 3 distinct primes, sum ≤ 1/2+1/3+1/5 = 31/30.
-    Product ≤ (5/6)(31/30) = 31/36 < 1. -/
+    Product ≤ (5/6)(31/30) = 31/36 < 1.
+    Needs tight bound: for 3 distinct primes, sum ≤ 31/30 (requires showing 3rd prime ≥ 5). -/
 theorem no_two_three_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 3 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
       reciprocalProduct P Q = 1 := by
-  intro ⟨P, Q, hP2, hQ3, hPprime, hQprime, hprod⟩
-  have hP_le := reciprocal_sum_two_primes_le hP2 hPprime
-  -- For 3 distinct primes: each ≥ 2, so sum ≤ 3/2 (crude but sufficient)
-  have hQ_le : reciprocalSum Q ≤ 31 / 30 := by
-    -- Each element of Q is prime ≥ 2, so each reciprocal ≤ 1/2.
-    -- With 3 elements: sum ≤ 3 · (1/2) = 3/2.
-    -- Tighter: smallest 3 distinct primes are 2,3,5 giving 31/30.
-    -- We use the crude bound: 3 · (1/2) = 3/2
-    have : reciprocalSum Q ≤ ∑ _ in Q, (2 : ℚ)⁻¹ := by
-      apply Finset.sum_le_sum
-      intro p hp
-      exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast (hQprime p hp).two_le)
-    simp [Finset.sum_const, hQ3] at this
-    linarith
-  have : reciprocalProduct P Q ≤ (5 / 6) * (3 / 2) := by
-    unfold reciprocalProduct
-    apply mul_le_mul hP_le (le_trans hQ_le (by norm_num : (31 : ℚ) / 30 ≤ 3 / 2))
-    · exact Finset.sum_nonneg (fun i _ => inv_nonneg.mpr (Nat.cast_nonneg i))
-    · norm_num
-  have : reciprocalProduct P Q ≤ 5 / 4 := by linarith
-  -- Wait, 5/6 * 3/2 = 5/4 > 1. The crude bound isn't tight enough.
-  -- Use the tighter bound: sum ≤ 31/30, product ≤ 5/6 * 31/30 = 155/180 = 31/36 < 1
   sorry
 
 /- ## Part XII: Summary -/
