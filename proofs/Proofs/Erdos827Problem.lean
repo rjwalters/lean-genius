@@ -13,10 +13,11 @@ The problem asks to determine n_k more precisely.
 
 Reference: https://erdosproblems.com/827
 
-Axioms: 5 (minimalNk, minimalNk_valid, minimalNk_sharp,
-  martinez_roldan_pensado, nk_three)
+Axioms: 4 (minimalNk, minimalNk_valid, minimalNk_sharp,
+  martinez_roldan_pensado)
 Proved: nk_monotone (from valid + sharp + subset argument),
-  nk_ge_k (from valid + parabola GP construction)
+  nk_ge_k (from valid + parabola GP construction),
+  nk_three (from valid + sharp + vacuous AllDistinctCircumradii for 3-sets)
 Sorries: 0
 -/
 
@@ -105,9 +106,52 @@ axiom martinez_roldan_pensado : MartinezBound
 
 /- ## Trivial Cases -/
 
+/-- AllDistinctCircumradii is vacuously true for 3-element sets:
+    there is only one unordered triple, so the "distinct triples"
+    hypothesis is never satisfied. -/
+theorem allDistinctCircumradii_of_card_three {T : Finset Point} (hT : T.card = 3) :
+    AllDistinctCircumradii T := by
+  intro p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂
+    hpq₁ hqr₁ hpr₁ hpq₂ hqr₂ hpr₂ hneq
+  exfalso; apply hneq
+  -- Both {p₁,q₁,r₁} and {p₂,q₂,r₂} are 3-distinct-element subsets of T
+  -- Since |T| = 3, each must equal T, so they're equal
+  have mk_eq : ∀ (a b c : Point), a ∈ T → b ∈ T → c ∈ T →
+      a ≠ b → b ≠ c → a ≠ c → ({a, b, c} : Finset Point) = T := by
+    intro a b c ha hb hc hab hbc hac
+    apply Finset.Subset.antisymm
+    · intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl <;> assumption
+    · intro x hx; by_contra hxnot
+      have hsub : ({a, b, c} : Finset Point) ⊆ T := by
+        intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+        rcases hy with rfl | rfl | rfl <;> assumption
+      have hcard : ({a, b, c} : Finset Point).card = 3 := by
+        rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+            Finset.card_singleton]
+        · exact Finset.not_mem_singleton.mpr hbc
+        · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨hab, hac⟩
+      have := Finset.card_lt_card (show ({a, b, c} : Finset Point) ⊂ T from
+        ⟨hsub, fun h => hxnot (h hx)⟩)
+      omega
+  exact (mk_eq p₁ q₁ r₁ hp₁ hq₁ hr₁ hpq₁ hqr₁ hpr₁).trans
+        (mk_eq p₂ q₂ r₂ hp₂ hq₂ hr₂ hpq₂ hqr₂ hpr₂).symm
+
 /-- For k = 3, any 3 points in general position form a triangle with
-    exactly one circumradius, so n_3 = 3. -/
-axiom nk_three : minimalNk 3 = 3
+    exactly one circumradius, so n_3 = 3.
+
+    Proof: nk_ge_k gives 3 ≤ minimalNk 3. For the upper bound, if
+    minimalNk 3 > 3 then minimalNk_sharp gives a GP set of size ≥ 3
+    with no good 3-subset. But any 3-element subset has
+    AllDistinctCircumradii vacuously (only one triple). Contradiction. -/
+theorem nk_three : minimalNk 3 = 3 := by
+  have hge := nk_ge_k 3 (by omega)
+  suffices h : minimalNk 3 ≤ 3 by omega
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨S, hGP, hCard, hBad⟩ := minimalNk_sharp 3 (by omega)
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 (by omega)
+  exact hBad ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
 
 /-- n_k is monotone non-decreasing.
 

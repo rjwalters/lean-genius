@@ -405,6 +405,17 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   -- Contradiction: muPosDeg F < muPosDeg F + ε ≤ muPosDeg F
   exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
+/-- When transfinite diameter < 1, corrected μ(F) > 0.
+    Proof sketch: by `small_diameter_disc`, every sublevel set of a degree ≥ 1
+    polynomial contains a ball of radius ≥ c > 0, so sublevelMeasure p ≥
+    volume(ball z₀ c) > 0 uniformly. Hence the infimum muPosDeg F ≥
+    volume(ball 0 c) > 0. -/
+theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
+    (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
+  -- From small_diameter_disc: ∃ c > 0 s.t. every degree > 0 poly's sublevel set
+  -- contains a ball of radius ≥ c. Measure of that ball > 0, giving uniform lower bound.
+  sorry
+
 /-
 ## The Open Question
 -/

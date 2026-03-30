@@ -41,6 +41,7 @@
   },
   "conclusion": {
     "summary": "Erdős's combinatorial proof of infinitely many primes is formalized. The proof depends on 2 sorry'd lemmas (smooth counting bound, multiples counting).",
+    "implications": "Demonstrates that the combinatorial core of Erdős's Σ1/p divergence proof can be formalized without any analytic machinery, complementing the parent proof's Mathlib-based approach.",
     "openQuestions": ["Can smooth_count_bound be proved by constructing the explicit (m,S) injection?"]
   },
   "sections": [
