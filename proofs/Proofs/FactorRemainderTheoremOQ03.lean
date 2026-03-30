@@ -2,6 +2,7 @@ import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.Polynomial.FieldDivision
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Algebra.MvPolynomial.Basic
+import Mathlib.RingTheory.Ideal.Basic
 import Mathlib.Tactic
 
 /-
@@ -23,12 +24,18 @@ The univariate Factor Theorem says: `f(a) = 0 ↔ (X - C a) ∣ f`.
 The Nullstellensatz generalizes this to systems of multivariate polynomials:
 a system `f₁ = ⋯ = fₘ = 0` has no solution iff 1 is in the ideal `(f₁,...,fₘ)`.
 
+4. Defines **multivariate zero loci and vanishing ideals** for `MvPolynomial`
+   and proves the V-I Galois connection and idempotence properties.
+
 ## Status
 - [x] Univariate weak Nullstellensatz (from IsAlgClosed)
 - [x] Factor Theorem as ideal membership
 - [x] Root count upper bound (from degree)
 - [x] Nonconstant polynomials are not units
-- [ ] Multivariate Nullstellensatz (formalization target for future work)
+- [x] Multivariate zeroLocus and vanishingIdeal definitions
+- [x] Galois connection: S ⊆ V(I(S)), S ⊆ I(V(S))
+- [x] Idempotence: V(I(V(S))) = V(S) and I(V(I(W))) = I(W)
+- [ ] Multivariate weak Nullstellensatz proof (requires Jacobson ring theory)
 
 ## Mathlib Dependencies
 - `IsAlgClosed.exists_root` : nonconstant polynomials have roots
@@ -144,7 +151,113 @@ Formalizing Levels 2-4 in Lean would require:
 -/
 
 -- ============================================================
--- PART 5: Numerical Examples
+-- PART 5: Multivariate Zero Loci and Vanishing Ideals
+-- ============================================================
+-- The Nullstellensatz connects two operations that form a Galois connection:
+--   V : Ideals → Sets (zero locus: points where all polynomials in I vanish)
+--   I : Sets → Ideals (vanishing ideal: polynomials vanishing on all points in S)
+
+namespace Nullstellensatz
+
+open MvPolynomial
+
+variable {σ : Type*} {k : Type*} [CommRing k]
+
+/-- The **zero locus** of a set of multivariate polynomials: the set of points
+where every polynomial in the set evaluates to zero.
+
+V(S) = { v : σ → k | ∀ f ∈ S, eval v f = 0 }
+
+This is the fundamental geometric object in algebraic geometry. -/
+def zeroLocus (S : Set (MvPolynomial σ k)) : Set (σ → k) :=
+  { v | ∀ f ∈ S, MvPolynomial.eval v f = 0 }
+
+/-- The **vanishing ideal** of a set of points: the set of polynomials
+that evaluate to zero at every point in the set.
+
+I(W) = { f : MvPolynomial σ k | ∀ v ∈ W, eval v f = 0 }
+
+This is an ideal of the polynomial ring (closure under +, ·, and 0 follows
+from eval being a ring homomorphism). -/
+def vanishingIdeal (W : Set (σ → k)) : Ideal (MvPolynomial σ k) where
+  carrier := { f | ∀ v ∈ W, MvPolynomial.eval v f = 0 }
+  add_mem' {a b} ha hb := fun v hv => by
+    rw [map_add, ha v hv, hb v hv, add_zero]
+  zero_mem' := fun v _ => map_zero (MvPolynomial.eval v)
+  smul_mem' c {f} hf := fun v hv => by
+    change MvPolynomial.eval v (c * f) = 0
+    rw [map_mul, hf v hv, mul_zero]
+
+/-- Zero locus is antimonotone: more polynomials means fewer common zeros. -/
+theorem zeroLocus_antimono {S T : Set (MvPolynomial σ k)} (h : S ⊆ T) :
+    zeroLocus T ⊆ zeroLocus S :=
+  fun _ hv f hf => hv f (h hf)
+
+/-- Vanishing ideal is antimonotone: more points means fewer common vanishing polynomials. -/
+theorem vanishingIdeal_antimono {W₁ W₂ : Set (σ → k)} (h : W₁ ⊆ W₂) :
+    vanishingIdeal W₂ ≤ vanishingIdeal W₁ :=
+  fun _ hf v hv => hf v (h hv)
+
+/-- **Galois connection (V ∘ I direction)**: Every point set is contained in the
+zero locus of its vanishing ideal. S ⊆ V(I(S)). -/
+theorem subset_zeroLocus_vanishingIdeal (W : Set (σ → k)) :
+    W ⊆ zeroLocus (vanishingIdeal W : Ideal (MvPolynomial σ k)) :=
+  fun v hv f hf => hf v hv
+
+/-- **Galois connection (I ∘ V direction)**: Every polynomial set is contained in the
+vanishing ideal of its zero locus. S ⊆ I(V(S)). -/
+theorem subset_vanishingIdeal_zeroLocus (S : Set (MvPolynomial σ k)) :
+    S ⊆ (vanishingIdeal (zeroLocus S) : Ideal (MvPolynomial σ k)) :=
+  fun f hf v hv => hv f hf
+
+/-- The vanishing ideal of the empty set is the whole ring: every polynomial
+vacuously vanishes on the empty set. I(∅) = k[x₁,...,xₙ]. -/
+theorem vanishingIdeal_empty :
+    vanishingIdeal (∅ : Set (σ → k)) = ⊤ := by
+  ext f
+  constructor
+  · intro _; exact Submodule.mem_top
+  · intro _ v hv; exact absurd hv (Set.not_mem_empty v)
+
+/-- The zero locus of a single polynomial is its vanishing set. -/
+theorem zeroLocus_singleton (f : MvPolynomial σ k) :
+    zeroLocus {f} = { v | MvPolynomial.eval v f = 0 } := by
+  ext v; simp [zeroLocus]
+
+/-- The zero locus distributes over unions: V(S ∪ T) = V(S) ∩ V(T).
+More equations means more constraints, so the solution set shrinks. -/
+theorem zeroLocus_union (S T : Set (MvPolynomial σ k)) :
+    zeroLocus (S ∪ T) = zeroLocus S ∩ zeroLocus T := by
+  ext v
+  simp only [zeroLocus, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_union]
+  exact ⟨fun h => ⟨fun f hf => h f (Or.inl hf), fun f hf => h f (Or.inr hf)⟩,
+         fun ⟨hs, ht⟩ f hf => hf.elim (hs f) (ht f)⟩
+
+/-- Idempotence: V(I(V(S))) = V(S). Applying the Galois connection twice
+on the geometric side returns to the original zero locus. -/
+theorem zeroLocus_vanishingIdeal_zeroLocus (S : Set (MvPolynomial σ k)) :
+    zeroLocus (vanishingIdeal (zeroLocus S) : Ideal (MvPolynomial σ k)) = zeroLocus S := by
+  apply Set.eq_of_subset_of_subset
+  · intro v hv f hf
+    exact hv f (subset_vanishingIdeal_zeroLocus S hf)
+  · exact subset_zeroLocus_vanishingIdeal (zeroLocus S)
+
+/-- Idempotence: I(V(I(W))) = I(W). Applying the Galois connection twice
+on the algebraic side returns to the original vanishing ideal.
+
+Note: the strong Nullstellensatz says I(V(J)) = √J in general, but
+I(V(I(W))) = I(W) always holds without the radical. -/
+theorem vanishingIdeal_zeroLocus_vanishingIdeal (W : Set (σ → k)) :
+    vanishingIdeal (zeroLocus (vanishingIdeal W : Ideal (MvPolynomial σ k))) =
+      vanishingIdeal W := by
+  apply le_antisymm
+  · exact vanishingIdeal_antimono (subset_zeroLocus_vanishingIdeal W)
+  · exact subset_vanishingIdeal_zeroLocus (vanishingIdeal W : Ideal (MvPolynomial σ k))
+
+end Nullstellensatz
+
+-- ============================================================
+-- PART 6: Numerical Examples
 -- ============================================================
 
 /-- Example: x² - 1 has roots ±1 in any field (char ≠ 2).
@@ -167,3 +280,7 @@ example : ¬(X ^ 2 + 1 : ℚ[X]).IsRoot (-1) := by decide
 #check @exists_linear_factor
 #check @root_count_le_degree
 #check @nonconstant_not_unit
+#check @Nullstellensatz.zeroLocus
+#check @Nullstellensatz.vanishingIdeal
+#check @Nullstellensatz.zeroLocus_vanishingIdeal_zeroLocus
+#check @Nullstellensatz.vanishingIdeal_zeroLocus_vanishingIdeal
