@@ -17,9 +17,9 @@
     ],
     "proofRepoPath": "Proofs/FundamentalTheoremCalculusStokes.lean",
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 2 sorries: (1) d^2=0 in 2D — Clairaut's theorem, needs bridge from Mathlib's iteratedFDeriv to concrete partial derivatives; (2) Green's theorem in Stokes form — full proof exists in GreensTheoremOQ01.lean.",
+    "assumptions": "0 axioms. 1 sorry: d^2=0 in 2D (Clairaut's theorem) — needs bridge from Mathlib's iteratedFDeriv to concrete partial derivatives. Green's theorem in Stokes form now proved via GreensTheoremOQ01.greens_theorem_concrete.",
     "mathlibDependencies": [
       {
         "theorem": "integral_eq_sub_of_hasDerivAt_of_le",
@@ -53,7 +53,7 @@
       "d^2 = 0 (Clairaut's theorem) stated for C^2 functions on R^2"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 345,
+    "lineCount": 365,
     "theoremCount": 11,
     "definitionCount": 8,
     "mathlib_version": "4.26.0"
@@ -215,7 +215,7 @@
       "intervalIntegral"
     ],
     "namespace": "GeneralizedStokes",
-    "lineCount": 345,
+    "lineCount": 365,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 8

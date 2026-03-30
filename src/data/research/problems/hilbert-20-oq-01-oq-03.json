@@ -29,13 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: All 7 axioms require microlocal analysis not available in Mathlib. No tractable proof path exists.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Eliminated 4 of 7 axioms in Hilbert20LocalSolvability.lean by concretizing BicharacteristicCurve as a structure. Proved elliptic_satisfies_psi and imSymbolAlongCurve_eq. 3 deep axioms remain (IsLocallySolvable, hormander_necessity, dencker_sufficiency).",
+    "builtItems": [
+      "Proved elliptic_satisfies_psi (was axiom) in Hilbert20LocalSolvability.lean:194",
+      "Proved imSymbolAlongCurve_eq (was axiom) in Hilbert20LocalSolvability.lean:123",
+      "Defined BicharacteristicCurve structure in Hilbert20LocalSolvability.lean:104",
+      "Defined imSymbolAlongCurve as concrete def in Hilbert20LocalSolvability.lean:116"
+    ],
     "insights": [
       "7 axioms all require microlocal analysis infrastructure not in Mathlib",
       "Condition (Psi) characterization (Dencker 2006) is the deepest result - needs FBI transform + bicharacteristic flow",
       "LinearPDO structure + MultiIndex + principal symbol defined but proofs fully axiomatized",
-      "No tractable axiom elimination path without microlocal analysis in Mathlib"
+      "No tractable axiom elimination path without microlocal analysis in Mathlib",
+      "Concretized BicharacteristicCurve from opaque axiom to structure with fields (x, ξ, ξ_ne_zero, symbol_vanishes)",
+      "Eliminated 4 axioms: BicharacteristicCurve, imSymbolAlongCurve, imSymbolAlongCurve_eq, elliptic_satisfies_psi",
+      "elliptic_satisfies_psi proved by contradiction: elliptic ⟹ symbol ≠ 0 for ξ ≠ 0, but BicharacteristicCurve requires symbol = 0",
+      "real_symbol_satisfies_psi proof updated to use concrete imSymbolAlongCurve definition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -77,9 +86,9 @@
     {
       "path": "Proofs/Hilbert20LocalSolvability.lean",
       "filename": "Hilbert20LocalSolvability.lean",
-      "lineCount": 190,
-      "theoremCount": 3,
-      "axiomCount": 7,
+      "lineCount": 209,
+      "theoremCount": 5,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
