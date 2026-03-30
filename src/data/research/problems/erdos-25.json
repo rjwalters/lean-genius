@@ -1,6 +1,6 @@
 {
   "slug": "erdos-25",
-  "title": "Erdős #25",
+  "title": "Erd\u0151s #25",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Eliminated logDensity_avoid_one_residue axiom (4\u21923 axioms). Proved via generalized weighted count for multiples + complement splitting.",
     "builtItems": [
       "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
       "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
@@ -55,7 +55,11 @@
       "Proved logDensity_mem_unit: d>=0 via ge_of_tendsto, d<=1 via limsup_le_limsup + harmonic ratio comparison",
       "Proved logDensity_unique via tendsto_nhds_unique in Erdos25Problem.lean",
       "PROVED finite_sieve_density_exists via exfalso (contradictory hypotheses, 4 lines)",
-      "REMOVED sieve_density_positive (false axiom, replaced with counterexample comment)"
+      "REMOVED sieve_density_positive (false axiom, replaced with counterexample comment)",
+      "Proved logDensity_avoid_one_residue: numbers not divisible by m have log density (m-1)/m",
+      "logWeightedCount_multiples: weighted count of multiples of m = (1/m) \u00b7 H_{\u230aN/m\u230b}",
+      "tendsto_log_div_m_div_log: log(\u230aN/m\u230b)/log(N) \u2192 1 (squeeze argument)",
+      "tendsto_harmonicSum_div_m_div_log: H_{\u230aN/m\u230b}/log(N) \u2192 1"
     ],
     "insights": [
       "The axiom logDensityRatio_bounded claiming ratio <= 1 for N >= 2 is mathematically incorrect since H_N/log N > 1 for all finite N",
@@ -65,12 +69,18 @@
       "The Problem file axiomatized logDensity separately from LogDensity files constructive HasLogDensity - unifying them eliminated 3 axioms at once",
       "d<=1 proof requires limsup comparison (not pointwise bound) because harmonicSum/log > 1 for all finite N",
       "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)",
-      "finite_sieve_density_exists hypothesis (∀ i≥N, seq_n i = seq_n N) contradicts StrictMono seq_n — axiom proved vacuously via exfalso+omega",
-      "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0"
+      "finite_sieve_density_exists hypothesis (\u2200 i\u2265N, seq_n i = seq_n N) contradicts StrictMono seq_n \u2014 axiom proved vacuously via exfalso+omega",
+      "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0",
+      "logDensity_avoid_one_residue follows from complement splitting: full set (density 1) minus multiples (density 1/m) = non-multiples (density (m-1)/m)",
+      "logWeightedCount_multiples generalizes logWeightedCount_evens via Nat.succ_div for divisibility case splits"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Prove naturalDensity_implies_logDensity: requires summation by parts / Abel summation (~100 lines)",
+      "Prove exists_logDensity_no_naturalDensity: requires explicit construction (~150 lines)",
+      "davenport_erdos: deep theorem, likely stays as axiom"
+    ],
+    "markdown": "# Erd\u0151s #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
