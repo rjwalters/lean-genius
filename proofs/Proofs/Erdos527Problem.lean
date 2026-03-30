@@ -66,19 +66,9 @@ def almostAllSigns (P : (ℕ → ℤ) → Prop) : Prop :=
 
 /- ## Classical Divergence Results -/
 
-/-- Divergence for almost all z (given almost all signs).
-When Σ|aₙ|² = ∞, the random series diverges at Lebesgue-a.e. point
-of the unit circle for a.e. sign choice. -/
-axiom divergence_typical (a : ℕ → ℝ) (hdiv : divergentSquares a) :
-    almostAllSigns (fun ε =>
-      ∀ᵐ z ∂(MeasureTheory.Measure.restrict volume unitCircle), ¬convergesAt a ε z)
+-- divergence_typical: removed (unused axiom — consequence of measure theory, not needed in main results)
 
-/-- Dvoretzky-Erdős (1959): If |aₙ| > c/√n for large n, the series
-diverges for ALL |z| = 1, almost surely. This shows the decay
-condition |aₙ| = o(1/√n) is sharp. -/
-axiom dvoretzky_erdos_1959 (a : ℕ → ℝ) (c : ℝ) (hc : c > 0)
-    (hlower : ∀ᶠ n in Filter.atTop, |a n| > c / Real.sqrt n) :
-    almostAllSigns (fun ε => ∀ z ∈ unitCircle, ¬convergesAt a ε z)
+-- dvoretzky_erdos_1959: removed (unused axiom — sharpness context, not referenced in proofs)
 
 /- ## The Main Result (Michelen-Sawhney 2025) -/
 
@@ -100,16 +90,9 @@ axiom hausdorff_dimension_one (a : ℕ → ℝ)
 
 /- ## Properties of the Convergence Set -/
 
-/-- The convergence set is uncountable -/
-axiom convergence_set_uncountable (a : ℕ → ℝ)
-    (hdiv : divergentSquares a) (hsmall : littleO_sqrt a) :
-    almostAllSigns (fun ε => Set.Countable (convergenceSet a ε)ᶜ → False)
+-- convergence_set_uncountable: removed (unused axiom — follows from hausdorff_dimension_one)
 
-/-- The convergence set has measure zero despite having full Hausdorff dimension -/
-axiom convergence_set_measure_zero (a : ℕ → ℝ)
-    (hdiv : divergentSquares a) (hsmall : littleO_sqrt a) :
-    almostAllSigns (fun ε =>
-      MeasureTheory.Measure.restrict volume (convergenceSet a ε) = 0)
+-- convergence_set_measure_zero: removed (unused axiom — measure-zero property not cited in summary theorems)
 
 /- ## Examples -/
 
@@ -117,18 +100,11 @@ axiom convergence_set_measure_zero (a : ℕ → ℝ)
 noncomputable def example_seq : ℕ → ℝ := fun n =>
   if n ≥ 2 then 1 / (Real.sqrt n * Real.log n) else 0
 
-/-- The canonical example satisfies both hypotheses -/
-axiom example_satisfies_conditions :
-    divergentSquares example_seq ∧ littleO_sqrt example_seq
+-- example_satisfies_conditions: removed (unused axiom — illustrative only, not used in any proof)
 
-/-- Example: aₙ = 1/√n does NOT satisfy |aₙ| = o(1/√n)
-(it is Θ(1/√n), not o(1/√n)) -/
-axiom boundary_example :
-    ¬littleO_sqrt (fun n => 1 / Real.sqrt n)
+-- boundary_example: removed (unused axiom — illustrative counterexample, not cited in any proof)
 
-/-- Example: aₙ = 1/n satisfies Σ|aₙ|² < ∞, so divergentSquares fails -/
-axiom summable_example :
-    ¬divergentSquares (fun n => (1 : ℝ) / n)
+-- summable_example: removed (unused axiom — illustrative counterexample, not cited in any proof)
 
 /- ## Summary -/
 
