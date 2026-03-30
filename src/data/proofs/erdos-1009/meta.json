@@ -39,6 +39,11 @@
         "theorem": "Sym2",
         "description": "Unordered pairs for edges",
         "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "CliqueFree.card_edgeFinset_le",
+        "description": "Turán bound: triangle-free graphs have at most n²/4 edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
       }
     ],
     "originalContributions": [
@@ -52,11 +57,12 @@
       "gyori_odd_n, gyori_even_n: refined parity-dependent bounds",
       "completeTripartite: explicit K_{a,b,c} construction",
       "sauer_counterexample axiom: K_{1,m,m} shows f(2) >= 1",
-      "exceeds_turan_has_triangle: corollary of Turán's theorem"
+      "exceeds_turan_has_triangle: corollary of Turán's theorem",
+      "turan_extremal PROVED: via Mathlib CliqueFree.card_edgeFinset_le (Turán bound), eliminating 1 axiom"
     ],
-    "axiomCount": 3,
-    "lineCount": 216,
-    "assumptions": "3 axioms: boundFunction (opaque function), gyori_bound (C²-bound on f(c)), turan_extremal (extremal triangle-free graph). 5 former axioms converted to Prop defs (unused published results)."
+    "axiomCount": 1,
+    "lineCount": 234,
+    "assumptions": "1 axiom: boundFunction (opaque function for Györi's f(c)). turan_extremal proved from Mathlib Turán bound. 5 former axioms converted to Prop defs (unused published results)."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1971 [Er71], motivated by the classical Turán problem. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (proved by Turán in 1941) is the maximum edges in a triangle-free graph on $n$ vertices. When a graph exceeds this threshold by $k$ edges, triangles must exist by Turán's theorem. Erdős asked: can we find nearly $k$ edge-disjoint triangles? He originally conjectured $f(c) = 0$ for all $c$ (every excess edge 'belongs to' a unique triangle). Sauer disproved this with $K_{1,m,m}$: it has $2m$ excess edges but only $2m - 1$ edge-disjoint triangles, since the degree-1 vertex is a bottleneck. Erdős himself proved $f(c) = 0$ for $c < 1/2$ using chromatic number arguments. Györi (1988) [Gy88] resolved the problem completely, showing $f(c) \\leq Cc^2$ for an absolute constant $C$. The quadratic growth is essentially optimal. Györi also refined the small-$c$ range: $f(c) = 0$ for $c < 2$ (odd $n$) and $c < 3/2$ (even $n$), reflecting the parity-dependent structure of the Turán graph.",
@@ -232,9 +238,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 216,
-    "axiomCount": 3,
-    "theoremCount": 1,
+    "lineCount": 234,
+    "axiomCount": 1,
+    "theoremCount": 2,
     "definitionCount": 9
   }
 }

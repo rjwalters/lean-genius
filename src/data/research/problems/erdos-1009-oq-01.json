@@ -29,18 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 5 unused axioms (8→3). Converted gyori_theorem, erdos_small_c, gyori_odd_n, gyori_even_n, sauer_counterexample to def Prop.",
+    "progressSummary": "PROGRESS: 0S, 1A (was 2). Proved turan_extremal from Mathlib Turán bound. Only boundFunction (Györi f(c)) remains.",
     "builtItems": [
       "Assessment: 8A all appropriate (opaque function + deep results)",
       "edgeDisjoint_comm: symmetry of edge-disjointness",
       "turanThreshold_zero, turanThreshold_one: small value computations",
       "turanThreshold_pos: positivity for n≥2",
-      "turanThreshold_mono: monotonicity of Turán threshold"
+      "turanThreshold_mono: monotonicity of Turán threshold",
+      "PROVED turan_extremal from Mathlib CliqueFree.card_edgeFinset_le — axioms 2→1"
     ],
     "insights": [
       "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",
       "turanThreshold is n²/4 rounded down — monotone, positive for n≥2, zero for n≤1",
-      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible"
+      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible",
+      "turan_extremal: convert Triangle→CliqueFree 3 via Finset.card_eq_three, then apply card_edgeFinset_le + mod 2 case split"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -72,9 +74,9 @@
     {
       "path": "Proofs/Erdos1009Problem.lean",
       "filename": "Erdos1009Problem.lean",
-      "lineCount": 217,
+      "lineCount": 234,
       "theoremCount": 4,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,

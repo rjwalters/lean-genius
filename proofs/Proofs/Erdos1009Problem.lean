@@ -178,11 +178,28 @@ def sauer_counterexample_theorem : Prop :=
 Connections to other graph theory results.
 -/
 
-/-- The Turán graph is the extremal triangle-free graph -/
-axiom turan_extremal :
+/-- The Turán graph is the extremal triangle-free graph.
+    PROVED via Mathlib's CliqueFree.card_edgeFinset_le (Turán bound). -/
+theorem turan_extremal :
   ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
-      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G)
+      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G) := by
+  intro V _ _ G _ hnoT
+  -- Step 1: Convert "no Triangle" to CliqueFree 3
+  have hcf : G.CliqueFree 3 := by
+    intro s ⟨hClique, hCard⟩
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hCard
+    exact hnoT ⟨a, b, c,
+      hClique (by simp) (by simp) hab,
+      hClique (by simp) (by simp) hbc,
+      hClique (by simp) (by simp) hac,
+      ⟨hab, hbc, hac⟩⟩
+  -- Step 2: Apply Mathlib Turán bound
+  unfold numEdges turanThreshold numVertices
+  have hbound := hcf.card_edgeFinset_le
+  set n := Fintype.card V
+  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+  rcases hmod with hm | hm <;> simp only [hm] at hbound <;> omega
 
 /-- Edge-disjointness is symmetric. -/
 theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :
