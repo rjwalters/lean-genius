@@ -550,16 +550,141 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 5. `pascalConstraint_projTransform`: Pascal constraint is projectively invariant
 6. `stdConicPoint_covers`: Every finite point on stdConic is stdConicPoint(t)
 7. `stdConic_infinity_char`: The point at infinity (1,0,-1) is the only uncovered point
+8. `crossProduct_smul_left/right`: Bilinearity of cross product under scaling
+9. `pascal_std_conic_infinity_{A,B,C,D,E,F}`: Pascal holds when one vertex is at infinity
+10. `det_threeVectorMatrix_smul`: Determinant scales with row scaling
+11. `pascalConstraint_smul`: Pascal constraint is invariant under nonzero scaling
 
 **Remaining for full proof:**
 1. **Sylvester's law**: Any non-degenerate symmetric conic with real points is congruent to
    diag(1,1,-1). For signature (2,1), there exists invertible M with MᵀCM = stdConic.
-2. **Point at infinity case**: Handle 6 points where one is (1,0,-1) — either by:
-   (a) A limit argument: as t→∞, stdConicPoint(t)/t² → (-1,0,1) ∼ (1,0,-1), or
-   (b) A rotation: apply a projective transformation mapping (1,0,-1) to a finite point
-3. **Assembly**: Combine Sylvester + coverage + projective invariance + parametric proof
-   to eliminate `conic_implies_pascal_constraint`.
+2. **Assembly**: Combine Sylvester + coverage + projective invariance + parametric proof
+   + scale invariance + infinity cases to eliminate `conic_implies_pascal_constraint`.
+   For stdConic, the proof is essentially complete: given 6 points on stdConic,
+   use coverage to write each as λᵢ·stdConicPoint(tᵢ) or μᵢ·stdConicInfinity,
+   apply scale invariance, then use parametric or infinity result.
 -/
+
+-- ============================================================
+-- PART 14: Bilinearity of Cross Product (Scaling)
+-- ============================================================
+
+/-! Cross product is bilinear: scaling either argument scales the result.
+    This is needed for the scale-invariance of the Pascal constraint. -/
+
+theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) :
+    crossProduct (c • u) v = c • crossProduct u v := by
+  ext i; fin_cases i <;>
+    simp only [crossProduct, Pi.smul_apply, smul_eq_mul, Fin.isValue] <;> ring
+
+theorem crossProduct_smul_right (c : ℝ) (u v : Fin 3 → ℝ) :
+    crossProduct u (c • v) = c • crossProduct u v := by
+  ext i; fin_cases i <;>
+    simp only [crossProduct, Pi.smul_apply, smul_eq_mul, Fin.isValue] <;> ring
+
+-- ============================================================
+-- PART 15: Pascal's Theorem — Point at Infinity Cases
+-- ============================================================
+
+/-! When one vertex of the hexagon is at the point at infinity (1,0,-1),
+    Pascal's constraint still holds. Each of the 6 positions is a separate
+    polynomial identity in 5 variables, verified computationally by `ring`.
+
+    Combined with `pascal_std_conic_parametrized` (all 6 finite) and the
+    scaling lemma, these cover all configurations on the standard conic. -/
+
+/-- Pascal's constraint when F = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_F (a b c d e : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) stdConicInfinity := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal's constraint when A = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_A (b c d e f : ℝ) :
+    pascalConstraint stdConicInfinity (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal's constraint when B = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_B (a c d e f : ℝ) :
+    pascalConstraint (stdConicPoint a) stdConicInfinity (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal's constraint when C = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_C (a b d e f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) stdConicInfinity
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal's constraint when D = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_D (a b c e f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      stdConicInfinity (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal's constraint when E = (1,0,-1) (point at infinity). -/
+theorem pascal_std_conic_infinity_E (a b c d f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) stdConicInfinity (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+-- ============================================================
+-- PART 16: Scale Invariance of Pascal Constraint
+-- ============================================================
+
+/-! The Pascal constraint is invariant under individual point scaling.
+    Since `pascalConstraint` is defined via cross products and determinants,
+    both of which are multilinear, scaling each point by a nonzero scalar
+    doesn't change whether the constraint holds. -/
+
+/-- Scaling the threeVectorMatrix rows by constants scales the determinant
+    by their product. -/
+theorem det_threeVectorMatrix_smul (α β γ : ℝ) (u v w : Fin 3 → ℝ) :
+    (threeVectorMatrix (α • u) (β • v) (γ • w)).det =
+    α * β * γ * (threeVectorMatrix u v w).det := by
+  unfold threeVectorMatrix
+  simp only [Matrix.det_fin_three, Matrix.of_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- **Scale invariance**: The Pascal constraint is unchanged when each point
+    is scaled by a nonzero scalar. This is because the cross products and
+    determinant are multilinear, so the scalars factor out. -/
+theorem pascalConstraint_smul
+    {A B C D E F : ProjPoint}
+    {λ₁ λ₂ λ₃ λ₄ λ₅ λ₆ : ℝ}
+    (h1 : λ₁ ≠ 0) (h2 : λ₂ ≠ 0) (h3 : λ₃ ≠ 0)
+    (h4 : λ₄ ≠ 0) (h5 : λ₅ ≠ 0) (h6 : λ₆ ≠ 0) :
+    pascalConstraint (λ₁ • A) (λ₂ • B) (λ₃ • C) (λ₄ • D) (λ₅ • E) (λ₆ • F) ↔
+    pascalConstraint A B C D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  -- Pull scalars through cross products and collapse nested smul
+  simp only [crossProduct_smul_left, crossProduct_smul_right, smul_smul]
+  -- Now each Pascal point is (λᵢλⱼλₖλₗ) • original, so the det scales
+  rw [det_threeVectorMatrix_smul]
+  constructor
+  · intro h
+    have hprod : λ₁ * λ₂ * (λ₄ * λ₅) * (λ₂ * λ₃ * (λ₅ * λ₆)) *
+      (λ₃ * λ₄ * (λ₆ * λ₁)) ≠ 0 := by
+      apply mul_ne_zero; apply mul_ne_zero
+      · exact mul_ne_zero (mul_ne_zero h1 h2) (mul_ne_zero h4 h5)
+      · exact mul_ne_zero (mul_ne_zero h2 h3) (mul_ne_zero h5 h6)
+      · exact mul_ne_zero (mul_ne_zero h3 h4) (mul_ne_zero h6 h1)
+    exact (mul_eq_zero.mp h).resolve_left hprod
+  · intro h; rw [h, mul_zero]
+
 -- ============================================================
 -- Export main results
 -- ============================================================
@@ -579,3 +704,9 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 #check @pascalConstraint_projTransform
 #check @stdConicPoint_covers
 #check @stdConic_infinity_char
+#check @crossProduct_smul_left
+#check @crossProduct_smul_right
+#check @pascal_std_conic_infinity_F
+#check @pascal_std_conic_infinity_A
+#check @det_threeVectorMatrix_smul
+#check @pascalConstraint_smul
