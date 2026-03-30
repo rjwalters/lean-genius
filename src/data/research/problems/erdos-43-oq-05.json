@@ -29,10 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_diff_injective (ℤ version). Foundation for all 5 counting sorries.",
+    "progressSummary": "Session 2: Proved tao_equal_size_bound assuming disjoint_diff_combined_bound. Found bug in sidon_diff_count (false for empty A). 5 counting sorries remain.",
     "builtItems": [
       "Proved sidon_diff_injective for Finset ℤ — if a₁-b₁=a₂-b₂ with a₁≠b₁, then a₁=a₂ and b₁=b₂",
-      "Prior: sidon_diff_injective also proved in Erdos152 (for Finset ℕ) and Erdos14 (for Set ℕ)"
+      "Prior: sidon_diff_injective also proved in Erdos152 (for Finset ℕ) and Erdos14 (for Set ℕ)",
+      "Proved tao_equal_size_bound from disjoint_diff_combined_bound: m²≤2N+1 via even-ness of m*(m-1)",
+      "Identified bug: sidon_diff_count is false for empty A (claims card=1 but diffSet(∅)=∅ has card 0)"
     ],
     "insights": [
       "Sidon diff injectivity: a₁-b₁=a₂-b₂ → a₁+b₂=a₂+b₁ → by Sidon {a₁,b₂}={a₂,b₁} → a₁=a₂ (since a₁≠b₁)",

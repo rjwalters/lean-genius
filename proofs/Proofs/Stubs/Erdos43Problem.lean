@@ -122,11 +122,25 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) (hEq : A.card = B.card) :
   (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by
-  -- Proof from disjoint_diff_combined_bound: 2·C(m,2) ≤ N where m = A.card
-  -- → m*(m-1) ≤ N (via Nat.choose_two_right)
-  -- → m ≤ N+1 (case split: m ≥ 2 gives m ≤ m*(m-1) ≤ N)
-  -- → m² = m*(m-1)+m ≤ N+(N+1) = 2N+1 (in ℝ via nlinarith)
-  sorry
+  -- From disjoint_diff_combined_bound: C(m,2) + C(m,2) ≤ N where m = |A| = |B|
+  have hcomb := disjoint_diff_combined_bound A B N hA hB hRA hRB hD
+  set m := A.card
+  rw [hEq] at hcomb
+  rw [Nat.choose_two_right, Nat.choose_two_right] at hcomb
+  -- hcomb: m*(m-1)/2 + m*(m-1)/2 ≤ N
+  suffices h : m * m ≤ 2 * N + 1 from by exact_mod_cast h
+  -- Key: m*(m-1) is even (consecutive nats), so m*(m-1) = 2*(m*(m-1)/2) ≤ N
+  -- Then m ≤ m*(m-1)+1 ≤ N+1, so m² = m*(m-1)+m ≤ N+(N+1) = 2N+1
+  have hmm1 : m * (m - 1) ≤ N := by
+    -- m*(m-1) = 2*(m*(m-1)/2) since m*(m-1) is always even
+    have h_even : m * (m - 1) = 2 * (m * (m - 1) / 2) := by
+      rcases m with _ | k
+      · simp
+      · rw [Nat.succ_sub_one]
+        -- (k+1)*k is even: k*(k+1) = 2*(k*(k+1)/2)
+        omega  -- omega should handle: (k+1)*k = 2*((k+1)*k/2) via even-ness
+    omega
+  omega
 
 /- ## Counting Arguments -/
 
