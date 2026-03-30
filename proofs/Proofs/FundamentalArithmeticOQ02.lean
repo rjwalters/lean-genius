@@ -127,6 +127,14 @@ theorem no_norm_two_or_three (z : ℤ√(-5)) :
   unfold normZ5
   constructor <;> intro h <;> nlinarith [sq_nonneg z.re, sq_nonneg z.im]
 
+/-- If normZ5 z = 1, then z is a unit (±1 are the only units in ℤ[√(-5)]).
+    a² + 5b² = 1 forces b = 0 and a² = 1, so z · z = 1. -/
+private theorem isUnit_of_normZ5_eq_one {z : ℤ√(-5)} (h : normZ5 z = 1) : IsUnit z := by
+  unfold normZ5 at h
+  have him : z.im = 0 := by nlinarith [sq_nonneg z.re, sq_nonneg z.im]
+  have hre : z.re * z.re = 1 := by nlinarith
+  exact isUnit_of_mul_eq_one z z (by ext <;> simp [him] <;> linarith)
+
 /-- 2 is irreducible in ℤ[√(-5)]: if 2 = a·b, then a or b is a unit.
     Proof: N(2) = 4 = N(a)·N(b). Since no element has norm 2 or 3,
     one of N(a), N(b) must be 1 (making that factor a unit). -/
@@ -140,10 +148,22 @@ theorem two_irreducible : Irreducible (⟨2, 0⟩ : ℤ√(-5)) := by
     have hnb := no_norm_two_or_three b
     have ha_pos : 0 ≤ normZ5 a := by unfold normZ5; nlinarith [sq_nonneg a.re, sq_nonneg a.im]
     have hb_pos : 0 ≤ normZ5 b := by unfold normZ5; nlinarith [sq_nonneg b.re, sq_nonneg b.im]
-    -- N(a) * N(b) = 4, N(a), N(b) ≥ 0, N(a) ≠ 2, N(b) ≠ 2
-    -- So one of N(a), N(b) is 1 (a unit) and the other is 4.
-    -- Cases: (1,4), (4,1), (2,2) — but (2,2) excluded by no_norm_two_or_three
-    sorry
+    -- Both norms positive (zero would give product 0 ≠ 4)
+    have ha1 : 0 < normZ5 a := by
+      have : normZ5 a ≠ 0 := by intro h; rw [h, zero_mul] at hn; norm_num at hn
+      omega
+    have hb1 : 0 < normZ5 b := by
+      have : normZ5 b ≠ 0 := by intro h; rw [h, mul_zero] at hn; norm_num at hn
+      omega
+    -- Upper bound from product: N(a) ≤ 4
+    have ha_le : normZ5 a ≤ 4 := by
+      nlinarith [mul_nonneg ha_pos (show (0 : ℤ) ≤ normZ5 b - 1 from by linarith)]
+    -- Only 1 and 4 possible (omega eliminates 2 and 3)
+    obtain ⟨hna2, hna3⟩ := hna
+    have : normZ5 a = 1 ∨ normZ5 a = 4 := by omega
+    rcases this with h1 | h4
+    · left; exact isUnit_of_normZ5_eq_one h1
+    · right; exact isUnit_of_normZ5_eq_one (show normZ5 b = 1 by rw [h4] at hn; linarith)
 
 /-- 2 does not divide (1 + √(-5)) in ℤ[√(-5)].
     If (1 + √(-5)) = 2 · z, then z = (1/2, 1/2), which is not in ℤ[√(-5)]. -/
