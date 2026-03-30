@@ -26,6 +26,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.Nat.Prime.Nth
 
 open Nat Finset Set
 
@@ -268,9 +269,21 @@ for all large n. This would follow from conjectures like Cramér's.
 -/
 
 /--
-The n-th prime (axiomatized; p_1 = 2, p_2 = 3, etc.)
+The n-th prime: nthPrime 0 = 2, nthPrime 1 = 3, nthPrime 2 = 5, etc.
+Uses Mathlib's `Nat.nth` with the `Nat.Prime` predicate.
 -/
-axiom nthPrime : ℕ → ℕ
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+/--
+The first prime is 2 (from Mathlib).
+-/
+theorem nthPrime_zero : nthPrime 0 = 2 := Nat.nth_prime_zero_eq_two
+
+/--
+Every nthPrime output is prime (from Mathlib).
+-/
+theorem nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
 /--
 The prime gap after the n-th prime.
