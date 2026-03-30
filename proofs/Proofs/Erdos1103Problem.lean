@@ -21,6 +21,7 @@ growth may be necessary.
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Tactic
 
 open Finset Filter
@@ -118,3 +119,53 @@ theorem squarefreeSumset_pair (a b : ℕ) :
     · exact hab_sf
     · rwa [add_comm]
     · exact hbb
+
+/- ## Refutation of the exponential growth conjecture
+
+The van Doorn–Tao upper bound shows there exists an infinite squarefree-sumset
+sequence growing like exp(5j / log j), which is subexponential. Since C^j
+eventually exceeds exp(5j / log j) for any C > 1, no exponential lower
+bound can hold for that sequence, refuting ErdosProblem1103. -/
+
+/-- For any C > 1, the subexponential function exp(5j / log j) is eventually
+    smaller than the exponential C^j. This is the key analysis lemma. -/
+theorem subexp_eventually_lt_exp (C : ℝ) (hC : 1 < C) :
+    ∀ᶠ (j : ℕ) in atTop,
+      Real.exp (5 * (j : ℝ) / Real.log (j : ℝ)) < C ^ (j : ℝ) := by
+  have hC0 : (0 : ℝ) < C := by linarith
+  have hlogC : 0 < Real.log C := Real.log_pos hC
+  -- log(n : ℝ) → ∞ as n → ∞
+  have hlog_tend : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- Eventually log n > 5 / log C
+  have hev_log : ∀ᶠ n in atTop, 5 / Real.log C < Real.log (n : ℝ) :=
+    hlog_tend.eventually (eventually_gt_atTop (5 / Real.log C))
+  filter_upwards [hev_log, eventually_gt_atTop 2] with j hj_log hj_ge
+  -- Derived: log j > 0 and j > 0 (since 5/log C > 0 and log j > 5/log C)
+  have hlog_j_pos : (0 : ℝ) < Real.log (j : ℝ) :=
+    lt_trans (div_pos (by norm_num : (0:ℝ) < 5) hlogC) hj_log
+  have hj_pos : (0 : ℝ) < (j : ℝ) := Nat.cast_pos.mpr (by omega)
+  -- Rewrite C^(j : ℝ) = exp(log C * j) via rpow definition
+  rw [Real.rpow_def_of_pos hC0]
+  -- Goal: exp(5 * j / log j) < exp(log C * j)
+  apply Real.exp_lt_exp.mpr
+  -- From hj_log: 5 / log C < log j, i.e., 5 < log j * log C
+  rw [div_lt_iff hlogC] at hj_log
+  -- Goal: 5 * j / log j < log C * j
+  rw [div_lt_iff hlog_j_pos]
+  -- Goal: 5 * j < log C * j * log j. From hj_log: 5 < log j * log C, so 5*j < (log j * log C)*j
+  nlinarith [mul_comm (Real.log C) (Real.log (j : ℝ))]
+
+/-- The van Doorn–Tao upper bound refutes the conjecture that every infinite
+    squarefree-sumset sequence must grow exponentially. -/
+theorem erdos_1103_false : ¬ ErdosProblem1103 := by
+  intro hconj
+  obtain ⟨A, hAinf, hAsf, hAub⟩ := vanDoorn_tao_upper
+  obtain ⟨C, hC1, hClb⟩ := hconj A hAinf hAsf
+  have hexp := subexp_eventually_lt_exp C hC1
+  -- Combine the three "eventually" statements
+  have hcombined := hClb.and (hAub.and hexp)
+  -- Extract a witness where all three hold simultaneously
+  obtain ⟨j, hj_lb, hj_ub, hj_exp⟩ := hcombined.exists
+  -- C^j ≤ a_j < exp(5j/log j) < C^j gives C^j < C^j
+  linarith
