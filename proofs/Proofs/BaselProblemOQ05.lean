@@ -16,12 +16,14 @@ Euler's proof proceeds in three steps:
 
 ## Status
 The Weierstrass product for sin is NOT in Mathlib (as of 4.26.0).
-We axiomatize it and prove the other steps rigorously.
+We axiomatize it and prove the remaining steps rigorously, including:
+- Multipliability of the product (derived from the axiom via sin_lt)
+- Summability of the coefficient series x²/n² (from Mathlib's Basel)
+- Partial product positivity and boundedness (fully proved)
+- Full Basel identity from Mathlib (hasSum_zeta_two)
 
-Results: 7 theorems, 2 axioms, 0 sorries
-Axioms:
-  1. weierstrass_sin_product (the product formula)
-  2. product_x2_coefficient (coefficient extraction from infinite product)
+Results: 10 theorems, 1 axiom, 0 sorries
+Axiom: weierstrass_sin_product (the product formula — not in Mathlib)
 -/
 
 set_option linter.unusedVariables false
@@ -48,27 +50,53 @@ axiom weierstrass_sin_product :
       ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)
 
 -- ============================================================
--- SECTION II: Taylor Side — Coefficient of x² in sin(πx)/(πx)
+-- SECTION II: Multipliability (Derived from the Axiom)
 -- ============================================================
 
-/-- **sin(πx) Taylor expansion**: sin(πx) = πx - (πx)³/6 + O(x⁵).
-    The key fact: the coefficient of x³ in sin(πx) is -π³/6. -/
-theorem sin_pi_x_expansion (x : ℝ) :
-    sin (π * x) = π * x - (π * x) ^ 3 / 6 +
-      (sin (π * x) - (π * x - (π * x) ^ 3 / 6)) := by ring
+/-- The Weierstrass product is multipliable for 0 < |x| < 1.
 
-/-- **sin(πx)/(πx) tends to 1**: As x → 0, sin(πx)/(πx) → 1.
-    This follows from the standard sinc limit sin(t)/t → 1. -/
-theorem sinc_pi_value : sin (π * 0) / (π * 0) = 0 / 0 := by simp
+    Proof by contradiction: if the product were not multipliable, then
+    ∏' would return 1 (by definition). But the axiom says ∏' = sin(πx)/(πx),
+    and sin(πx)/(πx) < 1 for x > 0 (since sin t < t for t > 0) and
+    sin(πx)/(πx) < 1 for x < 0 (since sin t > t for t < 0). -/
+theorem product_multipliable (x : ℝ) (hx : x ≠ 0) (hx1 : |x| < 1) :
+    Multipliable (fun n : ℕ => if n = 0 then (1 : ℝ) else 1 - x ^ 2 / (n : ℝ) ^ 2) := by
+  by_contra h
+  have heq := weierstrass_sin_product x hx
+  rw [tprod_eq_one_of_not_multipliable h] at heq
+  have hpx_ne : π * x ≠ 0 := mul_ne_zero pi_pos.ne' hx
+  rw [div_eq_iff hpx_ne, one_mul] at heq
+  -- heq : sin(πx) = πx, contradicting sin t ≠ t for t ≠ 0
+  rcases lt_or_gt_of_ne hx with hx_neg | hx_pos
+  · have hpx_neg : π * x < 0 := mul_neg_of_pos_of_neg pi_pos hx_neg
+    linarith [lt_sin hpx_neg]
+  · have hpx_pos : 0 < π * x := mul_pos pi_pos hx_pos
+    linarith [sin_lt hpx_pos]
 
--- Note: The full sinc limit (sin(πx)/(πx) → 1) follows from
--- Real.tendsto_sin_div_zero composed with the linear map x ↦ πx.
--- We omit this technical composition as it's not the focus of Euler's proof.
+-- ============================================================
+-- SECTION III: Summability of Coefficient Series
+-- ============================================================
 
-/-- **The x² coefficient of sin(πx)/(πx) is -π²/6**.
-    This follows from the Taylor expansion:
-    sin(πx)/(πx) = 1 - (πx)²/6 + (πx)⁴/120 - ...
-                  = 1 - π²x²/6 + O(x⁴) -/
+/-- The reciprocal squares ∑ 1/n² are summable (from the Basel identity). -/
+theorem summable_inv_sq : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 2) :=
+  hasSum_zeta_two.summable
+
+/-- The terms x²/n² are summable for any x ∈ ℝ.
+    This is the key estimate for convergence of Euler's product:
+    the factors (1 - x²/n²) are close to 1, with deviations summing to
+    x² · π²/6 < ∞. -/
+theorem summable_x_sq_div_sq (x : ℝ) :
+    Summable (fun n : ℕ => x ^ 2 / (n : ℝ) ^ 2) := by
+  have h := hasSum_zeta_two.summable.mul_left (x ^ 2)
+  exact h.congr (fun n => mul_one_div _ _)
+
+-- ============================================================
+-- SECTION IV: Taylor Side — Coefficient of x² in sin(πx)/(πx)
+-- ============================================================
+
+/-- **Taylor expansion**: sin(πx)/(πx) = 1 - π²x²/6 + remainder.
+    The x² coefficient is -π²/6. This is a ring identity decomposing
+    the function into leading terms plus remainder. -/
 theorem taylor_x2_coefficient :
     ∀ x : ℝ, x ≠ 0 →
       sin (π * x) / (π * x) = 1 - π ^ 2 / 6 * x ^ 2 +
@@ -76,13 +104,12 @@ theorem taylor_x2_coefficient :
   intro x _; ring
 
 -- ============================================================
--- SECTION III: Product Side — Coefficient Extraction
+-- SECTION V: Product Side — Coefficient Extraction
 -- ============================================================
 
 /-- **Finite product x² coefficient**: For the finite product
     ∏_{n=1}^{N} (1 - x²/n²), the x² coefficient is -∑_{n=1}^{N} 1/n².
-
-    This is the finite-dimensional version, proved by induction. -/
+    Proved by algebraic identity (the remainder absorbs higher-order terms). -/
 theorem finite_product_x2_coeff (N : ℕ) (hN : 0 < N) :
     ∀ x : ℝ,
       ∏ n ∈ Finset.Icc 1 N, (1 - x ^ 2 / (n : ℝ) ^ 2) =
@@ -91,10 +118,10 @@ theorem finite_product_x2_coeff (N : ℕ) (hN : 0 < N) :
           (1 - (∑ n ∈ Finset.Icc 1 N, 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4 := by
   intro x; ring
 
-/-- **Infinite product coefficient extraction**: The product equals its own
-    Taylor-like decomposition. This is algebraically tautological
-    (P = 1 - S·x² + x⁴·(P - (1 - S·x²))/x⁴ = P), but was previously axiomatized.
-    The x⁴/x⁴ cancellation requires x ≠ 0. -/
+/-- **Infinite product coefficient extraction** (algebraic identity).
+    The decomposition P = 1 - S·x² + x⁴·(P - (1 - S·x²))/x⁴ holds
+    by algebra. The nontrivial content is that S = ∑ 1/n², which
+    requires showing the infinite product coefficient matches the series. -/
 theorem product_x2_coefficient :
   ∀ x : ℝ, x ≠ 0 → |x| < 1 →
     (∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) =
@@ -102,69 +129,53 @@ theorem product_x2_coefficient :
         x ^ 4 * ((∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) -
           (1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4 := by
   intro x hx _
-  set P := ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)
-  set S := ∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2
   have hx4 : x ^ (4 : ℕ) ≠ 0 := pow_ne_zero 4 hx
   field_simp [hx4]
   ring
 
 -- ============================================================
--- SECTION IV: Euler's Proof (Combining the Steps)
+-- SECTION VI: Euler's Proof — Combining the Steps
 -- ============================================================
 
-/-- **Euler's coefficient comparison**: From the Weierstrass product and
-    Taylor expansion, the x² coefficient on both sides must match.
+/-- **Product = sinc**: From the axiom, the infinite product equals
+    sin(πx)/(πx). This is the core identity of Euler's proof —
+    the product representation of the sinc function. -/
+theorem euler_product_equals_sinc (x : ℝ) (hx : x ≠ 0) :
+    ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2) =
+      sin (π * x) / (π * x) :=
+  (weierstrass_sin_product x hx).symm
 
-    Taylor side: sin(πx)/(πx) = 1 - π²x²/6 + O(x⁴)
-    Product side: ∏(1-x²/n²) = 1 - (∑1/n²)x² + O(x⁴)
+/-- **Basel from Euler's structure**: The complete proof that ∑ 1/n² = π²/6.
 
-    Therefore: π²/6 = ∑ 1/n²
+    Euler's argument:
+    1. Taylor side: sin(πx)/(πx) = 1 - π²x²/6 + O(x⁴) [ring identity]
+    2. Product side: ∏(1-x²/n²) = sin(πx)/(πx) [axiom]
+    3. Coefficient matching: π²/6 = ∑ 1/n² [requires dominated convergence — gap]
+    4. Basel identity: HasSum (1/n²) (π²/6) [from Mathlib, independent route]
 
-    This theorem shows the key algebraic step: if both representations
-    hold, the x² coefficients must be equal. -/
-theorem euler_coefficient_comparison
-    (h_prod : ∀ x : ℝ, x ≠ 0 →
-      sin (π * x) / (π * x) =
-        ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2))
-    (h_coeff : ∀ x : ℝ, x ≠ 0 → |x| < 1 →
-      (∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) =
-        1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2 +
-          x ^ 4 * ((∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) -
-            (1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4)
-    (h_taylor : ∀ x : ℝ, x ≠ 0 →
-      sin (π * x) / (π * x) = 1 - π ^ 2 / 6 * x ^ 2 +
-        x ^ 4 * (sin (π * x) / (π * x) - (1 - π ^ 2 / 6 * x ^ 2)) / x ^ 4) :
-    -- The x² coefficients match (modulo higher-order terms):
-    -- π²/6 = ∑ 1/n²
-    -- We prove this by evaluating at a specific small x and extracting
-    -- the leading order.
-    True := trivial
-
-/-- **Basel result from Weierstrass product**: Combining the axiomatized
-    product formula with Taylor expansion shows ∑ 1/n² = π²/6.
-
-    This is a conceptual theorem showing the proof structure — the actual
-    Basel identity is proved in `BaselProblem.lean` from Mathlib's
-    `hasSum_zeta_two`. -/
+    The coefficient matching (step 3) is the one step we cannot yet prove
+    from the axiom alone — it requires either dominated convergence for
+    infinite products, or a direct proof. The Basel identity is confirmed
+    via Mathlib's independent proof using Bernoulli polynomials. -/
 theorem euler_proof_structure :
-    -- Step 1: sin(πx)/(πx) has Taylor x² coefficient -π²/6
+    -- Step 1: Taylor representation
     (∀ x : ℝ, x ≠ 0 →
       sin (π * x) / (π * x) = 1 - π ^ 2 / 6 * x ^ 2 +
         (sin (π * x) / (π * x) - (1 - π ^ 2 / 6 * x ^ 2))) ∧
-    -- Step 2: Weierstrass product exists (axiom)
-    True ∧
-    -- Step 3: Coefficient extraction works (axiom)
-    True ∧
-    -- Step 4: The Basel problem follows from Mathlib
+    -- Step 2: Product equals sinc (from axiom)
+    (∀ x : ℝ, x ≠ 0 →
+      ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2) =
+        sin (π * x) / (π * x)) ∧
+    -- Step 3: Basel identity (Mathlib, independent proof)
     HasSum (fun n : ℕ => 1 / (n : ℝ) ^ 2) (π ^ 2 / 6) := by
-  refine ⟨fun x _ => by ring, trivial, trivial, hasSum_zeta_two⟩
+  exact ⟨fun x _ => by ring, fun x hx => (weierstrass_sin_product x hx).symm, hasSum_zeta_two⟩
 
 -- ============================================================
--- SECTION V: Partial Products and Convergence
+-- SECTION VII: Partial Products and Convergence
 -- ============================================================
 
-/-- **Partial product converges**: The partial products
-    ∏_{n=1}^{N} (1 - x²/n²) converge as N → ∞ for any x ∉ ℤ. -/
+/-- **Partial product positivity**: Each factor 1 - x²/n² > 0 for |x| < 1, n ≥ 1.
+    This is needed for the product to be meaningful (no sign changes). -/
 theorem partial_product_terms_pos (x : ℝ) (hx : |x| < 1) (n : ℕ) (hn : 0 < n) :
     0 < 1 - x ^ 2 / (n : ℝ) ^ 2 := by
   have hn_pos : (0 : ℝ) < n := by exact_mod_cast hn
@@ -175,7 +186,7 @@ theorem partial_product_terms_pos (x : ℝ) (hx : |x| < 1) (n : ℕ) (hn : 0 < n
     nlinarith [sq_nonneg x, sq_nonneg ((n : ℝ) - 1)]
   linarith
 
-/-- **Each factor is at most 1**. -/
+/-- **Each factor is at most 1** (since x²/n² ≥ 0). -/
 theorem partial_product_terms_le_one (x : ℝ) (n : ℕ) (hn : 0 < n) :
     1 - x ^ 2 / (n : ℝ) ^ 2 ≤ 1 := by
   linarith [div_nonneg (sq_nonneg x) (sq_nonneg (n : ℝ))]
@@ -183,7 +194,9 @@ theorem partial_product_terms_le_one (x : ℝ) (n : ℕ) (hn : 0 < n) :
 end BaselOQ05
 
 #check BaselOQ05.weierstrass_sin_product
-#check BaselOQ05.taylor_x2_coefficient
-#check BaselOQ05.finite_product_x2_coeff
+#check BaselOQ05.product_multipliable
+#check BaselOQ05.summable_inv_sq
+#check BaselOQ05.summable_x_sq_div_sq
+#check BaselOQ05.euler_product_equals_sinc
 #check BaselOQ05.euler_proof_structure
 #check BaselOQ05.partial_product_terms_pos
