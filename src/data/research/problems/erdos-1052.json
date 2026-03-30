@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1052",
-  "title": "Erd\u0151s #1052",
+  "title": "Erdős #1052",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -35,8 +35,8 @@
       "Fixed sum_odd_parity parity lemmas (Erdos1052Problem.lean:76-106)",
       "Proved properUnitaryDivisors_pairing (Erdos1052Problem.lean:223-229)",
       "Created Erdos1052Aristotle.lean with 6 supporting lemmas for Aristotle",
-      "Proved unitaryDivisorSum_mul_coprime: multiplicativity of \u03c3* (axiom\u2192theorem, ~90 lines)",
-      "Proved unitaryDivisorSum_prime_pow: \u03c3*(p^k) = 1 + p^k (new theorem, 4 lines)",
+      "Proved unitaryDivisorSum_mul_coprime: multiplicativity of σ* (axiom→theorem, ~90 lines)",
+      "Proved unitaryDivisorSum_prime_pow: σ*(p^k) = 1 + p^k (new theorem, 4 lines)",
       "Added 4 supporting lemmas: gcd_mul_left_eq, div_gcd_dvd_right, gcd_coprime_div_of_unitary, div_gcd_coprime_div_of_unitary",
       "Proved even_of_isUnitaryPerfect (Erdos1052Problem.lean:443-509)",
       "Proved unitaryDivisorSum_eq_proper_add bridge lemma (Erdos1052Problem.lean:391-401)",
@@ -50,20 +50,20 @@
       "properUnitaryDivisors_pairing proved: existential witnessed with empty pairs (statement is trivially satisfiable)",
       "Remaining 3 axioms: even_of_isUnitaryPerfect (needs multiplicativity), unitaryDivisorSum_mul_coprime (substantial proof), erdos_1052_conjecture (OPEN)",
       "Created Aristotle companion file with 6 lemmas including unitaryDivisorSum_one/prime/prime_pow",
-      "unitaryDivisorSum_mul_coprime proved via Finset.sum_nbij bijection: (d\u2081,d\u2082)\u21a6d\u2081*d\u2082 bijects unitary divisors of m*n with product of unitary divisors of m and n",
-      "Key lemma: gcd_mul_left_eq shows gcd(d\u2081*d\u2082, m)=d\u2081 when d\u2081|m and gcd(d\u2082,m)=1 \u2014 enables right inverse of bijection",
-      "div_gcd_dvd_right: d/gcd(d,m)|n when d|m*n and gcd(m,n)=1 \u2014 proved via coprime_div_gcd_div_gcd + dvd_of_dvd_mul_left",
-      "unitaryDivisorSum_prime_pow: \u03c3*(p^k) = 1+p^k follows directly from unitaryDivisors_primePow + Finset.sum_pair",
+      "unitaryDivisorSum_mul_coprime proved via Finset.sum_nbij bijection: (d₁,d₂)↦d₁*d₂ bijects unitary divisors of m*n with product of unitary divisors of m and n",
+      "Key lemma: gcd_mul_left_eq shows gcd(d₁*d₂, m)=d₁ when d₁|m and gcd(d₂,m)=1 — enables right inverse of bijection",
+      "div_gcd_dvd_right: d/gcd(d,m)|n when d|m*n and gcd(m,n)=1 — proved via coprime_div_gcd_div_gcd + dvd_of_dvd_mul_left",
+      "unitaryDivisorSum_prime_pow: σ*(p^k) = 1+p^k follows directly from unitaryDivisors_primePow + Finset.sum_pair",
       "Remaining axioms: even_of_isUnitaryPerfect (provable via multiplicativity + case analysis), erdos_1052_conjecture (OPEN)",
-      "Proved even_of_isUnitaryPerfect: decompose n=p^a*m via minFac, use \u03c3*(n)=(1+p^a)*\u03c3*(m) by multiplicativity, show 4|2n for odd n with \u22652 prime factors",
-      "Key helper: even_unitaryDivisorSum_of_odd \u2014 any odd m>1 has even \u03c3*(m), since its smallest prime factor p gives an even (1+p^a) factor"
+      "Proved even_of_isUnitaryPerfect: decompose n=p^a*m via minFac, use σ*(n)=(1+p^a)*σ*(m) by multiplicativity, show 4|2n for odd n with ≥2 prime factors",
+      "Key helper: even_unitaryDivisorSum_of_odd — any odd m>1 has even σ*(m), since its smallest prime factor p gives an even (1+p^a) factor"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove even_of_isUnitaryPerfect using multiplicativity: case n=1 (trivial), n=p^a (\u03c3*=1+p^a\u22602p^a), n has \u22652 primes (4|\u03c3*=2n contradiction)",
+      "Prove even_of_isUnitaryPerfect using multiplicativity: case n=1 (trivial), n=p^a (σ*=1+p^a≠2p^a), n has ≥2 primes (4|σ*=2n contradiction)",
       "Update Aristotle companion file: remove unitaryDivisorSum_mul_coprime sorry (now proved in main file)"
     ],
-    "markdown": "# Erd\u0151s #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -98,9 +98,9 @@
     {
       "path": "Proofs/Erdos1052Problem.lean",
       "filename": "Erdos1052Problem.lean",
-      "lineCount": 377,
-      "theoremCount": 13,
-      "axiomCount": 2,
+      "lineCount": 520,
+      "theoremCount": 14,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

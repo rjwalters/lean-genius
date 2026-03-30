@@ -1,0 +1,97 @@
+{
+  "slug": "isoperimetric-theorem-oq-02",
+  "title": "Discrete Isoperimetric Inequality (1D)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall S \\subseteq \\mathbb{Z}, |S| \\geq 2 \\Rightarrow |\\partial S| \\geq 2",
+    "plain": "For finite subsets of Z with at least 2 elements, the edge boundary has at least 2 elements. Intervals achieve this bound.",
+    "whyMatters": [
+      "Discrete analogue of the classical isoperimetric inequality",
+      "Foundation for higher-dimensional discrete isoperimetric theorems",
+      "Fully verified: 0 axioms, 0 sorries"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T12:00:00Z",
+    "iteration": 1,
+    "focus": "Complete. Fully verified formalization.",
+    "blockers": [],
+    "nextAction": "None for 1D. Higher dimensions need compression technique.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fully verified discrete isoperimetric inequality for Z. 0 axioms, 0 sorries, 221 lines.",
+    "builtItems": [
+      "IsoperimetricTheoremOQ02.lean: 221 lines, 12 theorems, 0 axioms, 0 sorries",
+      "Gallery entry: src/data/proofs/isoperimetric-theorem-oq-02/",
+      "edgeBoundary definition for Finset Z",
+      "edgeBoundary_card_ge_two: lower bound via min/max argument",
+      "edgeBoundary_Icc_eq: interval boundary = {a-1, b+1}",
+      "discrete_isoperimetric_1d: combined theorem"
+    ],
+    "insights": [
+      "Min/max argument gives constructive proof of the lower bound",
+      "For intervals, boundary is exactly {pred(min), succ(max)}",
+      "The 1D case is elementary but higher dimensions need compression or Loomis-Whitney"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Extend to Z^d using compression technique",
+      "Formalize Harper theorem for hypercube {0,1}^n"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "combinatorics",
+    "discrete-geometry",
+    "isoperimetric-inequality"
+  ],
+  "relatedProofs": [
+    "isoperimetric-theorem",
+    "isoperimetric-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T12:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/IsoperimetricTheorem.lean",
+      "filename": "IsoperimetricTheorem.lean",
+      "lineCount": 450,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheorem.lean"
+    },
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ01.lean",
+      "filename": "IsoperimetricTheoremOQ01.lean",
+      "lineCount": 385,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ01.lean"
+    }
+  ]
+}

@@ -8,10 +8,14 @@
   "problemStatement": {
     "formal": "",
     "plain": "Can convexity_implies_product_bound be proved in Lean without sorry?",
-    "whyMatters": ["Completes the formalization of Pomerance's 1979 proof"]
+    "whyMatters": [
+      "Completes the formalization of Pomerance's 1979 proof"
+    ]
   },
   "knownResults": {
-    "proven": ["log_to_product from Mathlib log lemmas"],
+    "proven": [
+      "log_to_product from Mathlib log lemmas"
+    ],
     "open": [],
     "goal": "Sorry-free proof of convexity → product bound"
   },
@@ -45,13 +49,51 @@
     "nextSteps": [],
     "markdown": ""
   },
-  "tags": ["erdos", "number-theory", "primes", "logarithms"],
-  "relatedProofs": ["erdos-453"],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "primes",
+    "logarithms"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-45",
+    "erdos-453",
+    "erdos-453-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": ["Real.log_mul", "Real.log_pow", "Real.log_lt_log_iff"]
+    "mathlib": [
+      "Real.log_mul",
+      "Real.log_pow",
+      "Real.log_lt_log_iff"
+    ]
   },
   "started": "2026-03-30T05:40:00Z",
-  "lastUpdate": "2026-03-30T05:50:00Z"
+  "lastUpdate": "2026-03-30T05:50:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos453OQ02.lean",
+      "filename": "Erdos453OQ02.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos453Problem.lean",
+      "filename": "Erdos453Problem.lean",
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453Problem.lean"
+    }
+  ]
 }
