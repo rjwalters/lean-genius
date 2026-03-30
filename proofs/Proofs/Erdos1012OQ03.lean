@@ -46,8 +46,8 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] List-based directed path definition
 - [x] Tournament insertion lemma (key step for Rédei)
 - [x] Rédei's theorem (proved modulo 2 infrastructure lemmas)
-- [ ] tournament_full_path_list (sorry — iterated insertion)
-- [ ] list_path_to_hamiltonian (sorry — list-to-equiv conversion)
+- [x] tournament_full_path_list (proved by induction)
+- [x] list_path_to_hamiltonian (proved via Equiv.ofBijective)
 - [ ] Ghouila-Houri proof
 - [ ] Moon-Moser proof
 - [ ] Directed threshold proof
@@ -243,13 +243,38 @@ lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
       obtain ⟨k, hk_le, hp'⟩ := tournament_path_insert D hT l (by omega) hp u hu
       exact ⟨l.insertNth k u, by rw [List.length_insertNth (by omega)]; omega, hp'⟩
 
-/-- Convert a list-based Hamiltonian path to the equivalence-based definition. -/
+/-- Convert a list-based Hamiltonian path to the equivalence-based definition.
+    A nodup list of length (card V) gives a bijection Fin (card V) → V
+    via getElem, which yields the required equivalence. -/
 lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
     (hlen : l.length = Fintype.card V) (hp : IsDirectedPathList D l) :
     D.HasHamiltonianPath := by
-  -- A nodup list of length (Fintype.card V) bijects with Fin (card V),
-  -- giving the required equivalence. The arc condition transfers directly.
-  sorry
+  have hnd := hp.1
+  -- Every vertex appears in l (nodup list of full length covers V)
+  have hmem : ∀ v : V, v ∈ l := by
+    intro v; rw [← List.mem_toFinset]
+    have : l.toFinset = Finset.univ :=
+      Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen])
+    exact this ▸ Finset.mem_univ v
+  -- l defines a bijection Fin (card V) → V via index lookup
+  let f : Fin (Fintype.card V) → V := fun i => l[i.val]'(hlen ▸ i.isLt)
+  have hf_bij : Function.Bijective f := by
+    constructor
+    · -- Injective: distinct indices give distinct elements (nodup)
+      intro ⟨i, hi⟩ ⟨j, hj⟩ heq
+      simp only [f] at heq
+      have hi' : i < l.length := hlen ▸ hi
+      have hj' : j < l.length := hlen ▸ hj
+      ext
+      exact List.Nodup.getElem_inj_iff hnd |>.mp heq
+    · -- Surjective: every vertex is in l, so has a valid index
+      intro v
+      have hv := hmem v
+      rw [List.mem_iff_getElem] at hv
+      obtain ⟨i, hi, hvi⟩ := hv
+      exact ⟨⟨i, hlen ▸ hi⟩, hvi.symm⟩
+  -- Build the equivalence: σ.symm i = l[i]
+  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i hi => hp.2 i.val (hlen ▸ hi)⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: GHOUILA-HOURI'S THEOREM
