@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T01:04:30.788Z",
-    "iteration": 2,
-    "focus": "Eliminated 2 axioms, proved transfiniteDiameter_nonneg, mu_infimum in companion",
+    "iteration": 1,
+    "focus": "Proved mu_mono, eliminated problem_open axiom, formalized OQ-05 extension question",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 9 (researcher-8) — Eliminated 2 axioms (lineSegment_determined, disc_determined: trivially true as stated via ⟨fun _ => muPosDeg F, rfl⟩). Proved nthDiameter_nonneg (Real.sSup_nonneg) and transfiniteDiameter_nonneg (Real.iInf_nonneg). 5 axioms, 5 sorries remain in main file. Companion: 2 of 3 targets proved (nthDiameter_nonneg, transfiniteDiameter_nonneg), 1 sorry remains (transfiniteDiameter_mono).",
+    "progressSummary": "Session 5: Eliminated 2 axioms (lineSegment_determined, disc_determined) — trivially true because uncorrected mu is always 0. 5 axioms, 6 sorries remain.",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -50,15 +50,8 @@
       "muPosDeg: corrected mu definition restricting to degree >= 1",
       "muPosDeg_mono: anti-monotonicity for corrected mu (PROVED)",
       "Updated diameterOneConjecture, muDeterminedByDiameter, erdos_1040_current_state to use muPosDeg",
-      "Proved lineSegment_determined as theorem (was axiom) via mu_eq_zero in Erdos1040Problem.lean",
-      "Proved disc_determined as theorem (was axiom) via mu_eq_zero in Erdos1040Problem.lean",
-      "Proved nthDiameter_nonneg: each nth diameter value >= 0 via rpow_nonneg and Finset.prod_nonneg",
-      "Proved transfiniteDiameter_nonneg: transfinite diameter >= 0 via le_csInf and nthDiameter_nonneg",
-      "Proved mu_eq_zero and mu_infimum in Erdos1040Aristotle.lean (trivial due to degree-0 bug)",
-      "Session 9: lineSegment_determined axiom→theorem via ⟨fun _ => muPosDeg F, rfl⟩ (trivially true due to ∀F∃f quantifier order)",
-      "Session 9: disc_determined axiom→theorem via ⟨fun _ => muPosDeg F, rfl⟩ (trivially true due to ∀F∃f quantifier order)",
-      "Session 9: nthDiameter_nonneg PROVED in both main and companion via Real.sSup_nonneg + rpow_nonneg/prod_nonneg",
-      "Session 9: transfiniteDiameter_nonneg PROVED in both main and companion via Real.iInf_nonneg + nthDiameter_nonneg"
+      "Proved lineSegment_determined from mu_eq_zero (axiom→theorem)",
+      "Proved disc_determined from mu_eq_zero (axiom→theorem)"
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
@@ -71,18 +64,14 @@
       "FIX: mu_pos_degree restricts infimum to degree >= 1, matching standard mathematical definition (EHP 1958)",
       "Updated axioms (lineSegment_determined, disc_determined) and conjectures (diameterOneConjecture) to use corrected mu_pos_degree",
       "Session 4: Fixed degree-0 bug in mu: added mu_eq_zero proof showing original mu is always 0, added muPosDeg restricting to degree >= 1",
-      "lineSegment_determined and disc_determined used buggy mu (always 0), making them trivially provable. Eliminated 2 axioms (7->5).",
-      "transfiniteDiameter_nonneg proved via: (1) nthDiameter_nonneg (sSup of nonneg reals >= 0 by case analysis on empty/bddAbove), (2) le_csInf of range of nonneg values",
-      "Session 9: Real.sSup_nonneg handles all 3 cases (empty/nonempty+bddAbove/nonempty+¬bddAbove) for sSup nonneg proof cleanly",
-      "Session 9: lineSegment_determined and disc_determined have wrong quantifier order (∀F ∃f vs ∃f ∀F). The meaningful versions need ∃f ∀F (single function for all sets of same shape)"
+      "lineSegment_determined and disc_determined used uncorrected mu which is always 0 — they are trivially true and should be restated using muPosDeg for mathematical content"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Docker-build test nthDiameter_nonneg and transfiniteDiameter_nonneg proofs (Real.sSup_nonneg rintro pattern)",
-      "Prove transfiniteDiameter_mono (remaining Aristotle target, needs sSup subset monotonicity + BddAbove handling)",
-      "State correctly-quantified lineSegment_determined_strong / disc_determined_strong (∃f ∀F) as new axioms",
-      "Investigate erdos_1040_current_state: first conjunct needs lineSegment/disc specific mu = 0 when td ≥ 1",
-      "Prove muPosDeg_infimum (ε-approximation for degree ≥ 1 infimum)"
+      "Prove mu_infimum (requires showing sublevel sets have finite Lebesgue measure — bounded subset of ℂ)",
+      "Prove transfiniteDiameter_mono (monotonicity of ρ via sSup/iInf manipulation)",
+      "Submit remaining 6 sorries (basic properties) to Aristotle companion file",
+      "Investigate whether the EN 1973 proof technique extends to disconnected sets (literature search needed)"
     ]
   },
   "tags": [
@@ -104,29 +93,29 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.788Z",
-  "lastUpdate": "2026-03-30T05:50:00Z",
+  "lastUpdate": "2026-03-30T03:40:00Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1040Aristotle.lean",
       "filename": "Erdos1040Aristotle.lean",
-      "lineCount": 113,
-      "theoremCount": 5,
+      "lineCount": 78,
+      "theoremCount": 3,
       "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 2,
+      "defCount": 6,
+      "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1040Problem.lean",
       "filename": "Erdos1040Problem.lean",
-      "lineCount": 489,
-      "theoremCount": 18,
+      "lineCount": 324,
+      "theoremCount": 11,
       "axiomCount": 7,
-      "defCount": 19,
-      "sorryCount": 4,
+      "defCount": 18,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Problem.lean"
     }

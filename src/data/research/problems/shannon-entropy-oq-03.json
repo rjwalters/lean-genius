@@ -29,23 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)≤H(X)+H(Y)). 3→1 sorries. Remaining sorry: strong_subadditivity needs conditional distributions + per-slice KL divergence.",
+    "progressSummary": "PROGRESS: Added 3 marginal definitions, stated SSA and subadditivity, proved subadditivity from entropy chain rule + conditioning. 2 sorries remain: entropy_chain_rule and strong_subadditivity.",
     "builtItems": [
       "def marginalXY, marginalYZ, marginalY: three-variable marginal distributions",
       "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) — Lieb-Ruskai",
       "theorem entropy_chain_rule (sorry): H(X,Y) = H(Y) + H(X|Y) — entropy decomposition",
-      "theorem subadditivity (from entropy_chain_rule): H(X,Y) ≤ H(X) + H(Y)",
-      "theorem entropy_chain_rule (proved): H(X,Y) = H(Y) + H(X|Y) — log splitting + marginal telescoping",
-      "theorem subadditivity (proved): H(X,Y) ≤ H(X) + H(Y) — from chain_rule + conditioning_reduces_entropy"
+      "theorem subadditivity (from entropy_chain_rule): H(X,Y) ≤ H(X) + H(Y)"
     ],
     "insights": [
       "SSA is equivalent to I(X;Z|Y) ≥ 0 (conditional MI non-negativity)",
       "SSA proof strategy: express SSA as conditional KL divergence via Σ_y p(y) D(p(x,z|y) || p(x|y)p(z|y)) ≥ 0",
       "Subadditivity follows from entropy chain rule + conditioning reduces entropy: H(X,Y) = H(Y) + H(X|Y) ≤ H(Y) + H(X)",
-      "entropy_chain_rule is the key missing piece: H(X,Y) = H(Y) + H(X|Y). Proof: expand log p(x,y) = log p_Y(y) + log(p(x,y)/p_Y(y)) and collect terms.",
-      "entropy_chain_rule proved: split log p(x,y) = log(p(x,y)/p_Y(y)) + log(p_Y(y)), telescoping sum gives marginal entropy",
-      "subadditivity proved: chain_rule + conditioning_reduces_entropy from ShannonEntropy.lean via definitional equality bridge",
-      "SSA requires defining conditional joint p(x,z|y) = p(x,y,z)/p(y) per slice and applying mutual_info_nonneg"
+      "entropy_chain_rule is the key missing piece: H(X,Y) = H(Y) + H(X|Y). Proof: expand log p(x,y) = log p_Y(y) + log(p(x,y)/p_Y(y)) and collect terms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -78,11 +73,11 @@
     {
       "path": "Proofs/ShannonEntropy.lean",
       "filename": "ShannonEntropy.lean",
-      "lineCount": 644,
-      "theoremCount": 17,
+      "lineCount": 567,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
     },
