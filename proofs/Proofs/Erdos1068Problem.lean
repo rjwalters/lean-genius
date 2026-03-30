@@ -137,7 +137,7 @@ theorem inf_connected_no_finite_separator :
     w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast}
   -- For each s ∈ S, at most one path in `paths` has s as an internal vertex
   -- (by pairwise internal disjointness). So `bad` is finite (bounded by |S|).
-  -- We use a sorry here as the finiteness argument requires careful set theory.
+  -- Finiteness via biUnion over S with subsingleton fibers (each s internal to ≤ 1 path).
   have hbad_finite : Set.Finite bad := by
     -- bad ⊆ ⋃ s ∈ S, {p ∈ paths | s internal to p}
     -- Each fiber has ≤ 1 element (by pairwise internal disjointness), S is finite

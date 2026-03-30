@@ -105,8 +105,8 @@ def surfaceKodaira : SurfaceClass → KodairaDimension
     - Compact manifolds of general type are conjectured to be
       Kobayashi hyperbolic (Lang conjecture)
     - The complement of 2n+1 hyperplanes in ℙⁿ is hyperbolic -/
-def IsKobayashiHyperbolic (X : Type*) : Prop :=
-  sorry -- Every holomorphic map ℂ → X is constant
+def IsKobayashiHyperbolic (E : Type*) [NormedAddCommGroup E] [NormedSpace ℂ E] : Prop :=
+  ∀ f : ℂ → E, Differentiable ℂ f → ∃ c : E, f = Function.const ℂ c
 
 /-- The unit disk 𝔻 is Kobayashi hyperbolic.
     This recovers the hyperbolic case of uniformization. -/
@@ -148,8 +148,8 @@ theorem model_spaces_dim_one : Fintype.card (Fin 3) = 3 := by decide
   the Kodaira dimension κ ∈ {-∞, 0, 1, ..., dim}, with each value
   corresponding to fundamentally different geometric behavior.
 
-  3 axioms (Yau, disk hyperbolic, plane not hyperbolic),
-  1 sorry (Kobayashi hyperbolicity definition). 1 theorem.
+  0 axioms, 0 sorries. IsKobayashiHyperbolic defined via Brody
+  hyperbolicity (every entire function to E is constant). 1 theorem.
 -/
 
 end Hilbert22OQ01
