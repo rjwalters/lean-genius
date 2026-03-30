@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 sorries in OQ02 (corrected incorrect O(1/l) rate claim). Main file: 12 axioms, 0 sorries.",
+    "progressSummary": "COMPLETE: OQ02 fully verified (0 axioms, 0 sorries). OQ01 has 1 axiom (R3_lower_bound). Parent file has 11 axioms (all used). erdos_1014_conjecture removed as unused.",
     "builtItems": [
       "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
       "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)",
@@ -45,7 +45,8 @@
       "Fixed R3_lower axiom from ∀c to ∃c (consistency fix)",
       "ramsey_pos proved as theorem from ramsey_k2 + ramsey_monotone_left iterated (eliminates 1 axiom)",
       "ramsey_mono_left_ge2: R(2,l) ≤ R(k,l) for k ≥ 2 via induction on k",
-      "Eliminated 2 sorries in Erdos1014OQ02.lean by replacing conditional_rate_general_k (incorrect O(1/l) claim) with conditional_convergence_general_k (correct o(1) via ratio_from_asymptotics)"
+      "Eliminated 2 sorries in Erdos1014OQ02.lean by replacing conditional_rate_general_k (incorrect O(1/l) claim) with conditional_convergence_general_k (correct o(1) via ratio_from_asymptotics)",
+      "Updated stale knowledge: OQ02 has 0 sorries (was 2), parent has 11 axioms (was 12)"
     ],
     "insights": [
       "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
