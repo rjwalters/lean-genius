@@ -1,6 +1,6 @@
 {
   "slug": "prime-reciprocal-divergence-oq-03",
-  "title": "Can Erdős's elementary proof be formalized purely in Lean without relying on ...",
+  "title": "Can Erd\u0151s's elementary proof be formalized purely in Lean without relying on ...",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -29,13 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved infinitely many primes via Erdos smooth number counting (modulo 2 sorry lemmas). Framework for purely elementary proof without analysis.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Both sorries eliminated. smooth_count_bound proved via squarefree decomposition injection. multiples_count proved via bijection. File is 0 sorries, 0 axioms.",
+    "builtItems": [
+      "sqfPart/sqRtPart helpers wrapping sq_mul_squarefree_of_pos",
+      "squarefree_eq_of_prime_dvd_iff lemma",
+      "smoothInj injection for smooth count bound",
+      "Full proof of smooth_count_bound (was sorry)",
+      "Full proof of multiples_count (was sorry)"
+    ],
     "insights": [
       "Erdos proof uses smooth number counting: k = m^2*s with m<=sqrt(n), s squarefree",
       "At most sqrt(n)*2^pi(N) smooth numbers up to n",
       "For n > (2^(pi(N)+1))^2, contradiction if all primes <= N",
-      "2 sorries remain: smooth_count_bound (injection argument), multiples_count (standard)"
+      "2 sorries remain: smooth_count_bound (injection argument), multiples_count (standard)",
+      "Squarefree decomposition k=b^2*a via sq_mul_squarefree_of_pos enables injection for smooth count",
+      "Key lemma: squarefree positive naturals with same prime divisors are equal (via factorization)",
+      "multiples_count: filter equals image of (.*p) on Icc 1 (n/p)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
