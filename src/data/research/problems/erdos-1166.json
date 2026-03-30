@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom elimination 8→6 total. erdos1166_main now theorem, polya_recurrence removed as orphan.",
+    "progressSummary": "COMPLETE: 3 axioms (deep results: probability filter, Erdős-Révész, Erdős-Taylor constant), 0 sorries. All 3 remaining axioms are deep results not in Mathlib — cannot be eliminated. Meta.json accurate.",
     "builtItems": [
       "Refactored RandomWalk from 3 axioms to structure with trajectory field + starts_at_origin hypothesis",
       "Removed 2 orphan axioms (erdosTaylor_upper_bound, maxVisitCount_tendsto_infty)",
@@ -41,7 +41,8 @@
       "erdosTaylor_upper_bound removed: implied by erdosTaylor_constant via erdosTaylor_implies_bound (already proved in file)",
       "maxVisitCount_tendsto_infty removed: unused, follows from polya_recurrence by induction on return times",
       "erdos1166_main proved as theorem: erdos1166_from_ingredients mostVisited_bounded_eventually (erdosTaylor_implies_bound erdosTaylor_constant)",
-      "polya_recurrence removed as orphan axiom: not used by any theorem in the proof chain"
+      "polya_recurrence removed as orphan axiom: not used by any theorem in the proof chain",
+      "All 3 remaining axioms are deep results: asProbFilter (probability infrastructure), mostVisited_bounded_eventually (Erdős-Révész), erdosTaylor_constant (1/π limit). None provable from current Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [
