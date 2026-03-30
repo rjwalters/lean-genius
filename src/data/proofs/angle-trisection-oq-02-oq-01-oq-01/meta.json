@@ -7,7 +7,7 @@
     "author": "Generalization of Mathlib's prime_degree_dvd_card",
     "sourceUrl": "https://github.com/leanprover-community/mathlib4",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ01.lean",
     "tags": [
       "algebra",
@@ -15,7 +15,7 @@
       "field-extensions",
       "mathlib-contribution"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "mathlibDependencies": [
@@ -42,7 +42,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "No axioms. Uses natDegree_dvd_card_gal from parent file (also 0 axioms). The theorem prime_degree_dvd_card_from_general is fully proved.",
-    "lineCount": 105
+    "lineCount": 123
   },
   "overview": {
     "historicalContext": "Mathlib's `Polynomial.Gal.prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) proves that for an irreducible polynomial of **prime** degree over a `CharZero` field, the degree divides the cardinality of its Galois group. However, inspecting the proof reveals that the primality hypothesis is only used to deduce `p.degree ≠ 0`, which also follows from `Irreducible.natDegree_pos`. This means the theorem holds for all irreducible polynomials, not just those of prime degree.",
