@@ -1,0 +1,77 @@
+{
+  "proofId": "fundamental-arithmetic-oq-02",
+  "annotations": [
+    {
+      "type": "definition",
+      "name": "ZSqrtNeg5",
+      "line": 51,
+      "description": "The ring Z[sqrt(-5)], represented as Zsqrtd(-5) from Mathlib"
+    },
+    {
+      "type": "definition",
+      "name": "norm",
+      "line": 73,
+      "description": "The norm function N(a + b*sqrt(-5)) = a^2 + 5b^2, which is multiplicative and positive definite"
+    },
+    {
+      "type": "theorem",
+      "name": "no_norm_two",
+      "line": 93,
+      "description": "No element of Z[sqrt(-5)] has norm 2: the equation a^2 + 5b^2 = 2 has no integer solutions"
+    },
+    {
+      "type": "theorem",
+      "name": "no_norm_three",
+      "line": 104,
+      "description": "No element of Z[sqrt(-5)] has norm 3: the equation a^2 + 5b^2 = 3 has no integer solutions"
+    },
+    {
+      "type": "theorem",
+      "name": "unit_iff_norm_one",
+      "line": 122,
+      "description": "An element of Z[sqrt(-5)] is a unit if and only if its norm equals 1, characterizing units as exactly {+1, -1}"
+    },
+    {
+      "type": "theorem",
+      "name": "factorization_1",
+      "line": 183,
+      "description": "First factorization: 6 = 2 * 3 in Z[sqrt(-5)]"
+    },
+    {
+      "type": "theorem",
+      "name": "factorization_2",
+      "line": 187,
+      "description": "Second factorization: 6 = (1 + sqrt(-5)) * (1 - sqrt(-5)) in Z[sqrt(-5)]"
+    },
+    {
+      "type": "theorem",
+      "name": "two_irreducible",
+      "line": 196,
+      "description": "2 is irreducible in Z[sqrt(-5)]: N(2)=4 and no element has norm 2, so 2 cannot factor nontrivially"
+    },
+    {
+      "type": "theorem",
+      "name": "three_irreducible",
+      "line": 215,
+      "description": "3 is irreducible in Z[sqrt(-5)]: N(3)=9 and no element has norm 3"
+    },
+    {
+      "type": "theorem",
+      "name": "onePlus_irreducible",
+      "line": 239,
+      "description": "1+sqrt(-5) is irreducible: N(1+sqrt(-5))=6 and no element has norm 2 or 3"
+    },
+    {
+      "type": "theorem",
+      "name": "oneMinus_irreducible",
+      "line": 260,
+      "description": "1-sqrt(-5) is irreducible by the same norm argument"
+    },
+    {
+      "type": "theorem",
+      "name": "zsqrt_neg5_not_ufd",
+      "line": 359,
+      "description": "Main theorem: Z[sqrt(-5)] is NOT a unique factorization domain, proved by showing 2 is irreducible but not prime (2 divides (1+sqrt(-5))(1-sqrt(-5)) without dividing either factor)"
+    }
+  ]
+}

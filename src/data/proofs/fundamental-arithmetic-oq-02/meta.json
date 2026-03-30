@@ -1,0 +1,45 @@
+{
+  "id": "fundamental-arithmetic-oq-02",
+  "title": "Failure of Unique Factorization in Z[sqrt(-5)]",
+  "slug": "fundamental-arithmetic-oq-02",
+  "description": "The classic counterexample showing Z[sqrt(-5)] is not a UFD: 6 = 2*3 = (1+sqrt(-5))(1-sqrt(-5)) gives two distinct irreducible factorizations.",
+  "meta": {
+    "author": "Kummer, Dedekind (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Unique_factorization_domain#Non-example",
+    "date": "1847 (Kummer), 1871 (Dedekind)",
+    "status": "formalized",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "rings",
+      "counterexample",
+      "classic"
+    ],
+    "proofRepoPath": "Proofs/FundamentalArithmeticOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "mathlibDependencies": [
+      {
+        "theorem": "Zsqrtd",
+        "description": "Ring of integers Z[sqrt(d)]",
+        "module": "Mathlib.NumberTheory.Zsqrtd.Basic"
+      },
+      {
+        "theorem": "Irreducible",
+        "description": "Element is irreducible in a monoid",
+        "module": "Mathlib.Algebra.Prime.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid",
+        "description": "Unique factorization domain structure",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
+      }
+    ],
+    "assumptions": []
+  },
+  "parent": "fundamental-arithmetic",
+  "openQuestion": "Can the failure of unique factorization in Z[sqrt(-5)] be formalized as a counterexample showing it is not a UFD?",
+  "significance": "This is the classical counterexample that motivated Kummer's ideal numbers (1847) and Dedekind's theory of ideals (1871). Z[sqrt(-5)] has class number 2, meaning the failure of unique factorization is measured by the class group Z/2Z. The formalization proves all four factors (2, 3, 1+sqrt(-5), 1-sqrt(-5)) are irreducible, that they give two genuinely different factorizations of 6, and that this implies Z[sqrt(-5)] is not a UFD via the irreducible-but-not-prime argument."
+}
