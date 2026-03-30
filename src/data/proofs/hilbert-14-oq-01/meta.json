@@ -1,0 +1,22 @@
+{
+  "id": "hilbert-14-oq-01",
+  "title": "Hilbert's 14th Problem: Non-Reductive Finite Generation",
+  "slug": "hilbert-14-oq-01",
+  "description": "Investigates which non-reductive groups have finitely generated invariant rings. Proves invariant subring closure properties and documents the landscape: Weitzenbook (additive groups), Zariski (dim <= 2), Nagata (counterexample).",
+  "meta": {
+    "status": "verified",
+    "tags": ["algebra", "invariant-theory", "open-question"],
+    "proofRepoPath": "Proofs/Hilbert14InvariantsOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 154,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "dateAdded": "2026-03-30"
+  },
+  "crossReferences": [
+    {"targetId": "hilbert-14", "relationship": "extends"}
+  ],
+  "leanFile": {"namespace": "Hilbert14OQ01", "lineCount": 154, "axiomCount": 0, "theoremCount": 8}
+}
