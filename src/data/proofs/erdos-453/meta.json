@@ -17,7 +17,7 @@
       "prime-number-graph"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 453,
     "erdosUrl": "https://erdosproblems.com/453",
     "erdosProblemStatus": "solved",
@@ -54,9 +54,9 @@
       "counterexample_set_infinite theorem (fully proved from axioms)",
       "log_convexity_iff_vertex identity (proved by rfl)"
     ],
-    "axiomCount": 4,
+    "axiomCount": 2,
     "lineCount": 339,
-    "assumptions": "4 axioms: nthPrime_is_prime, nthPrime_strictMono, logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma. 1 sorry remaining."
+    "assumptions": "2 axioms: logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma. 0 sorries. nthPrime_is_prime and nthPrime_strictMono are now proved theorems."
   },
   "leanFile": {
     "imports": [
@@ -71,7 +71,7 @@
     ],
     "namespace": "Erdos453",
     "lineCount": 339,
-    "axiomCount": 4,
+    "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 7
   },
@@ -126,8 +126,8 @@
       "title": "The Prime Sequence",
       "startLine": 42,
       "endLine": 69,
-      "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (sorry), and axiomatizes primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
-      "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (sorry), and axiomatizes primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
+      "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
+      "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
     },
     {
       "id": "conjectures",
