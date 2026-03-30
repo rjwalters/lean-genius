@@ -491,25 +491,281 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
     exact (mul_eq_zero.mp h).resolve_left hdet
   · intro h; rw [h, mul_zero]
 
-/-
-### Roadmap for Full Axiom Elimination
+-- ============================================================
+-- PART 13: Scaling Lemma and Parametric Coverage
+-- ============================================================
 
-**Completed:**
-1. `pascal_std_conic_parametrized`: Pascal's theorem for the standard conic x₀²+x₁²=x₂²
-2. `stdConic_det_factored`: Scalar triple product formula det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a)
-3. `collinear_projTransform`: Collinearity is projectively invariant
-4. `threeVectorMatrix_projTransform`: Determinant of transformed vectors = det(M) · original
+/-!
+## Scaling and Coverage for Full Axiom Elimination
 
-**Remaining for full proof:**
-1. `pascalConstraint_projTransform` (above): needs adjugate composition identity
-2. **Sylvester's law**: Any non-degenerate symmetric conic matrix can be diagonalized by
-   congruence to ±diag(1,1,-1). For real projective conics, the signature determines the
-   conic type. Non-empty non-degenerate conics have signature (2,1), equivalent to stdConic.
-3. **stdConic parametric coverage**: Show every point on stdConic (with x₂ ≠ 0) is of the
-   form stdConicPoint(t) for some t. (The point at infinity (1,0,-1) is the limit t→∞.)
-4. **Assembly**: Combine Sylvester's law + parametric coverage + projective invariance +
-   `pascal_std_conic_parametrized` to prove `conic_implies_pascal_constraint`.
+### Building blocks for reducing `conic_implies_pascal_constraint` to standard results:
+
+1. **Cross product bilinearity**: `cross(c₁·u, c₂·v) = (c₁c₂) · cross(u,v)`
+2. **Determinant multilinearity**: `det(α·u, β·v, γ·w) = αβγ · det(u,v,w)`
+3. **Scaling lemma**: Pascal constraint preserved under scalar multiples
+4. **Exceptional point**: (-1,0,1) — the unique stdConic point not covered by stdConicPoint
+5. **Exceptional lemmas**: Pascal holds with (-1,0,1) at each hexagon position
+6. **Sylvester's law**: Any non-degenerate conic with a real point ≅ stdConic
+7. **Assembly**: Combine all pieces to derive the axiom
 -/
+
+/-- Cross product is bilinear with respect to scalar multiplication:
+    cross(c₁·u, c₂·v) = (c₁·c₂) · cross(u,v).
+    Proved componentwise via ring. -/
+theorem crossProduct_smul_smul (c₁ c₂ : ℝ) (u v : Fin 3 → ℝ) :
+    crossProduct (c₁ • u) (c₂ • v) = (c₁ * c₂) • crossProduct u v := by
+  ext i; fin_cases i <;>
+    simp only [crossProduct, Pi.smul_apply, smul_eq_mul, Fin.isValue] <;>
+    ring
+
+/-- Determinant of threeVectorMatrix is multilinear in scalar factors:
+    det(α·u, β·v, γ·w) = α·β·γ · det(u,v,w). -/
+theorem threeVectorMatrix_det_smul (α β γ : ℝ) (u v w : Fin 3 → ℝ) :
+    (threeVectorMatrix (α • u) (β • v) (γ • w)).det =
+    α * β * γ * (threeVectorMatrix u v w).det := by
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+    Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- The exceptional point on stdConic not covered by stdConicPoint parametrization.
+    This is the unique real point with x₀ + x₂ = 0. -/
+def exceptionalPoint : ProjPoint :=
+  fun i => match i with | 0 => -1 | 1 => 0 | 2 => 1
+
+/-- The exceptional point lies on stdConic. -/
+theorem exceptionalPoint_on_conic : pointOnConic exceptionalPoint stdConic := by
+  unfold pointOnConic conicQuadraticForm exceptionalPoint stdConic
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply]
+  norm_num
+
+/-- Valid points on stdConic have x₂ ≠ 0.
+    Proof: if x₂ = 0 then x₀² + x₁² = 0, which over ℝ forces x₀ = x₁ = 0. -/
+theorem stdConic_x2_ne_zero (p : ProjPoint) (hp : pointOnConic p stdConic)
+    (hv : ProjPoint.valid p) : p 2 ≠ 0 := by
+  intro h2
+  apply hv
+  unfold pointOnConic conicQuadraticForm stdConic at hp
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
+  ext i; fin_cases i <;> nlinarith [sq_nonneg (p 0), sq_nonneg (p 1)]
+
+/-- Scaling all 6 points preserves the Pascal constraint.
+
+    The proof uses modular building blocks:
+    1. Cross product bilinearity simplifies inner and outer cross products
+    2. Determinant multilinearity factors out the scalar products
+    3. The original det = 0 by hypothesis -/
+theorem pascalConstraint_of_smul (c₁ c₂ c₃ c₄ c₅ c₆ : ℝ)
+    (A B C D E F : ProjPoint)
+    (h : pascalConstraint A B C D E F) :
+    pascalConstraint (c₁ • A) (c₂ • B) (c₃ • C) (c₄ • D) (c₅ • E) (c₆ • F) := by
+  unfold pascalConstraint lineIntersection lineThrough at h ⊢
+  simp only [crossProduct_smul_smul]
+  rw [threeVectorMatrix_det_smul, h, mul_zero]
+
+-- ============================================================
+-- PART 13b: Exceptional Point Lemmas
+-- ============================================================
+
+/-!
+### Pascal with the Exceptional Point
+
+The parametrization `stdConicPoint(t) = (1-t², 2t, 1+t²)` covers all real points on
+stdConic except `(-1, 0, 1)`. We prove Pascal holds with this exceptional point at
+each of the 6 hexagon positions, closing the gap left by `pascal_std_conic_parametrized`.
+
+Each proof substitutes the specific coordinates and lets `ring` verify the polynomial
+identity (degree ~10 in 5 variables, ~2000 terms).
+-/
+
+/-- **Pascal with exceptional point at position A.** -/
+theorem pascal_std_conic_exceptionalA (b c d e f : ℝ) :
+    pascalConstraint exceptionalPoint (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal with exceptional point at position B.** -/
+theorem pascal_std_conic_exceptionalB (a c d e f : ℝ) :
+    pascalConstraint (stdConicPoint a) exceptionalPoint (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal with exceptional point at position C.** -/
+theorem pascal_std_conic_exceptionalC (a b d e f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) exceptionalPoint
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal with exceptional point at position D.** -/
+theorem pascal_std_conic_exceptionalD (a b c e f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      exceptionalPoint (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal with exceptional point at position E.** -/
+theorem pascal_std_conic_exceptionalE (a b c d f : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) exceptionalPoint (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal with exceptional point at position F.** -/
+theorem pascal_std_conic_exceptionalF (a b c d e : ℝ) :
+    pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
+      (stdConicPoint d) (stdConicPoint e) exceptionalPoint := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+-- ============================================================
+-- PART 13c: Multi-Exceptional and Coverage
+-- ============================================================
+
+/-!
+### Multi-Exceptional Cases
+
+When two or more hexagon vertices are the exceptional point (-1,0,1):
+- **Adjacent pair** (e.g., A=B=exc): cross(A,B) = 0 → P = 0 → det has zero row → det = 0
+- **Non-adjacent pair** (e.g., A=C=exc): requires direct computation
+- **Three alternating** (A=C=E=exc): requires direct computation
+
+We prove the non-adjacent cases via ring and handle adjacent cases via a general lemma.
+-/
+
+/-- If two adjacent hexagon vertices are proportional, the Pascal determinant is zero.
+    When A and B are proportional, cross(A,B) = 0, making P = 0, giving a zero row. -/
+theorem pascalConstraint_of_proportional_AB (c : ℝ) (A C D E F : ProjPoint) :
+    pascalConstraint A (c • A) C D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct,
+    Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- Pascal with exceptional points at non-adjacent positions A and C. -/
+theorem pascal_std_conic_exceptionalAC (b d e f : ℝ) :
+    pascalConstraint exceptionalPoint (stdConicPoint b) exceptionalPoint
+      (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal with exceptional points at non-adjacent positions A and D (opposite vertices). -/
+theorem pascal_std_conic_exceptionalAD (b c e f : ℝ) :
+    pascalConstraint exceptionalPoint (stdConicPoint b) (stdConicPoint c)
+      exceptionalPoint (stdConicPoint e) (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- Pascal with exceptional points at three alternating positions A, C, E. -/
+theorem pascal_std_conic_exceptionalACE (b d f : ℝ) :
+    pascalConstraint exceptionalPoint (stdConicPoint b) exceptionalPoint
+      (stdConicPoint d) exceptionalPoint (stdConicPoint f) := by
+  unfold pascalConstraint lineIntersection lineThrough exceptionalPoint stdConicPoint
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  ring
+
+/-- **Pascal's theorem for ALL real points on stdConic.**
+
+    Every valid point on x₀²+x₁²=x₂² is either:
+    - A scalar multiple of stdConicPoint(t) for some t (when x₀+x₂ ≠ 0)
+    - A scalar multiple of exceptionalPoint = (-1,0,1) (when x₀+x₂ = 0)
+
+    Proof combines the parametrized result, 6 single-exceptional lemmas,
+    multi-exceptional lemmas, adjacent-proportional lemma, and the scaling lemma.
+
+    TODO: Complete the 2⁶ case analysis or use algebraic argument. -/
+theorem pascal_stdConic_all_points
+    (A B C D E F : ProjPoint)
+    (hA : pointOnConic A stdConic) (hB : pointOnConic B stdConic)
+    (hC : pointOnConic C stdConic) (hD : pointOnConic D stdConic)
+    (hE : pointOnConic E stdConic) (hF : pointOnConic F stdConic)
+    (hAv : ProjPoint.valid A) (hBv : ProjPoint.valid B)
+    (hCv : ProjPoint.valid C) (hDv : ProjPoint.valid D)
+    (hEv : ProjPoint.valid E) (hFv : ProjPoint.valid F) :
+    pascalConstraint A B C D E F := by sorry
+
+-- ============================================================
+-- PART 14: Sylvester's Law (Conic Equivalence)
+-- ============================================================
+
+/-!
+## Sylvester's Law of Inertia for Conics
+
+A non-degenerate real symmetric 3×3 matrix with an isotropic vector (a real point on
+the conic) has signature (2,1). By Sylvester's law, it is congruent to diag(1,1,-1).
+
+This means: for any non-degenerate conic C with a real point, there exists an
+invertible M such that Mᵀ · C · M = stdConic. Equivalently, every real point on C
+maps (via M⁻¹) to a real point on stdConic, preserving the Pascal constraint.
+-/
+
+/-- **Sylvester's law for conics:** Any non-degenerate symmetric conic with a real point
+    is congruent to the standard conic diag(1,1,-1).
+
+    This is a well-known result from the theory of quadratic forms over ℝ.
+    The proof requires showing that a non-degenerate quadratic form of rank 3 with an
+    isotropic vector has signature (2,1), and then diagonalizing by congruence.
+
+    TODO: Prove from Mathlib's `QuadraticForm` or `BilinForm` theory. -/
+theorem sylvester_conic_equivalence (C : Conic) (hC : C.nondegenerate) (hCS : C.symmetric)
+    (hpoint : ∃ p : ProjPoint, ProjPoint.valid p ∧ pointOnConic p C) :
+    ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧
+    ∀ p : ProjPoint, pointOnConic p C ↔
+      pointOnConic (projTransform M p) stdConic := by sorry
+
+-- ============================================================
+-- PART 15: Assembly (Proof of the Main Axiom)
+-- ============================================================
+
+/-!
+## Assembly
+
+Given all the building blocks:
+1. `pascal_stdConic_all_points`: Pascal for all real points on stdConic
+2. `pascalConstraint_projTransform`: Pascal constraint is projectively invariant
+3. `sylvester_conic_equivalence`: Any non-degenerate conic ≅ stdConic
+
+We can derive `conic_implies_pascal_constraint` (modulo the sorries in Sylvester and
+coverage). This reduces the axiom to two clearly identified, well-known results.
+
+### Sorry inventory (toward full axiom elimination):
+- `pascal_stdConic_all_points`: case analysis assembling parametric + exceptional lemmas
+- `sylvester_conic_equivalence`: Sylvester's law of inertia for quadratic forms
+- `conic_implies_pascal_constraint_proof`: needs validity of transformed points
+-/
+
+/-- **Main theorem (assembly):** Six points on any non-degenerate conic satisfy Pascal's constraint.
+
+    Proof sketch:
+    1. By Sylvester, ∃ M with M mapping C to stdConic
+    2. The 6 image points are on stdConic
+    3. By `pascal_stdConic_all_points`, Pascal holds for the images
+    4. By `pascalConstraint_projTransform`, Pascal holds for the originals -/
+theorem conic_implies_pascal_constraint_proof
+    (C : Conic) (hC : C.nondegenerate) (hCS : C.symmetric)
+    (hex : InscribedHexagon C) :
+    pascalConstraint hex.A hex.B hex.C' hex.D hex.E hex.F := by
+  -- Get the equivalence to stdConic
+  obtain ⟨M, hMdet, hMequiv⟩ := sylvester_conic_equivalence C hC hCS
+    ⟨hex.A, hex.hAvalid, hex.hA⟩
+  -- Apply projective invariance: Pascal for M-images ↔ Pascal for originals
+  rw [← pascalConstraint_projTransform M hMdet]
+  -- Need Pascal for points on stdConic; transform the on-conic hypotheses
+  exact pascal_stdConic_all_points _ _ _ _ _ _
+    ((hMequiv hex.A).mp hex.hA) ((hMequiv hex.B).mp hex.hB)
+    ((hMequiv hex.C').mp hex.hC) ((hMequiv hex.D).mp hex.hD)
+    ((hMequiv hex.E).mp hex.hE) ((hMequiv hex.F).mp hex.hF)
+    sorry sorry sorry sorry sorry sorry  -- validity of transformed points
+
 -- ============================================================
 -- Export main results
 -- ============================================================
@@ -527,3 +783,9 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
 #check @crossProduct_projTransform
 #check @stdConic_det_factored
 #check @pascalConstraint_projTransform
+#check @crossProduct_smul_smul
+#check @threeVectorMatrix_det_smul
+#check @pascalConstraint_of_smul
+#check @pascal_stdConic_all_points
+#check @sylvester_conic_equivalence
+#check @conic_implies_pascal_constraint_proof
