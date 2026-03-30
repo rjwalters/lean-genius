@@ -97,7 +97,9 @@ PART III: COUNTING ROUGH NUMBERS
 /-- The number of multiples of p in {1, ..., n} is ⌊n/p⌋. -/
 theorem multiples_count (p n : ℕ) (hp : 0 < p) :
     ((Finset.Icc 1 n).filter (fun k => p ∣ k)).card = n / p := by
-  -- Standard counting argument
+  -- Follows from Nat.card_multiples (in Mathlib.Data.Nat.Factorization.Basic):
+  -- #{e ∈ range n | p ∣ e + 1} = n / p
+  -- Our filter is the same set shifted by 1 (k = e + 1).
   sorry
 
 /-- If Σ_{p > N, prime} 1/p < 1/2 (in some rational sense), then the number of
