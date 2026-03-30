@@ -1,0 +1,99 @@
+{
+  "slug": "erdos-152-oq-01",
+  "title": "Two isolated elements in Sidon sumsets via dual endpoint analysis",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a Sidon set $A \\subset \\mathbb{N}$ with $|A| \\geq N_0$ (for some explicit $N_0$), prove $\\mathrm{isolatedCount}(A) \\geq 2$. Strategy: show both $2\\min(A)$ and $2\\max(A)$ are isolated, or find two disjoint isolated elements via interior structure.",
+    "plain": "Strengthen gap_existence_pigeonhole from \u22651 to \u22652 isolated elements. The current proof finds one isolated element from the endpoints 2\u00b7min(A) or 2\u00b7max(A). Can we prove both endpoints are isolated simultaneously for |A| \u2265 N\u2080, or find a second isolated element in the interior of A+A?",
+    "whyMatters": [
+      "First quantitative improvement toward Erd\u0151s #152 beyond the pigeonhole bound",
+      "Dual endpoint analysis requires controlling both consecutive pairs (M,M-1) and (m,m+1) simultaneously \u2014 Sidon difference injectivity limits this to at most one",
+      "Finding interior isolated elements would require new techniques beyond endpoint analysis"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "gap_existence_pigeonhole: isolatedCount(A) \u2265 1 for |A| \u2265 5",
+      "sidon_sumset_size: |A+A| = n(n+1)/2",
+      "sidon_set_range_lower_bound: max(A) \u2265 n(n-1)/2",
+      "sidon_diff_injective: at most one pair of consecutive elements in a Sidon set"
+    ],
+    "open": [
+      "Is isolatedCount(A) \u2265 2 for all Sidon sets with |A| \u2265 N\u2080? What is the smallest N\u2080?",
+      "Can both 2\u00b7min(A) and 2\u00b7max(A) be isolated simultaneously?"
+    ],
+    "goal": "Prove isolatedCount(A) \u2265 2 for Sidon sets of size \u2265 N\u2080"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proved no-consecutive-pair case. 2 sorries for one-consecutive-pair cases.",
+    "blockers": [],
+    "nextAction": "Prove the one-consecutive-pair cases (requires interior analysis)",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Erdos152OQ01.lean (173 lines, 0A, 2S). Proved two_isolated_no_consecutive: when A has no consecutive pair and min \u2265 1, both 2\u00b7min and 2\u00b7max are isolated. 2 sorries remain for one-consecutive-pair cases.",
+    "builtItems": [
+      "min_sum_left_isolated: 2m-1 \u2209 A+A when m \u2265 1 (below minimum sum)",
+      "min_sum_right_isolated: 2m+1 \u2209 A+A when m+1 \u2209 A",
+      "max_sum_left_isolated: 2M-1 \u2209 A+A when M-1 \u2209 A",
+      "max_sum_right_isolated: 2M+1 \u2209 A+A (exceeds maximum sum)",
+      "two_isolated_no_consecutive: \u22652 isolated elements when no consecutive pair (PROVED)",
+      "gap_existence_two: \u22652 isolated elements for |A|\u22657, min\u22651 (2 sorries for one-consec cases)"
+    ],
+    "insights": [
+      "From gap_existence_pigeonhole: if M-1 \u2209 A, 2M is isolated. If m+1 \u2209 A and m \u2265 1, 2m is isolated.",
+      "Sidon diff injectivity: at most one pair (x, x-1) in A. So at most one of {M-1 \u2208 A, m+1 \u2208 A} holds.",
+      "No-consecutive case: both endpoints isolated \u2192 2 distinct isolated elements.",
+      "One-consecutive case: one endpoint has a neighbor in A+A. Need interior isolated element.",
+      "The interior case likely requires sumset density argument: O(n\u00b2) elements in range O(n\u00b2), density ~1/4, many gaps must create isolated elements."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize case (1): no consecutive pairs in A \u2192 both endpoints isolated",
+      "For case (2): use counting argument \u2014 n(n+1)/2 sumset elements in range ~2n\u00b2, too sparse for all to be non-isolated",
+      "Consider: for |A| large enough, even case (2) gives \u22652 isolated elements via pigeonhole on gaps"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "quantitative-improvement"
+  ],
+  "relatedProofs": [
+    "erdos-152"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T00:00:00.000Z",
+  "lastUpdate": "2026-03-29T06:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos152OQ01.lean",
+      "filename": "Erdos152OQ01.lean",
+      "lineCount": 173,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152OQ01.lean"
+    }
+  ]
+}
