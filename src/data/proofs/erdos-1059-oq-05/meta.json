@@ -1,0 +1,73 @@
+{
+    "id": "erdos-1059-oq-05",
+    "title": "Decidable Factorial Compositeness Verification",
+    "slug": "erdos-1059-oq-05",
+    "description": "A Decidable instance for AllFactorialSubtractionsComposite eliminates the need for manual per-prime factorial bound helpers. Any concrete prime can now be verified with a single native_decide.",
+    "meta": {
+        "author": "Erdős",
+        "sourceUrl": "https://erdosproblems.com/1059",
+        "status": "verified",
+        "proofRepoPath": "Proofs/Erdos1059OQ05.lean",
+        "tags": [
+            "erdos",
+            "number theory",
+            "primes",
+            "factorials",
+            "decidability",
+            "automation",
+            "tactics"
+        ],
+        "badge": "verified",
+        "sorries": 0,
+        "erdosNumber": 1059,
+        "erdosUrl": "https://erdosproblems.com/1059",
+        "erdosProblemStatus": "open",
+        "axiomCount": 0,
+        "lineCount": 88,
+        "assumptions": "None. All results proved by computation (native_decide).",
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy p - k! being composite for every k with k! < p. The parent proof verified examples (101, 211) using manual factorial bound helpers and interval_cases. This open question generalizes that approach.",
+        "problemStatement": "Provide a general decision procedure for verifying AllFactorialSubtractionsComposite on any concrete natural number, eliminating per-prime boilerplate.",
+        "text": "The key insight is that k ≤ k! for all k (Nat.self_le_factorial), so k! < n implies k < n. This bounds the universal quantifier to Finset.range n, making the proposition decidable. With the Decidable instance, verification of any concrete prime reduces to a single `by native_decide`.",
+        "proofStrategy": "Prove AllFactorialSubtractionsComposite n is equivalent to a bounded quantifier over Finset.range n via factorial_lt_implies_lt, then derive a Decidable instance using decidable_of_iff. The bounded quantifier inherits decidability from Finset.decidableBAll and the decidability of Nat.Prime, Nat.lt, and Nat.le.",
+        "keyInsights": [
+            "k ≤ k! for all k (Nat.self_le_factorial), so k! < n forces k < n, bounding the quantifier",
+            "The bounded quantifier over Finset.range n is automatically decidable since all components (factorial, primality, comparison) are decidable",
+            "A single Decidable instance replaces all per-prime factorial_lt_bound helper lemmas",
+            "Both witnesses (101, 211) and non-witnesses (89, 223) are verified uniformly by native_decide"
+        ],
+        "prerequisites": [
+            "Decidability in Lean 4 (Decidable typeclass, decidable_of_iff)",
+            "Nat.factorial and Nat.Prime from Mathlib",
+            "Finset.range and bounded quantifier decidability"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Data.Nat.Prime.Basic",
+            "Mathlib.Data.Nat.Factorial.Basic",
+            "Mathlib.Data.Finset.Basic",
+            "Mathlib.Tactic"
+        ],
+        "opens": [],
+        "namespace": null,
+        "lineCount": 88,
+        "axiomCount": 0,
+        "theoremCount": 7,
+        "definitionCount": 1
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-1059",
+            "relationship": "extends",
+            "description": "Provides decidable verification infrastructure for the main Erdős 1059 formalization"
+        },
+        {
+            "targetId": "erdos-1059-oq-03",
+            "relationship": "related",
+            "description": "OQ-03 found the next failing prime (223); OQ-05 verifies this uniformly via native_decide"
+        }
+    ]
+}
