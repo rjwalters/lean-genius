@@ -106,7 +106,11 @@ theorem max_edges (r : ℕ) :
   calc H.edges.card
       ≤ (Finset.univ.filter (fun (s : Finset V) => s.card = r)).card :=
         card_le_card hsub
-    _ = (Fintype.card V).choose r := by sorry
+    _ = (Fintype.card V).choose r := by
+        rw [show Finset.univ.filter (fun s : Finset V => s.card = r) =
+            (Finset.univ : Finset V).powersetCard r from by
+          ext S; simp [Finset.mem_powersetCard, Finset.mem_filter, Finset.subset_univ]]
+        rw [Finset.card_powersetCard, Finset.card_univ]
 
 -- ============================================================
 -- Part IV: Topological Obstruction
