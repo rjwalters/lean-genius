@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 404,
     "erdosUrl": "https://erdosproblems.com/404",
     "erdosProblemStatus": "open",
@@ -65,8 +65,8 @@
       "Legendre's formula for v_p(n!)",
       "Filter.Tendsto and convergence in Lean/Mathlib"
     ],
-    "lineCount": 253,
-    "assumptions": "2 axioms: lin_bound (f(2,2) <= 254), lin_bound_meaning (2^255 never divides such sums). 1 sorry in padic_val_factorial_asymp (Nat.log p n / n -> 0). The digit-sum identity, upper bound, and lower bound are all proved.",
+    "lineCount": 291,
+    "assumptions": "2 axioms: lin_bound (f(2,2) <= 254), lin_bound_meaning (2^255 never divides such sums). 0 sorries.",
     "theoremCount": 10
   },
   "overview": {
@@ -202,7 +202,7 @@
       "Filter"
     ],
     "namespace": "Erdos404",
-    "lineCount": 253,
+    "lineCount": 291,
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 7
