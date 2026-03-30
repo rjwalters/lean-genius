@@ -413,12 +413,6 @@ theorem derivation_pow (d : ℝ → ℝ) (hd : IsDerivation d) (x : ℝ) :
       push_cast
       ring
 
-/-- A continuous derivation on ℝ must be zero.
-This is because the only continuous derivation of a complete valued
-field is the zero derivation. -/
-axiom continuous_derivation_is_zero :
-    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0
-
 /-- **Almost Derivation Stability:**
 If d satisfies Leibniz rule for a.e. pairs, then there exists
 a true derivation δ with d = δ a.e.
@@ -470,5 +464,12 @@ Combined with derivation stability: an almost-derivation that
 is measurable must be zero a.e. -/
 axiom measurable_derivation_is_zero :
     ∀ d : ℝ → ℝ, IsDerivation d → Measurable d → d = 0
+
+/-- A continuous derivation on ℝ must be zero.
+Proved from the stronger measurable_derivation_is_zero, since
+continuous functions are measurable (Continuous.measurable). -/
+theorem continuous_derivation_is_zero :
+    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0 :=
+  fun d hd hcont => measurable_derivation_is_zero d hd hcont.measurable
 
 end Erdos1126OQ01
