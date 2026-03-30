@@ -21,9 +21,9 @@
     "erdosNumber": 100,
     "erdosUrl": "https://erdosproblems.com/100",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 491,
-    "assumptions": "4 axioms: kanold_bound (n^(3/4) bound), guthKatz_distinct_distances (n/log n distinct distances), piepmeyer_construction (9-point counterexample), erdos_anning_theorem (infinite collinearity). 0 sorries. distinctDistances_le_diam PROVED via injection into {1,...,⌊diam⌋}. diam_is_integer PROVED (diameter is a positive integer). Open problem - linear diameter growth conjectured.",
+    "axiomCount": 2,
+    "lineCount": 477,
+    "assumptions": "2 axioms: guthKatz_distinct_distances (Guth-Katz theorem), piepmeyer_construction (explicit integer distance set). Both used. kanold_bound and erdos_anning_theorem removed (unused).",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanDist",

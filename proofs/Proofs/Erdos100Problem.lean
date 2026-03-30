@@ -293,16 +293,9 @@ theorem diam_ge_one (S : Finset (EuclideanSpace ℝ (Fin 2)))
   rw [dif_pos hne]
   exact le_trans hdist_ge1 (Finset.le_max' _ _ hmem)
 
-/--
-**Kanold's Bound**
-
-For any n-point integer distance set, diameter ≥ n^(3/4).
-
-Proved by pigeonhole counting on distance multiplicities.
--/
-axiom kanold_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    c * (n : ℝ)^(3/4 : ℝ) ≤ minDiameterRestrictedSets n
+/- **Kanold's Bound** (not axiomatized — unused by theorems below)
+   For any n-point integer distance set, diameter ≥ n^(3/4).
+   Proved by pigeonhole counting on distance multiplicities. -/
 
 /--
 **Guth-Katz Distinct Distances Theorem (2015)**
@@ -402,16 +395,9 @@ def IsCollinear (S : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
   ∃ (a b : EuclideanSpace ℝ (Fin 2)), a ≠ b ∧
     ∀ p ∈ S, ∃ t : ℝ, p = a + t • (b - a)
 
-/--
-**Erdős-Anning Theorem (1945)**
-
-If an infinite set of points in ℝ² has all pairwise distances
-being integers, then all points are collinear.
--/
-axiom erdos_anning_theorem (S : Set (EuclideanSpace ℝ (Fin 2)))
-    (hinf : Set.Infinite S)
-    (hint : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, k ≥ 1 ∧ ‖p - q‖ = k) :
-    IsCollinear S
+/- **Erdős-Anning Theorem (1945)** (not axiomatized — unused by theorems below)
+   If an infinite set of points in ℝ² has all pairwise distances
+   being integers, then all points are collinear. -/
 
 /-
 ## The Conjecture Implies Kanold

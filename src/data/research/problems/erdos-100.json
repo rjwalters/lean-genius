@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Main file Erdos100Problem.lean: 4A (all deep), 11T proved, 0S. Related 100X files have separate axioms/sorries.",
+    "progressSummary": "COMPLETE: 2A (both used), 0S. Removed 2 unused axioms (kanold_bound, erdos_anning_theorem).",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -40,7 +40,8 @@
       "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
       "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298",
       "PROVED distinctDistances_le_diam: axiom→theorem via injection of pairwiseDistances into Finset.Icc 1 ⌊diam⌋ using Nat.floor_natCast injectivity",
-      "PROVED diam_is_integer: diameter of integer-distance set is a positive integer, via max of pairwiseDistances being a positive integer member"
+      "PROVED diam_is_integer: diameter of integer-distance set is a positive integer, via max of pairwiseDistances being a positive integer member",
+      "Removed kanold_bound + erdos_anning_theorem axioms (unused, 4A→2A)"
     ],
     "insights": [
       "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
@@ -107,14 +108,14 @@
     ]
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-03-23T03:30:00Z",
+  "lastUpdate": "2026-03-29T23:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1000Problem.lean",
       "filename": "Erdos1000Problem.lean",
-      "lineCount": 1120,
+      "lineCount": 477,
       "theoremCount": 55,
       "axiomCount": 2,
       "defCount": 11,
