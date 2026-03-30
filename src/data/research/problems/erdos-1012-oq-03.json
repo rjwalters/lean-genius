@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1012-oq-03",
   "title": "Directed graph Hamiltonian cycle thresholds",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,36 +16,49 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-30T08:49:59.593Z",
-    "iteration": 1,
-    "focus": "Survey complete. Infrastructure and statements formalized.",
+    "iteration": 2,
+    "focus": "Proved tournament insertion lemma + iterated construction. Rédei proved modulo list-to-equiv conversion.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove list_path_to_hamiltonian (list-to-equiv conversion). Then tackle Moon-Moser using Rédei.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Defined digraph infrastructure + stated 4 key directed Hamiltonian theorems. All proofs sorry.",
+    "progressSummary": "ACT: Rédei proved via list-based insertion sort. Tournament insertion lemma fully proved. 1 sorry remains (list-to-equiv conversion). 3 other theorems still sorry.",
     "builtItems": [
       "Digraph structure with loopless axiom",
       "In-degree, out-degree, tournament, strong connectivity definitions",
       "Hamiltonian cycle and path predicates using equivalences",
       "Arc count definition",
-      "Statements of Ghouila-Houri, Moon-Moser, Redei, directed threshold (all sorry)"
+      "Statements of Ghouila-Houri, Moon-Moser, Redei, directed threshold (all sorry)",
+      "tournament_path_insert: fully proved insertion lemma for tournaments",
+      "tournament_full_path_list: iterated insertion builds Hamiltonian path (proved)",
+      "IsDirectedPathList: list-based directed path definition",
+      "Digraph.arc_or_arc, arc_of_not_arc: tournament basic lemmas (proved)",
+      "redei: proved using infrastructure (modulo list_path_to_hamiltonian)"
     ],
     "insights": [
-      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree \u2265 n/2 + strong connectivity \u2192 HC",
+      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree ≥ n/2 + strong connectivity → HC",
       "Moon-Moser (1963): strongly connected tournaments have Hamiltonian cycles",
       "Redei (1934): every tournament has Hamiltonian path (no connectivity needed)",
-      "Mathlib lacks directed graph infrastructure \u2014 defined custom Digraph type",
-      "Proof roadmap: Ghouila-Houri ~200 lines, Moon-Moser ~150, Redei ~100"
+      "Mathlib lacks directed graph infrastructure — defined custom Digraph type",
+      "Proof roadmap: Ghouila-Houri ~200 lines, Moon-Moser ~150, Redei ~100",
+      "List-based induction on paths (cons a t) cleanly handles tournament insertion: if u beats head, prepend; else head beats u, recurse on tail",
+      "The key insight for correctness: when inserting at k_t+1 in a::t, if k_t=0 then first element becomes u and head→u arc is available; if k_t>0 then first element is unchanged",
+      "Induction on path length (Nat induction) is cleaner than well-founded recursion for the iterated construction",
+      "The remaining list_path_to_hamiltonian sorry is purely data manipulation (building Equiv from Nodup list), no mathematical content"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove list_path_to_hamiltonian: construct V ≃ Fin n from a Nodup list of length n",
+      "Prove Moon-Moser: use Rédei to get Hamiltonian path, then rotate to close into cycle",
+      "Consider Aristotle companion file for the conversion lemma"
+    ]
   },
   "tags": [
     "graph-theory",
@@ -93,11 +106,11 @@
     {
       "path": "Proofs/Erdos1012Problem.lean",
       "filename": "Erdos1012Problem.lean",
-      "lineCount": 354,
-      "theoremCount": 35,
+      "lineCount": 340,
+      "theoremCount": 10,
       "axiomCount": 4,
       "defCount": 7,
-      "sorryCount": 0,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012Problem.lean"
     }
