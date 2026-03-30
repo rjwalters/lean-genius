@@ -453,6 +453,17 @@ theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.
 /-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? (Using corrected μ.) -/
 def erdos_1040_question : Prop := diameterOneConjecture
 
+/-- The specific known results for line segments and discs with ρ ≥ 1.
+    This requires explicit computation of μ for these shapes (EHP 1958),
+    which goes beyond what the current axioms provide.
+    Axioms lineSegment_determined and disc_determined only state that μ is a
+    function of ρ, not that μ = 0 when ρ ≥ 1. -/
+axiom lineSegment_muPosDeg_zero (F : Set ℂ) (hF : isLineSegment F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
+
+axiom disc_muPosDeg_zero (F : Set ℂ) (hF : isClosedDisc F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
+
 /-- Current state: known for special cases, open in general.
     Uses corrected muPosDeg (degree ≥ 1 restriction).
     Part 1 (μ = 0 for line segments/discs with ρ ≥ 1) needs explicit EHP 1958 formulas.
@@ -463,11 +474,11 @@ theorem erdos_1040_current_state :
     (∀ F : Set ℂ, IsClosed F → F.Infinite →
       transfiniteDiameter F < 1 → muPosDeg F > 0) := by
   constructor
-  · -- Part 1: μ = 0 for line segments/discs with ρ ≥ 1
-    -- Needs explicit EHP 1958 formula for μ in terms of ρ
-    sorry
-  · -- Part 2: μ > 0 when ρ < 1 (proved above)
-    exact fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
+  · intro F hF hρ
+    rcases hF with hL | hD
+    · exact lineSegment_muPosDeg_zero F hL hρ
+    · exact disc_muPosDeg_zero F hD hρ
+  · exact fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
 
 /-
 ## OQ-05: Extension of Erdős-Netanyahu Bound
