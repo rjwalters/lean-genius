@@ -18,8 +18,8 @@
     ],
     "badge": "formalized",
     "sorries": 1,
-    "axiomCount": 2,
-    "assumptions": "2 axioms: Bernoulli polynomial leading coefficient (monic of degree k+1), monic polynomial ratio limit (p(n)/n^d -> 1). 1 sorry: main asymptotic theorem powerSumRatio_tendsto (requires combining Faulhaber with filter limits).",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: monic_poly_ratio_tendsto (p(n)/n^d -> 1). bernoulli_poly_leading previously axiomatized, now proved from coeff_bernoulli. 1 sorry: powerSumRatio_tendsto (requires combining Faulhaber with filter limits).",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
@@ -134,7 +134,7 @@
     ],
     "namespace": "SumOfKthPowersAsymptotic",
     "lineCount": 126,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 1
   },
