@@ -25,12 +25,13 @@
     "problemStatement": "Can the Descartes parity result be proved using Mathlib's existing complex root theory?",
     "text": "Proves conjugate root theorem, non-real root pairing, and parity connection. Assesses that the factoring approach is more direct.",
     "keyInsights": [
-      "Conjugate root theorem: z root \u2192 z\u0304 root for real polynomials",
-      "Non-real roots come in pairs \u2192 count is always even",
+      "Conjugate root theorem: z root → z̄ root for real polynomials",
+      "Non-real roots come in pairs → count is always even",
       "Real root count has same parity as degree",
       "Factoring approach (existing proof) is more direct for Lean than complex root theory"
     ],
-    "proofStrategy": "Proves conjugate root theorem, non-real root pairing, and parity connection. Assesses that the factoring approach is more direct."
+    "proofStrategy": "Proves conjugate root theorem, non-real root pairing, and parity connection. Assesses that the factoring approach is more direct.",
+    "historicalContext": ""
   },
   "conclusion": {
     "summary": "YES, the complex root theory approach can prove parity, but the factoring approach in OQ01 is more direct. The complex approach has pedagogical value: it explains WHY (non-real roots pair up).",

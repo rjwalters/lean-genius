@@ -82,7 +82,8 @@
       "Parseval's identity (tsum_sq_fourierCoeff, conceptually)",
       "Chain rule for continuous linear maps",
       "Green's theorem (area formula for closed curves)"
-    ]
+    ],
+    "historicalContext": ""
   },
   "crossReferences": [
     {
@@ -133,8 +134,16 @@
     "openQuestions": []
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Complex", "MeasureTheory", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "MeasureTheory",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "IsoperimetricAssembly",
     "lineCount": 423,
     "axiomCount": 0,

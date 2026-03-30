@@ -50,7 +50,8 @@
     "openQuestions": [
       "Can the log n factor be removed from the Guth-Katz bound to achieve linear growth?",
       "Is kanold_bound provable from the existing theorems (eliminating a redundant axiom)?"
-    ]
+    ],
+    "implications": []
   },
   "crossReferences": [
     {
@@ -59,8 +60,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.Erdos100Problem"],
-    "opens": ["Erdos100", "Filter", "Set"],
+    "imports": [
+      "Proofs.Erdos100Problem"
+    ],
+    "opens": [
+      "Erdos100",
+      "Filter",
+      "Set"
+    ],
     "namespace": "Erdos100OQ02",
     "lineCount": 54,
     "axiomCount": 0,

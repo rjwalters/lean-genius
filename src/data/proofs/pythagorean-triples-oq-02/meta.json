@@ -2,7 +2,7 @@
   "id": "pythagorean-triples-oq-02",
   "title": "Pythagorean Triples via Gaussian Integers",
   "slug": "pythagorean-triples-oq-02",
-  "description": "Shows that the parametric formula for Pythagorean triples (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) is the squaring map in \u2124[i]. Norm multiplicativity gives the Brahmagupta-Fibonacci identity and a product rule for triples. Fully verified, 0 axioms.",
+  "description": "Shows that the parametric formula for Pythagorean triples (m²-n², 2mn, m²+n²) is the squaring map in ℤ[i]. Norm multiplicativity gives the Brahmagupta-Fibonacci identity and a product rule for triples. Fully verified, 0 axioms.",
   "meta": {
     "author": "Brahmagupta (628), Fibonacci (1225), Gauss (1801)",
     "date": "1801",
@@ -25,26 +25,27 @@
     "mathlibDependencies": [
       {
         "theorem": "PythagoreanTriple",
-        "description": "Predicate a\u00b2 + b\u00b2 = c\u00b2",
+        "description": "Predicate a² + b² = c²",
         "module": "Mathlib.NumberTheory.PythagoreanTriples"
       }
     ],
     "originalContributions": [
       "Gaussian integer arithmetic framework (gaussMul, gaussNorm, gaussConj, gaussSq)",
-      "Norm multiplicativity: N(z\u2081z\u2082) = N(z\u2081)N(z\u2082)",
+      "Norm multiplicativity: N(z₁z₂) = N(z₁)N(z₂)",
       "Pythagorean triple from Gaussian squaring: gaussSq_pythagorean",
       "Brahmagupta-Fibonacci identity from norm multiplicativity",
       "Product rule for Pythagorean triples via Gaussian multiplication"
     ]
   },
   "overview": {
-    "text": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "text": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in ℤ[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
     "keyInsights": [
-      "The parametric formula (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) IS z\u00b2 where z = m + ni",
+      "The parametric formula (m²-n², 2mn, m²+n²) IS z² where z = m + ni",
       "Norm multiplicativity explains why sums of squares are closed under multiplication",
       "Product of Pythagorean triples corresponds to Gaussian multiplication"
     ],
-    "proofStrategy": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity."
+    "proofStrategy": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in ℤ[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "historicalContext": ""
   },
   "sections": [
     {
