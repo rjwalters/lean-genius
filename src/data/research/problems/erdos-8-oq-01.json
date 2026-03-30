@@ -29,20 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 5 to 4 by proving balister_improved_bound (identical to hough_minimum_modulus)",
+    "progressSummary": "AXIOM ELIMINATION + BUG FIX: Proved erdos_8_resolution from bottleneck+Hough, fixed missing hasDistinctModuli (3→2 axioms)",
     "builtItems": [
-      "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)"
+      "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)",
+      "erdos_8_resolution: proved from bottleneck_counterexample + hough_minimum_modulus (was axiom)",
+      "Fixed erdos_graham_conjecture to require hasDistinctModuli (math bug)",
+      "Fixed erdos_8_disproved to require hasDistinctModuli (math bug)",
+      "Strengthened bottleneck_counterexample to return k >= 2"
     ],
     "insights": [
       "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) — trivially derivable",
       "bottleneck_counterexample is provable via pigeonhole: color each n <= 616000 uniquely, show covering system moduli cannot be monochromatic",
       "The pigeonhole proof requires showing single congruence class does not cover Z (modulus >= 2 implies uncovered integers)",
-      "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck"
+      "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck",
+      "Without hasDistinctModuli, erdos_8_disproved is vacuously false: CS {0 mod 2, 1 mod 2} has singleton moduli set {2}, always monochromatic",
+      "erdos_8_resolution was asserting something mathematically incorrect — fixed by adding distinct moduli condition",
+      "Remaining 2 axioms (hough_minimum_modulus, density_conjecture_false) are deep published results"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove bottleneck_counterexample (pigeonhole argument, ~60 lines)",
-      "The optimal minimum modulus bound (the actual OQ) is a deep open question"
+      "density_conjecture_false is the only remaining eliminable axiom (but requires significant infrastructure to prove)"
     ],
     "markdown": "# Knowledge Base: erdos-8-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
