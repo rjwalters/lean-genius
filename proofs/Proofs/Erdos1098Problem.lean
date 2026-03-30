@@ -146,30 +146,6 @@ noncomputable def centerIndex (G : Type*) [Group G] : ℕ∞ :=
 axiom neumann_theorem (G : Type*) [Group G] :
     noInfiniteClique G ↔ centerHasFiniteIndex G
 
-/--
-**Clique Size Bound:**
-If [G : Z(G)] = n < ∞, then Γ(G) has no clique on > n vertices.
--/
-axiom neumann_bound (G : Type*) [Group G] (n : ℕ)
-    (hn : (Subgroup.center G).index = n) :
-    ∀ S : Set G, isClique S → S.Finite → S.ncard ≤ n
-
-/--
-**Corollary: Finite Index implies Finite Clique Number:**
--/
-theorem finite_index_implies_finite_clique (G : Type*) [Group G]
-    (h : centerHasFiniteIndex G) : hasFiniteCliqueNumber G := by
-  exact ⟨(Subgroup.center G).index, neumann_bound G _ rfl⟩
-
-/--
-**Answer to Erdős' Question:**
-YES - if no infinite clique exists, then cliques are uniformly bounded.
--/
-theorem erdos_question_answered (G : Type*) [Group G]
-    (h : noInfiniteClique G) : hasFiniteCliqueNumber G := by
-  rw [neumann_theorem] at h
-  exact finite_index_implies_finite_clique G h
-
 /- ## Part V: Why This Works
 -/
 
@@ -226,6 +202,34 @@ theorem clique_size_bound (S : Set G) (hS : isClique S) (hSfin : S.Finite) :
     _ ≤ Set.univ.ncard := Set.ncard_le_ncard (Set.subset_univ _) (hSfin.image _)
     _ = Nat.card ((Subgroup.center G).quotient) := Set.ncard_univ _
     _ = (Subgroup.center G).index := (Subgroup.index_eq_card _).symm
+
+/--
+**Clique Size Bound (with explicit index):**
+If [G : Z(G)] = n < ∞, then Γ(G) has no clique on > n vertices.
+Proved from clique_size_bound (eliminates former axiom). -/
+theorem neumann_bound (G : Type*) [Group G] (n : ℕ)
+    (hn : (Subgroup.center G).index = n) :
+    ∀ S : Set G, isClique S → S.Finite → S.ncard ≤ n := by
+  intro S hS hSfin
+  calc S.ncard
+      ≤ (Subgroup.center G).index := clique_size_bound S hS hSfin
+    _ = n := hn
+
+/--
+**Corollary: Finite Index implies Finite Clique Number:**
+-/
+theorem finite_index_implies_finite_clique (G : Type*) [Group G]
+    (h : centerHasFiniteIndex G) : hasFiniteCliqueNumber G := by
+  exact ⟨(Subgroup.center G).index, neumann_bound G _ rfl⟩
+
+/--
+**Answer to Erdős' Question:**
+YES - if no infinite clique exists, then cliques are uniformly bounded.
+-/
+theorem erdos_question_answered (G : Type*) [Group G]
+    (h : noInfiniteClique G) : hasFiniteCliqueNumber G := by
+  rw [neumann_theorem] at h
+  exact finite_index_implies_finite_clique G h
 
 /- ## Part VI: Infinite Groups
 -/
