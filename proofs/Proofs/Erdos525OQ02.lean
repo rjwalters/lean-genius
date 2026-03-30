@@ -56,7 +56,7 @@ def onTorus (d : ℕ) (z : Fin d → ℂ) : Prop :=
 
 /-- The minimum modulus of a function on the d-torus. -/
 noncomputable def minModulus (d : ℕ) (f : (Fin d → ℂ) → ℂ) : ℝ :=
-  sorry -- infimum of |f(z)| over z ∈ T^d
+  sInf {y : ℝ | ∃ z : Fin d → ℂ, onTorus d z ∧ y = Complex.abs (f z)}
 
 -- ============================================================
 -- Part III: The 1D vs Multi-D Comparison
@@ -137,7 +137,8 @@ theorem sqrt_cancellation_terms (d n : ℕ) (hn : 0 < n) :
   The 1D case is solved (Konyagin 1994, Cook-Nguyen 2021).
   The multivariate case (d ≥ 2) remains open.
 
-  1 axiom (1D bound), 1 sorry (minModulus def), 4 theorems.
+  1 axiom (1D bound placeholder), 0 sorries, 4 theorems.
+  minModulus defined via sInf over torus evaluations.
 -/
 
 end Erdos525OQ02
