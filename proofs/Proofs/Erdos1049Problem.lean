@@ -115,7 +115,31 @@ theorem double_sum_identity (t : ℝ) (ht : t > 1) :
 /-- Geometric series for each d: ∑_{m≥1} 1/t^{dm} = 1/(t^d - 1). -/
 theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     (∑' m : ℕ, if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) = 1 / (t ^ d - 1) := by
-  sorry
+  set q := (1 : ℝ) / t ^ d with hq_def
+  have htd_pos : (0 : ℝ) < t ^ d := by positivity
+  have htd_gt : t ^ d > 1 := by
+    have : t ^ 1 ≤ t ^ d := pow_le_pow_right (le_of_lt ht) hd
+    linarith [pow_one t]
+  have hq_nn : 0 ≤ q := by positivity
+  have hq_lt : q < 1 := by rw [hq_def, div_lt_one htd_pos]; exact htd_gt
+  -- Each term equals q^m with m=0 zeroed out
+  have hterm : ∀ m, (if m = 0 then (0:ℝ) else 1 / t ^ (d * m)) =
+      q ^ m - if m = 0 then 1 else 0 := by
+    intro m; split_ifs with h
+    · subst h; simp
+    · simp only [sub_zero, hq_def, div_pow, one_pow, pow_mul]
+  simp_rw [hterm]
+  have hsumq := summable_geometric_of_lt_one hq_nn hq_lt
+  have hsumind : Summable (fun m : ℕ => if m = 0 then (1:ℝ) else 0) :=
+    summable_of_ne_finset {0} (by intro n hn; simp at hn; simp [hn])
+  rw [tsum_sub hsumq hsumind, tsum_geometric_of_lt_one hq_nn hq_lt,
+      tsum_eq_single 0 (by intro n hn; simp [hn])]
+  simp only [ite_true]
+  rw [hq_def]
+  have h1 : 1 - 1 / t ^ d ≠ 0 := by positivity
+  have h2 : t ^ d - 1 ≠ 0 := by linarith
+  field_simp
+  ring
 
 /-
 ## Part IV: Erdős's Result for Integers
@@ -151,7 +175,8 @@ def ChowlaConjecture : Prop :=
   ∀ t : ℚ, t > 1 → Irrational (S (t : ℝ))
 
 /-- The conjecture remains OPEN. -/
-axiom chowla_conjecture_open : ChowlaConjecture ↔ ChowlaConjecture
+theorem chowla_conjecture_open : ChowlaConjecture ↔ ChowlaConjecture :=
+  Iff.rfl
 
 /-- Erdős's result implies Chowla for integer t ≥ 2. -/
 theorem chowla_for_integers (t : ℕ) (ht : t ≥ 2) :
@@ -197,7 +222,13 @@ def TranscendentalConjecture : Prop :=
 /-- The transcendental conjecture is stronger than Chowla's. -/
 theorem transcendental_implies_chowla :
     TranscendentalConjecture → ChowlaConjecture := by
-  sorry
+  intro hTC t ht
+  have ht1 : (t : ℝ) > 1 := by exact_mod_cast ht
+  have halg : IsAlgebraic ℚ (t : ℝ) := isAlgebraic_algebraMap ℚ t
+  have hna := hTC (t : ℝ) ht1 halg
+  -- S(t) is not algebraic over ℚ; in particular it's not rational, hence irrational
+  intro ⟨q, hq⟩
+  exact hna (by rw [← hq]; exact isAlgebraic_algebraMap ℚ q)
 
 /-- S(t) satisfies no polynomial equation over ℚ(t) (conjectured). -/
 def AlgebraicIndependenceConjecture : Prop :=
@@ -219,9 +250,9 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
   sorry
 
 /-- Lambert series preserve arithmetic structure. -/
-axiom lambert_arithmetic_property :
+theorem lambert_arithmetic_property :
     -- Lambert series of arithmetic functions have special properties
-    True
+    True := trivial
 
 /-
 ## Part IX: Partial Results
@@ -230,14 +261,14 @@ What is known towards Chowla's conjecture.
 -/
 
 /-- S(p/q) is irrational for certain p/q (partial results). -/
-axiom partial_rational_results :
+theorem partial_rational_results :
     -- Some specific rational values have been verified
-    True
+    True := trivial
 
 /-- Linear independence results. -/
-axiom linear_independence_partial :
+theorem linear_independence_partial :
     -- Partial results on linear independence of S values
-    True
+    True := trivial
 
 /-- Approximation bounds for S(t). -/
 theorem S_bounds (t : ℝ) (ht : t > 1) :
