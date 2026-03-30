@@ -29,23 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION + BUG FIX: Proved zero_mem_subsetSums and subsetSums_mono. Fixed incorrect subsetSums_add axiom (was false: fails when a already in witness finset). Axioms 4→1.",
+    "progressSummary": "BUILD: Added 4 structural API lemmas (mem_subsetSums_of_mem, subsetSums_add_of_disjoint, cofiniteImage_subset, isCofiniteSubseq_id). Theorems 3->7. Remaining: 1 axiom (erdos347_affirmative, the main theorem).",
     "builtItems": [
       "Proved zero_mem_subsetSums: empty finset witnesses 0 ∈ P(A)",
       "Proved subsetSums_mono: A⊆B → P(A)⊆P(B) via witness subset transitivity",
       "Fixed subsetSums_add → subsetSums_insert: requires a∉S as precondition",
-      "Identified bug: old subsetSums_add was FALSE (counterexample: A={2,3}, s=5, a=2)"
+      "Identified bug: old subsetSums_add was FALSE (counterexample: A={2,3}, s=5, a=2)",
+      "Proved mem_subsetSums_of_mem: singleton subset sum membership",
+      "Proved subsetSums_add_of_disjoint: disjoint witness combination",
+      "Proved cofiniteImage_subset: cofinite images contained in range",
+      "Proved isCofiniteSubseq_id: identity is cofinite subsequence"
     ],
     "insights": [
       "subsetSums_add was UNSOUND: for A={2,3}, s=5∈P(A), a=2∈A, but 7∉P(A)={0,2,3,5}",
       "Correct version needs a∉S precondition: can only add elements not already in witness",
       "CoveringSystem formalization uses Set ℕ (no repeats) — fine for this problem",
-      "Problem is SOLVED (Tao + van Doorn ideas), axiom erdos347_affirmative records this"
+      "Problem is SOLVED (Tao + van Doorn ideas), axiom erdos347_affirmative records this",
+      "Main axiom erdos347_affirmative requires Tao-van Doorn construction: perturb powers of 2 with controlled redundancy",
+      "Construction needs explicit sequence a(n) ~ c*2^n with enough representations to survive cofinite deletion",
+      "Ratio limit 2 is critical boundary: r<2 gives automatic completeness (Folkman), r>2 gives inevitable gaps",
+      "Full proof would need: (1) define sequence, (2) prove monotonicity+ratio, (3) prove cofinite robustness via redundancy argument"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "erdos347_affirmative is the only remaining axiom — records the solved result",
-      "Could construct explicit witness sequence satisfying ErdosProblem347 to eliminate last axiom"
+      "Define explicit candidate sequence (perturbed powers of 2 or similar)",
+      "Prove monotonicity and HasRatioLimit for the candidate",
+      "The hard part: prove cofinite robustness (density 1 after finite deletion)",
+      "Consider: countIn_univ and hasDensity_univ lemmas to support density arguments"
     ],
     "markdown": "# Erdős #347 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a sequence $A=\\{a_1\\leq a_2\\leq \\cdots\\}$ of integers with\\[\\lim \\frac{a_{n+1}}{a_n}=2\\]such that\\[P(A')= \\left\\{\\sum_{n\\in B}n : B\\subseteq A'\\textrm{ finite }\\right\\}\\]has density $1$ for every cofinite subsequence $A'$ of $A$?\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #346\n- Problem #348\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
@@ -63,15 +73,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:53:52.153Z",
-  "lastUpdate": "2026-03-24T08:15:00.000Z",
+  "lastUpdate": "2026-03-30T14:20:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos347Problem.lean",
       "filename": "Erdos347Problem.lean",
-      "lineCount": 103,
-      "theoremCount": 3,
+      "lineCount": 126,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,
