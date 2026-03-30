@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-152-oq-01",
+  "title": "Two isolated elements in Sidon sumsets via dual endpoint analysis",
+  "phase": "OBSERVE",
+  "status": "pending",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a Sidon set $A \\subset \\mathbb{N}$ with $|A| \\geq N_0$ (for some explicit $N_0$), prove $\\mathrm{isolatedCount}(A) \\geq 2$. Strategy: show both $2\\min(A)$ and $2\\max(A)$ are isolated, or find two disjoint isolated elements via interior structure.",
+    "plain": "Strengthen gap_existence_pigeonhole from ≥1 to ≥2 isolated elements. The current proof finds one isolated element from the endpoints 2·min(A) or 2·max(A). Can we prove both endpoints are isolated simultaneously for |A| ≥ N₀, or find a second isolated element in the interior of A+A?",
+    "whyMatters": [
+      "First quantitative improvement toward Erdős #152 beyond the pigeonhole bound",
+      "Dual endpoint analysis requires controlling both consecutive pairs (M,M-1) and (m,m+1) simultaneously — Sidon difference injectivity limits this to at most one",
+      "Finding interior isolated elements would require new techniques beyond endpoint analysis"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "gap_existence_pigeonhole: isolatedCount(A) ≥ 1 for |A| ≥ 5",
+      "sidon_sumset_size: |A+A| = n(n+1)/2",
+      "sidon_set_range_lower_bound: max(A) ≥ n(n-1)/2",
+      "sidon_diff_injective: at most one pair of consecutive elements in a Sidon set"
+    ],
+    "open": [
+      "Is isolatedCount(A) ≥ 2 for all Sidon sets with |A| ≥ N₀? What is the smallest N₀?",
+      "Can both 2·min(A) and 2·max(A) be isolated simultaneously?"
+    ],
+    "goal": "Prove isolatedCount(A) ≥ 2 for Sidon sets of size ≥ N₀"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T00:00:00.000Z",
+    "iteration": 0,
+    "focus": "Dual endpoint isolation analysis",
+    "blockers": [],
+    "nextAction": "Analyze when 2·min(A) is isolated given that 2·max(A) is also isolated. The key constraint: Sidon sets have at most one consecutive pair, so if M-1 ∈ A then m+1 ∉ A (and vice versa). When neither endpoint has a consecutive neighbor, both 2·min and 2·max should be isolated.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [
+      "From gap_existence_pigeonhole: if M-1 ∉ A, 2M is isolated. If m+1 ∉ A and m ≥ 1, 2m is isolated.",
+      "Sidon diff injectivity: at most one pair (x, x-1) in A. So at most one of {M-1 ∈ A, m+1 ∈ A} holds.",
+      "Case analysis: (1) Neither M-1 nor m+1 in A → both endpoints isolated → done. (2) Exactly one consecutive pair → one endpoint isolated, need second from interior.",
+      "Interior isolation requires: find s ∈ A+A with s ≠ 2m, 2M such that s±1 ∉ A+A. The sumset gap density (~3/4 of range) suggests this should exist."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize case (1): no consecutive pairs in A → both endpoints isolated",
+      "For case (2): use counting argument — n(n+1)/2 sumset elements in range ~2n², too sparse for all to be non-isolated",
+      "Consider: for |A| large enough, even case (2) gives ≥2 isolated elements via pigeonhole on gaps"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "quantitative-improvement"
+  ],
+  "relatedProofs": [
+    "erdos-152"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T00:00:00.000Z",
+  "lastUpdate": "2026-03-29T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": []
+}
