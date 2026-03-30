@@ -27,7 +27,7 @@ namespace BaselProblemOQ02Aristotle
 -- Definitions needed for the theorems
 noncomputable def zetaValue (s : ℕ) : ℝ := ∑' n : ℕ, 1 / (n : ℝ) ^ s
 
--- π is transcendental over ℚ (from PiTranscendental.lean)
+-- π is transcendental over ℚ (proved in PiTranscendental.lean from Lindemann axiom)
 theorem pi_transcendental : Transcendental ℚ (Real.pi : ℝ) :=
   pi_transcendental_over_rationals
 
