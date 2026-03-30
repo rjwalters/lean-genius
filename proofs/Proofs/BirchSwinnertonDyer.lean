@@ -597,27 +597,19 @@ theorem BSD_rank_one (E : EllipticCurveQ)
     L-function factorization into Hecke characters. -/
 opaque HasCM : EllipticCurveQ → Prop
 
-/-- **Axiom: CM Case (Coates-Wiles 1977)**
-
-    For CM elliptic curves with L(E, 1) ≠ 0, the rank is 0.
-    CM curves have extra structure (endomorphisms by an imaginary
-    quadratic field) that enables direct L-function analysis.
-    This is a proven theorem (Coates-Wiles 1977). -/
-axiom BSD_CM_rank_zero_axiom (E : EllipticCurveQ)
-    (hCM : HasCM E) (hL : LFunction E 1 ≠ 0) :
-    algebraicRank E = 0
-
 /-- **CM Case (Coates-Wiles 1977)**
 
-    For elliptic curves with complex multiplication, BSD holds in rank 0.
+    For CM elliptic curves with L(E, 1) ≠ 0, the rank is 0.
+    Historically proved by Coates-Wiles (1977) for CM curves, but this is now
+    subsumed by Kolyvagin's general result (1990): BSD_rank_zero_axiom gives
+    algebraicRank E = 0 from L(E,1) ≠ 0 alone, without the CM hypothesis.
 
-    These curves have extra structure (endomorphisms by an imaginary
-    quadratic field) that makes them more tractable. -/
+    Previously an axiom; now proved from the general BSD_rank_zero_axiom. -/
 theorem BSD_CM_rank_zero (E : EllipticCurveQ)
     (hCM : HasCM E)
     (hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0 :=
-  BSD_CM_rank_zero_axiom E hCM hL
+  (BSD_rank_zero_axiom E hL).1
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: THE GROSS-ZAGIER FORMULA
@@ -5642,17 +5634,10 @@ def HeegnerPointExists (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := T
 /-- The Gross-Zagier formula (1986):
     L'(E/K, 1) = c(E,K) · ĥ(y_K) for explicit c > 0.
     This connects the derivative of the L-function to the height of Heegner points.
-    Key consequence: y_K non-torsion ⟺ L'(E,1) ≠ 0 ⟺ analytic rank = 1. -/
-axiom gross_zagier_formula_detail (E : EllipticCurveQ)
-    (y : HeegnerPointData E) (h : y.isNonTorsion) :
-    analyticRank E = 1
+    Key consequence: y_K non-torsion ⟺ L'(E,1) ≠ 0 ⟺ analytic rank = 1.
 
-/-- The parity conjecture: (-1)^{rank E(ℚ)} = w(E) where w(E) is the root number.
-    Proved by Dokchitser-Dokchitser (2010) for all E/ℚ.
-    Equivalently: algebraic rank parity = analytic rank parity.
-    (Follows from parity_conjecture_proved_axiom in Part XI.) -/
-theorem parity_conjecture (E : EllipticCurveQ) : ParityConjecture E :=
-  parity_conjecture_proved_axiom E
+    Note: This is already captured by `GrossZagierData.gross_zagier` in Part VIII.
+    The standalone axiom was removed as it was unused and redundant. -/
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART LIV: P-ADIC BSD AND SPECIAL VALUE FORMULAS
