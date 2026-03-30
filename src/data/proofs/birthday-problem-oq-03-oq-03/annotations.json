@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-scaling-exponent",
+    "proofId": "birthday-problem-oq-03-oq-03",
+    "range": { "startLine": 62, "endLine": 75 },
+    "type": "definition",
+    "title": "Scaling Exponent (k-1)/k",
+    "content": "The growth exponent $\\alpha_k = (k-1)/k$ determines how the k-way birthday threshold scales with the number of days $d$: the threshold grows as $d^{\\alpha_k}$. For $k=2$: $\\alpha = 1/2$ (square root), $k=3$: $\\alpha = 2/3$, approaching 1 as $k \\to \\infty$.",
+    "mathContext": "$\\alpha_k = \\frac{k-1}{k},\\quad n_k \\sim d^{\\alpha_k}$",
+    "significance": "key",
+    "relatedConcepts": ["growth rate", "sub-linear scaling", "pigeonhole principle"],
+    "prerequisites": ["real division"]
+  },
+  {
+    "id": "ann-threshold-formula",
+    "proofId": "birthday-problem-oq-03-oq-03",
+    "range": { "startLine": 118, "endLine": 128 },
+    "type": "definition",
+    "title": "Threshold Power Formula",
+    "content": "Working with the k-th power $n_k^k = k! \\cdot d^{k-1}$ avoids fractional exponents. This formulation makes monotonicity and comparison proofs algebraically clean. The factorial factor $k!$ captures the combinatorial growth of coincidence patterns.",
+    "mathContext": "$n_k^k = k! \\cdot d^{k-1}$",
+    "significance": "key",
+    "relatedConcepts": ["factorial", "polynomial growth", "threshold formula"],
+    "prerequisites": ["factorial", "exponentiation"]
+  },
+  {
+    "id": "ann-exponent-limit",
+    "proofId": "birthday-problem-oq-03-oq-03",
+    "range": { "startLine": 226, "endLine": 241 },
+    "type": "theorem",
+    "title": "Exponent Approaches 1",
+    "content": "As $k \\to \\infty$, the scaling exponent $(k-1)/k \\to 1$, meaning the threshold approaches linear growth in $d$ (the pigeonhole bound). The proof gives an explicit convergence rate: for $(k-1)/k > 1 - \\varepsilon$, it suffices to take $k > 1/\\varepsilon$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists K,\\; \\forall k \\ge K:\\; \\frac{k-1}{k} > 1 - \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": ["convergence", "epsilon-delta", "asymptotic analysis"],
+    "prerequisites": ["limits", "Archimedean property"]
+  }
+]
