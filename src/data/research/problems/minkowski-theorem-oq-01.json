@@ -1,0 +1,57 @@
+{
+  "slug": "minkowski-theorem-oq-01",
+  "title": "Prove Minkowski axiom using Mathlib measure theory",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Prove minkowski_fundamental axiom in MinkowskiFundamentalTheorem.lean from Mathlib's ZSpan and measure theory infrastructure.",
+    "whyMatters": []
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T08:45:00Z",
+    "iteration": 1,
+    "focus": "Survey: identified Mathlib API and bridge strategy",
+    "blockers": ["Substantial bridge code needed between custom Lattice/ConvexBody and Mathlib ZSpan"],
+    "nextAction": "Build bridge between custom Lattice n and Mathlib ZSpan"
+  },
+  "knowledge": {
+    "progressSummary": "Session 1: SURVEY only. Identified Mathlib API for Minkowski (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, ZSpan). Bridge between custom definitions and Mathlib is substantial (~200 lines).",
+    "builtItems": [],
+    "insights": [
+      "Mathlib has exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure — the core Minkowski theorem",
+      "The file uses custom Lattice n, ConvexBody n, HasVolume, criticalVolume, latticePoints structures that don't align with Mathlib's ZSpan API",
+      "ThreeSquares.lean already uses ZSpan.fundamentalDomain and ZSpan.isAddFundamentalDomain for Minkowski applications — can serve as reference",
+      "Bridge strategy: (1) map custom Lattice n → Mathlib ZSpan, (2) map ConvexBody → MeasurableSet with volume, (3) apply Mathlib Minkowski, (4) translate result back to custom types",
+      "Estimated effort: 200+ lines of bridge code. Best done as a dedicated session."
+    ],
+    "nextSteps": [
+      "Study ThreeSquares.lean ZSpan usage as reference implementation",
+      "Build Lattice→ZSpan bridge (map basis vectors, show covolume equals)",
+      "Build ConvexBody→MeasurableSet bridge (symmetric, convex, measurable, volume)",
+      "Apply Mathlib's Minkowski theorem via the bridge",
+      "Convert result back to custom latticePoints predicate"
+    ]
+  },
+  "tags": ["geometry", "number-theory", "lattice", "measure-theory", "axiom-elimination", "seeker-selected"],
+  "relatedProofs": ["minkowski-fundamental-theorem"],
+  "started": "2026-03-30T08:45:00Z",
+  "lastUpdate": "2026-03-30T08:50:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiFundamentalTheorem.lean",
+      "filename": "MinkowskiFundamentalTheorem.lean",
+      "lineCount": 453,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
+}
