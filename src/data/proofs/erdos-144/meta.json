@@ -1,10 +1,10 @@
 {
   "id": "erdos-144",
-  "title": "Erdős Problem #144: Propinquity of Divisors",
+  "title": "Erd\u0151s Problem #144: Propinquity of Divisors",
   "slug": "erdos-144",
-  "description": "The density of integers with two divisors d₁ < d₂ < 2d₁ equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold β* = log 3 - 1 separates density 1 from density 0.",
+  "description": "The density of integers with two divisors d\u2081 < d\u2082 < 2d\u2081 equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold \u03b2* = log 3 - 1 separates density 1 from density 0.",
   "meta": {
-    "author": "Maier-Tenenbaum (1984), Erdős-Hall (1979)",
+    "author": "Maier-Tenenbaum (1984), Erd\u0151s-Hall (1979)",
     "sourceUrl": "https://erdosproblems.com/144",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos144Problem.lean",
@@ -41,43 +41,43 @@
       }
     ],
     "originalContributions": [
-      "naturalDensity definition via ε-N formulation",
+      "naturalDensity definition via \u03b5-N formulation",
       "hasCloseDivisors and hasCloseDivisorsC predicates",
       "erdos_144_conjecture and erdos_144_strong_conjecture statements",
       "maier_tenenbaum_theorem and maier_tenenbaum_strong axioms",
-      "criticalExponent: β* = log 3 - 1",
-      "hasRefinedCloseDivisors with (log n)^{-β} decay",
-      "erdos_hall_theorem: density 0 for β > β*",
-      "maier_tenenbaum_refined: density 1 for β < β*",
+      "criticalExponent: \u03b2* = log 3 - 1",
+      "hasRefinedCloseDivisors with (log n)^{-\u03b2} decay",
+      "erdos_hall_theorem: density 0 for \u03b2 > \u03b2*",
+      "maier_tenenbaum_refined: density 1 for \u03b2 < \u03b2*",
       "phase_transition theorem combining both results",
       "prime_powers_fail axiom",
       "Concrete examples: hasCloseDivisors 6, 12 (norm_num)",
       "erdos_144_summary: four-part conjunction of all results"
     ],
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 188,
-    "assumptions": "5 axioms encode the main mathematical results awaiting Lean proof:\n\n1. **maier_tenenbaum_theorem**: `naturalDensity closeDivisorsSet 1` — the density of integers having two divisors d₁ < d₂ < 2d₁ equals 1. Proved by Maier and Tenenbaum (1984) using sieve methods and divisor distribution theory.\n\n2. **maier_tenenbaum_strong**: `∀ c : ℝ, c > 1 → naturalDensity (closeDivisorsSetC c) 1` — the stronger version holds for any constant c > 1, not just c = 2. Resolves the stronger conjecture Erdős posed in 1979.\n\n3. **erdos_hall_theorem**: `∀ β > criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 0` — when the proximity parameter β exceeds log 3 - 1, the density of integers with (log n)^{-β}-close divisors is 0. Proved by Erdős and Hall (1979) as the complementary result before the main theorem was established.\n\n4. **maier_tenenbaum_refined**: `∀ β < criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 1` — the sharp converse: when β < log 3 - 1, density equals 1. Together with axiom 3, this establishes the complete phase transition.\n\n5. **prime_powers_fail**: `∀ p k, Nat.Prime p → k ≥ 1 → ¬hasCloseDivisors (p^k)` — prime powers have no close divisors because consecutive divisors p^j and p^{j+1} differ by factor p ≥ 2."
+    "assumptions": "5 axioms encode the main mathematical results awaiting Lean proof:\n\n1. **maier_tenenbaum_theorem**: `naturalDensity closeDivisorsSet 1` \u2014 the density of integers having two divisors d\u2081 < d\u2082 < 2d\u2081 equals 1. Proved by Maier and Tenenbaum (1984) using sieve methods and divisor distribution theory.\n\n2. **maier_tenenbaum_strong**: `\u2200 c : \u211d, c > 1 \u2192 naturalDensity (closeDivisorsSetC c) 1` \u2014 the stronger version holds for any constant c > 1, not just c = 2. Resolves the stronger conjecture Erd\u0151s posed in 1979.\n\n3. **erdos_hall_theorem**: `\u2200 \u03b2 > criticalExponent, naturalDensity (refinedCloseDivisorsSet \u03b2) 0` \u2014 when the proximity parameter \u03b2 exceeds log 3 - 1, the density of integers with (log n)^{-\u03b2}-close divisors is 0. Proved by Erd\u0151s and Hall (1979) as the complementary result before the main theorem was established.\n\n4. **maier_tenenbaum_refined**: `\u2200 \u03b2 < criticalExponent, naturalDensity (refinedCloseDivisorsSet \u03b2) 1` \u2014 the sharp converse: when \u03b2 < log 3 - 1, density equals 1. Together with axiom 3, this establishes the complete phase transition.\n\n5. **prime_powers_fail**: `\u2200 p k, Nat.Prime p \u2192 k \u2265 1 \u2192 \u00achasCloseDivisors (p^k)` \u2014 prime powers have no close divisors because consecutive divisors p^j and p^{j+1} differ by factor p \u2265 2."
   },
   "overview": {
-    "historicalContext": "Erdős first considered the propinquity of divisors in 1964, when he claimed a proof that almost all integers have two divisors within a factor of 2 of each other [Er64h]. The proof went unchallenged for fifteen years until 1979, when Erdős himself discovered an error and publicly retracted it. This was one of the rare occasions where Erdős admitted a mistake in his own work. Rather than abandon the problem, Erdős joined forces with Richard Hall to salvage what they could: they proved the complementary result [ErHa79] that for any β greater than the critical threshold β* = log 3 - 1 ≈ 0.0986, the density of integers with (log n)^{-β}-close divisors is exactly 0. This established the right boundary of the phase transition while leaving the central question open.\n\nIn 1979 Erdős also posed a stronger form of his original conjecture: not just that the density of integers with two divisors in a 2:1 ratio is 1, but that this holds for any ratio c > 1. The problem appeared in several Erdős problem lists of the period with a $250 prize.\n\nThe breakthrough came in 1984 when Helmut Maier and Gérald Tenenbaum jointly proved both the original conjecture and the stronger version [MaTe84]. Their proof appeared in Compositio Mathematica and drew on Tenenbaum's earlier 1984 work [Te84] on the probability that an integer has a divisor in a given interval — itself a landmark paper. The methods combined sieve theory, Dirichlet series, and probabilistic number theory in a sophisticated way, building on the framework that Tenenbaum had been developing for the distribution of divisors.\n\nThe outcome was one of the most satisfying resolutions in the Erdős problem collection: not only was the original conjecture vindicated despite the flawed proof, but the full quantitative picture emerged with a precise phase transition. Tenenbaum reportedly received $650 from Erdős — well above the advertised $250 — likely because both the basic and strong conjectures were resolved simultaneously. The Hall-Tenenbaum monograph 'Divisors' (1988) [HT88] later became the canonical reference for the mathematical theory underpinning these results.",
+    "historicalContext": "Erd\u0151s first considered the propinquity of divisors in 1964, when he claimed a proof that almost all integers have two divisors within a factor of 2 of each other [Er64h]. The proof went unchallenged for fifteen years until 1979, when Erd\u0151s himself discovered an error and publicly retracted it. This was one of the rare occasions where Erd\u0151s admitted a mistake in his own work. Rather than abandon the problem, Erd\u0151s joined forces with Richard Hall to salvage what they could: they proved the complementary result [ErHa79] that for any \u03b2 greater than the critical threshold \u03b2* = log 3 - 1 \u2248 0.0986, the density of integers with (log n)^{-\u03b2}-close divisors is exactly 0. This established the right boundary of the phase transition while leaving the central question open.\n\nIn 1979 Erd\u0151s also posed a stronger form of his original conjecture: not just that the density of integers with two divisors in a 2:1 ratio is 1, but that this holds for any ratio c > 1. The problem appeared in several Erd\u0151s problem lists of the period with a $250 prize.\n\nThe breakthrough came in 1984 when Helmut Maier and G\u00e9rald Tenenbaum jointly proved both the original conjecture and the stronger version [MaTe84]. Their proof appeared in Compositio Mathematica and drew on Tenenbaum's earlier 1984 work [Te84] on the probability that an integer has a divisor in a given interval \u2014 itself a landmark paper. The methods combined sieve theory, Dirichlet series, and probabilistic number theory in a sophisticated way, building on the framework that Tenenbaum had been developing for the distribution of divisors.\n\nThe outcome was one of the most satisfying resolutions in the Erd\u0151s problem collection: not only was the original conjecture vindicated despite the flawed proof, but the full quantitative picture emerged with a precise phase transition. Tenenbaum reportedly received $650 from Erd\u0151s \u2014 well above the advertised $250 \u2014 likely because both the basic and strong conjectures were resolved simultaneously. The Hall-Tenenbaum monograph 'Divisors' (1988) [HT88] later became the canonical reference for the mathematical theory underpinning these results.",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes the density of integers $n$ having two divisors $d_1 < d_2 < 2d_1$ exist and equal 1?\n\n**Answer: YES** (Maier-Tenenbaum 1984)\n\nStronger: For any $c > 1$, the density of integers with $d_1 < d_2 < c \\cdot d_1$ also equals 1.\n\nRefined: The critical threshold is $\\beta^* = \\log 3 - 1$. For $d_2 < d_1(1 + (\\log n)^{-\\beta})$, density is 1 when $\\beta < \\beta^*$ and 0 when $\\beta > \\beta^*$.",
-    "text": "Erdős Problem #144 asks whether almost all positive integers possess two divisors that are close to each other — specifically, whether the natural density of integers $n$ with divisors $d_1 < d_2 < 2d_1$ equals 1. Proved affirmatively by Maier and Tenenbaum in 1984, the result reveals a fundamental clustering phenomenon in the multiplicative structure of integers: generic integers (in the density sense) have their divisors packed tightly, not spread uniformly across the interval $[1, n]$. The problem also admits a sharp quantitative refinement: for the finer condition $d_2 < d_1(1 + (\\log n)^{-\\beta})$, there is a phase transition at the critical exponent $\\beta^* = \\log 3 - 1 \\approx 0.0986$, with density 1 below the threshold and density 0 above it. This phase transition is one of the sharpest and most elegant results in probabilistic number theory.",
-    "proofStrategy": "The formalization defines natural density via ε-N limits, close divisor predicates for both the basic (c=2) and general (arbitrary c>1) versions, and the refined version with (log n)^{-β} decay. The four key results are axiomatized: Maier-Tenenbaum's basic and strong theorems, and the Erdős-Hall/Maier-Tenenbaum phase transition. The phase_transition theorem and erdos_144_summary theorem combine these axioms into proved conjunctions. Concrete examples (6 and 12 have close divisors) are verified by norm_num.",
+    "text": "Erd\u0151s Problem #144 asks whether almost all positive integers possess two divisors that are close to each other \u2014 specifically, whether the natural density of integers $n$ with divisors $d_1 < d_2 < 2d_1$ equals 1. Proved affirmatively by Maier and Tenenbaum in 1984, the result reveals a fundamental clustering phenomenon in the multiplicative structure of integers: generic integers (in the density sense) have their divisors packed tightly, not spread uniformly across the interval $[1, n]$. The problem also admits a sharp quantitative refinement: for the finer condition $d_2 < d_1(1 + (\\log n)^{-\\beta})$, there is a phase transition at the critical exponent $\\beta^* = \\log 3 - 1 \\approx 0.0986$, with density 1 below the threshold and density 0 above it. This phase transition is one of the sharpest and most elegant results in probabilistic number theory.",
+    "proofStrategy": "The formalization defines natural density via \u03b5-N limits, close divisor predicates for both the basic (c=2) and general (arbitrary c>1) versions, and the refined version with (log n)^{-\u03b2} decay. The four key results are axiomatized: Maier-Tenenbaum's basic and strong theorems, and the Erd\u0151s-Hall/Maier-Tenenbaum phase transition. The phase_transition theorem and erdos_144_summary theorem combine these axioms into proved conjunctions. Concrete examples (6 and 12 have close divisors) are verified by norm_num.",
     "keyInsights": [
-      "**Phase Transition at β* = log 3 - 1:** The critical exponent $\\beta^* = \\log 3 - 1 \\approx 0.0986$ creates a sharp density dichotomy. For the refined close-divisor condition $d_2 < d_1(1 + (\\log n)^{-\\beta})$, the density is exactly 1 when $\\beta < \\beta^*$ and exactly 0 when $\\beta > \\beta^*$. This is one of the most precise phase transitions in analytic number theory, providing a complete characterization with no ambiguity at the boundary.",
-      "**Divisor Clustering as a Generic Phenomenon:** Most integers have $\\Omega(n) \\sim \\log \\log n$ prime factors (Erdős-Kac theorem). Many prime factors force divisors to cluster: if $n = p_1 \\cdots p_k$ with distinct primes, the $2^k$ divisors land in an interval of length $n$, and by the pigeonhole principle many pairs must be close. The density-1 result formalizes this heuristic precisely.",
+      "**Phase Transition at \u03b2* = log 3 - 1:** The critical exponent $\\beta^* = \\log 3 - 1 \\approx 0.0986$ creates a sharp density dichotomy. For the refined close-divisor condition $d_2 < d_1(1 + (\\log n)^{-\\beta})$, the density is exactly 1 when $\\beta < \\beta^*$ and exactly 0 when $\\beta > \\beta^*$. This is one of the most precise phase transitions in analytic number theory, providing a complete characterization with no ambiguity at the boundary.",
+      "**Divisor Clustering as a Generic Phenomenon:** Most integers have $\\Omega(n) \\sim \\log \\log n$ prime factors (Erd\u0151s-Kac theorem). Many prime factors force divisors to cluster: if $n = p_1 \\cdots p_k$ with distinct primes, the $2^k$ divisors land in an interval of length $n$, and by the pigeonhole principle many pairs must be close. The density-1 result formalizes this heuristic precisely.",
       "**Prime Power Exception:** Prime powers $p^k$ are the archetypal integers *without* close divisors, since consecutive divisors $p^j$ and $p^{j+1}$ differ by exactly factor $p \\geq 2$. However, prime powers have natural density 0 (the series $\\sum_{p} \\sum_{k \\geq 1} p^{-k}$ converges), so they form a density-zero exceptional set that does not affect the overall result.",
       "**Universality of the c > 1 Case:** The result holds for any constant $c > 1$, not just $c = 2$. This universality is surprising: even requiring $d_2 < 1.001 \\cdot d_1$ (i.e., divisors within 0.1% of each other) gives density 1. The uniformity is a consequence of the rapid growth of $\\Omega(n)$ for typical integers.",
-      "**Retraction and Vindication:** Erdős's 1964 proof was flawed — he retracted it in 1979 after fifteen years — but the conjecture was correct. This is a rare case in mathematics where a retracted proof is later vindicated. The Erdős-Hall 1979 work on the complementary density-0 result was crucial for guiding the eventual Maier-Tenenbaum proof.",
+      "**Retraction and Vindication:** Erd\u0151s's 1964 proof was flawed \u2014 he retracted it in 1979 after fifteen years \u2014 but the conjecture was correct. This is a rare case in mathematics where a retracted proof is later vindicated. The Erd\u0151s-Hall 1979 work on the complementary density-0 result was crucial for guiding the eventual Maier-Tenenbaum proof.",
       "**Connection to Smooth Numbers:** The behavior of close divisors is closely linked to smooth numbers and the distribution of the smallest prime factor $P^-(n)$. When $P^-(n)$ is small (i.e., $n$ is smooth), the divisors of $n$ are constrained to small multiples, forcing clustering. The transition at $\\beta^* = \\log 3 - 1$ reflects the optimal balance between smoothness and divisor spacing.",
       "**Role of Tenenbaum's Divisor Theory:** The proof of Maier-Tenenbaum relies heavily on Tenenbaum's foundational work [Te84] characterizing the probability that a random integer in $[1,x]$ has a divisor in a given interval $(u, v]$. The key quantity is $H(x, y, z) = \\#\\{n \\leq x : n$ has a divisor in $(y, z]\\}$, and the phase transition emerges from its asymptotic behavior near the critical ratio $z/y \\to 1^+$.",
-      "**Lean Formalization Strategy:** The formalization avoids reproving the deep analytic estimates from Tenenbaum's theory by axiomatizing the four main results. The two theorems that *are* fully proved — `phase_transition` and `erdos_144_summary` — combine the axioms via `exact ⟨..., ..., ..., ...⟩`, demonstrating that the logical structure of the result is machine-verified even while the analytic content remains as axioms."
+      "**Lean Formalization Strategy:** The formalization avoids reproving the deep analytic estimates from Tenenbaum's theory by axiomatizing the four main results. The two theorems that *are* fully proved \u2014 `phase_transition` and `erdos_144_summary` \u2014 combine the axioms via `exact \u27e8..., ..., ..., ...\u27e9`, demonstrating that the logical structure of the result is machine-verified even while the analytic content remains as axioms."
     ],
     "prerequisites": [
       "Natural density and asymptotic counting",
       "Divisibility and the structure of divisors",
       "Prime factorization and smooth numbers",
-      "Probabilistic number theory (Erdős-Kac theorem)",
+      "Probabilistic number theory (Erd\u0151s-Kac theorem)",
       "Basic sieve theory"
     ]
   },
@@ -90,9 +90,9 @@
       "endLine": 65,
       "mathContext": "Natural density $d(A) = \\lim_{n \\to \\infty} |A \\cap \\{1, \\ldots, n\\}| / n$ is defined via the standard $\\varepsilon$-$N$ formulation, avoiding measure-theoretic machinery. The close divisors predicate $\\mathtt{hasCloseDivisors}(n)$ asserts $\\exists\\, d_1 < d_2 \\mid n$ with $d_2 < 2d_1$, while $\\mathtt{hasCloseDivisorsC}(c, n)$ generalizes to ratio $c > 1$.",
       "prerequisites": [
-        "Natural density of subsets of ℕ",
+        "Natural density of subsets of \u2115",
         "Divisibility and the Finset of divisors",
-        "Limit definitions via ε-N"
+        "Limit definitions via \u03b5-N"
       ]
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "id": "threshold",
-      "title": "The Threshold β = log 3 - 1",
+      "title": "The Threshold \u03b2 = log 3 - 1",
       "summary": "criticalExponent, hasRefinedCloseDivisors, erdos_hall_theorem, maier_tenenbaum_refined, phase_transition",
       "startLine": 87,
       "endLine": 124,
@@ -118,7 +118,7 @@
       "prerequisites": [
         "Definitions of naturalDensity and hasRefinedCloseDivisors",
         "Real.log and its properties",
-        "The Erdős-Hall theorem [ErHa79]"
+        "The Erd\u0151s-Hall theorem [ErHa79]"
       ]
     },
     {
@@ -140,7 +140,7 @@
       "summary": "erdos_144_summary: four-part conjunction of all key results",
       "startLine": 159,
       "endLine": 188,
-      "mathContext": "The summary theorem $\\mathtt{erdos\\_144\\_summary}$ is a proved conjunction of four statements: (1) basic density-1, (2) strong density-1 for all $c > 1$, (3) Erdős-Hall density-0 for $\\beta > \\beta^*$, and (4) Maier-Tenenbaum density-1 for $\\beta < \\beta^*$. The proof is purely structural: $\\mathtt{exact}\\, \\langle\\mathtt{mt\\_thm}, \\lambda c\\, hc \\Rightarrow \\mathtt{mt\\_strong}\\, c, \\mathtt{eh\\_thm}, \\mathtt{mt\\_refined}\\rangle$.",
+      "mathContext": "The summary theorem $\\mathtt{erdos\\_144\\_summary}$ is a proved conjunction of four statements: (1) basic density-1, (2) strong density-1 for all $c > 1$, (3) Erd\u0151s-Hall density-0 for $\\beta > \\beta^*$, and (4) Maier-Tenenbaum density-1 for $\\beta < \\beta^*$. The proof is purely structural: $\\mathtt{exact}\\, \\langle\\mathtt{mt\\_thm}, \\lambda c\\, hc \\Rightarrow \\mathtt{mt\\_strong}\\, c, \\mathtt{eh\\_thm}, \\mathtt{mt\\_refined}\\rangle$.",
       "prerequisites": [
         "All four axioms from previous sections",
         "Lean conjunction introduction syntax",
@@ -149,11 +149,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #144 was SOLVED by Maier and Tenenbaum in 1984. The density of integers with close divisors equals 1, and this holds for any constant c > 1. The refined version reveals a phase transition at β* = log 3 - 1: density 1 for β < β* and density 0 for β > β*. The summary theorem packages all four main results as a conjunction.",
-    "implications": "The Maier-Tenenbaum theorem establishes that divisor clustering is a universal property of almost all integers, not an exceptional coincidence. This result fundamentally changed how number theorists understand the fine structure of the divisor function: rather than divisors being spread roughly uniformly through $[1, n]$, they tend to accumulate in tight clusters. The sharp phase transition at $\\beta^* = \\log 3 - 1$ is one of the most precise quantitative statements in probabilistic number theory — the critical exponent is not just a rough bound but the exact threshold where the density flips from 0 to 1.\n\nThe techniques developed for this problem — particularly Tenenbaum's framework for the distribution of integers with divisors in intervals — have had broad subsequent influence. They feed into the theory of smooth numbers, the distribution of multiplicative functions, and the study of integers with prescribed arithmetic structure. The Hall-Tenenbaum monograph [HT88] systematized these methods and remains the authoritative reference. The problem also illustrates a broader principle in additive and multiplicative combinatorics: density-1 results about integer structure often follow from probabilistic arguments about the typical number of prime factors, mediated by threshold phenomena at precisely calculable critical values.",
+    "summary": "Erd\u0151s Problem #144 was SOLVED by Maier and Tenenbaum in 1984. The density of integers with close divisors equals 1, and this holds for any constant c > 1. The refined version reveals a phase transition at \u03b2* = log 3 - 1: density 1 for \u03b2 < \u03b2* and density 0 for \u03b2 > \u03b2*. The summary theorem packages all four main results as a conjunction.",
+    "implications": "The Maier-Tenenbaum theorem establishes that divisor clustering is a universal property of almost all integers, not an exceptional coincidence. This result fundamentally changed how number theorists understand the fine structure of the divisor function: rather than divisors being spread roughly uniformly through $[1, n]$, they tend to accumulate in tight clusters. The sharp phase transition at $\\beta^* = \\log 3 - 1$ is one of the most precise quantitative statements in probabilistic number theory \u2014 the critical exponent is not just a rough bound but the exact threshold where the density flips from 0 to 1.\n\nThe techniques developed for this problem \u2014 particularly Tenenbaum's framework for the distribution of integers with divisors in intervals \u2014 have had broad subsequent influence. They feed into the theory of smooth numbers, the distribution of multiplicative functions, and the study of integers with prescribed arithmetic structure. The Hall-Tenenbaum monograph [HT88] systematized these methods and remains the authoritative reference. The problem also illustrates a broader principle in additive and multiplicative combinatorics: density-1 results about integer structure often follow from probabilistic arguments about the typical number of prime factors, mediated by threshold phenomena at precisely calculable critical values.",
     "openQuestions": [
-      "What is the exact density behavior at the critical threshold β = log 3 - 1 itself (neither density 0 nor 1)?",
-      "What is the precise rate of convergence of |closeDivisorsSet ∩ {1,...,n}|/n to 1?",
+      "What is the exact density behavior at the critical threshold \u03b2 = log 3 - 1 itself (neither density 0 nor 1)?",
+      "What is the precise rate of convergence of |closeDivisorsSet \u2229 {1,...,n}|/n to 1?",
       "Can the Maier-Tenenbaum techniques be extended to study higher-order divisor clustering (three or more mutually close divisors)?",
       "Is there an analogous phase transition for the Gaussian integers or other number rings?"
     ]
@@ -162,17 +162,17 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The fundamental theorem of arithmetic — unique prime factorization — is the bedrock of divisor theory. Erdős #144 studies propinquity of divisors, which is entirely governed by the prime factorization of $n$: the divisors of $n = p_1^{a_1} \\cdots p_k^{a_k}$ are products $p_1^{b_1} \\cdots p_k^{b_k}$ with $0 \\leq b_i \\leq a_i$. The close-divisor condition is a statement about the metric geometry of this lattice of exponent vectors."
+      "description": "The fundamental theorem of arithmetic \u2014 unique prime factorization \u2014 is the bedrock of divisor theory. Erd\u0151s #144 studies propinquity of divisors, which is entirely governed by the prime factorization of $n$: the divisors of $n = p_1^{a_1} \\cdots p_k^{a_k}$ are products $p_1^{b_1} \\cdots p_k^{b_k}$ with $0 \\leq b_i \\leq a_i$. The close-divisor condition is a statement about the metric geometry of this lattice of exponent vectors."
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "related",
-      "description": "The Prime Number Theorem governs the macroscopic distribution of primes, and thereby the average behavior of divisor functions. The Maier-Tenenbaum proof relies on detailed estimates for the distribution of smooth numbers and the counting function of integers with prescribed prime factor structure — both downstream consequences of the PNT and its refinements."
+      "description": "The Prime Number Theorem governs the macroscopic distribution of primes, and thereby the average behavior of divisor functions. The Maier-Tenenbaum proof relies on detailed estimates for the distribution of smooth numbers and the counting function of integers with prescribed prime factor structure \u2014 both downstream consequences of the PNT and its refinements."
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$ in $\\{1, \\ldots, n\\}$, while the divisor count $\\tau(n) = d(n)$ counts divisors. These two multiplicative functions encode complementary aspects of the multiplicative structure. Erdős #144 goes beyond mere counting to study the metric spacing of divisors — a finer question that complements the information in $\\varphi$ and $\\tau$."
+      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$ in $\\{1, \\ldots, n\\}$, while the divisor count $\\tau(n) = d(n)$ counts divisors. These two multiplicative functions encode complementary aspects of the multiplicative structure. Erd\u0151s #144 goes beyond mere counting to study the metric spacing of divisors \u2014 a finer question that complements the information in $\\varphi$ and $\\tau$."
     },
     {
       "targetId": "perfect-numbers",
@@ -182,12 +182,12 @@
     {
       "targetId": "erdos-145",
       "relationship": "related",
-      "description": "Erdős #145 studies moments of gaps between squarefree numbers. Squarefree numbers are those with no repeated prime factors ($p^2 \\nmid n$), and their gap structure is closely related to divisor distribution. Just as Erdős #144 asks about the typical spacing of divisors within a single integer, Erdős #145 asks about the typical spacing between consecutive squarefree integers globally — both problems probe the fine structure of multiplicative number theory."
+      "description": "Erd\u0151s #145 studies moments of gaps between squarefree numbers. Squarefree numbers are those with no repeated prime factors ($p^2 \\nmid n$), and their gap structure is closely related to divisor distribution. Just as Erd\u0151s #144 asks about the typical spacing of divisors within a single integer, Erd\u0151s #145 asks about the typical spacing between consecutive squarefree integers globally \u2014 both problems probe the fine structure of multiplicative number theory."
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's Postulate guarantees that consecutive prime gaps satisfy $p_{k+1} < 2p_k$, meaning primes are always 'close' in a ratio sense. The propinquity of divisors in Erdős #144 is a divisibility analogue: most integers have consecutive divisors $d_i, d_{i+1}$ with $d_{i+1} < 2d_i$. Both results capture a 'no large gaps' phenomenon — for primes globally and for divisors of individual integers."
+      "description": "Bertrand's Postulate guarantees that consecutive prime gaps satisfy $p_{k+1} < 2p_k$, meaning primes are always 'close' in a ratio sense. The propinquity of divisors in Erd\u0151s #144 is a divisibility analogue: most integers have consecutive divisors $d_i, d_{i+1}$ with $d_{i+1} < 2d_i$. Both results capture a 'no large gaps' phenomenon \u2014 for primes globally and for divisors of individual integers."
     }
   ],
   "leanFile": {
@@ -225,7 +225,7 @@
       "authors": [
         "G. Tenenbaum"
       ],
-      "title": "Sur la probabilité qu'un entier possède un diviseur dans un intervalle donné",
+      "title": "Sur la probabilit\u00e9 qu'un entier poss\u00e8de un diviseur dans un intervalle donn\u00e9",
       "venue": "Compositio Mathematica",
       "year": "1984",
       "volume": "51",
@@ -235,15 +235,15 @@
     {
       "key": "ErHa79",
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R.R. Hall"
       ],
-      "title": "On the Möbius function",
-      "venue": "Journal für die reine und angewandte Mathematik",
+      "title": "On the M\u00f6bius function",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik",
       "year": "1980",
       "volume": "315",
       "pages": "121-126",
-      "note": "Erdős-Hall theorem: for β > log 3 - 1, the density of integers with (log n)^{-β}-close divisors equals 0; the complementary result to Maier-Tenenbaum"
+      "note": "Erd\u0151s-Hall theorem: for \u03b2 > log 3 - 1, the density of integers with (log n)^{-\u03b2}-close divisors equals 0; the complementary result to Maier-Tenenbaum"
     },
     {
       "key": "HT88",
@@ -260,14 +260,14 @@
     {
       "key": "Er64h",
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "On the distribution of divisors of integers in the residue classes (mod d)",
-      "venue": "Bulletin de la Société Mathématique de Belgique",
+      "venue": "Bulletin de la Soci\u00e9t\u00e9 Math\u00e9matique de Belgique",
       "year": "1964",
       "volume": "16",
       "pages": "280-291",
-      "note": "Erdős's original (flawed) 1964 claim; the error was discovered by Erdős himself in 1979 and led to the retraction"
+      "note": "Erd\u0151s's original (flawed) 1964 claim; the error was discovered by Erd\u0151s himself in 1979 and led to the retraction"
     },
     {
       "key": "Te95",
@@ -278,7 +278,7 @@
       "venue": "Cambridge Studies in Advanced Mathematics, Cambridge University Press",
       "year": "1995",
       "volume": "46",
-      "note": "Graduate textbook covering the full probabilistic number theory background including the Erdős-Kac theorem, smooth numbers, and the divisor distribution theory underlying the Maier-Tenenbaum result"
+      "note": "Graduate textbook covering the full probabilistic number theory background including the Erd\u0151s-Kac theorem, smooth numbers, and the divisor distribution theory underlying the Maier-Tenenbaum result"
     }
   ]
 }

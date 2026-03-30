@@ -124,11 +124,44 @@ theorem phase_transition :
 
 /- ## Part IV: Examples -/
 
+/-- Every divisor of a prime power is a power of that prime. -/
+private lemma dvd_prime_pow_eq_pow {p : ℕ} (hp : Nat.Prime p) {k d : ℕ}
+    (hd : d ∣ p ^ k) : ∃ j ≤ k, d = p ^ j := by
+  induction k with
+  | zero => exact ⟨0, le_refl 0, Nat.eq_one_of_dvd_one (by rwa [pow_zero] at hd)⟩
+  | succ n ih =>
+    by_cases h : p ∣ d
+    · obtain ⟨d', rfl⟩ := h
+      obtain ⟨j, hj, rfl⟩ := ih (by
+        have : p ^ (n + 1) = p * p ^ n := by ring
+        rw [this] at hd
+        exact Nat.dvd_of_mul_dvd_mul_left hp.pos hd)
+      exact ⟨j + 1, by omega, by ring⟩
+    · obtain ⟨j, hj, rfl⟩ := ih (by
+        have hcop : Nat.Coprime d p := (hp.coprime_iff_not_dvd.mpr h).symm
+        rw [pow_succ] at hd
+        exact hcop.dvd_of_dvd_mul_right hd)
+      exact ⟨j, by omega, rfl⟩
+
 /-- **Prime powers have no close divisors:**
-    If n = p^k (prime power), consecutive divisors are p^j and p^{j+1},
-    so d₂/d₁ = p ≥ 2. Hence prime powers fail the close divisors test. -/
-axiom prime_powers_fail : ∀ p k : ℕ, Nat.Prime p → k ≥ 1 →
-    ¬hasCloseDivisors (p ^ k)
+    If n = p^k (prime power), any two divisors d₁ = p^a < d₂ = p^b satisfy
+    d₂ ≥ p · d₁ ≥ 2d₁ (strict: d₂ < 2d₁ is impossible since p ≥ 2). -/
+theorem prime_powers_fail : ∀ p k : ℕ, Nat.Prime p → k ≥ 1 →
+    ¬hasCloseDivisors (p ^ k) := by
+  intro p k hp _
+  intro ⟨d₁, d₂, hd1, hd2, hlt, hlt2⟩
+  obtain ⟨a, _, rfl⟩ := dvd_prime_pow_eq_pow hp hd1
+  obtain ⟨b, _, rfl⟩ := dvd_prime_pow_eq_pow hp hd2
+  -- p^a < p^b with a < b (strict monotonicity of p^· for p ≥ 2)
+  have hab : a < b := by
+    by_contra h; push_neg at h
+    exact not_lt.mpr (Nat.pow_le_pow_right hp.pos h) hlt
+  -- p^b ≥ 2 · p^a, contradicting p^b < 2 · p^a
+  have : 2 * p ^ a ≤ p ^ b :=
+    calc 2 * p ^ a ≤ p * p ^ a := Nat.mul_le_mul_right _ hp.two_le
+      _ = p ^ (a + 1) := by ring
+      _ ≤ p ^ b := Nat.pow_le_pow_right hp.pos (by omega)
+  omega
 
 /-- **Example: 6 has close divisors.**
     6 = 2 · 3, divisors are 1, 2, 3, 6.
