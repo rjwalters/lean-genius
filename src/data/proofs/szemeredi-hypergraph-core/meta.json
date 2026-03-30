@@ -1,0 +1,187 @@
+{
+  "id": "szemeredi-hypergraph-core",
+  "title": "Hypergraph Regularity Core Definitions",
+  "slug": "szemeredi-hypergraph-core",
+  "description": "Core definitions for hypergraph regularity: k-uniform hypergraphs, k-partite density, and epsilon-regularity. Generalizes graph regularity (SzemerediCore) to the hypergraph setting of Gowers (2007).",
+  "meta": {
+    "author": "Gowers (2007), Rödl–Skokan (2004), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hypergraph_regularity_lemma",
+    "date": "2007",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SzemerediHypergraphCore.lean",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "hypergraph-theory",
+      "regularity",
+      "infrastructure"
+    ],
+    "badge": "infrastructure",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset for defining transversals of vertex subsets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for the k=2 specialization",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for vertex sets and enumeration",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Centralized UHypergraph structure for k-uniform hypergraphs",
+      "k-partite density via transversals (generalizes bipartite edge density)",
+      "Naive hypergraph epsilon-regularity definition",
+      "Proved: kPartiteDensity_nonneg, kPartiteDensity_le_one, kPartiteDensity_empty",
+      "Bridge from SimpleGraph to UHypergraph (fromSimpleGraph)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 175,
+    "prerequisites": [
+      "Graph theory (simple graphs, hypergraphs)",
+      "Finite combinatorics (Finsets, products, powerset)",
+      "Rational arithmetic (division, positivity, bounds)",
+      "Szemerédi graph regularity (SzemerediCore.lean)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Szemerédi's regularity lemma (1975) for graphs is one of the most powerful tools in combinatorics, but many applications require a hypergraph version. The challenge is that naive generalizations of graph regularity to hypergraphs fail: knowing that pairs of vertex sets have uniform density does not suffice to count k-uniform structures.\n\nGowers (2007) and independently Rödl–Skokan (2004) and Nagle–Rödl–Schacht (2006) solved this by introducing regularity relative to an underlying simplicial complex. In their framework, a k-uniform hypergraph is regular not when large vertex subsets preserve density, but when restricting to dense sub-complexes of the (k-1)-skeleton preserves density. This relative regularity is what makes the hypergraph counting lemma work.\n\nThis module formalizes the foundational definitions: k-uniform hypergraphs, k-partite density via transversals, and the naive epsilon-regularity condition. The naive version captures the density-deviation idea and specializes to the graph case (k=2), serving as a stepping stone to the full Gowers regularity.",
+    "problemStatement": "Define the core concepts for hypergraph regularity:\n\n- **k-uniform hypergraph**: edges are k-element subsets of V\n- **k-partite density**: $d_k(H; V_1,\\ldots,V_k)$ = fraction of transversals that are edges\n- **Epsilon-regularity**: density is stable under restriction to large subsets\n\nProve that k-partite density lies in $[0,1]$ and equals 0 for the empty hypergraph.",
+    "text": "Core definitions for hypergraph regularity: k-uniform hypergraphs, k-partite density, and epsilon-regularity. Generalizes graph regularity to the hypergraph setting.",
+    "proofStrategy": "The module provides definitions and four proved lemmas:\n\n1. **edgeCount_empty**: The empty hypergraph has 0 edges (by simp).\n2. **kPartiteDensity_nonneg**: By positivity of both numerator and denominator.\n3. **kPartiteDensity_le_one**: The filtered set (edges that are transversals) is a subset of all transversals, so its cardinality is bounded.\n4. **kPartiteDensity_empty**: The empty hypergraph has no edges, so the filter is empty.\n\nThe fromSimpleGraph bridge uses Finset.card_pair with the irreflexivity of adjacency.",
+    "keyInsights": [
+      "k-partite density via transversals naturally generalizes bipartite edge density: for k=2, a transversal of [A, B] is a pair {a, b} with a ∈ A, b ∈ B",
+      "The naive regularity condition (density stable under large subset restriction) is correct for graphs but insufficient for hypergraphs — the full Gowers version requires relativization to (k-1)-complexes",
+      "Centralizing UHypergraph prevents the 27+ per-problem definitions scattered across Erdős problem files from diverging",
+      "The density bounds [0,1] are the hypergraph analogues of edgeDensity_nonneg and edgeDensity_le_one from SzemerediCore"
+    ],
+    "prerequisites": [
+      "Graph theory (simple graphs, hypergraphs)",
+      "Finite combinatorics (Finsets, products, powerset)",
+      "Rational arithmetic (division, positivity, bounds)",
+      "Szemerédi graph regularity (SzemerediCore.lean)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hypergraph-def",
+      "title": "k-Uniform Hypergraph",
+      "startLine": 35,
+      "endLine": 63,
+      "summary": "Defines UHypergraph V k: a k-uniform hypergraph with edges as k-element Finsets. Includes edgeCount, the empty hypergraph, and edgeCount_empty.",
+      "mathContext": "A k-uniform hypergraph $H = (V, E)$ where $E \\subseteq \\binom{V}{k}$."
+    },
+    {
+      "id": "kpartite-density",
+      "title": "k-Partite Density",
+      "startLine": 65,
+      "endLine": 114,
+      "summary": "Defines transversals (k-sets picking one element from each part) and kPartiteDensity (fraction of transversals that are edges). Proves density is in [0,1].",
+      "mathContext": "$d_k(H; V_1,\\ldots,V_k) = \\frac{|\\{e \\in E(H) : e \\text{ is a transversal}\\}|}{|\\text{transversals}(V_1,\\ldots,V_k)|} \\in [0,1]$."
+    },
+    {
+      "id": "regularity-def",
+      "title": "Hypergraph Epsilon-Regularity",
+      "startLine": 116,
+      "endLine": 139,
+      "summary": "Defines IsHypergraphRegular: a k-tuple is ε-regular if restricting each part to a subset of size ≥ ε|Vᵢ| changes density by at most ε. This is the naive generalization of graph regularity.",
+      "mathContext": "$(V_1,\\ldots,V_k)$ is $\\varepsilon$-regular for $H$ if for all $V'_i \\subseteq V_i$ with $|V'_i| \\geq \\varepsilon|V_i|$: $|d_k(H; V'_1,\\ldots,V'_k) - d_k(H; V_1,\\ldots,V_k)| \\leq \\varepsilon$."
+    },
+    {
+      "id": "empty-density",
+      "title": "Empty Hypergraph Density",
+      "startLine": 141,
+      "endLine": 152,
+      "summary": "Proves that the k-partite density of the empty hypergraph is 0.",
+      "mathContext": "$d_k(\\emptyset; V_1,\\ldots,V_k) = 0$."
+    },
+    {
+      "id": "graph-bridge",
+      "title": "Bridge to Graph Case",
+      "startLine": 154,
+      "endLine": 175,
+      "summary": "Constructs a 2-uniform hypergraph from a SimpleGraph, connecting the hypergraph framework back to the graph regularity pipeline.",
+      "mathContext": "For a simple graph $G$, the 2-uniform hypergraph has edges $\\{\\{u,v\\} : uv \\in E(G)\\}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "generalizes",
+      "description": "Generalizes graph regularity definitions (edgeDensity, IsEpsilonRegular) to k-uniform hypergraphs (kPartiteDensity, IsHypergraphRegular)"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The graph regularity lemma uses SzemerediCore definitions; a future hypergraph regularity lemma would use these definitions"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The graph counting lemma exploits graph regularity; the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) would need the full Gowers regularity built on these foundations"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides core definitions for hypergraph regularity in 175 lines with 3 definitions (UHypergraph, kPartiteDensity, IsHypergraphRegular) and 4 proved lemmas (0 sorries, 0 axioms). It generalizes the graph regularity framework of SzemerediCore.lean to k-uniform hypergraphs.",
+    "implications": "**Theoretical Significance**: Hypergraph regularity is the foundation for the multidimensional Szemerédi theorem (Gowers 2007), the hypergraph removal lemma, and many results in additive combinatorics. The naive regularity defined here captures the density-deviation idea and specializes correctly to the graph case.\n\nThe centralized UHypergraph structure can replace the 27+ per-problem hypergraph definitions scattered across Erdős problem files, preventing definition drift.\n\n**Limitations**: The naive regularity is insufficient for most applications — the full Gowers regularity (relative to simplicial complexes) is needed for the hypergraph counting lemma and removal lemma.",
+    "openQuestions": [
+      "Define SimplicialComplex (nested family of j-graphs) and relative density for the full Gowers (2007) regularity",
+      "Prove the hypergraph regularity lemma: every k-graph admits an ε-regular partition with bounded number of parts",
+      "Formalize the hypergraph counting lemma (Nagle–Rödl–Schacht 2006): regular k-graphs contain the expected number of copies of any fixed k-graph"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Szemeredi.Hypergraph",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 6
+  },
+  "references": [
+    {
+      "key": "Go07",
+      "citation": "Gowers, W.T., Hypergraph regularity and the multidimensional Szemerédi theorem, Annals of Mathematics 166(3) (2007), 897–946.",
+      "type": "paper"
+    },
+    {
+      "key": "RS04",
+      "citation": "Rödl, V. and Skokan, J., Regularity lemma for k-uniform hypergraphs, Random Structures & Algorithms 25(1) (2004), 1–42.",
+      "type": "paper"
+    },
+    {
+      "key": "NRS06",
+      "citation": "Nagle, B., Rödl, V., Schacht, M., The counting lemma for regular k-uniform hypergraphs, Random Structures & Algorithms 28(2) (2006), 113–179.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kPartiteDensity_nonneg",
+      "type": "lemma",
+      "description": "k-partite density is non-negative",
+      "leanType": "0 ≤ kPartiteDensity H parts"
+    },
+    {
+      "name": "kPartiteDensity_le_one",
+      "type": "lemma",
+      "description": "k-partite density is at most 1",
+      "leanType": "kPartiteDensity H parts ≤ 1"
+    }
+  ]
+}
