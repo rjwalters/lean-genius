@@ -124,21 +124,55 @@ def ExtremalFrobeniusQuestion (n k : ℕ) : Prop :=
 /- ## Part V: Small Examples -/
 
 /-- Example: With A = {2, 3}, non-representables are {1}.
-    - 0 = empty sum
-    - 1 is not representable
-    - 2 = 2
-    - 3 = 3
-    - 4 = 2 + 2
-    - 5 = 2 + 3
-    - 6 = 3 + 3 = 2 + 2 + 2
-    - All larger integers are representable -/
+    - 0 = empty sum, 1 is NOT representable (all elements ≥ 2),
+    - ≥ 2: use copies of 2 and 3 to reach any value. -/
 theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
-  sorry
+  ext n
+  simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · -- ¬IsRepresentableAs n {2, 3} → n = 1
+    intro hnr
+    -- n ≠ 0 (0 is representable by empty multiset)
+    have h0 : n ≠ 0 := fun h => hnr (h ▸ zero_representable _)
+    -- n < 2 (any representable n ≥ 2 by Sylvester: only 1 is non-rep)
+    -- Use Sylvester: NR({2,3}) has (2-1)(3-1)/2 = 1 element, so n=1
+    by_contra hne
+    apply hnr
+    -- n ≥ 2 → representable
+    have h2 : n ≥ 2 := by omega
+    -- Strong induction: if n ≥ 2, then either n = 2, n = 3, or n ≥ 4
+    -- n = 2: {2}, n = 3: {3}, n ≥ 4: n - 2 ≥ 2 and is representable (IH)
+    suffices ∀ m, m ≥ 2 → IsRepresentableAs m ({2, 3} : Set ℕ) from this n h2
+    intro m
+    induction m using Nat.strong_rec_on with | _ m ih => ?_
+    intro hm
+    rcases Nat.lt_or_ge m 4 with hlt | hge
+    · -- m ∈ {2, 3}
+      interval_cases m <;> simp_all
+      · exact mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ))
+      · exact mem_representable (by simp : (3 : ℕ) ∈ ({2, 3} : Set ℕ))
+    · -- m ≥ 4: m = 2 + (m - 2), and m - 2 ≥ 2
+      exact add_representable
+        (mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ)))
+        (ih (m - 2) (by omega) (by omega))
+  · -- n = 1 → ¬IsRepresentableAs 1 {2, 3}
+    intro h; subst h
+    intro ⟨S, hS_sub, hS_sum⟩
+    -- S is a multiset over {2, 3} with sum 1.
+    -- If empty: sum = 0 ≠ 1. If nonempty: every element ≥ 2, so sum ≥ 2 > 1.
+    rcases Multiset.empty_or_exists_mem S with hempty | ⟨a, ha⟩
+    · simp [hempty] at hS_sum
+    · have : a ∈ ({2, 3} : Set ℕ) := hS_sub a ha
+      have hage : a ≥ 2 := by simp at this; omega
+      have : S.sum ≥ a := Multiset.single_le_sum (fun x hx => by
+        have := hS_sub x hx; simp at this; omega) a ha
+      omega
 
-/-- Example: With A = {3, 5}, non-representables are {1, 2, 4, 7}.
-    The Frobenius number is 7 (largest non-representable). -/
+/-- Example: With A = {3, 5}, the Frobenius number is 7.
+    By Sylvester: 3 * 5 - 3 - 5 = 7. -/
 theorem example_3_5_frobenius : frobeniusNumber {3, 5} = 7 := by
-  sorry
+  have := sylvester_frobenius 3 5 (by omega) (by omega) (by decide : Nat.Coprime 3 5)
+  norm_num at this; exact this
 
 /-- For topK(5, 2) = {4, 5}, we can compute non-representables.
     - 0 = empty
@@ -187,13 +221,23 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
     For example, with n = 10, k = 2:
     - A = {1, 2}: Only 0 is non-representable (all positives are sums of 1s and 2s)
     - A = {9, 10}: Many integers are non-representable (1-8, 11-17, etc.) -/
-/- BUG: This theorem is false at n = 2, where {n-1, n} = {1, 2} = the comparison set.
-   Hypothesis should be n ≥ 3. With sylvester_count: LHS = (n-2)(n-1)/2, RHS = 0,
-   so LHS > 0 iff n ≥ 3. -/
-theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 2) :
+/-- Using larger numbers creates more non-representable integers.
+    Requires n ≥ 3 since at n = 2, both sides equal 0.
+    By Sylvester: |NR{n-1,n}| = (n-2)(n-1)/2, |NR{1,2}| = 0. -/
+theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 3) :
     nCardNonRepresentable ({n - 1, n} : Set ℕ) >
     nCardNonRepresentable ({1, 2} : Set ℕ) := by
-  sorry
+  -- RHS: nCardNonRepresentable {1, 2} = (1-1)*(2-1)/2 = 0
+  have h12 : nCardNonRepresentable ({1, 2} : Set ℕ) = 0 := by
+    have hcop : Nat.Coprime 1 2 := by decide
+    have := sylvester_count 1 2 (by omega) (by omega) hcop
+    simp at this; exact this
+  rw [h12]
+  -- LHS: nCardNonRepresentable {n-1, n} = (n-2)*(n-1)/2 > 0
+  rw [consecutive_count n (by omega)]
+  -- (n - 2) * (n - 1) / 2 > 0 for n ≥ 3
+  have h1 : (n - 2) * (n - 1) ≥ 2 := by nlinarith
+  omega
 
 /- ## Part VIII: Connection to Sylvester-Frobenius -/
 
