@@ -234,9 +234,132 @@ theorem f_one_eq : f 1 = 1 := by
       have : p ^ 2 ≠ 0 := pow_ne_zero 2 this
       exact this hp_sq
 
+/-- For a polynomial with exactly 2 terms, p² has at least 3 nonzero coefficients.
+    The positions 2i, i+j, 2j (where {i,j} = support) are distinct and have
+    nonzero coefficients: (coeff i)², 2·(coeff i)·(coeff j), (coeff j)². -/
+private theorem two_term_sq_ge_three (p : Polynomial ℚ) (hp : termCount p = 2) :
+    termCount (p ^ 2) ≥ 3 := by
+  unfold termCount at *
+  obtain ⟨i, j, hij, hsup⟩ := Finset.card_eq_two.mp hp
+  have hi : p.coeff i ≠ 0 := by
+    rw [← Polynomial.mem_support_iff, hsup]; exact Finset.mem_insert_self _ _
+  have hj : p.coeff j ≠ 0 := by
+    rw [← Polynomial.mem_support_iff, hsup]
+    exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))
+  -- Three positions are in support of p²
+  suffices hsub : {2 * i, i + j, 2 * j} ⊆ (p ^ 2).support by
+    have hcard : ({2 * i, i + j, 2 * j} : Finset ℕ).card = 3 := by
+      rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem, Finset.card_singleton]
+      · simp only [Finset.mem_singleton]; omega
+      · simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨by omega, by omega⟩
+    linarith [Finset.card_le_card hsub]
+  intro m hm
+  rw [Polynomial.mem_support_iff]
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hm
+  rcases hm with rfl | rfl | rfl
+  · -- Position 2*i: coeff = (p.coeff i)² ≠ 0
+    rw [sq, Polynomial.coeff_mul]
+    have := Finset.sum_eq_single (⟨i, i⟩ : ℕ × ℕ)
+      (fun ⟨a, b⟩ hab hne => by
+        have hab' := Finset.Nat.mem_antidiagonal.mp hab
+        simp only [ne_eq, Prod.mk.injEq, not_and_or] at hne
+        by_cases ha : a ∈ p.support
+        · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
+          rcases ha with rfl | rfl
+          · -- a = i, b = i (contradiction with hne)
+            have hb : b = i := by omega
+            rcases hne with h | h <;> exact absurd hb h
+          · -- a = j, b = 2i - j. Show b ∉ support
+            have hb : b ∉ p.support := by
+              rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
+              exact ⟨by omega, by omega⟩
+            rw [Polynomial.not_mem_support_iff.mp hb]; ring
+        · rw [Polynomial.not_mem_support_iff.mp ha]; ring)
+      (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : i + i = 2 * i)) h)
+    rw [this]; exact mul_ne_zero hi hi
+  · -- Position i+j: coeff = 2 * (p.coeff i) * (p.coeff j) ≠ 0
+    rw [sq, Polynomial.coeff_mul]
+    -- Extract (i,j) and (j,i) terms, show rest is 0
+    have hij_mem : (i, j) ∈ Finset.Nat.antidiagonal (i + j) :=
+      Finset.Nat.mem_antidiagonal.mpr rfl
+    have hji_ne : (⟨j, i⟩ : ℕ × ℕ) ≠ ⟨i, j⟩ := by
+      simp only [ne_eq, Prod.mk.injEq, not_and_or]; left; exact Ne.symm hij
+    have hji_mem_erase : (j, i) ∈ (Finset.Nat.antidiagonal (i + j)).erase (i, j) :=
+      Finset.mem_erase.mpr ⟨hji_ne, Finset.Nat.mem_antidiagonal.mpr (by omega)⟩
+    rw [← Finset.add_sum_erase _ _ hij_mem,
+        ← Finset.add_sum_erase _ _ hji_mem_erase]
+    have hrest : ∑ x ∈ ((Finset.Nat.antidiagonal (i + j)).erase (i, j)).erase (j, i),
+        p.coeff x.1 * p.coeff x.2 = 0 := by
+      apply Finset.sum_eq_zero
+      intro ⟨a, b⟩ hab
+      have hab_ne1 : (⟨a, b⟩ : ℕ × ℕ) ≠ ⟨j, i⟩ := (Finset.mem_erase.mp hab).1
+      have hab2 := (Finset.mem_erase.mp hab).2
+      have hab_ne2 : (⟨a, b⟩ : ℕ × ℕ) ≠ ⟨i, j⟩ := (Finset.mem_erase.mp hab2).1
+      have hab' := Finset.Nat.mem_antidiagonal.mp (Finset.mem_erase.mp hab2).2
+      by_cases ha : a ∈ p.support
+      · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl
+        · exact absurd (Prod.ext rfl (show b = j by omega)) hab_ne2
+        · exact absurd (Prod.ext rfl (show b = i by omega)) hab_ne1
+      · rw [Polynomial.not_mem_support_iff.mp ha]; ring
+    rw [hrest, add_zero]
+    have : p.coeff i * p.coeff j + p.coeff j * p.coeff i =
+        2 * (p.coeff i * p.coeff j) := by ring
+    rw [this]
+    exact mul_ne_zero two_ne_zero (mul_ne_zero hi hj)
+  · -- Position 2*j: coeff = (p.coeff j)² ≠ 0 (symmetric to 2*i case)
+    rw [sq, Polynomial.coeff_mul]
+    have := Finset.sum_eq_single (⟨j, j⟩ : ℕ × ℕ)
+      (fun ⟨a, b⟩ hab hne => by
+        have hab' := Finset.Nat.mem_antidiagonal.mp hab
+        simp only [ne_eq, Prod.mk.injEq, not_and_or] at hne
+        by_cases ha : a ∈ p.support
+        · rw [hsup, Finset.mem_insert, Finset.mem_singleton] at ha
+          rcases ha with rfl | rfl
+          · have hb : b ∉ p.support := by
+              rw [hsup, Finset.mem_insert, Finset.mem_singleton]; push_neg
+              exact ⟨by omega, by omega⟩
+            rw [Polynomial.not_mem_support_iff.mp hb]; ring
+          · have hb : b = j := by omega
+            rcases hne with h | h <;> exact absurd hb h
+        · rw [Polynomial.not_mem_support_iff.mp ha]; ring)
+      (fun h => absurd (Finset.Nat.mem_antidiagonal.mpr (by omega : j + j = 2 * j)) h)
+    rw [this]; exact mul_ne_zero hj hj
+
 /-- f(2) = 3: (a + bx^n)² = a² + 2abx^n + b²x^{2n}. -/
 theorem f_two_eq : f 2 = 3 := by
-  sorry
+  apply le_antisymm
+  · -- f(2) ≤ 3: witnessed by 1 + X^1
+    unfold f termCount
+    apply Nat.sInf_le
+    exact ⟨1 + X ^ 1, by
+      simp only [pow_one]
+      suffices h : (1 + X : Polynomial ℚ).support = {0, 1} by rw [h]; simp
+      ext n
+      simp only [Polynomial.mem_support_iff, Polynomial.coeff_add, Polynomial.coeff_one,
+                  Polynomial.coeff_X, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro h; by_contra hall; push_neg at hall
+        obtain ⟨hn0, hn1⟩ := hall; simp [hn0, hn1] at h
+      · rintro (rfl | rfl) <;> simp,
+    binomial_square_three_terms 1 (by omega)⟩
+  · -- f(2) ≥ 3
+    unfold f termCount
+    apply le_csInf
+    · exact ⟨3, 1 + X ^ 1, by
+        simp only [pow_one]
+        suffices h : (1 + X : Polynomial ℚ).support = {0, 1} by rw [h]; simp
+        ext n
+        simp only [Polynomial.mem_support_iff, Polynomial.coeff_add, Polynomial.coeff_one,
+                    Polynomial.coeff_X, Finset.mem_insert, Finset.mem_singleton]
+        constructor
+        · intro h; by_contra hall; push_neg at hall
+          obtain ⟨hn0, hn1⟩ := hall; simp [hn0, hn1] at h
+        · rintro (rfl | rfl) <;> simp,
+      binomial_square_three_terms 1 (by omega)⟩
+    · intro n ⟨p, hp, hsq⟩
+      rw [← hsq]
+      exact two_term_sq_ge_three p hp
 
 /-
 ## Part VI: Why the Problem Is Hard

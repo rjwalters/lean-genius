@@ -242,11 +242,37 @@ theorem exceptional_density_zero :
       (exceptionalCount X : ℝ) / X < ε := by
   intro ε hε
   obtain ⟨C, hC, hbound⟩ := gafni_tao_upper_bound
-  -- Proof outline: choose N > exp(√(C/ε)) + 3.
-  -- For X ≥ N: log X > √(C/ε), so (log X)² > C/ε, so C/(log X)² < ε.
-  -- Then E(X)/X ≤ (C·X/(log X)²)/X = C/(log X)² < ε.
-  -- Requires: Real.log monotonicity, division by positive X, exp/log inverse.
-  sorry
+  -- log n → ∞ as n → ∞
+  have h_log : Filter.Tendsto (fun n : ℕ => Real.log (↑n)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- Eventually log X ≥ √(C/ε) + 1 and X ≥ 3
+  set L := Real.sqrt (C / ε) + 1 with hL_def
+  have hL_pos : L > 0 := by positivity
+  have h_ev_log : ∀ᶠ X : ℕ in Filter.atTop, L ≤ Real.log (↑X) :=
+    h_log.eventually (Filter.mem_atTop L)
+  have h_ev_ge3 : ∀ᶠ X : ℕ in Filter.atTop, (3 : ℕ) ≤ X :=
+    Filter.eventually_atTop.mpr ⟨3, fun _ h => h⟩
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (h_ev_log.and h_ev_ge3)
+  refine ⟨N, fun X hX => ?_⟩
+  obtain ⟨hlog, hX3⟩ := hN X hX
+  have hX_pos : (0 : ℝ) < (X : ℝ) := by exact_mod_cast (show 0 < X by omega)
+  have hlog_pos : (0 : ℝ) < Real.log (↑X) := lt_of_lt_of_le hL_pos hlog
+  have hlog2_pos : (0 : ℝ) < (Real.log (↑X)) ^ 2 := by positivity
+  -- Key: C/ε < (log X)², so C/(log X)² < ε
+  have hCε_lt : C / ε < (Real.log (↑X)) ^ 2 := by
+    have h1 : Real.sqrt (C / ε) < L := by linarith
+    have h2 : 0 ≤ Real.sqrt (C / ε) := Real.sqrt_nonneg _
+    calc C / ε = Real.sqrt (C / ε) ^ 2 := (Real.sq_sqrt (div_nonneg hC.le hε.le)).symm
+      _ < L ^ 2 := by nlinarith [sq_nonneg (L - Real.sqrt (C / ε))]
+      _ ≤ (Real.log (↑X)) ^ 2 := by nlinarith [sq_nonneg (Real.log (↑X) - L)]
+  have hkey : C / (Real.log (↑X)) ^ 2 < ε := by
+    rwa [div_lt_iff hlog2_pos, ← div_lt_iff hε]
+  -- E(X)/X ≤ C·X/(log X)²/X = C/(log X)² < ε
+  calc (exceptionalCount X : ℝ) / ↑X
+      ≤ C * ↑X / (Real.log ↑X) ^ 2 / ↑X :=
+        div_le_div_of_nonneg_right (hbound X hX3) hX_pos.le
+    _ = C / (Real.log ↑X) ^ 2 := by rw [mul_div_assoc, div_div_cancel_left₀ hX_pos.ne']
+    _ < ε := hkey
 
 /--
 **Most Gaps Contain Rough Numbers:**
