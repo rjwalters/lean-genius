@@ -17,14 +17,14 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "erdosNumber": 1039,
     "erdosUrl": "https://erdosproblems.com/1039",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 5,
-    "lineCount": 261,
-    "assumptions": "5 axioms: benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected. Removed inconsistent ehp_open axiom. 5 sorries remain.",
+    "lineCount": 303,
+    "assumptions": "5 axioms: benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected. 3 sorries remain (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc). Fixed sublevelArea type (ENNReal→ℝ via toReal).",
     "mathlib_version": "4.29.0"
   },
   "overview": {
