@@ -20,12 +20,12 @@
       "erdos_ko_rado theorem proved from ErdosKoRado.Star in Erdos780Problem.lean:178",
       "Erdos780Aristotle.lean companion file with 10 routine lemmas"
     ],
-    "progressSummary": "COMPLETED: Axiom count reduced from 10 to 4 (60% reduction). Defined chromaticNumber properly, proved EKR from existing formalization, converted small cases to provable theorems, fixed mathematical error in kg_7_3_chromatic, created Aristotle companion file.",
+    "progressSummary": "COMPLETED: 4A, 0S. All 4 sorry'd small cases proved directly from kneser_conjecture axiom (rw+omega). Petersen \u03c7=3, KG(7,3) \u03c7=3, KG(2r,r) \u03c7=2, KG(2r+1,r) \u03c7=3.",
     "nextSteps": [
-      "Prove the 4 sorry'd small cases using the chromaticNumber definition",
       "Explore proving kneser_conjecture from Tucker's lemma (BorsukUlamOQ01.lean)",
       "Prove tightness_construction by explicitly building the partition coloring",
-      "Connect to SimpleGraph.chromaticNumber for k=2 case"
+      "Connect to SimpleGraph.chromaticNumber for k=2 case",
+      "Prove alon_frankl_lovasz_1986 (requires topological methods)"
     ]
   },
   "leanFiles": [
@@ -47,7 +47,7 @@
       "theoremCount": 7,
       "axiomCount": 4,
       "defCount": 11,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos780Problem.lean"
     }
