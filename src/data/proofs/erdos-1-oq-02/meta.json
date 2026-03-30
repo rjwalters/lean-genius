@@ -28,7 +28,11 @@
   "overview": {
     "historicalContext": "Erd\u0151s Problem #1 ($500 prize) asks: if A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, must N \u2265 c\u00b72\u207f? The basic counting bound gives N \u2265 (2\u207f-1)/n. Dubroff, Fox, and Xu (2021) improved this to N \u2265 \u221a(2/\u03c0)\u00b72\u207f/\u221an using a variance-based anticoncentration argument.",
     "problemStatement": "**Theorem (DFX 2021)**: If A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, then N \u2265 \u221a(2/\u03c0) \u00b7 2\u207f/\u221an.",
-    "text": "Formalizes the framework for the DFX lower bound, including variance bounds and the anticoncentration axiom."
+    "text": "Formalizes the framework for the DFX lower bound, including variance bounds and the anticoncentration axiom.",
+    "proofStrategy": "See the overview summary for the proof approach.",
+    "keyInsights": [
+      "See the parent entry for related insights."
+    ]
   },
   "crossReferences": [
     {
@@ -47,7 +51,10 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.Erdos1Problem", "Mathlib"],
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
     "namespace": "Erdos1OQ02",
     "lineCount": 180,
     "axiomCount": 1,
