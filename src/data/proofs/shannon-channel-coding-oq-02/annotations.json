@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-uniform-bool",
+    "proofId": "shannon-channel-coding-oq-02",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Uniform Input Distribution on Bool",
+    "content": "Defines the Bernoulli(1/2) distribution as an InputDist Bool. Both outcomes get probability 1/2, satisfying non-negativity and sum-to-one. This is the capacity-achieving input for BSC.",
+    "mathContext": "$p(\\text{true}) = p(\\text{false}) = 1/2$",
+    "significance": "supporting",
+    "relatedConcepts": ["Bernoulli distribution", "capacity-achieving distribution"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-bsc-symmetry",
+    "proofId": "shannon-channel-coding-oq-02",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "technique",
+    "title": "BSC Output Entropy is Input-Independent",
+    "content": "Proves that ∑_y W(x,y)·log W(x,y) = p·log(p) + (1-p)·log(1-p) for all input symbols x. This is a direct consequence of BSC symmetry: for any input, the output distribution is always Bernoulli(p), just with the labels possibly swapped. The proof uses Bool case analysis and ring arithmetic.",
+    "mathContext": "$\\sum_y W(x,y) \\ln W(x,y) = p \\ln p + (1-p) \\ln(1-p)$ for all $x \\in \\{0,1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["symmetric channel", "Bernoulli distribution", "binary entropy"],
+    "prerequisites": ["BSC definition"]
+  },
+  {
+    "id": "ann-conditional-entropy",
+    "proofId": "shannon-channel-coding-oq-02",
+    "range": { "startLine": 102, "endLine": 146 },
+    "type": "theorem",
+    "title": "H(Y|X) = h(p) for BSC",
+    "content": "The main computational result: the conditional output entropy of a BSC equals h(p) regardless of the input distribution (as long as all input probabilities are positive). The proof unfolds the conditionalEntropy definition on the transposed joint distribution, eliminates the if-then-else branches (all probabilities are positive), simplifies the denominator ∑_y' p(x)·W(x,y') = p(x) to cancel with the numerator, swaps the sum order, factors out p(x), and uses BSC symmetry to replace the inner sum with p·log(p)+(1-p)·log(1-p). After summing p(x) to 1, the result is -[p·log(p)+(1-p)·log(1-p)] = h(p).",
+    "mathContext": "$H(Y|X) = \\sum_x p(x) \\cdot H(Y|X=x) = \\sum_x p(x) \\cdot h(p) = h(p)$",
+    "significance": "key",
+    "relatedConcepts": ["conditional entropy", "channel symmetry", "binary entropy"],
+    "prerequisites": ["BSC output entropy symmetry", "chain rule"]
+  },
+  {
+    "id": "ann-capacity-theorem",
+    "proofId": "shannon-channel-coding-oq-02",
+    "range": { "startLine": 222, "endLine": 240 },
+    "type": "theorem",
+    "title": "BSC Capacity = log 2 - h(p)",
+    "content": "Proves that the channel capacity (supremum of mutual information over all input distributions) equals log 2 - h(p). The proof uses antisymmetry: the upper bound shows every input distribution gives MI ≤ log 2 - h(p), and the lower bound exhibits the uniform distribution achieving MI = log 2 - h(p). This eliminates the bsc_capacity_eq axiom from the parent formalization.",
+    "mathContext": "$C(\\text{BSC}(p)) = \\sup_{p(x)} I(X;Y) = \\log 2 - h(p)$",
+    "significance": "key",
+    "relatedConcepts": ["channel capacity", "supremum", "BSC"],
+    "prerequisites": ["MI upper bound", "MI achievability", "csSup properties"]
+  },
+  {
+    "id": "ann-random-coding",
+    "proofId": "shannon-channel-coding-oq-02",
+    "range": { "startLine": 242, "endLine": 262 },
+    "type": "theorem",
+    "title": "Random Coding Existence Lemma",
+    "content": "If the average error over a finite ensemble of codebooks is at most ε, then there exists a specific codebook with error ≤ ε. This is the probabilistic method step in Shannon's achievability proof. The proof is by contradiction: if all errors exceed ε, the average exceeds ε too.",
+    "mathContext": "If $\\frac{1}{|\\mathcal{C}|} \\sum_{C \\in \\mathcal{C}} P_e(C) \\leq \\varepsilon$, then $\\exists C^*: P_e(C^*) \\leq \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "random coding", "Shannon achievability"],
+    "prerequisites": ["finite sum properties"]
+  }
+]
