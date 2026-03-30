@@ -93,15 +93,15 @@ noncomputable def maxTrivialSize : ℕ :=
 -/
 
 /-- The Chen-Erdős conjecture: under degree constraints,
-    must there be a trivial subgraph much larger than log n? -/
+    must the largest trivial subgraph grow faster than any constant times log n?
+    (i.e., is maxTrivialSize = ω(log n)?) -/
 def chenErdosConjecture : Prop :=
-  ∀ ε > 0, ∃ c > 0, ∀ (V' : Type*) [Fintype V'] [DecidableEq V'],
+  ∀ ε > 0, ∀ c > 0, ∃ N : ℕ,
+    ∀ (V' : Type*) [Fintype V'] [DecidableEq V'],
+    Fintype.card V' ≥ N →
     ∀ (G' : SimpleGraph V') [DecidableRel G'.Adj],
     isChenErdosGraph G' ε →
     (maxTrivialSize G' : ℝ) > c * Real.log (Fintype.card V')
-
-/-- The conjecture is false. -/
-axiom chenErdos_false : ¬chenErdosConjecture
 
 /-
 ## The Cambie-Chan-Hunter Counterexample
@@ -115,15 +115,18 @@ theorem cambie_exceeds_half : cambieConstant > 1/2 := by
   unfold cambieConstant
   norm_num
 
-/-- The counterexample construction exists. -/
+/-- The counterexample construction exists with a uniform O(log n) bound.
+    For all n ≥ 4, the Cambie-Chan-Hunter construction produces a graph on n vertices
+    with ≥ (3/4)n distinct degrees, multiplicity ≤ 2, and maxTrivialSize ≤ C·log n
+    for a fixed constant C independent of n. -/
 axiom cambieChanHunter_construction :
-  ∀ n : ℕ, n ≥ 4 →
+  ∃ C > 0, ∀ n : ℕ, n ≥ 4 →
   ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
   ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     Fintype.card V = n ∧
     hasLimitedMultiplicity G ∧
     (distinctDegreeCount G : ℝ) ≥ cambieConstant * n ∧
-    ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log n
+    (maxTrivialSize G : ℝ) ≤ C * Real.log n
 
 /-- The construction disproves the conjecture for any ε < 1/4. -/
 theorem counterexample_works (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/4) :
@@ -131,40 +134,26 @@ theorem counterexample_works (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/4) :
     ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       isChenErdosGraph G ε ∧
       ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log (Fintype.card V) := by
-  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, C, hCpos, hTriv⟩ :=
-    cambieChanHunter_construction 4 (by norm_num)
+  obtain ⟨C, hCpos, hConstr⟩ := cambieChanHunter_construction
+  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, hTriv⟩ := hConstr 4 (by norm_num)
   haveI := hFin; haveI := hDec; haveI := hDR
   refine ⟨V, hFin, hDec, G, hDR, ⟨hLim, ?_⟩, C, hCpos, ?_⟩
-  · -- hasManyDistinctDegrees: distinctDegreeCount > (1/2 + ε) * vertexCount
-    -- From axiom: distinctDegreeCount ≥ (3/4) * 4 = 3
-    -- Since ε < 1/4: (1/2 + ε) * 4 < 3
-    show (distinctDegreeCount G : ℝ) > (1 / 2 + ε) * (vertexCount G : ℝ)
+  · show (distinctDegreeCount G : ℝ) > (1 / 2 + ε) * (vertexCount G : ℝ)
     unfold vertexCount; rw [hn]
     unfold cambieConstant at hDist
     have h1 : (3 : ℝ) / 4 * ((4 : ℕ) : ℝ) = 3 := by push_cast; ring
     have h2 : (1 / 2 + ε) * ((4 : ℕ) : ℝ) = 2 + 4 * ε := by push_cast; ring
     linarith
-  · -- maxTrivialSize bound: same after rewriting Fintype.card V = 4
-    rw [hn]; exact hTriv
+  · rw [hn]; exact hTriv
 
 /-
 ## Ramsey Connection
+
+By Ramsey's theorem, any graph on n vertices has max(clique, independent set) ≥ c·log n
+for a universal constant c. The Chen-Erdős conjecture asked whether degree diversity forces
+this to grow FASTER than O(log n), i.e., ω(log n). The Cambie-Chan-Hunter construction
+shows it does not — the trivial subgraph remains O(log n) despite high degree diversity.
 -/
-
-/-- Ramsey number R(k,k): minimum n such that any 2-coloring of K_n
-    contains a monochromatic K_k. Axiomatized as exact values are unknown. -/
-axiom ramseyNumber (k : ℕ) : ℕ
-
-/-- Ramsey theorem: graphs on ≥ R(k,k) vertices have trivial set of size k. -/
-axiom ramsey_theorem (k : ℕ) (hk : k ≥ 2) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V ≥ ramseyNumber k →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      maxTrivialSize G ≥ k
-
-/-- Ramsey numbers grow exponentially: R(k,k) ≥ 2^(k/2). -/
-axiom ramsey_lower_bound (k : ℕ) (hk : k ≥ 2) :
-  (ramseyNumber k : ℝ) ≥ 2^((k : ℝ)/2)
 
 /-- The counterexample shows degree diversity doesn't help Ramsey:
     there exist graphs with limited multiplicity, ≥ (3/4)n distinct degrees,
@@ -175,8 +164,8 @@ theorem degree_diversity_no_ramsey_help :
       hasLimitedMultiplicity G ∧
       (distinctDegreeCount G : ℝ) ≥ cambieConstant * (Fintype.card V : ℝ) ∧
       ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log (Fintype.card V) := by
-  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, C, hCpos, hTriv⟩ :=
-    cambieChanHunter_construction 4 (by norm_num)
+  obtain ⟨C, hCpos, hConstr⟩ := cambieChanHunter_construction
+  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, hTriv⟩ := hConstr 4 (by norm_num)
   haveI := hFin; haveI := hDec; haveI := hDR
   have hn' : (Fintype.card V : ℝ) = 4 := by exact_mod_cast hn
   exact ⟨V, hFin, hDec, G, hDR, hLim, by rw [hn']; exact hDist,
@@ -254,13 +243,10 @@ theorem cambie_is_optimal :
   intro ε hε
   use 4
   intro n hn
-  obtain ⟨V, hFin, hDec, G, hDR, hn_eq, hLim, hDist, _C, _hCpos, _hTriv⟩ :=
-    cambieChanHunter_construction n hn
+  obtain ⟨_C, _hCpos, hConstr⟩ := cambieChanHunter_construction
+  obtain ⟨V, hFin, hDec, G, hDR, hn_eq, hLim, hDist, _hTriv⟩ := hConstr n hn
   haveI := hFin; haveI := hDec; haveI := hDR
   refine ⟨V, hFin, hDec, G, hDR, hn_eq, hLim, ?_⟩
-  -- hDist : distinctDegreeCount G ≥ cambieConstant * n = (3/4) * n
-  -- Need: ≥ (optimalDistinctBound - ε) * n = (3/4 - ε) * n
-  -- Since ε > 0 and n ≥ 0: (3/4) * n ≥ (3/4 - ε) * n
   unfold optimalDistinctBound cambieConstant at *
   have hn_nn : (0 : ℝ) ≤ ↑n := Nat.cast_nonneg n
   nlinarith [mul_nonneg (le_of_lt hε) hn_nn]
@@ -310,8 +296,32 @@ theorem erdos_1037_disproved :
       ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log (Fintype.card V) := by
   exact ⟨1/8, by norm_num, counterexample_works (1/8) (by norm_num) (by norm_num)⟩
 
-/-- The answer to Erdős #1037 is NO. -/
-theorem erdos_1037_answer : ¬chenErdosConjecture := chenErdos_false
+/-- The answer to Erdős #1037 is NO: degree diversity doesn't force
+    trivial subgraphs to grow faster than O(log n).
+    Proved from the Cambie-Chan-Hunter construction. -/
+theorem erdos_1037_answer : ¬chenErdosConjecture := by
+  intro h
+  obtain ⟨C, hCpos, hConstr⟩ := cambieChanHunter_construction
+  -- Apply conjecture with ε = 1/8, c = C + 1
+  obtain ⟨N, hN⟩ := h (1/8) (by norm_num) (C + 1) (by linarith)
+  -- Build counterexample with n = max N 4
+  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, hTriv⟩ :=
+    hConstr (max N 4) (by omega)
+  haveI := hFin; haveI := hDec; haveI := hDR
+  -- The graph satisfies the Chen-Erdős conditions
+  have hCard : Fintype.card V ≥ N := by rw [hn]; exact le_max_left N 4
+  have hCEG : isChenErdosGraph G (1/8) := by
+    refine ⟨hLim, ?_⟩
+    show (distinctDegreeCount G : ℝ) > (1 / 2 + 1 / 8) * (vertexCount G : ℝ)
+    unfold vertexCount; rw [hn]; unfold cambieConstant at hDist
+    have : (max N 4 : ℝ) ≥ 4 := by exact_mod_cast (le_max_right N 4)
+    linarith
+  -- Conjecture says maxTrivialSize > (C+1)·log n, but construction says ≤ C·log n
+  have hBig := hN V hCard G hCEG
+  rw [hn] at hBig hTriv
+  have hlog : Real.log ((max N 4 : ℕ) : ℝ) > 0 := by
+    apply Real.log_pos; push_cast; omega
+  linarith
 
 /-
 ## Summary
@@ -320,7 +330,7 @@ Erdős Problem #1037 asked whether graphs with many distinct degrees
 (each appearing at most twice) must contain large trivial subgraphs.
 
 Chen and Erdős conjectured: if distinctDegrees > (1/2 + ε)n with
-each degree appearing ≤ 2 times, then maxTrivial >> log n.
+each degree appearing ≤ 2 times, then maxTrivial = ω(log n).
 
 Cambie, Chan, and Hunter disproved this by constructing graphs with:
 - ≥ 3n/4 distinct degrees (far exceeding (1/2 + ε)n)
@@ -328,6 +338,10 @@ Cambie, Chan, and Hunter disproved this by constructing graphs with:
 - Largest clique/independent set of size O(log n)
 
 This shows degree diversity doesn't improve Ramsey-type bounds.
+
+Axiom status: 1 axiom remains (cambieChanHunter_construction — the existence
+of the specific graph construction). The negation of the conjecture is fully
+derived from this single axiom.
 -/
 
 end Erdos1037

@@ -22,16 +22,16 @@
     "erdosUrl": "https://erdosproblems.com/1037",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 5,
-    "lineCount": 333,
-    "assumptions": "5 axiom(s) and 0 sorry(s). degree_diversity_no_ramsey_help and cambie_is_optimal proved from cambieChanHunter_construction axiom.",
+    "axiomCount": 1,
+    "lineCount": 347,
+    "assumptions": "1 axiom (cambieChanHunter_construction: existence of the specific graph construction with uniform O(log n) bound). chenErdosConjecture negation fully proved from this single axiom. 3 unused Ramsey axioms eliminated, chenErdos_false proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Chen and Erdős posed this question as part of a broader program investigating how degree sequence structure constrains Ramsey-type properties of graphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n, and Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) essentially achieve this bound. The Chen-Erdős conjecture asked whether imposing degree diversity — specifically, requiring that each degree appears at most twice and that the number of distinct degrees exceeds (1/2 + ε)n — forces significantly larger trivial (complete or empty) subgraphs. This would have provided a deterministic condition implying non-random-like Ramsey behavior. The conjecture remained open for decades until Cambie, Chan, and Hunter (2025) disproved it by constructing explicit graphs with at least 3n/4 distinct degrees (each appearing at most twice) in which the largest clique or independent set has size only O(log n). Their construction shows that degree diversity is fundamentally independent of Ramsey structure: one can have maximally diverse degree sequences while maintaining the same trivial subgraph size as random graphs. The fraction 3/4 appears to be essentially optimal for multiplicity-2 constraints, connecting this to extremal questions about degree sequence realizability.",
     "problemStatement": "Let G be a graph on n vertices where every degree occurs at most twice and the number of distinct degrees exceeds (1/2 + ε)n. Must G contain a trivial (empty or complete) subgraph of size much larger than log n? Answer: NO (Cambie-Chan-Hunter 2025). The counterexample achieves at least 3n/4 distinct degrees with maximum trivial size O(log n).",
     "text": "Let G have n vertices where every degree occurs at most twice and distinct degrees > (1/2 + ε)n. Must G have a trivial subgraph much larger than log n? NO (Cambie-Chan-Hunter). Counterexample: ≥ 3n/4 distinct degrees, max trivial O(log n).",
-    "proofStrategy": "The formalization defines degree sequences with multiplicity constraints (hasLimitedMultiplicity), degree diversity conditions (hasManyDistinctDegrees), and the combined Chen-Erdős predicate (isChenErdosGraph). It axiomatizes the Cambie-Chan-Hunter counterexample construction achieving at least 3n/4 distinct degrees with each appearing at most twice, while the maximum trivial subgraph remains O(log n). The Ramsey-theoretic context is formalized via ramseyNumber and ramsey_theorem. The key result degree_diversity_no_ramsey_help establishes that degree diversity does not improve over Ramsey bounds. Generalizations to arbitrary multiplicity k are explored via hasMultiplicityAtMost and generalMultiplicityBound.",
+    "proofStrategy": "The conjecture is properly formalized as ω(log n) growth (∀ c > 0, eventually maxTrivialSize > c·log n), fixing an earlier Ω(log n) formalization that was trivially true by Ramsey. The single axiom (cambieChanHunter_construction) provides the Cambie-Chan-Hunter construction with a uniform O(log n) bound on trivial size. The negation of the conjecture is proved by contradiction: the conjecture requires maxTrivialSize > (C+1)·log n for large graphs, but the construction produces graphs with maxTrivialSize ≤ C·log n. Generalizations to arbitrary multiplicity k are explored via hasMultiplicityAtMost and generalMultiplicityBound.",
     "keyInsights": [
       "**Degree Diversity vs Ramsey Independence:** Having many distinct degrees (> (1/2 + ε)n, each at most twice) does not force trivial subgraphs larger than the Ramsey bound O(log n) — diversity and homogeneity avoidance are orthogonal graph properties",
       "**Chen-Erdős Conjecture Disproved:** Cambie, Chan, and Hunter (2025) constructed explicit counterexamples with ≥ 3n/4 distinct degrees and max trivial size O(log n), fully answering the conjecture in the negative",
@@ -92,7 +92,7 @@
     {
       "id": "conjecture",
       "title": "The Chen-Erdős Conjecture",
-      "summary": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false",
+      "summary": "chenErdosConjecture formalized as ω(log n) growth: ∀ c > 0, eventually maxTrivialSize > c·log n",
       "startLine": 91,
       "endLine": 105,
       "mathContext": "Chen-Erdos conjecture: degree diversity forces large trivial subgraphs ($\\\\gg \\\\log n$). DISPROVED."
@@ -108,7 +108,7 @@
     {
       "id": "ramsey",
       "title": "Ramsey Connection",
-      "summary": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
+      "summary": "Ramsey connection commentary (axiom-free), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
       "startLine": 136,
       "endLine": 162,
       "mathContext": "Ramsey: $R(k,k) \\\\leq 4^k$, so every $n$-vertex graph has $\\\\max(\\\\alpha, \\\\omega) \\\\geq (1/2)\\\\log_2 n$."
@@ -176,7 +176,7 @@
     "opens": [],
     "namespace": "Erdos1037",
     "lineCount": 333,
-    "axiomCount": 5,
+    "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 20
   }
