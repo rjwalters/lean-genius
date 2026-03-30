@@ -36,12 +36,12 @@ to the arithmetic of lattices.
 
 ## Approach
 - **Foundation (from Mathlib):** We use Mathlib's convexity, measure theory,
-  and Euclidean space infrastructure.
+  Euclidean space infrastructure, and GeometryOfNumbers module.
 - **Original Contributions:** We define lattices and centrally symmetric sets,
-  state the theorem, and outline the classical pigeonhole proof.
-- **Proof Techniques:** The main theorem uses a beautiful covering argument
-  with the pigeonhole principle, which we axiomatize since full formalization
-  requires measure-theoretic machinery beyond current scope.
+  state the theorem, and provide full proofs using Mathlib.
+- **Proof Techniques:** The main theorem is proved by bridging to Mathlib's
+  `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+  via a Module.Basis constructed from the lattice basis matrix.
 
 ## Status
 - [x] Complete statement of theorem
@@ -50,7 +50,7 @@ to the arithmetic of lattices.
 - [x] Proof structure outlined
 - [x] Uses Mathlib for convexity and measure concepts
 - [x] Applications (Fermat's two squares, Lagrange's four squares)
-- [ ] Incomplete (main result axiomatized)
+- [x] Main theorem proved from Mathlib (GeometryOfNumbers + type bridge)
 
 ## The Classical Proof (Pigeonhole Argument)
 
@@ -188,6 +188,31 @@ theorem standardLattice_covolume : (standardLattice n).covolume = 1 := by
   unfold Lattice.covolume standardLattice
   simp [Matrix.det_one]
 
+/-- Convert a Lattice's basis matrix to a Module.Basis by interpreting the rows of
+    L.basis as basis vectors. Since det(L.basis) ≠ 0, the rows are linearly independent
+    and span ℝⁿ. We use L.basis.transpose so that Matrix.toLin' maps standard basis
+    vector eᵢ to (column i of Mᵀ) = (row i of M) = lattice basis vector i. -/
+noncomputable def Lattice.toModuleBasis (L : Lattice n) :
+    Module.Basis (Fin n) ℝ (EuclideanN n) := by
+  have hdet : L.basis.transpose.det ≠ 0 := by rwa [Matrix.det_transpose]
+  exact (Pi.basisFun ℝ (Fin n)).map
+    (LinearEquiv.ofLinear
+      (Matrix.toLin' L.basis.transpose)
+      (Matrix.toLin' L.basis.transpose⁻¹)
+      (by ext x; simp [← Matrix.toLin'_mul, Matrix.mul_nonsing_inv _ hdet])
+      (by ext x; simp [← Matrix.toLin'_mul, Matrix.nonsing_inv_mul _ hdet]))
+
+/-- The matrix of the constructed basis equals the original lattice basis matrix. -/
+theorem Lattice.toModuleBasis_matrix (L : Lattice n) :
+    Matrix.of (L.toModuleBasis) = L.basis := by
+  ext i j
+  -- (Matrix.of b) i j = (b i) j = (L.basis.transpose.mulVec (eᵢ)) j = L.basis i j
+  simp only [Lattice.toModuleBasis, Basis.map_apply, LinearEquiv.ofLinear_apply,
+    Pi.basisFun_apply, Matrix.toLin'_apply, Matrix.mulVec, Matrix.dotProduct,
+    Finset.sum_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, Matrix.of_apply,
+    Matrix.transpose_apply]
+  simp [Finset.sum_ite_eq', Finset.mem_univ]
+
 -- ============================================================
 -- PART 3: Convex Bodies
 -- ============================================================
@@ -219,11 +244,13 @@ the lattice.
 We abstract the volume as a property of convex bodies.
 -/
 
-/-- Abstract volume for a convex body.
-    In full formalization, this would be the Lebesgue measure. -/
+/-- Volume for a convex body, connected to Lebesgue measure.
+    The volume field gives the real-valued Lebesgue measure of the carrier set.
+    This connection enables proving the main theorem from Mathlib. -/
 class HasVolume (n : ℕ) (S : ConvexBody n) where
   volume : ℝ
   volume_pos : 0 < volume
+  volume_eq : ENNReal.ofReal volume = MeasureTheory.volume S.carrier
 
 /-- The critical volume threshold for Minkowski's theorem -/
 noncomputable def criticalVolume (L : Lattice n) : ℝ := (2 : ℝ) ^ n * L.covolume
@@ -253,28 +280,53 @@ The proof uses the pigeonhole principle:
 4. Use convexity and symmetry to find a non-zero lattice point in S
 -/
 
-/-- **Minkowski's Fundamental Theorem** (Axiomatized)
+/-- **Minkowski's Fundamental Theorem** (Proved from Mathlib)
 
 If S is a centrally symmetric convex body in ℝⁿ with volume > 2ⁿ · det(L),
 then S contains a non-zero point of the lattice L.
 
-Proof outline:
-1. Let T = S/2 (scale S by factor 1/2).
-2. vol(T) = vol(S)/2ⁿ > det(L) = volume of fundamental domain.
-3. Consider translates T + p for all lattice points p ∈ L.
-4. By the pigeonhole principle, two translates must overlap:
-   ∃ p₁ ≠ p₂ in L, ∃ x ∈ (T + p₁) ∩ (T + p₂).
-5. Then x = t₁ + p₁ = t₂ + p₂ for some t₁, t₂ ∈ T.
-6. So t₁ - t₂ = p₂ - p₁ ∈ L (a non-zero lattice vector).
-7. But t₁ = s₁/2 and t₂ = s₂/2 for s₁, s₂ ∈ S.
-8. By symmetry, -s₂ ∈ S. By convexity, (s₁ + (-s₂))/2 ∈ S.
-9. This equals t₁ - t₂ = p₂ - p₁ ∈ S ∩ L, and it's non-zero.
-
-This proof requires measure theory and careful handling of
-the pigeonhole argument in infinite settings. -/
-axiom minkowski_fundamental (L : Lattice n) (S : ConvexBody n) [hv : HasVolume n S] :
+This is proved by bridging to Mathlib's
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+via the Module.Basis constructed from L.basis (see Lattice.toModuleBasis). -/
+theorem minkowski_fundamental (L : Lattice n) (S : ConvexBody n) [hv : HasVolume n S] :
     hv.volume > criticalVolume n L →
-    ∃ x ∈ S.carrier, x ∈ latticePoints n L ∧ x ≠ 0
+    ∃ x ∈ S.carrier, x ∈ latticePoints n L ∧ x ≠ 0 := by
+  intro hvol
+  -- Apply Mathlib's general lattice Minkowski theorem
+  have h_result := MinkowskiProved.minkowski_general_lattice_proved n
+    L.toModuleBasis S.carrier S.symmetric S.convex
+    (by -- Volume condition: ENNReal.ofReal |det(basis)| * 2^n < volume S.carrier
+      rw [L.toModuleBasis_matrix]
+      -- Need: ENNReal.ofReal |L.basis.det| * 2 ^ n < volume S.carrier
+      rw [← hv.volume_eq]
+      -- Need: ENNReal.ofReal |L.basis.det| * 2 ^ n < ENNReal.ofReal hv.volume
+      have h1 : |L.basis.det| * (2 : ℝ) ^ n < hv.volume := by
+        unfold criticalVolume at hvol; linarith
+      have h_abs_nn : (0 : ℝ) ≤ |L.basis.det| := abs_nonneg _
+      have h_pow_nn : (0 : ℝ) ≤ (2 : ℝ) ^ n := pow_nonneg (by norm_num) n
+      calc ENNReal.ofReal |L.basis.det| * (2 : ENNReal) ^ n
+          = ENNReal.ofReal (|L.basis.det| * (2 : ℝ) ^ n) := by
+            rw [ENNReal.ofReal_mul h_abs_nn, ENNReal.ofReal_pow (by norm_num : (0:ℝ) ≤ 2),
+                ENNReal.ofReal_ofNat]
+        _ < ENNReal.ofReal hv.volume := by
+            apply ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg h_abs_nn h_pow_nn)
+              |>.mpr h1)
+  -- Convert result to custom types
+  obtain ⟨⟨x, hx_span⟩, hx_ne, hx_in_s⟩ := h_result
+  refine ⟨x, hx_in_s, ?_, ?_⟩
+  · -- x ∈ latticePoints n L (bridge Submodule.span to latticePoints)
+    unfold latticePoints isLatticeVector
+    -- x ∈ Submodule.span ℤ (Set.range L.toModuleBasis)
+    -- means x = ∑ i, c_i • (basis vector i) for integer c_i
+    rw [Submodule.mem_span_range_iff_exists_fun] at hx_span
+    obtain ⟨coeffs, hcoeffs⟩ := hx_span
+    exact ⟨coeffs, by
+      rw [← hcoeffs]; congr 1; ext i
+      -- (coeffs i : ℝ) • (fun j => L.basis i j) = (coeffs i : ℤ) • L.toModuleBasis i
+      -- ℤ-smul = cast to ℝ then ℝ-smul
+      rw [zsmul_eq_smul_cast ℝ]⟩
+  · -- x ≠ 0
+    intro h0; apply hx_ne; exact Subtype.ext h0
 
 /-- Equivalent formulation: volume ≥ 2ⁿ · det(L) with strict inequality implies
     existence of a non-zero lattice point. -/

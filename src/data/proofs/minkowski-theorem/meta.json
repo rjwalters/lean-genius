@@ -8,7 +8,7 @@
     "author": "Hermann Minkowski (1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski%27s_theorem",
     "date": "1896",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheorem.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -52,9 +52,9 @@
       "Proved Minkowski for ℤⁿ from Mathlib's GeometryOfNumbers (axiom-free integer lattice case)"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 544,
-    "assumptions": "1 axiom: minkowski_fundamental (the main convex body theorem for general lattices using custom HasVolume typeclass). The integer lattice case (ℤⁿ) is now PROVED from Mathlib's GeometryOfNumbers module (MinkowskiProved.minkowski_integer_lattice_proved). The general lattice axiom remains because the custom Lattice/HasVolume types need refactoring to use actual Lebesgue measure.",
+    "assumptions": "0 axioms. Minkowski fundamental theorem proved from Mathlib GeometryOfNumbers module by bridging custom Lattice type to Module.Basis, adding Lebesgue measure connection to HasVolume typeclass, and applying exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure.",
     "mathlib_version": "4.26.0",
     "prerequisites": [
       "Convex sets and convexity in real vector spaces",
@@ -241,7 +241,7 @@
     ],
     "namespace": "MinkowskiFundamentalTheorem",
     "lineCount": 453,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 7,
     "mainTheorems": [
