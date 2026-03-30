@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "context",
+    "title": "Mathlib Imports",
+    "content": "This proof uses Mathlib's prime number definitions, factorial properties, modular arithmetic, and general tactics. The key external facts are `Nat.exists_prime_and_dvd` (every n >= 2 has a prime factor) and `Nat.dvd_factorial` (primes up to n divide n!).",
+    "significance": "supporting",
+    "prerequisites": [],
+    "relatedConcepts": ["Mathlib", "prime definition", "factorial", "modular arithmetic"]
+  },
+  {
+    "id": "ann-mul-mod",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
+    "type": "technique",
+    "title": "Multiplicativity of Residue 1 (mod 3)",
+    "content": "The product of two integers each congruent to 1 (mod 3) is also congruent to 1 (mod 3). This is because (Z/3Z)* is a group and 1 is the identity. Proved by direct calculation using `Nat.mul_mod`.",
+    "significance": "key",
+    "prerequisites": [],
+    "relatedConcepts": ["modular arithmetic", "multiplicativity"]
+  },
+  {
+    "id": "ann-factors",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 107
+    },
+    "type": "proof-step",
+    "title": "Factoring Determines Residue (Strong Induction)",
+    "content": "The most technical lemma: if all prime factors of n are either 3 or congruent to 1 (mod 3), then n cannot be congruent to 2 (mod 3). Proved by strong induction on n. The base cases handle n = 1 (trivial) and the case where n = p (a single prime factor). The inductive step extracts a prime factor p with p % 3 = 1, divides out to get m = n/p, shows m has the same factor property, and uses m % 3 = 2 (from n = p*m with n % 3 = 2, p % 3 = 1) to apply the inductive hypothesis.",
+    "significance": "key",
+    "prerequisites": ["ann-mul-mod"],
+    "relatedConcepts": ["strong induction", "prime factorization", "modular arithmetic"]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {
+      "startLine": 129,
+      "endLine": 156
+    },
+    "type": "proof-step",
+    "title": "The Euclid-Style Construction",
+    "content": "Given any n, consider N = 3*(n+1)! - 1. This satisfies N = 2 (mod 3) and N >= 2. By has_prime_factor_2_mod_3, N has a prime factor p with p = 2 (mod 3). The key size argument: if p <= n+1 then p | (n+1)! and hence p | 3*(n+1)!, but also p | N, so p | (3*(n+1)! - N) = 1, contradicting p being prime. Therefore p > n.",
+    "significance": "key",
+    "prerequisites": ["ann-factors"],
+    "relatedConcepts": ["Euclid's method", "factorial", "size argument"]
+  }
+]
