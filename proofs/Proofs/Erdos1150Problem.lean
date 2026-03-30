@@ -93,6 +93,22 @@ theorem roots_sum_one (N : ℕ) :
     ∑ m ∈ Finset.range N, (1 : ℂ) ^ m = ↑N := by
   simp
 
+/-- For Littlewood polynomials, each coefficient has norm 1. -/
+theorem littlewood_coeff_norm {p : Polynomial ℂ} (hp : IsLittlewoodPolynomial p)
+    {k : ℕ} (hk : k ≤ p.natDegree) : ‖p.coeff k‖ = 1 := by
+  rcases hp k hk with h | h <;> simp [h]
+
+/-- For Littlewood polynomials, each coefficient has norm squared 1. -/
+theorem littlewood_coeff_normSq {p : Polynomial ℂ} (hp : IsLittlewoodPolynomial p)
+    {k : ℕ} (hk : k ≤ p.natDegree) : ‖p.coeff k‖ ^ 2 = 1 := by
+  rw [littlewood_coeff_norm hp hk, one_pow]
+
+/-- The sum of coefficient norm-squareds for a degree-n Littlewood polynomial is n+1. -/
+theorem littlewood_coeffNormSq_sum {p : Polynomial ℂ} (hp : IsLittlewoodPolynomial p) :
+    ∑ k ∈ Finset.range (p.natDegree + 1), ‖p.coeff k‖ ^ 2 = ↑(p.natDegree + 1) := by
+  simp_rw [littlewood_coeff_normSq hp (Finset.mem_range.mp · |>.le)]
+  simp [Finset.sum_const, Finset.card_range]
+
 /-- **Parseval's theorem** gives the trivial lower bound:
     For any Littlewood polynomial of degree n,
     max_{|z|=1} |P(z)| ≥ √(n+1).
@@ -101,8 +117,12 @@ theorem roots_sum_one (N : ℕ) :
     Σ_m |P(ω^m)|² = (n+1)·Σ_k |a_k|² = (n+1)². Pigeonhole gives
     max|P(ω^m)| ≥ √(n+1), and since |ω^m| = 1, supNorm P ≥ √(n+1).
 
-    TODO: Replace this axiom with a full proof using roots_orthogonal
-    and the DFT double-sum expansion. -/
+    TODO: Replace this axiom with a full proof. Remaining steps:
+    1. Prove BddAbove for supNorm (triangle inequality on unit circle)
+    2. Prove DFT Parseval identity: Σ_{m<N} ‖P(ω^m)‖² = N²
+       using roots_orthogonal + littlewood_coeffNormSq_sum
+    3. Pigeonhole: max_m ‖P(ω^m)‖² ≥ N, so ‖P(ω^m)‖ ≥ √N
+    4. le_ciSup + BddAbove to lift to supNorm -/
 axiom parseval_lower_bound :
     ∀ p : Polynomial ℂ, IsLittlewoodPolynomial p →
     supNorm p ≥ Real.sqrt (p.natDegree + 1)

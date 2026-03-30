@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 6: Added DFT infrastructure (roots_orthogonal, roots_sum_one). Documented proof plan for eliminating parseval_lower_bound axiom via discrete Fourier analysis.",
+    "progressSummary": "Session 7: Added littlewood_coeff_norm, littlewood_coeff_normSq, littlewood_coeffNormSq_sum. Fixed meta.json axiom count (4→2). Documented clear 4-step proof plan for eliminating parseval_lower_bound.",
     "builtItems": [
       "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
       "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward",
@@ -40,7 +40,11 @@
       "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem",
       "Erdos1150Problem.lean: roots_orthogonal - geometric sum vanishes for non-trivial roots",
       "Erdos1150Problem.lean: roots_sum_one - trivial sum over roots of unity",
-      "Erdos1150Problem.lean: Full proof plan documentation for Parseval via DFT"
+      "Erdos1150Problem.lean: Full proof plan documentation for Parseval via DFT",
+      "littlewood_coeff_norm: ‖a_k‖ = 1 for Littlewood (PROVED)",
+      "littlewood_coeff_normSq: ‖a_k‖² = 1 for Littlewood (PROVED)",
+      "littlewood_coeffNormSq_sum: Σ ‖a_k‖² = n+1 for Littlewood (PROVED)",
+      "Fixed meta.json: axiom count corrected from 4 to 2"
     ],
     "insights": [
       "Forward direction is clean: supNorm/√n > 1+c eventually contradicts Tendsto ... (nhds 1)",
@@ -55,15 +59,18 @@
       "Parseval can be proved via DFT without integration: evaluate at N-th roots, use orthogonality",
       "Key remaining step: expand |P(ω^m)|² as double sum and commute with Σ_m (DFT identity)",
       "The orthogonality lemma follows cleanly from geom_sum_eq + zero_div",
-      "Complex.isPrimitiveRoot_exp is available in Mathlib for primitive roots"
+      "Complex.isPrimitiveRoot_exp is available in Mathlib for primitive roots",
+      "Meta.json was incorrectly reporting 4 axioms — actual file has 2 (parseval_lower_bound, bbmst_flat). kahane_unimodular and rudin_shapiro were eliminated in prior sessions.",
+      "littlewood_coeffNormSq_sum is the key ingredient for the DFT Parseval identity RHS"
     ],
     "mathlibGaps": [
       "Integration on unit circle (for Parseval)"
     ],
     "nextSteps": [
-      "Prove DFT identity: Σ_m |P(ω^m)|² = (n+1)·Σ_k |a_k|² using roots_orthogonal",
-      "Replace parseval_lower_bound axiom with theorem (eliminates critical axiom)",
-      "Consider proving rudin_shapiro_bound constructively (contextual axiom)"
+      "Prove BddAbove for supNorm (triangle inequality: ‖P(z)‖ ≤ n+1 for |z|=1)",
+      "Prove DFT identity: Σ_{m<N} ‖P(ω^m)‖² = N² using roots_orthogonal + coeffNormSq_sum",
+      "Pigeonhole + le_ciSup to convert DFT identity to parseval_lower_bound",
+      "bbmst_flat is a deep published result — keep as axiom"
     ],
     "markdown": "# Erdős #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },

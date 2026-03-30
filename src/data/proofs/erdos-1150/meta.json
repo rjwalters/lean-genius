@@ -18,7 +18,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axioms": 4,
+    "axioms": 2,
     "erdosNumber": 1150,
     "erdosUrl": "https://erdosproblems.com/1150",
     "erdosProblemStatus": "open",
@@ -38,9 +38,9 @@
       "Axiom kahane_unimodular_ultraflat (ultraflat for unimodular coefficients)",
       "Axiom rudin_shapiro_bound (concrete ≤ √(2n) family)"
     ],
-    "axiomCount": 4,
-    "lineCount": 342,
-    "assumptions": "4 axiom(s) and 0 sorry(s). Full equivalence (conjecture ↔ no ultraflat) proved in both directions. Remaining axioms: parseval_lower_bound, bbmst_flat, kahane_unimodular_ultraflat, rudin_shapiro_bound."
+    "axiomCount": 2,
+    "lineCount": 362,
+    "assumptions": "2 axioms: parseval_lower_bound (provable via DFT, infrastructure started), bbmst_flat (deep research result BBMST 2019). Full equivalence (conjecture ↔ no ultraflat) proved in both directions."
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials — polynomials with all coefficients ±1 — dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist — the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the ±1 restriction the essential barrier. The problem gained renewed attention after Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erdős Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
