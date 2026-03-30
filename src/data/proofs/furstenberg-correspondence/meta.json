@@ -50,7 +50,7 @@
     ],
     "dateAdded": "2026-03-29",
     "axiomCount": 2,
-    "lineCount": 215,
+    "lineCount": 252,
     "assumptions": "2 axiom(s): (1) Furstenberg Correspondence Principle — construction needs weak-* compactness not in Mathlib, (2) Multiple Recurrence for k≥3 — needs ergodic decomposition not in Mathlib. Both are well-defined mathematical constructions.",
     "mathlib_version": "4.26.0"
   },
@@ -76,56 +76,56 @@
     {
       "id": "density",
       "title": "Upper Banach Density",
-      "startLine": 40,
-      "endLine": 55,
+      "startLine": 43,
+      "endLine": 56,
       "summary": "Defines `HasUpperDensityGe A δ`: A ⊆ ℕ has upper Banach density ≥ δ, meaning arbitrarily long intervals exist with density ≥ δ.",
       "mathContext": "$d^*(A) \\geq \\delta$: $\\forall N_0, \\exists a, N \\geq N_0: |A \\cap [a, a+N)| \\geq \\delta N$"
     },
     {
       "id": "system",
       "title": "Dynamical System Structure",
-      "startLine": 57,
-      "endLine": 72,
+      "startLine": 58,
+      "endLine": 74,
       "summary": "Defines `System`: a probability measure-preserving system $(X, \\mu, T)$ with distinguished measurable set $B$. Bundles the type, measurable space, measure, transformation, and measurability proofs.",
       "mathContext": "$(X, \\mathcal{B}, \\mu, T)$ with $\\mu(X) = 1$, $T$ measure-preserving, $B \\in \\mathcal{B}$"
     },
     {
       "id": "poincare",
       "title": "Poincaré Recurrence (from Mathlib)",
-      "startLine": 74,
-      "endLine": 100,
+      "startLine": 76,
+      "endLine": 108,
       "summary": "**Proved.** Wraps Mathlib's `Conservative.exists_gt_measure_inter_ne_zero` and `frequently_measure_inter_ne_zero`. Shows that any set of positive measure in a probability measure-preserving system has infinitely many return times.",
       "mathContext": "Poincaré: $\\mu(B) > 0 \\Rightarrow \\exists^\\infty n > 0, \\mu(B \\cap T^{-n}B) > 0$. Proved via $\\text{MeasurePreserving} \\to \\text{Conservative} \\to \\text{Recurrence}$."
     },
     {
       "id": "correspondence",
       "title": "Furstenberg Correspondence (Axiom 1)",
-      "startLine": 102,
-      "endLine": 137,
+      "startLine": 110,
+      "endLine": 142,
       "summary": "**Axiomatized.** States the Furstenberg Correspondence Principle: sets with positive upper Banach density correspond to measure-preserving systems where positive-measure intersections give combinatorial patterns. Includes detailed construction sketch.",
       "mathContext": "Axiom: $d^*(A) \\geq \\delta > 0 \\Rightarrow \\exists (X, \\mu, T, B)$: $\\mu(B) \\geq \\delta$, and positive-measure $k$-fold intersections lift to $k$-APs in $A$."
     },
     {
       "id": "szemeredi-k2",
       "title": "Szemerédi k=2 via Ergodic Route (Proved)",
-      "startLine": 139,
-      "endLine": 162,
+      "startLine": 144,
+      "endLine": 172,
       "summary": "**Proved.** Derives Szemerédi k=2 from the Furstenberg correspondence (Axiom 1) combined with Mathlib's Poincaré recurrence. The 4-step proof: correspondence → positive measure → Poincaré return → combinatorial pattern.",
       "mathContext": "$d^*(A) > 0 \\Rightarrow \\exists a, n > 0: \\{a, a+n\\} \\subseteq A$. Via: correspondence $\\to$ $\\mu(B) > 0$ $\\to$ Poincaré $\\to$ 2-AP."
     },
     {
       "id": "multiple-recurrence",
       "title": "Multiple Recurrence k ≥ 3 (Axiom 2)",
-      "startLine": 164,
-      "endLine": 190,
+      "startLine": 174,
+      "endLine": 200,
       "summary": "**Axiomatized.** States the Multiple Recurrence Theorem for $k \\geq 3$: deep part of Furstenberg's proof requiring ergodic decomposition and structural analysis.",
       "mathContext": "Axiom: $\\mu(B) > 0, k \\geq 3 \\Rightarrow \\exists n > 0, \\mu(B \\cap T^{-n}B \\cap \\cdots \\cap T^{-(k-1)n}B) > 0$"
     },
     {
       "id": "full-szemeredi",
       "title": "Full Szemerédi via Ergodic Route",
-      "startLine": 192,
-      "endLine": 215,
+      "startLine": 202,
+      "endLine": 230,
       "summary": "**Proved from axioms.** Assembles the infinite Szemerédi theorem for all $k \\geq 1$ by case split: $k \\leq 2$ uses Poincaré (Mathlib), $k \\geq 3$ uses the multiple recurrence axiom.",
       "mathContext": "$d^*(A) > 0 \\Rightarrow \\forall k \\geq 1, \\exists a, n > 0: \\{a, a+n, \\ldots, a+(k-1)n\\} \\subseteq A$"
     }
@@ -160,7 +160,7 @@
       "Set"
     ],
     "namespace": "Furstenberg",
-    "lineCount": 215,
+    "lineCount": 252,
     "axiomCount": 2,
     "theoremCount": 4,
     "definitionCount": 2
