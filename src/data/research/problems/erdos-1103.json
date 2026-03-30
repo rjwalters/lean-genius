@@ -29,19 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3 axioms (all published results: vanDoorn-Tao upper/lower, Konyagin). Conjecture is def. Well-formalized.",
+    "progressSummary": "COMPLETE: Proved erdos_1103_false (conjecture is false via van Doorn-Tao upper bound). 3 axioms (all deep published results). 0 sorries. 9 theorems.",
     "builtItems": [
       "Proved squarefreeSumset_singleton (axiom → theorem) in Erdos1103Problem.lean:78",
       "Fixed type annotation for ErdosProblem1103 (j : ℕ)",
       "Fixed deprecated Set.not_mem_empty → Set.notMem_empty",
       "enumSet: replaced axiom with noncomputable def via Nat.nth (· ∈ A)",
-      "enumSet_spec: replaced axiom with theorem (5→3 axioms)"
+      "enumSet_spec: replaced axiom with theorem (5→3 axioms)",
+      "subexp_eventually_lt_exp: analysis lemma that C^j > exp(5j/log j) eventually for C>1",
+      "erdos_1103_false: ¬ ErdosProblem1103 from vanDoorn_tao_upper axiom"
     ],
     "insights": [
       "All 3 axioms are deep published results (not provable from Mathlib)",
       "Main conjecture is properly a def, not axiom",
       "enumSet defined via Nat.nth (previously axiomatized, now proved from Mathlib)",
-      "SquarefreeSumset automatically excludes 0 (Squarefree 0 = False), so enumSet values >= 1"
+      "SquarefreeSumset automatically excludes 0 (Squarefree 0 = False), so enumSet values >= 1",
+      "van Doorn-Tao upper bound exp(5j/log j) refutes ErdosProblem1103: for any C>1, C^j eventually exceeds exp(5j/log j)",
+      "Proved subexp_eventually_lt_exp and erdos_1103_false using filter_upwards, rpow_def_of_pos, exp_lt_exp, and nlinarith"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
