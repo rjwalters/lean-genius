@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4A appropriate (structural axioms for noncomputable g(k)), 15T proved, 0S.",
+    "progressSummary": "COMPLETED: Reduced 4 axioms to 1 (gFunc_exists). gFunc now defined constructively via Nat.find. Properties derived as theorems.",
     "builtItems": [
       "AllPrimesExceed: predicate definition",
       "gFunc: axiomatized with gt, spec, minimal properties",
@@ -42,7 +42,11 @@
       "Gallery entry created with meta.json",
       "gFunc_three theorem: g(3) = 7",
       "gFunc_four theorem: g(4) = 7",
-      "ErdosAsymptoticConjecture def: formal statement of log g(k) ~ c*k/log k"
+      "ErdosAsymptoticConjecture def: formal statement of log g(k) ~ c*k/log k",
+      "def gFunc via Nat.find (was axiom)",
+      "theorem gFunc_gt from Nat.find_spec (was axiom)",
+      "theorem gFunc_spec from Nat.find_spec (was axiom)",
+      "theorem gFunc_minimal from Nat.find_min (was axiom)"
     ],
     "insights": [
       "g(k) = smallest n > k+1 such that all prime factors of C(n,k) exceed k",
@@ -91,10 +95,10 @@
     {
       "path": "Proofs/Erdos1095OQ01Problem.lean",
       "filename": "Erdos1095OQ01Problem.lean",
-      "lineCount": 261,
-      "theoremCount": 15,
-      "axiomCount": 4,
-      "defCount": 3,
+      "lineCount": 476,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1095OQ01Problem.lean"

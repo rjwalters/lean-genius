@@ -57,10 +57,6 @@ axiom erdos_bounds (d : ℕ) (hd : d ≥ 3) :
 
 This improves the lower bound from n^{1/d} toward the conjectured n^{2/d}.
 -/
-axiom solymosi_vu (d : ℕ) (hd : d ≥ 4) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f d n : ℝ) ≥ (n : ℝ) ^ (2 / (d : ℝ) - c / (d : ℝ)^2)
-
 /-
 ## Part IV: The Conjecture
 -/
@@ -71,10 +67,6 @@ axiom solymosi_vu (d : ℕ) (hd : d ≥ 4) :
 The conjectured lower bound matches the grid upper bound up to
 subpolynomial factors.
 -/
-axiom erdos_conjecture (d : ℕ) (hd : d ≥ 3) :
-    ∀ ε : ℝ, ε > 0 → ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (f d n : ℝ) ≥ c * (n : ℝ) ^ (2 / (d : ℝ) - ε)
-
 /-
 ## Part V: Main Theorem
 -/

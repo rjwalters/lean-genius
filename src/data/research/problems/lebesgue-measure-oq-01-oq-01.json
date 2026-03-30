@@ -35,16 +35,16 @@
       "src/data/proofs/lebesgue-measure-oq-01-oq-01/ (gallery entry)",
       "thomae: modified Dirichlet function definition via classical choice",
       "thomae_ae_zero: thomae = 0 a.e. (via measure_mono_null + countable_range)",
-      "thomae_integral_zero: main result \u222b thomae = 0 (sorry-free)",
+      "thomae_integral_zero: main result ∫ thomae = 0 (sorry-free)",
       "thomae_le_dirichlet: pointwise comparison with standard Dirichlet",
       "dirichlet_integral_zero: standard Dirichlet integral = 0",
       "thomae_integral_unit_interval: unit interval restriction proved via ae_restrict_of_ae"
     ],
     "insights": [
-      "Thomae function (modified Dirichlet) = 0 a.e. since support \u2286 \u211a which has measure 0",
+      "Thomae function (modified Dirichlet) = 0 a.e. since support ⊆ ℚ which has measure 0",
       "Main integral result follows immediately from integral_eq_zero_of_ae",
-      "Thomae \u2264 Dirichlet pointwise: 1/q \u2264 1 for q \u2265 1",
-      "ae_restrict_of_ae bridges ae properties from full measure to restricted measure \u2014 standard Mathlib API"
+      "Thomae ≤ Dirichlet pointwise: 1/q ≤ 1 for q ≥ 1",
+      "ae_restrict_of_ae bridges ae properties from full measure to restricted measure — standard Mathlib API"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -64,7 +64,8 @@
     "lebesgue-measure",
     "lebesgue-measure-oq-01",
     "lebesgue-measure-oq-01-oq-01",
-    "lebesgue-measure-oq-02"
+    "lebesgue-measure-oq-02",
+    "lebesgue-measure-oq-03"
   ],
   "references": {
     "papers": [],
@@ -101,7 +102,7 @@
     {
       "path": "Proofs/LebesgueMeasureOQ01OQ01.lean",
       "filename": "LebesgueMeasureOQ01OQ01.lean",
-      "lineCount": 153,
+      "lineCount": 154,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 2,
@@ -119,6 +120,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03.lean",
+      "filename": "LebesgueMeasureOQ03.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03.lean"
     }
   ]
 }

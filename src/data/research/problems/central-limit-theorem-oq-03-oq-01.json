@@ -1,0 +1,162 @@
+{
+  "slug": "central-limit-theorem-oq-03-oq-01",
+  "title": "Gnedenko-Kolmogorov domains of attraction classification",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Gnedenko-Kolmogorov domains of attraction classification.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T08:49:59.544Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probability",
+    "stable-distributions",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-03",
+    "central-limit-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.544Z",
+  "lastUpdate": "2026-03-30T08:49:59.544Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 621,
+      "theoremCount": 16,
+      "axiomCount": 12,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 323,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 730,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 650,
+      "theoremCount": 21,
+      "axiomCount": 9,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    }
+  ]
+}

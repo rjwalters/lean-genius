@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-erdos106-oq02-header",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "context",
+    "title": "Rotated vs Axis-Parallel: The Last Barrier",
+    "body": "After BKU (2024) solved the axis-parallel case of Erdős #106, the remaining question is whether allowing rotation gives strictly better packings. This file formalizes the infrastructure to state and reason about this question."
+  },
+  {
+    "id": "ann-erdos106-oq02-rotated-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 35,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Rotated Square Interior via Inverse Rotation",
+    "body": "A point p is in the interior of a rotated square if rotating p back to the axis-parallel frame places it within (-s/2, s/2)². The rotation by -θ sends (dx, dy) ↦ (dx·cos θ + dy·sin θ, -dx·sin θ + dy·cos θ). This is the standard approach: transform the query point rather than the geometry."
+  },
+  {
+    "id": "ann-erdos106-oq02-subset",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "Axis-Parallel ⊆ General: The Trivial Direction",
+    "body": "Every axis-parallel packing is a general packing (with angle = 0 for all squares). This immediately gives g(n) ≤ f_rot(n). The deep question is the reverse: does strict inequality ever hold?"
+  },
+  {
+    "id": "ann-erdos106-oq02-bridge",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 190,
+      "endLine": 210
+    },
+    "type": "insight",
+    "title": "The BKU Bridge: Reducing Erdős to a Rotation Question",
+    "body": "The theorem bku_and_no_rotation_implies_general shows that the full Erdős conjecture decomposes cleanly: (rotation never helps) + (BKU axis-parallel result) → f(k²+1) = k for all k. This isolates the geometric core question about rotation from the combinatorial packing analysis already resolved by BKU."
+  }
+]

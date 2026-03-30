@@ -1,7 +1,7 @@
 {
   "slug": "erdos-719",
   "title": "Erdős #719",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-01-14T21:21:40.197Z",
     "iteration": 2,
     "focus": "Structural theorems and Mathlib bridge identification",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 20 theorems, 2 axioms, 1 sorry (turanHypergraph_graph_le — hard direction of Turan theorem). Eliminated 2/3 sorries via bijection counting.",
+    "progressSummary": "COMPLETE: 20 theorems, 1 axiom (open conjecture only), 0 sorries. Proved turanHypergraph_graph_le via SimpleGraph bridge to Mathlib Turán bound. Eliminated turan_graph axiom.",
     "builtItems": [
       "completeClique_eq_powersetCard: bridge to Mathlib powersetCard",
       "completeClique_card: |completeClique r S| = C(|S|, r)",
@@ -47,7 +47,10 @@
       "turanHypergraph_graph_le: upper bound stub (sorry)",
       "turan_graph_proved: clean path to replace turan_graph axiom",
       "SORRY FILLED: completeBipartiteHypergraph_cliqueFree — pigeonhole on parity mod 2",
-      "Proved hevens/hodds (2 sorries eliminated) in Erdos719Problem.lean"
+      "Proved hevens/hodds (2 sorries eliminated) in Erdos719Problem.lean",
+      "turanHypergraph_graph_le: upper bound via SimpleGraph bridge + CliqueFree.card_edgeFinset_le",
+      "turan_graph: full Turán theorem (le_antisymm of ge and le)",
+      "graph_case_bound: reconstructed after axiom elimination"
     ],
     "insights": [
       "completeClique r S equals Finset.powersetCard r S — bridges to Mathlib combinatorial API",
@@ -63,17 +66,16 @@
       "completeBipartiteHypergraph_cliqueFree proved via: card_eq_three decomposition → 8-way case split on parities → Finset.card_pair + completeClique membership → filter condition contradiction",
       "Key Mathlib lemmas: Finset.card_eq_three, Nat.mod_two_eq_zero_or_one, Finset.card_pair",
       "Both sorries (completeBipartiteHypergraph_card, turanHypergraph_graph_le) require combinatorial counting arguments. Edge count needs bijection with evens×odds product. Upper bound needs SimpleGraph bridge to Mathlib Turán. Neither tractable without build testing.",
-      "Proved evens/odds cardinality in completeBipartiteHypergraph_card via bijection with Fin((n+1)/2) and Fin(n/2)"
+      "Proved evens/odds cardinality in completeBipartiteHypergraph_card via bijection with Fin((n+1)/2) and Fin(n/2)",
+      "Bridge strategy: define SimpleGraph from 2-uniform hypergraph, show CliqueFree 3, map edges via Sym2.toFinset injection, chain inequalities",
+      "Key trick: H.edges ⊆ G.edgeFinset.image Sym2.toFinset gives card inequality without full bijection proof",
+      "Mathlib formula (n²-(n%2)²)/4 + (n%2).choose 2 = n²/4 for all n (since (n%2).choose 2 = 0)"
     ],
     "mathlibGaps": [
       "No Mathlib API for r-uniform hypergraphs (only SimpleGraph)",
       "SimpleGraph.Extremal.Turan has card_edgeFinset_turanGraph but needs bridge to RUniformHypergraph"
     ],
-    "nextSteps": [
-      "Build RUniformHypergraph-to-SimpleGraph bridge for r=2 to prove turan_graph axiom",
-      "Create Aristotle companion file for routine supporting lemmas",
-      "Prove that valid decompositions have total edge count equal to H.edges.card"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #719 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathrm{ex}_r(n;K_{r+1}^r)$ be the maximum number of $r$-edges that can be placed on $n$ vertices without forming a $K_{r+1}^r$ (the $r$-uniform complete graph on $r+1$ vertices).\n\nIs every $r$-hypergraph $G$ on $n$ vertices the union of at most $\\mathrm{ex}_{r}(n;K_{r+1}^r)$ many copies of $K_r^r$ and $K_{r+1}^r$, no two of which share a $K_r^r$?\n\n\n\nA conjecture of Erd\\H{o}s and Sauer.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #718\n- Problem #720\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -97,11 +99,11 @@
     {
       "path": "Proofs/Erdos719Problem.lean",
       "filename": "Erdos719Problem.lean",
-      "lineCount": 485,
+      "lineCount": 547,
       "theoremCount": 20,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 8,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos719Problem.lean"
     }

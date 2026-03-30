@@ -73,11 +73,6 @@ def InEKRegime (k : ℕ → ℕ) (ε : ℝ) : Prop :=
     (k n : ℝ) < c * (Real.log n)^(3/2 - ε)
 
 /-- Erdős-Kaplansky (1946): Asymptotic formula for small k -/
-axiom erdos_kaplansky_1946 (ε : ℝ) (hε : ε > 0) (k : ℕ → ℕ)
-    (hk : InEKRegime k ε) :
-    ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |((L (k n) n : ℕ) : ℝ) / ErdosKaplanskyFormula (k n) n - 1| < δ
-
 /- ## Part 3: Yamamoto's Extension
 
 Extending the regime where the formula holds.
@@ -90,10 +85,6 @@ def InYamamotoRegime (k : ℕ → ℕ) : Prop :=
     ∀ n : ℕ, n ≥ 2 → (k n : ℝ) ≤ (n : ℝ)^(1/3 - f n)
 
 /-- Yamamoto (1951): Extended formula to k ≤ n^{1/3-o(1)} -/
-axiom yamamoto_1951 (k : ℕ → ℕ) (hk : InYamamotoRegime k) :
-    ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |((L (k n) n : ℕ) : ℝ) / ErdosKaplanskyFormula (k n) n - 1| < δ
-
 /- ## Part 4: Permanent Methods
 
 Godsil-McKay approach using permanents.
@@ -105,9 +96,6 @@ noncomputable def permanent {n : ℕ} (A : Fin n → Fin n → ℝ) : ℝ :=
     Finset.univ.prod fun i => A i (σ i)
 
 /-- L(k,n) in terms of permanents -/
-axiom L_as_permanent (k n : ℕ) (hkn : k ≤ n) :
-    ∃ A : Fin n → Fin n → ℝ, (L k n : ℝ) = permanent A
-
 /-- Godsil-McKay (1990) bounds -/
 axiom godsil_mckay_bounds (k n : ℕ) (hkn : k ≤ n) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
@@ -126,15 +114,8 @@ axiom L_1_n (n : ℕ) : L 1 n = factorial n
 axiom derangements (n : ℕ) : ℕ
 
 /-- L(2,n) = n! · D(n) where D(n) is derangements -/
-axiom L_2_n (n : ℕ) : L 2 n = factorial n * derangements n
-
 /-- L(n,n) ≤ product of factorials (Latin squares upper bound) -/
-axiom L_n_n_upper (n : ℕ) (hn : n ≥ 1) :
-    (L n n : ℝ) ≤ ((Finset.range n).prod (fun i => factorial (i + 1)) : ℕ)
-
 /-- OEIS A001009: Number of k×n Latin rectangles -/
-axiom oeis_A001009 : L 3 4 = 3456
-
 /- ## Part 6: The Open Question
 
 What happens for general k as a function of n?

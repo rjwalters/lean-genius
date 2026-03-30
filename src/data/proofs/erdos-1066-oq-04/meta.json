@@ -1,0 +1,89 @@
+{
+  "id": "erdos-1066-oq-04",
+  "title": "Higher-Dimensional Unit Distance Independence",
+  "slug": "erdos-1066-oq-04",
+  "description": "Explores g_d(n) — the independence number of unit distance graphs in ℝ^d. Kissing number τ(d) bounds degrees, giving g_d(n) ≥ n/(τ(d)+1) by greedy coloring.",
+  "meta": {
+    "author": "Erdős, Swanepoel, et al.",
+    "sourceUrl": "https://erdosproblems.com/1066",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1066OQ04.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "unit-distance",
+      "independence-number",
+      "erdos",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 2,
+    "lineCount": 156,
+    "assumptions": "2 axioms (degree_le_kissing, greedy_independence). 2 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "SepConfig structure for d-dimensional separated points",
+      "Kissing number lookup with known values",
+      "Greedy bound g_d(n) ≥ n/(τ(d)+1) for specific dimensions",
+      "Scaling analysis: greedy weakens as d grows"
+    ]
+  },
+  "sections": [
+    {
+      "id": "config",
+      "title": "Separated Configurations",
+      "startLine": 20,
+      "endLine": 40,
+      "summary": "Separated Configurations"
+    },
+    {
+      "id": "kissing",
+      "title": "Kissing Number Bound",
+      "startLine": 42,
+      "endLine": 70,
+      "summary": "Kissing Number Bound"
+    },
+    {
+      "id": "greedy",
+      "title": "Greedy Independence",
+      "startLine": 72,
+      "endLine": 92,
+      "summary": "Greedy Independence"
+    },
+    {
+      "id": "dimensions",
+      "title": "Specific Dimensions",
+      "startLine": 94,
+      "endLine": 128,
+      "summary": "Specific Dimensions"
+    }
+  ],
+  "conclusion": {
+    "summary": "Higher-dimensional g_d(n) bounded below by n/(τ(d)+1) via greedy coloring. Structural improvements needed for tighter bounds.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1066",
+      "relationship": "parent-problem"
+    },
+    {
+      "targetId": "erdos-1084-oq-01",
+      "relationship": "related-problem",
+      "description": "Also uses kissing number bounds"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Erdos1066OQ04",
+    "lineCount": 156,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 6
+  }
+}

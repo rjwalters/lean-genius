@@ -17,12 +17,12 @@
       "kelley-meka"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 140,
     "erdosUrl": "https://erdosproblems.com/140",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
-    "axiomCount": 9,
+    "axiomCount": 8,
     "prerequisites": [
       "arithmetic-progressions",
       "density-arguments",
@@ -30,8 +30,8 @@
       "fourier-analysis-on-finite-groups",
       "extremal-set-theory"
     ],
-    "lineCount": 267,
-    "assumptions": "9 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "lineCount": 313,
+    "assumptions": "8 axiom(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -183,9 +183,9 @@
       "Real"
     ],
     "namespace": "Erdos140",
-    "lineCount": 267,
-    "axiomCount": 9,
-    "theoremCount": 6,
+    "lineCount": 313,
+    "axiomCount": 8,
+    "theoremCount": 7,
     "definitionCount": 11
   },
   "references": [

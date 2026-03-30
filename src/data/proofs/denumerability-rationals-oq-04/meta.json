@@ -1,0 +1,65 @@
+{
+  "id": "denumerability-rationals-oq-04",
+  "title": "Constructive Denumerability of Algebraic Numbers",
+  "slug": "denumerability-rationals-oq-04",
+  "description": "Constructive proof that the algebraic numbers are countable, avoiding the full axiom of choice. Uses polynomial countability and FTA for finite roots.",
+  "meta": {
+    "author": "Classical (Cantor-style)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ04.lean",
+    "tags": [
+      "set-theory",
+      "countability",
+      "algebraic-numbers",
+      "constructive",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 141,
+    "assumptions": "No axioms or sorries. Core argument uses Mathlib's FTA (Polynomial.setOf_isRoot_finite) and Set.countable_iUnion. 1 True stub (choiceless_note, documentation only).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.setOf_isRoot_finite",
+        "description": "Fundamental theorem of algebra: each nonzero polynomial has finitely many roots",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Set.countable_iUnion",
+        "description": "Countable union of countable sets is countable",
+        "module": "Mathlib.Order.Filter.CountableInter"
+      }
+    ],
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Constructive proof of algebraic numbers countability",
+      "Finite roots per polynomial via FTA",
+      "Choiceless argument documentation"
+    ]
+  },
+  "conclusion": {
+    "summary": "Algebraic numbers proved countable without full AC. 0 axioms, 0 sorries.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DenumerabilityOQ04",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "sections": []
+}

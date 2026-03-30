@@ -7,7 +7,7 @@
     "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/104",
     "date": "1975",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos104Problem.lean",
     "tags": [
       "erdos",
@@ -16,15 +16,15 @@
       "unit-circles",
       "open-problem"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "erdosNumber": 104,
     "erdosUrl": "https://erdosproblems.com/104",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
-    "axiomCount": 11,
-    "lineCount": 218,
-    "assumptions": "11 axiom(s) and 1 sorry(s). two_points_no_circle proved from triangle inequality (was axiom). See the Lean source for details.",
+    "axiomCount": 0,
+    "lineCount": 330,
+    "assumptions": "0 axioms, 0 sorries. All geometric lemmas fully proved: two_points_no_circle (triangle inequality), two_points_one_circle (parallelogram law uniqueness), strong_implies_weak, quadratic_at_most_two_roots. The main conjecture O(n^{3/2}) remains open.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -51,63 +51,63 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 40,
       "mathContext": "Mathematical content: Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set"
     },
     {
       "id": "geometry",
       "title": "Points and Unit Circles",
       "summary": "Point type (EuclideanSpace ℝ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation",
-      "startLine": 36,
-      "endLine": 56,
+      "startLine": 41,
+      "endLine": 61,
       "mathContext": "Point type (EuclideanSpace $\\mathbb{R}$ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation"
     },
     {
       "id": "counting",
       "title": "Point Sets and Circle Counting",
       "summary": "PointSet (Finset Point), CircleContainsKPoints (k-rich predicate), unitCirclesThrough3 (set of 3-rich unit circles), countUnitCircles3 (cardinality via ncard)",
-      "startLine": 57,
-      "endLine": 77,
+      "startLine": 62,
+      "endLine": 82,
       "mathContext": "Mathematical content: PointSet (Finset Point), CircleContainsKPoints (k-rich predicate), unitCirclesThrough3 (set of 3-rich unit circles), countUnitCircles3 (cardinality via ncard)"
     },
     {
-      "id": "trivial-bound",
-      "title": "Trivial Upper Bound",
-      "summary": "Circle determination: two_points_two_circles, two_points_one_circle, two_points_no_circle. Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)",
-      "startLine": 78,
-      "endLine": 108,
-      "mathContext": "Bound: Circle determination: two_points_two_circles, two_points_one_circle, two_points_no_circle. Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)"
+      "id": "circle-determination",
+      "title": "Geometric Facts About Unit Circles",
+      "summary": "Circle determination: two_points_two_circles (axiom), two_points_one_circle (PROVED via parallelogram law), two_points_no_circle (PROVED via triangle inequality). Upper bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)",
+      "startLine": 83,
+      "endLine": 183,
+      "mathContext": "Bound: Circle determination by distance: 2 circles (d<2, axiom), 1 circle (d=2, proved), 0 circles (d>2, proved). Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Constructions",
       "summary": "elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)",
-      "startLine": 109,
-      "endLine": 126,
+      "startLine": 184,
+      "endLine": 201,
       "mathContext": "Bound: elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem",
-      "startLine": 127,
-      "endLine": 152,
-      "mathContext": "erdos104Conjecture ($O(n^{3/2})$), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem"
+      "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (corrected o(n²) formalization), and strong_implies_weak theorem (PROVED: √n ≥ C/ε argument)",
+      "startLine": 202,
+      "endLine": 270,
+      "mathContext": "erdos104Conjecture ($O(n^{3/2})$), erdos104WeakConjecture (o(n²) corrected), and strong_implies_weak theorem (proved)"
     },
     {
       "id": "incidences",
       "title": "Incidence Geometry",
-      "summary": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))",
-      "startLine": 153,
-      "endLine": 167,
-      "mathContext": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I $\\leq$ $O(n^{2/3}|C|^{2/3} + n + |C|)$)"
+      "summary": "circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))",
+      "startLine": 271,
+      "endLine": 287,
+      "mathContext": "circle_incidence_bound (Szemerédi-Trotter for circles: I $\\leq$ $O(n^{2/3}|C|^{2/3} + n + |C|)$)"
     },
     {
       "id": "values",
       "title": "Known Values",
       "summary": "maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13",
-      "startLine": 168,
-      "endLine": 202,
+      "startLine": 288,
+      "endLine": 317,
       "mathContext": "Mathematical content: maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13"
     }
   ],
@@ -143,10 +143,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 218,
-    "axiomCount": 12,
-    "theoremCount": 1,
-    "definitionCount": 11
+    "lineCount": 330,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 12
   },
   "references": [
     {

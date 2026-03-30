@@ -1,0 +1,81 @@
+{
+  "slug": "erdos-1022-oq-03",
+  "title": "Can the Lovász Local Lemma (or its constructive versions, e",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the Lovász Local Lemma (or its constructive versions, e.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.849Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1022",
+    "erdos-1022-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.849Z",
+  "lastUpdate": "2026-03-30T17:32:58.849Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1022OQ01.lean",
+      "filename": "Erdos1022OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1022Problem.lean",
+      "filename": "Erdos1022Problem.lean",
+      "lineCount": 523,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
+    }
+  ]
+}

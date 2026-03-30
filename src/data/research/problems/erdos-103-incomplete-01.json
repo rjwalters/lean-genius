@@ -1,13 +1,13 @@
 {
   "slug": "erdos-103-incomplete-01",
-  "title": "Complete proof of Erd\u0151s Problem #103: Incongruent Optimal Point Configurations",
+  "title": "Complete proof of Erdős Problem #103: Incongruent Optimal Point Configurations",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Complete proof of Erd\u0151s Problem #103: Incongruent Optimal Point Configurations.",
+    "plain": "Formal investigation in geometry: Complete proof of Erdős Problem #103: Incongruent Optimal Point Configurations.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated both sorries (2\u21920). Fixed false conjecture_equiv theorem. 271 lines, 0 sorries, 6 axioms.",
+    "progressSummary": "COMPLETED: Eliminated both sorries (2→0). Fixed false conjecture_equiv theorem. 271 lines, 0 sorries, 6 axioms.",
     "builtItems": [
       "congruent_symm: sorry-free via inverse isometry construction",
       "conjecture_implies_unbounded: correct one-way implication (was false biconditional)",

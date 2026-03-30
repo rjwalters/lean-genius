@@ -1,0 +1,43 @@
+{
+  "id": "bounded-prime-gaps-oq-04-oq-01",
+  "title": "Pólya-Vinogradov Inequality",
+  "slug": "bounded-prime-gaps-oq-04-oq-01",
+  "description": "The Pólya-Vinogradov inequality: character sums over intervals are bounded by √q·log(q). Foundation for equidistribution of primes in arithmetic progressions.",
+  "meta": {
+    "author": "George Pólya / Ivan Vinogradov (1918)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/P%C3%B3lya%E2%80%93Vinogradov_inequality",
+    "date": "1918",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+    "tags": [
+      "analytic-number-theory",
+      "character-sums",
+      "dirichlet-characters",
+      "gauss-sums"
+    ],
+    "badge": "formalized",
+    "sorries": 5,
+    "axiomCount": 0,
+    "lineCount": 203,
+    "assumptions": "0 axioms. 5 sorries (Gauss sum norm, geometric series bound, cotangent sum, PV inequality, complete sum). Theorem statements and proof strategy documented.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "Prove the Pólya-Vinogradov inequality: |Σ_{n=M+1}^{M+N} χ(n)| ≤ √q·log(q) for non-principal Dirichlet characters χ mod q.",
+    "proofStrategy": "Fourier expansion via Gauss sums → geometric series bounds → cotangent sum estimate → assembly with |τ(χ)| = √q.",
+    "keyInsights": [
+      "Gauss sum bound |τ(χ)| = √q is the foundation — proved via τ(χ)·τ(χ̄) = χ(-1)·q",
+      "Geometric series partial sum bounded by 1/|sin(πa/q)|",
+      "Cotangent sum reduces to harmonic series, giving log(q) factor",
+      "Full proof ~700 lines, most tractable of the 6 BV prerequisites"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "First concrete step toward Bombieri-Vinogradov theorem",
+      "sharedConcepts": ["dirichlet-characters", "character-sums", "gauss-sums"],
+      "targetId": "bounded-prime-gaps-oq-04"
+    }
+  ]
+}

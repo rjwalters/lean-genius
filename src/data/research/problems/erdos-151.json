@@ -16,26 +16,28 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T09:56:05.234Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination: fixed proof bug, removed triangleFreeIndep_le",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed 4 unused axioms (16→12): IsClique, cliqueTransversal_spec, triangleFree_isK4Free, IsK4Free. Removed trivial erdos_151_K4free_open theorem.",
+    "progressSummary": "PROGRESS: Fixed proof bug in erdos_151_triangle_free (omega could not derive I.card ≤ n from H(n) ≤ I.card + H(n) ≤ n). Strengthened triangleFreeIndep_spec to include I.card ≤ n. Removed unused triangleFreeIndep_le axiom. 12→11 axioms.",
     "builtItems": [
       "Removed axiom IsClique (line 34, never used)",
       "Removed axiom cliqueTransversal_spec (line 59-60, never used)",
       "Removed axiom IsK4Free (line 46, only used in other removed items)",
       "Removed axiom triangleFree_isK4Free (line 120-121, never used)",
-      "Removed theorem erdos_151_K4free_open (trivial: proves True by tauto)"
+      "Removed theorem erdos_151_K4free_open (trivial: proves True by tauto)",
+      "Fixed erdos_151_triangle_free: strengthened triangleFreeIndep_spec with I.card ≤ n bound",
+      "Eliminated triangleFreeIndep_le axiom (no longer needed after spec strengthening)"
     ],
     "insights": [
       "IsClique axiom was declared but never used — no proof references it",
@@ -43,7 +45,10 @@
       "triangleFree_isK4Free and IsK4Free formed an unused axiom cluster: declared as documentation but never referenced in real proofs",
       "erdos_151_K4free_open was a trivial theorem (proves True by tauto) — replaced with a comment noting the K4-free case is open",
       "Remaining 12 axioms: 4 graph predicates (vertexCount, IsMaximalClique, IsIndependent, IsTriangleFree) + 8 function/property axioms (cliqueTransversal, cliqueTransversal_min, triangleFreeIndep, triangleFreeIndep_spec/sqrt/le, complement_of_indep_is_transversal, clique_transversal_easy_bound)",
-      "Further axiom reduction possible: refactoring to use Mathlib SimpleGraph would eliminate the 4 graph predicate axioms and enable proving complement_of_indep_is_transversal and triangleFreeIndep_le"
+      "Further axiom reduction possible: refactoring to use Mathlib SimpleGraph would eliminate the 4 graph predicate axioms and enable proving complement_of_indep_is_transversal and triangleFreeIndep_le",
+      "Bug: omega cannot prove I.card ≤ n from H(n) ≤ I.card and H(n) ≤ n (counterexample: H=0, I=100, n=5)",
+      "Fix: include I.card ≤ n in triangleFreeIndep_spec output (any independent set in n-vertex graph has ≤ n elements)",
+      "Remaining 11 axioms are either deep (Ramsey, complement transversal, easy bound) or definitional (graph concepts)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -70,9 +75,9 @@
     {
       "path": "Proofs/Erdos151Problem.lean",
       "filename": "Erdos151Problem.lean",
-      "lineCount": 181,
+      "lineCount": 174,
       "theoremCount": 7,
-      "axiomCount": 12,
+      "axiomCount": 11,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,

@@ -197,6 +197,36 @@ theorem uniqueProductCount_singletons (a b : ℕ) :
   simp [Finset.product_singleton_right, Finset.product_singleton_left,
         Finset.filter_singleton, Finset.image_singleton]
 
+/-- F({a}, B) = |B| for a ≥ 1: the map b ↦ ab is injective, so each product
+    has exactly one representation, making all products unique. -/
+theorem uniqueProductCount_singleton_left (a : ℕ) (B : Finset ℕ) (ha : 0 < a) :
+    uniqueProductCount {a} B = B.card := by
+  unfold uniqueProductCount reprCount
+  -- Image = B.image (a * ·) which has |B| elements by injectivity of (a * ·)
+  have h_img : ({a} ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2) = B.image (a * ·) := by
+    ext m; simp only [Finset.mem_image, Finset.mem_product, Finset.mem_singleton, Prod.exists]
+    constructor
+    · rintro ⟨x, y, ⟨rfl, hy⟩, hxy⟩; exact ⟨y, hy, hxy⟩
+    · rintro ⟨y, hy, rfl⟩; exact ⟨a, y, ⟨rfl, hy⟩, rfl⟩
+  -- Each product has reprCount = 1 (unique factorization since a > 0)
+  have h_repr : ∀ m ∈ B.image (a * ·),
+      (({a} ×ˢ B).filter (fun p => p.1 * p.2 = m)).card = 1 := by
+    intro m hm
+    obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hm
+    suffices ({a} ×ˢ B).filter (fun p => p.1 * p.2 = a * b) = {(a, b)} by rw [this]; simp
+    ext ⟨x, y⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨rfl, hy⟩, hxy⟩; exact ⟨rfl, Nat.eq_of_mul_eq_left ha hxy⟩
+    · rintro ⟨rfl, rfl⟩; exact ⟨⟨rfl, hb⟩, rfl⟩
+  rw [h_img, Finset.filter_true_of_mem h_repr,
+      Finset.card_image_of_injective B (fun _ _ h => Nat.eq_of_mul_eq_left ha h)]
+
+/-- F(A, {b}) = |A| for b ≥ 1, by commutativity. -/
+theorem uniqueProductCount_singleton_right (A : Finset ℕ) (b : ℕ) (hb : 0 < b) :
+    uniqueProductCount A {b} = A.card := by
+  rw [uniqueProductCount_comm]; exact uniqueProductCount_singleton_left b A hb
+
 /-- maxUniqueProducts N ≥ 1 for N ≥ 1: singleton subsets {1}×{1} give F = 1. -/
 theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
     1 ≤ maxUniqueProducts N := by
@@ -208,6 +238,49 @@ theorem maxUniqueProducts_pos (N : ℕ) (hN : 1 ≤ N) :
        Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr
         (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩))⟩)
   exact le_of_eq (uniqueProductCount_singletons 1 1).symm
+
+/-- F(Icc 1 N, {1}) = card(Icc 1 N): for B = {1}, every product a·1 = a
+    has exactly one representation, so all products are unique. -/
+theorem uniqueProductCount_range_one (N : ℕ) :
+    uniqueProductCount (Finset.Icc 1 N) {1} = (Finset.Icc 1 N).card := by
+  unfold uniqueProductCount reprCount
+  -- Image = Icc 1 N (since a·1 = a)
+  have h_img : (Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).image
+      (fun p : ℕ × ℕ => p.1 * p.2) = Finset.Icc 1 N := by
+    ext m
+    simp only [Finset.mem_image, Finset.mem_product, Finset.mem_Icc,
+      Finset.mem_singleton, Prod.exists]
+    constructor
+    · rintro ⟨a, b, ⟨ha, rfl⟩, hab⟩; simp only [mul_one] at hab; rwa [← hab]
+    · intro hm; exact ⟨m, 1, ⟨hm, rfl⟩, mul_one m⟩
+  -- Each m ∈ Icc 1 N has exactly one pair (m, 1) in the filter
+  have h_repr : ∀ m ∈ Finset.Icc 1 N,
+      ((Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).filter
+        (fun p => p.1 * p.2 = m)).card = 1 := by
+    intro m hm
+    suffices (Finset.Icc 1 N ×ˢ ({1} : Finset ℕ)).filter
+        (fun p => p.1 * p.2 = m) = {(m, 1)} by rw [this]; simp
+    ext ⟨x, y⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc,
+      Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨hx, rfl⟩, hxy⟩; exact ⟨by omega, rfl⟩
+    · rintro ⟨rfl, rfl⟩; exact ⟨⟨hm, rfl⟩, by simp⟩
+  rw [h_img, Finset.filter_true_of_mem h_repr]
+
+/-- maxUniqueProducts N ≥ N for N ≥ 1: the pair A = {1,...,N}, B = {1}
+    gives F(A,{1}) = N since each product a·1 = a is unique. -/
+theorem maxUniqueProducts_ge_range (N : ℕ) (hN : 1 ≤ N) :
+    N ≤ maxUniqueProducts N := by
+  have hcard : (Finset.Icc 1 N).card = N := by rw [Finset.card_Icc]; omega
+  calc N = (Finset.Icc 1 N).card := hcard.symm
+    _ = uniqueProductCount (Finset.Icc 1 N) {1} := (uniqueProductCount_range_one N).symm
+    _ ≤ maxUniqueProducts N := by
+        unfold maxUniqueProducts
+        exact Finset.le_sup (Finset.mem_product.mpr
+          ⟨Finset.mem_powerset.mpr le_rfl,
+           Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr
+            (Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩))⟩)
 
 /-
 ## Monotonicity and Bounds
@@ -229,6 +302,73 @@ theorem maxUniqueProducts_mono {N₁ N₂ : ℕ} (h : N₁ ≤ N₂) :
 theorem uniqueProductCount_le_image_card (A B : Finset ℕ) :
     uniqueProductCount A B ≤ ((A ×ˢ B).image (fun p => p.1 * p.2)).card :=
   Finset.card_filter_le _ _
+
+/-
+## Representation Count Structural Properties
+-/
+
+/-- reprCount A B (a*b) > 0 when a ∈ A and b ∈ B: the pair (a,b) itself
+    is a representation. -/
+theorem reprCount_pos_of_mem {A B : Finset ℕ} {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ B) : 0 < reprCount A B (a * b) := by
+  unfold reprCount
+  rw [Finset.card_pos]
+  exact ⟨⟨a, b⟩, Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, rfl⟩⟩
+
+/-- reprCount A B m ≤ |A| for m > 0: each representation (a,b) with a·b = m
+    is determined by a (since b = m/a), giving at most |A| representations. -/
+theorem reprCount_le_card_left (A B : Finset ℕ) (m : ℕ) (hm : 0 < m) :
+    reprCount A B m ≤ A.card := by
+  unfold reprCount
+  apply Finset.card_le_card_of_injOn Prod.fst
+  · intro ⟨a, b⟩ hp
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).1
+  · intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    have hm₁ : a₁ * b₁ = m := (Finset.mem_filter.mp h₁).2
+    have hm₂ : a₂ * b₂ = m := (Finset.mem_filter.mp h₂).2
+    have ha : a₁ ≠ 0 := by rintro rfl; simp at hm₁; omega
+    have hb : b₁ = b₂ :=
+      mul_left_cancel₀ ha (hm₁.trans (by rw [← heq]; exact hm₂.symm))
+    exact Prod.ext heq hb
+
+/-- reprCount A B m ≤ |B| for m > 0, by commutativity. -/
+theorem reprCount_le_card_right (A B : Finset ℕ) (m : ℕ) (hm : 0 < m) :
+    reprCount A B m ≤ B.card := by
+  rw [reprCount_comm]; exact reprCount_le_card_left B A m hm
+
+/-- maxUniqueProducts N ≤ N²: trivial quadratic upper bound.
+    Each A, B ⊆ {1,...,N} has at most N elements, so F(A,B) ≤ N·N = N². -/
+theorem maxUniqueProducts_le_sq (N : ℕ) :
+    maxUniqueProducts N ≤ N ^ 2 := by
+  unfold maxUniqueProducts
+  apply Finset.sup_le
+  intro ⟨A, B⟩ hmem
+  simp only [Finset.mem_product, Finset.mem_powerset] at hmem
+  calc uniqueProductCount A B
+      ≤ A.card * B.card := uniqueProductCount_le_product A B
+    _ ≤ (Finset.Icc 1 N).card * (Finset.Icc 1 N).card :=
+        Nat.mul_le_mul (Finset.card_le_card hmem.1) (Finset.card_le_card hmem.2)
+    _ = N * N := by rw [Finset.card_Icc]; ring_nf; omega
+    _ = N ^ 2 := by ring
+
+/-- The image of A × B under multiplication has at most |A|·|B| elements
+    (with equality iff all products are distinct). -/
+theorem product_image_card_le (A B : Finset ℕ) :
+    ((A ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2)).card ≤ A.card * B.card := by
+  calc ((A ×ˢ B).image (fun p : ℕ × ℕ => p.1 * p.2)).card
+      ≤ (A ×ˢ B).card := Finset.card_image_le
+    _ = A.card * B.card := Finset.card_product A B
+
+/-- F(A, B) = 0 when either set is empty. -/
+theorem uniqueProductCount_eq_zero_of_empty_left' (B : Finset ℕ) :
+    uniqueProductCount ∅ B = 0 :=
+  uniqueProductCount_empty_left B
+
+/-- Combining linear lower and quadratic upper:
+    N ≤ maxF(N) ≤ N² for N ≥ 1. -/
+theorem maxUniqueProducts_bounds (N : ℕ) (hN : 1 ≤ N) :
+    N ≤ maxUniqueProducts N ∧ maxUniqueProducts N ≤ N ^ 2 :=
+  ⟨maxUniqueProducts_ge_range N hN, maxUniqueProducts_le_sq N⟩
 
 /-
 ## Gap Between Bounds and Conjecture

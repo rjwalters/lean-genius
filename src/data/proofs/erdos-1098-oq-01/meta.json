@@ -1,0 +1,108 @@
+{
+  "id": "erdos-1098-oq-01",
+  "title": "Groups with Small Clique Number in the Non-Commuting Graph",
+  "slug": "erdos-1098-oq-01",
+  "description": "Characterizes groups with small clique number ω in the non-commuting graph Γ(G). Proves: ω(Γ(G)) = 0 iff G abelian, center elements excluded from large cliques, clique elements lie in different cosets of Z(G), finite index center implies finite clique number. All theorems fully proved (0 sorries, 0 axioms).",
+  "meta": {
+    "author": "Neumann (1976); Abdollahi-Akbari-Maimani (2006)",
+    "sourceUrl": "https://erdosproblems.com/1098",
+    "date": "1976",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1098OQ01.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "non-commuting-graph",
+      "clique-number",
+      "center",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 8 theorems fully proved from Mathlib.",
+    "erdosNumber": 1098,
+    "erdosUrl": "https://erdosproblems.com/1098",
+    "erdosProblemStatus": "solved",
+    "lineCount": 122
+  },
+  "overview": {
+    "historicalContext": "**Non-Commuting Graphs and Group Structure**\n\nThe non-commuting graph Γ(G) has all group elements as vertices, with edges between non-commuting pairs. Neumann (1976) proved the foundational result: Γ(G) has no infinite clique iff the center Z(G) has finite index. This OQ explores the finer structure: what do groups with small clique number look like?",
+    "problemStatement": "**Problem Statement**\n\nCharacterize groups G where the clique number ω(Γ(G)) is small.\n\n**Known**: ω = 0 iff abelian. ω = 2 iff G/Z(G) is Klein four-group. ω ≤ n implies [G:Z(G)] ≤ n.",
+    "text": "Formalizes characterizations of groups with small non-commuting clique number.",
+    "proofStrategy": "**Approach**: Define non-commuting and clique predicates, prove structural results using center properties and coset arguments.",
+    "keyInsights": [
+      "**Coset structure**: Elements in a clique must lie in distinct cosets of Z(G), giving the injection bound",
+      "**Center exclusion**: Center elements commute with everything, so they can't participate in cliques of size ≥ 2",
+      "**Abelian characterization**: ω = 0 iff every pair commutes iff G is abelian — a clean biconditional"
+    ],
+    "prerequisites": [
+      "Group theory: center, cosets, quotient groups",
+      "Graph theory: cliques, clique number"
+    ]
+  },
+  "sections": [
+    {
+      "id": "defs",
+      "title": "Definitions",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Defines nonCommuting, commuting, and basic properties. Imports from Mathlib.",
+      "mathContext": "$g \\sim h$ in $\\Gamma(G)$ iff $gh \\neq hg$."
+    },
+    {
+      "id": "structure",
+      "title": "Structural Theorems",
+      "startLine": 56,
+      "endLine": 122,
+      "summary": "Proves clique_zero_iff_abelian, center_not_in_clique, abelian_clique_bound, same_coset_commute, clique_different_cosets, finite_index_implies_finite_clique.",
+      "mathContext": "$\\omega(\\Gamma(G)) = 0 \\iff G$ abelian. Clique elements in distinct cosets of $Z(G)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization of small clique number characterizations in non-commuting graphs. All 8 theorems proved from Mathlib with 0 axioms and 0 sorries.",
+    "implications": "Establishes the algebraic structure theory connecting clique number of Γ(G) to the quotient G/Z(G).",
+    "openQuestions": [
+      "Can clique_size_bound (injection S → G/Z(G)) be proved?",
+      "Characterize ω = 2 (Klein four-group quotient) formally"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "clique_zero_iff_abelian",
+      "type": "core",
+      "description": "ω(Γ(G)) = 0 iff G is abelian",
+      "leanType": "biconditional"
+    },
+    {
+      "name": "clique_different_cosets",
+      "type": "core",
+      "description": "Clique elements lie in different cosets of Z(G)",
+      "leanType": "∀ g h ∈ clique, g⁻¹*h ∉ Z(G)"
+    },
+    {
+      "name": "finite_index_implies_finite_clique",
+      "type": "core",
+      "description": "[G:Z(G)] < ∞ implies ω(Γ(G)) < ∞",
+      "leanType": "Subgroup.index (center G) finite → clique number finite"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1098",
+      "relationship": "extends",
+      "description": "Extends Erdős #1098 with small clique number characterizations"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.GroupTheory.Subgroup.Basic", "Mathlib.GroupTheory.Subgroup.Center", "Mathlib.Data.Nat.Basic", "Mathlib.Tactic"],
+    "opens": ["Subgroup"],
+    "namespace": "Erdos1098OQ01",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 8,
+    "sorryTheorems": 0,
+    "definitionCount": 3
+  }
+}

@@ -148,15 +148,6 @@ theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := b
 def Erdos29Statement : Prop :=
   ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
 
-/- ## The Probabilistic Existence (Erdős) -/
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['harmonicSorry429466', 'Erdos29.erdos_probabilistic_existence']-/
-/-- Erdős proved existence using probabilistic method (non-constructive). -/
-axiom erdos_probabilistic_existence :
-  ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
-
 /- ## The Explicit Construction (JPSZ 2024) -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
@@ -172,11 +163,66 @@ Unexpected axioms were added during verification: ['harmonicSorry207162', 'Erdos
 /-- The JPSZ set is an additive basis. -/
 axiom JPSZ_is_basis : IsAdditiveBasis JPSZ_set
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+/-- The JPSZ set is economical.
+    NOT an independent axiom — follows from JPSZ_representation_bound.
+    exp(C√(log n)) = o(n^ε) for all ε > 0, since √(log n) = o(log n)
+    implies C√(log n) - ε·log n → -∞, so exp(C√(log n))/n^ε → 0. -/
+theorem JPSZ_is_economical : IsEconomical JPSZ_set := by
+  obtain ⟨C, hC, hbound⟩ := JPSZ_representation_bound
+  intro ε hε
+  -- Strategy: squeeze r(n)/n^ε between 0 and exp(C√(log n))/n^ε,
+  -- then show the upper bound → 0 via exp(C√(log n) - ε·log n) → 0.
 
-Unexpected axioms were added during verification: ['Erdos29.JPSZ_is_economical', 'harmonicSorry299836']-/
-/-- The JPSZ set is economical. -/
-axiom JPSZ_is_economical : IsEconomical JPSZ_set
+  -- Step 1: √ tends to ∞
+  have h_sqrt_atTop : Tendsto Real.sqrt atTop atTop :=
+    Filter.tendsto_atTop_atTop.mpr fun b => ⟨max (b ^ 2) 0, fun x hx => by
+      by_cases hb : b ≤ 0
+      · exact le_trans hb (Real.sqrt_nonneg _)
+      · push_neg at hb
+        exact (Real.sqrt_sq hb.le).symm ▸ Real.sqrt_le_sqrt (le_trans (le_max_left _ _) hx)⟩
+
+  -- Step 2: log n → ∞ and √(log n) → ∞ (over ℕ)
+  have h_log_inf : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have h_sqrt_log_inf : Tendsto (fun n : ℕ => Real.sqrt (Real.log (↑n : ℝ))) atTop atTop :=
+    h_sqrt_atTop.comp h_log_inf
+
+  -- Step 3: C/√(log n) → 0
+  have h_C_div : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ))) atTop (nhds 0) :=
+    tendsto_const_nhds.div_atTop h_sqrt_log_inf
+
+  -- Step 4: C/√(log n) - ε → -ε < 0
+  have h_factor : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ)) - ε) atTop (nhds (-ε)) := by
+    have := h_C_div.sub tendsto_const_nhds; rwa [zero_sub] at this
+
+  -- Step 5: C√(log n) - ε·log n = log n · (C/√(log n) - ε) → -∞
+  have h_bot : Tendsto (fun n : ℕ => C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ)) atTop atBot := by
+    have h_prod := Filter.Tendsto.atTop_mul_neg (show -ε < 0 by linarith) h_log_inf h_factor
+    refine h_prod.congr' ?_
+    filter_upwards [eventually_gt_atTop 1] with n hn
+    have hlog_pos : (0 : ℝ) < Real.log ↑n := Real.log_pos (by exact_mod_cast (show 1 < n from hn))
+    set s := Real.sqrt (Real.log (↑n : ℝ))
+    have hs_ne : s ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hlog_pos)
+    have hsq : s * s = Real.log ↑n := Real.mul_self_sqrt hlog_pos.le
+    rw [← hsq]; field_simp; ring
+
+  -- Step 6: exp(C√(log n) - ε·log n) → 0
+  have h_exp : Tendsto (fun n : ℕ => Real.exp (C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ))) atTop (nhds 0) :=
+    Real.tendsto_exp_atBot.comp h_bot
+
+  -- Step 7: Convert exp(a-b) back to exp(a)/n^ε
+  have h_upper : Tendsto (fun n : ℕ => Real.exp (C * Real.sqrt (Real.log (↑n : ℝ))) / (↑n : ℝ) ^ ε) atTop (nhds 0) := by
+    refine h_exp.congr' ?_
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    have hnpos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn
+    rw [Real.rpow_def_of_pos hnpos, Real.exp_sub]
+
+  -- Step 8: Squeeze between 0 and exp(C√(log n))/n^ε
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · filter_upwards with n
+    exact div_nonneg (Nat.cast_nonneg _) (rpow_nonneg (Nat.cast_nonneg _) _)
+  · filter_upwards [eventually_ge_atTop 2] with n hn
+    exact div_le_div_of_nonneg_right (hbound n hn) (rpow_nonneg (Nat.cast_nonneg _) _)
 
 /-- The main theorem: Erdős Problem #29 is SOLVED. -/
 theorem erdos_29_solved : Erdos29Statement :=
@@ -188,11 +234,45 @@ theorem erdos_29_solved : Erdos29Statement :=
 def HasDensityZero (A : Set ℕ) : Prop :=
   Tendsto (fun N => (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) / N) atTop (nhds 0)
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+/-- The JPSZ set has density 0 (necessary for economical bases).
+    NOT an independent axiom — follows from JPSZ_size_optimal.
+    |A ∩ [1,N]| ≤ C√N√(log N), so density ≤ C√(log N)/√N → 0
+    since log N = o(N) implies √(log N)/√N = √(log N/N) → 0. -/
+theorem JPSZ_density_zero : HasDensityZero JPSZ_set := by
+  obtain ⟨C, _hC, hbound⟩ := JPSZ_size_optimal
+  -- Strategy: squeeze density between 0 and C·√(log N/N), which → 0
+  -- since log N/N → 0 and √ is continuous at 0.
 
-Unexpected axioms were added during verification: ['harmonicSorry294151', 'Erdos29.JPSZ_density_zero']-/
-/-- The JPSZ set has density 0 (necessary for economical bases). -/
-axiom JPSZ_density_zero : HasDensityZero JPSZ_set
+  -- Step 1: log x/x → 0 over ℝ (standard Mathlib fact)
+  have h_log_real : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
+    simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
+  -- Step 2: log N/N → 0 for ℕ
+  have h_log_nat : Tendsto (fun N : ℕ => Real.log (↑N : ℝ) / (↑N : ℝ)) atTop (nhds 0) :=
+    h_log_real.comp tendsto_natCast_atTop_atTop
+  -- Step 3: √(log N/N) → 0 by continuity of √ at 0
+  have h_sqrt : Tendsto (fun N : ℕ => Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ))) atTop (nhds 0) := by
+    have := (Real.continuous_sqrt.tendsto 0).comp h_log_nat; rwa [Real.sqrt_zero] at this
+  -- Step 4: C·√(log N/N) → 0
+  have h_upper : Tendsto (fun N : ℕ => C * Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ))) atTop (nhds 0) := by
+    have := h_sqrt.const_mul C; rwa [mul_zero] at this
+
+  -- Step 5: Squeeze
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · -- 0 ≤ ncard/N
+    filter_upwards with N
+    exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  · -- ncard/N ≤ C·√(log N/N)
+    filter_upwards [eventually_ge_atTop 1] with N hN
+    have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+    have hlog_nn : (0 : ℝ) ≤ Real.log (↑N : ℝ) :=
+      Real.log_nonneg (by exact_mod_cast hN)
+    calc (Set.ncard (JPSZ_set ∩ Set.Icc 1 N) : ℝ) / ↑N
+        ≤ C * Real.sqrt ↑N * Real.sqrt (Real.log ↑N) / ↑N :=
+          div_le_div_of_nonneg_right (hbound N hN) hNpos.le
+      _ = C * Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ)) := by
+          rw [Real.sqrt_div hlog_nn, ← Real.mul_self_sqrt (Nat.cast_nonneg N)]
+          have : Real.sqrt (↑N : ℝ) ≠ 0 := Real.sqrt_ne_zero'.mpr hNpos
+          field_simp; ring
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -357,15 +437,12 @@ Why explicit matters:
 
 /- ## Lower Bounds -/
 
-/- Aristotle found this block to be false. Here is a proof of the negation:
-
 noncomputable section AristotleLemmas
 
-/-
-There exists a set A that is an additive basis but violates the square root lower bound for N=2.
--/
 def CounterexampleA : Set ℕ := {0, 1} ∪ {n | 3 ≤ n}
 
+/-- The counterexample set is an additive basis that violates |A ∩ [1,N]| ≥ √N at N=2.
+    Originally proved by Aristotle proof search. -/
 theorem counterexample_to_lower_bound :
     ∃ A, IsAdditiveBasis A ∧ ∃ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) < Real.sqrt N := by
   use CounterexampleA
@@ -374,43 +451,36 @@ theorem counterexample_to_lower_bound :
     rw [IsAdditiveBasis, Doubling, Sumset]
     ext n
     simp only [Set.mem_univ, iff_true, Set.mem_setOf_eq]
-    -- Show n = a + b
-    -- Consider two cases: $n \leq 1$ or $n \geq 2$.
     by_cases hn : n ≤ 1;
     · interval_cases n <;> [ exact ⟨ 0, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ; exact ⟨ 1, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ];
-    · -- Since $n > 1$, we have $n \geq 3$ or $n = 2$.
-      by_cases hn3 : n ≥ 3;
+    · by_cases hn3 : n ≥ 3;
       · use n, by
           exact Or.inr hn3, 0, by
           exact Or.inl <| by norm_num;
         norm_num;
       · interval_cases n ; exists 1, by simp +decide [ Erdos29.CounterexampleA ], 1, by simp +decide [ Erdos29.CounterexampleA ] ;
-  · -- Inequality fails for N=2
-    use 2
+  · use 2
     constructor
     · norm_num
-    · -- |A ∩ [1, 2]| < √2
-      rw [CounterexampleA]
+    · rw [CounterexampleA]
       rw [ show ( { 0, 1 } ∪ { n | 3 ≤ n } : Set ℕ ) ∩ Set.Icc 1 2 = { 1 } by ext ( _ | _ | _ | k ) <;> simp +arith +decide ] ; norm_num [ Real.lt_sqrt ]
 
 end AristotleLemmas
 
-/-
-Any additive basis A must have |A ∩ [1,N]| ≥ √N.
--/
-theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :
-    ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N := by
-  -- Wait, there's a mistake. We can actually prove the opposite.
-  negate_state;
-  -- Proof starts here:
-  -- Apply the theorem counterexample_to_lower_bound to obtain the existence of A and N.
-  apply counterexample_to_lower_bound
+/-- The claim "any additive basis has |A ∩ [1,N]| ≥ √N for all N" is FALSE.
+    Counterexample: A = {0,1} ∪ {n | 3 ≤ n} is a basis with |A ∩ [1,2]| = 1 < √2. -/
+theorem basis_size_lower_bound_false :
+    ¬(∀ A : Set ℕ, IsAdditiveBasis A →
+      ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N) := by
+  intro h
+  obtain ⟨A, hA, N, hN, hlt⟩ := counterexample_to_lower_bound
+  exact absurd (h A hA N hN) (not_le.mpr hlt)
 
--/
-/-- Any additive basis A must have |A ∩ [1,N]| ≥ √N. -/
-theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :
-    ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N := by
-  sorry
+/-- The Erdős probabilistic existence follows from the JPSZ construction.
+    This was previously a separate axiom (erdos_probabilistic_existence)
+    but is redundant — it's exactly erdos_29_solved. -/
+theorem erdos_probabilistic_from_jpsz : ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A :=
+  ⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

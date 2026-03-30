@@ -1,0 +1,117 @@
+{
+  "id": "pythagorean-triples-oq-02",
+  "title": "Pythagorean Triples via Gaussian Integers",
+  "slug": "pythagorean-triples-oq-02",
+  "description": "Shows that the parametric formula for Pythagorean triples (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) is the squaring map in \u2124[i]. Norm multiplicativity gives the Brahmagupta-Fibonacci identity and a product rule for triples. Fully verified, 0 axioms.",
+  "meta": {
+    "author": "Brahmagupta (628), Fibonacci (1225), Gauss (1801)",
+    "date": "1801",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ02.lean",
+    "tags": [
+      "number-theory",
+      "gaussian-integers",
+      "pythagorean-triples",
+      "algebraic",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 173,
+    "assumptions": "No axioms. All results proved algebraically (ring tactic) or from Mathlib's PythagoreanTriple.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple",
+        "description": "Predicate a\u00b2 + b\u00b2 = c\u00b2",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
+    ],
+    "originalContributions": [
+      "Gaussian integer arithmetic framework (gaussMul, gaussNorm, gaussConj, gaussSq)",
+      "Norm multiplicativity: N(z\u2081z\u2082) = N(z\u2081)N(z\u2082)",
+      "Pythagorean triple from Gaussian squaring: gaussSq_pythagorean",
+      "Brahmagupta-Fibonacci identity from norm multiplicativity",
+      "Product rule for Pythagorean triples via Gaussian multiplication"
+    ]
+  },
+  "overview": {
+    "text": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "keyInsights": [
+      "The parametric formula (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) IS z\u00b2 where z = m + ni",
+      "Norm multiplicativity explains why sums of squares are closed under multiplication",
+      "Product of Pythagorean triples corresponds to Gaussian multiplication"
+    ],
+    "proofStrategy": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "historicalContext": "",
+    "problemStatement": "See the description field for the problem statement."
+  },
+  "sections": [
+    {
+      "id": "gaussian-arithmetic",
+      "title": "Gaussian Integer Arithmetic",
+      "startLine": 24,
+      "endLine": 46,
+      "summary": "Gaussian Integer Arithmetic"
+    },
+    {
+      "id": "core-properties",
+      "title": "Core Properties",
+      "startLine": 51,
+      "endLine": 68,
+      "summary": "Core Properties"
+    },
+    {
+      "id": "pythagorean-triples",
+      "title": "Pythagorean Triples from Squaring",
+      "startLine": 73,
+      "endLine": 95,
+      "summary": "Pythagorean Triples from Squaring"
+    },
+    {
+      "id": "brahmagupta-fibonacci",
+      "title": "Brahmagupta-Fibonacci Identity",
+      "startLine": 100,
+      "endLine": 120,
+      "summary": "Brahmagupta-Fibonacci Identity"
+    },
+    {
+      "id": "factoring",
+      "title": "The Factoring Perspective",
+      "startLine": 125,
+      "endLine": 140,
+      "summary": "The Factoring Perspective"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 145,
+      "endLine": 170,
+      "summary": "Concrete Examples"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian integer connection reveals the algebraic structure behind Pythagorean triples: the parametric formula is squaring, and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "implications": "Demonstrates that Gaussian integer arithmetic unifies the parametric formula and the sum-of-two-squares closure property into a single algebraic framework.",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "slug": "pythagorean-triples",
+      "title": "Formula for Pythagorean Triples",
+      "relation": "parent-problem",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "PythagoreanTriplesOQ02",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 14
+  }
+}

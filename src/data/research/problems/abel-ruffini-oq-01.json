@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Listed files all 0A 0S (122T across 5 files). InverseGalois related files have separate axioms/sorries not tracked here.",
+    "progressSummary": "BLOCKED: 1 axiom remains (three_dvd_gal_card). Requires Dedekind theorem (not in Mathlib 4.26.0). File builds clean with warnings only. All other work complete.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -307,7 +307,8 @@
       "vandermondeProduct_sq_eq axiom was eliminated (Part XV), only three_dvd_gal_card remains — 1 axiom total in A5 file",
       "sylvM_det sorry in ResultantDet was dead code (discriminant proved via Vandermonde chain) — removed",
       "All 5 listed AbelRuffini files are fully proved (0A, 0S, 122T total)",
-      "InverseGalois files with axioms/sorries are tracked under a different problem"
+      "InverseGalois files with axioms/sorries are tracked under a different problem",
+      "Verified build on Lean 4.26.0. 0 sorries, 1 axiom (three_dvd_gal_card). Axiom requires Dedekind theorem connecting polynomial factorization mod p to Galois group cycle types. No Mathlib-free alternative identified."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -328,7 +329,8 @@
     "abel-ruffini",
     "abel-ruffini-oq-04",
     "abel-ruffini-oq-04-oq-01",
-    "abel-ruffini-oq-04-oq-02"
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-03"
   ],
   "references": {
     "papers": [],
@@ -394,6 +396,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
     }
   ]
 }

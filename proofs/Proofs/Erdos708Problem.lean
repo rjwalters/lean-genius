@@ -100,8 +100,6 @@ axiom g_three : g 3 = 4
 
 /-- **Trivial upper bound:**
 g(n) ≤ n² (very rough — the full interval always works). -/
-axiom g_trivial_upper (n : ℕ) (hn : n ≥ 1) : g n ≤ n * n
-
 /-- **Erdős-Surányi lower bound:**
 g(n) ≥ (2 - o(1))n
 
@@ -137,11 +135,7 @@ axiom c (n : ℕ) : ℝ
 
 /-- **Known values of c_n:**
 c₂ = 1 (interval of length max(a,b) suffices for 2 elements). -/
-axiom c_two : c 2 = 1
-
 /-- c₃ = √2 (need ~41% more length for 3 elements). -/
-axiom c_three : c 3 = Real.sqrt 2
-
 /- ## Part VII: Examples -/
 
 /-- **Example: g(2) = 2**

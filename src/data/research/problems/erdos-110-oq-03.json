@@ -1,0 +1,256 @@
+{
+  "slug": "erdos-110-oq-03",
+  "title": "EHS Conjecture at Higher Cardinals",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "GeneralizedEHSConjecture(κ) := ∀ G with χ(G) = κ, ∃ F : ℕ → ℕ, ∃ N₀, ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)",
+    "plain": "Does the Erdős-Hajnal-Szemerédi conjecture fail at all uncountable cardinals, or only at successor alephs?",
+    "whyMatters": [
+      "Extends the Lambie-Hanson disproof to higher cardinals",
+      "Identifies limit cardinals as the genuine frontier",
+      "Completes the structural picture for successor cardinals"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "EHS fails at ℵ₁ (Lambie-Hanson 2020)",
+      "EHS fails at all successor alephs ℵ_{α+1} (Todorcevic walks)",
+      "No universal bounding function exists"
+    ],
+    "open": [
+      "EHS status at limit alephs (ℵ_ω, ℵ_{ω₁})",
+      "Whether limit cardinal answer is independent of ZFC"
+    ],
+    "goal": "Complete formalization of EHS failure at all successor cardinals with structural analysis"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T21:03:28-07:00",
+    "iteration": 1,
+    "focus": "Formalization complete. Created Erdos110HigherCardinals.lean with generalized conjecture and proofs.",
+    "blockers": [],
+    "nextAction": "Submit for review and deployment",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FIX: Corrected 3 syntax errors in Erdos1100ProblemProvable.lean (:= by sorry before type → after type)",
+    "builtItems": [
+      "Erdos110HigherCardinals.lean: GeneralizedEHSConjecture parametric definition",
+      "generalized_ehs_fails_aleph1: ℵ₁ case from Lambie-Hanson",
+      "generalized_ehs_fails_all_successor_alephs: universal successor failure",
+      "generalized_ehs_fails_aleph2: ℵ₂ special case",
+      "CounterexampleGraph structure",
+      "no_universal_bound theorem",
+      "LimitCardinalEHSOpen definition marking open question",
+      "erdos_110_oq_03_summary combining all results",
+      "Gallery data: src/data/proofs/erdos-110-oq-03/",
+      "Fixed syntax: tau_perp_equality_infinitely_often, erdos_hall_max_lower_bound, erdos_simonovits_bounds"
+    ],
+    "insights": [
+      "Todorcevic walks on ordinals generalize Lambie-Hanson from ω₁ to any successor ordinal",
+      "C-sequences on limit ordinals have fundamentally different properties - no incompatibility",
+      "Each successor cardinal has its own independent counterexample - failures dont propagate",
+      "No single F works across all uncountable graphs (stronger than per-cardinal failure)",
+      "The disjoint union trick fails because EHS is an existence statement not universal",
+      "6 sorries remain: 3 deep published results (Erdős-Hall, Erdős-Simonovits), 1 trivial bound (tau_perp_lower_bound), 2 dependent (g_exponential_growth)"
+    ],
+    "mathlibGaps": [
+      "Cardinal.aleph ordinal arithmetic is well-supported in Mathlib",
+      "Ordinal.IsLimit available but limit cardinal graph theory is absent"
+    ],
+    "nextSteps": [
+      "Investigate limit cardinal EHS conjecture - is it consistent or provable?",
+      "Cross-reference with Erdős #593 (hypergraph analogue at higher cardinals)"
+    ],
+    "markdown": "# Knowledge Base: erdos-110-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "graph-theory",
+    "chromatic-number",
+    "set-theory",
+    "higher-cardinals",
+    "open-question"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-110",
+    "erdos-110-oq-03",
+    "erdos-1101",
+    "erdos-1102",
+    "erdos-1103",
+    "erdos-1104",
+    "erdos-1105",
+    "erdos-1106",
+    "erdos-1107",
+    "erdos-1108",
+    "erdos-1109"
+  ],
+  "references": {
+    "papers": [
+      "Lambie-Hanson 2020 (arXiv:2001.03368)",
+      "Todorcevic 2007 (Walks on Ordinals)",
+      "Shelah 2005"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Cardinal.aleph",
+      "Ordinal",
+      "SimpleGraph"
+    ]
+  },
+  "started": "2026-03-30T04:12:19.656Z",
+  "lastUpdate": "2026-03-30T04:57:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1100ProblemProvable.lean",
+      "filename": "Erdos1100ProblemProvable.lean",
+      "lineCount": 259,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100ProblemProvable.lean"
+    },
+    {
+      "path": "Proofs/Erdos1101Problem.lean",
+      "filename": "Erdos1101Problem.lean",
+      "lineCount": 124,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1101Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1102Problem.lean",
+      "filename": "Erdos1102Problem.lean",
+      "lineCount": 155,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1102Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1103Problem.lean",
+      "filename": "Erdos1103Problem.lean",
+      "lineCount": 163,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1103Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1104Problem.lean",
+      "filename": "Erdos1104Problem.lean",
+      "lineCount": 197,
+      "theoremCount": 10,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1104Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1105Aristotle.lean",
+      "filename": "Erdos1105Aristotle.lean",
+      "lineCount": 71,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1105Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1105Problem.lean",
+      "filename": "Erdos1105Problem.lean",
+      "lineCount": 379,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 25,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1105Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1106Problem.lean",
+      "filename": "Erdos1106Problem.lean",
+      "lineCount": 247,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1106Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1107Problem.lean",
+      "filename": "Erdos1107Problem.lean",
+      "lineCount": 173,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1107Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1108Problem.lean",
+      "filename": "Erdos1108Problem.lean",
+      "lineCount": 172,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1108Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1109Problem.lean",
+      "filename": "Erdos1109Problem.lean",
+      "lineCount": 3714,
+      "theoremCount": 92,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1109Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos110HigherCardinals.lean",
+      "filename": "Erdos110HigherCardinals.lean",
+      "lineCount": 262,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos110HigherCardinals.lean"
+    },
+    {
+      "path": "Proofs/Erdos110Problem.lean",
+      "filename": "Erdos110Problem.lean",
+      "lineCount": 274,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos110Problem.lean"
+    }
+  ]
+}

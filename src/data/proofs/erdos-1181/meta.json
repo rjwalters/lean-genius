@@ -18,7 +18,8 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
+    "lineCount": 292,
     "erdosNumber": 1181,
     "erdosUrl": "https://erdosproblems.com/1181",
     "erdosProblemStatus": "open",
@@ -76,7 +77,6 @@
       "conjectures_compatible theorem stub: compatibility of #457 and #1181"
     ],
     "axiomCount": 4,
-    "lineCount": 261,
     "assumptions": "4 axioms: trivial_upper_bound (primorial/PNT), erdos_1181 (main open conjecture), pnt_chebyshev (PNT for Chebyshev function), primorial_divides_bound (primorial divides product). 1 sorry remaining. Properties of q(n,k) proved constructively."
   },
   "overview": {
@@ -184,7 +184,7 @@
       "Finset"
     ],
     "namespace": "Erdos1181",
-    "lineCount": 261,
+    "lineCount": 292,
     "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 6

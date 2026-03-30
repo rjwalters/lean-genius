@@ -218,9 +218,71 @@ theorem erdos_299_no_such_sequence :
   -- 3. Positive density → contains unit fraction sum (bloom_theorem)
   -- 4. This contradicts AvoidsUnitFractionSum
   intro ⟨a, hmono, hpos, hgaps, havoid⟩
-  -- The full proof requires extracting the uniform bound from the O(1) condition
-  -- and applying bloom_theorem to the range of a.
-  sorry
+  -- Step 1: Extract uniform gap bound from the O(1) condition
+  -- HasBoundedGaps = (fun n => a(n+1) - a n) =O[atTop] (1 : ℕ → ℝ)
+  -- This gives: ∃ C > 0, ∀ᶠ n in atTop, |a(n+1) - a n| ≤ C
+  obtain ⟨C, hC⟩ := hgaps.bound
+  rw [Filter.eventually_atTop] at hC
+  obtain ⟨N₀, hN₀⟩ := hC
+  -- Compute the maximum gap for n < N₀ and the eventual bound
+  -- The gap a(n+1) - a(n) is positive (strict mono), so bounded by a(N₀+1) for n ≤ N₀
+  set Cnat := Nat.max (a (N₀ + 1)) (Nat.ceil C + 1) with hCnat_def
+  have hCnat_pos : Cnat > 0 := by
+    unfold_let Cnat; exact Nat.lt_of_lt_of_le (hpos (N₀ + 1)) (Nat.le_max_left _ _)
+  -- Uniform gap bound
+  have hunif : HasUniformBoundedGaps a Cnat := by
+    intro n
+    by_cases hn : n ≥ N₀
+    · -- For n ≥ N₀: use the asymptotic bound
+      have h := hN₀ n hn
+      simp [norm_one, mul_one] at h
+      have hnn : a (n + 1) - a n ≤ Nat.ceil C + 1 := by
+        have : (a (n + 1) : ℝ) - a n ≥ 0 := by
+          have := hmono (Nat.lt_succ_of_le (le_refl n))
+          exact sub_nonneg.mpr (by exact_mod_cast le_of_lt this)
+        rw [Real.norm_of_nonneg this] at h
+        exact Nat.sub_le_of_le_add (by exact_mod_cast le_trans h (by linarith [Nat.le_ceil C]))
+      exact le_trans hnn (Nat.le_max_right _ _)
+    · -- For n < N₀: gap ≤ a(N₀+1) since a is increasing
+      push_neg at hn
+      have : a (n + 1) ≤ a (N₀ + 1) := le_of_lt (hmono (by omega : n + 1 < N₀ + 1 + 1))
+      have : a (n + 1) - a n ≤ a (N₀ + 1) := Nat.sub_le_of_le_add (by omega)
+      exact le_trans this (Nat.le_max_left _ _)
+  -- Step 2: Bounded gaps → positive density
+  have hdens := boundedGaps_implies_positiveDensity a Cnat hCnat_pos hmono hpos hunif
+  -- Step 3: 0 ∉ range a (since all values are positive)
+  have h0 : (0 : ℕ) ∉ Set.range a := by
+    rintro ⟨n, hn⟩; exact Nat.not_eq_zero_of_lt (hpos n) hn.symm
+  -- Step 4: Bloom's theorem → ∃ finset S with unit fraction sum
+  obtain ⟨S, hS_sub, hS_ufs⟩ := bloom_theorem (Set.range a) h0 hdens
+  -- Step 5: Construct index set and derive contradiction
+  -- For each value s ∈ S (subset of range a), find its preimage index
+  let g := Function.invFun a
+  -- g is a right inverse of a on range a
+  have hag : ∀ s, s ∈ (S : Set ℕ) → a (g s) = s := by
+    intro s hs
+    exact Function.Injective.invFun_eq hmono.injective (hS_sub hs)
+  -- g is injective on S (since a is injective)
+  have hg_inj : ∀ s₁ ∈ S, ∀ s₂ ∈ S, g s₁ = g s₂ → s₁ = s₂ := by
+    intro s₁ h₁ s₂ h₂ hg
+    have := hag s₁ h₁
+    have := hag s₂ h₂
+    rw [hg] at *; linarith
+  -- Index set T
+  let T := S.image g
+  -- Sum over T equals sum over S (after applying a)
+  have hsum_eq : ∑ i ∈ T, (1 : ℝ) / a i = ∑ s ∈ S, 1 / (s : ℝ) := by
+    rw [Finset.sum_image hg_inj]
+    apply Finset.sum_congr rfl
+    intro s hs
+    congr 1
+    exact_mod_cast hag s hs
+  -- ℚ sum = 1 implies ℝ sum = 1
+  have hsum_one : ∑ s ∈ S, (1 : ℝ) / (s : ℝ) = 1 := by
+    have := hS_ufs.2  -- ∑ n ∈ S, (1 : ℚ) / n = 1
+    exact_mod_cast this
+  -- Contradiction: havoid T says sum ≠ 1, but we showed sum = 1
+  exact havoid T (hsum_eq.trans hsum_one)
 
 /-- Alternative formulation matching formal-conjectures style.
     The answer is FALSE: no such sequence exists. -/

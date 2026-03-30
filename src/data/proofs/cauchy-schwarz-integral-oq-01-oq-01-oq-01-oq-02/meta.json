@@ -1,0 +1,167 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+  "title": "Power Mean Inequality Chain",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+  "description": "The complete power mean inequality chain for two positive reals: min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max. Each step proved from first principles using nlinarith and sqrt monotonicity.",
+  "meta": {
+    "author": "Classical inequalities (Cauchy, AM-GM tradition)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "inequalities",
+      "power-means",
+      "algebra",
+      "classical",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 217,
+    "assumptions": "No axioms or sorries. All results proved from first principles.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(a²) = a for a ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Complete power mean chain: min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max",
+      "Each step proved independently with explicit algebraic proofs",
+      "Equality conditions: all means coincide when a = b",
+      "Transitivity corollaries: HM ≤ AM, GM ≤ max, min ≤ AM"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The power mean inequality is one of the most fundamental results in classical analysis. For a parameter p, the p-th power mean of positive reals a, b is M_p(a,b) = ((a^p+b^p)/2)^(1/p). Special cases include the harmonic (p=-1), geometric (p→0), arithmetic (p=1), and quadratic (p=2) means. The chain min = M_{-∞} ≤ M_{-1} ≤ M_0 ≤ M_1 ≤ M_2 ≤ M_{+∞} = max has been known since at least the 19th century.",
+    "problemStatement": "Prove the complete power mean inequality chain for two positive reals: min(a,b) ≤ HM(a,b) ≤ GM(a,b) ≤ AM(a,b) ≤ QM(a,b) ≤ max(a,b).",
+    "text": "Formalizes all five links of the power mean chain for two variables, with each step proved from algebraic identities and the monotonicity of square root. No axioms or sorries.",
+    "proofStrategy": "Each inequality is reduced to a sum-of-squares argument: the gap between consecutive means can be expressed as a nonneg expression involving (a-b)². For steps involving square roots, we use sqrt monotonicity to reduce to polynomial inequalities, then close with nlinarith.",
+    "keyInsights": [
+      "Each step in the chain reduces to (a-b)² ≥ 0 after algebraic manipulation",
+      "The sqrt steps (HM ≤ GM, AM ≤ QM, QM ≤ max) use Real.sqrt_le_sqrt to reduce to polynomial comparisons",
+      "All five inequalities are tight if and only if a = b"
+    ],
+    "prerequisites": [
+      "Basic real analysis",
+      "Square root properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "summary": "HM, GM, AM, QM for two reals",
+      "startLine": 30,
+      "endLine": 44
+    },
+    {
+      "id": "min-le-hm",
+      "title": "min ≤ HM",
+      "summary": "Minimum is at most the harmonic mean",
+      "startLine": 46,
+      "endLine": 61
+    },
+    {
+      "id": "hm-le-gm",
+      "title": "HM ≤ GM",
+      "summary": "Harmonic mean is at most the geometric mean",
+      "startLine": 63,
+      "endLine": 82
+    },
+    {
+      "id": "gm-le-am",
+      "title": "GM ≤ AM",
+      "summary": "Classical AM-GM inequality",
+      "startLine": 84,
+      "endLine": 95
+    },
+    {
+      "id": "am-le-qm",
+      "title": "AM ≤ QM",
+      "summary": "Arithmetic mean is at most the quadratic mean",
+      "startLine": 97,
+      "endLine": 112
+    },
+    {
+      "id": "qm-le-max",
+      "title": "QM ≤ max",
+      "summary": "Quadratic mean is at most the maximum",
+      "startLine": 114,
+      "endLine": 131
+    },
+    {
+      "id": "full-chain",
+      "title": "The Full Chain",
+      "summary": "All five inequalities combined in one theorem",
+      "startLine": 133,
+      "endLine": 147
+    },
+    {
+      "id": "equality",
+      "title": "Equality Conditions",
+      "summary": "All means coincide when a = b",
+      "startLine": 149,
+      "endLine": 170
+    },
+    {
+      "id": "corollaries",
+      "title": "Transitivity Corollaries",
+      "summary": "Direct corollaries: HM ≤ AM, GM ≤ max, min ≤ AM",
+      "startLine": 172,
+      "endLine": 194
+    }
+  ],
+  "conclusion": {
+    "summary": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries.",
+    "openQuestions": [],
+    "implications": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries."
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "relationship": "parent-problem",
+      "description": "Parent file with AM-GM, QM-AM, Young's inequality, and Schur's inequality"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "ancestor",
+      "description": "Root: integral Cauchy-Schwarz inequality"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Definitive reference for the power mean inequality and its generalizations"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "PowerMeanChain",
+    "lineCount": 217,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4
+  }
+}

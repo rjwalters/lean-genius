@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T16:24:55.487Z",
-    "iteration": 5,
-    "focus": "Session 5: Proved no_ultraflat_implies_conjecture, eliminating 1 axiom. Axioms: 5→4.",
+    "iteration": 6,
+    "focus": "Session 6: DFT infrastructure for Parseval axiom elimination",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove DFT double-sum identity to complete Parseval elimination",
     "attemptCounts": {
-      "total": 0,
+      "total": 6,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 theorems, 4 axioms. Proved backward direction of ultraflat equivalence via contrapositive diagonal extraction + squeeze.",
+    "progressSummary": "Session 6: Added DFT infrastructure (roots_orthogonal, roots_sum_one). Documented proof plan for eliminating parseval_lower_bound axiom via discrete Fourier analysis.",
     "builtItems": [
       "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
       "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward",
@@ -37,7 +37,10 @@
       "bbmst_upper_bound_exists: eliminated sorry via ciSup_le on subtype",
       "IsUltraflat corrected: subsequence-based (Tendsto degree atTop atTop) instead of all-n",
       "Proved parseval_ratio_ge_one: supNorm(P)/sqrt(deg P) ≥ 1 via div_self + div_le_div_right",
-      "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem"
+      "no_ultraflat_implies_conjecture: backward direction proved via by_contra + Filter.frequently_atTop + squeeze theorem",
+      "Erdos1150Problem.lean: roots_orthogonal - geometric sum vanishes for non-trivial roots",
+      "Erdos1150Problem.lean: roots_sum_one - trivial sum over roots of unity",
+      "Erdos1150Problem.lean: Full proof plan documentation for Parseval via DFT"
     ],
     "insights": [
       "Forward direction is clean: supNorm/√n > 1+c eventually contradicts Tendsto ... (nhds 1)",
@@ -47,12 +50,21 @@
       "Parseval axiom potentially provable if Mathlib has circle integration theory",
       "parseval_ratio_ge_one is key ingredient for squeeze in backward direction: ratio ≥ 1 from Parseval, ≤ 1+1/k from construction → ratio → 1",
       "Backward direction proved without dependent choice: Filter.frequently_atTop gives ∃ m ≥ k directly, no need for strictly increasing extraction",
-      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze"
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le + parseval_ratio_ge_one + tendsto_one_div_add_atTop_nhds_zero_nat gives the squeeze",
+      "parseval_lower_bound is the ONLY axiom used in the main equivalence proof",
+      "Parseval can be proved via DFT without integration: evaluate at N-th roots, use orthogonality",
+      "Key remaining step: expand |P(ω^m)|² as double sum and commute with Σ_m (DFT identity)",
+      "The orthogonality lemma follows cleanly from geom_sum_eq + zero_div",
+      "Complex.isPrimitiveRoot_exp is available in Mathlib for primitive roots"
     ],
     "mathlibGaps": [
       "Integration on unit circle (for Parseval)"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove DFT identity: Σ_m |P(ω^m)|² = (n+1)·Σ_k |a_k|² using roots_orthogonal",
+      "Replace parseval_lower_bound axiom with theorem (eliminates critical axiom)",
+      "Consider proving rudin_shapiro_bound constructively (contextual axiom)"
+    ],
     "markdown": "# Erdős #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -70,16 +82,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:24:55.487Z",
-  "lastUpdate": "2026-03-28T08:15:00Z",
+  "lastUpdate": "2026-03-29T20:30:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1150Problem.lean",
       "filename": "Erdos1150Problem.lean",
-      "lineCount": 328,
-      "theoremCount": 8,
-      "axiomCount": 4,
+      "lineCount": 343,
+      "theoremCount": 10,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

@@ -52,11 +52,34 @@
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
+      "filename": "FundamentalTheoremCalculusStokes.lean",
+      "lineCount": 366,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
+      "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
     }
   ],
   "relatedProofs": [
     "fundamental-theorem-calculus",
-    "fundamental-theorem-calculus-oq-01"
+    "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-02"
   ],
   "tags": [],
   "problemStatement": {

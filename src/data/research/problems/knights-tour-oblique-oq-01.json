@@ -1,0 +1,89 @@
+{
+  "slug": "knights-tour-oblique-oq-01",
+  "title": "knights-tour-oblique-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved that every closed knight's tour on any n*n board (n >= 5) has >= 4 oblique turns. The proof is purely algebraic, generalizing Knuth's 8x8 result. Key theorem: four_oblique_corners exhibits 4 distinct positions (the corners) where turns are oblique because the dot product of entry/exit vectors is always -4.",
+    "builtItems": [
+      "Created KnightsTourObliqueOQ01.lean: parameterized board, knight graph, corner analysis, main theorem",
+      "Proved cornerXX_neighbors: degree-2 theorems for all 4 corners (algebraic elimination of 6/8 offsets)",
+      "Proved corner_forces_oblique: universal oblique turn theorem at any corner (dot = -4)",
+      "Proved four_oblique_corners: 4 distinct oblique positions exist in any closed tour on n*n (n >= 5)",
+      "Created gallery entry with meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "For n >= 5, each corner of the n*n board has exactly 2 knight-adjacent squares (6 of 8 offsets produce negative coordinates, impossible in Fin n)",
+      "The dot product of entry/exit move vectors at any corner is always -4, independent of board size: (-offset1) . offset2 = -(1*2 + 2*1) = -4",
+      "The corner-forcing mechanism is purely algebraic — no native_decide or enumeration needed, unlike the 8x8 parent proof",
+      "The bound 4 is tight: the 8x8 board achieves exactly 4 oblique turns via Knuth's unique minimum tour"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Does the minimum oblique count grow with n? Investigate whether boards with n >> 8 have minimum > 4",
+      "Can edge squares (degree 3-4) also force oblique turns under certain conditions?"
+    ],
+    "markdown": "# Knowledge Base: knights-tour-oblique-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "knights-tour-oblique",
+    "knights-tour-oblique-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.385Z",
+  "lastUpdate": "2026-03-30T11:59:37.398Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/KnightsTourOblique.lean",
+      "filename": "KnightsTourOblique.lean",
+      "lineCount": 2470,
+      "theoremCount": 101,
+      "axiomCount": 1,
+      "defCount": 42,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourOblique.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ01.lean",
+      "filename": "KnightsTourObliqueOQ01.lean",
+      "lineCount": 513,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01.lean"
+    }
+  ]
+}

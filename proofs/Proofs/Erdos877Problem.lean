@@ -129,7 +129,11 @@ noncomputable def f_m (n : ℕ) : ℕ :=
 Every maximal sum-free set is sum-free, so f_m(n) ≤ f(n).
 -/
 theorem f_m_le_f (n : ℕ) : f_m n ≤ f n := by
-  sorry
+  unfold f_m f
+  apply Finset.card_le_card
+  intro A
+  simp only [Finset.mem_filter]
+  exact fun ⟨hpow, hmax⟩ => ⟨hpow, hmax.2.1⟩
 
 /-
 ## Part IV: The Cameron-Erdős Lower Bound
@@ -191,32 +195,16 @@ and f_m(n) < 2^{c'n} for c' < 1/2, this is also resolved.
 f_m(n) = 2^{(1/4 + o(1))n}.
 This pins down the exponent as 1/4.
 -/
-axiom blst_2015 :
-    ∀ ε : ℚ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      2 ^ ((1/4 - ε) * n) < (f_m n : ℚ) ∧ (f_m n : ℚ) < 2 ^ ((1/4 + ε) * n)
-
 /--
 **BLST 2018 Sharp Bound:**
 f_m(n) = (C_n + o(1)) · 2^{n/4},
 where C_n is an explicit constant depending only on n mod 4.
 -/
-axiom blst_2018_sharp :
-    ∃ C : ℕ → ℚ, (∀ n m : ℕ, n % 4 = m % 4 → C n = C m) ∧
-      ∀ ε : ℚ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-        |((f_m n : ℚ) / 2 ^ (n / 4)) - C n| < ε
-
 /--
 **The four cases of C_n:**
 The constant C_n depends on n mod 4, reflecting the structure of
 maximal sum-free sets in each residue class.
 -/
-axiom C_n_values : ∃ c0 c1 c2 c3 : ℚ,
-    ∀ n : ℕ, match n % 4 with
-      | 0 => True  -- C_n = c0
-      | 1 => True  -- C_n = c1
-      | 2 => True  -- C_n = c2
-      | _ => True  -- C_n = c3
-
 /-
 ## Part VII: Structure of Maximal Sum-Free Sets
 -/

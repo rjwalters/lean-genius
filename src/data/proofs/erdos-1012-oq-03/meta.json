@@ -1,0 +1,36 @@
+{
+  "id": "erdos-1012-oq-03",
+  "title": "Directed Graph Hamiltonian Cycle Thresholds",
+  "slug": "erdos-1012-oq-03",
+  "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and Rédei theorems for digraphs and tournaments.",
+  "meta": {
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1012OQ03.lean",
+    "tags": [
+      "graph-theory",
+      "directed-graphs",
+      "hamiltonian-cycles",
+      "tournaments"
+    ],
+    "badge": "formalized",
+    "sorries": 4,
+    "axiomCount": 0,
+    "lineCount": 547,
+    "assumptions": "0 axioms. 4 sorries (Ghouila-Houri, cycle existence, cycle extension, directed threshold). Moon-Moser proved structurally via longest-cycle extension (modulo 2 infrastructure lemmas). Rédei fully proved. Tournament insertion and dichotomy lemmas proved.",
+    "dateAdded": "2026-03-30"
+  },
+  "overview": {
+    "problemStatement": "What conditions on a directed graph guarantee a Hamiltonian cycle? Formalize key directed Hamiltonian cycle theorems.",
+    "keyInsights": [
+      "Ghouila-Houri (1960) is the directed Dirac: in/out-degree ≥ n/2 + strong connectivity → Hamiltonian cycle",
+      "Moon-Moser (1963): strongly connected tournaments always have Hamiltonian cycles",
+      "Rédei (1934): every tournament has a Hamiltonian PATH (no connectivity needed)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1012",
+      "relationship": "Directed analogue of undirected long cycle thresholds"
+    }
+  ]
+}

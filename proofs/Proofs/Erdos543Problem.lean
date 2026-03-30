@@ -71,14 +71,9 @@ noncomputable def spanningProbability (G : Type*) [AddCommGroup G] [Fintype G]
 axiom f (N : ℕ) : ℕ
 
 /-- f is well-defined: for each N ≥ 1, f(N) ≤ N (the full group trivially spans). -/
-axiom f_le_card (N : ℕ) (hN : N ≥ 1) : f N ≤ N
-
 /- ## Part III: Elementary Properties -/
 
 /-- The empty set only spans the trivial group: if ∅ spans G then |G| = 1. -/
-axiom empty_spanning_iff (G : Type*) [AddCommGroup G] [Fintype G] :
-    IsSpanningSet (∅ : Finset G) ↔ Fintype.card G = 1
-
 /-- A set containing all generators spans. -/
 theorem spanning_of_generators {G : Type*} [AddCommGroup G] [Fintype G]
     (A : Finset G) (hgen : ∀ g : G, ∃ S : Finset G, S ⊆ A ∧ S.sum id = g) :
@@ -95,10 +90,6 @@ This is the main known upper bound. The proof uses probabilistic
 counting: for a random k-subset with k this large, most elements
 of G are covered by multiple subset sums, and the probability
 of missing any element is < 1/2. -/
-axiom erdos_renyi_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (f N : ℝ) ≤ Real.logb 2 N + C * Real.log (Real.log N)
-
 /- ## Part V: The Conjecture and Its Disproof -/
 
 /-- The question asks: can we improve O(log log N) to o(log log N)?
@@ -150,17 +141,10 @@ theorem little_o_conjecture_false : ¬LittleOConjecture :=
 /-- **Information-theoretic lower bound:**
 A random k-subset has at most 2^k possible subset sums.
 To cover N elements, we need roughly 2^k ≥ N, i.e., k ≥ log₂ N. -/
-axiom naive_lower_bound (N : ℕ) (hN : N ≥ 2) :
-    (f N : ℝ) ≥ Real.logb 2 N - 1
-
 /-- **Erdős-Hall (1978):** The bound cannot improve to o(log log log N).
 
 This intermediate result showed that even a much weaker improvement
 than o(log log N) fails, foreshadowing the full disproof. -/
-axiom erdos_hall_lower :
-    ∃ c : ℝ, c > 0 ∧ ∀ N₀ : ℕ, ∃ N : ℕ, N ≥ N₀ ∧
-      (f N : ℝ) > Real.logb 2 N + c * Real.log (Real.log (Real.log N))
-
 /- ## Part VII: Special Cases -/
 
 /-- For cyclic groups ℤ/Nℤ, the problem has additional structure.
@@ -170,9 +154,6 @@ theorem cyclic_spanning_characterization (N : ℕ) [NeZero N] (A : Finset (ZMod 
   rfl
 
 /-- For prime p, if |A| ≥ p in ℤ/pℤ, then A spans (since A must equal all of ℤ/pℤ). -/
-axiom prime_full_spanning (p : ℕ) [hp : Fact p.Prime] :
-    ∀ A : Finset (ZMod p), A.card ≥ p → IsSpanningSet A
-
 /- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #543:**

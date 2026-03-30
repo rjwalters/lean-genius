@@ -1,0 +1,204 @@
+{
+  "slug": "erdos-29-oq-01",
+  "title": "Erdos 29: Axiom cleanup — remove redundant axiom + fix false theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:39:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Sorries 2→0. Both JPSZ_is_economical and JPSZ_density_zero fully proved from axioms using standard analysis (squeeze theorem + log/x→0 + continuity of sqrt). File now: 5 axioms (all JPSZ 2024 results), 0 sorries.",
+    "builtItems": [
+      "Removed erdos_probabilistic_existence axiom (redundant — follows from JPSZ axioms)",
+      "Removed false basis_size_lower_bound sorry (Aristotle counterexample: {0,1}∪{n|3≤n})",
+      "Added erdos_probabilistic_from_jpsz theorem (proves existence from JPSZ)",
+      "Documented correct counting argument in comments",
+      "JPSZ_density_zero: proved as theorem (was axiom)",
+      "JPSZ_is_economical: proved as theorem (was axiom)",
+      "JPSZ_is_economical sorry eliminated: proved via exp(C√(log n) - ε·log n)→-∞ using atTop_mul_neg factorization",
+      "JPSZ_density_zero sorry eliminated: proved via squeeze with C·√(log N/N) using tendsto_pow_log_div_mul_add_atTop"
+    ],
+    "insights": [
+      "erdos_probabilistic_existence was redundant — erdos_29_solved already proves it from JPSZ axioms",
+      "basis_size_lower_bound was FALSE for small N (counterexample at N=2)",
+      "All 7 remaining axioms are from the JPSZ 2024 paper — none eliminable from Mathlib",
+      "The correct lower bound is asymptotic: |A∩[0,N]|² ≥ N+1 for all N (counting argument)",
+      "JPSZ_density_zero is NOT independent — follows from JPSZ_size_optimal",
+      "JPSZ_is_economical is NOT independent — follows from JPSZ_representation_bound",
+      "Reduced independent assumptions from 7 to 5",
+      "Key technique for JPSZ_is_economical: factor C√(log n)-ε·log n = log n·(C/√(log n)-ε), use atTop_mul_neg since C/√(log n)→0 and -ε<0",
+      "Key technique for JPSZ_density_zero: rewrite C·√N·√(log N)/N = C·√(log N/N) via sqrt_div and mul_self_sqrt, then use continuity of √ at 0",
+      "Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 is the standard Mathlib way to get log x/x → 0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-29-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-29",
+    "erdos-290",
+    "erdos-291",
+    "erdos-292",
+    "erdos-293",
+    "erdos-294",
+    "erdos-295",
+    "erdos-296",
+    "erdos-297",
+    "erdos-298",
+    "erdos-299"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos290Problem.lean",
+      "filename": "Erdos290Problem.lean",
+      "lineCount": 245,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 21,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos290Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos291Problem.lean",
+      "filename": "Erdos291Problem.lean",
+      "lineCount": 933,
+      "theoremCount": 77,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos291Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos292Problem.lean",
+      "filename": "Erdos292Problem.lean",
+      "lineCount": 151,
+      "theoremCount": 5,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos292Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos293Problem.lean",
+      "filename": "Erdos293Problem.lean",
+      "lineCount": 122,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos293Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos294Problem.lean",
+      "filename": "Erdos294Problem.lean",
+      "lineCount": 307,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos294Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos295Problem.lean",
+      "filename": "Erdos295Problem.lean",
+      "lineCount": 154,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos295Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos296Problem.lean",
+      "filename": "Erdos296Problem.lean",
+      "lineCount": 161,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos296Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos297Problem.lean",
+      "filename": "Erdos297Problem.lean",
+      "lineCount": 257,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos297Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos298Problem.lean",
+      "filename": "Erdos298Problem.lean",
+      "lineCount": 228,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos298Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos299Problem.lean",
+      "filename": "Erdos299Problem.lean",
+      "lineCount": 387,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos299Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos29Problem.lean",
+      "filename": "Erdos29Problem.lean",
+      "lineCount": 524,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos29Problem.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T07:15:00.000Z"
+}

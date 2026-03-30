@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T00:59:36.242Z",
-    "iteration": 3,
-    "focus": "Axiom elimination via Mathlib definitions",
+    "iteration": 4,
+    "focus": "Assessed as complete — 1 deep axiom, 0 sorries",
     "blockers": [],
-    "nextAction": "Verify build, consider proving bad_interval_no_prime",
+    "nextAction": "Problem complete. Axiom requires advanced analytic NT (Dickman function, smoothness estimates).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Formalized very bad intervals and powerful numbers from original problem statement. Added 5 definitions, 7 proved theorems, 1 conjecture definition. Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount. File now covers both conjectures from Erdős #380 with 0 sorries, 2 deep axioms.",
+    "progressSummary": "COMPLETE: 1A deep (gpfSquare_asymptotic, sieve methods), 17T proved, 0S. Comprehensive formalization with Bertrand-based no-prime theorem, counting chain, very-bad intervals.",
     "builtItems": [
       "Proved gpf_prime (theorem, 4 lines)",
       "Proved gpf_dvd (theorem, 4 lines)",
@@ -49,7 +49,8 @@
       "veryBadCount_le_badCount: inequality (proved)",
       "veryBadCount_ge_powerfulCount: inequality (proved)",
       "counting_chain: summary of all counting inequalities (proved)",
-      "VeryBadConjecture: secondary conjecture statement"
+      "VeryBadConjecture: secondary conjecture statement",
+      "erdos_graham_lower: derived from gpfSquare_asymptotic + badCount_ge_gpfSquareCount (axiom→theorem)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max, eliminating 4 axioms",
@@ -66,7 +67,8 @@
       "IsPowerful n: 1 < n ∧ ∀ p prime, p|n → p²|n — standard definition for powerful/squareful numbers",
       "veryBad → bad: powerful product implies P²|product for GPF, so every very bad interval is bad",
       "Singleton [n,n] is very bad ↔ n is powerful — parallels singleton_bad_iff for bad intervals",
-      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount"
+      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount",
+      "erdos_graham_lower is redundant given gpfSquare_asymptotic: chain x^{1-ε} ≤ gpfSquareCount(x) ≤ badCount(x) gives the bound directly"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -93,10 +95,10 @@
     {
       "path": "Proofs/Erdos380Problem.lean",
       "filename": "Erdos380Problem.lean",
-      "lineCount": 402,
-      "theoremCount": 16,
-      "axiomCount": 2,
-      "defCount": 11,
+      "lineCount": 397,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos380Problem.lean"

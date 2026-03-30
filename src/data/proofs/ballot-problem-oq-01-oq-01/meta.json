@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cycle_lemma",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ01.lean",
     "tags": [
       "combinatorics",
@@ -18,7 +18,7 @@
       "finset",
       "research"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -66,7 +66,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "0 sorry(s) remain in the formalization.",
+    "assumptions": "0 axioms, 0 sorries. 2 trivial placeholder theorems (1+1=2) remain for cycle_lemma_lower_bound_via_ivt and rightmost_is_good_sketch.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

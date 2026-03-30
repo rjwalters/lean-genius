@@ -1,0 +1,54 @@
+{
+  "id": "erdos-606-oq-03",
+  "title": "Hyperplane Determination in Higher Dimensions",
+  "slug": "erdos-606-oq-03",
+  "description": "Explores which hyperplane counts are achievable for n points in \u211d^d. Sylvester-Gallai, Green-Tao, and the gap problem.",
+  "meta": {
+    "author": "Sylvester, Green-Tao, Motzkin",
+    "sourceUrl": "https://erdosproblems.com/606",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos606OQ03.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "hyperplanes",
+      "sylvester-gallai",
+      "erdos",
+      "research"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "assumptions": "0 axioms, 0 sorries. WARNING: general_position_count proves True (placeholder). Sylvester-Gallai, Green-Tao, and Motzkin are mentioned in comments but not axiomatized.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Max hyperplanes C(n,d), extremal bound n < C(n,d)",
+      "Sylvester-Gallai higher-dim framework",
+      "Achievable set analysis"
+    ]
+  },
+  "conclusion": {
+    "summary": "Achievable hyperplane counts for n points in \u211d^d: between ~n and C(n,d). Full characterization open.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-606",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Erdos606OQ03",
+    "lineCount": 98,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sections": []
+}

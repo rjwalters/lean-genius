@@ -71,7 +71,8 @@
     "openQuestions": [
       "Is the bound |K| > n tight, or can it be weakened further to |K| > k where k is the number of distinct irreducible factors (which may be much less than n)?",
       "Can the union avoidance approach be replaced by a direct algebraic argument that works for all fields?"
-    ]
+    ],
+    "implications": "This formalization proves the nonderogatory → cyclic vector theorem over finite fields with |K| > n, generalizing the infinite field version. Two routine sorries remain: a finite union cardinality bound and a normalized factor degree bound."
   },
   "leanFile": {
     "imports": [
@@ -82,7 +83,7 @@
       "Polynomial"
     ],
     "namespace": "NonderogatoryFinite",
-    "lineCount": 268,
+    "lineCount": 362,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 2

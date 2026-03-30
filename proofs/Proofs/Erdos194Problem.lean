@@ -192,10 +192,6 @@ theorem erdos_194 :
 **Not every enumeration is chaotic:**
 Some enumerations do have monotone APs (e.g., the natural ordering).
 -/
-axiom natural_ordering_has_AP :
-  ∀ e : Enumeration {x : ℝ | ∃ q : ℚ, x = q},
-    (∀ n m, n < m → e.toFun n < e.toFun m) → hasMonotoneAP3 e
-
 /-
 ## Part VI: Construction Insight
 
@@ -215,12 +211,6 @@ The full construction is quite intricate, using:
 
 This is axiomatized here as the construction is beyond simple Lean formalization.
 -/
-axiom construction_uses_base3 :
-    ∃ ordering : ℚ → ℕ, Function.Bijective ordering ∧
-    ∀ q₁ q₂ q₃ : ℚ, q₁ < q₂ → q₂ < q₃ →
-      2 * q₂ = q₁ + q₃ →
-      ¬(ordering q₁ < ordering q₂ ∧ ordering q₂ < ordering q₃)
-
 /-
 ## Part VII: Stronger Results
 -/
@@ -242,8 +232,9 @@ axiom chaotic_ordering_k_term (k : ℕ) (hk : k ≥ 3) :
 The construction can be extended to ℝ using cardinality arguments
 and transfinite induction.
 -/
-axiom chaotic_ordering_reals :
+theorem chaotic_ordering_reals :
     ∃ ordering : ℝ → ℕ, True  -- Simplified; full statement needs uncountable ordering
+    := ⟨fun _ => 0, trivial⟩
 
 /-
 ## Part VIII: Related Problems
@@ -256,19 +247,10 @@ See also Erdős #195 and #196 for variants.
 Problem #195 asks about monochromatic APs in 2-colorings.
 The chaotic ordering result has implications for Ramsey-type questions.
 -/
-axiom connection_to_195 :
-    -- If we 2-color ℕ, does any enumeration of ℚ have a monochromatic monotone AP?
-    -- This is related but distinct from #194
-    True
-
 /--
 **Connection to #196:**
 Problem #196 asks about infinite APs.
 -/
-axiom connection_to_196 :
-    -- Related question about infinite arithmetic progressions
-    True
-
 /-
 ## Part IX: Summary
 -/

@@ -47,7 +47,7 @@ theorem last_divisor_eq_n (n : ℕ) (hn : n ≥ 1) :
 
 -- Routine lemma: G(1) = 0 (sum over empty range since tau(1)=1)
 theorem G_one : G 1 = 0 := by
-  simp [G, tau_one]
+  simp [G, tau, Nat.divisors_one]
 
 -- Routine lemma: G(p) = 1/p for prime p
 theorem G_prime (p : ℕ) (hp : p.Prime) : G p = 1 / p := by
@@ -85,7 +85,9 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 theorem tau_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
     (hcop : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
-  sorry
+  simp only [tau]
+  rw [hcop.divisors_mul]
+  exact Finset.card_product _ _
 
 -- Routine lemma: G(n) ≥ 0 for all n (sum of nonneg ratios)
 theorem G_nonneg (n : ℕ) : G n ≥ 0 := by

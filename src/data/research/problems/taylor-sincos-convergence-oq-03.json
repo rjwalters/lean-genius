@@ -1,0 +1,27 @@
+{
+  "id": "taylor-sincos-convergence-oq-03",
+  "name": "Can the remainder bounds be sharpened using the alternating series estimation",
+  "parentId": "taylor-sincos-convergence",
+  "status": "completed",
+  "knowledge": {
+    "score": 6,
+    "insights": [
+      "Mathlib has alternating series test: Monotone.cauchySeq_alternating_series_of_tendsto_zero",
+      "Located at Mathlib.Analysis.SpecificLimits.Normed, line ~653",
+      "Also: Monotone.tendsto_alternating_series_of_tendsto_zero",
+      "4 sorries remaining: alternating_partial_sum_even_bounds, alternating_tail_bound, and 2 more",
+      "Connection to Mathlib needs: reformulate hypotheses to match Monotone + Antitone API"
+    ],
+    "builtItems": [],
+    "progressSummary": "SURVEYED: Identified Mathlib results that could prove the sorries. No code changes.",
+    "nextSteps": [
+      "Prove alternating_partial_sum_even_bounds from Mathlib's alternating series infrastructure",
+      "Prove alternating_tail_bound from cauchySeq_alternating_series",
+      "Submit companion file lemmas to Aristotle"
+    ]
+  },
+  "relatedProofs": [
+    "taylor-sincos-convergence",
+    "taylor-sincos-convergence-oq-03"
+  ]
+}

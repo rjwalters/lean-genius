@@ -93,17 +93,7 @@ For sets closed under x ↦ mᵢx + bᵢ with Σ 1/mᵢ^σ = 1.
 -/
 
 /-- The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
-axiom klarner_rado_exponent_exists (ms : List ℕ) (hms : ∀ m ∈ ms, m ≥ 1) :
-    ∃! σ : ℝ, σ > 0 ∧ (ms.map (fun m => (m : ℝ) ^ (-σ))).sum = 1
-
 /-- Klarner-Rado (1974): General upper bound -/
-axiom klarner_rado_1974 (S : Set ℕ) (ms bs : List ℕ)
-    (hms : ∀ m ∈ ms, m ≥ 1) (hbs : ∀ b ∈ bs, b ≥ 0)
-    (σ : ℝ) (hσ : σ > 0)
-    (hsum : (ms.map (fun m => (m : ℝ) ^ (-σ))).sum = 1) :
-    ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ X : ℕ, X ≥ 2 →
-      (countingFunction S X : ℝ) ≤ C * (X : ℝ) ^ (σ + ε)
-
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
@@ -148,9 +138,6 @@ theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
   norm_num
 
 /-- Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
-axiom density_tends_to_zero :
-    ∀ ε > 0, ∃ N : ℕ, ∀ X ≥ N, (countingFunction A X : ℝ) / X < ε
-
 /-
 ## Part 6: Structure of A
 
@@ -158,10 +145,37 @@ Understanding what elements look like.
 -/
 
 /-- Every element of A has a representation as compositions of f₁, f₂, f₃ applied to 1.
-    This follows directly from the inductive definition of InA. -/
-axiom elements_have_representation {n : ℕ} (hn : n ∈ A) :
+    Proved by induction on InA: base gives [], each step appends the used operation. -/
+theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
     ∃ ops : List (ℕ → ℕ), (∀ f ∈ ops, f = f₁ ∨ f = f₂ ∨ f = f₃) ∧
-      n = ops.foldl (fun x f => f x) 1
+      n = ops.foldl (fun x f => f x) 1 := by
+  change InA n at hn
+  induction hn with
+  | base => exact ⟨[], fun _ h => absurd h (List.not_mem_nil _), rfl⟩
+  | step1 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₁], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inl h
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
+  | step2 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₂], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inr (Or.inl h)
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
+  | step3 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₃], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inr (Or.inr h)
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
 
 /-- First few elements of A: 1, 3, 4, 7, 9, 10, 13, 15, ... -/
 example : 1 ∈ A := one_in_A
@@ -189,8 +203,6 @@ def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
 /-- τ is the unique positive root -/
-axiom tau_is_root : characteristic_equation τ = 0
-
 /-
 ## Part 9: Open Variants
 

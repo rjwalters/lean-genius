@@ -65,36 +65,12 @@ noncomputable def maxDiffB2rSize (r N : ℕ) : ℕ :=
 
 /-- For r = 1 (Sidon sets), both constants equal 1:
     |A| ~ √N for both sum and difference versions -/
-axiom sidon_classical :
-  (∀ε > 0, ∀ᶠ N in Filter.atTop,
-    (1 - ε) * Real.sqrt (N : ℝ) ≤ (maxB2rSize 1 N : ℝ) ∧
-    (maxB2rSize 1 N : ℝ) ≤ (1 + ε) * Real.sqrt (N : ℝ)) ∧
-  (∀ε > 0, ∀ᶠ N in Filter.atTop,
-    (1 - ε) * Real.sqrt (N : ℝ) ≤ (maxDiffB2rSize 1 N : ℝ) ∧
-    (maxDiffB2rSize 1 N : ℝ) ≤ (1 + ε) * Real.sqrt (N : ℝ))
-
 /- ## The Erdős Problem -/
 
 /-- Erdős Problem 863: For r ≥ 2, do the asymptotic constants for
     B₂[r] sets and difference B₂[r] sets differ?
     The conjecture is c'ᵣ < cᵣ, meaning difference sets are smaller. -/
-axiom ErdosProblem863 :
-  ∀ r : ℕ, 2 ≤ r →
-    ∃ (c c' : ℝ), c > 0 ∧ c' > 0 ∧ c' < c ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
-        |((maxB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c| < ε) ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
-        |((maxDiffB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c'| < ε)
-
 /-- Weaker version: just prove cᵣ ≠ c'ᵣ for some r ≥ 2 -/
-axiom erdos_863_weak :
-  ∃ r : ℕ, 2 ≤ r ∧
-    ∃ (c c' : ℝ), c > 0 ∧ c' > 0 ∧ c ≠ c' ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
-        |((maxB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c| < ε) ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
-        |((maxDiffB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c'| < ε)
-
 /- ## Part II: Basic Properties of B₂[r] Sets -/
 
 /-- B₂[r] property is monotone in r: B₂[r] implies B₂[r'] for r ≤ r' -/

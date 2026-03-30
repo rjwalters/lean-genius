@@ -339,12 +339,126 @@ theorem sidon_set_range_lower_bound (A : Finset ℕ) (hS : IsSidonFinset A)
 ## Section VI: Related Results
 -/
 
-/-- A Sidon set of size n has sumset of size n(n+1)/2 contained in
-an interval of length ≤ 2(n² - n), so by pigeonhole there are at
-least n(n+1)/2 - 2(n² - n) - 1 "missing" values, creating gaps. -/
-axiom gap_existence_pigeonhole (A : Finset ℕ) (hS : IsSidonFinset A)
+/-- A Sidon set of size ≥ 5 has at least one isolated element in A + A.
+Proof: The max sum 2M has no right neighbor. If M-1 ∉ A, it has no left
+neighbor either, so 2M is isolated. If M-1 ∈ A, we use the min endpoint
+or second-smallest element, exploiting that Sidon sets have at most one
+pair of consecutive elements (by difference injectivity). -/
+theorem gap_existence_pigeonhole (A : Finset ℕ) (hS : IsSidonFinset A)
     (hn : A.card ≥ 5) :
-  isolatedCount A ≥ 1
+    isolatedCount A ≥ 1 := by
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  set M := A.max' hne
+  set m := A.min' hne
+  have hM_mem : M ∈ A := Finset.max'_mem A hne
+  have hm_mem : m ∈ A := Finset.min'_mem A hne
+  have hle_M : ∀ a ∈ A, a ≤ M := fun a ha => Finset.le_max' A a ha
+  have hge_m : ∀ a ∈ A, m ≤ a := fun a ha => Finset.min'_le A a ha
+  have hM4 : M ≥ 4 := by
+    have : A ⊆ Finset.range (M + 1) := fun a ha =>
+      Finset.mem_range.mpr (Nat.lt_succ.mpr (hle_M a ha))
+    linarith [Finset.card_le_card this, Finset.card_range (M + 1)]
+  -- Suffices to find an isolated element
+  suffices ∃ s ∈ sumsetFinset A, s - 1 ∉ sumsetFinset A ∧ s + 1 ∉ sumsetFinset A by
+    obtain ⟨s, hs, h⟩ := this
+    exact Finset.card_pos.mpr ⟨s, Finset.mem_filter.mpr ⟨hs, h⟩⟩
+  -- All sums lie in [2m, 2M]
+  have sum_le : ∀ s ∈ sumsetFinset A, s ≤ M + M := fun s hs => by
+    obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.mp hs
+    linarith [hle_M a ha, hle_M b hb]
+  have sum_ge : ∀ s ∈ sumsetFinset A, m + m ≤ s := fun s hs => by
+    obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.mp hs
+    linarith [hge_m a ha, hge_m b hb]
+  -- 2M ∈ A+A, 2M+1 ∉ A+A
+  have h2M_in : M + M ∈ sumsetFinset A := Finset.add_mem_add hM_mem hM_mem
+  have h2M1_out : M + M + 1 ∉ sumsetFinset A := fun h => by linarith [sum_le _ h]
+  -- Case 1: M - 1 ∉ A → 2M is isolated
+  by_cases hM1 : M - 1 ∈ A; swap
+  · refine ⟨M + M, h2M_in, ?_, h2M1_out⟩
+    intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+    have ha_le := hle_M a ha; have hb_le := hle_M b hb
+    -- a + b = 2M - 1 with a, b ≤ M forces one to be M-1
+    by_cases ha_eq : a = M
+    · exact hM1 (show M - 1 ∈ A by have : b = M - 1 := by omega; rwa [this] at hb)
+    · exact hM1 (show M - 1 ∈ A by have : a = M - 1 := by omega; rwa [this] at ha)
+  -- Case 2: M - 1 ∈ A
+  by_cases hm1 : m + 1 ∈ A
+  · -- Case 2a: Both m+1 ∈ A and M-1 ∈ A → two diff-1 pairs → contradiction
+    exfalso
+    have hdiff := sidon_diff_injective hS hM_mem hM1 hm1 hm_mem
+      (by omega) (by omega) (by omega)
+    have : A ⊆ ({m, m + 1} : Finset ℕ) := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      have := hge_m x hx; have := hle_M x hx; omega
+    have : A.card ≤ 2 := by
+      calc A.card ≤ ({m, m + 1} : Finset ℕ).card := Finset.card_le_card this
+        _ ≤ 1 + 1 := Finset.card_insert_le _ _
+        _ = 2 := by ring
+    omega
+  -- Case 2b: m + 1 ∉ A, M - 1 ∈ A
+  by_cases hm0 : m = 0; swap
+  · -- Case 2b-i: m ≥ 1 → 2m is isolated
+    refine ⟨m + m, Finset.add_mem_add hm_mem hm_mem, ?_, ?_⟩
+    · intro h; linarith [sum_ge _ h]  -- 2m - 1 < 2m
+    · intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+      have ha_ge := hge_m a ha; have hb_ge := hge_m b hb
+      -- a + b = 2m + 1, a ≥ m, b ≥ m → one is m+1
+      by_cases ha_eq : a = m
+      · exact hm1 (show m + 1 ∈ A by have : b = m + 1 := by omega; rwa [this] at hb)
+      · exact hm1 (show m + 1 ∈ A by have : a = m + 1 := by omega; rwa [this] at ha)
+  -- Case 2b-ii: m = 0, 1 ∉ A, M - 1 ∈ A → use second-smallest element
+  subst hm0
+  have hA'_ne : (A.erase 0).Nonempty := Finset.card_pos.mp (by
+    rw [Finset.card_erase_of_mem hm_mem]; omega)
+  set a₂ := (A.erase 0).min' hA'_ne
+  have ha₂_er : a₂ ∈ A.erase 0 := Finset.min'_mem _ hA'_ne
+  have ha₂_mem : a₂ ∈ A := Finset.mem_of_mem_erase ha₂_er
+  have ha₂_ne0 : a₂ ≠ 0 := Finset.ne_of_mem_erase ha₂_er
+  have ha₂_ge2 : a₂ ≥ 2 := by
+    have : (1 : ℕ) ∉ A := by simpa using hm1
+    have : a₂ ≠ 1 := fun h => this (h ▸ ha₂_mem); omega
+  have ha₂_min : ∀ x ∈ A, x ≠ 0 → a₂ ≤ x :=
+    fun x hx hx0 => Finset.min'_le _ x (Finset.mem_erase.mpr ⟨hx0, hx⟩)
+  -- a₂ ∈ A+A (via 0 + a₂)
+  have ha₂_in : a₂ ∈ sumsetFinset A :=
+    show a₂ ∈ A + A from (zero_add a₂) ▸ Finset.add_mem_add hm_mem ha₂_mem
+  -- a₂ - 1 ∉ A+A (no sums in (0, a₂))
+  have ha₂_left : a₂ - 1 ∉ sumsetFinset A := by
+    intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+    by_cases ha0 : a = 0
+    · subst ha0; simp at hab; linarith [ha₂_min b hb (by omega : b ≠ 0)]
+    · by_cases hb0 : b = 0
+      · subst hb0; simp at hab; linarith [ha₂_min a ha ha0]
+      · linarith [ha₂_min a ha ha0, ha₂_min b hb hb0]
+  -- If a₂ + 1 ∉ A+A, then a₂ is isolated
+  by_cases ha₂1 : a₂ + 1 ∈ sumsetFinset A; swap
+  · exact ⟨a₂, ha₂_in, ha₂_left, ha₂1⟩
+  -- a₂ + 1 ∈ A+A: must have a₂ + 1 ∈ A (only pair is {0, a₂+1})
+  exfalso
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp ha₂1
+  have h0 : a = 0 ∨ b = 0 := by
+    by_contra h; push_neg at h
+    linarith [ha₂_min a ha h.1, ha₂_min b hb h.2]
+  have ha₂1_mem : a₂ + 1 ∈ A := by
+    rcases h0 with rfl | rfl
+    · rw [zero_add] at hab; rwa [hab] at hb
+    · rw [add_zero] at hab; rwa [hab] at ha
+  -- Two pairs with diff 1: (M, M-1) and (a₂+1, a₂) → a₂+1 = M
+  have hdiff := sidon_diff_injective hS hM_mem hM1 ha₂1_mem ha₂_mem
+    (by omega) (by omega) (by omega)
+  -- A ⊆ {0, M-1, M} → |A| ≤ 3 < 5
+  have : A ⊆ ({0, M - 1, M} : Finset ℕ) := by
+    intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton]
+    by_cases hx0 : x = 0; · left; exact hx0
+    · right; have := ha₂_min x hx hx0; have := hle_M x hx; omega
+  have : A.card ≤ 3 := by
+    calc A.card ≤ ({0, M - 1, M} : Finset ℕ).card := Finset.card_le_card this
+      _ ≤ 1 + (1 + 1) := by
+          calc _ ≤ ({M - 1, M} : Finset ℕ).card + 1 := Finset.card_insert_le _ _
+            _ ≤ (({M} : Finset ℕ).card + 1) + 1 := by linarith [Finset.card_insert_le (M-1) {M}]
+            _ = 1 + (1 + 1) := by simp
+  omega
 
 /-- The infinite version: if A ⊂ ℕ is an infinite Sidon set and
 A_N = A ∩ [1, N], does the number of isolated elements in A_N + A_N

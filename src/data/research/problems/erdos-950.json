@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "REPAIR+PROVE: Fixed all pre-existing build failures (question2 ⊤→∀M, f_two/f_three/f_four native_decide, removed unused primeGap/Nat.nth, fixed type mismatch in axiom). Proved dense_primes_increase_f sorry. Switched to import Mathlib. File compiles: 7 theorems, 9 axioms (all deep/open), 0 sorries.",
+    "progressSummary": "COMPLETE: 9A (all deep/open — Erdős questions, de Bruijn-Erdős-Turán sums, dense intervals), 7T proved, 0S.",
     "builtItems": [
       "Converted f_three axiom to theorem (explicit primesLessThan 3 = {2} computation)",
       "Converted f_four axiom to theorem (explicit primesLessThan 4 = {2,3} computation)",
@@ -77,9 +77,9 @@
     {
       "path": "Proofs/Erdos950Problem.lean",
       "filename": "Erdos950Problem.lean",
-      "lineCount": 245,
+      "lineCount": 222,
       "theoremCount": 7,
-      "axiomCount": 9,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

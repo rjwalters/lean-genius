@@ -1,0 +1,143 @@
+{
+  "id": "subset-count-oq-02",
+  "title": "Subset Counting for Multisets",
+  "slug": "subset-count-oq-02",
+  "description": "Generalizes |P(S)| = 2^n to multisets: a multiset with n elements has 2^n submultisets. Proves the multiset powerset theorem, the multiset choose theorem (C(n,k) submultisets of size k), and the connection between set and multiset cases.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "date": "2026-03-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SubsetCountOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "multiset",
+      "powerset",
+      "binomial-coefficient",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved using Mathlib's multiset powerset API.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Multiset.card_powerset",
+        "description": "card (powerset s) = 2 ^ card s",
+        "module": "Mathlib.Data.Multiset.Powerset"
+      },
+      {
+        "theorem": "Multiset.card_powersetCard",
+        "description": "card (powersetCard k s) = (card s).choose k",
+        "module": "Mathlib.Data.Multiset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "Multiset powerset cardinality: card(powerset s) = 2^(card s)",
+      "Adding element doubles powerset: card(powerset (a :: s)) = 2 * card(powerset s)",
+      "Multiset choose: card(powersetCard k s) = C(card s, k)",
+      "No submultisets of size > n: powersetCard k s = 0 when card s < k",
+      "Connection: Finset powerset equals multiset powerset for sets"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 120,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Multiset basics and operations",
+      "Powerset and submultiset membership",
+      "Binomial coefficients"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The subset counting theorem |P(S)| = 2^n is one of the most basic results in combinatorics. Its generalization to multisets shows that the same formula holds when elements can repeat: a multiset with n elements (counted with multiplicity) has 2^n submultisets (also counted with multiplicity).",
+    "problemStatement": "For a multiset $s$ with $n$ elements (counted with multiplicity):\n\n$$|\\mathcal{P}(s)| = 2^n$$\n\nMoreover, the number of submultisets of size $k$ is $\\binom{n}{k}$.",
+    "text": "A 121-line formalization generalizing subset counting to multisets. All 7 theorems fully proved with 0 sorries and 0 axioms.",
+    "proofStrategy": "The proofs leverage Mathlib's multiset API directly. The powerset cardinality follows from Multiset.card_powerset, and the fixed-size count follows from Multiset.card_powersetCard.",
+    "keyInsights": [
+      "Each occurrence of an element contributes independently to the powerset count, giving 2^n even for multisets",
+      "Multiset.card_powerset is the master lemma from which all results follow"
+    ]
+  },
+  "sections": [
+    {
+      "id": "powerset-card",
+      "title": "Multiset Powerset Cardinality",
+      "startLine": 39,
+      "endLine": 59,
+      "summary": "Proves the main theorem: a multiset with n elements has 2^n submultisets.",
+      "mathContext": "$|\\mathcal{P}(s)| = 2^{|s|}$"
+    },
+    {
+      "id": "fixed-size",
+      "title": "Fixed-Size Submultisets",
+      "startLine": 61,
+      "endLine": 81,
+      "summary": "Proves the number of k-element submultisets is C(n,k).",
+      "mathContext": "$|\\mathcal{P}_k(s)| = \\binom{|s|}{k}$"
+    },
+    {
+      "id": "set-connection",
+      "title": "Connection to Set Case",
+      "startLine": 83,
+      "endLine": 94,
+      "summary": "Shows that for Finsets, the multiset powerset formula recovers the standard result.",
+      "mathContext": "For a Finset $s$: $|\\mathcal{P}(s.\\text{val})| = 2^{|s|}$"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 96,
+      "endLine": 120,
+      "summary": "Verifies the formulas on concrete examples.",
+      "mathContext": "Computational verification for small cases"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "subset-count",
+      "relationship": "extends",
+      "description": "Generalizes the set powerset counting theorem to multisets"
+    }
+  ],
+  "conclusion": {
+    "summary": "The multiset powerset cardinality formula |P(s)| = 2^n is a clean generalization of the set case.",
+    "implications": "Extends the fundamental 2^n counting result from sets to multisets, providing a verified foundation for enumerative combinatorics with repeated elements.",
+    "openQuestions": [
+      "What about the number of DISTINCT submultisets (without multiplicity)? This is product(m_i + 1) for multiplicities m_i.",
+      "How does this connect to generating functions?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Multiset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Multiset"
+    ],
+    "namespace": "SubsetCountMultiset",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "multiset_powerset_card",
+      "type": "core",
+      "description": "A multiset with n elements has 2^n submultisets",
+      "leanType": "Multiset.card (Multiset.powerset s) = 2 ^ Multiset.card s"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "birthday-problem-oq-03-oq-01",
+  "title": "k=3 Birthday Coincidence: Extension Counting Framework",
+  "slug": "birthday-problem-oq-03-oq-01",
+  "description": "Extension-counting framework for the k=3 birthday coincidence threshold. Proves fiber partition, full-days bound, day type decomposition (empty/single/double sum to d), and restriction validity. Enables recursive computation of the exact probability that 3+ people share a birthday.",
+  "meta": {
+    "author": "Diaconis & Mosteller (1989), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
+    "date": "1989",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "birthday-problem",
+      "pigeonhole",
+      "counting",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_eq_sum_card_fiberwise",
+        "description": "Fiber decomposition: card(s) = sum of fiber cardinalities",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_union_of_disjoint",
+        "description": "Card of disjoint union = sum of cards",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.disjoint_filter",
+        "description": "Filters with contradictory predicates give disjoint sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Extension-counting framework: d - #{full days} valid placements for new person",
+      "Full-days bound: below pigeonhole limit, not all days can be at capacity",
+      "Day type decomposition: empty + single + double = d for k=3 assignments",
+      "Fiber restriction: restricting (n+1)-assignment preserves multiplicity bounds",
+      "k=3 extension possibility: below 2d people, extension always possible"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 245,
+    "assumptions": "0 axioms, 0 sorries. All 19 definitions and theorems fully proved from Mathlib.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**The k=3 Birthday Problem**\n\nThe classical birthday problem asks: how many people to get a 50% chance of a shared birthday? The answer is 23. The k=3 generalization asks: how many for a 50% chance that 3+ people share a birthday? The answer is 88.\n\nDiaconis & Mosteller (1989) studied these generalizations systematically. The key insight is the extension-counting technique: adding one person to a valid assignment, the number of valid days is d minus the number of 'full' days (those already at capacity k-1).",
+    "problemStatement": "**Extension Counting for k=3 Birthday Threshold (OQ-01)**\n\nDevelop the framework for computing the exact k=3 birthday threshold. Key components:\n1. Fiber partition: every person belongs to exactly one day's fiber\n2. Full-days bound: below pigeonhole limit, #{full days} < d\n3. Extension counting: d - #{full days} valid choices for each new person\n4. Day type decomposition: each day has 0, 1, or 2 people (for k=3)",
+    "text": "Extension-counting framework for the k=3 birthday coincidence threshold. Proves fiber partition, full-days bound, day type decomposition, and restriction validity. Enables recursive computation of the exact probability.",
+    "proofStrategy": "**Strategy: Counting Valid Extensions**\n\n1. **Fiber partition**: Σ_j |fiber(j)| = n (people are partitioned by day)\n2. **Full-days bound**: If n < (k-1)·d, then #{days with k-1 people} < d. Proof by contradiction: if all d days had k-1 people, then n = (k-1)·d.\n3. **Extension count**: For each valid n-assignment, count valid placements for person n+1: the d - #{full days} non-full days.\n4. **Day types for k=3**: Split into empty (0), single (1), double (2). These form a disjoint partition of all d days.\n5. **Restriction**: Removing the last person preserves validity.",
+    "keyInsights": [
+      "**Extension counting is the key**: The recursive structure |noKWay(n+1)| = Σ_f (d - #{full days in f}) connects consecutive probability values.",
+      "**Full-days bound from fiber sum**: The fiber-sum = n constraint prevents all days from being full when n < (k-1)·d.",
+      "**Day type trichotomy**: For k=3, every day has 0, 1, or 2 people. The type counts (a, b, c) with a+b+c=d and b+2c=n determine the combinatorial structure.",
+      "**Restriction monotonicity**: Removing a person from a valid assignment gives a valid assignment, connecting (n+1)-problem to n-problem."
+    ],
+    "prerequisites": [
+      "BirthdayProblemOQ03.lean: k-way definitions, generalized pigeonhole, probability framework",
+      "Finite combinatorics: Finset, filter, card",
+      "Pigeonhole principle"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fiber-infra",
+      "title": "Fiber Infrastructure",
+      "summary": "Fiber definition and partition-of-unity: fiber sizes sum to n.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "The fiber at day $j$ is $f^{-1}(j) = \\{i : f(i) = j\\}$. Since the fibers partition $[n]$, $\\sum_j |f^{-1}(j)| = n$."
+    },
+    {
+      "id": "full-days",
+      "title": "Full Days Bound",
+      "summary": "Full days (days with k-1 people). Below pigeonhole limit: #{full days} < d.",
+      "startLine": 49,
+      "endLine": 100,
+      "mathContext": "A 'full day' has $k-1$ people (maximum under the no-$k$-way constraint). If all $d$ days were full: $n = \\sum |f^{-1}(j)| \\geq (k-1)d$. So $n < (k-1)d$ implies $\\#\\{\\text{full days}\\} < d$."
+    },
+    {
+      "id": "extension-count",
+      "title": "Extension Counting",
+      "summary": "extensionCount = d - #{full days}. Below pigeonhole: extensionCount > 0. For k=3: extension_possible_k3.",
+      "startLine": 101,
+      "endLine": 140,
+      "mathContext": "Person $n+1$ can go to any non-full day: $d - \\#\\{\\text{full days}\\}$ choices. Below the pigeonhole limit, this is positive, so extension is always possible."
+    },
+    {
+      "id": "day-types",
+      "title": "Day Type Decomposition for k=3",
+      "summary": "Day type trichotomy, pairwise disjointness, coverage, and count sum = d.",
+      "startLine": 141,
+      "endLine": 210,
+      "mathContext": "For $k=3$, each day has $0$, $1$, or $2$ people. The three types form a partition of all $d$ days: empty $\\cup$ single $\\cup$ double $= [d]$ and $|\\text{empty}| + |\\text{single}| + |\\text{double}| = d$."
+    },
+    {
+      "id": "restriction",
+      "title": "Restriction Preserves Validity",
+      "summary": "Restricting (n+1)-assignment to first n people has weakly smaller fibers.",
+      "startLine": 211,
+      "endLine": 245,
+      "mathContext": "If $f : [n+1] \\to [d]$ has all fibers $\\leq m$, then $f|_{[n]}$ has all fibers $\\leq m$ (removing a person can only shrink fibers)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The extension-counting framework is established with 0 sorries. The key structural results (fiber partition, full-days bound, day types, restriction) enable recursive computation of the exact k=3 birthday probability. For d=365, the threshold where P(≥3 share) > 1/2 is n=88.",
+    "implications": "The framework reduces the k=3 threshold computation to evaluating the recursive formula |noKWay(n+1)| = Σ_f (d - #{doubled days in f}). Combined with the multinomial counting formula, this gives the exact probability as a ratio of integers.",
+    "openQuestions": [
+      "Can the recursive formula be made computationally efficient enough for native_decide verification at d=365?",
+      "Can the asymptotic threshold n ≈ (6d² ln 2)^{1/3} be proved from this framework?",
+      "Can the multinomial counting formula n! · Σ_c d!/((d-n+c)!(n-2c)!c!2^c) be formalized and connected to |noKWaySet|?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "Fintype"],
+    "namespace": "BirthdayKWayThreshold",
+    "lineCount": 245,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 4
+  },
+  "references": [
+    {
+      "authors": "P. Diaconis, F. Mosteller",
+      "title": "Methods for Studying Coincidences",
+      "year": "1989",
+      "venue": "Journal of the American Statistical Association",
+      "note": "Systematic study of k-way birthday coincidences"
+    },
+    {
+      "authors": "P. Flajolet, R. Sedgewick",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press",
+      "note": "Chapter II.3: exponential generating functions for bounded-multiplicity assignments"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-03",
+      "relationship": "extends",
+      "description": "Parent: k-way birthday definitions, generalized pigeonhole, probability framework. This entry adds the extension-counting technique for computing exact thresholds."
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Root birthday problem formalization. The k=3 threshold (n=88) generalizes the classical k=2 threshold (n=23)."
+    }
+  ]
+}

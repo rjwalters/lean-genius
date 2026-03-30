@@ -1,0 +1,107 @@
+{
+  "slug": "pascals-hexagon-oq-01",
+  "title": "Can the Cayley-Bacharach axiom be proved from Mathlib's algebraic geometry, e...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T07:45:00Z",
+    "iteration": 3,
+    "focus": "Proved parametric coverage; Sylvester law is next bottleneck",
+    "blockers": [
+      "Docker offline for build verification",
+      "Full axiom elimination needs projective equivalence + degenerate conics"
+    ],
+    "nextAction": "Docker build verify; then prove projective equivalence preserves pascalConstraint",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved stdConicPoint_covers (parametric coverage) and stdConic_infinity_char (point at infinity characterization). 7/10 roadmap steps complete.",
+    "builtItems": [
+      "stdConicPoint — rational parametrization of standard conic",
+      "stdConic — the matrix diag(1,1,-1)",
+      "stdConicPoint_on_conic — points lie on conic (ring)",
+      "pascal_std_conic_parametrized — Pascal for parametrized standard conic (simp+ring, needs build verify)",
+      "projTransform — apply matrix to projective point",
+      "threeVectorMatrix_projTransform — det multiplicativity: det(M·u,M·v,M·w) = det(M)·det(u,v,w)",
+      "collinear_projTransform — collinearity preserved under invertible projective transforms",
+      "Proved stdConic_det_factored: det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) by ring",
+      "Stated pascalConstraint_projTransform with 2 sorries (ring verification of det(M)⁴ factorization)",
+      "stdConicPoint_covers theorem in PascalsHexagon.lean (parametric coverage via half-angle sub)",
+      "stdConic_infinity_char theorem in PascalsHexagon.lean (infinity point characterization)",
+      "stdConicInfinity def + stdConicInfinity_on_conic theorem in PascalsHexagon.lean"
+    ],
+    "insights": [
+      "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
+      "DesarguesTheorem.lean has all needed infrastructure: cross_triple_product (BAC-CAB), scalar_triple_product_eq_det, threeVectorMatrix_det_explicit, scalar_triple_of_cross_products — all verified by ring",
+      "Desargues identity proved by expanding cross products into coordinates and using ring on 18 variables. Pascal needs same approach but with conic constraint Q(X) = ∑ C_ij X_i X_j",
+      "det(P,Q,R) does NOT vanish universally — only when 6 points on a conic. Need ideal membership: det(P,Q,R) = Σ p_X · Q(X). Coefficients p_X are degree-10 polynomials in 24 variables",
+      "A computer algebra system (Sage/Macaulay2) needed to compute the ideal membership certificate, then transcribe to Lean for ring verification",
+      "P = [ABE]D - [ABD]E, Q = [BCF]E - [BCE]F, R = [CDA]F - [CDF]A (via BAC-CAB on cross products of cross products)",
+      "Rational parametrization P(t)=(1-t²,2t,1+t²) covers ALL real points on x₀²+x₁²=x₂² (no real points at infinity)",
+      "det(P,Q,R) for parametrized points is identically 0 as polynomial — verified in sympy",
+      "simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct] + ring is the Desargues pattern for cross product determinant proofs",
+      "Full axiom elimination requires: (1) this parametrized proof, (2) projective equivalence preserves pascalConstraint, (3) any non-degenerate conic ≅ standard conic, (4) degenerate conic case",
+      "det multiplicativity for 3×3 is a 36-term polynomial identity — ring handles it easily",
+      "Full Pascal invariance needs cross product transformation law: cross(M·u,M·v) = det(M)·M⁻ᵀ·cross(u,v) — then Pascal points transform as M·P_old up to scalar",
+      "Roadmap: Part 11 (done) → Part 12 collinearity invariance (done) → Part 12 full Pascal invariance (needs cross product law) → Part 13 Sylvester law of inertia → Part 14 degenerate conics",
+      "For parametric circle points P(t) = (1-t², 2t, 1+t²): det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) — enables factored proof approach",
+      "The pascalConstraint is projectively invariant: det(P_new,Q_new,R_new) = det(M)⁴ · det(P,Q,R), so vanishing is preserved",
+      "Full axiom elimination roadmap: (1) parametric std conic proof (done), (2) projective invariance of pascalConstraint, (3) Sylvester law for conics, (4) assembly",
+      "stdConicPoint_covers proved: every point on stdConic with p₀+p₂≠0 is λ·stdConicPoint(t) for t=p₁/(p₀+p₂), λ=(p₀+p₂)/2",
+      "stdConic_infinity_char proved: if p₀+p₂=0 on stdConic, then p₁=0 (point is (1,0,-1))",
+      "stdConicInfinity_on_conic proved: (1,0,-1) lies on stdConic",
+      "Updated roadmap: 7 of ~10 steps completed, remaining are Sylvester law + infinity case + assembly",
+      "For point at infinity case: apply a rotation R mapping (1,0,-1) to finite point, use projective invariance"
+    ],
+    "mathlibGaps": [
+      "No Bezout theorem for projective curves in Mathlib",
+      "No Cayley-Bacharach theorem in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove Sylvester law for 3×3 real symmetric matrices (congruence to diag(1,1,-1) for signature (2,1))",
+      "Handle point at infinity in Pascal proof (apply rotation before parametrizing)",
+      "Assembly: combine Sylvester + coverage + projective invariance to eliminate axiom"
+    ],
+    "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "pascals-hexagon"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/PascalsHexagon.lean",
+      "filename": "PascalsHexagon.lean",
+      "lineCount": 582,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 24,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagon.lean"
+    }
+  ]
+}

@@ -513,6 +513,7 @@ import Proofs.Erdos197Problem
 import Proofs.Erdos198Problem
 import Proofs.Erdos199Problem
 import Proofs.Erdos19Problem
+import Proofs.Erdos1OQ03
 import Proofs.Erdos1Problem
 import Proofs.Erdos200Problem
 import Proofs.Erdos201Problem
@@ -1574,6 +1575,7 @@ import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonEntropy
 import Proofs.ShannonEntropyAristotle
+import Proofs.ShannonEntropyOQ02
 import Proofs.ShannonSourceCoding
 import Proofs.SkolemNoetherMatrixAut
 import Proofs.SkolemNoetherMatrixAutAristotle

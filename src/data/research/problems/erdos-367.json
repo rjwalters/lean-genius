@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 7 to 5. Proved strong_bound_k1 and strong_bound_k2 from twoFullPart_le. Total 8 theorems proved, 5 axioms remain.",
+    "progressSummary": "PROGRESS: Verified 2 provable axioms (twoFullPart_eq_one_iff, twoFullPart_mul_coprime) are unused — proof tree unaffected. 3 deep axioms remain (strong_bound_fails_k3, van_doorn_lower_bound, average_twoFullPart_bounded).",
     "builtItems": [
       "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean",
       "Proved strong_bound_k1 in Erdos367Problem.lean:140",
@@ -39,13 +39,20 @@
       "4 axioms proved from Mathlib: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq",
       "Proved strong_bound_k1 (k=1) from twoFullPart_le via Finset.Ico singleton and nlinarith",
       "Proved strong_bound_k2 (k=2) from twoFullPart_le via Finset.prod_insert, mul_le_mul, and nlinarith",
-      "Key Mathlib API for twoFullPart_eq_one_iff: Nat.squarefree_iff_factorization_le_one, Nat.factorization_prod_pow_eq_self, Nat.support_factorization, Finset.filter_true_of_mem"
+      "Key Mathlib API for twoFullPart_eq_one_iff: Nat.squarefree_iff_factorization_le_one, Nat.factorization_prod_pow_eq_self, Nat.support_factorization, Finset.filter_true_of_mem",
+      "twoFullPart_eq_one_iff: backward (Squarefree→B₂=1) via squarefreePart=n: filter_true_of_mem + factorization_prod_pow_eq_self + prod_congr with pow_one",
+      "twoFullPart_eq_one_iff: forward (B₂=1→Squarefree) needs squarefreePart_dvd_self (product of coprime primes divides n) + div_eq_one implies equality",
+      "twoFullPart_mul_coprime: needs squarefreePart multiplicativity via Nat.primeFactors_mul coprime + factorization additive on coprimes",
+      "strong_bound_fails_k3 and van_doorn_lower_bound are deep results (irreducible). average_twoFullPart_bounded is analytic (needs summation bounds).",
+      "twoFullPart_eq_one_iff and twoFullPart_mul_coprime are NOT used by any theorem — axiom elimination would not strengthen the proof tree",
+      "Backward dir (Squarefree→B₂=1): Nat.squarefree_iff_factorization_le_one gives all exponents ≤ 1, filter_true_of_mem + factorization_prod_pow_eq_self gives squarefreePart=n",
+      "Forward dir (B₂=1→Squarefree): n/squarefreePart(n)=1 → squarefreePart=n → all exponents are 1 (contrapositive: exponent ≥ 2 means strict inequality)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove twoFullPart_eq_one_iff via Nat.squarefree_iff_factorization_le_one + Nat.factorization_prod_pow_eq_self (backward: squarefree → all exps 1 → filter identity → product = n → division = 1; forward: division = 1 → n = squarefreePart → Prime.dvd_finset_prod shows all primes in filter → all exps 1 → squarefree)",
-      "Prove twoFullPart_mul_coprime via coprime factorization splitting (Nat.factorization_mul_coprime)",
-      "average_twoFullPart_bounded requires deep analytic number theory — likely unprovable in Lean without extensive infrastructure"
+      "Prove twoFullPart_eq_one_iff: use Nat.squarefree_iff_factorization_le_one + filter_true_of_mem + factorization_prod_pow_eq_self",
+      "Prove twoFullPart_mul_coprime: use Nat.primeFactors_mul + factorization_mul coprime",
+      "3 axioms are likely irreducible: strong_bound_fails_k3, van_doorn_lower_bound, average_twoFullPart_bounded"
     ],
     "markdown": "# Erdős #367 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_2(n)$ be the 2-full part of $n$ (that is, $B_2(n)=n/n'$ where $n'$ is the product of all primes that divide $n$ exactly once). Is it true that, for every fixed $k\\geq 1$,\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2+o(1)}?\\]Or perhaps even $\\ll_k n^2$?\n\n\n\nIt would also be interesting to find upper and lower bounds for the analogous product with $B_r$ for $r\\geq 3$, where $B_r(n)$ is the $r$-full part of $n$ (that is, the product of prime powers $p^a \\mid n$ such that $p^{a+1}\\nmid n$ and $a\\geq r$). Is it true that, for every fixed $r,k\\geq 2$ and $\\epsilon>0$,\\[\\limsup \\frac{\\prod_{n\\leq m<n+k}B_r(m) }{n^{1+\\epsilon}}\\to\\infty?\\]van Doorn notes in the comments that for $k\\leq 2$ we trivially have\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2},\\]but that this fails for all $k\\geq 3$, and in fact\\[\\prod_{n\\leq m<n+3}B_2(m) \\gg n^{2}\\log n\\]infinitely often.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #366\n- Problem #368\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
@@ -63,16 +70,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:59:36.242Z",
-  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "lastUpdate": "2026-03-29T11:20:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos367Problem.lean",
       "filename": "Erdos367Problem.lean",
-      "lineCount": 389,
-      "theoremCount": 8,
-      "axiomCount": 5,
+      "lineCount": 416,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

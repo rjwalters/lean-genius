@@ -110,12 +110,103 @@ theorem isbell_upper_bound : chromaticNumberPlane ≤ 7 := by
 
 /- ## Lower Bounds -/
 
+/-! ### Moser Spindle: Explicit Construction
+
+We construct the 7 vertices of the Moser spindle in ℝ² using Warren D. Smith's
+coordinates from the complex formulation z ∈ {0, 1, 1+ω, 2+ω, a, a+aω, 2a+aω}
+where ω = e^{2πi/3} and a = e^{i·arccos(5/6)}. All coordinates lie in Q(√3, √11).
+The 11 edges all have unit distance, and the graph requires 4 colors. -/
+
+/-- Adjacency of the Moser spindle graph on Fin 7.
+    Edges: 0-1, 0-2, 0-4, 0-5, 1-2, 1-3, 2-3, 3-6, 4-5, 4-6, 5-6 -/
+private def moserAdj (i j : Fin 7) : Bool :=
+  let a := min i.val j.val
+  let b := max i.val j.val
+  (a == 0 && b == 1) || (a == 0 && b == 2) || (a == 0 && b == 4) || (a == 0 && b == 5) ||
+  (a == 1 && b == 2) || (a == 1 && b == 3) || (a == 2 && b == 3) || (a == 3 && b == 6) ||
+  (a == 4 && b == 5) || (a == 4 && b == 6) || (a == 5 && b == 6)
+
+/-- The Moser spindle is not 3-colorable: every 3-coloring has a monochromatic edge. -/
+private theorem moser_not_3_colorable :
+    ∀ c : Fin 7 → Fin 3, ∃ i j : Fin 7, moserAdj i j = true ∧ c i = c j := by
+  native_decide
+
+/-- The 7 vertices of the Moser spindle in ℝ². -/
+private noncomputable def moserPt : Fin 7 → EuclideanSpace ℝ (Fin 2)
+  | 0 => ![0, 0]
+  | 1 => ![1, 0]
+  | 2 => ![1/2, Real.sqrt 3 / 2]
+  | 3 => ![3/2, Real.sqrt 3 / 2]
+  | 4 => ![5/6, Real.sqrt 11 / 6]
+  | 5 => ![(5 - Real.sqrt 3 * Real.sqrt 11) / 12,
+           (5 * Real.sqrt 3 + Real.sqrt 11) / 12]
+  | 6 => ![(15 - Real.sqrt 3 * Real.sqrt 11) / 12,
+           (5 * Real.sqrt 3 + 3 * Real.sqrt 11) / 12]
+
+private theorem sqrt3_sq' : (Real.sqrt 3) ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+private theorem sqrt11_sq' : (Real.sqrt 11) ^ 2 = 11 := Real.sq_sqrt (by norm_num)
+
+private theorem sqrt33_sq' : (Real.sqrt 3 * Real.sqrt 11) ^ 2 = 33 := by
+  rw [mul_pow, sqrt3_sq', sqrt11_sq']; norm_num
+
+/-- (5 - √33)/12 ≠ r when (5 - 12r)² ≠ 33. Used for injectivity. -/
+private theorem moser_x5_ne (r : ℝ) (hr : (5 - 12 * r) ^ 2 ≠ 33) :
+    (5 - Real.sqrt 3 * Real.sqrt 11) / 12 ≠ r := by
+  intro h; apply hr
+  have : Real.sqrt 3 * Real.sqrt 11 = 5 - 12 * r := by linarith
+  rw [← this]; exact sqrt33_sq'
+
+/-- (15 - √33)/12 ≠ r when (15 - 12r)² ≠ 33. Used for injectivity. -/
+private theorem moser_x6_ne (r : ℝ) (hr : (15 - 12 * r) ^ 2 ≠ 33) :
+    (15 - Real.sqrt 3 * Real.sqrt 11) / 12 ≠ r := by
+  intro h; apply hr
+  have : Real.sqrt 3 * Real.sqrt 11 = 15 - 12 * r := by linarith
+  rw [← this]; exact sqrt33_sq'
+
+/-- All 7 Moser spindle points are distinct (proved via x-coordinate comparison). -/
+private theorem moserPt_injective : Function.Injective moserPt := by
+  intro i j h
+  have h0 := congr_arg (fun x : EuclideanSpace ℝ (Fin 2) => x 0) h
+  fin_cases i <;> fin_cases j <;>
+    simp only [moserPt, Matrix.cons_val_zero, Matrix.head_cons] at h0 ⊢ <;>
+    first
+    | rfl
+    | (exfalso; norm_num at h0)
+    | (exfalso; exact moser_x5_ne _ (by norm_num) h0)
+    | (exfalso; exact moser_x5_ne _ (by norm_num) h0.symm)
+    | (exfalso; exact moser_x6_ne _ (by norm_num) h0)
+    | (exfalso; exact moser_x6_ne _ (by norm_num) h0.symm)
+    | (exfalso; field_simp at h0; linarith)
+
+/-- Sum of squared coordinate differences = 1 for each Moser spindle edge. -/
+private theorem moser_coord_sq (i j : Fin 7) (h : moserAdj i j = true) :
+    (moserPt i 0 - moserPt j 0) ^ 2 + (moserPt i 1 - moserPt j 1) ^ 2 = 1 := by
+  fin_cases i <;> fin_cases j <;> simp_all [moserAdj] <;>
+    simp only [moserPt, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+    ring_nf <;> nlinarith [sqrt3_sq', sqrt11_sq']
+
+/-- Each edge of the Moser spindle has unit Euclidean distance. -/
+private theorem moser_edges_unit (i j : Fin 7) (h : moserAdj i j = true) :
+    dist (moserPt i) (moserPt j) = 1 := by
+  rw [dist_eq_norm, EuclideanSpace.norm_eq]
+  simp only [Fin.sum_univ_two, Pi.sub_apply, Real.norm_eq_abs, sq_abs]
+  rw [moser_coord_sq i j h, Real.sqrt_one]
+
 /-- **Nelson (1950)**: The Moser spindle shows 4 colors are necessary.
-    A 7-vertex graph where all edges have unit length and χ = 4. -/
-axiom moser_spindle :
-  ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 7 ∧
-    (∀ c : V → Fin 3, ∃ x y : V, dist x.val y.val = 1 ∧ c x = c y)
+    A 7-vertex graph where all edges have unit length and χ = 4.
+    PROVED: explicit construction with coordinates in Q(√3, √11). -/
+theorem moser_spindle :
+    ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
+      V.card = 7 ∧
+      (∀ c : V → Fin 3, ∃ x y : V, dist x.val y.val = 1 ∧ c x = c y) := by
+  refine ⟨Finset.image moserPt Finset.univ, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ moserPt_injective, Finset.card_fin]
+  · intro c
+    obtain ⟨i, j, hadj, hcolor⟩ := moser_not_3_colorable
+      (fun k => c ⟨moserPt k, Finset.mem_image_of_mem _ (Finset.mem_univ k)⟩)
+    exact ⟨⟨moserPt i, Finset.mem_image_of_mem _ (Finset.mem_univ i)⟩,
+           ⟨moserPt j, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩,
+           moser_edges_unit i j hadj, hcolor⟩
 
 /-- The Moser spindle implies χ ≥ 4: any proper k-coloring of the plane restricts
     to a proper coloring of the Moser spindle vertices, but 3 colors don't suffice. -/
@@ -193,12 +284,14 @@ on ℝ² (the Hadwiger-Nelson problem).
 - Lower bound: χ ≥ 5 (de Grey 2018)
 - Upper bound: χ ≤ 7 (Isbell 1950)
 
-**Historical Progress:**
-- 1950: 4 ≤ χ ≤ 7 (Nelson, Isbell)
-- 2018: χ ≥ 5 (de Grey) - first improvement in 68 years!
+**Proved (7+ theorems):**
+- moser_spindle: Explicit Moser spindle in Q(√3, √11) with native_decide
+- lower_bound_4, de_grey, current_bounds, isbell_upper_bound
+- clique_number_3, no_4_clique (Aristotle-verified)
 
-**Open Question:**
-What is the exact value? Is χ = 5, 6, or 7?
+**Axiomatized (2 axioms):**
+- isbell_coloring: A proper 7-coloring of ℝ² exists (hexagonal tiling)
+- de_grey_graph: A finite ℝ² graph requiring 5 colors (1581 vertices)
 
 References:
 - de Grey (2018): "The chromatic number of the plane is at least 5"

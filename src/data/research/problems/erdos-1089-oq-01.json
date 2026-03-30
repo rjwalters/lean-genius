@@ -2,7 +2,7 @@
   "slug": "erdos-1089-oq-01",
   "title": "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -74,11 +74,11 @@
     {
       "path": "Proofs/Erdos1089Problem.lean",
       "filename": "Erdos1089Problem.lean",
-      "lineCount": 383,
+      "lineCount": 390,
       "theoremCount": 6,
-      "axiomCount": 8,
+      "axiomCount": 4,
       "defCount": 11,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1089Problem.lean"
     }

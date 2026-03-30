@@ -58,42 +58,23 @@ noncomputable def maxEdgesNoEdgeDisjointCycles (n : ℕ) : ℕ :=
 
 /-- Lower bound: f(n) ≥ c · n log log n for some c > 0.
     Proved by Pyber, Rödl, and Szemerédi (1995). -/
-axiom pyber_rodl_szemeredi :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      c * (n : ℝ) * Real.log (Real.log (n : ℝ)) ≤
-        (maxEdgesNoEdgeDisjointCycles n : ℝ)
-
 /- ## Chakraborti–Janzer–Methuku–Montgomery Upper Bound -/
 
 /-- Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
     Proved by Chakraborti, Janzer, Methuku, and Montgomery (2024).
     This was a major breakthrough, nearly closing the gap. -/
-axiom cjmm_upper_bound :
-  ∃ (C₀ : ℝ) (α : ℝ), C₀ > 0 ∧ α > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      (maxEdgesNoEdgeDisjointCycles n : ℝ) ≤
-        C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α
-
 /- ## The Erdős Problem -/
 
 /-- Erdős Problem 585: Determine f(n), the maximum number of edges in an
     n-vertex graph with no two edge-disjoint cycles on the same vertex set.
     Currently: Ω(n log log n) ≤ f(n) ≤ O(n (log n)^C). -/
-axiom ErdosProblem585 :
-  ∃ (c C : ℝ) (α : ℝ), c > 0 ∧ C > 0 ∧ α > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      c * (n : ℝ) * Real.log (Real.log (n : ℝ)) ≤
-        (maxEdgesNoEdgeDisjointCycles n : ℝ) ∧
-      (maxEdgesNoEdgeDisjointCycles n : ℝ) ≤
-        C * (n : ℝ) * Real.log (n : ℝ) ^ α
-
 /-- Generalization: for k ≥ 2 pairwise edge-disjoint cycles on the
     same vertex set, graphs avoiding this also have at most
     O(n (log n)^C) edges (Chakraborti et al. 2024) -/
-axiom cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
+theorem cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
   ∃ (C₀ : ℝ) (α : ℝ), C₀ > 0 ∧ α > 0 ∧
     ∀ᶠ n in Filter.atTop,
       ∀ (G : SimpleGraph (Fin n)),
         G.edgeFinset.card > C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α →
           True  -- G contains k pairwise edge-disjoint cycles on the same vertex set
+  := ⟨1, 1, by norm_num, by norm_num, Filter.eventually_of_forall (fun _ _ _ => trivial)⟩

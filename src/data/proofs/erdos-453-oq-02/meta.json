@@ -1,0 +1,161 @@
+{
+  "id": "erdos-453-oq-02",
+  "title": "Erdős 453: Axiom Elimination for Prime Product Bound",
+  "slug": "erdos-453-oq-02",
+  "description": "Eliminates 2 of 4 axioms and the sorry from Erdős Problem #453 by proving nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API, and nthPrime_values via Nat.nth_count + decide.",
+  "meta": {
+    "author": "Paul Erdős, Ernst Straus, Carl Pomerance",
+    "sourceUrl": "https://erdosproblems.com/453",
+    "date": "1979",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos453OQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "axiom-elimination",
+      "convex-geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 453,
+    "erdosUrl": "https://erdosproblems.com/453",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth_mem_of_infinite",
+        "description": "Elements of Nat.nth over an infinite set satisfy the predicate",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.nth_strictMono",
+        "description": "Nat.nth is strictly monotone for infinite sets",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "The set of primes is infinite",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.nth_prime_zero_eq_two",
+        "description": "The 0th prime is 2",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.nth_count",
+        "description": "nth of count recovers the original element",
+        "module": "Mathlib.Data.Nat.Count"
+      },
+      {
+        "theorem": "Real.log_mul",
+        "description": "Logarithm of a product",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "nthPrime_is_prime: proved from Nat.nth_mem_of_infinite (was axiom in parent)",
+      "nthPrime_strictMono: proved from Nat.nth_strictMono (was axiom in parent)",
+      "nthPrime_values: proved from Mathlib prime constants + Nat.nth_count (was sorry in parent)",
+      "nth_prime_three_eq_seven: auxiliary lemma via Nat.count + decide",
+      "convexity_implies_product_bound: re-derived using proved (not axiomatized) prime facts"
+    ],
+    "axiomCount": 2,
+    "lineCount": 226,
+    "assumptions": "2 axioms remain: logPrime_ratio_tendsto_zero (PNT consequence), pomerance_convex_hull_lemma (convex hull theory). Reduced from 4 axioms + 1 sorry in parent."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Convex.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos453OQ02",
+    "lineCount": 226,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-453",
+      "relationship": "parent",
+      "description": "Parent formalization. This OQ reduces its axiom count from 4 to 2 and eliminates its only sorry."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős Problem #453 was solved by Pomerance (1979) using convex hull geometry on the prime number graph. The parent formalization (Erdos453Problem.lean) axiomatized 4 facts about primes and convex hulls. This follow-up eliminates the 2 axioms about the prime enumeration function (nthPrime_is_prime, nthPrime_strictMono) by proving them from Mathlib's Nat.nth API, and proves the concrete prime values that were left as sorry.",
+    "problemStatement": "Can the axioms in Erdős Problem #453's formalization be proved from Mathlib, reducing the assumption count?",
+    "text": "Eliminates 2 of 4 axioms and the sorry from Erdős Problem #453 by proving nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API.",
+    "proofStrategy": "The 1-indexed nthPrime function unfolds to Nat.nth Nat.Prime (n-1). For primality, Nat.nth_mem_of_infinite applied to Nat.infinite_setOf_prime gives the result directly. For strict monotonicity, the shift fun n => nthPrime (n+1) = Nat.nth Nat.Prime, and Nat.nth_strictMono provides monotonicity. For concrete values, Mathlib has nth_prime_{zero,one,two}_eq_{two,three,five}; the 4th prime uses the Nat.count/Nat.nth_count technique with decide.",
+    "keyInsights": [
+      "**Indexing Bridge:** The 1-indexed nthPrime(n) = Nat.nth Nat.Prime (n-1) for n >= 1. The shifted function fun n => nthPrime(n+1) is exactly Nat.nth Nat.Prime, making Mathlib's API directly applicable.",
+      "**Nat.nth_count Technique:** For primes beyond index 2, Nat.nth Nat.Prime k = p can be proved by showing Nat.count Nat.Prime p = k (decidable) and applying Nat.nth_count.",
+      "**Axiom Triage:** Of the 4 parent axioms, 2 are routine (prime enumeration facts provable from Mathlib) and 2 are deep (PNT consequence and convex hull lemma). Eliminating the routine ones is high-value, low-cost work."
+    ],
+    "prerequisites": [
+      "Number theory (primes, Nat.nth enumeration)",
+      "Real analysis (logarithms, convexity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-sequence",
+      "title": "The Prime Sequence (Axiom-Free)",
+      "startLine": 36,
+      "endLine": 96,
+      "summary": "Defines the 1-indexed nthPrime and proves three facts that were axioms/sorry in the parent: nthPrime_is_prime via Nat.nth_mem_of_infinite, nthPrime_strictMono via Nat.nth_strictMono, and nthPrime_values using Mathlib's prime constants plus the Nat.count technique for p_4 = 7.",
+      "mathContext": "Proves nthPrime_is_prime, nthPrime_strictMono, and nthPrime_values from Mathlib's Nat.nth API, eliminating 2 axioms and 1 sorry from the parent file."
+    },
+    {
+      "id": "remaining-axioms",
+      "title": "Remaining Axioms (Deep Results)",
+      "startLine": 98,
+      "endLine": 135,
+      "summary": "Retains 2 axioms from the parent: logPrime_ratio_tendsto_zero (PNT consequence) and pomerance_convex_hull_lemma (convex hull theory for discrete sequences). Documents why these remain axiomatized.",
+      "mathContext": "The PNT asymptotic log p_n / n -> 0 and Pomerance's convex hull vertex lemma require infrastructure beyond what's currently practical to formalize from Mathlib alone."
+    },
+    {
+      "id": "main-results",
+      "title": "Re-derived Main Results",
+      "startLine": 137,
+      "endLine": 195,
+      "summary": "Re-derives convexity_implies_product_bound and pomerance_1979 using the proved (not axiomatized) prime sequence facts, demonstrating that the main theorem chain works with fewer assumptions.",
+      "mathContext": "The full proof chain from convex hull vertices to p_n^2 > p_{n+i} p_{n-i} now rests on only 2 axioms instead of 4."
+    }
+  ],
+  "conclusion": {
+    "summary": "Successfully reduced the axiom count of Erdős Problem #453 from 4 to 2 and eliminated the only sorry. The 2 eliminated axioms (nthPrime_is_prime, nthPrime_strictMono) and the sorry (nthPrime_values) were all provable from Mathlib's Nat.nth API. The 2 remaining axioms (logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma) require deep mathematical infrastructure.",
+    "implications": "The parent file's formalization is now stronger: the prime enumeration facts are machine-verified rather than assumed. Future work could target the remaining 2 axioms by connecting Mathlib's PNT to the logPrime ratio limit and formalizing discrete convex hull theory.",
+    "openQuestions": [
+      "Can logPrime_ratio_tendsto_zero be proved by connecting Mathlib's Prime Number Theorem to the 1-indexed nthPrime definition?",
+      "Can pomerance_convex_hull_lemma be proved by formalizing discrete convex hull vertex theory for sublinear sequences?"
+    ]
+  },
+  "references": [
+    {
+      "key": "pomerance1979",
+      "title": "The prime number graph",
+      "author": "C. Pomerance",
+      "year": "1979",
+      "volume": "33",
+      "pages": "399-408",
+      "venue": "Mathematics of Computation"
+    },
+    {
+      "key": "mathlib-nth",
+      "title": "Mathlib: Nat.nth and Prime Enumeration",
+      "author": "Mathlib Contributors",
+      "year": "2024",
+      "venue": "Mathlib4"
+    }
+  ]
+}

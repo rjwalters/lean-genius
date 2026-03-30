@@ -7,7 +7,7 @@
     "author": "Cauchy (1850), Bonnesen-Fenchel (1934); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_needle_problem#Buffon's_needle_problem_in_higher_dimensions",
     "date": "1850",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ02.lean",
     "tags": [
       "probability",
@@ -20,12 +20,12 @@
       "research",
       "open-question"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 4,
-    "theoremCount": 19,
+    "axiomCount": 0,
+    "theoremCount": 21,
     "defCount": 3,
-    "lineCount": 265,
+    "lineCount": 325,
     "mathlibDependencies": [
       {
         "theorem": "Real.Gamma",
@@ -67,7 +67,7 @@
       "Recurrence-derived values: c₅ = 2/3, c₆ = 3/π"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "4 axioms: gamma_one_half (Γ(1/2)=√π, Gaussian integral), buffon_higher_dim (Cauchy-Crofton formula), buffonConstant_le_one (c_n≤1 from |cosine|≤1), buffonConstant_recurrence (sphere volume recurrence). No sorries.",
+    "assumptions": "Fully verified: 0 axioms, 0 sorries. All 3 former axioms proved from Mathlib (Gamma_one_half_eq, Gamma_add_one, strong induction).",
     "prerequisites": [
       "The Gamma function and its functional equation",
       "Buffon's needle problem in 2D",
@@ -174,8 +174,8 @@
       "Real"
     ],
     "namespace": "BuffonHigherDim",
-    "lineCount": 265,
-    "axiomCount": 4,
+    "lineCount": 325,
+    "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 3
   },

@@ -89,14 +89,7 @@ theorem necessary_lower_bound (C : ℚ) (hC : 0 < C)
 
 /-- No odd weird number is known. It is an open question (Erdős #470)
     whether any odd weird number exists. -/
-axiom no_known_odd_weird :
-    ∀ n : ℕ, n ≤ 10 ^ 21 → ¬(n % 2 = 1 ∧ IsWeird n)
-
 /-- If no odd weird numbers exist, then all weird numbers have abundancy < 4. -/
-axiom odd_weird_abundancy_bound :
-    (∀ n : ℕ, n % 2 = 1 → ¬IsWeird n) →
-      ∀ n : ℕ, 0 < n → IsWeird n → (divisorSum n : ℚ) < 4 * (n : ℚ)
-
 /- ## Main conjecture -/
 
 /-- Erdős Problem 825: there exists an absolute constant C > 0 such that

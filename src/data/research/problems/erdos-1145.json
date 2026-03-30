@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1145",
-  "title": "Erd\u0151s #1145",
+  "title": "Erdős #1145",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "axiom erdos_sarkozy_conjecture (A B : Set \u2115) (hInf_A : A.Infinite) (hInf_B : B.Infinite) (hRatio : HasAsymptoticRatio A B) (hBasis : IsTwoSetBasis A B) : \u2200 k : \u2115, \u2203 n : \u2115, k < twoSetRepFunc A B n",
-    "plain": "If A, B \u2286 \u2115 are infinite with a\u2099/b\u2099 \u2192 1 and A + B covers all large integers, must r_{A,B}(n) be unbounded?",
+    "formal": "axiom erdos_sarkozy_conjecture (A B : Set ℕ) (hInf_A : A.Infinite) (hInf_B : B.Infinite) (hRatio : HasAsymptoticRatio A B) (hBasis : IsTwoSetBasis A B) : ∀ k : ℕ, ∃ n : ℕ, k < twoSetRepFunc A B n",
+    "plain": "If A, B ⊆ ℕ are infinite with aₙ/bₙ → 1 and A + B covers all large integers, must r_{A,B}(n) be unbounded?",
     "whyMatters": []
   },
   "knownResults": {
@@ -35,7 +35,7 @@
       "src/data/proofs/erdos-1145/ - Gallery entry (meta.json, index.ts, annotations.json)",
       "Proved: isTwoSetBasis_iff (basis def equivalence)",
       "Proved: hasAsymptoticRatio_self (A=A gives ratio 1)",
-      "Proved: erdos_1145_implies_28 (1145 implies Erd\u0151s-Tur\u00e1n)",
+      "Proved: erdos_1145_implies_28 (1145 implies Erdős-Turán)",
       "Proved: ratio_condition_necessary (Ruzsa counterexample)",
       "Proved: twoSetRepFunc_comm (representation symmetry)",
       "ruzsa_rep_bounded: derived from ruzsa_unique_rep via Set.ncard_eq_one",
@@ -47,18 +47,18 @@
       "sum_of_reps_bound: converted from axiom to theorem (RHS = x-x = 0, trivially true)"
     ],
     "insights": [
-      "Problem #1145 strictly generalizes Problem #28 (Erd\u0151s-Tur\u00e1n): setting A = B recovers it",
-      "The ratio condition a\u2099/b\u2099 \u2192 1 is NECESSARY: Ruzsa binary digit construction gives counterexample without it",
+      "Problem #1145 strictly generalizes Problem #28 (Erdős-Turán): setting A = B recovers it",
+      "The ratio condition aₙ/bₙ → 1 is NECESSARY: Ruzsa binary digit construction gives counterexample without it",
       "Ruzsa sets: A = even binary positions, B = odd positions, every n has unique representation, r = 1 everywhere",
       "Two-set representation function is commutative: r_{A,B}(n) = r_{B,A}(n)",
-      "For Ruzsa sets a\u2099/b\u2099 \u2192 1/2 (since B = 2A), confirming ratio \u2260 1",
+      "For Ruzsa sets aₙ/bₙ → 1/2 (since B = 2A), confirming ratio ≠ 1",
       "sum_of_reps_bound was vacuously true: RHS simplifies to a*b - a*b = 0 for naturals",
       "Ruzsa set membership proved via bit-position analysis: 4^m=2^{2m} has even bits only",
       "3 axioms eliminated (8->5), remaining 5 are genuinely deep results or open conjectures"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #1145 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1145 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -82,11 +82,11 @@
     {
       "path": "Proofs/Erdos1145Problem.lean",
       "filename": "Erdos1145Problem.lean",
-      "lineCount": 344,
-      "theoremCount": 13,
-      "axiomCount": 8,
+      "lineCount": 599,
+      "theoremCount": 36,
+      "axiomCount": 1,
       "defCount": 9,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1145Problem.lean"
     }

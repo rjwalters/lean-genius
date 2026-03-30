@@ -273,8 +273,6 @@ def question1 : Prop :=
       (v - u : ℝ) < (v : ℝ) ^ ε
 
 /-- The conjecture that Question 1 has answer YES. -/
-axiom erdos_382_q1 : question1
-
 /--
 **Question 2 (OPEN)**: Can v - u be arbitrarily large?
 
@@ -285,8 +283,6 @@ def question2 : Prop :=
   ∀ L : ℕ, ∃ u v : ℕ, satisfiesCondition u v ∧ v - u > L
 
 /-- Cambie's heuristic suggests YES for Question 2. -/
-axiom erdos_382_q2_heuristic : question2
-
 /- ## Part VI: Known Upper Bound -/
 
 /--
@@ -414,8 +410,82 @@ theorem cramer_implies_q1 : cramersConjecture → question1 := by
   intro u v hv hcond
   obtain ⟨huv, hu, _⟩ := hcond
   have hno_large := no_prime_in_upper_half u v hu huv hcond
-  -- Combine: the interval is within a Cramér gap, giving v - u ≤ C(log v)² < v^ε
-  sorry -- Case split u vs √v + Cramér gap bound + growth comparison
+  have hv4 : v ≥ 4 := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hv
+  have hV₁_le : V₁ ≤ v := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hv
+  have hV₂_le : V₂ ≤ v := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hv
+  -- Step 1: u > Nat.sqrt v (by Bertrand + contradiction with hno_large)
+  have hu_gt_sqrt : u > Nat.sqrt v := by
+    by_contra h
+    push_neg at h
+    -- Bertrand: ∃ prime p with Nat.sqrt v < p ≤ 2 * Nat.sqrt v
+    have hsqrt_pos : Nat.sqrt v ≠ 0 := by omega
+    obtain ⟨p, hp, hp_gt, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (Nat.sqrt v) hsqrt_pos
+    -- p ≤ 2 * Nat.sqrt v ≤ v (since Nat.sqrt v ≤ √v and 2√v ≤ v for v ≥ 4)
+    have hp_le_v : p ≤ v := by
+      calc p ≤ 2 * Nat.sqrt v := hp_le
+        _ ≤ v := by
+          have := Nat.sqrt_le_self v
+          have := (Nat.sqrt_lt_self (by omega : v ≥ 2)).le
+          omega
+    -- u ≤ Nat.sqrt v < p, so u ≤ p
+    have hup : u ≤ p := by omega
+    -- But hno_large says p ≤ Nat.sqrt v, contradicting p > Nat.sqrt v
+    exact absurd (hno_large p hp hup hp_le_v) (by omega)
+  -- Step 2: [u,v] is prime-free (primes in [u,v] would be > Nat.sqrt v, contradicting hno_large)
+  have hprime_free : ∀ p, Nat.Prime p → u ≤ p → p ≤ v → False := by
+    intro p hp hup hpv
+    have := hno_large p hp hup hpv
+    omega
+  -- Step 3: Find consecutive primes p₀ < u ≤ v < q₀
+  -- q₀: smallest prime > v (exists by Bertrand)
+  have ⟨q_wit, hq_wit_prime, hq_wit_gt, _⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul v (by omega)
+  let q₀ := Nat.find ⟨q_wit, hq_wit_prime, by omega : q_wit > v⟩
+  have hq₀_spec := Nat.find_spec ⟨q_wit, hq_wit_prime, by omega : q_wit > v⟩
+  have hq₀_prime : q₀.Prime := hq₀_spec.1
+  have hq₀_gt : q₀ > v := hq₀_spec.2
+  have hq₀_min : ∀ r, r.Prime → r > v → q₀ ≤ r := fun r hr hrv =>
+    Nat.find_min' ⟨q_wit, hq_wit_prime, by omega⟩ ⟨hr, hrv⟩
+  -- p₀: largest prime < u (exists since 2 < u)
+  let primes_lt_u := (Finset.range u).filter Nat.Prime
+  have hne : primes_lt_u.Nonempty := by
+    refine ⟨2, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), Nat.prime_iff.mpr ⟨by omega, by omega⟩⟩⟩
+  let p₀ := primes_lt_u.max' hne
+  have hp₀_mem := Finset.max'_mem primes_lt_u hne
+  have hp₀_prime : p₀.Prime := (Finset.mem_filter.mp hp₀_mem).2
+  have hp₀_lt : p₀ < u := Finset.mem_range.mp (Finset.mem_filter.mp hp₀_mem).1
+  have hp₀_max : ∀ r, r.Prime → r < u → r ≤ p₀ := by
+    intro r hr hru
+    exact Finset.le_max' primes_lt_u r (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hru, hr⟩)
+  -- p₀ and q₀ are consecutive primes (no prime between them)
+  have hconsec : ∀ r, p₀ < r → r < q₀ → ¬r.Prime := by
+    intro r hr₁ hr₂ hr_prime
+    -- r < q₀ and q₀ is min prime > v, so r ≤ v
+    have hrv : r ≤ v := by
+      by_contra h; push_neg at h; exact absurd (hq₀_min r hr_prime (by omega)) (by omega)
+    -- r > p₀ and r.Prime, so r ≥ u (otherwise r ≤ p₀ by maximality)
+    have hru : u ≤ r := by
+      by_contra h; push_neg at h; exact absurd (hp₀_max r hr_prime h) (by omega)
+    -- But r.Prime, u ≤ r, r ≤ v contradicts hprime_free
+    exact hprime_free r hr_prime hru hrv
+  have hp₀_lt_q₀ : p₀ < q₀ := by omega
+  -- Step 4: Apply Cramér to consecutive primes p₀, q₀
+  have hcramer_bound : (q₀ - p₀ : ℝ) ≤ C * (Real.log p₀) ^ 2 :=
+    hcramer p₀ q₀ hp₀_prime hq₀_prime hp₀_lt_q₀ hconsec
+  -- Step 5: Chain v - u ≤ q₀ - p₀ ≤ C * log² p₀ ≤ C * log² v < v^ε
+  have hvu_le : (v - u : ℝ) ≤ (q₀ - p₀ : ℝ) := by
+    have : (u : ℝ) ≥ (p₀ : ℝ) + 1 := by exact_mod_cast show u ≥ p₀ + 1 by omega
+    have : (v : ℝ) ≤ (q₀ : ℝ) - 1 := by exact_mod_cast show v ≤ q₀ - 1 by omega
+    linarith
+  have hlog_mono : (Real.log p₀) ^ 2 ≤ (Real.log v) ^ 2 := by
+    apply sq_le_sq'
+    · linarith [Real.log_nonneg (show (1 : ℝ) ≤ ↑v by exact_mod_cast show 1 ≤ v by omega)]
+    · exact Real.log_le_log (by exact_mod_cast show 0 < p₀ from Nat.Prime.pos hp₀_prime)
+        (by exact_mod_cast show p₀ ≤ v by omega)
+  calc (v - u : ℝ) ≤ (q₀ - p₀ : ℝ) := hvu_le
+    _ ≤ C * (Real.log p₀) ^ 2 := hcramer_bound
+    _ ≤ C * (Real.log v) ^ 2 := by exact mul_le_mul_of_nonneg_left hlog_mono hC.le
+    _ < (v : ℝ) ^ ε := hV₁ v hV₁_le
 
 /- ## Part VIII: Examples -/
 

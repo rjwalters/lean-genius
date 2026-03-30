@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-cramer-complexity-header",
+    "proofId": "cramers-rule-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "context",
+    "title": "Beauty vs Efficiency: The Cramer-Gauss Complexity Gap",
+    "body": "Cramer's Rule provides an explicit closed-form solution to linear systems using determinants. However, the Leibniz formula for determinants requires summing over all n! permutations, making it exponentially slower than Gaussian elimination's O(n³) for large systems. This file quantifies the gap."
+  },
+  {
+    "id": "ann-cramer-complexity-factorial",
+    "proofId": "cramers-rule-oq-01-oq-03",
+    "range": {
+      "startLine": 111,
+      "endLine": 135
+    },
+    "type": "insight",
+    "title": "Factorial Dominates Cube: The Inductive Proof",
+    "body": "The proof that n! ≥ n³ for n ≥ 6 uses strong induction. The base case 6! = 720 ≥ 216 = 6³ is checked by norm_num. The inductive step uses (n+1)! = (n+1)·n! ≥ (n+1)·n³ ≥ (n+1)³, where the last inequality follows from n³ ≥ (n+1)² for n ≥ 3, which is equivalent to n²(n-1) ≥ 2n+1."
+  },
+  {
+    "id": "ann-cramer-complexity-exact",
+    "proofId": "cramers-rule-oq-01-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Exact Counts: The Gap Becomes Absurd Quickly",
+    "body": "The exact operation counts tell the story: at n = 2, Cramer uses 5 ops (competitive). At n = 3, it's 53 vs ~14. At n = 4, it's 475 vs ~20. At n = 10, Cramer would need over 40 million operations while Gaussian uses ~1000. The factorial explosion is devastating."
+  }
+]

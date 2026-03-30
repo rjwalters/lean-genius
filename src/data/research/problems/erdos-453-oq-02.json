@@ -1,0 +1,99 @@
+{
+  "slug": "erdos-453-oq-02",
+  "title": "Convexity Implies Product Bound (Sorry Elimination)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can convexity_implies_product_bound be proved in Lean without sorry?",
+    "whyMatters": [
+      "Completes the formalization of Pomerance's 1979 proof"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "log_to_product from Mathlib log lemmas"
+    ],
+    "open": [],
+    "goal": "Sorry-free proof of convexity → product bound"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T05:40:00Z",
+    "iteration": 1,
+    "focus": "Completed",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved log_to_product without sorry using Real.log_mul, Real.log_pow, Real.log_lt_log_iff. Fixed forward reference ordering issue from parent file.",
+    "builtItems": [
+      "log_to_product: log convexity → product bound (sorry-free)",
+      "convexity_implies_product_bound (properly ordered)",
+      "Verification theorems for each Mathlib lemma used",
+      "Gallery entry with cross-references"
+    ],
+    "insights": [
+      "Proof reduces to three Mathlib lemmas: log_mul, log_pow, log_lt_log_iff",
+      "Parent file had forward reference: log_to_product defined after its caller",
+      "Transfer from ℝ to ℤ requires exact_mod_cast and careful Nat.cast handling"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "primes",
+    "logarithms"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-45",
+    "erdos-453",
+    "erdos-453-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Real.log_mul",
+      "Real.log_pow",
+      "Real.log_lt_log_iff"
+    ]
+  },
+  "started": "2026-03-30T05:40:00Z",
+  "lastUpdate": "2026-03-30T05:50:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos453OQ02.lean",
+      "filename": "Erdos453OQ02.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos453Problem.lean",
+      "filename": "Erdos453Problem.lean",
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453Problem.lean"
+    }
+  ]
+}

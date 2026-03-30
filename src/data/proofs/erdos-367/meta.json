@@ -62,7 +62,7 @@
       "strong_bound_k1: proved strongBound(1) via twoFullPart_le and Finset.prod_singleton",
       "strong_bound_k2: proved strongBound(2) via twoFullPart_le, mul_le_mul, and nlinarith"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "prerequisites": [
       "Prime factorization and p-adic valuations",
       "Squarefree numbers and powerful (k-full) numbers",
@@ -71,8 +71,8 @@
       "Basic real analysis (logarithms, limits, sequences)"
     ],
     "date": "1980",
-    "lineCount": 388,
-    "assumptions": "5 axioms: strong_bound_fails_k3, van_doorn_lower_bound, twoFullPart_eq_one_iff, twoFullPart_mul_coprime, average_twoFullPart_bounded. 6 former axioms proved: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq, strong_bound_k1, strong_bound_k2."
+    "lineCount": 415,
+    "assumptions": "4 axioms: van_doorn_lower_bound, twoFullPart_eq_one_iff, twoFullPart_mul_coprime, average_twoFullPart_bounded. 7 former axioms proved: twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq, strong_bound_k1, strong_bound_k2, strong_bound_fails_k3 (proved from van_doorn_lower_bound via log→∞ argument)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #367: Products of 2-Full Parts**\n\nThis problem connects two classical themes in multiplicative number theory: the distribution of powerful numbers and the multiplicative structure of consecutive integers.\n\n**Background:** The 2-full (or squareful) part $B_2(n)$ captures the 'square content' of $n$'s prime factorization. Golomb (1970) introduced powerful numbers (where every prime divides with exponent $\\geq 2$) and studied their distribution. The function $B_2$ generalizes this: $B_2(n) = \\prod_{v_p(n) \\geq 2} p^{v_p(n)}$ extracts the powerful component from any integer.\n\n**The problem:** Erdős asked whether $\\prod_{n \\leq m < n+k} B_2(m) \\ll n^{2+o(1)}$ for every fixed $k$. The exponent 2 is natural: since $B_2(n) \\leq n$, the product of $k$ terms is at most $n^k$, but heuristically most $B_2(m)$ are small, so the 'effective' exponent should be much less than $k$.\n\n**Progress:**\n- For $k \\leq 2$: the strong bound $\\ll n^2$ holds trivially ($B_2(n) \\leq n$).\n- **van Doorn (2023):** Proved the strong bound **fails** for $k \\geq 3$. Specifically, there exist infinitely many $n$ with $\\prod_{m=n}^{n+2} B_2(m) \\gg n^2 \\log n$. The construction uses the Chinese Remainder Theorem to find $n$ where multiple consecutive integers have large square factors.\n- The **weak bound** $n^{2+o(1)}$ (with the logarithmic slack) remains open for all $k \\geq 3$.",
@@ -234,8 +234,8 @@
       "Finset"
     ],
     "namespace": "Erdos367",
-    "lineCount": 388,
-    "axiomCount": 5,
+    "lineCount": 415,
+    "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 10
   }

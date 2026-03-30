@@ -46,7 +46,14 @@ noncomputable def t (n : ℕ) : ℕ :=
 -- Lattice grid properties
 /-- The lattice grid {1,...,n}^2 has n^2 points. -/
 theorem latticeGrid_card (n : ℕ) (hn : n ≥ 1) :
-    (latticeGrid n).ncard = n ^ 2 := by sorry
+    (latticeGrid n).ncard = n ^ 2 := by
+  have heq : latticeGrid n = (Set.Icc (1 : ℤ) ↑n) ×ˢ (Set.Icc (1 : ℤ) ↑n) := by
+    ext ⟨x, y⟩; simp [latticeGrid, Set.mem_prod, Set.mem_Icc]
+  rw [heq, Set.ncard_prod (Set.finite_Icc _ _) (Set.finite_Icc _ _)]
+  suffices h : (Set.Icc (1 : ℤ) ↑n).ncard = n by rw [h]; ring
+  rw [Set.ncard_eq_toFinset_card’ (Set.Icc (1 : ℤ) ↑n)]
+  simp only [Set.toFinset_Icc, Finset.card_Icc]
+  omega
 
 /-- The lattice grid is finite. -/
 theorem latticeGrid_finite (n : ℕ) :
@@ -80,7 +87,19 @@ theorem mem_lineThroughPoints_right (p q : ℤ × ℤ) :
 
 /-- Lines are symmetric: the line through p,q equals the line through q,p. -/
 theorem lineThroughPoints_symm (p q : ℤ × ℤ) :
-    lineThroughPoints p q = lineThroughPoints q p := by sorry
+    lineThroughPoints p q = lineThroughPoints q p := by
+  simp only [lineThroughPoints]
+  split_ifs with h1 h2 h2
+  · rw [h1]
+  · exact absurd h1.symm h2
+  · exact absurd h2.symm h1
+  · ext r
+    simp only [Set.mem_setOf_eq]
+    constructor
+    · rintro ⟨t, ht1, ht2⟩
+      exact ⟨1 - t, by push_cast; linarith, by push_cast; linarith⟩
+    · rintro ⟨t, ht1, ht2⟩
+      exact ⟨1 - t, by push_cast; linarith, by push_cast; linarith⟩
 
 -- Combinatorial bound
 /-- k points determine at most k*(k-1)/2 lines. -/

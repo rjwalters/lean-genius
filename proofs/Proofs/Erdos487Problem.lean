@@ -116,9 +116,7 @@ lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet
 If A ⊆ ℕ has positive upper logarithmic density, then A contains
 an infinite divisibility chain a₁ | a₂ | a₃ | ...
 -/
-axiom davenport_erdos_1936 :
-  ∀ A : Set ℕ, HasPositiveUpperDensity A →
-    ∃ f : ℕ → ℕ, (∀ i, f i ∈ A) ∧ IsDivisibilityChain f
+/-- Davenport-Erdős implies infinite divisibility chains in dense sets. -/
 
 /--
 **LCM Triple from Coprime Multipliers:**
@@ -159,17 +157,8 @@ theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (
 ## Part IV: Kleitman's Theorem (1971)
 -/
 
-/--
-**Union-Free Bound:**
-The maximum size of a union-free collection F ⊆ P([n]) is
-  (1 + o(1)) · C(n, ⌊n/2⌋).
-
-This is exponentially smaller than 2^n.
--/
-axiom union_free_bound :
-  ∀ n : ℕ, ∀ F : Finset (Finset (Fin n)),
-    IsUnionFree (F.toSet.image (·.toSet)) →
-    F.card ≤ 2 * Nat.choose n (n / 2)
+/-- **Union-Free Bound**: max |F| for union-free F ⊆ P([n]) is
+(1 + o(1)) · C(n, ⌊n/2⌋), exponentially smaller than 2^n. -/
 
 /--
 **Kleitman (1971):**
@@ -233,14 +222,7 @@ axiom lcm_triple_in_dense_set :
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c
 
-/--
-**Infinitely Many LCM Triples:**
-In fact, there are infinitely many such triples.
--/
-axiom infinitely_many_lcm_triples :
-  ∀ A : Set ℕ, HasPositiveUpperDensity A →
-    Set.Infinite {(a, b, c) : ℕ × ℕ × ℕ |
-      a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c}
+/-- In fact, there are infinitely many such triples in any dense set. -/
 
 /-
 ## Part VI: Examples

@@ -71,7 +71,13 @@ def rootsOfUnity (n : ℕ) (hn : n > 0) : UnitDiscPolynomial where
   roots_in_disc := by
     intro i
     simp only [Complex.abs_exp]
-    sorry
+    -- The argument is purely imaginary: rewrite as (real * I), then re = 0
+    have heq : 2 * ↑Real.pi * Complex.I * ↑↑(i : ℕ) / ↑(n : ℕ) =
+      ↑(2 * Real.pi * (↑(i : ℕ) : ℝ) / (↑n : ℝ)) * Complex.I := by
+      push_cast; ring
+    rw [heq, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        Complex.I_re, Complex.I_im]
+    simp [Real.exp_zero]
 
 /-- The benchmark upper bound: ρ(zⁿ - 1) ≤ π/(2n). -/
 axiom benchmark_upper (n : ℕ) (hn : n > 0) :
@@ -101,7 +107,33 @@ axiom klr_lower :
 theorem klr_better_than_pommerenke :
     ∀ᶠ n in Filter.atTop,
     1 / ((n : ℝ) * Real.sqrt (Real.log n)) > 1 / (2 * Real.exp 1 * n^2) := by
-  sorry
+  filter_upwards [Filter.eventually_ge_atTop 3] with n hn
+  have hn3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by linarith
+  have hlog_pos : 0 < Real.log (n : ℝ) := Real.log_pos (by linarith : (1 : ℝ) < n)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  -- Key chain: √(log n) < log n < n for n ≥ 3
+  have hlog_gt_1 : 1 < Real.log (n : ℝ) := by
+    rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+    exact Real.log_lt_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9])
+  have hsqrt_lt_log : Real.sqrt (Real.log (n : ℝ)) < Real.log (n : ℝ) := by
+    have h1 : 1 < Real.sqrt (Real.log (n : ℝ)) := by
+      rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
+      exact Real.sqrt_lt_sqrt (by linarith) hlog_gt_1
+    calc Real.sqrt (Real.log (n : ℝ))
+        = Real.sqrt (Real.log (n : ℝ)) * 1 := (mul_one _).symm
+      _ < Real.sqrt (Real.log (n : ℝ)) * Real.sqrt (Real.log (n : ℝ)) :=
+          mul_lt_mul_of_pos_left h1 hsqrt_pos
+      _ = Real.log (n : ℝ) := Real.mul_self_sqrt (le_of_lt hlog_pos)
+  have hlog_lt_n : Real.log (n : ℝ) < (n : ℝ) := by
+    have := Real.add_one_le_exp hlog_pos.le
+    rw [Real.exp_log hn_pos] at this; linarith
+  -- 1/(n√(log n)) > 1/(2en²) ⟺ 2en² > n√(log n) ⟺ 2en > √(log n)
+  rw [gt_iff_lt, div_lt_div_iff (by positivity) (mul_pos hn_pos hsqrt_pos)]
+  simp only [one_mul]
+  push_cast
+  nlinarith [Real.exp_one_gt_d9,
+             mul_lt_mul_of_pos_left (lt_trans hsqrt_lt_log hlog_lt_n) hn_pos]
 
 /-
 ## The Erdős-Herzog-Piranian Conjecture
@@ -112,9 +144,8 @@ def ehpConjecture : Prop :=
   ∃ c > 0, ∀ (f : UnitDiscPolynomial), f.degree > 0 →
     rho f ≥ c / f.degree
 
-/-- The conjecture remains open. -/
-axiom ehp_open : ¬(ehpConjecture ∨ ¬ehpConjecture)
-  -- This is a placeholder to indicate the problem is open
+/-- The EHP conjecture is an open problem. We neither prove nor disprove it.
+    (The previous axiom `¬(P ∨ ¬P)` was inconsistent with classical logic.) -/
 
 /-
 ## Comparison of Bounds
@@ -136,10 +167,26 @@ noncomputable def conjecturedBound (c : ℝ) (n : ℕ) : ℝ :=
 noncomputable def benchmarkBound (n : ℕ) : ℝ :=
   Real.pi / (2 * n)
 
-/-- The gap between known lower and upper bounds. -/
-theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : c > 0) :
+/-- For small enough c (c < π/2), the KLR bound is below the benchmark. -/
+theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Real.pi / 2) :
     klrBound c n < benchmarkBound n := by
-  sorry
+  simp only [klrBound, benchmarkBound]
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hn3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hlog_pos : 0 < Real.log (n : ℝ) := Real.log_pos (by linarith : (1 : ℝ) < n)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have hlog_ge_1 : 1 ≤ Real.log (n : ℝ) := by
+    have hexp_le : Real.exp 1 ≤ (n : ℝ) := by
+      have : Real.exp 1 < 3 := by linarith [Real.exp_one_lt_d9]
+      linarith
+    rwa [Real.exp_le_iff_le_log hn_pos] at hexp_le
+  have hsqrt_ge_1 : 1 ≤ Real.sqrt (Real.log (n : ℝ)) := by
+    have := Real.sqrt_le_sqrt hlog_ge_1; rwa [Real.sqrt_one] at this
+  -- Reduce to: 2c < π√(log n), by clearing positive denominators
+  rw [div_lt_div_iff (mul_pos hn_pos hsqrt_pos) (by positivity : (0 : ℝ) < 2 * ↑n)]
+  -- Goal: c * (2 * ↑n) < π * (↑n * √(log ↑n))
+  -- From c < π/2 and √(log n) ≥ 1: 2cn < πn ≤ πn√(log n)
+  nlinarith [Real.pi_pos]
 
 /-
 ## Lemniscate Properties
@@ -149,26 +196,33 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : c > 0) :
 def lemniscate : Set ℂ :=
   {z : ℂ | Complex.abs (f.eval z) = 1}
 
-/-- The sublevel set is open. -/
+/-- The sublevel set is open (preimage of (-∞, 1) under the continuous map |f|). -/
 theorem sublevelSet_isOpen : IsOpen (sublevelSet f) := by
-  sorry
+  simp only [sublevelSet, UnitDiscPolynomial.eval]
+  exact isOpen_lt
+    (Complex.continuous_abs.comp
+      (continuous_finset_prod Finset.univ fun i _ => continuous_id.sub continuous_const))
+    continuous_const
+
+/-- Each root is in the sublevel set (f(zᵢ) = 0 since the product has a zero factor). -/
+theorem root_in_sublevelSet (i : Fin f.degree) :
+    f.roots i ∈ sublevelSet f := by
+  simp only [sublevelSet, Set.mem_setOf_eq, UnitDiscPolynomial.eval]
+  have : ∏ j : Fin f.degree, (f.roots i - f.roots j) = 0 :=
+    Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)
+  simp [this]
 
 /-- The sublevel set is non-empty (contains the roots). -/
 theorem sublevelSet_nonempty (hf : f.degree > 0) :
-    (sublevelSet f).Nonempty := by
-  sorry
-
-/-- Each root is in the sublevel set. -/
-theorem root_in_sublevelSet (i : Fin f.degree) :
-    f.roots i ∈ sublevelSet f := by
-  sorry
+    (sublevelSet f).Nonempty :=
+  ⟨f.roots ⟨0, hf⟩, root_in_sublevelSet f ⟨0, hf⟩⟩
 
 /-
 ## Area Bounds
 -/
 
-/-- Area of the sublevel set. -/
-noncomputable def sublevelArea : ℝ := MeasureTheory.volume (sublevelSet f)
+/-- Area of the sublevel set (Lebesgue measure, converted to ℝ via toReal). -/
+noncomputable def sublevelArea : ℝ := (MeasureTheory.volume (sublevelSet f)).toReal
 
 /-- Lower bound on area implies lower bound on inscribed disc. -/
 theorem area_implies_disc_bound :

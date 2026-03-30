@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T10:46:46.306Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Axiom elimination on structural properties",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added telescoping section — generalGap_add_mid, generalGap_telescope, consecutiveGap_le_generalGap. Total: 26 theorems, 1 axiom (open conjecture), 0 sorries.",
+    "progressSummary": "PROGRESS: Added per-pair reciprocal bounds (reciprocal_gap_index_bound, reciprocal_gap_consecutive_bound). Total: 28 theorems, 1 axiom (open conjecture), 0 sorries.",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -53,7 +53,9 @@
       "generalGap_ge_diff: gap >= index diff (Erdos884Problem.lean:284)",
       "generalGap_add_mid: additive decomposition d_k-d_i = (d_j-d_i)+(d_k-d_j) (Erdos884Problem.lean:315)",
       "generalGap_telescope: telescoping d_j-d_i = Σ_{k=i}^{j-1} g_k by induction (Erdos884Problem.lean:326)",
-      "consecutiveGap_le_generalGap: any interior consecutive gap ≤ general gap (Erdos884Problem.lean:348)"
+      "consecutiveGap_le_generalGap: any interior consecutive gap ≤ general gap (Erdos884Problem.lean:348)",
+      "reciprocal_gap_index_bound: 1/(d_j-d_i) ≤ 1/(j-i) via generalGap_ge_diff + div_le_div_iff (Erdos884Problem.lean:365)",
+      "reciprocal_gap_consecutive_bound: 1/(d_j-d_i) ≤ 1/g_i via gap_lower_bound + div_le_div_iff (Erdos884Problem.lean:378)"
     ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
@@ -77,10 +79,18 @@
       "generalGap_ge_diff: general gap d_j - d_i >= j - i — divisors grow at least 1 per step",
       "Telescoping identity: generalGap decomposes into sum of consecutiveGaps — proved by induction on j with generalGap_add_mid as the key step",
       "consecutiveGap_le_generalGap: any consecutive gap in [i,j) is dominated by the general gap — proved via gap_lower_bound + generalGap_add_mid",
-      "AM-HM approach gives 1/(d_j-d_i) ≤ (Σ 1/g_k)/(j-i)² but summing gives O(log τ) factor, not constant — insufficient for full conjecture"
+      "AM-HM approach gives 1/(d_j-d_i) ≤ (Σ 1/g_k)/(j-i)² but summing gives O(log τ) factor, not constant — insufficient for full conjecture",
+      "Per-pair bounds: 1/(d_j-d_i) ≤ min(1/(j-i), 1/g_i) — two independent upper bounds for each pair contribution",
+      "Index bound implies allPairsSum ≤ Σ_{s=1}^{τ-1} (τ-s)/s ≈ τ·H(τ) via rearrangement by offset s=j-i",
+      "Consecutive bound implies allPairsSum ≤ (τ-1)·consecutivePairsSum via counting j > i for each fixed i",
+      "Tighter bound needs AM-HM/Cauchy-Schwarz: 1/(d_j-d_i) ≤ (1/(j-i)²)·Σ_{k∈[i,j)} 1/g_k — gives O(log τ) factor"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove sum-level bound: allPairsSum ≤ (τ-1)·consecutivePairsSum using reciprocal_gap_consecutive_bound",
+      "Formalize AM-HM inequality for finite sums to get tighter O(log τ) bound",
+      "Prove conjecture for prime power case n=p^k where geometric series converge"
+    ],
     "markdown": "# Erdős #884 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $n$, if $d_1<\\cdots <d_t$ are the divisors of $n$, then\\[\\sum_{1\\leq i<j\\leq t}\\frac{1}{d_j-d_i} \\ll 1+\\sum_{1\\leq i<t}\\frac{1}{d_{i+1}-d_i},\\]where the implied constant is absolute?\n\n\n\nSee also [144].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #144\n- Problem #883\n- Problem #885\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -97,15 +107,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:46:46.306Z",
-  "lastUpdate": "2026-03-28T23:00:00.000Z",
+  "lastUpdate": "2026-03-29T23:10:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos884Problem.lean",
       "filename": "Erdos884Problem.lean",
-      "lineCount": 323,
-      "theoremCount": 17,
+      "lineCount": 483,
+      "theoremCount": 23,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,

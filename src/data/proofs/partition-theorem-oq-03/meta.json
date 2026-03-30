@@ -1,0 +1,68 @@
+{
+  "id": "partition-theorem-oq-03",
+  "title": "Euler Partition Identities for Overpartitions",
+  "slug": "partition-theorem-oq-03",
+  "description": "Defines overpartitions (partitions with optional overlined parts) and formalizes their connection to Euler's partition identity.",
+  "meta": {
+    "author": "Corteel-Lovejoy (2004), Euler (1748)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PartitionTheoremOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "partitions",
+      "overpartitions",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Overpartition structure: partition + overlined set with subset constraint",
+      "euler_partition_identity: wrapper for Mathlib's distinct = odd",
+      "distinctToOverpartition: embedding of distinct partitions into overpartitions",
+      "overpartition_choices: 2^d choices for d distinct part sizes"
+    ],
+    "axiomCount": 4,
+    "assumptions": "4 axioms: numOverpartitions (function), numOverpartitions_zero/one/two (small values). The function requires enumerating partitions which needs Mathlib Fintype infrastructure.",
+    "lineCount": 62
+  },
+  "overview": {
+    "historicalContext": "Overpartitions were systematically studied by Corteel and Lovejoy (2004), building on Euler's 1748 partition identity. An overpartition allows the first occurrence of each part size to be optionally marked, doubling the combinatorial choices.",
+    "problemStatement": "How do Euler's partition identities generalize to overpartitions?",
+    "text": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
+    "proofStrategy": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
+    "keyInsights": []
+  },
+  "sections": [],
+  "references": [
+    {
+      "authors": "Corteel, Sylvie and Lovejoy, Jeremy",
+      "title": "Overpartitions",
+      "year": "2004",
+      "venue": "Trans. Amer. Math. Soc."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "partition-theorem",
+      "relationship": "extends",
+      "description": "Extends Euler's partition identity to overpartitions"
+    }
+  ],
+  "conclusion": {
+    "summary": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized.",
+    "implications": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "OverpartitionTheory",
+    "lineCount": 62,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 2
+  }
+}

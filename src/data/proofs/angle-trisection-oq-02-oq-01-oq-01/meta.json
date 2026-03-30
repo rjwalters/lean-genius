@@ -1,0 +1,125 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-01",
+  "title": "Mathlib Contribution: natDegree_dvd_card for Polynomial Galois Groups",
+  "slug": "angle-trisection-oq-02-oq-01-oq-01",
+  "description": "Demonstrates that Mathlib's prime_degree_dvd_card has an unnecessary hypothesis: the Prime condition on natDegree can be dropped. The generalized natDegree_dvd_card works for ALL irreducible polynomials over CharZero fields.",
+  "meta": {
+    "author": "Generalization of Mathlib's prime_degree_dvd_card",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "field-extensions",
+      "mathlib-contribution"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Gal.card_of_separable",
+        "description": "Card of Galois group equals finrank of splitting field",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "Degree of simple extension equals minpoly degree",
+        "module": "Mathlib.FieldTheory.Adjoin"
+      },
+      {
+        "theorem": "Module.finrank_mul_finrank",
+        "description": "Tower law for field extensions",
+        "module": "Mathlib.LinearAlgebra.Dimension.Finrank"
+      }
+    ],
+    "originalContributions": [
+      "prime_degree_dvd_card_from_general: shows Mathlib's existing theorem as corollary",
+      "Detailed Mathlib contribution plan with exact code changes",
+      "API difference analysis: Nat.card vs Fintype.card, Module.finrank vs FiniteDimensional.finrank"
+    ],
+    "axiomCount": 0,
+    "assumptions": "No axioms. Uses natDegree_dvd_card_gal from parent file (also 0 axioms). The theorem prime_degree_dvd_card_from_general is fully proved.",
+    "lineCount": 123
+  },
+  "overview": {
+    "historicalContext": "Mathlib's `Polynomial.Gal.prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) proves that for an irreducible polynomial of **prime** degree over a `CharZero` field, the degree divides the cardinality of its Galois group. However, inspecting the proof reveals that the primality hypothesis is only used to deduce `p.degree ≠ 0`, which also follows from `Irreducible.natDegree_pos`. This means the theorem holds for all irreducible polynomials, not just those of prime degree.",
+    "problemStatement": "**Generalization:** For any irreducible polynomial $p$ over a `CharZero` field $F$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.\n\n**Proof:** By the tower law $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $E$ is the splitting field and $\\alpha$ is any root. Since $[F(\\alpha):F] = \\deg(\\text{minpoly}(F, \\alpha)) = \\deg(p)$ (by irreducibility), the result follows.\n\n**Impact:** The existing `prime_degree_dvd_card` becomes a trivial corollary.",
+    "text": "Generalizes Mathlib's prime_degree_dvd_card to all irreducible polynomials by observing the prime hypothesis is unused beyond deducing nonzero degree.",
+    "proofStrategy": "The proof is identical to Mathlib's existing proof of prime_degree_dvd_card, except that we replace the use of Nat.Prime.ne_zero with Irreducible.natDegree_pos to establish p.degree ≠ 0. This single change drops the unnecessary hypothesis.",
+    "keyInsights": [
+      "The Prime hypothesis in prime_degree_dvd_card is used only to establish p.degree ≠ 0, which follows directly from irreducibility",
+      "The generalization is essentially a one-line change to the existing Mathlib proof",
+      "Tower law gives natDegree(p) | [SplittingField : F] = |Gal(p)| for ALL irreducible polynomials",
+      "This is a common pattern in Mathlib: hypotheses that are stronger than needed due to the original proof strategy"
+    ],
+    "prerequisites": [
+      "Galois theory: splitting fields, Galois groups of polynomials, the fundamental theorem connecting |Gal| to the degree of the splitting field extension",
+      "Field extensions: tower law dim(E/F) = dim(E/K) · dim(K/F), simple extensions F(α), the connection between minimal polynomial degree and extension degree",
+      "Polynomial algebra: irreducible polynomials, roots in splitting fields, the fact that minpoly(F, α) divides any polynomial vanishing at α"
+    ]
+  },
+  "sections": [
+    {
+      "id": "generalization",
+      "title": "The Generalized Theorem",
+      "summary": "References `natDegree_dvd_card_gal` from parent file: for irreducible $p$ over CharZero, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "The key insight: `Irreducible.natDegree_pos` replaces `Nat.Prime.ne_zero` to establish $\\deg(p) \\neq 0$."
+    },
+    {
+      "id": "corollary",
+      "title": "Existing Theorem as Corollary",
+      "summary": "Proves `prime_degree_dvd_card_from_general`: the Mathlib theorem follows by ignoring the unused `Prime` hypothesis.",
+      "startLine": 41,
+      "endLine": 50,
+      "mathContext": "Verified: one-line proof showing `prime_degree_dvd_card` is a special case."
+    },
+    {
+      "id": "contribution-plan",
+      "title": "Mathlib Contribution Plan",
+      "summary": "Detailed plan for contributing to Mathlib: exact code changes, deprecation strategy, API differences, PR checklist.",
+      "startLine": 51,
+      "endLine": 105,
+      "mathContext": "Documents the precise changes needed in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent file containing the original proof of natDegree_dvd_card_gal with full tower law argument"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "foundational",
+      "description": "Root problem: impossibility of angle trisection by ruler and compass, which uses the degree criterion that this theorem supports"
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Abel-Ruffini theorem uses similar Galois group cardinality arguments for solvability by radicals"
+    }
+  ],
+  "conclusion": {
+    "summary": "The generalized theorem natDegree_dvd_card is proved and ready for Mathlib contribution. It strictly generalizes the existing prime_degree_dvd_card by dropping the unnecessary Prime hypothesis. The contribution plan includes exact code changes and deprecation strategy.",
+    "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where natDegree divides |Gal| is needed (constructibility, solvability, Galois representations) benefits from the weaker hypothesis.",
+    "openQuestions": [
+      "Does the theorem extend beyond CharZero? The separability hypothesis is key — in positive characteristic, inseparable polynomials may not satisfy this.",
+      "Can the Fintype.card be replaced with Nat.card throughout the Gal API in Mathlib?",
+      "Are there other theorems in Mathlib with similarly unnecessary hypotheses that could be generalized?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Mathlib contributors",
+      "title": "Polynomial.Gal.prime_degree_dvd_card",
+      "year": "2023",
+      "venue": "Mathlib4, Mathlib/FieldTheory/PolynomialGaloisGroup.lean",
+      "note": "The existing Mathlib theorem requiring prime degree, which this contribution generalizes"
+    }
+  ]
+}

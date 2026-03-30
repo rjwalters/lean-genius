@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ann-dr-formula",
+    "proofId": "divisibility-by-3-oq-03",
+    "range": {"startLine": 41, "endLine": 65},
+    "type": "insight",
+    "title": "From O(n) Iterations to O(1): The Digital Root Formula",
+    "body": "The naive approach iterates digit summation until reaching a single digit, which requires O(log n) iterations each taking O(log n) time. The closed-form formula dr(n) = 1 + ((n-1) mod 9) computes the result in constant time using a single modular reduction."
+  },
+  {
+    "id": "ann-dr-idempotent",
+    "proofId": "divisibility-by-3-oq-03",
+    "range": {"startLine": 95, "endLine": 110},
+    "type": "insight",
+    "title": "Idempotency: The Fixed-Point Property",
+    "body": "digitalRoot_idempotent shows dr(dr(n)) = dr(n): once you've computed the digital root, applying it again gives the same result. The proof uses the fact that dr(n) is always a single digit (1-9), so digitalRoot_single gives dr applied to a single digit is the identity."
+  }
+]

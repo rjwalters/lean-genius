@@ -1,6 +1,6 @@
 {
   "slug": "erdos-278",
-  "title": "Erd\u0151s #278",
+  "title": "Erdős #278",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -29,19 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (Simpson 1986 \u2014 deep result), 12T proved, 0S.",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries, 12T proved. Fully verified.",
     "builtItems": [
-      "Proved erdos_278_density_le_one (axiom \u2192 theorem) via csSup_le",
+      "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
       "Proved single_modulus_density: for singleton {n}, maxCoverageDensity = 1/n (via systemLCM_singleton + coverageDensity_singleton)",
       "Added dvd_systemLCM: each modulus divides the system LCM (via init_dvd_foldl_lcm + mem_dvd_foldl_lcm)",
       "Added coverageDensity_eq: unfolds coverageDensity without the let binding",
-      "Proved equal_residues_minimize: coverage density with constant residue a = coverage density with constant residue 0 (via Finset.card_bij, cyclic shift m\u21a6(m+a)%L)",
-      "Added coverage_card_shift: \u2115 cardinality equality of coverage filters via bijection",
+      "Proved equal_residues_minimize: coverage density with constant residue a = coverage density with constant residue 0 (via Finset.card_bij, cyclic shift m↦(m+a)%L)",
+      "Added coverage_card_shift: ℕ cardinality equality of coverage filters via bijection",
       "Fixed pre-existing build failure in coverage_card_shift (swapped bijection + explicit mod arithmetic)",
-      "Proved dvd_sub_of_mod_eq helper: a\u2261b(mod k), b\u2264a \u2192 k|(a-b)",
+      "Proved dvd_sub_of_mod_eq helper: a≡b(mod k), b≤a → k|(a-b)",
       "Proved mod_add_right helper: (x%n+y)%n = (x+y)%n",
-      "Corrected max_density_coprime_case \u2192 coprime_density_formula with correct 1-\u220f(1-1/n\u1d62) formula",
+      "Corrected max_density_coprime_case → coprime_density_formula with correct 1-∏(1-1/nᵢ) formula",
       "Added coprimeDensity definition and coprimeDensity_singleton theorem",
       "Proved coprime_max_eq_min: for coprime moduli, max=min=coprimeDensity (from axiom)",
       "PROVED foldl_lcm_eq_foldl_mul: for pairwise coprime lists, foldl lcm = foldl mul",
@@ -52,27 +52,27 @@
       "coprime_residues_complete: complete residue system for coprime shifts",
       "coprime_avoid_count: exactly (n-1) residues avoid a given target",
       "mod_add_mul_dvd: helper for modular arithmetic with divisibility",
-      "prod_sub_one_div: fraction identity connecting \u2115 products to \u211d density",
-      "Removed unused simpson_theorem axiom \u2014 1 to 0 axioms. File now fully verified!"
+      "prod_sub_one_div: fraction identity connecting ℕ products to ℝ density",
+      "Removed unused simpson_theorem axiom — 1 to 0 axioms. File now fully verified!"
     ],
     "insights": [
-      "erdos_278_open_question was trivially provable: maxCoverageDensity is sSup of densities, each \u2264 1",
+      "erdos_278_open_question was trivially provable: maxCoverageDensity is sSup of densities, each ≤ 1",
       "csSup_le + density_le_one eliminates the axiom in 3 lines",
       "List.mem_cons_self deprecated in current Mathlib - use simp instead",
-      "equal_residues_minimize proof strategy: cyclic shift bijection m\u21a6(m+a)%L on {0,...,L-1}. Need add_mod_injOn (prove via by_contra + Nat.mul_le_mul_left for quotient equality), then dvd_mul_of_dvd_left for n|(a+c). Blocked on Lean omega not handling nonlinear L*(q\u2081-q\u2082)",
+      "equal_residues_minimize proof strategy: cyclic shift bijection m↦(m+a)%L on {0,...,L-1}. Need add_mod_injOn (prove via by_contra + Nat.mul_le_mul_left for quotient equality), then dvd_mul_of_dvd_left for n|(a+c). Blocked on Lean omega not handling nonlinear L*(q₁-q₂)",
       "omega in Lean 4 handles modular arithmetic round-trips: ((m+a)%L + L - a%L)%L = m when m<L",
-      "Nat.mod_mod_of_dvd is the key lemma for shifting: if k\u2223L then (x%L)%k = x%k",
-      "CRITICAL: max_density_coprime_case axiom was INCORRECT. Stated \u03a31/n\u1d62 but correct formula is 1-\u220f(1-1/n\u1d62). For {2,3}: actual=2/3, not 5/6.",
+      "Nat.mod_mod_of_dvd is the key lemma for shifting: if k∣L then (x%L)%k = x%k",
+      "CRITICAL: max_density_coprime_case axiom was INCORRECT. Stated Σ1/nᵢ but correct formula is 1-∏(1-1/nᵢ). For {2,3}: actual=2/3, not 5/6.",
       "coverage_card_shift proof had build failure: bijection functions were swapped and omega cant handle variable-modulus round-trips",
       "Fixed round-trips using Nat.div_add_mod decomposition + ring for Nat.add_mul_mod_self_left",
       "For coprime moduli, CRT makes density invariant under residue choice: max=min=coprimeDensity",
-      "coprime_density_formula proof path: (1) systemLCM=prod [DONE], (2) CRT bijection, (3) complement counting \u220f(n\u1d62-1)",
+      "coprime_density_formula proof path: (1) systemLCM=prod [DONE], (2) CRT bijection, (3) complement counting ∏(nᵢ-1)",
       "List.pairwise_iff_forall_ne missing in Mathlib - use pairwise_iff_getElem + Nodup",
-      "CRT complement counting: for coprime moduli, uncovered elements = \u220f(n\u1d62-1) by Finset induction with fiber decomposition"
+      "CRT complement counting: for coprime moduli, uncovered elements = ∏(nᵢ-1) by Finset induction with fiber decomposition"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #278 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #277\n- Problem #279\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Si86\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #278 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #277\n- Problem #279\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Si86\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -95,9 +95,9 @@
     {
       "path": "Proofs/Erdos278Problem.lean",
       "filename": "Erdos278Problem.lean",
-      "lineCount": 647,
+      "lineCount": 645,
       "theoremCount": 12,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

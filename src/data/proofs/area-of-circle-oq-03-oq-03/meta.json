@@ -17,20 +17,20 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 185,
+    "lineCount": 190,
     "assumptions": "None. All results proved from Mathlib.",
     "theoremCount": 14,
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Archimedes used the method of exhaustion to compute the area of a circle (πr²) and a parabolic segment (4/3 of the inscribed triangle). The method was later generalized by Cavalieri and others, eventually leading to integral calculus. The question of whether the same technique applies to other curves is fundamental to the history of analysis.",
+    "historicalContext": "Archimedes used the method of exhaustion to compute the area of a circle (\u03c0r\u00b2) and a parabolic segment (4/3 of the inscribed triangle). The method was later generalized by Cavalieri and others, eventually leading to integral calculus. The question of whether the same technique applies to other curves is fundamental to the history of analysis.",
     "problemStatement": "Can the method of exhaustion be generalized to other curves (ellipses, parabolas)?",
     "text": "Proves that the method of exhaustion generalizes to ellipses via affine scaling and to parabolic segments via Archimedes' geometric series.",
-    "proofStrategy": "For ellipses: the affine scaling (x,y) → (ax,by) transforms the unit circle to an ellipse, multiplying area by ab. For parabolas: Archimedes' key insight that each exhaustion step fills 1/4 of the remaining area, giving a geometric series summing to 4/3.",
+    "proofStrategy": "For ellipses: the affine scaling (x,y) \u2192 (ax,by) transforms the unit circle to an ellipse, multiplying area by ab. For parabolas: Archimedes' key insight that each exhaustion step fills 1/4 of the remaining area, giving a geometric series summing to 4/3.",
     "keyInsights": [
-      "Ellipse area = ab · circle area via Jacobian of affine scaling",
+      "Ellipse area = ab \u00b7 circle area via Jacobian of affine scaling",
       "Parabolic area follows from geometric series 1 + 1/4 + 1/16 + ... = 4/3",
-      "The general exhaustion principle: geometric convergence C·r^n → 0 for 0 < r < 1",
+      "The general exhaustion principle: geometric convergence C\u00b7r^n \u2192 0 for 0 < r < 1",
       "Archimedes' parabolic result predates integral calculus by ~2000 years"
     ],
     "prerequisites": [
@@ -81,5 +81,6 @@
       "relationship": "related",
       "description": "The original circle area proof that this generalizes"
     }
-  ]
+  ],
+  "sections": []
 }

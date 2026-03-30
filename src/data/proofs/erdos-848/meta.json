@@ -22,7 +22,7 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: vanDoorn_upper_bound (0.108N upper bound via prime density), sawhney_solution (exact answer N/25 for large N), sawhney_structure (extremal set uniqueness). Previously axiomatized maxNonSqfreeSet, maxNonSqfreeSet_le, and lower_bound are now proved.",
-    "lineCount": 255,
+    "lineCount": 289,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -38,6 +38,8 @@
       "maxNonSqfreeSet_le: proved via injection x↦x-1 from Icc 1 N to range N (was axiom)",
       "mod25_achieves: proved 5² | ab+1 when a ≡ b ≡ 7 (mod 25) via ring arithmetic",
       "lower_bound: proved N/25 ≤ maxNonSqfreeSet N via witness construction k↦25k+7 (was axiom)",
+      "sq_neg_one_unique: at most 2 solutions of x²=-1 in ZMod p via integral domain argument",
+      "sq_dvd_succ_mod_congruence: p²|a²+1 and p²|b²+1 → a≡±b (mod p) via ZMod casting",
       "sawhney_solution: axiom encoding the exact answer N/25 for large N",
       "sawhney_structure: axiom encoding uniqueness of extremal sets (mod 25 residue classes)"
     ],
@@ -123,16 +125,24 @@
       "mathContext": "The injection $k \\mapsto 25k+7$ maps $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into $\\{n \\in \\{1,\\ldots,N\\} : n \\equiv 7 \\pmod{25}\\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
     },
     {
+      "id": "counting-solutions",
+      "title": "Counting Solutions: At Most 2 Roots of x² = -1",
+      "startLine": 235,
+      "endLine": 280,
+      "summary": "sq_neg_one_unique: in ZMod p, x²=-1 has at most 2 solutions (±a) via integral domain argument. sq_dvd_succ_mod_congruence: corollary for natural numbers via ZMod casting.",
+      "mathContext": "In the field $\\mathbb{F}_p$, $x^2 + 1 = 0$ has at most 2 roots since $(a-b)(a+b) = a^2 - b^2 = 0$ and $\\mathbb{F}_p$ has no zero divisors. This is step 1 of Van Doorn's density argument. Steps 2-4 (Hensel lifting, density counting, infinite sum) remain in the axiom."
+    },
+    {
       "id": "deep-results",
       "title": "Deep Results (Axiomatized)",
-      "startLine": 155,
-      "endLine": 176,
-      "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require deep analytic/combinatorial arguments beyond current Lean formalization.",
+      "startLine": 282,
+      "endLine": 303,
+      "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require Hensel's lemma, density counting, and real analysis beyond current formalization.",
       "mathContext": "Van Doorn: $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$. Sawhney: $\\forall N \\geq N_0,\\ \\max|A| = \\lfloor N/25\\rfloor$, achieved only by $\\{n \\equiv 7\\}$ or $\\{n \\equiv 18\\} \\pmod{25}$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #848 is formalized in 176 lines with 3 axioms (down from 6). The extremal function maxNonSqfreeSet is now properly defined via Finset.sup, with both bounds proved: maxNonSqfreeSet_le (upper, via injection) and lower_bound (via witness construction). Only deep results remain axiomatized: Van Doorn's upper bound, Sawhney's exact solution, and the structural characterization.",
+    "summary": "Erdős Problem #848 is formalized in 303 lines with 3 axioms (down from 6) and 15 theorems. The extremal function maxNonSqfreeSet is properly defined via Finset.sup, with both bounds proved. Van Doorn's argument is partially formalized: the constraint (p ≡ 1 mod 4 with p² | a²+1), the 2-solution uniqueness in ZMod p, and the natural number corollary. Only the Hensel lifting, density counting, and infinite sum remain axiomatized, along with Sawhney's exact solution and structural characterization.",
     "implications": "The result reveals a surprising connection between squarefree numbers and modular arithmetic: the extremal configuration is determined entirely by the quadratic residue structure of Z/25Z. The rigidity of the extremal sets (uniqueness up to the 7 ↔ 18 symmetry) suggests deep structural constraints beyond simple density arguments.",
     "openQuestions": [
       "What is the exact value of maxNonSqfreeSet(N) for small N? Sawhney's result only applies for sufficiently large N",
@@ -149,9 +159,9 @@
     ],
     "opens": [],
     "namespace": "Erdos848",
-    "lineCount": 255,
+    "lineCount": 289,
     "axiomCount": 3,
-    "theoremCount": 13,
+    "theoremCount": 15,
     "definitionCount": 4
   },
   "references": [

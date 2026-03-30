@@ -102,9 +102,6 @@ and the geometric series Σ 1/φ^n converges.
 -/
 
 /-- The reciprocal Fibonacci series converges -/
-axiom fibonacci_reciprocal_summable :
-  Summable (fun n : ℕ => if n = 0 then 0 else (1 : ℝ) / Nat.fib n)
-
 /-
 ## Solved Cases
 
@@ -116,17 +113,11 @@ While the main conjecture remains open, specific cases have been proved.
 
     This was the first special case proved. The exponential growth of indices
     (2^n) ensures the subsequence is very sparse, yet irrationality holds. -/
-axiom good_bicknell_hoggatt :
-  Irrational (∑' n : ℕ, (1 : ℝ) / Nat.fib (2 ^ n))
-
 /-- **André-Jeannin (1989)**:
     The full sum Σ 1/F_n is irrational.
 
     This resolved the question for the complete Fibonacci reciprocal series.
     The proof uses techniques from transcendence theory and continued fractions. -/
-axiom andre_jeannin :
-  Irrational (∑' n : ℕ, if n = 0 then 0 else (1 : ℝ) / Nat.fib n)
-
 /-
 ## The Main Conjecture (OPEN)
 

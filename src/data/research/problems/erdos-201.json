@@ -46,7 +46,10 @@
       "4 value axioms (g3_5_eq, r3_5_eq, etc.) need decidability instance for IsAPFree on finite sets — not trivially provable",
       "KSS 1975 axiom is deep, stays as axiom",
       "gk_bddAbove: G_k bounds set bounded by N (needed for csSup lemmas)",
-      "gk_anti_k: G_k anti-monotone in k via isAPFree_of_le transfer"
+      "gk_anti_k: G_k anti-monotone in k via isAPFree_of_le transfer",
+      "g3_5_eq: upper bound provable via witness {0,1,2,3,6} (all 4-element subsets contain 3-AP). Lower bound requires universality over all 5-element ℤ sets.",
+      "r3_14_eq: provable in principle by brute force over 2^14 subsets, but computationally heavy for Lean",
+      "komlos_sulyok_szemeredi: deep published result, not eliminable"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -73,9 +76,9 @@
     {
       "path": "Proofs/Erdos201Problem.lean",
       "filename": "Erdos201Problem.lean",
-      "lineCount": 354,
+      "lineCount": 352,
       "theoremCount": 20,
-      "axiomCount": 4,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

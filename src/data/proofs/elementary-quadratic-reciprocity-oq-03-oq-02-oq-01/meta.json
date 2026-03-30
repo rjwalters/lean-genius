@@ -49,28 +49,35 @@
       "kronecker0_mul_of_ne_zero: multiplicativity of the unit character at modulus 0",
       "kroneckerNeg1_mul_of_ne_zero: multiplicativity of the sign character at modulus -1",
       "kronecker_mul_left_proved: full Kronecker symbol multiplicativity via case analysis + Jacobi"
-    ]
+    ],
+    "lineCount": 267
   },
   "sections": [
     {
       "id": "kronecker0-mul",
       "title": "Multiplicativity of kronecker0",
-      "description": "The unit character at modulus 0: (ab/0) = (a/0)(b/0)"
+      "description": "The unit character at modulus 0: (ab/0) = (a/0)(b/0)",
+      "summary": "Multiplicativity of kronecker0"
     },
     {
       "id": "kronecker-neg1-mul",
       "title": "Multiplicativity of kroneckerNeg1",
-      "description": "The sign character at modulus -1: (ab/-1) = (a/-1)(b/-1)"
+      "description": "The sign character at modulus -1: (ab/-1) = (a/-1)(b/-1)",
+      "summary": "Multiplicativity of kroneckerNeg1"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "description": "Complete multiplicativity by case analysis on n"
+      "description": "Complete multiplicativity by case analysis on n",
+      "summary": "Main Theorem"
     }
   ],
   "overview": {
     "text": "Proves the Kronecker symbol is completely multiplicative in the first argument, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
-    "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib."
+    "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib.",
+    "keyInsights": [],
+    "historicalContext": "",
+    "problemStatement": "See the description field for the problem statement."
   },
   "references": [
     {

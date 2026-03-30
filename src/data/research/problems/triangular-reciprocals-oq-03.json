@@ -74,7 +74,9 @@
   ],
   "relatedProofs": [
     "triangular-reciprocals",
-    "triangular-reciprocals-oq-03"
+    "triangular-reciprocals-oq-01",
+    "triangular-reciprocals-oq-03",
+    "triangular-reciprocals-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -91,5 +93,18 @@
   "started": "2026-03-19T08:13:01.850Z",
   "lastUpdate": "2026-03-19T10:00:00.000Z",
   "significance": 7,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/TriangularReciprocalsFigurate.lean",
+      "filename": "TriangularReciprocalsFigurate.lean",
+      "lineCount": 112,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsFigurate.lean"
+    }
+  ]
 }

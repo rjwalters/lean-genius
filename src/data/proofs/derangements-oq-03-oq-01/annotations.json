@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-tail-split",
+    "proofId": "derangements-oq-03-oq-01",
+    "range": { "startLine": 48, "endLine": 76 },
+    "type": "technique",
+    "title": "Tail Splitting Lemma",
+    "content": "The tail of the alternating factorial series $\\sum_{k=0}^\\infty a_{m+k}$ equals its first term $a_m$ plus the shifted tail $\\sum_{k=0}^\\infty a_{m+1+k}$. This is the key decomposition enabling the second-order bound: by splitting off one more term from the tail, we reduce the residual estimate to a smaller alternating tail.",
+    "mathContext": "$\\sum_{k=0}^{\\infty} a_{m+k} = a_m + \\sum_{k=0}^{\\infty} a_{m+1+k}$",
+    "significance": "key",
+    "relatedConcepts": ["tsum", "summable series", "tail of series"],
+    "prerequisites": ["summability", "infinite series"]
+  },
+  {
+    "id": "ann-second-order-rate",
+    "proofId": "derangements-oq-03-oq-01",
+    "range": { "startLine": 90, "endLine": 121 },
+    "type": "theorem",
+    "title": "Second-Order Convergence Rate",
+    "content": "The main result: $D(n)/n!$ approximates $1/e$ with correction term $(-1)^n/(n+1)!$ and residual at most $1/(n+2)!$. The proof splits the tail series at one additional term beyond the first-order bound, then applies the existing alternating series estimation to the shifted residual.",
+    "mathContext": "$\\left|\\frac{D_n}{n!} - e^{-1} - \\frac{(-1)^n}{(n+1)!}\\right| \\le \\frac{1}{(n+2)!}$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series", "asymptotic expansion", "derangement ratio", "Taylor remainder"],
+    "prerequisites": ["first-order convergence rate", "tail splitting", "alternating tail bound"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "derangements-oq-03-oq-01",
+    "range": { "startLine": 130, "endLine": 158 },
+    "type": "theorem",
+    "title": "Tightness Lower Bound",
+    "content": "Shows the first-order error bound is essentially tight: $|D(n)/n! - 1/e| \\ge 1/(n+1)! - 1/(n+2)!$. Combined with the upper bound $1/(n+1)!$, this pins down the error to within a factor of $1 - 1/(n+2) = (n+1)/(n+2)$ of the leading term.",
+    "mathContext": "$\\frac{1}{(n+1)!} - \\frac{1}{(n+2)!} \\le \\left|\\frac{D_n}{n!} - e^{-1}\\right|$",
+    "significance": "key",
+    "relatedConcepts": ["reverse triangle inequality", "tightness of bounds"],
+    "prerequisites": ["second-order expansion", "triangle inequality"]
+  },
+  {
+    "id": "ann-error-ratio",
+    "proofId": "derangements-oq-03-oq-01",
+    "range": { "startLine": 165, "endLine": 173 },
+    "type": "corollary",
+    "title": "Error Ratio Formula",
+    "content": "Each additional element in the permutation improves the derangement ratio approximation by a factor of $1/(n+2)$. Since $1/(n+2)! = 1/(n+1)! \\cdot 1/(n+2)$, the convergence is super-exponential — much faster than geometric decay.",
+    "mathContext": "$\\frac{1}{(n+2)!} = \\frac{1}{(n+1)!} \\cdot \\frac{1}{n+2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["factorial decay", "super-exponential convergence"],
+    "prerequisites": ["factorial recurrence"]
+  }
+]

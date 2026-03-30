@@ -29,18 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms 8→3. Converted 2 open conjectures to defs. Removed 3 unused axioms (vanDoorn, complete_iff_repr, complete_bounded_gaps).",
+    "progressSummary": "PROGRESS: Proved fib_complete (was axiom). 1 axiom remaining (fib_1_robust). 0 sorries.",
     "builtItems": [
       "Converted erdos_348_characterization from axiom to def",
       "Converted erdos_348_main_problem from axiom to def",
-      "Removed vanDoorn_theorem, complete_iff_repr, complete_bounded_gaps (unused, documented in comments)"
+      "Removed vanDoorn_theorem, complete_iff_repr, complete_bounded_gaps (unused, documented in comments)",
+      "Proved fib_complete theorem (was axiom)",
+      "Added fib_succ_le_double helper",
+      "Added fib_bracketing helper"
     ],
     "insights": [
       "Original file had 8 axioms (not 4 as metadata claimed)",
       "5 axioms were unused: erdos_348_characterization, vanDoorn_theorem, complete_iff_repr, complete_bounded_gaps, erdos_348_main_problem",
       "Only 3 axioms used in proofs: fib_complete, fib_1_robust, fib_not_2_robust (all in pair_1_2_valid)",
       "erdos_348_characterization and erdos_348_main_problem are OPEN conjectures, converted to defs",
-      "binary_sum and pair_0_1_valid are fully proved (binary representation, powers of 2)"
+      "binary_sum and pair_0_1_valid are fully proved (binary representation, powers of 2)",
+      "fib_complete PROVED: greedy algorithm via strong induction",
+      "Key: fib(k+1) <= 2*fib(k) ensures n-fib(k) < fib(k) for the IH",
+      "fib_bracketing via Nat.find gives largest Fibonacci index <= n",
+      "Axiom count: 2 -> 1 (fib_1_robust remains)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -71,9 +78,9 @@
     {
       "path": "Proofs/Erdos348Problem.lean",
       "filename": "Erdos348Problem.lean",
-      "lineCount": 510,
-      "theoremCount": 6,
-      "axiomCount": 2,
+      "lineCount": 559,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,

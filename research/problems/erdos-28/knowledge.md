@@ -52,7 +52,26 @@ If $A\subseteq \mathbb{N}$ is such that $A+A$ contains all but finitely many int
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-03-29 (researcher-2) — Axiom Elimination in Erdos28Problem.lean
+
+**Mode**: REVISIT (AXIOM HUNT)
+**Outcome**: AXIOM ELIMINATION — 6 axioms → 5 in Erdos28Problem.lean
+
+#### What Was Done
+- Proved `basis_counting_lower` as a theorem (was axiom)
+- Fixed incorrect statement: original said `∀ N ≥ 1`, which fails when A has no elements below threshold
+- Corrected to `∃ N₁, ∀ N ≥ N₁, 4 * (countingFn A N + 1) ^ 2 ≥ N`
+- Proof: standard counting argument (sums from A∩[0,N] cover [T+1,N], count pairs ≤ |A∩[0,N]|²)
+- Unified threshold extraction via `Set.Finite.toFinset.sup id` (handles empty/nonempty complement)
+
+#### Key Findings
+- `basis_counting_lower` was unused by any other theorem — safe to change signature
+- Original `∀ N ≥ 1` form is incorrect: A = {0} ∪ {n≥100} is a basis but countingFn A 1 = 0
+- `average_rep_unbounded` axiom is likely incorrectly stated (average for thin basis ≈ O(1), not → ∞)
+- Remaining 5 axioms in Problem file: 3 are OPEN conjectures ($500), 2 are deep published theorems
+
+#### Files Modified
+- `proofs/Proofs/Erdos28Problem.lean` (117 → 180 lines, 6 → 5 axioms, 2 → 3 theorems)
 
 ---
 

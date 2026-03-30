@@ -1,0 +1,87 @@
+{
+  "id": "erdos-1002-oq-01",
+  "title": "Erdős #1002 OQ-01: Proving Cauchy CDF and Periodic Sum Axioms",
+  "slug": "erdos-1002-oq-01",
+  "description": "Eliminates two axioms from the Erdős #1002 formalization: proves the Cauchy CDF is a valid distribution function (monotone, correct limits) and proves periodicity of the inner sum for rational arguments.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1002",
+    "date": "",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1002OQ01.lean",
+    "tags": [
+      "analysis",
+      "diophantine-approximation",
+      "erdos",
+      "distribution-functions",
+      "axiom-elimination"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 1002,
+    "erdosUrl": "https://erdosproblems.com/1002",
+    "erdosProblemStatus": "open",
+    "relatedProblems": ["erdos-1002"],
+    "axiomCount": 0,
+    "lineCount": 140,
+    "assumptions": "No axioms. All results proved from Mathlib: Cauchy CDF validity via arctan monotonicity and limits, inner sum periodicity via fractional part invariance under integer shifts."
+  },
+  "overview": {
+    "historicalContext": "This file proves two supporting results for Erdős Problem #1002 that were previously axiomatized:\n\n1. **Cauchy CDF validity**: The function g(c) = (1/π)arctan(ρc) + 1/2 is a valid distribution function — monotone with g(-∞) = 0 and g(+∞) = 1.\n\n2. **Inner sum periodicity**: For rational α = p/q, the inner sum S(α, n) = Σ(1/2 - {αk}) satisfies S(α, n+q) = S(α, n) + S(α, q).",
+    "problemStatement": "**Axiom Elimination**\n\nTwo axioms in Erdos1002Problem.lean are proved from Mathlib:\n\n1. `cauchy_is_distribution`: The Cauchy CDF g(c) = (1/π)arctan(ρc) + 1/2 is monotone with correct limits at ±∞.\n\n2. `innerSum_periodic_rational`: For rational α = p/q with gcd(p,q) = 1, S(p/q, n+q) = S(p/q, n) + S(p/q, q).",
+    "text": "Proves the Cauchy CDF is a valid distribution function and the inner sum is periodic for rational arguments, eliminating 2 of 7 axioms from the Erdős #1002 formalization.",
+    "proofStrategy": "**Cauchy CDF**: Monotonicity follows from arctan being strictly monotone (arctan_strictMono) composed with multiplication by ρ > 0. The limits use Real.tendsto_arctan_atTop/atBot composed with scaling, then algebraic simplification (1/π · π/2 + 1/2 = 1).\n\n**Periodic Sum**: The key insight is that deviation(p/q · k) has period q as a function of k, because p/q · (k+q) = p/q · k + p and fract(x + integer) = fract(x). A cyclic sum lemma then shows Σ g(n+k) = Σ g(k) for any periodic g, proved by induction using sum_range_succ and sum_range_succ'.",
+    "keyInsights": [
+      "arctan is strictly monotone and tends to ±π/2, making (1/π)arctan(ρ·) + 1/2 a valid CDF",
+      "Fractional parts satisfy fract(x + n) = fract(x) for integer n, giving periodicity of the inner sum for rational α",
+      "Summing a periodic function over any complete period gives the same result, proved by induction"
+    ],
+    "prerequisites": [
+      "Real analysis: monotonicity, limits at infinity",
+      "Trigonometry: arctan properties and limits",
+      "Number theory: fractional parts and integer shifts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cauchy-distribution",
+      "title": "Cauchy Distribution is a Valid CDF",
+      "summary": "Proves monotonicity and correct limits at ±∞ for g(c) = (1/π)arctan(ρc) + 1/2",
+      "startLine": 1,
+      "endLine": 85,
+      "mathContext": "The Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ is monotone (since arctan is strictly monotone and $\\rho > 0$), tends to 0 as $c \\to -\\infty$ (since $\\arctan \\to -\\pi/2$), and tends to 1 as $c \\to +\\infty$ (since $\\arctan \\to \\pi/2$)."
+    },
+    {
+      "id": "periodic-sum",
+      "title": "Periodicity of Inner Sum for Rational α",
+      "summary": "Proves S(p/q, n+q) = S(p/q, n) + S(p/q, q) via fractional part periodicity",
+      "startLine": 87,
+      "endLine": 130,
+      "mathContext": "For rational $\\alpha = p/q$, the deviation function $d(k) = 1/2 - \\{(p/q)k\\}$ satisfies $d(k+q) = d(k)$ since $(p/q)(k+q) = (p/q)k + p$ and $\\{x + n\\} = \\{x\\}$ for integer $n$. The cyclic sum invariance $\\sum_{k=0}^{q-1} d(n+k) = \\sum_{k=0}^{q-1} d(k)$ follows by induction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Two axioms from the Erdős #1002 formalization are proved from Mathlib, reducing the axiom count from 7 to 5. The Cauchy CDF validity follows from standard arctan properties, and the inner sum periodicity follows from the invariance of fractional parts under integer shifts.",
+    "implications": "Reduces the assumption count in the Erdős #1002 formalization. The remaining 5 axioms include the open main conjecture, Kesten's deep ergodic result, Weyl equidistribution, and bounds for irrational α.",
+    "openQuestions": [
+      "Can the remaining axioms (Weyl equidistribution, inner sum log bound) be proved from Mathlib?",
+      "Can Kesten's theorem be formalized from first principles?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Proves two axioms from the parent formalization of Erdős Problem #1002",
+      "targetId": "erdos-1002"
+    }
+  ],
+  "references": [],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real", "Filter"],
+    "namespace": "Erdos1002OQ01",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 4
+  }
+}

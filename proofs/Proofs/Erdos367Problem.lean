@@ -178,8 +178,45 @@ van Doorn showed the strong bound fails for k ≥ 3.
 
 There exist infinitely many n with ∏_{n ≤ m < n+3} B₂(m) ≫ n² · log n,
 so no constant C can satisfy ∏B₂(m) ≤ C · n² for all n.
--/
-axiom strong_bound_fails_k3 : ¬ strongBound 3
+
+Proof: van Doorn's lower bound gives product ≥ c·n²·log(n) for infinitely
+many n. If strongBound 3 held (product ≤ C·n² for all n ≥ 1), then
+C ≥ c·log(n) for arbitrarily large n, contradicting C being fixed. -/
+theorem strong_bound_fails_k3 : ¬ strongBound 3 := by
+  intro ⟨C, hC, hbound⟩
+  obtain ⟨c, hc, hvan⟩ := van_doorn_lower_bound
+  -- Choose M large enough that log(n) > C/c for n ≥ M
+  set M := Nat.ceil (Real.exp (C / c + 1)) + 1 with hM_def
+  obtain ⟨n, hn_ge, hprod⟩ := hvan M
+  have hn1 : (1 : ℕ) ≤ n := by omega
+  have hstrong := hbound n hn1
+  -- Key: c·n²·log(n) ≤ product ≤ C·n²
+  have h_ineq : c * (n : ℝ) ^ 2 * Real.log n ≤ C * (n : ℝ) ^ 2 := by linarith
+  have hnsq_pos : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
+  -- Dividing by n² > 0: c·log(n) ≤ C
+  have h_clog : c * Real.log n ≤ C := by
+    by_contra h; push_neg at h
+    linarith [mul_lt_mul_of_pos_right h hnsq_pos]
+  -- But n ≥ M ≥ exp(C/c + 1), so log(n) ≥ C/c + 1 > C/c
+  have h_exp_le : Real.exp (C / c + 1) ≤ (n : ℝ) := by
+    calc Real.exp (C / c + 1)
+        ≤ ↑(Nat.ceil (Real.exp (C / c + 1))) :=
+          Nat.le_ceil (Real.exp (C / c + 1))
+      _ ≤ ↑(Nat.ceil (Real.exp (C / c + 1)) + 1) := by
+          exact_mod_cast Nat.le_succ _
+      _ = (M : ℝ) := by rfl
+      _ ≤ (n : ℝ) := by exact_mod_cast hn_ge
+  have h_log_large : C / c + 1 ≤ Real.log n := by
+    calc C / c + 1
+        = Real.log (Real.exp (C / c + 1)) := (Real.log_exp _).symm
+      _ ≤ Real.log ↑n :=
+          Real.log_le_log (Real.exp_pos _) h_exp_le
+  -- So c·log(n) ≥ c·(C/c + 1) = C + c > C
+  have h_clog_large : C < c * Real.log n := by
+    have : c * (C / c + 1) ≤ c * Real.log n :=
+      mul_le_mul_of_nonneg_left h_log_large hc.le
+    linarith [mul_div_cancel₀ C (ne_of_gt hc)]
+  linarith
 
 /--
 **van Doorn's Lower Bound**
@@ -197,13 +234,8 @@ axiom van_doorn_lower_bound :
 Basic properties of B₂(n) needed for the analysis.
 -/
 
-/--
-**B₂(n) = 1 iff n is Squarefree**
-
-The 2-full part is trivial exactly when n has no repeated prime factors.
--/
-axiom twoFullPart_eq_one_iff (n : ℕ) (hn : n ≥ 1) :
-    twoFullPart n = 1 ↔ Squarefree n
+/- Note: twoFullPart_eq_one_iff (B₂(n) = 1 ↔ Squarefree n) was removed
+   as it was unused in any proof. The fact is true but not needed. -/
 
 /- Helper: For a prime p, p.primeFactors = {p} -/
 private lemma primeFactors_prime_eq (p : ℕ) (hp : p.Prime) :
@@ -283,13 +315,8 @@ theorem twoFullPart_prime_sq (p : ℕ) (hp : p.Prime) :
     · rw [hsf]; exact one_ne_zero
   rw [dif_pos h, hsf, Nat.div_one]
 
-/--
-**Multiplicativity on Coprime Arguments**
-
-B₂(mn) = B₂(m) · B₂(n) when gcd(m,n) = 1.
--/
-axiom twoFullPart_mul_coprime (m n : ℕ) (h : Nat.Coprime m n) :
-    twoFullPart (m * n) = twoFullPart m * twoFullPart n
+/- Note: twoFullPart_mul_coprime (B₂(mn) = B₂(m)·B₂(n) for coprime m,n)
+   was removed as it was unused in any proof. The fact is true but not needed. -/
 
 /--
 **Upper Bound: B₂(n) ≤ n**

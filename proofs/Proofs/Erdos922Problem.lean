@@ -170,15 +170,8 @@ theorem folkman_implies_ratio_bound (k : ℕ) (hk : hasFolkmanPropertyInduced G 
 The proof uses ideas related to greedy coloring.
 -/
 
-/-- Greedy coloring gives χ(G) ≤ Δ(G) + 1 for max degree Δ -/
-axiom greedy_coloring_bound :
-  χ(G) ≤ G.maxDegree + 1
-
-/-- For Folkman graphs, the structure limits the maximum degree effectively -/
-axiom folkman_degree_control (k : ℕ) :
-  hasFolkmanPropertyInduced G k →
-    ∃ (bound : ℕ), bound ≤ k + 1 ∧
-      (∀ v : V, G.degree v ≤ bound ∨ α(G) > Fintype.card V / 2 - k / 2)
+/-- Greedy coloring gives χ(G) ≤ Δ(G) + 1.
+Folkman graphs have structure that limits max degree effectively. -/
 
 /-
 ## Part 8: The Original Erdős-Hajnal Formulation
@@ -194,9 +187,7 @@ def erdosHajnalQuestion (k : ℕ) : Prop :=
         2 * S.card ≥ U.card - k) →
     chromaticNumber' H ≤ k + 2
 
-/-- Folkman answered the Erdős-Hajnal question affirmatively -/
-axiom folkman_answers_erdos_hajnal :
-  ∀ (k : ℕ), erdosHajnalQuestion k
+/-- Folkman answered the Erdős-Hajnal question affirmatively. -/
 
 /-
 ## Part 9: Related Results
@@ -204,16 +195,8 @@ axiom folkman_answers_erdos_hajnal :
 Connections to other graph coloring results.
 -/
 
-/-- Ramsey-type connection: large graphs have either large cliques or large independent sets -/
-axiom ramsey_connection (n k : ℕ) :
-  Fintype.card V ≥ n →
-    (∃ (S : Finset V), S.card ≥ k ∧ G.IsClique S) ∨
-    (∃ (S : Finset V), S.card ≥ k ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v)
-
-/-- Brook's theorem: χ(G) ≤ Δ(G) unless G is complete or an odd cycle -/
-axiom brooks_theorem :
-  (¬G.IsComplete ∧ ¬(∃ n, n ≥ 3 ∧ Odd n ∧ G.IsCycle n)) →
-    χ(G) ≤ G.maxDegree
+/-- Related: Ramsey theorem gives large cliques or independent sets.
+Brooks' theorem: χ(G) ≤ Δ(G) unless G is complete or an odd cycle. -/
 
 /-
 ## Part 10: Summary

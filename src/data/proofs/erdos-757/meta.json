@@ -7,7 +7,7 @@
     "author": "Erdős-Sós (lower bound); Gyárfás-Lehel (1995, bounds)",
     "sourceUrl": "https://erdosproblems.com/757",
     "date": "1995",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos757Problem.lean",
     "tags": [
       "erdos",
@@ -16,8 +16,8 @@
       "additive-combinatorics",
       "extremal-combinatorics"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "erdosNumber": 757,
     "erdosUrl": "https://erdosproblems.com/757",
     "erdosProblemStatus": "open",
@@ -49,8 +49,8 @@
       "Connection to B₂ sequences and extremal combinatorics"
     ],
     "axiomCount": 0,
-    "lineCount": 191,
-    "assumptions": "11 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 243,
+    "assumptions": "0 axioms, 0 sorries. almostSidon_of_sidon proved via Sidon injectivity on off-diagonal pairs."
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B₂ sequence) is a set where all pairwise sums are distinct. Equivalently, all non-zero differences are distinct. For a 4-element Sidon set, the difference set B - B has exactly 13 elements (including 0).\n\nErdős asked: if every 4-element subset of A has 'almost' this property (|B - B| ≥ 11, missing at most one pair of differences), must A contain a large Sidon subset?\n\nErdős and Sós first proved c ≥ 1/2. Gyárfás and Lehel (1995) improved this to strict bounds:\n- **Lower bound**: c > 1/2 (greedy construction)\n- **Upper bound**: c < 3/5 (Fibonacci numbers as counterexample)\n\nThe exact value of c remains OPEN.",
@@ -165,7 +165,7 @@
       "Finset"
     ],
     "namespace": "Erdos757",
-    "lineCount": 191,
+    "lineCount": 243,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 5

@@ -56,26 +56,11 @@ theorem erdos_321_asymptotics :
 
 /-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
     for iterated logs up to level k. -/
-axiom bleicher_erdos_lower :
-  ∀ k : ℕ, k ≥ 4 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (maxDistinctReciprocal N : ℝ) ≥
-      (N : ℝ) / Real.log N
-
 /-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
     (N/log N) · Π log_i N for some r depending on N. -/
-axiom bleicher_erdos_upper :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) ≤
-      C * (N : ℝ) / Real.log N * Real.log (Real.log N)
-
 /-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
     The main term is N/log N; the precise iterated log correction is
     the content of the open problem. -/
-axiom main_term_n_over_log_n :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    c₁ * (N : ℝ) / Real.log N ≤ (maxDistinctReciprocal N : ℝ) ∧
-    (maxDistinctReciprocal N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N)
-
 /- ## Observations -/
 
 /-- **Egyptian fraction connection**: The problem relates to

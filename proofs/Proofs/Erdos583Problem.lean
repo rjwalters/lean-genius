@@ -111,9 +111,6 @@ axiom lovasz_theorem (G : SimpleGraph V) :
   ∃ P : PathCyclePartition G, P.paths.length + P.cycles.length ≤ Fintype.card V / 2
 
 /-- Corollary: Every graph partitions into ≤ n-1 paths -/
-axiom lovasz_corollary (G : SimpleGraph V) (hG : G.edgeSet.Nonempty) :
-  ∃ P : PathPartition G, P.size ≤ Fintype.card V - 1
-
 /-
 ## Part 4: Chung's Theorem (1978)
 
@@ -147,11 +144,6 @@ structure PathCover (G : SimpleGraph V) where
   covers : CoversAllEdges paths
 
 /-- Pyber's Theorem (1996): Connected graphs covered by n/2 + O(n^{3/4}) paths -/
-axiom pyber_theorem (G : SimpleGraph V) (hG : G.Connected) :
-  ∃ C : PathCover G, ∃ c : ℝ, c > 0 ∧
-    (C.paths.length : ℝ) ≤ Fintype.card V / 2 + c * (Fintype.card V : ℝ)^(3/4 : ℝ)
-
-
 /-
 ## Part 6: Fan's Theorem (2002)
 
@@ -192,18 +184,8 @@ Cases where the Erdős-Gallai conjecture is known.
 -/
 
 /-- Trees satisfy the conjecture (trivially: a tree is one path when n > 1) -/
-axiom tree_satisfies (G : SimpleGraph V) (hG : G.IsTree) :
-  satisfiesConjecture G
-
 /-- Complete graphs satisfy the conjecture -/
-axiom complete_graph_satisfies (n : ℕ) (hn : n ≥ 1) :
-  ErdosGallaiConjecture n
-
 /-- Cycles satisfy the conjecture -/
-axiom cycle_satisfies (G : SimpleGraph V) (hG : G.Connected)
-    (hcycle : ∀ v, G.degree v = 2) :
-  satisfiesConjecture G
-
 /-
 ## Part 9: Erdős Problem #583 Statement
 
@@ -226,18 +208,8 @@ Graphs showing the bound ⌈n/2⌉ is tight.
 -/
 
 /-- Stars require only 1 path (the bound is not tight for stars) -/
-axiom star_needs_few_paths (n : ℕ) (hn : n ≥ 2) :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = n ∧ G.Connected ∧
-    ∃ P : PathPartition G, P.size ≤ (n - 1 + 1) / 2
-
 /-- Complete bipartite graphs K_{n,n} need many paths.
     K_{n,n} has 2n vertices and n² edges, needs Θ(n) paths. -/
-axiom bipartite_tight (n : ℕ) (hn : n ≥ 2) :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = 2 * n ∧ G.Connected ∧
-    ∀ P : PathPartition G, P.size ≥ n / 2
-
 /-
 ## Part 11: Summary
 -/

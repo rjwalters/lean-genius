@@ -15,11 +15,14 @@
 -- (2) Erdős–Taylor: max visit count T_n satisfies T_n ≪ (log n)² a.s.
 --
 -- Status: PROVED
--- Axioms: 7 declarations + 1 structure field = 8 (down from 12)
+-- Axioms: 3 declarations + 1 structure field = 4 (down from 12)
+-- (AlmostSurely is now a def via Filter; mono/conjunction are Mathlib theorems)
 -- Sorries: 0 (cumulative_card_bound proved via induction on interval length)
 -- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
 --   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
---   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence)
+--   maxVisitCount_tendsto_infty (unused, follows from polya_recurrence),
+--   polya_recurrence (orphan: not used by proof chain),
+--   erdos1166_main (now theorem: follows from ingredients + Erdős-Taylor)
 -- New: maxVisitCount_mono_succ, maxVisitCount_le_of_le, mostVisited_nesting,
 --   mostVisited_nesting_range, biUnion_subset_last_of_constant_T,
 --   mostVisited_subset_trajectory, erdos1166_from_ingredients (restructured)
@@ -27,7 +30,7 @@
 
 import Mathlib
 
-open Real
+open Real Filter
 
 namespace Erdos1166
 
@@ -311,19 +314,30 @@ theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
           _ ≤ 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
 
 -- ## Almost Sure Events
+-- Modeled via Mathlib's Filter theory: a.s. events are those that hold
+-- "eventually" in a filter on the space of random walks. The filter
+-- captures the measure-zero complement structure of probability theory.
+-- Monotonicity and conjunction are derived from Filter axioms (Mathlib).
 
-/-- Probability space for random walks.
-    We axiomatize "almost surely" as a predicate on properties of walks. -/
-axiom AlmostSurely : (RandomWalk → Prop) → Prop
+/-- The probability filter on random walks: axiomatizes the notion of
+    "measure-one" sets without specifying the full measure space.
+    Almost-sure events are exactly those in this filter. -/
+axiom asProbFilter : Filter RandomWalk
 
-/-- Almost sure monotonicity: if P implies Q, then a.s. P implies a.s. Q. -/
-axiom almostSurely_mono {P Q : RandomWalk → Prop}
-    (h : ∀ ω, P ω → Q ω) (hP : AlmostSurely P) : AlmostSurely Q
+/-- P holds almost surely: P is true for "almost all" random walks.
+    Defined as Filter.Eventually, giving us mono/conjunction for free. -/
+def AlmostSurely (P : RandomWalk → Prop) : Prop := ∀ᶠ ω in asProbFilter, P ω
 
-/-- Almost sure conjunction. -/
-axiom almostSurely_and {P Q : RandomWalk → Prop}
+/-- Almost sure monotonicity: derived from Filter.Eventually.mono. -/
+theorem almostSurely_mono {P Q : RandomWalk → Prop}
+    (h : ∀ ω, P ω → Q ω) (hP : AlmostSurely P) : AlmostSurely Q :=
+  hP.mono h
+
+/-- Almost sure conjunction: derived from Filter.inter_mem. -/
+theorem almostSurely_and {P Q : RandomWalk → Prop}
     (hP : AlmostSurely P) (hQ : AlmostSurely Q) :
-    AlmostSurely (fun ω => P ω ∧ Q ω)
+    AlmostSurely (fun ω => P ω ∧ Q ω) :=
+  Filter.inter_mem hP hQ
 
 -- ## Key Result 1: |F(n)| ≤ 3 Eventually a.s.
 -- Related to Erdős problem #1165
@@ -348,10 +362,12 @@ axiom mostVisited_bounded_eventually :
     The key idea: since |F(k)| ≤ 3 for large k, and the maximum visit count
     T_n ≤ C · (log n)², only O((log n)²) different "regimes" of most-visited
     points can occur, bounding the cumulative set size. -/
-axiom erdos1166_main :
+theorem erdos1166_main :
     AlmostSurely (fun ω =>
       ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2)
+        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2) :=
+  erdos1166_from_ingredients mostVisited_bounded_eventually
+    (erdosTaylor_implies_bound erdosTaylor_constant)
 
 /-- The bound in explicit polylogarithmic form:
     |⋃_{k ≤ n} F(k)| ≤ (log n)^{O(1)} a.s.
@@ -485,16 +501,10 @@ theorem connection_to_1165 :
       (mostVisitedSet ω n).card ≤ 3) :=
   mostVisited_bounded_eventually
 
--- ## Recurrence of Z² Random Walk
-
-/-- A 2D simple random walk is recurrent: it returns to the origin
-    infinitely often, almost surely. (Pólya, 1921) -/
-axiom polya_recurrence :
-    AlmostSurely (fun ω =>
-      ∀ N : ℕ, ∃ n ≥ N, ω.trajectory n = origin)
-
--- [Formerly axiom maxVisitCount_tendsto_infty — follows from polya_recurrence
---  by inductively finding M distinct return times. Removed as unused.]
+-- [Pólya recurrence and maxVisitCount_tendsto_infty removed as orphan axioms:
+--  not used by the main proof chain. Pólya's theorem (Z² walk is recurrent)
+--  would imply max visit count → ∞, but the Erdős–Taylor constant axiom
+--  already provides the quantitative bound we need.]
 
 -- ## The Erdős–Taylor Constant
 

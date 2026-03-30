@@ -1,0 +1,63 @@
+{
+  "id": "erdos-70-oq-01",
+  "title": "Does the Continuum Partition to (\u03c9\u00b2, n)?",
+  "slug": "erdos-70-oq-01",
+  "description": "Does \ud835\udd20 \u2192 (\u03c9\u00b2, n)\u2082\u00b3 hold for all n \u2265 2? This is the first open case beyond the Erd\u0151s-Rado theorem. The formalization establishes the ordinal hierarchy (\u03c9+n < \u03c9\u00b7k < \u03c9\u00b2), proves structural implications via partition arrow monotonicity, and shows the \u03c9\u00b2 case dominates all finite-multiplicity cases.",
+  "meta": {
+    "author": "Erd\u0151s, Rado (1956); Hajnal, Larson",
+    "sourceUrl": "https://erdosproblems.com/70",
+    "date": "1956",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos70OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "partition-calculus",
+      "ramsey-theory",
+      "ordinals",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": [],
+    "erdosNumber": 70,
+    "erdosUrl": "https://erdosproblems.com/70",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal.mul_lt_mul_of_pos_left",
+        "description": "Monotonicity of ordinal multiplication",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Ordinal.nat_lt_omega0",
+        "description": "Natural numbers are less than omega",
+        "module": "Mathlib.SetTheory.Ordinal.Natural"
+      },
+      {
+        "theorem": "Ordinal.card_mul",
+        "description": "Cardinality of ordinal product",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.aleph0_mul_aleph0",
+        "description": "aleph0 * aleph0 = aleph0",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Ordinal.isLimit_mul_left",
+        "description": "Product of limit ordinal with positive ordinal is limit",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      }
+    ],
+    "parentProof": "erdos-70",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-70"
+  },
+  "sections": []
+}

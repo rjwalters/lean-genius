@@ -1,0 +1,82 @@
+{
+  "id": "law-of-cosines-oq-04",
+  "title": "Stewart's Theorem from Law of Cosines",
+  "slug": "law-of-cosines-oq-04",
+  "description": "Derives Stewart's theorem b\u00b2m + c\u00b2n = a(d\u00b2 + mn) from the law of cosines applied to sub-triangles with supplementary angles. Includes median length formula as special case.",
+  "meta": {
+    "author": "Matthew Stewart (1746)",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ04.lean",
+    "tags": [
+      "geometry",
+      "stewarts-theorem",
+      "cevian",
+      "law-of-cosines",
+      "research"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 160,
+    "assumptions": "No axioms or sorries. All results proved from law of cosines.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Stewart's theorem derived from supplementary angle law of cosines",
+      "Median length formula d\u00b2 = (2b\u00b2+2c\u00b2-a\u00b2)/4 as special case",
+      "Pure algebraic proof via ring and nlinarith"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Stewart's theorem (Matthew Stewart, 1746) relates the length of a cevian to the sides of a triangle. It generalizes the law of cosines.",
+    "problemStatement": "Derive Stewart's theorem from the law of cosines / inner product form.",
+    "text": "Applies law of cosines to both sub-triangles using supplementary angles, then eliminates cosines by adding.",
+    "proofStrategy": "Applies law of cosines to both sub-triangles using supplementary angles, then eliminates cosines by adding.",
+    "keyInsights": []
+  },
+  "sections": [
+    {
+      "id": "algebraic",
+      "title": "Algebraic Identity",
+      "startLine": 30,
+      "endLine": 42,
+      "summary": "Algebraic Identity"
+    },
+    {
+      "id": "derivation",
+      "title": "Stewart's from Cosines",
+      "startLine": 44,
+      "endLine": 100,
+      "summary": "Stewart's from Cosines"
+    },
+    {
+      "id": "median",
+      "title": "Median Length Formula",
+      "startLine": 102,
+      "endLine": 121,
+      "summary": "Median Length Formula"
+    }
+  ],
+  "conclusion": {
+    "summary": "Stewart's theorem fully derived from law of cosines. 0 axioms, 0 sorries.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "StewartsTheorem",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
+}

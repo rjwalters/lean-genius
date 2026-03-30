@@ -1,7 +1,7 @@
 {
   "slug": "erdos-321",
-  "title": "Erd\u0151s #321",
-  "phase": "OBSERVE",
+  "title": "Erdős #321",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,30 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: R1 tautological axiom proved. Main file 3 axioms (2 deep published results + 1 derivable). Note: main_term_n_over_log_n derivable from other 2 with finite-range argument.",
+    "progressSummary": "PROGRESS: Axiom eliminated. 3 to 2 axioms. main_term_n_over_log_n derived from bleicher_erdos_lower + bleicher_erdos_upper.",
     "builtItems": [
       "erdos_321_asymptotics: proved by taking f = maxDistinctReciprocal",
-      "subset_pair_cases: helper classifying S \u2286 {a,b} into 4 cases",
+      "subset_pair_cases: helper classifying S ⊆ {a,b} into 4 cases",
       "pair_hasDistinctReciprocalSums: proved (4 subset sums are strictly ordered: 0 < 1/n < 1/m < 1/m+1/n)",
-      "erdos_321_asymptotics in R1: PROVED (was axiom) \u2014 tautological \u27e8maxDistinctReciprocal, rfl\u27e9"
+      "erdos_321_asymptotics in R1: PROVED (was axiom) — tautological ⟨maxDistinctReciprocal, rfl⟩",
+      "PROVED main_term_n_over_log_n (was axiom, now theorem)",
+      "Added maxDistinctReciprocal_ge_one helper"
     ],
     "insights": [
-      "erdos_321_asymptotics was tautological \u2014 take f = the function itself",
-      "pair_hasDistinctReciprocalSums has a sorry \u2014 needs Finset case analysis on subsets of {m,n}",
+      "erdos_321_asymptotics was tautological — take f = the function itself",
+      "pair_hasDistinctReciprocalSums has a sorry — needs Finset case analysis on subsets of {m,n}",
       "main_term_n_over_log_n could potentially be derived from bleicher_erdos_lower + bleicher_erdos_upper",
       "For {m,n} with m < n: 0 < 1/n < 1/m < 1/m + 1/n gives all 4 subset sums distinct",
       "Finset.sum_pair hmn_ne + linarith handles all 12 non-trivial cross-cases",
       "div_lt_div_of_pos_left is the correct Mathlib v4.26.0 name for reciprocal ordering",
-      "Erdos321ProblemR1.lean: erdos_321_asymptotics converted axiom\u2192theorem (tautological: \u2203 f, R(N)=f(N) by f=R)",
-      "main_term_n_over_log_n is derivable from bleicher_erdos_lower + bleicher_erdos_upper with c\u2081=log(2)/(N\u2080+1), requires R(N)\u22651 helper and finite-range real analysis",
-      "pair_hasDistinctReciprocalSums is already fully proved (no sorry) \u2014 stale knowledge claim"
+      "Erdos321ProblemR1.lean: erdos_321_asymptotics converted axiom→theorem (tautological: ∃ f, R(N)=f(N) by f=R)",
+      "main_term_n_over_log_n is derivable from bleicher_erdos_lower + bleicher_erdos_upper with c₁=log(2)/(N₀+1), requires R(N)≥1 helper and finite-range real analysis",
+      "pair_hasDistinctReciprocalSums is already fully proved (no sorry) — stale knowledge claim",
+      "main_term_n_over_log_n PROVED: derived from 2 remaining axioms via finite-range argument",
+      "maxDistinctReciprocal_ge_one proved: singleton {1} witnesses R(N)>=1 for N>=1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove main_term_n_over_log_n from bleicher_erdos_lower + bleicher_erdos_upper (requires maxDistinctReciprocal_pos helper)",
-      "Prove maxDistinctReciprocal_pos: R(N) \u2265 1 for N \u2265 1 via singleton {1}"
+      "Prove maxDistinctReciprocal_pos: R(N) ≥ 1 for N ≥ 1 via singleton {1}"
     ],
-    "markdown": "# Erd\u0151s #321 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that all sums $\\sum_{n\\in S}\\frac{1}{n}$ are distinct for $S\\subseteq A$?\n\n\n\nLet $R(N)$ be the maximal such size. Results of Bleicher and Erd\\H{o}s from \\cite{BlEr75} and \\cite{BlEr76b} imply that\\[\\frac{N}{\\log N}\\prod_{i=3}^k\\log_iN\\leq R(N)\\leq \\frac{1}{\\log 2}\\log_r N\\left(\\frac{N}{\\log N} \\prod_{i=3}^r \\log_iN\\right),\\]valid for any $k\\geq 4$ with $\\log_kN\\geq k$ and any $r\\geq 1$ with $\\log_{2r}N\\geq 1$. (In these bounds $\\log_in$ denotes the $i$-fold iterated logarithm.)\n\nSee also [320].\n\n\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[BlEr76b] Bleicher, Michael N. and Erd\\H{o}s, Paul, Denominators of Egyptian fractions. II. Illinois J. Math. (1976), 598-613.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #320\n- Problem #322\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BlEr75\n- BlEr76b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #321 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that all sums $\\sum_{n\\in S}\\frac{1}{n}$ are distinct for $S\\subseteq A$?\n\n\n\nLet $R(N)$ be the maximal such size. Results of Bleicher and Erd\\H{o}s from \\cite{BlEr75} and \\cite{BlEr76b} imply that\\[\\frac{N}{\\log N}\\prod_{i=3}^k\\log_iN\\leq R(N)\\leq \\frac{1}{\\log 2}\\log_r N\\left(\\frac{N}{\\log N} \\prod_{i=3}^r \\log_iN\\right),\\]valid for any $k\\geq 4$ with $\\log_kN\\geq k$ and any $r\\geq 1$ with $\\log_{2r}N\\geq 1$. (In these bounds $\\log_in$ denotes the $i$-fold iterated logarithm.)\n\nSee also [320].\n\n\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[BlEr76b] Bleicher, Michael N. and Erd\\H{o}s, Paul, Denominators of Egyptian fractions. II. Illinois J. Math. (1976), 598-613.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #320\n- Problem #322\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BlEr75\n- BlEr76b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -75,9 +79,9 @@
     {
       "path": "Proofs/Erdos321Problem.lean",
       "filename": "Erdos321Problem.lean",
-      "lineCount": 171,
+      "lineCount": 156,
       "theoremCount": 6,
-      "axiomCount": 3,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -86,9 +90,9 @@
     {
       "path": "Proofs/Erdos321ProblemR1.lean",
       "filename": "Erdos321ProblemR1.lean",
-      "lineCount": 92,
-      "theoremCount": 3,
-      "axiomCount": 4,
+      "lineCount": 80,
+      "theoremCount": 4,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

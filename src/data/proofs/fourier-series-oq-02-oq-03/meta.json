@@ -8,16 +8,27 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeriesOQ02OQ03.lean",
-    "tags": ["harmonic-analysis", "fourier-series", "holder-continuity", "sharp-constants", "research", "open-question"],
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "holder-continuity",
+      "sharp-constants",
+      "research",
+      "open-question"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
     "theoremCount": 6,
     "defCount": 3,
-    "lineCount": 147,
+    "lineCount": 132,
     "dateAdded": "2026-03-28",
     "assumptions": "2 axioms: sharp_constant_is_half (extremal family existence), lipschitz_sawtooth_extremal (sawtooth achieves bound). No sorries.",
-    "prerequisites": ["Fourier coefficients on AddCircle", "Hölder continuity", "Fourier coefficient decay (OQ-02)"],
+    "prerequisites": [
+      "Fourier coefficients on AddCircle",
+      "Hölder continuity",
+      "Fourier coefficient decay (OQ-02)"
+    ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -34,8 +45,28 @@
   "sections": [],
   "conclusion": {
     "summary": "The constant 1/2 in the Fourier-Hölder decay bound is sharp.",
-    "openQuestions": ["Compute the sharp constant for the Sobolev embedding converse", "Sharp constants for analytic (exponential) decay bounds"]
+    "openQuestions": [
+      "Compute the sharp constant for the Sobolev embedding converse",
+      "Sharp constants for analytic (exponential) decay bounds"
+    ],
+    "implications": "The constant 1/2 in the Fourier-Hölder decay bound is sharp."
   },
-  "leanFile": {"imports": ["Mathlib.Analysis.Fourier.AddCircle", "Mathlib.Topology.MetricSpace.Holder"], "namespace": "FourierSharpConstant", "lineCount": 147, "axiomCount": 2, "theoremCount": 6, "definitionCount": 3},
-  "crossReferences": [{"targetId": "fourier-series-oq-02", "relationship": "extends", "description": "Investigates sharpness of the decay bound proved in the parent OQ-02"}]
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Topology.MetricSpace.Holder"
+    ],
+    "namespace": "FourierSharpConstant",
+    "lineCount": 132,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "extends",
+      "description": "Investigates sharpness of the decay bound proved in the parent OQ-02"
+    }
+  ]
 }

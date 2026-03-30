@@ -81,15 +81,13 @@ noncomputable def fThreshold (r n : ℕ) : ℕ :=
 
 /- ## Erdős–Hajnal–Szemerédi Questions -/
 
-/-- **FALSE (removed)**: Question 1 asked "Is f₂(n) ≫ n?" The answer is NO.
-    Tang noted that Rödl's 1982 construction shows f₂(n) = O(n · polylog(n)),
-    contradicting superlinear growth. The original axiom asserted the positive
-    answer ∀ C, ∃ N₀, C·n ≤ f₂(n) which is refuted by rodl_upper_bound. -/
-theorem erdos_1092_question1_false_note : True := trivial
+/- DISPROVED: Question 1 asked "Is f₂(n) ≫ n?" The answer is NO.
+   Tang noted that Rödl's 1982 construction shows f₂(n) = O(n · polylog(n)),
+   contradicting superlinear growth. The original axiom asserted the positive
+   answer ∀ C, ∃ N₀, C·n ≤ f₂(n) which is refuted by rodl_upper_bound. -/
 
-/-- **FALSE (removed)**: Question 2 generalizes Q1 to all r ≥ 2.
-    Since Q1 is false for r = 2, Q2 is also false in general. -/
-theorem erdos_1092_question2_false_note : True := trivial
+/- DISPROVED: Question 2 generalizes Q1 to all r ≥ 2.
+   Since Q1 is false for r = 2, Q2 is also false in general. -/
 
 /- ## Trivial Lower Bound — FALSE (removed)
 

@@ -1,0 +1,66 @@
+{
+  "slug": "product-of-segments-of-chords-oq-01",
+  "title": "Generalization to 3D: for a sphere with center O and radius r, is the product...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Generalization to 3D: for a sphere with center O and radius r, is the product....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "product-of-segments-of-chords"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.851Z",
+  "lastUpdate": "2026-03-30T17:32:58.851Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProductOfSegmentsOfChords.lean",
+      "filename": "ProductOfSegmentsOfChords.lean",
+      "lineCount": 542,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChords.lean"
+    }
+  ]
+}

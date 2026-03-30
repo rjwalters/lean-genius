@@ -2,7 +2,7 @@
   "id": "stirling-formula-oq-01",
   "title": "Higher-Order Stirling Expansion",
   "slug": "stirling-formula-oq-01",
-  "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ \u221a(2\u03c0n)(n/e)^n(1 + 1/(12n) + O(1/n\u00b2)). Shows this eliminates an axiom.",
+  "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + O(1/n²)). Shows this eliminates an axiom.",
   "meta": {
     "author": "Stirling (1730), de Moivre (1733)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
@@ -24,36 +24,36 @@
     "mathlibDependencies": [
       {
         "theorem": "Stirling.stirlingSeq",
-        "description": "The Stirling sequence n!/[\u221a(2n)(n/e)^n]",
+        "description": "The Stirling sequence n!/[√(2n)(n/e)^n]",
         "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
       },
       {
         "theorem": "Stirling.tendsto_stirlingSeq_sqrt_pi",
-        "description": "stirlingSeq \u2192 \u221a\u03c0",
+        "description": "stirlingSeq → √π",
         "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
       }
     ],
     "originalContributions": [
       "Stirling series coefficients a_0=1, a_1=1/12, a_2=1/288, a_3=-139/51840",
       "stirlingPartial: truncated Stirling expansion at k terms",
-      "Statement of first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)",
+      "Statement of first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)",
       "Path to axiom elimination: first correction implies stirling_error_bound_ge_2",
       "error_bound_from_correction: structured proof reducing axiom to first correction"
     ],
-    "lineCount": 177,
+    "lineCount": 176,
     "theoremCount": 9,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Stirling's formula n! ~ \u221a(2\u03c0n)(n/e)^n (1730) is one of the most important approximations in mathematics. The asymptotic expansion n! ~ \u221a(2\u03c0n)(n/e)^n(1 + 1/(12n) + 1/(288n\u00b2) - ...) gives increasingly precise approximations. The coefficients come from the Euler-Maclaurin formula applied to \u2211 log k, involving Bernoulli numbers.",
+    "historicalContext": "Stirling's formula n! ~ √(2πn)(n/e)^n (1730) is one of the most important approximations in mathematics. The asymptotic expansion n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + 1/(288n²) - ...) gives increasingly precise approximations. The coefficients come from the Euler-Maclaurin formula applied to ∑ log k, involving Bernoulli numbers.",
     "problemStatement": "Formalize the higher-order terms in the Stirling expansion and use them to eliminate the error bound axiom in StirlingFormula.lean.",
     "text": "Formalizes the Stirling series coefficients and the first correction term 1/(12n), showing it implies the axiomatized error bound.",
-    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
+    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
     "keyInsights": [
       "**Axiom elimination**: The 1/(12n) correction implies the error bound axiom in StirlingFormula.lean",
-      "**Bernoulli coefficients**: a_k = B_{2k}/(2k(2k-1)) \u00b7 (product of earlier terms)",
-      "**Practical accuracy**: The two-term expansion 1 + 1/(12n) gives relative error < 0.1% for n \u2265 10"
+      "**Bernoulli coefficients**: a_k = B_{2k}/(2k(2k-1)) · (product of earlier terms)",
+      "**Practical accuracy**: The two-term expansion 1 + 1/(12n) gives relative error < 0.1% for n ≥ 10"
     ]
   },
   "sections": [
@@ -116,7 +116,7 @@
       "Filter"
     ],
     "namespace": "StirlingExpansion",
-    "lineCount": 177,
+    "lineCount": 176,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2

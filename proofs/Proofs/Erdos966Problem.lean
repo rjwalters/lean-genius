@@ -165,17 +165,9 @@ there exist arbitrarily long monochromatic APs.
 W(k, r) is the minimum N such that any r-coloring of {1, ..., N}
 contains a monochromatic AP of length k.
 -/
-axiom vanDerWaerdenNumber (k r : ℕ) : ℕ
-
 /--
 Van der Waerden's theorem: W(k, r) exists for all k, r ≥ 1.
 -/
-axiom van_der_waerden_exists (k r : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) :
-    ∃ N : ℕ, ∀ f : Coloring r,
-      ∃ c : Fin r, ∃ a d : ℕ, d > 0 ∧
-        (∀ i : ℕ, i < k → a + i * d < N) ∧
-        (∀ i : ℕ, i < k → f (a + i * d) = c)
-
 /--
 Erdős 966 refines Van der Waerden by restricting to (k+1)-AP-free sets.
 The key insight is that such restricted sets can still force
@@ -202,11 +194,6 @@ The answer there is also YES (Folkman numbers).
 Erdős 966 is an arithmetic analogue of Erdős 924 (Folkman's theorem).
 Where 924 asks about cliques in graphs, 966 asks about APs in sets.
 -/
-axiom erdos_966_analogue_of_924 :
-    ∀ k r : ℕ, k ≥ 2 → r ≥ 2 →
-      (∃ A : Set ℕ, APFreeOfLength A (k + 1) ∧ forcesMonochromaticAP A r k) ↔
-      True  -- Simplified: just asserting the analogy exists
-
 /-
 ## Part VII: Specific Cases
 -/
@@ -244,9 +231,6 @@ axiom upperDensity (A : Set ℕ) : ℝ
 /--
 Roth's theorem: positive density implies 3-APs.
 -/
-axiom roth_theorem (A : Set ℕ) :
-    upperDensity A > 0 → containsAPOfLength A 3
-
 /--
 Spencer's sets have zero upper density (else they'd contain arbitrarily long APs).
 -/

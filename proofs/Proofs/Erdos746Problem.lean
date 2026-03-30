@@ -184,7 +184,23 @@ def IsConnected (G : GraphOnN n) : Prop :=
 /-- Hamiltonicity implies connectivity. -/
 theorem hamiltonian_implies_connected (G : GraphOnN n) (hn : n ≥ 2) :
     IsHamiltonian G → IsConnected G := by
-  sorry
+  intro ⟨cycle, hlen, _, hall, hadj, _⟩
+  intro u v
+  -- Every vertex is reachable from cycle[0] (by walking along the cycle)
+  have hne : 0 < cycle.length := by omega
+  suffices h : ∀ w : Fin n, G.Reachable (cycle.get ⟨0, hne⟩) w by
+    exact (h u).symm.trans (h v)
+  -- Show: ∀ j < cycle.length, Reachable cycle[0] cycle[j]
+  have hreach_idx : ∀ j (hj : j < cycle.length),
+      G.Reachable (cycle.get ⟨0, hne⟩) (cycle.get ⟨j, hj⟩) := by
+    intro j hj
+    induction j with
+    | zero => exact SimpleGraph.Reachable.refl _
+    | succ k ih => exact (ih (by omega)).trans (SimpleGraph.Adj.reachable (hadj k (by omega)))
+  -- Every vertex w is in cycle, so w = cycle[j] for some j
+  intro w
+  obtain ⟨j, hj, rfl⟩ := List.mem_iff_get.mp (hall w)
+  exact hreach_idx j.val j.isLt
 
 /-- The thresholds for connectivity and Hamiltonicity coincide:
     both properties hold a.a.s. above (1/2 + ε)n log n edges. -/
@@ -199,7 +215,9 @@ def thresholdCoincidence : Prop :=
 
 /-- Minimum degree for Hamiltonicity. -/
 def MinDegree (G : GraphOnN n) : ℕ :=
-  (Finset.univ : Finset (Fin n)).inf' (by sorry) (fun v => G.degree v)
+  if h : (Finset.univ : Finset (Fin n)).Nonempty then
+    (Finset.univ : Finset (Fin n)).inf' h (fun v => G.degree v)
+  else 0
 
 /-
 ## Part XII: Summary

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-erdos114-oq01-header",
+    "proofId": "erdos-114-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "context",
+    "title": "From Erdős's 1958 Question to Tao's 2025 Breakthrough",
+    "body": "Erdős, Herzog, and Piranian asked in 1958: among monic degree-n polynomials, which maximizes the arc length of the lemniscate {z : |p(z)| = 1}? The conjecture that z^n - 1 is the unique maximizer remained open for over 60 years until Tao's 2025 proof for sufficiently large n. This file formalizes the threshold structure."
+  },
+  {
+    "id": "ann-erdos114-oq01-bounds",
+    "proofId": "erdos-114-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Six Decades of Improving Bounds",
+    "body": "The upper bound on f(n) improved steadily: Dolzhenko (1961) proved f(n) ≤ 4πn, Danchenko (2007) improved to f(n) ≤ 2πn (a factor-of-2 improvement), and Fryntov-Nazarov (2009) achieved the near-optimal f(n) ≤ 2n + O(n^{7/8}). The conjectured optimal is L(z^n - 1) ~ 2n, so the error term n^{7/8} is the remaining gap."
+  },
+  {
+    "id": "ann-erdos114-oq01-threshold",
+    "proofId": "erdos-114-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Nat.find: The Right Tool for Thresholds",
+    "body": "taoThreshold is defined via Nat.find, which gives the minimal N satisfying Tao's existential statement. This is cleaner than taking an arbitrary witness — it ensures minimality and gives us threshold_is_minimal for free. The three theorems (defining property, minimality, upper bound) completely characterize the threshold."
+  },
+  {
+    "id": "ann-erdos114-oq01-reduction",
+    "proofId": "erdos-114-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 181
+    },
+    "type": "insight",
+    "title": "The Key Theorem: Finite Reduction",
+    "body": "finite_reduction is the central result: the infinite MaximizerConjecture (for all n ≥ 1) is equivalent to verifying UniqueMaximizer for the finite set {3, 4, ..., N₀-1}. The proof elegantly combines three ingredients: known_small_cases (n ≤ 2), the gap hypothesis (3 ≤ n < N₀), and unique_max_above_threshold (n ≥ N₀)."
+  },
+  {
+    "id": "ann-erdos114-oq01-gap",
+    "proofId": "erdos-114-oq-01",
+    "range": {
+      "startLine": 194,
+      "endLine": 226
+    },
+    "type": "insight",
+    "title": "Gap Analysis: Quantifying the Remaining Work",
+    "body": "gapSize = max(0, N₀ - 3) exactly measures the computational work needed to close the conjecture. The theorem threshold_le_three_iff_no_gap shows this is an if-and-only-if: the gap vanishes precisely when N₀ ≤ 3. Since n = 0, 1, 2 are known, a threshold of 3 would mean Tao's result covers everything else."
+  }
+]

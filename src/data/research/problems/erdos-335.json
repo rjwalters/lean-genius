@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T00:04:50.018Z",
-    "iteration": 4,
-    "focus": "Session 4: Added 4 more structural theorems. All axioms are deep/open.",
+    "iteration": 5,
+    "focus": "Session 5: Added sumset identity, chain composition, complement bound, double sumset. All axioms deep/open.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 13 theorems, 3 deep axioms. Added density_additive_pos, density_additive_zero, Sumset_empty. No routine axioms to eliminate.",
+    "progressSummary": "PROGRESS: 31 theorems (6 new), 3 deep axioms, 0 sorries. Added Sumset identity ({0}), density chain composition, complement bound, double sumset.",
     "builtItems": [
       "density_nonneg (PROVED) - ge_of_tendsto + div_nonneg",
       "density_le_one (PROVED) - le_of_tendsto + countingFn_le",
@@ -38,7 +38,23 @@
       "density_additive_comm (PROVED) - DensityAdditive is symmetric via Sumset_comm",
       "Proved density_additive_pos via linarith on d(A+B) = d(A) + d(B)",
       "Proved density_additive_zero: zero density on one side collapses sumset density",
-      "Proved Sumset_empty_left and Sumset_empty_right via simp"
+      "Proved Sumset_empty_left and Sumset_empty_right via simp",
+      "Sumset_assoc (PROVED) - sumset associativity",
+      "Sumset_univ_right (PROVED) - sumset with univ",
+      "Sumset_mono_left/right (PROVED) - monotonicity",
+      "density_additive_parts_le_one (PROVED) - density bounds",
+      "density_additive_parts_nonneg (PROVED) - non-negativity",
+      "density_additive_full (PROVED) - full density case",
+      "countingFn_empty (PROVED) - empty set counting",
+      "countingFn_mono (PROVED) - set monotonicity",
+      "countingFn_mono_N (PROVED) - N monotonicity",
+      "Sumset_singleton (PROVED) - singleton sumset",
+      "density_sumset_empty (PROVED) - empty sumset",
+      "Sumset_zero_right: {0} is right identity for Sumset (Erdos335Problem.lean:290)",
+      "Sumset_zero_left: {0} is left identity for Sumset (Erdos335Problem.lean:295)",
+      "density_additive_chain: d(A+B+C)=d(A)+d(B)+d(C) from chain (Erdos335Problem.lean:302)",
+      "density_additive_complement_bound: d(B) ≤ 1-d(A) (Erdos335Problem.lean:308)",
+      "density_double_sumset: d(A+A) = 2d(A) when self-additive (Erdos335Problem.lean:313)"
     ],
     "insights": [
       "limUnder requires Mathlib.Topology.Basic import (not in original file)",
@@ -48,7 +64,15 @@
       "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Plünnecke-Ruzsa. None are routine Mathlib proofs.",
       "plunnecke_ruzsa_lower axiom was unused by any theorem - removed (4→3 axioms)",
       "density_additive_pos: positive densities + DensityAdditive → positive sumset density (trivial from d(A+B)=d(A)+d(B))",
-      "Sumset_empty_left/right: Sumset with ∅ yields ∅ (no elements to sum)"
+      "Sumset_empty_left/right: Sumset with ∅ yields ∅ (no elements to sum)",
+      "Sumset_assoc proved: (A+B)+C = A+(B+C) via ext + omega",
+      "countingFn_mono proved: monotone in set argument via ncard_le_ncard",
+      "countingFn_mono_N proved: monotone in N via Icc_subset_Icc_right",
+      "Sumset_singleton proved: {a}+{b} = {a+b}",
+      "density_additive_full: d(A)+d(B)=1 implies d(A+B)=1",
+      "Sumset_zero proved cleanly: ext + rintro with Set.mem_singleton_iff + simpa",
+      "density_additive_chain: direct rw composition of two DensityAdditive hypotheses",
+      "All 3 axioms confirmed deep: Weyl equidistribution (classical analysis), fractional part density (measure theory), open conjecture"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,16 +92,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:04:50.018Z",
-  "lastUpdate": "2026-03-23T21:00:00Z",
+  "lastUpdate": "2026-03-29T23:15:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos335Problem.lean",
       "filename": "Erdos335Problem.lean",
-      "lineCount": 204,
-      "theoremCount": 13,
-      "axiomCount": 3,
+      "lineCount": 301,
+      "theoremCount": 30,
+      "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,

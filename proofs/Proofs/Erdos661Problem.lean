@@ -20,6 +20,7 @@ Reference: https://erdosproblems.com/661
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
 /- ## Definition -/
@@ -82,26 +83,12 @@ theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
     Equivalently, can bipartite arrangements achieve
     asymptotically fewer distinct distances than general
     point configurations? -/
-axiom erdos_661_bipartite_advantage :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    (minBipartiteDist n : ℝ) ≤ ε * (minDistinct2n n : ℝ)
-
 /- ## Known Bounds -/
 
 /-- **Guth–Katz (2015)**: f(2n) ≳ n/log n. The minimum number
     of distinct distances among 2n points is Ω(n/log n). -/
-axiom guth_katz_lower :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (minDistinct2n n : ℝ) ≥ C * n / Real.log n
-
 /-- **Lattice Upper Bound**: f(2n) ≲ n/√(log n) from the integer
     lattice. Thus the question asks if F(2n) = o(n/√(log n)). -/
-axiom lattice_upper :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (minDistinct2n n : ℝ) ≤ C * n / Real.sqrt (Real.log n)
-
 /- ## Basic Bounds -/
 
 theorem bipartiteDistSet_card_le (X Y : Finset Point2) :
@@ -118,11 +105,53 @@ theorem bipartiteDistSet_mono {X₁ X₂ Y₁ Y₂ : Finset Point2}
   unfold bipartiteDistSet
   exact Finset.image_subset_image (Finset.product_subset_product hX hY)
 
-/- ## Higher Dimensions -/
+/- ## Lenz Construction (ℝ⁴) — Formalized -/
 
-/- **Lenz Construction (ℝ⁴)**: In ℝ⁴, place x₁,...,xₙ on one
-    circle and y₁,...,yₙ on an orthogonal circle. Then
-    d(xᵢ,yⱼ) = √2 for all i,j: only one bipartite distance. -/
+/-- A point in ℝ⁴, represented as two coordinate pairs. -/
+def Point4 := (ℝ × ℝ) × (ℝ × ℝ)
+
+/-- Squared Euclidean distance between two points in ℝ⁴. -/
+def distSq4 (p q : Point4) : ℝ :=
+  (p.1.1 - q.1.1) ^ 2 + (p.1.2 - q.1.2) ^ 2 +
+  (p.2.1 - q.2.1) ^ 2 + (p.2.2 - q.2.2) ^ 2
+
+/-- A point on the first Lenz circle: (cos θ, sin θ, 0, 0).
+    This circle lies in the x₁x₂-plane. -/
+noncomputable def lenzCircle1 (θ : ℝ) : Point4 :=
+  ((Real.cos θ, Real.sin θ), (0, 0))
+
+/-- A point on the second Lenz circle: (0, 0, cos φ, sin φ).
+    This circle lies in the x₃x₄-plane, orthogonal to the first. -/
+noncomputable def lenzCircle2 (φ : ℝ) : Point4 :=
+  ((0, 0), (Real.cos φ, Real.sin φ))
+
+/-- **Lenz's Theorem**: Every bipartite squared distance between
+    points on two orthogonal unit circles in ℝ⁴ equals 2.
+    Consequently all bipartite distances equal √2, giving F₄(2n) = 1
+    for every n ≥ 1. -/
+theorem lenz_distSq4_eq (θ φ : ℝ) :
+    distSq4 (lenzCircle1 θ) (lenzCircle2 φ) = 2 := by
+  show (Real.cos θ - 0) ^ 2 + (Real.sin θ - 0) ^ 2 +
+       (0 - Real.cos φ) ^ 2 + (0 - Real.sin φ) ^ 2 = 2
+  have h1 := Real.sin_sq_add_cos_sq θ
+  have h2 := Real.sin_sq_add_cos_sq φ
+  nlinarith [sq_nonneg (Real.cos θ), sq_nonneg (Real.sin θ),
+             sq_nonneg (Real.cos φ), sq_nonneg (Real.sin φ)]
+
+/-- Both Lenz circles are unit circles: every point has norm² = 1. -/
+theorem lenzCircle1_unit (θ : ℝ) :
+    distSq4 (lenzCircle1 θ) ((0, 0), (0, 0)) = 1 := by
+  show (Real.cos θ - 0) ^ 2 + (Real.sin θ - 0) ^ 2 +
+       (0 - 0) ^ 2 + (0 - 0) ^ 2 = 1
+  have := Real.sin_sq_add_cos_sq θ
+  nlinarith [sq_nonneg (Real.cos θ), sq_nonneg (Real.sin θ)]
+
+theorem lenzCircle2_unit (φ : ℝ) :
+    distSq4 ((0, 0), (0, 0)) (lenzCircle2 φ) = 1 := by
+  show (0 - 0) ^ 2 + (0 - 0) ^ 2 +
+       (0 - Real.cos φ) ^ 2 + (0 - Real.sin φ) ^ 2 = 1
+  have := Real.sin_sq_add_cos_sq φ
+  nlinarith [sq_nonneg (Real.cos φ), sq_nonneg (Real.sin φ)]
 
 /- ## Observations -/
 
@@ -130,4 +159,6 @@ theorem bipartiteDistSet_mono {X₁ X₂ Y₁ Y₂ : Finset Point2}
     problem (general case) is Problem #89. This bipartite variant
     asks whether the bipartite structure provides additional savings. -/
 
-/- **$50 Reward**: Erdős offered $50 for resolving this problem. -/
+/- **Dimension gap**: In ℝ⁴ the Lenz construction gives F₄(2n) = 1,
+    while in ℝ² the conjectured answer is F₂(2n) = o(n/√(log n)).
+    The ℝ³ case is also unknown. -/

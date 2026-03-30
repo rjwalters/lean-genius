@@ -1,0 +1,112 @@
+{
+  "slug": "shannon-entropy-oq-01",
+  "title": "Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-entropy",
+    "shannon-entropy-oq-02",
+    "shannon-entropy-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-03-30T17:32:58.852Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 901,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ02.lean",
+      "filename": "ShannonEntropyOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSA.lean",
+      "filename": "ShannonEntropySSA.lean",
+      "lineCount": 342,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSA.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAAristotle.lean",
+      "filename": "ShannonEntropySSAAristotle.lean",
+      "lineCount": 75,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    }
+  ]
+}

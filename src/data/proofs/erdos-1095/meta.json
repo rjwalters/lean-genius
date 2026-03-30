@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1095",
     "date": "1974",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos1095Problem.lean",
+    "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -22,9 +22,9 @@
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations: g (function), g_gt (g(k) > k+1), g_spec (C(g(k),k) is k-rough), g_minimal (minimality), ees_lower_bound, ees_upper_bound, konyagin_lower_bound, lcm_asymptotic, els_consensus_bound. Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 PROVED from axioms.",
-    "lineCount": 256,
+    "axiomCount": 1,
+    "assumptions": "1 axiom declaration: gFunc_exists (existence of g(k) satisfying all prime factors of C(g(k),k) > k). Previous 8 axioms eliminated: g/g_gt/g_spec/g_minimal folded into gFunc_exists, bounds proved/removed. 0 sorries. Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 PROVED.",
+    "lineCount": 475,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -178,7 +178,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos1095",
-    "lineCount": 256,
+    "lineCount": 475,
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8

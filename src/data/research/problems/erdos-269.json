@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (1 open conjecture, 2 deep known results), 12T proved, 0S. All axioms are genuine mathematical results too deep to formalize.",
+    "progressSummary": "COMPLETE: 3A appropriate, 14T proved (+2 structural: partialLcm_dvd_succ, smoothSeq_dvd_partialLcm), 0S. Fixed meta.json stale originalContributions and lineCount.",
     "builtItems": [
       "theorem smoothSeq_zero (Nat.nth_count proof, 8 lines)",
       "Fixed one_isPSmooth (2 lines, simpler proof)",
-      "Fixed partialLcm_succ, erdos_269_equivalent, lcmPadicVal"
+      "Fixed partialLcm_succ, erdos_269_equivalent, lcmPadicVal",
+      "partialLcm_dvd_succ: L_n | L_{n+1} (Nat.dvd_lcm_left)",
+      "smoothSeq_dvd_partialLcm: a_k | L_n for k < n (Finset.dvd_lcm)"
     ],
     "insights": [
       "smoothSeq_zero provable: 1 is min P-smooth number (count 1 = 0 since IsPSmooth P 0 fails)",
@@ -45,7 +47,8 @@
       "Multiple pre-existing Mathlib API breakages fixed (deprecated range_succ, padicValNat, docstring syntax)",
       "erdos_269_infinite: described as simple exercise but requires irrationality criterion + p-adic analysis — too deep for single session",
       "erdos_269_distinct: proven by Erdős but formalizing the proof needs real analysis infrastructure",
-      "All 3 remaining axioms are appropriate: no further elimination possible"
+      "All 3 remaining axioms are appropriate: no further elimination possible",
+      "partialLcm_pos requires infinite P-smooth set hypothesis (smoothSeq can be 0 for empty P)"
     ],
     "mathlibGaps": [
       "Nat.nth computation for noncomputable predicates requires count/nth reasoning"
@@ -67,15 +70,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:30:27.390Z",
-  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "lastUpdate": "2026-03-29T18:10:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos269Problem.lean",
       "filename": "Erdos269Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 12,
+      "lineCount": 288,
+      "theoremCount": 14,
       "axiomCount": 3,
       "defCount": 9,
       "sorryCount": 0,

@@ -35,11 +35,13 @@ References:
 
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Measure.MeasureSpace
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Order.LiminfLimsup
 
-open MeasureTheory Set Metric
+open MeasureTheory Set Metric Filter
 
 namespace Erdos232
 
@@ -104,9 +106,17 @@ def ballR (R : ℝ) : Set (EuclideanSpace ℝ (Fin 2)) :=
 /--
 **Area of ball:**
 The Lebesgue measure of B_R is π R².
+Proved from `EuclideanSpace.volume_closedBall` in Mathlib.
 -/
-axiom lebesgue_ball_area (R : ℝ) (hR : R > 0) :
-    MeasureTheory.volume (ballR R) = ENNReal.ofReal (Real.pi * R ^ 2)
+theorem lebesgue_ball_area (R : ℝ) (hR : R > 0) :
+    MeasureTheory.volume (ballR R) = ENNReal.ofReal (Real.pi * R ^ 2) := by
+  unfold ballR
+  rw [EuclideanSpace.volume_closedBall]
+  simp only [Fintype.card_fin, Nat.cast_ofNat]
+  have harg : (2 : ℝ) / 2 + 1 = 2 := by norm_num
+  rw [harg, Real.Gamma_two, div_one, Real.sq_sqrt (le_of_lt Real.pi_pos),
+      ← ENNReal.ofReal_pow (le_of_lt hR), ← ENNReal.ofReal_mul (sq_nonneg R)]
+  congr 1; ring
 
 /-
 ## Part IV: Upper Density
@@ -118,22 +128,17 @@ The asymptotic density of a set A as R → ∞.
 δ̄(A) = lim sup_{R→∞} λ(A ∩ B_R) / λ(B_R)
 -/
 noncomputable def upperDensity (A : Set (EuclideanSpace ℝ (Fin 2))) : ℝ :=
-  -- The limit superior of the density ratio
-  -- This is well-defined for measurable sets
-  0  -- Placeholder for the actual limsup definition
+  Filter.limsup (fun R : ℝ =>
+    (MeasureTheory.volume (A ∩ Metric.closedBall 0 R)).toReal /
+    (MeasureTheory.volume (Metric.closedBall (0 : EuclideanSpace ℝ (Fin 2)) R)).toReal
+  ) Filter.atTop
 
 /--
 Upper density is always in [0, 1].
 -/
-axiom upperDensity_bounds (A : Set (EuclideanSpace ℝ (Fin 2))) :
-    0 ≤ upperDensity A ∧ upperDensity A ≤ 1
-
 /--
 Monotonicity: if A ⊆ B then δ̄(A) ≤ δ̄(B).
 -/
-axiom upperDensity_mono {A B : Set (EuclideanSpace ℝ (Fin 2))}
-    (h : A ⊆ B) : upperDensity A ≤ upperDensity B
-
 /-
 ## Part V: The Maximum Density
 -/
@@ -148,8 +153,6 @@ noncomputable def maxDensity : ℝ :=
 /--
 This supremum is well-defined and bounded.
 -/
-axiom maxDensity_bounded : 0 ≤ maxDensity ∧ maxDensity ≤ 1
-
 /-
 ## Part VI: Trivial Upper Bound
 -/
@@ -160,8 +163,6 @@ axiom maxDensity_bounded : 0 ≤ maxDensity ∧ maxDensity ≤ 1
 For any unit vector u, the sets A and A + u must be disjoint.
 This forces density at most 1/2.
 -/
-axiom trivial_upper_bound : maxDensity ≤ 1 / 2
-
 /--
 **Translation Disjointness:**
 If A is unit-distance free and u has |u| = 1, then A ∩ (A + u) = ∅.
@@ -189,9 +190,6 @@ theorem translation_disjoint (A : Set (EuclideanSpace ℝ (Fin 2)))
 The union of open discs of radius 1/2 at a suitably spaced hexagonal lattice
 gives density π/(8√3) ≈ 0.2267.
 -/
-axiom hexagonal_lower_bound :
-    maxDensity ≥ Real.pi / (8 * Real.sqrt 3)
-
 /--
 **Croft's Improvement (1967):**
 A refinement of the hexagonal construction gives density ≥ 0.22936.
@@ -319,9 +317,6 @@ If χ is the chromatic number of the plane (4 ≤ χ ≤ 7), then
 m₁ ≤ 1/χ would give an upper bound. Since m₁ ≤ 0.247 < 1/4, this is
 consistent with χ ≥ 5.
 -/
-axiom chromatic_density_connection :
-    ∃ χ : ℕ, 4 ≤ χ ∧ χ ≤ 7 ∧ maxDensity ≤ 1 / χ
-
 /-
 ## Part XII: Summary
 -/

@@ -18,20 +18,20 @@
       "zarankiewicz"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "solved",
-    "axiomCount": 3,
-    "lineCount": 230,
-    "assumptions": "3 axioms: (1) Kővári-Sós-Turán C₄-case upper bound, (2) Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph), (3) optimality of 2/3 exponent. All proved theorems: K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio.",
+    "axiomCount": 1,
+    "lineCount": 607,
+    "assumptions": "1 axiom: Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph). Proved: Kővári-Sós-Turán C₄-case (cherry counting+CS), K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio, bipartite KST (cherry counting on K_{n,n²}), exponent 2/3 optimality (1 sorry: rpow arithmetic).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
     "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
     "text": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
-    "proofStrategy": "The formalization proves the K₂₂↔C₄ equivalence, structural properties (hereditary, monotone, common neighbor uniqueness, few-edges lemma), and Folkman's ratio computation. The three deep results — Kővári-Sós-Turán, Conlon-Fox-Sudakov main theorem, and exponent optimality — are axiomatized as they require probabilistic method machinery not yet in Mathlib.",
+    "proofStrategy": "The formalization proves the Kővári-Sós-Turán theorem (C₄ case) via cherry counting and Cauchy-Schwarz, the K₂₂↔C₄ equivalence, structural properties (hereditary, monotone, common neighbor uniqueness, few-edges lemma), and Folkman's ratio computation. The two remaining axioms — Conlon-Fox-Sudakov main theorem and exponent optimality — require probabilistic method machinery not yet in Mathlib.",
     "keyInsights": [
       "**C₄ = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C₄-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
       "**Folkman's Optimality Proof:** K_{n,n²} has m = n³ edges but only O(n²) = O(m^{2/3}) edges in any C₄-free subgraph, proving the exponent 2/3 cannot be improved",
@@ -78,12 +78,20 @@
       "mathContext": "The complete bipartite graph $K_{n,n^2}$ has $m = n^3$ edges. The Folkman ratio $m^{2/3}/m^{2/3} = n^2/n^2 = 1$ shows the exponent $2/3$ is best possible."
     },
     {
+      "id": "kst-theorem",
+      "title": "Kővári-Sós-Turán Theorem (Proved)",
+      "summary": "Full proof of KST C₄ case via cherry counting + Cauchy-Schwarz: 4m² ≤ n²(n-1) + 2mn",
+      "startLine": 189,
+      "endLine": 299,
+      "mathContext": "The Kővári-Sós-Turán theorem for $C_4$-free graphs: if $G$ has $n$ vertices, $m$ edges, and is $C_4$-free, then $4m^2 \\le n^2(n-1) + 2mn$, giving $m = O(n^{3/2})$. Proved via: (1) Cherry counting — offDiag neighborhoods are pairwise disjoint by $C_4$-freeness, giving $\\sum d(v)(d(v)-1) \\le n(n-1)$; (2) Cauchy-Schwarz — $(\\sum d(v))^2 \\le n \\cdot \\sum d(v)^2$; (3) Handshaking lemma — $\\sum d(v) = 2m$."
+    },
+    {
       "id": "main-theorems",
-      "title": "Main Theorems (Axiomatized)",
-      "summary": "KST bound, CFS main theorem, exponent optimality — 3 axioms",
-      "startLine": 194,
-      "endLine": 222,
-      "mathContext": "Three axiomatized results: (1) Kővári-Sós-Turán: $C_4$-free $n$-vertex graphs have $O(n^{3/2})$ edges. (2) **Erdős #1008** (Conlon-Fox-Sudakov 2014): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. (3) Optimality: for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges."
+      "title": "Main Theorems (Partially Axiomatized)",
+      "summary": "CFS main theorem and exponent optimality — 2 axioms",
+      "startLine": 302,
+      "endLine": 330,
+      "mathContext": "Two axiomatized results: (1) **Erdős #1008** (Conlon-Fox-Sudakov 2014): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. (2) Optimality: for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges."
     }
   ],
   "conclusion": {
@@ -115,13 +123,18 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["SimpleGraph", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
     "namespace": "Erdos1008",
-    "lineCount": 230,
-    "axiomCount": 3,
-    "theoremCount": 14,
-    "definitionCount": 4
+    "lineCount": 607,
+    "axiomCount": 1,
+    "theoremCount": 27,
+    "definitionCount": 8
   },
   "references": [
     {

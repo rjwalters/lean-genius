@@ -1,0 +1,27 @@
+{
+  "id": "yang-mills-2d-oq-01",
+  "title": "2D Yang-Mills Heat Kernel Techniques for 3D/4D Extension",
+  "slug": "yang-mills-2d-oq-01",
+  "description": "Proves that 2D Yang-Mills heat kernel terms decay exponentially with area, Wilson loops satisfy an exact area law, and the SU(2) string tension is explicitly computable (sigma = 3g^2/16). The partition function decays monotonically from Z(0) = 14 to trivial representation dominance. These exact 2D results contrast with 3D (topological/Chern-Simons) and 4D (Millennium Prize) where no closed-form solutions exist.",
+  "meta": {
+    "author": "Migdal (1975), Witten (1991), Sengupta (1997)",
+    "date": "1991",
+    "status": "verified",
+    "proofRepoPath": "Proofs/YangMills2DOQ01.lean",
+    "tags": [
+      "mathematical-physics",
+      "yang-mills",
+      "gauge-theory",
+      "heat-kernel",
+      "area-law",
+      "casimir-scaling"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All theorems (heat kernel positivity, decay, Wilson loop area law, SU(2) string tension, partition function bounds) are proved from definitions using Mathlib tactics.",
+    "lineCount": 308
+  },
+  "sections": []
+}

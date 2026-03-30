@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T14:24:45.358Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed open-conjecture axiom, added 5 theorems (partial fraction, term bounds, exponential growth). File: 113→166 lines, 1→6 theorems, 4→3 axioms.",
+    "progressSummary": "PROGRESS: 8T/3A/0S (was 6T). Added doubling_implies_pos, doubling_implies_strict_mono. Axioms remain deep.",
     "builtItems": [
       "Proved series_positive theorem in Erdos1051Problem.lean",
       "partial_fraction: telescoping identity",
@@ -71,10 +71,10 @@
     {
       "path": "Proofs/Erdos1051Problem.lean",
       "filename": "Erdos1051Problem.lean",
-      "lineCount": 113,
-      "theoremCount": 1,
-      "axiomCount": 4,
-      "defCount": 4,
+      "lineCount": 174,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1051Problem.lean"

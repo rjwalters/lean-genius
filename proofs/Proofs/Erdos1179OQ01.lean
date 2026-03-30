@@ -219,22 +219,157 @@ private lemma ψp_norm {p : ℕ} [NeZero p] (x : ZMod p) : ‖ψp x‖ = 1 :=
 private lemma ψp_zero {p : ℕ} [NeZero p] : ψp (0 : ZMod p) = 1 := by
   simp [ψp, ZMod.val_zero]
 
+/-- ω^{a % p} = ω^a, since ω^p = 1. -/
+private lemma ωp_pow_mod (p a : ℕ) [NeZero p] : ωp p ^ (a % p) = ωp p ^ a := by
+  conv_rhs => rw [← Nat.div_add_mod a p]
+  rw [pow_add, pow_mul, ωp_pow_eq_one, one_pow, one_mul]
+
+/-- ψ is an additive character: ψ(x + y) = ψ(x) · ψ(y). -/
+private lemma ψp_add {p : ℕ} [NeZero p] (x y : ZMod p) :
+    ψp (x + y) = ψp x * ψp y := by
+  simp only [ψp, ← pow_add]
+  rw [ZMod.val_add x y]
+  exact ωp_pow_mod p (ZMod.val x + ZMod.val y)
+
+/-- ψ distributes over negation: ψ(-x) · ψ(x) = 1. -/
+private lemma ψp_neg_mul {p : ℕ} [NeZero p] (x : ZMod p) :
+    ψp (-x) * ψp x = 1 := by
+  rw [← ψp_add, neg_add_cancel, ψp_zero]
+
+/-- ψ distributes over Finset.sum: ψ(∑ f) = ∏ ψ(f i). -/
+private lemma ψp_sum {p : ℕ} [NeZero p] {ι : Type*} (s : Finset ι) (f : ι → ZMod p) :
+    ψp (s.sum f) = ∏ i ∈ s, ψp (f i) := by
+  induction s using Finset.cons_induction with
+  | empty => simp [ψp_zero]
+  | cons a s ha ih => rw [Finset.sum_cons, ψp_add, ih, Finset.prod_cons]
+
+/-- Character orthogonality on ℤ/pℤ:
+    ∑_j ψ(j·c) = p if c = 0, and 0 if c ≠ 0.
+    The c≠0 case uses the geometric sum formula with ψ(c)^p = 1. -/
+private lemma character_orthogonality {p : ℕ} (hp : Nat.Prime p) (c : ZMod p) :
+    ∑ j : ZMod p, ψp (j * c) = if c = 0 then ↑p else 0 := by
+  split
+  · -- c = 0: each term is ψ(0) = 1, sum = p
+    rename_i hc; subst hc
+    simp only [mul_zero, ψp_zero, Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul,
+      mul_one]
+  · -- c ≠ 0: shift argument. S = ψ(c) · S and ψ(c) ≠ 1, so S = 0.
+    rename_i hc
+    haveI : Fact (Nat.Prime p) := ⟨hp⟩
+    haveI : NeZero p := ⟨hp.ne_zero⟩
+    -- Step 1: ψp(c) ≠ 1 when c ≠ 0
+    have hψp_ne : ψp c ≠ 1 := by
+      simp only [ψp, ωp, ← Complex.exp_nat_mul]
+      have hval_pos : 0 < ZMod.val c :=
+        Nat.pos_of_ne_zero (fun h => hc (ZMod.val_eq_zero.mp h))
+      have hval_lt : ZMod.val c < p := ZMod.val_lt c
+      intro h
+      rw [Complex.exp_eq_one_iff] at h
+      obtain ⟨n, hn⟩ := h
+      -- hn : val(c) * (2πI/p) = n * (2πI)
+      have hpi_ne : (2 : ℂ) * ↑Real.pi * Complex.I ≠ 0 :=
+        mul_ne_zero (mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero))
+          Complex.I_ne_zero
+      have hp_ne : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
+      -- From hn: val(c)/p = n
+      have heq : (↑(ZMod.val c) : ℂ) / ↑p = ↑n :=
+        mul_left_cancel₀ hpi_ne (by rw [hn]; ring)
+      -- So val(c) = n * p as integers
+      have heq_int : (ZMod.val c : ℤ) = n * ↑p := by
+        have h := heq; rw [div_eq_iff hp_ne] at h; exact_mod_cast h
+      -- But 0 < val(c) < p, contradiction
+      have hp_pos : (0 : ℤ) < ↑p := Int.natCast_pos.mpr hp.pos
+      have hvc_pos : (0 : ℤ) < ↑(ZMod.val c) := Int.natCast_pos.mpr hval_pos
+      have hvc_lt : (↑(ZMod.val c) : ℤ) < ↑p := Int.natCast_lt.mpr hval_lt
+      rcases le_or_gt n 0 with hn_le | hn_gt
+      · linarith [mul_nonpos_of_nonpos_of_nonneg hn_le hp_pos.le]
+      · linarith [mul_le_mul_of_nonneg_right (show 1 ≤ n by omega) hp_pos.le]
+    -- Step 2: ψp(c) · S = S via shift j ↦ j + 1
+    set S := ∑ j : ZMod p, ψp (j * c) with hS_def
+    have hshift : ψp c * S = S := by
+      rw [hS_def, Finset.mul_sum]
+      -- ψ(c) · ψ(j·c) = ψ(c + j·c) = ψ((j+1)·c)
+      have hstep : ∀ j : ZMod p, ψp c * ψp (j * c) = ψp ((j + 1) * c) := by
+        intro j; rw [← ψp_add, show c + j * c = (j + 1) * c from by ring]
+      simp_rw [hstep]
+      -- Reindex: sum over j of f(j+1) = sum over j of f(j)
+      apply Finset.sum_equiv (Equiv.addRight (1 : ZMod p))
+      · intro r; simp
+      · intro r _; ring_nf
+    -- Step 3: (ψp(c) - 1) · S = 0, and ψp(c) - 1 ≠ 0, so S = 0
+    have h0 : (ψp c - 1) * S = 0 := by rw [sub_mul, one_mul, hshift, sub_self]
+    exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hψp_ne)
+
 /-- Fourier expansion of reprCount.
     reprCount A g = (1/p) ∑_j ω^{val(-j·g)} · ∏_{a∈A} (1 + ω^{val(j·a)})
 
-    Proof outline:
-    1. reprCount A g = #{S ⊆ A : ∑S = g}
-    2. By character orthogonality: δ(∑S = g) = (1/p)∑_j ω^{j(g-∑S)}
-    3. Swap sums and use subset product identity (Mathlib's prod_add):
-       ∑_{S⊆A} ∏_{a∈S} ω^{ja} = ∏_{a∈A} (1 + ω^{ja})
-    4. Rearrange to get the stated formula. -/
+    Proof uses three key ingredients:
+    1. ψ additivity (ψp_add, ψp_sum): character property of ω^{val(·)}
+    2. Character orthogonality: ∑_j ψ(j·c) = p·[c=0] via geometric sum
+    3. Subset product identity: ∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a)
+
+    Infrastructure (ωp_pow_mod, ψp_add, ψp_sum) is proved above;
+    the remaining steps need character orthogonality on ZMod p
+    and the subset product identity (Finset.prod_add or by induction). -/
 private lemma reprCount_fourier_expansion {p : ℕ} (hp : Nat.Prime p)
     (A : Finset (ZMod p)) (g : ZMod p) :
     (reprCount A g : ℂ) =
       (1 / (p : ℂ)) * ∑ j : ZMod p,
         (ωp p) ^ ZMod.val (-j * g) *
           ∏ a ∈ A, (1 + (ωp p) ^ ZMod.val (j * a)) := by
-  sorry
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.ne_zero⟩
+  have hp_ne : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
+  -- Rewrite ωp in terms of ψp
+  have hψp_eq : ∀ x : ZMod p, (ωp p) ^ ZMod.val x = ψp x := fun _ => rfl
+  -- Product expansion: ∏(1 + f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a)
+  have hprod_expand : ∀ j : ZMod p,
+      ∏ a ∈ A, ((1 : ℂ) + ψp (j * a)) =
+      ∑ S ∈ A.powerset, ∏ a ∈ S, ψp (j * a) := by
+    intro j
+    have h := Finset.prod_add A (fun _ => (1 : ℂ)) (fun a => ψp (j * a))
+    simp only [Finset.prod_const_one, one_mul] at h
+    exact h
+  -- Simplify RHS
+  -- Step 1: Replace ω^{val(...)} with ψp
+  conv_rhs => arg 2; ext j; rw [hψp_eq (-j * g)]
+  conv_rhs => arg 2; ext j; arg 2; arg 2; ext a; rw [hψp_eq (j * a)]
+  -- Step 2: Expand product
+  simp_rw [hprod_expand]
+  -- RHS = (1/p) * ∑_j ψp(-j*g) * ∑_{S⊆A} ∏_{a∈S} ψp(j*a)
+  -- Step 3: Distribute ψp(-j*g) into the sum
+  simp_rw [Finset.mul_sum]
+  -- RHS = (1/p) * ∑_j ∑_{S⊆A} ψp(-j*g) * ∏_{a∈S} ψp(j*a)
+  -- Step 4: Use ψp_sum to simplify: ∏_{a∈S} ψp(j*a) = ψp(j * S.sum id)
+  conv_rhs =>
+    arg 2; ext j; arg 2; ext S
+    rw [show ∏ a ∈ S, ψp (j * a) = ψp (S.sum (fun a => j * a)) from
+      (ψp_sum S (fun a => j * a)).symm]
+    rw [show S.sum (fun a => j * a) = j * S.sum id from Finset.mul_sum.symm]
+  -- RHS = (1/p) * ∑_j ∑_{S⊆A} ψp(-j*g) * ψp(j * S.sum id)
+  -- Step 5: Combine ψp terms: ψp(-j*g) * ψp(j * S.sum id) = ψp(j * (S.sum id - g))
+  conv_rhs =>
+    arg 2; ext j; arg 2; ext S
+    rw [← ψp_add, show -j * g + j * S.sum id = j * (S.sum id - g) from by ring]
+  -- RHS = (1/p) * ∑_j ∑_{S⊆A} ψp(j * (S.sum id - g))
+  -- Step 6: Swap sums
+  rw [show (1 / (p : ℂ)) * ∑ j : ZMod p, ∑ S ∈ A.powerset, ψp (j * (S.sum id - g)) =
+      (1 / (p : ℂ)) * ∑ S ∈ A.powerset, ∑ j : ZMod p, ψp (j * (S.sum id - g)) from by
+    congr 1; rw [Finset.sum_comm]]
+  -- RHS = (1/p) * ∑_{S⊆A} ∑_j ψp(j * (S.sum id - g))
+  -- Step 7: Apply character_orthogonality
+  simp_rw [character_orthogonality hp]
+  -- RHS = (1/p) * ∑_{S⊆A} (if S.sum id - g = 0 then ↑p else 0)
+  -- Step 8: Simplify
+  simp_rw [sub_eq_zero]
+  rw [Finset.mul_sum]
+  simp_rw [show ∀ S : Finset (ZMod p),
+      (1 / (p : ℂ)) * (if S.sum id = g then (↑p : ℂ) else 0) =
+      if S.sum id = g then 1 else 0 from by
+    intro S; split_ifs <;> simp [hp_ne]]
+  -- RHS = ∑_{S⊆A} (if S.sum id = g then 1 else 0) = reprCount A g
+  simp only [reprCount, Finset.card_filter]
+  push_cast; rfl
 
 /-- For j = 0 in ℤ/pℤ, the Fourier term equals 2^|A|. -/
 private lemma fourier_j_zero_term {p : ℕ} [NeZero p]

@@ -101,7 +101,11 @@ structure DescendingWaveIn (S : Finset ℕ) (k : ℕ) where
     such a wave where all terms have the same color. -/
 def HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=
   ∃ (w : DescendingWaveIn (Finset.univ.image (fun i : Fin n => i.val + 1)) k),
-    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by sorry⟩ = color
+    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by
+      have := w.in_S i
+      simp [Finset.mem_image] at this
+      obtain ⟨j, _, hj⟩ := this
+      omega⟩ = color
 
 /- ## The Function f(k) -/
 
@@ -115,13 +119,7 @@ noncomputable def f (k : ℕ) : ℕ :=
   Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified; actual min is complex
 
 /-- f is well-defined for k ≥ 1. -/
-axiom f_exists (k : ℕ) (hk : k ≥ 1) :
-    ∀ c : TwoColoring (f k), HasMonochromaticWave (f k) k c
-
 /-- f(k) is minimal. -/
-axiom f_minimal (k : ℕ) (hk : k ≥ 1) :
-    ∀ n < f k, ∃ c : TwoColoring n, ¬HasMonochromaticWave n k c
-
 /- ## The Original Conjecture (FALSE) -/
 
 /--
@@ -149,9 +147,6 @@ f(k) ≤ (k³ - 4k + 9)/3
 
 This was the original upper bound, later improved.
 -/
-axiom BEF_upper_bound (k : ℕ) (hk : k ≥ 1) :
-    (f k : ℚ) ≤ (k^3 - 4*k + 9) / 3
-
 /--
 **Alon-Spencer (1989): Cubic Growth**
 f(k) ≫ k³
@@ -205,11 +200,6 @@ Their construction uses probabilistic methods to show that
 colorings can avoid descending waves for much larger n than
 k² - k + 1.
 -/
-axiom alon_spencer_construction (k : ℕ) (hk : k ≥ 1) :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, (n : ℝ) ≤ c * k^3 →
-      ∃ coloring : TwoColoring n, ¬HasMonochromaticWave n k coloring
-
 /- ## Connection to Ascending Waves -/
 
 /-- An ascending wave: gaps are non-decreasing.
@@ -226,11 +216,6 @@ noncomputable def g (k : ℕ) : ℕ :=
 /-- Ascending and descending waves have similar growth.
     In fact, the paper is titled "Ascending waves" because the
     analysis works similarly for both cases. -/
-axiom ascending_descending_similar (k : ℕ) (hk : k ≥ 1) :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * k^3 ≤ (f k : ℝ) ∧ (f k : ℝ) ≤ c₂ * k^3 ∧
-    c₁ * k^3 ≤ (g k : ℝ) ∧ (g k : ℝ) ≤ c₂ * k^3
-
 /- ## Quasi-Progressions -/
 
 /-- A quasi-arithmetic progression: an arithmetic progression with bounded errors.
@@ -241,10 +226,6 @@ def IsQuasiProgression {k : ℕ} (seq : Fin k → ℕ) (d error : ℕ) : Prop :=
     d - error ≤ gap ∧ gap ≤ d + error
 
 /-- Descending waves are quasi-progressions where gaps decrease. -/
-axiom descending_wave_is_quasi {k : ℕ} (seq : Fin k → ℕ)
-    (hinc : StrictlyIncreasing seq) (hwave : IsDescendingWave seq) :
-    ∃ d, IsQuasiProgression seq d (seq ⟨0, by sorry⟩)
-
 /- ## Summary -/
 
 /--

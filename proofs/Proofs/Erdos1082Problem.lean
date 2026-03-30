@@ -193,11 +193,6 @@ axiom szemeredi_n_over_3 (S : Finset Point2D) (h : inGeneralPosition S) :
 **Szemerédi's Stronger Result:**
 If S has n points with no k on a line, then some point determines ≫ n/k distances.
 -/
-axiom szemeredi_no_k_on_line (S : Finset Point2D) (k : ℕ) (hk : k ≥ 3)
-    (h : ∀ L : Finset Point2D, L ⊆ S → (∀ p ∈ L, ∀ q ∈ L, ∀ r ∈ L, p ≠ q → q ≠ r → p ≠ r →
-         ¬areCollinear p q r) → L.card < k) :
-    ∃ p ∈ S, numDistancesFromPoint p S ≥ S.card / k
-
 /-
 ## Part VI: The Conjectures
 -/
@@ -321,10 +316,6 @@ Every set of n points in ℝ² determines Ω(n/log n) distinct distances.
 For sets in general position, this gives a lower bound independent of
 the n/2 conjecture.
 -/
-axiom guth_katz_distinct_distances :
-    ∀ S : Finset Point2D, S.card ≥ 2 →
-      ∃ C > 0, (distinctDistances S).card ≥ C * S.card / Real.log S.card
-
 /-
 ## Part X: Summary
 -/

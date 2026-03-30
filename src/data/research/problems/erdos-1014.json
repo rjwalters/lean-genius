@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Eliminated 2 sorries in OQ02 (corrected incorrect O(1/l) rate claim). Main file: 12 axioms, 0 sorries.",
     "builtItems": [
       "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
       "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)",
@@ -44,7 +44,8 @@
       "increment_bound_general: R(k,l+1) ≤ R(k,l) + R(k-1,l+1)",
       "Fixed R3_lower axiom from ∀c to ∃c (consistency fix)",
       "ramsey_pos proved as theorem from ramsey_k2 + ramsey_monotone_left iterated (eliminates 1 axiom)",
-      "ramsey_mono_left_ge2: R(2,l) ≤ R(k,l) for k ≥ 2 via induction on k"
+      "ramsey_mono_left_ge2: R(2,l) ≤ R(k,l) for k ≥ 2 via induction on k",
+      "Eliminated 2 sorries in Erdos1014OQ02.lean by replacing conditional_rate_general_k (incorrect O(1/l) claim) with conditional_convergence_general_k (correct o(1) via ratio_from_asymptotics)"
     ],
     "insights": [
       "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
@@ -56,7 +57,8 @@
       "R3_lower was inconsistent: ∀c>0 R(3,l)≥c·l²/log l contradicts R3_upper. Fixed to ∃c>0.",
       "R3_ratio_convergence proved directly: recurrence gives R(3,l+1)-R(3,l)≤l+1, combined with R(3,l)≥c·l²/log l gives ratio O(log l/l)→0",
       "R3_asymptotic_bounds combines R3_lower and R3_upper to give R(3,l) = Θ(l²/log l)",
-      "ramsey_pos(k,l) for k ≥ 2 follows from R(2,l)=l ≥ 1 and R(2,l) ≤ R(k,l) by iterated ramsey_monotone_left. Only k=1 case would need an axiom but it is never used."
+      "ramsey_pos(k,l) for k ≥ 2 follows from R(2,l)=l ≥ 1 and R(2,l) ≤ R(k,l) by iterated ramsey_monotone_left. Only k=1 case would need an axiom but it is never used.",
+      "OQ02 conditional_rate_general_k had incorrect O(1/l) conclusion — only o(1) follows from the given hypothesis. The growth ratio g(l+1)/g(l) is 1+O(k/l), but the R/g error is o(1) at unspecified rate. Fixed by delegating to ratio_from_asymptotics."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -86,10 +88,10 @@
     {
       "path": "Proofs/Erdos1014OQ01.lean",
       "filename": "Erdos1014OQ01.lean",
-      "lineCount": 198,
-      "theoremCount": 3,
-      "axiomCount": 6,
-      "defCount": 0,
+      "lineCount": 366,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ01.lean"
@@ -97,11 +99,11 @@
     {
       "path": "Proofs/Erdos1014OQ02.lean",
       "filename": "Erdos1014OQ02.lean",
-      "lineCount": 234,
+      "lineCount": 187,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
     },

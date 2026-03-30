@@ -33,13 +33,15 @@
     "builtItems": [
       "Erdos1022Problem.lean: HasPropertyB def, AllSizeAtLeast def, IsSparse def",
       "erdos_1022_conjecture axiom",
-      "hasPropertyB_empty, hasPropertyB_subset, sparse_zero_forces_empty"
+      "hasPropertyB_empty, hasPropertyB_subset, sparse_zero_forces_empty",
+      "Created Proofs/Erdos1022OQ01.lean: k-colorability with monotonicity and B↔B_2"
     ],
     "insights": [
       "Property B = 2-colorability of hypergraphs: ∃ S such that every edge meets both S and S^c",
       "Sparsity condition: for every X, at most c·|X| edges are subsets of X",
       "Conjecture: c(t) → ∞ exists such that c(t)-sparse families of sets of size ≥ t have Property B",
-      "Known: Lovász (1968) proved c(2) = 1 works"
+      "Known: Lovász (1968) proved c(2) = 1 works",
+      "Follow-up OQ-01: Property B_k (k-colorability) generalization (10 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -54,7 +56,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-102",
-    "erdos-1022"
+    "erdos-1022",
+    "erdos-1022-oq-01"
   ],
   "references": {
     "papers": [],
@@ -64,15 +67,27 @@
   "started": "2026-03-28T10:58:21-07:00",
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1022OQ01.lean",
+      "filename": "Erdos1022OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 322,
-      "theoremCount": 22,
-      "axiomCount": 3,
-      "defCount": 5,
+      "lineCount": 523,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-03-29T20:00:00Z"
 }

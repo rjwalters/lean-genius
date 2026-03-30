@@ -311,7 +311,8 @@ theorem erdos_318_summary :
 - Positive density: SOLVED (NO, counterexamples exist)
 - Squares: OPEN (announced proof never appeared)
 -/
-axiom erdos_318_status :
+theorem erdos_318_status :
   True  -- Recording the mixed status
+  := trivial
 
 end Erdos318

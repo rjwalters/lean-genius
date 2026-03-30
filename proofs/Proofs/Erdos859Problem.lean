@@ -92,7 +92,29 @@ theorem divisorSumSet_zero : DivisorSumSet 0 = Set.univ := by
 /-- Corollary: The density of DivisorSumSet 0 is 1. -/
 theorem density_zero : HasNaturalDensity (DivisorSumSet 0) 1 := by
   rw [divisorSumSet_zero]
-  sorry  -- Density of ℕ is 1
+  -- Density of Set.univ is 1: (N+1)/N → 1
+  unfold HasNaturalDensity
+  have hsimp : ∀ N : ℕ,
+      (((Finset.range (N + 1)).filter (· ∈ Set.univ)).card : ℝ) = ↑N + 1 := by
+    intro N
+    rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _), Finset.card_range]
+    push_cast; ring
+  simp_rw [hsimp]
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  refine ⟨⌈ε⁻¹⌉₊ + 1, fun n hn => ?_⟩
+  have hn_pos : (0 : ℝ) < ↑n := by exact_mod_cast (show 0 < n by omega)
+  rw [Real.dist_eq]
+  have hsub : (↑n + 1 : ℝ) / ↑n - 1 = 1 / ↑n := by
+    have : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+    field_simp; ring
+  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff hn_pos, one_mul]
+  calc (1 : ℝ) = ε * ε⁻¹ := (mul_inv_cancel₀ (ne_of_gt hε)).symm
+    _ < ε * ↑n := by
+        apply mul_lt_mul_of_pos_left _ hε
+        calc ε⁻¹ ≤ ↑⌈ε⁻¹⌉₊ := Nat.le_ceil _
+          _ < ↑⌈ε⁻¹⌉₊ + 1 := lt_add_one _
+          _ ≤ ↑n := by exact_mod_cast hn
 
 /-- t = 1: We need 1 to be a divisor of n (always true for n ≥ 1).
     So DivisorSumSet 1 = ℕ⁺. -/
@@ -110,7 +132,35 @@ theorem divisorSumSet_one : ∀ n : ℕ, n > 0 → n ∈ DivisorSumSet 1 := by
     The only way is 2 | n. So d₂ = 1/2. -/
 theorem mem_divisorSumSet_two (n : ℕ) (hn : n > 0) :
     n ∈ DivisorSumSet 2 ↔ 2 ∣ n := by
-  sorry
+  constructor
+  · -- Forward: if some subset of divisors sums to 2, then 2 | n
+    intro ⟨s, hs_sub, hs_sum⟩
+    -- Every element of s is ≤ 2 (single term ≤ total sum)
+    have hle : ∀ x ∈ s, x ≤ 2 := fun x hx => by
+      have := Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx; omega
+    -- Every element of s is ≥ 1 (divisors are positive)
+    have hpos : ∀ x ∈ s, 1 ≤ x := fun x hx => Nat.pos_of_mem_divisors (hs_sub hx)
+    -- 2 must be in s (otherwise all elements = 1, sum ≤ 1 < 2)
+    by_contra h2n
+    have h2nd : (2 : ℕ) ∉ Nat.divisors n := by
+      simp [Nat.mem_divisors]; tauto
+    have h2ns : 2 ∉ s := fun h => h2nd (hs_sub h)
+    have hone : ∀ x ∈ s, x = 1 := fun x hx => by
+      have := hpos x hx; have := hle x hx
+      have : x ≠ 2 := fun h => h2ns (h ▸ hx)
+      omega
+    have : ∑ i in s, i ≤ 1 := by
+      calc ∑ i in s, i = ∑ _ in s, 1 := Finset.sum_congr rfl (fun x hx => hone x hx)
+        _ = s.card := by simp
+        _ ≤ ({1} : Finset ℕ).card := Finset.card_le_card
+            (fun x hx => Finset.mem_singleton.mpr (hone x hx))
+        _ = 1 := by simp
+    omega
+  · -- Backward: if 2 | n, use subset {2} of divisors
+    intro h2n
+    exact ⟨{2}, fun x hx => by
+      simp only [Finset.mem_singleton] at hx
+      rw [hx]; exact Nat.mem_divisors.mpr ⟨h2n, by omega⟩, by simp⟩
 
 /- ## Part IV: Erdős's Bounds (1970) -/
 
@@ -178,14 +228,15 @@ theorem subset_sum_count (n : ℕ) (hn : n > 0) :
     This multiplicative structure helps analyze DivisorSumSet. -/
 theorem divisors_mul_coprime {m n : ℕ} (hmn : Nat.Coprime m n) (hm : m > 0) (hn : n > 0) :
     (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card := by
-  sorry
+  rw [Nat.Coprime.divisors_mul hmn]
+  exact Finset.card_product _ _
 
 /-- Key observation: If n = p₁^a₁ · ... · pₖ^aₖ, then subset sums of
     divisors can be analyzed by considering each prime power separately. -/
 theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
     Nat.divisors (p^a) = (Finset.range (a + 1)).map ⟨fun i => p^i, fun _ _ => by
-      intro h; exact Nat.pow_right_injective hp.two_le h⟩ := by
-  sorry
+      intro h; exact Nat.pow_right_injective hp.two_le h⟩ :=
+  Nat.divisors_prime_pow hp
 
 /- ## Part VIII: Density Comparisons -/
 
@@ -218,9 +269,6 @@ theorem practical_examples :
 
 /-- Practical numbers have positive density (Margenstern 1991).
     This relates to our problem since practical n contribute to many dₜ. -/
-axiom practical_density_positive :
-    HasPositiveDensity {n : ℕ | IsPractical n}
-
 /- ## Part X: Subset Sum Problem -/
 
 /-- The subset sum problem: given a set S and target t, does some
@@ -237,15 +285,8 @@ theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
 /- ## Part XI: Growth of σ(n) -/
 
 /-- Average order of σ(n): Σ_{n≤N} σ(n) ~ (π²/12) N². -/
-axiom sigma_average_order :
-    Tendsto (fun N => (∑ n in Finset.range (N + 1), sigma n : ℝ) / N^2)
-      atTop (𝓝 (Real.pi^2 / 12))
-
 /-- For "most" n, σ(n) ≈ n · (some logarithmic factor).
     This bounds how many n can contribute to DivisorSumSet t for large t. -/
-axiom sigma_typical_size :
-    ∀ᶠ n : ℕ in atTop, sigma n < n * (log n)^2
-
 /- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #859:

@@ -69,34 +69,33 @@ axiom erdos_sidon_upper_bound :
     There exist arbitrarily large N where A(N) < ε√N. -/
 theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A) :
     ∀ c : ℝ, c > 0 → ∃ᶠ N in atTop, (countingFunction A N : ℝ) < c * Real.sqrt N := by
-  sorry  -- Follows from liminf = 0
+  intro c hc
+  have hlim := erdos_sidon_upper_bound A hInf hSidon
+  -- liminf = 0 < c, so A(N)/√N < c frequently
+  have hlt : Filter.liminf (fun N => (countingFunction A N : ℝ) / Real.sqrt N) atTop < c := by
+    rw [hlim]; exact hc
+  have hbdd : atTop.IsBoundedUnder (· ≥ ·)
+      (fun N => (countingFunction A N : ℝ) / Real.sqrt N) :=
+    ⟨0, Filter.eventually_atTop.mpr ⟨0, fun N _ =>
+      div_nonneg (Nat.cast_nonneg _) (Real.sqrt_nonneg _)⟩⟩
+  have hfreq := Filter.frequently_lt_of_liminf_lt hlt hbdd
+  -- Convert A(N)/√N < c to A(N) < c * √N (for N ≥ 1)
+  exact (hfreq.and_eventually (Filter.eventually_atTop.mpr ⟨1, fun _ h => h⟩)).mono
+    fun N ⟨hN, hN1⟩ => by
+      have hNpos : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
+      rwa [div_lt_iff (Real.sqrt_pos_of_pos hNpos)] at hN
 
 /- ## Known Lower Bounds (Constructions) -/
 
 /-- **Greedy Construction**: The greedy algorithm produces an infinite
     Sidon set with A(N) ≫ N^{1/3}.
     (Add n to A if no sum collision with existing elements.) -/
-axiom greedy_sidon_exists :
-  ∃ A : Set ℕ, A.Infinite ∧ IsSidonSet A ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-      (countingFunction A N : ℝ) ≥ C * (N : ℝ)^((1:ℝ)/3)
-
 /-- **Ajtai-Komlós-Szemerédi (1981)**: There exists an infinite Sidon set
     with A(N) ≫ (N log N)^{1/3}.
     First improvement over greedy, earned $25 from Erdős. -/
-axiom aks_sidon_construction :
-  ∃ A : Set ℕ, A.Infinite ∧ IsSidonSet A ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (countingFunction A N : ℝ) ≥ C * ((N : ℝ) * Real.log N)^((1:ℝ)/3)
-
 /-- **Ruzsa (1998)**: There exists an infinite Sidon set with
     A(N) ≫ N^{√2-1+o(1)} ≈ N^{0.414}.
     Current best construction, earned $100 from Erdős. -/
-axiom ruzsa_sidon_construction :
-  ∃ A : Set ℕ, A.Infinite ∧ IsSidonSet A ∧
-    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (countingFunction A N : ℝ) ≥ C * (N : ℝ)^(Real.sqrt 2 - 1 - ε)
-
 /-- √2 - 1 ≈ 0.41421... is the Ruzsa exponent. -/
 theorem ruzsa_exponent_value : Real.sqrt 2 - 1 > 0.41 := by
   have h : Real.sqrt 2 > 1.41 := by
@@ -139,13 +138,6 @@ theorem erdos39_gap : Real.sqrt 2 - 1 < (1:ℝ)/2 := by
 
     This shows N^{1/2-ε} is achievable if we relax Sidon to bounded
     representation. The question is whether we can achieve r(n) = 1. -/
-axiom erdos_renyi_construction :
-  ∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ, A.Infinite ∧
-    (∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-      (countingFunction A N : ℝ) ≥ C * (N : ℝ)^((1:ℝ)/2 - ε)) ∧
-    ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ,
-      (({(a, b) : ℕ × ℕ | a ∈ A ∧ b ∈ A ∧ a + b = n}).ncard : ℝ) ≤ B
-
 /- ## Problem Status -/
 
 /-- **Erdős Problem #39: OPEN ($500 prize)**

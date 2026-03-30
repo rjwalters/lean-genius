@@ -50,9 +50,9 @@
       "Characteristic zero requirement demonstrated via Artin-Schreier counterexample"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 3,
-    "lineCount": 469,
-    "assumptions": "3 axiom(s): puiseux_theorem, puiseux_is_algebraic_closure, newton_puiseux_terminates. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 471,
+    "assumptions": "No axioms. All three former placeholder axioms (puiseux_theorem, puiseux_is_algebraic_closure, newton_puiseux_terminates) had trivial True conclusions and have been converted to theorems.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -151,7 +151,7 @@
       "Polynomial"
     ],
     "namespace": "PuiseuxTheorem",
-    "lineCount": 469,
+    "lineCount": 471,
     "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 2

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/854",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 194,
+    "lineCount": 180,
     "assumptions": "4 axiom(s). Axioms: maxGap_bound (Jacobsthal bound), lacampagne_selfridge_counterexample (computational), ErdosProblem854_missing_gap_growth (open conjecture), ErdosProblem854_many_gaps (open conjecture). gaps_even proved from Mathlib (primorial even → coprime residues odd → gaps even). nthPrime replaced with Mathlib's Nat.nth Nat.Prime; 5 former axioms now proved theorems.",
     "mathlib_version": "4.26.0"
   },
@@ -139,7 +139,7 @@
       "Nat"
     ],
     "namespace": "Erdos854",
-    "lineCount": 194,
+    "lineCount": 180,
     "axiomCount": 4,
     "theoremCount": 16,
     "definitionCount": 8

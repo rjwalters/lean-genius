@@ -223,11 +223,9 @@ For highly composite numbers, τ(n) grows much faster than τ⁺(n).
 For n = 2^k, τ(n) = k+1 but τ⁺(n) = k+1 also (each power in its own interval).
 -/
 theorem tau_power_of_two (k : ℕ) : τ(2^k) = k + 1 := by
-  induction k with
-  | zero => native_decide
-  | succ k ih =>
-    simp only [tau, pow_succ]
-    sorry  -- requires divisor counting for prime powers
+  simp only [tau, Nat.divisors_prime_pow (by decide : Nat.Prime 2),
+    Finset.card_image_of_injective _ (Nat.pow_right_injective (by omega : 2 ≤ 2)),
+    Finset.card_range]
 
 /--
 For products of distinct primes, the spread can be significant.

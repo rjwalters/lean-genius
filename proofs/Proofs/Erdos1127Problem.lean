@@ -142,9 +142,6 @@ axiom erdos_kakutani_equivalence :
 **ℚ-Linearly Independent Sets have Distinct Distances:**
 If S ⊆ ℝ is ℚ-linearly independent, then all pairwise distances in S are distinct.
 -/
-axiom q_linear_independent_distinct_distances :
-  ∀ S : Set ℝ, IsQLinearlyIndependent S → HasDistinctDistances (n := 1) (fun x => ![x])
-
 /--
 **Corollary: CH implies n=1 case:**
 -/
@@ -204,29 +201,12 @@ axiom kunen_theorem : ∀ n : ℕ, ContinuumHypothesis → Erdos1127Question' n
 If CH is false, then for any finite partition of ℝ, there exist four points
 determining at most four distances.
 -/
-axiom erdos_hajnal_necessity :
-  ¬ContinuumHypothesis →
-    ∀ (k : ℕ) (S : Fin k → Set ℝ), (⋃ i, S i) = univ →
-      ∃ i : Fin k, ∃ p₁ p₂ p₃ p₄ : ℝ,
-        p₁ ∈ S i ∧ p₂ ∈ S i ∧ p₃ ∈ S i ∧ p₄ ∈ S i ∧
-        p₁ ≠ p₂ ∧ p₁ ≠ p₃ ∧ p₁ ≠ p₄ ∧ p₂ ≠ p₃ ∧ p₂ ≠ p₄ ∧ p₃ ≠ p₄ ∧
-        -- Only at most 4 distinct distances among the 6 pairs
-        ∃ d₁ d₂ d₃ d₄ : ℝ,
-          {|p₁ - p₂|, |p₁ - p₃|, |p₁ - p₄|, |p₂ - p₃|, |p₂ - p₄|, |p₃ - p₄|} ⊆
-            {d₁, d₂, d₃, d₄}
-
 /--
 **Corollary: Finite partition impossible without CH:**
 The proof connects Erdős-Hajnal (4 points with ≤4 distances) with
 HasDistinctDistances (all 6 pairwise distances distinct).
 This is a contradiction: 4 distinct values cannot cover 6 distinct distances.
 -/
-axiom finite_partition_impossible_without_ch :
-    ¬ContinuumHypothesis →
-      ∀ k : ℕ, ¬∃ (S : Fin k → Set ℝ),
-        (∀ i, HasDistinctDistances (n := 1) (fun x => ![x] '' (S i))) ∧
-        (⋃ i, S i) = univ
-
 /-
 ## Part VIII: The Countable vs Finite Distinction
 -/
@@ -236,12 +216,6 @@ axiom finite_partition_impossible_without_ch :
 CH allows COUNTABLE decomposition to work, but without CH even FINITE
 decomposition fails. The transition from finite to countable is the crux.
 -/
-axiom countable_vs_finite_distinction :
-  -- Under CH: countable works
-  (ContinuumHypothesis → Erdos1127Question' 1) ∧
-  -- Without CH: even finite fails for the "almost" version
-  True
-
 /-
 ## Part IX: Related Concepts
 -/
@@ -260,10 +234,6 @@ noncomputable def numDistinctDistances {n : ℕ} (S : Finset (Point n)) : ℕ :=
 **Erdős Distinct Distances Problem (related):**
 n points in the plane determine at least Ω(n/√log n) distinct distances.
 -/
-axiom erdos_distinct_distances_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ (S : Finset (Point 2)), S.card ≥ 2 →
-    (numDistinctDistances S : ℝ) ≥ c * S.card / Real.sqrt (Real.log S.card)
-
 /-
 ## Part X: Summary
 -/

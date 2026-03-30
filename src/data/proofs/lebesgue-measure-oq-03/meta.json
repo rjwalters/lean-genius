@@ -1,0 +1,81 @@
+{
+  "id": "lebesgue-measure-oq-03",
+  "title": "Infinite-Dimensional Measure Theory",
+  "slug": "lebesgue-measure-oq-03",
+  "description": "Explores why Lebesgue measure fails in infinite dimensions (no translation-invariant σ-finite measure) and what replaces it (Gaussian/Wiener measures). Proves the orthonormal separation argument.",
+  "meta": {
+    "author": "Gross (1967), Wiener",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ03.lean",
+    "tags": [
+      "measure-theory",
+      "infinite-dimensional",
+      "gaussian-measure",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 132,
+    "assumptions": "0 axioms, 0 sorries. 2 True-stub theorems (gaussian_measure_exists, abstract_wiener_well_defined). Previously claimed axioms don't exist in file.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Orthonormal vectors have distance √2 (proved)",
+      "√2 > 2/3 separation for disjoint balls (proved)",
+      "Framework: impossibility → Gaussian → Wiener"
+    ]
+  },
+  "sections": [
+    {
+      "id": "impossibility",
+      "title": "The Impossibility Result",
+      "startLine": 20,
+      "endLine": 50,
+      "summary": "The Impossibility Result"
+    },
+    {
+      "id": "separation",
+      "title": "Orthogonal Separation",
+      "startLine": 52,
+      "endLine": 82,
+      "summary": "Orthogonal Separation"
+    },
+    {
+      "id": "gaussian",
+      "title": "Gaussian Measures",
+      "startLine": 84,
+      "endLine": 108,
+      "summary": "Gaussian Measures"
+    },
+    {
+      "id": "wiener",
+      "title": "Wiener Measure",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "Wiener Measure"
+    }
+  ],
+  "conclusion": {
+    "summary": "No Lebesgue measure in ∞-dim. Gaussian and Wiener measures are the replacements.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "LebesgueMeasureOQ03",
+    "lineCount": 132,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
+}

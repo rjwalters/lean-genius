@@ -282,8 +282,26 @@ theorem representable_six : IsRepresentable 6 := by
                 Finset.sum_singleton]
     norm_num
 
-/-- All n from 1 to 6 are representable. -/
-theorem representable_le_6 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 6) : IsRepresentable n := by
+/-- n = 7 is representable: 7/128 = 8/256 + 9/512 + 11/2048 + 15/32768
+    + 20/1048576 + 21/2097152 + 24/16777216. -/
+theorem representable_seven : IsRepresentable 7 := by
+  refine ⟨{8, 9, 11, 15, 20, 21, 24}, ?_, ?_, ?_⟩
+  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
+  · show recipPow2Sum {8, 9, 11, 15, 20, 21, 24} = recipPow2Weight 7
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (8 : ℕ) ∉ ({9, 11, 15, 20, 21, 24} : Finset ℕ) by decide),
+                Finset.sum_insert (show (9 : ℕ) ∉ ({11, 15, 20, 21, 24} : Finset ℕ) by decide),
+                Finset.sum_insert (show (11 : ℕ) ∉ ({15, 20, 21, 24} : Finset ℕ) by decide),
+                Finset.sum_insert (show (15 : ℕ) ∉ ({20, 21, 24} : Finset ℕ) by decide),
+                Finset.sum_insert (show (20 : ℕ) ∉ ({21, 24} : Finset ℕ) by decide),
+                Finset.sum_insert (show (21 : ℕ) ∉ ({24} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
+
+/-- All n from 1 to 7 are representable. -/
+theorem representable_le_7 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 7) : IsRepresentable n := by
   interval_cases n
   · exact representable_one
   · exact representable_two
@@ -291,6 +309,21 @@ theorem representable_le_6 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 6) : IsRepresen
   · exact representable_four
   · exact representable_five
   · exact representable_six
+  · exact representable_seven
+
+/-- n = 9 is representable: 9/512 = 10/1024 + 11/2048 + 13/8192 + 14/16384. -/
+theorem representable_nine : IsRepresentable 9 := by
+  refine ⟨{10, 11, 13, 14}, ?_, ?_, ?_⟩
+  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl | rfl | rfl <;> omega
+  · show recipPow2Sum {10, 11, 13, 14} = recipPow2Weight 9
+    simp only [recipPow2Sum, recipPow2Weight]
+    simp only [Finset.sum_insert (show (10 : ℕ) ∉ ({11, 13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (11 : ℕ) ∉ ({13, 14} : Finset ℕ) by decide),
+                Finset.sum_insert (show (13 : ℕ) ∉ ({14} : Finset ℕ) by decide),
+                Finset.sum_singleton]
+    norm_num
 
 /-- n = 11 is representable, from the Borwein-Loring family with m = 3:
     11 = 2⁴ - 3 - 2, and 11/2¹¹ = ∑_{k=12}^{14} k/2^k. -/
@@ -302,10 +335,17 @@ theorem representable_eleven : IsRepresentable 11 :=
 theorem representable_26 : IsRepresentable 26 :=
   borwein_loring_family 4 (by omega)
 
-/-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
-axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
-  IsRepresentable n
+/-- n = 57 is representable, from the Borwein-Loring family with m = 5:
+    57 = 2⁶ - 5 - 2, and 57/2⁵⁷ = ∑_{k=58}^{62} k/2^k. -/
+theorem representable_57 : IsRepresentable 57 :=
+  borwein_loring_family 5 (by omega)
 
+/-- n = 120 is representable, from the Borwein-Loring family with m = 6:
+    120 = 2⁷ - 6 - 2, and 120/2¹²⁰ = ∑_{k=121}^{126} k/2^k. -/
+theorem representable_120 : IsRepresentable 120 :=
+  borwein_loring_family 6 (by omega)
+
+/-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
 /- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 261, Part 1: infinitely many n are representable.
@@ -315,9 +355,6 @@ theorem ErdosProblem261_infinitely_many :
   cusick_infinitely_many
 
 /-- Erdős Problem 261, Part 2 (stronger conjecture): every n ≥ 1 is representable -/
-axiom ErdosProblem261_all (n : ℕ) (hn : 1 ≤ n) :
-  IsRepresentable n
-
 /- ## Continuum Representations -/
 
 /-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers.

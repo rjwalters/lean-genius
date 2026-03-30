@@ -65,10 +65,18 @@
       "erdos_335_conjecture: all density-additive pairs arise from group rotations (OPEN, axiomatized)",
       "Basic properties: density_nonneg, density_le_one, additive_sum_le_one",
       "additive_implies_tight: PROVED — density additivity implies Plünnecke–Ruzsa is tight",
-      "density_additive_comm: PROVED — density additivity is symmetric"
+      "density_additive_comm: PROVED — density additivity is symmetric",
+      "Sumset_assoc: PROVED — sumset associativity (A+B)+C = A+(B+C)",
+      "Sumset_univ_right: PROVED — sumset with universal set contains all large numbers",
+      "Sumset_mono_left/right: PROVED — sumset monotonicity in each argument",
+      "density_additive_parts_le_one: PROVED — density bounds for additive pairs",
+      "density_additive_parts_nonneg: PROVED — non-negativity for additive pairs",
+      "density_additive_full: PROVED — full density when d(A)+d(B)=1",
+      "countingFn_empty/mono/mono_N: PROVED — counting function properties",
+      "Sumset_singleton: PROVED — sumset of singletons is a singleton"
     ],
     "axiomCount": 3,
-    "lineCount": 203,
+    "lineCount": 300,
     "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements."
   },
   "sections": [
@@ -111,6 +119,14 @@
       "endLine": 180,
       "summary": "PROVES **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), **additive_implies_tight** (density additivity makes Plünnecke–Ruzsa tight), and **density_additive_comm** (density additivity is symmetric).",
       "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
+    },
+    {
+      "id": "structural",
+      "title": "Deeper Structural Results",
+      "startLine": 205,
+      "endLine": 282,
+      "summary": "PROVES **Sumset_assoc** (sumset associativity), **Sumset_univ_right** (sumset with univ contains large numbers), **Sumset_mono_left/right** (monotonicity), **density_additive_parts_le_one/nonneg** (density bounds for additive pairs), **density_additive_full** ($d(A)+d(B)=1$ implies full sumset density), **countingFn_empty/mono/mono_N** (counting function properties), and **Sumset_singleton** (singleton sumset characterization).",
+      "mathContext": "The sumset $(A + B) + C = A + (B + C)$ (associativity). The counting function $|A \\cap [1,N]|$ is monotone in both $A$ and $N$. These structural properties underpin iterated sumset analysis."
     }
   ],
   "overview": {
@@ -171,9 +187,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 203,
+    "lineCount": 300,
     "axiomCount": 3,
-    "theoremCount": 13,
+    "theoremCount": 31,
     "definitionCount": 8
   },
   "references": [

@@ -47,13 +47,13 @@
         "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
       }
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "assumptions": [
       "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
       "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
       "orbits_get_close: ∀ m, n ≥ 1, ∀ D, ∃ i, j: |h^i(m) - h^j(n)| < D — weaker proximity statement (also open)"
     ],
-    "lineCount": 171
+    "lineCount": 301
   },
   "sections": [
     {
@@ -177,7 +177,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This 171-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge, where $\\tau(n)$ is the divisor count function? The formalization defines the orbit structure, proves basic properties (e.g., $h(n) > n$ so orbits are strictly increasing), axiomatizes the coalescence conjecture, and verifies small-case mergers computationally. The problem's difficulty is irreducibility: the divisor function $\\tau(n) = \\prod(e_i + 1)$ fluctuates wildly with the prime factorization of $n$, and proving two trajectories $h^i(m), h^j(n)$ eventually collide requires controlling cumulative irregularities across arbitrarily many steps. The heuristic that $\\tau(n)$ averages $\\ln n$ suggests orbits grow like $n + c \\cdot n\\ln n$ and should merge, but the gap between average behavior and pointwise control of specific trajectories remains unbridged.",
+    "summary": "This 178-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge, where $\\tau(n)$ is the divisor count function? The formalization defines the orbit structure, proves basic properties (e.g., $h(n) > n$ so orbits are strictly increasing), axiomatizes the coalescence conjecture, and verifies small-case mergers computationally. The problem's difficulty is irreducibility: the divisor function $\\tau(n) = \\prod(e_i + 1)$ fluctuates wildly with the prime factorization of $n$, and proving two trajectories $h^i(m), h^j(n)$ eventually collide requires controlling cumulative irregularities across arbitrarily many steps. The heuristic that $\\tau(n)$ averages $\\ln n$ suggests orbits grow like $n + c \\cdot n\\ln n$ and should merge, but the gap between average behavior and pointwise control of specific trajectories remains unbridged.",
     "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f. The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory",
     "openQuestions": [
       "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
@@ -188,9 +188,9 @@
     ]
   },
   "leanFile": {
-    "lineCount": 178,
+    "lineCount": 301,
     "structureCount": 0,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 13,
     "lemmaCount": 0,
     "defCount": 2,

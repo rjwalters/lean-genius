@@ -1,0 +1,103 @@
+{
+  "id": "sylow-theorems-oq-01",
+  "title": "Classification of Groups of Order pq via Sylow Theorems",
+  "slug": "sylow-theorems-oq-01",
+  "description": "For distinct primes p < q: if p \u2224 (q-1), the only group of order pq is cyclic. If p | (q-1), there are exactly two groups (cyclic + non-abelian semidirect product). Proves the Sylow counting arguments (n_q = 1, n_p \u2208 {1,q}), normality of unique Sylow subgroups, and states the classification theorem with concrete examples (orders 6, 15, 21, 35).",
+  "meta": {
+    "author": "Burnside (1911); Sylow (1872)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems#Examples",
+    "date": "1872/1911",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ01.lean",
+    "tags": [
+      "group-theory",
+      "finite-groups",
+      "sylow",
+      "classification",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations, 0 sorries. All 3 previously sorry'd theorems proved: cyclic_when_coprime via commutator argument + order calculation, nonabelian_sylow_p_count by contradiction, pq_cyclic_classification by universal instantiation.",
+    "lineCount": 387
+  },
+  "overview": {
+    "historicalContext": "The classification of groups of order pq is one of the first applications of Sylow's theorems taught in abstract algebra. Burnside's 1911 textbook included this classification as a foundational result.",
+    "problemStatement": "Classify all groups of order pq for distinct primes p < q.",
+    "text": "Formalizes the pq-group classification using Sylow counting arguments. Proves uniqueness of Sylow q-subgroups, normality results, and the key divisibility/congruence constraints.",
+    "keyInsights": [
+      "The Sylow q-subgroup is always unique (n_q | p and n_q \u2261 1 mod q, with p < q)",
+      "The classification depends solely on whether p | (q-1)",
+      "Concrete examples verify the theory: order 15 cyclic, order 6 has S\u2083",
+      "Helper lemmas compute Sylow subgroup orders via prime factorization of pq"
+    ],
+    "proofStrategy": "Formalizes the pq-group classification using Sylow counting arguments. Proves uniqueness of Sylow q-subgroups, normality results, and the key divisibility/congruence constraints."
+  },
+  "mainTheorems": [
+    {
+      "name": "unique_sylow_q",
+      "type": "core",
+      "description": "The Sylow q-subgroup is always unique (n_q = 1)"
+    },
+    {
+      "name": "sylow_q_normal",
+      "type": "core",
+      "description": "The unique Sylow q-subgroup is normal"
+    },
+    {
+      "name": "unique_sylow_p_when_coprime",
+      "type": "core",
+      "description": "If p \u2224 (q-1), the Sylow p-subgroup is also unique"
+    },
+    {
+      "name": "both_normal_when_coprime",
+      "type": "core",
+      "description": "If p \u2224 (q-1), both Sylow subgroups are normal"
+    },
+    {
+      "name": "sylow_p_count",
+      "type": "supporting",
+      "description": "n_p \u2208 {1, q} for groups of order pq"
+    },
+    {
+      "name": "cyclic_when_coprime",
+      "type": "core",
+      "description": "p \u2224 (q-1) \u2192 G is cyclic (proved via commutator + order argument)"
+    },
+    {
+      "name": "nonabelian_sylow_p_count",
+      "type": "core",
+      "description": "p | (q-1) and \u00accyclic \u2192 n_p = q (proved by contradiction)"
+    },
+    {
+      "name": "pq_cyclic_classification",
+      "type": "core",
+      "description": "p \u2224 (q-1) \u2192 every group of order pq is cyclic (proved)"
+    },
+    {
+      "name": "order_15_cyclic",
+      "type": "supporting",
+      "description": "Groups of order 15 are cyclic (3 \u2224 4)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "extends",
+      "description": "Applies Sylow theorems to classify groups of order pq"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "SylowPQ",
+    "lineCount": 387,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "sorryTheorems": 0,
+    "definitionCount": 3
+  },
+  "sections": []
+}

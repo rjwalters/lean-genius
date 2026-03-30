@@ -18,13 +18,13 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "erdosNumber": 225,
     "erdosUrl": "https://erdosproblems.com/225",
     "erdosProblemStatus": "solved",
-    "axiomCount": 2,
-    "lineCount": 243,
-    "assumptions": "2 axiom(s) and 5 sorry(s). Axioms encode related theorems (Fejér–Riesz, Littlewood); sorries include corrected main theorem, integral identity, and degree-1 case.",
+    "axiomCount": 3,
+    "lineCount": 329,
+    "assumptions": "3 axioms: erdos_225 (Kristiansen 1974 / Saff-Sheil-Small 1973 — main theorem), fejer_riesz (Fejer-Riesz theorem), littlewood_lower_bound (Littlewood conjecture, now theorem). 3 sorries remain for optimality chain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -121,8 +121,8 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos225",
-    "lineCount": 315,
-    "axiomCount": 2,
+    "lineCount": 329,
+    "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 8
   },

@@ -42,7 +42,10 @@ noncomputable def sumTwoMinusThree : ℝ :=
 
 /-- The two definitions agree. -/
 theorem S_eq_sumTwoMinusThree : S = sumTwoMinusThree := by
-  sorry
+  simp only [S, T, sumTwoMinusThree]
+  congr 1; ext n
+  split_ifs with h <;> simp_all
+  push_cast; ring
 
 /-!
 ## Part II: Convergence
@@ -62,7 +65,10 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
 
 /-- The denominators 2^n - 3 are nonzero for n ≥ 2. -/
 theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
-  sorry
+  have h : (2 : ℝ) ^ n ≥ 4 := by
+    calc (2 : ℝ) ^ n ≥ 2 ^ 2 := pow_le_pow_right (by norm_num) hn
+      _ = 4 := by norm_num
+  linarith
 
 /-- Note: 2^1 - 3 = -1, so the n=1 term is -1. -/
 theorem first_term : 1 / ((2 : ℝ)^1 - 3) = -1 := by
@@ -295,12 +301,23 @@ def oeis_A331372 : ℕ → ℤ
 /-- The denominators form A000051 shifted: 2^n - 3. -/
 theorem denom_sequence (n : ℕ) (hn : n ≥ 1) :
     oeis_A331372 n = 2^n - 3 := by
-  sorry
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp [oeis_A331372]
 
 /-- Denominators grow exponentially. -/
 theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
     (oeis_A331372 n : ℝ) > 2^(n-1) := by
-  sorry
+  have hd := denom_sequence n (by omega)
+  simp only [hd]; push_cast
+  -- Goal: (2:ℝ)^n - 3 > (2:ℝ)^(n-1)
+  -- 2^n = 2 * 2^(n-1), so need 2^(n-1) - 3 > 0, i.e., 2^(n-1) > 3
+  have hpow : (2 : ℝ) ^ n = 2 * (2 : ℝ) ^ (n - 1) := by
+    rw [← pow_succ]; congr 1; omega
+  have hge : (2 : ℝ) ^ (n - 1) ≥ 4 := by
+    calc (2 : ℝ) ^ (n - 1) ≥ (2 : ℝ) ^ 2 :=
+          pow_le_pow_right (by norm_num) (by omega)
+      _ = 4 := by norm_num
+  linarith
 
 /-!
 ## Part X: Main Results

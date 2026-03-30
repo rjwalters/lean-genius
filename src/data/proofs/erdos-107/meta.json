@@ -16,7 +16,7 @@
       "convex-geometry"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
@@ -52,16 +52,20 @@
       "InGeneralPosition: general position predicate using Collinear",
       "IsConvexNGon: convex n-gon via extreme-point characterization",
       "CardSet and f(n): Ramsey-type threshold function",
+      "InGeneralPosition.mono: hereditary property (proved)",
+      "CardSet.mono: upward closure of threshold set (proved)",
+      "cardSet_three_lower_bound: f(3) >= 3 via witness construction (proved)",
+      "f_3_value: f(3) = 3 (proved via convexHull ⊆ affineSpan + non-collinearity)",
       "Erdos-Szekeres lower bound 2^{n-2}+1 (axiomatized)",
       "Suk bound 2^{(1+o(1))n} with Filter.atTop formalization",
       "HMPT bound 2^{n+O(sqrt(n log n))} with existential constant",
       "HappyEndingConjecture as Prop (correctly open)"
     ],
     "leanFile": {
-      "lineCount": 188,
+      "lineCount": 285,
       "structureCount": 0,
       "axiomCount": 6,
-      "theoremCount": 5,
+      "theoremCount": 9,
       "defCount": 6,
       "imports": [
         "Mathlib"
@@ -69,8 +73,8 @@
     },
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 188,
-    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "lineCount": 290,
+    "assumptions": "6 axioms (deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds). 0 sorries. f_finite proved from ersz_lower_bound by contradiction.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -228,9 +232,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos107",
-    "lineCount": 226,
+    "lineCount": 290,
     "axiomCount": 6,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 6
   }
 }

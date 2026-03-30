@@ -56,8 +56,9 @@ noncomputable def S (N : ℕ) : ℕ := (allSubsetSums N).card
 
 /-- S(N) is always positive (at least the empty sum = 0). -/
 theorem S_pos (N : ℕ) : S N > 0 := by
-  simp [S, allSubsetSums]
-  sorry  -- The empty set gives sum 0
+  simp only [S, allSubsetSums]
+  exact Finset.card_pos.mpr ⟨_, Finset.mem_image.mpr
+    ⟨∅, Finset.mem_powerset.mpr (Finset.empty_subset _), rfl⟩⟩
 
 /- ## Part II: Iterated Logarithms
 -/
@@ -86,14 +87,15 @@ noncomputable def iterLogProduct (N : ℝ) (k : ℕ) : ℝ :=
 /-- **Bleicher-Erdős Lower Bound (1975):**
     log S(N) ≥ (N/log N)(log 2 · ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ k. -/
-axiom bleicher_erdos_lower_bound (N : ℕ) (k : ℕ) (hk : k ≥ 4)
-    (h_valid : iterLog k N ≥ k) :
-    Real.log (S N : ℝ) ≥ (N : ℝ) / Real.log N * (Real.log 2 * iterLogProduct N k)
-
 /-- The lower bound shows S(N) grows very fast. -/
 theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
     (S N : ℝ) ≥ Real.exp ((N : ℝ) / Real.log N) := by
-  sorry  -- Follows from bleicher_erdos_lower_bound
+  have ⟨hlb, _⟩ := erdos_320_open_bounds N hN
+  have hS : (0 : ℝ) < (S N : ℝ) := Nat.cast_pos.mpr (S_pos N)
+  rw [ge_iff_le]
+  calc Real.exp ((N : ℝ) / Real.log (N : ℝ))
+      ≤ Real.exp (Real.log (S N : ℝ)) := by exact Real.exp_le_exp.mpr hlb
+    _ = (S N : ℝ) := Real.exp_log hS
 
 /- ## Part IV: Bleicher-Erdős Upper Bound (1976)
 -/
@@ -101,10 +103,6 @@ theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
 /-- **Bleicher-Erdős Upper Bound (1976):**
     log S(N) ≤ (N/log N)(log_r N · ∏_{i=3}^r log_i N)
     valid for r ≥ 1 and log_{2r} N ≥ 1. -/
-axiom bleicher_erdos_upper_bound (N : ℕ) (r : ℕ) (hr : r ≥ 1)
-    (h_valid : iterLog (2 * r) N ≥ 1) :
-    Real.log (S N : ℝ) ≤ (N : ℝ) / Real.log N * (iterLog r N * iterLogProduct N r)
-
 /-- The gap between upper and lower bounds. -/
 noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
   (iterLog r N * iterLogProduct N r) - (Real.log 2 * iterLogProduct N k)
@@ -115,11 +113,6 @@ noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
 /-- **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
     log S(N) ≥ (N/log N)(2 log 2 (1 - 3/(2 log_k N)) ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ 3/2. -/
-axiom bgms_improved_lower_bound (N : ℕ) (k : ℕ) (hk : k ≥ 4)
-    (h_valid : iterLog k N ≥ 3/2) :
-    Real.log (S N : ℝ) ≥ (N : ℝ) / Real.log N *
-      (2 * Real.log 2 * (1 - 3 / (2 * iterLog k N)) * iterLogProduct N k)
-
 /-- The BGMS bound improves upon Bleicher-Erdős. -/
 theorem bgms_improves_bleicher_erdos (N : ℕ) (k : ℕ) (hk : k ≥ 4)
     (h_valid : iterLog k N ≥ 4) :
@@ -161,9 +154,6 @@ noncomputable def egyptianCount (q : ℚ) (N : ℕ) : ℕ :=
 
 /-- **Problem #321 Connection:**
     Related to counting Egyptian fraction representations. -/
-axiom problem_321_connection (q : ℚ) (hq : q > 0) (N : ℕ) (hN : N ≥ 8) :
-    egyptianCount q N ≤ S N
-
 /- ## Part VIII: Specific Values and Bounds
 -/
 
@@ -177,11 +167,7 @@ theorem S_two : S 2 = 4 := oeis_A072207.2.1
 theorem S_three : S 3 = 8 := oeis_A072207.2.2.1
 
 /-- For small N, S(N) = 2^N (all sums distinct). -/
-axiom S_small (N : ℕ) (hN : N ≤ 6) : S N = 2^N
-
 /-- For large N, collisions occur: S(N) < 2^N. -/
-axiom S_collisions (N : ℕ) (hN : N ≥ 8) : S N < 2^N
-
 /- ## Part IX: OEIS Sequence A072207
 -/
 
@@ -211,7 +197,8 @@ theorem log_S_leading_term (N : ℕ) (hN : N ≥ 100) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       c₁ * (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
       Real.log (S N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N) := by
-  sorry  -- Follows from the bounds
+  have ⟨hlb, hub⟩ := erdos_320_open_bounds N (by omega)
+  exact ⟨1, 1, one_pos, one_pos, by linarith, by linarith⟩
 
 /- ## Part XI: Summary
 -/

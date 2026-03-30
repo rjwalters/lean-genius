@@ -25,6 +25,17 @@ Parse `$ARGUMENTS` to determine mode:
 
 ---
 
+## Honesty Standards
+
+- Do not describe trivial results as significant
+- Do not inflate novelty claims -- if the result is routine, say so
+- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
+- Judge results relative to current gallery state, not in absolute terms
+- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
+- When uncertain about significance, default to understating rather than overstating
+
+---
+
 ## Mode: STATUS
 
 Report current state of the candidate pool and research pipeline.
@@ -220,6 +231,24 @@ function select_problem():
   return ranked[0]
 ```
 
+### Step 4b: Candidate Quality Gate (MANDATORY)
+
+Before returning any candidate, apply these rejection criteria:
+
+**REJECT if:**
+- Problem is a near-duplicate of any problem completed in the last 30 days
+  (check `research/problems/*/knowledge.md` for similar titles/descriptions)
+- Problem is a shallow specialization or notation variant of an existing gallery proof
+- Problem is a one-off example check with no theory-level implications
+- Composite score falls below minimum threshold (significance < 3)
+- Last 3 selections were from the same problem domain -- apply diversity penalty
+
+**If ALL candidates fail the quality gate, return null with explanation:**
+
+> "No candidates meet quality threshold. Pool needs fresh problems or reprioritization."
+
+This is preferable to returning a weak candidate that wastes researcher cycles.
+
 ### Step 5: Validate and Register Selection
 
 Before finalizing, verify the problem is valid and register it in the database:
@@ -308,6 +337,12 @@ fi
 1. <Why this problem was selected>
 2. <Knowledge tier justification>
 3. <Tractability assessment>
+
+## Rejection Summary
+
+- **Candidates considered**: <total count>
+- **Candidates rejected**: <count and reasons>
+- **Confidence**: high|medium|low (based on score spread between top candidates)
 
 ## Related Gallery Proofs
 

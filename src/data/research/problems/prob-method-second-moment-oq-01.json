@@ -1,0 +1,91 @@
+{
+  "slug": "prob-method-second-moment-oq-01",
+  "title": "Can the quantitative Paley-Zygmund inequality (with threshold parameter $\\the...",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Can the quantitative Paley-Zygmund inequality (with threshold parameter $\\the....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T01:04:30.838Z",
+    "iteration": 1,
+    "focus": "Gallery entry created for completed proof",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: ProbMethodSecondMomentOQ01.lean (3 theorems, 0 sorries, 0 axioms, 147 lines). Gallery entry created with meta.json, annotations, index.ts.",
+    "builtItems": [
+      "Created ProbMethodSecondMomentOQ01.lean (147 lines): quantitative Paley-Zygmund inequality",
+      "Proved paley_zygmund_quantitative: counting form with threshold θ",
+      "Proved paley_zygmund_probability: probability form as corollary",
+      "Proved paley_zygmund_at_zero: θ=0 specialization",
+      "Gallery entry: src/data/proofs/prob-method-second-moment-oq-01/ with meta.json, index.ts, annotations.json"
+    ],
+    "insights": [
+      "The quantitative Paley-Zygmund inequality with threshold θ follows from Cauchy-Schwarz on the above-threshold subset plus a sum decomposition argument",
+      "The proof uses sq_sum_le (Cauchy-Schwarz for finite sums), Finset.sum_filter_add_sum_filter_not, and Finset.sum_le_sum for the below-threshold bound",
+      "At θ=0, the quantitative PZ gives (∑f)² ≤ |{f>0}| · ∑f², strictly stronger than the qualitative P[X>0]>0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "analysis",
+    "probability",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "prob-method-second-moment"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodSecondMoment.lean",
+      "filename": "ProbMethodSecondMoment.lean",
+      "lineCount": 227,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMoment.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
+      "filename": "ProbMethodSecondMomentOQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ01.lean"
+    }
+  ]
+}

@@ -185,10 +185,6 @@ theorem pair_0_1_valid : (0, 1) ∈ validPairs := by
       exact powersOf2_complete
     · exact powersOf2_not_1_robust
 
-/-- Fibonacci sequence is complete (Zeckendorf's theorem).
-    Deep result: every positive integer is a sum of non-consecutive Fibonacci numbers. -/
-axiom fib_complete : IsComplete (sequenceToSet fib)
-
 /-- Fibonacci sequence is 1-robust: removing one element doesn't break completeness.
     Deep result about the redundancy structure of Fibonacci representations. -/
 axiom fib_1_robust : IsRobust fib 1
@@ -225,6 +221,59 @@ private lemma fib_ge_succ : ∀ k, 1 ≤ k → k + 1 ≤ fib k := by
       have := ih (k + 1) (by omega) (by omega)
       have := ih (k + 2) (by omega) (by omega)
       omega
+
+/-- fib(k+1) ≤ 2 * fib(k) for all k: the next Fibonacci is at most double. -/
+private lemma fib_succ_le_double (k : ℕ) : fib (k + 1) ≤ 2 * fib k := by
+  match k with
+  | 0 => show (2 : ℕ) ≤ 2 * 1; omega
+  | k + 1 =>
+    show fib k + fib (k + 1) ≤ 2 * fib (k + 1)
+    have := fib_mono_succ k; omega
+
+/-- For any n ≥ 1, find the largest Fibonacci index k with fib k ≤ n. -/
+private lemma fib_bracketing (n : ℕ) (hn : 1 ≤ n) :
+    ∃ k, fib k ≤ n ∧ n < fib (k + 1) := by
+  have ⟨j, hj⟩ : ∃ j, n < fib j :=
+    ⟨n + 1, lt_of_lt_of_le (by omega) (fib_ge_succ (n + 1) (by omega))⟩
+  set j₀ := Nat.find ⟨j, hj⟩ with hj₀_def
+  have hmin : n < fib j₀ := Nat.find_spec ⟨j, hj⟩
+  have hj₀_pos : 1 ≤ j₀ := by
+    by_contra h; push_neg at h
+    have : j₀ = 0 := by omega
+    rw [this, fib] at hmin; omega
+  have hprev : ¬(n < fib (j₀ - 1)) := Nat.find_min ⟨j, hj⟩ (by omega)
+  exact ⟨j₀ - 1, by omega, by rwa [show j₀ - 1 + 1 = j₀ from by omega]⟩
+
+/-- Fibonacci sequence is complete: every natural number is a sum of distinct
+    Fibonacci values. Proof by greedy algorithm: take the largest fib(k) ≤ n,
+    then n - fib(k) < fib(k) (since fib(k+1) ≤ 2·fib(k)), so the IH applies.
+    fib(k) exceeds any element of the representing set for n-fib(k), so fib(k)
+    is fresh and can be inserted. -/
+theorem fib_complete : IsComplete (sequenceToSet fib) := by
+  use 0
+  suffices h : ∀ n, n ∈ finiteSums (sequenceToSet fib) by exact fun n _ => h n
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact ⟨∅, Set.empty_subset _, by simp⟩
+    | n + 1 =>
+      obtain ⟨k, hk_le, hk_lt⟩ := fib_bracketing (n + 1) (by omega)
+      have hlt_fib : n + 1 - fib k < fib k := by
+        have := fib_succ_le_double k; omega
+      obtain ⟨S, hS_sub, hS_sum⟩ := ih (n + 1 - fib k) (by omega)
+      have hfk_notin : fib k ∉ S := by
+        intro hmem
+        have : fib k ≤ S.sum id :=
+          Finset.single_le_sum (fun _ _ => Nat.zero_le _) hmem
+        omega
+      refine ⟨insert (fib k) S, ?_, ?_⟩
+      · intro x hx
+        simp only [Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe] at hx
+        rcases hx with rfl | hx
+        · exact Set.mem_range.mpr ⟨k, rfl⟩
+        · exact hS_sub (Finset.mem_coe.mpr hx)
+      · rw [Finset.sum_insert hfk_notin]; simp only [id]; omega
 
 /-- fib(i) ≥ 3 for i ≥ 2. -/
 private lemma fib_ge_three (i : ℕ) (hi : 2 ≤ i) : 3 ≤ fib i := by

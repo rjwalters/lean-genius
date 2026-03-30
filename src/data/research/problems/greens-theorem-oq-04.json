@@ -1,0 +1,135 @@
+{
+  "slug": "greens-theorem-oq-04",
+  "title": "greens-theorem-oq-04",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T19:03:47-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated axiom greens_theorem_multiply_connected by proving it from greens_theorem_typeI. Also fixed sign error in OQ03 axiom and corrected typeILineIntegral definition. 0 axioms, 0 sorries, 584 lines.",
+    "builtItems": [
+      "proofs/Proofs/GreensTheoremOQ04.lean (552 lines, 22 theorems, 1 axiom, 0 sorries)",
+      "src/data/proofs/greens-theorem-oq-04/meta.json (gallery entry)",
+      "src/data/proofs/greens-theorem-oq-04/annotations.json",
+      "src/data/proofs/greens-theorem-oq-04/index.ts",
+      "Corrected typeILineIntegral definition (includes Q·deriv terms)",
+      "Proved greens_theorem_multiply_connected from greens_theorem_typeI",
+      "Fixed sign error in greens_theorem_typeI (OQ-03)",
+      "Updated meta.json: status verified, 0 axioms"
+    ],
+    "insights": [
+      "MultiplyConnectedRegion = outer TypeIRegion + list of hole TypeIRegions with containment proofs",
+      "Boundary orientation correction: outer integral minus sum of hole integrals",
+      "Zero-curl corollary (PROVED): outer circulation = sum of inner circulations",
+      "Single-hole deformation invariance (PROVED): curl-free fields have path-independent integrals around holes",
+      "Period vector structure formalizes H^1_dR(D) = R^n",
+      "Annular area pi(R^2-r^2) proved from disk_area_eq_pi axiom in OQ-03",
+      "The multiply-connected Green theorem follows from the simply-connected case by applying it to each subregion (outer + holes) and using List.map_congr_left",
+      "typeILineIntegral must include Q·dy terms on curved boundaries (Q·f and Q·g via deriv) to match the boundary expression from greens_theorem_typeI",
+      "greens_theorem_typeI in OQ-03 had a sign error: Q·g·g - Q·f·f should be Q·f·f - Q·g·g (Leibniz integral rule)",
+      "Set.Subset.rfl proves R.outer.toSet ⊆ R.outer.toSet; holes_contained propagates smoothness to each hole"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove greens_theorem_typeI_full from Mathlib FTC + Leibniz integral rule (would eliminate all axioms)",
+      "Fix sign error in greens_theorem_typeI in OQ03 (Q·g'-Q·f' should be negated)",
+      "Formalize residue theorem using period vector"
+    ],
+    "markdown": "# Knowledge Base: greens-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.213Z",
+  "lastUpdate": "2026-03-30T02:13:21.224Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 353,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}

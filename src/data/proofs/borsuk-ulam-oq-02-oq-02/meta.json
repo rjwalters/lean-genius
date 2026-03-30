@@ -17,7 +17,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 155,
+    "lineCount": 160,
     "assumptions": "None. Survey file with basic definitions proved from Mathlib.",
     "theoremCount": 7,
     "mathlib_version": "4.26.0"
@@ -40,7 +40,8 @@
       "Can equivariant cohomology be built on Mathlib's existing cohomology?",
       "Is there a simpler proof route via equivariant K-theory?",
       "Can the Z/p case (Yang's theorem) be proved without equivariant cohomology?"
-    ]
+    ],
+    "implications": "The equivariant Borsuk-Ulam CAN be formalized in principle, but requires ~2000 lines of equivariant topology infrastructure. Basic definitions are immediately formalizable; the dimension-reduction principle requires equivariant cohomology."
   },
   "leanFile": {
     "imports": [
@@ -66,5 +67,6 @@
       "relationship": "related",
       "description": "The classical Z/2 Borsuk-Ulam that this generalizes"
     }
-  ]
+  ],
+  "sections": []
 }

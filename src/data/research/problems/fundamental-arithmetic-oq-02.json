@@ -1,0 +1,102 @@
+{
+  "slug": "fundamental-arithmetic-oq-02",
+  "title": "Failure of Unique Factorization in Z[√-5]",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Failure of Unique Factorization in Z[√-5].",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:49:26.404Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proof fully verified (0 sorries, 0 axioms, 193 lines, 17 theorems). Gallery data present. Fixed meta.json conclusion (was incorrectly stating 1 sorry).",
+    "builtItems": [],
+    "insights": [
+      "Parent file has 0 sorries, 0 axioms — fully verified",
+      "OQ-02 would need new file: define Z[√-5] ring, show 6 = 2*3 = (1+√-5)(1-√-5), prove 2 is irreducible but not prime",
+      "Mathlib has Zsqrtd (Z[√d]) type, and GaussInt. Could use Zsqrtd for Z[√-5]",
+      "Key Mathlib: Zsqrtd.norm, Zsqrtd.isPrime_iff for norm-based arguments"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Create FundamentalArithmeticOQ02.lean with Z[√-5] non-UFD proof",
+      "Use Mathlib Zsqrtd type with d = -5",
+      "Prove norm(a + b√-5) = a² + 5b², use it to show 2 and 3 are irreducible",
+      "Show (1+√-5)(1-√-5) = 6 = 2·3 with both being valid factorizations into irreducibles"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "algebraic-number-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-03-30T16:05:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalArithmetic.lean",
+      "filename": "FundamentalArithmetic.lean",
+      "lineCount": 225,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmetic.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01.lean",
+      "filename": "FundamentalArithmeticOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ02.lean",
+      "filename": "FundamentalArithmeticOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ02.lean"
+    }
+  ]
+}

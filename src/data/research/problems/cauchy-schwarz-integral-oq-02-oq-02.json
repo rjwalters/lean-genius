@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created comprehensive formalization of explicit Young→Hölder→Minkowski chain. 13 theorems proved, 0 axioms. Full factoring trick detailed. 2 sorries in ENNReal rpow arithmetic.",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries, 13 theorems. Fully verified. minkowski_from_holder_explicit proved via ENNReal.lintegral_Lp_add_le.",
     "builtItems": [
       "Created CauchySchwarzIntegralOQ02OQ02.lean (393 lines, 13 theorems, 0 axioms, 2 sorries)",
       "Proved young_ineq: Young inequality wrapper",
@@ -40,7 +40,8 @@
       "Proved chain_verification: complete Young→Hölder→Minkowski chain",
       "Proved minkowski_l2_from_cs: L² Minkowski from CS (explicit)",
       "Proved minkowski_l1 and minkowski_linfty: endpoint cases",
-      "Full gallery integration with meta.json, index.ts"
+      "Full gallery integration with meta.json, index.ts",
+      "PROVED minkowski_from_holder_explicit: closed sorry via ENNReal.lintegral_Lp_add_le (Mathlib direct Minkowski)"
     ],
     "insights": [
       "The full chain Young→Hölder→Minkowski is available in Mathlib as explicit theorems",
@@ -48,13 +49,11 @@
       "The factoring trick (splitting |f+g|^p into Hölder-amenable terms) is the key creative step",
       "Conjugate exponent identity (p-1)q = p is essential for simplifying the Hölder application",
       "p=1 needs no Hölder (direct integration), p=2 uses CS directly, p=∞ uses essSup",
-      "ENNReal rpow arithmetic is the main technical barrier to closing all sorries"
+      "ENNReal rpow arithmetic is the main technical barrier to closing all sorries",
+      "ENNReal.lintegral_Lp_add_le in Mathlib provides Minkowski for lintegral directly — eliminates need for explicit division step"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Close 2 ENNReal rpow sorries in lintegral_rpow_le_split and minkowski_from_holder_explicit",
-      "Submit to Aristotle for routine rpow arithmetic"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -64,6 +63,7 @@
     "cauchy-schwarz-integral-oq-01",
     "cauchy-schwarz-integral-oq-01-oq-01",
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
     "cauchy-schwarz-integral-oq-01-oq-02",
     "cauchy-schwarz-integral-oq-02",
@@ -77,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T22:57:01.594Z",
-  "lastUpdate": "2026-03-28T22:57:01.613Z",
+  "lastUpdate": "2026-03-29T23:20:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/CauchySchwarzIntegral.lean",
@@ -122,6 +122,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 218,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean"
     },
     {
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
@@ -170,11 +181,11 @@
     {
       "path": "Proofs/CauchySchwarzIntegralOQ02OQ02.lean",
       "filename": "CauchySchwarzIntegralOQ02OQ02.lean",
-      "lineCount": 394,
+      "lineCount": 407,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ02.lean"
     },

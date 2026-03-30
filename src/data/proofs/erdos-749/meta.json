@@ -84,14 +84,14 @@
       "erdos_749_upper_variant: upper density version (proved via by_cases)"
     ],
     "axiomCount": 1,
-    "lineCount": 286,
-    "assumptions": "2 axioms: sidon_set_density_zero (Sidon sets have zero upper density), erdos_turan_conjecture_28 (ET conjecture, open)."
+    "lineCount": 321,
+    "assumptions": "1 axiom: erdos_turan_conjecture_28 (Erdős-Turán conjecture #28, open). sidon_set_density_zero is now a fully proved theorem via Sidon counting bound."
   },
   "overview": {
     "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets (Erdős-Turán 1941) demonstrate that bounded r(n) is compatible with sparse sumsets: they have r(n) ≤ 1 but |A ∩ [1,N]| ∼ √N, giving density-0 sumsets. At the other extreme, the Erdős-Turán conjecture (Problem #28, $500 bounty) asserts that any additive basis of order 2 (density-1 sumset) must have unbounded r(n).\n\nProblem #749 asks about the boundary: can we get sumset density arbitrarily close to 1 while keeping r(n) bounded? A positive answer would show the Erdős-Turán obstruction is specific to density exactly 1 — a sharp phase transition. A negative answer would show the obstruction appears at some critical density 1-ε₀ < 1, strengthening the Erdős-Turán conjecture quantitatively.",
     "problemStatement": "For every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) = |{(a,b) ∈ A² : a+b=n, a≤b}| is bounded?",
     "text": "For ε > 0, does A ⊆ ℕ exist with lower density of A+A ≥ 1-ε and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erdős-Turán conjecture (#28). Status: OPEN.",
-    "proofStrategy": "The formalization defines the representation function via Finset.filter, the sumset as an existential image, and asymptotic densities as axioms. The bounded representation and dense sumset predicates capture the two competing goals. The main conjecture is stated as a dichotomy. Sidon sets demonstrate one extreme (bounded r(n), sparse sumset), and the Erdős-Turán conjecture captures the other (dense sumset implies unbounded r(n)). The upper density variant is also formalized.",
+    "proofStrategy": "The formalization defines the representation function via Finset.filter, the sumset as an existential image, and asymptotic densities via Filter.liminf/limsup. The bounded representation and dense sumset predicates capture the two competing goals. The main conjecture is stated as a dichotomy. Sidon sets demonstrate one extreme (bounded r(n), sparse sumset) with a fully proved density-zero theorem via Sidon counting bounds. The Erdős-Turán conjecture captures the other extreme (dense sumset implies unbounded r(n)), axiomatized as the sole remaining assumption. The upper density variant is also formalized.",
     "keyInsights": [
       "Sidon sets: r(n) ≤ 1 (bounded) but sumset density = 0 — shows bounded r(n) is possible for sparse sumsets",
       "Erdős-Turán conjecture (#28): full bases (density 1) require unbounded r(n)",
@@ -111,36 +111,43 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines `repFunction` (representation count via Finset.filter), `sumSet` (A + A), `countingFn`, `densityRatio`, and defines `lowerDensity`/`upperDensity` via Filter.liminf/limsup. Proves basic properties: non-negativity, density ≤ 1, liminf ≤ limsup.",
-      "startLine": 32,
-      "endLine": 82
+      "startLine": 30,
+      "endLine": 88
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "summary": "Proves fundamental structural lemmas: `sumSet_empty`, `repFunction_empty`, `repFunction_mono` (monotone under set inclusion), `repFunction_eq_zero_of_not_mem`, `mem_sumSet_iff_repFunction_pos` (bridge between sumset and rep function), `mem_sumSet_double`, `sumSet_monotone`.",
+      "startLine": 90,
+      "endLine": 147
     },
     {
       "id": "bounded-dense",
       "title": "Bounded Representation and Dense Sumset",
       "summary": "Defines `HasBoundedRep` (∃ C, ∀ n, r(n) ≤ C) and `HasDenseSumset` (d(A+A) ≥ 1-ε). These are the two properties whose simultaneous achievability is the main question.",
-      "startLine": 51,
-      "endLine": 60
+      "startLine": 149,
+      "endLine": 158
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "summary": "States `erdos_749_conjecture` as a dichotomy: either for all ε > 0 such sets exist, or there is a critical ε₀ below which no such A exists. Captures both possible answers.",
-      "startLine": 61,
-      "endLine": 71
+      "summary": "States `erdos_749_conjecture` as a dichotomy: either for all ε > 0 such sets exist, or there is a critical ε₀ below which no such A exists. Proved via excluded middle.",
+      "startLine": 160,
+      "endLine": 177
     },
     {
       "id": "context",
       "title": "Sidon Sets and Erdős-Turán Connection",
-      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1). Proves `sidon_set_density_zero` (Sidon sets have upper density 0) from Sidon counting bound. Connects to Erdős-Turán conjecture (#28, open) as axiom.",
-      "startLine": 113,
-      "endLine": 150
+      "summary": "Proves `sidon_bounded_rep` (Sidon → r(n) ≤ 1), `sidon_counting_bound` (|A∩[1,N]| ≤ √(2N)+1), and `sidon_set_density_zero` (Sidon → upper density 0, fully proved via counting bound and limsup argument). Axiomatizes Erdős-Turán conjecture (#28, open), derives #749 false at ε=0 from ET.",
+      "startLine": 179,
+      "endLine": 304
     },
     {
       "id": "upper-variant",
       "title": "Upper Density Variant",
-      "summary": "States the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ.",
-      "startLine": 97,
-      "endLine": 106
+      "summary": "States the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ. Proved via excluded middle.",
+      "startLine": 306,
+      "endLine": 322
     }
   ],
   "conclusion": {
@@ -161,7 +168,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 321,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 19,
     "definitionCount": 8
   },

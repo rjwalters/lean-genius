@@ -232,24 +232,58 @@ theorem vanDoorn_constraint (A : Finset ℕ) (hA : HasNonSqfreeProductProp A)
   obtain ⟨p, hp, hdvd⟩ := diagonal_constraint A hA a ha
   exact ⟨p, hp, prime_sq_dvd_sq_succ_mod_four hp hdvd, hdvd⟩
 
+/- ## Van Doorn's Density Argument: Counting Solutions
+
+The full Van Doorn bound proceeds:
+1. x² = -1 has at most 2 solutions in ZMod p (field theory) — proved below
+2. Hensel lifting: each solution mod p lifts uniquely to mod p² (2a ≠ 0 for odd p)
+3. Each prime p ≡ 1 (mod 4) contributes ≤ 2/p² density to A
+4. Union bound: |A|/N ≤ 2 Σ_{p≡1(4)} 1/p² ≈ 0.108
+Steps 2-4 require Hensel's lemma and real analysis, remaining in the axiom. -/
+
+/-- In ZMod p (a field for prime p), x² = -1 has at most 2 solutions:
+    if a² = -1 and b² = -1, then b = a or b = -a.
+    This is the algebraic core of Van Doorn's density counting. -/
+theorem sq_neg_one_unique {p : ℕ} (hp : Nat.Prime p)
+    {a b : ZMod p} (ha : a * a = -(1 : ZMod p)) (hb : b * b = -(1 : ZMod p)) :
+    b = a ∨ b = -a := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  have heq : a * a = b * b := by rw [ha, hb]
+  have h : (a - b) * (a + b) = 0 := by
+    calc (a - b) * (a + b) = a * a - b * b := by ring
+      _ = 0 := sub_eq_zero.mpr heq
+  rcases mul_eq_zero.mp h with hsub | hadd
+  · left; exact (sub_eq_zero.mp hsub).symm
+  · right; exact (neg_eq_of_add_eq_zero_left hadd).symm
+
+/-- Corollary: if p² | a²+1 and p² | b²+1, then a ≡ b or a ≡ -b (mod p).
+    The set {n : p² | n²+1} falls into at most 2 residue classes mod p.
+    Hensel lifting extends this to 2 classes mod p² (not formalized). -/
+theorem sq_dvd_succ_mod_congruence {p a b : ℕ} (hp : Nat.Prime p)
+    (ha : p * p ∣ a * a + 1) (hb : p * p ∣ b * b + 1) :
+    (a : ZMod p) = (b : ZMod p) ∨ (a : ZMod p) = -(b : ZMod p) := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  have cast_neg_one : ∀ x : ℕ, p * p ∣ x * x + 1 →
+      (x : ZMod p) * (x : ZMod p) = -(1 : ZMod p) := by
+    intro x hx
+    have hpdvd : p ∣ x * x + 1 := dvd_trans ⟨p, rfl⟩ hx
+    have hpdvd' : p ∣ x ^ 2 + 1 := by rwa [sq]
+    have hzero : ((x ^ 2 + 1 : ℕ) : ZMod p) = 0 := by
+      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hpdvd'
+    simp only [Nat.cast_add, Nat.cast_pow, Nat.cast_one] at hzero
+    have h : (x : ZMod p) ^ 2 = -1 := by
+      have h0 : (x : ZMod p) ^ 2 + 1 = 0 := hzero
+      calc (x : ZMod p) ^ 2 = (x : ZMod p) ^ 2 + 1 - 1 := by ring
+        _ = 0 - 1 := by rw [h0]
+        _ = -1 := by ring
+    rwa [sq] at h
+  exact sq_neg_one_unique hp (cast_neg_one b hb) (cast_neg_one a ha)
+
 /- ## Deep Results (Axiomatized) -/
 
 /-- Van Doorn's upper bound: |A|/N ≤ 2 Σ_{p ≡ 1 (4)} 1/p² ≈ 0.108.
     So maxNonSqfreeSet(N) ≤ ⌊0.108 · N⌋ + O(1). -/
-axiom vanDoorn_upper_bound :
-  ∃ C : ℕ, ∀ N : ℕ, 1 ≤ N →
-    maxNonSqfreeSet N * 1000 ≤ 108 * N + C
-
 /-- Sawhney's theorem: for sufficiently large N, the maximum is exactly
     ⌊N/25⌋, achieved only by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
-axiom sawhney_solution :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    maxNonSqfreeSet N = N / 25
-
 /-- Structural result: any extremal set for large N is contained in
     {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
-axiom sawhney_structure :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    ∀ A : Finset ℕ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) →
-      HasNonSqfreeProductProp A → A.card = N / 25 →
-        (∀ a ∈ A, a % 25 = 7) ∨ (∀ a ∈ A, a % 25 = 18)

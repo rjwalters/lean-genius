@@ -70,10 +70,6 @@ For any choice of forbidden residue classes Xₙ ⊆ ℤ/nℤ, the modular
 avoidance set B = {m : ∀n, m ∉ Xₙ (mod n)} has a logarithmic density.
 
 This is a significant generalization of the Davenport-Erdős theorem. -/
-axiom erdos486_conjecture :
-    ∀ X : (n : ℕ) → Set (ZMod n),
-    ∃ d : ℝ, HasLogDensity (avoidanceSet X) d
-
 /-
 ## Special Case: Davenport-Erdős Theorem (1936)
 
@@ -92,9 +88,6 @@ For any A ⊆ ℕ, the set of numbers not divisible by any element of A
 has a logarithmic density. This is the Xₙ = {0} case of Problem #486.
 
 Note: This is a known theorem, stated as an axiom pending Mathlib formalization. -/
-axiom davenport_erdos_theorem :
-    ∀ A : Set ℕ, ∃ d : ℝ, HasLogDensity (zeroAvoidanceSet A) d
-
 /-
 ## Related Results
 
@@ -112,8 +105,4 @@ def HasNaturalDensity (A : Set ℕ) (d : ℝ) : Prop :=
 
 There exists A ⊆ ℕ such that the zero-avoidance set has logarithmic density
 but NOT natural density. This justifies studying logarithmic density. -/
-axiom besicovitch_counterexample :
-    ∃ A : Set ℕ, (∃ d : ℝ, HasLogDensity (zeroAvoidanceSet A) d) ∧
-                 (¬ ∃ d : ℝ, HasNaturalDensity (zeroAvoidanceSet A) d)
-
 end Erdos486

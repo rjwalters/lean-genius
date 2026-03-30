@@ -141,72 +141,25 @@ theorem log_over_l_faster_than_inv_log :
   linarith
 
 -- ══════════════════════════════════════════════════════════════════
--- § Step 3: Rate Bound for General k (Conditional)
+-- § Step 3: General k (conditional convergence)
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Conditional rate for general k: If R(k,l) has power-law growth
-    R(k,l) ~ c·l^(k-1)/(log l)^(k-2), then the rate of convergence
-    to 1 is O(1/l), which is even faster than O(log l / l).
+/-- For general k with conjectured asymptotics R(k,l) ~ c·l^(k-1)/(log l)^(k-2),
+    the ratio R(k,l+1)/R(k,l) → 1 as l → ∞.
 
-    This follows because:
-    - R(k,l+1)/R(k,l) = [(l+1)/l]^(k-1) · [log l/log(l+1)]^(k-2) · [c(l+1)/c(l)]
-    - [(l+1)/l]^(k-1) = 1 + (k-1)/l + O(1/l²)
-    - [log l/log(l+1)]^(k-2) = 1 - O(1/(l·log l))
-    - The product is 1 + O(1/l)
--/
-theorem conditional_rate_general_k (k : ℕ) (hk : k ≥ 3) :
+    This is proved in `Erdos1014Problem.ratio_from_asymptotics` (the main file)
+    using a 3-factor decomposition R'/R = (R'/g')·(g'/g)·(g/R).
+
+    NOTE: The growth ratio g'/g = ((l+1)/l)^(k-1)·(log l/log(l+1))^(k-2)
+    converges to 1 at rate O(k/l), but this does NOT imply the overall
+    convergence is O(1/l) — the rate depends on how fast R(k,l)/g(l) → 1,
+    which the asymptotic hypothesis does not quantify. -/
+theorem conditional_convergence_general_k (k : ℕ) (hk : k ≥ 3) :
   (∀ ε : ℝ, ε > 0 → ∃ c : ℝ, c > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     |(ramseyNumber k l : ℝ) / (c * (l : ℝ) ^ (k - 1) / (Real.log l) ^ (k - 2)) - 1| < ε) →
-  ∃ C : ℝ, C > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
-    |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| ≤ C / (l : ℝ) := by
-  intro h_asymp
-  obtain ⟨c, hc, L₁, hL₁⟩ := h_asymp (1/4) (by positivity)
-  refine ⟨4 * k, by positivity, ?_⟩
-  -- Growth ratio bound: |((l+1)/l)^(k-1) · (log l/log(l+1))^(k-2) - 1| ≤ 2k/l
-  have hgr : ∃ L₂ : ℕ, ∀ l : ℕ, l > L₂ →
-      |(((l : ℝ) + 1) / (l : ℝ)) ^ (k - 1) *
-       (Real.log (l : ℝ) / Real.log ((l : ℝ) + 1)) ^ (k - 2) - 1| ≤
-        (2 * k : ℝ) / (l : ℝ) := by
-    use max (4 * k) 2
-    intro l hl
-    have hl_pos : (0 : ℝ) < l := by exact_mod_cast (show 0 < l by omega)
-    have hl1_pos : (0 : ℝ) < (l : ℝ) + 1 := by linarith
-    have hlog_l : 0 < Real.log (l : ℝ) :=
-      Real.log_pos (by exact_mod_cast (show 1 < l by omega))
-    have hlog_l1 : 0 < Real.log ((l : ℝ) + 1) :=
-      Real.log_pos (by linarith)
-    -- Bernoulli-type bound for growth ratio
-    sorry
-  obtain ⟨L₂, hL₂⟩ := hgr
-  use max (max L₁ L₂) 2
-  intro l hl
-  have hl1 : l > L₁ := by omega
-  have hl2 : l > L₂ := by omega
-  have hl_pos : (0 : ℝ) < l := by exact_mod_cast (show 0 < l by omega)
-  have hl1_pos : (0 : ℝ) < (l : ℝ) + 1 := by linarith
-  have hlog_l : 0 < Real.log (l : ℝ) :=
-    Real.log_pos (by exact_mod_cast (show 1 < l by omega))
-  have hlog_l1 : 0 < Real.log ((l : ℝ) + 1) :=
-    Real.log_pos (by linarith)
-  set a := k - 1 with ha_def
-  set b := k - 2 with hb_def
-  set g := c * (l : ℝ) ^ a / (Real.log (l : ℝ)) ^ b
-  set g' := c * ((l : ℝ) + 1) ^ a / (Real.log ((l : ℝ) + 1)) ^ b
-  have hg_pos : 0 < g := div_pos (mul_pos hc (pow_pos hl_pos _)) (pow_pos hlog_l _)
-  have hg'_pos : 0 < g' := div_pos (mul_pos hc (pow_pos hl1_pos _)) (pow_pos hlog_l1 _)
-  set R := (ramseyNumber k l : ℝ)
-  set R' := (ramseyNumber k (l + 1) : ℝ)
-  have hα : |R' / g' - 1| < 1/4 := by
-    convert hL₁ (l + 1) (by omega) using 2; push_cast; ring
-  have hζ : |R / g - 1| < 1/4 := hL₁ l hl1
-  have hβ := hL₂ l hl2
-  have hR_pos : 0 < R := by
-    have hRg : R / g > 3/4 := by linarith [(abs_lt.mp hζ).1]
-    by_contra h; push_neg at h
-    have : R / g ≤ 0 := div_nonpos_of_nonpos_of_nonneg h (le_of_lt hg_pos)
-    linarith
-  -- Decompose and bound R'/R - 1 using 3-factor decomposition
-  sorry
+  ∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
+    |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| < ε :=
+  ratio_from_asymptotics k hk
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Step 4: The Answer

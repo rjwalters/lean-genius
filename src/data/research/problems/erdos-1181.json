@@ -65,7 +65,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-11",
-    "erdos-118"
+    "erdos-118",
+    "erdos-1181"
   ],
   "references": {
     "papers": [],
@@ -75,5 +76,18 @@
   "started": "2026-02-08T00:55:03.569Z",
   "lastUpdate": "2026-03-13T07:52:17.061Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1181Problem.lean",
+      "filename": "Erdos1181Problem.lean",
+      "lineCount": 293,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1181Problem.lean"
+    }
+  ]
 }

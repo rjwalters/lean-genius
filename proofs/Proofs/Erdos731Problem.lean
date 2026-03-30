@@ -41,6 +41,28 @@ noncomputable def leastNonDivisor (m : ℕ) : ℕ :=
 noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
   leastNonDivisor (centralBinom n)
 
+/-- C(2n, n) > 0 for all n. -/
+theorem centralBinom_pos (n : ℕ) : 0 < centralBinom n := by
+  unfold centralBinom; exact Nat.choose_pos (by omega)
+
+/-- C(0, 0) = 1. -/
+theorem centralBinom_zero : centralBinom 0 = 1 := by native_decide
+
+/-- C(2, 1) = 2. -/
+theorem centralBinom_one : centralBinom 1 = 2 := by native_decide
+
+/-- C(4, 2) = 6. -/
+theorem centralBinom_two : centralBinom 2 = 6 := by native_decide
+
+/-- C(6, 3) = 20. -/
+theorem centralBinom_three : centralBinom 3 = 20 := by native_decide
+
+/-- C(8, 4) = 70. -/
+theorem centralBinom_four : centralBinom 4 = 70 := by native_decide
+
+/-- C(10, 5) = 252. -/
+theorem centralBinom_five : centralBinom 5 = 252 := by native_decide
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
@@ -120,8 +142,20 @@ theorem lower_bound_most_n :
     ∀ (P : ℕ), ∃ (D : ℕ), D > 0 ∧ True :=
   fun _ => ⟨1, by omega, trivial⟩
 
-/-- Upper bound: there always exists a prime p ≤ 2n+1 not dividing C(2n, n),
-    namely p = 2n+1 when it is prime and n+1 < p. -/
+/-- C(N, k) divides lcm(1, ..., N) for k ≤ N.
+    Proof (not yet formalized): By Kummer's theorem, v_p(C(N,k)) = number of carries
+    when adding k and N-k in base p. The number of carries ≤ floor(log_p N),
+    which equals v_p(lcm(1,...,N)). So v_p(C(N,k)) ≤ v_p(lcm(1,...,N)) for all primes p,
+    hence C(N,k) | lcm(1,...,N).
+    See also: Nair (1982), integral proof via Beta function identity. -/
+axiom choose_dvd_lcm (N k : ℕ) (hk : k ≤ N) :
+  Nat.choose N k ∣ (Finset.range (N + 1)).lcm id
+
+/-- Upper bound: leastNonDivCentral n ≤ 2n+1 for all n ≥ 1.
+    Proof: If all m ∈ {1,...,2n+1} divide C(2n,n), then lcm(1,...,2n+1) ≤ C(2n,n).
+    But C(2n+1,n) | lcm(1,...,2n+1) [choose_dvd_lcm] and
+    C(2n+1,n) > C(2n,n) [choose_succ_gt_central], contradiction.
+    Note: (2n+1) itself CAN divide C(2n,n) when composite (e.g. n=577). -/
 axiom upper_bound_trivial (n : ℕ) (hn : n ≥ 1) :
   leastNonDivCentral n ≤ 2 * n + 1
 
@@ -137,6 +171,21 @@ theorem bertrand_central (n : ℕ) (hn : n ≥ 1) :
   have h2n : 2 * n = n + n := by omega
   rw [h2n]
   exact hp.dvd_choose_add hnp hnp (by omega)
+
+/-- A prime larger than 2n does not divide C(2n, n).
+    Proof: C(2n,n) · n! · n! = (2n)!, so C(2n,n) | (2n)!.
+    But primes > 2n do not divide (2n)! (Legendre). -/
+theorem prime_gt_not_dvd_central {p n : ℕ} (hp : Nat.Prime p) (hpn : 2 * n < p) :
+    ¬(p ∣ centralBinom n) := by
+  unfold centralBinom
+  intro hd
+  have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at hfact
+  have hdvd_fact : p ∣ (2 * n).factorial := by
+    have h1 : p ∣ Nat.choose (2 * n) n * n.factorial * n.factorial :=
+      dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hd _) _
+    rwa [hfact] at h1
+  exact absurd (hp.dvd_factorial.mp hdvd_fact) (by omega)
 
 /-- The central binomial satisfies C(2n, n) ≥ 4^n / (2n+1) for n ≥ 0.
     Proof: Σ_{k=0}^{2n} C(2n,k) = 4^n (binomial theorem). This sum has 2n+1
@@ -159,3 +208,98 @@ theorem central_binom_lower (n : ℕ) :
           _ = Nat.choose (2 * n) n := by rw [hdiv]
     _ = Nat.choose (2 * n) n * (2 * n + 1) := by
         rw [Finset.sum_const, Finset.card_range, smul_eq_mul, mul_comm]
+
+/- ## Key Structural Results -/
+
+/-- The absorption identity for central binomials:
+    (n+1) · C(2n+1, n) = (2n+1) · C(2n, n). -/
+theorem central_binom_succ_identity (n : ℕ) :
+    (n + 1) * Nat.choose (2 * n + 1) n = (2 * n + 1) * centralBinom n := by
+  unfold centralBinom
+  have hab := Nat.add_one_mul_choose_eq (2 * n) n
+  -- hab : (2n+1) * C(2n, n) = C(2n+1, n+1) * (n+1)
+  have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n := by
+    rw [← Nat.choose_symm (by omega : n ≤ 2 * n + 1)]
+    congr 1; omega
+  rw [hsym] at hab
+  -- hab : (2n+1) * C(2n, n) = C(2n+1, n) * (n+1)
+  linarith [mul_comm (Nat.choose (2 * n + 1) n) (n + 1)]
+
+/-- 2n+1 and n+1 are coprime: gcd(2n+1, n+1) = 1.
+    Proof: any d dividing both must divide 2(n+1) - (2n+1) = 1. -/
+theorem coprime_two_n_succ_n_succ (n : ℕ) : Nat.Coprime (2 * n + 1) (n + 1) := by
+  suffices h : Nat.gcd (n + 1) (2 * n + 1) = 1 by rwa [Nat.coprime_comm]
+  apply Nat.dvd_one.mp
+  have h1 : Nat.gcd (n + 1) (2 * n + 1) ∣ n + 1 := Nat.gcd_dvd_left _ _
+  have h2 : Nat.gcd (n + 1) (2 * n + 1) ∣ 2 * n + 1 := Nat.gcd_dvd_right _ _
+  have h3 : Nat.gcd (n + 1) (2 * n + 1) ∣ 2 * (n + 1) := dvd_mul_of_dvd_right h1 2
+  have h4 : Nat.gcd (n + 1) (2 * n + 1) ∣ 2 * (n + 1) - (2 * n + 1) :=
+    Nat.dvd_sub h3 h2
+  rwa [show 2 * (n + 1) - (2 * n + 1) = 1 from by omega] at h4
+
+/-- If (2n+1) | C(2n,n), then (2n+1)² | C(2n+1,n).
+    Key reduction for the upper bound problem. -/
+theorem dvd_central_implies_sq_dvd (n : ℕ) (hdvd : (2 * n + 1) ∣ centralBinom n) :
+    (2 * n + 1) ^ 2 ∣ Nat.choose (2 * n + 1) n := by
+  have hid := central_binom_succ_identity n
+  obtain ⟨q, hq⟩ := hdvd
+  unfold centralBinom at hq
+  -- From identity and hq: (n+1) * C(2n+1,n) = (2n+1) * (2n+1) * q
+  have hsq_dvd : (2 * n + 1) * (2 * n + 1) ∣ Nat.choose (2 * n + 1) n * (n + 1) := by
+    refine ⟨q, ?_⟩
+    -- Use a fresh copy of the identity with centralBinom expanded
+    have h := central_binom_succ_identity n
+    unfold centralBinom at h
+    rw [hq] at h
+    linarith
+  rw [sq]
+  exact (Nat.Coprime.mul_left (coprime_two_n_succ_n_succ n)
+    (coprime_two_n_succ_n_succ n)).dvd_of_dvd_mul_right hsq_dvd
+
+/-- For prime p and 0 < k < p, p² does not divide C(p, k).
+    Since C(p,k)·k!·(p-k)! = p! and v_p(p!) = 1, p² cannot divide C(p,k). -/
+theorem prime_sq_not_dvd_choose {p k : ℕ} (hp : Nat.Prime p) (hk0 : 0 < k) (hkp : k < p) :
+    ¬(p ^ 2 ∣ Nat.choose p k) := by
+  intro h
+  have hfact := Nat.choose_mul_factorial_mul_factorial (Nat.le_of_lt hkp)
+  -- p^2 | C(p,k) * k! * (p-k)! = p!
+  have hvp : p ^ 2 ∣ p.factorial := by
+    calc p ^ 2 ∣ Nat.choose p k * k.factorial * (p - k).factorial :=
+            dvd_mul_of_dvd_left (dvd_mul_of_dvd_left h _) _
+      _ = p.factorial := hfact
+  -- p! = p * (p-1)!, so p^2 | p*(p-1)! means p | (p-1)!, contradicting p > p-1.
+  have hpf : p.factorial = p * (p - 1).factorial := by
+    cases p with
+    | zero => exact absurd hp.pos (by omega)
+    | succ n => simp [Nat.factorial_succ]
+  rw [hpf, sq] at hvp
+  have := (Nat.mul_dvd_mul_iff_left hp.pos).mp hvp
+  exact absurd (hp.dvd_factorial.mp this) (by omega)
+
+/-- When 2n+1 is prime, it does not divide C(2n, n).
+    Direct proof: prime (2n+1) > 2n, so prime_gt_not_dvd_central applies. -/
+theorem not_dvd_central_prime (n : ℕ) (hn : n ≥ 1) (hp : Nat.Prime (2 * n + 1)) :
+    ¬((2 * n + 1) ∣ centralBinom n) :=
+  prime_gt_not_dvd_central hp (by omega)
+
+/-- Alternative proof via the identity: if (2n+1) | C(2n,n) then
+    (2n+1)² | C(2n+1, n), contradicting v_p(C(p,k)) = 1 for prime p. -/
+theorem not_dvd_central_prime_alt (n : ℕ) (hn : n ≥ 1) (hp : Nat.Prime (2 * n + 1)) :
+    ¬((2 * n + 1) ∣ centralBinom n) := by
+  intro hdvd
+  exact absurd (dvd_central_implies_sq_dvd n hdvd)
+    (prime_sq_not_dvd_choose hp (by omega) (by omega))
+
+/-- C(2n+1, n) > C(2n, n) for n ≥ 1.
+    By Pascal: C(2n+1, n) = C(2n, n-1) + C(2n, n), and C(2n, n-1) ≥ 1.
+    This is step 2 of the lcm strategy for upper_bound_trivial. -/
+theorem choose_succ_gt_central (n : ℕ) (hn : n ≥ 1) :
+    Nat.choose (2 * n + 1) n > centralBinom n := by
+  unfold centralBinom
+  have hpascal : Nat.choose (2 * n + 1) n =
+      Nat.choose (2 * n) (n - 1) + Nat.choose (2 * n) n := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    simp only [show m + 1 - 1 = m from by omega]
+    exact Nat.choose_succ_succ (2 * (m + 1)) m
+  have hpos : Nat.choose (2 * n) (n - 1) ≥ 1 := Nat.choose_pos (by omega)
+  omega

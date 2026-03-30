@@ -200,18 +200,16 @@ theorem r3_5_eq : rk 3 5 = 4 := by
     calc (4 : ℕ) = ({1, 2, 4, 5} : Finset ℤ).card := by native_decide
       _ ≤ rk 3 5 := Finset.le_sup hA_mem
 
-/-- G_3(14) ≤ 7 while R_3(14) = 8. -/
-axiom g3_14_le : gk 3 14 ≤ 7
-axiom r3_14_eq : rk 3 14 = 8
+/- G_3(14) ≤ 7 while R_3(14) = 8.
+    Formally: gk 3 14 ≤ 7 and rk 3 14 = 8. -/
 
 /-
 ## Komlós–Sulyok–Szemerédi bound
 -/
 
-/-- Komlós, Sulyok, Szemerédi (1975): R_k(N) and G_k(N) have the
-same order of magnitude, i.e., R_k(N) ≪_k G_k(N). -/
-axiom komlos_sulyok_szemeredi (k : ℕ) (hk : 3 ≤ k) :
-    ∃ C : ℕ, 0 < C ∧ ∀ N : ℕ, rk k N ≤ C * gk k N
+/- Komlós, Sulyok, Szemerédi (1975): R_k(N) and G_k(N) have the
+same order of magnitude, i.e., R_k(N) ≪_k G_k(N).
+Formally: ∀ k ≥ 3, ∃ C > 0, ∀ N, rk k N ≤ C * gk k N. -/
 
 /-
 ## Main conjecture

@@ -1,10 +1,10 @@
 {
   "id": "erdos-711",
-  "title": "Erd\u0151s Problem #711: Divisibility Matching with Variable Starting Point",
+  "title": "Erdős Problem #711: Divisibility Matching with Variable Starting Point",
   "slug": "erdos-711",
-  "description": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a\u2081,...,a\u2099 with k|a\u2096. Prove max_m f(n,m) \u2264 n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))\u2192\u221e [SOLVED by van Doorn 2026].",
+  "description": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a₁,...,aₙ with k|aₖ. Prove max_m f(n,m) ≤ n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))→∞ [SOLVED by van Doorn 2026].",
   "meta": {
-    "author": "Erd\u0151s, Pomerance (1980), van Doorn (2026, second part)",
+    "author": "Erdős, Pomerance (1980), van Doorn (2026, second part)",
     "sourceUrl": "https://erdosproblems.com/711",
     "date": "1980/2026",
     "status": "axiomatized",
@@ -33,17 +33,17 @@
       },
       {
         "theorem": "Fin",
-        "description": "Finite ordinal type Fin n = {0, ..., n-1}, used to index the n elements a\u2081,...,a\u2099 in the selection",
+        "description": "Finite ordinal type Fin n = {0, ..., n-1}, used to index the n elements a₁,...,aₙ in the selection",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
         "theorem": "Real.log",
-        "description": "Real logarithm function, used in asymptotic bounds: f(n,m) - f(n,n) \u226b n\u00b7log(n)/log(log(n))",
+        "description": "Real logarithm function, used in asymptotic bounds: f(n,m) - f(n,n) ≫ n·log(n)/log(log(n))",
         "module": "Mathlib.Algebra.Order.Floor"
       },
       {
         "theorem": "Matrix.cons",
-        "description": "Vector construction notation ![v\u2081, v\u2082, ...] for explicit witnesses in the n=2 examples",
+        "description": "Vector construction notation ![v₁, v₂, ...] for explicit witnesses in the n=2 examples",
         "module": "Mathlib.Data.Matrix.Basic"
       },
       {
@@ -54,28 +54,28 @@
     ],
     "originalContributions": [
       "Two-parameter formalization of f(n,m) via Nat.find with variable starting point m",
-      "Axiomatized Erd\u0151s-Pomerance uniform upper bound: max_m f(n,m) \u2264 C\u00b7n^{3/2}",
-      "Formal definition of firstConjecture (max_m f(n,m) \u2264 n^{1+o(1)}) as \u2200\u03b5>0 \u2203N \u2200n\u2265N \u2200m statement",
+      "Axiomatized Erdős-Pomerance uniform upper bound: max_m f(n,m) ≤ C·n^{3/2}",
+      "Formal definition of firstConjecture (max_m f(n,m) ≤ n^{1+o(1)}) as ∀ε>0 ∃N ∀n≥N ∀m statement",
       "Formal definition and axiomatized resolution of secondConjecture via van Doorn's quantitative bound",
-      "Axiomatized van Doorn (2026): f(n,m) - f(n,n) \u2265 C\u00b7n\u00b7log(n)/log(log(n)) for adversarial m",
+      "Axiomatized van Doorn (2026): f(n,m) - f(n,n) ≥ C·n·log(n)/log(log(n)) for adversarial m",
       "Three fully proved examples for n=2 with m=1,2,3 using explicit vector witnesses",
       "Analysis of residue class effects on multiple distribution via multiplesInInterval",
       "Connection to Problem #710 bounds and asymptotic dominance analysis"
     ],
     "axiomCount": 6,
-    "lineCount": 345,
+    "lineCount": 336,
     "assumptions": "9 axioms: selection_exists_for_any_start, erdos_pomerance_upper_bound_711, first_conjecture_open, and 6 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Pomerance (1980) introduced the two-parameter function f(n,m) generalizing f(n) = f(n,n) from Problem #710. While Problem #710 fixes the starting point at m = n, Problem #711 asks how the starting point affects the required interval length. They proved the uniform bound max_m f(n,m) \u226a n^{3/2} using a greedy construction, and Erd\u0151s offered 1000 rupees (~$78 in 1992) for proving either of two conjectures. In 2026, van Doorn resolved the second conjecture by proving f(n,m) - f(n,n) \u226b n\u00b7(log n / log log n) for suitably chosen m, published in Integers #A7. This quantitative bound shows the difference can actually dominate f(n,n) itself for large n, since log n / log log n \u226b \u221a(log n). The first conjecture \u2014 improving n^{3/2} to n^{1+o(1)} \u2014 remains open and is one of the outstanding problems in multiplicative number theory.",
-    "problemStatement": "**Erd\u0151s Problem #711** (Erd\u0151s-Pomerance, 1980; partially solved):\n\nLet f(n,m) be minimal such that (m, m+f(n,m)) contains distinct integers a\u2081,...,a\u2099 with k | a\u2096 for all 1 \u2264 k \u2264 n.\n\n**Conjecture 1** (OPEN): max_m f(n,m) \u2264 n^{1+o(1)}\n**Conjecture 2** (SOLVED): max_m (f(n,m) - f(n,n)) \u2192 \u221e\n\n**Known**: max_m f(n,m) \u226a n^{3/2} (Erd\u0151s-Pomerance 1980); f(n,m) - f(n,n) \u226b n\u00b7(log n / log log n) for some m (van Doorn 2026)",
-    "text": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a\u2081,...,a\u2099 with k|a\u2096. Prove max_m f(n,m) \u2264 n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))\u2192\u221e [SOLVED by van Doorn 2026].",
-    "proofStrategy": "The formalization proceeds in layers: (1) Define IsValidSelection extending Problem #710's setup with variable starting point m; (2) Define f(n,m) = minimalIntervalLength via Nat.find; (3) Axiomatize the Erd\u0151s-Pomerance n^{3/2} uniform bound; (4) Define both conjectures formally \u2014 firstConjecture as \u2200\u03b5>0 \u2203N \u2200n\u2265N \u2200m, secondConjecture as \u2200K \u2203N \u2200n\u2265N \u2203m; (5) Axiomatize van Doorn's quantitative bound and derive secondConjecture from it; (6) Analyze why m matters via residue class effects (multiplesInInterval, residue_class_effect); (7) Prove three concrete examples for n=2 with different m values; (8) Combine all results in erdos_711_summary theorem.",
+    "historicalContext": "Erdős and Pomerance (1980) introduced the two-parameter function f(n,m) generalizing f(n) = f(n,n) from Problem #710. While Problem #710 fixes the starting point at m = n, Problem #711 asks how the starting point affects the required interval length. They proved the uniform bound max_m f(n,m) ≪ n^{3/2} using a greedy construction, and Erdős offered 1000 rupees (~$78 in 1992) for proving either of two conjectures. In 2026, van Doorn resolved the second conjecture by proving f(n,m) - f(n,n) ≫ n·(log n / log log n) for suitably chosen m, published in Integers #A7. This quantitative bound shows the difference can actually dominate f(n,n) itself for large n, since log n / log log n ≫ √(log n). The first conjecture — improving n^{3/2} to n^{1+o(1)} — remains open and is one of the outstanding problems in multiplicative number theory.",
+    "problemStatement": "**Erdős Problem #711** (Erdős-Pomerance, 1980; partially solved):\n\nLet f(n,m) be minimal such that (m, m+f(n,m)) contains distinct integers a₁,...,aₙ with k | aₖ for all 1 ≤ k ≤ n.\n\n**Conjecture 1** (OPEN): max_m f(n,m) ≤ n^{1+o(1)}\n**Conjecture 2** (SOLVED): max_m (f(n,m) - f(n,n)) → ∞\n\n**Known**: max_m f(n,m) ≪ n^{3/2} (Erdős-Pomerance 1980); f(n,m) - f(n,n) ≫ n·(log n / log log n) for some m (van Doorn 2026)",
+    "text": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a₁,...,aₙ with k|aₖ. Prove max_m f(n,m) ≤ n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))→∞ [SOLVED by van Doorn 2026].",
+    "proofStrategy": "The formalization proceeds in layers: (1) Define IsValidSelection extending Problem #710's setup with variable starting point m; (2) Define f(n,m) = minimalIntervalLength via Nat.find; (3) Axiomatize the Erdős-Pomerance n^{3/2} uniform bound; (4) Define both conjectures formally — firstConjecture as ∀ε>0 ∃N ∀n≥N ∀m, secondConjecture as ∀K ∃N ∀n≥N ∃m; (5) Axiomatize van Doorn's quantitative bound and derive secondConjecture from it; (6) Analyze why m matters via residue class effects (multiplesInInterval, residue_class_effect); (7) Prove three concrete examples for n=2 with different m values; (8) Combine all results in erdos_711_summary theorem.",
     "keyInsights": [
       "The starting point m fundamentally affects the optimization: multiples of k in (m, m+L) depend on m mod k, creating residue class interference effects",
-      "Van Doorn's bound f(n,m) - f(n,n) \u226b n\u00b7(log n / log log n) can dominate f(n,n) \u2248 n\u00b7\u221a(log n) for large n, meaning the worst starting point roughly doubles the interval",
-      "The first conjecture (n^{1+o(1)} bound) would dramatically improve the n^{3/2} greedy bound; the gap between n^{1+\u03b5} and n^{3/2} has resisted all approaches since 1980",
-      "For small n (e.g., n=2), the starting point has negligible effect \u2014 the divergence only manifests asymptotically",
+      "Van Doorn's bound f(n,m) - f(n,n) ≫ n·(log n / log log n) can dominate f(n,n) ≈ n·√(log n) for large n, meaning the worst starting point roughly doubles the interval",
+      "The first conjecture (n^{1+o(1)} bound) would dramatically improve the n^{3/2} greedy bound; the gap between n^{1+ε} and n^{3/2} has resisted all approaches since 1980",
+      "For small n (e.g., n=2), the starting point has negligible effect — the divergence only manifests asymptotically",
       "The problem connects to Chinese Remainder Theorem-like constructions for finding adversarial m that simultaneously misaligns multiples of many k values"
     ],
     "prerequisites": [
@@ -104,47 +104,47 @@
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds and First Conjecture",
-      "summary": "Axiomatized Erd\u0151s-Pomerance bound max_m f(n,m) \u2264 C\u00b7n^{3/2}. Defines firstConjecture (\u2200\u03b5>0 \u2203N \u2200n\u2265N \u2200m, f(n,m) \u2264 n^{1+\u03b5}) as OPEN.",
+      "summary": "Axiomatized Erdős-Pomerance bound max_m f(n,m) ≤ C·n^{3/2}. Defines firstConjecture (∀ε>0 ∃N ∀n≥N ∀m, f(n,m) ≤ n^{1+ε}) as OPEN.",
       "startLine": 98,
       "endLine": 129,
-      "mathContext": "Axiomatized Erd\u0151s-Pomerance bound max_m f(n,m) $\\leq$ C\u00b7n^{3/2}. Defines firstConjecture (\u2200\u03b5>0 \u2203N \u2200n$\\geq$N \u2200m, f(n,m) $\\leq$ n^{1+\u03b5}) as OPEN."
+      "mathContext": "Axiomatized Erdős-Pomerance bound max_m f(n,m) $\\leq$ C·n^{3/2}. Defines firstConjecture (∀ε>0 ∃N ∀n$\\geq$N ∀m, f(n,m) $\\leq$ n^{1+ε}) as OPEN."
     },
     {
       "id": "dependence-on-m",
       "title": "Dependence on Starting Point",
-      "summary": "Defines differenceFnm n m = f(n,m) - f(n,n) as \u2124, and secondConjecture: max_m differenceFnm(n,m) \u2192 \u221e.",
+      "summary": "Defines differenceFnm n m = f(n,m) - f(n,n) as ℤ, and secondConjecture: max_m differenceFnm(n,m) → ∞.",
       "startLine": 130,
       "endLine": 159,
-      "mathContext": "Defines differenceFnm n m = f(n,m) - f(n,n) as $\\mathbb{Z}$, and secondConjecture: max_m differenceFnm(n,m) $\\to$ \u221e."
+      "mathContext": "Defines differenceFnm n m = f(n,m) - f(n,n) as $\\mathbb{Z}$, and secondConjecture: max_m differenceFnm(n,m) $\\to$ ∞."
     },
     {
       "id": "van-doorn",
       "title": "van Doorn's Theorem (2026)",
-      "summary": "Axiomatized quantitative bound: \u2203 C > 0, \u2203 N\u2080, \u2200 n \u2265 N\u2080, \u2203 m, differenceFnm n m \u2265 C\u00b7n\u00b7log(n)/log(log(n)). Derives secondConjecture.",
+      "summary": "Axiomatized quantitative bound: ∃ C > 0, ∃ N₀, ∀ n ≥ N₀, ∃ m, differenceFnm n m ≥ C·n·log(n)/log(log(n)). Derives secondConjecture.",
       "startLine": 160,
       "endLine": 183,
-      "mathContext": "Axiomatized quantitative bound: \u2203 C > 0, \u2203 N\u2080, \u2200 n $\\geq$ N\u2080, \u2203 m, differenceFnm n m $\\geq$ C\u00b7n\u00b7log(n)/log(log(n)). Derives secondConjecture."
+      "mathContext": "Axiomatized quantitative bound: ∃ C > 0, ∃ N₀, ∀ n $\\geq$ N₀, ∃ m, differenceFnm n m $\\geq$ C·n·log(n)/log(log(n)). Derives secondConjecture."
     },
     {
       "id": "why-m-matters",
       "title": "Why the Starting Point Matters",
-      "summary": "Analyzes residue class effects: multiplesInInterval(d, m, L) = \u230a(m+L)/d\u230b - \u230am/d\u230b depends on m mod d. Axiomatized bound \u2264 L/d + 1.",
+      "summary": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound ≤ L/d + 1.",
       "startLine": 184,
       "endLine": 216,
-      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = \u230a(m+L)/d\u230b - \u230am/d\u230b depends on m mod d. Axiomatized bound $\\leq$ L/d + 1."
+      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound $\\leq$ L/d + 1."
     },
     {
       "id": "connection-710",
       "title": "Connection to Problem #710",
-      "summary": "Axiomatized Erd\u0151s-Pomerance bounds for f(n,n): C\u2081\u00b7n\u00b7\u221a(log n/log log n) \u2264 f(n,n) \u2264 C\u2082\u00b7n\u00b7\u221a(log n). Shows van Doorn's difference can dominate the base value.",
+      "summary": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n). Shows van Doorn's difference can dominate the base value.",
       "startLine": 217,
       "endLine": 243,
-      "mathContext": "Axiomatized Erd\u0151s-Pomerance bounds for f(n,n): C\u2081\u00b7n\u00b7\u221a($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C\u2082\u00b7n\u00b7\u221a($\\log n$). Shows van Doorn's difference can dominate the base value."
+      "mathContext": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C₂·n·√($\\log n$). Shows van Doorn's difference can dominate the base value."
     },
     {
       "id": "examples",
       "title": "Small Examples: n=2",
-      "summary": "Three fully proved examples with m=1,2,3 all showing f(2,m) \u2264 3. Demonstrates the divergence is asymptotic, not visible at small scale.",
+      "summary": "Three fully proved examples with m=1,2,3 all showing f(2,m) ≤ 3. Demonstrates the divergence is asymptotic, not visible at small scale.",
       "startLine": 244,
       "endLine": 295,
       "mathContext": "Three fully proved examples with m=1,2,3 all showing f(2,m) $\\leq$ 3. Demonstrates the divergence is asymptotic, not visible at small scale."
@@ -159,13 +159,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #711 is partially solved. The second conjecture (max_m(f(n,m) - f(n,n)) \u2192 \u221e) was resolved by van Doorn (2026) with the quantitative bound f(n,m) - f(n,n) \u226b n\u00b7(log n / log log n), showing the starting point can force intervals roughly twice as long as the natural choice m = n. The first conjecture (max_m f(n,m) \u2264 n^{1+o(1)}) remains open \u2014 the best known uniform bound is n^{3/2} from Erd\u0151s-Pomerance (1980). The formalization captures both conjectures, van Doorn's resolution, and three concrete examples.",
-    "implications": "**Theoretical Significance**: The resolution of the second conjecture reveals a fundamental phenomenon: the starting position of an interval significantly affects divisibility matching. The residue class structure of m creates interference patterns that can force substantially longer intervals.\n\nThis connects to broader themes in additive and multiplicative number theory about how local alignment conditions affect global optimization. The open first conjecture represents a deep question about whether the greedy n^{3/2} bound can be improved to near-linear \u2014 progress would likely require new techniques in the distribution of multiples in short intervals.",
+    "summary": "Erdős Problem #711 is partially solved. The second conjecture (max_m(f(n,m) - f(n,n)) → ∞) was resolved by van Doorn (2026) with the quantitative bound f(n,m) - f(n,n) ≫ n·(log n / log log n), showing the starting point can force intervals roughly twice as long as the natural choice m = n. The first conjecture (max_m f(n,m) ≤ n^{1+o(1)}) remains open — the best known uniform bound is n^{3/2} from Erdős-Pomerance (1980). The formalization captures both conjectures, van Doorn's resolution, and three concrete examples.",
+    "implications": "**Theoretical Significance**: The resolution of the second conjecture reveals a fundamental phenomenon: the starting position of an interval significantly affects divisibility matching. The residue class structure of m creates interference patterns that can force substantially longer intervals.\n\nThis connects to broader themes in additive and multiplicative number theory about how local alignment conditions affect global optimization. The open first conjecture represents a deep question about whether the greedy n^{3/2} bound can be improved to near-linear — progress would likely require new techniques in the distribution of multiples in short intervals.",
     "openQuestions": [
-      "First conjecture: can max_m f(n,m) \u2264 n^{1+o(1)} be proven, improving the Erd\u0151s-Pomerance n^{3/2} bound?",
+      "First conjecture: can max_m f(n,m) ≤ n^{1+o(1)} be proven, improving the Erdős-Pomerance n^{3/2} bound?",
       "What is the exact order of max_m f(n,m)? Is it closer to n^{1+o(1)} or n^{3/2}?",
       "For which m = m(n) is f(n,m) maximized? Can the adversarial m be characterized explicitly?",
-      "Is van Doorn's bound n\u00b7(log n / log log n) for the difference optimal, or can it be improved?",
+      "Is van Doorn's bound n·(log n / log log n) for the difference optimal, or can it be improved?",
       "Can the first conjecture be approached via sieve methods or the distribution of smooth numbers in short intervals?"
     ]
   },
@@ -182,7 +182,7 @@
       "Finset"
     ],
     "namespace": "Erdos711",
-    "lineCount": 345,
+    "lineCount": 336,
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 11
@@ -191,17 +191,17 @@
     {
       "targetId": "erdos-710",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
     },
     {
       "targetId": "erdos-1005",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
     },
     {
       "targetId": "erdos-13",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
     }
   ]
 }

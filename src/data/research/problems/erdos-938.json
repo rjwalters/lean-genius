@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (erdos_938 open, erdos_364_conjecture open, powerful_count_asymptotic deep analytic NT), 6T proved, 0S (metadata sorry=1 is wrong — counts comment mention).",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries. All 3 former axioms converted to def Prop (2 open conjectures + 1 known result, none used by any theorem).",
     "builtItems": [
       "infinite_powerful: proved powerfulSet is infinite via squares argument (Erdos938Problem.lean:85)",
       "nthPowerful: defined as Nat.nth Powerful (Erdos938Problem.lean:100)",
@@ -76,10 +76,10 @@
     {
       "path": "Proofs/Erdos938Problem.lean",
       "filename": "Erdos938Problem.lean",
-      "lineCount": 218,
+      "lineCount": 219,
       "theoremCount": 6,
-      "axiomCount": 3,
-      "defCount": 10,
+      "axiomCount": 0,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos938Problem.lean"

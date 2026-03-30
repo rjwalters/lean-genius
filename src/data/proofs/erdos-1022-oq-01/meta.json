@@ -1,0 +1,162 @@
+{
+  "id": "erdos-1022-oq-01",
+  "title": "Property B_k: k-Colorability of Hypergraphs",
+  "slug": "erdos-1022-oq-01",
+  "description": "Generalizes Property B (2-colorability) to Property B_k (k-colorability). Proves monotonicity in k, equivalence B ↔ B_2, and states the generalized first-moment threshold k^{t-1}/(k-1).",
+  "meta": {
+    "author": "Erdős (generalized)",
+    "sourceUrl": "https://erdosproblems.com/1022",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1022OQ01.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "hypergraph coloring",
+      "Property B",
+      "open question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1022,
+    "erdosUrl": "https://erdosproblems.com/1022",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "assumptions": "No axioms. All theorems proved from Mathlib. The generalized first-moment bound is stated as a definition.",
+    "lineCount": 164,
+    "relatedProblems": [
+      {
+        "id": "erdos-1022",
+        "relationship": "Parent problem: Property B and sparse set families"
+      }
+    ]
+  },
+  "overview": {
+    "text": "A formalization generalizing Property B (hypergraph 2-colorability) to Property B_k (k-colorability). Defines HasPropertyBK: there exists a k-coloring such that no set in the family is monochromatic. Proves 10 theorems: monotonicity in k (B_k → B_{k+1}), equivalence with the original Property B when k=2, singleton/empty family base cases, and the k-color hierarchy. States the generalized first-moment threshold as an open question.",
+    "historicalContext": "Property B was introduced by Bernstein (1908) for 2-colorings and studied extensively by Erdős and Hajnal. The k-color generalization relates to hypergraph chromatic number, connecting to list coloring and the Erdős-Faber-Lovász conjecture. The probabilistic threshold k^{t-1}/(k-1) generalizes Erdős's 2^{t-1} bound.",
+    "problemStatement": "Define Property $B_k$ for set families: does there exist a $k$-coloring of the ground set with no monochromatic member? Determine the threshold family size below which Property $B_k$ is guaranteed.",
+    "proofStrategy": "Property B_k is defined using colorings χ : α → Fin k. Monotonicity is proved by embedding Fin k → Fin (k+1) via castSucc. The equivalence B ↔ B_2 uses the bijection between 2-colorings and subsets S = χ⁻¹(0).",
+    "keyInsights": [
+      "Property B_k is monotone in k: embedding k colors into k+1 colors preserves non-monochromaticity",
+      "Property B (Erdős #1022) is exactly Property B_2: the equivalence is proved via the correspondence between 2-colorings and set membership",
+      "The generalized first-moment threshold is k^{t-1}/(k-1), recovering 2^{t-1} when k=2",
+      "All theorems are axiom-free — the generalization adds no new assumptions beyond the parent formalization"
+    ],
+    "prerequisites": [
+      "Combinatorics (hypergraph coloring, set families)",
+      "Probability (first-moment method, for understanding the threshold)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Core Definition",
+      "startLine": 30,
+      "endLine": 36,
+      "summary": "Defines HasPropertyBK: there exists χ : α → Fin k such that no nonempty member is monochromatic.",
+      "mathContext": "$B_k(F) \\iff \\exists \\chi : \\alpha \\to [k],\\; \\forall f \\in F,\\; \\exists a,b \\in f,\\; \\chi(a) \\neq \\chi(b)$."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 38,
+      "endLine": 60,
+      "summary": "Empty family has B_k, B_k is hereditary, singleton families with ≥2-element sets have B_k.",
+      "mathContext": "$B_k(\\emptyset)$, $F \\subseteq G \\land B_k(G) \\implies B_k(F)$, $|f| \\geq 2 \\land k \\geq 2 \\implies B_k(\\{f\\})$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity in k",
+      "startLine": 62,
+      "endLine": 80,
+      "summary": "Proves B_k → B_{k+1} via Fin.castSucc embedding, and the general version B_k → B_m for k ≤ m.",
+      "mathContext": "$B_k(F) \\implies B_{k+1}(F)$ (embed $[k] \\hookrightarrow [k+1]$). More generally, $k \\leq m \\implies B_k \\implies B_m$."
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Property B",
+      "startLine": 82,
+      "endLine": 120,
+      "summary": "Proves B ↔ B_2 via the bijection between 2-colorings and subsets.",
+      "mathContext": "$B(F) \\iff B_2(F)$ for families of nonempty sets."
+    },
+    {
+      "id": "threshold",
+      "title": "Generalized First-Moment Threshold",
+      "startLine": 130,
+      "endLine": 145,
+      "summary": "States the generalized bound: |F| < k^{t-1}/(k-1) with min size ≥ t implies B_k.",
+      "mathContext": "$|F| \\cdot (k-1) < k^{t-1} \\land \\min_{f \\in F} |f| \\geq t \\implies B_k(F)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "An axiom-free formalization of Property B_k extending Erdős #1022. The k-color hierarchy B_2 ⊆ B_3 ⊆ ... is proved, and the equivalence B = B_2 formally connects this to the parent problem. The generalized first-moment threshold provides the k-color analogue of Erdős's 2^{t-1} bound.",
+    "implications": "Understanding Property B_k for k > 2 connects to hypergraph chromatic number theory and the Erdős-Faber-Lovász conjecture (proved by Kang et al., 2023). The sparsity conjecture from Erdős #1022 could be strengthened to ask about k-colorability thresholds.",
+    "openQuestions": [
+      "Does the sparsity conjecture (Erdős #1022) generalize to k-colorability with a threshold c(t,k) → ∞?",
+      "What is the chromatic threshold: the minimum k such that c(t)-sparse families of t-sets have Property B_k?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1022",
+      "relationship": "parent",
+      "description": "Parent problem: Property B (2-colorability) for sparse set families"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 164,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1022OQ01"
+  },
+  "mainTheorems": [
+    {
+      "name": "hasPropertyBK_mono",
+      "type": "proved",
+      "description": "B_k → B_{k+1} (monotonicity via color embedding)"
+    },
+    {
+      "name": "propertyB_iff_propertyBK_two",
+      "type": "proved",
+      "description": "Property B ↔ Property B_2 (equivalence with parent)"
+    },
+    {
+      "name": "hasPropertyBK_singleton",
+      "type": "proved",
+      "description": "Singleton families with ≥2-element sets have B_k for k ≥ 2"
+    },
+    {
+      "name": "propertyBK_hierarchy",
+      "type": "proved",
+      "description": "Full hierarchy: B_k → B_m for k ≤ m"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On a combinatorial problem, II",
+      "year": "1964",
+      "venue": "Acta Math. Acad. Sci. Hungar. 15, pp. 445-447",
+      "note": "2^{t-1} bound for Property B via the probabilistic method"
+    },
+    {
+      "authors": "Kang, Dong Yeap et al.",
+      "title": "A proof of the Erdős-Faber-Lovász conjecture",
+      "year": "2023",
+      "venue": "Annals of Mathematics 198(2), pp. 537-618",
+      "note": "Proof of the EFL conjecture on edge-chromatic number of linear hypergraphs"
+    }
+  ]
+}

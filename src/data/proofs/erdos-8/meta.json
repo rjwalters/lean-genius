@@ -44,15 +44,15 @@
       "Connection to Problem #2 documented"
     ],
     "dateAdded": "2025-01-14",
-    "axiomCount": 5,
-    "lineCount": 237,
+    "axiomCount": 2,
+    "lineCount": 351,
     "prerequisites": [
       "Covering systems and congruence classes",
       "Graph coloring and chromatic numbers",
       "Chinese Remainder Theorem",
       "Modular arithmetic"
     ],
-    "assumptions": "5 axioms: hough_minimum_modulus, balister_improved_bound, erdos_8_resolution, and 2 more. See Lean source for complete statements.",
+    "assumptions": "2 axioms: hough_minimum_modulus (deep result, Hough 2015), density_conjecture_false (deep result). erdos_8_resolution now proved from bottleneck_counterexample + hough_minimum_modulus.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -160,9 +160,9 @@
       "Function"
     ],
     "namespace": "Erdos8",
-    "lineCount": 237,
-    "axiomCount": 5,
-    "theoremCount": 2,
+    "lineCount": 351,
+    "axiomCount": 2,
+    "theoremCount": 9,
     "definitionCount": 15
   },
   "crossReferences": [

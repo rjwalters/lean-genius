@@ -123,8 +123,9 @@ theorem problem_40_implies_28
 
 /-- For Sidon sets (r_A(n) ≤ 1 for all n), we have
     |A ∩ {1,...,N}| ≤ (1+o(1))N^{1/2}. So the N^{1/2} threshold
-    is natural: Sidon sets are exactly at this density. -/
-axiom sidon_density_bound :
+    is natural: Sidon sets are exactly at this density.
+    Classical result (Lindström 1969). Stated as Prop without proof. -/
+def SidonDensityBound : Prop :=
   ∀ A : Set ℕ, (∀ n : ℕ, repCount A n ≤ 1) →
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
       (countingFn A N : ℝ) ≤ (1 + ε) * Real.sqrt N
@@ -135,10 +136,98 @@ axiom sidon_density_bound :
     symmetry: the upper-triangular part of S×S has at least half the elements).
     Each pair has sum a+b ∈ {2,...,2N} and contributes to repCount(A, a+b).
     Since repCount ≤ g and there are 2N-1 possible sums: k²/2 ≤ g(2N-1). -/
-private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (_ : N ≥ 1)
+private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
     (hrep : ∀ n : ℕ, repCount A n ≤ g) :
     countingFn A N * countingFn A N ≤ 2 * g * (2 * N - 1) := by
-  sorry -- Needs: Finset pair counting via swap injection + fiber decomposition by sum
+  classical
+  -- Convert to Finset
+  set S := (Finset.Icc 1 N).filter (· ∈ A) with hS_def
+  -- Establish S.card = countingFn A N
+  have hS_card : S.card = countingFn A N := by
+    unfold countingFn
+    have hfin : (A ∩ Set.Icc 1 N).Finite :=
+      (Set.finite_Icc 1 N).subset Set.inter_subset_right
+    rw [Set.ncard_eq_toFinset_card _ hfin]
+    congr 1; ext x
+    simp only [Set.Finite.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc,
+               Finset.mem_filter, Finset.mem_Icc]
+    tauto
+  rw [← hS_card, ← Finset.card_product]
+  -- Fiber decomposition by sum: map (a,b) ↦ a+b into [2, 2N]
+  set T := Finset.Icc 2 (2 * N)
+  have hT_card : T.card = 2 * N - 1 := by
+    simp only [T, Finset.card_Icc]; omega
+  have hf : ∀ p ∈ S ×ˢ S, p.1 + p.2 ∈ T := by
+    intro ⟨a, b⟩ hp
+    obtain ⟨haS, hbS⟩ := Finset.mem_product.mp hp
+    have ha := Finset.mem_Icc.mp (Finset.mem_filter.mp haS).1
+    have hb := Finset.mem_Icc.mp (Finset.mem_filter.mp hbS).1
+    exact Finset.mem_Icc.mpr ⟨by omega, by omega⟩
+  -- Main calculation: |S×S| = Σ fibers ≤ Σ 2g = 2g(2N-1)
+  calc (S ×ˢ S).card
+      = ∑ m in T, ((S ×ˢ S).filter (fun p => p.1 + p.2 = m)).card :=
+        Finset.card_eq_sum_card_fiberwise hf
+    _ ≤ ∑ _ in T, (2 * g) := by
+        apply Finset.sum_le_sum; intro m _
+        -- FIBER BOUND: |(S×S) ∩ {sum = m}| ≤ 2g
+        -- Split into {a ≤ b} and {a > b} halves, each ≤ g
+        set F := (S ×ˢ S).filter (fun p => p.1 + p.2 = m)
+        set F_le := F.filter (fun p : ℕ × ℕ => p.1 ≤ p.2)
+        set F_gt := F.filter (fun p : ℕ × ℕ => ¬(p.1 ≤ p.2))
+        -- F ⊆ F_le ∪ F_gt, so F.card ≤ F_le.card + F_gt.card
+        have h_split : F.card ≤ F_le.card + F_gt.card := by
+          calc F.card ≤ (F_le ∪ F_gt).card := by
+                apply Finset.card_le_card; intro p hp
+                rw [Finset.mem_union]; by_cases h : p.1 ≤ p.2
+                · exact Or.inl (Finset.mem_filter.mpr ⟨hp, h⟩)
+                · exact Or.inr (Finset.mem_filter.mpr ⟨hp, h⟩)
+            _ ≤ F_le.card + F_gt.card := Finset.card_union_le _ _
+        -- RepCount set R(m) and its finiteness
+        set R := {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = m}
+        have hR_fin : R.Finite :=
+          (Set.Finite.prod (Set.finite_Icc 0 m) (Set.finite_Icc 0 m)).subset
+            (fun ⟨a, b⟩ ⟨_, _, _, hab⟩ =>
+              ⟨Set.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩,
+               Set.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩⟩)
+        -- F_le ⊆ R (identity injection)
+        have hle_sub : (↑F_le : Set (ℕ × ℕ)) ⊆ R := by
+          rintro ⟨a, b⟩ hp
+          rw [Finset.mem_coe] at hp
+          obtain ⟨hF_mem, hab_le⟩ := Finset.mem_filter.mp hp
+          obtain ⟨hSS, hab_sum⟩ := Finset.mem_filter.mp hF_mem
+          obtain ⟨haS, hbS⟩ := Finset.mem_product.mp hSS
+          exact ⟨(Finset.mem_filter.mp haS).2, (Finset.mem_filter.mp hbS).2,
+                 hab_le, hab_sum⟩
+        -- F_le.card ≤ g
+        have hle_bound : F_le.card ≤ g :=
+          calc F_le.card
+              = Set.ncard (↑F_le : Set (ℕ × ℕ)) := (Set.ncard_coe_Finset F_le).symm
+            _ ≤ Set.ncard R := Set.ncard_le_ncard hle_sub hR_fin
+            _ ≤ g := hrep m
+        -- F_gt.image(swap) ⊆ R (swap injection)
+        have hgt_sub : (↑(F_gt.image Prod.swap) : Set (ℕ × ℕ)) ⊆ R := by
+          rintro ⟨c, d⟩ hp
+          rw [Finset.mem_coe, Finset.mem_image] at hp
+          obtain ⟨⟨a, b⟩, hab_mem, hab_swap⟩ := hp
+          simp only [Prod.swap] at hab_swap
+          obtain ⟨rfl, rfl⟩ := Prod.mk.inj hab_swap
+          obtain ⟨hF_mem, hab_gt⟩ := Finset.mem_filter.mp hab_mem
+          obtain ⟨hSS, hab_sum⟩ := Finset.mem_filter.mp hF_mem
+          obtain ⟨haS, hbS⟩ := Finset.mem_product.mp hSS
+          exact ⟨(Finset.mem_filter.mp hbS).2, (Finset.mem_filter.mp haS).2,
+                 by omega, by omega⟩
+        -- F_gt.card ≤ g
+        have hgt_bound : F_gt.card ≤ g :=
+          calc F_gt.card
+              = (F_gt.image Prod.swap).card :=
+                (Finset.card_image_of_injective F_gt Prod.swap_injective).symm
+            _ = Set.ncard (↑(F_gt.image Prod.swap) : Set (ℕ × ℕ)) :=
+                (Set.ncard_coe_Finset _).symm
+            _ ≤ Set.ncard R := Set.ncard_le_ncard hgt_sub hR_fin
+            _ ≤ g := hrep m
+        linarith
+    _ = 2 * g * (2 * N - 1) := by
+        rw [Finset.sum_const, smul_eq_mul, hT_card]
 
 /-- **PROVED** (modulo counting lemma): For B₂[g] sets (r_A(n) ≤ g for all n),
     the counting function satisfies |A ∩ {1,...,N}| ≤ 2(g+1)·√N.

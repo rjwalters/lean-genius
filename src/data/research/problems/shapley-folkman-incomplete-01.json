@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved convexHull_not_mem_requires_two (key lemma, ~40 lines) using eq_pos_convex_span + Fintype.equivFin. Proved all 6 Aristotle companion lemmas (0 sorries in companion file). File grew from 198 to 237 lines. Main file: 3 sorries remain (main theorem + 2 corollaries).",
+    "progressSummary": "PROGRESS: 3 sorries remain (reduce_excess_by_one, 2 corollaries). Strengthened convexHull_not_mem_requires_two with strict positivity. Detailed proof roadmap documented for reduce_excess_by_one.",
     "builtItems": [
       "Added exists_minimal_decomposition (trivial construction of Decomposition from data)",
       "Added detailed proof strategy documentation for convexHull_not_mem_requires_two",
       "Documented main proof decomposition: Parts 1-5 with clear strategy for each step",
       "Created ShapleyFolkmanAristotle.lean companion with 8 routine lemmas for proof search",
       "PROVED convexHull_not_mem_requires_two via eq_pos_convex_span + nonempty/unique case analysis + Fintype.equivFin reindexing",
-      "PROVED all 6 Aristotle companion lemmas: convexHull_singleton, convexHull_empty, card_ge_two_of_mem_convexHull_not_mem, not_affineIndependent_of_card_gt, convex_sum_convexHull, mem_of_sum_singleton"
+      "PROVED all 6 Aristotle companion lemmas: convexHull_singleton, convexHull_empty, card_ge_two_of_mem_convexHull_not_mem, not_affineIndependent_of_card_gt, convex_sum_convexHull, mem_of_sum_singleton",
+      "Strengthened convexHull_not_mem_requires_two: weights now strictly positive (0 < w i) instead of non-negative"
     ],
     "insights": [
       "Key Mathlib theorem: eq_pos_convex_span_of_mem_convexHull gives affinely-independent convex combinations with positive weights",
@@ -47,7 +48,11 @@
       "0 axioms — all sorries are provable theorems (not open conjectures)",
       "Equiv.sum_comp is the key reindexing lemma for converting Fintype sums to Fin n sums through equivalences",
       "Fintype.card_eq_one_iff gives ∃ a, ∀ b, b = a — cleanly handles the singleton type case",
-      "Convex.add exists in Mathlib for proving Minkowski sum of convex sets is convex"
+      "Convex.add exists in Mathlib for proving Minkowski sum of convex sets is convex",
+      "reduce_excess_by_one needs binary representations: for each excess index, x = t*a + (1-t)*b where a ∈ S, b ∈ convexHull(S), 0 < t < 1. This follows from convexHull_not_mem_requires_two by grouping points.",
+      "Critical for perturbation: strict positivity of weights (0 < w i) enables choosing ε that zeroes out exactly one weight while keeping others positive. The strengthened convexHull_not_mem_requires_two provides this.",
+      "reduce_excess_by_one proof sketch: (1) pick d+1 excess indices, (2) get binary reps, (3) direction vectors δₘ=bₘ-aₘ are linearly dependent, (4) perturb along dependence to push one index to a ∈ S, (5) new decomposition has fewer excess indices.",
+      "Key subtlety in perturbation: push TOWARD a (the S-element) not b (the convexHull element). This ensures the collapsed index lands in S, becoming non-excess."
     ],
     "mathlibGaps": [
       "No gap: convexHull Caratheodory representation is fully available via eq_pos_convex_span_of_mem_convexHull",
@@ -55,10 +60,9 @@
       "Possible gap: no direct theorem for Minkowski sum of convex hulls = convex hull of Minkowski sum (may need manual proof)"
     ],
     "nextSteps": [
-      "Prove shapley_folkman main theorem via minimality + affine dependence argument (requires WellFoundedRelation on vertex count)",
-      "Prove corollaries from main theorem (sum_close_to_convexHull, repeated_sum_nearly_convex)",
-      "Docker build verification needed for convexHull_not_mem_requires_two proof",
-      "Consider targeting mathlib4#14427 for upstream contribution (see project memory)"
+      "Prove reduce_excess_by_one: the core reduction step. Break into sub-lemmas: (a) binary rep extraction, (b) linear dependence of d+1 directions, (c) ε selection, (d) verify new decomposition",
+      "The two corollaries (sum_close_to_convexHull, repeated_sum_nearly_convex) need the Minkowski sum identity: convexHull(∑ Sᵢ) ⊆ ∑ convexHull(Sᵢ). Check if Mathlib has this.",
+      "For Mathlib contribution: once sorries resolved, adapt to Mathlib style and submit to leanprover-community/mathlib4#14427"
     ]
   },
   "tags": [

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-distortion-measure",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "definition",
+    "title": "Distortion Measure",
+    "content": "A distortion measure $d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$ quantifies reconstruction error. The non-negativity constraint $d(x, \\hat{x}) \\ge 0$ is built into the structure. Common examples: Hamming distortion $d_H(x,\\hat{x}) = \\mathbf{1}_{x \\ne \\hat{x}}$ for discrete sources, squared error $d(x,\\hat{x}) = (x - \\hat{x})^2$ for continuous sources.",
+    "mathContext": "$d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$",
+    "significance": "key",
+    "relatedConcepts": ["Hamming distortion", "squared error", "fidelity criterion"],
+    "prerequisites": ["metric spaces"]
+  },
+  {
+    "id": "ann-test-channel",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "definition",
+    "title": "Test Channel",
+    "content": "A test channel $W(\\hat{x}|x)$ is a conditional distribution: for each source symbol $x$, it specifies a probability distribution over reproductions $\\hat{x}$. The rate-distortion optimization searches over all such channels. The structure enforces non-negativity and normalization $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$ for each $x$.",
+    "mathContext": "$W : \\mathcal{X} \\to \\Delta(\\hat{\\mathcal{X}})$ with $W(\\hat{x}|x) \\ge 0$, $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$",
+    "significance": "key",
+    "relatedConcepts": ["conditional distribution", "channel", "Markov chain"],
+    "prerequisites": ["probability distributions"]
+  },
+  {
+    "id": "ann-rate-distortion-fn",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 78, "endLine": 92 },
+    "type": "definition",
+    "title": "Rate-Distortion Function",
+    "content": "The rate-distortion function $R(D) = \\inf\\{I(X;\\hat{X}) : E[d(X,\\hat{X})] \\le D\\}$ is the central object of lossy source coding theory. It gives the minimum number of bits per source symbol needed for reproduction at average distortion at most $D$. Defined as `sInf` (greatest lower bound) of the set of achievable mutual informations.",
+    "mathContext": "$R(D) = \\inf_{p(\\hat{x}|x):\\, E[d(X,\\hat{X})] \\le D} I(X;\\hat{X})$",
+    "significance": "key",
+    "relatedConcepts": ["mutual information", "infimum", "lossy compression", "source coding"],
+    "prerequisites": ["mutual information", "expected value", "infimum"]
+  },
+  {
+    "id": "ann-joint-dist-properties",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 98, "endLine": 108 },
+    "type": "technique",
+    "title": "Joint Distribution Properties",
+    "content": "The induced joint distribution $p(x,y) = p(x) W(y|x)$ inherits non-negativity from the source and test channel, and sums to 1 by the chain $\\sum_{x,y} p(x) W(y|x) = \\sum_x p(x) \\sum_y W(y|x) = \\sum_x p(x) \\cdot 1 = 1$. These are the basic well-formedness properties needed to apply mutual information.",
+    "mathContext": "$p_{XY}(x,y) = p_X(x) \\cdot W(y|x) \\ge 0$, $\\sum_{x,y} p_{XY}(x,y) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["joint distribution", "marginalization", "Bayes' rule"],
+    "prerequisites": ["probability axioms"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 122, "endLine": 132 },
+    "type": "technique",
+    "title": "R(D) Monotonicity via Set Inclusion",
+    "content": "R(D) is non-increasing: if $D_1 \\le D_2$, then any channel admissible at distortion $D_1$ is also admissible at $D_2$, so the infimum is taken over a larger set. Formally, `achievableRates_mono` proves $\\{I : E[d] \\le D_1\\} \\subseteq \\{I : E[d] \\le D_2\\}$. The monotonicity of `sInf` then gives $R(D_2) \\le R(D_1)$.",
+    "mathContext": "$D_1 \\le D_2 \\Rightarrow R(D_2) \\le R(D_1)$",
+    "significance": "key",
+    "relatedConcepts": ["infimum monotonicity", "set inclusion", "non-increasing function"],
+    "prerequisites": ["order theory", "infimum properties"]
+  },
+  {
+    "id": "ann-binary-entropy",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 165, "endLine": 170 },
+    "type": "definition",
+    "title": "Binary Entropy Function",
+    "content": "The binary entropy function $h(p) = -p \\log p - (1-p) \\log(1-p)$ is the entropy of a Bernoulli($p$) random variable. It appears in the binary rate-distortion function $R(D) = h(p) - h(D)$. The definition uses the convention $0 \\log 0 = 0$ via conditional branches.",
+    "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "Bernoulli distribution", "binary symmetric channel"],
+    "prerequisites": ["Shannon entropy", "logarithm"]
+  },
+  {
+    "id": "ann-gaussian-rd",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 217, "endLine": 227 },
+    "type": "technique",
+    "title": "Gaussian Rate-Distortion",
+    "content": "For a Gaussian source $X \\sim N(0, \\sigma^2)$ with squared-error distortion, $R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$, and $R(D) = 0$ for $D > \\sigma^2$. This is the cleanest closed-form rate-distortion result: each additional bit per symbol halves the distortion (the '6 dB per bit' rule). The optimal reproduction is $\\hat{X} = X + Z$ where $Z$ is independent Gaussian noise.",
+    "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian distribution", "squared error", "water-filling", "6 dB/bit rule"],
+    "prerequisites": ["Gaussian distribution", "logarithm properties", "squared error distortion"]
+  },
+  {
+    "id": "ann-convexity",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": { "startLine": 286, "endLine": 297 },
+    "type": "axiom",
+    "title": "R(D) Convexity (Axiomatized)",
+    "content": "The rate-distortion function is convex in $D$: $R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$. The proof requires showing that time-sharing two test channels achieves the convex combination of distortions, combined with the convexity of mutual information in the conditional distribution. Axiomatized because it requires the full optimization machinery.",
+    "mathContext": "$R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$",
+    "significance": "key",
+    "relatedConcepts": ["convex function", "time-sharing", "log-sum inequality", "Jensen's inequality"],
+    "prerequisites": ["convex optimization", "mutual information convexity"]
+  }
+]

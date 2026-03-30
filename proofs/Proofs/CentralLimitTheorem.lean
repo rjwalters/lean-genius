@@ -138,14 +138,16 @@ axiom charFun_deriv_interchange (μ_meas : MeasureTheory.Measure ℝ)
     deriv (characteristicFunction μ_meas) t =
     ∫ x, Complex.I * x * Complex.exp (Complex.I * t * x) ∂μ_meas
 
-/-- Axiom: Complex integral of real coercion equals coercion of real integral.
-    This is the linearity of integration for the canonical embedding ℝ → ℂ.
-    In Mathlib this follows from Complex.ofReal_integral but finding the
-    exact API with measures requires careful type matching. -/
-axiom integral_ofReal_eq_ofReal_integral (μ_meas : MeasureTheory.Measure ℝ)
+/-- Complex integral of real coercion equals coercion of real integral.
+    Follows from Complex.ofRealCLM being a continuous linear map and
+    ContinuousLinearMap.integral_comp_comm. -/
+theorem integral_ofReal_eq_ofReal_integral (μ_meas : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ_meas]
     (h_int : MeasureTheory.Integrable id μ_meas) :
-    ∫ x : ℝ, (x : ℂ) ∂μ_meas = (∫ x : ℝ, x ∂μ_meas : ℂ)
+    ∫ x : ℝ, (x : ℂ) ∂μ_meas = (∫ x : ℝ, x ∂μ_meas : ℂ) := by
+  have := Complex.ofRealCLM.integral_comp_comm h_int
+  simp only [Complex.ofRealCLM_apply, id] at this
+  exact this
 
 /-- First moment (mean) from characteristic function derivative -/
 theorem charFun_deriv_mean (μ_meas : MeasureTheory.Measure ℝ)

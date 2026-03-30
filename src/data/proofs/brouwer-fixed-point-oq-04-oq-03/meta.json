@@ -1,0 +1,28 @@
+{
+  "id": "brouwer-fixed-point-oq-04-oq-03",
+  "title": "Kakutani Fixed Point Theorem (Infinite-Dimensional)",
+  "slug": "brouwer-fixed-point-oq-04-oq-03",
+  "description": "Formalizes Kakutani's fixed point theorem for set-valued maps and its infinite-dimensional generalization (Fan-Glicksberg). Includes application to Nash equilibrium existence and the hierarchy of fixed point theorems.",
+  "meta": {
+    "author": "Kakutani (1941), Fan (1952), Glicksberg (1952)",
+    "date": "1941",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "game-theory",
+      "functional-analysis"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 2,
+    "lineCount": 156,
+    "assumptions": "2 axioms (kakutani_finite_dim, fan_glicksberg) and 0 sorries. NOTE: IsNashEquilibrium is defined as True (placeholder); nash_equilibrium_existence is trivially proved and does not constitute a real Nash equilibrium result. The genuine content is the Kakutani/Fan-Glicksberg axiomatizations and the brouwer_from_kakutani_finite derivation."
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 2
+  }
+}

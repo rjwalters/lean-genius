@@ -1,0 +1,99 @@
+{
+  "slug": "euler-totient-oq-01",
+  "title": "Carmichael's Function: a^λ(n) ≡ 1 (mod n)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Carmichael's Function: a^λ(n) ≡ 1 (mod n).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:49:26.404Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved carmichael_prime via IsCyclic.exponent_eq_card. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "carmichael_prime: proved using IsCyclic.exponent_eq_card + ZMod.card_units_eq_totient + Nat.totient_prime",
+      "carmichael (definition): Monoid.exponent (ZMod n)ˣ",
+      "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal: all proved from Monoid.exponent API"
+    ],
+    "insights": [
+      "Carmichael function = group exponent of (ZMod n)ˣ, directly from Mathlib",
+      "For prime p: (ZMod p)ˣ is cyclic (Mathlib instance), so exponent = card",
+      "Prior proof attempt used iSup_orderOf which got stuck; direct IsCyclic.exponent_eq_card is cleaner"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "euler-totient-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-03-30T13:49:26.404Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 137,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01.lean",
+      "filename": "EulerTotientOQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04.lean",
+      "filename": "EulerTotientOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    }
+  ]
+}

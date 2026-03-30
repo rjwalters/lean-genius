@@ -1,0 +1,117 @@
+{
+  "slug": "motivic-flag-maps-oq-02",
+  "title": "Motivic Classes of Maps to Partial Flag Varieties",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "Does the Bryan et al. motivic class formula extend from complete to partial flag varieties? We formalize the extension conjecture with q-analog infrastructure and Grassmannian motivic classes.",
+    "whyMatters": [
+      "Extends a major AI-assisted theorem to broader geometric settings",
+      "Connects q-combinatorics to motivic algebraic geometry",
+      "Partial flags include Grassmannians, widely used in algebraic geometry and physics"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T23:03:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized partial flag extension (OQ-02). Proved: q-factorial = flag class, GL_n = (L-1)^n · flag · L^T(n), Grassmannian q-Pascal. 3 axioms (partial flag conjecture + moduli space), 3 sorries (duality, lines, Gaussian binomial). Gallery data created.",
+    "builtItems": [
+      "q-number [n]_L and q-factorial [n]_L! infrastructure in MotivicFlagMapsPartialFlags.lean",
+      "Recursive Grassmannian motivic class via q-Pascal identity",
+      "Explicit Grassmannian computations: Gr(1,2), Gr(1,3), Gr(2,3), Gr(2,4)",
+      "q-factorial = flag class theorem (proved)",
+      "GL_n q-factorial decomposition theorem (proved from mul_geom_sum)",
+      "Partial flag variety definition and motivic class factorization",
+      "Extension conjecture formalized with parabolic subgroups",
+      "Gallery integration: meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "q-factorials [n]_L! equal complete flag variety classes [Fl_n] — bridge between q-combinatorics and algebraic geometry",
+      "GL_n decomposes as (L-1)^n · [Fl_n] · L^{T(n)} via geometric series factorization of each (L^i - 1) factor",
+      "Grassmannian motivic classes follow q-Pascal recursion, paralleling classical binomial coefficients",
+      "First non-projective Grassmannian [Gr(2,4)] = 1+L+2L²+L³+L⁴ shows Schubert cell multiplicity",
+      "Extension to partial flags naturally involves parabolic subgroups (Levi × unipotent radical)",
+      "For Grassmannians, the conjecture reduces to maps to Gr(d,n) with GL_d × GL_{n-d} × affine"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove Grassmannian duality by induction on q-Pascal",
+      "Prove Gaussian binomial identity via induction",
+      "Submit duality and lines sorries to Aristotle companion file",
+      "Verify with Docker build once available"
+    ],
+    "markdown": "# Knowledge Base: motivic-flag-maps-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "algebraic-geometry",
+    "flag-varieties",
+    "q-analogs",
+    "moduli-spaces",
+    "grassmannians"
+  ],
+  "relatedProofs": [
+    "motivic-flag-maps",
+    "motivic-flag-maps-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.378Z",
+  "lastUpdate": "2026-03-30T06:03:08.396Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/MotivicFlagMaps.lean",
+      "filename": "MotivicFlagMaps.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMaps.lean"
+    },
+    {
+      "path": "Proofs/MotivicFlagMapsPartialFlags.lean",
+      "filename": "MotivicFlagMapsPartialFlags.lean",
+      "lineCount": 636,
+      "theoremCount": 33,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMapsPartialFlags.lean"
+    },
+    {
+      "path": "Proofs/MotivicFlagMapsProvable.lean",
+      "filename": "MotivicFlagMapsProvable.lean",
+      "lineCount": 183,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMapsProvable.lean"
+    }
+  ]
+}

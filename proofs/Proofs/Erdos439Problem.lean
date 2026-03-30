@@ -130,10 +130,6 @@ def HasMonochromaticPolyPair (c : FiniteColoring k) (f : ℤ → ℤ) : Prop :=
 For any non-constant polynomial f with f(z) even for some z,
 any finite coloring has a monochromatic pair with x + y = f(z).
 -/
-axiom khalfalah_szemeredi_general (k : ℕ) (hk : k ≥ 1)
-    (f : ℤ → ℤ) (hpoly : PolyIsEvenSomewhere f) :
-    ∀ c : FiniteColoring k, HasMonochromaticPolyPair c f
-
 /- ## Part VI: k-th Powers -/
 
 /--
@@ -163,9 +159,6 @@ For k ≥ 2, any finite coloring yields monochromatic pairs whose
 sum is a k-th power. This follows from the polynomial generalization
 since f(z) = z^k satisfies the evenness condition.
 -/
-axiom kth_power_result (m k : ℕ) (hm : m ≥ 1) (hk : k ≥ 2) :
-    ∀ c : FiniteColoring m, HasMonochromaticKthPowerPair c k
-
 /- ## Part VII: The Graph Perspective -/
 
 /--

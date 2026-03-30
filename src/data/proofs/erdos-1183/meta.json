@@ -50,9 +50,9 @@
       "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
       "BddAbove proofs bounding achievable sets by 2^n"
     ],
-    "axiomCount": 2,
-    "assumptions": "Two axioms encode the open conjectures: (1) an upper bound on f(n) (linear growth), (2) superpolynomial growth of F(n). Both are open questions from [Er78].",
-    "lineCount": 277,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations. Two open conjectures (erdos1183_f_growth_conjecture, erdos1183_F_superpolynomial_conjecture) stated as Prop definitions, not assumed true.",
+    "lineCount": 280,
     "prerequisites": [
       "Finite set theory (Finset, powerset, filter)",
       "Lattice theory (union/intersection closure)",
@@ -83,7 +83,9 @@
       "content": "We define 2-colorings of the powerset, union-closed families, intersection-closed families, sublattices, monochromaticity, and chains.",
       "lineStart": 35,
       "lineEnd": 62,
-      "theorems": []
+      "theorems": [],
+      "summary": "Basic Definitions",
+      "id": "basic-definitions"
     },
     {
       "title": "Chains Are Sublattices",
@@ -94,7 +96,9 @@
         "chain_union_mem",
         "chain_inter_mem",
         "chain_isSublattice"
-      ]
+      ],
+      "summary": "Chains Are Sublattices",
+      "id": "chains-are-sublattices"
     },
     {
       "title": "The Standard Chain",
@@ -106,7 +110,9 @@
         "stdChain_isChain",
         "initialSeg_injective",
         "stdChain_card"
-      ]
+      ],
+      "summary": "The Standard Chain",
+      "id": "the-standard-chain"
     },
     {
       "title": "Pigeonhole",
@@ -115,7 +121,9 @@
       "lineEnd": 164,
       "theorems": [
         "exists_mono_color_class"
-      ]
+      ],
+      "summary": "Pigeonhole",
+      "id": "pigeonhole"
     },
     {
       "title": "Main Results",
@@ -125,7 +133,9 @@
       "theorems": [
         "erdos1183_chain_bound",
         "erdos1183_F_chain_bound"
-      ]
+      ],
+      "summary": "Main Results",
+      "id": "main-results"
     },
     {
       "title": "Abstract Definitions and Bounds",
@@ -138,7 +148,9 @@
         "erdos1183_f_lower_bound",
         "achievableSublattice_subset_unionClosed",
         "erdos1183_F_ge_f"
-      ]
+      ],
+      "summary": "Abstract Definitions and Bounds",
+      "id": "abstract-definitions-and-bound"
     }
   ],
   "conclusion": {
@@ -179,8 +191,8 @@
       "Finset"
     ],
     "namespace": "Erdos1183",
-    "lineCount": 277,
-    "axiomCount": 2,
+    "lineCount": 280,
+    "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 12
   }

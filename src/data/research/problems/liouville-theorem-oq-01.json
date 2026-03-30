@@ -1,0 +1,82 @@
+{
+  "slug": "liouville-theorem-oq-01",
+  "title": "liouville-theorem-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Proved liouville_uncountable_axiom via Baire category",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated liouville_uncountable_axiom. Axiom count 3→2. Proof uses Baire category: Liouville numbers are residual (Mathlib), residual sets are not meagre, but countable sets in ℝ are meagre (each singleton is nowhere dense in the perfect space ℝ).",
+    "builtItems": [
+      "Proved liouville_uncountable_axiom in LiouvilleTheorem.lean:275-283 using Baire category theorem"
+    ],
+    "insights": [
+      "Mathlib has Liouville.transcendental but NOT the approximation theorem (lower bound |a-p/q|>=c/q^n)",
+      "The approximation theorem axiom is the hardest: needs MVT + minimal polynomial degree bound",
+      "liouville_uncountable_axiom: could be proved via cardinality arguments if Mathlib has uncountability of reals with specific density properties",
+      "roth_theorem is extremely deep (1955 Fields Medal) — not in Mathlib, should remain axiom",
+      "File already uses Mathlib well: Liouville.transcendental, liouville_liouvilleNumber, LiouvilleWith API",
+      "Proof strategy for liouville_uncountable_axiom: define liouvilleFamily(s) = Σₙ (if s(n) then 2 else 1)/10^((n+1)!) for s : ℕ→Bool, show all values are Liouville (factorial gaps give Liouville property), show injective (first differing digit dominates tail), conclude via Cardinal.cantor ℵ₀",
+      "CantorDiagonalizationOQ01.lean shows Cardinal.cantor ℵ₀ gives ℵ₀ < 2^ℵ₀, and Set.countable_range + Equiv.ofInjective can transfer countability back to domain",
+      "The main challenge is proving liouvilleFamily_isLiouville: need to show partial sums give approximations with error < 1/q^m where q = 10^((N+1)!) and N > m",
+      "Docker was unavailable for build verification — cannot write 100+ lines of unverified analysis proofs safely",
+      "Proved liouville_uncountable_axiom via Baire category: residual (comeagre) + PerfectSpace ℝ argument",
+      "Key Mathlib theorems: eventually_residual_liouville, not_isMeagre_of_mem_residual, interior_singleton, isMeagre_biUnion",
+      "Axiom count reduced from 3 to 2 (remaining: liouville_approximation_theorem_axiom, roth_theorem)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove liouville_uncountable_axiom via injection from (ℕ → Bool): (1) define liouvilleFamily, (2) prove convergence, (3) prove Liouville property, (4) prove injectivity, (5) conclude via Cardinal.cantor",
+      "The Liouville property proof needs: tail bound ≤ 4/10^((N+2)!) < 1/10^((N+1)!·m) for N > m",
+      "Injectivity proof: first differing digit has coefficient ≥ 1/10^((n₀+1)!) while tail sum < 2/10^((n₀+2)!) < 1/10^((n₀+1)!)"
+    ],
+    "markdown": "# Knowledge Base: liouville-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "liouville-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LiouvilleTheorem.lean",
+      "filename": "LiouvilleTheorem.lean",
+      "lineCount": 529,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheorem.lean"
+    }
+  ]
+}

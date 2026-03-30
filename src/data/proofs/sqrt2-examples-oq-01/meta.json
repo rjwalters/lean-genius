@@ -1,0 +1,106 @@
+{
+  "id": "sqrt2-examples-oq-01",
+  "title": "Generalized Non-Negativity of Squares",
+  "slug": "sqrt2-examples-oq-01",
+  "description": "Generalizes square_nonneg from ℤ to any LinearOrderedSemiring using Mathlib's mul_self_nonneg. Shows the parent's case-analysis proof technique also generalizes. Includes consequences: sum of squares non-negativity and an AM-GM variant.",
+  "meta": {
+    "author": "Pedagogical generalization",
+    "date": "2024",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2OQ01.lean",
+    "tags": [
+      "ordered-rings",
+      "algebra",
+      "generalization",
+      "pedagogical",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 102,
+    "assumptions": "No axioms. All results follow from Mathlib's LinearOrderedSemiring and LinearOrderedRing instances.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "mul_self_nonneg",
+        "description": "0 ≤ x * x in any LinearOrderedSemiring",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "0 ≤ x ^ 2 in any LinearOrderedSemiring",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Demonstration that square_nonneg generalizes without additional axioms",
+      "Independent case-analysis proof for LinearOrderedRing",
+      "AM-GM variant via the Cauchy-Schwarz trick"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The non-negativity of squares is a foundational property in ordered algebra, formalized in Mathlib via mul_self_nonneg for LinearOrderedSemiring.",
+    "problemStatement": "Generalize square_nonneg from integers to any LinearOrderedSemiring and derive consequences.",
+    "text": "Answers whether square_nonneg generalizes to arbitrary linearly ordered rings. Yes: Mathlib's mul_self_nonneg works for LinearOrderedSemiring.",
+    "proofStrategy": "Uses Mathlib's mul_self_nonneg as the core lemma, derives concrete instances, and gives an independent proof by cases.",
+    "keyInsights": [
+      "Mathlib's mul_self_nonneg already provides the maximum generalization",
+      "The case-analysis proof technique from the parent also generalizes",
+      "LinearOrderedSemiring is the weakest typeclass needed (not even a full ring)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "generalized-result",
+      "title": "The Generalized Result",
+      "summary": "square_nonneg for any LinearOrderedSemiring",
+      "startLine": 18,
+      "endLine": 32
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "summary": "ℤ, ℚ, ℝ, ℕ instances",
+      "startLine": 37,
+      "endLine": 49
+    },
+    {
+      "id": "independent-proof",
+      "title": "Independent Proof by Cases",
+      "summary": "Generalizing the parent's proof technique",
+      "startLine": 54,
+      "endLine": 67
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "summary": "Sum of squares, AM-GM variant",
+      "startLine": 72,
+      "endLine": 88
+    }
+  ],
+  "conclusion": {
+    "summary": "The answer is YES: Mathlib's LinearOrderedSemiring provides the maximum generalization with no additional axioms needed.",
+    "implications": "This demonstrates that the non-negativity of squares is a structural property of any linearly ordered semiring, not specific to integers or reals.",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "slug": "sqrt2-examples",
+      "title": "Basic Lean Examples",
+      "relation": "parent-problem",
+      "description": "Parent file with the original ℤ-specific proof",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "Sqrt2OQ01",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
+}

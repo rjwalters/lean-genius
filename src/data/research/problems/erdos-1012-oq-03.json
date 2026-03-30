@@ -1,0 +1,130 @@
+{
+  "slug": "erdos-1012-oq-03",
+  "title": "Directed graph Hamiltonian cycle thresholds",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Directed graph Hamiltonian cycle thresholds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T08:49:59.593Z",
+    "iteration": 2,
+    "focus": "Proved tournament insertion lemma + iterated construction. Rédei proved modulo list-to-equiv conversion.",
+    "blockers": [],
+    "nextAction": "Prove list_path_to_hamiltonian (list-to-equiv conversion). Then tackle Moon-Moser using Rédei.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT: Rédei proved via list-based insertion sort. Tournament insertion lemma fully proved. 1 sorry remains (list-to-equiv conversion). 3 other theorems still sorry.",
+    "builtItems": [
+      "Digraph structure with loopless axiom",
+      "In-degree, out-degree, tournament, strong connectivity definitions",
+      "Hamiltonian cycle and path predicates using equivalences",
+      "Arc count definition",
+      "Statements of Ghouila-Houri, Moon-Moser, Redei, directed threshold (all sorry)",
+      "tournament_path_insert: fully proved insertion lemma for tournaments",
+      "tournament_full_path_list: iterated insertion builds Hamiltonian path (proved)",
+      "IsDirectedPathList: list-based directed path definition",
+      "Digraph.arc_or_arc, arc_of_not_arc: tournament basic lemmas (proved)",
+      "redei: proved using infrastructure (modulo list_path_to_hamiltonian)"
+    ],
+    "insights": [
+      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree ≥ n/2 + strong connectivity → HC",
+      "Moon-Moser (1963): strongly connected tournaments have Hamiltonian cycles",
+      "Redei (1934): every tournament has Hamiltonian path (no connectivity needed)",
+      "Mathlib lacks directed graph infrastructure — defined custom Digraph type",
+      "Proof roadmap: Ghouila-Houri ~200 lines, Moon-Moser ~150, Redei ~100",
+      "List-based induction on paths (cons a t) cleanly handles tournament insertion: if u beats head, prepend; else head beats u, recurse on tail",
+      "The key insight for correctness: when inserting at k_t+1 in a::t, if k_t=0 then first element becomes u and head→u arc is available; if k_t>0 then first element is unchanged",
+      "Induction on path length (Nat induction) is cleaner than well-founded recursion for the iterated construction",
+      "The remaining list_path_to_hamiltonian sorry is purely data manipulation (building Equiv from Nodup list), no mathematical content"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove list_path_to_hamiltonian: construct V ≃ Fin n from a Nodup list of length n",
+      "Prove Moon-Moser: use Rédei to get Hamiltonian path, then rotate to close into cycle",
+      "Consider Aristotle companion file for the conversion lemma"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "extremal-combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1012",
+    "erdos-1012-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.593Z",
+  "lastUpdate": "2026-03-30T08:49:59.593Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1012OQ01.lean",
+      "filename": "Erdos1012OQ01.lean",
+      "lineCount": 313,
+      "theoremCount": 37,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1012OQ02.lean",
+      "filename": "Erdos1012OQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1012OQ03.lean",
+      "filename": "Erdos1012OQ03.lean",
+      "lineCount": 340,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1012Problem.lean",
+      "filename": "Erdos1012Problem.lean",
+      "lineCount": 354,
+      "theoremCount": 35,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012Problem.lean"
+    }
+  ]
+}

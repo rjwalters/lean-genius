@@ -1,0 +1,170 @@
+{
+  "id": "sperner-ndim-oq-03",
+  "title": "Brouwer Fixed Point via Displacement Coloring (n-dimensional)",
+  "slug": "sperner-ndim-oq-03",
+  "description": "Connects the n-dimensional Sperner's lemma to the Brouwer fixed point theorem via the displacement coloring construction. Defines barycentric displacement, proves the displacement coloring satisfies the Sperner boundary condition in arbitrary dimension, and proves the approximate fixed point and Brouwer FPT theorems.",
+  "meta": {
+    "author": "Sperner (1928), Brouwer (1911)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "1928",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerNDimOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "Sperner-lemma",
+      "Brouwer-fixed-point",
+      "displacement-coloring",
+      "fixed-point-theory",
+      "advanced"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "originalContributions": [
+      "n-dimensional displacement coloring definition via barycentric coordinates",
+      "Proof that displacement coloring satisfies Sperner boundary condition for arbitrary d",
+      "Barycentric displacement sum-to-zero identity",
+      "Existence of negative displacement when f(v) != v via nonneg-sum-zero argument",
+      "Full proof of approximate_fixed_point: ε-approximate FPs via Sperner + displacement coloring transfer in arbitrary dimension",
+      "Full proof of brouwer_simplex: Brouwer FPT via compact simplex minimization of dist(f·,·)",
+      "FSimplex mesh bound via countPerm injectivity",
+      "Grid-to-cube membership for uniform continuity application"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 452,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully verified. Takes Sperner lemma (sperner_ndim) as a hypothesis parameter, cleanly separating combinatorial and analytical arguments.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The displacement coloring is the standard elementary bridge between Sperner's lemma and Brouwer's fixed point theorem, avoiding algebraic topology entirely. Given a continuous self-map f of the simplex, one colors grid vertices by the index of the most negative barycentric displacement component d_k = f(v)_k - v_k. This construction appears in most combinatorial topology textbooks and was used by Cohen (1967) and others to give elementary proofs of Brouwer's theorem.",
+    "problemStatement": "Given a continuous self-map f of the standard d-simplex with no grid fixed point, prove that the displacement coloring (argmin of barycentric displacement) satisfies the Sperner boundary condition, enabling the application of Sperner's lemma to obtain approximate and exact fixed points.",
+    "text": "The displacement coloring connects Sperner's lemma to Brouwer's fixed point theorem by coloring grid vertices according to the most negative barycentric displacement component of a continuous self-map.",
+    "proofStrategy": "The proof has three layers:\n\n1. **Barycentric displacement**: For a grid vertex v mapped to v/N in the simplex, define d+1 displacement components d_k corresponding to changes in barycentric coordinates. These sum to zero by construction.\n\n2. **Sperner condition** (fully verified): On face k, the k-th barycentric coordinate of v is 0, so d_k = f(v/N)_k >= 0 (since f maps to the simplex). When f(v) != v, some d_j < 0. The argmin satisfies: d_min <= d_j < 0 <= d_k, so k != argmin. This is the complete proof that the displacement coloring is Sperner.\n\n3. **Fixed point extraction** (fully verified): Choose N with mesh < delta(epsilon), apply Sperner's lemma to get fully-colored simplices, transfer displacement bounds via uniform continuity, and extract convergent subsequence by compactness.",
+    "keyInsights": [
+      "The displacement coloring argument is dimension-independent: the proof for the Sperner condition in dimension d has the same structure as dimension 2",
+      "The key property is sign-definite: on face k, d_k >= 0 regardless of f, because the k-th barycentric coordinate starts at 0 and f maps into the simplex",
+      "When displacements sum to 0 and are not all zero, at least one must be negative -- this forces the argmin to avoid nonneg indices",
+      "Taking Sperner's lemma as a hypothesis cleanly separates the combinatorial (Sperner) and analytical (fixed point) arguments"
+    ],
+    "prerequisites": [
+      "n-dimensional Sperner's lemma (SpernerNDim.lean)",
+      "Barycentric coordinates on the standard simplex",
+      "Uniform continuity on compact sets (for approximate FPT)",
+      "Bolzano-Weierstrass / sequential compactness (for exact FPT)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "simplex-geometry",
+      "title": "Simplex Geometry",
+      "startLine": 32,
+      "endLine": 50,
+      "summary": "Maps grid vertices to real coordinates via v/N, defines simplex membership, proves grid vertices lie in the simplex.",
+      "mathContext": "The standard d-simplex is {x : x_i >= 0, sum x_i <= 1}. Grid vertices with subdivision N map to this simplex via coordinate division by N."
+    },
+    {
+      "id": "barycentric-displacement",
+      "title": "Barycentric Displacement",
+      "startLine": 52,
+      "endLine": 95,
+      "summary": "Defines the d+1 barycentric displacement components and proves they sum to zero. Includes the sum-subtraction algebra helper.",
+      "mathContext": "The barycentric displacement d_k measures the change in the k-th barycentric coordinate under f. For k < d, it's the explicit coordinate change. For k = d, it's the negative of the sum (the implicit last barycentric coordinate). These sum to zero because barycentric coordinates sum to 1."
+    },
+    {
+      "id": "displacement-coloring",
+      "title": "Displacement Coloring",
+      "startLine": 97,
+      "endLine": 120,
+      "summary": "Defines the minimizer selection (minIndex) and the displacement coloring that assigns each vertex the index of the most negative barycentric displacement.",
+      "mathContext": "The coloring c(v) = argmin_k d_k assigns the color with the most negative displacement. This is the standard construction for connecting Sperner's lemma to Brouwer's theorem."
+    },
+    {
+      "id": "sperner-condition",
+      "title": "Sperner Boundary Condition",
+      "startLine": 122,
+      "endLine": 195,
+      "summary": "The main mathematical contribution: proves the displacement coloring satisfies the Sperner boundary condition. Three supporting lemmas handle face-nonnegativity and existence of negative displacements.",
+      "mathContext": "The proof that the displacement coloring is Sperner relies on two facts: (1) on face k, d_k >= 0 (because the k-th bary coordinate of v is 0 and f(v)'s is >= 0), and (2) when f(v) != v, some d_j < 0 (because all displacements sum to 0). Together: argmin <= d_j < 0 <= d_k, so k != argmin."
+    },
+    {
+      "id": "approximate-fixed-point",
+      "title": "Approximate Fixed Points",
+      "startLine": 197,
+      "endLine": 217,
+      "summary": "Proves the approximate fixed point theorem: for any epsilon > 0, there exists an epsilon-approximate fixed point in the simplex.",
+      "mathContext": "Using Sperner's lemma on increasingly fine grids, fully-colored simplices yield approximate fixed points. The mesh diameter shrinks to 0, and uniform continuity ensures displacement bounds transfer between vertices."
+    },
+    {
+      "id": "brouwer-fpt",
+      "title": "Brouwer Fixed Point Theorem",
+      "startLine": 219,
+      "endLine": 230,
+      "summary": "Proves the Brouwer fixed point theorem for the standard d-simplex: every continuous self-map has a fixed point.",
+      "mathContext": "The standard compactness argument: approximate fixed points form a sequence in the compact simplex, so a subsequence converges, and the limit is an exact fixed point by continuity."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides the complete bridge from n-dimensional Sperner lemma to Brouwer fixed point theorem via displacement coloring. All results are fully verified with 0 axioms and 0 sorries. The approximate fixed point theorem uses UC + Sperner + displacement transfer, and Brouwer follows by compact minimization.",
+    "implications": "Combined with the completion of sperner_ndim (1 sorry remaining), this gives an entirely combinatorial path to Brouwer's FPT that avoids the 2 axioms in BrouwerFixedPoint.lean (no-retraction and retraction-construction). The displacement coloring approach is more elementary and computational than the algebraic topology route.",
+    "openQuestions": [
+      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "extends",
+      "description": "Uses the Sperner's lemma infrastructure (Vertex, Coloring, IsSperner, FSimplex, IsFC) and takes sperner_ndim as a hypothesis"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-02-oq-01",
+      "relationship": "generalizes",
+      "description": "Generalizes the 2D displacement coloring and Sperner condition proof from BrouwerFixedPointOQ02OQ01.lean to arbitrary dimension d"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Provides an alternative, axiom-free path to Brouwer's FPT via combinatorics rather than algebraic topology"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Brouwer, L. E. J.",
+      "title": "Uber Abbildung von Mannigfaltigkeiten",
+      "year": "1911",
+      "venue": "Mathematische Annalen, 71, 97-115",
+      "note": "Original proof of the Brouwer fixed point theorem via simplicial methods"
+    },
+    {
+      "authors": "Cohen, D. I. A.",
+      "title": "On the Sperner lemma",
+      "year": "1967",
+      "venue": "Journal of Combinatorial Theory, 2(4), 585-587",
+      "note": "Elementary proof of Sperner's lemma and the displacement coloring approach to Brouwer's theorem"
+    },
+    {
+      "authors": "Su, F. E.",
+      "title": "Rental Harmony: Sperner's Lemma in Fair Division",
+      "year": "1999",
+      "venue": "The American Mathematical Monthly, 106(10), 930-942",
+      "note": "Accessible exposition of the Sperner-to-Brouwer connection via displacement coloring"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SpernerNDim"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "SpernerNDim"
+    ],
+    "namespace": "DisplacementBrouwer",
+    "lineCount": 452,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 6
+  }
+}

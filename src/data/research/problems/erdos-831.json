@@ -1,6 +1,6 @@
 {
   "slug": "erdos-831",
-  "title": "Erd\u0151s #831",
+  "title": "Erdős #831",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T09:46:19.704Z",
-    "iteration": 4,
-    "focus": "Proved permutation invariance, unblocking h_three and h_upper_bound",
+    "iteration": 7,
+    "focus": "All sorries eliminated. h_upper_bound proved via powersetCard 3 factoring.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,31 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S\u2083 perm invariance proved. h_three structured: GP conditions fully proved (no-3-collinear via case analysis + triangle_not_collinear, no-4-concyclic via pigeonhole). 3 sorries remain: h_upper_bound, countDistinctRadii=1, h\u22651.",
+    "progressSummary": "COMPLETE: 4→0 sorries. h_three fully proved. h_upper_bound proved via tripleCircumradius on S.powersetCard 3, using circumradiusOf_eq_of_mem_triple for S₃ invariance. Only axiom: h_four_lower.",
     "builtItems": [
       "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction",
       "Proved circumradiusOf_perm12: swap first two args preserves circumradius (signed area negates, |area| preserved)",
       "Proved circumradiusOf_cycle: cyclic permutation preserves circumradius (signed area literally equal)",
-      "Derived circumradiusOf_perm23, circumradiusOf_perm13 from perm12+cycle (full S\u2083 invariance)",
-      "FIXED countDistinctRadii: allCircumradiiFinset using Finset \u00d7\u02e2 filter image (prior session)",
-      "Added DecidableEq instances for Point and \u211d via Classical.decEq",
-      "Proved GP conditions for {(0,0),(1,0),(0,1)}: no-3-collinear (27-case analysis \u2192 triangle_not_collinear), no-4-concyclic (81-case pigeonhole)",
-      "Proved card=3 for {p_origin, p_e1, p_e2} via card_insert_of_not_mem"
+      "Derived circumradiusOf_perm23, circumradiusOf_perm13 from perm12+cycle (full S₃ invariance)",
+      "FIXED countDistinctRadii: allCircumradiiFinset using Finset ×ˢ filter image (prior session)",
+      "Added DecidableEq instances for Point and ℝ via Classical.decEq",
+      "Proved GP conditions for {(0,0),(1,0),(0,1)}: no-3-collinear (27-case analysis → triangle_not_collinear), no-4-concyclic (81-case pigeonhole)",
+      "Proved card=3 for {p_origin, p_e1, p_e2} via card_insert_of_not_mem",
+      "Proved 1≤h(3) via Nat.sInf_eq_zero: if sInf=0, either 0∈set (3-point config has ≥1 radius, contradiction) or set=∅ (standard triangle exists, contradiction)",
+      "Extracted standard_triangle_card, standard_triangle_gp as reusable private lemmas",
+      "Proved countDistinctRadii=1 via eq_singleton_iff_unique_mem: membership witness + uniqueness by permutation invariance over 6 valid orderings",
+      "Proved circumradiusOf_eq_of_mem_triple: general S₃ invariance for abstract 3-point sets (27-case analysis)",
+      "Defined tripleCircumradius via Multiset.toList extraction, proved allCircumradiiFinset ⊆ powersetCard 3 image",
+      "Proved countDistinctRadii_le_choose: card(allCircumradiiFinset) ≤ C(n,3) via image chain",
+      "Proved h_upper_bound: sInf bound via by_cases on Set.Nonempty + Nat.sInf_eq_zero"
     ],
     "insights": [
       "regular_polygon_not_general proved: 4 points on same circle are concyclic, contradicting GP",
       "DEFINITION BUG FIXED: countDistinctRadii now uses Finset.card on allCircumradiiFinset",
-      "circumradiusOf is fully S\u2083-invariant: perm12 (transposition) + cycle (3-cycle) generate all 6 perms",
-      "Key proof technique for perm12: signed area expression negates under p1\u2194p2 swap, proved by ring",
+      "circumradiusOf is fully S₃-invariant: perm12 (transposition) + cycle (3-cycle) generate all 6 perms",
+      "Key proof technique for perm12: signed area expression negates under p1↔p2 swap, proved by ring",
       "Key proof technique for cycle: signed area expression is LITERALLY EQUAL under cyclic perm, proved by ring",
-      "h_upper_bound now provable: image of ordered triples through perm-invariant circumradiusOf collapses to \u2264C(n,3) elements",
-      "h_three now provable: 3-point GP config has 6 ordered triples, all mapping to same circumradius \u2192 card=1",
-      "h_four_lower axiom is appropriate: proving h(4)\u22652 requires showing all GP 4-point configs have \u22652 radii",
-      "h_three structured as le_antisymm with Nat.sInf_le witness; remaining: countDistinctRadii=1 and sInf\u22651"
+      "h_upper_bound now provable: image of ordered triples through perm-invariant circumradiusOf collapses to ≤C(n,3) elements",
+      "h_three now provable: 3-point GP config has 6 ordered triples, all mapping to same circumradius → card=1",
+      "h_four_lower axiom is appropriate: proving h(4)≥2 requires showing all GP 4-point configs have ≥2 radii",
+      "h_three structured as le_antisymm with Nat.sInf_le witness; remaining: countDistinctRadii=1 and sInf≥1",
+      "h_upper_bound needs: define tripleCircumradius on S.powersetCard 3, show allCircumradiiFinset ⊆ image, bound by card_powersetCard = C(n,3)",
+      "Key difficulty in h_upper_bound: proving tripleCircumradius well-defined (toList permutation + S₃ invariance case analysis)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #831 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.\n\n\n\nSee also [104] and [506].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #104\n- Problem #506\n- Problem #830\n- Problem #832\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -69,18 +78,18 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:46:19.704Z",
-  "lastUpdate": "2026-03-28T00:15:00.000Z",
+  "lastUpdate": "2026-03-29T13:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos831Problem.lean",
       "filename": "Erdos831Problem.lean",
-      "lineCount": 399,
-      "theoremCount": 10,
-      "axiomCount": 1,
-      "defCount": 11,
-      "sorryCount": 3,
+      "lineCount": 713,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos831Problem.lean"
     }

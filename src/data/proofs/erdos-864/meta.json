@@ -49,10 +49,11 @@
       "Defined maxAlmostSidon as supremum over powerset of Icc 1 N",
       "Proved sidon_is_almost_sidon by unfolding and omega",
       "Axiomatized Erdős-Freud lower bound with explicit (2/√3 − ε)·√N form",
-      "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}"
+      "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}",
+      "reflected_construction_bound: PROVED quantitative lower bound maxAlmostSidon(N) ≥ 2|B| for any Sidon B ⊆ {1,...,N/3}"
     ],
     "axiomCount": 1,
-    "lineCount": 755,
+    "lineCount": 823,
     "assumptions": "1 axiom: erdos_freud_lower_bound. Previously 2; sidon_upper_bound ELIMINATED by proving difference-counting bound (sidon_diff_counting_bound, sidon_card_sq_le_2N). reflected_construction_valid was proved as theorem in prior session.",
     "mathlib_version": "4.26.0"
   },
@@ -157,9 +158,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 755,
+    "lineCount": 823,
     "axiomCount": 1,
-    "theoremCount": 16,
+    "theoremCount": 22,
     "definitionCount": 5
   }
 }

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved card_constOn_le in Erdos1027Problem.lean (1 sorry eliminated). The constrained-function counting lemma uses restriction injection into complement functions. 1A+0S in Erdos1027 now.",
+    "progressSummary": "PROGRESS: Fixed critical Gk definition bug (was K_{k,C(k,2)}, now correct pair graph). Removed 3 unused axioms (7→4) and 1 vacuous sorry (4→3) from Erdos1021. Proved 5 of 7 companion lemmas. 2 rpow Aristotle targets remain.",
     "builtItems": [
       "Assessment: 11A all appropriate, f is opaque",
       "collinear₃_comm: symmetry in last two args",
@@ -46,8 +46,7 @@
       "choose_le_choose_of_le: proved via Nat.choose_le_choose (Erdos1021Aristotle.lean)",
       "nat_sub_split: proved via omega (Erdos1021Aristotle.lean)",
       "sum_inl_injective: proved via Sum.inl_injective (Erdos1021Aristotle.lean)",
-      "sum_inr_injective: proved via Sum.inr_injective (Erdos1021Aristotle.lean)",
-      "Proved card_constOn_le: constrained Boolean functions ≤ 2^(|α|-|A|) via restriction injection (Erdos1027Problem.lean)"
+      "sum_inr_injective: proved via Sum.inr_injective (Erdos1021Aristotle.lean)"
     ],
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
@@ -63,8 +62,7 @@
       "CRITICAL BUG FIXED: Gk was defined as K_{k,C(k,2)} (all cross-edges) instead of the pair graph. Corrected to use subtype {(a,b) : a<b} vertex type with proper adjacency.",
       "With corrected Gk, G3_is_C6 axiom is now actually TRUE (pair graph G_3 = C_6 via mapping: 0→(0,1)→1→(1,2)→2→(0,2)→0)",
       "Removed weak_conjecture_open (meta-mathematical, not useful), conjecturedGap+gap_positive_conjecture (opaque axiom, vacuous), Gk_from_Hk (unused embedding)",
-      "strong_implies_weak sorry: needs C*n^{3/2-c} ≤ ε*n^{3/2} for large n, i.e., n^c ≥ C/ε. Provable via Real.rpow_natCast + tendsto_rpow_atTop for c > 0.",
-      "card_constOn_le proof: inject constrained functions into (Aᶜ → Bool) via restriction; injectivity from constraint + complement values determining the full function"
+      "strong_implies_weak sorry: needs C*n^{3/2-c} ≤ ε*n^{3/2} for large n, i.e., n^c ≥ C/ε. Provable via Real.rpow_natCast + tendsto_rpow_atTop for c > 0."
     ],
     "mathlibGaps": [],
     "nextSteps": [

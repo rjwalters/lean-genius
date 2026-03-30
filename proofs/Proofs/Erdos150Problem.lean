@@ -116,9 +116,6 @@ axiom seymour_construction (m : ℕ) : c(3*m + 2) ≥ 3^m
 
 Taking the mth root of c(3m+2) ≥ 3^m and letting m → ∞.
 -/
-axiom seymour_lower_bound :
-  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (c(n) : ℝ) ^ (1 / n : ℝ) ≥ 3 ^ (1/3 : ℝ) - ε
-
 /-
 ## Part IV: Binary Entropy Function
 
@@ -142,9 +139,6 @@ axiom binaryEntropy_one_third : binaryEntropy (1/3) = Real.log 3 / Real.log 2 - 
 /--
 2^{H(1/3)} ≈ 1.8899
 -/
-axiom two_pow_entropy_one_third :
-  (2 : ℝ) ^ binaryEntropy (1/3) = 3 / (2 : ℝ) ^ (2/3 : ℝ)
-
 /-
 ## Part V: Bradač's Theorem
 
@@ -184,9 +178,24 @@ The answer to Erdős's question is YES.
 theorem alpha_less_than_two : α < 2 := by
   have h1 : α ≤ (2 : ℝ) ^ binaryEntropy (1/3) := bradac_upper_bound
   have h2 : (2 : ℝ) ^ binaryEntropy (1/3) < 2 := by
-    -- 2^{H(1/3)} ≈ 1.8899 < 2
-    -- Since H(1/3) < 1, we have 2^{H(1/3)} < 2^1 = 2
-    sorry
+    -- H(1/3) < 1, so 2^{H(1/3)} < 2^1 = 2
+    suffices hexp : binaryEntropy (1/3) < 1 by
+      calc (2 : ℝ) ^ binaryEntropy (1/3)
+          < (2 : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt (by norm_num) hexp
+        _ = 2 := Real.rpow_one 2
+    rw [binaryEntropy_one_third]
+    -- Goal: log 3 / log 2 - 2/3 < 1, i.e., log 3 / log 2 < 5/3
+    have hlog2_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+    suffices h : Real.log 3 / Real.log 2 < 5 / 3 by linarith
+    rw [div_lt_div_iff hlog2_pos (by norm_num : (0 : ℝ) < 3)]
+    -- Goal: log 3 * 3 < 5 * log 2, i.e., log(27) < log(32)
+    have h27 : Real.log (27 : ℝ) = Real.log ((3 : ℝ) ^ (3 : ℕ)) := by norm_num
+    have h32 : Real.log (32 : ℝ) = Real.log ((2 : ℝ) ^ (5 : ℕ)) := by norm_num
+    have hlog_ineq : Real.log (27 : ℝ) < Real.log 32 :=
+      Real.log_lt_log (by norm_num) (by norm_num)
+    rw [h27, Real.log_pow, h32, Real.log_pow] at hlog_ineq
+    push_cast at hlog_ineq ⊢
+    linarith
   exact lt_of_le_of_lt h1 h2
 
 /-

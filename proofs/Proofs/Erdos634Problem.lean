@@ -214,14 +214,8 @@ axiom soifer_theorem (n : ℕ) (hn : n ≥ 1) :
     n ≠ 2 → n ≠ 3 → n ≠ 5 → IsSimilarDissectable n
 
 /-- 2 is NOT similar-dissectable. -/
-axiom two_not_similar_dissectable : ¬IsSimilarDissectable 2
-
 /-- 3 is NOT similar-dissectable. -/
-axiom three_not_similar_dissectable : ¬IsSimilarDissectable 3
-
 /-- 5 is NOT similar-dissectable. -/
-axiom five_not_similar_dissectable : ¬IsSimilarDissectable 5
-
 /-
 ## Part IX: Self-Similar Dissections
 
@@ -238,12 +232,6 @@ def IsSelfSimilarDissectable (n : ℕ) : Prop :=
 
 /-- **Snover-Waiveris-Williams Theorem**: Self-similar dissection requires
     n ∈ {k², k² + m², 3k²} for some k, m. -/
-axiom sww_theorem (n : ℕ) :
-    IsSelfSimilarDissectable n ↔
-      (∃ k : ℕ, n = k^2) ∨
-      (∃ k m : ℕ, k ≥ 1 ∧ m ≥ 1 ∧ n = k^2 + m^2) ∨
-      (∃ k : ℕ, k ≥ 1 ∧ n = 3 * k^2)
-
 /-
 ## Part X: Recent Progress
 
@@ -251,9 +239,6 @@ Zhang (2025) and other developments.
 -/
 
 /-- Zhang's condition: For a ≥ b ≥ 1, large n makes n²ab dissectable. -/
-axiom zhang_2025 (a b : ℕ) (hab : a ≥ b) (hb : b ≥ 1) :
-    ∃ N : ℕ, ∀ n ≥ N, IsDissectable (n^2 * a * b)
-
 /-- The set of known dissectable values. -/
 def KnownDissectable : Set ℕ :=
   { n | (∃ k : ℕ, n = k^2) ∨

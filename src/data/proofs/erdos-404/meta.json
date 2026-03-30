@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 404,
     "erdosUrl": "https://erdosproblems.com/404",
     "erdosProblemStatus": "open",
@@ -65,8 +65,9 @@
       "Legendre's formula for v_p(n!)",
       "Filter.Tendsto and convergence in Lean/Mathlib"
     ],
-    "lineCount": 125,
-    "assumptions": "2 axioms: lin_bound (f(2,2) ≤ 254), lin_bound_meaning (2^255 never divides such sums). 3 sorries in padic_val_factorial_asymp (v_p(n!)/n → 1/(p-1) squeeze argument). legendre_formula is a proved theorem using Mathlib's padicValNat_factorial."
+    "lineCount": 291,
+    "assumptions": "2 axioms: lin_bound (f(2,2) <= 254), lin_bound_meaning (2^255 never divides such sums). 0 sorries.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Prime Power Divisibility of Factorial Sums**\n\nThe interaction between prime divisibility and factorials has deep roots: Legendre's formula $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ (1808) gives the exact $p$-adic valuation of $n!$, and Kummer's theorem (1852) extends this to binomial coefficients. Erdős and Graham posed Problem #404 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*: for integers $a \\geq 1$ and primes $p$, define $f(a,p) = \\sup\\{k : p^k \\mid a_1! + \\cdots + a_n!$ for some $a = a_1 < \\cdots < a_n\\}$. Is $f(a,p)$ always finite?\n\n**Chronological Development:**\n- **1808 (Legendre):** Formula for $v_p(n!)$ — the foundational tool\n- **1976 (Lin):** Proved $f(2,2) \\leq 254$ — the only known concrete upper bound for any $(a,p)$ pair. Lin's argument used careful analysis of carries in $p$-adic addition of factorials\n- **1980 (Erdős–Graham):** Problem 404 posed formally, alongside the related Problem #403 on factorial sums modulo primes\n\nThe problem is surprisingly resistant because factorial sums can have cancellation patterns that concentrate $p$-adic valuation. The gap between the known lower bound $f(2,2) \\geq 3$ (from $2^3 \\mid 2! + 3!$) and Lin's upper bound of 254 illustrates how little is understood about the $p$-adic structure of factorial sums.",
@@ -201,9 +202,9 @@
       "Filter"
     ],
     "namespace": "Erdos404",
-    "lineCount": 125,
+    "lineCount": 291,
     "axiomCount": 2,
-    "theoremCount": 4,
+    "theoremCount": 10,
     "definitionCount": 7
   }
 }

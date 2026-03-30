@@ -1,0 +1,60 @@
+{
+  "id": "erdos-780-oq-01",
+  "name": "Erdős 780: Matoušek combinatorial proof of Kneser chromatic number",
+  "parentId": "erdos-780",
+  "status": "completed",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "chromaticNumber was an opaque axiom — replaced with proper sInf definition",
+      "erdos_ko_rado axiom proved from existing ErdosKoRado.Star construction",
+      "4 small case axioms (Petersen, KG(7,3), KG(2r,r), KG(2r+1,r)) converted to sorry'd theorems",
+      "kg_7_3_chromatic value was mathematically incorrect (2→3), fixed",
+      "Tucker's lemma already axiomatized in BorsukUlamOQ01.lean — potential path to proving kneser_conjecture",
+      "Kneser graph already defined in Erdos627Problem.lean with lovasz_kneser axiom",
+      "GraphCore.lean has proper chromaticNumber for SimpleGraph — could connect for k=2 case",
+      "4 remaining axioms are deep theorems requiring topological methods"
+    ],
+    "builtItems": [
+      "chromaticNumber definition as sInf in Erdos780Problem.lean:77",
+      "erdos_ko_rado theorem proved from ErdosKoRado.Star in Erdos780Problem.lean:178",
+      "Erdos780Aristotle.lean companion file with 10 routine lemmas"
+    ],
+    "progressSummary": "COMPLETED: 4A, 0S. All 4 sorry'd small cases proved directly from kneser_conjecture axiom (rw+omega). Petersen χ=3, KG(7,3) χ=3, KG(2r,r) χ=2, KG(2r+1,r) χ=3.",
+    "nextSteps": [
+      "Explore proving kneser_conjecture from Tucker's lemma (BorsukUlamOQ01.lean)",
+      "Prove tightness_construction by explicitly building the partition coloring",
+      "Connect to SimpleGraph.chromaticNumber for k=2 case",
+      "Prove alon_frankl_lovasz_1986 (requires topological methods)"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos780Aristotle.lean",
+      "filename": "Erdos780Aristotle.lean",
+      "lineCount": 144,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos780Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos780Problem.lean",
+      "filename": "Erdos780Problem.lean",
+      "lineCount": 222,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos780Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-78",
+    "erdos-780"
+  ]
+}

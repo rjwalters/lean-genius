@@ -29,20 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Added 5 new theorems (5→10 total). All structural results proved, 0 sorries. 2 remaining axioms are deep results.",
+    "progressSummary": "COMPLETED: Removed unsound axiom erdos_949_open (2→1 axioms). sidon_variant_solved remains as legitimate deep axiom.",
     "builtItems": [
       "sum_free_empty theorem",
       "sum_free_singleton theorem",
       "sum_free_subset theorem",
       "realSumset_mono theorem",
-      "open_interval_sum_free theorem"
+      "open_interval_sum_free theorem",
+      "Removed erdos_949_open axiom (unsound: asserted open conjecture)"
     ],
     "insights": [
       "All provable work complete: 2 axioms are deep (solved variant + open problem)",
       "Added 5 structural theorems: sum_free_empty, sum_free_singleton, sum_free_subset, realSumset_mono, open_interval_sum_free",
       "Classic result (1/3,2/3) sum-free proved by linarith: a+b > 2/3 when a,b ∈ (1/3,2/3)",
       "sum_free_singleton requires x≠0 since {0} is not sum-free (0+0=0∈{0})",
-      "Switched to import Mathlib for broader API access"
+      "Switched to import Mathlib for broader API access",
+      "Removed unsound erdos_949_open axiom — it falsely asserted an open conjecture as true. Axiom count: 2→1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -73,9 +75,9 @@
     {
       "path": "Proofs/Erdos949Problem.lean",
       "filename": "Erdos949Problem.lean",
-      "lineCount": 163,
+      "lineCount": 159,
       "theoremCount": 14,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

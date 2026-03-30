@@ -8,7 +8,7 @@
     "author": "Classical (Young 1912, Hölder 1889, Minkowski 1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski_inequality",
     "date": "1896",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ02OQ02.lean",
     "tags": [
       "analysis",
@@ -20,8 +20,8 @@
       "young-inequality",
       "open-question"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-03-28",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -66,7 +66,7 @@
       "minkowski_linfty: L∞ special case from pointwise triangle"
     ],
     "axiomCount": 0,
-    "lineCount": 402,
+    "lineCount": 406,
     "assumptions": "0 axioms. 1 sorry in minkowski_from_holder_explicit (ENNReal arithmetic combining split + Hölder steps with division)."
   },
   "overview": {

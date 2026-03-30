@@ -61,10 +61,6 @@ noncomputable def intervalWidth (n : ℕ) (ε : ℝ) : ℝ :=
   (n : ℝ)^(1/2 - ε)
 
 /-- For large n, the interval width is o(√n). -/
-axiom intervalWidth_sublinear (ε : ℝ) (hε : ε > 0) :
-    ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N,
-      intervalWidth n ε < C * Real.sqrt n
-
 /- ## Part III: Divisors in the Critical Interval
 -/
 
@@ -95,10 +91,6 @@ def ruzsaConjecture : Prop :=
 /-- **Erdős-Rosenfeld Theorem (1997):**
     There are infinitely many n with four divisors in (√n, √n + n^{1/4}).
     Note: This uses ε = 1/4, which gives a wider interval than the conjecture. -/
-axiom erdos_rosenfeld_four_divisors :
-    ∃ S : Set ℕ, S.Infinite ∧
-      ∀ n ∈ S, divisorsNearSqrt n (1/4 : ℝ) ≥ 4
-
 /-- The Erdős-Rosenfeld result for the specific interval (√n, √n + n^{1/4}). -/
 axiom erdos_rosenfeld :
     ∀ k : ℕ, k ≥ 1 → ∃ n : ℕ, n ≥ k ∧
@@ -114,9 +106,6 @@ def factorDifferenceSet (n : ℕ) : Finset ℤ :=
     |>.image (fun dd' => (dd'.1 : ℤ) - (dd'.2 : ℤ))
 
 /-- The factor-difference set is nonempty when n has at least 2 divisors. -/
-axiom factorDifferenceSet_nonempty (n : ℕ) (hn : (divisorsOf n).card ≥ 2) :
-    (factorDifferenceSet n).Nonempty
-
 /- ## Part VII: Divisor Density Near √n
 -/
 
@@ -132,9 +121,6 @@ def ruzsaConjectureAlt : Prop :=
       localDivisorDensity n ε < δ
 
 /-- The two formulations are equivalent. -/
-axiom conjecture_equivalence :
-    ruzsaConjecture ↔ ruzsaConjectureAlt
-
 /- ## Part VIII: Examples
 -/
 
@@ -153,9 +139,6 @@ theorem trivial_bound (n : ℕ) (ε : ℝ) (hε : ε > 0) (hn : n ≥ 1) :
   apply card_filter_le
 
 /-- τ(n) ≤ 2√n for all n ≥ 1. -/
-axiom divisor_count_bound (n : ℕ) (hn : n ≥ 1) :
-    (divisorCount n : ℝ) ≤ 2 * Real.sqrt n
-
 /- ## Part X: Summary
 -/
 

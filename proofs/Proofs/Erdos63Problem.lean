@@ -68,19 +68,11 @@ def ContainsMinDegreeSubgraph (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ)
 **Observation**: High minimum degree implies even cycle lengths.
 If G has minimum degree d ≥ 2, then G contains an even cycle of length at most 2d.
 -/
-axiom high_degree_implies_even_cycles (G : SimpleGraph V) [Nonempty V] [DecidableRel G.Adj]
-    (d : ℕ) (hd : 2 ≤ d) (hmin : minDegree G ≥ d) :
-    ∃ k : ℕ, Even k ∧ 4 ≤ k ∧ k ≤ 2 * d ∧ ContainsCycleLength G k
-
 /--
 **Bondy-Simonovits Theorem** (simplified):
 If G has minimum degree d ≥ 2, then G contains cycles of all even lengths from
 4 up to some threshold depending on d.
 -/
-axiom bondy_simonovits (G : SimpleGraph V) [Nonempty V] [DecidableRel G.Adj]
-    (d : ℕ) (hd : 2 ≤ d) (hmin : minDegree G ≥ d) :
-    ∀ k : ℕ, Even k → 4 ≤ k → k ≤ 2 * d → ContainsCycleLength G k
-
 /- ## de Bruijn-Erdős Theorem -/
 
 /-- A graph (possibly infinite) represented as a type with adjacency. -/
@@ -110,21 +102,12 @@ G contains a finite induced subgraph with chromatic number > k.
 
 Equivalently: G contains finite subgraphs with arbitrarily high chromatic number.
 -/
-axiom de_bruijn_erdos (G : InfGraph V) (hχ : G.HasInfiniteChromaticNumber) :
-    ∀ k : ℕ, ∃ (S : Finset V), ∀ f : S → Fin k,
-      ∃ u v : S, u ≠ v ∧ G.Adj u.val v.val ∧ f u = f v
-
 /- ## Liu-Montgomery Theorem -/
 
 /--
 **Liu-Montgomery Theorem** (2020):
 Every graph with chromatic number > k contains a subgraph with minimum degree > k/2.
 -/
-axiom liu_montgomery (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
-    (hχ : ¬∃ f : V → Fin k, ∀ u v, G.Adj u v → f u ≠ f v) :
-    ∃ (S : Finset V), S.Nonempty ∧
-      ∀ v ∈ S, k / 2 < ((G.neighborFinset v).filter (· ∈ S)).card
-
 /- ## Erdős-Hajnal for Uncountable Chromatic Number -/
 
 /--
@@ -132,16 +115,7 @@ axiom liu_montgomery (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
 Every graph with uncountable chromatic number contains arbitrarily large
 complete bipartite subgraphs K_{m,m}.
 -/
-axiom erdos_hajnal_uncountable_bipartite (G : InfGraph V)
-    (hχ : ¬∃ f : V → ℕ, ∀ u v, G.Adj u v → f u ≠ f v) :
-    ∀ m : ℕ, ∃ (A B : Finset V), A.card ≥ m ∧ B.card ≥ m ∧
-      Disjoint A B ∧ ∀ a ∈ A, ∀ b ∈ B, G.Adj a b
-
 /-- Complete bipartite graphs K_{m,m} contain cycles of all even lengths up to 2m. -/
-axiom complete_bipartite_even_cycles (m : ℕ) (hm : 2 ≤ m) :
-    ∀ k : ℕ, Even k → 4 ≤ k → k ≤ 2 * m →
-      ∃ (G : SimpleGraph (Fin (2 * m))), ContainsCycleLength G k
-
 /- ## Main Result -/
 
 /--
@@ -201,11 +175,6 @@ theorem infinitely_many_power_cycles (G : InfGraph V)
 **Penman's Observation**: For uncountable chromatic number, the result follows
 from Erdős-Hajnal (complete bipartite graphs contain all even cycles).
 -/
-axiom penman_uncountable (G : InfGraph V)
-    (hχ : ¬∃ f : V → ℕ, ∀ u v, G.Adj u v → f u ≠ f v) :
-    ∀ N : ℕ, ∃ n ≥ N, ∃ (S : Finset V) (H : SimpleGraph S),
-      ContainsCycleLength H (2^n)
-
 /- ## Generalization -/
 
 /--

@@ -1,0 +1,37 @@
+{
+  "id": "euler-totient-oq-01",
+  "title": "Carmichael's Function: λ(n) and the Minimal Universal Exponent",
+  "slug": "euler-totient-oq-01",
+  "description": "Carmichael's function λ(n), defined as the exponent of (ℤ/nℤ)*, gives the smallest e with a^e ≡ 1 (mod n) for all coprime a. Proves λ(n) | φ(n), minimality, and special values.",
+  "meta": {
+    "status": "verified",
+    "tags": ["number-theory", "group-theory", "modular-arithmetic", "carmichael"],
+    "proofRepoPath": "Proofs/EulerTotientOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Core results derived from Mathlib's Monoid.exponent, Monoid.exponent_dvd_card, and IsCyclic.exponent_eq_card.",
+    "lineCount": 83,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30"
+  },
+  "overview": {
+    "problemStatement": "Define Carmichael's function λ(n) and prove its key properties: a^λ(n) ≡ 1 (mod n) for coprime a, λ(n) | φ(n), and minimality.",
+    "text": "Carmichael's function λ(n) is the exponent of the multiplicative group (ℤ/nℤ)*. It satisfies λ(n) | φ(n) with equality iff (ℤ/nℤ)* is cyclic.",
+    "proofStrategy": "Define λ(n) as Monoid.exponent (ZMod n)ˣ, then derive all properties from Mathlib's group theory: exponent divides card (Lagrange), pow_exponent_eq_one, minimality.",
+    "keyInsights": [
+      "Carmichael's function = Monoid.exponent in Mathlib's group theory framework",
+      "λ(n) | φ(n) follows from Lagrange's theorem (exponent divides group order)",
+      "λ(n) = φ(n) iff the group is cyclic (iff n = 1, 2, 4, p^k, 2p^k)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Refines Euler's theorem a^φ(n) ≡ 1 to the sharper a^λ(n) ≡ 1 where λ(n) | φ(n)"
+    }
+  ]
+}

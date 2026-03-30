@@ -75,6 +75,27 @@ f(n) = min{k : φₖ(n) = 1}
 This is the number of steps to reach 1.
 -/
 
+/-- Shifting: φ_{k+1}(n) = φ_k(φ(n)). This allows decomposing iterations. -/
+private lemma iteratedTotient_shift (k n : ℕ) :
+    iteratedTotient (k + 1) n = iteratedTotient k n.totient := by
+  induction k with
+  | zero => rfl
+  | succ k ih => exact congr_arg Nat.totient ih
+
+/-- For n > 1, iterated totient eventually reaches 1.
+    Proof: φ(n) < n for n > 1 (Nat.totient_lt), and φ(n) ≥ 1 for n ≥ 1
+    (Nat.totient_pos), so by strong induction the sequence terminates. -/
+private theorem iteratedTotient_reaches_one (n : ℕ) (hn : n > 1) :
+    ∃ k, iteratedTotient k n = 1 := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    have htot_lt := Nat.totient_lt n hn
+    have htot_pos : 0 < n.totient := Nat.totient_pos (by omega)
+    by_cases heq : n.totient = 1
+    · exact ⟨1, heq⟩
+    · obtain ⟨k, hk⟩ := ih n.totient htot_lt (by omega)
+      exact ⟨k + 1, by rw [iteratedTotient_shift]; exact hk⟩
+
 /--
 **Iteration Length** f(n):
 The minimum number of totient iterations to reach 1.
@@ -84,17 +105,22 @@ For n ≥ 1, we always have f(n) < ∞ since:
 - Eventually we reach φₖ(n) = 1
 -/
 noncomputable def iterationLength (n : ℕ) : ℕ :=
-  if n ≤ 1 then 0
-  else Nat.find (existence_proof n)
-where
-  existence_proof (n : ℕ) : ∃ k, φ[k](n) = 1 := by
-    sorry  -- Existence follows from φ(m) < m for m > 1
+  if h : n ≤ 1 then 0
+  else Nat.find (iteratedTotient_reaches_one n (by omega))
 
 /-- Notation for iteration length. -/
 notation "f(" n ")" => iterationLength n
 
-/-- For n > 1: f(n) ≥ 1 -/
-axiom iterationLength_pos (n : ℕ) (hn : n > 1) : f(n) ≥ 1
+/-- For n > 1: f(n) ≥ 1. Since φ₀(n) = n ≠ 1, the minimum k is at least 1. -/
+theorem iterationLength_pos (n : ℕ) (hn : n > 1) : f(n) ≥ 1 := by
+  unfold iterationLength
+  rw [dif_neg (by omega)]
+  suffices h : Nat.find (iteratedTotient_reaches_one n (by omega)) ≠ 0 by omega
+  intro h0
+  have hspec := Nat.find_spec (iteratedTotient_reaches_one n (by omega))
+  rw [h0] at hspec
+  change n = 1 at hspec
+  omega
 
 /-
 ## Part III: Pillai's Bounds (1929)

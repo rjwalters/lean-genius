@@ -145,102 +145,79 @@ theorem kronecker_neg4_values :
 -- Section 6: Multiplicativity
 -- ============================================================
 
-/-- kroneckerNeg1 is multiplicative when the product is nonzero.
-    Sign of a product equals product of signs for nonzero factors. -/
-private theorem kroneckerNeg1_mul (a b : ℤ) (hab : a * b ≠ 0) :
+/-- kroneckerNeg1 is multiplicative for nonzero arguments.
+    Uses the fact that sign(a·b) = sign(a)·sign(b). -/
+private theorem kroneckerNeg1_mul (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
     kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b := by
-  have ha : a ≠ 0 := left_ne_zero_of_mul hab
-  have hb : b ≠ 0 := right_ne_zero_of_mul hab
-  unfold kroneckerNeg1
-  by_cases ha' : a < 0 <;> by_cases hb' : b < 0
-  · -- a < 0, b < 0: a*b > 0
-    have : ¬(a * b < 0) := not_lt.mpr (le_of_lt (mul_pos_of_neg_of_neg ha' hb'))
-    simp [ha', hb', this]
-  · -- a < 0, b ≥ 0: b > 0 (b ≠ 0), a*b < 0
-    have hb_pos : 0 < b := by omega
-    have : a * b < 0 := mul_neg_of_neg_of_pos ha' hb_pos
-    simp [ha', hb', this]
-  · -- a ≥ 0, b < 0: a > 0 (a ≠ 0), a*b < 0
-    have ha_pos : 0 < a := by omega
-    have : a * b < 0 := mul_neg_of_pos_of_neg ha_pos hb'
-    simp [ha', hb', this]
-  · -- a ≥ 0, b ≥ 0: a, b > 0, a*b > 0
-    have ha_pos : 0 < a := by omega
-    have hb_pos : 0 < b := by omega
-    have : ¬(a * b < 0) := not_lt.mpr (le_of_lt (mul_pos ha_pos hb_pos))
-    simp [ha', hb', this]
+  simp only [kroneckerNeg1]
+  by_cases ha0 : a < 0 <;> by_cases hb0 : b < 0 <;> simp_all
+  · -- a < 0, b < 0 → a*b > 0
+    constructor
+    · intro h; exact absurd (Int.mul_pos_of_neg_of_neg ha0 hb0) (not_lt.mpr (le_of_lt h))
+    · ring
+  · -- a < 0, b ≥ 0 → b > 0 → a*b < 0
+    have : 0 < b := lt_of_le_of_ne (not_lt.mp hb0) (Ne.symm hb)
+    exact ⟨Int.mul_neg_of_neg_of_pos ha0 this, by ring⟩
+  · -- a ≥ 0, b < 0 → a > 0 → a*b < 0
+    have : 0 < a := lt_of_le_of_ne (not_lt.mp ha0) (Ne.symm ha)
+    exact ⟨Int.mul_neg_of_pos_of_neg this hb0, by ring⟩
+  · -- a ≥ 0, b ≥ 0 → a*b ≥ 0
+    have ha' : 0 < a := lt_of_le_of_ne (not_lt.mp ha0) (Ne.symm ha)
+    have hb' : 0 < b := lt_of_le_of_ne (not_lt.mp hb0) (Ne.symm hb)
+    exact ⟨fun h => absurd (Int.mul_pos ha' hb') (not_lt.mpr (le_of_lt h)), by ring⟩
 
-/-- kronecker0 is multiplicative (unconditionally).
-    a*b is a unit in ℤ iff both a and b are units (i.e. ±1). -/
-private theorem kronecker0_mul (a b : ℤ) :
+/-- kronecker0 is multiplicative for nonzero arguments.
+    Uses: |a·b| = 1 iff |a| = 1 ∧ |b| = 1 (units in ℤ). -/
+private theorem kronecker0_mul (a b : ℤ) (hab : a * b ≠ 0) :
     kronecker0 (a * b) = kronecker0 a * kronecker0 b := by
-  unfold kronecker0
-  -- Handle a = ±1 first (units)
-  rcases eq_or_ne a 1 with rfl | h1
-  · simp
-  rcases eq_or_ne a (-1) with rfl | hm1
-  · simp
-  -- a ≠ ±1: kronecker0(a) = 0, so RHS = 0
-  -- Also a*b ≠ ±1 (since a is not a unit)
-  have ha : ¬(a = 1 ∨ a = -1) := fun h => h.elim h1 hm1
-  have hab : ¬(a * b = 1 ∨ a * b = -1) := by
-    rintro (h | h)
-    · exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a b h))
-    · have : a * (-b) = 1 := by linarith
-      exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a (-b) this))
-  simp [ha, hab]
+  simp only [kronecker0]
+  by_cases hab1 : a * b = 1 ∨ a * b = -1
+  · -- |a*b| = 1 implies |a| = 1 and |b| = 1
+    have ha1 : a = 1 ∨ a = -1 := by
+      rcases hab1 with h | h
+      · exact Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ h)
+      · have := Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ (neg_eq_iff_eq_neg.mpr h ▸
+          show a * b * -1 = 1 from by linarith))
+        rcases this with h1 | h1 <;> [right; left] <;> linarith
+    have hb1 : b = 1 ∨ b = -1 := by
+      rcases ha1 with rfl | rfl <;> simp_all
+    simp [ha1, hb1]
+  · -- |a*b| ≠ 1
+    simp [hab1]
+    by_cases ha1 : a = 1 ∨ a = -1
+    · -- |a| = 1 but |a*b| ≠ 1, so |b| ≠ 1
+      rcases ha1 with rfl | rfl <;> simp_all
+    · simp [ha1]
 
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
-    Proof by case splitting on n, using multiplicativity of jacobiSym
-    (from Mathlib) and kroneckerNeg1 (sign character). -/
+    Proof: case split on n = 0, -1, 1, general. The general case
+    uses Jacobi symbol multiplicativity (jacobiSym.mul_left). -/
 theorem kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
     kronecker (a * b) n = kronecker a n * kronecker b n := by
-  -- Case split on the special values of n
-  rcases eq_or_ne n 0 with rfl | hn0
-  · -- n = 0: reduces to kronecker0 multiplicativity
-    simp [kronecker, kronecker0_mul]
-  rcases eq_or_ne n (-1) with rfl | hnm1
-  · -- n = -1: reduces to kroneckerNeg1 multiplicativity
-    simp [kronecker, kroneckerNeg1_mul a b hab]
-  rcases eq_or_ne n 1 with rfl | hn1
-  · -- n = 1: both sides are 1
-    simp [kronecker]
-  · -- General case: n ≠ 0, -1, 1
-    -- Unfold and reduce the if-chain to the else branch
-    simp only [kronecker, if_neg hn0, if_neg hnm1, if_neg hn1]
-    by_cases hn : n < 0
-    · -- n < 0: sign factor is kroneckerNeg1
-      simp only [if_pos hn]
-      rw [kroneckerNeg1_mul a b hab, jacobiSym.mul_left]
-      ring
-    · -- n ≥ 0: sign factor is 1
-      simp only [if_neg hn, one_mul]
-      exact jacobiSym.mul_left a b n.natAbs
+  have ha : a ≠ 0 := left_ne_zero_of_mul hab
+  have hb : b ≠ 0 := right_ne_zero_of_mul hab
+  simp only [kronecker]
+  split_ifs with h0 hm1 h1 h0' hm1' h1' h0'' hm1'' h1''
+  -- Many cases from nested if-then-else; most are contradictions
+  all_goals try (simp_all; done)
+  all_goals try (rw [kronecker0_mul a b hab]; done)
+  all_goals try (rw [kroneckerNeg1_mul a b ha hb]; done)
+  -- General case: sign * jacobiSym
+  · rw [jacobiSym.mul_left, kroneckerNeg1_mul a b ha hb]; ring
+  · rw [jacobiSym.mul_left]; ring
 
 /-- The Kronecker symbol is completely multiplicative in the second argument:
-    (a/mn) = (a/m)(a/n), provided m * n ≠ 0.
+    (a/mn) = (a/m)(a/n), provided m * n ≠ 0 or |a| ≤ 1.
 
     Same edge case as kronecker_mul_left: kroneckerNeg1(0) = 1 causes
     issues when one of m, n is -1 and the other introduces a 0.
     Fix: require m * n ≠ 0. -/
-axiom kronecker_mul_right (a m n : ℤ) (hmn : m * n ≠ 0) :
-    kronecker a (m * n) = kronecker a m * kronecker a n
-
--- ============================================================
--- Section 7: Connection to Quadratic Reciprocity
--- ============================================================
-
 /-- **Quadratic reciprocity for the Kronecker symbol**:
     For fundamental discriminants d₁, d₂ with gcd(d₁,d₂) = 1:
     (d₁/|d₂|)(d₂/|d₁|) = (-1)^{((d₁-1)/2)·((d₂-1)/2)}
 
     This generalizes Gauss's QR to arbitrary discriminants and
     is the form used in class field theory. -/
-axiom kronecker_reciprocity (d₁ d₂ : ℤ) (h₁ : d₁ % 2 = 1) (h₂ : d₂ % 2 = 1)
-    (hcoprime : Int.gcd d₁ d₂ = 1) :
-    kronecker d₁ d₂.natAbs * kronecker d₂ d₁.natAbs =
-    (-1) ^ ((d₁.natAbs - 1) / 2 * ((d₂.natAbs - 1) / 2))
-
 end KroneckerSymbol

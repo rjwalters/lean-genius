@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 476,
     "erdosUrl": "https://erdosproblems.com/476",
     "erdosProblemStatus": "solved",
@@ -54,8 +54,8 @@
       "combinatorial_nullstellensatz axiom: polynomial method"
     ],
     "axiomCount": 6,
-    "lineCount": 302,
-    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "lineCount": 290,
+    "assumptions": "7 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #476: The Erdős-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erdős-Heilbronn (1964): Conjectured the bound |A +̂ A| ≥ min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +̂ A contains only sums a + b where a ≠ b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",
@@ -179,7 +179,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos476",
-    "lineCount": 302,
+    "lineCount": 290,
     "axiomCount": 6,
     "theoremCount": 9,
     "definitionCount": 4

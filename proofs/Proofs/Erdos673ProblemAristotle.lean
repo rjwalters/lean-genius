@@ -1,72 +1,94 @@
 /-
-  Aristotle targets for Erdos673Problem
+  Aristotle targets for Erdős Problem #673
   Routine supporting lemmas for automated proof search.
   See Erdos673Problem.lean for the main formalization.
+
+  Criteria for inclusion:
+  - NOT the main open conjecture or deep analytic results
+  - Known results: sorted list properties, ratio bounds, concrete computations
+  - Clean theorem statements with no definition sorries
+
+  Excluded (deep/analytic results kept in main file):
+  - tao_lower_bound (Tao's structural argument)
+  - G_even_lower_bound (needs divisor structure analysis)
+  - average_G_tends_to_infinity (asymptotic analysis)
+  - first_question_trivial (density argument)
+  - erdos_tenenbaum_distribution (deep analytic number theory)
+  - G_coprime_relation (structural argument on coprime divisors)
+  - sum_G_asymptotic (asymptotic formula)
+  - highly_composite_G_large (needs analysis of highly composite numbers)
+  - tau_sum_asymptotic (Dirichlet's theorem on average order of τ)
+  - G_tau_similar_average (follows from deep results)
 -/
 import Mathlib
 
 namespace Erdos673.Aristotle
 
-open Nat Finset
+open Nat Finset Real Filter
 
-/-- τ(1) = 1. -/
-theorem tau_one : (1 : ℕ).divisors.card = 1 := by
-  simp [Nat.divisors_one]
+/- ## Sorted Divisor Definitions (mirrored from main file) -/
 
-/-- τ(p) = 2 for prime p. -/
-theorem tau_prime (p : ℕ) (hp : p.Prime) : p.divisors.card = 2 := by
-  simp [Nat.Prime.divisors hp]
+noncomputable def sortedDivisors (n : ℕ) : List ℕ :=
+  (n.divisors.sort (· ≤ ·))
 
-/-- τ(p²) = 3 for prime p. -/
-theorem tau_prime_sq (p : ℕ) (hp : p.Prime) : (p ^ 2).divisors.card = 3 := by
-  sorry -- Needs factorization of p^2; Aristotle target
+def tau (n : ℕ) : ℕ := n.divisors.card
 
-/-- τ(6) = 4. -/
-theorem tau_6 : (6 : ℕ).divisors.card = 4 := by native_decide
+noncomputable def divisorAt (n : ℕ) (i : ℕ) : ℕ :=
+  (sortedDivisors n).getD i 0
 
-/-- τ(12) = 6. -/
-theorem tau_12 : (12 : ℕ).divisors.card = 6 := by native_decide
+noncomputable def G (n : ℕ) : ℝ :=
+  ∑ i ∈ Finset.range (tau n - 1),
+    (divisorAt n i : ℝ) / (divisorAt n (i + 1) : ℝ)
 
-/-- Divisors of a prime p are {1, p}. -/
-theorem divisors_prime (p : ℕ) (hp : p.Prime) : p.divisors = {1, p} :=
-  Nat.Prime.divisors hp
+/- ## Section 1: Basic Sorted Divisor Properties -/
 
-/-- 1 divides every natural number. -/
-theorem one_dvd_all (n : ℕ) : 1 ∣ n := one_dvd n
+-- First divisor of n ≥ 1 is always 1
+theorem first_divisor_eq_one (n : ℕ) (hn : n ≥ 1) :
+    divisorAt n 0 = 1 := by sorry
 
-/-- n divides n. -/
-theorem self_dvd (n : ℕ) : n ∣ n := dvd_refl n
+-- Last divisor of n ≥ 1 is n itself
+theorem last_divisor_eq_n (n : ℕ) (hn : n ≥ 1) :
+    divisorAt n (tau n - 1) = n := by sorry
 
-/-- For n ≥ 1: 1 ∈ n.divisors. -/
-theorem one_mem_divisors (n : ℕ) (hn : n ≥ 1) : 1 ∈ n.divisors :=
-  Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+/- ## Section 2: G for Specific Primes and Prime Powers -/
 
-/-- For n ≥ 1: n ∈ n.divisors. -/
-theorem self_mem_divisors (n : ℕ) (hn : n ≥ 1) : n ∈ n.divisors :=
-  Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+-- G(p) = 1/p: divisors of prime p are {1, p}, ratio = 1/p
+theorem G_prime (p : ℕ) (hp : p.Prime) : G p = 1 / p := by sorry
 
-/-- Consecutive divisor ratio is at most 1: a/b ≤ 1 when a ≤ b. -/
-theorem ratio_le_one (a b : ℕ) (ha : a ≥ 1) (hab : a ≤ b) :
-    (a : ℝ) / (b : ℝ) ≤ 1 := by
-  rw [div_le_one (by positivity)]
-  exact_mod_cast hab
+-- G(p²) = 2/p: divisors {1, p, p²}, ratios 1/p + p/p² = 2/p
+theorem G_prime_sq (p : ℕ) (hp : p.Prime) : G (p ^ 2) = 2 / p := by sorry
 
-/-- Divisor ratio is non-negative. -/
-theorem ratio_nonneg (a b : ℕ) (hb : b ≥ 1) :
-    0 ≤ (a : ℝ) / (b : ℝ) := by positivity
+/- ## Section 3: Upper Bounds -/
 
-/-- For coprime a, b: τ(a*b) = τ(a) * τ(b). -/
-theorem tau_multiplicative (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1)
-    (hcop : Nat.Coprime a b) :
-    (a * b).divisors.card = a.divisors.card * b.divisors.card :=
-  Nat.Coprime.divisors_mul hcop
+-- Each consecutive divisor ratio dᵢ/dᵢ₊₁ ≤ 1, so G(n) ≤ τ(n) - 1
+theorem G_upper_bound (n : ℕ) (hn : n ≥ 1) :
+    G n ≤ tau n - 1 := by sorry
 
-/-- Sum of ratios dᵢ/dᵢ₊₁ is non-negative. -/
-theorem sum_ratios_nonneg (l : List ℕ) (hl : ∀ x ∈ l, x ≥ 1) :
-    0 ≤ ∑ i ∈ Finset.range (l.length - 1),
-      ((l.getD i 0 : ℝ) / (l.getD (i + 1) 0 : ℝ)) := by
-  apply Finset.sum_nonneg
-  intro i _
-  exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+-- Tao's upper bound follows: G(n) ≤ τ(n)
+theorem tao_upper_bound (n : ℕ) (hn : n ≥ 1) :
+    G n ≤ tau n := by sorry
+
+/- ## Section 4: GRatio Boundedness -/
+
+noncomputable def GRatio (n : ℕ) : ℝ :=
+  if tau n = 0 then 0 else G n / tau n
+
+-- GRatio is in [0, 1] for n ≥ 1
+theorem GRatio_bounded (n : ℕ) (hn : n ≥ 1) :
+    0 ≤ GRatio n ∧ GRatio n ≤ 1 := by sorry
+
+/- ## Section 5: Concrete Computations -/
+
+-- G(6): divisors 1,2,3,6 → ratios 1/2, 2/3, 3/6
+theorem G_6 : G 6 = 1/2 + 2/3 + 1/2 := by sorry
+
+-- G(12): divisors 1,2,3,4,6,12 → ratios 1/2, 2/3, 3/4, 4/6, 6/12
+theorem G_12 : G 12 = 1/2 + 2/3 + 3/4 + 4/6 + 6/12 := by sorry
+
+/- ## Section 6: Non-Multiplicativity -/
+
+-- G is not multiplicative: concrete counterexample witnesses
+theorem G_not_multiplicative :
+    ∃ a b : ℕ, Nat.Coprime a b ∧ a ≥ 2 ∧ b ≥ 2 ∧ G (a * b) ≠ G a * G b := by sorry
 
 end Erdos673.Aristotle

@@ -1,0 +1,96 @@
+{
+  "id": "ramseys-theorem-oq-04",
+  "title": "Ramsey Theory for Hypergraphs",
+  "slug": "ramseys-theorem-oq-04",
+  "description": "Extends Ramsey's theorem from graphs (k=2) to k-uniform hypergraphs. The hypergraph Ramsey theorem states that for any k, r, n, sufficiently large sets have monochromatic k-subsets under any r-coloring.",
+  "meta": {
+    "author": "Ramsey (1930), Erdős-Rado (1952)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/RamseysTheoremOQ04.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "hypergraphs",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "kSubsets: k-element subsets of a finset via powersetCard",
+      "HypergraphRamseyProperty: formal statement of k-uniform Ramsey property",
+      "k1_is_pigeonhole: k=1 case is the pigeonhole principle",
+      "classical_ramsey_is_k2: k=2 case recovers classical 2-color Ramsey",
+      "tower: iterated exponentiation for Ramsey number growth rates",
+      "tower_strictMono: tower function grows strictly",
+      "kSubsets_card: |kSubsets s k| = C(|s|, k)",
+      "kSubsets_subset: k-subsets monotone under set inclusion",
+      "ramsey_property_mono: Ramsey property monotone in N",
+      "ramsey_base: base case n ≤ k (vacuously/trivially monochromatic)",
+      "pigeonhole_ramsey: k=1 base case proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
+    ],
+    "axiomCount": 1,
+    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k = 1 pigeonhole), and monotonicity are proved.",
+    "lineCount": 301
+  },
+  "overview": {
+    "historicalContext": "Ramsey (1930) proved the theorem in full generality for k-element subsets, not just edges. The k=2 (graph) case became most famous. Erdős and Rado (1952) showed hypergraph Ramsey numbers grow as towers of exponentials with height proportional to k.",
+    "problemStatement": "How does Ramsey theory extend to hypergraphs and higher dimensions?\n\n**Answer**: The hypergraph Ramsey theorem states that for k-uniform hypergraphs with r colors, sufficiently large sets contain monochromatic k-subsets. The Ramsey numbers grow as iterated towers.",
+    "text": "Ramsey theory extends to hypergraphs via the k-uniform Ramsey theorem.",
+    "proofStrategy": "Define k-subsets, colorings, and the Ramsey property. Show k=1 is pigeonhole, k=2 is classical Ramsey. Axiomatize the general existence. Define tower function for growth rates.",
+    "keyInsights": [
+      "k=1 is pigeonhole, k=2 is classical graph Ramsey, k>=3 is hypergraph Ramsey",
+      "Growth rate: k-uniform Ramsey numbers grow as height-k towers of 2",
+      "The stepping-up lemma converts (k-1)-uniform bounds to k-uniform bounds"
+    ],
+    "prerequisites": [
+      "Combinatorics (Ramsey theory)",
+      "Graph theory (cliques, colorings)"
+    ]
+  },
+  "sections": [],
+  "references": [
+    {
+      "authors": "Ramsey, Frank P.",
+      "title": "On a Problem of Formal Logic",
+      "year": "1930",
+      "venue": "Proceedings of the London Mathematical Society"
+    },
+    {
+      "authors": "Erdős, Paul and Rado, Richard",
+      "title": "Combinatorial theorems on classifications of subsets of a given set",
+      "year": "1952",
+      "venue": "Proceedings of the London Mathematical Society"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "generalizes",
+      "description": "Generalizes the k=2 Ramsey theorem to k-uniform hypergraphs"
+    }
+  ],
+  "conclusion": {
+    "summary": "The hypergraph Ramsey theorem is formalized with complete infrastructure (definitions, special cases, growth rates). The deep existence result is axiomatized as it requires the stepping-up lemma.",
+    "implications": "Provides foundation for formalizing hypergraph Ramsey applications and growth rate bounds.",
+    "openQuestions": [
+      "Can the stepping-up lemma be formalized to remove the axiom?",
+      "What are the best known hypergraph Ramsey number bounds for small k?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "HypergraphRamsey",
+    "lineCount": 301,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 5
+  }
+}

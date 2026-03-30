@@ -20,6 +20,7 @@ Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
 import Mathlib
+import Proofs.KummerTheoremOQ03
 
 open Nat Filter
 
@@ -35,23 +36,177 @@ def AllPrimesExceed (m k : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ≤ k → ¬(p ∣ m)
 
 /-
-# Part 2: g(k) — the key function (axiomatized)
+# Part 1b: Proving existence of g(k)
 
-g(k) is the smallest n > k+1 such that all prime factors of C(n,k) exceed k.
-Existence follows from known upper bounds: g(k) ≤ exp((1+o(1))k).
+For each k, there exists n > k+1 with all prime factors of C(n,k) exceeding k.
+
+**Construction**: Let P = ∏_{p prime, p≤k} p^(⌊log_p(k)⌋+1). Take n = 2P - 1.
+For each prime p ≤ k, p^a | (n+1) where a = ⌊log_p(k)⌋+1 and p^a > k.
+This ensures all base-p digits of n dominate those of k (carry-free addition),
+so by Kummer's theorem, p ∤ C(n,k).
 -/
 
-/-- The function g(k): smallest n > k+1 with all prime factors of C(n,k) > k. -/
-axiom gFunc : ℕ → ℕ
+section gFuncExistence
 
-/-- g(k) > k + 1 (by definition). -/
-axiom gFunc_gt : ∀ k, gFunc k > k + 1
+open Finset in
+/-- Product of p^(⌊log_p(k)⌋+1) over all primes p ≤ k.
+    Divisible by a sufficiently high power of each prime ≤ k. -/
+private noncomputable def smoothProd (k : ℕ) : ℕ :=
+  (Finset.filter Nat.Prime (Finset.range (k + 1))).prod (fun p => p ^ (Nat.log p k + 1))
 
-/-- All prime factors of C(g(k), k) exceed k. -/
-axiom gFunc_spec : ∀ k, AllPrimesExceed (choose (gFunc k) k) k
+open Finset in
+private lemma smoothProd_pos (k : ℕ) : 0 < smoothProd k :=
+  Finset.prod_pos fun p hp => by
+    have := (Finset.mem_filter.mp hp).2.pos
+    positivity
 
-/-- g(k) is minimal: no smaller n > k+1 satisfies the condition. -/
-axiom gFunc_minimal : ∀ k n, n > k + 1 → AllPrimesExceed (choose n k) k → gFunc k ≤ n
+open Finset in
+private lemma prime_pow_dvd_smoothProd {p k : ℕ} (hp : p.Prime) (hpk : p ≤ k) :
+    p ^ (Nat.log p k + 1) ∣ smoothProd k :=
+  Finset.dvd_prod_of_mem _ (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩)
+
+/-- If m ∣ (n+1) and m > 0, then n % m = m - 1. -/
+private lemma mod_pred_of_dvd_succ {n m : ℕ} (hm : 0 < m) (h : m ∣ (n + 1)) :
+    n % m = m - 1 := by
+  obtain ⟨q, hq⟩ := h
+  have hq1 : q ≥ 1 := by omega
+  have hn : n = (m - 1) + m * (q - 1) := by omega
+  rw [hn, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
+
+/-- Core modular inequality: if p^a ∣ (n+1) with p^a > k and k ≤ n,
+    then n % p^i ≥ k % p^i for all i. This is the key carry-free condition. -/
+private lemma mod_ge_of_dvd_succ_pow {p a n k : ℕ} (hp : p ≥ 2)
+    (hdvd : p ^ a ∣ (n + 1)) (hpa : p ^ a > k) (hkn : k ≤ n) :
+    ∀ i, k % p ^ i ≤ n % p ^ i := by
+  intro i
+  by_cases hi : p ^ i ∣ (n + 1)
+  · -- p^i | (n+1), so n % p^i = p^i - 1 ≥ k % p^i
+    rw [mod_pred_of_dvd_succ (by positivity) hi]
+    exact Nat.le_sub_one_of_lt (Nat.mod_lt k (by positivity))
+  · -- p^i ∤ (n+1), so i > a. Use decomposition.
+    -- Since p^i ∤ (n+1) but p^a | (n+1), we have i > a
+    have hi_gt : i > a := by
+      by_contra h; push_neg at h
+      exact hi (dvd_trans (pow_dvd_pow p h) hdvd)
+    have hpi_gt : p ^ i > k := by
+      calc p ^ i ≥ p ^ (a + 1) := pow_le_pow_right (by omega) hi_gt
+        _ = p * p ^ a := by ring
+        _ ≥ 2 * (k + 1) := by nlinarith
+        _ > k := by omega
+    rw [Nat.mod_eq_of_lt (by omega : k < p ^ i)]
+    -- Decompose: n + 1 = p^a * R, R = q * p^(i-a) + r
+    obtain ⟨R, hR⟩ := hdvd
+    have hR_pos : R ≥ 1 := by omega
+    set r := R % p ^ (i - a) with hr_def
+    set q := R / p ^ (i - a) with hq_def
+    have hR_eq : R = q * p ^ (i - a) + r := (Nat.div_add_mod R (p ^ (i - a))).symm
+    have hr_lt : r < p ^ (i - a) := Nat.mod_lt R (by positivity)
+    -- (n+1) = q * p^i + p^a * r
+    have hpow_eq : p ^ a * p ^ (i - a) = p ^ i := by
+      rw [← pow_add]; congr 1; omega
+    have hsucc : n + 1 = q * p ^ i + p ^ a * r := by
+      calc n + 1 = p ^ a * R := hR
+        _ = p ^ a * (q * p ^ (i - a) + r) := by rw [hR_eq]
+        _ = p ^ a * q * p ^ (i - a) + p ^ a * r := by ring
+        _ = q * (p ^ a * p ^ (i - a)) + p ^ a * r := by ring
+        _ = q * p ^ i + p ^ a * r := by rw [hpow_eq]
+    -- r ≥ 1 (since p^i ∤ (n+1) means (n+1) % p^i ≠ 0, i.e., p^a * r ≠ 0)
+    have hr_pos : r ≥ 1 := by
+      by_contra h; push_neg at h; simp at h
+      exact hi ⟨q, by omega⟩
+    -- n % p^i = p^a * r - 1 ≥ p^a - 1 ≥ k
+    have hpar_lt : p ^ a * r < p ^ i := by
+      calc p ^ a * r < p ^ a * p ^ (i - a) := by nlinarith
+        _ = p ^ i := hpow_eq
+    have hn_eq : n = (p ^ a * r - 1) + p ^ i * q := by
+      have : q * p ^ i = p ^ i * q := Nat.mul_comm q (p ^ i)
+      omega
+    rw [hn_eq, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
+    nlinarith
+
+/-- If n % p^i ≥ k % p^i for all i, then carry count is 0. -/
+private lemma carry_free_of_mod_ge {p n k : ℕ} (hp : p ≥ 2) (hkn : k ≤ n)
+    (h : ∀ i, k % p ^ i ≤ n % p ^ i) (b : ℕ) :
+    KummerTheoremOQ03.carryCount p n k b = 0 := by
+  simp only [KummerTheoremOQ03.carryCount]
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro i _
+  simp only [not_le]
+  have hge := h i
+  -- n % p^i = (k % p^i + (n-k) % p^i) % p^i by Nat.add_mod
+  have h_add : n % p ^ i = (k % p ^ i + (n - k) % p ^ i) % p ^ i := by
+    conv_lhs => rw [show n = k + (n - k) by omega]
+    exact Nat.add_mod k (n - k) (p ^ i)
+  -- If the sum ≥ p^i, then mod reduces it, making n%p^i < k%p^i. Contradiction.
+  by_contra hle; push_neg at hle; simp only [not_lt] at hle
+  have hkm := Nat.mod_lt k (show 0 < p ^ i by positivity)
+  have hnkm := Nat.mod_lt (n - k) (show 0 < p ^ i by positivity)
+  have hsum_lt : k % p ^ i + (n - k) % p ^ i < 2 * p ^ i := by omega
+  have : (k % p ^ i + (n - k) % p ^ i) % p ^ i =
+      k % p ^ i + (n - k) % p ^ i - p ^ i := by omega
+  rw [this] at h_add
+  omega
+
+/-
+# Part 2: g(k) — the key function (PROVED)
+
+g(k) is the smallest n > k+1 such that all prime factors of C(n,k) exceed k.
+Existence proved constructively using carry-free base-p arithmetic (Kummer's theorem).
+-/
+
+/-- Existence of g(k): for each k, there exists n > k+1 with all prime factors
+    of C(n,k) exceeding k. Proved using Kummer's theorem: we construct n such that
+    adding k and (n-k) in base p produces no carries for every prime p ≤ k. -/
+theorem gFunc_exists (k : ℕ) :
+    ∃ n, n > k + 1 ∧ AllPrimesExceed (choose n k) k := by
+  -- Handle small k separately (no primes ≤ 1)
+  rcases k with _ | _ | k
+  · exact ⟨2, by omega, fun p hp hpk _ => absurd hp.two_le (by omega)⟩
+  · exact ⟨3, by omega, fun p hp hpk _ => absurd hp.two_le (by omega)⟩
+  · -- k ≥ 2: use witness n = 2 * smoothProd K - 1 where K = k + 2
+    set K := k + 2 with hK_def
+    set P := smoothProd K with hP_def
+    set n := 2 * P - 1 with hn_def
+    have hP_pos := smoothProd_pos K
+    -- P > K, so 2P - 1 > K + 1
+    have hP_gt : P > K := by
+      have h_dvd := prime_pow_dvd_smoothProd Nat.prime_two (show 2 ≤ K by omega)
+      have h_le := Nat.le_of_dvd hP_pos h_dvd
+      have h_gt := Nat.lt_pow_succ_log_self (show 1 < 2 by omega) K
+      omega
+    have hn_gt : n > K + 1 := by omega
+    refine ⟨n, hn_gt, fun p hp hpK hpdvd => ?_⟩
+    -- For each prime p ≤ K: p^a | P | 2P = n+1 where p^a > K
+    set a := Nat.log p K + 1 with ha_def
+    have hpa_gt : p ^ a > K := Nat.lt_pow_succ_log_self hp.one_lt K
+    have hpa_dvd_n1 : p ^ a ∣ (n + 1) := by
+      have : n + 1 = 2 * P := by omega
+      rw [this]; exact dvd_mul_of_dvd_right (prime_pow_dvd_smoothProd hp hpK) 2
+    have hkn : K ≤ n := by omega
+    -- Carry-free → non-divisibility
+    have h_mod := mod_ge_of_dvd_succ_pow hp.two_le hpa_dvd_n1 hpa_gt hkn
+    have h_carry := carry_free_of_mod_ge hp.two_le hkn h_mod (Nat.log p n + 1)
+    exact absurd hpdvd (KummerTheoremOQ03.choose_coprime_of_no_carries hp hkn (by omega) h_carry)
+
+end gFuncExistence
+
+/-- The function g(k): smallest n > k+1 with all prime factors of C(n,k) > k.
+    Defined constructively via Nat.find from the existence proof. -/
+noncomputable def gFunc (k : ℕ) : ℕ :=
+  Nat.find (gFunc_exists k)
+
+/-- g(k) > k + 1 (from Nat.find_spec). -/
+theorem gFunc_gt (k : ℕ) : gFunc k > k + 1 :=
+  (Nat.find_spec (gFunc_exists k)).1
+
+/-- All prime factors of C(g(k), k) exceed k (from Nat.find_spec). -/
+theorem gFunc_spec (k : ℕ) : AllPrimesExceed (choose (gFunc k) k) k :=
+  (Nat.find_spec (gFunc_exists k)).2
+
+/-- g(k) is minimal: no smaller n > k+1 satisfies the condition (from Nat.find_min'). -/
+theorem gFunc_minimal (k n : ℕ) (hn : n > k + 1) (h : AllPrimesExceed (choose n k) k) :
+    gFunc k ≤ n :=
+  Nat.find_min' (gFunc_exists k) ⟨hn, h⟩
 
 /-
 # Part 3: Basic Lemmas about AllPrimesExceed
@@ -115,7 +270,7 @@ theorem choose_5_2 : choose 5 2 = 10 := by decide
 /-
 # Part 5a: Concrete values of g(k)
 
-We compute g(1) = 3 and g(2) = 6 from the axioms.
+We compute g(1) = 3 and g(2) = 6 from the existence proof.
 -/
 
 /-- AllPrimesExceed is vacuously true for k < 2 (no primes ≤ 1). -/

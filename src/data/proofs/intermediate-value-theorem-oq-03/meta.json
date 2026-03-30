@@ -1,0 +1,73 @@
+{
+  "id": "intermediate-value-theorem-oq-03",
+  "title": "IVT and Brouwer Fixed Point Connection",
+  "slug": "intermediate-value-theorem-oq-03",
+  "description": "Explores the equivalence of IVT and Brouwer in 1D, and why Brouwer is strictly stronger in higher dimensions. Proves the 1D case via g(x) = f(x) - x.",
+  "meta": {
+    "author": "Classical topology",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/IntermediateValueTheoremOQ03.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "ivt",
+      "brouwer",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 142,
+    "assumptions": "1 axiom (brouwer_2d). 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "1D Brouwer from IVT via g(x) = f(x) - x",
+      "IVT fails in 2D: S¹ example",
+      "Dimensional hierarchy: IVT ⊂ Brouwer ⊂ Schauder"
+    ]
+  },
+  "sections": [
+    {
+      "id": "1d-brouwer",
+      "title": "1D Brouwer from IVT",
+      "startLine": 23,
+      "endLine": 45,
+      "summary": "1D Brouwer from IVT"
+    },
+    {
+      "id": "ivt-fails",
+      "title": "Why IVT Fails in 2D",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "Why IVT Fails in 2D"
+    }
+  ],
+  "conclusion": {
+    "summary": "IVT and Brouwer are equivalent in 1D but Brouwer is strictly stronger in higher dimensions.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "parent-problem"
+    },
+    {
+      "targetId": "schauder-fixed-point-oq-03",
+      "relationship": "related-problem",
+      "description": "Kakutani framework for infinite-dimensional extensions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "IVTBrouwer",
+    "lineCount": 142,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
+}

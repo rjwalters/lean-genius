@@ -15,7 +15,7 @@
       "probability",
       "advanced"
     ],
-    "badge": "verified",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 459,
+    "lineCount": 900,
     "prerequisites": [
       "Probability distributions and discrete random variables",
       "Logarithm and convexity (Jensen's inequality)",
@@ -52,13 +52,13 @@
       "Conditional entropy and mutual information",
       "Data processing inequality and sufficient statistics"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 sorries, 0 axioms. All theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' founded information theory and introduced entropy as the fundamental measure of information content. Shannon showed that the quantity H(X) = -sum p(x) log p(x) is the unique function (up to a constant) satisfying natural axioms for an information measure: continuity, monotonicity in the number of equally likely outcomes, and a composition law for sequential experiments.\n\nShannon entropy quantifies the irreducible uncertainty in a random variable, measured in bits (when using log base 2). A fair coin has entropy 1 bit; a deterministic variable has entropy 0. The entropy of English text is approximately 1.0-1.5 bits per character, far below the 4.7 bits per character of uniform random text, reflecting the redundancy of natural language.\n\nBeyond its foundational role in information theory, Shannon entropy has deep connections to thermodynamic entropy (via Boltzmann's formula), combinatorics (via the method of types), statistics (via maximum entropy distributions), and even pure mathematics (via the entropy method in additive combinatorics, used by Tao and others to prove sumset bounds).",
     "problemStatement": "Shannon Entropy: For a discrete random variable $X$ with probability mass function $p$, define $H(X) = -\\sum_{x} p(x) \\log_2 p(x)$, with the convention $0 \\log 0 = 0$.\n\nKey properties:\n- Non-negativity: $H(X) \\geq 0$, with equality iff $X$ is deterministic.\n- Maximum: $H(X) \\leq \\log_2 |\\mathcal{X}|$, with equality iff $X$ is uniform.\n- Chain rule: $H(X, Y) = H(X) + H(Y|X)$.\n- Gibbs inequality: $D(p \\| q) = \\sum p(x) \\log(p(x)/q(x)) \\geq 0$.",
-    "text": "A 459-line formalization of discrete Shannon entropy and its core properties in Lean 4, building from the definition $H(X) = -\\sum p(x) \\ln p(x)$ through the full hierarchy of information-theoretic inequalities. The development proceeds bottom-up: entropy non-negativity from $\\ln t \\leq 0$ for $t \\leq 1$; the pointwise KL bound $p \\ln(p/q) \\geq p - q$ from the fundamental inequality $\\ln t \\leq t - 1$; KL divergence non-negativity $D(p \\| q) \\geq 0$ by summing pointwise bounds; Gibbs inequality $H(p) \\leq -\\sum p \\ln q$ as a corollary; maximum entropy $H(X) \\leq \\ln |\\mathcal{X}|$ via Gibbs with uniform $q$; mutual information non-negativity $I(X;Y) \\geq 0$ by the same pointwise technique on the product space; and the chain rule $I(X;Y) = H(X) - H(X|Y)$ via detailed log-division and marginal telescoping. The culminating corollary $H(X|Y) \\leq H(X)$ — conditioning reduces entropy — follows in one line. All 16 theorems are fully proved with 0 sorries and 0 axioms.",
+    "text": "A 900-line formalization of discrete Shannon entropy and its core properties in Lean 4, building from the definition $H(X) = -\\sum p(x) \\ln p(x)$ through the full hierarchy of information-theoretic inequalities. The development proceeds bottom-up: entropy non-negativity from $\\ln t \\leq 0$ for $t \\leq 1$; the pointwise KL bound $p \\ln(p/q) \\geq p - q$ from the fundamental inequality $\\ln t \\leq t - 1$; KL divergence non-negativity $D(p \\| q) \\geq 0$ by summing pointwise bounds; Gibbs inequality $H(p) \\leq -\\sum p \\ln q$ as a corollary; maximum entropy $H(X) \\leq \\ln |\\mathcal{X}|$ via Gibbs with uniform $q$; mutual information non-negativity $I(X;Y) \\geq 0$ by the same pointwise technique on the product space; and the chain rule $I(X;Y) = H(X) - H(X|Y)$ via detailed log-division and marginal telescoping. The culminating corollary $H(X|Y) \\leq H(X)$ — conditioning reduces entropy — follows in one line. All 17 theorems are fully proved with 0 sorries and 0 axioms.",
     "proofStrategy": "The formalization builds entropy theory from the ground up:\n\n1. **Entropy definition**: Define H(X) = -sum p(x) log p(x) for discrete distributions over a Fintype, handling the convention 0 log 0 = 0 via a custom function that extends x * log x continuously to 0.\n\n2. **Non-negativity**: Since each term -p(x) log p(x) >= 0 for p(x) in [0,1], the sum is non-negative. Equality holds iff every term is 0, which requires p(x) in {0, 1}.\n\n3. **Gibbs inequality**: The key inequality D(p || q) >= 0 follows from Jensen's inequality applied to the convex function -log. This is the master inequality from which most entropy inequalities follow.\n\n4. **Conditional entropy and chain rule**: Define H(Y|X) = sum_x p(x) H(Y|X=x) and prove H(X,Y) = H(X) + H(Y|X) by expanding the joint entropy.\n\n5. **Mutual information**: Define I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) >= 0. Non-negativity follows from Gibbs inequality.\n\n6. **Data processing inequality**: If X -> Y -> Z is a Markov chain, then I(X;Z) <= I(X;Y). Information cannot be created by processing.",
     "keyInsights": [
       "The convention 0 log 0 = 0 is essential and arises from continuity: lim_{p->0} p log p = 0",
@@ -89,7 +89,7 @@
       "title": "Entropy Definition and Non-Negativity",
       "startLine": 20,
       "endLine": 30,
-      "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. States non-negativity H(p) >= 0 for probability distributions (sorry'd). Uses natural log (Real.log), not log₂.",
+      "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. Proves non-negativity H(p) >= 0 for probability distributions. Uses natural log (Real.log), not log₂.",
       "mathContext": "$H(X) = -\\sum_x p(x) \\ln p(x) \\geq 0$ for $p(x) \\geq 0$, $\\sum p(x) = 1$"
     },
     {
@@ -174,10 +174,10 @@
     ],
     "opens": [],
     "namespace": "InformationTheory",
-    "lineCount": 459,
+    "lineCount": 900,
     "axiomCount": 0,
-    "theoremCount": 16,
-    "definitionCount": 4
+    "theoremCount": 17,
+    "definitionCount": 8
   },
   "references": [
     {

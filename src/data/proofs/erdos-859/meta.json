@@ -17,7 +17,7 @@
       "asymptotics"
     ],
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 3,
     "erdosNumber": 859,
     "erdosUrl": "https://erdosproblems.com/859",
     "erdosProblemStatus": "open",
@@ -49,8 +49,8 @@
       "Divisor function properties (σ, τ) and multiplicative structure"
     ],
     "axiomCount": 6,
-    "lineCount": 307,
-    "assumptions": "6 axiom(s) and 7 sorry(s). See the Lean source for details."
+    "lineCount": 348,
+    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #859 originates from Erdős's 1970 paper 'Some extremal problems in combinatorial number theory', where he systematically studied the density of integers n for which a given target t can be represented as a sum of distinct divisors. The study of divisor subset sums has roots going back to the ancient concept of perfect numbers (σ(n) = 2n) and the work of Srinivasan (1948) on practical numbers—integers n where every k ≤ σ(n) is representable.\n\nErdős proved three foundational results: (1) the density dₜ exists for all t, using the multiplicative structure of divisors to establish convergence; (2) dₜ > 0 for all t > 0, showing that a positive fraction of integers can always represent t; (3) there exist constants c₃, c₄ > 0 such that 1/(log t)^c₃ < dₜ < 1/(log t)^c₄, pinning the decay rate to a power of log t.\n\nThe connection to practical numbers was deepened by Margenstern (1991), who proved practical numbers have positive density, and Saias (1997), who established the asymptotic P(x) ~ cx/log x (analogous to the prime number theorem). Since practical n contribute to Dₜ for all t ≤ σ(n), practical number density provides a natural lower bound framework.\n\nThe open question—whether dₜ has a precise asymptotic c₁/(log t)^c₂—asks for the exact exponent of decay, going beyond Erdős's bracket of c₃ < exponent < c₄. This remains one of the outstanding problems in combinatorial number theory, connecting divisor structure to analytic density in a way that resists known techniques.",
@@ -198,7 +198,7 @@
       "Real"
     ],
     "namespace": "Erdos859",
-    "lineCount": 307,
+    "lineCount": 348,
     "axiomCount": 6,
     "theoremCount": 13,
     "definitionCount": 9

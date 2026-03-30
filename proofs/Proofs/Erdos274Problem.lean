@@ -82,10 +82,6 @@ theorem abelian_has_repeated_index (G : Type*) [CommGroup G] [Fintype G]
 **Margolis-Schnabel Theorem** (2019):
 The conjecture holds for all groups of order < 1440.
 -/
-axiom margolis_schnabel_small_groups (G : Type*) [Group G] [Fintype G]
-    (hG : Fintype.card G < 1440) (k : ℕ) (hk : k > 1)
-    (C : ExactCovering G k) : ¬hasDistinctIndices C
-
 /- ## The Open Problem -/
 
 /--
@@ -112,10 +108,6 @@ If k cosets partition G with indices n₁, ..., nₖ, then
 
 Example: Indices 2, 3, 6 satisfy 1/2 + 1/3 + 1/6 = 1.
 -/
-axiom index_sum_necessary {G : Type*} [Group G] [Fintype G] {k : ℕ}
-    (C : ExactCovering G k) :
-    ∑ i : Fin k, (1 : ℚ) / ((C.subgroups i).index : ℚ) = 1
-
 /- ## Summary -/
 
 /--

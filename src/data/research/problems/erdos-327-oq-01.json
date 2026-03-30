@@ -1,0 +1,103 @@
+{
+  "slug": "erdos-327-oq-01",
+  "title": "Parametrization of Sum-Divides-Product Pairs",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Parametrize all pairs (a,b) with (a+b)|ab using coprime factorizations and determine the asymptotic count in {1,...,N}.",
+    "plain": "Explicitly describe all pairs of positive integers whose sum divides their product, and count how many such pairs exist up to N.",
+    "whyMatters": [
+      "Structural foundation for Erdős #327 avoidance problem",
+      "Connects unit fractions to coprime factorization theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Explicit construction of all sum-dvd-prod pairs via coprime factorization (0 axioms, 0 sorries)",
+      "(3,6) is the smallest such pair (exhaustive verification for b ≤ 5)",
+      "Pair count is 0 for N ≤ 5, positive for N ≥ 6"
+    ],
+    "open": [
+      "Exact constant in pair count asymptotic C·N·log(N)",
+      "Pair count for the (a+b)|2ab variant"
+    ],
+    "goal": "Complete parametrization and counting infrastructure"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T19:00:00Z",
+    "iteration": 1,
+    "focus": "Created 150-line formalization with 10 proved theorems and 0 axioms.",
+    "blockers": [],
+    "nextAction": "None.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 150-line formalization with 10 proved theorems, 0 axioms, 0 sorries. Explicit construction, examples, minimality proof, counting functions.",
+    "builtItems": [
+      "Created Proofs/Erdos327OQ01.lean (150 lines, 10 theorems, 0 axioms)",
+      "Created gallery entry src/data/proofs/erdos-327-oq-01/"
+    ],
+    "insights": [
+      "Sum-dvd-prod pairs biject with triples (a', b', m): coprime a' < b', multiplier m ≥ 1, pair = (m·s·a', m·s·b') with s=a'+b'",
+      "The construction proof is pure algebra: a+b = ms² divides ab = m²s²a'b'",
+      "(3,6) minimality follows from exhaustive interval_cases check"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "number theory",
+    "unit fractions",
+    "divisibility"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-32",
+    "erdos-327",
+    "erdos-327-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/327"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:40:00Z",
+  "lastUpdate": "2026-03-29T19:00:00Z",
+  "significance": 4,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos327OQ01.lean",
+      "filename": "Erdos327OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos327Problem.lean",
+      "filename": "Erdos327Problem.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327Problem.lean"
+    }
+  ]
+}

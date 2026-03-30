@@ -1,227 +1,228 @@
 {
-  "id": "szemeredi-full",
-  "title": "Szemeredi's Theorem (Case Assembly & Axiom Reduction)",
-  "slug": "szemeredi-full",
-  "description": "Assembles Szemerédi's theorem by cases: k=1,2 proved trivially, k=3 via Mathlib's Roth/corners chain, k>=4 axiomatized. Reduces the full theorem to a single axiom requiring hypergraph regularity.",
-  "meta": {
-    "author": "Szemeredi (1975), formalized in Lean 4",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di%27s_theorem",
-    "date": "1975",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/SzemerediTheorem.lean",
-    "tags": [
-      "szemeredi",
-      "combinatorics",
-      "additive-combinatorics",
-      "arithmetic-progressions",
-      "marquee-phase-3"
+    "id": "szemeredi-full",
+    "title": "Szemeredi's Theorem (Case Assembly & Axiom Reduction)",
+    "slug": "szemeredi-full",
+    "description": "Assembles Szemerédi's theorem by cases: k=1,2 proved trivially, k=3 via Mathlib's Roth/corners chain, k>=4 axiomatized. Reduces the full theorem to a single axiom requiring hypergraph regularity.",
+    "meta": {
+        "author": "Szemeredi (1975), formalized in Lean 4",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di%27s_theorem",
+        "date": "1975",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/SzemerediTheorem.lean",
+        "tags": [
+            "szemeredi",
+            "combinatorics",
+            "additive-combinatorics",
+            "arithmetic-progressions",
+            "marquee-phase-3"
+        ],
+        "badge": "axiom",
+        "sorries": 0,
+        "assumptions": "k >= 4 case axiomatized (requires hypergraph regularity, not in Mathlib). k=1,2 proved trivially, k=3 proved via Mathlib Roth/corners chain.",
+        "mathlibDependencies": [
+            {
+                "theorem": "Finset.card",
+                "description": "Cardinality of finite sets for density and counting arguments",
+                "module": "Mathlib.Data.Finset.Card"
+            },
+            {
+                "theorem": "ThreeAPFree",
+                "description": "3-AP-free set predicate and Roth's theorem",
+                "module": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+            },
+            {
+                "theorem": "roth_3ap_theorem_nat",
+                "description": "Roth's theorem via corners chain in Mathlib",
+                "module": "Mathlib.Combinatorics.Additive.Corner.Roth"
+            }
+        ],
+        "originalContributions": [
+            "k-term arithmetic progression definition (HasAPOfLength) and characterization",
+            "Equivalence proof between custom IsAPFree and Mathlib's ThreeAPFree (non-trivial case split)",
+            "k=1,2 density versions proved from scratch",
+            "k=3 derived from Mathlib's roth_3ap_theorem_nat via the ThreeAPFree bridge",
+            "Theorem reduction: full statement assembled from k=1,2,3 proofs + single k>=4 axiom",
+            "AP monotonicity, superset transfer, k-monotonicity, and AP-free density bound"
+        ],
+        "dateAdded": "2026-03-21",
+        "axiomCount": 1,
+        "lineCount": 374,
+        "prerequisites": [
+            "Arithmetic progressions and upper density of integer sets",
+            "Roth's theorem (k=3 case via Fourier analysis or corners)",
+            "Szemeredi regularity lemma and pseudorandom graphs",
+            "Furstenberg's ergodic correspondence principle",
+            "Van der Waerden's theorem on monochromatic APs"
+        ],
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "Szemeredi's theorem, proved by Endre Szemeredi in 1975, is one of the most celebrated results in combinatorics and number theory. It resolved the Erdos-Turan conjecture from 1936, which asked whether every dense subset of the integers must contain long arithmetic progressions.\n\nThe theorem has inspired multiple independent proofs using fundamentally different techniques:\n- Szemeredi's original proof (1975) uses the regularity lemma and a sophisticated induction on the AP length k\n- Furstenberg (1977) gave an ergodic-theoretic proof using multiple recurrence, launching a new field\n- Gowers (2001) gave a quantitative proof using higher-order Fourier analysis (uniformity norms), earning the Fields Medal in part for this work\n- The Green-Tao theorem (2004) extended Szemeredi's theorem to the primes, proving that the primes contain arbitrarily long arithmetic progressions\n\nThe question traces back even further: in 1927, van der Waerden proved that any finite coloring of the integers contains arbitrarily long monochromatic APs. Erdos and Turan conjectured in 1936 that van der Waerden's theorem could be strengthened from colorings to density, asking: does every set of positive upper density contain arbitrarily long APs? The k=3 case was proved by Klaus Roth in 1953 (earning him a Fields Medal in 1958), but the general case resisted for nearly 40 years until Szemeredi's breakthrough.\n\nThis formalization does not independently prove Szemerédi's theorem — the k>=4 case is axiomatized, requiring hypergraph regularity not yet available in any proof assistant. What is provided is a clean theorem reduction: the full statement is assembled from proved k=1,2,3 cases plus a single axiom for k>=4, with the k=3 case connecting to one of Mathlib's deepest theorem chains (regularity -> triangle removal -> corners -> Roth).",
+        "problemStatement": "**Szemeredi's Theorem:** For every integer $k \\geq 3$ and every $\\delta > 0$, there exists $N_0 = N_0(k, \\delta)$ such that every subset $A \\subseteq [N]$ with $|A| \\geq \\delta N$ and $N \\geq N_0$ contains a $k$-term arithmetic progression.\n\nEquivalently: every subset of $\\mathbb{N}$ with positive upper density $\\bar{d}(A) = \\limsup_{N \\to \\infty} |A \\cap [N]|/N > 0$ contains arithmetic progressions of every length.",
+        "text": "Assembles Szemerédi's theorem by cases: k=1,2 proved trivially, k=3 via Mathlib's Roth/corners chain, k>=4 axiomatized. Reduces the full theorem to a single axiom requiring hypergraph regularity.",
+        "proofStrategy": "The formalization proceeds by case analysis on k:\n\n1. **k-term AP definition**: HasAPOfLength defines when a set contains {a, a+d, ..., a+(k-1)d} with d > 0. SzemerediTheorem is the density version for finsets.\n\n2. **k=1, k=2 (trivial)**: Proved directly. Any nonempty set has a 1-AP; any set with >= 2 elements has a 2-AP.\n\n3. **k=3 (Roth via Mathlib)**: The key achievement. Proves equivalence between our IsAPFree and Mathlib's ThreeAPFree, then derives Roth's theorem from Mathlib's roth_3ap_theorem_nat, which itself follows from the chain: Regularity Lemma -> Triangle Removal -> Corners Theorem -> Roth.\n\n4. **k >= 4 (axiomatized)**: The k >= 4 case requires hypergraph regularity (not in Mathlib) or ergodic theory. Axiomatized as szemeredi_k_ge_4.\n\n5. **Assembly**: The full theorem is assembled by cases: k=1,2 trivial, k=3 via Mathlib's Roth, k >= 4 via axiom.",
+        "keyInsights": [
+            "The theorem says density alone forces arithmetic structure: no clever construction can avoid long APs in a dense set. This is surprising because random-like sets can have complex local structure, yet density provides a global constraint.",
+            "The bridge between our custom IsAPFree and Mathlib's ThreeAPFree is the technical crux enabling the k=3 case. The equivalence proof requires a non-trivial case split on element ordering, reflecting the asymmetry between the 'AP with positive step' and 'symmetric 3-AP' viewpoints.",
+            "The regularity lemma provides the 'structure vs randomness' decomposition needed at each inductive step: any dense graph can be partitioned so that most pairs of parts behave pseudo-randomly, enabling counting arguments.",
+            "Axiom isolation at k=4 is a deliberate architectural choice. The full theorem compiles and type-checks with a single axiom, meaning future Mathlib additions (hypergraph regularity or ergodic methods) can replace the axiom without touching any other code.",
+            "The quantitative bounds are tower-type in $1/\\delta$, with tower height depending on $k$. Gowers (1997) showed this tower-type dependence is unavoidable for regularity-based proofs, motivating the search for alternative approaches with better bounds."
+        ],
+        "prerequisites": [
+            "Arithmetic progressions and upper density of integer sets",
+            "Roth's theorem (k=3 case via Fourier analysis or corners)",
+            "Szemeredi regularity lemma and pseudorandom graphs",
+            "Furstenberg's ergodic correspondence principle",
+            "Van der Waerden's theorem on monochromatic APs"
+        ]
+    },
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "Module Docstring and Imports",
+            "startLine": 1,
+            "endLine": 38,
+            "summary": "Overview of Szemeredi's theorem formalization and its status. Documents the full Mathlib proof chain: Regularity Lemma -> Triangle Removal -> Corners Theorem -> Roth's Theorem. Lists what exists in Mathlib (3-AP definitions, Roth numbers, Behrend bound, regularity, corners) vs what is missing (hypergraph regularity for k>=4). References Szemeredi (1975), Furstenberg (1977), and Gowers (2001).",
+            "mathContext": "The import `Mathlib.Combinatorics.Additive.Corner.Roth` brings the full chain culminating in $r_3(N) = o(N)$."
+        },
+        {
+            "id": "ap-definitions",
+            "title": "k-AP Definitions and Formal Statement",
+            "startLine": 39,
+            "endLine": 72,
+            "summary": "Three core definitions: `HasAPOfLength S k` (set contains k-term AP with positive step), `hasAPOfLengthFinset` (finset version via coercion), `IsAPFree S k` (negation). The main `SzemerediTheorem` is stated as a `Prop` with the quantifier structure $\\forall k \\geq 1, \\delta > 0, \\exists N_0$ capturing the density threshold.",
+            "mathContext": "$\\text{HasAPOfLength}(S, k) := \\exists a, d > 0 : \\forall i < k,\\; a + id \\in S$"
+        },
+        {
+            "id": "trivial-cases",
+            "title": "Trivial Cases (k=1, k=2)",
+            "startLine": 73,
+            "endLine": 108,
+            "summary": "Base cases proved directly. k=1: extract a witness from set nonemptiness. k=2: extract two distinct elements via `Finset.one_lt_card`, case-split on ordering to get the common difference. Both use `interval_cases i` to handle index enumeration.",
+            "mathContext": "$k=1$: $|S| \\geq 1 \\implies \\exists a \\in S$. $k=2$: $|S| \\geq 2 \\implies \\exists a < b \\in S$, giving AP $\\{a, b\\}$ with $d = b - a$."
+        },
+        {
+            "id": "axiom-reduction",
+            "title": "Axiom for k >= 4",
+            "startLine": 109,
+            "endLine": 126,
+            "summary": "Documents the axiom reduction strategy and declares `szemeredi_k_ge_4` as the single axiom. The k>=4 case requires either hypergraph regularity (Rodl-Skokan, Gowers) or Furstenberg's ergodic approach, neither available in Mathlib. The axiom has the identical signature to the full theorem restricted to $k \\geq 4$, ensuring clean modularity.",
+            "mathContext": "The axiom states $\\text{SzemerediTheorem}|_{k \\geq 4}$: one axiom covering all higher-order cases."
+        },
+        {
+            "id": "threeapfree-bridge",
+            "title": "Bridge: Custom IsAPFree <-> Mathlib's ThreeAPFree",
+            "startLine": 127,
+            "endLine": 255,
+            "summary": "The technical core connecting our definitions to Mathlib. Proves `threeAPFree_iff_isAPFree`: our 'no 3-AP with positive step' is equivalent to Mathlib's 'for all a,b,c in S with a+c=2b, a=b'. Forward direction: a 3-AP yields a non-trivial solution. Reverse: a non-trivial solution to a+c=2b yields a 3-AP after ordering. Also defines `RothTheorem` as the k=3 special case and proves it follows from Szemeredi.",
+            "mathContext": "$\\text{ThreeAPFree}(S) \\iff \\nexists\\, a,d>0 : \\{a, a+d, a+2d\\} \\subseteq S$"
+        },
+        {
+            "id": "roth-via-mathlib",
+            "title": "Roth's Theorem from Mathlib's Corners Chain",
+            "startLine": 256,
+            "endLine": 271,
+            "summary": "The breakthrough result: derives Roth's theorem from Mathlib's `roth_3ap_theorem_nat` using the ThreeAPFree equivalence. Sets threshold $N_0 = \\text{cornersTheoremBound}(\\delta/3)$ and argues by contradiction: if a dense set is 3-AP-free, it satisfies ThreeAPFree, contradicting Mathlib's Roth. The bound comes from the full Regularity -> Triangle Removal -> Corners chain.",
+            "mathContext": "Roth (1953): $r_3(N) = o(N)$. Proved here via: Regularity $\\to$ Triangle Removal $\\to$ Corners $\\to$ Roth."
+        },
+        {
+            "id": "density-versions",
+            "title": "Density Versions of k=1 and k=2",
+            "startLine": 272,
+            "endLine": 314,
+            "summary": "Lifts the basic k=1 and k=2 results to the density formulation required by the full theorem. k=1: density implies nonemptiness via $\\delta N > 0$. k=2: sets $N_0 = \\lceil 2/\\delta \\rceil$ so density ensures $|S| \\geq 2$. Both use casting between natural and real arithmetic.",
+            "mathContext": "$N_0(1, \\delta) = 1$, $N_0(2, \\delta) = \\lceil 2/\\delta \\rceil$"
+        },
+        {
+            "id": "full-theorem",
+            "title": "Full Szemeredi Theorem Assembly",
+            "startLine": 315,
+            "endLine": 335,
+            "summary": "Assembles the full theorem via `Nat.lt_or_ge k 4` and `interval_cases k`. For k<4, enumerates k=1,2,3 with their dedicated proofs. For k>=4, invokes the axiom. The corollary `dense_set_has_long_ap` provides a readable API entry point. This modular structure ensures future k>=4 proofs need only replace one axiom.",
+            "mathContext": "$\\text{szemeredi\\_theorem} : \\text{SzemerediTheorem}$, proved by cases $k \\in \\{1,2,3\\}$ plus axiom for $k \\geq 4$."
+        }
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "assumptions": "k >= 4 case axiomatized (requires hypergraph regularity, not in Mathlib). k=1,2 proved trivially, k=3 proved via Mathlib Roth/corners chain.",
-    "mathlibDependencies": [
-      {
-        "theorem": "Finset.card",
-        "description": "Cardinality of finite sets for density and counting arguments",
-        "module": "Mathlib.Data.Finset.Card"
-      },
-      {
-        "theorem": "ThreeAPFree",
-        "description": "3-AP-free set predicate and Roth's theorem",
-        "module": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
-      },
-      {
-        "theorem": "roth_3ap_theorem_nat",
-        "description": "Roth's theorem via corners chain in Mathlib",
-        "module": "Mathlib.Combinatorics.Additive.Corner.Roth"
-      }
+    "crossReferences": [
+        {
+            "targetId": "roth-theorem-k3",
+            "relationship": "depends-on",
+            "description": "Roth's theorem provides the k=3 base case for Szemeredi's induction"
+        },
+        {
+            "targetId": "szemeredi-regularity",
+            "relationship": "depends-on",
+            "description": "The Regularity Lemma provides the structural decomposition at each inductive step"
+        },
+        {
+            "targetId": "szemeredi-counting",
+            "relationship": "depends-on",
+            "description": "The counting/removal lemma translates regularity structure into AP counts"
+        },
+        {
+            "targetId": "prob-method-lovasz-local",
+            "relationship": "related",
+            "description": "Both are landmark results bridging probability and combinatorics, forming the Phase 1 and Phase 3 anchors of the marquee program"
+        },
+        {
+            "targetId": "szemeredi-theorem",
+            "relationship": "related",
+            "description": "The companion density formulation of Szemeredi's theorem — this entry provides the full case assembly and axiom reduction, while the companion states the density version"
+        },
+        {
+            "targetId": "ramseys-theorem",
+            "relationship": "related",
+            "description": "Ramsey's theorem guarantees monochromatic structure in colorings; Szemeredi's theorem is the density analogue, guaranteeing arithmetic structure in dense sets — van der Waerden's theorem bridges both viewpoints"
+        },
+        {
+            "targetId": "prime-number-theorem",
+            "relationship": "related",
+            "description": "The PNT shows primes have density zero yet the Green-Tao theorem (2004) extends Szemeredi's theorem to prove primes contain arbitrarily long arithmetic progressions despite zero density"
+        },
+        {
+            "targetId": "inclusion-exclusion",
+            "relationship": "foundational",
+            "description": "Counting and removal lemmas in the regularity method use inclusion-exclusion-style arguments to translate pseudorandom structure into arithmetic progression counts"
+        }
     ],
-    "originalContributions": [
-      "k-term arithmetic progression definition (HasAPOfLength) and characterization",
-      "Equivalence proof between custom IsAPFree and Mathlib's ThreeAPFree (non-trivial case split)",
-      "k=1,2 density versions proved from scratch",
-      "k=3 derived from Mathlib's roth_3ap_theorem_nat via the ThreeAPFree bridge",
-      "Theorem reduction: full statement assembled from k=1,2,3 proofs + single k>=4 axiom"
+    "conclusion": {
+        "summary": "Szemerédi's theorem is reduced to a single axiom (k>=4) via case assembly. The k=1,2 cases are proved trivially, k=3 is derived from Mathlib's Roth theorem via a non-trivial ThreeAPFree equivalence bridge, and k>=4 is axiomatized pending hypergraph regularity. This is a theorem reduction and infrastructure layer, not an independent proof of the full result.",
+        "implications": "This formalization provides:\n\n**1. Clean Theorem Reduction**\nThe full Szemerédi theorem is reduced to exactly one axiom (k>=4), isolating the gap to what Mathlib currently lacks (hypergraph regularity). Future Mathlib additions can replace the axiom without touching other code.\n\n**2. AP Definition Infrastructure**\nThe HasAPOfLength/IsAPFree definitions and the ThreeAPFree equivalence bridge are reusable for other AP-related formalizations.\n\n**3. Mathlib Connection**\nThe k=3 case connects to one of Mathlib's deepest theorem chains: Regularity -> Triangle Removal -> Corners -> Roth.\n\n**4. Not a Complete Proof**\nThe k>=4 case — which is the mathematical heart of Szemerédi's theorem — remains axiomatized. This file provides the scaffolding and interface, not the proof itself.",
+        "openQuestions": [
+            "Can the Furstenberg ergodic-theoretic proof be formalized in Lean, providing a fundamentally different approach?",
+            "What quantitative bounds can we formalize? Gowers (2001) gives tower-type bounds with height polynomial in k.",
+            "Can the proof be extended to polynomial progressions (Bergelson-Leibman theorem)?",
+            "Is a formalization of the Green-Tao theorem feasible building on this infrastructure?"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Data.Nat.Prime.Basic",
+            "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+            "Mathlib.Combinatorics.Additive.Corner.Roth",
+            "Mathlib.Tactic"
+        ],
+        "opens": [],
+        "namespace": "Szemeredi",
+        "lineCount": 374,
+        "axiomCount": 1,
+        "theoremCount": 16,
+        "definitionCount": 5
+    },
+    "references": [
+        {
+            "authors": "Szemerédi, Endre",
+            "title": "On sets of integers containing no k elements in arithmetic progression",
+            "year": "1975",
+            "venue": "Acta Arithmetica 27, 199–245",
+            "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
+        }
     ],
-    "dateAdded": "2026-03-21",
-    "axiomCount": 1,
-    "lineCount": 335,
-    "prerequisites": [
-      "Arithmetic progressions and upper density of integer sets",
-      "Roth's theorem (k=3 case via Fourier analysis or corners)",
-      "Szemeredi regularity lemma and pseudorandom graphs",
-      "Furstenberg's ergodic correspondence principle",
-      "Van der Waerden's theorem on monochromatic APs"
-    ],
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "Szemeredi's theorem, proved by Endre Szemeredi in 1975, is one of the most celebrated results in combinatorics and number theory. It resolved the Erdos-Turan conjecture from 1936, which asked whether every dense subset of the integers must contain long arithmetic progressions.\n\nThe theorem has inspired multiple independent proofs using fundamentally different techniques:\n- Szemeredi's original proof (1975) uses the regularity lemma and a sophisticated induction on the AP length k\n- Furstenberg (1977) gave an ergodic-theoretic proof using multiple recurrence, launching a new field\n- Gowers (2001) gave a quantitative proof using higher-order Fourier analysis (uniformity norms), earning the Fields Medal in part for this work\n- The Green-Tao theorem (2004) extended Szemeredi's theorem to the primes, proving that the primes contain arbitrarily long arithmetic progressions\n\nThe question traces back even further: in 1927, van der Waerden proved that any finite coloring of the integers contains arbitrarily long monochromatic APs. Erdos and Turan conjectured in 1936 that van der Waerden's theorem could be strengthened from colorings to density, asking: does every set of positive upper density contain arbitrarily long APs? The k=3 case was proved by Klaus Roth in 1953 (earning him a Fields Medal in 1958), but the general case resisted for nearly 40 years until Szemeredi's breakthrough.\n\nThis formalization does not independently prove Szemerédi's theorem — the k>=4 case is axiomatized, requiring hypergraph regularity not yet available in any proof assistant. What is provided is a clean theorem reduction: the full statement is assembled from proved k=1,2,3 cases plus a single axiom for k>=4, with the k=3 case connecting to one of Mathlib's deepest theorem chains (regularity -> triangle removal -> corners -> Roth).",
-    "problemStatement": "**Szemeredi's Theorem:** For every integer $k \\geq 3$ and every $\\delta > 0$, there exists $N_0 = N_0(k, \\delta)$ such that every subset $A \\subseteq [N]$ with $|A| \\geq \\delta N$ and $N \\geq N_0$ contains a $k$-term arithmetic progression.\n\nEquivalently: every subset of $\\mathbb{N}$ with positive upper density $\\bar{d}(A) = \\limsup_{N \\to \\infty} |A \\cap [N]|/N > 0$ contains arithmetic progressions of every length.",
-    "text": "Assembles Szemerédi's theorem by cases: k=1,2 proved trivially, k=3 via Mathlib's Roth/corners chain, k>=4 axiomatized. Reduces the full theorem to a single axiom requiring hypergraph regularity.",
-    "proofStrategy": "The formalization proceeds by case analysis on k:\n\n1. **k-term AP definition**: HasAPOfLength defines when a set contains {a, a+d, ..., a+(k-1)d} with d > 0. SzemerediTheorem is the density version for finsets.\n\n2. **k=1, k=2 (trivial)**: Proved directly. Any nonempty set has a 1-AP; any set with >= 2 elements has a 2-AP.\n\n3. **k=3 (Roth via Mathlib)**: The key achievement. Proves equivalence between our IsAPFree and Mathlib's ThreeAPFree, then derives Roth's theorem from Mathlib's roth_3ap_theorem_nat, which itself follows from the chain: Regularity Lemma -> Triangle Removal -> Corners Theorem -> Roth.\n\n4. **k >= 4 (axiomatized)**: The k >= 4 case requires hypergraph regularity (not in Mathlib) or ergodic theory. Axiomatized as szemeredi_k_ge_4.\n\n5. **Assembly**: The full theorem is assembled by cases: k=1,2 trivial, k=3 via Mathlib's Roth, k >= 4 via axiom.",
-    "keyInsights": [
-      "The theorem says density alone forces arithmetic structure: no clever construction can avoid long APs in a dense set. This is surprising because random-like sets can have complex local structure, yet density provides a global constraint.",
-      "The bridge between our custom IsAPFree and Mathlib's ThreeAPFree is the technical crux enabling the k=3 case. The equivalence proof requires a non-trivial case split on element ordering, reflecting the asymmetry between the 'AP with positive step' and 'symmetric 3-AP' viewpoints.",
-      "The regularity lemma provides the 'structure vs randomness' decomposition needed at each inductive step: any dense graph can be partitioned so that most pairs of parts behave pseudo-randomly, enabling counting arguments.",
-      "Axiom isolation at k=4 is a deliberate architectural choice. The full theorem compiles and type-checks with a single axiom, meaning future Mathlib additions (hypergraph regularity or ergodic methods) can replace the axiom without touching any other code.",
-      "The quantitative bounds are tower-type in $1/\\delta$, with tower height depending on $k$. Gowers (1997) showed this tower-type dependence is unavoidable for regularity-based proofs, motivating the search for alternative approaches with better bounds."
-    ],
-    "prerequisites": [
-      "Arithmetic progressions and upper density of integer sets",
-      "Roth's theorem (k=3 case via Fourier analysis or corners)",
-      "Szemeredi regularity lemma and pseudorandom graphs",
-      "Furstenberg's ergodic correspondence principle",
-      "Van der Waerden's theorem on monochromatic APs"
+    "mainTheorems": [
+        {
+            "name": "szemeredi_full",
+            "type": "core",
+            "description": "Full Szemeredi theorem: positive density implies arbitrarily long APs",
+            "leanType": "upper_density A > 0 -> forall k, exists a d, d > 0 and forall i < k, a + i*d in A"
+        }
     ]
-  },
-  "sections": [
-    {
-      "id": "introduction",
-      "title": "Module Docstring and Imports",
-      "startLine": 1,
-      "endLine": 38,
-      "summary": "Overview of Szemeredi's theorem formalization and its status. Documents the full Mathlib proof chain: Regularity Lemma -> Triangle Removal -> Corners Theorem -> Roth's Theorem. Lists what exists in Mathlib (3-AP definitions, Roth numbers, Behrend bound, regularity, corners) vs what is missing (hypergraph regularity for k>=4). References Szemeredi (1975), Furstenberg (1977), and Gowers (2001).",
-      "mathContext": "The import `Mathlib.Combinatorics.Additive.Corner.Roth` brings the full chain culminating in $r_3(N) = o(N)$."
-    },
-    {
-      "id": "ap-definitions",
-      "title": "k-AP Definitions and Formal Statement",
-      "startLine": 39,
-      "endLine": 72,
-      "summary": "Three core definitions: `HasAPOfLength S k` (set contains k-term AP with positive step), `hasAPOfLengthFinset` (finset version via coercion), `IsAPFree S k` (negation). The main `SzemerediTheorem` is stated as a `Prop` with the quantifier structure $\\forall k \\geq 1, \\delta > 0, \\exists N_0$ capturing the density threshold.",
-      "mathContext": "$\\text{HasAPOfLength}(S, k) := \\exists a, d > 0 : \\forall i < k,\\; a + id \\in S$"
-    },
-    {
-      "id": "trivial-cases",
-      "title": "Trivial Cases (k=1, k=2)",
-      "startLine": 73,
-      "endLine": 108,
-      "summary": "Base cases proved directly. k=1: extract a witness from set nonemptiness. k=2: extract two distinct elements via `Finset.one_lt_card`, case-split on ordering to get the common difference. Both use `interval_cases i` to handle index enumeration.",
-      "mathContext": "$k=1$: $|S| \\geq 1 \\implies \\exists a \\in S$. $k=2$: $|S| \\geq 2 \\implies \\exists a < b \\in S$, giving AP $\\{a, b\\}$ with $d = b - a$."
-    },
-    {
-      "id": "axiom-reduction",
-      "title": "Axiom for k >= 4",
-      "startLine": 109,
-      "endLine": 126,
-      "summary": "Documents the axiom reduction strategy and declares `szemeredi_k_ge_4` as the single axiom. The k>=4 case requires either hypergraph regularity (Rodl-Skokan, Gowers) or Furstenberg's ergodic approach, neither available in Mathlib. The axiom has the identical signature to the full theorem restricted to $k \\geq 4$, ensuring clean modularity.",
-      "mathContext": "The axiom states $\\text{SzemerediTheorem}|_{k \\geq 4}$: one axiom covering all higher-order cases."
-    },
-    {
-      "id": "threeapfree-bridge",
-      "title": "Bridge: Custom IsAPFree <-> Mathlib's ThreeAPFree",
-      "startLine": 127,
-      "endLine": 255,
-      "summary": "The technical core connecting our definitions to Mathlib. Proves `threeAPFree_iff_isAPFree`: our 'no 3-AP with positive step' is equivalent to Mathlib's 'for all a,b,c in S with a+c=2b, a=b'. Forward direction: a 3-AP yields a non-trivial solution. Reverse: a non-trivial solution to a+c=2b yields a 3-AP after ordering. Also defines `RothTheorem` as the k=3 special case and proves it follows from Szemeredi.",
-      "mathContext": "$\\text{ThreeAPFree}(S) \\iff \\nexists\\, a,d>0 : \\{a, a+d, a+2d\\} \\subseteq S$"
-    },
-    {
-      "id": "roth-via-mathlib",
-      "title": "Roth's Theorem from Mathlib's Corners Chain",
-      "startLine": 256,
-      "endLine": 271,
-      "summary": "The breakthrough result: derives Roth's theorem from Mathlib's `roth_3ap_theorem_nat` using the ThreeAPFree equivalence. Sets threshold $N_0 = \\text{cornersTheoremBound}(\\delta/3)$ and argues by contradiction: if a dense set is 3-AP-free, it satisfies ThreeAPFree, contradicting Mathlib's Roth. The bound comes from the full Regularity -> Triangle Removal -> Corners chain.",
-      "mathContext": "Roth (1953): $r_3(N) = o(N)$. Proved here via: Regularity $\\to$ Triangle Removal $\\to$ Corners $\\to$ Roth."
-    },
-    {
-      "id": "density-versions",
-      "title": "Density Versions of k=1 and k=2",
-      "startLine": 272,
-      "endLine": 314,
-      "summary": "Lifts the basic k=1 and k=2 results to the density formulation required by the full theorem. k=1: density implies nonemptiness via $\\delta N > 0$. k=2: sets $N_0 = \\lceil 2/\\delta \\rceil$ so density ensures $|S| \\geq 2$. Both use casting between natural and real arithmetic.",
-      "mathContext": "$N_0(1, \\delta) = 1$, $N_0(2, \\delta) = \\lceil 2/\\delta \\rceil$"
-    },
-    {
-      "id": "full-theorem",
-      "title": "Full Szemeredi Theorem Assembly",
-      "startLine": 315,
-      "endLine": 335,
-      "summary": "Assembles the full theorem via `Nat.lt_or_ge k 4` and `interval_cases k`. For k<4, enumerates k=1,2,3 with their dedicated proofs. For k>=4, invokes the axiom. The corollary `dense_set_has_long_ap` provides a readable API entry point. This modular structure ensures future k>=4 proofs need only replace one axiom.",
-      "mathContext": "$\\text{szemeredi\\_theorem} : \\text{SzemerediTheorem}$, proved by cases $k \\in \\{1,2,3\\}$ plus axiom for $k \\geq 4$."
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "roth-theorem-k3",
-      "relationship": "depends-on",
-      "description": "Roth's theorem provides the k=3 base case for Szemeredi's induction"
-    },
-    {
-      "targetId": "szemeredi-regularity",
-      "relationship": "depends-on",
-      "description": "The Regularity Lemma provides the structural decomposition at each inductive step"
-    },
-    {
-      "targetId": "szemeredi-counting",
-      "relationship": "depends-on",
-      "description": "The counting/removal lemma translates regularity structure into AP counts"
-    },
-    {
-      "targetId": "prob-method-lovasz-local",
-      "relationship": "related",
-      "description": "Both are landmark results bridging probability and combinatorics, forming the Phase 1 and Phase 3 anchors of the marquee program"
-    },
-    {
-      "targetId": "szemeredi-theorem",
-      "relationship": "related",
-      "description": "The companion density formulation of Szemeredi's theorem — this entry provides the full case assembly and axiom reduction, while the companion states the density version"
-    },
-    {
-      "targetId": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Ramsey's theorem guarantees monochromatic structure in colorings; Szemeredi's theorem is the density analogue, guaranteeing arithmetic structure in dense sets — van der Waerden's theorem bridges both viewpoints"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The PNT shows primes have density zero yet the Green-Tao theorem (2004) extends Szemeredi's theorem to prove primes contain arbitrarily long arithmetic progressions despite zero density"
-    },
-    {
-      "targetId": "inclusion-exclusion",
-      "relationship": "foundational",
-      "description": "Counting and removal lemmas in the regularity method use inclusion-exclusion-style arguments to translate pseudorandom structure into arithmetic progression counts"
-    }
-  ],
-  "conclusion": {
-    "summary": "Szemerédi's theorem is reduced to a single axiom (k>=4) via case assembly. The k=1,2 cases are proved trivially, k=3 is derived from Mathlib's Roth theorem via a non-trivial ThreeAPFree equivalence bridge, and k>=4 is axiomatized pending hypergraph regularity. This is a theorem reduction and infrastructure layer, not an independent proof of the full result.",
-    "implications": "This formalization provides:\n\n**1. Clean Theorem Reduction**\nThe full Szemerédi theorem is reduced to exactly one axiom (k>=4), isolating the gap to what Mathlib currently lacks (hypergraph regularity). Future Mathlib additions can replace the axiom without touching other code.\n\n**2. AP Definition Infrastructure**\nThe HasAPOfLength/IsAPFree definitions and the ThreeAPFree equivalence bridge are reusable for other AP-related formalizations.\n\n**3. Mathlib Connection**\nThe k=3 case connects to one of Mathlib's deepest theorem chains: Regularity -> Triangle Removal -> Corners -> Roth.\n\n**4. Not a Complete Proof**\nThe k>=4 case — which is the mathematical heart of Szemerédi's theorem — remains axiomatized. This file provides the scaffolding and interface, not the proof itself.",
-    "openQuestions": [
-      "Can the Furstenberg ergodic-theoretic proof be formalized in Lean, providing a fundamentally different approach?",
-      "What quantitative bounds can we formalize? Gowers (2001) gives tower-type bounds with height polynomial in k.",
-      "Can the proof be extended to polynomial progressions (Bergelson-Leibman theorem)?",
-      "Is a formalization of the Green-Tao theorem feasible building on this infrastructure?"
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Combinatorics.Additive.AP.Three.Defs",
-      "Mathlib.Combinatorics.Additive.Corner.Roth",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Szemeredi",
-    "lineCount": 335,
-    "axiomCount": 1,
-    "theoremCount": 12,
-    "definitionCount": 5
-  },
-  "references": [
-    {
-      "authors": "Szemerédi, Endre",
-      "title": "On sets of integers containing no k elements in arithmetic progression",
-      "year": "1975",
-      "venue": "Acta Arithmetica 27, 199–245",
-      "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "szemeredi_full",
-      "type": "core",
-      "description": "Full Szemeredi theorem: positive density implies arbitrarily long APs",
-      "leanType": "upper_density A > 0 -> forall k, exists a d, d > 0 and forall i < k, a + i*d in A"
-    }
-  ]
 }

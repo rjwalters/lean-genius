@@ -1,0 +1,156 @@
+{
+  "id": "hilbert-17-oq-01",
+  "title": "Minimum Squares for PSD Polynomials (Pfister Bound)",
+  "slug": "hilbert-17-oq-01",
+  "description": "Investigates the minimum number of squares of rational functions needed to represent PSD polynomials. Proves Brahmagupta-Fibonacci closure (product of 2-SOS is 2-SOS), SOS monotonicity, PSD characterization, and concrete examples. Fully verified: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17OQ01.lean",
+    "tags": [
+      "real-algebra",
+      "hilbert",
+      "sum-of-squares",
+      "pfister",
+      "inequalities",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Data.Polynomial.Eval"
+      }
+    ],
+    "originalContributions": [
+      "IsPSD, IsSumOfKSquares, IsSOS definitions for univariate polynomials",
+      "Brahmagupta-Fibonacci identity in polynomial form: (p²+q²)(r²+s²) = (pr-qs)² + (ps+qr)²",
+      "Product closure: product of 2-SOS polynomials is 2-SOS",
+      "SOS monotonicity: k-SOS implies m-SOS for m ≥ k",
+      "Sum of squares implies PSD (soundness)",
+      "Concrete witnesses: x², x²+1, (x²+1)² as SOS with explicit decompositions",
+      "Pfister bound values 2^n for n=1,2,3"
+    ],
+    "axiomCount": 0,
+    "lineCount": 190,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "prerequisites": [
+      "Polynomial arithmetic over ℝ",
+      "Finset summation and Fin types",
+      "Basic real number inequalities"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pfister (1967) proved that any PSD polynomial in n variables can be written as a sum of at most 2^n squares of rational functions. This bound is tight in general (proved using Pfister forms). For specific classes, better bounds exist: univariate PSD polynomials need only 2 squares (a classical result using complex factorization and the Brahmagupta-Fibonacci identity), and bivariate PSD quartics are always polynomial-SOS (Hilbert 1888).",
+    "problemStatement": "Given Pfister's general bound of $2^n$ squares for PSD polynomials in $n$ variables, what is the minimum number of squares needed for specific classes?\n\n**Known results**:\n- Univariate: 2 squares suffice (closure under multiplication via Brahmagupta-Fibonacci)\n- Bivariate quartics: polynomial-SOS (Hilbert 1888)\n- General: $2^n$ is optimal (Pfister forms)\n\nWe formalize the algebraic infrastructure and prove key structural results.",
+    "text": "Investigates the minimum number of squares of rational functions needed to represent PSD polynomials, proving Brahmagupta-Fibonacci closure and structural results.",
+    "proofStrategy": "1. Define IsPSD, IsSumOfKSquares, IsSOS for univariate polynomials\n2. Prove the Brahmagupta-Fibonacci identity: (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)²\n3. Use this to show: product of two 2-SOS polynomials is 2-SOS\n4. Prove SOS monotonicity and soundness (SOS → PSD)\n5. Give explicit SOS witnesses for x², x²+1, (x²+1)²",
+    "keyInsights": [
+      "The Brahmagupta-Fibonacci identity is the algebraic engine: it shows sums of 2 squares are closed under multiplication, which is why 2 squares suffice in the univariate case",
+      "SOS monotonicity (k-SOS → m-SOS for m ≥ k) follows by padding with 0² terms",
+      "The ring structure of polynomials makes SOS decomposition multiplicative via norm form identities",
+      "Pfister's bound 2^n comes from Pfister forms — n-fold tensor products of the 2-square identity"
+    ],
+    "prerequisites": [
+      "Polynomial rings over ordered fields",
+      "Finset algebra and matrix notation",
+      "Basic real analysis (nonnegativity, squares)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "SOS Definitions",
+      "startLine": 28,
+      "endLine": 48,
+      "summary": "Defines IsPSD (nonneg for all inputs), IsSumOfKSquares (sum of exactly k polynomial squares), IsSOS (sum of some number of squares).",
+      "mathContext": "A polynomial $p$ is PSD if $p(x) \\geq 0$ for all $x \\in \\mathbb{R}$. It is $k$-SOS if $p = \\sum_{i=1}^k q_i^2$."
+    },
+    {
+      "id": "basic-results",
+      "title": "Basic SOS Results",
+      "startLine": 49,
+      "endLine": 115,
+      "summary": "Proves concrete examples (x², x²+1), PSD addition closure, SOS implies PSD, and SOS monotonicity.",
+      "mathContext": "If $p = \\sum q_i^2$ then $p(x) = \\sum q_i(x)^2 \\geq 0$. If $p$ is $k$-SOS then it is $m$-SOS for any $m \\geq k$ by adding $0^2$ terms."
+    },
+    {
+      "id": "brahmagupta",
+      "title": "Brahmagupta-Fibonacci Identity",
+      "startLine": 116,
+      "endLine": 145,
+      "summary": "Proves the Brahmagupta-Fibonacci identity for reals and polynomials, then uses it to show 2-SOS is closed under multiplication.",
+      "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$. This is the norm multiplicativity of Gaussian integers: $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$."
+    },
+    {
+      "id": "pfister-structure",
+      "title": "Pfister Bound Structure",
+      "startLine": 99,
+      "endLine": 114,
+      "summary": "Records Pfister bound values 2^n for small n and proves monotonicity.",
+      "mathContext": "Pfister's theorem: $2^n$ squares suffice for $n$-variate PSD polynomials. Values: $2, 4, 8$ for $n = 1, 2, 3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization (0 axioms, 0 sorries) of the algebraic infrastructure for Pfister's bound optimization. The Brahmagupta-Fibonacci identity provides the multiplicative closure that explains why 2 squares suffice in the univariate case.",
+    "implications": "The Brahmagupta-Fibonacci identity generalizes to higher Pfister forms (4-square identity of Euler, 8-square identity of Cayley-Dickson), explaining the power-of-2 structure in Pfister's bound. This formalization provides the foundation for a complete treatment.",
+    "openQuestions": [
+      "Formalize the full univariate PSD → 2-SOS theorem via complex factorization",
+      "Prove Euler's 4-square identity and connect to bivariate Pfister bound",
+      "Formalize Hilbert's 1888 classification of when PSD = polynomial-SOS",
+      "Give explicit rational-SOS decomposition of the Motzkin polynomial"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Extends the parent Hilbert 17 formalization with quantitative bounds on the number of squares"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality underlies the Motzkin polynomial's nonnegativity proof"
+    }
+  ],
+  "references": [
+    {
+      "title": "Zur Darstellung definiter Funktionen als Summe von Quadraten",
+      "author": "Albrecht Pfister",
+      "year": "1967",
+      "venue": "Inventiones Mathematicae",
+      "description": "Pfister's theorem: 2^n squares suffice for n-variate PSD polynomials"
+    },
+    {
+      "title": "Über die Darstellung definiter Formen als Summe von Formenquadraten",
+      "author": "David Hilbert",
+      "year": "1888",
+      "venue": "Mathematische Annalen",
+      "description": "Hilbert's classification of when PSD = polynomial-SOS"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Eval",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "Hilbert17OQ01",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 3
+  }
+}

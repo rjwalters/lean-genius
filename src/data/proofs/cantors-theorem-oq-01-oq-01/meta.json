@@ -4,7 +4,7 @@
   "slug": "cantors-theorem-oq-01-oq-01",
   "description": "Shows |P(R)| = aleph_2 is equivalent to CH + GCH at the continuum level. Proves the implication in both directions and establishes unconditional bounds.",
   "meta": {
-    "author": "Cantor / Gödel / Cohen / Easton",
+    "author": "Cantor / G\u00f6del / Cohen / Easton",
     "status": "verified",
     "proofRepoPath": "Proofs/CantorsTheoremOQ01OQ01.lean",
     "tags": [
@@ -16,12 +16,12 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 155,
+    "lineCount": 171,
     "assumptions": "0 axioms, 0 sorries. Core cardinal facts via Mathlib (Cardinal.cantor, mk_set, aleph_one_le_continuum) and parent file CantorsTheoremOQ01.lean (CH/GCH definitions, conditional results).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The question whether |P(R)| = aleph_2 packages two independent set-theoretic axioms (CH and GCH at the continuum level) into a single cardinality equation. Gödel (1938) showed CH is consistent with ZFC; Cohen (1963) showed its negation is also consistent. Easton (1970) showed that for regular cardinals, the power function can take almost any value.",
+    "historicalContext": "The question whether |P(R)| = aleph_2 packages two independent set-theoretic axioms (CH and GCH at the continuum level) into a single cardinality equation. G\u00f6del (1938) showed CH is consistent with ZFC; Cohen (1963) showed its negation is also consistent. Easton (1970) showed that for regular cardinals, the power function can take almost any value.",
     "problemStatement": "Is |P(R)| = aleph_2? This is independent of ZFC: it holds iff both CH (continuum = aleph_1) and GCH at continuum (2^continuum = successor of continuum) hold simultaneously.",
     "text": "Complete characterization of |P(R)| = aleph_2 as equivalent to CH + GCH at the continuum level.",
     "proofStrategy": "Forward direction: if |P(R)| = aleph_2, then since continuum < aleph_2 = succ(aleph_1) (Cantor), we get continuum <= aleph_1, combined with aleph_1 <= continuum gives CH. GCH follows similarly. Reverse uses the parent file's conditional theorem.",
@@ -66,5 +66,6 @@
       "relationship": "related",
       "description": "Based on Cantor's theorem |X| < |P(X)|"
     }
-  ]
+  ],
+  "sections": []
 }

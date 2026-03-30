@@ -1,0 +1,135 @@
+{
+  "slug": "erdos-1126-oq-01-oq-04",
+  "title": "Can the remaining sorry (almost Jensen → almost additive) be resolved using M...",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T08:58:00Z",
+    "iteration": 2,
+    "focus": "Implemented structured proof: algebraic combination proved, 4 targeted measure-theory sorries remain",
+    "blockers": [],
+    "nextAction": "Prove ae_double_of_almost_jensen using Fubini section extraction from MeasureTheory.Measure.Prod",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Session 7: Proved 3 null-set preservation lemmas (fst, snd, double). 1 sorry remains: ae_double_of_almost_jensen (Fubini section extraction). 5 axioms unchanged.",
+    "builtItems": [
+      "Surveyed proof requirements: identified 5-step proof strategy via Fubini sections",
+      "Identified Mathlib infrastructure: integral_prod, prod_right_ae, Measure.prod",
+      "Classified all 6 axioms as deep results (not easily eliminable)",
+      "Identified that almost_jensen_stability would become provable after sorry resolution",
+      "Proved algebraic combination in almost_jensen_implies_almost_additive_shifted",
+      "Added volume_preimage_double_null helper lemma (sorry)",
+      "Added volume_preimage_fst_null helper lemma (sorry)",
+      "Added volume_preimage_snd_null helper lemma (sorry)",
+      "Added ae_double_of_almost_jensen helper lemma (sorry, key Fubini step)",
+      "Created Erdos1126OQ01Aristotle.lean companion file",
+      "Proved volume_preimage_fst_null: measurable superset B ⊇ S, monotonicity, Measure.prod_prod",
+      "Proved volume_preimage_snd_null: symmetric to fst",
+      "Proved volume_preimage_double_null: scalar multiplication (2•·), Set.preimage_smul₀, addHaar_smul"
+    ],
+    "insights": [
+      "The sorry requires proving g(x+y) = g(x)+g(y) a.e. where g(x)=f(x)-f(0) satisfies almost Jensen.",
+      "Step 1: Scale substitution (u,v)=(2x,2y) gives g(x+y)=(g(2x)+g(2y))/2 a.e. — uses null set preservation under linear maps.",
+      "Step 2: Need g(2z)=2g(z) a.e. — this is the HARD step. Cannot simply \"set y=0\" in 2D ae condition.",
+      "Step 3: Fubini section extraction: for a.e. b, Jensen holds for a.e. (a,b). Pick good b₀. This gives g((a+b₀)/2)=(g(a)+g(b₀))/2 for a.e. a.",
+      "Step 4: From step 3 with affine substitution, derive g(2z)=2g(z) for a.e. z via algebraic manipulation.",
+      "Step 5: Combine steps 1+4: g(x+y) = (2g(x)+2g(y))/2 = g(x)+g(y) a.e.",
+      "Mathlib infrastructure available: integral_prod (Fubini), prod_right_ae (ae sections), Measure.prod (product measures).",
+      "The IsDerivation definition only includes Leibniz rule (not additivity) — continuous_derivation_is_zero axiom may be harder to prove than expected.",
+      "The file has 6 axioms, all deep results. Only almost_jensen_stability could become derivable if the sorry is proved.",
+      "Null set preservation under (x,y)↦(2x,2y): Lebesgue measure scales as volume(T⁻¹(N)) = volume(N)/|det T| = 0. In Mathlib: MeasureTheory.Measure.addHaar_smul or similar.",
+      "Key algebraic identity: if g satisfies a.e. Jensen with g(0)=0, and we know g(2z)=2g(z) a.e., then g(x+y)=(g(2x)+g(2y))/2=g(x)+g(y) a.e.",
+      "The proof decomposes into: (1) scaling substitution f(x+y)=(f(2x)+f(2y))/2, (2) ae double lemma f(2z)=2f(z)-f(0), (3) linarith combination.",
+      "The ae double lemma is the ONLY step requiring Fubini. Everything else is algebraic with null-set unions.",
+      "Null set for the combined proof: M = T⁻¹(N) ∪ (N_d × ℝ) ∪ (ℝ × N_d) where T(x,y)=(2x,2y).",
+      "Proved volume_preimage_fst_null: Prod.fst⁻¹(S) = S ×ˢ univ, use measurable superset + Measure.prod_prod + zero_mul",
+      "Proved volume_preimage_snd_null: symmetric via Prod.snd⁻¹(S) = univ ×ˢ S + mul_zero",
+      "Proved volume_preimage_double_null: map is (2:ℝ)•·, use Set.preimage_smul₀ + Measure.addHaar_smul + mul_zero",
+      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction)."
+    ],
+    "mathlibGaps": [
+      "Need ae_ae_of_ae_prod or prod_right_ae for ℝ² Lebesgue measure → ae sections",
+      "Need null set preservation under affine maps (linear isomorphisms of ℝ²)",
+      "May need filter_upwards for combining multiple ae conditions"
+    ],
+    "nextSteps": [
+      "Prove ae_double_of_almost_jensen: use Fubini section extraction (ae_ae_of_ae_prod) to get good y₀, then algebraic manipulation",
+      "Alternatively, submit ae_double_of_almost_jensen to Aristotle if the Fubini argument is too complex"
+    ],
+    "markdown": "# Knowledge Base: erdos-1126-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "functional-equations",
+    "measure-theory",
+    "fubini",
+    "erdos",
+    "almost-everywhere"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-112",
+    "erdos-1126",
+    "erdos-1126-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:51-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1126OQ01Aristotle.lean",
+      "filename": "Erdos1126OQ01Aristotle.lean",
+      "lineCount": 45,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1126OQ01Problem.lean",
+      "filename": "Erdos1126OQ01Problem.lean",
+      "lineCount": 486,
+      "theoremCount": 13,
+      "axiomCount": 3,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1126Problem.lean",
+      "filename": "Erdos1126Problem.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126Problem.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T08:58:00Z"
+}

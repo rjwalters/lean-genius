@@ -1,0 +1,84 @@
+{
+  "id": "binary-gcd",
+  "title": "Binary GCD (Stein's Algorithm)",
+  "slug": "binary-gcd",
+  "description": "Formalizes Stein's Binary GCD algorithm (1967) which computes GCD using only subtraction and bit shifts, and proves key GCD lemmas for correctness.",
+  "meta": {
+    "author": "Josef Stein (1967), formalized in Lean 4",
+    "date": "1967",
+    "status": "verified",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "bit-manipulation"
+    ],
+    "proofRepoPath": "Proofs/GcdAlgorithmOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "originalContributions": [
+      "binaryGcd: recursive implementation of Stein's algorithm in Lean 4",
+      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b \u2264 a",
+      "gcd_mul_two_left: gcd(2a, b) = gcd(a, b) when b is odd",
+      "gcd_two_mul: gcd(2a, 2b) = 2\u00b7gcd(a, b)",
+      "gcd_odd_sub_half: gcd((a-b)/2, b) = gcd(a, b) for both odd, a > b"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 177,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Josef Stein published this algorithm in 1967. It replaces division with bit shifts, making it faster on binary hardware.",
+    "problemStatement": "Formalize the Binary GCD algorithm and prove it computes the GCD correctly.",
+    "text": "Binary GCD (Stein's algorithm) uses subtraction and division by 2 instead of Euclidean division.",
+    "proofStrategy": "Define the algorithm by well-founded recursion on a+b. Prove three key lemmas (even factor extraction, coprime reduction, odd subtraction) and combine for correctness.",
+    "keyInsights": [
+      "Three key lemmas: gcd(2a,2b)=2\u00b7gcd(a,b), gcd(2a,b)=gcd(a,b) for odd b, gcd(a-b,b)=gcd(a,b)",
+      "When both arguments are odd, their difference is even, enabling the halving step",
+      "Termination: a+b strictly decreases in every recursive call"
+    ],
+    "prerequisites": [
+      "GCD properties",
+      "Basic number theory"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "extends",
+      "description": "Alternative GCD algorithm using bit operations instead of Euclidean division"
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines binaryGcd with well-founded recursion and proves all supporting lemmas. The main correctness theorem binaryGcd_eq_gcd is fully proved using equation compiler induction.",
+    "implications": "Binary GCD is the standard GCD algorithm in modern hardware-optimized libraries.",
+    "openQuestions": [
+      "What is the formal step count comparison with the Euclidean algorithm?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "BinaryGcd",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "binaryGcd",
+      "type": "core",
+      "description": "Binary GCD algorithm definition using subtraction and halving"
+    },
+    {
+      "name": "binaryGcd_eq_gcd",
+      "type": "core",
+      "description": "Correctness: binaryGcd a b = Nat.gcd a b"
+    }
+  ],
+  "sections": []
+}

@@ -109,3 +109,147 @@ theorem hypercube_one_is_edge :
     refine ⟨hne, ⟨0, by omega⟩, ?_⟩
     simp [Pow.pow]
     fin_cases u <;> fin_cases v <;> simp_all
+
+/- ## Decidability -/
+
+/-- Decidability of `hypercubeAdj`: enables `decide` and `native_decide` for
+    computational verification of Q_n properties. -/
+instance hypercubeAdjDecidable (n : ℕ) (u v : Fin (2 ^ n)) :
+    Decidable (hypercubeAdj n u v) :=
+  inferInstance
+
+instance hypercubeGraphDecidableAdj (n : ℕ) : DecidableRel (hypercubeGraph n).Adj :=
+  fun u v => hypercubeAdjDecidable n u v
+
+/- ## Q_n structural properties -/
+
+/-- Q_2 is the 4-cycle: edges are 0-1, 0-2, 1-3, 2-3. Verified computationally.
+    The vertices {00, 01, 10, 11} are adjacent when they differ in exactly one bit. -/
+theorem hypercube_two_edges :
+    (hypercubeGraph 2).Adj (0 : Fin 4) (1 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (0 : Fin 4) (2 : Fin 4) ∧
+    ¬(hypercubeGraph 2).Adj (0 : Fin 4) (3 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (1 : Fin 4) (3 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (2 : Fin 4) (3 : Fin 4) ∧
+    ¬(hypercubeGraph 2).Adj (1 : Fin 4) (2 : Fin 4) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> {
+    simp only [hypercubeGraph, hypercubeAdj]
+    decide
+  }
+
+/-- Each vertex of Q_1 has exactly 1 neighbor (Q_1 is 1-regular). -/
+theorem hypercube_one_regular :
+    ∀ v : Fin (2 ^ 1),
+      (Finset.univ.filter (fun w => (hypercubeGraph 1).Adj v w)).card = 1 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- Each vertex of Q_2 has exactly 2 neighbors (Q_2 is 2-regular). -/
+theorem hypercube_two_regular :
+    ∀ v : Fin (2 ^ 2),
+      (Finset.univ.filter (fun w => (hypercubeGraph 2).Adj v w)).card = 2 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- Q_2 has exactly 4 edges (each of the 4 vertices has degree 2, and 4·2/2 = 4). -/
+theorem hypercube_two_edge_count :
+    (Finset.univ.filter (fun p : Fin 4 × Fin 4 =>
+      (hypercubeGraph 2).Adj p.1 p.2)).card = 8 := by
+  native_decide
+
+/-- Each vertex of Q_3 has exactly 3 neighbors (Q_3 is 3-regular). -/
+theorem hypercube_three_regular :
+    ∀ v : Fin (2 ^ 3),
+      (Finset.univ.filter (fun w => (hypercubeGraph 3).Adj v w)).card = 3 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- The total number of directed edges in Q_3 is 24 (= 8 vertices × 3 neighbors).
+    So Q_3 has 12 undirected edges. -/
+theorem hypercube_three_edge_count :
+    (Finset.univ.filter (fun p : Fin 8 × Fin 8 =>
+      (hypercubeGraph 3).Adj p.1 p.2)).card = 24 := by
+  native_decide
+
+/- ## Adjacency characterization -/
+
+/-- Adjacent vertices in Q_n differ in exactly one bit position. Restates
+    the definition in terms of explicit bit positions. -/
+theorem hypercube_adj_iff (n : ℕ) (u v : Fin (2 ^ n)) :
+    (hypercubeGraph n).Adj u v ↔ u ≠ v ∧ ∃ k : Fin n, u.val ^^^ v.val = 2 ^ k.val :=
+  Iff.rfl
+
+/-- XOR with a power of 2 gives a distinct value (flipping a nonzero bit).
+    For any v and k, v XOR 2^k ≠ v since 2^k > 0. -/
+theorem xor_pow2_ne_self (v k : ℕ) : v ^^^ 2 ^ k ≠ v := by
+  intro h
+  have : v ^^^ v ^^^ 2 ^ k = v ^^^ v := by rw [h]
+  simp [Nat.xor_self, Nat.zero_xor] at this
+
+/- ## General Q_n regularity (proved for all n) -/
+
+/-- Flipping bit `k` in vertex `v` gives a valid vertex in `Q_n`. -/
+theorem hypercube_flip_lt (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) :
+    v.val ^^^ 2 ^ k.val < 2 ^ n :=
+  Nat.xor_lt_two_pow v.isLt (Nat.pow_lt_pow_right (by omega) k.isLt)
+
+/-- The bit-flip function: flip bit `k` of vertex `v` in `Q_n`. -/
+def hypercubeFlip (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) : Fin (2 ^ n) :=
+  ⟨v.val ^^^ 2 ^ k.val, hypercube_flip_lt n v k⟩
+
+/-- Flipping bit `k` gives a neighbor: `v` is adjacent to `v ⊕ 2^k` in `Q_n`. -/
+theorem hypercube_flip_adj (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) :
+    (hypercubeGraph n).Adj v (hypercubeFlip n v k) := by
+  refine ⟨?_, k, ?_⟩
+  · intro h
+    have hval : v.val = v.val ^^^ 2 ^ k.val := by
+      have := congr_arg Fin.val h; simp only [hypercubeFlip] at this; exact this
+    exact absurd hval.symm (xor_pow2_ne_self v.val k.val)
+  · simp only [hypercubeFlip]
+    rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor]
+
+/-- Every neighbor of `v` in `Q_n` comes from a single bit flip. -/
+theorem hypercube_adj_of_flip (n : ℕ) (v w : Fin (2 ^ n))
+    (h : (hypercubeGraph n).Adj v w) :
+    ∃ k : Fin n, w = hypercubeFlip n v k := by
+  obtain ⟨_, k, hk⟩ := h
+  refine ⟨k, Fin.ext ?_⟩
+  simp only [hypercubeFlip]
+  have h1 := congr_arg (v.val ^^^ ·) hk
+  rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
+  exact h1
+
+/-- Distinct bit positions give distinct neighbors (the flip map is injective). -/
+theorem hypercube_flip_injective (n : ℕ) (v : Fin (2 ^ n)) :
+    Function.Injective (hypercubeFlip n v) := by
+  intro i j h
+  have h1 : v.val ^^^ 2 ^ i.val = v.val ^^^ 2 ^ j.val := by
+    have := congr_arg Fin.val h; simp only [hypercubeFlip] at this; exact this
+  have h2 : (2 : ℕ) ^ i.val = 2 ^ j.val := by
+    have h3 := congr_arg (v.val ^^^ ·) h1
+    rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor,
+        ← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h3
+    exact h3
+  ext
+  by_contra h3
+  rcases lt_or_gt_of_ne h3 with h4 | h4
+  · exact absurd h2 (Nat.pow_lt_pow_right (by omega) h4).ne
+  · exact absurd h2.symm (Nat.pow_lt_pow_right (by omega) h4).ne
+
+/-- **Q_n is n-regular**: every vertex has exactly `n` neighbors.
+    Proved for all `n`, subsuming the computational checks for `n ≤ 3` above. -/
+theorem hypercube_n_regular_general (n : ℕ) (v : Fin (2 ^ n)) :
+    (univ.filter (fun w => (hypercubeGraph n).Adj v w)).card = n := by
+  have h_eq : univ.filter (fun w => (hypercubeGraph n).Adj v w) =
+      univ.image (hypercubeFlip n v) := by
+    ext w
+    constructor
+    · intro hw
+      rw [mem_filter] at hw
+      rw [mem_image]
+      obtain ⟨k, hk⟩ := hypercube_adj_of_flip n v w hw.2
+      exact ⟨k, mem_univ _, hk.symm⟩
+    · intro hw
+      rw [mem_image] at hw
+      rw [mem_filter]
+      obtain ⟨k, _, hk⟩ := hw
+      exact ⟨mem_univ _, by rw [← hk]; exact hypercube_flip_adj n v k⟩
+  rw [h_eq, card_image_of_injective _ (hypercube_flip_injective n v),
+      card_univ, Fintype.card_fin]

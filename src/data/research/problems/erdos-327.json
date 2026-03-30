@@ -32,7 +32,8 @@
     "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry",
-      "sumDvdProd_iff_unitFraction: axiom→theorem via div_add_div + div_eq_div_iff in ℚ"
+      "sumDvdProd_iff_unitFraction: axiom→theorem via div_add_div + div_eq_div_iff in ℚ",
+      "Created Proofs/Erdos327OQ01.lean: explicit coprime factorization construction"
     ],
     "insights": [
       "Proof strategy: write a=d*a', b=d*b' with d=gcd. Then (a+b)|a*b ↔ (a'+b')|d via coprimality of a'+b' and a'*b'",
@@ -41,7 +42,8 @@
       "Proof uses coprime_div_gcd_div_gcd to get gcd(a/d, b/d)=1, then derives gcd(a/d+b/d, a/d*b/d)=1 via Coprime.mul_right",
       "Key Mathlib API: mul_dvd_mul_iff_left cancels common factor d from divisibility, Coprime.dvd_of_dvd_mul_right extracts the coprime factor",
       "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum",
-      "sumDvdProd_iff_unitFraction provable: 1/a+1/b=(a+b)/(ab), equals 1/c iff c*(a+b)=ab iff (a+b)|ab. Forward: div_add_div combines fractions, div_eq_div_iff clears denominators. Backward: field_simp in ℚ + exact_mod_cast back to ℕ."
+      "sumDvdProd_iff_unitFraction provable: 1/a+1/b=(a+b)/(ab), equals 1/c iff c*(a+b)=ab iff (a+b)|ab. Forward: div_add_div combines fractions, div_eq_div_iff clears denominators. Backward: field_simp in ℚ + exact_mod_cast back to ℕ.",
+      "Follow-up OQ-01: parametrization of sum-dvd-prod pairs (10 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -53,7 +55,8 @@
   "relatedProofs": [
     "erdos-3",
     "erdos-32",
-    "erdos-327"
+    "erdos-327",
+    "erdos-327-oq-01"
   ],
   "references": {
     "papers": [],
@@ -61,10 +64,21 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.604Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-03-29T19:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos327OQ01.lean",
+      "filename": "Erdos327OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos327Problem.lean",
       "filename": "Erdos327Problem.lean",

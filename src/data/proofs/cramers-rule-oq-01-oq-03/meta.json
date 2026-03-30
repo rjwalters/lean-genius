@@ -1,0 +1,166 @@
+{
+  "id": "cramers-rule-oq-01-oq-03",
+  "title": "Complexity Analysis: Cramer's Rule O(n!) vs Gaussian Elimination O(n³)",
+  "slug": "cramers-rule-oq-01-oq-03",
+  "description": "Formalizes the computational complexity comparison between Cramer's Rule and Gaussian elimination. Defines operation counts for both algorithms, proves n! ≥ n³ for n ≥ 6 by induction, and computes exact operation counts for small systems (n = 1,2,3,4). Cramer's Rule uses (n+1)·detOps(n) + n operations via the Leibniz formula, while Gaussian elimination uses O(n³).",
+  "meta": {
+    "author": "Gabriel Cramer (1750); Carl Friedrich Gauss",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Complexity",
+    "date": "1750/1800s",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ01OQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "complexity",
+      "determinants",
+      "cramer",
+      "algorithms",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding) and factorial_ge_cube (n! >= n³ for n >= 6).",
+    "lineCount": 228
+  },
+  "overview": {
+    "historicalContext": "**Why Cramer's Rule is Beautiful but Impractical**\n\nCramer's Rule provides elegant closed-form solutions to linear systems via determinants. However, the Leibniz formula for determinants sums over all n! permutations, making it computationally prohibitive for large n. Gaussian elimination, developed systematically by Gauss in the early 1800s, solves the same problem in O(n³) operations.",
+    "problemStatement": "**Problem Statement**\n\nCan the complexity analysis (O(n!) vs O(n³)) for Cramer's Rule be formalized in Lean 4?\n\n**Answer**: Yes. This file formalizes operation counts for both algorithms and proves the key asymptotic result n! ≥ n³ for n ≥ 6.",
+    "text": "Formalizes the complexity comparison between Cramer's Rule (O(n!)) and Gaussian elimination (O(n³)).",
+    "proofStrategy": "**Approach**\n\n1. Count operations in Leibniz formula: n! summands × (n-1) multiplications each\n2. Count Cramer operations: (n+1) determinants + n divisions\n3. Count Gaussian operations via summation formulas\n4. Prove n! ≥ n³ for n ≥ 6 by strong induction\n5. Compute exact counts for n = 1,2,3,4",
+    "keyInsights": [
+      "**Exact counts reveal the gap**: At n = 4, Cramer uses 475 operations vs ~20 for Gaussian. The gap grows exponentially",
+      "**Inductive proof of factorial dominance**: The key step n³ ≥ (n+1)² for n ≥ 3 makes the induction work",
+      "**Cramer's theoretical value**: Despite O(n!) complexity, Cramer's Rule provides closed-form solutions essential for the adjugate matrix and Cayley-Hamilton theorem"
+    ],
+    "prerequisites": [
+      "Linear algebra: determinants, Cramer's Rule, Gaussian elimination",
+      "Combinatorics: factorial, permutations",
+      "Complexity theory: operation counting, asymptotic notation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "leibniz",
+      "title": "Operation Count for Determinant via Leibniz Formula",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Defines operation counts for computing an n×n determinant: n! summands, each with n-1 multiplications, plus n!-1 additions.",
+      "mathContext": "$\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sign}(\\sigma) \\prod_i a_{i,\\sigma(i)}$. $|S_n| = n!$ summands."
+    },
+    {
+      "id": "cramer",
+      "title": "Operation Count for Cramer's Rule",
+      "startLine": 56,
+      "endLine": 78,
+      "summary": "Total: (n+1) determinant computations + n divisions.",
+      "mathContext": "Cramer: $x_i = \\det(A_i)/\\det(A)$. Need $n+1$ determinants."
+    },
+    {
+      "id": "gaussian",
+      "title": "Operation Count for Gaussian Elimination",
+      "startLine": 79,
+      "endLine": 110,
+      "summary": "Forward elimination + back-substitution. Total ≈ n³/3 + n²/2 = O(n³).",
+      "mathContext": "Forward elimination: $\\sum_{k=1}^{n-1} (n-k)(n-k+1)$ operations."
+    },
+    {
+      "id": "factorial",
+      "title": "Factorial Dominates Polynomial",
+      "startLine": 111,
+      "endLine": 135,
+      "summary": "Proves n! ≥ n³ for n ≥ 6 by strong induction. Base case: 720 ≥ 216. Step: (n+1)·n³ ≥ (n+1)³ since m³ ≥ (m+1)² for m ≥ 3.",
+      "mathContext": "$n! \\geq n^3$ for $n \\geq 6$. Inductive step: $(n+1)! = (n+1) \\cdot n! \\geq (n+1) \\cdot n^3 \\geq (n+1)^3$."
+    },
+    {
+      "id": "exact-counts",
+      "title": "Exact Operation Counts for Small Systems",
+      "startLine": 136,
+      "endLine": 210,
+      "summary": "Computes exact Cramer operation counts: n=1→2, n=2→5, n=3→53, n=4→475. Discusses when Cramer's Rule is still useful.",
+      "mathContext": "Cramer operations: 2, 5, 53, 475 for $n = 1, 2, 3, 4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the complexity gap between Cramer's Rule and Gaussian elimination. The key result is the fully proved factorial_ge_cube (n! ≥ n³ for n ≥ 6), along with exact operation counts for small n demonstrating the practical crossover.",
+    "implications": "The formalization shows that while Cramer's Rule is theoretically beautiful (closed-form, connection to adjugate/Cayley-Hamilton), it is computationally impractical for systems larger than about 4×4.",
+    "openQuestions": [
+      "Can the cramer_exceeds_gaussian comparison theorem be formalized directly?",
+      "What is the exact crossover point where Gaussian beats Cramer?",
+      "Can LU decomposition operation counts be formalized similarly?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "factorial_ge_cube",
+      "type": "core",
+      "description": "n! ≥ n³ for n ≥ 6 — the key asymptotic dominance result",
+      "leanType": "∀ n ≥ 6, n ! ≥ n ^ 3"
+    },
+    {
+      "name": "perm_count",
+      "type": "supporting",
+      "description": "|Sₙ| = n! — number of permutations equals factorial",
+      "leanType": "Fintype.card (Equiv.Perm (Fin n)) = n !"
+    },
+    {
+      "name": "cramer_ops_4",
+      "type": "supporting",
+      "description": "Cramer's Rule on a 4×4 system requires exactly 475 operations",
+      "leanType": "cramerOperations 4 = 475"
+    },
+    {
+      "name": "cramer_lower_bound",
+      "type": "supporting",
+      "description": "Cramer uses at least (n+1)(n!-1) operations",
+      "leanType": "∀ n ≥ 2, cramerOperations n ≥ (n+1)*(n!-1)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Extends the Cramer's Rule formalization with complexity analysis"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "extends",
+      "description": "Extends OQ-01 (Cayley-Hamilton connection) with the complexity perspective"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "CramersRuleComplexity",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "substantiveTheoremCount": 10,
+    "sorryTheorems": 0,
+    "definitionCount": 11,
+    "mainTheorems": [
+      {
+        "name": "factorial_ge_cube",
+        "type": "proved",
+        "description": "n! ≥ n³ for n ≥ 6"
+      },
+      {
+        "name": "cramer_ops_4",
+        "type": "proved",
+        "description": "Cramer on 4×4 uses 475 ops"
+      },
+      {
+        "name": "gaussian_cubic_bound",
+        "type": "proved",
+        "description": "Gaussian elimination is O(n³)"
+      }
+    ]
+  }
+}

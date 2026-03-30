@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/YangMills/Exploration.lean",
     "author": "Formalized in Lean 4 (Mathlib)",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "mathematical-physics",
       "lattice-gauge-theory",
@@ -16,11 +16,11 @@
       "mass-gap",
       "millennium-prize"
     ],
-    "badge": "wip",
-    "sorries": 46,
+    "badge": "axiom",
+    "sorries": 1,
     "axiomCount": 1,
     "assumptions": "1 explicit axiom (gaugeTransform from YangMills/Classical.lean) plus structure-encoded assumptions: TransferMatrix requires lambda_0 > lambda_1 > 0 (Perron-Frobenius eigenvalue ordering), and LatticeTransferMatrix requires positivity and strict gap. These encode the physical assumption that the transfer matrix has a spectral gap, which is proven for finite-volume lattice gauge theory.",
-    "lineCount": 28001,
+    "lineCount": 28043,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",
@@ -136,7 +136,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 28025,
+    "lineCount": 28043,
     "structureCount": 365,
     "axiomCount": 1,
     "theoremCount": 1786,

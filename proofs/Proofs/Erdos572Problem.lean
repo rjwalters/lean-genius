@@ -100,12 +100,6 @@ ex(n; C_{2k}) ≤ c·k·n^{1+1/k} for some constant c.
 More precisely, for n sufficiently large:
   ex(n; C_{2k}) ≤ (1/2)·k^{1/k}·n^{1+1/k} + O(n)
 -/
-axiom bondy_simonovits_upper :
-  ∀ k : ℕ, k ≥ 2 →
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 1 →
-      (exCycle n k : ℝ) ≤ c * k * (n : ℝ)^(1 + 1/(k : ℝ))
-
 /--
 **Benson's Theorem (1966):**
 For k = 3: ex(n; C_6) ≥ c·n^{4/3} for some c > 0.
@@ -206,8 +200,26 @@ The LUW exponent is always less than or equal to the conjectured exponent.
 theorem luw_weaker_than_conjectured (k : ℕ) (hk : k ≥ 3) :
     luwExponent k ≤ conjecturedExponent k := by
   unfold luwExponent conjecturedExponent
-  -- For k ≥ 3, we have 3k - 3 + ν ≥ 2k, so 2/(3k-3+ν) ≤ 1/k
-  sorry
+  -- Need: 1 + 2/(3k-3+ν) ≤ 1 + 1/k, i.e., 2/(3k-3+ν) ≤ 1/k
+  -- Equivalently: 2k ≤ 3k-3+ν, which holds for k ≥ 3
+  have hk_pos : (k : ℝ) > 0 := by positivity
+  have hk_ne : (k : ℝ) ≠ 0 := ne_of_gt hk_pos
+  apply add_le_add_left
+  split_ifs with heven
+  · -- k even: ν = 1, denominator = 3k - 3 + 1 = 3k - 2
+    have hdenom : (3 * (k : ℝ) - 3 + 1) > 0 := by
+      have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+      linarith
+    rw [div_le_div_iff (by positivity) hk_pos]
+    have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+    nlinarith
+  · -- k odd: ν = 0, denominator = 3k - 3
+    have hdenom : (3 * (k : ℝ) - 3 + 0) > 0 := by
+      have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+      linarith
+    rw [div_le_div_iff (by positivity) hk_pos]
+    have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
+    nlinarith
 
 /--
 For k = 3 (odd), LUW gives exponent 1 + 2/6 = 4/3, matching the conjecture.
@@ -242,12 +254,6 @@ ex(n; C_4) ~ (1/2)·n^{3/2}
 
 The extremal graphs are related to finite projective planes.
 -/
-axiom erdos_klein_c4 :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-    ∀ n : ℕ, n ≥ 1 →
-      c₁ * (n : ℝ)^(3/2 : ℝ) ≤ (exCycle n 2 : ℝ) ∧
-      (exCycle n 2 : ℝ) ≤ c₂ * (n : ℝ)^(3/2 : ℝ)
-
 /--
 C_4-free graphs and the Kővári-Sós-Turán theorem.
 For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
@@ -266,10 +272,6 @@ ex(n; C_{2k+1}) = ⌊n²/4⌋ for k ≥ 1 and n > 2k+1.
 The extremal graphs are complete bipartite graphs K_{⌊n/2⌋, ⌈n/2⌉}.
 This is because bipartite graphs contain no odd cycles.
 -/
-axiom odd_cycle_extremal :
-  ∀ k n : ℕ, k ≥ 1 → n > 2 * k + 1 →
-    exCycle n (2 * k + 1) = n^2 / 4
-
 /-
 ## Part VIII: Main Results Summary
 -/

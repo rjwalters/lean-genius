@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T02:35:40.569Z",
     "iteration": 2,
-    "focus": "4A assessed, all appropriate",
+    "focus": "All sorries eliminated. Only Lin 1976 axioms remain.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Problem complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,10 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATED: legendre_formula proved from Mathlib padicValNat_factorial (4->3 axioms). Remaining: lin_bound (Lin 1976), lin_bound_meaning, padic_val_factorial_asymp.",
+    "progressSummary": "COMPLETE: Proved padic_val_factorial_asymp sorry (Nat.log/n→0 via isLittleO + squeeze). File now 2A/0S — only Lin 1976 bounds remain as axioms.",
     "builtItems": [
       "Assessment: 4A all appropriate",
-      "PROVED legendre_formula: padicValNat p n! = legendreSum n p (was axiom, now theorem)"
+      "PROVED legendre_formula: padicValNat p n! = legendreSum n p (was axiom, now theorem)",
+      "legendreSum_digitSum_identity: legendreSum*(p-1)+baseDigitSum=n (telescoping proof)",
+      "baseDigitSum: sum of base-p digits via iterated division",
+      "padic_val_factorial_upper: v*(p-1)<=n from identity",
+      "padic_val_factorial_lower: n-(p-1)(L+1)<=v*(p-1) from identity+digit bound",
+      "padic_val_factorial_asymp: v/n->1/(p-1) via squeeze (1 sorry: log/n->0)",
+      "sum_telescope_nat: Nat telescoping sum lemma",
+      "div_pow_antitone: n/p^k decreasing in k",
+      "Proved padic_val_factorial_asymp: ν_p(n!)/n → 1/(p-1) via isLittleO_log_rpow_atTop + Nat.pow_log_le_self + epsilon-N squeeze"
     ],
     "insights": [
       "lin_bound and lin_bound_meaning both encode Lin 1976 result (f(2,2) ≤ 254) — deep, appropriate",
@@ -42,10 +50,16 @@
       "native_decide examples verify small cases nicely",
       "Well-structured file with good definitions (StrictIncSeq, factorialSum, divisiblePowers)",
       "legendre_formula PROVED from Mathlib padicValNat_factorial — reindex Ico to range via sum_Ico_eq_sum_range",
-      "Key: padicValNat_factorial gives sum over Ico 1 b; our legendreSum uses range with shifted index; these match after reindexing"
+      "Key: padicValNat_factorial gives sum over Ico 1 b; our legendreSum uses range with shifted index; these match after reindexing",
+      "Key insight: digit-sum identity legendreSum*(p-1)+baseDigitSum=n is exact Nat equality, both bounds follow by omega",
+      "Telescoping via division algorithm: (a/p)*(p-1) + a%p = a - a/p, summed over k=0..L",
+      "Remaining sorry (Nat.log p n / n -> 0) needs sublinear bound on Nat.log",
+      "isLittleO_log_rpow_atTop with r=1 gives log(x)=o(x); composed with Nat.pow_log_le_self gives Nat.log p n ≤ Real.log n / Real.log p, yielding the sublinear bound for squeeze"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove Nat.log p n / n -> 0: bound by M/p^M -> 0 where M = Nat.log p n"
+    ],
     "markdown": "# Erdős #404 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which integers $a\\geq 1$ and primes $p$ is there a finite upper bound on those $k$ such that there are $a=a_1<\\cdots<a_n$ with\\[p^k \\mid (a_1!+\\cdots+a_n!)?\\]If $f(a,p)$ is the greatest such $k$, how does this function behave?\n\nIs there a prime $p$ and an infinite sequence $a_1<a_2<\\cdots$ such that if $p^{m_k}$ is the highest power of $p$ dividing $\\sum_{i\\leq k}a_i!$ then $m_k\\to \\infty$?\n\n\n\nSee also [403]. Lin \\cite{Li76} has shown that $f(2,2) \\leq 254$.\n\n\n\n\nReferences\n\n\n[Li76] Lin, S., On two problems of Erd\\H{o}s concerning sums of distinct factorials. Bell Laboratories internal memorandum (1960).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #403\n- Problem #405\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Li76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -62,17 +76,17 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:35:40.569Z",
-  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "lastUpdate": "2026-03-29T00:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos404Problem.lean",
       "filename": "Erdos404Problem.lean",
-      "lineCount": 100,
-      "theoremCount": 3,
-      "axiomCount": 3,
-      "defCount": 7,
+      "lineCount": 292,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos404Problem.lean"

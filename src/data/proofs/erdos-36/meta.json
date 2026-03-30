@@ -2,7 +2,7 @@
   "id": "erdos-36",
   "title": "Erdős Problem #36: Minimum Overlap Problem",
   "slug": "erdos-36",
-  "description": "Erdős Problem #36: Partition $\\{1,\\ldots,2N\\}$ into equal sets $A, B$. Minimize over all partitions the maximum overlap $\\max_k |\\{(a,b) \\in A \\times B : a - b = k\\}|$. Does the limit $c = \\lim M(N)/N$ exist, and what is its value? Known bounds: $0.379 < c < 0.381$. A 91-line formalization with 6 axioms encoding Moser's construction ($c \\geq 0.379...$), the Swinnerton-Dyer upper bound ($c < 0.382$), and Fourier-analytic reformulations. Status: OPEN.",
+  "description": "Erdős Problem #36: Partition $\\{1,\\ldots,2N\\}$ into equal sets $A, B$. Minimize over all partitions the maximum overlap $\\max_k |\\{(a,b) \\in A \\times B : a - b = k\\}|$. Does the limit $c = \\lim M(N)/N$ exist, and what is its value? Known bounds: $0.379 < c < 0.381$. A 203-line formalization with 3 axioms. Small values M(1)..M(5) computationally verified via native_decide. Status: OPEN.",
   "meta": {
     "erdosNumber": 36,
     "status": "axiomatized",
@@ -54,17 +54,18 @@
       "Defined interval, partitions, overlapValues helper definitions",
       "Proved constant_bounds: axiom sandwich 0.379005 ≤ c ≤ 0.380876",
       "Proved product_card from Finset.card_product",
-      "Axiomatized four progressively tighter bounds and small values"
+      "Proved small_values via computable mirror function MC and native_decide",
+      "Axiomatized three deep bounds (limit existence, White lower, Haugland upper)"
     ],
-    "axiomCount": 6,
+    "axiomCount": 3,
     "prerequisites": [
       "Additive combinatorics: partitions of {1,...,2N} into equal halves",
       "Fourier analysis on finite groups (Scherk's technique)",
       "Convex optimization (White's improved bounds)",
       "Asymptotic analysis: limit of M(N)/N"
     ],
-    "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results.",
-    "lineCount": 162,
+    "assumptions": "3 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists), white_lower (White's 0.379 lower bound), upper_bound (Haugland's 0.381 upper bound). small_values is now a theorem proved computationally via native_decide on a computable mirror function MC.",
+    "lineCount": 203,
     "relatedProblems": [
       {
         "id": "erdos-335",
@@ -77,10 +78,10 @@
     ]
   },
   "leanFile": {
-    "lineCount": 162,
-    "axiomCount": 6,
-    "theoremCount": 2,
-    "definitionCount": 7,
+    "lineCount": 203,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 9,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Int.Basic",

@@ -117,9 +117,6 @@ theorem two_separated_is_2K2 {V : Type*} [Fintype V] [DecidableEq V]
 axiom cgtt_1990 (d : ℕ) (hd : d ≥ 1) : h 2 d = (5 * d^2) / 4 + 1
 
 /-- For even d: h_2(d) = 5d²/4 + 1 exactly -/
-axiom h_2_even (d : ℕ) (hd : d ≥ 2) (heven : Even d) :
-    h 2 d = 5 * d^2 / 4 + 1
-
 /-- Erdős-Nešetřil and Bermond-Bond-Paoli-Peyrat conjecture (proved by CGTT) -/
 theorem erdos_nesetril_conjecture_proved :
     ∀ d : ℕ, d ≥ 1 → h 2 d ≤ 5 * d^2 / 4 + 1 := by
@@ -146,17 +143,11 @@ def H3EqualityCondition (d : ℕ) : Prop :=
 -/
 
 /-- Upper bound: h_t(d) ≤ 2d^t (trivial) -/
-axiom trivial_upper_bound (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
-    h t d ≤ 2 * d^t
-
 /-- Improved upper bound: h_t(d) ≤ (3/2)d^t + 1 (Cambie et al. 2022) -/
 axiom improved_upper_bound (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
     (h t d : ℝ) ≤ (3/2) * d^t + 1
 
 /-- Lower bound for large t: h_t(d) ≥ 0.629^t · d^t for infinitely many d -/
-axiom lower_bound_large_t (t : ℕ) (ht : t ≥ 3) :
-    ∃ᶠ d in Filter.atTop, (h t d : ℝ) ≥ (0.629)^t * d^t
-
 /-- Asymptotic conjecture: (1-o(1))d^t ≤ h_t(d) ≤ (1+o(1))d^t -/
 def AsymptoticConjecture : Prop :=
   ∀ t : ℕ, t ≥ 3 →
@@ -192,33 +183,15 @@ theorem h_polynomial_growth (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
     graph with max degree ≤ d whose line graph has diameter < t. The line graph
     L(G) has edges of G as vertices, with two vertices adjacent iff the
     corresponding edges share an endpoint in G. -/
-axiom line_graph_diameter_bound (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
-    ∀ V : Type*, ∀ [Fintype V] [DecidableEq V],
-    ∀ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-    maxDegree G ≤ d → numEdges G < h t d → ¬HasTSeparatedEdges G t
-
 /-
 ## Part 9: Extremal Constructions
 -/
 
 /-- Star graph achieves h_1(d) - 1: a star with d edges has max degree d
     and no pair of edges at distance ≥ 1 (all edges share the center). -/
-axiom star_graph_extremal (d : ℕ) (hd : d ≥ 1) :
-    ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
-    numEdges G = d ∧ maxDegree G ≤ d ∧ ¬HasTSeparatedEdges G 1
-
 /-- For h_2(d) with even d, there exist 2K₂-free graphs achieving 5d²/4 edges -/
-axiom h_2_extremal_construction (d : ℕ) (hd : d ≥ 2) (heven : Even d) :
-    ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
-    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
-    numEdges G = 5 * d^2 / 4 ∧ maxDegree G ≤ d ∧ ¬HasTSeparatedEdges G 2
-
 /-- Projective plane constructions give extremal graphs for h_3.
     The incidence graph of PG(2,q) gives good lower bounds when q is prime. -/
-axiom projective_plane_h3_bound (q : ℕ) (hq : Nat.Prime q) :
-    h 3 (q + 1) ≥ q^3 + 1
-
 /-
 ## Part 10: Erdős's Comment
 -/

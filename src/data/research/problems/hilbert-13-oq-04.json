@@ -1,0 +1,119 @@
+{
+  "slug": "hilbert-13-oq-04",
+  "title": "Kolmogorov-Arnold Generalization to General Compact Metric Spaces",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For compact metrizable } X \\text{ with } \\dim(X) \\leq n, \\text{ every } f \\in C(X, \\mathbb{R}) \\text{ has } f(x) = \\sum_{q=0}^{2n} \\Phi_q(g_q(x)) \\text{ with continuous } \\Phi_q, g_q",
+    "plain": "The Kolmogorov-Arnold theorem generalizes from [0,1]^n to arbitrary compact metric spaces: covering dimension n implies every continuous function decomposes into 2n+1 compositions of univariate functions. Sternfeld showed this is both necessary and sufficient.",
+    "whyMatters": [
+      "Identifies covering dimension as the precise topological invariant governing function representation",
+      "Generalizes the classical KA theorem to the natural level of generality",
+      "The 2n+1 bound is sharp — cannot be improved even in the general setting"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Covering dimension defined and basic properties proved (monotonicity)",
+      "Generalized KA representation structure formalized",
+      "Classical KA theorem recovered as special case",
+      "Sharpness of 2n+1 bound formalized"
+    ],
+    "open": [
+      "Prove covDimLE_of_embedding (dimension monotonicity under continuous injection)",
+      "Smooth generalization to compact manifolds (Vitushkin extension)",
+      "Computational complexity of finding KA representations"
+    ],
+    "goal": "Complete formalization of the generalized KA theorem and Sternfeld's characterization for compact metric spaces"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T06:33:00-07:00",
+    "iteration": 1,
+    "focus": "Formalization of covering dimension and generalized KA theorem",
+    "blockers": [],
+    "nextAction": "Prove the sorry in covDimLE_of_embedding or submit to Aristotle. Explore smooth generalization.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Hilbert13GeneralSpaces.lean with covering dimension definitions (covDimLE, covDimEq), proved monotonicity, axiomatized dim([0,1]^n) = n, generalized KA theorem, Sternfeld characterization, Ostrand separating maps, and 2n+1 sharpness. Gallery integration complete. 1 sorry remains (embedding monotonicity).",
+    "builtItems": [
+      "Created proofs/Proofs/Hilbert13GeneralSpaces.lean (340 lines)",
+      "Defined covDimLE, covDimEq for covering dimension",
+      "Proved covDimLE_succ (dimension monotonicity)",
+      "Proved unitCube_covDimEq, classical_KA_from_general, unitCube_superposition_sharp",
+      "Created gallery: src/data/proofs/hilbert-13-oq-04/"
+    ],
+    "insights": [
+      "Covering dimension is not in Mathlib — this is new infrastructure for the gallery",
+      "The Sternfeld characterization gives an iff: superposition property with 2n+1 maps <-> dim <= n",
+      "Ostrand's separating maps (1965) are the key bridge between dimension and representation",
+      "The embedding monotonicity sorry should be provable with more work on pullback refinements"
+    ],
+    "mathlibGaps": [
+      "No covering dimension (Lebesgue/topological) in Mathlib",
+      "No Ostrand-type theorems for compact metric spaces",
+      "No superposition/representation theory for continuous functions"
+    ],
+    "nextSteps": [
+      "Try to prove covDimLE_of_embedding (or submit to Aristotle)",
+      "Explore smooth generalization (Vitushkin extension to manifolds)"
+    ],
+    "markdown": "# Knowledge Base: hilbert-13-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe Kolmogorov-Arnold theorem generalizes from [0,1]^n to compact metrizable spaces. The key insight is that covering dimension is the precise invariant controlling superposition representations. Sternfeld (1985) proved the complete characterization: superposition with 2n+1 maps iff dim <= n.\n\n---\n\n## Insights\n\n- Covering dimension is not in Mathlib — this is genuinely new infrastructure\n- The Sternfeld characterization is an iff, giving both necessity and sufficiency\n- Ostrand's separating maps (1965) bridge dimension theory and representation theory\n- The 2n+1 bound is sharp even in the general setting\n\n---\n\n## Dead Ends\n\n(None yet — first session)\n"
+  },
+  "tags": [
+    "analysis",
+    "topology",
+    "dimension-theory",
+    "superposition",
+    "hilbert-problems"
+  ],
+  "relatedProofs": [
+    "hilbert-13",
+    "hilbert-13-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Ostrand 1965 - Dimension of metric spaces and Hilbert's problem 13",
+      "Sternfeld 1985 - Dimension, superposition of functions and separation of points",
+      "Engelking 1978 - Dimension Theory"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Topology.Compactness.Compact",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ]
+  },
+  "started": "2026-03-30T06:03:08.378Z",
+  "lastUpdate": "2026-03-30T06:33:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert13GeneralSpaces.lean",
+      "filename": "Hilbert13GeneralSpaces.lean",
+      "lineCount": 407,
+      "theoremCount": 7,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert13GeneralSpaces.lean"
+    },
+    {
+      "path": "Proofs/Hilbert13Superposition.lean",
+      "filename": "Hilbert13Superposition.lean",
+      "lineCount": 400,
+      "theoremCount": 4,
+      "axiomCount": 4,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert13Superposition.lean"
+    }
+  ]
+}

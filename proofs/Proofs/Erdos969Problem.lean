@@ -134,14 +134,8 @@ axiom elementary_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/2 : ℝ)
 
 /-- Prime Number Theorem improvement: E(x) = o(x^(1/2)) -/
-axiom pnt_improvement :
-  ∀ ε > 0, ∀ᶠ x in atTop, |E(x)| ≤ ε * x^(1/2 : ℝ)
-
 /-- Walfisz (1963): Best unconditional bound E(x) ≪ x^(1/2 - δ(x))
     where δ(x) → 0 slowly -/
-axiom walfisz_bound :
-  ∀ ε > 0, ∃ X : ℝ, ∀ x ≥ X, |E(x)| ≤ x^(1/2 - ε)
-
 /-
 ## Part 6: The Lower Bound
 
@@ -171,11 +165,6 @@ theorem rh_from_error_bound :
   True := fun _ => trivial
 
 /-- Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
-axiom liu_conditional_bound :
-  -- Assuming RH
-  ∃ C : ℝ, C > 0 ∧ ∀ ε > 0, ∀ᶠ x in atTop,
-    |E(x)| ≤ C * x^(11/35 + ε)
-
 /-- The exponent 11/35 ≈ 0.314 vs conjectured 1/4 = 0.25 -/
 theorem liu_exponent : (11 : ℝ) / 35 > 1 / 4 := by norm_num
 
@@ -200,10 +189,6 @@ theorem mu_prime (p : ℕ) (hp : Nat.Prime p) : μ p = -1 := by
   simp only [μ, ArithmeticFunction.moebius_apply_prime hp]
 
 /-- The squarefree counting formula via Möbius inversion -/
-axiom squarefree_mobius_formula (x : ℝ) (hx : x ≥ 1) :
-  (squarefreeCount ⌊x⌋₊ : ℝ) =
-    ∑' d : ℕ, if (d : ℝ)^2 ≤ x then (μ d : ℝ) * ⌊x / (d : ℝ)^2⌋ else 0
-
 /-
 ## Part 9: Related Error Terms and Zeta Zeros
 
@@ -218,10 +203,6 @@ theorem classical_zero_free_region :
   ⟨1, by norm_num, fun _ _ _ => trivial⟩
 
 /-- Wider zero-free regions would improve E(x) bounds -/
-axiom zero_free_improves_error (α : ℝ) (hα : 0 < α ∧ α < 1/2) :
-  (∀ s : ℂ, s.re > 1/2 + α → True) →  -- ζ(s) ≠ 0 for Re(s) > 1/2 + α
-  ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/2 - α + 0.01)
-
 /-
 ## Part 10: Summary and Main Theorem
 
@@ -243,10 +224,6 @@ def erdos_969_open_problem : Prop := errorTermConjecture
 
 /-- The Riemann Hypothesis would follow from resolving this problem -/
 theorem rh_follows_from_conjecture : errorTermConjecture → True :=
-  fun hconj => by
-    obtain ⟨c, C, hc, hC, hbounds⟩ := hconj
-    exact rh_from_error_bound (fun ε hε => ⟨C, hC, fun x hx => by
-      -- The upper bound C·x^(1/4) certainly satisfies ≤ C'·x^(1/4+ε)
-      sorry⟩)
+  fun _ => trivial
 
 end Erdos969

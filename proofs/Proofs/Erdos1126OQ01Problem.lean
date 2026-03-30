@@ -29,6 +29,8 @@ References:
 
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -176,6 +178,67 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 
 /- ## Part II: Almost Jensen → Almost Additive Reduction -/
 
+/- Helper lemmas for the almost Jensen → almost additive proof.
+These decompose the measure-theoretic components into clean, targeted statements. -/
+
+/-- Preimage of a null set under (x,y) ↦ (2x,2y) is null.
+Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4. -/
+private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
+    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
+  -- The map (x,y) ↦ (2x,2y) = (2 : ℝ) • (x,y) is scalar multiplication.
+  -- Preimage under (2 • ·) = (2⁻¹) • N. By addHaar scaling, volume((2⁻¹) • N) ∝ volume(N) = 0.
+  obtain ⟨B, hNB, hBm, hB0⟩ := exists_measurable_superset_of_null hN
+  apply measure_mono_null (Set.preimage_mono hNB)
+  -- Show the map is (2 : ℝ) • · and use addHaar scaling
+  have heq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' B =
+      ((2 : ℝ) • ·) ⁻¹' B := by
+    ext ⟨x, y⟩; simp [Prod.smul_mk, smul_eq_mul]
+  rw [heq, Set.preimage_smul₀ (two_ne_zero : (2 : ℝ) ≠ 0) B]
+  -- volume((2⁻¹) • B) = |2⁻¹|^dim * volume(B) = C * 0 = 0
+  rw [Measure.addHaar_smul volume (2⁻¹ : ℝ) B, hB0, mul_zero]
+
+/-- Preimage of a 1D null set under first projection is null in ℝ².
+S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
+private lemma volume_preimage_fst_null {S : Set ℝ} (hS : volume S = 0) :
+    volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
+  -- fst⁻¹'(S) = S ×ˢ univ. Find measurable B ⊇ S with volume(B) = 0.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  -- volume(fst⁻¹'(B)) = volume(B ×ˢ univ) = volume(B) · volume(univ) = 0 · ⊤ = 0
+  have : (Prod.fst ⁻¹' B : Set (ℝ × ℝ)) = B ×ˢ Set.univ := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod hBm MeasurableSet.univ, hB0, zero_mul]
+
+/-- Preimage of a 1D null set under second projection is null in ℝ². -/
+private lemma volume_preimage_snd_null {S : Set ℝ} (hS : volume S = 0) :
+    volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
+  -- snd⁻¹'(S) = univ ×ˢ S. Same approach as fst via measurable superset.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  have : (Prod.snd ⁻¹' B : Set (ℝ × ℝ)) = Set.univ ×ˢ B := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod MeasurableSet.univ hBm, hB0, mul_zero]
+
+/-- From almost Jensen, f(2z) = 2f(z) - f(0) for a.e. z.
+
+This is the key measure-theoretic step requiring Fubini section extraction.
+In the exact case, setting y=0 in Jensen gives f(x) = (f(2x)+f(0))/2 directly.
+In the a.e. case, y=0 cannot be chosen from a 2D a.e. condition, so we need:
+
+1. By Fubini (measure_ae_null_of_prod_null), since the null set N ⊂ ℝ²
+   has volume 0, for a.e. y₀, the section {x : (x,y₀) ∈ N} has measure 0.
+2. For such y₀: f((x+y₀)/2) = (f(x)+f(y₀))/2 for a.e. x.
+   Setting x = 2z: f(2z) = 2f(z+y₀/2) - f(y₀) for a.e. z.
+3. From the scaling substitution f(x+y) = (f(2x)+f(2y))/2 and step 2,
+   the translation z ↦ f(z+y₀/2)-f(z) is shown constant a.e. via a
+   second Fubini application, yielding f(2z) = 2f(z)-f(0) for a.e. z.
+
+Required Mathlib: MeasureTheory.Measure.Prod (measure_ae_null_of_prod_null,
+ae_ae_of_ae_prod, volume_eq_prod), null set preservation under affine maps. -/
+private lemma ae_double_of_almost_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
+    ae_holds (fun z => f (2 * z) = 2 * f z - f 0) := by
+  sorry
+
 /-- **Almost Jensen reduces to almost additive (for shifted function).**
 If f is almost Jensen, then the shifted function g(x) = f(x) - f(0) satisfies
 the additive equation for a.e. (x,y) where Jensen also holds at (2x, 0) and (2y, 0).
@@ -194,13 +257,31 @@ Mathematical argument:
 theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
     IsAlmostAdditive (fun x => f x - f 0) := by
-  -- Full proof requires Fubini's theorem (MeasureTheory.ae_prod_iff)
-  -- to extract a.e. sections from the 2D null set in IsAlmostJensen.
-  -- The key steps are: (1) Fubini to get a "good" point b₀,
-  -- (2) linear substitution (2x, 2y) preserving null sets,
-  -- (3) combining three a.e. conditions.
-  -- This is a non-trivial measure-theory exercise in Lean.
-  sorry
+  -- Strategy: scaling substitution + ae double lemma (Fubini).
+  -- 1. From Jensen at (2x,2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
+  -- 2. From ae_double: f(2z) = 2f(z)-f(0) for a.e. z
+  -- 3. Algebraic combination: f(x+y) = f(x)+f(y)-f(0) for a.e. (x,y)
+  obtain ⟨N_d, hN_d_null, hN_d⟩ := ae_double_of_almost_jensen f hf
+  obtain ⟨N, hN_null, hN⟩ := hf
+  -- Null set M = {(x,y) : (2x,2y) ∈ N} ∪ {(x,y) : x ∈ N_d} ∪ {(x,y) : y ∈ N_d}
+  refine ⟨(fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N ∪
+    Prod.fst ⁻¹' N_d ∪ Prod.snd ⁻¹' N_d, ?_, ?_⟩
+  · -- M is null: union of three null sets
+    exact measure_union_null
+      (measure_union_null (volume_preimage_double_null hN_null)
+        (volume_preimage_fst_null hN_d_null))
+      (volume_preimage_snd_null hN_d_null)
+  · -- For (x,y) ∉ M: (f(x+y)-f(0)) = (f(x)-f(0)) + (f(y)-f(0))
+    intro x y hxy
+    -- Scaling: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
+    have h_scale := hN (2 * x) (2 * y) (fun h => hxy (Or.inl (Or.inl h)))
+    have h_eq : (2 * x + 2 * y) / 2 = x + y := by ring
+    rw [h_eq] at h_scale
+    -- Double lemma: f(2x) = 2f(x)-f(0) and f(2y) = 2f(y)-f(0)
+    have h_dx := hN_d x (fun h => hxy (Or.inl (Or.inr h)))
+    have h_dy := hN_d y (fun h => hxy (Or.inr h))
+    -- Algebraic: f(x+y) = (2f(x)-f(0)+2f(y)-f(0))/2 = f(x)+f(y)-f(0)
+    simp only; linarith
 
 /- ## Part III: Multiplicative Functional Equation -/
 
@@ -281,11 +362,6 @@ apply de Bruijn-Jurkat, then exponentiate back.
 Known result: follows from de Bruijn-Jurkat via log/exp conjugation
 for positive solutions. The general case (allowing sign changes)
 requires additional arguments. -/
-axiom almost_multiplicative_stability :
-    ∀ f : ℝ → ℝ, IsAlmostMultiplicative f →
-    (∃ N : Set ℝ, MeasureTheory.volume N = 0 ∧ ∀ x, x ∉ N → x ≠ 0 → f x ≠ 0) →
-      ∃ g : ℝ → ℝ, IsMultiplicative g ∧ ae_eq f g
-
 /-- **Almost Jensen Stability Theorem:**
 If f is almost Jensen, then there exists a Jensen function g
 with f = g a.e.
@@ -352,12 +428,6 @@ theorem derivation_pow (d : ℝ → ℝ) (hd : IsDerivation d) (x : ℝ) :
       push_cast
       ring
 
-/-- A continuous derivation on ℝ must be zero.
-This is because the only continuous derivation of a complete valued
-field is the zero derivation. -/
-axiom continuous_derivation_is_zero :
-    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0
-
 /-- **Almost Derivation Stability:**
 If d satisfies Leibniz rule for a.e. pairs, then there exists
 a true derivation δ with d = δ a.e.
@@ -398,16 +468,18 @@ theorem stability_paradigm_summary :
 If f: (0,∞) → ℝ is multiplicative and measurable, then f(x) = x^c
 for some constant c. This parallels the additive case where
 measurable additive functions are linear. -/
-axiom measurable_multiplicative_is_power :
-    ∀ f : ℝ → ℝ, IsMultiplicative f → Measurable f →
-    (∀ x : ℝ, x > 0 → f x > 0) →
-      ∃ c : ℝ, ∀ x : ℝ, x > 0 → f x = x ^ c
-
 /-- **Measurable derivations are zero:**
 Any measurable derivation on ℝ is identically zero.
 Combined with derivation stability: an almost-derivation that
 is measurable must be zero a.e. -/
 axiom measurable_derivation_is_zero :
     ∀ d : ℝ → ℝ, IsDerivation d → Measurable d → d = 0
+
+/-- A continuous derivation on ℝ must be zero.
+Proved from the stronger measurable_derivation_is_zero, since
+continuous functions are measurable (Continuous.measurable). -/
+theorem continuous_derivation_is_zero :
+    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0 :=
+  fun d hd hcont => measurable_derivation_is_zero d hd hcont.measurable
 
 end Erdos1126OQ01

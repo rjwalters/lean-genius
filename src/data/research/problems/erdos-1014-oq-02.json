@@ -29,19 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved rate O(log l/l) for k=3 (faster than O(1/log l)), conditional O(1/l) for general k",
+    "progressSummary": "PROGRESS: Verified 2 actual sorries in conditional_rate_general_k. Main results sorry-free. Sorries need Bernoulli bounds and ratio decomposition. Hypothesis quantifier order may need reformulation.",
     "builtItems": [
       "Created Erdos1014OQ02.lean with rate_of_convergence_k3 (0 sorries)",
       "Created Erdos1014OQ02.lean with log_over_l_faster_than_inv_log (0 sorries)",
       "Created Erdos1014OQ02.lean with conditional_rate_general_k (2 sorries)",
-      "Created gallery entry: src/data/proofs/erdos-1014-oq-02/"
+      "Created gallery entry: src/data/proofs/erdos-1014-oq-02/",
+      "Corrected metadata: sorryCount 0→2 (previously undercounted)"
     ],
     "insights": [
       "Rate of convergence for k=3 is O(log l / l), from recurrence + Kim lower bound",
       "This is FASTER than O(1/log l) because (log l)^2 < l for large l",
       "Explicit constant: C = 2/c where c is Kim lower bound constant",
       "For general k with power-law asymptotics, rate would be O(1/l)",
-      "The Ramsey recurrence R(3,l+1) <= R(3,l) + (l+1) is the key structural input"
+      "The Ramsey recurrence R(3,l+1) <= R(3,l) + (l+1) is the key structural input",
+      "2 actual sorries in conditional_rate_general_k (lines 179, 209). Main results (rate_of_convergence_k3, log_over_l_faster_than_inv_log) are sorry-free.",
+      "Sorry #1 (line 179): Bernoulli-type bound |((l+1)/l)^(k-1)·(log l/log(l+1))^(k-2) - 1| ≤ 2k/l needs real analysis (exp bounds, log comparison)",
+      "Sorry #2 (line 209): Ratio decomposition R\"/R = (R\"/g\")·(g\"/g)·(g/R) needs careful bound propagation",
+      "Hypothesis quantifier structure is ∀ε ∃c (c depends on ε), weaker than standard asymptotic ∃c ∀ε. This may make the O(1/l) rate unprovable as stated."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,15 +70,15 @@
     "mathlib": []
   },
   "started": "2026-03-28T14:26:43.165Z",
-  "lastUpdate": "2026-03-28T14:26:43.173Z",
+  "lastUpdate": "2026-03-29T11:15:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1014OQ01.lean",
       "filename": "Erdos1014OQ01.lean",
-      "lineCount": 198,
-      "theoremCount": 3,
-      "axiomCount": 6,
-      "defCount": 0,
+      "lineCount": 366,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ01.lean"
@@ -81,11 +86,11 @@
     {
       "path": "Proofs/Erdos1014OQ02.lean",
       "filename": "Erdos1014OQ02.lean",
-      "lineCount": 234,
+      "lineCount": 187,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
     },

@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T16:08:36.613Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: small_gaps_exist proved from average_normalized_gap",
+    "iteration": 4,
+    "focus": "Density function conditional properties proved; axioms assessed as irreducible",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATED: Proved small_gaps_exist from average_normalized_gap via Cesàro contrapositive + Markov bound. Axiom count reduced from 4 to 3. Added 4 lemmas/theorems (~90 new lines). Remaining axioms: gallagher_conditional, large_gaps_exist, average_normalized_gap — all deep published results.",
+    "progressSummary": "SECTION IX ADDED: 4 new theorems proving conditional CDF properties of the density function. All 3 remaining axioms assessed as irreducible (Gallagher 1976, FGKT/Maynard, PNT). File: 512 lines, 28 theorem/lemma decls, 3 axioms, 0 sorries.",
     "builtItems": [
       "finset_markov_bound: c * |{gap ≥ c}| ≤ ∑ gap (finite Markov inequality)",
       "complement_card: |{gap ≥ c}| = N - countSmallNormGaps N c",
@@ -38,7 +38,11 @@
       "nthPrime_ge: n ≤ nthPrime n via induction + Nat.nth_strictMono",
       "infinite_normalizedGap_lt: {n | normalizedGap n < c}.Infinite for c > 1, via Cesàro contradiction",
       "primeGap_lt_of_normalizedGap_lt: normalizedGap < c implies primeGap < c·log(p_n) for n ≥ 2",
-      "theorem small_gaps_exist: proved from average_normalized_gap (was axiom, axiom count 4 → 3)"
+      "theorem small_gaps_exist: proved from average_normalized_gap (was axiom, axiom count 4 → 3)",
+      "density_function_nonneg: f(c) ≥ 0 via ge_of_tendsto on gapProportion_nonneg",
+      "density_function_le_one: f(c) ≤ 1 via le_of_tendsto on gapProportion_le_one",
+      "density_function_monotone: f(c₁) ≤ f(c₂) for c₁ ≤ c₂ via Tendsto.sub + ge_of_tendsto",
+      "density_function_tendsto_one: f(c) → 1 as c → ∞ via density_at_infinity + tendsto_order"
     ],
     "insights": [
       "density_at_infinity (f(c)→1 as c→∞) follows from average_normalized_gap via Markov inequality",
@@ -47,7 +51,11 @@
       "All 4 remaining axioms (gallagher_conditional, small_gaps_exist, large_gaps_exist, average_normalized_gap) are deep published results",
       "small_gaps_exist can be derived from average_normalized_gap via Cesàro contrapositive: if only finitely many n have normalizedGap n < c (for c > 1), the average would exceed 1",
       "Key helper: nthPrime n ≥ n (by induction using Nat.nth_strictMono for infinite sets)",
-      "Bridge lemma: for n ≥ 2, normalizedGap n < c implies primeGap n < c·log(p_n), since log(p_n) ≥ log(n)"
+      "Bridge lemma: for n ≥ 2, normalizedGap n < c implies primeGap n < c·log(p_n), since log(p_n) ≥ log(n)",
+      "All 3 remaining axioms (gallagher_conditional, large_gaps_exist, average_normalized_gap) are irreducible deep results — no path to eliminate from Mathlib",
+      "large_gaps_exist cannot be proved by factorial/primorial gap argument (gap/log(index) → 0 with those constructions)",
+      "average_normalized_gap requires PNT or Chebyshev bounds, neither available in Mathlib as of 2026-03",
+      "IF the density exists, it must be a proper CDF: valued in [0,1], monotone, f(0)=0 (proved earlier), f→1 (new)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -79,8 +87,8 @@
     {
       "path": "Proofs/Erdos234Problem.lean",
       "filename": "Erdos234Problem.lean",
-      "lineCount": 459,
-      "theoremCount": 18,
+      "lineCount": 513,
+      "theoremCount": 22,
       "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,

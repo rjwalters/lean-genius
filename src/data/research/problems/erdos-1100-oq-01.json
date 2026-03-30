@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-1100-oq-01",
+  "title": "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T17:32:58.850Z",
+    "iteration": 3,
+    "focus": "Proved tau_perp_equality_infinitely_often via prime witnesses; eliminated 5 companion sorries",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved tau_perp_equality_infinitely_often (main sorry eliminated) via divisorList_prime + omega_prime + infinite primes. Companion: 5 of 6 sorries proved (gcd_one_left_eq, exists_prime_gt, omega_prime, divisors_of_prime, tau_prime). Main file: 4\u21923 sorries.",
+    "builtItems": [
+      "Proved g_exponential_growth in Erdos1100ProblemProvable.lean (eliminated 2 sorries)",
+      "Created Erdos1100OQ01Aristotle.lean companion file with 6 supporting lemmas for Aristotle",
+      "Proved divisors_of_prime via Nat.Prime.eq_one_or_self_of_dvd",
+      "Proved divisorList_prime via sort characterization (length+membership+sorted+nodup)",
+      "Proved tauPerp_prime: \u03c4\u22a5(p) = 1 for primes via divisorList reduction",
+      "Proved omega_prime: \u03c9(p) = 1 via Nat.Prime.primeFactors_eq",
+      "Proved tau_perp_equality_infinitely_often via prime witnesses + Nat.exists_infinite_primes",
+      "Proved companion lemmas: gcd_one_left_eq, exists_prime_gt, omega_prime, divisors_of_prime, tau_prime"
+    ],
+    "insights": [
+      "g_exponential_growth theorem was unprovable as stated: claimed \u2203 \u03b1 \u2265 \u221a2 with \u03b1^k \u2264 g(k), but Erd\u0151s-Simonovits only gives (\u221a2 - \u03b5)^k asymptotic lower bound",
+      "Fixed g_exponential_growth by reformulating: now correctly states \u2203 \u03b2 < 2 with asymptotic lower bound approaching \u221a2 and eventual upper bound \u03b2^k",
+      "tau_perp_equality_infinitely_often: proof strategy via primes (\u03c4\u22a5(p) = 1 = \u03c9(p)) is clear but requires proving divisorList p = [1, p] which needs sorted finset manipulation",
+      "The 4 remaining sorries in provable file are: tau_perp_lower_bound, tau_perp_equality_infinitely_often, erdos_hall_max_lower_bound, erdos_simonovits_bounds",
+      "divisorList_prime proof: characterize Finset.sort output by length (= card), membership (mem_sort), sorted (sort_sorted), and nodup (from membership uniqueness) to determine exact list",
+      "tauPerp reduction: once divisorList p = [1, p] established, tauPerp p = 1 follows from gcd(1,p) = 1 (Nat.gcd_one_left) via list computation",
+      "Remaining 3 main sorries are deep results: tau_perp_lower_bound (needs induction on factorization), erdos_hall_max_lower_bound (Erd\u0151s-Hall 1978), erdos_simonovits_bounds (research-level)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "tau_perp_lower_bound: possibly tractable via induction on prime factorization structure",
+      "erdos_hall_max_lower_bound + erdos_simonovits_bounds: axiomatize as deep results (unlikely provable from Mathlib)",
+      "squarefree_omega_one_is_prime in companion: submit to Aristotle or prove via Nat.factorization"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-110",
+    "erdos-1100"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.850Z",
+  "lastUpdate": "2026-03-30T19:50:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1100ProblemProvable.lean",
+      "filename": "Erdos1100ProblemProvable.lean",
+      "lineCount": 335,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100ProblemProvable.lean"
+    },
+    {
+      "path": "Proofs/Erdos1100OQ01Aristotle.lean",
+      "filename": "Erdos1100OQ01Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100OQ01Aristotle.lean"
+    }
+  ]
+}

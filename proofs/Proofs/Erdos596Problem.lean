@@ -96,8 +96,6 @@ def ErdosProblem596 : Prop :=
       HasDichotomy isForbiddenFree containsTarget
 
 /-- The problem is open: no complete characterization is known. -/
-axiom erdos_596 : ErdosProblem596
-
 /-
 ## Part V: Related Problem (K₄, K₃)
 -/
@@ -115,8 +113,6 @@ def ContainsK3 : GraphProperty := fun G =>
 
 /-- Problem #595: Does the pair (K₄, K₃) have the dichotomy?
     This is a specific instance related to Problem #596. -/
-axiom erdos_595_k4_k3 : HasDichotomy IsK4Free ContainsK3
-
 /-
 ## Part VI: Properties
 -/

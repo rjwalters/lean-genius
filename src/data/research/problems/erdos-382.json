@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1S (case split), 3A. Proved log_sq_lt_rpow (C*log²v < v^ε for large v, ~45 lines using isLittleO_log_rpow_atTop). Proved V₂ bound (v-√v > C*log²v). 3S→1S.",
+    "progressSummary": "COMPLETE: 0S, 3A. Proved cramer_implies_q1 (Cramér → Q1 via Bertrand + consecutive primes + gap bound).",
     "builtItems": [
       "Proved prodInterval_factorial by induction with Finset.prod_insert",
       "Fixed largestPrimeDivisor: List.foldl max 0 replaces removed List.maximum?",
@@ -42,7 +42,8 @@
       "cramer_implies_q1 (THEOREM): eliminated axiom — Cramér gap bound + no_prime_in_upper_half gives v-u < v^ε",
       "PROVED log_sq_lt_rpow: C*(log v)² < v^ε for large v, using isLittleO_log_rpow_atTop with ε/4 splitting",
       "PROVED V₂ bound: v - √v > C*(log v)² for large v, via log_sq_lt_rpow with ε=1/2 and √v ≥ 2 for v ≥ 4",
-      "Added imports: Pow.Asymptotics, Log.Deriv for isLittleO_log_rpow_atTop"
+      "Added imports: Pow.Asymptotics, Log.Deriv for isLittleO_log_rpow_atTop",
+      "cramer_implies_q1: PROVED (was sorry). 0 sorries remain in file."
     ],
     "insights": [
       "12 axioms remain (was 13). prodInterval_factorial proved by induction",
@@ -56,7 +57,9 @@
       "3 sorries remain: (1) C(log v)² < v^ε for large v, (2) v - √v > C(log v)² for large v, (3) case split + Cramér gap arithmetic",
       "isLittleO_log_rpow_atTop pattern: .bound δ gives |log x| ≤ δ*x^p eventually, then Filter.eventually_atTop.mp extracts the ℝ threshold",
       "For C*log²<v^ε: split ε as ε/4+ε/4+ε/2; first two for log² via squaring, last for absorbing C via C^(2/ε) threshold",
-      "Real.sqrt_eq_rpow connects √v = v^(1/2) for rpow ↔ sqrt conversions"
+      "Real.sqrt_eq_rpow connects √v = v^(1/2) for rpow ↔ sqrt conversions",
+      "cramer_implies_q1 proved: Bertrand forces u > sqrt(v), interval is prime-free, Cramér bounds gap",
+      "Key technique: Finset.max primes_lt_u for largest prime < u, Nat.find for smallest prime > v"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,11 +88,11 @@
     {
       "path": "Proofs/Erdos382Problem.lean",
       "filename": "Erdos382Problem.lean",
-      "lineCount": 592,
+      "lineCount": 662,
       "theoremCount": 11,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos382Problem.lean"
     }

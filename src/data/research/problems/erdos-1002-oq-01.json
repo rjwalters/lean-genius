@@ -1,0 +1,116 @@
+{
+  "slug": "erdos-1002-oq-01",
+  "title": "Asymptotic distribution of Diophantine approximation function f(α,n)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove cauchy\\_is\\_distribution and innerSum\\_periodic\\_rational from Mathlib}",
+    "plain": "Eliminate two axioms from Erdős #1002: prove the Cauchy CDF is a valid distribution function and prove periodicity of the inner sum for rational arguments.",
+    "whyMatters": [
+      "Reduces axiom count from 7 to 5 in the parent formalization",
+      "Both are standard results provable from Mathlib"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "cauchy_is_distribution: Cauchy CDF g(c) = (1/π)arctan(ρc) + 1/2 is monotone with g(-∞)=0, g(+∞)=1",
+      "innerSum_periodic_rational: S(p/q, n+q) = S(p/q, n) + S(p/q, q) via fractional part periodicity"
+    ],
+    "open": [
+      "Weyl equidistribution (deep result, not yet in Mathlib in usable form)",
+      "Kesten's theorem (ergodic, very deep)",
+      "The main open conjecture"
+    ],
+    "goal": "Eliminate provable axioms from Erdős #1002 formalization"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T15:35:00.000Z",
+    "iteration": 1,
+    "focus": "Axiom elimination via Mathlib proofs",
+    "blockers": [],
+    "nextAction": "Integrate proved theorems into parent file to replace axioms",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved 2 axioms from Erdős #1002. cauchy_is_distribution via arctan monotonicity/limits. innerSum_periodic_rational via fract(x+n)=fract(x) and cyclic sum induction.",
+    "builtItems": [
+      "Erdos1002OQ01.lean: cauchy_is_distribution theorem (was axiom)",
+      "Erdos1002OQ01.lean: innerSum_periodic_rational theorem (was axiom)",
+      "Erdos1002OQ01.lean: cyclic_sum_periodic helper lemma",
+      "Erdos1002OQ01.lean: deviation_add_int helper lemma",
+      "Gallery data: src/data/proofs/erdos-1002-oq-01/"
+    ],
+    "insights": [
+      "arctan_strictMono from Mathlib provides monotonicity; compose with positive scaling for the Cauchy CDF",
+      "tendsto_arctan_atTop/atBot give π/2 and -π/2 limits; 1/π * (±π/2) + 1/2 = {1,0}",
+      "Fractional part periodicity: fract(x+n) = fract(x) for integer n, giving deviation period q for rational p/q",
+      "Cyclic sum invariance: ∑g(n+k) = ∑g(k) for periodic g, proved by induction using sum_range_succ/succ'"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Replace axioms in parent Erdos1002Problem.lean with imports from this file",
+      "Consider proving weyl_equidistribution if Mathlib has sufficient Fourier analysis"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "diophantine-approximation",
+    "erdos",
+    "seeker-selected",
+    "axiom-elimination"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1002",
+    "erdos-1002-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Real.arctan_strictMono",
+      "Real.tendsto_arctan_atTop",
+      "Real.tendsto_arctan_atBot",
+      "Int.floor_add_intCast",
+      "Finset.sum_range_add",
+      "Finset.sum_range_succ'"
+    ]
+  },
+  "started": "2026-03-29T14:32:06.111Z",
+  "lastUpdate": "2026-03-29T15:35:00.000Z",
+  "significance": 5,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1002OQ01.lean",
+      "filename": "Erdos1002OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1002Problem.lean",
+      "filename": "Erdos1002Problem.lean",
+      "lineCount": 190,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002Problem.lean"
+    }
+  ]
+}

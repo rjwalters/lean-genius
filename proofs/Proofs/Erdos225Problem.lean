@@ -98,35 +98,33 @@ noncomputable def TrigPoly.l1Norm (p : TrigPoly n) : ℝ :=
 
 /- ## The Main Theorem -/
 
-/--
-**Erdős Problem #225 (ORIGINAL — KNOWN BUG)**: This version is false as stated.
-Aristotle found a counterexample: the constant polynomial p(θ) = 1 satisfies
-`HasUnitCircleRoots` vacuously (no roots), has supNorm = 1, but L¹ norm = 2π > 4.
-Retained for historical reference; use `erdos_225` instead.
+/-
+**Note on the original formulation (KNOWN BUG)**:
+The original theorem statement omitted `Nonconstant p`. Without it, the constant
+polynomial p(θ) = 1 satisfies `HasUnitCircleRoots` vacuously (no roots), has
+supNorm = 1, but L¹ norm = 2π > 4. Counterexample found by Aristotle (Harmonic).
+The corrected version below adds `Nonconstant p`.
 -/
-theorem erdos_225_main (n : ℕ) (p : TrigPoly n)
-    (hroots : HasUnitCircleRoots p)
-    (hsup : p.supNorm = 1) :
-    p.l1Norm ≤ 4 := by
-  sorry
 
 /--
-**Erdős Problem #225 (CORRECTED)**: If a nonconstant trigonometric polynomial
-has all roots on the unit circle and supremum norm 1, then its L¹ norm is at
-most 4. The `Nonconstant` hypothesis fixes the bug found by Aristotle.
+**Erdős Problem #225 (Kristiansen 1974, Saff–Sheil-Small 1973)**:
+If a nonconstant trigonometric polynomial has all roots on the unit circle
+and supremum norm 1, then its L¹ norm is at most 4.
 
-Proved by Kristiansen (1974) for real coefficients and Saff–Sheil-Small (1973)
-for complex coefficients. The bound 4 is sharp (achieved at degree 1).
+The proof uses the factorization P(z) = cₙ ∏(z - zⱼ) with |zⱼ| = 1,
+the identity ∫₀²π |e^(iθ) - α| dθ = 8 for |α| = 1,
+and sub-multiplicativity of L¹ norms under convolution.
+The bound 4 is sharp (achieved at degree 1).
+
+References:
+- Kristiansen (1974): Proved for real coefficients
+- Saff, E.B. & Sheil-Small, T. (1973): Proved for complex coefficients
 -/
-theorem erdos_225 (n : ℕ) (p : TrigPoly n)
+axiom erdos_225 (n : ℕ) (p : TrigPoly n)
     (hroots : HasUnitCircleRoots p)
     (hnc : Nonconstant p)
     (hsup : p.supNorm = 1) :
-    p.l1Norm ≤ 4 := by
-  -- The proof uses the factorization P(z) = cₙ ∏(z - zⱼ) with |zⱼ| = 1,
-  -- combined with the identity ∫₀²π |e^(iθ) - α| dθ = 4 for |α| = 1
-  -- and the sub-multiplicativity of L¹ norms under convolution.
-  sorry
+    p.l1Norm ≤ 4
 
 /- ## Optimality -/
 
@@ -167,11 +165,37 @@ theorem constant_not_nonconstant : ¬ Nonconstant (fun (_ : Fin 1) => (1 : ℂ))
   intro ⟨z, hz⟩
   simp [Fin.sum_univ_one] at hz
 
+/-- The norm of e^(iθ) - e^(iφ) equals 2|sin((θ-φ)/2)|.
+    Proved via Euler's formula, Pythagorean identity, and cos double angle. -/
+theorem norm_exp_diff (θ φ : ℝ) :
+    ‖Complex.exp (Complex.I * ↑θ) - Complex.exp (Complex.I * ↑φ)‖ =
+    2 * |Real.sin ((θ - φ) / 2)| := by
+  rw [show Complex.I * (↑θ : ℂ) = ↑θ * Complex.I from mul_comm _ _,
+      show Complex.I * (↑φ : ℂ) = ↑φ * Complex.I from mul_comm _ _]
+  rw [Complex.exp_ofReal_mul_I, Complex.exp_ofReal_mul_I]
+  have h_diff : (↑(Real.cos θ) + ↑(Real.sin θ) * Complex.I) -
+      (↑(Real.cos φ) + ↑(Real.sin φ) * Complex.I) =
+      ↑(Real.cos θ - Real.cos φ) + ↑(Real.sin θ - Real.sin φ) * Complex.I := by
+    push_cast; ring
+  rw [h_diff, Complex.norm_add_mul_I]
+  have h_sq : (Real.cos θ - Real.cos φ) ^ 2 + (Real.sin θ - Real.sin φ) ^ 2 =
+      (2 * |Real.sin ((θ - φ) / 2)|) ^ 2 := by
+    rw [mul_pow, sq_abs]
+    have h1 := Real.sin_sq_add_cos_sq θ
+    have h2 := Real.sin_sq_add_cos_sq φ
+    have h3 := Real.cos_sub θ φ
+    have h4 := Real.cos_two_mul ((θ - φ) / 2)
+    have h5 : 2 * ((θ - φ) / 2) = θ - φ := by ring
+    rw [h5] at h4
+    have h6 := Real.sin_sq_add_cos_sq ((θ - φ) / 2)
+    linear_combination h1 + h2 + 2 * h3 - 2 * h4 - 4 * h6
+  rw [h_sq, Real.sqrt_sq (by positivity)]
+
 /--
 **Key integral identity**: For any α on the unit circle (|α| = 1),
 ∫₀²π |e^(iθ) − α| dθ = 8.
 
-Proof sketch: Write α = e^(iφ). Then |e^(iθ) − e^(iφ)| = 2|sin((θ−φ)/2)|.
+Proof: Write α = e^(iφ). By `norm_exp_diff`, |e^(iθ) − e^(iφ)| = 2|sin((θ−φ)/2)|.
 By periodicity, ∫₀²π 2|sin((θ−φ)/2)| dθ = 4∫₀^π |sin u| du = 4·2 = 8.
 -/
 theorem unit_circle_difference_integral (α : ℂ) (hα : ‖α‖ = 1) :
@@ -263,9 +287,6 @@ A non-negative trigonometric polynomial (one with f(θ) ≥ 0 for all θ)
 can be written as |g(θ)|² for some trigonometric polynomial g.
 This is the Fejér-Riesz theorem.
 -/
-axiom fejer_riesz (p : TrigPoly n) (hpos : ∀ θ : ℝ, 0 ≤ (p.eval θ).re) :
-    ∃ m : ℕ, ∃ g : TrigPoly m, ∀ θ : ℝ, p.eval θ = (‖g.eval θ‖) ^ 2
-
 /- ## Relationship to Littlewood's Conjecture -/
 
 /--
@@ -275,13 +296,6 @@ Littlewood's conjecture (now theorem) states that for unimodular polynomials
 This is related but distinct from Erdős #225: Littlewood concerns lower bounds
 while Erdős #225 gives an upper bound under the unit-circle-roots condition.
 -/
-axiom littlewood_lower_bound :
-    ∃ C > 0, ∀ n ≥ 1, ∀ coeffs : Fin n → ℂ,
-    (∀ k, ‖coeffs k‖ = 1) →
-    ∫ θ in Set.Icc 0 (2 * Real.pi),
-      ‖∑ k : Fin n, coeffs k * Complex.exp (Complex.I * k * θ)‖ ≥
-    C * Real.log n
-
 /- ## Summary
 
 **Problem Status: SOLVED**

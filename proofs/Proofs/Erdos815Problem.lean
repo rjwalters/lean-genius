@@ -110,20 +110,8 @@ axiom efgs_short_cycles (V : Type*) [Fintype V] [DecidableEq V]
 /-- **EFGS Long Cycle Theorem (1988):**
     Every degree 3 critical graph on n vertices contains a cycle of length
     at least ⌊log₂ n⌋. -/
-axiom efgs_long_cycle (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) (hn : Fintype.card V ≥ 2) (hcrit : IsDegree3Critical G) :
-    ∃ k : ℕ, k ≥ Nat.log 2 (Fintype.card V) ∧ ContainsCk G k
-
 /-- **EFGS Upper Bound (1988):**
     There exist degree 3 critical graphs with no cycle longer than √n. -/
-axiom efgs_upper_bound :
-    ∃ (f : ℕ → Type*),
-    ∀ n : ℕ, n ≥ 5 →
-    ∃ [Fintype (f n)] [DecidableEq (f n)] (G : SimpleGraph (f n)),
-      Fintype.card (f n) = n ∧
-      IsDegree3Critical G ∧
-      ∀ k : ℕ, ContainsCk G k → k ≤ Nat.sqrt n
-
 /-- **Erdős-Hajnal Partial Result:**
     The conjecture holds for k = 3, 4, 5, 6 (claimed by Erdős-Hajnal). -/
 theorem erdos_hajnal_small_k (k : ℕ) (hk : 3 ≤ k ∧ k ≤ 6) :

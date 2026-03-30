@@ -51,9 +51,9 @@
       "erdosClaimedBound: Erdős's original (incorrect) bound",
       "nk_three, nk_monotone, nk_ge_k: basic properties"
     ],
-    "axiomCount": 5,
-    "lineCount": 232,
-    "assumptions": "5 axioms: minimalNk (function), minimalNk_valid, minimalNk_sharp, martinez_roldan_pensado, nk_three. Proved: nk_monotone (from valid+sharp+subset argument), nk_ge_k (from valid+parabola GP construction)."
+    "axiomCount": 4,
+    "lineCount": 275,
+    "assumptions": "4 axioms: minimalNk (function), minimalNk_valid, minimalNk_sharp, martinez_roldan_pensado. Proved: nk_three (from sharp + vacuous AllDistinctCircumradii for 3-sets), nk_monotone (from valid+sharp+subset argument), nk_ge_k (from valid+parabola GP construction)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #827: Distinct Circumradii in General Position**\n\nErdős posed this problem in 1975, asking a Ramsey-type question in discrete geometry: how many points in general position are needed to guarantee a $k$-element subset where all $\\binom{k}{3}$ triples have distinct circumradii? This is a geometric analog of classical Ramsey problems — instead of coloring edges, we seek 'rainbow' configurations where all circumradii are distinct.\n\n**General Position:** The 'no three collinear' assumption ensures every triple determines a unique circumscribed circle with a well-defined radius. Without this, degenerate triples could have infinite circumradius, making the problem ill-defined.\n\n**Erdős's Error (1978):** Erdős claimed a bound of $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$, but the proof contained errors. The argument used a greedy/Ramsey approach to select points with increasingly constrained circumradii, but incorrectly counted the number of constraints.\n\n**Correction by Martinez-Roldán-Pensado:** They salvaged the approach, correcting the counting argument to establish $n_k \\ll k^9$. The increased exponent (9 vs 6) reflects the need to account for more complex interactions between triples.\n\n**The Gap:** The trivial lower bound $n_k \\geq k$ (need at least $k$ points for a $k$-subset) leaves a gap of 8 orders of magnitude in the exponent. Determining the true growth rate — is it closer to $k$, $k^2$, or $k^9$? — is the central open question.\n\n**Connection to Distinct Distances:** This problem is spiritually related to Erdős's 1946 distinct distances problem (how many distinct distances must $n$ points determine?), solved by Guth-Katz (2015). Both ask about the 'diversity' of geometric measurements from point configurations.",
@@ -135,9 +135,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 231,
-    "axiomCount": 5,
-    "theoremCount": 0,
+    "lineCount": 275,
+    "axiomCount": 4,
+    "theoremCount": 1,
     "definitionCount": 11
   },
   "references": [

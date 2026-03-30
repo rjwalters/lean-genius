@@ -1,0 +1,220 @@
+{
+  "slug": "erdos-43-oq-05",
+  "title": "Prove 5 sorry counting lemmas for Sidon sets via Mathlib Finset.card",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T07:10:00Z",
+    "iteration": 1,
+    "focus": "Prove counting lemmas from established injectivity",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Resolved 3 of 5 sorries. Proved example_2_3 (strong induction), example_3_5_frobenius (from Sylvester axiom), and fixed+proved larger_numbers_fewer_reps (bug: hypothesis was n≥2, should be n≥3). Remaining 2 sorries (nonrep_finite, topK_finite) require the Chicken McNugget theorem.",
+    "builtItems": [
+      "Proved sidon_diff_injective for Finset ℤ — if a₁-b₁=a₂-b₂ with a₁≠b₁, then a₁=a₂ and b₁=b₂",
+      "Prior: sidon_diff_injective also proved in Erdos152 (for Finset ℕ) and Erdos14 (for Set ℕ)",
+      "Proved example_2_3 via strong induction + multiset sum bounds",
+      "Proved example_3_5_frobenius from sylvester_frobenius axiom",
+      "Fixed and proved larger_numbers_fewer_reps (hypothesis n≥2→n≥3)"
+    ],
+    "insights": [
+      "Sidon diff injectivity: a₁-b₁=a₂-b₂ → a₁+b₂=a₂+b₁ → by Sidon {a₁,b₂}={a₂,b₁} → a₁=a₂ (since a₁≠b₁)",
+      "sidon_diff_count needs A.Nonempty — formula fails for empty set (0 ≠ 1)",
+      "For sidon_pair_bound: need |A|*(|A|-1) ≤ 2*(N-1) from injection into {-(N-1),...,N-1}\\{0}",
+      "Dependency chain: sidon_diff_injective → sidon_diff_count → disjoint_diff_total → bounds",
+      "Nat.choose 2 manipulation needed: 2*C(n,2) = n*(n-1)",
+      "example_2_3 proved by strong induction: n≥4 decomposes as 2+(n-2), base cases 2 and 3 are elements",
+      "example_3_5_frobenius proved directly from sylvester_frobenius axiom: 3*5-3-5=7",
+      "larger_numbers_fewer_reps bug fixed (n≥2→n≥3) and proved from sylvester_count + consecutive_count",
+      "Remaining sorries (nonrep_finite, topK_finite) need Chicken McNugget theorem — non-trivial formalization"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove sidon_diff_count using Finset.card_image_of_injOn (split diagonal/off-diagonal)",
+      "Prove sidon_pair_bound from injectivity + range bound",
+      "Then prove disjoint_diff_total and tao_equal_size_bound"
+    ],
+    "markdown": "# Knowledge Base: erdos-43-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "combinatorics",
+    "frobenius-problem",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-43",
+    "erdos-430",
+    "erdos-431",
+    "erdos-432",
+    "erdos-433",
+    "erdos-434",
+    "erdos-435",
+    "erdos-436",
+    "erdos-437",
+    "erdos-438",
+    "erdos-439"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:51-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos430Problem.lean",
+      "filename": "Erdos430Problem.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos430Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos431Problem.lean",
+      "filename": "Erdos431Problem.lean",
+      "lineCount": 214,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos431Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos432Problem.lean",
+      "filename": "Erdos432Problem.lean",
+      "lineCount": 165,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos432Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos433Problem.lean",
+      "filename": "Erdos433Problem.lean",
+      "lineCount": 315,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos433Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos434Aristotle.lean",
+      "filename": "Erdos434Aristotle.lean",
+      "lineCount": 138,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos434Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos434Problem.lean",
+      "filename": "Erdos434Problem.lean",
+      "lineCount": 373,
+      "theoremCount": 15,
+      "axiomCount": 4,
+      "defCount": 10,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos434Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos435Problem.lean",
+      "filename": "Erdos435Problem.lean",
+      "lineCount": 229,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos435Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos436Improvements.lean",
+      "filename": "Erdos436Improvements.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Improvements.lean"
+    },
+    {
+      "path": "Proofs/Erdos436Problem.lean",
+      "filename": "Erdos436Problem.lean",
+      "lineCount": 687,
+      "theoremCount": 45,
+      "axiomCount": 9,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos437Problem.lean",
+      "filename": "Erdos437Problem.lean",
+      "lineCount": 285,
+      "theoremCount": 5,
+      "axiomCount": 4,
+      "defCount": 9,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos437Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos438Problem.lean",
+      "filename": "Erdos438Problem.lean",
+      "lineCount": 112,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos438Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos439Problem.lean",
+      "filename": "Erdos439Problem.lean",
+      "lineCount": 219,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos439Problem.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T07:15:00Z"
+}

@@ -96,7 +96,12 @@ theorem three_five_seven_is_ap : IsArithmeticProgression [3, 5, 7] 2 := by
 
 /-- There exist 3 consecutive primes in arithmetic progression: (3, 5, 7).
     Verified by showing primes 1, 2, 3 (which are 3, 5, 7) form an AP with d=2. -/
-axiom exists_3_consecutive_in_ap : ExistsConsecutivePrimesInAP 3
+theorem exists_3_consecutive_in_ap : ExistsConsecutivePrimesInAP 3 := by
+  refine ⟨1, 2, by omega, ?_⟩
+  suffices h : ConsecutivePrimeSequence 1 3 = [3, 5, 7] by rw [h]; exact three_five_seven_is_ap
+  simp only [ConsecutivePrimeSequence]
+  have hr : List.range 3 = [0, 1, 2] := by decide
+  rw [hr]; simp [nthPrime_1, nthPrime_2, nthPrime_3]
 
 /- ## The Erdős Conjecture -/
 
@@ -125,9 +130,6 @@ theorem erdos_141_open : Erdos141Conjecture ∨ ¬Erdos141Conjecture := by
     - k=4: (251, 257, 263, 269)
     - k=5: Exists (verified computationally)
     - k=6 through 10: Exist (verified computationally) -/
-axiom small_cases_verified :
-    ∀ k, 3 ≤ k → k ≤ 10 → ExistsConsecutivePrimesInAP k
-
 /- ## Related Questions -/
 
 /-- Are there infinitely many AP's of k consecutive primes?
@@ -156,10 +158,6 @@ the primes are consecutive.
 
 For example, (7, 13, 19) are in AP with d=6, but they're not consecutive primes
 (11 is between 7 and 13). -/
-axiom green_tao : ∀ k, ∃ (S : Finset ℕ), S.card = k ∧
-    (∀ p ∈ S, p.Prime) ∧
-    (∃ a d, d > 0 ∧ S = Finset.image (fun i => a + i * d) (Finset.range k))
-
 /-- Green-Tao gives primes in AP, but not necessarily consecutive primes.
     Example: (7, 13, 19) are primes in AP, but 11 lies between 7 and 13. -/
 theorem green_tao_example_not_consecutive :

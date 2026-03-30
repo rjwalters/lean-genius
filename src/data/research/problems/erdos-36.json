@@ -29,20 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed stub definitions (maxOverlap, M). Proved constant_bounds + product_card. File: 162 lines, 6 axioms, 0 sorries, 2 theorems, 7 defs.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (6→4). Proved erdos_lower_quarter and scherk_lower as theorems from white_lower. Remaining axioms: erdos_36_limit_exists, white_lower, upper_bound, small_values.",
     "builtItems": [
       "Proved primeFactors_product_coprime from Mathlib Nat.primeFactors_mul",
       "Converted 5 unused axiom propositions to def Prop",
       "Fixed maxOverlap: real Finset.sup definition over difference image",
       "Defined M via Finset.min on overlapValues (constructive, not stub)",
       "Proved constant_bounds theorem from white_lower + upper_bound axioms",
-      "Added interval, partitions, overlapValues helper definitions"
+      "Added interval, partitions, overlapValues helper definitions",
+      "theorem erdos_lower_quarter: proved from white_lower (0.379 > 0.25)",
+      "theorem scherk_lower: proved from white_lower using √2 < 3/2"
     ],
     "insights": [
       "Erdos368Problem.lean: 6 axioms eliminated (11→5). primeFactors_product_coprime proved from Nat.primeFactors_mul (Mathlib). 5 unused axioms converted to def Prop.",
       "maxOverlap and minMaxOverlap were stubs (returning 0), making axioms inconsistent — fixed with proper definitions",
       "M(N) now constructively defined via Finset.min over partition overlap image",
-      "constant_bounds proved: if c = lim M(N)/N then 0.379005 ≤ c ≤ 0.380876 (from axiom sandwich)"
+      "constant_bounds proved: if c = lim M(N)/N then 0.379005 ≤ c ≤ 0.380876 (from axiom sandwich)",
+      "erdos_lower_quarter and scherk_lower are both subsumed by white_lower (strongest lower bound)",
+      "√2 < 3/2 (since 2 < 9/4) gives 1/√2 > 2/3, so 1-1/√2 < 1/3 < 0.379"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -78,20 +82,31 @@
     {
       "path": "Proofs/Erdos361Problem.lean",
       "filename": "Erdos361Problem.lean",
-      "lineCount": 147,
+      "lineCount": 141,
       "theoremCount": 6,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos361Problem.lean"
     },
     {
+      "path": "Proofs/Erdos362Aristotle.lean",
+      "filename": "Erdos362Aristotle.lean",
+      "lineCount": 81,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos362Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos362Problem.lean",
       "filename": "Erdos362Problem.lean",
-      "lineCount": 224,
-      "theoremCount": 4,
-      "axiomCount": 7,
+      "lineCount": 337,
+      "theoremCount": 10,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
@@ -100,20 +115,20 @@
     {
       "path": "Proofs/Erdos363Problem.lean",
       "filename": "Erdos363Problem.lean",
-      "lineCount": 282,
+      "lineCount": 294,
       "theoremCount": 5,
-      "axiomCount": 5,
+      "axiomCount": 3,
       "defCount": 10,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos363Problem.lean"
     },
     {
       "path": "Proofs/Erdos364Problem.lean",
       "filename": "Erdos364Problem.lean",
-      "lineCount": 206,
+      "lineCount": 191,
       "theoremCount": 7,
-      "axiomCount": 4,
+      "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
@@ -122,9 +137,9 @@
     {
       "path": "Proofs/Erdos365Problem.lean",
       "filename": "Erdos365Problem.lean",
-      "lineCount": 197,
+      "lineCount": 182,
       "theoremCount": 4,
-      "axiomCount": 6,
+      "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
@@ -144,9 +159,9 @@
     {
       "path": "Proofs/Erdos367Problem.lean",
       "filename": "Erdos367Problem.lean",
-      "lineCount": 389,
-      "theoremCount": 8,
-      "axiomCount": 5,
+      "lineCount": 416,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
@@ -177,10 +192,10 @@
     {
       "path": "Proofs/Erdos36Problem.lean",
       "filename": "Erdos36Problem.lean",
-      "lineCount": 92,
-      "theoremCount": 0,
-      "axiomCount": 6,
-      "defCount": 3,
+      "lineCount": 204,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos36Problem.lean"

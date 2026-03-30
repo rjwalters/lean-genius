@@ -34,11 +34,12 @@
       "Complete proof via characteristic functions",
       "Lévy continuity theorem application",
       "Topological interpretation as renormalization flow",
-      "Gaussian as universal attractor formalization"
+      "Gaussian as universal attractor formalization",
+      "Proved integral_ofReal_eq_ofReal_integral: eliminated axiom using Complex.ofRealCLM.integral_comp_comm (13→12 axioms)"
     ],
     "dateAdded": "2025-12-22",
     "wiedijkNumber": 47,
-    "axiomCount": 13,
+    "axiomCount": 12,
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -52,11 +53,19 @@
     ],
     "assumptions": "13 axioms encoding measure-theoretic infrastructure not yet available in Mathlib: (1) stdGaussian — standard Gaussian measure on ℝ, (2) stdGaussian_isProbabilityMeasure — probability measure instance, (3) gaussian_fourier_identity — Gaussian Fourier transform $\\int e^{itx} dN = e^{-t^2/2}$, (4) charFun_deriv_interchange — differentiation under the integral for characteristic functions, (5) integral_ofReal_eq_ofReal_integral — complex/real integral coercion, (6) charFun_taylor_remainder — Taylor expansion remainder bound $O(|t|^3)$, (7) charFun_normalized_sum_limit — core CLT convergence $[\\varphi(t/\\sqrt{n})]^n \\to e^{-t^2/2}$, (8) measureWeakTopology — weak-* topology on measures, (9) levy_continuity_axiom — Lévy continuity theorem, (10) clt_general_case_axiom — CLT for non-standardized distributions, (11) renormalization_measure — n-fold convolution and scaling, (12) gaussian_fixed_point_axiom — Gaussian fixed point under renormalization, (13) gaussian_attractor_axiom — Gaussian as attractor of renormalization flow. The substantive original proofs are charFun_zero, charFun_deriv_mean, limit_one_plus_x_over_n, and gaussian_charFun.",
     "proofRepoPath": "Proofs/CentralLimitTheorem.lean",
-    "lineCount": 618,
+    "lineCount": 620,
     "prerequisites": [
       "Probability theory (random variables, expectation, variance)",
       "Measure theory (convergence in distribution)",
       "Characteristic functions and Fourier analysis"
+    ],
+    "theoremCount": 16,
+    "leanFiles": [
+      {
+        "axiomCount": 12,
+        "theoremCount": 16,
+        "lineCount": 620
+      }
     ]
   },
   "overview": {
@@ -296,7 +305,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 618,
+    "lineCount": 620,
     "structureCount": 0,
     "axiomCount": 13,
     "theoremCount": 15,

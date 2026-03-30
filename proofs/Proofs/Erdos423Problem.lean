@@ -198,14 +198,7 @@ def IsConsecutiveSum (m n : ℕ) : Prop :=
     (List.range (j - i + 1)).foldl (fun acc k => acc + consSeq (i + k)) 0 = m
 
 /-- The defining property: consSeq(k) is a consecutive sum of previous terms. -/
-axiom consSeq_is_consecutive_sum (k : ℕ) (hk : k ≥ 2) :
-    IsConsecutiveSum (consSeq k) k
-
 /-- No smaller integer > consSeq(k-1) is a consecutive sum (minimality). -/
-axiom consSeq_minimal (k : ℕ) (hk : k ≥ 2) (m : ℕ)
-    (hm₁ : consSeq (k - 1) < m) (hm₂ : m < consSeq k) :
-    ¬IsConsecutiveSum m k
-
 /- ## Part VI: Growth Properties -/
 
 /-- The sequence grows at least linearly: consSeq(n) ≥ n + 1.
@@ -278,7 +271,99 @@ theorem nine_is_missing : 9 ∈ missingNumbers := by
   | 3 => omega | 4 => omega | 5 => omega
   | n + 6 => exact absurd hn (consSeq_ne_of_gt (by omega : consSeq 6 > 9) (by omega))
 
-/- ## Part VIII: The Main Question -/
+/- ## Part VIII: Refined Bounds from Excess Nondecreasing -/
+
+/-- For n ≥ 3, the excess is at least 2: consSeq(3) = 5 gives consSeq(3) - 3 = 2,
+    and excess_nondecreasing propagates this forward. -/
+theorem consSeq_excess_ge_two (n : ℕ) (hn : n ≥ 3) : consSeq n ≥ n + 2 := by
+  have h3 : consSeq 3 = 5 := consSeq_three
+  have := excess_nondecreasing 3 n hn
+  omega
+
+/-- For n ≥ 5, excess is at least 3: consSeq(5) = 8 gives excess 3. -/
+theorem consSeq_excess_ge_three (n : ℕ) (hn : n ≥ 5) : consSeq n ≥ n + 3 := by
+  have h5 : consSeq 5 = 8 := consSeq_five
+  have := excess_nondecreasing 5 n hn
+  omega
+
+/-- For n ≥ 6, excess is at least 4: consSeq(6) = 10 gives excess 4. -/
+theorem consSeq_excess_ge_four (n : ℕ) (hn : n ≥ 6) : consSeq n ≥ n + 4 := by
+  have h6 : consSeq 6 = 10 := consSeq_six
+  have := excess_nondecreasing 6 n hn
+  omega
+
+/-- The excess is nondecreasing in ℤ. Restates the ℕ axiom for convenience. -/
+theorem excessInt_nondecreasing (m n : ℕ) (h : m ≤ n) :
+    (consSeq m : ℤ) - (m : ℤ) ≤ (consSeq n : ℤ) - (n : ℤ) := by
+  have := excess_nondecreasing m n h
+  have hm := consSeq_lower_bound m
+  have hn := consSeq_lower_bound n
+  omega
+
+/- ## Part IX: Super-Linear Growth -/
+
+/-- The excess function as an integer-valued sequence. -/
+def excessInt (n : ℕ) : ℤ := (consSeq n : ℤ) - (n : ℤ)
+
+/-- The excess is always positive (from consSeq_lower_bound). -/
+theorem excessInt_pos (n : ℕ) : excessInt n ≥ 1 := by
+  unfold excessInt
+  have := consSeq_lower_bound n
+  omega
+
+/-- Super-linear growth: for any bound C, eventually consSeq(n) > n + C.
+    Follows directly from excess_unbounded. -/
+theorem consSeq_superlinear :
+    Filter.Tendsto excessInt Filter.atTop Filter.atTop :=
+  excess_unbounded
+
+/-- The sequence grows faster than any linear function eventually.
+    For any c : ℕ, there exists N such that for all n ≥ N, consSeq(n) ≥ n + c. -/
+theorem consSeq_eventually_exceeds (c : ℕ) :
+    ∃ N, ∀ n, n ≥ N → consSeq n ≥ n + c := by
+  have h := (Filter.tendsto_atTop.mp consSeq_superlinear) (c : ℤ)
+  rw [Filter.eventually_atTop] at h
+  obtain ⟨N, hN⟩ := h
+  exact ⟨N, fun n hn => by
+    have := hN n hn
+    unfold excessInt at this
+    omega⟩
+
+/- ## Part X: Structural Properties -/
+
+/-- The sequence is injective (immediate from strict monotonicity). -/
+theorem consSeq_injective : Function.Injective consSeq :=
+  consSeq_strictMono.injective
+
+/-- If consSeq(k) = m, then k < m (since consSeq(k) ≥ k + 1). -/
+theorem consSeq_index_lt_value (k : ℕ) : k < consSeq k :=
+  Nat.lt_of_lt_of_le (Nat.lt_succ_of_le le_rfl) (consSeq_lower_bound k)
+
+/-- The preimage of [1, m] under consSeq has at most m elements. -/
+theorem consSeq_preimage_finite (m : ℕ) :
+    Set.Finite {n : ℕ | consSeq n ≤ m} := by
+  apply Set.Finite.subset (Finset.range (m + 1)).finite_toSet
+  intro n hn
+  simp at hn ⊢
+  have := consSeq_lower_bound n
+  omega
+
+/-- For any C, the excess eventually exceeds C at every subsequent index. -/
+theorem excess_eventually_large (C : ℕ) :
+    ∃ N, ∀ n, n ≥ N → consSeq n - n ≥ C := by
+  obtain ⟨N, hN⟩ := consSeq_eventually_exceeds C
+  exact ⟨N, fun n hn => by have := hN n hn; omega⟩
+
+/-- Excess at index 0 is 1. -/
+theorem excess_zero : consSeq 0 - 0 = 1 := by simp [consSeq_zero]
+
+/-- Excess at index 3 is 2. -/
+theorem excess_three : consSeq 3 - 3 = 2 := by simp [consSeq_three]
+
+/-- Excess at index 6 is 4. -/
+theorem excess_six : consSeq 6 - 6 = 4 := by simp [consSeq_six]
+
+/- ## Part XI: The Main Question -/
 
 /--
 **Erdős Problem #423 (OPEN):**
@@ -293,7 +378,7 @@ def ErdosQuestion423_convergence : Prop :=
   ∃ C : ℝ, C > 1 ∧
     Filter.Tendsto (fun n => (consSeq n : ℝ) / (n : ℝ)) Filter.atTop (nhds C)
 
-/- ## Part IX: Summary -/
+/- ## Part XII: Summary -/
 
 /--
 **Erdős Problem #423: Summary**
@@ -312,6 +397,9 @@ FORMALIZED:
 - Linear lower bound proved from strict monotonicity
 - Missing numbers (4, 7, 9) proved from computation + monotonicity
 - Growth properties (Bolan-Tang) stated as axioms
+- Refined excess bounds from verified values + nondecreasing excess
+- Super-linear growth and eventual exceedance from excess_unbounded
+- Injectivity, index-value relationship, preimage finiteness
 -/
 theorem erdos_423_known :
     (∀ m n, m ≤ n → consSeq m - m ≤ consSeq n - n) ∧

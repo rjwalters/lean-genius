@@ -117,9 +117,6 @@ many solutions. Each solution (x, y) gives the pair (8y², x²).
 
 Observed by Mahler when Erdős asked the question.
 -/
-axiom infinitely_many_consecutive_pairs :
-  {n : ℕ | Powerful n ∧ Powerful (n + 1)}.Infinite
-
 /-
 ## No Quadruple of Consecutive Powerful Numbers
 
@@ -166,9 +163,6 @@ finitely many such triples exist.
 Reference: Erdős, P., "Problems and results on number theoretic properties
 of consecutive integers", Proc. Manitoba Conf. (1976), 25-44.
 -/
-axiom no_consecutive_triple :
-    ¬∃ n : ℕ, Powerful n ∧ Powerful (n + 1) ∧ Powerful (n + 2)
-
 /-
 ## Stronger Conjecture
 
@@ -182,11 +176,6 @@ the gap nₖ₊₂ - nₖ grows like nₖᶜ for some constant c > 0.
 
 This implies no consecutive triple exists, but is much stronger.
 -/
-axiom gap_conjecture :
-    ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ,
-      (Nat.nth Powerful (k + 2) - Nat.nth Powerful k : ℝ) >
-        (Nat.nth Powerful k : ℝ) ^ c
-
 /-
 ## Partial Results
 -/
@@ -198,8 +187,4 @@ numbers where n is a perfect cube.
 Reference: Chan, Tsz Ho, "A note on three consecutive powerful numbers",
 Integers (2025), Paper No. A7.
 -/
-axiom chan_cube_result :
-    ¬∃ n : ℕ, (∃ m : ℕ, n = m ^ 3) ∧
-      Powerful (n - 1) ∧ Powerful n ∧ Powerful (n + 1)
-
 end Erdos364

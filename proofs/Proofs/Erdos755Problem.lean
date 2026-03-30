@@ -108,21 +108,9 @@ The points on each circle form inscribed squares.
 
 This construction achieves T₆ᵘ(n) ≥ n³/27 - O(n²).
 -/
-axiom lenz_construction :
-  ∀ n : ℕ, n ≥ 3 →
-    ∃ (P : Finset (Fin 6 → ℝ)), P.card = n ∧
-      -- Number of unit equilateral triangles is at least n³/27 - O(n²)
-      ∃ C : ℝ, C > 0 ∧
-        (T6_unit n : ℝ) ≥ (n : ℝ)^3 / 27 - C * (n : ℝ)^2
-
 /--
 **Lower bound: T₆ᵘ(n) ≥ n³/27 - O(n²)**
 -/
-axiom lower_bound_unit :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      (T6_unit n : ℝ) ≥ (n : ℝ)^3 / 27 - C * (n : ℝ)^2
-
 /-
 ## Part IV: Erdős's Conjecture
 -/
@@ -181,7 +169,8 @@ theorem erdos_conjecture_any_size_true : erdos_conjecture_any_size := by
   intro n hn
   have h := hN n hn
   -- |T6(n) - n³/27| ≤ ε·n³ implies T6(n) ≤ (1/27 + ε)n³
-  sorry
+  have h' := (abs_le.mp h).2
+  nlinarith
 
 /-
 ## Part VI: Exact Formula for Higher Dimensions
@@ -192,21 +181,10 @@ theorem erdos_conjecture_any_size_true : erdos_conjecture_any_size := by
 Clemen-Dumitrescu-Liu found exact formulas for T_d(n) for all even d ≥ 6
 and sufficiently large n.
 -/
-axiom cdl_general_dimension :
-  ∀ d : ℕ, d ≥ 6 → Even d →
-    ∃ c_d : ℝ, c_d > 0 ∧
-      ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-        |((T_d d n : ℝ) - c_d * (n : ℝ)^3)| ≤ ε * (n : ℝ)^3
-
 /--
 **The constant for d = 6:**
 c₆ = 1/27
 -/
-axiom c6_equals_one_27th :
-  ∃ c_d : ℝ, c_d > 0 ∧ c_d = 1/27 ∧
-    ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      |((T_d 6 n : ℝ) - c_d * (n : ℝ)^3)| ≤ ε * (n : ℝ)^3
-
 /-
 ## Part VII: Why 1/27?
 -/

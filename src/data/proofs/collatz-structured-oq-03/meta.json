@@ -1,0 +1,24 @@
+{
+  "id": "collatz-structured-oq-03",
+  "title": "Growth Rate of Average Collatz Stopping Time",
+  "slug": "collatz-structured-oq-03",
+  "description": "Formalizes the average Collatz stopping time S(N) and asks whether S(N) ~ c·log N. Defines stopping time via Nat.find, heuristic constant 1/log₂(4/3), and states the asymptotic growth question. Axiomatizes Terras density result.",
+  "meta": {
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CollatzStructuredOQ03.lean",
+    "tags": [
+      "number-theory",
+      "collatz",
+      "stopping-time",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 149
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 1
+  }
+}

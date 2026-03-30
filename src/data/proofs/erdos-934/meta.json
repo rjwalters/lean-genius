@@ -56,8 +56,8 @@
       "erdos_934 main theorem combining all results"
     ],
     "axiomCount": 11,
-    "lineCount": 261,
-    "assumptions": "11 axiom(s) and 8 sorry(s). Sorries: h definition existence (line 86), h_1_upper_bound (line 99), h_1_lower_bound (line 103), two_separated_is_2K2 (line 114), erdos_nesetril_conjecture_proved (line 127), h_mono_d (line 175), h_mono_t (line 180), h_polynomial_growth (line 185)."
+    "lineCount": 234,
+    "assumptions": "11 axiom(s) and 8 sorries(s). Sorries: h definition existence (line 86), h_1_upper_bound (line 99), h_1_lower_bound (line 103), two_separated_is_2K2 (line 114), erdos_nesetril_conjecture_proved (line 127), h_mono_d (line 175), h_mono_t (line 180), h_polynomial_growth (line 185)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #934** was posed by Erdős and Nešetřil, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) ≤ 5d²/4 + 1, with equality for even d.\n- **1988 (Erdős):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gyárfás-Tuza-Trotter):** Proved h_2(d) = ⌊5d²/4⌋ + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) ≤ d³-d²+d+2, and established general bounds.\n\nThe problem connects to 2K₂-free graphs and line graph diameter problems.",
@@ -181,7 +181,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos934",
-    "lineCount": 261,
+    "lineCount": 234,
     "axiomCount": 11,
     "theoremCount": 10,
     "definitionCount": 9

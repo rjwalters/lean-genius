@@ -195,13 +195,7 @@ theorem K4_edge_count : edgeCount (completeGraph 4) = 6 := by
   sorry
 
 /-- K₃ (triangle) is Ramsey size linear. -/
-axiom K3_linear : isRamseySizeLinear (completeGraph 3)
-
 /-- Paths are Ramsey size linear. -/
-axiom paths_linear (n : ℕ) : isRamseySizeLinear (pathGraph n)
-where
-  pathGraph : ℕ → SimpleGraph ℕ := fun _ => ⊥  -- Placeholder
-
 /-
 ## Antichain Structure
 

@@ -65,15 +65,44 @@ def Erdos1150Conjecture : Prop :=
     supNorm p > (1 + c) * Real.sqrt n
 
 /-
-## Parseval Lower Bound
+## Parseval Lower Bound — Infrastructure
+
+The Parseval bound can be proved via discrete Fourier analysis (no integration needed):
+
+**Proof plan** (DFT approach):
+Let N = n+1, ω = exp(2πi/N) (primitive N-th root of unity).
+1. Orthogonality: Σ_{m<N} ω^(md) = N if N|d, 0 otherwise.
+2. DFT identity: Σ_{m<N} |P(ω^m)|² = N·Σ_{k≤n} |a_k|² = N(n+1) = N².
+3. Pigeonhole: max_m |P(ω^m)|² ≥ N²/N = N = n+1.
+4. Since |ω^m| = 1: supNorm(P) ≥ √(n+1).
+
+Step 2 expands |P(ω^m)|² as a double sum, swaps summation order, and uses step 1.
+This is the main remaining work to eliminate the Parseval axiom below.
 -/
+
+/-- **Orthogonality of roots of unity**: for r with r^N = 1 and r ≠ 1,
+    the geometric sum Σ_{m<N} r^m vanishes. -/
+theorem roots_orthogonal {N : ℕ} {r : ℂ} (hr : r ^ N = 1) (hr1 : r ≠ 1) :
+    ∑ m ∈ Finset.range N, r ^ m = 0 := by
+  have h := geom_sum_eq hr1 N
+  rw [hr, sub_self, zero_div] at h
+  exact h
+
+/-- Sum over all N-th roots of unity: Σ_{m<N} 1^m = N. -/
+theorem roots_sum_one (N : ℕ) :
+    ∑ m ∈ Finset.range N, (1 : ℂ) ^ m = ↑N := by
+  simp
 
 /-- **Parseval's theorem** gives the trivial lower bound:
     For any Littlewood polynomial of degree n,
     max_{|z|=1} |P(z)| ≥ √(n+1).
 
-    Proof: ∫|P|² dθ/2π = Σ|aᵢ|² = n+1 for a degree-n Littlewood polynomial.
-    So ‖P‖_∞² ≥ ‖P‖₂² = n+1. -/
+    Proof sketch: Evaluate at (n+1)-th roots of unity. By DFT orthogonality,
+    Σ_m |P(ω^m)|² = (n+1)·Σ_k |a_k|² = (n+1)². Pigeonhole gives
+    max|P(ω^m)| ≥ √(n+1), and since |ω^m| = 1, supNorm P ≥ √(n+1).
+
+    TODO: Replace this axiom with a full proof using roots_orthogonal
+    and the DFT double-sum expansion. -/
 axiom parseval_lower_bound :
     ∀ p : Polynomial ℂ, IsLittlewoodPolynomial p →
     supNorm p ≥ Real.sqrt (p.natDegree + 1)
@@ -216,14 +245,6 @@ axiom bbmst_flat :
 /-- **Kahane (1980)**: Ultraflat polynomials exist for unimodular
     coefficients (|aᵢ| = 1, not necessarily ±1).
     This shows the restriction to ±1 is essential for #1150. -/
-axiom kahane_unimodular_ultraflat :
-    ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ n in atTop, ∃ coeffs : Fin (n + 1) → ℂ,
-      (∀ i, ‖coeffs i‖ = 1) ∧
-      ∀ z : ℂ, ‖z‖ = 1 →
-        let P := ∑ i : Fin (n + 1), coeffs i * z ^ (i : ℕ)
-        (1 - ε) * Real.sqrt n ≤ ‖P‖ ∧ ‖P‖ ≤ (1 + ε) * Real.sqrt n
-
 /-- BBMST implies the sup norm of some Littlewood polynomial is at most c₂√n.
     In particular, it's NOT true that max|P| > C√n for arbitrarily large C.
     This follows from bbmst_flat (the sup norm is bounded by the pointwise bound). -/
@@ -276,12 +297,6 @@ theorem flat_does_not_imply_ultraflat :
 /-- **Rudin-Shapiro polynomials** give a concrete family with
     max_{|z|=1} |P(z)| ≤ √(2(n+1)) for degree n.
     These are Littlewood polynomials with bounded sup norm. -/
-axiom rudin_shapiro_bound :
-    ∀ k : ℕ, k ≥ 1 →
-    ∃ p : Polynomial ℂ, p.natDegree = 2^k - 1 ∧
-      IsLittlewoodPolynomial p ∧
-      supNorm p ≤ Real.sqrt (2 * 2^k)
-
 /-
 ## Summary
 -/

@@ -29,9 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "SURVEY: 2 axioms, 0 sorries. covering_upper_bound potentially provable via inclusion-exclusion averaging argument.",
     "builtItems": [
-      "Proved single_prime_lower via ceiling-division injection: i ↦ (⌈a/p⌉+i)*p maps range(k/p) into filter(p∣·)(Ico a (a+k))"
+      "Proved single_prime_lower via ceiling-division injection: i ↦ (⌈a/p⌉+i)*p maps range(k/p) into filter(p∣·)(Ico a (a+k))",
+      "Proved erdos_selfridge_exact from axiom (trivial: ∃ x, f = x)",
+      "Proved covering_lower_bound theorem (density < 1 ⟹ lower bound trivial)",
+      "Proved alpha_gt_3_open theorem from covering_lower_bound + covering_upper_bound axiom"
     ],
     "insights": [
       "single_prime_lower proved: inject range(k/p) → multiples via i ↦ (⌈a/p⌉+i)*p, key: Nat.div_add_mod + mul_comm for omega",
@@ -39,10 +42,17 @@
       "Key approach for upper bound: filter(p∣·)(range k) ⊆ image(·*p)(range(k/p+1)), use card_image_le",
       "3 axioms are deep: covering_asymptotic (main term), erdos_selfridge_exact (solved 2<α<3), alpha_gt_3_open",
       "9 theorems fully proved: single_prime_lower/upper, covering_le_k, density bounds, concrete examples",
-      "covering_complement_relation is a placeholder (proves True)"
+      "covering_complement_relation is a placeholder (proves True)",
+      "erdos_selfridge_exact was trivially provable: ∃ x, f = x ⟹ ⟨f, rfl⟩ (axiom eliminated)",
+      "alpha_gt_3_open lower bound proved: density < 1 makes k*(density-1) ≤ 0 ≤ F_k (axiom split, lower bound proved)",
+      "covering_upper_bound remains as axiom — needs inclusion-exclusion + periodicity averaging argument",
+      "covering_upper_bound: F_k <= k*density + |primes| — provable via averaging (infimum <= average over one period), ~50 lines",
+      "covering_asymptotic: deep analytic result, not tractable"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove covering_upper_bound via periodicity averaging argument"
+    ],
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -67,9 +77,9 @@
     {
       "path": "Proofs/Erdos1143Problem.lean",
       "filename": "Erdos1143Problem.lean",
-      "lineCount": 274,
-      "theoremCount": 8,
-      "axiomCount": 3,
+      "lineCount": 298,
+      "theoremCount": 11,
+      "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

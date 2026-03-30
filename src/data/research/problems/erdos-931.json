@@ -31,13 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Refined axiom — exists_prime_between_blocks promoted from axiom to theorem via case analysis. Remaining axiom (exists_prime_between_blocks_hard) is strictly weaker with 3 extra hypotheses.",
     "builtItems": [
       "Fixed consecutive product computation bug (9459360 → 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
       "Proved exists_prime_between_blocks_small: covers k₁ ≥ n₁ case without SamePrimeFactors",
       "Proved exists_prime_between_of_large_prime_factor: uses SamePrimeFactors + Prime.dvd_finset_prod_iff",
-      "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)"
+      "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)",
+      "Proved exists_prime_between_blocks as theorem (was axiom) — 4-way case analysis in Erdos931Problem.lean:309-330"
     ],
     "insights": [
       "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
@@ -46,7 +47,10 @@
       "The HARD remaining case: n₁ > k₁, first block all composite, all prime factors ≤ n₁ — SamePrimeFactors forces second block to be n₁-smooth",
       "Empirically, the hard case appears vacuously true: for all tested n₁ with all-composite blocks, SamePrimeFactors fails",
       "stronger_implies_main requires showing the outer set {n₂ > 2(n₁+k₁)} is finite — needs smooth number theory (Størmer)",
-      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)"
+      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)",
+      "Refined exists_prime_between_blocks: general statement proved as theorem via 4-way case analysis (Bertrand for k₁≥n₁, Bertrand for 2n₁≤n₂+k₂, large prime factor transfer, hard-case axiom)",
+      "The hard-case axiom (exists_prime_between_blocks_hard) adds 3 hypotheses: k₁<n₁, n₂+k₂<2n₁, all prime factors ≤n₁ — strictly weaker than the original",
+      "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth"
     ],
     "mathlibGaps": [
       "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"
@@ -75,8 +79,8 @@
     {
       "path": "Proofs/Erdos931Problem.lean",
       "filename": "Erdos931Problem.lean",
-      "lineCount": 331,
-      "theoremCount": 34,
+      "lineCount": 454,
+      "theoremCount": 39,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,

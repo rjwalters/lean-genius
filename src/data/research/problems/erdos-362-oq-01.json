@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T06:54:32-07:00",
-    "iteration": 3,
-    "focus": "Axiom elimination in parent Erdos362Problem.lean",
+    "iteration": 4,
+    "focus": "Proved fourier_extraction via Fourier orthogonality. 2 axioms remain (S-S 1965, Halász 1977) — both deep.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,14 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed subsetSumGF bug and erdos_moser_1965_bound statement. Prior PR #7493 handles axiom elimination.",
+    "progressSummary": "PROGRESS: Eliminated fourier_extraction axiom. Axiom count 3→2. Added 3 helper lemmas (cexp_pow_eq, cexp_zpow, exp_orthogonality) and converted axiom to theorem using Fourier orthogonality + GF expansion.",
     "builtItems": [
       "Converted erdos_moser_1965_bound from axiom to theorem in Proofs/Erdos362Problem.lean",
       "Added log_ge_one_of_ge_three lemma (line 73)",
       "Added rpow_ge_one_of_ge_one lemma (line 79)",
       "Updated meta.json: axiomCount 8→7, lineCount 193→222",
       "Fixed subsetSumGF: z^(a.toNat) → z^a using zpow for correct negative integer exponents",
-      "Fixed erdos_moser_1965_bound: A.card > 0 → A.card ≥ 3 (fixes false statement)"
+      "Fixed erdos_moser_1965_bound: A.card > 0 → A.card ≥ 3 (fixes false statement)",
+      "zpow_finset_sum theorem in Erdos362Problem.lean (∏ z^a = z^(∑ a))",
+      "gf_at_one theorem in Erdos362Problem.lean (GF(1) = 2^|A|)",
+      "gf_expansion theorem in Erdos362Problem.lean (product-to-sum identity via prod_one_add)",
+      "gf_disjoint_union theorem in Erdos362Problem.lean (GF factors over disjoint union)",
+      "Proof roadmap comment for fourier_extraction in Erdos362Problem.lean",
+      "Proved cexp_pow_eq: exp(z)^n = exp(n*z) for ℕ",
+      "Proved cexp_zpow: exp(z)^n = exp(n*z) for ℤ",
+      "Proved exp_orthogonality: Fourier orthogonality on [0,2π]",
+      "Proved fourier_extraction: Fourier coefficient extraction (was axiom, now theorem)"
     ],
     "insights": [
       "erdos_moser_1965_bound was incorrectly stated as axiom: bound becomes 0 at N=1 (log(1)=0) making it false",
@@ -47,14 +56,22 @@
       "subsetSumGF has potential bug: z^(a.toNat) loses info for negative a since Int.toNat clips to 0",
       "subsetSumGF bug FIXED: z^(a.toNat) clipped negatives to 0, now uses z^a (zpow)",
       "erdos_moser_1965_bound statement FIXED: was false for N≤2 (log factor killed RHS), now requires N≥3",
-      "The E-M bound follows from S-S since (log N)^(3/2) ≥ 1 for N ≥ 3"
+      "The E-M bound follows from S-S since (log N)^(3/2) ≥ 1 for N ≥ 3",
+      "Integrated 4 proved theorems from Aristotle companion file: zpow_finset_sum, gf_at_one, gf_expansion, gf_disjoint_union",
+      "gf_expansion (∏(1+z^a) = ∑_S z^{setSum S}) is the key stepping stone for proving fourier_extraction",
+      "fourier_extraction proof roadmap: expand GF via gf_expansion, swap sum/integral, use orthogonality ∫₀²π e^{inθ}dθ = 2πδ_{n,0}",
+      "symmetric_max_at_zero verified correct for N=2,4,6 (even cases): the count at t=0 ties for max on a plateau",
+      "Two approaches for fourier_extraction: (1) direct FTC+orthogonality on [0,2π], (2) rewrite via Mathlib AddCircle/fourierCoeff",
+      "Proved fourier_extraction: converted axiom to theorem using Fourier orthogonality (∫₀²π exp(inθ)dθ = 2πδ_{n,0}), GF expansion, and integral_exp_mul_complex from Mathlib",
+      "Axiom count reduced 3→2. Remaining axioms (sarkozy_szemeredi_1965, halasz_1977) are deep analytic results."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Docker build compiles (Docker was not running during this session)",
-      "Investigate subsetSumGF bug: z^(a.toNat) incorrect for negative a",
-      "Investigate symmetric_max_at_zero correctness for even N",
-      "The exact constant question (main OQ) remains open — requires deep analysis"
+      "Prove fourier_extraction: use gf_expansion + Mathlib Fourier orthogonality to eliminate this axiom",
+      "The proof requires either (1) intervalIntegral FTC or (2) Mathlib AddCircle fourierCoeff framework",
+      "symmetric_max_at_zero is correct but requires log-concavity / unimodality theory to prove — deep",
+      "bound_tight_order requires Stirling-type asymptotics of central binomial coefficients — hard",
+      "The remaining 5 deep axioms (S-S, Halász, Stanley, Halász-multi-dim) are unlikely provable from Mathlib"
     ],
     "markdown": "# Knowledge Base: erdos-362-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -73,11 +90,22 @@
   "lastUpdate": "2026-03-28T14:26:43.173Z",
   "leanFiles": [
     {
+      "path": "Proofs/Erdos362Aristotle.lean",
+      "filename": "Erdos362Aristotle.lean",
+      "lineCount": 81,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos362Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos362Problem.lean",
       "filename": "Erdos362Problem.lean",
-      "lineCount": 224,
-      "theoremCount": 4,
-      "axiomCount": 7,
+      "lineCount": 337,
+      "theoremCount": 10,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

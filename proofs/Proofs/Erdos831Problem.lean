@@ -186,16 +186,17 @@ noncomputable def h (n : ℕ) : ℕ :=
 With n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.
 -/
 theorem h_upper_bound (n : ℕ) : h n ≤ Nat.choose n 3 := by
-  -- Proof strategy (now feasible with Finset-based countDistinctRadii):
-  -- 1. If {k | ∃ S, ...} = ∅, then sInf = 0 ≤ C(n,3)  ✓
-  -- 2. If non-empty, any k in the set has k = (allCircumradiiFinset S).card
-  --    Since allCircumradiiFinset is an image of ordered triples, and
-  --    circumradiusOf is permutation-invariant, the image has at most
-  --    C(n,3) elements (one per unordered triple).
-  -- 3. So sInf ≤ k ≤ C(n,3)
-  -- REQUIRES: circumradiusOf permutation invariance (swapping arguments
-  -- preserves side length product and absolute area)
-  sorry
+  -- sInf {k | ...} ≤ C(n,3): empty set gives 0 ≤ C(n,3), otherwise
+  -- any member k = countDistinctRadii S ≤ C(|S|,3) = C(n,3)
+  by_cases hne : Set.Nonempty {k : ℕ | ∃ S : Finset Point, S.card = n ∧
+      isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k}
+  · obtain ⟨k, S, hcard, hGP, hcount⟩ := hne
+    calc h n ≤ k := Nat.sInf_le ⟨S, hcard, hGP, hcount⟩
+      _ ≤ Nat.choose n 3 := by
+          rw [hcount, ← hcard]; exact countDistinctRadii_le_choose S
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    have h0 : h n = 0 := by unfold h; rw [hne]; exact Nat.sInf_eq_zero.mpr (Or.inr rfl)
+    omega
 
 /--
 **h(3) = 1:**
@@ -285,15 +286,53 @@ theorem h_three : h 3 = 1 := by
         | rw [circumradiusOf_cycle]                 -- (E2, O, E1): one cycle
         | rw [circumradiusOf_cycle, circumradiusOf_cycle]  -- (E1, E2, O): two cycles
   · -- 1 ≤ h 3: any 3-point GP config has ≥ 1 distinct radius
-    -- (the image of a nonempty set is nonempty → card ≥ 1)
-    sorry
+    suffices h 3 ≠ 0 by omega
+    intro h0
+    unfold h at h0
+    rw [Nat.sInf_eq_zero] at h0
+    rcases h0 with ⟨S, hcard, _, hcount⟩ | hempty
+    · -- Case: countDistinctRadii S = 0 for a 3-point config — impossible
+      obtain ⟨p1, T2, h1, rfl, hT2⟩ :=
+        Finset.card_eq_succ.mp (show S.card = 2 + 1 by omega)
+      obtain ⟨p2, T1, h2, rfl, hT1⟩ :=
+        Finset.card_eq_succ.mp (show T2.card = 1 + 1 by omega)
+      obtain ⟨p3, rfl⟩ := Finset.card_eq_one.mp (show T1.card = 1 by omega)
+      have d12 : p1 ≠ p2 := fun h => h1 (by rw [h]; exact Finset.mem_insert_self _ _)
+      have d13 : p1 ≠ p3 := fun h => h1 (by rw [h]; simp)
+      have d23 : p2 ≠ p3 := fun h => h2 (by rw [h]; simp)
+      have hmem : circumradiusOf p1 p2 p3 ∈
+          allCircumradiiFinset (insert p1 (insert p2 {p3})) := by
+        simp only [allCircumradiiFinset]
+        apply Finset.mem_image_of_mem (a := (p1, (p2, p3)))
+        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_insert,
+                   Finset.mem_singleton]
+        exact ⟨⟨Or.inl rfl, Or.inr (Or.inl rfl), Or.inr (Or.inr rfl)⟩,
+               d12, d23, d13⟩
+      simp only [countDistinctRadii, Finset.card_eq_zero] at hcount
+      rw [hcount] at hmem
+      exact absurd hmem (Finset.not_mem_empty _)
+    · -- Case: set is empty — impossible, standard triangle is a valid config
+      have hmem : countDistinctRadii {p_origin, p_e1, p_e2} ∈ {k : ℕ |
+          ∃ S : Finset Point, S.card = 3 ∧
+            isInGeneralPosition (↑S : Set Point) ∧ countDistinctRadii S = k} :=
+        ⟨{p_origin, p_e1, p_e2}, standard_triangle_card, standard_triangle_gp, rfl⟩
+      rw [hempty] at hmem
+      exact absurd hmem (Set.not_mem_empty _)
 
 /--
-**h(4) ≥ 2:**
-Four points in general position give at least 2 distinct radii.
-(If all 4 circumradii were equal, the points would be concyclic.)
+**h(4) = 1 (CORRECTED):**
+Previously axiomatized as h(4) ≥ 2, but this is FALSE.
+
+Counterexample: An equilateral triangle {A, B, C} with its circumcenter D.
+- A = (0,0), B = (1,0), C = (1/2, √3/2), D = (1/2, √3/6)
+- No 3 collinear (D is interior to ABC) ✓
+- Not concyclic (D is at the circumcenter, not on the circumcircle) ✓
+- ALL 4 circumradii = 1/√3 (circumcircles of each triple have equal radii
+  because D is equidistant from all 3 vertices at distance R = 1/√3)
+
+So countDistinctRadii({A,B,C,D}) = 1, giving h(4) ≤ 1.
+Combined with h(4) ≥ 1 (trivially, any triple has a circumcircle), h(4) = 1.
 -/
-axiom h_four_lower : h 4 ≥ 2
 
 /-
 ## Part VI: The Main Conjecture
@@ -499,6 +538,139 @@ private theorem triangle_not_collinear : ¬areCollinear p_origin p_e1 p_e2 := by
   · exact ha h2
   · exact hb h3
 
+/-- The standard triangle {(0,0), (1,0), (0,1)} has cardinality 3. -/
+private theorem standard_triangle_card :
+    ({p_origin, p_e1, p_e2} : Finset Point).card = 3 := by
+  have h1 : p_e1 ∉ ({p_e2} : Finset Point) := by
+    simp [Finset.mem_singleton, p_e1_ne_e2]
+  have h2 : p_origin ∉ ({p_e1, p_e2} : Finset Point) := by
+    simp [Finset.mem_insert, Finset.mem_singleton, p_origin_ne_e1, p_origin_ne_e2]
+  rw [Finset.card_insert_of_not_mem h2, Finset.card_insert_of_not_mem h1,
+      Finset.card_singleton]
+
+/-- The standard triangle {(0,0), (1,0), (0,1)} is in general position. -/
+private theorem standard_triangle_gp :
+    isInGeneralPosition (↑({p_origin, p_e1, p_e2} : Finset Point) : Set Point) := by
+  constructor
+  · intro q1 q2 q3 hq1 hq2 hq3 hd12 hd23 hd13
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hq1 hq2 hq3
+    rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+      rcases hq3 with rfl | rfl | rfl <;>
+    first
+    | exact absurd rfl hd12 | exact absurd rfl hd23 | exact absurd rfl hd13
+    | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd23)
+    | exact absurd rfl (Ne.symm hd13)
+    | (intro ⟨a, b, c, hab, h1, h2, h3⟩; exact triangle_not_collinear
+        (by first | exact ⟨a, b, c, hab, h1, h2, h3⟩
+                  | exact ⟨a, b, c, hab, h1, h3, h2⟩
+                  | exact ⟨a, b, c, hab, h2, h1, h3⟩
+                  | exact ⟨a, b, c, hab, h2, h3, h1⟩
+                  | exact ⟨a, b, c, hab, h3, h1, h2⟩
+                  | exact ⟨a, b, c, hab, h3, h2, h1⟩))
+  · intro q1 q2 q3 q4 hq1 hq2 hq3 hq4 hd12 hd23 hd34 hd13 hd14 hd24
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hq1 hq2 hq3 hq4
+    rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+      rcases hq3 with rfl | rfl | rfl <;> rcases hq4 with rfl | rfl | rfl <;>
+    first
+    | exact absurd rfl hd12 | exact absurd rfl hd13 | exact absurd rfl hd14
+    | exact absurd rfl hd23 | exact absurd rfl hd24 | exact absurd rfl hd34
+    | exact absurd rfl (Ne.symm hd12) | exact absurd rfl (Ne.symm hd13)
+    | exact absurd rfl (Ne.symm hd14) | exact absurd rfl (Ne.symm hd23)
+    | exact absurd rfl (Ne.symm hd24) | exact absurd rfl (Ne.symm hd34)
+
+/-- circumradiusOf is invariant under all S₃ permutations of elements from a 3-element set.
+    If q1, q2, q3 are pairwise distinct members of {p1, p2, p3}, then
+    circumradiusOf q1 q2 q3 = circumradiusOf p1 p2 p3. -/
+private theorem circumradiusOf_eq_of_mem_triple
+    {p1 p2 p3 q1 q2 q3 : Point}
+    (hq1 : q1 ∈ ({p1, p2, p3} : Finset Point))
+    (hq2 : q2 ∈ ({p1, p2, p3} : Finset Point))
+    (hq3 : q3 ∈ ({p1, p2, p3} : Finset Point))
+    (dq12 : q1 ≠ q2) (dq23 : q2 ≠ q3) (dq13 : q1 ≠ q3) :
+    circumradiusOf q1 q2 q3 = circumradiusOf p1 p2 p3 := by
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hq1 hq2 hq3
+  rcases hq1 with rfl | rfl | rfl <;> rcases hq2 with rfl | rfl | rfl <;>
+    rcases hq3 with rfl | rfl | rfl <;>
+  first
+  | exact absurd rfl dq12 | exact absurd rfl dq23 | exact absurd rfl dq13
+  | exact absurd rfl (Ne.symm dq12) | exact absurd rfl (Ne.symm dq23)
+  | exact absurd rfl (Ne.symm dq13)
+  | rfl
+  | rw [circumradiusOf_perm12]
+  | rw [circumradiusOf_perm23]
+  | rw [circumradiusOf_perm13]
+  | rw [circumradiusOf_cycle]
+  | rw [circumradiusOf_cycle, circumradiusOf_cycle]
+
+/-- Circumradius of a triple, extracted via Multiset.toList.
+    Well-defined by circumradiusOf S₃ invariance. -/
+private noncomputable def tripleCircumradius (T : Finset Point) : ℝ :=
+  let l := T.val.toList
+  if h : l.length ≥ 3 then
+    circumradiusOf (l.get ⟨0, by omega⟩) (l.get ⟨1, by omega⟩) (l.get ⟨2, by omega⟩)
+  else 0
+
+/-- allCircumradiiFinset S is contained in the image of S.powersetCard 3
+    under tripleCircumradius. This is because each ordered triple (p,q,s) maps
+    to circumradiusOf p q s, and {p,q,s} ∈ powersetCard 3 maps to the same
+    value by S₃ invariance of circumradiusOf. -/
+private theorem allCircumradiiFinset_subset_powersetCard (S : Finset Point) :
+    allCircumradiiFinset S ⊆ (S.powersetCard 3).image tripleCircumradius := by
+  intro r hr
+  simp only [allCircumradiiFinset, Finset.mem_image, Finset.mem_filter,
+             Finset.mem_product] at hr
+  obtain ⟨⟨p, q, s⟩, ⟨⟨hp, hq, hs⟩, dpq, dqs, dps⟩, heq⟩ := hr
+  rw [Finset.mem_image]
+  refine ⟨{p, q, s}, ?mem, ?val⟩
+  case mem =>
+    rw [Finset.mem_powersetCard]
+    constructor
+    · exact Finset.insert_subset_iff.mpr ⟨hp,
+        Finset.insert_subset_iff.mpr ⟨hq, Finset.singleton_subset_iff.mpr hs⟩⟩
+    · rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+          Finset.card_singleton]
+      · exact Finset.not_mem_singleton.mpr dqs
+      · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
+  case val =>
+    rw [← heq]
+    simp only [tripleCircumradius]
+    -- l = ({p,q,s}).val.toList has length 3 (since card = 3)
+    set T : Finset Point := {p, q, s}
+    set l := T.val.toList
+    have hcard : T.card = 3 := by
+      rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+          Finset.card_singleton]
+      · exact Finset.not_mem_singleton.mpr dqs
+      · simp [Finset.mem_insert, Finset.mem_singleton, dpq, dps]
+    have hlen : l.length = 3 := by
+      rw [show l.length = T.val.card from (Multiset.length_toList T.val).symm]
+      exact hcard
+    simp only [dif_pos (show l.length ≥ 3 by omega)]
+    -- l's elements are in T = {p,q,s} and are pairwise distinct (T is nodup)
+    have h_mem : ∀ i : Fin l.length, l.get i ∈ T := by
+      intro i
+      exact Finset.mem_def.mpr (Multiset.mem_toList.mp (List.get_mem l i.val i.isLt))
+    have h_nodup : l.Nodup := by
+      rw [show l = T.val.toList from rfl, ← Multiset.coe_nodup, Multiset.coe_toList]
+      exact T.nodup
+    -- Apply S₃ invariance
+    exact circumradiusOf_eq_of_mem_triple
+      (h_mem ⟨0, by omega⟩) (h_mem ⟨1, by omega⟩) (h_mem ⟨2, by omega⟩)
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+      (by intro h; exact absurd ((List.Nodup.get_inj_iff h_nodup).mp h) (by omega))
+
+/-- The number of distinct circumradii of S is at most C(|S|, 3). -/
+private theorem countDistinctRadii_le_choose (S : Finset Point) :
+    countDistinctRadii S ≤ Nat.choose S.card 3 := by
+  calc (allCircumradiiFinset S).card
+      ≤ ((S.powersetCard 3).image tripleCircumradius).card :=
+        Finset.card_le_card (allCircumradiiFinset_subset_powersetCard S)
+    _ ≤ (S.powersetCard 3).card := Finset.card_image_le
+    _ = Nat.choose S.card 3 := S.card_powersetCard 3
+
 end PointHelpers
 
 /-
@@ -513,20 +685,20 @@ of distinct circumradii achievable by n points in general position.
 
 Known:
 1. h(3) = 1 (trivial)
-2. h(4) ≥ 2 (four points give at least 2 radii)
+2. h(4) = 1 (equilateral triangle + circumcenter is a counterexample to h(4)≥2)
 3. h(n) ≤ C(n,3) (obvious upper bound)
 
+Note: h(4) ≥ 2 was previously axiomatized but is FALSE. The equilateral triangle
+{(0,0), (1,0), (1/2, √3/2)} with its circumcenter (1/2, √3/6) gives 4 points
+in general position where all 4 circumradii equal 1/√3.
+
 Unknown:
+- For which n does h(n) ≥ 2?
 - Exact growth rate of h(n)
-- Whether h(n) = Θ(n), Θ(n^α), or Θ(n²)
 -/
 theorem erdos_831_summary :
-    h 3 = 1 ∧ h 4 ≥ 2 ∧ ∀ n : ℕ, h n ≤ Nat.choose n 3 := by
-  constructor
-  · exact h_three
-  constructor
-  · exact h_four_lower
-  · exact h_upper_bound
+    h 3 = 1 ∧ ∀ n : ℕ, h n ≤ Nat.choose n 3 :=
+  ⟨h_three, h_upper_bound⟩
 
 /--
 **Main Question:**

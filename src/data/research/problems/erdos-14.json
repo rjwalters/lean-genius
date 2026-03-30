@@ -1,13 +1,13 @@
 {
   "slug": "erdos-14",
-  "title": "Erd\u0151s #14",
+  "title": "Erdős #14",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Let $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erd\u0151s and Nathanson, although later Erd\u0151s attributes this to Erd\u0151s, S\u00e1rk\u00f6zy, and Szemer\u00e9di (but gives...",
+    "plain": "Let $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erdős and Nathanson, although later Erdős attributes this to Erdős, Sárközy, and Szemerédi (but gives...",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (sidon_size_bound) via counting argument. File: 4\u21923 axioms.",
+    "progressSummary": "PROGRESS: Eliminated 3 sorries in Erdos140Problem.lean (3->0). Proved r3_superlogarithmic and r3_density_vanishes as corollaries of Kelley-Meka. Completed greedyAP3Free definition.",
     "builtItems": [
       "Proved non_unique_monotone in Erdos14Problem.lean:102 (3-line proof)",
       "Fixed import: Asymptotics.Asymptotics -> Asymptotics.Defs in Erdos14Problem.lean:24",
-      "Proved sidon_size_bound theorem in Erdos14UniqueSums.lean (replacing axiom), +3 helper lemmas (~120 lines)"
+      "Proved sidon_size_bound theorem in Erdos14UniqueSums.lean (replacing axiom), +3 helper lemmas (~120 lines)",
+      "Proved r3_superlogarithmic in Erdos140Problem.lean:132 (corollary of Kelley-Meka)",
+      "Proved r3_density_vanishes in Erdos140Problem.lean:165 (limit theorem)",
+      "Defined toBase3Binary helper in Erdos140Problem.lean:225 (Stanley sequence)",
+      "Completed greedyAP3Free definition in Erdos140Problem.lean:236 (no sorry)"
     ],
     "insights": [
       "12 associated Lean files - largest problem family encountered",
@@ -44,11 +48,17 @@
       "sidon_size_bound (UniqueSums) could be proved from Erdos340GreedySidon sidon_upper_bound_weak but needs Set/Finset conversion",
       "Most axioms in Erdos14Problem.lean are deep results (open conjectures, deep theorems) that must stay as axioms",
       "erdos_freud_finite duplicated between Erdos14Problem.lean and Erdos14UniqueSums.lean",
-      "sidon_size_bound axiom eliminated: proved from Sidon difference-counting argument (k(k-1)/2 \u2264 N-1 via injective diff map)"
+      "sidon_size_bound axiom eliminated: proved from Sidon difference-counting argument (k(k-1)/2 ≤ N-1 via injective diff map)",
+      "Erdos140Problem.lean had 3 provable sorries: r3_superlogarithmic, r3_density_vanishes, greedyAP3Free definition",
+      "r3_superlogarithmic proved via Kelley-Meka(C+1) + log N > K/eps for large N",
+      "r3_density_vanishes proved using r3_superlogarithmic as a building block",
+      "greedyAP3Free defined via binary-to-base-3 (Stanley sequence A005836 + 1)",
+      "Erdos14Problem.lean: remaining 6 axioms are all deep (2 open conjectures, 3 published results, 1 structural)",
+      "Erdos14UniqueSums.lean: remaining 3 axioms are all deep published results"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #14 - Knowledge Base\n\n## Problem Statement\n\nLet $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erd\u0151s and Nathanson, although later Erd\u0151s attributes this to Erd\u0151s, S\u00e1rk\u00f6zy, and Szemer\u00e9di (but gives no reference), and claims a construction of an $A$ such that for all $\\epsilon>0$ and all large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\ll_\\epsilon N^{1/2+\\epsilon},\\]and yet there for all $\\epsilon>0$ there exist infinitely many $N$ where\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/3-\\epsilon}.\\]Erd\u00f6s and Freud investigated the finite analogue in [ErFr91], proving that there exists $A\\subseteq \\{1,\\ldots,N\\}$ such that the number of integers not representable in exactly one w\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #3\n- Problem #13\n- Problem #15\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n- Er97\n- Er97e\n- ErFr91\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #14 - Knowledge Base\n\n## Problem Statement\n\nLet $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erdős and Nathanson, although later Erdős attributes this to Erdős, Sárközy, and Szemerédi (but gives no reference), and claims a construction of an $A$ such that for all $\\epsilon>0$ and all large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\ll_\\epsilon N^{1/2+\\epsilon},\\]and yet there for all $\\epsilon>0$ there exist infinitely many $N$ where\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/3-\\epsilon}.\\]Erdös and Freud investigated the finite analogue in [ErFr91], proving that there exists $A\\subseteq \\{1,\\ldots,N\\}$ such that the number of integers not representable in exactly one w\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #3\n- Problem #13\n- Problem #15\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n- Er97\n- Er97e\n- ErFr91\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -80,20 +90,20 @@
     {
       "path": "Proofs/Erdos140Problem.lean",
       "filename": "Erdos140Problem.lean",
-      "lineCount": 268,
-      "theoremCount": 6,
-      "axiomCount": 9,
+      "lineCount": 314,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 11,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos140Problem.lean"
     },
     {
       "path": "Proofs/Erdos141Problem.lean",
       "filename": "Erdos141Problem.lean",
-      "lineCount": 172,
-      "theoremCount": 9,
-      "axiomCount": 3,
+      "lineCount": 170,
+      "theoremCount": 10,
+      "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
@@ -135,9 +145,9 @@
     {
       "path": "Proofs/Erdos145Problem.lean",
       "filename": "Erdos145Problem.lean",
-      "lineCount": 146,
+      "lineCount": 134,
       "theoremCount": 6,
-      "axiomCount": 6,
+      "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
@@ -146,9 +156,9 @@
     {
       "path": "Proofs/Erdos146Problem.lean",
       "filename": "Erdos146Problem.lean",
-      "lineCount": 241,
+      "lineCount": 216,
       "theoremCount": 4,
-      "axiomCount": 7,
+      "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -190,9 +200,9 @@
     {
       "path": "Proofs/Erdos14Problem.lean",
       "filename": "Erdos14Problem.lean",
-      "lineCount": 109,
+      "lineCount": 86,
       "theoremCount": 1,
-      "axiomCount": 6,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -201,8 +211,8 @@
     {
       "path": "Proofs/Erdos14UniqueSums.lean",
       "filename": "Erdos14UniqueSums.lean",
-      "lineCount": 443,
-      "theoremCount": 8,
+      "lineCount": 444,
+      "theoremCount": 6,
       "axiomCount": 3,
       "defCount": 13,
       "sorryCount": 0,

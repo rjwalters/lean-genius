@@ -1,0 +1,81 @@
+{
+  "id": "hilbert-22-oq-01",
+  "title": "Higher-Dimensional Uniformization",
+  "slug": "hilbert-22-oq-01",
+  "description": "Explores how the uniformization theorem generalizes to higher dimensions via Kodaira dimension, Yau's theorem, and Kobayashi hyperbolicity.",
+  "meta": {
+    "author": "Kodaira, Yau, Kobayashi",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert22OQ01.lean",
+    "tags": [
+      "complex-geometry",
+      "uniformization",
+      "classification",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 156,
+    "assumptions": "0 axioms, 1 sorry (IsKobayashiHyperbolic definition). Previously listed axioms (yau_theorem, disk_kobayashi_hyperbolic, plane_not_hyperbolic) do not exist in the file.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Kodaira dimension as classification invariant",
+      "Enriques-Kodaira surface classification",
+      "Analogy table: 1D uniformization → higher-dim Kodaira"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kodaira",
+      "title": "Kodaira Dimension",
+      "startLine": 28,
+      "endLine": 55,
+      "summary": "Kodaira Dimension"
+    },
+    {
+      "id": "surfaces",
+      "title": "Surface Classification",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Surface Classification"
+    },
+    {
+      "id": "yau",
+      "title": "Yau's Theorem",
+      "startLine": 92,
+      "endLine": 110,
+      "summary": "Yau's Theorem"
+    },
+    {
+      "id": "kobayashi",
+      "title": "Kobayashi Hyperbolicity",
+      "startLine": 112,
+      "endLine": 140,
+      "summary": "Kobayashi Hyperbolicity"
+    }
+  ],
+  "conclusion": {
+    "summary": "Higher-dimensional uniformization explored via Kodaira dimension and Yau's theorem.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-22",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Hilbert22OQ01",
+    "lineCount": 155,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 6
+  }
+}

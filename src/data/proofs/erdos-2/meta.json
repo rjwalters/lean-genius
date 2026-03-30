@@ -29,15 +29,15 @@
         "relation": "Erdős Problem #3 asks about covering systems with all moduli odd (Erdős-Selfridge conjecture)"
       }
     ],
-    "axiomCount": 4,
-    "lineCount": 264,
+    "axiomCount": 3,
+    "lineCount": 267,
     "prerequisites": [
       "Modular arithmetic and congruence classes",
       "Chinese Remainder Theorem",
       "Basic combinatorics and the pigeonhole principle",
       "Lovász Local Lemma (for understanding Hough's proof)"
     ],
-    "assumptions": "4 axioms: hough_bound, balister_bound, owens_construction, and 1 more. See Lean source for complete statements.",
+    "assumptions": "3 axioms: balister_bound, owens_construction, reciprocal_sum_ge_one. hough_bound proved from balister_bound (616000 ≤ 10^16).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -250,9 +250,9 @@
       "Finset"
     ],
     "namespace": "Erdos2",
-    "lineCount": 264,
-    "axiomCount": 4,
-    "theoremCount": 8,
+    "lineCount": 267,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 17
   }
 }

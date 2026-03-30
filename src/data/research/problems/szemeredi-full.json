@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-03-21",
-    "iteration": 0,
+    "iteration": 1,
     "focus": "Full Szemeredi theorem via regularity lemma approach. Induction on k (AP length).",
     "blockers": [
       "Depends on szemeredi-regularity and szemeredi-counting."
@@ -31,20 +31,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Highly developed formalization. 43T, 1A (szemeredi_k_ge_4 for k≥4, needs hypergraph regularity). k=1,2,3 fully proved. Only gap is k≥4 which requires infrastructure not in Mathlib.",
+    "progressSummary": "PROGRESS: Added 4 infrastructure lemmas (hasAP_mono, hasAP_superset, szemeredi_mono, ap_free_density_bound). Now 47T/1A/0S. Axiom remains deep (hypergraph regularity).",
     "builtItems": [
-      "Assessment: highly developed formalization, 43T/1A/0S across 4 files, 2174 lines total"
+      "Assessment: highly developed formalization, 43T/1A/0S across 4 files, 2174 lines total",
+      "Added hasAP_mono: k-AP implies j-AP for j ≤ k (SzemerediTheorem.lean:342)",
+      "Added hasAP_superset: APs preserved under supersets (SzemerediTheorem.lean:348)",
+      "Added szemeredi_mono: Szemerédi monotone in k (SzemerediTheorem.lean:354)",
+      "Added ap_free_density_bound: contrapositive density bound (SzemerediTheorem.lean:364)"
     ],
     "insights": [
-      "4 Lean files: Core (110L, 3T), Counting (1196L, 13T), Regularity (533L, 15T), Theorem (335L, 12T)",
-      "Total: 2174 lines, 43 theorems, 1 axiom (szemeredi_k_ge_4), 0 sorries",
+      "4 Lean files: Core (110L, 3T), Counting (1196L, 13T), Regularity (533L, 15T), Theorem (374L, 16T)",
+      "Total: 2213 lines, 47 theorems, 1 axiom (szemeredi_k_ge_4), 0 sorries",
       "k=1,2 proved (trivial cases), k=3 proved via Mathlib corner theorem chain",
       "Only axiom: szemeredi_k_ge_4 — k ≥ 4 case requires hypergraph regularity (not in Mathlib)",
       "Extensive infrastructure: regularity lemma, counting lemma, energy increment all formalized",
-      "Axiom is deep: needs hypergraph regularity or Furstenberg ergodic theory, neither in Mathlib"
+      "Axiom is deep: needs hypergraph regularity or Furstenberg ergodic theory, neither in Mathlib",
+      "Several Erdős problems (817, 716, 139) define own AP predicates — could import from SzemerediTheorem.lean",
+      "Van der Waerden density version from Szemerédi is a tractable follow-up (pigeonhole argument)"
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "Hypergraph regularity lemma (Rödl-Skokan, Gowers)",
+      "Furstenberg's ergodic correspondence principle"
+    ],
+    "nextSteps": [
+      "Prove Van der Waerden density version from Szemerédi (pigeonhole, ~50 lines)",
+      "Refactor Erdős 817/139 to import AP definitions from SzemerediTheorem.lean",
+      "Add infinitary formulation (positive upper density ⇒ k-APs)"
+    ]
   },
   "tags": [
     "szemeredi",
@@ -62,14 +75,14 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-28T05:52:00Z",
+  "lastUpdate": "2026-03-29T23:30:00Z",
   "significance": 10,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/SzemerediTheorem.lean",
       "axiomCount": 1,
-      "theoremCount": 12,
+      "theoremCount": 16,
       "sorryCount": 0
     },
     {

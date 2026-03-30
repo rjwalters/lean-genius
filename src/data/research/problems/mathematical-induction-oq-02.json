@@ -1,0 +1,79 @@
+{
+  "slug": "mathematical-induction-oq-02",
+  "title": "Is there a formalized proof in Lean that Peano arithmetic's induction schema is independent of the first four Peano axioms (i.e., that models satisfying PA1–PA4 but not PA5 exist)? This requires const",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Is there a formalized proof in Lean that Peano arithmetic's induction schema is independent of the first four Peano axioms (i.e., that models satisfying PA1–PA4 but not PA5 exist)? This requires const.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.307Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "mathematical-induction",
+    "mathematical-induction-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.307Z",
+  "lastUpdate": "2026-03-29T18:32:39.307Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MathematicalInduction.lean",
+      "filename": "MathematicalInduction.lean",
+      "lineCount": 250,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInduction.lean"
+    },
+    {
+      "path": "Proofs/MathematicalInductionOQ01.lean",
+      "filename": "MathematicalInductionOQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInductionOQ01.lean"
+    }
+  ]
+}

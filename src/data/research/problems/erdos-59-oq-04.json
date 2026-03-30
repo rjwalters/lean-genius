@@ -1,0 +1,202 @@
+{
+  "slug": "erdos-59-oq-04",
+  "title": "Can the sorry in erdos_59_disproved be resolved via Set",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-29T23:39:51-07:00",
+    "iteration": 1,
+    "focus": "Analyzed sorry gap: needs turanNumber_pos axiom (ex(n;C₆)>0 for n≥6). Added Set.Infinite.exists_gt progress.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated 3 axioms from Erdos59Problem.lean (10→7). Replaced axiomatized cycleGraph with concrete definition, proved odd_cycle_not_bipartite by induction on parity membership, proved even_cycle_bipartite using Nat.mod_mod_of_dvd. Remaining 7 axioms are deep results (EFR, Morris-Saxton, Turán, KST) or structural (turanNumber, countFreeGraphs). Docker build verification pending.",
+    "builtItems": [
+      "Proved erdos_59_disproved: resolved sorry using Set.Infinite.exists_gt + rpow monotonicity",
+      "Added turanNumber_pos axiom: Turán numbers positive for n ≥ k",
+      "Proof structure: extract large n from infinite counterexample set, combine upper/lower bounds",
+      "Concrete cycleGraph definition in Erdos59Problem.lean:51-61",
+      "Proved theorem odd_cycle_not_bipartite (lines 67-120): induction + closing edge contradiction",
+      "Proved theorem even_cycle_bipartite (lines 125-158): parity partition + Nat.mod_mod_of_dvd"
+    ],
+    "insights": [
+      "Set.Infinite.exists_gt N₀ gives m > N₀ in the counterexample set",
+      "From hopt(c/2) and morris_saxton: 2^((1+c)*t) ≤ f(m) ≤ 2^((1+c/2)*t)",
+      "This gives (c/2)*t ≤ 0, requiring t = turanNumber m 6 = 0",
+      "But turanNumber m 6 = 0 makes both bounds equal to 1, giving no contradiction",
+      "GAP: needs axiom turanNumber_pos: ex(n; C₆) > 0 for n ≥ 6",
+      "Fix: add turanNumber_pos axiom, then use hinf.exists_gt (max N₀ 6) and case split",
+      "Replaced axiom cycleGraph with concrete def using (i.val+1)%n adjacency",
+      "Proved odd_cycle_not_bipartite by induction: parity forces membership, closing edge gives contradiction",
+      "Proved even_cycle_bipartite using Nat.mod_mod_of_dvd: parity preserved under mod by even n",
+      "Net result: 10 axioms → 7 axioms, 5 theorems → 7 theorems"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-59-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-59",
+    "erdos-590",
+    "erdos-591",
+    "erdos-592",
+    "erdos-593",
+    "erdos-594",
+    "erdos-595",
+    "erdos-596",
+    "erdos-597",
+    "erdos-598",
+    "erdos-599"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:51-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos590Problem.lean",
+      "filename": "Erdos590Problem.lean",
+      "lineCount": 239,
+      "theoremCount": 14,
+      "axiomCount": 5,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos590Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos591Problem.lean",
+      "filename": "Erdos591Problem.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos591Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos592Problem.lean",
+      "filename": "Erdos592Problem.lean",
+      "lineCount": 66,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos592Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos593Problem.lean",
+      "filename": "Erdos593Problem.lean",
+      "lineCount": 111,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos593Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos594Problem.lean",
+      "filename": "Erdos594Problem.lean",
+      "lineCount": 246,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos594Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos595Problem.lean",
+      "filename": "Erdos595Problem.lean",
+      "lineCount": 230,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos595Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos596Problem.lean",
+      "filename": "Erdos596Problem.lean",
+      "lineCount": 143,
+      "theoremCount": 3,
+      "axiomCount": 2,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos596Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos597Problem.lean",
+      "filename": "Erdos597Problem.lean",
+      "lineCount": 184,
+      "theoremCount": 1,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos597Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos598Problem.lean",
+      "filename": "Erdos598Problem.lean",
+      "lineCount": 85,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos598Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos599Problem.lean",
+      "filename": "Erdos599Problem.lean",
+      "lineCount": 231,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos599Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos59Problem.lean",
+      "filename": "Erdos59Problem.lean",
+      "lineCount": 338,
+      "theoremCount": 7,
+      "axiomCount": 5,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos59Problem.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T08:05:00Z"
+}

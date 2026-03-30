@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 207,
     "erdosUrl": "https://erdosproblems.com/207",
     "erdosProblemStatus": "solved",
@@ -55,7 +55,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 279,
-    "assumptions": "4 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "4 axiom(s) and 2 sorries. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Steiner Triple Systems and High Girth**\n\nA Steiner triple system STS$(n)$ is a collection of 3-element subsets (triples) of an $n$-set such that every pair of elements appears in exactly one triple. These fundamental structures were first studied by **Thomas Kirkman** in 1847, who proved STS$(n)$ exists iff $n \\equiv 1, 3 \\pmod{6}$, predating **Jakob Steiner**'s 1853 formulation.\n\n**The Girth Question**\n\nErdős posed this problem in 1976, asking whether STS with arbitrarily high girth exist for all large admissible orders. The girth condition (any $j$ edges span $\\geq j+3$ vertices) prevents 'tight' configurations. The special case $g = 3$ (Pasch-free STS) was resolved earlier by **Grannell, Griggs, and Whitehead** (2000) and independently by others.\n\n**The Resolution (2022)**\n\n**Matthew Kwan, Ashwin Sah, Mehtaab Sawhney, and Michael Simkin** (arXiv:2201.04554) resolved this completely using a random greedy construction. Their proof combines the **Rödl nibble method** with a novel **spread measure** to control the girth property throughout the construction process, employing concentration inequalities from probabilistic combinatorics.\n\n**The Kirkman Schoolgirl Problem**\n\nThe formalization also includes the 1850 Kirkman schoolgirl problem—the first question in design theory—asking for a resolvable STS$(15)$ where 15 girls walk in groups of 3 for 7 days without repeating companions.",

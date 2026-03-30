@@ -1,0 +1,61 @@
+{
+  "id": "triangular-reciprocals-oq-01",
+  "title": "Reciprocal Sums of Higher Figurate Numbers",
+  "slug": "triangular-reciprocals-oq-01",
+  "description": "Defines k-gonal (figurate) numbers and proves telescoping partial fractions for triangular reciprocals, with convergence of square reciprocals by p-series comparison.",
+  "meta": {
+    "author": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TriangularReciprocalsFigurate.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "combinatorics",
+      "figurate-numbers",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "partial_fraction: 2/(n(n+1)) = 2/n - 2/(n+1)",
+      "triangular, pentagonal, hexagonal definitions with examples",
+      "hexagonal_eq_triangular: hexagonal n = triangular (2n-1)",
+      "square_reciprocals_summable: \u03a3 1/n\u00b2 converges (p-series)"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified.",
+    "lineCount": 111
+  },
+  "overview": {
+    "historicalContext": "Figurate (polygonal) numbers date to the Pythagoreans. The sum of reciprocals of triangular numbers telescopes to 2 via partial fractions. Higher figurate reciprocal sums converge by comparison with 1/n\u00b2.",
+    "problemStatement": "Generalize \u03a3 1/T_n to higher figurate numbers \u03a3 1/P(k,n).",
+    "text": "k-gonal number reciprocals converge for all k >= 3 by comparison with 1/n\u00b2.",
+    "proofStrategy": "k-gonal number reciprocals converge for all k >= 3 by comparison with 1/n\u00b2.",
+    "keyInsights": []
+  },
+  "sections": [],
+  "references": [],
+  "crossReferences": [
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "extends",
+      "description": "Extends to general k-gonal numbers"
+    }
+  ],
+  "conclusion": {
+    "summary": "Figurate number reciprocal sums formalized with telescoping and convergence.",
+    "implications": "Figurate number reciprocal sums formalized with telescoping and convergence."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "FigurateReciprocals",
+    "lineCount": 111,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3
+  }
+}

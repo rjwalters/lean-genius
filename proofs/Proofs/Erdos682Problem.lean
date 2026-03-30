@@ -36,20 +36,24 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Order.OrderIsoNat
 
 open Nat
 
 namespace Erdos682
+
+noncomputable section
 
 /-
 ## Part I: Basic Definitions
 -/
 
 /--
-**The n-th Prime:**
-p_n is the n-th prime number (1-indexed: p_1 = 2, p_2 = 3, etc.)
+**The n-th Prime (0-indexed):**
+`nthPrime n` is the n-th prime: nthPrime 0 = 2, nthPrime 1 = 3, etc.
+Defined via `Nat.nth Nat.Prime` from Mathlib (was previously an axiom).
 -/
-axiom nthPrime (n : ℕ) : ℕ
+def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /--
 **Least Prime Factor:**
@@ -151,11 +155,12 @@ def isExceptional (n : ℕ) : Prop := ¬hasRoughNumberInGap n
 -/
 
 /--
-**Primorial Definition:**
+**Primorial:**
 n# = product of all primes ≤ n.
 30030 = 2·3·5·7·11·13 = 13#
+Available as `Nat.primorial` from Mathlib.NumberTheory.Primorial.
+(Removed axiom — was unused in any theorem.)
 -/
-axiom primorial (n : ℕ) : ℕ
 
 /--
 **Dickson's Conjecture (Special Case):**
@@ -242,22 +247,55 @@ theorem exceptional_density_zero :
       (exceptionalCount X : ℝ) / X < ε := by
   intro ε hε
   obtain ⟨C, hC, hbound⟩ := gafni_tao_upper_bound
-  -- For large enough X, C/(log X)² < ε
-  sorry
+  -- log n → ∞ as n → ∞
+  have h_log : Filter.Tendsto (fun n : ℕ => Real.log (↑n)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- Eventually log X ≥ √(C/ε) + 1 and X ≥ 3
+  set L := Real.sqrt (C / ε) + 1 with hL_def
+  have hL_pos : L > 0 := by positivity
+  have h_ev_log : ∀ᶠ X : ℕ in Filter.atTop, L ≤ Real.log (↑X) :=
+    h_log.eventually (Filter.mem_atTop L)
+  have h_ev_ge3 : ∀ᶠ X : ℕ in Filter.atTop, (3 : ℕ) ≤ X :=
+    Filter.eventually_atTop.mpr ⟨3, fun _ h => h⟩
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (h_ev_log.and h_ev_ge3)
+  refine ⟨N, fun X hX => ?_⟩
+  obtain ⟨hlog, hX3⟩ := hN X hX
+  have hX_pos : (0 : ℝ) < (X : ℝ) := by exact_mod_cast (show 0 < X by omega)
+  have hlog_pos : (0 : ℝ) < Real.log (↑X) := lt_of_lt_of_le hL_pos hlog
+  have hlog2_pos : (0 : ℝ) < (Real.log (↑X)) ^ 2 := by positivity
+  -- Key: C/ε < (log X)², so C/(log X)² < ε
+  have hCε_lt : C / ε < (Real.log (↑X)) ^ 2 := by
+    have h1 : Real.sqrt (C / ε) < L := by linarith
+    have h2 : 0 ≤ Real.sqrt (C / ε) := Real.sqrt_nonneg _
+    calc C / ε = Real.sqrt (C / ε) ^ 2 := (Real.sq_sqrt (div_nonneg hC.le hε.le)).symm
+      _ < L ^ 2 := by nlinarith [sq_nonneg (L - Real.sqrt (C / ε))]
+      _ ≤ (Real.log (↑X)) ^ 2 := by nlinarith [sq_nonneg (Real.log (↑X) - L)]
+  have hkey : C / (Real.log (↑X)) ^ 2 < ε := by
+    rwa [div_lt_iff hlog2_pos, ← div_lt_iff hε]
+  -- E(X)/X ≤ C·X/(log X)²/X = C/(log X)² < ε
+  calc (exceptionalCount X : ℝ) / ↑X
+      ≤ C * ↑X / (Real.log ↑X) ^ 2 / ↑X :=
+        div_le_div_of_nonneg_right (hbound X hX3) hX_pos.le
+    _ = C / (Real.log ↑X) ^ 2 := by rw [mul_div_assoc, div_div_cancel_left₀ hX_pos.ne']
+    _ < ε := hkey
 
 /--
 **Most Gaps Contain Rough Numbers:**
-For most n, the interval (p_n, p_{n+1}) contains an integer whose
-smallest prime factor is at least the gap size.
+Non-exceptional indices + exceptional indices = total,
+so non-exceptional count ≥ total - exceptional count.
 -/
 theorem most_gaps_have_rough :
-    ∀ X : ℕ, X ≥ 10 →
-      (Finset.filter hasRoughNumberInGap (Finset.range X)).card >
+    ∀ X : ℕ,
+      (Finset.filter hasRoughNumberInGap (Finset.range X)).card ≥
       X - exceptionalCount X := by
-  intro X hX
-  simp [exceptionalCount]
-  -- Tautology from definitions
-  sorry
+  intro X
+  simp only [exceptionalCount, isExceptional]
+  have h : (Finset.filter hasRoughNumberInGap (Finset.range X)).card +
+    (Finset.filter (fun n => ¬hasRoughNumberInGap n) (Finset.range X)).card =
+    (Finset.range X).card :=
+    Finset.filter_card_add_filter_neg_card_eq_card
+  simp only [Finset.card_range] at h
+  omega
 
 /-
 ## Part IX: Related Results
@@ -313,5 +351,7 @@ The number of exceptional n ≤ X is O(X/(log X)²).
 Conditionally, it is asymptotic to c·X/(log X)² for explicit c > 0.
 -/
 theorem erdos_682 : erdos682Question := erdos682_answer
+
+end
 
 end Erdos682

@@ -2,7 +2,7 @@
   "slug": "triangular-reciprocals-oq-03-oq-02",
   "title": "Generalize to \u2211(-1)^{n+1}/(n(n+k)) for arbitrary k",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:58:08-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,14 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated duplicate axiom via import fix (1\u21920 axioms in Generalized). 3 sorries remain.",
+    "progressSummary": "COMPLETED: All 3 sorries proved. generalized_alternating_sum fully verified (0 sorries, 0 own axioms). Closed form proved for all k>=1.",
     "builtItems": [
       "Created TriangularReciprocalGeneralized.lean with generalized formula",
       "Proved partial_fraction: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k))",
       "Defined altHarmonicPartial A_k with A_0=0, A_1=1 proved",
       "Verified special_case_k1 = 2\u00b7log 2 - 1 and special_case_k2 = 1/4",
       "Stated generalized_alternating_sum with tsum version",
-      "Eliminated duplicate axiom by importing TriangularReciprocalAlternatingOQ03.lean (1\u21920 axioms)"
+      "Eliminated duplicate axiom by importing TriangularReciprocalAlternatingOQ03.lean (1\u21920 axioms)",
+      "Proved alternating_harmonic_tail via hasSum_nat_add_iff",
+      "Proved shifted_alternating_hasSum via factoring (-1)^k and shift removal",
+      "Proved generalized_alternating_sum from partial fractions + HasSum results"
     ],
     "insights": [
       "Closed form: \u2211(-1)^{n+1}/(n(n+k)) = (1/k)(log 2 - (-1)^k(log 2 - A_k)) where A_k = \u2211_{m=1}^k (-1)^{m+1}/m",
@@ -44,7 +47,9 @@
       "k=1 recovers 2\u00b7log 2 - 1 (parent result), k=2 gives 1/4 (rational!)",
       "Partial fraction 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) is the key decomposition",
       "3 sorries need HasSum tail decomposition (Mathlib HasSum.nat_add or equivalent)",
-      "TriangularReciprocalGeneralized.lean duplicated alternating_harmonic_hasSum axiom from OQ03"
+      "TriangularReciprocalGeneralized.lean duplicated alternating_harmonic_hasSum axiom from OQ03",
+      "All HasSum tail decomposition sorries proved using hasSum_nat_add_iff + congr technique",
+      "File depends on 1 axiom from parent (alternating_harmonic_hasSum) but declares 0 own axioms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -57,6 +62,7 @@
   "tags": [],
   "relatedProofs": [
     "triangular-reciprocals",
+    "triangular-reciprocals-oq-01",
     "triangular-reciprocals-oq-03",
     "triangular-reciprocals-oq-03-oq-02"
   ],
@@ -66,5 +72,18 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.979Z",
-  "lastUpdate": "2026-03-29T04:28:18.989Z"
+  "lastUpdate": "2026-03-29T04:28:18.989Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/TriangularReciprocalsFigurate.lean",
+      "filename": "TriangularReciprocalsFigurate.lean",
+      "lineCount": 112,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsFigurate.lean"
+    }
+  ]
 }

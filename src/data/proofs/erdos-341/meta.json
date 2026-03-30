@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/341",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All structural properties (strict monotonicity, sum avoidance, minimality) proved from the definition using Nat.find_spec and Nat.find_min. The main conjecture (eventual periodicity) is stated as a def, not an axiom — it remains OPEN.",
-    "lineCount": 158,
+    "assumptions": "0 axioms, 0 sorries. All structural properties proved from definitions. Conjecture verified for A₀={1} (odd numbers, constant difference 2). Main conjecture stated as def (OPEN).",
+    "lineCount": 252,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Formal framework: pairwiseSums, IsSumRepresentable, dicksonSeq (greedy via Nat.find), IsEventuallyPeriodic",
       "Universal quantification of Dickson conjecture over all finite nonempty starting sets",
+      "Singleton instance: proof that A₀={1} yields odd numbers with constant difference 2, verifying the conjecture for this case",
       "Connection to Mian–Chowla sequence (Problem #340) via singleton case formalization"
     ],
     "prerequisites": [

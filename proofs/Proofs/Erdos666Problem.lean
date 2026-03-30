@@ -63,9 +63,6 @@ def hypercubeEdges (n : ℕ) : ℕ := n * 2^(n-1)
 **Degree in Qₙ:**
 Every vertex has degree n.
 -/
-axiom hypercube_regular (n : ℕ) (hn : n ≥ 1) :
-  ∀ v : Fin (2^n), (Hypercube n).degree v = n
-
 /-
 ## Part II: Cycles in Graphs
 -/
@@ -182,20 +179,6 @@ theorem chung_counterexample (n : ℕ) (hn : n ≥ 3) :
 Independent of Chung, proved that Qₙ can be 4-colored with no
 monochromatic C₄ or C₆.
 -/
-axiom brouwer_dejter_thomassen_1993 :
-  ∀ n : ℕ, n ≥ 3 →
-    ∃ (coloring : (Fin (2^n)) × (Fin (2^n)) → Fin 4),
-      -- Only colors edges
-      (∀ x y, (Hypercube n).Adj x y → coloring (x, y) = coloring (y, x)) ∧
-      -- No monochromatic C₄
-      (∀ c : Fin 4, ¬HasC4 { Adj := fun x y => (Hypercube n).Adj x y ∧ coloring (x, y) = c,
-                             symm := by intro x y ⟨h1, h2⟩; exact ⟨(Hypercube n).symm h1, by simp [h2]⟩,
-                             loopless := by intro x ⟨h, _⟩; exact (Hypercube n).loopless x h }) ∧
-      -- No monochromatic C₆
-      (∀ c : Fin 4, ¬HasC6 { Adj := fun x y => (Hypercube n).Adj x y ∧ coloring (x, y) = c,
-                             symm := by intro x y ⟨h1, h2⟩; exact ⟨(Hypercube n).symm h1, by simp [h2]⟩,
-                             loopless := by intro x ⟨h, _⟩; exact (Hypercube n).loopless x h })
-
 /-
 ## Part VII: Conder's Improvement (1993)
 -/
@@ -205,18 +188,6 @@ axiom brouwer_dejter_thomassen_1993 :
 For n ≥ 3, the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆.
 This improves Chung/BDT from 4 colors to 3.
 -/
-axiom conder_1993 :
-  ∀ n : ℕ, n ≥ 3 →
-    ∃ (coloring : (Fin (2^n)) × (Fin (2^n)) → Fin 3),
-      -- No monochromatic C₄ or C₆
-      (∀ c : Fin 3,
-        ¬HasC4 { Adj := fun x y => (Hypercube n).Adj x y ∧ coloring (x, y) = c,
-                 symm := by intro x y ⟨h1, h2⟩; exact ⟨(Hypercube n).symm h1, by simp [h2]⟩,
-                 loopless := by intro x ⟨h, _⟩; exact (Hypercube n).loopless x h } ∧
-        ¬HasC6 { Adj := fun x y => (Hypercube n).Adj x y ∧ coloring (x, y) = c,
-                 symm := by intro x y ⟨h1, h2⟩; exact ⟨(Hypercube n).symm h1, by simp [h2]⟩,
-                 loopless := by intro x ⟨h, _⟩; exact (Hypercube n).loopless x h })
-
 /--
 **Improved bound: ε = 1/3:**
 With 3 colors, each color class has ~1/3 of edges but no C₆.
@@ -227,8 +198,10 @@ theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
       True ∧
       -- H has no C₆
       ¬HasC6 H := by
-  -- Follows from conder_1993
-  sorry
+  -- Conder's 3-coloring improves Chung's 4-coloring, but the conclusion
+  -- only needs existence of a C₆-free subgraph, which Chung already gives.
+  obtain ⟨H, _, h⟩ := chung_counterexample n hn
+  exact ⟨H, h⟩
 
 /-
 ## Part VIII: Erdős's Generalization
@@ -259,15 +232,6 @@ def GeneralizedConjecture : Prop :=
 **Turán-type result for C₄ in Qₙ:**
 The maximum number of edges in a C₄-free subgraph of Qₙ is Θ(n^{1/2} · 2ⁿ).
 -/
-axiom turan_c4_hypercube :
-  ∃ c C : ℝ, 0 < c ∧ c < C ∧
-    ∀ n : ℕ, n ≥ 3 →
-      ∀ H : SimpleGraph (Fin (2^n)), ∀ _ : DecidableRel H.Adj,
-        (∀ x y, H.Adj x y → (Hypercube n).Adj x y) →
-        ¬HasC4 H →
-        c * (n : ℝ).sqrt * 2^n ≤ (H.edgeFinset.card : ℝ) ∧
-        (H.edgeFinset.card : ℝ) ≤ C * (n : ℝ).sqrt * 2^n
-
 /-
 ## Part X: Summary
 -/

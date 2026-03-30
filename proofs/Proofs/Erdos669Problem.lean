@@ -81,13 +81,6 @@ def orchardProblem : Prop :=
 /-- **Burr-Grünbaum-Sloane Theorem (1974):**
 f_3(n) = n²/6 - O(n) and F_3(n) = n²/6 - O(n).
 This resolves the Orchard Problem completely. -/
-axiom burr_grunbaum_sloane :
-  ∃ C : ℝ, ∀ n : ℕ, n ≥ 3 →
-    (f_k 3 n : ℝ) ≥ (n^2 : ℝ) / 6 - C * n ∧
-    (f_k 3 n : ℝ) ≤ (n^2 : ℝ) / 6 + C * n ∧
-    (F_k 3 n : ℝ) ≥ (n^2 : ℝ) / 6 - C * n ∧
-    (F_k 3 n : ℝ) ≤ (n^2 : ℝ) / 6 + C * n
-
 /-- The asymptotic limit for k=3: both f_3(n)/n² and F_3(n)/n² tend to 1/6. -/
 axiom k3_limit :
   Filter.Tendsto (fun n => (f_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6)) ∧
@@ -98,14 +91,7 @@ axiom k3_limit :
 /-- **Trivial upper bound:** F_k(n) ≤ C(n,2)/C(k,2).
 Each line with ≥ k points contributes at least C(k,2) pairs,
 and there are at most C(n,2) pairs total. -/
-axiom trivial_upper_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    F_k k n ≤ n.choose 2 / k.choose 2
-
 /-- The limiting ratio: lim F_k(n)/n² ≤ 1/(k(k-1)). -/
-axiom limit_upper (k : ℕ) (hk : k ≥ 2) :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    (F_k k n : ℝ) / n^2 ≤ 1 / (k * (k - 1)) + ε
-
 /- ## Part V: The General Conjecture -/
 
 /-- **Conjecture:** The limits equal 1/(k(k-1)) for all k ≥ 2. -/
@@ -125,10 +111,6 @@ theorem k3_conjecture_true : limit_conjecture 3 (by norm_num) :=
 /-- **Optimal Configurations:**
 Configurations achieving f_3(n) = n²/6 - O(n) exist.
 Often derived from projective plane constructions (e.g., points of PG(2,q)). -/
-axiom optimal_configs_exist :
-  ∀ n ≥ 7, ∃ P : Finset Point, P.card = n ∧
-    (f_k 3 n : ℝ) ≥ (n^2 : ℝ) / 6 - 2 * n
-
 /- ## Part VII: Summary -/
 
 /-- **Erdős Problem #669: OPEN (k=3 solved)**

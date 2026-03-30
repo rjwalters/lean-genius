@@ -1,8 +1,8 @@
 {
   "id": "erdos-770",
-  "title": "Erd\u0151s Problem #770: Mutual Coprimality of k^n \u2212 1",
+  "title": "Erdős Problem #770: Mutual Coprimality of k^n − 1",
   "slug": "erdos-770",
-  "description": "Let h(n) be the minimal k such that gcd(2^n\u22121, 3^n\u22121, ..., k^n\u22121) = 1. Does lim inf h(n) = \u221e? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
+  "description": "Let h(n) be the minimal k such that gcd(2^n−1, 3^n−1, ..., k^n−1) = 1. Does lim inf h(n) = ∞? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
   "meta": {
     "erdosNumber": 770,
     "status": "axiomatized",
@@ -49,14 +49,14 @@
       "Proved counterexamples h(n) > 3 at n = 4, 10, 11 from shared Fermat factors",
       "Axiomatized three open questions: density, unboundedness, largest prime characterization",
       "Stated gcd stability (monotonicity) property with sorry",
-      "Proved gcdPowerSeq_at_succ_eq_one: h(n) \u2264 n+1 for all n \u2265 1 via prime elimination",
-      "Proved no_small_prime_dvd: primes q \u2264 n+1 self-refute via q|q^n and q|q^n-1",
+      "Proved gcdPowerSeq_at_succ_eq_one: h(n) ≤ n+1 for all n ≥ 1 via prime elimination",
+      "Proved no_small_prime_dvd: primes q ≤ n+1 self-refute via q|q^n and q|q^n-1",
       "Proved no_large_prime_dvd: primes q > n+1 violate polynomial root counting",
       "Proved h_eq_succ_of_prime: h(n) = n+1 when n+1 is prime",
       "Bridge lemma zmod_pow_eq_one_of_dvd: converts nat divisibility to ZMod equality"
     ],
     "axiomCount": 2,
-    "lineCount": 484,
+    "lineCount": 498,
     "assumptions": "2 axiom(s) (open questions). No sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -112,23 +112,23 @@
     },
     {
       "id": "h-bound",
-      "title": "Key Result: h(n) \u2264 n + 1",
+      "title": "Key Result: h(n) ≤ n + 1",
       "startLine": 363,
       "endLine": 484,
       "summary": "Proves `gcdPowerSeq_at_succ_eq_one`: for all $n \\geq 1$, $\\gcd(2^n-1, \\ldots, (n+1)^n-1) = 1$, giving $h(n) \\leq n+1$. The proof eliminates all prime divisors: primes $q \\leq n+1$ are in the fold and self-refute ($q \\mid q^n$ and $q \\mid q^n-1$ gives $q \\mid 1$); primes $q > n+1$ would give $n+1$ distinct roots of $X^n - 1$ in $\\mathbb{Z}/q\\mathbb{Z}$, violating the degree-$n$ polynomial root bound. Corollary: `h_eq_succ_of_prime` gives $h(n) = n+1$ when $n+1$ is prime."
     }
   ],
   "overview": {
-    "historicalContext": "Erd\u0151s posed Problem 770 in 1974, studying the function $h(n) = \\min\\{k \\geq 2 : \\gcd(2^n-1, 3^n-1, \\ldots, k^n-1) = 1\\}$. The problem connects deeply to Fermat's little theorem: when $p$ is prime and $(p-1) \\mid n$, Fermat guarantees $p \\mid a^n - 1$ for all $a$ coprime to $p$, creating a shared factor among the first $p-1$ terms. However, $p \\nmid p^n - 1$ (since $p^n \\equiv 0 \\pmod{p}$), so including $k = p$ breaks the shared factor. This mechanism explains why $h(n) = n+1$ precisely when $n+1$ is prime: the prime $p = n+1$ divides all terms $a^n - 1$ for $2 \\leq a < p$ (by Fermat), but adding $k = p$ gives $\\gcd = 1$. For composite $n+1$, smaller primes provide earlier breaks. The sequence $h(1), h(2), \\ldots = 2, 3, 3, 5, 3, 7, 3, 5, 3, 11, 5, 13, \\ldots$ (OEIS A263647) exhibits complex behavior: it equals 3 frequently (conjecturally infinitely often), but whether it is unbounded remains open.",
+    "historicalContext": "Erdős posed Problem 770 in 1974, studying the function $h(n) = \\min\\{k \\geq 2 : \\gcd(2^n-1, 3^n-1, \\ldots, k^n-1) = 1\\}$. The problem connects deeply to Fermat's little theorem: when $p$ is prime and $(p-1) \\mid n$, Fermat guarantees $p \\mid a^n - 1$ for all $a$ coprime to $p$, creating a shared factor among the first $p-1$ terms. However, $p \\nmid p^n - 1$ (since $p^n \\equiv 0 \\pmod{p}$), so including $k = p$ breaks the shared factor. This mechanism explains why $h(n) = n+1$ precisely when $n+1$ is prime: the prime $p = n+1$ divides all terms $a^n - 1$ for $2 \\leq a < p$ (by Fermat), but adding $k = p$ gives $\\gcd = 1$. For composite $n+1$, smaller primes provide earlier breaks. The sequence $h(1), h(2), \\ldots = 2, 3, 3, 5, 3, 7, 3, 5, 3, 11, 5, 13, \\ldots$ (OEIS A263647) exhibits complex behavior: it equals 3 frequently (conjecturally infinitely often), but whether it is unbounded remains open.",
     "problemStatement": "Let $h(n)$ be the minimal $k \\geq 2$ such that $\\gcd(2^n-1, 3^n-1, \\ldots, k^n-1) = 1$. Study: (1) Does the density of $n$ with $h(n) = p$ exist for each prime $p$? (2) Does $\\liminf_{n \\to \\infty} h(n) = \\infty$? (3) Is $h(n)$ determined by the largest prime factor of $n+1$?",
-    "text": "Let h(n) be the minimal k such that gcd(2^n\u22121, 3^n\u22121, ..., k^n\u22121) = 1. Does lim inf h(n) = \u221e? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
+    "text": "Let h(n) be the minimal k such that gcd(2^n−1, 3^n−1, ..., k^n−1) = 1. Does lim inf h(n) = ∞? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
     "proofStrategy": "The formalization combines computation and abstraction. Concrete values are verified by `native_decide` for $n \\leq 12$. Fermat's little theorem is proved abstractly via `ZMod` (not just verified computationally). The key structural result $h(n) \\leq n+1$ is proved for ALL $n \\geq 1$ by showing no prime can divide $\\gcd(2^n-1, \\ldots, (n+1)^n-1)$: small primes ($q \\leq n+1$) are in the fold and self-refute, while large primes ($q > n+1$) violate polynomial root counting. Combined with Fermat, this gives $h(n) = n+1$ iff $n+1$ is prime.",
     "keyInsights": [
       "$h(n) = n+1$ if and only if $n+1$ is prime: Fermat's little theorem forces $p \\mid a^{p-1} - 1$ for all $a$ coprime to $p$, creating a shared factor that persists until $k = p$",
       "The Fermat mechanism: when $(p-1) \\mid n$, the prime $p$ divides every $a^n - 1$ for $\\gcd(a,p) = 1$, but $p^n \\equiv 0 \\pmod{p}$ means $p \\nmid p^n - 1$, breaking the shared factor at $k = p$",
-      "The gcd cascade at $n = 12$: $\\gcd(2^{12}-1, 3^{12}-1) = 455 = 5 \\cdot 7 \\cdot 13$, then adding terms kills factors 5, then 7, until only 13 remains \u2014 reflecting the multiple Fermat primes (5, 7, 13) dividing $n! - 1$ terms",
+      "The gcd cascade at $n = 12$: $\\gcd(2^{12}-1, 3^{12}-1) = 455 = 5 \\cdot 7 \\cdot 13$, then adding terms kills factors 5, then 7, until only 13 remains — reflecting the multiple Fermat primes (5, 7, 13) dividing $n! - 1$ terms",
       "Conjectured $h(n) = 3$ infinitely often: the formalization verifies this at 11 values, but proving density existence requires understanding the distribution of primes $p$ with $(p-1) \\mid n$",
-      "The stability property: once the gcd reaches 1, it cannot increase \u2014 this is the monotonicity of gcd under additional factors, formalized as `gcdPowerSeq_stable`"
+      "The stability property: once the gcd reaches 1, it cannot increase — this is the monotonicity of gcd under additional factors, formalized as `gcdPowerSeq_stable`"
     ],
     "prerequisites": [
       "Greatest common divisor and its properties under multiple arguments",
@@ -138,12 +138,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #770 is formalized with a complete computation of h(n) for n = 1..12 via native_decide, computational verification of Fermat's little theorem for five primes, demonstration of the h(n) = 3 pattern at 11 values, and axiomatization of three open questions. The file has 1 sorry (gcd stability) and 3 axioms (open questions).",
+    "summary": "Erdős Problem #770 is formalized with a complete computation of h(n) for n = 1..12 via native_decide, computational verification of Fermat's little theorem for five primes, demonstration of the h(n) = 3 pattern at 11 values, and axiomatization of three open questions. The file has 1 sorry (gcd stability) and 3 axioms (open questions).",
     "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\nThe density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
     "openQuestions": [
       "Does the natural density of {n : h(n) = p} exist for each prime p? If so, what is its value?",
-      "Does lim inf h(n) = \u221e, or does h(n) remain bounded along some subsequence?",
-      "Is h(n) determined by the largest prime p with (p\u22121) | n and p > n^\u03b5 for some fixed \u03b5?",
+      "Does lim inf h(n) = ∞, or does h(n) remain bounded along some subsequence?",
+      "Is h(n) determined by the largest prime p with (p−1) | n and p > n^ε for some fixed ε?",
       "Can the gcd stability property (gcdPowerSeq_stable) be proved from Mathlib's gcd API?",
       "What is the average order of h(n)? Is it O(log n), O(log log n), or something else?"
     ]
@@ -157,17 +157,17 @@
     {
       "targetId": "primitive-roots",
       "relationship": "related",
-      "description": "The order of $a$ modulo a prime $p$ determines the minimal $n$ with $p \\mid a^n - 1$. When $a$ is a primitive root mod $p$, its order is $p-1$, and $p \\mid a^n - 1$ iff $(p-1) \\mid n$ \u2014 the exact Fermat periodicity condition controlling shared factors in $\\gcd(2^n-1, \\ldots, k^n-1)$"
+      "description": "The order of $a$ modulo a prime $p$ determines the minimal $n$ with $p \\mid a^n - 1$. When $a$ is a primitive root mod $p$, its order is $p-1$, and $p \\mid a^n - 1$ iff $(p-1) \\mid n$ — the exact Fermat periodicity condition controlling shared factors in $\\gcd(2^n-1, \\ldots, k^n-1)$"
     },
     {
       "targetId": "bezout-identity",
       "relationship": "foundational",
-      "description": "B\u00e9zout's identity underpins the GCD computation at the heart of $h(n)$: $\\gcd(a, b) = 1$ iff there exist integers $x, y$ with $ax + by = 1$. The `gcdPowerSeq` definition computes iterated GCDs via `Finset.fold Nat.gcd`, relying on associativity and commutativity properties rooted in B\u00e9zout's characterization"
+      "description": "Bézout's identity underpins the GCD computation at the heart of $h(n)$: $\\gcd(a, b) = 1$ iff there exist integers $x, y$ with $ax + by = 1$. The `gcdPowerSeq` definition computes iterated GCDs via `Finset.fold Nat.gcd`, relying on associativity and commutativity properties rooted in Bézout's characterization"
     },
     {
       "targetId": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem guarantees infinitely many primes in each arithmetic progression $a + nd$ with $\\gcd(a, d) = 1$. The density questions about $h(n)$ (Q1: does $\\delta_p$ exist?) connect to the distribution of $n$ such that the largest prime $p$ with $(p-1) \\mid n$ equals a given value \u2014 a condition governed by the primes in arithmetic progressions modulo divisors of $n$"
+      "description": "Dirichlet's theorem guarantees infinitely many primes in each arithmetic progression $a + nd$ with $\\gcd(a, d) = 1$. The density questions about $h(n)$ (Q1: does $\\delta_p$ exist?) connect to the distribution of $n$ such that the largest prime $p$ with $(p-1) \\mid n$ equals a given value — a condition governed by the primes in arithmetic progressions modulo divisors of $n$"
     },
     {
       "targetId": "bertrands-postulate",
@@ -197,7 +197,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 509,
+    "lineCount": 498,
     "axiomCount": 2,
     "theoremCount": 71,
     "definitionCount": 2

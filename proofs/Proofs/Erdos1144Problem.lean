@@ -160,12 +160,33 @@ theorem partialSum_succ (f : ℕ → ℤ) (N : ℕ) (hN : 1 ≤ N) :
   rw [Finset.sum_insert (by simp [Finset.mem_filter, Finset.mem_range])]
   ring
 
-/- NOTE: A previous version stated that Atherfold's bound gives subpolynomial
-    growth for ALL Rademacher multiplicative functions. This is FALSE:
-    the constant function f ≡ 1 is Rademacher multiplicative (f(p) = 1 for
-    all primes), and its partial sum is N−1 (linear growth), exceeding
-    N^{3/4} for large N. The actual Atherfold result is probabilistic
-    (holds almost surely for random sign choices), not deterministic. -/
+-- ## Concrete Example: The Constant Function f ≡ 1
+
+/-- The constant function 1 is completely multiplicative. -/
+theorem const_one_completely_mult : IsCompletelyMultiplicative (fun _ : ℕ => (1 : ℤ)) :=
+  ⟨rfl, fun _ _ => (mul_one 1).symm⟩
+
+/-- The constant function 1 is Rademacher multiplicative (f(p) = 1 for all primes). -/
+theorem const_one_rademacher : IsRademacherMultiplicative (fun _ : ℕ => (1 : ℤ)) :=
+  ⟨const_one_completely_mult, fun _ _ => Or.inl rfl⟩
+
+/-- The partial sum of f ≡ 1 equals N - 1: it sums 1 over {1, ..., N-1}. -/
+theorem partialSum_const_one (N : ℕ) (hN : 1 ≤ N) :
+    partialSum (fun _ => (1 : ℤ)) N = (N : ℤ) - 1 := by
+  induction N with
+  | zero => omega
+  | succ n ih =>
+    rcases n.eq_zero_or_pos with rfl | hn
+    · exact partialSum_one _
+    · rw [partialSum_succ _ n hn, ih hn]; push_cast; ring
+
+/-- There exist Rademacher multiplicative functions with linear partial sum growth.
+    This shows Atherfold's √N·(log N) bound is probabilistic, not deterministic:
+    the constant function f ≡ 1 grows linearly (partial sum = N - 1). -/
+theorem exists_linear_growth_rademacher :
+    ∃ f : ℕ → ℤ, IsRademacherMultiplicative f ∧
+      ∀ N : ℕ, 1 ≤ N → partialSum f N = (N : ℤ) - 1 :=
+  ⟨fun _ => 1, const_one_rademacher, partialSum_const_one⟩
 
 /-- The trivial upper bound: |∑_{m ≤ N} f(m)| ≤ N for any
 function with |f(m)| ≤ 1. -/

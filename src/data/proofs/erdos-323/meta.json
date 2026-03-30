@@ -1,174 +1,174 @@
 {
-  "id": "erdos-323",
-  "title": "Erdős Problem #323: Sums of k-th Powers Counting Function",
-  "slug": "erdos-323",
-  "description": "How many integers ≤ x are sums of m nonneg k-th powers? Conjectured: f_{k,k}(x) ≫ x^{1-ε} and f_{k,m}(x) ≫ x^{m/k} for m < k.",
-  "meta": {
-    "author": "Erdős–Graham, Landau (1908, k=2)",
-    "sourceUrl": "https://erdosproblems.com/323",
-    "date": "1980",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos323Problem.lean",
-    "tags": [
-      "erdos",
-      "number-theory",
-      "waring-problem",
-      "sums-of-powers",
-      "counting-functions",
-      "open"
+    "id": "erdos-323",
+    "title": "Erdős Problem #323: Sums of k-th Powers Counting Function",
+    "slug": "erdos-323",
+    "description": "How many integers ≤ x are sums of m nonneg k-th powers? Conjectured: f_{k,k}(x) ≫ x^{1-ε} and f_{k,m}(x) ≫ x^{m/k} for m < k.",
+    "meta": {
+        "author": "Erdős–Graham, Landau (1908, k=2)",
+        "sourceUrl": "https://erdosproblems.com/323",
+        "date": "1980",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/Erdos323Problem.lean",
+        "tags": [
+            "erdos",
+            "number-theory",
+            "waring-problem",
+            "sums-of-powers",
+            "counting-functions",
+            "open"
+        ],
+        "badge": "axiom",
+        "sorries": 0,
+        "erdosNumber": 323,
+        "erdosUrl": "https://erdosproblems.com/323",
+        "erdosProblemStatus": "open",
+        "dateAdded": "2026-01-19",
+        "prerequisites": [
+            "Waring's problem and sums of powers",
+            "Counting representations r_k(n)",
+            "Asymptotic analysis and Filter.atTop",
+            "Finset.card for counting"
+        ],
+        "mathlib_version": "4.26.0",
+        "mathlibDependencies": [
+            {
+                "theorem": "Finset.filter",
+                "description": "Filtering finite sets by predicate",
+                "module": "Mathlib.Data.Finset.Basic"
+            },
+            {
+                "theorem": "Finset.sum",
+                "description": "Summation over finite sets",
+                "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+            }
+        ],
+        "originalContributions": [
+            "IsSumOfPowers predicate",
+            "powerSumCount (f_{k,m}(x)) counting function",
+            "first_power_count and power_sum_count_mono axioms",
+            "landau_two_squares axiom",
+            "ErdosProblem323_part1 and ErdosProblem323_part2 definitions",
+            "DensityQuestion definition"
+        ],
+        "axiomCount": 1,
+        "lineCount": 105,
+        "assumptions": "3 axiom(s): first_power_count, power_sum_count_mono, landau_two_squares. See Lean source for complete statements."
+    },
+    "overview": {
+        "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph, asking about the counting function f_{k,m}(x) of integers representable as sums of m nonnegative k-th powers. The question is rooted in the classical Waring problem (every integer is a sum of g(k) k-th powers, proved by Hilbert 1909), but shifts focus from representation of all integers to counting how many integers have representations with fewer summands. Landau (1908) completely resolved k = 2 by showing f_{2,2}(x) ~ c·x/√(log x), where c is the Landau-Ramanujan constant arising from the multiplicative structure of sums of two squares (Fermat's theorem). For k > 2, the situation is dramatically different: even whether f_{k,k}(x) = o(x) (zero density) is unknown. The circle method of Hardy-Littlewood-Vinogradov is the primary tool for Waring's problem, but it gives asymptotic formulas only when the number of summands exceeds k. Erdős described the regime m ≤ k as 'unattackable by the methods at our disposal.'",
+        "problemStatement": "Is f_{k,k}(x) ≫_ε x^{1-ε}? For m < k, is f_{k,m}(x) ≫ x^{m/k}?",
+        "text": "How many integers ≤ x are sums of m nonneg k-th powers? Conjectured: f_{k,k}(x) ≫ x^{1-ε} and f_{k,m}(x) ≫ x^{m/k} for m < k.",
+        "proofStrategy": "The formalization builds from the predicate IsSumOfPowers (using Fin m → ℕ tuples and Finset.sum) to the counting function powerSumCount via Finset filtering. Two structural axioms establish the degenerate case (k = 1) and monotonicity in summand count. Landau's deep analytic result is axiomatized as an existence statement for the Landau-Ramanujan constant. The two main conjectures are encoded as Prop definitions with explicit ε-quantifier structure, and a separate DensityQuestion captures the strictly weaker open problem about zero density for k > 2.",
+        "keyInsights": [
+            "f_{k,m}(x) counts integers ≤ x that are sums of m k-th powers, shifting Waring's problem from universality to density",
+            "Landau's 1908 theorem f_{2,2}(x) ~ c·x/√(log x) resolves k = 2, with the √(log x) correction arising from the multiplicative criterion for sums of two squares (Fermat's theorem)",
+            "For k > 2, it is unknown whether f_{k,k}(x) has positive density — the Hardy-Littlewood circle method fails when the number of summands equals the power",
+            "The conjectured lower bounds x^{1-ε} (m = k) and x^{m/k} (m < k) reflect a dimensional heuristic: m summands each up to x^{1/k} should produce ~x^{m/k} distinct sums, but controlling collisions is the key difficulty",
+            "The two parts have different quantifier structures: Part 1 requires an ε-dependent bound (near-density), while Part 2 gives a clean power law x^{m/k}, reflecting their fundamentally different mathematical characters"
+        ],
+        "prerequisites": [
+            "Waring's problem and sums of powers",
+            "Counting representations r_k(n)",
+            "Asymptotic analysis and Filter.atTop",
+            "Finset.card for counting"
+        ]
+    },
+    "sections": [
+        {
+            "id": "sums-of-powers",
+            "title": "Sums of k-th Powers",
+            "startLine": 24,
+            "endLine": 36,
+            "summary": "Defines `IsSumOfPowers(n,k,m)` ($\\exists x_1,\\ldots,x_m: n = \\sum x_i^k$) and `powerSumCount` ($f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$).",
+            "mathContext": "$\\text{IsSumOfPowers}(n, k, m) \\iff \\exists x_1, \\ldots, x_m \\in \\mathbb{N}: n = \\sum_{i=1}^{m} x_i^k$. $f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$."
+        },
+        {
+            "id": "basic-properties",
+            "title": "Basic Properties",
+            "startLine": 37,
+            "endLine": 45,
+            "summary": "Trivial case $k=1$: $f_{1,m}(x) \\ge m$. Monotonicity: $f_{k,m}(x) \\le f_{k,m+1}(x)$ via zero-padding ($0^k = 0$).",
+            "mathContext": "$f_{1,m}(x) \\ge m$ (trivial for first powers). $f_{k,m}(x) \\le f_{k,m+1}(x)$ (monotonicity via zero-padding)."
+        },
+        {
+            "id": "landau",
+            "title": "Landau's Theorem",
+            "startLine": 46,
+            "endLine": 53,
+            "summary": "Landau's theorem: $f_{2,2}(x) \\sim c \\cdot x / \\sqrt{\\log x}$ where $c \\approx 0.7642$ is the Landau–Ramanujan constant. Resolves $k = 2$.",
+            "mathContext": "$f_{2,2}(x) \\sim \\frac{c \\cdot x}{\\sqrt{\\log x}}$ where $c = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} \\frac{1}{\\sqrt{1 - p^{-2}}}$ (Landau-Ramanujan constant). An integer is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides it to an even power."
+        },
+        {
+            "id": "main-conjectures",
+            "title": "Main Conjectures",
+            "startLine": 54,
+            "endLine": 76,
+            "summary": "Part 1: $f_{k,k}(x) \\gg_{\\varepsilon} x^{1-\\varepsilon}$ (near-full density). Part 2: $f_{k,m}(x) \\gg x^{m/k}$ for $m < k$ (dimensional lower bound). Combined as `ErdosProblem323`.",
+            "mathContext": "Part 1: $\\forall k \\ge 2,\\, \\forall \\varepsilon > 0,\\, \\exists c > 0,\\, x_0: f_{k,k}(x) \\ge c \\cdot x^{1-\\varepsilon}$ for $x \\ge x_0$. Part 2: $\\forall 1 \\le m < k,\\, k \\ge 2,\\, \\exists c > 0,\\, x_0: f_{k,m}(x) \\ge c \\cdot x^{m/k}$ for $x \\ge x_0$."
+        },
+        {
+            "id": "density-question",
+            "title": "Density Question",
+            "startLine": 77,
+            "endLine": 84,
+            "summary": "Open: is $f_{k,k}(x) = o(x)$ for $k > 2$? Known for $k = 2$ (Landau). `DensityQuestion(k)` formalizes $\\lim f_{k,k}(x)/x = 0$.",
+            "mathContext": "$\\text{DensityQuestion}(k) \\iff \\forall \\varepsilon > 0,\\, \\exists x_0: f_{k,k}(x) < \\varepsilon \\cdot x$ for $x \\ge x_0$. Equivalently, $f_{k,k}(x) = o(x)$. Known for $k = 2$ (Landau), open for $k > 2$."
+        }
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "erdosNumber": 323,
-    "erdosUrl": "https://erdosproblems.com/323",
-    "erdosProblemStatus": "open",
-    "dateAdded": "2026-01-19",
-    "prerequisites": [
-      "Waring's problem and sums of powers",
-      "Counting representations r_k(n)",
-      "Asymptotic analysis and Filter.atTop",
-      "Finset.card for counting"
+    "conclusion": {
+        "summary": "The formalization captures both conjectures of Erdős Problem 323 about the growth of sums-of-powers counting functions, together with Landau's resolved k = 2 case and the open density question for k > 2.",
+        "implications": "Resolving these conjectures would require fundamentally new techniques beyond the Hardy-Littlewood circle method, which needs m >> k summands for sharp results. Progress would illuminate the transition between the 'easy' regime (m large, full density by Waring's theorem) and the 'hard' regime (m ≤ k, unknown density), a frontier of additive number theory.",
+        "openQuestions": [
+            "Is f_{k,k}(x) = o(x) for k > 2? Even this weaker zero-density question remains open.",
+            "Is f_{k,k}(x) ≫ x^{1-ε} for all ε > 0? This would place sums-of-powers density just below full density.",
+            "Is f_{k,m}(x) ≫ x^{m/k} for m < k? The dimensional heuristic predicts yes, but collision bounds are missing.",
+            "What is the exact asymptotic of f_{k,m}(x) for k > 2? Can Landau's product formula approach generalize?",
+            "Can the Landau-Ramanujan constant's infinite product structure be extended to k > 2, or does the absence of a multiplicative characterization for sums of higher powers preclude this?"
+        ]
+    },
+    "crossReferences": [
+        {
+            "relationship": "related-problem",
+            "description": "Both involve counting integers with specific additive representations: #323 counts sums of k-th powers, #362 counts subsets with a given sum",
+            "targetId": "erdos-362"
+        },
+        {
+            "relationship": "foundation",
+            "description": "Fermat's theorem on sums of two squares provides the multiplicative criterion underlying Landau's asymptotic for f_{2,2}(x)",
+            "targetId": "fermat-two-squares"
+        },
+        {
+            "relationship": "technique",
+            "description": "The prime number theorem underlies the analytic number theory techniques used in Landau's proof of f_{2,2}(x) ~ c·x/√(log x)",
+            "targetId": "prime-number-theorem"
+        }
     ],
-    "mathlib_version": "4.26.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Finset.filter",
-        "description": "Filtering finite sets by predicate",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "Finset.sum",
-        "description": "Summation over finite sets",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      }
-    ],
-    "originalContributions": [
-      "IsSumOfPowers predicate",
-      "powerSumCount (f_{k,m}(x)) counting function",
-      "first_power_count and power_sum_count_mono axioms",
-      "landau_two_squares axiom",
-      "ErdosProblem323_part1 and ErdosProblem323_part2 definitions",
-      "DensityQuestion definition"
-    ],
-    "axiomCount": 1,
-    "lineCount": 84,
-    "assumptions": "3 axiom(s): first_power_count, power_sum_count_mono, landau_two_squares. See Lean source for complete statements."
-  },
-  "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph, asking about the counting function f_{k,m}(x) of integers representable as sums of m nonnegative k-th powers. The question is rooted in the classical Waring problem (every integer is a sum of g(k) k-th powers, proved by Hilbert 1909), but shifts focus from representation of all integers to counting how many integers have representations with fewer summands. Landau (1908) completely resolved k = 2 by showing f_{2,2}(x) ~ c·x/√(log x), where c is the Landau-Ramanujan constant arising from the multiplicative structure of sums of two squares (Fermat's theorem). For k > 2, the situation is dramatically different: even whether f_{k,k}(x) = o(x) (zero density) is unknown. The circle method of Hardy-Littlewood-Vinogradov is the primary tool for Waring's problem, but it gives asymptotic formulas only when the number of summands exceeds k. Erdős described the regime m ≤ k as 'unattackable by the methods at our disposal.'",
-    "problemStatement": "Is f_{k,k}(x) ≫_ε x^{1-ε}? For m < k, is f_{k,m}(x) ≫ x^{m/k}?",
-    "text": "How many integers ≤ x are sums of m nonneg k-th powers? Conjectured: f_{k,k}(x) ≫ x^{1-ε} and f_{k,m}(x) ≫ x^{m/k} for m < k.",
-    "proofStrategy": "The formalization builds from the predicate IsSumOfPowers (using Fin m → ℕ tuples and Finset.sum) to the counting function powerSumCount via Finset filtering. Two structural axioms establish the degenerate case (k = 1) and monotonicity in summand count. Landau's deep analytic result is axiomatized as an existence statement for the Landau-Ramanujan constant. The two main conjectures are encoded as Prop definitions with explicit ε-quantifier structure, and a separate DensityQuestion captures the strictly weaker open problem about zero density for k > 2.",
-    "keyInsights": [
-      "f_{k,m}(x) counts integers ≤ x that are sums of m k-th powers, shifting Waring's problem from universality to density",
-      "Landau's 1908 theorem f_{2,2}(x) ~ c·x/√(log x) resolves k = 2, with the √(log x) correction arising from the multiplicative criterion for sums of two squares (Fermat's theorem)",
-      "For k > 2, it is unknown whether f_{k,k}(x) has positive density — the Hardy-Littlewood circle method fails when the number of summands equals the power",
-      "The conjectured lower bounds x^{1-ε} (m = k) and x^{m/k} (m < k) reflect a dimensional heuristic: m summands each up to x^{1/k} should produce ~x^{m/k} distinct sums, but controlling collisions is the key difficulty",
-      "The two parts have different quantifier structures: Part 1 requires an ε-dependent bound (near-density), while Part 2 gives a clean power law x^{m/k}, reflecting their fundamentally different mathematical characters"
-    ],
-    "prerequisites": [
-      "Waring's problem and sums of powers",
-      "Counting representations r_k(n)",
-      "Asymptotic analysis and Filter.atTop",
-      "Finset.card for counting"
+    "leanFile": {
+        "imports": [
+            "Mathlib.Data.Nat.Basic",
+            "Mathlib.Data.Finset.Basic",
+            "Mathlib.Data.Rat.Basic",
+            "Mathlib.Tactic"
+        ],
+        "opens": [],
+        "namespace": null,
+        "lineCount": 105,
+        "axiomCount": 1,
+        "theoremCount": 0,
+        "definitionCount": 6
+    },
+    "references": [
+        {
+            "title": "Über die Einteilung der positiven ganzen Zahlen in vier Klassen",
+            "year": "1908",
+            "authors": "Landau 1908",
+            "note": "Proved f_{2,2}(x) ~ c·x/√(log x), resolving k = 2"
+        },
+        {
+            "title": "Old and New Problems and Results in Combinatorial Number Theory",
+            "year": "1980",
+            "authors": "Erdős–Graham 1980",
+            "note": "Original source of both conjectures"
+        }
     ]
-  },
-  "sections": [
-    {
-      "id": "sums-of-powers",
-      "title": "Sums of k-th Powers",
-      "startLine": 24,
-      "endLine": 36,
-      "summary": "Defines `IsSumOfPowers(n,k,m)` ($\\exists x_1,\\ldots,x_m: n = \\sum x_i^k$) and `powerSumCount` ($f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$).",
-      "mathContext": "$\\text{IsSumOfPowers}(n, k, m) \\iff \\exists x_1, \\ldots, x_m \\in \\mathbb{N}: n = \\sum_{i=1}^{m} x_i^k$. $f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$."
-    },
-    {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "startLine": 37,
-      "endLine": 45,
-      "summary": "Trivial case $k=1$: $f_{1,m}(x) \\ge m$. Monotonicity: $f_{k,m}(x) \\le f_{k,m+1}(x)$ via zero-padding ($0^k = 0$).",
-      "mathContext": "$f_{1,m}(x) \\ge m$ (trivial for first powers). $f_{k,m}(x) \\le f_{k,m+1}(x)$ (monotonicity via zero-padding)."
-    },
-    {
-      "id": "landau",
-      "title": "Landau's Theorem",
-      "startLine": 46,
-      "endLine": 53,
-      "summary": "Landau's theorem: $f_{2,2}(x) \\sim c \\cdot x / \\sqrt{\\log x}$ where $c \\approx 0.7642$ is the Landau–Ramanujan constant. Resolves $k = 2$.",
-      "mathContext": "$f_{2,2}(x) \\sim \\frac{c \\cdot x}{\\sqrt{\\log x}}$ where $c = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} \\frac{1}{\\sqrt{1 - p^{-2}}}$ (Landau-Ramanujan constant). An integer is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides it to an even power."
-    },
-    {
-      "id": "main-conjectures",
-      "title": "Main Conjectures",
-      "startLine": 54,
-      "endLine": 76,
-      "summary": "Part 1: $f_{k,k}(x) \\gg_{\\varepsilon} x^{1-\\varepsilon}$ (near-full density). Part 2: $f_{k,m}(x) \\gg x^{m/k}$ for $m < k$ (dimensional lower bound). Combined as `ErdosProblem323`.",
-      "mathContext": "Part 1: $\\forall k \\ge 2,\\, \\forall \\varepsilon > 0,\\, \\exists c > 0,\\, x_0: f_{k,k}(x) \\ge c \\cdot x^{1-\\varepsilon}$ for $x \\ge x_0$. Part 2: $\\forall 1 \\le m < k,\\, k \\ge 2,\\, \\exists c > 0,\\, x_0: f_{k,m}(x) \\ge c \\cdot x^{m/k}$ for $x \\ge x_0$."
-    },
-    {
-      "id": "density-question",
-      "title": "Density Question",
-      "startLine": 77,
-      "endLine": 84,
-      "summary": "Open: is $f_{k,k}(x) = o(x)$ for $k > 2$? Known for $k = 2$ (Landau). `DensityQuestion(k)` formalizes $\\lim f_{k,k}(x)/x = 0$.",
-      "mathContext": "$\\text{DensityQuestion}(k) \\iff \\forall \\varepsilon > 0,\\, \\exists x_0: f_{k,k}(x) < \\varepsilon \\cdot x$ for $x \\ge x_0$. Equivalently, $f_{k,k}(x) = o(x)$. Known for $k = 2$ (Landau), open for $k > 2$."
-    }
-  ],
-  "conclusion": {
-    "summary": "The formalization captures both conjectures of Erdős Problem 323 about the growth of sums-of-powers counting functions, together with Landau's resolved k = 2 case and the open density question for k > 2.",
-    "implications": "Resolving these conjectures would require fundamentally new techniques beyond the Hardy-Littlewood circle method, which needs m >> k summands for sharp results. Progress would illuminate the transition between the 'easy' regime (m large, full density by Waring's theorem) and the 'hard' regime (m ≤ k, unknown density), a frontier of additive number theory.",
-    "openQuestions": [
-      "Is f_{k,k}(x) = o(x) for k > 2? Even this weaker zero-density question remains open.",
-      "Is f_{k,k}(x) ≫ x^{1-ε} for all ε > 0? This would place sums-of-powers density just below full density.",
-      "Is f_{k,m}(x) ≫ x^{m/k} for m < k? The dimensional heuristic predicts yes, but collision bounds are missing.",
-      "What is the exact asymptotic of f_{k,m}(x) for k > 2? Can Landau's product formula approach generalize?",
-      "Can the Landau-Ramanujan constant's infinite product structure be extended to k > 2, or does the absence of a multiplicative characterization for sums of higher powers preclude this?"
-    ]
-  },
-  "crossReferences": [
-    {
-      "relationship": "related-problem",
-      "description": "Both involve counting integers with specific additive representations: #323 counts sums of k-th powers, #362 counts subsets with a given sum",
-      "targetId": "erdos-362"
-    },
-    {
-      "relationship": "foundation",
-      "description": "Fermat's theorem on sums of two squares provides the multiplicative criterion underlying Landau's asymptotic for f_{2,2}(x)",
-      "targetId": "fermat-two-squares"
-    },
-    {
-      "relationship": "technique",
-      "description": "The prime number theorem underlies the analytic number theory techniques used in Landau's proof of f_{2,2}(x) ~ c·x/√(log x)",
-      "targetId": "prime-number-theorem"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 105,
-    "axiomCount": 1,
-    "theoremCount": 0,
-    "definitionCount": 6
-  },
-  "references": [
-    {
-      "title": "Über die Einteilung der positiven ganzen Zahlen in vier Klassen",
-      "year": "1908",
-      "authors": "Landau 1908",
-      "note": "Proved f_{2,2}(x) ~ c·x/√(log x), resolving k = 2"
-    },
-    {
-      "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "year": "1980",
-      "authors": "Erdős–Graham 1980",
-      "note": "Original source of both conjectures"
-    }
-  ]
 }

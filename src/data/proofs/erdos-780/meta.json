@@ -52,17 +52,19 @@
       "PairwiseDisjoint predicate for k-matchings in hypergraphs",
       "EdgeColoring and colorClass definitions for t-colorings",
       "KneserHypergraph structure with vertices, edges, uniformity, and disjointness fields",
+      "chromaticNumber as proper noncomputable def (sInf of valid colorings)",
       "Threshold function: n₀ = kr + (t-1)(k-1)",
       "alon_frankl_lovasz_1986 main theorem (axiom) with kneser_hypergraph_chromatic_number equivalent",
       "tightness_construction showing the bound is optimal",
       "kneser_conjecture axiom (k=2 special case, Lovász 1978)",
-      "Four small cases: Petersen graph KG(5,2), KG(7,3), KG(2r,r), KG(2r+1,r)",
-      "erdos_ko_rado axiom connecting independence number to intersecting families",
-      "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms"
+      "Four small cases proved from kneser_conjecture axiom: Petersen graph KG(5,2)=3, KG(7,3)=3, KG(2r,r)=2, KG(2r+1,r)=3",
+      "erdos_ko_rado proved from ErdosKoRado.Star construction (was axiom)",
+      "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms",
+      "Companion file Erdos780Aristotle.lean with 10 routine lemmas for automated proof"
     ],
-    "axiomCount": 10,
-    "assumptions": "10 axiom declarations: chromaticNumber (Kneser hypergraph chromatic number function), alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2 for n >= 2r), petersen_chromatic (chi(KG(5,2)) = 3), kg_7_3_chromatic (chi(KG(7,3)) = 2), kg_2r_r_chromatic (chi(KG(2r,r)) = 2 perfect matching), kg_2r_plus_1_r (chi(KG(2r+1,r)) = 3 odd graph), erdos_ko_rado (max intersecting family size C(n-1,r-1))",
-    "lineCount": 200
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching, deep topological proof), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2, Lovász 1978). 0 sorries: all 4 small cases proved from kneser_conjecture, erdos_ko_rado proved from EKR Star construction.",
+    "lineCount": 221
   },
   "overview": {
     "historicalContext": "Erdős Problem #780 generalizes the famous Kneser conjecture to hypergraphs. **Kneser (1955)** conjectured that $\\chi(KG(n,r)) = n - 2r + 2$, i.e., any $(n - 2r + 1)$-coloring of the $r$-subsets of $[n]$ must contain two disjoint sets of the same color. This remained open until **Lovász's landmark 1978 proof** (*J. Comb. Theory A* 25, 319-324), which was the **first major application of algebraic topology to combinatorics**, using the Borsuk-Ulam theorem via the neighborhood complex $\\mathcal{N}(KG(n,r))$. Schrijver simultaneously found a vertex-critical subgraph (the stable Kneser graph) with the same chromatic number.\n\n**Alon, Frankl, and Lovász (1986)** extended this to $r$-uniform hypergraphs (*Trans. AMS* 298, 359-370): if $n \\geq kr + (t-1)(k-1)$, any $t$-coloring of $\\binom{[n]}{r}$ contains $k$ pairwise disjoint monochromatic edges. Their proof generalizes the topological approach using the independence complex and a Borsuk-Ulam-type argument via the Lusternik-Schnirelmann category. **Matoušek (2004)** later gave a purely combinatorial proof using Tucker's lemma. The problem connects to the Erdős-Ko-Rado theorem (1961): the maximum intersecting family gives $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",
@@ -136,18 +138,18 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
+      "summary": "Four instances proved from kneser_conjecture axiom: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 3$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
       "startLine": 133,
       "endLine": 150,
-      "mathContext": "Axiomatized: Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
+      "mathContext": "Four instances proved from kneser_conjecture axiom: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 3$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
     },
     {
       "id": "connections",
       "title": "Erdős-Ko-Rado Connection",
-      "summary": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
+      "summary": "Proves `erdos_ko_rado` from ErdosKoRado.Star construction: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
       "startLine": 151,
       "endLine": 165,
-      "mathContext": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\$\\alpha$(KG(n,r)) = \\binom{n-1}{r-1}$."
+      "mathContext": "Proves `erdos_ko_rado` from ErdosKoRado.Star construction: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$."
     },
     {
       "id": "summary",
@@ -200,16 +202,17 @@
       "Mathlib.Combinatorics.SetFamily.Intersecting",
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.Choose.Basic"
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Proofs.ErdosKoRado"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos780",
-    "lineCount": 200,
-    "axiomCount": 10,
-    "theoremCount": 2,
-    "definitionCount": 11
+    "lineCount": 221,
+    "axiomCount": 4,
+    "theoremCount": 7,
+    "definitionCount": 12
   },
   "references": [
     {

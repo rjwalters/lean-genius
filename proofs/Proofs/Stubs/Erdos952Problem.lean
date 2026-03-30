@@ -360,7 +360,7 @@ A "moat" is a region around 0 containing no Gaussian primes beyond a certain nor
 
 -- The critical moat width (if it exists)
 noncomputable def criticalMoatWidth : ℕ :=
-  Nat.find (⟨0, fun x hx => hx.1 0⟩ : ∃ k, ¬ CanEscapeMoat k)
+  Nat.find ⟨0, not_canEscapeMoat_le_27 0 (Nat.zero_le 27)⟩
 
 -- If no walk exists for any k, the conjecture is false
 def StrongNegation : Prop := ∀ k, ¬ CanEscapeMoat k
@@ -379,8 +379,8 @@ noncomputable def gaussianPrimeCount (R : ℕ) : ℕ :=
       IsGaussianPrime z ∧ z.norm ≤ R ^ 2)).card
 
 -- Asymptotic: π_ℤ[i](x) ~ x / log(x)
--- Similar to rational prime counting function
-axiom gaussian_prime_theorem : ∀ ε > 0, ∃ N : ℕ,
+-- Similar to rational prime counting function (analytic number theory, not formalized here)
+def GaussianPrimeTheorem : Prop := ∀ ε > 0, ∃ N : ℕ,
   ∀ R ≥ N, |((gaussianPrimeCount R : ℝ) / R ^ 2) - 1 / Real.log R| < ε
 
 /-
@@ -401,10 +401,45 @@ noncomputable def splitPrime (p : ℕ) (hp : p.Prime) (hmod : p % 4 = 1) :
   (⟨(a : ℤ), (b : ℤ)⟩, ⟨(a : ℤ), -(b : ℤ)⟩)
 
 -- Connection: large gaps in primes ≡ 1 (mod 4) create large moats
-axiom primes_mod_4_connection :
+-- Proved unconditionally: the factorial construction gives arbitrarily long
+-- prime-free intervals, hence no primes ≡ 1 mod 4 either.
+theorem primes_mod_4_connection :
     (∀ k, ¬ CanEscapeMoat k) →
     ∀ C, ∃ᶠ n in Filter.atTop, ∀ m ∈ Finset.range C,
-      ¬ (n + m).Prime ∨ (n + m) % 4 ≠ 1
+      ¬ (n + m).Prime ∨ (n + m) % 4 ≠ 1 := by
+  intro _ C
+  rw [Filter.frequently_atTop]
+  intro a
+  -- For any window size C, [k!+2, k!+C+1] is entirely composite
+  set k := max a (C + 2)
+  refine ⟨k ! + 2, ?_, ?_⟩
+  · -- k! + 2 ≥ a (since k ≤ k! for k ≥ 1)
+    have : k ≤ k ! := by
+      apply Nat.le_of_dvd (Nat.factorial_pos k)
+      match k, show 1 ≤ k by omega with
+      | n + 1, _ => exact ⟨n !, Nat.factorial_succ n⟩
+    omega
+  · -- Every number in [k!+2, k!+2+C) is composite
+    intro m hm
+    left
+    rw [Finset.mem_range] at hm
+    -- j = m + 2 divides k!, hence divides k! + j, making k!+2+m composite
+    set j := m + 2
+    have hj_le_k : j ≤ k := by omega
+    have hj_dvd_kfact : j ∣ k ! := by
+      apply dvd_trans
+      · -- j ∣ j! (since j! = j * (j-1)!)
+        match j, show 1 ≤ j by omega with
+        | n + 1, _ => exact ⟨n !, Nat.factorial_succ n⟩
+      · exact Nat.factorial_dvd_factorial hj_le_k
+    have hj_dvd : j ∣ (k ! + 2 + m) := by
+      rw [show k ! + 2 + m = k ! + j from by omega]
+      exact dvd_add hj_dvd_kfact (dvd_refl j)
+    -- k!+2+m has proper divisor j (2 ≤ j < k!+2+m), so not prime
+    intro hp
+    rcases hp.eq_one_or_self_of_dvd j hj_dvd with h | h
+    · omega -- j ≥ 2, not 1
+    · have := Nat.factorial_pos k; omega -- j = k!+2+m implies k! = 0, impossible
 
 /-
 # Part 8: Equivalences and Structural Results
@@ -466,15 +501,17 @@ def RationalPrimeMoat : Prop :=
 - Whether any bounded step size suffices
 - The critical moat width (if the answer is NO)
 
-**Axioms (3):**
+**Axioms (1):**
 - tsuchimura: computational verification (no walk ≤ √26)
-- gaussian_prime_theorem: asymptotic density (analytic number theory)
-- primes_mod_4_connection: moat structure from prime gaps
+
+**Stated (not axiomatized):**
+- GaussianPrimeTheorem: asymptotic density (analytic number theory, as Prop def)
 
 **Proved from Mathlib:**
 - Full Gaussian prime classification (both directions):
   - Backward: 3 norm types → prime (prime_of_prime_natAbs_norm, prime_of_inert, prime_of_split)
   - Forward: prime → one of 3 norm types (classification_forward, via strong induction + mod 4)
+- primes_mod_4_connection: proved via factorial construction (k!+2,...,k!+k all composite)
 - splitPrime definition (via Fermat's two-square theorem)
 - jordan_rabung, gethner_et_al from tsuchimura
 - Moat monotonicity and structural equivalences

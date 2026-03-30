@@ -60,9 +60,9 @@
       "Gap property: complete sequences have eventually bounded gaps",
       "Main conjecture as disjunction: all (m,m+1) valid or cutoff exists"
     ],
-    "axiomCount": 2,
-    "lineCount": 509,
-    "assumptions": "8 axioms: erdos_348_characterization, erdos_348_main_problem (open problem), vanDoorn_theorem, complete_bounded_gaps (deep results), fib_complete (Zeckendorf), fib_1_robust (Fibonacci resilience), fib_not_2_robust (Fibonacci fragility), complete_iff_repr (requires Fintype machinery). powersOf2_complete and powersOf2_not_1_robust are now FULLY PROVED.",
+    "axiomCount": 1,
+    "lineCount": 558,
+    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -174,9 +174,9 @@
     ],
     "opens": [],
     "namespace": "Erdos348",
-    "lineCount": 509,
-    "axiomCount": 2,
-    "theoremCount": 15,
+    "lineCount": 558,
+    "axiomCount": 1,
+    "theoremCount": 7,
     "definitionCount": 14
   },
   "references": [

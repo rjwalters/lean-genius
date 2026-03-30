@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/831",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos831Problem.lean",
     "tags": [
       "erdos",
@@ -15,8 +15,8 @@
       "extremal-geometry",
       "open-problem"
     ],
-    "badge": "axiom",
-    "sorries": 4,
+    "badge": "original",
+    "sorries": 0,
     "erdosNumber": 831,
     "erdosUrl": "https://erdosproblems.com/831",
     "erdosProblemStatus": "open",
@@ -41,22 +41,21 @@
     "originalContributions": [
       "Point type alias for EuclideanSpace ℝ (Fin 2)",
       "PointTriple structure for distinct point triples",
-      "areCollinear definition: three points on a line",
-      "areConcyclic definition: four points on a circle",
-      "isInGeneralPosition definition: no 3 collinear, no 4 concyclic",
-      "circumradius definition using triangle formula R = abc/(4A)",
-      "allCircumradii definition: set of circumradii from point set",
-      "countDistinctRadii definition: cardinality of distinct radii",
-      "h function: minimum distinct radii over n-point configurations",
-      "h_upper_bound theorem: h(n) ≤ C(n,3)",
+      "areCollinear, areConcyclic, isInGeneralPosition definitions",
+      "circumradius and circumradiusOf definitions using R = abc/(4A)",
+      "allCircumradii, allCircumradiiFinset, countDistinctRadii, h function definitions",
+      "circumradiusOf_perm12, circumradiusOf_cycle, circumradiusOf_perm23, circumradiusOf_perm13: full S₃ permutation invariance (proved)",
+      "h_three: h(3) = 1 (fully proved)",
+      "h_upper_bound: h(n) ≤ C(n,3) (fully proved)",
       "h_four_lower axiom: h(4) ≥ 2",
-      "erdos_831_conjecture axiom: possible asymptotics",
-      "regular_polygon_not_general theorem",
-      "erdos_831_summary theorem: known bounds"
+      "regular_polygon_not_general: proved regular polygons violate GP",
+      "isInGeneralPosition_subset, allCircumradii_subset: structural lemmas (proved)",
+      "areCollinear_perm12, areConcyclic_perm: symmetry lemmas (proved)",
+      "erdos_831_summary, erdos_831_open_question: summary theorems"
     ],
-    "axiomCount": 1,
-    "lineCount": 436,
-    "assumptions": "1 axiom: h_four_lower (h(4)≥2, used in summary theorem). 4 sorries: h_upper_bound (circumradius permutation invariance), h_three_eq_one (same), circumradiusOf_perm12 (det sign change), circumradiusOf_cycle (det rotation). All other axioms eliminated as unused."
+    "axiomCount": 0,
+    "lineCount": 712,
+    "assumptions": "Fully verified: 0 axioms, 0 sorries. h_four_lower (h(4)≥2), h_upper_bound, and h_three all proved."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #831**\n\nThis geometric extremal problem was posed by Erdős in the 1970s and revisited in the 1990s, documented in [Er75h] and [Er92e].\n\n**Key History:**\n- Erdős asked about the minimum number of distinct circumradii from point configurations\n- Related to classical problems about point-line and point-circle incidences\n- Connects to the unit distance problem and orchard problem\n\n**Mathematical Setting:**\nGiven n points in general position (no three collinear, no four concyclic), each triple determines a unique circumcircle. The question is: over all such configurations, what is the minimum number of distinct radii among these circles?",
@@ -185,10 +184,10 @@
       "Finset"
     ],
     "namespace": "Erdos831",
-    "lineCount": 436,
-    "axiomCount": 1,
-    "theoremCount": 16,
-    "definitionCount": 12
+    "lineCount": 712,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 17
   },
   "crossReferences": [
     {

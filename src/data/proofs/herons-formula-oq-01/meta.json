@@ -1,0 +1,184 @@
+{
+  "id": "herons-formula-oq-01",
+  "title": "Brahmagupta's Formula for Cyclic Quadrilaterals",
+  "slug": "herons-formula-oq-01",
+  "description": "Generalizes Heron's formula to cyclic quadrilaterals: Area = sqrt((s-a)(s-b)(s-c)(s-d)). Proves algebraic properties, reduction to Heron when d=0, non-negativity, rectangle/square special cases, and states the isoperimetric inequality.",
+  "meta": {
+    "author": "Brahmagupta (628 AD), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brahmagupta%27s_formula",
+    "date": "628",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ01.lean",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "quadrilateral",
+      "cyclic",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: Brahmagupta's formula for inscribed quadrilaterals (requires cyclic quadrilateral definition and diagonal angle analysis). 1 sorry: isoperimetric inequality (AM-GM for 4 variables).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "sqrt(x^2) = x for x >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Brahmagupta product definition and algebraic expansion",
+      "Cyclic permutation and reversal symmetry",
+      "Reduction to Heron's formula when d = 0",
+      "Non-negativity under quadrilateral inequalities",
+      "Rectangle and square area formulas as special cases",
+      "Isoperimetric inequality statement (sorry: AM-GM chain)",
+      "Concrete examples: 3-4-5, unit square, 2x3 rectangle"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 224,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "prerequisites": [
+      "Heron's formula for triangles",
+      "Basic algebra over the reals",
+      "Square roots and non-negativity"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Brahmagupta, the great Indian mathematician-astronomer, discovered in 628 AD that Heron's formula for triangle area generalizes to cyclic quadrilaterals. For a quadrilateral inscribed in a circle with sides a, b, c, d and semi-perimeter s = (a+b+c+d)/2, the area is sqrt((s-a)(s-b)(s-c)(s-d)). Setting d = 0 recovers Heron's formula. The formula holds only for cyclic (inscribed) quadrilaterals — for general quadrilaterals, the area depends on the diagonal angles.",
+    "problemStatement": "For a cyclic quadrilateral with sides $a, b, c, d$ and semi-perimeter $s = (a+b+c+d)/2$:\n\n$$\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$$\n\nSpecial cases: setting $d = 0$ gives Heron's formula; equal sides gives the square area formula.",
+    "text": "A 193-line formalization of Brahmagupta's formula for cyclic quadrilaterals. The Brahmagupta product (s-a)(s-b)(s-c)(s-d) is defined and its algebraic properties proved: expansion in terms of side lengths, cyclic and reversal symmetry, reduction to Heron's formula when d=0, non-negativity under quadrilateral inequalities, and exact formulas for rectangles (area = ab) and squares (area = a^2). Brahmagupta's formula itself is axiomatized (requires cyclic quadrilateral geometry). The isoperimetric inequality (square maximizes area for fixed perimeter) is stated with proof strategy via AM-GM.",
+    "proofStrategy": "The algebraic properties are proved by ring arithmetic (unfold + ring). Non-negativity follows from the quadrilateral inequality constraints ensuring all four factors are non-negative. The reduction to Heron is a direct computation. Rectangle/square formulas follow by expanding and simplifying. The main formula is axiomatized because a full proof requires: (1) formalizing cyclic quadrilateral geometry, (2) applying the law of cosines to supplementary opposite angles, and (3) connecting to diagonal angles.",
+    "keyInsights": [
+      "Setting d = 0 reduces Brahmagupta to Heron: the degenerate quadrilateral is a triangle",
+      "The Brahmagupta product has full dihedral symmetry (cyclic permutations + reversal)",
+      "For a rectangle (a=c, b=d), the product simplifies to (ab)^2, giving area = ab",
+      "The isoperimetric inequality follows from AM-GM applied to the four factors (s-a), (s-b), (s-c), (s-d)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 30,
+      "endLine": 41,
+      "summary": "Defines semiperimeter and Brahmagupta product for a quadrilateral.",
+      "mathContext": "$s = (a+b+c+d)/2$, $(s-a)(s-b)(s-c)(s-d)$"
+    },
+    {
+      "id": "algebraic",
+      "title": "Algebraic Properties",
+      "startLine": 43,
+      "endLine": 66,
+      "summary": "Expansion in terms of side lengths, cyclic symmetry, reversal symmetry.",
+      "mathContext": "$(s-a)(s-b)(s-c)(s-d) = \\frac{(-a+b+c+d)(a-b+c+d)(a+b-c+d)(a+b+c-d)}{16}$"
+    },
+    {
+      "id": "heron-reduction",
+      "title": "Reduction to Heron's Formula",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "When d=0, Brahmagupta product equals Heron product: the degenerate quadrilateral is a triangle.",
+      "mathContext": "$(s-a)(s-b)(s-c)(s-0) = s(s-a)(s-b)(s-c)$ with $s = (a+b+c)/2$"
+    },
+    {
+      "id": "nonnegativity",
+      "title": "Non-negativity",
+      "startLine": 90,
+      "endLine": 106,
+      "summary": "Brahmagupta product is non-negative when all four generalized triangle inequalities hold.",
+      "mathContext": "$(s-a)(s-b)(s-c)(s-d) \\geq 0$ when each side is at most the sum of the other three"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 108,
+      "endLine": 135,
+      "summary": "Rectangle: product = (ab)^2, area = ab. Square: product = a^4, area = a^2.",
+      "mathContext": "For rectangle: $\\sqrt{(s-a)(s-b)(s-a)(s-b)} = ab$"
+    },
+    {
+      "id": "isoperimetric",
+      "title": "Isoperimetric Inequality",
+      "startLine": 137,
+      "endLine": 154,
+      "summary": "Square maximizes area for fixed perimeter. Product <= ((a+b+c+d)/4)^4 by AM-GM.",
+      "mathContext": "$(s-a)(s-b)(s-c)(s-d) \\leq \\left(\\frac{a+b+c+d}{4}\\right)^4$"
+    },
+    {
+      "id": "axiom-examples",
+      "title": "Brahmagupta Formula and Examples",
+      "startLine": 156,
+      "endLine": 193,
+      "summary": "Axiomatized Brahmagupta formula and concrete examples: 3-4-5 triangle, unit square, 2x3 rectangle.",
+      "mathContext": "Numerical verification of the formula"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula",
+      "relationship": "extends",
+      "description": "Generalizes Heron's formula from triangles to cyclic quadrilaterals"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem relates diagonals of cyclic quadrilaterals"
+    }
+  ],
+  "conclusion": {
+    "summary": "Brahmagupta's formula is formalized with full algebraic infrastructure. The reduction to Heron's formula and the rectangle/square special cases are proved cleanly. The main formula is axiomatized (needs cyclic geometry), and the isoperimetric inequality needs AM-GM for 4 variables.",
+    "implications": "Provides a verified algebraic framework for cyclic quadrilateral area computation, bridging Heron's formula to its natural four-sided generalization.",
+    "openQuestions": [
+      "Can the axiom be eliminated by formalizing cyclic quadrilateral geometry and the law of cosines for supplementary angles?",
+      "Can the isoperimetric inequality be proved from a formalized AM-GM inequality for n variables?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Brahmagupta",
+      "title": "Brahmasphutasiddhanta (Chapter 12)",
+      "year": "628",
+      "venue": "Sanskrit mathematical treatise",
+      "note": "First statement of the formula for cyclic quadrilateral area"
+    },
+    {
+      "authors": "Coolidge, Julian L.",
+      "title": "A Historically Interesting Formula for the Area of a Quadrilateral",
+      "year": "1939",
+      "venue": "American Mathematical Monthly 46(6), 345-347",
+      "note": "Historical discussion of Brahmagupta's formula and its generalizations"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Brahmagupta",
+    "lineCount": 224,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 3
+  },
+  "mainTheorems": [
+    {
+      "name": "brahmagupta_reduces_to_heron",
+      "type": "core",
+      "description": "Setting d=0 in Brahmagupta gives Heron's formula",
+      "leanType": "brahmaguptaProduct a b c 0 = heronProduct a b c"
+    },
+    {
+      "name": "brahmaguptaProduct_nonneg",
+      "type": "core",
+      "description": "Non-negativity under quadrilateral inequalities",
+      "leanType": "0 <= brahmaguptaProduct a b c d"
+    }
+  ]
+}

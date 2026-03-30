@@ -28,8 +28,8 @@
       "Turán-type bounds"
     ],
     "axiomCount": 0,
-    "lineCount": 111,
-    "assumptions": "None. All auxiliary theorems proved: hypercube_self_subgraph (identity embedding), complete_contains_hypercube (identity on complete graph), hypercube_one_is_edge (case analysis on Fin 2). Main conjecture stated as Prop definition (open problem).",
+    "lineCount": 255,
+    "assumptions": "None. All auxiliary theorems proved. Q_n regularity proved for all n via bit-flip bijection. Main conjecture stated as Prop definition (open problem).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -212,7 +212,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 111,
+    "lineCount": 255,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 7

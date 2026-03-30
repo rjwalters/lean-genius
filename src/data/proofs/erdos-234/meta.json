@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/234",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 458,
+    "lineCount": 512,
     "assumptions": "3 axioms: gallagher_conditional (RH→exponential distribution), large_gaps_exist (FGKT/Maynard), average_normalized_gap (PNT). Previously 5 axioms: density_at_infinity proved via Markov (session 2), small_gaps_exist proved via Cesàro contrapositive (session 3).",
     "mathlib_version": "4.26.0"
   },
@@ -122,6 +122,14 @@
       "endLine": 363,
       "summary": "Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$.",
       "mathContext": "Verified: Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$."
+    },
+    {
+      "id": "density-function-properties",
+      "title": "Properties of the Density Function",
+      "startLine": 461,
+      "endLine": 512,
+      "summary": "Conditional properties of the density $f(c)$ (if it exists): $f(c) \\in [0,1]$, $f$ is monotone non-decreasing, and $f(c) \\to 1$ as $c \\to \\infty$. The last result uses density_at_infinity and `tendsto_order`.",
+      "mathContext": "Verified: If the density exists (the limit of gapProportion), it necessarily satisfies CDF properties. The limit approach uses `ge_of_tendsto` / `le_of_tendsto` for bounds and `tendsto_order` for the convergence $f(c) \\to 1$."
     }
   ],
   "crossReferences": [
@@ -175,9 +183,9 @@
       "Set"
     ],
     "namespace": null,
-    "lineCount": 458,
+    "lineCount": 512,
     "axiomCount": 3,
-    "theoremCount": 21,
+    "theoremCount": 28,
     "definitionCount": 8
   },
   "references": [

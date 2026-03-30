@@ -1,0 +1,59 @@
+{
+  "id": "szemeredi-core-oq-03",
+  "name": "Hypergraph regularity lemma (Gowers 2007)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "szemeredi-core",
+    "question": "Generalize to hypergraph regularity (Gowers 2007)?"
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Defined k-uniform hypergraphs, density, regularity conditions. Full formalization ~2000+ lines.",
+    "builtItems": [
+      "proofs/Proofs/SzemerediCoreOQ03.lean",
+      "UniformHypergraph V k structure",
+      "hypergraphDensity, IsGraphRegular, IsHypergraphRegular3",
+      "Formalization roadmap"
+    ],
+    "insights": [
+      "Nested regularity structure (k depends on k-1)",
+      "Wowzer partition bounds vs tower for graphs",
+      "Polyadic set framework is key missing piece"
+    ],
+    "mathlibGaps": [
+      "No k-uniform hypergraph in Mathlib"
+    ],
+    "nextSteps": [
+      "Build polyadic set framework",
+      "Formalize nested regularity"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediCore.lean",
+      "filename": "SzemerediCore.lean",
+      "lineCount": 111,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCore.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ03.lean",
+      "filename": "SzemerediCoreOQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 0,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-core"
+  ]
+}

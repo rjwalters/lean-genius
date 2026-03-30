@@ -68,30 +68,17 @@ def ErdosProblem129_k3 (r : ℕ) : Prop :=
 
 /-- Erdős–Gyárfás lower bound for `k = 3`: `R(n;3,r) > C^{√n}` for some `C > 1`.
 That is, for large `n`, no `N < C^{√n}` satisfies `HasRamseyAvoid N n 3 r`. -/
-axiom erdos_gyarfas_lower_bound (r : ℕ) (hr : 2 ≤ r) :
-    ∃ (C : ℝ), 1 < C ∧ ∀ᶠ n in Filter.atTop,
-      ∀ N : ℕ, (N : ℝ) < C ^ Real.sqrt n → ¬HasRamseyAvoid N n 3 r
 
 /- ## Basic properties -/
 
 /-- Monotonicity: if `HasRamseyAvoid N n k r`, then `HasRamseyAvoid M n k r`
 for any `M ≥ N`. More vertices only makes it easier to find a large independent set. -/
-axiom hasRamseyAvoid_mono (N M n k r : ℕ) (h : N ≤ M) :
-    HasRamseyAvoid N n k r → HasRamseyAvoid M n k r
 
 /-- With more colors, avoiding monochromatic cliques is easier. -/
-axiom hasRamseyAvoid_more_colors (N n k r₁ r₂ : ℕ) (h : r₁ ≤ r₂) :
-    HasRamseyAvoid N n k r₁ → HasRamseyAvoid N n k r₂
 
 /-- For `k ≤ 2` and `n ≤ N`, the property holds vacuously since no edge
 forms a monochromatic `K_k` when `k ≤ 2`. -/
-axiom hasRamseyAvoid_small_k (N n k r : ℕ) (hk : k ≤ 2) (hn : n ≤ N) (hr : 0 < r) :
-    HasRamseyAvoid N n k r
 
 /-- The singleton case: any graph has a 1-vertex set avoiding mono `K_3`. -/
-axiom hasRamseyAvoid_one (N r : ℕ) (hN : 1 ≤ N) (hr : 0 < r) :
-    HasRamseyAvoid N 1 3 r
 
 /-- The `n = 0` case is trivially satisfiable. -/
-axiom hasRamseyAvoid_zero (N k r : ℕ) (hr : 0 < r) :
-    HasRamseyAvoid N 0 k r

@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/661",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 133,
+    "lineCount": 164,
     "assumptions": "3 axiom(s): erdos_661_bipartite_advantage, guth_katz_lower, lattice_upper. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -75,19 +75,19 @@
     },
     {
       "id": "lenz-construction",
-      "title": "Part VII: Lenz Construction in ℝ⁴",
-      "startLine": 72,
-      "endLine": 77,
-      "summary": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$.",
-      "mathContext": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$."
+      "title": "Part VII: Lenz Construction in ℝ⁴ (Verified)",
+      "startLine": 122,
+      "endLine": 167,
+      "summary": "Formalizes and verifies Lenz's construction in $\\mathbb{R}^4$. Defines $\\text{Point4} = (\\mathbb{R}^2) \\times (\\mathbb{R}^2)$, squared distance $d_4^2$, and two orthogonal unit circles $C_1(\\theta) = (\\cos\\theta, \\sin\\theta, 0, 0)$, $C_2(\\phi) = (0, 0, \\cos\\phi, \\sin\\phi)$. Proves $d_4^2(C_1(\\theta), C_2(\\phi)) = 2$ for all $\\theta, \\phi$ (so all bipartite distances equal $\\sqrt{2}$, giving $F_4(2n) = 1$). Also proves both circles have unit norm. All 3 theorems fully verified (0 sorries).",
+      "mathContext": "Verified: Lenz's theorem that two orthogonal unit circles in $\\mathbb{R}^4$ produce constant bipartite distance $\\sqrt{2}$. Proof uses the Pythagorean identity $\\sin^2\\theta + \\cos^2\\theta = 1$."
     },
     {
       "id": "observations",
       "title": "Part VIII: Observations and Connections",
-      "startLine": 78,
-      "endLine": 84,
-      "summary": "Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry.",
-      "mathContext": "Mathematical content: Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry."
+      "startLine": 169,
+      "endLine": 178,
+      "summary": "Notes the connection to Erdős Problem #89 (general distinct distances) and the dimension gap: $F_4(2n) = 1$ (verified) vs the conjectured $F_2(2n) = o(n/\\sqrt{\\log n})$ in $\\mathbb{R}^2$.",
+      "mathContext": "Mathematical content: connection to Problem #89, dimension gap between ℝ² and ℝ⁴."
     }
   ],
   "overview": {
@@ -122,14 +122,15 @@
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 133,
+    "lineCount": 164,
     "axiomCount": 3,
-    "theoremCount": 4,
-    "definitionCount": 5
+    "theoremCount": 10,
+    "definitionCount": 9
   },
   "references": [
     "Erdős–Pach (1990): bipartite distinct distances problem",

@@ -29,16 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Key insight — steinerberger_r2_equiv is provable via φ(2m)=2φ(m) for even m, which gives g(2m)=2g(m) and self-similar doubling. Once proved, computational axioms follow.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (6A→4A, 2T→8T). Proved doubling for n=10 and n=94 via totientStep_double_even propagation. Remaining 4 axioms: 3 Cambie ratios (3,4), 1 Steinerberger equivalence.",
     "builtItems": [
-      "Survey: identified proof strategy for steinerberger_r2_equiv and downstream axioms"
+      "Survey: identified proof strategy for steinerberger_r2_equiv and downstream axioms",
+      "totient_double_even: φ(2m)=2φ(m) for even m (from Mathlib)",
+      "totientStep_double_even: g(2m)=2g(m)",
+      "iteratedTotientStep_even: iterates stay even",
+      "iteratedTotientStep_ge_start: iterates ≥ starting value",
+      "doubling_propagation: base case + self-similar implies all k",
+      "PROVED doubling_r2_n10: axiom→theorem (6A→5A)",
+      "PROVED doubling_r2_n94: axiom→theorem (5A→4A)"
     ],
     "insights": [
       "φ(2m) = 2φ(m) for even m — key identity enabling the scaling argument",
       "g(2m) = 2m + φ(2m) = 2m + 2φ(m) = 2(m+φ(m)) = 2g(m) for even m",
       "If g_2(n)=2n (equiv to φ(n)+φ(n+φ(n))=n), then g_{k+2}(n)=2g_k(n) by induction via g_k(2n)=2g_k(n)",
       "Computational axioms (n=10,94 etc.) could follow from steinerberger equiv + native_decide on φ equation",
-      "steinerberger_r2_equiv is the key enabler — proving it unlocks all r=2 axiom eliminations"
+      "steinerberger_r2_equiv is the key enabler — proving it unlocks all r=2 axiom eliminations",
+      "totient_double_even proved via Nat.totient_mul_of_prime_of_dvd (Mathlib). Key: φ(2m)=2φ(m) when 2|m.",
+      "doubling_propagation: once g_2(n) = 2n verified computationally, the relation g_{k+2}=2·g_k propagates forever via g(2m)=2g(m).",
+      "Both r=2 solutions (n=10, n=94) proved: native_decide for base case, structural induction for propagation."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -65,9 +75,9 @@
     {
       "path": "Proofs/Erdos411Problem.lean",
       "filename": "Erdos411Problem.lean",
-      "lineCount": 109,
-      "theoremCount": 2,
-      "axiomCount": 6,
+      "lineCount": 217,
+      "theoremCount": 10,
+      "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

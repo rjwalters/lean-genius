@@ -18,17 +18,19 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "theoremCount": 16,
+    "theoremCount": 13,
     "defCount": 4,
-    "lineCount": 246,
+    "lineCount": 223,
     "dateAdded": "2026-03-28",
-    "assumptions": "2 axioms: kronecker_mul_right (second-argument multiplicativity), kronecker_reciprocity (generalized QR). kronecker_mul_left PROVED via jacobiSym.mul_left + sign multiplicativity.",
+    "assumptions": "2 axioms: kronecker_mul_right (multiplicativity), kronecker_reciprocity (generalized QR). No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Leopold Kronecker extended the Jacobi symbol in 1885 to handle all integer arguments, creating a symbol fundamental to algebraic number theory, Dirichlet L-functions, and modular forms.",
     "problemStatement": "Define the Kronecker symbol (a/n) for all integers a,n and prove its basic properties.",
-    "text": "Formalizes the Kronecker symbol extension of the Jacobi symbol."
+    "text": "Formalizes the Kronecker symbol extension of the Jacobi symbol.",
+    "proofStrategy": "Formalizes the Kronecker symbol extension of the Jacobi symbol.",
+    "keyInsights": []
   },
   "sections": [],
   "conclusion": {
@@ -36,15 +38,16 @@
     "openQuestions": [
       "Prove multiplicativity from the definition",
       "Formalize connection to Dirichlet characters"
-    ]
+    ],
+    "implications": "The Kronecker symbol provides a uniform framework for quadratic characters over all integers."
   },
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
     ],
     "namespace": "KroneckerSymbol",
-    "lineCount": 175,
-    "axiomCount": 3,
+    "lineCount": 223,
+    "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 4
   },

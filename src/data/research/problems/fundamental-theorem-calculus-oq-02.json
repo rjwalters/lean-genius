@@ -1,0 +1,155 @@
+{
+  "slug": "fundamental-theorem-calculus-oq-02",
+  "title": "Formalize the generalized Stokes theorem: FTC as a special case",
+  "phase": "SURVEYED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∫_M dω = ∫_{∂M} ω, with M=[a,b] giving FTC: ∫_a^b F'dx = F(b)-F(a)",
+    "plain": "Formalize the generalized Stokes theorem showing FTC (1D), Green's theorem (2D), classical Stokes' theorem, and the divergence theorem as special cases of ∫_M dω = ∫_{∂M} ω.",
+    "whyMatters": [
+      "Unifies all fundamental integral theorems of calculus",
+      "Connects analysis (FTC), topology (de Rham cohomology), and algebra (exterior calculus)",
+      "Foundation for modern differential geometry and physics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Stokes 1D = FTC Part 2 (from Mathlib, 0 sorries)",
+      "Poincare lemma in 1D: every continuous 1-form is exact",
+      "Antiderivative uniqueness: two antiderivatives differ by a constant",
+      "de Rham cohomology: H^0(R) = R, H^1(R) = 0",
+      "Orientation-reversal negates the integral",
+      "Evaluation formula from Stokes theorem"
+    ],
+    "open": [
+      "d^2 = 0 (Clairaut) — stated, needs Mathlib bridge for iteratedFDeriv",
+      "Green's theorem in Stokes form — stated, full proof in GreensTheoremOQ01",
+      "General Stokes theorem on manifolds with boundary"
+    ],
+    "goal": "Complete formalization of the Stokes hierarchy with proved d^2=0"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-03-30T03:00:00.000Z",
+    "iteration": 1,
+    "focus": "Created FundamentalTheoremCalculusStokes.lean with 11 theorems, 8 defs, 0 axioms, 2 sorries",
+    "blockers": [],
+    "nextAction": "Prove d^2=0 via Mathlib's iteratedFDeriv symmetry",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Created 345-line Lean 4 file with concrete differential forms framework in dimensions 1 and 2. Proved 9 of 11 theorems (2 sorries). Gallery entry created.",
+    "builtItems": [
+      "proofs/Proofs/FundamentalTheoremCalculusStokes.lean (345 lines, 11 theorems, 8 defs)",
+      "src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json",
+      "stokes_1d: FTC as 1D Stokes theorem (proved from Mathlib)",
+      "stokes_1d_differentiable: clean version for differentiable functions",
+      "stokes_1d_orientation: orientation-reversal property",
+      "poincare_1d: every continuous 1-form is exact",
+      "exact_unique: antiderivatives differ by a constant",
+      "h1_trivial: H^1_dR(R) = 0",
+      "h0_eq_constants: ker(d) = constants",
+      "evaluation_formula: ∫f = F(b)-F(a) when F'=f"
+    ],
+    "insights": [
+      "FTC is literally the 1D Stokes theorem: M=[a,b], omega=F, d(omega)=F'dx",
+      "d^2=0 in 2D reduces to Clairaut's theorem (symmetry of mixed partials)",
+      "Mathlib has iteratedFDeriv symmetry but bridging to concrete partial deriv is non-trivial",
+      "Green's theorem proof in GreensTheoremOQ01 is the 2D Stokes proof"
+    ],
+    "mathlibGaps": [
+      "No direct lemma connecting iteratedFDeriv symmetry to concrete partial derivatives",
+      "Integration of differential forms on manifolds not yet in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove dd_eq_zero_2D via ContDiff.isSymmetric_iteratedFDeriv",
+      "Prove stokes_2d_rectangle by adapting GreensTheoremOQ01 proof",
+      "Compute de Rham cohomology of S^1: H^1(S^1) = R"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "integration",
+    "differential-forms",
+    "de-rham-cohomology",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-02",
+    "greens-theorem",
+    "greens-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Stokes 1854 — Smith's Prize exam question",
+      "Cartan 1945 — Unified exterior calculus",
+      "Spivak 1965 — Calculus on Manifolds"
+    ],
+    "urls": [],
+    "mathlib": [
+      "integral_eq_sub_of_hasDerivAt_of_le",
+      "integral_hasDerivAt_right",
+      "is_const_of_deriv_eq_zero",
+      "intervalIntegral.integral_symm"
+    ]
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-30T03:00:00.000Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremCalculus.lean",
+      "filename": "FundamentalTheoremCalculus.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculus.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+      "filename": "FundamentalTheoremCalculusLebesgue.lean",
+      "lineCount": 277,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
+      "filename": "FundamentalTheoremCalculusStokes.lean",
+      "lineCount": 366,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
+      "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
+    }
+  ]
+}

@@ -80,7 +80,22 @@ noncomputable def f' (n : ℕ) : ℕ :=
 
 /-- The two definitions are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
-  sorry
+  simp only [f, f']
+  split
+  · rfl
+  · rename_i h
+    have hn : 0 < n := Nat.pos_of_ne_zero h
+    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+    have hbdd : BddBelow (Set.range (fun i : Fin n =>
+        nthPrime (n + ↑i) + nthPrime (n - ↑i))) :=
+      ⟨0, fun _ _ => Nat.zero_le _⟩
+    apply le_antisymm
+    · -- ⨅ i : Fin n, g i ≤ (range n).inf' _ h
+      apply Finset.le_inf'
+      intro j hj
+      exact ciInf_le hbdd ⟨j, Finset.mem_range.mp hj⟩
+    · -- (range n).inf' _ h ≤ ⨅ i : Fin n, g i
+      exact le_ciInf (fun i => Finset.inf'_le _ (Finset.mem_range.mpr i.isLt))
 
 /- ## Part III: The Deviation from 2p_n -/
 
@@ -107,7 +122,15 @@ theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
 
 /-- The minimum is at most 2p_n (achieved at i = 0). -/
 theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) : f n ≤ 2 * nthPrime n := by
-  sorry
+  simp only [f, dif_neg (show n ≠ 0 by omega)]
+  -- The infimum over Fin n is ≤ the value at index 0
+  have hbdd : BddBelow (Set.range fun i : Fin n =>
+      nthPrime (n + ↑i) + nthPrime (n - ↑i)) :=
+    ⟨0, fun _ _ => Nat.zero_le _⟩
+  calc ⨅ i : Fin n, nthPrime (n + ↑i) + nthPrime (n - ↑i)
+      ≤ nthPrime (n + ↑(⟨0, hn⟩ : Fin n)) + nthPrime (n - ↑(⟨0, hn⟩ : Fin n)) :=
+        ciInf_le hbdd ⟨0, hn⟩
+    _ = 2 * nthPrime n := by simp [two_mul]
 
 /-- For i > 0, by strict monotonicity of primes:
     p_{n+i} > p_n and p_{n-i} < p_n (assuming n - i ≥ 0). -/
@@ -134,7 +157,26 @@ theorem limsup_pos : 0 < limsup deviationENat atTop := by
 /-- Corollary: Infinitely many n have deviation at least 2. -/
 theorem infinitely_many_deviation_ge_2 :
     {n : ℕ | deviationENat n ≥ 2}.Infinite := by
-  sorry
+  -- Proof by contradiction: if the set were finite, limsup ≤ 1 < 2
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  -- A finite subset of ℕ is bounded above: ∃ M, ∀ n ∈ S, n ≤ M
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  -- For n > M, n ∉ S, so deviationENat n < 2
+  have hev : ∀ᶠ n in atTop, deviationENat n ≤ 1 := by
+    rw [Filter.eventually_atTop]
+    refine ⟨M + 1, fun n hn => ?_⟩
+    by_contra hgt
+    push_neg at hgt -- hgt : 1 < deviationENat n
+    have hmem : n ∈ {n : ℕ | deviationENat n ≥ 2} := by
+      simp only [Set.mem_setOf_eq]
+      exact Order.succ_le_of_lt hgt
+    exact absurd (hM hmem) (by omega)
+  -- From the eventual bound, limsup ≤ 1
+  have hls : limsup deviationENat atTop ≤ 1 :=
+    limsup_le_of_le ⟨⊥, eventually_of_forall (fun _ => bot_le)⟩ hev
+  -- But pomerance_1979 says limsup ≥ 2, contradiction: 2 ≤ 1
+  exact absurd (pomerance_1979.trans hls) (by norm_num)
 
 /- ## Part VI: The Main Conjecture -/
 
@@ -151,10 +193,28 @@ def Erdos454Conjecture : Prop :=
 def Erdos454Negation : Prop :=
   ∃ M : ℕ, limsup deviationENat atTop ≤ M
 
-/-- The conjecture and its negation are complementary. -/
+/-- The conjecture and its negation are complementary.
+
+    limsup f = ⊤ ↔ ¬∃ M : ℕ, limsup f ≤ ↑M.
+    Forward: ⊤ is not ≤ any finite value.
+    Backward: if limsup is finite, it's ≤ itself. -/
 theorem conjecture_iff_not_negation :
     Erdos454Conjecture ↔ ¬Erdos454Negation := by
-  sorry
+  simp only [Erdos454Conjecture, Erdos454Negation]
+  constructor
+  · -- If limsup = ⊤, no finite bound exists
+    rintro rfl ⟨M, hM⟩
+    exact absurd hM (not_le.mpr (WithTop.coe_lt_top M))
+  · -- If no finite bound exists, limsup = ⊤
+    intro h
+    by_contra hne
+    -- limsup ≠ ⊤, so it's some finite value m
+    have : ∃ m : ℕ, limsup deviationENat atTop = ↑m := by
+      rcases limsup deviationENat atTop with _ | m
+      · exact absurd rfl hne
+      · exact ⟨m, rfl⟩
+    obtain ⟨m, hm⟩ := this
+    exact h ⟨m, le_of_eq hm.symm⟩
 
 /- ## Part VII: Heuristic Analysis -/
 
@@ -175,14 +235,15 @@ theorem gap_deviation_connection :
 
 /- ## Part VIII: Examples -/
 
-/-- Example: Computing f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
-                           = min(5+5, 7+3, 11+3) = min(10, 10, 14) = 10.
-    2*p_3 = 2*5 = 10, so deviation(3) = 0. -/
-theorem example_f_3 : f 3 = 10 := by
+/-- Example: Computing f(3) with 0-indexed primes (p_0=2, p_1=3, p_2=5, p_3=7):
+    f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
+         = min(7+7, 11+5, 13+3) = min(14, 16, 16) = 14.
+    2*p_3 = 2*7 = 14, so deviation(3) = 0. -/
+theorem example_f_3 : f 3 = 14 := by
   sorry
 
-/-- Example: 2*p_3 = 10 -/
-theorem example_twice_p3 : 2 * nthPrime 3 = 10 := by
+/-- Example: 2*p_3 = 14 (0-indexed: p_3 = 7) -/
+theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
   simp [nthPrime]
   native_decide
 

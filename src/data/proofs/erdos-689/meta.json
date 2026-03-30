@@ -19,9 +19,9 @@
     "sourceUrl": "https://erdosproblems.com/689",
     "erdosUrl": "https://erdosproblems.com/689",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "lineCount": 177,
-    "assumptions": "2 axioms: erdos_689_r_fold (OPEN conjecture, general r-fold covering), jacobsthal_connection (known, needs Jacobsthal bounds). erdos_689_double_cover and green_variant_r10 derived as special cases (r=2, r=10).",
+    "axiomCount": 1,
+    "lineCount": 179,
+    "assumptions": "1 axiom: erdos_689_r_fold (OPEN conjecture, general r-fold covering). All other results derived: erdos_689_double_cover (r=2), green_variant_r10 (r=10), jacobsthal_connection (r=1 via Filter.eventually_atTop).",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -51,14 +51,14 @@
       "title": "Main Conjecture and Generalization",
       "startLine": 105,
       "endLine": 118,
-      "summary": "Axiomatizes `erdos_689_double_cover`: for large $n$, a 2-fold cover exists. Axiomatizes `erdos_689_r_fold`: for any fixed $r \\geq 1$ and sufficiently large $n$, an $r$-fold cover exists."
+      "summary": "States the open conjecture `erdos_689_r_fold` (axiom): for any fixed $r \\geq 1$ and sufficiently large $n$, an $r$-fold cover exists. Derives `erdos_689_double_cover` as the $r = 2$ special case."
     },
     {
       "id": "connections",
       "title": "Connections and Supporting Results",
       "startLine": 121,
       "endLine": 174,
-      "summary": "Proves Mertens' theorem ($\\sum_{p \\leq n} 1/p \\to \\infty$) from Mathlib's `not_summable_one_div_on_primes`. Axiomatizes the Jacobsthal function connection (1-fold covering exists for large $n$, related to Problem #687) and Ben Green's variant asking for 10-fold coverage."
+      "summary": "Proves Mertens' theorem ($\\sum_{p \\leq n} 1/p \\to \\infty$) from Mathlib's `not_summable_one_div_on_primes`. Derives the Jacobsthal function connection (1-fold covering for large $n$, $r=1$ case via `Filter.eventually_atTop`) and Ben Green's variant ($r=10$ case), both as theorems from `erdos_689_r_fold`."
     }
   ],
   "overview": {
@@ -79,7 +79,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 689 on double covering by prime congruence classes, with precise definitions, five proved structural theorems, and axiomatized open conjectures. The structural results (monotonicity, bounds, small cases) are fully proved with 0 sorries, while the main question, its generalization, and supporting number-theoretic facts are axiomatized.",
+    "summary": "The formalization captures Erdős Problem 689 on double covering by prime congruence classes, with precise definitions and 13 proved theorems. Only 1 axiom remains: the open conjecture `erdos_689_r_fold`. All special cases (r=1, r=2, r=10) and supporting results (Mertens' theorem) are fully proved.",
     "implications": "Resolution would advance the theory of covering congruences with prime moduli, connecting to probabilistic combinatorics (Lovász Local Lemma applications), sieve methods, and the distribution of primes in arithmetic progressions. The gap between average-case and worst-case behavior is a fundamental theme in combinatorial number theory, and new techniques here could apply to related problems on covering systems.",
     "openQuestions": [
       "Does a 2-fold covering exist for all sufficiently large $n$? What is the smallest such $n$?",
@@ -111,9 +111,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 177,
-    "axiomCount": 4,
-    "theoremCount": 10,
+    "lineCount": 179,
+    "axiomCount": 1,
+    "theoremCount": 13,
     "definitionCount": 4
   },
   "references": [

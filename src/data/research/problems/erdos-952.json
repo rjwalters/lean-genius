@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated classification_forward axiom (4A→3A). Proved forward direction of Gaussian prime classification via strong induction + Associated + ZMod 4. Removed duplicate definitions.",
+    "progressSummary": "COMPLETE: 1A (Tsuchimura 2005 — computational verification, published), 0S. Full classification proved both directions.",
     "builtItems": [
       "PROVED jordan_rabung from tsuchimura (axiom→theorem)",
       "PROVED gethner_et_al from tsuchimura (axiom→theorem)",
@@ -37,7 +37,10 @@
       "no_walk_up_to_sqrt26: blocks all step sizes ≤27 via Tsuchimura + mono",
       "exists_nat_prime_dvd: strong induction helper (Gaussian prime divides some rational prime)",
       "classification_forward: complete proof (was axiom, now theorem ~115 lines)",
-      "Removed: duplicate canEscapeMoat_mono, no_walk_up_to_sqrt26"
+      "Removed: duplicate canEscapeMoat_mono, no_walk_up_to_sqrt26",
+      "primes_mod_4_connection: axiom→theorem via factorial argument (~25 lines)",
+      "gaussian_prime_theorem: axiom→def (unused axiom converted to Prop statement, 2A→1A)",
+      "criticalMoatWidth: cleaned existence proof to use not_canEscapeMoat_le_27"
     ],
     "insights": [
       "jordan_rabung and gethner_et_al are weaker results than tsuchimura — proved as consequences (6A→4A)",
@@ -50,10 +53,17 @@
       "Key technique: z*star(z)=norm(z), so z|norm(z). By induction z|↑p for some rational prime p. Then norm(z)|p², giving norm=p or p²",
       "For norm=p²: z~↑p (associated), so ↑p prime in ℤ[i], hence p≡3 mod 4 by GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime",
       "For norm=p: sum-of-squares mod 4 argument (same as prime_of_inert) shows p≡1 mod 4",
-      "Removed duplicate canEscapeMoat_mono and no_walk_up_to_sqrt26 definitions"
+      "Removed duplicate canEscapeMoat_mono and no_walk_up_to_sqrt26 definitions",
+      "primes_mod_4_connection proved: the consequent (arbitrarily long prime-free windows) holds unconditionally via factorial construction, making the conditional implication trivially true",
+      "Key technique: for j in [2, k], j divides k!, so j divides k!+j, making k!+j composite",
+      "gaussian_prime_theorem was unused by any theorem — safe to convert from axiom to def without loss",
+      "Only remaining axiom (tsuchimura) is genuinely deep: computational verification of moat for step ≤ √26, not provable without significant infrastructure"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Only 1 axiom remains (tsuchimura — computational verification, deep and appropriate)",
+      "File is near-complete for an open problem formalization — only tsuchimura axiom prevents full verification"
+    ],
     "markdown": "# Erdős #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -70,18 +80,18 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-03-28T00:00:00.000Z",
+  "lastUpdate": "2026-03-29T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos952Problem.lean",
+      "path": "Proofs/Stubs/Erdos952Problem.lean",
       "filename": "Erdos952Problem.lean",
-      "lineCount": 240,
-      "theoremCount": 1,
-      "axiomCount": 6,
+      "lineCount": 530,
+      "theoremCount": 16,
+      "axiomCount": 1,
       "defCount": 20,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos952Problem.lean"
     }

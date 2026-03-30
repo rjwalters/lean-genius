@@ -50,40 +50,53 @@ noncomputable def coveringExponent (n : ℕ) : ℝ :=
 
 /-- **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
     Even primes close to n suffice to cover [1, n] with one class each. -/
-axiom erdos_688_conjecture :
-  Filter.Tendsto (fun n => coveringExponent n) Filter.atTop (nhds 0)
-
 /- ## Known Bounds -/
 
 /-- **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
     The exponent cannot decrease faster than this iterated-log ratio. -/
-axiom erdos_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      coveringExponent n ≥ c * Real.log (Real.log (Real.log n)) /
-        Real.log (Real.log n)
-
 /-- Trivial upper bound: εₙ < 1, since we need at least the prime n
     (if n is prime) or primes up to n. -/
-axiom covering_exponent_lt_one :
-  ∀ n : ℕ, n ≥ 2 → coveringExponent n < 1
-
 /- ## Structural Properties -/
 
-/-- Each prime p covers exactly ⌊n/p⌋ or ⌈n/p⌉ integers in [1,n]
-    with a single residue class. -/
-axiom single_class_coverage :
+/-- Each prime p covers at most ⌊n/p⌋ + 1 integers in [1,n]
+    with a single residue class.
+    Proved via injection m ↦ (m+1)/p into range(n/p + 1). -/
+theorem single_class_coverage :
   ∀ (n p : ℕ) (a : ℕ), Nat.Prime p → p ≤ n → a < p →
-    ({m ∈ Finset.range n | (m + 1) % p = a}.card : ℝ) ≤ (n : ℝ) / p + 1
+    ({m ∈ Finset.range n | (m + 1) % p = a}.card : ℝ) ≤ (n : ℝ) / p + 1 := by
+  intro n p a hp _hpn hap
+  set S := Finset.filter (fun m => (m + 1) % p = a) (Finset.range n) with hS_def
+  -- Step 1: S embeds into range(n/p + 1) via m ↦ (m+1)/p
+  have h_maps : ∀ m ∈ S, (m + 1) / p ∈ Finset.range (n / p + 1) := by
+    intro m hm
+    simp only [hS_def, Finset.mem_filter, Finset.mem_range] at hm ⊢
+    exact Nat.lt_succ_of_le (Nat.div_le_div_right (by omega))
+  -- Step 2: The map is injective on S (same remainder + same quotient → same value)
+  have h_inj : Set.InjOn (fun m => (m + 1) / p) (↑S) := by
+    intro m₁ hm₁ m₂ hm₂ heq
+    simp only [hS_def, Finset.coe_filter, Finset.mem_coe,
+               Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq] at hm₁ hm₂
+    have r1 := Nat.div_add_mod (m₁ + 1) p
+    have r2 := Nat.div_add_mod (m₂ + 1) p
+    rw [hm₁.2, hm₂.2] at r1 r2
+    omega
+  -- Step 3: card S ≤ n/p + 1 via injection
+  have h_card : S.card ≤ n / p + 1 := by
+    calc S.card
+        ≤ (Finset.range (n / p + 1)).card :=
+          Finset.card_le_card_of_injOn (fun m => (m + 1) / p) h_maps h_inj
+      _ = n / p + 1 := Finset.card_range _
+  -- Step 4: Cast to ℝ — ↑(n/p) ≤ (n:ℝ)/p follows from Nat.cast_div_le
+  calc (S.card : ℝ)
+      ≤ ↑(n / p + 1) := Nat.cast_le.mpr h_card
+    _ = ↑(n / p) + 1 := by push_cast; ring
+    _ ≤ (n : ℝ) / p + 1 := by
+        gcongr
+        rw [le_div_iff₀ (Nat.cast_pos.mpr hp.pos)]
+        exact_mod_cast Nat.div_mul_le_self n p
 
 /-- The total coverage capacity of primes in (n^ε, n] is
     ∑_{n^ε < p ≤ n} ⌊n/p⌋ ~ n · (log(1/ε) + O(1)) by Mertens' theorem. -/
-axiom mertens_coverage :
-  ∀ ε : ℝ, 0 < ε → ε < 1 →
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in Filter.atTop,
-      ∃ (primes : Finset ℕ),
-        (primes.sum (fun p => n / p) : ℝ) ≥ (n : ℝ) * (Real.log (1 / ε) - C)
-
 /-- Monotonicity: if ε₁ ≤ ε₂, the primes in (n^ε₁, n] include those
     in (n^ε₂, n], so more primes are available. -/
 theorem exponent_monotone_coverage :
@@ -105,11 +118,6 @@ theorem exponent_monotone_coverage :
 
 /-- Covering with all primes ≤ n (ε = 0): by CRT and the prime number
     theorem, one class per prime suffices to cover [1, n] for large n. -/
-axiom full_prime_covering :
-  ∀ᶠ n in Filter.atTop,
-    ∃ assignment : CoveringAssignment (primesInRange n 0),
-      CoverInterval n (primesInRange n 0) assignment
-
 /-- The sieve connection: covering [1,n] by one residue class per prime
     is dual to sieving — excluding one class per prime. -/
 theorem sieve_duality :

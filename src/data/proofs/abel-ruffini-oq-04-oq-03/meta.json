@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 152,
+    "lineCount": 165,
     "assumptions": "1 axiom: solvableGal_implies_solvableByRad (reverse direction, requires Kummer theory for cyclic extensions not yet in Mathlib).",
     "mathlib_version": "4.26.0"
   },
@@ -46,5 +46,6 @@
       "relationship": "extends",
       "description": "Extends the A5 simplicity chain with the converse direction"
     }
-  ]
+  ],
+  "sections": []
 }

@@ -17,14 +17,14 @@
       "turan-theory"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1019,
     "erdosUrl": "https://erdosproblems.com/1019",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 8,
-    "lineCount": 349,
-    "assumptions": "8 axiom(s) and 2 sorry(s). Remaining sorries: isPlanar definition (needs topological planarity theory) and bipartite_not_saturated. See the Lean source for details.",
+    "axiomCount": 6,
+    "lineCount": 441,
+    "assumptions": "6 axioms (planar_edge_bound, K4_saturated_planar, cyclePlus2K1_saturated_planar, erdos_construction_exists, simonovits_theorem, erdos_size_bound). isPlanar defined via Wagner's forbidden minor characterization (no K₅ or K₃,₃ minor). K3_saturated_planar proved by pigeonhole. turan_triangle proved from Mathlib. bipartite_not_saturated proved by K₃,₃ minor embedding.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -37,7 +37,7 @@
       "**Two structural outcomes: $K_4$ or $C_\\ell + 2K_1$**: These are the only saturated planar graphs that can be forced at this threshold. $K_4$ is rigid (unique on 4 vertices); the family $C_\\ell + 2K_1$ is flexible (parameterized by cycle length $\\ell \\ge 3$). Both achieve $|E| = 3|V| - 6$ exactly.",
       "**1-edge gap proves optimality**: The forcing threshold $\\lfloor n^2/4 \\rfloor + \\lfloor(n+1)/2\\rfloor$ exceeds the achievable lower bound $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ by exactly 1 edge. This is the sharpest possible extremal result—a single additional edge changes the answer.",
       "**Stability meets supersaturation**: This result extends the Erdős-Simonovits stability theorem into the supersaturation regime. Near the extremal threshold, the graph resembles the Turán graph; beyond it, specific topological structures (saturated planar subgraphs) must appear.",
-      "**Planarity as a formal challenge**: The definition of `isPlanar` is `sorry` because topological planarity requires embedding theory not yet in Mathlib. This is a concrete target for formalization efforts: Kuratowski's theorem or the Hopcroft-Tarjan planarity algorithm would provide a constructive definition."
+      "**Planarity via forbidden minors**: `isPlanar` is now properly defined via Wagner's theorem (no K₅ or K₃,₃ minor), using a `GraphMinorWitness` structure. This replaces the original `sorry` definition and enables proving `K3_saturated_planar` by pigeonhole and `bipartite_not_saturated` by K₃,₃ embedding."
     ],
     "prerequisites": [
       "Planar graphs (Euler formula, $|E| \\\\leq 3|V|-6$)",
@@ -59,7 +59,7 @@
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
-      "summary": "Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$.",
+      "summary": "Defines graph minors (`GraphMinorWitness`, `HasMinor`), K₅ and K₃,₃, and `isPlanar` via Wagner's forbidden minor characterization. Axiomatizes Euler's bound $|E| \\le 3|V| - 6$.",
       "startLine": 37,
       "endLine": 50,
       "mathContext": "Planar: embeds in $\\\\mathbb{R}^2$ without crossings. Euler: $|E| \\\\leq 3|V|-6$ for $|V| \\\\geq 3$."
@@ -265,24 +265,30 @@
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan",
       "Mathlib.Combinatorics.SimpleGraph.Subgraph",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Fintype.Basic"
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "SimpleGraph"
     ],
     "namespace": "Erdos1019",
-    "lineCount": 349,
-    "axiomCount": 8,
-    "theoremCount": 8,
+    "lineCount": 441,
+    "axiomCount": 7,
+    "theoremCount": 9,
     "definitionCount": 19
   },
   "mathlibDependencies": [
     "Mathlib.Combinatorics.SimpleGraph.Basic",
+    "Mathlib.Combinatorics.SimpleGraph.Clique",
+    "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan",
     "Mathlib.Combinatorics.SimpleGraph.Subgraph",
     "Mathlib.Data.Real.Basic",
-    "Mathlib.Data.Fintype.Basic"
+    "Mathlib.Data.Fintype.Basic",
+    "Mathlib.Tactic"
   ],
   "originalContributions": [
     "Framework for saturated planarity: defines `isSaturatedPlanar` and derives basic properties",

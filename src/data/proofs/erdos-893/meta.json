@@ -55,12 +55,29 @@
       "Proved f_mono (monotonicity) and f_pos (positivity) as genuine Lean proofs",
       "Defined ratio f(2n)/f(n) and proved ratio_ge_one from monotonicity",
       "Axiomatized Kovac-Luca (2025) limsup result and proved ratio_unbounded from it",
-      "Stated ErdosProblem893 (full divergence) and proved kovac_luca_weaker_than_conjecture"
+      "Stated ErdosProblem893 (full divergence) and proved kovac_luca_weaker_than_conjecture",
+      "Proved tau_ge_two: every n >= 2 has at least 2 divisors (structural bound)",
+      "Proved f_lower_bound: f(n) >= 2n-1 for n >= 1 (stronger than f_ge)",
+      "Proved f_decomp: f(2n) = f(n) + extra terms (key ratio decomposition)",
+      "Proved f_gap_lower_bound: extra terms in f(2n) sum to at least 2n"
     ],
     "axiomCount": 1,
-    "lineCount": 213,
+    "lineCount": 268,
     "assumptions": "1 axiom: kovac_luca_limsup_infinite. See Lean source for the complete statement.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31,
+    "leanFiles": [
+      {
+        "path": "Proofs/Erdos893Problem.lean",
+        "filename": "Erdos893Problem.lean",
+        "lineCount": 268,
+        "theoremCount": 31,
+        "axiomCount": 1,
+        "defCount": 3,
+        "sorryCount": 0,
+        "isAristotle": false
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1998 ([Er98]), noting that $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$ likely has no simple asymptotic formula due to the erratic growth of divisor counts of Mersenne numbers. The function $\\tau(2^k - 1)$ is small ($= 2$) when $2^k - 1$ is a Mersenne prime but can be large when $2^k - 1$ is highly composite. As of 2024, 51 Mersenne primes are known, but their distribution remains mysterious, making the growth of $f$ hard to predict. Kovac and Luca (2025, arXiv:2506.04883) proved $\\limsup f(2n)/f(n) = \\infty$, building on a heuristic by Cambie, but the full divergence $\\lim f(2n)/f(n) = \\infty$ remains open. The problem connects the divisor function (multiplicative number theory) to the arithmetic of Mersenne numbers (exponential number theory), a rare and deep interface.",
@@ -184,7 +201,7 @@
       "Finset"
     ],
     "namespace": "Erdos893",
-    "lineCount": 213,
+    "lineCount": 268,
     "axiomCount": 1,
     "theoremCount": 27,
     "definitionCount": 4

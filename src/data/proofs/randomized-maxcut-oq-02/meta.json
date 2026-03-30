@@ -1,0 +1,48 @@
+{
+  "id": "randomized-maxcut-oq-02",
+  "title": "Weighted MaxCut Approximation",
+  "slug": "randomized-maxcut-oq-02",
+  "description": "Extends randomized MaxCut to weighted graphs: random partition achieves W/2 cut weight. Goemans-Williamson 0.878 approximation.",
+  "meta": {
+    "author": "Goemans-Williamson (1995)",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/RandomizedMaxcutOQ02.lean",
+    "tags": [
+      "algorithms",
+      "approximation",
+      "maxcut",
+      "randomized",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 128,
+    "assumptions": "1 axiom (exists good partition). 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0"
+  },
+  "conclusion": {
+    "summary": "Weighted MaxCut: random partition gives 1/2 approximation. GW gives 0.878.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "WeightedMaxCut",
+    "lineCount": 128,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 5
+  },
+  "sections": []
+}

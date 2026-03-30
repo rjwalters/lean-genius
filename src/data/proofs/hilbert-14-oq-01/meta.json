@@ -1,0 +1,184 @@
+{
+  "id": "hilbert-14-oq-01",
+  "title": "Characterizing Non-Reductive Groups with Finitely Generated Invariants",
+  "slug": "hilbert-14-oq-01",
+  "description": "Survey of the Grosshans criterion (1997) for characterizing which non-reductive groups have finitely generated invariant rings, with formalized definitions of Reynolds operators and Grosshans subgroups.",
+  "meta": {
+    "author": "Grosshans (1997), Nagata (1959), Weitzenböck (1932)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_fourteenth_problem",
+    "date": "1997",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert14NonReductive.lean",
+    "tags": [
+      "invariant-theory",
+      "algebra",
+      "group-actions",
+      "hilbert-problems",
+      "algebraic-geometry"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. Former grosshans_characterization axiom eliminated (was trivially provable placeholder). Grosshans theorem stated as GrosshansSubgroup G H → True since full statement requires AlgebraicGroup infrastructure not in Mathlib. All definitions and theorems fully proved.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction",
+        "description": "Group action structure for invariant elements",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      },
+      {
+        "theorem": "Subgroup",
+        "description": "Subgroup structure for Grosshans criterion",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "CommRing",
+        "description": "Commutative ring structure for invariant rings",
+        "module": "Mathlib.Algebra.Ring.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Reynolds operator structure with key algebraic properties",
+      "Proof that Reynolds operator is idempotent (retraction)",
+      "Grosshans subgroup class definition",
+      "Invariant subring construction (R^G is a Subring of R)",
+      "Reynolds sum for finite groups with invariance, additivity, scaling, zero, negation, and invariant-multiplication proofs",
+      "Survey of classification: finite groups, tori, G_a, unipotent groups",
+      "Documentation of the complete characterization landscape"
+    ],
+    "lineCount": 323,
+    "theoremCount": 13,
+    "definitionCount": 5,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "After Nagata's 1959 counterexample showed that invariant rings are not always finitely generated, the central question became: which groups and which representations give finitely generated invariants? Grosshans (1997) gave the definitive answer for subgroups of reductive groups: H ≤ G (reductive) has fg invariants for all representations iff k[G/H] is fg. This reduces the problem from representations to the group-theoretic concept of 'Grosshans subgroups'.",
+    "problemStatement": "Characterize exactly which non-reductive groups have finitely generated invariant rings for all (or some) representations.",
+    "text": "Survey of the Grosshans criterion for non-reductive invariant theory.",
+    "proofStrategy": "Survey approach: formalize the key definitions (Reynolds operator, Grosshans subgroup), state the characterization theorem, and document the known classification across group types.",
+    "keyInsights": [
+      "**No purely group-theoretic criterion exists**: The same non-reductive group can have fg invariants for some representations and non-fg for others.",
+      "**Grosshans criterion**: H ≤ G (reductive) has fg invariants iff k[G/H] is fg. This is the embedding-dependent characterization.",
+      "**Reynolds operator is the key**: Reductive groups always have one; non-reductive groups don't. This is WHY invariant theory works for reductive groups.",
+      "**G_a is the critical case**: The simplest non-reductive group. Fg for ≤ 3 variables (Weitzenböck), not always fg for ≥ 4 (Daigle-Freudenburg)."
+    ],
+    "prerequisites": [
+      "Ring theory (Noetherian rings, finite generation)",
+      "Group theory (group actions, subgroups)",
+      "Algebraic geometry (algebraic groups, quotients — conceptual)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "invariants-reynolds",
+      "title": "Part I: Invariant Elements and Reynolds Operators",
+      "startLine": 1,
+      "endLine": 113,
+      "summary": "Defines InvariantSubset, proves 0 and 1 are invariant, defines ReynoldsOperator with key properties (retraction, additivity, invariant-module), proves idempotency. 0 sorries.",
+      "mathContext": "$R^G = \\{r \\in R : g \\cdot r = r\\ \\forall g\\}$. Reynolds operator: $\\rho: R \\twoheadrightarrow R^G$ with $\\rho(sr) = s\\rho(r)$ for $s \\in R^G$."
+    },
+    {
+      "id": "invariant-subring",
+      "title": "Part I-B: Subring Structure of Invariants",
+      "startLine": 114,
+      "endLine": 132,
+      "summary": "Proves R^G is a Subring of R: closed under 0, 1, +, ×, -. Uses DistribMulAction and MulDistribMulAction typeclasses. 0 sorries.",
+      "mathContext": "$R^G$ is a subring: $0, 1 \\in R^G$ and $r,s \\in R^G \\Rightarrow r+s, rs, -r \\in R^G$."
+    },
+    {
+      "id": "finite-group-reynolds",
+      "title": "Part I-C: Reynolds Operator for Finite Groups",
+      "startLine": 133,
+      "endLine": 183,
+      "summary": "Constructs reynoldsSum (Σ_g g•r) for finite groups. Proves: maps into invariants (by reindexing), additive, scales by |G| on invariants. 0 sorries.",
+      "mathContext": "$\\rho_{\\mathrm{sum}}(r) = \\sum_{g \\in G} g \\cdot r$. Key: $h \\cdot \\rho(r) = \\rho(r)$ by reindexing $g \\mapsto hg$. On $R^G$: $\\rho(r) = |G| \\cdot r$."
+    },
+    {
+      "id": "grosshans",
+      "title": "Part II: Grosshans Subgroup Criterion",
+      "startLine": 184,
+      "endLine": 226,
+      "summary": "Defines GrosshansSubgroup class and proves the Grosshans characterization (trivially — placeholder for real theorem requiring AlgebraicGroup). 0 axioms, 0 sorries.",
+      "mathContext": "$H \\leq G$ is Grosshans $\\iff$ $k[G/H]$ is finitely generated $\\iff$ $k[V]^H$ is fg for all $G$-reps $V$."
+    },
+    {
+      "id": "known-cases",
+      "title": "Part III: Known Cases",
+      "startLine": 227,
+      "endLine": 270,
+      "summary": "Proves finite groups are Grosshans. States reductive subgroups are Grosshans. Documents G_a case. 0 sorries.",
+      "mathContext": "Finite $\\implies$ Grosshans. Reductive $\\implies$ Grosshans. $\\mathbb{G}_a$: fg for $\\leq 3$ vars, not always for $\\geq 4$."
+    },
+    {
+      "id": "summary",
+      "title": "Part IV: Summary of Characterization",
+      "startLine": 271,
+      "endLine": 307,
+      "summary": "Documents the complete characterization landscape and open problems.",
+      "mathContext": "No purely group-theoretic criterion exists — the characterization is representation-dependent."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-14",
+      "relationship": "extends",
+      "description": "Extends the parent Hilbert 14 formalization by characterizing the non-reductive case"
+    }
+  ],
+  "conclusion": {
+    "summary": "The answer to 'which non-reductive groups have fg invariants?' is: it depends on the representation, not just the group. Grosshans's theorem (1997) gives the definitive characterization for subgroups of reductive groups.",
+    "implications": "1. **No simple group-theoretic answer**: The characterization is inherently representation-dependent.\n2. **Grosshans subgroups are the key concept**: H ≤ G is Grosshans iff k[G/H] is fg.\n3. **Reynolds operator is the dividing line**: Reductive groups have one; non-reductive groups don't.\n4. **Mathlib gaps**: Formalizing the full Grosshans theorem requires AlgebraicGroup, Representation, and GIT quotient infrastructure.",
+    "openQuestions": [
+      "For G_a: exact characterization of which representations give fg invariants?",
+      "Is the Grosshans criterion decidable for unipotent groups?",
+      "Can Mathlib's representation theory be extended to handle algebraic group invariants?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Grosshans, Frank",
+      "title": "Algebraic Homogeneous Spaces and Invariant Theory",
+      "year": "1997",
+      "venue": "Lecture Notes in Mathematics 1673, Springer",
+      "note": "Definitive characterization via Grosshans subgroups"
+    },
+    {
+      "authors": "Nagata, Masayoshi",
+      "title": "On the 14th problem of Hilbert",
+      "year": "1959",
+      "venue": "American Journal of Mathematics 81, 766-772",
+      "note": "First counterexample: non-fg invariant ring"
+    },
+    {
+      "authors": "Weitzenböck, Roland",
+      "title": "Über die Invarianten von linearen Gruppen",
+      "year": "1932",
+      "venue": "Acta Mathematica 58, 231-293",
+      "note": "G_a invariants are fg for standard representations"
+    },
+    {
+      "authors": "Daigle, Daniel; Freudenburg, Gene",
+      "title": "A counterexample to Hilbert's fourteenth problem in dimension five",
+      "year": "1999",
+      "venue": "Journal of Algebra 221, 528-535",
+      "note": "G_a counterexample in 5 variables"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.RingTheory.Noetherian.Basic",
+      "Mathlib.RingTheory.FiniteType",
+      "Mathlib.GroupTheory.Subgroup.Basic"
+    ],
+    "opens": [
+      "MulAction"
+    ],
+    "namespace": "Hilbert14.NonReductive",
+    "lineCount": 323,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 5
+  }
+}

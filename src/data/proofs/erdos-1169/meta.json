@@ -1,214 +1,214 @@
 {
-  "id": "erdos-1169",
-  "title": "Erdős Problem #1169: Partition Relations for ω₁²",
-  "slug": "erdos-1169",
-  "description": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
-  "meta": {
-    "author": "Erdős",
-    "sourceUrl": "https://erdosproblems.com/1169",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos1169Problem.lean",
-    "tags": [
-      "erdos",
-      "set-theory",
-      "combinatorics",
-      "ramsey-theory",
-      "graph-theory",
-      "open"
+    "id": "erdos-1169",
+    "title": "Erdős Problem #1169: Partition Relations for ω₁²",
+    "slug": "erdos-1169",
+    "description": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+    "meta": {
+        "author": "Erdős",
+        "sourceUrl": "https://erdosproblems.com/1169",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/Erdos1169Problem.lean",
+        "tags": [
+            "erdos",
+            "set-theory",
+            "combinatorics",
+            "ramsey-theory",
+            "graph-theory",
+            "open"
+        ],
+        "badge": "axiom",
+        "sorries": 0,
+        "erdosNumber": 1169,
+        "erdosUrl": "https://erdosproblems.com/1169",
+        "erdosProblemStatus": "open",
+        "mathlib_version": "4.26.0",
+        "mathlibDependencies": [
+            {
+                "theorem": "Arithmetic",
+                "description": "From Mathlib.SetTheory.Ordinal.Arithmetic",
+                "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+            },
+            {
+                "theorem": "Basic",
+                "description": "From Mathlib.SetTheory.Cardinal.Basic",
+                "module": "Mathlib.SetTheory.Cardinal.Basic"
+            },
+            {
+                "theorem": "Ordinal",
+                "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+                "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+            },
+            {
+                "theorem": "Tactic",
+                "description": "From Mathlib.Tactic",
+                "module": "Mathlib.Tactic"
+            }
+        ],
+        "originalContributions": [
+            "ordinalPartitionRel",
+            "negPartitionRel",
+            "omega1",
+            "omega1Sq",
+            "omega1_uncountable",
+            "omega1Sq_card",
+            "erdos_1169_statement",
+            "CH",
+            "hajnal_ch_implies_partition",
+            "erdos_1169_under_ch",
+            "erdos_1169_not_disprovable",
+            "erdos_1169_open_in_zfc",
+            "partition_monotone_clique",
+            "partition_monotone_ordinal",
+            "erdos_1169_implies_pairs"
+        ],
+        "axiomCount": 1,
+        "lineCount": 225,
+        "assumptions": "1 axiom: hajnal_ch_implies_partition (CH implies ω₁²→(ω₁²,3)²). ordinalPartitionRel and partition_monotone_clique are now proved definitions/theorems."
+    },
+    "overview": {
+        "historicalContext": "Erdős Problem #1169 belongs to the partition calculus, a branch of combinatorial set theory developed by Erdős and Hajnal starting in the 1950s. The partition calculus extends Ramsey's theorem (1930) — which concerns finite colorings of finite sets — to the transfinite setting, asking when colorings of pairs from infinite well-ordered sets must contain large homogeneous subsets.\n\nThe specific question $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ asks: must every 2-coloring of pairs from a set of order type $\\omega_1^2$ (where $\\omega_1$ is the first uncountable ordinal) contain either a monochromatic subset of the same order type $\\omega_1^2$ or a monochromatic triangle? This is a natural question in the hierarchy of ordinal partition relations, sitting between the well-understood countable case and the general uncountable theory.\n\nThe key partial result is due to András Hajnal, who proved the partition relation holds under the Continuum Hypothesis (CH). Hajnal's proof uses the diamond principle $\\Diamond$ (a combinatorial consequence of CH established by Jensen) to construct the required homogeneous sets. Remarkably, Hajnal proves the stronger result $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for ALL finite $k$, not just $k = 3$. Since CH is consistent with ZFC (Gödel 1940), this shows the negative relation cannot be proved from ZFC alone. However, it remains open whether the positive relation is provable from ZFC without assuming CH.\n\nThe problem connects to several other Erdős problems: #592 asks the countable analogue (for which countable $\\beta$ does $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ hold?), and #118 asks whether $\\alpha \\to (\\alpha, 3)^2$ implies $\\alpha \\to (\\alpha, n)^2$ for all $n$ (disproved by Schipperus and Darby in 1999, though Hajnal's result shows this implication holds for $\\omega_1^2$ under CH). The problem is referenced as [Va99, 7.85].",
+        "problemStatement": "Does $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ hold in ZFC? That is, for every 2-coloring $f: [\\omega_1^2]^2 \\to \\{0, 1\\}$, must there exist either a subset $H \\subseteq \\omega_1^2$ of order type $\\omega_1^2$ with $f''[H]^2 = \\{0\\}$, or a set $K \\subseteq \\omega_1^2$ with $|K| = 3$ and $f''[K]^2 = \\{1\\}$?",
+        "text": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+        "proofStrategy": "The formalization axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and builds the problem statement from the key ordinals $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$. The core result is Hajnal's CH-conditional theorem, axiomatized as `hajnal_ch_implies_partition`, from which `erdos_1169_under_ch` derives the specific $k = 3$ case via `norm_num`. Monotonicity properties are axiomatized to derive consequences (e.g., the relation for pairs follows from triangles). The metamathematical status is captured via `erdos_1169_not_disprovable` (consistency with ZFC) and `erdos_1169_open_in_zfc` (excluded middle, encoding that the ZFC status is unresolved).",
+        "keyInsights": [
+            "The problem is **solved under CH but open in ZFC**: Hajnal proved $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all finite $k$ assuming CH, using the diamond principle $\\Diamond$. This gives consistency but not provability from ZFC alone.",
+            "Hajnal's result is **stronger than needed**: it proves the partition relation for ALL finite clique sizes $k \\geq 2$, not just $k = 3$. This answers the analogue of Problem #118 positively for $\\omega_1^2$ under CH.",
+            "The **diamond principle** $\\Diamond$ (Jensen, from CH) is the key set-theoretic tool: it provides a 'prediction' sequence that guides the construction of homogeneous sets in the partition argument.",
+            "The ordinal $\\omega_1^2$ has **richer order structure** than $\\omega_1$ despite having the same cardinality $\\aleph_1$. It consists of $\\omega_1$-many copies of $\\omega_1$ in sequence, and this structure is essential for the partition relation to potentially hold.",
+            "The problem sits at the **boundary of independence**: results that hold under CH but whose ZFC status is open often turn out to be independent. Whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ is independent of ZFC (like the Continuum Hypothesis itself) is a major open question."
+        ],
+        "prerequisites": [
+            "Combinatorics and number theory",
+            "Set theory and cardinality",
+            "Combinatorics (counting, extremal problems)",
+            "Ramsey theory (partition regularity)",
+            "Graph theory (vertices, edges, colorings)"
+        ]
+    },
+    "sections": [
+        {
+            "id": "header-and-imports",
+            "title": "Problem Statement and Imports",
+            "startLine": 1,
+            "endLine": 37,
+            "summary": "Documents the problem, known results (Hajnal under CH, consistency, open in ZFC), related problems (#592, #118), and imports Mathlib ordinal/cardinal modules.",
+            "mathContext": "Mathematical content: Documents the problem, known results (Hajnal under CH, consistency, open in ZFC), related problems (#592, #118), and imports Mathlib ordinal/cardinal modules."
+        },
+        {
+            "id": "partition-relations",
+            "title": "Ordinal Partition Relations",
+            "startLine": 38,
+            "endLine": 56,
+            "summary": "Axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and defines its negation $\\alpha \\not\\to (\\beta, k)^2$.",
+            "mathContext": "Axiomatizes the ordinal partition relation $\\$\\alpha$ \\to (\\$\\beta$, k)^2$ and defines its negation $\\$\\alpha$ \\not\\to (\\$\\beta$, k)^2$."
+        },
+        {
+            "id": "key-ordinals",
+            "title": "Key Ordinals: $\\omega_1$ and $\\omega_1^2$",
+            "startLine": 57,
+            "endLine": 73,
+            "summary": "Defines $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$, with axioms for uncountability and cardinality.",
+            "mathContext": "Formal definition: Defines $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$, with axioms for uncountability and cardinality."
+        },
+        {
+            "id": "problem-statement",
+            "title": "The Main Problem Statement",
+            "startLine": 74,
+            "endLine": 85,
+            "summary": "Defines `erdos_1169_statement` as the partition relation $\\omega_1^2 \\to (\\omega_1^2, 3)^2$.",
+            "mathContext": "Formal definition: Defines `erdos_1169_statement` as the partition relation $\\omega_1^2 \\to (\\omega_1^2, 3)^2$."
+        },
+        {
+            "id": "hajnal-ch",
+            "title": "Hajnal's CH-Conditional Result",
+            "startLine": 86,
+            "endLine": 106,
+            "summary": "Defines CH ($2^{\\aleph_0} = \\aleph_1$), axiomatizes Hajnal's theorem that CH implies $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all $k$, and derives the $k = 3$ case.",
+            "mathContext": "Defines CH ($$$2^{{\\aleph_0}$}$ = \\aleph_1$), axiomatizes Hajnal's theorem that CH implies $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all $k$, and derives the $k = 3$ case."
+        },
+        {
+            "id": "independence",
+            "title": "Independence and Consistency",
+            "startLine": 107,
+            "endLine": 123,
+            "summary": "Captures the metamathematical status: the problem is not disprovable (consistent via CH models) and the ZFC status remains open.",
+            "mathContext": "Mathematical content: Captures the metamathematical status: the problem is not disprovable (consistent via CH models) and the ZFC status remains open."
+        },
+        {
+            "id": "monotonicity",
+            "title": "Monotonicity Properties",
+            "startLine": 124,
+            "endLine": 145,
+            "summary": "Axiomatizes monotonicity in the clique and ordinal parameters, and derives that the partition relation for pairs follows from triangles.",
+            "mathContext": "Axiomatized: Axiomatizes monotonicity in the clique and ordinal parameters, and derives that the partition relation for pairs follows from triangles."
+        },
+        {
+            "id": "connections",
+            "title": "Connections to Problems #592 and #118",
+            "startLine": 146,
+            "endLine": 165,
+            "summary": "Links to Problem #592 (countable analogue via Specker's theorem) and Problem #118 (clique extension, disproved in general but true for $\\omega_1^2$ under CH).",
+            "mathContext": "Verified: Links to Problem #592 (countable analogue via Specker's theorem) and Problem #118 (clique extension, disproved in general but true for $\\omega_1^2$ under CH)."
+        },
+        {
+            "id": "omega1-properties",
+            "title": "Basic Properties of $\\omega_1$",
+            "startLine": 166,
+            "endLine": 178,
+            "summary": "Axiomatizes that $\\omega_1$ is a limit ordinal, $\\omega < \\omega_1$, and $\\omega_1$ is regular (cofinality equals itself).",
+            "mathContext": "Axiomatized: Axiomatizes that $\\omega_1$ is a limit ordinal, $\\omega < \\omega_1$, and $\\omega_1$ is regular (cofinality equals itself)."
+        },
+        {
+            "id": "summary",
+            "title": "Summary of Formalization",
+            "startLine": 179,
+            "endLine": 218,
+            "summary": "Recaps the formalization: 12 axioms, 3 proved theorems, open in ZFC, solved under CH, and connections to related problems.",
+            "mathContext": "Verified: Recaps the formalization: 12 axioms, 3 proved theorems, open in ZFC, solved under CH, and connections to related problems."
+        }
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "erdosNumber": 1169,
-    "erdosUrl": "https://erdosproblems.com/1169",
-    "erdosProblemStatus": "open",
-    "mathlib_version": "4.26.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Arithmetic",
-        "description": "From Mathlib.SetTheory.Ordinal.Arithmetic",
-        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
-      },
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.SetTheory.Cardinal.Basic",
-        "module": "Mathlib.SetTheory.Cardinal.Basic"
-      },
-      {
-        "theorem": "Ordinal",
-        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
-        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
-      },
-      {
-        "theorem": "Tactic",
-        "description": "From Mathlib.Tactic",
-        "module": "Mathlib.Tactic"
-      }
-    ],
-    "originalContributions": [
-      "ordinalPartitionRel",
-      "negPartitionRel",
-      "omega1",
-      "omega1Sq",
-      "omega1_uncountable",
-      "omega1Sq_card",
-      "erdos_1169_statement",
-      "CH",
-      "hajnal_ch_implies_partition",
-      "erdos_1169_under_ch",
-      "erdos_1169_not_disprovable",
-      "erdos_1169_open_in_zfc",
-      "partition_monotone_clique",
-      "partition_monotone_ordinal",
-      "erdos_1169_implies_pairs"
-    ],
-    "axiomCount": 1,
-    "lineCount": 213,
-    "assumptions": "1 axiom: hajnal_ch_implies_partition (CH implies ω₁²→(ω₁²,3)²). ordinalPartitionRel and partition_monotone_clique are now proved definitions/theorems."
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #1169 belongs to the partition calculus, a branch of combinatorial set theory developed by Erdős and Hajnal starting in the 1950s. The partition calculus extends Ramsey's theorem (1930) — which concerns finite colorings of finite sets — to the transfinite setting, asking when colorings of pairs from infinite well-ordered sets must contain large homogeneous subsets.\n\nThe specific question $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ asks: must every 2-coloring of pairs from a set of order type $\\omega_1^2$ (where $\\omega_1$ is the first uncountable ordinal) contain either a monochromatic subset of the same order type $\\omega_1^2$ or a monochromatic triangle? This is a natural question in the hierarchy of ordinal partition relations, sitting between the well-understood countable case and the general uncountable theory.\n\nThe key partial result is due to András Hajnal, who proved the partition relation holds under the Continuum Hypothesis (CH). Hajnal's proof uses the diamond principle $\\Diamond$ (a combinatorial consequence of CH established by Jensen) to construct the required homogeneous sets. Remarkably, Hajnal proves the stronger result $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for ALL finite $k$, not just $k = 3$. Since CH is consistent with ZFC (Gödel 1940), this shows the negative relation cannot be proved from ZFC alone. However, it remains open whether the positive relation is provable from ZFC without assuming CH.\n\nThe problem connects to several other Erdős problems: #592 asks the countable analogue (for which countable $\\beta$ does $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ hold?), and #118 asks whether $\\alpha \\to (\\alpha, 3)^2$ implies $\\alpha \\to (\\alpha, n)^2$ for all $n$ (disproved by Schipperus and Darby in 1999, though Hajnal's result shows this implication holds for $\\omega_1^2$ under CH). The problem is referenced as [Va99, 7.85].",
-    "problemStatement": "Does $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ hold in ZFC? That is, for every 2-coloring $f: [\\omega_1^2]^2 \\to \\{0, 1\\}$, must there exist either a subset $H \\subseteq \\omega_1^2$ of order type $\\omega_1^2$ with $f''[H]^2 = \\{0\\}$, or a set $K \\subseteq \\omega_1^2$ with $|K| = 3$ and $f''[K]^2 = \\{1\\}$?",
-    "text": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
-    "proofStrategy": "The formalization axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and builds the problem statement from the key ordinals $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$. The core result is Hajnal's CH-conditional theorem, axiomatized as `hajnal_ch_implies_partition`, from which `erdos_1169_under_ch` derives the specific $k = 3$ case via `norm_num`. Monotonicity properties are axiomatized to derive consequences (e.g., the relation for pairs follows from triangles). The metamathematical status is captured via `erdos_1169_not_disprovable` (consistency with ZFC) and `erdos_1169_open_in_zfc` (excluded middle, encoding that the ZFC status is unresolved).",
-    "keyInsights": [
-      "The problem is **solved under CH but open in ZFC**: Hajnal proved $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all finite $k$ assuming CH, using the diamond principle $\\Diamond$. This gives consistency but not provability from ZFC alone.",
-      "Hajnal's result is **stronger than needed**: it proves the partition relation for ALL finite clique sizes $k \\geq 2$, not just $k = 3$. This answers the analogue of Problem #118 positively for $\\omega_1^2$ under CH.",
-      "The **diamond principle** $\\Diamond$ (Jensen, from CH) is the key set-theoretic tool: it provides a 'prediction' sequence that guides the construction of homogeneous sets in the partition argument.",
-      "The ordinal $\\omega_1^2$ has **richer order structure** than $\\omega_1$ despite having the same cardinality $\\aleph_1$. It consists of $\\omega_1$-many copies of $\\omega_1$ in sequence, and this structure is essential for the partition relation to potentially hold.",
-      "The problem sits at the **boundary of independence**: results that hold under CH but whose ZFC status is open often turn out to be independent. Whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ is independent of ZFC (like the Continuum Hypothesis itself) is a major open question."
-    ],
-    "prerequisites": [
-      "Combinatorics and number theory",
-      "Set theory and cardinality",
-      "Combinatorics (counting, extremal problems)",
-      "Ramsey theory (partition regularity)",
-      "Graph theory (vertices, edges, colorings)"
+    "conclusion": {
+        "summary": "This formalization captures the full structure of Erdős Problem #1169, an open problem in ordinal partition calculus asking whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ holds in ZFC. The formalization includes the problem statement, Hajnal's CH-conditional proof, the metamathematical independence status, monotonicity consequences, and connections to related Erdős problems (#592, #118).",
+        "implications": "The formalization demonstrates how open problems at the boundary of set-theoretic independence can be precisely captured in Lean 4. The axiomatization cleanly separates what is known (Hajnal's CH result, consistency) from what is open (the ZFC status), and the proof of `erdos_1169_under_ch` from `hajnal_ch_implies_partition` shows how conditional results can be formally derived.",
+        "openQuestions": [
+            "Is $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ provable from ZFC alone, or is it independent?",
+            "Does the negation $\\omega_1^2 \\not\\to (\\omega_1^2, 3)^2$ hold in some model of ZFC + $\\neg$CH?",
+            "Can Hajnal's proof be carried out without the full strength of CH — does Martin's Axiom or PFA suffice?",
+            "Can the ordinal partition relation be fully formalized in Lean 4 using Mathlib's ordinal and coloring theory, replacing the axiomatization?"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.SetTheory.Ordinal.Arithmetic",
+            "Mathlib.SetTheory.Cardinal.Basic",
+            "Mathlib.SetTheory.Cardinal.Ordinal",
+            "Mathlib.Tactic"
+        ],
+        "opens": [
+            "Cardinal",
+            "Ordinal"
+        ],
+        "namespace": null,
+        "lineCount": 225,
+        "axiomCount": 1,
+        "theoremCount": 3,
+        "definitionCount": 5
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-1174",
+            "relationship": "related",
+            "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+        },
+        {
+            "targetId": "erdos-1176",
+            "relationship": "related",
+            "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+        },
+        {
+            "targetId": "erdos-1014",
+            "relationship": "related",
+            "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+        }
     ]
-  },
-  "sections": [
-    {
-      "id": "header-and-imports",
-      "title": "Problem Statement and Imports",
-      "startLine": 1,
-      "endLine": 37,
-      "summary": "Documents the problem, known results (Hajnal under CH, consistency, open in ZFC), related problems (#592, #118), and imports Mathlib ordinal/cardinal modules.",
-      "mathContext": "Mathematical content: Documents the problem, known results (Hajnal under CH, consistency, open in ZFC), related problems (#592, #118), and imports Mathlib ordinal/cardinal modules."
-    },
-    {
-      "id": "partition-relations",
-      "title": "Ordinal Partition Relations",
-      "startLine": 38,
-      "endLine": 56,
-      "summary": "Axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and defines its negation $\\alpha \\not\\to (\\beta, k)^2$.",
-      "mathContext": "Axiomatizes the ordinal partition relation $\\$\\alpha$ \\to (\\$\\beta$, k)^2$ and defines its negation $\\$\\alpha$ \\not\\to (\\$\\beta$, k)^2$."
-    },
-    {
-      "id": "key-ordinals",
-      "title": "Key Ordinals: $\\omega_1$ and $\\omega_1^2$",
-      "startLine": 57,
-      "endLine": 73,
-      "summary": "Defines $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$, with axioms for uncountability and cardinality.",
-      "mathContext": "Formal definition: Defines $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$, with axioms for uncountability and cardinality."
-    },
-    {
-      "id": "problem-statement",
-      "title": "The Main Problem Statement",
-      "startLine": 74,
-      "endLine": 85,
-      "summary": "Defines `erdos_1169_statement` as the partition relation $\\omega_1^2 \\to (\\omega_1^2, 3)^2$.",
-      "mathContext": "Formal definition: Defines `erdos_1169_statement` as the partition relation $\\omega_1^2 \\to (\\omega_1^2, 3)^2$."
-    },
-    {
-      "id": "hajnal-ch",
-      "title": "Hajnal's CH-Conditional Result",
-      "startLine": 86,
-      "endLine": 106,
-      "summary": "Defines CH ($2^{\\aleph_0} = \\aleph_1$), axiomatizes Hajnal's theorem that CH implies $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all $k$, and derives the $k = 3$ case.",
-      "mathContext": "Defines CH ($$$2^{{\\aleph_0}$}$ = \\aleph_1$), axiomatizes Hajnal's theorem that CH implies $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all $k$, and derives the $k = 3$ case."
-    },
-    {
-      "id": "independence",
-      "title": "Independence and Consistency",
-      "startLine": 107,
-      "endLine": 123,
-      "summary": "Captures the metamathematical status: the problem is not disprovable (consistent via CH models) and the ZFC status remains open.",
-      "mathContext": "Mathematical content: Captures the metamathematical status: the problem is not disprovable (consistent via CH models) and the ZFC status remains open."
-    },
-    {
-      "id": "monotonicity",
-      "title": "Monotonicity Properties",
-      "startLine": 124,
-      "endLine": 145,
-      "summary": "Axiomatizes monotonicity in the clique and ordinal parameters, and derives that the partition relation for pairs follows from triangles.",
-      "mathContext": "Axiomatized: Axiomatizes monotonicity in the clique and ordinal parameters, and derives that the partition relation for pairs follows from triangles."
-    },
-    {
-      "id": "connections",
-      "title": "Connections to Problems #592 and #118",
-      "startLine": 146,
-      "endLine": 165,
-      "summary": "Links to Problem #592 (countable analogue via Specker's theorem) and Problem #118 (clique extension, disproved in general but true for $\\omega_1^2$ under CH).",
-      "mathContext": "Verified: Links to Problem #592 (countable analogue via Specker's theorem) and Problem #118 (clique extension, disproved in general but true for $\\omega_1^2$ under CH)."
-    },
-    {
-      "id": "omega1-properties",
-      "title": "Basic Properties of $\\omega_1$",
-      "startLine": 166,
-      "endLine": 178,
-      "summary": "Axiomatizes that $\\omega_1$ is a limit ordinal, $\\omega < \\omega_1$, and $\\omega_1$ is regular (cofinality equals itself).",
-      "mathContext": "Axiomatized: Axiomatizes that $\\omega_1$ is a limit ordinal, $\\omega < \\omega_1$, and $\\omega_1$ is regular (cofinality equals itself)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary of Formalization",
-      "startLine": 179,
-      "endLine": 218,
-      "summary": "Recaps the formalization: 12 axioms, 3 proved theorems, open in ZFC, solved under CH, and connections to related problems.",
-      "mathContext": "Verified: Recaps the formalization: 12 axioms, 3 proved theorems, open in ZFC, solved under CH, and connections to related problems."
-    }
-  ],
-  "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #1169, an open problem in ordinal partition calculus asking whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ holds in ZFC. The formalization includes the problem statement, Hajnal's CH-conditional proof, the metamathematical independence status, monotonicity consequences, and connections to related Erdős problems (#592, #118).",
-    "implications": "The formalization demonstrates how open problems at the boundary of set-theoretic independence can be precisely captured in Lean 4. The axiomatization cleanly separates what is known (Hajnal's CH result, consistency) from what is open (the ZFC status), and the proof of `erdos_1169_under_ch` from `hajnal_ch_implies_partition` shows how conditional results can be formally derived.",
-    "openQuestions": [
-      "Is $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ provable from ZFC alone, or is it independent?",
-      "Does the negation $\\omega_1^2 \\not\\to (\\omega_1^2, 3)^2$ hold in some model of ZFC + $\\neg$CH?",
-      "Can Hajnal's proof be carried out without the full strength of CH — does Martin's Axiom or PFA suffice?",
-      "Can the ordinal partition relation be fully formalized in Lean 4 using Mathlib's ordinal and coloring theory, replacing the axiomatization?"
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.SetTheory.Ordinal.Arithmetic",
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.SetTheory.Cardinal.Ordinal",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Cardinal",
-      "Ordinal"
-    ],
-    "namespace": null,
-    "lineCount": 225,
-    "axiomCount": 1,
-    "theoremCount": 3,
-    "definitionCount": 5
-  },
-  "crossReferences": [
-    {
-      "targetId": "erdos-1174",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
-    },
-    {
-      "targetId": "erdos-1176",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
-    },
-    {
-      "targetId": "erdos-1014",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
-    }
-  ]
 }

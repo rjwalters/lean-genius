@@ -1,75 +1,39 @@
 {
   "slug": "erdos-1000-oq-01",
   "title": "Explicit Haight-type sequences construction",
-  "phase": "ORIENT",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Can we construct an explicit increasing sequence A = {n₁ < n₂ < ...} such that the Cesàro average (1/N)Σ φ_A(k)/n_k → 0?",
-    "plain": "Haight proved existentially that a sequence with vanishing Cesàro average of generalized totient ratios exists. The open question asks for an explicit construction and characterization of what structural properties such sequences must have.",
-    "whyMatters": [
-      "Bridges existence (Haight axiom) to constructive mathematics",
-      "Characterizes the growth/divisibility structure of Haight sequences",
-      "Negative results eliminate natural candidates (factorials, primorials)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Explicit Haight-type sequences construction.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Factorial sequence has ρ→1, so NOT Haight-type",
-      "Haight sequences must have ρ<ε for density-1 of indices (haight_density_one_low)",
-      "At low-density indices, growth is at most polynomial (haight_polynomial_growth)",
-      "Divisibility density bounds for factorial sequence"
-    ],
-    "open": [
-      "Prove factorialSeq_usedSum_le (Σ φ(j!) ≤ Σ j! bound)",
-      "Prove sum_factorials_lt (Σ j! < 2·k! for k≥2)",
-      "Construct an explicit Haight sequence candidate",
-      "Prove or disprove: primorial-block sequences are Haight-type"
-    ],
-    "goal": "Construct an explicit sequence satisfying VanishingAverage and prove it works"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-30T19:15:00.000Z",
-    "iteration": 2,
-    "focus": "Structural characterization of Haight sequences + negative results for factorial candidate",
-    "blockers": [
-      "2 sorries in factorial computation (routine but need compilation verification)"
-    ],
-    "nextAction": "Prove the 2 factorial computation sorries, then define primorial-block candidate",
+    "phase": "NEW",
+    "since": "2026-03-30T16:34:54.971Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Created Erdos1000OQ01.lean (218 lines, 14 theorems, 2 sorries, 0 axioms). Proved haight_density_one_low (key structural characterization), factorial sequence negative result, polynomial growth constraint. The 2 sorries are standard factorial sum bounds.",
-    "builtItems": [
-      "Defined factorialSeq : IncreasingSeq in Erdos1000OQ01.lean",
-      "Proved haight_density_one_low: ρ≥ε indices have density→0 (structural characterization)",
-      "Proved haight_polynomial_growth: growth ≤ O(k) at low-density indices",
-      "Proved factorialSeq_not_vanishing: factorials NOT Haight-type (modulo 2 sorries)",
-      "Defined divDensity and proved basic properties",
-      "Proved factorialSeq_divDensity_le: divisibility density → 0 for factorials"
-    ],
-    "insights": [
-      "Factorial growth is too fast for Haight: usedSum < 2k! while n_k = (k+1)!, giving ρ ≥ 1-2/(k+1) → 1",
-      "Generic growth bound (usedSum ≤ k·n_{k-1}) gives ρ ≥ 1/(k+1), insufficient — need sequence-specific bound",
-      "haight_density_one_low is the KEY characterization: vanishing average ⟺ ρ < ε for almost all indices",
-      "Haight sequences need most indices to have many used divisors (high divisor density)",
-      "The polynomial growth constraint (haight_polynomial_growth) implies Haight sequences can't grow super-exponentially during low-density phases"
-    ],
-    "mathlibGaps": [
-      "Finset.sum_le_sum_of_injOn (injection-based sum comparison — may need custom lemma)"
-    ],
-    "nextSteps": [
-      "Prove the 2 sorries (standard factorial sum bounds, should be routine with Docker build)",
-      "Define primorial-block candidate sequence (lcm-based construction)",
-      "Prove structural lemma: sequences where most n_k have many used divisors have small ρ",
-      "Investigate whether the construction of Haight (1979) can be made explicit"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -82,22 +46,12 @@
     "erdos-1000"
   ],
   "references": {
-    "papers": [
-      "Haight (1979): A de Bruijn-Erdős approach to diophantine approximation",
-      "Erdős (1964): On the distribution of φ_A(k)/n_k"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1000"
-    ],
-    "mathlib": [
-      "Nat.factorial_dvd_factorial",
-      "Nat.factorial_lt_of_lt",
-      "Filter.Tendsto.cesaro",
-      "Metric.tendsto_atTop"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-03-30T16:34:54.971Z",
-  "lastUpdate": "2026-03-30T19:15:00.000Z",
+  "lastUpdate": "2026-03-30T16:34:54.971Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -111,17 +65,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1000Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos1000OQ01.lean",
-      "filename": "Erdos1000OQ01.lean",
-      "lineCount": 218,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1000OQ01.lean"
     }
   ]
 }

@@ -56,7 +56,10 @@
   "relatedProofs": [
     "borsuk-ulam",
     "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-04",
     "borsuk-ulam-oq-02-oq-02",
+    "borsuk-ulam-oq-02-oq-03",
     "borsuk-ulam-oq-03",
     "borsuk-ulam-oq-03-oq-01",
     "borsuk-ulam-oq-03-oq-01-oq-01",
@@ -107,6 +110,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
     },
     {
+      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04.lean",
+      "lineCount": 252,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean"
+    },
+    {
       "path": "Proofs/BorsukUlamOQ02OQ02.lean",
       "filename": "BorsukUlamOQ02OQ02.lean",
       "lineCount": 161,
@@ -116,6 +141,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ03.lean",
+      "lineCount": 252,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ03.lean"
     },
     {
       "path": "Proofs/BorsukUlamOQ03.lean",
@@ -171,17 +207,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
-    },
-    {
-      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
-      "filename": "BorsukUlamOQ02OQ01.lean",
-      "lineCount": 151,
-      "theoremCount": 6,
-      "axiomCount": 6,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
     }
   ]
 }

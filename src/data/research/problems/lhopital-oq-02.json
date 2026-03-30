@@ -1,0 +1,70 @@
+{
+  "slug": "lhopital-oq-02",
+  "title": "Formalize the $\\infty/\\infty$ form of L'Hopital's rule in Lean — Mathlib curr...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T00:13:03-07:00",
+    "iteration": 2,
+    "focus": "Proved main theorem. 3 variant reductions remain.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Main theorem lhopital_infty_right PROVED (sorry-free). 3 variant reductions remain (left, atTop, atBot). Proof uses c=0 reduction + Cauchy MVT. Cannot Docker-verify (Docker not running).",
+    "builtItems": [
+      "lhopital_infty_right_zero: c=0 case, full proof (~100 lines)",
+      "lhopital_infty_right: general case via c=0 reduction (~20 lines)"
+    ],
+    "insights": [
+      "Mathlib has 26 L Hopital variants but ALL are 0/0 form — genuine gap for infinity/infinity",
+      "Only g → ∞ needed (not both f and g), making this more general than naive 1/f 1/g reduction",
+      "Proof requires two-variable Cauchy MVT: fix x0, let x → a, then optimize x0",
+      "Four sorries: main proof + 3 reductions (left via negation, atTop via 1/x, atBot via -x)",
+      "Proof structure for lhopital_infty_right fully mapped: Cauchy MVT application on [x,x₀] gives ratio, algebraic decomposition gives bound, g→∞ controls correction terms. Key Mathlib APIs: exists_ratio_hasDerivAt_eq_ratio_slope, Metric.tendsto_nhdsWithin_nhds, Filter.Tendsto.eventually_ge_atTop",
+      "Main barrier: converting between Filter.Eventually on 𝓝[>]a and delta-neighborhoods requires careful API navigation (eventually_nhdsWithin_iff, Metric.eventually_nhds_iff). Needs iterative REPL debugging.",
+      "c=0 reduction is key: define h=f-cg, prove h/g→0, then f/g=h/g+c→c",
+      "For c=0 case: Cauchy MVT gives f(x)/g(x) = R·(1-g(x₀)/g(x)) + f(x₀)/g(x), bound each term by ε/2",
+      "Metric.mem_nhdsWithin_iff extracts delta from filter eventually for g→∞",
+      "g(x)>g(x₀) gives both g(x)≠g(x₀) and 0≤1-g(x₀)/g(x)≤1 without Rolle argument"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker-verify the proof when Docker is available",
+      "Prove lhopital_infty_left via u=a+b-x substitution",
+      "Prove lhopital_infty_atTop via u=1/x substitution",
+      "Prove lhopital_infty_atBot via u=-x reduction to atTop"
+    ],
+    "markdown": "# Knowledge Base: lhopital-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "lhopital",
+    "lhopital-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T07:24:09.593Z",
+  "lastUpdate": "2026-03-30T07:24:09.604Z"
+}

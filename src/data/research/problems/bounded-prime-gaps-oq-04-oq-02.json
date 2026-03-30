@@ -40,20 +40,22 @@
     ],
     "insights": [
       "BV requires exactly 6 minimal Mathlib additions: gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate",
-      "Total new code: ~5500 lines (refined from OQ04 estimate of 12000 \u2014 OQ04 double-counted scaffolding)",
-      "gaussSumBound (300 lines, tractability 5/5) is the most impactful first PR \u2014 unlocks polyaVinogradov and all character sum bounds",
+      "Total new code: ~5500 lines (refined from OQ04 estimate of 12000 — OQ04 double-counted scaffolding)",
+      "gaussSumBound (300 lines, tractability 5/5) is the most impactful first PR — unlocks polyaVinogradov and all character sum bounds",
       "vaughanIdentity (400 lines, tractability 4/5) is independent and can be developed as a parallel PR",
-      "siegelWalfisz (2000 lines, tractability 1/5) is the hardest single addition \u2014 requires contour integration and Siegels ineffective theorem",
-      "Mathlib v4.26.0 has DirichletCharacter, LFunction, L(1,\u03c7)\u22600, vonMangoldt, dirichlet_modEq \u2014 roughly 70% of Layer 1 infrastructure",
-      "Two parallel development tracks: character sums (Gauss\u2192PV\u2192SW) and sieve methods (LS+Vaughan\u2192zero density)",
+      "siegelWalfisz (2000 lines, tractability 1/5) is the hardest single addition — requires contour integration and Siegels ineffective theorem",
+      "Mathlib v4.26.0 has DirichletCharacter, LFunction, L(1,χ)≠0, vonMangoldt, dirichlet_modEq — roughly 70% of Layer 1 infrastructure",
+      "Two parallel development tracks: character sums (Gauss→PV→SW) and sieve methods (LS+Vaughan→zero density)",
       "Proving all 6 additions would reduce BoundedPrimeGaps.lean from 3 axioms to 2 (bombieriVinogradov becomes theorem)",
       "Each addition unlocks 4-5 further results beyond BV (e.g., gaussSumBound enables Burgess bounds, Jacobi sums)",
-      "LargeSieve is the first sieve result that would exist in Mathlib \u2014 foundational for all sieve theory"
+      "LargeSieve is the first sieve result that would exist in Mathlib — foundational for all sieve theory",
+      "All 6 axioms are well-known theorems (gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate) missing from Mathlib. Each needs 300-2000 lines to prove. None are used by any theorem in the file — they are purely a catalog.",
+      "sorryCount was incorrectly 1 in metadata — actual sorry count is 0 (only appears in a comment)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build gaussSumBound from Mathlib ZMod.gaussSum \u2014 highest tractability, most impactful",
-      "Build vaughanIdentity from Mathlib vonMangoldt + M\u00f6bius \u2014 parallel with gaussSumBound",
+      "Build gaussSumBound from Mathlib ZMod.gaussSum — highest tractability, most impactful",
+      "Build vaughanIdentity from Mathlib vonMangoldt + Möbius — parallel with gaussSumBound",
       "Verify file builds via Docker (Docker was not available this session)",
       "Consider submitting gaussSumBound as standalone Mathlib PR"
     ],
@@ -64,7 +66,8 @@
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
-    "bounded-prime-gaps-oq-04"
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -128,6 +131,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 601,
+      "theoremCount": 11,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsSieve.lean",

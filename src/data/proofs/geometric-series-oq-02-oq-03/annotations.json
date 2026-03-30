@@ -1,0 +1,34 @@
+{
+  "annotations": [
+    {
+      "line": 40,
+      "type": "theorem",
+      "content": "If $A$ is a unit and $\\|B - A\\| \\cdot \\|A^{-1}\\| < 1$, then $B$ is also a unit.",
+      "symbol": "isUnit_of_near_unit"
+    },
+    {
+      "line": 69,
+      "type": "theorem",
+      "content": "Every element $B$ with $\\|1 - B\\| < 1$ is a unit (open ball around identity).",
+      "symbol": "isUnit_of_near_one"
+    },
+    {
+      "line": 86,
+      "type": "theorem",
+      "content": "$B^{-1} = \\sum_{n=0}^\\infty (1-B)^n$ when $\\|1-B\\| < 1$ (Neumann series for perturbed inverse).",
+      "symbol": "perturbed_inverse_series"
+    },
+    {
+      "line": 100,
+      "type": "theorem",
+      "content": "$\\|B^{-1}\\| \\leq (1 - \\|1-B\\|)^{-1}$ when $\\|1 - B\\| < 1$ (quantitative bound).",
+      "symbol": "perturbed_inverse_norm_bound"
+    },
+    {
+      "line": 118,
+      "type": "theorem",
+      "content": "Inversion is locally bounded: for $\\|1 - B\\| \\leq \\varepsilon < 1$, $\\|B^{-1}\\| \\leq (1-\\varepsilon)^{-1}$.",
+      "symbol": "inverse_locally_bounded"
+    }
+  ]
+}

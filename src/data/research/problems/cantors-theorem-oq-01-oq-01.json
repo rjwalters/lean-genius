@@ -1,6 +1,6 @@
 {
   "slug": "cantors-theorem-oq-01-oq-01",
-  "title": "Is |\ud835\udcab(\u211d)| = \u2135\u2082",
+  "title": "Is |𝒫(ℝ)| = ℵ₂",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -51,6 +51,7 @@
   "relatedProofs": [
     "cantors-theorem",
     "cantors-theorem-oq-01",
+    "cantors-theorem-oq-01-oq-01",
     "cantors-theorem-oq-02",
     "cantors-theorem-oq-03"
   ],
@@ -83,6 +84,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ01.lean",
+      "filename": "CantorsTheoremOQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ01.lean"
     },
     {
       "path": "Proofs/CantorsTheoremOQ02.lean",

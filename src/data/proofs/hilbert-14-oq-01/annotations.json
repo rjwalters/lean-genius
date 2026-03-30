@@ -1,0 +1,38 @@
+[
+  {
+    "id": "reynolds-def",
+    "type": "definition",
+    "startLine": 88,
+    "endLine": 101,
+    "title": "Reynolds Operator",
+    "content": "A linear projection R → R^G that is the identity on invariants, maps into invariants, and commutes with multiplication by invariants. This is the key structure that makes reductive invariant theory work — non-reductive groups lack it.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "grosshans-def",
+    "type": "definition",
+    "startLine": 112,
+    "endLine": 129,
+    "title": "Grosshans Subgroup",
+    "content": "H ≤ G is Grosshans if the coordinate ring k[G/H] is finitely generated. This is the characterization of which subgroups of reductive groups have well-behaved invariant theory.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "grosshans-thm",
+    "type": "insight",
+    "startLine": 131,
+    "endLine": 150,
+    "title": "Grosshans's Theorem (1997)",
+    "content": "The definitive characterization: H ≤ G (reductive) has fg invariants for ALL representations iff H is Grosshans. The proof uses the transfer principle and Hilbert's theorem for the reductive quotient.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "no-group-criterion",
+    "type": "insight",
+    "startLine": 206,
+    "endLine": 235,
+    "title": "No Purely Group-Theoretic Criterion",
+    "content": "The key negative result: the same non-reductive group can have fg invariants for some representations and non-fg for others. The characterization is inherently representation-dependent (via Grosshans embedding).",
+    "difficulty": "advanced"
+  }
+]

@@ -93,24 +93,15 @@ def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k}
 **Erdős (1950):**
 The powers of two satisfy the conjecture.
 -/
-axiom erdos_1950_powers_of_two :
-    HasUnboundedLimsup (representationCount powersOfTwo)
-
 /--
 **Powers of Two Have Logarithmic Density:**
 |{2^k : k ≤ N}| = ⌊log₂(N)⌋ + 1 ~ log(N).
 -/
-axiom powers_of_two_log_density : HasLogDensity powersOfTwo
-
 /--
 **Arithmetic Progressions:**
 Sets containing long arithmetic progressions tend to have
 many prime representations due to Goldbach-like phenomena.
 -/
-axiom ap_representation_bound (A : Set ℕ) (d : ℕ) (hd : d > 0)
-    (hAP : ∃ a L : ℕ, L ≥ d ∧ ∀ k < L, a + k * d ∈ A) :
-    ∃ n : ℕ, representationCount A n ≥ d
-
 /-
 ## Part IV: Chen and Ding's Theorem
 -/
@@ -134,10 +125,36 @@ theorem erdos_conjecture_true : ErdosConjecture := by
   have hInf : Set.Infinite A := by
     obtain ⟨c, N₀, hc, hDense⟩ := hA
     by_contra hFin
-    push_neg at hFin
-    obtain ⟨k, hk⟩ := Set.finite_iff_bddAbove.mp hFin
-    -- For N large enough, log(N) > k/c, contradiction
-    sorry
+    have hFA : A.Finite := Set.not_infinite.mp hFin
+    obtain ⟨k, hk⟩ := hFA.bddAbove
+    -- For N ≥ k: A ∩ [1,N] = A ∩ [1,k] since A ⊆ Iic k
+    have heq : ∀ N, N ≥ k → A ∩ Set.Icc 1 N = A ∩ Set.Icc 1 k := by
+      intro N hN; ext x
+      simp only [Set.mem_inter_iff, Set.mem_Icc]
+      exact ⟨fun ⟨hA, h1, _⟩ => ⟨hA, h1, hk hA⟩,
+             fun ⟨hA, h1, hk'⟩ => ⟨hA, h1, hk'.trans hN⟩⟩
+    -- Nat.card is constant C for N ≥ k
+    set C := Nat.card ↥(A ∩ Set.Icc 1 k)
+    -- Pick N large enough that c * log N > C
+    obtain ⟨N, hN⟩ := exists_nat_gt (max ↑(max N₀ k) (Real.exp ((↑C + 1) / c)))
+    have hN_max : max N₀ k < N := by
+      exact_mod_cast lt_of_le_of_lt (le_max_left (↑(max N₀ k) : ℝ) _) hN
+    have hN_N0 : N ≥ N₀ := le_of_lt (lt_of_le_of_lt (le_max_left N₀ k) hN_max)
+    have hN_k : N ≥ k := le_of_lt (lt_of_le_of_lt (le_max_right N₀ k) hN_max)
+    -- Nat.card (A ∩ [1,N]) = C since A ∩ [1,N] = A ∩ [1,k]
+    have hcard : Nat.card ↥(A ∩ Set.Icc 1 N) = C := by rw [heq N hN_k]
+    -- c * log N > C (since N > exp((C+1)/c))
+    have hlog : c * Real.log ↑N > ↑C := by
+      have hN_exp : (↑N : ℝ) > Real.exp ((↑C + 1) / c) :=
+        lt_of_le_of_lt (le_max_right _ _) hN
+      have h := Real.log_lt_log (Real.exp_pos _) hN_exp
+      rw [Real.log_exp] at h
+      rw [div_lt_iff hc] at h
+      linarith [mul_comm (Real.log ↑N) c]
+    -- hDense says (C : ℝ) ≥ c * log N, but c * log N > C. Contradiction.
+    have hdens := hDense N hN_N0
+    rw [hcard] at hdens
+    linarith
   exact chen_ding_2022 A hInf
 
 /-
@@ -173,17 +190,11 @@ A = {n² : n ≥ 1} is infinite, so limsup f(n) = ∞.
 -/
 def squares : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k^2}
 
-axiom squares_unbounded_limsup :
-    HasUnboundedLimsup (representationCount squares)
-
 /--
 **Prime Powers:**
 A = {p^k : p prime, k ≥ 1} is infinite.
 -/
 def primePowers : Set ℕ := {n | ∃ (p k : ℕ), p.Prime ∧ k ≥ 1 ∧ n = p^k}
-
-axiom prime_powers_unbounded_limsup :
-    HasUnboundedLimsup (representationCount primePowers)
 
 /-
 **Highly Composite Numbers:**

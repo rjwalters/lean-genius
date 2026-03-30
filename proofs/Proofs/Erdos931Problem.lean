@@ -272,24 +272,62 @@ theorem exists_prime_between_of_large_prime_factor
     _ ≤ n₂ + k₂ := by omega
 
 /-
-## Open Question: Prime Between Blocks (Remaining Hard Case)
+## Prime Between Blocks: Proved from Refined Axiom
 
-The theorems above prove exists_prime_between_blocks when:
-  (a) k₁ ≥ n₁ (Bertrand guarantees a prime in the first block), OR
-  (b) the first product has any prime factor > n₁ (which includes case (a))
+We reduce the general prime-between-blocks claim to a precise hard case:
+  Case 1: k₁ ≥ n₁ → first block contains a Bertrand prime (proved above)
+  Case 2: n₂+k₂ ≥ 2n₁ → Bertrand prime in (n₁, 2n₁] fits in range
+  Case 3: first product has a prime factor > n₁ → transfer via SamePrimeFactors
+  Case 4 (axiom): n₁ > k₁, n₂+k₂ < 2n₁, all prime factors ≤ n₁
+    → both blocks are n₁-smooth, requires Størmer-type smooth number theory
 
-The remaining hard case: n₁ > k₁, ALL elements of {n₁+1,...,n₁+k₁} are composite,
-AND all prime factors of the first product are ≤ n₁. In this case, by
-SamePrimeFactors, the second block is also n₁-smooth. Empirically, having
-k₂ ≥ 3 consecutive n₁-smooth numbers with the exact same prime factor set as
-a block of k₁ composites appears impossible for all tested n₁ values
-(by Størmer-type arguments on consecutive smooth numbers).
+The hard case is extremely constrained: k₁+k₂ < n₁ (so n₁ ≥ 7), the first
+block is entirely composite, and the gap between blocks is tight. Under
+SamePrimeFactors, the second block must also be n₁-smooth. By Størmer-type
+results on consecutive smooth numbers, this case is likely vacuously true
+(the hypotheses are mutually inconsistent for large n₁).
 -/
-axiom exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
+
+/-- Refined axiom: the remaining hard case for prime-between-blocks.
+    All three conditions hold simultaneously:
+    - The first block is entirely composite (k₁ < n₁, so no Bertrand prime in block)
+    - The gap is tight (n₂+k₂ < 2n₁, so Bertrand's (n₁, 2n₁] overshoots)
+    - No large prime factor (all factors ≤ n₁, so SamePrimeFactors transfer fails)
+    Under these constraints, SamePrimeFactors forces both blocks to be n₁-smooth.
+    Proving this requires smooth number theory not yet in Mathlib. -/
+axiom exists_prime_between_blocks_hard (k₁ k₂ n₁ n₂ : ℕ)
+    (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₅ : k₁ < n₁)
+    (h₆ : n₂ + k₂ < 2 * n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂
+
+/-- **Prime between blocks** (general case): proved by case analysis.
+    Reduces the general claim to the hard-case axiom above. -/
+theorem exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
     (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
     (h₃ : n₁ + k₁ ≤ n₂)
     (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂) :
-    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂ := by
+  -- Case 1: k₁ ≥ n₁ (Bertrand gives a prime in the first block)
+  by_cases hkn : n₁ ≤ k₁
+  · exact exists_prime_between_blocks_small k₁ k₂ n₁ n₂ (le_trans h₁ h₂) hkn h₃
+  push_neg at hkn
+  -- Case 2: n₂ + k₂ ≥ 2n₁ (Bertrand prime fits in range)
+  by_cases hlarge : 2 * n₁ ≤ n₂ + k₂
+  · obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul n₁ (by omega)
+    exact ⟨p, hp, hlt, by omega⟩
+  push_neg at hlarge
+  -- Case 3: first product has a prime factor > n₁
+  by_cases hpf : ∃ q ∈ consecutivePrimeFactors n₁ k₁, n₁ < q
+  · obtain ⟨q, hq_mem, hq_lo⟩ := hpf
+    exact exists_prime_between_of_large_prime_factor k₁ k₂ n₁ n₂ q
+      (prime_factor_is_prime n₁ k₁ q hq_mem) hq_lo hq_mem h₃ h₄
+  -- Case 4: hard case (all three constraints active)
+  push_neg at hpf
+  exact exists_prime_between_blocks_hard k₁ k₂ n₁ n₂ h₁ h₂ h₃ h₄ hkn hlarge hpf
 
 /-
 ## Problem Status
@@ -326,5 +364,90 @@ theorem prime_le_k_mem_factors (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
 theorem two_mem_factors (n k : ℕ) (hk : 2 ≤ k) :
     2 ∈ consecutivePrimeFactors n k :=
   prime_le_k_mem_factors n k 2 Nat.prime_two hk
+
+/-
+## Hard Case Structure: Both Blocks Are Entirely Composite
+
+In the hard case (k₁ < n₁, n₂+k₂ < 2n₁, all prime factors ≤ n₁), both blocks
+must consist entirely of composite numbers. The proof: if n₁+i were prime, it
+would be a prime factor of the first product exceeding n₁ (since i ≥ 1),
+contradicting hypothesis h₇. Similarly for the second block via SamePrimeFactors.
+-/
+
+/-- In the hard case, every element of the first block is composite.
+    Proof: if n₁+i is prime and i ≥ 1, then n₁+i > n₁ is a prime factor
+    of the first product, contradicting the hypothesis that all prime factors ≤ n₁. -/
+theorem hard_case_first_block_composite (n₁ k₁ : ℕ)
+    (h₅ : k₁ < n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
+    (i : ℕ) (hi : i ∈ Finset.Icc 1 k₁) :
+    ¬ (n₁ + i).Prime := by
+  intro hp
+  -- n₁ + i is a prime factor of the product
+  have hmem : (n₁ + i) ∈ consecutivePrimeFactors n₁ k₁ :=
+    factor_prime_mem n₁ k₁ i hi (n₁ + i) hp (dvd_refl _)
+  -- By h₇, n₁ + i ≤ n₁
+  have := h₇ _ hmem
+  -- But i ≥ 1, so n₁ + i > n₁
+  simp only [Finset.mem_Icc] at hi
+  omega
+
+/-- In the hard case, every element of the second block is composite.
+    Proof: if n₂+j is prime and j ≥ 1, then n₂+j > n₁ (since n₂ ≥ n₁+k₁) is a
+    prime factor of the second product. By SamePrimeFactors, it's also a prime factor
+    of the first product, and by h₇ it must be ≤ n₁ — contradiction. -/
+theorem hard_case_second_block_composite (n₁ k₁ k₂ n₂ : ℕ)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
+    (j : ℕ) (hj : j ∈ Finset.Icc 1 k₂) :
+    ¬ (n₂ + j).Prime := by
+  intro hp
+  -- n₂ + j is a prime factor of the second product
+  have hmem₂ : (n₂ + j) ∈ consecutivePrimeFactors n₂ k₂ :=
+    factor_prime_mem n₂ k₂ j hj (n₂ + j) hp (dvd_refl _)
+  -- By SamePrimeFactors, it's also a prime factor of the first product
+  have hmem₁ : (n₂ + j) ∈ consecutivePrimeFactors n₁ k₁ := h₄ ▸ hmem₂
+  -- By h₇, n₂ + j ≤ n₁
+  have hle := h₇ _ hmem₁
+  -- But n₂ + j > n₁
+  simp only [Finset.mem_Icc] at hj
+  omega
+
+/-- In the hard case, every prime factor of the second product is ≤ n₁.
+    Follows directly from SamePrimeFactors and the first-product bound. -/
+theorem hard_case_second_block_smooth (n₁ k₁ k₂ n₂ : ℕ)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    ∀ p ∈ consecutivePrimeFactors n₂ k₂, p ≤ n₁ := by
+  intro p hp
+  exact h₇ p (h₄ ▸ hp)
+
+/-- In the hard case, every element of the second block is n₁-smooth AND greater than n₁.
+    This is the core structural constraint: k₂ ≥ 3 consecutive integers, all composite,
+    all greater than n₁, all with prime factors ≤ n₁. By results on consecutive smooth
+    numbers (Størmer's theorem), this is extremely restrictive and likely impossible
+    for all but finitely many n₁. -/
+theorem hard_case_summary (k₁ k₂ n₁ n₂ : ℕ)
+    (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₅ : k₁ < n₁)
+    (h₆ : n₂ + k₂ < 2 * n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    -- All elements of both blocks are composite
+    (∀ i ∈ Finset.Icc 1 k₁, ¬ (n₁ + i).Prime) ∧
+    (∀ j ∈ Finset.Icc 1 k₂, ¬ (n₂ + j).Prime) ∧
+    -- All prime factors of the second product are ≤ n₁
+    (∀ p ∈ consecutivePrimeFactors n₂ k₂, p ≤ n₁) ∧
+    -- All elements of the second block exceed n₁
+    (∀ j ∈ Finset.Icc 1 k₂, n₁ < n₂ + j) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact hard_case_first_block_composite n₁ k₁ h₅ h₇
+  · exact hard_case_second_block_composite n₁ k₁ k₂ n₂ h₃ h₄ h₇
+  · exact hard_case_second_block_smooth n₁ k₁ k₂ n₂ h₄ h₇
+  · intro j hj
+    simp only [Finset.mem_Icc] at hj
+    omega
 
 end Erdos931

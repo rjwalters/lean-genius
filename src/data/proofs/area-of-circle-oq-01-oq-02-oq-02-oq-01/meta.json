@@ -1,0 +1,195 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+  "title": "Isoperimetric Inequality from IBP + Wirtinger + Parseval (Hurwitz 1901)",
+  "slug": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+  "description": "Clean formalization of Hurwitz's 1901 Fourier-analytic proof of the isoperimetric inequality C\u00b2 \u2265 4\u03c0A. Chains three analytical ingredients: integration by parts for Fourier coefficients, Parseval's identity, and Wirtinger's inequality. The arithmetic kernel (from Wirtinger bounds to 4\u03c0A \u2264 L\u00b2) is fully proved. Concrete examples verify C\u00b2 = 4\u03c0A for circles and C\u00b2 > 4\u03c0A for squares.",
+  "meta": {
+    "author": "Hurwitz (1901); formalized 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
+    "date": "1901",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "fourier-analysis",
+      "geometry",
+      "isoperimetric",
+      "wirtinger",
+      "parseval",
+      "integration-by-parts",
+      "cauchy-schwarz",
+      "hurwitz",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "hasSum_le",
+        "description": "Order comparison for infinite sums",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "Int.one_le_abs",
+        "description": "For nonzero integers, |n| \u2265 1",
+        "module": "Mathlib.Data.Int.Order"
+      }
+    ],
+    "originalContributions": [
+      "FourierDecomp structure: clean packaging of Fourier decomposition properties",
+      "wirtinger_inequality: Wirtinger from Fourier decomposition (pointwise n\u00b2 \u2265 1 argument)",
+      "isoperimetric_arithmetic_kernel: purely algebraic deduction 4\u03c0A \u2264 L\u00b2 from Wirtinger bounds",
+      "isoperimetric_inequality: full statement with reparametrization + Wirtinger chain",
+      "cross_product_sq_le: 2D algebraic Cauchy\u2013Schwarz",
+      "circle_isoperimetric_ratio: I(circle) = 1",
+      "square_isoperimetric_strict: C\u00b2 > 4\u03c0A for squares (via \u03c0 < 4)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 5,
+    "lineCount": 419,
+    "assumptions": "Five axioms: (1) fourier_decomp_exists (Fourier decomposition for periodic C\u00b9 functions), (2) exists_nice_reparam (arc-length reparametrization with zero mean), (3) wirtinger_sum_bound (Wirtinger applied to coordinate functions), (4) area_cauchy_schwarz_bound (Green\u2019s theorem + Cauchy\u2013Schwarz), (5) integral_cauchy_schwarz_sq (L\u00b2 Cauchy\u2013Schwarz). Of these, #1 and #3 are proved in AreaOfCircleOQ01OQ03.lean.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The isoperimetric inequality C\u00b2 \u2265 4\u03c0A states that among all simple closed curves of given circumference, the circle encloses the maximum area. Known since antiquity, the first rigorous proof was given by Weierstrass (1870s). Hurwitz (1901) gave an elegant proof using Fourier analysis: the key insight is that Wirtinger\u2019s inequality (itself a consequence of Parseval + IBP) provides the analytical bound that, combined with Cauchy\u2013Schwarz, yields the geometric inequality.",
+    "problemStatement": "**Theorem (Isoperimetric Inequality)**: For any smooth closed plane curve with circumference $C$ and enclosed area $A$:\n$$C^2 \\geq 4\\pi A$$\nwith equality if and only if the curve is a circle.\n\n**Proof chain**: Parseval + IBP \u2192 Wirtinger \u2192 Arithmetic kernel \u2192 Isoperimetric inequality.",
+    "text": "Clean formalization of Hurwitz's 1901 Fourier-analytic proof of the isoperimetric inequality C\u00b2 \u2265 4\u03c0A. The proof chains IBP for Fourier coefficients, Parseval\u2019s identity, and Wirtinger\u2019s inequality through an arithmetic kernel to the geometric conclusion.",
+    "proofStrategy": "**Layer 1 (Analytical)**: Wirtinger\u2019s inequality from Fourier analysis. For a mean-zero 2\u03c0-periodic $C^1$ function $f$: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$. Proof: from Parseval, $\\int f^2 = \\sum c_n^2$ and $\\int (f')^2 = \\sum n^2 c_n^2$. Mean zero gives $c_0 = 0$. For $n \\neq 0$, $n^2 \\geq 1$, so $n^2 c_n^2 \\geq c_n^2$.\n\n**Layer 2 (Algebraic)**: The arithmetic kernel. Given bounds from Wirtinger ($S_{xy} \\leq 2\\pi c^2$), Cauchy\u2013Schwarz ($S^2 \\leq 2\\pi S_{xy}$, $2A \\leq cS$), chain: $S \\leq 2\\pi c$, $2A \\leq 2\\pi c^2$, $4\\pi A \\leq (2\\pi c)^2 = L^2$.\n\n**Layer 3 (Geometric)**: Reparametrize to constant speed, subtract means, apply Layers 1+2.",
+    "keyInsights": [
+      "Wirtinger\u2019s inequality reduces to n\u00b2 \u2265 1 for nonzero integers via Fourier decomposition",
+      "The arithmetic kernel is purely algebraic \u2014 no integrals or measures",
+      "The circle\u2019s optimality comes from equality in Wirtinger (only n = \u00b11 terms)",
+      "Five axioms isolate the analytical infrastructure; the logical structure is fully verified",
+      "The square\u2019s strict inequality C\u00b2 > 4\u03c0A reduces to \u03c0 < 4"
+    ],
+    "prerequisites": [
+      "Fourier analysis (Parseval\u2019s identity, Fourier coefficients)",
+      "Real analysis (integration, differentiation, periodic functions)",
+      "Elementary geometry (area, circumference)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i",
+      "title": "Part I: Fourier Decomposition",
+      "startLine": 51,
+      "endLine": 90,
+      "summary": "FourierDecomp structure packaging real Fourier coefficients with Parseval identities for f and f\u2019. Axiom: every 2\u03c0-periodic C\u00b9 function admits such a decomposition.",
+      "mathContext": "Fourier decomposition: $\\int f^2 = \\sum c_n^2$, $\\int (f')^2 = \\sum n^2 c_n^2$, $c_0 = \\frac{1}{\\sqrt{2\\pi}}\\int f$."
+    },
+    {
+      "id": "part-ii",
+      "title": "Part II: Wirtinger\u2019s Inequality",
+      "startLine": 92,
+      "endLine": 136,
+      "summary": "Wirtinger\u2019s inequality: \u222bf\u00b2 \u2264 \u222b(f\u2019)\u00b2 for mean-zero periodic C\u00b9 functions. Proved from Fourier decomposition via pointwise bound n\u00b2c\u2099\u00b2 \u2265 c\u2099\u00b2.",
+      "mathContext": "For mean-zero $f$: $c_0 = 0$, so $\\sum n^2 c_n^2 \\geq \\sum c_n^2$ since $n^2 \\geq 1$ for $n \\neq 0$."
+    },
+    {
+      "id": "part-iii",
+      "title": "Part III: Arithmetic Kernel",
+      "startLine": 138,
+      "endLine": 190,
+      "summary": "Purely algebraic deduction: from Wirtinger bounds + Cauchy\u2013Schwarz, deduce 4\u03c0A \u2264 L\u00b2. Chain: S\u00b2 \u2264 (2\u03c0c)\u00b2 \u2192 S \u2264 2\u03c0c \u2192 2A \u2264 2\u03c0c\u00b2 \u2192 4\u03c0A \u2264 L\u00b2.",
+      "mathContext": "Arithmetic kernel: $S^2 \\leq 2\\pi \\cdot 2\\pi c^2 = (2\\pi c)^2$, so $S \\leq 2\\pi c$, giving $2A \\leq c \\cdot 2\\pi c = 2\\pi c^2$ and $4\\pi A \\leq (2\\pi c)^2 = L^2$."
+    },
+    {
+      "id": "part-iv-v",
+      "title": "Parts IV\u2013V: Curve Structure and Circle Equality",
+      "startLine": 192,
+      "endLine": 258,
+      "summary": "SmoothClosedCurve structure, circumference and area definitions, circle C\u00b2 = 4\u03c0A equality, isoperimetric ratio I(circle) = 1.",
+      "mathContext": "Circle: $C = 2\\pi r$, $A = \\pi r^2$, $C^2 = 4\\pi^2 r^2 = 4\\pi A$. Isoperimetric ratio: $I(\\gamma) = C^2/(4\\pi A)$, $I(\\text{circle}) = 1$."
+    },
+    {
+      "id": "part-vi",
+      "title": "Part VI: Non-Circular Strict Inequality",
+      "startLine": 260,
+      "endLine": 306,
+      "summary": "Square: C\u00b2 > 4\u03c0A (via \u03c0 < 4), I(square) = 4/\u03c0. Equilateral triangle ratio.",
+      "mathContext": "Square (side $s$): $C = 4s$, $A = s^2$, $C^2/(4\\pi A) = 16/(4\\pi) = 4/\\pi > 1$."
+    },
+    {
+      "id": "part-vii",
+      "title": "Part VII: The Full Isoperimetric Inequality",
+      "startLine": 308,
+      "endLine": 395,
+      "summary": "Full isoperimetric theorem C\u00b2 \u2265 4\u03c0A via reparametrization (axiom) + Wirtinger chain + arithmetic kernel. Five analytical axioms.",
+      "mathContext": "For smooth closed $\\gamma$ with $C > 0$: reparametrize to constant speed $c = C/(2\\pi)$ with zero mean, apply Wirtinger + Cauchy\u2013Schwarz, feed into arithmetic kernel to get $4\\pi A \\leq C^2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The isoperimetric inequality C\u00b2 \u2265 4\u03c0A is formalized following Hurwitz (1901) with 5 axioms, 0 sorries, 11 theorems. The Wirtinger inequality and arithmetic kernel are fully proved; axioms isolate the Fourier decomposition, reparametrization, and integral bounds.",
+    "implications": "**Mathematical Significance**:\n\n**1. Clean Proof Architecture**: The three-layer structure (Analytical \u2192 Algebraic \u2192 Geometric) makes the logical dependencies explicit.\n\n**2. Wirtinger from Fourier**: The pointwise argument n\u00b2 \u2265 1 for n \u2260 0 gives a transparent proof of Wirtinger\u2019s inequality.\n\n**3. Arithmetic Kernel**: The purely algebraic core is reusable for any isoperimetric-type inequality that reduces to the same bound structure.\n\n**4. Axiom Roadmap**: The 5 axioms provide a precise specification of what Mathlib infrastructure would eliminate them: Fourier decomposition (#1), inverse function theorem for arc-length (#2), Wirtinger application (#3), Green\u2019s theorem (#4), L\u00b2 Cauchy\u2013Schwarz (#5).",
+    "openQuestions": [
+      "Prove the reparametrization axiom from the inverse function theorem in Mathlib",
+      "Formalize Green\u2019s theorem for smooth closed curves to eliminate axiom #4",
+      "The equality condition: C\u00b2 = 4\u03c0A iff curve is a circle (requires Wirtinger equality characterization)",
+      "Higher-dimensional isoperimetric inequalities via Brunn\u2013Minkowski"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent: IBP lemma \u0109\u2099(f\u2019) = in\u00b7\u0109\u2099(f) for Fourier coefficients. This file uses IBP as an ingredient in the Wirtinger \u2192 Isoperimetric chain."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Sibling: Full isoperimetric proof with Wirtinger (1400+ lines). This file provides a clean standalone version of the same result."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "foundational",
+      "description": "Root ancestor: A = \u03c0r\u00b2. The isoperimetric inequality characterizes the circle as the area-maximizing shape."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hurwitz, A.",
+      "title": "Sur le probl\u00e8me des isop\u00e9rim\u00e8tres",
+      "year": "1901",
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, Paris, 132:401\u2013403",
+      "note": "First Fourier-analytic proof of the isoperimetric inequality"
+    },
+    {
+      "authors": "Chavel, I.",
+      "title": "Isoperimetric Inequalities: Differential Geometric and Analytic Perspectives",
+      "year": "2001",
+      "venue": "Cambridge University Press",
+      "note": "Modern treatment including the Hurwitz proof and higher-dimensional generalizations"
+    },
+    {
+      "authors": "Wirtinger, W.",
+      "title": "\u00dcber eine Minimumaufgabe im Gebiete der analytischen Funktionen",
+      "year": "1904",
+      "venue": "Monatsh. Math. Phys. 15:169\u2013172",
+      "note": "Original statement of Wirtinger\u2019s inequality for periodic functions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "intervalIntegral"
+    ],
+    "namespace": "IsoperimetricFromFourier",
+    "lineCount": 419,
+    "axiomCount": 5,
+    "theoremCount": 11,
+    "definitionCount": 6
+  }
+}

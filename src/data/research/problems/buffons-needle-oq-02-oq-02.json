@@ -1,0 +1,128 @@
+{
+  "id": "buffons-needle-oq-02-oq-02",
+  "name": "Buffon noodle extension to smooth 3D curves",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "3D smooth Buffon follows same axiomatization pattern as 2D in BuffonsNoodle.lean",
+      "Arc length in 3D uses component-wise integration: sqrt(x'^2 + y'^2 + z'^2)",
+      "The 2 axioms isolate exactly what Mathlib lacks: Cauchy-Crofton on Gr(2,3)",
+      "Lipschitz constant 1/(2d) in 3D is tighter than 2/(pid) in 2D",
+      "Shape independence, monotonicity, approximation all proved from the axiomatized formula",
+      "Universal 2D/3D crossing ratio 4/pi applies to smooth curves as well as polygonal"
+    ],
+    "builtItems": [
+      "arcLength3D: 3D arc length definition (proofs/Proofs/BuffonsNeedleOQ02OQ02.lean)",
+      "arcLength3D_nonneg: nonnegativity of 3D arc length",
+      "arcLength3D_const: constant curve has zero arc length",
+      "arcLength3D_add: additivity over adjacent intervals",
+      "Polygonal3D: structure for 3D polygonal paths",
+      "smooth3DExpectedCrossings: axiom for smooth expected crossings",
+      "smooth3D_buffon_eq: axiom E = L/(2d)",
+      "smooth3D_shape_independence: shape independence for C1 3D curves",
+      "smooth3D_expectedCrossings_nonneg: nonnegativity",
+      "approximation_limit_3D: polygonal approximation convergence",
+      "lipschitz_3D: Lipschitz stability with constant 1/(2d)",
+      "smooth3D_lt_smooth2D: dimension comparison L/(2d) < 2L/(pid)",
+      "smooth_crossing_ratio: 2D/3D ratio = 4/pi",
+      "smooth3D_mono/strictMono: monotonicity theorems",
+      "helix_expected_crossings: concrete example",
+      "great_circle_expected_crossings: concrete example",
+      "Gallery entry: src/data/proofs/buffons-needle-oq-02-oq-02/"
+    ],
+    "progressSummary": "COMPLETED: Full formalization of smooth 3D Buffon noodle formula with 2 axioms, 0 sorries, 15 theorems. Extends BuffonsNeedleOQ02.lean from polygonal to smooth curves.",
+    "nextSteps": [
+      "Build Cauchy-Crofton formula on Gr(2,3) in Mathlib to eliminate the 2 axioms",
+      "Extend to Lipschitz curves (weaker than C1) in 3D",
+      "General smooth n-dimensional Buffon noodle formula"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedle.lean",
+      "filename": "BuffonsNeedle.lean",
+      "lineCount": 267,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01.lean",
+      "filename": "BuffonsNeedleOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01.lean",
+      "lineCount": 391,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ02.lean",
+      "filename": "BuffonsNeedleOQ01OQ02.lean",
+      "lineCount": 326,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02.lean",
+      "filename": "BuffonsNeedleOQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02.lean",
+      "filename": "BuffonsNeedleOQ02OQ02.lean",
+      "lineCount": 377,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02"
+  ]
+}

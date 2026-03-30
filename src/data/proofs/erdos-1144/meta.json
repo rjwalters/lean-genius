@@ -66,8 +66,8 @@
       "conjecture_and_atherfold_pinch"
     ],
     "axiomCount": 1,
-    "lineCount": 205,
-    "assumptions": "1 axiom(s) and 1 sorry(s)."
+    "lineCount": 226,
+    "assumptions": "1 axiom (atherfold_upper_bound — deep published result, 2025)."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1144 belongs to a rich tradition of studying partial sums of multiplicative functions, beginning with the Liouville function λ(n) = (-1)^Ω(n). Pólya conjectured in 1919 that ∑_{n≤x} λ(n) ≤ 0 for all x ≥ 2, but Haselgrove disproved this in 1958, and the first counterexample (x ≈ 906,150,257) was found by Tanaka in 1980.\n\nThe study of random multiplicative functions was pioneered by Wintner (1944), who showed that for Steinhaus random multiplicative functions (f(p) uniform on the unit circle), the partial sums satisfy ∑_{n≤x} f(n) = O(x^{1/2+ε}) almost surely. For Rademacher multiplicative functions (f(p) = ±1), the behavior is subtler: Harper (2013) proved that the partial sums have typical size √x / (log log x)^{3/4+o(1)}, resolving a question of Helson.\n\nThe key recent advance is by Atherfold (2025), who proved the upper bound ∑_{m≤N} f(m) ≪ N^{1/2} (log N)^{1+o(1)} almost surely. Problem #1144 asks whether the matching lower bound holds: does the limsup of |∑ f(m)|/√N diverge? This remains open. The problem is catalogued as Va99 §1.11 and is related to Problem #520 on squarefree-restricted sums.",
@@ -211,9 +211,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 205,
+    "lineCount": 226,
     "axiomCount": 1,
-    "theoremCount": 8,
+    "theoremCount": 16,
     "definitionCount": 5
   }
 }

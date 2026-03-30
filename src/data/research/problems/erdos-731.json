@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-14T21:29:39.410Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems, 2 axioms (down from 3), 0 sorries. Eliminated false axiom small_primes_divide via Kummer counterexample.",
+    "progressSummary": "PROGRESS: 24 theorems (was 18), 2 axioms, 0 sorries. Added 6 structural theorems: absorption identity, coprimality, dvd-implies-sq-dvd, prime_sq_not_dvd_choose, two proofs of prime non-divisibility.",
     "builtItems": [
       "Proved erdos_731_conjecture (True placeholder)",
       "Proved kummer_carries (True placeholder)",
@@ -42,7 +42,14 @@
       "Proved central_binom_lower: sum_range_choose + choose_le_middle → (2n+1)·C(2n,n) ≥ 4^n",
       "Proved least_nondiv_counterexample: C(4,2)=6, leastNonDiv=4, 4 not prime",
       "Eliminated small_primes_divide axiom (FALSE)",
-      "Proved small_primes_divide_false: ¬(3 ∣ C(6,3)) ∧ C(6,3)=20"
+      "Proved small_primes_divide_false: ¬(3 ∣ C(6,3)) ∧ C(6,3)=20",
+      "Proved prime_gt_not_dvd_central: primes > 2n do not divide C(2n,n), via C(2n,n)|n!² = (2n)! and Legendre",
+      "Proved central_binom_succ_identity: (n+1)*C(2n+1,n) = (2n+1)*C(2n,n)",
+      "Proved coprime_two_n_succ_n_succ: gcd(2n+1, n+1) = 1",
+      "Proved dvd_central_implies_sq_dvd: (2n+1)|C(2n,n) → (2n+1)²|C(2n+1,n)",
+      "Proved prime_sq_not_dvd_choose: p²∤C(p,k) for prime p, 0<k<p",
+      "Proved not_dvd_central_prime: prime (2n+1) ∤ C(2n,n)",
+      "Proved not_dvd_central_prime_alt: alternative proof via identity route"
     ],
     "insights": [
       "File had pre-existing build failure: omega cannot prove non-divisibility (m+1 does not divide m)",
@@ -54,7 +61,11 @@
       "Central binom lower bound: max-term argument from Σ C(2n,k) = 4^n with 2n+1 terms",
       "FOUND FALSE AXIOM: small_primes_divide claimed ∀ primes p, ∃ N, ∀ n≥N, p|C(2n,n). FALSE for p≥3: n=p^k gives 0 carries in Kummer theorem, so p∤C(2p^k,p^k) for all k.",
       "Concrete counterexample: p=3, n=3, C(6,3)=20, 3∤20. Replaced axiom with counterexample theorem.",
-      "Axiom count reduced 3→2"
+      "Axiom count reduced 3→2",
+      "prime_gt_not_dvd_central gives upper_bound_trivial when 2n+1 is prime (common case). General composite case requires Kummer-type analysis.",
+      "CRITICAL: (2n+1)∤C(2n,n) is FALSE for composite 2n+1 (e.g., n=577, 1155|C(1154,577))",
+      "Full upper_bound_trivial proof needs: C(2n+1,n)|lcm(1,...,2n+1) via Kummer carry analysis, then C(2n+1,n)>C(2n,n) by Pascal gives lcm > C(2n,n)",
+      "The identity (n+1)*C(2n+1,n) = (2n+1)*C(2n,n) with gcd(2n+1,n+1)=1 gives: (2n+1)|C(2n,n) ↔ (2n+1)²|C(2n+1,n)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -74,16 +85,16 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:29:39.410Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-30T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos731Problem.lean",
       "filename": "Erdos731Problem.lean",
-      "lineCount": 162,
-      "theoremCount": 10,
-      "axiomCount": 2,
+      "lineCount": 306,
+      "theoremCount": 25,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

@@ -50,9 +50,6 @@ theorem n_divides_rarely :
 /- ## Pomerance's Results (2014) -/
 
 /-- Pomerance: for any k ≥ 0, infinitely many n satisfy (n−k) | C(2n, n) -/
-axiom pomerance_single_factor (k : ℕ) :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ k ≤ n ∧ (n - k) ∣ centralBinom n
-
 /-- Pomerance: the set of n with (n−k) | C(2n, n) has upper density < 1/3.
     The measure-theoretic statement requires density infrastructure;
     the existential structure here is a placeholder. -/
@@ -71,9 +68,6 @@ theorem pomerance_ascending_density (k : ℕ) :
 
 /-- Erdős Problem 396: For every k, there exists n such that
     n · (n−1) · ⋯ · (n−k) divides C(2n, n) -/
-axiom ErdosProblem396 :
-  ∀ k : ℕ, ∃ n : ℕ, descFactorial n (k + 1) ∣ centralBinom n
-
 /- ## Computational Evidence -/
 
 /-- Small cases: the smallest n for each k (OEIS A375077)
@@ -82,9 +76,4 @@ axiom ErdosProblem396 :
     Actually k=1: need n(n-1) | C(2n,n), e.g. n=4: 4·3=12 | C(8,4)=70? No
     These are non-trivial to find. -/
 axiom smallest_witness : ℕ → ℕ
-axiom smallest_witness_valid (k : ℕ) :
-  descFactorial (smallest_witness k) (k + 1) ∣ centralBinom (smallest_witness k)
-
 /-- The conjecture implies infinitely many witnesses for each k -/
-axiom ErdosProblem396_infinitely_many (k : ℕ) :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ descFactorial n (k + 1) ∣ centralBinom n

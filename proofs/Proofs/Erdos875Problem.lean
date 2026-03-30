@@ -61,46 +61,117 @@ def HasPolynomialGaps (a : ℕ → ℕ) (c : ℝ) : Prop :=
 /-- **Erdős Problem #875 — Gap Question (Open).**
     Determine the infimum of c such that no admissible sequence has
     a(n+1) − a(n) ≤ n^c for all large n. -/
-axiom erdos_875_gap_threshold :
-  ∃ c₀ : ℝ, 0 < c₀ ∧
-    (∀ c : ℝ, c < c₀ → ¬ ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasPolynomialGaps a c) ∧
-    (∀ c : ℝ, c₀ < c → ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasPolynomialGaps a c)
-
 /-- Can an admissible sequence satisfy a(n+1)/a(n) → 1?
     Erdős noted this is "not completely trivial." -/
 def HasRatioOne (a : ℕ → ℕ) : Prop :=
   Filter.Tendsto (fun n => (a (n + 1) : ℝ) / (a n : ℝ)) Filter.atTop (nhds 1)
-
-axiom erdos_875_ratio_one :
-  ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasRatioOne a
-
--- ## Structural Results
 
 /-- Powers of 2 form a strictly increasing sequence. -/
 theorem pow2_strictly_increasing : StrictlyIncreasing (fun n => 2 ^ n) := by
   intro n
   exact Nat.pow_lt_pow_right (by omega) (by omega)
 
-/-- Key lemma: the popcount (number of 1-bits) of a sum of r distinct
-    powers of 2 equals r. This is because distinct powers of 2 have
-    disjoint binary representations.
+/-- Sum of geometric series: ∑_{i<N} 2^i = 2^N - 1 -/
+private lemma sum_range_two_pow (N : ℕ) :
+    ∑ i ∈ Finset.range N, 2 ^ i = 2 ^ N - 1 := by
+  induction N with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih, pow_succ]
+    omega
 
-    We axiomatize this as the full formal proof requires detailed bit-level
-    reasoning about Nat.popcount and Finset.sum over powers of 2. -/
-axiom popcount_sum_distinct_pow2 (S : Finset ℕ) (hS : ∀ i ∈ S, ∀ j ∈ S, i ≠ j → (2:ℕ)^i + 2^j ≠ 2^(i+1)) :
-  Nat.popcount (S.sum (fun i => 2 ^ i)) = S.card
+/-- Binary uniqueness: subsets of {2^0,...,2^(N-1)} with equal sums are equal.
+    Proof by induction on N, case-splitting on the maximal power 2^(N-1). -/
+private lemma pow2_subset_sum_inj : ∀ (N : ℕ) (S T : Finset ℕ),
+    S ⊆ (Finset.range N).image (2 ^ ·) →
+    T ⊆ (Finset.range N).image (2 ^ ·) →
+    S.sum id = T.sum id → S = T := by
+  intro N
+  induction N with
+  | zero =>
+    intro S T hS hT _
+    simp only [Finset.range_zero, Finset.image_empty, Finset.subset_empty] at hS hT
+    rw [hS, hT]
+  | succ n ih =>
+    intro S T hS hT heq
+    -- Helper: x ∈ U ⊆ (range (n+1)).image (2^·) and 2^n ∉ U → U ⊆ (range n).image (2^·)
+    have to_smaller : ∀ {U : Finset ℕ}, U ⊆ (Finset.range (n + 1)).image (2 ^ ·) →
+        2 ^ n ∉ U → U ⊆ (Finset.range n).image (2 ^ ·) := by
+      intro U hU hn x hx
+      obtain ⟨k, hk, rfl⟩ := Finset.mem_image.mp (hU hx)
+      refine Finset.mem_image.mpr ⟨k, Finset.mem_range.mpr ?_, rfl⟩
+      have := Finset.mem_range.mp hk
+      have : k ≠ n := fun h => hn (h ▸ hx)
+      omega
+    have to_smaller_erase : ∀ {U : Finset ℕ}, U ⊆ (Finset.range (n + 1)).image (2 ^ ·) →
+        2 ^ n ∈ U → U.erase (2 ^ n) ⊆ (Finset.range n).image (2 ^ ·) := by
+      intro U hU hn x hx
+      have hx_ne := (Finset.mem_erase.mp hx).1
+      obtain ⟨k, hk, rfl⟩ := Finset.mem_image.mp (hU (Finset.mem_of_mem_erase hx))
+      refine Finset.mem_image.mpr ⟨k, Finset.mem_range.mpr ?_, rfl⟩
+      have := Finset.mem_range.mp hk
+      have : k ≠ n := fun h => hx_ne (congrArg (2 ^ ·) h)
+      omega
+    -- Helper: sum over (range n).image (2^·) = 2^n - 1
+    have sum_bound : ((Finset.range n).image (2 ^ ·)).sum id = 2 ^ n - 1 := by
+      have h_inj : ∀ i ∈ Finset.range n, ∀ j ∈ Finset.range n,
+          (2 : ℕ) ^ i = 2 ^ j → i = j := by
+        intro i _ j _ h
+        by_contra hne
+        rcases Ne.lt_or_lt hne with hlt | hlt
+        · exact absurd h (Nat.pow_lt_pow_right (by omega) hlt).ne
+        · exact absurd h (Nat.pow_lt_pow_right (by omega) hlt).ne'
+      rw [Finset.sum_image h_inj]
+      exact sum_range_two_pow n
+    by_cases hnS : 2 ^ n ∈ S <;> by_cases hnT : 2 ^ n ∈ T
+    · -- Both contain 2^n: erase it and apply IH
+      have hS' := to_smaller_erase hS hnS
+      have hT' := to_smaller_erase hT hnT
+      have heq' : (S.erase (2 ^ n)).sum id = (T.erase (2 ^ n)).sum id := by
+        have := Finset.add_sum_erase S id hnS
+        have := Finset.add_sum_erase T id hnT
+        omega
+      rw [← Finset.insert_erase hnS, ← Finset.insert_erase hnT, ih _ _ hS' hT' heq']
+    · -- S has 2^n, T doesn't: T.sum ≤ 2^n - 1 < 2^n ≤ S.sum, contradiction
+      exfalso
+      have h1 : T.sum id ≤ 2 ^ n - 1 :=
+        calc T.sum id
+            ≤ ((Finset.range n).image (2 ^ ·)).sum id :=
+              Finset.sum_le_sum_of_subset_of_nonneg (to_smaller hT hnT)
+                (fun _ _ _ => Nat.zero_le _)
+          _ = 2 ^ n - 1 := sum_bound
+      have h2 : 2 ^ n ≤ S.sum id :=
+        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hnS
+      omega
+    · -- T has 2^n, S doesn't: symmetric
+      exfalso
+      have h1 : S.sum id ≤ 2 ^ n - 1 :=
+        calc S.sum id
+            ≤ ((Finset.range n).image (2 ^ ·)).sum id :=
+              Finset.sum_le_sum_of_subset_of_nonneg (to_smaller hS hnS)
+                (fun _ _ _ => Nat.zero_le _)
+          _ = 2 ^ n - 1 := sum_bound
+      have h2 : 2 ^ n ≤ T.sum id :=
+        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hnT
+      omega
+    · -- Neither has 2^n: both ⊆ (range n).image, apply IH
+      exact ih S T (to_smaller hS hnS) (to_smaller hT hnT) heq
 
 /-- Powers of 2 are admissible: the r-fold sumsets are disjoint because
-    sums of r distinct powers of 2 have exactly r bits set in binary.
-    Different r gives different popcount, so the sumsets are disjoint.
-
-    The strictly increasing part is proved; the disjoint sumsets part
-    relies on the popcount argument. -/
+    sums of distinct powers of 2 uniquely determine the subset (binary uniqueness). -/
 theorem powers_of_two_admissible :
     IsAdmissible (fun n => 2 ^ n) := by
   constructor
   · exact pow2_strictly_increasing
-  · sorry -- Disjoint sumsets via popcount argument
+  · -- DisjointSumsets: if x is in both r-fold and s-fold sumsets, then r = s
+    intro N r s hrs _ _ _ _
+    rw [Finset.disjoint_left]
+    intro x hxr hxs
+    simp only [seqRSumset, rFoldSumset, Finset.mem_image, Finset.mem_powersetCard] at hxr hxs
+    obtain ⟨S, ⟨hS_sub, hS_card⟩, hS_eq⟩ := hxr
+    obtain ⟨T, ⟨hT_sub, hT_card⟩, hT_eq⟩ := hxs
+    exact hrs (hS_card.symm.trans ((congrArg Finset.card
+      (pow2_subset_sum_inj N S T hS_sub hT_sub (hS_eq.trans hT_eq.symm))).trans hT_card))
 
 /-- Every admissible sequence a satisfies a(n) ≥ n + 1 for all n.
     Proof: if a(0) ≥ 1 (since a(0) ∈ ℕ and we need the sequence to be

@@ -140,16 +140,8 @@ def fullRepCount (a : ℕ → ℕ) (x : ℕ) : ℕ :=
 
 /-- Weak conjecture: R(x) = (1 + o(1))x. Erdős and Rosen
     could not even prove this. -/
-axiom erdos_954_weak_conjecture (a : ℕ → ℕ) (h : IsRosenSequence a) :
-    ∀ ε > 0, ∃ N, ∀ x ≥ N,
-      (fullRepCount a x : ℤ) ≤ ((1 + ε) * x : ℤ)
-
 /-- Strong conjecture: R(x) = x + O(x^{1/4 + o(1)}).
     The error term x^{1/4} is the natural guess from Sidon set theory. -/
-axiom erdos_954_strong_conjecture (a : ℕ → ℕ) (h : IsRosenSequence a) :
-    ∃ C : ℝ, ∀ x : ℕ, 1 ≤ x →
-      |(fullRepCount a x : ℤ) - (x : ℤ)| ≤ C * (x : ℝ) ^ (1/4 : ℝ) * Real.log x
-
 /- ## Connection to Sidon Sets and B₂ Sequences -/
 
 /-- A B₂ sequence (Sidon set): all pairwise sums are distinct. -/
@@ -160,9 +152,6 @@ def IsB2Sequence (a : ℕ → ℕ) (k : ℕ) : Prop :=
 /-- The Rosen sequence is a relaxation of B₂: it allows repeated sums
     to achieve higher density. This is an open structural claim about
     any sequence satisfying the greedy property. -/
-axiom rosen_not_b2 (a : ℕ → ℕ) (h : IsRosenSequence a) :
-    ∃ k, ¬IsB2Sequence a k
-
 /-- The cumulative representation count fullRepCount is unbounded
     for any infinite sequence. This is trivially true: for any B,
     take x large enough that at least B+1 values j ∈ {1,...,B+1}

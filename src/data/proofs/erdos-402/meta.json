@@ -17,7 +17,7 @@
       "solved"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 402,
     "erdosUrl": "https://erdosproblems.com/402",
     "erdosProblemStatus": "solved",
@@ -60,8 +60,8 @@
       "erdos_402_contains_one: conjecture proved when 1 ∈ A"
     ],
     "axiomCount": 0,
-    "lineCount": 327,
-    "assumptions": "3 sorry(s)."
+    "lineCount": 485,
+    "assumptions": "2 sorry(s): main conjecture (line 99), quadruple hard case (line 457)."
   },
   "overview": {
     "historicalContext": "Graham posed this conjecture in 1970 as an **extremal problem** on GCD structure in finite sets. The conjecture attracted attention because it connects the multiplicative structure (GCD) of a set to its combinatorial size. **Szegedy** (1986) proved the conjecture for sets larger than an effective constant $N_0$, using a probabilistic argument on prime factorizations. **Zaharescu** (1987) obtained an independent proof for large sets via analytic methods. **Balasubramanian and Soundararajan** (1996) completed the proof for all finite sets by a refined sieve argument, handling the difficult small-set cases. Graham also conjectured that equality $\\gcd(a,b) = \\lfloor a/|A| \\rfloor$ for the optimal pair occurs only for three families of primitive sets, but Aristotle's automated proof search discovered that $\\{1, 2, 4\\}$ is a counterexample to this characterization.",
@@ -177,7 +177,7 @@
       "Finset"
     ],
     "namespace": "Erdos402",
-    "lineCount": 347,
+    "lineCount": 485,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 5

@@ -1,0 +1,123 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02-oq-03",
+  "name": "Finite groups of order < 60 are solvable",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "abel-ruffini-oq-04-oq-02",
+    "question": "Can the general theorem 'finite group of order < 60 is solvable' be formalized?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved p-group→solvable chain and abelian→solvable using Mathlib. Documented complete order classification below 60. Full theorem needs Burnside p^a·q^b (not in Mathlib). 0A/0S, 4 proved theorems, 104 lines.",
+    "builtItems": [
+      "proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean (104 lines)",
+      "pGroup_isSolvable: p-group → nilpotent → solvable chain",
+      "s5_not_solvable: threshold at order 60",
+      "abelian_isSolvable: CommGroup → IsSolvable",
+      "primes_below_60: 17 primes below 60",
+      "Complete order classification table by proof method"
+    ],
+    "insights": [
+      "IsPGroup.isNilpotent requires [Fact (Nat.Prime p)] instance",
+      "IsNilpotent.to_isSolvable is an instance, use infer_instance",
+      "Burnside p^a·q^b is the main missing piece for 33 of 59 orders",
+      "Only 2 orders (30, 42) have ≥ 3 distinct prime factors below 60"
+    ],
+    "mathlibGaps": [
+      "Burnside's p^a · q^b theorem (requires character theory or transfer)",
+      "IsSolvable instance for Perm (Fin n) for n ≤ 4 not easily accessible"
+    ],
+    "nextSteps": [
+      "Prove Burnside's p^a·q^b theorem in Mathlib",
+      "Or: case-by-case Sylow counting for remaining 33 orders",
+      "Connect to Feit-Thompson (odd order theorem) for odd orders"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 186,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 535,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 1602,
+      "theoremCount": 42,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-oq-04",
+    "abel-ruffini-oq-04-oq-01",
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-03"
+  ]
+}

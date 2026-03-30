@@ -8,10 +8,11 @@
 
   Claude Shannon (1948)
 
-  Axioms: 5 (channelMI_le_log_card, fano_inequality, channel_coding_achievability,
+  Axioms: 4 (fano_inequality, channel_coding_achievability,
     channel_coding_converse, bsc_capacity_eq)
-  Theorems: 7 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
-    capacity_nonneg, rate_of_code_pos, bsc_capacity_le_one, bsc_capacity_nonneg)
+  Theorems: 8 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+    channelMI_le_log_card, capacity_nonneg, rate_of_code_pos,
+    bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
@@ -85,10 +86,24 @@ theorem channelMI_nonneg {α β : Type*} [Fintype α] [Fintype β]
 
 /-- Mutual information is bounded by log of the output alphabet size.
     I(X;Y) ≤ H(Y) ≤ log|β|. Proof uses chain rule and entropy_le_log_card. -/
-axiom channelMI_le_log_card {α β : Type*} [Fintype α] [Fintype β]
+theorem channelMI_le_log_card {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     (ch : DMChannel α β) (inp : InputDist α) :
-    channelMI ch inp ≤ Real.log (Fintype.card β)
+    channelMI ch inp ≤ Real.log (Fintype.card β) := by
+  -- channelMI ch inp = mutualInformation (jointDist ch inp)
+  unfold channelMI
+  -- I(X;Y) ≤ H(Y) ≤ log|β|
+  calc mutualInformation (jointDist ch inp)
+      ≤ shannonEntropy (fun y => ∑ x : α, jointDist ch inp (x, y)) :=
+        mutual_info_le_entropy_snd (jointDist_nonneg ch inp) (jointDist_sum_one ch inp)
+    _ ≤ Real.log (Fintype.card β) := by
+        -- The Y-marginal sums to 1
+        have hmarg_sum : ∑ y : β, (∑ x : α, jointDist ch inp (x, y)) = 1 := by
+          rw [Finset.sum_comm, ← Fintype.sum_prod_type]
+          exact jointDist_sum_one ch inp
+        have hmarg_nn : ∀ y : β, 0 ≤ ∑ x : α, jointDist ch inp (x, y) :=
+          fun y => Finset.sum_nonneg (fun x _ => jointDist_nonneg ch inp (x, y))
+        exact entropy_le_log_card hmarg_nn hmarg_sum
 
 /-- Channel capacity is non-negative: I(X;Y) ≥ 0 for all input distributions,
     and the supremum over a non-empty set of non-negatives is non-negative. -/

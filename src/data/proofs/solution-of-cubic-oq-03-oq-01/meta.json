@@ -2,7 +2,7 @@
   "id": "solution-of-cubic-oq-03-oq-01",
   "title": "Discriminant of the Depressed Cubic",
   "slug": "solution-of-cubic-oq-03-oq-01",
-  "description": "Δ = -4p³ - 27q² = (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² for the depressed cubic x³+px+q=0. Includes root nature from discriminant sign.",
+  "description": "\u0394 = -4p\u00b3 - 27q\u00b2 = (x\u2081-x\u2082)\u00b2(x\u2081-x\u2083)\u00b2(x\u2082-x\u2083)\u00b2 for the depressed cubic x\u00b3+px+q=0. Includes root nature from discriminant sign.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ01.lean",
@@ -16,12 +16,14 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "dateAdded": "2026-03-28"
+    "dateAdded": "2026-03-28",
+    "lineCount": 89
   },
   "sorryCount": 0,
   "status": "verified",
   "badge": "verified",
   "leanFile": {
     "lineCount": 89
-  }
+  },
+  "sections": []
 }

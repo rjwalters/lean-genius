@@ -52,7 +52,8 @@
     "dirichlets-theorem",
     "dirichlets-theorem-oq-01",
     "dirichlets-theorem-oq-02",
-    "dirichlets-theorem-oq-02-oq-01"
+    "dirichlets-theorem-oq-02-oq-01",
+    "dirichlets-theorem-oq-03"
   ],
   "references": {
     "papers": [],
@@ -108,6 +109,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03.lean",
+      "filename": "DirichletsTheoremOQ03.lean",
+      "lineCount": 140,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03.lean"
     }
   ]
 }

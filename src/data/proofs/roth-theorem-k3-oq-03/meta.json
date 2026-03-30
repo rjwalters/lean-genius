@@ -1,0 +1,28 @@
+{
+  "id": "roth-theorem-k3-oq-03",
+  "title": "Density Increment Generalization to k-APs via Gowers Norms",
+  "slug": "roth-theorem-k3-oq-03",
+  "description": "Formalizes the generalization of Roth's density increment to k-term arithmetic progressions using Gowers uniformity norms. Gowers norms and k-AP counting operator defined constructively. For k=3, explicit density increment proved from RothTheorem infrastructure.",
+  "meta": {
+    "author": "Gowers (2001), Green-Tao-Ziegler (2012)",
+    "date": "2001",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/RothTheoremOQ03.lean",
+    "tags": [
+      "additive-combinatorics",
+      "gowers-norms",
+      "arithmetic-progressions",
+      "density-increment"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: generalized_von_neumann (k-AP count controlled by U^{k-1} norm via Gowers-Cauchy-Schwarz), density_increment_kAP (density increases on subprogression, AP-free preserved). gowersNorm and kAPCount constructive. density_increment_k3_explicit includes AP-free preservation via Roth infrastructure.",
+    "lineCount": 280
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 2
+  }
+}

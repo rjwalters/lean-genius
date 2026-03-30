@@ -157,10 +157,6 @@ def inConvexPosition (A : Finset Point) : Prop :=
 For points in convex position with |A| ≥ 5, two rare distances
 always exist.
 -/
-axiom clemen_dumitrescu_liu_convex (A : Finset Point) (hA : A.card ≥ 5)
-    (hconv : inConvexPosition A) :
-  ∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ isRareDistance A d₁ ∧ isRareDistance A d₂
-
 /- ## Part VIII: Related Bounds -/
 
 /--
@@ -168,21 +164,12 @@ axiom clemen_dumitrescu_liu_convex (A : Finset Point) (hA : A.card ≥ 5)
 The maximum number of unit distances in n points is O(n^{4/3}).
 This constrains how many times any single distance can occur.
 -/
-axiom unit_distance_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ A : Finset Point, ∀ d : ℝ,
-    (multiplicity A d : ℝ) ≤ C * (A.card : ℝ) ^ (4/3 : ℝ)
-
 /--
 **Guth-Katz (2015):**
 n points determine at least Ω(n / log n) distinct distances.
 This resolved Erdős's distinct distances conjecture up to
 logarithmic factors.
 -/
-axiom guth_katz_distinct_distances :
-  ∃ c : ℝ, c > 0 ∧ ∀ A : Finset Point, A.card ≥ 2 →
-    ∃ D : Finset ℝ, (∀ d ∈ D, d > 0 ∧ multiplicity A d ≥ 1) ∧
-      (D.card : ℝ) ≥ c * (A.card : ℝ) / Real.log (A.card : ℝ)
-
 /- ## Part IX: Summary -/
 
 /--

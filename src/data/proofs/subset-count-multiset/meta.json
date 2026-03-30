@@ -1,0 +1,137 @@
+{
+  "id": "subset-count-multiset",
+  "title": "Subset Counting for Multisets",
+  "slug": "subset-count-multiset",
+  "description": "Generalizes the subset counting theorem to multisets: a multiset with n elements has 2^n submultisets, and the number of k-element submultisets is C(n,k).",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Powerset.html",
+    "date": "2026-03-30",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "multisets",
+      "powerset",
+      "counting"
+    ],
+    "proofRepoPath": "Proofs/SubsetCountOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Multiset.card_powerset",
+        "description": "card (powerset s) = 2 ^ card s",
+        "module": "Mathlib.Data.Multiset.Powerset"
+      },
+      {
+        "theorem": "Multiset.card_powersetCard",
+        "description": "card (powersetCard k s) = (card s).choose k",
+        "module": "Mathlib.Data.Multiset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "Multiset powerset cardinality with pedagogical documentation",
+      "Fixed-size submultiset counting via binomial coefficients",
+      "Connection between Finset and Multiset powerset formulas",
+      "Concrete examples including multisets with repeated elements"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 120,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "The multiset (or bag) is a fundamental data structure generalizing sets by allowing repeated elements. The powerset counting formula 2^n extends naturally to multisets when we count submultisets with multiplicity.",
+    "problemStatement": "How does |P(S)| = 2^n generalize to multisets? For a multiset s with n elements (counted with multiplicity), prove that the number of submultisets is 2^n and the number of k-element submultisets is C(n,k).",
+    "text": "Subset counting generalized to multisets via Mathlib's multiset powerset infrastructure.",
+    "proofStrategy": "Direct application of Mathlib's Multiset.card_powerset and Multiset.card_powersetCard, with pedagogical documentation connecting to the set case.",
+    "keyInsights": [
+      "For multisets, each element occurrence is independently in or out of a submultiset, giving 2^n total",
+      "The number of DISTINCT submultisets (without multiplicity) is prod(m_i + 1) over distinct elements, where m_i is the multiplicity",
+      "When all multiplicities are 1 (i.e., a set), this reduces to 2^n"
+    ],
+    "prerequisites": [
+      "Basic combinatorics (powerset, binomial coefficients)",
+      "Multiset definition and operations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "powerset",
+      "title": "Multiset Powerset Cardinality",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "Proves the multiset powerset has 2^n elements using Mathlib's card_powerset.",
+      "mathContext": "card(powerset(s)) = 2^(card(s)) for any multiset s."
+    },
+    {
+      "id": "choose",
+      "title": "Fixed-Size Submultisets",
+      "startLine": 57,
+      "endLine": 74,
+      "summary": "The number of k-element submultisets is C(n,k), the binomial coefficient.",
+      "mathContext": "card(powersetCard(k, s)) = C(card(s), k)"
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Set Case",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "Shows the multiset formula specializes to the set formula for Finsets.",
+      "mathContext": "For Finset s viewed as Multiset s.val, the powerset cardinality agrees."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 89,
+      "endLine": 110,
+      "summary": "Examples: empty (1), singleton (2), triple (8), and C(4,2)=6.",
+      "mathContext": "Concrete verification with natural number multisets."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "subset-count",
+      "relationship": "extends",
+      "description": "Generalizes the subset counting theorem from sets to multisets"
+    }
+  ],
+  "conclusion": {
+    "summary": "A clean generalization of the subset counting theorem to multisets. 5 theorems, 0 sorries, 0 axioms, with concrete examples.",
+    "implications": "The multiset powerset formula is the foundation for generating function arguments in combinatorics.",
+    "openQuestions": [
+      "Can we formalize the DISTINCT submultiset count prod(m_i + 1)?",
+      "How do multiset powerset operations connect to generating functions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Multiset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Multiset"
+    ],
+    "namespace": "SubsetCountMultiset",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "multiset_powerset_card",
+      "type": "core",
+      "description": "A multiset with n elements has 2^n submultisets",
+      "leanType": "(s : Multiset α) → card (powerset s) = 2 ^ card s"
+    },
+    {
+      "name": "multiset_choose_card",
+      "type": "core",
+      "description": "The number of k-element submultisets is C(n, k)",
+      "leanType": "(s : Multiset α) → (k : ℕ) → card (powersetCard k s) = (card s).choose k"
+    }
+  ]
+}

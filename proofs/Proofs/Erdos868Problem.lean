@@ -103,11 +103,6 @@ and f(n) → ∞ as n → ∞, must A contain a minimal basis of order 2?
 The condition f(n) → ∞ means representations become unbounded - each large n
 has more and more ways to be written as a sum of two elements from A.
 -/
-axiom erdos_868_part_i_open : Prop
--- unknown: ∀ A : Set ℕ, IsBasisOrder2 A →
---   Tendsto (reprCount2 A) atTop atTop →
---   ∃ B ⊆ A, IsMinimalBasis2 B
-
 /--
 **Erdős Problem #868 Part (ii) (OPEN)**: If A is an additive basis of order 2
 and f(n) > ε log n for all large n (for any fixed ε > 0), must A contain a
@@ -116,11 +111,6 @@ minimal basis of order 2?
 This is a weaker condition than part (i) - we don't require f(n) → ∞,
 just that f(n) grows at least logarithmically.
 -/
-axiom erdos_868_part_ii_open : Prop
--- unknown: ∀ A : Set ℕ, ∀ ε > 0, IsBasisOrder2 A →
---   (∀ᶠ n in atTop, ε * Real.log n < reprCount2 A n) →
---   ∃ B ⊆ A, IsMinimalBasis2 B
-
 /-
 ## Known Results
 
@@ -142,9 +132,6 @@ axiom erdos_nathanson_1979 (A : Set ℕ) :
 noncomputable def erdosNathansonConstant : ℝ := (Real.log (4/3))⁻¹
 
 /-- The Erdős-Nathanson constant is approximately 3.476. -/
-axiom erdos_nathanson_constant_approx :
-    3.4 < erdosNathansonConstant ∧ erdosNathansonConstant < 3.5
-
 /--
 **Härtter-Nathanson Theorem**: There exist additive bases (of any order h > 1)
 that do NOT contain any minimal subbasis.
@@ -152,10 +139,6 @@ that do NOT contain any minimal subbasis.
 This shows the answer to a naive version of the question is NO - not every
 basis contains a minimal basis.
 -/
-axiom hartter_nathanson (h : ℕ) (hh : 1 < h) :
-    ∃ A : Set ℕ, IsAdditiveBasis A h ∧
-      ∀ B ⊆ A, IsAdditiveBasis B h → ∃ b ∈ B, IsAdditiveBasis (B \ {b}) h
-
 /--
 **Erdős-Nathanson 1989**: For any constant t, there exists an additive basis A
 with f(n) ≥ t for all large n, yet A contains no minimal basis of order 2.
@@ -182,10 +165,6 @@ The mystery lies in the gap between:
 The hierarchy of growth conditions: if f(n) > c log n for c = (log 4/3)⁻¹,
 then f(n) > ε log n for any ε > 0 (since c ≈ 3.476 > ε).
 -/
-axiom growth_hierarchy (A : Set ℕ) (ε : ℝ) (hε : ε > 0) :
-    (∀ᶠ (n : ℕ) in atTop, erdosNathansonConstant * Real.log n < reprCount2 A n) →
-    (∀ᶠ (n : ℕ) in atTop, ε * Real.log n < reprCount2 A n)
-
 /-
 ## Examples
 
@@ -195,8 +174,14 @@ We verify some basic properties of additive bases.
 /-- The set of all natural numbers is trivially a basis of any order. -/
 theorem univ_is_basis (h : ℕ) (hh : h > 0) : IsAdditiveBasis (Set.univ : Set ℕ) h := by
   simp only [IsAdditiveBasis]
-  -- Every n can be represented: just use (n, 0, 0, ..., 0)
-  sorry
+  -- The set of non-representable numbers is empty
+  convert Set.finite_empty
+  ext n
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]
+  -- Represent n using a 0 = n, a i = 0 for i ≥ 1
+  have h0 : 0 < h := hh
+  refine ⟨fun i => if i = ⟨0, h0⟩ then n else 0, fun _ => Set.mem_univ _, ?_⟩
+  simp [Finset.sum_ite_eq', Finset.mem_univ]
 
 /-- The natural numbers form a basis of order 2 (every n ≥ 0 is 0 + n or 1 + (n-1)). -/
 theorem nat_basis_order2 : IsBasisOrder2 (Set.univ : Set ℕ) := univ_is_basis 2 (by norm_num)
@@ -205,9 +190,26 @@ theorem nat_basis_order2 : IsBasisOrder2 (Set.univ : Set ℕ) := univ_is_basis 2
 theorem nat_not_minimal : ¬IsMinimalBasis2 (Set.univ : Set ℕ) := by
   intro ⟨_, hmin⟩
   have h0 : (0 : ℕ) ∈ (Set.univ : Set ℕ) := Set.mem_univ 0
-  have := hmin 0 h0
-  -- ℕ \ {0} is still a basis of order 2
-  sorry
+  apply hmin 0 h0
+  -- ℕ \ {0} is still a basis of order 2: only {0, 1} are non-representable
+  show IsAdditiveBasis (Set.univ \ {0}) 2
+  simp only [IsAdditiveBasis]
+  -- The non-representable set is ⊆ {0, 1}, hence finite
+  apply Set.Finite.subset (Set.Finite.insert 1 (Set.finite_singleton 0))
+  intro n hn
+  simp only [Set.mem_setOf_eq, not_exists] at hn
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+  -- n is not representable as a + b with a, b ≥ 1, so n ≤ 1
+  by_contra hge
+  push_neg at hge
+  have : n ≠ 0 ∧ n ≠ 1 := hge
+  have hn2 : n ≥ 2 := by omega
+  apply hn (fun i => if i = (0 : Fin 2) then 1 else n - 1)
+  constructor
+  · intro i
+    simp only [Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and]
+    fin_cases i <;> simp <;> omega
+  · simp [Fin.sum_univ_two]; omega
 
 /-
 ## The Structure of Minimal Bases

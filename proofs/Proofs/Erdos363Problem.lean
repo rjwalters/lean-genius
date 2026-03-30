@@ -147,13 +147,6 @@ axiom ulas_theorem :
 For n = 3 or n = 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 4, whose product is a perfect square.
 -/
-axiom bauer_bennett_theorem :
-    ∀ n : ℕ, (n = 3 ∨ n = 5) →
-      Set.Infinite { C : DisjointIntervalCollection |
-        C.intervals.length = n ∧
-        (∀ I ∈ C.intervals, I.size = 4) ∧
-        isPerfectSquare C.totalProduct }
-
 /-
 ## Part VII: Bennett-Van Luijk Theorem (2012)
 -/
@@ -163,13 +156,6 @@ axiom bauer_bennett_theorem :
 For n ≥ 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 5, whose product is a perfect square.
 -/
-axiom bennett_van_luijk_theorem :
-    ∀ n : ℕ, n ≥ 5 →
-      Set.Infinite { C : DisjointIntervalCollection |
-        C.intervals.length = n ∧
-        (∀ I ∈ C.intervals, I.size = 5) ∧
-        isPerfectSquare C.totalProduct }
-
 /-
 ## Part VIII: The Conjecture is FALSE
 -/
@@ -253,11 +239,37 @@ But DISJOINT blocks can multiply to give a square when combined correctly.
 theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2)
     (hne : I.product ≠ 0) :
     ¬isPerfectSquare I.product := by
-  -- Note: the nonzero hypothesis is necessary (e.g., [0,1] has product 0 = 0²).
-  -- I.product = ∏ m ∈ Icc(I.start, I.start + I.length - 1), m
-  -- This is the same as ∏ i ∈ range(I.length), (I.start + i) by reindexing.
-  -- By Erdős-Selfridge (axiom), this cannot be a perfect power ≥ 2.
-  sorry -- Follows from Erdős-Selfridge + reindexing the product
+  -- Reindex: show I.product equals the range form used by Erdős-Selfridge
+  have key : I.product = ∏ i ∈ Finset.range I.length, (I.start + (i : ℤ)) := by
+    simp only [ConsecutiveInterval.product, ConsecutiveInterval.elements]
+    -- Show Icc a (a + n - 1) = (range n).image (· + a ∘ Nat.cast)
+    have h_img : Finset.Icc I.start (I.start + ↑I.length - 1) =
+        (Finset.range I.length).image (fun (i : ℕ) => I.start + (↑i : ℤ)) := by
+      ext x
+      simp only [Finset.mem_Icc, Finset.mem_image, Finset.mem_range]
+      constructor
+      · intro ⟨hlo, hhi⟩
+        have h_nn : (0 : ℤ) ≤ x - I.start := by linarith
+        refine ⟨(x - I.start).toNat, ?_, ?_⟩
+        · -- (x - I.start).toNat < I.length
+          have h_cast : (↑(x - I.start).toNat : ℤ) = x - I.start :=
+            Int.toNat_of_nonneg h_nn
+          exact_mod_cast show (↑(x - I.start).toNat : ℤ) < ↑I.length by
+            rw [h_cast]; linarith
+        · -- I.start + ↑(x - I.start).toNat = x
+          rw [show (↑(x - I.start).toNat : ℤ) = x - I.start from
+            Int.toNat_of_nonneg h_nn]
+          ring
+      · rintro ⟨i, hi, rfl⟩
+        exact ⟨le_add_of_nonneg_right (Int.natCast_nonneg i),
+               by have : (↑i : ℤ) < ↑I.length := Int.ofNat_lt.mpr hi; linarith⟩
+    rw [h_img, Finset.prod_image]
+    intro a _ b _ hab
+    exact_mod_cast hab
+  -- Apply Erdős-Selfridge: product of ≥ 2 consecutive integers is never a perfect power
+  intro ⟨a, ha⟩
+  have es := erdos_selfridge I.length 2 I.start h (le_refl 2) (key ▸ hne)
+  exact es ⟨a, 2, le_refl 2, key ▸ ha⟩
 
 /-
 ## Part XII: Summary

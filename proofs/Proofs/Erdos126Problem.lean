@@ -65,9 +65,6 @@ def ErdosConjecture126 (f : ℕ → ℕ) : Prop :=
 
     This remains OPEN. Erdős offered $250 for a resolution.
     Axiomatized because no proof or disproof is known. -/
-axiom erdos_126 : ∀ (f : ℕ → ℕ), IsMaximalAddFactorsCard f →
-  ErdosConjecture126 f
-
 /-
 ## Part III: Known Bounds (Erdős–Turán 1934)
 
@@ -113,9 +110,6 @@ Erdős said this has "never been seriously attacked."
     the gap between the known lower and upper bounds.
 
     Axiomatized: this is itself an open question. -/
-axiom erdos_126_littleo : ∀ (f : ℕ → ℕ), IsMaximalAddFactorsCard f →
-  (fun (n : ℕ) => (f n : ℝ)) =o[atTop] fun (n : ℕ) => (n : ℝ) / Real.log n
-
 /-
 ## Part V: Trivial Upper Bound Construction
 
@@ -128,10 +122,6 @@ at most π(2n − 1) ~ 2n / log(n) distinct prime factors by PNT.
     are bounded by 2n via the prime number theorem.
 
     This shows f(n) ≤ O(n / log(n)) by explicit construction. -/
-axiom trivial_upper_bound (n : ℕ) :
-  ∃ (A : Finset ℕ), A.card = n ∧
-    (∏ p ∈ A.offDiag, ((p.1 + p.2) : ℕ)).primeFactors.card ≤ 2 * n
-
 /-
 ## Part VI: Monotonicity of f
 
@@ -142,9 +132,6 @@ since any (n+1)-element set contains an n-element subset.
 /-- f is monotone: adding elements to A can only introduce more primes.
     Axiomatized as it requires careful combinatorial reasoning
     about sub-multisets of the product. -/
-axiom f_monotone (f : ℕ → ℕ) (hf : IsMaximalAddFactorsCard f) :
-  Monotone f
-
 /-
 ## Part VII: Summary
 
@@ -162,9 +149,4 @@ axiom f_monotone (f : ℕ → ℕ) (hf : IsMaximalAddFactorsCard f) :
     Axiomatized: the proof requires showing that if a sequence g(n)/log(n) → ∞
     then g is not O(log), which needs Filter.Tendsto properties not
     directly available in current Mathlib. -/
-axiom conjecture_implies_not_O_log (f : ℕ → ℕ)
-    (hf : IsMaximalAddFactorsCard f)
-    (hconj : ErdosConjecture126 f) :
-    ¬ ((fun (n : ℕ) => (f n : ℝ)) =O[atTop] fun (n : ℕ) => Real.log n)
-
 end Erdos126

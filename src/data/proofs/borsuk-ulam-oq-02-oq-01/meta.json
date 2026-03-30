@@ -7,11 +7,17 @@
     "author": "Lean Genius",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01.lean",
-    "tags": ["topology", "borsuk-ulam", "equivariant", "group-actions", "open-conjecture"],
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "group-actions",
+      "open-conjecture"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 6,
-    "lineCount": 151,
+    "lineCount": 146,
     "assumptions": "buDim function, classical BU (Z/2), Yang-Borsuk (Z/p prime), monotonicity, open conjecture for composite groups.",
     "originalContributions": [
       "Abstract buDim framework for cyclic group BU dimensions",
@@ -95,10 +101,13 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Data.Nat.Prime.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
     "opens": [],
     "namespace": "BorsukUlamOQ02OQ01",
-    "lineCount": 151,
+    "lineCount": 146,
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 0

@@ -7,7 +7,7 @@
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
     "date": "1860",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -20,7 +20,7 @@
       "cauchy-crofton",
       "open-question-resolved"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -70,9 +70,8 @@
       "buffon_smooth_full: the complete Buffon-Barbier theorem with all hypotheses explicit"
     ],
     "dateAdded": "2026-02-25",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 390,
-    "assumptions": "1 axiom: buffon_noodle_smooth_eq. 0 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -197,7 +196,7 @@
     ],
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
   }

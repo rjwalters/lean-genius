@@ -97,10 +97,6 @@ def IsDense (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
 Any graph with >n²/4 edges must contain a triangle.
 This is a special case of the general Turán theorem.
 -/
-axiom turan_triangle :
-  ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-    IsDense G → ∃ x y z : V, IsTriangle G x y z
-
 /-
 ## Part III: The Bollobás-Erdős Conjecture
 -/
@@ -146,19 +142,9 @@ theorem erdos_904 : BollobasErdosConjecture := edwards_1978
 /-- **Complete Bipartite Sharpness:**
     The complete bipartite graph K_{n/2,n/2} has exactly ⌊n²/4⌋ edges
     and is triangle-free, showing the Turán threshold is tight. -/
-axiom complete_bipartite_triangle_free (n : ℕ) (hn : n ≥ 2) :
-    ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
-      edgeCount G = turanThreshold n ∧
-      ∀ x y z : Fin n, ¬IsTriangle G x y z
-
 /-- **Turán Graph Extremality:**
     The Turán graph T(n,2) maximizes edges among triangle-free graphs.
     No triangle-free graph on n vertices has more than ⌊n²/4⌋ edges. -/
-axiom turan_extremal (n : ℕ) :
-    ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      (∀ x y z : Fin n, ¬IsTriangle G x y z) →
-      edgeCount G ≤ turanThreshold n
-
 /-
 ## Part VI: Stronger Results
 -/
@@ -167,23 +153,10 @@ axiom turan_extremal (n : ℕ) :
     The constant 3/2 is best possible: for every ε > 0 and sufficiently
     large n, there exists a dense graph where every triangle has degree
     sum < (3/2 + ε)n. -/
-axiom degree_sum_tight :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
-        IsDense G ∧
-        ∃ x y z : Fin n, IsTriangle G x y z ∧
-          (triangleDegreeSum G x y z : ℝ) < (3/2 + ε) * n
-
 /-- **Supersaturation:**
     Graphs with more than ⌊n²/4⌋ edges contain not just one triangle but
     at least Ω(n) triangles. Density above the Turán threshold forces many
     triangles. -/
-axiom supersaturation (G : SimpleGraph V) [DecidableRel G.Adj]
-    (h : IsDense G) :
-    ∃ S : Finset (V × V × V),
-      S.card > 0 ∧
-      ∀ t ∈ S, IsTriangle G t.1 t.2.1 t.2.2
-
 /-
 ## Part VII: Summary
 -/

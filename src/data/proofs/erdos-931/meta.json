@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/931",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 330,
-    "assumptions": "2 axioms: stronger_implies_main (Størmer-type smooth number argument), exists_prime_between_blocks (partially proved via Bertrand for k₁ ≥ n₁ case). See Lean source for complete statements.",
+    "lineCount": 453,
+    "assumptions": "2 axioms: stronger_implies_main (Størmer-type smooth number argument), exists_prime_between_blocks_hard (refined: only the hard case with k₁<n₁, tight gap, all factors ≤n₁ — general statement proved as theorem). See Lean source.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -117,12 +117,12 @@
       "mathContext": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors."
     },
     {
-      "id": "sec-931-prime-between-axiom",
-      "title": "Open Question: Remaining Hard Case",
-      "startLine": 278,
-      "endLine": 300,
-      "summary": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values.",
-      "mathContext": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values."
+      "id": "sec-931-prime-between-proof",
+      "title": "Prime Between Blocks: Proved from Refined Axiom",
+      "startLine": 274,
+      "endLine": 330,
+      "summary": "The general exists_prime_between_blocks statement is now a THEOREM proved by 4-way case analysis: (1) k₁≥n₁ via Bertrand, (2) n₂+k₂≥2n₁ via Bertrand, (3) large prime factor transfer via SamePrimeFactors, (4) refined axiom for the hard case (k₁<n₁, tight gap, all factors ≤n₁). The hard-case axiom is strictly weaker than the original, with 3 additional hypotheses constraining when Størmer-type smooth number theory is needed.",
+      "mathContext": "The general exists_prime_between_blocks statement is now a THEOREM proved by 4-way case analysis. Only the hard case (k₁<n₁, n₂+k₂<2n₁, all prime factors ≤n₁) remains as an axiom. This case forces both blocks to be n₁-smooth, making it likely vacuously true by Størmer-type results."
     }
   ],
   "conclusion": {
@@ -151,9 +151,9 @@
       "Finset"
     ],
     "namespace": "Erdos931",
-    "lineCount": 330,
+    "lineCount": 453,
     "axiomCount": 2,
-    "theoremCount": 31,
+    "theoremCount": 32,
     "definitionCount": 6
   },
   "crossReferences": [

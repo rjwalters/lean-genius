@@ -2,7 +2,7 @@
   "slug": "erdos-423",
   "title": "Erdős #423",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,13 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 5A (2 structural + 3 deep Bolan-Tang 2024-2025), 27T proved, 0S. consSeq_strictMono proved from definition via findNextElem_ge (6A→5A).",
+    "progressSummary": "COMPLETE: 5A (2 structural + 3 deep Bolan-Tang), 38T proved, 0S. New: refined bounds, super-linear growth, structural properties (injectivity, preimage finiteness). 416 lines.",
     "builtItems": [
       "Axiom classification complete: 3 structural + 3 deep",
       "Verified initial values match OEIS A005243 via native_decide",
       "Missing numbers (4, 7, 9) proved from computation + monotonicity",
       "Proved consSeq_strictMono theorem (eliminated 1 axiom, 6A→5A)",
-      "Added findNextElem top-level function + findNextElem_ge theorem"
+      "Added findNextElem top-level function + findNextElem_ge theorem",
+      "consSeq_excess_ge_two, _ge_three, _ge_four: refined lower bounds",
+      "excessInt def + excessInt_pos, excessInt_nondecreasing theorems",
+      "consSeq_superlinear, consSeq_eventually_exceeds: super-linear growth",
+      "consSeq_injective, consSeq_index_lt_value, consSeq_preimage_finite",
+      "excess_eventually_large, excess_zero, excess_three, excess_six"
     ],
     "insights": [
       "6 axioms classified: 3 structural (from construction) + 3 deep (Bolan-Tang 2024-2025)",
@@ -46,7 +51,11 @@
       "consSeq_lower_bound (n+1 <= consSeq n) is the one proved theorem using strictMono axiom",
       "3 structural axioms (strictMono, is_consecutive_sum, minimal) could be proved with let-rec refactoring but effort not justified",
       "3 deep axioms (excess_nondecreasing, excess_unbounded, infinitely_many_missing) are Bolan-Tang 2024-2025 results",
-      "consSeq_strictMono eliminated: extracted findNextElem as top-level function, proved findNextElem_ge by induction on fuel, derived consSeq_succ_gt and consSeq_strictMono"
+      "consSeq_strictMono eliminated: extracted findNextElem as top-level function, proved findNextElem_ge by induction on fuel, derived consSeq_succ_gt and consSeq_strictMono",
+      "Refined excess bounds: consSeq n ≥ n+2 (n≥3), n+3 (n≥5), n+4 (n≥6) from excess_nondecreasing + verified values",
+      "Super-linear growth: consSeq_eventually_exceeds proved via Filter.tendsto_atTop",
+      "Structural properties: injectivity, index < value, preimage finiteness all proved from strictMono",
+      "gaps_grow (∃ gap > C) is NOT provable from current axioms — excess→∞ is compatible with bounded gaps"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -73,10 +82,10 @@
     {
       "path": "Proofs/Erdos423Problem.lean",
       "filename": "Erdos423Problem.lean",
-      "lineCount": 322,
-      "theoremCount": 25,
-      "axiomCount": 5,
-      "defCount": 8,
+      "lineCount": 410,
+      "theoremCount": 39,
+      "axiomCount": 3,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos423Problem.lean"

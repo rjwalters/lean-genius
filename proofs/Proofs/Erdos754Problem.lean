@@ -75,9 +75,6 @@ axiom avis_erdos_pach_lower_bound (n : ℕ) (hn : n ≥ 4) :
     f 4 n ≥ n / 2 + 2
 
 /-- Avis-Erdős-Pach (1988) upper bound: f(n) ≤ (1 + o(1))n/2. -/
-axiom avis_erdos_pach_upper_bound (n : ℕ) (hn : n ≥ 4) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ m ≥ N, (f 4 m : ℝ) ≤ (1 + ε) * m / 2
-
 /- ## Part IV: Swanepoel's Theorem (2013) -/
 
 /-- A distance assignment: for each point, a "favorite" distance. -/
@@ -91,11 +88,6 @@ noncomputable def favoriteDistancePairs {d n : ℕ}
 
 /-- Swanepoel's main theorem (2013): The total count of favorite distance pairs
     is at most (1/2)n² + O(n). -/
-axiom swanepoel_2013 (n : ℕ) (hn : n ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧
-      ∀ (A : PointConfig 4 n) (d : DistanceAssignment n),
-        (favoriteDistancePairs A d : ℝ) ≤ (1/2) * n^2 + C * n
-
 /-- Swanepoel's answer to Erdős's question: f(n) ≤ n/2 + O(1). -/
 axiom swanepoel_erdos_754 (n : ℕ) (hn : n ≥ 4) :
     ∃ C : ℕ, f 4 n ≤ n / 2 + C
@@ -111,10 +103,6 @@ theorem erdos_754_solved (n : ℕ) (hn : n ≥ 4) :
 /- ## Part V: Higher Dimensions -/
 
 /-- Swanepoel also proved analogous results for higher dimensions. -/
-axiom swanepoel_higher_dimensions (d : ℕ) (hd : d ≥ 4) :
-    ∃ c : ℝ, c > 0 ∧ c < 1 ∧
-      ∀ n : ℕ, n ≥ 2 → ∃ C : ℝ, (f d n : ℝ) ≤ c * n + C
-
 /- ## Summary
 
 **Erdős Problem #754: SOLVED (YES)**

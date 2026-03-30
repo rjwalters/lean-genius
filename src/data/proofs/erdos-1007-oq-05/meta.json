@@ -1,0 +1,116 @@
+{
+  "id": "erdos-1007-oq-05",
+  "title": "Graph Dimension: Axiom Elimination Analysis",
+  "slug": "erdos-1007-oq-05",
+  "description": "Analysis of axioms in the Erdős #1007 (graph dimension) formalization. Proves hasUnitEmbedding_exists via scaled basis vectors (4→3 axioms). The remaining axioms (min_edges_dimension_4/5, k33_unique_minimum) are deep results from House 2013 and Chaffee-Noble 2016.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://erdosproblems.com/1007",
+    "date": "2026-03-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1007OQ05.lean",
+    "tags": [
+      "graph-theory",
+      "geometry",
+      "unit-distance",
+      "axiom-elimination",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_one",
+        "description": "√1 = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Fintype.equivFin",
+        "description": "Equivalence between a Fintype and Fin (card V)",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved hasUnitEmbedding_exists via scaled standard basis construction (4→3 axioms)",
+      "Identified that the original axiom is false for graphs with self-loops",
+      "Classified remaining 3 axioms as deep results requiring geometric rigidity analysis",
+      "Proved completeBipartiteAdj is irreflexive, enabling corollary for K_{m,n}"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 141,
+    "mathlib_version": "4.26.0",
+    "assumptions": "0 axioms, 0 sorries. Parent file (erdos-1007) has 3 axioms; this file proves hasUnitEmbedding_exists without introducing new assumptions."
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1007 asks: what is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3} (House 2013). This OQ analyzes which axioms in the formalization can be eliminated.",
+    "problemStatement": "**OQ-05**: Can the axioms in the Erdős #1007 formalization be proved?\n\n**Answer**: One of four axioms (`hasUnitEmbedding_exists`) is proved via scaled standard basis vectors. The remaining three encode deep results from House (2013) and Chaffee-Noble (2016).",
+    "proofStrategy": "For `hasUnitEmbedding_exists`: map vertex v to (1/√2)·e_{φ(v)} in ℝ^|V|, where φ : V ≃ Fin |V|. All distinct pairs are at distance exactly 1.",
+    "keyInsights": [
+      "The hasUnitEmbedding_exists axiom has a bug: it's false for graphs with self-loops (dist(v,v)=0≠1). The corrected version adds irreflexivity.",
+      "Scaled basis vector construction: every distinct pair at distance 1, making all edges (and non-edges between distinct vertices) unit distance.",
+      "min_edges_dimension_4 is the real meat — proving 4-dimensional graphs need ≥9 edges requires ruling out all small graphs via geometric analysis."
+    ],
+    "text": "Axiom elimination analysis for Erdős #1007 graph dimension formalization. Proves hasUnitEmbedding_exists (unit distance embedding existence) via scaled basis vectors, reducing from 4 to 3 axioms.",
+    "prerequisites": [
+      "Unit distance graphs and graph dimension",
+      "Euclidean distance in ℝⁿ",
+      "Standard basis vectors and their properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basis-construction",
+      "title": "Scaled Basis Construction",
+      "startLine": 40,
+      "endLine": 100,
+      "summary": "Proves hasUnitEmbedding_exists via scaled standard basis vectors.",
+      "mathContext": "Map $v \\mapsto (1/\\sqrt{2}) \\cdot e_{\\varphi(v)}$ where $\\varphi : V \\simeq \\text{Fin}\\,|V|$. For distinct $u, v$: $d(u,v)^2 = (1/\\sqrt{2})^2 + (1/\\sqrt{2})^2 = 1$."
+    },
+    {
+      "id": "axiom-status",
+      "title": "Remaining Axiom Analysis",
+      "startLine": 101,
+      "endLine": 130,
+      "summary": "Classification of the three remaining deep axioms.",
+      "mathContext": "The minimum edge count for 4-dimensional graphs (House 2013: $\\geq 9$, uniquely $K_{3,3}$) and 5-dimensional graphs (Chaffee-Noble 2016: $\\geq 15$) require substantial geometric rigidity analysis."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved hasUnitEmbedding_exists, reducing the axiom count from 4 to 3. The remaining axioms encode deep results from combinatorial geometry that require substantial formalization effort.",
+    "implications": "The hasUnitEmbedding_exists proof also identified a bug in the original axiom (false for self-loops). The corrected version is mathematically precise.",
+    "openQuestions": [
+      "Can min_edges_dimension_4 be proved via a computational enumeration of small graphs?",
+      "Is there a simpler proof of K_{3,3}'s uniqueness that avoids the full classification?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1007",
+      "relationship": "parent",
+      "description": "Parent problem formalization with 4 axioms. This OQ eliminates 1."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos1007Problem"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1007OQ05",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "hasUnitEmbedding_exists_irr",
+      "type": "core",
+      "description": "Every finite graph with irreflexive adjacency admits a unit distance embedding",
+      "leanType": "(V : Type*) → [Fintype V] → [DecidableEq V] → (adj : V → V → Prop) → (∀ v, ¬adj v v) → ∃ n, hasUnitEmbedding V adj n"
+    }
+  ]
+}

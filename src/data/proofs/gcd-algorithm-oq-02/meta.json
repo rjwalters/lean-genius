@@ -1,0 +1,174 @@
+{
+  "id": "gcd-algorithm-oq-02",
+  "title": "Binary GCD (Stein's Algorithm)",
+  "slug": "gcd-algorithm-oq-02",
+  "description": "Formalizes Stein's binary GCD algorithm (1967) which computes GCD using only subtraction and division by 2. Defines the recursive algorithm, proves all three key invariants (even-even, even-odd, odd-odd), and proves full correctness: binaryGcd = Nat.gcd.",
+  "meta": {
+    "author": "Josef Stein (1967), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "1967",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GcdAlgorithmOQ02.lean",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "gcd",
+      "binary-arithmetic",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Correctness fully proved via functional induction.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "d | gcd(a,b) iff d | a and d | b",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.coprime_two_left",
+        "description": "Coprimality with 2 iff odd",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_mul_left",
+        "description": "gcd(ka, kb) = k * gcd(a, b)",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Recursive definition of binary GCD matching Stein's algorithm",
+      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b <= a",
+      "gcd_mul_two_left/right: even-odd coprime reduction",
+      "gcd_two_mul: even-even factor extraction",
+      "gcd_odd_sub_half: odd-odd subtraction-and-halve invariant",
+      "binaryGcd_eq_gcd: full correctness via functional induction"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 177,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "prerequisites": [
+      "Natural number GCD and divisibility",
+      "Coprimality (Nat.Coprime)",
+      "Well-founded recursion and functional induction"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Josef Stein published the binary GCD algorithm in 1967 as an alternative to the Euclidean algorithm. The key insight is that on binary computers, division by 2 is a single bit shift operation (essentially free), while general division is expensive. The algorithm replaces Euclidean division with three simple operations: (1) if both even, extract factor of 2; (2) if one even and one odd, drop the factor of 2; (3) if both odd, subtract the smaller from the larger. Modern implementations in GMP and other bignum libraries use variants of this algorithm, and it is asymptotically faster than the classical Euclidean algorithm for multi-precision integers.",
+    "problemStatement": "Define the binary GCD algorithm and prove it computes the same result as the Euclidean GCD:\n\n$$\\text{binaryGcd}(a, b) = \\gcd(a, b) \\text{ for all } a, b \\in \\mathbb{N}$$\n\nThe algorithm uses three operations:\n1. $\\gcd(2a, 2b) = 2 \\cdot \\gcd(a, b)$\n2. $\\gcd(2a, b) = \\gcd(a, b)$ when $b$ is odd\n3. $\\gcd(a-b, b) = \\gcd(a, b)$ when $b \\leq a$",
+    "text": "A 178-line formalization of Stein's binary GCD algorithm. The development proves three key GCD invariants: even-even factor extraction (gcd(2a,2b) = 2*gcd(a,b)), even-odd coprime reduction (gcd(2a,b) = gcd(a,b) for odd b), and odd-odd subtraction-and-halve (gcd((a-b)/2, b) = gcd(a,b) for odd a,b with a>b). The algorithm is defined recursively with termination proved by a + b strictly decreasing. The main correctness theorem binaryGcd_eq_gcd is proved by functional induction (binaryGcd.induct), matching each recursive case to the corresponding invariant. All 10 theorems are fully proved with 0 sorries and 0 axioms.",
+    "proofStrategy": "The proof proceeds in three stages:\n\n1. **Key lemmas**: Prove the three GCD invariants that justify each step of the algorithm:\n   - gcd_two_mul: gcd(2a, 2b) = 2*gcd(a,b) from Nat.gcd_mul_left\n   - gcd_mul_two_left: gcd(2a, b) = gcd(a, b) for odd b, from coprimality of 2 and b\n   - gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b <= a, by divisibility arguments\n   - gcd_odd_sub_half: gcd((a-b)/2, b) = gcd(a, b) for odd a,b with a>b, combining subtraction with the even-odd rule\n\n2. **Algorithm definition**: Define binaryGcd as a recursive function on ℕ × ℕ with pattern matching on zero cases and parity, with termination on a + b.\n\n3. **Correctness**: Prove binaryGcd = Nat.gcd by functional induction (binaryGcd.induct), which generates one case per recursive branch. Each case follows from the corresponding invariant lemma.",
+    "keyInsights": [
+      "The algorithm's termination is guaranteed by a + b strictly decreasing: halving reduces the sum, and odd subtraction produces an even number which is then halved",
+      "Coprimality of 2 with odd numbers (Nat.coprime_two_left) is the key fact enabling the even-odd reduction",
+      "Functional induction (binaryGcd.induct) provides exactly the right induction principle, with one case per recursive branch",
+      "The algorithm is correct for all natural numbers, not just positive ones, handling the zero cases directly"
+    ],
+    "prerequisites": [
+      "Natural number GCD and divisibility",
+      "Coprimality (Nat.Coprime)",
+      "Well-founded recursion and functional induction"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gcd-lemmas",
+      "title": "Key GCD Lemmas",
+      "startLine": 29,
+      "endLine": 62,
+      "summary": "Proves the three invariants: gcd_sub_right (subtraction preserves GCD), gcd_mul_two_left/right (even-odd coprime reduction), gcd_two_mul (even-even factor extraction).",
+      "mathContext": "$\\gcd(a-b, b) = \\gcd(a, b)$, $\\gcd(2a, b) = \\gcd(a, b)$ for odd $b$, $\\gcd(2a, 2b) = 2\\gcd(a, b)$"
+    },
+    {
+      "id": "algorithm",
+      "title": "Binary GCD Algorithm Definition",
+      "startLine": 64,
+      "endLine": 96,
+      "summary": "Defines binaryGcd as a recursive function with pattern matching on zero and parity cases. Termination proved by a + b decreasing.",
+      "mathContext": "Recursive definition with 5 cases: (0,b), (a,0), both even, one even, both odd"
+    },
+    {
+      "id": "odd-sub-half",
+      "title": "Odd Subtraction-and-Halve Lemma",
+      "startLine": 98,
+      "endLine": 113,
+      "summary": "When both a and b are odd and a > b, gcd((a-b)/2, b) = gcd(a, b). Combines subtraction with even-odd reduction.",
+      "mathContext": "$\\gcd\\left(\\frac{a-b}{2}, b\\right) = \\gcd(a, b)$ for odd $a, b$ with $a > b$"
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness Proof",
+      "startLine": 115,
+      "endLine": 159,
+      "summary": "Proves binaryGcd(a, b) = Nat.gcd(a, b) by functional induction, handling all 7 cases generated by binaryGcd.induct.",
+      "mathContext": "$\\text{binaryGcd}(a, b) = \\gcd(a, b)$ for all $a, b \\in \\mathbb{N}$"
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 161,
+      "endLine": 177,
+      "summary": "Derives commutativity and zero properties from the correctness theorem.",
+      "mathContext": "binaryGcd is commutative and satisfies binaryGcd(0, b) = b, binaryGcd(a, 0) = a"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "extends",
+      "description": "Extends the Euclidean GCD formalization with an alternative algorithm and equivalence proof"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "Both algorithms compute GCD; Bezout's identity provides the linear combination certificate"
+    }
+  ],
+  "conclusion": {
+    "summary": "The binary GCD algorithm is fully formalized and proved correct: binaryGcd(a,b) = Nat.gcd(a,b) for all natural numbers. The proof uses functional induction to match the algorithm's recursive structure, with each case justified by coprimality, divisibility, and subtraction lemmas from Mathlib.",
+    "implications": "This formalization demonstrates that alternative GCD algorithms can be formalized in Lean 4 with full correctness proofs. The functional induction principle generated by Lean's equation compiler provides an elegant proof structure that mirrors the algorithm's case analysis.",
+    "openQuestions": [
+      "Can the step count of binary GCD be formally bounded? The algorithm takes at most 2*log_2(max(a,b)) steps.",
+      "Can the Lehmer variant of GCD (using single-precision operations for multi-precision inputs) be formalized similarly?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Stein, Josef",
+      "title": "Computational problems associated with Racah algebra",
+      "year": "1967",
+      "venue": "Journal of Computational Physics 1(3), 397-405",
+      "note": "Introduced the binary GCD algorithm using only subtraction and division by 2"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition, Section 4.5.2",
+      "note": "Analysis of binary GCD including worst-case and average-case step counts"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BinaryGcd",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "binaryGcd_eq_gcd",
+      "type": "core",
+      "description": "Binary GCD equals Euclidean GCD: binaryGcd a b = Nat.gcd a b",
+      "leanType": "∀ a b : ℕ, binaryGcd a b = Nat.gcd a b"
+    }
+  ]
+}

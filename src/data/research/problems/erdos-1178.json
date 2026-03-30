@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 11 theorems, 6 axioms (down from 8), 3 sorries. Converted exr and dr from axioms to definitions.",
+    "progressSummary": "PROGRESS: 7→5 axioms. Proved dr_spec and dr_minimal from sInf definition + Sárközy-Selkow result. Converted sarkozy_selkow_upper from axiom to theorem. All remaining axioms are deep published results or open conjecture.",
     "builtItems": [
       "Erdos1178Problem.lean: 185-line formalization",
       "UniformHypergraph structure for r-uniform hypergraphs",
@@ -42,7 +42,10 @@
       "efr_e3 (sorry): d_r(3) = (r-2)·3+3",
       "Gallery entry: meta.json, annotations.json, index.ts",
       "Converted exr: axiom → noncomputable def (sSup)",
-      "Converted dr: axiom → noncomputable def (sInf)"
+      "Converted dr: axiom → noncomputable def (sInf)",
+      "theorem dr_spec (proved): from Nat.sInf_mem + sarkozy_selkow_result",
+      "theorem dr_minimal (proved): from Nat.sInf_le + omega",
+      "theorem sarkozy_selkow_upper (proved): from Nat.sInf_le + sarkozy_selkow_result"
     ],
     "insights": [
       "Problem statement not on erdosproblems.com previously - now retrieved via web scraping",
@@ -54,7 +57,10 @@
       "CGLS (2023) nearly resolved r=3 case: d_3(e) ≤ e + O(log e / log log e)",
       "Reuses infrastructure patterns from #716 and #1076",
       "The gap between lower and upper bounds is ⌊log₂ e⌋ - 1, which is small but nonzero",
-      "Converted exr and dr from axioms to noncomputable defs (8A→6A). exr defined as sSup of edge counts over family-free hypergraphs. dr defined as sInf of threshold values where extremal number is o(n²)."
+      "Converted exr and dr from axioms to noncomputable defs (8A→6A). exr defined as sSup of edge counts over family-free hypergraphs. dr defined as sInf of threshold values where extremal number is o(n²).",
+      "dr_spec provable from Nat.sInf_mem + sarkozy_selkow_result providing set nonemptiness",
+      "dr_minimal provable from Nat.sInf_le: if d∈S then sInf S ≤ d, contrapositive gives minimality",
+      "Refactored sarkozy_selkow to primitive form (the value gives o(n²)) from which upper bound follows by sInf_le"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -91,9 +97,9 @@
     {
       "path": "Proofs/Erdos1178Problem.lean",
       "filename": "Erdos1178Problem.lean",
-      "lineCount": 244,
-      "theoremCount": 10,
-      "axiomCount": 7,
+      "lineCount": 261,
+      "theoremCount": 13,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

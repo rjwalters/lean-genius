@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3→1 axioms. Proved first_power_count (all n are sums of m 1st powers) and power_sum_count_mono (extend witness with 0, requires k≥1). Fixed bug: original power_sum_count_mono was false for k=0.",
+    "progressSummary": "SURVEY: 1 deep axiom (landau_two_squares — classical number theory), 0 sorries. Nothing actionable.",
     "builtItems": [
       "PROVED first_power_count: every n is IsSumOfPowers n 1 m via index-0 witness (3→2 axioms)",
       "PROVED power_sum_count_mono with hk:1≤k: extend Fin.snoc xs 0 (2→1 axioms)",
@@ -40,7 +40,8 @@
       "For k=0: 0^0=1 in Lean, so IsSumOfPowers n 0 m ↔ n=m (each term contributes 1)",
       "power_sum_count_mono requires k≥1: 0^k=0 only when k≥1, needed for the Fin.snoc extension",
       "landau_two_squares is the only remaining axiom — deep number theory (1908), correct as stated",
-      "Fin.sum_univ_castSucc + Fin.snoc_castSucc + Fin.snoc_last are the key decomposition lemmas"
+      "Fin.sum_univ_castSucc + Fin.snoc_castSucc + Fin.snoc_last are the key decomposition lemmas",
+      "landau_two_squares is Landau's 1908 theorem on density of sums of two squares — deep analytic number theory, not in Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -67,9 +68,9 @@
     {
       "path": "Proofs/Erdos323Problem.lean",
       "filename": "Erdos323Problem.lean",
-      "lineCount": 85,
-      "theoremCount": 0,
-      "axiomCount": 3,
+      "lineCount": 106,
+      "theoremCount": 2,
+      "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

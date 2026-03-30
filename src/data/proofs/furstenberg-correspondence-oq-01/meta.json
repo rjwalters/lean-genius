@@ -1,0 +1,188 @@
+{
+  "id": "furstenberg-correspondence-oq-01",
+  "title": "Shift Dynamics on Cantor Space: Toward the Furstenberg Correspondence",
+  "slug": "furstenberg-correspondence-oq-01",
+  "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems proved from Mathlib with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Furstenberg (1977)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes",
+    "date": "1977",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FurstenbergCorrespondenceOQ01.lean",
+    "tags": [
+      "ergodic-theory",
+      "dynamics",
+      "combinatorics",
+      "szemeredi",
+      "shift-dynamics",
+      "cantor-space",
+      "correspondence-principle"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. All results proved from Mathlib's topology, measure theory, and dynamics libraries.",
+    "dateAdded": "2026-03-30",
+    "mathlibDependencies": [
+      {
+        "theorem": "continuous_pi",
+        "description": "Continuity of functions into product spaces",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "continuous_apply",
+        "description": "Coordinate projections are continuous",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "Pi.compactSpace",
+        "description": "Tychonoff's theorem: product of compact spaces is compact",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      }
+    ],
+    "originalContributions": [
+      "Shift dynamics on Cantor space (ℕ → Bool) with product topology",
+      "Cylinder set infrastructure: clopen, measurable, preimage under shift",
+      "Set indicator encoding A ⊆ ℕ as points in Cantor space",
+      "k-fold return property: dynamical intersections ↔ arithmetic progressions",
+      "Orbit-density connection: orbit hits count set membership",
+      "Gap analysis: what Mathlib needs for complete correspondence (weak-* compactness)"
+    ],
+    "prerequisites": [
+      "Measure theory basics",
+      "Product topology (Tychonoff)",
+      "Ergodic theory concepts"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 285,
+    "relatedProblems": [
+      {
+        "id": "furstenberg-correspondence",
+        "relationship": "Builds infrastructure toward eliminating axiom 1 (Furstenberg correspondence) from the parent proof"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "furstenberg-correspondence",
+      "relationship": "extends",
+      "description": "Constructs the shift dynamical system on Cantor space, advancing toward a full formalization of the Furstenberg correspondence principle"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Furstenberg's 1977 proof of Szemerédi's theorem uses ergodic theory: the correspondence principle translates positive upper density of A ⊆ ℕ into a measure-preserving dynamical system (Cantor space with the shift) where the density of A becomes the measure of a cylinder set. This file constructs the dynamical system that underlies the correspondence.",
+    "problemStatement": "Can the Furstenberg correspondence construction be fully formalized using Mathlib's tools? This file answers: the shift dynamics, cylinder sets, and combinatorial-dynamical bridge are all provable from Mathlib. The remaining gap is weak-* compactness of probability measures.",
+    "text": "Builds the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle. All results proved with 0 axioms.",
+    "proofStrategy": "1. Define Cantor space Ω = ℕ → Bool with product topology\n2. Prove shift T(x)(n) = x(n+1) is continuous and measurable\n3. Prove cylinder sets are clopen and measurable\n4. Define set indicators and prove the fundamental connection: shift^n(1_A)(0) = true ↔ n ∈ A\n5. Prove the k-fold return property: dynamical intersections correspond to arithmetic progressions\n6. Prove Cantor space is compact (Tychonoff) and metrizable",
+    "keyInsights": [
+      "The shift on ℕ → Bool is continuous by continuous_pi and continuous_apply — Mathlib handles this",
+      "Cylinder sets are both open and closed (clopen) in the product topology",
+      "The k-fold return property directly connects T^{-id}(B₀) intersections to i·d ∈ A",
+      "Tychonoff gives compactness of Cantor space, needed for weak-* subsequential limits",
+      "The main gap for the full correspondence is weak-* sequential compactness for measures"
+    ],
+    "prerequisites": [
+      "Product topology",
+      "Measure theory",
+      "Symbolic dynamics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "shift-map",
+      "title": "Cantor Space and Shift Map",
+      "startLine": 43,
+      "endLine": 70,
+      "summary": "Defines Cantor space (ℕ → Bool), the left shift map, and proves it is continuous and measurable with an explicit iteration formula.",
+      "mathContext": "The shift T(x)(n) = x(n+1) is continuous because each coordinate of T(x) is a continuous function of x (product topology). The iteration formula shift^[n](x)(k) = x(k+n) follows by induction."
+    },
+    {
+      "id": "cylinder-sets",
+      "title": "Cylinder Sets",
+      "startLine": 72,
+      "endLine": 112,
+      "summary": "Defines cylinder sets, proves they are clopen and measurable, and computes their preimages under the shift.",
+      "mathContext": "Cylinder sets {x : x(i) = b} are the basic generators of the product σ-algebra. They are clopen because Bool has the discrete topology and coordinate projections are continuous."
+    },
+    {
+      "id": "indicators",
+      "title": "Set Indicators and Combinatorial Connection",
+      "startLine": 114,
+      "endLine": 148,
+      "summary": "Encodes sets A ⊆ ℕ as points in Cantor space and proves the fundamental connection: shift^n(1_A)(0) = true ↔ n ∈ A.",
+      "mathContext": "The indicator function 1_A : ℕ → Bool maps n to true iff n ∈ A. Under the shift dynamics, reading position 0 of T^n(1_A) recovers membership in A at position n."
+    },
+    {
+      "id": "return-property",
+      "title": "Return Property: Dynamics Encodes Combinatorics",
+      "startLine": 150,
+      "endLine": 176,
+      "summary": "Proves the binary and k-fold return properties connecting dynamical intersections to combinatorial patterns in A.",
+      "mathContext": "The k-fold return property states: 1_A ∈ ⋂_{i<k} T^{-id}(B₀) iff ∀ i < k, id ∈ A. This is the fundamental bridge making the Furstenberg correspondence work."
+    },
+    {
+      "id": "orbit-density",
+      "title": "Orbit and Cesàro Averages",
+      "startLine": 178,
+      "endLine": 206,
+      "summary": "Defines the orbit of a point under the shift and proves that orbit hits on B₀ count membership in A.",
+      "mathContext": "The Cesàro averages μ_N = (1/N) Σ_{n<N} δ_{T^n(1_A)} approximate the density of A. The orbit hit count is the numerator of this fraction."
+    },
+    {
+      "id": "compactness",
+      "title": "Compactness of Cantor Space",
+      "startLine": 208,
+      "endLine": 224,
+      "summary": "Establishes that Cantor space is compact (Tychonoff) and metrizable, the topological prerequisites for weak-* compactness arguments.",
+      "mathContext": "Tychonoff's theorem guarantees ℕ → Bool is compact. Combined with metrizability (countable product of discrete spaces), this gives sequential compactness for probability measures."
+    }
+  ],
+  "conclusion": {
+    "summary": "The shift dynamical system on Cantor space is fully formalized with 0 axioms, providing the infrastructure needed for the Furstenberg correspondence.",
+    "implications": "The remaining gap for the full correspondence is the construction of a T-invariant limit measure via weak-* compactness, connecting combinatorial density results to ergodic theory.",
+    "openQuestions": [
+      "Can weak-* sequential compactness for probability measures on compact metrizable spaces be formalized in Mathlib?",
+      "Can the T-invariance of Cesàro limit measures be proved directly using Mathlib's measure theory?"
+    ]
+  },
+  "leanFile": {
+    "path": "proofs/Proofs/FurstenbergCorrespondenceOQ01.lean",
+    "filename": "FurstenbergCorrespondenceOQ01.lean"
+  },
+  "mainTheorems": [
+    {
+      "name": "indicator_in_kfold_return",
+      "statement": "The indicator of A lies in the k-fold intersection ⋂_{i<k} T^{-id}(B₀) iff every id (for i < k) belongs to A",
+      "isAxiomatized": false,
+      "significance": "The fundamental combinatorial-dynamical bridge making the correspondence work"
+    },
+    {
+      "name": "shift_continuous",
+      "statement": "The shift map on Cantor space is continuous",
+      "isAxiomatized": false,
+      "significance": "Foundation for measurability and topological dynamics"
+    },
+    {
+      "name": "orbit_indicator_hits",
+      "statement": "Orbit hits on B₀ count membership in A up to time N",
+      "isAxiomatized": false,
+      "significance": "Connects orbit dynamics to the density of A, key for Cesàro averaging"
+    }
+  ],
+  "references": {
+    "papers": [
+      {
+        "title": "Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions",
+        "author": "Furstenberg, H.",
+        "year": 1977,
+        "journal": "J. Analyse Math."
+      },
+      {
+        "title": "Recurrence in ergodic theory and combinatorial number theory",
+        "author": "Furstenberg, H.",
+        "year": 1981,
+        "journal": "Princeton University Press"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "erdos-395-oq-01",
+  "title": "Optimal Constant in Reverse Littlewood-Offord",
+  "slug": "erdos-395-oq-01",
+  "description": "Structural theorems about the optimal constant c in the reverse Littlewood-Offord problem P(|sum| \u2264 \u221a2) \u2265 c/n. Formalizes the critical role of the \u221a2 threshold, monotonicity in threshold, tightness of the 1/n rate, and the counterexample exceeding threshold 1.",
+  "meta": {
+    "author": "He-Ju\u0161kevi\u010dius-Narayanan-Spiro (2024), Carnielli-Carolino (2011)",
+    "sourceUrl": "https://erdosproblems.com/395",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos395OQ01.lean",
+    "tags": [
+      "erdos",
+      "probability",
+      "complex-analysis",
+      "littlewood-offord",
+      "extension"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 395,
+    "erdosUrl": "https://erdosproblems.com/395",
+    "erdosProblemStatus": "open-question",
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 161,
+    "prerequisites": [
+      "Erd\u0151s Problem #395 parent formalization",
+      "Complex analysis and norms",
+      "Probability on finite sets"
+    ],
+    "assumptions": "4 axioms inherited from parent. 2 sorries: optimal_constant_pos (sSup bound), erdos_original_is_false_proved (Set.toFinset computation).",
+    "mathlib_version": "4.29.0",
+    "originalContributions": [
+      "Optimal constant c* defined via sSup",
+      "Counterexample exceeds threshold 1 (derived from parent axiom)",
+      "Monotonicity of counts in threshold parameter",
+      "\u221a2 is critical: result holds at \u221a2, fails at 1",
+      "Rate tightness summary from extremal example",
+      "Extremal example has unit vectors (proved)"
+    ]
+  },
+  "sections": []
+}

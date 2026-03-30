@@ -57,9 +57,6 @@ def ProductMapInjective (A B : Finset ℕ) : Prop :=
     a₁ * b₁ = a₂ * b₂ → (a₁ = a₂ ∧ b₁ = b₂)
 
 /-- The two definitions are equivalent. -/
-axiom distinct_products_equiv (A B : Finset ℕ) :
-  HasDistinctProducts A B ↔ ProductMapInjective A B
-
 /-
 ## Part II: The Erdős Question
 -/
@@ -73,7 +70,21 @@ where
     HasDistinctProducts A B → A.card * B.card ≤ k := by
     intro N
     use N^2  -- trivial bound
-    sorry
+    intro A B hA hB _
+    have hAcard : A.card ≤ N := by
+      have hsub : A ⊆ Finset.Icc 1 N :=
+        fun a ha => Finset.mem_Icc.mpr (hA a ha)
+      calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N := by omega
+    have hBcard : B.card ≤ N := by
+      have hsub : B ⊆ Finset.Icc 1 N :=
+        fun b hb => Finset.mem_Icc.mpr (hB b hb)
+      calc B.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N := by omega
+    calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAcard hBcard
+      _ = N ^ 2 := by ring
 
 /-- Erdős's Question: Is |A||B| ≪ N²/log N? -/
 def ErdosQuestion490 : Prop :=
@@ -116,10 +127,6 @@ axiom optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
   HasDistinctProducts (optimalA N) (optimalB N)
 
 /-- The optimal example achieves |A||B| ~ N²/(2 log N). -/
-axiom optimal_size (N : ℕ) (hN : N ≥ 4) :
-  ∃ c : ℝ, c > 0 ∧
-    |(optimalA N).card * (optimalB N).card - (N^2 : ℝ) / (2 * Real.log N)| ≤ c * N^2 / (Real.log N)^2
-
 /-- Why it works: products a·p are distinct because primes are coprime to smaller numbers. -/
 theorem optimal_works_because_primes (a₁ a₂ : ℕ) (p₁ p₂ : ℕ)
     (ha₁ : a₁ ≤ N / 2) (ha₂ : a₂ ≤ N / 2)
@@ -144,9 +151,6 @@ def LimitQuestion : Prop :=
   ∃ L : ℝ, Filter.Tendsto productRatio Filter.atTop (nhds L)
 
 /-- Van Doorn observed: If the limit exists, it must be ≥ 1. -/
-axiom van_doorn_observation :
-  LimitQuestion → ∃ L, Filter.Tendsto productRatio Filter.atTop (nhds L) ∧ L ≥ 1
-
 /-- The limit question is OPEN. -/
 def LimitQuestionOpen : Prop :=
   -- We don't know if the limit exists
@@ -161,12 +165,6 @@ def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
   HasDistinctProducts A A
 
 /-- For A = B, the bound is |A|² ≪ N²/log N, so |A| ≪ N/√(log N). -/
-axiom sidon_bound (N : ℕ) (hN : N ≥ 2) :
-  ∀ A : Finset ℕ, IsSubsetUpTo A N → IsMultiplicativeSidon A →
-    (A.card : ℝ)^2 ≤ szemeredi_constant * N^2 / Real.log N
-where
-  szemeredi_constant : ℝ := 1  -- placeholder
-
 /-- Primes are a multiplicative Sidon set. -/
 theorem primes_sidon (N : ℕ) :
     let P := Finset.filter Nat.Prime (Finset.range (N + 1))
@@ -208,14 +206,21 @@ theorem distinct_minimal_energy (A B : Finset ℕ) :
 theorem trivial_bound (N : ℕ) (A B : Finset ℕ)
     (hA : IsSubsetUpTo A N) (hB : IsSubsetUpTo B N) :
     A.card * B.card ≤ N^2 := by
-  sorry
+  have hAN : A.card ≤ N :=
+    (Finset.card_le_card (fun a ha => Finset.mem_Icc.mpr (hA a ha))).trans
+      (by simp [Finset.card_Icc]; omega)
+  have hBN : B.card ≤ N :=
+    (Finset.card_le_card (fun b hb => Finset.mem_Icc.mpr (hB b hb))).trans
+      (by simp [Finset.card_Icc]; omega)
+  calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAN hBN
+    _ = N ^ 2 := (sq N).symm
 
 /-- Counting bound: |A||B| ≤ N² (since products are ≤ N²). -/
 theorem counting_bound (N : ℕ) (A B : Finset ℕ)
     (hA : IsSubsetUpTo A N) (hB : IsSubsetUpTo B N)
     (h : HasDistinctProducts A B) :
-    A.card * B.card ≤ N^2 := by
-  sorry
+    A.card * B.card ≤ N^2 :=
+  trivial_bound N A B hA hB
 
 /-- Szemerédi's improvement: |A||B| ≤ C·N²/log N. -/
 theorem szemeredi_bound (N : ℕ) (hN : N ≥ 2) (A B : Finset ℕ)

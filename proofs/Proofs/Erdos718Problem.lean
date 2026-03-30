@@ -72,12 +72,6 @@ def MaderConjecture : Prop :=
 -/
 
 /-- Dirac (1960): 2n-2 edges forces a K₄ subdivision. -/
-axiom dirac_1960 :
-  ∀ n : ℕ, n ≥ 4 →
-    ∀ G : SimpleGraph (Fin n),
-      G.edgeFinset.card ≥ 2 * n - 2 →
-        ContainsSubdivisionOfKr (Fin n) G 4
-
 /-- Mader (1967): Exponential bound suffices. -/
 axiom mader_1967 :
   ∀ n r : ℕ, n ≥ r → r ≥ 2 →
@@ -95,8 +89,6 @@ Proved independently by Komlós-Szemerédi and Bollobás-Thomason.
 axiom komlos_szemeredi_1996 : MaderConjecture
 
 /-- Bollobás-Thomason (1996): Alternative proof. -/
-axiom bollobas_thomason_1996 : MaderConjecture
-
 /-
 ## Specific Bounds
 
@@ -122,16 +114,7 @@ A graph is k-linked if any 2k vertices can be paired by k disjoint paths.
 
 /-- A graph is k-linked if any 2k vertices can be connected by k disjoint paths.
     Axiomatized as a predicate since full path-disjointness is complex to formalize. -/
-axiom IsKLinked (G : SimpleGraph V) (k : ℕ) : Prop
-
 /-- Sufficiently dense graphs are highly linked. -/
-axiom dense_graphs_linked :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n k : ℕ, n ≥ 2 * k →
-      ∀ G : SimpleGraph (Fin n),
-        G.edgeFinset.card ≥ (C * k * n : ℝ).toNat →
-          IsKLinked (Fin n) G k
-
 /-
 ## Minors vs Subdivisions
 
@@ -141,12 +124,7 @@ then H is a minor of G, but not conversely.
 
 /-- Minor relationship: H is a minor of G.
     Axiomatized since the full definition requires edge contraction. -/
-axiom IsMinorOf (H G : SimpleGraph V) : Prop
-
 /-- Subdivision implies minor. -/
-axiom subdivision_implies_minor (G H : SimpleGraph V) :
-  IsSubdivisionOfKr V G (Fintype.card V) → IsMinorOf H G
-
 /-
 ## Applications
 

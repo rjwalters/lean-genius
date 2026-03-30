@@ -106,10 +106,6 @@ Sharper bounds on δ₁(n,m) for various ranges of n and m.
 Reference: "The distribution of integers with a divisor in a given interval"
 Ann. of Math. (2) (2008), 367-433.
 -/
-axiom ford_2008_bounds (n m : ℕ) (hn : n ≥ 2) (hm : m > n) :
-    ∃ (bound : ℝ), bound > 0 ∧ delta1 n m ≤ bound
-    -- Ford gives explicit formulas depending on the ratio m/n
-
 /-
 ## Part IV: Unimodularity (The Original Question)
 
@@ -151,11 +147,6 @@ Computed values:
 Note: 0.35 > 0.33 < 0.3619
 So the sequence decreases then increases - NOT unimodal!
 -/
-axiom cambie_n3_values :
-    delta1 3 6 > 0.34 ∧
-    delta1 3 7 < 0.34 ∧
-    delta1 3 8 > 0.36
-
 /--
 **Cambie's Theorem (2025): Unimodularity FAILS**
 The density function δ₁(n,m) is NOT unimodal, even for small n.
@@ -172,8 +163,6 @@ axiom cambie_n3_not_unimodal : ¬ erdosUnimodalityQuestion 3
 **Also fails for n = 2:**
 Cambie verified unimodality fails for n = 2 as well.
 -/
-axiom cambie_n2_not_unimodal : ¬ erdosUnimodalityQuestion 2
-
 /-
 ## Part VI: Superpolynomial Local Maxima
 
@@ -209,9 +198,6 @@ For fixed n, the sequence δ₁(n,m) has superpolynomially many local maxima.
 This is a much stronger result than just failing unimodality - the behavior
 is wildly oscillatory.
 -/
-axiom cambie_superpolynomial_maxima (n : ℕ) (hn : n ≥ 2) :
-    SuperpolynomialGrowth (fun M => countLocalMaxima (fun m => delta1 n m) n M)
-
 /-
 ## Part VII: Related Results
 

@@ -1,0 +1,182 @@
+{
+  "id": "newton-inductive-step-oq-01",
+  "title": "Newton's Inequality: e_k² ≥ e_{k-1} · e_{k+1}",
+  "slug": "newton-inductive-step-oq-01",
+  "description": "Formalizes Newton's inequality for elementary symmetric polynomials of nonnegative reals: the sequence of elementary symmetric means ē_k = e_k / C(n,k) is log-concave. Proves log-concavity of binomial coefficients, explicit small cases (n=2,3), and consequences including the first Maclaurin inequality.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_inequalities",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/NewtonInductiveStepOQ01.lean",
+    "tags": [
+      "algebra",
+      "symmetric-polynomials",
+      "inequalities",
+      "log-concavity",
+      "newton",
+      "maclaurin",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 2,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "Absorption identity for binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of esymm (elementary symmetric polynomial on real lists) with recurrence",
+      "Proof of log-concavity of binomial coefficients via absorption identities",
+      "Newton's inequality for n=2: (x+y)² ≥ xy from (x-y)² ≥ 0",
+      "Newton's inequality for n=3 k=1: (x+y+z)² ≥ 3(xy+xz+yz)",
+      "Newton's inequality for n=3 k=2: (xy+xz+yz)² ≥ 3xyz(x+y+z)",
+      "First Maclaurin inequality: ē₁² ≥ ē₂",
+      "AM-GM connection: (Σxᵢ/n)² ≥ (Σᵢ<ⱼ xᵢxⱼ)/C(n,2)",
+      "Statement of general Newton inequality with inductive proof structure"
+    ],
+    "axiomCount": 0,
+    "lineCount": 336,
+    "assumptions": "None. 0 axiom declarations. 2 sorries in the general inductive case (newton_inequality_binomial, newton_inequality_means).",
+    "prerequisites": [
+      "Elementary symmetric polynomials",
+      "Binomial coefficients and absorption identities",
+      "Real arithmetic and polynomial inequalities"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Newton's inequalities, first established by Isaac Newton in Arithmetica Universalis (1707), state that the elementary symmetric means ē_k form a log-concave sequence. This is one of the foundational results in the theory of symmetric functions and has deep connections to the AM-GM inequality, Maclaurin's inequality, and the theory of real-rooted polynomials.\n\nThe inequality chain ē₁ ≥ ē₂^{1/2} ≥ ē₃^{1/3} ≥ ... ≥ ēₙ^{1/n} (Maclaurin's inequality) follows from Newton's log-concavity, and the case ē₁ ≥ ēₙ^{1/n} recovers AM-GM.",
+    "problemStatement": "For nonnegative reals $x_1, \\ldots, x_n$ and the $k$-th elementary symmetric polynomial $e_k = \\sum_{1 \\le i_1 < \\cdots < i_k \\le n} x_{i_1} \\cdots x_{i_k}$, prove Newton's inequality:\n\n$$\\binom{n}{k}^2 \\cdot e_k^2 \\geq \\binom{n}{k-1} \\cdot \\binom{n}{k+1} \\cdot e_{k-1} \\cdot e_{k+1}$$\n\nfor $1 \\leq k \\leq n-1$. Equivalently, the elementary symmetric means $\\bar{e}_k = e_k / \\binom{n}{k}$ satisfy $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$.",
+    "text": "Formalizes Newton's inequality for elementary symmetric polynomials of nonnegative reals: the sequence of elementary symmetric means ē_k = e_k / C(n,k) is log-concave.",
+    "proofStrategy": "1. **Define esymm** on lists of reals using the recurrence e_k(x::xs) = e_k(xs) + x·e_{k-1}(xs)\n2. **Prove basic properties**: e_0 = 1, vanishing beyond length, nonnegativity for nonneg inputs\n3. **Prove log-concavity of binomial coefficients** via absorption identities (the all-ones special case)\n4. **Prove explicit small cases** (n=2,3) using nlinarith with sum-of-squares witnesses\n5. **State the general inductive proof** using the recurrence and Cauchy-Schwarz on the two terms\n6. **Derive consequences**: Maclaurin's first inequality, AM-GM connection",
+    "keyInsights": [
+      "The recurrence e_k(x::xs) = e_k(xs) + x·e_{k-1}(xs) makes induction on list length natural in Lean 4",
+      "Log-concavity of binomial coefficients follows from the identity C(n,k-1)·C(n,k+1) = k(n-k)/((n-k+1)(k+1)) · C(n,k)² and the fact that k(n-k) ≤ (n-k+1)(k+1)",
+      "Small cases (n=2,3) reduce to sum-of-squares arguments: (x-y)² ≥ 0 and its multivariate analogues",
+      "Newton's inequality implies Maclaurin's inequality chain, which in turn implies AM-GM"
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials and their properties",
+      "Binomial coefficients (absorption identity)",
+      "Real arithmetic and nlinarith"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Elementary Symmetric Polynomials",
+      "startLine": 33,
+      "endLine": 58,
+      "summary": "Definition of esymm on lists of reals using the standard recurrence, with simp lemmas.",
+      "mathContext": "The elementary symmetric polynomial $e_k(x_1, \\ldots, x_n)$ satisfies the recurrence $e_k(x_1, \\ldots, x_n) = e_k(x_2, \\ldots, x_n) + x_1 \\cdot e_{k-1}(x_2, \\ldots, x_n)$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 59,
+      "endLine": 100,
+      "summary": "Proves e_0 = 1, vanishing for k > n, e_n = product, and nonnegativity for nonneg inputs.",
+      "mathContext": "$e_0 = 1$, $e_k = 0$ for $k > n$, $e_n = \\prod x_i$, and $e_k \\geq 0$ when all $x_i \\geq 0$."
+    },
+    {
+      "id": "binom-log-concave",
+      "title": "Log-Concavity of Binomial Coefficients",
+      "startLine": 117,
+      "endLine": 170,
+      "summary": "Proves C(n,k)² ≥ C(n,k-1)·C(n,k+1) using absorption identities, reducing to k(n-k) ≤ (n-k+1)(k+1).",
+      "mathContext": "The binomial coefficients are log-concave: $\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$. Proved via the absorption identity $k \\binom{n}{k} = (n-k+1) \\binom{n}{k-1}$."
+    },
+    {
+      "id": "small-cases",
+      "title": "Explicit Small Cases",
+      "startLine": 193,
+      "endLine": 245,
+      "summary": "Newton's inequality for n=2 (via (x-y)² ≥ 0) and n=3 (both k=1 and k=2), each reduced to sum-of-squares by nlinarith.",
+      "mathContext": "For $n=2$: $(x+y)^2 \\geq 4xy$. For $n=3$: $(x+y+z)^2 \\geq 3(xy+xz+yz)$ and $(xy+xz+yz)^2 \\geq 3xyz(x+y+z)$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Maclaurin and AM-GM",
+      "startLine": 172,
+      "endLine": 193,
+      "summary": "First Maclaurin inequality ē₁² ≥ ē₂ and the AM-GM connection (mean)² ≥ average pairwise product.",
+      "mathContext": "From Newton's inequality with $k=1$: $\\bar{e}_1^2 \\geq \\bar{e}_0 \\cdot \\bar{e}_2 = \\bar{e}_2$. This gives $(\\sum x_i / n)^2 \\geq \\sum_{i<j} x_i x_j / \\binom{n}{2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Newton's inequality for elementary symmetric polynomials of nonneg reals in Lean 4. The formalization includes the definition of esymm, log-concavity of binomial coefficients, explicit n=2 and n=3 cases, and consequences including the first Maclaurin inequality. 0 axioms, 2 sorries (the general inductive cases).",
+    "implications": "Newton's inequality is a cornerstone of the theory of symmetric functions. Our formalization provides the foundation for a complete Lean 4 proof of the Maclaurin inequality chain and its connection to AM-GM. The esymm definition and basic lemmas serve as reusable infrastructure.",
+    "openQuestions": [
+      "Complete the full inductive proof of newton_inequality_binomial",
+      "Derive the full Maclaurin inequality chain ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}",
+      "Prove ultra-log-concavity: C(n,k)·e_k / C(n,0)·e_0 is log-concave",
+      "Connect to Schur convexity and majorization theory"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "newton-inductive-step",
+      "relationship": "extends",
+      "description": "Extends the parent proof's binomial inequality to the full Newton's inequality for elementary symmetric polynomials"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Newton's inequality implies AM-GM as a special case: the first Maclaurin inequality gives (arithmetic mean)² ≥ average pairwise product"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Log-concavity of binomial coefficients is a special case of Newton's inequality for the all-ones sequence"
+    }
+  ],
+  "references": [
+    {
+      "title": "Arithmetica Universalis",
+      "author": "Isaac Newton",
+      "year": "1707",
+      "description": "Original statement of Newton's inequalities for roots of polynomials"
+    },
+    {
+      "title": "A new look at Newton's inequalities",
+      "author": "Constantin P. Niculescu",
+      "year": "2000",
+      "venue": "Journal of Inequalities in Pure and Applied Mathematics",
+      "description": "Modern exposition of Newton's inequalities with elementary proofs"
+    },
+    {
+      "title": "Inequalities",
+      "author": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "year": "1952",
+      "venue": "Cambridge University Press",
+      "description": "Chapter 2 covers symmetric means and Newton-Maclaurin inequalities"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "List"
+    ],
+    "namespace": "NewtonInductiveStepOQ01",
+    "lineCount": 336,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 2
+  }
+}

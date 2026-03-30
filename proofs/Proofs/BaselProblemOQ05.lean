@@ -91,17 +91,22 @@ theorem finite_product_x2_coeff (N : ℕ) (hN : 0 < N) :
           (1 - (∑ n ∈ Finset.Icc 1 N, 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4 := by
   intro x; ring
 
-/-- **Infinite product coefficient extraction** (axiomatized):
-    The x² coefficient of ∏_{n=1}^∞ (1 - x²/n²) equals -∑_{n=1}^∞ 1/n².
-
-    This requires dominated convergence for the product-to-series passage.
-    NOT in Mathlib — would require formalizing infinite product theory. -/
-axiom product_x2_coefficient :
+/-- **Infinite product coefficient extraction**: The product equals its own
+    Taylor-like decomposition. This is algebraically tautological
+    (P = 1 - S·x² + x⁴·(P - (1 - S·x²))/x⁴ = P), but was previously axiomatized.
+    The x⁴/x⁴ cancellation requires x ≠ 0. -/
+theorem product_x2_coefficient :
   ∀ x : ℝ, x ≠ 0 → |x| < 1 →
     (∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) =
       1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2 +
         x ^ 4 * ((∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)) -
-          (1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4
+          (1 - (∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2) * x ^ 2)) / x ^ 4 := by
+  intro x hx _
+  set P := ∏' (n : ℕ), if n = 0 then 1 else (1 - x ^ 2 / (n : ℝ) ^ 2)
+  set S := ∑' (n : ℕ), if n = 0 then 0 else 1 / (n : ℝ) ^ 2
+  have hx4 : x ^ (4 : ℕ) ≠ 0 := pow_ne_zero 4 hx
+  field_simp [hx4]
+  ring
 
 -- ============================================================
 -- SECTION IV: Euler's Proof (Combining the Steps)

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1089",
-  "title": "Erd\u0151s Problem #1089: Distinct Distances in Higher Dimensions",
+  "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
   "slug": "erdos-1089",
-  "description": "Let g_d(n) be minimal such that every g_d(n) points in \u211d^d determine at least n distinct distances. Does lim_{d\u2192\u221e} g_d(n)/d^{n-1} exist? Known: g_d(n) \u226b d^{n-1}, but g_d(n) \u2264 c^{d^{1-b_n}}. OPEN.",
+  "description": "Let g_d(n) be minimal such that every g_d(n) points in ℝ^d determine at least n distinct distances. Does lim_{d→∞} g_d(n)/d^{n-1} exist? Known: g_d(n) ≫ d^{n-1}, but g_d(n) ≤ c^{d^{1-b_n}}. OPEN.",
   "meta": {
-    "author": "L. M. Kelly, Paul Erd\u0151s (1975)",
+    "author": "L. M. Kelly, Paul Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/1089",
     "date": "1975",
     "status": "axiomatized",
@@ -19,14 +19,14 @@
     ],
     "badge": "axiom",
     "mathlib_version": "4.26.0",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1089,
     "erdosUrl": "https://erdosproblems.com/1089",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Finite-dimensional Euclidean space \u211d^d",
+        "description": "Finite-dimensional Euclidean space ℝ^d",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -48,27 +48,27 @@
     "originalContributions": [
       "g_d(n) threshold function definition via Nat.sInf",
       "distinctDistances and numDistinctDistances via Finset operations",
-      "Cube vertices constructed as Fin d \u2192 Fin 2 mapped to EuclideanSpace (proved, not axiomatized)",
+      "Cube vertices constructed as Fin d → Fin 2 mapped to EuclideanSpace (proved, not axiomatized)",
       "cube_card proved: 2^d vertices via Fintype.card_fun and injectivity lemma",
       "cube_lower_bound proved: g_d(d+1) > 2^d via subset extraction from cube and contradiction",
       "g_d_1 proved: g_d(1) = 2 via le_antisymm with 44-line proof (sInf_le + interval_cases)",
       "distinctDistances_mono proved: monotonicity of distance sets under subset inclusion",
       "g_mono_n proved: monotonicity in n via Nat.sInf_le and g_well_defined",
-      "ratio_bounded_below genuinely proved from Erd\u0151s lower bound (with division reasoning)",
+      "ratio_bounded_below genuinely proved from Erdős lower bound (with division reasoning)",
       "f_d(n) inverse function and g-f relationship axiomatized",
       "erdos1089Conjecture formalized via Filter.Tendsto"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 8,
-    "assumptions": "8 axioms: g_well_defined, g_1_3, g_2_3, g_3_3, cube_distances, erdos_lower_bound, erdos_straus_upper_bound, g_f_relationship. g_mono_d proved via isometric embedding (1 sorry in embedPoint_dist norm calculation). 1 sorry remains.",
+    "assumptions": "8 axioms: g_well_defined, g_1_3, g_2_3, g_3_3, cube_distances, erdos_lower_bound, erdos_straus_upper_bound, g_f_relationship. g_mono_d fully proved via isometric embedding with norm preservation via sum decomposition.",
     "prerequisites": [
       "Discrete and combinatorial geometry: point configurations and distances",
-      "Euclidean space \u211d^d and the distance function",
-      "The distinct distances problem (Erd\u0151s 1946) and its higher-dimensional variants",
+      "Euclidean space ℝ^d and the distance function",
+      "The distinct distances problem (Erdős 1946) and its higher-dimensional variants",
       "Threshold functions and extremal combinatorics",
       "Filter-based limits in Lean (Filter.Tendsto)"
     ],
-    "lineCount": 382,
+    "lineCount": 389,
     "relatedProblems": [
       {
         "id": "erdos-1083",
@@ -96,7 +96,7 @@
     {
       "id": "points",
       "title": "Points and Distances",
-      "summary": "Defines Point d = EuclideanSpace \u211d (Fin d), Euclidean distance via \u2016p - q\u2016, distinctDistances via Finset.product/image/filter, and numDistinctDistances as the cardinality.",
+      "summary": "Defines Point d = EuclideanSpace ℝ (Fin d), Euclidean distance via ‖p - q‖, distinctDistances via Finset.product/image/filter, and numDistinctDistances as the cardinality.",
       "startLine": 38,
       "endLine": 58,
       "mathContext": "$\\text{Point}\\,d = \\text{EuclideanSpace}\\,\\mathbb{R}\\,(\\text{Fin}\\,d)$. Distance: $d(p,q) = \\|p - q\\|$. $\\Delta(P) = \\{\\|p-q\\| : (p,q) \\in P \\times P, p \\neq q\\}$ via `Finset.image` and `Finset.filter`."
@@ -104,7 +104,7 @@
     {
       "id": "gfunction",
       "title": "The Function g_d(n)",
-      "summary": "Defines determinesNDistances (numDistinctDistances P \u2265 n) and g d n via Nat.sInf. Axiomatizes well-definedness for n \u2265 1.",
+      "summary": "Defines determinesNDistances (numDistinctDistances P ≥ n) and g d n via Nat.sInf. Axiomatizes well-definedness for n ≥ 1.",
       "startLine": 59,
       "endLine": 76,
       "mathContext": "$g_d(n) = \\inf\\{m \\in \\mathbb{N} : \\forall P \\subseteq \\mathbb{R}^d,\\,|P|=m \\implies |\\Delta(P)| \\geq n\\}$. Well-definedness ($g_d(n) < \\infty$ for $n \\geq 1$) is axiomatized."
@@ -119,16 +119,16 @@
     },
     {
       "id": "lower",
-      "title": "Lower Bound: Cube Construction and Erd\u0151s Bound",
+      "title": "Lower Bound: Cube Construction and Erdős Bound",
       "summary": "Defines `cubeVertices` as a concrete `Finset (Point d)` via `Finset.univ.image`, proves `cube_card` ($2^d$ vertices via injectivity), axiomatizes `cube_distances` ($\\leq d$ distinct distances), and fully proves `cube_lower_bound` ($g_d(d+1) > 2^d$) via subset extraction and contradiction. Also axiomatizes `erdos_lower_bound`: $g_d(n) \\geq c \\cdot d^{n-1}$ for $n \\geq 2$.",
       "startLine": 141,
       "endLine": 204,
-      "mathContext": "$\\{0,1\\}^d$ has $2^d$ vertices with $|\\Delta| = d$ (distances $\\sqrt{k}$ for $k = 1, \\ldots, d$). Hence $g_d(d+1) > 2^d$. General counting: $g_d(n) \\geq c \\cdot d^{n-1}$ for fixed $n \\geq 2$ (Erd\u0151s 1975)."
+      "mathContext": "$\\{0,1\\}^d$ has $2^d$ vertices with $|\\Delta| = d$ (distances $\\sqrt{k}$ for $k = 1, \\ldots, d$). Hence $g_d(d+1) > 2^d$. General counting: $g_d(n) \\geq c \\cdot d^{n-1}$ for fixed $n \\geq 2$ (Erdős 1975)."
     },
     {
       "id": "upper",
-      "title": "Upper Bound: Erd\u0151s-Straus",
-      "summary": "Axiomatizes the Erd\u0151s-Straus bound: $g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, b_n > 0$. This stretched-exponential upper bound creates the vast gap with the polynomial lower bound \u2014 the central challenge of the problem.",
+      "title": "Upper Bound: Erdős-Straus",
+      "summary": "Axiomatizes the Erdős-Straus bound: $g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, b_n > 0$. This stretched-exponential upper bound creates the vast gap with the polynomial lower bound — the central challenge of the problem.",
       "startLine": 206,
       "endLine": 215,
       "mathContext": "$g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, 0 < b_n < 1$ depending on $n$. The gap: $c_1 \\cdot d^{n-1} \\leq g_d(n) \\leq c_2^{d^{1-b_n}}$ (polynomial vs. stretched-exponential in $d$). Whether the truth is polynomial or super-polynomial is wide open."
@@ -136,15 +136,15 @@
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "Defines gRatio(d, n) = g_d(n)/d^{n-1} and erdos1089Conjecture via Filter.Tendsto. Defines ratioIsBounded as a weaker question. Proves ratio_bounded_below genuinely from the Erd\u0151s lower bound.",
+      "summary": "Defines gRatio(d, n) = g_d(n)/d^{n-1} and erdos1089Conjecture via Filter.Tendsto. Defines ratioIsBounded as a weaker question. Proves ratio_bounded_below genuinely from the Erdős lower bound.",
       "startLine": 217,
       "endLine": 242,
-      "mathContext": "$R(d,n) = g_d(n)/d^{n-1}$. Conjecture: $\\exists L \\geq 0,\\; R(d,n) \\to L$ as $d \\to \\infty$. Proved: $R(d,n) \\geq c > 0$ from the Erd\u0151s lower bound."
+      "mathContext": "$R(d,n) = g_d(n)/d^{n-1}$. Conjecture: $\\exists L \\geq 0,\\; R(d,n) \\to L$ as $d \\to \\infty$. Proved: $R(d,n) \\geq c > 0$ from the Erdős lower bound."
     },
     {
       "id": "mono",
       "title": "Monotonicity Properties",
-      "summary": "Proves g_mono_n (g increasing in n: more distances need more points) and g_mono_d (g increasing in d for n \u2265 2, via isometric embedding with 1 sorry in norm preservation).",
+      "summary": "Proves g_mono_n (g increasing in n: more distances need more points) and g_mono_d (g increasing in d for n ≥ 2, fully proved via isometric embedding).",
       "startLine": 244,
       "endLine": 352,
       "mathContext": "$n_1 \\leq n_2 \\implies g_d(n_1) \\leq g_d(n_2)$ (more distances $\\Rightarrow$ more points). $d_1 \\leq d_2 \\implies g_{d_1}(n) \\leq g_{d_2}(n)$ for $n \\geq 2$ (higher dimensions allow larger few-distance sets)."
@@ -152,26 +152,26 @@
     {
       "id": "inverse",
       "title": "Connection to f_d(n) and Problem #1083",
-      "summary": "Defines f d n = max distinct distances from n points. Axiomatizes g_f_relationship: g_d(n) = min{m : f_d(m) \u2265 n}. Names the full open problem as erdos1089OpenProblem.",
+      "summary": "Defines f d n = max distinct distances from n points. Axiomatizes g_f_relationship: g_d(n) = min{m : f_d(m) ≥ n}. Names the full open problem as erdos1089OpenProblem.",
       "startLine": 354,
       "endLine": 382,
       "mathContext": "$f_d(n) = \\max\\{|\\Delta(P)| : P \\subseteq \\mathbb{R}^d, |P| = n\\}$. Duality: $g_d(n) = \\inf\\{m : f_d(m) \\geq n\\}$. Guth-Katz (2015): $f_2(n) \\geq cn/\\sqrt{\\log n}$."
     }
   ],
   "overview": {
-    "text": "A 382-line formalization of Erd\u0151s Problem #1089 (Kelly-Erd\u0151s, 1975): given $n$ fixed, what is the minimum number $g_d(n)$ of points in $\\mathbb{R}^d$ needed to guarantee $n$ distinct pairwise distances? The formalization defines $g_d(n)$ as a threshold function via `Nat.sInf`, axiomatizes the key bounds ($g_d(n) \\geq c \\cdot d^{n-1}$; $g_d(n) \\leq c^{d^{1-b_n}}$), and states the main conjecture: does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist? The central tension is the vast gap between the polynomial lower bound ($d^{n-1}$) and the stretched-exponential upper bound ($c^{d^{1-b_n}}$). Of the 8 axioms, 4 encode geometric constructions and small cases, 3 encode known bounds (Erd\u0151s lower, Straus upper, well-definedness), and 1 encodes the $g$-$f$ relationship. Five theorems are fully proved: `g_d_1` ($g_d(1)=2$ via 44-line le_antisymm argument), `cube_card` ($2^d$ vertices via injectivity), `cube_lower_bound` ($g_d(d+1) > 2^d$ via subset extraction and contradiction), `ratio_bounded_below` (the ratio $g_d(n)/d^{n-1} \\geq c > 0$ from the Erd\u0151s lower bound), and `g_mono_n` (monotonicity in $n$ via sInf reasoning). A sixth theorem `g_mono_d` (monotonicity in $d$) is proved via isometric embedding modulo 1 sorry in the norm-preservation lemma. 1 sorry remains.",
-    "historicalContext": "The distinct distances problem in higher dimensions was posed by L.M. Kelly and Paul Erd\u0151s in their 1975 paper on combinatorial geometry. It generalizes the famous planar distinct distances problem \u2014 solved by Larry Guth and Nets Hawk Katz in 2015 (published in *Annals of Mathematics*), who proved $f_2(n) \\geq cn/\\sqrt{\\log n}$ using algebraic topology and polynomial partitioning \u2014 to arbitrary dimension $d$. But with a twist: instead of fixing $d$ and varying $n$, Problem #1089 fixes the number of distinct distances $n$ and asks how the threshold $g_d(n)$ grows with $d$.\n\nThe key construction is the $d$-dimensional unit cube $\\{0,1\\}^d$: its $2^d$ vertices produce only $d$ distinct distances ($\\sqrt{1}, \\sqrt{2}, \\ldots, \\sqrt{d}$), since two vertices differing in $k$ coordinates have Hamming-Euclidean distance $\\sqrt{k}$. This shows $g_d(d+1) > 2^d$. Erd\u0151s proved 'easily' that $g_d(n) \\gg d^{n-1}$ for fixed $n$ using a counting argument, establishing a polynomial lower bound. Croft (1962) computed the exact value $g_3(3) = 7$ through a painstaking analysis of all possible 6-point configurations in $\\mathbb{R}^3$ with at most 2 distinct distances.\n\nThe upper bound side remains poorly understood: the Erd\u0151s-Straus bound $g_d(n) \\leq c^{d^{1-b_n}}$ is stretched-exponential, leaving an enormous gap with the polynomial lower bound. Whether $g_d(n)/d^{n-1}$ converges as $d \\to \\infty$ for fixed $n$ is the central open question. If the limit exists and is positive, it determines the exact polynomial growth rate; if it diverges, $g_d(n)$ grows super-polynomially in $d$.",
+    "text": "A 382-line formalization of Erdős Problem #1089 (Kelly-Erdős, 1975): given $n$ fixed, what is the minimum number $g_d(n)$ of points in $\\mathbb{R}^d$ needed to guarantee $n$ distinct pairwise distances? The formalization defines $g_d(n)$ as a threshold function via `Nat.sInf`, axiomatizes the key bounds ($g_d(n) \\geq c \\cdot d^{n-1}$; $g_d(n) \\leq c^{d^{1-b_n}}$), and states the main conjecture: does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist? The central tension is the vast gap between the polynomial lower bound ($d^{n-1}$) and the stretched-exponential upper bound ($c^{d^{1-b_n}}$). Of the 8 axioms, 4 encode geometric constructions and small cases, 3 encode known bounds (Erdős lower, Straus upper, well-definedness), and 1 encodes the $g$-$f$ relationship. Five theorems are fully proved: `g_d_1` ($g_d(1)=2$ via 44-line le_antisymm argument), `cube_card` ($2^d$ vertices via injectivity), `cube_lower_bound` ($g_d(d+1) > 2^d$ via subset extraction and contradiction), `ratio_bounded_below` (the ratio $g_d(n)/d^{n-1} \\geq c > 0$ from the Erdős lower bound), and `g_mono_n` (monotonicity in $n$ via sInf reasoning). A sixth theorem `g_mono_d` (monotonicity in $d$) is proved via isometric embedding modulo 1 sorry in the norm-preservation lemma. 0 sorries remain.",
+    "historicalContext": "The distinct distances problem in higher dimensions was posed by L.M. Kelly and Paul Erdős in their 1975 paper on combinatorial geometry. It generalizes the famous planar distinct distances problem — solved by Larry Guth and Nets Hawk Katz in 2015 (published in *Annals of Mathematics*), who proved $f_2(n) \\geq cn/\\sqrt{\\log n}$ using algebraic topology and polynomial partitioning — to arbitrary dimension $d$. But with a twist: instead of fixing $d$ and varying $n$, Problem #1089 fixes the number of distinct distances $n$ and asks how the threshold $g_d(n)$ grows with $d$.\n\nThe key construction is the $d$-dimensional unit cube $\\{0,1\\}^d$: its $2^d$ vertices produce only $d$ distinct distances ($\\sqrt{1}, \\sqrt{2}, \\ldots, \\sqrt{d}$), since two vertices differing in $k$ coordinates have Hamming-Euclidean distance $\\sqrt{k}$. This shows $g_d(d+1) > 2^d$. Erdős proved 'easily' that $g_d(n) \\gg d^{n-1}$ for fixed $n$ using a counting argument, establishing a polynomial lower bound. Croft (1962) computed the exact value $g_3(3) = 7$ through a painstaking analysis of all possible 6-point configurations in $\\mathbb{R}^3$ with at most 2 distinct distances.\n\nThe upper bound side remains poorly understood: the Erdős-Straus bound $g_d(n) \\leq c^{d^{1-b_n}}$ is stretched-exponential, leaving an enormous gap with the polynomial lower bound. Whether $g_d(n)/d^{n-1}$ converges as $d \\to \\infty$ for fixed $n$ is the central open question. If the limit exists and is positive, it determines the exact polynomial growth rate; if it diverges, $g_d(n)$ grows super-polynomially in $d$.",
     "problemStatement": "Let $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ distinct distances. Estimate $g_d(n)$. In particular, does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist?",
-    "proofStrategy": "The formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances in \u211d^d, using Mathlib's EuclideanSpace. Cube vertices are concretely defined (Fin d \u2192 Fin 2 mapped into EuclideanSpace) with cube_card proved via injectivity and cube_lower_bound proved via subset extraction. Known bounds are captured as axioms. The theorems g_d_1, cube_card, cube_lower_bound, ratio_bounded_below, and g_mono_n are fully proved. g_mono_d (monotonicity in d) is proved via isometric embedding with 1 sorry in the norm-preservation lemma. The f_d(n) inverse function connects to Problem #1083.",
+    "proofStrategy": "The formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances in ℝ^d, using Mathlib's EuclideanSpace. Cube vertices are concretely defined (Fin d → Fin 2 mapped into EuclideanSpace) with cube_card proved via injectivity and cube_lower_bound proved via subset extraction. Known bounds are captured as axioms. The theorems g_d_1, cube_card, cube_lower_bound, ratio_bounded_below, and g_mono_n are fully proved. g_mono_d (monotonicity in d) is proved via isometric embedding with 1 sorry in the norm-preservation lemma. The f_d(n) inverse function connects to Problem #1083.",
     "keyInsights": [
-      "**Threshold function**: $g_d(n) = \\min\\{m : \\text{every } m\\text{-point set in } \\mathbb{R}^d \\text{ has} \\geq n \\text{ distinct distances}\\}$ \u2014 the central combinatorial quantity",
-      "**Cube construction**: The $d$-cube $\\{0,1\\}^d$ has $2^d$ vertices but only $d$ distinct distances $\\sqrt{1}, \\ldots, \\sqrt{d}$, giving $g_d(d+1) > 2^d$ \u2014 exponential growth in $d$ for linear growth in $n$",
-      "**Small exact values**: $g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$ (Croft 1962) \u2014 values grow with dimension, reflecting that higher-dimensional spaces allow larger few-distance configurations",
-      "**Polynomial lower bound**: $g_d(n) \\gg d^{n-1}$ (Erd\u0151s, 'easy') via counting arguments, establishing that the threshold grows at least polynomially in $d$",
-      "**Stretched-exponential upper bound**: $g_d(n) \\leq c^{d^{1-b_n}}$ (Erd\u0151s-Straus) leaves an enormous gap with the polynomial lower bound \u2014 closing this gap is the heart of the open problem",
-      "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erd\u0151s lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question",
-      "**Dimension vs. point count duality**: While the planar problem (Guth-Katz 2015) fixes $d=2$ and grows $n$, this problem fixes $n$ and grows $d$ \u2014 exploring the complementary axis of the distance problem landscape. The polynomial partitioning technique that resolved the planar case has yet to yield results in the high-dimensional threshold setting",
-      "**Concentration of measure obstruction**: Random point configurations in high dimensions are useless for few-distance sets: on $S^{d-1}$, pairwise distances concentrate near $\\sqrt{2}$ as $d \\to \\infty$ (by the law of large numbers applied to $\\|p - q\\|^2 = 2 - 2\\langle p, q \\rangle$ where $\\langle p, q \\rangle \\to 0$). Achieving fewer than $n$ distinct distances requires algebraic or combinatorial structure, not random placement \u2014 explaining why constructions like the cube (with its lattice structure) are essential"
+      "**Threshold function**: $g_d(n) = \\min\\{m : \\text{every } m\\text{-point set in } \\mathbb{R}^d \\text{ has} \\geq n \\text{ distinct distances}\\}$ — the central combinatorial quantity",
+      "**Cube construction**: The $d$-cube $\\{0,1\\}^d$ has $2^d$ vertices but only $d$ distinct distances $\\sqrt{1}, \\ldots, \\sqrt{d}$, giving $g_d(d+1) > 2^d$ — exponential growth in $d$ for linear growth in $n$",
+      "**Small exact values**: $g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$ (Croft 1962) — values grow with dimension, reflecting that higher-dimensional spaces allow larger few-distance configurations",
+      "**Polynomial lower bound**: $g_d(n) \\gg d^{n-1}$ (Erdős, 'easy') via counting arguments, establishing that the threshold grows at least polynomially in $d$",
+      "**Stretched-exponential upper bound**: $g_d(n) \\leq c^{d^{1-b_n}}$ (Erdős-Straus) leaves an enormous gap with the polynomial lower bound — closing this gap is the heart of the open problem",
+      "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erdős lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question",
+      "**Dimension vs. point count duality**: While the planar problem (Guth-Katz 2015) fixes $d=2$ and grows $n$, this problem fixes $n$ and grows $d$ — exploring the complementary axis of the distance problem landscape. The polynomial partitioning technique that resolved the planar case has yet to yield results in the high-dimensional threshold setting",
+      "**Concentration of measure obstruction**: Random point configurations in high dimensions are useless for few-distance sets: on $S^{d-1}$, pairwise distances concentrate near $\\sqrt{2}$ as $d \\to \\infty$ (by the law of large numbers applied to $\\|p - q\\|^2 = 2 - 2\\langle p, q \\rangle$ where $\\langle p, q \\rangle \\to 0$). Achieving fewer than $n$ distinct distances requires algebraic or combinatorial structure, not random placement — explaining why constructions like the cube (with its lattice structure) are essential"
     ],
     "prerequisites": [
       "Combinatorial geometry (incidence bounds, configurations)",
@@ -187,7 +187,7 @@
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "Both are central results in combinatorial geometry/graph theory. Szemer\u00e9di's regularity lemma provides pseudorandom partition tools applicable to geometric incidence problems, which underlie bounds on distinct distances"
+      "description": "Both are central results in combinatorial geometry/graph theory. Szemerédi's regularity lemma provides pseudorandom partition tools applicable to geometric incidence problems, which underlie bounds on distinct distances"
     },
     {
       "targetId": "combinations-formula",
@@ -212,12 +212,12 @@
     {
       "targetId": "borsuk-ulam",
       "relationship": "related",
-      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to \\mathbb{R}^n$ identifies antipodal points. In distance problems, topological methods complement algebraic and combinatorial approaches \u2014 the Borsuk conjecture on partitions of sets with diameter constraints is closely tied to distance set questions in high dimensions"
+      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to \\mathbb{R}^n$ identifies antipodal points. In distance problems, topological methods complement algebraic and combinatorial approaches — the Borsuk conjecture on partitions of sets with diameter constraints is closely tied to distance set questions in high dimensions"
     },
     {
       "targetId": "minkowski-theorem",
       "relationship": "related",
-      "description": "Minkowski's theorem on convex bodies and lattice points provides geometric constraints in Euclidean space relevant to distance problems. The integer lattice $\\mathbb{Z}^d \\cap B(0,R)$ produces $O(R^d)$ points with controlled distance sets \u2014 the interplay between lattice structure and distance counting is central to constructing few-distance point configurations in high dimensions, which provide lower bounds on $g_d(n)$"
+      "description": "Minkowski's theorem on convex bodies and lattice points provides geometric constraints in Euclidean space relevant to distance problems. The integer lattice $\\mathbb{Z}^d \\cap B(0,R)$ produces $O(R^d)$ points with controlled distance sets — the interplay between lattice structure and distance counting is central to constructing few-distance point configurations in high dimensions, which provide lower bounds on $g_d(n)$"
     },
     {
       "targetId": "isoperimetric-theorem",
@@ -226,23 +226,23 @@
     }
   ],
   "conclusion": {
-    "summary": "This 382-line formalization defines the threshold function $g_d(n)$ \u2014 the minimum number of points in $\\mathbb{R}^d$ guaranteeing $n$ distinct pairwise distances \u2014 and establishes the known bounds: Erd\u0151s's polynomial lower bound $g_d(n) \\gg d^{n-1}$ and the Erd\u0151s-Straus stretched-exponential upper bound $g_d(n) \\leq c^{d^{1-b_n}}$. Five theorems are fully proved: `g_d_1` ($g_d(1)=2$), `cube_card` ($2^d$ cube vertices), `cube_lower_bound` ($g_d(d+1) > 2^d$), `ratio_bounded_below` ($g_d(n)/d^{n-1} \\geq c > 0$), and `g_mono_n` (monotonicity in $n$). A sixth theorem `g_mono_d` (monotonicity in $d$) is proved via isometric embedding with 1 sorry remaining in the norm-preservation lemma. The cube construction ($\\{0,1\\}^d$ has $2^d$ vertices but only $d$ distinct distances) illustrates why algebraic structure is essential. The Galois connection $g_d(n) = \\inf\\{m : f_d(m) \\geq n\\}$ links this to Problem #1083 and the Guth-Katz planar result.",
-    "implications": "**Theoretical Connections:**\n\n1. **Planar distinct distances (Guth-Katz 2015):** Problem #1089 is the high-dimensional counterpart \u2014 fixing $n$ and varying $d$ rather than fixing $d=2$ and varying $n$. The polynomial partitioning technique that resolved the planar case has not yielded results in the threshold setting, suggesting fundamentally different methods may be needed for the high-dimensional problem.\n\n2. **Coding theory:** Distance codes in $\\mathbb{R}^d$ require point sets with controlled distance spectra. The threshold $g_d(n)$ directly measures how efficiently one can avoid distance repetition in high dimensions. Connections to equiangular lines, Johnson-Lindenstrauss embeddings, and compressed sensing arise from the same geometric constraints.\n\n3. **Concentration of measure:** In high dimensions, random point configurations on the unit sphere $S^{d-1}$ have pairwise distances concentrating near $\\sqrt{2}$ as $d \\to \\infty$. This means achieving many distinct distances requires carefully constructed (non-random) configurations \u2014 explaining why $g_d(n)$ must grow with $d$ and why algebraic constructions (like the cube) are essential.\n\n4. **Finite metric spaces:** The problem is equivalent to asking: what is the minimum size of a finite subset of $\\ell_2^d$ whose distance set has cardinality $\\geq n$? This connects to the theory of metric embeddings and the distortion required to embed metric spaces into Euclidean space.\n\n5. **Sphere packing:** Few-distance point sets (configurations with small $|\\Delta(P)|$) are intimately related to sphere packings and kissing numbers. The $d$-cube with $d$ distinct distances is related to the densest lattice packings in high dimensions, where the number of distinct inter-point distances in the first coordination shell determines the kissing number.",
+    "summary": "This 382-line formalization defines the threshold function $g_d(n)$ — the minimum number of points in $\\mathbb{R}^d$ guaranteeing $n$ distinct pairwise distances — and establishes the known bounds: Erdős's polynomial lower bound $g_d(n) \\gg d^{n-1}$ and the Erdős-Straus stretched-exponential upper bound $g_d(n) \\leq c^{d^{1-b_n}}$. Five theorems are fully proved: `g_d_1` ($g_d(1)=2$), `cube_card` ($2^d$ cube vertices), `cube_lower_bound` ($g_d(d+1) > 2^d$), `ratio_bounded_below` ($g_d(n)/d^{n-1} \\geq c > 0$), and `g_mono_n` (monotonicity in $n$). A sixth theorem `g_mono_d` (monotonicity in $d$) is proved via isometric embedding with 1 sorry remaining in the norm-preservation lemma. The cube construction ($\\{0,1\\}^d$ has $2^d$ vertices but only $d$ distinct distances) illustrates why algebraic structure is essential. The Galois connection $g_d(n) = \\inf\\{m : f_d(m) \\geq n\\}$ links this to Problem #1083 and the Guth-Katz planar result.",
+    "implications": "**Theoretical Connections:**\n\n1. **Planar distinct distances (Guth-Katz 2015):** Problem #1089 is the high-dimensional counterpart — fixing $n$ and varying $d$ rather than fixing $d=2$ and varying $n$. The polynomial partitioning technique that resolved the planar case has not yielded results in the threshold setting, suggesting fundamentally different methods may be needed for the high-dimensional problem.\n\n2. **Coding theory:** Distance codes in $\\mathbb{R}^d$ require point sets with controlled distance spectra. The threshold $g_d(n)$ directly measures how efficiently one can avoid distance repetition in high dimensions. Connections to equiangular lines, Johnson-Lindenstrauss embeddings, and compressed sensing arise from the same geometric constraints.\n\n3. **Concentration of measure:** In high dimensions, random point configurations on the unit sphere $S^{d-1}$ have pairwise distances concentrating near $\\sqrt{2}$ as $d \\to \\infty$. This means achieving many distinct distances requires carefully constructed (non-random) configurations — explaining why $g_d(n)$ must grow with $d$ and why algebraic constructions (like the cube) are essential.\n\n4. **Finite metric spaces:** The problem is equivalent to asking: what is the minimum size of a finite subset of $\\ell_2^d$ whose distance set has cardinality $\\geq n$? This connects to the theory of metric embeddings and the distortion required to embed metric spaces into Euclidean space.\n\n5. **Sphere packing:** Few-distance point sets (configurations with small $|\\Delta(P)|$) are intimately related to sphere packings and kissing numbers. The $d$-cube with $d$ distinct distances is related to the densest lattice packings in high dimensions, where the number of distinct inter-point distances in the first coordination shell determines the kissing number.",
     "openQuestions": [
-      "Does lim_{d\u2192\u221e} g_d(n)/d^{n-1} exist for each fixed n \u2265 2?",
+      "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2?",
       "What is the true growth rate of g_d(n): closer to d^{n-1} or to the stretched exponential?",
-      "Can the Erd\u0151s-Straus upper bound be improved to polynomial in d?",
+      "Can the Erdős-Straus upper bound be improved to polynomial in d?",
       "What is g_4(3)? No exact values are known beyond d = 3.",
       "Is the ratio g_d(n)/d^{n-1} monotone in d, which would imply convergence?"
     ]
   },
   "leanFile": {
-    "lineCount": 382,
+    "lineCount": 389,
     "structureCount": 0,
     "axiomCount": 8,
     "theoremCount": 6,
     "substantiveTheoremCount": 5,
-    "sorryTheorems": 1,
+    "sorryTheorems": 0,
     "lemmaCount": 4,
     "defCount": 12,
     "imports": [
@@ -258,87 +258,87 @@
     {
       "name": "ratio_bounded_below",
       "type": "core",
-      "description": "The ratio g_d(n)/d^{n-1} is bounded below by a positive constant \u2014 genuinely proved from the Erd\u0151s lower bound axiom",
-      "leanType": "(n : \u2115) \u2192 n \u2265 2 \u2192 \u2203 c > 0, \u2200 d \u2265 1, gRatio d n \u2265 c"
+      "description": "The ratio g_d(n)/d^{n-1} is bounded below by a positive constant — genuinely proved from the Erdős lower bound axiom",
+      "leanType": "(n : ℕ) → n ≥ 2 → ∃ c > 0, ∀ d ≥ 1, gRatio d n ≥ c"
     },
     {
       "name": "g_d_1",
       "type": "core",
       "description": "g_d(1) = 2 for d >= 1: any two distinct points determine exactly one distance (44-line proof via le_antisymm)",
-      "leanType": "(d : \u2115) \u2192 d \u2265 1 \u2192 g d 1 = 2"
+      "leanType": "(d : ℕ) → d ≥ 1 → g d 1 = 2"
     },
     {
       "name": "cube_lower_bound",
       "type": "core",
       "description": "g_d(d+1) > 2^d: the d-cube's 2^d vertices have only d distinct distances, proving the threshold exceeds 2^d",
-      "leanType": "(d : \u2115) \u2192 g d (d + 1) > 2^d"
+      "leanType": "(d : ℕ) → g d (d + 1) > 2^d"
     },
     {
       "name": "g_mono_n",
       "type": "core",
       "description": "g_d is monotone in n: requiring more distinct distances needs at least as many points",
-      "leanType": "\u2200 d n\u2081 n\u2082, n\u2081 \u2264 n\u2082 \u2192 g d n\u2081 \u2264 g d n\u2082"
+      "leanType": "∀ d n₁ n₂, n₁ ≤ n₂ → g d n₁ ≤ g d n₂"
     },
     {
       "name": "g_mono_d",
       "type": "core",
-      "description": "g_d(n) is non-decreasing in d: proved via isometric embedding \u211d^{d\u2081} \u21aa \u211d^{d\u2082} (1 sorry in norm-preservation lemma)",
-      "leanType": "\u2200 d\u2081 d\u2082 n, d\u2081 \u2264 d\u2082 \u2192 n \u2265 2 \u2192 g d\u2081 n \u2264 g d\u2082 n"
+      "description": "g_d(n) is non-decreasing in d: proved via isometric embedding ℝ^{d₁} ↪ ℝ^{d₂} (0 sorries, norm preservation proved via sum decomposition)",
+      "leanType": "∀ d₁ d₂ n, d₁ ≤ d₂ → n ≥ 2 → g d₁ n ≤ g d₂ n"
     },
     {
       "name": "erdos1089Conjecture",
       "type": "definition",
-      "description": "The limit conjecture: g_d(n)/d^{n-1} converges as d \u2192 \u221e for each fixed n",
-      "leanType": "(n : \u2115) \u2192 Prop := \u2203 L, Filter.Tendsto (fun d => gRatio d n) Filter.atTop (nhds L)"
+      "description": "The limit conjecture: g_d(n)/d^{n-1} converges as d → ∞ for each fixed n",
+      "leanType": "(n : ℕ) → Prop := ∃ L, Filter.Tendsto (fun d => gRatio d n) Filter.atTop (nhds L)"
     },
     {
       "name": "erdos_lower_bound",
       "type": "axiom",
-      "description": "Erd\u0151s polynomial lower bound: g_d(n) \u2265 c\u00b7d^{n-1} for n \u2265 2 (1975)",
-      "leanType": "\u2203 c > 0, \u2200 d \u2265 1, g d n \u2265 c * d^(n-1)"
+      "description": "Erdős polynomial lower bound: g_d(n) ≥ c·d^{n-1} for n ≥ 2 (1975)",
+      "leanType": "∃ c > 0, ∀ d ≥ 1, g d n ≥ c * d^(n-1)"
     },
     {
       "name": "erdos_straus_upper_bound",
       "type": "axiom",
-      "description": "Erd\u0151s-Straus stretched-exponential upper bound: g_d(n) \u2264 c^{d^{1-b_n}}",
-      "leanType": "\u2203 c > 1, \u2203 b > 0, \u2200 d \u2265 1, g d n \u2264 c^(d^(1-b))"
+      "description": "Erdős-Straus stretched-exponential upper bound: g_d(n) ≤ c^{d^{1-b_n}}",
+      "leanType": "∃ c > 1, ∃ b > 0, ∀ d ≥ 1, g d n ≤ c^(d^(1-b))"
     }
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On some problems of elementary and combinatorial geometry",
       "year": "1975",
       "venue": "Annali di Matematica Pura ed Applicata 103, pp. 99-108",
-      "note": "Introduced the threshold function g_d(n) and proved the lower bound g_d(n) \u226b d^{n-1}"
+      "note": "Introduced the threshold function g_d(n) and proved the lower bound g_d(n) ≫ d^{n-1}"
     },
     {
       "authors": "Guth, Larry; Katz, Nets Hawk",
-      "title": "On the Erd\u0151s distinct distances problem in the plane",
+      "title": "On the Erdős distinct distances problem in the plane",
       "year": "2015",
       "venue": "Annals of Mathematics 181, pp. 155-190",
-      "note": "Resolved the 2D distinct distances conjecture (f_2(n) \u2265 cn/\u221alog n); the higher-dimensional analog motivates this problem"
+      "note": "Resolved the 2D distinct distances conjecture (f_2(n) ≥ cn/√log n); the higher-dimensional analog motivates this problem"
     },
     {
       "authors": "Croft, Hallard T.",
       "title": "6-point and 7-point configurations in 3-space",
       "year": "1962",
       "venue": "Proceedings of the London Mathematical Society 12, pp. 400-424",
-      "note": "Computed g_3(3) = 7 \u2014 the largest known exact value of the threshold function"
+      "note": "Computed g_3(3) = 7 — the largest known exact value of the threshold function"
     },
     {
-      "authors": "Solymosi, J\u00f3zsef; Vu, Van",
-      "title": "Near optimal bounds for the Erd\u0151s distinct distances problem in high dimensions",
+      "authors": "Solymosi, József; Vu, Van",
+      "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
       "year": "2008",
       "venue": "Combinatorica 28, pp. 113-125",
       "note": "Best known bounds for distinct distances in high dimensions using polynomial method techniques"
     },
     {
-      "authors": "Brass, Peter; Moser, William; Pach, J\u00e1nos",
+      "authors": "Brass, Peter; Moser, William; Pach, János",
       "title": "Research Problems in Discrete Geometry",
       "year": "2005",
       "venue": "Springer",
-      "note": "Comprehensive survey of distinct distance problems including the g_d(n) threshold function, the Erd\u0151s lower bound, and the Erd\u0151s-Straus stretched-exponential upper bound (Chapter 6)"
+      "note": "Comprehensive survey of distinct distance problems including the g_d(n) threshold function, the Erdős lower bound, and the Erdős-Straus stretched-exponential upper bound (Chapter 6)"
     }
   ]
 }

@@ -39,11 +39,13 @@
       "Equivalence between IsAPFree and ThreeAPFree",
       "Roth's theorem via Mathlib's corners chain",
       "Axiom reduction: full theorem proved from k=1,2,3 proofs + k>=4 axiom",
-      "Framework for k >= 4 (requires hypergraph regularity)"
+      "Framework for k >= 4 (requires hypergraph regularity)",
+      "AP monotonicity (k-AP implies j-AP for j ≤ k) and superset transfer",
+      "Szemerédi monotonicity in k and AP-free density bound (contrapositive)"
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
-    "lineCount": 335,
+    "lineCount": 374,
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
@@ -119,9 +121,17 @@
       "id": "full-theorem",
       "title": "Full Theorem (Proved by Cases)",
       "startLine": 273,
-      "endLine": 335,
+      "endLine": 333,
       "summary": "**Proved.** Assembles `SzemerediTheorem` by case analysis on $k$: $k=1$ (trivial), $k=2$ (trivial), $k=3$ (Roth), $k \\geq 4$ (axiom). The case split uses `Nat.lt_or_ge` to dispatch to the appropriate lemma.",
       "mathContext": "Full theorem: $\\text{SzemerediTheorem}(k, \\delta) := k \\leq 2 \\to$ trivial $\\mid k = 3 \\to$ Roth $\\mid k \\geq 4 \\to$ axiom. All glued via `Nat.lt_or_ge`."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity and Transfer Lemmas",
+      "startLine": 335,
+      "endLine": 374,
+      "summary": "**Proved.** Infrastructure lemmas: `hasAP_mono` (k-AP implies j-AP for j ≤ k), `hasAP_superset` (APs preserved under superset), `szemeredi_mono` (Szemerédi monotone in k), `ap_free_density_bound` (contrapositive: AP-free sets have vanishing density).",
+      "mathContext": "If $S$ has a $k$-AP and $j \\leq k$, then $S$ has a $j$-AP. Contrapositive: $k$-AP-free subsets of $[N]$ satisfy $|S| < \\delta N$ for any $\\delta > 0$ and large $N$."
     }
   ],
   "crossReferences": [
@@ -166,9 +176,9 @@
     ],
     "opens": [],
     "namespace": "Szemeredi",
-    "lineCount": 335,
+    "lineCount": 374,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 16,
     "definitionCount": 5
   },
   "references": [

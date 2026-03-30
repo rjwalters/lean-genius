@@ -174,10 +174,6 @@ theorem girth_5_satisfies [DecidableEq V] [Fintype V]
   sorry
 
 /-- The Turán problem for C₄-free graphs. -/
-axiom turan_C4_free (n : ℕ) (hn : n ≥ 2) :
-    ∃ G : SimpleGraph (Fin n), HasGirth G 5 ∧
-      G.edgeFinset.card ≥ Nat.floor ((n : ℝ)^(3/2 : ℝ) / 4)
-
 /-- This shows f(n) ≥ Ω(n^(3/2)) from girth-5 graphs. -/
 theorem f_lower_bound (n : ℕ) (hn : n ≥ 10) :
     f n ≥ Nat.floor ((n : ℝ)^(3/2 : ℝ) / 4) := by
@@ -203,11 +199,6 @@ def IsSublinearExpander (G : SimpleGraph (Fin n)) : Prop :=
       ∃ λ : ℝ, IsExpander G d λ
 
 /-- **Key Lemma (DMMS)**: Random walks in expanders find cycles with many diagonals. -/
-axiom expander_cycle_lemma (G : SimpleGraph (Fin n)) (d : ℕ) (λ : ℝ)
-    (hG : IsExpander G d λ) (hλ : λ ≤ d / 2) :
-    -- G contains a cycle violating the condition
-    ¬SatisfiesCycleDiagonalCondition G ∨ G.edgeFinset.card < d * n / 2
-
 /-
 ## Part X: Short Cycles vs Long Cycles
 

@@ -1,0 +1,67 @@
+{
+  "slug": "hermite-lindemann-oq-04",
+  "title": "Can Baker-type effective bounds be formalized? Baker's theorem gives computable lower bounds on $|\\beta_0 + \\beta_1 \\ln \\alpha_1 + \\cdots + \\beta_n \\ln \\alpha_n|$ with applications to Diophantine equa",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can Baker-type effective bounds be formalized? Baker's theorem gives computable lower bounds on $|\\beta_0 + \\beta_1 \\ln \\alpha_1 + \\cdots + \\beta_n \\ln \\alpha_n|$ with applications to Diophantine equa.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.305Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "hermite-lindemann"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.305Z",
+  "lastUpdate": "2026-03-29T18:32:39.305Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/HermiteLindemann.lean",
+      "filename": "HermiteLindemann.lean",
+      "lineCount": 391,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HermiteLindemann.lean"
+    }
+  ]
+}

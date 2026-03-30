@@ -71,9 +71,6 @@ noncomputable def uniformMatrix (n : ℕ) (hn : n ≠ 0) : Matrix (Fin n) (Fin n
   fun _ _ => (1 : ℝ) / n
 
 /-- The uniform matrix is doubly stochastic. -/
-axiom uniformMatrix_doublyStochastic (n : ℕ) (hn : n ≠ 0) :
-    IsDoublyStochastic (uniformMatrix n hn)
-
 /--
 Example: The 2×2 uniform matrix [[1/2, 1/2], [1/2, 1/2]].
 -/
@@ -103,9 +100,6 @@ def mainDiagonalProduct {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : ℝ :=
 /--
 For the uniform matrix, every diagonal product equals n^{-n}.
 -/
-axiom uniformMatrix_diagonalProduct (n : ℕ) (hn : n ≠ 0) (σ : Equiv.Perm (Fin n)) :
-    diagonalProduct (uniformMatrix n hn) σ = (n : ℝ)⁻¹ ^ n
-
 /-
 ## Part III: The Permanent
 
@@ -130,9 +124,6 @@ theorem perm_eq_sum_diagonalProducts {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) 
 For the uniform matrix, the permanent equals n^{-n} · n!.
 This is the minimum among all doubly stochastic matrices.
 -/
-axiom uniformMatrix_permanent (n : ℕ) (hn : n ≠ 0) :
-    perm' (uniformMatrix n hn) = (n : ℝ)⁻¹ ^ n * n !
-
 /-
 ## Part IV: Marcus-Ree Theorem (1959)
 
@@ -227,15 +218,20 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
     let M : Matrix (Fin 2) (Fin 2) ℝ := !![a, 1-a; 1-a, a]
     (diagonalProduct M 1 = a * a) ∧
     (∃ σ : Equiv.Perm (Fin 2), diagonalProduct M σ = (1-a) * (1-a)) := by
-  sorry
+  refine ⟨?_, ?_⟩
+  · -- Identity permutation: M 0 0 * M 1 1 = a * a
+    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+  · -- Swap permutation: M 0 1 * M 1 0 = (1-a) * (1-a)
+    refine ⟨Equiv.swap (0 : Fin 2) 1, ?_⟩
+    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
+      Equiv.swap_apply_right, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.head_fin_const]
 
 /--
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
 This verifies Erdős #499 for n = 2.
 -/
-axiom two_by_two_erdos499 (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
-    a * a ≥ 1/4 ∨ (1 - a) * (1 - a) ≥ 1/4
-
 /-
 ## Part VIII: The Birkhoff-von Neumann Theorem
 

@@ -1,0 +1,36 @@
+{
+  "id": "dirichlets-theorem-oq-03",
+  "title": "Best Constant in Linnik's Theorem for Primes in Arithmetic Progressions",
+  "slug": "dirichlets-theorem-oq-03",
+  "description": "Formalizes the Linnik constant L: the best exponent such that the least prime p ≡ a (mod q) satisfies p ≤ c·q^L. Current best: L ≤ 5 (Xylouris 2011). Conjectured: L = 1.",
+  "meta": {
+    "author": "Linnik (1944); Xylouris (2011)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Linnik%27s_theorem",
+    "date": "1944",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DirichletsTheoremOQ03.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "arithmetic-progressions",
+      "linnik-constant",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 2,
+    "lineCount": 139
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "LinnikConstant",
+    "lineCount": 139,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "sorryTheorems": 3
+  },
+  "sections": []
+}

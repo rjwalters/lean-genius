@@ -1,0 +1,271 @@
+{
+  "id": "erdos-114-oq-01",
+  "title": "Explicit Bounds on Tao's Lemniscate Threshold",
+  "slug": "erdos-114-oq-01",
+  "description": "Can Tao's threshold N₀, above which zⁿ-1 uniquely maximizes lemniscate length, be made explicit? This formalization defines the threshold via Nat.find, proves finite reduction (the full conjecture reduces to checking finitely many cases in [3, N₀)), and establishes structural bounds using known results of Dolzhenko, Danchenko, Fryntov-Nazarov, and Eremenko-Hayman.",
+  "meta": {
+    "author": "Tao (2025); Fryntov-Nazarov (2009); Danchenko (2007); Eremenko-Hayman (1999)",
+    "sourceUrl": "https://erdosproblems.com/114",
+    "date": "2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos114OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "extremal-problems",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 12,
+    "assumptions": "12 axiom declarations: lemniscateLength (definitional), lemniscateLength_nonneg, maxLemniscateLength (definitional), maxLemniscateLength_nonneg, maxLemniscateLength_upper (supremum property), dolzhenko_bound (f(n) ≤ 4πn), danchenko_bound (f(n) ≤ 2πn), tao_asymptotic (unique maximizer for large n), znMinus1_achieves_max, eremenko_hayman_n2 (n=2 solved), unique_max_one (n=1), fryntov_nazarov_bound (f(n) ≤ 2n + O(n^{7/8}))",
+    "erdosNumber": 114,
+    "erdosUrl": "https://erdosproblems.com/114",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-03-29",
+    "lineCount": 299,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.find",
+        "description": "Minimum natural number satisfying a decidable predicate",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Nat.one_le_cast",
+        "description": "1 ≤ (n : ℝ) iff 1 ≤ n",
+        "module": "Mathlib.Data.Nat.Cast.Order.Basic"
+      }
+    ],
+    "parentProof": "erdos-114",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-114"
+  },
+  "overview": {
+    "historicalContext": "**The Race to Pin Down Tao's Threshold**\n\nErdős Problem #114 asks: for a monic polynomial p(z) of degree n, what is the maximum arc length of the lemniscate {z : |p(z)| = 1}? The conjecture is that zⁿ - 1 is the unique maximizer (up to rotation). In 2025, Terence Tao proved this for all sufficiently large n, but his proof — using probabilistic and absorbing methods from additive combinatorics — yields a non-explicit threshold N₀.\n\nThe question is whether N₀ can be made explicit. If N₀ turns out to be small (say ≤ 100), computational verification of the remaining cases would resolve the full conjecture. The Fryntov-Nazarov bound f(n) ≤ 2n + O(n^{7/8}) suggests the extremal value is close to 2n, lending optimism that the threshold might be manageable.",
+    "problemStatement": "**Problem Statement**\n\nTao's 2025 proof establishes: there exists N₀ ∈ ℕ such that for all n ≥ N₀, zⁿ - 1 is the unique maximizer of lemniscate length among monic degree-n polynomials.\n\nCan N₀ be made explicit? How large is the 'gap' [3, N₀) of unverified cases?\n\n**Status**: OPEN\n\n**Known**: n = 0 (vacuous), n = 1 (elementary), n = 2 (Eremenko-Hayman 1999). Cases n ≥ N₀ (Tao 2025).",
+    "text": "Formalizes the threshold structure of Tao's lemniscate maximizer result. Defines taoThreshold via Nat.find, proves finite reduction, and establishes gap analysis bounds.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Setup**: MonicPoly structure, lemniscateLength and maxLemniscateLength axiomatized\n2. **Upper bounds**: Dolzhenko (4πn), Danchenko (2πn), Fryntov-Nazarov (2n + O(n^{7/8})) axiomatized\n3. **Threshold**: taoThreshold defined via Nat.find from tao_asymptotic\n4. **Small cases**: n = 0 (proved), n = 1,2 (axiomatized)\n5. **Finite reduction**: Full conjecture ↔ checking [3, N₀) gap\n6. **Gap analysis**: gapSize, empty_gap_resolves, threshold_le_three_iff_no_gap",
+    "keyInsights": [
+      "**Finite reduction is the core theorem**: The full infinite conjecture reduces to checking finitely many cases in [3, N₀). This mirrors the EFL threshold structure in other number-theoretic problems",
+      "**Gap analysis**: gapSize = max(0, N₀ - 3) exactly quantifies the computational work needed. If N₀ ≤ 3, the conjecture is resolved by combining known small cases with Tao's result",
+      "**Near-optimal bounds suggest small threshold**: Fryntov-Nazarov's f(n) ≤ 2n + O(n^{7/8}) is close to the conjectured optimal 2n, suggesting Tao's probabilistic methods may kick in at moderate n",
+      "**Threshold minimality**: Nat.find gives the minimal threshold, and threshold_is_minimal proves no smaller value works universally"
+    ],
+    "prerequisites": [
+      "Complex analysis: polynomial lemniscates, arc length",
+      "Number theory: Nat.find, well-ordering",
+      "Familiarity with Erdős Problem #114"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Basic Setup: Monic Polynomials and Lemniscate Length",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Defines MonicPoly structure, axiomatizes lemniscateLength and maxLemniscateLength functions, defines the extremal polynomial zⁿ-1.",
+      "mathContext": "MonicPoly: $z^n + a_{n-1}z^{n-1} + \\cdots + a_0$. $f(n) = \\sup\\{L(p) : p \\text{ monic, deg } n\\}$."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 69,
+      "endLine": 97,
+      "summary": "Axiomatizes Dolzhenko bound (f(n) ≤ 4πn, 1961) and Danchenko bound (f(n) ≤ 2πn, 2007). Proves Danchenko improves Dolzhenko.",
+      "mathContext": "Dolzhenko: $f(n) \\leq 4\\pi n$. Danchenko: $f(n) \\leq 2\\pi n$. Trivially $2\\pi < 4\\pi$."
+    },
+    {
+      "id": "tao-result",
+      "title": "The Maximizer Conjecture and Tao's Result",
+      "startLine": 98,
+      "endLine": 117,
+      "summary": "Defines UniqueMaximizer and MaximizerConjecture. Axiomatizes Tao's 2025 result: unique maximizer for all sufficiently large n.",
+      "mathContext": "Tao (2025): $\\exists N_0, \\forall n \\geq N_0$, $z^n - 1$ uniquely maximizes $L(p)$ (up to rotation)."
+    },
+    {
+      "id": "threshold",
+      "title": "The Threshold and Its Properties",
+      "startLine": 118,
+      "endLine": 141,
+      "summary": "Defines taoThreshold via Nat.find. Proves unique_max_above_threshold, threshold_is_minimal, threshold_le_of_holds_from.",
+      "mathContext": "$N_0 = \\min\\{N : \\forall n \\geq N, \\text{UniqueMaximizer}(n)\\}$. Well-defined by Tao's result."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases and Finite Reduction",
+      "startLine": 142,
+      "endLine": 187,
+      "summary": "Proves n=0 case, axiomatizes n=1,2. Proves the key finite_reduction theorem and small_threshold_resolves.",
+      "mathContext": "$n \\leq 2$: resolved. Finite reduction: full conjecture $\\iff$ all $n \\in [3, N_0)$ verified."
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Analysis",
+      "startLine": 188,
+      "endLine": 226,
+      "summary": "Defines gapSize, proves gap_bounded, empty_gap_resolves, threshold_le_three_iff_no_gap.",
+      "mathContext": "Gap $= \\max(0, N_0 - 3)$. Gap $= 0 \\iff N_0 \\leq 3 \\iff$ conjecture holds."
+    },
+    {
+      "id": "verification",
+      "title": "Upper Bound Consistency and Computability",
+      "startLine": 227,
+      "endLine": 299,
+      "summary": "Fryntov-Nazarov bound axiomatized. Verification count and explicit gap bound theorems for computational approach.",
+      "mathContext": "Fryntov-Nazarov: $f(n) \\leq 2n + Cn^{7/8}$. If $N_0 \\leq K$, only $K - 3$ cases to check."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the structural mathematics of Tao's lemniscate threshold. The key theorem finite_reduction shows the full conjecture is equivalent to a finite verification problem. With 12 theorems proved and 12 axioms (all deep results or definitional), the file provides a clean framework for tracking progress on making N₀ explicit.",
+    "implications": "**Theoretical Significance**\n\n1. **Finite-to-infinite bridge**: The finite reduction theorem is the key structural result, showing how an asymptotic theorem (Tao) plus finite verification yields a universal result\n\n2. **Computational path**: If N₀ is ever made explicit and is small enough, the conjecture could be resolved by computer verification of the gap cases\n\n3. **Historical progression**: The sequence Dolzhenko → Danchenko → Fryntov-Nazarov → Tao shows steady improvement toward the conjecture",
+    "openQuestions": [
+      "What is the explicit value of N₀? Can it be extracted from Tao's proof?",
+      "Is N₀ ≤ 3, which would resolve the conjecture immediately?",
+      "Can computational methods verify UniqueMaximizer for specific n values (e.g., n = 3, 4, 5)?",
+      "Is there a non-probabilistic proof that would yield a smaller threshold?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "finite_reduction",
+      "type": "core",
+      "description": "The full MaximizerConjecture is equivalent to verifying all n in [3, taoThreshold)",
+      "leanType": "MaximizerConjecture ↔ (∀ n, 3 ≤ n → n < taoThreshold → UniqueMaximizer n)"
+    },
+    {
+      "name": "unique_max_above_threshold",
+      "type": "core",
+      "description": "z^n - 1 is the unique maximizer for all n ≥ taoThreshold",
+      "leanType": "∀ n ≥ taoThreshold, UniqueMaximizer n"
+    },
+    {
+      "name": "small_threshold_resolves",
+      "type": "core",
+      "description": "If taoThreshold ≤ 3, the conjecture holds (combining small cases with Tao)",
+      "leanType": "taoThreshold ≤ 3 → MaximizerConjecture"
+    },
+    {
+      "name": "known_small_cases",
+      "type": "supporting",
+      "description": "UniqueMaximizer holds for n ≤ 2 (trivial, elementary, Eremenko-Hayman)",
+      "leanType": "∀ n ≤ 2, UniqueMaximizer n"
+    },
+    {
+      "name": "empty_gap_resolves",
+      "type": "supporting",
+      "description": "gapSize = 0 implies the full conjecture",
+      "leanType": "gapSize = 0 → MaximizerConjecture"
+    },
+    {
+      "name": "danchenko_improves_dolzhenko",
+      "type": "supporting",
+      "description": "2π·n ≤ 4π·n: Danchenko's bound is strictly better",
+      "leanType": "2 * π * n ≤ 4 * π * n"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-114",
+      "relationship": "extends",
+      "description": "Extends the main Erdős #114 formalization by defining Tao's threshold and proving finite reduction"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "T. Tao"
+      ],
+      "title": "On the maximization of the lemniscate length",
+      "venue": "Preprint",
+      "year": "2025",
+      "note": "Proves z^n-1 uniquely maximizes lemniscate length for all sufficiently large n"
+    },
+    {
+      "authors": [
+        "A. Fryntov",
+        "F. Nazarov"
+      ],
+      "title": "New variations on the theme of polynomial lemniscates",
+      "venue": "Lecture Notes in Mathematics",
+      "year": "2009",
+      "note": "Near-optimal upper bound f(n) ≤ 2n + O(n^{7/8})"
+    },
+    {
+      "authors": [
+        "V.I. Danchenko"
+      ],
+      "title": "On lengths of lemniscates",
+      "venue": "Mat. Zametki",
+      "year": "2007",
+      "note": "Improved upper bound f(n) ≤ 2πn"
+    },
+    {
+      "authors": [
+        "A. Eremenko",
+        "W.K. Hayman"
+      ],
+      "title": "On the length of lemniscates",
+      "venue": "Michigan Math. J.",
+      "year": "1999",
+      "note": "Resolved the n=2 case"
+    },
+    {
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
+      "title": "Metric properties of polynomials",
+      "venue": "J. Analyse Math.",
+      "year": "1958",
+      "note": "Original problem formulation"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": "Erdos114OQ01",
+    "lineCount": 299,
+    "axiomCount": 12,
+    "theoremCount": 14,
+    "substantiveTheoremCount": 12,
+    "sorryTheorems": 0,
+    "definitionCount": 5,
+    "mainTheorems": [
+      {
+        "name": "finite_reduction",
+        "type": "proved",
+        "description": "Full conjecture ↔ verifying all n in [3, N₀)"
+      },
+      {
+        "name": "unique_max_above_threshold",
+        "type": "proved",
+        "description": "UniqueMaximizer for n ≥ taoThreshold"
+      },
+      {
+        "name": "small_threshold_resolves",
+        "type": "proved",
+        "description": "Threshold ≤ 3 resolves everything"
+      },
+      {
+        "name": "known_small_cases",
+        "type": "proved",
+        "description": "n ≤ 2 resolved"
+      }
+    ]
+  }
+}

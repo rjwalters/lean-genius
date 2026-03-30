@@ -1,0 +1,24 @@
+{
+  "id": "factor-remainder-nullstellensatz-oq-01",
+  "title": "Strong Nullstellensatz I(V(J)) = √J via Mathlib",
+  "slug": "factor-remainder-nullstellensatz-oq-01",
+  "description": "Bridges the gallery's Factor-Remainder infrastructure to Mathlib's Nullstellensatz (MvPolynomial.vanishingIdeal_zeroLocus_eq_radical). Derives weak Nullstellensatz, membership criterion, and radical ideal correspondence as corollaries.",
+  "meta": {
+    "author": "Hilbert (1893), formalized via Mathlib",
+    "date": "1893",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderNullstellensatzOQ01.lean",
+    "tags": [
+      "algebra",
+      "algebraic-geometry",
+      "nullstellensatz",
+      "polynomial-rings"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 81
+  },
+  "sections": []
+}

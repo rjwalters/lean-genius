@@ -1,0 +1,104 @@
+{
+  "id": "wilsons-theorem-oq-04",
+  "title": "Gauss's Generalization of Wilson's Theorem",
+  "slug": "wilsons-theorem-oq-04",
+  "description": "For n ≥ 3, the product of all integers coprime to n (mod n) equals -1 if and only if n is 4, an odd prime power p^k, or twice an odd prime power 2p^k. This characterizes exactly when the multiplicative group (ℤ/nℤ)× is cyclic.",
+  "meta": {
+    "author": "Carl Friedrich Gauss (1801, Disquisitiones Arithmeticae)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ04.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "gauss",
+      "cyclic-groups",
+      "primitive-roots",
+      "generalization"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems are fully proved. The classification relies on Mathlib's ZMod.isCyclic_units_iff and the concrete↔abstract bridge from OQ01/OQ02.",
+    "dateAdded": "2026-03-30",
+    "lineCount": 67,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.isCyclic_units_iff",
+        "description": "Classification of when (ZMod n)ˣ is cyclic",
+        "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
+      },
+      {
+        "theorem": "Nat.Wilson",
+        "description": "Wilson's theorem for primes",
+        "module": "Mathlib.NumberTheory.Wilson"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gauss proved this generalization in his Disquisitiones Arithmeticae (1801, Article 73). Wilson's theorem (1770) states that (p-1)! ≡ -1 (mod p) for primes p. Gauss asked: for which n does ∏{k coprime to n} k ≡ -1 (mod n)? The answer is precisely n ∈ {1, 2, 4, p^k, 2p^k} for odd primes p — exactly the values where primitive roots exist, i.e., where (ℤ/nℤ)× is cyclic.",
+    "problemStatement": "For n ≥ 3, prove that the product of all integers in {1, ..., n-1} coprime to n is congruent to -1 modulo n if and only if n is 4, an odd prime power p^k, or twice an odd prime power 2p^k.",
+    "text": "The Gauss generalization characterizes when the product of the unit group mod n equals -1. The key insight is that this is equivalent to the unit group being cyclic, and Mathlib classifies exactly when (ℤ/nℤ)× is cyclic.",
+    "proofStrategy": "The proof has two layers:\n\n1. **Concrete ↔ Abstract Bridge**: Show that unitsProduct n % n = n-1 (concrete computation) is equivalent to ∏(ZMod n)ˣ = -1 (abstract algebra). This bridge is proved in OQ01/OQ02.\n\n2. **Cyclic Classification**: ∏ units = -1 iff the unit group is cyclic (Frobenius/Gauss). Mathlib's `ZMod.isCyclic_units_iff` gives: (ZMod n)ˣ is cyclic iff n ∈ {4, p^k, 2p^k}.",
+    "keyInsights": [
+      "The product of all units equals -1 iff the unit group is cyclic — a group-theoretic characterization",
+      "Cyclic unit groups correspond exactly to moduli with primitive roots: {1, 2, 4, p^k, 2p^k}",
+      "The concrete computation (unitsProduct n % n) connects to the abstract product (∏ (ZMod n)ˣ) via ZMod.val",
+      "For primes p, this recovers Wilson's theorem as a special case (p = p^1)"
+    ],
+    "prerequisites": [
+      "Number theory (modular arithmetic, Euler's totient)",
+      "Abstract algebra (cyclic groups, unit groups)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-statement",
+      "title": "Gauss–Wilson Main Statement",
+      "startLine": 40,
+      "endLine": 48,
+      "summary": "The full classification: unitsProduct n % n = n-1 ↔ n ∈ {4, p^k, 2p^k}."
+    },
+    {
+      "id": "cyclic-equivalence",
+      "title": "Cyclic Group Equivalence",
+      "startLine": 50,
+      "endLine": 54,
+      "summary": "The algebraic characterization: product = -1 iff (ZMod n)ˣ is cyclic."
+    },
+    {
+      "id": "prime-recovery",
+      "title": "Recovery of Wilson's Theorem",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "For odd primes, the Gauss generalization specializes to Wilson's theorem."
+    }
+  ],
+  "conclusion": {
+    "text": "The Gauss generalization is fully formalized with 0 sorries and 0 axioms. The classification leverages Mathlib's characterization of cyclic unit groups, while the concrete↔abstract bridge is built in OQ01/OQ02.",
+    "opens": [],
+    "implications": "This completes the answer to OQ-04 from the Wilson's theorem gallery entry."
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "generalizes",
+      "description": "Generalizes Wilson's theorem from primes to all moduli with primitive roots"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gauss_wilson",
+      "type": "core",
+      "statement": "∀ n ≥ 3, unitsProduct n % n = n - 1 ↔ (∃ p k, Prime p ∧ p ≠ 2 ∧ k ≥ 1 ∧ (n = p^k ∨ n = 2p^k)) ∨ n = 4",
+      "description": "The full Gauss–Wilson classification theorem.",
+      "significance": "Complete characterization of when the unit product equals -1"
+    },
+    {
+      "name": "gauss_wilson_cyclic",
+      "type": "core",
+      "statement": "∀ n ≥ 3, unitsProduct n % n = n - 1 ↔ IsCyclic (ZMod n)ˣ",
+      "description": "The group-theoretic equivalence.",
+      "significance": "Connects concrete computation to abstract algebra"
+    }
+  ]
+}

@@ -16,7 +16,7 @@
       "difference-sets"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 43,
     "erdosUrl": "https://erdosproblems.com/43",
     "erdosProblemStatus": "open",
@@ -63,15 +63,15 @@
       "ErdosProblem43: main conjecture $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$",
       "EqualSizeVariant: equal-size strengthening with $(1-c)$ factor",
       "barreto_counterexample: axiom disproving equal-size variant",
-      "sidon_pair_bound: $\\binom{|A|}{2} \\le N$ (sorry)",
-      "disjoint_diff_combined_bound: combined bound under disjoint differences (sorry)",
-      "tao_equal_size_bound: $m^2 \\le 2N+1$ when $|A|=|B|=m$ (sorry)",
-      "sidon_diff_count: $|A-A| = |A|^2 - |A| + 1$ (sorry)",
-      "disjoint_diff_total: combined difference count (sorry)"
+      "sidon_pair_bound: $\\binom{|A|}{2} \\le N$",
+      "disjoint_diff_combined_bound: combined bound under disjoint differences",
+      "tao_equal_size_bound: $m^2 \\le 2N+1$ when $|A|=|B|=m$",
+      "sidon_diff_count: $|A-A| = |A|^2 - |A| + 1$ (proved)",
+      "disjoint_diff_total: combined difference count (proved)"
     ],
     "axiomCount": 3,
-    "lineCount": 129,
-    "assumptions": "3 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "lineCount": 312,
+    "assumptions": "3 axioms (maxSidonSize, sidon_size_asymptotic, barreto_counterexample). 0 sorries — all theorems proved."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #43** ($100 bounty)\n\nThis is one of Erdős's celebrated prize problems in additive combinatorics, concerning the structure of **Sidon sets** (also called $B_2$ sets) under a disjoint difference constraint.\n\n**Historical Development:**\n- **Erdős & Turán (1941):** Proved $f(N) \\le \\sqrt{N} + O(N^{1/4})$ and constructed Sidon sets achieving $f(N) \\ge \\sqrt{N} - O(N^{1/4})$ using Singer difference sets from finite projective planes. This established $f(N) \\sim \\sqrt{N}$.\n- **Chowla (1944):** Simplified the Singer construction, showing explicit Sidon sets of size $\\sim \\sqrt{p}$ for primes $p$.\n- **Erdős (1950s-1970s):** Posed Problem #43 asking whether two Sidon sets with disjoint nonzero differences are \"complementary\" — their combined pair count cannot exceed what a single optimal Sidon set achieves, up to $O(1)$.\n- **Tao:** Proved partial results for the equal-size case: if $|A| = |B| = m$, then $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N}$.\n- **Barreto:** Showed the equal-size variant with a multiplicative savings factor $(1-c)$ is false for infinitely many $N$.\n\n**Mathematical Context:**\nThe problem sits at the intersection of additive combinatorics and extremal set theory. Sidon sets are fundamental objects: a set $A \\subseteq \\{1,\\ldots,N\\}$ is Sidon if all pairwise sums $a + b$ ($a \\le b$) are distinct, equivalently if all nonzero differences are distinct. The maximum size $f(N) \\sim \\sqrt{N}$ arises because a Sidon set of size $m$ produces $\\binom{m}{2}$ distinct sums in $\\{2,\\ldots,2N\\}$, giving $\\binom{m}{2} \\lesssim N$. Problem #43 asks whether this constraint is tight even when the difference space is partitioned between two sets.",
@@ -159,16 +159,16 @@
       "title": "Structural Pair Bounds",
       "startLine": 77,
       "endLine": 97,
-      "summary": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts.",
-      "mathContext": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts."
+      "summary": "`sidon_pair_bound`: $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound`: $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts.",
+      "mathContext": "`sidon_pair_bound`: $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound`: $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts."
     },
     {
       "id": "tao",
       "title": "Tao's Equal-Size Bound",
       "startLine": 98,
       "endLine": 116,
-      "summary": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$.",
-      "mathContext": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$."
+      "summary": "`tao_equal_size_bound`: when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$.",
+      "mathContext": "`tao_equal_size_bound`: when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$."
     },
     {
       "id": "counting",
@@ -180,14 +180,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #43 ($100 bounty) asks whether two Sidon sets with disjoint nonzero differences satisfy $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + O(1)$. The formalization captures the full landscape: the main OPEN conjecture, the equal-size variant (disproved by Barreto), Tao's partial bound $m \\le 0.707\\sqrt{N}$, and the underlying counting arguments. Five `sorry` placeholders mark the counting lemmas.",
+    "summary": "Erdős Problem #43 ($100 bounty) asks whether two Sidon sets with disjoint nonzero differences satisfy $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + O(1)$. The formalization captures the full landscape: the main OPEN conjecture, the equal-size variant (disproved by Barreto), Tao's partial bound $m \\le 0.707\\sqrt{N}$, and the counting arguments (all proved). 3 axioms remain for the open conjecture and known results.",
     "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Extremal set theory:** The conjecture asks whether the Sidon property under difference-disjointness exhibits a sharp \"complementarity\" phenomenon\n**2. Additive combinatorics:** Connects to $B_2$ sequence theory and sumset problems\n3. **Erdős Problem #30:** The $f(N)$ asymptotic is a $1000 prize problem; sharper bounds on $f(N)$ would refine the conjecture\n4. **Multiplicative analogues:** Erdős Problem #425 studies the multiplicative Sidon version $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$.",
     "openQuestions": [
       "Does $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + O(1)$ hold for all Sidon sets with disjoint differences?",
       "What is the tightest constant in the $O(1)$ error term?",
       "Can Tao's equal-size bound $m \\le (1/\\sqrt{2})\\sqrt{N}$ be sharpened for unequal sizes?",
       "What happens for $k \\ge 3$ Sidon sets with pairwise disjoint differences — does the bound become $\\sum_{i=1}^k \\binom{|A_i|}{2} \\le \\binom{f(N)}{2} + O(1)$?",
-      "Can the five `sorry` counting lemmas be proved using Mathlib's `Finset.card` API?"
+      "Can the two remaining `sorry` counting lemmas be proved using Mathlib's `Finset.card` API?"
     ]
   },
   "crossReferences": [
@@ -281,9 +281,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 129,
+    "lineCount": 312,
     "axiomCount": 3,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 5
   }
 }

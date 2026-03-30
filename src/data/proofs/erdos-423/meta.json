@@ -28,9 +28,9 @@
       "Asymptotic analysis and Filter.Tendsto",
       "Set.Infinite and natural density concepts"
     ],
-    "lineCount": 321,
+    "lineCount": 409,
     "assumptions": "5 axioms: consSeq_is_consecutive_sum, consSeq_minimal (structural), excess_nondecreasing, excess_unbounded, infinitely_many_missing (Bolan-Tang). consSeq_strictMono proved from definition.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.29.0"
   },
   "overview": {
     "historicalContext": "**Sums of Consecutive Terms Sequence**\n\nThis problem belongs to a family of greedy integer sequences studied by Erdős, where each term is determined by a minimality condition. The construction is reminiscent of the Ulam sequence (Problem #342, 1964), where terms are integers uniquely representable as a sum of two earlier terms. Problem #423 appeared in Erdős's 1977 paper [Er77c, p.71] and was included in the 1980 Erdős-Graham monograph [ErGr80, p.83]. The sequence $a_1 = 1, a_2 = 2$, and $a_k = \\min\\{m > a_{k-1} : m = a_i + a_{i+1} + \\cdots + a_j \\text{ for some } i \\leq j < k\\}$ is catalogued as OEIS A005243.\n\n**Chronological Development:**\n- **1964 (Ulam):** Introduced the Ulam sequence, the prototype for greedy additive sequence constructions\n- **1977 (Erdős):** Problem posed in [Er77c], asking about the asymptotic behavior of $a(n)$\n- **1980 (Erdős-Graham):** Included as Problem #423 in the monograph\n- **2024-2025 (Bolan, Tang):** Major progress — proved that the excess $a(n) - n$ is nondecreasing and unbounded, and that infinitely many integers are missing from the sequence\n\nThe sequence begins $1, 2, 3, 5, 6, 8, 10, 11, 14, 16, 17, 18, 19, 21, 22, \\ldots$ — note the gaps at $4, 7, 9, 12, 13, 15, 20, \\ldots$ The number 4 is the first missing integer because at the time it would be needed, no contiguous block of earlier terms sums to 4. Despite recent progress establishing superlinear growth, the precise asymptotic behavior — whether $a(n)/n$ converges, and to what — remains completely open.",
@@ -111,18 +111,42 @@
       "mathContext": "The missing number proofs use a hybrid approach: verify $a_k \\neq m$ for small $k$ by computation, then use $a_k > m$ for large $k$ via monotonicity. This gives a complete proof that $m \\notin \\text{seqRange}$ without checking infinitely many terms."
     },
     {
+      "id": "refined-bounds",
+      "title": "Part VIII: Refined Bounds from Excess Nondecreasing",
+      "startLine": 281,
+      "endLine": 308,
+      "summary": "Refined lower bounds combining verified initial values with excess_nondecreasing: consSeq(n) ≥ n+2 for n≥3, ≥ n+3 for n≥5, ≥ n+4 for n≥6. Integer version of excess nondecreasing.",
+      "mathContext": "Since the excess $a(n) - n$ is nondecreasing (Bolan-Tang), any computed excess propagates forward. From $a(6) = 10$ we get $a(n) - n \\geq 4$ for all $n \\geq 6$."
+    },
+    {
+      "id": "superlinear",
+      "title": "Part IX: Super-Linear Growth",
+      "startLine": 310,
+      "endLine": 337,
+      "summary": "Defines excessInt (ℤ-valued excess). Proves super-linear growth and eventual exceedance: for any C, eventually consSeq(n) ≥ n + C.",
+      "mathContext": "The filter-theoretic formulation $\\text{Tendsto}(a(n)-n, \\text{atTop}, \\text{atTop})$ is restated as the concrete $\\forall C,\\, \\exists N,\\, \\forall n \\geq N,\\, a(n) \\geq n + C$."
+    },
+    {
+      "id": "structural",
+      "title": "Part X: Structural Properties",
+      "startLine": 339,
+      "endLine": 371,
+      "summary": "Injectivity from strict monotonicity, index < value relationship, preimage finiteness, eventual excess bounds, computed excess values.",
+      "mathContext": "Structural consequences: $a$ is injective, $k < a(k)$ for all $k$, $\\{n : a(n) \\leq m\\}$ is finite. Computed excess values: $a(0)-0 = 1$, $a(3)-3 = 2$, $a(6)-6 = 4$."
+    },
+    {
       "id": "main-question",
-      "title": "Part VIII: The Main Question",
-      "startLine": 228,
-      "endLine": 242,
+      "title": "Part XI: The Main Question",
+      "startLine": 373,
+      "endLine": 387,
       "summary": "Open question: does a(n)/n converge to some C > 1? Formalized as ErdosQuestion423_convergence using Filter.Tendsto.",
       "mathContext": "The convergence question asks whether $\\lim_{n \\to \\infty} a(n)/n = C$ exists for some $C > 1$. If so, the sequence has natural density $1/C$, giving the proportion of integers that appear."
     },
     {
       "id": "summary",
-      "title": "Part IX: Summary",
-      "startLine": 243,
-      "endLine": 267,
+      "title": "Part XII: Summary",
+      "startLine": 388,
+      "endLine": 416,
       "summary": "erdos_423_known proved: combines excess nondecreasing and infinitely many missing. Status: OPEN.",
       "mathContext": "The summary theorem packages the two main known results: $(\\forall m \\leq n,\\; a(m)-m \\leq a(n)-n) \\wedge \\text{Set.Infinite}(\\text{missingNumbers})$. The proof combines the Bolan-Tang axioms."
     }
@@ -171,9 +195,9 @@
       "Finset"
     ],
     "namespace": "Erdos423",
-    "lineCount": 321,
+    "lineCount": 409,
     "axiomCount": 5,
-    "theoremCount": 28,
-    "definitionCount": 8
+    "theoremCount": 38,
+    "definitionCount": 9
   }
 }

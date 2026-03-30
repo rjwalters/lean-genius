@@ -16,7 +16,7 @@
       "analytic-number-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 853,
     "erdosUrl": "https://erdosproblems.com/853",
     "erdosProblemStatus": "open",
@@ -48,7 +48,7 @@
       "nthPrime: 0-indexed prime via Nat.nth",
       "primeGap: prime gap d_n = p_{n+1} - p_n",
       "gapSet: set of realized gap values up to x",
-      "r: smallest missing even gap (axiomatized)",
+      "r: smallest missing even gap (defined via Nat.find)",
       "primeGap_pos: proved all gaps are positive",
       "primeGap_zero: proved d\u2080 = 1",
       "primeGap_even: proved all gaps for n \u2265 1 are even",
@@ -58,23 +58,31 @@
       "r_monotone: proved r is weakly increasing",
       "weak_implies_all_even_gaps: proved weak conjecture \u27f9 all even gaps appear",
       "erdos_853_weak: weak conjecture r(x) \u2192 \u221e",
-      "erdos_853_strong: strong conjecture r(x)/log x \u2192 \u221e"
+      "erdos_853_strong: strong conjecture r(x)/log x \u2192 \u221e",
+      "nthPrime_two: proved p\u2082 = 5 via count/nth Galois connection",
+      "primeGap_one: proved d\u2081 = 2 (first twin prime gap)",
+      "two_mem_gapSet: gap 2 is always in gapSet(x) for x \u2265 3",
+      "r_ge_four: proved r(x) \u2265 4 for x \u2265 3",
+      "r_upper_bound: proved r(x) \u2264 x for x \u2265 4 (even + odd cases)",
+      "gap_lt_prime: proved d\u2099 < p\u2099 from Bertrand's postulate",
+      "gapSet_lt: proved all gaps in gapSet(x) are < x",
+      "maynard_tao_gap_persistent: Maynard-Tao \u27f9 some gap \u2264 246 persists forever"
     ],
     "axiomCount": 4,
-    "lineCount": 327,
-    "assumptions": "5 axioms: r_upper_bound, erdos_853_weak, erdos_853_strong, maynard_tao_bounded_gaps, cramer_conjecture_bound. 1 sorry(s) remain."
+    "lineCount": 523,
+    "assumptions": "4 axioms: erdos_853_weak, erdos_853_strong (OPEN conjectures), maynard_tao_bounded_gaps (Maynard-Tao 2014), cramer_conjecture_bound (Cramér conjecture). r(x) defined via Nat.find. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erd\u0151s Problem #853: Completeness of the Prime Gap Census**\n\nErd\u0151s posed this problem in 1985 [Er85c], asking about the completeness of prime gap sizes. For primes up to $x$, we observe a finite set of gap values $d_n = p_{n+1} - p_n$. The function $r(x)$ measures how far this set is from containing all even integers: it is the smallest even number $\\ge 2$ not appearing as any gap.\n\n**Historical Timeline:**\n- 1849: Polignac conjectured every even number is a prime gap infinitely often\n- 1936: Cram\u00e9r proposed his probabilistic model for prime gaps, predicting maximal gap $\\sim (\\log x)^2$\n- 1985: Erd\u0151s formulated Problem 853, asking whether $r(x) \\to \\infty$\n- 1995: Granville refined Cram\u00e9r's constant to $2e^{-\\gamma} \\approx 1.119$\n- 2013: Zhang proved bounded gaps ($\\liminf d_n \\le 7 \\times 10^7$), the first finite bound\n- 2014: Maynard and Tao independently improved to $\\liminf d_n \\le 246$\n- 2014: Polymath8b project achieved the current bound of 246\n\n**The Key Tension:** The Maynard-Tao theorem guarantees some small gap appears infinitely often, confirming that at least some entries of the gap census grow without bound. But this says nothing about whether ALL even gaps eventually appear. The problem asks about the **completeness** of the gap set $G(x) = \\{d_n : p_n \\le x\\}$, which is a fundamentally different question from the existence of small gaps.\n\n**Notably rich formalization:** This file proves 14 theorems directly from Mathlib (no sorries), including the crucial `primeGap_even` (all gaps after $d_0$ are even), `r_monotone` (the smallest missing gap is weakly increasing), and `weak_implies_all_even_gaps` (the weak conjecture implies gap completeness).",
     "problemStatement": "Is $r(x) \\to \\infty$, where $r(x) = \\min\\{t \\in 2\\mathbb{N}_{\\ge 1} : t \\notin G(x)\\}$ is the smallest even integer not appearing as a prime gap for primes up to $x$? The stronger form asks whether $r(x)/\\log x \\to \\infty$.",
     "text": "Let r(x) be the smallest even integer not appearing as a prime gap d_n = p_{n+1} - p_n for p_n \u2264 x. Is r(x) \u2192 \u221e? Or even r(x)/log x \u2192 \u221e? Status: OPEN.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Prime Infrastructure:** `nthPrime` and `primeGap` via Mathlib's `Nat.nth`. Prove 9 structural theorems from Mathlib.\n2. **Gap Set:** `gapSet(x)` with 4 proved properties (monotonicity, evenness, positivity, $\\ge 2$)\n3. **r(x) Axiomatization:** Four axioms characterizing $r(x)$ as the minimum missing even gap\n4. **Proved Properties:** `r_monotone` from the axioms; `weak_implies_all_even_gaps` from the weak conjecture\n5. **Deep Connections:** Maynard-Tao bounded gaps and Cram\u00e9r's conditional upper bound",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Prime Infrastructure:** `nthPrime` and `primeGap` via Mathlib's `Nat.nth`. Prove structural theorems ($p_0=2$, $p_1=3$, $p_2=5$, gap evenness, positivity) from Mathlib.\n2. **Gap Set:** `gapSet(x)` with proved properties (monotonicity, evenness, finiteness, $\\text{gaps} < x$)\n3. **r(x) Definition:** $r(x)$ defined via `Nat.find` as the minimum even integer $\\ge 2$ not in `gapSet(x)`. Properties (evenness, minimality, non-membership) proved from `Nat.find_spec`.\n4. **Bounds:** Upper bound $r(x) \\le x$ for $x \\ge 4$ (Bertrand + mod 3 argument). Lower bound $r(x) \\ge 4$ for $x \\ge 3$ (gap 2 always present).\n5. **Consequences:** `weak_implies_all_even_gaps`, `maynard_tao_gap_persistent`\n6. **Deep Connections:** Maynard-Tao bounded gaps and Cram\\u00e9r's conditional upper bound",
     "keyInsights": [
       "**Even gap restriction**: All prime gaps $d_n$ for $n \\ge 1$ are even (proved from Mathlib: both $p_n$ and $p_{n+1}$ are odd primes $\\ge 3$). The only odd gap is $d_0 = 1$ (between 2 and 3). This justifies restricting $r(x)$ to even values.",
       "**Monotonicity of r**: As $x$ grows, more gap values enter $G(x)$, so $r(x)$ can only increase. Proved by contradiction: if $r(y) < r(x)$ for $x \\le y$, minimality gives $r(y) \\in G(x) \\subseteq G(y)$, contradicting $r(y) \\notin G(y)$.",
       "**Maynard-Tao constraint**: The bounded gaps theorem guarantees some gap $\\le 246$ appears infinitely often, confirming small even gaps are realized. But this gives no information about completeness of the gap census.",
       "**Cram\u00e9r's conditional bound**: Cram\u00e9r's conjecture ($\\max_{p_n \\le x} d_n \\sim (\\log x)^2$) would imply $r(x) \\le O((\\log x)^2)$. Combined with the strong conjecture $r(x)/\\log x \\to \\infty$, this would place $r(x)$ between $\\log x$ and $(\\log x)^2$.",
-      "**14 proved theorems**: The file derives extensive structural theory from Mathlib with 0 sorries, demonstrating the power of Mathlib's `Nat.nth` prime enumeration infrastructure."
+      "**31 proved theorems**: The file derives extensive structural theory from Mathlib with 0 sorries, including concrete bounds $4 \\le r(x) \\le x$ and a consequence of Maynard-Tao. The function $r(x)$ is defined constructively via `Nat.find`, not axiomatized."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -143,10 +151,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 339,
+    "lineCount": 523,
     "axiomCount": 4,
-    "theoremCount": 26,
-    "definitionCount": 3
+    "theoremCount": 31,
+    "definitionCount": 5
   },
   "crossReferences": [
     {

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Added 3 structural theorems: distSq_eq_zero_iff, distSq_pos_of_ne, bipartiteDistSet_mono. File now 133 lines, 7 theorems, 3 axioms, 0 sorries.",
+    "progressSummary": "Added verified Lenz R4 construction: 4 new defs, 3 new proved theorems (0 sorries). File now 178 lines, 10 theorems, 3 axioms, 0 sorries.",
     "builtItems": [
       "theorem distSq_nonneg (proved)",
       "theorem distSq_self (proved)",
@@ -37,7 +37,12 @@
       "theorem bipartiteDistSet_card_le (proved)",
       "distSq_eq_zero_iff: zero iff equal (Erdos661Problem.lean)",
       "distSq_pos_of_ne: positive for distinct points (Erdos661Problem.lean)",
-      "bipartiteDistSet_mono: monotonicity under subsets (Erdos661Problem.lean)"
+      "bipartiteDistSet_mono: monotonicity under subsets (Erdos661Problem.lean)",
+      "Point4 type: (R×R)×(R×R) for R4 points",
+      "distSq4: squared Euclidean distance in R4",
+      "lenzCircle1/lenzCircle2: orthogonal unit circle parameterizations",
+      "lenz_distSq4_eq: bipartite distance = 2 (verified, 0 sorries)",
+      "lenzCircle1_unit, lenzCircle2_unit: unit norm (verified)"
     ],
     "insights": [
       "Fixed critical inconsistency: minBipartiteDist/minDistinct2n were noncomputable def (unfoldable to 0) making axioms contradictory. Changed to opaque.",
@@ -46,7 +51,11 @@
       "Problem is $50 prize, open, tractability 4/10",
       "distSq_eq_zero_iff: characterize zero distance via sq_eq_zero_iff and sub_eq_zero",
       "distSq_pos_of_ne: positive distance for distinct points via dichotomy",
-      "bipartiteDistSet_mono: distance sets grow monotonically with point sets"
+      "bipartiteDistSet_mono: distance sets grow monotonically with point sets",
+      "Formalized Lenz construction in R4: two orthogonal unit circles give constant bipartite distance sqrt(2)",
+      "Proved lenz_distSq4_eq: distSq4(C1(θ), C2(φ)) = 2 for all θ,φ using Pythagorean identity",
+      "Proved lenzCircle1_unit, lenzCircle2_unit: both circles have unit norm",
+      "Dimension gap: F4(2n)=1 (verified) vs conjectured F2(2n)=o(n/sqrt(log n)) in R2"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -73,10 +82,10 @@
     {
       "path": "Proofs/Erdos661Problem.lean",
       "filename": "Erdos661Problem.lean",
-      "lineCount": 134,
-      "theoremCount": 7,
-      "axiomCount": 3,
-      "defCount": 3,
+      "lineCount": 165,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos661Problem.lean"

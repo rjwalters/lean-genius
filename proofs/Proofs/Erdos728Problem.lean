@@ -200,11 +200,6 @@ def legendreSum (n p : ℕ) : ℕ :=
 a! * b! | n! * (a + b - n)! iff for every prime p,
 v_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!).
 -/
-axiom divisibility_via_legendre (a b n : ℕ) (h : a + b ≥ n) :
-    factorialDivisibility a b n ↔
-    ∀ p : ℕ, p.Prime →
-      legendreSum n p + legendreSum (a + b - n) p ≥ legendreSum a p + legendreSum b p
-
 /-
 ## Part VIII: Related Results
 
@@ -225,9 +220,6 @@ The divisibility a! * b! | n! is equivalent to:
 The multinomial coefficient n! / (a! * b! * (n-a-b)!) being well-defined
 when extended appropriately.
 -/
-axiom multinomial_interpretation (a b n : ℕ) (h : a + b ≤ n) :
-    a ! * b ! ∣ n ! ↔ n ! / (a ! * b !) % (n - a - b)! = 0
-
 /-
 ## Part IX: Summary
 -/

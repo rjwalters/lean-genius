@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-15T08:18:33.645Z",
-    "iteration": 3,
-    "focus": "Added structural theorems connecting sumSet and repFunction",
+    "iteration": 4,
+    "focus": "Meta corrections: axiomCount 2→1, stale assumptions fixed",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 structural theorems. Total: 19 theorems (incl. 2 private), 1 axiom, 0 sorries.",
+    "progressSummary": "COMPLETED: 0 sorries, 1 axiom (open conjecture erdos_turan_conjecture_28). Fixed stale meta.json (axiomCount 2→1, updated assumptions/sections). sidon_set_density_zero is fully proved.",
     "builtItems": [
       "countingFn: Set.ncard-based counting function in Erdos749Problem.lean",
       "densityRatio: counting function / N ratio in Erdos749Problem.lean",
@@ -49,7 +49,8 @@
       "sumSet_empty (Erdos749Problem.lean:93)",
       "repFunction_empty (Erdos749Problem.lean:97)",
       "repFunction_mono (Erdos749Problem.lean:101)",
-      "repFunction_eq_zero_of_not_mem (Erdos749Problem.lean:110)"
+      "repFunction_eq_zero_of_not_mem (Erdos749Problem.lean:110)",
+      "Fixed meta.json: leanFile.axiomCount 2→1, assumptions text corrected, proofStrategy updated, sections line ranges corrected, lineCount 321→322"
     ],
     "insights": [
       "lowerDensity/upperDensity can be properly defined via Filter.liminf/limsup of Set.ncard-based counting",
@@ -64,7 +65,9 @@
       "sidon_set_density_zero proof strategy: Sidon injectivity on ordered pairs → |S|²≤4N counting bound → densityRatio≤2/√N → limsup=0. Hard part: Finset injection formalization",
       "sumSet_empty: sumset of empty set is empty (by simp)",
       "repFunction_empty/mono: rep function is 0 for empty set and monotone under subset",
-      "repFunction_eq_zero_of_not_mem: rep function vanishes outside sumset"
+      "repFunction_eq_zero_of_not_mem: rep function vanishes outside sumset",
+      "Meta.json had stale axiomCount=2 and listed sidon_set_density_zero as axiom — corrected to axiomCount=1 with only erdos_turan_conjecture_28 as axiom",
+      "File is at maximum formalization: 0 sorries, sole axiom is an open conjecture that cannot be proved"
     ],
     "mathlibGaps": [],
     "nextSteps": [

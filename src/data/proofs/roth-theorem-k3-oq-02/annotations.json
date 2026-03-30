@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rs-graph-def",
+    "type": "definition",
+    "startLine": 50,
+    "endLine": 61,
+    "title": "Ruzsa-Szemerédi Adjacency",
+    "content": "The adjacency relation for the RS graph: edges between parts X-Y and Y-Z test membership in A, while X-Z edges test the doubling condition z - x = 2a for some a ∈ A. The definition uses the 'forward difference' convention for symmetry.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ap-triple-struct",
+    "type": "definition",
+    "startLine": 129,
+    "endLine": 138,
+    "title": "Generalized 3-AP Triple",
+    "content": "A triple (a, b, c) with a, b, c ∈ A and a + b = 2c. This is equivalent to saying (a, c, b) is a 3-term arithmetic progression with common difference c - a.",
+    "difficulty": "basic"
+  },
+  {
+    "id": "triangle-forward",
+    "type": "insight",
+    "startLine": 143,
+    "endLine": 160,
+    "title": "Triangle → AP Triple (Forward Direction)",
+    "content": "A triangle (0,x), (1,y), (2,z) in the RS graph yields a generalized 3-AP: a = y-x from the XY edge, b = z-y from the YZ edge, and c from the XZ edge witness, satisfying a + b = (y-x) + (z-y) = z-x = 2c.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ap-free-key",
+    "type": "insight",
+    "startLine": 194,
+    "endLine": 225,
+    "title": "AP-Free Forces Trivial Triples (Core Lemma)",
+    "content": "The heart of the construction: if A is AP-free, any triple (a,b,c) with a+b = 2c must have a = b = c. Set d = c - a; then APFree gives d ≠ 0 → a ∈ A → (a+d) ∈ A → (a+2d) ∉ A. Since all three are in A, d = 0.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "edge-disjoint",
+    "type": "insight",
+    "startLine": 226,
+    "endLine": 249,
+    "title": "Edge Uniqueness from AP-Freeness",
+    "content": "Each XY-edge (0,x)-(1,y) determines a unique triangle: AP-freeness forces the third vertex z to satisfy z - y = y - x (the common difference). So z = 2y - x is uniquely determined.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "min-removal",
+    "type": "insight",
+    "startLine": 278,
+    "endLine": 310,
+    "title": "Edge Removal Lower Bound",
+    "content": "To make the RS graph triangle-free, every triangle must lose at least one edge. Since triangles are edge-disjoint (AP-free), each removed edge destroys at most one triangle. So at least |A|·N edges must be removed.",
+    "difficulty": "advanced"
+  }
+]

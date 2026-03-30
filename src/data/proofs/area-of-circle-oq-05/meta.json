@@ -1,0 +1,109 @@
+{
+  "id": "area-of-circle-oq-05",
+  "title": "The Gaussian Integral and the Area of a Circle",
+  "slug": "area-of-circle-oq-05",
+  "description": "The Gaussian integral ∫ e^{-x²} dx = √π, proved via Mathlib's integral_gaussian. The appearance of π is explained by the polar-coordinate proof: squaring the integral gives a double integral ∫∫ e^{-(x²+y²)} dx dy that evaluates to the area of a circle.",
+  "meta": {
+    "author": "Pierre-Simon Laplace (1774, polar coordinate proof)",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05.lean",
+    "tags": [
+      "analysis",
+      "integration",
+      "gaussian",
+      "pi",
+      "probability",
+      "normal-distribution"
+    ],
+    "badge": "wip",
+    "sorries": 2,
+    "axiomCount": 0,
+    "assumptions": "None. The Gaussian integral itself is proved via Mathlib. Two sorries remain for standard normal normalization and radial integral (routine measure theory).",
+    "dateAdded": "2026-03-30",
+    "lineCount": 107,
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_gaussian",
+        "description": "The Gaussian integral ∫ e^{-(bx)²} dx = √π/|b|",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫ e^{-x²} dx = √π was first computed by Euler (1729) and independently by Laplace (1774). Laplace's polar-coordinate proof is the most celebrated: squaring the integral and converting to polar coordinates reveals the area of a circle hidden inside. Gauss later connected it to the normal distribution, and it became central to probability theory, statistical mechanics, and quantum field theory.",
+    "problemStatement": "Prove that ∫_{-∞}^{∞} e^{-x²} dx = √π and explain the connection to the area of a circle.",
+    "text": "The Gaussian integral equals √π. The key insight is that squaring the integral produces a double integral ∫∫ e^{-(x²+y²)} dx dy, which in polar coordinates becomes 2π × 1/2 = π. The factor 2π is the circumference of the unit circle, and 1/2 is the radial integral ∫₀^∞ r·e^{-r²} dr.",
+    "proofStrategy": "Use Mathlib's `integral_gaussian` for the main result. The connection to circles is explained through the polar-coordinate decomposition. Corollaries include the scaled Gaussian integral √(π/a) and the standard normal density normalization.",
+    "keyInsights": [
+      "π appears in the Gaussian integral because the proof involves a circle: the polar-coordinate evaluation squares the integral and integrates over angles",
+      "The decomposition I² = (2π)(1/2) = π shows the circumference (2π) and radial integral (1/2) separately",
+      "The scaled Gaussian ∫ e^{-ax²} dx = √(π/a) follows by substitution",
+      "The standard normal density (1/√(2π))e^{-x²/2} integrates to 1, connecting analysis to probability"
+    ],
+    "prerequisites": [
+      "Real analysis (Lebesgue integration)",
+      "Multivariable calculus (polar coordinates, Fubini's theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gaussian-integral",
+      "title": "The Gaussian Integral via Mathlib",
+      "startLine": 30,
+      "endLine": 50,
+      "summary": "Main result: ∫ e^{-x²} dx = √π, proved via Mathlib's integral_gaussian."
+    },
+    {
+      "id": "scaled-gaussian",
+      "title": "Scaled Gaussian",
+      "startLine": 52,
+      "endLine": 63,
+      "summary": "For a > 0: ∫ e^{-ax²} dx = √(π/a)."
+    },
+    {
+      "id": "normal-distribution",
+      "title": "Standard Normal Distribution",
+      "startLine": 65,
+      "endLine": 78,
+      "summary": "The standard normal density integrates to 1."
+    },
+    {
+      "id": "circle-connection",
+      "title": "Connection to Circle Area",
+      "startLine": 80,
+      "endLine": 110,
+      "summary": "Why π appears: the polar-coordinate proof decomposes into circumference × radial integral."
+    }
+  ],
+  "conclusion": {
+    "text": "The Gaussian integral ∫ e^{-x²} dx = √π is formalized via Mathlib. The connection to the area of a circle is made explicit: π appears because the proof involves integrating around a circle in polar coordinates.",
+    "opens": [
+      "Prove the radial integral ∫₀^∞ r·e^{-r²} dr = 1/2 (substitution u = r²)",
+      "Prove standard normal normalization from the scaled Gaussian"
+    ],
+    "implications": "The Gaussian integral is foundational for probability theory (normal distribution), physics (path integrals), and number theory (theta functions)."
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "The Gaussian integral secretly computes the area of a circle via polar coordinates"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gaussian_integral_eq_sqrt_pi",
+      "type": "core",
+      "statement": "∫ x : ℝ, rexp (-(x²)) = √π",
+      "description": "The Gaussian integral.",
+      "significance": "One of the most important integrals in mathematics"
+    },
+    {
+      "name": "scaled_gaussian",
+      "type": "core",
+      "statement": "∫ x : ℝ, rexp (-(a·x²)) = √(π/a) for a > 0",
+      "description": "The scaled Gaussian integral.",
+      "significance": "Used in Fourier transforms, heat equations, probability"
+    }
+  ]
+}

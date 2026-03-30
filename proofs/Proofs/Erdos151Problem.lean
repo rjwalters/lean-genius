@@ -64,15 +64,11 @@ axiom triangleFreeIndep : ℕ → ℕ
     independent set of size ≥ H(n). -/
 axiom triangleFreeIndep_spec (n : ℕ) (G : Type)
     (hv : vertexCount G = n) (htf : IsTriangleFree G) :
-    ∃ I : Finset ℕ, IsIndependent G I ∧ triangleFreeIndep n ≤ I.card
+    ∃ I : Finset ℕ, IsIndependent G I ∧ triangleFreeIndep n ≤ I.card ∧ I.card ≤ n
 
 /-- H(n) ≥ √n (Ramsey lower bound). -/
 axiom triangleFreeIndep_sqrt (n : ℕ) :
     (Nat.sqrt n : ℕ) ≤ triangleFreeIndep n
-
-/-- H(n) ≤ n (trivial upper bound). -/
-axiom triangleFreeIndep_le (n : ℕ) :
-    triangleFreeIndep n ≤ n
 
 /- ## Part IV: Proved Infrastructure Lemmas -/
 
@@ -133,12 +129,9 @@ def ErdosProblem151 : Prop :=
 theorem erdos_151_triangle_free (G : Type) (n : ℕ)
     (hv : vertexCount G = n) (htf : IsTriangleFree G) :
     cliqueTransversal G ≤ n - triangleFreeIndep n := by
-  -- Get independent set I with |I| ≥ H(n)
-  obtain ⟨I, hI_indep, hI_card⟩ := triangleFreeIndep_spec n G hv htf
+  -- Get independent set I with |I| ≥ H(n) and |I| ≤ n
+  obtain ⟨I, hI_indep, hI_card, hI_le⟩ := triangleFreeIndep_spec n G hv htf
   -- Get transversal T from complement of I with |T| ≤ n - |I|
-  have hI_le : I.card ≤ n := by
-    have := triangleFreeIndep_le n
-    omega
   obtain ⟨T, hT_card, hT_trans⟩ := complement_of_indep_is_transversal G I n hv hI_indep hI_le
   -- τ(G) ≤ |T| ≤ n - |I| ≤ n - H(n)
   calc cliqueTransversal G ≤ T.card := cliqueTransversal_min G T hT_trans

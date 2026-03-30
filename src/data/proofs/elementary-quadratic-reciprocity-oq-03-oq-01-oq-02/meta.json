@@ -34,8 +34,9 @@
   "overview": {
     "historicalContext": "The Jacobi symbol extends the Legendre symbol to composite moduli and can be computed efficiently via a generalized Euclidean algorithm using quadratic reciprocity, the supplements, and modular reduction.",
     "problemStatement": "Can the verified Euclidean reduction steps from the parent proof be assembled into a certified computation function in Lean 4?",
-    "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log² n) computation algorithm for the Jacobi symbol.",
-    "proofStrategy": "Define reusable reduction lemmas, then compose them into certified computation chains that prove specific Jacobi symbol values step by step. Define helper functions (extractTwos, recipSign) and prove the one-step reduction theorem that enables recursive certified computation."
+    "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log\u00b2 n) computation algorithm for the Jacobi symbol.",
+    "proofStrategy": "Define reusable reduction lemmas, then compose them into certified computation chains that prove specific Jacobi symbol values step by step. Define helper functions (extractTwos, recipSign) and prove the one-step reduction theorem that enables recursive certified computation.",
+    "keyInsights": []
   },
   "leanFile": {
     "imports": [
@@ -60,5 +61,6 @@
       "relationship": "extends",
       "description": "Answers the original question about Jacobi symbol reciprocity proof completion"
     }
-  ]
+  ],
+  "sections": []
 }

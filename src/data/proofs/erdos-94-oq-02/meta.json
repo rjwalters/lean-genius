@@ -1,0 +1,187 @@
+{
+  "id": "erdos-94-oq-02",
+  "title": "Asymptotic Constant for Distance Multiplicities in Convex Polygons",
+  "slug": "erdos-94-oq-02",
+  "description": "For convex n-gons, Fishburn proved ∑f(u)² = O(n³) and the regular n-gon achieves Θ(n³). What is the exact asymptotic constant c in S(regular_n) ~ c·n³? Analysis of the regular n-gon suggests c = 1/2. Connected to the Erdős-Fishburn extremality conjecture.",
+  "meta": {
+    "author": "Erdős; Fishburn (1995); Lefmann-Theile (1995)",
+    "sourceUrl": "https://erdosproblems.com/94",
+    "date": "1990s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos94OQ02.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "convex",
+      "distances",
+      "combinatorics",
+      "discrete-geometry",
+      "asymptotic-constant",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 6,
+    "assumptions": "6 axiom declarations: S (squared-multiplicity sum function), fishburn_bound (O(n³) for convex), regular_ngon_cubic (Θ(n³) for regular n-gon), regular_ngon_convex, asymptotic_constant_exists (limit exists), regular_distinct_count (⌊n/2⌋ distinct distances). 2 sorries: optimal_bound_from_conjecture (convergence argument), constant_ge_half (limit lower bound)",
+    "erdosNumber": 94,
+    "erdosUrl": "https://erdosproblems.com/94",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$44",
+    "lineCount": 212
+  },
+  "overview": {
+    "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn proved this sum is O(n³), and the regular n-gon achieves Θ(n³). The natural follow-up: what is the exact asymptotic constant?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances, most with multiplicity n. This gives ∑f(u)² ≈ (n/2)·n² = n³/2, suggesting the constant is 1/2.",
+    "problemStatement": "**Problem Statement**\n\nIs ∑f(u)² ~ c·n³ for convex n-gons, and what is c?\n\n**Status**: OPEN\n\n**Known**: Regular n-gon achieves Θ(n³). Analysis suggests c = 1/2.",
+    "text": "Formalizes the asymptotic constant question for distance multiplicities in convex polygons.",
+    "proofStrategy": "**Formalization Approach**\n\n1. Axiomatize S (squared-multiplicity sum) and Fishburn's bound\n2. Define regular n-gon and its normalized sum S(n)/n³\n3. Define the asymptotic constant via Choose/limit\n4. Analyze regular n-gon: ⌊n/2⌋ distances, most with multiplicity n\n5. State conjecture c = 1/2 and connection to Erdős-Fishburn",
+    "keyInsights": [
+      "**Dominant contribution**: Most distances in the regular n-gon have multiplicity n. Only the diameter (when n is even) has multiplicity n/2. This gives a leading term of n³/2",
+      "**Erdős-Fishburn bridge**: If the regular n-gon is extremal (Erdős-Fishburn), then c = 1/2 gives the universal tight bound S(P) ≤ (1/2 + ε)·n³",
+      "**Parity subtlety**: The exact computation depends on whether n is even or odd due to the diameter multiplicity"
+    ],
+    "prerequisites": [
+      "Discrete geometry: convex polygons, distance multiplicities",
+      "Analysis: limits, asymptotic notation",
+      "Number theory: floor function, divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Basic Definitions",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Defines Point, PointConfig, InConvexPosition, axiomatizes S (squared-multiplicity sum).",
+      "mathContext": "Point configuration in $\\mathbb{R}^2$. $S(P) = \\sum_u f(u)^2$ where $f(u)$ counts pairs at distance $u$."
+    },
+    {
+      "id": "fishburn",
+      "title": "Fishburn's Cubic Bound",
+      "startLine": 56,
+      "endLine": 62,
+      "summary": "Axiomatizes Fishburn's theorem: S(P) = O(n³) for convex polygons.",
+      "mathContext": "$\\exists C > 0, \\forall P \\text{ convex}: S(P) \\leq C \\cdot n^3$."
+    },
+    {
+      "id": "regular",
+      "title": "The Regular n-gon",
+      "startLine": 63,
+      "endLine": 85,
+      "summary": "Defines regularNGon, S_regular, axiomatizes Θ(n³) growth and convexity.",
+      "mathContext": "Regular $n$-gon inscribed in unit circle. $S(\\text{reg}_n) = \\Theta(n^3)$."
+    },
+    {
+      "id": "constant",
+      "title": "The Asymptotic Constant",
+      "startLine": 86,
+      "endLine": 112,
+      "summary": "Defines normalizedSum = S(n)/n³, axiomatizes convergence, defines asymptoticConstant via Choose.",
+      "mathContext": "$c = \\lim_{n \\to \\infty} S(\\text{reg}_n) / n^3$. Exists by boundedness + monotonicity."
+    },
+    {
+      "id": "analysis",
+      "title": "Regular n-gon Analysis",
+      "startLine": 113,
+      "endLine": 148,
+      "summary": "Analyzes ⌊n/2⌋ distinct distances with multiplicity n, proves dominant contribution bound, states conjectured value c = 1/2.",
+      "mathContext": "$\\lfloor n/2 \\rfloor$ distances, each with multiplicity $\\approx n$. Dominant term: $n \\cdot (n/2) \\approx n^3/2$."
+    },
+    {
+      "id": "erdos-fishburn",
+      "title": "Erdős-Fishburn Conjecture and Universal Bounds",
+      "startLine": 149,
+      "endLine": 218,
+      "summary": "States Erdős-Fishburn extremality conjecture, proves universal bound implication, states the open question.",
+      "mathContext": "If regular $n$-gon maximizes $S$ and $c = 1/2$, then $S(P) \\leq (1/2 + \\varepsilon) n^3$ for all large convex $P$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the asymptotic constant question for distance multiplicities in convex polygons. The regular n-gon analysis suggests c = 1/2, and the Erdős-Fishburn extremality conjecture would make this the universal optimal bound.",
+    "implications": "If c = 1/2 and the Erdős-Fishburn conjecture holds, the tight bound S(P) ≤ (1/2 + ε)·n³ resolves the quantitative form of Problem #94.",
+    "openQuestions": [
+      "Is the asymptotic constant exactly 1/2?",
+      "Is the regular n-gon extremal for all large n (Erdős-Fishburn)?",
+      "What is the exact formula for S(regular_n) as a function of n?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "dominant_contribution",
+      "type": "core",
+      "description": "⌊n/2⌋·n² ≥ n³/2 - n² : the regular n-gon's dominant contribution",
+      "leanType": "(regularDistinctDistances n : ℝ) * n^2 ≥ n^3/2 - n^2"
+    },
+    {
+      "name": "erdos_fishburn_implies_universal_bound",
+      "type": "core",
+      "description": "Erdős-Fishburn ⟹ S(P) ≤ S(regular_n) for large n",
+      "leanType": "ErdosFishburnConjecture → ∃ N, ∀ n ≥ N, ∀ P convex, S P ≤ S_regular n"
+    },
+    {
+      "name": "constant_le_fishburn",
+      "type": "supporting",
+      "description": "The asymptotic constant is bounded",
+      "leanType": "∃ C > 0, asymptoticConstant ≤ C"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-94",
+      "relationship": "extends",
+      "description": "Extends Erdős #94 by formalizing the exact asymptotic constant question"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "P. Fishburn"
+      ],
+      "title": "Convex polygons and distance multiplicities",
+      "year": "1995",
+      "note": "Proved ∑f(u)² = O(n³) for convex n-gons"
+    },
+    {
+      "authors": [
+        "H. Lefmann",
+        "T. Theile"
+      ],
+      "title": "Distance multiplicities under no-three-collinear",
+      "year": "1995",
+      "note": "Extended Fishburn's result to no-three-collinear condition"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos94OQ02",
+    "lineCount": 212,
+    "axiomCount": 6,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 7,
+    "sorryTheorems": 2,
+    "definitionCount": 11,
+    "mainTheorems": [
+      {
+        "name": "dominant_contribution",
+        "type": "proved",
+        "description": "Regular n-gon dominant term bound"
+      },
+      {
+        "name": "erdos_fishburn_implies_universal_bound",
+        "type": "proved",
+        "description": "Erdős-Fishburn → universal bound"
+      },
+      {
+        "name": "constantIs1Over2",
+        "type": "conjecture",
+        "description": "The asymptotic constant is 1/2"
+      }
+    ]
+  }
+}

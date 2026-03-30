@@ -1,0 +1,55 @@
+{
+  "id": "roth-theorem-k3-oq-03",
+  "name": "Density increment generalization to k-APs for k > 3",
+  "parentId": "roth-theorem-k3",
+  "status": "in-progress",
+  "knowledge": {
+    "score": 18,
+    "insights": [
+      "k=3 uses U² = Fourier L⁴, k≥4 needs U^{k-1} Gowers norms",
+      "Generalized von Neumann: k-AP count controlled by min_i ||f_i||_{U^{k-1}}",
+      "Inverse theorem for U^s is trivial for s=2 (Parseval) but deep for s≥3 (nilsequences)",
+      "Density increment for k=3 gives explicit δ²/100; for k≥4 gives non-explicit c(δ,k)",
+      "Existing SzemerediTheorem.lean already has k-AP definitions and k≥4 axiom",
+      "Roth density increment (k=3) is 1401 lines, fully proved — very mature infrastructure",
+      "gowersNorm_nonneg and gowersNorm_mono were unused by any theorem — removed",
+      "inverse_theorem had placeholder True conclusion, added no mathematical content — removed",
+      "density_increment_kAP is missing AP-free condition in conclusion — cant iterate for Szemeredi proof",
+      "gowersNorm converted from axiom to constructive def via finite sum over hypercube vertices",
+      "kAPCount converted from axiom to constructive def: E_{x,d} prod_i f_i(x + i*d)",
+      "IsKAPFreeZMod: properly typed k-AP-free predicate for Finset (ZMod N), bridges to Szemeredi.Roth.APFree for k=3",
+      "density_increment_k3_explicit proved from Szemeredi.Roth.density_increment_lemma via type bridge",
+      "szemeredi_from_density_increment needs quantitative density increment bound (not just delta_prime > delta) and AP-free conclusion for iteration",
+      "density_increment_kAP strengthened with IsKAPFreeZMod A' k in conclusion — enables iteration",
+      "isKAPFreeZMod_three_of_apFree: reverse bridge APFree → IsKAPFreeZMod for k=3",
+      "density_increment_k3_explicit now captures APFree from density_increment_lemma and converts back to IsKAPFreeZMod",
+      "Remaining sorry blocker: szemeredi_from_density_increment needs quantitative iteration bound (M not just < N but large enough for enough steps)"
+    ],
+    "builtItems": [
+      "RothTheoremOQ03.lean: 195 lines, 7 axioms, 2 sorries",
+      "Gowers norm axiomatization with non-negativity and monotonicity",
+      "Generalized von Neumann theorem and inverse theorem",
+      "Density increment for k-APs connecting to Szemerédi's theorem",
+      "Gallery entry with meta.json",
+      "gowersNorm: constructive Gowers U^s norm via hypercubeShift and conjugateByWeight helpers",
+      "kAPCount: constructive k-AP counting operator as finite sum over ZMod N",
+      "IsKAPFreeZMod: local k-AP-free predicate for ZMod N with Fin k AP structure",
+      "apFree_of_isKAPFreeZMod_three: bridge lemma to Szemeredi.Roth.APFree",
+      "density_increment_k3_explicit: proved (was sorry) using RothTheorem infrastructure",
+      "isKAPFreeZMod_three_of_apFree: reverse bridge lemma in RothTheoremOQ03.lean",
+      "Strengthened density_increment_kAP with AP-free preservation in conclusion",
+      "Strengthened density_increment_k3_explicit with IsKAPFreeZMod A' 3 from Roth APFree"
+    ],
+    "progressSummary": "PROGRESS: density_increment_kAP and density_increment_k3_explicit now include AP-free preservation. Reverse bridge isKAPFreeZMod_three_of_apFree proved. Still 2 axioms, 1 sorry. Sorry blocked on quantitative iteration bound for szemeredi_from_density_increment.",
+    "nextSteps": [
+      "Define Gowers norms constructively using iterated expectations",
+      "Prove Gowers-Cauchy-Schwarz inequality (monotonicity)",
+      "Connect to quantitative Szemerédi bounds (tower-type)",
+      "Prove szemeredi_from_density_increment using well-founded recursion"
+    ]
+  },
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-03"
+  ]
+}

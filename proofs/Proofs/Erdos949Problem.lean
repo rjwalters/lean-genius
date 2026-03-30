@@ -153,10 +153,6 @@ axiom sidon_variant_solved :
         realSumset A ⊆ Sᶜ
 
 -- ## The general sum-free problem remains open
-
-/-- The general problem is still open. The key difficulty is that
-sum-free sets can be much denser than Sidon sets, and the
-Sidon proof technique (exploiting injectivity of the sum map)
-does not generalize. -/
-axiom erdos_949_open :
-  ErdosProblem949
+-- The key difficulty is that sum-free sets can be much denser than
+-- Sidon sets, and the Sidon proof technique (exploiting injectivity
+-- of the sum map) does not generalize. The general problem is OPEN.

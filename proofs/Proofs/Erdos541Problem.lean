@@ -58,10 +58,6 @@ zero-sum subsets of different sizes by mixing elements appropriately.
 -/
 
 /-- **Erdős-Szemerédi (1976)**: The conjecture holds for sufficiently large primes -/
-axiom erdos_szemeredi_large_primes :
-    ∀ᶠ p in Filter.atTop, p.Prime → ∀ a : Fin p → ZMod p,
-    HasSomeUniqueZeroSumLength p a → distinctCount p a ≤ 2
-
 /-- **Gao-Hamidoune-Wang (2010)**: The conjecture holds for ALL moduli, not just primes
 
 This is the most general form of Graham's conjecture. -/
@@ -168,7 +164,4 @@ to be nearly constant.
 -/
 
 /-- The Erdős-Ginzburg-Ziv theorem: 2n-1 integers contain n summing to 0 mod n -/
-axiom erdos_ginzburg_ziv (n : ℕ) (hn : n > 0) (a : Fin (2*n - 1) → ZMod n) :
-    ∃ (S : Finset (Fin (2*n - 1))), S.card = n ∧ (∑ i ∈ S, a i) = 0
-
 end Erdos541

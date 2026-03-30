@@ -17,7 +17,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 155,
+    "lineCount": 138,
     "assumptions": "Uses Mathlib's Cauchy-Schwarz inequality (inner_mul_le_norm_mul_sq) as the foundation of the derivation chain.",
     "theoremCount": 7,
     "mathlib_version": "4.26.0"
@@ -29,10 +29,13 @@
       "Im bound: (Im⟨f,g⟩)² ≤ |⟨f,g⟩|²",
       "Commutator substitution: Im⟨Δx·ψ, Δp·ψ⟩ = ℏ/2",
       "Pure algebraic derivation — works in any complex inner product space"
-    ]
+    ],
+    "proofStrategy": "",
+    "historicalContext": ""
   },
   "conclusion": {
-    "summary": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound."
+    "summary": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound.",
+    "implications": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound."
   },
   "leanFile": {
     "namespace": "CauchySchwarzOQ01OQ03",
@@ -47,5 +50,6 @@
       "relationship": "extends",
       "description": "Derives uncertainty principle from complex Cauchy-Schwarz"
     }
-  ]
+  ],
+  "sections": []
 }

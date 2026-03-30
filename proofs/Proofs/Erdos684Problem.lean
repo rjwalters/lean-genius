@@ -113,9 +113,23 @@ f(n) is the smallest k such that the smooth part exceeds n².
 noncomputable def f (n : ℕ) : ℕ :=
   sInf {k : ℕ | binomialSmoothPart n k > n^2}
 
--- Property of f: at k = f(n), smooth part > n²
-axiom f_property (n : ℕ) (hn : n ≥ 2) :
+-- The domain where f is well-defined: the set {k | binomialSmoothPart n k > n²} is nonempty.
+-- NOTE: This fails for small n (e.g., n=5: max smooth part across all k is 2, far below n²=25).
+-- For large n, C(n,⌊n/2⌋) grows like 2^n/√n, whose smooth part eventually exceeds n².
+-- The exact threshold is not known effectively.
+def f_domain (n : ℕ) : Prop :=
+  ∃ k, binomialSmoothPart n k > n ^ 2
+
+-- Property of f: at k = f(n), smooth part > n² (requires f_domain)
+-- BUG FIX: Previously stated for n ≥ 2, but the set is empty for small n (e.g., n = 2..9).
+-- When sInf ∅ = 0, binomialSmoothPart n 0 = 1 ≤ n², so the old axiom was false.
+axiom f_property (n : ℕ) (hn : f_domain n) :
     binomialSmoothPart n (f n) > n^2
+
+-- For sufficiently large n, f is well-defined (the set is nonempty).
+-- This follows from the fact that C(n,⌊n/2⌋) grows exponentially while n² is polynomial.
+-- The smooth part of C(n,⌊n/2⌋) with primes ≤ ⌊n/2⌋ captures almost all prime factors.
+axiom f_domain_large : ∃ N₀ : ℕ, ∀ n ≥ N₀, f_domain n
 
 -- Below f(n), smooth part ≤ n²
 -- Proved: follows from sInf being the minimum of the set.
@@ -140,11 +154,13 @@ The smooth part is bounded by n^{1+ε} for large n.
 axiom mahler_ineffective : ∀ (k₀ : ℕ), ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     (binomialSmoothPart n k₀ : ℝ) ≤ (n : ℝ)^(1 + ε)
 
--- Mahler implies f(n) → ∞
+-- Mahler implies f(n) → ∞ (for n in f_domain)
 -- Proof: For each k ≤ C, Mahler with ε=1/2 gives N_k such that smoothPart ≤ n^(3/2) ≤ n².
--- Taking N = max of all N_k, all k ≤ C have smoothPart ≤ n², so f(n) > C.
+-- Taking N = max of all N_k + N₀ (for f_domain), all k ≤ C have smoothPart ≤ n², so f(n) > C.
 theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C := by
   intro C
+  -- Get threshold for f_domain
+  obtain ⟨N₀, hN₀⟩ := f_domain_large
   -- For each k₀, Mahler with ε = 1/2 gives a threshold
   have h_mahler : ∀ k₀ : ℕ, ∃ N : ℕ, ∀ n ≥ N,
       (binomialSmoothPart n k₀ : ℝ) ≤ (n : ℝ) ^ ((3 : ℝ) / 2) := by
@@ -153,10 +169,11 @@ theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C :=
     exact ⟨N, fun n hn => by have := hN n hn; linarith⟩
   -- Collect thresholds for k = 0, ..., C
   choose N_fn hN_fn using h_mahler
-  -- Take N = max(4, max of N_fn over [0, C])
-  use max 4 ((Finset.range (C + 1)).sup N_fn)
+  -- Take N = max(N₀, 4, max of N_fn over [0, C])
+  use max N₀ (max 4 ((Finset.range (C + 1)).sup N_fn))
   intro n hn
-  have hn4 : n ≥ 4 := le_of_max_le_left hn
+  have hn_N₀ : n ≥ N₀ := le_of_max_le_left hn
+  have hn4 : n ≥ 4 := le_of_max_le_left (le_of_max_le_right hn)
   have hn_thresholds : ∀ k₀ ≤ C, n ≥ N_fn k₀ := by
     intro k₀ hk₀
     have : N_fn k₀ ≤ (Finset.range (C + 1)).sup N_fn :=
@@ -165,8 +182,8 @@ theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C :=
   -- Show f(n) > C by contradiction
   by_contra hfC
   push_neg at hfC
-  -- f(n) ≤ C, so f_property gives smoothPart > n²
-  have hf := f_property n (by omega : n ≥ 2)
+  -- f(n) ≤ C, and n is in f_domain, so f_property gives smoothPart > n²
+  have hf := f_property n (hN₀ n hn_N₀)
   -- Mahler gives smoothPart ≤ n^(3/2)
   have hN := hN_fn (f n) n (hn_thresholds (f n) hfC)
   -- n^(3/2) ≤ n² for n ≥ 1 (monotonicity of rpow)
@@ -192,15 +209,7 @@ Recent results by Tang & ChatGPT on explicit bounds for f(n).
 -- The exponent 30/43 ≈ 0.698
 noncomputable def tang_exponent : ℝ := 30 / 43
 
-axiom tang_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    (f n : ℝ) ≤ n^(tang_exponent + ε)
-
--- Under Riemann Hypothesis: f(n) ≤ n^{2/3 + o(1)}
 noncomputable def rh_exponent : ℝ := 2 / 3
-
-axiom rh_conditional_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    -- Assuming RH
-    (f n : ℝ) ≤ n^(rh_exponent + ε)
 
 /-
 # Part 5: Heuristic Conjectures
@@ -215,11 +224,6 @@ noncomputable def heuristic_bound (n : ℕ) : ℝ := 2 * Real.log n
 -- The heuristic (not proven)
 -- Informal: for "most" n, f(n) ≈ 2 log n
 -- Formal statement uses natural density of a decidable subset
-axiom heuristic_conjecture : ∀ ε : ℝ, ε > 0 →
-    ∃ S : ℕ → Prop, ∃ _ : DecidablePred S,
-    (∀ N : ℕ, (↑(Finset.filter S (Finset.range N)).card / (N : ℝ)) > 1 - ε) ∧
-    (∀ n, S n → |((f n : ℝ) - heuristic_bound n) / heuristic_bound n| < ε)
-
 /-
 # Part 6: Structure of Smooth Part
 
@@ -281,17 +285,16 @@ theorem kummer_theorem (n k p : ℕ) (hp : p.Prime) (hk : k ≤ n) :
 Examine f(n) for small n and special values.
 -/
 
--- f(n) ≥ 2 for n ≥ 4 (otherwise smooth part too small)
--- Proved from f_property: for k ∈ {0,1}, no primes ≤ k exist, so smoothPart = 1 ≤ n²
+-- f(n) ≥ 2 for n ≥ 4 (when f is well-defined)
+-- Proved: for k ∈ {0,1}, no primes ≤ k exist, so smoothPart = 1 ≤ n²
 -- Hence every element of {k | binomialSmoothPart n k > n²} is ≥ 2.
-theorem f_lower_bound : ∀ n ≥ 4, f n ≥ 2 := by
-  intro n hn
+theorem f_lower_bound (n : ℕ) (hn : n ≥ 4) (hdom : f_domain n) : f n ≥ 2 := by
   -- f n = sInf {k | binomialSmoothPart n k > n^2}
   -- Show every element of the set is ≥ 2
   unfold f
   apply le_csInf
-  · -- Set is nonempty (from f_property)
-    exact ⟨_, f_property n (by omega)⟩
+  · -- Set is nonempty (from f_domain)
+    exact hdom
   · -- Every element is ≥ 2
     intro x hx
     simp only [Set.mem_setOf_eq] at hx
@@ -355,10 +358,11 @@ The sequence f(n) is recorded in OEIS A392019.
 The problem remains OPEN. Best known bounds leave a large gap.
 -/
 
--- Main formal statement
-theorem erdos_684_statement :
-    ∀ n ≥ 2, ∃ k ≤ n, binomialSmoothPart n k > n^2 := by
-  intro n hn
+-- Main formal statement: for n in f_domain, there exists k with large smooth part
+-- NOTE: The domain restriction is needed because the set {k | smoothPart > n²}
+-- is empty for small n (e.g., n = 2..9). The original statement with n ≥ 2 was false.
+theorem erdos_684_statement (n : ℕ) (hn : f_domain n) :
+    ∃ k ≤ n, binomialSmoothPart n k > n^2 := by
   use f n
   constructor
   · -- f(n) ≤ n: if f n > n then Choose(n, f n) = 0, so smoothPart = 1, contradicting > n²

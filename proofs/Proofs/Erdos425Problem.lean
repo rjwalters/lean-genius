@@ -96,17 +96,10 @@ By unique prime factorization, if p₁·p₂ = q₁·q₂ with p₁ < p₂ and q
 then {p₁, p₂} = {q₁, q₂}. Axiomatized since the formal proof requires
 unique factorization machinery.
 -/
-axiom primes_are_sidon (n : ℕ) :
-    let P := (Finset.range (n + 1)).filter Nat.Prime
-    IsMultiplicativeSidon P
-
 /--
 **Lower bound: F(n) ≥ π(n):**
 The primes ≤ n form a multiplicative Sidon set of size π(n).
 -/
-axiom F_ge_prime_count (n : ℕ) (hn : n ≥ 2) :
-    F n ≥ (Finset.range (n + 1)).filter Nat.Prime |>.card
-
 /-
 ## Part III: Erdős's Bounds
 -/
@@ -179,11 +172,6 @@ Erdős conjectured that max |A| = o(x) for A ⊂ [1, x] with RealMultSidon A.
 
 This was disproved by Alexander!
 -/
-axiom erdos_real_conjecture_false : ¬(∀ x : ℝ, x > 0 →
-  ∃ f : ℝ → ℝ, (∀ x, f x / x → 0) ∧
-    (∀ A : Finset ℝ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ x) → RealMultSidon A →
-      (A.card : ℝ) ≤ f x))
-
 /--
 **Alexander's construction:**
 Let B ⊆ [1, X²] be a Sidon set of integers with |B| ≫ X.
@@ -216,21 +204,10 @@ If A is multiplicative Sidon (all products ab distinct), then
 {log a : a ∈ A} is additive Sidon (all sums log a + log b distinct),
 since log(ab) = log a + log b.
 -/
-axiom log_conversion (A : Finset ℕ) :
-    IsMultiplicativeSidon A →
-    ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
-      a < b → c < d →
-      Real.log a + Real.log b = Real.log c + Real.log d →
-      (a = c ∧ b = d)
-
 /--
 **Classical Sidon set bounds:**
 Max |S| for additive Sidon S ⊆ {1, ..., n} is (1 + o(1))·√n.
 -/
-axiom sidon_bound :
-    ∀ n : ℕ, ∀ S : Finset ℕ, (∀ s ∈ S, s ≤ n) → IsSidonSet S →
-      (S.card : ℝ) ≤ Real.sqrt n + Real.sqrt (Real.sqrt n)
-
 /-
 ## Part VII: Examples
 -/

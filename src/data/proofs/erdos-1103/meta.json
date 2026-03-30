@@ -40,15 +40,15 @@
       }
     ],
     "axiomCount": 3,
-    "lineCount": 99,
-    "assumptions": "5 axioms: enumSet, enumSet_spec, vanDoorn_tao_upper, and 2 more. See Lean source for complete statements.",
+    "lineCount": 162,
+    "assumptions": "3 axioms: vanDoorn_tao_upper (subexponential upper construction), vanDoorn_tao_lower (polynomial lower bound), konyagin_finite_bound (finite-set density). All are deep published results.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around the 1970s as part of his program to understand how multiplicative constraints (squarefreeness) interact with additive structure (sumsets). A number $n$ is squarefree if no prime square $p^2$ divides it — the squarefree numbers have asymptotic density $6/\\pi^2 \\approx 0.608$ by Euler's product formula. Requiring ALL pairwise sums $a + b$ to be squarefree is vastly more restrictive: for each prime $p$, the elements of $A$ must avoid collisions modulo $p^2$, and these constraints interact across all primes simultaneously. The problem connects to the Erdős–Sárközy tradition of studying divisibility properties of sumsets. Van Doorn and Tao (2025) made the first significant quantitative progress, establishing both a polynomial lower bound $a_j > 0.24 \\cdot j^{4/3}$ (via sieve methods and the large sieve inequality) and an upper construction achieving $a_j < \\exp(5j/\\log j)$ (subexponential but superpolynomial). Konyagin complemented this with finite-set bounds: $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$, where the exponent $11/15$ arises from large sieve estimates for squarefree residues. The central question — whether true exponential growth $C^j$ for some $C > 1$ is unavoidable — remains open, with a substantial gap between the known polynomial lower bound and subexponential upper bound.",
     "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
     "text": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
-    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, axiomatize an increasing enumeration enumSet, and state the conjecture as exponential lower bound on enumSet. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. Basic properties (empty set, subsets, singletons) are proved.",
+    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and state the conjecture ErdosProblem1103. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
     "keyInsights": [
       "The **squarefree sumset condition** links additive combinatorics to multiplicative number theory: $a + b$ must avoid all $p^2$ for every pair, creating a global constraint from local divisibility conditions modulo $p^2$ for each prime $p$",
       "**Van Doorn–Tao's polynomial lower bound** $a_j > 0.24 \\cdot j^{4/3}$ rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth — the proof uses sieve methods bounding how densely a squarefree-sumset can pack into intervals",
@@ -160,6 +160,7 @@
       "Mathlib.Data.Nat.Squarefree",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -167,10 +168,10 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 120,
+    "lineCount": 162,
     "axiomCount": 3,
-    "theoremCount": 3,
-    "definitionCount": 2
+    "theoremCount": 9,
+    "definitionCount": 3
   },
   "references": [
     {

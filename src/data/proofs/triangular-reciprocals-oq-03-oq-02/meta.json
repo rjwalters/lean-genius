@@ -1,140 +1,138 @@
 {
-  "id": "triangular-reciprocals-oq-03-oq-02",
-  "title": "Generalized Alternating Reciprocal Product Sum",
-  "slug": "triangular-reciprocals-oq-03-oq-02",
-  "description": "Generalizes \u2211(-1)^{n+1}/(n(n+1)) to \u2211(-1)^{n+1}/(n(n+k)) for arbitrary k \u2265 1, giving a closed form involving the alternating harmonic partial sums.",
-  "meta": {
-    "author": "Generalization of Mercator (1668) / Euler series identities",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Harmonic_number#Alternating_harmonic_numbers",
-    "date": "2026",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/TriangularReciprocalGeneralized.lean",
-    "tags": [
-      "analysis",
-      "series",
-      "alternating-series",
-      "harmonic-numbers",
-      "partial-fractions"
-    ],
-    "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 2,
-    "assumptions": "2 transitive axioms from parent OQ03: alternating_harmonic_hasSum (Mercator series, requires Abel's theorem), shifted_alternating_hasSum (shifted alternating harmonic series). 0 direct axioms, 0 sorries — all theorems fully proved modulo parent axioms.",
-    "dateAdded": "2026-03-29",
-    "mathlibDependencies": [
-      {
-        "theorem": "HasSum",
-        "description": "Convergent series in topological groups",
-        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
-      },
-      {
-        "theorem": "Finset.sum_range_succ",
-        "description": "Finite sum decomposition for partial sums",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      }
-    ],
-    "originalContributions": [
-      "Closed-form formula for \u2211(-1)^{n+1}/(n(n+k)) = (1/k)(log 2 - (-1)^k(log 2 - A_k))",
-      "Definition of alternating harmonic partial sums A_k",
-      "Partial fraction decomposition 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) proved",
-      "Verification that k=1 gives 2\u00b7log 2 - 1 and k=2 gives 1/4",
-      "Even k: logarithmic terms cancel, giving rational answer A_k/k"
-    ],
-    "lineCount": 196,
-    "theoremCount": 10,
-    "definitionCount": 1,
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "The alternating harmonic series \u2211(-1)^{n+1}/n = log(2) was first published by Mercator (1668) and is a special case of the Mercator series for log(1+x). Euler studied many variants involving products n(n+k) in the denominators. The generalization to arbitrary k reveals a beautiful structure: for even k the logarithmic terms cancel giving a rational answer, while for odd k the result involves log(2).",
-    "problemStatement": "Compute \u2211_{n=1}^\u221e (-1)^{n+1}/(n(n+k)) for arbitrary k \u2265 1 in closed form.",
-    "text": "Generalizes the alternating sum of reciprocal products to arbitrary offset k, giving a closed form via partial fractions and the alternating harmonic series.",
-    "proofStrategy": "1. Partial fractions: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k))\n2. The first sum \u2211(-1)^{n+1}/n = log(2) (axiom)\n3. The shifted sum \u2211(-1)^{n+1}/(n+k) = (-1)^k(log(2) - A_k) via tail decomposition\n4. Combine: (1/k)(log(2) - (-1)^k(log(2) - A_k))",
-    "keyInsights": [
-      "**Even-odd dichotomy**: For even k, the log(2) terms cancel and the answer is purely rational (A_k/k). For odd k, the answer involves log(2).",
-      "**Partial fraction backbone**: The entire generalization rests on the identity 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)), reducing the product sum to differences of simpler sums.",
-      "**Alternating harmonic partial sums A_k**: These interpolate between A_1 = 1 and lim A_k = log(2), with A_k = H_k - 2H_{\u230ak/2\u230b} + H_{k} where H_k is the harmonic number."
-    ]
-  },
-  "sections": [
-    {
-      "id": "axiom",
-      "title": "Part I: Alternating Harmonic Series Axiom",
-      "startLine": 1,
-      "endLine": 30,
-      "summary": "Axiomatizes the alternating harmonic series \u2211(-1)^{n+1}/n = log(2).",
-      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\log 2$ (Mercator 1668)"
+    "id": "triangular-reciprocals-oq-03-oq-02",
+    "title": "Generalized Alternating Reciprocal Product Sum",
+    "slug": "triangular-reciprocals-oq-03-oq-02",
+    "description": "Generalizes ∑(-1)^{n+1}/(n(n+1)) to ∑(-1)^{n+1}/(n(n+k)) for arbitrary k ≥ 1, giving a closed form involving the alternating harmonic partial sums.",
+    "meta": {
+        "author": "Generalization of Mercator (1668) / Euler series identities",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Harmonic_number#Alternating_harmonic_numbers",
+        "date": "2026",
+        "status": "verified",
+        "proofRepoPath": "Proofs/TriangularReciprocalGeneralized.lean",
+        "tags": [
+            "analysis",
+            "series",
+            "alternating-series",
+            "harmonic-numbers",
+            "partial-fractions"
+        ],
+        "badge": "verified",
+        "sorries": 0,
+        "axiomCount": 0,
+        "dateAdded": "2026-03-29",
+        "mathlibDependencies": [
+            {
+                "theorem": "HasSum",
+                "description": "Convergent series in topological groups",
+                "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+            },
+            {
+                "theorem": "Finset.sum_range_succ",
+                "description": "Finite sum decomposition for partial sums",
+                "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+            }
+        ],
+        "originalContributions": [
+            "Closed-form formula for ∑(-1)^{n+1}/(n(n+k)) = (1/k)(log 2 - (-1)^k(log 2 - A_k))",
+            "Definition of alternating harmonic partial sums A_k",
+            "Partial fraction decomposition 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) proved",
+            "Verification that k=1 gives 2·log 2 - 1 and k=2 gives 1/4",
+            "Even k: logarithmic terms cancel, giving rational answer A_k/k"
+        ],
+        "lineCount": 196,
+        "theoremCount": 10,
+        "definitionCount": 1,
+        "mathlib_version": "4.26.0"
     },
-    {
-      "id": "partial-sums",
-      "title": "Part II: Alternating Harmonic Partial Sums",
-      "startLine": 31,
-      "endLine": 50,
-      "summary": "Defines A_k = \u2211_{m=1}^k (-1)^{m+1}/m. Proves A_0 = 0 and A_1 = 1.",
-      "mathContext": "$A_k = \\sum_{m=1}^k \\frac{(-1)^{m+1}}{m}$"
+    "overview": {
+        "historicalContext": "The alternating harmonic series ∑(-1)^{n+1}/n = log(2) was first published by Mercator (1668) and is a special case of the Mercator series for log(1+x). Euler studied many variants involving products n(n+k) in the denominators. The generalization to arbitrary k reveals a beautiful structure: for even k the logarithmic terms cancel giving a rational answer, while for odd k the result involves log(2).",
+        "problemStatement": "Compute ∑_{n=1}^∞ (-1)^{n+1}/(n(n+k)) for arbitrary k ≥ 1 in closed form.",
+        "text": "Generalizes the alternating sum of reciprocal products to arbitrary offset k, giving a closed form via partial fractions and the alternating harmonic series.",
+        "proofStrategy": "1. Partial fractions: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k))\n2. The first sum ∑(-1)^{n+1}/n = log(2) (axiom)\n3. The shifted sum ∑(-1)^{n+1}/(n+k) = (-1)^k(log(2) - A_k) via tail decomposition\n4. Combine: (1/k)(log(2) - (-1)^k(log(2) - A_k))",
+        "keyInsights": [
+            "**Even-odd dichotomy**: For even k, the log(2) terms cancel and the answer is purely rational (A_k/k). For odd k, the answer involves log(2).",
+            "**Partial fraction backbone**: The entire generalization rests on the identity 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)), reducing the product sum to differences of simpler sums.",
+            "**Alternating harmonic partial sums A_k**: These interpolate between A_1 = 1 and lim A_k = log(2), with A_k = H_k - 2H_{⌊k/2⌋} + H_{k} where H_k is the harmonic number."
+        ]
     },
-    {
-      "id": "partial-fractions",
-      "title": "Part V: Partial Fractions",
-      "startLine": 80,
-      "endLine": 95,
-      "summary": "Proves 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) via field_simp + ring. 0 sorries.",
-      "mathContext": "$\\frac{1}{n(n+k)} = \\frac{1}{k}\\left(\\frac{1}{n} - \\frac{1}{n+k}\\right)$"
+    "sections": [
+        {
+            "id": "axiom",
+            "title": "Part I: Alternating Harmonic Series Axiom",
+            "startLine": 1,
+            "endLine": 30,
+            "summary": "Axiomatizes the alternating harmonic series ∑(-1)^{n+1}/n = log(2).",
+            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\log 2$ (Mercator 1668)"
+        },
+        {
+            "id": "partial-sums",
+            "title": "Part II: Alternating Harmonic Partial Sums",
+            "startLine": 31,
+            "endLine": 50,
+            "summary": "Defines A_k = ∑_{m=1}^k (-1)^{m+1}/m. Proves A_0 = 0 and A_1 = 1.",
+            "mathContext": "$A_k = \\sum_{m=1}^k \\frac{(-1)^{m+1}}{m}$"
+        },
+        {
+            "id": "partial-fractions",
+            "title": "Part V: Partial Fractions",
+            "startLine": 80,
+            "endLine": 95,
+            "summary": "Proves 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) via field_simp + ring. 0 sorries.",
+            "mathContext": "$\\frac{1}{n(n+k)} = \\frac{1}{k}\\left(\\frac{1}{n} - \\frac{1}{n+k}\\right)$"
+        },
+        {
+            "id": "main-theorem",
+            "title": "Part VI: Main Theorem",
+            "startLine": 96,
+            "endLine": 130,
+            "summary": "States the generalized formula and verifies k=1 gives 2·log(2)-1 and k=2 gives 1/4.",
+            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+k)} = \\frac{1}{k}\\left(\\log 2 - (-1)^k(\\log 2 - A_k)\\right)$"
+        }
+    ],
+    "crossReferences": [
+        {
+            "targetId": "triangular-reciprocals-oq-03",
+            "relationship": "extends",
+            "description": "Generalizes the k=1 case to arbitrary k ≥ 1"
+        },
+        {
+            "targetId": "triangular-reciprocals",
+            "relationship": "related",
+            "description": "Non-alternating parent: ∑ 2/(n(n+1)) = 2"
+        }
+    ],
+    "conclusion": {
+        "summary": "Derives a closed-form formula for ∑(-1)^{n+1}/(n(n+k)) for arbitrary k, revealing a beautiful even-odd dichotomy where even k gives rational answers and odd k involves log(2).",
+        "implications": "Demonstrates that partial fraction decomposition combined with the alternating harmonic series yields closed forms for a wide family of alternating reciprocal product sums.",
+        "openQuestions": [
+            "Generalize further to ∑(-1)^{n+1}/((n+a)(n+b)) for arbitrary a, b?",
+            "What is the asymptotics of A_k/k as k → ∞?"
+        ]
     },
-    {
-      "id": "main-theorem",
-      "title": "Part VI: Main Theorem",
-      "startLine": 96,
-      "endLine": 130,
-      "summary": "States the generalized formula and verifies k=1 gives 2\u00b7log(2)-1 and k=2 gives 1/4.",
-      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+k)} = \\frac{1}{k}\\left(\\log 2 - (-1)^k(\\log 2 - A_k)\\right)$"
+    "references": [
+        {
+            "authors": "Mercator, Nicolaus",
+            "title": "Logarithmotechnia",
+            "year": "1668",
+            "venue": "",
+            "note": "First publication of the series log(1+x) = x - x²/2 + x³/3 - ..."
+        }
+    ],
+    "leanFile": {
+        "imports": [
+            "Proofs.TriangularReciprocalAlternatingOQ03"
+        ],
+        "opens": [
+            "Finset",
+            "BigOperators",
+            "Filter",
+            "Topology",
+            "Real"
+        ],
+        "namespace": "AlternatingTriangularReciprocals.Generalized",
+        "lineCount": 196,
+        "axiomCount": 0,
+        "theoremCount": 10,
+        "definitionCount": 1
     }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "triangular-reciprocals-oq-03",
-      "relationship": "extends",
-      "description": "Generalizes the k=1 case to arbitrary k \u2265 1"
-    },
-    {
-      "targetId": "triangular-reciprocals",
-      "relationship": "related",
-      "description": "Non-alternating parent: \u2211 2/(n(n+1)) = 2"
-    }
-  ],
-  "conclusion": {
-    "summary": "Derives a closed-form formula for \u2211(-1)^{n+1}/(n(n+k)) for arbitrary k, revealing a beautiful even-odd dichotomy where even k gives rational answers and odd k involves log(2).",
-    "implications": "Demonstrates that partial fraction decomposition combined with the alternating harmonic series yields closed forms for a wide family of alternating reciprocal product sums.",
-    "openQuestions": [
-      "Can the HasSum proofs (3 sorries) be completed using Mathlib's HasSum.nat_add?",
-      "Generalize further to \u2211(-1)^{n+1}/(n+a)(n+b) for arbitrary a, b?",
-      "What is the asymptotics of A_k/k as k \u2192 \u221e?"
-    ]
-  },
-  "references": [
-    {
-      "authors": "Mercator, Nicolaus",
-      "title": "Logarithmotechnia",
-      "year": "1668",
-      "venue": "",
-      "note": "First publication of the series log(1+x) = x - x\u00b2/2 + x\u00b3/3 - ..."
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Finset",
-      "BigOperators",
-      "Filter",
-      "Topology",
-      "Real"
-    ],
-    "namespace": "AlternatingTriangularReciprocals.Generalized",
-    "lineCount": 196,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 1
-  }
 }

@@ -102,10 +102,6 @@ def hasBoundedDiscrepancy (α : ℝ) (u v : ℝ) : Prop :=
 **Weyl's equidistribution gives O(√n) for generic intervals:**
 For most intervals, the discrepancy is O(√n), not O(1).
 -/
-axiom weyl_generic_bound (α : ℝ) (hα : Irrational α) (u v : ℝ) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      |((countingFunction α u v n : ℝ) - n * (v - u))| ≤ C * Real.sqrt n
-
 /-
 ## Part IV: The Characterization
 -/
@@ -154,23 +150,12 @@ theorem erdos_szusz_characterization (α : ℝ) (hα : Irrational α) (u v : ℝ
 The fractional parts {α}, {2α}, ..., {nα} partition [0,1) into n+1 intervals
 of at most 3 distinct lengths. This is fundamental to understanding the orbit structure.
 -/
-axiom three_distance_theorem (α : ℝ) (hα : Irrational α) (n : ℕ) (hn : n ≥ 1) :
-    ∃ (L₁ L₂ L₃ : ℝ),
-      L₁ > 0 ∧ L₂ > 0 ∧ L₃ > 0 ∧
-      L₃ = L₁ + L₂ ∧
-      n * L₁ + (n + 1 - n) * L₂ = 1
-
 /-
 ## Part VI: Weyl's Equidistribution
 -/
 
 /-- **Weyl's theorem:** {mα} is equidistributed in [0,1) for irrational α.
     This is the starting point for discrepancy theory. -/
-axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) (u v : ℝ)
-    (hu : 0 ≤ u) (hv : v ≤ 1) (huv : u < v) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |(countingFunction α u v n : ℝ) / n - (v - u)| < ε
-
 /-
 ## Part VII: Summary
 -/

@@ -94,9 +94,6 @@ def IsNearPencil (P : PointConfig) : Prop :=
     P.card ≥ 3
 
 /-- Near-pencil configurations are magic via careful weight assignment. -/
-axiom near_pencil_is_magic (P : PointConfig) :
-    IsNearPencil P → IsMagic P
-
 /-- Class 4: Incenter configuration — a triangle with its incenter and
     points on angle bisectors, or any projective image of such. -/
 def IsIncenterConfig (P : PointConfig) : Prop :=
@@ -109,9 +106,6 @@ def IsIncenterConfig (P : PointConfig) : Prop :=
       Collinear ℝ ({C, I, p} : Set (EuclideanSpace ℝ (Fin 2))))
 
 /-- Incenter configurations are magic. -/
-axiom incenter_config_is_magic (P : PointConfig) :
-    IsIncenterConfig P → IsMagic P
-
 /- ## Projective Equivalence -/
 
 /-- Two configurations are projectively equivalent -/
@@ -121,10 +115,6 @@ def ProjectivelyEquivalent (P Q : PointConfig) : Prop :=
     Q = P.image f
 
 /-- Magic property is preserved under projective equivalence -/
-axiom projective_preserves_magic (P Q : PointConfig)
-    (hPQ : ProjectivelyEquivalent P Q) :
-    IsMagic P ↔ IsMagic Q
-
 /- ## The Main Classification -/
 
 /-- A configuration belongs to one of the four magic classes -/
@@ -148,12 +138,6 @@ noncomputable def linesThrough (P : PointConfig) (p : EuclideanSpace ℝ (Fin 2)
 
 /-- In a magic configuration, the weight of a point is determined by
     the number of lines through it and the magic constant. -/
-axiom magic_weight_constraint (P : PointConfig) (hMagic : IsMagic P)
-    (p q : EuclideanSpace ℝ (Fin 2)) (hp : p ∈ P) (hq : q ∈ P) (hpq : p ≠ q) :
-    ∃ w : Weighting P, ∃ c > 0,
-      (∀ L : ConfigLine P, lineSum P w L = c) ∧
-      w.val ⟨p, hp⟩ + w.val ⟨q, hq⟩ ≤ c
-
 /- ## The Non-Magic Theorem -/
 
 /-- Configurations not in the four classes are not magic -/
@@ -193,24 +177,11 @@ noncomputable def incidenceMatrix (P : PointConfig) :
   fun L p => if p.val ∈ L.val then 1 else 0
 
 /-- Magic iff the incidence linear system has a positive solution -/
-axiom magic_iff_positive_solution (P : PointConfig) (hP : P.card ≥ 2) :
-    IsMagic P ↔
-    ∃ (w : P → ℝ) (c : ℝ), (∀ p, w p > 0) ∧ c > 0 ∧
-      ∀ L : ConfigLine P, (P.filter (· ∈ L.val)).sum (fun p =>
-        if h : p ∈ P then w ⟨p, h⟩ else 0) = c
-
 /- ## Dimension Counting Argument -/
 
 /-- The space of valid weightings has dimension at most n minus the number
     of independent line constraints. For configurations outside the four
     classes, this dimension is negative — no positive solution exists. -/
-axiom weighting_dimension_bound (P : PointConfig) (hP : P.card ≥ 3) :
-    ¬IsMagicClass P →
-    ¬∃ (w : P → ℝ), (∀ p, w p > 0) ∧
-      ∃ c > 0, ∀ L : ConfigLine P,
-        (P.filter (· ∈ L.val)).sum (fun p =>
-          if h : p ∈ P then w ⟨p, h⟩ else 0) = c
-
 end Erdos735
 
 /-

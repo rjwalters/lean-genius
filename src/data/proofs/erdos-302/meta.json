@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 0,
     "erdosNumber": 302,
     "erdosUrl": "https://erdosproblems.com/302",
     "erdosProblemStatus": "open",
@@ -76,8 +76,8 @@
       "Extremal combinatorics (density arguments)",
       "Asymptotic notation (o(1), liminf, limsup)"
     ],
-    "lineCount": 271,
-    "assumptions": "6 axiom(s) and 8 sorry(s). See the Lean source for details."
+    "lineCount": 414,
+    "assumptions": "6 axiom(s): asymptotic lower bound (Cambie), upper bound (van Doorn), basic lower bound, doubling threshold, coloring (Brown-Rödl), density existence."
   },
   "overview": {
     "historicalContext": "**Unit Fraction Sum-Free Sets**\n\nErdős Problem #302 concerns the equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$, which sits at the intersection of unit fraction theory and extremal combinatorics. The study of unit fraction decompositions traces back to ancient Egypt: the Rhind papyrus (c. 1650 BCE) represents fractions exclusively as sums of distinct unit fractions, and understanding which unit fraction equations have solutions has been a theme in number theory ever since.\n\nThe problem was posed by Erdős and Graham in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Monographies de L'Enseignement Mathématique 28). They asked: if $f(N)$ denotes the size of the largest subset $A \\subseteq \\{1, \\ldots, N\\}$ containing no solution to $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ with distinct $a, b, c \\in A$, is it true that $f(N) = (\\frac{1}{2} + o(1))N$?\n\n**Historical Development:**\n- **1980 (Erdős-Graham):** Problem posed with the conjecture $f(N) = (\\frac{1}{2}+o(1))N$, motivated by two natural constructions (odd integers and the upper half $[N/2, N]$) both giving density $\\frac{1}{2}$.\n- **1991 (Brown-Rödl):** Solved the related coloring version (Problem #303): $\\{1, \\ldots, N\\}$ can always be 2-colored with no monochromatic solution.\n- **2023 (Cambie):** Disproved the original conjecture by combining odd integers $\\leq N/4$ with the interval $[N/2, N]$, yielding $f(N) \\geq (\\frac{5}{8}+o(1))N$.\n- **2023 (van Doorn):** Established the first non-trivial upper bound $f(N) \\leq (\\frac{9}{10}+o(1))N$ using structural analysis of solution-rich regions.\n\nThe problem remains open: the asymptotic density of $f(N)/N$ is known to lie in $[\\frac{5}{8}, \\frac{9}{10}] = [0.625, 0.9]$, but the exact value is unknown. This wide gap highlights the difficulty of extremal problems for multiplicative equations.",
@@ -91,7 +91,7 @@
       "**Cambie's combination:** Odd integers ≤ N/4 plus [N/2, N] gives 5N/8 elements",
       "**Standard pattern:** 1/n = 1/(n+1) + 1/(n(n+1)) gives many solutions",
       "**Coloring version solved:** Brown-Rödl showed 2-coloring always works",
-      "**Algebraic constraint $c \\leq 2a$:** For any solution with $a < b < c$, we have $c \\leq 2a$, so each element only interacts with elements in a bounded range — yet this local structure still permits enough solutions to make the global problem hard",
+      "**Algebraic constraints $b < 2a$ and $c \\leq a(a+1)$:** For any solution with $a < b < c$, the range of interaction is bounded — yet this local structure still permits enough solutions to make the global problem hard",
       "**Egyptian fraction connection:** The equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is the simplest unit fraction decomposition, linking this problem to a tradition stretching back to the Rhind papyrus"
     ],
     "prerequisites": [
@@ -164,8 +164,8 @@
       "title": "Part 8: Algebraic Structure",
       "startLine": 183,
       "endLine": 201,
-      "summary": "algebraic_form: UnitFractionSum ↔ bc = ab + ac. solution_constraints: if a < b < c, then c ≤ 2a.",
-      "mathContext": "The polynomial form $bc = ab + ac$ reveals that solutions lie on a quadric surface. The constraint $c \\leq 2a$ (for $a < b < c$) follows from $\\frac{1}{c} = \\frac{1}{a} - \\frac{1}{b} \\geq \\frac{1}{a} - \\frac{1}{a+1} > \\frac{1}{2a}$, bounding the range of interaction."
+      "summary": "algebraic_form: UnitFractionSum ↔ bc = ab + ac. solution_b_lt_2a: b < 2a. solution_c_bound: c ≤ a(a+1).",
+      "mathContext": "The polynomial form $bc = ab + ac$ reveals solutions on a quadric. Proved bounds: $b < 2a$ (from $2ac \\leq bc \\Rightarrow c \\leq b$, contradiction) and $c \\leq a(a+1)$ (from $(b{-}a{-}1)(c{-}a) = a(a{+}1){-}c \\geq 0$)."
     },
     {
       "id": "examples",
@@ -234,9 +234,9 @@
     ],
     "opens": [],
     "namespace": "Erdos302",
-    "lineCount": 271,
+    "lineCount": 414,
     "axiomCount": 6,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 10
   },
   "references": [

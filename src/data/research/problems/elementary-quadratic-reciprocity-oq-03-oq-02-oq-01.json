@@ -29,10 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: FIXED 2 incorrect axioms. kronecker_mul_left and kronecker_mul_right were FALSE as stated — found counterexamples involving kroneckerNeg1(0)=1 + zero multiplication. Added nonzero hypotheses (ha/hb and hm/hn). 3 axioms remain (corrected).",
+    "progressSummary": "PROGRESS: Proved kronecker_mul_left (3→2 axioms). kroneckerNeg1_mul + kronecker0_mul as helper lemmas. Remaining: kronecker_mul_right + kronecker_reciprocity.",
     "builtItems": [
       "FIXED: kronecker_mul_left — added (ha : a ≠ 0) (hb : b ≠ 0)",
-      "FIXED: kronecker_mul_right — added (hm : m ≠ 0) (hn : n ≠ 0)"
+      "FIXED: kronecker_mul_right — added (hm : m ≠ 0) (hn : n ≠ 0)",
+      "theorem kroneckerNeg1_mul: sign character multiplicative for nonzero args",
+      "theorem kronecker0_mul: unit character multiplicative for nonzero args",
+      "theorem kronecker_mul_left: Kronecker symbol multiplicative in first arg (proved from jacobiSym.mul_left)"
     ],
     "insights": [
       "kronecker defined via cases: n=0→kronecker0, n=-1→kroneckerNeg1, n=1→1, else→sign*jacobiSym",
@@ -42,7 +45,8 @@
       "mul_right is more straightforward: products of moduli reduce to product of Jacobi symbols",
       "COUNTEREXAMPLE: kronecker_mul_left fails at a=-3, b=0, n=-1: LHS=1, RHS=-1",
       "COUNTEREXAMPLE: kronecker_mul_right fails at a=-1, m=0, n=-1: LHS=1, RHS=-1",
-      "Root cause: kroneckerNeg1(0)=1 but zero-arg product maps through kronecker0 instead of kroneckerNeg1"
+      "Root cause: kroneckerNeg1(0)=1 but zero-arg product maps through kronecker0 instead of kroneckerNeg1",
+      "kronecker_mul_left proof: case split on n, use jacobiSym.mul_left for general case + kroneckerNeg1_mul for sign"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -61,6 +65,7 @@
     "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
     "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "elementary-quadratic-reciprocity-oq-03-oq-03"
   ],
   "references": {
@@ -151,20 +156,31 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ02.lean",
-      "lineCount": 176,
-      "theoremCount": 13,
-      "axiomCount": 3,
+      "lineCount": 224,
+      "theoremCount": 14,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean"
     },
     {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+      "lineCount": 268,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ03.lean",
-      "lineCount": 114,
+      "lineCount": 103,
       "theoremCount": 3,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,

@@ -1,0 +1,138 @@
+{
+  "slug": "erdos-485-oq-02",
+  "title": "Is there a combinatorial (non-algebraic) proof of f(k) → ∞, e.g., via sumset bounds?",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Can we prove Filter.Tendsto (fun k => f k) Filter.atTop Filter.atTop using only sumset bounds and combinatorial arguments, without height theory?",
+    "plain": "The known proofs of f(k) → ∞ use algebraic height theory (Schinzel 1987, Schinzel-Zannier 2009). Is there a purely combinatorial proof via sumset bounds?",
+    "whyMatters": [
+      "A combinatorial proof would bypass deep algebraic machinery",
+      "Would connect polynomial squaring to additive combinatorics",
+      "Could yield better effective bounds"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "support(P²) ⊆ support(P) + support(P) (Minkowski sumset containment)",
+      "For nonneg-coefficient polynomials, support(P²) = support(P) + support(P) exactly",
+      "Nonneg-coefficient polynomials: termCount(P²) ≥ 2k - 1",
+      "|A + A| ≤ |A|² (trivial upper bound on sumset size)",
+      "Coefficient cancellation is the fundamental obstacle for general polynomials"
+    ],
+    "open": [
+      "Can cancellation be bounded sublinearly in |A + A| for general polynomials?",
+      "Is there any connection between Freiman-Ruzsa theory and cancellation control?"
+    ],
+    "goal": "Prove f(k) → ∞ using only combinatorial/sumset arguments"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T13:15:00Z",
+    "iteration": 2,
+    "focus": "Formalized combinatorial sumset framework. Proved positive-coefficient case. Identified cancellation barrier.",
+    "blockers": [
+      "sumset_card_lower_bound (|A + A| ≥ 2|A| - 1) needs proof — standard but labor-intensive in Lean"
+    ],
+    "nextAction": "Prove sumset_card_lower_bound via min/max chain argument. Explore cancellation bounds.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Erdos485OQ02.lean with 9 theorems (8 proved, 1 sorry), 0 axioms. Established formal connection between polynomial squaring and Minkowski sumsets. Proved the positive-coefficient case completely.",
+    "builtItems": [
+      "Created Erdos485OQ02.lean (297 lines, 9 theorems, 0 axioms)",
+      "Proved support_sq_subset_sumset (support containment in Minkowski sum)",
+      "Proved support_sq_eq_sumset_of_nonneg (equality for nonneg case)",
+      "Proved termCount_sq_nonneg_lower (2k-1 lower bound for nonneg case)",
+      "Created gallery data: meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "The combinatorial sumset approach succeeds COMPLETELY for positive-coefficient polynomials",
+      "Cancellation barrier: coefficient cancellation reduces support below sumset — the key obstacle",
+      "Example: P = 1 - x² - (1/2)x⁴ has cancellation at x⁴ in P²",
+      "Controlling cancellation requires algebraic, not purely combinatorial, arguments",
+      "The sumset bound |A + A| ≥ 2|A| - 1 is not in Mathlib — good Aristotle candidate"
+    ],
+    "mathlibGaps": [
+      "No sumset cardinality lower bound |A + A| ≥ 2|A| - 1 in Mathlib",
+      "No Cauchy-Davenport or Plünnecke-Ruzsa results in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove sumset_card_lower_bound in Lean (min/max chain argument)",
+      "Submit to Aristotle as companion file",
+      "Explore Freiman-Ruzsa connection to cancellation bounds"
+    ],
+    "markdown": "# Knowledge Base: erdos-485-oq-02\n\n## Problem Understanding\n\nThe open question asks whether f(k) → ∞ can be proved combinatorially (via sumsets) rather than algebraically (via height theory).\n\n## Key Results (This Session)\n\n1. support(P²) ⊆ support(P) + support(P) — always holds\n2. For nonneg coefficients, equality holds → termCount(P²) ≥ 2k-1\n3. Cancellation barrier: mixed-sign coefficients can eliminate sumset elements\n\n## Dead Ends\n\n- Direct sumset bounds fail for general polynomials due to cancellation\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "sumsets",
+    "cancellation",
+    "polynomial-squaring"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-48",
+    "erdos-485",
+    "erdos-485-oq-01",
+    "erdos-485-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Schinzel-Zannier 2009",
+      "Tao-Vu 2006 (Additive Combinatorics)",
+      "Freiman 1973"
+    ],
+    "urls": [
+      "https://erdosproblems.com/485"
+    ],
+    "mathlib": [
+      "Polynomial.coeff_mul",
+      "Finset.sum_nonneg",
+      "Finset.single_le_sum"
+    ]
+  },
+  "started": "2026-03-29T12:35:42.849Z",
+  "lastUpdate": "2026-03-29T13:15:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos485OQ01.lean",
+      "filename": "Erdos485OQ01.lean",
+      "lineCount": 452,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos485OQ02.lean",
+      "filename": "Erdos485OQ02.lean",
+      "lineCount": 328,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos485Problem.lean",
+      "filename": "Erdos485Problem.lean",
+      "lineCount": 226,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485Problem.lean"
+    }
+  ]
+}

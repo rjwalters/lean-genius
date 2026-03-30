@@ -1,10 +1,10 @@
 {
   "id": "erdos-1151",
-  "title": "Erdős Problem #1151: Limit Points of Lagrange Interpolation at Chebyshev Nodes",
+  "title": "Erd\u0151s Problem #1151: Limit Points of Lagrange Interpolation at Chebyshev Nodes",
   "slug": "erdos-1151",
   "description": "For Lagrange interpolation at Chebyshev nodes, prove that for any closed set A in [-1,1], there exists a continuous function f such that A is the set of limit points of the interpolation values.",
   "meta": {
-    "author": "Erdős (1941), Vértesi (1999)",
+    "author": "Erd\u0151s (1941), V\u00e9rtesi (1999)",
     "sourceUrl": "https://erdosproblems.com/1151",
     "date": "1941",
     "status": "axiomatized",
@@ -35,14 +35,14 @@
       }
     ],
     "originalContributions": [
-      "Formalization of Chebyshev nodes as cos((2k+1)π/(2n))",
+      "Formalization of Chebyshev nodes as cos((2k+1)\u03c0/(2n))",
       "Proof that Chebyshev nodes lie in [-1,1]",
       "Lagrange interpolation operator using basis polynomials",
       "Definition of limit point sets for sequences",
       "Formal statement of the full conjecture with special cases derived"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem).",
+    "assumptions": "2 axioms: erdos_1941_divergence (Erd\u0151s 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem).",
     "lineCount": 184,
     "prerequisites": [
       "Polynomial interpolation (Lagrange basis)",
@@ -51,12 +51,12 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős studied Lagrange interpolation at Chebyshev nodes starting in 1941, showing divergence is possible for continuous functions.",
-    "problemStatement": "Prove that for any closed A ⊆ [-1,1] and suitable x, there exists continuous f such that A is the set of limit points of 𝓛ⁿf(x).",
+    "historicalContext": "Erd\u0151s studied Lagrange interpolation at Chebyshev nodes starting in 1941, showing divergence is possible for continuous functions.",
+    "problemStatement": "Prove that for any closed A \u2286 [-1,1] and suitable x, there exists continuous f such that A is the set of limit points of \ud835\udcdb\u207ff(x).",
     "text": "We formalize the problem, defining Chebyshev nodes, Lagrange interpolation, and limit point sets.",
     "proofStrategy": "Define the mathematical objects and state the conjecture. Derive special cases from it.",
     "keyInsights": [
-      "Chebyshev nodes are cos((2k+1)π/(2n)), roots of Tₙ",
+      "Chebyshev nodes are cos((2k+1)\u03c0/(2n)), roots of T\u2099",
       "Lagrange interpolation can fail to converge for continuous functions",
       "The conjecture would show ALL closed subsets are realizable as limit point sets"
     ],
@@ -74,14 +74,18 @@
       "lineEnd": 55,
       "theorems": [
         "chebyshevNode_mem_Icc"
-      ]
+      ],
+      "summary": "Chebyshev Nodes",
+      "id": "chebyshev-nodes"
     },
     {
       "title": "Lagrange Interpolation",
       "content": "Define Lagrange basis polynomials and the interpolation operator.",
       "lineStart": 57,
       "lineEnd": 80,
-      "theorems": []
+      "theorems": [],
+      "summary": "Lagrange Interpolation",
+      "id": "lagrange-interpolation"
     },
     {
       "title": "Main Conjecture and Special Cases",
@@ -91,11 +95,13 @@
       "theorems": [
         "erdos_1151_convergent_case",
         "erdos_1151_dense_case"
-      ]
+      ],
+      "summary": "Main Conjecture and Special Cases",
+      "id": "main-conjecture-and-special-ca"
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #1151 on limit-point behavior of Lagrange interpolation at Chebyshev nodes.",
+    "summary": "We formalize Erd\u0151s Problem #1151 on limit-point behavior of Lagrange interpolation at Chebyshev nodes.",
     "implications": [
       "Complete classification of convergence/divergence behaviors"
     ],
@@ -113,12 +119,12 @@
   "references": [
     {
       "key": "Er41",
-      "citation": "P. Erdős, On divergence properties of the Lagrange interpolation parabolas, Ann. of Math. 42 (1941), 309-315.",
+      "citation": "P. Erd\u0151s, On divergence properties of the Lagrange interpolation parabolas, Ann. of Math. 42 (1941), 309-315.",
       "url": ""
     },
     {
       "key": "Va99",
-      "citation": "P. Vértesi, Problems on interpolation, Problem 2.41, 1999.",
+      "citation": "P. V\u00e9rtesi, Problems on interpolation, Problem 2.41, 1999.",
       "url": ""
     }
   ],

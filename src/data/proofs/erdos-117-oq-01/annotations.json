@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ann-erdos117-oq01-header",
+    "proofId": "erdos-117-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "context",
+    "title": "The Gap in Pyber's Bounds",
+    "body": "Pyber showed c₁ⁿ ≤ h(n) ≤ c₂ⁿ with c₁ < c₂. The gap between c₁ and c₂ is the source of the open question: does h(n) grow at a single exponential rate, or does the growth rate oscillate?"
+  },
+  {
+    "id": "ann-erdos117-oq01-fekete",
+    "proofId": "erdos-117-oq-01",
+    "range": {
+      "startLine": 158,
+      "endLine": 170
+    },
+    "type": "insight",
+    "title": "Fekete's Lemma: The Submultiplicative Path",
+    "body": "If h(m+n) ≤ h(m)·h(n) for all m,n, then log(h) is subadditive and Fekete's subadditive lemma guarantees lim log(h(n))/n exists. This is the most natural path to resolving the convergence question — it reduces to a structural property of covering numbers."
+  }
+]

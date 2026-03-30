@@ -1,0 +1,104 @@
+{
+  "slug": "erdos-825-oq-03",
+  "title": "Do odd weird numbers exist (Erd\u0151s Problem #470)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erd\u0151s Problem #470).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T17:32:58.851Z",
+    "iteration": 4,
+    "focus": "Extended odd weird bound to >4725, covering 7 odd abundant numbers",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Extended odd weird bound from >2835 to >4725. Cleaned up duplicate definitions. 3 deep axioms remain unchanged.",
+    "builtItems": [
+      "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
+      "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
+      "Proved properDivisors_lt (was axiom) from Mathlib in Erdos470Problem.lean:231",
+      "Proved nine45_odd_abundant in Erdos470Problem.lean:156-159",
+      "Proved nine45_semiperfect in Erdos470Problem.lean:165-167",
+      "Proved nine45_not_weird in Erdos470Problem.lean:172",
+      "Proved no_odd_abundant_below_945 in Erdos470Problem.lean:179-182",
+      "Proved odd_weird_gt_945 in Erdos470Problem.lean:188-193",
+      "Added liddy_riedl_6_primes axiom in Erdos470Problem.lean:213-214",
+      "Proved weird_836: 836 is the second weird number (native_decide)",
+      "Proved fifteen75_odd_abundant + fifteen75_semiperfect: 1575 is odd abundant but semiperfect",
+      "Proved no_odd_abundant_945_to_1575: no odd abundant in (945,1575) via native_decide on Finset.Ico",
+      "Proved no_odd_weird_to_1575 + odd_weird_gt_1575: extended odd weird lower bound from 945 to 1575",
+      "thirty465_semiperfect + no_odd_abundant_2836_to_3465 + odd_weird_gt_3465: bound >3465",
+      "forty95_semiperfect + no_odd_abundant_3466_to_4095 + odd_weird_gt_4095: bound >4095",
+      "forty725_semiperfect + no_odd_abundant_4096_to_4725 + odd_weird_gt_4725: bound >4725",
+      "Cleaned up file: removed duplicate theorem definitions that prevented compilation"
+    ],
+    "insights": [
+      "IsPseudoperfect is decidable by enumerating subsets of properDivisors.powerset",
+      "945 = 3^3 * 5 * 7 is the smallest odd abundant number (sigma=1920 > 1890=2*945)",
+      "945 is semiperfect: remove {3,27} from proper divisors, rest sums to 945",
+      "Any odd weird number must exceed 945 (no odd abundant below, 945 semiperfect)",
+      "properDivisors_lt follows immediately from Nat.mem_properDivisors",
+      "no_weird_below_70 provable by native_decide with Decidable IsWeird instance",
+      "Reduced axiom count from 5 to 4 in Erdos470Problem.lean",
+      "The only odd abundant numbers \u2264 1575 are 945 and 1575; both are semiperfect, so neither is weird",
+      "native_decide on Finset.Ico for range abundance checking; Finset.mem_Ico for membership proof",
+      "3465 = 3^2 * 5 * 7 * 11 is the fifth smallest odd abundant; semiperfect (native_decide)",
+      "4095 = 3^2 * 5 * 7 * 13 is the sixth smallest odd abundant; semiperfect (native_decide)",
+      "4725 = 3^3 * 5^2 * 7 is the seventh smallest odd abundant; semiperfect (native_decide)",
+      "All odd abundant numbers through 4725 have 23 or fewer proper divisors - powerset search feasible"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Next odd abundant: 5355 = 3^2 * 5 * 7 * 17 (check semiperfectness and gap)",
+      "Then 5775 = 3 * 5^2 * 7 * 11, then 5985 = 3^2 * 5 * 7 * 19",
+      "3 remaining axioms (Liddy-Riedl, Melfi, Benkoski-Erdos) are deep results, not provable"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-82",
+    "erdos-825"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.851Z",
+  "lastUpdate": "2026-03-30T20:30:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos470Problem.lean",
+      "filename": "Erdos470Problem.lean",
+      "lineCount": 419,
+      "theoremCount": 19,
+      "axiomCount": 3,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos470Problem.lean"
+    }
+  ]
+}

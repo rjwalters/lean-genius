@@ -1,0 +1,249 @@
+{
+  "id": "fundamental-theorem-calculus-oq-02",
+  "title": "Generalized Stokes Theorem",
+  "slug": "fundamental-theorem-calculus-oq-02",
+  "description": "Formalizes the generalized Stokes theorem framework, showing that FTC (1D) and Green's theorem (2D) are special cases of the single identity: the integral of the exterior derivative of a differential form over a manifold equals the integral of the form over the boundary.",
+  "meta": {
+    "author": "Stokes (1854), Cartan (1945)",
+    "date": "1854",
+    "status": "formalized",
+    "tags": [
+      "analysis",
+      "calculus",
+      "differential-forms",
+      "integration",
+      "de-rham-cohomology",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/FundamentalTheoremCalculusStokes.lean",
+    "badge": "formalized",
+    "sorries": 1,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 1 sorry: d^2=0 in 2D (Clairaut's theorem) — needs bridge from Mathlib's iteratedFDeriv to concrete partial derivatives. Green's theorem in Stokes form now proved via GreensTheoremOQ01.greens_theorem_concrete.",
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_eq_sub_of_hasDerivAt_of_le",
+        "description": "FTC Part 2: integral of derivative = net change (a <= b)",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
+      },
+      {
+        "theorem": "integral_hasDerivAt_right",
+        "description": "FTC Part 1: derivative of integral function = integrand",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
+      },
+      {
+        "theorem": "is_const_of_deriv_eq_zero",
+        "description": "Zero derivative implies constant (mean value theorem)",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "intervalIntegral.integral_symm",
+        "description": "Reversing integration bounds negates the integral",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Differential forms framework: concrete definitions of 0-forms, 1-forms, 2-forms with exterior derivatives in dimensions 1 and 2",
+      "Stokes 1D = FTC: proved ∫_[a,b] dF = F(b)-F(a) directly from Mathlib's FTC (0 sorries)",
+      "Orientation-reversal theorem: reversing the manifold orientation negates the integral",
+      "Poincare lemma in 1D: every continuous 1-form is exact (closed => exact on R)",
+      "Antiderivative uniqueness: two antiderivatives differ by a constant",
+      "De Rham cohomology: H^0(R)=R (constants), H^1(R)=0 (all closed forms exact)",
+      "Green's theorem stated as 2D Stokes theorem with OneForm2D structure",
+      "d^2 = 0 (Clairaut's theorem) stated for C^2 functions on R^2"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 365,
+    "theoremCount": 11,
+    "definitionCount": 8,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The generalized Stokes theorem is one of the crowning achievements of 19th-century mathematics. George Gabriel Stokes formulated the surface integral version in 1854 (as a Smith's Prize exam question at Cambridge). The 2D version (Green's theorem) was published by George Green in 1828, and the 3D volume version (divergence theorem) by Gauss and Ostrogradsky. The unification of all these into a single identity on differential forms was achieved by Elie Cartan in the 1940s using the exterior calculus he developed. The modern formulation — for smooth manifolds with boundary, using differential forms and the exterior derivative — reveals that FTC, Green's theorem, the classical Stokes theorem, and the divergence theorem are all the same theorem in different dimensions.",
+    "problemStatement": "Formalize the generalized Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ for manifolds with boundary, showing the Fundamental Theorem of Calculus as the $n=1$ case where $M = [a,b]$, $\\omega = F$, and $d\\omega = F'\\,dx$.",
+    "text": "A 345-line formalization presenting the generalized Stokes theorem as a unifying framework for the fundamental integral theorems of calculus. Defines differential k-forms concretely in dimensions 1 and 2 with exterior derivatives, then proves the key results: Stokes in 1D equals FTC Part 2 (from Mathlib, 0 sorries), the Poincare lemma (closed 1-forms on R are exact), antiderivative uniqueness, de Rham cohomology (H^0=R, H^1=0), and orientation-reversal. States d^2=0 (Clairaut) and Green's theorem in Stokes form. Contains 11 theorems and 8 definitions with 2 sorries (both have clear proof paths).",
+    "proofStrategy": "The formalization proceeds dimension by dimension:\n\n**1D (proved):** Define 0-forms (functions), 1-forms (coefficients of dx), and the exterior derivative d(F) = F'dx. Prove Stokes = FTC using Mathlib's `integral_eq_sub_of_hasDerivAt_of_le`. Prove the Poincare lemma using `integral_hasDerivAt_right` (the integral function is an antiderivative). Prove H^0 = constants using `is_const_of_deriv_eq_zero`.\n\n**2D (stated):** Define OneForm2D = (P,Q) and exterior derivatives d_0(f) = (df/dx, df/dy) and d_1(P,Q) = dQ/dx - dP/dy. State d^2 = 0 (Clairaut) and Green's theorem as ∫_{partial R} omega = ∫_R d(omega).\n\n**General (documented):** Describe the requirements for the fully general theorem on manifolds with boundary.",
+    "keyInsights": [
+      "The Fundamental Theorem of Calculus is the 1D Stokes theorem: M=[a,b] is a 1-manifold with boundary {a,b}, omega=F is a 0-form, and d(omega)=F'dx is a 1-form",
+      "d^2 = 0 (the key structural property enabling de Rham cohomology) corresponds to Clairaut's theorem on equality of mixed partial derivatives",
+      "The Poincare lemma (closed => exact on contractible domains) gives H^1_dR(R) = 0, while H^1_dR(S^1) = R shows topology matters",
+      "Orientation-reversal negates the integral — this is why boundary orientation must be induced consistently from the manifold orientation",
+      "Green's theorem (2D Stokes) decomposes into FTC applied to each partial derivative plus Fubini to swap integration order"
+    ],
+    "prerequisites": [
+      "Fundamental Theorem of Calculus (Parts 1 and 2)",
+      "Interval integrals and integrability (Mathlib measure theory)",
+      "Partial derivatives and differentiability",
+      "Green's theorem for rectangles",
+      "Basic differential forms and exterior algebra (conceptual)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "forms-1d",
+      "title": "Differential Forms in 1D",
+      "startLine": 43,
+      "endLine": 69,
+      "summary": "Defines the de Rham complex in 1D: 0-forms (functions), 1-forms (f(x)dx), the exterior derivative d(F) = F'(x)dx, integration of 1-forms over intervals, and boundary evaluation of 0-forms.",
+      "mathContext": "The 1D de Rham complex $\\Omega^0(\\mathbb{R}) \\xrightarrow{d} \\Omega^1(\\mathbb{R})$ where $d(F) = F'(x)\\,dx$."
+    },
+    {
+      "id": "stokes-1d",
+      "title": "Stokes Theorem in 1D = FTC",
+      "startLine": 71,
+      "endLine": 109,
+      "summary": "Proves the 1D Stokes theorem (= FTC Part 2) in three forms: general hypotheses, differentiable functions, and orientation-reversal. All proofs are from Mathlib with 0 sorries.",
+      "mathContext": "$\\int_{[a,b]} dF = \\int_{\\partial[a,b]} F$, i.e., $\\int_a^b F'(x)\\,dx = F(b) - F(a)$."
+    },
+    {
+      "id": "poincare-1d",
+      "title": "Poincare Lemma and de Rham Cohomology in 1D",
+      "startLine": 111,
+      "endLine": 147,
+      "summary": "Proves the 1D Poincare lemma (every continuous 1-form is exact) and antiderivative uniqueness. The antiderivative F(x) = integral_a^x f(t) dt satisfies dF = f.",
+      "mathContext": "Every closed 1-form on $\\mathbb{R}$ is exact: $H^1_{\\text{dR}}(\\mathbb{R}) = 0$. Antiderivatives are unique up to constants: $\\ker(d) = \\{\\text{constants}\\}$."
+    },
+    {
+      "id": "forms-2d",
+      "title": "Differential Forms in 2D",
+      "startLine": 149,
+      "endLine": 188,
+      "summary": "Defines the 2D de Rham complex: OneForm2D structure for P(x,y)dx + Q(x,y)dy, exterior derivative d_0 (gradient) and d_1 (curl).",
+      "mathContext": "$\\Omega^0(\\mathbb{R}^2) \\xrightarrow{d_0} \\Omega^1(\\mathbb{R}^2) \\xrightarrow{d_1} \\Omega^2(\\mathbb{R}^2)$ where $d_0(f) = f_x\\,dx + f_y\\,dy$ and $d_1(P\\,dx + Q\\,dy) = (Q_x - P_y)\\,dx \\wedge dy$."
+    },
+    {
+      "id": "dd-zero",
+      "title": "d-squared = 0 (Clairaut's Theorem)",
+      "startLine": 190,
+      "endLine": 212,
+      "summary": "States that d_1(d_0(f)) = 0 for C^2 functions, which is Clairaut's theorem on equality of mixed partial derivatives. This is the fundamental property enabling de Rham cohomology.",
+      "mathContext": "$d^2 = 0$: $\\partial^2 f/\\partial x \\partial y = \\partial^2 f/\\partial y \\partial x$ for $C^2$ functions (Schwarz/Clairaut theorem)."
+    },
+    {
+      "id": "greens-stokes",
+      "title": "Green's Theorem as 2D Stokes",
+      "startLine": 214,
+      "endLine": 256,
+      "summary": "Defines rectangle line integrals and area integrals, then states Green's theorem in the Stokes framework. The full proof exists in GreensTheoremOQ01.lean.",
+      "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ via FTC + Fubini."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Hierarchy and de Rham Cohomology",
+      "startLine": 283,
+      "endLine": 345,
+      "summary": "Proves the evaluation formula (find antiderivative, evaluate at endpoints), closed = exact in 1D (H^1 = 0), and ker(d) = constants (H^0 = R). Documents the full hierarchy from FTC to general Stokes.",
+      "mathContext": "De Rham cohomology of $\\mathbb{R}$: $H^0_{\\text{dR}}(\\mathbb{R}) = \\mathbb{R}$ (connected), $H^1_{\\text{dR}}(\\mathbb{R}) = 0$ (contractible). The evaluation formula $\\int_a^b f = F(b) - F(a)$ when $F' = f$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization presents the generalized Stokes theorem as a unifying framework for the fundamental integral theorems of calculus. The 1D case (FTC) is fully proved from Mathlib, including the Poincare lemma and de Rham cohomology calculations. The 2D case (Green's theorem) is stated in the Stokes framework with the full proof available in GreensTheoremOQ01. The key structural property d^2 = 0 (Clairaut) is stated for C^2 functions. The formalization demonstrates how a single identity — the integral of the exterior derivative equals the boundary integral — specializes to all the classical integral theorems.",
+    "implications": "The formalization connects three major threads in mathematics:\n\n1. **Calculus**: FTC, Green's theorem, Stokes' theorem, divergence theorem are all one theorem\n2. **Topology**: De Rham cohomology H^k(M) measures topological obstructions to exactness of closed forms\n3. **Algebra**: The exterior algebra and the de Rham complex Omega^0 -> Omega^1 -> Omega^2 -> ... provide the algebraic framework\n\nA full formalization of the general theorem requires integration of differential forms on manifolds with boundary, an active area of Mathlib development.",
+    "openQuestions": [
+      "Can d^2 = 0 be proved by bridging Mathlib's ContDiff.isSymmetric_iteratedFDeriv to concrete partial derivative expressions?",
+      "Can the general Stokes theorem be stated using Mathlib's SmoothManifoldWithCorners and ExteriorAlgebra?",
+      "What is the minimal smoothness assumption for the Stokes theorem? (Lipschitz forms on Lipschitz domains?)",
+      "Can de Rham cohomology be computed for the circle S^1, showing H^1(S^1) = R?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "FTC (the parent formalization) is the 1D case of Stokes: M=[a,b], omega=F, d(omega)=F'dx"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "related",
+      "description": "The Lebesgue FTC extends the 1D Stokes theorem to absolutely continuous functions with a.e. derivatives"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "extends",
+      "description": "Green's theorem is the 2D case of Stokes: M=D (region), omega=Pdx+Qdy (1-form), d(omega)=(dQ/dx-dP/dy)dx^dy"
+    },
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "uses",
+      "description": "The concrete Green's theorem proof (0 sorries) provides the full proof of the 2D Stokes theorem for rectangles"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "MVT underlies is_const_of_deriv_eq_zero, used to prove H^0 = constants and antiderivative uniqueness"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stokes, George Gabriel",
+      "title": "Smith's Prize Examination",
+      "year": "1854",
+      "venue": "University of Cambridge",
+      "note": "The classical Stokes theorem appeared as an exam question, likely suggested by Lord Kelvin who communicated it to Stokes in a letter"
+    },
+    {
+      "authors": "Green, George",
+      "title": "An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism",
+      "year": "1828",
+      "venue": "Nottingham",
+      "note": "Contains the 2D integral identity now called Green's theorem, discovered independently by Cauchy (1846) and Riemann (1851)"
+    },
+    {
+      "authors": "Cartan, Elie",
+      "title": "Les systemes differentiels exterieurs et leurs applications geometriques",
+      "year": "1945",
+      "venue": "Hermann, Paris",
+      "note": "Unified treatment of exterior calculus and differential forms, showing all classical integral theorems are cases of a single identity"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus on Manifolds",
+      "year": "1965",
+      "venue": "W.A. Benjamin",
+      "note": "Classic textbook proving the generalized Stokes theorem for compact manifolds with boundary using partition of unity and pullback of forms"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Filter",
+      "Topology",
+      "intervalIntegral"
+    ],
+    "namespace": "GeneralizedStokes",
+    "lineCount": 365,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 8
+  },
+  "mainTheorems": [
+    {
+      "name": "stokes_1d",
+      "type": "core",
+      "description": "The 1D Stokes theorem = FTC Part 2: integral of exterior derivative = boundary evaluation",
+      "leanType": "a <= b -> ContinuousOn F (Icc a b) -> ... -> intForm1D (extDeriv1D F) a b = bdryEval F a b"
+    },
+    {
+      "name": "poincare_1d",
+      "type": "core",
+      "description": "Poincare lemma in 1D: every continuous 1-form is exact (has an antiderivative)",
+      "leanType": "Continuous f -> exists F, forall x, HasDerivAt F (f x) x"
+    },
+    {
+      "name": "dd_eq_zero_2D",
+      "type": "structural",
+      "description": "d^2 = 0 in 2D: Clairaut's theorem, mixed partial derivatives commute for C^2 functions",
+      "leanType": "ContDiff R 2 f -> extDeriv1_2D (extDeriv0_2D f) p = 0"
+    },
+    {
+      "name": "h1_trivial",
+      "type": "core",
+      "description": "H^1_dR(R) = 0: the first de Rham cohomology of R is trivial",
+      "leanType": "Continuous f -> exists F, extDeriv1D F = f"
+    }
+  ]
+}

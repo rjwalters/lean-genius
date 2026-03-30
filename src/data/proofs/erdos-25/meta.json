@@ -20,9 +20,9 @@
     "erdosNumber": 25,
     "erdosUrl": "https://erdosproblems.com/25",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 166,
-    "assumptions": "4 axioms (from imported Erdos25LogDensity.lean): logDensity_avoid_one_residue, naturalDensity_implies_logDensity, exists_logDensity_no_naturalDensity, davenport_erdos. Main file has 0 direct axioms and 0 sorries.",
+    "assumptions": "3 axioms (from imported Erdos25LogDensity.lean): naturalDensity_implies_logDensity, exists_logDensity_no_naturalDensity, davenport_erdos. logDensity_avoid_one_residue PROVED via complement splitting and weighted count computation. Main file has 0 direct axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

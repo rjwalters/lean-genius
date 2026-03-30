@@ -1,0 +1,195 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+  "title": "Power Mean Inequality Chain",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T21:03:28-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max, all proved from first principles. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "HM, GM, AM, QM definitions for two variables",
+      "min_le_hm, hm_le_gm, gm_le_am, am_le_qm, qm_le_max individual proofs",
+      "power_mean_chain: unified 5-part conjunction",
+      "means_eq_when_eq: equality condition",
+      "Transitivity corollaries: hm_le_am, gm_le_max, min_le_am"
+    ],
+    "insights": [
+      "Each step reduces to (a-b)^2 >= 0 after algebraic manipulation",
+      "Sqrt steps use Real.sqrt_le_sqrt for monotonicity",
+      "All five inequalities tight iff a = b",
+      "HM ≤ GM is the least obvious step: requires squaring and clearing denominators"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T04:12:19.656Z",
+  "lastUpdate": "2026-03-30T04:12:19.668Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarzIntegral.lean",
+      "filename": "CauchySchwarzIntegral.lean",
+      "lineCount": 118,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegral.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01.lean",
+      "lineCount": 229,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 218,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "lineCount": 152,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ02.lean",
+      "lineCount": 601,
+      "theoremCount": 29,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02.lean",
+      "lineCount": 264,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ01.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ02.lean",
+      "lineCount": 407,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ03.lean",
+      "filename": "CauchySchwarzIntegralOQ03.lean",
+      "lineCount": 182,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ03.lean"
+    }
+  ]
+}

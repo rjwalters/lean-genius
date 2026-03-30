@@ -39,6 +39,7 @@
   "tags": [],
   "relatedProofs": [
     "shannon-channel-coding",
+    "shannon-channel-coding-oq-02",
     "shannon-channel-coding-oq-04"
   ],
   "references": {
@@ -52,13 +53,24 @@
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 214,
-      "theoremCount": 7,
-      "axiomCount": 5,
+      "lineCount": 229,
+      "theoremCount": 8,
+      "axiomCount": 4,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02.lean",
+      "filename": "ShannonChannelCodingOQ02.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02.lean"
     },
     {
       "path": "Proofs/ShannonChannelCodingOQ04.lean",

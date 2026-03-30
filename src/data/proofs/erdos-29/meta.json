@@ -16,20 +16,20 @@
       "explicit-construction"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 29,
     "erdosUrl": "https://erdosproblems.com/29",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
-    "axiomCount": 8,
-    "lineCount": 453,
+    "axiomCount": 5,
+    "lineCount": 523,
+    "assumptions": "5 axioms: JPSZ_set (explicit construction), JPSZ_is_basis, JPSZ_representation_bound, JPSZ_explicit, JPSZ_size_optimal. JPSZ_is_economical and JPSZ_density_zero fully proved as consequences (not independent axioms): economical follows from representation bound via exp(C√(log n) - ε·log n) → -∞, density zero follows from size optimal via squeeze with C·√(log N/N) → 0. 0 sorries.",
     "prerequisites": [
       "Additive bases and Waring's problem",
       "Explicit vs. probabilistic constructions",
       "Schnirelmann density",
       "Computational number theory"
     ],
-    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -171,8 +171,8 @@
       "Filter"
     ],
     "namespace": "Erdos29",
-    "lineCount": 453,
-    "axiomCount": 8,
+    "lineCount": 523,
+    "axiomCount": 5,
     "theoremCount": 10,
     "definitionCount": 12
   },

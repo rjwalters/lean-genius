@@ -52,7 +52,9 @@
     "fourier-series-oq-01",
     "fourier-series-oq-02",
     "fourier-series-oq-02-oq-03",
-    "fourier-series-oq-03"
+    "fourier-series-oq-02-oq-03-oq-02",
+    "fourier-series-oq-03",
+    "fourier-series-oq-04"
   ],
   "references": {
     "papers": [],
@@ -78,9 +80,9 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 441,
+      "lineCount": 428,
       "theoremCount": 13,
-      "axiomCount": 5,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 5,
       "isAristotle": false,
@@ -100,13 +102,35 @@
     {
       "path": "Proofs/FourierSeriesOQ02OQ03.lean",
       "filename": "FourierSeriesOQ02OQ03.lean",
-      "lineCount": 148,
+      "lineCount": 133,
       "theoremCount": 6,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02.lean",
+      "lineCount": 428,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ03.lean",
@@ -118,6 +142,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04.lean",
+      "filename": "FourierSeriesOQ04.lean",
+      "lineCount": 110,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04.lean"
     }
   ]
 }

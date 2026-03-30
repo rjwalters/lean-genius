@@ -102,15 +102,6 @@ both necessary and sufficient.
 /-- Balandraud (2012): for p prime, √(2p) is the exact threshold.
     Above √(2p), every set has a zero-sum subset; below it,
     there exist sets avoiding zero-sums. -/
-axiom balandraud_prime_optimal :
-  ∀ p : ℕ, Nat.Prime p →
-    (∀ A : Finset (ZMod p),
-      (A.card : ℝ) ≥ Real.sqrt (2 * p) →
-      HasZeroSumSubset A) ∧
-    (∃ A : Finset (ZMod p),
-      (A.card : ℝ) < Real.sqrt (2 * p) ∧
-      ¬HasZeroSumSubset A)
-
 /-
 ## Part 6: Hamidoune–Zémor (1996) — Near-Optimal General Bound
 
@@ -120,13 +111,6 @@ For arbitrary N, the asymptotically optimal (1+o(1))√(2N) bound holds.
 /-- Hamidoune–Zémor (1996): (1+ε)√(2N) works for sufficiently large N.
     This shows the optimal constant for the general case is
     asymptotically √2, matching the prime case. -/
-axiom hamidoune_zemor_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      ∀ A : Finset (ZMod N),
-        (A.card : ℝ) ≥ (1 + ε) * Real.sqrt (2 * N) →
-        HasZeroSumSubset A
-
 /-
 ## Part 7: The Trivial Case and the Davenport Constant
 -/
@@ -145,12 +129,6 @@ theorem case_N_1 : ∀ A : Finset (ZMod 1), A.Nonempty → HasZeroSumSubset A :=
     sequence of length ≥ d has a zero-sum subsequence.
     The Erdős-Heilbronn result is sharper (√N instead of N)
     because it considers subsets rather than sequences. -/
-axiom davenport_for_cyclic :
-  ∀ N : ℕ, N ≥ 1 →
-    ∀ A : Finset (ZMod N),
-      A.card ≥ N →
-      HasZeroSumSubset A
-
 /-
 ## Part 8: Generalization to Abelian Groups
 -/
@@ -158,13 +136,6 @@ axiom davenport_for_cyclic :
 /-- Szemerédi's result extends to arbitrary finite abelian groups:
     if |A| > c·√|G| for a suitable constant c, then A has a zero-sum subset.
     This is the most general form of the theorem. -/
-axiom general_abelian_case :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (G : Type*) [AddCommGroup G] [Fintype G],
-      ∀ A : Finset G,
-        (A.card : ℝ) > c * Real.sqrt (Fintype.card G) →
-        ∃ S : Finset G, S ⊆ A ∧ S.Nonempty ∧ S.sum id = 0
-
 /-
 ## Part 9: Summary
 -/

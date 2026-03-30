@@ -24,25 +24,53 @@ def tau (n : ℕ) : ℕ := n.divisors.card
 -- as Nat.card_divisors_mul_of_coprime or similar.
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     tau (m * n) = tau m * tau n := by
-  sorry
+  simp only [tau, hmn.divisors_mul, Finset.card_product]
 
 -- Routine: Geometric series ∑_{m≥1} x^m = x/(1-x) for |x| < 1
 -- Applied to x = 1/t^d where t > 1, d ≥ 1.
 theorem geometric_inverse_pow (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     HasSum (fun m : ℕ => if m = 0 then (0 : ℝ) else (1 / t ^ d) ^ m)
       (1 / (t ^ d - 1)) := by
-  sorry
+  set r := 1 / t ^ d with hr_def
+  have htd : (1 : ℝ) < t ^ d := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  have hr_pos : 0 < r := by positivity
+  have hr_lt : r < 1 := by rw [hr_def, div_lt_one (by positivity)]; exact htd
+  -- Standard geometric series: HasSum (r^·) ((1-r)⁻¹)
+  have hgeo : HasSum (fun m : ℕ => r ^ m) ((1 - r)⁻¹) :=
+    hasSum_geometric_of_lt_one hr_pos.le hr_lt
+  -- The m=0 term: HasSum (if · = 0 then r^· else 0) 1
+  have h0 : HasSum (fun m : ℕ => if m = 0 then r ^ m else 0) 1 := by
+    convert hasSum_single (0 : ℕ) (fun b (hb : b ≠ 0) => if_neg hb) using 1
+    simp
+  -- Subtract to get our function
+  have h_diff := hgeo.sub h0
+  have h_eq : (fun m : ℕ => r ^ m - if m = 0 then r ^ m else 0) =
+      (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
+    ext m; split_ifs with hm <;> simp
+  rw [h_eq] at h_diff
+  -- Show (1-r)⁻¹ - 1 = 1/(t^d - 1)
+  convert h_diff using 1
+  rw [hr_def]; field_simp; ring
 
 -- Routine: The series ∑ 1/t^n converges for t > 1
 theorem inv_pow_summable (t : ℝ) (ht : t > 1) :
     Summable (fun n : ℕ => (1 : ℝ) / t ^ n) := by
-  sorry
+  have h1 : (0 : ℝ) ≤ 1 / t := by positivity
+  have h2 : 1 / t < 1 := by rw [div_lt_one (by linarith)]; linarith
+  convert summable_geometric_of_lt_one h1 h2 using 1
+  ext n; simp [div_pow]
 
 -- Routine: The series ∑ n/t^n converges for t > 1
 -- (derivative of geometric series)
 theorem n_div_pow_summable (t : ℝ) (ht : t > 1) :
     Summable (fun n : ℕ => (n : ℝ) / t ^ n) := by
-  sorry
+  have h0 : (0 : ℝ) < 1 / t := by positivity
+  have h1 : 1 / t < 1 := by rw [div_lt_one (by linarith)]; linarith
+  have hr : ‖(1 / t : ℝ)‖ < 1 := by
+    rw [Real.norm_eq_abs, abs_of_nonneg h0.le]; exact h1
+  have h := summable_pow_mul_geometric_of_norm_lt_one 1 hr
+  simp only [pow_one] at h
+  exact h.congr fun n => by rw [one_div, inv_pow, ← div_eq_mul_inv]
 
 -- Routine: t^n - 1 > 0 for t > 1, n ≥ 1
 theorem pow_sub_one_pos (t : ℝ) (n : ℕ) (ht : t > 1) (hn : n ≥ 1) :
@@ -54,7 +82,12 @@ theorem pow_sub_one_pos (t : ℝ) (n : ℕ) (ht : t > 1) (hn : n ≥ 1) :
 -- (since t^n - 1 ≥ t^n / 2)
 theorem inv_pow_sub_one_bound (t : ℝ) (n : ℕ) (ht : t ≥ 2) (hn : n ≥ 1) :
     1 / (t ^ n - 1) ≤ 2 / t ^ n := by
-  sorry
+  have hp : t ^ n > 0 := by positivity
+  have hp1 : t ^ n - 1 > 0 := pow_sub_one_pos t n (by linarith) hn
+  rw [div_le_div_iff hp1 hp]
+  have : (2 : ℝ) ≤ t ^ n := le_trans (by norm_num : (2:ℝ) ≤ 2 ^ 1)
+    (le_trans (pow_le_pow_right (by linarith) hn) (pow_le_pow_left (by linarith) ht n))
+  nlinarith
 
 -- Routine: τ(n) ≤ n (number of divisors bounded by n)
 theorem tau_le_self (n : ℕ) : tau n ≤ n := by

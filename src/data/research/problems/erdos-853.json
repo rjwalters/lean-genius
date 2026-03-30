@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-15T10:25:45.156Z",
-    "iteration": 2,
-    "focus": "Fixed false axiom, built Bertrand-based infrastructure",
+    "iteration": 3,
+    "focus": "Proved r_ge_four, maynard_tao_gap_persistent, updated gallery data",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added r_upper_bound_even (even case). Odd case sorry remains. 26T, 4A, 1S.",
+    "progressSummary": "COMPLETED: 31T, 4A (all appropriate), 0S. Proved r(x)≥4 (lower bound), maynard_tao_gap_persistent. Updated meta.json.",
     "builtItems": [
       "Proved gap_lt_prime: prime gaps are < the prime (Bertrand postulate)",
       "Proved gapSet_lt: all gaps in gapSet(x) are < x",
       "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)",
-      "r_upper_bound_even: even case of upper bound (Erdos853Problem.lean:257)"
+      "r_upper_bound_even: even case of upper bound (Erdos853Problem.lean:257)",
+      "nthPrime_two: p₂=5 via count/nth Galois connection (Erdos853Problem.lean)",
+      "primeGap_one: d₁=2, first twin prime gap (Erdos853Problem.lean)",
+      "two_mem_gapSet: gap 2 always in gapSet(x) for x≥3 (Erdos853Problem.lean)",
+      "r_ge_four: r(x)≥4 for x≥3 (Erdos853Problem.lean)",
+      "maynard_tao_gap_persistent: consequence of Maynard-Tao axiom (Erdos853Problem.lean)"
     ],
     "insights": [
       "r(x) is an opaque axiom function - should ideally be defined via Nat.find",
@@ -53,11 +58,14 @@
       "For odd x≥5: counting argument needed - number of distinct gaps < number of even values ≤ x",
       "r_upper_bound sorry: even x case trivial (x not in gapSet by gapSet_lt), odd x needs counting argument",
       "All 4 axioms appropriate: erdos_853_weak/strong (open), maynard_tao (deep), cramer_conjecture (deep)",
-      "r_upper_bound_even: proved r(x) ≤ x for even x ≥ 4 via x ∉ gapSet(x) + minimality of r"
+      "r_upper_bound_even: proved r(x) ≤ x for even x ≥ 4 via x ∉ gapSet(x) + minimality of r",
+      "r(x)≥4 provable without deep number theory: gap 2 always realized by twin primes 3,5",
+      "nthPrime_two provable using count/nth Galois connection + 4 not prime",
+      "Maynard-Tao gap persistence follows from infinitely-many witnesses and gapSet monotonicity"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove r_upper_bound: even case trivial, odd case needs pigeonhole on gapSet size vs even numbers"
+      "Problem is mature: 0 sorries, 4 appropriate axioms, concrete bounds 4≤r(x)≤x"
     ],
     "markdown": "# Erdős #853 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #852\n- Problem #854\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -75,18 +83,18 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:25:45.156Z",
-  "lastUpdate": "2026-03-28T23:25:00.000Z",
+  "lastUpdate": "2026-03-29T23:50:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos853Problem.lean",
       "filename": "Erdos853Problem.lean",
-      "lineCount": 340,
-      "theoremCount": 25,
+      "lineCount": 524,
+      "theoremCount": 31,
       "axiomCount": 4,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos853Problem.lean"
     }

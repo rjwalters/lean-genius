@@ -1,0 +1,101 @@
+{
+  "slug": "infinitude-primes-oq-02",
+  "title": "The construction $n! + 1$ gives primes $> n$ but is hugely wasteful — e.g., $10! + 1 = 3628801 = 11 \\times 329891$, producing primes much larger than needed. Can we formalize tighter constructions, su",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The construction $n! + 1$ gives primes $> n$ but is hugely wasteful — e.g., $10! + 1 = 3628801 = 11 \\times 329891$, producing primes much larger than needed. Can we formalize tighter constructions, su.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.306Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.306Z",
+  "lastUpdate": "2026-03-29T18:32:39.306Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes.lean",
+      "filename": "InfinitudePrimes.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes3k2.lean",
+      "filename": "InfinitudePrimes3k2.lean",
+      "lineCount": 197,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes3k2.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 231,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    }
+  ]
+}

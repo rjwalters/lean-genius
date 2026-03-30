@@ -1,0 +1,98 @@
+{
+  "slug": "fundamental-arithmetic-oq-01",
+  "title": "fundamental-arithmetic-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 0A, 10T, 0S. Proved multiplicative property of factorization + coprime disjointness + iterated product.",
+    "builtItems": [
+      "Proofs/FundamentalArithmeticOQ01.lean: 113 lines, 10 theorems, 0 sorries, 0 axioms",
+      "factorization_mul_eq: factorization(mn) = factorization(m) + factorization(n)",
+      "factorization_disjoint_of_coprime: coprime implies disjoint factorization supports",
+      "coprime_valuation_exclusive: for coprime m,n, at most one of v_p(m),v_p(n) is nonzero",
+      "factorization_prod_eq: iterated factorization for lists of nonzero naturals",
+      "Concrete examples: 420 = 12*35 with coprime decomposition verified"
+    ],
+    "insights": [
+      "Nat.factorization_mul from Mathlib directly gives factorization(mn) = factorization(m) + factorization(n)",
+      "Coprime disjointness via Nat.coprime_iff_disjoint gives Disjoint on factorization supports",
+      "Iterated factorization for lists follows by induction using List.prod_cons"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fundamental-arithmetic-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.396Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalArithmetic.lean",
+      "filename": "FundamentalArithmetic.lean",
+      "lineCount": 225,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmetic.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01.lean",
+      "filename": "FundamentalArithmeticOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ02.lean",
+      "filename": "FundamentalArithmeticOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ02.lean"
+    }
+  ]
+}

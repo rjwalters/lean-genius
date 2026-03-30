@@ -1,0 +1,53 @@
+{
+  "id": "fermats-last-theorem-oq-03",
+  "title": "Fermat's Equation over Number Fields",
+  "slug": "fermats-last-theorem-oq-03",
+  "description": "Explores x^n + y^n = z^n over number fields. Wiles (\u211a), Freitas-Hung-Siksek (real quadratic), and the modularity obstruction.",
+  "meta": {
+    "author": "Wiles, Freitas-Hung-Siksek",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FermatsLastTheoremOQ03.lean",
+    "tags": [
+      "number-theory",
+      "fermat",
+      "number-fields",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 123,
+    "assumptions": "1 axiom (flt_over_Q). 0 sorries. WARNING: asymptotic_flt proves True (placeholder). freitas_hung_siksek and modularity_obstruction mentioned in comments but not axiomatized.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "FermatEquation definition over arbitrary CommRing",
+      "Small exponent solutions (n=1,2)",
+      "Asymptotic FLT framework",
+      "Modularity obstruction analysis"
+    ]
+  },
+  "conclusion": {
+    "summary": "FLT over number fields remains largely open. The modularity obstruction is the key difficulty.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "FermatsLastTheoremOQ03",
+    "lineCount": 123,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 3
+  },
+  "sections": []
+}

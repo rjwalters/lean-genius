@@ -1,0 +1,77 @@
+{
+  "slug": "roth-theorem-k3-oq-02",
+  "title": "Can we formalize the alternative proof via triangle removal lemma, showing th...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Can we formalize the alternative proof via triangle removal lemma, showing th....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.839Z",
+    "iteration": 2,
+    "focus": "Explicit Ruzsa-Szemeredi graph construction and triangle-AP correspondence",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created RothTriangleRemoval.lean (353 lines, 1 sorry). Explicit RS tripartite graph encoding 3-APs as triangles. Proved triangle<->AP bijection, AP-free forces trivial triples (a=b=c), edge uniqueness, and edge removal lower bound. Main sorry: quantitative TRL connection.",
+    "builtItems": [
+      "RothTriangleRemoval.lean: RS graph SimpleGraph definition on Fin 3 x ZMod N",
+      "APTriple structure: (a,b,c in A, a+b=2c)",
+      "triangle_yields_ap_triple: triangle in G(A) -> generalized 3-AP",
+      "ap_triple_yields_triangle: AP triple + base point -> triangle in G(A)",
+      "ap_free_forces_equal: AP-free => a=b=c in any AP triple",
+      "xy_edge_unique_triangle: each XY-edge in exactly one triangle when AP-free",
+      "ap_free_min_removal: edge removal lower bound |R| >= |A|N",
+      "Gallery entry: src/data/proofs/roth-theorem-k3-oq-02/"
+    ],
+    "insights": [
+      "RS construction naturally symmetric: forward diff (higher-part minus lower-part) makes Adj symmetric",
+      "XZ edge uses doubling condition (z-x = 2a) rather than division by 2, avoiding invertibility issues",
+      "AP-freeness proof via set d=c-a, then APFree forces d=0: clean 5-line argument",
+      "Edge-disjointness is the key: each edge in exactly one triangle when AP-free",
+      "linear_combination tactic essential for ZMod N arithmetic (linarith does not work)",
+      "Existing Mathlib uses triangle removal internally via corners chain, but does not expose the RS construction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Close the roth_via_triangle_removal sorry by connecting ap_free_min_removal to triangle_removal_quantitative",
+      "Consider Aristotle submission for the quantitative TRL connection"
+    ]
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.839Z",
+  "lastUpdate": "2026-03-30T02:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}

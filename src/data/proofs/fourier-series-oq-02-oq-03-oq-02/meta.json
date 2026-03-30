@@ -17,9 +17,9 @@
       "sharp-constants"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 2,
     "axiomCount": 3,
-    "lineCount": 325,
+    "lineCount": 427,
     "mathlibDependencies": [
       {
         "theorem": "fourierCoeff",
@@ -46,7 +46,7 @@
       "Weierstrass uniform convergence theorem",
       "Fourier coefficient infrastructure from Mathlib"
     ],
-    "assumptions": "3 axioms: (1) contour_shift_decay: contour-shifting gives exponential Fourier decay for strip-analytic functions; (2) rate_is_sharp: the exponential rate 2*pi*delta/T cannot be improved; (3) paley_wiener_converse: exponential decay of Fourier coefficients implies strip analyticity. Plus 6 sorry lemmas for structural results (summability, comparison, optimality, exponential-polynomial dominance).",
+    "assumptions": "3 axioms: (1) contour_shift_decay: contour-shifting gives exponential Fourier decay for strip-analytic functions; (2) rate_is_sharp: the exponential rate 2*pi*delta/T cannot be improved; (3) paley_wiener_converse: exponential decay of Fourier coefficients implies strip analyticity. Plus 4 sorry lemmas for structural results (comparison, optimality, exponential-polynomial dominance).",
     "relatedProblems": [
       {
         "id": "fourier-series-oq-02-oq-03",
@@ -195,7 +195,7 @@
       "Filter"
     ],
     "namespace": "FourierAnalyticDecay",
-    "lineCount": 325,
+    "lineCount": 427,
     "structureCount": 0,
     "axiomCount": 3,
     "theoremCount": 10,

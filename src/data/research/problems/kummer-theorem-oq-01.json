@@ -1,0 +1,104 @@
+{
+  "slug": "kummer-theorem-oq-01",
+  "title": "Multinomial Analogs of Kummer's Theorem",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Multinomial Analogs of Kummer's Theorem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:49:26.405Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "number-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "kummer-theorem",
+    "kummer-theorem-oq-01",
+    "kummer-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.405Z",
+  "lastUpdate": "2026-03-30T13:49:26.405Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/KummerTheorem.lean",
+      "filename": "KummerTheorem.lean",
+      "lineCount": 192,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheorem.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01.lean",
+      "filename": "KummerTheoremOQ01.lean",
+      "lineCount": 69,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ02.lean",
+      "filename": "KummerTheoremOQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ03.lean",
+      "filename": "KummerTheoremOQ03.lean",
+      "lineCount": 117,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
+    }
+  ]
+}

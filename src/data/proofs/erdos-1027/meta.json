@@ -1,8 +1,8 @@
 {
   "id": "erdos-1027",
-  "title": "Erd\u0151s Problem #1027: Intersecting Sets and Property B",
+  "title": "Erdős Problem #1027: Intersecting Sets and Property B",
   "slug": "erdos-1027",
-  "description": "Let F be a family of at most c\u00b72^n sets of size n, and X = \u222aF. Must there exist \u226b_c 2^|X| sets B \u2286 X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
+  "description": "Let F be a family of at most c·2^n sets of size n, and X = ∪F. Must there exist ≫_c 2^|X| sets B ⊆ X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
   "meta": {
     "author": "Koishi Chan (proof)",
     "sourceUrl": "https://erdosproblems.com/1027",
@@ -17,7 +17,7 @@
       "2-colorable"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1027,
     "erdosUrl": "https://erdosproblems.com/1027",
     "erdosProblemStatus": "solved",
@@ -25,19 +25,19 @@
       901
     ],
     "axiomCount": 1,
-    "lineCount": 340,
-    "assumptions": "1 axiom: erdos_1027_solution (Koishi Chan affirmative answer). 1 sorry: card_constOn_le (counting functions constant on a subset). 10 theorems, 3 new (IsMonochromatic infrastructure + erdos_classical_bound).",
-    "mathlib_version": "4.26.0"
+    "lineCount": 355,
+    "assumptions": "1 axiom: erdos_1027_solution (Koishi Chan's affirmative answer). 0 sorries remain. — card_constOn_le proved via injection into complement functions.",
+    "mathlib_version": "4.29.0"
   },
   "overview": {
-    "historicalContext": "Property B, named after Felix Bernstein's 1908 work on set partitions and formally introduced by E.W. Miller (1937), asks whether a family of sets can be 2-colored so that no set is monochromatic. Equivalently: does there exist a subset $B$ of the ground set that intersects every family member but contains none? Such a $B$ is called a 'good' set\u2014its existence is precisely property B.\n\nErd\u0151s's 1963 probabilistic bound showed that if $|\\mathcal{F}| < 2^{t-1}$ and all sets have size $\\ge t$, then $\\mathcal{F}$ has property B. The proof is a gem of the probabilistic method: each set of size $s$ is monochromatic under a random 2-coloring with probability $2^{1-s}$, and the union bound gives the result. This bound is tight\u2014Erd\u0151s constructed $2^{t-1}$ sets of size $t$ without property B.\n\nProblem #1027 asks a *quantitative* question that goes far beyond mere existence. Given a bounded family ($|\\mathcal{F}| \\le c \\cdot 2^n$, all sets of size $n$), must there be not just one good set but *exponentially many*? Specifically, are there $\\gg_c 2^{|X|}$ good subsets of $X = \\bigcup \\mathcal{F}$, where the implicit constant depends only on $c$? This is a supersaturation phenomenon: once property B holds, it holds abundantly.\n\nThe problem is closely related to Erd\u0151s Problem #901, which asks about property B for bounded families. Problem #1027 strengthens #901 from an existential statement (at least one good set) to a quantitative one (a constant fraction of all subsets are good).\n\nKoishi Chan resolved the problem affirmatively. The key insight is an amplification argument: given one good set $B$, local perturbations\u2014flipping elements of $B$ that are 'far' from being critical for any family member\u2014produce exponentially many other good sets. The probabilistic intuition is that a random subset $B \\subseteq X$ satisfies $\\Pr[B \\text{ good}] \\ge (1 - 2^{-n})^{2|\\mathcal{F}|} \\approx e^{-2c}$ for large $n$, giving an expected $e^{-2c} \\cdot 2^{|X|}$ good sets. Making this rigorous requires handling the dependencies between the events '$B$ intersects $A$' and '$A \\not\\subseteq B$' for different $A \\in \\mathcal{F}$.\n\nThe result connects to several areas: the Lov\u00e1sz Local Lemma (handling dependent events), supersaturation in extremal combinatorics (Erd\u0151s-Simonovits theory), the entropy method in combinatorics (Shearer's lemma), and the theory of containers (Balogh-Morris-Samotij, Saxton-Thomason), which provides a general framework for counting independent sets in hypergraphs.",
+    "historicalContext": "Property B, named after Felix Bernstein's 1908 work on set partitions and formally introduced by E.W. Miller (1937), asks whether a family of sets can be 2-colored so that no set is monochromatic. Equivalently: does there exist a subset $B$ of the ground set that intersects every family member but contains none? Such a $B$ is called a 'good' set—its existence is precisely property B.\n\nErdős's 1963 probabilistic bound showed that if $|\\mathcal{F}| < 2^{t-1}$ and all sets have size $\\ge t$, then $\\mathcal{F}$ has property B. The proof is a gem of the probabilistic method: each set of size $s$ is monochromatic under a random 2-coloring with probability $2^{1-s}$, and the union bound gives the result. This bound is tight—Erdős constructed $2^{t-1}$ sets of size $t$ without property B.\n\nProblem #1027 asks a *quantitative* question that goes far beyond mere existence. Given a bounded family ($|\\mathcal{F}| \\le c \\cdot 2^n$, all sets of size $n$), must there be not just one good set but *exponentially many*? Specifically, are there $\\gg_c 2^{|X|}$ good subsets of $X = \\bigcup \\mathcal{F}$, where the implicit constant depends only on $c$? This is a supersaturation phenomenon: once property B holds, it holds abundantly.\n\nThe problem is closely related to Erdős Problem #901, which asks about property B for bounded families. Problem #1027 strengthens #901 from an existential statement (at least one good set) to a quantitative one (a constant fraction of all subsets are good).\n\nKoishi Chan resolved the problem affirmatively. The key insight is an amplification argument: given one good set $B$, local perturbations—flipping elements of $B$ that are 'far' from being critical for any family member—produce exponentially many other good sets. The probabilistic intuition is that a random subset $B \\subseteq X$ satisfies $\\Pr[B \\text{ good}] \\ge (1 - 2^{-n})^{2|\\mathcal{F}|} \\approx e^{-2c}$ for large $n$, giving an expected $e^{-2c} \\cdot 2^{|X|}$ good sets. Making this rigorous requires handling the dependencies between the events '$B$ intersects $A$' and '$A \\not\\subseteq B$' for different $A \\in \\mathcal{F}$.\n\nThe result connects to several areas: the Lovász Local Lemma (handling dependent events), supersaturation in extremal combinatorics (Erdős-Simonovits theory), the entropy method in combinatorics (Shearer's lemma), and the theory of containers (Balogh-Morris-Samotij, Saxton-Thomason), which provides a general framework for counting independent sets in hypergraphs.",
     "problemStatement": "Let $c > 0$ and $n$ be sufficiently large. Suppose $\\mathcal{F}$ is a family of at most $c \\cdot 2^n$ sets, each of size $n$. Let $X = \\bigcup_{A \\in \\mathcal{F}} A$.\n\nMust there exist $\\gg_c 2^{|X|}$ sets $B \\subseteq X$ which intersect every set in $\\mathcal{F}$, yet contain none of them?\n\nMore precisely: does there exist $\\delta = \\delta(c) > 0$ such that for all sufficiently large $n$, every such family has at least $\\delta \\cdot 2^{|X|}$ good sets?\n\n**Status**: SOLVED (YES)\n\n**Answer**: Proved by Koishi Chan. A constant fraction $\\delta(c)$ of all subsets of $X$ are good.",
-    "text": "Let F be a family of at most c\u00b72^n sets of size n, and X = \u222aF. Must there exist \u226b_c 2^|X| sets B \u2286 X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
-    "proofStrategy": "The formalization builds the theory of good sets and the abundance conjecture in five layers across ~235 lines.\n\n**Layer 1 \u2014 Set family infrastructure (lines 24\u201341)**: Defines `SetFamily \u03b1` as `Finset (Finset \u03b1)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring all sets to have size $n$.\n\n**Layer 2 \u2014 Good sets and property B (lines 43\u201385)**: Defines `intersectsAll`, `containsNone`, `isGoodSet`, and `goodSets`. Defines `hasPropertyB` (existence of a good set) and `is2Colorable` (existence of a proper 2-coloring). Proves the equivalence `propertyB_iff_2colorable`.\n\n**Layer 3 \u2014 The conjecture and solution (lines 87\u2013123)**: Defines `goodSetCount` via `Finset.filter` on the powerset, and `erdos_1027_conjecture` with the precise quantifier structure ($\\forall c > 0, \\exists \\delta > 0, \\exists N, \\forall n \\ge N, \\ldots$). Axiomatizes `erdos_1027_solution` (Koishi Chan's theorem) and derives `erdos_1027_solved`.\n\n**Layer 4 \u2014 Problem #901 connection and existence (lines 125\u2013160)**: Links to Problem #901 via `problem_901_connection`. Axiomatizes `propertyB_for_bounded` (existence of one good set) and proves `single_implies_many` (amplification from one to exponentially many).\n\n**Layer 5 \u2014 Probabilistic analysis and special cases (lines 162\u2013235)**: Defines `probIntersects`, `probNotContains`, and `expectedGoodSets` for the first-moment heuristic. Defines `goodSetDensity` and axiomatizes its lower bound. Verifies base cases (empty and singleton families) and provides an inclusion-exclusion lower bound.",
+    "text": "Let F be a family of at most c·2^n sets of size n, and X = ∪F. Must there exist ≫_c 2^|X| sets B ⊆ X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
+    "proofStrategy": "The formalization builds the theory of good sets and the abundance conjecture across 7 sections in ~355 lines.\n\n**Section I — Definitions (lines 36–66)**: Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion`, `IsNUniform`, `IntersectsAll`, `ContainsNone`, `IsGoodSet`, `goodSets`, and `HasPropertyB`.\n\n**Section II — Property B and 2-Colorability (lines 69–112)**: Defines `IsProper2Coloring` and `Is2Colorable`. Proves `propertyB_implies_2colorable` and `coloring_implies_propertyB` — good sets correspond exactly to proper 2-colorings.\n\n**Section III — Base Cases (lines 114–152)**: Proves `empty_family_propertyB`, `empty_family_all_good`, and `singleton_family_propertyB`.\n\n**Section IV — Good Set Counting (lines 155–164)**: Defines `goodSetCount` and `goodSetDensity` for the quantitative statement.\n\n**Section V — The Main Conjecture and Solution (lines 167–191)**: Defines `Erdos1027Statement` with the $\\forall c > 0, \\exists \\delta > 0$ quantifier structure. Axiomatizes `erdos_1027_solution` (Koishi Chan's theorem) and derives `erdos_1027_solved`.\n\n**Section VI — Connection to Property B (lines 193–209)**: Proves `abundance_implies_propertyB`: positive good set count implies Property B.\n\n**Section VII — Erdős Classical Bound (lines 212–353)**: The largest section. Defines `IsMonochromatic`, proves `card_constOn_le` (injection argument: functions constant on $A$ $\\le 2^{|\\alpha| - |A|}$), `card_monochromatic_le` (union of all-true + all-false), and `erdos_classical_bound` (the 1963 probabilistic method result: $|\\mathcal{F}| \\cdot 2 < 2^t$ implies 2-colorability).",
     "keyInsights": [
-      "**From existence to abundance (supersaturation)**: The deepest insight is that property B is not a knife-edge phenomenon. Once a family is sparse enough to be 2-colorable, a *constant fraction* $\\delta(c)$ of all subsets of $X$ are good. This is analogous to the Erd\u0151s-Simonovits supersaturation lemma: once a graph has more than $\\text{ex}(n, H)$ edges, it contains not just one copy of $H$ but $\\Omega(n^{|V(H)|})$ copies.",
+      "**From existence to abundance (supersaturation)**: The deepest insight is that property B is not a knife-edge phenomenon. Once a family is sparse enough to be 2-colorable, a *constant fraction* $\\delta(c)$ of all subsets of $X$ are good. This is analogous to the Erdős-Simonovits supersaturation lemma: once a graph has more than $\\text{ex}(n, H)$ edges, it contains not just one copy of $H$ but $\\Omega(n^{|V(H)|})$ copies.",
       "**The probabilistic heuristic is essentially tight**: A random $B \\subseteq X$ fails to intersect a set $A$ of size $n$ with probability $2^{-n}$, and contains $A$ with probability $2^{-n}$. For $|\\mathcal{F}| \\le c \\cdot 2^n$, the expected number of 'bad' events is $\\le 2c$, so $\\Pr[B \\text{ good}] \\ge (1 - 2^{-n})^{2c \\cdot 2^n} \\to e^{-2c} > 0$. The formal proof must handle dependencies, but the heuristic gives the correct order of magnitude.",
-      "**Amplification via local perturbations**: Given one good set $B$, elements of $X$ that are not critical for any family member (i.e., their removal from $B$ doesn't cause $B$ to miss some $A$, and their addition doesn't cause $B$ to contain some $A$) can be freely toggled. The number of such 'free' elements is $|X| - O(|\\mathcal{F}|)$, yielding $2^{|X| - O(c \\cdot 2^n)}$ good sets\u2014exponential in $|X|$ when $|X| \\gg c \\cdot 2^n$.",
+      "**Amplification via local perturbations**: Given one good set $B$, elements of $X$ that are not critical for any family member (i.e., their removal from $B$ doesn't cause $B$ to miss some $A$, and their addition doesn't cause $B$ to contain some $A$) can be freely toggled. The number of such 'free' elements is $|X| - O(|\\mathcal{F}|)$, yielding $2^{|X| - O(c \\cdot 2^n)}$ good sets—exponential in $|X|$ when $|X| \\gg c \\cdot 2^n$.",
       "**Connection to the container method**: The hypergraph container method (Balogh-Morris-Samotij 2015, Saxton-Thomason 2015) provides a general framework for counting independent sets in hypergraphs. Good sets are precisely independent sets in the 'bad' hypergraph whose edges are the monochromatic subsets. The container method would give that most subsets of $X$ are close to a small number of 'containers,' each containing many good sets.",
       "**Quantitative strengthening of Problem #901**: Problem #901 asks whether bounded families have property B (at least one good set). Problem #1027 asks for exponentially many. The relationship is: #901 gives the 'qualitative' result, #1027 gives the 'quantitative' version. Koishi Chan's proof likely subsumes #901 as the $\\delta > 0$ case of the density bound."
     ],
@@ -48,97 +48,65 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Problem Documentation and Imports",
-      "summary": "Documents Erd\u0151s Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Bound: Documents Erd\u0151s Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`."
-    },
-    {
-      "id": "set-families",
-      "title": "Set Family Infrastructure",
-      "summary": "Defines `SetFamily \u03b1` as `Finset (Finset \u03b1)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$-uniform hypergraph.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `SetFamily \u03b1` as `Finset (Finset \u03b1)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$-uniform hypergraph."
-    },
-    {
-      "id": "intersecting",
-      "title": "Good Sets: Intersecting All, Containing None",
-      "summary": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$). A good set corresponds to the 'true' class of a proper 2-coloring.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$)."
+      "id": "definitions",
+      "title": "Section I: Definitions",
+      "summary": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` ($\\bigcup \\mathcal{F}$), `IsNUniform F n`, `IntersectsAll`, `ContainsNone`, `IsGoodSet`, `goodSets`, and `HasPropertyB`. These define the core vocabulary: an $n$-uniform family, good sets (transversals that are not covers), and Property B.",
+      "startLine": 36,
+      "endLine": 66,
+      "mathContext": "Defines $\\mathcal{F} \\subseteq 2^\\alpha$, $X = \\bigcup \\mathcal{F}$, good sets ($B \\cap A \\ne \\emptyset \\wedge A \\not\\subseteq B$), and Property B ($\\exists$ good set)."
     },
     {
       "id": "property-b",
-      "title": "Property B and 2-Colorability",
-      "summary": "Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Formal definition: Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$."
+      "title": "Section II: Property B and 2-Colorability",
+      "summary": "Defines `IsProper2Coloring` and `Is2Colorable`. Proves `propertyB_implies_2colorable` (good set $\\to$ coloring via $f(x) = (x \\in B)$) and `coloring_implies_propertyB` (coloring $\\to$ good set via $B = f^{-1}(\\text{true})$). Both are sorry-free.",
+      "startLine": 69,
+      "endLine": 112,
+      "mathContext": "$\\text{HasPropertyB}(\\mathcal{F}) \\iff \\text{Is2Colorable}(\\mathcal{F})$: good sets correspond to proper 2-colorings."
     },
     {
-      "id": "main-question",
-      "title": "The Main Conjecture: Exponential Abundance",
-      "summary": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta \\cdot 2^{|X|}$ good sets.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta \\cdot 2^{|X|}$ good sets."
+      "id": "base-cases",
+      "title": "Section III: Base Cases",
+      "summary": "Proves `empty_family_propertyB`, `empty_family_all_good`, and `singleton_family_propertyB`. Empty families: every subset is good. Singleton $\\{A\\}$ with $|A| \\ge 2$: any $\\{x\\}$ for $x \\in A$ is good. All sorry-free.",
+      "startLine": 114,
+      "endLine": 152,
+      "mathContext": "$\\mathcal{F} = \\emptyset \\Rightarrow$ all subsets good; $\\mathcal{F} = \\{A\\}, |A| \\ge 2 \\Rightarrow \\{x\\}$ is good for $x \\in A$."
     },
     {
-      "id": "solution",
-      "title": "Koishi Chan's Theorem",
-      "summary": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\delta(c)$-fraction of all subsets of $X$ are good for bounded families.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\$\\delta$(c)$-fraction of all subsets of $X$ are good for bounded families."
+      "id": "counting",
+      "title": "Section IV: Good Set Counting",
+      "summary": "Defines `goodSetCount F` (cardinality of good sets) and `goodSetDensity F` (ratio $|\\text{good}| / 2^{|X|}$). These are the quantitative measures central to the conjecture.",
+      "startLine": 155,
+      "endLine": 164,
+      "mathContext": "$\\text{goodSetCount}(\\mathcal{F}) = |\\{B \\subseteq X : B \\text{ good}\\}|$; $\\text{density} = \\text{count} / 2^{|X|}$."
     },
     {
-      "id": "problem-901",
-      "title": "Connection to Problem #901",
-      "summary": "Links to Erd\u0151s Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Links to Erd\u0151s Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901."
+      "id": "conjecture-solution",
+      "title": "Section V: The Main Conjecture and Solution",
+      "summary": "Defines `Erdos1027Statement` with the precise quantifier structure ($\\forall c > 0, \\exists \\delta > 0, \\exists N, \\forall n \\ge N, \\ldots$). Axiomatizes `erdos_1027_solution` (Koishi Chan's theorem) and derives `erdos_1027_solved`. This is the single axiom in the file.",
+      "startLine": 167,
+      "endLine": 191,
+      "mathContext": "$\\forall c > 0, \\exists \\delta > 0, \\exists N, \\forall n \\ge N: |\\mathcal{F}| \\le c \\cdot 2^n \\Rightarrow |\\text{good}| \\ge \\delta \\cdot 2^{|X|}$. Axiomatized."
     },
     {
-      "id": "existence",
-      "title": "Existence and Amplification",
-      "summary": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural insight.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural insight."
+      "id": "abundance-propertyb",
+      "title": "Section VI: Connection to Property B",
+      "summary": "Proves `abundance_implies_propertyB`: if `goodSetCount F > 0`, then F has Property B. This connects the quantitative abundance result to the qualitative existence question (Problem #901). Sorry-free.",
+      "startLine": 193,
+      "endLine": 209,
+      "mathContext": "$|\\text{good sets}| > 0 \\Rightarrow \\text{HasPropertyB}(\\mathcal{F})$. Links Problem #1027 (abundance) to Problem #901 (existence)."
     },
     {
-      "id": "probabilistic",
-      "title": "Probabilistic Intuition",
-      "summary": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E} \\approx e^{-2c} \\cdot 2^{|X|}$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E} \\approx e^{-2c} \\cdot 2^{|X|}$."
-    },
-    {
-      "id": "density",
-      "title": "Density of Good Sets",
-      "summary": "Defines `goodSetDensity` $= |\\text{good}| / 2^{|X|}$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\delta(c) > 0$ for bounded families. The strongest form of the result.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `goodSetDensity` $= |\\text{good}| / $$2^{{|X|}$}$$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\$\\delta$(c) > 0$ for bounded families. The strongest form of the result."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases and Counting",
-      "summary": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$."
+      "id": "classical-bound",
+      "title": "Section VII: Erdős Classical Bound (1963)",
+      "summary": "Defines `IsMonochromatic`. Proves `card_constOn_le` (functions constant on $A$ bounded by $2^{|\\alpha| - |A|}$ via injection to complement), `card_monochromatic_le` (monochromatic colorings $\\le 2 \\cdot 2^{|\\alpha| - |A|}$), and `erdos_classical_bound` ($|\\mathcal{F}| \\cdot 2 < 2^t$ and all sets size $\\ge t$ implies 2-colorable). The classical bound uses the probabilistic method: union bound over bad colorings. All sorry-free.",
+      "startLine": 212,
+      "endLine": 353,
+      "mathContext": "Erd\\u0151s 1963: $|\\mathcal{F}| \\cdot 2 < 2^t, |A| \\ge t \\; \\forall A \\Rightarrow \\text{Is2Colorable}(\\mathcal{F})$. Proved via counting: $|\\text{bad}| \\le |\\mathcal{F}| \\cdot 2 \\cdot 2^{|\\alpha| - t} < 2^{|\\alpha|}$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #1027 on the abundance of good sets for bounded set families in a ~235-line Lean file spanning 11 sections. The framework defines good sets (intersecting all, containing none), property B, and the quantitative conjecture ($\\ge \\delta \\cdot 2^{|X|}$ good sets). Koishi Chan's affirmative answer is axiomatized. The probabilistic intuition ($\\Pr[\\text{good}] \\approx e^{-2c}$), the amplification argument (one good set implies exponentially many), and the density formulation are all developed. Connection to Problem #901 established.",
-    "implications": "**Theoretical Significance**: This result connects several major themes in combinatorics and probability:\n\n1. **Supersaturation in extremal combinatorics**: Just as the Erd\u0151s-Simonovits supersaturation lemma shows that graphs above the Tur\u00e1n threshold contain not one but polynomially many copies of the forbidden subgraph, Problem #1027 shows that once a family is sparse enough for property B, exponentially many 2-colorings exist. This is a measure-theoretic strengthening: the 'solution set' has positive density.\n\n2. **The probabilistic method and the Lov\u00e1sz Local Lemma**: The probabilistic heuristic gives the right answer ($\\delta \\approx e^{-2c}$) but making it rigorous requires controlling dependencies. The Lov\u00e1sz Local Lemma (1975) is the natural tool: events '$B$ fails to intersect $A$' and '$A \\subseteq B$' have limited dependencies (sets sharing elements). The constructive Moser-Tardos version (2010) would additionally give an efficient algorithm.\n\n**3. The hypergraph container method**: The Balogh-Morris-Samotij (2015) and Saxton-Thomason (2015) container theorems provide a general framework for counting independent sets in hypergraphs. Good sets are independent sets in the 'monochromatic' hypergraph. Containers would show that most subsets of $X$ are contained in a small number of 'containers,' each with many good sets.\n\n4. **Algorithmic implications**: A positive-density result implies that a random subset of $X$ is good with probability $\\ge \\delta(c)$. Thus, a randomized algorithm finds a good set in expected $O(1/\\delta)$ trials\u2014constant time (in terms of $n$) for fixed $c$. This gives an efficient probabilistic algorithm for property B in bounded families.",
+    "summary": "This formalization captures Erdős Problem #1027 on the abundance of good sets for bounded set families in a ~355-line Lean file spanning 7 sections. The framework defines good sets (intersecting all, containing none), property B (equivalent to 2-colorability), and the quantitative conjecture ($\\ge \\delta \\cdot 2^{|X|}$ good sets). Koishi Chan's affirmative answer is axiomatized as a single axiom. All 10 theorems are sorry-free, including the Erdős 1963 classical bound via the probabilistic method (union bound over monochromatic colorings). Connection to Problem #901 established.",
+    "implications": "**Theoretical Significance**: This result connects several major themes in combinatorics and probability:\n\n1. **Supersaturation in extremal combinatorics**: Just as the Erdős-Simonovits supersaturation lemma shows that graphs above the Turán threshold contain not one but polynomially many copies of the forbidden subgraph, Problem #1027 shows that once a family is sparse enough for property B, exponentially many 2-colorings exist. This is a measure-theoretic strengthening: the 'solution set' has positive density.\n\n2. **The probabilistic method and the Lovász Local Lemma**: The probabilistic heuristic gives the right answer ($\\delta \\approx e^{-2c}$) but making it rigorous requires controlling dependencies. The Lovász Local Lemma (1975) is the natural tool: events '$B$ fails to intersect $A$' and '$A \\subseteq B$' have limited dependencies (sets sharing elements). The constructive Moser-Tardos version (2010) would additionally give an efficient algorithm.\n\n**3. The hypergraph container method**: The Balogh-Morris-Samotij (2015) and Saxton-Thomason (2015) container theorems provide a general framework for counting independent sets in hypergraphs. Good sets are independent sets in the 'monochromatic' hypergraph. Containers would show that most subsets of $X$ are contained in a small number of 'containers,' each with many good sets.\n\n4. **Algorithmic implications**: A positive-density result implies that a random subset of $X$ is good with probability $\\ge \\delta(c)$. Thus, a randomized algorithm finds a good set in expected $O(1/\\delta)$ trials—constant time (in terms of $n$) for fixed $c$. This gives an efficient probabilistic algorithm for property B in bounded families.",
     "openQuestions": [
       "What is the optimal constant $\\delta(c)$ as a function of $c$? The probabilistic heuristic suggests $\\delta(c) \\approx e^{-2c}$. Is this tight, or can a better bound be achieved via structural arguments?",
       "Does the result extend to $k$-colorability for $k > 2$? That is, for bounded $n$-uniform families, are there $\\gg_c k^{|X|}$ proper $k$-colorings? The container method suggests yes, with $\\delta$ depending on both $c$ and $k$.",
@@ -151,17 +119,17 @@
     {
       "targetId": "erdos-901",
       "relationship": "extends",
-      "description": "Problem #901 asks whether bounded n-uniform families have property B (existence of one good set); Problem #1027 is the quantitative supersaturation: a constant fraction \u03b4(c) of all subsets of X are good. #1027 implies #901."
+      "description": "Problem #901 asks whether bounded n-uniform families have property B (existence of one good set); Problem #1027 is the quantitative supersaturation: a constant fraction δ(c) of all subsets of X are good. #1027 implies #901."
     },
     {
       "targetId": "prob-method-lovasz-local",
       "relationship": "uses",
-      "description": "The Lov\u00e1sz Local Lemma is the natural tool for proving Koishi Chan's theorem: bad events ('B misses A' or 'A \u2286 B') have sparse dependencies, and the LLL guarantees positive probability that none occur."
+      "description": "The Lovász Local Lemma is the natural tool for proving Koishi Chan's theorem: bad events ('B misses A' or 'A ⊆ B') have sparse dependencies, and the LLL guarantees positive probability that none occur."
     },
     {
       "targetId": "prob-method-expectation",
       "relationship": "uses",
-      "description": "The first moment method gives the core heuristic: a random B \u2286 X is good with probability \u2248 e^{-2c}, predicting the density \u03b4(c). The probabilistic infrastructure in this proof is the analytic heart of the existence argument."
+      "description": "The first moment method gives the core heuristic: a random B ⊆ X is good with probability ≈ e^{-2c}, predicting the density δ(c). The probabilistic infrastructure in this proof is the analytic heart of the existence argument."
     },
     {
       "targetId": "prob-method-alteration",
@@ -176,39 +144,39 @@
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On a combinatorial problem",
       "year": "1963",
-      "venue": "Nordisk Matematisk Tidskrift 11, 5\u201310",
+      "venue": "Nordisk Matematisk Tidskrift 11, 5–10",
       "note": "Introduced the systematic study of property B and proved m(n) > 2^{n-1} via the probabilistic method; the qualitative precursor to the quantitative abundance result of Problem #1027"
     },
     {
-      "authors": "Erd\u0151s, Paul; Lov\u00e1sz, L\u00e1szl\u00f3",
+      "authors": "Erdős, Paul; Lovász, László",
       "title": "Problems and results on 3-chromatic hypergraphs and some related questions",
       "year": "1975",
-      "venue": "In: Infinite and Finite Sets (Colloquia Mathematica Societatis J\u00e1nos Bolyai 10), North-Holland, 609\u2013627",
-      "note": "Introduced the Lov\u00e1sz Local Lemma and applied it to property B; the LLL is the key tool controlling dependencies in the good-set probability argument"
+      "venue": "In: Infinite and Finite Sets (Colloquia Mathematica Societatis János Bolyai 10), North-Holland, 609–627",
+      "note": "Introduced the Lovász Local Lemma and applied it to property B; the LLL is the key tool controlling dependencies in the good-set probability argument"
     },
     {
-      "authors": "Balogh, J\u00f3zsef; Morris, Robert; Samotij, Wojciech",
+      "authors": "Balogh, József; Morris, Robert; Samotij, Wojciech",
       "title": "Independent sets in hypergraphs",
       "year": "2015",
-      "venue": "Journal of the American Mathematical Society 28(3), 669\u2013709",
+      "venue": "Journal of the American Mathematical Society 28(3), 669–709",
       "note": "Introduced the hypergraph container method, which provides a general framework for counting independent sets (equivalently, good sets) in hypergraphs and directly applies to the abundance result in Problem #1027"
     },
     {
       "authors": "Saxton, David; Thomason, Andrew",
       "title": "Hypergraph containers",
       "year": "2015",
-      "venue": "Inventiones Mathematicae 201(3), 925\u2013992",
-      "note": "Independent development of the container method; containers show that almost all subsets of X lie in one of few 'containers' each rich in good sets, giving a structural explanation for the \u03b4\u00b72^{|X|} abundance"
+      "venue": "Inventiones Mathematicae 201(3), 925–992",
+      "note": "Independent development of the container method; containers show that almost all subsets of X lie in one of few 'containers' each rich in good sets, giving a structural explanation for the δ·2^{|X|} abundance"
     },
     {
-      "authors": "Moser, Robin A.; Tardos, G\u00e1bor",
-      "title": "A constructive proof of the general Lov\u00e1sz Local Lemma",
+      "authors": "Moser, Robin A.; Tardos, Gábor",
+      "title": "A constructive proof of the general Lovász Local Lemma",
       "year": "2010",
       "venue": "Journal of the ACM 57(2), Article 11",
-      "note": "Constructive LLL via resampling; implies that a good set for a bounded family can be found in expected O(1/\u03b4) random trials, giving an efficient randomized algorithm for property B"
+      "note": "Constructive LLL via resampling; implies that a good set for a bounded family can be found in expected O(1/δ) random trials, giving an efficient randomized algorithm for property B"
     }
   ],
   "leanFile": {
@@ -219,9 +187,9 @@
       "Finset"
     ],
     "namespace": "Erdos1027",
-    "lineCount": 233,
-    "axiomCount": 2,
-    "theoremCount": 7,
-    "definitionCount": 10
+    "lineCount": 355,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 14
   }
 }

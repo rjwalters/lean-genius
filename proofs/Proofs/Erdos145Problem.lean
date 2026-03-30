@@ -71,25 +71,16 @@ def FullConjecture : Prop :=
 Axiomatized because the proof requires careful analysis of squarefree
 distribution using elementary sieve methods.
 -/
-axiom erdos_1951 {α : ℝ} (hα : α ∈ Icc 0 2) :
-    ∃ L : ℝ, Tendsto (momentSum α) atTop (𝓝 L)
-
 /--
 **Hooley (1973)**: The limit exists for 0 ≤ α ≤ 3.
 
 Extended Erdős's method using exponential sum techniques.
 -/
-axiom hooley_1973 {α : ℝ} (hα : α ∈ Icc 0 3) :
-    ∃ L : ℝ, Tendsto (momentSum α) atTop (𝓝 L)
-
 /--
 **Greaves-Harman-Huxley (1997)**: The limit exists for 0 ≤ α ≤ 11/3.
 
 Uses sophisticated exponential sum bounds from sieve theory.
 -/
-axiom greaves_harman_huxley_1997 {α : ℝ} (hα : α ∈ Icc 0 (11/3)) :
-    ∃ L : ℝ, Tendsto (momentSum α) atTop (𝓝 L)
-
 /--
 **Chan (2023)**: The limit exists for 0 ≤ α ≤ 3.75.
 
@@ -139,7 +130,4 @@ theorem squarefreeGap_pos (n : ℕ) : 0 < squarefreeGap n := by
 
 /-- The average gap between squarefree numbers up to x is approximately
     π²/6, since the density of squarefrees is 6/π². -/
-axiom average_gap_density :
-    Tendsto (fun x : ℝ => (x : ℝ) / (indicesUpTo x).card) atTop (𝓝 (Real.pi^2 / 6))
-
 end Erdos145

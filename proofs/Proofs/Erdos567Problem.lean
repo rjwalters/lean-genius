@@ -80,24 +80,11 @@ def IsRamseySizeLinear {V : Type} (G : Graph' V) : Prop :=
 /- ## Main Questions -/
 
 /-- Question 1: Is Q₃ Ramsey size linear? -/
-axiom erdos_567_Q3 : IsRamseySizeLinear Q3
-
 /-- Question 2: Is K₃,₃ Ramsey size linear? -/
-axiom erdos_567_K33 : IsRamseySizeLinear K33
-
 /-- Question 3: Is H₅ Ramsey size linear? -/
-axiom erdos_567_H5 : IsRamseySizeLinear H5
-
 /- ## Partial Results -/
 
 /-- Bradač–Gishboliner–Sudakov: every subdivision of K₄ with ≥ 6 vertices
     is Ramsey size linear. H₅ is such a subdivision. -/
-axiom k4_subdivision_linear :
-  ∀ V : Type, ∀ G : Graph' V,
-    True → IsRamseySizeLinear G
-
 /-- EFRS (1993): graphs with ≤ n+1 edges and no isolated vertices
     are Ramsey size linear. -/
-axiom efrs_sparse_linear :
-  ∀ V : Type, ∀ G : Graph' V, ∀ n : ℕ,
-    True → IsRamseySizeLinear G

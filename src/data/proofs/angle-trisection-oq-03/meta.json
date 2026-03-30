@@ -100,23 +100,33 @@
   "sections": [
     {
       "title": "Power-of-2 Characterization",
-      "description": "A positive number divides some power of 2 iff it is a power of 2"
+      "description": "A positive number divides some power of 2 iff it is a power of 2",
+      "summary": "Power-of-2 Characterization",
+      "id": "power-of-2-characterization"
     },
     {
       "title": "Prime Factor Characterization",
-      "description": "A number is a power of 2 iff all its prime factors equal 2"
+      "description": "A number is a power of 2 iff all its prime factors equal 2",
+      "summary": "Prime Factor Characterization",
+      "id": "prime-factor-characterization"
     },
     {
       "title": "Decidability of Constructibility",
-      "description": "Decidable instances for IsConstructible and related predicates"
+      "description": "Decidable instances for IsConstructible and related predicates",
+      "summary": "Decidability of Constructibility",
+      "id": "decidability-of-constructibili"
     },
     {
       "title": "N-gon Constructibility",
-      "description": "Decidability of regular polygon constructibility via Gauss-Wantzel"
+      "description": "Decidability of regular polygon constructibility via Gauss-Wantzel",
+      "summary": "N-gon Constructibility",
+      "id": "n-gon-constructibility"
     },
     {
       "title": "Examples and Summary",
-      "description": "Concrete examples and complexity analysis"
+      "description": "Concrete examples and complexity analysis",
+      "summary": "Examples and Summary",
+      "id": "examples-and-summary"
     }
   ],
   "references": [
@@ -137,5 +147,8 @@
       "description": "Gauss-Wantzel theorem for n-gon constructibility (used for decidable_ngon_constructibility)"
     }
   ],
-  "conclusion": "Compass-and-straightedge constructibility, given the minimal polynomial degree, is decidable and efficiently computable. The complete characterization reduces a 2000-year-old geometric question to a simple arithmetic check: is the degree a power of 2?"
+  "conclusion": {
+    "summary": "Compass-and-straightedge constructibility, given the minimal polynomial degree, is decidable and efficiently computable. The complete characterization reduces a 2000-year-old geometric question to a simple arithmetic check: is the degree a power of 2?",
+    "implications": "Provides a constructive O(log d) algorithm for deciding constructibility, enabling automated verification of geometric construction problems."
+  }
 }

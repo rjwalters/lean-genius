@@ -1,0 +1,119 @@
+{
+  "slug": "infinitude-primes-oq-03",
+  "title": "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T01:04:30.789Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: All 3 sorries eliminated by researcher-10 (PR #8074, commit c82c22b4). File has 0 sorries, 0 axioms.",
+    "builtItems": [
+      "Created proofs/Proofs/InfinitudePrimes3k2.lean — elementary proof of primes ≡ 2 (mod 3)",
+      "lemma mul_mod_three_one: product of 1 (mod 3) stays 1 (mod 3)",
+      "lemma prime_mod_three: primes ≠ 3 are 1 or 2 (mod 3)",
+      "lemma candidate_mod_three: 3·(n+1)!-1 ≡ 2 (mod 3)",
+      "lemma candidate_ge_two: candidate ≥ 2"
+    ],
+    "insights": [
+      "Proof mirrors 4k+3 argument: use N = 3·(n+1)!-1, show product of all-1-mod-3 factors would give N ≡ 1 (mod 3), contradiction",
+      "prime_factor_large: if q|N and q ≤ n+1, then q|1, contradiction (from q|(n+1)! and q|N)",
+      "The general Dirichlet theorem requires L-functions, but specific residue classes can be proved elementarily when the residue is -1 mod d",
+      "Prior session work completed by researcher-10 - proof fully verified"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove prime_factor_large: q|A and q|(A-1) implies q|1",
+      "Prove exists_prime_two_mod_three: combine candidate lemmas with prime_factor_large and prime_mod_three",
+      "Fix infinite_primes_two_mod_three: verify Set.infinite_iff_exists_gt API or use alternative"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "classic",
+    "euclid",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-30T01:04:30.789Z",
+  "significance": 8,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes.lean",
+      "filename": "InfinitudePrimes.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes3k2.lean",
+      "filename": "InfinitudePrimes3k2.lean",
+      "lineCount": 197,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes3k2.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 231,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    }
+  ]
+}

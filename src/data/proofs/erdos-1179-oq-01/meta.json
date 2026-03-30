@@ -7,7 +7,7 @@
     "author": "Open Question (Erdős #1179)",
     "sourceUrl": "https://erdosproblems.com/1179",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
     "tags": [
       "erdos",
@@ -18,16 +18,16 @@
       "open-question",
       "fourier-analysis"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
     "theoremCount": 23,
     "definitionCount": 7,
-    "lineCount": 525,
+    "lineCount": 709,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "open-question",
-    "assumptions": "Zero axioms. One sorry remains: reprCount_fourier_expansion (the core Fourier inversion identity on Z/pZ via character orthogonality and subset product identity). Previously sorry'd lemmas (norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound) are now fully proved. All foundational lemmas and erdos_renyi_decay fully proved.",
+    "assumptions": "Zero axioms, zero sorries. Fully verified: character_orthogonality (shift argument), reprCount_fourier_expansion (product expansion + character orthogonality), norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound, and erdos_renyi_decay all proved from Mathlib.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -87,11 +87,11 @@
         "Real"
       ],
       "namespace": "Erdos1179OQ01",
-      "lineCount": 525,
+      "lineCount": 709,
       "axiomCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "theoremCount": 23,
-      "definitionCount": 5,
+      "definitionCount": 7,
       "mainTheorems": [
         {
           "name": "total_reprCount",
@@ -201,7 +201,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #1179 asks about uniform subset sum representations in finite abelian groups. Given a group $G$ of order $N$ and $\\varepsilon > 0$, define $g_\\varepsilon(N)$ as the smallest $k$ such that a random $k$-subset $A \\subseteq G$ makes all representation counts $F_A(g)$ approximately equal to $2^k/N$ with high probability.\n\nThe study of subset sum representations began with Erdős and Rényi's 1965 paper, which introduced the second-moment method to show that $k \\approx 2\\log_2 N$ suffices for coverage (all elements representable). Erdős and Hall (1976) sharpened this to $g_\\varepsilon(N) \\sim \\log_2 N$, establishing the leading term. Their upper bound $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$ leaves the second-order correction unknown.\n\nThe question of the precise second-order term connects to the broader theme of 'how random is random enough?' in additive combinatorics. The closely related Problem #543 (random subset sums spanning the group) was disproved: the $O(\\log\\log N)$ correction term is optimal, suggesting by analogy that $\\Theta(\\log\\log N)$ may be the correct rate here as well. However, the uniformity condition in Problem #1179 is strictly stronger than the coverage condition in #543, so the analogy is not conclusive.",
     "problemStatement": "Determine the precise rate at which $g_\\varepsilon(N) - \\log_2 N$ grows. Three candidates are formalized:\n\n1. **$O(1)$** (strongest): $g_\\varepsilon(N) = \\log_2 N + O_\\varepsilon(1)$\n2. **$\\Theta(\\log\\log N)$** (conjectured): $g_\\varepsilon(N) = \\log_2 N + \\Theta_\\varepsilon(\\log\\log N)$\n3. **$o(\\log_2 N)$** (known): $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$",
-    "text": "A seven-part formalization in 525 lines investigating the second-order term in $g_\\varepsilon(N)$. Parts I–IV prove foundational properties of representation counts in $\\mathbb{Z}/N\\mathbb{Z}$: the partition identity $\\sum_g F_A(g) = 2^{|A|}$ (via fiber decomposition of the powerset), monotonicity under set insertion ($F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$), singleton bounds, and coverage monotonicity. Part V defines the correction term hierarchy — three candidate rates formalized as Lean propositions — and proves $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument using `Real.logb` monotonicity and the Archimedean property. Part VI axiomatizes the Fourier-analytic character sum bounds from the Erdős-Rényi method. Part VII summarizes the hierarchy as the clean theorem `second_order_hierarchy`. Zero axioms, two sorries, eleven theorems, five definitions.",
+    "text": "A seven-part formalization in 525 lines investigating the second-order term in $g_\\varepsilon(N)$. Parts I–IV prove foundational properties of representation counts in $\\mathbb{Z}/N\\mathbb{Z}$: the partition identity $\\sum_g F_A(g) = 2^{|A|}$ (via fiber decomposition of the powerset), monotonicity under set insertion ($F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$), singleton bounds, and coverage monotonicity. Part V defines the correction term hierarchy — three candidate rates formalized as Lean propositions — and proves $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument using `Real.logb` monotonicity and the Archimedean property. Part VI axiomatizes the Fourier-analytic character sum bounds from the Erdős-Rényi method. Part VII summarizes the hierarchy as the clean theorem `second_order_hierarchy`. Zero axioms, two sorries, eleven theorems, seven definitions.",
     "proofStrategy": "The formalization works concretely in $\\mathbb{Z}/N\\mathbb{Z}$ rather than abstract abelian groups, making the Finset/ZMod infrastructure directly available.\n\n**Parts I–IV (Proved):** Build the foundation of representation counts: the central definition `reprCount A g = |\\{S \\subseteq A : \\sigma(S) = g\\}|`, the partition identity (via `card_eq_sum_card_fiberwise`), base cases for the empty set, monotonicity under element insertion (via powerset inclusion), and coverage growth. These are proved from Mathlib primitives with no axioms.\n\n**Part V (Proved):** The hierarchy theorem. Define three correction term hypotheses as Lean `Prop`s. Prove $O(1) \\Rightarrow o(\\log_2 N)$ by choosing $N_0 = 2^{\\lceil C/\\delta \\rceil + 2}$: for $N \\geq N_0$, $\\log_2 N \\geq \\lceil C/\\delta \\rceil + 2 > C/\\delta$, so $C < \\delta \\cdot \\log_2 N$.\n\n**Part VI (Axiomatized):** The Fourier character sum bound $|F_A(g) - 2^k/p| \\leq (p-1)|\\cos(\\pi/p)|^k$ and its consequence that errors decay exponentially for $k \\approx 2\\log_2 p$. Axiomatized because discrete Fourier analysis on $\\mathbb{Z}/p\\mathbb{Z}$ requires character group infrastructure not yet in Mathlib.",
     "keyInsights": [
       "**Partition Identity (Proved):** $\\sum_g F_A(g) = 2^{|A|}$ — representation counts fiber the powerset. This is the zero-th order fact: the average representation count is $2^{|A|}/N$, and uniformity means all $F_A(g)$ are close to this average.",
@@ -276,6 +276,6 @@
     }
   ],
   "leanFile": {
-    "lineCount": 574
+    "lineCount": 709
   }
 }

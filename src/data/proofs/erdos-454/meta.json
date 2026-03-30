@@ -1,293 +1,293 @@
 {
-  "id": "erdos-454",
-  "title": "Erdős #454: Prime Sum Deviations",
-  "slug": "erdos-454",
-  "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
-  "meta": {
-    "author": "Carl Pomerance (1979 partial result)",
-    "sourceUrl": "https://erdosproblems.com/454",
-    "date": "1979",
-    "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos454Problem.lean",
-    "tags": [
-      "erdos",
-      "number-theory",
-      "primes",
-      "analytic-number-theory",
-      "prime-gaps",
-      "limsup",
-      "open-problem"
-    ],
-    "badge": "axiom",
-    "sorries": 7,
-    "erdosNumber": 454,
-    "erdosUrl": "https://erdosproblems.com/454",
-    "erdosProblemStatus": "open",
-    "dateUpdated": "2026-02-12",
-    "mathlib_version": "4.26.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Nat.nth Prime",
-        "description": "The nth prime function p_k via Nat.nth applied to the Prime predicate",
-        "module": "Mathlib.NumberTheory.PrimeCounting"
-      },
-      {
-        "theorem": "Filter.limsup",
-        "description": "Limit superior in filter-based order theory, used for limsup_{n→∞}",
-        "module": "Mathlib.Order.LiminfLimsup"
-      },
-      {
-        "theorem": "SimpleGraph",
-        "description": "Simple graph structure for Pomerance's Prime Number Graph",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      },
-      {
-        "theorem": "Filter.atTop",
-        "description": "The at-top filter encoding 'for all sufficiently large n'",
-        "module": "Mathlib.Order.Filter.Basic"
-      },
-      {
-        "theorem": "ENat",
-        "description": "Extended naturals ℕ∞ for limsup values that may be infinite",
-        "module": "Mathlib.Topology.Instances.ENat"
-      }
-    ],
-    "originalContributions": [
-      "Definition of nthPrime via Nat.nth Prime with proved values at 0, 1, 2",
-      "Symmetric prime sum function symmetricPrimeSum(n, i) = p_{n+i} + p_{n-i}",
-      "f(n) = iInf over Fin n of symmetric sums, with alternative Finset.inf' definition",
-      "Deviation function deviation(n) = f(n) - 2p_n over ℤ and deviationENat over ℕ∞",
-      "Pomerance's lower bound axiom: 2 ≤ limsup deviationENat atTop",
-      "Erdos454Conjecture definition: limsup = ⊤",
-      "Prime Number Graph as SimpleGraph ℕ with proved symmetry and looplessness",
-      "Goldbach-symmetric property connecting to Goldbach conjecture"
-    ],
-    "mathContext": {
-      "field": "Number Theory",
-      "subfield": "Analytic Number Theory / Prime Gaps",
-      "difficulty": "advanced",
-      "keyTechniques": [
-        "Limit superior via filter-based order theory (limsup atTop)",
-        "Symmetric prime sums: p_{n+i} + p_{n-i} cancellation analysis",
-        "Prime Number Theorem: p_n ~ n log n for gap heuristics",
-        "Graph-theoretic encoding of prime sum relationships",
-        "Extended naturals (ℕ∞) for potentially infinite limsup"
-      ],
-      "prerequisites": [
-        "Prime number sequence and its basic properties",
-        "Limit superior in ordered sets",
-        "Prime Number Theorem (asymptotic form)",
-        "Simple graph theory",
-        "Filter-based topology in Mathlib"
-      ],
-      "consequences": [
-        "Understanding the fine structure of prime gap irregularity",
-        "Connection between symmetric sums and Goldbach-type questions",
-        "Insight into how far primes deviate from 'evenly spaced' behavior"
-      ],
-      "crossReferences": [
+    "id": "erdos-454",
+    "title": "Erdős #454: Prime Sum Deviations",
+    "slug": "erdos-454",
+    "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
+    "meta": {
+        "author": "Carl Pomerance (1979 partial result)",
+        "sourceUrl": "https://erdosproblems.com/454",
+        "date": "1979",
+        "status": "axiomatized",
+        "proofRepoPath": "Proofs/Erdos454Problem.lean",
+        "tags": [
+            "erdos",
+            "number-theory",
+            "primes",
+            "analytic-number-theory",
+            "prime-gaps",
+            "limsup",
+            "open-problem"
+        ],
+        "badge": "axiom",
+        "sorries": 3,
+        "erdosNumber": 454,
+        "erdosUrl": "https://erdosproblems.com/454",
+        "erdosProblemStatus": "open",
+        "dateUpdated": "2026-02-12",
+        "mathlib_version": "4.26.0",
+        "mathlibDependencies": [
+            {
+                "theorem": "Nat.nth Prime",
+                "description": "The nth prime function p_k via Nat.nth applied to the Prime predicate",
+                "module": "Mathlib.NumberTheory.PrimeCounting"
+            },
+            {
+                "theorem": "Filter.limsup",
+                "description": "Limit superior in filter-based order theory, used for limsup_{n→∞}",
+                "module": "Mathlib.Order.LiminfLimsup"
+            },
+            {
+                "theorem": "SimpleGraph",
+                "description": "Simple graph structure for Pomerance's Prime Number Graph",
+                "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+            },
+            {
+                "theorem": "Filter.atTop",
+                "description": "The at-top filter encoding 'for all sufficiently large n'",
+                "module": "Mathlib.Order.Filter.Basic"
+            },
+            {
+                "theorem": "ENat",
+                "description": "Extended naturals ℕ∞ for limsup values that may be infinite",
+                "module": "Mathlib.Topology.Instances.ENat"
+            }
+        ],
+        "originalContributions": [
+            "Definition of nthPrime via Nat.nth Prime with proved values at 0, 1, 2",
+            "Symmetric prime sum function symmetricPrimeSum(n, i) = p_{n+i} + p_{n-i}",
+            "f(n) = iInf over Fin n of symmetric sums, with alternative Finset.inf' definition",
+            "Deviation function deviation(n) = f(n) - 2p_n over ℤ and deviationENat over ℕ∞",
+            "Pomerance's lower bound axiom: 2 ≤ limsup deviationENat atTop",
+            "Erdos454Conjecture definition: limsup = ⊤",
+            "Prime Number Graph as SimpleGraph ℕ with proved symmetry and looplessness",
+            "Goldbach-symmetric property connecting to Goldbach conjecture"
+        ],
+        "mathContext": {
+            "field": "Number Theory",
+            "subfield": "Analytic Number Theory / Prime Gaps",
+            "difficulty": "advanced",
+            "keyTechniques": [
+                "Limit superior via filter-based order theory (limsup atTop)",
+                "Symmetric prime sums: p_{n+i} + p_{n-i} cancellation analysis",
+                "Prime Number Theorem: p_n ~ n log n for gap heuristics",
+                "Graph-theoretic encoding of prime sum relationships",
+                "Extended naturals (ℕ∞) for potentially infinite limsup"
+            ],
+            "prerequisites": [
+                "Prime number sequence and its basic properties",
+                "Limit superior in ordered sets",
+                "Prime Number Theorem (asymptotic form)",
+                "Simple graph theory",
+                "Filter-based topology in Mathlib"
+            ],
+            "consequences": [
+                "Understanding the fine structure of prime gap irregularity",
+                "Connection between symmetric sums and Goldbach-type questions",
+                "Insight into how far primes deviate from 'evenly spaced' behavior"
+            ],
+            "crossReferences": [
+                {
+                    "proofId": "erdos-458",
+                    "relationship": "Problem #458 studies consecutive prime sums; both concern how prime sums deviate from expectations"
+                },
+                {
+                    "proofId": "prime-number-theorem",
+                    "relationship": "PNT gives p_n ~ n log n, providing the baseline for gap heuristics underlying the conjecture"
+                }
+            ]
+        },
+        "relatedProblems": [
+            {
+                "id": "erdos-458",
+                "relationship": "Consecutive prime sum deviations"
+            }
+        ],
+        "axiomCount": 3,
+        "lineCount": 335,
+        "assumptions": "3 axiom(s) and 4 sorries(s). See the Lean source for details."
+    },
+    "overview": {
+        "historicalContext": "Erdős Problem #454 concerns the behavior of symmetric prime sums, arising from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The function f(n) computes the minimum of p_{n+i} + p_{n-i} over all i < n. If primes were perfectly evenly spaced (like an arithmetic progression), this minimum would equal exactly 2p_n for all n.\n\nCarl Pomerance (born 1947), a distinguished American number theorist known for his work on computational number theory and the AKS primality test, studied this problem in his 1979 paper 'The Prime Number Graph' in Mathematics of Computation. He introduced a graph structure on natural numbers where vertices n and m are connected if p_n + p_m is itself prime. Using properties of this graph — specifically, bounding its chromatic number — Pomerance proved that the limsup of f(n) - 2p_n is at least 2. This means infinitely many n have the property that ALL symmetric prime sums p_{n+i} + p_{n-i} exceed 2p_n + 2.\n\nThe open question is whether these deviations can be arbitrarily large — that is, whether the limsup is infinite. This connects to deep questions about prime gap irregularity. By the Prime Number Theorem (Hadamard and de la Vallée-Poussin, 1896), p_n ~ n log n, so consecutive prime gaps average about log(p_n). But gaps fluctuate wildly: Maier's theorem (1985) shows that short-interval prime counts deviate from their expected values, suggesting the kind of irregularity that could produce large deviations. The Cramér conjecture (1936) predicts gaps as large as (log p_n)^2, which would give deviations of order (log p_n)^2 — far from bounded.",
+        "problemStatement": "Let $p_k$ denote the $k$-th prime. Define:\n\n$$f(n) = \\min_{i<n} (p_{n+i} + p_{n-i})$$\n\nIs it true that $\\limsup_{n \\to \\infty} (f(n) - 2p_n) = \\infty$?\n\n**Status**: OPEN\n\n**Known**: Pomerance (1979) proved $\\limsup \\geq 2$.",
+        "text": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
+        "proofStrategy": "The formalization proceeds in several stages:\n\n1. **$p_k$ via `Nat.nth Prime`**: The $k$-th prime is defined using Mathlib's `Nat.nth` applied to the `Prime` predicate, with specific values proved at $k = 0, 1, 2$ and strict monotonicity established\n2. **Symmetric sums**: `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$; $f(n)$ is the infimum over $i \\in \\text{Fin}\\,n$\n3. **Deviation**: `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$; `deviationENat n` casts to $\\mathbb{N}_\\infty$ for limsup\n4. **Pomerance's bound**: Axiomatized as $2 \\le \\limsup$ `deviationENat atTop`\n5. **Heuristics**: If gaps $\\approx \\log p$, then $p_{n+i} + p_{n-i} \\approx 2p_n$ (linear terms cancel)\n6. **Prime Number Graph**: Formalized as a `SimpleGraph ℕ` with proved symmetry and looplessness\n\nThe conjecture asks whether gap irregularity can cause unbounded deviations.",
+        "keyInsights": [
+            "**Symmetric cancellation**: For evenly spaced primes, $p_{n+i} + p_{n-i} = 2p_n$ exactly — the deviations $p_{n+i} - p_n$ and $p_n - p_{n-i}$ cancel. Real primes violate this symmetry due to gap irregularity",
+            "**The $i = 0$ anchor**: The term $i = 0$ always gives $p_n + p_n = 2p_n$, so $f(n) \\le 2p_n$. For $f(n) > 2p_n$, we need $i = 0$ to NOT be the minimum — requiring ALL symmetric sums at $i > 0$ to exceed $2p_n$",
+            "**Gap irregularity drives deviations**: If $p_{n+i} - p_n > p_n - p_{n-i}$ (the rightward gap exceeds the leftward gap), then $p_{n+i} + p_{n-i} > 2p_n$. Simultaneously large forward gaps and small backward gaps at ALL scales $i$ produce positive deviation",
+            "**Pomerance's graph-chromatic argument**: The proof that $\\limsup \\ge 2$ uses the chromatic number of the Prime Number Graph. If the graph has low chromatic number, one can find positions $n$ where all symmetric sums avoid certain residue classes, forcing deviations $\\ge 2$",
+            "**Connection to Goldbach**: The Prime Number Graph has an edge $n$-$m$ when $p_n + p_m$ is prime. Dense edges suggest many symmetric sums are prime, constraining the minimum — relating this problem to Goldbach-type questions about prime sums"
+        ],
+        "prerequisites": [
+            "Combinatorics and number theory",
+            "Number theory (primes, divisibility)"
+        ]
+    },
+    "sections": [
         {
-          "proofId": "erdos-458",
-          "relationship": "Problem #458 studies consecutive prime sums; both concern how prime sums deviate from expectations"
+            "id": "imports",
+            "title": "Imports and Namespace",
+            "startLine": 25,
+            "endLine": 34,
+            "summary": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation. Opens `Nat` and `Filter` namespaces.",
+            "mathContext": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation."
         },
         {
-          "proofId": "prime-number-theorem",
-          "relationship": "PNT gives p_n ~ n log n, providing the baseline for gap heuristics underlying the conjecture"
+            "id": "nth-prime",
+            "title": "The $n$th Prime Function",
+            "startLine": 35,
+            "endLine": 58,
+            "summary": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`). Establishes `nthPrime_prime` (all values are prime) and `nthPrime_strictMono` (strict monotonicity).",
+            "mathContext": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`)."
+        },
+        {
+            "id": "function-f",
+            "title": "The Function $f(n)$",
+            "startLine": 59,
+            "endLine": 84,
+            "summary": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$. Provides alternative `f'` using `Finset.inf'` and states their equivalence (`f_eq_f'`, sorry).",
+            "mathContext": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$."
+        },
+        {
+            "id": "deviation",
+            "title": "The Deviation from $2p_n$",
+            "startLine": 85,
+            "endLine": 100,
+            "summary": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$.",
+            "mathContext": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$."
+        },
+        {
+            "id": "symmetric-analysis",
+            "title": "Understanding Symmetric Sums",
+            "startLine": 101,
+            "endLine": 119,
+            "summary": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ via `ciInf_le` at $i=0$. Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity.",
+            "mathContext": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ via `ciInf_le` at $i=0$. Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity."
+        },
+        {
+            "id": "pomerance",
+            "title": "Pomerance's Lower Bound",
+            "startLine": 120,
+            "endLine": 138,
+            "summary": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry).",
+            "mathContext": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry)."
+        },
+        {
+            "id": "conjecture",
+            "title": "The Main Conjecture",
+            "startLine": 139,
+            "endLine": 158,
+            "summary": "Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary.",
+            "mathContext": "Formal definition: Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary."
+        },
+        {
+            "id": "heuristics",
+            "title": "Heuristic Analysis",
+            "startLine": 159,
+            "endLine": 175,
+            "summary": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. States `gap_deviation_connection` linking gaps to deviations (sorry).",
+            "mathContext": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$."
+        },
+        {
+            "id": "examples",
+            "title": "Examples",
+            "startLine": 176,
+            "endLine": 192,
+            "summary": "Computes $f(3) = \\min(14, 16, 16) = 14 = 2p_3$ (sorry). Proves $2p_3 = 14$ via `native_decide` (0-indexed: $p_3 = 7$). States $\\text{deviation}(3) = 0$ (sorry).",
+            "mathContext": "Computes $f(3) = \\min(14, 16, 16) = 14 = 2p_3$ (sorry). Proves $2p_3 = 14$ via `native_decide` (0-indexed: $p_3 = 7$). States $\\text{deviation}(3) = 0$ (sorry)."
+        },
+        {
+            "id": "related",
+            "title": "Related Problems",
+            "startLine": 193,
+            "endLine": 204,
+            "summary": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\log n) \\to 1$, providing context for average gap size.",
+            "mathContext": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\$\\log n$) \\to 1$, providing context for average gap size."
+        },
+        {
+            "id": "resolution",
+            "title": "What Would Resolve the Conjecture",
+            "startLine": 205,
+            "endLine": 220,
+            "summary": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$. These formalize what a proof or disproof would require.",
+            "mathContext": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$."
+        },
+        {
+            "id": "prime-graph",
+            "title": "The Prime Number Graph",
+            "startLine": 221,
+            "endLine": 274,
+            "summary": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?",
+            "mathContext": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?"
         }
-      ]
+    ],
+    "conclusion": {
+        "summary": "This formalization captures Erdős Problem #454 on symmetric prime sum deviations. The problem asks whether f(n) - 2p_n can be arbitrarily large, where f(n) = min_{i<n}(p_{n+i} + p_{n-i}) is the minimum symmetric prime sum. Pomerance (1979) proved the limsup is at least 2 using his Prime Number Graph, but whether it's infinite remains open.",
+        "implications": "**Theoretical Significance**: The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n.\n\nThe existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
+        "openQuestions": [
+            "Is limsup(f(n) - 2p_n) finite or infinite? (The main conjecture)",
+            "Can Pomerance's lower bound 2 be improved to any explicit larger value?",
+            "What is the typical size of f(n) - 2p_n — is it O(1), O(log log n), or larger?",
+            "Does the Cramér conjecture (gaps up to (log p)^2) imply the conjecture?",
+            "What is the chromatic number of the Prime Number Graph, and how does it relate to the conjecture?"
+        ]
     },
-    "relatedProblems": [
-      {
-        "id": "erdos-458",
-        "relationship": "Consecutive prime sum deviations"
-      }
+    "leanFile": {
+        "imports": [
+            "Mathlib.NumberTheory.PrimeCounting",
+            "Mathlib.Order.Filter.Basic",
+            "Mathlib.Order.LiminfLimsup",
+            "Mathlib.Topology.Instances.ENat",
+            "Mathlib.Tactic"
+        ],
+        "opens": [
+            "Nat",
+            "Filter"
+        ],
+        "namespace": "Erdos454",
+        "lineCount": 335,
+        "axiomCount": 3,
+        "theoremCount": 16,
+        "definitionCount": 14
+    },
+    "references": [
+        {
+            "authors": "C. Pomerance",
+            "title": "The prime number graph",
+            "year": "1979",
+            "venue": "Mathematics of Computation, 33(145), 399-408",
+            "note": "Introduced the Prime Number Graph and proved limsup(f(n) - 2p_n) ≥ 2"
+        },
+        {
+            "authors": "P. Erdős, R. L. Graham",
+            "title": "Old and New Problems and Results in Combinatorial Number Theory",
+            "year": "1980",
+            "venue": "Monographies de L'Enseignement Mathématique",
+            "note": "Original problem statement"
+        },
+        {
+            "authors": "R. K. Guy",
+            "title": "Unsolved Problems in Number Theory",
+            "year": "2004",
+            "venue": "Springer, 3rd edition",
+            "note": "Discussion of prime gap problems and symmetric prime properties"
+        }
     ],
-    "axiomCount": 3,
-    "lineCount": 274,
-    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details."
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #454 concerns the behavior of symmetric prime sums, arising from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The function f(n) computes the minimum of p_{n+i} + p_{n-i} over all i < n. If primes were perfectly evenly spaced (like an arithmetic progression), this minimum would equal exactly 2p_n for all n.\n\nCarl Pomerance (born 1947), a distinguished American number theorist known for his work on computational number theory and the AKS primality test, studied this problem in his 1979 paper 'The Prime Number Graph' in Mathematics of Computation. He introduced a graph structure on natural numbers where vertices n and m are connected if p_n + p_m is itself prime. Using properties of this graph — specifically, bounding its chromatic number — Pomerance proved that the limsup of f(n) - 2p_n is at least 2. This means infinitely many n have the property that ALL symmetric prime sums p_{n+i} + p_{n-i} exceed 2p_n + 2.\n\nThe open question is whether these deviations can be arbitrarily large — that is, whether the limsup is infinite. This connects to deep questions about prime gap irregularity. By the Prime Number Theorem (Hadamard and de la Vallée-Poussin, 1896), p_n ~ n log n, so consecutive prime gaps average about log(p_n). But gaps fluctuate wildly: Maier's theorem (1985) shows that short-interval prime counts deviate from their expected values, suggesting the kind of irregularity that could produce large deviations. The Cramér conjecture (1936) predicts gaps as large as (log p_n)^2, which would give deviations of order (log p_n)^2 — far from bounded.",
-    "problemStatement": "Let $p_k$ denote the $k$-th prime. Define:\n\n$$f(n) = \\min_{i<n} (p_{n+i} + p_{n-i})$$\n\nIs it true that $\\limsup_{n \\to \\infty} (f(n) - 2p_n) = \\infty$?\n\n**Status**: OPEN\n\n**Known**: Pomerance (1979) proved $\\limsup \\geq 2$.",
-    "text": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
-    "proofStrategy": "The formalization proceeds in several stages:\n\n1. **$p_k$ via `Nat.nth Prime`**: The $k$-th prime is defined using Mathlib's `Nat.nth` applied to the `Prime` predicate, with specific values proved at $k = 0, 1, 2$ and strict monotonicity established\n2. **Symmetric sums**: `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$; $f(n)$ is the infimum over $i \\in \\text{Fin}\\,n$\n3. **Deviation**: `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$; `deviationENat n` casts to $\\mathbb{N}_\\infty$ for limsup\n4. **Pomerance's bound**: Axiomatized as $2 \\le \\limsup$ `deviationENat atTop`\n5. **Heuristics**: If gaps $\\approx \\log p$, then $p_{n+i} + p_{n-i} \\approx 2p_n$ (linear terms cancel)\n6. **Prime Number Graph**: Formalized as a `SimpleGraph ℕ` with proved symmetry and looplessness\n\nThe conjecture asks whether gap irregularity can cause unbounded deviations.",
-    "keyInsights": [
-      "**Symmetric cancellation**: For evenly spaced primes, $p_{n+i} + p_{n-i} = 2p_n$ exactly — the deviations $p_{n+i} - p_n$ and $p_n - p_{n-i}$ cancel. Real primes violate this symmetry due to gap irregularity",
-      "**The $i = 0$ anchor**: The term $i = 0$ always gives $p_n + p_n = 2p_n$, so $f(n) \\le 2p_n$. For $f(n) > 2p_n$, we need $i = 0$ to NOT be the minimum — requiring ALL symmetric sums at $i > 0$ to exceed $2p_n$",
-      "**Gap irregularity drives deviations**: If $p_{n+i} - p_n > p_n - p_{n-i}$ (the rightward gap exceeds the leftward gap), then $p_{n+i} + p_{n-i} > 2p_n$. Simultaneously large forward gaps and small backward gaps at ALL scales $i$ produce positive deviation",
-      "**Pomerance's graph-chromatic argument**: The proof that $\\limsup \\ge 2$ uses the chromatic number of the Prime Number Graph. If the graph has low chromatic number, one can find positions $n$ where all symmetric sums avoid certain residue classes, forcing deviations $\\ge 2$",
-      "**Connection to Goldbach**: The Prime Number Graph has an edge $n$-$m$ when $p_n + p_m$ is prime. Dense edges suggest many symmetric sums are prime, constraining the minimum — relating this problem to Goldbach-type questions about prime sums"
-    ],
-    "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+    "crossReferences": [
+        {
+            "targetId": "erdos-458",
+            "relationship": "related",
+            "description": "Consecutive prime sum deviations"
+        },
+        {
+            "targetId": "prime-number-theorem",
+            "relationship": "foundational",
+            "description": "The Prime Number Theorem gives π(x) ~ x/log x, and Problem #454 studies deviations of prime sums from their PNT-predicted values. The error terms in the PNT (connected to zeros of ζ(s)) directly control the sum deviations studied here"
+        },
+        {
+            "targetId": "bounded-prime-gaps",
+            "relationship": "related",
+            "description": "Both concern the fine distribution of primes beyond PNT: bounded prime gaps (Maynard-Tao) shows primes cluster more than average, while #454 studies how prime sums deviate from their expected values — complementary perspectives on prime irregularity"
+        }
     ]
-  },
-  "sections": [
-    {
-      "id": "imports",
-      "title": "Imports and Namespace",
-      "startLine": 25,
-      "endLine": 34,
-      "summary": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation. Opens `Nat` and `Filter` namespaces.",
-      "mathContext": "Imports `PrimeCounting` for `Nat.nth Prime`, `Filter.Basic` and `LiminfLimsup` for $\\limsup$ via filters, `ENat` for extended naturals $\\mathbb{N}_\\infty$, and `Tactic` for proof automation."
-    },
-    {
-      "id": "nth-prime",
-      "title": "The $n$th Prime Function",
-      "startLine": 35,
-      "endLine": 58,
-      "summary": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`). Establishes `nthPrime_prime` (all values are prime) and `nthPrime_strictMono` (strict monotonicity).",
-      "mathContext": "Defines `nthPrime k` $= k$-th prime via `Nat.nth Prime`. Proves specific values: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$ (using `native_decide`)."
-    },
-    {
-      "id": "function-f",
-      "title": "The Function $f(n)$",
-      "startLine": 59,
-      "endLine": 84,
-      "summary": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$. Provides alternative `f'` using `Finset.inf'` and states their equivalence (`f_eq_f'`, sorry).",
-      "mathContext": "Defines `symmetricPrimeSum n i` $= p_{n+i} + p_{n-i}$ and $f(n) = \\inf_{i \\in \\text{Fin}\\,n}(p_{n+i} + p_{n-i})$ with $f(0) = 0$."
-    },
-    {
-      "id": "deviation",
-      "title": "The Deviation from $2p_n$",
-      "startLine": 85,
-      "endLine": 100,
-      "summary": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$.",
-      "mathContext": "Defines `deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$ and `deviationENat n` casting non-negative deviations to $\\mathbb{N}_\\infty$ for $\\limsup$ computation. The $\\mathbb{N}_\\infty$ version allows the $\\limsup$ to equal $\\top = \\infty$."
-    },
-    {
-      "id": "symmetric-analysis",
-      "title": "Understanding Symmetric Sums",
-      "startLine": 101,
-      "endLine": 119,
-      "summary": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ (sorry). Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity.",
-      "mathContext": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$. Proves `f_le_twice_nthPrime`: $f(n) \\le 2p_n$ (sorry). Proves `asymmetric_behavior`: for $i > 0$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$ by strict monotonicity."
-    },
-    {
-      "id": "pomerance",
-      "title": "Pomerance's Lower Bound",
-      "startLine": 120,
-      "endLine": 138,
-      "summary": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry).",
-      "mathContext": "Axiomatizes `pomerance_1979`: $2 \\le \\limsup$ `deviationENat atTop`. Derives `limsup_pos` ($\\limsup > 0$) and `infinitely_many_deviation_ge_2` (the set $\\{n : \\text{deviation}(n) \\ge 2\\}$ is infinite, sorry)."
-    },
-    {
-      "id": "conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 139,
-      "endLine": 158,
-      "summary": "Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary.",
-      "mathContext": "Formal definition: Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary."
-    },
-    {
-      "id": "heuristics",
-      "title": "Heuristic Analysis",
-      "startLine": 159,
-      "endLine": 175,
-      "summary": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. States `gap_deviation_connection` linking gaps to deviations (sorry).",
-      "mathContext": "Defines `primeGapHeuristic`: gaps $\\approx \\log p$ implies symmetric sums $\\approx 2p_n$. Axiomatizes `large_prime_gaps_exist`: $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$."
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 176,
-      "endLine": 192,
-      "summary": "Computes $f(3) = \\min(10, 10, 14) = 10 = 2p_3$ (sorry). Proves $2p_3 = 10$ via `native_decide`. States $\\text{deviation}(3) = 0$ (sorry).",
-      "mathContext": "Verified: Computes $f(3) = \\min(10, 10, 14) = 10 = 2p_3$ (sorry). Proves $2p_3 = 10$ via `native_decide`. States $\\text{deviation}(3) = 0$ (sorry)."
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "startLine": 193,
-      "endLine": 204,
-      "summary": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\log n) \\to 1$, providing context for average gap size.",
-      "mathContext": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\$\\log n$) \\to 1$, providing context for average gap size."
-    },
-    {
-      "id": "resolution",
-      "title": "What Would Resolve the Conjecture",
-      "startLine": 205,
-      "endLine": 220,
-      "summary": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$. These formalize what a proof or disproof would require.",
-      "mathContext": "Defines `witnessForConjecture M`: $\\exists n$ with all symmetric sums $> 2p_n + M$. Defines `witnessForNegation M`: eventually $f(n) \\le 2p_n + M$."
-    },
-    {
-      "id": "prime-graph",
-      "title": "The Prime Number Graph",
-      "startLine": 221,
-      "endLine": 274,
-      "summary": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?",
-      "mathContext": "Formalizes `primeNumberGraph` as a `SimpleGraph ℕ` with edge $n$-$m$ iff $p_n + p_m = p_k$ for some $k$. Proves symmetry and looplessness. Defines `goldbachSymmetric`: can every even $m > 4$ be expressed as $p_{n+i} + p_{n-i}$?"
-    }
-  ],
-  "conclusion": {
-    "summary": "This formalization captures Erdős Problem #454 on symmetric prime sum deviations. The problem asks whether f(n) - 2p_n can be arbitrarily large, where f(n) = min_{i<n}(p_{n+i} + p_{n-i}) is the minimum symmetric prime sum. Pomerance (1979) proved the limsup is at least 2 using his Prime Number Graph, but whether it's infinite remains open.",
-    "implications": "**Theoretical Significance**: The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n.\n\nThe existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
-    "openQuestions": [
-      "Is limsup(f(n) - 2p_n) finite or infinite? (The main conjecture)",
-      "Can Pomerance's lower bound 2 be improved to any explicit larger value?",
-      "What is the typical size of f(n) - 2p_n — is it O(1), O(log log n), or larger?",
-      "Does the Cramér conjecture (gaps up to (log p)^2) imply the conjecture?",
-      "What is the chromatic number of the Prime Number Graph, and how does it relate to the conjecture?"
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib.NumberTheory.PrimeCounting",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Order.LiminfLimsup",
-      "Mathlib.Topology.Instances.ENat",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Nat",
-      "Filter"
-    ],
-    "namespace": "Erdos454",
-    "lineCount": 274,
-    "axiomCount": 3,
-    "theoremCount": 16,
-    "definitionCount": 14
-  },
-  "references": [
-    {
-      "authors": "C. Pomerance",
-      "title": "The prime number graph",
-      "year": "1979",
-      "venue": "Mathematics of Computation, 33(145), 399-408",
-      "note": "Introduced the Prime Number Graph and proved limsup(f(n) - 2p_n) ≥ 2"
-    },
-    {
-      "authors": "P. Erdős, R. L. Graham",
-      "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique",
-      "note": "Original problem statement"
-    },
-    {
-      "authors": "R. K. Guy",
-      "title": "Unsolved Problems in Number Theory",
-      "year": "2004",
-      "venue": "Springer, 3rd edition",
-      "note": "Discussion of prime gap problems and symmetric prime properties"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "erdos-458",
-      "relationship": "related",
-      "description": "Consecutive prime sum deviations"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "The Prime Number Theorem gives π(x) ~ x/log x, and Problem #454 studies deviations of prime sums from their PNT-predicted values. The error terms in the PNT (connected to zeros of ζ(s)) directly control the sum deviations studied here"
-    },
-    {
-      "targetId": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Both concern the fine distribution of primes beyond PNT: bounded prime gaps (Maynard-Tao) shows primes cluster more than average, while #454 studies how prime sums deviate from their expected values — complementary perspectives on prime irregularity"
-    }
-  ]
 }

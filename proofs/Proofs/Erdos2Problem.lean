@@ -111,7 +111,10 @@ Every covering system has a modulus at most 10^16.
 This disproved Erdős' conjecture. The proof built on work by
 Filaseta, Ford, Konyagin, Pomerance, and Yu (2007).
 -/
-axiom hough_bound : ∀ cs : CoveringSystem, ∃ c ∈ cs.classes, c.modulus ≤ 10^16
+theorem hough_bound : ∀ cs : CoveringSystem, ∃ c ∈ cs.classes, c.modulus ≤ 10^16 := by
+  intro cs
+  obtain ⟨c, hc, hle⟩ := balister_bound cs
+  exact ⟨c, hc, le_trans hle (by norm_num)⟩
 
 /-- Hough's bound as a specific value. -/
 def hough_N : ℕ := 10^16

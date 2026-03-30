@@ -1,0 +1,57 @@
+{
+  "id": "picks-theorem-oq-01",
+  "title": "Pick's Theorem via Triangulation",
+  "slug": "picks-theorem-oq-01",
+  "description": "Constructive proof strategy for Pick's theorem via triangulation into primitive lattice triangles. Proves the base case (primitive triangles), the shoelace formula, Pick's formula for rectangles, and the additivity lemma when merging polygons. 0 sorries, 0 axioms.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "lattice-points",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/PicksTheoremOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved. The main gap for completing the full Pick's theorem proof is formalizing polygon triangulation into primitive lattice triangles.",
+    "originalContributions": [
+      "Pick's formula verified for unit/primitive lattice triangles (base case, norm_num)",
+      "Shoelace formula for lattice triangles with non-negativity proof",
+      "Pick's formula verified for a x b rectangles (ring arithmetic)",
+      "Pick's additivity: merging two polygons along a shared edge preserves the formula (linarith)",
+      "Primitive triangle characterization via determinant = 1",
+      "Complete proof strategy documented: triangulation + base case + additivity"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 206,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "Can the Pick's theorem axiom be proved constructively via triangulation into unit lattice triangles?",
+    "text": "A 206-line formalization answering YES in principle: the algebraic core of the triangulation proof is complete (0 sorries, 0 axioms). Proves Pick's formula for primitive triangles (base case), the shoelace area formula, Pick's formula for rectangles, and the key additivity lemma showing that merging polygons along shared edges preserves Pick's formula. The remaining gap is formalizing polygon triangulation into primitive lattice triangles, which requires computational geometry infrastructure not yet in Mathlib.",
+    "proofStrategy": "1. Base case: primitive (unimodular) lattice triangles have area 1/2, i=0, b=3, so 0+3/2-1=1/2 \u2713\n2. Additivity: when P\u2081 and P\u2082 share an edge with k interior lattice points, the union satisfies Pick's formula if both pieces do\n3. Triangulation: every simple lattice polygon can be decomposed into primitive triangles (ear-clipping + subdivision)\n4. Induction: apply additivity from step 2 repeatedly\n\nSteps 1-2 are fully proved; step 3 needs computational geometry infrastructure.",
+    "keyInsights": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem",
+      "relationship": "extends",
+      "description": "Provides the constructive proof strategy for the axiomatized Pick's theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "PicksTheoremOQ01",
+    "lineCount": 206,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3
+  },
+  "sections": []
+}

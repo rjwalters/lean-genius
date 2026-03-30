@@ -164,12 +164,6 @@ def HasNonTrivialCoveringWithDivisorModuli (n : ℕ) : Prop :=
   ∃ S : Finset Congruence, IsNonTrivialCovering S ∧ AllModuliDivide S n
 
 /-- Haight actually proved the stronger result about non-trivial coverings. -/
-axiom haight_strong_theorem :
-  ∀ c : ℝ, c > 0 →
-    ∃ n : ℕ, n ≥ 1 ∧
-      IsAbundant n c ∧
-      ¬HasNonTrivialCoveringWithDivisorModuli n
-
 /-
 ## Part VI: Key Properties of Covering Systems
 -/
@@ -179,15 +173,13 @@ noncomputable def reciprocalSum (S : Finset Congruence) : ℝ :=
   ∑ c ∈ S, (1 : ℝ) / (c.modulus : ℝ)
 
 /-- In a covering system with distinct moduli, ∑ 1/m_i ≥ 1. -/
-axiom covering_reciprocal_bound (S : Finset Congruence)
-    (hCover : IsCoveringSystem S) (hDistinct : HasDistinctModuli S) :
-    reciprocalSum S ≥ 1
-
-/-- This is related to the "Chinese Remainder" aspect of coverings. -/
-axiom covering_crt_connection :
-  ∀ S : Finset Congruence, IsCoveringSystem S →
-    ∀ m, m ∈ moduliSet S →
-      ∃ a, (⟨a, m, by sorry⟩ : Congruence) ∈ S
+/-- This is related to the "Chinese Remainder" aspect of coverings:
+    every modulus that appears in the system has some residue class in S. -/
+theorem covering_crt_connection :
+    ∀ S : Finset Congruence, IsCoveringSystem S →
+      ∀ m ∈ moduliSet S, ∃ c ∈ S, c.modulus = m := by
+  intro S _ m hm
+  exact Finset.mem_image.mp hm
 
 /-
 ## Part VII: Why Haight's Result Works
@@ -235,12 +227,6 @@ def IsSuperabundant (n : ℕ) : Prop :=
   ∀ m : ℕ, m < n → abundancyRatio m < abundancyRatio n
 
 /-- Haight used properties related to superabundance. -/
-axiom haight_superabundance_connection :
-  ∃ f : ℕ → ℕ, -- f selects the Haight examples
-    ∀ c : ℝ, c > 0 →
-      ∃ k, let n := f k
-           IsAbundant n c ∧ ¬HasNonTrivialCoveringWithDivisorModuli n
-
 /-
 ## Part IX: Connections to Other Problems
 -/

@@ -1,0 +1,96 @@
+{
+  "slug": "quadratic-reciprocity-oq-03",
+  "title": "quadratic-reciprocity-oq-03",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T19:03:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: QuadraticReciprocityOQ03.lean — 4 theorems + 7 examples, 0 sorries, 0 axioms. QR as algorithm: multiplicativity + reciprocity swap + supplementary laws. Verified Legendre symbol computations.",
+    "builtItems": [
+      "legendreSym_mul_eq: multiplicativity (a*b/p) = (a/p)(b/p) via map_mul",
+      "legendreSym_neg_one_eq: first supplementary law (-1/p) = (-1)^((p-1)/2)",
+      "reciprocity_swap: (q/p) = (-1)^(sign) * (p/q) quotient form",
+      "algorithm_descent: descent property (reciprocity reduces modulus)"
+    ],
+    "insights": [
+      "QR + multiplicativity + supplementary laws = complete algorithm for computing Legendre symbols",
+      "Each reciprocity swap reduces the prime, like the Euclidean algorithm reduces by taking remainders",
+      "decide tactic in Lean can verify Legendre symbol values for small primes automatically"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: quadratic-reciprocity-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "quadratic-reciprocity",
+    "quadratic-reciprocity-algorithm",
+    "quadratic-reciprocity-algorithm-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.213Z",
+  "lastUpdate": "2026-03-30T02:13:21.225Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/QuadraticReciprocity.lean",
+      "filename": "QuadraticReciprocity.lean",
+      "lineCount": 232,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocity.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ01.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityOQ03.lean",
+      "filename": "QuadraticReciprocityOQ03.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityOQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "id": "roth-theorem-k3-oq-02",
+  "title": "Roth's Theorem via Triangle Removal Lemma",
+  "slug": "roth-theorem-k3-oq-02",
+  "description": "The Ruzsa-Szemerédi (1978) construction encoding 3-term arithmetic progressions as triangles in a tripartite graph, providing an alternative proof of Roth's theorem via the triangle removal lemma.",
+  "meta": {
+    "author": "Ruzsa-Szemerédi (1978), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ruzsa%E2%80%93Szemer%C3%A9di_problem",
+    "date": "1978",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/RothTriangleRemoval.lean",
+    "tags": [
+      "additive-combinatorics",
+      "szemeredi",
+      "arithmetic-progressions",
+      "triangle-removal",
+      "graph-theory",
+      "regularity-lemma"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 1 sorry: roth_via_triangle_removal (the quantitative connection between the edge-disjointness lower bound and the triangle removal lemma). The RS graph construction, triangle-AP correspondence, edge-disjointness, and edge removal lower bound are all fully proved.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected graph type for the RS graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Cyclic groups for the vertex space",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for subsets of Z/NZ",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Explicit Ruzsa-Szemerédi tripartite graph encoding 3-APs as triangles",
+      "Proof that triangles in RS graph biject with generalized 3-AP triples",
+      "Proof that AP-freeness forces all AP triples to be trivial (a = b = c)",
+      "Edge uniqueness: each XY-edge determines a unique triangle when AP-free",
+      "Edge-disjointness lower bound: edge removal requires >= |A|N edges",
+      "Statement of Roth's theorem via triangle removal as alternative to Fourier proof"
+    ],
+    "lineCount": 357,
+    "theoremCount": 13,
+    "definitionCount": 4,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Ruzsa and Szemerédi (1978) showed that the triangle removal lemma implies Roth's theorem by encoding 3-term arithmetic progressions as triangles in a carefully constructed tripartite graph. This established a deep connection between graph theory (via Szemerédi's regularity lemma) and additive combinatorics, providing an alternative to Roth's original Fourier-analytic proof (1953).\n\nThe construction is elegant: given A ⊆ Z/NZ, build a tripartite graph on 3N vertices where each 3-AP in A corresponds to a triangle. If A is AP-free, every edge lies in exactly one triangle, creating a rigid structure that the triangle removal lemma cannot accommodate for dense sets.",
+    "problemStatement": "Formalize the Ruzsa-Szemerédi construction: given A ⊆ Z/NZ, construct a tripartite graph G on 3N vertices where triangles biject with generalized 3-AP triples (a, b, c ∈ A with a + b = 2c). Show that if A is AP-free, the triangles are edge-disjoint, and derive Roth's theorem from the triangle removal lemma.",
+    "text": "The Ruzsa-Szemerédi (1978) construction encoding 3-term arithmetic progressions as triangles in a tripartite graph, providing an alternative proof of Roth's theorem via the triangle removal lemma.",
+    "proofStrategy": "1. **Graph Construction**: Define the RS graph on vertex set Fin 3 × Z/NZ (three copies of Z/NZ). Edges: (0,x)~(1,y) iff y-x ∈ A; (1,y)~(2,z) iff z-y ∈ A; (0,x)~(2,z) iff ∃a ∈ A, z-x = 2a.\n\n2. **Triangle ↔ 3-AP**: Show that a triangle (0,x),(1,y),(2,z) yields a, b, c ∈ A with a+b = 2c (where a = y-x, b = z-y, c is the XZ witness). Conversely, each such triple plus a base point x gives a triangle.\n\n3. **Edge-Disjointness**: If A is AP-free, every AP triple has a = b = c. This means each triangle is (x, x+a, x+2a) for unique a ∈ A and base x, so each edge lies in exactly one triangle.\n\n4. **Roth via TRL**: The triangle removal lemma says we can make G triangle-free by removing few edges. But edge-disjointness forces removing ≥ |A|N edges. For dense A, this contradicts the removal lemma.",
+    "keyInsights": [
+      "**RS Graph Encoding**: The three edge types (XY, YZ, XZ) correspond to the three elements of a 3-AP. The XZ edge uses the doubling condition (z-x = 2a) to capture the midpoint constraint.",
+      "**AP-Free ⇒ Trivial Triples**: When A contains no 3-AP, the equation a + b = 2c with a,b,c ∈ A forces a = b = c. This is proved by setting d = c - a and using APFree to show d = 0.",
+      "**Edge-Disjointness**: Each edge in the RS graph lies in exactly one triangle when A is AP-free. This rigid structure means destroying all triangles requires removing at least one edge per triangle.",
+      "**Two Proofs, One Theorem**: Both the Fourier-analytic approach (Roth 1953) and the graph-theoretic approach (Ruzsa-Szemerédi 1978) prove r₃(N) = o(N). The graph approach uses regularity+counting instead of harmonic analysis."
+    ],
+    "prerequisites": [
+      "Graph theory (tripartite graphs, triangle removal lemma)",
+      "Additive combinatorics (AP-free sets, density)",
+      "Szemerédi regularity lemma (for triangle removal)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "graph-construction",
+      "title": "Part I: Ruzsa-Szemerédi Graph Construction",
+      "startLine": 1,
+      "endLine": 94,
+      "summary": "Defines the vertex type RSVertex = Fin 3 × ZMod N and the adjacency relation rsAdj encoding differences in A. Proves symmetry and irreflexivity, constructing the SimpleGraph. 0 sorries.",
+      "mathContext": "Graph $G(A)$ on $3N$ vertices: $(0,x) \\sim (1,y) \\iff y-x \\in A$, $(1,y) \\sim (2,z) \\iff z-y \\in A$, $(0,x) \\sim (2,z) \\iff \\exists a \\in A,\\; z-x = 2a$."
+    },
+    {
+      "id": "triangle-ap",
+      "title": "Part II: Triangle ↔ 3-AP Correspondence",
+      "startLine": 95,
+      "endLine": 183,
+      "summary": "Defines APTriple structure (a,b,c ∈ A with a+b=2c). Proves triangle_yields_ap_triple (forward: triangle → AP triple) and ap_triple_yields_triangle (reverse: AP triple + base point → triangle). 0 sorries.",
+      "mathContext": "Triangle $(0,x),(1,y),(2,z)$ in $G(A)$ $\\iff$ $\\exists a,b,c \\in A$: $a = y-x$, $b = z-y$, $a+b = 2c$."
+    },
+    {
+      "id": "edge-disjointness",
+      "title": "Part III: Edge-Disjointness When AP-Free",
+      "startLine": 184,
+      "endLine": 269,
+      "summary": "Proves ap_free_forces_equal: AP-free forces a=b=c in any AP triple. Proves xy_edge_unique_triangle: each XY-edge determines a unique triangle. Proves ap_free_triangle_exists: explicit triangle construction for each a ∈ A. 0 sorries.",
+      "mathContext": "AP-free $A$ $\\implies$ every triangle is $(x, x+a, x+2a)$ for unique $a \\in A$, $x \\in \\mathbb{Z}/N\\mathbb{Z}$. Each edge in exactly one triangle."
+    },
+    {
+      "id": "roth-via-trl",
+      "title": "Part IV: Roth's Theorem via Triangle Removal",
+      "startLine": 270,
+      "endLine": 353,
+      "summary": "Proves ap_free_min_removal: edge removal to make G triangle-free requires hitting every triangle (0 sorries). States roth_via_triangle_removal: the full Roth theorem from TRL (1 sorry — quantitative connection). Proves roth_proofs_agree: Fourier proof implies TRL proof.",
+      "mathContext": "Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$. Triangle removal lemma: $|R| \\leq \\delta' \\cdot 9N^2$. Contradiction for $|A| \\geq \\delta N$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "alternative-proof",
+      "description": "Alternative proof of the same theorem via triangle removal instead of Fourier analysis"
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-01",
+      "relationship": "related",
+      "description": "Quantitative bounds for Roth's theorem — the TRL approach gives different (tower-type) quantitative bounds than Fourier analysis"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "depends-on",
+      "description": "The triangle removal lemma is derived from the Szemerédi regularity lemma and counting lemma"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the Ruzsa-Szemerédi (1978) construction encoding 3-APs as triangles, with fully proved edge-disjointness and edge removal lower bounds. The quantitative TRL connection remains as a sorry.",
+    "implications": "This formalization provides:\n\n1. **Explicit RS Graph**: A reusable tripartite graph encoding for 3-AP problems.\n2. **Two-Proof Gallery**: The gallery now showcases both proofs of Roth's theorem (Fourier and graph-theoretic), demonstrating the deep connection between harmonic analysis and graph theory in additive combinatorics.\n3. **Edge-Disjointness Framework**: The proved structure (AP-free ⇒ edge-disjoint triangles) is the key lemma for the TRL approach.",
+    "openQuestions": [
+      "Complete the quantitative TRL connection (interface with triangle_removal_quantitative)",
+      "Can the RS construction be generalized to encode k-APs for k > 3 using hypergraph removal?",
+      "What is the exact quantitative bound on r₃(N) that the TRL approach yields?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Ruzsa, Imre; Szemerédi, Endre",
+      "title": "Triple systems with no six points carrying three triangles",
+      "year": "1978",
+      "venue": "Combinatorics (Keszthely 1976), Coll. Math. Soc. J. Bolyai 18, 939-945",
+      "note": "Introduced the (6,3)-problem and showed triangle removal lemma implies Roth's theorem"
+    },
+    {
+      "authors": "Roth, Klaus",
+      "title": "On certain sets of integers",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28, 104-109",
+      "note": "Original Fourier-analytic proof of r₃(N) = o(N)"
+    },
+    {
+      "authors": "Szemerédi, Endre",
+      "title": "Regular partitions of graphs",
+      "year": "1978",
+      "venue": "Problèmes combinatoires et théorie des graphes, 399-401",
+      "note": "The regularity lemma underlying the triangle removal lemma"
+    },
+    {
+      "authors": "Komlós, János; Simonovits, Miklós",
+      "title": "Szemerédi's Regularity Lemma and its applications in graph theory",
+      "year": "1996",
+      "venue": "Bolyai Society Mathematical Studies 2, 295-352",
+      "note": "Comprehensive survey of regularity lemma applications including the triangle removal approach"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SzemerediCounting",
+      "Proofs.RothTheorem"
+    ],
+    "opens": [
+      "Szemeredi.Roth",
+      "Szemeredi.Counting",
+      "Classical",
+      "Finset"
+    ],
+    "namespace": "Szemeredi.Roth.TriangleRemoval",
+    "lineCount": 357,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 4
+  }
+}

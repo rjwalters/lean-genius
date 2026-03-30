@@ -1,0 +1,72 @@
+{
+  "id": "cayley-hamilton-reduction-oq-02-oq-01",
+  "title": "Rational Canonical Form: Companion Matrix",
+  "slug": "cayley-hamilton-reduction-oq-02-oq-01",
+  "description": "Companion matrix definition and properties — the building block of rational canonical form (Frobenius normal form).",
+  "meta": {
+    "author": "Ferdinand Georg Frobenius (1878)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Frobenius_normal_form",
+    "date": "1878",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ02OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "companion-matrix",
+      "rational-canonical-form"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.aeval_self_charpoly",
+        "description": "Cayley-Hamilton theorem",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.coeff",
+        "description": "Polynomial coefficient access",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Companion matrix definition for monic polynomials",
+      "Subdiagonal and last-column entry lemmas",
+      "Statement of charpoly(C(p)) = p (sorry)",
+      "Statement of minpoly(C(p)) = p (sorry)",
+      "Proof that C(p) annihilates p (from Cayley-Hamilton + charpoly)",
+      "Linear polynomial case: C(x-c) = [c]",
+      "RCF roadmap and gap assessment"
+    ],
+    "dateAdded": "2026-03-30",
+    "leanFile": {
+      "lineCount": 267,
+      "structures": 0,
+      "axioms": 0,
+      "theorems": 7,
+      "definitions": 1,
+      "instances": 0
+    },
+    "axiomCount": 0,
+    "lineCount": 267,
+    "assumptions": "0 axioms. 3 sorries (aeval, charpoly, minpoly — restructured without circular dependency). Orbit infrastructure fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "Define the companion matrix C(p) for a monic polynomial p and prove its key properties: charpoly(C(p)) = p and minpoly(C(p)) = p.",
+    "text": "The companion matrix is the fundamental building block of the rational canonical form. This file defines it and proves basic properties.",
+    "proofStrategy": "Direct definition using index arithmetic, with entry-level lemmas. The key theorems (charpoly = p, minpoly = p) are stated but require determinant computation and minimality arguments respectively.",
+    "keyInsights": [
+      "Companion matrices are non-derogatory: minpoly = charpoly = p",
+      "The full RCF requires Smith Normal Form for F[X]-matrices (~800 lines) — main blocker",
+      "C(x-c) = [c] is the base case connecting eigenvalues to 1×1 companion blocks"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Extends parent with concrete companion matrix construction",
+      "sharedConcepts": ["companion-matrix", "minimal-polynomial", "characteristic-polynomial"],
+      "targetId": "cayley-hamilton-reduction-oq-02"
+    }
+  ]
+}

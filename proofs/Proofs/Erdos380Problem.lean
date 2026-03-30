@@ -99,19 +99,27 @@ def ErdosProblem380 : Prop :=
 
 /- ## Known bounds -/
 
-/-- Erdős–Graham: `B(x) > x^{1-o(1)}`, meaning `B(x)` is large. -/
-axiom erdos_graham_lower :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-        (x : ℚ) ^ (1 - ε) ≤ (badCount x : ℚ)
-
 /-- The count `#{n ≤ x : P(n)² | n}` grows like
-`x / exp(c √(log x · log log x))` for some `c > 0`. -/
+`x / exp(c √(log x · log log x))` for some `c > 0`.
+In particular, it exceeds `x^{1-ε}` for any `ε > 0` and large enough `x`. -/
 axiom gpfSquare_asymptotic :
     ∃ c : ℚ, 0 < c ∧
       ∀ (ε : ℚ), 0 < ε →
         ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
           (x : ℚ) ^ (1 - ε) ≤ (gpfSquareCount x : ℚ)
+
+/-- Erdős–Graham: `B(x) > x^{1-o(1)}`.
+Previously axiomatized; now derived from `gpfSquare_asymptotic` and
+`badCount_ge_gpfSquareCount` via the chain `x^{1-ε} ≤ G(x) ≤ B(x)`. -/
+theorem erdos_graham_lower :
+    ∀ (ε : ℚ), 0 < ε →
+      ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
+        (x : ℚ) ^ (1 - ε) ≤ (badCount x : ℚ) := by
+  intro ε hε
+  obtain ⟨_, _, hasy⟩ := gpfSquare_asymptotic
+  obtain ⟨x₀, hx₀⟩ := hasy ε hε
+  exact ⟨x₀, fun x hx =>
+    le_trans (hx₀ x hx) (Nat.cast_le.mpr (badCount_ge_gpfSquareCount x))⟩
 
 /- ## Bad intervals and primes -/
 

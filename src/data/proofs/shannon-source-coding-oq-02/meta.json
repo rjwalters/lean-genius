@@ -2,7 +2,7 @@
   "id": "shannon-source-coding-oq-02",
   "title": "Huffman Coding Optimality",
   "slug": "shannon-source-coding-oq-02",
-  "description": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 \u2264 L* < H(p)/ln2 + 1.",
+  "description": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 ≤ L* < H(p)/ln2 + 1.",
   "meta": {
     "author": "Claude Shannon (1948), David Huffman (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Huffman_coding",
@@ -48,7 +48,7 @@
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 1,
-    "lineCount": 274,
+    "lineCount": 357,
     "prerequisites": [
       "Shannon entropy H(X) = -sum p(x) log p(x)",
       "Kraft's inequality for prefix-free codes",
@@ -58,14 +58,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "In 1948, Claude Shannon's 'A Mathematical Theory of Communication' established that the entropy $H(X)$ is the fundamental limit of lossless compression, but his proof was existential \u2014 showing optimal codes exist without constructing them. Shannon and Robert Fano developed a top-down coding scheme (Shannon-Fano coding) that was near-optimal but not guaranteed to minimize average code length. In 1951, Fano assigned his MIT information theory class the problem of finding a provably optimal binary code. David Huffman, then a graduate student, was about to give up and take the final exam instead when he discovered an elegant bottom-up construction: recursively merge the two least probable symbols, assigning them sibling leaves in a binary tree. Huffman's 1952 paper proved this greedy algorithm produces optimal prefix-free codes, solving the problem Fano himself could not. Leon Kraft had independently characterized valid prefix-free code lengths via the inequality $\\sum 2^{-l_i} \\le 1$ in his 1949 MIT thesis, and Brockway McMillan (1956) extended this to all uniquely decodable codes. Together, these results form the combinatorial and information-theoretic foundations of data compression.",
+    "historicalContext": "In 1948, Claude Shannon's 'A Mathematical Theory of Communication' established that the entropy $H(X)$ is the fundamental limit of lossless compression, but his proof was existential — showing optimal codes exist without constructing them. Shannon and Robert Fano developed a top-down coding scheme (Shannon-Fano coding) that was near-optimal but not guaranteed to minimize average code length. In 1951, Fano assigned his MIT information theory class the problem of finding a provably optimal binary code. David Huffman, then a graduate student, was about to give up and take the final exam instead when he discovered an elegant bottom-up construction: recursively merge the two least probable symbols, assigning them sibling leaves in a binary tree. Huffman's 1952 paper proved this greedy algorithm produces optimal prefix-free codes, solving the problem Fano himself could not. Leon Kraft had independently characterized valid prefix-free code lengths via the inequality $\\sum 2^{-l_i} \\le 1$ in his 1949 MIT thesis, and Brockway McMillan (1956) extended this to all uniquely decodable codes. Together, these results form the combinatorial and information-theoretic foundations of data compression.",
     "problemStatement": "Given a discrete source with probability distribution p = (p_1, ..., p_n) and Shannon entropy H(p) = -sum p_i ln(p_i):\n\n1. **Lower bound**: For any prefix-free code with lengths l_1, ..., l_n satisfying Kraft's inequality sum 2^(-l_i) <= 1, the average code length satisfies L * ln(2) >= H(p).\n\n2. **Upper bound**: Shannon coding (l_i = ceil(-log_2(p_i))) satisfies L_S * ln(2) < H(p) + ln(2).\n\n3. **Optimality**: Huffman's algorithm produces lengths that minimize L among all Kraft-valid codes.",
-    "text": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 \u2264 L* < H(p)/ln2 + 1.",
+    "text": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 ≤ L* < H(p)/ln2 + 1.",
     "proofStrategy": "The entropy lower bound uses the pointwise KL divergence inequality: for positive reals p, q, we have p * ln(p/q) >= p - q. Setting q_i = 2^(-l_i) and summing over all symbols, Kraft's inequality sum q_i <= 1 gives sum p_i * ln(p_i/q_i) >= 1 - sum q_i >= 0. Expanding the logarithm yields L * ln(2) >= H(p).\n\nThe Shannon coding upper bound uses the ceiling function property: ceil(x) < x + 1 for x >= 0, applied to x = -log(p_i)/log(2).\n\nHuffman optimality follows from two structural lemmas: (1) in any optimal code, more probable symbols get shorter codewords (exchange argument), and (2) optimal codes for n symbols can be constructed from optimal codes for n-1 symbols by merging the two least probable symbols.",
     "keyInsights": [
       "The entropy lower bound is essentially Gibbs' inequality (non-negativity of KL divergence) in disguise: setting $q_i = 2^{-l_i}$ turns Kraft's inequality into a sub-probability constraint, and $D(p \\| q) \\ge 0$ yields $L \\cdot \\ln 2 \\ge H(p)$",
       "Kraft's inequality provides a bijection between prefix-free codes and sub-probability distributions: $q_i = 2^{-l_i}$ satisfies $\\sum q_i \\le 1$, making information-theoretic tools (KL divergence, entropy) directly applicable to coding theory",
-      "Shannon coding assigns $l_i = \\lceil \\log_2(1/p_i) \\rceil$, rounding the ideal (non-integer) code length up to the nearest integer \u2014 the ceiling function is what introduces the gap of at most 1 bit per symbol",
+      "Shannon coding assigns $l_i = \\lceil \\log_2(1/p_i) \\rceil$, rounding the ideal (non-integer) code length up to the nearest integer — the ceiling function is what introduces the gap of at most 1 bit per symbol",
       "The tight sandwich $H_2(p) \\le L^* < H_2(p) + 1$ gives entropy an operational definition: it is the minimum achievable compression rate for prefix-free codes, pinned to within a single bit",
       "Huffman's greedy merge strategy works because optimal codes have an exchange property: if $p_i > p_j$ then $l_i \\le l_j$, so the two least probable symbols can always be placed at maximum depth without loss of optimality"
     ],
@@ -161,7 +161,7 @@
     {
       "targetId": "laws-of-large-numbers",
       "relationship": "related",
-      "description": "The law of large numbers underpins the source coding theorem: the Asymptotic Equipartition Property (AEP) shows that for long sequences, -log(P(X_1,...,X_n))/n -> H(X) almost surely. This concentration result is what makes Shannon coding achievable \u2014 typical sequences have probability close to 2^(-nH), enabling compression to H bits per symbol."
+      "description": "The law of large numbers underpins the source coding theorem: the Asymptotic Equipartition Property (AEP) shows that for long sequences, -log(P(X_1,...,X_n))/n -> H(X) almost surely. This concentration result is what makes Shannon coding achievable — typical sequences have probability close to 2^(-nH), enabling compression to H bits per symbol."
     },
     {
       "targetId": "central-limit-theorem",
@@ -171,7 +171,7 @@
   ],
   "conclusion": {
     "summary": "Huffman coding is the optimal prefix-free binary code, achieving average code length within 1 bit of the Shannon entropy limit. The entropy lower bound is proved via KL divergence, and the Shannon coding upper bound via the ceiling function.",
-    "implications": "This formalization provides:\n\n**1. Operational Meaning of Entropy**\n$H(X)/\\ln 2$ is not just an abstract measure \u2014 it is the exact minimum average code length for prefix-free codes, giving entropy a concrete operational interpretation as the incompressibility of a source.\n\n**2. Constructive Compression Algorithms**\nShannon coding provides an explicit construction achieving $L < H_2 + 1$, while Huffman coding achieves the true minimum. Together they show the entropy bound is tight and constructively achievable.\n\n**3. Foundation for Modern Compression**\nThe Kraft inequality framework connects combinatorial coding theory with information-theoretic bounds. Arithmetic coding (Rissanen, 1976; Pasco, 1976) overcomes the 1-bit-per-symbol gap by coding sequences rather than individual symbols, approaching $H_2(p)$ bits per symbol as block length grows.\n\n**4. Bridge to Channel Coding**\nSource coding (compression to $H$ bits) and channel coding (reliable transmission at rate $C$) are dual halves of Shannon theory. This formalization provides the source-coding half, complementing our channel coding formalization.",
+    "implications": "This formalization provides:\n\n**1. Operational Meaning of Entropy**\n$H(X)/\\ln 2$ is not just an abstract measure — it is the exact minimum average code length for prefix-free codes, giving entropy a concrete operational interpretation as the incompressibility of a source.\n\n**2. Constructive Compression Algorithms**\nShannon coding provides an explicit construction achieving $L < H_2 + 1$, while Huffman coding achieves the true minimum. Together they show the entropy bound is tight and constructively achievable.\n\n**3. Foundation for Modern Compression**\nThe Kraft inequality framework connects combinatorial coding theory with information-theoretic bounds. Arithmetic coding (Rissanen, 1976; Pasco, 1976) overcomes the 1-bit-per-symbol gap by coding sequences rather than individual symbols, approaching $H_2(p)$ bits per symbol as block length grows.\n\n**4. Bridge to Channel Coding**\nSource coding (compression to $H$ bits) and channel coding (reliable transmission at rate $C$) are dual halves of Shannon theory. This formalization provides the source-coding half, complementing our channel coding formalization.",
     "openQuestions": [
       "Can the Huffman optimality axiom be fully proved via the exchange argument and induction on alphabet size?",
       "Can arithmetic coding be formalized as achieving arbitrarily close to H bits per symbol for block codes?",
@@ -188,7 +188,7 @@
       "Real"
     ],
     "namespace": "InformationTheory.HuffmanOptimality",
-    "lineCount": 274,
+    "lineCount": 357,
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 4

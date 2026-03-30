@@ -84,9 +84,6 @@ def allTrees (k : ℕ) : Set (Tree k) := Set.univ
 **Number of Trees:**
 By Cayley's formula, there are k^(k-2) labeled trees on k vertices.
 -/
-axiom cayley_formula (k : ℕ) (hk : k ≥ 2) :
-    ∃ count : ℕ, count = k ^ (k - 2)  -- Labeled trees
-
 /- ## Part III: Tree Embedding
 
 A tree T embeds in graph G if T is isomorphic to a subgraph of G.
@@ -167,13 +164,6 @@ For any ε > 0 and sufficiently large n:
 If at least (1+ε)n/2 vertices have degree at least (1+ε)n/2,
 then G contains every tree on at most n/2 vertices.
 -/
-axiom AKS_theorem (ε : ℝ) (hε : ε > 0) :
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      numVertices V ≥ N →
-      (highDegreeVertices G (⌈(1 + ε) * numVertices V / 2⌉₊)).card ≥
-        ⌈(1 + ε) * numVertices V / 2⌉₊ →
-      ContainsAllTreesUpTo G (numVertices V / 2)
-
 /--
 **Zhao's Theorem (2011):**
 The LKS conjecture holds for all sufficiently large n.
@@ -202,24 +192,10 @@ theorem erdos_580 : ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G 
 The conjecture is easy for paths: any graph satisfying the LKS condition
 contains all paths of length at most n/2 - 1.
 -/
-axiom path_case (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) :
-    @satisfiesLKS V _ _ G →
-    ∀ ℓ : ℕ, ℓ ≤ numVertices V / 2 - 1 →
-      ∃ path : Fin (ℓ + 1) → V,
-        Function.Injective path ∧
-        ∀ i : Fin ℓ, G.Adj (path i.castSucc) (path i.succ)
-
 /--
 **Star Case:**
 Stars (one central vertex connected to all others) are also easy to embed.
 -/
-axiom star_case (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) :
-    @satisfiesLKS V _ _ G →
-    ∀ k : ℕ, k ≤ numVertices V / 2 →
-      ∃ center : V, ∃ leaves : Finset V,
-        leaves.card = k - 1 ∧
-        ∀ v ∈ leaves, G.Adj center v
-
 /- ## Part VIII: Tightness Examples
 -/
 
@@ -228,13 +204,6 @@ axiom star_case (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) :
 The condition n/2-n/2 is tight: there exist graphs with n/2 - 1 vertices
 of degree n/2 - 1 that miss some tree on n/2 vertices.
 -/
-axiom LKS_tightness :
-    ∀ n : ℕ, n ≥ 4 →
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) (T : Tree (n / 2)),
-        numVertices V = n ∧
-        (highDegreeVertices G (n / 2 - 1)).card = n / 2 - 1 ∧
-        ¬TreeEmbeds T G
-
 /- ## Part IX: Summary
 -/
 

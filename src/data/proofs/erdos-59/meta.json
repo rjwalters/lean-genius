@@ -18,26 +18,26 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 59,
     "erdosUrl": "https://erdosproblems.com/59",
     "erdosProblemStatus": "solved",
-    "axiomCount": 9,
-    "lineCount": 222,
-    "assumptions": "9 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "axiomCount": 7,
+    "lineCount": 337,
+    "assumptions": "7 axioms (turanNumber, countFreeGraphs, turanNumber_pos, erdos_frankl_rodl_nonbipartite, morris_saxton_c6_counterexample, turan_theorem, kovari_sos_turan). 0 sorries. cycleGraph, odd_cycle_not_bipartite, and even_cycle_bipartite are now proved concretely.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős conjectured that the number of labeled H-free graphs on n vertices is at most 2^{(1+o(1))ex(n;H)}, where ex(n;H) is the Turán number. This connects extremal graph theory (how dense can an H-free graph be?) with graph enumeration (how many H-free graphs exist?). Erdős, Frankl, and Rödl proved in 1986 that the bound holds for all non-bipartite H, using the Szemerédi regularity lemma to show that most H-free graphs resemble the Turán graph. The bipartite case remained open until Morris and Saxton (2016) found a striking counterexample: the 6-cycle C_6. Using algebraic constructions related to projective planes, they showed there are superpolynomially more C_6-free graphs than the conjecture predicts. Specifically, for C_6 with ex(n;C_6) = Θ(n^{4/3}), the count exceeds 2^{(1+c)n^{4/3}}. This disproved the conjecture but left open the weaker question (Morris-Saxton conjecture): does 2^{O(ex(n;H))} hold for all H? The dichotomy between bipartite and non-bipartite forbidden subgraphs is fundamental and persists across extremal combinatorics.",
     "problemStatement": "Is it true that the number of graphs on $n$ vertices which do not contain $G$ is at most $2^{(1+o(1))\\text{ex}(n;G)}$?",
     "text": "Is the number of G-free graphs on n vertices at most 2^{(1+o(1))ex(n;G)}? Disproved by Morris-Saxton (2016) for C_6.",
-    "proofStrategy": "The formalization defines subgraph containment, H-free property, and bipartiteness. Cycle graphs are axiomatized with bipartiteness properties. Turán numbers and free graph counts are axiomatized since they involve extremal combinatorial computation. Three asymptotic bound predicates (HasOptimalBound, ExceedsOptimalBound, HasPolynomialBound) capture the conjectured bound, counterexample, and open conjecture. The Erdős-Frankl-Rödl theorem and Morris-Saxton counterexample are axioms. The main theorem `erdos_59_disproved` has 1 sorry (extracting a large element from Set.Infinite). Classical Turán bounds and two corollaries are also included.",
+    "proofStrategy": "The formalization defines subgraph containment, H-free property, and bipartiteness. Cycle graphs are axiomatized with bipartiteness properties. Turán numbers and free graph counts are axiomatized since they involve extremal combinatorial computation. Three asymptotic bound predicates (HasOptimalBound, ExceedsOptimalBound, HasPolynomialBound) capture the conjectured bound, counterexample, and open conjecture. The Erdős-Frankl-Rödl theorem and Morris-Saxton counterexample are axioms. The main theorem `erdos_59_disproved` is fully proved. Classical Turán bounds and two corollaries are also included.",
     "keyInsights": [
       "The bipartite/non-bipartite dichotomy is fundamental: for non-bipartite H, the regularity lemma forces most H-free graphs to look like the Turán graph, giving 2^{(1+o(1))ex}. Bipartite H allows more diverse structures",
       "C_6 is the simplest counterexample because ex(n;C_6) = Θ(n^{4/3}) comes from projective plane constructions, and these algebraic structures generate many distinct C_6-free graphs beyond what the Turán number alone predicts",
       "The gap between 2^{(1+o(1))ex} and 2^{O(ex)} is the key open question: the Morris-Saxton conjecture posits 2^{O(ex)} always holds, but 2^{(1+o(1))ex} fails for bipartite H",
       "Turán's theorem gives ex(n;K_{r+1}) exactly, while Kővári-Sós-Turán gives ex(n;C_{2k}) = O(n^{1+1/k}) — the subquadratic growth for bipartite graphs is what makes their counting behavior different",
-      "The sorry in erdos_59_disproved is a technical gap (extracting n ≥ N₀ from Set.Infinite), not a mathematical one — the argument is complete modulo this Lean extraction step"
+      "Cycle graphs and bipartiteness are now proved concretely (3 axioms eliminated). The remaining 7 axioms encode deep results (EFR 1986, Morris-Saxton 2016, Turán, Kővári-Sós-Turán) and structural functions (turanNumber, countFreeGraphs)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -64,8 +64,8 @@
     },
     {
       "id": "constructions",
-      "title": "Axiomatized Graph Constructions",
-      "summary": "cycleGraph axiom with odd_cycle_not_bipartite and even_cycle_bipartite. C6 = cycleGraph 6, K3 = cycleGraph 3",
+      "title": "Graph Constructions (Proved)",
+      "summary": "Concrete cycleGraph definition with proved odd_cycle_not_bipartite and even_cycle_bipartite. C6 = cycleGraph 6, K3 = cycleGraph 3",
       "startLine": 48,
       "endLine": 66,
       "mathContext": "Lower bound: bipartite graphs on balanced partition give $2^{\\lfloor n^2/4 \\rfloor}$ triangle-free graphs."
@@ -97,7 +97,7 @@
     {
       "id": "resolution",
       "title": "Problem Resolution: DISPROVED + Bipartiteness Results",
-      "summary": "erdos_59_disproved (1 sorry): negation of universal optimal bound via k=6. c6_is_bipartite and k3_not_bipartite proved from cycle axioms",
+      "summary": "erdos_59_disproved: negation of universal optimal bound via k=6. c6_is_bipartite and k3_not_bipartite proved from cycle axioms",
       "startLine": 132,
       "endLine": 173,
       "mathContext": "SOLVED: EKR (1976) for triangles, Erdos-Frankl-Rodl (1986) for general non-bipartite $G$. Bipartite case still has open questions."
@@ -120,13 +120,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #59 is DISPROVED. The 223-line formalization captures the complete resolution: the Erdős-Frankl-Rödl theorem (1986) proves the bound for non-bipartite H, while the Morris-Saxton counterexample (2016) disproves it for C_6. The main theorem has 1 sorry (a technical extraction from Set.Infinite). Classical Turán bounds, the Morris-Saxton weaker conjecture, and bipartiteness results are also formalized.",
+    "summary": "Erdős Problem #59 is DISPROVED. The formalization captures the complete resolution: the Erdős-Frankl-Rödl theorem (1986) proves the bound for non-bipartite H, while the Morris-Saxton counterexample (2016) disproves it for C_6. 0 sorries, 7 axioms (reduced from 10 by proving cycleGraph, bipartiteness of even/odd cycles concretely).",
     "implications": "**Theoretical Significance**: The resolution reveals a fundamental structural dichotomy in extremal graph theory: for non-bipartite forbidden subgraphs, the Turán number essentially determines the count of free graphs (via the regularity lemma).\n\nFor bipartite forbidden subgraphs, algebraic structures (projective planes) create additional diversity that the Turán number alone cannot capture. This parallels the KST/Turán divide throughout extremal combinatorics.",
     "openQuestions": [
       "Does the weaker bound 2^{O(ex(n;G))} hold for all G? (Morris-Saxton Conjecture, OPEN)",
       "For which bipartite graphs H does the original 2^{(1+o(1))ex} bound hold?",
       "What is the exact counting exponent for C_{2k}-free graphs for k > 3?",
-      "Can the sorry in erdos_59_disproved be resolved via Set.Infinite.exists_gt or similar Mathlib lemma?"
+      "Can any of the remaining 7 axioms (turanNumber, countFreeGraphs, turanNumber_pos, major theorems) be proved from Mathlib?"
     ]
   },
   "crossReferences": [
@@ -170,9 +170,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos59",
-    "lineCount": 222,
-    "axiomCount": 9,
-    "theoremCount": 5,
+    "lineCount": 337,
+    "axiomCount": 7,
+    "theoremCount": 7,
     "definitionCount": 9
   },
   "references": [

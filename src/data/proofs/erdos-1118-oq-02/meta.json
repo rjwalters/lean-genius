@@ -1,0 +1,49 @@
+{
+  "id": "erdos-1118-oq-02",
+  "title": "Superlevel Sets in Several Complex Variables",
+  "slug": "erdos-1118-oq-02",
+  "description": "Higher-dimensional analogue of Erd\u0151s 1118: superlevel sets of holomorphic maps \u2102\u207f \u2192 \u2102. Plurisubharmonicity, Oka theory, Hartogs extension.",
+  "meta": {
+    "author": "Camera, Gol'dberg, Oka",
+    "sourceUrl": "https://erdosproblems.com/1118",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1118OQ02.lean",
+    "tags": [
+      "complex-analysis",
+      "several-variables",
+      "superlevel-sets",
+      "erdos",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 103,
+    "assumptions": "0 axioms. 0 sorries. All theorems fully proved.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0"
+  },
+  "conclusion": {
+    "summary": "Several-complex-variables analogue explored. Key differences from 1D: plurisubharmonicity, pseudoconvexity, Hartogs extension.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1118",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Erdos1118OQ02",
+    "lineCount": 103,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "sections": []
+}

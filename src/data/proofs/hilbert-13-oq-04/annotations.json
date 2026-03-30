@@ -1,0 +1,90 @@
+[
+  {
+    "id": "hilbert-13-oq-04-covering-dim",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 79, "endLine": 126 },
+    "type": "definition",
+    "title": "Lebesgue Covering Dimension",
+    "content": "Defines covering dimension (covDimLE, covDimEq) for topological spaces. The covering dimension dim(X) <= n means every finite open cover of X has a finite open refinement where each point belongs to at most n+1 sets. This is the standard notion of topological dimension for separable metrizable spaces and is the key invariant governing the generalized Kolmogorov-Arnold theorem.",
+    "significance": "essential",
+    "relatedConcepts": ["topological dimension", "open covers", "refinements", "compact metric spaces"],
+    "mathContext": "The Lebesgue covering dimension coincides with the small and large inductive dimensions for separable metrizable spaces. For compact metric spaces, dim(X) = n iff X embeds in R^{2n+1} (Menger-Nobeling theorem). The covering dimension controls many function-theoretic properties."
+  },
+  {
+    "id": "hilbert-13-oq-04-dim-monotone",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 128, "endLine": 151 },
+    "type": "theorem",
+    "title": "Dimension Monotonicity",
+    "content": "Proves that covering dimension is monotone: dim(X) <= n implies dim(X) <= n+1. Also states the dimension-0 characterization: dim(X) = 0 iff every finite open cover has a disjoint refinement. The monotonicity is proved directly from the definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["dimension monotonicity", "zero-dimensional spaces", "totally disconnected spaces"],
+    "mathContext": "Monotonicity is a basic property of covering dimension. Dimension 0 characterizes totally disconnected compact spaces (Stone spaces)."
+  },
+  {
+    "id": "hilbert-13-oq-04-cube-dim",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 153, "endLine": 184 },
+    "type": "theorem",
+    "title": "Dimension of the Unit Cube",
+    "content": "States that [0,1]^n has covering dimension exactly n. The upper bound (dim <= n) uses coordinate hyperplane decomposition; the lower bound (dim > n-1) requires the Lebesgue covering theorem or degree theory. Both are axiomatized due to their deep topological content.",
+    "significance": "important",
+    "relatedConcepts": ["unit cube", "Lebesgue covering theorem", "degree theory"],
+    "mathContext": "dim([0,1]^n) = n is the foundational result that connects covering dimension to the familiar notion of dimension for Euclidean spaces. The lower bound is equivalent to the Brouwer fixed point theorem."
+  },
+  {
+    "id": "hilbert-13-oq-04-ostrand",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 186, "endLine": 234 },
+    "type": "theorem",
+    "title": "Ostrand's Separating Maps",
+    "content": "Axiomatizes Ostrand's theorem (1965): for a compact metric space of dimension n, there exist 2n+1 continuous maps to [0,1] that jointly separate all points. These separating maps are the key technical ingredient for the generalized KA construction.",
+    "significance": "essential",
+    "relatedConcepts": ["separating maps", "Ostrand theorem", "point separation"],
+    "mathContext": "Ostrand showed that compact metric spaces of dimension n admit 2n+1 separating maps to [0,1], extending the idea that [0,1]^n embeds into R^{2n+1} (Menger-Nobeling). The maps serve as 'coordinate functions' for the KA representation."
+  },
+  {
+    "id": "hilbert-13-oq-04-gen-ka",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 235, "endLine": 249 },
+    "type": "theorem",
+    "title": "Generalized Kolmogorov-Arnold Theorem",
+    "content": "The main theorem: every continuous function on a compact metrizable space of covering dimension n admits a representation as a sum of 2n+1 compositions of continuous univariate functions with continuous maps from X to R. This generalizes the classical KA theorem from [0,1]^n.",
+    "significance": "essential",
+    "relatedConcepts": ["Kolmogorov-Arnold theorem", "superposition", "compact metric spaces"],
+    "mathContext": "The generalized KA theorem shows that covering dimension is the precise invariant governing when continuous functions can be decomposed into sums of univariate compositions. The proof uses Ostrand's separating maps and a Baire category argument to construct the outer functions."
+  },
+  {
+    "id": "hilbert-13-oq-04-sternfeld",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 251, "endLine": 298 },
+    "type": "theorem",
+    "title": "Sternfeld's Characterization",
+    "content": "The definitive characterization (Sternfeld 1985): a compact metrizable space X has the superposition property with 2n+1 maps (every f : X -> R decomposes into 2n+1 univariate compositions) if and only if dim(X) <= n. This is a biconditional, giving both necessity and sufficiency.",
+    "significance": "essential",
+    "relatedConcepts": ["Sternfeld theorem", "superposition property", "Menger compacta", "essential maps"],
+    "mathContext": "Sternfeld's characterization completely answers the question of which compact spaces admit KA-type representations. The necessity direction (dim > n implies existence of non-decomposable functions) uses properties of Menger compacta as universal n-dimensional spaces."
+  },
+  {
+    "id": "hilbert-13-oq-04-classical",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 300, "endLine": 318 },
+    "type": "theorem",
+    "title": "Recovery of Classical KA Theorem",
+    "content": "Derives the classical KA theorem for [0,1]^n as a direct corollary of the generalized theorem combined with the fact that dim([0,1]^n) = n. This demonstrates that the generalized framework properly subsumes the original result.",
+    "significance": "important",
+    "relatedConcepts": ["classical KA theorem", "special case", "dimension of unit cube"],
+    "mathContext": "The classical Kolmogorov-Arnold theorem for [0,1]^n follows in one line from the generalized theorem and dim([0,1]^n) <= n."
+  },
+  {
+    "id": "hilbert-13-oq-04-sharp",
+    "proofId": "hilbert-13-oq-04",
+    "range": { "startLine": 320, "endLine": 348 },
+    "type": "theorem",
+    "title": "Sharpness of 2n+1 Bound",
+    "content": "Establishes that 2n+1 is the optimal number of terms: for n-dimensional spaces (n >= 1), the superposition property with 2n maps fails. Combined with the sufficiency of 2n+1, this gives the complete picture: exactly 2n+1 terms are needed.",
+    "significance": "important",
+    "relatedConcepts": ["optimal bounds", "cohomological obstructions", "Menger compacta"],
+    "mathContext": "The sharpness result uses cohomological methods and the theory of essential maps on universal n-dimensional compacta. For n=1, this says 3 terms are needed (and sufficient) for any curve; for n=2, 5 terms for any surface."
+  }
+]

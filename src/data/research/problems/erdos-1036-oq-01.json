@@ -1,0 +1,91 @@
+{
+  "slug": "erdos-1036-oq-01",
+  "title": "Optimal constant in Shelah's coloring theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Optimal constant in Shelah's coloring theorem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T16:34:54.972Z",
+    "iteration": 4,
+    "focus": "Eliminated 2 axioms: proved alon_hajnal from shelah, removed unused ramsey_lower_bound",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Axiom count 3\u21921. Proved alon_hajnal_1991 from shelah_1998 (exponential dominates linear via exp(t)\u2265t). Removed unused ramsey_lower_bound axiom. 2 sorries remain (optimalConstant bounds).",
+    "builtItems": [
+      "Created Erdos1036Problem.lean from scratch (was corrupted/empty)",
+      "Defined cliqueNumber, independenceNumber, IsNonRamsey, numInducedSubgraphClasses",
+      "Defined optimalConstant function for oq-01",
+      "Stated Shelah 1998 (main result), Alon-Hajnal 1991, Ramsey lower bound as axioms",
+      "Proved cliqueNumber_compl, independenceNumber_compl, complement_nonramsey",
+      "Proved erdos_1036 summary theorem from Shelah axiom",
+      "Proved alon_hajnal_1991 from shelah_1998: 2^{c'n} \u2265 (c'\u00b7ln2)\u00b7n via exp(t)\u2265t",
+      "Removed unused ramsey_lower_bound axiom"
+    ],
+    "insights": [
+      "independenceNumber G = cliqueNumber G\u1d9c by definition (rfl)",
+      "independenceNumber G\u1d9c = cliqueNumber G needs compl_compl rewrite",
+      "optimalConstant is defined via sSup of valid exponent constants",
+      "Random graphs G(n,1/2) achieve optimal constant 1",
+      "alon_hajnal derived from shelah: use c'\u00b7log2 as linear constant, chain 2^{c'n}=exp(c'n\u00b7log2)\u2265c'n\u00b7log2",
+      "exp(t)\u2265t follows from add_one_le_exp: t \u2264 t+1 \u2264 exp(t)",
+      "ramsey_lower_bound was unused in all proofs \u2014 safely removed"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "optimalConstant_pos: needs explicit non-Ramsey graph construction (BddAbove + nonempty sSup)",
+      "optimalConstant_le_one: needs numInducedSubgraphClasses \u2264 2^n + existence of non-Ramsey graph for large n",
+      "Fix numInducedSubgraphClasses placeholder (currently counts subsets not isomorphism classes)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "technique"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
+    "erdos-1036"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-03-30T20:30:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1036Problem.lean",
+      "filename": "Erdos1036Problem.lean",
+      "lineCount": 148,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1036Problem.lean"
+    }
+  ]
+}

@@ -75,7 +75,8 @@
     "openQuestions": [
       "Can we formalize the Riemann integrability of Thomae's function?",
       "Can we prove that Thomae's function is continuous at every irrational?"
-    ]
+    ],
+    "implications": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function."
   },
   "leanFile": {
     "imports": [

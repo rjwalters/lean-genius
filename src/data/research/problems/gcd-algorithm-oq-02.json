@@ -1,0 +1,74 @@
+{
+  "slug": "gcd-algorithm-oq-02",
+  "title": "gcd-algorithm-oq-02",
+  "phase": "OBSERVE",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T19:03:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved binaryGcd_eq_gcd (the sole sorry). Binary GCD now fully verified: 0 sorries, 0 axioms.",
+    "builtItems": [
+      "Proved binaryGcd_eq_gcd via functional induction (eliminated 1 sorry)",
+      "Created gallery data src/data/proofs/gcd-algorithm-oq-02/meta.json",
+      "File now fully verified: 0 sorries, 0 axioms, 10 theorems"
+    ],
+    "insights": [
+      "binaryGcd.induct provides functional induction matching recursive cases exactly",
+      "Coprimality of 2 with odd numbers (Nat.coprime_two_left) is the key lemma for even-odd reduction",
+      "gcd_odd_sub_half combines subtraction and halving: gcd((a-b)/2, b) = gcd(a,b) for odd a,b",
+      "All supporting lemmas were already proved - only the main correctness theorem needed induction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: gcd-algorithm-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "binary-gcd",
+    "gcd-algorithm",
+    "gcd-algorithm-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.213Z",
+  "lastUpdate": "2026-03-30T02:13:21.223Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GcdAlgorithmOQ02.lean",
+      "filename": "GcdAlgorithmOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GcdAlgorithmOQ02.lean"
+    }
+  ]
+}

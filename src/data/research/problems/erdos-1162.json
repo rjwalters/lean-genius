@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 4 unused axioms (10→6). Documented path to 2 axioms via concrete numSubgroups def.",
+    "progressSummary": "PROGRESS: Eliminated 5 axioms (6→1). Replaced opaque numSubgroups with Nat.card (Subgroup ...). Proved f1 via Subsingleton/Unique, numSubgroups_pos via Nat.card_pos_of_nonempty. f2-f4 as sorry (decidable). Only roney_dougal_tracey remains as axiom.",
     "builtItems": [
       "Erdos1162Problem.lean: 185-line formalization (5 axioms, 5 sorries)",
       "numSubgroups axiom for f(n)",
@@ -48,7 +48,10 @@
       "trivial_upper theorem: proved via injection into Finset, card_finset, card_perm",
       "Eliminated 4 unused axioms (numSubgroups_pos, trivial_upper, numSubgroupsElem2, elem2_subgroup_count_asymptotic)",
       "Added Part IX: Axiom Elimination Path documenting route to 2 axioms",
-      "Updated meta.json axiomCount 10→6"
+      "Updated meta.json axiomCount 10→6",
+      "numSubgroups: axiom → concrete Nat.card definition",
+      "f1: proved via Subsingleton + Unique + Nat.card_unique",
+      "numSubgroups_pos: proved via Nat.card_pos_of_nonempty"
     ],
     "insights": [
       "Problem statement retrieved from erdosproblems.com",
@@ -69,7 +72,8 @@
       "numSubgroups_pos, trivial_upper, numSubgroupsElem2, elem2_subgroup_count_asymptotic were all UNUSED by any theorem",
       "Only axioms actually used: numSubgroups (in types) and roney_dougal_tracey (by pyber_theorem/erdos_1162)",
       "Eliminated 4 axioms: 10→6 by removing unused declarations",
-      "Path to 2 axioms: replace axiom numSubgroups with Nat.card (Subgroup (Equiv.Perm (Fin n)))"
+      "Path to 2 axioms: replace axiom numSubgroups with Nat.card (Subgroup (Equiv.Perm (Fin n)))",
+      "For groups where Fin n is Subsingleton, Equiv.Perm is also Subsingleton, giving Unique (Subgroup G) and Nat.card = 1"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -101,11 +105,11 @@
     {
       "path": "Proofs/Erdos1162Problem.lean",
       "filename": "Erdos1162Problem.lean",
-      "lineCount": 223,
-      "theoremCount": 6,
-      "axiomCount": 7,
+      "lineCount": 224,
+      "theoremCount": 9,
+      "axiomCount": 1,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1162Problem.lean"
     }

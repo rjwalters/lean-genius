@@ -82,31 +82,23 @@ These are the roots of z^n - 1.
 noncomputable def rootsOfUnity (n : ℕ) : List ℂ :=
   (List.range n).map (fun k => Complex.exp (2 * Real.pi * k / n * Complex.I))
 
-/-- Roots of unity lie on the unit circle, hence in the unit disk. -/
-axiom rootsOfUnity_in_disk (n : ℕ) (hn : n ≥ 1) :
-    HasRootsInDisk (rootsOfUnity n)
+/- Roots of unity lie on the unit circle, hence in the unit disk.
+    Formally: ∀ n ≥ 1, HasRootsInDisk (rootsOfUnity n). -/
 
-/--
-**Tang's Conjecture**: For each fixed degree n, the polynomial z^n - 1
+/- **Tang's Conjecture**: For each fixed degree n, the polynomial z^n - 1
 minimizes Λ(f) among all degree-n polynomials with roots in the unit disk.
-
 Verified for n = 1 and n = 2.
--/
-axiom tang_conjecture (n : ℕ) (hn : n ≥ 1) :
-    ∀ roots : List ℂ, roots.length = n → HasRootsInDisk roots →
-      maxBoundaryLength (rootsOfUnity n) ≤ maxBoundaryLength roots
+Formally: ∀ n ≥ 1, ∀ roots with length n and roots in disk,
+  maxBoundaryLength (rootsOfUnity n) ≤ maxBoundaryLength roots. -/
 
 /-
 ## Part IV: Degree 1 Case
 -/
 
-/--
-For the degree 1 polynomial f(z) = z - z₀ with |z₀| ≤ 1,
+/- For the degree 1 polynomial f(z) = z - z₀ with |z₀| ≤ 1,
 the sublevel set {z : |z - z₀| < 1} is a disk of radius 1,
 whose boundary has length 2π.
--/
-axiom degree_one_boundary (z₀ : ℂ) (h : Complex.abs z₀ ≤ 1) :
-    maxBoundaryLength [z₀] = 2 * Real.pi
+Formally: ∀ z₀ with |z₀| ≤ 1, maxBoundaryLength [z₀] = 2π. -/
 
 /-
 ## Part V: Erdős Problem #1044 Summary

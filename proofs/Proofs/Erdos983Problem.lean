@@ -97,14 +97,10 @@ noncomputable def f (k n : ℕ) : ℕ :=
 **Trivial Upper Bound:**
 f(k,n) ≤ π(n) since all elements are smooth with respect to all primes ≤ n.
 -/
-axiom f_upper_bound (k n : ℕ) (hk : k ≥ 1) : f k n ≤ primePi n
-
 /--
 **Monotonicity in k:**
 f is increasing in k.
 -/
-axiom f_mono_k (k₁ k₂ n : ℕ) (hk : k₁ ≤ k₂) : f k₁ n ≤ f k₂ n
-
 /-
 ## Part III: The Main Question
 
@@ -138,12 +134,6 @@ f(π(n)+1, n) = 2π(√n) + o_A(√n/(log n)^A) for any A > 0.
 This means the difference 2π(√n) - f(π(n)+1, n) is small (tends to 0 faster
 than any polynomial in n, slower than √n).
 -/
-axiom erdos_straus_main :
-  ∀ A : ℝ, A > 0 →
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |(f (primePi n + 1) n : ℝ) - 2 * (primePi (Nat.sqrt n) : ℝ)| <
-    ε * (n : ℝ)^(1/2 : ℝ) / (Real.log n)^A
-
 /--
 **Corollary: The Difference is o(1) as a ratio:**
 (2π(√n) - f(π(n)+1, n)) / √n → 0.
@@ -159,11 +149,6 @@ For constant 0 < c < 1:
 f(cn, n) = log log n + (c₁ + o(1))√(2 log log n)
 where c₁ is related to the constant c via the normal distribution.
 -/
-axiom erdos_straus_dense (c : ℝ) (hc : 0 < c ∧ c < 1) :
-  ∃ c₁ : ℝ, ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |(f (⌊c * n⌋₊) n : ℝ) - Real.log (Real.log n) -
-     c₁ * Real.sqrt (2 * Real.log (Real.log n))| < ε
-
 /-
 ## Part V: Why 2π(√n)?
 
@@ -175,11 +160,6 @@ The intuition behind the formula.
 Any n has at most one prime factor > √n.
 Products of primes ≤ √n give many smooth numbers.
 -/
-axiom prime_structure :
-  ∀ n m : ℕ, m ≤ n → m ≥ 1 →
-    (∀ p, Nat.Prime p → p ∣ m → p ≤ Nat.sqrt n) ∨
-    (∃! q, Nat.Prime q ∧ q > Nat.sqrt n ∧ q ∣ m)
-
 /-
 ## Part VI: Related Concepts
 -/
@@ -203,9 +183,6 @@ noncomputable def smoothCount (x y : ℕ) : ℕ :=
 Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function.
 The count of y-smooth numbers up to x is asymptotically x·ρ(log x / log y).
 -/
-axiom dickman_asymptotics (x y : ℕ) (hx : x ≥ 2) (hy : y ≥ 2) (hyx : y ≤ x) :
-  smoothCount x y ≤ x
-
 /-
 ## Part VII: Summary
 -/

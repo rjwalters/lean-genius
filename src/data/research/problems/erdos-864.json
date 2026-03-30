@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sidon_upper_bound axiom ELIMINATED (2→1 axioms). Proved 3 new theorems: isSidon_diff_injective (sum-Sidon ⟹ difference-uniqueness), sidon_diff_counting_bound (k(k-1) ≤ 2(N-1) via difference injection), sidon_card_sq_le_2N (k² ≤ 2N+k, improving k² ≤ 4N by ~2×). File: ~19T 1A 0S.",
+    "progressSummary": "PROGRESS: Proved reflected_construction_bound (maxAlmostSidon(N) ≥ 2|B|). Axiom reduction: erdos_freud_lower_bound → sidon_exists_asymptotic via reflected construction. File: ~22T 1A 0S.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
@@ -43,7 +43,9 @@
       "isSidon_diff_injective: PROVED — sum-Sidon implies all pairwise differences distinct",
       "sidon_diff_counting_bound: PROVED — k(k-1) ≤ 2(N-1) via difference injection into {1,...,N-1}",
       "sidon_card_sq_le_2N: PROVED — k² ≤ 2N+k (improved Sidon bound, ~2× better than k² ≤ 4N)",
-      "ELIMINATED sidon_upper_bound axiom (replaced by proved difference-counting bound)"
+      "ELIMINATED sidon_upper_bound axiom (replaced by proved difference-counting bound)",
+      "reflected_construction_bound: PROVED — maxAlmostSidon(N) ≥ 2|B| for Sidon B ⊆ {1,...,N/3}",
+      "reflected_disjoint, reflected_card, reflected_subset_Icc: supporting lemmas for the bound"
     ],
     "insights": [
       "sumRepCount is monotone in the underlying set (key lemma for Sidon/almost-Sidon subset proofs)",
@@ -52,7 +54,8 @@
       "Sum-Sidon ⟹ difference-Sidon: if a₁-b₁=a₂-b₂ then a₁+b₂=a₂+b₁, and sumRepCount ≤ 1 forces {a₁,b₂}={a₂,b₁}",
       "Difference counting gives k(k-1)/2 distinct differences in {1,...,N-1}, yielding k² ≤ 2N+k",
       "The Lindström bound √N + O(N^{1/4}) requires Fourier analysis over cyclic groups (not in Mathlib v4.26.0)",
-      "erdos_freud_lower_bound needs large Sidon sets in {1,...,M} of size ~√M; Erdős-Turán construction gives size p in range 2p² (sufficient for √(M/2) but not √M)"
+      "erdos_freud_lower_bound needs large Sidon sets in {1,...,M} of size ~√M; Erdős-Turán construction gives size p in range 2p² (sufficient for √(M/2) but not √M)",
+      "erdos_freud_lower_bound now reduces to: ∃ Sidon B ⊆ {1,...,M} with |B| ~ √M (Singer/Bose-Chowla construction needed)"
     ],
     "mathlibGaps": [
       "Fourier analysis over finite cyclic groups (needed for Lindström bound)",
@@ -85,8 +88,8 @@
     {
       "path": "Proofs/Erdos864Problem.lean",
       "filename": "Erdos864Problem.lean",
-      "lineCount": 756,
-      "theoremCount": 17,
+      "lineCount": 824,
+      "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,

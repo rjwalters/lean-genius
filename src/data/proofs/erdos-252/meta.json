@@ -46,14 +46,14 @@
       "Formalization of conditional results (Schinzel, prime k-tuples)",
       "Verified computational examples for small cases"
     ],
-    "axiomCount": 8,
-    "lineCount": 229,
-    "assumptions": "10 axioms: erdos_252_k0, erdos_252_k1, erdos_252_k2, and 7 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 220,
+    "assumptions": "5 axioms: erdos_252_k0 through erdos_252_k4 (irrationality of divisorPowerSum for k=0..4).",
     "theoremCount": 6
   },
   "leanFile": {
     "path": "Proofs/Erdos252Problem.lean",
-    "lineCount": 229,
+    "lineCount": 220,
     "namespace": "Erdos252",
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction.Defs",
@@ -76,7 +76,7 @@
       "SchinzelHypothesisH",
       "PrimeKTuplesConjecture"
     ],
-    "axiomCount": 8,
+    "axiomCount": 5,
     "theoremCount": 6,
     "opens": [
       "scoped",

@@ -32,14 +32,14 @@
     "progressSummary": "COMPLETE: Created formalization of Galois criterion. Forward direction proved from Mathlib. Reverse axiomatized (needs Kummer theory). 1 axiom, 0 sorries.",
     "builtItems": [
       "AbelRuffiniOQ04OQ03.lean: 152 lines, 7 theorems, 1 axiom",
-      "galois_criterion: full iff (solvable by radicals \u2194 solvable Galois group)",
+      "galois_criterion: full iff (solvable by radicals ↔ solvable Galois group)",
       "galois_criterion_rationals: specialization to Q",
       "solvable_gal_means_radical_formula: converse of Abel-Ruffini",
       "Gallery data: meta.json"
     ],
     "insights": [
-      "Forward direction (solvable by radicals \u2192 solvable Galois group) is in Mathlib as solvableByRad.isSolvable_prime",
-      "Reverse direction (solvable Galois group \u2192 solvable by radicals) requires Kummer theory: cyclic Galois extensions over fields with roots of unity are radical",
+      "Forward direction (solvable by radicals → solvable Galois group) is in Mathlib as solvableByRad.isSolvable_prime",
+      "Reverse direction (solvable Galois group → solvable by radicals) requires Kummer theory: cyclic Galois extensions over fields with roots of unity are radical",
       "Reverse needs CharZero (or char not dividing group order) for roots of unity to exist",
       "Full iff criterion stated as galois_criterion with 1 axiom for the reverse direction"
     ],
@@ -54,7 +54,8 @@
     "abel-ruffini",
     "abel-ruffini-oq-04",
     "abel-ruffini-oq-04-oq-01",
-    "abel-ruffini-oq-04-oq-02"
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-03"
   ],
   "references": {
     "papers": [],
@@ -118,6 +119,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
     }
   ]
 }

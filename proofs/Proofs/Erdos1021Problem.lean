@@ -18,6 +18,7 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Nat.Choose.Basic
+import Proofs.Erdos1021Aristotle
 
 open SimpleGraph
 
@@ -95,10 +96,6 @@ def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
     omega
 
 /-- G_3 is isomorphic to C_6. -/
-axiom G3_is_C6 : ∃ (f : Gk_vertex 3 → Fin 6),
-  Function.Bijective f ∧
-  ∀ v w, (Gk 3).Adj v w ↔ (cycleGraph 6 (by omega)).Adj (f v) (f w)
-
 /-
 ## Extremal Numbers
 
@@ -161,8 +158,6 @@ def exponentVanishes : Prop :=
     ∀ c, (fun n => exGk k n) ≪ (fun n => powerBound c n) → c < ε
 
 /-- Erdős-Simonovits: if the conjecture holds, c_k → 0. -/
-axiom erdos_simonovits_limit : erdos_1021_conjecture → exponentVanishes
-
 /-
 ## Weak Conjecture
 
@@ -186,7 +181,8 @@ theorem strong_implies_weak : erdos_1021_conjecture → weak_conjecture := by
   -- when n^c ≥ C/ε, which holds for all sufficiently large n
   obtain ⟨N₁, hN₁⟩ : ∃ N₁ : ℕ, ∀ n : ℕ, n ≥ N₁ →
       C * powerBound c n ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by
-    sorry  -- Real analysis: rpow decay C·n^{-c} → 0; routine Aristotle target
+    -- powerBound c n = (n : ℝ) ^ (3/2 - c), which matches rpow_decay_bound
+    exact Erdos1021Aristotle.rpow_decay_bound C hC_pos c hc_pos ε hε
   refine ⟨max N₀ N₁, fun n hn => ?_⟩
   have ⟨hn₀, hn₁⟩ := max_le_iff.mp hn
   exact le_trans (hN₀ n hn₀) (hN₁ n hn₁)
@@ -201,9 +197,6 @@ For C_6, ex(n, C_6) ≪ n^(7/6) is known.
 noncomputable def exC6 (n : ℕ) : ℝ := extremalNumber n (cycleGraph 6 (by omega))
 
 /-- Erdős, Bondy-Simonovits: ex(n, C_6) ≪ n^(7/6). -/
-axiom C6_extremal_bound :
-  (fun n => exC6 n) ≪ (fun n => (n : ℝ) ^ (7/6 : ℝ))
-
 /-- The exponent 7/6 = 3/2 - 1/3, so c_3 = 1/3 works. -/
 theorem c3_value : (7 : ℝ) / 6 = 3/2 - 1/3 := by norm_num
 
@@ -219,18 +212,6 @@ Basic extremal theory gives n^(3/2) as an upper bound.
 -/
 
 /-- The Kővári-Sós-Turán theorem gives ex(n, K_{s,t}) ≤ C · n^(2-1/s). -/
-axiom kovari_sos_turan (s t : ℕ) (hs : s ≥ 2) (ht : t ≥ s) :
-  ∃ C > 0, ∀ n, extremalNumber n (completeBipartite s t) ≤ C * (n : ℝ) ^ (2 - 1/s)
-  where
-    completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) := {
-      Adj := fun v w => match v, w with
-        | Sum.inl _, Sum.inr _ => True
-        | Sum.inr _, Sum.inl _ => True
-        | _, _ => False
-      symm := fun v w h => by cases v <;> cases w <;> simp_all
-      loopless := fun v h => by cases v <;> simp at h
-    }
-
 /-- G_k contains K_{2, C(k,2)}, giving a trivial n^(3/2) bound. -/
 theorem trivial_bound (k : ℕ) (hk : k ≥ 3) :
     ∃ C > 0, ∀ n, exGk k n ≤ C * (n : ℝ) ^ (3/2 : ℝ) := by

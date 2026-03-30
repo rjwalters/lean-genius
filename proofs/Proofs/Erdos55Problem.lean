@@ -74,25 +74,13 @@ For r = 2, if A is Ramsey 2-complete, then A cannot grow slower than (log N)².
 More precisely: there exists c > 0 such that no Ramsey 2-complete set A
 can satisfy |A ∩ [1,N]| ≤ c(log N)² for all large N.
 -/
-axiom burr_erdos_lower_bound :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ A : Set ℕ, IsRamseyComplete A 2 →
-      ¬HasGrowthAtMost A (fun N => c * (Real.log N)^2)
-
 /--
 **Burr-Erdős Upper Bound (1985)**:
 There exists a Ramsey 2-complete set A with |A ∩ [1,N]| ≪ (log N)³.
 -/
-axiom burr_erdos_upper_bound :
-    ∃ A : Set ℕ, ∃ C : ℝ, C > 0 ∧
-    IsRamseyComplete A 2 ∧ HasGrowthAtMost A (fun N => C * (Real.log N)^3)
-
 /--
 **Burr's Theorem**: The set of k-th powers is Ramsey r-complete for all r, k ≥ 1.
 -/
-axiom powers_ramsey_complete (r k : ℕ) (hr : 1 ≤ r) (hk : 1 ≤ k) :
-    IsRamseyComplete { n | ∃ m : ℕ, n = m^k } r
-
 /- ## The Solution: Conlon-Fox-Pham (2021) -/
 
 /--

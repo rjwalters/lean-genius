@@ -1,0 +1,79 @@
+{
+  "slug": "divisibility-truncation-general-oq-02",
+  "title": "Divisibility tests for divisors sharing factors with 10",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Divisibility tests for divisors sharing factors with 10.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T16:34:54.975Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "divisibility-truncation-general",
+    "divisibility-truncation-general-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.975Z",
+  "lastUpdate": "2026-03-30T16:34:54.975Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityTruncationGeneral.lean",
+      "filename": "DivisibilityTruncationGeneral.lean",
+      "lineCount": 256,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneral.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityTruncationGeneralOQ01.lean",
+      "filename": "DivisibilityTruncationGeneralOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ01.lean"
+    }
+  ]
+}

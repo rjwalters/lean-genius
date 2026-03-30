@@ -8,7 +8,7 @@
     "author": "Frank Morley (1899)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Morley%27s_trisector_theorem",
     "date": "1899",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MorleysTheorem.lean",
     "tags": [
       "geometry",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -44,30 +44,32 @@
     ],
     "originalContributions": [
       "TriangleAngles structure with trisected angles and sum-to-π/3 lemma",
-      "Conway backward proof strategy via complex equilateral triangle",
-      "Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
-      "Vertex reconstruction from Morley triangle using direction vectors",
+      "Triple sine product identity: sin(3x) = 4sin(x)sin(π/3+x)sin(π/3-x)",
+      "Cosine rule identity for angle triples: sin²p+sin²q-2sin(p)sin(q)cos(c)=sin²c when p+q+c=π",
+      "Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) proved via sine rule + cosine rule",
+      "Complete proof: all three Morley sides equal by symmetry of the formula",
+      "Conway backward proof strategy via complex equilateral triangle (retained for context)",
       "Special case formalizations for equilateral and right isosceles triangles"
     ],
     "dateAdded": "2025-12-29",
     "leanFile": {
-      "lineCount": 384,
-      "structures": 2,
-      "axioms": 2,
-      "theorems": 6,
-      "definitions": 14,
+      "lineCount": 532,
+      "structures": 1,
+      "axioms": 0,
+      "theorems": 11,
+      "definitions": 10,
       "instances": 0
     },
-    "axiomCount": 1,
-    "lineCount": 384,
-    "assumptions": "1 axiom: morleys_theorem_axiom. 0 sorries.",
+    "axiomCount": 0,
+    "lineCount": 532,
+    "assumptions": "0 axioms. 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Frank Morley (1860-1937), an English-American mathematician and professor at Johns Hopkins University, discovered this theorem in 1899. Despite centuries of intensive study of triangle geometry by mathematicians from Euclid to Euler, this beautiful property remained hidden until the dawn of the 20th century. It has been called 'the most remarkable theorem in elementary geometry discovered in the 20th century.'\n\nThe theorem wasn't discovered earlier because angle trisection is impossible with compass and straightedge alone — a fact proved by Pierre Wantzel in 1837 using Galois theory. The ancient Greeks, who could not construct the trisector configuration, never encountered the Morley triangle. The algebraic reason is that trisecting angle $\\theta$ requires solving the irreducible cubic $4\\cos^3\\phi - 3\\cos\\phi = \\cos\\theta$.\n\nMorley first communicated the result around 1899, but it was not published until 1929. Multiple elegant proofs have been found: trigonometric (direct computation), complex number coordinates, and John Conway's celebrated 'backward proof' which starts with the equilateral triangle and reconstructs the original. The formalization here follows Conway's approach using complex coordinates.\n\nMorley's theorem appears as #84 in Freek Wiedijk's list of 100 greatest theorems. It connects to angle trisection impossibility (#8 on the same list) through the triple angle formula $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$.",
     "problemStatement": "**Morley's Trisector Theorem**: In any triangle $ABC$ with angles $\\alpha, \\beta, \\gamma$, the three intersection points of **adjacent** angle trisectors form an **equilateral triangle** (the Morley triangle).\n\nMore precisely: if the trisectors of angle $\\alpha$ make angles $\\alpha/3$ with sides $AB$ and $AC$, and similarly for $\\beta$ and $\\gamma$, then the three pairwise intersections of adjacent trisectors form a triangle with all sides equal to $8R \\sin(\\alpha/3) \\sin(\\beta/3) \\sin(\\gamma/3)$, where $R$ is the circumradius.",
     "text": "The three angle trisectors of any triangle, taken in pairs, meet to form an equilateral triangle. A surprising result discovered in 1899.",
-    "proofStrategy": "The formalization follows Conway's **backward proof**: instead of starting with triangle $ABC$ and proving trisector intersections are equilateral (computationally hard), we start with an equilateral triangle $PQR$ inscribed in the unit circle using complex exponentials $e^{i \\cdot 2\\pi k/3}$ (cube roots of unity), then reconstruct vertices $A$, $B$, $C$ using direction vectors at angles determined by the trisected angles. The key insight is that the Morley side length $s = 8R \\sin(\\alpha/3) \\sin(\\beta/3) \\sin(\\gamma/3)$ is **symmetric** in the trisected angles, immediately guaranteeing equilaterality. The main result is axiomatized; trigonometric identities for $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ are proved from Mathlib's `sin_add` and `cos_add`.",
+    "proofStrategy": "The proof uses the **sine rule / cosine rule method**: (1) In each sub-triangle formed by adjacent trisectors and a side, the **sine rule** gives arm lengths from each vertex to adjacent Morley points. (2) The **triple sine identity** $\\sin(3x) = 4\\sin(x)\\sin(\\pi/3+x)\\sin(\\pi/3-x)$ simplifies the sine rule computation, canceling $\\sin(\\pi/3-\\alpha_3)$ factors. (3) The **cosine rule** in the triangle connecting two Morley points through a shared vertex, with the **cosine rule identity** $\\sin^2 p + \\sin^2 q - 2\\sin p \\sin q \\cos c = \\sin^2 c$ (valid when $p+q+c=\\pi$), converts the distance computation into the symmetric formula $8R\\sin(\\alpha/3)\\sin(\\beta/3)\\sin(\\gamma/3)$. (4) Since this formula is **symmetric** in the trisected angles, all three Morley sides are equal, proving equilaterality. The Conway backward construction (equilateral triangle via cube roots of unity) is retained for geometric context.",
     "keyInsights": [
       "**Symmetric side formula**: The Morley side length $s = 8R \\sin(\\alpha/3) \\sin(\\beta/3) \\sin(\\gamma/3)$ is symmetric in the three trisected angles, immediately proving all sides equal",
       "**Trisected angle sum**: $\\alpha/3 + \\beta/3 + \\gamma/3 = \\pi/3 = 60°$, connecting the trisected angles to the equilateral triangle's internal angle",
@@ -159,10 +161,9 @@
     "summary": "Morley's theorem is formalized using Conway's backward proof in complex coordinates. The TriangleAngles structure captures the angle-sum constraint, cube roots of unity define the equilateral Morley triangle, and the symmetric side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) encodes the equilateral property. Two trigonometric identities are proved from Mathlib; the main theorem is axiomatized.",
     "implications": "**Theoretical Significance**: The formalization demonstrates how complex coordinates elegantly combine algebraic and geometric reasoning.\n\nThe TriangleAngles structure and backward construction provide a reusable framework for formalizing other triangle-center theorems (Napoleon's theorem, Feuerbach's theorem). The connection between Morley's theorem and angle trisection impossibility links classical geometry to Galois theory.",
     "openQuestions": [
-      "Can the morleys_theorem_axiom be proved by formalizing the full Conway backward construction verification?",
-      "Can the equilateral_side_length_axiom be proved by computing |e^(i·2π/3) - 1| = √3?",
-      "Can Napoleon's theorem (equilateral triangles on sides → centroids form equilateral) be formalized in this framework?",
-      "Can the extended Morley theorem (non-adjacent trisectors → other special triangles) be stated and proved?"
+      "Can Napoleon's theorem (equilateral triangles on sides → centroids form equilateral) be formalized using the TriangleAngles framework?",
+      "Can the extended Morley theorem (non-adjacent trisectors → other special triangles) be stated and proved?",
+      "Can the cosine_rule_identity and sin_triple_product be contributed to Mathlib as general-purpose lemmas?"
     ]
   },
   "crossReferences": [
@@ -226,7 +227,7 @@
       "Real"
     ],
     "namespace": "MorleysTheorem",
-    "lineCount": 384,
+    "lineCount": 532,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 15

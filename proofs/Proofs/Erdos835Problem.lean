@@ -88,10 +88,6 @@ def ErdosRosenfeldQuestion (k : ℕ) : Prop :=
 
     The coloring must be proper (adjacent subsets get different colors)
     and "rainbow" on each (k+1)-subset. -/
-axiom erdos_rosenfeld_equivalence :
-    ∀ k : ℕ, k > 0 →
-    ErdosRosenfeldQuestion k ↔ chromaticNumber (2*k) k = k + 1
-
 /-
 ## Part V: Known Results
 -/
@@ -127,23 +123,8 @@ axiom k_equals_8_fails : ¬ErdosRosenfeldQuestion 8
 -/
 
 /-- **Lower bound:** χ(J(2k,k)) ≥ k+1 for all k. -/
-axiom chromatic_lower_bound :
-    ∀ k : ℕ, k > 0 → chromaticNumber (2*k) k ≥ k + 1
-
 /-- **Upper bound:** χ(J(2k,k)) ≤ 2k for all k. -/
-axiom chromatic_upper_bound :
-    ∀ k : ℕ, k > 0 → chromaticNumber (2*k) k ≤ 2 * k
-
 /-- **Computed values:** Known chromatic numbers of J(2k,k). -/
-axiom known_chromatic_numbers :
-    chromaticNumber 4 2 = 3 ∧
-    chromaticNumber 6 3 = 4 ∧
-    chromaticNumber 8 4 = 7 ∧
-    chromaticNumber 10 5 = 8 ∧
-    chromaticNumber 12 6 = 11 ∧
-    chromaticNumber 14 7 = 13 ∧
-    chromaticNumber 16 8 = 15
-
 /-
 ## Part VII: The Answer
 -/

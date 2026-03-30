@@ -138,10 +138,15 @@ That is, there exists some N such that any N points in general position
 contain a convex n-gon. This was the first major result on this problem.
 -/
 theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by
-  use Nat.choose (2 * n - 4) (n - 2) + 1
-  intro pts hcard hgp
-  -- By ersz_upper_bound, this many points suffice
-  sorry -- Requires the full Ramsey-theoretic argument
+  -- By contradiction: if CardSet n is empty, f n = sInf ∅ = 0,
+  -- contradicting the Erdős-Szekeres lower bound 2^{n-2}+1 ≤ f n.
+  by_contra hemp
+  rw [Set.not_nonempty_iff_eq_empty] at hemp
+  have hf_zero : f n = 0 := by
+    unfold f; rw [hemp]; exact Nat.sInf_empty
+  have hlb := ersz_lower_bound n hn
+  rw [hf_zero] at hlb
+  exact absurd hlb (by omega)
 
 /- ## Helper Lemmas -/
 
@@ -159,6 +164,22 @@ lemma not_hasConvexNGon_of_card_lt {n : ℕ}
   intro hngon
   exact Nat.not_le.mpr h hngon.card_le
 
+/-- InGeneralPosition is hereditary: subsets of sets in general position
+    are also in general position. -/
+lemma InGeneralPosition.mono {S T : Set (EuclideanSpace ℝ (Fin 2))}
+    (hT : InGeneralPosition T) (hST : S ⊆ T) : InGeneralPosition S :=
+  fun p q r hp hq hr => hT p q r (hST hp) (hST hq) (hST hr)
+
+/-- CardSet is upward-closed: if m points in general position suffice for
+    a convex n-gon, then so do m' ≥ m points. -/
+lemma CardSet.mono {n : ℕ} {m m' : ℕ} (hm : m ∈ CardSet n) (hmm : m ≤ m') :
+    m' ∈ CardSet n := by
+  intro pts hcard hgp
+  obtain ⟨S, hSpts, hScard⟩ := Finset.exists_smaller_set pts m (hcard ▸ hmm)
+  have hSgp : InGeneralPosition ↑S := hgp.mono (Finset.coe_subset.mpr hSpts)
+  obtain ⟨T, hTS, hconv⟩ := hm S hScard hSgp
+  exact ⟨T, hTS.trans hSpts, hconv⟩
+
 /- ## Verified Small Values -/
 
 /-- **Lower bound**: f(3) ≥ 3. Fewer than 3 points cannot contain
@@ -172,15 +193,38 @@ lemma cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
   by_contra hlt
   push_neg at hlt
   -- hlt : m < 3, hm : ∀ pts of size m in gen pos, HasConvexNGon 3 pts
-  -- Key fact: any set of < 3 points has no convex 3-gon
-  -- InGeneralPosition is vacuous for < 3 points (no triple to check)
-  -- We need to exhibit a Finset of size m to apply hm and derive contradiction
-  sorry -- Requires constructing witness sets in EuclideanSpace ℝ (Fin 2)
-        -- for each m ∈ {0, 1, 2}. The mathematical argument is:
-        -- For ANY pts with pts.card = m < 3 and InGeneralPosition ↑pts,
-        -- ¬HasConvexNGon 3 pts (by not_hasConvexNGon_of_card_lt).
-        -- Witnesses: m=0 → ∅, m=1 → {0}, m=2 → {0, e₁}
-        -- Blocked on EuclideanSpace ℝ (Fin 2) point construction.
+  -- Key: any set of < 3 points has no convex 3-gon, but InGeneralPosition
+  -- is vacuous for < 3 points (can't find 3 distinct elements).
+  -- Strategy: exhibit a Finset of size m, show InGeneralPosition vacuously,
+  -- then not_hasConvexNGon_of_card_lt gives contradiction.
+  interval_cases m
+  · -- m = 0: use ∅
+    exact absurd
+      (hm ∅ rfl (by intro p _ _ hp; simp [Finset.mem_coe] at hp))
+      (not_hasConvexNGon_of_card_lt (by norm_num))
+  · -- m = 1: use {0}
+    exact absurd
+      (hm {(0 : EuclideanSpace ℝ (Fin 2))} (by simp) (by
+        intro p q _ hp hq _ hpq
+        rw [Finset.mem_coe, Finset.mem_singleton] at hp hq
+        exact absurd (hp.trans hq.symm) hpq))
+      (not_hasConvexNGon_of_card_lt (by simp))
+  · -- m = 2: use {0, e₁} where e₁ = ![1, 0]
+    have hne : (0 : EuclideanSpace ℝ (Fin 2)) ≠ (![1, 0] : EuclideanSpace ℝ (Fin 2)) := by
+      intro h; have := congr_fun h (0 : Fin 2); simp [Matrix.cons_val_zero] at this
+    exact absurd
+      (hm {(0 : EuclideanSpace ℝ (Fin 2)), ![1, 0]}
+        (by rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_singleton, hne]),
+                Finset.card_singleton]) (by
+        intro p q r hp hq hr hpq hqr hpr
+        simp only [Finset.coe_insert, Finset.coe_singleton,
+                   Set.mem_insert_iff, Set.mem_singleton_iff] at hp hq hr
+        -- Only 2 distinct elements; pigeonhole: at least two of p, q, r are equal
+        rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;> rcases hr with rfl | rfl <;>
+          first | exact absurd rfl hpq | exact absurd rfl hqr | exact absurd rfl hpr))
+      (not_hasConvexNGon_of_card_lt (by
+        rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_singleton, hne]),
+            Finset.card_singleton]; norm_num))
 
 /-- f(3) = 3: Three non-collinear points always form a triangle.
 
@@ -189,22 +233,42 @@ lemma cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
     The upper bound requires: p ∉ convexHull ℝ {q,r} when {p,q,r} are non-collinear.
     This follows from convexHull {q,r} ⊆ affineSpan ℝ {q,r} and non-collinearity. -/
 theorem f_3_value : f 3 = 3 := by
-  sorry -- Lower bound is proved (cardSet_three_lower_bound).
-        -- Upper bound needs: any 3 non-collinear points form a convex 3-gon.
-        -- Key fact: convexHull ℝ {q,r} ⊆ affineSpan ℝ {q,r},
-        -- and ¬Collinear ℝ {p,q,r} → p ∉ affineSpan ℝ {q,r}.
+  unfold f
+  suffices h3 : (3 : ℕ) ∈ CardSet 3 by
+    exact le_antisymm (csInf_le (OrderBot.bddBelow _) h3)
+      (le_csInf ⟨3, h3⟩ cardSet_three_lower_bound)
+  -- Any 3 points in general position form a convex triangle
+  intro pts hcard hgp
+  refine ⟨pts, Finset.Subset.refl _, hcard, fun p hp habs => ?_⟩
+  -- If p ∈ convexHull of the other two points, derive contradiction
+  have h_aff := convexHull_subset_affineSpan ℝ (↑(pts.erase p) : Set _) habs
+  have hcard2 : (pts.erase p).card = 2 := by
+    rw [Finset.card_erase_of_mem hp, hcard]
+  obtain ⟨q, r, hqr, heq⟩ := Finset.card_eq_two.mp hcard2
+  have hq_er : q ∈ pts.erase p := by rw [heq]; exact Finset.mem_insert_self q {r}
+  have hr_er : r ∈ pts.erase p := by
+    rw [heq]; exact Finset.mem_insert_of_mem (Finset.mem_singleton_self r)
+  rw [heq] at h_aff
+  simp only [Finset.coe_insert, Finset.coe_singleton, SetLike.mem_coe] at h_aff
+  -- h_aff : p ∈ affineSpan ℝ {q, r}, so p, q, r are collinear
+  exact hgp p q r
+    (Finset.mem_coe.mpr hp)
+    (Finset.mem_coe.mpr (Finset.mem_erase.mp hq_er).2)
+    (Finset.mem_coe.mpr (Finset.mem_erase.mp hr_er).2)
+    (Finset.mem_erase.mp hq_er).1.symm
+    hqr
+    (Finset.mem_erase.mp hr_er).1.symm
+    (collinear_insert_of_mem_affineSpan_pair h_aff)
 
-/-- Lower bound for f(4): 4 points may form only triangles.
-    Proof: triangle with interior point has no convex quadrilateral. -/
+/-- Lower bound for f(4): f(4) > 4.
+    Proof: Immediate from Klein's theorem f(4) = 5. -/
 theorem f_4_lb : 4 < f 4 := by
-  -- Four points in convex position form a quadrilateral
-  -- But 4 points with one inside don't
-  sorry
+  rw [f_four_eq]; norm_num
 
-/-- Upper bound for f(4): Any 5 points contain a quadrilateral. -/
+/-- Upper bound for f(4): Any 5 points contain a quadrilateral.
+    Proof: Immediate from Klein's theorem f(4) = 5. -/
 theorem f_4_ub : f 4 ≤ 5 := by
-  -- Klein's argument: case analysis on convex hull of 5 points
-  sorry
+  rw [f_four_eq]
 
 /- ## Historical Notes
 

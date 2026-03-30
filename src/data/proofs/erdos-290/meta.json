@@ -62,8 +62,8 @@
       "OEIS A375081 values recorded"
     ],
     "axiomCount": 9,
-    "lineCount": 265,
-    "assumptions": "9 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "lineCount": 244,
+    "assumptions": "9 axiom(s) and 2 sorries(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums**\n\nThis problem concerns a counterintuitive phenomenon in the arithmetic of partial harmonic sums. The partial harmonic sum Σ_{n=a}^{b} 1/n is a rational number p/q in lowest terms. One might expect that extending the sum by one more term (adding 1/(b+1)) would increase the denominator, since we are adding a fraction with a new denominator. But sometimes the opposite occurs: the denominator actually DECREASES.\n\n**The Motivating Example:**\nΣ_{n=3}^{5} 1/n = 1/3 + 1/4 + 1/5 = 47/60 (denominator 60)\nΣ_{n=3}^{6} 1/n = 47/60 + 1/6 = 57/60 = 19/20 (denominator 20)\n\nAdding 1/6 caused the denominator to drop from 60 to 20! The mechanism is GCD cancellation: 47/60 + 1/6 = 57/60, and gcd(57, 60) = 3, so the fraction reduces to 19/20.\n\nErdős asked: does this phenomenon always occur? For any starting point a, must there always exist some b where adding the next term decreases the denominator?\n\n**van Doorn's Resolution (2024):**\nIn a paper posted to arXiv (2411.03073), van Doorn proved the answer is YES. His key innovation was an explicit construction based on powers of 3: for a ∈ (3ᵏ, 3ᵏ⁺¹], taking b = 2·3ᵏ⁺¹ − 1 always gives a denominator drop. This yields the linear upper bound b(a) < 4.374a. He also proved a logarithmic lower bound b(a) > a + 0.54 log a, showing the first drop cannot happen immediately.\n\nThe connection to prime factorization is central: the denominator of a harmonic sum divides the LCM of the summation range, and denominator drops occur when adding a new term enables cancellation in the prime factorization of the numerator-denominator pair. Powers of 3 play a special role because the prime 3 has controlled multiplicity in nearby integers.",
@@ -197,7 +197,7 @@
       "Real"
     ],
     "namespace": "Erdos290",
-    "lineCount": 265,
+    "lineCount": 244,
     "axiomCount": 9,
     "theoremCount": 7,
     "definitionCount": 21

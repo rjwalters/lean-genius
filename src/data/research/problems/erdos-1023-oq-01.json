@@ -1,0 +1,95 @@
+{
+  "slug": "erdos-1023-oq-01",
+  "title": "[Problem Title]",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T17:00:18-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1023-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1023"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T04:38:25.646Z",
+  "completed": "2026-02-11T04:38:25.646Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1023OQ01.lean",
+      "filename": "Erdos1023OQ01.lean",
+      "lineCount": 459,
+      "theoremCount": 36,
+      "axiomCount": 2,
+      "defCount": 19,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1023OQ01Problem.lean",
+      "filename": "Erdos1023OQ01Problem.lean",
+      "lineCount": 245,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1023Problem.lean",
+      "filename": "Erdos1023Problem.lean",
+      "lineCount": 367,
+      "theoremCount": 17,
+      "axiomCount": 5,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023Problem.lean"
+    }
+  ]
+}

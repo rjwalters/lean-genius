@@ -44,8 +44,8 @@
       "Known results for k=3 through k=8"
     ],
     "axiomCount": 10,
-    "lineCount": 196,
-    "assumptions": "10 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "lineCount": 177,
+    "assumptions": "10 axiom(s) and 2 sorries(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and Moshe Rosenfeld. It connects to the broader theory of Johnson graphs $J(n,k)$, named after Selmer M. Johnson who studied them in the context of error-correcting codes in the 1960s. Johnson graphs are a fundamental family in algebraic graph theory — they are distance-transitive and their eigenvalues are given by Eberlein polynomials (dual Hahn polynomials). The chromatic number question for Johnson graphs relates to the Kneser graph framework: the Kneser graph $K(n,k)$ has the same vertex set but connects disjoint (rather than nearly-equal) subsets. Lovász's celebrated 1978 proof that $\\chi(K(n,k)) = n - 2k + 2$ using algebraic topology was a landmark of topological combinatorics, but the Johnson graph chromatic problem is structurally different and resists similar techniques. Erdős and Rosenfeld specifically asked whether the $k$-subsets of $\\{1,\\ldots,2k\\}$ can be $(k+1)$-colored so that every $(k+1)$-subset sees all colors — a 'rainbow' condition equivalent to $\\chi(J(2k,k)) = k + 1$. Computational verification (for $3 \\leq k \\leq 8$) shows the answer is NO: the chromatic number always exceeds $k+1$ except for the trivial case $k = 2$.",
@@ -151,7 +151,7 @@
       "Finset"
     ],
     "namespace": "Erdos835",
-    "lineCount": 196,
+    "lineCount": 177,
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 10

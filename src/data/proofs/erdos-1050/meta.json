@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 7,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
     "erdosProblemStatus": "solved",
@@ -63,7 +63,7 @@
       "erdos-257"
     ],
     "axiomCount": 3,
-    "lineCount": 340,
+    "lineCount": 357,
     "assumptions": "Three axioms: (1) borwein_irrationality — Borwein's 1991 Padé approximation result for T(q,r); (2) S_approx — numerical bounds 0.286 < S < 0.288; (3) transcendence_conjecture_status — records open status of transcendence conjecture."
   },
   "overview": {
@@ -221,10 +221,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["BigOperators", "Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Real"
+    ],
     "namespace": "Erdos1050",
-    "lineCount": 340,
+    "lineCount": 357,
     "axiomCount": 3,
     "theoremCount": 25,
     "definitionCount": 9,

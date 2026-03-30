@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-erdos105-oq05-setup",
+    "proofId": "erdos-105-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "context",
+    "title": "Geometric Framework in R^d",
+    "content": "The formalization defines points in R^d as EuclideanSpace R (Fin d), lines via base point + direction (parametric), and the rich/unblocked predicates generalized from R^2. These mirror the definitions in Erdos105Problem.lean but parameterized by dimension d.",
+    "mathContext": "PointD d = EuclideanSpace R (Fin d). LineD d has basePoint, direction (nonzero). contains: exists t, p = base + t * dir. isRich: exists p,q in A distinct on L. unblocked: no b in B on L.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "parametric line", "rich line", "unblocked"],
+    "prerequisites": ["Euclidean geometry", "EuclideanSpace"]
+  },
+  {
+    "id": "ann-erdos105-oq05-existence",
+    "proofId": "erdos-105-oq-05",
+    "range": {
+      "startLine": 71,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Rich Line Existence (Proved)",
+    "content": "rich_line_exists_d proves that any finset of >= 2 points in R^d has at least one rich line. The proof picks two distinct points p, q (using Finset.one_lt_card), constructs the line through them (base=p, dir=q-p), and verifies both points lie on it (t=0 gives p, t=1 gives q).",
+    "mathContext": "For |A| >= 2, pick p != q in A. The line L = {p + t(q-p) : t in R} contains p (t=0) and q (t=1), so L is rich for A.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.one_lt_card", "sub_ne_zero", "rich line construction"],
+    "prerequisites": ["Finset API", "EuclideanSpace arithmetic"]
+  },
+  {
+    "id": "ann-erdos105-oq05-twoflat",
+    "proofId": "erdos-105-oq-05",
+    "range": {
+      "startLine": 107,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "2-Flat Structure and Rich 2-Flat Conjecture",
+    "content": "A TwoFlat in R^d is parameterized by a base point and two linearly independent directions (dir1, dir2). A point p lies on it if p = base + s*dir1 + t*dir2. A 2-flat is rich if it contains 3 non-collinear points of A. The richTwoFlatConjecture asks whether obstacles can block all rich 2-flats.",
+    "mathContext": "TwoFlat: {base + s*dir1 + t*dir2 : s,t in R} where a*dir1 + b*dir2 = 0 implies a=b=0. Rich: contains 3 non-collinear points of A (not all on a single line within the flat).",
+    "significance": "key",
+    "relatedConcepts": ["affine plane", "linear independence", "non-collinearity", "blocking"],
+    "prerequisites": ["linear algebra", "affine geometry"]
+  },
+  {
+    "id": "ann-erdos105-oq05-monotonicity",
+    "proofId": "erdos-105-oq-05",
+    "range": {
+      "startLine": 145,
+      "endLine": 160
+    },
+    "type": "technique",
+    "title": "Obstacle Monotonicity (Proved)",
+    "content": "Two monotonicity theorems: if a line (or 2-flat) avoids all obstacles in a larger set B, it also avoids all obstacles in any subset B' of B. The proofs are direct: unblocked means no b in B lies on the flat, so no b in B' (a subset of B) lies on it either.",
+    "mathContext": "B' subseteq B and L unblocked by B implies L unblocked by B'. Proof: for b in B', b in B, so not on L.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "subset", "unblocked"],
+    "prerequisites": ["set theory"]
+  }
+]

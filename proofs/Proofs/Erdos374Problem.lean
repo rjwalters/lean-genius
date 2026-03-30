@@ -114,7 +114,58 @@ theorem bigF_eq_two_of_square (n : ℕ) (hn : 2 ≤ n) : bigF (n * n) = 2 := by
 theorem square_in_D2 (n : ℕ) (hn : 2 ≤ n) : inDk 2 (n * n) :=
   bigF_eq_two_of_square n hn
 
-/- ## Known Results (Axiomatized — deep results from Erdős-Graham 1976) -/
+/- ## Helper Lemmas for factorialProduct -/
+
+/-- The foldl for factorialProduct satisfies `foldl f b xs = b * foldl f 1 xs`.
+    This is the key property relating different starting accumulators. -/
+private lemma factorialProduct_foldl_mul (b : ℕ) (seq : List ℕ) :
+    List.foldl (fun acc a => acc * Nat.factorial a) b seq =
+    b * List.foldl (fun acc a => acc * Nat.factorial a) 1 seq := by
+  induction seq generalizing b with
+  | nil => simp [List.foldl]
+  | cons x xs ih =>
+    simp only [List.foldl]
+    rw [ih (b * x.factorial), ih (1 * x.factorial)]
+    ring
+
+/-- factorialProduct distributes over list concatenation. -/
+theorem factorialProduct_append (xs ys : List ℕ) :
+    factorialProduct (xs ++ ys) = factorialProduct xs * factorialProduct ys := by
+  unfold factorialProduct
+  rw [List.foldl_append]
+  exact factorialProduct_foldl_mul _ _
+
+/-- factorialProduct of a singleton is just the factorial. -/
+private lemma factorialProduct_singleton (x : ℕ) :
+    factorialProduct [x] = x.factorial := by
+  simp [factorialProduct, List.foldl]
+
+/-- factorialProduct of (x :: xs) splits as x! * factorialProduct xs. -/
+private lemma factorialProduct_cons (x : ℕ) (xs : List ℕ) :
+    factorialProduct (x :: xs) = x.factorial * factorialProduct xs := by
+  rw [show x :: xs = [x] ++ xs from rfl, factorialProduct_append, factorialProduct_singleton]
+
+/-- A prime p does not divide the product of factorials of numbers all < p.
+    Each a! for a < p has all factors in {1,...,a} ⊂ {1,...,p-1}, so p ∤ a!.
+    Since p is prime and doesn't divide any individual a!, it doesn't divide
+    their product. -/
+private theorem not_prime_dvd_factorialProduct {p : ℕ} (hp : p.Prime) (seq : List ℕ)
+    (hlt : ∀ a ∈ seq, a < p) : ¬(p ∣ factorialProduct seq) := by
+  induction seq with
+  | nil =>
+    simp [factorialProduct, List.foldl]
+    exact fun h => absurd (Nat.le_of_dvd Nat.one_pos h) (by omega)
+  | cons x xs ih =>
+    rw [factorialProduct_cons]
+    intro h
+    rcases hp.dvd_mul.mp h with hx | hxs
+    · -- p ∣ x! implies p ≤ x, contradicting x < p
+      exact absurd (hp.dvd_factorial.mp hx)
+        (not_le_of_lt (hlt x (List.mem_cons_self x xs)))
+    · -- p ∣ factorialProduct xs contradicts induction hypothesis
+      exact ih (fun a ha => hlt a (List.mem_cons_of_mem x ha)) hxs
+
+/- ## Known Results -/
 
 /-- For primes, no strictly increasing sequence ending at p has a
     factorial product that is a perfect square.
@@ -190,6 +241,25 @@ theorem no_prime_in_Dk (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : 2 ≤ k) :
   unfold inDk
   rw [bigF_prime_zero p hp]
   omega
+
+/- ## Edge Cases -/
+
+/-- HasSquareFactorialProduct 1 2 via the sequence [0, 1]: 0! · 1! = 1 = 1².
+    This shows 1 ∈ D₂, the smallest element. -/
+theorem one_has_square_factorial_product : HasSquareFactorialProduct 1 2 :=
+  ⟨[0, 1], rfl, by decide, by decide, ⟨1, by simp [factorialProduct, List.foldl]⟩⟩
+
+/-- bigF(1) = 2: the sequence [0, 1] witnesses 0! · 1! = 1 = 1². -/
+theorem bigF_one_eq_two : bigF 1 = 2 := by
+  unfold bigF
+  have h : ∃ k, 2 ≤ k ∧ HasSquareFactorialProduct 1 k :=
+    ⟨2, le_refl 2, one_has_square_factorial_product⟩
+  rw [dif_pos h]
+  exact Nat.find_eq_iff.mpr ⟨⟨le_refl 2, one_has_square_factorial_product⟩,
+    fun k hk ⟨h1, _⟩ => by omega⟩
+
+/-- 1 ∈ D₂ (the smallest element of D₂). -/
+theorem one_in_D2 : inDk 2 1 := bigF_one_eq_two
 
 /- ## The Open Question -/
 

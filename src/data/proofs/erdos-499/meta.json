@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 499,
     "erdosUrl": "https://erdosproblems.com/499",
     "erdosProblemStatus": "solved",
@@ -62,8 +62,8 @@
       "birkhoff_von_neumann axiom: convex hull characterization"
     ],
     "axiomCount": 8,
-    "lineCount": 288,
-    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 284,
+    "assumptions": "8 axiom(s). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #499**\n\nThis problem asks about finding large diagonal products in doubly stochastic matrices, connecting to the famous van der Waerden conjecture.\n\n**Key History:**\n- Marcus & Ree (1959): Proved weaker version (sum of diagonal ≥ 1)\n- Marcus & Minc (1962): Proved this problem (product ≥ n^{-n})\n- Gyires (1980), Egorychev (1981), Falikman (1981): Proved van der Waerden conjecture (permanent ≥ n^{-n} · n!)\n\n**Mathematical Setting:**\nA doubly stochastic matrix has non-negative entries with each row and column summing to 1. The Birkhoff-von Neumann theorem shows these are exactly the convex combinations of permutation matrices. The question is whether every such matrix has a \"good\" diagonal.",
@@ -183,7 +183,7 @@
       "Matrix"
     ],
     "namespace": "Erdos499",
-    "lineCount": 288,
+    "lineCount": 284,
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 7

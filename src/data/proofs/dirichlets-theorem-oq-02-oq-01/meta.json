@@ -55,7 +55,7 @@
     "dateAdded": "2026-03-25",
     "axiomCount": 4,
     "lineCount": 366,
-    "assumptions": "4 axioms: L_function_functional_symmetry, classical_zero_free_region_dirichlet, L_function_nonzero_re_gt_one, GRH_effective_L_one_bound. 1 sorry(s) remain.",
+    "assumptions": "4 axioms: L_function_functional_symmetry, classical_zero_free_region_dirichlet, L_function_nonzero_re_gt_one, GRH_effective_L_one_bound. 0 sorries remain.(s) remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -216,6 +216,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 366
+    "lineCount": 366,
+    "axiomCount": 4
   }
 }

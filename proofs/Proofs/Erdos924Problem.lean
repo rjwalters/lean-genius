@@ -183,18 +183,10 @@ def FolkmanNumber_3_2 : Prop :=
 **Folkman Number f(3; 2) ≤ 941:**
 Graham showed f(3; 2) ≤ 941.
 -/
-axiom graham_upper_bound :
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-    Fintype.card V ≤ 941 ∧ IsFolkmanGraph G 2 3
-
 /--
 **Folkman Number f(3; 2) = 786 (Best known as of recent):**
 The exact value of f(3; 2) was determined to be 786.
 -/
-axiom folkman_3_2_exact :
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-    Fintype.card V = 786 ∧ IsFolkmanGraph G 2 3
-
 /-
 ## Part VII: Connection to Ramsey Theory
 -/
@@ -213,12 +205,6 @@ Folkman graphs achieve the Ramsey property while avoiding K_{l+1},
 which is remarkable since the complete graph K_n (for large n) trivially
 has the Ramsey property but contains all cliques.
 -/
-axiom folkman_vs_ramsey :
-  ∀ l : ℕ, l ≥ 3 →
-    -- Complete graphs have Ramsey property but aren't K_{l+1}-free
-    -- Folkman graphs have Ramsey property AND are K_{l+1}-free
-    ErdosHajnalQuestion 2 l
-
 /-
 ## Part VIII: Proof Techniques
 -/

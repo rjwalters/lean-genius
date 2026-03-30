@@ -17,7 +17,7 @@
       "decomposition"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 719,
     "erdosUrl": "https://erdosproblems.com/719",
     "erdosProblemStatus": "open",
@@ -76,9 +76,9 @@
         "relationship": "Hamiltonicity and random graphs \u2014 structural decomposition questions in extremal graph theory"
       }
     ],
-    "axiomCount": 2,
-    "lineCount": 371,
-    "assumptions": "2 axioms and 1 sorry (decomp_pieces_le_edges at line 156)."
+    "axiomCount": 1,
+    "lineCount": 546,
+    "assumptions": "1 axiom: erdos_sauer_conjecture (OPEN problem). Turán's theorem for graphs fully proved via Mathlib bridge."
   },
   "overview": {
     "historicalContext": "Tur\u00e1n's theorem (1941) determines the maximum number of edges in a triangle-free graph on $n$ vertices: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This foundational result of extremal graph theory was extended by the Erd\u0151s-Stone-Simonovits theorem (1966) to determine $\\text{ex}_2(n; H)$ for all non-bipartite graphs $H$.\n\nFor $r$-uniform hypergraphs with $r \\ge 3$, the Tur\u00e1n problem becomes dramatically harder. Even $\\text{ex}_3(n; K_4^3)$ \u2014 the 3-uniform analogue of the triangle Tur\u00e1n number \u2014 is a central open problem. Tur\u00e1n conjectured the extremal hypergraph is a specific 3-partite construction with $(5/9 + o(1))\\binom{n}{3}$ edges, but this remains unproven.\n\nErd\u0151s and Sauer (1981) posed Problem #719: can every $r$-uniform hypergraph on $n$ vertices be decomposed into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces, where each piece is either a single $r$-edge ($K_r^r$) or a complete $(r+1)$-clique ($K_{r+1}^r$)? The conjecture connects two deep areas: Tur\u00e1n-type extremal theory (bounding edge counts) and decomposition theory (partitioning edge sets into canonical structures).\n\nFor $r = 2$, the conjecture asks whether every graph on $n$ vertices can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles \u2014 already non-trivial. For $r \\ge 3$, the conjecture is doubly open: the decomposition bound depends on a Tur\u00e1n number that is itself unknown. The problem remains OPEN.",
@@ -158,15 +158,16 @@
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Powerset",
       "Mathlib.Data.Finset.Card",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 484,
-    "axiomCount": 2,
-    "theoremCount": 5,
-    "definitionCount": 7,
-    "sorryCount": 1
+    "lineCount": 546,
+    "axiomCount": 1,
+    "theoremCount": 20,
+    "definitionCount": 8,
+    "sorryCount": 0
   },
   "references": [
     {

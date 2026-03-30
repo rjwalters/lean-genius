@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-factor-ideal",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "title": "Factor Theorem as Ideal Membership",
+    "type": "concept",
+    "content": "The Factor Theorem $f(a) = 0 \\iff (X-a) \\mid f$ restated as ideal membership. This perspective is the gateway to algebraic geometry: 'evaluation is zero' becomes 'belongs to the ideal'.",
+    "mathContext": "In algebraic geometry, the zero set $V(I)$ of an ideal $I$ is the set of points where all polynomials in $I$ vanish. The Factor Theorem says that $a \\in V((X - a))$ iff $f(a) = 0$ iff $f \\in (X - a)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ideal membership",
+      "polynomial evaluation",
+      "Factor Theorem"
+    ],
+    "prerequisites": [
+      "Polynomial.dvd_iff_isRoot"
+    ]
+  },
+  {
+    "id": "ann-weak-nullstellensatz",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "title": "Weak Nullstellensatz (Univariate)",
+    "type": "concept",
+    "content": "Over an algebraically closed field, every nonconstant polynomial has a root. This is the one-variable case of the general weak Nullstellensatz.",
+    "mathContext": "The general weak Nullstellensatz states: if $k$ is algebraically closed and $I \\subsetneq k[x_1, \\ldots, x_n]$ is a proper ideal, then $V(I) \\neq \\emptyset$. For $n = 1$, $k[x]$ is a PID, so $I = (f)$ for some $f$, and the result reduces to `IsAlgClosed.exists_root`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic closure",
+      "IsAlgClosed",
+      "Nullstellensatz"
+    ],
+    "prerequisites": [
+      "IsAlgClosed.exists_root",
+      "Polynomial.degree_eq_natDegree"
+    ]
+  },
+  {
+    "id": "ann-hierarchy",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": {
+      "startLine": 108,
+      "endLine": 147
+    },
+    "title": "Nullstellensatz Hierarchy",
+    "type": "concept",
+    "content": "Four levels of zero-set theorems:\n1. Factor Theorem (1 var, 1 poly)\n2. Weak Nullstellensatz (n vars, proper ideal → common zero)\n3. Strong Nullstellensatz ($I(V(J)) = \\sqrt{J}$)\n4. Combinatorial Nullstellensatz (Alon 1999, coefficient conditions → nonvanishing)",
+    "mathContext": "Each level generalizes the previous. The documentation outlines what Lean/Mathlib infrastructure would be needed for each level, serving as a roadmap for future formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert's Nullstellensatz",
+      "radical ideal",
+      "algebraic variety",
+      "combinatorial Nullstellensatz"
+    ],
+    "prerequisites": [
+      "ideal theory",
+      "algebraic geometry basics"
+    ]
+  }
+]

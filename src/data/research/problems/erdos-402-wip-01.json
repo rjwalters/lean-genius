@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Added 4 new theorems. Proved: dvd_lt_imp_le_half (proper divisor bound), erdos_402_pair (two-element case), max_ge_card_of_pos (pigeonhole for positive Finsets), erdos_402_contains_one (1-in-A case). 1 sorry remains (main conjecture, needs deep sieve theory).",
+    "progressSummary": "COMPLETED: Added 3 new theorems (small_min, three_element_gcd_bound, erdos_402_three). 433 lines, 18 theorems, 0 axioms, 1 sorry (main conjecture).",
     "builtItems": [
       "counterexample_124_satisfies: {1,2,4} satisfies Graham condition",
       "counterexample_124_primitive: {1,2,4} has gcd 1",
@@ -40,7 +40,10 @@
       "dvd_lt_imp_le_half: d|n \u2227 d<n \u2192 d \u2264 n/2",
       "erdos_402_pair: main conjecture for |A|=2 via proper-divisor bound",
       "max_ge_card_of_pos: max(A) \u2265 |A| for positive Finset A",
-      "erdos_402_contains_one: main conjecture when 1 \u2208 A via pigeonhole"
+      "erdos_402_contains_one: main conjecture when 1 \u2208 A via pigeonhole",
+      "erdos_402_small_min: when min(A) \u2264 max(A)/card, conjecture follows immediately",
+      "three_element_gcd_bound: for a<b<c, gcd(c,a) \u2264 c/3 or gcd(c,b) \u2264 c/3",
+      "erdos_402_three: full three-element case of Graham's conjecture"
     ],
     "insights": [
       "Equality characterization is false: {1,2,4} is a counterexample (primitive, satisfies GCD condition, not in three families)",
@@ -49,7 +52,10 @@
       "Coprimality of 2 and 3 forces 6|L when n\u22653, ruling out L\u22644",
       "Pair case reduces to: gcd properly divides max element, so gcd \u2264 max/2 = max/card",
       "Contains-one case: gcd(max,1)=1 and max\u2265card by pigeonhole (A \u2286 {1,...,max})",
-      "max_ge_card_of_pos proved via injection into range(max+1)\\{0} using card_sdiff"
+      "max_ge_card_of_pos proved via injection into range(max+1)\\{0} using card_sdiff",
+      "For 3 distinct positive ints a<b<c: if gcd(c,x) > c/3 then gcd(c,x) = c/2 (unique proper divisor > c/3)",
+      "Two elements can't both be c/2 (distinct), so at least one gcd \u2264 c/3",
+      "Small-min case: min \u2264 max/card implies gcd(max,min) \u2264 min \u2264 max/card"
     ],
     "mathlibGaps": [],
     "nextSteps": [

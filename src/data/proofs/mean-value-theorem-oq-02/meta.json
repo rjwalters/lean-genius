@@ -1,0 +1,130 @@
+{
+  "id": "mean-value-theorem-oq-02",
+  "title": "Taylor's Theorem with Lagrange Remainder",
+  "slug": "mean-value-theorem-oq-02",
+  "description": "Formalizes the higher-order Mean Value Theorem (Taylor's theorem with Lagrange remainder). Defines the Taylor polynomial, axiomatizes the Lagrange remainder, proves MVT is the n=0 case, and derives the second-order Taylor expansion.",
+  "meta": {
+    "author": "Taylor, Lagrange (classical)",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ02.lean",
+    "tags": [
+      "calculus",
+      "taylor-theorem",
+      "mean-value-theorem",
+      "analysis",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 154,
+    "assumptions": "1 axiom: taylor_lagrange_remainder (converting Mathlib's integral remainder to Lagrange form). 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "iteratedDeriv",
+        "description": "n-th derivative of a function",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "ContDiff",
+        "description": "n-times continuously differentiable",
+        "module": "Mathlib.Analysis.Calculus.ContDiff.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Taylor polynomial definition using iteratedDeriv and Finset.sum",
+      "MVT as first-order Taylor (n=0 specialization)",
+      "Second-order Taylor with explicit remainder"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Taylor's theorem (Brook Taylor, 1715) with the Lagrange form of the remainder (Joseph-Louis Lagrange, 1797) is one of the most important results in calculus. It generalizes the Mean Value Theorem to higher order: f(b) = T_n(b) + f^(n+1)(c)/(n+1)! \u00b7 (b-a)^(n+1).",
+    "problemStatement": "Is there a Mathlib-compatible formalization of the higher-order MVT (Taylor's theorem with Lagrange remainder)?",
+    "text": "Defines the Taylor polynomial, axiomatizes the Lagrange remainder form, and derives the MVT as a special case. Mathlib has the integral remainder form but converting to Lagrange requires the generalized MVT for integrals.",
+    "proofStrategy": "Define Taylor polynomials using iteratedDeriv and Finset.sum. Axiomatize the Lagrange form. Derive special cases (n=0 gives MVT, n=1 gives second-order expansion) by specializing and simplifying.",
+    "keyInsights": [
+      "Mathlib's taylor module uses integral remainder; the Lagrange form needs additional infrastructure",
+      "MVT is exactly Taylor's theorem at order 0",
+      "The taylorPolynomial_zero and taylorPolynomial_one lemmas enable clean specialization"
+    ],
+    "prerequisites": [
+      "Calculus (differentiation, Taylor series)",
+      "Real analysis (ContDiff, iteratedDeriv)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "taylor-polynomial",
+      "title": "The Taylor Polynomial",
+      "summary": "Defines T_n(x) = \u03a3 f^(k)(a)/k! \u00b7 (x-a)^k and proves n=0,1 cases",
+      "startLine": 39,
+      "endLine": 69
+    },
+    {
+      "id": "lagrange-remainder",
+      "title": "Taylor's Theorem with Lagrange Remainder",
+      "summary": "Axiomatizes: f(b) - T_n(b) = f^(n+1)(c)/(n+1)! \u00b7 (b-a)^(n+1)",
+      "startLine": 71,
+      "endLine": 99
+    },
+    {
+      "id": "mvt-connection",
+      "title": "MVT as First-Order Taylor",
+      "summary": "The n=0 case recovers the ordinary Mean Value Theorem",
+      "startLine": 100,
+      "endLine": 128
+    },
+    {
+      "id": "second-order",
+      "title": "Second-Order Taylor",
+      "summary": "f(b) = f(a) + f'(a)(b-a) + f''(c)/2\u00b7(b-a)\u00b2",
+      "startLine": 129,
+      "endLine": 155
+    }
+  ],
+  "conclusion": {
+    "summary": "Taylor's theorem with Lagrange remainder is formalized using Mathlib's iteratedDeriv. The Lagrange form is axiomatized (1 axiom) because converting from Mathlib's integral remainder requires substantial infrastructure. The MVT and second-order expansion are derived as special cases.",
+    "openQuestions": [],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "parent-problem",
+      "description": "Parent: Mean Value Theorem formalization"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "W. Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Theorem 5.15: Taylor's theorem with Lagrange remainder"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Taylor",
+      "Mathlib.Analysis.Calculus.MeanValue",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Deriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "MeanValueTheoremOQ02",
+    "lineCount": 154,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 1
+  }
+}

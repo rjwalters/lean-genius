@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 781,
     "erdosUrl": "https://erdosproblems.com/781",
     "erdosProblemStatus": "disproved",
@@ -52,9 +52,9 @@
       "IsQuasiProgression connection",
       "erdos_781_summary main theorem"
     ],
-    "axiomCount": 12,
-    "assumptions": "12 axiom declarations: descending_wave_equiv_gaps (descending wave iff non-increasing gaps), f_exists (f(k) well-defined for k >= 1), f_minimal (f(k) is minimal such n), BEF_lower_bound (f(k) >= k^2-k+1), BEF_upper_bound (f(k) <= (k^3-4k+9)/3), alon_spencer_cubic (f(k) >= ck^3 for some c > 0), f_1 (f(1) = 1), f_2 (f(2) = 2), f_3 (f(3) = 7), alon_spencer_construction (coloring avoiding k-waves for n <= ck^3), ascending_descending_similar (both f and g are Theta(k^3)), descending_wave_is_quasi (descending waves are quasi-progressions)",
-    "lineCount": 284
+    "axiomCount": 5,
+    "assumptions": "5 axioms (BEF_lower_bound, alon_spencer_cubic, f_1, f_2, f_3) and 0 sorries. Key bounds axiomatized from Brown-Erdos-Freedman (1990) and Alon-Spencer (1989). The disproof theorem is fully proved from axiomatized small values.",
+    "lineCount": 265
   },
   "overview": {
     "historicalContext": "**Erdős Problem #781: Descending Waves in 2-Colorings**\n\nThis problem concerns monochromatic patterns in 2-colorings of integers, specifically \"descending waves\" where successive gaps are non-increasing.\n\n**Key History:**\n- Brown, Erdős, Freedman (1990): Introduced the problem, proved k² - k + 1 ≤ f(k) ≤ (k³ - 4k + 9)/3\n- Alon, Spencer (1989): DISPROVED the conjecture by showing f(k) ≫ k³\n\n**Mathematical Setting:**\nA descending wave x₁ < x₂ < ... < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently, the gaps (x_{i+1} - x_i) form a non-increasing sequence.",
@@ -201,9 +201,9 @@
       "Finset"
     ],
     "namespace": "Erdos781",
-    "lineCount": 284,
-    "axiomCount": 12,
-    "theoremCount": 5,
+    "lineCount": 265,
+    "axiomCount": 5,
+    "theoremCount": 6,
     "definitionCount": 11
   },
   "crossReferences": [

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Fixed incorrect universal upper bound in ErdosProblem530 (counterexample: powers of 2 are Sidon). Proved interval upper bound: Sidon subsets of {1,...,N} have |S|^2 <= 4N. Proved corrected problem statement from KSS axiom + interval bound. 4 new theorems, 0 new sorries.",
     "builtItems": [
       "maxSidonSize_le_card: proved maxSidonSize A ≤ A.card (Erdos530Problem.lean:87)",
       "sidon_upper_bound: PROVED (was axiom) — trivial bound from subset property (Erdos530Problem.lean:95)",
@@ -42,7 +42,11 @@
       "isSidon_pair: any 2-element set is Sidon (16-case omega analysis)",
       "maxSidonSize_pos: nonempty sets have maxSidonSize ≥ 1",
       "maxSidonSize_ge_two: sets with ≥ 2 elements have maxSidonSize ≥ 2",
-      "theorem erdos_lower_bound: proved as corollary of KSS via le_mul_of_one_le_right (Erdos530Problem.lean:90-102)"
+      "theorem erdos_lower_bound: proved as corollary of KSS via le_mul_of_one_le_right (Erdos530Problem.lean:90-102)",
+      "sidon_subset_interval_bound: Sidon S in {1,...,N} => |S|^2 <= 4N (Erdos530Problem.lean:312)",
+      "interval_sidon_upper: maxSidonSize(Icc 1 N)^2 <= 4N (Erdos530Problem.lean:352)",
+      "ErdosProblem530Corrected: corrected problem statement with existential upper bound (Erdos530Problem.lean:296)",
+      "erdos530_corrected_proof: proof of corrected Theta(sqrt(N)) result (Erdos530Problem.lean:376)"
     ],
     "insights": [
       "sidon_upper_bound was trivially true (maxSidonSize A ≤ A.card, squared) — eliminated as axiom",
@@ -56,7 +60,11 @@
       "Finset.card_bij cleaner than Finset.map for bijection proofs in this context",
       "sidon_sum_count = card_image_of_injOn + card_sorted_pairs — clean decomposition",
       "erdos_lower_bound (N^{1/3}) follows trivially from komlos_sulyok_szemeredi (N^{1/2}): k²≥cN and k≥1 implies k³=k·k²≥cN",
-      "Remaining 2 axioms: KSS (deep known result, probabilistic method) and Alon-Erdos partition (open)"
+      "Remaining 2 axioms: KSS (deep known result, probabilistic method) and Alon-Erdos partition (open)",
+      "Original ErdosProblem530 had incorrect universal upper bound — powers of 2 are entirely Sidon, giving counterexample",
+      "Proved sidon_subset_interval_bound: any Sidon S in {1,...,N} has |S|^2 <= 4N via sum counting + evenness",
+      "Proved interval_sidon_upper: maxSidonSize({1,...,N})^2 <= 4N by lifting per-subset bound via exists_max_image",
+      "Proved erdos530_corrected_proof: ErdosProblem530Corrected follows from KSS axiom + interval upper bound with c2=4"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -83,10 +91,10 @@
     {
       "path": "Proofs/Erdos530Problem.lean",
       "filename": "Erdos530Problem.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
+      "lineCount": 382,
+      "theoremCount": 15,
       "axiomCount": 2,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos530Problem.lean"

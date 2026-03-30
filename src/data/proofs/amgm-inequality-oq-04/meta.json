@@ -1,0 +1,64 @@
+{
+  "id": "amgm-inequality-oq-04",
+  "title": "Gauss AGM Iteration and Elliptic Integrals",
+  "slug": "amgm-inequality-oq-04",
+  "description": "Formalizes the Gauss arithmetic-geometric mean (AGM) iteration: aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = √(aₙbₙ). Proves convergence of both sequences to a common limit M(a,b) via monotone convergence and gap contraction. Axiomatizes Gauss's connection to elliptic integrals: M(a,b) = aπ/(2K(k')).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ04.lean",
+    "tags": [
+      "analysis",
+      "sequences",
+      "convergence",
+      "agm",
+      "elliptic-integrals",
+      "gauss",
+      "arithmetic-geometric-mean",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 307,
+    "assumptions": "3 axioms: ellipticK (function), ellipticK_zero, agm_ellipticK (Gauss's theorem connecting AGM to elliptic integrals). All convergence results are proved from Mathlib's monotone convergence theorem.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Gauss discovered the AGM iteration around 1799 and found its remarkable connection to elliptic integrals. The AGM converges quadratically, making it one of the fastest algorithms for computing elliptic integrals and, via Legendre's relation, for computing pi. The Brent-Salamin algorithm (1976) uses this connection for rapid pi computation.",
+    "problemStatement": "Define the AGM iteration aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = sqrt(aₙbₙ) for a >= b > 0. Prove both sequences converge to a common limit M(a,b). State Gauss's theorem: M(a,b) = a*pi/(2*K(sqrt(1-(b/a)^2))).",
+    "text": "The arithmetic-geometric mean M(a,b) is the common limit of the AGM iteration. Gauss proved M(a,b) = a*pi/(2*K(k')) where K is the complete elliptic integral of the first kind.",
+    "proofStrategy": "The convergence proof proceeds in four steps: (1) AM >= GM gives the sandwich property b_n <= b_{n+1} <= a_{n+1} <= a_n, (2) gap contraction a_{n+1} - b_{n+1} <= (a_n - b_n)/2 gives exponential decay, (3) Mathlib's monotone convergence theorem (tendsto_atTop_ciInf/ciSup) gives existence of both limits, (4) the gap tending to zero forces the limits to coincide.",
+    "keyInsights": [
+      "**AM >= GM is the engine**: The inequality (a+b)/2 >= sqrt(ab) ensures the sandwich property at each step, maintaining b_n <= a_n throughout.",
+      "**Quadratic convergence**: The gap a_n - b_n contracts by at least half each step, giving a_n - b_n <= (a-b)/2^n. The actual convergence is even faster (quadratic, not just linear).",
+      "**Gauss's deep connection**: M(a,b) = a*pi/(2*K(k')) links a simple real iteration to elliptic integrals, connecting elementary analysis to deep transcendental function theory.",
+      "**Monotone convergence**: The a-sequence is antitone and bounded below, the b-sequence is monotone and bounded above. Mathlib's `tendsto_atTop_ciInf` and `tendsto_atTop_ciSup` give convergence directly."
+    ],
+    "prerequisites": [
+      "Real analysis: monotone convergence for bounded sequences, squeeze theorem",
+      "AM-GM inequality for two variables",
+      "Elliptic integrals (for the connection result, axiomatized)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Fully proves convergence of the Gauss AGM iteration to a common limit M(a,b), with 0 sorries. The sandwich property, gap contraction, and convergence all follow from AM >= GM and Mathlib's monotone convergence. The elliptic integral connection (3 axioms) captures Gauss's deep result linking AGM to K(k).",
+    "implications": "The AGM provides quadratically convergent computation of elliptic integrals and, via Legendre's identity, of pi. The formalization demonstrates how a simple arithmetic iteration connects to deep transcendental function theory.",
+    "openQuestions": [
+      "Can K(k) be defined and its basic properties proved in Lean from Mathlib's integral theory?",
+      "Can the quadratic convergence rate (a_n - b_n = O(4^{-2^n})) be formalized?",
+      "Can Gauss's theorem be proved (not just axiomatized) from the integral representation?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "Set", "Real"],
+    "namespace": "AmgmInequalityOQ04",
+    "lineCount": 307,
+    "axiomCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 8
+  }
+}

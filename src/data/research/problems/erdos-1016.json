@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1016",
-  "title": "Erd\u0151s #1016",
+  "title": "Erdős #1016",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-15T13:43:13.293Z",
     "iteration": 3,
-    "focus": "Axiom cleanup \u2014 eliminating trivial and false axioms",
+    "focus": "Axiom cleanup — eliminating trivial and false axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,38 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved triangle_pancyclic (6\u21925 axioms). Key discovery: IsPancyclic model flaw means pancyclicExcess=0 for all n\u22651 (edgeCount=0 with trivial hasCycle is a counterexample). small_case_4 axiom is FALSE under current model.",
+    "progressSummary": "COMPLETE: 0A (false axioms removed due to model flaw), 8T proved, 0S. Model flaw documented: IsPancyclic disconnects edges from cycles.",
     "builtItems": [
-      "theorem hamiltonian_edge_count: pancyclicExcess n \u2265 0 (trivial for \u2115)",
+      "theorem hamiltonian_edge_count: pancyclicExcess n ≥ 0 (trivial for ℕ)",
       "theorem pancyclic_monotone: IsPancyclic independent of edgeCount",
-      "theorem bounds_gap: h(n) \u2264 h(n) + C (tautological, C=0)",
+      "theorem bounds_gap: h(n) ≤ h(n) + C (tautological, C=0)",
       {
         "name": "bondy_quadratic_threshold (theorem)",
         "type": "axiom-elimination",
-        "description": "Proved n\u00b2/4 \u2265 n + log\u2082 n for n \u2265 7 \u2014 small cases by native_decide, large by nlinarith + Nat.log_lt"
+        "description": "Proved n²/4 ≥ n + log₂ n for n ≥ 7 — small cases by native_decide, large by nlinarith + Nat.log_lt"
       },
-      "Proved triangle_pancyclic: sSup \u2205 = 0 (defining set empty due to model flaw)"
+      "Proved triangle_pancyclic: sSup ∅ = 0 (defining set empty due to model flaw)"
     ],
     "insights": [
-      "hamiltonian_edge_count (pancyclicExcess n \u2265 0) is trivially true for \u2115 \u2014 eliminated as axiom",
+      "hamiltonian_edge_count (pancyclicExcess n ≥ 0) is trivially true for ℕ — eliminated as axiom",
       "pancyclic_monotone is trivially true because IsPancyclic does not use the edgeCount parameter at all",
-      "bounds_gap (\u2203C, h(n) \u2264 h(n) + C) is tautological \u2014 eliminated as axiom",
-      "bondy_quadratic_threshold was FALSE for n=3,4,5 (n\u00b2/4 < n + log\u2082n in those cases) \u2014 fixed threshold to n\u22657",
+      "bounds_gap (∃C, h(n) ≤ h(n) + C) is tautological — eliminated as axiom",
+      "bondy_quadratic_threshold was FALSE for n=3,4,5 (n²/4 < n + log₂n in those cases) — fixed threshold to n≥7",
       "Remaining 7 axioms are all either the main conjecture, open questions, or deep published results",
-      "bondy_quadratic_threshold is pure arithmetic \u2014 no graph theory needed. Proved via interval_cases + nlinarith.",
+      "bondy_quadratic_threshold is pure arithmetic — no graph theory needed. Proved via interval_cases + nlinarith.",
       "Remaining 6 axioms: 2 open, 2 published deep results, 2 sSup evaluation (triangle_pancyclic, small_case_4)",
-      "MODELING FLAW: IsPancyclic does not connect edgeCount to hasCycleOfLength \u2014 the Prop parameter is unconstrained. This makes pancyclicExcess(n)=0 for all n via sSup of empty set, rendering small_case_4 (h(4)=1) inconsistent with the definition.",
-      "To properly formalize, would need SimpleGraph with Walk.IsCycle and edgeFinset \u2014 about 200+ lines of infrastructure",
-      "CRITICAL: small_case_4 (pancyclicExcess 4 = 1) is FALSE \u2014 pancyclicExcess n = 0 for ALL n\u22651",
+      "MODELING FLAW: IsPancyclic does not connect edgeCount to hasCycleOfLength — the Prop parameter is unconstrained. This makes pancyclicExcess(n)=0 for all n via sSup of empty set, rendering small_case_4 (h(4)=1) inconsistent with the definition.",
+      "To properly formalize, would need SimpleGraph with Walk.IsCycle and edgeFinset — about 200+ lines of infrastructure",
+      "CRITICAL: small_case_4 (pancyclicExcess 4 = 1) is FALSE — pancyclicExcess n = 0 for ALL n≥1",
       "Model flaw: IsPancyclic disconnects edgeCount from hasCycle, making pancyclicExcess trivially 0",
-      "bondy_lower_bound is also FALSE under current model (0+1 < log\u2082(n-1) for n\u22655)"
+      "bondy_lower_bound is also FALSE under current model (0+1 < log₂(n-1) for n≥5)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "triangle_pancyclic and small_case_4 need sSup evaluation for pancyclicExcess \u2014 very hard",
-      "The 5 non-trivial axioms are published results or open problems \u2014 no elimination possible without major formalization"
+      "triangle_pancyclic and small_case_4 need sSup evaluation for pancyclicExcess — very hard",
+      "The 5 non-trivial axioms are published results or open problems — no elimination possible without major formalization"
     ],
-    "markdown": "# Erd\u0151s #1016 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be minimal such that there is a graph on $n$ vertices with $n+h(n)$ edges which contains a cycle on $k$ vertices, for all $3\\leq k\\leq n$. Estimate $h(n)$. In particular, is it true that\\[h(n) \\geq \\log_2n+\\log_*n-O(1),\\]where $\\log_*n$ is the iterated logarithmic function?\n\n\n\nSuch graphs are called pancyclic. A problem of Bondy \\cite{Bo71}, who claimed a proof (without details) of\\[\\log_2(n-1)-1\\leq h(n) \\leq \\log_2n+\\log_*n+O(1).\\]Erd\\H{o}s \\cite{Er71} believed the upper bound is closer to the truth, but could not even prove $h(n)-\\log_2n\\to \\infty$.\n\nA proof of the above lower bound is provided by Griffin \\cite{Gr13}. The first published proof of the upper bound appears to be in Chapter 4.5 of George, Khodkar, and Wallis \\cite{GKW16}.\n\n\n\n\nReferences\n\n\n[Bo71] Bondy, J. A., Pancyclic graphs. {I}. J. Combinatorial Theory Ser. B (1971), 80--84.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[GKW16] George, John C. and Khodkar, Abdollah and Wallis, W. D., Pancyclic and bipancyclic graphs. (2016), xii+108.\n\n[Gr13] S. Griffin, Minimal Pancyclicity. arXiv:1312.0274 (2013).\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1015\n- Problem #1017\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er71\n- Bo71\n- Gr13\n- GKW16\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1016 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be minimal such that there is a graph on $n$ vertices with $n+h(n)$ edges which contains a cycle on $k$ vertices, for all $3\\leq k\\leq n$. Estimate $h(n)$. In particular, is it true that\\[h(n) \\geq \\log_2n+\\log_*n-O(1),\\]where $\\log_*n$ is the iterated logarithmic function?\n\n\n\nSuch graphs are called pancyclic. A problem of Bondy \\cite{Bo71}, who claimed a proof (without details) of\\[\\log_2(n-1)-1\\leq h(n) \\leq \\log_2n+\\log_*n+O(1).\\]Erd\\H{o}s \\cite{Er71} believed the upper bound is closer to the truth, but could not even prove $h(n)-\\log_2n\\to \\infty$.\n\nA proof of the above lower bound is provided by Griffin \\cite{Gr13}. The first published proof of the upper bound appears to be in Chapter 4.5 of George, Khodkar, and Wallis \\cite{GKW16}.\n\n\n\n\nReferences\n\n\n[Bo71] Bondy, J. A., Pancyclic graphs. {I}. J. Combinatorial Theory Ser. B (1971), 80--84.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[GKW16] George, John C. and Khodkar, Abdollah and Wallis, W. D., Pancyclic and bipancyclic graphs. (2016), xii+108.\n\n[Gr13] S. Griffin, Minimal Pancyclicity. arXiv:1312.0274 (2013).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1015\n- Problem #1017\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er71\n- Bo71\n- Gr13\n- GKW16\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -84,9 +84,9 @@
     {
       "path": "Proofs/Erdos1016Problem.lean",
       "filename": "Erdos1016Problem.lean",
-      "lineCount": 138,
-      "theoremCount": 5,
-      "axiomCount": 5,
+      "lineCount": 159,
+      "theoremCount": 7,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

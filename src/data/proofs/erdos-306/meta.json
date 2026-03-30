@@ -54,9 +54,9 @@
       "Verification of small examples using native_decide",
       "Discussion of density and asymptotic properties"
     ],
-    "axiomCount": 8,
-    "lineCount": 255,
-    "assumptions": "8 axioms: butler_erdos_graham_theorem, example_one_representation, reduce_to_squarefree, and 5 more. See Lean source for complete statements."
+    "axiomCount": 7,
+    "lineCount": 242,
+    "assumptions": "7 axioms: butler_erdos_graham_theorem, reduce_to_squarefree, twoPrimeProductCount, threePrimeProductCount, k_prime_product_density, erdos_306_open, greedy_egyptian_exists. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Erdős Problem #306 asks about Egyptian fractions - a topic dating back to ancient Egypt, where fractions were typically expressed as sums of distinct unit fractions.\n\n**The Problem**: Can every positive rational a/b (with b squarefree) be written as 1/n₁ + ... + 1/nₖ where each nᵢ is a product of exactly 2 distinct primes?\n\n**Status**:\n- **2 distinct primes**: OPEN - the main conjecture\n- **3 distinct primes**: SOLVED for integers by Butler, Erdős, and Graham (2015)\n\n**Historical Note**: The Butler-Erdős-Graham paper appeared in 2015, 19 years after Erdős's death in 1996. It may be Erdős's last published paper, demonstrating his enduring influence on mathematics.\n\n**Key Example**: The integer 1 can be represented with 2-distinct-prime denominators:\n1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 1\nwhere 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7.",
@@ -152,8 +152,8 @@
       "Finset"
     ],
     "namespace": "Erdos306",
-    "lineCount": 255,
-    "axiomCount": 8,
+    "lineCount": 242,
+    "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 10
   },

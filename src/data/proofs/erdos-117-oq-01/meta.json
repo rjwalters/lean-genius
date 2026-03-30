@@ -1,0 +1,132 @@
+{
+  "id": "erdos-117-oq-01",
+  "title": "Exponential Growth Rate of the Abelian Covering Number",
+  "slug": "erdos-117-oq-01",
+  "description": "Pyber (1987) proved c₁ⁿ ≤ h(n) ≤ c₂ⁿ for the abelian covering number. Does lim log(h(n))/n exist? If so, h(n) = Θ(cⁿ) for a single constant c. Formalizes the growth rate sequence, proves it is bounded (from Pyber), defines liminf/limsup, and states the convergence question. Connection to Fekete's lemma via submultiplicativity.",
+  "meta": {
+    "author": "Pyber (1987); Isaacs",
+    "sourceUrl": "https://erdosproblems.com/117",
+    "date": "1987",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos117OQ01.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "abelian-subgroups",
+      "covering-number",
+      "growth-rate",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (exponential bounds). 3 sorries in analysis lemmas.",
+    "erdosNumber": 117,
+    "erdosUrl": "https://erdosproblems.com/117",
+    "erdosProblemStatus": "open",
+    "lineCount": 204
+  },
+  "overview": {
+    "historicalContext": "**Pinning Down the Exponential Base**\n\nPyber's 1987 breakthrough showed that h(n) — the minimum number of abelian subgroups needed to cover groups with the n-commuting property — grows exponentially: c₁ⁿ ≤ h(n) ≤ c₂ⁿ for 1 < c₁ < c₂. But is the growth rate precise? Does log(h(n))/n converge to a single value?",
+    "problemStatement": "**Problem Statement**\n\nDoes lim_{n→∞} log(h(n))/n exist?\n\nIf yes, h(n) = Θ(cⁿ) for c = e^L where L is the limit.\n\n**Status**: OPEN",
+    "text": "Formalizes the question of whether the abelian covering number h(n) has a well-defined exponential growth rate.",
+    "proofStrategy": "**Approach**\n\n1. Define growthRate(n) = log(h(n))/n\n2. Prove bounded from Pyber: log(c₁) ≤ growthRate(n) ≤ log(c₂)\n3. Define liminf/limsup\n4. State convergence as liminf = limsup\n5. Connect to Fekete's lemma via submultiplicativity",
+    "keyInsights": [
+      "**Bounded growth rate**: Pyber's bounds immediately give log(c₁) ≤ log(h(n))/n ≤ log(c₂) for all n ≥ 1",
+      "**Fekete's lemma path**: If h is submultiplicative (h(m+n) ≤ h(m)·h(n)), then log h is subadditive and Fekete's lemma gives convergence",
+      "**Structural question**: Whether the limit exists reveals whether the covering number has a clean multiplicative structure across scales"
+    ],
+    "prerequisites": [
+      "Group theory: abelian subgroups, covering numbers",
+      "Analysis: liminf, limsup, Fekete's lemma",
+      "Familiarity with Erdős Problem #117"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup from Erdős #117",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Axiomatizes h(n), h_pos, and Pyber's exponential bounds.",
+      "mathContext": "$h(n)$: abelian covering number. Pyber: $c_1^n \\leq h(n) \\leq c_2^n$ for $c_2 > c_1 > 1$."
+    },
+    {
+      "id": "growth-rate",
+      "title": "The Logarithmic Growth Rate",
+      "startLine": 46,
+      "endLine": 88,
+      "summary": "Defines growthRate(n) = log(h(n))/n. Proves bounded above and below from Pyber.",
+      "mathContext": "$r(n) = \\log h(n) / n \\in [\\log c_1, \\log c_2]$ for all $n \\geq 1$."
+    },
+    {
+      "id": "liminf-limsup",
+      "title": "liminf and limsup",
+      "startLine": 89,
+      "endLine": 110,
+      "summary": "Defines growthRateLimInf and growthRateLimSup, states they are bounded.",
+      "mathContext": "$\\liminf r(n) \\leq \\limsup r(n)$, both in $[\\log c_1, \\log c_2]$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 111,
+      "endLine": 200,
+      "summary": "States convergence question (liminf = limsup), defines ExponentialBehavior, connects to Fekete's lemma.",
+      "mathContext": "Open: $\\liminf = \\limsup$? If yes, $h(n) = \\Theta(c^n)$ for $c = e^L$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the exponential growth rate question for the abelian covering number. The growth rate sequence is bounded (from Pyber), and the question is whether it converges. The connection to Fekete's lemma suggests submultiplicativity as a path to resolution.",
+    "implications": "If the growth rate converges, it precisely characterizes the asymptotic covering complexity of groups with the n-commuting property.",
+    "openQuestions": [
+      "Does lim log(h(n))/n exist?",
+      "Is h(n) submultiplicative? (Would give convergence via Fekete)",
+      "What are the best known values of c₁ and c₂?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "growthRate_lower_bound",
+      "type": "core",
+      "description": "Growth rate ≥ log(c₁) > 0 for all n ≥ 1",
+      "leanType": "∃ L > 0, ∀ n ≥ 1, growthRate n ≥ L"
+    },
+    {
+      "name": "growthRate_upper_bound",
+      "type": "core",
+      "description": "Growth rate ≤ log(c₂) for all n ≥ 1",
+      "leanType": "∃ U, ∀ n ≥ 1, growthRate n ≤ U"
+    },
+    {
+      "name": "submultiplicative_implies_convergence",
+      "type": "supporting",
+      "description": "Submultiplicativity of h → convergence (Fekete's lemma)",
+      "leanType": "submultiplicative → growthRateConverges"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-117",
+      "relationship": "extends",
+      "description": "Extends Erdős #117 by formalizing the exponential growth rate question"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos117OQ01",
+    "lineCount": 204,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "sorryTheorems": 5,
+    "definitionCount": 10
+  }
+}

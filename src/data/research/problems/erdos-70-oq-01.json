@@ -1,0 +1,209 @@
+{
+  "slug": "erdos-70-oq-01",
+  "title": "Does 𝔠 → (ω², n)₂³ hold",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T05:28:40-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Reduced axioms from 5 to 2 by proving monotonicity and ramsey_3_3 from definitions",
+    "builtItems": [
+      "Proved partition_arrow_mono_ordinal (Erdos70Problem.lean:191)",
+      "Proved partition_arrow_mono_size (Erdos70Problem.lean:201)",
+      "Proved ramsey_3_3 (Erdos70Problem.lean:159)"
+    ],
+    "insights": [
+      "ramsey_3_3 is trivially true: any 3-element set has exactly one 3-subset (itself), so it is always homogeneous for its own color",
+      "partition_arrow_mono_ordinal follows from Ordinal.card_le_card: alpha <= beta implies alpha.card <= beta.card",
+      "partition_arrow_mono_size follows directly from le_trans on natural numbers",
+      "After proving 3 axioms, only erdos_rado_omega_plus_n and finite_ramsey remain as axioms",
+      "The omega-squared case (first open case beyond Erdos-Rado) would need stepping-up techniques beyond current infrastructure"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Investigate if finite_ramsey can be derived from Mathlib Ramsey theory",
+      "erdos_rado_omega_plus_n is a deep result - likely needs dedicated formalization effort"
+    ],
+    "markdown": "# Knowledge Base: erdos-70-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-70",
+    "erdos-70-oq-01",
+    "erdos-700",
+    "erdos-701",
+    "erdos-702",
+    "erdos-703",
+    "erdos-704",
+    "erdos-705",
+    "erdos-706",
+    "erdos-707",
+    "erdos-708",
+    "erdos-709"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T12:35:42.793Z",
+  "lastUpdate": "2026-03-29T12:35:42.858Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos700Problem.lean",
+      "filename": "Erdos700Problem.lean",
+      "lineCount": 420,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos700Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos701Problem.lean",
+      "filename": "Erdos701Problem.lean",
+      "lineCount": 285,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos701Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos702Problem.lean",
+      "filename": "Erdos702Problem.lean",
+      "lineCount": 156,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos702Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos703Problem.lean",
+      "filename": "Erdos703Problem.lean",
+      "lineCount": 260,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos703Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos704Problem.lean",
+      "filename": "Erdos704Problem.lean",
+      "lineCount": 155,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos704Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos705Problem.lean",
+      "filename": "Erdos705Problem.lean",
+      "lineCount": 362,
+      "theoremCount": 10,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos705Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos706Problem.lean",
+      "filename": "Erdos706Problem.lean",
+      "lineCount": 72,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos706Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos707Problem.lean",
+      "filename": "Erdos707Problem.lean",
+      "lineCount": 162,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos707Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos708Problem.lean",
+      "filename": "Erdos708Problem.lean",
+      "lineCount": 185,
+      "theoremCount": 3,
+      "axiomCount": 5,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos708Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos709Problem.lean",
+      "filename": "Erdos709Problem.lean",
+      "lineCount": 231,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos709Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos70OQ01Problem.lean",
+      "filename": "Erdos70OQ01Problem.lean",
+      "lineCount": 241,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos70OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos70Problem.lean",
+      "filename": "Erdos70Problem.lean",
+      "lineCount": 238,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos70Problem.lean"
+    }
+  ]
+}

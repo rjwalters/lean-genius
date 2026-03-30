@@ -137,9 +137,6 @@ This proves Part 1 by showing f(n) = o(2^n).
 The key insight is that cycle sets have structural constraints -
 not every subset of {3,...,n} is achievable.
 -/
-axiom verstraete_theorem (n : ℕ) (hn : n ≥ 10) :
-    (f n : ℝ) ≤ Real.rpow 2 (n - Real.rpow n (1/10))
-
 /--
 **Corollary: Part 1 is SOLVED**
 -/
@@ -204,11 +201,6 @@ def limit_exists : Prop :=
 √2 ≤ L ≤ 2
 Axiomatized: Follows from Erdős-Faudree bounds but requires limit analysis.
 -/
-axiom limit_bounds (h : limit_exists) :
-    ∃ L : ℝ, Real.sqrt 2 ≤ L ∧ L ≤ 2 ∧
-      Filter.Tendsto (fun n => Real.rpow (f n) (1/n : ℝ)) Filter.atTop (nhds L)
-
-
 /- ## Part VII: Structural Results
 -/
 
@@ -232,9 +224,6 @@ f(3) = 2: Either {3} (triangle) or ∅ (no cycles)
 f(4) = 4: ∅, {3}, {4}, {3,4}
 f(5) = 8: Various combinations
 -/
-axiom small_values :
-    f 3 = 2 ∧ f 4 = 4 ∧ f 5 = 8
-
 /- ## Part IX: Summary
 -/
 

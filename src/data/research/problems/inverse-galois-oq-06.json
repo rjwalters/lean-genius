@@ -1,0 +1,164 @@
+{
+  "slug": "inverse-galois-oq-06",
+  "title": "Kronecker-Weber Theorem Formalization: Mathlib Gap Analysis",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Every abelian extension of Q is contained in Q(zeta_n) for some n",
+    "plain": "Can the Kronecker-Weber theorem be fully formalized in Lean/Mathlib? Survey shows the critical missing piece is class field theory (Artin reciprocity).",
+    "whyMatters": [
+      "Kronecker-Weber is foundational for algebraic number theory",
+      "Complete solution to Hilbert 12th problem for Q",
+      "Would be a major milestone in formalized mathematics"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T23:39:50-07:00",
+    "iteration": 1,
+    "focus": "OQ mislabeled: sorry counts inflated by comment mentions. InverseGalois.lean has 0 actual sorry tactics. OQ01 has 1 sorry for open problem (intentional).",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (mislabeled OQ): Sorry counts in JSON are inflated by comment mentions of \"sorry-free\". Actual sorry count: InverseGalois.lean=0, InverseGaloisOQ01.lean=1 (intentional open problem), InverseGaloisA5ResultantDet.lean=1.",
+    "builtItems": [
+      "Gap analysis: identified class field theory as critical missing piece",
+      "Documented Mathlib support: cyclotomic fields (full), Galois theory (full), ramification groups (partial), p-adic numbers (full)",
+      "Documented Mathlib gaps: Artin reciprocity, ideles/adeles, ray class groups, local class field theory",
+      "Identified existing axiomatizations in KroneckersJugendtraum.lean and Hilbert9Reciprocity.lean"
+    ],
+    "insights": [
+      "JSON sorry counts include comment mentions — InverseGalois.lean reports 11 but has 0 actual sorry tactics",
+      "The 1 sorry in InverseGaloisOQ01.lean is intentional: inverse Galois problem is OPEN",
+      "Kronecker-Weber gap analysis is a survey task, not a sorry-elimination task"
+    ],
+    "mathlibGaps": [
+      "No class field theory (Artin reciprocity, Artin map)",
+      "No idele/adele infrastructure",
+      "No ray class groups or ray class field construction",
+      "No local fields as a typeclass (only p-adic numbers specifically)",
+      "No local class field theory or local Artin map"
+    ],
+    "nextSteps": [
+      "Consider axiomatizing Artin reciprocity as a clean axiom and proving KW from it",
+      "Alternatively: prove KW via the Minkowski bound approach (ramification + discriminant)",
+      "Check if the ramification-theoretic approach is feasible with existing Mathlib ramification groups"
+    ],
+    "markdown": "# Knowledge Base: inverse-galois-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGalois.lean",
+      "filename": "InverseGalois.lean",
+      "lineCount": 1883,
+      "theoremCount": 106,
+      "axiomCount": 4,
+      "defCount": 1,
+      "sorryCount": 11,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGalois.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5.lean",
+      "filename": "InverseGaloisA5.lean",
+      "lineCount": 2068,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Resultant.lean",
+      "filename": "InverseGaloisA5Resultant.lean",
+      "lineCount": 54,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Resultant.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Resultant2.lean",
+      "filename": "InverseGaloisA5Resultant2.lean",
+      "lineCount": 68,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Resultant2.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5ResultantDet.lean",
+      "filename": "InverseGaloisA5ResultantDet.lean",
+      "lineCount": 61,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5ResultantDet.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4.lean",
+      "filename": "InverseGaloisD4.lean",
+      "lineCount": 683,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisF20.lean",
+      "filename": "InverseGaloisF20.lean",
+      "lineCount": 530,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisF20.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ01.lean",
+      "filename": "InverseGaloisOQ01.lean",
+      "lineCount": 724,
+      "theoremCount": 40,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ01.lean"
+    }
+  ],
+  "lastUpdate": "2026-03-30T07:30:00Z"
+}

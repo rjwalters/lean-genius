@@ -396,10 +396,6 @@ theorem schur_3 :
   ⟨fun c => by native_decide, ⟨sumFree3Coloring13, by native_decide⟩⟩
 
 /-- S(4) = 45: proven by Fredricksen and Sweet (1993) -/
-axiom schur_4 :
-    (∀ c : IntegerColoring 45 4, HasMonochromaticSchurTriple c) ∧
-    (∃ c : IntegerColoring 44 4, ¬HasMonochromaticSchurTriple c)
-
 /-- S(5) = 161: proven by Heule (2017) using SAT solvers.
     The largest exactly known Schur number. -/
 axiom schur_5 :
@@ -409,14 +405,7 @@ axiom schur_5 :
 /-- Lower bound: S(r) ≥ (3^r + 1)/2 via greedy construction.
     For each r, the coloring where color class i contains
     {(3^i + 1)/2, ..., (3^{i+1} - 1)/2} is sum-free. -/
-axiom schur_lower_bound (r : ℕ) (hr : r ≥ 1) :
-    schurNumber r ≥ (3 ^ r + 1) / 2
-
 /-- Upper bound: S(r) ≤ R_r(3,...,3) - 1 via the edge coloring proof -/
-axiom schur_upper_from_ramsey (r : ℕ) (hr : r ≥ 1) :
-    -- The Schur number is at most the multicolor Ramsey number minus 1
-    True
-
 /-- Verify known values -/
 theorem schur_values_correct :
     schurNumber 1 = 2 ∧ schurNumber 2 = 5 ∧
@@ -492,12 +481,6 @@ theorem schur_from_rado :
 
 /-- The equation x₁ + x₂ + ... + xₙ = xₙ₊₁ is partition regular
     (generalized Schur, or the n-term version) -/
-axiom generalized_schur (n : ℕ) (hn : n ≥ 2) :
-    ∀ r : ℕ, r ≥ 1 → ∀ c : ℕ → Fin r,
-      ∃ x : Fin (n + 1) → ℕ, (∀ i, x i ≥ 1) ∧
-        ∑ i : Fin n, (x i.castSucc : ℕ) = x (Fin.last n) ∧
-        ∀ i j, c (x i) = c (x j)
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART X: WEAK SCHUR NUMBERS AND APPLICATIONS
 ═══════════════════════════════════════════════════════════════════════════════

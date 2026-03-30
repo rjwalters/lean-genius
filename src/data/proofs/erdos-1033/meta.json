@@ -17,7 +17,7 @@
       "turan-theory"
     ],
     "badge": "axiom",
-    "sorries": 13,
+    "sorries": 7,
     "erdosNumber": 1033,
     "erdosUrl": "https://erdosproblems.com/1033",
     "erdosProblemStatus": "open",
@@ -52,8 +52,8 @@
     ],
     "relatedProblems": [],
     "axiomCount": 6,
-    "lineCount": 367,
-    "assumptions": "6 axioms (turan_has_triangle, erdos_laskar_upper, upper_bound_tight, erdos_laskar_lower, fan_lower, extremal_exists) and 13 sorries. erdosLaskar_approx now proved."
+    "lineCount": 388,
+    "assumptions": "6 axioms (turan_has_triangle, erdos_laskar_upper, upper_bound_tight, erdos_laskar_lower, fan_lower, extremal_exists) and 7 sorries. erdosLaskar_approx now proved."
   },
   "overview": {
     "historicalContext": "Pál Turán proved in 1941 that every graph on $n$ vertices with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle — establishing the foundational result of extremal graph theory. This problem, posed by Erdős and Laskar, asks a refined question: given that triangles must exist above the Turán threshold, how large must the degree sum of the *heaviest* triangle be?\n\nErdős and Renu Laskar (1985) proved the initial bounds $(1+c)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$, where the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ comes from optimizing triangle configurations in nearly-bipartite graphs close to the Turán graph $T(n,2)$. Genghua Fan (1988) improved the lower bound to $(21/16)n = 1.3125n$ via careful degree counting arguments.\n\nThe gap between $1.3125n$ and $1.464n$ remains open. The conjectured answer is $h(n) = (2(\\sqrt{3}-1) - o(1))n$, which would mean the Erdős-Laskar construction is essentially optimal.",
@@ -303,7 +303,7 @@
       "Finset"
     ],
     "namespace": "Erdos1033",
-    "lineCount": 367,
+    "lineCount": 388,
     "axiomCount": 6,
     "theoremCount": 16,
     "definitionCount": 17

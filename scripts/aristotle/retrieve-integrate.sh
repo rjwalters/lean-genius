@@ -125,6 +125,43 @@ retrieve_solution() {
     return 0
 }
 
+# Safety check: refuse to overwrite a file if the solution looks like companion
+# content or is drastically shorter (prevents destroying main formalizations).
+# Returns 0 if safe to overwrite, 1 if blocked.
+safe_to_overwrite() {
+    local original="$1"
+    local solution="$2"
+
+    local orig_lines sol_lines
+    orig_lines=$(wc -l < "$original" 2>/dev/null | tr -d ' ')
+    sol_lines=$(wc -l < "$solution" 2>/dev/null | tr -d ' ')
+
+    # Guard 1: If the solution contains "Aristotle targets" header, it is companion
+    # content and must only overwrite *Aristotle.lean files, never *Problem.lean
+    if grep -q "Aristotle targets" "$solution" 2>/dev/null; then
+        local orig_basename
+        orig_basename=$(basename "$original")
+        if [[ "$orig_basename" != *Aristotle* ]]; then
+            echo -e "  ${RED}BLOCKED:${NC} Solution contains 'Aristotle targets' header but target is $orig_basename (not a companion file)"
+            echo -e "  ${RED}  This would overwrite the main formalization with companion content${NC}"
+            return 1
+        fi
+    fi
+
+    # Guard 2: If the solution is less than 50% of the original's line count,
+    # refuse to overwrite — this catches content regression from mismatched files
+    if [[ "$orig_lines" -gt 20 && "$sol_lines" -gt 0 ]]; then
+        local ratio=$((sol_lines * 100 / orig_lines))
+        if [[ "$ratio" -lt 50 ]]; then
+            echo -e "  ${RED}BLOCKED:${NC} Solution is $sol_lines lines vs original $orig_lines lines (${ratio}%% of original)"
+            echo -e "  ${RED}  Refusing to overwrite — possible file mismatch${NC}"
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
 # Count sorries in a file
 count_sorries() {
     local count
@@ -250,10 +287,19 @@ integrate_solution() {
             if [[ "$DRY_RUN" == true ]]; then
                 echo -e "  ${YELLOW}[DRY RUN]${NC} Would copy to $original_path"
             else
+                # Safety check: refuse if solution looks like companion content
+                # overwriting a main file, or is drastically shorter
+                if ! safe_to_overwrite "$original_path" "$solution_file"; then
+                    echo -e "  ${RED}Skipping integration for safety${NC}"
+                    mv "$solution_file" "$PROCESSED_DIR/" 2>/dev/null || true
+                    update_job_status "$project_id" "blocked" "Safety check failed: possible file mismatch (see issue #8061)"
+                    return 1
+                fi
+
                 # Backup original
                 cp "$original_path" "$original_path.bak"
 
-                # Copy solution directly - the header is informative
+                # Copy solution
                 cp "$solution_file" "$original_path"
 
                 echo -e "  ${GREEN}Integrated${NC}"
@@ -564,6 +610,14 @@ recover_server_completed() {
         if [[ "$new_sorries" -lt "$orig_sorries" ]]; then
             local theorems_proved=$((orig_sorries - new_sorries))
             echo -e "  ${GREEN}Improvement!${NC} ($theorems_proved theorems proved)"
+
+            # Safety check before overwriting
+            if ! safe_to_overwrite "$target_file" "$tmp_solution"; then
+                echo -e "  ${RED}Skipping recovery for safety${NC}"
+                mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}-blocked.lean"
+                ((failed_recover++))
+                continue
+            fi
 
             # Backup and integrate
             cp "$target_file" "$target_file.bak"

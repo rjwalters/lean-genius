@@ -44,9 +44,9 @@
       "Axiomatized Clunie-Netanyahu existence result",
       "Stated connection to Problem #1041"
     ],
-    "axiomCount": 5,
-    "lineCount": 191,
-    "assumptions": "5 axioms: erdos_1120_conjecture, trivial_lower, clunie_netanyahu_existence, and 2 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 183,
+    "assumptions": "4 axioms: erdos_1120_conjecture, trivial_lower, clunie_netanyahu_existence, erdos_growth_bound. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem appears as Problem 4.22 in Halasz's collection of problems attributed to Erdos, concerning the geometry of polynomial lemniscates — the level curves $\\{|f(z)| = c\\}$ of polynomials in the complex plane. The study of lemniscates dates back to Jakob Bernoulli (1694) and has deep connections to potential theory: the sublevel set $E = \\{|f(z)| \\le 1\\}$ is precisely the set where the logarithmic potential $\\frac{1}{n}\\log|f(z)|$ is non-positive.\n\nClunie and Netanyahu proved the fundamental existence result: for any monic polynomial $f$ of degree $n \\ge 1$ with roots in the closed unit disk, a continuous path from $0$ to $|z| = 1$ always exists within $E$. This is non-trivial because the sublevel set can a priori be highly disconnected near the unit circle when roots cluster along arcs.\n\nErdos conjectured that the worst-case shortest path length $W(n) = \\sup_f \\ell(f)$ tends to infinity with $n$, but slowly — perhaps at most linearly. For $f(z) = z^n$, $E$ is the unit disk and $\\ell = 1$, giving the trivial lower bound $W(n) \\ge 1$. When roots concentrate near the unit circle, the lemniscate develops thin passages and bottlenecks that force any path to wind through narrow corridors, potentially making $\\ell$ much larger. The problem remains open and is connected to Problem #1041 on covering properties of polynomial sublevel sets.",
@@ -222,8 +222,8 @@
       "Complex"
     ],
     "namespace": "Erdos1120",
-    "lineCount": 191,
-    "axiomCount": 5,
+    "lineCount": 183,
+    "axiomCount": 4,
     "theoremCount": 13,
     "definitionCount": 4
   }

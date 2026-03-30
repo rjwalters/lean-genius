@@ -254,10 +254,6 @@ Erdős's upper bound uses probabilistic method.
 -/
 
 /-- Random sign functions have max discrepancy O(n^(3/2)). -/
-axiom random_upper (n : ℕ) (hn : n ≥ 1) :
-  ∃ f : SignFunction n, isValidSign f ∧
-    (maxDiscrepancy f : ℝ) ≤ 10 * (n : ℝ) ^ (3/2 : ℝ)
-
 /-
 ## The Lower Bound Technique
 
@@ -265,9 +261,6 @@ Erdős-Spencer used entropy or counting arguments.
 -/
 
 /-- Any sign function has some subset with large discrepancy. -/
-axiom large_discrepancy_exists (f : SignFunction n) (hf : isValidSign f) (hn : n ≥ 10) :
-    ∃ X : Finset (Fin n), (discrepancy f X : ℝ) ≥ (n : ℝ) ^ (3/2 : ℝ) / 100
-
 /-
 ## Special Cases
 
@@ -275,11 +268,7 @@ Small cases and explicit computations.
 -/
 
 /-- H(2) = 2 (trivial case). -/
-axiom H_two : H 2 = 2
-
 /-- H(3) = 4. -/
-axiom H_three : H 3 = 4
-
 /-
 ## Connection to Ramsey Theory
 

@@ -1,10 +1,10 @@
 {
   "id": "erdos-12",
-  "title": "Erd\u0151s Problem #12: Divisibility-Free Sets",
+  "title": "Erdős Problem #12: Divisibility-Free Sets",
   "slug": "erdos-12",
   "description": "How large can a set A be if no element a divides the sum b+c of two larger elements? Three OPEN questions about density, sparseness, and reciprocal sums.",
   "meta": {
-    "author": "Erd\u0151s-S\u00e1rk\u00f6zy (1970)",
+    "author": "Erdős-Sárközy (1970)",
     "sourceUrl": "https://erdosproblems.com/12",
     "date": "1970",
     "status": "axiomatized",
@@ -56,15 +56,15 @@
       "Full proof of neg_one_not_square_mod_three_mod_four",
       "Full proof of prime_3mod4_not_div_sum_squares (ZMod argument)",
       "Full proof of primeSquares3mod4_infinite (Dirichlet + injectivity)",
-      "Statement of all three Erd\u0151s questions",
-      "Axiomatization of Erd\u0151s-S\u00e1rk\u00f6zy density-zero result",
+      "Statement of all three Erdős questions",
+      "Axiomatization of Erdős-Sárközy density-zero result",
       "Elsholtz-Planitzer construction bound",
       "Schoen-Baier coprime case bound"
     ],
     "relatedProblems": [
       {
         "id": "erdos-13",
-        "relationship": "Directly related variant: asks for max f(n) of divisibility-free subsets of {1,...,n}; SOLVED by Bedert (2023) with f(n) \u226b n/(log n)^{o(1)}"
+        "relationship": "Directly related variant: asks for max f(n) of divisibility-free subsets of {1,...,n}; SOLVED by Bedert (2023) with f(n) ≫ n/(log n)^{o(1)}"
       },
       {
         "id": "erdos-882",
@@ -80,11 +80,11 @@
       },
       {
         "id": "quadratic-reciprocity",
-        "relationship": "Foundation: the first supplementary law (-1 is QNR mod p \u2261 3 mod 4) is the key tool in the primeSquares3mod4 construction proof"
+        "relationship": "Foundation: the first supplementary law (-1 is QNR mod p ≡ 3 mod 4) is the key tool in the primeSquares3mod4 construction proof"
       },
       {
         "id": "dirichlets-theorem",
-        "relationship": "Foundation: infinitely many primes \u2261 3 (mod 4) is needed for primeSquares3mod4_infinite"
+        "relationship": "Foundation: infinitely many primes ≡ 3 (mod 4) is needed for primeSquares3mod4_infinite"
       },
       {
         "id": "erdos-788",
@@ -92,7 +92,7 @@
       }
     ],
     "axiomCount": 5,
-    "lineCount": 295,
+    "lineCount": 280,
     "prerequisites": [
       "Divisibility and the divisor lattice",
       "Extremal set theory",
@@ -102,17 +102,17 @@
     "assumptions": "5 axioms: erdos_sarkozy_density_zero, elsholtz_planitzer_construction, coprime_upper_bound, primeSquares3mod4_density, primeSquares3mod4_liminf_pos. infinitely_many_primes_3mod4 proved from Mathlib PrimesInAP (Dirichlet)."
   },
   "overview": {
-    "historicalContext": "**Divisibility-Free Sets: Multiplicative Constraints on Additive Structure**\n\nErd\u0151s and S\u00e1rk\u00f6zy introduced this problem in 1970, asking about sets where no element divides the sum of two larger elements. The condition creates a fascinating interplay: divisibility (a multiplicative relation) constrains sums (an additive operation).\n\n**The Density Zero Theorem (1970)**\n\nErd\u0151s and S\u00e1rk\u00f6zy proved the fundamental result: every infinite divisibility-free set has asymptotic density 0. The argument uses a counting/pigeonhole approach: for each small element a \u2208 A, the residues of larger elements mod a must form a sum-free set in \u2124/a\u2124 (no two residues sum to 0 mod a). This limits the number of larger elements in each residue class, forcing density to 0.\n\n**The Construction Race**\n\nDespite density 0, these sets can be surprisingly large:\n- **Primes \u2261 3 (mod 4) squared**: Achieve ~\u221aN/log N using quadratic non-residue arguments. This is the construction formalized in the Lean file, with a complete proof using ZMod and the first supplementary law of QR.\n- **Elsholtz-Planitzer (2017)**: The current best construction achieves \u221aN/(\u221a(log N)\u00b7(log log N)\u00b2), tantalizingly close to \u221aN but still separated by logarithmic factors.\n\n**Powers of 2: A Corrected Example**\n\nA natural first guess is that powers of 2 are divisibility-free, but this is FALSE: 2 | (4 + 8) = 12. The Lean file includes a complete proof of this counterexample, demonstrating the subtlety of the divisibility-free condition.\n\n**Three Open Questions**\n\nThe problem asks three increasingly strong questions, all OPEN after 50+ years:\n1. Can A(N)/\u221aN have positive liminf?\n2. Must A(N) < N^{1-c} infinitely often?\n3. Must \u03a3_{n\u2208A} 1/n converge?\n\nThe hierarchy Q3 \u27f9 Q2 \u27f9 \u00acQ1 means resolving any one would constrain the others.",
-    "problemStatement": "Let A be an infinite set of positive integers such that for all distinct a, b, c \u2208 A with b, c > a, we have a \u2224 (b + c).\n\n**Question 1:** Can |A \u2229 {1,...,N}| / \u221aN have positive liminf?\n\n**Question 2:** Must |A \u2229 {1,...,N}| < N^{1-c} for infinitely many N (some fixed c > 0)?\n\n**Question 3:** Must \u03a3_{n\u2208A} 1/n converge?\n\n**Status:** All three questions are OPEN.",
+    "historicalContext": "**Divisibility-Free Sets: Multiplicative Constraints on Additive Structure**\n\nErdős and Sárközy introduced this problem in 1970, asking about sets where no element divides the sum of two larger elements. The condition creates a fascinating interplay: divisibility (a multiplicative relation) constrains sums (an additive operation).\n\n**The Density Zero Theorem (1970)**\n\nErdős and Sárközy proved the fundamental result: every infinite divisibility-free set has asymptotic density 0. The argument uses a counting/pigeonhole approach: for each small element a ∈ A, the residues of larger elements mod a must form a sum-free set in ℤ/aℤ (no two residues sum to 0 mod a). This limits the number of larger elements in each residue class, forcing density to 0.\n\n**The Construction Race**\n\nDespite density 0, these sets can be surprisingly large:\n- **Primes ≡ 3 (mod 4) squared**: Achieve ~√N/log N using quadratic non-residue arguments. This is the construction formalized in the Lean file, with a complete proof using ZMod and the first supplementary law of QR.\n- **Elsholtz-Planitzer (2017)**: The current best construction achieves √N/(√(log N)·(log log N)²), tantalizingly close to √N but still separated by logarithmic factors.\n\n**Powers of 2: A Corrected Example**\n\nA natural first guess is that powers of 2 are divisibility-free, but this is FALSE: 2 | (4 + 8) = 12. The Lean file includes a complete proof of this counterexample, demonstrating the subtlety of the divisibility-free condition.\n\n**Three Open Questions**\n\nThe problem asks three increasingly strong questions, all OPEN after 50+ years:\n1. Can A(N)/√N have positive liminf?\n2. Must A(N) < N^{1-c} infinitely often?\n3. Must Σ_{n∈A} 1/n converge?\n\nThe hierarchy Q3 ⟹ Q2 ⟹ ¬Q1 means resolving any one would constrain the others.",
+    "problemStatement": "Let A be an infinite set of positive integers such that for all distinct a, b, c ∈ A with b, c > a, we have a ∤ (b + c).\n\n**Question 1:** Can |A ∩ {1,...,N}| / √N have positive liminf?\n\n**Question 2:** Must |A ∩ {1,...,N}| < N^{1-c} for infinitely many N (some fixed c > 0)?\n\n**Question 3:** Must Σ_{n∈A} 1/n converge?\n\n**Status:** All three questions are OPEN.",
     "text": "How large can a set A be if no element a divides the sum b+c of two larger elements? Three OPEN questions about density, sparseness, and reciprocal sums.",
-    "proofStrategy": "**Formalization Highlights**\n\nThis is one of the richer formalizations, with several fully-proved theorems:\n\n1. **IsDivisibilityFree**: The core predicate with eight quantifiers (a, b, c \u2208 A, distinct, ordered, non-divisibility)\n\n2. **Counterexample** (fully proved): powersOfTwo_not_divisibility_free demonstrates {2, 4, 8} violates the property\n\n3. **Construction** (fully proved via three lemmas):\n   - neg_one_not_square_mod_three_mod_four: first supplementary law via ZMod.exists_sq_eq_neg_one_iff\n   - prime_3mod4_not_div_sum_squares: if p < q, r are distinct primes \u2261 3 (mod 4), then p \u2224 (q\u00b2+r\u00b2). Proof works in ZMod p: assumes p | (q\u00b2+r\u00b2), derives (r\u00b7q\u207b\u00b9)\u00b2 = -1 via calc block, contradicts the supplementary law\n   - primeSquares3mod4_divisibility_free: lifts from p \u2224 to p\u00b2 \u2224 via transitivity\n\n4. **Infiniteness** (fully proved): primeSquares3mod4_infinite via Dirichlet's theorem (axiom) + injectivity of squaring\n\n5. **Three questions**: Formalized as separate Lean Props with appropriate quantifier structure\n\n6. **Known bounds** (axiomatized): Erd\u0151s-S\u00e1rk\u00f6zy density zero, Elsholtz-Planitzer construction, Schoen-Baier coprime bound",
+    "proofStrategy": "**Formalization Highlights**\n\nThis is one of the richer formalizations, with several fully-proved theorems:\n\n1. **IsDivisibilityFree**: The core predicate with eight quantifiers (a, b, c ∈ A, distinct, ordered, non-divisibility)\n\n2. **Counterexample** (fully proved): powersOfTwo_not_divisibility_free demonstrates {2, 4, 8} violates the property\n\n3. **Construction** (fully proved via three lemmas):\n   - neg_one_not_square_mod_three_mod_four: first supplementary law via ZMod.exists_sq_eq_neg_one_iff\n   - prime_3mod4_not_div_sum_squares: if p < q, r are distinct primes ≡ 3 (mod 4), then p ∤ (q²+r²). Proof works in ZMod p: assumes p | (q²+r²), derives (r·q⁻¹)² = -1 via calc block, contradicts the supplementary law\n   - primeSquares3mod4_divisibility_free: lifts from p ∤ to p² ∤ via transitivity\n\n4. **Infiniteness** (fully proved): primeSquares3mod4_infinite via Dirichlet's theorem (axiom) + injectivity of squaring\n\n5. **Three questions**: Formalized as separate Lean Props with appropriate quantifier structure\n\n6. **Known bounds** (axiomatized): Erdős-Sárközy density zero, Elsholtz-Planitzer construction, Schoen-Baier coprime bound",
     "keyInsights": [
-      "The divisibility-free condition a \u2224 (b+c) is equivalent to a sum-free condition on residues: {b mod a : b \u2208 A, b > a} must be sum-free in \u2124/a\u2124, connecting multiplicative and additive combinatorics",
-      "Powers of 2 are NOT divisibility-free (2 | 4+8=12), correcting a natural but wrong intuition \u2014 the proof of this counterexample is fully formalized",
-      "The primeSquares3mod4 construction uses deep number theory: the first supplementary law of QR (-1 is QNR mod p \u2261 3 mod 4) prevents p from dividing q\u00b2+r\u00b2 for distinct primes p < q, r",
-      "The Elsholtz-Planitzer construction \u221aN/(\u221a(log N)\u00b7(log log N)\u00b2) misses \u221aN by only iterated logarithmic factors \u2014 closing this gap is the core of Question 1",
-      "The coprime case is dramatically stronger (O(N^{2/3}/log N) vs \u221aN), showing that shared factors among elements enable much larger divisibility-free sets",
-      "The hierarchy Q3 \u27f9 Q2 \u27f9 \u00acQ1 means a positive answer to Q3 would settle all three questions \u2014 but convergent reciprocal sum is the hardest to prove"
+      "The divisibility-free condition a ∤ (b+c) is equivalent to a sum-free condition on residues: {b mod a : b ∈ A, b > a} must be sum-free in ℤ/aℤ, connecting multiplicative and additive combinatorics",
+      "Powers of 2 are NOT divisibility-free (2 | 4+8=12), correcting a natural but wrong intuition — the proof of this counterexample is fully formalized",
+      "The primeSquares3mod4 construction uses deep number theory: the first supplementary law of QR (-1 is QNR mod p ≡ 3 mod 4) prevents p from dividing q²+r² for distinct primes p < q, r",
+      "The Elsholtz-Planitzer construction √N/(√(log N)·(log log N)²) misses √N by only iterated logarithmic factors — closing this gap is the core of Question 1",
+      "The coprime case is dramatically stronger (O(N^{2/3}/log N) vs √N), showing that shared factors among elements enable much larger divisibility-free sets",
+      "The hierarchy Q3 ⟹ Q2 ⟹ ¬Q1 means a positive answer to Q3 would settle all three questions — but convergent reciprocal sum is the hardest to prove"
     ],
     "prerequisites": [
       "Divisibility and the divisor lattice",
@@ -125,18 +125,18 @@
     {
       "id": "definition",
       "title": "Core Definitions",
-      "summary": "Defines IsDivisibilityFree(A): \u2200 distinct a < b, c in A, a \u2224 (b+c). Also defines countingFunction via Set.ncard(A \u2229 Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality/distinctness conditions).",
+      "summary": "Defines IsDivisibilityFree(A): ∀ distinct a < b, c in A, a ∤ (b+c). Also defines countingFunction via Set.ncard(A ∩ Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality/distinctness conditions).",
       "startLine": 23,
       "endLine": 34,
-      "mathContext": "Defines IsDivisibilityFree(A): \u2200 distinct a < b, c in A, a \u2224 (b+c). Also defines countingFunction via Set.ncard(A \u2229 Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality/distinctness conditions)."
+      "mathContext": "Defines IsDivisibilityFree(A): ∀ distinct a < b, c in A, a ∤ (b+c). Also defines countingFunction via Set.ncard(A ∩ Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality/distinctness conditions)."
     },
     {
       "id": "examples",
       "title": "Examples: Powers of 2 and Prime Squares",
-      "summary": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p\u00b2 : p prime, p \u2261 3 mod 4}. Three fully-proved lemmas establish the construction: neg_one_not_square via QR supplementary law, prime_3mod4_not_div_sum_squares via ZMod calculation, and primeSquares3mod4_divisibility_free combining them.",
+      "summary": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p² : p prime, p ≡ 3 mod 4}. Three fully-proved lemmas establish the construction: neg_one_not_square via QR supplementary law, prime_3mod4_not_div_sum_squares via ZMod calculation, and primeSquares3mod4_divisibility_free combining them.",
       "startLine": 35,
       "endLine": 189,
-      "mathContext": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p\u00b2 : p prime, p \u2261 3 mod 4}."
+      "mathContext": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p² : p prime, p ≡ 3 mod 4}."
     },
     {
       "id": "density",
@@ -148,54 +148,54 @@
     },
     {
       "id": "question1",
-      "title": "Question 1: \u221aN Density (OPEN)",
-      "summary": "Defines sqrtLiminfDensity (\u2203 c > 0 with A(N)/\u221aN \u2265 c eventually) and Erdos12Question1 (\u2203 A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) \u2265 \u221aN/(\u221a(log N)\u00b7(log log N)\u00b2), the best known bound falling short of \u221aN by logarithmic factors.",
+      "title": "Question 1: √N Density (OPEN)",
+      "summary": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors.",
       "startLine": 200,
       "endLine": 216,
-      "mathContext": "Defines sqrtLiminfDensity (\u2203 c > 0 with A(N)/\u221aN \u2265 c eventually) and Erdos12Question1 (\u2203 A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) \u2265 \u221aN/(\u221a(log N)\u00b7(log log N)\u00b2), the best known bound falling short of \u221aN by logarithmic factors."
+      "mathContext": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors."
     },
     {
       "id": "question2",
       "title": "Question 2: Sparse Infinitely Often (OPEN)",
-      "summary": "Defines Erdos12Question2: \u2200 A div-free, \u2203 c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches \u221aN.",
+      "summary": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N.",
       "startLine": 217,
       "endLine": 224,
-      "mathContext": "Defines Erdos12Question2: \u2200 A div-free, \u2203 c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches \u221aN."
+      "mathContext": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N."
     },
     {
       "id": "question3",
       "title": "Question 3: Convergent Reciprocal Sum (OPEN)",
-      "summary": "Defines reciprocalSum via tsum and Erdos12Question3: \u2200 A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, \u221aN growth allows divergent reciprocal sum, so Q3 would force A(N) = o(\u221aN/log N) on average.",
+      "summary": "Defines reciprocalSum via tsum and Erdos12Question3: ∀ A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, √N growth allows divergent reciprocal sum, so Q3 would force A(N) = o(√N/log N) on average.",
       "startLine": 225,
       "endLine": 235,
-      "mathContext": "Defines reciprocalSum via tsum and Erdos12Question3: \u2200 A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, \u221aN growth allows divergent reciprocal sum, so Q3 would force A(N) = o(\u221aN/log N) on average."
+      "mathContext": "Defines reciprocalSum via tsum and Erdos12Question3: ∀ A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, √N growth allows divergent reciprocal sum, so Q3 would force A(N) = o(√N/log N) on average."
     },
     {
       "id": "coprime",
       "title": "Coprime Case (Solved)",
-      "summary": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2/3} exponent is dramatically below the \u221aN threshold from Q1.",
+      "summary": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2/3} exponent is dramatically below the √N threshold from Q1.",
       "startLine": 236,
       "endLine": 247,
-      "mathContext": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2/3} exponent is dramatically below the \u221aN threshold from Q1."
+      "mathContext": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2/3} exponent is dramatically below the √N threshold from Q1."
     },
     {
       "id": "main",
       "title": "Main Problem Statement",
-      "summary": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~\u221aN/log N), and the liminf positivity statement.",
+      "summary": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/log N), and the liminf positivity statement.",
       "startLine": 248,
       "endLine": 295,
-      "mathContext": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~\u221aN/log N), and the liminf positivity statement."
+      "mathContext": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/log N), and the liminf positivity statement."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #12 asks three OPEN questions about divisibility-free sets \u2014 sets where no element divides the sum of two larger elements. The Lean formalization includes fully-proved theorems establishing the primeSquares3mod4 construction (using quadratic reciprocity and ZMod arithmetic), a counterexample disproving the natural powers-of-2 guess, and formal statements of all three questions with axiomatized known bounds.",
-    "implications": "1. **Multiplicative-Additive Interaction**: The problem sits at the intersection of multiplicative (divisibility) and additive (sums) number theory. The residue class interpretation \u2014 {b mod a} must be sum-free \u2014 bridges these worlds.\n\n2. **Quadratic Reciprocity in Combinatorics**: The primeSquares3mod4 construction is a striking application of the first supplementary law of QR to a combinatorial extremal problem.\n\nThe proof that -1 is a QNR mod p \u2261 3 (mod 4) prevents p from dividing q\u00b2+r\u00b2 for distinct primes \u2014 an algebraic argument with combinatorial consequences.\n\n3. **The \u221aN Barrier**: The gap between the best construction \u221aN/(\u221alog N \u00b7 (log log N)\u00b2) and the \u221aN threshold is one of the most tantalizing open problems in additive combinatorics. Closing it would either yield a fundamentally new construction or a new upper bound technique.\n\n4. **Coprime vs General**: The dramatic difference between the coprime case (N^{2/3}) and general case (close to \u221aN) shows that shared prime factors create divisibility-free structure \u2014 elements sharing a factor a can both avoid having their sum divisible by a.\n\n5. **Hierarchy of Sparseness**: The Q3 \u27f9 Q2 \u27f9 \u00acQ1 chain means a single answer to Q3 would resolve all three questions, but the convergent reciprocal sum condition is the hardest to prove, requiring control of A(N) at all scales simultaneously.",
+    "summary": "Erdős Problem #12 asks three OPEN questions about divisibility-free sets — sets where no element divides the sum of two larger elements. The Lean formalization includes fully-proved theorems establishing the primeSquares3mod4 construction (using quadratic reciprocity and ZMod arithmetic), a counterexample disproving the natural powers-of-2 guess, and formal statements of all three questions with axiomatized known bounds.",
+    "implications": "1. **Multiplicative-Additive Interaction**: The problem sits at the intersection of multiplicative (divisibility) and additive (sums) number theory. The residue class interpretation — {b mod a} must be sum-free — bridges these worlds.\n\n2. **Quadratic Reciprocity in Combinatorics**: The primeSquares3mod4 construction is a striking application of the first supplementary law of QR to a combinatorial extremal problem.\n\nThe proof that -1 is a QNR mod p ≡ 3 (mod 4) prevents p from dividing q²+r² for distinct primes — an algebraic argument with combinatorial consequences.\n\n3. **The √N Barrier**: The gap between the best construction √N/(√log N · (log log N)²) and the √N threshold is one of the most tantalizing open problems in additive combinatorics. Closing it would either yield a fundamentally new construction or a new upper bound technique.\n\n4. **Coprime vs General**: The dramatic difference between the coprime case (N^{2/3}) and general case (close to √N) shows that shared prime factors create divisibility-free structure — elements sharing a factor a can both avoid having their sum divisible by a.\n\n5. **Hierarchy of Sparseness**: The Q3 ⟹ Q2 ⟹ ¬Q1 chain means a single answer to Q3 would resolve all three questions, but the convergent reciprocal sum condition is the hardest to prove, requiring control of A(N) at all scales simultaneously.",
     "openQuestions": [
-      "Can any divisibility-free set achieve \u221aN density? The Elsholtz-Planitzer construction misses by logarithmic factors.",
+      "Can any divisibility-free set achieve √N density? The Elsholtz-Planitzer construction misses by logarithmic factors.",
       "Must A(N) < N^{1-c} infinitely often? Even proving A(N) < N/log N i.o. would be significant progress.",
-      "Must \u03a3_{n\u2208A} 1/n converge? This would settle all three questions at once.",
-      "What is the optimal bound for non-coprime divisibility-free sets? Is the truth closer to \u221aN or to N^{2/3}?",
-      "Can the quadratic residue construction be extended? What about cubes of primes \u2261 5 (mod 8), or higher prime powers with specific residue conditions?"
+      "Must Σ_{n∈A} 1/n converge? This would settle all three questions at once.",
+      "What is the optimal bound for non-coprime divisibility-free sets? Is the truth closer to √N or to N^{2/3}?",
+      "Can the quadratic residue construction be extended? What about cubes of primes ≡ 5 (mod 8), or higher prime powers with specific residue conditions?"
     ]
   },
   "leanFile": {
@@ -209,7 +209,7 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 295,
+    "lineCount": 280,
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 13
@@ -236,14 +236,14 @@
       "authors": "Dilworth, Robert P.",
       "title": "A decomposition theorem for partially ordered sets",
       "year": "1950",
-      "venue": "Annals of Mathematics, vol. 51, no. 1, pp. 161\u2013166",
+      "venue": "Annals of Mathematics, vol. 51, no. 1, pp. 161–166",
       "note": "Dilworth's theorem bounds antichain size in posets, directly applicable to divisibility-free sets"
     },
     {
-      "authors": "Erd\u0151s, Paul; Ko, Chao; Rado, Richard",
+      "authors": "Erdős, Paul; Ko, Chao; Rado, Richard",
       "title": "Intersection theorems for systems of finite sets",
       "year": "1961",
-      "venue": "Quarterly Journal of Mathematics, vol. 12, no. 1, pp. 313\u2013320",
+      "venue": "Quarterly Journal of Mathematics, vol. 12, no. 1, pp. 313–320",
       "note": "Foundational extremal set theory result related to the study of antichains and divisibility-free families"
     }
   ]

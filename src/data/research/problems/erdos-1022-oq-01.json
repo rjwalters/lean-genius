@@ -1,0 +1,103 @@
+{
+  "slug": "erdos-1022-oq-01",
+  "title": "Property B_k: k-Colorability of Hypergraphs",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Define Property B_k for set families: exists k-coloring with no monochromatic member. Study the hierarchy B_2 ⊆ B_3 ⊆ ... and the generalized first-moment threshold.",
+    "plain": "Generalize 2-colorability (Property B) to k-colorability for hypergraphs.",
+    "whyMatters": [
+      "Connects to hypergraph chromatic number",
+      "Generalizes Erdős #1022 conjecture"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "B_k monotone in k (10 theorems, 0 axioms, 0 sorries)",
+      "B ↔ B_2 equivalence for nonempty families",
+      "Base cases for empty and singleton families"
+    ],
+    "open": [
+      "Does Erdős #1022 sparsity conjecture generalize to k-colorability?",
+      "Chromatic threshold: minimum k for c(t)-sparse families"
+    ],
+    "goal": "k-colorability infrastructure for Property B"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T20:00:00Z",
+    "iteration": 1,
+    "focus": "Created 160-line formalization with 10 proved theorems and 0 axioms.",
+    "blockers": [],
+    "nextAction": "None.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 160-line formalization with 10 proved theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "Created Proofs/Erdos1022OQ01.lean (160 lines, 10 theorems, 0 axioms)",
+      "Created gallery entry src/data/proofs/erdos-1022-oq-01/"
+    ],
+    "insights": [
+      "B_k monotonicity via Fin.castSucc embedding is the cleanest approach",
+      "B ↔ B_2 equivalence uses bijection between 2-colorings and subsets S = χ⁻¹(0)",
+      "Generalized threshold k^{t-1}/(k-1) recovers 2^{t-1} for k=2"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "hypergraph coloring"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1022",
+    "erdos-1022-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/1022"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-29T19:30:00Z",
+  "lastUpdate": "2026-03-29T20:00:00Z",
+  "significance": 4,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1022OQ01.lean",
+      "filename": "Erdos1022OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1022Problem.lean",
+      "filename": "Erdos1022Problem.lean",
+      "lineCount": 523,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
+    }
+  ]
+}

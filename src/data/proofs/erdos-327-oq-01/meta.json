@@ -1,0 +1,146 @@
+{
+  "id": "erdos-327-oq-01",
+  "title": "Parametrization of Sum-Divides-Product Pairs",
+  "slug": "erdos-327-oq-01",
+  "description": "Explicit parametrization of all pairs (a,b) with (a+b)|ab via coprime factorizations. Proves the construction, verifies concrete examples, shows (3,6) is the smallest such pair, and counts pairs in {1,...,N}.",
+  "meta": {
+    "author": "Erdős (generalized)",
+    "sourceUrl": "https://erdosproblems.com/327",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos327OQ01.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "unit fractions",
+      "divisibility",
+      "open question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 327,
+    "erdosUrl": "https://erdosproblems.com/327",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "assumptions": "No axioms. All theorems proved from Mathlib alone. The density conjecture (pair count ~ N log N) is stated as a definition.",
+    "lineCount": 165,
+    "relatedProblems": [
+      {
+        "id": "erdos-327",
+        "relationship": "Parent problem: sum-divides-product avoidance"
+      }
+    ]
+  },
+  "overview": {
+    "text": "A formalization studying the structure of sum-divides-product pairs: ordered pairs (a,b) of positive integers with (a+b) | ab. Uses the GCD characterization from Erdős #327 to give an explicit parametrization: every such pair has the form (m(a'+b')a', m(a'+b')b') where gcd(a',b')=1 and m ≥ 1. Proves this construction works, verifies 5 concrete examples and 2 non-examples, proves (3,6) is the smallest sum-dvd-prod pair with a < b, defines pair-counting functions, and states the density conjecture: the count in {1,...,N} grows as Θ(N log N).",
+    "historicalContext": "The sum-divides-product relation (a+b)|ab is equivalent to 1/a+1/b being a unit fraction, connecting to Egyptian fractions and the Erdős-Straus conjecture. The GCD characterization reduces the structure to coprime factorizations, revealing that sum-dvd-prod pairs are organized along arithmetic progressions indexed by coprime pairs.",
+    "problemStatement": "Parametrize all pairs $(a,b)$ with $(a+b) \\mid ab$ and determine the asymptotic count $\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\}$.",
+    "proofStrategy": "Direct algebraic verification: expand a = m*s*a', b = m*s*b' with s = a'+b', and show a+b = m*s² divides a*b = m²*s²*a'*b'. The distinctness and ordering proofs use positivity of the multiplier m*s. The minimality of (3,6) is verified by interval_cases exhaustion over a,b ≤ 5.",
+    "keyInsights": [
+      "Every sum-dvd-prod pair (a,b) is uniquely determined by coprime parts (a', b') and a multiplier m, via a = m(a'+b')a', b = m(a'+b')b'",
+      "(3, 6) is the smallest sum-dvd-prod pair: verified by exhaustive check of all pairs with b ≤ 5",
+      "The pair count in [1,N] should grow as Θ(N log N): the harmonic sum over coprime pairs weighted by 1/(a'+b')² converges to a constant, times N, with a log N correction from the multiplier sum"
+    ],
+    "prerequisites": [
+      "Number theory (GCD, coprimality, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "construction",
+      "title": "Explicit Construction",
+      "startLine": 26,
+      "endLine": 50,
+      "summary": "Proves that (m(a'+b')a', m(a'+b')b') satisfies sum-divides-product for coprime a', b', and that the pair is distinct when a' ≠ b'.",
+      "mathContext": "If $\\gcd(a', b') = 1$ and $m \\geq 1$, then $(m s a', m s b')$ with $s = a' + b'$ satisfies $(a+b) \\mid ab$ since $a+b = m s^2$ divides $a b = m^2 s^2 a' b'$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Verified Examples",
+      "startLine": 52,
+      "endLine": 76,
+      "summary": "Verifies 5 sum-dvd-prod pairs ((3,6), (4,12), (5,20), (6,12), (10,15)) and 2 non-examples ((2,3), (4,5)) by direct computation.",
+      "mathContext": "$(3,6)$: from $(1,2)$ with $m=1$. $(4,12)$: from $(1,3)$ with $m=1$. $(10,15)$: from $(2,3)$ with $m=1$."
+    },
+    {
+      "id": "classification",
+      "title": "Classification of Small Pairs",
+      "startLine": 78,
+      "endLine": 86,
+      "summary": "Proves that (3,6) is the smallest sum-dvd-prod pair by exhaustive check of all pairs with b ≤ 5.",
+      "mathContext": "For all $1 \\leq a < b \\leq 5$, $(a+b) \\nmid ab$. The first pair is $(3,6)$ from coprime $(1,2)$."
+    },
+    {
+      "id": "counting",
+      "title": "Pair Counting and Density",
+      "startLine": 88,
+      "endLine": 135,
+      "summary": "Defines sumDvdProdPairs and numSumDvdProdPairs, proves the count is 0 for N ≤ 5 and positive for N ≥ 6. States the density conjecture: pair count ~ C·N·log(N).",
+      "mathContext": "$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = 0$ for $N \\leq 5$, positive for $N \\geq 6$, conjectured $\\Theta(N \\log N)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "An axiom-free formalization giving the explicit parametrization of all sum-divides-product pairs. The bijection between pairs (a,b) with (a+b)|ab and triples (a', b', m) with gcd(a',b')=1 provides the structural foundation for counting these pairs.",
+    "implications": "The parametrization converts the sum-dvd-prod avoidance question from Erdős #327 into a covering problem: how efficiently can a set A avoid all arithmetic progressions of the form {m·s·a', m·s·b'} for coprime (a',b')? This viewpoint connects to Ramsey theory and the structure of sum-free sets.",
+    "openQuestions": [
+      "What is the exact constant C in the pair count asymptotic C·N·log(N)?",
+      "How does the pair count change for the variant (a+b)|2ab from Erdős #327?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-327",
+      "relationship": "parent",
+      "description": "Parent problem: sum-divides-product avoidance with GCD characterization"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 165,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "lemmaCount": 0,
+    "defCount": 5,
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null
+  },
+  "mainTheorems": [
+    {
+      "name": "construct_sumDvdProd_pair",
+      "type": "proved",
+      "description": "Coprime parametrization produces sum-dvd-prod pairs"
+    },
+    {
+      "name": "smallest_sumDvdProd_pair",
+      "type": "proved",
+      "description": "(3,6) is the smallest sum-dvd-prod pair (exhaustive check for b ≤ 5)"
+    },
+    {
+      "name": "numSumDvdProdPairs_pos",
+      "type": "proved",
+      "description": "At least one pair exists for N ≥ 6"
+    },
+    {
+      "name": "construction_produces_valid_pairs",
+      "type": "proved",
+      "description": "Full construction: ordering + divisibility for coprime pairs"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald",
+      "title": "Old and new problems and results in combinatorial number theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique",
+      "note": "Original statement of Problem #327 on sum-divides-product avoidance"
+    }
+  ]
+}

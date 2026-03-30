@@ -40,7 +40,9 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Sort
 import Mathlib.Algebra.BigOperators.Finprod
+import Archive.Wiedijk100Theorems.AscendingDescendingSequences
 
 open Finset BigOperators
 
@@ -94,10 +96,37 @@ an increasing subsequence of length r or a decreasing subsequence of length s.
 Taking r = s = n+1 gives: every sequence of n² + 1 elements contains
 a monotonic subsequence of length n + 1.
 -/
-axiom erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
+theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     (∃ (sub : Subsequence n r), IsIncreasing seq sub) ∨
-    (∃ (sub : Subsequence n s), IsDecreasing seq sub)
+    (∃ (sub : Subsequence n s), IsDecreasing seq sub) := by
+  -- Apply Mathlib's Erdős-Szekeres with parameters (r-1) and (s-1)
+  have hn_card : (r - 1) * (s - 1) < Fintype.card (Fin n) := by
+    rw [Fintype.card_fin]; omega
+  rcases Theorems100.erdos_szekeres hn_card hDistinct with
+    ⟨t, ht_card, ht_mono⟩ | ⟨t, ht_card, ht_anti⟩
+  · -- Increasing case: t has > (r-1) elements, so ≥ r
+    left
+    have hr : r ≤ t.card := by omega
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t r hr
+    -- Build Subsequence from the Finset via orderEmbOfFin
+    let emb := u.orderEmbOfFin hu_card
+    refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
+    -- IsIncreasing: seq (emb i) < seq (emb j) for i < j
+    -- emb is order-preserving, and seq is strictly monotone on t ⊇ u
+    have hmono_u : StrictMonoOn seq ↑u := ht_mono.mono (Finset.coe_subset.mpr hu_sub)
+    exact hmono_u (Finset.orderEmbOfFin_mem u hu_card i)
+      (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)
+  · -- Decreasing case: t has > (s-1) elements, so ≥ s
+    right
+    have hs : s ≤ t.card := by omega
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t s hs
+    let emb := u.orderEmbOfFin hu_card
+    refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
+    -- IsDecreasing: seq (emb j) < seq (emb i) for i < j
+    have hanti_u : StrictAntiOn seq ↑u := ht_anti.mono (Finset.coe_subset.mpr hu_sub)
+    exact hanti_u (Finset.orderEmbOfFin_mem u hu_card i)
+      (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)
 
 /-- Corollary: Every sequence of k²+1 elements has a monotonic
     subsequence of length ≥ k+1.
@@ -133,17 +162,7 @@ Every sequence of n elements can be decomposed into at most
 
 More precisely: at most ⌈√(2n)⌉ monotonic subsequences suffice.
 -/
-axiom hanani_decomposition (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    ∃ (decomp : MonotonicDecomposition n seq),
-      (decomp.numParts : ℝ) ≤ Real.sqrt (2 * n) + 1
-
 /-- The Dilworth-style bound: at most √n increasing + √n decreasing. -/
-axiom dilworth_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    ∃ (decomp : MonotonicDecomposition n seq),
-      decomp.numParts ≤ 2 * Nat.sqrt n
-
 /-
 ## Part IV: The Maximum Monotonic Sum Problem
 
@@ -179,17 +198,7 @@ Upper bound (from Cambie): c ≤ 1
 -/
 
 /-- Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
-axiom hanani_lower_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq)
-    (hPos : ∀ i, seq i > 0) :
-    maxMonotonicSum seq ≥ totalSum seq / (Real.sqrt 2 * Real.sqrt n + 1)
-
 /-- Cambie's upper bound: c ≤ 1 (by explicit construction). -/
-axiom cambie_upper_bound :
-    ∀ ε > 0, ∃ (n : ℕ) (seq : RealSeq n),
-      Function.Injective seq ∧ (∀ i, seq i > 0) ∧
-      maxMonotonicSum seq ≤ (1 + ε) * totalSum seq / Real.sqrt n
-
 /-
 ## Part VI: The Weighted Erdős-Szekeres Theorem
 
@@ -221,11 +230,6 @@ theorem tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
   weighted_erdos_szekeres
 
 /-- The optimal constant is exactly 1. -/
-axiom optimal_constant_is_one :
-    ∀ ε > 0, ∀ (n : ℕ) (seq : RealSeq n),
-      Function.Injective seq → (∀ i, seq i > 0) → totalSum seq > 0 →
-      maxMonotonicSum seq ≥ (1 - ε) * totalSum seq / Real.sqrt n
-
 /-
 ## Part VII: Related Results
 
@@ -247,10 +251,6 @@ axiom lis_lds_bound (n : ℕ) (seq : RealSeq n)
 
 /-- The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
-axiom longest_monotonic_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    max (LIS seq) (LDS seq) ≥ Nat.sqrt n
-
 /-
 ## Part VIII: Main Results Summary
 -/
@@ -272,11 +272,6 @@ theorem erdos_1026 : ∀ (k : ℕ) (hk : k ≥ 1)
 
 /-- The result is tight: Cambie's construction achieves equality asymptotically.
     For any ε > 0 and large enough k, there exists a sequence achieving sum ≤ 1/k + ε. -/
-axiom erdos_1026_tight :
-    ∀ ε > 0, ∃ k₀, ∀ k ≥ k₀, ∃ (seq : RealSeq (k^2)),
-      Function.Injective seq ∧ (∀ i, seq i > 0) ∧
-      totalSum seq = 1 ∧ maxMonotonicSum seq ≤ 1 / k + ε
-
 /-- Connection to tournament theory: there exists a path of length m
     with m² ≥ n. Trivially provable: take m = n, then n² ≥ n for n ≥ 1. -/
 theorem tournament_connection :

@@ -75,9 +75,6 @@ The sum from position u to v is v(v+1)/2 - (u-1)u/2 = (v-u+1)(v+u)/2.
 These are bounded by n(n+1)/2, but due to collisions among sums of different
 lengths, only O(n) distinct values arise.
 -/
-axiom trivial_fails (n : ℕ) :
-    ∃ C : ℕ, distinctConsecutiveSums (trivialSequence n) ≤ C * n
-
 /--
 **Why {1, 2, ..., n} fails — arithmetic structure causes collisions:**
 In an arithmetic progression, consecutive sums are determined by length and
@@ -86,10 +83,6 @@ same product, causing collisions. For example, 1+2+3+4 = 10 and 4+6 = 10
 in rearranged form. The highly structured nature of {1,...,n} prevents
 quadratic growth in distinct sums.
 -/
-axiom trivial_collision_structure :
-    ∀ n : ℕ, n ≥ 2 →
-      distinctConsecutiveSums (trivialSequence n) < n * n
-
 /- ## Part III: Strictly Increasing Sequences -/
 
 /--
@@ -179,9 +172,6 @@ Beker's construction uses number-theoretic techniques to build sequences
 where consecutive subsums are "spread out" — avoiding the sum collisions
 that plague arithmetic progressions.
 -/
-axiom beker_construction_yields_quadratic :
-    ∃ c : ℚ, c > 0 ∧ c < 1 ∧ erdosGrahamConjecture
-
 /- ## Part VII: Related Problems -/
 
 /--
@@ -191,9 +181,6 @@ Konieczny's theorem resolves it. The permutation variant is strictly
 harder: any permutation of {1,...,n} is a valid sequence for #356,
 but not vice versa.
 -/
-axiom permutation_implies_increasing :
-    permutationConjecture → erdosGrahamConjecture
-
 /--
 **Connection to Erdős #357 (Consecutive integers):**
 Problem #357 asks: among the integers > n expressible as consecutive sums
@@ -216,20 +203,11 @@ A sequence of length k has at most k(k+1)/2 consecutive subsums
 (choosing u ≤ v from {0,...,k-1}). Since k ≤ n for a valid sequence,
 the maximum is O(n²).
 -/
-axiom upper_bound (seq : List ℕ) :
-    distinctConsecutiveSums seq ≤ seq.length * (seq.length + 1) / 2
-
 /--
 **Lower bound from Beker:**
 There exist sequences achieving cn² for some explicit c > 0.
 Combined with the upper bound, the growth rate is Θ(n²).
 -/
-axiom lower_bound_exists :
-    ∃ c : ℚ, c > 0 ∧
-      ∀ n : ℕ, n ≥ 10 →
-        ∃ seq : List ℕ, isValidSequence seq n ∧
-          (distinctConsecutiveSums seq : ℚ) ≥ c * n^2
-
 /- ## Part IX: Summary -/
 
 /--

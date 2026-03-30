@@ -52,7 +52,9 @@ theorem tau_prime_pow (p k : ℕ) (hp : p.Prime) : τ (p ^ k) = k + 1 := by
 /-- τ is multiplicative: τ(mn) = τ(m)τ(n) for coprime m, n. -/
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     τ (m * n) = τ m * τ n := by
-  sorry
+  simp only [tau]
+  rw [hmn.divisors_mul]
+  exact Finset.card_product _ _
 
 /-- τ(n) ≥ 1 for n ≥ 1. -/
 theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
@@ -113,7 +115,46 @@ theorem double_sum_identity (t : ℝ) (ht : t > 1) :
 /-- Geometric series for each d: ∑_{m≥1} 1/t^{dm} = 1/(t^d - 1). -/
 theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     (∑' m : ℕ, if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) = 1 / (t ^ d - 1) := by
-  sorry
+  -- Let r = (t^d)⁻¹, with 0 < r < 1
+  have htd_pos : (0 : ℝ) < t ^ d := by positivity
+  have htd_gt : (1 : ℝ) < t ^ d := by
+    calc (1 : ℝ) = 1 ^ d := (one_pow d).symm
+    _ < t ^ d := by
+      apply pow_lt_pow_left (by linarith : (1 : ℝ) < t) (by linarith : (0 : ℝ) ≤ 1)
+      omega
+  have htd_ne : t ^ d ≠ 0 := ne_of_gt htd_pos
+  set r := (t ^ d)⁻¹ with hr_def
+  have hr_pos : (0 : ℝ) < r := inv_pos_of_pos htd_pos
+  have hr_lt : r < 1 := by rwa [inv_lt_one_iff_of_pos htd_pos]
+  -- Rewrite terms: 1/t^{dm} = r^m
+  have hterm : ∀ m : ℕ, (if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) =
+      if m = 0 then (0 : ℝ) else r ^ m := by
+    intro m; split_ifs with h
+    · rfl
+    · rw [one_div, hr_def, ← inv_pow, ← pow_mul]
+  simp_rw [hterm]
+  -- Summability of the geometric series
+  have hgeom : Summable (fun n : ℕ => r ^ n) :=
+    summable_geometric_of_lt_one hr_pos.le hr_lt.le
+  -- Summability of the if-then-else version
+  have hsum : Summable (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
+    apply Summable.of_nonneg_of_le
+    · intro m; split_ifs <;> positivity
+    · intro m; split_ifs with h
+      · exact pow_nonneg hr_pos.le m
+      · exact le_refl _
+    · exact hgeom
+  -- Split off the m=0 term: ∑ f(m) = f(0) + ∑ f(m+1)
+  rw [tsum_eq_zero_add hsum, if_pos rfl]
+  simp only [Nat.succ_ne_zero, ite_false, zero_add]
+  -- Now have: ∑' m, r^(m+1) = 1/(t^d - 1)
+  -- r^(m+1) = r * r^m
+  simp_rw [pow_succ]
+  rw [tsum_mul_right, tsum_geometric_of_lt_one hr_pos.le hr_lt.le]
+  -- (1 - r)⁻¹ * r = 1/(t^d - 1)
+  rw [hr_def]
+  field_simp
+  ring
 
 /-
 ## Part IV: Erdős's Result for Integers
@@ -149,7 +190,7 @@ def ChowlaConjecture : Prop :=
   ∀ t : ℚ, t > 1 → Irrational (S (t : ℝ))
 
 /-- The conjecture remains OPEN. -/
-axiom chowla_conjecture_open : ChowlaConjecture ↔ ChowlaConjecture
+theorem chowla_conjecture_open : ChowlaConjecture ↔ ChowlaConjecture := Iff.rfl
 
 /-- Erdős's result implies Chowla for integer t ≥ 2. -/
 theorem chowla_for_integers (t : ℕ) (ht : t ≥ 2) :
@@ -195,7 +236,13 @@ def TranscendentalConjecture : Prop :=
 /-- The transcendental conjecture is stronger than Chowla's. -/
 theorem transcendental_implies_chowla :
     TranscendentalConjecture → ChowlaConjecture := by
-  sorry
+  intro htrans t ht
+  have ht_real : (t : ℝ) > 1 := by exact_mod_cast ht
+  have ht_alg : IsAlgebraic ℚ (t : ℝ) := isAlgebraic_algebraMap t
+  have hS_not_alg := htrans (t : ℝ) ht_real ht_alg
+  -- Not algebraic over ℚ implies irrational: if S(t) = q for some q : ℚ,
+  -- then S(t) would be algebraic, contradiction.
+  exact fun ⟨q, hq⟩ => hS_not_alg (hq ▸ isAlgebraic_algebraMap q)
 
 /-- S(t) satisfies no polynomial equation over ℚ(t) (conjectured). -/
 def AlgebraicIndependenceConjecture : Prop :=
@@ -217,9 +264,9 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
   sorry
 
 /-- Lambert series preserve arithmetic structure. -/
-axiom lambert_arithmetic_property :
+theorem lambert_arithmetic_property :
     -- Lambert series of arithmetic functions have special properties
-    True
+    True := trivial
 
 /-
 ## Part IX: Partial Results
@@ -228,14 +275,14 @@ What is known towards Chowla's conjecture.
 -/
 
 /-- S(p/q) is irrational for certain p/q (partial results). -/
-axiom partial_rational_results :
+theorem partial_rational_results :
     -- Some specific rational values have been verified
-    True
+    True := trivial
 
 /-- Linear independence results. -/
-axiom linear_independence_partial :
+theorem linear_independence_partial :
     -- Partial results on linear independence of S values
-    True
+    True := trivial
 
 /-- Approximation bounds for S(t). -/
 theorem S_bounds (t : ℝ) (ht : t > 1) :

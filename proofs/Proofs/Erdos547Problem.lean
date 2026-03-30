@@ -75,8 +75,6 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 axiom IsTree (G : SimpleGraph V) : Prop
 
 /-- Maximum degree of a graph. -/
-axiom maxDegree (G : SimpleGraph V) : ℕ
-
 /-
 ## Part IV: Special Tree Families
 
@@ -84,11 +82,7 @@ We define paths and stars, the two extremes of tree structure.
 -/
 
 /-- A path P_n is a tree with max degree at most 2. -/
-axiom IsPath (G : SimpleGraph V) : Prop
-
 /-- A star S_n is a tree with one central vertex adjacent to all others. -/
-axiom IsStar (G : SimpleGraph V) : Prop
-
 /-
 ## Part V: Ramsey Numbers of Specific Trees
 

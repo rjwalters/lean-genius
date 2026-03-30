@@ -1,0 +1,68 @@
+{
+  "id": "erdos-1015-oq-05",
+  "title": "Erd\u0151s #1015 OQ5: Axiom Elimination via Erd\u0151s-Szekeres Bound",
+  "slug": "erdos-1015-oq-05",
+  "description": "Investigates which of the 8 axioms in the Erd\u0151s #1015 formalization can be proved from Mathlib. Eliminates 2: replaces the axiomatized ramseyNumber with a proper definition via Nat.find, and proves R(t,t) \u2264 4^t via the Erd\u0151s-Szekeres bound R(r,s) \u2264 C(r+s-2, r-1).",
+  "meta": {
+    "author": "Erd\u0151s-Szekeres (1935)",
+    "erdosNumber": 1015,
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1015OQ05.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "axiom-elimination",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1015",
+    "erdosUrl": "https://erdosproblems.com/1015",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 353,
+    "assumptions": "No axioms in this file. All theorems proved from RamseysTheorem.lean. Eliminates 2 of the 8 parent axioms (ramseyNumber definition and ramsey_upper_bound).",
+    "mathlib_version": "4.26.0"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1015",
+      "relationship": "extends",
+      "description": "This file eliminates 2 of the 8 axioms from the parent Erd\u0151s #1015 formalization by proving them from the Ramsey theorem formalized in RamseysTheorem.lean."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "depends",
+      "description": "Imports the Ramsey theorem (Wiedijk #31) to define ramseyNumber via Nat.find and prove the Erd\u0151s-Szekeres bound R(r,s) \u2264 C(r+s-2, r-1) by induction."
+    }
+  ],
+  "overview": {
+    "problemStatement": "Can any of the 8 axioms in Erdos1015Problem.lean (Moon's theorem, Ramsey bounds, BES formula, asymptotics) be proved from Mathlib?",
+    "text": "We eliminate 2 of the 8 axioms: (1) ramseyNumber is replaced with a proper definition via Nat.find, and (2) ramsey_upper_bound (R(t,t) \u2264 4^t) is proved via the Erd\u0151s-Szekeres bound. The remaining 6 axioms are deep results requiring substantial Ramsey-theoretic machinery beyond Mathlib.",
+    "proofStrategy": "The proof proceeds in four stages: (1) Define ramseyNumber as the minimum n with the Ramsey property via Nat.find. (2) Prove HasRamseyProperty monotonicity for embedding arguments. (3) Prove HasRamseyProperty at the binomial coefficient bound C(r+s-2, r-1) by strong induction on r+s, using Pascal's rule for the bound recurrence and the pigeonhole argument from RamseysTheorem.lean. (4) Chain R(t,t) \u2264 C(2t-2, t-1) \u2264 2^(2t-2) = 4^(t-1) \u2264 4^t.",
+    "keyInsights": [
+      "The ramseyNumber axiom is really a definition placeholder \u2014 replacing it with Nat.find on the Ramsey existence theorem gives a proper constructive definition.",
+      "The Erd\u0151s-Szekeres bound R(r,s) \u2264 C(r+s-2, r-1) follows from the same pigeonhole induction as Ramsey's theorem, but with explicit tracking of the binomial coefficient via Pascal's rule.",
+      "The key inequality C(n,k) \u2264 2^n (each binomial coefficient is at most the row sum) gives the bridge from combinatorial to exponential bounds.",
+      "The remaining 6 axioms (Moon's theorem, Erd\u0151s's f(t) < R(t,t), BES formula, root limit, superlinear growth) all require either specific graph constructions or deep analytic arguments not in Mathlib."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.RamseysTheorem"
+    ],
+    "opens": [
+      "RamseysTheorem",
+      "Finset"
+    ],
+    "namespace": "Erdos1015OQ05",
+    "lineCount": 353,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "sections": []
+}

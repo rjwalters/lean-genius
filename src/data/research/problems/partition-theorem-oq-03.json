@@ -1,0 +1,87 @@
+{
+  "slug": "partition-theorem-oq-03",
+  "title": "partition-theorem-oq-03",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T19:03:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: partition-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "partition-theorem",
+    "partition-theorem-oq-01",
+    "partition-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.213Z",
+  "lastUpdate": "2026-03-30T02:13:21.225Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/PartitionTheorem.lean",
+      "filename": "PartitionTheorem.lean",
+      "lineCount": 282,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheorem.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01.lean",
+      "filename": "PartitionTheoremOQ01.lean",
+      "lineCount": 3553,
+      "theoremCount": 129,
+      "axiomCount": 3,
+      "defCount": 40,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ03.lean",
+      "filename": "PartitionTheoremOQ03.lean",
+      "lineCount": 63,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ03.lean"
+    }
+  ]
+}

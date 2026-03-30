@@ -114,19 +114,10 @@ in {1,...,N} is at most (1-c)N for some constant c > 0.
 
 This would show that density 1 is impossible, but the proof was never published.
 -/
-axiom ruzsa_upper_bound_unpublished :
-    ∃ c > 0, ∀ᶠ N in atTop,
-      ∀ A : Set ℕ, A ⊆ Set.Icc 1 N → IsMulCardSet A → (A.ncard : ℝ) ≤ (1 - c) * N
-
 /--
 A simple lower bound: integers with a prime factor > √N form a MulCardSet
 of size ≥ (log 2)N.
 -/
-axiom log2_lower_bound :
-    ∀ᶠ N in atTop,
-      let A := {n ∈ Set.Icc 1 N | ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n}
-      IsMulCardSet A ∧ (Real.log 2 : ℝ) * N ≤ A.ncard
-
 /-
 ## Why These Sets Work
 

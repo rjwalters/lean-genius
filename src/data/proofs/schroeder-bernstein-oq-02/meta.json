@@ -1,0 +1,195 @@
+{
+  "id": "schroeder-bernstein-oq-02",
+  "title": "Knaster-Tarski Proof of Schroeder-Bernstein",
+  "slug": "schroeder-bernstein-oq-02",
+  "description": "The Schroeder-Bernstein theorem proved via the Knaster-Tarski fixed point theorem: the monotone operator T(S) = (range g)ᶜ ∪ g''(f''S) on Set α has a least fixed point S* that partitions α into the bijection h(a) = f(a) for a ∈ S*, h(a) = g⁻¹(a) otherwise.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026-03-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchroederBernsteinOQ02.lean",
+    "tags": [
+      "set-theory",
+      "lattice-theory",
+      "fixed-point",
+      "cardinality",
+      "bijections",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "OrderHom.lfp",
+        "description": "Least fixed point of a monotone function on a complete lattice (Knaster-Tarski)",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "OrderHom.map_lfp",
+        "description": "The least fixed point is a fixed point: f(lfp) = lfp",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "Equiv.ofBijective",
+        "description": "Construct an equivalence from a bijective function",
+        "module": "Mathlib.Logic.Equiv.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of Knaster-Tarski CBS operator T(S) = (range g)ᶜ ∪ g''(f''S)",
+      "Explicit least fixed point S* via Mathlib's OrderHom.lfp",
+      "Piecewise bijection construction from fixed point partition",
+      "Full injectivity proof via four-case analysis with g∘f closure",
+      "Full surjectivity proof via contrapositive fixed point argument"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 223,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "The Knaster-Tarski fixed point theorem (1928/1955) states that every monotone endomorphism of a complete lattice has a least fixed point. Tarski observed that the Schroeder-Bernstein theorem is a direct consequence: given injections f : α → β and g : β → α, the operator T(S) = α \\ g(β \\ f(S)) on the power set lattice P(α) is monotone, and its fixed point yields the bijection.\n\nThis connection was noted by Knaster and Tarski but is less well-known than the orbit decomposition proof. It reveals CBS as an instance of a fundamental lattice-theoretic principle, connecting cardinal arithmetic to order theory.\n\nThe proof is conceptually the simplest: no orbit classification, no induction, just one application of the fixed point theorem.",
+    "problemStatement": "**Open Question (OQ-02)**: Can we formalize the Knaster-Tarski proof variant in Lean, making the fixed point explicit?\n\n**Answer**: Yes. The operator $T(S) = (\\text{range}\\ g)^c \\cup g''(f''(S))$ on the complete lattice $\\text{Set}\\ \\alpha$ is monotone. Its least fixed point $S^* = \\text{lfp}(T)$ (via Mathlib's `OrderHom.lfp`) partitions $\\alpha$ into two pieces:\n- $a \\in S^*$: use $f(a)$ (the forward injection)\n- $a \\notin S^*$: use $g^{-1}(a)$ (well-defined since $a \\in \\text{range}\\ g$)\n\nThe resulting function $h : \\alpha \\to \\beta$ is a bijection.",
+    "proofStrategy": "1. **Define the operator**: $T(S) = (\\text{range}\\ g)^c \\cup g''(f''(S))$ maps subsets of $\\alpha$ to subsets of $\\alpha$. It is monotone because $\\text{Set.image}$ preserves inclusion.\n\n2. **Apply Knaster-Tarski**: By `OrderHom.lfp`, $T$ has a least fixed point $S^* = T(S^*)$ on the complete lattice $\\text{Set}\\ \\alpha$.\n\n3. **Extract properties**: From $S^* = (\\text{range}\\ g)^c \\cup g''(f''(S^*))$:\n   - $(\\text{range}\\ g)^c \\subseteq S^*$ (base inclusion)\n   - $S^{*c} \\subseteq \\text{range}\\ g$ (contrapositive: $g^{-1}$ is defined outside $S^*$)\n   - $g''(f''(S^*)) \\subseteq S^*$ (closure under $g \\circ f$)\n\n4. **Build the bijection**: Injectivity: four cases by $S^*$-membership. Mixed cases give contradictions via the closure property. Surjectivity: for $b \\in \\beta$, either $b \\in f''(S^*)$ or $g(b) \\notin S^*$.",
+    "keyInsights": [
+      "**One-Line Core**: The entire proof strategy is 'apply Knaster-Tarski to T(S) = (range g)ᶜ ∪ g''(f''S)'. Everything else is bookkeeping.",
+      "**No Orbits Needed**: Unlike the standard proof, there is no orbit classification (Type A/B/C). The lattice fixed point handles the partition automatically.",
+      "**Connection to Lattice Theory**: Schroeder-Bernstein is an instance of Knaster-Tarski on the power set lattice, connecting cardinal arithmetic to order theory.",
+      "**Fixed Point Is Explicit**: Unlike the classical Mathlib proof (which uses Classical.choice internally), the partition set S* is explicitly constructed as OrderHom.lfp and can be inspected.",
+      "**Three Proof Variants**: The gallery now has three CBS proofs: orbit decomposition (parent), Knaster-Tarski (this), and constructive finite (OQ-04), each using fundamentally different methods."
+    ],
+    "text": "A Knaster-Tarski proof of the Schroeder-Bernstein theorem in 207 lines, using Mathlib's OrderHom.lfp for the fixed point. The monotone operator T(S) = (range g)ᶜ ∪ g''(f''S) on Set α has a least fixed point S* that partitions α for the bijection. Fully verified: 0 sorries, 0 axioms.",
+    "prerequisites": [
+      "Complete lattices and monotone functions (Knaster-Tarski theorem)",
+      "Set operations: image, range, complement, union",
+      "Injective functions and their properties",
+      "OrderHom (bundled monotone functions) in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "operator",
+      "title": "The Monotone Operator",
+      "startLine": 40,
+      "endLine": 62,
+      "summary": "Definition of the CBS operator T(S) = (range g)ᶜ ∪ g''(f''S) and proof of monotonicity.",
+      "mathContext": "Define $T : \\mathcal{P}(\\alpha) \\to \\mathcal{P}(\\alpha)$ by $T(S) = (\\text{range}\\ g)^c \\cup g''(f''(S))$. Since $S \\subseteq S'$ implies $f''(S) \\subseteq f''(S')$ implies $g''(f''(S)) \\subseteq g''(f''(S'))$, the operator $T$ is monotone."
+    },
+    {
+      "id": "fixed-point",
+      "title": "The Knaster-Tarski Fixed Point",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "S* = lfp(T) via OrderHom.lfp. Proof that T(S*) = S*.",
+      "mathContext": "By the Knaster-Tarski theorem, every monotone endomorphism of a complete lattice has a least fixed point. Since $\\mathcal{P}(\\alpha) = \\text{Set}\\ \\alpha$ is a complete lattice and $T$ is monotone, $S^* = \\text{lfp}(T)$ exists and satisfies $T(S^*) = S^*$."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of S*",
+      "startLine": 79,
+      "endLine": 120,
+      "summary": "Key structural properties: complement of range ⊆ S*, closure under g∘f, and the contrapositive for surjectivity.",
+      "mathContext": "From $S^* = (\\text{range}\\ g)^c \\cup g''(f''(S^*))$: (1) $(\\text{range}\\ g)^c \\subseteq S^*$ trivially. (2) $a \\notin S^* \\Rightarrow a \\in \\text{range}\\ g$ by contrapositive. (3) $g''(f''(S^*)) \\subseteq S^*$ from the union. (4) If $g(b) \\in S^*$ then $b \\in f''(S^*)$ using injectivity of $g$."
+    },
+    {
+      "id": "bijection",
+      "title": "The Bijection",
+      "startLine": 122,
+      "endLine": 145,
+      "summary": "Piecewise bijection definition and basic specifications.",
+      "mathContext": "Define $h(a) = f(a)$ if $a \\in S^*$, $h(a) = g^{-1}(a)$ if $a \\notin S^*$. The function $g^{-1}$ is well-defined on $S^{*c}$ because $S^{*c} \\subseteq \\text{range}\\ g$. Specification: $h(a) = f(a)$ for $a \\in S^*$, and $g(h(a)) = a$ for $a \\notin S^*$."
+    },
+    {
+      "id": "injectivity",
+      "title": "Injectivity",
+      "startLine": 147,
+      "endLine": 172,
+      "summary": "Four-case proof that h is injective.",
+      "mathContext": "Four cases for $a_1, a_2$ with $h(a_1) = h(a_2)$: (1) Both in $S^*$: $f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$ by injectivity of $f$. (2,3) One in $S^*$, one not: $g(f(a_i)) = a_j$ but $g(f(a_i)) \\in S^*$ by closure, contradicting $a_j \\notin S^*$. (4) Both outside $S^*$: $g(h(a_1)) = g(h(a_2)) \\Rightarrow a_1 = a_2$."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Surjectivity",
+      "startLine": 174,
+      "endLine": 186,
+      "summary": "Two-case proof that h is surjective.",
+      "mathContext": "For $b \\in \\beta$: (1) If $b \\in f''(S^*)$, then $b = f(a)$ for some $a \\in S^*$, so $h(a) = b$. (2) If $b \\notin f''(S^*)$, then $g(b) \\notin S^*$ (since $g(b) \\in S^* \\Rightarrow b \\in f''(S^*)$ by the preimage lemma). So $h(g(b)) = g^{-1}(g(b)) = b$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorems",
+      "startLine": 188,
+      "endLine": 207,
+      "summary": "Full Schroeder-Bernstein theorem recovered via the Knaster-Tarski construction.",
+      "mathContext": "Combining injectivity and surjectivity: given injections $f : \\alpha \\hookrightarrow \\beta$ and $g : \\beta \\hookrightarrow \\alpha$, there exists a bijection $\\alpha \\simeq \\beta$, constructed explicitly via the Knaster-Tarski fixed point."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified Knaster-Tarski proof of the Schroeder-Bernstein theorem. The monotone operator T(S) = (range g)ᶜ ∪ g''(f''S) has its least fixed point computed via Mathlib's OrderHom.lfp, yielding the partition for the bijection.",
+    "implications": "**Three Proof Methods Formalized**: The gallery now contains three fundamentally different CBS proofs: orbit decomposition (classical, via Mathlib), Knaster-Tarski (lattice-theoretic, this proof), and constructive finite (decidable, OQ-04). This demonstrates the theorem's deep connections across set theory, lattice theory, and constructive mathematics.\n\n**Lattice Theory Connection**: By making the Knaster-Tarski structure explicit, this proof invites generalizations: any monotone operator on a complete lattice has fixed points, and many existence results in mathematics can be recast in this framework.",
+    "openQuestions": [
+      "The Knaster-Tarski fixed point is the *least* fixed point of T. Is the greatest fixed point S** = gfp(T) equally useful? What is S** ∖ S* geometrically?",
+      "Can the Knaster-Tarski approach be extended to prove the Schroeder-Bernstein property in specific categories (e.g., well-ordered sets, divisible abelian groups)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "parent",
+      "description": "Parent proof using Mathlib's orbit-based Function.Embedding.schroeder_bernstein. This OQ-02 provides an alternative Knaster-Tarski proof of the same theorem."
+    },
+    {
+      "targetId": "schroeder-bernstein-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04: constructive CBS for finite types using iterated expansion and pigeonhole. Both are alternative CBS proofs; this one uses lattice theory, OQ-04 uses decidable computation."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Order.FixedPoints",
+      "Mathlib.Data.Set.Lattice",
+      "Mathlib.Logic.Equiv.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "KnasterTarskiCBS",
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 5
+  },
+  "mainTheorems": [
+    {
+      "name": "knasterTarski_schroeder_bernstein",
+      "type": "core",
+      "description": "Mutual injections imply bijection, proved via Knaster-Tarski fixed point",
+      "leanType": "(f : α → β) → (g : β → α) → Function.Injective f → Function.Injective g → ∃ h : α → β, Function.Bijective h"
+    },
+    {
+      "name": "knasterTarski_equiv",
+      "type": "core",
+      "description": "Construct an Equiv α β from mutual injections via Knaster-Tarski",
+      "leanType": "(f : α → β) → (g : β → α) → Function.Injective f → Function.Injective g → α ≃ β"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Knaster, Bronisław",
+      "title": "Un théorème sur les fonctions d'ensembles",
+      "year": "1928",
+      "venue": "Annales de la Société Polonaise de Mathématique",
+      "note": "Original fixed point theorem for monotone functions on power sets"
+    },
+    {
+      "authors": "Tarski, Alfred",
+      "title": "A lattice-theoretical fixpoint theorem and its applications",
+      "year": "1955",
+      "venue": "Pacific Journal of Mathematics",
+      "note": "Generalization to complete lattices; notes the CBS application"
+    }
+  ]
+}

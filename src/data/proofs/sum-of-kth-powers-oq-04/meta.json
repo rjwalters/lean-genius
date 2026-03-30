@@ -1,0 +1,155 @@
+{
+  "id": "sum-of-kth-powers-oq-04",
+  "title": "Euler-Maclaurin Asymptotics for Power Sums",
+  "slug": "sum-of-kth-powers-oq-04",
+  "description": "Asymptotic formula for power sums: sum_{i=0}^{n-1} i^k / n^{k+1} -> 1/(k+1) as n -> infinity. Axiomatizes Bernoulli polynomial leading behavior and monic polynomial asymptotics. Proves k=0 and k=1 special cases exactly.",
+  "meta": {
+    "author": "Euler (1738), Maclaurin (1742), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%E2%80%93Maclaurin_formula",
+    "date": "1738",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SumOfKthPowersOQ04.lean",
+    "tags": [
+      "analysis",
+      "number-theory",
+      "asymptotics",
+      "bernoulli-numbers",
+      "open-question"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: monic_poly_ratio_tendsto (p(n)/n^d -> 1). bernoulli_poly_leading previously axiomatized, now proved from coeff_bernoulli. 1 sorry: powerSumRatio_tendsto (requires combining Faulhaber with filter limits).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.bernoulli",
+        "description": "Bernoulli polynomials",
+        "module": "Mathlib.NumberTheory.BernoulliPolynomials"
+      },
+      {
+        "theorem": "Finset.sum_range_pow_eq_bernoulli_sub",
+        "description": "Faulhaber's formula via Bernoulli polynomial evaluation",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      }
+    ],
+    "originalContributions": [
+      "powerSumRatio definition: normalized ratio for asymptotic analysis",
+      "Gauss sum over Q (proved by induction)",
+      "powerSumRatio_k0: exact formula for k=0 case",
+      "powerSumRatio_k1: exact formula for k=1 using Gauss sum",
+      "powerSumRatio_tendsto statement: general asymptotic 1/(k+1)"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 126,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "prerequisites": [
+      "Power sums and Faulhaber's formula",
+      "Bernoulli numbers and polynomials",
+      "Filter limits and topological convergence"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Euler-Maclaurin formula, discovered independently by Euler (1738) and Maclaurin (1742), connects discrete sums to integrals with correction terms involving Bernoulli numbers. The simplest consequence is the asymptotic formula: for power sums, the ratio sum_{i<n} i^k / n^{k+1} converges to 1/(k+1) as n -> infinity, matching the integral of x^k from 0 to 1.",
+    "problemStatement": "$$\\frac{\\sum_{i=0}^{n-1} i^k}{n^{k+1}} \\to \\frac{1}{k+1} \\quad \\text{as } n \\to \\infty$$",
+    "text": "A 101-line formalization of asymptotic power sum behavior. Defines the normalized power sum ratio, axiomatizes Bernoulli polynomial leading behavior, and proves exact formulas for k=0 (trivial) and k=1 (via Gauss sum). The general asymptotic theorem is stated with proof strategy documented.",
+    "proofStrategy": "The proof uses Faulhaber's formula: (k+1) * sum i^k = B_{k+1}(n) - B_{k+1}(0), where B_{k+1} is the Bernoulli polynomial. Since B_{k+1} is monic of degree k+1, the ratio B_{k+1}(n)/n^{k+1} -> 1, giving sum i^k / n^{k+1} -> 1/(k+1).",
+    "keyInsights": [
+      "The asymptotic 1/(k+1) matches the integral of x^k from 0 to 1 — this is the Riemann sum interpretation",
+      "Faulhaber's formula provides the exact algebraic connection between power sums and Bernoulli polynomials",
+      "The k=1 case (n-1)/(2n) -> 1/2 is proved from the Gauss sum formula"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Power Sum Ratio Definition",
+      "startLine": 34,
+      "endLine": 39,
+      "summary": "Defines powerSumRatio k n = sum_{i<n} i^k / n^{k+1}.",
+      "mathContext": "$R_k(n) = \\frac{\\sum_{i=0}^{n-1} i^k}{n^{k+1}}$"
+    },
+    {
+      "id": "axioms",
+      "title": "Bernoulli Polynomial Axioms",
+      "startLine": 41,
+      "endLine": 50,
+      "summary": "Axiomatizes: B_{k+1} is monic of degree k+1, and monic polynomial ratios tend to 1.",
+      "mathContext": "$B_{k+1}$ monic of degree $k+1$; $p(n)/n^d \\to 1$ for monic $p$ of degree $d$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Asymptotic Theorem",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "States powerSumRatio k -> 1/(k+1). The sorry requires combining Faulhaber with filter limits.",
+      "mathContext": "$R_k(n) \\to \\frac{1}{k+1}$ as $n \\to \\infty$"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases k=0, k=1",
+      "startLine": 70,
+      "endLine": 101,
+      "summary": "Proves exact formulas: powerSumRatio 0 n = 1, and powerSumRatio 1 n = (n-1)/(2n).",
+      "mathContext": "$R_0(n) = 1$, $R_1(n) = \\frac{n-1}{2n}$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "extends",
+      "description": "Extends the power sum formulas with asymptotic analysis"
+    }
+  ],
+  "conclusion": {
+    "summary": "The asymptotic formula sum i^k / n^{k+1} -> 1/(k+1) is stated and the k=0 and k=1 cases are proved. The general case remains as a sorry requiring filter limit manipulation with Faulhaber's formula.",
+    "implications": "Connects discrete power sums to continuous integration via the Riemann sum interpretation, laying groundwork for a full Euler-Maclaurin formalization in Lean 4.",
+    "openQuestions": [
+      "Can the full Euler-Maclaurin formula with Bernoulli correction terms be formalized?",
+      "Can the error term in the Euler-Maclaurin approximation be bounded?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Methodus generalis summandi progressiones",
+      "year": "1738",
+      "venue": "Commentarii Academiae Scientiarum Petropolitanae 6, 68-97"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Bernoulli",
+      "Mathlib.NumberTheory.BernoulliPolynomials",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "SumOfKthPowersAsymptotic",
+    "lineCount": 126,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "powerSumRatio_tendsto",
+      "type": "core",
+      "description": "Power sum ratio tends to 1/(k+1)",
+      "leanType": "Tendsto (powerSumRatio k) atTop (nhds (1 / (k + 1 : Q)))"
+    },
+    {
+      "name": "powerSumRatio_k1",
+      "type": "supporting",
+      "description": "Exact formula for k=1: (n-1)/(2n)",
+      "leanType": "powerSumRatio 1 n = (n - 1) / (2 * n)"
+    }
+  ]
+}

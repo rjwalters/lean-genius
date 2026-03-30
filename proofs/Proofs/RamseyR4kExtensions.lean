@@ -1044,9 +1044,22 @@ theorem cgms_exponentially_better :
       ∀ C > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
         C * (4 - ε) ^ k < 4 ^ k := by
   intro ε hε hε4 C hC
-  -- (4-ε)/4 < 1, so ((4-ε)/4)^k → 0
-  -- For large enough k, C * (4-ε)^k < 4^k
-  sorry
+  -- Key: (4-ε)/4 < 1 and ≥ 0, so ((4-ε)/4)^k → 0
+  have hr_nn : (0 : ℝ) ≤ (4 - ε) / 4 := by positivity
+  have hr_lt : (4 - ε) / 4 < 1 := by linarith
+  -- Find k₀ such that ((4-ε)/4)^k₀ < 1/C
+  obtain ⟨k₀, hk₀⟩ := exists_pow_lt_of_lt_one (by positivity : (0 : ℝ) < 1 / C) hr_lt
+  exact ⟨k₀, fun k hk => by
+    -- ((4-ε)/4)^k ≤ ((4-ε)/4)^k₀ < 1/C since k ≥ k₀ and base ∈ [0,1)
+    have hrk : ((4 - ε) / 4) ^ k ≤ ((4 - ε) / 4) ^ k₀ :=
+      pow_le_pow_of_le_one hr_nn (le_of_lt hr_lt) hk
+    have hrk_bound : ((4 - ε) / 4) ^ k < 1 / C := lt_of_le_of_lt hrk hk₀
+    -- Rewrite: ((4-ε)/4)^k = (4-ε)^k / 4^k
+    rw [div_pow] at hrk_bound
+    -- (4-ε)^k / 4^k < 1/C, multiply through
+    have h4k_pos : (0 : ℝ) < (4 : ℝ) ^ k := by positivity
+    rw [div_lt_div_iff h4k_pos hC, one_mul, mul_comm] at hrk_bound
+    exact hrk_bound⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 Part XI: OFF-DIAGONAL RAMSEY AND GRAPH RAMSEY THEORY

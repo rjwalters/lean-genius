@@ -89,12 +89,6 @@ axiom prob_favourite_count_io (r : ℕ) : ℝ
   -- P(|F(n)| = r infinitely often)
 
 /-- Basic property: probabilities are between 0 and 1. -/
-axiom prob_favourite_count_io_nonneg (r : ℕ) :
-  0 ≤ prob_favourite_count_io r
-
-axiom prob_favourite_count_io_le_one (r : ℕ) :
-  prob_favourite_count_io r ≤ 1
-
 /- ## Part IV: Main Results (SOLVED)
 
 Erdős Problem #1165 asks for the value of

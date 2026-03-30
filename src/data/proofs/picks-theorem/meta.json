@@ -49,9 +49,9 @@
       "definitions": 11,
       "instances": 0
     },
-    "axiomCount": 2,
-    "lineCount": 489,
-    "assumptions": "2 axiom(s): picks_theorem, area_bounded_by_box_axiom. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 484,
+    "assumptions": "1 axiom: picks_theorem (the main theorem statement). Removed inconsistent area_bounded_by_box_axiom (claimed A(P) ≤ w_x*w_y for all w_x,w_y without containment hypothesis).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -217,7 +217,7 @@
     ],
     "opens": [],
     "namespace": "PicksTheorem",
-    "lineCount": 489,
+    "lineCount": 484,
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 14

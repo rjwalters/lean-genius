@@ -1,0 +1,240 @@
+{
+  "id": "shannon-entropy-oq-02",
+  "title": "Kolmogorov Complexity and Shannon Entropy",
+  "slug": "shannon-entropy-oq-02",
+  "description": "H(X) = E[K(X)] + O(1): the fundamental link between information-theoretic and algorithmic notions of information. Shannon entropy equals expected Kolmogorov complexity up to a constant for computable distributions.",
+  "meta": {
+    "author": "Shannon (1948), Kolmogorov (1965), Chaitin (1966)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kolmogorov_complexity",
+    "date": "1965",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShannonEntropyOQ02.lean",
+    "tags": [
+      "information-theory",
+      "computability",
+      "entropy",
+      "kolmogorov-complexity",
+      "advanced",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: Kolmogorov complexity function K (1), Kraft inequality for K values ∑ 2^(-K(x)) ≤ 1 (1), coding theorem K(x) ≤ ⌈-log₂ p(x)⌉ + c for computable p (1). All axioms encode properties of prefix-free Kolmogorov complexity that require Turing machine formalization.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_le_sub_one_of_pos",
+        "description": "ln(t) <= t - 1 for t > 0, the fundamental inequality for KL divergence",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.le_ceil",
+        "description": "x <= ceil(x) for real x",
+        "module": "Mathlib.Topology.Algebra.Order.Ceil"
+      },
+      {
+        "theorem": "Real.exp_le_exp",
+        "description": "Monotonicity of exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized prefix-free Kolmogorov complexity with 3 minimal properties",
+      "Entropy lower bound: H(X) <= E[K(X)] * ln 2 via Kraft inequality",
+      "Entropy upper bound: E[K(X)] * ln 2 < H(X) + (c+1) * ln 2 via Shannon coding",
+      "Combined entropy-complexity equivalence theorem",
+      "Uniform distribution: E[K(X)] approx log_2(n) (incompressibility)",
+      "Self-contained proofs of source coding theorem and Shannon code Kraft validity"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 383,
+    "theoremCount": 12,
+    "definitionCount": 4,
+    "prerequisites": [
+      "Shannon entropy and its properties",
+      "Kraft inequality and prefix-free codes",
+      "Source coding theorem (noiseless coding)",
+      "Kolmogorov complexity (algorithmic information theory)",
+      "KL divergence non-negativity"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kolmogorov complexity, introduced independently by Solomonoff (1960), Kolmogorov (1965), and Chaitin (1966), measures the algorithmic content of individual strings: K(x) is the length of the shortest program that outputs x. Shannon entropy H(X), introduced by Shannon (1948), measures the average information content of a random variable. The connection between these two foundational notions of information is one of the deepest results in information theory: for any computable distribution P, the expected Kolmogorov complexity E[K(X)] equals the Shannon entropy H(X) up to a constant that depends only on the universal Turing machine, not on the distribution.\n\nThis equivalence has profound implications: it shows that Shannon's operational notion of information (minimum average bits for compression) and Kolmogorov's algorithmic notion (shortest program length) are two views of the same quantity. The proof uses the source coding theorem: K(x) values form a prefix-free code (by the definition of prefix-free Kolmogorov complexity), so the source coding lower bound applies; conversely, any computable distribution provides an encoding scheme, giving the upper bound.",
+    "problemStatement": "For a discrete random variable X with computable probability mass function p:\n\n$$H(X) \\leq \\mathbb{E}[K(X)] \\cdot \\ln 2 < H(X) + (c+1) \\cdot \\ln 2$$\n\nwhere K(x) is the prefix-free Kolmogorov complexity and c is a constant depending only on the universal Turing machine.\n\nDividing by ln 2 (converting to bits): $H_2(X) \\leq \\mathbb{E}[K(X)] < H_2(X) + c + 1$.",
+    "text": "A 383-line formalization connecting Kolmogorov complexity to Shannon entropy. Kolmogorov complexity is axiomatized with 3 minimal properties: the function K itself, Kraft inequality (from prefix-freeness), and the coding theorem bound. The main results are: (1) H(X) <= E[K(X)] * ln 2, proved from the source coding theorem applied to K (which satisfies Kraft's inequality by prefix-freeness); (2) E[K(X)] * ln 2 < H(X) + (c+1) * ln 2, proved by bounding K(x) against Shannon code lengths plus a constant; (3) the combined entropy-complexity equivalence showing |H(X) - E[K(X)] * ln 2| = O(1). The source coding theorem and Shannon code Kraft validity are proved from scratch using the KL divergence pointwise bound.",
+    "proofStrategy": "The proof proceeds in two directions:\n\n**Lower bound (H <= E[K] * ln 2):**\n1. Kolmogorov descriptions form a prefix-free code, so their lengths satisfy Kraft's inequality\n2. The source coding theorem (proved via KL divergence) says: for any Kraft-valid code, E[l(X)] * ln 2 >= H(X)\n3. Applying this to K gives: E[K(X)] * ln 2 >= H(X)\n\n**Upper bound (E[K] * ln 2 < H + O(1)):**\n1. The coding theorem (axiomatized) says: K(x) <= ceil(-log_2 p(x)) + c for computable p\n2. The Shannon code has lengths l_S(x) = ceil(-log_2 p(x))\n3. So E[K(X)] <= E[l_S(X)] + c\n4. The Shannon code upper bound says: E[l_S(X)] * ln 2 < H(X) + ln 2\n5. Combining: E[K(X)] * ln 2 < H(X) + (c+1) * ln 2",
+    "keyInsights": [
+      "Prefix-free Kolmogorov complexity satisfies Kraft's inequality, making it a valid code in the source coding sense",
+      "The source coding theorem provides the lower bound: no prefix-free code (including K) can compress below entropy on average",
+      "The coding theorem provides the upper bound: any computable distribution yields a code with K(x) <= -log_2(p(x)) + O(1)",
+      "The constant c depends on the universal Turing machine but not on the distribution, making the equivalence truly universal",
+      "For the uniform distribution, E[K(X)] = log_2(n) + O(1), implying most strings of length n are incompressible"
+    ],
+    "prerequisites": [
+      "Shannon entropy and its properties",
+      "Kraft inequality and prefix-free codes",
+      "Source coding theorem (noiseless coding)",
+      "Kolmogorov complexity (algorithmic information theory)",
+      "KL divergence non-negativity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kolmogorov-axioms",
+      "title": "Axiomatized Kolmogorov Complexity",
+      "startLine": 34,
+      "endLine": 59,
+      "summary": "Axiomatizes prefix-free Kolmogorov complexity K(x) with the function definition and Kraft inequality (∑ 2^(-K(x)) ≤ 1 from prefix-freeness).",
+      "mathContext": "$K: \\alpha \\to \\mathbb{N}$, $\\sum_x 2^{-K(x)} \\leq 1$"
+    },
+    {
+      "id": "entropy-infrastructure",
+      "title": "Entropy and Code Length Infrastructure",
+      "startLine": 61,
+      "endLine": 76,
+      "summary": "Defines Shannon entropy H(p), expected Kolmogorov complexity E[K(X)], and Kraft validity for code lengths.",
+      "mathContext": "$H(p) = -\\sum p(x) \\ln p(x)$, $E[K(X)] = \\sum p(x) K(x)$"
+    },
+    {
+      "id": "auxiliary-lemmas",
+      "title": "Auxiliary Lemmas",
+      "startLine": 78,
+      "endLine": 103,
+      "summary": "Proves the pointwise KL bound p*ln(p/q) >= p-q, positivity of Kraft terms 2^(-l), and the logarithm identity ln(2^(-l)) = -l*ln(2).",
+      "mathContext": "$p \\ln(p/q) \\geq p - q$ from $\\ln t \\leq t - 1$"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: H(X) <= E[K(X)] * ln 2",
+      "startLine": 105,
+      "endLine": 162,
+      "summary": "Proves the source coding theorem (any Kraft-valid code has E[l] * ln 2 >= H) and applies it to Kolmogorov complexity.",
+      "mathContext": "$H(X) \\leq E[K(X)] \\cdot \\ln 2$ via Kraft inequality and KL divergence non-negativity"
+    },
+    {
+      "id": "coding-theorem-axioms",
+      "title": "Coding Theorem Axioms",
+      "startLine": 164,
+      "endLine": 189,
+      "summary": "Axiomatizes the algorithmic coding theorem: K(x) <= ceil(-log_2 p(x)) + c for computable distributions p.",
+      "mathContext": "$K(x) \\leq \\lceil -\\log_2 p(x) \\rceil + c$"
+    },
+    {
+      "id": "shannon-code",
+      "title": "Shannon Code Infrastructure",
+      "startLine": 191,
+      "endLine": 262,
+      "summary": "Defines Shannon code lengths, proves Kraft validity, and proves the Shannon code upper bound E[l_S] * ln 2 < H + ln 2.",
+      "mathContext": "$l_S(x) = \\lceil -\\log_2 p(x) \\rceil$ satisfies Kraft, and $E[l_S] \\cdot \\ln 2 < H + \\ln 2$"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound: E[K(X)] * ln 2 < H(X) + O(1)",
+      "startLine": 264,
+      "endLine": 340,
+      "summary": "Proves the upper bound by combining K(x) <= l_S(x) + c with the Shannon code upper bound.",
+      "mathContext": "$E[K(X)] \\cdot \\ln 2 < H(X) + (c+1) \\cdot \\ln 2$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Entropy-Complexity Equivalence",
+      "startLine": 342,
+      "endLine": 347,
+      "summary": "The combined theorem: for any computable distribution, H(X) and E[K(X)] * ln 2 differ by at most (c+1) * ln 2.",
+      "mathContext": "$H(X) \\leq E[K(X)] \\cdot \\ln 2 < H(X) + (c+1) \\cdot \\ln 2$"
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Uniform Distribution and Incompressibility",
+      "startLine": 349,
+      "endLine": 383,
+      "summary": "Shows that for the uniform distribution, E[K(X)] = log_2(n) + O(1), the incompressibility theorem.",
+      "mathContext": "$E[K(X)] \\approx \\log_2 n$ for uniform $X$ on $n$ elements"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "extends",
+      "description": "Parent formalization of Shannon entropy — this proof establishes its connection to algorithmic information"
+    },
+    {
+      "targetId": "shannon-entropy-oq-03",
+      "relationship": "related",
+      "description": "Strong subadditivity — uses the same entropy infrastructure"
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "uses",
+      "description": "Source coding theorem infrastructure: Kraft inequality, entropy lower bound on code length"
+    }
+  ],
+  "conclusion": {
+    "summary": "The entropy-complexity equivalence H(X) = E[K(X)] + O(1) bridges Shannon's information theory and Kolmogorov's algorithmic information theory. The lower bound uses Kraft's inequality (prefix-free K values form a valid code) and the source coding theorem. The upper bound uses the coding theorem (computable distributions provide efficient encodings). Together, they show that the two most fundamental measures of information content agree up to a universal constant.",
+    "implications": "This formalization demonstrates that:\n\n1. **Shannon and Kolmogorov agree**: Information-theoretic and algorithmic notions of information content are equivalent on average for computable sources.\n\n2. **Incompressibility**: Most strings of length n have K(x) close to n bits — random strings cannot be compressed.\n\n3. **Source coding completeness**: The source coding theorem captures not just the operational limits of compression but also the algorithmic limits.\n\n4. **Foundation for MDL**: The minimum description length principle in statistics rests on this equivalence — model selection via shortest programs is asymptotically optimal.",
+    "openQuestions": [
+      "Can the 3 remaining axioms be derived from a formalization of prefix-free Turing machines? (3 unused axioms were already eliminated)",
+      "Can the individual randomness theorem (K(x) >= -log p(x) - O(1) for most x) be formalized, strengthening the average result to a concentration bound?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Kolmogorov, Andrei N.",
+      "title": "Three Approaches to the Quantitative Definition of Information",
+      "year": "1965",
+      "venue": "Problems of Information Transmission 1(1), 1-7",
+      "note": "Introduced algorithmic complexity as the length of the shortest binary program producing a string"
+    },
+    {
+      "authors": "Chaitin, Gregory J.",
+      "title": "On the Length of Programs for Computing Finite Binary Sequences",
+      "year": "1966",
+      "venue": "Journal of the ACM 13(4), 547-569",
+      "note": "Independent introduction of algorithmic complexity with emphasis on the prefix-free variant"
+    },
+    {
+      "authors": "Cover, Thomas M.; Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley, 2nd edition, Chapter 14",
+      "note": "Chapter 14 presents the entropy-complexity connection and the coding theorem for computable distributions"
+    },
+    {
+      "authors": "Li, Ming; Vitanyi, Paul",
+      "title": "An Introduction to Kolmogorov Complexity and Its Applications",
+      "year": "2019",
+      "venue": "Springer, 4th edition",
+      "note": "Comprehensive reference on algorithmic information theory — Chapter 2 covers the Shannon-Kolmogorov connection"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "InformationTheory.KolmogorovEntropy",
+    "lineCount": 383,
+    "axiomCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 4
+  },
+  "mainTheorems": [
+    {
+      "name": "entropy_complexity_equivalence",
+      "type": "core",
+      "description": "H(X) <= E[K(X)] * ln 2 < H(X) + (c+1) * ln 2 for computable distributions",
+      "leanType": "exists c, shannonEntropy p <= expectedComplexity p K * log 2 and expectedComplexity p K * log 2 < shannonEntropy p + (c+1) * log 2"
+    },
+    {
+      "name": "entropy_le_expected_complexity",
+      "type": "core",
+      "description": "Lower bound: H(X) <= E[K(X)] * ln 2 from Kraft inequality",
+      "leanType": "shannonEntropy p <= expectedComplexity p (kolmogorovComplexity (Fin n)) * log 2"
+    }
+  ]
+}

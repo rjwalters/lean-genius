@@ -265,12 +265,15 @@ theorem erdos1183_F_ge_f (n : ℕ) : erdos1183_F n ≥ erdos1183_f n := by
     · intro A hA; exact absurd hA (Finset.not_mem_empty A)
   · exact achievableSublattice_subset_unionClosed n
 
-/-- Open: What is the growth rate of f(n)? (Erdős had no conjecture.) -/
-axiom erdos1183_f_growth :
+/-- Open conjecture: f(n) is at most linear in n. Erdős had no conjecture
+    for the growth rate. Stated as a Prop (not axiom) since unresolved. -/
+def erdos1183_f_growth_conjecture : Prop :=
     ∃ C : ℕ, 0 < C ∧ ∀ n : ℕ, erdos1183_f n ≤ C * (n + 1)
 
-/-- Open: Is F(n) superpolynomial? I.e., F(n) ≥ n^{ω(n)} with ω → ∞. -/
-axiom erdos1183_F_superpolynomial :
+/-- Open conjecture: F(n) is superpolynomial, i.e., F(n) ≥ n^{ω(n)} with ω → ∞.
+    Howorka proved this for same-size colorings [Er78]. General case open.
+    Stated as a Prop (not axiom) since unresolved. -/
+def erdos1183_F_superpolynomial_conjecture : Prop :=
     ∃ ω : ℕ → ℕ, (∀ M, ∃ N, ∀ n, n ≥ N → ω n ≥ M) ∧
       ∀ n : ℕ, 2 ≤ n → erdos1183_F n ≥ n ^ ω n
 

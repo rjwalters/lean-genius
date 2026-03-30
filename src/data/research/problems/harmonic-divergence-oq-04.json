@@ -1,0 +1,94 @@
+{
+  "slug": "harmonic-divergence-oq-04",
+  "title": "harmonic-divergence-oq-04",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For f : N -> R with f >= 0 and f antitone: Summable f <-> Summable (fun k => 2^k * f(2^k))",
+    "plain": "Can Oresme's grouping argument be generalized to characterize all divergent series with terms decreasing to zero?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T19:03:47-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full formalization of Cauchy condensation test as generalization of Oresme. 9 theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "HarmonicDivergenceOQ04.lean: 9 theorems, 0 axioms, 0 sorries (113 lines)",
+      "Gallery entry: src/data/proofs/harmonic-divergence-oq-04/"
+    ],
+    "insights": [
+      "Cauchy condensation test completely generalizes Oresme: Summable f <-> Summable (2^k*f(2^k))",
+      "Oresme is the special case f(n)=1/n: condensed series = Sigma 1 diverges trivially",
+      "Mathlib has full condensation test (summable_condensed_iff_of_nonneg) and Schlomilch generalization",
+      "The characterization is biconditional (necessary AND sufficient), not just a sufficient test"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: harmonic-divergence-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "harmonic-divergence",
+    "harmonic-divergence-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.213Z",
+  "lastUpdate": "2026-03-30T02:13:21.224Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/HarmonicDivergence.lean",
+      "filename": "HarmonicDivergence.lean",
+      "lineCount": 182,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergence.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ01.lean",
+      "filename": "HarmonicDivergenceOQ01.lean",
+      "lineCount": 254,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ04.lean",
+      "filename": "HarmonicDivergenceOQ04.lean",
+      "lineCount": 107,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ04.lean"
+    }
+  ]
+}

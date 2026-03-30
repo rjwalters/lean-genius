@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 12,
+    "sorries": 9,
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
     "erdosProblemStatus": "open",
@@ -65,15 +65,15 @@
       "erdos-1048",
       "erdos-1050"
     ],
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607), chowla_conjecture_open (open status marker), lambert_arithmetic_property (Lambert series arithmetic property placeholder), partial_rational_results (partial progress placeholder), linear_independence_partial (linear independence placeholder). The first is Erdős's published result; the numerical bound is computationally verified; the rest encode the open status and known partial progress.",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erdős's published result; the second is computationally verified. 4 former placeholder axioms (chowla_conjecture_open, lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were eliminated by proving them as theorems.",
     "prerequisites": [
       "Analytic number theory: divisor function and Lambert series",
       "Irrationality and transcendence theory",
       "Infinite series convergence (tsum)",
       "p-adic analysis (for understanding Erdős's proof technique)"
     ],
-    "lineCount": 280
+    "lineCount": 327
   },
   "overview": {
     "historicalContext": "The study of arithmetic properties of the series S(t) = sum 1/(t^n - 1) originates in classical analytic number theory. The series naturally arises as a Lambert series with constant coefficients, connecting it to the divisor function tau(n) via the identity S(t) = sum tau(n)/t^n. In 1948, Paul Erdos published 'On arithmetical properties of Lambert series' in the Journal of the Indian Mathematical Society, proving that S(t) is irrational whenever t is an integer >= 2. His proof used careful analysis of the p-adic structure of partial sums. Sarvadaman Chowla conjectured that the irrationality should hold for all rational t > 1, not just integers. This conjecture remains open and connects to broader questions about Lambert series, transcendence theory, and the Erdos-Borwein constant E = S(2) ~ 1.606695. The problem appears as #1049 in the Erdos problems collection and is closely related to #1048 (Lambert series generalizations) and #1050 (related irrationality questions).",
@@ -276,9 +276,9 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 280,
-    "axiomCount": 6,
-    "theoremCount": 22,
+    "lineCount": 327,
+    "axiomCount": 2,
+    "theoremCount": 26,
     "substantiveTheoremCount": 22,
     "trivialSpecializations": 0,
     "definitionCount": 12

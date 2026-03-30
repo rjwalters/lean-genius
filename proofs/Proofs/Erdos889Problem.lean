@@ -100,9 +100,6 @@ theorem general_implies_base :
 
 /-- Does v₁(n) = 1 have only finitely many solutions?
 Erdős and Selfridge could not even prove v₁(n) ≥ 2 for all large n. -/
-axiom v1_eq_1_finiteness_question :
-    ∃ bound : ℕ, ∀ n ≥ bound, vShifted 1 n > 1
-
 /-
 ## Section VII: Exact Power Variant V(n,k)
 -/
@@ -120,9 +117,6 @@ noncomputable def exactPowerShifted (l n : ℕ) : ℕ :=
 
 /-- Does V₁(n) = 1 have only finitely many solutions?
 This variant might be more amenable to attack (Erdős–Selfridge). -/
-axiom exact_power_v1_finiteness :
-    ∃ bound : ℕ, ∀ n ≥ bound, exactPowerShifted 1 n > 1
-
 /-- V(n,k) ≥ v(n,k): the condition ¬(p^α ∣ m) is weaker than ¬(p ∣ m),
     so more primes pass the exactPowerNewCount filter.
     Proof: if ¬(p ∣ n+i) then ¬(p^α ∣ n+i) since p^α ∣ m → p ∣ m. -/

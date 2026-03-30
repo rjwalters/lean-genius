@@ -122,15 +122,6 @@ theorem valid_seq_linear_growth (a : ValidSeq) :
 -- ## Known Results (axioms for deep constructions)
 
 /-- The reciprocal sum can grow at least as fast as c * log log x. -/
-axiom reciprocal_sum_lower :
-  ∃ a : ValidSeq, ∃ c : ℝ, 0 < c ∧
-    ∀ X : ℕ, 3 ≤ X →
-      c * Real.log (Real.log X) ≤
-        ∑ n ∈ (Finset.range X).filter (fun n => a.val n < X),
-          (1 : ℝ) / (a.val n : ℝ)
-
--- ## Upper Density
-
 /-- The upper density of a valid sequence. -/
 noncomputable def upperDensity (a : ValidSeq) : ℝ :=
   Filter.limsup (fun N : ℕ =>
@@ -261,7 +252,4 @@ end LiminfFinite
 -- ## Main Open Questions
 
 /-- Erdos Problem #839, Question 1: Is lim sup(a_n/n) = infinity? -/
-axiom erdos_839_question1 : Question1
-
 /-- Erdos Problem #839, Question 2: Does the logarithmic density vanish? -/
-axiom erdos_839_question2 : Question2

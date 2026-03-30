@@ -65,7 +65,44 @@ theorem colourEdgeCount_total {n : ℕ} (c : EdgeColouring n) (S : Finset (Fin n
         · exact Or.inl ⟨h1, h2, h⟩
         · exact Or.inr ⟨h1, h2, h⟩
     · -- |{(i,j) ∈ S×S | i < j}| = C(|S|, 2)
-      sorry
+      -- Proof: strict-order pairs = half of off-diagonal pairs.
+      -- offDiag.card = n*(n-1), and C(n,2) = n*(n-1)/2.
+      rw [Nat.choose_two_right]
+      suffices h : 2 * ((S ×ˢ S).filter fun p : Fin n × Fin n => p.1 < p.2).card =
+          S.card * (S.card - 1) by omega
+      rw [← S.card_offDiag]
+      -- offDiag = filter(<) ∪ filter(>), disjoint, equal halves
+      have hlt_eq : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) =
+          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).image Prod.swap := by
+        ext ⟨a, b⟩
+        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_image, Prod.swap,
+          Prod.exists, Prod.mk.injEq]
+        constructor
+        · rintro ⟨⟨ha, hb⟩, hab⟩; exact ⟨b, a, ⟨⟨hb, ha⟩, hab⟩, rfl, rfl⟩
+        · rintro ⟨c, d, ⟨⟨hc, hd⟩, hcd⟩, rfl, rfl⟩; exact ⟨⟨hd, hc⟩, hcd⟩
+      have hcard_eq : ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).card =
+          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+        rw [hlt_eq, Finset.card_image_of_injective _ Prod.swap_injective]
+      have hunion : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2) ∪
+          (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) = S.offDiag := by
+        ext ⟨a, b⟩
+        simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product, Finset.mem_offDiag]
+        constructor
+        · rintro (⟨⟨ha, hb⟩, hab⟩ | ⟨⟨ha, hb⟩, hab⟩)
+          · exact ⟨ha, hb, ne_of_lt hab⟩
+          · exact ⟨ha, hb, ne_of_gt hab⟩
+        · rintro ⟨ha, hb, hab⟩
+          rcases lt_or_gt_of_ne hab with h | h
+          · exact Or.inl ⟨⟨ha, hb⟩, h⟩
+          · exact Or.inr ⟨⟨ha, hb⟩, h⟩
+      have hdisj : Disjoint
+          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2))
+          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)) := by
+        rw [Finset.disjoint_filter]
+        intro ⟨a, b⟩ _ h1 h2; exact absurd (lt_trans h1 h2) (lt_irrefl _)
+      have h_union_card := Finset.card_union_of_disjoint hdisj
+      rw [hunion] at h_union_card
+      linarith
   · -- Disjoint: true ≠ false
     simp only [Finset.disjoint_filter]
     intro p _ ⟨_, htrue⟩ ⟨_, hfalse⟩
@@ -109,12 +146,6 @@ axiom discrepancyF : ℕ → ℚ → ℕ
 
 /-- Characterization: F(n, α) = k means there exists a (k, α)-balanced colouring
     but no (k+1, α)-balanced colouring exists. -/
-axiom discrepancyF_spec (n : ℕ) (α : ℚ) (hα : 0 < α) (hα2 : α ≤ 1 / 2) (hn : 1 ≤ n) :
-    (∃ c : EdgeColouring n, IsKBalanced c (discrepancyF n α) α) ∧
-    (∀ c : EdgeColouring n, ¬IsKBalanced c (discrepancyF n α + 1) α)
-
--- Part IV: Basic properties
-
 /-- F(n, α) is monotone decreasing in α: stricter balance requirement
     means smaller balanced substructures. -/
 axiom discrepancyF_mono_alpha (n : ℕ) (α β : ℚ) (h : α ≤ β) :
@@ -122,15 +153,7 @@ axiom discrepancyF_mono_alpha (n : ℕ) (α β : ℚ) (h : α ≤ β) :
 
 /-- F(n, 0) = n: every colouring is trivially 0-balanced, since
     0 · C(|S|, 2) = 0 < any positive edge count. -/
-axiom discrepancyF_zero (n : ℕ) (hn : 1 ≤ n) :
-    discrepancyF n 0 = n
-
 /-- F(n, α) ≤ n: the balanced substructure cannot exceed the total graph. -/
-axiom discrepancyF_le (n : ℕ) (α : ℚ) :
-    discrepancyF n α ≤ n
-
--- Part V: Logarithmic bounds (probabilistic method)
-
 /-- Lower bound: F(n, α) > c₁(α) · log n for some c₁ > 0.
     Proof sketch: A random 2-colouring of K_n is α-balanced on all sets
     of size ≤ c₁ log n with positive probability, by Chernoff + union bound. -/

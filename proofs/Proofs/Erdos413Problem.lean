@@ -1007,14 +1007,16 @@ theorem all_trajectories_meet :
 
 -- ## Known Results (stated as axioms, provable but deep)
 
-/-- Erdős's result: expProd has barriers with positive density [Er79d] -/
-axiom erdos_expProd_positive_density :
+/-- Erdős's result: expProd has barriers with positive density [Er79d].
+    Stated as Prop (not axiom) since not used by any theorem in this file. -/
+def erdos_expProd_positive_density_theorem : Prop :=
   ∃ δ : ℝ, δ > 0 ∧
     Filter.Tendsto (fun (N : ℕ) => (countBarriers expProdC N : ℝ) / ↑N)
       Filter.atTop (nhds δ)
 
-/-- Selfridge's computation: largest Ω-barrier below 10^5 is 99840 -/
-axiom selfridge_bigOmega_barrier :
+/-- Selfridge's computation: largest Ω-barrier below 10^5 is 99840.
+    Stated as Prop (not axiom) since not used by any theorem in this file. -/
+def selfridge_bigOmega_barrier_theorem : Prop :=
   IsBarrier bigOmega 99840 ∧
   ∀ n : ℕ, 99840 < n → n < 100000 → ¬IsBarrier bigOmega n
 

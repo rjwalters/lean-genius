@@ -1,0 +1,213 @@
+{
+  "id": "lagrange-theorem-oq-02",
+  "title": "The Orbit-Stabilizer Theorem (Generalization of Lagrange)",
+  "slug": "lagrange-theorem-oq-02",
+  "description": "The orbit-stabilizer theorem: for a group $G$ acting on a set $X$, $|G| = |\\text{Orb}(x)| \\times |\\text{Stab}(x)|$ for any $x \\in X$. This fundamental result generalizes Lagrange's theorem (the special case where $G$ acts on $G/H$) and implies Burnside's lemma, the class equation, and the nontriviality of $p$-group centers.",
+  "meta": {
+    "author": "Orbit-Stabilizer Theorem (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Orbit-stabilizer_theorem",
+    "date": "c. 1870",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "group-actions",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.orbitEquivQuotientStabilizer",
+        "description": "Orbit is equivalent to quotient by stabilizer",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Subgroup.card_mul_index",
+        "description": "Product formula |H| x [G:H] = |G|",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.card_subgroup_dvd_card",
+        "description": "Subgroup order divides group order (Lagrange)",
+        "module": "Mathlib.GroupTheory.Coset.Basic"
+      },
+      {
+        "theorem": "IsPGroup.card_modEq_card_fixedPoints",
+        "description": "p-group fixed point theorem",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsPGroup.center_nontrivial",
+        "description": "Center of nontrivial p-group is nontrivial",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "MulAction.orbit_eq_univ",
+        "description": "Orbit equals universe for transitive actions",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Orbit-stabilizer cardinality theorem composed from Mathlib's orbit-quotient equivalence and index formula",
+      "Divisibility corollaries: orbit size and stabilizer order both divide |G|",
+      "Lagrange's theorem recovered as special case via index formula",
+      "p-group fixed point theorem and center nontriviality as orbit-stabilizer consequences",
+      "Orbit size equals stabilizer index via equivalence"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All results follow from Mathlib's group action theory.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The orbit-stabilizer theorem emerged from the work of Cauchy, Jordan, and Frobenius on permutation groups in the 19th century. Cauchy (1845) proved that primes dividing |G| yield elements of that order. Frobenius developed the theory of group actions systematically, leading to the orbit-stabilizer decomposition. The theorem unifies Lagrange's theorem, Burnside's counting lemma, the class equation, and the fixed-point theorems for p-groups into a single principle.",
+    "problemStatement": "**Orbit-Stabilizer Theorem**:\n\nFor a group $G$ acting on a set $X$ and any $x \\in X$:\n$$|G| = |\\text{Orb}_G(x)| \\times |\\text{Stab}_G(x)|$$\n\nwhere $\\text{Orb}_G(x) = \\{g \\cdot x : g \\in G\\}$ is the orbit and $\\text{Stab}_G(x) = \\{g \\in G : g \\cdot x = x\\}$ is the stabilizer.",
+    "text": "A formalization of the orbit-stabilizer theorem as a generalization of Lagrange's theorem. The key structural result is the bijection $\\text{Orb}(x) \\cong G/\\text{Stab}(x)$ between the orbit and the coset space, from which the cardinality formula follows by Lagrange. The file proves 16 results with 0 sorries and 0 axioms, including orbit and stabilizer divisibility, Lagrange as a special case, the orbit-index connection, the p-group fixed point theorem, and nontriviality of p-group centers.",
+    "proofStrategy": "The core is the Mathlib equivalence `MulAction.orbitEquivQuotientStabilizer`: the orbit of $x$ is equivalent to $G/\\text{Stab}(x)$ as sets. Combined with `Subgroup.card_mul_index` (Lagrange's index formula), this gives the orbit-stabilizer cardinality theorem. The p-group results follow from orbit size divisibility: non-trivial orbits under a $p$-group have size divisible by $p$.",
+    "keyInsights": [
+      "The orbit-stabilizer bijection $\\text{Orb}(x) \\cong G/\\text{Stab}(x)$ is the structural heart: it sends $g \\cdot x$ to the coset $g \\cdot \\text{Stab}(x)$. This is well-defined because $g_1 \\cdot x = g_2 \\cdot x$ iff $g_1^{-1}g_2 \\in \\text{Stab}(x)$ iff $g_1\\text{Stab}(x) = g_2\\text{Stab}(x)$.",
+      "Lagrange's theorem is the orbit-stabilizer theorem for the transitive action of $G$ on $G/H$ by left multiplication: $\\text{Orb}(eH) = G/H$ and $\\text{Stab}(eH) = H$, giving $|G| = |G/H| \\times |H|$.",
+      "The p-group fixed point theorem ($|\\text{Fix}| \\equiv |X| \\pmod{p}$) follows because non-fixed orbits have size $> 1$ dividing $|G| = p^k$, hence size divisible by $p$. Summing over orbits: $|X| = |\\text{Fix}| + \\sum |\\text{non-fixed orbits}| \\equiv |\\text{Fix}| \\pmod{p}$.",
+      "The nontriviality of $p$-group centers is a gem: apply the fixed point theorem to the conjugation action. Fixed points = center $Z(G)$, so $|Z(G)| \\equiv |G| \\equiv 0 \\pmod{p}$. Since $1 \\in Z(G)$, $|Z(G)| \\geq p > 1$."
+    ],
+    "prerequisites": [
+      "Group theory: finite groups, subgroups, cosets, group actions",
+      "Orbit and stabilizer definitions",
+      "Modular arithmetic for p-group results"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Orbit and Stabilizer Basics",
+      "startLine": 45,
+      "endLine": 57,
+      "summary": "Basic facts: every element is in its own orbit, stabilizer membership iff fixing the point, identity is in the stabilizer.",
+      "mathContext": "$x \\in \\text{Orb}(x)$; $g \\in \\text{Stab}(x) \\iff g \\cdot x = x$; $1 \\in \\text{Stab}(x)$."
+    },
+    {
+      "id": "bijection",
+      "title": "Orbit-Stabilizer Bijection",
+      "startLine": 59,
+      "endLine": 70,
+      "summary": "The orbit of x is in bijection with G/Stab(x) via MulAction.orbitEquivQuotientStabilizer.",
+      "mathContext": "$\\text{Orb}(x) \\cong G/\\text{Stab}(x)$ as sets."
+    },
+    {
+      "id": "cardinality",
+      "title": "Orbit-Stabilizer Theorem (Cardinality)",
+      "startLine": 72,
+      "endLine": 100,
+      "summary": "The main theorem |Orb(x)| x |Stab(x)| = |G|, plus divisibility corollaries for orbit and stabilizer sizes.",
+      "mathContext": "$|\\text{Orb}(x)| \\times |\\text{Stab}(x)| = |G|$; $|\\text{Orb}(x)| \\mid |G|$; $|\\text{Stab}(x)| \\mid |G|$."
+    },
+    {
+      "id": "lagrange",
+      "title": "Lagrange as Special Case",
+      "startLine": 102,
+      "endLine": 128,
+      "summary": "Lagrange's theorem, the index formula, element order divisibility, and g^|G| = 1 as special cases.",
+      "mathContext": "$|H| \\mid |G|$; $|H| \\times [G:H] = |G|$; $\\text{ord}(g) \\mid |G|$; $g^{|G|} = 1$."
+    },
+    {
+      "id": "orbit-index",
+      "title": "Orbit Size = Stabilizer Index",
+      "startLine": 130,
+      "endLine": 139,
+      "summary": "The orbit size equals the index of the stabilizer subgroup.",
+      "mathContext": "$|\\text{Orb}(x)| = [G : \\text{Stab}(x)]$."
+    },
+    {
+      "id": "transitive",
+      "title": "Transitive Actions",
+      "startLine": 141,
+      "endLine": 149,
+      "summary": "For transitive actions, every orbit is the full set.",
+      "mathContext": "If the action is transitive, $\\text{Orb}(x) = X$ for all $x$."
+    },
+    {
+      "id": "pgroup",
+      "title": "p-Group Results",
+      "startLine": 151,
+      "endLine": 189,
+      "summary": "p-group fixed point theorem (|Fix| ≡ |X| mod p) and nontriviality of p-group centers.",
+      "mathContext": "For $p$-group $G$ acting on $X$: $|X| \\equiv |\\text{Fix}(G)| \\pmod{p}$. If $|G| > 1$, then $|Z(G)| > 1$."
+    },
+    {
+      "id": "summary",
+      "title": "Generalization Hierarchy",
+      "startLine": 191,
+      "endLine": 207,
+      "summary": "Summary theorem showing orbit-stabilizer and Lagrange hold simultaneously, documenting the generalization hierarchy.",
+      "mathContext": "Orbit-stabilizer $\\Rightarrow$ Lagrange $\\Rightarrow$ Burnside $\\Rightarrow$ class equation $\\Rightarrow$ $p$-group center nontriviality."
+    }
+  ],
+  "conclusion": {
+    "summary": "The orbit-stabilizer theorem is formalized as a generalization of Lagrange's theorem, with 16 results proved in 207 lines, 0 sorries, 0 axioms. The formalization covers the orbit-stabilizer bijection, cardinality theorem, Lagrange recovery, transitive actions, p-group fixed points, and center nontriviality.",
+    "implications": "The orbit-stabilizer theorem is the workhorse of finite group theory. It yields Lagrange's theorem, Burnside's counting lemma (for necklaces, colorings, etc.), the class equation (for p-group classification), Sylow's theorems (via p-group actions on cosets), and counting arguments throughout combinatorics.",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Lagrange's theorem is the orbit-stabilizer theorem for the transitive left multiplication action on G/H"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "related",
+      "description": "Hall's theorem for solvable groups gives a partial converse of Lagrange; the orbit-stabilizer theorem gives the forward direction"
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "extends",
+      "description": "Burnside's counting lemma follows from orbit-stabilizer by double counting: sum over G of |Fix(g)| = |X/G| x |G|"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "The Sylow theorems are proved using p-group actions on coset spaces, leveraging orbit-stabilizer divisibility"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd edition",
+      "note": "Section 4.1 develops the orbit-stabilizer theorem; Section 4.3 covers Burnside's lemma and the class equation"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, 3rd edition",
+      "note": "Chapter I.5 presents group actions, orbits, stabilizers, and the counting formula"
+    }
+  ],
+  "prerequisites": [
+    "Group theory: finite groups, subgroups, cosets, group actions",
+    "Modular arithmetic for p-group results"
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["MulAction", "Subgroup"],
+    "namespace": "LagrangeTheoremOQ02",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "card_orbit_mul_card_stabilizer",
+      "type": "core",
+      "description": "|Orb(x)| x |Stab(x)| = |G| for any group action",
+      "leanType": "Nat.card (orbit G x) * Nat.card (stabilizer G x) = Nat.card G"
+    }
+  ]
+}

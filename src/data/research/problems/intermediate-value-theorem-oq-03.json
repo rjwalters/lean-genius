@@ -1,0 +1,102 @@
+{
+  "slug": "intermediate-value-theorem-oq-03",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:03:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: intermediate-value-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "intermediate-value-theorem",
+    "intermediate-value-theorem-oq-01",
+    "intermediate-value-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.389Z",
+  "lastUpdate": "2026-03-30T06:03:08.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/IntermediateValueTheorem.lean",
+      "filename": "IntermediateValueTheorem.lean",
+      "lineCount": 222,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheorem.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ01.lean",
+      "filename": "IntermediateValueTheoremOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ02.lean",
+      "filename": "IntermediateValueTheoremOQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ03.lean",
+      "filename": "IntermediateValueTheoremOQ03.lean",
+      "lineCount": 143,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ03.lean"
+    }
+  ]
+}

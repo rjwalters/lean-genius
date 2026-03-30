@@ -138,10 +138,6 @@ Modification of the argument for Problem #728.
 /-- The proof extends the powers-of-2 argument: large primes contribute
     significantly to the p-adic valuation constraints. For any prime p > C,
     the constraint v_p(a!) + v_p(b!) ≤ v_p(n!) still yields a + b ≤ n + O(log n). -/
-axiom proof_extends_erdos_argument (C : ℝ) (hC : C > 0) (p : ℕ) (hp : Nat.Prime p) (hpC : (p : ℝ) > C) :
-    ∀ n a b : ℕ, DividesFactorialModSmall n a b C →
-      padicValNat p (a.factorial) + padicValNat p (b.factorial) ≤ padicValNat p (n.factorial)
-
 /-
 ## Part 7: Legendre's Formula Details
 
@@ -160,7 +156,9 @@ axiom legendre_identity (p n : ℕ) (hp : Nat.Prime p) (hp2 : p ≥ 2) :
 /-- For p = 2: v_2(n!) = n - s_2(n) -/
 theorem legendre_for_two (n : ℕ) :
     padicValNat 2 n.factorial = n - digitSum 2 n := by
-  sorry
+  have h := legendre_identity 2 n Nat.prime_two (by omega)
+  simp [Nat.div_one] at h
+  exact h
 
 /-
 ## Part 8: Implications
@@ -170,15 +168,19 @@ What the result tells us about factorial structure.
 
 /-- The structure of factorials is rigid: the constraint a + b ≤ n + O(log n)
     comes from ALL sufficiently large primes, not just a few small ones. -/
-axiom factorial_rigidity (C : ℝ) (hC : C > 0) :
-    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
-      DividesFactorialModSmall n a b C → (a + b : ℝ) ≤ n + D * Real.log n
-
 /-- Binomial coefficients inherit this rigidity -/
 theorem binomial_rigidity (n a b : ℕ) (hab : a + b = n) :
     -- n!/(a!b!) = C(n, a) is always an integer
     DividesFactorial n a b := by
-  sorry
+  unfold DividesFactorial
+  have ha : a ≤ n := by omega
+  have hb : b = n - a := by omega
+  subst hb
+  exact ⟨n.choose a, by
+    have := Nat.choose_mul_factorial_mul_factorial ha
+    rw [mul_assoc] at this
+    rw [mul_comm (n.choose a)] at this
+    exact this.symm⟩
 
 /-
 ## Part 9: Main Problem Statement

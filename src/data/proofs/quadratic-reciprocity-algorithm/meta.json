@@ -1,0 +1,123 @@
+{
+  "id": "quadratic-reciprocity-algorithm",
+  "title": "Quadratic Reciprocity as a Computation Algorithm",
+  "slug": "quadratic-reciprocity-algorithm",
+  "description": "The Law of Quadratic Reciprocity combined with multiplicativity yields a GCD-like algorithm for computing Legendre symbols, demonstrated with verified examples",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Legendre_symbol#Computational_example",
+    "date": "2026-03-30",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "algorithm",
+      "legendre-symbol",
+      "computational"
+    ],
+    "proofRepoPath": "Proofs/QuadraticReciprocityOQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity'",
+        "description": "Quotient form of quadratic reciprocity",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "legendreSym.at_neg_one",
+        "description": "First supplementary law: (-1/p) = (-1)^((p-1)/2)",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrappers exposing Mathlib's legendreSym API as an algorithmic framework",
+      "Verified example computations of Legendre symbols for small primes via decide",
+      "Core theorems (multiplicativity, supplementary law, reciprocity swap) are one-liner Mathlib delegations"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 118,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Gauss's law of quadratic reciprocity is not just a theoretical gem — it's a practical algorithm. Combined with multiplicativity and the supplementary laws, it reduces any Legendre symbol computation to a Euclidean-like descent. This was recognized by Gauss himself and is used in modern computational number theory.",
+    "problemStatement": "Formalize the algorithmic use of quadratic reciprocity: given $a \\in \\mathbb{Z}$ and an odd prime $p$, compute $(a/p)$ by reducing mod $p$, factoring, applying multiplicativity, and using reciprocity to swap and descend.",
+    "text": "Quadratic reciprocity + multiplicativity gives a GCD-like algorithm for computing Legendre symbols",
+    "proofStrategy": "The file provides the key reduction lemmas (multiplicativity via map_mul, supplementary law, reciprocity swap) and demonstrates their use through verified example computations using Lean's decide tactic.",
+    "keyInsights": [
+      "Reciprocity + reduction mod p always reduces the modulus, like the Euclidean algorithm",
+      "Multiplicativity lets us factor the argument and handle each prime factor separately",
+      "The supplementary laws handle the special cases -1 and 2",
+      "For small primes, decide can verify Legendre symbol values directly"
+    ],
+    "prerequisites": [
+      "Legendre symbols",
+      "Quadratic reciprocity",
+      "Modular arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction-lemmas",
+      "title": "Algorithm Reduction Lemmas",
+      "startLine": 46,
+      "endLine": 72,
+      "summary": "Key lemmas for the algorithm: multiplicativity, supplementary law for -1, and the reciprocity swap.",
+      "mathContext": "These three lemmas form the complete reduction system. Any Legendre symbol can be computed by repeatedly applying: (1) factor the argument, (2) handle -1 and 2 via supplementary laws, (3) use reciprocity to swap primes and reduce the modulus."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Example Computations",
+      "startLine": 74,
+      "endLine": 100,
+      "summary": "Seven verified Legendre symbol computations for small primes, all proved by decide.",
+      "mathContext": "Each example demonstrates the algorithm in action. For instance, (3/7) = -1 can be verified by reciprocity: (3/7)·(7/3) = -1 and (7/3) = (1/3) = 1, so (3/7) = -1."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Extends quadratic reciprocity from a theoretical result to an algorithmic framework with verified computations"
+    }
+  ],
+  "conclusion": {
+    "summary": "Quadratic reciprocity as a verified computation algorithm: 4 reduction lemmas, 7 verified examples, 0 sorries, 0 axioms. Demonstrates the Euclidean-like descent property of Legendre symbol computation.",
+    "implications": "The algorithmic perspective on QR shows that the theorem is not just theoretically beautiful but computationally useful. A full implementation as a verified Lean function (with termination proof) would be a natural next step.",
+    "openQuestions": [
+      "Can the full Legendre symbol computation be implemented as a verified recursive function in Lean with a termination proof?",
+      "Can this approach be extended to compute Jacobi symbols for composite moduli?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "QRAlgorithm",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "legendreSym_mul_eq",
+      "type": "core",
+      "description": "Multiplicativity of Legendre symbol: (ab/p) = (a/p)(b/p)",
+      "leanType": "(a b : ℤ) → (p : ℕ) → [Fact p.Prime] → legendreSym p (a*b) = legendreSym p a * legendreSym p b"
+    },
+    {
+      "name": "reciprocity_swap",
+      "type": "core",
+      "description": "Reciprocity swap for the algorithm: (q/p) = ±(p/q)",
+      "leanType": "{p q : ℕ} → [Fact p.Prime] → [Fact q.Prime] → p ≠ 2 → q ≠ 2 → legendreSym q p = (-1)^(p/2*(q/2)) * legendreSym p q"
+    }
+  ]
+}

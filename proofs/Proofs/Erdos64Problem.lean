@@ -99,11 +99,6 @@ The Erdős-Gyárfás conjecture is FALSE for sufficiently large r.
 There exists an absolute constant D such that every graph with minimum degree
 at least D contains a cycle of length 2^k for some k ≥ 2.
 -/
-axiom liu_montgomery_threshold :
-    ∃ D : ℕ, ∀ (W : Type*) [Fintype W] [DecidableEq W] [Nonempty W]
-      (G : SimpleGraph W) [DecidableRel G.Adj],
-      HasMinDegree G D → ∃ k : ℕ, k ≥ 2 ∧ ContainsCycleLength G (2^k)
-
 /- ## Partial Results -/
 
 /--
@@ -113,13 +108,6 @@ in the interval [(\log ℓ)^8, ℓ] for some large integer ℓ.
 
 In particular, they contain some cycle of length 2^k.
 -/
-axiom liu_montgomery_even_cycles :
-    ∃ D : ℕ, ∀ (W : Type*) [Fintype W] [DecidableEq W] [Nonempty W]
-      (G : SimpleGraph W) [DecidableRel G.Adj],
-      HasMinDegree G D →
-        ∃ L : ℕ, L ≥ 16 ∧ ∀ m : ℕ, Even m → m ≥ 4 → m ≤ L →
-          ContainsCycleLength G m
-
 /-- Any even length cycle in a suitable range includes some power of 2. -/
 theorem range_contains_power_of_two (L : ℕ) (hL : L ≥ 16) :
     ∃ k : ℕ, k ≥ 2 ∧ 2^k ≤ L := by
@@ -156,9 +144,6 @@ def InfGraph.IsTree (G : InfGraph V) : Prop :=
 There exists an infinite 3-regular tree (the infinite binary tree with each vertex
 connected to its parent and two children). This has minimum degree 3 but no cycles.
 -/
-axiom infinite_3_regular_tree_exists :
-    ∃ (W : Type) (G : InfGraph W), G.IsRegular 3 ∧ G.IsTree
-
 /- ## Degree 3 Case (Open) -/
 
 /--
@@ -180,22 +165,11 @@ def degree_3_conjecture : Prop :=
 A graph on n ≥ 3 vertices with minimum degree at least n/2 is Hamiltonian
 (contains a cycle through all vertices).
 -/
-axiom dirac_theorem (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hn : Fintype.card V ≥ 3) (hmin : HasMinDegree G (Fintype.card V / 2)) :
-    ContainsCycleLength G (Fintype.card V)
-
 /--
 **Bondy's Theorem** (1971):
 If G has n vertices and at least n²/4 edges, then either G is bipartite or
 G contains cycles of all lengths from 3 to n.
 -/
-axiom bondy_pancyclic (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hn : Fintype.card V ≥ 3)
-    (hmany : G.edgeFinset.card ≥ (Fintype.card V)^2 / 4) :
-    (∃ A B : Set V, A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧
-      (∀ u ∈ A, ∀ v ∈ A, ¬G.Adj u v) ∧ (∀ u ∈ B, ∀ v ∈ B, ¬G.Adj u v)) ∨
-    ∀ k : ℕ, 3 ≤ k → k ≤ Fintype.card V → ContainsCycleLength G k
-
 /- ## Probabilistic Lower Bounds -/
 
 /--
@@ -204,11 +178,6 @@ Random graphs G(n, p) with p ≥ c/n for suitable c almost surely have minimum
 degree at least 3 and contain cycles of all lengths up to some threshold.
 This suggests that counterexamples, if they exist, must be highly structured.
 -/
-axiom random_graph_cycles :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 100 →
-      ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
-        HasMinDegree G 3 ∧ ∀ k : ℕ, k ≥ 2 → k ≤ 10 → ContainsCycleLength G (2^k)
-
 /- ## Summary
 
 **Problem Status: OPEN ($1000 prize)**

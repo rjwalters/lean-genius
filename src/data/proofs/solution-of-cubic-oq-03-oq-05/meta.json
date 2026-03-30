@@ -9,31 +9,49 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ05.lean",
-    "tags": ["algebra", "polynomials", "cubic-equations", "vieta-formulas", "symmetric-polynomials", "research"],
+    "tags": [
+      "algebra",
+      "polynomials",
+      "cubic-equations",
+      "vieta-formulas",
+      "symmetric-polynomials",
+      "research"
+    ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-03-28",
     "axiomCount": 0,
     "lineCount": 112,
     "relatedProblems": [
-      {"id": "solution-of-cubic-oq-03", "relationship": "Parent: Vieta's for depressed cubic"},
-      {"id": "solution-of-cubic", "relationship": "Root: solution of the cubic equation"}
+      {
+        "id": "solution-of-cubic-oq-03",
+        "relationship": "Parent: Vieta's for depressed cubic"
+      },
+      {
+        "id": "solution-of-cubic",
+        "relationship": "Root: solution of the cubic equation"
+      }
     ]
   },
   "overview": {
     "problemStatement": "Verify Vieta's formulas for the general (non-depressed) cubic over a commutative ring.",
-    "proofStrategy": "Expand (x-r₁)(x-r₂)(x-r₃) via ring, then extract coefficients at each degree to obtain the three Vieta relations."
+    "proofStrategy": "Expand (x-r₁)(x-r₂)(x-r₃) via ring, then extract coefficients at each degree to obtain the three Vieta relations.",
+    "keyInsights": [],
+    "historicalContext": ""
   },
   "sorryCount": 0,
   "status": "verified",
   "badge": "original",
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "VietaCubic",
     "lineCount": 112,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0
-  }
+  },
+  "sections": []
 }

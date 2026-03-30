@@ -60,7 +60,13 @@ theorem propertyP_iff (α : Ordinal) :
     PropertyP α ↔
     ∀ G : OrdinalGraph α, ¬HasInfinitePath G →
       ∃ S : Set α.toType, IsIndependent G S ∧ HasOrderType α S α := by
-  sorry
+  constructor
+  · intro h G hnotpath
+    exact (h G).resolve_left hnotpath
+  · intro h G
+    by_cases hp : HasInfinitePath G
+    · exact Or.inl hp
+    · exact Or.inr (h G hp)
 
 /- ## Part III: Finite Ordinals -/
 
@@ -112,7 +118,9 @@ theorem critical_counterexample (h : ¬PropertyP criticalOrdinal) :
     ∃ G : OrdinalGraph criticalOrdinal,
       ¬HasInfinitePath G ∧
       ∀ S : Set criticalOrdinal.toType, IsIndependent G S → HasOrderType criticalOrdinal S criticalOrdinal → False := by
-  sorry
+  simp only [PropertyP, not_forall, not_or] at h
+  obtain ⟨G, hnopath, hnoset⟩ := h
+  exact ⟨G, hnopath, fun S hind hord => hnoset ⟨S, hind, hord⟩⟩
 
 /- ## Part VII: Martin's Axiom -/
 
@@ -185,7 +193,8 @@ def HasBoundedPaths (G : SimpleGraph V) (n : ℕ) : Prop :=
 /-- No infinite path implies bounded path lengths (for finite graphs). -/
 theorem bounded_implies_no_infinite (G : SimpleGraph V) [Finite V]
     (h : ∃ n, HasBoundedPaths G n) : ¬HasInfinitePath G := by
-  sorry
+  intro ⟨f, hf_inj, _⟩
+  exact absurd (Finite.of_injective f hf_inj) Nat.infinite.not_finite
 
 /-- Transfinite induction on ordinals. -/
 theorem transfinite_induction (P : Ordinal → Prop)
@@ -193,7 +202,13 @@ theorem transfinite_induction (P : Ordinal → Prop)
     (hS : ∀ α, P α → P (α + 1))
     (hL : ∀ α, α.IsLimit → (∀ β < α, P β) → P α) :
     ∀ α, P α := by
-  sorry
+  intro α
+  induction α using Ordinal.induction with
+  | _ α ih =>
+    rcases Ordinal.zero_or_succ_or_limit α with rfl | ⟨β, rfl⟩ | hlim
+    · exact h0
+    · exact hS β (ih β (Order.lt_succ β))
+    · exact hL α hlim ih
 
 /- ## Part XII: The General Conjecture -/
 

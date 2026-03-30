@@ -208,6 +208,83 @@ theorem k5_free_implies_k7_free {n : ℕ} (G : SGraph n) (h : ¬HasClique G 5) :
     ¬HasClique G 7 :=
   not_hasClique_mono G (by omega) h
 
+/- ## Neighborhood Structure -/
+
+/-- The open neighborhood of a vertex v: all vertices adjacent to v. -/
+noncomputable def neighborhood {n : ℕ} (G : SGraph n) (v : Fin n) : Finset (Fin n) :=
+  Finset.univ.filter (fun u => G.adj v u)
+
+/-- The degree of a vertex. -/
+noncomputable def degree {n : ℕ} (G : SGraph n) (v : Fin n) : ℕ :=
+  (neighborhood G v).card
+
+/-- Membership in the neighborhood. -/
+@[simp]
+theorem mem_neighborhood {n : ℕ} (G : SGraph n) (v u : Fin n) :
+    u ∈ neighborhood G v ↔ G.adj v u := by
+  simp [neighborhood]
+
+/-- A vertex is not in its own neighborhood (no self-loops). -/
+theorem not_mem_neighborhood_self {n : ℕ} (G : SGraph n) (v : Fin n) :
+    v ∉ neighborhood G v := by
+  simp [G.irrefl v]
+
+/-- If S ⊆ N(v) is a clique in G, then S ∪ {v} is a clique in G.
+    Key structural lemma: adding v to a clique in its neighborhood gives a larger clique. -/
+theorem clique_in_neighborhood_extends {n : ℕ} (G : SGraph n) (v : Fin n)
+    (S : Finset (Fin n)) (hS : S ⊆ neighborhood G v) (hv : v ∉ S)
+    (hClique : IsClique G S) : IsClique G (insert v S) := by
+  intro i hi j hj hij
+  simp [Finset.mem_insert] at hi hj
+  rcases hi with rfl | hi <;> rcases hj with rfl | hj
+  · exact absurd rfl hij
+  · exact mem_neighborhood G v j |>.mp (hS hj)
+  · exact G.symm _ _ (mem_neighborhood G v i |>.mp (hS hi))
+  · exact hClique i hi j hj hij
+
+/-- **Neighborhood K₄-freeness**: In a K₅-free graph, the neighborhood of any
+    vertex is K₄-free. This is because a K₄ in N(v) together with v forms a K₅.
+
+    This is the key structural observation connecting K₅-freeness to K₄-freeness:
+    locally (in neighborhoods), K₅-free graphs look K₄-free. -/
+theorem neighborhood_k4_free {n : ℕ} (G : SGraph n) (hK5 : ¬HasClique G 5)
+    (v : Fin n) : ∀ S : Finset (Fin n), S ⊆ neighborhood G v → S.card = 4 →
+    ¬IsClique G S := by
+  intro S hSN hcard hClique
+  apply hK5
+  have hv : v ∉ S := by
+    intro hv
+    exact not_mem_neighborhood_self G v (hSN hv)
+  refine ⟨insert v S, ?_, clique_in_neighborhood_extends G v S hSN hv hClique⟩
+  rw [Finset.card_insert_of_not_mem hv, hcard]
+
+/-- The neighborhood of any vertex in a K₅-free graph has no K₄.
+    Restated using HasClique for compatibility with the k4_free_triangle_free_subset axiom. -/
+theorem neighborhood_hasClique_4_false {n : ℕ} (G : SGraph n) (hK5 : ¬HasClique G 5)
+    (v : Fin n) : ¬∃ S : Finset (Fin n), S ⊆ neighborhood G v ∧ S.card = 4 ∧
+    IsClique G S := by
+  intro ⟨S, hSN, hcard, hClique⟩
+  exact neighborhood_k4_free G hK5 v S hSN hcard hClique
+
+/- ## Turán-Type Bounds -/
+
+/-- **Turán's bound for K₅-free graphs**: a K₅-free graph on n vertices has at
+    most (3/8)n² edges. This is tight, achieved by the complete 4-partite graph
+    T(n,4) with parts as equal as possible.
+
+    Why axiomatized: Turán's theorem requires an extremal graph theory argument
+    (induction on n with vertex deletion, or the Zykov symmetrization method).
+    The general statement for K_{r+1}-free graphs gives (1-1/r)n²/2 edges. -/
+axiom turan_k5_free (n : ℕ) (G : SGraph n) (hK5 : ¬HasClique G 5) :
+    (edgeCount G : ℝ) ≤ 3 / 8 * n ^ 2
+
+/-- Turán's bound constrains the density parameter δ: in a K₅-free graph,
+    the density δ satisfies δ ≤ 3/8. So Problem 533 only needs δ ∈ (0, 3/8]. -/
+theorem density_bound_k5_free (n : ℕ) (G : SGraph n) (hK5 : ¬HasClique G 5)
+    (δ : ℝ) (hEdges : δ * n ^ 2 ≤ (edgeCount G : ℝ)) :
+    δ * n ^ 2 ≤ 3 / 8 * n ^ 2 := by
+  linarith [turan_k5_free n G hK5]
+
 /- ## Known Partial Results -/
 
 /-- Erdős–Hajnal–Simonovits–Sós–Szemerédi: for δ > 1/16, any K₅-free graph
@@ -251,6 +328,30 @@ theorem erdos_533_for_k4_free (δ : ℝ) (hδ : 0 < δ)
       ∃ c : ℝ, 0 < c ∧ (S.card : ℝ) ≥ c * n := by
   obtain ⟨c, S, hc, hTF, hSize⟩ := k4_free_triangle_free_subset n hn δ hδ G hK4 hEdges
   exact ⟨S, hTF, c, hc, hSize⟩
+
+/- ## Strategy: Neighborhood Approach
+
+The key proof strategy for Problem 533:
+1. In a K₅-free graph G, neighborhood N(v) is K₄-free (neighborhood_k4_free)
+2. By the K₄-free result (k4_free_triangle_free_subset), dense K₄-free graphs
+   contain linear-size triangle-free subsets
+3. If G has ≥ δn² edges, average degree ≥ 2δn, so some vertex v has deg(v) ≥ 2δn
+4. If N(v) is dense enough, applying step 2 gives a triangle-free set of size ≫ δn
+
+The challenge is step 4: the edge density within N(v) may not be quadratic
+in |N(v)|. This is the core difficulty of the open problem. -/
+
+/-- The degree of any vertex is at most n - 1 (no self-loops). -/
+theorem degree_le {n : ℕ} (G : SGraph n) (v : Fin n) : degree G v ≤ n - 1 := by
+  unfold degree neighborhood
+  have h : (Finset.univ.filter (fun u => G.adj v u)).card ≤
+      (Finset.univ.erase v).card := by
+    apply Finset.card_le_card
+    intro u hu
+    simp at hu ⊢
+    exact ⟨fun h => absurd h (G.irrefl v ∘ (· ▸ hu)), hu⟩
+  simp [Finset.card_erase_of_mem (Finset.mem_univ v), Fintype.card_fin] at h
+  exact h
 
 /- ## The Open Question -/
 

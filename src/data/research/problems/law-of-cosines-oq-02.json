@@ -1,0 +1,90 @@
+{
+  "slug": "law-of-cosines-oq-02",
+  "title": "The hyperbolic Law of Cosines $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cos C$ governs triangles in hyperbolic space. Formalizing the three versions (Euclidean, spherical, hyperbolic) and showing",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The hyperbolic Law of Cosines $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cos C$ governs triangles in hyperbolic space. Formalizing the three versions (Euclidean, spherical, hyperbolic) and showing .",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.306Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.306Z",
+  "lastUpdate": "2026-03-29T18:32:39.306Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 196,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 161,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    }
+  ]
+}

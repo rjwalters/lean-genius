@@ -1,0 +1,141 @@
+{
+  "slug": "erdos-1040-oq-05",
+  "title": "Does the Erdős-Netanyahu quantitative bound $r(\\rho)$ for bounded connected s...",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Does the Erdős-Netanyahu quantitative bound $r(\\rho)$ for bounded connected s....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.788Z",
+    "iteration": 1,
+    "focus": "Proved mu_mono, eliminated problem_open axiom, formalized OQ-05 extension question",
+    "blockers": [
+      "Pre-existing Mathlib compilation errors block further development"
+    ],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SORRY ELIMINATION: Proved nthDiameter_eq_zero_of_finite via pigeonhole (3→2 sorries)",
+    "builtItems": [
+      "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
+      "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
+      "Defined erdos_netanyahu_unbounded: OQ-05a formal statement for unbounded case",
+      "Defined erdos_netanyahu_disconnected: OQ-05b formal statement for disconnected case",
+      "Defined erdos_netanyahu_general: full extension dropping both boundedness and connectedness",
+      "Proved erdos_netanyahu_general_implies_unbounded and _disconnected: general implies special cases",
+      "Proved unbounded_connected_diameter_challenge: qualitative containment for unbounded sets from existing axiom",
+      "Created Erdos1040Aristotle.lean: companion file with 3 targets (transfiniteDiameter_mono, _nonneg, mu_infimum)",
+      "degree_zero_sublevel_empty: formal proof that degree-0 polynomial has empty sublevel set",
+      "mu_eq_zero_of_degree_zero: proves mu F = 0 for all F (exposes definition bug)",
+      "mu_pos_degree: corrected definition restricting to degree >= 1",
+      "mu_pos_degree_mono: anti-monotonicity for corrected mu",
+      "degree_zero_eval_eq_one: degree-0 polynomial evaluates to 1 at all points (PROVED)",
+      "degree_zero_sublevel_empty: degree-0 sublevel set is empty (PROVED)",
+      "degree_zero_sublevel_measure: degree-0 sublevel measure is 0 (PROVED)",
+      "mu_eq_zero: PROVED that uncorrected mu F = 0 for ALL F",
+      "muPosDeg: corrected mu definition restricting to degree >= 1",
+      "muPosDeg_mono: anti-monotonicity for corrected mu (PROVED)",
+      "Updated diameterOneConjecture, muDeterminedByDiameter, erdos_1040_current_state to use muPosDeg",
+      "Proved lineSegment_determined from mu_eq_zero (axiom→theorem)",
+      "Proved disc_determined from mu_eq_zero (axiom→theorem)",
+      "Proved lineSegment_determined trivially (axiom→theorem): ⟨fun _ => muPosDeg F, rfl⟩",
+      "Proved disc_determined trivially (axiom→theorem): same pattern",
+      "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball",
+      "nthDiameter_eq_zero_of_finite: proved via pigeonhole + Finset.prod_eq_zero + zero_rpow (was sorry)"
+    ],
+    "insights": [
+      "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
+      "mu_mono (anti-monotonicity of μ) proved via iInf_mono: lifting polynomials from F to G preserves sublevel measure.",
+      "The Erdős-Netanyahu bound requires both boundedness and connectedness. The small_diameter_disc axiom already gives qualitative containment without these hypotheses, so OQ-05 asks whether the quantitative bound r(ρ) depending only on ρ can be extended.",
+      "For unbounded connected sets with ρ < 1, the qualitative disc containment follows from the existing small_diameter_disc axiom with no additional work needed.",
+      "transfiniteDiameter_mono proof blocked on BddAbove for the nthDiameter value set — needs the target set G to be bounded, or case analysis on unbounded sets",
+      "The nthDiameter definition produces value 1 for n=0 and n=1 (empty products with exponent 2/0=0), so transfiniteDiameter ≤ 1 always",
+      "CRITICAL BUG: Original mu definition includes degree-0 polynomials, making mu F = 0 for all F. The constant polynomial 1 has sublevel {z : |1| < 1} = empty. This makes erdos_1040_current_state false as stated (claims mu > 0 when diameter < 1).",
+      "FIX: mu_pos_degree restricts infimum to degree >= 1, matching standard mathematical definition (EHP 1958)",
+      "Updated axioms (lineSegment_determined, disc_determined) and conjectures (diameterOneConjecture) to use corrected mu_pos_degree",
+      "Session 4: Fixed degree-0 bug in mu: added mu_eq_zero proof showing original mu is always 0, added muPosDeg restricting to degree >= 1",
+      "lineSegment_determined and disc_determined used uncorrected mu which is always 0 — they are trivially true and should be restated using muPosDeg for mathematical content",
+      "Aristotle file actually has 0 sorries (stale count in problem JSON)",
+      "BddAbove sorry (line 281): provable via Metric.diam bound — each |pts_i-pts_j| ≤ diam(G), product ≤ diam^(n(n-1)/2), rpow ≤ diam. Bound: max(1, Metric.diam G)",
+      "transfiniteDiameter_scale sorry (line 376): standard scaling, needs product_rpow + abs_mul arithmetic",
+      "erdos_1040_current_state Part 1 sorry (line 468): requires EHP 1958 explicit μ formulas for line segments/discs, deep result",
+      "All 7 axioms are deep potential theory (Fekete, EHP, Erdős-Netanyahu) — none eliminable from Mathlib",
+      "File has pre-existing compilation errors from Mathlib API changes (Complex.abs renamed, ENNReal notation issues, Subtype.Simps changes). Needs mechanic repair before further research.",
+      "lineSegment_determined and disc_determined axioms are vacuously true: for fixed F, ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f(ρ) is trivially satisfied by f = const. Proved as theorems.",
+      "muPosDeg_pos_of_small_diameter PROVED: from small_diameter_disc (uniform ball containment), Complex.volume_ball (center-independent: vol(ball a r) = ofReal(r)^2 * π), and Metric.measure_ball_pos. Gives uniform lower bound on muPosDeg.",
+      "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain.",
+      "Pigeonhole for nth diameter: n > |F| implies repeated points, making product 0 via Finset.prod_eq_zero",
+      "Remaining 2 sorries: BddAbove for monotonicity (line 297), transfiniteDiameter_scale (line 400)",
+      "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)",
+      "BddAbove sorry (line 284): extract D from IsBounded G, bound each distance factor by D, product by D^(n*(n-1)/2), then rpow with e<=1 gives bound max(D^(n*(n-1)/2), 1). Needs Metric.isBounded API.",
+      "transfiniteDiameter_scale sorry (line 387): FALSE for n<=1 (rpow exponent 2/0=0 gives 1, not |c|*1). Proof strategy: show nthDiameter(cF, n) = |c| * nthDiameter(F, n) for n>=2, then pull |c| from iInf over n>=2 (n=0,1 dont affect inf since they equal 1)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "BddAbove sorry: use Metric.isBounded_iff.mp hG to extract diameter D, bound Finset product by D^(n choose 2), rpow mono for exponent in [0,1]",
+      "transfiniteDiameter_scale: prove nthDiameter_scale for n>=2 via Complex.abs_mul + Finset.prod scaling + rpow_mul, then use iInf on n>=2"
+    ]
+  },
+  "tags": [
+    "complex-analysis",
+    "polynomials",
+    "erdos",
+    "potential-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1040"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.788Z",
+  "lastUpdate": "2026-03-30T03:40:00Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1040Aristotle.lean",
+      "filename": "Erdos1040Aristotle.lean",
+      "lineCount": 140,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1040Problem.lean",
+      "filename": "Erdos1040Problem.lean",
+      "lineCount": 577,
+      "theoremCount": 21,
+      "axiomCount": 4,
+      "defCount": 19,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Problem.lean"
+    }
+  ]
+}

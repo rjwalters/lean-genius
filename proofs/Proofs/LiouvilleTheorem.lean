@@ -1,6 +1,8 @@
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+import Mathlib.NumberTheory.Transcendental.Liouville.Residual
+import Mathlib.Topology.Algebra.Module.PerfectSpace
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -138,24 +140,95 @@ integers p, q with q > 0:
 can be approximated by rationals.
 -/
 
-/-- **Axiom: Liouville's Approximation Theorem** (1844)
+/-- **Liouville's Approximation Theorem** (1844) — formerly axiom, now proved.
 
     If α is algebraic of degree n ≥ 2, then there exists c > 0 such that
-    for all rationals p/q with q > 0: |α - p/q| > c/q^n
+    for all rationals p/q with q > 0: |α - p/q| > c/q^n (or α = p/q).
 
-    This is the contrapositive of: Liouville numbers are transcendental.
-    Mathlib proves this via the `Liouville.transcendental` theorem.
+    **Irrational case**: Uses Mathlib's `Liouville.exists_pos_real_of_irrational_root`,
+    which proves the bound via the Mean Value Theorem and denominator clearing.
 
-    The proof follows from properties of minimal polynomials. For algebraic α
-    of degree n, if P is the minimal polynomial and p/q ≠ α, then:
-    - q^n · P(p/q) is a non-zero integer, so |q^n · P(p/q)| ≥ 1
-    - By Mean Value Theorem: P(p/q) - P(α) = (p/q - α) · P'(ξ)
-    - The derivative P'(ξ) is bounded on any interval containing α
-    - This gives the lower bound c/q^n for |α - p/q| -/
-axiom liouville_approximation_theorem_axiom
+    **Rational case**: Uses the integer gap: for α = a/b rational and p/q ≠ α,
+    |α - p/q| = |aq - bp|/(bq) ≥ 1/(bq) ≥ 1/(b·q^n). -/
+theorem liouville_approximation_theorem_axiom
     (α : ℝ) (hα : IsAlgebraic ℤ α) (n : ℕ) (hn : n ≥ 2)
-    (hdeg : ∃ p : Polynomial ℤ, p.natDegree = n ∧ Polynomial.aeval α p = 0 ∧ p ≠ 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ p q : ℤ, q > 0 → |α - p / q| > c / (q : ℝ) ^ n ∨ α = p / q
+    (hdeg : ∃ f : Polynomial ℤ, f.natDegree = n ∧ Polynomial.aeval α f = 0 ∧ f ≠ 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ p q : ℤ, q > 0 → |α - p / q| > c / (q : ℝ) ^ n ∨ α = p / q := by
+  obtain ⟨f, hfn, hfa, hf0⟩ := hdeg
+  -- Convert aeval to eval (map ...) for Mathlib compatibility
+  have heval : Polynomial.eval α (Polynomial.map (algebraMap ℤ ℝ) f) = 0 := by
+    rwa [Polynomial.eval_map, ← Polynomial.aeval_def]
+  by_cases hirr : Irrational α
+  · -- Case 1: α is irrational — use Mathlib's theorem
+    obtain ⟨A, hA, hbound⟩ := Liouville.exists_pos_real_of_irrational_root hirr hf0 heval
+    -- Use c = 1/(2A): from Mathlib's bound |α-p/q| ≥ 1/(A·q^n) > 1/(2A·q^n)
+    refine ⟨1 / (2 * A), by positivity, fun p q hq => ?_⟩
+    left
+    -- Map q : ℤ (q > 0) to b : ℕ with (↑b + 1 : ℝ) = (↑q : ℝ)
+    have hq_pos : (0 : ℝ) < (q : ℝ) := Int.cast_pos.mpr hq
+    set b := q.toNat - 1 with hb_def
+    have hqn : q.toNat ≥ 1 := by omega
+    have hb_succ : (↑b + 1 : ℝ) = (↑q : ℝ) := by
+      have : (b : ℤ) + 1 = q := by
+        simp [hb_def, Int.toNat_sub_of_le (by omega : 1 ≤ q)]
+        omega
+      push_cast [← this]; ring
+    -- Apply Mathlib bound
+    have hmb := hbound p b
+    rw [hfn, hb_succ] at hmb
+    -- hmb : 1 ≤ (↑q : ℝ) ^ n * (|α - ↑p / ↑q| * A)
+    -- Goal : |α - ↑p / ↑q| > 1 / (2 * A) / (↑q : ℝ) ^ n
+    have hqn_pos : (0 : ℝ) < (↑q : ℝ) ^ n := pow_pos hq_pos n
+    rw [div_div]
+    rw [gt_iff_lt, lt_div_iff (by positivity : 0 < 2 * A * (↑q : ℝ) ^ n)]
+    -- Goal : 1 < |α - ↑p / ↑q| * (2 * A * ↑q ^ n)
+    have h1 : |α - ↑p / ↑q| * A ≥ 1 / (↑q : ℝ) ^ n := by
+      rwa [ge_iff_le, div_le_iff hqn_pos, mul_comm]
+    calc 1 = 1 * 1 := by ring
+      _ < 2 * (|α - ↑p / ↑q| * A * (↑q : ℝ) ^ n) := by
+          have := mul_le_mul_of_nonneg_right h1 (le_of_lt hqn_pos)
+          rw [div_mul_cancel₀ _ (ne_of_gt hqn_pos)] at this
+          linarith [abs_nonneg (α - ↑p / ↑q), hA]
+      _ = |α - ↑p / ↑q| * (2 * A * (↑q : ℝ) ^ n) := by ring
+  · -- Case 2: α is rational — use integer gap argument
+    -- Extract rational representation: α = ↑r for some r : ℚ
+    obtain ⟨r, rfl⟩ : ∃ r : ℚ, (↑r : ℝ) = α := not_not.mp hirr
+    -- Use c = 1/(2 * r.den). For p/q ≠ ↑r: |↑r - p/q| ≥ 1/(r.den · q^n) > c/q^n
+    refine ⟨1 / (2 * (r.den : ℝ)), by positivity, fun p q hq => ?_⟩
+    by_cases heq : (↑r : ℝ) = ↑p / ↑q
+    · exact Or.inr heq
+    · left
+      -- Integer gap: r.num * q - p * r.den is a nonzero integer
+      have hq_pos : (0 : ℝ) < (↑q : ℝ) := Int.cast_pos.mpr hq
+      have hq_ne : (↑q : ℝ) ≠ 0 := ne_of_gt hq_pos
+      have hden_pos : (0 : ℝ) < (↑r.den : ℝ) := Nat.cast_pos.mpr r.pos
+      set k := r.num * q - p * (r.den : ℤ) with hk_def
+      have hk_ne : k ≠ 0 := by
+        intro hk
+        apply heq
+        rw [Rat.cast_def, div_eq_div_iff (Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp r.pos)) hq_ne]
+        have : r.num * q = p * (r.den : ℤ) := by omega
+        exact_mod_cast this
+      -- |k| ≥ 1 since k is a nonzero integer
+      have hk_abs : (1 : ℝ) ≤ |(↑k : ℝ)| := by
+        rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hk_ne
+      -- Key identity: ↑r - ↑p / ↑q = ↑k / (↑r.den * ↑q)
+      have hid : (↑r : ℝ) - ↑p / ↑q = (↑k : ℝ) / ((↑r.den : ℝ) * ↑q) := by
+        rw [Rat.cast_def, hk_def]; field_simp; push_cast; ring
+      -- Chain of inequalities
+      rw [gt_iff_lt]
+      calc 1 / (2 * (↑r.den : ℝ)) / (↑q : ℝ) ^ n
+          < 1 / ((↑r.den : ℝ) * (↑q : ℝ) ^ n) := by
+            rw [div_div]; apply div_lt_div_of_pos_right (by linarith : 1 / (2 * ↑r.den) < 1 / ↑r.den)
+              (by positivity)
+        _ ≤ 1 / ((↑r.den : ℝ) * ↑q) := by
+            apply div_le_div_of_nonneg_left one_pos (by positivity) (by positivity)
+            exact mul_le_mul_of_nonneg_left
+              (le_self_pow₀ (by linarith : 1 ≤ (↑q : ℝ)) (by omega : n ≠ 0))
+              (by positivity)
+        _ ≤ |(↑k : ℝ)| / ((↑r.den : ℝ) * ↑q) := by
+            exact div_le_div_of_nonneg_right hk_abs (by positivity)
+        _ = |↑r - ↑p / ↑q| := by rw [hid, abs_div, abs_of_pos (by positivity : 0 < ↑r.den * ↑q)]
 
 theorem liouville_approximation_theorem
     (α : ℝ) (hα : IsAlgebraic ℤ α) (n : ℕ) (hn : n ≥ 2)
@@ -262,14 +335,23 @@ theorem liouville_constant_irrational : Irrational (liouvilleNumber 10) :=
 PART V: PROPERTIES OF LIOUVILLE NUMBERS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Liouville numbers form an uncountable set.**
+/-- **Liouville numbers form an uncountable set.** (formerly axiom, now proved)
 
-    **Proof idea**: The set of Liouville numbers contains a perfect set (a closed set
-    with no isolated points), hence is uncountable by the Cantor-Bendixson theorem.
-
-    Alternatively: Consider numbers of the form Σₙ aₙ · 10^(-n!) where aₙ ∈ {0, 1}.
-    This gives 2^ℕ = cardinality of continuum many distinct Liouville numbers. -/
-axiom liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x}
+    The set of Liouville numbers is residual (comeagre) in ℝ by
+    `eventually_residual_liouville` from Mathlib. In a nonempty Baire space like ℝ,
+    residual sets are not meagre. But any countable subset of ℝ is meagre: each
+    singleton has empty interior (since ℝ is a perfect space with no isolated points),
+    hence is nowhere dense, hence meagre, and a countable union of meagre sets is
+    meagre. Contradiction. -/
+theorem liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x} := by
+  intro hcount
+  have hnotmeagre : ¬IsMeagre {x : ℝ | Liouville x} :=
+    not_isMeagre_of_mem_residual eventually_residual_liouville
+  apply hnotmeagre
+  have eq : {x : ℝ | Liouville x} = ⋃ x ∈ {x : ℝ | Liouville x}, ({x} : Set ℝ) := by ext; simp
+  rw [eq]
+  exact isMeagre_biUnion hcount fun x _ =>
+    (isClosed_singleton.isNowhereDense_iff.mpr (interior_singleton x)).isMeagre
 
 theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} :=
   liouville_uncountable_axiom

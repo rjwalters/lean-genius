@@ -164,10 +164,12 @@ theorem mertens_sum_divergence :
 
 /-- Connection to Jacobsthal function (Problem #687): For large n,
     1-fold covering of [1,n] by primes up to n exists.
-    This follows from known results on the Jacobsthal function. -/
-axiom jacobsthal_connection :
+    This is the r=1 case of the r-fold generalization. -/
+theorem jacobsthal_connection :
   ∀ᶠ (n : ℕ) in Filter.atTop,
-    ∃ a : ℕ → ℕ, IsRFoldCover n 1 a
+    ∃ a : ℕ → ℕ, IsRFoldCover n 1 a := by
+  rw [Filter.eventually_atTop]
+  exact erdos_689_r_fold 1 (by norm_num)
 
 /-- Ben Green's variant: Problem 45 on Green's list asks the same question
     with r = 10 instead of r = 2. Derived from the r-fold generalization. -/

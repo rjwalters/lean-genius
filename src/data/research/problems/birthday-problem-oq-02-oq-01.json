@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Attempted 2/4 sorry eliminations (sum_sq_le_quartic + Gauss sum). 2 deep sorries remain (exp inequality + main theorem).",
+    "progressSummary": "COMPLETED: All 4 sorries eliminated (2→0 this session). Fixed incorrect hypotheses in 2 theorems. File now 229 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Assessment: tractable new formalization, needs Taylor remainder infrastructure",
       "sum_sq_le_quartic: proved ∑i² ≤ k²(k-1)²/4 via sum_sq_formula + nlinarith",
-      "Gauss sum: proved ∑(-i/d) = -k(k-1)/(2d) via Finset.sum_range_id"
+      "Gauss sum: proved ∑(-i/d) = -k(k-1)/(2d) via Finset.sum_range_id",
+      "exp_neg_sub_sq_le_one_sub: proved exp(-x-x²) ≤ 1-x for x ∈ [0,1/2] via Taylor bound",
+      "birthdayProduct_lower_bound: proved matching lower bound with corrected hypothesis 2(k-1)≤d",
+      "birthdayProduct_two_sided: two-sided exponential sandwich for birthday probability"
     ],
     "insights": [
       "No Lean file for OQ-02-OQ-01. Parent files: 5 files, 0A, 0S, 119T — fully proved",
@@ -44,7 +47,10 @@
       "Would need Mathlib Real.log bounds + Taylor/Lagrange remainder for ln",
       "sum_sq_le_quartic: use case split k=1 (trivial) vs k≥2 (nlinarith with sq_nonneg)",
       "Gauss sum: factor -(1/d) then use sum_range_id = k(k-1)/2",
-      "exp_neg_sub_sq_le_one_sub: deep — needs Taylor remainder for ln(1-x) ≥ -x-x²"
+      "exp_neg_sub_sq_le_one_sub: deep — needs Taylor remainder for ln(1-x) ≥ -x-x²",
+      "CRITICAL FIX: original exp(-x-x²) ≤ 1-x had hypothesis x<1 but is FALSE for x>0.69. Changed to x≤1/2.",
+      "CRITICAL FIX: birthdayProduct_lower_bound with k≤d+1 is FALSE (product=0 when k=d+1). Changed to 2(k-1)≤d.",
+      "Proof technique: Taylor bound exp(y) ≥ 1+y+y²/2 via Real.sum_le_exp_of_nonneg, then polynomial algebra"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -56,7 +62,8 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-02",
-    "birthday-problem-oq-03"
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -115,11 +122,11 @@
     {
       "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
       "filename": "BirthdayProblemOQ02OQ01.lean",
-      "lineCount": 123,
+      "lineCount": 230,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
     },
@@ -133,6 +140,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
     }
   ]
 }

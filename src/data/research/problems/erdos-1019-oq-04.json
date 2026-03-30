@@ -1,0 +1,91 @@
+{
+  "slug": "erdos-1019-oq-04",
+  "title": "Can the planarity definition `isPlanar` be formalized in Mathlib using Kurato...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Can the planarity definition `isPlanar` be formalized in Mathlib using Kurato....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-03-30T01:04:30.838Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved turan_triangle from Mathlib (8→7 axioms). Remaining axioms depend on isPlanar (sorry) or deep theorems. Kuratowski formalization in Mathlib NOT feasible: no graph minor/subdivision infrastructure.",
+    "builtItems": [
+      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)"
+    ],
+    "insights": [
+      "Mathlib has no graph minor definitions (SimpleGraph.Minor does not exist)",
+      "Mathlib has no planarity definition or Kuratowski/Wagner theorem",
+      "isPlanar is currently sorry — cannot be defined without graph minor infrastructure",
+      "All 8 axioms depend on isPlanar, so none can be eliminated without the definition",
+      "Wagner characterization (forbidden K₅/K₃,₃ minors) is the simplest correct approach",
+      "Estimated infrastructure needed: ~1000+ lines for graph minors + forbidden minor characterization",
+      "bipartite_not_saturated sorry is vacuously true (K_{m,n} for m,n≥3 is not planar)",
+      "turan_triangle axiom proved from Mathlib CliqueFree.card_edgeFinset_le (8→7 axioms)",
+      "Remaining 7 axioms all depend on isPlanar or deep results (Simonovits, Erdős construction)",
+      "bipartite_not_saturated sorry blocked on isPlanar sorry — K_{4,6} case requires knowing K_{4,6} is not planar",
+      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define graph minors in Mathlib (SimpleGraph.Minor)",
+      "Define isPlanar via Wagner forbidden minor characterization",
+      "Once isPlanar defined: K3_saturated_planar and K4_saturated_planar become provable by computation"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "planar-graphs",
+    "erdos",
+    "extremal-combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1019"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1019Problem.lean",
+      "filename": "Erdos1019Problem.lean",
+      "lineCount": 442,
+      "theoremCount": 10,
+      "axiomCount": 4,
+      "defCount": 19,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1019Problem.lean"
+    }
+  ]
+}

@@ -97,13 +97,17 @@ total vertex count — contradicting minimality.
     `eq_pos_convex_span_of_mem_convexHull : x ∈ convexHull 𝕜 s →
       ∃ (ι : Sort _) (_ : Fintype ι) (z : ι → E) (w : ι → 𝕜),
         range z ⊆ s ∧ AffineIndependent 𝕜 z ∧ (∀ i, 0 < w i) ∧
-        ∑ i, w i = 1 ∧ ∑ i, w i • z i = x` -/
+        ∑ i, w i = 1 ∧ ∑ i, w i • z i = x`
+
+    Note: weights are strictly positive (0 < w i), not just non-negative.
+    This is inherited from eq_pos_convex_span and is needed for the
+    perturbation argument in reduce_excess_by_one. -/
 theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
     (hx_hull : x ∈ convexHull ℝ s) (hx_not : x ∉ s) :
     ∃ (n : ℕ) (f : Fin n → E) (w : Fin n → ℝ),
       2 ≤ n ∧
       (∀ i, f i ∈ s) ∧
-      (∀ i, 0 ≤ w i) ∧
+      (∀ i, 0 < w i) ∧
       ∑ i, w i = 1 ∧
       ∑ i, w i • f i = x := by
   classical
@@ -140,8 +144,8 @@ theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
   refine ⟨Fintype.card ι, z ∘ e.symm, w ∘ e.symm, hcard, ?_, ?_, ?_, ?_⟩
   · -- Each point lies in s
     intro i; exact hz_range (Set.mem_range_self (e.symm i))
-  · -- Weights are non-negative (in fact positive)
-    intro i; exact le_of_lt (hw_pos (e.symm i))
+  · -- Weights are strictly positive
+    intro i; exact hw_pos (e.symm i)
   · -- Weights sum to 1: reindex through equivalence
     show ∑ j, w (e.symm j) = 1
     have := Equiv.sum_comp e.symm w
@@ -183,6 +187,22 @@ The reduction step (reduce_excess_by_one) works as follows:
   e. Since ∑ cᵢ·δᵢ = 0, the perturbation preserves ∑ xᵢ = x
   f. The result has one fewer excess index
 -/
+
+/-- **Linear dependence extraction**: d+1 vectors in d-dimensional space are
+    linearly dependent, and we can extract explicit coefficients.
+    This is the key algebraic input for the perturbation argument. -/
+theorem linearDependent_coefficients [FiniteDimensional ℝ E]
+    {n : ℕ} (hn : Module.finrank ℝ E < n) (f : Fin n → E) :
+    ∃ (c : Fin n → ℝ), (∃ i, c i ≠ 0) ∧ ∑ i, c i • f i = 0 := by
+  have hli : ¬LinearIndependent ℝ f := by
+    intro h
+    have := h.fintype_card_le_finrank
+    simp [Fintype.card_fin] at this
+    omega
+  rw [Fintype.linearIndependent_iff] at hli
+  push_neg at hli
+  obtain ⟨g, hg_sum, i, hi_ne⟩ := hli
+  exact ⟨g, ⟨i, hi_ne⟩, hg_sum⟩
 
 /-- A decomposition can always be constructed from the hypothesis. -/
 theorem exists_decomposition

@@ -1,0 +1,212 @@
+{
+  "id": "erdos-106-oq-02",
+  "title": "Can Rotated Squares Beat Axis-Parallel Packings?",
+  "slug": "erdos-106-oq-02",
+  "description": "Formalizes the open question of whether rotated squares can achieve a strictly larger total side-length sum than axis-parallel arrangements when packing squares in the unit square. Defines RotatedSquare with angle parameter, general vs axis-parallel packings, proves agreement at perfect squares, and states the open question f_rot(n) > g(n). Related to Erdős Problem #106 and the BKU axis-parallel breakthrough (2024).",
+  "meta": {
+    "author": "Erdős; Baek-Koizumi-Ueoro (2024)",
+    "sourceUrl": "https://erdosproblems.com/106",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos106OQ02.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "packing",
+      "squares",
+      "rotation",
+      "optimization",
+      "open-problem",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 106,
+    "erdosUrl": "https://erdosproblems.com/106",
+    "erdosProblemStatus": "open",
+    "axiomCount": 6,
+    "assumptions": "6 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). New: side_le_sqrt_two (contained squares have side≤√2), g_ap_le_f_rot (AP packings are general packings). 1 sorry: g_ap_set_nonempty (needs explicit tiny-square construction).",
+    "lineCount": 455
+  },
+  "overview": {
+    "historicalContext": "**From Axis-Parallel to Rotated: The Last Barrier in Square Packing**\n\nThe 2024 breakthrough by Baek, Koizumi, and Ueoro completely resolved the axis-parallel case of Erdős's square packing conjecture, proving g(k²+1) = k. This leaves one fundamental question: can rotated squares do better?\n\nIn the axis-parallel formulation, all packed squares have sides parallel to the unit square. When rotation is allowed, the packing space is richer — a rotated square occupies a diamond-shaped region that could potentially fill space more efficiently.\n\nNo example is known where rotation helps. At perfect squares n = k², both f_rot(k²) = g(k²) = k, since the k×k grid (which is axis-parallel) is already optimal by Cauchy-Schwarz. The question is whether rotation helps at non-perfect-square values of n.",
+    "problemStatement": "**Problem Statement**\n\nLet f_rot(n) be the maximum sum of side lengths when packing n possibly-rotated squares in [0,1]² with disjoint interiors. Let g(n) be the same quantity restricted to axis-parallel squares.\n\nIs f_rot(n) = g(n) for all n?\n\nEquivalently: does rotation ever help in maximizing the total side-length sum?\n\n**Status**: OPEN\n\n**Known**: f_rot(k²) = g(k²) = k for all k ≥ 1. g(k²+1) = k (BKU 2024).",
+    "text": "Formalizes whether rotated squares can beat axis-parallel packings in Erdős Problem #106. Defines rotated squares, general packings, and proves agreement at perfect squares. The open question: is there n with f_rot(n) > g(n)?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **RotatedSquare**: Structure with center, side, angle; interior defined by rotating point back to axis-parallel frame\n\n2. **GeneralPacking**: Fin n-indexed family of RotatedSquares with containment and disjointness\n\n3. **AxisParallelPacking**: Extends GeneralPacking with angle=0 constraint\n\n4. **Objective functions**: f_rot(n) = sup over GeneralPacking, g_ap(n) = sup over AxisParallelPacking\n\n5. **Key results**: g ≤ f_rot (trivially), agreement at perfect squares, connection to Erdős conjecture",
+    "keyInsights": [
+      "**Perfect square agreement**: At n = k², both functions equal k, so rotation cannot help at these values. The Cauchy-Schwarz bound is tight for the k×k grid, which is axis-parallel",
+      "**BKU bridge**: If rotation never helps, the general Erdős conjecture f(k²+1) = k follows immediately from the BKU axis-parallel result g(k²+1) = k",
+      "**Area preservation**: Rotation preserves area, so the Cauchy-Schwarz upper bound f_rot(n) ≤ √n holds regardless of rotation. The question is about the gap between √n and k at values like n = k²+1",
+      "**Diamond vs rectangle**: A rotated square occupies a diamond shape, which tiles space differently than axis-parallel rectangles. However, no efficient packing exploiting this difference is known"
+    ],
+    "prerequisites": [
+      "Discrete geometry: square packing, rotation, containment constraints",
+      "Real analysis: supremum, Cauchy-Schwarz inequality, trigonometry",
+      "Understanding of Erdős Problem #106 and the BKU result"
+    ]
+  },
+  "sections": [
+    {
+      "id": "rotated-squares",
+      "title": "Rotated Squares in the Plane",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Defines RotatedSquare structure with center, side, angle; interior and closure via inverse rotation; DisjointInteriors predicate; axis-parallel constructor as angle=0 special case.",
+      "mathContext": "RotatedSquare: center $(c_x, c_y)$, side $s > 0$, angle $\\theta$. Point $p$ in interior iff rotating $p - c$ by $-\\theta$ lands in $(-s/2, s/2)^2$."
+    },
+    {
+      "id": "packings",
+      "title": "General and Axis-Parallel Packings",
+      "startLine": 66,
+      "endLine": 110,
+      "summary": "Defines GeneralPacking (allows rotation) and AxisParallelPacking (angle=0 restriction), both as Fin n-indexed families with containment and disjointness. Defines objective functions f_rot and g_ap as suprema.",
+      "mathContext": "GeneralPacking: $(S_i)_{i=1}^n$ rotated squares with $\\overline{S_i} \\subseteq [0,1]^2$, pairwise disjoint interiors. $f_{\\text{rot}}(n) = \\sup_P \\sum s_i$."
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship: g(n) ≤ f_rot(n)",
+      "startLine": 111,
+      "endLine": 130,
+      "summary": "Proves that every axis-parallel packing is a general packing, so the achievable sums for g are a subset of those for f_rot.",
+      "mathContext": "$g(n) \\leq f_{\\text{rot}}(n)$ since axis-parallel packings are a special case of general packings."
+    },
+    {
+      "id": "bounds",
+      "title": "Area Bounds and Monotonicity",
+      "startLine": 131,
+      "endLine": 165,
+      "summary": "Axiomatizes the Cauchy-Schwarz bound f_rot(n) ≤ √n (rotation preserves area), monotonicity, and values at perfect squares.",
+      "mathContext": "Rotation preserves area: $s^2$ per square. Cauchy-Schwarz: $(\\sum s_i)^2 \\leq n \\cdot \\sum s_i^2 \\leq n$, so $f_{\\text{rot}}(n) \\leq \\sqrt{n}$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question: Does Rotation Help?",
+      "startLine": 166,
+      "endLine": 219,
+      "summary": "States rotationHelps (∃ n, f_rot(n) > g(n)) and rotationNeverHelps (∀ n, f_rot(n) = g(n)). Proves agreement at perfect squares, at n=2, and that rotation_never_helps + BKU → general Erdős conjecture.",
+      "mathContext": "Open: $\\exists n, f_{\\text{rot}}(n) > g(n)$? No known example. If no, then $f(k^2+1) = k$ by BKU."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the remaining open question after the BKU axis-parallel breakthrough: whether rotated squares can ever beat axis-parallel packings. The infrastructure (RotatedSquare, GeneralPacking, AxisParallelPacking) enables formal reasoning about rotation's effect on packing efficiency. Key proved results include agreement at perfect squares and the reduction from the general Erdős conjecture to the rotation question plus BKU.",
+    "implications": "**Theoretical Significance**\n\n1. **Clean decomposition**: The general Erdős conjecture decomposes as (rotation never helps) + BKU, isolating the geometric core question\n\n2. **Perfect square rigidity**: f_rot(k²) = g(k²) = k shows Cauchy-Schwarz optimality cannot be beaten by rotation at these points\n\n3. **Connection to optimization theory**: The question of whether expanding the feasible set (allowing rotation) improves the optimum connects to sensitivity analysis in mathematical programming",
+    "openQuestions": [
+      "Is f_rot(n) = g(n) for all n? (The central question — no counterexample known)",
+      "What is f_rot(10)? (The first unresolved case: is it 3, as predicted by the Erdős conjecture?)",
+      "Can the diamond tiling of rotated squares ever fill space more efficiently than axis-parallel arrangements?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "agree_at_perfect_squares",
+      "type": "core",
+      "description": "At perfect squares, f_rot(k²) = g(k²) = k — rotation cannot help at these values",
+      "leanType": "∀ k : ℕ, k ≥ 1 → f_rot (k ^ 2) = g_ap (k ^ 2)"
+    },
+    {
+      "name": "bku_and_no_rotation_implies_general",
+      "type": "core",
+      "description": "If rotation never helps, the general Erdős conjecture follows from BKU",
+      "leanType": "rotationNeverHelps → erdos106GeneralConjecture"
+    },
+    {
+      "name": "rotation_never_helps_implies_conjecture",
+      "type": "core",
+      "description": "rotationNeverHelps + BKU gives f_rot(k²+1) = k for all k ≥ 1",
+      "leanType": "rotationNeverHelps → ∀ k ≥ 1, f_rot (k ^ 2 + 1) = k"
+    },
+    {
+      "name": "no_rotation_help_at_2",
+      "type": "supporting",
+      "description": "At n = 2, rotation doesn't help: f_rot(2) = g(2) = 1",
+      "leanType": "f_rot 2 = g_ap 2"
+    },
+    {
+      "name": "achievable_sums_subset",
+      "type": "supporting",
+      "description": "Achievable sums for axis-parallel packings form a subset of general packing sums",
+      "leanType": "{s | ∃ P : AxisParallelPacking n, P.sumSides = s} ⊆ {s | ∃ P : GeneralPacking n, P.sumSides = s}"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-106",
+      "relationship": "extends",
+      "description": "Extends the main Erdős #106 formalization by introducing rotated squares and formalizing the question of whether rotation helps"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz bound f(n) ≤ √n applies to rotated squares since rotation preserves area"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "J. Baek",
+        "M. Koizumi",
+        "Y. Ueoro"
+      ],
+      "title": "Packing unit squares in a square: axis-parallel case",
+      "venue": "arXiv preprint",
+      "year": "2024",
+      "arxiv": "2411.06770",
+      "note": "Proves g(k²+1) = k for axis-parallel squares. If rotation never helps, this resolves the general conjecture."
+    },
+    {
+      "authors": [
+        "P. Erdős",
+        "A. Soifer"
+      ],
+      "title": "Squares packing",
+      "venue": "Geombinatorics",
+      "year": "1995",
+      "volume": "4",
+      "pages": "75-82"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 455,
+    "axiomCount": 8,
+    "theoremCount": 11,
+    "substantiveTheoremCount": 8,
+    "sorryTheorems": 0,
+    "definitionCount": 13,
+    "mainTheorems": [
+      {
+        "name": "agree_at_perfect_squares",
+        "type": "proved",
+        "description": "f_rot(k²) = g(k²) = k for all k ≥ 1"
+      },
+      {
+        "name": "bku_and_no_rotation_implies_general",
+        "type": "proved",
+        "description": "rotationNeverHelps → erdos106GeneralConjecture"
+      },
+      {
+        "name": "rotation_never_helps_implies_conjecture",
+        "type": "proved",
+        "description": "rotationNeverHelps → f_rot(k²+1) = k for all k ≥ 1"
+      },
+      {
+        "name": "no_rotation_help_at_2",
+        "type": "proved",
+        "description": "f_rot(2) = g(2) = 1"
+      },
+      {
+        "name": "rotationHelps",
+        "type": "conjecture",
+        "description": "∃ n, f_rot(n) > g(n) — the open question"
+      }
+    ]
+  }
+}

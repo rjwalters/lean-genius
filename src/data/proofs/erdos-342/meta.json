@@ -28,7 +28,7 @@
       "Natural density and asymptotic analysis",
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
-    "lineCount": 204,
+    "lineCount": 221,
     "assumptions": "5 axioms: ulamSeq (opaque sequence), ulamSeq_initial (agrees with computable), ulamSeq_strictMono, ulamSeq_unique_rep, ulamSeq_minimal. 12 initial values verified by native_decide.",
     "mathlib_version": "4.26.0"
   },
@@ -148,7 +148,7 @@
       "Finset"
     ],
     "namespace": "Erdos342",
-    "lineCount": 232,
+    "lineCount": 221,
     "axiomCount": 5,
     "theoremCount": 19,
     "definitionCount": 8

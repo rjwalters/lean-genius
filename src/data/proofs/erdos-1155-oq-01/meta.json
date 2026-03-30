@@ -2,7 +2,7 @@
   "id": "erdos-1155-oq-01",
   "title": "Triangle Removal Process: Exact Asymptotics",
   "slug": "erdos-1155-oq-01",
-  "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erd\u0151s's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 20 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
+  "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 20 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",
@@ -50,14 +50,14 @@
       },
       {
         "theorem": "Real.rpow_add",
-        "description": "x^(a+b) = x^a \u00b7 x^b for positive reals; used in exponent splitting for BFL implications.",
+        "description": "x^(a+b) = x^a · x^b for positive reals; used in exponent splitting for BFL implications.",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
       "BFL sandwich theorem combining upper and lower bounds",
       "Exact exponent characterization: 3/2 is the critical exponent",
-      "Conjecture decomposition into independent upper/lower \u0398-bounds",
+      "Conjecture decomposition into independent upper/lower Θ-bounds",
       "Sufficient conditions: limit convergence implies full conjecture",
       "Complete graph triangle existence for variable Fin n",
       "Small-value bounds from complete graph edge count",
@@ -68,11 +68,11 @@
       "Ratio tightness and bounded ratio characterization"
     ],
     "axiomCount": 0,
-    "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) \u2264 n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
+    "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) ≤ n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
     "relatedProblems": [
       {
         "id": "erdos-1155",
-        "relationship": "Parent formalization of Erd\u0151s Problem #1155; this file extends the parent with OQ-01 gap analysis"
+        "relationship": "Parent formalization of Erdős Problem #1155; this file extends the parent with OQ-01 gap analysis"
       },
       {
         "id": "ramseys-theorem",
@@ -84,16 +84,16 @@
       "Real powers (Real.rpow) and their monotonicity properties",
       "Simple graph theory (SimpleGraph, CliqueFree)",
       "Topological convergence (Filter.Tendsto, nhds)",
-      "Asymptotic notation (\u0398, O, \u03a9)"
+      "Asymptotic notation (Θ, O, Ω)"
     ],
-    "lineCount": 489,
+    "lineCount": 411,
     "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "header",
       "title": "Module Header and Imports",
-      "summary": "Documents the file's scope: extending Erdos1155Problem.lean to analyze the gap between BFL n^{3/2+o(1)} and the conjectured \u0398(n^{3/2}). Imports Mathlib for filters, real powers, simple graph clique theory, and topological convergence.",
+      "summary": "Documents the file's scope: extending Erdos1155Problem.lean to analyze the gap between BFL n^{3/2+o(1)} and the conjectured Θ(n^{3/2}). Imports Mathlib for filters, real powers, simple graph clique theory, and topological convergence.",
       "startLine": 1,
       "endLine": 21,
       "mathContext": "Imports Mathlib's filter framework (`Filter.Eventually`, `atTop`), `SimpleGraph.CliqueFree`, `Real.rpow`, and `Filter.Tendsto` for asymptotic analysis."
@@ -101,7 +101,7 @@
     {
       "id": "triangle-defs",
       "title": "Triangle Definitions",
-      "summary": "Defines pointwise triangle predicates (IsTriangle', IsTriangleFree) and proves their equivalence with Mathlib's CliqueFree 3. Constructs explicit triangles in K_n for n \u2265 3.",
+      "summary": "Defines pointwise triangle predicates (IsTriangle', IsTriangleFree) and proves their equivalence with Mathlib's CliqueFree 3. Constructs explicit triangles in K_n for n ≥ 3.",
       "startLine": 22,
       "endLine": 76,
       "mathContext": "Triangle: $a \\neq b \\neq c \\neq a$ with edges $ab, bc, ac$. Equivalence: $\\text{IsTriangleFree}(G) \\iff G.\\text{CliqueFree}\\,3$."
@@ -109,7 +109,7 @@
     {
       "id": "asymptotic-setup",
       "title": "Asymptotic Infrastructure",
-      "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erd\u0151s conjecture as \u2203 c\u2081, c\u2082 > 0 with c\u2081\u00b7n^{3/2} \u2264 f(n) \u2264 c\u2082\u00b7n^{3/2} eventually.",
+      "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erdős conjecture as ∃ c₁, c₂ > 0 with c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually.",
       "startLine": 77,
       "endLine": 103,
       "mathContext": "Axioms: $0 \\leq f(n) \\leq \\binom{n}{2}$, BFL: $\\forall \\varepsilon > 0, \\; n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually."
@@ -117,7 +117,7 @@
     {
       "id": "bfl-sandwich",
       "title": "BFL Sandwich and Conjecture Implications",
-      "summary": "Combines BFL bounds into a sandwich n^{3/2-\u03b5} \u2264 f(n) \u2264 n^{3/2+\u03b5}. Proves the conjecture strictly implies BFL in both directions via constant-to-sub-polynomial reduction: a fixed constant $C$ is eventually dominated by $n^\\varepsilon$ for any $\\varepsilon > 0$.",
+      "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL in both directions via constant-to-sub-polynomial reduction: a fixed constant $C$ is eventually dominated by $n^\\varepsilon$ for any $\\varepsilon > 0$.",
       "startLine": 104,
       "endLine": 183,
       "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
@@ -128,7 +128,7 @@
       "summary": "Defines `upper_theta_bound` ($O(n^{3/2})$) and `lower_theta_bound` ($\\Omega(n^{3/2})$) as independent conditions. Proves `conjecture_iff_both_bounds`: $f(n) = \\Theta(n^{3/2})$ iff both one-sided bounds hold. The non-trivial reverse direction shows $c \\leq C$ by contradiction: if $c > C$, the eventual bounds $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ with $n^{3/2} > 0$ force $c \\leq C$.",
       "startLine": 184,
       "endLine": 219,
-      "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. The $O$ and $\\Omega$ bounds can be pursued independently \u2014 proving either constitutes progress toward the full conjecture."
+      "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. The $O$ and $\\Omega$ bounds can be pursued independently — proving either constitutes progress toward the full conjecture."
     },
     {
       "id": "exponent-characterization",
@@ -149,23 +149,23 @@
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
-      "summary": "Two sufficient conditions: (1) `limit_implies_conjecture` \u2014 if $f(n)/n^{3/2} \\to L > 0$, the conjecture holds with $c_1 = L/2$, $c_2 = 3L/2$, using `Icc_mem_nhds` for the topological argument. (2) `limsup_liminf_implies_conjecture` \u2014 the weaker condition that $f(n)/n^{3/2}$ is eventually bounded between positive constants also suffices. Together these characterize the conjecture as a compactness condition on the ratio sequence.",
+      "summary": "Two sufficient conditions: (1) `limit_implies_conjecture` — if $f(n)/n^{3/2} \\to L > 0$, the conjecture holds with $c_1 = L/2$, $c_2 = 3L/2$, using `Icc_mem_nhds` for the topological argument. (2) `limsup_liminf_implies_conjecture` — the weaker condition that $f(n)/n^{3/2}$ is eventually bounded between positive constants also suffices. Together these characterize the conjecture as a compactness condition on the ratio sequence.",
       "startLine": 305,
       "endLine": 355,
-      "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices. Implication chain: limit convergence $\\Rightarrow$ limsup/liminf bounded $\\Rightarrow$ Erd\u0151s conjecture $\\Rightarrow$ BFL."
+      "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices. Implication chain: limit convergence $\\Rightarrow$ limsup/liminf bounded $\\Rightarrow$ Erdős conjecture $\\Rightarrow$ BFL."
     },
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
-      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any \u03b1 < 3/2, eventually n^\u03b1 \u2264 f(n). Proved by taking \u03b5 = 3/2 - \u03b1 in the BFL lower bound. Completes the two-sided critical exponent characterization started in \u00a7 4: together with `bfl_exponent_is_three_halves`, this shows inf{\u03b1 : f(n) = O(n^\u03b1)} = 3/2.",
+      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Proved by taking ε = 3/2 - α in the BFL lower bound. Completes the two-sided critical exponent characterization started in § 4: together with `bfl_exponent_is_three_halves`, this shows inf{α : f(n) = O(n^α)} = 3/2.",
       "startLine": 356,
       "endLine": 369,
       "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. Superlinearity ($\\alpha = 1$): the terminal graph is far from a forest."
     },
     {
       "id": "mantel-connection",
-      "title": "Mantel/Tur\u00e1n Connection",
-      "summary": "Connects the triangle removal process to Mantel's theorem (1907): the triangle-free terminal graph has at most n\u00b2/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound` (the 5th axiom). Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$. Also wraps the axiom as `mantel_bound_forall` and `mantel_bound_eventually` for API compatibility.",
+      "title": "Mantel/Turán Connection",
+      "summary": "Connects the triangle removal process to Mantel's theorem (1907): the triangle-free terminal graph has at most n²/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound` (the 5th axiom). Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$. Also wraps the axiom as `mantel_bound_forall` and `mantel_bound_eventually` for API compatibility.",
       "startLine": 370,
       "endLine": 403,
       "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
@@ -173,7 +173,7 @@
     {
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
-      "summary": "Proves the strict weakening chain: Conjecture \u27f9 BFL \u27f9 Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
+      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
       "startLine": 404,
       "endLine": 433,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
@@ -181,39 +181,39 @@
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
-      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually, measuring how close the conjecture's constants are to sharp. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually, the cleanest compactness formulation. Together they characterize the conjecture as: the ratio sequence $\\{f(n)/n^{3/2}\\}$ has a compact accumulation set in $(0, \\infty)$ \u2014 a topological reformulation of the number-theoretic conjecture.",
+      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually, measuring how close the conjecture's constants are to sharp. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually, the cleanest compactness formulation. Together they characterize the conjecture as: the ratio sequence $\\{f(n)/n^{3/2}\\}$ has a compact accumulation set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture.",
       "startLine": 434,
       "endLine": 489,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
   "overview": {
-    "historicalContext": "The triangle removal process \u2014 repeatedly select a triangle uniformly at random from $K_n$ and delete its edges until no triangles remain \u2014 was introduced by Erd\u0151s, Faudree, Phelps, and Schelp in the early 1980s as a model for random greedy algorithms in combinatorics. Paul Erd\u0151s conjectured (c. 1981) that the number of surviving edges satisfies $f(n) = \\Theta(n^{3/2})$, a prediction rooted in the observation that the process slows down as triangles become sparse, with the critical density regime occurring near $n^{3/2}$ edges. The first rigorous progress came from Daniel Grable (1997), who proved an upper bound of $n^{7/4+o(1)}$ using the differential equation method for random graph processes pioneered by Nicholas Wormald (1995). This method tracks edge and triangle densities via a system of ODEs that approximate the discrete random process in the large-$n$ limit. The breakthrough by Tom Bohman, Alan Frieze, and Eyal Lubetzky (2015) established $f(n) = n^{3/2+o(1)}$ almost surely, confirming the exponent $3/2$ but with sub-polynomial rather than constant multiplicative bounds. Their proof refined Wormald's ODE method with delicate martingale concentration arguments to control the process through the critical regime where triangle density drops from polynomial to near-zero. The precise gap \u2014 whether $f(n)/n^{3/2}$ is bounded between constants or merely between $n^{\\pm\\varepsilon}$ \u2014 remains open and is one of the central problems in the theory of random graph processes. The process connects to classical extremal graph theory: Mantel's theorem (1907) gives the naive upper bound $f(n) \\leq n^2/4$ since the terminal graph is triangle-free, and the triangle supersaturation phenomenon (Razborov 2010, flag algebras) governs the early stages when the graph is dense. A related but distinct problem is the triangle removal lemma (Ruzsa-Szemer\u00e9di 1978): if a graph has $o(n^3)$ triangles, it can be made triangle-free by removing $o(n^2)$ edges. Fox (2011) improved the quantitative bounds of this deterministic result using regularity-free methods. The triangle removal *process* studied here is the random greedy counterpart \u2014 rather than finding an optimal edge set to remove, it greedily deletes random triangle edges, and the question is how many edges survive. Spencer (1995) conjectured that random graph processes with monotone properties generally exhibit sharp thresholds, a framework within which the $n^{3/2}$ scaling is a specific instance.",
-    "problemStatement": "OQ-01: What is the exact asymptotic behavior of the triangle removal process?\n\n**Erd\u0151s Conjecture** (#1155): $\\exists c_1, c_2 > 0$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ eventually, i.e., $f(n) = \\Theta(n^{3/2})$.\n\n**Known** (BFL 2015): $f(n) = n^{3/2+o(1)}$, i.e., for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.\n\n**Gap**: The conjecture needs constant bounds $c_1 \\leq f(n)/n^{3/2} \\leq c_2$, while BFL only gives sub-polynomial bounds $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$.",
-    "text": "A 489-line research formalization that dissects the gap between the best known result ($f(n) = n^{3/2+o(1)}$, Bohman-Frieze-Lubetzky 2015) and Erd\u0151s's conjecture ($f(n) = \\Theta(n^{3/2})$) for the triangle removal process on $K_n$. The file axiomatizes 5 external results (the removal function $f$, BFL bounds, Mantel's theorem) and proves 20 structural theorems with 0 sorries. Key results: (1) the conjecture decomposes into independent $O$ and $\\Omega$ bounds, so progress on either bound advances the problem; (2) $3/2$ is the exact critical exponent \u2014 $f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$ but for no $\\alpha < 3/2$; (3) the strict weakening chain Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each result relaxes the multiplicative constant control; (4) ratio convergence $f(n)/n^{3/2} \\to L > 0$ implies the conjecture with explicit constants $c_1 = L/2$, $c_2 = 3L/2$, reformulating the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$. The approach cleanly separates hard probabilistic analysis (axiomatized) from combinatorial-logical structure (proved), providing a template for formalizing open conjectures in extremal combinatorics.",
+    "historicalContext": "The triangle removal process — repeatedly select a triangle uniformly at random from $K_n$ and delete its edges until no triangles remain — was introduced by Erdős, Faudree, Phelps, and Schelp in the early 1980s as a model for random greedy algorithms in combinatorics. Paul Erdős conjectured (c. 1981) that the number of surviving edges satisfies $f(n) = \\Theta(n^{3/2})$, a prediction rooted in the observation that the process slows down as triangles become sparse, with the critical density regime occurring near $n^{3/2}$ edges. The first rigorous progress came from Daniel Grable (1997), who proved an upper bound of $n^{7/4+o(1)}$ using the differential equation method for random graph processes pioneered by Nicholas Wormald (1995). This method tracks edge and triangle densities via a system of ODEs that approximate the discrete random process in the large-$n$ limit. The breakthrough by Tom Bohman, Alan Frieze, and Eyal Lubetzky (2015) established $f(n) = n^{3/2+o(1)}$ almost surely, confirming the exponent $3/2$ but with sub-polynomial rather than constant multiplicative bounds. Their proof refined Wormald's ODE method with delicate martingale concentration arguments to control the process through the critical regime where triangle density drops from polynomial to near-zero. The precise gap — whether $f(n)/n^{3/2}$ is bounded between constants or merely between $n^{\\pm\\varepsilon}$ — remains open and is one of the central problems in the theory of random graph processes. The process connects to classical extremal graph theory: Mantel's theorem (1907) gives the naive upper bound $f(n) \\leq n^2/4$ since the terminal graph is triangle-free, and the triangle supersaturation phenomenon (Razborov 2010, flag algebras) governs the early stages when the graph is dense. A related but distinct problem is the triangle removal lemma (Ruzsa-Szemerédi 1978): if a graph has $o(n^3)$ triangles, it can be made triangle-free by removing $o(n^2)$ edges. Fox (2011) improved the quantitative bounds of this deterministic result using regularity-free methods. The triangle removal *process* studied here is the random greedy counterpart — rather than finding an optimal edge set to remove, it greedily deletes random triangle edges, and the question is how many edges survive. Spencer (1995) conjectured that random graph processes with monotone properties generally exhibit sharp thresholds, a framework within which the $n^{3/2}$ scaling is a specific instance.",
+    "problemStatement": "OQ-01: What is the exact asymptotic behavior of the triangle removal process?\n\n**Erdős Conjecture** (#1155): $\\exists c_1, c_2 > 0$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ eventually, i.e., $f(n) = \\Theta(n^{3/2})$.\n\n**Known** (BFL 2015): $f(n) = n^{3/2+o(1)}$, i.e., for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.\n\n**Gap**: The conjecture needs constant bounds $c_1 \\leq f(n)/n^{3/2} \\leq c_2$, while BFL only gives sub-polynomial bounds $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$.",
+    "text": "A 489-line research formalization that dissects the gap between the best known result ($f(n) = n^{3/2+o(1)}$, Bohman-Frieze-Lubetzky 2015) and Erdős's conjecture ($f(n) = \\Theta(n^{3/2})$) for the triangle removal process on $K_n$. The file axiomatizes 5 external results (the removal function $f$, BFL bounds, Mantel's theorem) and proves 20 structural theorems with 0 sorries. Key results: (1) the conjecture decomposes into independent $O$ and $\\Omega$ bounds, so progress on either bound advances the problem; (2) $3/2$ is the exact critical exponent — $f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$ but for no $\\alpha < 3/2$; (3) the strict weakening chain Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each result relaxes the multiplicative constant control; (4) ratio convergence $f(n)/n^{3/2} \\to L > 0$ implies the conjecture with explicit constants $c_1 = L/2$, $c_2 = 3L/2$, reformulating the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$. The approach cleanly separates hard probabilistic analysis (axiomatized) from combinatorial-logical structure (proved), providing a template for formalizing open conjectures in extremal combinatorics.",
     "proofStrategy": "Layered analysis proceeding from foundations to structural results:\n\n1. **Triangle predicates**: Define pointwise triangle predicates and prove equivalence with Mathlib's `CliqueFree 3`\n2. **Axiomatization**: Declare $f(n)$ with basic properties and BFL bounds as axioms\n3. **BFL sandwich**: Combine bounds and prove Conjecture $\\Longrightarrow$ BFL via constant-to-sub-polynomial reduction\n4. **Decomposition**: Show $\\Theta(n^{3/2})$ is equivalent to independent $O$ and $\\Omega$ bounds\n5. **Critical exponent**: Prove $3/2$ is the exact threshold: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, but not for $\\alpha < 3/2$\n6. **Sufficient conditions**: Ratio convergence $f(n)/n^{3/2} \\to L > 0$ implies the conjecture with explicit constants\n7. **Hierarchy**: Establish strict weakening chain Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable\n8. **Tightness**: Characterize the conjecture as compactness of the ratio sequence",
     "keyInsights": [
-      "**The BFL-conjecture gap** is exactly the gap between $n^{\\pm\\varepsilon}$ and constant bounds on the ratio $f(n)/n^{3/2}$ \u2014 a compactness condition on the ratio sequence",
+      "**The BFL-conjecture gap** is exactly the gap between $n^{\\pm\\varepsilon}$ and constant bounds on the ratio $f(n)/n^{3/2}$ — a compactness condition on the ratio sequence",
       "**Conjecture decomposition**: $f(n) = \\Theta(n^{3/2})$ splits into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds, with the non-trivial combination requiring $c_1 \\leq c_2$ by a monotonicity argument",
       "**Ratio convergence** $f(n)/n^{3/2} \\to L > 0$ is strictly stronger than the conjecture (which only needs boundedness) but provides explicit constants $c_1 = L/2$, $c_2 = 3L/2$",
       "**Strict hierarchy** Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable: each weakening loses information about whether the multiplicative constant is fixed or grows with $n$",
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
-      "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries \u2014 cleanly separating the hard analysis from the combinatorial-logical structure",
-      "**ODE-to-asymptotics pipeline**: BFL's proof tracks edge density $e(t)$ and triangle density $t(t)$ as coupled ODEs $e' = -3t/\\binom{e}{3}$, valid while $e \\gg n^{3/2}$. The ODE breaks down precisely at $e \\approx n^{3/2}$, producing the $n^{3/2+o(1)}$ bound. Extracting constants from this breakdown region is the key to resolving Erd\u0151s's conjecture"
+      "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure",
+      "**ODE-to-asymptotics pipeline**: BFL's proof tracks edge density $e(t)$ and triangle density $t(t)$ as coupled ODEs $e' = -3t/\\binom{e}{3}$, valid while $e \\gg n^{3/2}$. The ODE breaks down precisely at $e \\approx n^{3/2}$, producing the $n^{3/2+o(1)}$ bound. Extracting constants from this breakdown region is the key to resolving Erdős's conjecture"
     ],
     "prerequisites": [
       "Filter-based asymptotics (Filter.Eventually, atTop)",
       "Real powers (Real.rpow) and their monotonicity properties",
       "Simple graph theory (SimpleGraph, CliqueFree)",
       "Topological convergence (Filter.Tendsto, nhds)",
-      "Asymptotic notation (\u0398, O, \u03a9)"
+      "Asymptotic notation (Θ, O, Ω)"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1155",
       "relationship": "parent",
-      "description": "Parent formalization of Erd\u0151s Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
+      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
     },
     {
       "targetId": "ramseys-theorem",
@@ -223,17 +223,17 @@
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The Szemer\u00e9di regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *process*). Both concern triangle counting in graphs, but via different mechanisms: regularity via deterministic decomposition, the process via random greedy algorithms"
+      "description": "The Szemerédi regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *process*). Both concern triangle counting in graphs, but via different mechanisms: regularity via deterministic decomposition, the process via random greedy algorithms"
     },
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Edge-disjoint triangles beyond Tur\u00e1n: both problems concern triangle structure in dense graphs. Erd\u0151s #1009 asks how many edge-disjoint triangles exist beyond the Tur\u00e1n threshold, while #1155 asks how many edges survive random triangle removal \u2014 dual perspectives on triangle packing and covering"
+      "description": "Edge-disjoint triangles beyond Turán: both problems concern triangle structure in dense graphs. Erdős #1009 asks how many edge-disjoint triangles exist beyond the Turán threshold, while #1155 asks how many edges survive random triangle removal — dual perspectives on triangle packing and covering"
     },
     {
       "targetId": "erdos-1010",
       "relationship": "related",
-      "description": "Triangle supersaturation counts triangles in graphs with more than Tur\u00e1n-many edges. The triangle removal process starts from the complete graph (maximum supersaturation) and greedily reduces triangles to zero \u2014 the edge count at termination is governed by the rate of triangle depletion, connecting supersaturation bounds to the removal process dynamics"
+      "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts from the complete graph (maximum supersaturation) and greedily reduces triangles to zero — the edge count at termination is governed by the rate of triangle depletion, connecting supersaturation bounds to the removal process dynamics"
     },
     {
       "targetId": "erdos-1104",
@@ -243,32 +243,32 @@
     {
       "targetId": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemer\u00e9di's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle removal lemma (a key consequence of Szemer\u00e9di regularity) states that graphs with few triangles can be made triangle-free by removing few edges \u2014 the deterministic counterpart to the random triangle removal process studied here"
+      "description": "Szemerédi's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle removal lemma (a key consequence of Szemerédi regularity) states that graphs with few triangles can be made triangle-free by removing few edges — the deterministic counterpart to the random triangle removal process studied here"
     },
     {
       "targetId": "roth-theorem-k3",
       "relationship": "related",
-      "description": "The triangle removal lemma \u2014 a key consequence of Szemer\u00e9di regularity \u2014 states that graphs with o(n\u00b3) triangles can be made triangle-free by removing o(n\u00b2) edges. Ruzsa and Szemer\u00e9di (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
+      "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. Ruzsa and Szemerédi (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
     },
     {
       "targetId": "szemeredi-counting",
       "relationship": "related",
-      "description": "Szemer\u00e9di's counting lemma quantifies triangle density in \u03b5-regular triples: if (A, B, C) are pairwise \u03b5-regular with edge densities d\u2081, d\u2082, d\u2083, the triangle count is approximately d\u2081d\u2082d\u2083|A||B||C|. In the triangle removal process, this counting governs the early (dense) phase when the graph still has many \u03b5-regular triples \u2014 the rate of triangle depletion in this regime determines how quickly the process transitions to the critical n^{3/2} phase"
+      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples: if (A, B, C) are pairwise ε-regular with edge densities d₁, d₂, d₃, the triangle count is approximately d₁d₂d₃|A||B||C|. In the triangle removal process, this counting governs the early (dense) phase when the graph still has many ε-regular triples — the rate of triangle depletion in this regime determines how quickly the process transitions to the critical n^{3/2} phase"
     },
     {
       "targetId": "prob-method-alteration",
       "relationship": "related",
-      "description": "The alteration method (Erd\u0151s 1963) constructs combinatorial objects by starting with a random structure and modifying it. The triangle removal process is a natural extension: start with K_n and greedily remove random triangles. The alteration perspective suggests that the terminal graph's structure may be analyzable by viewing it as K_n 'altered' by the removal process, with the n^{3/2} scaling reflecting the balance between the random greedy deletions and the surviving edge structure"
+      "description": "The alteration method (Erdős 1963) constructs combinatorial objects by starting with a random structure and modifying it. The triangle removal process is a natural extension: start with K_n and greedily remove random triangles. The alteration perspective suggests that the terminal graph's structure may be analyzable by viewing it as K_n 'altered' by the removal process, with the n^{3/2} scaling reflecting the balance between the random greedy deletions and the surviving edge structure"
     },
     {
       "targetId": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "The Lov\u00e1sz Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency. In the triangle removal process, triangle deletions create complex dependencies \u2014 removing one triangle's edges can destroy adjacent triangles. The BFL proof uses martingale concentration (a related probabilistic tool) to handle these dependencies during the critical phase of the process"
+      "description": "The Lovász Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency. In the triangle removal process, triangle deletions create complex dependencies — removing one triangle's edges can destroy adjacent triangles. The BFL proof uses martingale concentration (a related probabilistic tool) to handle these dependencies during the critical phase of the process"
     },
     {
       "targetId": "prob-method-second-moment",
       "relationship": "related",
-      "description": "The second moment method bounds P(X > 0) via E[X]\u00b2/E[X\u00b2], providing concentration for the triangle count during the removal process. BFL's proof tracks the variance of edge and triangle counts through the process, using second-moment-type arguments to show concentration around the ODE trajectory until the critical n^{3/2} threshold"
+      "description": "The second moment method bounds P(X > 0) via E[X]²/E[X²], providing concentration for the triangle count during the removal process. BFL's proof tracks the variance of edge and triangle counts through the process, using second-moment-type arguments to show concentration around the ODE trajectory until the critical n^{3/2} threshold"
     }
   ],
   "references": [
@@ -276,35 +276,35 @@
       "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
       "title": "Random triangle removal",
       "year": "2015",
-      "venue": "Advances in Mathematics, vol. 280, pp. 379\u2013438",
-      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erd\u0151s but with sub-polynomial rather than constant multiplicative bounds"
+      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
+      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
     },
     {
       "authors": "Grable, Daniel",
       "title": "On random greedy triangle packing",
       "year": "1997",
       "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
-      "note": "Earlier upper bound of n^{7/4+\u03b5} for the triangle removal process, superseded by the BFL result"
+      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
     },
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "Problems and results in combinatorial analysis and graph theory",
       "year": "1981",
-      "venue": "Discrete Mathematics, vol. 36, pp. 69\u201373",
-      "note": "Original conjecture that f(n) = \u0398(n^{3/2}) for the triangle removal process"
+      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
+      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
     },
     {
       "authors": "Mantel, Willem",
       "title": "Problem 28",
       "year": "1907",
-      "venue": "Wiskundige Opgaven, vol. 10, pp. 60\u201361",
-      "note": "Triangle-free graphs on n vertices have at most \u230an\u00b2/4\u230b edges; provides the naive upper bound on f(n)"
+      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
+      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
     },
     {
       "authors": "Wormald, Nicholas",
       "title": "Differential equations for random processes and random graphs",
       "year": "1995",
-      "venue": "Annals of Applied Probability, vol. 5, pp. 1217\u20131235",
+      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
       "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
     },
     {
@@ -318,33 +318,33 @@
       "authors": "Razborov, Alexander",
       "title": "On the minimal density of triangles in graphs",
       "year": "2010",
-      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201\u2013214",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
       "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
     },
     {
-      "authors": "Tur\u00e1n, P\u00e1l",
+      "authors": "Turán, Pál",
       "title": "Eine Extremalaufgabe aus der Graphentheorie",
       "year": "1941",
-      "venue": "Matematikai \u00e9s Fizikai Lapok, vol. 48, pp. 436\u2013452",
-      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Tur\u00e1n bound"
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
     },
     {
-      "authors": "Ruzsa, Imre Z.; Szemer\u00e9di, Endre",
+      "authors": "Ruzsa, Imre Z.; Szemerédi, Endre",
       "title": "Triple systems with no six points carrying three triangles",
       "year": "1978",
-      "venue": "Combinatorics (Keszthely), Colloq. Math. Soc. J. Bolyai, vol. 18, pp. 939\u2013945",
-      "note": "Proved the triangle removal lemma: graphs with o(n\u00b3) triangles can be made triangle-free by removing o(n\u00b2) edges. The deterministic counterpart to the random triangle removal process"
+      "venue": "Combinatorics (Keszthely), Colloq. Math. Soc. J. Bolyai, vol. 18, pp. 939–945",
+      "note": "Proved the triangle removal lemma: graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. The deterministic counterpart to the random triangle removal process"
     },
     {
       "authors": "Fox, Jacob",
       "title": "A new proof of the graph removal lemma",
       "year": "2011",
-      "venue": "Annals of Mathematics, vol. 174, pp. 561\u2013579",
-      "note": "Improved quantitative bounds for the triangle removal lemma without using Szemer\u00e9di regularity, achieving a tower-function improvement. Relevant to understanding the deterministic-vs-random removal gap"
+      "venue": "Annals of Mathematics, vol. 174, pp. 561–579",
+      "note": "Improved quantitative bounds for the triangle removal lemma without using Szemerédi regularity, achieving a tower-function improvement. Relevant to understanding the deterministic-vs-random removal gap"
     }
   ],
   "leanFile": {
-    "lineCount": 489,
+    "lineCount": 411,
     "structureCount": 0,
     "axiomCount": 5,
     "theoremCount": 20,
@@ -360,16 +360,16 @@
     ]
   },
   "conclusion": {
-    "summary": "This 489-line formalization fully proves 20 structural theorems (0 sorries) from 5 axioms, dissecting the precise gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erd\u0151s's conjectured $\\Theta(n^{3/2})$ for the triangle removal process. The central insight is that the conjecture is a compactness condition on the ratio $f(n)/n^{3/2}$: it holds if and only if this sequence has all its accumulation points in a bounded interval $(c_1, c_2) \\subset (0, \\infty)$, a topological reformulation more revealing than the original asymptotic statement. The decomposition into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds provides a practical research roadmap \u2014 proving either one-sided bound constitutes concrete progress toward the full conjecture. The strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each known result relaxes multiplicative constant control, while the exact critical exponent characterization ($3/2 = \\inf\\{\\alpha : f(n) = O(n^\\alpha)\\}$) confirms BFL pinpointed the right scaling.",
-    "implications": "**Theoretical Significance**: Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ \u2014 a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture. The compactness reformulation reveals the conjecture's topological nature: it asks whether the ratio sequence $\\{f(n)/n^{3/2}\\}$ has all its accumulation points in a bounded interval of positive reals, a Bolzano-Weierstrass-type condition.\n\nThe hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants. The Wormald ODE method tracks the process via coupled differential equations $e'(t) = -3\\tau(t)/\\binom{e(t)}{3}$ where $e(t)$ and $\\tau(t)$ are edge and triangle counts; the ODE breaks down precisely at $e \\approx n^{3/2}$, and understanding the breakdown region is the key to resolving the conjecture.\n\n**Methodological Significance**: The formalization demonstrates how axiomatization can cleanly separate hard analysis (the BFL probabilistic proof, encoded as axioms) from structural combinatorial reasoning (decomposition theorems, hierarchy, tightness, all proved with 0 sorries). This pattern \u2014 axiomatizing deep external results while fully proving their structural consequences \u2014 is a scalable approach for formalizing research-level combinatorics where the analytical core may resist formalization but the logical architecture is independently verifiable.",
+    "summary": "This 489-line formalization fully proves 20 structural theorems (0 sorries) from 5 axioms, dissecting the precise gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process. The central insight is that the conjecture is a compactness condition on the ratio $f(n)/n^{3/2}$: it holds if and only if this sequence has all its accumulation points in a bounded interval $(c_1, c_2) \\subset (0, \\infty)$, a topological reformulation more revealing than the original asymptotic statement. The decomposition into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds provides a practical research roadmap — proving either one-sided bound constitutes concrete progress toward the full conjecture. The strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each known result relaxes multiplicative constant control, while the exact critical exponent characterization ($3/2 = \\inf\\{\\alpha : f(n) = O(n^\\alpha)\\}$) confirms BFL pinpointed the right scaling.",
+    "implications": "**Theoretical Significance**: Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture. The compactness reformulation reveals the conjecture's topological nature: it asks whether the ratio sequence $\\{f(n)/n^{3/2}\\}$ has all its accumulation points in a bounded interval of positive reals, a Bolzano-Weierstrass-type condition.\n\nThe hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants. The Wormald ODE method tracks the process via coupled differential equations $e'(t) = -3\\tau(t)/\\binom{e(t)}{3}$ where $e(t)$ and $\\tau(t)$ are edge and triangle counts; the ODE breaks down precisely at $e \\approx n^{3/2}$, and understanding the breakdown region is the key to resolving the conjecture.\n\n**Methodological Significance**: The formalization demonstrates how axiomatization can cleanly separate hard analysis (the BFL probabilistic proof, encoded as axioms) from structural combinatorial reasoning (decomposition theorems, hierarchy, tightness, all proved with 0 sorries). This pattern — axiomatizing deep external results while fully proving their structural consequences — is a scalable approach for formalizing research-level combinatorics where the analytical core may resist formalization but the logical architecture is independently verifiable.",
     "openQuestions": [
-      "Does f(n)/n^{3/2} converge to a limit L? If so, what is L? Simulations suggest L \u2248 1.2 but this is not rigorously established.",
-      "Can the lower \u0398-bound \u03a9(n^{3/2}) be established independently of the upper? The BFL proof establishes both bounds simultaneously via a single differential equation analysis.",
+      "Does f(n)/n^{3/2} converge to a limit L? If so, what is L? Simulations suggest L ≈ 1.2 but this is not rigorously established.",
+      "Can the lower Θ-bound Ω(n^{3/2}) be established independently of the upper? The BFL proof establishes both bounds simultaneously via a single differential equation analysis.",
       "Can the differential equation method of BFL (tracking edge/triangle densities) be refined to extract explicit multiplicative constants rather than sub-polynomial corrections?",
       "Does the triangle removal process on random graphs G(n,p) exhibit a phase transition in the ratio f(n,p)/n^{3/2} as p varies? The complete graph (p = 1) is the classical setting.",
-      "Can the ratio tightness characterization (compactness of f(n)/n^{3/2} in (0,\u221e)) be connected to concentration inequalities for the underlying random process?",
-      "What is the structure of the terminal graph? Is it close to a balanced bipartite graph (Tur\u00e1n-like), or does it have a more complex structure? Understanding the terminal graph's geometry may provide a path to proving the conjecture by constraining the possible edge distributions.",
-      "Can the triangle removal process be generalized to K_r-removal for r > 3? The analogous conjecture would be f_r(n) = \u0398(n^{2-2/(r+1)}), with the exponent coming from the Kruskal-Katona-style density threshold for K_r. Formalizing the general case would extend the structural results proved here."
+      "Can the ratio tightness characterization (compactness of f(n)/n^{3/2} in (0,∞)) be connected to concentration inequalities for the underlying random process?",
+      "What is the structure of the terminal graph? Is it close to a balanced bipartite graph (Turán-like), or does it have a more complex structure? Understanding the terminal graph's geometry may provide a path to proving the conjecture by constraining the possible edge distributions.",
+      "Can the triangle removal process be generalized to K_r-removal for r > 3? The analogous conjecture would be f_r(n) = Θ(n^{2-2/(r+1)}), with the exponent coming from the Kruskal-Katona-style density threshold for K_r. Formalizing the general case would extend the structural results proved here."
     ]
   }
 }

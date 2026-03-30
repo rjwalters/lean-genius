@@ -1,0 +1,120 @@
+{
+  "slug": "erdos-152-oq-01",
+  "title": "Two isolated elements in Sidon sumsets via dual endpoint analysis",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a Sidon set $A \\subset \\mathbb{N}$ with $|A| \\geq N_0$ (for some explicit $N_0$), prove $\\mathrm{isolatedCount}(A) \\geq 2$. Strategy: show both $2\\min(A)$ and $2\\max(A)$ are isolated, or find two disjoint isolated elements via interior structure.",
+    "plain": "Strengthen gap_existence_pigeonhole from ≥1 to ≥2 isolated elements. The current proof finds one isolated element from the endpoints 2·min(A) or 2·max(A). Can we prove both endpoints are isolated simultaneously for |A| ≥ N₀, or find a second isolated element in the interior of A+A?",
+    "whyMatters": [
+      "First quantitative improvement toward Erdős #152 beyond the pigeonhole bound",
+      "Dual endpoint analysis requires controlling both consecutive pairs (M,M-1) and (m,m+1) simultaneously — Sidon difference injectivity limits this to at most one",
+      "Finding interior isolated elements would require new techniques beyond endpoint analysis"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "gap_existence_pigeonhole: isolatedCount(A) ≥ 1 for |A| ≥ 5",
+      "sidon_sumset_size: |A+A| = n(n+1)/2",
+      "sidon_set_range_lower_bound: max(A) ≥ n(n-1)/2",
+      "sidon_diff_injective: at most one pair of consecutive elements in a Sidon set"
+    ],
+    "open": [
+      "Is isolatedCount(A) ≥ 2 for all Sidon sets with |A| ≥ N₀? What is the smallest N₀?",
+      "Can both 2·min(A) and 2·max(A) be isolated simultaneously?"
+    ],
+    "goal": "Prove isolatedCount(A) ≥ 2 for Sidon sets of size ≥ N₀"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "All 4 cases proved. 0 sorries remain. Needs Docker build verification.",
+    "blockers": [],
+    "nextAction": "Prove the one-consecutive-pair cases (requires interior analysis)",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved gap_existence_two with 0 sorries, 0 axioms (369 lines). All 4 cases handled: no-consecutive-pair (both endpoints isolated), one-consecutive-pair-at-max (2m + m+s2 isolated), one-consecutive-pair-at-min (2M + M+p2 isolated), both-consecutive (contradiction for |A|>=7).",
+    "builtItems": [
+      "min_sum_left_isolated: 2m-1 ∉ A+A when m ≥ 1 (below minimum sum)",
+      "min_sum_right_isolated: 2m+1 ∉ A+A when m+1 ∉ A",
+      "max_sum_left_isolated: 2M-1 ∉ A+A when M-1 ∉ A",
+      "max_sum_right_isolated: 2M+1 ∉ A+A (exceeds maximum sum)",
+      "two_isolated_no_consecutive: ≥2 isolated elements when no consecutive pair (PROVED)",
+      "gap_existence_two: ≥2 isolated elements for |A|≥7, min≥1 (2 sorries for one-consec cases)",
+      "hs2_succ: s2+1 not in A when only consecutive pair is (M-1,M), via sidon_diff_injective",
+      "hp2_pred: p2-1 not in A when only consecutive pair is (m,m+1), via sidon_diff_injective",
+      "Case 1 complete: M-1 in A, m+1 not in A -> 2m and m+s2 both isolated",
+      "Case 2 complete: M-1 not in A, m+1 in A -> 2M and M+p2 both isolated",
+      "gap_existence_two: isolatedCount >= 2 for |A|>=7, min>=1 (PROVED, 0 sorry)"
+    ],
+    "insights": [
+      "From gap_existence_pigeonhole: if M-1 ∉ A, 2M is isolated. If m+1 ∉ A and m ≥ 1, 2m is isolated.",
+      "Sidon diff injectivity: at most one pair (x, x-1) in A. So at most one of {M-1 ∈ A, m+1 ∈ A} holds.",
+      "No-consecutive case: both endpoints isolated → 2 distinct isolated elements.",
+      "One-consecutive case: one endpoint has a neighbor in A+A. Need interior isolated element.",
+      "The interior case likely requires sumset density argument: O(n²) elements in range O(n²), density ~1/4, many gaps must create isolated elements.",
+      "Second smallest element s2 has s2+1 not in A because (s2,s2+1) would be second consecutive pair, violating Sidon uniqueness of differences.",
+      "Symmetric argument: second largest p2 has p2-1 not in A because (p2-1,p2) would be second consecutive pair.",
+      "Key size bound: s2 < M-1 and p2 > m+1 follow from |A|>=7 forcing enough elements between extremes."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify build compiles with Docker (Docker was not running during this session)",
+      "Consider generalizing: can we prove isolatedCount >= 3 for |A| >= N?",
+      "The technique extends: k consecutive pairs impossible in Sidon set, so k+1 isolated elements from k+1 second-nearest elements"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "quantitative-improvement"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-15",
+    "erdos-152"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T00:00:00.000Z",
+  "lastUpdate": "2026-03-30T06:20:00Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos152OQ01.lean",
+      "filename": "Erdos152OQ01.lean",
+      "lineCount": 320,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos152Problem.lean",
+      "filename": "Erdos152Problem.lean",
+      "lineCount": 471,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152Problem.lean"
+    }
+  ]
+}

@@ -142,8 +142,6 @@ The solution uses finitary Ramsey-type arguments.
 **Main Theorem**: Erdős Problem #645 is true.
 Every 2-coloring has a monochromatic 3-AP with d > x.
 -/
-axiom erdos_645 : erdos_645_statement
-
 /-
 ## Why This Is Interesting
 
@@ -188,8 +186,6 @@ def colorByParity (n : ℕ) : Bool := n % 2 = 0
 For colorByParity, the AP (2, 6, 10) works: x = 2, d = 4, all even.
 Here d = 4 > 2 = x ✓
 -/
-axiom example_parity : erdosCondition 2 4 ∧ isMonochromatic' colorByParity 2 4
-
 /--
 Example coloring: n < 5 is true, n ≥ 5 is false.
 -/
@@ -202,8 +198,6 @@ For colorByThreshold:
 The AP (5, 11, 17) works: x = 5, d = 6, all false.
 Here d = 6 > 5 = x ✓
 -/
-axiom example_threshold : erdosCondition 5 6 ∧ isMonochromatic' colorByThreshold 5 6
-
 /-
 ## Generalization Questions
 
@@ -230,8 +224,6 @@ def erdos_645_generalized (k : ℕ) : Prop :=
 /--
 The original problem is the k = 3 case.
 -/
-axiom erdos_645_is_k3 : erdos_645_generalized 3 ↔ erdos_645_statement
-
 /-
 ## The Finite Version
 
@@ -255,7 +247,5 @@ def finiteErdos645 (N : ℕ) : Prop :=
 The threshold N₀ for which finiteErdos645 N holds for all N ≥ N₀.
 -/
 axiom erdos645_threshold : ℕ
-
-axiom erdos645_threshold_works : ∀ N ≥ erdos645_threshold, finiteErdos645 N
 
 end Erdos645

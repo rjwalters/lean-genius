@@ -130,8 +130,6 @@ def PrimeSquares : Set ℕ :=
 **Squarefree Numbers:**
 When A = prime squares, B = squarefree numbers.
 -/
-axiom squarefreeSetAsBFree : BFreeSet PrimeSquares = {n : ℕ | Squarefree n}
-
 /--
 **Erdős's Theorem (for squarefrees):**
 When A = {p² : p prime}, the limit exists.
@@ -143,12 +141,6 @@ axiom erdos_squarefree_limit :
 **Density of Squarefree Numbers:**
 The density of squarefree numbers is 6/π² ≈ 0.6079.
 -/
-axiom squarefree_density :
-  Filter.Tendsto
-    (fun x : ℕ => (countingFunction {n | Squarefree n} x : ℝ) / x)
-    Filter.atTop
-    (nhds (6 / Real.pi ^ 2))
-
 /-
 ## Part V: K-Free Numbers
 -/

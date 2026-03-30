@@ -84,6 +84,23 @@ theorem consecutive_sum_formula (u v : ℕ) (huv : u ≤ v) :
   have h2 := consecutive_sum_double u v huv
   omega
 
+/-- Any n ≥ 3 that is not a power of 2 has an odd divisor d ≥ 3.
+    Proof by induction: if n is odd, n itself works; if n = 2m, recurse on m. -/
+private lemma exists_odd_divisor_ge3 (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k, n = 2 ^ k) :
+    ∃ d, d ∣ n ∧ Odd d ∧ d ≥ 3 := by
+  rcases Nat.even_or_odd n with ⟨m, rfl⟩ | hodd
+  · -- n = 2m
+    have hm_ge2 : m ≥ 2 := by omega
+    have hm_np : ¬∃ k, m = 2 ^ k := fun ⟨k, hk⟩ => h ⟨k + 1, by rw [pow_succ]; omega⟩
+    by_cases hm3 : m ≥ 3
+    · obtain ⟨d, hd, hodd, hge⟩ := exists_odd_divisor_ge3 m hm3 hm_np
+      exact ⟨d, dvd_mul_of_dvd_right hd 2, hodd, hge⟩
+    · -- m = 2: n = 4 = 2²
+      exfalso; exact h ⟨2, by omega⟩
+  · exact ⟨n, dvd_refl n, hodd, hn⟩
+termination_by n
+decreasing_by omega
+
 /-- If n is not a power of 2, then n can be written as a sum of ≥2 consecutive
     positive integers.
 
@@ -96,8 +113,70 @@ private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ
     ∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i := by
   -- Handle odd n: use two consecutive terms
   rcases Nat.even_or_odd n with ⟨m, hm⟩ | ⟨m, hm⟩
-  · -- n even, not a power of 2: need odd factor analysis
-    sorry
+  · -- n = 2*m, even case. Since n ≥ 3 and even, m ≥ 2.
+    -- Since n is not a power of 2, m is not a power of 2.
+    have hm_ge2 : m ≥ 2 := by omega
+    have hm_not_pow : ¬∃ k, m = 2 ^ k := by
+      intro ⟨k, hk⟩; exact h ⟨k + 1, by rw [pow_succ]; omega⟩
+    rcases Nat.even_or_odd m with ⟨m2, hm2⟩ | ⟨k, hk⟩
+    · -- m = 2*m2 (even sub-case). n = 4*m2.
+      -- Use odd divisor of n to construct the representation directly.
+      obtain ⟨d, hd_dvd, hd_odd, hd_ge⟩ := exists_odd_divisor_ge3 n hn h
+      obtain ⟨r, hd_eq⟩ := hd_odd  -- d = 2*r + 1
+      set q := n / d with hq_def
+      have hqd : d * q = n := Nat.div_mul_cancel hd_dvd
+      have hq_pos : q ≥ 1 := by
+        by_contra hq0; push_neg at hq0
+        simp at hq0; rw [hq0, mul_zero] at hqd; omega
+      by_cases h_case : d + 1 ≤ 2 * q
+      · -- Case A: d consecutive terms centered at q
+        -- Terms: q-(d-1)/2 .. q+(d-1)/2, count = d
+        refine ⟨q - (d + 1) / 2, q + (d - 3) / 2, by omega, ?_⟩
+        have hs : q - (d + 1) / 2 + 1 = q - (d - 1) / 2 := by omega
+        have he : q + (d - 3) / 2 + 1 = q + (d - 1) / 2 := by omega
+        rw [hs, he]
+        have hle : q - (d - 1) / 2 ≤ q + (d - 1) / 2 := by omega
+        have h_sum := two_mul_sum_Icc (q - (d - 1) / 2) (q + (d - 1) / 2) hle
+        have h1 : q + (d - 1) / 2 - (q - (d - 1) / 2) + 1 = d := by omega
+        have h2 : q - (d - 1) / 2 + (q + (d - 1) / 2) = 2 * q := by omega
+        rw [h1, h2] at h_sum
+        have h2n : d * (2 * q) = 2 * n := by
+          rw [show d * (2 * q) = 2 * (d * q) from by ring, hqd]
+        rw [h2n] at h_sum; omega
+      · -- Case B: 2q consecutive terms starting at (d-2q+1)/2
+        push_neg at h_case
+        set a := (d - 2 * q + 1) / 2 with ha_def
+        have ha_pos : a ≥ 1 := by omega
+        refine ⟨a - 1, a + 2 * q - 2, by omega, ?_⟩
+        have hs : a - 1 + 1 = a := by omega
+        have he : a + 2 * q - 2 + 1 = a + 2 * q - 1 := by omega
+        rw [hs, he]
+        have hle : a ≤ a + 2 * q - 1 := by omega
+        have h_sum := two_mul_sum_Icc a (a + 2 * q - 1) hle
+        have h1 : a + 2 * q - 1 - a + 1 = 2 * q := by omega
+        have h2 : a + (a + 2 * q - 1) = d := by omega
+        rw [h1, h2] at h_sum
+        have h2n : 2 * q * d = 2 * n := by
+          rw [show 2 * q * d = 2 * (d * q) from by ring, hqd]
+        rw [h2n] at h_sum; omega
+    · -- m = 2*k+1 (odd sub-case). n = 2*(2k+1) = 4k+2.
+      -- m ≥ 3 (m ≥ 2, m odd ⟹ m ≥ 3), so k ≥ 1.
+      have hk_ge1 : k ≥ 1 := by omega
+      rcases eq_or_lt_of_le hk_ge1 with rfl | hk_ge2
+      · -- k = 1: n = 6. Use 3 terms: 1+2+3 = 6.
+        refine ⟨0, 2, by omega, ?_⟩
+        have h_sum := two_mul_sum_Icc 1 3 (by omega)
+        -- 2 * ∑[1..3] = (3-1+1)*(1+3) = 12, so ∑ = 6 = n
+        omega
+      · -- k ≥ 2: n = 4k+2. Use 4 terms from (k-1) to (k+2).
+        -- Sum = (k-1)+k+(k+1)+(k+2) = 4k+2 = n.
+        refine ⟨k - 2, k + 1, by omega, ?_⟩
+        have hk_sub : k - 2 + 1 = k - 1 := by omega
+        rw [hk_sub]
+        have h_sum := two_mul_sum_Icc (k - 1) (k + 2) (by omega)
+        -- 2*∑[k-1..k+2] = (k+2-(k-1)+1)*(k-1+k+2) = 4*(2k+1)
+        -- So ∑ = 2*(2k+1) = n
+        omega
   · -- n odd: n = (n-1)/2 + (n+1)/2 = 2m+1
     -- Use u = m-1, v = m. Then Icc (m) (m+1) has sum m + (m+1) = 2m+1 = n.
     have hm1 : m ≥ 1 := by omega

@@ -17,7 +17,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 0,
     "erdosNumber": 964,
     "erdosUrl": "https://erdosproblems.com/964",
     "erdosProblemStatus": "solved",
@@ -50,8 +50,8 @@
       "PrimeKTupleConjecture definition"
     ],
     "axiomCount": 7,
-    "lineCount": 312,
-    "assumptions": "7 axiom(s) and 8 sorry(s). See the Lean source for details."
+    "lineCount": 336,
+    "assumptions": "7 axiom(s) and 0 sorry(s). All theorems fully proved from axioms."
   },
   "overview": {
     "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as τ(n+1)/τ(n). The divisor function τ has been central to analytic number theory since Dirichlet's 1849 work on the average order τ(1)+⋯+τ(n) ≈ n log n. Questions about the range and distribution of τ(n+1)/τ(n) are part of a broader study of multiplicative functions at consecutive integers, a notoriously difficult area since τ is not additive and consecutive integers are coprime.",
@@ -168,7 +168,7 @@
       "Topology"
     ],
     "namespace": "Erdos964",
-    "lineCount": 312,
+    "lineCount": 336,
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 8

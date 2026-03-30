@@ -255,17 +255,43 @@ The script will:
 - Update the state file with the post record and daily count
 - Append `[automated post]` tag to the text
 
-### 9. Sleep until next cycle
+### 9. Scan for engagement opportunities
+
+After posting (or if nothing to post), scan for community engagement:
+
+```bash
+# Scan hashtag timelines for posts mentioning Lean/formal math
+npx tsx ${REPO_ROOT}/scripts/herald/scan-engagement.ts --json
+```
+
+This returns a JSON list of candidate posts from #LeanProver, #FormalMath, #Lean4, and #ProofAssistants that mention Lean.
+
+**Engagement rules:**
+- Max 3 replies per cycle
+- Only reply to posts that are substantively about Lean/formal math
+- Use the TS client directly for replies:
+  ```bash
+  npx tsx ${REPO_ROOT}/scripts/herald/mastodon-client.ts reply <parent-id> "Reply text"
+  ```
+- Be helpful and collegial — share relevant links to our gallery when appropriate
+- Never self-promote aggressively; only link our proofs when genuinely relevant
+- Boost posts that showcase interesting formal math work by others
+- Skip posts that are just tangentially mentioning Lean
+
+After replying, the engagement state file tracks replied-to IDs to prevent duplicate replies.
+
+### 10. Sleep until next cycle
 ```bash
 echo "Next scan in ${INTERVAL} minutes..."
 sleep ${INTERVAL}m
 ```
 
-### 10. Repeat from step 1
+### 11. Repeat from step 1
 
 ## Important Rules
 
 - **Max 1 post per cycle, max 4 posts per day**
+- **Max 3 replies per engagement scan** (replies also count toward daily post limit)
 - **Never post about**: build fixes, data syncs, enrichment batches, axiom decomposition
 - **Always use --subject** for every post (enables dedup)
 - **Always use --automated** (you are an automated agent)

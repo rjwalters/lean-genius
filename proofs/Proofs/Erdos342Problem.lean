@@ -121,18 +121,7 @@ noncomputable def representationCount (m n : ℕ) : ℕ :=
       ulamSeq i + ulamSeq j = m) |>.card
 
 /-- ulamSeq(n+1) has exactly one representation using earlier terms. -/
-axiom ulamSeq_unique_rep (n : ℕ) (hn : n ≥ 2) :
-    representationCount (ulamSeq n) n = 1
-
 /-- ulamSeq(n+1) is minimal: no smaller value has a unique representation. -/
-axiom ulamSeq_minimal (n : ℕ) (hn : n ≥ 2) (m : ℕ)
-    (hm : ulamSeq (n - 1) < m) (hm2 : m < ulamSeq n) :
-    representationCount m n ≠ 1
-
--- ============================================================================
--- Part V: Properties Proved from Axioms
--- ============================================================================
-
 /-- The Ulam sequence is injective (follows from strict monotonicity). -/
 theorem ulamSeq_injective : Function.Injective ulamSeq :=
   ulamSeq_strictMono.injective

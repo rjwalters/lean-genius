@@ -2,7 +2,7 @@
   "slug": "erdos-1144",
   "title": "Erdős #1144",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T16:41:04.200Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,14 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 12 theorems (was 10), 1 deep axiom, 0 sorries. Added power preservation and square-one properties. Fixed incorrect completely_mult_zero + 4 compilation errors.",
+    "progressSummary": "PROGRESS: 16 theorems (was 12), 1 deep axiom, 0 sorries. Added f≡1 as concrete Rademacher example with linear growth (partialSum = N-1), formalizing the note about Atherfold's bound being probabilistic.",
     "builtItems": [
       "partialSum_one: partialSum f 1 = 0",
       "partialSum_two: partialSum f 2 = f 1",
       "partialSum_succ: recursion partialSum f (N+1) = partialSum f N + f N for N ≥ 1",
       "completely_mult_pow: f(n^k) = (f n)^k in Erdos1144Problem.lean",
       "rademacher_sq_one: f(n²) = 1 for Rademacher mult in Erdos1144Problem.lean",
-      "completely_mult_zero_or_one: f(0) ∈ {0,1} (corrected) in Erdos1144Problem.lean"
+      "completely_mult_zero_or_one: f(0) ∈ {0,1} (corrected) in Erdos1144Problem.lean",
+      "const_one_completely_mult: f≡1 is completely multiplicative (Erdos1144Problem.lean:166)",
+      "const_one_rademacher: f≡1 is Rademacher multiplicative (Erdos1144Problem.lean:170)",
+      "partialSum_const_one: partialSum of f≡1 is N-1 (Erdos1144Problem.lean:174)",
+      "exists_linear_growth_rademacher: existence of linear growth example (Erdos1144Problem.lean:186)"
     ],
     "insights": [
       "partialSum sums f(m) for m ∈ [1, N-1] (range N filtered by ≥ 1), so it is off-by-one from mathematical convention ∑_{m≤N}",
@@ -44,11 +48,15 @@
       "All f(m) values are ±1 by strong induction on prime factorization (proved by Aristotle)",
       "Proved completely_mult_pow: f(n^k) = (f n)^k for completely multiplicative f, by induction on k",
       "Proved rademacher_sq_one: f(n²) = 1 for Rademacher multiplicative f (follows from f(n)∈{±1})",
-      "Fixed incorrect completely_mult_zero — replaced with correct completely_mult_zero_or_one (f(0) ∈ {0,1})",
-      "Fixed 4 compilation errors: deprecated range_succ, detached doc comment, card_le_card API, simp proofs"
+      "f≡1 is Rademacher multiplicative with partialSum = N-1 (linear growth), showing Atherfold bound is probabilistic not deterministic",
+      "The conjecture holds trivially for f≡1 since linear growth exceeds √N"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Show const-1 function satisfies the conjecture (linear growth > √N eventually)",
+      "Add Liouville function λ(n) = (-1)^Ω(n) as another Rademacher example",
+      "Connect to Riemann hypothesis via Liouville function partial sums"
+    ],
     "markdown": "# Erdős #1144 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -66,15 +74,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-28T06:05:00Z",
+  "lastUpdate": "2026-03-29T23:40:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1144Problem.lean",
       "filename": "Erdos1144Problem.lean",
-      "lineCount": 206,
-      "theoremCount": 12,
+      "lineCount": 227,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,

@@ -7,7 +7,7 @@
     "author": "Paul Erdős, András Hajnal",
     "sourceUrl": "https://erdosproblems.com/501",
     "date": "1960",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos501Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "combinatorics",
       "independence"
     ],
-    "badge": "axiom",
-    "sorries": 4,
+    "badge": "formalized",
+    "sorries": 3,
     "erdosNumber": 501,
     "erdosUrl": "https://erdosproblems.com/501",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 219,
-    "assumptions": "1 axiom(s) and 4 sorry(s). See the Lean source for details.",
+    "axiomCount": 0,
+    "lineCount": 239,
+    "assumptions": "0 axioms, 3 sorries. CH is defined as a Prop (not axiom), used as hypothesis to Hechler's theorem. Gladysz proved from NPS.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -81,9 +81,9 @@
       "id": "ch-result",
       "title": "Continuum Hypothesis and Hechler (1972)",
       "startLine": 86,
-      "endLine": 96,
-      "summary": "Axiomatizes CH and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set.",
-      "mathContext": "Verified: Axiomatizes CH and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set."
+      "endLine": 101,
+      "summary": "Defines CH as $\\aleph_1 = \\mathfrak{c}$ (Cardinal.aleph 1 = Cardinal.continuum) and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set.",
+      "mathContext": "CH defined as a Prop (not axiom). Hechler's theorem is conditional on CH."
     },
     {
       "id": "closed-results",
@@ -126,6 +126,7 @@
       "Mathlib.MeasureTheory.Measure.OuterMeasure.Basic",
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Data.Set.Finite",
+      "Mathlib.SetTheory.Cardinal.Continuum",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -133,10 +134,10 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos501",
-    "lineCount": 219,
-    "axiomCount": 1,
+    "lineCount": 239,
+    "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 11
+    "definitionCount": 12
   },
   "references": [
     "Erdős & Hajnal (1960): finite independent sets exist",

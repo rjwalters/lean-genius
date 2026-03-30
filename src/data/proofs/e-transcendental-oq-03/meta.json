@@ -1,0 +1,187 @@
+{
+  "id": "e-transcendental-oq-03",
+  "title": "Irrationality Measure of e",
+  "slug": "e-transcendental-oq-03",
+  "description": "The irrationality measure of Euler's number e is exactly 2, the smallest possible value for any irrational number. This follows from the regular continued fraction expansion e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...].",
+  "meta": {
+    "author": "Euler (1737 CF expansion), Davis (1978 irrationality measure)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Transcendental/Liouville/LiouvilleWith.html",
+    "date": "1978",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ETranscendentalOQ03.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "approximation",
+      "continued-fractions",
+      "irrationality-measure",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LiouvilleWith",
+        "description": "Parametric Liouville approximation exponent",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith"
+      },
+      {
+        "theorem": "Liouville.liouvilleWith",
+        "description": "Liouville numbers satisfy LiouvilleWith for all p",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of irrationality measure concept via LiouvilleWith",
+      "Statement of mu(e) = 2 with pedagogical exposition of continued fraction argument",
+      "Proof that e is not a Liouville number (from upper bound axiom)",
+      "Comparison table of irrationality measures for mathematical constants"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: irrational_liouvilleWith_two (Dirichlet's approximation theorem for irrationals), e_not_liouvilleWith_gt_two (upper bound from CF expansion of e)",
+    "lineCount": 219,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Euler discovered the continued fraction expansion of e in 1737: e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...]. This remarkable pattern, where every third partial quotient follows the sequence 2, 4, 6, 8, ..., gives e an exceptionally regular arithmetic structure among transcendental numbers. C.S. Davis proved in 1978 that this regularity implies the irrationality measure of e is exactly 2.",
+    "problemStatement": "**Irrationality measure**: The irrationality measure $\\mu(e) = \\sup\\{\\mu : |e - p/q| < q^{-\\mu}$ has infinitely many solutions$\\}$ equals exactly 2.",
+    "text": "The irrationality measure of e is exactly 2, proved via the regular continued fraction expansion e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...].",
+    "proofStrategy": "Lower bound: Dirichlet's approximation theorem gives $\\mu(\\alpha) \\geq 2$ for all irrationals. Upper bound: The continued fraction of $e$ has partial quotients $a_n = O(n)$, so convergent denominators satisfy $q_{n+1} \\leq C \\cdot q_n$, giving $|e - p_n/q_n| \\geq c/q_n^2$ and hence $\\mu(e) \\leq 2$.",
+    "keyInsights": [
+      "The irrationality measure captures how well a number can be approximated by rationals",
+      "mu(alpha) = 2 for all algebraic irrationals (Roth), but e is transcendental so Roth's theorem doesn't apply",
+      "The regular pattern in e's continued fraction is what pins mu(e) = 2 exactly",
+      "mu(pi) remains unknown beyond 2 <= mu(pi) <= 7.103, showing how special e's CF regularity is"
+    ],
+    "prerequisites": [
+      "Number theory (continued fractions, Diophantine approximation)",
+      "Irrationality and transcendence of e",
+      "Liouville's approximation framework"
+    ]
+  },
+  "sections": [
+    {
+      "id": "liouville-with",
+      "title": "Irrationality Measure via LiouvilleWith",
+      "startLine": 64,
+      "endLine": 79,
+      "summary": "Connection between irrationality measure and Mathlib's LiouvilleWith: mu(x) = sup{p : LiouvilleWith p x}.",
+      "mathContext": "The irrationality measure $\\mu(x) = \\sup\\{p \\in \\mathbb{R} : \\text{LiouvilleWith}(p, x)\\}$. So $\\mu(x) = 2$ iff LiouvilleWith 2 x and $\\neg$ LiouvilleWith p x for p > 2."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: mu(e) >= 2",
+      "startLine": 80,
+      "endLine": 102,
+      "summary": "By Dirichlet's approximation theorem, every irrational has irrationality measure >= 2.",
+      "mathContext": "Dirichlet's theorem: for irrational $\\alpha$ and $N \\geq 1$, $\\exists p/q$ with $1 \\leq q \\leq N$ and $|\\alpha - p/q| < 1/(qN) \\leq 1/q^2$. This gives infinitely many such approximations, so LiouvilleWith 2 $\\alpha$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound: mu(e) <= 2",
+      "startLine": 103,
+      "endLine": 139,
+      "summary": "From the regular continued fraction of e = [2; 1, 2, 1, 1, 4, ...], the partial quotients grow linearly, bounding approximation quality to quadratic.",
+      "mathContext": "The CF $e = [2; 1, 2k, 1]_{k \\geq 1}$ has $a_n = O(n)$, so $q_{n+1} \\leq (a_{n+1}+1)q_n$ gives $q_n \\leq C^n$. Best approximation: $|e - p_n/q_n| \\asymp 1/(q_n q_{n+1})$. Since $q_{n+1}/q_n$ is bounded, $|e - p_n/q_n| \\geq c/q_n^2$, giving $\\mu(e) \\leq 2$."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: mu(e) = 2",
+      "startLine": 140,
+      "endLine": 150,
+      "summary": "Combining lower and upper bounds: the irrationality measure of e is exactly 2.",
+      "mathContext": "$\\mu(e) = 2$ since LiouvilleWith 2 (exp 1) holds (Dirichlet) and $\\neg$ LiouvilleWith p (exp 1) for p > 2 (CF analysis)."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 151,
+      "endLine": 170,
+      "summary": "e is not a Liouville number (proved from the upper bound), and e is irrational (from the lower bound).",
+      "mathContext": "Since $\\mu(e) = 2 < \\infty$, $e$ is not Liouville (Liouville numbers have $\\mu = \\infty$). From LiouvilleWith 2 e with 2 > 1, irrationality of e follows."
+    },
+    {
+      "id": "context",
+      "title": "Context and Comparisons",
+      "startLine": 171,
+      "endLine": 206,
+      "summary": "Comparison of irrationality measures across mathematical constants and discussion of why mu(e) = 2 is remarkable despite being the generic value.",
+      "mathContext": "$\\mu(\\text{rational}) = 1$, $\\mu(\\text{algebraic irrational}) = 2$ (Roth), $\\mu(e) = \\mu(e^2) = 2$, $2 \\leq \\mu(\\pi) \\leq 7.103$, $\\mu(\\text{Liouville}) = \\infty$. Almost all reals have $\\mu = 2$ (Khinchin)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "parent",
+      "description": "Parent proof establishing that e is transcendental. The irrationality measure quantifies the 'quality' of e's transcendence in terms of rational approximation."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's theorem on rational approximation to algebraic numbers. The LiouvilleWith framework from Mathlib connects both proofs."
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "foundational",
+      "description": "Hurwitz's theorem gives the optimal constant sqrt(5) in Dirichlet's approximation, establishing the baseline mu >= 2 for irrationals."
+    }
+  ],
+  "conclusion": {
+    "summary": "The irrationality measure of e is exactly 2, the minimum for any irrational number. This follows from the remarkably regular continued fraction expansion discovered by Euler.",
+    "implications": "Among transcendental numbers, mu = 2 is the 'best behaved' in terms of rational approximation. The fact that mu(e) = 2 while mu(pi) > 2 (likely) reflects the much simpler CF structure of e compared to pi.",
+    "openQuestions": [
+      "Can the continued fraction analysis be fully formalized in Lean 4 via Mathlib's GeneralizedContinuedFraction?",
+      "Is mu(e^n) = 2 for all positive integers n?",
+      "What is the irrationality measure of e + pi?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Transcendental.Liouville.Basic",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "ETranscendentalOQ03",
+    "lineCount": 219,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "De fractionibus continuis dissertatio",
+      "year": "1737",
+      "venue": "Commentarii academiae scientiarum Petropolitanae 9, 98-137",
+      "note": "Discovered the regular continued fraction expansion of e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...]"
+    },
+    {
+      "authors": "Davis, C.S.",
+      "title": "Rational approximations to e",
+      "year": "1978",
+      "venue": "Journal of the Australian Mathematical Society (Series A) 25, 497-502",
+      "note": "Proved the irrationality measure of e is exactly 2"
+    },
+    {
+      "authors": "Khinchin, A.Ya.",
+      "title": "Continued Fractions",
+      "year": "1964",
+      "venue": "University of Chicago Press (English translation)",
+      "note": "Standard reference for continued fraction theory and metric number theory, including the result that almost all reals have irrationality measure 2"
+    },
+    {
+      "authors": "Salikhov, V.Kh.",
+      "title": "On the irrationality measure of pi",
+      "year": "2008",
+      "venue": "Russian Mathematical Surveys 63(3), 570-572",
+      "note": "Current best upper bound mu(pi) <= 7.10321, showing the difficulty of determining irrationality measures for constants without regular CF patterns"
+    }
+  ]
+}

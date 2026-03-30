@@ -43,22 +43,23 @@
       "IsGaussianPrime definition: Prime in ℤ[i]",
       "GaussianPrimes definition: set of Gaussian primes",
       "IsNorm2Prime, IsInertPrime, IsSplitPrime: classification of Gaussian primes",
-      "gaussian_prime_classification axiom: complete classification",
+      "gaussian_prime_classification theorem: complete classification (both directions proved)",
       "IsInfiniteGaussianPrimeWalk definition: injective prime sequence",
       "HasBoundedGaps definition: consecutive norm differences bounded",
       "GaussianMoatConjecture definition: existence of bounded walk",
-      "jordan_rabung axiom: no walk with steps ≤ 2",
-      "tsuchimura axiom: no walk with steps ≤ √26",
-      "gethner_et_al axiom: step size 4 insufficient",
+      "jordan_rabung theorem: no walk with steps ≤ 2 (proved from tsuchimura)",
+      "tsuchimura axiom: no walk with steps ≤ √26 (only remaining axiom)",
+      "GaussianPrimeTheorem: asymptotic density stated as Prop def (not axiomatized)",
+      "gethner_et_al theorem: step size 4 insufficient (proved from tsuchimura)",
       "CanEscapeMoat definition: moat escapability",
       "criticalMoatWidth definition: smallest non-escapable moat",
       "gaussianPrimeCount definition: counting function",
-      "gaussian_prime_theorem axiom: asymptotic density",
-      "primes_mod_4_connection axiom: relation to primes ≡ 1 (mod 4)"
+      "GaussianPrimeTheorem def: asymptotic density (Prop, not axiomatized)",
+      "primes_mod_4_connection theorem: proved via factorial construction (arbitrarily long prime-free intervals)"
     ],
-    "axiomCount": 3,
-    "lineCount": 492,
-    "assumptions": "4 axioms: gaussian_prime_classification, tsuchimura, gaussian_prime_theorem, primes_mod_4_connection. jordan_rabung and gethner_et_al proved from tsuchimura. 1 sorry (definition)."
+    "axiomCount": 1,
+    "lineCount": 529,
+    "assumptions": "1 axiom: tsuchimura (computational verification — no walk ≤ √26). GaussianPrimeTheorem stated as Prop def (not axiomatized). gaussian_prime_classification proved (both directions). primes_mod_4_connection proved via factorial construction. jordan_rabung and gethner_et_al proved from tsuchimura."
   },
   "overview": {
     "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",
@@ -170,10 +171,10 @@
       "GaussianInt"
     ],
     "namespace": "Erdos952",
-    "lineCount": 492,
-    "axiomCount": 3,
-    "theoremCount": 15,
-    "definitionCount": 19
+    "lineCount": 529,
+    "axiomCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 20
   },
   "crossReferences": [
     {

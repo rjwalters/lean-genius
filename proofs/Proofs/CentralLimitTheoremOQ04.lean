@@ -42,21 +42,23 @@ This file formalizes:
 
 ## Approach
 
-We axiomatize the key objects (ncps, free convolution, R-transform) since
-Mathlib does not yet contain free probability theory. Structural theorems
-are proved from these axioms. The main mathematical content is the
-demonstration that the semicircle is the unique attractor of free
-renormalization, exactly paralleling the Gaussian in the classical case.
+We axiomatize the core objects (ncps, free cumulants, free convolution)
+since Mathlib does not yet contain free probability theory. Structural
+theorems (commutativity, associativity, R-transform additivity) are
+PROVED from these axioms. The R-transform is defined as the cumulant
+coefficient sequence. The main mathematical content is the demonstration
+that the semicircle is the unique attractor of free renormalization,
+exactly paralleling the Gaussian in the classical case.
 
 ## Status
 - [x] Non-commutative probability space definitions
 - [x] Free independence formalization
-- [x] Free convolution monoid structure
-- [x] R-transform and its linearization property
+- [x] Free convolution monoid structure (comm, assoc PROVED from cumulant determinism)
+- [x] R-transform DEFINED and linearization PROVED
 - [x] Semicircle distribution properties
 - [x] Free CLT (fixed point + attractor)
 - [x] Classical/free structural comparison
-- [x] Complete (no sorries)
+- [x] Complete (no sorries, 9 axioms)
 
 ## Historical Note
 Voiculescu (1985) → Speicher (1990) → Nica-Speicher (2006)
@@ -184,14 +186,6 @@ or equivalently, multiplies characteristic functions.
 /-- Free convolution of two NC distributions. -/
 axiom freeConv : NCDistribution → NCDistribution → NCDistribution
 
-/-- Free convolution is commutative: μ ⊞ ν = ν ⊞ μ. -/
-axiom freeConv_comm (μ ν : NCDistribution) :
-    freeConv μ ν = freeConv ν μ
-
-/-- Free convolution is associative: (μ ⊞ ν) ⊞ ρ = μ ⊞ (ν ⊞ ρ). -/
-axiom freeConv_assoc (μ ν ρ : NCDistribution) :
-    freeConv (freeConv μ ν) ρ = freeConv μ (freeConv ν ρ)
-
 /-- The Dirac mass at 0 is the identity for free convolution. -/
 axiom freeConv_dirac_right (μ : NCDistribution) :
     freeConv μ diracNC = μ
@@ -204,6 +198,33 @@ axiom freeConv_dirac_right (μ : NCDistribution) :
     where classical cumulants use ALL partitions, not just non-crossing ones. -/
 axiom freeConv_linearizes_cumulants (μ ν : NCDistribution) (n : ℕ) (hn : n ≥ 1) :
     freeCumulant (freeConv μ ν) n = freeCumulant μ n + freeCumulant ν n
+
+/-- **Free cumulants determine distributions.**
+    The moment-cumulant formula via non-crossing partitions is invertible:
+    if two distributions have the same free cumulants for all n ≥ 1,
+    they have the same moments and hence are equal. This is the free
+    analog of the classical fact that cumulants determine distributions. -/
+axiom cumulant_determines_distribution (μ ν : NCDistribution) :
+    (∀ n : ℕ, n ≥ 1 → freeCumulant μ n = freeCumulant ν n) → μ = ν
+
+/-- Free convolution is commutative: μ ⊞ ν = ν ⊞ μ.
+    Proved from cumulant linearity (symmetric in μ, ν) and cumulant determinism. -/
+theorem freeConv_comm (μ ν : NCDistribution) :
+    freeConv μ ν = freeConv ν μ := by
+  apply cumulant_determines_distribution
+  intro n hn
+  rw [freeConv_linearizes_cumulants μ ν n hn, freeConv_linearizes_cumulants ν μ n hn]
+  ring
+
+/-- Free convolution is associative: (μ ⊞ ν) ⊞ ρ = μ ⊞ (ν ⊞ ρ).
+    Proved: both sides have cumulants κₙ(μ) + κₙ(ν) + κₙ(ρ). -/
+theorem freeConv_assoc (μ ν ρ : NCDistribution) :
+    freeConv (freeConv μ ν) ρ = freeConv μ (freeConv ν ρ) := by
+  apply cumulant_determines_distribution
+  intro n hn
+  rw [freeConv_linearizes_cumulants _ ρ n hn, freeConv_linearizes_cumulants μ ν n hn,
+      freeConv_linearizes_cumulants μ _ n hn, freeConv_linearizes_cumulants ν ρ n hn]
+  ring
 
 -- Derived properties of the free convolution monoid
 
@@ -271,33 +292,27 @@ The R-transform converts free convolution to addition, just as
 the log-characteristic function converts classical convolution to addition.
 -/
 
-/-- The R-transform of a distribution, defined as the generating function
-    of free cumulants: R_μ(z) = Σ κₙ z^{n-1}. -/
-axiom Rtransform : NCDistribution → ℝ → ℝ
+/-- The R-transform of a distribution as a coefficient sequence.
+    The n-th coefficient is κ_{n+1}(μ), so the formal power series is
+    R_μ(z) = Σ_{n≥0} κ_{n+1} z^n = κ₁ + κ₂z + κ₃z² + ⋯
+    Previously axiomatized; now defined from free cumulants. -/
+noncomputable def Rtransform (μ : NCDistribution) : ℕ → ℝ :=
+  fun n => freeCumulant μ (n + 1)
 
-/-- The R-transform is additive under free convolution.
-    This is Voiculescu's foundational result (1986).
-    R_{μ⊞ν}(z) = R_μ(z) + R_ν(z) -/
-axiom Rtransform_additive (μ ν : NCDistribution) (z : ℝ) :
-    Rtransform (freeConv μ ν) z = Rtransform μ z + Rtransform ν z
+/-- The R-transform is additive under free convolution (coefficient-wise).
+    This is Voiculescu's foundational result (1986), now proved from
+    cumulant linearity: κ_{n+1}(μ⊞ν) = κ_{n+1}(μ) + κ_{n+1}(ν). -/
+theorem Rtransform_additive (μ ν : NCDistribution) (n : ℕ) :
+    Rtransform (freeConv μ ν) n = Rtransform μ n + Rtransform ν n := by
+  simp only [Rtransform]
+  exact freeConv_linearizes_cumulants μ ν (n + 1) (by omega)
 
-/-- The R-transform of the n-th free convolution power.
-    R_{μ^{⊞n}}(z) = n · R_μ(z) -/
-theorem Rtransform_freeConvPow (μ : NCDistribution) (n : ℕ) (z : ℝ) :
-    Rtransform (freeConvPow μ n) z = n * Rtransform μ z := by
-  induction n with
-  | zero =>
-    simp [freeConvPow]
-    -- R(δ₀) = 0: Dirac at 0 has zero R-transform
-    -- From additivity: R(δ₀ ⊞ μ) = R(δ₀) + R(μ), and δ₀ ⊞ μ = μ
-    have h : Rtransform (freeConv diracNC μ) z =
-             Rtransform diracNC z + Rtransform μ z :=
-      Rtransform_additive diracNC μ z
-    rw [freeConv_dirac_left] at h
-    linarith
-  | succ n ih =>
-    rw [freeConvPow, Rtransform_additive, ih]
-    push_cast; ring
+/-- The R-transform of the m-th free convolution power (coefficient-wise).
+    R_{μ^{⊞m}} n = m · R_μ n. Follows from freeConvPow_cumulant. -/
+theorem Rtransform_freeConvPow (μ : NCDistribution) (m : ℕ) (n : ℕ) :
+    Rtransform (freeConvPow μ m) n = m * Rtransform μ n := by
+  simp only [Rtransform]
+  exact freeConvPow_cumulant μ m (n + 1) (by omega)
 
 -- ============================================================================
 -- § 6. The Semicircle Distribution (Wigner's Law)
@@ -361,9 +376,14 @@ theorem semicircle_cumulant_two : freeCumulant semicircle 2 = 1 := by
 axiom semicircle_cumulant_higher (n : ℕ) (hn : n ≥ 3) :
     freeCumulant semicircle n = 0
 
-/-- The R-transform of the semicircle is R_w(z) = z.
-    This is because only κ₂ = 1 is nonzero:
-    R_w(z) = κ₁ + κ₂z + κ₃z² + ⋯ = 0 + 1·z + 0 + ⋯ = z.
+/-
+The R-transform of the semicircle is R_w(z) = z.
+This is because only κ₂ = 1 is nonzero:
+R_w(z) = κ₁ + κ₂z + κ₃z² + ⋯ = 0 + 1·z + 0 + ⋯ = z.
+
+In our coefficient representation: Rtransform semicircle 0 = κ₁ = 0,
+Rtransform semicircle 1 = κ₂ = 1, Rtransform semicircle n = κ_{n+1} = 0 for n ≥ 2.
+-/
 
 -- ============================================================================
 -- § 7. Dilation (Scaling) of Distributions
@@ -379,8 +399,11 @@ The normalized n-fold free convolution is:
 -/
 
 /-- Dilation of a distribution by a scalar c.
-    D_c(μ) is the distribution of c·a where a ~ μ. -/
-axiom dilate : ℝ → NCDistribution → NCDistribution
+    D_c(μ) is the distribution of c·a where a ~ μ.
+    The k-th moment of D_c(μ) is cᵏ · mₖ(μ), since τ((ca)ᵏ) = cᵏ τ(aᵏ). -/
+noncomputable def dilate (c : ℝ) (μ : NCDistribution) : NCDistribution where
+  moment := fun k => c ^ k * μ.moment k
+  moment_zero := by simp [μ.moment_zero]
 
 /-- The normalized free convolution power:
     μ^{⊞n} / √n = D_{1/√n}(μ^{⊞n})
@@ -587,8 +610,11 @@ def bernoulliNC : NCDistribution where
 
 /-- Boolean cumulants: the simplest cumulant family.
     For the Boolean CLT, the Boolean cumulants satisfy:
-    βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions. -/
-axiom booleanCumulant : NCDistribution → ℕ → ℝ
+    βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions.
+
+    Note: Boolean cumulants are not developed further in this file.
+    The CLTStructure framework above would accommodate a Boolean
+    CLT instance with bernoulliNC as the limit law. -/
 
 /-- Summary: The answer to "How does the topological perspective extend?"
 

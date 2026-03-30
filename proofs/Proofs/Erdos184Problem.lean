@@ -138,11 +138,6 @@ def ErdosGallaiConjecture : Prop :=
 **Original Erdős-Gallai Bound:**
 O(n log n) pieces suffice.
 -/
-axiom erdos_gallai_original_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
-    Fintype.card V ≥ 2 →
-    (decompNumber G : ℝ) ≤ C * Fintype.card V * Real.log (Fintype.card V)
-
 /--
 **Lower Bound from K_{3,n-3}:**
 At least (1+c)n pieces are needed for some graphs.
@@ -211,10 +206,6 @@ axiom coverNumber (G : Graph V) : ℕ
 **Erdős (1971):**
 If we don't require edge-disjointness, n-1 cycles and edges suffice.
 -/
-axiom erdos_covering_bound :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
-    coverNumber G ≤ Fintype.card V - 1
-
 /-
 ## Part VII: Summary
 -/

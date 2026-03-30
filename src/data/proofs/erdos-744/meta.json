@@ -17,7 +17,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 744,
     "erdosUrl": "https://erdosproblems.com/744",
     "erdosProblemStatus": "disproved",
@@ -59,8 +59,8 @@
       "erdos_744_statement theorem: combined main result"
     ],
     "axiomCount": 6,
-    "lineCount": 342,
-    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "lineCount": 344,
+    "assumptions": "6 axiom(s) and 1 sorry (edge-deletion existence). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #744 originates from a question posed by Erdős, Hajnal, and Szemerédi in the early 1980s (references [Er81] and [EHS82]). The problem concerns a fundamental question about the structure of k-chromatic critical graphs: how many edges must be removed to make such a graph bipartite? The function f_k(n) measures the minimum number of edge deletions needed across all k-critical graphs on n vertices.\n\nThe case k = 3 is trivial: the only 3-critical graphs are odd cycles, and removing any single edge yields a path (which is bipartite), so f_3(n) = 1. For k ≥ 4, early results were encouraging for the conjecture. Gallai (1968) established that f_4(n) ≤ O(√n), and Lovász extended this to f_k(n) ≤ O(n^{1-1/(k-2)}) for general k. Erdős and collaborators conjectured that f_k(n) → ∞ as n → ∞, and specifically asked whether f_4(n) grows at least as fast as log(n).\n\nIn a surprising turn, Rödl and Tuza disproved the conjecture entirely in 1985. They showed that for every fixed k ≥ 3, the function f_k(n) is eventually constant: f_k(n) = C(k-1, 2) = (k-1)(k-2)/2 for all sufficiently large n. This means the non-bipartiteness of large k-critical graphs is concentrated in a bounded substructure, regardless of the total graph size.",
@@ -185,7 +185,7 @@
       "Finset"
     ],
     "namespace": "Erdos744",
-    "lineCount": 342,
+    "lineCount": 344,
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 10

@@ -86,15 +86,34 @@ axiom erdos_36_limit_exists :
 -- ============================================================================
 
 /-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4.
-    Proof sketch: N² pairs in at most 4N-1 differences ⟹
-    max overlap ≥ N²/(4N-1) > N/4. -/
-axiom erdos_lower_quarter :
-  ∀ N : ℕ, N ≥ 1 → (M N : ℝ) / N > 1 / 4
+    Originally a pigeonhole argument (N² pairs in ≤ 4N−1 differences),
+    now proved as a corollary of White's sharper bound (0.379 > 0.25). -/
+theorem erdos_lower_quarter :
+    ∀ N : ℕ, N ≥ 1 → (M N : ℝ) / N > 1 / 4 := by
+  intro N hN
+  calc (M N : ℝ) / N > 379005 / 1000000 := white_lower N hN
+    _ > 1 / 4 := by norm_num
 
-/-- **Scherk (1955)**: improved lower bound M(N)/N > 1 − 1/√2 ≈ 0.293. -/
-axiom scherk_lower :
-  ∀ N : ℕ, N ≥ 1 →
-    (M N : ℝ) / N > 1 - 1 / Real.sqrt 2
+/-- **Scherk (1955)**: improved lower bound M(N)/N > 1 − 1/√2 ≈ 0.293.
+    Now a corollary of White's sharper bound, since √2 < 3/2 implies
+    1 − 1/√2 < 1/3 < 0.379. -/
+theorem scherk_lower :
+    ∀ N : ℕ, N ≥ 1 →
+      (M N : ℝ) / N > 1 - 1 / Real.sqrt 2 := by
+  intro N hN
+  have hw := white_lower N hN
+  have h_sqrt_pos : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos_of_pos (by norm_num)
+  -- √2 < 3/2 since 2 < (3/2)² = 9/4
+  have h_sqrt_lt : Real.sqrt 2 < 3 / 2 := by
+    rw [show (3 : ℝ) / 2 = Real.sqrt (9 / 4) from by
+      rw [show (9 : ℝ) / 4 = (3 / 2) ^ 2 from by ring]; exact (Real.sqrt_sq (by norm_num)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  -- 1/√2 > 2/3 (reciprocal inequality)
+  have h_inv : 1 / Real.sqrt 2 > 2 / 3 := by
+    rw [div_lt_div_iff (by norm_num : (0:ℝ) < 3) h_sqrt_pos]
+    linarith
+  -- 1 - 1/√2 < 1/3 < 379005/1000000
+  linarith
 
 /-- **White (2022)**: best known lower bound M(N)/N > 0.379005,
     obtained via Fourier analysis and convex optimization. -/
@@ -112,9 +131,31 @@ axiom upper_bound :
 -- Part VI: Small Values
 -- ============================================================================
 
-/-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3. -/
-axiom small_values :
-  M 1 = 1 ∧ M 2 = 1 ∧ M 3 = 2 ∧ M 4 = 2 ∧ M 5 = 3
+/-- Computable version of `maxOverlap`. Mirrors the noncomputable definition
+    but is accepted by Lean's compiler for evaluation via `native_decide`. -/
+def maxOverlapC (A B : Finset ℤ) : ℕ :=
+  ((A ×ˢ B).image (fun p : ℤ × ℤ => p.1 - p.2)).sup (overlap A B)
+
+/-- Computable version of `M(N)`. Uses `maxOverlapC` and inline definitions
+    to avoid noncomputable intermediate functions. -/
+def MC (N : ℕ) : ℕ :=
+  let I := Finset.Icc (1 : ℤ) (2 * ↑N)
+  let parts := I.powerset.filter (fun A => A.card = N)
+  let vals := parts.image (fun A => maxOverlapC A (I \ A))
+  if h : vals.Nonempty then vals.min' h else 0
+
+/-- `MC` agrees with `M`: both compute the same min-max overlap value.
+    After unfolding all intermediate definitions, the expressions are identical.
+    The `noncomputable` tag on `M` only affects code generation, not definitional equality. -/
+theorem MC_eq (N : ℕ) : MC N = M N := rfl
+
+/-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3.
+    Verified computationally via `native_decide` on the computable mirror `MC`. -/
+theorem small_values :
+    M 1 = 1 ∧ M 2 = 1 ∧ M 3 = 2 ∧ M 4 = 2 ∧ M 5 = 3 := by
+  have h : ∀ n, M n = MC n := fun n => (MC_eq n).symm
+  simp only [h]
+  native_decide
 
 -- ============================================================================
 -- Part VII: Consequences and Observations

@@ -1,0 +1,86 @@
+{
+  "slug": "erdos-1001-oq-01",
+  "title": "Explicit formula for f(A,c) outside EST regime",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Explicit formula for f(A,c) outside EST regime.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T16:34:54.971Z",
+    "iteration": 2,
+    "focus": "Survey of outside-EST regime + structural theorems",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Added f_pos, f_linear_A, f_zero_A, f_one_c, estBoundary_pos, limit_in_est_regime. Documented outside-EST regime. Fixed meta.json axiomCount 9\u21922.",
+    "builtItems": [
+      "Proved f_pos (f(A,c) > 0 for valid params) in Erdos1001Problem.lean",
+      "Proved f_linear_A, f_zero_A, f_one_c (algebraic properties) in Erdos1001Problem.lean",
+      "Proved estBoundary_pos (EST boundary value positive) in Erdos1001Problem.lean",
+      "Proved limit_in_est_regime (limitValue = f in EST regime) in Erdos1001Problem.lean",
+      "Defined outsideESTRegime, estBoundary in Erdos1001Problem.lean",
+      "Fixed meta.json axiomCount from 9 to 2"
+    ],
+    "insights": [
+      "Outside EST regime, Farey approximation intervals overlap causing inclusion-exclusion corrections",
+      "General formula involves pair-correlation statistics of Farey fractions (Boca-Cobeli-Zaharescu 2001)",
+      "As A \u2192 \u221e, limitValue(A,c) \u2192 1 (full measure)",
+      "The meta.json previously claimed 9 axioms but only 2 exist in the file",
+      "limit_in_est_regime provable via tendsto_nhds_unique (limits are unique in T2 spaces)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove limitValue is monotone in A (needs measure-theoretic argument)",
+      "Study Boca-Cobeli-Zaharescu pair correlation for explicit outside-EST formula"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1001"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.971Z",
+  "lastUpdate": "2026-03-30T16:34:54.971Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1001Problem.lean",
+      "filename": "Erdos1001Problem.lean",
+      "lineCount": 188,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1001Problem.lean"
+    }
+  ]
+}

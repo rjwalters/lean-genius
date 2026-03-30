@@ -1,0 +1,96 @@
+{
+  "slug": "mathematical-induction-oq-01",
+  "title": "Transfinite induction over ordinals: Lean's `WellFounded",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in set theory: Transfinite induction over ordinals: Lean's `WellFounded.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T01:04:30.789Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Created TransfiniteInduction.lean (8 theorems, 0 sorries, 0 axioms, 107 lines). Well-founded induction, ordinal induction, ℕ as special case. Gallery entry created.",
+    "builtItems": [
+      "TransfiniteInduction.lean: wf_induction, nat_wf_induction, ordinal_induction, ordinal_succ_step",
+      "nat_lt_iff_ordinal_lt: ℕ < ↔ Ordinal <",
+      "nat_induction_from_ordinal: ℕ strong induction from ordinal induction",
+      "ordinal_well_ordered: every non-empty set of ordinals has minimum",
+      "Gallery entry: src/data/proofs/mathematical-induction-oq-01/"
+    ],
+    "insights": [
+      "WellFounded.fix is the abstract core; ordinal and ℕ induction are instantiations",
+      "Ordinal.natCast_lt bridges ℕ and ordinal ordering",
+      "Lean type theory makes transfinite induction natural via well-founded recursion"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Three-case transfinite induction (zero, successor, limit)",
+      "Non-trivial application: Cantor-Bendixson theorem",
+      "Connection to axiom of choice via Zermelo well-ordering"
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "logic",
+    "foundations",
+    "induction",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "mathematical-induction",
+    "mathematical-induction-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-30T01:04:30.789Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MathematicalInduction.lean",
+      "filename": "MathematicalInduction.lean",
+      "lineCount": 250,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInduction.lean"
+    },
+    {
+      "path": "Proofs/MathematicalInductionOQ01.lean",
+      "filename": "MathematicalInductionOQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInductionOQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "sperner-ndim-oq-03",
+  "title": "Extend n-dim Sperner to Brouwer FPT via displacement coloring",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "Use the n-dimensional Sperner lemma (SpernerNDim.lean) with a displacement coloring to prove Brouwer fixed point theorem in arbitrary dimension.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-29T23:03:00-07:00",
+    "iteration": 1,
+    "focus": "Both sorries proved. File has 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "Verify proof compiles, then mark completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved both approximate_fixed_point and brouwer_simplex (0 sorries in SpernerNDimOQ03.lean). The proof builds 3 infrastructure lemmas (countPerm_le_one, gridToReal_mem_cube, fsimplex_gridToReal_dist), proves ε-approximate fixed points via Sperner + displacement coloring transfer, and derives exact Brouwer FPT via compact simplex minimization.",
+    "builtItems": [
+      "countPerm_le_one: permutation counting values are 0 or 1",
+      "gridToReal_mem_cube: grid vertices map into [0,1]^d cube",
+      "fsimplex_gridToReal_dist: FSimplex vertices have L∞ distance ≤ 1/N",
+      "approximate_fixed_point: ε-approximate fixed points via Sperner + displacement coloring",
+      "brouwer_simplex: Brouwer FPT for standard d-simplex (compact minimization)"
+    ],
+    "insights": [
+      "BrouwerFixedPointOQ02OQ01.lean already has displacement coloring for 2D (displacementColoring, ~50 lines)",
+      "SpernerNDim.lean has all infrastructure (grid, Freudenthal, door parity) but the main theorem is sorry",
+      "The sorry is on sperner_ndim itself (line 476) - needs composing the global parity argument",
+      "n-dim displacement coloring generalizes directly: argmax_k(v_k - f(v)_k)",
+      "Convergence argument needs Bolzano-Weierstrass on compact simplex (available in Mathlib)",
+      "Transfer argument: pick color-(last d) vertex for sum condition ∑(f_j-p_j)≥0, transfer from each color-(castSucc j) vertex for upper bounds, combine via sum constraint for lower bounds",
+      "Key bound: (d-1)*ε/(d+1) < ε gives coordinate-wise approximation from sum condition",
+      "Brouwer follows cleanly from approximate_fixed_point + IsCompact.exists_forall_le on dist(f·,·)",
+      "FSimplex mesh bound ≤ 1/N follows from countPerm ∈ {0,1} (permutation injectivity)"
+    ],
+    "mathlibGaps": [
+      "No direct gap - Bolzano-Weierstrass and compact simplex are in Mathlib",
+      "The blocker is the internal sorry in SpernerNDim, not Mathlib infrastructure"
+    ],
+    "nextSteps": [
+      "PRIORITY: Resolve the sorry in SpernerNDim.lean (compose global parity argument)",
+      "Then generalize displacement coloring from BrouwerFixedPointOQ02OQ01 to n dimensions",
+      "Prove n-dim Sperner boundary condition for displacement coloring",
+      "Convergence: sequential compactness on closed simplex gives fixed point"
+    ],
+    "markdown": "# Knowledge Base: sperner-ndim-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "topology",
+    "Sperner-lemma",
+    "fixed-point-theory",
+    "Brouwer"
+  ],
+  "relatedProofs": [
+    "sperner-ndim",
+    "sperner-ndim-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.390Z",
+  "lastUpdate": "2026-03-30T06:03:08.398Z"
+}

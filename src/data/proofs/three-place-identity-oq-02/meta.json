@@ -1,0 +1,51 @@
+{
+  "id": "three-place-identity-oq-02",
+  "title": "Etter's Stereo Equality Theorem",
+  "slug": "three-place-identity-oq-02",
+  "description": "Formalizes Etter's Stereo Equality Theorem: two equivalence relations suffice to encode three-place relative identity. Proves the forward and reverse constructions, round-trip properties, and shows why a single equivalence relation is insufficient. 0 sorries, 0 axioms.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "set-theory",
+      "logic",
+      "identity",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/ThreePlaceIdentityOQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved.",
+    "originalContributions": [
+      "stereoToRelative: Two equivalence relations \u2192 relative identity (consensus construction)",
+      "relativeToStereo: Relative identity \u2192 two equivalence relations (viewpoint extraction)",
+      "Stereo equality theorem: two equalities always give valid relative identity",
+      "Flat identity is trivial: single equivalence makes all viewpoints agree",
+      "Stereo nontrivial: disagreeing viewpoints \u2192 distinct equivalence relations"
+    ],
+    "dateAdded": "2026-03-30",
+    "lineCount": 175,
+    "theoremCount": 8,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "three-place-identity",
+      "relationship": "extends",
+      "description": "Extends the base three-place identity formalization with the stereo equality theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic.Tauto",
+      "Mathlib.Logic.Basic"
+    ],
+    "namespace": "StereoEquality",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 5
+  },
+  "sections": []
+}

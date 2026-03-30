@@ -1,0 +1,73 @@
+{
+  "id": "hilbert-15-oq-01",
+  "name": "Formalize Schubert calculus including Chow rings and intersection theory",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "The Chow ring of Gr(2,4) has rank 6 with a fully explicit multiplication table",
+      "sigma2 * sigma11 = 0 is nontrivial: the LR lattice word condition fails",
+      "sigma2 and sigma11 are self-dual under Poincare duality (complement = self in 2x2 box)",
+      "Giambelli formula sigma11 = sigma1^2 - sigma2 is immediate from the table",
+      "native_decide gives machine-verified proofs of all intersection numbers",
+      "The four lines number sigma1^4 = 2 is provable with 0 axioms from explicit computation",
+      "Bilinear extension from 36 basis products gives the full ring multiplication"
+    ],
+    "builtItems": [
+      "ChowGr24: Chow ring structure with 6 Schubert basis coefficients",
+      "basisMul: complete 6x6 LR multiplication table",
+      "sigma1_fourth: sigma1^4 = 2 * sigma22 (0 axioms!)",
+      "four_lines_number: extraction of intersection number 2",
+      "Poincare duality: verified for all 5 dual pairs",
+      "giambelli_11: sigma11 = sigma1^2 - sigma2",
+      "sigma2_sigma11: nontrivial LR vanishing",
+      "Classical enumerative results: lines through point meeting 2 lines, overdetermined case",
+      "mul_comm_basis: commutativity on basis verified by decide",
+      "Gallery entry: src/data/proofs/hilbert-15-oq-01/"
+    ],
+    "progressSummary": "COMPLETED: Full Chow ring of Gr(2,4) with 0 axioms, 0 sorries, 22 theorems. The four lines theorem sigma1^4 = 2 is proved computationally.",
+    "nextSteps": [
+      "Extend to Gr(2,5) and Gr(3,6)",
+      "Derive multiplication table from combinatorial LR rule",
+      "Connect to algebraic geometry: Schubert varieties"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert15OQ01.lean",
+      "filename": "Hilbert15OQ01.lean",
+      "lineCount": 352,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculus.lean",
+      "filename": "Hilbert15SchubertCalculus.lean",
+      "lineCount": 473,
+      "theoremCount": 4,
+      "axiomCount": 7,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculus.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculusOQ01.lean",
+      "filename": "Hilbert15SchubertCalculusOQ01.lean",
+      "lineCount": 311,
+      "theoremCount": 5,
+      "axiomCount": 6,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "hilbert-15",
+    "hilbert-15-oq-01"
+  ]
+}

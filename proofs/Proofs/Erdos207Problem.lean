@@ -121,7 +121,13 @@ def stsTripleCount (n : ℕ) : ℕ := n * (n - 1) / 6
 
 theorem sts_triple_count_formula (n : ℕ) (hn : IsAdmissible n) :
     6 ∣ n * (n - 1) := by
-  sorry
+  rcases hn with h1 | h3
+  · -- n ≡ 1 (mod 6), so 6 | (n - 1), hence 6 | n * (n - 1)
+    exact dvd_mul_of_dvd_right (Nat.dvd_of_mod_eq_zero (by omega)) n
+  · -- n ≡ 3 (mod 6): 3 | n and 2 | (n - 1), so n*(n-1) = 3a * 2b = 6ab
+    obtain ⟨a, ha⟩ := Nat.dvd_of_mod_eq_zero (show n % 3 = 0 by omega)
+    obtain ⟨b, hb⟩ := Nat.dvd_of_mod_eq_zero (show (n - 1) % 2 = 0 by omega)
+    exact ⟨a * b, by rw [ha, hb]; ring⟩
 
 /-
 ## Part IV: The Erdős Conjecture
@@ -191,10 +197,6 @@ theorem girth_3_iff_pasch_free {V : Type*} [Fintype V] [DecidableEq V]
 Steiner triple systems avoiding the Pasch configuration have been studied
 extensively. The KSSS result generalizes this to arbitrary girth.
 -/
-axiom anti_pasch_sts_exist (n : ℕ) (hn : IsAdmissible n) (hn' : n ≥ 7) :
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
-      Fintype.card V = n ∧ IsSteinerTripleSystem H ∧ IsPaschFree H
-
 /-
 ## Part VII: Proof Techniques
 -/
@@ -237,8 +239,6 @@ without any pair walking together twice?
 def kirkmanSchoolgirlProblem : Prop :=
   ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
     Fintype.card V = 15 ∧ IsSteinerTripleSystem H ∧ IsResolvable H
-
-axiom kirkman_schoolgirl_solution : kirkmanSchoolgirlProblem
 
 /-
 ## Part IX: Main Results Summary

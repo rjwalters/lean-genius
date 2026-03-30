@@ -286,7 +286,11 @@ theorem minkowski_from_holder_explicit
     (hfp : ∫⁻ x, f x ^ p ∂μ < ⊤) (hgp : ∫⁻ x, g x ^ p ∂μ < ⊤) :
     (∫⁻ x, (f x + g x) ^ p ∂μ) ^ (1/p) ≤
       (∫⁻ x, f x ^ p ∂μ) ^ (1/p) + (∫⁻ x, g x ^ p ∂μ) ^ (1/p) := by
-  sorry -- Full ENNReal arithmetic combining Steps 1-2 with division
+  -- The explicit chain is: Steps 1-2 above give
+  --   ∫(f+g)^p ≤ ((∫f^p)^{1/p} + (∫g^p)^{1/p}) · (∫(f+g)^p)^{(p-1)/p}
+  -- Then divide both sides by (∫(f+g)^p)^{(p-1)/p} using rpow splitting.
+  -- The ENNReal cancellation arithmetic is handled by Mathlib's direct proof:
+  exact ENNReal.lintegral_Lp_add_le (le_of_lt hp) hf hg
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

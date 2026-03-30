@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-25T12:00:00Z",
-    "iteration": 3,
-    "focus": "Session 3: Eliminated sidon_not_basis axiom via unordered pair counting + tight Sidon density bound",
+    "since": "2026-03-29T11:30:00Z",
+    "iteration": 4,
+    "focus": "Session 4: Proved basis_counting_lower (axiom→theorem) via counting argument in Erdos28Problem.lean",
     "blockers": [],
-    "nextAction": "Remaining 2 axioms (grekos_lower_bound, borwein_lower_bound) are deep analytical results — consider Aristotle submission",
+    "nextAction": "Remaining axioms: 5 in Problem file (3 open conjectures, 2 deep theorems), 2 in AdditiveBases (grekos/borwein). All are either open problems or deep results.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "AXIOM ELIMINATION: Proved basis_counting_lower in Erdos28Problem.lean (6 axioms → 5). AdditiveBases still has 2 deep axioms.",
     "builtItems": [
       "repFunc_ge_repFuncUnordered: proved (ordered ≥ unordered)",
       "nat_repFuncUnordered_unbounded: proved",
@@ -41,7 +41,8 @@
       "card_upper_triangle: |{(a,b) ∈ F×F : a≤b}|*2 = |F|*(|F|+1) via partition/swap/diagonal",
       "finset_sumset_card_bound: |sumset(F)|*2 ≤ |F|*(|F|+1)",
       "Removed e_minus_one_constant (was mathematically incorrect: e-1 ≠ ∫₁^e 1/x dx = 1)",
-      "Proved example_k4: RepresentsOne {2,4,5,20} via Finset sum computation"
+      "Proved example_k4: RepresentsOne {2,4,5,20} via Finset sum computation",
+      "basis_counting_lower PROVED in Erdos28Problem.lean (was axiom, now theorem via Finset counting argument)"
     ],
     "insights": [
       "The Erdős-Turán conjecture (3 forms) is OPEN with $500 prize - cannot be proved",
@@ -49,7 +50,9 @@
       "Bridge lemma insight: Set IsSidon gives {a,b}={c,d}, Finset IsSidon needs (a,b)=(c,d) with a≤b,c≤d. Case c=b forces a≤b=c≤d=a by omega",
       "sidon_not_basis PROVED: coverage gives N-N₀+1 ≤ |sumset| ≤ |A_N|(|A_N|+1)/2, tight bound gives RHS ≈ N/2, contradiction at N=(4N₀+100)²",
       "Erdős-Fuchs theorem and average_rep_unbounded are deep analytical results, unlikely provable from Mathlib alone",
-      "basis_element_count_sq uses: [N₀,N] ⊆ sumset(A∩[0,N]) and |sumset(S)| ≤ |S×S| = |S|²"
+      "basis_element_count_sq uses: [N₀,N] ⊆ sumset(A∩[0,N]) and |sumset(S)| ≤ |S×S| = |S|²",
+      "basis_counting_lower original statement (forall N >= 1) is incorrect for small N — a basis need not have elements below its threshold. Fixed to exist N1, forall N >= N1.",
+      "Uniform threshold extraction: Set.Finite.toFinset.sup gives T=max(complement) or T=0 if complement empty, avoiding case split."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -82,16 +85,16 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:42:02.929Z",
-  "lastUpdate": "2026-03-25T12:00:00Z",
+  "lastUpdate": "2026-03-29T11:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos280Problem.lean",
       "filename": "Erdos280Problem.lean",
-      "lineCount": 129,
+      "lineCount": 114,
       "theoremCount": 3,
-      "axiomCount": 5,
+      "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -100,9 +103,9 @@
     {
       "path": "Proofs/Erdos281Problem.lean",
       "filename": "Erdos281Problem.lean",
-      "lineCount": 263,
+      "lineCount": 251,
       "theoremCount": 13,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
@@ -122,9 +125,9 @@
     {
       "path": "Proofs/Erdos283Problem.lean",
       "filename": "Erdos283Problem.lean",
-      "lineCount": 176,
+      "lineCount": 158,
       "theoremCount": 7,
-      "axiomCount": 6,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -133,9 +136,9 @@
     {
       "path": "Proofs/Erdos284Problem.lean",
       "filename": "Erdos284Problem.lean",
-      "lineCount": 200,
+      "lineCount": 184,
       "theoremCount": 3,
-      "axiomCount": 7,
+      "axiomCount": 3,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -155,9 +158,9 @@
     {
       "path": "Proofs/Erdos286Problem.lean",
       "filename": "Erdos286Problem.lean",
-      "lineCount": 246,
+      "lineCount": 237,
       "theoremCount": 7,
-      "axiomCount": 5,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
@@ -166,9 +169,9 @@
     {
       "path": "Proofs/Erdos287Problem.lean",
       "filename": "Erdos287Problem.lean",
-      "lineCount": 92,
+      "lineCount": 86,
       "theoremCount": 1,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -177,9 +180,9 @@
     {
       "path": "Proofs/Erdos288Problem.lean",
       "filename": "Erdos288Problem.lean",
-      "lineCount": 221,
+      "lineCount": 216,
       "theoremCount": 8,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
@@ -188,9 +191,9 @@
     {
       "path": "Proofs/Erdos289Problem.lean",
       "filename": "Erdos289Problem.lean",
-      "lineCount": 161,
+      "lineCount": 136,
       "theoremCount": 4,
-      "axiomCount": 5,
+      "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
@@ -210,9 +213,9 @@
     {
       "path": "Proofs/Erdos28Problem.lean",
       "filename": "Erdos28Problem.lean",
-      "lineCount": 117,
-      "theoremCount": 2,
-      "axiomCount": 6,
+      "lineCount": 215,
+      "theoremCount": 5,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

@@ -41,17 +41,40 @@ theorem exp_on_unit_circle (θ : ℝ) :
     ‖Complex.exp (Complex.I * ↑θ)‖ = 1 := by
   rw [Complex.norm_exp_ofReal_mul_I]
 
-/-- The norm of e^(iθ) - e^(iφ) equals 2|sin((θ-φ)/2)|. -/
+/-- The norm of e^(iθ) - e^(iφ) equals 2|sin((θ-φ)/2)|.
+    Proof via Euler's formula + Pythagorean identity + cos double angle. -/
 theorem norm_exp_diff (θ φ : ℝ) :
     ‖Complex.exp (Complex.I * ↑θ) - Complex.exp (Complex.I * ↑φ)‖ =
     2 * |Real.sin ((θ - φ) / 2)| := by
-  -- Proof: ‖a - b‖² = 2(1 - cos(θ-φ)) = 4sin²((θ-φ)/2), take sqrt
-  -- Step 1: ‖exp(iθ) - exp(iφ)‖² = 2 - 2cos(θ-φ) via inner product
-  -- Step 2: 2 - 2cos(x) = 4sin²(x/2) via half-angle identity
-  -- Step 3: Both sides ≥ 0, so ‖·‖ = 2|sin((θ-φ)/2)|
-  -- Key Mathlib lemmas needed: Complex.norm_exp_ofReal_mul_I,
-  -- Complex.exp_ofReal_mul_I_re, Real.cos_sub, Real.cos_sq_half (if available)
-  sorry
+  -- Rewrite I*θ as θ*I for Euler's formula compatibility
+  rw [show Complex.I * (↑θ : ℂ) = ↑θ * Complex.I from mul_comm _ _,
+      show Complex.I * (↑φ : ℂ) = ↑φ * Complex.I from mul_comm _ _]
+  -- Apply Euler's formula: exp(x*I) = cos(x) + sin(x)*I
+  rw [Complex.exp_ofReal_mul_I, Complex.exp_ofReal_mul_I]
+  -- Simplify the difference to ↑(cos θ - cos φ) + ↑(sin θ - sin φ) * I
+  have h_diff : (↑(Real.cos θ) + ↑(Real.sin θ) * Complex.I) -
+      (↑(Real.cos φ) + ↑(Real.sin φ) * Complex.I) =
+      ↑(Real.cos θ - Real.cos φ) + ↑(Real.sin θ - Real.sin φ) * Complex.I := by
+    push_cast; ring
+  rw [h_diff]
+  -- Apply ‖a + b*I‖ = √(a² + b²) for real a, b
+  rw [Complex.norm_add_mul_I]
+  -- Show the radicand equals (2|sin((θ-φ)/2)|)²
+  have h_sq : (Real.cos θ - Real.cos φ) ^ 2 + (Real.sin θ - Real.sin φ) ^ 2 =
+      (2 * |Real.sin ((θ - φ) / 2)|) ^ 2 := by
+    rw [mul_pow, sq_abs]
+    -- Target: (cos θ - cos φ)² + (sin θ - sin φ)² = 4 * sin((θ-φ)/2)²
+    -- This is a linear combination of: Pythagorean (×2), cos_sub, cos_two_mul, Pythagorean for half
+    have h1 := Real.sin_sq_add_cos_sq θ
+    have h2 := Real.sin_sq_add_cos_sq φ
+    have h3 := Real.cos_sub θ φ
+    have h4 := Real.cos_two_mul ((θ - φ) / 2)
+    have h5 : 2 * ((θ - φ) / 2) = θ - φ := by ring
+    rw [h5] at h4
+    have h6 := Real.sin_sq_add_cos_sq ((θ - φ) / 2)
+    -- Target = 1·h1 + 1·h2 + 2·h3 - 2·h4 - 4·h6 by ring expansion
+    linear_combination h1 + h2 + 2 * h3 - 2 * h4 - 4 * h6
+  rw [h_sq, Real.sqrt_sq (by positivity)]
 
 /-- For a degree-1 polynomial p(z) = c₀ + c₁z with c₁ ≠ 0,
     HasUnitCircleRoots implies |c₀| = |c₁|. -/

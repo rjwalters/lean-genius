@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced from 3 to 2. Proved multiplicativity of σ* via bijection argument + prime power formula. Remaining: even_of_isUnitaryPerfect (provable), erdos_1052_conjecture (OPEN).",
+    "progressSummary": "SURVEY: 1 axiom (erdos_1052_conjecture — open problem: unitary perfect numbers are finite), 0 sorries. Metadata axiomCount stale (was 2, is 1).",
     "builtItems": [
       "Proved unitaryDivisors_primePow (Erdos1052Problem.lean:175-213)",
       "Fixed sum_odd_parity parity lemmas (Erdos1052Problem.lean:76-106)",
@@ -37,7 +37,11 @@
       "Created Erdos1052Aristotle.lean with 6 supporting lemmas for Aristotle",
       "Proved unitaryDivisorSum_mul_coprime: multiplicativity of σ* (axiom→theorem, ~90 lines)",
       "Proved unitaryDivisorSum_prime_pow: σ*(p^k) = 1 + p^k (new theorem, 4 lines)",
-      "Added 4 supporting lemmas: gcd_mul_left_eq, div_gcd_dvd_right, gcd_coprime_div_of_unitary, div_gcd_coprime_div_of_unitary"
+      "Added 4 supporting lemmas: gcd_mul_left_eq, div_gcd_dvd_right, gcd_coprime_div_of_unitary, div_gcd_coprime_div_of_unitary",
+      "Proved even_of_isUnitaryPerfect (Erdos1052Problem.lean:443-509)",
+      "Proved unitaryDivisorSum_eq_proper_add bridge lemma (Erdos1052Problem.lean:391-401)",
+      "Proved coprime_pow_factorization_div helper (Erdos1052Problem.lean:373-385)",
+      "Proved even_unitaryDivisorSum_of_odd helper (Erdos1052Problem.lean:405-433)"
     ],
     "insights": [
       "unitaryDivisors_primePow proved: d|p^k and coprime(d,p^k/d) iff d in {1,p^k}",
@@ -50,7 +54,11 @@
       "Key lemma: gcd_mul_left_eq shows gcd(d₁*d₂, m)=d₁ when d₁|m and gcd(d₂,m)=1 — enables right inverse of bijection",
       "div_gcd_dvd_right: d/gcd(d,m)|n when d|m*n and gcd(m,n)=1 — proved via coprime_div_gcd_div_gcd + dvd_of_dvd_mul_left",
       "unitaryDivisorSum_prime_pow: σ*(p^k) = 1+p^k follows directly from unitaryDivisors_primePow + Finset.sum_pair",
-      "Remaining axioms: even_of_isUnitaryPerfect (provable via multiplicativity + case analysis), erdos_1052_conjecture (OPEN)"
+      "Remaining axioms: even_of_isUnitaryPerfect (provable via multiplicativity + case analysis), erdos_1052_conjecture (OPEN)",
+      "Proved even_of_isUnitaryPerfect: decompose n=p^a*m via minFac, use σ*(n)=(1+p^a)*σ*(m) by multiplicativity, show 4|2n for odd n with ≥2 prime factors",
+      "Key helper: even_unitaryDivisorSum_of_odd — any odd m>1 has even σ*(m), since its smallest prime factor p gives an even (1+p^a) factor",
+      "Only axiom is the open conjecture itself (unitary perfect numbers are finite) — cannot be eliminated",
+      "Metadata axiomCount was 2 but actual count is 1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -79,11 +87,22 @@
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1052Aristotle.lean",
+      "filename": "Erdos1052Aristotle.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1052Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1052Problem.lean",
       "filename": "Erdos1052Problem.lean",
-      "lineCount": 378,
-      "theoremCount": 15,
-      "axiomCount": 2,
+      "lineCount": 520,
+      "theoremCount": 14,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

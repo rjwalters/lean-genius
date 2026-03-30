@@ -35,13 +35,16 @@
     "originalContributions": [
       "Formalization of linear partial differential operators via multi-index coefficients",
       "Definition of principal symbol as a function on the cotangent bundle",
+      "Concrete structure for bicharacteristic curves (symbol vanishing, nonzero cotangent vector)",
       "Formalization of condition (Ψ) on bicharacteristic curves",
       "Statement of the Nirenberg-Treves characterization theorem",
+      "Proved: elliptic operators satisfy condition (Ψ) vacuously (no bicharacteristic curves exist)",
+      "Proved: operators with real principal symbol satisfy condition (Ψ)",
       "Proof that elliptic operators of principal type are locally solvable"
     ],
-    "axiomCount": 7,
-    "assumptions": "7 axioms: IsLocallySolvable, BicharacteristicCurve, imSymbolAlongCurve, imSymbolAlongCurve_eq (bridge: curve evaluation = principal symbol Im), hormander_necessity (Hörmander 1960), dencker_sufficiency (Dencker 2006), elliptic_satisfies_psi. These encode deep results from microlocal analysis.",
-    "lineCount": 189,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: IsLocallySolvable (requires distribution theory), hormander_necessity (Hörmander 1960, deep microlocal analysis), dencker_sufficiency (Dencker 2006, deep microlocal analysis). BicharacteristicCurve is now a concrete structure, enabling proved theorems for elliptic_satisfies_psi and imSymbolAlongCurve_eq.",
+    "lineCount": 209,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
@@ -72,21 +75,27 @@
       "content": "Define multi-indices, linear PDOs with polynomial coefficients, and the principal symbol.",
       "lineStart": 46,
       "lineEnd": 76,
-      "theorems": []
+      "theorems": [],
+      "summary": "Linear Differential Operators",
+      "id": "linear-differential-operators"
     },
     {
       "title": "Local Solvability",
       "content": "Define local solvability (axiomatically, since distributions are not in Mathlib) and the principal type condition.",
       "lineStart": 78,
       "lineEnd": 98,
-      "theorems": []
+      "theorems": [],
+      "summary": "Local Solvability",
+      "id": "local-solvability"
     },
     {
       "title": "Condition (Ψ)",
-      "content": "Define bicharacteristic curves, the imaginary part of the symbol along them, and condition (Ψ).",
-      "lineStart": 100,
-      "lineEnd": 122,
-      "theorems": []
+      "content": "Concrete structure for bicharacteristic curves (x(t), ξ(t) with symbol vanishing and ξ ≠ 0), definition of Im(p_m) along curves, proved bridge theorem, and condition (Ψ).",
+      "lineStart": 93,
+      "lineEnd": 136,
+      "theorems": [],
+      "summary": "Condition (Ψ)",
+      "id": "condition-ψ"
     },
     {
       "title": "The Nirenberg-Treves Theorem",
@@ -95,16 +104,22 @@
       "lineEnd": 152,
       "theorems": [
         "nirenberg_treves_characterization"
-      ]
+      ],
+      "summary": "The Nirenberg-Treves Theorem",
+      "id": "the-nirenberg-treves-theorem"
     },
     {
       "title": "Special Cases",
-      "content": "Show that elliptic operators and operators with real principal symbols satisfy condition (Ψ), hence are locally solvable.",
-      "lineStart": 154,
-      "lineEnd": 181,
+      "content": "Proved: elliptic operators satisfy (Ψ) vacuously (no bicharacteristic curves exist). Proved: real-symbol operators satisfy (Ψ) (Im p_m = 0). Elliptic operators of principal type are locally solvable.",
+      "lineStart": 170,
+      "lineEnd": 207,
       "theorems": [
+        "real_symbol_satisfies_psi",
+        "elliptic_satisfies_psi",
         "elliptic_locally_solvable"
-      ]
+      ],
+      "summary": "Special Cases",
+      "id": "special-cases"
     }
   ],
   "conclusion": {
@@ -115,7 +130,7 @@
       "Shows the deep connection between symplectic geometry and PDE theory"
     ],
     "openQuestions": [
-      "Can the microlocal analysis infrastructure be built to remove the axioms?",
+      "Can IsLocallySolvable be defined concretely once Mathlib has distribution theory?",
       "What is the analogue of condition (Ψ) for systems of PDEs?",
       "Can Dencker's proof be formalized using Lean 4 and Mathlib?"
     ]
@@ -155,9 +170,9 @@
       "NNReal"
     ],
     "namespace": "Hilbert20LocalSolvability",
-    "lineCount": 189,
-    "axiomCount": 7,
-    "theoremCount": 3,
-    "definitionCount": 7
+    "lineCount": 209,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

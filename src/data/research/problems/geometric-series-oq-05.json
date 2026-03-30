@@ -1,0 +1,114 @@
+{
+  "slug": "geometric-series-oq-05",
+  "title": "For matrices, the geometric series $\\sum A^k = (I - A)^{-1}$ converges iff the spectral radius $\\rho(A) < 1$. The spectral radius condition is strictly weaker than $\\|A\\| < 1$ — can this refinement be",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: For matrices, the geometric series $\\sum A^k = (I - A)^{-1}$ converges iff the spectral radius $\\rho(A) < 1$. The spectral radius condition is strictly weaker than $\\|A\\| < 1$ — can this refinement be.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.305Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "geometric-series",
+    "geometric-series-oq-01",
+    "geometric-series-oq-02",
+    "geometric-series-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.305Z",
+  "lastUpdate": "2026-03-29T18:32:39.305Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GeometricSeries.lean",
+      "filename": "GeometricSeries.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeries.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01.lean",
+      "filename": "GeometricSeriesOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01Neumann.lean",
+      "filename": "GeometricSeriesOQ01Neumann.lean",
+      "lineCount": 92,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01Neumann.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02.lean",
+      "filename": "GeometricSeriesOQ02.lean",
+      "lineCount": 238,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02OQ03.lean",
+      "filename": "GeometricSeriesOQ02OQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ03.lean"
+    }
+  ]
+}

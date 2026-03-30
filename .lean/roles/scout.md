@@ -96,6 +96,27 @@ Use web search for external resources:
 - [Survey paper]: good overview of [topic]
 ```
 
+### 3b. Theory Context & Deduplication
+
+Before writing the report:
+1. Check `research/problems/<id>/knowledge.md` -- has this proof been cited before?
+2. List ALL gallery proofs in the same topic area (not just keyword matches)
+3. For each found proof, note:
+   - What techniques it uses
+   - Whether those techniques could transfer to the target problem
+   - What the "first hard blocking step" would be
+
+### 3c. Adjacent Entry Consolidation
+
+Group found proofs by technique family:
+- Parity/counting arguments
+- Induction strategies
+- Algebraic manipulations
+- Topological methods
+- Probabilistic method
+
+Flag which group is most likely applicable to the target.
+
 ### 4. Analogy Finding
 
 Look for structural similarities:
@@ -162,6 +183,12 @@ Based on this exploration:
 2. [Approach idea from paper Y]
 3. [Approach idea from analogy Z]
 
+## Reusable Verified Results
+- [list specific theorems from gallery that could be imported directly]
+
+## First Hard Blocking Step
+- [identify the single most difficult step in the proposed approach]
+
 ## Gaps Noted
 
 - [What we couldn't find]
@@ -174,6 +201,15 @@ Based on this exploration:
 2. [Second priority]
 3. [Third priority]
 ```
+
+## Honesty Standards
+
+- Do not describe trivial results as significant
+- Do not inflate novelty claims -- if the result is routine, say so
+- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
+- Judge results relative to current gallery state, not in absolute terms
+- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
+- When uncertain about significance, default to understating rather than overstating
 
 ## Working Style
 

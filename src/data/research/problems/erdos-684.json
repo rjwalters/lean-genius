@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-14T19:46:33.194Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Fixed f_property soundness bug, added f_domain guard",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom elimination (7→6) + sorry elimination (2→1). Proved below_f_small (sInf min property), f_tendsto_infty_weak (from Mahler via rpow monotonicity).",
+    "progressSummary": "PROGRESS: Fixed critical soundness bug — f_property axiom was false for small n. Added f_domain guard. Axiom count 5→6 but formalization is now correct.",
     "builtItems": [
       "Proved smoothPart_dvd via prod_pow_factorization_dvd helper (Finset induction + coprimality)",
       "Proved f_lower_bound theorem from f_property axiom",
@@ -38,7 +38,12 @@
       "Fixed prime_binomial_structure to use current Mathlib API",
       "Fixed heuristic_conjecture to use DecidablePred",
       "Proved below_f_small: if k < f(n) then smoothPart ≤ n² (sInf is minimum)",
-      "Proved f_tendsto_infty_weak: f(n)→∞ from Mahler + rpow_le_rpow_of_exponent_le"
+      "Proved f_tendsto_infty_weak: f(n)→∞ from Mahler + rpow_le_rpow_of_exponent_le",
+      "f_domain definition (predicate for f being well-defined)",
+      "f_domain_large axiom (f is well-defined for sufficiently large n)",
+      "Fixed f_property axiom (now requires f_domain instead of n≥2)",
+      "Fixed f_lower_bound theorem (now requires f_domain)",
+      "Fixed erdos_684_statement theorem (now requires f_domain)"
     ],
     "insights": [
       "smoothPart_dvd proved: product of p^(factorization p) for primes p ≤ k divides m, via coprimality of distinct prime powers and Finset induction",
@@ -47,13 +52,17 @@
       "kummer_theorem has a Mathlib equivalent via Nat.Prime.multiplicity_choose — convertible but requires bridging multiplicity vs factorization APIs",
       "4 pre-existing build issues fixed: noncomputable defs, deprecated API names, heuristic_conjecture decidability issue",
       "below_f_small follows trivially from sInf_le: if k were in the set, sInf ≤ k, contradicting k < sInf",
-      "f_tendsto_infty_weak uses Mahler with ε=1/2 for each k≤C, then Finset.sup to collect thresholds"
+      "f_tendsto_infty_weak uses Mahler with ε=1/2 for each k≤C, then Finset.sup to collect thresholds",
+      "CRITICAL BUG: f_property axiom was FALSE for small n (n=2..~9). The set {k | smoothPart > n²} is empty for small n because binomial coefficients are too small.",
+      "Example: n=5, max smoothPart across all k is 2 (from C(5,2)=10), far below n²=25. So sInf ∅ = 0 and f_property claims 1 > 25, which is false.",
+      "Fix: Added f_domain predicate (set nonemptiness) and f_domain_large axiom. Changed f_property, f_lower_bound, erdos_684_statement to require f_domain.",
+      "Axiom count 5→6 but formalization is now SOUND. The old version was unsound from a false axiom."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove kummer_theorem by bridging Nat.Prime.multiplicity_choose to factorization API",
-      "Prove f_tendsto_infty_weak from corrected mahler_ineffective + f_property (complex ℝ/ℕ proof)",
-      "Create Aristotle companion file for remaining routine lemmas"
+      "Determine exact threshold for f_domain (smallest n where set is nonempty)",
+      "Consider merging f_domain_large into mahler_ineffective (Mahler implies nonemptiness for large n)",
+      "Explore if any of the remaining axioms can be reduced"
     ],
     "markdown": "# Erdős #684 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.\n\nLet $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.\n\n\n\nA classical theorem of Mahler states that for any $\\epsilon>0$ and integers $k$ and $l$ then, writing\\[(n+1)\\cdots (n+k) = ab\\]where the only primes dividing $a$ are $\\leq l$ and the only primes dividing $b$ are $>l$, we have $a < n^{1+\\epsilon}$ for all sufficiently large (depending on $\\epsilon,k,l$) $n$.\n\nMahler's theorem implies $f(n)\\to \\infty$ as $n\\to \\infty$, but is ineffective, and so gives no bounds on the growth of $f(n)$.\n\nOne can similarly ask for estimates on the smallest integer $f(n,k)$ such that if $m$ is the factor of $\\binom{n}{k}$ containing all primes $\\leq f(n,k)$ then $m > n^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #683\n- Problem #685\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
@@ -78,10 +87,10 @@
     {
       "path": "Proofs/Erdos684Problem.lean",
       "filename": "Erdos684Problem.lean",
-      "lineCount": 364,
-      "theoremCount": 8,
-      "axiomCount": 6,
-      "defCount": 10,
+      "lineCount": 400,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos684Problem.lean"

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-parity-chain",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": { "startLine": 127, "endLine": 148 },
+    "type": "theorem",
+    "title": "Parity Chain Theorem",
+    "content": "Composes all three ingredients of the Descartes parity proof: (1) non-real roots pair up ($\\text{nonreal}$ even), (2) negative roots pair up ($\\text{neg}$ even), (3) sign variations relate to degree. Given all three, $\\text{sv} + \\text{pos}$ is even, which is the Descartes parity result.",
+    "mathContext": "$\\text{sv} + \\text{pos}$ is even given: $\\text{sv} + \\text{deg}$ even, $\\text{deg} = \\text{pos} + \\text{neg} + \\text{nonreal}$, $\\text{neg}$ and $\\text{nonreal}$ even",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "parity composition", "proof architecture"],
+    "prerequisites": ["parity arithmetic", "root decomposition"]
+  },
+  {
+    "id": "ann-gap-analysis",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": { "startLine": 106, "endLine": 125 },
+    "type": "insight",
+    "title": "The Gap: Why Conjugate Pairing is Insufficient",
+    "content": "Conjugate pairing gives degree $\\equiv$ real roots (mod 2), but Descartes parity needs sign variations $\\equiv$ positive roots (mod 2). These are different statements! The bridge requires knowing that sign variations $\\equiv$ degree (mod 2), which is a combinatorial fact about coefficient sign sequences, not a consequence of complex analysis.",
+    "mathContext": "Need: $\\text{sv}(p) \\equiv |\\text{pos roots}| \\pmod{2}$, have: $\\deg(p) \\equiv |\\text{real roots}| \\pmod{2}$",
+    "significance": "key",
+    "relatedConcepts": ["conjugate root theorem", "sign variation", "proof architecture"],
+    "prerequisites": ["complex conjugate pairing", "sign variation definition"]
+  },
+  {
+    "id": "ann-hard-axiom",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": { "startLine": 163, "endLine": 175 },
+    "type": "axiom",
+    "title": "Sign Variation Parity Under Positive Root (Axiomatized)",
+    "content": "The irreducible hard lemma: when $p = (x-r) \\cdot q$ with $r > 0$, the sign variations of $p$ and $q$ have different parity. This captures the combinatorial fact that extracting a positive root changes the sign variation count by an odd number. Proving this requires analyzing how multiplication by $(X - C\\, r)$ transforms the coefficient sign sequence.",
+    "mathContext": "$p = (x-r) \\cdot q,\\; r > 0 \\Rightarrow \\text{sv}(p) + \\text{sv}(q) \\text{ is odd}$",
+    "significance": "key",
+    "relatedConcepts": ["polynomial multiplication", "coefficient sign sequences", "Budan-Fourier"],
+    "prerequisites": ["sign variation definition", "polynomial factoring"]
+  }
+]

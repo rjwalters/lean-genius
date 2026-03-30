@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 382,
     "erdosUrl": "https://erdosproblems.com/382",
     "erdosProblemStatus": "open",
@@ -59,14 +59,14 @@
       "question1: subpolynomial growth conjecture (v−u = v^o(1))",
       "question2: unbounded length conjecture",
       "ramachandra_bound axiom: v−u ≤ v^{1/2+ε}",
-      "cramersConjecture definition and cramer_implies_q1 theorem (3 sorries)",
+      "cramersConjecture definition and cramer_implies_q1 theorem (proved)",
       "noPrimeLargerThanSqrt: equivalent prime-free interval formulation",
       "erdos_382_summary: combined known results theorem",
       "Concrete example: prodInterval 2 4 = 24 via native_decide"
     ],
     "axiomCount": 3,
-    "lineCount": 591,
-    "assumptions": "3 axioms: erdos_382_q1 (OPEN conjecture), erdos_382_q2_heuristic (OPEN conjecture), ramachandra_bound (deep result). 3 sorries in cramer_implies_q1 (growth rate steps). Proved: exponentInProduct_sum, largest_prime_exp_one (Bertrand's postulate), no_prime_in_upper_half."
+    "lineCount": 661,
+    "assumptions": "3 axioms: erdos_382_q1 (OPEN conjecture), erdos_382_q2_heuristic (OPEN conjecture), ramachandra_bound (deep result). 0 sorries. Proved: exponentInProduct_sum, largest_prime_exp_one (Bertrand's postulate), no_prime_in_upper_half, cramer_implies_q1."
   },
   "overview": {
     "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
@@ -145,32 +145,32 @@
     {
       "id": "cramer",
       "title": "Part VII: Connection to Cramér's Conjecture",
-      "startLine": 302,
-      "endLine": 317,
-      "summary": "Defines cramersConjecture: there exists C > 0 such that consecutive prime gaps satisfy q−p ≤ C·(log p)². Axiomatizes cramer_implies_q1: Cramér's conjecture implies Question 1 (subpolynomial growth). The connection is that Cramér's conjecture prevents long prime-free intervals, forcing primes above √v into any sufficiently long interval.",
-      "mathContext": "Cram\\'er's conjecture: $\\exists C > 0$ such that for consecutive primes $p < q$ with no prime between them, $q - p \\le C (\\log p)^2$. Axiom `cramer_implies_q1`: Cram\\'er $\\Rightarrow$ Question 1. The logic: if $v - u > v^\\varepsilon$ for some $\\varepsilon > 0$, the interval $[u,v]$ has length $\\gg v^\\varepsilon$, but Cram\\'er bounds prime gaps by $O((\\log v)^2)$, so a prime $p > \\sqrt{v}$ must appear in $[u,v]$ for large $v$, contradicting the condition."
+      "startLine": 304,
+      "endLine": 493,
+      "summary": "Defines cramersConjecture: there exists C > 0 such that consecutive prime gaps satisfy q−p ≤ C·(log p)². Proves cramer_implies_q1 (PROVED): Cramér's conjecture implies Question 1 (subpolynomial growth). Helper lemma log_sq_lt_rpow shows C·(log v)² < v^ε for large v. The proof uses no_prime_in_upper_half, Bertrand's postulate, and the Cramér gap bound to show u > √v, placing [u,v] within a single Cramér gap of length < v^ε.",
+      "mathContext": "Cram\\'er's conjecture: $\\exists C > 0$ such that for consecutive primes $p < q$ with no prime between them, $q - p \\le C (\\log p)^2$. Theorem `cramer_implies_q1` (PROVED): Cram\\'er $\\Rightarrow$ Question 1. Helper: $C (\\log v)^2 < v^\\varepsilon$ for large $v$ (from $\\log = o(x^{\\varepsilon/4})$). Main argument: if $v - u > v^\\varepsilon$, Cram\\'er bounds gaps by $O((\\log v)^2)$, so a prime $p > \\sqrt{v}$ must appear in $[u,v]$, contradicting `no_prime_in_upper_half`. Hence $u > \\sqrt{v}$ and $[u,v]$ lies within a single Cram\\'er gap."
     },
     {
       "id": "examples-and-main-theorem",
       "title": "Part VIII: Examples and Main Structural Theorem",
-      "startLine": 319,
-      "endLine": 419,
+      "startLine": 494,
+      "endLine": 595,
       "summary": "Concrete example: prodInterval 2 4 = 24 proved by native_decide. Major theorem no_prime_in_upper_half (PROVED, 83 lines): if [u,v] satisfies the condition, then every prime p in [u,v] satisfies p ≤ √v. Proof: assume p > √v; then p divides the product, so q = lpd(product) ≥ p > √v; Bertrand gives 2q > v; thus q is the unique multiple of itself in [u,v]; the sum decomposition gives exponent = 1, contradicting the condition's requirement of ≥ 2.",
       "mathContext": "Example: $\\mathrm{prodInterval}(2,4) = 2 \\cdot 3 \\cdot 4 = 24$ by `native_decide`. Main theorem `no_prime_in_upper_half`: $\\text{satisfiesCondition}(u,v) \\Rightarrow \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. Proof by contradiction: if $p > \\sqrt{v}$, then $q := \\mathrm{lpd}(\\Pi) \\ge p > \\sqrt{v}$. Bertrand's postulate gives a prime $r$ with $q < r \\le 2q$; if $r \\le v$ then $r$ divides $\\Pi$ so $q \\ge r > q$, contradiction, hence $v < 2q$. The only multiple of $q$ in $[u,v]$ is $q$ itself (since $2q > v$), so $v_q(\\Pi) = v_q(q) + \\sum_{m \\ne q} 0 = 1 < 2$, contradicting the condition."
     },
     {
       "id": "prime-free",
       "title": "Part IX: Prime-Free Interval Perspective",
-      "startLine": 421,
-      "endLine": 441,
-      "summary": "Defines noPrimeLargerThanSqrt(u,v): every prime p with u ≤ p ≤ v satisfies p ≤ √v. Axiomatizes condition_iff_no_large_prime: the Erdős-Graham condition is equivalent to u ≤ v, u > 0, and noPrimeLargerThanSqrt. The forward direction is proved by no_prime_in_upper_half; the backward direction (no large primes implies some prime has exponent ≥ 2) is axiomatized as it requires deeper combinatorial arguments.",
-      "mathContext": "Defines the predicate $\\text{noPrimeLargerThanSqrt}(u,v) :\\equiv \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. Axiom `condition_iff_no_large_prime`: $\\text{satisfiesCondition}(u,v) \\iff (u \\le v \\wedge u > 0 \\wedge \\text{noPrimeLargerThanSqrt}(u,v))$. The forward direction ($\\Rightarrow$) is the proved theorem `no_prime_in_upper_half`. The backward direction ($\\Leftarrow$) requires showing that if all primes in $[u,v]$ are $\\le \\sqrt{v}$, then the largest prime factor of $\\prod_{m=u}^{v} m$ must have exponent $\\ge 2$ — a deeper pigeonhole argument on $p$-adic valuations."
+      "startLine": 596,
+      "endLine": 623,
+      "summary": "Defines noPrimeLargerThanSqrt(u,v): every prime p with u ≤ p ≤ v satisfies p ≤ √v. Notes that the previous axiom condition_iff_no_large_prime was REMOVED as mathematically incorrect — counterexample [24,28] shows the backward direction fails because noPrimeLargerThanSqrt only constrains primes IN [u,v], not prime factors of composite numbers. The forward direction (satisfiesCondition → noPrimeLargerThanSqrt) remains proved as no_prime_in_upper_half.",
+      "mathContext": "Defines the predicate $\\text{noPrimeLargerThanSqrt}(u,v) :\\equiv \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. The previously axiomatized equivalence `condition_iff_no_large_prime` was removed: the backward direction ($\\Leftarrow$) is false. Counterexample: $[24,28]$ has no primes, so `noPrimeLargerThanSqrt` holds vacuously, but $\\mathrm{lpd}(\\prod_{24}^{28} m) = 13$ (from $26 = 2 \\cdot 13$) has exponent 1, so `satisfiesCondition` fails. Only the forward direction ($\\Rightarrow$) is valid, proved as `no_prime_in_upper_half`."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "startLine": 443,
-      "endLine": 483,
+      "startLine": 625,
+      "endLine": 665,
       "summary": "erdos_382_summary (PROVED): a conjunction of Ramachandra's bound, Cramér implies Q1, and True (both questions stated), assembled from the three axioms. ramachandra_consistent_with_questions (PROVED): identity function showing the bound is consistent with both questions. Closes the Erdos382 namespace.",
       "mathContext": "Theorem `erdos_382_summary`: $\\left(\\forall \\varepsilon > 0,\\; \\exists V,\\; \\ldots v-u \\le v^{1/2+\\varepsilon}\\right) \\wedge \\left(\\text{Cram\\'er} \\Rightarrow \\text{Q1}\\right) \\wedge \\top$, proved by $\\langle\\texttt{ramachandra\\_bound},\\, \\texttt{cramer\\_implies\\_q1},\\, \\texttt{trivial}\\rangle$. Theorem `ramachandra_consistent_with_questions`: the identity function, witnessing that Ramachandra's bound $v - u \\le v^{1/2+o(1)}$ is logically compatible with both subpolynomial growth (Q1) and unbounded length (Q2), since $v^{1/2+o(1)} \\to \\infty$ yet $v^{1/2+o(1)} = v^{o(1)} \\cdot v^{1/2}$."
     }
@@ -204,7 +204,7 @@
       "Real"
     ],
     "namespace": "Erdos382",
-    "lineCount": 591,
+    "lineCount": 661,
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 9

@@ -33,12 +33,15 @@
     "builtItems": [
       "Proved erdos_spencer_lower from lemm_lower (rpow_le_rpow_of_exponent_le)",
       "Proved erdos_ruzsa_explicit from lemm_lower (algebraic rearrangement)",
-      "Proved alphaevolve_improvement from lemm_lower (linarith on constants)"
+      "Proved alphaevolve_improvement from lemm_lower (linarith on constants)",
+      "Created Proofs/Erdos1097OQ01.lean: k-AP generalization with anti-monotonicity",
+      "Fixed meta.json leanFile.axiomCount from 6 to 3 (actual count)"
     ],
     "insights": [
       "erdos_spencer_lower (n^{3/2}) follows from lemm_lower (n^{1.778}) since 1.778 > 1.5 and n^c is monotone in c for n≥1",
       "erdos_ruzsa_explicit (n^{1+c}) follows from lemm_lower with c'=c-1>0.778, C=1",
-      "alphaevolve_improvement (c>1.77898) is logically subsumed by lemm_lower (c>1.778) due to rounding in axiom constants"
+      "alphaevolve_improvement (c>1.77898) is logically subsumed by lemm_lower (c>1.778) due to rounding in axiom constants",
+      "Follow-up OQ-01: k-term AP common differences formalized (17 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -51,7 +54,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-109",
-    "erdos-1097"
+    "erdos-1097",
+    "erdos-1097-oq-01"
   ],
   "references": {
     "papers": [],
@@ -59,10 +63,21 @@
     "mathlib": []
   },
   "started": "2026-01-15T15:31:24.882Z",
-  "lastUpdate": "2026-03-13T07:52:17.057Z",
+  "lastUpdate": "2026-03-29T18:30:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1097OQ01.lean",
+      "filename": "Erdos1097OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1097OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos1097Problem.lean",
       "filename": "Erdos1097Problem.lean",

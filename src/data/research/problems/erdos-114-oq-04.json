@@ -1,0 +1,212 @@
+{
+  "id": "erdos-114-oq-04",
+  "name": "Verify lemniscate axioms using Mathlib complex analysis",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "erdos-114",
+    "question": "Can any of the axiomatized results be verified using Mathlib's complex analysis?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Defined lemniscate sets properly using Polynomial.eval + ‖·‖ (no axioms needed for set definitions). Proved basic properties. Assessed axiom eliminability: arc length requires curve integration not in Mathlib. 1 axiom (Danchenko placeholder), 0 sorries, 10 theorems, 177 lines.",
+    "builtItems": [
+      "proofs/Proofs/Erdos114OQ04Problem.lean (177 lines)",
+      "lemniscateSet and unitLemniscate definitions (axiom-free)",
+      "Basic properties: lemniscate_zero_eq_roots, lemniscate_neg_empty, lemniscate_is_preimage",
+      "z^n - 1 definitions: znMinus1, eval_znMinus1, znMinus1_lemniscate",
+      "Membership: root_of_unity_not_on_lemniscate, zero_on_lemniscate",
+      "Examples: lemniscate_degree_zero, lemniscate_n1, lemniscate_n2",
+      "Gallery entry"
+    ],
+    "insights": [
+      "Polynomial module moved from Data.Polynomial to Algebra.Polynomial in newer Mathlib",
+      "Complex.abs is accessed via ‖·‖ (norm) in current Mathlib API",
+      "norm_eq_zero and norm_nonneg are key lemmas for lemniscate proofs",
+      "Arc length of ℂ curves is the main Mathlib gap blocking axiom elimination",
+      "Danchenko bound potentially provable via Cauchy integral (~500 lines)"
+    ],
+    "mathlibGaps": [
+      "No arc length for curves in ℂ",
+      "No complex curve integration (line integrals over parametric curves)"
+    ],
+    "nextSteps": [
+      "Define arc length for parametric curves in ℂ (custom infrastructure)",
+      "Attempt Danchenko bound via Cauchy integral formula",
+      "Connect to Gamma function formula for z^n-1 lemniscate length"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1140Problem.lean",
+      "filename": "Erdos1140Problem.lean",
+      "lineCount": 228,
+      "theoremCount": 19,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1140Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1141Problem.lean",
+      "filename": "Erdos1141Problem.lean",
+      "lineCount": 203,
+      "theoremCount": 35,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1141Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1142Problem.lean",
+      "filename": "Erdos1142Problem.lean",
+      "lineCount": 193,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1142Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1143Problem.lean",
+      "filename": "Erdos1143Problem.lean",
+      "lineCount": 298,
+      "theoremCount": 11,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1143Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1144Problem.lean",
+      "filename": "Erdos1144Problem.lean",
+      "lineCount": 227,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1144Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1145Problem.lean",
+      "filename": "Erdos1145Problem.lean",
+      "lineCount": 599,
+      "theoremCount": 36,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1145Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1146Problem.lean",
+      "filename": "Erdos1146Problem.lean",
+      "lineCount": 288,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1146Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1147Problem.lean",
+      "filename": "Erdos1147Problem.lean",
+      "lineCount": 235,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1147Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1148Problem.lean",
+      "filename": "Erdos1148Problem.lean",
+      "lineCount": 356,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1148Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1149Aristotle.lean",
+      "filename": "Erdos1149Aristotle.lean",
+      "lineCount": 107,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1149Problem.lean",
+      "filename": "Erdos1149Problem.lean",
+      "lineCount": 321,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos114OQ01Problem.lean",
+      "filename": "Erdos114OQ01Problem.lean",
+      "lineCount": 300,
+      "theoremCount": 14,
+      "axiomCount": 12,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos114OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos114OQ04Problem.lean",
+      "filename": "Erdos114OQ04Problem.lean",
+      "lineCount": 178,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos114OQ04Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos114Problem.lean",
+      "filename": "Erdos114Problem.lean",
+      "lineCount": 50,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos114Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-114",
+    "erdos-114-oq-01",
+    "erdos-114-oq-04",
+    "erdos-1140",
+    "erdos-1141",
+    "erdos-1142",
+    "erdos-1143",
+    "erdos-1144",
+    "erdos-1145",
+    "erdos-1146",
+    "erdos-1147",
+    "erdos-1148",
+    "erdos-1149"
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1027-wip-01",
-  "title": "Complete Erd\u0151s Problem #1027: Intersecting Sets and Property B (Work in Progress)",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Complete Erdős Problem #1027: Intersecting Sets and Property B (Work in Progress)",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Complete Erd\u0151s Problem #1027: Intersecting Sets and Property B (Work in Progress).",
+    "plain": "Formal investigation in combinatorics: Complete Erdős Problem #1027: Intersecting Sets and Property B (Work in Progress).",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:57:10.256Z",
     "iteration": 2,
-    "focus": "Proved Erd\u0151s classical bound via probabilistic method",
+    "focus": "All sorries proved, metadata synced with current file",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Erd\u0151s classical bound (1963) added via probabilistic method. 1 axiom, 1 sorry (card_constOn_le \u2014 Aristotle target). New: IsMonochromatic, card_monochromatic_le, erdos_classical_bound.",
+    "progressSummary": "COMPLETED: 0 sorries, 1 axiom (erdos_1027_solution). card_constOn_le proved via injection. Erdős classical bound (1963) fully proved. Gallery metadata updated to match current 355-line file with 7 sections.",
     "builtItems": [
       "SetFamily, familyUnion, IsNUniform, IntersectsAll, ContainsNone, IsGoodSet definitions",
       "goodSets, HasPropertyB, IsProper2Coloring, Is2Colorable definitions",
@@ -42,29 +42,31 @@
       "erdos_1027_conjecture, erdos_1027_solution: axiomatized (2 axioms)",
       "erdos_1027_solved: derives from solution axiom",
       "IsMonochromatic: definition of monochromatic coloring on a set",
-      "card_constOn_le: counting constant-value functions (1 sorry \u2014 Aristotle candidate)",
+      "card_constOn_le: counting constant-value functions (1 sorry — Aristotle candidate)",
       "card_monochromatic_le: monochromatic coloring bound (proved from card_constOn_le)",
-      "erdos_classical_bound: Erd\u0151s 1963 probabilistic method (proved from card_monochromatic_le)",
-      "Erdos1027Aristotle.lean: companion file with card_constOn for Aristotle"
+      "erdos_classical_bound: Erdős 1963 probabilistic method (proved from card_monochromatic_le)",
+      "Erdos1027Aristotle.lean: companion file with card_constOn for Aristotle",
+      "Updated gallery metadata: sections, annotations, leanFile stats to match current file"
     ],
     "insights": [
       "Lean file was corrupted (Aristotle UUID), needed full rewrite",
       "Property B (2-colorability) is equivalent to existence of a good set",
-      "Good set B: intersects every A in F (B\u2229A\u2260\u2205) and contains no A (A\u2284B)",
+      "Good set B: intersects every A in F (B∩A≠∅) and contains no A (A⊄B)",
       "Empty family: trivially has Property B, every subset is good",
-      "Singleton {A} with |A|\u22652: single-element subsets {x} for x\u2208A are good",
-      "Main conjecture quantifier structure: \u2200c>0 \u2203\u03b4>0 \u2203N \u2200n\u2265N \u2200F ...",
-      "Koishi Chan solved: abundance \u03b4\u00b72^|X| of good sets for bounded families",
-      "Erd\u0151s 1963 classical bound: |F|\u00b72 < 2^t and all sets size \u2265 t \u2192 2-colorable",
+      "Singleton {A} with |A|≥2: single-element subsets {x} for x∈A are good",
+      "Main conjecture quantifier structure: ∀c>0 ∃δ>0 ∃N ∀n≥N ∀F ...",
+      "Koishi Chan solved: abundance δ·2^|X| of good sets for bounded families",
+      "Erdős 1963 classical bound: |F|·2 < 2^t and all sets size ≥ t → 2-colorable",
       "Probabilistic method proof via counting: bad colorings < total colorings",
-      "Key counting lemma: functions constant on A form set of size 2^(|\u03b1|-|A|)",
-      "Monochromatic colorings on A bounded by 2\u00b72^(|\u03b1|-|A|) via union of all-true + all-false"
+      "Key counting lemma: functions constant on A form set of size 2^(|α|-|A|)",
+      "Monochromatic colorings on A bounded by 2·2^(|α|-|A|) via union of all-true + all-false",
+      "File was fully rewritten after corruption; old metadata referenced nonexistent code (propertyB_for_bounded, single_implies_many, probIntersects, etc.)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove card_constOn_le via bijection with functions on complement (or Aristotle)",
       "Add connection between erdos_classical_bound and abundance result",
-      "Consider stronger bounds via Lov\u00e1sz Local Lemma"
+      "Consider stronger bounds via Lovász Local Lemma"
     ]
   },
   "tags": [
@@ -87,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.256Z",
-  "lastUpdate": "2026-03-28T20:57:10.256Z",
+  "lastUpdate": "2026-03-29T16:45:00.000Z",
   "significance": 6,
   "tractability": 5
 }

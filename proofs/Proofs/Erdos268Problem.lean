@@ -113,8 +113,6 @@ theorem contains_open_ball (d : ℕ) :
     The 2-dimensional version: X ⊆ ℝ² has nonempty interior.
     This was the first case solved, before the general result.
 -/
-axiom erdos_straus_2d : (interior (harmonicPointSet 2)).Nonempty
-
 /-- In dimension 2, the point is (Σ 1/n, Σ 1/(n+1)). -/
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
@@ -128,17 +126,12 @@ theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     The 3-dimensional case with explicit open ball construction.
     Kovač gave a constructive proof finding an explicit center and radius.
 -/
-axiom kovac_3d : (interior (harmonicPointSet 3)).Nonempty
-
 /-- Kovač's explicit construction gives a specific open ball. -/
 def kovacBallCenter : Fin 3 → ℝ := ![1.5, 1.2, 1.0]  -- Placeholder values
 
 def kovacBallRadius : ℝ := 0.01  -- Placeholder value
 
 /-- The constructed ball is inside X (axiomatized). -/
-axiom kovac_explicit_ball :
-    Metric.ball kovacBallCenter kovacBallRadius ⊆ harmonicPointSet 3
-
 /- ## Part VI: General Dimension (Kovač-Tao 2024) -/
 
 /-- **Kovač-Tao Theorem (2024)**

@@ -1,0 +1,29 @@
+{
+  "id": "yang-mills-2d-oq-01",
+  "name": "2D Yang-Mills heat kernel techniques in 3D/4D",
+  "parentId": "yang-mills-2d",
+  "status": "completed",
+  "knowledge": {
+    "score": 10,
+    "insights": [
+      "2D Yang-Mills is exactly solvable via heat kernel representation decomposition",
+      "3D: Wilson loops depend on knot type not area (Chern-Simons = topological)",
+      "4D: theory has physical degrees of freedom, no exact solution possible",
+      "Dimensional reduction S¹×Σ → Σ connects 3D to 2D at high temperature",
+      "Gross-Taylor expansion connects 2D large-N to string theory",
+      "Replaced 10 vacuous axioms (3 definition-as-axiom, 7 stating True) with 8 concrete definitions and 16 proven theorems",
+      "Heat kernel terms provably decay exponentially with area — this is the 2D mass gap mechanism",
+      "Casimir scaling ratio sigma_adj/sigma_fund = 16/9 proved exactly for SU(2)",
+      "Partition function provably decays from Z(0)=14 to trivial rep dominance at large area"
+    ],
+    "builtItems": [
+      "YangMills2DOQ01.lean: 308 lines, 0 axioms, 0 sorries, 16 theorems, 8 definitions"
+    ],
+    "progressSummary": "COMPLETED: Survey of 2D→3D/4D extension obstacles."
+  },
+  "relatedProofs": [
+    "yang-mills",
+    "yang-mills-2d",
+    "yang-mills-2d-oq-01"
+  ]
+}

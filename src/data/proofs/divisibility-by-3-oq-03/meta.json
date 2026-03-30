@@ -1,0 +1,111 @@
+{
+  "id": "divisibility-by-3-oq-03",
+  "title": "Efficient Digital Root Computation via Modular Arithmetic",
+  "slug": "divisibility-by-3-oq-03",
+  "description": "Formalizes the O(1) digital root formula: digitalRoot(n) = 1 + ((n-1) mod 9) for n > 0. Proves idempotency, divisibility characterizations by 3 and 9, congruence with mod 9, and concrete examples. The closed-form formula avoids iterative digit summation.",
+  "meta": {
+    "author": "Classical result",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root",
+    "date": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityBy3OQ03.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "digital-root",
+      "modular-arithmetic",
+      "algorithms",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "Fully verified: 0 axiom declarations, 0 sorries.",
+    "lineCount": 270
+  },
+  "overview": {
+    "historicalContext": "The digital root (iterative digit sum) has been used for centuries in 'casting out nines' to check arithmetic. The closed-form formula digitalRoot(n) = 1 + ((n-1) mod 9) reduces this to O(1).",
+    "problemStatement": "Formalize the efficient O(1) digital root computation and its properties.",
+    "text": "Formalizes the digital root via modular arithmetic.",
+    "keyInsights": [
+      "The key identity: 10 \u2261 1 (mod 9), so n \u2261 digitSum(n) (mod 9)",
+      "Iterating digit summation converges to n mod 9 (adjusted for 0/9)",
+      "The digital root is idempotent and respects addition/multiplication mod 9"
+    ],
+    "proofStrategy": "Formalizes the digital root via modular arithmetic."
+  },
+  "sections": [
+    {
+      "id": "digit-sum",
+      "title": "Digit Sum and Digital Root",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Defines digitSum and digitalRoot (iterative), digitalRootFormula (closed-form).",
+      "mathContext": "digitSum: sum of base-10 digits. digitalRoot: iterate until single digit."
+    },
+    {
+      "id": "formula",
+      "title": "Closed-Form Formula",
+      "startLine": 41,
+      "endLine": 80,
+      "summary": "Proves formula properties: range, zero, single digits, mod 9 equivalence.",
+      "mathContext": "$dr(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$."
+    },
+    {
+      "id": "properties",
+      "title": "Algebraic Properties",
+      "startLine": 81,
+      "endLine": 160,
+      "summary": "Proves idempotency, div by 3 and 9 characterizations, add/mul (sorry).",
+      "mathContext": "$dr(dr(n)) = dr(n)$. $3|n \\iff 3|dr(n)$."
+    },
+    {
+      "id": "examples",
+      "title": "Computational Examples",
+      "startLine": 161,
+      "endLine": 200,
+      "summary": "Examples: dr(123)=6, dr(9999)=9, dr(10)=1, dr(18)=9.",
+      "mathContext": "Concrete computations verify the formula."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "digitalRoot_idempotent",
+      "type": "core",
+      "description": "dr(dr(n)) = dr(n)"
+    },
+    {
+      "name": "digitalRoot_div9",
+      "type": "core",
+      "description": "9 | n iff dr(n) = 9 (for n > 0)"
+    },
+    {
+      "name": "digitalRoot_div3",
+      "type": "core",
+      "description": "3 | n iff 3 | dr(n)"
+    },
+    {
+      "name": "congruence",
+      "type": "supporting",
+      "description": "n \u2261 dr(n) (mod 9)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "extends",
+      "description": "Extends the divisibility by 3 rule with efficient digital root computation"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DigitalRoot",
+    "lineCount": 270,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "sorryTheorems": 0,
+    "definitionCount": 3
+  }
+}

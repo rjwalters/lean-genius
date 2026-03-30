@@ -57,8 +57,8 @@
       "Formalization of EST regime condition",
       "Connection to Farey fraction asymptotics"
     ],
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations encoding results on the distribution of {nα} sequences: S_bounds, S_mono_A, S_mono_c (properties of the discrepancy functional S(N,A,c)), erdos_szusz_turan (Erdős-Szüsz-Turán 1958 theorem on bounded discrepancy), est_boundedness (boundedness condition), kesten_sos (Kesten's three-distance theorem connection), boca_theorem (Boca's continued fraction approach), xiong_zaharescu_theorem (Xiong-Zaharescu gap distribution result). These encode established results in the metric theory of continued fractions.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: erdos_szusz_turan (EST 1958: explicit formula in EST regime), kesten_sos (Kesten-Sós 1966: limit exists for all valid A, c). Both are deep analytic number theory results.",
     "prerequisites": [
       "Diophantine approximation (Dirichlet's theorem, approximation quality)",
       "Lebesgue measure on the real line",
@@ -67,7 +67,7 @@
       "Euler's totient function and coprime density (6/pi^2)",
       "Basic ergodic theory (for Kesten-Sos proof method)"
     ],
-    "lineCount": 205
+    "lineCount": 249
   },
   "overview": {
     "historicalContext": "This problem originates in a 1958 paper by Erdős, Szüsz, and Turán, who studied the metric theory of Diophantine approximation — specifically, what fraction of real numbers $\\alpha \\in (0,1)$ can be well-approximated by rationals whose denominators lie in a prescribed range $[N, cN]$. They proved the explicit formula $f(A,c) = 12A\\log(c)/\\pi^2$ in a specific parameter regime, revealing a striking connection to the density of coprime pairs via Euler's formula $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$. The key advance came in 1966 when Harry Kesten and Vera T. Sós proved that the limit $\\lim_{N \\to \\infty} S(N,A,c)$ exists for all valid parameters, using ergodic-theoretic methods — a significant generalization since no explicit formula was needed. Later, Florin Boca (2008) gave an independent proof using the geometry of Farey fractions and their spacing statistics, while Xiong and Zaharescu (2006) provided yet another proof via continued fraction expansions. The problem illustrates a central theme in metric number theory: how measure-theoretic properties of approximation sets encode deep arithmetic structure.",
@@ -217,10 +217,10 @@
       "Real"
     ],
     "namespace": "Erdos1001",
-    "lineCount": 205,
-    "axiomCount": 9,
-    "theoremCount": 4,
-    "definitionCount": 10
+    "lineCount": 249,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 12
   },
   "references": [
     {

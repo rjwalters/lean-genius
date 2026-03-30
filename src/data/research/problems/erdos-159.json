@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-12T09:56:05.235Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: defined ramseyC4Kn from Ramsey theorem (4→2 axioms)",
+    "iteration": 4,
+    "focus": "Meta corrections: stale sections and line numbers from old 91-line version",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 more axioms (ramseyC4Kn function + spec) by defining via Nat.find from Ramsey theorem. File now has 2 axioms (szemeredi_upper, spencer_lower — deep results), 7 proved lemmas/theorems.",
+    "progressSummary": "COMPLETED: 0 sorries, 2 axioms (deep literature results: szemeredi_upper, spencer_lower). Fixed stale meta.json sections and line numbers. Ramsey function defined from first principles via Nat.find.",
     "builtItems": [
       "HasClique_mono lemma in Erdos159Problem.lean:40-44",
       "HasClique_card_le lemma in Erdos159Problem.lean:48-52",
@@ -39,7 +39,8 @@
       "HasClique_four_hasC4 lemma in Erdos159Problem.lean (K₄ contains C₄)",
       "ramsey_C4_Kn_exists theorem in Erdos159Problem.lean (existence via Ramsey theorem)",
       "ramseyC4Kn noncomputable def in Erdos159Problem.lean (Nat.find, replaces axiom)",
-      "ramseyC4Kn_spec theorem in Erdos159Problem.lean (proved from Nat.find, replaces axiom)"
+      "ramseyC4Kn_spec theorem in Erdos159Problem.lean (proved from Nat.find, replaces axiom)",
+      "Fixed meta.json: sections line numbers, proofStrategy, conclusion summary, lineCount 292→293"
     ],
     "insights": [
       "ramseyC4Kn_mono and ramseyC4Kn_ge are provable from ramseyC4Kn_spec (eliminated 2 axioms)",
@@ -48,7 +49,9 @@
       "Remaining 4 axioms (function def, spec, Szemeredi upper, Spencer lower) are necessary - cannot be proved from Mathlib",
       "ramseyC4Kn and ramseyC4Kn_spec eliminated as axioms — now defined/proved from Ramsey theorem via Nat.find",
       "K₄ ⊇ C₄ proved as HasClique_four_hasC4: Finset decomposition extracts 4 vertices, pairwise adjacency gives cycle",
-      "Bridge from SimpleGraph to EdgeColoring: red=G edges, blue=Gᶜ edges, using if-then-else with Classical decidability"
+      "Bridge from SimpleGraph to EdgeColoring: red=G edges, blue=Gᶜ edges, using if-then-else with Classical decidability",
+      "Meta.json sections were from old 91-line version — corrected to match current 293-line file",
+      "File is at maximum formalization: 0 sorries, 2 axioms are deep literature results not in Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -79,9 +82,9 @@
     {
       "path": "Proofs/Erdos159Problem.lean",
       "filename": "Erdos159Problem.lean",
-      "lineCount": 225,
-      "theoremCount": 8,
-      "axiomCount": 2,
+      "lineCount": 283,
+      "theoremCount": 10,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

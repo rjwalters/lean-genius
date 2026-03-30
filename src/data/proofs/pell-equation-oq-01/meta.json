@@ -1,0 +1,40 @@
+{
+  "id": "pell-equation-oq-01",
+  "title": "Pell Equation: Size of the Fundamental Solution",
+  "slug": "pell-equation-oq-01",
+  "description": "Investigation of the Pell regulator R(D) = log(x₁ + y₁√D) for the fundamental solution to x² - Dy² = 1. States the heuristic conjecture R(D) = O(√D log D), proves basic bounds, and formalizes connections to class numbers and computational complexity.",
+  "meta": {
+    "author": "Lagrange (existence), Lenstra (computational survey), Cohen-Lenstra (heuristics)",
+    "date": "2002",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PellEquationOQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "regulator",
+      "computational-complexity",
+      "open-problem"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-30",
+    "lineCount": 195,
+    "originalContributions": [
+      "pellNorm and pellRegulator definitions",
+      "pellNorm_pos_of_pos: norm bound for positive solutions",
+      "pellRegulator_nonneg: regulator is non-negative",
+      "pell_near_square_solution: D=n²-1 gives small fundamental solution (n,1)",
+      "PellRegulatorBound: formal statement of O(√D log D) heuristic",
+      "AverageRegulatorConjecture: average R(D)/√D converges",
+      "DirichletClassNumberFormula: h(D)·R(D) = √D·L(1,χ_D)/2",
+      "PellPolynomialTime: open question about polynomial-time solvability"
+    ],
+    "assumptions": "No axioms. All properties proved or stated as Prop definitions for open conjectures."
+  },
+  "leanFile": {
+    "lineCount": 195,
+    "axiomCount": 0
+  }
+}

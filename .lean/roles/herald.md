@@ -234,9 +234,29 @@ Track posted milestones in `.loom/state/herald-posts.json`:
 
 ## Tools
 
+### Posting (bash orchestration — rate limiting, dedup, proof URL verification)
+
 - `./scripts/herald/post-mathstodon.sh --automated --subject "KEY" --arc "ARC" "text"` — Post to Mathstodon (updates state automatically)
 - `./scripts/herald/post-mathstodon.sh --dry-run --subject "KEY" "text"` — Preview without posting or updating state
 - `./scripts/herald/post-mathstodon.sh --status` — Check rate limit and recent post history
+
+### Mastodon API client (TypeScript — direct API access via masto.js)
+
+- `npx tsx scripts/herald/mastodon-client.ts post [--dry-run] [--visibility VIS] "text"` — Post a new status
+- `npx tsx scripts/herald/mastodon-client.ts reply [--dry-run] <parent-id> "text"` — Reply to an existing status
+- `npx tsx scripts/herald/mastodon-client.ts boost <status-id>` — Boost (reblog) a status
+- `npx tsx scripts/herald/mastodon-client.ts favourite <status-id>` — Favourite a status
+- `npx tsx scripts/herald/mastodon-client.ts status` — Show state file status
+
+**When to use which**: Use `post-mathstodon.sh` for primary posting (it handles rate limits, dedup, and proof URL verification). Use `mastodon-client.ts` directly for replies, boosts, favourites, and engagement interactions that don't need the bash orchestration layer.
+
+### Engagement scanning (Phase 2)
+
+- `npx tsx scripts/herald/scan-engagement.ts` — Scan #LeanProver and related hashtags for engagement candidates
+- `npx tsx scripts/herald/scan-engagement.ts --dry-run` — Preview candidates without replying
+
+### Other
+
 - `git log --oneline --since="7 hours ago"` — Recent commits
 - `jq` — Parse state files and meta.json
 - `ls src/data/proofs/{slug}/meta.json` — Verify proof slug exists locally

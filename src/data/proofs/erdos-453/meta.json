@@ -17,7 +17,7 @@
       "prime-number-graph"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 453,
     "erdosUrl": "https://erdosproblems.com/453",
     "erdosProblemStatus": "solved",
@@ -54,9 +54,9 @@
       "counterexample_set_infinite theorem (fully proved from axioms)",
       "log_convexity_iff_vertex identity (proved by rfl)"
     ],
-    "axiomCount": 6,
-    "lineCount": 304,
-    "assumptions": "6 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "axiomCount": 2,
+    "lineCount": 364,
+    "assumptions": "2 axioms: logPrime_ratio_tendsto_zero (from PNT), pomerance_convex_hull_lemma. 0 sorries — nthPrime_is_prime/strictMono now proved via Mathlib, log_to_product fully proved."
   },
   "leanFile": {
     "imports": [
@@ -70,9 +70,9 @@
       "Real"
     ],
     "namespace": "Erdos453",
-    "lineCount": 304,
-    "axiomCount": 6,
-    "theoremCount": 12,
+    "lineCount": 364,
+    "axiomCount": 2,
+    "theoremCount": 14,
     "definitionCount": 7
   },
   "crossReferences": [
@@ -126,8 +126,8 @@
       "title": "The Prime Sequence",
       "startLine": 42,
       "endLine": 69,
-      "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (sorry), and axiomatizes primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
-      "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (sorry), and axiomatizes primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
+      "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
+      "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
     },
     {
       "id": "conjectures",

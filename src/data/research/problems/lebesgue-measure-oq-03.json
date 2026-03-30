@@ -1,0 +1,115 @@
+{
+  "slug": "lebesgue-measure-oq-03",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:02:53-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: lebesgue-measure-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "lebesgue-measure",
+    "lebesgue-measure-oq-01",
+    "lebesgue-measure-oq-01-oq-01",
+    "lebesgue-measure-oq-02",
+    "lebesgue-measure-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.389Z",
+  "lastUpdate": "2026-03-30T06:03:08.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LebesgueMeasure.lean",
+      "filename": "LebesgueMeasure.lean",
+      "lineCount": 426,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasure.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01.lean",
+      "filename": "LebesgueMeasureOQ01.lean",
+      "lineCount": 198,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01.lean",
+      "filename": "LebesgueMeasureOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ02.lean",
+      "filename": "LebesgueMeasureOQ02.lean",
+      "lineCount": 225,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03.lean",
+      "filename": "LebesgueMeasureOQ03.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03.lean"
+    }
+  ]
+}

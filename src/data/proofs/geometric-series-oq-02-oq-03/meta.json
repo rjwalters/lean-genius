@@ -1,0 +1,56 @@
+{
+  "id": "geometric-series-oq-02-oq-03",
+  "title": "Unit Group Topology from Neumann Series",
+  "slug": "geometric-series-oq-02-oq-03",
+  "description": "The unit group of a complete normed ring is open and inversion is locally bounded, proved as corollaries of the Neumann series perturbation theorem. Includes quantitative bounds via explicit series representations.",
+  "meta": {
+    "author": "Kato (1966), Rudin (1991)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Neumann_series",
+    "date": "1966",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ02OQ03.lean",
+    "tags": [
+      "functional-analysis",
+      "operator-theory",
+      "neumann-series",
+      "normed-ring",
+      "invertibility",
+      "topology",
+      "extension"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 164,
+    "prerequisites": [
+      "Neumann series (GeometricSeriesOQ02)",
+      "Complete normed rings",
+      "Units and invertibility",
+      "Topology of normed spaces"
+    ],
+    "assumptions": "0 axioms, 0 sorries. All results proved from Mathlib and parent Neumann series theorems.",
+    "mathlib_version": "4.29.0",
+    "originalContributions": [
+      "Perturbation of units: B near A (unit) implies B is a unit",
+      "Open ball B(1,1) consists entirely of units",
+      "Neumann series representation of perturbed inverses",
+      "Quantitative norm bounds on perturbed inverses",
+      "Local boundedness of inversion near identity",
+      "Left and right inverse identities near 1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The openness of the unit group in a Banach algebra is a fundamental result in functional analysis, first established rigorously by Gel'fand (1941). The proof relies on the Neumann series \u2014 the operator-theoretic generalization of the geometric series. Kato's perturbation theory (1966) systematically develops the consequences: if A is invertible and B is close enough to A, the Neumann series for A\u207b\u00b9(A-B) converges, giving an explicit inverse for B. This result underpins spectral theory, resolvent calculus, and numerical stability analysis.",
+    "problemStatement": "Prove that the unit group of a complete normed ring is open and the inversion map is locally bounded, as corollaries of the Neumann series perturbation theorem.",
+    "text": "Unit group topology: openness of invertible elements and local boundedness of inversion in complete normed rings.",
+    "proofStrategy": "All results follow from the perturbation theorem `invertible_near_one` (from OQ-02): if \u20161 - B\u2016 < 1 then B is a unit. For a general unit A, write B = A(1 - A\u207b\u00b9(A-B)) and bound \u2016A\u207b\u00b9(A-B)\u2016 \u2264 \u2016A\u207b\u00b9\u2016\u2016A-B\u2016 < 1. Norm bounds come from the Neumann series: \u2016B\u207b\u00b9\u2016 \u2264 (1 - \u20161-B\u2016)\u207b\u00b9.",
+    "keyInsights": [
+      "The unit group is open with explicit radius: B(A, \u2016A\u207b\u00b9\u2016\u207b\u00b9) consists of units",
+      "Perturbed inverses have Neumann series representations: B\u207b\u00b9 = \u2211(1-B)^n near 1",
+      "Norm bound: \u2016B\u207b\u00b9\u2016 \u2264 (1 - \u20161-B\u2016)\u207b\u00b9 gives quantitative control",
+      "The proof is purely algebraic + metric \u2014 works in any complete normed ring"
+    ]
+  },
+  "sections": []
+}

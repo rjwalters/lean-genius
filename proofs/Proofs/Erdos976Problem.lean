@@ -74,20 +74,11 @@ def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
 **Nagell-Ricci bound (1922):**
 F_f(n) ≫ n log n for any irreducible f of degree ≥ 2.
 -/
-axiom nagell_ricci_bound (f : Polynomial ℤ) :
-    isIrreducible f → polyDegree f ≥ 2 →
-    ∃ C > 0, ∀ n : ℕ, n ≥ 2 → (F_f f n : ℝ) ≥ C * n * Real.log n
-
 /--
 **Erdős bound (1952):**
 F_f(n) ≫ n(log n)^{log log log n}.
 Improved the Nagell-Ricci bound using sieve methods.
 -/
-axiom erdos_1952_bound (f : Polynomial ℤ) :
-    isIrreducible f → polyDegree f ≥ 2 →
-    ∃ C > 0, ∀ n : ℕ, n ≥ 16 →
-      (F_f f n : ℝ) ≥ C * n * Real.log n ^ Real.log (Real.log (Real.log n))
-
 /--
 **Tenenbaum bound (1990):**
 F_f(n) ≫ n exp((log n)^c) for some c > 0.
@@ -128,10 +119,6 @@ def conjecture_degree_growth (f : Polynomial ℤ) : Prop :=
 **Trivial upper bound:**
 F_f(n) ≤ max_{1≤m≤n} |f(m)| ≈ n^d for polynomial of degree d.
 -/
-axiom trivial_upper_bound (f : Polynomial ℤ) :
-    isIrreducible f → polyDegree f ≥ 2 →
-    ∃ C : ℝ, ∀ n : ℕ, (F_f f n : ℝ) ≤ C * (n : ℝ) ^ (polyDegree f)
-
 /-
 ## Part V: Computational Examples
 -/

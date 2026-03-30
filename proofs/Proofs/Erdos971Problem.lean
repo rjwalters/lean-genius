@@ -86,12 +86,6 @@ moduli d with special multiplicative structure.
 Reference: Erdős, P., "On some applications of Brun's method",
 Acta Univ. Szeged. Sect. Sci. Math. (1949), 57-63.
 -/
-axiom erdos_infinite_sequence :
-  ∃ c > (0 : ℝ), ∃ C > (0 : ℝ),
-    {d : ℕ | C * (d.totient : ℝ) ≤
-      #{a ∈ Finset.range d | a.Coprime d ∧
-        (leastCongruentPrime a d : ℝ) > (1 + c) * d.totient * Real.log d}}.Infinite
-
 /--
 Erdős's second partial result: For any ε > 0, a positive proportion of
 reduced residue classes have SMALL least primes (less than ε·φ(d)·log d).
@@ -102,12 +96,6 @@ least primes, many others have small ones.
 Reference: Erdős, P., "On some applications of Brun's method",
 Acta Univ. Szeged. Sect. Sci. Math. (1949), 57-63.
 -/
-axiom erdos_many_small :
-  ∀ ε > (0 : ℝ), ∃ C > (0 : ℝ), ∀ᶠ d in atTop,
-    C * (d.totient : ℝ) ≤
-      #{a ∈ Finset.range d | a.Coprime d ∧
-        (leastCongruentPrime a d : ℝ) < ε * d.totient * Real.log d}
-
 /-
 ## Context and Significance
 

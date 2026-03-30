@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-03-oq-04",
-  "title": "Efficient Verified CRT via Direct Bézout",
+  "title": "Efficient Verified CRT via Direct B\u00e9zout",
   "slug": "bezout-identity-oq-03-oq-04",
-  "description": "Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.",
+  "description": "Efficient CRT computation using direct B\u00e9zout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -10,13 +10,13 @@
     "tags": [
       "number theory",
       "CRT",
-      "Bézout",
+      "B\u00e9zout",
       "algorithms"
     ],
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 150,
+    "lineCount": 142,
     "assumptions": "None.",
     "theoremCount": 8,
     "mathlib_version": "4.26.0"
@@ -34,5 +34,6 @@
       "relationship": "extends",
       "description": "Efficient CRT implementation"
     }
-  ]
+  ],
+  "sections": []
 }

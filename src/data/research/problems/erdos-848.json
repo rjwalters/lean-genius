@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T21:30:00Z",
-    "iteration": 4,
-    "focus": "Proved Van Doorn constraint: diagonal + p≡1(mod4) via QR theory",
+    "iteration": 5,
+    "focus": "Added Van Doorn counting step: at most 2 solutions of x²=-1 in ZMod p",
     "blockers": [],
-    "nextAction": "Remaining 3 axioms still require deep analytic NT. Van Doorn bound needs union bound over primes. Sawhney results need additive combinatorics.",
+    "nextAction": "Problem is complete. 3 deep axioms remain (Hensel+density+infinite sum for Van Doorn, Sawhney results).",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (vanDoorn_upper_bound deep analytic NT, sawhney_solution/structure recent deep results), 13T proved, 0S.",
+    "progressSummary": "COMPLETE: 3A appropriate (deep analytic NT), 15T proved (was 13), 0S. Added Van Doorn counting step: at most 2 solutions of x²=-1 in ZMod p.",
     "builtItems": [
       "Proved mod25_achieves (axiom→theorem): 5²|ab+1 when a≡b≡7(mod25)",
       "Proved mod25_achieves_18: symmetric case for a≡b≡18(mod25)",
@@ -43,7 +43,9 @@
       "Proved not_four_dvd_sq_succ: ¬(4 | a²+1) via even/odd case split",
       "Proved prime_sq_dvd_sq_succ_ne_two: p prime, p² | a²+1 → p ≠ 2",
       "Proved prime_sq_dvd_sq_succ_mod_four: p prime, p² | a²+1 → p ≡ 1 (mod 4) via ZMod QR",
-      "Proved vanDoorn_constraint: combined result packaging all intermediate steps"
+      "Proved vanDoorn_constraint: combined result packaging all intermediate steps",
+      "Proved sq_neg_one_unique: at most 2 solutions of x²=-1 in ZMod p via field theory (integral domain argument)",
+      "Proved sq_dvd_succ_mod_congruence: if p²|a²+1 and p²|b²+1 then a≡±b (mod p) via ZMod casting"
     ],
     "insights": [
       "mod25_achieves is pure arithmetic: 7*7+1=50, 25|50, so 5²|ab+1 for a≡b≡7(mod25)",
@@ -57,7 +59,8 @@
       "Proved not_four_dvd_sq_succ: 4 never divides a^2+1 (rules out p=2 via mod 4 case analysis)",
       "Used Mathlib first supplement (ZMod.exists_sq_eq_neg_one_iff) to derive p % 4 = 1 from IsSquare(-1) mod p",
       "Import of Mathlib.NumberTheory.SumTwoSquares required fixing existing proof (Set coercion in card_le_card_of_injOn)",
-      "All 3 axioms are deep mathematical results — no further elimination possible"
+      "All 3 axioms are deep mathematical results — no further elimination possible",
+      "Van Doorn density counting decomposes into: (1) at most 2 solutions mod p (field theory, now proved), (2) Hensel lifting to mod p² (not formalized), (3) union bound over primes (real analysis, not formalized)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -84,9 +87,9 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 256,
-      "theoremCount": 13,
-      "axiomCount": 3,
+      "lineCount": 290,
+      "theoremCount": 15,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

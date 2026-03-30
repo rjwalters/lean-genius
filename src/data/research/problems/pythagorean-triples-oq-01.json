@@ -47,7 +47,8 @@
   ],
   "relatedProofs": [
     "pythagorean-triples",
-    "pythagorean-triples-oq-01"
+    "pythagorean-triples-oq-01",
+    "pythagorean-triples-oq-02"
   ],
   "references": {
     "papers": [],
@@ -92,6 +93,17 @@
       "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ02.lean",
+      "filename": "PythagoreanTriplesOQ02.lean",
+      "lineCount": 174,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ02.lean"
     }
   ]
 }

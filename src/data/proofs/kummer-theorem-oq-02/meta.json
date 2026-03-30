@@ -1,0 +1,248 @@
+{
+  "id": "kummer-theorem-oq-02",
+  "title": "q-Kummer Theorem: Cyclotomic Factorization of q-Binomials",
+  "slug": "kummer-theorem-oq-02",
+  "description": "The q-binomial coefficient [n choose k]_q factors as a product of cyclotomic polynomials Phi_d^e_d, where e_d = floor(n/d) - floor(k/d) - floor((n-k)/d) counts carries in base d. This generalizes classical Kummer from primes to ALL positive integers d >= 2.",
+  "meta": {
+    "author": "Gauss (q-binomials, 1808), Kummer (carries, 1852), Konvalinka-Pak (q-analog, 2007)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "2007",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerTheoremOQ02.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "q-analogs",
+      "cyclotomic-polynomials",
+      "binomial-coefficients",
+      "polynomial-algebra",
+      "extension",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.prod_cyclotomic_eq_geom_sum",
+        "description": "X^n - 1 = prod of cyclotomic polynomials, yielding [n]_q = prod of Phi_d for d | n, d > 1",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      },
+      {
+        "theorem": "Polynomial.cyclotomic_ne_zero",
+        "description": "Cyclotomic polynomials are nonzero, enabling cancellation in integral domain",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete definitions of qNumber, qFactorial, qBinomial (Gaussian binomial) in Z[X]",
+      "q-Pascal recurrence definition avoids polynomial division",
+      "qNumber_add_shift: partition identity [a]_q + q^a * [m]_q = [a+m]_q",
+      "qBinomial_factorial: quotient formula [n choose k]_q * [k]_q! * [n-k]_q! = [n]_q!",
+      "qFactorial_cyclotomic: [n]_q! = prod Phi_d^(n/d) by induction with succ_div_step",
+      "qKummer: full q-Kummer theorem via quotient formula + cancellation in Z[X]",
+      "floorDeficiency: carry-counting function generalized to all bases d >= 2"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 412,
+    "prerequisites": [
+      "Cyclotomic polynomials and their basic properties",
+      "Polynomial rings over Z (integral domain structure)",
+      "Classical Kummer's theorem (p-adic valuations of binomial coefficients)",
+      "q-analogs: q-numbers as geometric sums 1 + q + ... + q^(n-1)",
+      "Finset product manipulations and induction"
+    ],
+    "assumptions": "0 axioms, 0 sorries. All q-analog definitions built from scratch. Cyclotomic factorization of q-numbers from Mathlib; all else original.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Gauss introduced q-binomial coefficients (Gaussian binomial coefficients) in 1808 while studying the number of subspaces of a vector space over a finite field. The q-binomial [n choose k]_q is a polynomial in q that counts k-dimensional subspaces of F_q^n, and specializes to the ordinary C(n,k) at q = 1.\n\nKummer's theorem (1852) states that v_p(C(n,k)) equals the number of carries when adding k and (n-k) in base p. The q-analog lifts this from integers to polynomials: the q-binomial factors as a product of cyclotomic polynomials, with exponents given by carry counts in ALL bases d >= 2, not just prime bases. This was studied by Konvalinka and Pak (2007) among others.",
+    "problemStatement": "**Open Question**: How does Kummer's theorem generalize to q-binomial coefficients?\n\n**Answer**: The q-Kummer theorem states that for any d >= 2:\n  multiplicity(Phi_d, [n choose k]_q) = floor(n/d) - floor(k/d) - floor((n-k)/d)\n\nEquivalently: [n choose k]_q = prod_{d=2}^{n} Phi_d(q)^{floorDeficiency(n,k,d)}",
+    "text": "The q-binomial coefficient factors as a product of cyclotomic polynomials with exponents given by carry counts, generalizing Kummer's theorem from primes to all integers d >= 2.",
+    "proofStrategy": "**Step 1 (Definitions)**: Define qNumber, qFactorial, qBinomial via q-Pascal recurrence in Z[X].\n\n**Step 2 (Quotient formula)**: Prove qBinomial(n,k) * [k]_q! * [n-k]_q! = [n]_q! by induction, using the split identity [a]_q + q^a * [m]_q = [a+m]_q and linear_combination.\n\n**Step 3 (Cyclotomic factorization)**: Prove [n]_q! = prod Phi_d^(n/d) by induction on n, using Mathlib's cyclotomic factorization of q-numbers and the step identity (n+1)/d = n/d + [d | n+1].\n\n**Step 4 (Cancellation)**: Express all three q-factorials over a common product range, merge products, and cancel in the integral domain Z[X] using mul_left_cancel.",
+    "keyInsights": [
+      "q-binomial coefficients encode MORE information than ordinary binomials: the full polynomial factorization over cyclotomic polynomials, not just prime divisibility",
+      "The q-Pascal recurrence avoids polynomial division entirely, producing clean recursive definitions",
+      "The floor deficiency fd(n,k,d) = n/d - k/d - (n-k)/d generalizes carry counting to ALL bases d >= 2, not just primes",
+      "Classical Kummer is recovered by evaluating at q = 1: Phi_p(1) = p for prime p",
+      "The quotient formula (Step 2) is the hardest part; it requires the split identity and linear_combination tactic"
+    ],
+    "prerequisites": [
+      "Cyclotomic polynomials and their basic properties",
+      "Polynomial rings over Z (integral domain structure)",
+      "Classical Kummer's theorem (p-adic valuations)",
+      "q-analogs and Gaussian binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "q-Numbers, q-Factorials, and q-Binomials",
+      "startLine": 38,
+      "endLine": 65,
+      "summary": "Defines qNumber(n) = sum of X^i for i < n, qFactorial by recursion, and qBinomial via q-Pascal recurrence. All in Z[X].",
+      "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$, $[n]_q! = [1]_q [2]_q \\cdots [n]_q$, $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "simp lemmas: qBinomial_zero_right, qBinomial_zero_left, qBinomial_self, qNumber_one, qNumber_zero.",
+      "mathContext": "Standard boundary cases: $\\binom{n}{0}_q = 1$, $\\binom{0}{k+1}_q = 0$, $\\binom{n}{n}_q = 1$."
+    },
+    {
+      "id": "cyclotomic-factorization-qnumbers",
+      "title": "Cyclotomic Factorization of q-Numbers",
+      "startLine": 96,
+      "endLine": 109,
+      "summary": "qNumber_eq_prod_cyclotomic: [n]_q = prod of Phi_d for d | n, d > 1, directly from Mathlib's prod_cyclotomic_eq_geom_sum.",
+      "mathContext": "$[n]_q = \\frac{X^n - 1}{X - 1} = \\prod_{d \\mid n, d > 1} \\Phi_d(X)$."
+    },
+    {
+      "id": "eval-at-one",
+      "title": "Evaluation at q = 1",
+      "startLine": 111,
+      "endLine": 150,
+      "summary": "qNumber_eval_one, qFactorial_eval_one, qBinomial_eq_zero, qBinomial_eval_one: evaluating q-analogs at q=1 recovers classical integers, factorials, and binomial coefficients.",
+      "mathContext": "$[n]_q|_{q=1} = n$, $[n]_q!|_{q=1} = n!$, $\\binom{n}{k}_q|_{q=1} = \\binom{n}{k}$. The defining property of q-analogs."
+    },
+    {
+      "id": "split-identity",
+      "title": "q-Number Split Identity",
+      "startLine": 152,
+      "endLine": 161,
+      "summary": "qNumber_add_shift: [a]_q + q^a * [m]_q = [a+m]_q. Partitions the geometric sum into two contiguous ranges.",
+      "mathContext": "$[a]_q + q^a [m]_q = [a+m]_q$: partitions $\\{0, \\ldots, a+m-1\\}$ into $\\{0, \\ldots, a-1\\}$ and $\\{a, \\ldots, a+m-1\\}$."
+    },
+    {
+      "id": "quotient-formula",
+      "title": "Quotient Formula",
+      "startLine": 163,
+      "endLine": 205,
+      "summary": "qBinomial_factorial: [n choose k]_q * [k]_q! * [n-k]_q! = [n]_q! by induction, using the split identity and linear_combination.",
+      "mathContext": "$\\binom{n}{k}_q [k]_q! [n-k]_q! = [n]_q!$. The q-analog of $\\binom{n}{k} k! (n-k)! = n!$."
+    },
+    {
+      "id": "floor-deficiency",
+      "title": "Floor Deficiency Infrastructure",
+      "startLine": 207,
+      "endLine": 231,
+      "summary": "div_add_div_le (subadditivity of floor division), floorDeficiency definition, and floorDeficiency_add_eq: fd(n,k,d) + k/d + (n-k)/d = n/d.",
+      "mathContext": "Floor deficiency $\\text{fd}(n,k,d) = \\lfloor n/d \\rfloor - \\lfloor k/d \\rfloor - \\lfloor (n-k)/d \\rfloor \\geq 0$. Counts carries when adding $k + (n-k)$ in base $d$."
+    },
+    {
+      "id": "cyclotomic-factorization-qfactorials",
+      "title": "Cyclotomic Factorization of q-Factorials",
+      "startLine": 233,
+      "endLine": 305,
+      "summary": "qFactorial_cyclotomic: [n]_q! = prod Phi_d^(n/d) over Icc 2 n, proved by induction using succ_div_step. Also qFactorial_cyclotomic_ext for range extension.",
+      "mathContext": "$[n]_q! = \\prod_{d=2}^{n} \\Phi_d^{\\lfloor n/d \\rfloor}$. Inductive step splits $(n+1)/d = n/d + [d \\mid n+1]$."
+    },
+    {
+      "id": "q-kummer-theorem",
+      "title": "The q-Kummer Theorem",
+      "startLine": 307,
+      "endLine": 357,
+      "summary": "qKummer: [n choose k]_q = prod Phi_d^fd(n,k,d). Proved by rewriting quotient formula with cyclotomic factorizations and cancelling in Z[X].",
+      "mathContext": "$\\binom{n}{k}_q = \\prod_{d=2}^{n} \\Phi_d^{\\lfloor n/d \\rfloor - \\lfloor k/d \\rfloor - \\lfloor (n-k)/d \\rfloor}$."
+    },
+    {
+      "id": "classical-connection",
+      "title": "Connection to Classical Kummer",
+      "startLine": 359,
+      "endLine": 397,
+      "summary": "qKummer_classical_connection: specialization at q=1 recovers classical Kummer for prime p. Summary section with #check statements.",
+      "mathContext": "At $q = 1$: $\\Phi_p(1) = p$ for prime $p$, so $\\nu_p\\binom{n}{k} = \\sum_j \\text{fd}(n, k, p^j)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The q-Kummer theorem provides a complete cyclotomic factorization of q-binomial coefficients, lifting Kummer's classical theorem from integer divisibility to polynomial algebra. The proof builds q-number, q-factorial, and q-binomial from scratch, establishes a quotient formula via induction, factors q-factorials into cyclotomic products, and cancels in the integral domain Z[X].",
+    "implications": "1. **Strictly more general**: Classical Kummer for primes is the special case q -> 1 with Phi_p(1) = p.\n2. **All bases**: The floor deficiency counts carries in ALL bases d >= 2, not just prime bases.\n3. **Polynomial factorization**: Goes beyond integer divisibility to full factorization in Z[X].\n4. **Finite field geometry**: The q-binomial [n choose k]_q counts k-dimensional subspaces of F_q^n; the cyclotomic factors reflect the arithmetic of finite fields.",
+    "openQuestions": [
+      "Can the q-Kummer theorem be extended to q-multinomial coefficients?",
+      "What are the combinatorial interpretations of individual cyclotomic factors in subspace counting?",
+      "Can the floor deficiency be related to carries in mixed-radix numeral systems?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic",
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Tactic",
+      "Proofs.KummerTheorem"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "KummerTheoremOQ02",
+    "lineCount": 412,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "extends",
+      "description": "Parent: classical Kummer's theorem on p-adic valuations of binomial coefficients. This entry generalizes to the q-analog with cyclotomic polynomial factorization."
+    },
+    {
+      "targetId": "kummer-theorem-oq-03",
+      "relationship": "related",
+      "description": "Sibling open question about patterns in Pascal's triangle mod p^k. The q-Kummer factorization gives finer structure than mod-p reduction."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Summatio quarumdam serierum singularium",
+      "year": "1808",
+      "venue": "Commentationes Societatis Regiae Scientiarum Gottingensis",
+      "note": "Introduction of Gaussian binomial coefficients as polynomial analogs of binomial coefficients"
+    },
+    {
+      "authors": "Kummer, Ernst Eduard",
+      "title": "Uber die Erganzungssatze zu den allgemeinen Reciprocitatsgesetzen",
+      "year": "1852",
+      "venue": "Journal fur die reine und angewandte Mathematik 44, 93-146",
+      "note": "Classical Kummer's theorem: v_p(C(n,k)) = number of carries in base-p addition"
+    },
+    {
+      "authors": "Konvalinka, Matjaz; Pak, Igor",
+      "title": "Non-commutative extensions of the MacMahon Master Theorem",
+      "year": "2007",
+      "venue": "Advances in Mathematics",
+      "note": "Study of q-analogs of classical combinatorial identities including q-Kummer"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "qKummer",
+      "type": "core",
+      "description": "The q-binomial [n choose k]_q = prod of Phi_d^fd(n,k,d) over d in Icc 2 n",
+      "leanType": "qBinomial n k = prod (Icc 2 n) (fun d => (cyclotomic d Z) ^ (floorDeficiency n k d))"
+    },
+    {
+      "name": "qBinomial_factorial",
+      "type": "supporting",
+      "description": "Quotient formula: [n choose k]_q * [k]_q! * [n-k]_q! = [n]_q!",
+      "leanType": "qBinomial n k * qFactorial k * qFactorial (n - k) = qFactorial n"
+    },
+    {
+      "name": "qFactorial_cyclotomic",
+      "type": "supporting",
+      "description": "Cyclotomic factorization of q-factorials: [n]_q! = prod Phi_d^(n/d)",
+      "leanType": "qFactorial n = prod (Icc 2 n) (fun d => (cyclotomic d Z) ^ (n / d))"
+    },
+    {
+      "name": "qBinomial_eval_one",
+      "type": "supporting",
+      "description": "q-binomial at q=1 recovers ordinary binomial coefficient",
+      "leanType": "(qBinomial n k).eval 1 = (n.choose k : Z)"
+    }
+  ]
+}

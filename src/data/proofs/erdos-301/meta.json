@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/301",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos301Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "extremal-combinatorics",
       "egyptian-fractions"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 301,
     "erdosUrl": "https://erdosproblems.com/301",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 86,
-    "assumptions": "3 axiom(s): halfInterval_egyptFree, maxEgyptFree_lower, vanDoorn_upper. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 158,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -107,7 +107,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 142,
+    "lineCount": 158,
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 4

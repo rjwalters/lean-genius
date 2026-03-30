@@ -1,0 +1,178 @@
+{
+  "id": "ptolemys-complex-proof",
+  "title": "Ptolemy's Inequality via Complex Numbers",
+  "slug": "ptolemys-complex-proof",
+  "description": "The algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) yields Ptolemy's inequality via the triangle inequality in ℂ",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem#Proof_using_complex_numbers",
+    "date": "2026-03-30",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "inequality",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PtolemysComplexProof.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_mul",
+        "description": "Multiplicativity of norm in normed fields: ‖a * b‖ = ‖a‖ * ‖b‖",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "Triangle inequality for norms: ‖a + b‖ ≤ ‖a‖ + ‖b‖",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete complex-number proof of Ptolemy's inequality from the algebraic identity",
+      "Generalization of the algebraic identity to arbitrary commutative rings",
+      "Three equivalent formulations: norm, Complex.abs, and metric distance",
+      "Equality characterization: Ptolemy's equality holds when opposite-side products are positively proportional"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 154,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "The complex-number proof of Ptolemy's theorem is perhaps the most elegant approach to this classical result. While Ptolemy himself used a geometric argument in the *Almagest* (c. 150 AD), the complex-number proof reveals the deeper algebraic structure: the identity $(z_1 - z_3)(z_2 - z_4) = (z_1 - z_2)(z_3 - z_4) + (z_2 - z_3)(z_1 - z_4)$ holds in any commutative ring, and Ptolemy's inequality follows from taking absolute values in $\\mathbb{C}$.",
+    "problemStatement": "**Ptolemy's Inequality (Complex Number Proof)**:\n\nFor any four points $z_1, z_2, z_3, z_4 \\in \\mathbb{C}$:\n\n$$|z_1 - z_3| \\cdot |z_2 - z_4| \\leq |z_1 - z_2| \\cdot |z_3 - z_4| + |z_2 - z_3| \\cdot |z_1 - z_4|$$\n\nwith equality if and only if the four points are concyclic.",
+    "text": "The algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) combined with the triangle inequality gives Ptolemy's inequality over ℂ",
+    "proofStrategy": "The proof has two components:\n1. **Algebraic identity**: $(z_1-z_3)(z_2-z_4) = (z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4)$ holds in any commutative ring, proved by `ring`.\n2. **Ptolemy's inequality**: Taking norms of both sides, the LHS becomes $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\|$ by multiplicativity of norm (`norm_mul`). The RHS is bounded above by $\\|z_1-z_2\\| \\cdot \\|z_3-z_4\\| + \\|z_2-z_3\\| \\cdot \\|z_1-z_4\\|$ via the triangle inequality (`norm_add_le`) and multiplicativity.",
+    "keyInsights": [
+      "The identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) holds over any commutative ring, not just ℂ. Ptolemy is fundamentally algebraic, with the geometry entering only through the norm.",
+      "The entire proof of Ptolemy's inequality is three steps: multiplicativity of norm, the algebraic identity, and the triangle inequality. This is arguably the shortest known proof.",
+      "This approach yields the inequality form (≤) rather than equality. Equality requires the additional geometric condition that the four points are concyclic, which corresponds to the equality case of the triangle inequality.",
+      "The proof reveals a contrast with the geometric approach: the Mathlib cospherical formulation proves equality directly for concyclic points, while the complex-number proof naturally gives the inequality for all four-point configurations."
+    ],
+    "prerequisites": [
+      "Complex number arithmetic",
+      "Normed fields (multiplicativity of norm)",
+      "Triangle inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Documentation and imports. Uses Mathlib.Analysis.Complex.Basic for ℂ and its normed field structure, Topology.MetricSpace.Basic for dist, and Tactic for proof automation.",
+      "mathContext": "The imports provide ℂ as a normed field (giving norm_mul and norm_add_le) and as a metric space (giving dist_eq_norm)."
+    },
+    {
+      "id": "algebraic-identity",
+      "title": "The Algebraic Identity",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "The identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) proved over any CommRing by ring, then specialized to ℂ.",
+      "mathContext": "This identity is the algebraic core of Ptolemy's theorem. It expresses the 'diagonal product' as a sum of two 'opposite side products'. The ring tactic verifies this by expansion."
+    },
+    {
+      "id": "ptolemy-inequality",
+      "title": "Ptolemy's Inequality (Norm Form)",
+      "startLine": 59,
+      "endLine": 80,
+      "summary": "Ptolemy's inequality ‖z₁-z₃‖·‖z₂-z₄‖ ≤ ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ via a calc proof using norm_mul and norm_add_le.",
+      "mathContext": "The calc proof chains: (1) norm_mul rewrites ‖a‖·‖b‖ as ‖a·b‖, (2) the algebraic identity rewrites the product as a sum, (3) norm_add_le gives the triangle inequality, (4) norm_mul expands back."
+    },
+    {
+      "id": "alternative-forms",
+      "title": "Alternative Formulations",
+      "startLine": 82,
+      "endLine": 101,
+      "summary": "Two equivalent formulations: using Complex.abs (via Complex.norm_eq_abs) and using dist (via dist_eq_norm).",
+      "mathContext": "Complex.abs and ‖·‖ agree on ℂ. The dist formulation dist(z₁,z₃)·dist(z₂,z₄) ≤ dist(z₁,z₂)·dist(z₃,z₄) + dist(z₂,z₃)·dist(z₁,z₄) connects directly to the classical geometric statement."
+    },
+    {
+      "id": "equality-characterization",
+      "title": "Equality Characterization",
+      "startLine": 102,
+      "endLine": 133,
+      "summary": "Sufficient condition for Ptolemy's equality: if (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) for some real t ≥ 0, both sides equal (1+t)·‖(z₁-z₂)(z₃-z₄)‖.",
+      "mathContext": "The equality case of the triangle inequality ‖a+b‖ ≤ ‖a‖+‖b‖ occurs when a and b point in the same direction. For Ptolemy, this means the two opposite-side products are positively proportional. Geometrically, concyclic points in the standard ordering satisfy this condition."
+    },
+    {
+      "id": "examples",
+      "title": "Numerical Examples",
+      "startLine": 135,
+      "endLine": 143,
+      "summary": "Numerical verification for the unit square vertices 0, 1, 1+i, i where equality holds (2 = 1·1 + 1·1).",
+      "mathContext": "The four vertices of the unit square lie on a circle of radius √2/2, so Ptolemy's equality holds. The diagonal products equal 2, matching the sum of opposite side products."
+    },
+    {
+      "id": "exports",
+      "title": "Exported Theorems",
+      "startLine": 145,
+      "endLine": 155,
+      "summary": "#check verification of all six exported theorems.",
+      "mathContext": "Six theorems: ptolemy_algebraic_identity (CommRing), ptolemy_complex_identity (ℂ), ptolemy_inequality (norm), ptolemy_inequality_abs (Complex.abs), ptolemy_inequality_dist (dist), ptolemy_equality_of_proportional (equality characterization)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "alternate-proof",
+      "description": "PtolemysTheorem.lean proves equality for cospherical points using Mathlib's geometric approach. This file proves the inequality for arbitrary points using the algebraic/complex-number approach."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete complex-number proof of Ptolemy's inequality with equality characterization. Starting from a purely algebraic identity over any commutative ring, the inequality follows from multiplicativity of norm and the triangle inequality. The equality condition (when opposite-side products are positively proportional) is also proved. Six theorems, 0 sorries, 0 axioms.",
+    "implications": "**Theoretical Significance**: The complex-number proof reveals the algebraic essence of Ptolemy's theorem. While the geometric proof works with cospherical points and angle conditions, the algebraic proof needs only a commutative ring and a norm satisfying the triangle inequality. This explains why Ptolemy-type results appear in many settings beyond Euclidean geometry.\n\nThe inequality form is strictly more general than the equality: it holds for all four-point configurations in ℂ, with the geometric condition (concyclicity) characterizing when equality holds.",
+    "openQuestions": [
+      "Can the converse direction be proved: if Ptolemy's equality holds, are the opposite-side products necessarily positively proportional (equivalently, are the points concyclic)?",
+      "Can the derivation of the sine addition formula from Ptolemy's theorem be formalized, showing the historical connection between chord tables and modern trigonometry?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "year": "c. 150 AD",
+      "note": "Book I, Ch. 10: original geometric proof of Ptolemy's theorem"
+    },
+    {
+      "authors": "T. Needham",
+      "title": "Visual Complex Analysis",
+      "year": "1997",
+      "venue": "Oxford University Press",
+      "note": "Ch. 3: elegant presentation of the complex-number proof"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ptolemy_inequality",
+      "type": "core",
+      "description": "‖z₁-z₃‖·‖z₂-z₄‖ ≤ ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → ‖z₁-z₃‖*‖z₂-z₄‖ ≤ ‖z₁-z₂‖*‖z₃-z₄‖ + ‖z₂-z₃‖*‖z₁-z₄‖"
+    },
+    {
+      "name": "ptolemy_equality_of_proportional",
+      "type": "core",
+      "description": "Ptolemy's equality holds when opposite-side products are positively proportional (sufficient condition for concyclicity)",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → (t : ℝ) → 0 ≤ t → (z₂-z₃)*(z₁-z₄) = ↑t*((z₁-z₂)*(z₃-z₄)) → ‖z₁-z₃‖*‖z₂-z₄‖ = ‖z₁-z₂‖*‖z₃-z₄‖ + ‖z₂-z₃‖*‖z₁-z₄‖"
+    }
+  ]
+}

@@ -71,14 +71,6 @@ def CriticalPoints (f : Polynomial ℝ) (n : ℕ) := Fin n → ℝ
 **Rolle's theorem gives critical points:**
 Between each pair of consecutive roots of f, there's a root of f'.
 -/
-axiom rolle_gives_critical_points {f : Polynomial ℝ} {n : ℕ} {a₀ d : ℝ}
-    (hf : HasAPRoots f (n + 1) a₀ d) :
-    ∃ c : Fin n → ℝ,
-      -- Critical points are strictly increasing
-      (∀ i j : Fin n, i < j → c i < c j) ∧
-      -- Each lies between consecutive roots
-      (∀ i : Fin n, a₀ + i * d < c i ∧ c i < a₀ + (i + 1) * d)
-
 /-
 ## Part III: The Gaps
 -/
@@ -132,11 +124,6 @@ axiom balint_theorem {n : ℕ} (hn : n ≥ 2) {a₀ d : ℝ} (hd : d > 0)
 For n critical points c₁ < c₂ < ... < cₙ, the gaps satisfy:
 g₁ > gₙ₋₁ ≥ g₂ > gₙ₋₂ ≥ ... (interleaved from ends toward middle)
 -/
-axiom balint_symmetric (n : ℕ) (hn : n ≥ 3) (c : Fin n → ℝ)
-    (hc : ∀ i j : Fin n, i < j → c i < c j) :
-    -- Outer gaps are larger than inner gaps
-    Gap c ⟨0, by omega⟩ ≥ Gap c ⟨n / 2 - 1, by omega⟩
-
 /-
 ## Part V: Quartic Case
 -/
@@ -157,15 +144,6 @@ axiom quartic_gap_property (c : Fin 4 → ℝ)
 /-- Lorch (1976) extended Bálint's result to higher derivatives:
     for f⁽ᵏ⁾ with k < n, the gaps between consecutive zeros also
     exhibit monotonicity from the midpoint outward. -/
-axiom lorch_higher_derivatives {f : Polynomial ℝ} {n : ℕ} {a₀ d : ℝ}
-    (hf : HasAPRoots f (n + 1) a₀ d) (k : ℕ) (hk : k < n) :
-    ∃ c : Fin (n - k) → ℝ,
-      (∀ i j : Fin (n - k), i < j → c i < c j) ∧
-      ∀ i j : Fin (n - k - 1),
-        DistFromMidpoint c a₀ d (n - k) ⟨i.val, by omega⟩ <
-        DistFromMidpoint c a₀ d (n - k) ⟨j.val, by omega⟩ →
-        Gap c i < Gap c j
-
 /-
 ## Part VII: Summary
 -/

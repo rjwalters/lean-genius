@@ -21,11 +21,13 @@ Tags: additive-combinatorics, subset-sum, concentration, counting
 -/
 
 import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Integrals
 
 namespace Erdos362
 
@@ -105,11 +107,6 @@ theorem erdos_moser_1965_bound :
     exact rpow_ge_one_of_ge_one (log_ge_one_of_ge_three hA) (by norm_num)
 
 /-- The bound 2^N / N^(3/2) is tight up to constants. -/
-axiom bound_tight_order :
-    ∀ ε > 0, ∀ᶠ N : ℕ in atTop,
-      ∃ (A : Finset ℤ), A.card = N ∧
-        ∃ t : ℤ, (countSubsetsWithSum A t : ℝ) ≥ (1 - ε) * 2^N / (N : ℝ)^(3/2 : ℝ)
-
 /-
 ## Part 3: Question 2 - Fixed Cardinality Bound
 
@@ -146,16 +143,7 @@ def symmetricSet (N : ℕ) : Finset ℤ :=
 
 /-- Stanley (1980): Symmetric set maximizes concentration.
     Uses the hard Lefschetz theorem from algebraic geometry. -/
-axiom stanley_1980_extremal :
-    ∀ (A : Finset ℤ), ∀ t : ℤ,
-      countSubsetsWithSum A t ≤
-        countSubsetsWithSum (symmetricSet A.card) 0
-
 /-- For the symmetric set, t = 0 achieves maximum concentration. -/
-axiom symmetric_max_at_zero (N : ℕ) :
-    ∀ t : ℤ, countSubsetsWithSum (symmetricSet N) t ≤
-      countSubsetsWithSum (symmetricSet N) 0
-
 /-
 ## Part 5: Multi-dimensional Generalization
 
@@ -174,12 +162,6 @@ def countVectorSubsetsWithSum {d : ℕ} (A : Finset (Fin d → ℤ))
 
 /-- Halász multi-dimensional bound: generalizes to d dimensions.
     The exponent (d+1)/2 specializes to 3/2 for d=2 and 2 for d=3. -/
-axiom halasz_multi_dim (d : ℕ) :
-    ∃ C > 0, ∀ (A : Finset (Fin d → ℤ)), A.card > 0 →
-      ∀ t : Fin d → ℤ,
-        (countVectorSubsetsWithSum A t : ℝ) ≤
-          C * 2^(A.card) / (A.card : ℝ)^((d + 1 : ℕ) / 2 : ℝ)
-
 /-
 ## Part 6: Generating Function Approach
 
@@ -194,12 +176,135 @@ the concentration bound follows from saddle point analysis.
 noncomputable def subsetSumGF (A : Finset ℤ) (z : ℂ) : ℂ :=
   ∏ a ∈ A, (1 + z ^ a)
 
+/-- zpow distributes over finset sum (for nonzero base).
+    Proved via induction on the finset using zpow_add₀. -/
+theorem zpow_finset_sum (S : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
+    ∏ a ∈ S, z ^ a = z ^ (∑ a ∈ S, a) := by
+  induction S using Finset.cons_induction with
+  | empty => simp
+  | cons a S ha ih => rw [prod_cons, sum_cons, zpow_add₀ hz, ih]
+
+/-- GF at z=1 equals 2^|A| (counts all subsets). -/
+theorem gf_at_one (A : Finset ℤ) :
+    subsetSumGF A 1 = (2 : ℂ) ^ A.card := by
+  unfold subsetSumGF
+  have h : ∀ a ∈ A, (1 : ℂ) + (1 : ℂ) ^ a = 2 := by
+    intros a _; simp [one_zpow]; norm_num
+  rw [prod_congr rfl h, prod_const]
+
+/-- Product expansion of GF as sum over powerset.
+    Key identity: ∏ (1 + z^a) = ∑_{S ⊆ A} z^{setSum S}.
+    Uses Finset.prod_one_add to expand the product, then zpow_finset_sum
+    to convert ∏ z^a to z^(∑ a). -/
+theorem gf_expansion (A : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
+    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by
+  simp only [subsetSumGF, setSum]
+  rw [Finset.prod_one_add]
+  exact Finset.sum_congr rfl fun S _ => zpow_finset_sum S z hz
+
+/-- GF factors over disjoint union. -/
+theorem gf_disjoint_union (B C : Finset ℤ) (z : ℂ) (h : Disjoint B C) :
+    subsetSumGF (B ∪ C) z = subsetSumGF B z * subsetSumGF C z := by
+  unfold subsetSumGF
+  exact prod_union h
+
+/-
+## Proof roadmap for fourier_extraction (below)
+
+Using gf_expansion (proved above), the proof reduces to:
+1. subsetSumGF A (e^{iθ}) = ∑ S ∈ A.powerset, e^{i·setSum(S)·θ} (by gf_expansion, since e^{iθ} ≠ 0)
+2. Multiply by e^{-itθ} and integrate: each term gives (1/2π)∫₀²π e^{i(setSum S-t)θ} dθ
+3. Orthogonality: this integral equals 1 if setSum S = t, 0 otherwise
+4. Sum collapses to #{S ⊆ A : setSum S = t} = countSubsetsWithSum A t
+
+Step 3 needs: for n : ℤ, (1/2π)∫₀²π e^{inθ} dθ = if n = 0 then 1 else 0
+- n = 0: ∫₀²π 1 dθ = 2π, so (1/2π)·2π = 1
+- n ≠ 0: FTC with antiderivative e^{inθ}/(in), giving (e^{2πin}-1)/(in) = 0
+
+Alternatively, use Mathlib's AddCircle/fourierCoeff infrastructure:
+- Express f(θ) = subsetSumGF A (e^{iθ}) as ∑_{S} fourier(setSum S)(θ) on AddCircle(2π)
+- Apply fourierCoeff linearity + orthonormal_fourier
+- Bridge set_integral on Icc to intervalIntegral / Haar measure
+-/
+
+/-- Complex exponential to natural power: exp(z)^n = exp(n*z). -/
+private lemma cexp_pow_eq (z : ℂ) (n : ℕ) :
+    Complex.exp z ^ n = Complex.exp (↑n * z) := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [pow_succ, ih, ← Complex.exp_add]; congr 1; push_cast; ring
+
+/-- Complex exponential to integer power: exp(z)^n = exp(n*z). -/
+private lemma cexp_zpow (z : ℂ) (n : ℤ) :
+    Complex.exp z ^ n = Complex.exp (↑n * z) := by
+  rcases n with (k | k)
+  · simp only [zpow_natCast, Int.cast_natCast]; exact cexp_pow_eq z k
+  · rw [zpow_negSucc, cexp_pow_eq z (k + 1), ← Complex.exp_neg]
+    congr 1; push_cast; ring
+
+/-- Orthogonality of complex exponentials on [0, 2π]:
+    ∫₀²π exp(inθ) dθ = 2π if n = 0, and 0 if n ≠ 0. -/
+private lemma exp_orthogonality (n : ℤ) :
+    ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      Complex.exp (↑n * Complex.I * ↑θ) =
+    if n = 0 then ↑(2 * Real.pi) else 0 := by
+  split
+  · next h =>
+    subst h
+    simp only [Int.cast_zero, zero_mul, Complex.exp_zero]
+    rw [intervalIntegral.integral_const, sub_zero, Algebra.smul_def, mul_one]
+  · next hn =>
+    have hc : (↑n * Complex.I : ℂ) ≠ 0 :=
+      mul_ne_zero (Int.cast_ne_zero.mpr hn) Complex.I_ne_zero
+    simp_rw [show ∀ θ : ℝ, (↑n * Complex.I * (↑θ : ℂ) : ℂ) = (↑n * Complex.I) * ↑θ from
+      fun _ => mul_assoc _ _ _]
+    rw [integral_exp_mul_complex hc]
+    have h1 : Complex.exp ((↑n * Complex.I) * ↑(2 * Real.pi)) = 1 := by
+      have heq : (↑n * Complex.I) * (↑(2 * Real.pi) : ℂ) =
+          ↑n * (2 * ↑Real.pi * Complex.I) := by push_cast; ring
+      rw [heq]; exact Complex.exp_int_mul_two_pi_mul_I n
+    simp [h1]
+
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
-    the integral of the generating function against an exponential. -/
-axiom fourier_extraction (A : Finset ℤ) (t : ℤ) :
+    the integral of the generating function against an exponential.
+    Proof: expand GF via product-to-sum, apply Fourier orthogonality. -/
+theorem fourier_extraction (A : Finset ℤ) (t : ℤ) :
     (countSubsetsWithSum A t : ℂ) =
       (1 : ℂ) / (2 * Real.pi) * ∫ θ in Set.Icc 0 (2 * Real.pi),
-        subsetSumGF A (Complex.exp (Complex.I * θ)) * Complex.exp (-Complex.I * t * θ)
+        subsetSumGF A (Complex.exp (Complex.I * θ)) * Complex.exp (-Complex.I * t * θ) := by
+  -- Convert Icc set integral to interval integral (Icc =ᵐ Ioc for Lebesgue measure)
+  have h_conv : ∫ θ in Set.Icc (0 : ℝ) (2 * Real.pi),
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) =
+    ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) := by
+    rw [MeasureTheory.integral_Icc_eq_integral_Ioc,
+        ← intervalIntegral.integral_of_le (by positivity : (0 : ℝ) ≤ 2 * Real.pi)]
+  rw [h_conv]
+  -- Expand GF and simplify integrand using Fourier characters
+  have h_expand : ∀ θ : ℝ,
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) =
+      ∑ S ∈ A.powerset, Complex.exp (↑(setSum S - t) * Complex.I * ↑θ) := by
+    intro θ
+    rw [gf_expansion A _ (Complex.exp_ne_zero _), Finset.sum_mul]
+    congr 1; ext S
+    rw [cexp_zpow, ← Complex.exp_add]
+    congr 1; push_cast; ring
+  simp_rw [h_expand]
+  -- Exchange finite sum and integral (each term is continuous hence integrable)
+  rw [intervalIntegral.integral_finset_sum _ fun S _ =>
+    (Complex.continuous_exp.comp
+      (continuous_const.mul Complex.continuous_ofReal)).intervalIntegrable _ _]
+  -- Apply orthogonality to each integral: ∫ exp(inθ) = 2πδ_{n,0}
+  simp_rw [exp_orthogonality]
+  -- Collapse conditional sum to count
+  simp_rw [sub_eq_zero]
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+  -- Cancel (1/2π) · (count · 2π) = count
+  unfold countSubsetsWithSum subsetsWithSum
+  have hpi : (↑(2 * Real.pi) : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (by positivity)
+  field_simp
 
 /-
 ## Part 7: Summary

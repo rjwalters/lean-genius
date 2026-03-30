@@ -42,6 +42,7 @@
   ],
   "relatedProofs": [
     "picks-theorem",
+    "picks-theorem-oq-01",
     "picks-theorem-oq-03"
   ],
   "references": {
@@ -58,13 +59,24 @@
     {
       "path": "Proofs/PicksTheorem.lean",
       "filename": "PicksTheorem.lean",
-      "lineCount": 490,
-      "theoremCount": 13,
-      "axiomCount": 2,
+      "lineCount": 485,
+      "theoremCount": 12,
+      "axiomCount": 1,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
     },
     {
       "path": "Proofs/PicksTheoremOQ03.lean",

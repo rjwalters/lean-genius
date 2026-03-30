@@ -39,10 +39,10 @@
       "Channel capacity definition (placeholder returning 0)",
       "Theorem statements for Fano inequality, achievability, converse, and BSC capacity (all placeholder stubs proving True)"
     ],
-    "assumptions": "5 axioms: channelMI_le_log_card, fano_inequality, channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 7 theorems proved (jointDist properties, capacity_nonneg, rate/BSC bounds). 0 sorries.",
+    "assumptions": "4 axioms: fano_inequality, channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 8 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, rate/BSC bounds). 0 sorries.",
     "dateAdded": "2026-03-21",
-    "axiomCount": 5,
-    "lineCount": 213,
+    "axiomCount": 4,
+    "lineCount": 228,
     "prerequisites": [
       "Shannon entropy and mutual information",
       "Discrete memoryless channels and capacity",
@@ -170,9 +170,9 @@
     ],
     "opens": [],
     "namespace": "InformationTheory.ChannelCoding",
-    "lineCount": 213,
-    "axiomCount": 5,
-    "theoremCount": 7,
+    "lineCount": 228,
+    "axiomCount": 4,
+    "theoremCount": 8,
     "definitionCount": 5
   },
   "references": [

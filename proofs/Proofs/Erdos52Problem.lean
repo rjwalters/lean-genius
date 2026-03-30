@@ -58,11 +58,6 @@ def ErdosProblem52 : Prop :=
 /-- Erdős and Szemerédi (1983) proved the first super-linear lower bound:
 there exists c > 0 such that max(|A+A|, |A·A|) ≥ |A|^{1+c} for all
 finite sets A with |A| ≥ 2. This was the foundational result. -/
-axiom erdos_szemeredi_theorem :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ A : Finset ℤ, A.card ≥ 2 →
-      (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1 + c)
-
 /-
 ## Section IV: Current Best Bound
 -/
@@ -71,31 +66,62 @@ axiom erdos_szemeredi_theorem :
 max(|A+A|, |A·A|) ≥ |A|^{1270/951 - o(1)} ≈ |A|^{1.335}.
 We state this as: for every ε > 0, there exists N₀ such that for
 |A| ≥ N₀, the bound max(|A+A|, |A·A|) ≥ |A|^{1270/951 - ε} holds. -/
-axiom bloom_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ →
-      (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1270 / 951 - ε)
-
 /-
 ## Section V: Trivial Bounds
 -/
 
-/-- The sumset is at least as large as the original set. -/
-axiom sumset_card_ge (A : Finset ℤ) (h : A.Nonempty) :
-    A.card ≤ (sumset A).card
+/-- The sumset is at least as large as the original set.
+    Proof: fix a₀ ∈ A; the map a ↦ a + a₀ injects A into sumset A. -/
+theorem sumset_card_ge (A : Finset ℤ) (h : A.Nonempty) :
+    A.card ≤ (sumset A).card := by
+  obtain ⟨a₀, ha₀⟩ := h
+  have hinj : Set.InjOn (· + a₀) (↑A) := fun a _ b _ hab => by linarith
+  have hsub : Finset.image (· + a₀) A ⊆ sumset A := by
+    intro x hx
+    simp only [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    simp only [sumset, Finset.mem_image, Finset.mem_product]
+    exact ⟨(a, a₀), ⟨ha, ha₀⟩, rfl⟩
+  calc A.card = (Finset.image (· + a₀) A).card :=
+        (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (sumset A).card := Finset.card_le_card hsub
 
 /-- The product set is at least as large as the original set
-(when A contains no zero and has at least 2 elements). -/
-axiom productset_card_ge (A : Finset ℤ)
+    (when A contains no zero and has at least 2 elements).
+    Proof: fix a₀ ∈ A with a₀ ≠ 0; the map a ↦ a * a₀ injects A into productset A. -/
+theorem productset_card_ge (A : Finset ℤ)
     (h : A.card ≥ 2) (h0 : (0 : ℤ) ∉ A) :
-    A.card ≤ (productset A).card
+    A.card ≤ (productset A).card := by
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨a₀, ha₀⟩ := hne
+  have ha₀_ne : a₀ ≠ 0 := fun heq => h0 (heq ▸ ha₀)
+  have hinj : Set.InjOn (· * a₀) (↑A) :=
+    fun a _ b _ hab => mul_right_cancel₀ ha₀_ne hab
+  have hsub : Finset.image (· * a₀) A ⊆ productset A := by
+    intro x hx
+    simp only [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    simp only [productset, Finset.mem_image, Finset.mem_product]
+    exact ⟨(a, a₀), ⟨ha, ha₀⟩, rfl⟩
+  calc A.card = (Finset.image (· * a₀) A).card :=
+        (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (productset A).card := Finset.card_le_card hsub
 
-/-- Upper bound: both sumset and product set have at most |A|² elements. -/
-axiom sumset_card_le (A : Finset ℤ) :
-    (sumset A).card ≤ A.card * A.card
+/-- Upper bound: both sumset and product set have at most |A|² elements.
+    Follows from Finset.card_image_le since they are images of A ×ˢ A. -/
+theorem sumset_card_le (A : Finset ℤ) :
+    (sumset A).card ≤ A.card * A.card := by
+  unfold sumset
+  calc (A ×ˢ A).image (fun p => p.1 + p.2) |>.card
+      ≤ (A ×ˢ A).card := Finset.card_image_le
+    _ = A.card * A.card := Finset.card_product A A
 
-axiom productset_card_le (A : Finset ℤ) :
-    (productset A).card ≤ A.card * A.card
+theorem productset_card_le (A : Finset ℤ) :
+    (productset A).card ≤ A.card * A.card := by
+  unfold productset
+  calc (A ×ˢ A).image (fun p => p.1 * p.2) |>.card
+      ≤ (A ×ˢ A).card := Finset.card_image_le
+    _ = A.card * A.card := Finset.card_product A A
 
 /-
 ## Section VI: Higher-Fold Generalizations
@@ -129,6 +155,3 @@ def GeneralizedSumProduct (m : ℕ) : Prop :=
 If max(|A+A|, |A·A|) is large, then A generates many sums or products.
 Problem 53 (resolved by Chang 2003) asks about sums and products
 of distinct subsets rather than pairwise operations. -/
-axiom sum_product_implies_many_representations :
-  ∀ A : Finset ℤ, A.card ≥ 2 →
-    ((sumset A).card + (productset A).card : ℤ) ≥ A.card

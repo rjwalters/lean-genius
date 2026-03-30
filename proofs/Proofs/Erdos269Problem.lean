@@ -128,6 +128,18 @@ theorem partialLcm_succ (P : Set ℕ) (n : ℕ) :
   simp only [partialLcm, Finset.range_add_one, Finset.lcm_insert]
   exact _root_.lcm_comm _ _
 
+/-- L_n divides L_{n+1}: the partial LCM is non-decreasing in divisibility. -/
+theorem partialLcm_dvd_succ (P : Set ℕ) (n : ℕ) :
+    partialLcm P n ∣ partialLcm P (n + 1) := by
+  rw [partialLcm_succ]
+  exact Nat.dvd_lcm_left _ _
+
+/-- Each P-smooth number divides its partial LCM. -/
+theorem smoothSeq_dvd_partialLcm (P : Set ℕ) (k n : ℕ) (hkn : k < n) :
+    smoothSeq P k ∣ partialLcm P n := by
+  simp only [partialLcm]
+  exact Finset.dvd_lcm (Finset.mem_range.mpr hkn)
+
 /- ## Part IV: The Series -/
 
 /--

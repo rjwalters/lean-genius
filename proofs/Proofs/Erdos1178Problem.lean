@@ -35,6 +35,7 @@ References:
 -/
 
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Lattice
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
@@ -97,13 +98,28 @@ def isLittleO (f g : ℕ → ℝ) : Prop :=
 noncomputable def dr (r e : ℕ) : ℕ :=
   sInf {d : ℕ | isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2)}
 
-/-- dr is well-defined: ex_r(n, F(r, dr(r,e), e)) = o(n²). -/
-axiom dr_spec (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
-  isLittleO (fun n => (exr r n (dr r e) e : ℝ)) (fun n => (n : ℝ)^2)
+/-- **Sárközy-Selkow (2005):** The value d₀ = (r-2)e + 2 + ⌊log₂ e⌋ gives
+    a subquadratic extremal number. This is the primitive form from which
+    dr_spec and the upper bound theorem are derived. -/
+axiom sarkozy_selkow_result (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
+  isLittleO (fun n => (exr r n ((r - 2) * e + 2 + Nat.log 2 e) e : ℝ))
+    (fun n => (n : ℝ)^2)
 
-/-- dr is minimal: for any d < dr(r,e), ex_r(n, F(r,d,e)) is NOT o(n²). -/
-axiom dr_minimal (r e d : ℕ) (hr : r ≥ 3) (he : e ≥ 3) (hd : d < dr r e) :
-  ¬isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2)
+/-- dr is well-defined: ex_r(n, F(r, dr(r,e), e)) = o(n²).
+    Proof: dr = sInf S where S is nonempty (by Sárközy-Selkow).
+    For ℕ, sInf of a nonempty set is in the set. -/
+theorem dr_spec (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
+    isLittleO (fun n => (exr r n (dr r e) e : ℝ)) (fun n => (n : ℝ)^2) := by
+  unfold dr
+  exact Nat.sInf_mem ⟨_, sarkozy_selkow_result r e hr he⟩
+
+/-- dr is minimal: for any d < dr(r,e), ex_r(n, F(r,d,e)) is NOT o(n²).
+    Proof: if d ∈ S, then sInf S ≤ d, contradicting d < sInf S. -/
+theorem dr_minimal (r e d : ℕ) (hr : r ≥ 3) (he : e ≥ 3) (hd : d < dr r e) :
+    ¬isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2) := by
+  intro h
+  have hle : dr r e ≤ d := Nat.sInf_le h
+  omega
 
 /- ## Part V: Brown-Erdős-Sós Lower Bound (1973) -/
 
@@ -120,9 +136,11 @@ axiom bes_lower_bound (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
 /- ## Part VI: Known Upper Bounds -/
 
 /-- **Sárközy-Selkow Upper Bound (2005):**
-    d_r(e) ≤ (r-2)·e + 2 + ⌊log₂ e⌋ for all r, e ≥ 3. -/
-axiom sarkozy_selkow_upper (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
-  dr r e ≤ (r - 2) * e + 2 + Nat.log 2 e
+    d_r(e) ≤ (r-2)·e + 2 + ⌊log₂ e⌋ for all r, e ≥ 3.
+    Proof: sInf S ≤ d₀ since d₀ ∈ S (by sarkozy_selkow_result). -/
+theorem sarkozy_selkow_upper (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
+    dr r e ≤ (r - 2) * e + 2 + Nat.log 2 e :=
+  Nat.sInf_le (sarkozy_selkow_result r e hr he)
 
 /- ## Part VII: Solved Cases -/
 
@@ -154,11 +172,10 @@ theorem efr_e3 (r : ℕ) (hr : r ≥ 3) : dr r 3 = conjecturedValue r 3 := by
   · -- Lower bound: dr r 3 ≥ (r-2)·3 + 3
     exact bes_lower_bound r 3 hr (by omega)
 
-/-- **Conlon-Gishboliner-Levanzov-Shapira (2023):**
+/- **Conlon-Gishboliner-Levanzov-Shapira (2023):**
     d_3(e) ≤ e + O(log e / log log e) for all e ≥ 3.
-    Note: the conjecture predicts d_3(e) = e + 3. -/
-axiom cgls_upper_r3 (e : ℕ) (he : e ≥ 3) :
-  ∃ C : ℝ, C > 0 ∧ (dr 3 e : ℝ) ≤ (e : ℝ) + C * Real.log e / Real.log (Real.log e)
+    Note: the conjecture predicts d_3(e) = e + 3.
+    Formally: ∃ C > 0, (dr 3 e : ℝ) ≤ e + C * log e / log (log e). -/
 
 /- ## Part VIII: Specific Values -/
 
@@ -171,9 +188,9 @@ theorem d3_4_conjectured : conjecturedValue 3 4 = 7 := by norm_num
 /-- d_4(3) should be 9 according to the conjecture. -/
 theorem d4_3_conjectured : conjecturedValue 4 3 = 9 := by norm_num
 
-/-- d_3(10): Solymosi-Solymosi (2017) proved d_3(10) ≤ 14.
-    The conjecture predicts d_3(10) = 13. -/
-axiom solymosi_d3_10 : dr 3 10 ≤ 14
+/- d_3(10): Solymosi-Solymosi (2017) proved d_3(10) ≤ 14.
+    The conjecture predicts d_3(10) = 13.
+    Formally: dr 3 10 ≤ 14. -/
 
 /- ## Part IX: The Main Conjecture -/
 
@@ -225,7 +242,7 @@ theorem conjecture_implies_subquadratic (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3
 
 /- ## Part XII: Summary -/
 
-/-- **Erdős Problem #1178: OPEN**
+/- **Erdős Problem #1178: OPEN**
 
 The Brown-Erdős-Sós Conjecture in its general form asks:
 
@@ -237,7 +254,7 @@ where d_r(e) is the minimal d such that ex_r(n, F(r,d,e)) = o(n²).
 - Upper bound d_r(e) ≤ (r-2)e+2+⌊log₂ e⌋ proved [SaSe05]
 - Case e=3: d_r(3) = (r-2)·3+3 proved [EFR86]
 - Case r=3: d_3(e) ≤ e + O(log e / log log e) proved [CGLS23]
-- Full conjecture: OPEN -/
-axiom erdos_1178 : BrownErdosSosGeneralConjecture
+- Full conjecture: OPEN
+Formally: BrownErdosSosGeneralConjecture. -/
 
 end Erdos1178

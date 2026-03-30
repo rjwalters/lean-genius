@@ -36,8 +36,6 @@ that it is uncountable but every smaller ordinal is countable. -/
 axiom omega_1 : Ordinal
 
 /-- ω₁ is uncountable. -/
-axiom omega_1_uncountable : Cardinal.aleph 1 = omega_1.card
-
 /-- The first infinite ordinal ω (identified with ℕ). -/
 def omega : Ordinal := Ordinal.omega
 
@@ -46,15 +44,11 @@ larger than ω₁ but smaller than ω₁². -/
 axiom omega_1_times_omega : Ordinal
 
 /-- ω₁ · ω is defined as the ordinal product. -/
-axiom omega_1_times_omega_def : omega_1_times_omega = omega_1 * omega
-
 /-- The ordinal square ω₁² = ω₁ · ω₁. This is the "source" ordinal
 whose pairs are 2-colored in the partition relation. -/
 axiom omega_1_squared : Ordinal
 
 /-- ω₁² is defined as ordinal exponentiation. -/
-axiom omega_1_squared_def : omega_1_squared = omega_1 * omega_1
-
 /- ## Graph Structures -/
 
 /-- A simple graph on a type α: a symmetric irreflexive relation on vertices. -/

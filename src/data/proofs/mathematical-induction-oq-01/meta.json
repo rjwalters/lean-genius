@@ -1,0 +1,36 @@
+{
+  "id": "mathematical-induction-oq-01",
+  "title": "Transfinite Induction over Ordinals",
+  "slug": "mathematical-induction-oq-01",
+  "description": "Connects Lean's WellFounded recursion to transfinite induction over ordinals. Proves transfinite induction via Ordinal.induction, the zero/successor/limit trichotomy, course-of-values induction, and the equivalence with the well-ordering principle.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "set-theory",
+      "ordinals",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/MathematicalInductionOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 153,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "dateAdded": "2026-03-30"
+  },
+  "crossReferences": [
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "TransfiniteInduction",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 10
+  },
+  "sections": []
+}

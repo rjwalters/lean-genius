@@ -21,7 +21,7 @@
     "sourceUrl": "https://erdosproblems.com/1084",
     "erdosUrl": "https://erdosproblems.com/1084",
     "axiomCount": 4,
-    "assumptions": "4 axiom declarations: degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Eliminated: kissingNumber (now concrete def with known values), kissing_1d/2d/3d (proved by rfl), degree_sum_eq_twice_pairs (handshaking proved by double-counting). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition. 1 sorry(s) remain.",
+    "assumptions": "4 axiom declarations: degree_le_kissing (degree bound from kissing number), fcc_cluster_pairs (FCC lower bound), bezdek_reid (Bezdek-Reid upper bound), harborth_formula (Harborth 2D exact formula). Eliminated: kissingNumber (now concrete def with known values), kissing_1d/2d/3d (proved by rfl), degree_sum_eq_twice_pairs (handshaking proved by double-counting). Machine-verified: f1_upper, f1_achieve, 1D triangle/degree lemmas, f2_upper_3n, f3_upper_6n, isoperimetric exponent analysis, erdos_1084_oq01 conjecture decomposition. 0 sorries remain.(s) remain.",
     "lineCount": 607,
     "badge": "axiom",
     "mathlib_version": "4.26.0"

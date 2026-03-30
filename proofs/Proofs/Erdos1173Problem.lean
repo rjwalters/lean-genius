@@ -117,16 +117,6 @@ def erdos_1173 : Prop :=
     Erdős #1173 asks whether a similar result holds when κ = ℵ_ω (singular)
     with the weaker almost-disjoint intersection condition replacing the
     pointwise size bound. -/
-axiom hajnal_free_set_theorem (κ : Cardinal) (hκ : κ.IsRegular) :
-  ∀ (f : SetMapping (Order.succ κ).ord),
-    (∀ (α : Ordinal) (hα : α < (Order.succ κ).ord),
-      Cardinal.mk (f α hα) < κ) →
-    HasFreeSetOfCard (Order.succ κ).ord f (Order.succ κ)
-
--- ============================================================
--- PART 5: Observations under GCH
--- ============================================================
-
 /-- Under GCH, ℵ_ω is a strong limit cardinal:
     for all n : ℕ, 2^(ℵ_n) < ℵ_ω.
 
@@ -179,11 +169,6 @@ theorem overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
 /-- The Erdős-Hajnal set mapping theorem for ℵ₁: any set mapping
     f : ω₁ → [ω₁]^{≤ℵ₀} has a free set of size ℵ₁. This is the
     countable case that motivated Problem #1173. -/
-axiom erdos_hajnal_aleph1 :
-  ∀ (f : SetMapping (Cardinal.aleph 1).ord),
-    BoundedImageSize (Cardinal.aleph 1).ord f (Cardinal.aleph 0) →
-    HasFreeSetOfCard (Cardinal.aleph 1).ord f (Cardinal.aleph 1)
-
 /-- A weaker form: under GCH with the almost disjoint condition,
     there exists a free set of size ℵ_ω (rather than ℵ_{ω+1}).
     This would be a partial result toward the full conjecture. -/

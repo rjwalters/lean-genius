@@ -19,15 +19,15 @@
     "erdosNumber": 52,
     "erdosUrl": "https://erdosproblems.com/52",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 134,
+    "axiomCount": 3,
+    "lineCount": 157,
     "prerequisites": [
       "Sumsets and product sets of finite sets",
       "Additive combinatorics",
       "Incidence geometry (Szemerédi-Trotter)",
       "Real analysis and arithmetic structure"
     ],
-    "assumptions": "7 axioms: erdos_szemeredi_theorem, bloom_bound, sumset_card_ge, and 4 more. See Lean source for complete statements.",
+    "assumptions": "3 axioms: erdos_szemeredi_theorem, bloom_bound, sum_product_implies_many_representations. Sumset/productset bounds proved from Finset.card_image_le and injections.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -145,9 +145,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 134,
-    "axiomCount": 7,
-    "theoremCount": 0,
+    "lineCount": 157,
+    "axiomCount": 3,
+    "theoremCount": 4,
     "definitionCount": 7
   },
   "crossReferences": [

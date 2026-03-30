@@ -1,7 +1,7 @@
 {
   "slug": "erdos-345",
   "title": "Erdős #345",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,41 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T00:53:52.153Z",
+    "phase": "ACT",
+    "since": "2026-03-29T20:45:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Monotonicity infrastructure and power sequence properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Attempt powerSeq_complete for k=2 or investigate threshold computation",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 axioms (9→5). Defined threshold via Nat.find, proved threshold_spec/minimal/powerSeq_1 from definition. Fixed subsetSums to require nonempty subsets (standard convention).",
+    "progressSummary": "Added 5 new theorems: subset sum monotonicity (3), power sequence containment, T(1) ≤ T(k) corollary. All axioms remain (computational/deep).",
     "builtItems": [
-      "Proved powerSeq_1_complete in Erdos345Problem.lean",
-      "Proved threshold_mono_small in Erdos345Problem.lean",
-      "Defined threshold : Set ℕ → ℕ via Nat.find (was axiom)",
-      "Proved threshold_spec from Nat.find_spec (was axiom)",
-      "Proved threshold_minimal from Nat.find_min (was axiom)",
-      "Proved threshold_powerSeq_1 : threshold (powerSeq 1) = 1 (was axiom)",
-      "Fixed subsetSums to require S.Nonempty (standard convention)"
+      "subsetSums_mono: A ⊆ B → subsetSums A ⊆ subsetSums B",
+      "isComplete_of_subset: A ⊆ B → complete A → complete B",
+      "threshold_le_of_subset: A ⊆ B → T(B) ≤ T(A)",
+      "powerSeq_subset_powerSeq_1: powerSeq k ⊆ powerSeq 1 for k ≥ 1",
+      "powerSeq_complete_from_1: T(1) ≤ T(k) when powerSeq k is complete"
     ],
     "insights": [
-      "Proved powerSeq_1_complete: {n^1 : n ≥ 1} is complete (every n ≥ 1 = sum of {n})",
-      "Proved threshold_mono_small from concrete values via omega",
-      "Renamed IsComplete → IsCompleteSeq to avoid Mathlib conflict, added Erdos345 namespace",
-      "subsetSums with empty sum gives T(powerSeq 1) = 0, contradicting known T(n)=1. Requiring S.Nonempty fixes the off-by-one to match mathematical convention.",
-      "threshold defined via Nat.find (Classical): when IsCompleteSeq, find the least m; otherwise 0",
-      "threshold_spec proved from Nat.find_spec: the found m satisfies the completeness predicate",
-      "threshold_minimal proved from Nat.find_min + Nat.find_spec: any m below find fails the predicate, and all counterexamples must be below find",
-      "threshold_powerSeq_1 proved: 0 is not a nonempty subset sum (elements of powerSeq 1 are ≥ 1), so T = 1 is the least m"
+      "Threshold values (T(n²)=128 etc.) are computational - impossible to verify in Lean without native computation",
+      "powerSeq_complete is a consequence of Waring problem - deep number theory",
+      "Monotonicity infrastructure is the cleanest provable contribution",
+      "The conjecture asks if T(n^k) > T(n^{k+1}) infinitely often - known data shows T is INCREASING for small k, but the question is about eventual decrease"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Attempt to prove powerSeq_complete for k=2 (squares) via constructive Waring",
+      "Investigate if native_decide can verify T(n²) = 128",
+      "Add structural results about subset sums (union, singleton, etc.)"
+    ],
     "markdown": "# Erdős #345 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a complete sequence, and define the threshold of completeness $T(A)$ to be the least integer $m$ such that all $n\\geq m$ are in\\[P(A) = \\left\\{\\sum_{n\\in B}n : B\\subseteq A\\textrm{ finite }\\right\\}\\](the existence of $T(A)$ is guaranteed by completeness).\n\nIs it true that there are infinitely many $k$ such that $T(n^k)>T(n^{k+1})$?\n\n\n\nErd\\H{o}s and Graham \\cite{ErGr80} remark that very little is known about $T(A)$ in general. It is known that\\[T(n)=1, T(n^2)=128, T(n^3)=12758,\\]\\[T(n^4)=5134240,\\textrm{ and }T(n^5)=67898771.\\]Erd\\H{o}s and Graham remark that a good candidate for the $n$ in the question are $k=2^t$ for large $t$, perhaps even $t=3$, because of the highly restricted values of $n^{2^t}$ modulo $2^{t+1}$.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #344\n- Problem #346\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -67,15 +65,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:53:52.153Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-03-29T20:45:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos345Problem.lean",
       "filename": "Erdos345Problem.lean",
-      "lineCount": 153,
-      "theoremCount": 5,
+      "lineCount": 192,
+      "theoremCount": 10,
       "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,

@@ -1,0 +1,129 @@
+{
+  "slug": "picks-theorem-oq-01",
+  "title": "Can the picks_theorem axiom be proved constructively via triangulation into u...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Can the picks_theorem axiom be proved constructively via triangulation into u....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.838Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: OQ01 already fully addressed in PicksTheoremOQ01.lean (9 theorems, 0 sorries, 0 axioms, 207 lines). Answer: Yes, picks_theorem axiom can be proved via triangulation. Algebraic core (base case, additivity, induction) fully proved. Gap: polygon triangulation formalization needs computational geometry infrastructure not yet in Mathlib.",
+    "builtItems": [],
+    "insights": [
+      "OQ01 is already complete — PicksTheoremOQ01.lean proves all algebraic components (base case, shoelace, rectangles, additivity, primitive triangles, inductive step)",
+      "The only missing piece is formal polygon triangulation (ear-clipping algorithm) which requires computational geometry infrastructure"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "combinatorics",
+    "lattice",
+    "area",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 485,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ]
+}

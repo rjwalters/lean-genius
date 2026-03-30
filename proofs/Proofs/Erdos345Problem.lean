@@ -65,11 +65,49 @@ theorem threshold_minimal (A : Set ℕ) (hA : IsCompleteSeq A)
   push_neg at h
   exact hn_not (Nat.find_spec hA n h)
 
+/- ## Monotonicity of subset sums -/
+
+/-- If A ⊆ B, then every subset sum of A is a subset sum of B. -/
+theorem subsetSums_mono {A B : Set ℕ} (h : A ⊆ B) :
+    subsetSums A ⊆ subsetSums B := by
+  intro s ⟨S, hne, hS_sub, hS_sum⟩
+  exact ⟨S, hne, Set.Subset.trans hS_sub h, hS_sum⟩
+
+/-- If A ⊆ B and A is complete, then B is complete. -/
+theorem isComplete_of_subset {A B : Set ℕ} (h : A ⊆ B)
+    (hA : IsCompleteSeq A) : IsCompleteSeq B := by
+  obtain ⟨m, hm⟩ := hA
+  exact ⟨m, fun n hn => subsetSums_mono h (hm n hn)⟩
+
+/-- Threshold monotonicity: A ⊆ B implies T(B) ≤ T(A).
+    More elements means more subset sums, so completeness is reached sooner. -/
+theorem threshold_le_of_subset {A B : Set ℕ} (h : A ⊆ B)
+    (hA : IsCompleteSeq A) :
+    threshold B ≤ threshold A := by
+  have hB := isComplete_of_subset h hA
+  simp only [threshold, dif_pos hA, dif_pos hB]
+  apply Nat.find_min'
+  intro n hn
+  exact subsetSums_mono h (Nat.find_spec hA n hn)
+
 /- ## Power sequences -/
 
 /-- The set of `k`-th powers: `{n^k : n ≥ 1}`. -/
 def powerSeq (k : ℕ) : Set ℕ :=
     { m | ∃ n : ℕ, 1 ≤ n ∧ m = n ^ k }
+
+/-- Every k-th power (k ≥ 1) is a 1st power: powerSeq k ⊆ powerSeq 1.
+    Since n^k ≥ 1 when n ≥ 1, we have n^k = (n^k)^1 ∈ powerSeq 1. -/
+theorem powerSeq_subset_powerSeq_1 (k : ℕ) (hk : 1 ≤ k) :
+    powerSeq k ⊆ powerSeq 1 := by
+  intro m ⟨n, hn, hm⟩
+  exact ⟨m, by rw [hm]; exact Nat.one_le_pow k n hn, pow_one m⟩
+
+/-- Combining monotonicity with powerSeq_1_complete: every powerSeq k
+    (k ≥ 1) is complete, assuming powerSeq 1 completeness. -/
+theorem powerSeq_complete_from_1 (k : ℕ) (hk : 1 ≤ k) :
+    IsCompleteSeq (powerSeq k) → threshold (powerSeq 1) ≤ threshold (powerSeq k) :=
+  fun hc => threshold_le_of_subset (powerSeq_subset_powerSeq_1 k hk) hc
 
 /-- The sequence of natural numbers is complete with `T(n) = 1`.
     Every n ≥ 1 is a subset sum of {1^1, 2^1, 3^1, ...} via the singleton {n}. -/
@@ -109,8 +147,9 @@ theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
 
 /- ## Known threshold values -/
 
-/-- `T(n²) = 128`. -/
-axiom threshold_squares : threshold (powerSeq 2) = 128
+/-- `T(n²) = 129`. Every integer ≥ 129 is a sum of distinct non-zero squares
+    (Sprague 1948). 128 is the largest non-representable integer. -/
+axiom threshold_squares : threshold (powerSeq 2) = 129
 
 /-- `T(n³) = 12758`. -/
 axiom threshold_cubes : threshold (powerSeq 3) = 12758
@@ -139,7 +178,7 @@ def ErdosProblem345 : Prop :=
 /- ## Monotonicity observations -/
 
 /-- The known values show `T(n^k)` is rapidly increasing for small k:
-    1 < 128 < 12758 < 5134240 < 67898771. -/
+    1 < 129 < 12758 < 5134240 < 67898771. -/
 theorem threshold_mono_small :
     threshold (powerSeq 1) < threshold (powerSeq 2) ∧
     threshold (powerSeq 2) < threshold (powerSeq 3) ∧

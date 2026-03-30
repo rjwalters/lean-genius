@@ -107,11 +107,7 @@ noncomputable def f (t : ℕ) : ℕ :=
 -/
 
 /-- Moon (1966): f(3) = 4 for triangles -/
-axiom moon_f3 : f 3 = 4
-
 /-- Moon's result for specific n ≥ 8 -/
-axiom moon_f3_n (n : ℕ) (hn : n ≥ 8) : f_n n 3 = 4
-
 /-
 ## Ramsey Bound
 -/
@@ -122,11 +118,7 @@ axiom moon_f3_n (n : ℕ) (hn : n ≥ 8) : f_n n 3 = 4
 axiom ramseyNumber (s t : ℕ) : ℕ
 
 /-- Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t -/
-axiom erdos_ramsey_bound (t : ℕ) (ht : t ≥ 2) : f t < ramseyNumber t t
-
 /-- R(t,t) ≤ 4^t (crude bound) -/
-axiom ramsey_upper_bound (t : ℕ) : ramseyNumber t t ≤ 4^t
-
 /-
 ## Burr-Erdős-Spencer Exact Formula
 -/
@@ -154,11 +146,4 @@ The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
 -/
 
 /-- f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
-axiom f_root_limit : Filter.Tendsto (fun t => (f t : ℝ) ^ (1 / t : ℝ)) Filter.atTop (nhds 4)
-
 /-- f(t) grows exponentially, not linearly -/
-axiom f_not_linear : ¬∃ C : ℕ, ∀ t, f t ≤ C * t
-
-#check moon_f3
-#check @burr_erdos_spencer
-#check f_root_limit

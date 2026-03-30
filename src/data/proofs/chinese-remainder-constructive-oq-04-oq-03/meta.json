@@ -1,0 +1,189 @@
+{
+  "id": "chinese-remainder-constructive-oq-04-oq-03",
+  "title": "Non-Coprime CRT for Arbitrary Lists",
+  "slug": "chinese-remainder-constructive-oq-04-oq-03",
+  "description": "Generalizes the non-coprime Chinese Remainder Theorem to arbitrary-length systems over Euclidean domains. Proves that a system of congruences with arbitrary moduli is solvable iff all pairs satisfy the GCD compatibility condition, with solutions unique modulo the LCM of all moduli.",
+  "meta": {
+    "author": "Ore (1952) / Gauss (formalized in Lean 4)",
+    "date": "1952",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeList.lean",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "euclidean-domains",
+      "induction",
+      "lists",
+      "generalization"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanDomain.gcd_dvd_left / gcd_dvd_right",
+        "description": "GCD divides both arguments in a Euclidean domain",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      },
+      {
+        "theorem": "EuclideanDomain.dvd_lcm_left / dvd_lcm_right",
+        "description": "Both arguments divide their LCM in a Euclidean domain",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      },
+      {
+        "theorem": "EuclideanDomain.lcm_dvd",
+        "description": "LCM is the smallest common multiple: if a | d and b | d then lcm(a,b) | d",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      }
+    ],
+    "originalContributions": [
+      "List-based non-coprime CRT existence (ed_crt_list_sufficient) by induction",
+      "List-based non-coprime CRT necessity (ed_crt_list_necessary)",
+      "Full iff characterization (ed_crt_list_iff)",
+      "Uniqueness modulo listLcm (ed_crt_list_unique)",
+      "Extended distributive law: gcd(listLcm ms, c) divides listLcm(ms.map(gcd . c))",
+      "Key transfer lemma (gcd_listLcm_dvd_sub) bridging inductive step",
+      "Connection: coprime_implies_compatible shows coprime case is a special case"
+    ],
+    "references": [
+      {
+        "authors": "Ore, Oystein",
+        "title": "The General Chinese Remainder Theorem",
+        "year": "1952",
+        "venue": "American Mathematical Monthly, vol. 59, no. 6, pp. 365-370",
+        "note": "First modern treatment of CRT for non-coprime moduli with compatibility conditions"
+      },
+      {
+        "authors": "C. F. Gauss",
+        "title": "Disquisitiones Arithmeticae",
+        "year": "1801",
+        "venue": "Leipzig: Gerhard Fleischer",
+        "note": "CRT for pairwise coprime moduli; the non-coprime generalization extends this"
+      }
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 216,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Works over any EuclideanDomain."
+  },
+  "overview": {
+    "historicalContext": "The classical Chinese Remainder Theorem requires pairwise coprime moduli. Oystein Ore's 1952 paper in the American Mathematical Monthly gave the complete generalization: a system x = ai (mod mi) is solvable iff gcd(mi, mj) | (ai - aj) for all pairs, with solutions unique modulo lcm(m1, ..., mk). The parent formalization (chinese-remainder-constructive-oq-04) generalized the coprime CRT to arbitrary lists. This formalization answers OQ04's third open question by doing the same for the non-coprime case, and goes further by working over arbitrary Euclidean domains rather than just the natural numbers.",
+    "problemStatement": "**General Non-Coprime CRT**: Given moduli [m1, ..., mk] (not necessarily coprime) and targets [a1, ..., ak] in a Euclidean domain R, prove:\n1. **Solvability iff**: The system mi | (x - ai) for all i has a solution iff gcd(mi, mj) | (ai - aj) for all pairs i, j\n2. **Uniqueness**: Any two solutions agree modulo lcm(m1, ..., mk)",
+    "proofStrategy": "Existence is proved by list induction, reducing to the two-moduli non-coprime CRT at each step. The key challenge is showing that the inductive step's compatibility condition is satisfied: gcd(lcm(m1,...,mk-1), mk) | (y - ak) where y solves the prefix system. This requires an extended distributive law showing gcd(listLcm ms, c) divides listLcm(ms.map(gcd . c)), plus a transfer lemma that combines individual compatibility conditions with the existing solution's congruences.\n\nNecessity is simpler: if x satisfies all congruences, then for any pair (i,j), gcd(mi,mj) divides both (x - ai) and (x - aj), hence their difference (ai - aj).\n\nUniqueness follows from the fact that each modulus mi divides (x - y) when both x and y are solutions, so listLcm of all moduli divides (x - y).",
+    "keyInsights": [
+      "**Extended distributive law**: The key technical lemma is gcd(listLcm ms, c) | listLcm(ms.map(gcd . c)), proved by induction using OQ03's gcd_lcm_dvd_lcm_gcd at each step. This generalizes the 2-element distributive identity to arbitrary lists.",
+      "**Transfer lemma**: gcd_listLcm_dvd_sub bridges individual compatibility conditions to the composite condition needed for the inductive step. If x satisfies the tail system and each tail modulus is compatible with the new target, then gcd(listLcm(tail moduli), new modulus) | (x - new target).",
+      "**Euclidean domain generality**: Working over R : EuclideanDomain rather than just N or Z means the theorems apply to polynomial rings, Gaussian integers, and other Euclidean domains, making this a truly algebraic result.",
+      "**Coprime case as corollary**: coprime_implies_compatible shows that when moduli are pairwise coprime (IsUnit of each gcd), compatibility is automatic. This recovers the coprime CRT as a special case of the general theory."
+    ],
+    "prerequisites": [
+      "EuclideanDomain GCD and LCM theory",
+      "Non-coprime CRT for two moduli (ChineseRemainderNonCoprimeOQ03)",
+      "Distributive law: gcd(lcm(a,b), c) | lcm(gcd(a,c), gcd(b,c))",
+      "List induction in Lean 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "list-lcm",
+      "title": "List LCM and Compatibility",
+      "startLine": 24,
+      "endLine": 66,
+      "summary": "Defines listLcm (LCM of a list), System (list of target-modulus pairs), Satisfies (solution predicate), Compatible (pairwise GCD divisibility), and moduli (projection). Proves dvd_listLcm (each element divides the list LCM) and listLcm_dvd (list LCM is the minimal such).",
+      "mathContext": "listLcm([m1,...,mk]) = lcm(m1, lcm(m2, ...lcm(mk, 1)...)). Compatible(sys) := for all i,j, gcd(mi,mj) | (ai - aj)."
+    },
+    {
+      "id": "distributive-law",
+      "title": "Extended Distributive Law",
+      "startLine": 68,
+      "endLine": 102,
+      "summary": "Proves the extended distributive law: gcd(listLcm ms, c) divides listLcm(ms.map(gcd . c)). Uses lcm_dvd_lcm_right for monotonicity and the 2-element identity from OQ03.",
+      "mathContext": "gcd(lcm(m1,...,mk), c) | lcm(gcd(m1,c), ..., gcd(mk,c))"
+    },
+    {
+      "id": "transfer-lemma",
+      "title": "Key Transfer Lemma",
+      "startLine": 104,
+      "endLine": 134,
+      "summary": "Proves gcd_listLcm_dvd_sub: if x satisfies a system and each modulus is compatible with a new target, then gcd(listLcm(moduli), c) | (x - a). The bridge between individual compatibility and the composite inductive step.",
+      "mathContext": "For each j: gcd(mj, c) | (aj - a) and mj | (x - aj), so gcd(mj, c) | (x - a). Then listLcm of these divides (x - a), and gcd(listLcm, c) divides the listLcm."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 136,
+      "endLine": 200,
+      "summary": "Four main results: ed_crt_list_sufficient (existence from compatibility), ed_crt_list_necessary (compatibility from existence), ed_crt_list_iff (full characterization), and ed_crt_list_unique (uniqueness mod listLcm).",
+      "mathContext": "Exists x satisfying the system iff Compatible(sys). Solutions unique mod lcm(m1,...,mk)."
+    },
+    {
+      "id": "coprime-connection",
+      "title": "Connection to Coprime Case",
+      "startLine": 202,
+      "endLine": 215,
+      "summary": "coprime_implies_compatible: when all pairwise GCDs are units (the coprime case), compatibility is automatic. Recovers the coprime CRT as a special case.",
+      "mathContext": "IsUnit(gcd(mi, mj)) for all i != j implies Compatible(sys), so a solution always exists in the coprime case."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the third open question from the coprime list CRT (chinese-remainder-constructive-oq-04): yes, the pairwise coprimality condition can be weakened to the GCD compatibility condition, and the result generalizes to arbitrary-length lists. The proof works over any Euclidean domain, making it applicable beyond integers to polynomial rings and other algebraic structures. Both existence-iff-compatibility and uniqueness-mod-LCM are proved with 0 axioms and 0 sorries.",
+    "implications": "**Mathematical significance**: This completes the CRT generalization program: from fixed-size coprime systems (parent proof) to arbitrary-length coprime lists (OQ04) to arbitrary-length non-coprime lists (this file). The non-coprime case is strictly more general, with the coprime case recovered as a corollary.\n\n**Algebraic generality**: Working over Euclidean domains means these results apply to:\n- Z (integers): the classical setting for modular arithmetic\n- Z[i] (Gaussian integers): for 2D lattice problems\n- F[x] (polynomial rings): for interpolation and coding theory\n- Any principal ideal domain (via the EuclideanDomain instance)\n\n**Applications**: Non-coprime CRT is essential in:\n1. Signal processing: when sampling rates share common factors\n2. Cryptographic protocols: where moduli may share small prime factors\n3. Calendar computations: cycles with shared divisors (e.g., 12-month and 52-week cycles)\n4. Error-correcting codes: redundant modular representations",
+    "openQuestions": [
+      "Can the solution construction be made computationally efficient? The current proof is existential via the two-moduli CRT; an explicit formula using generalized Bezout coefficients would enable verified computation.",
+      "What is the relationship between listLcm and Mathlib's Finset.lcm? Can this formalization be unified with Mathlib's existing algebraic CRT infrastructure?",
+      "For the natural number case, can we produce the minimal non-negative solution and bound it by listLcm?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.ChineseRemainderNonCoprimeOQ03"
+    ],
+    "opens": [
+      "ChineseRemainderNonCoprimeOQ03"
+    ],
+    "namespace": "ChineseRemainderNonCoprimeList",
+    "lineCount": 216,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "answers",
+      "description": "Answers OQ04's third open question: 'Can the pairwise coprimality condition be weakened?'"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "Extends the two-moduli non-coprime CRT to arbitrary-length lists"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "relates",
+      "description": "OQ01 addresses computational efficiency; this file provides the general existence/uniqueness framework"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "generalizes",
+      "description": "The coprime case (parent proof) is recovered as a special case via coprime_implies_compatible"
+    }
+  ],
+  "references": [
+    {
+      "key": "Or52",
+      "citation": "Ore, O., The General Chinese Remainder Theorem, American Mathematical Monthly 59(6):365-370 (1952). First modern treatment for non-coprime moduli.",
+      "type": "article"
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C.F., Disquisitiones Arithmeticae, Leipzig (1801), Section 36. Classical CRT for coprime moduli.",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), Section 7.6. CRT for rings via ideals and direct products.",
+      "type": "book"
+    }
+  ]
+}

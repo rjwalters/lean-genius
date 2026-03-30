@@ -1,0 +1,82 @@
+{
+  "slug": "erdos-1012-oq-03-incomplete-01",
+  "title": "Complete directed Hamiltonian cycle thresholds proof",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete directed Hamiltonian cycle thresholds proof.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T16:34:54.972Z",
+    "iteration": 2,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved list_path_to_hamiltonian (was sorry). Eliminated infrastructure sorry in R\u00e9dei theorem proof chain. 3S remain (all deep theorems).",
+    "builtItems": [
+      "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
+      "Key insight: nodup list of full length gives bijection, arc condition transfers directly"
+    ],
+    "insights": [
+      "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
+      "Injectivity: List.Nodup.getElem_inj_iff",
+      "Surjectivity: List.mem_iff_getElem + hmem (\u2200 v, v \u2208 l from Finset.eq_univ_of_card)",
+      "Arc condition: Equiv.ofBijective preserves function values, so \u03c3.symm i = l[i]"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Remaining 3 sorries are deep theorems (ghouila_houri, moon_moser, directed_hamiltonian_threshold)",
+      "ghouila_houri proof outline: longest path \u2192 extend \u2192 close cycle (~200 lines)",
+      "moon_moser follows from R\u00e9dei + tournament rotation"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "completion"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1012",
+    "erdos-1012-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-03-30T16:34:54.972Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1012OQ03.lean",
+      "filename": "Erdos1012OQ03.lean",
+      "lineCount": 364,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 3,
+      "isAristotle": false
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "factor-remainder-nullstellensatz-oq-01",
+  "name": "Strong Nullstellensatz I(V(J))=rad(J) in Lean",
+  "parentId": "factor-remainder",
+  "status": "completed",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "Mathlib already has MvPolynomial.vanishingIdeal_zeroLocus_eq_radical — the full Nullstellensatz",
+      "0 axioms needed — everything from Mathlib",
+      "Weak Nullstellensatz derivable as corollary: proper ideal → nonempty zero locus",
+      "V,I form an antitone Galois connection (also in Mathlib)"
+    ],
+    "builtItems": [
+      "FactorRemainderNullstellensatzOQ01.lean: 85 lines, 0 axioms, 0 sorries",
+      "strong_nullstellensatz, weak_nullstellensatz, membership_criterion, radical_ideal_correspondence"
+    ],
+    "progressSummary": "COMPLETED: Fully verified Nullstellensatz via Mathlib. 0 axioms, 0 sorries."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderNullstellensatzOQ01.lean",
+      "filename": "FactorRemainderNullstellensatzOQ01.lean",
+      "lineCount": 82,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderNullstellensatzOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "factor-remainder-nullstellensatz",
+    "factor-remainder-nullstellensatz-oq-01"
+  ]
+}

@@ -17,10 +17,12 @@ Reference: https://erdosproblems.com/75
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
 namespace Erdos75
+
+open Classical
 
 /- ## Graph Infrastructure
 
@@ -77,13 +79,12 @@ def FiniteSubgraph.IsIndepSet {G : Graph} {n : ℕ}
 /-- The empty set is always independent -/
 theorem FiniteSubgraph.empty_IsIndepSet {G : Graph} {n : ℕ}
     (H : FiniteSubgraph G n) : H.IsIndepSet ∅ :=
-  fun _ hi => absurd hi (Finset.not_mem_empty _)
+  fun _ hi => absurd hi (Finset.notMem_empty _)
 
 /-- The independence number of a finite subgraph:
     maximum cardinality of an independent set in H.
     Defined as the sup over k ∈ {0, ..., n} of k when an independent set
     of that size exists. -/
-open Classical in
 noncomputable def indepNumber {G : Graph} {n : ℕ} (H : FiniteSubgraph G n) : ℕ :=
   Finset.sup (Finset.range (n + 1))
     (fun k => if ∃ S : Finset (Fin n), S.card = k ∧ H.IsIndepSet S then k else 0)
@@ -99,11 +100,69 @@ theorem indepNumber_le (G : Graph) (n : ℕ) (H : FiniteSubgraph G n) :
 
 /- ## Known Context -/
 
+/-- If there exists an independent set of size m ≤ n, then indepNumber ≥ m -/
+theorem indepNumber_ge_of_exists {G : Graph} {n : ℕ} (H : FiniteSubgraph G n)
+    {m : ℕ} (hm : m ≤ n) (S : Finset (Fin n)) (hcard : S.card = m)
+    (hindep : H.IsIndepSet S) : m ≤ indepNumber H := by
+  unfold indepNumber
+  have hm_range : m ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  have hif : (if ∃ S : Finset (Fin n), S.card = m ∧ H.IsIndepSet S then m else 0) = m := by
+    rw [if_pos ⟨S, hcard, hindep⟩]
+  calc m = (if ∃ S : Finset (Fin n), S.card = m ∧ H.IsIndepSet S then m else 0) :=
+        hif.symm
+    _ ≤ Finset.sup (Finset.range (n + 1))
+        (fun k => if ∃ S : Finset (Fin n), S.card = k ∧ H.IsIndepSet S then k else 0) :=
+        Finset.le_sup (f := fun k => if ∃ S : Finset (Fin n), S.card = k ∧ H.IsIndepSet S
+          then k else 0) hm_range
+
 /-- If G is k-colorable (k > 0), every n-vertex subgraph has an independent set
-    of size ≥ n/k. (Pigeonhole principle on color classes.) -/
-axiom finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable k)
-    (hkpos : 0 < k) :
-  ∀ H : FiniteSubgraph G n, indepNumber H * k ≥ n
+    of size ≥ n/k. (Pigeonhole principle on color classes.)
+
+    Proof: restrict the coloring to the subgraph. By pigeonhole, some color class
+    has ≥ ⌈n/k⌉ ≥ n/k vertices. This color class is independent (proper coloring).
+    So indepNumber ≥ n/k, hence indepNumber * k ≥ n. -/
+theorem finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable k)
+    (_hkpos : 0 < k) :
+  ∀ H : FiniteSubgraph G n, indepNumber H * k ≥ n := by
+  intro H
+  obtain ⟨f, hf⟩ := hk
+  -- Restrict k-coloring to subgraph
+  set g : Fin n → Fin k := fun i => f (H.embed i)
+  set fib : Fin k → Finset (Fin n) := fun c => Finset.univ.filter (fun i => g i = c)
+  -- Each color class is independent (adjacent vertices get different colors)
+  have hfib_indep : ∀ c : Fin k, H.IsIndepSet (fib c) := by
+    intro c i hi j hj _hij hadj
+    exact absurd ((Finset.mem_filter.mp hi).2.trans (Finset.mem_filter.mp hj).2.symm)
+      (hf _ _ hadj)
+  -- Each color class has at most indepNumber H elements
+  have hfib_le : ∀ c : Fin k, (fib c).card ≤ indepNumber H := by
+    intro c
+    exact indepNumber_ge_of_exists H
+      ((Finset.card_filter_le _ _).trans (by simp [Finset.card_univ, Fintype.card_fin]))
+      (fib c) rfl (hfib_indep c)
+  -- Color classes are pairwise disjoint
+  have hdisj : ∀ c ∈ (Finset.univ : Finset (Fin k)),
+      ∀ d ∈ Finset.univ, c ≠ d → Disjoint (fib c) (fib d) := by
+    intro c _ d _ hcd
+    rw [Finset.disjoint_left]
+    intro i hi hd
+    exact absurd ((Finset.mem_filter.mp hi).2.symm.trans (Finset.mem_filter.mp hd).2) hcd
+  -- Color classes cover all vertices
+  have hcover : Finset.univ.biUnion fib = (Finset.univ : Finset (Fin n)) := by
+    ext i; constructor
+    · exact fun _ => Finset.mem_univ _
+    · intro _
+      exact Finset.mem_biUnion.mpr
+        ⟨g i, Finset.mem_univ _, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩⟩
+  -- n = Σ|fib c| ≤ k · indepNumber H = indepNumber H · k
+  suffices n ≤ indepNumber H * k by omega
+  calc n = (Finset.univ : Finset (Fin n)).card := by
+          simp [Finset.card_univ, Fintype.card_fin]
+    _ = (Finset.univ.biUnion fib).card := by rw [hcover]
+    _ = ∑ c ∈ Finset.univ, (fib c).card := Finset.card_biUnion hdisj
+    _ ≤ ∑ _c ∈ Finset.univ, indepNumber H := Finset.sum_le_sum fun c _ => hfib_le c
+    _ = indepNumber H * k := by
+        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
 
 /-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
@@ -149,12 +208,6 @@ theorem strong_implies_basic :
 
 /-- Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/
-axiom ErdosProblem75 :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLargeIndepSets G
-
 /-- Erdős Problem 75 (strong form): There exists a graph with uncountable
     chromatic number where every large finite subgraph has linear independence number -/
-axiom ErdosProblem75_strong :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLinearIndepSets G
-
 end Erdos75

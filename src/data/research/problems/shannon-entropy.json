@@ -130,10 +130,10 @@
     {
       "path": "Proofs/ShannonEntropy.lean",
       "filename": "ShannonEntropy.lean",
-      "lineCount": 460,
-      "theoremCount": 9,
+      "lineCount": 901,
+      "theoremCount": 17,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
@@ -141,16 +141,51 @@
     {
       "path": "Proofs/ShannonEntropyAristotle.lean",
       "filename": "ShannonEntropyAristotle.lean",
-      "lineCount": 60,
+      "lineCount": 123,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ02.lean",
+      "filename": "ShannonEntropyOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSA.lean",
+      "filename": "ShannonEntropySSA.lean",
+      "lineCount": 342,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSA.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAAristotle.lean",
+      "filename": "ShannonEntropySSAAristotle.lean",
+      "lineCount": 75,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
     }
   ],
   "relatedProofs": [
-    "shannon-entropy"
+    "shannon-entropy",
+    "shannon-entropy-oq-02",
+    "shannon-entropy-oq-03"
   ]
 }

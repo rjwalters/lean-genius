@@ -117,11 +117,6 @@ axiom sierpinski_kurepa :
 2^ℵ₀ → (ℵ₁)²₂ holds unconditionally.
 Every 2-coloring of pairs from the continuum has an uncountable monochromatic set.
 -/
-axiom two_color_partition :
-  ∀ χ : (Fin 2 → ℕ) × (Fin 2 → ℕ) → Fin 2,
-    ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
-    ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
-
 /- ## Part V: Under CH (Erdős's Result) -/
 
 /--
@@ -161,10 +156,6 @@ axiom shelah_consistency :
 Shelah's counterexample model has a very large continuum —
 much larger than ℵ₂. The model satisfies c > ℵ₂.
 -/
-axiom shelah_large_c :
-  ∃ (M : Type) (_ : Nonempty M),
-    Cardinal.mk M > Cardinal.aleph 2
-
 /- ## Part VII: The Open Question -/
 
 /--
@@ -216,25 +207,12 @@ For k ≥ 4 colors, the partition relation 2^ℵ₀ → (ℵ₁)^k₂ is at leas
 as hard as the 3-color case. Failure for 3 colors implies failure
 for all higher k.
 -/
-axiom higher_colors_harder :
-  NegativePartition →
-  ∀ k : ℕ, k ≥ 3 →
-    ∃ χ : ThreeColoring ((Fin 2 → ℕ) × (Fin 2 → ℕ)),
-      ∀ A : Set (Fin 2 → ℕ), IsUncountable A →
-      ∃ c : Fin 3, ∃ a b : Fin 2 → ℕ, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
-
 /--
 **Ramsey Theory Connection:**
 The Erdős-Rado theorem establishes that for the 2-color case,
 (2^κ)⁺ → (κ⁺)²₂ holds for all infinite cardinals κ.
 The 3-color case is more delicate and depends on cardinal arithmetic.
 -/
-axiom erdos_rado_two_color :
-  ∀ κ : Cardinal, Cardinal.aleph 0 ≤ κ →
-    ∀ χ : (Fin 2 → ℕ) × (Fin 2 → ℕ) → Fin 2,
-      ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
-      ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
-
 /- ## Part IX: The Argument Structure -/
 
 /--
@@ -243,27 +221,12 @@ Under CH, |ℝ| = ℵ₁, so ℝ can be well-ordered in order type ω₁.
 For any 3-coloring of pairs, a diagonal argument over this well-ordering
 produces an uncountable monochromatic set by transfinite induction.
 -/
-axiom ch_argument :
-  ContinuumHypothesis →
-  ∀ χ : ThreeColoring (ℝ × ℝ),
-    ∃ A : Set ℝ, IsUncountable A ∧
-    ∃ c : Fin 3, ∀ a b : ℝ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
-
 /--
 **Why Larger c Might Fail:**
 With larger c, the continuum has "more room" for colorings to avoid
 monochromatic uncountable sets. Forcing constructions can exploit
 this extra room to build counterexamples when c is sufficiently large.
 -/
-axiom large_c_failure :
-  ∃ κ : Cardinal, κ > Cardinal.aleph 2 →
-    -- For sufficiently large c, a counterexample model can be forced
-    ∃ (M : Type) (_ : Nonempty M),
-      Cardinal.mk M = κ ∧
-      ∃ χ : M × M → Fin 3,
-        ∀ A : Set M, IsUncountable A →
-          ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
-
 /- ## Part X: Summary -/
 
 /--

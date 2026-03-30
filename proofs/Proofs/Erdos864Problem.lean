@@ -753,3 +753,71 @@ theorem reflected_construction_valid (N : ℕ) (B : Finset ℕ) :
           simp only [Prod.mk.injEq] at this
           obtain ⟨rfl, rfl⟩ := this
           exact absurd rfl hne
+
+/- ## Reflected Construction: Quantitative Lower Bound
+
+The reflected construction A = B ∪ {N − b : b ∈ B} gives |A| = 2|B| when
+B ⊆ {1,...,N/3}, since B lives in [1, N/3] and the reflected set lives in
+[N − N/3, N − 1], which are disjoint ranges. Combined with
+`reflected_construction_valid`, this yields maxAlmostSidon(N) ≥ 2|B|. -/
+
+/-- The reflection map b ↦ N − b is injective on B when all elements ≤ N. -/
+private lemma reflected_injOn (N : ℕ) (B : Finset ℕ)
+    (hB_le : ∀ b ∈ B, b ≤ N) :
+    Set.InjOn (fun b => N - b) ↑B := by
+  intro a ha b hb heq
+  rw [Finset.mem_coe] at ha hb
+  have := hB_le a ha; have := hB_le b hb
+  omega
+
+/-- B and B.image(N−·) are disjoint when B ⊆ {1,...,N/3}. -/
+private lemma reflected_disjoint (N : ℕ) (B : Finset ℕ)
+    (hB : ∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) :
+    Disjoint B (B.image (fun b => N - b)) := by
+  rw [Finset.disjoint_left]
+  intro x hxB hxImg
+  rw [Finset.mem_image] at hxImg
+  obtain ⟨y, hyB, hxy⟩ := hxImg
+  have := Finset.mem_Icc.mp (hB x hxB)
+  have := Finset.mem_Icc.mp (hB y hyB)
+  omega
+
+/-- |B ∪ B.image(N−·)| = 2|B| when B ⊆ {1,...,N/3}. -/
+private lemma reflected_card (N : ℕ) (B : Finset ℕ)
+    (hB : ∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) :
+    (B ∪ B.image (fun b => N - b)).card = 2 * B.card := by
+  rw [Finset.card_union_of_disjoint (reflected_disjoint N B hB),
+      Finset.card_image_of_injOn (reflected_injOn N B
+        (fun b hb => le_trans (Finset.mem_Icc.mp (hB b hb)).2 (Nat.div_le_self N 3)))]
+  ring
+
+/-- B ∪ B.image(N−·) ⊆ {1,...,N} when B ⊆ {1,...,N/3}. -/
+private lemma reflected_subset_Icc (N : ℕ) (B : Finset ℕ)
+    (hB : ∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) :
+    B ∪ B.image (fun b => N - b) ⊆ Finset.Icc 1 N := by
+  intro x hx
+  rw [Finset.mem_union] at hx
+  rcases hx with hxB | hxImg
+  · have := Finset.mem_Icc.mp (hB x hxB)
+    rw [Finset.mem_Icc]; constructor <;> omega
+  · rw [Finset.mem_image] at hxImg
+    obtain ⟨b, hbB, rfl⟩ := hxImg
+    have := Finset.mem_Icc.mp (hB b hbB)
+    rw [Finset.mem_Icc]; constructor <;> omega
+
+/-- **Reflected construction bound**: If B ⊆ {1,...,N/3} is Sidon,
+    then maxAlmostSidon(N) ≥ 2·|B|. This quantifies `reflected_construction_valid`:
+    the reflected set has exactly 2|B| elements (disjointness), lies in {1,...,N},
+    and witnesses the lower bound. To eliminate `erdos_freud_lower_bound`, it
+    suffices to construct Sidon sets of size ∼√(N/3) in {1,...,N/3}. -/
+theorem reflected_construction_bound (N : ℕ) (B : Finset ℕ)
+    (hB : ∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3)) (hS : IsSidon B) :
+    maxAlmostSidon N ≥ 2 * B.card := by
+  have hA_mem : B ∪ B.image (fun b => N - b) ∈
+      (Finset.Icc 1 N).powerset.filter IsAlmostSidon :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (reflected_subset_Icc N B hB),
+                            reflected_construction_valid N B hB hS⟩
+  have h1 : (B ∪ B.image (fun b => N - b)).card ≤ maxAlmostSidon N :=
+    Finset.le_sup hA_mem
+  have h2 := reflected_card N B hB
+  omega

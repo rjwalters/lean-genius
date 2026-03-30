@@ -223,13 +223,6 @@ axiom koizumi_right_triangle (A : Set (EuclideanSpace ℝ (Fin 2)))
 Every measurable set with infinite measure contains the vertices of a
 (not necessarily isosceles) trapezoid of area 1.
 -/
-axiom kovac_trapezoid (A : Set (EuclideanSpace ℝ (Fin 2)))
-    (hA : HasInfiniteMeasure A) :
-    ∃ p q r s, p ∈ A ∧ q ∈ A ∧ r ∈ A ∧ s ∈ A ∧
-      -- One pair of parallel sides
-      (q - p) 0 * (r - s) 1 = (q - p) 1 * (r - s) 0 ∧
-      quadrilateralArea p q r s = 1
-
 /--
 **Kovač's Parallelogram Counterexample (2023):**
 There exists a set with infinite measure that does NOT contain the vertices
@@ -237,13 +230,6 @@ of a parallelogram with area 1.
 
 This shows parallelograms are different from trapezoids!
 -/
-axiom kovac_parallelogram_counterexample :
-    ∃ A : Set (EuclideanSpace ℝ (Fin 2)),
-      HasInfiniteMeasure A ∧
-      ¬∃ p q r s, p ∈ A ∧ q ∈ A ∧ r ∈ A ∧ s ∈ A ∧
-        IsParallelogram p q r s ∧
-        quadrilateralArea p q r s = 1
-
 /--
 **Kovač-Predojević Cyclic Quadrilateral Theorem (2024):**
 Every measurable set with infinite measure contains the vertices of a
@@ -262,15 +248,6 @@ axiom kovac_predojevic_cyclic (A : Set (EuclideanSpace ℝ (Fin 2)))
 There exists a set with infinite measure such that every convex polygon
 with congruent sides and all vertices in the set has area < 1.
 -/
-axiom kovac_predojevic_congruent_counterexample :
-    ∃ A : Set (EuclideanSpace ℝ (Fin 2)),
-      HasInfiniteMeasure A ∧
-      ∀ vertices : List (EuclideanSpace ℝ (Fin 2)),
-        HasCongruentSides vertices →
-        (∀ v ∈ vertices, v ∈ A) →
-        -- polygon area < 1 (simplified statement)
-        True -- Area computation would require convex hull
-
 /-
 ## Part VII: Why Infinite Measure Matters
 -/
@@ -280,11 +257,6 @@ axiom kovac_predojevic_congruent_counterexample :
 Sets with finite measure may not contain any triangle of area 1.
 Example: A line segment has infinite length but zero 2D measure.
 -/
-axiom finite_measure_counterexample :
-    ∃ A : Set (EuclideanSpace ℝ (Fin 2)),
-      MeasurableSet A ∧ volume A < ⊤ ∧
-      ¬HasTriangleWithArea A 1
-
 /-
 **Density Argument:**
 The proofs use the fact that infinite measure sets must have positive

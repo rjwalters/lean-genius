@@ -1,0 +1,44 @@
+[
+  {
+    "id": "heat-kernel-term",
+    "lineStart": 55,
+    "lineEnd": 57,
+    "type": "definition",
+    "content": "Each irreducible representation contributes $d^2 \\cdot e^{-C_2 g^2 A}$ to the heat kernel trace. The full partition function is the sum over all irreps. This factorization is unique to 2D."
+  },
+  {
+    "id": "heat-kernel-decay",
+    "lineStart": 88,
+    "lineEnd": 97,
+    "type": "theorem",
+    "content": "Non-trivial representations ($C_2 > 0$) are exponentially suppressed at large area. This is the mechanism behind the 2D mass gap: only the trivial vacuum survives at large distances."
+  },
+  {
+    "id": "wilson-loop-2d",
+    "lineStart": 112,
+    "lineEnd": 114,
+    "type": "definition",
+    "content": "Migdal's formula (1975): the Wilson loop expectation $\\langle W_R(C)\\rangle = d \\cdot e^{-\\sigma A}$ is EXACT in 2D. In 3D, Wilson loops depend on knot type (Witten 1989). In 4D, computing this from first principles is the Millennium Prize problem."
+  },
+  {
+    "id": "area-law",
+    "lineStart": 148,
+    "lineEnd": 158,
+    "type": "theorem",
+    "content": "The exact area law: $W(A) < W(0)$ for positive area, coupling, and Casimir. This proves confinement in 2D from the Migdal formula alone."
+  },
+  {
+    "id": "casimir-scaling",
+    "lineStart": 188,
+    "lineEnd": 193,
+    "type": "theorem",
+    "content": "Casimir scaling: $\\sigma_{\\text{adj}}/\\sigma_{\\text{fund}} = 16/9$ in SU(2). This ratio is exact in 2D and approximately observed in 4D lattice QCD (Bali 2000)."
+  },
+  {
+    "id": "partition-fn-decays",
+    "lineStart": 240,
+    "lineEnd": 253,
+    "type": "theorem",
+    "content": "The partition function decays monotonically: $Z(A) < Z(0)$ for $A > 0$, because non-trivial representations are suppressed while the trivial representation contributes 1 regardless of area. This argument is specific to 2D."
+  }
+]

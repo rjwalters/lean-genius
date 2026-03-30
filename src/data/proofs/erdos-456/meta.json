@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/456",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "dateUpdated": "2026-03-28",
+    "dateUpdated": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -65,7 +65,7 @@
       "Formalized all three conjectures as ErdosProblem456_Part1/2/3",
       "Created Aristotle companion for van_doorn_power_of_two and density_implies_witness",
       "Proved almostAll_infinitely_often: density-0 exceptions → infinitely many witnesses (pigeonhole)",
-      "Eliminated erdos_strict_inequality axiom (4→3): part1_implies_infinitely_many now proved from AlmostAll hypothesis"
+      "Eliminated erdos_strict_inequality axiom (3→2): part1_implies_infinitely_many now proved from AlmostAll hypothesis via almostAll_infinitely_often pigeonhole lemma"
     ],
     "mathContext": {
       "field": "Number Theory",
@@ -108,7 +108,7 @@
       }
     ],
     "axiomCount": 2,
-    "lineCount": 290,
+    "lineCount": 275,
     "assumptions": "2 axioms: linnik_bound (Linnik's theorem), m_over_n_diverges (Erdős density result). Dirichlet's theorem now proved from Mathlib's PrimesInAP. 9 formerly-axiom properties proved (8 from sInf well-ordering + Dirichlet from Mathlib)."
   },
   "overview": {
@@ -130,53 +130,53 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Namespace",
-      "startLine": 28,
-      "endLine": 34,
-      "summary": "Imports `Nat.Prime.Basic` for the `Nat.Prime` predicate and `Nat.Totient` for Euler's totient function $\\varphi$. Opens `Nat` namespace for convenience."
-    },
-    {
-      "id": "core-functions",
+      "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 35,
-      "endLine": 49,
+      "startLine": 49,
+      "endLine": 61,
       "summary": "Defines `smallestPrimeMod1 n` $= \\inf\\{p : p$ prime, $n \\mid p - 1\\}$ and `smallestTotientDiv n` $= \\inf\\{m > 0 : n \\mid \\varphi(m)\\}$ via `sInf`. Both are noncomputable (depend on Dirichlet's theorem for well-definedness)."
     },
     {
-      "id": "pn-properties",
-      "title": "Properties of $p_n$",
-      "startLine": 50,
-      "endLine": 70,
-      "summary": "Axiomatizes Dirichlet's theorem (infinitely many primes $\\equiv 1 \\pmod{n}$) and three properties of $p_n$: `smallestPrimeMod1_prime` ($p_n$ is prime), `smallestPrimeMod1_cong` ($n \\mid p_n - 1$), `smallestPrimeMod1_minimal` ($p_n \\le p$ for any prime $p \\equiv 1$)."
+      "id": "deep-axioms",
+      "title": "Deep Axioms (2 remaining)",
+      "startLine": 63,
+      "endLine": 88,
+      "summary": "Two deep axioms that cannot be proved from Mathlib: `linnik_bound` ($p_n \\le n^L$ for some constant $L$, Linnik 1944) and `m_over_n_diverges` ($m_n/n \\to \\infty$ for almost all $n$, Erdős 1979). Dirichlet's theorem `dirichlet_primes_mod1` is now a proved theorem using Mathlib's `Nat.forall_exists_prime_gt_and_modEq` from `PrimesInAP`."
     },
     {
-      "id": "mn-properties",
-      "title": "Properties of $m_n$",
-      "startLine": 71,
-      "endLine": 87,
-      "summary": "Axiomatizes three properties of $m_n$: `smallestTotientDiv_pos` ($m_n > 0$), `smallestTotientDiv_divides` ($n \\mid \\varphi(m_n)$), `smallestTotientDiv_minimal` ($m_n \\le m$ for any $m > 0$ with $n \\mid \\varphi(m)$)."
+      "id": "proved-properties",
+      "title": "Proved Properties (9 formerly axioms)",
+      "startLine": 90,
+      "endLine": 160,
+      "summary": "Nine properties formerly stated as axioms, now all proved from `sInf` well-ordering and Dirichlet's theorem: `primes_mod1_nonempty`, `totient_div_set_nonempty`, `smallestPrimeMod1_{prime,cong,minimal}` ($p_n$ is prime, $n \\mid p_n - 1$, minimality), `smallestTotientDiv_{pos,divides,minimal}` ($m_n > 0$, $n \\mid \\varphi(m_n)$, minimality), and `m_le_p` ($m_n \\le p_n$)."
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "startLine": 88,
-      "endLine": 119,
-      "summary": "States four known results: `m_le_p` ($m_n \\le p_n$, trivial), `linnik_bound` ($p_n \\le n^L$), `m_over_n_diverges` ($m_n/n \\to \\infty$ a.a.), `van_doorn_power_of_two` ($m_n \\le 2n$ for $n = 2^{2k+1}$). The former `erdos_strict_inequality` axiom was eliminated by proving `almostAll_infinitely_often`."
+      "id": "van-doorn",
+      "title": "Van Doorn's Result",
+      "startLine": 162,
+      "endLine": 183,
+      "summary": "Proves `van_doorn_power_of_two`: for $n = 2^{2k+1}$, $m_n \\le 2n$. Uses $\\varphi(2^{2k+2}) = 2^{2k+1} = n$ via `Nat.totient_prime_pow_succ` and minimality of $m_n$."
     },
     {
       "id": "density",
       "title": "Natural Density",
-      "startLine": 120,
-      "endLine": 129,
-      "summary": "Defines `AlmostAll P`: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall M \\ge N,\\, |\\{n < M : \\neg P(n)\\}| < M$. This encodes 'the exceptional set has density $0$' in the natural density sense."
+      "startLine": 185,
+      "endLine": 211,
+      "summary": "Defines `AlmostAll P`: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall M \\ge N,\\, |\\{n < M : \\neg P(n)\\}| < \\varepsilon M$. Proves `almostAll_mono`: if $P \\Rightarrow Q$ pointwise, then `AlmostAll P` $\\Rightarrow$ `AlmostAll Q`."
     },
     {
       "id": "conjectures",
       "title": "The Three Erdős Conjectures",
-      "startLine": 130,
-      "endLine": 168,
-      "summary": "Defines `ErdosProblem456_Part1`: $m_n < p_n$ for a.a. $n$. `Part2`: $p_n/m_n \\to \\infty$ for a.a. $n$ (formalized as $\\forall C,\\, C \\cdot m_n \\le p_n$ a.a.). `Part3`: infinitely many 'rigid' primes $p$ with unique preimage $n = p - 1$. Proves `part2_implies_part1` and `part1_implies_infinitely_many` (via `almostAll_infinitely_often` pigeonhole lemma)."
+      "startLine": 213,
+      "endLine": 248,
+      "summary": "Defines `ErdosProblem456_Part1` ($m_n < p_n$ a.a.), `Part2` ($p_n/m_n \\to \\infty$ a.a.), `Part3` (infinitely many rigid primes). Proves `part2_implies_part1` (specialize at $C=2$, use $m_n \\ge 1$) and `part1_implies_infinitely_many` (via `almostAll_infinitely_often` pigeonhole lemma, no axiom dependency)."
+    },
+    {
+      "id": "pigeonhole",
+      "title": "Density Implies Infinitely Many",
+      "startLine": 249,
+      "endLine": 288,
+      "summary": "Proves `almostAll_infinitely_often`: if $P$ holds for almost all $n$, then for every $N$ there exists $n \\ge N$ with $P(n)$. Proof by contradiction via pigeonhole: take $\\varepsilon = 1/2$, $M = \\max(N_0, 2N+1)$; if no witness in $[N, M)$, exceptions $\\ge M - N > M/2$, contradicting the density bound."
     }
   ],
   "conclusion": {
@@ -198,7 +198,7 @@
       "Nat"
     ],
     "namespace": "Erdos456",
-    "lineCount": 282,
+    "lineCount": 275,
     "axiomCount": 2,
     "theoremCount": 16,
     "definitionCount": 8

@@ -115,19 +115,8 @@ theorem basic_distance_bound (n : ℕ) (_hn : 2 ≤ n)
 /-- Zach Hunter showed the conjecture as stated is false:
     n points equally spaced on a circle satisfy NoConcyclicTriple
     but determine only n/2 distinct distances (not (1+c)n/2) -/
-axiom hunter_counterexample :
-  ∀ε > 0, ∀ᶠ n in Filter.atTop,
-    ∃ P : PointConfig n,
-      Function.Injective P ∧ NoConcyclicTriple P ∧
-      (distinctDistances P).card ≤ n / 2 + 1
-
 /- ## The Erdős–Pach Conjecture (Corrected Form) -/
 
 /-- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
     that no 4 points are concyclic (and no 3 collinear), do the points
     determine at least (1+c)n/2 distinct distances? -/
-axiom ErdosProblem655_corrected (c : ℝ) (hc : c > 0) :
-  ∀ᶠ n in Filter.atTop,
-    ∀ P : PointConfig n,
-      Function.Injective P → NoFourConcyclic P →
-        (1 + c) * (n : ℝ) / 2 ≤ ((distinctDistances P).card : ℝ)

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 108 theorems, 3 deep axioms, 0 sorries. Axioms: main conjecture (OPEN), expProd density (deep), Selfridge Ω-barrier computation. Comprehensive formalization.",
+    "progressSummary": "COMPLETE: 108 theorems, 1 axiom (open conjecture), 0 sorries. Eliminated 2 unused axioms (3→1).",
     "builtItems": [
       "Proved erdos_413_epsilon_variant from erdos_413_conjecture (take ε=1)",
       "Proved erdos_413_main as ⟨erdos_413_conjecture, erdos_413_epsilon_variant⟩",
@@ -76,10 +76,10 @@
     {
       "path": "Proofs/Erdos413Problem.lean",
       "filename": "Erdos413Problem.lean",
-      "lineCount": 1114,
+      "lineCount": 1116,
       "theoremCount": 108,
-      "axiomCount": 3,
-      "defCount": 17,
+      "axiomCount": 1,
+      "defCount": 19,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos413Problem.lean"

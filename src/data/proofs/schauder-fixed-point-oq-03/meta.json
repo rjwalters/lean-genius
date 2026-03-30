@@ -1,0 +1,99 @@
+{
+  "id": "schauder-fixed-point-oq-03",
+  "title": "Kakutani Fixed Point Theorem for Set-Valued Maps",
+  "slug": "schauder-fixed-point-oq-03",
+  "description": "Formalizes the Kakutani fixed point theorem framework: set-valued maps, upper hemicontinuity, and the main theorem for compact convex sets. Recovers Brouwer as a corollary.",
+  "meta": {
+    "author": "Kakutani (1941)",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SchauderFixedPointOQ03.lean",
+    "tags": [
+      "fixed-point",
+      "kakutani",
+      "set-valued-map",
+      "game-theory",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 171,
+    "assumptions": "1 axiom: kakutani_finite_dim. 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Set-valued map framework with graph, values properties",
+      "Upper hemicontinuity definition and continuous-is-UHC proof",
+      "Brouwer from Kakutani corollary",
+      "Nash equilibrium existence sketch"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Kakutani (1941) generalized Brouwer's theorem to set-valued maps. Nash (1950) used it to prove existence of Nash equilibria.",
+    "problemStatement": "Formalize the Kakutani fixed point theorem for set-valued maps.",
+    "text": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
+    "proofStrategy": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
+    "keyInsights": []
+  },
+  "sections": [
+    {
+      "id": "set-valued",
+      "title": "Set-Valued Maps",
+      "startLine": 23,
+      "endLine": 55,
+      "summary": "Set-Valued Maps"
+    },
+    {
+      "id": "uhc",
+      "title": "Upper Hemicontinuity",
+      "startLine": 57,
+      "endLine": 82,
+      "summary": "Upper Hemicontinuity"
+    },
+    {
+      "id": "fixed-points",
+      "title": "Fixed Points",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "Fixed Points"
+    },
+    {
+      "id": "kakutani",
+      "title": "Kakutani's Theorem",
+      "startLine": 100,
+      "endLine": 132,
+      "summary": "Kakutani's Theorem"
+    },
+    {
+      "id": "brouwer",
+      "title": "Recovering Brouwer",
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "Recovering Brouwer"
+    }
+  ],
+  "conclusion": {
+    "summary": "Kakutani framework formalized with 1 axiom (the main theorem). Brouwer recovered as corollary. Nash equilibrium connection sketched.",
+    "openQuestions": [
+      "Prove kakutani_finite_dim from Brouwer via simplicial approximation"
+    ],
+    "implications": ""
+  },
+  "crossReferences": [
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "parent-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "KakutaniFixedPoint",
+    "lineCount": 171,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 8
+  }
+}

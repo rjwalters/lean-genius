@@ -41,7 +41,8 @@
     "de-moivre",
     "de-moivre-oq-01",
     "de-moivre-oq-02",
-    "de-moivre-oq-03"
+    "de-moivre-oq-03",
+    "de-moivre-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -95,6 +96,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
     }
   ]
 }

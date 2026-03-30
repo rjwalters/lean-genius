@@ -19,7 +19,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 176,
     "erdosUrl": "https://erdosproblems.com/176",
     "erdosProblemStatus": "open",
@@ -56,7 +56,7 @@
       "szemeredi_theorem axiom: positive density sets contain arbitrarily long APs"
     ],
     "axiomCount": 8,
-    "lineCount": 311,
+    "lineCount": 298,
     "references": [
       {
         "title": "A note on a conjecture of Erdős",
@@ -82,7 +82,7 @@
         "description": "Proves the Erdős Discrepancy Conjecture: every infinite ±1 sequence has unbounded discrepancy on homogeneous APs"
       }
     ],
-    "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",
@@ -202,7 +202,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos176",
-    "lineCount": 311,
+    "lineCount": 298,
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 12

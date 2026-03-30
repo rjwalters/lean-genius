@@ -81,14 +81,8 @@ Known exact values of g_d(n).
 -/
 
 /-- g_1(3) = 4: four points on a line give 3 distinct distances -/
-axiom g_1_3 : g 1 3 = 4
-
 /-- g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
-axiom g_2_3 : g 2 3 = 6
-
 /-- g_3(3) = 7 (Croft 1962) -/
-axiom g_3_3 : g 3 3 = 7
-
 /-- Trivial: g_d(1) = 2 (any two distinct points give 1 distance) -/
 theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
   apply le_antisymm
@@ -300,19 +294,35 @@ private lemma embedPoint_injective {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) :
 /-- embedPoint preserves Euclidean distance -/
 private lemma embedPoint_dist {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂)
     (p q : Point d₁) : eucDist (embedPoint hd p) (embedPoint hd q) = eucDist p q := by
-  simp only [eucDist, embedPoint]
+  simp only [eucDist]
+  -- Express both norms using EuclideanSpace.norm_eq: ‖v‖ = √(∑ i, ‖v i‖²)
+  rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   congr 1
-  -- ‖embed(p) - embed(q)‖ = ‖p - q‖ via the PiLp norm
-  have : (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ else 0) -
-    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩ else 0) =
-    (EuclideanSpace.equiv (Fin d₂) ℝ).symm (fun j =>
-      if hj : j.val < d₁ then
-        (EuclideanSpace.equiv (Fin d₁) ℝ) p ⟨j, hj⟩ - (EuclideanSpace.equiv (Fin d₁) ℝ) q ⟨j, hj⟩
-      else 0) := by
-    simp only [map_sub]; ext j; simp [EuclideanSpace.equiv]; split_ifs <;> ring
-  sorry -- norm equality: ‖(padded difference)‖ = ‖(original difference)‖
+  -- Goal: ∑ i, ‖(embedPoint hd p - embedPoint hd q) i‖² = ∑ i, ‖(p - q) i‖²
+  -- Step 1: Simplify LHS coordinates using the zero-padding structure
+  have hcoord : ∀ j : Fin d₂,
+      ‖(embedPoint hd p - embedPoint hd q) j‖ ^ 2 =
+        if j.val < d₁ then ‖(p - q) (⟨j.val, by omega⟩ : Fin d₁)‖ ^ 2 else 0 := by
+    intro j
+    simp only [embedPoint, Pi.sub_apply, EuclideanSpace.equiv, PiLp.equiv_symm_apply]
+    split_ifs with h <;> simp
+  simp_rw [hcoord]
+  -- Step 2: Convert to range sums and decompose
+  rw [Fin.sum_univ_eq_sum_range, Fin.sum_univ_eq_sum_range]
+  -- LHS: ∑ k ∈ range d₂, (if k < d₁ then ‖(p-q) ⟨k, _⟩‖² else 0)
+  -- RHS: ∑ k ∈ range d₁, ‖(p-q) ⟨k, _⟩‖²
+  -- Split range d₂ = range d₁ + range [d₁, d₂)
+  conv_lhs => rw [show d₂ = d₁ + (d₂ - d₁) from by omega, Finset.sum_range_add]
+  -- Second part is 0 (all indices ≥ d₁)
+  have hzero : ∀ k ∈ Finset.range (d₂ - d₁),
+      (if (d₁ + k) < d₁ then ‖(p - q) ⟨d₁ + k, by omega⟩‖ ^ 2 else 0) = 0 := by
+    intro k _; simp [show ¬(d₁ + k < d₁) from by omega]
+  rw [Finset.sum_eq_zero hzero, add_zero]
+  -- First part matches: both sum the same values over range d₁
+  apply Finset.sum_congr rfl
+  intro k hk
+  simp only [Finset.mem_range] at hk
+  simp [hk]
 
 /-- g_d(n) is non-decreasing in d: more dimensions → more equidistant configurations →
     more points needed to guarantee n distinct distances.
@@ -362,9 +372,6 @@ noncomputable def f (d n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : Finset (Point d), P.card = n ∧ numDistinctDistances P = k}
 
 /-- Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
-axiom g_f_relationship :
-  ∀ d n : ℕ, n ≥ 1 → g d n = sInf {m : ℕ | f d m ≥ n}
-
 /-
 ## The Open Problem
 

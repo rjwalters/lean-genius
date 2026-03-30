@@ -74,7 +74,8 @@
       "fano_dual_property: any two distinct Fano lines meet in exactly 1 point",
       "fano_vertex_degree: each vertex has degree 3 (on exactly 3 lines)",
       "fano_edge_count: exactly 7 triples"
-    ]
+    ],
+    "lineCount": 307
   },
   "references": [
     {
@@ -100,37 +101,44 @@
     {
       "id": "definitions",
       "title": "3-Uniform Hypergraph Definitions",
-      "description": "Definitions of 3-uniform hypergraphs, the friendship property, and universal vertices."
+      "description": "Definitions of 3-uniform hypergraphs, the friendship property, and universal vertices.",
+      "summary": "3-Uniform Hypergraph Definitions"
     },
     {
       "id": "fano-plane",
       "title": "The Fano Plane",
-      "description": "Construction of the Fano plane PG(2,2) as a 3-uniform hypergraph on 7 vertices with 7 triples."
+      "description": "Construction of the Fano plane PG(2,2) as a 3-uniform hypergraph on 7 vertices with 7 triples.",
+      "summary": "The Fano Plane"
     },
     {
       "id": "friendship-verification",
       "title": "Friendship Property Verification",
-      "description": "Proof that every pair of Fano plane vertices is in exactly one triple."
+      "description": "Proof that every pair of Fano plane vertices is in exactly one triple.",
+      "summary": "Friendship Property Verification"
     },
     {
       "id": "no-universal",
       "title": "No Universal Vertex",
-      "description": "Proof that no vertex belongs to all 7 Fano triples."
+      "description": "Proof that no vertex belongs to all 7 Fano triples.",
+      "summary": "No Universal Vertex"
     },
     {
       "id": "counterexample",
       "title": "The Main Counterexample",
-      "description": "The friendship theorem does NOT generalize to 3-uniform hypergraphs."
+      "description": "The friendship theorem does NOT generalize to 3-uniform hypergraphs.",
+      "summary": "The Main Counterexample"
     },
     {
       "id": "properties",
       "title": "Fano Plane Properties",
-      "description": "Edge count (7), vertex degree (3), 3-regularity, and the dual property."
+      "description": "Edge count (7), vertex degree (3), 3-regularity, and the dual property.",
+      "summary": "Fano Plane Properties"
     },
     {
       "id": "counting",
       "title": "General Counting Arguments",
-      "description": "Vertex degree and triple count formulas for friendship 3-hypergraphs."
+      "description": "Vertex degree and triple count formulas for friendship 3-hypergraphs.",
+      "summary": "General Counting Arguments"
     }
   ],
   "overview": {
@@ -158,6 +166,7 @@
       "Characterize all friendship 3-hypergraphs (Steiner triple systems)",
       "Study friendship k-hypergraphs for k >= 4",
       "Determine which structural properties of friendship graphs DO generalize"
-    ]
+    ],
+    "implications": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). This is fully verified in Lean 4 with 0 sorries and 0 axioms."
   }
 }

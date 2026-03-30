@@ -9,16 +9,28 @@
     "date": "1545",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ02.lean",
-    "tags": ["algebra", "cubic-equations", "complex-numbers", "cardano-formula", "casus-irreducibilis", "galois-theory", "research"],
+    "tags": [
+      "algebra",
+      "cubic-equations",
+      "complex-numbers",
+      "cardano-formula",
+      "casus-irreducibilis",
+      "galois-theory",
+      "research"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
     "theoremCount": 11,
     "defCount": 7,
-    "lineCount": 199,
+    "lineCount": 178,
     "dateAdded": "2026-03-28",
     "assumptions": "3 axioms: trigRoots_distinct (cosine injectivity), trigRoot_is_root (triple angle identity), wantzel_casus_irreducibilis (Galois theory). No sorries.",
-    "prerequisites": ["Depressed cubic and Cardano's formula", "Complex numbers and cube roots", "Discriminant of polynomial equations"],
+    "prerequisites": [
+      "Depressed cubic and Cardano's formula",
+      "Complex numbers and cube roots",
+      "Discriminant of polynomial equations"
+    ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -37,8 +49,28 @@
   "sections": [],
   "conclusion": {
     "summary": "The casus irreducibilis demonstrates that complex numbers are not just a convenience but a necessity: some real polynomial equations with entirely real roots cannot be solved without passing through the complex numbers.",
-    "openQuestions": ["Formalize Wantzel's theorem using Lean's Galois theory infrastructure", "Extend to quartics: when does the quartic casus irreducibilis occur?"]
+    "openQuestions": [
+      "Formalize Wantzel's theorem using Lean's Galois theory infrastructure",
+      "Extend to quartics: when does the quartic casus irreducibilis occur?"
+    ],
+    "implications": "The casus irreducibilis demonstrates that complex numbers are not just a convenience but a necessity: some real polynomial equations with entirely real roots cannot be solved without passing through the complex numbers."
   },
-  "leanFile": {"imports": ["Mathlib.Analysis.SpecialFunctions.Pow.Complex", "Mathlib.Data.Complex.Basic"], "namespace": "CasusIrreducibilis", "lineCount": 199, "axiomCount": 3, "theoremCount": 11, "definitionCount": 7},
-  "crossReferences": [{"targetId": "solution-of-cubic", "relationship": "extends", "description": "The casus irreducibilis is a fundamental limitation of Cardano's cubic formula from the parent proof"}]
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Data.Complex.Basic"
+    ],
+    "namespace": "CasusIrreducibilis",
+    "lineCount": 178,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "extends",
+      "description": "The casus irreducibilis is a fundamental limitation of Cardano's cubic formula from the parent proof"
+    }
+  ]
 }

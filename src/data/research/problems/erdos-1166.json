@@ -29,15 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Axiom elimination: 12→8 (7 axiom declarations + 1 structure field). Converted RandomWalk to structure, removed 2 orphan axioms. 1 sorry remains (erdos1166_from_ingredients counting argument).",
+    "progressSummary": "PROGRESS: Axiom elimination 8→6 total. erdos1166_main now theorem, polya_recurrence removed as orphan.",
     "builtItems": [
       "Refactored RandomWalk from 3 axioms to structure with trajectory field + starts_at_origin hypothesis",
-      "Removed 2 orphan axioms (erdosTaylor_upper_bound, maxVisitCount_tendsto_infty)"
+      "Removed 2 orphan axioms (erdosTaylor_upper_bound, maxVisitCount_tendsto_infty)",
+      "Promoted erdos1166_main from axiom to theorem (one-liner proof)",
+      "Removed polya_recurrence orphan axiom (8→6 total assumptions)"
     ],
     "insights": [
       "RandomWalk/trajectory/walk_starts_at_origin converted to structure: 3 axiom declarations → 1 structure-encoded assumption",
       "erdosTaylor_upper_bound removed: implied by erdosTaylor_constant via erdosTaylor_implies_bound (already proved in file)",
-      "maxVisitCount_tendsto_infty removed: unused, follows from polya_recurrence by induction on return times"
+      "maxVisitCount_tendsto_infty removed: unused, follows from polya_recurrence by induction on return times",
+      "erdos1166_main proved as theorem: erdos1166_from_ingredients mostVisited_bounded_eventually (erdosTaylor_implies_bound erdosTaylor_constant)",
+      "polya_recurrence removed as orphan axiom: not used by any theorem in the proof chain"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -68,10 +72,10 @@
     {
       "path": "Proofs/Erdos1166Problem.lean",
       "filename": "Erdos1166Problem.lean",
-      "lineCount": 538,
-      "theoremCount": 22,
-      "axiomCount": 7,
-      "defCount": 5,
+      "lineCount": 548,
+      "theoremCount": 25,
+      "axiomCount": 3,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1166Problem.lean"

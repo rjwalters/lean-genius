@@ -1,0 +1,118 @@
+{
+  "slug": "wilsons-theorem-oq-01",
+  "title": "Can we formalize the generalized Wilson theorem for prime powers: $(p^k - 1)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Can we formalize the generalized Wilson theorem for prime powers: $(p^k - 1).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T01:04:30.790Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: File was already sorry-free and axiom-free. The problem data was stale — no actual research work needed.",
+    "builtItems": [],
+    "insights": [
+      "WilsonsTheoremOQ01.lean is already sorry-free (0 sorries, 0 axioms). The problem JSON showing 1 sorry was stale.",
+      "File contains 33 theorems covering: composite factorial vanishing, n=4 special case, complete classification, Wilson quotient, Wilson primes (5, 13, 563), Gauss generalization via ZMod.isCyclic_units_iff"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "modular-arithmetic",
+    "classic",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.790Z",
+  "lastUpdate": "2026-03-30T01:04:30.790Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/WilsonsTheorem.lean",
+      "filename": "WilsonsTheorem.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheorem.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ01.lean",
+      "filename": "WilsonsTheoremOQ01.lean",
+      "lineCount": 689,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02.lean",
+      "filename": "WilsonsTheoremOQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02Ext.lean",
+      "filename": "WilsonsTheoremOQ02Ext.lean",
+      "lineCount": 540,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ04.lean",
+      "filename": "WilsonsTheoremOQ04.lean",
+      "lineCount": 68,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ04.lean"
+    }
+  ]
+}

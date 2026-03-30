@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/726",
     "axiomCount": 2,
     "badge": "axiom",
-    "assumptions": "6 axioms: mertens_theorem, erdos_726_conjecture, upper_half_count, and 3 more. See Lean source for complete statements.",
+    "assumptions": "2 axioms: mertens_theorem (Mertens' classical ∑1/p ~ log log n) and erdos_726_conjecture (the open EGRS conjecture). All other results are proved theorems.",
     "proofRepoPath": "Proofs/Erdos726Problem.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 316
@@ -61,40 +61,40 @@
     {
       "id": "residue-properties",
       "title": "Basic Residue Properties",
-      "startLine": 75,
-      "endLine": 93,
-      "summary": "Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, and that the upper half contains exactly $(p-1)/2$ elements for odd primes — the 1/2 probability underlying the heuristic.",
-      "mathContext": "Verified: Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, and that the upper half contains exactly $(p-1)/2$ elements for odd primes — the 1/2 probability underlying the heuristic."
+      "startLine": 74,
+      "endLine": 109,
+      "summary": "Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, that odd primes have exactly $(p-1)/2$ upper-half residues, and that $p=2$ has none.",
+      "mathContext": "Verified: Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, that odd primes have exactly $(p-1)/2$ upper-half residues, and that $p=2$ has none."
     },
     {
       "id": "sum-partition",
       "title": "Sum Partition and Bounds",
-      "startLine": 99,
-      "endLine": 157,
+      "startLine": 111,
+      "endLine": 172,
       "summary": "Proves nonnegativity of all three sums, bounds $U(n), L(n) \\le M(n)$, and handles base cases $n < 2$. Uses $\\text{Finset.sum\\_nonneg}$ and $\\text{positivity}$ tactic throughout.",
       "mathContext": "Verified: Proves nonnegativity of all three sums, bounds $U(n), L(n) \\le M(n)$, and handles base cases $n < 2$. Uses $\\text{Finset.sum\\_nonneg}$ and $\\text{positivity}$ tactic throughout."
     },
     {
       "id": "heuristic",
       "title": "Uniform Residue Heuristic",
-      "startLine": 162,
-      "endLine": 165,
-      "summary": "For odd prime $p$, the fraction of nonzero residues in the upper half is exactly $1/2$. Heuristically each prime contributes to $U(n)$ with probability $1/2$; rigorizing requires controlling inter-prime correlations.",
-      "mathContext": "For odd prime $p$, the fraction of nonzero residues in the upper half is exactly $1/2$. Heuristically each prime contributes to $U(n)$ with probability $1/2$; rigorizing requires controlling inter-prime correlations."
+      "startLine": 174,
+      "endLine": 189,
+      "summary": "For odd prime $p$, the fraction of nonzero residues in the upper half is exactly $1/2$. The proof uses upper_half_count and field_simp to compute the ratio.",
+      "mathContext": "Verified: For odd prime $p$, the fraction of nonzero residues in the upper half is exactly $1/2$. Proved via upper_half_count and Nat.cast_div."
     },
     {
       "id": "implications",
       "title": "Implications of the Conjecture",
-      "startLine": 171,
-      "endLine": 180,
-      "summary": "The EGRS conjecture implies $L(n) \\sim (\\log\\log n)/2$ and $U(n)/M(n) \\to 1/2$: an equidistribution of prime reciprocal weight across the two halves of the residue range.",
-      "mathContext": "The EGRS conjecture implies $L(n) \\sim (\\log\\$\\log n$)/2$ and $U(n)/M(n) \\to 1/2$: an equidistribution of prime reciprocal weight across the two halves of the residue range."
+      "startLine": 191,
+      "endLine": 289,
+      "summary": "Proves that the EGRS conjecture implies: (1) $L(n) \\sim (\\log\\log n)/2$, (2) $|U-L| \\to 0$, and (3) $U(n)/M(n) \\to 1/2$. All three are proved theorems using triangle inequality and limit arguments.",
+      "mathContext": "Verified: The EGRS conjecture (with Mertens) implies $L(n) \\sim (\\log\\log n)/2$, $U-L \\to 0$, and $U/M \\to 1/2$. All proved via $\\varepsilon$-$\\delta$ arguments with triangle inequality."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity and Growth",
-      "startLine": 186,
-      "endLine": 202,
+      "startLine": 291,
+      "endLine": 311,
       "summary": "Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$).",
       "mathContext": "Verified: Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$)."
     }
@@ -103,13 +103,13 @@
     "historicalContext": "This conjecture was formulated by Erdős, Graham, Ruzsa, and Straus in their 1975 paper 'On the prime factors of C(2n, n),' where they studied the prime factorization of central binomial coefficients. The question asks for a quantitative equidistribution result: not merely that residues n mod p are roughly uniform over {0, ..., p−1} (which follows from the Chinese Remainder Theorem for coprime moduli), but that the prime reciprocal sum restricted to each half of the residue range is exactly half of Mertens' classical sum ∑ 1/p ~ log log n. The heuristic argument is compelling — for an odd prime p, exactly (p−1)/2 of the p−1 nonzero residues lie in the upper half (p/2, p), giving probability 1/2 for each prime. If these events were independent across primes, the conclusion would follow immediately. The difficulty is that n mod p₁ and n mod p₂ are not truly independent (they are determined by the same n), though CRT ensures joint independence for any finite set of primes. Controlling the error accumulated over all primes ≤ n requires tools from analytic number theory, potentially including the Bombieri-Vinogradov theorem or large sieve inequalities. The conjecture remains open after over 50 years.",
     "problemStatement": "As $n \\to \\infty$, prove that $\\sum_{\\substack{p \\le n,\\, p \\text{ prime} \\\\ n \\bmod p \\in (p/2, p)}} \\frac{1}{p} \\sim \\frac{\\log\\log n}{2}$.",
     "text": "For n → ∞, is Σ_{p≤n, n mod p ∈ (p/2,p)} 1/p ~ (log log n)/2? The upper half residues should contribute exactly half of Mertens' sum. Erdős–Graham–Ruzsa–Straus (1975). Status: OPEN.",
-    "proofStrategy": "The formalization defines the upper-half residue predicate (with decidable instance for computation), the three weighted sums U(n), L(n), M(n), and states both Mertens' theorem and the EGRS conjecture as ε-N asymptotic formulas. It proves structural properties: residue bounds, sum nonnegativity, partition bounds, monotonicity, and positivity. The heuristic half-fraction and implications (lower half, ratio) are stated as axioms.",
+    "proofStrategy": "The formalization defines the upper-half residue predicate (with decidable instance for computation), the three weighted sums U(n), L(n), M(n), and states both Mertens' theorem and the EGRS conjecture as ε-N asymptotic formulas. It proves 19 theorems including: residue bounds, sum nonnegativity, the M=U+L partition, that each odd prime has exactly (p-1)/2 upper-half residues (heuristic_half_fraction), and that the conjecture implies L(n)~(log log n)/2, U-L→0, and U/M→1/2.",
     "keyInsights": [
       "**Mertens baseline**: $\\sum_{p \\le n} 1/p \\sim \\log\\log n$ provides the total; the conjecture says the upper half gets exactly $1/2$ of this slowly growing sum",
       "**Half-fraction is exact**: For odd prime $p$, exactly $(p-1)/2$ of $p-1$ nonzero residues exceed $p/2$, giving probability $1/2$ per prime — the heuristic is not approximate but exact for each prime",
       "**Independence is the challenge**: CRT gives joint independence of residues for any finite set of primes, but controlling the accumulated error over all $\\pi(n)$ primes requires analytic tools",
       "**Partition symmetry**: $U(n) + L(n) = M(n)$ exactly, so proving the conjecture for either half automatically gives the other — a rare case where two asymptotic statements are equivalent",
-      "**Rich proof structure**: The Lean formalization proves 8 theorems (not just axioms), including monotonicity, positivity, and sum bounds, giving computational verification of the algebraic framework"
+      "**Rich proof structure**: The Lean formalization proves 19 theorems from just 2 axioms, including monotonicity, positivity, sum bounds, the heuristic half-fraction, and conditional implications of the conjecture"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -117,7 +117,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #726 on the equidistribution of prime reciprocal sums across residue halves. The EGRS conjecture (1975) asserts that primes where n has an upper-half residue contribute exactly (log log n)/2 — half of Mertens' total. The formalization proves 8 structural theorems and states the conjecture alongside its heuristic motivation.",
+    "summary": "Formalizes Erdős Problem #726 on the equidistribution of prime reciprocal sums across residue halves. The EGRS conjecture (1975) asserts that primes where n has an upper-half residue contribute exactly (log log n)/2 — half of Mertens' total. The formalization proves 19 theorems from 2 axioms, including residue counting, sum partition, heuristic half-fraction, and conditional implications of the conjecture (lower half asymptotics, ratio convergence).",
     "implications": "A proof would establish a deep quantitative equidistribution result for residues modulo primes, going beyond CRT-based results for fixed sets of primes to a statement about all primes simultaneously. This connects to the Bombieri-Vinogradov theorem, the Elliott-Halberstam conjecture, and the general question of how 'random' a fixed integer n looks modulo varying primes.",
     "openQuestions": [
       "Can the Bombieri-Vinogradov theorem or large sieve inequality be used to control the inter-prime error terms?",
@@ -136,10 +136,10 @@
   "leanFile": {
     "lineCount": 316,
     "structureCount": 0,
-    "axiomCount": 4,
-    "theoremCount": 12,
+    "axiomCount": 2,
+    "theoremCount": 19,
     "lemmaCount": 0,
-    "defCount": 2,
+    "defCount": 6,
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Data.Nat.Prime.Basic",

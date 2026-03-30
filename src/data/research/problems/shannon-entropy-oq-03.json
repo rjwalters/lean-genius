@@ -1,0 +1,135 @@
+{
+  "slug": "shannon-entropy-oq-03",
+  "title": "Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequ...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T01:04:30.790Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)≤H(X)+H(Y)). 3→1 sorries. Remaining sorry: strong_subadditivity needs conditional distributions + per-slice KL divergence.",
+    "builtItems": [
+      "def marginalXY, marginalYZ, marginalY: three-variable marginal distributions",
+      "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) — Lieb-Ruskai",
+      "theorem entropy_chain_rule (sorry): H(X,Y) = H(Y) + H(X|Y) — entropy decomposition",
+      "theorem subadditivity (from entropy_chain_rule): H(X,Y) ≤ H(X) + H(Y)",
+      "theorem entropy_chain_rule (proved): H(X,Y) = H(Y) + H(X|Y) — log splitting + marginal telescoping",
+      "theorem subadditivity (proved): H(X,Y) ≤ H(X) + H(Y) — from chain_rule + conditioning_reduces_entropy"
+    ],
+    "insights": [
+      "SSA is equivalent to I(X;Z|Y) ≥ 0 (conditional MI non-negativity)",
+      "SSA proof strategy: express SSA as conditional KL divergence via Σ_y p(y) D(p(x,z|y) || p(x|y)p(z|y)) ≥ 0",
+      "Subadditivity follows from entropy chain rule + conditioning reduces entropy: H(X,Y) = H(Y) + H(X|Y) ≤ H(Y) + H(X)",
+      "entropy_chain_rule is the key missing piece: H(X,Y) = H(Y) + H(X|Y). Proof: expand log p(x,y) = log p_Y(y) + log(p(x,y)/p_Y(y)) and collect terms.",
+      "entropy_chain_rule proved: split log p(x,y) = log(p(x,y)/p_Y(y)) + log(p_Y(y)), telescoping sum gives marginal entropy",
+      "subadditivity proved: chain_rule + conditioning_reduces_entropy from ShannonEntropy.lean via definitional equality bridge",
+      "SSA requires defining conditional joint p(x,z|y) = p(x,y,z)/p(y) per slice and applying mutual_info_nonneg"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove entropy_chain_rule: term-by-term identity using log splitting, similar to MI chain_rule proof",
+      "Prove strong_subadditivity: define conditional MI, express SSA-deficit as conditional KL divergence, use gibbs_inequality",
+      "Once entropy_chain_rule proved, subadditivity proof completes automatically (calc block uses it)"
+    ]
+  },
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "advanced",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-entropy",
+    "shannon-entropy-oq-02",
+    "shannon-entropy-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.790Z",
+  "lastUpdate": "2026-03-30T01:04:30.790Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 901,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ02.lean",
+      "filename": "ShannonEntropyOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSA.lean",
+      "filename": "ShannonEntropySSA.lean",
+      "lineCount": 342,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSA.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAAristotle.lean",
+      "filename": "ShannonEntropySSAAristotle.lean",
+      "lineCount": 75,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    }
+  ]
+}

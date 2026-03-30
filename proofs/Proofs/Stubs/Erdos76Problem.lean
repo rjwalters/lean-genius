@@ -156,9 +156,10 @@ axiom gruslys_letzter (n : ℕ) (hn : n ≥ 6) :
     (maxPackingSize c : ℝ) ≥ conjecturedBound n * (1 - 1 / n)
 
 /-- The extremal coloring is essentially unique. -/
-axiom extremal_uniqueness (n : ℕ) (hn : n ≥ 6) (c : EdgeColoring (Fin n)) :
+theorem extremal_uniqueness (n : ℕ) (hn : n ≥ 6) (c : EdgeColoring (Fin n)) :
     (maxPackingSize c : ℝ) = conjecturedBound n + o(1) →
     True  -- c is close to balanced coloring (up to isomorphism)
+    := fun _ => trivial
   where
     o : ℝ → ℝ := fun _ => 0
 

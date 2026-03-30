@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 6A all appropriate in parent file, OQ01 has 11T and 2S (Fourier expansion + error bound — deep analytic combinatorics).",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries. All lemmas fully proved including character_orthogonality and reprCount_fourier_expansion.",
     "builtItems": [
       "abs_cos_pi_div_prime_lt_one: |cos(pi/p)| < 1 via strict antitonicity of cos on [0,pi]",
       "erdos_renyi_decay: proved from fourier_error_bound via exists_pow_lt_of_lt_one + pow_le_pow_of_le_one",
@@ -42,7 +42,9 @@
       "abs_cos_mul_pi_div_le: |cos(πm/p)|≤cos(π/p) via strictAntiOn_cos antitoneOn + cos_pi_sub symmetry",
       "fourier_product_bound: ∏|1+ω^{val(ja)}|≤2^k·cos(π/p)^{k-1} by splitting 0∈A case + Finset.prod_le_prod",
       "gEps_pos proved from trivial_lower_bound: log₂(N) ≥ log₂(2) = 1",
-      "Assessment: 6A all appropriate (gEps opaque)"
+      "Assessment: 6A all appropriate (gEps opaque)",
+      "Proved character_orthogonality (c≠0 case) in Erdos1179OQ01.lean",
+      "Proved reprCount_fourier_expansion in Erdos1179OQ01.lean"
     ],
     "insights": [
       "fourier_error_bound axiom was FALSE: missing 2^k/p factor. Counterexample A={1,2} in Z/3Z gives error 2/3 > old bound 1/2",
@@ -57,7 +59,10 @@
       "gEps_pos is redundant: follows immediately from trivial_lower_bound since log₂(N) ≥ 1 for N ≥ 2",
       "6 axioms: gEps (opaque function) + 5 properties. All appropriate since gEps is axiomatized.",
       "Already assessed by prior session: 6A appropriate",
-      "2 sorries in OQ01 are deep Fourier analysis results (character orthogonality, triangle inequality bounds)"
+      "2 sorries in OQ01 are deep Fourier analysis results (character orthogonality, triangle inequality bounds)",
+      "character_orthogonality proved via shift argument (j→j+1 bijection): ψp(c)*S=S gives (ψp(c)-1)*S=0",
+      "reprCount_fourier_expansion proved via product expansion ∏(1+f)=∑_S∏f + character orthogonality + sum swap",
+      "ψp_ne_one proved via Complex.exp_eq_one_iff: if exp(2πi*val(c)/p)=1 then val(c)/p∈ℤ, contradicting 0<val(c)<p"
     ],
     "mathlibGaps": [
       "Discrete Fourier analysis on Z/pZ (character groups, orthogonality) needed to prove fourier_error_bound"
@@ -92,20 +97,20 @@
     {
       "path": "Proofs/Erdos1179OQ01.lean",
       "filename": "Erdos1179OQ01.lean",
-      "lineCount": 526,
+      "lineCount": 710,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ01.lean"
     },
     {
       "path": "Proofs/Erdos1179Problem.lean",
       "filename": "Erdos1179Problem.lean",
-      "lineCount": 331,
+      "lineCount": 317,
       "theoremCount": 10,
-      "axiomCount": 5,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

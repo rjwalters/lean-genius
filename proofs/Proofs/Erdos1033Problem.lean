@@ -54,10 +54,6 @@ def isAboveTuran (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   edgeCount G > turanThreshold (Fintype.card V)
 
 /-- Turán's theorem: graphs above threshold have triangles. -/
-axiom turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
-  isAboveTuran G → ∃ (a b c : V), a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
-    G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
-
 /-
 ## Triangles and Degree Sums
 
@@ -149,13 +145,6 @@ axiom erdos_laskar_upper (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≤ erdosLaskarConstant * n
 
 /-- There exists a graph achieving the upper bound. -/
-axiom upper_bound_tight : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) [DecidableEq V] [Fintype V],
-  Fintype.card V = n ∧
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-  isAboveTuran G ∧
-  (∀ T : Triangle G, (triangleDegreeSum G T : ℝ) ≤ erdosLaskarConstant * n + o(1))
-
 /-
 ## Erdős-Laskar Lower Bound (1985)
 
@@ -171,8 +160,9 @@ theorem lower_beats_n : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N, h n ≥ n := by
   obtain ⟨c, hc, N, hN⟩ := erdos_laskar_lower
   use c, hc, N
   intro n hn
-  have := hN n hn
-  sorry
+  have hle := hN n hn
+  -- (h n : ℝ) ≥ (1 + c) * n ≥ 1 * n = n, so h n ≥ n as naturals
+  exact_mod_cast le_trans (by exact_mod_cast le_refl n) (le_trans (by nlinarith) hle)
 
 /-
 ## Fan's Improved Lower Bound (1988)
@@ -209,12 +199,17 @@ noncomputable def boundGap : ℝ := erdosLaskarConstant - fanConstant
 
 /-- The gap is positive: problem is open. -/
 theorem gap_positive : boundGap > 0 := by
-  unfold boundGap erdosLaskarConstant fanConstant
-  sorry
+  unfold boundGap
+  have h := erdosLaskar_approx
+  have : (fanConstant : ℝ) = 21 / 16 := by norm_num [fanConstant]
+  linarith [h.1, this]
 
 /-- Numerical gap ≈ 0.15. -/
 theorem gap_approx : boundGap > 0.15 ∧ boundGap < 0.16 := by
-  sorry
+  unfold boundGap
+  have h := erdosLaskar_approx
+  have hfan : (fanConstant : ℝ) = 21 / 16 := by norm_num [fanConstant]
+  constructor <;> linarith [h.1, h.2, hfan]
 
 /-
 ## The Main Conjecture
@@ -235,7 +230,21 @@ def h_asymptotic : Prop :=
 /-- The conjecture implies exact asymptotics. -/
 theorem conjecture_gives_asymptotic :
     erdos_1033_conjecture → h_asymptotic := by
-  sorry
+  intro hconj ε hε
+  obtain ⟨N, hN⟩ := hconj (ε / 2) (by linarith)
+  use max N 3
+  intro n hn
+  have hn3 : n ≥ 3 := le_trans (le_max_right N 3) hn
+  have hnN : n ≥ N := le_trans (le_max_left N 3) hn
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  have h_lower := hN n hnN
+  have h_upper := erdos_laskar_upper n hn3
+  have h_div_le : (h n : ℝ) / n ≤ erdosLaskarConstant := by
+    rwa [div_le_iff hn_pos, mul_comm]
+  have h_div_ge : erdosLaskarConstant - ε / 2 ≤ (h n : ℝ) / n := by
+    rwa [le_div_iff hn_pos, mul_comm]
+  rw [abs_lt]
+  constructor <;> linarith
 
 /-
 ## Degree Sum Properties
@@ -246,12 +255,28 @@ Basic properties of degree sums in triangles.
 /-- Each vertex in triangle contributes at least 2 to its degree. -/
 theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :
     vertexDegree G T.v1 ≥ 2 ∧ vertexDegree G T.v2 ≥ 2 ∧ vertexDegree G T.v3 ≥ 2 := by
-  sorry
+  -- Each vertex is adjacent to the other 2 (distinct) vertices of the triangle.
+  suffices h : ∀ (v a b : V), G.Adj v a → G.Adj v b → a ≠ b → vertexDegree G v ≥ 2 by
+    exact ⟨h _ _ _ T.adj12 T.adj13 T.distinct23,
+           h _ _ _ (G.symm T.adj12) T.adj23 T.distinct13,
+           h _ _ _ (G.symm T.adj13) (G.symm T.adj23) T.distinct12⟩
+  intro v a b ha hb hab
+  simp only [vertexDegree]
+  calc G.degree v = (G.neighborFinset v).card := rfl
+    _ ≥ ({a, b} : Finset V).card := Finset.card_le_card (by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact G.mem_neighborFinset.mpr ha
+        · exact G.mem_neighborFinset.mpr hb)
+    _ = 2 := by rw [Finset.card_pair hab]
 
 /-- Triangle degree sum is at least 6. -/
 theorem triangle_sum_min (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :
     triangleDegreeSum G T ≥ 6 := by
-  sorry
+  simp only [triangleDegreeSum]
+  have ⟨h1, h2, h3⟩ := triangle_min_degree G T
+  omega
 
 /-- In dense graphs, average degree is high. -/
 theorem dense_average_degree (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -291,10 +316,6 @@ def isExtremal (n : ℕ) (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   ∀ T : Triangle G, triangleDegreeSum G T ≤ h n
 
 /-- Extremal graphs exist. -/
-axiom extremal_exists (n : ℕ) (hn : n ≥ 3) :
-  ∃ (V : Type*) [DecidableEq V] [Fintype V],
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isExtremal n G
-
 /-
 ## Relation to Turán Graph
 

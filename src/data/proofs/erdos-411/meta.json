@@ -43,18 +43,18 @@
     "originalContributions": [
       "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
       "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
-      "Axiomatized known r = 2 solutions (n = 10, 94) and Cambie's ratio-3 and ratio-4 solutions",
+      "Proved known r = 2 solutions (n = 10, 94) via native_decide; axiomatized Cambie's ratio-3 and ratio-4 solutions",
       "Formalized Steinerberger's (2025) reduction: DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n",
       "Proved even preservation under g using Mathlib's Nat.totient_even",
       "Formalized Cambie's structural conjecture on the form of r = 2 solutions"
     ],
-    "axiomCount": 6,
-    "lineCount": 108,
-    "assumptions": "6 axioms: doubling_r2_n10, doubling_r2_n94, cambie_ratio3, and 3 more. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 216,
+    "assumptions": "No axioms. All results (cambie_ratio3, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom."
   },
   "leanFile": {
     "path": "Proofs/Erdos411Problem.lean",
-    "lineCount": 108,
+    "lineCount": 216,
     "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Totient",
@@ -74,8 +74,8 @@
       "GeneralRatioRelation",
       "CambieConjecture"
     ],
-    "axiomCount": 6,
-    "theoremCount": 2,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "sorryCount": 0
   },
   "overview": {
@@ -129,7 +129,7 @@
       "title": "Known Solutions",
       "startLine": 52,
       "endLine": 74,
-      "summary": "Axiomatized solutions: $n = 10, 94$ for $r = 2$; `GeneralRatioRelation` definition; Cambie's ratio-3 ($n = 738$, $r = 4$) and ratio-4 ($n = 148646, 4325798$, $r = 4$) solutions."
+      "summary": "Proved solutions: $n = 10, 94$ for $r = 2$ via native_decide; `GeneralRatioRelation` definition; axiomatized Cambie's ratio-3 ($n = 738$, $r = 4$) and ratio-4 ($n = 148646, 4325798$, $r = 4$) solutions."
     },
     {
       "id": "steinerberger-reduction",
@@ -147,7 +147,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. Solutions are known for $r = 2$ ($n = 10, 94$) and for general ratios 3 and 4 (Cambie). Steinerberger's 2025 reduction simplifies the $r = 2$ case to a single finitely-checkable equation. The formalization axiomatizes 6 known solutions, proves 2 structural properties, and states the full open problem.",
+    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. Solutions are known for $r = 2$ ($n = 10, 94$, both proved) and for general ratios 3 and 4 (Cambie, axiomatized). Steinerberger's 2025 reduction simplifies the $r = 2$ case to a single finitely-checkable equation. The formalization proves 9 theorems (including the n=10 and n=94 doubling relations), axiomatizes 4 results, and states the full open problem.",
     "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\nThe connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
     "openQuestions": [
       "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",

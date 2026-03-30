@@ -1,44 +1,24 @@
 /-
-Erdős Problem #866: Pairwise Sums Threshold Function
+  Aristotle targets for Erdős Problem #866
+  Routine supporting lemmas for automated proof search.
+  See Erdos866Problem.lean for the main formalization.
 
-Source: https://erdosproblems.com/866
-Status: PARTIALLY SOLVED (specific cases solved, general open)
+  Criteria for inclusion:
+  - NOT the main open conjecture
+  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
+  - Clean theorem statement with no definition sorries
+  - No axioms (use theorem ... := by sorry instead)
 
-Statement:
-For k ≥ 3, let g_k(N) be the minimal value such that if A ⊆ {1,...,2N}
-has |A| ≥ N + g_k(N), then there exist integers b₁,...,b_k such that
-all (k choose 2) pairwise sums b_i + b_j are in A (but the b_i themselves
-need not be in A).
-
-Known Results (Choi-Erdős-Szemerédi):
-- g₃(N) = 2
-- g₄(N) ≪ 1 (van Doorn: g₄(N) ≤ 2032)
-- g₅(N) ≍ log N
-- g₆(N) ≍ N^{1/2}
-- General upper bound: g_k(N) ≪_k N^{1-2^{-k}}
-- For large k and any ε > 0: g_k(N) > N^{1-ε}
-
-The problem is to fully characterize g_k(N) for all k.
-
-References:
-- Choi, Erdős, Szemerédi, "On sums and products of integers" (unpublished)
-- van Doorn, "On the pairwise sum problem" (2020s)
-
-Tags: additive-combinatorics, sumsets, pairwise-sums, threshold-functions
+  Targets:
+  1. upperExponent_increasing: geometric sequence monotonicity
+  2. oddNumbers_card: counting odd numbers in {1,...,2N}
+  3. oddNumbers_no_triple: parity pigeonhole argument
 -/
-
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 open Finset Real
 
 namespace Erdos866
-
-/- ## Part I: Basic Definitions -/
 
 /-- The interval {1, 2, ..., 2N}. -/
 def Interval (N : ℕ) : Finset ℕ :=
@@ -49,226 +29,57 @@ def Interval (N : ℕ) : Finset ℕ :=
 def HasAllPairwiseSums (A : Finset ℕ) (b : Fin k → ℤ) : Prop :=
   ∀ i j : Fin k, i < j → (b i + b j).toNat ∈ A
 
-/-- The condition: A ⊆ {1,...,2N} and |A| ≥ N + g implies existence
-    of b₁,...,b_k with all pairwise sums in A. -/
-def PairwiseSumCondition (k N g : ℕ) : Prop :=
-  ∀ A : Finset ℕ, A ⊆ Interval N → A.card ≥ N + g →
-    ∃ b : Fin k → ℤ, HasAllPairwiseSums A b
-
-/-- g_k(N) is the minimal g such that PairwiseSumCondition holds. -/
-noncomputable def g (k N : ℕ) : ℕ :=
-  Nat.find (⟨2 * N, by
-    intro A hA hcard
-    -- For sufficiently large g, the condition is vacuously true
-    -- when no set can have that many elements
-    sorry
-  ⟩ : ∃ m, PairwiseSumCondition k N m)
-
-/- ## Part II: The Case k = 3 -/
-
-/-- **Theorem (Choi-Erdős-Szemerédi):** g₃(N) = 2 for all N ≥ 1.
-
-    If A ⊆ {1,...,2N} has |A| ≥ N + 2, then there exist integers
-    b₁, b₂, b₃ such that b₁+b₂, b₁+b₃, b₂+b₃ ∈ A. -/
-axiom g3_exact :
-    ∀ N : ℕ, N ≥ 1 → g 3 N = 2
-
-/-- The lower bound g₃(N) ≥ 2 comes from the set of odd numbers. -/
-theorem g3_lower_bound (N : ℕ) (hN : N ≥ 1) : g 3 N ≥ 2 := by
-  -- The set of odd numbers in {1,...,2N} has exactly N elements
-  -- but no three integers have all pairwise sums odd
-  -- (since two odds sum to even)
-  sorry
-
-/- ## Part III: The Case k = 4 -/
-
-/-- **Theorem (Choi-Erdős-Szemerédi):** g₄(N) is bounded by a constant.
-
-    More precisely, g₄(N) ≤ C for some absolute constant C. -/
-axiom g4_bounded :
-    ∃ C : ℕ, ∀ N : ℕ, N ≥ 1 → g 4 N ≤ C
-
-/-- **Theorem (van Doorn):** g₄(N) ≤ 2032.
-
-    This is the current best known explicit bound. -/
-axiom g4_vanDoorn :
-    ∀ N : ℕ, N ≥ 1 → g 4 N ≤ 2032
-
-/- ## Part IV: The Case k = 5 -/
-
-/-- **Theorem (Choi-Erdős-Szemerédi):** g₅(N) ≍ log N.
-
-    There exist constants c₁, c₂ > 0 such that
-    c₁ log N ≤ g₅(N) ≤ c₂ log N for large N. -/
-axiom g5_asymptotic :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-        c₁ * N.log ≤ g 5 N ∧ (g 5 N : ℝ) ≤ c₂ * N.log
-
-/-- The lower bound g₅(N) ≥ c log N comes from the set of odd integers
-    together with powers of 2. This set has about N + log₂ N elements
-    but avoids the configuration. -/
-theorem g5_lower_bound_construction :
-    ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (g 5 N : ℝ) ≥ c * N.log := by
-  obtain ⟨c₁, c₂, hc1, hc2, N₀, hasym⟩ := g5_asymptotic
-  exact ⟨c₁, hc1, N₀, fun N hN => (hasym N hN).1⟩
-
-/- ## Part V: The Case k = 6 -/
-
-/-- **Theorem (Choi-Erdős-Szemerédi):** g₆(N) ≍ N^{1/2}.
-
-    There exist constants c₁, c₂ > 0 such that
-    c₁ √N ≤ g₆(N) ≤ c₂ √N for large N. -/
-axiom g6_asymptotic :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-        c₁ * (N : ℝ).sqrt ≤ g 6 N ∧ (g 6 N : ℝ) ≤ c₂ * (N : ℝ).sqrt
-
-/- ## Part VI: General Upper Bound -/
-
-/-- **Theorem (Choi-Erdős-Szemerédi):** General upper bound.
-
-    For all k ≥ 3, g_k(N) ≪_k N^{1-2^{-k}}.
-
-    The implied constant depends on k. -/
-axiom general_upper_bound :
-    ∀ k : ℕ, k ≥ 3 →
-      ∃ C : ℝ, C > 0 ∧
-        ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-          (g k N : ℝ) ≤ C * (N : ℝ) ^ (1 - (2 : ℝ)⁻¹ ^ k)
+/-- The set of odd numbers in {1,...,2N}. -/
+def oddNumbers (N : ℕ) : Finset ℕ :=
+  (Interval N).filter (fun n => n % 2 = 1)
 
 /-- The exponent 1 - 2^{-k} in the upper bound. -/
 noncomputable def upperExponent (k : ℕ) : ℝ :=
   1 - (2 : ℝ)⁻¹ ^ k
 
+/-
+PROBLEM
+Routine lemma: geometric sequence is strictly decreasing,
+so 1 - (1/2)^k < 1 - (1/2)^(k+1)
+
+PROVIDED SOLUTION
+Unfold upperExponent, then use sub_lt_sub_iff_left to reduce to showing (2⁻¹)^(k+1) < (2⁻¹)^k. Use pow_lt_pow_of_lt_one or pow_lt_pow_right with 0 < 2⁻¹ < 1 and k+1 > k (from hk ≥ 1).
+-/
 theorem upperExponent_increasing (k : ℕ) (hk : k ≥ 1) :
     upperExponent k < upperExponent (k + 1) := by
-  unfold upperExponent
-  simp only [pow_succ]
-  ring_nf
-  sorry
+      exact sub_lt_sub_left ( pow_lt_pow_right_of_lt_one₀ ( by norm_num ) ( by norm_num ) ( by linarith ) ) _
 
-/- ## Part VII: General Lower Bound -/
+/-
+PROBLEM
+Routine lemma: the odd numbers in {1,...,2N} have cardinality N
 
-/-- **Theorem (Choi-Erdős-Szemerédi):** For large k, g_k is nearly linear.
-
-    For every ε > 0, if k is sufficiently large, then g_k(N) > N^{1-ε}. -/
-axiom general_lower_bound :
-    ∀ ε : ℝ, ε > 0 →
-      ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
-        ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-          (g k N : ℝ) > (N : ℝ) ^ (1 - ε)
-
-/-- The threshold grows toward N as k → ∞. -/
-theorem threshold_approaches_N :
-    ∀ c : ℝ, c < 1 →
-      ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
-        ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-          (g k N : ℝ) > (N : ℝ) ^ c := by
-  intro c hc
-  have hε : 1 - c > 0 := by linarith
-  obtain ⟨k₀, hk₀⟩ := general_lower_bound (1 - c) hε
-  exact ⟨k₀, hk₀⟩
-
-/- ## Part VIII: The Odd Numbers Construction -/
-
-/-- The set of odd numbers in {1,...,2N}. -/
-def oddNumbers (N : ℕ) : Finset ℕ :=
-  (Interval N).filter (fun n => n % 2 = 1)
-
-/-- The odd numbers have cardinality exactly N. -/
+PROVIDED SOLUTION
+Show oddNumbers N = (Finset.range N).image (fun k => 2 * k + 1) by ext and omega. Then use card_image_of_injective (injectivity by omega) and card_range.
+-/
 theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by
-  sorry
+  unfold oddNumbers;
+  unfold Interval;
+  rw [ Finset.card_eq_of_bijective ];
+  use fun i hi => 2 * i + 1;
+  · exact fun n hn => ⟨ n / 2, by linarith [ Nat.mod_add_div n 2, Finset.mem_filter.mp hn, Finset.mem_filter.mp ( Finset.mem_filter.mp hn |>.1 ), Finset.mem_range.mp ( Finset.mem_filter.mp ( Finset.mem_filter.mp hn |>.1 ) |>.1 ) ], by linarith [ Nat.mod_add_div n 2, Finset.mem_filter.mp hn, Finset.mem_filter.mp ( Finset.mem_filter.mp hn |>.1 ) ] ⟩;
+  · grind;
+  · aesop
 
-/-- For odd numbers, no b₁, b₂, b₃ have all pairwise sums odd.
-    (If b₁, b₂ have the same parity, their sum is even.) -/
+/-
+PROBLEM
+Routine lemma: parity pigeonhole — among any 3 integers,
+two share parity, so their sum is even and not in oddNumbers
+
+PROVIDED SOLUTION
+Assume ⟨b, hb⟩. Extract h01, h02, h12 from hb for pairs (0,1), (0,2), (1,2). Simp oddNumbers/Interval membership to get that (b i + b j).toNat is odd and in range. Among b 0, b 1, b 2, by pigeonhole two have the same parity mod 2, so their sum is even, contradicting the oddness requirement. Use omega to derive contradiction after unfolding membership.
+-/
 theorem oddNumbers_no_triple (N : ℕ) :
     ¬∃ b : Fin 3 → ℤ, HasAllPairwiseSums (oddNumbers N) b := by
-  intro ⟨b, hb⟩
-  -- Among b₀, b₁, b₂, at least two have the same parity
-  -- Their sum is even, contradiction
-  sorry
-
-/-- This shows g₃(N) ≥ 1 (actually ≥ 2 with more care). -/
-theorem g3_ge_1 (N : ℕ) (hN : N ≥ 1) : g 3 N ≥ 1 := by
-  sorry
-
-/- ## Part IX: Summary Table -/
-
-/-- **Summary of Known Bounds for g_k(N)**
-
-| k | Lower Bound | Upper Bound | Status |
-|---|-------------|-------------|--------|
-| 3 | 2 | 2 | EXACT |
-| 4 | ? | 2032 | BOUNDED |
-| 5 | c₁ log N | c₂ log N | ASYMPTOTIC |
-| 6 | c₁ √N | c₂ √N | ASYMPTOTIC |
-| k | N^{1-ε} (large k) | N^{1-2^{-k}} | GAP |
-
-The gap between bounds widens as k increases. -/
-theorem summary_g3 : ∀ N ≥ 1, g 3 N = 2 := g3_exact
-theorem summary_g4 : ∃ C, ∀ N ≥ 1, g 4 N ≤ C := g4_bounded
-theorem summary_g5 : ∃ c₁ c₂ > 0, ∃ N₀, ∀ N ≥ N₀,
-    c₁ * N.log ≤ g 5 N ∧ (g 5 N : ℝ) ≤ c₂ * N.log := g5_asymptotic
-theorem summary_g6 : ∃ c₁ c₂ > 0, ∃ N₀, ∀ N ≥ N₀,
-    c₁ * (N : ℝ).sqrt ≤ g 6 N ∧ (g 6 N : ℝ) ≤ c₂ * (N : ℝ).sqrt := g6_asymptotic
-
-/- ## Part X: Open Problems -/
-
-/-- **Open Problem 1:** Determine g₄(N) exactly.
-
-    Known: 0 ≤ g₄(N) ≤ 2032. Is g₄(N) constant? What is its value? -/
-def openProblem_g4_exact : Prop :=
-  ∃ c : ℕ, ∀ N : ℕ, N ≥ 1 → g 4 N = c
-
-/-- **Open Problem 2:** Determine optimal constants in g₅(N) ≍ log N. -/
-def openProblem_g5_constants : Prop :=
-  ∃ c : ℝ, c > 0 ∧ ∀ N₀ : ℕ, ∃ N ≥ N₀,
-    |(g 5 N : ℝ) - c * N.log| ≤ 1
-
-/-- **Open Problem 3:** Close the gap for large k.
-    Upper: g_k(N) ≪ N^{1-2^{-k}}, Lower: g_k(N) > N^{1-ε} (large k). -/
-def openProblem_large_k_gap : Prop :=
-  ∀ k : ℕ, k ≥ 3 → ∃ α : ℝ,
-    (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      |(g k N : ℝ) / (N : ℝ) ^ α - 1| < ε)
-
-/-- **Open Problem 4:** Structural characterization of extremal sets. -/
-def openProblem_extremal_structure (k N : ℕ) : Prop :=
-  ∀ A : Finset ℕ, A ⊆ Interval N → A.card = N + g k N - 1 →
-    ¬∃ b : Fin k → ℤ, HasAllPairwiseSums A b →
-      ∃ S : Finset ℕ, S.card = N ∧ S ⊆ A ∧
-        ∀ x ∈ S, x % 2 = 1
-
-/- ## Part XI: The Main Summary -/
-
-/--
-**Summary of Erdős Problem #866**
-
-**Problem**: For k ≥ 3, define g_k(N) as the minimal threshold such that
-any A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums
-of some b₁,...,b_k.
-
-**Known Results**:
-1. g₃(N) = 2 (exact)
-2. g₄(N) ≤ 2032 (bounded constant)
-3. g₅(N) ≍ log N (logarithmic growth)
-4. g₆(N) ≍ √N (square root growth)
-5. g_k(N) ≪_k N^{1-2^{-k}} (general upper bound)
-6. g_k(N) > N^{1-ε} for large k (nearly linear lower bound)
-
-**Status**: PARTIALLY SOLVED
-- Small k (3,4,5,6): Well understood
-- Large k: Gap between bounds
-
-**Key Construction**: Odd numbers + powers of 2 avoid the condition
-
-**Significance**: Connects additive combinatorics to threshold phenomena
--/
-theorem erdos_866_summary :
-    (∀ N ≥ 1, g 3 N = 2) ∧
-    (∃ C, ∀ N ≥ 1, g 4 N ≤ C) :=
-  ⟨g3_exact, g4_bounded⟩
+      rintro ⟨ b, hb ⟩;
+      -- By definition of $oddNumbers$, we know that for any $i < j$, $(b i + b j).toNat$ is odd.
+      have h_odd : ∀ i j : Fin 3, i < j → (b i + b j).toNat % 2 = 1 := by
+        intro i j hij; have := hb i j hij; unfold oddNumbers at this; aesop;
+      simp_all +decide [ Fin.forall_fin_succ ];
+      grind +ring
 
 end Erdos866

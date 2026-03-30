@@ -332,4 +332,43 @@ theorem dense_set_has_long_ap (k : ℕ) (δ : ℝ) (hk : k ≥ 1) (hδ : δ > 0)
         hasAPOfLengthFinset S k :=
   szemeredi_theorem k δ hk hδ
 
+/-!
+## Monotonicity and Transfer Lemmas
+
+These infrastructure lemmas support downstream formalizations (Erdős problems,
+Van der Waerden, etc.) that build on the AP definitions and Szemerédi's theorem.
+-/
+
+/-- AP monotonicity: a k-AP contains a j-AP for any j ≤ k -/
+theorem hasAP_mono {S : Set ℕ} {j k : ℕ} (hjk : j ≤ k)
+    (h : HasAPOfLength S k) : HasAPOfLength S j := by
+  obtain ⟨a, d, hd, hap⟩ := h
+  exact ⟨a, d, hd, fun i hi => hap i (lt_of_lt_of_le hi hjk)⟩
+
+/-- AP superset transfer: APs are preserved by taking supersets -/
+theorem hasAP_superset {S T : Set ℕ} {k : ℕ} (hST : S ⊆ T)
+    (h : HasAPOfLength S k) : HasAPOfLength T k := by
+  obtain ⟨a, d, hd, hap⟩ := h
+  exact ⟨a, d, hd, fun i hi => hST (hap i hi)⟩
+
+/-- Szemerédi is monotone in k: the threshold N₀ for k-APs also gives j-APs (j ≤ k) -/
+theorem szemeredi_mono {j k : ℕ} (hjk : j ≤ k) (hj : j ≥ 1) (δ : ℝ) (hδ : δ > 0) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      ∀ S : Finset ℕ, S ⊆ Finset.range N → (S.card : ℝ) ≥ δ * N →
+        hasAPOfLengthFinset S j := by
+  obtain ⟨N₀, hN₀⟩ := szemeredi_theorem k δ (by omega) hδ
+  exact ⟨N₀, fun N hN S hS hcard => hasAP_mono hjk (hN₀ N hN S hS hcard)⟩
+
+/-- Contrapositive of Szemerédi: k-AP-free subsets of [N] have vanishing density.
+    For any δ > 0, sufficiently large k-AP-free subsets have density < δ. -/
+theorem ap_free_density_bound (k : ℕ) (hk : k ≥ 1) (δ : ℝ) (hδ : δ > 0) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      ∀ S : Finset ℕ, S ⊆ Finset.range N → IsAPFree (↑S) k →
+        (S.card : ℝ) < δ * N := by
+  obtain ⟨N₀, hN₀⟩ := szemeredi_theorem k δ hk hδ
+  exact ⟨N₀, fun N hN S hS hfree => by
+    by_contra h
+    push_neg at h
+    exact hfree (hN₀ N hN S hS h)⟩
+
 end Szemeredi

@@ -62,10 +62,6 @@ def ValidDecomposition (k : ℕ) (blocks : Fin k → IntervalBlock) : Prop :=
 
 /-- **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
     a valid decomposition of 1 into k disjoint non-adjacent interval blocks. -/
-axiom erdos_289_conjecture :
-  ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-    ∃ blocks : Fin k → IntervalBlock, ValidDecomposition k blocks
-
 /- ## Basic Properties -/
 
 /-- Every interval block has at least 2 elements. -/
@@ -90,20 +86,11 @@ theorem nonadj_implies_disjoint (I J : IntervalBlock) :
 /-- The Hickerson–Montgomery example: 5 intervals summing to 2.
     [2,7], [9,10], [17,18], [34,35], [84,85].
     This shows the feasibility of interval decomposition for targets other than 1. -/
-axiom hickerson_montgomery_example :
-  ∃ blocks : Fin 5 → IntervalBlock,
-    (∀ i j : Fin 5, i ≠ j → IntervalBlock.NonAdjacent (blocks i) (blocks j)) ∧
-    ∑ i : Fin 5, (blocks i).recipSum = 2
-
 /- ## Structural Observations -/
 
 /-- The harmonic series diverges, so the total available reciprocal sum
     from any tail of ℕ is unbounded. This is necessary for the problem
     to have solutions for arbitrarily many blocks. -/
-axiom harmonic_tail_diverges :
-  ∀ (M : ℕ) (C : ℚ), C > 0 →
-    ∃ N : ℕ, N > M ∧ ∑ n ∈ Finset.Icc M N, (1 : ℚ) / (n : ℚ) > C
-
 /-- Each interval block contributes at most (hi-lo+1)/lo.
     Proof: each term 1/n ≤ 1/lo since lo ≤ n for n ∈ [lo, hi]. -/
 theorem interval_recipsum_upper (I : IntervalBlock) :
@@ -144,17 +131,5 @@ theorem interval_recipsum_lower (I : IntervalBlock) :
 /-- To achieve exactly 1 with many small-contribution blocks, we need
     blocks at large values of n. The gap constraint forces intervals
     to spread out, making the target harder to hit exactly. -/
-axiom exact_target_difficulty :
-  ∀ k : ℕ, k > 0 →
-    ∀ blocks : Fin k → IntervalBlock,
-      (∀ i j : Fin k, i ≠ j → IntervalBlock.NonAdjacent (blocks i) (blocks j)) →
-        -- The smallest block endpoint grows with k
-        ∃ i : Fin k, (blocks i).hi ≥ k
-
 /-- The problem without the non-adjacency constraint is easier: one can
     always decompose 1 into disjoint intervals (Erdős–Graham remark). -/
-axiom trivial_without_nonadjacency :
-  ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-    ∃ blocks : Fin k → IntervalBlock,
-      (∀ i j : Fin k, i ≠ j → IntervalBlock.Disjoint (blocks i) (blocks j)) ∧
-      ∑ i : Fin k, (blocks i).recipSum = 1

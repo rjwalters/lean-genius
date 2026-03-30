@@ -1,0 +1,50 @@
+{
+  "id": "fundamental-arithmetic-oq-01",
+  "title": "Multiplicative Property of Prime Factorization",
+  "slug": "fundamental-arithmetic-oq-01",
+  "description": "Proves the multiplicative property of prime factorization: factorization(mn) = factorization(m) + factorization(n), with coprime disjointness and concrete examples.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "factorization",
+      "coprime",
+      "p-adic-valuation",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FundamentalArithmeticOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 113,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "summary": "Proves the multiplicative property of prime factorization using Mathlib's Nat.factorization_mul. For coprime m, n: factorizations have disjoint support. Includes concrete examples (420 = 12 \u00b7 35) and iterated factorization for lists.",
+    "text": "Proves the multiplicative property of prime factorization: factorization(mn) = factorization(m) + factorization(n), with coprime disjointness and concrete examples.",
+    "historicalContext": "See the parent entry for historical background.",
+    "problemStatement": "See the description field for the problem statement.",
+    "proofStrategy": "See the overview summary for the proof approach.",
+    "keyInsights": [
+      "See the parent entry for related insights."
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "extends",
+      "description": "Parent entry proving the Fundamental Theorem of Arithmetic. This entry proves the multiplicative property as a corollary."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified proof of the multiplicative property of factorization with 10 theorems, 0 sorries, 0 axioms.",
+    "openQuestions": [],
+    "implications": "See the parent entry for broader implications."
+  }
+}

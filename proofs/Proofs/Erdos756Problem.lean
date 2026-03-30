@@ -101,7 +101,7 @@ def StrongErdosPachQuestion : Prop :=
 
 /-- The largest distance in a point set. -/
 noncomputable def maxDistance (A : PointSet) : ℝ :=
-  (allDistances A).sup' (by sorry) id
+  if h : (allDistances A).Nonempty then (allDistances A).sup' h id else 0
 
 /-- Hopf-Pannwitz (1934): The largest distance occurs at most n times. -/
 axiom hopf_pannwitz (A : PointSet) (hA : A.card ≥ 2) :
@@ -119,22 +119,11 @@ theorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :
 -/
 
 /-- Bhowmick's construction: n points with many rich distances. -/
-axiom bhowmick_construction :
-  ∀ n : ℕ, n ≥ 4 →
-    ∃ A : PointSet, A.card = n ∧
-      ∀ d ∈ (allDistances A).filter (IsRichDistance A),
-        distanceMultiplicity A d ≥ n + 1
-
 /-- Bhowmick's main result: At least ⌊n/4⌋ rich distances exist. -/
 axiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :
   ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4
 
 /-- Bhowmick's general result for higher multiplicities. -/
-axiom bhowmick_general (m n : ℕ) (hn : n ≥ 2 * (m + 1)) :
-  ∃ A : PointSet, A.card = n ∧
-    (((allDistances A).filter fun d =>
-      distanceMultiplicity A d ≥ n + m).card : ℕ) ≥ n / (2 * (m + 1))
-
 /-
 ## Part VI: Answer to Erdős Problem #756
 -/
@@ -164,19 +153,7 @@ theorem rich_distances_exist :
 noncomputable axiom squareGrid (n : ℕ) : PointSet
 
 /-- Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
-axiom clemen_dumitrescu_liu (n : ℕ) (hn : n ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧
-    let A := squareGrid n
-    let k := n^2  -- number of grid points
-    (numRichDistances A : ℝ) ≥ k^(c / Real.log (Real.log k))
-
 /-- The square grid has distances with super-linear multiplicity. -/
-axiom grid_super_linear_multiplicity (n : ℕ) (hn : n ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧
-    let A := squareGrid n
-    let k := n^2
-    ∃ d ∈ allDistances A, (distanceMultiplicity A d : ℝ) ≥ k^(1 + c / Real.log (Real.log k))
-
 /-
 ## Part VIII: Related Problems
 -/
@@ -195,8 +172,6 @@ def SecondDistanceQuestion : Prop :=
       distanceMultiplicity A d₁ ≤ A.card ∧ distanceMultiplicity A d₂ ≤ A.card
 
 /-- The second distance question is open (see Problem #132). -/
-axiom second_distance_open : SecondDistanceQuestion
-
 /-
 ## Part IX: Asymptotic Analysis
 -/

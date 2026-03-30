@@ -113,7 +113,7 @@ noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
 -/
 /-- The maximum number of distinct pinned distances over all points in A -/
 noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
-  A.sup' (by sorry) (fun x => pinnedDistanceCount x A)
+  if h : A.Nonempty then A.sup' h (fun x => pinnedDistanceCount x A) else 0
 
 /- ## The Pinned Distance Conjecture -/
 
@@ -165,19 +165,15 @@ theorem pinnedDistance_pos (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x �
     exact Finset.exists_mem_ne hA x;
   exact Finset.card_pos.mpr ⟨ _, Finset.mem_image.mpr ⟨ h_nonempty.choose, Finset.mem_filter.mpr ⟨ h_nonempty.choose_spec.1, h_nonempty.choose_spec.2 ⟩, rfl ⟩ ⟩
 
-/-- Upper bound: No point can see more than n-1 distinct distances -/
-theorem pinnedDistance_le (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) :
+/-- Upper bound: A point in A can see at most |A|-1 distinct distances -/
+theorem pinnedDistance_le (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x ∈ A) :
     pinnedDistanceCount x A ≤ A.card - 1 := by
   unfold pinnedDistanceCount pinnedDistances
-  calc (A.filter (· ≠ x)).image (euclideanDist x) |>.card
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected token '≤'; expected command-/
-≤ (A.filter (· ≠ x)).card := Finset.card_image_le
-    _ ≤ A.card := Finset.card_filter_le A _
-    _ ≤ A.card - 0 := by omega
-    _ ≤ A.card - 1 := by sorry
+  have h : (A.filter (· ≠ x)).image (euclideanDist x) |>.card < A.card :=
+    calc (A.filter (· ≠ x)).image (euclideanDist x) |>.card
+        ≤ (A.filter (· ≠ x)).card := Finset.card_image_le
+      _ < A.card := Finset.card_lt_card (Finset.filter_ssubset.mpr ⟨x, hx, by simp⟩)
+  omega
 
 /-- The integer lattice achieves the conjectured upper bound construction -/
 theorem integerLattice_pinnedDistances (n : ℕ) (hn : n ≥ 2) :

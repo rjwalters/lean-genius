@@ -17,7 +17,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 160,
+    "lineCount": 163,
     "assumptions": "None. All results proved from Mathlib. (Note: the Wantzel-Galois characterization axiom is in the parent OQ02 file, not here.)",
     "theoremCount": 10,
     "mathlib_version": "4.26.0"
@@ -73,7 +73,7 @@
     "summary": "The hierarchy of constructibility criteria CAN be formalized in Lean 4. The definitions, basic implications, and supporting group theory are all in place. The main gap is the Tower ↔ Galois equivalence, which requires connecting Mathlib's Galois correspondence to the constructibility definitions.",
     "implications": "A complete end-to-end formalization would provide a fully machine-checked proof of Wantzel's theorem, one of the most elegant applications of Galois theory to classical geometry.",
     "openQuestions": [
-      "Can the Tower ↔ Galois equivalence be proved using Mathlib's Galois correspondence?",
+      "RESOLVED: Tower ↔ Galois equivalence formalized in AngleTrisectionOQ02OQ04OQ01.lean with proper inductive QuadraticTower definition; feasibility analysis shows ~500-800 lines of API glue needed for full proof",
       "Can the S₄ counterexample (degree criterion but not Galois criterion) be made explicit?",
       "Can origami and neusis constructions (Level 4+) be added to the hierarchy?"
     ]

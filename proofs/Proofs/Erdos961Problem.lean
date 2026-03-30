@@ -169,8 +169,8 @@ axiom jutila_ramachandra_shorey_bound :
 def polylog_conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ᶠ k in atTop, (f k : ℝ) < (log k) ^ C
 
-/-- The conjecture is stated but unresolved. -/
-axiom polylog_conjecture_open : polylog_conjecture ↔ answer(sorry)
+/-- The conjecture is stated but unresolved (open problem).
+    Cannot be formalized as a clean axiom since its truth value is unknown. -/
 
 /- ## Part VIII: Small Examples -/
 
@@ -257,5 +257,5 @@ contain a number with a prime factor > k. Estimate f(k).
 - `sylvester_schur`: Classical result requiring prime distribution analysis
 - `erdos_1955_bound`: Requires analytic number theory
 - `jutila_ramachandra_shorey_bound`: Advanced sieve methods
-- `polylog_conjecture_open`: The main open question
+- `polylog_conjecture`: The main open question (def, not axiom)
 -/

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/152",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos152Problem.lean",
     "tags": [
       "erdos",
@@ -14,14 +14,14 @@
       "sidon-sets",
       "sumsets"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 152,
     "erdosUrl": "https://erdosproblems.com/152",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 356,
-    "assumptions": "1 axiom: gap_existence_pigeonhole (at least 1 isolated for n≥5). sidon_set_range_lower_bound proved via distinct differences injection.",
+    "axiomCount": 0,
+    "lineCount": 470,
+    "assumptions": "Fully verified (0 axioms, 0 sorries). gap_existence_pigeonhole proved via endpoint analysis and Sidon difference injectivity.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -130,8 +130,8 @@
       "Pointwise"
     ],
     "namespace": null,
-    "lineCount": 356,
-    "axiomCount": 1,
+    "lineCount": 470,
+    "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 7
   },

@@ -60,14 +60,21 @@ def IsSidonAlt (A : Finset ℕ) : Prop :=
 The set {1², 2², ..., N²} = {1, 4, 9, ..., N²}.
 -/
 def squaresUpTo (N : ℕ) : Finset ℕ :=
-  (Finset.range (N + 1)).image (fun k => (k + 1)^2)
+  (Finset.range N).image (fun k => (k + 1)^2)
 
 /--
 **Size of squaresUpTo:**
 |squaresUpTo N| = N.
 -/
 theorem squaresUpTo_card (N : ℕ) : (squaresUpTo N).card = N := by
-  sorry
+  unfold squaresUpTo
+  have hinj : Function.Injective (fun k : ℕ => (k + 1) ^ 2) := by
+    intro a b h
+    by_contra hab
+    rcases lt_or_gt_of_ne hab with hab | hab
+    · exact absurd h (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
+    · exact absurd h.symm (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
+  rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
 
 /-
 ## Part III: The Main Question
@@ -142,23 +149,12 @@ noncomputable def sumOfTwoSquaresCount (N : ℕ) : ℕ :=
 S(N) ~ c · N / √(log N) where c = 1/√2 · ∏_{p≡3 mod 4} (1-1/p²)^{-1/2}.
 The density of sums of two squares decays like (log N)^{-1/2}.
 -/
-axiom landau_theorem :
-    ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∀ᶠ N in Filter.atTop,
-      |(sumOfTwoSquaresCount N : ℝ) - c * N / Real.sqrt (Real.log N)| <
-        ε * N / Real.sqrt (Real.log N)
-
 /--
 **Why Landau Matters:**
 For a Sidon set A of squares, each sum a² + b² must be distinct.
 Since sums of two squares are sparse (density (log N)^{-1/2}),
 this constrains |A|.
 -/
-axiom landau_constraint :
-    -- If A ⊆ squaresUpTo N is Sidon, then sums a² + b² are distinct
-    -- There are |A| choose 2 + |A| such sums (pairs + singletons 2a²)
-    -- These must fit in the ~N/(log N)^{1/2} available sums of squares ≤ 2N²
-    True
-
 /-
 ## Part VI: Probabilistic Method
 -/
@@ -169,11 +165,6 @@ A random subset of squaresUpTo N with density p yields expected
 |A| ~ pN elements, with ~p²N² pairwise sums.
 For Sidon property, need p²N² ≤ (log N)^{-1/2} · (2N²), giving p ~ N^{-2/3}.
 -/
-axiom random_construction :
-    -- Random subset with p ~ N^{-2/3+ε} is likely Sidon
-    -- This gives |A| ~ N^{1/3+ε}, but refined analysis gives N^{2/3-o(1)}
-    True
-
 /-
 **Why N^{2/3}?**
 Balancing: want many elements (N^α) but few collisions.
@@ -194,11 +185,6 @@ Each sum ≤ 2N² and is a sum of two squares.
 By Landau, the number of sums of two squares ≤ 2N² is ~ N² / (log N)^{1/2}.
 For Sidon: m² ≤ N² / (log N)^{1/2}, so m ≤ N / (log N)^{1/4}.
 -/
-axiom upper_bound_sketch (N : ℕ) (A : Finset ℕ) (hA : A ⊆ squaresUpTo N)
-    (hSidon : IsSidon A) :
-    -- Upper bound from Landau + Sidon: |A|² ≤ N² / (log N)^{1/2}
-    (A.card : ℝ) ≤ (N : ℝ) / (Real.log N)^(1/4 : ℝ)
-
 /-
 ## Part VIII: Open Questions
 -/

@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Proved explicit_rate_k3: |R(3,l+1)/R(3,l) - 1| ≤ (2/c) · log(l)/l",
+    "progressSummary": "PROGRESS: Main results proved (rate_of_convergence_k3, log_over_l_faster_than_inv_log). 2 sorries remain in conditional_rate_general_k (Bernoulli bound + factor decomposition). Axioms from parent file (Ramsey definitions).",
     "builtItems": [
       "Erdos1014OQ02.lean: increment_bound (reused from OQ01)",
       "Erdos1014OQ02.lean: explicit_rate_k3 — main theorem with quantitative rate"
@@ -45,7 +45,8 @@
       "Rate is sharp: recurrence gives O(l) increment, Kim-Shearer gives Θ(l²/log l), ratio is Θ(log l/l)",
       "Key algebra: (l+1)·log l/(c·l²) ≤ 2l·log l/(c·l²) = (2/c)·log l/l for l ≥ 1",
       "The O(log l/l) rate is UNIVERSAL for all k ≥ 3 under conjectured asymptotics: recurrence always gains one power of l in denominator vs increment",
-      "For general k: R(k,l+1)-R(k,l) ≤ R(k-1,l+1) ~ l^{k-2}/(log l)^{k-3} while R(k,l) ~ l^{k-1}/(log l)^{k-2}, ratio ~ log l/l"
+      "For general k: R(k,l+1)-R(k,l) ≤ R(k-1,l+1) ~ l^{k-2}/(log l)^{k-3} while R(k,l) ~ l^{k-1}/(log l)^{k-2}, ratio ~ log l/l",
+      "conditional_rate_general_k sorries: (1) Bernoulli-type bound on (1+1/l)^a · (log/log)^b product, (2) 3-factor decomposition combining asymptotics. Both are correct analysis but hard to formalize."
     ],
     "mathlibGaps": [],
     "nextSteps": [

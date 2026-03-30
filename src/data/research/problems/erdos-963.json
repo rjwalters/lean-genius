@@ -1,6 +1,6 @@
 {
   "slug": "erdos-963",
-  "title": "Erd\u0151s #963",
+  "title": "Erdős #963",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Complete greedy bound proof framework built. 1 sorry remains: disjoint_pairs_card (3^n identity). Once filled, greedy_lower_bound axiom eliminable \u2192 2 axioms.",
+    "progressSummary": "PROGRESS: Eliminated greedy_lower_bound axiom (2→1 axioms). Proved add_pow3_lt_pow3_succ + gt_add_pow3_of_lt_log helpers, then greedy_lower_bound via greedy_dissociated + Nat.log arithmetic. Remaining axiom: trivial_upper_bound (known upper bound).",
     "builtItems": [
       "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n",
       "Proved maxDissociatedSize_mono: f is non-decreasing (csSup_le_csSup + Finset.exists_smaller_set)",
@@ -37,30 +37,28 @@
       "Proved dissociated_card_le: dissociated subset card <= ambient card",
       "Defined diffSumFinset: Finset of all subset-sum differences",
       "Proved dissociated_insert: extension lemma for greedy construction",
-      "Proved dissociated_extend: greedy step \u2014 if |A\\B| > |diffSumFinset B|, can extend",
+      "Proved dissociated_extend: greedy step — if |A\\B| > |diffSumFinset B|, can extend",
       "Proved sum_factor_disjoint: diff factors through disjoint pairs",
-      "Proved diffSumFinset_card_le (modulo disjoint_pairs_card): |diffSumFinset| \u2264 3^|B|",
+      "Proved diffSumFinset_card_le (modulo disjoint_pairs_card): |diffSumFinset| ≤ 3^|B|",
       "Proved greedy_dissociated: builds dissociated subset of size k if |A| > j+3^j for j<k"
     ],
     "insights": [
       "Nat.log_anti_left provides log base monotonicity",
-      "BddAbove proof requires constructing a specific n-element Finset \u211d via Finset.range.image Nat.cast",
+      "BddAbove proof requires constructing a specific n-element Finset ℝ via Finset.range.image Nat.cast",
       "IsDissociatedSubset depends only on B (not ambient set), making subset transitivity trivial",
       "Extension lemma requires a != any T.sum-S.sum (includes a!=0)",
       "diffSumFinset B has at most 3^|B| elements (3 roles per element of B)",
       "Greedy bound proof needs: diffSumFinset card bound + induction on k",
       "trivial_upper_bound needs witness set {1..n} and integer counting argument",
       "disjoint_pairs_card (3^n identity) is the ONLY sorry blocking greedy_lower_bound elimination",
-      "Proof chain: disjoint_pairs_card \u2192 diffSumFinset_card_le \u2192 greedy_dissociated \u2192 greedy_lower_bound",
+      "Proof chain: disjoint_pairs_card → diffSumFinset_card_le → greedy_dissociated → greedy_lower_bound",
       "Finset.induction_on is the natural approach for disjoint_pairs_card: each new element has 3 roles"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove disjoint_pairs_card by Finset.induction_on (partition D(insert a B) into 3 classes)",
-      "Then eliminate greedy_lower_bound axiom using greedy_dissociated + arithmetic",
-      "Suitable for Aristotle companion: disjoint_pairs_card is a standard combinatorial identity"
+      "Prove trivial_upper_bound: needs witness set + counting argument showing 2^k ≤ something ≤ O(n)"
     ],
-    "markdown": "# Erd\u0151s #963 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the maximal $k$ such that in any set $A\\subset \\mathbb{R}$ of size $n$ there is a subset $B\\subseteq A$ of size $\\lvert B\\rvert\\geq k$ which is dissociated that is, the sums $\\sum_{b\\in S}b$ are distinct for all $S\\subseteq B$. Estimate $f(n)$ - in particular, is it true that\\[f(n)\\geq \\lfloor \\log_2 n\\rfloor?\\]\n\n\n\nErd\\H{o}s noted that the greedy algorithm showed $f(n)\\geq \\lfloor \\log_3 n\\rfloor$.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #962\n- Problem #964\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #7\n\n## References\n\n- Er65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #963 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the maximal $k$ such that in any set $A\\subset \\mathbb{R}$ of size $n$ there is a subset $B\\subseteq A$ of size $\\lvert B\\rvert\\geq k$ which is dissociated that is, the sums $\\sum_{b\\in S}b$ are distinct for all $S\\subseteq B$. Estimate $f(n)$ - in particular, is it true that\\[f(n)\\geq \\lfloor \\log_2 n\\rfloor?\\]\n\n\n\nErd\\H{o}s noted that the greedy algorithm showed $f(n)\\geq \\lfloor \\log_3 n\\rfloor$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #962\n- Problem #964\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #7\n\n## References\n\n- Er65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -83,10 +81,10 @@
     {
       "path": "Proofs/Erdos963Problem.lean",
       "filename": "Erdos963Problem.lean",
-      "lineCount": 254,
-      "theoremCount": 9,
-      "axiomCount": 3,
-      "defCount": 2,
+      "lineCount": 634,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos963Problem.lean"

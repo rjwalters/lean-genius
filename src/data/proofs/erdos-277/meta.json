@@ -1,8 +1,8 @@
 {
   "id": "erdos-277",
-  "title": "Erd\u0151s Problem #277: Covering Systems and Abundancy",
+  "title": "Erdős Problem #277: Covering Systems and Abundancy",
   "slug": "erdos-277",
-  "description": "For every c > 0, does there exist n with \u03c3(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
+  "description": "For every c > 0, does there exist n with σ(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
   "meta": {
     "author": "Haight (1979 solution)",
     "sourceUrl": "https://erdosproblems.com/277",
@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 277,
     "erdosUrl": "https://erdosproblems.com/277",
     "erdosProblemStatus": "solved",
@@ -42,9 +42,9 @@
       }
     ],
     "originalContributions": [
-      "sigma: sum of divisors function \u03c3(n)",
-      "abundancyRatio: \u03c3(n)/n for measuring abundancy",
-      "IsAbundant: \u03c3(n) > cn predicate",
+      "sigma: sum of divisors function σ(n)",
+      "abundancyRatio: σ(n)/n for measuring abundancy",
+      "IsAbundant: σ(n) > cn predicate",
       "Congruence: structure for a (mod m)",
       "IsCoveringSystem: congruences covering all integers",
       "AllModuliDivide: all moduli divide n",
@@ -54,26 +54,26 @@
       "trivialCovering: the 0 (mod 1) covering",
       "HasDistinctModuli, IsNonTrivialCovering: refinements",
       "haight_strong_theorem axiom: non-trivial version",
-      "reciprocalSum: \u2211 1/m_i for coverings",
-      "covering_reciprocal_bound axiom: \u2211 1/m_i \u2265 1",
+      "reciprocalSum: ∑ 1/m_i for coverings",
+      "covering_reciprocal_bound axiom: ∑ 1/m_i ≥ 1",
       "coveringLCM: lcm of covering moduli",
       "IsHighlyComposite, IsSuperabundant: related concepts"
     ],
-    "axiomCount": 5,
-    "lineCount": 297,
-    "assumptions": "6 axioms and 1 sorry. See the Lean source for details."
+    "axiomCount": 4,
+    "lineCount": 283,
+    "assumptions": "4 axiom(s) and 0 sorries remain.(s). covering_crt_connection proved from Finset.mem_image."
   },
   "overview": {
-    "historicalContext": "Covering systems of congruences were introduced by Erd\u0151s in 1950 in his proof that there exist odd integers not representable as a prime plus a power of 2. The concept became central to his research program in combinatorial number theory. In the 1970s, Erd\u0151s formulated Problem #277 as part of a cluster of questions (#273-#279) exploring the interplay between covering systems and number-theoretic properties.\n\nThe problem connects two classical threads: the sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$, studied since Euler, and the combinatorics of congruence coverings. Gronwall (1913) proved $\\limsup \\sigma(n)/(n \\ln\\ln n) = e^\\gamma$, showing highly abundant numbers exist at every threshold. The question is whether such numbers can simultaneously resist being covered.\n\nJ.A. Haight resolved the problem in 1979 ('Covering systems of congruences, a negative result', Mathematika 26, 53-61). His constructive proof builds $n$ as a product of carefully chosen large primes, ensuring high abundancy while structurally preventing any covering system from using only divisors of $n$ as moduli. The key insight exploits the reciprocal sum constraint: a covering system with distinct moduli $m_1, \\ldots, m_k$ requires $\\sum 1/m_i \\geq 1$, but Haight's numbers have divisors too sparse to satisfy this.\n\nThe result connects to Ramanujan's highly composite numbers (1915), Alaoglu and Erd\u0151s's superabundant numbers (1944), and later work by Hough (2015) resolving Erd\u0151s's minimum modulus conjecture for covering systems with distinct moduli.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nIs it true that, for every c > 0, there exists n such that:\n- \u03c3(n) > cn (the number has large divisor sum)\n- No covering system has all moduli dividing n\n\n**Answer: YES** (Haight 1979)\n\nThe intuition suggests abundant numbers should be easier to cover (more divisors = more possible moduli), but Haight showed this fails: structure matters more than count.\n\n**Key constraint:** A covering system with distinct moduli must satisfy \u2211 1/m_i \u2265 1.",
-    "text": "For every c > 0, does there exist n with \u03c3(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Define \u03c3(n) = \u2211_{d|n} d using Mathlib's divisors\n\n2. **Abundancy:** Define IsAbundant(n, c) as \u03c3(n) > cn\n\n3. **Covering Systems:** Formalize as finite sets of congruences covering \u2124\n\n4. **The Question:** ErdosQuestion277 asks if such n always exist\n\n5. **Haight's Theorem:** Axiomatize the main result\n\n6. **Refinements:** Handle trivial coverings, reciprocal sum bounds\n\n7. **Connections:** Link to highly composite and superabundant numbers",
+    "historicalContext": "Covering systems of congruences were introduced by Erdős in 1950 in his proof that there exist odd integers not representable as a prime plus a power of 2. The concept became central to his research program in combinatorial number theory. In the 1970s, Erdős formulated Problem #277 as part of a cluster of questions (#273-#279) exploring the interplay between covering systems and number-theoretic properties.\n\nThe problem connects two classical threads: the sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$, studied since Euler, and the combinatorics of congruence coverings. Gronwall (1913) proved $\\limsup \\sigma(n)/(n \\ln\\ln n) = e^\\gamma$, showing highly abundant numbers exist at every threshold. The question is whether such numbers can simultaneously resist being covered.\n\nJ.A. Haight resolved the problem in 1979 ('Covering systems of congruences, a negative result', Mathematika 26, 53-61). His constructive proof builds $n$ as a product of carefully chosen large primes, ensuring high abundancy while structurally preventing any covering system from using only divisors of $n$ as moduli. The key insight exploits the reciprocal sum constraint: a covering system with distinct moduli $m_1, \\ldots, m_k$ requires $\\sum 1/m_i \\geq 1$, but Haight's numbers have divisors too sparse to satisfy this.\n\nThe result connects to Ramanujan's highly composite numbers (1915), Alaoglu and Erdős's superabundant numbers (1944), and later work by Hough (2015) resolving Erdős's minimum modulus conjecture for covering systems with distinct moduli.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs it true that, for every c > 0, there exists n such that:\n- σ(n) > cn (the number has large divisor sum)\n- No covering system has all moduli dividing n\n\n**Answer: YES** (Haight 1979)\n\nThe intuition suggests abundant numbers should be easier to cover (more divisors = more possible moduli), but Haight showed this fails: structure matters more than count.\n\n**Key constraint:** A covering system with distinct moduli must satisfy ∑ 1/m_i ≥ 1.",
+    "text": "For every c > 0, does there exist n with σ(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Define σ(n) = ∑_{d|n} d using Mathlib's divisors\n\n2. **Abundancy:** Define IsAbundant(n, c) as σ(n) > cn\n\n3. **Covering Systems:** Formalize as finite sets of congruences covering ℤ\n\n4. **The Question:** ErdosQuestion277 asks if such n always exist\n\n5. **Haight's Theorem:** Axiomatize the main result\n\n6. **Refinements:** Handle trivial coverings, reciprocal sum bounds\n\n7. **Connections:** Link to highly composite and superabundant numbers",
     "keyInsights": [
-      "**Abundancy vs Coverability**: Large $\\sigma(n)/n$ does not force coverability \u2014 Haight showed the divisor *structure* matters more than the divisor *count* for building covering systems",
+      "**Abundancy vs Coverability**: Large $\\sigma(n)/n$ does not force coverability — Haight showed the divisor *structure* matters more than the divisor *count* for building covering systems",
       "**Reciprocal Sum Constraint**: A covering system with distinct moduli $m_1, \\ldots, m_k$ must satisfy $\\sum 1/m_i \\geq 1$ (pigeonhole on $\\text{lcm}$). Haight's construction exploits the failure of this constraint for large-prime products",
-      "**Trivial Covering Subtlety**: The covering $\\{0 \\pmod{1}\\}$ always works since $1 \\mid n$, so the problem requires non-trivial coverings with $\\geq 2$ distinct moduli \u2014 the formalization carefully addresses this refinement",
+      "**Trivial Covering Subtlety**: The covering $\\{0 \\pmod{1}\\}$ always works since $1 \\mid n$, so the problem requires non-trivial coverings with $\\geq 2$ distinct moduli — the formalization carefully addresses this refinement",
       "**Multiplicative Structure**: Since $\\sigma$ is multiplicative, $\\sigma(n)/n = \\prod_{p^k \\| n} (1 + 1/p + \\cdots + 1/p^k)$. Products of many distinct primes maximize abundancy but have too-sparse divisor sets for covering",
-      "**Covering System Cluster**: Part of Erd\u0151s's #273-#279 investigation into covering congruences, connecting to the Herzog-Sch\u00f6nheim conjecture (#274), Hough's theorem on minimum modulus, and Egyptian fraction representations"
+      "**Covering System Cluster**: Part of Erdős's #273-#279 investigation into covering congruences, connecting to the Herzog-Schönheim conjecture (#274), Hough's theorem on minimum modulus, and Egyptian fraction representations"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -86,7 +86,7 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Module docstring stating Erd\u0151s #277 and its resolution by Haight (1979). Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$.",
+      "summary": "Module docstring stating Erdős #277 and its resolution by Haight (1979). Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$.",
       "mathContext": "Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$."
     },
     {
@@ -107,7 +107,7 @@
     },
     {
       "id": "erdos-question",
-      "title": "The Erd\u0151s Question",
+      "title": "The Erdős Question",
       "startLine": 99,
       "endLine": 110,
       "summary": "States `ErdosQuestion277`: $\\forall c > 0, \\exists n \\geq 1$ with $\\sigma(n) > cn \\wedge \\neg\\text{HasCoveringWithDivisorModuli}(n)$. This combines the number-theoretic condition (high abundancy) with the combinatorial condition (uncoverability).",
@@ -166,7 +166,7 @@
       "title": "Connections to Other Problems",
       "startLine": 244,
       "endLine": 263,
-      "summary": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition). Part of Erd\u0151s's covering system cluster #273-#279.",
+      "summary": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition). Part of Erdős's covering system cluster #273-#279.",
       "mathContext": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition)."
     },
     {
@@ -189,7 +189,7 @@
       "targetId": "erdos-273"
     },
     {
-      "relationship": "Herzog-Sch\u00f6nheim conjecture on exact coverings by cosets \u2014 the exact (partition) analogue of covering systems",
+      "relationship": "Herzog-Schönheim conjecture on exact coverings by cosets — the exact (partition) analogue of covering systems",
       "sharedConcepts": [
         "coset coverings",
         "exact covering systems",
@@ -198,7 +198,7 @@
       "targetId": "erdos-274"
     },
     {
-      "relationship": "Covering congruences problem, directly adjacent in Erd\u0151s's covering system cluster",
+      "relationship": "Covering congruences problem, directly adjacent in Erdős's covering system cluster",
       "sharedConcepts": [
         "covering congruences",
         "moduli sets",
@@ -207,7 +207,7 @@
       "targetId": "erdos-275"
     },
     {
-      "relationship": "Maximum covering density of congruence systems \u2014 quantitative complement to #277's qualitative uncoverability result",
+      "relationship": "Maximum covering density of congruence systems — quantitative complement to #277's qualitative uncoverability result",
       "sharedConcepts": [
         "covering density",
         "reciprocal sum bounds",
@@ -225,7 +225,7 @@
       "targetId": "euler-totient"
     },
     {
-      "relationship": "Prime factorization underlies both the multiplicativity of \u03c3 and the structure of covering system moduli",
+      "relationship": "Prime factorization underlies both the multiplicativity of σ and the structure of covering system moduli",
       "sharedConcepts": [
         "prime factorization",
         "divisors",
@@ -238,25 +238,25 @@
     {
       "citation": "Haight, J.A. (1979). 'Covering systems of congruences, a negative result.' Mathematika 26, 53-61.",
       "url": "https://doi.org/10.1112/S0025579300009566",
-      "note": "Original proof that for every c > 0, there exists n with \u03c3(n) > cn but no covering system has all moduli dividing n"
+      "note": "Original proof that for every c > 0, there exists n with σ(n) > cn but no covering system has all moduli dividing n"
     },
     {
-      "citation": "Erd\u0151s, P. and Graham, R.L. (1980). 'Old and New Problems and Results in Combinatorial Number Theory.' Monographie No. 28, L'Enseignement Math\u00e9matique.",
+      "citation": "Erdős, P. and Graham, R.L. (1980). 'Old and New Problems and Results in Combinatorial Number Theory.' Monographie No. 28, L'Enseignement Mathématique.",
       "note": "Monograph containing the systematic formulation of covering system problems including #277"
     },
     {
       "citation": "Hough, B. (2015). 'Solution of the minimum modulus problem for covering systems.' Annals of Mathematics 181(1), 361-382.",
       "url": "https://doi.org/10.4007/annals.2015.181.1.6",
-      "note": "Resolved Erd\u0151s's minimum modulus conjecture: every covering system with distinct moduli > 1 has minimum modulus at most 10^16"
+      "note": "Resolved Erdős's minimum modulus conjecture: every covering system with distinct moduli > 1 has minimum modulus at most 10^16"
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #277 asked whether highly abundant numbers (large \u03c3(n)/n) can still be \"uncoverable\" - having no covering system with all moduli as divisors. Haight (1979) proved YES: for every abundancy threshold c, such numbers exist. This reveals a fundamental disconnect between divisor count and covering system structure.",
+    "summary": "Erdős Problem #277 asked whether highly abundant numbers (large σ(n)/n) can still be \"uncoverable\" - having no covering system with all moduli as divisors. Haight (1979) proved YES: for every abundancy threshold c, such numbers exist. This reveals a fundamental disconnect between divisor count and covering system structure.",
     "implications": "**Theoretical Significance**: **Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n**2. Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial.",
     "openQuestions": [
       "What is the growth rate of the minimal uncoverable n as a function of c? Is it polynomial or exponential in c?",
-      "Can the definition sorries (\u03c3(p) = p+1, \u03c3(n) \u2265 n, lcm divisibility) be proved from Mathlib's Nat.divisors API?",
-      "Does Haight's construction extend to exact covering systems (partitions of \u2124 into congruence classes)?",
+      "Can the definition sorries (σ(p) = p+1, σ(n) ≥ n, lcm divisibility) be proved from Mathlib's Nat.divisors API?",
+      "Does Haight's construction extend to exact covering systems (partitions of ℤ into congruence classes)?",
       "Can the placeholder True definitions (haightConstruction, primorialApproach) be replaced with explicit Lean constructions of Haight's examples?",
       "What is the relationship between superabundant numbers and the explicit bounds in Haight's theorem?"
     ]
@@ -274,9 +274,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos277",
-    "lineCount": 297,
-    "axiomCount": 6,
-    "theoremCount": 11,
+    "lineCount": 283,
+    "axiomCount": 4,
+    "theoremCount": 12,
     "definitionCount": 22
   }
 }

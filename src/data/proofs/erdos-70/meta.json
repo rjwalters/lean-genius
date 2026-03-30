@@ -21,9 +21,9 @@
     "erdosNumber": 70,
     "erdosUrl": "https://erdosproblems.com/70",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 225,
-    "assumptions": "5 axioms: erdos_rado_omega_plus_n, finite_ramsey, ramsey_3_3, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 2,
+    "lineCount": 237,
+    "assumptions": "2 axioms: erdos_rado_omega_plus_n (Erdős-Rado partial result), finite_ramsey (Finite Ramsey Theorem). Monotonicity and ramsey_3_3 proved from definitions.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -130,8 +130,8 @@
       "title": "Part X: Finite Ramsey Theory",
       "startLine": 141,
       "endLine": 161,
-      "summary": "Axiomatizes the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$ and the specific case $R(3,3) = 6$ for 2-colorings of 3-subsets of a 6-element set.",
-      "mathContext": "Finite Ramsey: $\\forall r, k, n, \\exists N: N \\to (r)_k^n$. Special case: $R(3,3) = 6$."
+      "summary": "Axiomatizes the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$. Proves the specific case for 3-subsets of a 6-set: any 3-element set is trivially homogeneous for 3-subsets (it has exactly one 3-subset, itself).",
+      "mathContext": "Finite Ramsey: $\\forall r, k, n, \\exists N: N \\to (r)_k^n$ (axiomatized). 3-subset case proved from definitions."
     },
     {
       "id": "negative-results",
@@ -146,8 +146,8 @@
       "title": "Part XII: Monotonicity",
       "startLine": 180,
       "endLine": 189,
-      "summary": "Axiomatizes monotonicity: $\\kappa \\to (\\beta, m)_k^n$ with $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$, and similarly for $m' \\le m$.",
-      "mathContext": "Monotonicity: $\\kappa \\to (\\beta, m)_k^n$ and $\\alpha \\leq \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$."
+      "summary": "Proves monotonicity from definitions: $\\kappa \\to (\\beta, m)_k^n$ with $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$ (via ordinal card monotonicity), and similarly for $m' \\le m$ (via natural number inequality).",
+      "mathContext": "Monotonicity proved: ordinal parameter via `Ordinal.card_le_card`, size parameter via `le_trans`."
     },
     {
       "id": "ordinal-arithmetic",
@@ -159,7 +159,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
+    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 245-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity (proved from definitions), and countability proofs for ordinal arithmetic. Only 2 deep results remain axiomatized (Erdős-Rado, Finite Ramsey).",
     "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\nA positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
       "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
@@ -178,9 +178,9 @@
       "Ordinal"
     ],
     "namespace": "Erdos70",
-    "lineCount": 225,
-    "axiomCount": 5,
-    "theoremCount": 6,
+    "lineCount": 237,
+    "axiomCount": 2,
+    "theoremCount": 9,
     "definitionCount": 13
   },
   "crossReferences": [

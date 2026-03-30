@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 604,
     "erdosUrl": "https://erdosproblems.com/604",
     "erdosProblemStatus": "open",
@@ -59,8 +59,8 @@
       "Crossing number inequality",
       "Number theory (sums of two squares, Landau's theorem)"
     ],
-    "lineCount": 227,
-    "assumptions": "No axioms. 3 sorry(s) remain in the formalization.",
+    "lineCount": 223,
+    "assumptions": "No axioms. 1 sorry remaining: integerLattice_pinnedDistances (deep constructive existence). maxPinnedDistances and pinnedDistance_le are now sorry-free.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -184,7 +184,7 @@
       "Set"
     ],
     "namespace": null,
-    "lineCount": 227,
+    "lineCount": 223,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 11

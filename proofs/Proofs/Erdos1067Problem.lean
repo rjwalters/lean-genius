@@ -127,13 +127,6 @@ def ErdosHajnalQuestion (G : SimpleGraph V) : Prop :=
 **Komjáth's Consistency Result (2013):**
 It is consistent with ZFC that there exists a counterexample.
 -/
-axiom komjath_consistency_2013 :
-    -- In some models of ZFC:
-    ∃ V : Type*, ∃ G : SimpleGraph V,
-      hasAleph1ChromaticNumber G ∧
-      ¬∃ H : SimpleGraph V, IsSubgraph H G ∧
-        InfinitelyConnected H ∧ hasAleph1ChromaticNumber H
-
 /--
 **Soukup's Counterexample (2015):**
 A counterexample exists in ZFC (no extra assumptions).
@@ -158,12 +151,6 @@ axiom bowler_pitz_counterexample_2024 :
 **Thomassen's Edge-Connectivity Counterexample (2017):**
 For the edge-connectivity variant, a counterexample also exists.
 -/
-axiom thomassen_edge_counterexample_2017 :
-    ∃ V : Type*, ∃ G : SimpleGraph V,
-      hasAleph1ChromaticNumber G ∧
-      ∀ H : SimpleGraph V, IsSubgraph H G →
-        InfinitelyEdgeConnected H → ¬hasAleph1ChromaticNumber H
-
 /- ## Part VI: The Variant with ℵ₁ Vertices -/
 
 /--
@@ -177,25 +164,12 @@ def hasAleph1Vertices (V : Type*) : Prop :=
 For graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is
 independent of ZFC: counterexamples exist in some models but not others.
 We axiomatize one direction (consistency of counterexample). -/
-axiom komjath_aleph1_vertex_counterexample_consistent :
-    -- In some models of ZFC with ℵ₁-vertex graphs:
-    ∃ V : Type*, ∃ G : SimpleGraph V,
-      hasAleph1Vertices V ∧ hasAleph1ChromaticNumber G ∧
-      ¬∃ H : SimpleGraph V, IsSubgraph H G ∧
-        InfinitelyConnected H ∧ hasAleph1ChromaticNumber H
-
 /- ## Part VII: Key Observations -/
 
 /-- **Soukup's construction principle:**
 One can build a graph from "ladder" structures of trees where
 the overall graph needs ℵ₁ colors but any infinitely connected
 piece can be colored with fewer colors. -/
-axiom soukup_construction_principle :
-    ∃ V : Type*, ∃ G : SimpleGraph V,
-      hasAleph1ChromaticNumber G ∧
-      ∀ H : SimpleGraph V, IsSubgraph H G →
-        InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
-
 /- ## Part IX: Summary
 
 **Erdős Problem #1067: DISPROVED**

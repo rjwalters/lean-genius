@@ -1,0 +1,177 @@
+{
+  "slug": "bounded-prime-gaps-oq-04-oq-01",
+  "title": "Pólya-Vinogradov inequality formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Pólya-Vinogradov inequality formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T08:49:59.544Z",
+    "iteration": 1,
+    "focus": "Surveyed. All key statements formalized, proofs pending.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Stated all 5 key theorems for Pólya-Vinogradov. Documented 4-phase proof roadmap (~700 lines total). All proofs are sorry — this is infrastructure laying.",
+    "builtItems": [
+      "gaussSumNorm: statement of |τ(χ)|=√q (sorry)",
+      "geom_partial_sum_bound: geometric series bound (sorry)",
+      "cotangent_sum_bound: cotangent sum estimate (sorry)",
+      "polya_vinogradov: main inequality statement (sorry)",
+      "complete_character_sum_zero: orthogonality consequence (sorry)"
+    ],
+    "insights": [
+      "Mathlib has ZMod.gaussSum and DirichletCharacter infrastructure",
+      "Gauss sum bound |τ(χ)|=√q is Phase 1 (~300 lines, HIGH tractability)",
+      "PV proof decomposes into 4 phases: Gauss sum, geometric series, cotangent sum, assembly",
+      "Total estimated ~700 lines (most tractable of 6 BV prerequisites)",
+      "OQ04-OQ02 already axiomatizes gaussSumBound and polyaVinogradov"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove gaussSumNorm via double sum identity τ(χ)·τ(χ̄) = χ(-1)·q",
+      "Prove geom_partial_sum_bound via geometric series formula",
+      "Prove cotangent_sum_bound via |sin(πa/q)| ≥ 2a/q and harmonic sum",
+      "Assemble polya_vinogradov from the three bounds"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.543Z",
+  "lastUpdate": "2026-03-30T08:49:59.543Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 384,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 601,
+      "theoremCount": 11,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ]
+}

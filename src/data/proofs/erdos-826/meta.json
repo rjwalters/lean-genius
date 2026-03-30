@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (1974)",
     "sourceUrl": "https://erdosproblems.com/826",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos826Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "arithmetic-functions",
       "open-problem"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 826,
     "erdosUrl": "https://erdosproblems.com/826",
@@ -56,7 +56,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 320,
-    "assumptions": "0 axioms. Open conjecture stated as a definition. Background facts (average/max order of τ) stated as propositions. erdos_826_statement and prime_satisfies_bound proved from Mathlib."
+    "assumptions": "Open conjecture (Erdős #826) stated as a definition — not asserted as true. 0 axiom declarations, 0 sorries. Background facts (average/max order of τ) stated as Prop definitions. Proved theorems: erdos_826_statement (definitional equivalence), prime_satisfies_bound (from Mathlib), erdos_826_implies_248, erdos_826_main. Status is axiomatized because the subject is an open conjecture."
   },
   "overview": {
     "historicalContext": "Erdős Problem #826 was posed by Paul Erdős in 1974 (referenced as [Er74b]). It asks a fundamental question about the growth of the divisor function τ(n) = σ₀(n) along arithmetic shifts: can we find infinitely many starting points n where τ(n+k) grows at most linearly in k? The problem is described as a stronger form of Erdős Problem #248.\n\nThe divisor function τ(n) counts the number of positive divisors of n. Its average order is log(n), established by Dirichlet's divisor problem, while its maximum order is much larger — roughly 2^{log(n)/log(log(n))} — achieved by highly composite numbers. The interplay between typical and extremal behavior is central to understanding this problem.\n\nTerence Tao has noted that Problem #826 appears difficult. The challenge lies in simultaneously controlling divisor counts across all shifts k ≥ 1 from a single starting point. While the constraint becomes easier for large k (since Ck grows), the constraint at k = 1 is extremely restrictive: it requires τ(n+1) ≤ C, meaning n+1 must have very few divisors. Standard sieve methods and analytic number theory techniques have not yet yielded a resolution.",

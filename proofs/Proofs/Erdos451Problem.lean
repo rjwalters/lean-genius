@@ -55,8 +55,6 @@ axiom nk : ℕ → ℕ
 axiom nk_gt_2k (k : ℕ) (hk : 1 ≤ k) : 2 * k < nk k
 
 /-- n_k avoids Bertrand-range primes. -/
-axiom nk_avoids (k : ℕ) (hk : 1 ≤ k) : AvoidsBertrandPrimes (nk k) k
-
 /-- n_k is minimal: no smaller n > 2k avoids them. -/
 axiom nk_minimal (k : ℕ) (hk : 1 ≤ k) (n : ℕ) (hn : 2 * k < n)
     (ha : AvoidsBertrandPrimes n k) : nk k ≤ n
@@ -156,16 +154,8 @@ theorem avoidsBertrand_iff_finset (n k : ℕ) (hk : 1 ≤ k) :
 /- ## Known bounds -/
 
 /-- Erdős–Graham lower bound: n_k > k^{1+c} for some constant c > 0. -/
-axiom erdos_graham_lower :
-    ∃ c : ℝ, 0 < c ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
-      (k : ℝ) ^ (1 + c) < (nk k : ℝ)
-
 /-- Adenwalla upper bound: n_k ≤ ∏_{k < p < 2k} p = e^{O(k)}.
     By CRT, taking n ≡ 0 (mod p) for all primes p in (k,2k). -/
-axiom adenwalla_upper :
-    ∃ C : ℝ, 0 < C ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
-      (nk k : ℝ) ≤ (2 : ℝ) ^ (C * (k : ℝ))
-
 /-- The trivial lower bound: n_k > 2k (by definition). -/
 theorem nk_trivial_lower (k : ℕ) (hk : 1 ≤ k) : (2 * k : ℝ) < (nk k : ℝ) := by
   have := nk_gt_2k k hk

@@ -132,17 +132,9 @@ theorem iteration_terminates :
 /-- **Part (i)**: Estimate F(n), the iteration count.
     Cambie notes F(n) = o(n) is trivial and F(n) = 1 infinitely often.
     The question asks for good upper bounds on F(n). -/
-axiom erdos_409_upper_bound :
-  ∃ (g : ℕ → ℝ), (∀ n : ℕ, n > 0 → (iterationsToFirst n : ℝ) ≤ g n) ∧
-    g =o[atTop] (fun n => (n : ℝ))
-
 /-- **Part (ii)**: Can infinitely many n reach the same prime?
     That is, for some prime p, the set {n : ∃ k, totientIterate n k = p}
     is infinite. -/
-axiom erdos_409_same_prime :
-  ∃ p : ℕ, p.Prime ∧
-    {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
-
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
     Note: The formalization only states the trivial existence of a value in [0,1].
     The full question asks for the actual density value and whether it is positive. -/
@@ -241,13 +233,14 @@ theorem sigma_variant_question :
   ∀ n : ℕ, n > 1 → n.Prime →
     True := fun _ _ _ => trivial
 
-/-- The σ iteration can grow: σ(n) − 1 ≥ n for n > 1.
+/-- The σ iteration can grow: σ(n) − 1 ≥ n for all n > 1.
     Since 1 and n are both divisors and 1 ≠ n (as n > 1),
-    σ(n) ≥ 1 + n, so σ(n) - 1 ≥ n. -/
+    σ(n) ≥ 1 + n, so σ(n) - 1 ≥ n.
+    Note: this holds for primes too (σ(p) = 1 + p, so σ(p) − 1 = p). -/
 theorem sigma_growing :
-    ∀ n : ℕ, n > 1 → ¬n.Prime →
+    ∀ n : ℕ, n > 1 →
       n ≤ (n.divisors.sum id) - 1 := by
-  intro n hn _hnp
+  intro n hn
   -- σ(n) = n.divisors.sum id ≥ 1 + n since {1, n} ⊆ n.divisors
   have h1_dvd : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
   have hn_dvd : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
@@ -265,6 +258,49 @@ theorem sigma_growing :
             Finset.sum_le_sum_of_subset_of_nonneg hpair (fun _ _ _ => Nat.zero_le _)
          _ = 1 + n := hpair_sum
   omega
+
+/- ## Quantitative Bound -/
+
+/-- φ(n) ≥ 2 for n ≥ 3: φ(n) is even (Nat.totient_even) and positive
+    (Nat.totient_pos), hence ≥ 2. -/
+theorem totient_ge_two (n : ℕ) (hn : n ≥ 3) : n.totient ≥ 2 := by
+  have hpos : 0 < n.totient := Nat.totient_pos (by omega)
+  have heven : Even n.totient := Nat.totient_even (by omega : 2 < n)
+  obtain ⟨k, hk⟩ := heven
+  omega
+
+/-- Any n > 1 reaches a prime in at most n − 2 iterations.
+    This gives the bound F(n) ≤ n − 2, i.e., F(n) = O(n).
+    Proof: strong induction. Primes need 0 steps. For composite n ≥ 4,
+    T(n) < n (by iterate_decreasing) and T(n) > 1 (since φ(n) ≥ 2),
+    so by IH, T(n) reaches prime in ≤ T(n) − 2 steps, giving
+    n reaches prime in ≤ T(n) − 1 ≤ n − 2 steps. -/
+theorem iteration_reaches_prime_in :
+    ∀ n : ℕ, n > 1 → ∃ k : ℕ, k ≤ n - 2 ∧ (totientIterate n k).Prime := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro hn
+    by_cases hp : n.Prime
+    · exact ⟨0, by omega, hp⟩
+    · -- n > 1 and not prime, so n ≥ 4
+      have hn4 : n ≥ 4 := by
+        by_contra h; push_neg at h
+        interval_cases n <;> simp_all [Nat.Prime]
+      have hdec := iterate_decreasing n (by omega) hp
+      -- totientPlusOne n > 1: φ(n) ≥ 2 for n ≥ 3, so φ(n)+1 ≥ 3
+      have hm_gt1 : totientPlusOne n > 1 := by
+        unfold totientPlusOne
+        have := totient_ge_two n (by omega)
+        omega
+      obtain ⟨k, hk_le, hk_prime⟩ := ih (totientPlusOne n) hdec hm_gt1
+      refine ⟨k + 1, ?_, ?_⟩
+      · -- k + 1 ≤ n - 2: k ≤ T(n) - 2 and T(n) ≤ n - 1
+        omega
+      · -- totientIterate n (k+1) = totientIterate (T(n)) k
+        unfold totientIterate
+        rw [Function.iterate_succ, Function.comp_apply]
+        exact hk_prime
 
 /- ## Small Cases -/
 

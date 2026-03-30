@@ -1,0 +1,71 @@
+{
+  "id": "erdos-19-oq-01",
+  "title": "Explicit Bounds on the EFL Threshold",
+  "slug": "erdos-19-oq-01",
+  "description": "What is the explicit threshold N₀ such that the Kang-Kelly-Kühn-Methuku-Osthus asymptotic proof of the Erdős-Faber-Lovász conjecture takes over? This formalization defines the threshold, proves the finite reduction theorem (EFL reduces to checking finitely many cases in [10, N₀)), and establishes structural bounds.",
+  "meta": {
+    "author": "Kang, Kelly, Kühn, Methuku, Osthus (2021); Hindman (1981)",
+    "sourceUrl": "https://erdosproblems.com/19",
+    "date": "2021",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos19OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "chromatic-number",
+      "combinatorics",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": [
+      "kang_kelly_kuhn_methuku_osthus_asymptotic: EFL conjecture holds for all sufficiently large n (2021 result)",
+      "hindman_small_cases: EFL holds for n = 1 through 9 (case analysis, 1981)",
+      "kahn_asymptotic_bound: chi(G) <= (1+o(1))n for EFL graphs (1992 result)"
+    ],
+    "erdosNumber": 19,
+    "erdosUrl": "https://erdosproblems.com/19",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.find",
+        "description": "Computes the minimum natural number satisfying a decidable predicate",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Nat.find_spec",
+        "description": "The value returned by Nat.find satisfies the predicate",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Nat.find_min",
+        "description": "Values below Nat.find do not satisfy the predicate",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Nat.find_le",
+        "description": "Nat.find returns at most any witness",
+        "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets, used for clique representation",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "parentProof": "erdos-19",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-19",
+    "lineCount": 394
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 3
+  }
+}

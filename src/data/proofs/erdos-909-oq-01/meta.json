@@ -1,0 +1,42 @@
+{
+  "id": "erdos-909-oq-01",
+  "title": "Characterize Dimension-Stable Spaces",
+  "slug": "erdos-909-oq-01",
+  "description": "Characterize all topological spaces S with dim(S × S) = dim(S). Anderson-Keisler showed such spaces exist for all n ≥ 1, but the structural criterion is unknown. This formalization defines dimension-stability, proves necessary conditions from the product inequality, handles the 0-dimensional case, and shows that dimension mismatch precludes stability.",
+  "meta": {
+    "author": "Anderson, Keisler (1967); Engelking (1978)",
+    "sourceUrl": "https://erdosproblems.com/909",
+    "date": "1967",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos909OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "topology",
+      "dimension-theory",
+      "product-spaces",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": [
+      "dimension_product_ineq: dim(X x Y) <= dim(X) + dim(Y)",
+      "anderson_keisler_existence: dimension-stable spaces exist for all n >= 1"
+    ],
+    "erdosNumber": 909,
+    "erdosUrl": "https://erdosproblems.com/909",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [],
+    "parentProof": "erdos-909",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-909",
+    "lineCount": 255
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 2
+  }
+}

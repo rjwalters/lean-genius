@@ -68,10 +68,6 @@ def IsPrime3Mod4 (p : ℕ) : Prop :=
 
 /-- **Fermat's criterion:** n > 0 is a sum of two squares iff
 every prime p ≡ 3 (mod 4) divides n to an even power. -/
-axiom fermat_sum_two_squares_criterion (n : ℕ) (hn : n > 0) :
-    IsSumTwoSquares n ↔
-      ∀ p : ℕ, IsPrime3Mod4 p → Even (padicValNat p n)
-
 /-- Primes p ≡ 1 (mod 4) are sums of two squares.
     Proved via Mathlib's Nat.Prime.sq_add_sq. -/
 theorem prime_1_mod_4_sum_two_squares (p : ℕ) (hp : p.Prime) (h : p % 4 = 1) :
@@ -94,11 +90,7 @@ are axiomatized as functions with appropriate properties. -/
 axiom nthSumTwoSquares : ℕ → ℕ
 
 /-- The sequence is strictly increasing. -/
-axiom nthSumTwoSquares_strictMono : StrictMono nthSumTwoSquares
-
 /-- Every element is a sum of two squares. -/
-axiom nthSumTwoSquares_mem (k : ℕ) : IsSumTwoSquares (nthSumTwoSquares k)
-
 /-- The gap between the k-th and (k+1)-th sums of two squares. -/
 def gap (k : ℕ) : ℕ :=
   nthSumTwoSquares (k + 1) - nthSumTwoSquares k
@@ -111,10 +103,6 @@ noncomputable def countSumTwoSquares (x : ℝ) : ℕ :=
 
 /-- **Landau's theorem (1908):** The density of sums of two squares
 is asymptotic to cx/√(log x) for some c > 0. -/
-axiom landau_density_theorem :
-    ∃ c > 0, Tendsto (fun x => (countSumTwoSquares x : ℝ) * Real.sqrt (Real.log x) / x)
-      atTop (𝓝 c)
-
 /- ## Part V: Lower Bounds on Gaps -/
 
 /-- **Erdős (1951):** For infinitely many k, the gap is
@@ -125,18 +113,8 @@ axiom erdos_1951_lower_bound :
         (gap k : ℝ) ≥ c * Real.log n / Real.sqrt (Real.log (Real.log n))
 
 /-- **Richards (1982):** limsup of gaps / log n ≥ 1/4. -/
-axiom richards_1982_lower_bound :
-    ∃ (kSeq : ℕ → ℕ), StrictMono kSeq ∧
-      ∀ ε > 0, ∀ᶠ j in atTop,
-        (gap (kSeq j) : ℝ) / Real.log (nthSumTwoSquares (kSeq j)) ≥ 1/4 - ε
-
 /-- **Dietmann-Elsholtz-Kalmynin-Konyagin-Maynard (2022):**
 limsup of gaps / log n ≥ 0.868. -/
-axiom dekkm_2022_lower_bound :
-    ∃ (kSeq : ℕ → ℕ), StrictMono kSeq ∧
-      ∀ ε > 0, ∀ᶠ j in atTop,
-        (gap (kSeq j) : ℝ) / Real.log (nthSumTwoSquares (kSeq j)) ≥ 0.868 - ε
-
 /- ## Part VI: Upper Bound -/
 
 /-- **Bambah-Chowla (1947):** All gaps are O(n^(1/4)).

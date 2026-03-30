@@ -1,0 +1,90 @@
+{
+  "slug": "factor-remainder-theorem-oq-04",
+  "title": "The Berlekamp-Zassenhaus algorithm factors polynomials over $\\mathbb{Z}$ by first factoring modulo a prime $p$ (using the Factor Theorem over $\\mathbb{F}_p$) and then lifting via Hensel's lemma. Can t",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The Berlekamp-Zassenhaus algorithm factors polynomials over $\\mathbb{Z}$ by first factoring modulo a prime $p$ (using the Factor Theorem over $\\mathbb{F}_p$) and then lifting via Hensel's lemma. Can t.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "factor-remainder-nullstellensatz",
+    "factor-remainder-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.304Z",
+  "lastUpdate": "2026-03-29T18:32:39.304Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderTheorem.lean",
+      "filename": "FactorRemainderTheorem.lean",
+      "lineCount": 259,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheorem.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ02.lean",
+      "filename": "FactorRemainderTheoremOQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ03.lean",
+      "filename": "FactorRemainderTheoremOQ03.lean",
+      "lineCount": 287,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ03.lean"
+    }
+  ]
+}

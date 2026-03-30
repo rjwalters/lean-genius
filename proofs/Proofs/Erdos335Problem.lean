@@ -70,16 +70,9 @@ def FractionalPartSet (θ : ℝ) (X : Set ℝ) : Set ℕ :=
 
 /-- For irrational θ, the density of FractionalPartSet θ X equals μ(X)
     by Weyl's equidistribution theorem. -/
-axiom weyl_equidistribution (θ : ℝ) (X : Set ℝ) (hirrational : Irrational θ) :
-  DensityExists (FractionalPartSet θ X)
-
 /-- The known construction: if X_A and X_B have additive measure on ℝ/ℤ
     (μ(X_A + X_B) = μ(X_A) + μ(X_B)), then the corresponding fractional
     part sets have additive density. -/
-axiom fractional_part_density_additive (θ : ℝ) (X_A X_B : Set ℝ)
-    (hirrational : Irrational θ) :
-  DensityAdditive (FractionalPartSet θ X_A) (FractionalPartSet θ X_B)
-
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #335** (OPEN): Are all density-additive pairs
@@ -89,14 +82,6 @@ axiom fractional_part_density_additive (θ : ℝ) (X_A X_B : Set ℝ)
     must there exist a compact abelian group G, a group element g,
     and measurable sets X_A, X_B ⊆ G such that A and B are obtained
     from the orbit of g through X_A and X_B? -/
-axiom erdos_335_conjecture :
-  ∀ A B : Set ℕ,
-    HasPositiveDensity A → HasPositiveDensity B →
-    DensityAdditive A B →
-    ∃ (θ : ℝ) (X_A X_B : Set ℝ),
-      Irrational θ ∧
-      A = FractionalPartSet θ X_A ∧ B = FractionalPartSet θ X_B
-
 /- ## Basic Properties -/
 
 /-- Density is non-negative (when the density exists). -/
@@ -201,3 +186,115 @@ theorem Sumset_empty_left (B : Set ℕ) : Sumset ∅ B = ∅ := by
 /-- Sumset with the empty set on the right is empty. -/
 theorem Sumset_empty_right (A : Set ℕ) : Sumset A ∅ = ∅ := by
   ext n; simp [Sumset]
+
+/- ## Deeper Structural Results -/
+
+/-- Sumset is associative: (A + B) + C = A + (B + C). -/
+theorem Sumset_assoc (A B C : Set ℕ) :
+    Sumset (Sumset A B) C = Sumset A (Sumset B C) := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨ab, ⟨a, ha, b, hb, rfl⟩, c, hc, hn⟩
+    exact ⟨a, ha, b + c, ⟨b, hb, c, hc, rfl⟩, by omega⟩
+  · rintro ⟨a, ha, bc, ⟨b, hb, c, hc, rfl⟩, hn⟩
+    exact ⟨a + b, ⟨a, ha, b, hb, rfl⟩, c, hc, by omega⟩
+
+/-- Sumset with the universal set contains all sufficiently large numbers.
+    If a ∈ A, then for all n ≥ a, n ∈ Sumset A univ. -/
+theorem Sumset_univ_right (A : Set ℕ) (a : ℕ) (ha : a ∈ A) (n : ℕ) (hn : a ≤ n) :
+    n ∈ Sumset A Set.univ := by
+  exact ⟨a, ha, n - a, Set.mem_univ _, by omega⟩
+
+/-- Sumset is monotone in both arguments. -/
+theorem Sumset_mono_left {A A' B : Set ℕ} (hA : A ⊆ A') :
+    Sumset A B ⊆ Sumset A' B :=
+  Sumset_mono hA (Set.Subset.refl B)
+
+/-- Sumset is monotone in both arguments. -/
+theorem Sumset_mono_right {A B B' : Set ℕ} (hB : B ⊆ B') :
+    Sumset A B ⊆ Sumset A B' :=
+  Sumset_mono (Set.Subset.refl A) hB
+
+/-- In a density-additive pair, both sets have density at most 1. -/
+theorem density_additive_parts_le_one (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity A ≤ 1 ∧ asympDensity B ≤ 1 :=
+  ⟨density_le_one A h.1, density_le_one B h.2.1⟩
+
+/-- In a density-additive pair, both sets have non-negative density. -/
+theorem density_additive_parts_nonneg (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity A ≥ 0 ∧ asympDensity B ≥ 0 :=
+  ⟨density_nonneg A h.1, density_nonneg B h.2.1⟩
+
+/-- If d(A) + d(B) = 1 in a density-additive pair, the sumset has full density. -/
+theorem density_additive_full (A B : Set ℕ) (h : DensityAdditive A B)
+    (hfull : asympDensity A + asympDensity B = 1) :
+    asympDensity (Sumset A B) = 1 := by
+  rw [h.2.2.2, hfull]
+
+/-- Density additivity with the empty set: d(A + ∅) = d(∅) + d(A) holds vacuously
+    since ∅ has density 0 and A + ∅ = ∅. -/
+theorem density_sumset_empty (A : Set ℕ) :
+    Sumset A ∅ = ∅ ∧ Sumset ∅ A = ∅ :=
+  ⟨Sumset_empty_right A, Sumset_empty_left A⟩
+
+/-- Counting function is zero for the empty set. -/
+theorem countingFn_empty (N : ℕ) : countingFn ∅ N = 0 := by
+  simp [countingFn]
+
+/-- Counting function is monotone in the set argument. -/
+theorem countingFn_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    countingFn A N ≤ countingFn B N := by
+  unfold countingFn
+  exact Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+    ((Set.finite_Icc 1 N).subset Set.inter_subset_right)
+
+/-- Counting function is monotone in N when A is fixed. -/
+theorem countingFn_mono_N (A : Set ℕ) {M N : ℕ} (h : M ≤ N) :
+    countingFn A M ≤ countingFn A N := by
+  unfold countingFn
+  apply Set.ncard_le_ncard
+  · exact Set.inter_subset_inter_right A (Set.Icc_subset_Icc_right h)
+  · exact (Set.finite_Icc 1 N).subset Set.inter_subset_right
+
+/-- The sumset of singletons is a singleton. -/
+theorem Sumset_singleton (a b : ℕ) :
+    Sumset {a} {b} = {a + b} := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨x, rfl, y, rfl, rfl⟩; rfl
+  · intro h; exact ⟨a, rfl, b, rfl, h⟩
+
+/- ## Sumset Identity and Further Properties -/
+
+/-- {0} is a right identity for sumsets: A + {0} = A. -/
+theorem Sumset_zero_right (A : Set ℕ) : Sumset A {0} = A := by
+  ext n; constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩
+    rw [Set.mem_singleton_iff] at hb; subst hb; simpa
+  · intro hn; exact ⟨n, hn, 0, rfl, by omega⟩
+
+/-- {0} is a left identity for sumsets: {0} + A = A. -/
+theorem Sumset_zero_left (A : Set ℕ) : Sumset {0} A = A := by
+  rw [Sumset_comm]; exact Sumset_zero_right A
+
+/-- Density additivity composes along a chain:
+    if d(A+B) = d(A)+d(B) and d((A+B)+C) = d(A+B)+d(C),
+    then d(A+B+C) = d(A)+d(B)+d(C). -/
+theorem density_additive_chain (A B C : Set ℕ)
+    (h1 : DensityAdditive A B) (h2 : DensityAdditive (Sumset A B) C) :
+    asympDensity (Sumset (Sumset A B) C) =
+      asympDensity A + asympDensity B + asympDensity C := by
+  rw [h2.2.2.2, h1.2.2.2]
+
+/-- In a density-additive pair, d(B) ≤ 1 - d(A). -/
+theorem density_additive_complement_bound (A B : Set ℕ) (h : DensityAdditive A B) :
+    asympDensity B ≤ 1 - asympDensity A := by
+  have := additive_sum_le_one A B h
+  linarith
+
+/-- The double sumset A + A has density 2·d(A) when density-additive with itself. -/
+theorem density_double_sumset (A : Set ℕ) (h : DensityAdditive A A) :
+    asympDensity (Sumset A A) = 2 * asympDensity A := by
+  rw [h.2.2.2]; ring
