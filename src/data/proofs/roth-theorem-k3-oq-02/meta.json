@@ -1,0 +1,157 @@
+{
+  "id": "roth-theorem-k3-oq-02",
+  "title": "Roth's Theorem via Triangle Removal (Corners Reduction)",
+  "slug": "roth-theorem-k3-oq-02",
+  "description": "Explicit reduction from Roth's theorem to the corners theorem via the construction S = {(x,y) : 2x+y \u2208 A}, showing corners in S correspond to 3-APs in A",
+  "meta": {
+    "author": "Roth/Ruzsa-Szemer\u00e9di (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
+    "date": "1953",
+    "status": "axiomatized",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "graph-theory",
+      "triangle-removal"
+    ],
+    "proofRepoPath": "Proofs/RothTriangleRemoval.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod",
+        "description": "Cyclic group arithmetic",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations and cardinality",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Explicit cornerSet construction: S = {(x,y) : 2x+y \u2208 A}",
+      "Proved corners in S \u2194 3-APs in A (both directions, verified)",
+      "Proved AP-free \u21d2 corner-free (the contrapositive reduction)",
+      "Demonstrated why the coefficient 2 uniquely gives 3-APs",
+      "Injectivity of the parameterization map (a,x) \u21a6 (x, a-2x)"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 2,
+    "lineCount": 181,
+    "assumptions": "2 axioms: (1) cornerSet_card -- density preservation |S| = |A|\u00b7N, provable by the injective parameterization (a,x) \u21a6 (x, a-2x). (2) roth_via_corners -- the final Roth theorem via corners, derivable from Mathlib's corners theorem + density preservation.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Roth proved his theorem on 3-APs in 1953 using Fourier analysis. The alternative proof via the triangle removal lemma was discovered by Ruzsa and Szemer\u00e9di (1978). The key insight is that 3-AP problems can be encoded as corner problems in Z/NZ \u00d7 Z/NZ, which in turn reduce to the triangle removal lemma via the regularity method.",
+    "problemStatement": "**Roth via Corners**: Given A \u2286 Z/NZ with |A| \u2265 \u03b4N, construct S = {(x,y) : 2x+y \u2208 A} and show that corners in S correspond to 3-APs in A.",
+    "text": "Explicit reduction from Roth's theorem to the corners theorem via the corner set construction",
+    "proofStrategy": "Define cornerSet A = {(x,y) \u2208 (Z/NZ)\u00b2 : 2x+y \u2208 A}. A corner (x,y), (x+d,y), (x,y+d) in S gives 2x+y, 2x+y+d, 2x+y+2d \u2208 A (a 3-AP). Conversely, each 3-AP {a, a+d, a+2d} in A yields N corners in S. The corners theorem then gives Roth.",
+    "keyInsights": [
+      "The coefficient 2 in '2x+y' is the unique coefficient that makes corners correspond to 3-APs: cx+y with c=1 gives sum triples, c=3 gives {a,a+d,a+3d}, only c=2 gives {a,a+d,a+2d}.",
+      "Each 3-AP produces N corners (one for each base point x), providing a quantitative amplification from APs to corners.",
+      "The AP-free \u21d2 corner-free direction is the key reduction: it converts the additive combinatorics problem (no 3-AP) into a geometric problem (no corner) solvable by the regularity method."
+    ],
+    "prerequisites": [
+      "Modular arithmetic (Z/NZ)",
+      "Finite set theory (Finset)",
+      "Arithmetic progressions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "construction",
+      "title": "Corner Set Construction",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Definition of cornerSet A as {(x,y) : 2x+y \u2208 A} with membership simp lemma.",
+      "mathContext": "The factor of 2 in 2x+y ensures that corners in S correspond to 3-APs rather than sum triples."
+    },
+    {
+      "id": "correspondence",
+      "title": "Corners \u2194 3-AP Correspondence",
+      "startLine": 50,
+      "endLine": 112,
+      "summary": "Verified correspondence in both directions: corner_to_ap (corner gives 3-AP) and ap_to_corner (3-AP gives corners). Plus the contrapositive: AP-free implies corner-free.",
+      "mathContext": "The correspondence uses only ring arithmetic in ZMod N. The key equations are: 2(x+d)+y = (2x+y) + 2d and 2x+(y+d) = (2x+y) + d."
+    },
+    {
+      "id": "density",
+      "title": "Density Preservation",
+      "startLine": 113,
+      "endLine": 140,
+      "summary": "Injectivity of (a,x) \u21a6 (x, a-2x) proved. Density |S| = |A|\u00b7N axiomatized.",
+      "mathContext": "Each element a \u2208 A has N preimages under the projection 2x+y, giving |S| = |A|\u00b7N."
+    },
+    {
+      "id": "roth",
+      "title": "Roth from Corners",
+      "startLine": 141,
+      "endLine": 181,
+      "summary": "Full chain: Regularity \u2192 Triangle Removal \u2192 Corners \u2192 (this file) \u2192 Roth. Final theorem axiomatized.",
+      "mathContext": "The explicit corners reduction makes visible how the graph-theoretic machinery (regularity + triangle removal) applies to the number-theoretic problem."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "alternative-proof",
+      "description": "The main gallery entry proves Roth via Fourier analysis (density increment). This entry provides the graph-theoretic proof via triangle removal."
+    }
+  ],
+  "conclusion": {
+    "summary": "Explicit formalization of the corners \u2194 3-AP correspondence that bridges the triangle removal lemma to Roth's theorem. Five theorems verified (corner_to_ap, ap_to_corner, apFree_imp_cornerFree, mem_cornerSet, cornerSet_map_injective), two axioms (density preservation, final theorem).",
+    "implications": "The corners approach generalizes: replacing 2x+y with kx+y gives k-term APs from 'k-dimensional corners'. This suggests a path to formalizing Szemer\u00e9di's theorem for general k via higher-dimensional hypergraph removal.",
+    "openQuestions": [
+      "Can the density preservation axiom be eliminated by completing the bijection proof?",
+      "Can the connection to Mathlib's corners theorem be made explicit, eliminating the final axiom?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "RothTriangleRemoval",
+    "lineCount": 181,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 1
+  },
+  "references": [
+    {
+      "authors": "K. F. Roth",
+      "title": "On Certain Sets of Integers",
+      "year": "1953",
+      "venue": "J. London Math. Soc.",
+      "note": "Original proof of r_3(N) = o(N) via Fourier analysis"
+    },
+    {
+      "authors": "I. Z. Ruzsa, E. Szemer\u00e9di",
+      "title": "Triple Systems with No Six Points Carrying Three Triangles",
+      "year": "1978",
+      "venue": "Combinatorics (Keszthely)",
+      "note": "Triangle removal approach to Roth-type problems"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "corner_to_ap",
+      "type": "core",
+      "description": "A corner in the corner set yields a 3-term AP in A",
+      "leanType": "corner (x,y), (x+d,y), (x,y+d) in cornerSet A \u21d2 {2x+y, 2x+y+d, 2x+y+2d} \u2286 A"
+    },
+    {
+      "name": "apFree_imp_cornerFree",
+      "type": "core",
+      "description": "AP-free A implies corner-free cornerSet A",
+      "leanType": "(\u2200 a d, d \u2260 0 \u2192 \u00acAP) \u21d2 (\u2200 x y d, d \u2260 0 \u2192 \u00accorner in S)"
+    }
+  ]
+}

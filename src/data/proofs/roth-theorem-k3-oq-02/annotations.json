@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cornerSet",
+    "proofId": "roth-theorem-k3-oq-02",
+    "range": { "startLine": 37, "endLine": 49 },
+    "title": "Corner Set Construction",
+    "type": "definition",
+    "content": "Defines cornerSet A as the set of pairs (x,y) in (Z/NZ)^2 where 2x+y lies in A. The simp lemma provides direct membership access.",
+    "mathContext": "The coefficient 2 in '2x+y' is crucial: it's the unique coefficient c such that corners in {(x,y) : cx+y in A} correspond to 3-term arithmetic progressions in A.",
+    "significance": "core",
+    "relatedConcepts": ["ZMod", "Finset.filter", "arithmetic progression"],
+    "prerequisites": ["Modular arithmetic"]
+  },
+  {
+    "id": "ann-corner-to-ap",
+    "proofId": "roth-theorem-k3-oq-02",
+    "range": { "startLine": 68, "endLine": 80 },
+    "title": "Corners to 3-APs",
+    "type": "theorem",
+    "content": "If (x,y), (x+d,y), (x,y+d) are all in cornerSet A with d nonzero, then {2x+y, 2x+y+d, 2x+y+2d} is a 3-AP in A. Proved by ring arithmetic.",
+    "mathContext": "The three membership conditions give: 2x+y in A, 2(x+d)+y = 2x+y+2d in A, 2x+(y+d) = 2x+y+d in A. The ring tactic verifies the equalities.",
+    "significance": "core",
+    "relatedConcepts": ["ring tactic", "3-AP", "corner"],
+    "prerequisites": ["cornerSet definition"]
+  },
+  {
+    "id": "ann-ap-to-corner",
+    "proofId": "roth-theorem-k3-oq-02",
+    "range": { "startLine": 82, "endLine": 95 },
+    "title": "3-APs to Corners",
+    "type": "theorem",
+    "content": "Each 3-AP {a, a+d, a+2d} in A produces a corner in S for every x in Z/NZ (with y = a-2x). This gives N corners per 3-AP.",
+    "mathContext": "The parameterization by x reveals the N-fold multiplicity: each AP element maps to an entire fiber of corners, amplifying the structure.",
+    "significance": "core",
+    "relatedConcepts": ["parameterization", "fiber", "multiplicity"],
+    "prerequisites": ["cornerSet definition"]
+  },
+  {
+    "id": "ann-apfree-cornerfree",
+    "proofId": "roth-theorem-k3-oq-02",
+    "range": { "startLine": 97, "endLine": 107 },
+    "title": "AP-Free Implies Corner-Free",
+    "type": "theorem",
+    "content": "If A has no 3-term AP, then cornerSet A has no corners. This is the contrapositive reduction from the corners theorem to Roth's theorem.",
+    "mathContext": "This is the key logical step: it converts the additive combinatorics problem (no 3-AP) into a geometric problem (no corner in Z/NZ x Z/NZ), which the regularity method can solve.",
+    "significance": "core",
+    "relatedConcepts": ["contrapositive", "reduction", "regularity lemma"],
+    "prerequisites": ["corner_to_ap"]
+  }
+]
