@@ -110,7 +110,8 @@ theorem lhopital_infty_right {f g f' g' : ℝ → ℝ} {a b c : ℝ}
 PART II: ADDITIONAL VARIANTS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **∞/∞ L'Hôpital — Left Approach** -/
+/-- **∞/∞ L'Hôpital — Left Approach**
+Reduces to the right approach via composition with negation. -/
 theorem lhopital_infty_left {f g f' g' : ℝ → ℝ} {a b c : ℝ}
     (hab : a < b)
     (hff' : ∀ x ∈ Ioo a b, HasDerivAt f (f' x) x)
@@ -119,10 +120,21 @@ theorem lhopital_infty_left {f g f' g' : ℝ → ℝ} {a b c : ℝ}
     (hgb : Tendsto g (𝓝[<] b) atTop)
     (hdiv : Tendsto (fun x => f' x / g' x) (𝓝[<] b) (𝓝 c)) :
     Tendsto (fun x => f x / g x) (𝓝[<] b) (𝓝 c) := by
-  -- Reduce to right approach via the substitution u = -x
-  -- f̃(u) = f(-u), g̃(u) = g(-u) on (-b, -a)
-  -- g̃(u) → ∞ as u → (-b)⁺, and f̃'(u)/g̃'(u) = f'(-u)/g'(-u) → c
-  sorry
+  -- Compose with negation: f̃(u) = f(-u), g̃(u) = g(-u) on (-b, -a)
+  have hdnf : ∀ x ∈ -Ioo a b, HasDerivAt (f ∘ Neg.neg) (f' (-x) * -1) x := fun x hx =>
+    comp x (hff' (-x) hx) (hasDerivAt_neg x)
+  have hdng : ∀ x ∈ -Ioo a b, HasDerivAt (g ∘ Neg.neg) (g' (-x) * -1) x := fun x hx =>
+    comp x (hgg' (-x) hx) (hasDerivAt_neg x)
+  rw [neg_Ioo] at hdnf hdng
+  have := lhopital_infty_right (neg_lt_neg hab) hdnf hdng
+    (by intro x hx h; apply hg' _ (by rw [← neg_Ioo] at hx; exact hx)
+        rwa [mul_comm, ← neg_eq_neg_one_mul, neg_eq_zero] at h)
+    (hgb.comp tendsto_neg_nhdsGT_neg)
+    (by simp only [neg_div_neg_eq, mul_one, mul_neg]
+        exact hdiv.comp tendsto_neg_nhdsGT_neg)
+  have := this.comp tendsto_neg_nhdsLT
+  unfold Function.comp at this
+  simpa only [neg_neg]
 
 /-- **∞/∞ L'Hôpital — At +∞** -/
 theorem lhopital_infty_atTop {f g f' g' : ℝ → ℝ} {a c : ℝ}
@@ -137,7 +149,8 @@ theorem lhopital_infty_atTop {f g f' g' : ℝ → ℝ} {a c : ℝ}
   -- g̃ → ∞ as u → 0⁺ since g → ∞ as x → +∞
   sorry
 
-/-- **∞/∞ L'Hôpital — At -∞** -/
+/-- **∞/∞ L'Hôpital — At -∞**
+Reduces to at +∞ via composition with negation. -/
 theorem lhopital_infty_atBot {f g f' g' : ℝ → ℝ} {a c : ℝ}
     (hff' : ∀ x ∈ Iio a, HasDerivAt f (f' x) x)
     (hgg' : ∀ x ∈ Iio a, HasDerivAt g (g' x) x)
@@ -145,8 +158,20 @@ theorem lhopital_infty_atBot {f g f' g' : ℝ → ℝ} {a c : ℝ}
     (hgBot : Tendsto g atBot atTop)
     (hdiv : Tendsto (fun x => f' x / g' x) atBot (𝓝 c)) :
     Tendsto (fun x => f x / g x) atBot (𝓝 c) := by
-  -- Reduce to atTop via u = -x
-  sorry
+  -- Compose with negation: f̃(u) = f(-u), g̃(u) = g(-u) on Ioi (-a)
+  have hdnf : ∀ x ∈ Ioi (-a), HasDerivAt (f ∘ Neg.neg) (f' (-x) * -1) x := by
+    intro x hx; exact comp x (hff' (-x) (by simp [Iio, neg_lt]; exact hx)) (hasDerivAt_neg x)
+  have hdng : ∀ x ∈ Ioi (-a), HasDerivAt (g ∘ Neg.neg) (g' (-x) * -1) x := by
+    intro x hx; exact comp x (hgg' (-x) (by simp [Iio, neg_lt]; exact hx)) (hasDerivAt_neg x)
+  have := lhopital_infty_atTop hdnf hdng
+    (by intro x hx h; exact hg' (-x) (by simp [Iio, neg_lt]; exact hx)
+        (by rwa [mul_comm, ← neg_eq_neg_one_mul, neg_eq_zero] at h))
+    (hgBot.comp tendsto_neg_atTop_atBot)
+    (by simp only [neg_div_neg_eq, mul_one, mul_neg]
+        exact hdiv.comp tendsto_neg_atTop_atBot)
+  have := this.comp tendsto_neg_atBot_atTop
+  unfold Function.comp at this
+  simpa only [neg_neg]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: EXAMPLE APPLICATION

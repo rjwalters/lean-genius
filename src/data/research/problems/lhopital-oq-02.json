@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Stated 4 variants of infinity/infinity L Hopital rule (right, left, at +inf, at -inf). Proof bodies have 4 sorries — needs Cauchy MVT epsilon management. Documented proof strategy and why separate from 0/0.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Sorry count 4→2. Proved left + atBot reductions via negation composition. Remaining: lhopital_infty_right (main proof, hard) + lhopital_infty_atTop (1/x substitution).",
+    "builtItems": [
+      "Proved lhopital_infty_left via negation reduction to lhopital_infty_right",
+      "Proved lhopital_infty_atBot via negation reduction to lhopital_infty_atTop"
+    ],
     "insights": [
       "Mathlib has 26 L Hopital variants but ALL are 0/0 form — genuine gap for infinity/infinity",
       "Only g → ∞ needed (not both f and g), making this more general than naive 1/f 1/g reduction",
       "Proof requires two-variable Cauchy MVT: fix x0, let x → a, then optimize x0",
-      "Four sorries: main proof + 3 reductions (left via negation, atTop via 1/x, atBot via -x)"
+      "Four sorries: main proof + 3 reductions (left via negation, atTop via 1/x, atBot via -x)",
+      "Left and atBot reductions proved via negation composition — same pattern as Mathlib 0/0 L Hopital reductions (lhopital_zero_left_on_Ioo)",
+      "Key Mathlib lemmas: tendsto_neg_nhdsGT_neg, tendsto_neg_nhdsLT, tendsto_neg_atTop_atBot, tendsto_neg_atBot_atTop, neg_Ioo, neg_div_neg_eq",
+      "Main proof (lhopital_infty_right) needs: Cauchy MVT application + two-variable epsilon management — estimated 80+ lines"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
