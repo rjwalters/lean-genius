@@ -413,6 +413,48 @@ theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠
   · intro h; exact (mul_eq_zero.mp h).resolve_left hM
   · intro h; rw [h, mul_zero]
 
+/-- **Cross product transformation law (adjugate form):**
+    cross(M·u, M·v) = adj(M)ᵀ · cross(u, v)
+
+    Equivalently, cross(M·u, M·v) = det(M) · M⁻ᵀ · cross(u, v) when M is invertible.
+    This identity says cross products transform contravariantly under linear maps.
+    Verified computationally: degree-3 polynomial identity in 15 variables. -/
+theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3 → ℝ) :
+    crossProduct (projTransform M u) (projTransform M v) =
+    projTransform M.adjugate.transpose (crossProduct u v) := by
+  ext i
+  fin_cases i <;>
+    simp only [crossProduct, projTransform, Matrix.mulVec, Matrix.dotProduct,
+      Matrix.adjugate, Matrix.transpose, Matrix.of_apply, Matrix.cramer,
+      Fin.sum_univ_three, Fin.isValue] <;>
+    ring
+
+/-- **Pascal constraint is invariant under invertible projective transformations.**
+
+    The key theorem: if 6 points satisfy (or don't satisfy) Pascal's constraint,
+    then so do their images under any invertible projective transformation M.
+
+    Proof uses: P' = cross(cross(M·A,M·B), cross(M·D,M·E))
+              = cross(adj(M)ᵀ·AB, adj(M)ᵀ·DE)
+              = adj(adj(M)ᵀ)ᵀ · cross(AB, DE)
+              = det(M) · M · P  (since adj(adj(M)ᵀ) = det(M)·Mᵀ)
+    Then det(P',Q',R') = det(M)⁴ · det(P,Q,R). -/
+theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠ 0)
+    (A B C D E F : ProjPoint) :
+    pascalConstraint (projTransform M A) (projTransform M B) (projTransform M C)
+      (projTransform M D) (projTransform M E) (projTransform M F)
+    ↔ pascalConstraint A B C D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  -- Cross product of two cross-product-transformed vectors:
+  -- cross(adj(M)ᵀ·a, adj(M)ᵀ·b) = adj(adj(M)ᵀ)ᵀ · cross(a, b)
+  -- P', Q', R' are all of the form (scalar) · M · (original vector)
+  -- det(P',Q',R') = (scalar)³ · det(M) · det(P,Q,R)
+  -- The scalar factors are powers of det(M), so ≠ 0
+  simp only [← crossProduct_projTransform]
+  -- After unfolding, both sides are polynomial expressions
+  -- The transformed det = det(M)^4 · original det
+  sorry -- Needs: adjugate composition identity, to be proved in next session
+
 -- ============================================================
 -- Export main results
 -- ============================================================
@@ -427,3 +469,4 @@ theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠
 #check @pascalConstraint
 #check @conic_implies_pascal_constraint
 #check @pascal_std_conic_parametrized
+#check @crossProduct_projTransform
