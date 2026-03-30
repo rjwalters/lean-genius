@@ -8,16 +8,24 @@
   "problemStatement": {
     "formal": "",
     "plain": "Can morleys_theorem_axiom be proved by formalizing the full Conway backward construction verification?",
-    "whyMatters": ["Would eliminate the axiom in the Morley formalization"]
+    "whyMatters": [
+      "Would eliminate the axiom in the Morley formalization"
+    ]
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T06:00:00Z",
     "iteration": 1,
     "focus": "Supporting lemmas complete, coordinate verification remains",
-    "blockers": ["Coordinate computation for ear vertices in complex plane"],
+    "blockers": [
+      "Coordinate computation for ear vertices in complex plane"
+    ],
     "nextAction": "Place equilateral triangle in complex plane, compute ear vertex positions, verify side lengths",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: Fixed 3 incorrect theorem statements (conway_angle_identity/B/C). RHS was t.α₃ but should be π/3 + t.α₃. Build now clean on Lean 4.26.0. 0 sorries, 0 axioms.",
@@ -39,12 +47,49 @@
       "conway_angle_identity theorems had incorrect RHS: π - earApex_B - earApex_C + π/3 = 2π/3 - β₃ - γ₃ = π/3 + α₃ (not α₃). Fixed all three variants."
     ],
     "mathlibGaps": [],
-    "nextSteps": ["Complete coordinate verification placing equilateral in complex plane"],
+    "nextSteps": [
+      "Complete coordinate verification placing equilateral in complex plane"
+    ],
     "markdown": ""
   },
-  "tags": ["geometry", "morley", "trisectors"],
-  "relatedProofs": ["morleys-theorem"],
-  "references": { "papers": [], "urls": [], "mathlib": [] },
+  "tags": [
+    "geometry",
+    "morley",
+    "trisectors"
+  ],
+  "relatedProofs": [
+    "morleys-theorem",
+    "morleys-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-03-30T05:55:00Z",
-  "lastUpdate": "2026-03-30T06:05:00Z"
+  "lastUpdate": "2026-03-30T06:05:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/MorleysTheorem.lean",
+      "filename": "MorleysTheorem.lean",
+      "lineCount": 533,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheorem.lean"
+    },
+    {
+      "path": "Proofs/MorleysTheoremOQ01.lean",
+      "filename": "MorleysTheoremOQ01.lean",
+      "lineCount": 293,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheoremOQ01.lean"
+    }
+  ]
 }

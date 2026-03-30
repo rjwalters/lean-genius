@@ -27,5 +27,68 @@
       "Prove edge midpoints on sphere for specific orthocentric examples"
     ],
     "progressSummary": "COMPLETED: Initial formalization of 3D Feuerbach analogue. Built complete 3D coordinate infrastructure (Point3, dist3, dot3, cross3, Tetrahedron, OrthocentricTetrahedron). Defined twenty-four-point sphere, insphere, 4 exspheres. Proved 4 theorems including third perpendicularity and 3D Euler line. 5 axioms and 5 sorries remain for deep geometric content."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheorem.lean",
+      "filename": "FeuerbachsTheorem.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheorem.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremDefs.lean",
+      "filename": "FeuerbachsTheoremDefs.lean",
+      "lineCount": 688,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 34,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01.lean",
+      "filename": "FeuerbachsTheoremOQ01.lean",
+      "lineCount": 1554,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01Aristotle.lean",
+      "filename": "FeuerbachsTheoremOQ01Aristotle.lean",
+      "lineCount": 188,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ02.lean",
+      "filename": "FeuerbachsTheoremOQ02.lean",
+      "lineCount": 587,
+      "theoremCount": 14,
+      "axiomCount": 5,
+      "defCount": 46,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-defs",
+    "feuerbachs-theorem-oq-01",
+    "feuerbachs-theorem-oq-02"
+  ]
 }

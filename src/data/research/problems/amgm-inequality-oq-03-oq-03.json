@@ -3,5 +3,102 @@
   "name": "Power mean extreme cases: lim M_r as r -> +/-infinity",
   "parentId": "amgm-inequality-oq-03",
   "status": "completed",
-  "knowledge": { "score": 4, "insights": ["M_r → max via n^{1/r} → 1 squeezing", "M_r mono in r generalizes AM-GM"], "builtItems": ["AmgmInequalityOQ03OQ03.lean"], "progressSummary": "COMPLETED: Survey of power mean limits." }
+  "knowledge": {
+    "score": 4,
+    "insights": [
+      "M_r → max via n^{1/r} → 1 squeezing",
+      "M_r mono in r generalizes AM-GM"
+    ],
+    "builtItems": [
+      "AmgmInequalityOQ03OQ03.lean"
+    ],
+    "progressSummary": "COMPLETED: Survey of power mean limits."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 544,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 960,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 194,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 58,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-03"
+  ]
 }

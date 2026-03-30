@@ -1,6 +1,6 @@
 {
   "slug": "prime-reciprocal-divergence-oq-03",
-  "title": "Can Erd\u0151s's elementary proof be formalized purely in Lean without relying on ...",
+  "title": "Can Erdős's elementary proof be formalized purely in Lean without relying on ...",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -52,7 +52,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "prime-reciprocal-divergence"
+    "prime-reciprocal-divergence",
+    "prime-reciprocal-divergence-oq-03"
   ],
   "references": {
     "papers": [],
@@ -72,6 +73,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeReciprocalDivergence.lean"
+    },
+    {
+      "path": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
+      "filename": "PrimeReciprocalDivergenceOQ03.lean",
+      "lineCount": 389,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeReciprocalDivergenceOQ03.lean"
     }
   ]
 }

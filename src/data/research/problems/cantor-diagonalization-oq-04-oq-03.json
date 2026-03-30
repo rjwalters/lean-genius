@@ -1,0 +1,174 @@
+{
+  "slug": "cantor-diagonalization-oq-04-oq-03",
+  "title": "Lawvere FPT connection to domain-theoretic fixed points",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Lawvere FPT connection to domain-theoretic fixed points.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:07:48.619Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Connected Lawvere FPT to domain-theoretic fixed points. Y combinator extracted, Knaster-Tarski proved from Mathlib, structural parallel documented. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "CantorDiagonalizationOQ04OQ03.lean: 150 lines, 0 axioms, 0 sorries",
+      "yCombinator: explicit Y combinator from CodesEndomorphisms",
+      "knaster_tarski: from Mathlib OrderHom.lfp",
+      "structural_parallel: unified theorem"
+    ],
+    "insights": [
+      "Y combinator = Lawvere construction: Y(f) = g(encode(g))",
+      "Lawvere needs coding, Tarski needs order — dual approaches",
+      "Domain theory bridges categorical and order-theoretic FPTs",
+      "OrderHom.lfp from Mathlib gives Knaster-Tarski directly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "logic",
+    "category-theory",
+    "fixed-point"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-01-oq-01",
+    "cantor-diagonalization-oq-02",
+    "cantor-diagonalization-oq-02-oq-01",
+    "cantor-diagonalization-oq-03",
+    "cantor-diagonalization-oq-03-oq-01",
+    "cantor-diagonalization-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.619Z",
+  "lastUpdate": "2026-03-30T13:07:48.619Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorDiagonalization.lean",
+      "filename": "CantorDiagonalization.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalization.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01.lean",
+      "filename": "CantorDiagonalizationOQ01.lean",
+      "lineCount": 443,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01.lean",
+      "lineCount": 307,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02.lean",
+      "filename": "CantorDiagonalizationOQ02.lean",
+      "lineCount": 273,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
+      "filename": "CantorDiagonalizationOQ02OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03.lean",
+      "lineCount": 143,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03.lean",
+      "filename": "CantorDiagonalizationOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01.lean",
+      "lineCount": 295,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04.lean",
+      "filename": "CantorDiagonalizationOQ04.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04.lean"
+    }
+  ]
+}

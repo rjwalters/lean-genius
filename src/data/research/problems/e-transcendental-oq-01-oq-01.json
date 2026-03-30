@@ -45,7 +45,8 @@
   ],
   "relatedProofs": [
     "e-transcendental",
-    "e-transcendental-oq-01"
+    "e-transcendental-oq-01",
+    "e-transcendental-oq-03"
   ],
   "references": {
     "papers": [],
@@ -60,11 +61,11 @@
     {
       "path": "Proofs/ETranscendentalOQ01.lean",
       "filename": "ETranscendentalOQ01.lean",
-      "lineCount": 546,
-      "theoremCount": 18,
+      "lineCount": 539,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
     },
@@ -78,6 +79,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03.lean",
+      "filename": "ETranscendentalOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
     }
   ]
 }

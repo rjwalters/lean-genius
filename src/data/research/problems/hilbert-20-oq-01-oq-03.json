@@ -1,0 +1,89 @@
+{
+  "slug": "hilbert-20-oq-01-oq-03",
+  "title": "Dencker proof of locally solvable operators (Hilbert 20th extension)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Dencker proof of locally solvable operators (Hilbert 20th extension).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:07:48.620Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: All 7 axioms require microlocal analysis not available in Mathlib. No tractable proof path exists.",
+    "builtItems": [],
+    "insights": [
+      "7 axioms all require microlocal analysis infrastructure not in Mathlib",
+      "Condition (Psi) characterization (Dencker 2006) is the deepest result - needs FBI transform + bicharacteristic flow",
+      "LinearPDO structure + MultiIndex + principal symbol defined but proofs fully axiomatized",
+      "No tractable axiom elimination path without microlocal analysis in Mathlib"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Monitor Mathlib for microlocal analysis additions",
+      "Consider stating Lewy example (simpler special case) as separate problem"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "functional-analysis",
+    "pde",
+    "hilbert-problems"
+  ],
+  "relatedProofs": [
+    "hilbert-20",
+    "hilbert-20-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.620Z",
+  "lastUpdate": "2026-03-30T14:50:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert20BoundaryValue.lean",
+      "filename": "Hilbert20BoundaryValue.lean",
+      "lineCount": 245,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20BoundaryValue.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20LocalSolvability.lean",
+      "filename": "Hilbert20LocalSolvability.lean",
+      "lineCount": 190,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20LocalSolvability.lean"
+    }
+  ]
+}

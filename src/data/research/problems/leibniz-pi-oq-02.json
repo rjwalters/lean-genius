@@ -1,0 +1,99 @@
+{
+  "slug": "leibniz-pi-oq-02",
+  "title": "Generalized Leibniz-Type Formulas for Constants",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Generalized Leibniz-Type Formulas for Constants.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:49:26.405Z",
+    "iteration": 1,
+    "focus": "Completed: generalized Leibniz formulas via eta/beta.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Unified framework for Leibniz-type formulas via Dirichlet eta/beta functions. β(1)=π/4 proved, η(2)=π²/12 relationship proved algebraically, Catalan constant defined, η(1)=ln(2) axiomatized.",
+    "builtItems": [
+      "LeibnizPiOQ02.lean: 189 lines, 2 axioms, 2 sorries",
+      "beta_one_eq_pi_div_four: proved from Real.tendsto_sum_pi_div_four",
+      "eta_zeta_relationship_s2: algebraic identity proved",
+      "CatalanConstant: defined as β(2) tsum",
+      "Unified etaTerm/betaTerm framework for generalized Leibniz sums"
+    ],
+    "insights": [
+      "Leibniz series is β(1) in Dirichlet beta function family",
+      "η(s) = (1-2^{1-s})·ζ(s) links alternating to standard zeta",
+      "η(2) = π²/12 follows from (1/2)·ζ(2), provable from hasSum_zeta_two",
+      "η(1) = ln(2) requires Abel theorem (not in Mathlib) — must axiomatize",
+      "Catalan G = β(2) irrationality is open",
+      "All four constants (π/4, ln2, π²/12, G) arise from same pattern"
+    ],
+    "mathlibGaps": [
+      "Abel theorem for boundary convergence of power series (needed for η(1) = ln(2))"
+    ],
+    "nextSteps": [
+      "Prove eta_two_eq sorry from hasSum_zeta_two via even/odd extraction",
+      "Prove catalan_pos from term dominance argument"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "series",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "leibniz-pi",
+    "leibniz-pi-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.405Z",
+  "lastUpdate": "2026-03-30T13:49:26.405Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LeibnizPi.lean",
+      "filename": "LeibnizPi.lean",
+      "lineCount": 179,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPi.lean"
+    },
+    {
+      "path": "Proofs/LeibnizPiOQ01OQ01.lean",
+      "filename": "LeibnizPiOQ01OQ01.lean",
+      "lineCount": 135,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPiOQ01OQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "slug": "konigsberg-oq-04",
+  "title": "Computational Complexity of Counting Eulerian Circuits",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Computational Complexity of Counting Eulerian Circuits.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:49:26.405Z",
+    "iteration": 1,
+    "focus": "Completed: complexity survey for Eulerian circuit counting.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Survey of Eulerian circuit counting complexity. Decision trivial, counting #P-complete (undirected), polynomial via BEST theorem (directed).",
+    "builtItems": [
+      "KonigsbergOQ04.lean: 157 lines, 0 axioms, 0 sorries",
+      "euler_criterion_decidable: decidability of Euler criterion",
+      "BEST theorem: documented formula",
+      "Complexity landscape table",
+      "Concrete examples: cycle, complete graphs"
+    ],
+    "insights": [
+      "Decision-counting gap: O(|V|) vs #P-complete",
+      "BEST theorem formula: EC(G) = t_w(G) · prod (deg+(v)-1)!",
+      "Directed counting is polynomial via matrix tree theorem",
+      "Undirected counting is #P-complete (Brightwell-Winkler 2005)",
+      "#P-completeness cannot be stated in Lean without Turing machine formalization"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "complexity",
+    "extension"
+  ],
+  "relatedProofs": [
+    "konigsberg",
+    "konigsberg-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-03-30T13:49:26.404Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Konigsberg.lean",
+      "filename": "Konigsberg.lean",
+      "lineCount": 221,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Konigsberg.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01.lean",
+      "filename": "KonigsbergOQ01.lean",
+      "lineCount": 405,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02.lean",
+      "filename": "KonigsbergOQ02.lean",
+      "lineCount": 814,
+      "theoremCount": 30,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03.lean",
+      "filename": "KonigsbergOQ03.lean",
+      "lineCount": 75,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    }
+  ]
+}
