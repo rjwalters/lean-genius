@@ -146,6 +146,24 @@ noncomputable def upstepsAboveAxis (l : List ℤ) : ℕ :=
 def balancedPathsOfType (n k : ℕ) : Set (List ℤ) :=
   {l | IsBalancedPath l n ∧ upstepsAboveAxis l = k}
 
+/-- Computable version of `upstepsAboveAxis` for `native_decide` proofs. -/
+def upstepsAboveAxisC (l : List ℤ) : ℕ :=
+  ((Finset.range l.length).filter (fun i =>
+    l.get? i = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
+
+/-- `upstepsAboveAxisC` agrees with `upstepsAboveAxis`. -/
+theorem upstepsAboveAxisC_eq (l : List ℤ) :
+    upstepsAboveAxisC l = upstepsAboveAxis l := rfl
+
+/-- Computational verification of Chung-Feller for n=2:
+    Types 0, 1, 2 each have exactly 2 = C₂ balanced paths. -/
+example : upstepsAboveAxisC [1, 1, -1, -1] = 2 := by native_decide
+example : upstepsAboveAxisC [1, -1, 1, -1] = 2 := by native_decide
+example : upstepsAboveAxisC [1, -1, -1, 1] = 1 := by native_decide
+example : upstepsAboveAxisC [-1, 1, 1, -1] = 1 := by native_decide
+example : upstepsAboveAxisC [-1, 1, -1, 1] = 0 := by native_decide
+example : upstepsAboveAxisC [-1, -1, 1, 1] = 0 := by native_decide
+
 /-- **Chung-Feller Theorem (uniform distribution)**:
 
     For each k ∈ {0, 1, ..., n}, the number of balanced paths from (0,0) to (2n,0)

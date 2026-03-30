@@ -150,8 +150,8 @@ among consecutive powerful numbers. The answer is unknown.
 /-- Erdős Problem #938: Are there only finitely many three-term APs
     among consecutive powerful numbers?
 
-    This is an open problem, axiomatized as stated. -/
-axiom erdos_938 : apIndices.Finite
+    Open problem, stated as Prop (not axiom) since unresolved. -/
+def erdos_938_conjecture : Prop := apIndices.Finite
 
 /-
 ## Connection to Problem #364
@@ -166,8 +166,8 @@ def NoThreeConsecutivePowerful : Prop :=
 
 /-- Problem #364 conjecture: no three consecutive integers are all powerful.
     If true, this forbids APs with common difference 1, a much stronger
-    result than Problem #938. -/
-axiom erdos_364_conjecture : NoThreeConsecutivePowerful
+    result than Problem #938. Stated as Prop (not axiom) since unresolved. -/
+def erdos_364_conjecture : Prop := NoThreeConsecutivePowerful
 
 /-
 ## Counting Function and Asymptotics
@@ -183,8 +183,9 @@ noncomputable def countPowerful (n : ℕ) : ℕ :=
 
 /-- The count of powerful numbers ≤ x is asymptotic to c·√x
     where c = ζ(3/2)/ζ(3) ≈ 2.173.
-    This is a classical result in analytic number theory. -/
-axiom powerful_count_asymptotic :
+    Classical result in analytic number theory, stated as Prop (not axiom)
+    since not used by any theorem in this file. -/
+def powerful_count_asymptotic_theorem : Prop :=
   ∃ c : ℝ, c > 0 ∧ Filter.Tendsto
     (fun n => (countPowerful n : ℝ) / Real.sqrt n) Filter.atTop (nhds c)
 

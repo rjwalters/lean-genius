@@ -159,9 +159,11 @@ theorem strong_implies_original (h : erdos_1160_strong) (h0 : ∀ n, 0 ≤ numGr
 -/
 
 /-- Pantelidakis (2003): The conjecture holds for odd n when m ≥ 3619.
-    If n is odd and n ≤ 2^m with m ≥ 3619, then g(n) ≤ g(2^m). -/
-axiom pantelidakis_odd (m n : ℕ) (hm : 3619 ≤ m) (hn : n ≤ 2 ^ m)
-    (hodd : Odd n) : numGroups n ≤ numGroups (2 ^ m)
+    Stated as a Prop (not axiom) since it is a published result not used
+    by any theorem in this file. -/
+def pantelidakis_odd_theorem : Prop :=
+  ∀ (m n : ℕ), 3619 ≤ m → n ≤ 2 ^ m → Odd n →
+    numGroups n ≤ numGroups (2 ^ m)
 
 /-- The conjecture trivially holds for n = 1. -/
 theorem erdos_1160_n_eq_one (m : ℕ) :
@@ -182,8 +184,10 @@ theorem erdos_1160_prime (m : ℕ) (p : ℕ) (hp : Nat.Prime p) :
 /-- The asymptotic formula for g(2^m):
     log₂(g(2^m)) ~ (2/27) · m³ as m → ∞.
     This shows the super-exponential growth of the group counting function
-    at powers of 2, which is why they dominate all other orders. -/
-axiom numGroups_two_power_growth :
+    at powers of 2, which is why they dominate all other orders.
+    Stated as a Prop (not axiom) since it is a known result not used
+    by any theorem in this file. -/
+def numGroups_two_power_growth_theorem : Prop :=
     ∀ ε > 0, ∃ M : ℕ, ∀ m : ℕ, M ≤ m →
       (2 : ℝ) / 27 - ε < (Real.log (numGroups (2 ^ m) : ℝ)) / ((m : ℝ) ^ 3 * Real.log 2) ∧
       (Real.log (numGroups (2 ^ m) : ℝ)) / ((m : ℝ) ^ 3 * Real.log 2) < 2 / 27 + ε
