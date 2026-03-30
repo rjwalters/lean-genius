@@ -64,7 +64,7 @@ noncomputable def GLnClass (n : ℕ) : K.carrier :=
 
 /-- [Fl_n] = ∏_{i=0}^{n-1} [P^i] (complete flag) -/
 noncomputable def completeFlagClass (n : ℕ) : K.carrier :=
-  ∏ i ∈ Finset.range n, K.projectiveClass i
+  ∏ i ∈ Finset.range n, projectiveClass K i
 
 /-
 ## Part II: q-Analog Infrastructure
@@ -122,7 +122,6 @@ theorem qFactorial_three : qFactorial K 3 = (1 + K.L) * (1 + K.L + K.L ^ 2) := b
   unfold qFactorial qNumber
   simp [Finset.prod_range_succ, Finset.sum_range_succ, Finset.sum_range_zero,
         Finset.prod_range_one, Finset.sum_range_one]
-  ring
 
 /-- The q-factorial equals the complete flag class:
     [n]_L! = [Fl_n] -/
@@ -130,7 +129,7 @@ theorem qFactorial_eq_completeFlagClass (n : ℕ) :
     qFactorial K n = completeFlagClass K n := by
   unfold qFactorial completeFlagClass
   congr 1
-  ext i
+  ext i _
   exact (qNumber_succ_eq_projective K i).symm
 
 /-
@@ -156,14 +155,14 @@ We define [Gr(d, n)] for the cases we can compute directly:
   - [Gr(d, n)] = [Gr(n-d, n)] (duality)
   - [Gr(2, 4)] = (1+L)(1+L+L²+L³)/(1) = 1+L+2L²+L³+L⁴ -/
 noncomputable def grassmannianClass : ℕ → ℕ → K.carrier
-  | 0, _ => 1
-  | _, 0 => 0
+  | 0, _ => 1       -- [Gr(0, n)] = 1 (the trivial subspace, including Gr(0,0) = 1)
+  | _, 0 => 0       -- [Gr(d+1, 0)] = 0 (no subspaces of the zero space)
   | d + 1, n + 1 =>
     if d + 1 > n + 1 then 0
     else if d + 1 = n + 1 then 1
     else
       -- [Gr(d+1, n+1)] = L^{d+1} · [Gr(d+1, n)] + [Gr(d, n)]
-      -- This is the q-Pascal identity
+      -- This is the q-Pascal identity for Gaussian binomial coefficients
       K.L ^ (d + 1) * grassmannianClass (d + 1) n + grassmannianClass d n
 
 /-- [Gr(0, n)] = 1 -/
@@ -209,17 +208,43 @@ theorem grassmannianClass_2_4 :
   simp [grassmannianClass]
   ring
 
-/-- [Gr(n, n)] = 1 (single d-subspace of kⁿ when d = n) -/
-theorem grassmannianClass_self (n : ℕ) :
-    grassmannianClass K n n = 1 := by
-  cases n with
-  | zero => rfl
-  | succ n =>
-    unfold grassmannianClass
-    split_ifs with h1 h2
-    · exfalso; omega
-    · rfl
-    · exfalso; omega
+/-- Geometric sum splitting: ∑_{i<a} q^i + q^a · ∑_{i<b} q^i = ∑_{i<a+b} q^i.
+    This is the key algebraic identity for the Gaussian binomial proof. -/
+private lemma geom_sum_split (q : K.carrier) (a b : ℕ) :
+    (∑ i ∈ Finset.range a, q ^ i) + q ^ a * (∑ i ∈ Finset.range b, q ^ i) =
+    ∑ i ∈ Finset.range (a + b), q ^ i := by
+  induction b with
+  | zero => simp
+  | succ b ih =>
+    rw [Finset.sum_range_succ, mul_add, ← pow_add, ← add_assoc, ih,
+        show a + (b + 1) = a + b + 1 from by omega, Finset.sum_range_succ]
+
+/-- q-Number splitting: [d]_L + L^d · [n-d]_L = [n]_L for d ≤ n. -/
+theorem qNumber_split (d n : ℕ) (hd : d ≤ n) :
+    qNumber K d + K.L ^ d * qNumber K (n - d) = qNumber K n := by
+  unfold qNumber
+  rw [geom_sum_split, show d + (n - d) = n from Nat.add_sub_cancel' hd]
+
+/-- q-Factorial recurrence: [n+1]! = [n]! · [n+1]_L -/
+theorem qFactorial_succ (n : ℕ) :
+    qFactorial K (n + 1) = qFactorial K n * qNumber K (n + 1) := by
+  unfold qFactorial
+  rw [Finset.prod_range_succ]
+
+/-- [Gr(d, d)] = 1 for all d -/
+theorem grassmannianClass_self (d : ℕ) :
+    grassmannianClass K d d = 1 := by
+  cases d with
+  | zero => simp [grassmannianClass]
+  | succ d => simp [grassmannianClass]
+
+/-- [Gr(d+1, n+1)] with d < n unfolds to the q-Pascal recursion -/
+theorem grassmannianClass_qPascal (d n : ℕ) (h : d + 1 ≤ n) :
+    grassmannianClass K (d + 1) (n + 1) =
+    K.L ^ (d + 1) * grassmannianClass K (d + 1) n + grassmannianClass K d n := by
+  show (if d + 1 > n + 1 then (0 : K.carrier) else if d + 1 = n + 1 then 1
+    else K.L ^ (d + 1) * grassmannianClass K (d + 1) n + grassmannianClass K d n) = _
+  rw [if_neg (by omega), if_neg (by omega)]
 
 /-- [Gr(1, n+1)] = [P^n] = projectiveClass K n
 
@@ -228,19 +253,27 @@ theorem grassmannianClass_lines (n : ℕ) :
     grassmannianClass K 1 (n + 1) = projectiveClass K n := by
   induction n with
   | zero =>
-    simp [grassmannianClass, projectiveClass, Finset.sum_range_one]
+    show (1 : K.carrier) = projectiveClass K 0
+    simp [projectiveClass, Finset.sum_range_one]
   | succ n ih =>
-    have hrec := qPascal K 0 n (by omega : 0 + 1 < n + 2)
-    simp only [zero_add, pow_one, grassmannianClass_zero] at hrec
-    rw [hrec, ih]
-    simp only [projectiveClass]
-    rw [Finset.sum_range_succ']
-    simp only [pow_zero]
-    congr 1
-    rw [← Finset.mul_sum]
-    congr 1
-    ext i
-    exact (pow_succ K.L i).symm
+    rw [grassmannianClass_qPascal K 0 (n + 1) (by omega), pow_one, grassmannianClass_zero, ih]
+    -- Goal: K.L * projectiveClass K n + 1 = projectiveClass K (n + 1)
+    -- Convert to qNumber and use qNumber_split
+    rw [← qNumber_succ_eq_projective, ← qNumber_succ_eq_projective, add_comm]
+    have h := qNumber_split K 1 (n + 2) (by omega)
+    rwa [qNumber_one, pow_one, show n + 2 - 1 = n + 1 from by omega] at h
+
+/-- [Gr(d, n)] = 0 when d > n -/
+theorem grassmannianClass_eq_zero_of_gt (d n : ℕ) (h : d > n) :
+    grassmannianClass K d n = 0 := by
+  cases d with
+  | zero => omega
+  | succ d =>
+    cases n with
+    | zero => simp [grassmannianClass]
+    | succ n =>
+      have hgt : d + 1 > n + 1 := by omega
+      simp [grassmannianClass, hgt]
 
 /-
 ## Part IV: The Gaussian Binomial Identity
@@ -251,135 +284,187 @@ The key algebraic identity connecting Grassmannians to q-factorials:
 This says the flag variety factors through Grassmannians.
 -/
 
-/-- [n+1]! = [n+1] · [n]! (q-factorial recurrence) -/
-theorem qFactorial_succ (n : ℕ) :
-    qFactorial K (n + 1) = qNumber K (n + 1) * qFactorial K n := by
-  unfold qFactorial
-  rw [Finset.prod_range_succ]
-
-/-- Splitting a q-number sum: [d+1] + L^{d+1} · [n-d] = [n+1] for d ≤ n.
-
-This is the q-analog of (d+1) + (n-d) = n+1, expressed as a
-splitting of the geometric sum ∑_{i=0}^n L^i at position d+1. -/
-theorem qNumber_split (d n : ℕ) (hd : d ≤ n) :
-    qNumber K (d + 1) + K.L ^ (d + 1) * qNumber K (n - d) = qNumber K (n + 1) := by
-  simp only [qNumber]
-  have h : (d + 1) + (n - d) = n + 1 := by omega
-  conv_rhs => rw [← h]
-  rw [Finset.sum_range_add]
-  congr 1
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [← pow_add]
-
 /-- **Gaussian Binomial Identity**: [Gr(d, n)] · [d]! · [n-d]! = [n]!
 
 This is the motivic version of the identity
   (n choose d) · d! · (n-d)! = n!
 
 It expresses the fibration Fl_n → Gr(d, n) with fibers
-Fl_d × Fl_{n-d}.
-
-Proof by induction on n. The key step uses q-Pascal to expand
-Gr(d+1, n+2), then applies IH at (d+1, n+1) and (d, n+1),
-reducing to the qNumber_split identity. -/
+Fl_d × Fl_{n-d}. -/
 theorem gaussian_binomial_identity (d n : ℕ) (hd : d ≤ n) :
     grassmannianClass K d n * qFactorial K d * qFactorial K (n - d) =
     qFactorial K n := by
   induction n generalizing d with
   | zero =>
-    obtain rfl : d = 0 := by omega
-    simp [grassmannianClass, qFactorial]
+    interval_cases d
+    simp [grassmannianClass, qFactorial_zero]
   | succ n ih =>
-    rcases d with _ | d
-    · -- d = 0
+    cases d with
+    | zero =>
       simp [grassmannianClass_zero, qFactorial_zero]
-    · -- d = d + 1 ≤ n + 1
-      rcases Nat.eq_or_lt_of_le hd with heq | hlt
-      · -- d + 1 = n + 1, i.e., d = n
-        have hdn : d = n := by omega
-        subst hdn
-        simp [grassmannianClass_self, qFactorial_zero, Nat.sub_self]
-      · -- d + 1 < n + 1, i.e., d < n
-        obtain ⟨m, hm⟩ : ∃ m, n = m + 1 := by
-          rcases n with _ | m; · omega; · exact ⟨m, rfl⟩
-        subst hm
-        -- d + 1 < m + 2, d ≤ m
-        -- q-Pascal: Gr(d+1, m+2) = L^(d+1) · Gr(d+1, m+1) + Gr(d, m+1)
-        have hpascal := qPascal K d m (by omega : d + 1 < m + 2)
-        -- IH at (d+1, m+1): Gr(d+1,m+1) * qF(d+1) * qF(m-d) = qF(m+1)
-        have ih1 := ih (d + 1) (by omega : d + 1 ≤ m + 1)
-        rw [show m + 1 - (d + 1) = m - d from by omega] at ih1
-        -- IH at (d, m+1): Gr(d,m+1) * qF(d) * qF(m+1-d) = qF(m+1)
-        have ih2 := ih d (by omega : d ≤ m + 1)
-        -- Factor: qF(m+1-d) = qN(m-d+1) · qF(m-d)
-        rw [show m + 1 - d = (m - d) + 1 from by omega, qFactorial_succ] at ih2
-        -- qNumber_split: qN(d+1) + L^(d+1) · qN(m-d+1) = qN(m+2)
-        have hsplit := qNumber_split K d (m + 1) (by omega : d ≤ m + 1)
-        rw [show m + 1 - d = m - d + 1 from by omega] at hsplit
-        -- Normalize goal subtraction and factor
-        rw [show m + 1 + 1 - (d + 1) = (m - d) + 1 from by omega]
-        rw [qFactorial_succ K (m - d)]
-        -- Apply q-Pascal expansion
-        rw [hpascal]
-        -- Goal: (L^(d+1) * Gr(d+1,m+1) + Gr(d,m+1)) * qF(d+1) * (qN(m-d+1) * qF(m-d)) = qF(m+2)
-        -- Isolate IH1 application
-        have term1 : K.L ^ (d + 1) * grassmannianClass K (d + 1) (m + 1) *
-            qFactorial K (d + 1) * (qNumber K (m - d + 1) * qFactorial K (m - d)) =
-            K.L ^ (d + 1) * qNumber K (m - d + 1) * qFactorial K (m + 1) := by
-          calc _ = K.L ^ (d + 1) * qNumber K (m - d + 1) *
-              (grassmannianClass K (d + 1) (m + 1) * qFactorial K (d + 1) * qFactorial K (m - d)) := by ring
-            _ = _ := by rw [ih1]
-        -- Isolate IH2 application
-        have term2 : grassmannianClass K d (m + 1) *
-            qFactorial K (d + 1) * (qNumber K (m - d + 1) * qFactorial K (m - d)) =
-            qNumber K (d + 1) * qFactorial K (m + 1) := by
-          rw [show qFactorial K (d + 1) = qNumber K (d + 1) * qFactorial K d from qFactorial_succ K d]
-          calc _ = qNumber K (d + 1) *
-              (grassmannianClass K d (m + 1) * qFactorial K d *
-               (qNumber K (m - d + 1) * qFactorial K (m - d))) := by ring
-            _ = _ := by rw [ih2]
-        -- Combine
-        calc (K.L ^ (d + 1) * grassmannianClass K (d + 1) (m + 1) +
-              grassmannianClass K d (m + 1)) *
-              qFactorial K (d + 1) * (qNumber K (m - d + 1) * qFactorial K (m - d))
-          = K.L ^ (d + 1) * grassmannianClass K (d + 1) (m + 1) *
-              qFactorial K (d + 1) * (qNumber K (m - d + 1) * qFactorial K (m - d)) +
-            grassmannianClass K d (m + 1) *
-              qFactorial K (d + 1) * (qNumber K (m - d + 1) * qFactorial K (m - d)) := by ring
-          _ = K.L ^ (d + 1) * qNumber K (m - d + 1) * qFactorial K (m + 1) +
-              qNumber K (d + 1) * qFactorial K (m + 1) := by rw [term1, term2]
-          _ = (K.L ^ (d + 1) * qNumber K (m - d + 1) + qNumber K (d + 1)) *
-              qFactorial K (m + 1) := by ring
-          _ = qNumber K (m + 2) * qFactorial K (m + 1) := by
-              congr 1; linear_combination hsplit
-          _ = qFactorial K (m + 2) := (qFactorial_succ K (m + 1)).symm
+    | succ d =>
+      cases Nat.eq_or_lt_of_le hd with
+      | inl heq =>
+        have : d = n := by omega
+        subst this
+        simp [grassmannianClass_self, qFactorial_zero]
+      | inr hlt =>
+        have hdn' : d + 1 ≤ n := by omega
+        -- Apply q-Pascal: gr(d+1, n+1) = L^(d+1) * gr(d+1, n) + gr(d, n)
+        rw [grassmannianClass_qPascal K d n hdn',
+            show n + 1 - (d + 1) = n - d from by omega]
+        -- IH instances
+        have ih1 := ih (d + 1) hdn'
+        have ih2 := ih d (by omega : d ≤ n)
+        -- Decompose qF(n-d) = qF(n-(d+1)) * qN(n-d)
+        have hqf_nd : qFactorial K (n - d) =
+            qFactorial K (n - (d + 1)) * qNumber K (n - d) := by
+          have h := qFactorial_succ K (n - (d + 1))
+          rwa [show n - (d + 1) + 1 = n - d from by omega] at h
+        -- Term 1: L^(d+1) * gr(d+1,n) * qF(d+1) * qF(n-d)
+        --       = L^(d+1) * [gr(d+1,n) * qF(d+1) * qF(n-(d+1))] * qN(n-d)
+        --       = L^(d+1) * qF(n) * qN(n-d)                        [by ih1]
+        have term1 : K.L ^ (d + 1) * grassmannianClass K (d + 1) n *
+            qFactorial K (d + 1) * qFactorial K (n - d) =
+            K.L ^ (d + 1) * qFactorial K n * qNumber K (n - d) := by
+          rw [hqf_nd]
+          have h : K.L ^ (d + 1) * grassmannianClass K (d + 1) n *
+              qFactorial K (d + 1) * (qFactorial K (n - (d + 1)) * qNumber K (n - d)) =
+              K.L ^ (d + 1) * (grassmannianClass K (d + 1) n *
+              qFactorial K (d + 1) * qFactorial K (n - (d + 1))) * qNumber K (n - d) := by
+            ring
+          rw [h, ih1]
+        -- Term 2: gr(d,n) * qF(d+1) * qF(n-d)
+        --       = [gr(d,n) * qF(d) * qF(n-d)] * qN(d+1)
+        --       = qF(n) * qN(d+1)                                   [by ih2]
+        have term2 : grassmannianClass K d n * qFactorial K (d + 1) *
+            qFactorial K (n - d) =
+            qFactorial K n * qNumber K (d + 1) := by
+          rw [qFactorial_succ]
+          have h : grassmannianClass K d n * (qFactorial K d * qNumber K (d + 1)) *
+              qFactorial K (n - d) =
+              (grassmannianClass K d n * qFactorial K d * qFactorial K (n - d)) *
+              qNumber K (d + 1) := by ring
+          rw [h, ih2]
+        -- Combine: qF(n) * (L^(d+1) * qN(n-d) + qN(d+1)) = qF(n) * qN(n+1) = qF(n+1)
+        rw [add_mul, add_mul, term1, term2]
+        -- Goal: L^(d+1) * qF(n) * qN(n-d) + qF(n) * qN(d+1) = qF(n+1)
+        rw [show qFactorial K (n + 1) =
+            qFactorial K n * qNumber K (n + 1) from qFactorial_succ K n]
+        -- Goal: L^(d+1) * qF(n) * qN(n-d) + qF(n) * qN(d+1) = qF(n) * qN(n+1)
+        have h : K.L ^ (d + 1) * qFactorial K n * qNumber K (n - d) +
+            qFactorial K n * qNumber K (d + 1) =
+            qFactorial K n * (qNumber K (d + 1) + K.L ^ (d + 1) * qNumber K (n - d)) := by
+          ring
+        rw [h]
+        congr 1
+        have := qNumber_split K (d + 1) (n + 1) (by omega)
+        rwa [show n + 1 - (d + 1) = n - d from by omega] at this
 
-/-- Duality: [Gr(d, n)] = [Gr(n-d, n)] for d ≤ n
+/-
+## Part IV-b: Grassmannian Duality
 
-This follows from the Gaussian binomial identity:
-both sides multiply [d]! · [n-d]! to give [n]!. -/
+The symmetry [Gr(d, n)] = [Gr(n-d, n)] is non-trivial in a general commutative
+ring (no cancellation law). We prove it by:
+1. Instantiating our theorems in Polynomial ℤ (an integral domain)
+2. Cancelling via the Gaussian binomial identity
+3. Evaluating back to K.carrier via a ring homomorphism
+-/
+
+section GrassmannianDuality
+
+open Polynomial
+
+/-- K₀(Var) instance over Polynomial ℤ, with X playing the role of L. -/
+private noncomputable def polyK₀ : K0Var ℚ where
+  carrier := Polynomial ℤ
+  L := X
+
+/-- Ring homomorphism evaluating Polynomial ℤ at K.L. -/
+private noncomputable def evalAtL : (polyK₀).carrier →+* K.carrier :=
+  eval₂RingHom (Int.castRingHom K.carrier) K.L
+
+private theorem evalAtL_X : evalAtL K (X : Polynomial ℤ) = K.L := by
+  exact eval₂_X (Int.castRingHom K.carrier) K.L
+
+/-- grassmannianClass commutes with evaluation: evaluating the polynomial
+    version at K.L recovers grassmannianClass K. -/
+private theorem eval_grassmannianClass (d n : ℕ) :
+    evalAtL K (grassmannianClass polyK₀ d n) = grassmannianClass K d n := by
+  induction n generalizing d with
+  | zero =>
+    cases d with
+    | zero => exact map_one _
+    | succ _ => exact map_zero _
+  | succ n ih =>
+    cases d with
+    | zero => exact map_one _
+    | succ d =>
+      by_cases hgt : d + 1 > n + 1
+      · rw [grassmannianClass_eq_zero_of_gt _ _ _ hgt,
+            grassmannianClass_eq_zero_of_gt _ _ _ hgt, map_zero]
+      · push_neg at hgt
+        by_cases heq : d + 1 = n + 1
+        · have hd : d = n := by omega
+          subst hd
+          rw [grassmannianClass_self, grassmannianClass_self, map_one]
+        · have hle : d + 1 ≤ n := by omega
+          rw [grassmannianClass_qPascal polyK₀ d n hle,
+              grassmannianClass_qPascal K d n hle,
+              map_add, map_mul, map_pow, ih (d + 1), ih d]
+          show (evalAtL K polyK₀.L) ^ (d + 1) *
+            grassmannianClass K (d + 1) n + grassmannianClass K d n =
+            K.L ^ (d + 1) * grassmannianClass K (d + 1) n + grassmannianClass K d n
+          rw [evalAtL_X]
+
+/-- Each q-number [n]_X in Polynomial ℤ is nonzero (has constant term 1 for n > 0). -/
+private theorem qNumber_polyK₀_ne_zero (n : ℕ) (hn : n > 0) :
+    qNumber polyK₀ n ≠ 0 := by
+  intro h
+  have hc : coeff (qNumber polyK₀ n) 0 = 0 := by rw [h]; simp
+  simp only [qNumber, polyK₀, coeff_sum, coeff_X_pow, Finset.sum_ite_eq',
+             Finset.mem_range] at hc
+  omega
+
+/-- The q-factorial [n]!_X is nonzero in Polynomial ℤ. -/
+private theorem qFactorial_polyK₀_ne_zero (d : ℕ) :
+    qFactorial polyK₀ d ≠ 0 := by
+  unfold qFactorial
+  exact Finset.prod_ne_zero fun i _ => qNumber_polyK₀_ne_zero (i + 1) (by omega)
+
+/-- **Duality**: [Gr(d, n)] = [Gr(n-d, n)] for d ≤ n.
+
+This follows from the symmetry of Gaussian binomial coefficients.
+The proof works in any commutative ring by lifting to Polynomial ℤ
+(an integral domain) where we can cancel the q-factorial product. -/
 theorem grassmannianClass_duality (d n : ℕ) (hd : d ≤ n) :
     grassmannianClass K d n = grassmannianClass K (n - d) n := by
-  by_cases heq : d = n - d
-  · congr 1; omega
-  · have hnd : n - d ≤ n := Nat.sub_le n d
-    have hnsub : n - (n - d) = d := by omega
-    have h1 := gaussian_binomial_identity K d n hd
-    have h2 := gaussian_binomial_identity K (n - d) n hnd
-    rw [hnsub] at h2
-    -- h1 : Gr(d, n) * [d]! * [n-d]! = [n]!
-    -- h2 : Gr(n-d, n) * [n-d]! * [d]! = [n]!
-    -- Both LHS equal [n]!, so Gr(d,n) * C = Gr(n-d,n) * C where C = [d]! * [n-d]!
-    have h3 : grassmannianClass K d n * (qFactorial K d * qFactorial K (n - d)) =
-              grassmannianClass K (n - d) n * (qFactorial K d * qFactorial K (n - d)) := by
-      calc grassmannianClass K d n * (qFactorial K d * qFactorial K (n - d))
-          = grassmannianClass K d n * qFactorial K d * qFactorial K (n - d) := by ring
-        _ = qFactorial K n := h1
-        _ = grassmannianClass K (n - d) n * qFactorial K (n - d) * qFactorial K d := h2.symm
-        _ = grassmannianClass K (n - d) n * (qFactorial K d * qFactorial K (n - d)) := by ring
-    sorry -- Cancellation: need qFactorial K d * qFactorial K (n - d) ≠ 0 or non-zero-divisor
+  -- Step 1: Gaussian binomial identity in Polynomial ℤ
+  have h1 := gaussian_binomial_identity polyK₀ d n hd
+  have h2 := gaussian_binomial_identity polyK₀ (n - d) n (Nat.sub_le n d)
+  rw [show n - (n - d) = d from Nat.sub_sub_self hd] at h2
+  -- Step 2: Both products equal qF(n), so they're equal to each other
+  have heq : grassmannianClass polyK₀ d n *
+      (qFactorial polyK₀ d * qFactorial polyK₀ (n - d)) =
+      grassmannianClass polyK₀ (n - d) n *
+      (qFactorial polyK₀ d * qFactorial polyK₀ (n - d)) :=
+    calc grassmannianClass polyK₀ d n *
+          (qFactorial polyK₀ d * qFactorial polyK₀ (n - d))
+        = grassmannianClass polyK₀ d n * qFactorial polyK₀ d *
+          qFactorial polyK₀ (n - d) := by ring
+      _ = qFactorial polyK₀ n := h1
+      _ = grassmannianClass polyK₀ (n - d) n * qFactorial polyK₀ (n - d) *
+          qFactorial polyK₀ d := h2.symm
+      _ = grassmannianClass polyK₀ (n - d) n *
+          (qFactorial polyK₀ d * qFactorial polyK₀ (n - d)) := by ring
+  -- Step 3: Cancel the nonzero q-factorial product (Polynomial ℤ is an integral domain)
+  have hne : qFactorial polyK₀ d * qFactorial polyK₀ (n - d) ≠ 0 :=
+    mul_ne_zero (qFactorial_polyK₀_ne_zero d) (qFactorial_polyK₀_ne_zero (n - d))
+  have hpoly := mul_right_cancel₀ hne heq
+  -- Step 4: Evaluate at K.L to transfer to K.carrier
+  rw [← eval_grassmannianClass K d n, ← eval_grassmannianClass K (n - d) n, hpoly]
+
+end GrassmannianDuality
 
 /-
 ## Part V: Partial Flag Varieties
@@ -408,12 +493,12 @@ noncomputable def partialFlagClass (n : ℕ) : List ℕ → K.carrier
   | [d] => grassmannianClass K d n  -- single step = Grassmannian
   | d₁ :: d₂ :: rest =>
       grassmannianClass K d₁ n * partialFlagClass (n - d₁) (((d₂ - d₁) :: rest.map (· - d₁)))
+termination_by l => l.length
 
 /-- Fl(d; n) = Gr(d, n) (partial flag with one step is a Grassmannian) -/
 theorem partialFlag_single (d n : ℕ) :
     partialFlagClass K n [d] = grassmannianClass K d n := by
-  unfold partialFlagClass
-  rfl
+  simp only [partialFlagClass]
 
 /-- The complete flag class factors through iterated Grassmannians.
 
@@ -450,6 +535,7 @@ noncomputable def leviClass (n : ℕ) : List ℕ → K.carrier
   | [] => GLnClass K n
   | [d] => GLnClass K d * GLnClass K (n - d)
   | d :: rest => GLnClass K d * leviClass (n - d) (rest.map (· - d))
+termination_by l => l.length
 
 /-- Unipotent radical dimension for a partial flag.
 
@@ -507,11 +593,7 @@ This is the q-analog of Pascal's triangle. -/
 theorem qPascal (d n : ℕ) (h : d + 1 < n + 2) :
     grassmannianClass K (d + 1) (n + 2) =
     K.L ^ (d + 1) * grassmannianClass K (d + 1) (n + 1) + grassmannianClass K d (n + 1) := by
-  unfold grassmannianClass
-  split_ifs with h1 h2
-  · exfalso; omega
-  · exfalso; omega
-  · rfl
+  exact grassmannianClass_qPascal K d (n + 1) (by omega)
 
 /-
 ## Part VIII: Relating GL_n to q-Numbers
@@ -525,8 +607,7 @@ The geometric series factorization in K₀(Var). -/
 theorem geom_series_factor (n : ℕ) :
     K.L ^ n - 1 = (K.L - 1) * qNumber K n := by
   unfold qNumber
-  rw [mul_comm]
-  exact mul_geom_sum K.L n
+  exact (mul_geom_sum K.L n).symm
 
 /-- [GL_n] = (L-1)^n · [n]_L! · L^{T(n)}
 
@@ -536,12 +617,12 @@ Each factor (L^i - 1) in the product decomposes as
 theorem GLn_qFactorial_decomposition (n : ℕ) :
     GLnClass K n = (K.L - 1) ^ n * qFactorial K n * K.L ^ triangular n := by
   unfold GLnClass qFactorial
-  rw [← Finset.prod_mul_distrib]
-  congr 1
-  apply Finset.prod_congr rfl
-  intro i _
-  rw [geom_series_factor]
-  ring
+  have h : ∀ i ∈ Finset.range n, K.L ^ (i + 1) - 1 = (K.L - 1) * qNumber K (i + 1) :=
+    fun i _ => geom_series_factor K (i + 1)
+  conv_lhs => rw [show (∏ i ∈ Finset.range n, (K.L ^ (i + 1) - 1)) =
+    (∏ i ∈ Finset.range n, ((K.L - 1) * qNumber K (i + 1))) from
+    Finset.prod_congr rfl h]
+  rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]
 
 /-- Corollary: [GL_n] / (L-1)^n = [n]_L! · L^{T(n)} = [Fl_n] · L^{T(n)}
 

@@ -1,0 +1,98 @@
+{
+  "slug": "cayley-hamilton-reduction-oq-02-oq-01",
+  "title": "Rational canonical form (Frobenius normal form) formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Rational canonical form (Frobenius normal form) formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T08:49:59.592Z",
+    "iteration": 1,
+    "focus": "Surveyed + partial build. Companion matrix defined, key properties stated.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Defined companion matrix, proved entry lemmas and linear case. 2 key sorries: charpoly=p (det computation) and minpoly=p (minimality). RCF roadmap documented.",
+    "builtItems": [
+      "companionMatrix: def for d\u00d7d companion from monic polynomial",
+      "companionMatrix_subdiag, _last_col, _zero: entry lemmas",
+      "aeval_companionMatrix: p(C(p))=0 from Cayley-Hamilton",
+      "companionMatrix_linear: C(x-c) = [c]"
+    ],
+    "insights": [
+      "Mathlib has Matrix.Companion but limited \u2014 needs charpoly/minpoly theorems",
+      "Companion matrix C(p) has 1s on subdiagonal, negated coefficients in last column",
+      "charpoly(C(p))=p requires cofactor expansion along last column + induction",
+      "minpoly(C(p))=p: companion is non-derogatory, follows from module dimension argument",
+      "Full RCF needs Smith Normal Form for F[X]-matrices (~800 lines main blocker)",
+      "Total RCF estimate: ~1800 lines across 4 components"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove charpoly_companionMatrix via cofactor expansion (hard, ~100 lines)",
+      "Prove minpoly_companionMatrix via module dimension argument",
+      "Investigate if Mathlib already has companion matrix constructions to leverage"
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.592Z",
+  "lastUpdate": "2026-03-30T08:49:59.592Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ01.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02.lean",
+      "filename": "CayleyHamiltonReductionOQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02.lean"
+    }
+  ]
+}
