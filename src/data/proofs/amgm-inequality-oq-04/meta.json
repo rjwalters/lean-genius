@@ -1,0 +1,128 @@
+{
+  "id": "amgm-inequality-oq-04",
+  "title": "Gauss AGM Iteration and Elliptic Integrals",
+  "slug": "amgm-inequality-oq-04",
+  "description": "The arithmetic-geometric mean (AGM) iteration of Gauss: given a ≥ b > 0, iterate aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = √(aₙbₙ). Both sequences converge to a common limit M(a,b). The deep result: M(1,√(1-k²)) = π/(2K(k)) connecting AGM to complete elliptic integrals.",
+  "meta": {
+    "author": "Carl Friedrich Gauss (1799)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ04.lean",
+    "tags": [
+      "analysis",
+      "sequences",
+      "convergence",
+      "agm",
+      "elliptic-integrals",
+      "gauss"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: completeEllipticK (definition of K(k)), completeEllipticK_pos (K(k) > 0), gauss_agm_elliptic (AGM = π/(2K(k))). The elliptic integral connection is axiomatized because Mathlib lacks elliptic integral theory. AGM convergence has 2 sorries for the final limit argument.",
+    "dateAdded": "2026-03-30",
+    "lineCount": 175,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence of sequences",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gauss discovered the AGM iteration around 1799 and proved its connection to elliptic integrals, calling it one of his most remarkable discoveries. The AGM provides the fastest known algorithm for computing π (Brent-Salamin, 1976) and elliptic integrals. The iteration doubles the number of correct digits at each step due to quadratic convergence.",
+    "problemStatement": "Define the AGM iteration for positive reals a ≥ b, prove convergence to a common limit M(a,b), and state the connection to complete elliptic integrals of the first kind.",
+    "text": "The arithmetic-geometric mean iteration converges quadratically. The sandwich property bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ ensures both sequences are monotone and bounded, hence convergent. The gap aₙ - bₙ contracts by at least half each step.",
+    "proofStrategy": "1. Define AGM sequences (mutual recursion).\n2. Prove positivity by joint induction.\n3. Prove AM ≥ GM for two reals (key: (x-y)² ≥ 0).\n4. Derive sandwich: bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ.\n5. Prove gap contraction and convergence.\n6. Axiomatize the elliptic integral connection.",
+    "keyInsights": [
+      "Both AGM sequences are monotone and bounded, hence convergent by the monotone convergence theorem",
+      "The gap aₙ - bₙ contracts by at least half each step, forcing convergence to a common limit",
+      "AM ≥ GM at each step provides the sandwich: bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ",
+      "The connection M(1,k') = π/(2K(k)) transforms elliptic integral computation into simple iteration"
+    ],
+    "prerequisites": [
+      "Real analysis (monotone convergence, squeeze theorem)",
+      "AM-GM inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "agm-definition",
+      "title": "AGM Iteration Definition",
+      "startLine": 30,
+      "endLine": 42,
+      "summary": "Mutually recursive definition of the AGM arithmetic and geometric sequences."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity",
+      "startLine": 44,
+      "endLine": 55,
+      "summary": "Both sequences stay positive when started with positive values."
+    },
+    {
+      "id": "sandwich",
+      "title": "AM ≥ GM Sandwich",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "AM ≥ GM at each step gives the sandwich property bₙ ≤ aₙ."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 92,
+      "endLine": 118,
+      "summary": "a-sequence decreasing, b-sequence increasing, full sandwich theorem."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence",
+      "startLine": 140,
+      "endLine": 160,
+      "summary": "Gap contracts, both sequences converge to common limit M(a,b)."
+    },
+    {
+      "id": "elliptic-connection",
+      "title": "Elliptic Integral Connection",
+      "startLine": 162,
+      "endLine": 175,
+      "summary": "Axiomatized: M(1, √(1-k²)) = π/(2K(k)) — Gauss's deep identity."
+    }
+  ],
+  "conclusion": {
+    "text": "The AGM iteration is formalized with its key convergence properties. The sandwich property (bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ) and gap contraction are proved from first principles. The connection to elliptic integrals is axiomatized pending Mathlib support for elliptic integral theory.",
+    "opens": [
+      "Prove AGM convergence without sorry (using Mathlib monotone convergence)",
+      "Formalize the elliptic integral K(k) and prove the AGM connection"
+    ],
+    "implications": "The AGM provides the fastest known method for computing π and elliptic integrals."
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Uses the AM-GM inequality as the foundation for the AGM sandwich property"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "agm_sandwich",
+      "type": "core",
+      "statement": "∀ n, agmB n ≤ agmB (n+1) ∧ agmB (n+1) ≤ agmA (n+1) ∧ agmA (n+1) ≤ agmA n",
+      "description": "The AGM sandwich property.",
+      "significance": "The key structural result ensuring convergence"
+    },
+    {
+      "name": "agm_gap_contracts",
+      "type": "core",
+      "statement": "aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2",
+      "description": "Gap contracts by at least half each step.",
+      "significance": "Proves convergence to a common limit"
+    }
+  ]
+}
