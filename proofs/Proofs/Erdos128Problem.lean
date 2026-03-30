@@ -60,45 +60,23 @@ def Graph.denseSubgraphs {n : ℕ} (G : Graph n) : Prop :=
 /-- The blow-up of C₅ (Möbius–Kantor type): partition n vertices into 5 parts
     of size ~n/5, connect parts i and i+1 (mod 5). This is triangle-free
     with edge density approaching 2/5 · (1/5)² · n² in large subgraphs. -/
-axiom c5_blowup_triangle_free (n : ℕ) (hn : 10 ≤ n) :
-  ∃ G : Graph n, G.triangleFree ∧
-    ∀ S : Finset (Fin n), n / 2 ≤ S.card →
-      (G.induce S).edgeCount ≤ n ^ 2 / 50 + n
 
 /- ## Partial Results -/
 
 /-- EFRS (Erdős–Faudree–Rousseau–Schelp): the result holds with
     50 replaced by 16. If every subgraph on ≥ n/2 vertices has > n²/16 edges,
     then G contains a triangle. -/
-axiom efrs_theorem (n : ℕ) (G : Graph n) :
-  (∀ S : Finset (Fin n), n / 2 ≤ S.card →
-    n ^ 2 / 16 < (G.induce S).edgeCount) →
-  G.hasTriangle
 
 /-- Krivelevich: the result holds with n/2 replaced by 3n/5 and 50 by 25.
     If every subgraph on ≥ 3n/5 vertices has > n²/25 edges, then triangle. -/
-axiom krivelevich_theorem (n : ℕ) (G : Graph n) :
-  (∀ S : Finset (Fin n), 3 * n / 5 ≤ S.card →
-    n ^ 2 / 25 < (G.induce S).edgeCount) →
-  G.hasTriangle
 
 /-- Razborov: holds with 1/50 replaced by 27/1024 ≈ 0.0264.
     Uses flag algebra methods. -/
-axiom razborov_theorem (n : ℕ) (G : Graph n) :
-  (∀ S : Finset (Fin n), n / 2 ≤ S.card →
-    27 * n ^ 2 / 1024 < (G.induce S).edgeCount) →
-  G.hasTriangle
 
 /-- Norin–Yepremyan: holds for graphs with at least (1/5 - c)n² edges
     for some small constant c > 0. -/
-axiom norin_yepremyan_theorem :
-  ∃ c : ℝ, 0 < c ∧ ∀ n : ℕ, ∀ G : Graph n,
-    (1 / 5 - c) * (n : ℝ) ^ 2 ≤ (G.edgeCount : ℝ) →
-    G.denseSubgraphs → G.hasTriangle
 
 /- ## Main Conjecture -/
 
 /-- Erdős Problem #128: If every induced subgraph on ≥ ⌊n/2⌋ vertices
     has more than n²/50 edges, then G contains a triangle. ($250 prize) -/
-axiom erdos_128_conjecture (n : ℕ) (G : Graph n) :
-  G.denseSubgraphs → G.hasTriangle

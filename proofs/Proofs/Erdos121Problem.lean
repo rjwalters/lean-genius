@@ -41,24 +41,12 @@ noncomputable def squareFreeMax (k N : ℕ) : ℕ :=
 
 /-- `F_2(N) = (6/π² + o(1))N`: the squarefree integers have density
 `6/π²` (Erdős–Sós–Sárközy). -/
-axiom f2_asymptotic :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        |(squareFreeMax 2 N : ℚ) / (N : ℚ) - 6 / 10| < ε
 
 /-- `F_3(N) = (1 - o(1))N`: for 3-element products, almost all
 integers can be included. -/
-axiom f3_full_density :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (1 - ε) * (N : ℚ) ≤ (squareFreeMax 3 N : ℚ)
 
 /-- `F_4(N) = o(N)`: for 4-element products, the density goes to
 zero (Erdős). -/
-axiom f4_density_zero :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (squareFreeMax 4 N : ℚ) ≤ ε * (N : ℚ)
 
 /- ## The conjecture (disproved) -/
 
@@ -76,21 +64,12 @@ def ErdosProblem121_Conjecture : Prop :=
 /-- Tao (2024): For all `k ≥ 4`, there exists `c_k > 0` such that
 `F_k(N) ≤ (1 - c_k + o(1))N`. This disproves the conjecture for
 `k = 5` (and all larger odd `k`). -/
-axiom tao_disproof (k : ℕ) (hk : 4 ≤ k) :
-    ∃ c : ℚ, 0 < c ∧
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (squareFreeMax k N : ℚ) ≤ (1 - c) * (N : ℚ)
 
 /-- The conjecture is false. -/
-axiom erdos121_disproved : ¬ErdosProblem121_Conjecture
 
 /- ## Monotonicity -/
 
 /-- `F_k` is monotone in `N`. -/
-axiom squareFreeMax_mono_N (k M N : ℕ) (h : M ≤ N) :
-    squareFreeMax k M ≤ squareFreeMax k N
 
 /-- `F_k` is anti-monotone in `k`: more elements required to form a
 product makes it easier to avoid squares. -/
-axiom squareFreeMax_anti_k (k l N : ℕ) (h : k ≤ l) :
-    squareFreeMax l N ≤ squareFreeMax k N

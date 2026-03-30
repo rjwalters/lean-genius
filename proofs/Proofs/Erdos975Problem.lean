@@ -81,9 +81,6 @@ For any irreducible polynomial f with f(n) ≥ 1 eventually,
 
 This shows the divisor sum grows at least as fast as x log x.
 -/
-axiom vanDerCorput_lower_bound (f : ℤ[X]) (hf : Irreducible f) (hdeg : f.natDegree ≠ 0)
-    (hpos : ∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) :
-    (fun x => x * Real.log x) =O[atTop] divisorSumPoly f
 
 /--
 **Erdős's Upper Bound (1952)**:
@@ -93,9 +90,6 @@ For any irreducible polynomial f with f(n) ≥ 1 eventually,
 This shows the divisor sum grows at most as fast as x log x.
 Erdős proved this using elementary (non-analytic) methods.
 -/
-axiom erdos_upper_bound (f : ℤ[X]) (hf : Irreducible f)
-    (hpos : ∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) :
-    divisorSumPoly f =O[atTop] (fun x => x * Real.log x)
 
 /-
 ## Main Conjecture (Open)
@@ -116,9 +110,6 @@ meaning the ratio converges to c as x → ∞.
 While bounds of the form Θ(x log x) are known, proving the existence of a
 specific limiting constant for general polynomials remains open.
 -/
-axiom erdos_975 : ∀ f : ℤ[X], f.natDegree ≠ 0 → Irreducible f →
-    (∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) →
-    ∃ c : ℝ, 0 < c ∧ Tendsto (fun x => divisorSumPoly f x / (x * Real.log x)) atTop (nhds c)
 
 /-
 ## Solved Case: Quadratic Polynomials
@@ -134,9 +125,6 @@ there exists c = c(f) > 0 such that Σ τ(f(n)) ~ c · x · log(x).
 The constant c depends on the polynomial in a complicated way involving
 Hurwitz class numbers and the discriminant of the polynomial.
 -/
-axiom hooley_quadratic (f : ℤ[X]) (hf : Irreducible f) (hdeg : f.natDegree = 2)
-    (hpos : ∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) :
-    ∃ c : ℝ, 0 < c ∧ Tendsto (fun x => divisorSumPoly f x / (x * Real.log x)) atTop (nhds c)
 
 /-
 ## Famous Example: f(n) = n² + 1
@@ -149,7 +137,6 @@ beautiful asymptotic formula with constant 3/π.
 noncomputable def poly_n2_plus_1 : ℤ[X] := X ^ 2 + 1
 
 /-- n² + 1 is irreducible over ℤ. -/
-axiom irreducible_n2_plus_1 : Irreducible poly_n2_plus_1
 
 /--
 **The n² + 1 Asymptotic**:
@@ -158,14 +145,10 @@ axiom irreducible_n2_plus_1 : Irreducible poly_n2_plus_1
 The constant 3/π ≈ 0.9549 arises from deep number-theoretic considerations
 involving the distribution of prime factors of values of n² + 1.
 -/
-axiom n2_plus_1_asymptotic :
-    Tendsto (fun x => divisorSumPoly poly_n2_plus_1 x / (x * Real.log x)) atTop (nhds (3 / π))
 
 /--
 The stronger form: the error term is O(x).
 -/
-axiom n2_plus_1_strong :
-    (fun x => divisorSumPoly poly_n2_plus_1 x - (3 / π) * x * Real.log x) =O[atTop] id
 
 /-
 ## Basic Properties of Divisor Count
