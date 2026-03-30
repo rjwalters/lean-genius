@@ -1,14 +1,19 @@
 {
   "id": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
-  "title": "Multiplicativity of the Kronecker Symbol (First Argument)",
+  "title": "Multiplicativity of the Kronecker Symbol (Both Arguments)",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
-  "description": "Proves that the Kronecker symbol is completely multiplicative in the first argument: (ab/n) = (a/n)(b/n) for all integers with ab != 0. Uses case analysis on n with kronecker0 and kroneckerNeg1 multiplicativity for special cases, and Jacobi symbol multiplicativity for the general case.",
+  "description": "Proves that the Kronecker symbol is completely multiplicative in both arguments: (ab/n) = (a/n)(b/n) for ab != 0, and (a/mn) = (a/m)(a/n) for mn != 0. Uses case analysis with kronecker0 and kroneckerNeg1 multiplicativity for special moduli, and Jacobi symbol multiplicativity (jacobiSym.mul_left and jacobiSym.mul_right) for the general case.",
   "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
   "mainTheorems": [
     {
       "name": "kronecker_mul_left_proved",
       "statement": "kronecker (a * b) n = kronecker a n * kronecker b n",
       "description": "Complete multiplicativity of the Kronecker symbol in the first argument, for nonzero a*b."
+    },
+    {
+      "name": "kronecker_mul_right_proved",
+      "statement": "kronecker a (m * n) = kronecker a m * kronecker a n",
+      "description": "Complete multiplicativity of the Kronecker symbol in the second argument, for nonzero m*n."
     },
     {
       "name": "kronecker0_mul_of_ne_zero",
@@ -43,14 +48,22 @@
         "theorem": "jacobiSym.mul_left",
         "description": "Jacobi symbol multiplicativity in first argument",
         "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mul_right",
+        "description": "Jacobi symbol multiplicativity in second argument",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
       }
     ],
     "originalContributions": [
       "kronecker0_mul_of_ne_zero: multiplicativity of the unit character at modulus 0",
       "kroneckerNeg1_mul_of_ne_zero: multiplicativity of the sign character at modulus -1",
-      "kronecker_mul_left_proved: full Kronecker symbol multiplicativity via case analysis + Jacobi"
+      "kronecker_mul_left_proved: full Kronecker symbol multiplicativity in first arg via case analysis + jacobiSym.mul_left",
+      "kronecker_mul_right_proved: full Kronecker symbol multiplicativity in second arg via case analysis on m,n signs + jacobiSym.mul_right",
+      "kronecker_neg_modulus: negating the modulus introduces/removes the sign character",
+      "kroneckerNeg1_sq: the sign character is an involution"
     ],
-    "lineCount": 267
+    "lineCount": 268
   },
   "sections": [
     {
@@ -66,15 +79,21 @@
       "summary": "Multiplicativity of kroneckerNeg1"
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem",
-      "description": "Complete multiplicativity by case analysis on n",
-      "summary": "Main Theorem"
+      "id": "main-theorem-left",
+      "title": "Multiplicativity in the First Argument",
+      "description": "kronecker (a*b) n = kronecker a n * kronecker b n for ab != 0",
+      "summary": "First argument multiplicativity via case analysis on n"
+    },
+    {
+      "id": "main-theorem-right",
+      "title": "Multiplicativity in the Second Argument",
+      "description": "kronecker a (m*n) = kronecker a m * kronecker a n for mn != 0",
+      "summary": "Second argument multiplicativity via sign factor analysis + jacobiSym.mul_right"
     }
   ],
   "overview": {
-    "text": "Proves the Kronecker symbol is completely multiplicative in the first argument, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
-    "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib.",
+    "text": "Proves the Kronecker symbol is completely multiplicative in both arguments. First argument: case analysis on n with kronecker0/kroneckerNeg1 multiplicativity at special moduli. Second argument: case analysis on m,n being ±1 or general, with sign factor analysis and jacobiSym.mul_right.",
+    "proofStrategy": "First argument: case split on n = 0, -1, 1, general; use kronecker0_mul, kroneckerNeg1_mul, jacobiSym.mul_left. Second argument: case split on m,n = ±1 (special) vs general; use kronecker_neg_modulus for sign introduction, then jacobiSym.mul_right with sign(m)*sign(n) analysis for 4 quadrants.",
     "keyInsights": [],
     "historicalContext": "",
     "problemStatement": "See the description field for the problem statement."
