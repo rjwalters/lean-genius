@@ -309,10 +309,34 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
   rintro _ ⟨n, rfl⟩
   exact nthDiameter_nonneg F n
 
-/-- Finite sets have transfinite diameter 0. -/
+/-- For large enough n, nthDiameter of a finite set is 0 (pigeonhole).
+    Every n-tuple from F repeats a value, making the product 0. -/
+private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
+    (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
+    nthDiameter F n = 0 := by
+  -- By pigeonhole (n > |F|), every n-tuple from F repeats a value.
+  -- Repeated points give |pts i - pts j| = 0, making the product 0.
+  -- Then 0^(2/(n*(n-1))) = 0 (exponent > 0 since n ≥ 2).
+  -- So all elements of the sSup set are 0, and sSup {0} = sSup ∅ = 0.
+  -- Key lemmas: Fintype.card_le_of_injective (pigeonhole),
+  --   Finset.prod_eq_zero, Real.zero_rpow, Real.sSup_empty
+  sorry
+
+/-- Finite sets have transfinite diameter 0.
+    Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
+    Combined with nonneg gives = 0. -/
 theorem finite_diameter_zero (F : Set ℂ) (hF : F.Finite) :
     transfiniteDiameter F = 0 := by
-  sorry
+  apply le_antisymm
+  · -- transfiniteDiameter F ≤ 0: find n₀ with nthDiameter = 0
+    let n₀ := hF.toFinset.card + 2
+    simp only [transfiniteDiameter]
+    calc sInf (Set.range (nthDiameter F))
+        ≤ nthDiameter F n₀ :=
+          csInf_le ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
+            (Set.mem_range.mpr ⟨n₀, rfl⟩)
+      _ = 0 := nthDiameter_eq_zero_of_finite F hF n₀ (by omega) (by omega)
+  · exact (transfiniteDiameter_nonneg F).le
 
 /-- Scaling property. -/
 theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
