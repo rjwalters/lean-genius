@@ -74,18 +74,6 @@ theorem dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
   obtain ⟨p, hpN, hp, hmod⟩ := Nat.forall_exists_prime_gt_and_modEq N hn0 hcop
   exact ⟨p, hpN.le, hp, (Nat.modEq_iff_dvd' hp.one_lt.le).mp hmod.symm⟩
 
-/-- Linnik's theorem: pₙ = O(n^L) for some constant L.
-    Best known: L ≤ 5.18 (Xylouris 2011). -/
-axiom linnik_bound :
-  ∃ L : ℕ, ∀ n : ℕ, 1 ≤ n → smallestPrimeMod1 n ≤ n ^ L
-
-/-- mₙ/n → ∞ for almost all n.
-    Erdős (1979): for any constant C, the set {n : mₙ ≤ Cn} has density 0. -/
-axiom m_over_n_diverges :
-  ∀ C : ℕ, ∀ ε : ℚ, 0 < ε → ∃ N : ℕ, ∀ M ≥ N,
-    ((Finset.filter (fun n => smallestTotientDiv n ≤ C * n)
-      (Finset.range M)).card : ℚ) < ε * ↑M
-
 -- ═══════════════════════════════════════════════════════════════════════
 -- PROVED PROPERTIES (9 total — formerly axioms, now proved)
 --
