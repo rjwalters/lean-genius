@@ -29,23 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8T/3A/0S (was 6T). Added doubling_implies_pos, doubling_implies_strict_mono. Axioms remain deep.",
+    "progressSummary": "PROGRESS: 8T/1A/0S (was 3A). Converted rapid_growth_irrational and sylvester_fibonacci_example from unused axioms to def statements. Only series_converges remains (used by series_positive).",
     "builtItems": [
       "Proved series_positive theorem in Erdos1051Problem.lean",
       "partial_fraction: telescoping identity",
       "term_pos, term_le_reciprocal_sq: term analysis",
-      "strict_mono_pos, exponential_growth_bound: sequence bounds"
+      "strict_mono_pos, exponential_growth_bound: sequence bounds",
+      "Converted rapid_growth_irrational: axiom→def RapidGrowthIrrationality (unused, preserves documentation)",
+      "Converted sylvester_fibonacci_example: axiom→def SylvesterFibonacciExistence (unused, preserves documentation)"
     ],
     "insights": [
       "Proved series_positive from series_converges using tsum_pos. Each term 1/(a_n*a_{n+1}) > 0 since a_n > 0.",
       "simple_series_question was incorrectly axiomatized as fact — converted to def (its an open conjecture)",
       "Partial fraction 1/(xy) = 1/(y-x) · (1/x - 1/y) enables telescoping analysis",
       "Term bound 1/(aₙ·aₙ₊₁) ≤ 1/aₙ² from strict monotonicity",
-      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)"
+      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)",
+      "rapid_growth_irrational was unused — Erdős 1988 result stated but never referenced in proofs",
+      "sylvester_fibonacci_example was unused — existence example never referenced in proofs",
+      "series_converges could potentially be proved via root test + comparison: growth condition gives aₙ ≥ c^{2ⁿ} eventually, so terms decay super-exponentially"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Remaining axioms are deep (Erdős 1988 result, open questions, Fibonacci example)"
+      "Prove series_converges: extract c>1 from liminf, show aₙ ≥ c^{2ⁿ} eventually, compare with geometric series",
+      "Would need ~50-100 lines of real analysis (Filter.liminf API, Summable comparison)"
     ],
     "markdown": "# Erdős #1051 - Knowledge Base\n\n## Problem Statement\n\nIs it true that if a1&lt;a2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">a1a2⋯a1a2⋯a_1 is a sequence of integers withlim&#x2006;infan1/2n&gt;1\" role=\"presentation\" style=\"text-align: center; position: relative;\">liminfa1/2nn>1lim infan1/2n>1\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #1050\n- Problem #1052\n- Problem #39\n- Problem #1\n\n## References\n\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -73,8 +79,8 @@
       "filename": "Erdos1051Problem.lean",
       "lineCount": 183,
       "theoremCount": 8,
-      "axiomCount": 3,
-      "defCount": 5,
+      "axiomCount": 1,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1051Problem.lean"
