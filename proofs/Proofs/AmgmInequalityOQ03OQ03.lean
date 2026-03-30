@@ -45,9 +45,10 @@ noncomputable def powerMean {ι : Type*} [Fintype ι]
 /-- For two positive reals a, b: M₁ = (a+b)/2 (arithmetic mean). -/
 theorem powerMean_1_is_am (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     powerMean (![a, b]) 1 = (a + b) / 2 := by
-  simp [powerMean, Fintype.card_fin]
-  ring_nf
-  sorry  -- Matrix.cons normalization
+  simp only [powerMean, one_ne_zero, ↓reduceIte, Fintype.card_fin, Nat.cast_ofNat]
+  rw [Fin.sum_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Real.rpow_natCast, pow_one, div_one, Real.rpow_one]
 
 /-- For two positive reals: M₋₁ = 2ab/(a+b) (harmonic mean). -/
 theorem powerMean_neg1_is_hm (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :

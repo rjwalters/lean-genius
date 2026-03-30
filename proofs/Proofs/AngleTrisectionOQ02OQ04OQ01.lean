@@ -90,7 +90,9 @@ theorem quadratic_tower_degree (K : IntermediateField ℚ ℝ) (n : ℕ)
     obtain ⟨hfinK, hrank⟩ := ih
     constructor
     · exact IntermediateField.finiteDimensional_of_le_of_finiteDimensional hKL
-    · sorry -- finrank ℚ L = finrank ℚ K * finrank K L = 2^n * 2 = 2^(n+1)
+    · rw [show (2 : ℕ) ^ (n + 1) = 2 ^ n * 2 from by ring,
+           ← hrank, ← hdeg]
+      exact (Module.finrank_mul_finrank ℚ _ _).symm
 
 /-- A number in a quadratic tower satisfies the degree criterion -/
 theorem tower_satisfies_degree (α : ℝ) (hα : ConstructibleViaTower α) :
