@@ -133,18 +133,9 @@ infinitely often, there are at least two primes in an interval of length H.
 More precisely, for any m, there are infinitely many n such that
 among n, n+1, ..., n+H, at least m of these are prime.
 -/
-axiom maynard_tao_bounded_gaps (m : ℕ) :
-    ∃ H : ℕ, ∀ N : ℕ, ∃ n > N, (Finset.filter Nat.Prime (Finset.Icc n (n + H))).card ≥ m
-
-/--
-**Zhang's Theorem (2013)**
-
-There exists H such that there are infinitely many pairs of primes
-differing by at most H. This was the breakthrough that started the
-bounded gaps revolution.
--/
-axiom zhang_bounded_gaps : ∃ H : ℕ, ∀ N : ℕ, ∃ p, p > N ∧ Nat.Prime p ∧
-    ∃ q, Nat.Prime q ∧ p < q ∧ q - p ≤ H
+/-- **Maynard-Tao (2013+)**: For any m, there are infinitely many intervals
+of bounded length containing ≥ m primes.
+**Zhang (2013)**: First proof of bounded prime gaps. -/
 
 /- ## Generalizations -/
 
@@ -168,11 +159,7 @@ theorem prime_gaps_oscillate :
   · exact banks_freiberg_turnage_butterbaugh 1 (by norm_num)
   · exact banks_freiberg_turnage_butterbaugh_decreasing 1 (by norm_num)
 
-/-- Average prime gap near n is approximately ln(n) by the Prime Number Theorem. -/
-axiom average_prime_gap (n : ℕ) (hn : n ≥ 2) :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * Real.log n ≤ (primeGap n : ℝ) + (primeGap (n+1) : ℝ) + (primeGap (n+2) : ℝ) ∧
-    (primeGap n : ℝ) + (primeGap (n+1) : ℝ) + (primeGap (n+2) : ℝ) ≤ c₂ * Real.log n
+/-- Average prime gap near n ≈ ln(n) by the Prime Number Theorem. -/
 
 /- ## Summary
 
