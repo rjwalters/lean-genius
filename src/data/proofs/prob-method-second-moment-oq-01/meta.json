@@ -1,0 +1,158 @@
+{
+  "id": "prob-method-second-moment-oq-01",
+  "title": "Quantitative Paley-Zygmund Inequality",
+  "slug": "prob-method-second-moment-oq-01",
+  "description": "The quantitative Paley-Zygmund inequality with threshold parameter θ: P[X > θE[X]] ≥ (1-θ)²E[X]²/E[X²]",
+  "meta": {
+    "author": "Paley-Zygmund (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Paley%E2%80%93Zygmund_inequality",
+    "date": "1932",
+    "status": "verified",
+    "tags": [
+      "probabilistic-method",
+      "combinatorics",
+      "analysis",
+      "probability",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Sum decomposition into above/below-threshold parts",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Pointwise bound on finite sums",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "Quantitative Paley-Zygmund inequality with threshold parameter θ over Finset",
+      "Counting form: (1-θ)²(∑f)² ≤ |above| · ∑f²",
+      "Probability form as corollary via division",
+      "θ=0 specialization strengthening qualitative Paley-Zygmund"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 147,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "R.E.A.C. Paley and A. Zygmund proved this inequality in 1932 as a tool for establishing lower bounds on the probability that a random variable exceeds a fraction of its mean. While the qualitative version (X > 0 with positive probability when E[X] > 0) is a simple consequence, the quantitative version with threshold parameter θ provides explicit lower bounds. It is a fundamental tool in the probabilistic method for combinatorics (Alon-Spencer, Chapter 4).",
+    "problemStatement": "**Quantitative Paley-Zygmund Inequality**:\n\nFor a non-negative random variable $X$ with $E[X] > 0$ and $0 \\leq \\theta < 1$:\n\n$$P[X > \\theta \\cdot E[X]] \\geq (1 - \\theta)^2 \\cdot \\frac{E[X]^2}{E[X^2]}$$\n\nIn counting form over a Finset $s$ with non-negative $f$:\n\n$$(1-\\theta)^2 (\\sum f)^2 \\leq |\\{a \\in s : f(a) > \\theta \\cdot \\mu\\}| \\cdot \\sum f^2$$",
+    "text": "The quantitative Paley-Zygmund inequality provides a lower bound on the probability that a non-negative random variable exceeds any fraction θ of its mean",
+    "proofStrategy": "The proof proceeds by:\n1. **Sum decomposition**: Split $\\sum f = \\sum_{\\text{above}} f + \\sum_{\\text{below}} f$ where 'above' = $\\{a : f(a) > \\theta \\mu\\}$\n2. **Below-threshold bound**: $\\sum_{\\text{below}} f \\leq \\theta \\cdot \\sum f$ (each term ≤ θμ, and $|\\text{below}| \\leq |s|$)\n3. **Above-threshold bound**: $(1-\\theta) \\sum f \\leq \\sum_{\\text{above}} f$ (from steps 1-2)\n4. **Cauchy-Schwarz on above**: $(\\sum_{\\text{above}} f)^2 \\leq |\\text{above}| \\cdot \\sum_{\\text{above}} f^2$\n5. **Subset monotonicity**: $\\sum_{\\text{above}} f^2 \\leq \\sum_s f^2$\n6. **Combine**: $(1-\\theta)^2 (\\sum f)^2 \\leq |\\text{above}| \\cdot \\sum f^2$",
+    "keyInsights": [
+      "The proof uses a discrete Cauchy-Schwarz inequality (sq_sum_le) on the above-threshold subset, which is proved by induction with nlinarith handling the algebraic manipulation.",
+      "The sum decomposition Finset.sum_filter_add_sum_filter_not splits the finite sum into above/below-threshold parts cleanly in Lean 4.",
+      "At θ=0, the result reduces to (∑f)² ≤ |{f>0}| · ∑f², which is strictly stronger than the qualitative P[X>0] > 0 from ProbMethodSecondMoment.lean.",
+      "The counting form avoids division and works over ℚ directly, while the probability form requires dividing by ∑f² > 0."
+    ],
+    "prerequisites": [
+      "Finite sums and Finset API",
+      "Cauchy-Schwarz inequality",
+      "Paley-Zygmund inequality (qualitative)",
+      "Rational arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Documentation of the quantitative Paley-Zygmund inequality, imports from Mathlib and the parent ProbMethodSecondMoment module.",
+      "mathContext": "Extends ProbMethodSecondMoment.lean with the threshold-parameter version of the Paley-Zygmund inequality."
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Discrete Cauchy-Schwarz Lemma",
+      "startLine": 36,
+      "endLine": 52,
+      "summary": "Private lemma sq_sum_le: (∑ f)² ≤ |s| · ∑ f² for finite sums, proved by induction with nlinarith.",
+      "mathContext": "This is the Cauchy-Schwarz inequality for finite sums in the form $(\\sum_{i=1}^n a_i)^2 \\leq n \\sum_{i=1}^n a_i^2$. The inductive proof expands the sum-of-squares of differences $\\sum (f(a) - f(b))^2 \\geq 0$ and uses nlinarith for the algebraic verification."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Quantitative Paley-Zygmund (Counting Form)",
+      "startLine": 54,
+      "endLine": 119,
+      "summary": "The main theorem paley_zygmund_quantitative: (1-θ)²(∑f)² ≤ |above|·∑f² where above = {a : f(a) > θ·μ}. Six-step proof via sum decomposition, Cauchy-Schwarz, and subset monotonicity.",
+      "mathContext": "The proof combines: (1) sum decomposition via Finset.sum_filter_add_sum_filter_not, (2) below-threshold bound via Finset.sum_le_sum, (3) above-threshold lower bound by subtraction, (4) Cauchy-Schwarz on the above set, (5) subset monotonicity of sum of squares, (6) squaring the lower bound via sq_le_sq'."
+    },
+    {
+      "id": "probability-form",
+      "title": "Probability Form Corollary",
+      "startLine": 121,
+      "endLine": 131,
+      "summary": "Corollary paley_zygmund_probability: (1-θ)²(∑f)²/∑f² ≤ |above|, the fraction form obtained by dividing by ∑f² > 0.",
+      "mathContext": "This is the standard textbook form of the Paley-Zygmund inequality, where dividing by |s| gives the probability P[X > θE[X]] ≥ (1-θ)²E[X]²/E[X²]."
+    },
+    {
+      "id": "zero-specialization",
+      "title": "θ=0 Specialization",
+      "startLine": 133,
+      "endLine": 147,
+      "summary": "Theorem paley_zygmund_at_zero: at θ=0, reduces to (∑f)² ≤ |{f>0}|·∑f², strengthening the qualitative version.",
+      "mathContext": "Setting θ=0 eliminates the (1-θ)² factor and the threshold simplifies to f(a) > 0. This gives a quantitative lower bound on the count of positive elements, strictly stronger than just knowing P[X>0] > 0."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "extends",
+      "description": "Extends the qualitative Paley-Zygmund inequality from ProbMethodSecondMoment.lean with a threshold parameter θ, providing quantitative lower bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete formalization of the quantitative Paley-Zygmund inequality with threshold parameter θ over finite sets. Three theorems (counting form, probability form, θ=0 specialization), 0 sorries, 0 axioms. The proof uses sum decomposition, Cauchy-Schwarz, and subset monotonicity.",
+    "implications": "**Theoretical Significance**: The quantitative Paley-Zygmund inequality is the main tool for lower-tail bounds in the probabilistic method. While the qualitative version only guarantees P[X > 0] > 0, the quantitative version gives explicit concentration bounds. The θ=0 case already strengthens the qualitative result by providing a numerical lower bound on the count of positive elements.",
+    "openQuestions": [
+      "Can the equality characterization be formalized: when does equality hold in Paley-Zygmund (constant f on the above-threshold set)?",
+      "Can the Paley-Zygmund inequality be extended to the measure-theoretic setting with Lebesgue integrals?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ProbMethodSecondMoment"
+    ],
+    "opens": [],
+    "namespace": "ProbMethod.SecondMoment",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "R.E.A.C. Paley, A. Zygmund",
+      "title": "A note on analytic functions in the unit circle",
+      "year": "1932",
+      "venue": "Proc. Cambridge Phil. Soc.",
+      "note": "Original statement of the Paley-Zygmund inequality"
+    },
+    {
+      "authors": "N. Alon, J. Spencer",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley",
+      "note": "Chapter 4: Second moment method and Paley-Zygmund applications"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "paley_zygmund_quantitative",
+      "type": "core",
+      "description": "(1-θ)²(∑f)² ≤ |{a: f(a)>θμ}| · ∑f²",
+      "leanType": "Finset → (α → ℚ) → ℚ → inequality"
+    }
+  ]
+}

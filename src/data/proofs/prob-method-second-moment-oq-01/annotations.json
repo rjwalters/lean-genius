@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Module Header and Imports",
+    "type": "concept",
+    "content": "Documentation of the quantitative Paley-Zygmund inequality. Imports Mathlib and the parent ProbMethodSecondMoment module for the qualitative version.",
+    "mathContext": "The qualitative Paley-Zygmund inequality (P[X>0] > 0 when E[X] > 0) is proved in ProbMethodSecondMoment.lean. This file extends it with a threshold parameter θ.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Paley-Zygmund inequality",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "ProbMethodSecondMoment.lean"
+    ]
+  },
+  {
+    "id": "ann-cauchy-schwarz",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 52
+    },
+    "title": "Discrete Cauchy-Schwarz (sq_sum_le)",
+    "type": "concept",
+    "content": "Private lemma: $(\\sum_{a \\in s} f(a))^2 \\leq |s| \\cdot \\sum_{a \\in s} f(a)^2$ for any function $f$ on a finite set $s$.",
+    "mathContext": "This is the Cauchy-Schwarz inequality for finite sums. The proof is by induction on $|s|$: for the inductive step, expanding $\\sum_{b \\in s} (f(a) - f(b))^2 \\geq 0$ gives $|s| \\cdot f(a)^2 - 2 f(a) \\sum f + \\sum f^2 \\geq 0$, which `nlinarith` combines with the inductive hypothesis. This is the key inequality that converts the above-threshold sum bound into a cardinality bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "nlinarith",
+      "induction on Finset"
+    ],
+    "prerequisites": [
+      "Finset.induction_on",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 119
+    },
+    "title": "Quantitative Paley-Zygmund (Main Theorem)",
+    "type": "concept",
+    "content": "For non-negative $f$ on Finset $s$ with positive sum and $0 \\leq \\theta < 1$: $(1-\\theta)^2 (\\sum f)^2 \\leq |\\{a \\in s : f(a) > \\theta \\mu\\}| \\cdot \\sum f^2$ where $\\mu = (\\sum f)/|s|$.",
+    "mathContext": "The proof has six steps:\n1. **Sum decomposition**: $\\sum f = \\sum_{\\text{above}} f + \\sum_{\\text{below}} f$ via `Finset.sum_filter_add_sum_filter_not`\n2. **Below-threshold bound**: $\\sum_{\\text{below}} f \\leq \\theta \\cdot \\sum f$ (each term $\\leq \\theta\\mu$, and $|\\text{below}| \\leq |s|$)\n3. **Above-threshold lower bound**: $(1-\\theta) \\sum f \\leq \\sum_{\\text{above}} f$ (from steps 1-2)\n4. **Cauchy-Schwarz**: $(\\sum_{\\text{above}} f)^2 \\leq |\\text{above}| \\cdot \\sum_{\\text{above}} f^2$\n5. **Subset monotonicity**: $\\sum_{\\text{above}} f^2 \\leq \\sum_s f^2$ (non-negative terms)\n6. **Combine**: square the lower bound from step 3 and chain with steps 4-5\n\nThe final step uses `sq_le_sq'` to square the inequality from step 3, which requires showing the above-threshold sum is non-negative.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum decomposition",
+      "Cauchy-Schwarz",
+      "subset monotonicity",
+      "sq_le_sq'"
+    ],
+    "prerequisites": [
+      "sq_sum_le",
+      "Finset.sum_filter_add_sum_filter_not",
+      "Finset.sum_le_sum",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ]
+  },
+  {
+    "id": "ann-probability-form",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 131
+    },
+    "title": "Probability Form Corollary",
+    "type": "concept",
+    "content": "Dividing by $\\sum f^2 > 0$: $(1-\\theta)^2 (\\sum f)^2 / \\sum f^2 \\leq |\\text{above}|$.",
+    "mathContext": "This is the textbook form of Paley-Zygmund. Dividing both sides by $|s|$ gives the probability form $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2 / E[X^2]$. The proof is a one-liner via `div_le_iff` applied to the counting form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "div_le_iff",
+      "probability interpretation"
+    ],
+    "prerequisites": [
+      "paley_zygmund_quantitative"
+    ]
+  },
+  {
+    "id": "ann-zero-specialization",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 145
+    },
+    "title": "θ=0 Specialization",
+    "type": "concept",
+    "content": "At $\\theta = 0$: $(\\sum f)^2 \\leq |\\{f > 0\\}| \\cdot \\sum f^2$. Strengthens the qualitative Paley-Zygmund from the parent file.",
+    "mathContext": "Setting $\\theta = 0$ eliminates the $(1-\\theta)^2$ factor (becomes 1) and simplifies the threshold condition from $f(a) > 0 \\cdot \\mu$ to $f(a) > 0$. The `simp` and `convert` tactics handle the algebraic simplification. This gives a quantitative lower bound $|\\{f > 0\\}| \\geq (\\sum f)^2 / \\sum f^2$, strictly stronger than the qualitative statement $|\\{f > 0\\}| \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "specialization",
+      "qualitative vs quantitative",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "paley_zygmund_quantitative",
+      "qualitative Paley-Zygmund"
+    ]
+  }
+]
