@@ -201,10 +201,6 @@ theorem infinitely_many_zero_good : (kGoodPrimes 0).Infinite := by
   · intro p hp; exact zero_good p hp
   · exact Nat.infinite_setOf_prime
 
-axiom positive_density_smooth : ∃ c : ℝ, c > 0 ∧
-  Filter.Tendsto (fun N => (Finset.filter (fun n => ∀ p ∈ primeDivisors n, p^2 ≤ n)
-    (Finset.range N)).card / N) Filter.atTop (nhds c)
-
 /-
 # Part 6: Relation to Problem #382
 -/
@@ -275,10 +271,6 @@ theorem kGood_iff_smooth (p k : ℕ) (hp : p.Prime) :
 
 noncomputable def countSmooth (x y : ℕ) : ℕ :=
   (Finset.filter (fun n => isSmooth n y) (Finset.Icc 1 x)).card
-
-axiom dickman_asymptotic : ∃ ρ : ℝ → ℝ, ρ 1 = 1 ∧ ρ 2 > 0 ∧
-  ∀ u ≥ 1, Filter.Tendsto (fun x => (countSmooth x (x^(1/u : ℝ)).toNat : ℝ) / x)
-    Filter.atTop (nhds (ρ u))
 
 /-
 # Part 8-10: Status and Formal Statement

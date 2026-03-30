@@ -78,15 +78,6 @@ Erdős (1949) constructed counterexamples showing the sum can be large.
 
 /-- Erdős (1949): There exists a lacunary sequence and f ∈ L² such that
     for a.e. α, limsup ∑f({α n_k}) / (N(log log N)^{1/2-ε}) = ∞ -/
-axiom erdos_lower_bound_1949 :
-  ∃ (f : ℝ → ℝ) (n : ℕ → ℕ),
-    IsLacunarySeq n ∧
-    -- f ∈ L²([0,1])
-    ∀ ε > 0,
-      ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
-        Filter.limsup (fun N => |lacunarySum f n α N| /
-          (N * (Real.log (Real.log N))^((1:ℝ)/2 - ε))) Filter.atTop = ⊤
-
 /-- The lower bound shows: at least N (log log N)^{1/2 - ε} infinitely often -/
 def LowerBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
   ∀ ε > 0, ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
@@ -100,15 +91,6 @@ Erdős proved a general upper bound for all lacunary sequences.
 
 /-- Erdős upper bound: For every lacunary sequence and L² function,
     ∑f({α n_k}) = o(N (log N)^{1/2+ε}) for a.e. α -/
-axiom erdos_upper_bound :
-  ∀ (f : ℝ → ℝ) (n : ℕ → ℕ),
-    IsLacunarySeq n →
-    -- f ∈ L²([0,1])
-    ∀ ε > 0,
-      ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
-        ∃ N₀ : ℕ, ∀ N ≥ N₀,
-          |lacunarySum f n α N| < N * (Real.log N)^((1:ℝ)/2 + ε)
-
 /-- The upper bound is o(N (log N)^{1/2+ε}) -/
 def UpperBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
   ∀ ε > 0, ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
@@ -183,10 +165,6 @@ Erdős (1949) paper was titled "On the strong law of large numbers".
 
 /-- Connection to SLLN: for mean-zero f and lacunary n, the sum has variance ~ N,
     so it behaves like a random walk with √N typical fluctuations. -/
-axiom slln_connection (f : ℝ → ℝ) (n : ℕ → ℕ) (hn : IsLacunarySeq n) :
-    ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
-      ∃ C > 0, ∀ N : ℕ, |lacunarySum f n α N| ≤ C * Real.sqrt N
-
 /-
 ## Part 8: Erdős's Opinion
 

@@ -65,10 +65,6 @@ axiom pomerance_n_eq_5 : ∃ P : PointConfig 5,
     NoThreeCollinear 5 P ∧ HasTriangularMultiplicity 5 P
 
 /-- Palásti: configurations exist for all n ≤ 8. -/
-axiom palasti_small_n (n : ℕ) (hn : 4 ≤ n ∧ n ≤ 8) :
-    ∃ P : PointConfig n,
-      NoThreeCollinear n P ∧ HasTriangularMultiplicity n P
-
 /-
 ## Part III: Erdős's Conjecture
 -/
@@ -77,11 +73,6 @@ axiom palasti_small_n (n : ℕ) (hn : 4 ≤ n ∧ n ≤ 8) :
 **Erdős's Conjecture (OPEN)**: For all sufficiently large n, no such
 configuration exists. The property should fail eventually.
 -/
-axiom erdos_217_conjecture :
-    ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-      ¬∃ P : PointConfig n,
-        NoThreeCollinear n P ∧ HasTriangularMultiplicity n P
-
 /-
 ## Part IV: Main Result
 -/

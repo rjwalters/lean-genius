@@ -108,21 +108,6 @@ def Erdos803Conjecture : Prop :=
 /-- Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
 large n, there exists a graph G with n vertices and ≥ n log n edges such
 that any D-balanced subgraph H has ≤ m√(log m) + log D edges. -/
-axiom alon_2008_counterexample :
-  ∀ D : ℕ, D > 1 →
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      ∃ (V : Type*) [Fintype V] [DecidableEq V],
-      ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
-        vertexCount V = n ∧
-        HasLogDensity G ∧
-        ∀ (W : Type*) [Fintype W] [DecidableEq W],
-        ∀ (H : SimpleGraph W) [DecidableRel H.Adj],
-        ∀ (f : W ↪ V),
-          (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) →
-          IsDBalanced H D →
-          let m := vertexCount W
-          (edgeCount H : ℝ) ≤ m * Real.sqrt (Real.log m) + Real.log D
-
 /-- The conjecture is false: Alon's counterexample applies for D = 2. -/
 axiom erdos_803_disproved : ¬Erdos803Conjecture
 
@@ -148,21 +133,6 @@ axiom erdos_simonovits_polynomial :
 /-- Janzer-Sudakov (2023): Best positive result for logarithmic density.
 Any graph with n log n edges contains a O(1)-balanced subgraph on m
 vertices with m√(log m)/(log log m)^(3/2) edges. -/
-axiom janzer_sudakov_2023 :
-  ∃ D : ℕ, ∃ C : ℝ, C > 0 ∧
-    ∀ k : ℕ, ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      vertexCount V ≥ N →
-      HasLogDensity G →
-      ∀ m : ℕ, m ≥ k →
-        ∃ (W : Type*) [Fintype W] [DecidableEq W],
-        ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
-        ∃ (f : W ↪ V),
-          (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
-          vertexCount W = m ∧
-          IsDBalanced H D ∧
-          (edgeCount H : ℝ) ≥ C * m * Real.sqrt (Real.log m) / (Real.log (Real.log m))^(3/2 : ℝ)
-
 /- ##Summary -/
 
 /-- **Erdős Problem #803 Summary.**

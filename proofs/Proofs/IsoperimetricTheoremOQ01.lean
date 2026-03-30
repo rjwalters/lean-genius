@@ -136,10 +136,6 @@ theorem spherical_cap_equality (c : SphericalCap) :
   nlinarith [sin_sq_add_cos_sq c.colatitude, pi_pos]
 
 /-- Equality characterization: optimal regions on S² are geodesic caps -/
-axiom spherical_equality_iff_cap (R : SurfaceRegion) (hA : R.A ≤ 4 * π) :
-    R.L ^ 2 = 4 * π * R.A - R.A ^ 2 ↔
-    ∃ c : SphericalCap, R.boundaryLength = c.boundaryLength ∧ R.area = c.area
-
 /-
 ## Part IV: The Hyperbolic Plane H²
 -/
@@ -224,10 +220,6 @@ theorem hyperbolic_disk_equality (d : HyperbolicDisk) :
   nlinarith [cosh_sq_sub_sinh_sq d.radius, pi_pos]
 
 /-- Equality characterization: optimal regions in H² are geodesic disks -/
-axiom hyperbolic_equality_iff_disk (R : SurfaceRegion) :
-    R.L ^ 2 = 4 * π * R.A + R.A ^ 2 ↔
-    ∃ d : HyperbolicDisk, R.boundaryLength = d.boundaryLength ∧ R.area = d.area
-
 /-
 ## Part VI: Unified Curvature Framework
 -/

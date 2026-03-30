@@ -117,11 +117,6 @@ t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}) for some c > 0.
 
 This resolves both questions in Problem #391.
 -/
-axiom acrstuv_theorem :
-    ∃ (c : ℝ) (C : ℝ), c > 0 ∧ C > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      |ratio n - (1 / Real.exp 1 - c₀ / Real.log n)| ≤ C / (Real.log n) ^ (1 + c)
-
 /--
 **Corollary 1: The Limit Exists and Equals 1/e**
 -/
@@ -156,24 +151,16 @@ axiom lower_bound_explicit :
 **Optimality of 43632:**
 The threshold 43632 is sharp.
 -/
-axiom threshold_43632_sharp :
-    ∃ n : ℕ, n < 43632 ∧ t n < n / 3
-
 /- ## Part VI: Small Cases -/
 
 /--
 **Small Values:**
 Explicit computation of t(n) for small n.
 -/
-axiom t_small_values :
-    t 1 = 1 ∧ t 2 = 2 ∧ t 3 = 2 ∧ t 4 = 3
-
 /--
 **Exception at n = 4:**
 t(4) = 3 > 4/e ≈ 1.47, so n = 4 is a genuine exception to t(n) ≤ n/e.
 -/
-axiom exception_at_4 : (t 4 : ℝ) > 4 / Real.exp 1
-
 /- ## Part VII: Guy-Selfridge Conjectures -/
 
 /--
@@ -182,8 +169,6 @@ t(n) ≤ n/e for n ≠ 1, 2, 4. (PROVED by ACRSTUV25)
 -/
 def guySelfridgeConjecture1 : Prop :=
   ∀ n : ℕ, n ≥ 3 ∧ n ≠ 4 → (t n : ℝ) ≤ n / Real.exp 1
-
-axiom guy_selfridge_1_proved : guySelfridgeConjecture1
 
 /--
 **Guy-Selfridge Conjecture 2:**
@@ -202,11 +187,6 @@ theorem guy_selfridge_2_proved : guySelfridgeConjecture2 :=
 Finding t(n) is equivalent to finding the "most balanced" way to write n!
 as a product of n positive integers.
 -/
-axiom balanced_factorization_view :
-    ∀ n : ℕ, n ≥ 1 →
-      ∃ f : OrderedFactorization n.factorial n,
-        minFactor f = t n ∧ ∀ g : OrderedFactorization n.factorial n, minFactor g ≤ t n
-
 /-
 ## Part IX: Summary
 

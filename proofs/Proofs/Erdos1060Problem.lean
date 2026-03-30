@@ -276,10 +276,6 @@ f(n) ≤ n^{o(1/log log n)} as n → ∞.
 This means: For any ε > 0, there exists N such that for all n > N,
 f(n) ≤ n^{ε/log log n}.
 -/
-axiom erdos_1060_weak_conjecture :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n > N,
-      (f n : ℝ) ≤ (n : ℝ) ^ (ε / Real.log (Real.log n))
-
 /--
 **Strong Conjecture:**
 f(n) ≤ (log n)^C for some constant C.
@@ -287,10 +283,6 @@ f(n) ≤ (log n)^C for some constant C.
 This is a much stronger bound - polynomial in log n rather than
 a slow power of n.
 -/
-axiom erdos_1060_strong_conjecture :
-    ∃ C : ℝ, ∀ n > 1,
-      (f n : ℝ) ≤ (Real.log n) ^ C
-
 /-
 ## Part VII: OEIS Connection
 -/

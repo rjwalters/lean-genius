@@ -80,9 +80,6 @@ This doubly-exponential sequence grows fast enough that no bounded perturbation
 can make the sum rational. The growth rate 2^(2ⁿ) satisfies
 a_{n+1}/aₙ = 2^(2ⁿ) → ∞, which is the key condition.
 -/
-axiom double_exp_is_irrationality_seq :
-    IsIrrationalitySequence (fun n => 2^(2^n))
-
 /- ## Kovač-Tao Criteria -/
 
 /--
@@ -94,13 +91,6 @@ is NOT an irrationality sequence.
 
 This applies to 2ⁿ and more generally to sequences with bounded ratio a_{n+1}/aₙ.
 -/
-axiom kovac_tao_negative_criterion {a : ℕ → ℕ}
-    (h_mono : StrictMono a)
-    (h_pos : ∀ n, 0 < a n)
-    (h_summable : Summable (fun n => (1 : ℝ) / a n))
-    (h_liminf : 0 < liminf atTop (fun n => (a n)^2 * ∑' k : {k : ℕ // n < k}, (1 : ℝ) / (a k)^2)) :
-    ¬IsIrrationalitySequence a
-
 /--
 **Kovač-Tao Positive Criterion**:
 
@@ -109,11 +99,6 @@ irrationality sequence aₙ with aₙ ~ F(n) (asymptotically equivalent).
 
 This shows irrationality sequences exist at any superexponential growth rate.
 -/
-axiom kovac_tao_positive_criterion {F : ℕ → ℕ}
-    (h_growth : Tendsto (fun n => (F (n+1) : ℝ) / F n) atTop atTop) :
-    ∃ a : ℕ → ℕ, IsIrrationalitySequence a ∧
-      Tendsto (fun n => (a n : ℝ) / F n) atTop (nhds 1)
-
 /- ## Growth Rate Discussion -/
 
 /--

@@ -53,14 +53,6 @@ For example:
 The existence follows from the greedy algorithm: repeatedly subtract the largest
 possible unit fraction 1/⌈1/r⌉ from the remaining sum r, starting with r = 1.
 -/
-axiom exists_egyptian_representation (N : ℕ) (hN : N ≥ 1) :
-    ∃ (k : ℕ) (n : Fin k → ℕ),
-      k ≥ 1 ∧
-      (∀ i, N ≤ n i) ∧
-      Function.Injective n ∧
-      (∀ i j, i < j → n i < n j) ∧
-      ∑ i, (1 : ℝ) / n i = 1
-
 /--
 k(N) is the smallest number of terms needed to represent 1 as a sum of
 distinct unit fractions with all denominators at least N.
@@ -72,19 +64,9 @@ axiom k (N : ℕ) : ℕ
 /--
 k(N) achieves a representation of 1 with all denominators ≥ N.
 -/
-axiom k_achieves (N : ℕ) (hN : N ≥ 1) :
-    ∃ (n : Fin (k N) → ℕ),
-      (∀ i, N ≤ n i) ∧
-      Function.Injective n ∧
-      (∀ i j, i < j → n i < n j) ∧
-      ∑ i, (1 : ℝ) / n i = 1
-
 /--
 k(N) is minimal: any representation with denominators ≥ N needs at least k(N) terms.
 -/
-axiom k_minimal (N : ℕ) (m : ℕ) (n : Fin m → ℕ)
-    (hN : ∀ i, N ≤ n i) (hsum : ∑ i, (1 : ℝ) / n i = 1) : k N ≤ m
-
 /--
 The Erdős-Straus theorem (1971): There exist constants c > 0 and O > 0 such that
 for all sufficiently large N:

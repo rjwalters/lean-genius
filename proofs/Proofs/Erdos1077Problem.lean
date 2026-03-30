@@ -111,22 +111,11 @@ The correct answer is m ≈ n^α vertices:
 
     For K_{n^α, n^{1-α}}, any balanced subgraph has at most O(n^α) vertices
     from the smaller side. -/
-axiom upperBound_bipartite (α : ℝ) (hα : 0 < α) (hα' : α < 1) :
-    ∃ (counterexample : ℕ → Type*),
-    -- There exist graphs with n^{1+α} edges but no large balanced subgraph
-    True
-
 /-- **Axiom (Jiang-Longbrake 2025 - Lower Bound):**
     Every graph with n^{1+α} edges contains a 6-balanced subgraph on
     at least c·n^α vertices with proportionally many edges.
 
     The constant 6 is explicit in their proof. -/
-axiom lowerBound_balanced (α : ℝ) (hα : 0 < α) (hα' : α < 1) :
-    ∃ (c : ℝ) (hc : c > 0),
-    -- For all graphs G on n vertices with n^{1+α} edges,
-    -- there exists a 6-balanced subgraph on ≥ c·n^α vertices
-    True
-
 /-- **Erdős Problem 1077** (Resolved)
 
     The original conjecture (as literally stated) is FALSE.

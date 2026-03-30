@@ -62,9 +62,6 @@ def ErdosGraham_rational : Prop :=
       ∃ S : Finset ℕ, IsRatFractionRepr S q ∧ IsMonochromatic c S
 
 /-- The rational generalization follows from the infinitely-many version. -/
-axiom rational_from_infinite :
-    ErdosProblem46_infinitely_many → ErdosGraham_rational
-
 /- ## Basic properties -/
 
 /-- The empty set is not a unit fraction representation (sum is 0 ≠ 1). -/
@@ -73,8 +70,6 @@ theorem not_unitFractionRepr_empty : ¬IsUnitFractionRepr ∅ := by
   simp at hsum
 
 /-- A singleton {n} is a unit fraction representation iff n = 1, which contradicts n ≥ 2. -/
-axiom not_unitFractionRepr_singleton (n : ℕ) : ¬IsUnitFractionRepr {n}
-
 /-- Any monochromatic set under a 1-colouring is trivially monochromatic. -/
 theorem mono_one_colour (c : FiniteColouring 1) (S : Finset ℕ) :
     IsMonochromatic c S := by
@@ -87,5 +82,3 @@ theorem mono_subset {r : ℕ} {c : FiniteColouring r} {S T : Finset ℕ}
   exact ⟨col, fun n hn => hcol n (hTS hn)⟩
 
 /-- A unit fraction representation has at least two elements. -/
-axiom unitFractionRepr_card_ge_two (S : Finset ℕ) :
-    IsUnitFractionRepr S → 2 ≤ S.card

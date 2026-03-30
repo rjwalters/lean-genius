@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SORRY ELIMINATED: Proved sharpConstant_optimal via ciSup_le + exp cancellation. Fixed stale metadata. 3 axioms, 3 sorries remain.",
+    "progressSummary": "PROGRESS: Proved sharpConstant_is_bound (3→2 sorries). Used ciSup_const + le_ciSup with BddAbove from IsStripAnalytic. Remaining: exp_dominates_polynomial, analytic_hierarchy (standard analysis, need Filter.cofinite/Summable machinery).",
     "builtItems": [
       "Created FourierSeriesOQ02OQ03OQ02.lean: 3 axioms, 10 theorems, 4 definitions, 5 sorries",
       "Defined IsStripAnalytic, stripNorm, sharpConstant, poissonKernelStripWidth",
       "Proved structural: exp_decay_pos, exp_decay_le_one, wider_strip_faster_decay, poissonKernel_strip_positive",
       "Created gallery entry src/data/proofs/fourier-series-oq-02-oq-03-oq-02/meta.json",
-      "Created FourierSeriesOQ02OQ03OQ02Aristotle.lean companion file with 6 theorem sorries for automated proof search"
+      "Created FourierSeriesOQ02OQ03OQ02Aristotle.lean companion file with 6 theorem sorries for automated proof search",
+      "sharpConstant_is_bound: proved via ciSup_const + le_ciSup + exp cancellation"
     ],
     "insights": [
       "Contour shifting is the key technique: shift integration to Im z = delta-epsilon, periodicity cancels vertical edges",
@@ -48,7 +49,8 @@
       "sharpConstant proofs: require ciSup_le / le_ciSup from ConditionallyCompleteLattice API",
       "exp_dominates_polynomial: Real.tendsto_pow_mul_exp_neg_atTop_nhds in Mathlib may help",
       "sharpConstant_optimal proved: ciSup_le reduces to showing each term ≤ K, then exp(-a)*exp(a)=1 gives the bound",
-      "Data fix: leanFiles was pointing to FourierSeries.lean (parent) not FourierSeriesOQ02OQ03OQ02.lean"
+      "Data fix: leanFiles was pointing to FourierSeries.lean (parent) not FourierSeriesOQ02OQ03OQ02.lean",
+      "ciSup_const.symm converts constant value to iSup over nonempty Prop index; le_ciSup lifts to outer iSup. Pattern: calc x = iSup (const) ≤ iSup (outer)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -90,9 +92,9 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 441,
+      "lineCount": 428,
       "theoremCount": 13,
-      "axiomCount": 5,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 5,
       "isAristotle": false,
@@ -112,9 +114,9 @@
     {
       "path": "Proofs/FourierSeriesOQ02OQ03.lean",
       "filename": "FourierSeriesOQ02OQ03.lean",
-      "lineCount": 148,
+      "lineCount": 133,
       "theoremCount": 6,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -123,11 +125,11 @@
     {
       "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
       "filename": "FourierSeriesOQ02OQ03OQ02.lean",
-      "lineCount": 388,
+      "lineCount": 428,
       "theoremCount": 11,
       "axiomCount": 3,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02.lean"
     },
@@ -156,9 +158,9 @@
     {
       "path": "Proofs/FourierSeriesOQ04.lean",
       "filename": "FourierSeriesOQ04.lean",
-      "lineCount": 134,
+      "lineCount": 110,
       "theoremCount": 2,
-      "axiomCount": 5,
+      "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

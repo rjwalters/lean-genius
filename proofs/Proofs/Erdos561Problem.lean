@@ -109,10 +109,6 @@ axiom sizeRamseyNumber (F₁ F₂ : StarUnion) : ℕ
 
 /-- **Existence:**
 The size Ramsey number always exists (and is finite). -/
-axiom sizeRamseyNumber_exists (F₁ F₂ : StarUnion) :
-    ∃ V : Type*, ∃ H : SimpleGraph V, [Fintype V] →
-      hasRamseyProperty V H F₁ F₂
-
 /-
 ## Part V: The Conjectured Formula
 -/
@@ -190,9 +186,6 @@ axiom sizeRamsey_lower_bound (F₁ F₂ : StarUnion) :
 /-- **Upper Bound from Complete Graph:**
 Taking N = R(F₁, F₂) (the classical Ramsey number), the complete graph K_N
 has the Ramsey property, providing an upper bound. -/
-axiom sizeRamsey_upper_bound (F₁ F₂ : StarUnion) :
-    ∃ N : ℕ, sizeRamseyNumber F₁ F₂ ≤ N * (N - 1) / 2
-
 /-
 ## Part VIII: Connection to Classical Ramsey Numbers
 -/
@@ -206,9 +199,6 @@ axiom classicalRamseyNumber (F₁ F₂ : StarUnion) : ℕ
 /-- **Relationship:**
 R̂(F₁, F₂) ≤ (R(F₁, F₂) choose 2) since K_{R(F₁,F₂)} works.
 But size Ramsey numbers can be much smaller than this bound. -/
-axiom size_vs_classical (F₁ F₂ : StarUnion) :
-    sizeRamseyNumber F₁ F₂ ≤ classicalRamseyNumber F₁ F₂ * (classicalRamseyNumber F₁ F₂ - 1) / 2
-
 /-
 ## Part IX: Summary
 -/

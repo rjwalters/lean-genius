@@ -81,18 +81,22 @@ def CoveringSystem.hasMonochromaticModuli {k : ℕ}
 /--
 **Erdős-Graham Conjecture** (DISPROVED):
 For any finite coloring of the positive integers, there exists a covering system
-whose moduli are all the same color.
+with distinct moduli whose moduli are all the same color.
 
 This was conjectured to be TRUE, but Hough (2015) showed it is FALSE.
+
+Note: Covering systems classically have distinct moduli. Without this condition,
+trivial systems like {0 mod 2, 1 mod 2} always have monochromatic moduli ({2}).
 -/
 def erdos_graham_conjecture : Prop :=
   ∀ k : ℕ, k ≥ 2 → ∀ c : Coloring k,
-    ∃ cs : CoveringSystem, cs.hasMonochromaticModuli c
+    ∃ cs : CoveringSystem, cs.hasDistinctModuli ∧ cs.hasMonochromaticModuli c
 
-/-- The negation: there exists a coloring with no monochromatic covering moduli. -/
+/-- The negation: there exists a coloring where no covering system with distinct
+    moduli has monochromatic moduli. -/
 def erdos_8_disproved : Prop :=
   ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
-    ∀ cs : CoveringSystem, ¬cs.hasMonochromaticModuli c
+    ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
 /- ## Hough's Minimum Modulus Theorem -/
 
@@ -143,17 +147,22 @@ def hough_counterexample_coloring_exists : Prop :=
     ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
 /--
-**Resolution of Erdős Problem 8**:
+**Resolution of Erdős Problem 8** (PROVED — was axiom):
 The Erdős-Graham conjecture is FALSE.
+
+Derived from `bottleneck_counterexample` and `hough_minimum_modulus`:
+Hough's bound provides the hypothesis, and the bottleneck construction
+produces a coloring that avoids monochromatic covering moduli.
 -/
-axiom erdos_8_resolution : erdos_8_disproved
+theorem erdos_8_resolution : erdos_8_disproved :=
+  bottleneck_counterexample fun cs hd => hough_minimum_modulus cs hd
 
 /-- Equivalently, not all colorings admit monochromatic covering moduli. -/
 theorem erdos_8_false : ¬erdos_graham_conjecture := by
   intro h
   obtain ⟨k, hk, c, hc⟩ := erdos_8_resolution
-  obtain ⟨cs, hcs⟩ := h k hk c
-  exact hc cs hcs
+  obtain ⟨cs, hcs_d, hcs_m⟩ := h k hk c
+  exact hc cs hcs_d hcs_m
 
 /- ## Density Version -/
 
@@ -249,10 +258,10 @@ If m₂ > 616000, color(m₂) = 0 ≠ m₁ (since m₁ ≥ 2).
 -/
 theorem bottleneck_counterexample :
     (∀ cs : CoveringSystem, cs.hasDistinctModuli → cs.minModulus ≤ 616000) →
-    ∃ k : ℕ, ∃ c : Coloring k,
+    ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
       ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c := by
   intro hbound
-  refine ⟨616001, fun n => if h : n ≤ 616000 then ⟨n, by omega⟩ else ⟨0, by omega⟩, ?_⟩
+  refine ⟨616001, by omega, fun n => if h : n ≤ 616000 then ⟨n, by omega⟩ else ⟨0, by omega⟩, ?_⟩
   intro cs hd ⟨color, hcolor⟩
   set m₁ := cs.minModulus with hm₁_def
   have hm₁_mem : m₁ ∈ cs.moduli := cs.minModulus_mem
@@ -307,19 +316,24 @@ bottleneck that allows constructing colorings with no monochromatic covering.
 1. Coloring version: Explicitly constructed counterexample
 2. Density version: Logarithmic tail density is NOT sufficient
 
-**Axioms** (3 — reduced from 4):
+**Axioms** (2 — reduced from 5):
 1. hough_minimum_modulus — every CS has min modulus ≤ 616000 (deep result, 2015)
-2. erdos_8_resolution — the conjecture is false (deep result, 2015)
-3. density_conjecture_false — the density version is false (deep result, 2015)
+2. density_conjecture_false — the density version is false (deep result, 2015)
 
-**Proved** (7 theorems — was 2):
+**Proved** (9 theorems):
 1. balister_improved_bound — derived from hough
-2. erdos_8_false — conjecture negation
-3. single_class_not_covering — modulus ≥ 2 misses integers
-4. covering_distinct_has_ge_two_classes — covering systems need ≥ 2 classes
-5. covering_distinct_moduli_card_ge_two — ≥ 2 distinct moduli
-6. CoveringSystem.minModulus_mem — min modulus membership
-7. bottleneck_counterexample — **PROVED (was axiom)**: pigeonhole coloring
+2. erdos_8_resolution — **PROVED (was axiom)**: derived from bottleneck + Hough
+3. erdos_8_false — conjecture negation
+4. single_class_not_covering — modulus ≥ 2 misses integers
+5. covering_distinct_has_ge_two_classes — covering systems need ≥ 2 classes
+6. covering_distinct_moduli_card_ge_two — ≥ 2 distinct moduli
+7. CoveringSystem.minModulus_mem — min modulus membership
+8. bottleneck_counterexample — **PROVED (was axiom)**: pigeonhole coloring
+9. erdos_8_summary — both versions false
+
+**Bug Fixed**: erdos_graham_conjecture and erdos_8_disproved now require
+hasDistinctModuli. Without this, trivial CS like {0 mod 2, 1 mod 2} always
+have monochromatic moduli, making the disproval statement vacuously false.
 
 References:
 - Erdős, Graham (1980): Original conjecture

@@ -95,7 +95,12 @@ theorem outerMeasure_union_le (A B : Set ℝ) :
 theorem exists_not_mem_of_outerMeasure_lt_Icc {A : Set ℝ} {a b : ℝ}
     (hab : a < b) (hA : outerMeasure A < ENNReal.ofReal (b - a)) :
     ∃ x ∈ Set.Icc a b, x ∉ A := by
-  sorry
+  by_contra h
+  push_neg at h
+  -- h : Icc a b ⊆ A
+  have hIcc : outerMeasure (Set.Icc a b) = ENNReal.ofReal (b - a) := by
+    unfold outerMeasure; exact Real.volume_Icc
+  exact absurd hA (not_lt.mpr (hIcc ▸ outerMeasure_mono h))
 
 /-- A closed set in ℝ is Lebesgue measurable. -/
 theorem isClosed_measurableSet {A : Set ℝ} (hA : IsClosed A) :
@@ -113,7 +118,26 @@ theorem measure_compl_Icc_pos {A : Set ℝ} {a b : ℝ}
     (hA : IsClosed A) (hab : a < b)
     (hμ : outerMeasure A < ENNReal.ofReal (b - a)) :
     0 < outerMeasure (Set.Icc a b \ A) := by
-  sorry
+  obtain ⟨x, hx_mem, hx_notin⟩ := exists_not_mem_of_outerMeasure_lt_Icc hab hμ
+  -- x ∈ Aᶜ which is open, so ∃ ε > 0 with ball x ε ⊆ Aᶜ
+  obtain ⟨ε, hε_pos, hε_ball⟩ := Metric.isOpen_iff.mp hA.isOpen_compl x hx_notin
+  -- Build [lo, hi] ⊆ [a,b] \ A with positive length
+  set lo := max a (x - ε / 2)
+  set hi := min b (x + ε / 2)
+  have hlo_hi : lo < hi := by
+    simp only [lo, hi, lt_min_iff, max_lt_iff]
+    exact ⟨⟨by linarith [hx_mem.2], by linarith⟩,
+           ⟨by linarith [hx_mem.1], by linarith⟩⟩
+  have h_sub : Set.Icc lo hi ⊆ Set.Icc a b \ A := by
+    intro y hy
+    refine ⟨⟨le_of_max_le_left hy.1, le_trans hy.2 (min_le_left _ _)⟩, ?_⟩
+    apply hε_ball
+    rw [Real.dist_eq, abs_lt]
+    exact ⟨by linarith [le_of_max_le_right hy.1], by linarith [le_trans hy.2 (min_le_right _ _)]⟩
+  calc (0 : ℝ≥0∞) < ENNReal.ofReal (hi - lo) := by rwa [ENNReal.ofReal_pos, sub_pos]
+    _ = outerMeasure (Set.Icc lo hi) := by
+        symm; unfold outerMeasure; exact Real.volume_Icc
+    _ ≤ outerMeasure (Set.Icc a b \ A) := outerMeasure_mono h_sub
 
 /-- An independent set of size 0 exists for any family. -/
 theorem independent_size_zero (A : ℝ → Set ℝ) :

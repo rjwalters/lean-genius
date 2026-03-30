@@ -127,9 +127,6 @@ theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m)
   sorry
 
 /-- The smallest prime > n is ≤ 2n (Bertrand's postulate). -/
-axiom smallest_prime_bound (n : ℕ) (hn : n ≥ 1) :
-  ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n
-
 /-
 ## Part V: Alon-Freiman Upper Bound
 -/
@@ -146,13 +143,7 @@ noncomputable def lcm_up_to (s : ℕ) : ℕ :=
   (Icc_n s).lcm id
 
 /-- Key estimate: lcm(1,...,s) ≈ e^s. -/
-axiom lcm_estimate (s : ℕ) (hs : s ≥ 1) :
-  (lcm_up_to s : ℝ) ≤ Real.exp (2 * s)
-
 /-- The upper bound argument: if S is large enough, some m ≤ lcm is achieved. -/
-axiom large_set_achieves_sum (S : Finset ℕ) (L : ℕ) (hL : L ≥ 1) :
-  S.card > L → ∃ m ≤ L, ∃ A ⊆ S, A.Nonempty ∧ ∑ a ∈ A, a = m
-
 /-
 ## Part VI: The Complete Answer
 -/
@@ -216,10 +207,6 @@ def IsSumFree (S : Finset ℕ) : Prop :=
   ∀ a b c, a ∈ S → b ∈ S → c ∈ S → a + b ≠ c
 
 /-- Sum-free sets have size at most n/3 + O(1). -/
-axiom sum_free_upper_bound (n : ℕ) (S : Finset ℕ)
-    (hS : S ⊆ Icc_n n) (hSF : IsSumFree S) :
-  S.card ≤ n / 3 + 1
-
 /-- m-avoiding is weaker than sum-free in some sense. -/
 def avoiding_vs_sumfree : Prop :=
   -- m-avoiding sets can be larger than sum-free sets

@@ -114,9 +114,6 @@ Every graph with chromatic number ≥ ℵ₂ contains all sufficiently large odd
 
 This was the original result by Erdős and Hajnal.
 -/
-axiom erdos_hajnal_aleph2 (V : Type*) (G : SimpleGraph V) :
-    hasLargeChromaticNumber G aleph2 → containsAllLargeOddCycles G
-
 /--
 **Erdős-Hajnal-Shelah Theorem (1974):**
 Every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles.
@@ -184,10 +181,6 @@ def isTriangleFree (G : SimpleGraph V) : Prop :=
   ¬hasCycleOfLength G 3
 
 /-- Triangle-free graphs with χ ≥ ℵ₁ contain all odd cycles ≥ 5. -/
-axiom triangle_free_odd_cycles (V : Type*) (G : SimpleGraph V) :
-    isTriangleFree G → hasLargeChromaticNumber G aleph1 →
-    ∀ n : ℕ, Odd n → n ≥ 5 → hasCycleOfLength G n
-
 /- ## Thomassen's Strengthening (1983)
 
 Problem #737 asked whether cycles must pass through a specific edge.
@@ -206,35 +199,17 @@ def hasCycleThroughEdge (G : SimpleGraph V) (v w : V) (n : ℕ) : Prop :=
 For every edge e in a graph with χ ≥ ℵ₁, all sufficiently large cycles
 pass through e.
 -/
-axiom thomassen_1983 (V : Type*) (G : SimpleGraph V) (v w : V) :
-    hasLargeChromaticNumber G aleph1 → G.Adj v w →
-    ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → hasCycleThroughEdge G v w n
-
 /- ## Small Cycle Behavior -/
 
 /-- Not every graph with χ ≥ ℵ₁ contains a triangle.
     There exist triangle-free graphs with arbitrary chromatic number. -/
-axiom mycielski_type_construction :
-    ∀ κ : Cardinal, ∃ (V : Type*) (G : SimpleGraph V),
-      isTriangleFree G ∧ hasLargeChromaticNumber G κ
-
 /-- Graphs with high girth can still have high chromatic number.
     (Girth is the minimum cycle length; here we express the property
     directly: no cycles of length < g exist, yet χ ≥ κ.) -/
-axiom high_girth_high_chromatic :
-    ∀ g : ℕ, ∀ κ : Cardinal, ∃ (V : Type*) (G : SimpleGraph V),
-      (∀ n, 3 ≤ n → n < g → ¬hasCycleOfLength G n) ∧
-      hasLargeChromaticNumber G κ
-
 /- ## Explicit Bounds -/
 
 /-- For the Erdős-Hajnal-Shelah theorem, the threshold N₀ depends on
     the structure of the graph, not just its chromatic number. -/
-axiom threshold_depends_on_graph (V : Type*) (G : SimpleGraph V) :
-    hasLargeChromaticNumber G aleph1 →
-    ∃! N₀ : ℕ, (∀ n : ℕ, Odd n → n ≥ N₀ → hasCycleOfLength G n) ∧
-              (∃ n : ℕ, Odd n ∧ n < N₀ ∧ ¬hasCycleOfLength G n)
-
 /- ## Summary
 
 **Erdős Problem #594: SOLVED**

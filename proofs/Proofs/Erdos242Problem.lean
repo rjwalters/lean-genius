@@ -66,31 +66,16 @@ def ErdosStrausConjecture : Prop :=
 **Four fractions trivially suffice**: By the greedy algorithm, any a/n with a < n
 can be written as a sum of at most n unit fractions.
 -/
-axiom four_fractions_suffice :
-    ∀ n : ℕ, 2 < n → ∃ x y z w : ℕ,
-      1 ≤ x ∧ x < y ∧ y < z ∧ z < w ∧
-      (4 : ℚ) / n = 1 / x + 1 / y + 1 / z + 1 / w
-
 /--
 **Density result**: The Erdős-Straus conjecture holds for "almost all" n
 in the sense of natural density. The set of exceptions has density 0.
 -/
-axiom erdos_straus_almost_all :
-    ∃ S : Set ℕ, (∀ n ∈ S, 2 < n → ∃ x y z : ℕ,
-      1 ≤ x ∧ x < y ∧ y < z ∧ (4 : ℚ) / n = 1 / x + 1 / y + 1 / z) ∧
-    (∀ᶠ N in atTop, ((S ∩ Finset.range N).ncard : ℝ) / N > 1 - 1/N)
-
 /--
 **Computational verification**: The conjecture has been verified for all
 n ≤ 10^14 by various computational efforts.
 
 We axiomatize a concrete upper bound.
 -/
-axiom computational_verification :
-    ∀ n : ℕ, 2 < n → n ≤ 10^14 → ∃ x y z : ℕ,
-      1 ≤ x ∧ x < y ∧ y < z ∧
-      (4 : ℚ) / n = 1 / x + 1 / y + 1 / z
-
 /- ## Specific Cases -/
 
 /--
@@ -98,19 +83,9 @@ axiom computational_verification :
 We can write 4/n = 1/(k+1) + 1/(k·(k+1)) + 1/(k·(k+1)·large) with care.
 But more simply, for composite n the problem often has direct solutions.
 -/
-axiom mod_4_case :
-    ∀ k : ℕ, 1 < k → ∃ x y z : ℕ,
-      1 ≤ x ∧ x < y ∧ y < z ∧
-      (4 : ℚ) / (4 * k) = 1 / x + 1 / y + 1 / z
-
 /--
 **n ≡ 1 (mod 4)**: Can be reduced using 4/n = 1/⌈n/4⌉ + (4k-n)/(n·⌈n/4⌉).
 -/
-axiom mod_4_equiv_1_case :
-    ∀ k : ℕ, ∃ x y z : ℕ,
-      1 ≤ x ∧ x < y ∧ y < z ∧
-      (4 : ℚ) / (4 * k + 1) = 1 / x + 1 / y + 1 / z
-
 /- ## Schinzel's Generalization -/
 
 /--

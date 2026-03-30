@@ -95,10 +95,6 @@ def IsSpanningSubgraph (H G : SimpleGraph V) : Prop :=
 **Subgraph monotonicity:**
 Subgraphs have chromatic number at most that of the parent.
 -/
-axiom subgraph_chromatic_le (H G : SimpleGraph V)
-    (hsub : IsSpanningSubgraph H G) :
-    chromaticNumber H ≤ chromaticNumber G
-
 /- ## Part IV: Mycielski's Construction (Context) -/
 
 /--
@@ -106,11 +102,6 @@ axiom subgraph_chromatic_le (H G : SimpleGraph V)
 There exist triangle-free graphs with arbitrarily high chromatic number.
 This was proved by Mycielski (1955) using an iterative construction.
 -/
-axiom mycielski_triangle_free_high_chromatic :
-  ∀ k : ℕ, ∃ (W : Type*) [Fintype W] [DecidableEq W],
-    ∃ G : SimpleGraph W,
-      IsTriangleFree G ∧ HasChromaticNumberAtLeast G k
-
 /- ## Part V: The Main Problem -/
 
 /--
@@ -200,11 +191,6 @@ def HFreeSubgraphProblem (H : Type*) [Fintype H] [DecidableEq H]
 **Rödl's General Theorem:**
 The H-free version holds for any bipartite H.
 -/
-axiom rodl_general_bipartite :
-  ∀ (H : Type*) [Fintype H] [DecidableEq H] (Hgraph : SimpleGraph H),
-    (∃ c : Hgraph.Coloring (Fin 2), True) →
-    HFreeSubgraphProblem H Hgraph
-
 /- ## Part VIII: Summary -/
 
 /--

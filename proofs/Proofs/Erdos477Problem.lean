@@ -243,15 +243,7 @@ theorem sq_count (N : ℕ) : (Finset.range (N + 1)).card = N + 1 := by
 
 /-- Erdős Problem #477 (OPEN): No polynomial of degree ≥ 2 has a perfect complement.
     Erdős and Graham (1980) conjectured the answer is NO. -/
-axiom erdos_477_conjecture :
-  ∀ (f : ℤ → ℤ), (∀ (a : ℤ) (b : ℤ), a ≠ b → ∃ c d e : ℤ,
-    f c = a * c ^ 2 + d * c + e ∧ a ≠ 0) →
-    ¬∃ A : Set ℤ, IsPerfectComplement A (polyImage f)
-
 /-- Conjecture: No perfect complement exists for f(x) = x^k, any k ≥ 2 -/
-axiom no_complement_power (k : ℕ) (hk : k ≥ 2) :
-  ¬∃ A : Set ℤ, IsPerfectComplement A (polyImage (fun n : ℤ => n ^ k))
-
 /-- Erdős Problem #477 Main Statement (OPEN):
 Is there a polynomial f : ℤ → ℤ of degree ≥ 2 and set A ⊆ ℤ
 such that for any n ∈ ℤ there is exactly one a ∈ A and b ∈ f(ℤ)
@@ -266,8 +258,4 @@ Connections:
 - For degree 1, trivially YES (identity function, A = {0})
 - For squares: partial results exist (non-negative image forces structure)
 -/
-axiom erdos_477_main :
-  ¬∃ (f : ℤ → ℤ) (d : ℕ), d ≥ 2 ∧
-    (∃ A : Set ℤ, IsPerfectComplement A (polyImage f))
-
 end Erdos477

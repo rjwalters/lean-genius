@@ -284,31 +284,12 @@ theorem four_collinear_overlap_small (P : PlanarPointSet) (hP : NoFiveCollinear 
 
 /-- **Erdős Problem #101**: the number of four-point lines is o(n²).
     For any ε > 0, eventually fourPointLineCount(P) < ε · n². -/
-axiom erdos_101_conjecture :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ P : PlanarPointSet,
-      NoFiveCollinear P → P.points.card ≥ N₀ →
-        (fourPointLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2
-
 /- ## Known Results -/
 
 /-- **Grünbaum's Lower Bound**: there exist point sets with no five collinear
     achieving ≫ n^{3/2} four-point lines. -/
-axiom grunbaum_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, ∃ P : PlanarPointSet,
-      NoFiveCollinear P ∧ P.points.card ≥ N ∧
-        (fourPointLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ (3/2 : ℝ)
-
 /-- **Solymosi–Stojaković**: configurations exist with n^{2−O(1/√(log n))}
     four-point lines, disproving Erdős's Θ(n^{3/2}) conjecture. -/
-axiom solymosi_stojakovic_lower :
-  ∀ C : ℝ, C > 0 →
-    ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ P : PlanarPointSet,
-      NoFiveCollinear P ∧ P.points.card = n ∧
-        (fourPointLineCount P : ℝ) ≥ (n : ℝ) ^ (2 - C / Real.sqrt (Real.log n))
-
-open Classical in
 /-- **Trivial Upper Bound (n²)**: Under NoFiveCollinear, fourPointLineCount ≤ n².
     Injection from 4-collinear subsets to ordered pairs via existential witnesses. -/
 theorem trivial_upper_bound_sq (P : PlanarPointSet) (hP : NoFiveCollinear P) :
@@ -610,24 +591,10 @@ theorem improved_upper_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) :
 
 /-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
     sets with ~n²/6 collinear triples but no four-point lines. -/
-axiom collinear_triples_no_four :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, ∃ P : PlanarPointSet,
-      NoFiveCollinear P ∧ P.points.card ≥ N ∧
-        fourPointLineCount P = 0
-
 /-- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
     of lines L in ℝ², the number of incidences I(P,L) satisfies
     I(P,L) ≤ C · (|P|^{2/3}·|L|^{2/3} + |P| + |L|) for some absolute constant C.
     Note: stated for a given incidence count, not universally quantified. -/
-axiom szemeredi_trotter
-    (P_pts : Finset (ℝ × ℝ)) (lines : Finset (Finset (ℝ × ℝ)))
-    (incidences : Finset ((ℝ × ℝ) × Finset (ℝ × ℝ)))
-    (h_inc : ∀ pl ∈ incidences, pl.1 ∈ P_pts ∧ pl.2 ∈ lines ∧ pl.1 ∈ pl.2) :
-  ∃ C : ℝ, C > 0 ∧
-    (incidences.card : ℝ) ≤ C * ((P_pts.card : ℝ) ^ (2/3 : ℝ) *
-      (lines.card : ℝ) ^ (2/3 : ℝ) + P_pts.card + lines.card)
-
 /- ## The F family (for reuse across theorems) -/
 
 open Classical in

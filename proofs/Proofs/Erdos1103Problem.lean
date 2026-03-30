@@ -69,17 +69,8 @@ axiom vanDoorn_tao_upper :
 
 /-- van Doorn–Tao lower bound: `a_j > 0.24 · j^{4/3}` for any infinite
 squarefree-sumset sequence. -/
-axiom vanDoorn_tao_lower (A : Set ℕ) (hA : A.Infinite) (hS : SquarefreeSumset A) :
-    ∀ j : ℕ, (0.24 : ℝ) * (j : ℝ) ^ (4/3 : ℝ) < (enumSet A j : ℝ)
-
 /-- Konyagin's bound for finite sets: for `A ⊆ {1,...,N}` with squarefree sumset,
 `|A| ≪ N^{11/15 + o(1)}`. -/
-axiom konyagin_finite_bound :
-    ∃ (C : ℝ), 0 < C ∧ ∀ N : ℕ, ∀ A : Finset ℕ,
-      (∀ a ∈ A, a ≤ N) →
-      (∀ a ∈ A, ∀ b ∈ A, Squarefree (a + b)) →
-        (A.card : ℝ) ≤ C * (N : ℝ) ^ (11/15 : ℝ)
-
 /- ## Basic properties -/
 
 /-- Every singleton set has a squarefree sumset iff `2a` is squarefree. -/

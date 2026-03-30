@@ -91,12 +91,6 @@ axiom erdos_275_theorem (C : CoveringSystem) (a : ℤ) :
 If r arithmetic progressions cover the first 2^r positive integers,
 they cover all integers.
 -/
-axiom crittenden_vanden_eynden (r : ℕ) (residues : Fin r → ℤ) (moduli : Fin r → ℕ)
-    (hpos : ∀ i, moduli i > 0) :
-    (∀ x : ℕ, x < 2^r →
-      ∃ i : Fin r, (x : ℤ) ∈ CongruenceClass (residues i) (moduli i)) →
-    (∀ x : ℤ, ∃ i : Fin r, x ∈ CongruenceClass (residues i) (moduli i))
-
 /- ## Part III: Optimality — The 2^r Bound is Tight -/
 
 /--
@@ -116,9 +110,6 @@ def OptimalExample (r : ℕ) : CoveringSystem where
 **What the Optimal Example Covers:**
 x is covered iff x is NOT divisible by 2^r.
 -/
-axiom optimal_example_coverage (r : ℕ) (hr : r ≥ 1) :
-    ∀ x : ℤ, IsCovered (OptimalExample r) x ↔ ¬((2^r : ℤ) ∣ x)
-
 /--
 **Consecutive Integers Not Covered:**
 Among any 2^r - 1 consecutive integers, there's always at least one

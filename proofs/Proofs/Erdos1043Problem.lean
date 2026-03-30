@@ -139,8 +139,6 @@ noncomputable def pommerenkeConstant : ℝ≥0∞ :=
     minProjectionMeasure f
 
 /-- Pommerenke showed this constant is at least 2.386. -/
-axiom pommerenke_lower_bound : pommerenkeConstant ≥ 2.386
-
 /- ## Part VI: Pommerenke's Upper Bound -/
 
 /-- **Pommerenke (1961)**: For any monic polynomial, some projection has measure ≤ 3.3.
@@ -160,9 +158,6 @@ theorem min_projection_bounded (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f
 /-- For a degree-n monic polynomial, the level set {|f(z)| ≤ 1} has
     logarithmic capacity 1. This follows from the fact that the Green's
     function with pole at infinity has leading term log|z| - (1/n)log|f(z)|. -/
-axiom levelSet_capacity (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
-    ∃ cap : ℝ, cap = 1
-
 /-- The level set is connected if and only if all roots lie in the level set. -/
 theorem levelSet_connected_iff (f : Polynomial ℂ) (hMonic : f.Monic) :
     IsConnected (unitLevelSet f) ↔ ∀ z, f.eval z = 0 → z ∈ unitLevelSet f := by
@@ -212,15 +207,8 @@ theorem bernoulli_origin : (0 : ℂ) ∈ bernoulliLemniscate 1 := by
 
 /-- The transfinite diameter of the unit level set equals 1 for monic polynomials.
     Equivalently, cap({|f(z)| ≤ 1}) = 1 when f is monic. -/
-axiom transfinite_diameter_one (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
-    ∃ td : ℝ, td = 1
-
 /-- Chebyshev's theorem: Among monic degree-n polynomials, the Chebyshev polynomial
     T_n(z)/2^(n-1) minimizes the sup norm on [-1, 1], achieving ‖·‖ = 1/2^(n-1). -/
-axiom chebyshev_optimal (n : ℕ) (hn : n > 0) :
-    ∀ (f : Polynomial ℝ), f.Monic → f.natDegree = n →
-      ∃ (x : ℝ), x ∈ Set.Icc (-1 : ℝ) 1 ∧ |f.eval x| ≥ 1 / 2 ^ (n - 1)
-
 /-- The level set {|f(z)| ≤ 1} contains all roots of f. -/
 theorem roots_in_levelSet (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
     z ∈ unitLevelSet f := by
@@ -230,14 +218,8 @@ theorem roots_in_levelSet (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
 
 /-- For a monic polynomial of degree n, the level set has area at most π.
     (Equality holds for f(z) = zⁿ.) -/
-axiom levelSet_area_bound (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
-    volume (unitLevelSet f) ≤ Real.pi
-
 /-- The diameter of the level set is at most 4 for monic polynomials.
     (The unit disk has diameter 2, but level sets can be more spread out.) -/
-axiom levelSet_diameter_bound (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
-    Metric.diam (unitLevelSet f) ≤ 4
-
 /- ## Part XII: Summary -/
 
 /-- The main theorem: Answer to Erdős Problem #1043.

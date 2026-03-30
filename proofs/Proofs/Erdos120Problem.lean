@@ -138,10 +138,6 @@ If A is dense in some open interval (a,b), then A is avoidable.
 The density forces similar copies to "fill up" intervals, which
 can be avoided by careful measure-theoretic constructions.
 -/
-axiom dense_in_interval_avoidable (A : Set ℝ)
-    (hDense : ∃ a b : ℝ, a < b ∧ Dense ((A ∩ Set.Ioo a b) : Set ℝ)) :
-    avoidable A
-
 /-
 # Part 5: The Erdős Conjecture
 
@@ -254,20 +250,12 @@ contains an open interval around 0.
 
 This is the classical result underlying the universality of finite sets.
 -/
-axiom steinhaus_difference (E : Set ℝ) (hE : MeasurableSet E)
-    (hpos : volume E > 0) :
-    ∃ δ > 0, Set.Ioo (-δ) δ ⊆ {z | ∃ x y, x ∈ E ∧ y ∈ E ∧ z = x - y}
-
 /--
 **Lebesgue Density Theorem**
 
 For a measurable set E, almost every point of E is a point of
 density 1. This constrains the local structure of positive-measure sets.
 -/
-axiom lebesgue_density (E : Set ℝ) (hE : MeasurableSet E) (hpos : volume E > 0) :
-    ∃ x ∈ E, ∀ ε > 0,
-    volume (E ∩ Set.Ioo (x - ε) (x + ε)) / volume (Set.Ioo (x - ε) (x + ε)) > 1/2
-
 /-
 # Part 9: Connections and Related Problems
 -/

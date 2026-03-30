@@ -155,33 +155,11 @@ def erdosGyarfasConjecture : Prop :=
 The conjecture holds when max degree is ≪ log n / log log n.
 This is a much weaker condition than the full conjecture.
 -/
-axiom erdos_gyarfas_weak :
-  ∀ C : ℝ, C > 0 →
-    ∀ δ : ℝ, δ > 0 →
-      ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-        Fintype.card V ≥ N →
-          ∀ G : SimpleGraph V,
-            IsTriangleFree G →
-            let n := Fintype.card V
-            (maxDegree G : ℝ) ≤ C * Real.log n / Real.log (Real.log n) →
-            extendableToDiameter2WithBudget G ⌊δ * (n : ℝ) ^ 2⌋₊
-
 /--
 **Simonovits Counterexample:**
 For large enough C, there exist triangle-free graphs with max degree ≤ C√n
 that cannot be extended to diameter-2 triangle-free with o(n²) edges.
 -/
-axiom simonovits_counterexample :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ δ : ℝ, δ > 0 →
-      ∀ᶠ (n : ℕ) in Filter.atTop,
-        ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
-          Fintype.card V = n ∧
-          ∃ G : SimpleGraph V,
-            IsTriangleFree G ∧
-            (maxDegree G : ℝ) ≤ C * Real.sqrt n ∧
-            ¬ extendableToDiameter2WithBudget G ⌊δ * (n : ℝ) ^ 2⌋₊
-
 /-
 ## Part V: Alon's Theorem (Solution)
 -/
@@ -241,9 +219,6 @@ def commonNeighborProperty (G : SimpleGraph V) : Prop :=
 **Equivalence of Diameter 2 Characterizations:**
 For connected graphs, diameter 2 ↔ common neighbor property.
 -/
-axiom diameter2_equiv (G : SimpleGraph V) (hConn : G.Connected) :
-    hasDiameter2 G ↔ commonNeighborProperty G
-
 /-
 ## Part VIII: Summary
 

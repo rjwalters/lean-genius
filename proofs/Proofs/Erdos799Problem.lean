@@ -86,18 +86,11 @@ noncomputable def listChromaticNumber (G : SimpleGraph V) : ℕ :=
 The list chromatic number is at least the ordinary chromatic number.
 This is because we can give every vertex the same list of χ(G) colors.
 -/
-axiom list_chromatic_ge_chromatic (G : SimpleGraph V) :
-    listChromaticNumber G ≥ G.chromaticNumber
-
 /--
 **The gap can be arbitrarily large:**
 There exist bipartite graphs (χ = 2) with arbitrarily large χ_L.
 The complete bipartite graph K_{n,n} satisfies χ_L(K_{n,n}) ≥ ⌊log₂ n⌋ + 1.
 -/
-axiom list_chromatic_gap_unbounded :
-    ∀ k : ℕ, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.chromaticNumber = 2 ∧ listChromaticNumber G ≥ k
-
 /-
 ## Part III: Random Graph Model
 -/
@@ -112,10 +105,6 @@ axiom listChromaticRandom (n : ℕ) : ℕ
 **Chromatic number of random graphs:**
 For G ∈ G(n, 1/2), χ(G) ≍ n / (2 log₂ n) almost surely.
 -/
-axiom chromatic_number_random_graph :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      c₁ * (n : ℝ) / Real.log n ≤ (listChromaticRandom n : ℝ)
-
 /-
 ## Part IV: Alon's 1992 Result
 -/
@@ -128,18 +117,10 @@ For the random graph G on n vertices with edge probability 1/2:
 This was the first proof that χ_L(G) = o(n) for random graphs, using
 the probabilistic method and the Lovász Local Lemma.
 -/
-axiom alon_1992 :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      (listChromaticRandom n : ℝ) ≤ C * (Real.log (Real.log n) / Real.log n) * n
-
 /--
 **Corollary: χ_L(G) = o(n) Almost Surely.**
 Alon's theorem implies that χ_L(G) grows slower than linearly in n.
 -/
-axiom list_chromatic_sublinear :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-      (listChromaticRandom n : ℝ) ≤ ε * n
-
 /-
 ## Part V: Alon-Krivelevich-Sudakov Improvement (1999)
 -/
@@ -171,10 +152,6 @@ For G ∈ G(n, 1/2):
 So χ_L(G) / χ(G) → 2 / ln 2 ≈ 2.885 as n → ∞.
 The list chromatic number exceeds the ordinary one by a constant factor.
 -/
-axiom list_vs_ordinary_ratio :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-      |(listChromaticRandom n : ℝ) / ((n : ℝ) / Real.log n) - 1| ≤ ε
-
 /-
 ## Part VII: Main Results
 -/

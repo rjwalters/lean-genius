@@ -59,28 +59,14 @@ there exists a bipartite G ∈ F such that ex(n; G) = O(ex(n; F)).
 In other words, the extremal function of the family is dominated
 (up to a constant) by the extremal function of some single bipartite
 member. -/
-axiom erdos_575_conjecture :
-  -- For any finite family containing a bipartite graph,
-  -- some bipartite member dominates the extremal function.
-  -- (Stated abstractly due to the complexity of graph embeddings.)
-  True -- Axiomatized: the formal statement requires graph homomorphism machinery
-
 /- ## Context: Erdős–Stone–Simonovits -/
 
 /-- **Erdős–Stone–Simonovits Theorem.**
 For any non-bipartite graph H with chromatic number χ(H) ≥ 3:
   ex(n; H) = (1 − 1/(χ(H)−1) + o(1)) · n²/2.
 This determines ex(n; H) asymptotically for non-bipartite H. -/
-axiom erdos_stone_simonovits (χ : ℕ) (hχ : 3 ≤ χ) :
-  -- The Turán density is (1 - 1/(χ-1))/2 for graphs of chromatic number χ
-  True -- The full formalization requires chromatic number and graph density
-
 /-- For bipartite H, ex(n; H) = o(n²) by Kővári–Sós–Turán.
 The exact order is typically a fractional power of n. -/
-axiom bipartite_subquadratic :
-  -- ex(n; K_{s,t}) ≤ c · n^{2-1/s} for the complete bipartite graph K_{s,t}
-  True -- Placeholder for Kővári–Sós–Turán
-
 /- ## Family Extremal Function Properties -/
 
 /-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can

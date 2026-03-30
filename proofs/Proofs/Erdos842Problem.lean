@@ -65,9 +65,6 @@ theorem triangle_is_complete : ∀ i j : Fin 3, i ≠ j → TriangleGraph.Adj i 
 **Chromatic number of K₃:**
 K₃ has chromatic number exactly 3.
 -/
-axiom triangle_chromatic_number :
-    TriangleGraph.chromaticNumber = 3
-
 /- ## The Graph Construction -/
 
 /--
@@ -186,9 +183,6 @@ Each vertex is in one triangle (degree 2 from triangle)
 and part of Hamiltonian cycle (degree 2 from cycle).
 Maximum degree is at most 4 (could be less if triangle and cycle share an edge).
 -/
-axiom max_degree_bound (n : ℕ) (hn : n > 0) :
-    ∀ v : Fin (3 * n), (TriangleHamiltonianGraph n hn).degree v ≤ 4
-
 /- ## Special Cases -/
 
 /--

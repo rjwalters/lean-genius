@@ -52,10 +52,6 @@ theorem primePi_monotone : Monotone primePi := by
 **Prime Number Theorem:**
 π(n) ~ n/log(n) as n → ∞.
 -/
-axiom prime_number_theorem (ε : ℝ) (hε : ε > 0) :
-    ∃ N₀ : ℕ, ∀ n ≥ N₀, (n : ℝ) > 0 →
-      |((primePi n : ℝ) - n / Real.log n) / (n / Real.log n)| < ε
-
 /- ## Part II: The Second Hardy-Littlewood Conjecture -/
 
 /--
@@ -108,12 +104,6 @@ axiom hensley_richards_incompatibility :
 Under the k-tuples conjecture, for every large y and infinitely many x:
   π(x+y) > π(x) + π(y) + (log 2 - o(1)) · y/(log y)²
 -/
-axiom hensley_richards_quantitative :
-    PrimeKTuplesConjecture →
-      ∀ y : ℕ, y > 1 → ∀ N : ℕ, ∃ x > N,
-        (primePi (x + y) : ℝ) > primePi x + primePi y +
-          (Real.log 2 / 2) * y / (Real.log y)^2
-
 /--
 **Reason for Incompatibility:**
 If there exists an admissible k-tuple with more than π(k) elements,
@@ -121,10 +111,6 @@ then placing it at the right position gives a counterexample.
 
 Hensley-Richards showed such dense admissible tuples exist.
 -/
-axiom dense_admissible_tuples_exist (k : ℕ) (hk : k ≥ 2) :
-    ∃ H : Finset ℕ, IsAdmissibleTuple H ∧ H.card > primePi k ∧
-      ∀ h ∈ H, h < k
-
 /- ## Part V: Unconditional Results -/
 
 /--
@@ -134,9 +120,6 @@ Unconditionally, we have:
 
 This is weaker than the conjecture (which claims π(x) + π(y)).
 -/
-axiom montgomery_vaughan_bound (x y : ℕ) (hy : y ≥ 2) :
-    (primePi (x + y) : ℝ) ≤ primePi x + 2 * y / Real.log y
-
 /--
 **Trivial Lower Bound:**
 π(x+y) ≥ π(x) always, since we're counting more primes.

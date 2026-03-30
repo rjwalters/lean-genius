@@ -300,10 +300,6 @@ For any n-point integer distance set, diameter ≥ n^(3/4).
 
 Proved by pigeonhole counting on distance multiplicities.
 -/
-axiom kanold_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    c * (n : ℝ)^(3/4 : ℝ) ≤ minDiameterRestrictedSets n
-
 /--
 **Guth-Katz Distinct Distances Theorem (2015)**
 
@@ -408,11 +404,6 @@ def IsCollinear (S : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
 If an infinite set of points in ℝ² has all pairwise distances
 being integers, then all points are collinear.
 -/
-axiom erdos_anning_theorem (S : Set (EuclideanSpace ℝ (Fin 2)))
-    (hinf : Set.Infinite S)
-    (hint : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, k ≥ 1 ∧ ‖p - q‖ = k) :
-    IsCollinear S
-
 /-
 ## The Conjecture Implies Kanold
 

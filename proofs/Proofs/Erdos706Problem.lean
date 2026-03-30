@@ -34,11 +34,6 @@ axiom multiDistChromatic : ℕ → ℕ
 /-- **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
     That is, there exist constants C, k such that L(r) ≤ C · r^k
     for all r ≥ 1. -/
-axiom erdos_706_polynomial_bound :
-  ∃ C k : ℝ, C > 0 ∧ k > 0 ∧
-    ∀ r : ℕ, r ≥ 1 →
-      (multiDistChromatic r : ℝ) ≤ C * (r : ℝ) ^ k
-
 /- ## Known Bounds -/
 
 /-- **Hadwiger–Nelson Base Case**: L(1) satisfies 5 ≤ L(1) ≤ 7.
@@ -63,11 +58,6 @@ theorem erdos_706_lower :
     From the Frankl–Wilson method in higher dimensions, one can
     derive exponential-type bounds. The polynomial question asks
     whether this can be dramatically improved. -/
-axiom erdos_706_exponential_upper :
-  ∃ C : ℝ, C > 1 ∧
-    ∀ r : ℕ, r ≥ 1 →
-      (multiDistChromatic r : ℝ) ≤ C ^ (r : ℝ)
-
 /- ## Observations -/
 
 /- **Hadwiger–Nelson Connection**: the r = 1 case is exactly

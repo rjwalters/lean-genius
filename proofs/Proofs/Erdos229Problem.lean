@@ -72,9 +72,6 @@ can only prescribe zeros on discrete sets.
 
 The condition "no finite limit point" ensures exactly this discreteness.
 -/
-axiom discrete_condition_necessary :
-    ∀ S : Set ℂ, HasNoFiniteLimitPoint S → (S = ∅ ∨ S.Countable)
-
 /- ## The Main Theorem -/
 
 /--
@@ -108,40 +105,21 @@ For any sequence of discrete sets {Sₖ}, there exist:
 
 such that f^(nₖ)(z) = 0 for all z ∈ Sₖ.
 -/
-axiom barth_schneider_explicit :
-    ∀ S : ℕ → Set ℂ,
-    (∀ k, HasNoFiniteLimitPoint (S k)) →
-    ∃ (f : ℂ → ℂ) (n : ℕ → ℕ),
-      IsTranscendental f ∧
-      (∀ k, n k > 0) ∧
-      ∀ k, ∀ z ∈ S k, iteratedDeriv (n k) f z = 0
-
 /- ## Special Cases -/
 
 /--
 **Special case**: For a single discrete set S, we can find an entire function
 with prescribed zeros. This is the classical Weierstrass factorization theorem.
 -/
-axiom weierstrass_factorization :
-    ∀ S : Set ℂ, HasNoFiniteLimitPoint S →
-    ∃ f : ℂ → ℂ, IsEntireFunction f ∧ ∀ z ∈ S, f z = 0
-
 /--
 **Special case**: We can also prescribe zeros of a specific derivative.
 -/
-axiom derivative_zeros :
-    ∀ k : ℕ, ∀ S : Set ℂ, HasNoFiniteLimitPoint S →
-    ∃ f : ℂ → ℂ, IsEntireFunction f ∧ ∀ z ∈ S, iteratedDeriv k f z = 0
-
 /- ## Related Results -/
 
 /--
 **Related result**: The iterated derivative of an entire function is entire.
 This follows from the fact that holomorphic functions are infinitely differentiable.
 -/
-axiom iterated_deriv_entire :
-    ∀ (f : ℂ → ℂ) (n : ℕ), IsEntireFunction f → IsEntireFunction (iteratedDeriv n f)
-
 /- ## Summary -/
 
 /--

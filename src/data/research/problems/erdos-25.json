@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: Eliminated logDensity_avoid_one_residue axiom (4→3 axioms). Proved via generalized weighted count for multiples + complement splitting.",
     "builtItems": [
       "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
       "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
@@ -55,7 +55,11 @@
       "Proved logDensity_mem_unit: d>=0 via ge_of_tendsto, d<=1 via limsup_le_limsup + harmonic ratio comparison",
       "Proved logDensity_unique via tendsto_nhds_unique in Erdos25Problem.lean",
       "PROVED finite_sieve_density_exists via exfalso (contradictory hypotheses, 4 lines)",
-      "REMOVED sieve_density_positive (false axiom, replaced with counterexample comment)"
+      "REMOVED sieve_density_positive (false axiom, replaced with counterexample comment)",
+      "Proved logDensity_avoid_one_residue: numbers not divisible by m have log density (m-1)/m",
+      "logWeightedCount_multiples: weighted count of multiples of m = (1/m) · H_{⌊N/m⌋}",
+      "tendsto_log_div_m_div_log: log(⌊N/m⌋)/log(N) → 1 (squeeze argument)",
+      "tendsto_harmonicSum_div_m_div_log: H_{⌊N/m⌋}/log(N) → 1"
     ],
     "insights": [
       "The axiom logDensityRatio_bounded claiming ratio <= 1 for N >= 2 is mathematically incorrect since H_N/log N > 1 for all finite N",
@@ -66,10 +70,16 @@
       "d<=1 proof requires limsup comparison (not pointwise bound) because harmonicSum/log > 1 for all finite N",
       "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)",
       "finite_sieve_density_exists hypothesis (∀ i≥N, seq_n i = seq_n N) contradicts StrictMono seq_n — axiom proved vacuously via exfalso+omega",
-      "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0"
+      "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0",
+      "logDensity_avoid_one_residue follows from complement splitting: full set (density 1) minus multiples (density 1/m) = non-multiples (density (m-1)/m)",
+      "logWeightedCount_multiples generalizes logWeightedCount_evens via Nat.succ_div for divisibility case splits"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove naturalDensity_implies_logDensity: requires summation by parts / Abel summation (~100 lines)",
+      "Prove exists_logDensity_no_naturalDensity: requires explicit construction (~150 lines)",
+      "davenport_erdos: deep theorem, likely stays as axiom"
+    ],
     "markdown": "# Erdős #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -113,9 +123,9 @@
     {
       "path": "Proofs/Erdos251Problem.lean",
       "filename": "Erdos251Problem.lean",
-      "lineCount": 211,
+      "lineCount": 202,
       "theoremCount": 6,
-      "axiomCount": 6,
+      "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
@@ -124,9 +134,9 @@
     {
       "path": "Proofs/Erdos252Problem.lean",
       "filename": "Erdos252Problem.lean",
-      "lineCount": 230,
+      "lineCount": 221,
       "theoremCount": 7,
-      "axiomCount": 8,
+      "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
@@ -157,9 +167,9 @@
     {
       "path": "Proofs/Erdos255Problem.lean",
       "filename": "Erdos255Problem.lean",
-      "lineCount": 173,
+      "lineCount": 164,
       "theoremCount": 2,
-      "axiomCount": 6,
+      "axiomCount": 3,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
@@ -190,9 +200,9 @@
     {
       "path": "Proofs/Erdos258Problem.lean",
       "filename": "Erdos258Problem.lean",
-      "lineCount": 120,
+      "lineCount": 109,
       "theoremCount": 9,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -201,9 +211,9 @@
     {
       "path": "Proofs/Erdos259Problem.lean",
       "filename": "Erdos259Problem.lean",
-      "lineCount": 249,
+      "lineCount": 240,
       "theoremCount": 14,
-      "axiomCount": 4,
+      "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -212,9 +222,9 @@
     {
       "path": "Proofs/Erdos25LogDensity.lean",
       "filename": "Erdos25LogDensity.lean",
-      "lineCount": 598,
-      "theoremCount": 23,
-      "axiomCount": 4,
+      "lineCount": 737,
+      "theoremCount": 25,
+      "axiomCount": 3,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,

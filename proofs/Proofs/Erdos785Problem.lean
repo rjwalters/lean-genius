@@ -146,12 +146,6 @@ For ANY function w : ℕ → ℝ with w(x) → ∞,
 there exist exact additive complements A, B such that
 A(x)B(x) - x < w(x) for infinitely many x.
 -/
-axiom ruzsa_2017 :
-    ∀ w : ℕ → ℝ, (Filter.Tendsto w Filter.atTop Filter.atTop) →
-      ∃ A B : Set ℕ, IsExactAdditiveComplement A B ∧
-        ∃ᶠ x in Filter.atTop,
-          (countingFunction A x * countingFunction B x : ℝ) - x < w x
-
 /-
 ## Part VII: Related Concepts
 -/
@@ -167,12 +161,6 @@ noncomputable def representationFunction (A B : Set ℕ) (n : ℕ) : ℕ :=
 **Average Representation:**
 For exact complements, average r(n) for n ≤ x is close to 1.
 -/
-axiom average_representation :
-    ∀ A B : Set ℕ, IsExactAdditiveComplement A B →
-      Filter.Tendsto (fun x =>
-        (Finset.range (x + 1)).sum (fun n => representationFunction A B n : ℝ) / x)
-        Filter.atTop (nhds 1)
-
 /-
 ## Part IX: Summary
 -/

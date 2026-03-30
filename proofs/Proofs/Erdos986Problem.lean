@@ -62,8 +62,6 @@ where
 **Ramsey numbers exist:**
 For all k, n ≥ 1, R(k,n) is finite.
 -/
-axiom ramsey_exists : ∀ k n : ℕ, k ≥ 1 → n ≥ 1 → RamseyNumber k n > 0
-
 /-
 ## Part II: Asymptotic Notation
 -/
@@ -166,11 +164,6 @@ axiom bohman_keevash_2010 :
 For general k ≥ 3:
   R(k,n) ≪_k n^(k-1) / (log n)^(k-2)
 -/
-axiom aks_1980_upper :
-  ∀ k : ℕ, k ≥ 3 →
-    (fun n => (RamseyNumber k n : ℝ)) ≪
-    (fun n => (n : ℝ)^(k-1) / (log n)^(k-2))
-
 /-
 ## Part VII: The Gap for k ≥ 5
 -/
@@ -195,10 +188,6 @@ theorem exponent_gap_formula (k : ℕ) (hk : k ≥ 3) :
 **For k = 5:** Gap is 1 (significant)
 **For k = 10:** Gap is 3.5 (huge)
 -/
-axiom general_k_open :
-  -- The conjecture is open for k ≥ 5
-  ∀ k : ℕ, k ≥ 5 → ¬∃ proof : erdos_986_conjecture k, True
-
 /-
 ## Part VIII: Related Problems
 -/

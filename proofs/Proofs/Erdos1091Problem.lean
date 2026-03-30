@@ -72,10 +72,6 @@ One diagonal is guaranteed. -/
 
 /-- Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
     with at least one diagonal -/
-axiom larson_one_diagonal (G : SimpleGraph V)
-    (hK4 : IsK4Free G) (hChi : chromaticNumber G ≥ 4) :
-    ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 1
-
 /-- Bollobás-Erdős Conjecture (proved by Larson 1979):
     If G is K₄-free and contains no odd cycle with a diagonal, then
     G is bipartite, or has a cut vertex, or has a vertex of degree ≤ 2 -/
@@ -86,12 +82,6 @@ structure BollobasErdosAlternative (G : SimpleGraph V) where
   hasDegree2Vertex : Prop := ∃ v : V, G.degree v ≤ 2
 
 /-- Larson proved Bollobás-Erdős conjecture -/
-axiom bollobas_erdos_conjecture (G : SimpleGraph V)
-    (hK4 : IsK4Free G)
-    (hNoDiag : ¬ ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 1) :
-    let alt := BollobasErdosAlternative G
-    alt.isBipartite ∨ alt.hasCutVertex ∨ alt.hasDegree2Vertex
-
 /- ## Part 3: Voss's Theorem (1982)
 
 Two diagonals are guaranteed - answers the first question. -/
@@ -184,9 +174,6 @@ theorem K4_free_high_chi_possible :
 
 /-- Triangle-free graphs can also have arbitrarily high chromatic number
     (Mycielski construction) -/
-axiom mycielski_construction : ∀ k : ℕ, ∃ (V : Type*) [Fintype V]
-    (G : SimpleGraph V), G.CliqueFree 3 ∧ chromaticNumber G ≥ k
-
 /- ## Part 7: Summary -/
 
 /-- **Erdős Problem #1091 Summary**:

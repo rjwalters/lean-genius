@@ -58,11 +58,6 @@ def ErdosProblem52 : Prop :=
 /-- Erdős and Szemerédi (1983) proved the first super-linear lower bound:
 there exists c > 0 such that max(|A+A|, |A·A|) ≥ |A|^{1+c} for all
 finite sets A with |A| ≥ 2. This was the foundational result. -/
-axiom erdos_szemeredi_theorem :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ A : Finset ℤ, A.card ≥ 2 →
-      (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1 + c)
-
 /-
 ## Section IV: Current Best Bound
 -/
@@ -71,11 +66,6 @@ axiom erdos_szemeredi_theorem :
 max(|A+A|, |A·A|) ≥ |A|^{1270/951 - o(1)} ≈ |A|^{1.335}.
 We state this as: for every ε > 0, there exists N₀ such that for
 |A| ≥ N₀, the bound max(|A+A|, |A·A|) ≥ |A|^{1270/951 - ε} holds. -/
-axiom bloom_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ →
-      (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1270 / 951 - ε)
-
 /-
 ## Section V: Trivial Bounds
 -/
@@ -165,6 +155,3 @@ def GeneralizedSumProduct (m : ℕ) : Prop :=
 If max(|A+A|, |A·A|) is large, then A generates many sums or products.
 Problem 53 (resolved by Chang 2003) asks about sums and products
 of distinct subsets rather than pairwise operations. -/
-axiom sum_product_implies_many_representations :
-  ∀ A : Finset ℤ, A.card ≥ 2 →
-    ((sumset A).card + (productset A).card : ℤ) ≥ A.card

@@ -78,9 +78,6 @@ axiom f (k : ℕ) : ℕ
 **f is well-defined for k ≥ 2:**
 There exist k-term representations of 1 for k ≥ 2.
 -/
-axiom f_well_defined (k : ℕ) (hk : k ≥ 2) :
-    ∃ S : Finset ℕ, S.card = k ∧ RepresentsOne S
-
 /-
 ## Part III: The Upper Bound
 -/
@@ -91,10 +88,6 @@ axiom f_well_defined (k : ℕ) (hk : k ≥ 2) :
 
 More precisely: Σ_{n=u}^{⌊eu⌋} 1/n = 1 + o(1).
 -/
-axiom harmonic_interval :
-    ∀ ε > 0, ∃ U : ℕ, ∀ u ≥ U,
-      |((Finset.Icc u ⌊Real.exp 1 * u⌋₊).sum (fun n => (1 : ℝ) / n)) - 1| < ε
-
 /--
 **Upper Bound (Trivial):**
 f(k) ≤ (1 + o(1)) · k/(e-1)
@@ -121,11 +114,6 @@ axiom f_upper_bound :
 For any N > 1, there exist distinct integers n₁ < ... < nₖ
 in the interval (N, eN] such that 1 = Σ 1/nᵢ.
 -/
-axiom croot_2001 :
-    ∀ N : ℕ, N > 1 →
-      ∃ S : Finset ℕ, (∀ n ∈ S, N < n ∧ n ≤ ⌊Real.exp 1 * N⌋₊) ∧
-        RepresentsOne S
-
 /--
 **Croot's Result Implies Lower Bound:**
 f(k) ≥ (1 - o(1)) · k/(e-1)
@@ -138,10 +126,6 @@ axiom f_lower_bound :
 **The Main Result:**
 f(k) = (1 + o(1)) · k/(e-1)
 -/
-axiom f_asymptotic :
-    ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
-      |(f k : ℝ) - k / (Real.exp 1 - 1)| < ε * k / (Real.exp 1 - 1)
-
 /-
 ## Part V: Examples
 -/

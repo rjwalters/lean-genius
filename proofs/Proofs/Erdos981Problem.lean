@@ -99,38 +99,21 @@ axiom elliott_1969 (ε : ℝ) (hε : ε > 0) :
       Tendsto (fun x => sumFEps ε x / asymptoticFunc x) atTop (𝓝 c)
 
 /-- Alternative formulation: the ratio is eventually bounded between c±δ. -/
-axiom elliott_1969_quantitative (ε : ℝ) (hε : ε > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ δ > 0, ∃ X : ℕ, ∀ x ≥ X,
-      |sumFEps ε x / asymptoticFunc x - c| < δ
-
 /- ## Part V: Properties of Character Sums
 -/
 
 /-- Character sums are bounded by √p · log p (Pólya-Vinogradov inequality).
     This is weaker than what we need but is a classical result. -/
-axiom polya_vinogradov (p : ℕ) [hp : Fact (Nat.Prime p)] :
-    ∀ N : ℕ, |characterSum N p| ≤ Real.sqrt p * Real.log p
-
 /-- Character sums exhibit square-root cancellation on average.
     This is key to Elliott's proof. -/
-axiom character_sum_cancellation (p : ℕ) [hp : Fact (Nat.Prime p)] :
-    ∀ᶠ N in atTop, |characterSum N p| ≤ Real.sqrt N * Real.log N
-
 /-- For any ε > 0 and prime p, f_ε(p) is finite (well-defined).
     Eventually the cancellation dominates. -/
-axiom fEps_finite (ε : ℝ) (hε : ε > 0) (p : ℕ) [hp : Fact (Nat.Prime p)] :
-    ∃ m : ℕ, isBoundedFrom ε p m
-
 /- ## Part VI: Burgess Bounds
 
 Classical bounds on character sums provide context for the problem.
 -/
 
 /-- Burgess (1962): Improved bounds for short character sums. -/
-axiom burgess_bound (p : ℕ) [hp : Fact (Nat.Prime p)] (r : ℕ) (hr : r ≥ 1) :
-    ∃ C : ℝ, C > 0 ∧ ∀ N H : ℕ, H ≥ p^(1/(4*r) + 1/r) →
-      |∑ n in Finset.Ico N (N + H), legendreInt n p| ≤ C * H * p^(-(1/(4*r)))
-
 /- ## Part VII: Related Concepts
 -/
 
@@ -139,9 +122,6 @@ def isQuadraticResidue (a : ℤ) (p : ℕ) : Prop :=
   ∃ x : ℤ, x^2 ≡ a [ZMOD p]
 
 /-- The character sum over a complete period is 0. -/
-axiom complete_sum_zero (p : ℕ) [hp : Fact (Nat.Prime p)] :
-    characterSum p p = 0
-
 /- ## Part VIII: The Alternative Formulation
 
 Tang and Zhang (2025) studied a different formulation.

@@ -43,28 +43,16 @@ axiom R : ℕ → ℕ
 **Basic Ramsey number properties:**
 R(1) = 1, R(2) = 2, and R is strictly increasing.
 -/
-axiom R_basic :
-    R 1 = 1 ∧
-    R 2 = 2 ∧
-    ∀ n ≥ 1, R n < R (n + 1)
-
 /--
 **Known Ramsey numbers:**
 R(3) = 6, R(4) = 18.
 -/
-axiom R_known_values :
-    R 3 = 6 ∧
-    R 4 = 18
-
 /--
 **Ramsey bounds:**
 The classical bounds are:
 - Lower bound: R(n) ≥ 2^{n/2} (Erdős probabilistic argument)
 - Upper bound: R(n) ≤ C(2n-2, n-1) < 4^n / √n (Erdős-Szekeres)
 -/
-axiom ramsey_bounds (n : ℕ) :
-    n ≥ 3 → (2 : ℝ) ^ (n / 2 : ℝ) ≤ R n ∧ (R n : ℝ) ≤ (4 : ℝ) ^ n / Real.sqrt n
-
 /-
 ## Part II: The Main Questions
 -/
@@ -113,10 +101,6 @@ axiom problem_165_bound :
 If R(n+1)/R(n) ≥ 1 + c, then R(n) ≥ R(k) · (1+c)^{n-k},
 giving true exponential growth.
 -/
-axiom ratio_implies_exponential (c : ℝ) (hc : c > 0) :
-    (∀ n ≥ 3, (R (n + 1) : ℝ) / R n ≥ 1 + c) →
-    ∀ n k : ℕ, 3 ≤ k → k ≤ n → (R n : ℝ) ≥ R k * (1 + c) ^ (n - k)
-
 /-
 ## Part V: Computational Verifications
 -/

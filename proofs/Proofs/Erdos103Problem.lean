@@ -183,12 +183,6 @@ def VeryWeakConjecture : Prop :=
   ∀ N : ℕ, ∃ n ≥ N, h n ≥ 2
 
 -- h(n) ≥ 1 for all n ≥ 2 (at least one optimal config exists)
-axiom h_pos : ∀ n ≥ 2, h n ≥ 1
-
--- Small cases (known or computable)
-axiom h_2 : h 2 = 1  -- Two points at distance 1, unique up to isometry
-axiom h_3 : h 3 = 1  -- Equilateral triangle with side 1
-
 /-
 # Part 7: Connection to Packing Problems
 
@@ -201,13 +195,6 @@ noncomputable def optimalPackingDensity : ℝ := Real.pi / (2 * Real.sqrt 3)
 
 -- For large n, optimal diameter relates to packing
 -- d(n) ≈ √(n / optimal_density) for large n
-axiom diameter_asymptotic : ∀ ε > 0, ∃ N : ℕ,
-  ∀ n ≥ N, |minDiameter n - Real.sqrt (n / optimalPackingDensity)| < ε * Real.sqrt n
-
--- Hexagonal packing is optimal for large n
--- This is the Thue-Minkowski theorem for circle packing
--- Points approximate a hexagonal lattice: nearest-neighbor distances approach 1
--- and the angle structure converges to 60°/120° lattice angles.
 def IsHexagonalLattice (n : ℕ) (P : PointConfig n) : Prop :=
   HasMinSeparation n P ∧
   ∀ i : Fin n, ∃ j : Fin n, i ≠ j ∧ pointDist (P i) (P j) ≤ 1 + 1 / n

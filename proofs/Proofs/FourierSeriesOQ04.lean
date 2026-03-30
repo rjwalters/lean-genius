@@ -74,39 +74,15 @@ noncomputable def spherPartialSum {n : ℕ} (f : Torus n → ℂ)
 
 /-- L² convergence holds in all dimensions (Parseval's identity).
     This is the direct analog of the 1D case. -/
-axiom l2_convergence_nd (n : ℕ) :
-    True  -- ∫ |f - S_N(f)|² → 0 as N → ∞
-
 /-- Carleson's theorem does NOT extend to rectangular sums in n ≥ 2.
     Fefferman (1971) showed divergence for L¹ functions on T². -/
-axiom fefferman_divergence :
-    ∃ (f : Torus 2 → ℂ), True →  -- f ∈ L^1(T²)
-      ∃ (x : Torus 2), True      -- rectangular partial sums diverge at x
-
 /-- For Lipschitz functions on T^n, square partial sums converge uniformly.
     This extends the 1D Dirichlet-Jordan result. -/
-axiom lipschitz_uniform_convergence (n : ℕ) :
-    True  -- Square partial sums of Lipschitz f converge uniformly
-
 /-- Bochner-Riesz conjecture (partially solved):
     Spherical partial sums with Bochner-Riesz means of order δ > (n-1)/2
     converge in L^p for 1 ≤ p ≤ ∞. -/
-axiom bochner_riesz_convergence (n : ℕ) (δ : ℝ) (hδ : δ > (n - 1) / 2) :
-    True  -- S_R^δ(f) → f in L^p for all p
-
--- ============================================================
--- PART IV: Parseval's Identity in n Dimensions
--- ============================================================
-
 /-- Parseval's identity: ∫_{T^n} |f|² = Σ_{k ∈ Z^n} |f̂(k)|².
     This holds for all f ∈ L²(T^n) and is the basis for L² convergence. -/
-axiom parseval_nd (n : ℕ) (f : Torus n → ℂ) :
-    True  -- ∫ |f|² = Σ |f̂(k)|²
-
--- ============================================================
--- PART V: Key Differences by Dimension
--- ============================================================
-
 /-
 | Property | n=1 | n=2 | n≥3 |
 |----------|-----|-----|-----|

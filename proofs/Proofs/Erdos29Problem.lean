@@ -168,11 +168,61 @@ axiom JPSZ_is_basis : IsAdditiveBasis JPSZ_set
     exp(C√(log n)) = o(n^ε) for all ε > 0, since √(log n) = o(log n)
     implies C√(log n) - ε·log n → -∞, so exp(C√(log n))/n^ε → 0. -/
 theorem JPSZ_is_economical : IsEconomical JPSZ_set := by
-  -- Depends on JPSZ_representation_bound (not an independent assumption)
-  obtain ⟨C, _hC, hbound⟩ := JPSZ_representation_bound
-  -- r(n) ≤ exp(C√(log n)) and exp(C√(log n))/n^ε → 0 for all ε > 0
-  -- The limit follows from: √(log n) = o(log n), a standard analysis fact
-  sorry
+  obtain ⟨C, hC, hbound⟩ := JPSZ_representation_bound
+  intro ε hε
+  -- Strategy: squeeze r(n)/n^ε between 0 and exp(C√(log n))/n^ε,
+  -- then show the upper bound → 0 via exp(C√(log n) - ε·log n) → 0.
+
+  -- Step 1: √ tends to ∞
+  have h_sqrt_atTop : Tendsto Real.sqrt atTop atTop :=
+    Filter.tendsto_atTop_atTop.mpr fun b => ⟨max (b ^ 2) 0, fun x hx => by
+      by_cases hb : b ≤ 0
+      · exact le_trans hb (Real.sqrt_nonneg _)
+      · push_neg at hb
+        exact (Real.sqrt_sq hb.le).symm ▸ Real.sqrt_le_sqrt (le_trans (le_max_left _ _) hx)⟩
+
+  -- Step 2: log n → ∞ and √(log n) → ∞ (over ℕ)
+  have h_log_inf : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have h_sqrt_log_inf : Tendsto (fun n : ℕ => Real.sqrt (Real.log (↑n : ℝ))) atTop atTop :=
+    h_sqrt_atTop.comp h_log_inf
+
+  -- Step 3: C/√(log n) → 0
+  have h_C_div : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ))) atTop (nhds 0) :=
+    tendsto_const_nhds.div_atTop h_sqrt_log_inf
+
+  -- Step 4: C/√(log n) - ε → -ε < 0
+  have h_factor : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ)) - ε) atTop (nhds (-ε)) := by
+    have := h_C_div.sub tendsto_const_nhds; rwa [zero_sub] at this
+
+  -- Step 5: C√(log n) - ε·log n = log n · (C/√(log n) - ε) → -∞
+  have h_bot : Tendsto (fun n : ℕ => C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ)) atTop atBot := by
+    have h_prod := Filter.Tendsto.atTop_mul_neg (show -ε < 0 by linarith) h_log_inf h_factor
+    refine h_prod.congr' ?_
+    filter_upwards [eventually_gt_atTop 1] with n hn
+    have hlog_pos : (0 : ℝ) < Real.log ↑n := Real.log_pos (by exact_mod_cast (show 1 < n from hn))
+    set s := Real.sqrt (Real.log (↑n : ℝ))
+    have hs_ne : s ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hlog_pos)
+    have hsq : s * s = Real.log ↑n := Real.mul_self_sqrt hlog_pos.le
+    rw [← hsq]; field_simp; ring
+
+  -- Step 6: exp(C√(log n) - ε·log n) → 0
+  have h_exp : Tendsto (fun n : ℕ => Real.exp (C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ))) atTop (nhds 0) :=
+    Real.tendsto_exp_atBot.comp h_bot
+
+  -- Step 7: Convert exp(a-b) back to exp(a)/n^ε
+  have h_upper : Tendsto (fun n : ℕ => Real.exp (C * Real.sqrt (Real.log (↑n : ℝ))) / (↑n : ℝ) ^ ε) atTop (nhds 0) := by
+    refine h_exp.congr' ?_
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    have hnpos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn
+    rw [Real.rpow_def_of_pos hnpos, Real.exp_sub]
+
+  -- Step 8: Squeeze between 0 and exp(C√(log n))/n^ε
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · filter_upwards with n
+    exact div_nonneg (Nat.cast_nonneg _) (rpow_nonneg (Nat.cast_nonneg _) _)
+  · filter_upwards [eventually_ge_atTop 2] with n hn
+    exact div_le_div_of_nonneg_right (hbound n hn) (rpow_nonneg (Nat.cast_nonneg _) _)
 
 /-- The main theorem: Erdős Problem #29 is SOLVED. -/
 theorem erdos_29_solved : Erdos29Statement :=
@@ -189,11 +239,40 @@ def HasDensityZero (A : Set ℕ) : Prop :=
     |A ∩ [1,N]| ≤ C√N√(log N), so density ≤ C√(log N)/√N → 0
     since log N = o(N) implies √(log N)/√N = √(log N/N) → 0. -/
 theorem JPSZ_density_zero : HasDensityZero JPSZ_set := by
-  -- Depends on JPSZ_size_optimal (not an independent assumption)
   obtain ⟨C, _hC, hbound⟩ := JPSZ_size_optimal
-  -- |A ∩ [1,N]| / N ≤ C·√(log N)/√N → 0 as N → ∞
-  -- The limit follows from: log N / N → 0, a standard analysis fact
-  sorry
+  -- Strategy: squeeze density between 0 and C·√(log N/N), which → 0
+  -- since log N/N → 0 and √ is continuous at 0.
+
+  -- Step 1: log x/x → 0 over ℝ (standard Mathlib fact)
+  have h_log_real : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
+    simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
+  -- Step 2: log N/N → 0 for ℕ
+  have h_log_nat : Tendsto (fun N : ℕ => Real.log (↑N : ℝ) / (↑N : ℝ)) atTop (nhds 0) :=
+    h_log_real.comp tendsto_natCast_atTop_atTop
+  -- Step 3: √(log N/N) → 0 by continuity of √ at 0
+  have h_sqrt : Tendsto (fun N : ℕ => Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ))) atTop (nhds 0) := by
+    have := (Real.continuous_sqrt.tendsto 0).comp h_log_nat; rwa [Real.sqrt_zero] at this
+  -- Step 4: C·√(log N/N) → 0
+  have h_upper : Tendsto (fun N : ℕ => C * Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ))) atTop (nhds 0) := by
+    have := h_sqrt.const_mul C; rwa [mul_zero] at this
+
+  -- Step 5: Squeeze
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · -- 0 ≤ ncard/N
+    filter_upwards with N
+    exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  · -- ncard/N ≤ C·√(log N/N)
+    filter_upwards [eventually_ge_atTop 1] with N hN
+    have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+    have hlog_nn : (0 : ℝ) ≤ Real.log (↑N : ℝ) :=
+      Real.log_nonneg (by exact_mod_cast hN)
+    calc (Set.ncard (JPSZ_set ∩ Set.Icc 1 N) : ℝ) / ↑N
+        ≤ C * Real.sqrt ↑N * Real.sqrt (Real.log ↑N) / ↑N :=
+          div_le_div_of_nonneg_right (hbound N hN) hNpos.le
+      _ = C * Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ)) := by
+          rw [Real.sqrt_div hlog_nn, ← Real.mul_self_sqrt (Nat.cast_nonneg N)]
+          have : Real.sqrt (↑N : ℝ) ≠ 0 := Real.sqrt_ne_zero'.mpr hNpos
+          field_simp; ring
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

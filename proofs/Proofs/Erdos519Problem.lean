@@ -79,11 +79,6 @@ def hasFirstOne {n : ℕ} (z : Fin n → ℂ) (hn : n > 0) : Prop :=
 The maximum power sum is at least c/n for some c > 0.
 This was the original result, showing the max doesn't go to 0.
 -/
-axiom turan_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
-    maxPowerSum n z ≥ c / n
-
 /--
 **The Question:**
 Can we get an ABSOLUTE constant c, independent of n?
@@ -124,11 +119,6 @@ theorem turan_question_yes : turanQuestion := by
 **Biró (1994):**
 Improved the constant to c = 1/2.
 -/
-axiom biro_1994 :
-  ∀ n : ℕ, n ≥ 1 →
-    ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
-    maxPowerSum n z > 1/2
-
 /--
 **Biró (2000):**
 Further improved to some c > 1/2.
@@ -192,9 +182,6 @@ def nthRootsOfUnity (n : ℕ) : Fin n → ℂ :=
 **Power Sums of Roots of Unity:**
 ∑ ω^k where ω ranges over n-th roots of unity equals 0 unless n | k.
 -/
-axiom roots_of_unity_sum (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
-  powerSum (nthRootsOfUnity n) k = if n ∣ k then n else 0
-
 /-
 **Implication for the Problem:**
 Roots of unity don't satisfy z₁ = 1 in general (unless n-th root = 1).

@@ -102,11 +102,6 @@ Results on how sparse an additive complement can be.
 
 This was the first result showing sparse complements exist.
 -/
-axiom lorentz_log_cubed :
-    ∃ A : Set ℕ, IsAdditiveComplement A ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (countingFunction A N : ℝ) ≤ C * (Real.log N)^3
-
 /-- **Erdős (1954)**: There exists an additive complement with O((log N)²) density.
 
 This improved Lorentz's result by a factor of log N.
@@ -127,11 +122,6 @@ complement with O(ω(N) · log N) density.
 
 This shows we can get arbitrarily close to O(log N), but not quite there.
 -/
-axiom ruzsa_omega_log (ω : ℕ → ℝ) (hω : Tendsto ω atTop atTop) :
-    ∃ A : Set ℕ, IsAdditiveComplement A ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (countingFunction A N : ℝ) ≤ C * ω N * Real.log N
-
 /-
 ## Ruzsa's Lower Bound
 
@@ -186,8 +176,6 @@ def erdos_fifty_dollar_question : Prop :=
   ∃ A : Set ℕ, IsAdditiveComplement A ∧ HasLogDensity A
 
 /-- Erdős believed O(log N) is NOT achievable. -/
-axiom erdos_conjecture_negative : ¬erdos_fifty_dollar_question
-
 /-
 ## The Optimal Constant Question
 
@@ -206,9 +194,6 @@ noncomputable def optimalConstant : ℝ :=
     ∀ N : ℕ, N ≥ 2 → (countingFunction A N : ℝ) ≤ C * Real.log N}
 
 /-- The optimal constant is at least e^γ. -/
-axiom optimal_constant_lower_bound :
-    optimalConstant ≥ lowerBoundConstant
-
 /-
 ## Connection to Goldbach
 

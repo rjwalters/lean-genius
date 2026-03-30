@@ -143,33 +143,14 @@ axiom graham_result :
 **Density Zero (Erdős 1962):**
 Sum-free sets have asymptotic density zero.
 -/
-axiom erdos_density_zero :
-  ∀ A : Set ℕ, IsSumFreeErdos A →
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n ≥ N,
-        ((A ∩ Set.Icc 1 n).ncard : ℝ) / n < ε
-
 /--
 **Łuczak-Schoen Upper Bound (2000):**
 |A ∩ [1,N]| ≪ (N log N)^{1/2}
 -/
-axiom luczak_schoen_upper :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ A : Set ℕ, IsSumFreeErdos A →
-      ∀ N : ℕ, N ≥ 2 →
-        (A ∩ Set.Icc 1 N).ncard ≤ c * Real.sqrt ((N : ℝ) * Real.log N)
-
 /--
 **Łuczak-Schoen Lower Bound (2000):**
 There exists a sum-free set B with |B ∩ [1,N]| ≫ N^{1/2} / (log N)^{1/2+o(1)}
 -/
-axiom luczak_schoen_lower :
-  ∃ (B : Set ℕ), IsSumFreeErdos B ∧
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀,
-        ((B ∩ Set.Icc 1 N).ncard : ℝ) ≥
-          Real.sqrt (N : ℝ) / (Real.log N)^(1/2 + ε)
-
 /-
 ## Part V: Growth Rate
 -/
@@ -178,13 +159,6 @@ axiom luczak_schoen_lower :
 **Deshouillers-Erdős-Melfi (1999):**
 There exists a sum-free set with aₙ ~ n^{3+o(1)}.
 -/
-axiom dem_growth :
-  ∃ (a : ℕ → ℕ), IsIncreasingEnumeration a ∧
-    IsSumFreeErdos (Set.range a) ∧
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ n ≥ N,
-        (n : ℝ)^(3 - ε) < (a n : ℝ) ∧ (a n : ℝ) < (n : ℝ)^(3 + ε)
-
 /--
 **Cubic Growth:**
 The exponent 3 in n^{3+o(1)} is significant - it relates to
@@ -207,23 +181,14 @@ noncomputable def reciprocalSum (A : Set ℕ) : ℝ :=
 **Erdős Upper Bound:**
 Erdős proved Σ 1/n < 100 for any sum-free set.
 -/
-axiom erdos_reciprocal_bound :
-  ∀ A : Set ℕ, IsSumFreeErdos A → reciprocalSum A < 100
-
 /--
 **Sullivan's Improvement:**
 Sullivan improved this to Σ 1/n < 4.
 -/
-axiom sullivan_bound :
-  ∀ A : Set ℕ, IsSumFreeErdos A → reciprocalSum A < 4
-
 /--
 **Sullivan's Conjecture:**
 The maximum reciprocal sum is slightly larger than 2.
 -/
-axiom sullivan_conjecture :
-  ∃ A : Set ℕ, IsSumFreeErdos A ∧ reciprocalSum A > 2
-
 /-
 ## Part VII: Examples
 -/

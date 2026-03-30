@@ -63,21 +63,12 @@ axiom sylvester_k3 :
 **Known lower bound**: f_k(n) ≫ n^{2 - c/√(log n)} for some constant c > 0.
 This is close to n² but not quite o(n²).
 -/
-axiom lower_bound_k4 :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      (f 4 n : ℝ) ≥ (n : ℝ) ^ (2 - c / Real.sqrt (Real.log n))
-
 /--
 **Erdős's Conjecture (OPEN)**: f_k(n) = o(n²) for k ≥ 4.
 
 That is, requiring at most k collinear points (k ≥ 4) should force
 the number of k-rich lines to be strictly subquadratic.
 -/
-axiom erdos_conjecture_k4 :
-    ∀ k : ℕ, k ≥ 4 → ∀ ε : ℝ, ε > 0 →
-      ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-        (f k n : ℝ) ≤ ε * (n : ℝ)^2
-
 /-
 ## Part IV: Main Theorem
 -/

@@ -93,9 +93,6 @@ The supremum defining f(N) is attained because we optimize over a finite
 collection of finite sets. Axiomatized since the proof requires finiteness
 arguments about the space of admissible sets.
 -/
-axiom f_exists (N : ℕ) (hN : N ≥ 4) :
-    ∃ A : Finset ℕ, IsAdmissible A N ∧ (restrictedSumset A N).card = f N
-
 /-
 ## Part III: Trivial Bounds
 -/
@@ -104,16 +101,12 @@ axiom f_exists (N : ℕ) (hN : N ≥ 4) :
 **Upper bound: f(N) ≤ N**
 The restricted sumset is a subset of [1,N], so has at most N elements.
 -/
-axiom f_le_N (N : ℕ) : f N ≤ N
-
 /--
 **Trivial lower bound:**
 Any admissible set gives |(A+A) ∩ [1,N]| ≥ |A| = √N, since
 at minimum the elements of A themselves appear as sums (a + 0 is not valid,
 but various small sums land in [1,N]).
 -/
-axiom f_ge_sqrt_N (N : ℕ) (hN : N ≥ 1) : f N ≥ Nat.sqrt N
-
 /-
 ## Part IV: Erdős-Freud Bounds (1991)
 -/
@@ -178,12 +171,6 @@ using arithmetic progressions with carefully chosen common difference.
 The construction avoids too much additive structure while still generating
 many distinct sums landing in [1,N].
 -/
-axiom lower_bound_construction :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      ∃ A : Finset ℕ, IsAdmissible A N ∧
-        (restrictedSumset A N).card ≥ Nat.floor ((3/8 - ε) * N)
-
 /--
 **Upper bound argument (Erdős-Freud 1991):**
 If |A| = √N, then |A+A| ≤ |A|² = N in general.
@@ -191,12 +178,6 @@ But (A+A) ∩ [1,N] has additional constraints: sums a+b with
 a,b ∈ [1,N] range from 2 to 2N, and roughly half exceed N.
 This geometric constraint limits coverage to at most N/2.
 -/
-axiom upper_bound_argument :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      ∀ A : Finset ℕ, IsAdmissible A N →
-        (restrictedSumset A N).card ≤ Nat.ceil ((1/2 + ε) * N)
-
 /-
 ## Part VI: Connection to Quasi-Sidon Sets
 -/
@@ -217,11 +198,6 @@ The size of the largest quasi-Sidon set in [1,N] is related to f(N).
 If A is quasi-Sidon with parameter k, then |A+A| ≥ |A|²/(2k),
 so better quasi-Sidon sets yield larger sumsets.
 -/
-axiom problem_840_connection :
-  ∀ (k : ℕ) (hk : k ≥ 1),
-    ∀ A : Finset ℕ, IsQuasiSidon A k →
-      (sumset A).card * (2 * k) ≥ A.card * A.card
-
 /-
 ## Part VII: Extremal Examples
 -/
@@ -232,9 +208,6 @@ A = {0, 1, ..., k-1} has |A+A| = 2k-1.
 For k = √N: only ~2√N sums, far from the optimal ~0.375N.
 APs have too much additive structure - their sums overlap heavily.
 -/
-axiom arithmetic_progression_sumset (k : ℕ) (hk : k ≥ 1) :
-    (sumset (Finset.range k)).card = 2 * k - 1
-
 /-
 ## Part VIII: The Gap
 -/

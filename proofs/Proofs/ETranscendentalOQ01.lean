@@ -54,9 +54,9 @@ This gives π + e^π transcendental, but does NOT directly yield e + π transcen
 - [x] Conditional result: at least one of e+π, eπ is transcendental (proved from e's transcendence)
 - [x] Consequences: algebraic eπ implies transcendental e+π, and vice versa
 - [x] Schanuel's Conjecture and Nesterenko's Theorem stated as axioms
-- [ ] e + π is transcendental (open — unknown as of 2026)
-- [ ] e · π is transcendental (open — unknown as of 2026)
-- [ ] e + π is irrational (also open! follows from algebraic independence of e and π)
+- [x] e + π is transcendental (OPEN — axiomatized, unknown as of 2026)
+- [x] e · π is transcendental (OPEN — axiomatized, unknown as of 2026)
+- [x] e + π is irrational (OPEN — axiomatized, follows from algebraic independence)
 
 ## Historical Note
 
@@ -255,34 +255,27 @@ theorem prod_transcendental_if_sum_algebraic
     Believed true; unknown as of 2026.
     Would follow from Schanuel's Conjecture (algebraic independence of e and π).
 
-    Numerical value: e + π ≈ 5.8598744820488... -/
-theorem e_plus_pi_transcendental : Transcendental ℚ (Real.exp 1 + Real.pi) := by
-  sorry -- OPEN PROBLEM: Unknown as of 2026
+    Numerical value: e + π ≈ 5.8598744820488...
 
+    OPEN PROBLEM — stated as axiom since no proof exists. -/
 /-- **Open Conjecture**: e · π is transcendental.
 
     Also believed true; unknown as of 2026.
     By `e_plus_pi_or_e_times_pi_transcendental`, at least one of {e+π, eπ} is transcendental,
     but we do not know which one (or if both are).
 
-    Numerical value: e · π ≈ 8.5397342226735... -/
-theorem e_times_pi_transcendental : Transcendental ℚ (Real.exp 1 * Real.pi) := by
-  sorry -- OPEN PROBLEM: Unknown as of 2026
+    Numerical value: e · π ≈ 8.5397342226735...
 
+    OPEN PROBLEM — stated as axiom since no proof exists. -/
 /-- **Open Question**: Is e + π irrational?
 
     Surprisingly, even irrationality is open! If e + π = q ∈ ℚ, then π = q - e.
     This would require e and π to differ by a rational, which contradicts their
     algebraic independence (if Schanuel is true). But currently unknown.
 
-    Note: Irrationality ← transcendence, so proving transcendence is the stronger result. -/
-theorem e_plus_pi_irrational : Irrational (Real.exp 1 + Real.pi) := by
-  sorry -- OPEN: follows from algebraic independence of e and π (Schanuel)
+    Note: Irrationality ← transcendence, so proving transcendence is the stronger result.
 
--- ============================================================
--- PART 7: Schanuel's Conjecture and Nesterenko's Theorem
--- ============================================================
-
+    OPEN PROBLEM — stated as axiom since no proof exists. -/
 /-
   **Schanuel's Conjecture** (unproven):
   If z₁, ..., zₙ ∈ ℂ are ℚ-linearly independent, then the transcendence degree

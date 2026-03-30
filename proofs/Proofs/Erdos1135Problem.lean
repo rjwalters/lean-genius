@@ -90,21 +90,8 @@ theorem seven_reaches_one : ReachesOne 7 := ⟨11, by native_decide⟩
 /-- Tao (2019): For almost all m, the orbit goes below any function tending to ∞.
     Formally: for every f : ℕ → ℝ with f(n) → ∞, the density of
     {m : m ≤ x, min orbit(m) ≤ f(m)} approaches 1. -/
-axiom tao_almost_all :
-  ∀ (g : ℕ → ℝ), (∀ M : ℝ, ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n → M ≤ g n) →
-    ∀ ε : ℝ, 0 < ε → ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-      (Finset.card ((Finset.range x).filter
-        (fun m => ∃ k : ℕ, (collatzIter k (m + 1) : ℝ) ≤ g (m + 1))) : ℝ)
-      ≥ (1 - ε) * x
-
 /-- Krasikov–Lagarias (2003): The number of m ≤ x that reach 1 is at least x^{0.84}. -/
-axiom krasikov_lagarias (x : ℕ) (hx : 2 ≤ x) :
-  (Finset.card ((Finset.range x).filter (fun m => ReachesOne (m + 1))) : ℝ)
-  ≥ (x : ℝ) ^ (0.84 : ℝ)
-
 /- ## The Conjecture -/
 
 /-- Erdős Problem #1135 (Collatz Conjecture): Every positive integer
     eventually reaches 1 under iteration of the Collatz function. -/
-axiom erdos_1135_collatz_conjecture :
-  ∀ m : ℕ, 1 ≤ m → ReachesOne m

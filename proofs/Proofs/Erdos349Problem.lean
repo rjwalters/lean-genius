@@ -52,35 +52,18 @@ theorem erdos_349_characterization :
 
 /-- **Golden Ratio Conjecture**: The sequence ⌊tα^n⌋ is complete
     for all t > 0 and 1 < α < (1+√5)/2 ≈ 1.618. -/
-axiom golden_ratio_conjecture :
-  ∀ t α : ℝ, t > 0 → 1 < α → α < (1 + Real.sqrt 5) / 2 →
-    IsGoodPair t α
-
 /- ## Known Results -/
 
 /-- **Graham's Disjoint Segments**: For any k, there exists
     t_k ∈ (0,1) such that the set of α making ⌊t_k α^n⌋ complete
     consists of at least k disjoint intervals. -/
-axiom graham_disjoint_segments :
-  ∀ k : ℕ, ∃ t : ℝ, 0 < t ∧ t < 1 ∧
-    ∃ intervals : Fin k → Set ℝ,
-      (∀ i, ∃ a b : ℝ, a < b ∧ intervals i = Set.Ioo a b) ∧
-      (∀ i j, i ≠ j → Disjoint (intervals i) (intervals j)) ∧
-      (∀ i, ∀ α ∈ intervals i, IsGoodPair t α)
-
 /- ## Parity of ⌊(3/2)^n⌋ -/
 
 /-- **Odd Infinitely Often?**: Is ⌊(3/2)^n⌋ odd for infinitely
     many n? This basic question remains open and is a fundamental
     obstacle to the main conjecture. -/
-axiom floor_3_2_odd_infinitely :
-  Set.Infinite {n : ℕ | Odd (⌊(3 / 2 : ℝ) ^ n⌋).toNat}
-
 /-- **Even Infinitely Often?**: Is ⌊(3/2)^n⌋ even for infinitely
     many n? Also open. -/
-axiom floor_3_2_even_infinitely :
-  Set.Infinite {n : ℕ | Even (⌊(3 / 2 : ℝ) ^ n⌋).toNat}
-
 /- ## Proved Properties -/
 
 /-- When α = 1, the sequence ⌊t · 1^n⌋ = ⌊t⌋ is constant.

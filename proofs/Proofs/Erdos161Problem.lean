@@ -64,22 +64,12 @@ def IsBalanced {n t : ℕ} (coloring : HyperedgeColoring n t) (α : ℝ) (m : �
 axiom F (t n : ℕ) (α : ℝ) : ℕ
 
 /-- F satisfies the defining property: some coloring is balanced for F, none for F+1 -/
-axiom F_spec (t n : ℕ) (α : ℝ) (hα : 0 ≤ α) (hα2 : α < 1/2) :
-  (∃ coloring : HyperedgeColoring n t, IsBalanced coloring α (F t n α)) ∧
-  (∀ coloring : HyperedgeColoring n t, ¬IsBalanced coloring α (F t n α + 1))
-
 /- ## Classical Ramsey Case (α = 0) -/
 
 /-- For α = 0, F^(t)(n, 0) is related to the Ramsey number -/
 def FZero (t n : ℕ) : ℕ := F t n 0
 
 /-- Erdős-Hajnal-Rado Conjecture (#562): F^(t)(n, 0) ≍ log_{t-1}(n) -/
-axiom erdos_hajnal_rado_conjecture (t : ℕ) (ht : t ≥ 2) :
-    ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      c₁ * Real.logb (t - 1) n ≤ (FZero t n : ℝ) ∧
-      (FZero t n : ℝ) ≤ c₂ * Real.logb (t - 1) n
-
 /-- The iterated logarithm log_{t-1} -/
 noncomputable def iterLog (base : ℕ) : ℕ → ℝ
   | 0 => 0
@@ -94,11 +84,6 @@ axiom erdos_spencer_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 
       (F t n α : ℝ) ≥ c * (Real.log n)^(1/(t - 1 : ℝ))
 
 /-- Upper bound for α close to 1/2 -/
-axiom upper_bound_near_half (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : 0 < α) (hα2 : α < 1/2) :
-    ∃ (c : ℝ), c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (F t n α : ℝ) ≤ c * (Real.log n)^(1/(t - 1 : ℝ))
-
 /- ## The Jump Question -/
 
 /-- Does F^(t)(n, α) have discontinuities (jumps) as α varies? -/
@@ -116,11 +101,6 @@ def erdos_one_jump_belief (t : ℕ) : Prop :=
 /- ## Main Result: t = 3 (Conlon-Fox-Sudakov) -/
 
 /-- Conlon-Fox-Sudakov (2011): Upper bound for F^(3)(n, α) -/
-axiom conlon_fox_sudakov_upper (α : ℝ) (hα : α > 0) :
-    ∃ (c : ℝ), c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (F 3 n α : ℝ) ≤ c * Real.sqrt (Real.log n)
-
 /-- Combined result: F^(3)(n, α) = Θ_α(√(log n)) for α > 0 -/
 axiom F3_characterization (α : ℝ) (hα : α > 0) (hα2 : α < 1/2) :
     ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
@@ -134,19 +114,9 @@ axiom one_jump_for_t3 : erdos_one_jump_belief 3
 /- ## General t: Partial Results -/
 
 /-- For all α > 0, a polynomial lower bound in (log n) holds -/
-axiom general_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 0) :
-    ∃ (c_α : ℝ), c_α > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (F t n α : ℝ) ≥ (Real.log n)^c_α
-
 /- ## The Gap Between α = 0 and α > 0 -/
 
 /-- At α = 0 (Ramsey case), growth is iterated logarithm -/
-axiom alpha_zero_growth (t : ℕ) (ht : t ≥ 3) :
-    ∃ (c : ℝ), c > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (F t n 0 : ℝ) ≤ c * Real.logb (t - 1) n
-
 /-- At α > 0, growth is power of log (much larger for large t) -/
 theorem alpha_positive_growth (t : ℕ) (ht : t ≥ 3) (α : ℝ) (hα : 0 < α) :
     ∃ (c : ℝ), c > 0 ∧

@@ -122,9 +122,6 @@ def SchinzelHypothesisH : Prop :=
     Set.Infinite {n : ℕ | ∀ p ∈ polys, (p.eval (n : ℤ)).natAbs.Prime}
 
 /-- **Schlage-Puchta (2006)**: Schinzel's Hypothesis H implies irrationality for all k. -/
-axiom schinzel_implies_all_k :
-    SchinzelHypothesisH → Erdos252Conjecture
-
 /-- **Prime k-tuples Conjecture** (simplified):
     Admissible k-tuples of linear forms take prime values infinitely often. -/
 def PrimeKTuplesConjecture : Prop :=
@@ -133,9 +130,6 @@ def PrimeKTuplesConjecture : Prop :=
     Set.Infinite {n : ℕ | ∀ i : Fin k, ((a i : ℕ) * n + b i).Prime}
 
 /-- **Friedlander-Luca-Stoiciu (2007)**: Prime k-tuples implies irrationality for k ≥ 4. -/
-axiom prime_tuples_implies_ge_4 :
-    PrimeKTuplesConjecture → ∀ k ≥ 4, Irrational (divisorPowerSum k)
-
 /- ## Basic Properties of Divisor Sums
 
 We verify some basic properties and examples.
@@ -202,9 +196,6 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
 By sigma_le_pow, σ_k(n)/n! ≤ n^(k+1)/n!, and Σ n^(k+1)/n! converges
 since n^(k+1)/n! → 0 faster than any geometric sequence.
 -/
-axiom divisorPowerSum_summable (k : ℕ) :
-    Summable (fun n => (sigma k n : ℝ) / (n ! : ℝ))
-
 /- ## Summary
 
 **Erdős Problem #252** asks whether Σ_{n=1}^∞ σ_k(n)/n! is irrational for all k ≥ 1.

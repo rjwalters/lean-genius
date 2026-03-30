@@ -91,14 +91,6 @@ theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
 
 /-- The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
     This follows from the primorial bound and PNT. -/
-axiom trivial_upper_bound :
-  ∀ ε : ℝ, ε > 0 → ∀ᶠ n in atTop,
-    (q n ⌊Real.log (n : ℝ)⌋₊ : ℝ) ≤ (1 + ε) * (Real.log n) ^ 2
-
--- ============================================================================
--- Part IV: The Main Conjecture (Erdős #1181, OPEN)
--- ============================================================================
-
 /- Erdős #1181 asks: can we improve the 1+o(1) to 1-c for fixed c > 0?
    That is, does q(n, log n) < (1-c)(log n)² hold eventually?
 
@@ -143,9 +135,23 @@ theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
   -- (a) Eventually log(log n) < (1/(2C)) * log n
   have ha : ∀ᶠ n in (atTop : Filter ℕ),
       Real.log (Real.log (n : ℝ)) < (1 / (2 * C)) * Real.log (n : ℝ) := by
-    -- log(log n) / log n → 0, so eventually < 1/(2C)
-    -- This is: log x / x → 0 (Mathlib) composed with log n → ∞
-    sorry
+    -- log(log n) / log n → 0 (from log x / x → 0 composed with log n → ∞)
+    have hlogn_tend : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
+      Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    have hlogx_div : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
+      have h := Real.tendsto_log_div_rpow_atTop 1 one_pos
+      simp only [Real.rpow_one] at h; exact h
+    -- Compose: log(log n) / log n → 0
+    have h_ratio := hlogx_div.comp hlogn_tend
+    -- Extract: eventually log(log n) / log n < 1/(2C)
+    have h_small := h_ratio.eventually (Iio_mem_nhds (show (0:ℝ) < 1 / (2 * C) by positivity))
+    -- Eventually log n > 0 (for multiplication)
+    have h_logn_pos : ∀ᶠ n in (atTop : Filter ℕ), 0 < Real.log (↑n : ℝ) := by
+      filter_upwards [Filter.eventually_ge_atTop 2] with n hn
+      exact Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+    filter_upwards [h_small, h_logn_pos] with n h_small h_pos
+    rw [Set.mem_Iio, div_lt_iff h_pos] at h_small
+    linarith
   -- (b) Eventually log(log(log n)) ≥ 1 (iterated log → ∞)
   have hb : ∀ᶠ n in (atTop : Filter ℕ),
       1 ≤ Real.log (Real.log (Real.log (n : ℝ))) := by
@@ -212,18 +218,8 @@ noncomputable def chebyshev_theta (x : ℝ) : ℝ :=
     Real.log (p : ℝ)
 
 /-- PNT for the Chebyshev function: θ(x) ~ x. -/
-axiom pnt_chebyshev : Tendsto (fun x : ℝ => chebyshev_theta x / x) atTop (nhds 1)
-
 /-- The primorial bound: if all primes below q divide m, then
     ∏_{p < q, p prime} p ≤ m. -/
-axiom primorial_divides_bound (m q_val : ℕ) (hm : m > 0)
-    (hdvd : ∀ p : ℕ, p.Prime → p < q_val → p ∣ m) :
-    chebyshev_theta q_val ≤ Real.log m
-
--- ============================================================================
--- Part VII: Connection to Problem #457
--- ============================================================================
-
 /- Erdős #457 concerns the LOWER bound for q(n, log n):
    is q(n, log n) ≥ (2+ε) log n infinitely often?
 

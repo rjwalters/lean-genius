@@ -82,18 +82,9 @@ def hasNoOddCycle (G : SimpleGraph V) : Prop :=
   ∀ (u : V) (p : G.Walk u u), p.IsCycle → Even p.length
 
 /-- Characterization: bipartite iff no odd cycles. -/
-axiom bipartite_iff_no_odd_cycle (G : SimpleGraph V) :
-    IsBipartite G ↔ hasNoOddCycle G
-
 /- ## Part IV: The Trivial k=0 Case -/
 
 /-- An odd cycle on 2m+1 vertices has independence number exactly m. -/
-axiom odd_cycle_independence (m : ℕ) (hm : m ≥ 1) :
-    ∃ (V' : Type) (_ : Fintype V') (G : SimpleGraph V') (_ : DecidableRel G.Adj),
-      Fintype.card V' = 2 * m + 1 ∧
-      (∃ (v : V') (p : G.Walk v v), p.IsCycle ∧ p.length = 2 * m + 1) ∧
-      independenceNumber G = m
-
 /-- Key lemma: odd cycles violate the k=0 condition.
     A cycle on 2m+1 vertices has independence number m < (2m+1)/2. -/
 theorem odd_cycle_violates_strict (m : ℕ) (hm : m ≥ 1) :
@@ -186,8 +177,6 @@ theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
 /- ## Part IX: Bounds on f(k) -/
 
 /-- Reed's proof gives some explicit bound, though not optimal. -/
-axiom reed_bound_explicit (k : ℕ) : reed_bound k ≤ 2^k
-
 /-- Finding optimal bounds remains of interest. -/
 def openQuestion_optimal_bound : Prop :=
   ∃ f : ℕ → ℕ, (∀ k, f k ≤ reed_bound k) ∧
@@ -198,14 +187,7 @@ def openQuestion_optimal_bound : Prop :=
 /- ## Part X: Connection to Chromatic Number -/
 
 /-- Bipartite graphs are exactly 2-colorable. -/
-axiom bipartite_iff_two_colorable (G : SimpleGraph V) :
-    IsBipartite G ↔ ∃ c : V → Fin 2, ∀ u v, G.Adj u v → c u ≠ c v
-
 /-- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
-axiom almost_bipartite_chromatic (G : SimpleGraph V) (k : ℕ)
-    (h : isAlmostBipartite G k) :
-    ∃ c : V → Fin (k + 2), ∀ u v, G.Adj u v → c u ≠ c v
-
 end Erdos73
 
 /-

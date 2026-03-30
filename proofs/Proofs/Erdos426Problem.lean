@@ -97,13 +97,6 @@ noncomputable def nonIsomorphicGraphs (n : ℕ) : ℝ :=
 The number of non-isomorphic graphs on n vertices is asymptotically
 2^(n choose 2) / n!.
 -/
-axiom polya_enumeration (n : ℕ) (hn : n ≥ 10) :
-    ∃ c C : ℝ, 0 < c ∧ c < C ∧
-      c * nonIsomorphicGraphs n ≤ -- actual count
-      nonIsomorphicGraphs n ∧
-      -- actual count ≤
-      nonIsomorphicGraphs n ≤ C * nonIsomorphicGraphs n
-
 /--
 **Maximum unique subgraphs:**
 f(n) = maximum number of unique subgraphs in any graph on n vertices.
@@ -119,9 +112,6 @@ noncomputable def maxUniqueSubgraphs (n : ℕ) : ℕ :=
 **Entringer-Erdős construction (1972):**
 There exist graphs with 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.
 -/
-axiom entringer_erdos_1972 (n : ℕ) (hn : n ≥ 10) :
-    (maxUniqueSubgraphs n : ℝ) ≥ (2 : ℝ)^(n.choose 2 - n^(3/2 : ℝ) * (Real.log n))
-
 /--
 **Brouwer improvement (1975):**
 There exist graphs with ~ 2^{(n choose 2) - O(n)} / n! unique subgraphs.
@@ -171,11 +161,6 @@ axiom bradac_christoph_2024 :
 **Quantitative bound:**
 The o(1) factor can be made explicit.
 -/
-axiom bradac_christoph_quantitative :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 100 →
-      (maxUniqueSubgraphs n : ℝ) ≤
-        nonIsomorphicGraphs n * (C * Real.log (Real.log (Real.log n)) / Real.log (Real.log n))
-
 /--
 **The original question is answered: NO**
 

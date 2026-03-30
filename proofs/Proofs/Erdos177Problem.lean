@@ -141,17 +141,10 @@ axiom roth_lower_bound :
 **Beck's upper bound**: h(d) ≤ d^{8+ε}.
 For every ε > 0, there exists a coloring achieving this bound.
 -/
-axiom beck_upper_bound :
-    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ d : ℕ, d ≥ 1 →
-      (h d : ℝ) ≤ C * (d : ℝ) ^ (8 + ε)
-
 /--
 **Cantor-Erdős-Schreiber-Straus**: h(d) ≤ d! is achievable.
 The earliest quantitative bound.
 -/
-axiom factorial_bound :
-    ∀ d : ℕ, d ≥ 1 → h d ≤ Nat.factorial d
-
 /-
 ## Part III: Main Theorem
 -/

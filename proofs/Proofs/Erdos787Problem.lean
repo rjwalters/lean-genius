@@ -56,10 +56,6 @@ def HasSumAvoidingSubset (A : Finset ℤ) (k : ℕ) : Prop :=
 axiom g (n : ℕ) : ℕ
 
 /-- Specification: g(n) is the largest k with the universal property -/
-axiom g_spec (n : ℕ) (hn : n ≥ 1) :
-  (∀ A : Finset ℤ, A.card = n → HasSumAvoidingSubset A (g n)) ∧
-  ¬(∀ A : Finset ℤ, A.card = n → HasSumAvoidingSubset A (g n + 1))
-
 /- ## Part 2: Trivial Cases -/
 
 /-- The empty set is trivially sum-avoiding -/
@@ -82,16 +78,9 @@ theorem singleton_is_sum_avoiding (A : Finset ℤ) (a : ℤ) (ha : a ∈ A) :
 /- ## Part 3: Klarner's Lower Bound -/
 
 /-- Klarner's lower bound: g(n) ≫ log n via greedy construction -/
-axiom klarner_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 → (g n : ℝ) ≥ c * Real.log n
-
 /- ## Part 4: Choi's Upper Bound (1971) -/
 
 /-- Choi's upper bound: g(n) ≪ n^(2/5+o(1)) -/
-axiom choi_1971_upper_bound :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      (g n : ℝ) ≤ (n : ℝ) ^ ((2 : ℝ) / 5 + ε)
-
 /- ## Part 5: Ruzsa's Upper Bound (2005) -/
 
 /-- Ruzsa's 2005 improvement: g(n) ≪ exp(√(log n)) — the current best upper bound -/

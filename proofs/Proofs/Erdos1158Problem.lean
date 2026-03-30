@@ -131,10 +131,6 @@ Upper bound (Erdős 1964):
 This is the generalization of the Kővári-Sós-Turán theorem to
 t-uniform hypergraphs.
 -/
-axiom erdos_upper_bound (t r : ℕ) (ht : t ≥ 2) (hr : r ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exHypergraph t n r : ℝ) ≤ c * (n : ℝ) ^ hypergraphExponent t r
-
 /-
 ## Part V: Known Lower Bound (Weaker)
 
@@ -152,10 +148,6 @@ Erdős's lower bound (1964):
 for constants c, C > 0 depending on t. The key gap with the upper bound
 is the constant multiplying r^{1-t} in the exponent.
 -/
-axiom erdos_lower_bound (t r : ℕ) (ht : t ≥ 2) (hr : r ≥ 2) :
-  ∃ (c C : ℝ), c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exHypergraph t n r : ℝ) ≥ c * (n : ℝ) ^ ((t : ℝ) - C * (r : ℝ)^(1 - (t : ℝ)))
-
 /-
 ## Part VI: The Conjecture (Erdős Problem #1158)
 
@@ -251,12 +243,6 @@ If ex_{t-1}(n, K_{t-1}(r)) ≥ n^α then ex_t(n, K_t(r)) ≥ n^{α+1-o(1)}.
 This converts (t-1)-uniform lower bounds to t-uniform ones,
 but with a loss that compounds across uniformities.
 -/
-axiom stepping_up_lemma (t r : ℕ) (ht : t ≥ 3) (hr : r ≥ 2)
-    (α : ℝ) (hα : ∀ ε > 0, ∃ c N₀ : ℝ, c > 0 ∧ ∀ n : ℕ, (n : ℝ) ≥ N₀ →
-      (exHypergraph (t-1) n r : ℝ) ≥ c * (n : ℝ)^(α - ε)) :
-    ∀ ε > 0, ∃ c N₀ : ℝ, c > 0 ∧ ∀ n : ℕ, (n : ℝ) ≥ N₀ →
-      (exHypergraph t n r : ℝ) ≥ c * (n : ℝ)^(α + 1 - ε)
-
 /-
 ## Part X: Summary
 -/

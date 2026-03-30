@@ -128,31 +128,20 @@ theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by
 The most famous small Ramsey number. Any 2-coloring of K_6 contains
 a monochromatic triangle. K_5 can be 2-colored without a monochromatic triangle.
 -/
-axiom ramsey_3_3 : R(3, 3) = 6
-
 /--
 **R(4,4) = 18:**
 Any 2-coloring of K_18 contains a monochromatic K_4.
 Finding the exact value required extensive computation.
 -/
-axiom ramsey_4_4 : R(4, 4) = 18
-
 /--
 **R(4,5) = 25:**
 The largest exactly known off-diagonal Ramsey number with s = 4.
 -/
-axiom ramsey_4_5 : R(4, 5) = 25
-
 /--
 **R(3,k) Bounds:**
 The best known bounds for R(3,k) are
 c₁ · k²/log k ≤ R(3,k) ≤ c₂ · k²/log k.
 -/
-axiom ramsey_3_k_bounds (k : ℕ) (hk : k ≥ 3) :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * k^2 / Real.log k ≤ R(3, k) ∧
-    (R(3, k) : ℝ) ≤ c₂ * k^2 / Real.log k
-
 /- ## Part IV: Historical Lower Bounds for R(4,k) -/
 
 /--
@@ -162,11 +151,6 @@ R(4,k) ≥ c · (k log k)^{5/2} for some constant c > 0.
 This was the best lower bound for over 40 years, using
 probabilistic constructions with dependent random choices.
 -/
-axiom spencer_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 3 →
-    (R(4, k) : ℝ) ≥ c * (k * Real.log k)^(5/2 : ℝ)
-
-
 /- ## Part V: Upper Bound (Ajtai-Komlós-Szemerédi) -/
 
 /--

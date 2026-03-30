@@ -74,27 +74,18 @@ noncomputable def k_func (n : ℕ) : ℕ :=
 **k is well-defined and finite:**
 For any n, we have k(n) ≤ n.
 -/
-axiom k_bounded (n : ℕ) : k_func n ≤ n
-
 /--
 **Monotonicity:**
 k(n) ≤ k(n+1) for all n.
 -/
-axiom k_monotone (n : ℕ) : k_func n ≤ k_func (n + 1)
-
 /--
 **k(n) ≥ 1 for n ≥ 2:**
 We can always find a single integer with a large prime factor.
 -/
-axiom k_pos (n : ℕ) (hn : n ≥ 2) : k_func n ≥ 1
-
 /--
 **Small values:**
 For small n, k(n) is small.
 -/
-axiom k_small_values :
-  k_func 10 ≤ 5 ∧ k_func 100 ≤ 15
-
 /- ## Part III: Erdős's Lower Bound -/
 
 /--
@@ -103,10 +94,6 @@ For any ε > 0, k(n) ≫_ε exp((log n)^{1/2-ε}).
 
 This means k(n) grows at least as fast as exp(√(log n)^{1-2ε}).
 -/
-axiom erdos_lower_bound (ε : ℝ) (hε : ε > 0) :
-  ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in atTop,
-    (k_func n : ℝ) ≥ C * Real.exp ((Real.log n) ^ (1/2 - ε))
-
 /- ## Part IV: Tang's Improved Lower Bound -/
 
 /--
@@ -163,9 +150,6 @@ def IsSmooth (n y : ℕ) : Prop :=
 **Complementary property:**
 n is NOT k-smooth iff n has a prime factor > k.
 -/
-axiom not_smooth_iff_large_prime (n k : ℕ) (hn : n > 1) :
-    ¬IsSmooth n k ↔ HasLargePrimeFactor n k
-
 /- ## Part VIII: Summary -/
 
 /--

@@ -98,10 +98,6 @@ axiom alon_frankl_lovasz_1986 (n r k t : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (ht 
       ∀ e ∈ edges, c e = i
 
 /-- Equivalent formulation: chromatic number of Kneser hypergraph -/
-axiom kneser_hypergraph_chromatic_number (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 2)
-    (hn : n ≥ r * k) :
-    chromaticNumber n r k = Nat.ceil ((n - r * (k - 1) : ℤ) / (k - 1 : ℤ))
-
 /-
 ## Part 4: Tightness Construction
 
@@ -113,14 +109,6 @@ def tightBound (k r t : ℕ) : ℕ := k * r - 1 + (t - 1) * (k - 1)
 
 /-- Construction: partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1, |Xᵢ| = k-1.
     Color by first non-empty intersection. This avoids k disjoint monochromatic edges. -/
-axiom tightness_construction (k r t : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (ht : t ≥ 2) :
-    let n := tightBound k r t
-    ∃ c : EdgeColoring n r t,
-      ∀ i : Fin t, ∀ edges : Finset (completeHypergraph n r),
-        PairwiseDisjoint (edges.image Subtype.val) →
-        (∀ e ∈ edges, c e = i) →
-        edges.card < k
-
 /-
 ## Part 5: Special Case: Lovász's Theorem (k = 2)
 

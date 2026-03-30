@@ -53,9 +53,6 @@ def LittlewoodPolynomials (n : ℕ) : Set (Polynomial ℂ) :=
   {p | p.natDegree = n ∧ IsLittlewoodPolynomial p}
 
 /-- There are exactly 2^(n+1) Littlewood polynomials of degree n -/
-axiom littlewood_count (n : ℕ) :
-  (LittlewoodPolynomials n).ncard = 2^(n+1)
-
 /-- The unit circle in ℂ -/
 def UnitCircle : Set ℂ := {z : ℂ | abs z = 1}
 
@@ -74,9 +71,6 @@ def HasSmallValue (p : Polynomial ℂ) : Prop :=
 /-- Equivalent: minModulus < 1.
     This is a basic property of the infimum: the set of values is nonempty
     (unit circle is nonempty) so the infimum < 1 iff some value < 1. -/
-axiom has_small_value_iff_min_lt_one (p : Polynomial ℂ) :
-    HasSmallValue p ↔ minModulus p < 1
-
 /-- Almost all Littlewood polynomials have m(f) < 1.
     More precisely: #{p : degree n Littlewood | m(p) ≥ 1} = o(2^n) -/
 axiom almost_all_small :
@@ -107,20 +101,12 @@ axiom konyagin_upper_bound :
     ({p ∈ LittlewoodPolynomials n | minModulus p > n^(-(1/2 : ℝ) + ε)}).ncard < δ * 2^n
 
 /-- The exponent -1/2 is essentially optimal -/
-axiom konyagin_exponent_tight :
-  ∀ ε > 0, ∃ δ > 0, ∀ N : ℕ, ∃ n ≥ N,
-    ({p ∈ LittlewoodPolynomials n | minModulus p ≤ n^(-(1/2 : ℝ) - ε)}).ncard < δ * 2^n
-
 /-
 ## Part V: Konyagin-Schlag Lower Bound
 -/
 
 /-- Konyagin-Schlag Theorem (1999): The lower tail is thin.
     For any ε > 0: limsup P(m(f) ≤ εn^{-1/2}) ≪ ε -/
-axiom konyagin_schlag_lower_tail :
-  ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
-    ({p ∈ LittlewoodPolynomials n | minModulus p ≤ ε * n^(-(1/2 : ℝ))}).ncard ≤ C * ε * 2^n
-
 /-
 ## Part VI: Cook-Nguyen Universal Distribution
 -/
@@ -150,17 +136,11 @@ def IsRudinShapiro (p : Polynomial ℂ) (n : ℕ) : Prop :=
   ∀ z ∈ UnitCircle, abs (p.eval z) ≤ Real.sqrt (2^(n+1))
 
 /-- Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
-axiom rudin_shapiro_bound (p : Polynomial ℂ) (n : ℕ) (z : ℂ) :
-  IsRudinShapiro p n → z ∈ UnitCircle → abs (p.eval z) ≤ Real.sqrt (2^(n+1))
-
 /-- The constant polynomial 1 + z + z² + ... + zⁿ has minimum on the unit circle -/
 def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
   ∑ i ∈ Finset.range (n+1), X^i
 
 /-- The minimum modulus of the all-ones polynomial -/
-axiom all_ones_min_modulus (n : ℕ) :
-  minModulus (AllOnesPolynomial n) = 1 / (n + 1)
-
 /-
 ## Part VIII: Connection to Other Problems
 -/
@@ -171,10 +151,6 @@ noncomputable def MahlerMeasure (p : Polynomial ℂ) : ℝ :=
   Real.exp (∫ t in Set.Icc 0 1, Real.log (abs (p.eval (Complex.exp (2 * Real.pi * t * I)))))
 
 /-- For Littlewood polynomials, M(p) is related to m(p) -/
-axiom mahler_vs_min_modulus :
-  ∀ p : Polynomial ℂ, IsLittlewoodPolynomial p →
-    MahlerMeasure p ≥ 1 → minModulus p ≤ MahlerMeasure p
-
 /-- Lehmer's Problem: Is there a Littlewood polynomial with M(p) < 1? -/
 def LehmerQuestion : Prop :=
   ∃ p : Polynomial ℂ, IsLittlewoodPolynomial p ∧ MahlerMeasure p < 1

@@ -205,7 +205,51 @@ theorem displacementColoring_isSperner {d N : ℕ} (hN : 0 < N)
   linarith
 
 -- ============================================================
--- SECTION VI: Approximate Fixed Points
+-- SECTION VI: Infrastructure for Main Theorems
+-- ============================================================
+
+/-- countPerm values are 0 or 1 (permutation is injective). -/
+private lemma countPerm_le_one {d : ℕ} (σ : Equiv.Perm (Fin d)) (k : ℕ) (j : Fin d) :
+    countPerm σ k j ≤ 1 := by
+  apply Finset.card_le_one.mpr
+  intro a ha b hb
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+  exact σ.injective (ha.2.trans hb.2.symm)
+
+/-- Grid vertices map into the unit cube [0,1]^d. -/
+private lemma gridToReal_mem_cube {d N : ℕ} (hN : 0 < N) (v : Vertex d N) :
+    gridToReal v ∈ Set.pi Set.univ (fun _ : Fin d => Set.Icc (0 : ℝ) 1) := by
+  intro i _
+  have hv := gridToReal_inSimplex hN v
+  exact ⟨hv.1 i, le_trans (Finset.single_le_sum (fun j _ => hv.1 j)
+    (Finset.mem_univ i)) hv.2⟩
+
+/-- FSimplex vertices have L∞ distance ≤ 1/N.
+    Each coordinate differs by at most 1 (in ℕ), hence ≤ 1/N (in ℝ). -/
+private lemma fsimplex_gridToReal_dist {d N : ℕ} (hN : 0 < N)
+    (S : FSimplex d N) (k₁ k₂ : Fin (d + 1)) :
+    dist (gridToReal (S.vertex k₁)) (gridToReal (S.vertex k₂)) ≤ 1 / (N : ℝ) := by
+  have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  rw [dist_pi_le_iff (by positivity)]
+  intro i
+  simp only [gridToReal, FSimplex.vertex, Real.dist_eq]
+  rw [show (↑(S.base i + countPerm S.perm k₁.val i) : ℝ) / ↑N -
+    ↑(S.base i + countPerm S.perm k₂.val i) / ↑N =
+    ((↑(countPerm S.perm k₁.val i) : ℝ) - ↑(countPerm S.perm k₂.val i)) / ↑N
+    from by push_cast; ring]
+  rw [abs_div, abs_of_pos hN']
+  apply div_le_div_of_nonneg_right _ hN'.le
+  have h1 := countPerm_le_one S.perm k₁.val i
+  have h2 := countPerm_le_one S.perm k₂.val i
+  rw [abs_le]
+  constructor
+  · have : (↑(countPerm S.perm k₂.val i) : ℝ) ≤ 1 := by exact_mod_cast h2
+    linarith [Nat.cast_nonneg (countPerm S.perm k₁.val i)]
+  · have : (↑(countPerm S.perm k₁.val i) : ℝ) ≤ 1 := by exact_mod_cast h1
+    linarith [Nat.cast_nonneg (countPerm S.perm k₂.val i)]
+
+-- ============================================================
+-- SECTION VII: Approximate Fixed Points
 -- ============================================================
 
 /-- Approximate fixed points via Sperner's lemma and displacement coloring.
@@ -213,19 +257,9 @@ theorem displacementColoring_isSperner {d N : ℕ} (hN : 0 < N)
     For any ε > 0, there exists a point in the simplex that is an
     ε-approximate fixed point of f.
 
-    Proof sketch: Choose N with mesh 1/N < δ(ε) (from uniform continuity
-    of f on the compact simplex). Either:
-    (a) f fixes some grid vertex exactly → done, or
-    (b) No grid fixed point → displacement coloring is Sperner →
-        Sperner gives fully-colored simplex → transfer displacement
-        bounds between vertices of different colors → all barycentric
-        displacements at any vertex are O(1/N) → approximate fixed point.
-
-    The full argument generalizes approximate_fixed_point_2d in
-    BrouwerFixedPointOQ02OQ01.lean (lines 922-1071) from 3 to d+1
-    colors/components: for each color k, vertex v_k has d_k(v_k) ≤ 0.
-    By UC + mesh bounds, d_k(v_0) ≤ C/N for all k. Since Σ d_k = 0
-    and each d_k ≤ C/N, we get -dC/N ≤ d_k ≤ C/N, so ‖f(v_0)-v_0‖ → 0. -/
+    The proof picks the color-(last d) vertex of the FC simplex, which
+    has ∑(f_j - p_j) ≥ 0. Transfer from each color-(castSucc j) vertex
+    gives f(p)_j - p_j ≤ C. Combined: |f(p)_j - p_j| ≤ max(C, (d-1)C) < ε. -/
 theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
     (f : (Fin d → ℝ) → (Fin d → ℝ))
     (hcont : Continuous f)
@@ -234,21 +268,147 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
       IsSperner c → ∃ S : FSimplex d N, IsFC c S)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ x : Fin d → ℝ, InSimplex d x ∧ ∀ i : Fin d, |f x i - x i| < ε := by
-  sorry
+  -- Step 1: Uniform continuity of f on the compact cube [0,1]^d
+  set cube := Set.pi Set.univ (fun _ : Fin d => Set.Icc (0 : ℝ) 1) with cube_def
+  have hcube_compact : IsCompact cube := isCompact_univ_pi (fun _ => isCompact_Icc)
+  have huc := Metric.uniformContinuousOn_iff.mp
+    (hcube_compact.uniformContinuousOn_of_continuous hcont.continuousOn)
+  -- Get δ for tolerance ε / (2*(d+1))
+  have hε' : 0 < ε / (2 * (↑d + 1)) := by positivity
+  obtain ⟨δ, hδ_pos, hδ⟩ := huc (ε / (2 * (↑d + 1))) hε'
+  -- Step 2: Choose N large enough
+  obtain ⟨N, hN_gt⟩ := exists_nat_gt (max ((2 * (↑d + 1)) / ε) (1 / δ))
+  have hN_pos : 0 < N := by
+    by_contra h; push_neg at h
+    have hN0 : N = 0 := by omega
+    subst hN0; simp only [Nat.cast_zero] at hN_gt
+    linarith [le_max_right ((2 * (↑d + 1)) / ε) (1 / δ), div_pos one_pos hδ_pos]
+  have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr hN_pos
+  -- Key bounds: 1/N < ε/(2*(d+1)) and 1/N < δ
+  have h_inv_N : 1 / (N : ℝ) < ε / (2 * (↑d + 1)) := by
+    have h1 : (2 * (↑d + 1)) / ε < ↑N := lt_of_le_of_lt (le_max_left _ _) hN_gt
+    rw [div_lt_iff hε] at h1
+    rw [div_lt_div_iff hN' (by positivity : (0 : ℝ) < 2 * (↑d + 1)), one_mul]
+    nlinarith [mul_comm ε (↑N : ℝ)]
+  have h_inv_δ : 1 / (N : ℝ) < δ := by
+    have h1 : 1 / δ < ↑N := lt_of_le_of_lt (le_max_right _ _) hN_gt
+    rw [div_lt_iff hδ_pos] at h1
+    rw [div_lt_iff hN']
+    linarith [mul_comm δ (↑N : ℝ)]
+  -- Step 3: Grid fixed point case
+  by_cases hgfp : ∃ v : Vertex d N, f (gridToReal v) = gridToReal v
+  · obtain ⟨v, hv⟩ := hgfp
+    exact ⟨gridToReal v, gridToReal_inSimplex hN_pos v, fun i => by
+      simp only [hv, sub_self, abs_zero]; exact hε⟩
+  · -- Step 4: No grid fixed point → displacement coloring is Sperner
+    push_neg at hgfp
+    have hSp := displacementColoring_isSperner hN_pos f hf hgfp
+    obtain ⟨S, hFC⟩ := sperner N hN_pos _ hSp
+    -- Step 5: Extract color-(last d) vertex as approximate fixed point
+    obtain ⟨i_last, hi_last⟩ := hFC (Fin.last d)
+    set v₀ := S.vertex i_last with hv₀_def
+    -- v₀ has color (last d), so ∑(f_j - p_j) > 0
+    have hcolor : minIndex (baryDisp f v₀) = Fin.last d := by
+      show displacementColoring hN_pos f v₀ = Fin.last d; exact hi_last
+    have hsum_pos : 0 < ∑ j : Fin d, (f (gridToReal v₀) j - gridToReal v₀ j) := by
+      obtain ⟨k, hk⟩ := exists_neg_baryDisp hN_pos f v₀ (hgfp v₀)
+      have hmin := minIndex_le (baryDisp f v₀) k
+      rw [hcolor] at hmin
+      have : baryDisp f v₀ (Fin.last d) < 0 := lt_of_le_of_lt hmin hk
+      simp only [baryDisp, Fin.val_last, dif_neg (lt_irrefl d)] at this
+      linarith
+    -- Step 6: Upper bound for each coordinate displacement
+    -- For each j < d, color-(castSucc j) vertex has displacement_j ≤ 0
+    -- Transfer gives displacement_j at v₀ < ε/(d+1)
+    have hupper : ∀ j : Fin d,
+        f (gridToReal v₀) j - gridToReal v₀ j < ε / (↑d + 1) := by
+      intro j
+      obtain ⟨i_j, hi_j⟩ := hFC (Fin.castSucc j)
+      set v_j := S.vertex i_j
+      -- At v_j: displacement_j ≤ 0
+      have hdisp_neg : f (gridToReal v_j) j - gridToReal v_j j ≤ 0 := by
+        have hne := hgfp v_j
+        obtain ⟨k, hk⟩ := exists_neg_baryDisp hN_pos f v_j hne
+        have hmin_j : minIndex (baryDisp f v_j) = Fin.castSucc j := by
+          show displacementColoring hN_pos f v_j = Fin.castSucc j; exact hi_j
+        have := minIndex_le (baryDisp f v_j) k
+        rw [hmin_j] at this
+        have hbd : baryDisp f v_j (Fin.castSucc j) ≤ 0 :=
+          le_of_lt (lt_of_le_of_lt this hk)
+        simp only [baryDisp, Fin.coe_castSucc, dif_pos j.isLt, Fin.eta] at hbd
+        linarith
+      -- Mesh + UC transfer
+      have hmesh := fsimplex_gridToReal_dist hN_pos S i_last i_j
+      have hv₀_cube := gridToReal_mem_cube hN_pos v₀
+      have hvj_cube := gridToReal_mem_cube hN_pos v_j
+      have hf_close : dist (f (gridToReal v₀)) (f (gridToReal v_j)) <
+          ε / (2 * (↑d + 1)) :=
+        hδ _ hv₀_cube _ hvj_cube (lt_of_le_of_lt hmesh h_inv_δ)
+      -- Component bounds from L∞ distance
+      have hf_j : |f (gridToReal v₀) j - f (gridToReal v_j) j| <
+          ε / (2 * (↑d + 1)) :=
+        lt_of_le_of_lt ((Real.dist_eq _ _) ▸ dist_le_pi_dist _ _ j) hf_close
+      have hp_j : |gridToReal v_j j - gridToReal v₀ j| ≤ 1 / (↑N : ℝ) :=
+        (Real.dist_eq _ _) ▸ dist_le_pi_dist _ _ j |>.trans
+          (fsimplex_gridToReal_dist hN_pos S i_j i_last)
+      -- Transfer: f(p₀)_j - p₀_j < UC_bound + mesh_bound ≤ ε/(d+1)
+      calc f (gridToReal v₀) j - gridToReal v₀ j
+          = (f (gridToReal v₀) j - f (gridToReal v_j) j) +
+            (f (gridToReal v_j) j - gridToReal v_j j) +
+            (gridToReal v_j j - gridToReal v₀ j) := by ring
+        _ ≤ |f (gridToReal v₀) j - f (gridToReal v_j) j| + 0 +
+            |gridToReal v_j j - gridToReal v₀ j| := by
+          gcongr
+          · exact le_abs_self _
+          · exact hdisp_neg
+          · exact le_abs_self _
+        _ < ε / (2 * (↑d + 1)) + 0 + ε / (2 * (↑d + 1)) := by
+          linarith [lt_of_le_of_lt hp_j h_inv_N]
+        _ = ε / (↑d + 1) := by ring
+    -- Step 7: Lower bound from sum condition
+    -- ∑(f_j - p_j) > 0 and each < ε/(d+1) → each > -ε
+    have hlower : ∀ j : Fin d, -(ε : ℝ) < f (gridToReal v₀) j - gridToReal v₀ j := by
+      intro j
+      have hsub : f (gridToReal v₀) j - gridToReal v₀ j =
+        (∑ k, (f (gridToReal v₀) k - gridToReal v₀ k)) -
+        ∑ k in Finset.univ.erase j, (f (gridToReal v₀) k - gridToReal v₀ k) := by
+        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j)]; ring
+      rw [hsub]
+      -- ∑_others ≤ d * ε/(d+1) < ε, and ∑_all > 0, so f_j - p_j > 0 - ε = -ε
+      have hother : ∑ k in Finset.univ.erase j,
+          (f (gridToReal v₀) k - gridToReal v₀ k) ≤
+          ↑d * (ε / (↑d + 1)) := by
+        calc ∑ k in Finset.univ.erase j,
+              (f (gridToReal v₀) k - gridToReal v₀ k)
+            ≤ ∑ k in Finset.univ.erase j, (ε / (↑d + 1)) :=
+              Finset.sum_le_sum (fun k _ => le_of_lt (hupper k))
+          _ ≤ ∑ _ in (Finset.univ : Finset (Fin d)), (ε / (↑d + 1)) :=
+              Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _)
+                (fun _ _ _ => div_nonneg hε.le
+                  (by linarith [Nat.cast_nonneg d]))
+          _ = ↑d * (ε / (↑d + 1)) := by
+              simp [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul]
+      have hd_bound : ↑d * (ε / (↑d + 1)) < ε := by
+        rw [mul_div_assoc, div_lt_iff (by linarith [Nat.cast_nonneg d] : (0:ℝ) < ↑d + 1)]
+        linarith
+      linarith
+    -- Step 8: Combine upper and lower bounds
+    exact ⟨gridToReal v₀, gridToReal_inSimplex hN_pos v₀, fun j => by
+      rw [abs_lt]; exact ⟨hlower j, lt_of_lt_of_le (hupper j)
+        (div_le_self hε.le (by linarith [Nat.cast_nonneg d]))⟩⟩
 
 -- ============================================================
--- SECTION VII: Brouwer Fixed Point Theorem
+-- SECTION VIII: Brouwer Fixed Point Theorem
 -- ============================================================
 
 /-- **Brouwer Fixed Point Theorem for the standard d-simplex.**
 
     Every continuous self-map of the d-simplex has a fixed point.
 
-    Proof: For each n, approximate_fixed_point gives x_n with
-    |f(x_n)_i - (x_n)_i| < 1/n. Since the simplex is compact,
-    {x_n} has a convergent subsequence x_{n_k} → x*. By continuity,
-    f(x_{n_k}) → f(x*). Since |f(x_{n_k}) - x_{n_k}| → 0,
-    we get f(x*) = x*. -/
+    Proof: The displacement function g(x) = dist(f(x), x) is continuous
+    and achieves its minimum m on the compact simplex. If m > 0, then
+    approximate_fixed_point with ε = m gives a point with g(y) < m,
+    contradicting minimality. So m = 0 and the minimizer is a fixed point. -/
 theorem brouwer_simplex {d : ℕ} (hd : 0 < d)
     (f : (Fin d → ℝ) → (Fin d → ℝ))
     (hcont : Continuous f)
@@ -256,6 +416,37 @@ theorem brouwer_simplex {d : ℕ} (hd : 0 < d)
     (sperner : ∀ (N : ℕ) (hN : 0 < N) (c : Coloring d N),
       IsSperner c → ∃ S : FSimplex d N, IsFC c S) :
     ∃ x : Fin d → ℝ, InSimplex d x ∧ f x = x := by
-  sorry
+  -- The simplex is compact and nonempty
+  have hK : IsCompact {x : Fin d → ℝ | InSimplex d x} := by
+    apply IsCompact.of_isClosed_subset (isCompact_univ_pi (fun _ => isCompact_Icc))
+    · have heq : {x : Fin d → ℝ | InSimplex d x} =
+          (⋂ i, {x | (0 : ℝ) ≤ x i}) ∩ {x | ∑ i, x i ≤ 1} := by
+        ext x; simp [InSimplex, Set.mem_iInter]
+      rw [heq]
+      exact (isClosed_iInter fun i =>
+        isClosed_le continuous_const (continuous_apply i)).inter
+        (isClosed_le (continuous_finset_sum _ fun i _ => continuous_apply i)
+          continuous_const)
+    · intro x ⟨hnn, hsum⟩
+      simp only [Set.mem_pi, Set.mem_univ, Set.mem_Icc, forall_const]
+      exact fun i => ⟨hnn i, le_trans
+        (Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ i)) hsum⟩
+  have hKne : Set.Nonempty {x : Fin d → ℝ | InSimplex d x} :=
+    ⟨0, fun _ => le_refl 0, by simp⟩
+  -- dist(f(·), ·) achieves its minimum on the compact simplex
+  obtain ⟨x₀, hx₀_mem, hx₀_min⟩ :=
+    hK.exists_forall_le hKne (hcont.dist continuous_id).continuousOn
+  -- The minimum is 0 (otherwise approximate_fixed_point contradicts)
+  suffices h : dist (f x₀) x₀ = 0 from
+    ⟨x₀, hx₀_mem, dist_eq_zero.mp h⟩
+  by_contra h
+  have hpos : 0 < dist (f x₀) x₀ :=
+    lt_of_le_of_ne dist_nonneg (Ne.symm h)
+  obtain ⟨y, hy_mem, hy_bound⟩ :=
+    approximate_fixed_point hd f hcont hf sperner (dist (f x₀) x₀) hpos
+  have hlt : dist (f y) y < dist (f x₀) x₀ := by
+    rw [dist_pi_lt_iff hpos]
+    exact fun i => by rw [Real.dist_eq]; exact hy_bound i
+  linarith [hx₀_min hy_mem]
 
 end DisplacementBrouwer

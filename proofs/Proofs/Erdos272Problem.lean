@@ -88,9 +88,6 @@ axiom simonovits_sos_upper (N : ℕ) (hN : N ≥ 1) :
   ∃ C : ℝ, C > 0 ∧ (maxAPFamily N : ℝ) ≤ C * N^2
 
 /-- The quadratic bound is essentially tight: t = Ω(N²) -/
-axiom simonovits_sos_lower (N : ℕ) (hN : N ≥ 1) :
-  ∃ c : ℝ, c > 0 ∧ (maxAPFamily N : ℝ) ≥ c * N^2
-
 /- ## Part IV: The Erdős-Graham Conjecture (Disproved) -/
 
 /--
@@ -98,17 +95,6 @@ The Erdős-Graham conjecture that APs through ⌊N/2⌋ are optimal was
 disproved by Simonovits-Sós. For large N, the small-sets construction
 through a fixed element beats APs through the middle.
 -/
-axiom erdos_graham_conjecture_false :
-  ∃ N₀ : ℕ, ∀ N ≥ N₀, ∃ F : Finset (Finset ℕ),
-    (∀ A ∈ F, A ⊆ interval N) ∧
-    hasAPIntersectionProperty F ∧
-    -- F is larger than the family of APs through ⌊N/2⌋
-    ∃ G : Finset (Finset ℕ),
-      (∀ A ∈ G, A ⊆ interval N) ∧
-      hasAPIntersectionProperty G ∧
-      (∀ A ∈ G, N / 2 ∈ A) ∧
-      F.card > G.card
-
 /- ## Part V: The Simonovits-Sós Construction -/
 
 /-- Sets of size ≤ 3 containing a fixed element -/
@@ -116,14 +102,8 @@ def smallSetsThroughElement (N k : ℕ) : Finset (Finset ℕ) :=
   (interval N).powerset.filter (fun S => k ∈ S ∧ S.card ≤ 3)
 
 /-- This gives C(N-1, 2) + 1 sets (asymptotically N²/2) -/
-axiom small_sets_count (N k : ℕ) (hN : N ≥ 3) (hk : k ∈ interval N) :
-  (smallSetsThroughElement N k).card = Nat.choose (N - 1) 2 + 1
-
 /-- This family has the AP-intersection property (any pair of small sets
 through k intersects in {k}, which is a singleton AP) -/
-axiom small_sets_has_AP (N k : ℕ) (hN : N ≥ 3) (hk : k ∈ interval N) :
-  hasAPIntersectionProperty (smallSetsThroughElement N k)
-
 /- ## Part VI: Szabó's Theorem (1999) -/
 
 /-- Szabó's main theorem: the asymptotic for maxAPFamily -/
@@ -132,22 +112,10 @@ axiom szabo_theorem (N : ℕ) (hN : N ≥ 2) :
     |(maxAPFamily N : ℝ) - N^2 / 2| ≤ C * N^(5/3 : ℝ) * (Real.log N)^3
 
 /-- The leading constant is 1/2 -/
-axiom szabo_leading_constant :
-  Filter.Tendsto (fun N => (maxAPFamily N : ℝ) / N^2)
-    Filter.atTop (nhds (1/2))
-
 /- ## Part VII: Szabó's Refined Results -/
 
 /-- Szabó's improved lower bound -/
-axiom szabo_lower_bound (N : ℕ) (hN : N ≥ 4) :
-  maxAPFamily N ≥ Nat.choose N 2 + (N - 1) / 4 + 1
-
 /-- Szabó conjectured every extremal family has a common element -/
-axiom szabo_common_element_conjecture (N : ℕ) (hN : N ≥ 2)
-    (F : Finset (Finset ℕ)) (hF : ∀ A ∈ F, A ⊆ interval N)
-    (hAP : hasAPIntersectionProperty F) (hmax : F.card = maxAPFamily N) :
-  ∃ k : ℕ, ∀ A ∈ F, k ∈ A
-
 /- ## Part VIII: Summary -/
 
 /--

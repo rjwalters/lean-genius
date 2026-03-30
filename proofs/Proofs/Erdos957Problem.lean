@@ -149,8 +149,13 @@ theorem erdos_pach_conjecture_true : ErdosPachConjecture := by
   use Nat.ceil (C / ε) + 2
   intro n hn A hA
   have hbound := hDum n (by omega) A hA
-  -- (9/8)n² + C·n ≤ (9/8 + ε)n² for large n
-  sorry
+  -- Need: (9/8)n² + C·n ≤ (9/8 + ε)·n², i.e., C·n ≤ ε·n²
+  have hn_pos : (0 : ℝ) < n := by positivity
+  have hn_cast : (↑(Nat.ceil (C / ε) + 2) : ℝ) ≤ ↑n := by exact_mod_cast hn
+  have hn_ge : C / ε ≤ n := le_trans (Nat.le_ceil _) (by linarith)
+  have hCn : C * n ≤ ε * n ^ 2 := by
+    rw [sq]; nlinarith [div_le_iff hε |>.mp hn_ge]
+  linarith
 
 /-
 ## Part V: Makai's Construction (Tightness)

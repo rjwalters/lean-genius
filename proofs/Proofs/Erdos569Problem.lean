@@ -66,12 +66,6 @@ def NoIsolatedVertices {V : Type*} [Fintype V] (G : SimpleGraph V)
   ∀ v : V, ∃ w : V, G.Adj v w
 
 /-- A graph with no isolated vertices on m edges has at most 2m vertices -/
-axiom vertex_bound_no_isolated :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    [DecidableRel G.Adj],
-    NoIsolatedVertices G →
-    Fintype.card V ≤ 2 * G.edgeFinset.card
-
 /-
 ## Part 3: The Ramsey Number R(C_{2k+1}, H)
 
@@ -82,8 +76,6 @@ red-blue coloring of K_N contains a red G₁ or a blue G₂.
 /-- The Ramsey number R(G₁, G₂): smallest N such that every 2-coloring
     of K_N contains a monochromatic copy.
     We axiomatize this as it requires deep graph theory machinery. -/
-axiom RamseyNumber (G₁ G₂ : ℕ → Prop) : ℕ
-
 /-- The Ramsey number for odd cycle C_{2k+1} vs a graph with m edges -/
 axiom R_cycle_graph (k m : ℕ) : ℕ
 
@@ -114,22 +106,10 @@ Several partial results are known for small values of k.
 /-- For k = 1 (triangles, C_3): R(C_3, H) ≤ 2m + 1 for graphs H
     with m edges and no isolated vertices.
     This follows from classical Ramsey theory for triangles. -/
-axiom triangle_ramsey_linear :
-  ∀ m : ℕ, m ≥ 1 →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (H : SimpleGraph V)
-      [DecidableRel H.Adj],
-      H.edgeFinset.card = m →
-      NoIsolatedVertices H →
-      R_cycle_graph 1 m ≤ 2 * m + 1
-
 /-- The triangle case gives c_1 ≤ 3 (since 2m + 1 ≤ 3m for m ≥ 1) -/
 axiom triangle_constant_bound : LinearRamseyBound 1 3
 
 /-- For k = 2 (pentagons, C_5): a linear bound is known -/
-axiom pentagon_ramsey_linear :
-  ∀ m : ℕ, m ≥ 1 →
-    R_cycle_graph 2 m ≤ 4 * m + 1
-
 /-
 ## Part 6: General Upper Bounds
 
@@ -145,10 +125,6 @@ axiom efrs_upper_bound :
 
 /-- The conjectured improvement: the k-dependence can be separated
     into a constant c_k independent of m. -/
-axiom conjectured_linear_bound :
-  ∀ k : ℕ, k ≥ 1 →
-    ∃ c : ℕ, LinearRamseyBound k c
-
 /-
 ## Part 7: Lower Bounds
 
@@ -157,15 +133,7 @@ Lower bounds show that some linear dependence on m is necessary.
 
 /-- Lower bound: R(C_{2k+1}, K_{1,m}) ≥ 2m + 1 for k ≥ 1.
     The star graph K_{1,m} has m edges and gives a lower bound. -/
-axiom star_lower_bound :
-  ∀ k m : ℕ, k ≥ 1 → m ≥ 1 →
-    R_cycle_graph k m ≥ 2 * m + 1
-
 /-- Lower bound: c_k ≥ 2 for all k ≥ 1 -/
-axiom constant_lower_bound :
-  ∀ k : ℕ, k ≥ 1 →
-    ¬ LinearRamseyBound k 1
-
 /-
 ## Part 8: Summary
 -/

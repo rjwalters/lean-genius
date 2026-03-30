@@ -1,0 +1,57 @@
+{
+  "id": "erdos-1-oq-02",
+  "title": "Dubroff\u2013Fox\u2013Xu Subset Sum Lower Bound Framework",
+  "slug": "erdos-1-oq-02",
+  "description": "Formalizes the algebraic framework for the Dubroff\u2013Fox\u2013Xu (2021) lower bound N \u2265 \u221a(2/\u03c0) \u00b7 2\u207f/\u221an for the distinct subset sums problem (Erd\u0151s #1). Proves variance bounds (sum of squares \u2264 n\u00b7N\u00b2, sum \u2264 n\u00b7N) and axiomatizes the anticoncentration step from Berry\u2013Esseen.",
+  "meta": {
+    "author": "Dubroff, Fox, Xu (2021); framework formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "2021",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1OQ02.lean",
+    "tags": [
+      "additive-combinatorics",
+      "erdos",
+      "distinct-subset-sums",
+      "variance",
+      "anticoncentration",
+      "berry-esseen"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 1,
+    "lineCount": 180,
+    "assumptions": "One axiom: anticoncentration_bound (Berry\u2013Esseen theorem for random subset sums). Two sorries remaining.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s Problem #1 ($500 prize) asks: if A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, must N \u2265 c\u00b72\u207f? The basic counting bound gives N \u2265 (2\u207f-1)/n. Dubroff, Fox, and Xu (2021) improved this to N \u2265 \u221a(2/\u03c0)\u00b72\u207f/\u221an using a variance-based anticoncentration argument.",
+    "problemStatement": "**Theorem (DFX 2021)**: If A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, then N \u2265 \u221a(2/\u03c0) \u00b7 2\u207f/\u221an.",
+    "text": "Formalizes the framework for the DFX lower bound, including variance bounds and the anticoncentration axiom."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "Parent: Erd\u0151s Problem #1, distinct subset sums"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dubroff, Q., Fox, J., Xu, M. Z.",
+      "title": "A note on the Erd\u0151s distinct subset sums problem",
+      "year": "2021",
+      "venue": "SIAM J. Discrete Math. 35(1):322\u2013324",
+      "note": "The \u221a(2/\u03c0)\u00b72\u207f/\u221an lower bound via Berry\u2013Esseen"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.Erdos1Problem", "Mathlib"],
+    "namespace": "Erdos1OQ02",
+    "lineCount": 180,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
+}

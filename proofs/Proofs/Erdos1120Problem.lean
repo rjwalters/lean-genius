@@ -155,15 +155,7 @@ axiom erdos_1120_conjecture :
   ∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, worstCasePathLength n ≥ M
 
 /-- Trivial lower bound: the worst case is always ≥ 1 -/
-axiom trivial_lower : ∀ n : ℕ, n > 0 → worstCasePathLength n ≥ 1
-
 /-- Clunie–Netanyahu: a path from 0 to |z|=1 always exists in E -/
-axiom clunie_netanyahu_existence (n : ℕ) (hn : n > 0) (p : UnitRootedPoly n) :
-  ∃ γ : Set.Icc (0 : ℝ) 1 → ℂ,
-    γ ⟨0, le_refl 0, zero_le_one⟩ = 0 ∧
-    abs (γ ⟨1, zero_le_one, le_refl 1⟩) = 1 ∧
-    ∀ t, (γ t) ∈ sublevelSet p
-
 /-- Erdős's growth conjecture: worst case grows slowly -/
 axiom erdos_growth_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 → worstCasePathLength n ≤ C * n

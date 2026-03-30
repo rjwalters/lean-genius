@@ -131,9 +131,6 @@ def MengersTheorem {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) : Prop :=
     (∀ S : Finset V, IsSeparator G A B ↑S → k ≤ S.card)
 
 /-- Menger's theorem is classical and well-established. -/
-axiom menger_classical {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) :
-    MengersTheorem G A B
-
 /-
 ## Part IV: The Aharoni-Berger Theorem (2009)
 -/
@@ -169,12 +166,6 @@ def IsKLinked {V : Type*} (G : Graph V) (k : ℕ) : Prop :=
       (∀ p q, p ∈ paths → q ∈ paths → p ≠ q → AreDisjoint p q)
 
 /-- Erdős-Menger generalizes to k-linkage. -/
-axiom erdos_menger_implies_linkage :
-    ErdosMengerConjecture →
-    ∀ (V : Type*) (G : Graph V) (k : ℕ), ∃ f : ℕ → ℕ,
-      (∀ v : V, ∃ neighbors : Finset V, neighbors.card ≥ f k) →
-      IsKLinked G k
-
 /-
 ## Part VII: Historical Context
 
@@ -189,12 +180,6 @@ axiom erdos_menger_implies_linkage :
 -/
 
 /-- The max-flow min-cut theorem for vertex version. -/
-axiom maxflow_mincut_vertex {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) :
-    Disjoint A B →
-    ∃ k : ℕ, (∃ P : PathFamily G A B, P.pairwiseDisjoint ∧
-      ∃ f : Fin k → Path G, (∀ i, f i ∈ P.paths)) ∧
-      (∀ S : Finset V, IsSeparator G A B ↑S → k ≤ S.card)
-
 /-
 ## Part IX: König-Egervary Connection
 

@@ -228,16 +228,10 @@ example : divisorRatio 3 = 3/2 := by
 **Small ratios:**
 τ(n+1)/τ(n) can be arbitrarily small.
 -/
-axiom small_ratios_exist :
-    ∀ ε > 0, ∃ n : ℕ, n ≥ 1 ∧ divisorRatio n < ε
-
 /--
 **Large ratios:**
 τ(n+1)/τ(n) can be arbitrarily large.
 -/
-axiom large_ratios_exist :
-    ∀ M : ℝ, ∃ n : ℕ, n ≥ 1 ∧ divisorRatio n > M
-
 /-
 ## Part VI: Connection to Prime k-Tuple Conjecture
 -/
@@ -256,16 +250,10 @@ def PrimeKTupleConjecture : Prop :=
 **The conjecture implies density:**
 Under the prime k-tuple conjecture, density follows easily.
 -/
-axiom ktuple_implies_density :
-    PrimeKTupleConjecture → ErdosConjecture964
-
 /--
 **Eberhard's unconditional proof:**
 Eberhard proved the density result without assuming any unproved conjectures.
 -/
-axiom eberhard_unconditional :
-    ErdosConjecture964
-
 /-
 ## Part VII: Stronger Results
 -/
@@ -312,20 +300,10 @@ noncomputable def averageRatio (N : ℕ) : ℝ :=
 **The average is 1:**
 On average, τ(n+1) ≈ τ(n).
 -/
-axiom average_ratio_is_one :
-    Filter.Tendsto averageRatio Filter.atTop (nhds 1)
-
 /--
 **Distribution of log ratios:**
 log(τ(n+1)/τ(n)) has a limiting distribution.
 -/
-axiom log_ratio_distribution :
-    ∃ μ : MeasureTheory.Measure ℝ,
-      Filter.Tendsto
-        (fun N => (∑ n ∈ Finset.range N, if Real.log (divisorRatio (n + 1)) ∈ Set.Icc (-1) 1 then (1 : ℝ) else 0) / N)
-        Filter.atTop
-        (nhds (μ (Set.Icc (-1) 1)))
-
 /-
 ## Part IX: Summary
 

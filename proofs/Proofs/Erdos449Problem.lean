@@ -113,21 +113,11 @@ r(n) + τ(n) ≥ τ(n)² / τ⁺(n)
 
 This is the key technical tool.
 -/
-axiom cauchy_schwarz_divisors (n : ℕ) (hn : n > 0) :
-    (r n : ℝ) + tau n ≥ (tau n : ℝ)^2 / tauPlus n
-
 /--
 **Connection to Problem 448:**
 From Problem 448: τ⁺(n) can be much smaller than τ(n) for
 a positive density set of n, making τ(n)²/τ⁺(n) large.
 -/
-axiom problem_448_consequence :
-    ∀ K : ℝ, K > 0 →
-    ∃ δ : ℝ, δ > 0 ∧
-    ∀ N : ℕ, N > 0 →
-      ((Finset.range N).filter (fun n =>
-        n > 0 ∧ (tau n : ℝ)^2 / tauPlus n ≥ (K + 1) * tau n)).card ≥ δ * N
-
 /- ## Part V: Examples and Small Values -/
 
 /--
@@ -136,11 +126,6 @@ Divisors: 1, 2, 3, 4, 6, 12
 Close pairs: (2,3), (3,4), (3,6), (4,6), (6,12)
 r(12) = 5, τ(12) = 6
 -/
-axiom example_12 :
-    tau 12 = 6 ∧
-    -- Close pairs include (2,3), (3,4), etc.
-    r 12 = 5
-
 /- ## Part VI: Related Results -/
 
 /-- **Ford's derivation from Problem 448:**
@@ -150,13 +135,6 @@ that τ⁺(n) can be much smaller than τ(n) on a positive density set.
 
 Specifically: r(n) + τ(n) ≥ τ(n)²/τ⁺(n), so when τ(n)/τ⁺(n) ≫ 1,
 we get r(n) ≫ τ(n). -/
-axiom ford_derivation :
-    ∀ K : ℝ, K > 0 →
-    ∃ δ : ℝ, δ > 0 ∧
-    ∀ N : ℕ, N > 0 →
-      ((Finset.range N).filter (fun n =>
-        n > 0 ∧ (r n : ℝ) ≥ K * tau n)).card ≥ δ * N
-
 /- ## Part VII: Summary -/
 
 /--

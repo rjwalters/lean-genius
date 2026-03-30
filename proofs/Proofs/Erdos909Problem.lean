@@ -46,10 +46,6 @@ def hasDimensionExactly (X : Type*) (n : ℕ) : Prop :=
 For 'nice' spaces: dim(X × Y) ≤ dim(X) + dim(Y).
 The problem asks when this can be a strict inequality.
 -/
-axiom dimension_product_ineq (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
-    (m n : ℕ) (hX : dimLeq X m) (hY : dimLeq Y n) :
-    dimLeq (X × Y) (m + n)
-
 /- ## Part II: The Problem Statement -/
 
 /--
@@ -102,12 +98,7 @@ theorem erdos_909 : erdos909Statement := by
 /- ## Part V: Supporting Results -/
 
 /-- dim(ℝ^n) = n (standard result) -/
-axiom dimension_euclidean (n : ℕ) : dimLeq (Fin n → ℝ) n
-
 /-- If Y ⊆ X, then dim(Y) ≤ dim(X) (monotonicity) -/
-axiom dimension_subspace (X : Type*) [TopologicalSpace X] (Y : Set X) (n : ℕ)
-    (hX : dimLeq X n) : dimLeq Y n
-
 /- ## Part VI: Summary -/
 
 /--

@@ -53,29 +53,16 @@ axiom l (n : ℕ) : ℕ
 
 /-- l(n) is a valid lower bound: every n-set has a sum-free subset
 of size at least l(n). -/
-axiom l_characterization (n : ℕ) :
-  ∀ A : Finset ℤ, A.card = n → ∃ B : Finset ℤ, B ⊆ A ∧ IsSumFree B ∧ B.card ≥ l n
-
 /-- l(n) is optimal: for any k > l(n), there exists an n-set where
 no sum-free subset reaches size k. -/
-axiom l_optimal (n : ℕ) :
-  ∀ k : ℕ, k > l n → ∃ A : Finset ℤ, A.card = n ∧
-    ∀ B : Finset ℤ, B ⊆ A → IsSumFree B → B.card < k
-
 /- ## Lower Bounds -/
 
 /-- **Erdős's observation:** l(n) ≥ √(n/2).
 In {1,...,n}, the upper half is nearly sum-free since sums of
 large numbers exceed n. A careful selection yields √(n/2) elements. -/
-axiom erdos_lower_bound :
-  ∀ n : ℕ, n > 0 → (l n : ℝ) ≥ Real.sqrt (n / 2)
-
 /-- **Choi's improvement:** l(n) > (1+c)√n for some c > 0.
 This beats Erdős's √(n/2) ≈ 0.707√n by a constant factor,
 using a more refined combinatorial argument. -/
-axiom choi_improvement :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n > 0 → (l n : ℝ) > (1 + c) * Real.sqrt n
-
 /-- **CKS Lower Bound (1975):**
 l(n) ≥ c √(n log n / log log n) for large n.
 This is the best known lower bound. -/

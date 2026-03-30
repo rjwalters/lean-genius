@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 614,
     "erdosUrl": "https://erdosproblems.com/614",
     "erdosProblemStatus": "open",
@@ -45,15 +45,18 @@
       "existsGraphWithPropertyP definition: existence predicate for f(n,k)",
       "f_lower_bound axiom: kn/2 lower bound on edges",
       "f_upper_bound axiom: complete graph upper bound",
-      "f_case_k_eq_1 axiom: k=1 requires n-2 edges",
-      "f_max_k axiom: k=n-2 requires complete graph",
+      "f_case_k_eq_1 theorem: k=1 requires n-2 edges (axiom eliminated, proved via vertex cover injection)",
+      "hasPropertyP_one_triple_has_edge lemma: P(1) means every triple has an edge",
+      "edge_injection_bound lemma: vertex cover gives injection to edge set",
+      "edgeCount_ge_of_propertyP1 theorem: core result for Fin n",
       "f_mono_k axiom: monotonicity in k",
       "erdos_614_existence axiom: well-definedness of f(n,k)",
       "erdos_614_summary theorem: combines existence and upper bound"
     ],
-    "axiomCount": 3,
-    "lineCount": 269,
-    "assumptions": "3 axioms: f_lower_bound, f_case_k_eq_1, f_mono_k. f_upper_bound proved via complete graph construction."
+    "axiomCount": 2,
+    "sorryCount": 1,
+    "lineCount": 454,
+    "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 converted to theorem (1 sorry: type transport). f_upper_bound proved via complete graph construction."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #614** is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\n**Background:** The problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size). It was referenced in [FRS97] by Füredi, Ruszinkó, and Selkow.\n\n**Current Status:** The problem remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood. Basic bounds and monotonicity properties have been established, but the exact determination of f(n,k) for general n, k is an unsolved problem.",
@@ -153,16 +156,18 @@
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Combinatorics.SimpleGraph.Basic"
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "SimpleGraph",
       "Finset"
     ],
     "namespace": "Erdos614",
-    "lineCount": 269,
-    "axiomCount": 3,
-    "theoremCount": 8,
+    "lineCount": 454,
+    "axiomCount": 2,
+    "theoremCount": 12,
     "definitionCount": 7
   },
   "crossReferences": [

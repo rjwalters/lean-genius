@@ -79,8 +79,6 @@ axiom erdos_b2_theorem : ErdosBhConjecture 2
 
     Nash proved the conjecture for h=4 using Fourier-analytic methods.
 -/
-axiom nash_b4_theorem : ErdosBhConjecture 4
-
 /-- **Chen's Theorem (1996)**: B_h sets have density o(N^(1/h)) for all even h.
 
     Chen extended Nash's techniques to handle all even values of h.
@@ -145,10 +143,6 @@ def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k}
 
     This follows from the uniqueness of binary representation.
 -/
-axiom powers_of_two_sidon_property :
-  ∀ a b c d : ℕ, a ≤ b → c ≤ d →
-    2^a + 2^b = 2^c + 2^d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
-
 /- ## Summary of Known Results -/
 
 /-- Summary: What's proven about B_h density bounds.

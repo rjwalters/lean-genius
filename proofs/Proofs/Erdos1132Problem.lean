@@ -161,10 +161,6 @@ For any choice of nodes in [-1,1],
   max_{x∈[-1,1]} Lₙ(x) > (2/π) log(n) - O(1)
 
 This is a fundamental lower bound on the Lebesgue constant. -/
-axiom erdos_lower_bound (n : ℕ) (hn : n ≥ 2) (nodes : Fin n → ℝ)
-    (hnodes : ∀ k, nodes k ∈ Set.Icc (-1 : ℝ) 1) :
-    lebesgueConstant nodes > (2 / Real.pi) * Real.log n - 10
-
 /-- **Chebyshev Nodes:**
 The nodes that minimize the Lebesgue constant are the Chebyshev nodes:
   xₖ = cos((2k-1)π/(2n)) for k = 1, ..., n -/
@@ -182,9 +178,6 @@ theorem chebyshevNodes_in_interval (n : ℕ) (hn : n ≥ 1) (k : Fin n) :
 /-- **Optimal Growth Rate:**
 For Chebyshev nodes, the Lebesgue constant grows as (2/π) log(n) + O(1).
 This is asymptotically optimal. -/
-axiom chebyshev_lebesgue_constant (n : ℕ) (hn : n ≥ 2) :
-    |lebesgueConstant (chebyshevNodes n) - (2 / Real.pi) * Real.log n| ≤ 2
-
 /- ## Part IV: The Main Questions
 
 Erdős's questions about Lebesgue functions for infinite sequences.
@@ -265,9 +258,6 @@ noncomputable def equidistantNodes (n : ℕ) : Fin n → ℝ :=
 
 /-- **Equidistant nodes have exponentially growing Lebesgue constants:**
 Λₙ ≥ 2^(n/4) for equidistant nodes when n is large enough. -/
-axiom equidistant_exponential_growth (n : ℕ) (hn : n ≥ 10) :
-    lebesgueConstant (equidistantNodes n) ≥ 2 ^ (n / 4 : ℕ)
-
 /- ## Part VII: Summary
 
 **Erdős Problem #1132: OPEN**

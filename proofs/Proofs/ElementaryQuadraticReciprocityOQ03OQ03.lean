@@ -69,23 +69,12 @@ theorem first_supplement (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) :
 axiom HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ
 
 /-- The Hilbert symbol takes values in {-1, 1}. -/
-axiom hilbert_values (a b : ℤ) (p : ℕ) :
-    HilbertSymbol a b p = 1 ∨ HilbertSymbol a b p = -1
-
 /-- The Hilbert product formula: ∏_v (a,b)_v = 1.
     This is the deepest form of quadratic reciprocity, expressing it as
     a local-global principle. The product is over all places (primes + ∞).
 
     This axiom encodes the key insight: QR is equivalent to saying that
     local solvability data (Hilbert symbols) is globally consistent. -/
-axiom hilbert_product_formula (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
-    ∃ S : Finset ℕ, (∀ p, p ∉ S → HilbertSymbol a b p = 1) ∧
-    (S.prod fun p => HilbertSymbol a b p) = 1
-
--- ============================================================
--- SECTION IV: Connection Summary
--- ============================================================
-
 /-!
 ## The Bridge: Jacobi → Hilbert → Class Field Theory
 

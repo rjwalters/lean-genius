@@ -75,6 +75,7 @@ The following was proved by Aristotle:
 -/
 
 import Mathlib
+import Proofs.AreaOfCircleOQ01OQ02OQ02
 
 
 open Real Filter Topology
@@ -379,20 +380,14 @@ theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     · exact Complex.continuous_ofReal.comp hf.continuous;
     · assumption
 
-/- Aristotle failed to find a proof. -/
 /-- IBP for Fourier coefficients of periodic functions.
-    For C¹ periodic f, ĉₙ(f') = in·ĉₙ(f). Proof: apply fourierCoeffOn_of_hasDerivAt,
-    periodicity cancels boundary term f(2π)-f(0) = 0. -/
+    For C¹ periodic f, ĉₙ(f') = in·ĉₙ(f). Proved in AreaOfCircleOQ01OQ02OQ02.lean. -/
 theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t)
     (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
     fourierCoeffOn hab (Complex.ofReal ∘ deriv f) n =
-    I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n := by
-  -- IBP: ĉₙ(f') = in·ĉₙ(f) for periodic C¹ f, via fourierCoeffOn_of_hasDerivAt.
-  -- Boundary term vanishes by periodicity: f(2π) - f(0) = 0.
-  -- API note: Complex.hasDerivAt_ofReal_comp was removed/renamed in recent Mathlib.
-  -- fourierCoeffOn_of_hasDerivAt argument order also changed.
-  sorry
+    I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n :=
+  IsoperimetricFourier.fourierCoeffOn_deriv_periodic f hf hperiod hab n hn
 
 /- Fourier decomposition for periodic C¹ functions.
     Converted from axiom to theorem. Uses parseval_periodic_real and

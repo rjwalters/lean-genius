@@ -170,11 +170,6 @@ contain two points at distances r₁ and r₁+1 from the same center
 when those two points are collinear with the center.
 This limits the "radial extent" of the set along any ray.
 -/
-axiom circle_separation (A : Set (ℝ × ℝ)) (hA : AvoidsIntegerDistances A)
-    (center : ℝ × ℝ) :
-    ∀ r₁ r₂ : ℝ, r₂ - r₁ = 1 →
-      ¬(∃ a ∈ A, dist a center = r₁) ∨ ¬(∃ b ∈ A, dist b center = r₂)
-
 /-
 ## Part V: Lower Bounds
 
@@ -224,10 +219,6 @@ theorem annulus_subset_openDisk (r₁ r₂ : ℝ) : annulus r₁ r₂ ⊆ openDi
 If an annulus has thickness < 1, any two points in it have distance < 2,
 so integers > 1 are automatically avoided. We only need to avoid distance 1.
 -/
-axiom thin_annulus_property (r : ℝ) (hr : r > 0) (δ : ℝ) (hδ : 0 < δ ∧ δ < 1) :
-    ∃ A : Set (ℝ × ℝ), A ⊆ annulus r (r + δ) ∧ AvoidsIntegerDistances A ∧
-      volume A > 0
-
 /-
 ## Part VII: Related Distance Problems
 
@@ -255,18 +246,10 @@ theorem avoidsInteger_is_forbiddenDistances (A : Set (ℝ × ℝ)) :
 **Erdős #465 (Related):**
 Upper bounds for sets avoiding unit distances.
 -/
-axiom erdos_465_upper : ∃ C : ℝ, C > 0 ∧
-    ∀ r : ℝ, r > 0 → ∀ A : Set (ℝ × ℝ), A ⊆ openDisk r →
-      AvoidsForbiddenDistances A {1} → volume A ≤ ENNReal.ofReal (C * r)
-
 /--
 **Erdős #466 (Related):**
 Lower bounds for sets avoiding unit distances.
 -/
-axiom erdos_466_lower : ∃ (α : ℝ) (C : ℝ), α > 0 ∧ C > 0 ∧
-    ∀ r : ℝ, r ≥ 1 → ∃ A : Set (ℝ × ℝ), A ⊆ openDisk r ∧
-      AvoidsForbiddenDistances A {1} ∧ volume A ≥ ENNReal.ofReal (C * r ^ α)
-
 /-
 ## Part VIII: The Main Open Question
 -/
@@ -280,12 +263,6 @@ The conjecture is that there exist constants α, C₁, C₂ such that
   C₁ · r^α ≤ maxMeasure(r) ≤ C₂ · r^α
 for some α between 0.26 and 1.
 -/
-axiom erdos_953_asymptotic :
-    ∃ (α : ℝ) (C₁ C₂ : ℝ), 0 < α ∧ α ≤ 1 ∧ C₁ > 0 ∧ C₂ > 0 ∧
-      ∀ r : ℝ, r ≥ 1 →
-        ENNReal.ofReal (C₁ * r ^ α) ≤ maxMeasure r ∧
-        maxMeasure r ≤ ENNReal.ofReal (C₂ * r ^ α)
-
 /-
 ## Part IX: Summary
 -/
@@ -311,9 +288,4 @@ theorem erdos_953_summary :
 /--
 The main open question.
 -/
-axiom erdos_953 : ∃ f : ℝ → ℝ,
-    (∀ r : ℝ, r > 0 → maxMeasure r = ENNReal.ofReal (f r)) ∧
-    (∃ α : ℝ, 0 < α ∧ α ≤ 1 ∧
-      ∀ ε > 0, ∃ r₀ : ℝ, ∀ r ≥ r₀, |f r / r ^ α - 1| < ε)
-
 end Erdos953

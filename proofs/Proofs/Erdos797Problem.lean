@@ -81,27 +81,16 @@ axiom f (d : ℕ) : ℕ
 
 /-- f(d) is realized by some graph with maximum degree ≤ d.
     This guarantees the existence of extremal graphs. -/
-axiom f_realized (d : ℕ) :
-    ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-      maxDegree G ≤ d ∧ acyclicChromaticNumber G = f d
-
 /- ## Part 3: Known Bounds -/
 
 /-- Greedy upper bound: f(d) ≤ d² + 1.
     A simple greedy coloring argument: at each step, at most d² color pairs
     involving the current vertex and its neighbors' colors could create
     bichromatic paths, so d² + 1 colors always suffice. -/
-axiom greedy_upper_bound :
-  ∀ d : ℕ, d ≥ 1 → f d ≤ d^2 + 1
-
 /-- Erdős lower bound: f(d) ≥ d^{4/3 - o(1)}.
     Uses probabilistic constructions with Sidon (B₂) sets.
     Dense Sidon sets in ℤ_p yield bipartite graphs where many colors
     are forced for any acyclic coloring. -/
-axiom erdos_lower_bound :
-  ∀ ε > 0, ∃ d₀ : ℕ, ∀ d ≥ d₀,
-    (f d : ℝ) ≥ (d : ℝ)^(4/3 - ε)
-
 /-- Alon-McDiarmid-Reed (1991): f(d) ≤ O(d^{4/3}).
     The key resolution of the problem. Uses the Lovász Local Lemma to show
     a random coloring can be modified to avoid bichromatic cycles while
@@ -122,12 +111,6 @@ axiom precise_lower_bound :
 /-- The complete asymptotic: f(d) = Θ(d^{4/3}).
     Combines the AMR upper bound and precise lower bound into a single statement.
     The remaining (log d)^{1/3} gap between upper and lower bounds is still open. -/
-axiom asymptotic_theta :
-  ∃ c C : ℝ, 0 < c ∧ c < C ∧
-    ∀ d : ℕ, d ≥ 3 →
-      c * (d : ℝ)^(4/3) / (Real.log d)^(1/3) ≤ f d ∧
-      (f d : ℝ) ≤ C * (d : ℝ)^(4/3)
-
 /- ## Part 5: Connection to B₂ Sequences (Sidon Sets) -/
 
 /-- A finite set A ⊂ ℕ is a B₂ set (Sidon set) if all pairwise sums a + b
@@ -146,9 +129,6 @@ def is_B2_sequence (A : Finset ℕ) : Prop :=
 /-- The original Erdős question: is f(d) = o(d²)?
     This follows from the AMR upper bound f(d) ≤ C·d^{4/3},
     since d^{4/3} / d² = d^{-2/3} → 0 as d → ∞. -/
-axiom erdos_797_subquadratic :
-    ∀ ε > 0, ∃ d₀ : ℕ, ∀ d ≥ d₀, (f d : ℝ) ≤ ε * (d : ℝ)^2
-
 /- ## Part 7: Summary -/
 
 /-- **Erdős Problem #797: SOLVED**

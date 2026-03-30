@@ -92,11 +92,6 @@ axiom threshold_decreasing :
     thresholdConstant (r + 1) < thresholdConstant r
 
 /-- Concrete threshold values for small r -/
-axiom threshold_values :
-  thresholdConstant 3 = 1/27 ∧
-  thresholdConstant 4 = 1/256 ∧
-  thresholdConstant 5 = 1/3125
-
 /- ## Part III: The Open Conjecture -/
 
 /--
@@ -128,10 +123,6 @@ large n when ε is small. This means the hypothesis in the conjecture
 is weaker, so improving the conclusion (density constant) would be
 a genuine strengthening.
 -/
-axiom threshold_comparison :
-  ∀ n r : ℕ, r ≥ 3 → n ≥ r →
-    ((n : ℝ) / r)^r < (n : ℝ)^r
-
 /- ## Part IV: Complete Hypergraphs and Asymptotics -/
 
 /-- Complete r-uniform hypergraph on m vertices has C(m,r) edges -/
@@ -141,12 +132,6 @@ def completeHypergraphEdges (m r : ℕ) : ℕ := Nat.choose m r
 For large m, C(m,r) ~ m^r / r!, establishing the relationship
 between binomial coefficients and the m^r density measure.
 -/
-axiom binomial_asymptotic :
-  ∀ r : ℕ, r ≥ 1 →
-    Filter.Tendsto
-      (fun m => (completeHypergraphEdges m r : ℝ) / ((m : ℝ)^r / (r.factorial : ℝ)))
-      Filter.atTop (nhds 1)
-
 /- ## Part V: Summary -/
 
 /--

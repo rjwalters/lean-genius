@@ -52,11 +52,6 @@ theorem constant_superlevel (n : ℕ) (w : ℂ) (c : ℝ) :
 
     Camera-Gol'dberg criterion: |E(c)| < ∞ iff
     ∫₀^∞ r/(log log M(r)) dr < ∞ where M(r) = max_{|z|=r} |f(z)|. -/
-axiom camera_goldberg_criterion :
-    -- The measure finiteness of E(c) is characterized by the
-    -- Camera-Gol'dberg integral condition on M(r).
-    True
-
 /-- In nD (n ≥ 2): The superlevel set E(c) ⊂ ℂⁿ ≅ ℝ^(2n)
     has a richer structure.
 
@@ -67,26 +62,11 @@ axiom camera_goldberg_criterion :
        pseudoconvex domain (Oka's theorem)
     3. Hartogs extension: if E(c) has "small" complement,
        f extends holomorphically (no 1D analogue) -/
-axiom higher_dim_differences :
-    True
-
--- ============================================================
--- Part III: Plurisubharmonic Functions
--- ============================================================
-
 /-- In several complex variables, log|f| is plurisubharmonic:
     Δᵢlog|f| ≥ 0 for each complex variable zᵢ.
 
     The superlevel sets of plurisubharmonic functions are
     pseudoconvex (a key notion in SCV). -/
-axiom log_abs_psh :
-    -- For f : ℂⁿ → ℂ holomorphic, log|f| is plurisubharmonic.
-    True
-
--- ============================================================
--- Part IV: Dimension Counting
--- ============================================================
-
 /-- The real dimension of the superlevel set:
     In ℂ = ℝ², the superlevel set is 2-dimensional.
     In ℂⁿ = ℝ^(2n), the superlevel set is (2n)-dimensional.

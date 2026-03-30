@@ -113,13 +113,6 @@ summing to 1 has positive density among all integers.
 
 This foundational result led to Liu-Sawhney's resolution of Erdős #310.
 -/
-axiom bloom_unit_fraction_density :
-  ∃ δ : ℚ, δ > 0 ∧
-    ∀ N : ℕ, N > 0 →
-      ∃ count : ℕ, count ≥ 1 ∧
-        ∃ S : Finset (Finset ℕ), S.card = count ∧
-          ∀ T ∈ S, unitFractionSum T = 1
-
 /-
 ## Part IV: Small Examples
 
@@ -190,12 +183,6 @@ where the minimum achievable denominator requires b ≥ exp(Ω(1/α)).
 
 This shows Liu-Sawhney's result is essentially best possible.
 -/
-axiom liu_sawhney_sharpness :
-  ∀ C : ℕ, ∃ α : ℚ, 0 < α ∧ α < 1 ∧
-    ∃ N : ℕ, ∃ A : Finset ℕ, isDense A N α ∧
-      ∀ S : Finset ℕ, S ⊆ A → S.Nonempty →
-        ¬ hasBoundedDenom (unitFractionSum S) C
-
 /-
 ## Part VII: Connection to Egyptian Fractions
 
@@ -210,18 +197,10 @@ for some finite set S of distinct positive integers.
 
 This is a classical result, provable by the greedy algorithm.
 -/
-axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0) :
-  ∃ S : Finset ℕ, (∀ n ∈ S, n > 0) ∧ unitFractionSum S = q
-
 /--
 The greedy algorithm: repeatedly subtract the largest unit fraction ≤ q.
 This terminates and produces a valid representation.
 -/
-axiom egyptian_fraction_greedy (q : ℚ) (hq : 0 < q) (hq1 : q ≤ 1) :
-  ∃ S : Finset ℕ, (∀ n ∈ S, n > 0) ∧
-    (∀ n m : ℕ, n ∈ S → m ∈ S → n ≠ m) ∧
-    unitFractionSum S = q
-
 /-
 ## Part VIII: Historical Context
 
@@ -305,12 +284,6 @@ subset whose reciprocals sum to 1.
 
 This is a strong precursor to Bloom's work.
 -/
-axiom croot_theorem :
-  ∀ A : Set ℕ, (∀ n ∈ A, n > 0) →
-    (∃ δ : ℚ, δ > 0 ∧ ∀ N : ℕ, N > 0 →
-      ((Finset.range (N+1)).filter (· ∈ A)).card ≥ δ * N) →
-    ∃ S : Finset ℕ, (↑S : Set ℕ) ⊆ A ∧ unitFractionSum S = 1
-
 /--
 **Summary Theorem:**
 Erdős Problem #310 is solved with optimal bounds.

@@ -243,8 +243,30 @@ theorem erdos_1171_k1_under_ch (h : CH) :
 -- PART 7: Baumgartner's Partial Result
 -- ============================================================
 
-/-- Martin's Axiom (a set-theoretic axiom weaker than CH). -/
-axiom MartinsAxiom : Prop
+/-- Martin's Axiom: For every partial order P with the countable chain condition
+    (CCC) and every family of fewer than 2^ℵ₀ dense subsets, there exists a
+    filter meeting all of them. This is independent of ZFC but weaker than CH.
+
+    Concretely:
+    - Two elements are **compatible** if they have a common lower bound
+    - **CCC**: every set of pairwise incompatible elements is countable
+    - **Dense**: D ⊆ P is dense if every element has a refinement in D
+    - **Filter**: nonempty, upward-closed, downward-directed subset of P -/
+def MartinsAxiom : Prop :=
+  ∀ (P : Type) [Preorder P],
+    -- CCC: every antichain (pairwise incompatible set) is countable
+    (∀ A : Set P, (∀ a ∈ A, ∀ b ∈ A, a ≠ b →
+      ¬∃ r : P, r ≤ a ∧ r ≤ b) → A.Countable) →
+    -- For every family D of dense sets with |D| < 2^ℵ₀
+    ∀ D : Set (Set P),
+      (∀ d ∈ D, ∀ p : P, ∃ q ∈ d, q ≤ p) →
+      Cardinal.mk D < 2 ^ Cardinal.aleph0 →
+      -- There exists a filter meeting every dense set
+      ∃ G : Set P,
+        G.Nonempty ∧
+        (∀ p ∈ G, ∀ q : P, p ≤ q → q ∈ G) ∧
+        (∀ p ∈ G, ∀ q ∈ G, ∃ r ∈ G, r ≤ p ∧ r ≤ q) ∧
+        ∀ d ∈ D, ∃ x ∈ G, x ∈ d
 
 /-- Baumgartner's theorem [Ba89b]: Assuming Martin's Axiom,
     ω₁·ω → (ω₁·ω, 3)². -/
@@ -367,16 +389,7 @@ theorem erdos_1171_under_ch (h : CH) : erdos_1171_statement := by
   exact ch_implies_multicolor h k
 
 -- ============================================================
--- PART 11: Relationship to Known Partition Calculus
--- ============================================================
-
-/-- The Erdős-Rado partition theorem: (2^κ)⁺ → (κ⁺ + 1)²_κ
-    for every infinite cardinal κ. -/
-axiom erdos_rado_partition (κ : Cardinal) (hκ : ℵ₀ ≤ κ) :
-    ordinalPartitionRel2 ((2 ^ κ).ord + 1) (κ.ord + 1) 2
-
--- ============================================================
--- PART 12: Summary
+-- PART 11: Summary
 -- ============================================================
 
 /-
@@ -387,12 +400,13 @@ Erdős #1171 asks whether ω₁² → (ω₁·ω, 3, ..., 3)²_{k+1} holds
 for all finite k.
 
 ### What We Formalize
-1. Ordinal partition relations (2-color and multicolor, axiomatized)
+1. Ordinal partition relations (2-color and multicolor, concrete definitions)
 2. Key ordinals: ω₁, ω₁², ω₁·ω
 3. The problem statement as a universal quantification over k
-4. Baumgartner's partial result (k=1 case under MA)
-5. The CH-conditional full resolution via Hajnal's theorem
-6. Monotonicity and connections to #1169 and Erdős-Rado
+4. Martin's Axiom (concrete CCC/dense sets/generic filter formulation)
+5. Baumgartner's partial result (k=1 case under MA)
+6. The CH-conditional full resolution via Hajnal's theorem
+7. Monotonicity of partition relations (source, target, colors)
 
 ### Status
 - OPEN in ZFC (the main question)
@@ -408,7 +422,9 @@ for all finite k.
    from ZFC: without CH or MA, we lack the tools to control colorings
    of ω₁².
 
-### Axiom Count: 4 axioms, 20 theorems (17 with non-trivial proofs)
+### Axiom Count: 2 axioms (hajnal_ch, baumgartner_ma), 20 theorems
+### Eliminated MartinsAxiom: concrete def via CCC/dense sets/generic filters (was axiom)
+### Removed erdos_rado_partition: unused axiom (was 4 axioms)
 ### Proved ch_implies_multicolor from hajnal_ch by induction on k (was 5 axioms)
 ### Previously proved 9 axioms by defining ordinalPartitionRel2/Multi concretely (was 14 axioms)
 ### Previously proved omega1_isLimit and omega1TimesOmega_isLimit (was 16 axioms)

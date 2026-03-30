@@ -299,16 +299,10 @@ theorem k3_not_bipartite : ¬IsBipartite K3 := by
 ex(n; K_{r+1}) = (1 - 1/r) * n²/2, asymptotically.
 The extremal graph is the Turán graph T(n,r).
 -/
-axiom turan_theorem (n r : ℕ) (hr : 1 ≤ r) :
-    ∃ c : ℝ, c ≥ 0 ∧ |((turanNumber n (r+1)) : ℝ) - (1 - 1/r) * n^2 / 2| ≤ c * n
-
 /--
 **Kővári-Sós-Turán Theorem (1954)**:
 For even cycles C_{2k}, we have ex(n; C_{2k}) = O(n^{1+1/k}).
 -/
-axiom kovari_sos_turan (k : ℕ) (hk : 2 ≤ k) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (turanNumber n (2*k) : ℝ) ≤ c * (n : ℝ)^(1 + 1/(k : ℝ))
-
 /- ## Corollaries -/
 
 /-- Non-bipartite graphs satisfy the original conjecture. -/

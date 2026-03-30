@@ -1,0 +1,176 @@
+{
+  "id": "shannon-channel-coding-oq-02",
+  "title": "BSC Capacity Proof and Random Coding Foundation",
+  "slug": "shannon-channel-coding-oq-02",
+  "description": "Proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) from first principles, eliminating the bsc_capacity_eq axiom from the parent formalization. Establishes the random coding existence lemma (probabilistic method).",
+  "meta": {
+    "author": "Claude Shannon (1948), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_symmetric_channel",
+    "date": "1948",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonChannelCodingOQ02.lean",
+    "tags": [
+      "information-theory",
+      "analysis",
+      "probability",
+      "coding-theory",
+      "channel-capacity",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Logarithm properties for entropy and mutual information computations",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Order.ConditionallyCompleteLattice.Basic",
+        "description": "csSup/csSup_le for capacity as supremum",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof that BSC(p) capacity = log 2 - h(p), eliminating the parent file's bsc_capacity_eq axiom",
+      "Proof that H(Y|X) = h(p) for BSC regardless of input distribution (BSC symmetry)",
+      "Chain rule decomposition MI = H(Y) - H(Y|X) for channel mutual information",
+      "Shannon entropy of uniform distribution on Bool = log 2",
+      "Random coding existence lemma (probabilistic method for codebook selection)"
+    ],
+    "assumptions": "0 axioms. 0 sorries. All results proved from Mathlib and the parent ShannonEntropy/ShannonChannelCoding infrastructure.",
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 220,
+    "prerequisites": [
+      "Shannon entropy and mutual information (ShannonEntropy.lean)",
+      "Discrete memoryless channels and BSC definition (ShannonChannelCoding.lean)",
+      "Binary entropy function h(p) (ShannonChannelCodingOQ04.lean)",
+      "KL divergence non-negativity and Gibbs inequality"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The binary symmetric channel (BSC) is the simplest non-trivial noisy channel model and serves as the canonical example for Shannon's channel coding theorem. Shannon showed that the capacity of BSC(p) -- the crossover probability -- equals 1 - h(p) bits (or log 2 - h(p) nats), where h(p) is the binary entropy function. This result demonstrates that reliable communication is possible even over noisy channels, as long as the data rate stays below C.\n\nThe capacity-achieving input distribution for BSC is uniform (Bernoulli 1/2), which follows from the symmetric structure of the channel. The key insight is that BSC is doubly stochastic: both row sums and column sums of the transition matrix equal 1. This means uniform input produces uniform output, maximizing the output entropy H(Y) = log 2.\n\nThe random coding argument, also due to Shannon, shows that randomly chosen codebooks achieve rates below capacity with high probability. The existence of a good deterministic codebook then follows by the probabilistic method -- if the expected error is small, at least one specific codebook must have small error.",
+    "problemStatement": "**BSC Capacity Formula**: For a binary symmetric channel with crossover probability $0 < p < 1$:\n$$C(\\text{BSC}(p)) = \\log 2 - h(p) \\text{ nats}$$\nwhere $h(p) = -(p \\ln p + (1-p) \\ln(1-p))$ is the binary entropy function.\n\n**Random Coding Existence**: If the average error probability over a random ensemble of codebooks is at most $\\varepsilon$, then there exists a specific codebook with error probability $\\leq \\varepsilon$.",
+    "text": "Proves BSC capacity = log 2 - h(p) and establishes the random coding existence lemma.",
+    "proofStrategy": "The capacity proof has five stages:\n\n1. **BSC symmetry**: Show that for BSC, the per-input output entropy sum \u2211_y W(x,y)\u00b7log W(x,y) = p\u00b7log(p) + (1-p)\u00b7log(1-p) is independent of the input symbol x.\n\n2. **H(Y|X) = h(p)**: Unfold the conditional entropy definition on the transposed joint distribution. All joint probabilities are positive, so simplify: the denominator \u2211_y' p(x)\u00b7W(x,y') = p(x) cancels, giving \u2211_x p(x) \u00b7 \u2211_y W(x,y)\u00b7log W(x,y) = -h(p). Negate to get h(p).\n\n3. **Chain rule**: MI(X;Y) = H(Y) - H(Y|X) via mutual information symmetry and the chain rule.\n\n4. **Upper bound**: MI \u2264 H(Y) - h(p) \u2264 log|Bool| - h(p) = log 2 - h(p) for all inputs.\n\n5. **Capacity**: Uniform Bernoulli(1/2) input achieves equality (BSC is doubly stochastic, so output is also uniform with H(Y) = log 2). The supremum equals this maximum value.",
+    "keyInsights": [
+      "BSC is doubly stochastic: uniform input \u2192 uniform output, maximizing H(Y) = log 2",
+      "H(Y|X) = h(p) for BSC regardless of input distribution, because the channel noise is input-independent",
+      "The chain rule MI = H(Y) - H(Y|X) immediately gives both the achievable MI value and the upper bound",
+      "For degenerate (point mass) inputs, MI = 0 because H(X) = 0, providing the edge case in the capacity proof",
+      "The random coding existence lemma is a finite probabilistic method argument: averaging over codebooks bounds the minimum"
+    ],
+    "prerequisites": [
+      "Shannon entropy and mutual information",
+      "Binary entropy function h(p)",
+      "Discrete memoryless channels and BSC definition",
+      "Channel capacity as supremum over input distributions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "uniform-input",
+      "title": "Uniform Input Distribution",
+      "startLine": 33,
+      "endLine": 41,
+      "description": "Defines the uniform Bernoulli(1/2) distribution on Bool and proves positivity.",
+      "summary": "Defines the uniform Bernoulli(1/2) distribution on Bool and proves positivity."
+    },
+    {
+      "id": "bsc-properties",
+      "title": "BSC Properties",
+      "startLine": 43,
+      "endLine": 54,
+      "description": "BSC transition probability positivity for 0 < p < 1.",
+      "summary": "BSC transition probability positivity for 0 < p < 1."
+    },
+    {
+      "id": "marginals",
+      "title": "Channel Marginal Distributions",
+      "startLine": 56,
+      "endLine": 72,
+      "description": "X-marginal equals input distribution; BSC+uniform Y-marginal is uniform.",
+      "summary": "X-marginal equals input distribution; BSC+uniform Y-marginal is uniform."
+    },
+    {
+      "id": "bsc-symmetry",
+      "title": "BSC Output Entropy Symmetry",
+      "startLine": 74,
+      "endLine": 85,
+      "description": "Per-input output entropy is constant across all input symbols.",
+      "summary": "Per-input output entropy is constant across all input symbols."
+    },
+    {
+      "id": "chain-rule",
+      "title": "Chain Rule: MI = H(Y) - H(Y|X)",
+      "startLine": 87,
+      "endLine": 100,
+      "description": "Derives the H(Y) - H(Y|X) form of mutual information via symmetry and the standard chain rule.",
+      "summary": "Derives the H(Y) - H(Y|X) form of mutual information via symmetry and the standard chain rule."
+    },
+    {
+      "id": "conditional-entropy",
+      "title": "BSC Conditional Output Entropy",
+      "startLine": 102,
+      "endLine": 146,
+      "description": "The main computation: H(Y|X) = h(p) for BSC with any positive input distribution.",
+      "summary": "The main computation: H(Y|X) = h(p) for BSC with any positive input distribution."
+    },
+    {
+      "id": "uniform-entropy",
+      "title": "Entropy of Uniform Distribution",
+      "startLine": 148,
+      "endLine": 161,
+      "description": "Shannon entropy of uniform distribution on Bool equals log 2.",
+      "summary": "Shannon entropy of uniform distribution on Bool equals log 2."
+    },
+    {
+      "id": "bsc-mi",
+      "title": "BSC Mutual Information Bounds",
+      "startLine": 163,
+      "endLine": 220,
+      "description": "MI = log 2 - h(p) for uniform input; MI \u2264 log 2 - h(p) for all inputs.",
+      "summary": "MI = log 2 - h(p) for uniform input; MI \u2264 log 2 - h(p) for all inputs."
+    },
+    {
+      "id": "capacity",
+      "title": "BSC Capacity Theorem",
+      "startLine": 222,
+      "endLine": 240,
+      "description": "Channel capacity equals log 2 - h(p), proved via antisymmetry of sSup.",
+      "summary": "Channel capacity equals log 2 - h(p), proved via antisymmetry of sSup."
+    },
+    {
+      "id": "random-coding",
+      "title": "Random Coding Existence Lemma",
+      "startLine": 242,
+      "endLine": 262,
+      "description": "The probabilistic method for codebook selection in Shannon's achievability proof.",
+      "summary": "The probabilistic method for codebook selection in Shannon's achievability proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) entirely from Mathlib and the existing Shannon entropy infrastructure, with zero axioms and zero sorries. The proof leverages the doubly stochastic structure of BSC to show that uniform input maximizes mutual information. The random coding existence lemma establishes the probabilistic method step needed for Shannon's full achievability proof.",
+    "implications": "Eliminates one of four axioms from the parent ShannonChannelCoding.lean formalization. The BSC capacity result is the most concrete and widely-cited application of the channel coding theorem.",
+    "openQuestions": [
+      "Prove Fano's inequality (another parent axiom) from the conditional entropy machinery",
+      "Formalize the joint typicality lemma needed for the full achievability proof",
+      "Prove the channel coding converse using Fano's inequality",
+      "Extend to general symmetric channels beyond BSC"
+    ]
+  },
+  "crossReferences": [
+    {
+      "target": "shannon-channel-coding",
+      "relationship": "extends",
+      "description": "Proves the bsc_capacity_eq axiom from the parent formalization"
+    },
+    {
+      "target": "shannon-channel-coding-oq-04",
+      "relationship": "uses",
+      "description": "Uses binary entropy function h(p) and its properties"
+    }
+  ]
+}

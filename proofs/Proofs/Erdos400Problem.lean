@@ -78,9 +78,6 @@ def ErdosProblem400 : Prop :=
 -/
 
 /-- Erdős–Graham: g_k(n) ≪ log n. -/
-axiom gExcess_upper_bound (k : ℕ) (hk : k ≥ 2) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (gExcess k n : ℝ) ≤ C * Real.log n
-
 /-
 ## Section V: Proved Properties
 -/
@@ -171,13 +168,4 @@ theorem g2_binomial_connection (n : ℕ) :
 -/
 
 /-- For k = 2, the supremum is attained by some pair (a, b). -/
-axiom g2_excess_characterization (n : ℕ) (hn : n ≥ 1) :
-  ∃ a b : ℕ, a.factorial * b.factorial ∣ n.factorial ∧
-    (a : ℤ) + b - n = gExcess 2 n
-
 /-- The average of g₂ over [1,x] is asymptotically c₂ · log x. -/
-axiom average_g2_growth :
-  ∃ c : ℝ, c > 0 ∧
-    Filter.Tendsto
-      (fun x : ℕ => (∑ n ∈ Finset.range x, (gExcess 2 n : ℝ)) / ((x : ℝ) * Real.log x))
-      Filter.atTop (nhds c)

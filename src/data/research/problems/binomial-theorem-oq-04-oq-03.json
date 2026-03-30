@@ -1,0 +1,224 @@
+{
+  "slug": "binomial-theorem-oq-04-oq-03",
+  "title": "q-Vandermonde identity formalization",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: q-Vandermonde identity formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:07:48.618Z",
+    "iteration": 1,
+    "focus": "Completed: q-Vandermonde infrastructure built.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: q-Vandermonde identity fully formalized (0 sorries, 0 axioms). Created dedicated Lean file with 7 theorems building on existing q-binomial infrastructure.",
+    "builtItems": [
+      "Created proofs/Proofs/BinomialTheoremOQ04OQ03.lean with dedicated presentation and corollaries",
+      "Created gallery entry src/data/proofs/binomial-theorem-oq-04-oq-03/",
+      "Added to listings.json for auto-discovery"
+    ],
+    "insights": [
+      "q-Vandermonde identity already proved as qBinom_vandermonde in CombinationsFormulaOQ03.lean (line 619)",
+      "Proof uses induction on m with q-Pascal recurrence, handling N subtraction via case split on coefficient vanishing",
+      "q-sum-of-squares corollary follows from m=n=k specialization + symmetry",
+      "Classical Vandermonde at q=1 derived via vandermonde_at_one specialization theorem"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "q-Pfaff-Saalschutz identity (3-parameter extension)",
+      "Bijective proof via lattice path counting with q-weights",
+      "Subspace counting interpretation formalization"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "binomial-coefficients",
+    "q-analogs"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-01",
+    "binomial-theorem-oq-01-oq-01",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-02",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-03-oq-02",
+    "binomial-theorem-oq-04",
+    "binomial-theorem-oq-04-oq-02",
+    "binomial-theorem-oq-04-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.618Z",
+  "lastUpdate": "2026-03-30T14:15:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheorem.lean",
+      "filename": "BinomialTheorem.lean",
+      "lineCount": 177,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheorem.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01.lean",
+      "filename": "BinomialTheoremOQ01.lean",
+      "lineCount": 265,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01Aristotle.lean",
+      "filename": "BinomialTheoremOQ01Aristotle.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ01OQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02.lean",
+      "filename": "BinomialTheoremOQ02.lean",
+      "lineCount": 281,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03.lean",
+      "filename": "BinomialTheoremOQ03.lean",
+      "lineCount": 589,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02.lean",
+      "filename": "BinomialTheoremOQ03OQ02.lean",
+      "lineCount": 216,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04.lean",
+      "filename": "BinomialTheoremOQ04.lean",
+      "lineCount": 196,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ01.lean",
+      "lineCount": 300,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02.lean",
+      "filename": "BinomialTheoremOQ04OQ02.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ03.lean",
+      "filename": "BinomialTheoremOQ04OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ03.lean"
+    }
+  ]
+}

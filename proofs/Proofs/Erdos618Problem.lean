@@ -121,9 +121,6 @@ noncomputable def h₂ (G : SimpleGraph V) : ℕ :=
 For any triangle-free G, there exists a valid extension.
 (The complete bipartite graph gives diameter 2.)
 -/
-axiom h₂_exists (G : SimpleGraph V) (hG : IsTriangleFree G) :
-  ∃ H : SimpleGraph V, ValidExtension G H
-
 /-
 ## Part III: The Erdős-Gyárfás-Ruszinkó Results
 
@@ -134,23 +131,10 @@ Results from the original 1998 paper.
 **Simonovits's Example:**
 There exist triangle-free graphs with Δ ≫ n^{1/2} and h₂(G) ≫ n².
 -/
-axiom simonovits_example :
-  ∃ f : ℕ → ℕ, (∀ᶠ n in atTop, f n > n^(1/2 : ℝ)) ∧
-  ∀ᶠ n in atTop, ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = n ∧ IsTriangleFree G ∧
-    (maxDegree G : ℝ) ≥ f n ∧ (h₂ G : ℝ) ≥ n^2 / 4
-
 /--
 **Bounded Degree Result (EGR98):**
 If G has no isolated vertices and Δ = O(1), then h₂(G) = O(n log n).
 -/
-axiom bounded_degree_result :
-  ∀ Δ : ℕ, ∃ c : ℝ, c > 0 ∧
-  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    let n := Fintype.card V
-    IsTriangleFree G → maxDegree G ≤ Δ → (∀ v, G.degree v ≥ 1) →
-    (h₂ G : ℝ) ≤ c * n * Real.log n
-
 /--
 **Trivial Lower Bound:**
 h₂(G) ≥ 0 always.
@@ -170,13 +154,6 @@ If G is triangle-free with maximum degree o(n^{1/2}), then h₂(G) = o(n²).
 More precisely: For any function f(n) → ∞ (arbitrarily slowly),
 if Δ(G) ≤ n^{1/2}/f(n), then h₂(G) = o(n²).
 -/
-axiom alon_theorem :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = n → IsTriangleFree G →
-    (maxDegree G : ℝ) ≤ n^(1/2 - ε : ℝ) →
-    (h₂ G : ℝ) ≤ ε * n^2
-
 /-
 ## Part V: Asymptotic Formulation
 
@@ -241,9 +218,6 @@ axiom threshold_is_sharp :
 **Mantel's Theorem:**
 Triangle-free graphs have at most n²/4 edges.
 -/
-axiom mantel_theorem (G : SimpleGraph V) (hG : IsTriangleFree G) :
-  2 * G.edgeFinset.card ≤ (Fintype.card V)^2 / 2
-
 /-
 ## Part VII: Summary
 

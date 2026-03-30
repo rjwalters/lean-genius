@@ -2,7 +2,7 @@
   "id": "euler-polyhedral-formula-oq-01-oq-02",
   "title": "Four Color Theorem: Survey for Lean 4 Formalization",
   "slug": "euler-polyhedral-formula-oq-01-oq-02",
-  "description": "Survey of re-formalizing Gonthier's Coq proof of the Four Color Theorem in Lean 4. Proves small cases (\u22644 vertices, bipartite), assesses feasibility (~43K lines needed), and identifies starting points.",
+  "description": "Survey of re-formalizing Gonthier's Coq proof of the Four Color Theorem in Lean 4. Proves small cases (≤4 vertices, bipartite), assesses feasibility (~43K lines needed), and identifies starting points.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -30,7 +30,8 @@
       "Five Color Theorem (~2000 lines) is a feasible intermediate target",
       "native_decide could replace much of the computational kernel"
     ],
-    "proofStrategy": "Survey: 4CT formalization requires ~43K lines. Proves small cases. Identifies starting points."
+    "proofStrategy": "Survey: 4CT formalization requires ~43K lines. Proves small cases. Identifies starting points.",
+    "historicalContext": ""
   },
   "conclusion": {
     "summary": "A full 4CT in Lean 4 is a multi-year project. The recommended path: planar graphs → Five Color Theorem → reducibility framework → computational verification via native_decide.",

@@ -96,9 +96,6 @@ theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
   simpa [pow_one] using h
 
 /-- P(m * n) = max(P(m), P(n)) for m, n > 1. -/
-axiom gpf_mul (m n : ℕ) (hm : m > 1) (hn : n > 1) :
-    P(m * n) = max (P(m)) (P(n))
-
 /-
 ## Part II: The Erdős Conjecture
 
@@ -215,8 +212,6 @@ axiom tong_theorem (p : ℕ) (hp : p.Prime) :
 **Specific Counterexample: p = 19, q = 2**
 When 2 is a primitive root modulo 19, there is no n with P(n) = 19 and P(n+1) = 2.
 -/
-axiom no_solution_19_2 : ¬∃ n : ℕ, n > 0 ∧ P(n) = 19 ∧ P(n + 1) = 2
-
 /-
 ## Part V: Positive Results
 

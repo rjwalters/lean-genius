@@ -45,17 +45,11 @@ def CentralBinomPairs : Set (ℕ × ℕ) :=
 
 /-- **Erdős Problem #730** (OPEN): There are infinitely many pairs
     n < m with C(2n,n) and C(2m,m) having the same prime divisor set. -/
-axiom erdos_730_conjecture : Set.Infinite CentralBinomPairs
-
 /- ## Known Examples -/
 
 /-- The pair (87, 88): C(174, 87) and C(176, 88) have the same prime
     divisor set. -/
-axiom example_87_88 : (87, 88) ∈ CentralBinomPairs
-
 /-- The pair (607, 608): another known example. -/
-axiom example_607_608 : (607, 608) ∈ CentralBinomPairs
-
 /-- The triple (10003, 10004, 10005): three consecutive values sharing
     prime divisor sets. -/
 axiom triple_10003 :
@@ -71,9 +65,6 @@ theorem delta_ne_one : ∃ p ∈ CentralBinomPairs, p.2 ≠ p.1 + 1 := by
 
 /-- For prime p ≤ 2n, p | C(2n, n) iff at least one digit of n in
     base p has a carry when doubled (Kummer's theorem). -/
-axiom kummer_central_divisibility (p n : ℕ) (hp : Nat.Prime p) (hle : p ≤ 2 * n) :
-  p ∣ centralBinom n ↔ ∃ k : ℕ, (n / p ^ k) % p ≥ (p + 1) / 2
-
 /-- C(2n, n) is always even for n ≥ 1.
     Proof: By Pascal's rule, C(2n, n) = C(2n-1, n-1) + C(2n-1, n).
     By symmetry, C(2n-1, n) = C(2n-1, n-1). So C(2n, n) = 2·C(2n-1, n-1). -/
@@ -132,10 +123,6 @@ theorem middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p
 
 /-- Stronger conjecture: for every k ≥ 1, there exist infinitely many n
     with C(2n, n) and C(2(n+k), n+k) having the same prime divisors. -/
-axiom spacing_conjecture :
-  ∀ k : ℕ, k ≥ 1 →
-    Set.Infinite {n : ℕ | SamePrimeDivisors (centralBinom n) (centralBinom (n + k))}
-
 /-- The spacing-1 case implies the main conjecture. -/
 theorem spacing1_implies_main
     (h : Set.Infinite {n : ℕ | SamePrimeDivisors (centralBinom n) (centralBinom (n + 1))}) :

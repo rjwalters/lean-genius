@@ -245,12 +245,52 @@ def sharpConstant (δ : ℝ) (f : AddCircle T → ℂ) : ℝ :=
   ⨆ (n : ℤ) (_ : n ≠ 0),
     ‖fourierCoeff f n‖ * Real.exp (2 * Real.pi * δ * |↑n| / T)
 
-/-- The sharp constant is a valid bound. -/
+/-- The sharp constant is a valid bound.
+    Proof: K = sup_n (|ĉ_n| * e^{2πδ|n|/T}), so |ĉ_n| * e^{2πδ|n|/T} ≤ K,
+    hence |ĉ_n| ≤ K * e^{-2πδ|n|/T}. -/
 theorem sharpConstant_is_bound (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → ℂ)
     (hf : IsStripAnalytic δ f) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ sharpConstant δ f *
       Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := by
-  sorry -- By definition of sharpConstant as the supremum
+  obtain ⟨_, _, M, hM, hbound⟩ := hf
+  set a := 2 * Real.pi * δ * |↑n| / T
+  -- Step 1: ‖ĉ_n‖ * exp(a) ≤ sharpConstant δ f (n-th term ≤ supremum)
+  suffices h_le : ‖fourierCoeff f n‖ * Real.exp a ≤ sharpConstant δ f by
+    -- Step 2: multiply both sides by exp(-a) to get the goal
+    calc ‖fourierCoeff f n‖
+        = ‖fourierCoeff f n‖ * Real.exp a * Real.exp (-a) := by
+          rw [mul_assoc, ← Real.exp_add]; simp
+      _ ≤ sharpConstant δ f * Real.exp (-a) :=
+          mul_le_mul_of_nonneg_right h_le (Real.exp_pos _).le
+      _ = sharpConstant δ f * Real.exp (-(2 * Real.pi * δ * |↑n|) / T) := by
+          congr 1
+  -- Show n-th term ≤ supremum via le_ciSup
+  unfold sharpConstant
+  -- BddAbove: all terms bounded by M (from IsStripAnalytic decay bound)
+  have hbdd : BddAbove (Set.range fun m : ℤ =>
+      ⨆ (_ : m ≠ 0), ‖fourierCoeff f m‖ *
+        Real.exp (2 * Real.pi * δ * |↑m| / T)) := by
+    refine ⟨M, ?_⟩
+    rintro x ⟨m, rfl⟩
+    by_cases hm : m = 0
+    · subst hm; simp only [ne_eq, not_true_eq_false, ciSup_of_empty]; exact hM.le
+    · haveI : Nonempty (m ≠ 0) := ⟨hm⟩
+      rw [ciSup_const]
+      have hbn := hbound m hm
+      have hexp_cancel : Real.exp (-(2 * Real.pi * δ * |↑m|) / T) *
+          Real.exp (2 * Real.pi * δ * |↑m| / T) = 1 := by
+        rw [← Real.exp_add]; simp [show -(2 * Real.pi * δ * |↑m|) / T +
+          2 * Real.pi * δ * |↑m| / T = 0 from by ring]
+      nlinarith [Real.exp_pos (2 * Real.pi * δ * |↑m| / T),
+                 mul_le_mul_of_nonneg_right hbn
+                   (Real.exp_pos (2 * Real.pi * δ * |↑m| / T)).le]
+  -- n-th term ≤ outer supremum
+  haveI : Nonempty (n ≠ 0) := ⟨hn⟩
+  calc ‖fourierCoeff f n‖ * Real.exp a
+      = ⨆ (_ : n ≠ 0), ‖fourierCoeff f n‖ * Real.exp a := ciSup_const.symm
+    _ ≤ ⨆ (m : ℤ), ⨆ (_ : m ≠ 0),
+        ‖fourierCoeff f m‖ * Real.exp (2 * Real.pi * δ * |↑m| / T) :=
+        le_ciSup hbdd n
 
 /-- The sharp constant is the smallest valid bound. -/
 theorem sharpConstant_optimal (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → ℂ)

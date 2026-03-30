@@ -64,16 +64,10 @@ def middleLayer (n : ℕ) : Finset (GroundSet n) :=
 /-- The middle layer is union-free: sets of the same size cannot have
 one be the union of two others (since |A ∪ B| ≥ max(|A|, |B|) with
 equality only when A ⊆ B or B ⊆ A, forcing A = B). -/
-axiom middleLayer_union_free (n : ℕ) : IsUnionFree (middleLayer n)
-
 /-- C(n, ⌊n/2⌋), the largest binomial coefficient -/
 def middleBinomial (n : ℕ) : ℕ := Nat.choose n (n / 2)
 
 /-- Sperner's theorem: any antichain in 2^[n] has size at most C(n, ⌊n/2⌋) -/
-axiom sperner_theorem (n : ℕ) (F : Finset (GroundSet n)) :
-    (∀ A B : GroundSet n, A ∈ F → B ∈ F → A ≠ B → ¬(A ⊆ B) ∧ ¬(B ⊆ A)) →
-    F.card ≤ middleBinomial n
-
 /- ## Part III: Asymptotic Notation -/
 
 /-- f(n) = o(g(n)) means f(n)/g(n) → 0 as n → ∞ -/
@@ -92,9 +86,6 @@ def AsymptoticUpperBound (f g : ℕ → ℕ) : Prop :=
 
 /-- Sárközy-Szemerédi (unpublished, reported 1965): maxUnionFreeSize(n) = o(2ⁿ).
 This was superseded by Kleitman's stronger result. -/
-axiom sarkozy_szemeredi_bound :
-    IsLittleO maxUnionFreeSize (fun n => 2 ^ n)
-
 /- ## Part V: Kleitman's Theorem (1971) -/
 
 /-- Kleitman (1971): maxUnionFreeSize(n) < (1+o(1)) · C(n, ⌊n/2⌋).
@@ -133,10 +124,6 @@ def hasPositiveDensity (A : Set ℕ) : Prop :=
 /-- Corollary (Problem 487): if A ⊂ ℕ has positive density, then there
 are infinitely many distinct a, b, c ∈ A with lcm(a,b) = c.
 This follows from the union-free bound via prime factorization encoding. -/
-axiom problem_487_from_447 (A : Set ℕ) (hA : hasPositiveDensity A) :
-    ∀ N : ℕ, ∃ a b c : ℕ, a > N ∧ a ∈ A ∧ b ∈ A ∧ c ∈ A ∧
-      a ≠ b ∧ a ≠ c ∧ b ≠ c ∧ Nat.lcm a b = c
-
 /- ## Part VIII: Generalizations -/
 
 /-- k-union-free: no set is the union of k other distinct sets -/

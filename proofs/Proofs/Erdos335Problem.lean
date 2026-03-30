@@ -70,16 +70,9 @@ def FractionalPartSet (θ : ℝ) (X : Set ℝ) : Set ℕ :=
 
 /-- For irrational θ, the density of FractionalPartSet θ X equals μ(X)
     by Weyl's equidistribution theorem. -/
-axiom weyl_equidistribution (θ : ℝ) (X : Set ℝ) (hirrational : Irrational θ) :
-  DensityExists (FractionalPartSet θ X)
-
 /-- The known construction: if X_A and X_B have additive measure on ℝ/ℤ
     (μ(X_A + X_B) = μ(X_A) + μ(X_B)), then the corresponding fractional
     part sets have additive density. -/
-axiom fractional_part_density_additive (θ : ℝ) (X_A X_B : Set ℝ)
-    (hirrational : Irrational θ) :
-  DensityAdditive (FractionalPartSet θ X_A) (FractionalPartSet θ X_B)
-
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #335** (OPEN): Are all density-additive pairs
@@ -89,14 +82,6 @@ axiom fractional_part_density_additive (θ : ℝ) (X_A X_B : Set ℝ)
     must there exist a compact abelian group G, a group element g,
     and measurable sets X_A, X_B ⊆ G such that A and B are obtained
     from the orbit of g through X_A and X_B? -/
-axiom erdos_335_conjecture :
-  ∀ A B : Set ℕ,
-    HasPositiveDensity A → HasPositiveDensity B →
-    DensityAdditive A B →
-    ∃ (θ : ℝ) (X_A X_B : Set ℝ),
-      Irrational θ ∧
-      A = FractionalPartSet θ X_A ∧ B = FractionalPartSet θ X_B
-
 /- ## Basic Properties -/
 
 /-- Density is non-negative (when the density exists). -/

@@ -101,10 +101,6 @@ log(n) bound from general Ramsey theory.
 We state this as an axiom since the proof requires probabilistic and
 combinatorial techniques beyond current Mathlib formalization.
 -/
-axiom erdosHajnal1989 :
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α),
-    ∃ c : ℝ, c > 0 ∧ IsErdosHajnalLowerBound H (fun n => exp (c * sqrt (log n)))
-
 /--
 **Bucić-Nguyen-Scott-Seymour 2023 Bound**
 
@@ -113,10 +109,6 @@ exp(c_H · √(log n · log log n)).
 
 This is the current best known bound toward the conjecture.
 -/
-axiom bnss2023 :
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α),
-    ∃ c : ℝ, c > 0 ∧ IsErdosHajnalLowerBound H (fun n => exp (c * sqrt (log n * log (log n))))
-
 /-
 ## Comparison of Bounds
 
@@ -142,7 +134,4 @@ def threePathGraph : SimpleGraph (Fin 3) where
 The Erdős-Hajnal conjecture is known to be true for several specific graphs H,
 including paths, cycles, and complete bipartite graphs.
 -/
-axiom erdosHajnalForPaths :
-  ∃ c : ℝ, c > 0 ∧ IsErdosHajnalLowerBound threePathGraph (fun n => (n : ℝ) ^ c)
-
 end Erdos61

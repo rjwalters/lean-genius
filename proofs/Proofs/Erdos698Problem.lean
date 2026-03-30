@@ -70,9 +70,6 @@ For valid pairs (i,j), gcd(C(n,i), C(n,j)) ≥ C(n,i)/C(j,i) ≥ 2^i.
 
 This shows the GCD is always at least 2 when i ≥ 1.
 -/
-axiom erdos_szekeres_bound (n i j : ℕ) (h : isValidPair n i j) :
-  (binomGcd n i j : ℝ) ≥ (binom n i : ℝ) / (binom j i : ℝ)
-
 /--
 **Exponential Lower Bound:**
 The Erdős-Szekeres bound implies gcd ≥ 2^i.
@@ -105,9 +102,6 @@ where p is prime.
 
 In this case, gcd(C(2p,1), C(2p,p)) = 2p/C(p,1) = 2p/p = 2 = 2^1.
 -/
-axiom sharpness_example (p : ℕ) (hp : p.Prime) (hp2 : p ≥ 2) :
-  binomGcd (2*p) 1 p = 2
-
 /-
 ## Part IV: The Main Question
 -/
@@ -140,18 +134,11 @@ For any valid pair (i,j), the GCD satisfies:
 gcd(C(n,i), C(n,j)) ≥ c · n^{1/2} · 2^i / i^{3/2}
 for some absolute constant c > 0.
 -/
-axiom bergman_bound_exists :
-  ∃ c : ℝ, c > 0 ∧ ∀ n i j : ℕ, isValidPair n i j → n > 1 →
-    (binomGcd n i j : ℝ) ≥ c * (n : ℝ)^(1/2 : ℝ) * (2^i : ℝ) / (i : ℝ)^(3/2 : ℝ)
-
 /--
 **Bergman's Theorem (Main Result):**
 For any valid pair, gcd ≫ n^{1/2} · 2^i / i^{3/2}.
 Taking i = 2 (the minimum), this gives gcd ≥ c · n^{1/2} · 4 / 2^{3/2} ≈ c · n^{1/2}.
 -/
-axiom bergman_theorem (n i j : ℕ) (h : isValidPair n i j) (hn : n > 1) :
-  ∃ c : ℝ, c > 0 ∧ (binomGcd n i j : ℝ) ≥ c * Real.sqrt n
-
 /--
 **Minimum GCD Growth:**
 The minimum GCD over all valid pairs grows like Ω(√n).

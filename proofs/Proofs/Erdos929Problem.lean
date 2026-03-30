@@ -254,18 +254,8 @@ theorem trivial_upper (k : ℕ) (_hk : 2 ≤ k) :
 
 /-- **Rosser's sieve.** S(k) > k^{1/2−o(1)}.
 For every ε > 0 and large enough k, S(k) ≥ k^{1/2−ε}. -/
-axiom rosser_lower :
-  ∀ ε : ℝ, 0 < ε → ∀ᶠ (k : ℕ) in atTop,
-    (smoothThreshold k : ℝ) ≥ (k : ℝ) ^ (1/2 - ε)
-
 /-- **Ford–Green–Konyagin–Maynard–Tao (2018).**
 S(k) ≪ k · log log log k / (log log k · log log log log k). -/
-axiom fgkmt_upper :
-  ∃ C : ℝ, 0 < C ∧ ∀ᶠ (k : ℕ) in atTop,
-    (smoothThreshold k : ℝ) ≤ C * (k : ℝ) *
-      Real.log (Real.log (Real.log (k : ℝ))) /
-      (Real.log (Real.log (k : ℝ)) * Real.log (Real.log (Real.log (Real.log (k : ℝ)))))
-
 /- ## Structural Observations -/
 
 /-- If k₁ ≤ k₂, the small-factor block set for k₂ is contained in that for k₁. -/

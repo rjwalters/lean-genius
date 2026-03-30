@@ -107,15 +107,11 @@ Proved by Erdős, Hardy, and Subbarao.
 
 The proof uses properties of prime factorizations of factorial values
 and the distribution of primes in residue classes. -/
-axiom EHSNumbers_infinite : EHSNumbers.Infinite
-
 /-- The set of Pillai primes is infinite.
 Proved by Erdős, Hardy, and Subbarao.
 
 This follows from the infinitude of EHS numbers combined with
 analysis of which primes can divide m! + 1. -/
-axiom PillaiPrimes_infinite : PillaiPrimes.Infinite
-
 /- ## Open Problems
 
 The main questions of Problem 1074 remain open:
@@ -140,9 +136,6 @@ If so, Erdős, Hardy, and Subbarao conjectured it equals 1.
 This formalizes the existence of the limit:
   lim_{x→∞} |S ∩ [1,x]| / x
 where S is the set of EHS numbers. -/
-axiom EHSNumbers_density_conjecture :
-  ∃ d : ℕ → ℕ, ∀ x, d x = (EHSNumbers ∩ Finset.range (x + 1)).toFinite.toFinset.card
-
 /-- **OPEN**: Does the relative density of Pillai primes exist?
 Hardy and Subbarao estimated it might be between 0.5 and 0.6,
 but also suggested it could tend to 1.
@@ -150,7 +143,4 @@ but also suggested it could tend to 1.
 This formalizes the existence of the limit:
   lim_{x→∞} |P ∩ [1,x]| / π(x)
 where P is the set of Pillai primes and π(x) is the prime counting function. -/
-axiom PillaiPrimes_density_conjecture :
-  ∃ d : ℕ → ℕ, ∀ x, d x = (PillaiPrimes ∩ Finset.range (x + 1)).toFinite.toFinset.card
-
 end Erdos1074

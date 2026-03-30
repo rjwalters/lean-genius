@@ -57,21 +57,12 @@ def multiplesOfSmallestPrime (N : ℕ) : Finset ℕ :=
   (interval N).filter (fun n => p ∣ n)
 
 /-- Multiples of p gives size N/p -/
-axiom multiples_of_p_size :
-  ∀ N : ℕ, N > 1 → (multiplesOfSmallestPrime N).card = N / N.minFac
-
 /-- This set is GCD-intersecting (all share factor p) -/
-axiom multiples_of_p_intersecting :
-  ∀ N : ℕ, N > 1 → IsGCDIntersecting (multiplesOfSmallestPrime N)
-
 /-- Even numbers that share a factor with N -/
 def evenMultiplesSharing (N : ℕ) : Finset ℕ :=
   (interval N).filter (fun n => 2 ∣ n ∧ Nat.gcd n N > 1)
 
 /-- This gives another candidate for the maximum -/
-axiom even_multiples_intersecting :
-  ∀ N : ℕ, N > 1 → IsGCDIntersecting (evenMultiplesSharing N)
-
 /- ## Part 3: The Original Conjecture (WRONG) -/
 
 /-- Erdős-Graham original conjecture -/
@@ -110,15 +101,7 @@ axiom ahlswede_khachatrian_theorem :
 /- ## Part 5: Special Cases -/
 
 /-- When N is a prime power p^k, the maximum is p^(k-1) -/
-axiom prime_power_case :
-  ∀ p k : ℕ, p.Prime → k ≥ 1 →
-    maxGCDIntersecting (p^k) = p^(k-1)
-
 /-- When N = 2p for odd prime p, the maximum is 2 -/
-axiom two_times_prime_case :
-  ∀ p : ℕ, p.Prime → p > 2 →
-    maxGCDIntersecting (2 * p) = 2
-
 /- ## Part 6: Summary
 
 **Erdős Problem #534: SOLVED** (Ahlswede-Khachatrian 1996)

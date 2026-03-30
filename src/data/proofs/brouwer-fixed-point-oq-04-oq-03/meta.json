@@ -18,7 +18,11 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 2,
-    "lineCount": 156
+    "lineCount": 157,
+    "assumptions": "2 axioms (kakutani_finite_dim, fan_glicksberg) and 0 sorries. NOTE: IsNashEquilibrium is defined as True (placeholder); nash_equilibrium_existence is trivially proved and does not constitute a real Nash equilibrium result. The genuine content is the Kakutani/Fan-Glicksberg axiomatizations and the brouwer_from_kakutani_finite derivation."
   },
-  "sections": []
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 2
+  }
 }

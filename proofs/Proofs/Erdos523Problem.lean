@@ -139,8 +139,6 @@ def AlmostSureConvergence (C : ℝ) : Prop :=
   True
 
 /-- Halász proved almost sure convergence to 1. -/
-axiom halasz_almost_sure : AlmostSureConvergence 1
-
 /-
 ## Part VII: Properties of Random Polynomials
 -/
@@ -151,13 +149,7 @@ noncomputable def L2Norm (s : SignVector n) : ℝ :=
     (abs (evalOnCircle s θ))^2)
 
 /-- The L² norm is exactly √(n+1). -/
-axiom L2_norm_exact (s : SignVector n) (hs : IsValidSign s) :
-    L2Norm s = Real.sqrt (n + 1)
-
 /-- The max is much larger than the L² norm (by √(log n) factor). -/
-axiom max_vs_L2 (s : SignVector n) (hs : IsValidSign s) (hn : n ≥ 2) :
-    maxModulus s ≥ Real.sqrt (n * Real.log n) / 2
-
 /-- Connection to Kahane's work on random Fourier series. -/
 def kahaneConnection : Prop :=
   -- Random polynomials are a special case of random Fourier series

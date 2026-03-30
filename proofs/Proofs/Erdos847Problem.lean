@@ -147,19 +147,11 @@ with density ≥ δ contains a k-term arithmetic progression.
 
 This implies that AP-free sets have density 0.
 -/
-axiom szemeredi_theorem (k : ℕ) (hk : k ≥ 3) (δ : ℝ) (hδ : δ > 0) :
-  ∃ N : ℕ, ∀ A : Finset ℕ, (∀ a ∈ A, a ≤ N) → (A.card : ℝ) ≥ δ * N →
-    ∃ a d : ℕ, d > 0 ∧ ∀ i < k, a + i * d ∈ A
-
 /--
 **Density consequence:**
 An AP-free subset of [1,N] has size o(N).
 More precisely: |A ∩ [1,N]| / N → 0 as N → ∞.
 -/
-axiom apfree_zero_density : ∀ A : Set ℕ, isAPFree A →
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    ((A ∩ Set.Icc 1 N).ncard : ℝ) / N < ε
-
 /- ## Part VI: Why the Conjecture Fails -/
 
 /-
@@ -261,18 +253,10 @@ The k=3 case of Szemerédi: any dense subset of [1,N] contains a 3-AP.
 
 This was the first major result on AP-free sets.
 -/
-axiom roth_theorem : ∃ c > 0, ∀ N : ℕ, ∀ A : Finset ℕ,
-  (∀ a ∈ A, a ≤ N) → A.card > N / (Real.log N)^c →
-    ∃ a d : ℕ, d > 0 ∧ isThreeTermAP a d ↑A
-
 /--
 **Best known bounds (Kelley-Meka 2023):**
 An AP-free subset of [1,N] has size at most N exp(-c (log N)^{1/12}).
 -/
-axiom kelley_meka_bound : ∃ c > 0, ∀ N : ℕ, ∀ A : Finset ℕ,
-  (∀ a ∈ A, a ≤ N) → isAPFree ↑A →
-    (A.card : ℝ) ≤ N * Real.exp (-c * Real.log N ^ (1/12 : ℝ))
-
 /- ## Part IX: Summary -/
 
 /--

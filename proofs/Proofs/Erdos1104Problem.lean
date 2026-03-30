@@ -119,12 +119,6 @@ def RamseyTriangle (k : ℕ) : ℕ := by
 /-- R(3,k) = Θ(k²/log k) (Kim 1995, Bohman 2009, Fiz Pontiveros–
 Griffiths–Morris 2020). The lower bound is by Kim's semi-random method;
 the upper bound follows from triangle Ramsey results. -/
-axiom kim_ramsey_bound :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-    ∀ k : ℕ, k ≥ 3 →
-      c₁ * (k : ℝ)^2 / Real.log k ≤ (RamseyTriangle k : ℝ) ∧
-      (RamseyTriangle k : ℝ) ≤ c₂ * (k : ℝ)^2 / Real.log k
-
 /- ## Main Asymptotic Bounds -/
 
 /-- **Lower Bound (Hefty–Horn–King–Pfender 2025)**: f(n) ≥ (1-o(1))√(n/log n).
@@ -161,19 +155,8 @@ noncomputable def triangleFreeMaxChiEdges : ℕ → ℕ := by
 
 /-- **Edge variant upper bound (Davies–Illingworth 2022)**:
 g(m) ≤ (3^{5/3} + o(1))(m/(log m)²)^{1/3}. -/
-axiom edge_variant_upper :
-  ∀ ε > 0, ∃ M₀ : ℕ, ∀ m ≥ M₀,
-    (triangleFreeMaxChiEdges m : ℝ) ≤
-      (3 ^ ((5 : ℝ) / 3) + ε) * ((m : ℝ) / (Real.log m) ^ 2) ^ ((1 : ℝ) / 3)
-
 /-- **Edge variant lower bound (Kim 1995)**:
 g(m) ≥ c(m/(log m)²)^{1/3} for some c > 0. -/
-axiom edge_variant_lower :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ ε > 0, ∃ M₀ : ℕ, ∀ m ≥ M₀,
-      (triangleFreeMaxChiEdges m : ℝ) ≥
-        (c - ε) * ((m : ℝ) / (Real.log m) ^ 2) ^ ((1 : ℝ) / 3)
-
 /- ## Mycielski Construction -/
 
 /-- The Mycielski graph M_k is triangle-free with chromatic number k.

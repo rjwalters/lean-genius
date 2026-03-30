@@ -96,9 +96,6 @@ For any graph G with at least one vertex:
 More importantly for us:
   If χ(G) ≥ k, then G has a subgraph with minimum degree ≥ k - 1.
 -/
-axiom chromatic_implies_minDeg (G : SimpleGraph V) :
-    chromaticNumber G ≥ 4 → ∃ (H : Subgraph G), minDegree H.coe ≥ 3
-
 /--
 **Alternative formulation:**
 Every graph with chromatic number 4 contains a subgraph of minimum degree 3.
@@ -130,11 +127,6 @@ axiom bondy_vince_theorem (G : SimpleGraph V) :
 **Immediate Corollary:**
 The minimum gap between consecutive cycle lengths is at most 2.
 -/
-axiom bondy_vince_gap (G : SimpleGraph V) :
-    minDegree G ≥ 3 →
-    ∀ gaps : Set ℕ, gaps = {|m - m'| | m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m'} →
-    ∃ g ∈ gaps, g ≤ 2
-
 /-
 ## Part IV: Main Results
 

@@ -250,9 +250,6 @@ theorem abelian_no_edges (G : Type*) [Group G]
 **Infinite Non-Abelian Groups:**
 Can have infinite cliques (e.g., free groups).
 -/
-axiom infinite_clique_example :
-    ∃ G : Type*, ∃ _ : Group G, ¬noInfiniteClique G
-
 /- ## Part VII: Examples
 -/
 
@@ -261,18 +258,10 @@ axiom infinite_clique_example :
 The symmetric group S_n has center {1} (trivial) for n ≥ 3.
 So [S_n : Z(S_n)] = n! and clique number ≤ n!.
 -/
-axiom symmetric_group_clique_bound (n : ℕ) (hn : n ≥ 3) :
-    ∃ bound : ℕ, bound = n.factorial ∧
-      ∀ G : Type*, ∀ _ : Group G, ∀ S : Set G,
-        isClique S → S.Finite → S.ncard ≤ bound
-
 /--
 **Example: Dihedral Groups:**
 D_n has center of index 2n (or 2n for odd n, n for even n).
 -/
-axiom dihedral_group_center_index (n : ℕ) (hn : n ≥ 3) :
-    ∃ idx : ℕ, (Even n → idx = n) ∧ (Odd n → idx = 2 * n)
-
 /--
 **Example: Finite Groups:**
 Every finite group has finite index center (trivially).
@@ -318,9 +307,6 @@ def isBFCGroup (G : Type*) [Group G] : Prop :=
 **Connection to BFC:**
 Z(G) having finite index is related to BFC property.
 -/
-axiom bfc_center_connection (G : Type*) [Group G] :
-    centerHasFiniteIndex G → isBFCGroup G
-
 /- ## Part IX: Summary
 -/
 

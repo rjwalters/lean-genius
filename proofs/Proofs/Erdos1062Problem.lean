@@ -85,25 +85,12 @@ theorem lower_bound_construction (n : ℕ) (hn : n ≥ 3) :
 -/
 
 /-- Lebensold (1976): for large n, f(n) ≥ 0.6725n. -/
-axiom lebensold_lower_bound :
-  ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-    (maxNDTOSize n : ℝ) ≥ 0.6725 * n
-
 /-- Lebensold (1976): for large n, f(n) ≤ 0.6736n. -/
-axiom lebensold_upper_bound :
-  ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
-    (maxNDTOSize n : ℝ) ≤ 0.6736 * n
-
 /-
 ## Section V: The Conjectures
 -/
 
 /-- The limiting density lim f(n)/n exists and lies in [0.6725, 0.6736]. -/
-axiom limiting_density_exists :
-  ∃ L : ℝ, Filter.Tendsto (fun n : ℕ => (maxNDTOSize n : ℝ) / n)
-    Filter.atTop (nhds L) ∧
-    0.6725 ≤ L ∧ L ≤ 0.6736
-
 /-- **Erdős Problem #1062**: Is the limiting density irrational? -/
 def ErdosProblem1062 : Prop :=
   ∃ L : ℝ, Filter.Tendsto (fun n : ℕ => (maxNDTOSize n : ℝ) / n)

@@ -141,21 +141,12 @@ Known cases where the conjecture is verified.
 -/
 
 /-- Kleitman's result: conjecture holds when n = rk -/
-axiom kleitman_exact :
-  ∀ r k : ℕ, r ≥ 2 → k ≥ 1 →
-    f (r * k) r k = construction1 r k
-
 /-- Huang-Loh-Sudakov: conjecture holds for n ≥ 3kr² -/
 axiom huang_loh_sudakov :
   ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
     ∀ n ≥ 3 * k * r^2, f n r k = conjecturedValue n r k
 
 /-- Frankl's small n result -/
-axiom frankl_small_n :
-  ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
-    ∀ n : ℕ, r * k ≤ n → n ≤ r * k + k / (2 * r^(2*r + 1)) →
-    f n r k = construction1 r k
-
 /-
 ## Upper Bounds
 
@@ -249,13 +240,7 @@ theorem combined_lower_bound (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n
 -/
 
 /-- f is increasing in n -/
-axiom f_mono_n :
-  ∀ n₁ n₂ r k : ℕ, n₁ ≤ n₂ → f n₁ r k ≤ f n₂ r k
-
 /-- f is increasing in k -/
-axiom f_mono_k :
-  ∀ n r k₁ k₂ : ℕ, k₁ ≤ k₂ → f n r k₁ ≤ f n r k₂
-
 /-
 ## Asymptotic Behavior
 
@@ -265,14 +250,60 @@ For large n, the second construction dominates.
 /-- For large n, construction2 > construction1 -/
 theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) :
     ∃ N : ℕ, ∀ n ≥ N, construction2 n r k > construction1 r k := by
-  sorry
+  -- construction2 n r k = C(n,r) - C(n-k+1,r) grows without bound
+  -- construction1 r k = C(rk-1, r) is a fixed constant
+  -- For k=1: c1 = C(r-1,r) = 0, so any n with C(n,r) > C(n,r) = 0 works trivially
+  -- For k≥2: by Pascal telescoping, construction2 n r k ≥ C(n-1,r-1) ≥ n-1 → ∞
+  set c1 := construction1 r k
+  -- Use N = c1 + k + r as threshold
+  refine ⟨c1 + k + r, fun n hn => ?_⟩
+  unfold construction2
+  by_cases hk1 : k = 1
+  · -- k = 1: c1 = C(r*1-1, r) = C(r-1, r) = 0
+    subst hk1
+    simp only [construction1, Nat.mul_one] at c1 hn ⊢
+    have : c1 = 0 := Nat.choose_eq_zero_of_lt (by omega)
+    rw [this] at hn ⊢
+    simp only [Nat.zero_add] at hn
+    rw [show n - 1 + 1 = n from by omega, Nat.sub_self]
+    exact Nat.choose_pos (by omega)
+  · -- k ≥ 2
+    have hk2 : k ≥ 2 := by omega
+    -- By Pascal: C(n,r) = C(n-1,r) + C(n-1,r-1)
+    -- So C(n,r) - C(n-1,r) = C(n-1,r-1)
+    -- And C(n-k+1,r) ≤ C(n-1,r) since n-k+1 ≤ n-1
+    have h1 : Nat.choose (n - k + 1) r ≤ Nat.choose (n - 1) r :=
+      Nat.choose_le_choose r (by omega)
+    have h2 : Nat.choose n r = Nat.choose (n - 1) r + Nat.choose (n - 1) (r - 1) := by
+      have := Nat.choose_succ_succ (n - 1) (r - 1)
+      rw [show n - 1 + 1 = n from by omega, show r - 1 + 1 = r from by omega] at this
+      omega
+    -- So construction2 n r k ≥ C(n-1,r-1)
+    have h3 : Nat.choose n r - Nat.choose (n - k + 1) r ≥ Nat.choose (n - 1) (r - 1) := by omega
+    -- C(n-1, r-1) ≥ n-1 when r-1 ≥ 1 (since C(m,s) ≥ C(m,1) = m for 1 ≤ s ≤ m-1)
+    -- Actually: C(m, 1) = m and C(m, s) ≥ C(m, 1) when s ≤ m/2 or by direct bound
+    -- Simpler: C(n-1, r-1) ≥ (n-1) since r-1 ≥ 1 and for s=1, C(m,1)=m, and C(m,s)≥C(m,1)
+    -- for s ≤ m-s, i.e., 2s ≤ m. We have r-1 ≥ 1, n-1 ≥ c1+k+r-1 ≥ 2(r-1) for large enough.
+    -- But we just need C(n-1, r-1) > c1, and n-1 ≥ c1 + k + r - 1 ≥ c1 + 2 + 2 - 1 = c1+3.
+    -- Use: C(m, s) ≥ m for m ≥ 2s-1 and s ≥ 1 (since C(m,s) ≥ C(m,1)=m when s ≤ m/2+1)
+    -- Here m = n-1 ≥ c1+k+r-1, s = r-1 ≥ 1.
+    -- For m ≥ 2(r-1): C(m, r-1) ≥ C(m, 1) = m ≥ c1+k+r-1 > c1.
+    suffices Nat.choose (n - 1) (r - 1) > c1 by omega
+    have hm : n - 1 ≥ c1 + k + r - 1 := by omega
+    -- We need: n-1 ≥ 2*(r-1) for C(n-1,r-1) ≥ C(n-1,1) = n-1 > c1
+    -- n-1 ≥ c1+k+r-1 ≥ 0+2+2-1 = 3 ≥ 2*(2-1) = 2 when r=2
+    -- n-1 ≥ c1+k+r-1 ≥ 2(r-1) when c1+k ≥ r-1, which holds since k ≥ 2 and r ≥ 2.
+    have hm2 : n - 1 ≥ 2 * (r - 1) := by omega
+    -- For m ≥ 2s where s ≥ 1: C(m, s) ≥ m
+    -- Proof: C(m, s) ≥ C(m, 1) = m when 1 ≤ s ≤ m-1 and s ≤ (m+1)/2
+    -- Since m ≥ 2s, we have s ≤ m/2, so C(m,s) ≥ C(m,1) = m
+    calc Nat.choose (n - 1) (r - 1)
+        ≥ n - 1 := by
+          rw [show n - 1 = Nat.choose (n - 1) 1 from (Nat.choose_one_right (n - 1)).symm]
+          exact Nat.choose_anti (n - 1) (by omega) (by omega)
+      _ > c1 := by omega
 
 /-- Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
-axiom f_asymptotic :
-  ∀ r k : ℕ, r ≥ 2 → k ≥ 1 →
-    Filter.Tendsto (fun n => (f n r k : ℝ) / ((k - 1 : ℝ) * n^(r - 1) / (r - 1).factorial))
-      Filter.atTop (nhds 1)
-
 /-
 ## The Open Problem
 

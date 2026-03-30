@@ -113,9 +113,6 @@ def AboveTuran {n : ℕ} (G : Graph n) : Prop :=
 **Turán's Theorem:**
 Any graph with more than ⌊n²/4⌋ edges contains a triangle.
 -/
-axiom turan_theorem (n : ℕ) (hn : n ≥ 1) (G : Graph n) :
-  edgeCount G > turanNumber n → ∃ u v w : Fin n, IsTriangle G u v w
-
 /-
 ## Part IV: The Main Theorem
 -/
@@ -140,9 +137,6 @@ axiom bollobas_erdos_theorem : BollobasErdosConjecture
 Any graph above the Turán threshold has at least one triangle,
 hence maxTriangleMultiplicity ≥ 1.
 -/
-axiom main_theorem_alt (n : ℕ) (hn : n ≥ 6) (G : Graph n)
-    (hG : AboveTuran G) : maxTriangleMultiplicity G ≥ 1
-
 /-
 ## Part V: Tightness and Turán Theory
 -/
@@ -152,11 +146,6 @@ axiom main_theorem_alt (n : ℕ) (hn : n ≥ 6) (G : Graph n)
 The constant n/6 is tight. There exist graphs with exactly n²/4 + 1
 edges where some edge is in exactly ⌊n/6⌋ triangles.
 -/
-axiom constant_tight :
-  ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀,
-    ∃ G : Graph n, edgeCount G > turanNumber n ∧
-      maxTriangleMultiplicity G ≤ (n : ℝ) / 6 + ε * n
-
 /--
 **Turán Graph T(n, 2):**
 The complete bipartite graph K_{⌊n/2⌋, ⌈n/2⌉} is triangle-free.
@@ -171,20 +160,12 @@ The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} contains no triangles
 because any triangle would require three mutually adjacent vertices,
 but in a bipartite graph no two vertices in the same part are adjacent.
 -/
-axiom turan_graph_triangle_free {n : ℕ} (G : Graph n)
-    (hT : IsTuranGraph G) : ∀ u v w : Fin n, ¬IsTriangle G u v w
-
 /--
 **Just above Turán:**
 Adding one edge to T(n,2) creates triangles. If G is the Turán graph
 and we add a non-edge {u,v}, then u and v are in the same part of the
 bipartition. They share neighbors in the other part, creating triangles.
 -/
-axiom above_turan_creates_triangles (n : ℕ) (hn : n ≥ 3) :
-  ∀ G : Graph n, IsTuranGraph G →
-    ∀ u v : Fin n, ¬Adj G u v →
-      ∃ w : Fin n, Adj G u w ∧ Adj G v w
-
 /-
 ## Part VI: Key Lemma
 -/
@@ -194,12 +175,6 @@ axiom above_turan_creates_triangles (n : ℕ) (hn : n ≥ 3) :
 If e(G) > n²/4, then the number of triangles T(G) satisfies
 T(G) ≥ (e(G) - n²/4) · n/6.
 -/
-axiom triangle_count_lower_bound (n : ℕ) (G : Graph n)
-    (hG : AboveTuran G) :
-  let T := (Finset.univ.filter (fun (uvw : Fin n × Fin n × Fin n) =>
-    IsTriangle G uvw.1 uvw.2.1 uvw.2.2)).card
-  T ≥ (edgeCount G - turanNumber n) * (n / 6)
-
 /-
 ## Part VII: Summary
 -/
