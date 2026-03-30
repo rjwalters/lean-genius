@@ -1,0 +1,40 @@
+{
+  "id": "cantor-diagonalization-oq-04-oq-03",
+  "title": "Lawvere FPT Connection to Domain-Theoretic Fixed Points",
+  "slug": "cantor-diagonalization-oq-04-oq-03",
+  "description": "Connects Lawvere's categorical fixed-point theorem to Kleene's domain-theoretic fixed-point theorem, showing both arise from diagonal/self-referential constructions. Kleene's theorem fully proved including least fixed-point property.",
+  "meta": {
+    "author": "Lawvere (1969), Scott (1972), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kleene_fixed-point_theorem",
+    "date": "1969/1972",
+    "status": "formalized",
+    "tags": [
+      "logic",
+      "category-theory",
+      "domain-theory",
+      "fixed-point",
+      "order-theory"
+    ],
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
+    "badge": "original",
+    "sorries": 1,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "mathlibDependencies": [
+      {
+        "theorem": "CompleteLattice",
+        "description": "Complete lattice structure for suprema",
+        "module": "Mathlib.Order.CompleteLattice"
+      },
+      {
+        "theorem": "iSup_le",
+        "description": "Supremum bounds",
+        "module": "Mathlib.Order.CompleteLattice"
+      }
+    ],
+    "assumptions": []
+  },
+  "parent": "cantor-diagonalization-oq-04",
+  "openQuestion": "How does Lawvere's categorical fixed-point theorem connect to domain-theoretic fixed points (Kleene chain, Scott's theorem, Y combinator)?",
+  "significance": "Reveals that Lawvere's abstract categorical construction and Kleene's order-theoretic construction are two manifestations of the same self-referential principle. The type-theoretic Y combinator Y(f) = (lx.f(x x))(lx.f(x x)) is exactly the Lawvere fixed point specialized to the identity retraction. In Scott's D-infinity where D = (D -> D), both constructions produce the same least fixed point."
+}
