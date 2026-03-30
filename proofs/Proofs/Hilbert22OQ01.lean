@@ -95,16 +95,6 @@ def surfaceKodaira : SurfaceClass → KodairaDimension
 
     Combined with Aubin (1976) for c₁ < 0, this resolves the
     Calabi conjecture. -/
-axiom yau_theorem :
-    -- For every compact Kähler manifold X with c₁(X) ≤ 0,
-    -- there exists a unique Kähler-Einstein metric.
-    -- Axiomatized: requires full differential geometry infrastructure.
-    True
-
--- ============================================================
--- Part IV: Kobayashi Hyperbolicity
--- ============================================================
-
 /-- Kobayashi hyperbolicity: a complex manifold X is Kobayashi
     hyperbolic if every holomorphic map f : ℂ → X is constant.
 
@@ -120,17 +110,7 @@ def IsKobayashiHyperbolic (X : Type*) : Prop :=
 
 /-- The unit disk 𝔻 is Kobayashi hyperbolic.
     This recovers the hyperbolic case of uniformization. -/
-axiom disk_kobayashi_hyperbolic :
-    IsKobayashiHyperbolic (Metric.ball (0 : ℂ) 1)
-
 /-- ℂ is NOT Kobayashi hyperbolic (the identity is non-constant). -/
-axiom plane_not_hyperbolic :
-    ¬ IsKobayashiHyperbolic ℂ
-
--- ============================================================
--- Part V: The Analogy Table
--- ============================================================
-
 /-
   The higher-dimensional uniformization analogy:
 

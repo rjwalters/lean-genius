@@ -75,8 +75,6 @@ For complete graphs K_n with n ≥ 3, this is approximately n²/4.
 
 We axiomatize this as it requires decidability instances that complicate the formalization.
 -/
-axiom edgesToRemoveForBipartite {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ
-
 /--
 **Edge Deletion Function h_G:**
 For a graph G and natural number n, h_G(n) is the maximum number of edges
@@ -116,8 +114,6 @@ The minimum number of colors needed for a proper coloring.
 
 Axiomatized to avoid decidability issues with IsKColorable.
 -/
-axiom chromaticNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ
-
 /-- Every finite graph is k-colorable for some k. -/
 /-
 ## Part IV: Infinite Chromatic Number

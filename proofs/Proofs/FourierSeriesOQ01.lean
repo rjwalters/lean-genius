@@ -154,8 +154,6 @@ operator satisfies ‖S*f‖_{L²} ≤ C · ‖f‖_{L²}.
 The exact value is not important for the theorem; what matters is its existence.
 The best known constant is due to work refining Carleson's original argument. -/
 axiom carlesonConstant : ℝ
-axiom carlesonConstant_pos : (0 : ℝ) < carlesonConstant
-
 /-- **Carleson-Hunt Maximal Inequality** (Axiomatized)
 
 For any f ∈ L²(𝕋), the Carleson maximal function S*f satisfies the weak-type
@@ -168,13 +166,6 @@ implies this by Chebyshev's inequality, but the weak form suffices for proving
 a.e. convergence.
 
 Note: We state this for measurable f : AddCircle T → ℂ with finite L² norm. -/
-axiom carleson_hunt_weak_type
-    (f : AddCircle T → ℂ) (hf : Integrable (fun x => ‖f x‖ ^ 2) haarAddCircle)
-    {λ : ℝ} (hλ : 0 < λ) :
-    haarAddCircle {x : AddCircle T | carlesonMaximal f x > ENNReal.ofReal λ} ≤
-      ENNReal.ofReal (carlesonConstant / λ) ^ 2 *
-        ENNReal.ofReal (∫ x : AddCircle T, ‖f x‖ ^ 2 ∂haarAddCircle)
-
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART IV: TRIGONOMETRIC POLYNOMIALS CONVERGE EXACTLY
@@ -200,12 +191,6 @@ theorem fourierPartialSum_of_trigPoly
 
 /-- Key property: for a trig poly of degree M, S_N g(x) = g(x) for N ≥ M.
 This uses the L² Fourier series convergence from the base file. -/
-axiom trigPoly_partialSum_eq
-    {g : AddCircle T → ℂ} (hg : IsTrigPoly g)
-    (hgL2 : Memℒp g 2 haarAddCircle) :
-    ∃ M : ℕ, ∀ N : ℕ, M ≤ N → ∀ x : AddCircle T,
-      fourierPartialSum g N x = g x
-
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART V: DENSITY OF TRIGONOMETRIC POLYNOMIALS IN L²
@@ -219,12 +204,6 @@ with ‖f - g‖_{L²} < ε. This follows from the completeness of the Fourier b
 
 We need this as a density statement about actual functions, not just L² equivalence
 classes, so we axiomatize the precise form needed. -/
-axiom trigPoly_dense_L2
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
-    {ε : ℝ} (hε : 0 < ε) :
-    ∃ g : AddCircle T → ℂ, IsTrigPoly g ∧ Memℒp g 2 haarAddCircle ∧
-      (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2
-
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART VI: THE REDUCTION — MAXIMAL INEQUALITY IMPLIES a.e. CONVERGENCE

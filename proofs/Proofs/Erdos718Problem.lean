@@ -114,8 +114,6 @@ A graph is k-linked if any 2k vertices can be paired by k disjoint paths.
 
 /-- A graph is k-linked if any 2k vertices can be connected by k disjoint paths.
     Axiomatized as a predicate since full path-disjointness is complex to formalize. -/
-axiom IsKLinked (G : SimpleGraph V) (k : ℕ) : Prop
-
 /-- Sufficiently dense graphs are highly linked. -/
 /-
 ## Minors vs Subdivisions
@@ -126,8 +124,6 @@ then H is a minor of G, but not conversely.
 
 /-- Minor relationship: H is a minor of G.
     Axiomatized since the full definition requires edge contraction. -/
-axiom IsMinorOf (H G : SimpleGraph V) : Prop
-
 /-- Subdivision implies minor. -/
 /-
 ## Applications

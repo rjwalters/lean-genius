@@ -57,8 +57,6 @@ axiom realRootCount (n : ℕ) (ε : ℕ → Int) : ℕ
 **Real Roots in Interval [-1, 1]:**
 Rₙ[-1,1] counts roots in the interval [-1, 1].
 -/
-axiom realRootCountInUnit (n : ℕ) (ε : ℕ → Int) : ℕ
-
 /-
 ## Part II: The Kac-Erdős-Offord Constant
 -/
@@ -91,8 +89,6 @@ E[Rₙ] = (2/π + o(1)) log n
 
 The expected real root count over all 2^(n+1) coefficient sequences.
 -/
-axiom expectedRealRoots (n : ℕ) : ℝ
-
 /--
 **Erdős-Offord (1956):**
 The expected number of real roots satisfies E[Rₙ] = (2/π + o(1)) log n.

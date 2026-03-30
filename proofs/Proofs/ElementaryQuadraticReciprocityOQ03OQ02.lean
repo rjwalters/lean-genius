@@ -214,22 +214,10 @@ theorem kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
     Same edge case as kronecker_mul_left: kroneckerNeg1(0) = 1 causes
     issues when one of m, n is -1 and the other introduces a 0.
     Fix: require m * n ≠ 0. -/
-axiom kronecker_mul_right (a m n : ℤ) (hmn : m * n ≠ 0) :
-    kronecker a (m * n) = kronecker a m * kronecker a n
-
--- ============================================================
--- Section 7: Connection to Quadratic Reciprocity
--- ============================================================
-
 /-- **Quadratic reciprocity for the Kronecker symbol**:
     For fundamental discriminants d₁, d₂ with gcd(d₁,d₂) = 1:
     (d₁/|d₂|)(d₂/|d₁|) = (-1)^{((d₁-1)/2)·((d₂-1)/2)}
 
     This generalizes Gauss's QR to arbitrary discriminants and
     is the form used in class field theory. -/
-axiom kronecker_reciprocity (d₁ d₂ : ℤ) (h₁ : d₁ % 2 = 1) (h₂ : d₂ % 2 = 1)
-    (hcoprime : Int.gcd d₁ d₂ = 1) :
-    kronecker d₁ d₂.natAbs * kronecker d₂ d₁.natAbs =
-    (-1) ^ ((d₁.natAbs - 1) / 2 * ((d₂.natAbs - 1) / 2))
-
 end KroneckerSymbol

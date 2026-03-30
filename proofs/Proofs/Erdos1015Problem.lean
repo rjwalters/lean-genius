@@ -107,8 +107,6 @@ noncomputable def f (t : ℕ) : ℕ :=
 -/
 
 /-- Moon (1966): f(3) = 4 for triangles -/
-axiom moon_f3 : f 3 = 4
-
 /-- Moon's result for specific n ≥ 8 -/
 /-
 ## Ramsey Bound
@@ -148,6 +146,4 @@ The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
 -/
 
 /-- f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
-axiom f_root_limit : Filter.Tendsto (fun t => (f t : ℝ) ^ (1 / t : ℝ)) Filter.atTop (nhds 4)
-
 /-- f(t) grows exponentially, not linearly -/
