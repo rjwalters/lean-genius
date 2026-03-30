@@ -1,0 +1,51 @@
+{
+  "id": "erdos-1019-oq-04",
+  "title": "Kuratowski Planarity Definition for Erd\u0151s 1019",
+  "slug": "erdos-1019-oq-04",
+  "description": "Formalization of Kuratowski's planarity criterion: G is planar iff it contains no subdivision of K\u2085 or K\u2083,\u2083",
+  "meta": {
+    "author": "Kuratowski (1930), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kuratowski%27s_theorem",
+    "date": "1930",
+    "status": "axiomatized",
+    "tags": ["graph-theory", "planar-graphs", "erdos", "topology", "kuratowski"],
+    "proofRepoPath": "Proofs/Erdos1019Kuratowski.lean",
+    "badge": "axiom",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {"theorem": "SimpleGraph", "description": "Simple graph type", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
+      {"theorem": "completeGraph", "description": "Complete graph K_n", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
+      {"theorem": "completeBipartiteGraph", "description": "Complete bipartite graph K_{m,n}", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
+      {"theorem": "SimpleGraph.Walk", "description": "Graph walks and paths", "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting"}
+    ],
+    "originalContributions": [
+      "K\u2085 and K\u2083,\u2083 as Mathlib SimpleGraph instances",
+      "Subdivision containment predicate (branch vertices + connecting paths)",
+      "isPlanarKuratowski definition via Kuratowski's criterion",
+      "Subgraph monotonicity for Kuratowski planarity (outlined)"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 1,
+    "lineCount": 163,
+    "assumptions": "1 axiom: kuratowski_euler_bound -- the Euler formula bound |E| \u2264 3|V| - 6. 2 sorries in subgraph monotonicity proof (Walk.mapLE preserves IsPath).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kuratowski's theorem (1930) characterizes planar graphs: G is planar iff it contains no subdivision of K\u2085 or K\u2083,\u2083. This replaces the topological definition (embedding in R\u00b2) with a purely combinatorial criterion.",
+    "problemStatement": "Define isPlanar for SimpleGraph using Kuratowski's characterization, replacing the sorry in Erdos1019Problem.lean.",
+    "text": "Kuratowski planarity definition using subdivisions of K\u2085 and K\u2083,\u2083",
+    "proofStrategy": "Define Subdivision structure (branch vertices + connecting paths), then isPlanarKuratowski as absence of K\u2085 and K\u2083,\u2083 subdivisions.",
+    "keyInsights": ["The Subdivision structure captures the topological minor relation without requiring topological spaces."],
+    "prerequisites": ["SimpleGraph", "Graph walks and paths", "Forbidden minor theory"]
+  },
+  "sections": [
+    {"id": "forbidden", "title": "Forbidden Minors", "startLine": 1, "endLine": 40, "summary": "K\u2085 and K\u2083,\u2083 definitions.", "mathContext": "The two forbidden subdivisions in Kuratowski's theorem."},
+    {"id": "subdivision", "title": "Subdivision Containment", "startLine": 41, "endLine": 90, "summary": "Subdivision structure and ContainsSubdivision predicate.", "mathContext": "Branch vertices + internally disjoint paths model topological containment."},
+    {"id": "planarity", "title": "Kuratowski Planarity", "startLine": 91, "endLine": 163, "summary": "isPlanarKuratowski definition and basic properties.", "mathContext": "Kuratowski (1930): G planar iff no K\u2085 or K\u2083,\u2083 subdivision."}
+  ],
+  "crossReferences": [{"targetId": "erdos-1019", "relationship": "enhancement", "description": "Provides the missing isPlanar definition for Erd\u0151s 1019."}],
+  "conclusion": {"summary": "Formalization of Kuratowski planarity via Subdivision structure. Replaces sorry in Erdos1019Problem.lean with a combinatorial characterization.", "implications": "Enables further graph theory formalization: planarity testing, dual graphs, graph minors.", "openQuestions": ["Can the Euler bound be proved from Kuratowski planarity without topology?"]},
+  "leanFile": {"imports": ["Mathlib.Combinatorics.SimpleGraph.Basic", "Mathlib.Combinatorics.SimpleGraph.Subgraph", "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting", "Mathlib.Combinatorics.SimpleGraph.Maps", "Mathlib.Data.Fin.Basic", "Mathlib.Tactic"], "opens": ["SimpleGraph"], "namespace": "Kuratowski", "lineCount": 163, "axiomCount": 1, "theoremCount": 2, "substantiveTheoremCount": 2, "duplicateTheorems": 0, "definitionCount": 5},
+  "references": [{"authors": "K. Kuratowski", "title": "Sur le probl\u00e8me des courbes gauches en Topologie", "year": "1930", "venue": "Fund. Math."}],
+  "mainTheorems": [{"name": "isPlanarKuratowski", "type": "definition", "description": "G is planar iff no K\u2085 or K\u2083,\u2083 subdivision"}]
+}
