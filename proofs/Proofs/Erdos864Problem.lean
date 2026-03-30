@@ -21,6 +21,7 @@ representations as a + b with a ≤ b ∈ A. What is the maximum |A|?
 
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
+import Proofs.Erdos44SidonLowerBound
 
 open Finset
 
@@ -820,4 +821,52 @@ theorem reflected_construction_bound (N : ℕ) (B : Finset ℕ)
   have h1 : (B ∪ B.image (fun b => N - b)).card ≤ maxAlmostSidon N :=
     Finset.le_sup hA_mem
   have h2 := reflected_card N B hB
+  omega
+
+/- ## Bridge from Erdős-Turán Sidon Construction
+
+The Erdős-Turán modular parabola construction (Erdos44SidonLowerBound.lean) produces
+Sidon sets of size ⌊√N⌋/2 in {1,...,N}. To use this with our reflected construction,
+we bridge the Erdos340.IsSidon definition (pairwise sum uniqueness) to our local
+IsSidon definition (multiRepSet = ∅). -/
+
+/-- Bridge: Erdos340.IsSidon (all pairwise sums distinct) implies
+    our local IsSidon (multiRepSet is empty). -/
+theorem erdos340_isSidon_implies_local {A : Finset ℕ} (h : Erdos340.IsSidon A) :
+    IsSidon A := by
+  unfold IsSidon
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  intro n hn
+  simp only [multiRepSet, Finset.mem_filter] at hn
+  obtain ⟨_, hrep⟩ := hn
+  unfold sumRepCount at hrep
+  -- Extract two distinct pairs with the same sum
+  have hlt : 1 < ((A ×ˢ A).filter fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n).card := by omega
+  rw [Finset.one_lt_card] at hlt
+  obtain ⟨⟨a₁, b₁⟩, h1, ⟨a₂, b₂⟩, h2, hne⟩ := hlt
+  simp only [Finset.mem_filter, Finset.mem_product] at h1 h2
+  -- By Erdos340.IsSidon: same sum + ordered → same pair
+  have := h a₁ b₁ a₂ b₂ h1.1.1 h1.1.2 h2.1.1 h2.1.2 h1.2.1 h2.2.1 (by linarith [h1.2.2, h2.2.2])
+  exact hne (Prod.ext this.1 this.2)
+
+/-- **Concrete lower bound**: For N ≥ 3, there exists an almost-Sidon set in {1,...,N}
+    of size ≥ 2·⌊√(N/3)⌋/2, obtained by applying the reflected construction to a
+    modular parabola Sidon set in {1,...,N/3}.
+
+    This is weaker than `erdos_freud_lower_bound` (which gives ∼(2/√3)·√N) by a
+    factor of √2, because the Erdős-Turán construction has range 2p² (not p²).
+    The optimal constant requires the Singer/Bose-Chowla construction. -/
+theorem maxAlmostSidon_concrete_lower_bound (N : ℕ) (hN : 3 ≤ N) :
+    maxAlmostSidon N ≥ 2 * (Nat.sqrt (N / 3) / 2) := by
+  set M := N / 3 with hM_def
+  -- M ≥ 1 since N ≥ 3
+  have hM : 1 ≤ M := by omega
+  -- By Erdős-Turán construction: ∃ Sidon B ⊆ {1,...,M} with |B| ≥ √M/2
+  obtain ⟨B, hB_sub, hB_sidon, hB_card⟩ := Erdos44.sidon_set_lower_bound_exists M hM
+  -- Bridge: Erdos340.IsSidon → local IsSidon
+  have hB_local : IsSidon B := erdos340_isSidon_implies_local hB_sidon
+  -- B ⊆ Icc 1 M = Icc 1 (N/3)
+  have hB_Icc : ∀ b ∈ B, b ∈ Finset.Icc 1 (N / 3) := fun b hb => hB_sub hb
+  -- Apply reflected construction
+  have := reflected_construction_bound N B hB_Icc hB_local
   omega
