@@ -1,0 +1,90 @@
+{
+  "id": "geometric-series-oq-02-oq-05",
+  "title": "Resolvent and Neumann Series: Toward the Holomorphic Functional Calculus",
+  "slug": "geometric-series-oq-02-oq-05",
+  "description": "The resolvent R(λ,a) = (λ·1 - a)⁻¹ of a Banach algebra element, expressed as the Neumann series λ⁻¹ ∑ (λ⁻¹a)^n for ‖a‖ < |λ|. Includes the first resolvent identity and norm bounds — the analytical core of the holomorphic functional calculus.",
+  "meta": {
+    "author": "Dunford & Taylor (1938), formalized via Mathlib",
+    "sourceUrl": "https://github.com/rjwalters/lean-genius",
+    "date": "1938",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ02OQ05.lean",
+    "tags": [
+      "functional-analysis",
+      "spectral-theory",
+      "resolvent",
+      "neumann-series",
+      "banach-algebra",
+      "holomorphic-functional-calculus"
+    ],
+    "badge": "original",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "summable_geometric_of_norm_lt_one",
+        "description": "Power series ∑ T^n is summable when ‖T‖ < 1",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Units.oneSub",
+        "description": "Constructs the unit (1-T) with inverse ∑ T^n",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Ring.inverse_unit",
+        "description": "Ring.inverse of a unit equals its unit inverse",
+        "module": "Mathlib.Algebra.Ring.Regular"
+      }
+    ],
+    "originalContributions": [
+      "Resolvent existence: (λ·1-a) is invertible when ‖a‖ < ‖λ‖, proved via Neumann series factorization",
+      "Neumann series representation: R(λ,a) = λ⁻¹ ∑ (λ⁻¹a)^n for Banach algebra elements",
+      "Resolvent norm bound: ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹",
+      "First resolvent identity: R(λ) - R(μ) = (μ-λ)R(λ)R(μ) for arbitrary Banach algebras"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 200,
+    "assumptions": "1 sorry: resolvent_tendsto_zero (resolvent vanishes at infinity). All other theorems fully proved.",
+    "prerequisites": [
+      "Functional analysis (Banach algebras, normed rings)",
+      "Spectral theory basics (resolvent, spectrum)",
+      "Neumann series (from OQ-02)",
+      "Lean 4 and Mathlib"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-02",
+      "relationship": "extends",
+      "description": "Directly extends the Neumann series from OQ-02 to define the resolvent R(λ,a) via the factorization λ·1 - a = λ(1 - λ⁻¹a) and the Neumann series for (1-T)⁻¹."
+    },
+    {
+      "targetId": "geometric-series-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Sibling OQ proving the unit group is open. The resolvent existence theorem here uses the same perturbation mechanism but parametrized by the spectral variable λ."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "The resolvent series R(λ,a) = ∑ λ⁻⁽ⁿ⁺¹⁾ aⁿ is the operator-theoretic version of the partial fraction 1/(λ-x) = ∑ x^n/λ^{n+1} from the scalar geometric series."
+    }
+  ],
+  "overview": "## Motivation\n\nThe **holomorphic functional calculus** is the crown jewel of Banach algebra theory: given a Banach algebra element $a$ and a holomorphic function $f$ on a neighborhood of the spectrum $\\sigma(a)$, one defines\n\n$$f(a) = \\frac{1}{2\\pi i} \\oint_\\Gamma f(\\lambda) R(\\lambda, a) \\, d\\lambda$$\n\nwhere $R(\\lambda, a) = (\\lambda \\cdot 1 - a)^{-1}$ is the **resolvent**. This file formalizes the resolvent and its Neumann series representation — the analytical engine that powers this integral.\n\n## Key Results\n\n1. **Resolvent existence**: When $\\|a\\| < |\\lambda|$, the element $\\lambda \\cdot 1 - a$ is invertible, proved by factoring as $\\lambda(1 - \\lambda^{-1}a)$ and applying the Neumann series\n\n2. **Neumann series expansion**: $R(\\lambda, a) = \\lambda^{-1} \\sum_{n=0}^{\\infty} (\\lambda^{-1} a)^n$\n\n3. **Norm bound**: $\\|R(\\lambda, a)\\| \\leq (|\\lambda| - \\|a\\|)^{-1}$, showing the resolvent decays as $|\\lambda| \\to \\infty$\n\n4. **First resolvent identity**: $R(\\lambda) - R(\\mu) = (\\mu - \\lambda) R(\\lambda) R(\\mu)$, the fundamental algebraic identity of spectral theory",
+  "references": [
+    {
+      "type": "book",
+      "title": "Linear Operators, Part I",
+      "authors": ["N. Dunford", "J. T. Schwartz"],
+      "year": 1958,
+      "section": "VII.3"
+    },
+    {
+      "type": "book",
+      "title": "Functional Analysis",
+      "authors": ["W. Rudin"],
+      "year": 1991,
+      "section": "10.4-10.6"
+    }
+  ]
+}
