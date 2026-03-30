@@ -370,14 +370,84 @@ theorem no_size_two_solution :
       _ = 25 / 36 := by norm_num
   linarith
 
+/-- For 3 distinct primes, sum of reciprocals ≤ 1/2 + 1/3 + 1/5 = 31/30.
+    Proof: among 3 distinct primes, at least one ≥ 5 (only 2 primes < 5)
+    and among the other two, at least one ≥ 3 (only 1 prime < 3). -/
+private lemma reciprocal_sum_three_primes_le {Q : Finset ℕ} (hcard : Q.card = 3)
+    (hQ : IsSetOfPrimes Q) : reciprocalSum Q ≤ 31 / 30 := by
+  obtain ⟨c, t, hct, rfl, ht2⟩ := Finset.card_eq_succ.mp hcard
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp ht2
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hct
+  obtain ⟨hca, hcb⟩ := hct
+  have ha := hQ a (by simp)
+  have hb := hQ b (by simp)
+  have hc := hQ c (by simp)
+  have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
+  have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
+  have hc2 : (2 : ℚ) ≤ c := by exact_mod_cast hc.two_le
+  simp only [reciprocalSum, Finset.sum_insert hct, Finset.sum_pair hab]
+  -- At least one ≥ 5 (pigeonhole: only 2 primes < 5, namely {2, 3})
+  have h5 : 5 ≤ a ∨ 5 ≤ b ∨ 5 ≤ c := by
+    by_contra hall; push_neg at hall; obtain ⟨h5a, h5b, h5c⟩ := hall
+    have : a = 2 ∨ a = 3 := by have := ha.two_le; interval_cases a <;> simp_all
+    have : b = 2 ∨ b = 3 := by have := hb.two_le; interval_cases b <;> simp_all
+    have : c = 2 ∨ c = 3 := by have := hc.two_le; interval_cases c <;> simp_all
+    rcases ‹a = 2 ∨ a = 3› with rfl | rfl <;> rcases ‹b = 2 ∨ b = 3› with rfl | rfl <;>
+      rcases ‹c = 2 ∨ c = 3› with rfl | rfl <;> simp_all
+  -- Among any 2 distinct primes, one ≥ 3 (only 1 prime < 3)
+  have pair3 : ∀ x y : ℕ, Nat.Prime x → Nat.Prime y → x ≠ y →
+      (3 : ℚ) ≤ (x : ℚ) ∨ (3 : ℚ) ≤ (y : ℚ) := by
+    intro x y hx hy hxy; by_contra hall; push_neg at hall
+    have hx3 : x < 3 := by exact_mod_cast hall.1
+    have hy3 : y < 3 := by exact_mod_cast hall.2
+    have : x = 2 := le_antisymm (by omega) hx.two_le
+    have : y = 2 := le_antisymm (by omega) hy.two_le
+    exact hxy (by omega)
+  -- Bound each reciprocal, then combine
+  rcases h5 with h5a | h5b | h5c
+  · have : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5a)
+    rcases pair3 b c hb hc (Ne.symm hcb) with h3 | h3
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+      linarith
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+      linarith
+  · have : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5b)
+    rcases pair3 a c ha hc (Ne.symm hca) with h3 | h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+      linarith
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+      linarith
+  · have : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5c)
+    rcases pair3 a b ha hb hab with h3 | h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+      linarith
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+      linarith
+
 /-- No solution with |P| = 2 and |Q| = 3 exists among primes.
-    Product ≤ (5/6)(31/30) = 31/36 < 1.
-    Needs tight bound: for 3 distinct primes, sum ≤ 31/30 (requires showing 3rd prime ≥ 5). -/
+    PROVED: product ≤ (5/6)(31/30) = 31/36 < 1. -/
 theorem no_two_three_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 3 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
       reciprocalProduct P Q = 1 := by
-  sorry
+  intro ⟨P, Q, hP2, hQ3, hPprime, hQprime, hprod⟩
+  have hP_le := reciprocal_sum_two_primes_le hP2 hPprime
+  have hQ_le := reciprocal_sum_three_primes_le hQ3 hQprime
+  have : reciprocalProduct P Q ≤ 31 / 36 := by
+    unfold reciprocalProduct
+    calc reciprocalSum P * reciprocalSum Q
+        ≤ (5 / 6) * (31 / 30) := by
+          apply mul_le_mul hP_le hQ_le
+          · exact Finset.sum_nonneg (fun i _ => inv_nonneg.mpr (Nat.cast_nonneg i))
+          · norm_num
+      _ = 31 / 36 := by norm_num
+  linarith
 
 /- ## Part XII: Summary -/
 
