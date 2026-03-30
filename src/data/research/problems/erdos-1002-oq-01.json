@@ -8,10 +8,7 @@
   "problemStatement": {
     "formal": "\\text{Prove cauchy\\_is\\_distribution and innerSum\\_periodic\\_rational from Mathlib}",
     "plain": "Eliminate two axioms from Erdős #1002: prove the Cauchy CDF is a valid distribution function and prove periodicity of the inner sum for rational arguments.",
-    "whyMatters": [
-      "Reduces axiom count from 7 to 5 in the parent formalization",
-      "Both are standard results provable from Mathlib"
-    ]
+    "whyMatters": ["Reduces axiom count from 7 to 5 in the parent formalization", "Both are standard results provable from Mathlib"]
   },
   "knownResults": {
     "proven": [
@@ -70,8 +67,7 @@
     "erdos-1",
     "erdos-10",
     "erdos-100",
-    "erdos-1002",
-    "erdos-1002-oq-01"
+    "erdos-1002"
   ],
   "references": {
     "papers": [],
@@ -91,17 +87,6 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1002OQ01.lean",
-      "filename": "Erdos1002OQ01.lean",
-      "lineCount": 141,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01.lean"
-    },
-    {
       "path": "Proofs/Erdos1002Problem.lean",
       "filename": "Erdos1002Problem.lean",
       "lineCount": 212,
@@ -111,6 +96,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1002OQ01.lean",
+      "filename": "Erdos1002OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01.lean"
     }
   ]
 }

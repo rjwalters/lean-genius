@@ -70,18 +70,12 @@
     ],
     "markdown": "# Knowledge Base: erdos-485-oq-02\n\n## Problem Understanding\n\nThe open question asks whether f(k) → ∞ can be proved combinatorially (via sumsets) rather than algebraically (via height theory).\n\n## Key Results (This Session)\n\n1. support(P²) ⊆ support(P) + support(P) — always holds\n2. For nonneg coefficients, equality holds → termCount(P²) ≥ 2k-1\n3. Cancellation barrier: mixed-sign coefficients can eliminate sumset elements\n\n## Dead Ends\n\n- Direct sumset bounds fail for general polynomials due to cancellation\n"
   },
-  "tags": [
-    "additive-combinatorics",
-    "sumsets",
-    "cancellation",
-    "polynomial-squaring"
-  ],
+  "tags": ["additive-combinatorics", "sumsets", "cancellation", "polynomial-squaring"],
   "relatedProofs": [
     "erdos-4",
     "erdos-48",
     "erdos-485",
-    "erdos-485-oq-01",
-    "erdos-485-oq-02"
+    "erdos-485-oq-01"
   ],
   "references": {
     "papers": [
@@ -89,9 +83,7 @@
       "Tao-Vu 2006 (Additive Combinatorics)",
       "Freiman 1973"
     ],
-    "urls": [
-      "https://erdosproblems.com/485"
-    ],
+    "urls": ["https://erdosproblems.com/485"],
     "mathlib": [
       "Polynomial.coeff_mul",
       "Finset.sum_nonneg",
@@ -102,6 +94,17 @@
   "lastUpdate": "2026-03-29T13:15:00Z",
   "leanFiles": [
     {
+      "path": "Proofs/Erdos485OQ02.lean",
+      "filename": "Erdos485OQ02.lean",
+      "lineCount": 297,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ02.lean"
+    },
+    {
       "path": "Proofs/Erdos485OQ01.lean",
       "filename": "Erdos485OQ01.lean",
       "lineCount": 278,
@@ -111,17 +114,6 @@
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos485OQ02.lean",
-      "filename": "Erdos485OQ02.lean",
-      "lineCount": 328,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ02.lean"
     },
     {
       "path": "Proofs/Erdos485Problem.lean",

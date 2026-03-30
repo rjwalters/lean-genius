@@ -34,7 +34,7 @@
       "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)"
     ],
     "insights": [
-      "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) — trivially derivable",
+      "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) \u2014 trivially derivable",
       "bottleneck_counterexample is provable via pigeonhole: color each n <= 616000 uniquely, show covering system moduli cannot be monochromatic",
       "The pigeonhole proof requires showing single congruence class does not cover Z (modulus >= 2 implies uncovered integers)",
       "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck"
@@ -541,9 +541,9 @@
     {
       "path": "Proofs/Erdos831Problem.lean",
       "filename": "Erdos831Problem.lean",
-      "lineCount": 713,
+      "lineCount": 705,
       "theoremCount": 14,
-      "axiomCount": 0,
+      "axiomCount": 1,
       "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
@@ -728,8 +728,8 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 303,
-      "theoremCount": 15,
+      "lineCount": 256,
+      "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
@@ -794,8 +794,8 @@
     {
       "path": "Proofs/Erdos853Problem.lean",
       "filename": "Erdos853Problem.lean",
-      "lineCount": 524,
-      "theoremCount": 31,
+      "lineCount": 479,
+      "theoremCount": 26,
       "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 0,
@@ -959,18 +959,18 @@
     {
       "path": "Proofs/Erdos866Aristotle.lean",
       "filename": "Erdos866Aristotle.lean",
-      "lineCount": 79,
+      "lineCount": 70,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos866Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos866Problem.lean",
       "filename": "Erdos866Problem.lean",
-      "lineCount": 85,
+      "lineCount": 86,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 4,
@@ -992,11 +992,11 @@
     {
       "path": "Proofs/Erdos868Problem.lean",
       "filename": "Erdos868Problem.lean",
-      "lineCount": 280,
+      "lineCount": 257,
       "theoremCount": 5,
       "axiomCount": 7,
       "defCount": 4,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos868Problem.lean"
     },
@@ -1113,11 +1113,11 @@
     {
       "path": "Proofs/Erdos877Problem.lean",
       "filename": "Erdos877Problem.lean",
-      "lineCount": 308,
+      "lineCount": 304,
       "theoremCount": 9,
       "axiomCount": 5,
       "defCount": 6,
-      "sorryCount": 4,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos877Problem.lean"
     },
@@ -1201,8 +1201,8 @@
     {
       "path": "Proofs/Erdos884Problem.lean",
       "filename": "Erdos884Problem.lean",
-      "lineCount": 483,
-      "theoremCount": 23,
+      "lineCount": 369,
+      "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,
@@ -1366,8 +1366,8 @@
     {
       "path": "Proofs/Erdos896Problem.lean",
       "filename": "Erdos896Problem.lean",
-      "lineCount": 381,
-      "theoremCount": 22,
+      "lineCount": 335,
+      "theoremCount": 17,
       "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,
@@ -1410,9 +1410,9 @@
     {
       "path": "Proofs/Erdos8Problem.lean",
       "filename": "Erdos8Problem.lean",
-      "lineCount": 338,
-      "theoremCount": 8,
-      "axiomCount": 3,
+      "lineCount": 238,
+      "theoremCount": 2,
+      "axiomCount": 5,
       "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,

@@ -67,29 +67,11 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry
 
-/-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
-    This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
-theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
-  apply le_antisymm
-  · have p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
-    calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
-      _ = 0 := by
-        simp only [sublevelMeasure, sublevelSet, PolynomialInF.eval]
-        convert MeasureTheory.measure_empty
-        ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]
-  · exact zero_le _
-
 /-- μ(F) is achieved or approached for infinite F.
-    Trivially true because mu F = 0 (degree-0 bug). -/
+    Proof idea: iInf approximation in ℝ≥0∞ (needs mu F < ⊤,
+    which holds because sublevel sets of polynomials are bounded). -/
 theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
     ∀ ε > 0, ∃ (p : PolynomialInF F), sublevelMeasure p < mu F + ε := by
-  intro ε hε
-  rw [mu_eq_zero]
-  simp only [zero_add]
-  exact ⟨⟨0, Fin.elim0, fun i => i.elim0⟩, by
-    simp only [sublevelMeasure, sublevelSet, PolynomialInF.eval]
-    convert hε using 1
-    convert MeasureTheory.measure_empty
-    ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]⟩
+  sorry
 
 end Erdos1040

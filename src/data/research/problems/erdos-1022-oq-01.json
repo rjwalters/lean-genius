@@ -8,10 +8,7 @@
   "problemStatement": {
     "formal": "Define Property B_k for set families: exists k-coloring with no monochromatic member. Study the hierarchy B_2 ⊆ B_3 ⊆ ... and the generalized first-moment threshold.",
     "plain": "Generalize 2-colorability (Property B) to k-colorability for hypergraphs.",
-    "whyMatters": [
-      "Connects to hypergraph chromatic number",
-      "Generalizes Erdős #1022 conjecture"
-    ]
+    "whyMatters": ["Connects to hypergraph chromatic number", "Generalizes Erdős #1022 conjecture"]
   },
   "knownResults": {
     "proven": [
@@ -53,23 +50,11 @@
     "nextSteps": [],
     "markdown": ""
   },
-  "tags": [
-    "erdos",
-    "combinatorics",
-    "hypergraph coloring"
-  ],
-  "relatedProofs": [
-    "erdos-1",
-    "erdos-10",
-    "erdos-102",
-    "erdos-1022",
-    "erdos-1022-oq-01"
-  ],
+  "tags": ["erdos", "combinatorics", "hypergraph coloring"],
+  "relatedProofs": ["erdos-1022"],
   "references": {
     "papers": [],
-    "urls": [
-      "https://erdosproblems.com/1022"
-    ],
+    "urls": ["https://erdosproblems.com/1022"],
     "mathlib": []
   },
   "started": "2026-03-29T19:30:00Z",
@@ -80,24 +65,13 @@
     {
       "path": "Proofs/Erdos1022OQ01.lean",
       "filename": "Erdos1022OQ01.lean",
-      "lineCount": 165,
-      "theoremCount": 8,
+      "lineCount": 160,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1022Problem.lean",
-      "filename": "Erdos1022Problem.lean",
-      "lineCount": 419,
-      "theoremCount": 22,
-      "axiomCount": 2,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
     }
   ]
 }
