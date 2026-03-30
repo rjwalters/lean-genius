@@ -187,7 +187,50 @@ This is a special case of the Cauchy-Davenport theorem for ℤ
     giving at least 2|A| - 1 distinct elements. -/
 theorem sumset_card_lower_bound (A : Finset ℕ) (hA : A.Nonempty) :
     (A + A).card ≥ 2 * A.card - 1 := by
-  sorry
+  -- Let m = min(A), M = max(A)
+  set m := A.min' hA
+  set M := A.max' hA
+  have hm_mem : m ∈ A := min'_mem A hA
+  have hM_mem : M ∈ A := max'_mem A hA
+  -- Two shifted copies: S₁ = {a + m : a ∈ A}, S₂ = {a + M : a ∈ A}
+  set S₁ := A.image (· + m)
+  set S₂ := A.image (· + M)
+  -- Both embed into A + A
+  have hS₁_sub : S₁ ⊆ A + A := by
+    intro x hx
+    simp only [S₁, mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    exact add_mem_add ha hm_mem
+  have hS₂_sub : S₂ ⊆ A + A := by
+    intro x hx
+    simp only [S₂, mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    exact add_mem_add ha hM_mem
+  -- Their cardinalities equal |A| (addition by a constant is injective)
+  have hS₁_card : S₁.card = A.card :=
+    card_image_of_injective A (fun _ _ h => by omega)
+  have hS₂_card : S₂.card = A.card :=
+    card_image_of_injective A (fun _ _ h => by omega)
+  -- Their intersection has at most 1 element
+  -- (a₁ + m = a₂ + M with a₁ ≤ M and m ≤ a₂ forces a₁ = M and a₂ = m)
+  have hinter : (S₁ ∩ S₂).card ≤ 1 := by
+    rw [card_le_one]
+    intro x hx y hy
+    simp only [mem_inter, S₁, S₂, mem_image] at hx hy
+    obtain ⟨⟨a₁, ha₁, ha₁_eq⟩, a₂, ha₂, ha₂_eq⟩ := hx
+    obtain ⟨⟨b₁, hb₁, hb₁_eq⟩, b₂, hb₂, hb₂_eq⟩ := hy
+    have := le_max' A a₁ ha₁
+    have := min'_le A a₂ ha₂
+    have := le_max' A b₁ hb₁
+    have := min'_le A b₂ hb₂
+    omega
+  -- Combine via inclusion-exclusion:
+  -- |A + A| ≥ |S₁ ∪ S₂| = |S₁| + |S₂| - |S₁ ∩ S₂| ≥ 2|A| - 1
+  have hunion := card_union_add_card_inter S₁ S₂
+  calc (A + A).card
+      ≥ (S₁ ∪ S₂).card := card_le_card (union_subset hS₁_sub hS₂_sub)
+    _ ≥ S₁.card + S₂.card - 1 := by omega
+    _ = 2 * A.card - 1 := by omega
 
 /-
 ## Part VI: Combining — The Positive-Coefficient Result
