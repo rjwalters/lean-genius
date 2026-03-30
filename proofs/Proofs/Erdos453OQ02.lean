@@ -16,7 +16,8 @@
     and Nat.nth_count + decide for the 4th prime
 
   logPrime_ratio_tendsto_zero is now a theorem (proved from PNT asymptotics,
-  1 sorry for the technical squeeze argument).
+  1 sorry for the final ε-δ assembly — key ingredients extracted:
+  isLittleO_log_rpow_atTop and nth_prime_asymptotic_axiom bounds).
   pomerance_convex_hull_lemma remains axiomatized (convex hull theory).
 
   Result: Axiom count reduced from 4 to 1, sorry count from 1 to 1.
@@ -132,21 +133,24 @@ Proof strategy from nth_prime_asymptotic_axiom (p_k ~ k·log(k)):
 -/
 theorem logPrime_ratio_tendsto_zero :
     Filter.Tendsto (fun n => logPrime n / ↑n) Filter.atTop (nhds 0) := by
-  -- From PNT: Nat.nth Nat.Prime k / (k * log k) → 1
-  -- This means p_k grows like k·log(k), so log(p_k) grows like log(k)
-  -- Hence log(p_k)/k → 0
-  --
-  -- Technical proof uses squeeze between 0 and C·log(k)/k:
-  -- The sequence (fun n => logPrime n / n) is eventually bounded above
-  -- by (fun n => 3 * log n / n) and below by 0.
-  -- Both bounds → 0, so the sequence → 0 by squeeze.
-  --
-  -- Key Mathlib dependencies:
-  -- - PrimeNumberTheorem.nth_prime_asymptotic_axiom
-  -- - Real.tendsto_log_atTop (log → ∞, used for log(k)/k → 0)
-  -- - Filter.Tendsto.div_atTop
-  -- - squeeze_zero or tendsto_of_tendsto_of_tendsto_of_le_of_le'
-  sorry -- proof structure clear; see comments above for the exact argument
+  -- Strategy: squeeze between 0 and 3·log(n)/n.
+  -- Step 1: From log = o(x) (Mathlib: isLittleO_log_rpow_atTop), get bound on log(n)/n
+  -- Step 2: From PNT, eventually p_n ≤ 2·n·log(n), so log(p_n) ≤ log(2·n·log(n)) ≤ 3·log(n)
+  -- Step 3: 3·log(n)/n → 0, and 0 ≤ logPrime n / n, so squeeze gives → 0
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  -- From log = o(x^1): eventually ‖log x‖ ≤ (ε/3) · ‖x^1‖
+  have h_olit := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
+  obtain ⟨R₁, hR₁⟩ := Filter.eventually_atTop.mp (h_olit.bound (show (0 : ℝ) < ε / 3 by linarith))
+  -- From PNT: Nat.nth Prime k / (k * log k) → 1, so eventually ≤ 2
+  have h_pnt := PrimeNumberTheorem.nth_prime_asymptotic_axiom
+  rw [Metric.tendsto_atTop] at h_pnt
+  obtain ⟨N₂, hN₂⟩ := h_pnt 1 one_pos
+  -- For sufficiently large n, combine:
+  -- (a) p_{n-1} ≤ 2·(n-1)·log(n-1)    [from PNT bound]
+  -- (b) log(2·(n-1)·log(n-1)) ≤ 3·log(n)  [for large n]
+  -- (c) 3·log(n)/n ≤ 3·(ε/3)·n/n = ε     [from isLittleO bound]
+  sorry -- Remaining: assemble the three bounds into the ε-δ argument
 
 /--
 **Convex Hull Vertex:**
