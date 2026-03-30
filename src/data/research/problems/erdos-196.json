@@ -32,12 +32,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: 0A, 4T, 0S. Fully verified. Removed 4 unused axioms.",
     "builtItems": [
       "conjecture_implies_3ap: 4-AP conjecture implies 3-AP theorem (PROVED)",
       "ap4_parity: every 4-AP has odd or even common difference (PROVED)",
       "conjecture_equiv_even_forced: conjecture ↔ no-odd-CD-4AP implies even-CD-4AP (PROVED)",
-      "non_extendable_constraint: 4-AP avoidance forbids specific extensions of 3-APs (PROVED)"
+      "non_extendable_constraint: 4-AP avoidance forbids specific extensions of 3-APs (PROVED)",
+      "Removed 4 unused axioms (degs_3ap_theorem, degs_5ap_counterexample, lesaulnier_vijay_odd_avoidable, erdos_szekeres) — now fully verified"
     ],
     "insights": [
       "k=4 is the critical threshold: k=3 proved (DEGS 1977), k=5 disproved (DEGS 1977)",
@@ -71,16 +72,16 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.837Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-03-29T22:45:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos196Problem.lean",
       "filename": "Erdos196Problem.lean",
-      "lineCount": 172,
+      "lineCount": 161,
       "theoremCount": 4,
-      "axiomCount": 4,
+      "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/196",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos196Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "arithmetic progressions",
       "monotone subsequences"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 196,
     "erdosUrl": "https://erdosproblems.com/196",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 171,
-    "assumptions": "5 axioms: erdos_196_conjecture, degs_3ap_theorem, degs_5ap_counterexample, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 161,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Known results (DEGS 1977, LeSaulnier-Vijay 2011, Erdős-Szekeres 1935) documented as comments.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

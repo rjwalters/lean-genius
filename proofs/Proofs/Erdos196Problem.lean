@@ -67,15 +67,13 @@ def HasMonotone5AP (x : Perm) : Prop :=
 def ErdosProblem196 : Prop :=
   ∀ x : Perm, HasMonotone4AP x
 
-/- ## Known Results -/
+/- ## Known Results (documented, not axiomatized — unused by theorems below)
 
-/-- **DEGS (1977)**: Every permutation of ℕ contains a monotone 3-AP. -/
-axiom degs_3ap_theorem :
-  ∀ x : Perm, HasMonotone3AP x
-
-/-- **DEGS (1977)**: There exists a permutation avoiding monotone 5-APs. -/
-axiom degs_5ap_counterexample :
-  ∃ x : Perm, ¬HasMonotone5AP x
+- **DEGS (1977)**: Every permutation of ℕ contains a monotone 3-AP.
+  `∀ x : Perm, HasMonotone3AP x`
+- **DEGS (1977)**: There exists a permutation avoiding monotone 5-APs.
+  `∃ x : Perm, ¬HasMonotone5AP x`
+-/
 
 /-- The 4-AP conjecture implies the 3-AP theorem. -/
 theorem conjecture_implies_3ap (hconj : ∀ x : Perm, HasMonotone4AP x) :
@@ -99,12 +97,8 @@ def IsAP4OddCD (a b c d : ℕ) : Prop :=
 def IsAP4EvenCD (a b c d : ℕ) : Prop :=
   IsAP4 a b c d ∧ (b - a) % 2 = 0
 
-/-- **LeSaulnier–Vijay (2011)**: There exists a permutation avoiding
-    all monotone 4-APs with odd common difference. -/
-axiom lesaulnier_vijay_odd_avoidable :
-  ∃ x : Perm, ¬∃ i j k l : ℕ,
-    (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
-    IsAP4OddCD (x i) (x j) (x k) (x l)
+/- **LeSaulnier–Vijay (2011)**: There exists a permutation avoiding
+   all monotone 4-APs with odd common difference. Not axiomatized (unused). -/
 
 /-- Every 4-AP has either odd or even common difference. -/
 theorem ap4_parity (a b c d : ℕ) (h : IsAP4 a b c d) :
@@ -161,11 +155,7 @@ theorem non_extendable_constraint :
 
 /- ## Erdős–Szekeres Connection -/
 
-/-- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
-    numbers contains an increasing subsequence of length r or a decreasing
-    one of length s. This guarantees long monotone subsequences but not APs. -/
-axiom erdos_szekeres :
-  ∀ (n r s : ℕ), n > (r - 1) * (s - 1) →
-    ∀ (seq : Fin n → ℕ), Injective seq →
-      (∃ indices : Fin r → Fin n, StrictMono indices ∧ StrictMono (seq ∘ indices)) ∨
-      (∃ indices : Fin s → Fin n, StrictMono indices ∧ StrictAnti (seq ∘ indices))
+/- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
+   numbers contains an increasing subsequence of length r or a decreasing
+   one of length s. Guarantees long monotone subsequences but not APs.
+   Not axiomatized (unused by theorems in this file). -/
