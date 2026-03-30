@@ -133,24 +133,24 @@ Proof strategy from nth_prime_asymptotic_axiom (p_k ~ k·log(k)):
 -/
 theorem logPrime_ratio_tendsto_zero :
     Filter.Tendsto (fun n => logPrime n / ↑n) Filter.atTop (nhds 0) := by
-  -- Strategy: squeeze between 0 and 3·log(n)/n.
-  -- Step 1: From log = o(x) (Mathlib: isLittleO_log_rpow_atTop), get bound on log(n)/n
-  -- Step 2: From PNT, eventually p_n ≤ 2·n·log(n), so log(p_n) ≤ log(2·n·log(n)) ≤ 3·log(n)
-  -- Step 3: 3·log(n)/n → 0, and 0 ≤ logPrime n / n, so squeeze gives → 0
+  -- Strategy: squeeze between 0 and 3·log(n)/n → 0.
+  -- From PNT: eventually p_n ≤ 2·n·log(n), so log(p_n) ≤ 3·log(n) for large n.
+  -- From log = o(x): 3·log(n)/n < ε for large n.
   rw [Metric.tendsto_atTop]
   intro ε hε
-  -- From log = o(x^1): eventually ‖log x‖ ≤ (ε/3) · ‖x^1‖
+  -- Step 1: From log = o(x^1), get N₁ where log(x) ≤ (ε/4) · x for x ≥ N₁
   have h_olit := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
-  obtain ⟨R₁, hR₁⟩ := Filter.eventually_atTop.mp (h_olit.bound (show (0 : ℝ) < ε / 3 by linarith))
-  -- From PNT: Nat.nth Prime k / (k * log k) → 1, so eventually ≤ 2
+  obtain ⟨R₁, hR₁⟩ := Filter.eventually_atTop.mp (h_olit.bound (show (0 : ℝ) < ε / 4 by linarith))
+  -- Step 2: From PNT, get N₂ where |p_k/(k·log k) - 1| < 1, so p_k < 2·k·log(k)
   have h_pnt := PrimeNumberTheorem.nth_prime_asymptotic_axiom
   rw [Metric.tendsto_atTop] at h_pnt
   obtain ⟨N₂, hN₂⟩ := h_pnt 1 one_pos
-  -- For sufficiently large n, combine:
-  -- (a) p_{n-1} ≤ 2·(n-1)·log(n-1)    [from PNT bound]
-  -- (b) log(2·(n-1)·log(n-1)) ≤ 3·log(n)  [for large n]
-  -- (c) 3·log(n)/n ≤ 3·(ε/3)·n/n = ε     [from isLittleO bound]
-  sorry -- Remaining: assemble the three bounds into the ε-δ argument
+  -- Step 3: Choose N large enough for all bounds to hold
+  -- For n ≥ N: nthPrime n ≤ n² (from PNT + growth bound), so
+  -- log(nthPrime n) ≤ 2·log(n), and 2·log(n)/n ≤ 2·(ε/4) < ε
+  -- Full proof requires careful chain of real analysis inequalities;
+  -- all key ingredients are now extracted above.
+  sorry
 
 /--
 **Convex Hull Vertex:**
