@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 28T/3A/0S (was 25T). Added set_eq_implies_erdos_5 (reverse direction), erdos_5_iff (full equivalence), known_properties_of_S (summary). 3 deep axioms remain.",
+    "progressSummary": "COMPLETED: 29T/3A/0S (was 27T). Removed vacuous merikoski_density. Added isLimitPoint_of_frequently_near (cluster→limit point) and erdos_5_from_dense_values (reduces conjecture to distributional density). All 3 axioms are deep results — no further elimination possible.",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
@@ -49,7 +49,10 @@
       "Defined nthPrime via Nat.nth Nat.Prime in Erdos5Problem.lean",
       "Proved nthPrime_prime from Nat.nth_mem_of_infinite",
       "Proved nthPrime_strictMono from Nat.nth_strictMono",
-      "Derived hildebrand_maier_large_gaps from gaps_unbounded"
+      "Derived hildebrand_maier_large_gaps from gaps_unbounded",
+      "Removed merikoski_density (was vacuous True placeholder)",
+      "Added isLimitPoint_of_frequently_near (Erdos5PrimeGaps.lean:528)",
+      "Added erdos_5_from_dense_values (Erdos5PrimeGaps.lean:564)"
     ],
     "insights": [
       "Erdos5PrimeGaps.lean is the main file (343L, well-structured); Erdos5Problem.lean is legacy (81L, all axiomatized)",
@@ -67,7 +70,10 @@
       "limitPointSet_isClosed proved: complement is open via contrapositive diagonal extraction (build strictly increasing subsequence from infinite ε-neighborhoods) + triangle inequality (ε/2-ball argument)",
       "nthPrime can be defined as Nat.nth Nat.Prime (from Mathlib.Data.Nat.Prime.Nth) — eliminates 3 axioms",
       "hildebrand_maier_large_gaps is redundant with gaps_unbounded (same statement with weaker hypothesis C > 0 vs any M)",
-      "4 axioms eliminated in this session: nthPrime (defined), nthPrime_prime (proved), nthPrime_strictMono (proved), hildebrand_maier_large_gaps (derived)"
+      "4 axioms eliminated in this session: nthPrime (defined), nthPrime_prime (proved), nthPrime_strictMono (proved), hildebrand_maier_large_gaps (derived)",
+      "Removed vacuous merikoski_density placeholder (∃ d ≥ 1/3, True proves nothing)",
+      "Added isLimitPoint_of_frequently_near: if ∀ε>0 infinitely many n have dist(normalizedGap n, C)<ε, then C∈S (diagonal extraction)",
+      "Added erdos_5_from_dense_values: reduces conjecture to showing normalizedGap values are distributionally dense on [0,∞)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -2,7 +2,7 @@
   "id": "erdos-909-oq-01",
   "title": "Characterize Dimension-Stable Spaces",
   "slug": "erdos-909-oq-01",
-  "description": "Characterize all topological spaces S with dim(S \u00d7 S) = dim(S). Anderson-Keisler showed such spaces exist for all n \u2265 1, but the structural criterion is unknown. This formalization defines dimension-stability, proves necessary conditions from the product inequality, handles the 0-dimensional case, and shows that dimension mismatch precludes stability.",
+  "description": "Characterize all topological spaces S with dim(S × S) = dim(S). Anderson-Keisler showed such spaces exist for all n ≥ 1, but the structural criterion is unknown. This formalization defines dimension-stability, proves necessary conditions from the product inequality, handles the 0-dimensional case, and shows that dimension mismatch precludes stability.",
   "meta": {
     "author": "Anderson, Keisler (1967); Engelking (1978)",
     "sourceUrl": "https://erdosproblems.com/909",
@@ -35,5 +35,8 @@
     "openQuestionOf": "erdos-909",
     "lineCount": 255
   },
-  "sections": []
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 2
+  }
 }

@@ -22,14 +22,21 @@ Tags: extremal-graph-theory, induced-subgraphs, maximum-degree
 Results:
 - erdos_614_existence: proved from f_upper_bound
 - f_max_k: identified as FALSE and removed (star graph counterexample)
-Axioms: 4 (f_lower_bound, f_upper_bound, f_case_k_eq_1, f_mono_k)
-Sorries: 0
+- f_case_k_eq_1: converted from axiom to theorem with proof structure
+  (1 sorry remains: type transport from arbitrary V to Fin n)
+- hasPropertyP_one_triple_has_edge: proved — P(1) implies every triple has an edge
+- edge_injection_bound: proved — injection from vertex cover to edge set
+- edgeCount_ge_of_propertyP1: proved — core math result for Fin n
+Axioms: 2 (f_lower_bound, f_mono_k)
+Sorries: 1 (type transport via Fintype.equivFin in f_case_k_eq_1)
 -/
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Tactic
 
 open SimpleGraph Finset
 
@@ -193,12 +200,190 @@ theorem f_upper_bound :
 ## Part 5: Special Cases
 -/
 
+/-- P(1) means every triple has at least one edge: if inducedMaxDegree ≥ 1
+    on a 3-set, then some vertex has a neighbor, so there is an edge. -/
+private lemma hasPropertyP_one_triple_has_edge
+    (G : SimpleGraph V) [DecidableRel G.Adj] (hP : hasPropertyP G 1)
+    {a b c : V} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    G.Adj a b ∨ G.Adj a c ∨ G.Adj b c := by
+  unfold hasPropertyP at hP
+  have hcard : ({a, b, c} : Finset V).card = 1 + 2 := by
+    rw [Finset.card_insert_of_not_mem (by simp [hab, hac]),
+        Finset.card_insert_of_not_mem (by simp [hbc]),
+        Finset.card_singleton]
+  have h := hP {a, b, c} hcard
+  unfold inducedMaxDegree at h
+  have hne : ({a, b, c} : Finset V).Nonempty := ⟨a, Finset.mem_insert_self a _⟩
+  simp only [dif_pos hne] at h
+  -- Some vertex in {a,b,c} has ≥ 1 neighbor in {a,b,c}
+  rw [Finset.le_sup'_iff] at h
+  obtain ⟨v, hv, hcard_pos⟩ := h
+  -- v has a neighbor w in {a,b,c} with w ≠ v and G.Adj v w
+  have : (({a, b, c} : Finset V).filter (fun u => u ≠ v ∧ G.Adj v u)).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨w, hw⟩ := this
+  simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton] at hw hv
+  obtain ⟨hw_mem, hw_ne, hw_adj⟩ := hw
+  -- v and w are both in {a,b,c} and v-w is an edge
+  rcases hv with rfl | rfl | rfl <;> rcases hw_mem with rfl | rfl | rfl <;>
+    first | exact absurd rfl hw_ne
+          | exact Or.inl hw_adj | exact Or.inl (hw_adj.symm)
+          | exact Or.inr (Or.inl hw_adj) | exact Or.inr (Or.inl (hw_adj.symm))
+          | exact Or.inr (Or.inr hw_adj) | exact Or.inr (Or.inr (hw_adj.symm))
+
+/-- An edge (a, b) with a < b contributes to the edge count. -/
+private lemma mem_edgeCount_filter (G : SimpleGraph V) [DecidableRel G.Adj]
+    {a b : V} (hab : a < b) (hadj : G.Adj a b) :
+    (a, b) ∈ (Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)) := by
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact ⟨hab, hadj⟩
+
+/-- If a subset of the edge-count filter has cardinality k, then edgeCount ≥ k. -/
+private lemma edgeCount_ge_of_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset (V × V))
+    (hS : S ⊆ Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)) :
+    edgeCount G ≥ S.card := by
+  unfold edgeCount
+  exact Finset.card_le_card hS
+
+/-- If every vertex in a set S is adjacent to a or b (where a ≠ b, ¬adj a b),
+    then the graph has at least |S| edges. Each c ∈ S produces a distinct edge
+    (a,c) or (b,c); these are all distinct because c appears as an endpoint
+    unique to that element of S, and a ≠ b ensures no overlap between
+    a-edges and b-edges. -/
+private theorem edge_injection_bound {n : ℕ}
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (a b : Fin n) (hab : a ≠ b) (hnadj : ¬G.Adj a b)
+    (S : Finset (Fin n))
+    (hS : ∀ c ∈ S, G.Adj a c ∨ G.Adj b c) :
+    edgeCount G ≥ S.card := by
+  -- a and b cannot be in S (self-loops impossible, a-b not adjacent)
+  have ha_notin : a ∉ S := by
+    intro ha; rcases hS a ha with h | h
+    · exact G.loopless a h
+    · exact hnadj (G.symm h)
+  have hb_notin : b ∉ S := by
+    intro hb; rcases hS b hb with h | h
+    · exact hnadj h
+    · exact G.loopless b h
+  -- Edge-selecting function: map c to ordered edge pair (min(x,c), max(x,c))
+  let f : Fin n → Fin n × Fin n := fun c =>
+    if G.Adj a c then (min a c, max a c) else (min b c, max b c)
+  -- Recovery function: from a pair, extract the non-{a,b} element
+  let g : Fin n × Fin n → Fin n := fun ⟨p, _q⟩ =>
+    if p = a ∨ p = b then _q else p
+  -- g is a left inverse of f on S, so f is injective on S
+  have hgf : ∀ c, c ∈ (↑S : Set (Fin n)) → g (f c) = c := by
+    intro c hc
+    have hca : c ≠ a := fun h => ha_notin (h ▸ Finset.mem_coe.mp hc)
+    have hcb : c ≠ b := fun h => hb_notin (h ▸ Finset.mem_coe.mp hc)
+    simp only [f, g]
+    by_cases hadj : G.Adj a c
+    · simp only [if_pos hadj]
+      rcases le_total a c with hle | hle
+      · simp [min_eq_left hle, max_eq_right hle, Or.inl rfl]
+      · simp [min_eq_right hle, max_eq_left hle, not_or.mpr ⟨hca, hcb⟩]
+    · simp only [if_neg hadj]
+      rcases le_total b c with hle | hle
+      · simp [min_eq_left hle, max_eq_right hle, show b = a ∨ b = b from Or.inr rfl]
+      · simp [min_eq_right hle, max_eq_left hle, not_or.mpr ⟨hca, hcb⟩]
+  have hinj : Set.InjOn f (↑S : Set (Fin n)) :=
+    fun c₁ hc₁ c₂ hc₂ heq => by
+      have := congr_arg g heq
+      rw [hgf c₁ hc₁, hgf c₂ hc₂] at this
+      exact this
+  -- f maps S into the edge filter
+  have hf_mem : S.image f ⊆
+      Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.Adj p.1 p.2) := by
+    intro ⟨p, q⟩ hmem
+    simp only [Finset.mem_image] at hmem
+    obtain ⟨c, hc, hfc⟩ := hmem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    have hca : c ≠ a := fun h => ha_notin (h ▸ hc)
+    have hcb : c ≠ b := fun h => hb_notin (h ▸ hc)
+    -- Case split on what f actually does (whether G.Adj a c)
+    by_cases hadj_a : G.Adj a c
+    · -- f uses a-path: f c = (min a c, max a c)
+      simp only [f, if_pos hadj_a] at hfc
+      rw [← hfc]
+      rcases hca.lt_or_lt with hlt | hlt
+      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_a⟩
+      · simp only [min_eq_right hlt.le, max_eq_left hlt.le]; exact ⟨hlt, hadj_a.symm⟩
+    · -- f uses b-path: f c = (min b c, max b c), and G.Adj b c by elimination
+      have hadj_b : G.Adj b c :=
+        (hS c hc).resolve_left hadj_a
+      simp only [f, if_neg hadj_a] at hfc
+      rw [← hfc]
+      rcases hcb.lt_or_lt with hlt | hlt
+      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_b⟩
+      · simp only [min_eq_right hlt.le, max_eq_left hlt.le]; exact ⟨hlt, hadj_b.symm⟩
+  -- Combine: edgeCount ≥ |image| = |S|
+  calc edgeCount G
+      ≥ (S.image f).card := Finset.card_le_card hf_mem
+    _ = S.card := Finset.card_image_of_injOn hinj
+
+/-- Core lemma: On Fin n with n ≥ 3, if G has property P(1), then edgeCount G ≥ n - 2.
+
+    Proof: Either G is complete (≥ n-1 edges), or there exist non-adjacent vertices
+    a, b. For every other vertex c, the triple {a,b,c} must span an edge. Since a-b
+    is not an edge, either a-c or b-c is. This gives n-2 distinct edges. -/
+private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hP : hasPropertyP G 1) : edgeCount G ≥ n - 2 := by
+  -- Either every pair is adjacent, or some pair is not
+  by_cases hcomplete : ∀ a b : Fin n, a ≠ b → G.Adj a b
+  · -- Case 1: G is complete. Each i > 0 gives edge (0, i), so ≥ n-1 ≥ n-2 edges.
+    apply edgeCount_ge_of_subset G
+      (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i) |>.image
+        (fun i => ((0 : Fin n), i)))
+    intro ⟨x, y⟩ hmem
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    obtain ⟨i, hi, rfl⟩ := hmem
+    exact mem_edgeCount_filter G hi (hcomplete 0 i (Fin.ne_of_lt hi))
+  · -- Case 2: There exist non-adjacent a, b
+    push_neg at hcomplete
+    obtain ⟨a, b, hab, hnadj⟩ := hcomplete
+    -- For each c ≠ a, c ≠ b: triple {a,b,c} must have an edge, so a-c or b-c
+    set others := Finset.univ.filter (fun c : Fin n => c ≠ a ∧ c ≠ b) with others_def
+    have hothers_card : others.card = n - 2 := by
+      have : others = Finset.univ \ {a, b} := by
+        ext x; simp [others_def, Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton]
+        tauto
+      rw [this, Finset.card_sdiff (by simp),
+          Finset.card_insert_of_not_mem (by simp [hab]), Finset.card_singleton,
+          Fintype.card_fin]
+    -- Each c in others has an edge to a or b
+    have hedge_exists : ∀ c ∈ others, G.Adj a c ∨ G.Adj b c := by
+      intro c hc
+      simp only [others_def, Finset.mem_filter, Finset.mem_univ, true_and] at hc
+      have := hasPropertyP_one_triple_has_edge G hP hab hc.1.symm hc.2.symm
+      rcases this with h | h | h
+      · exact absurd h hnadj
+      · exact Or.inl h.symm
+      · exact Or.inr h.symm
+    -- Each c ∈ others produces a distinct edge (to a or to b).
+    -- We count: edges from a to its neighbors in others, plus edges from b
+    -- to its neighbors in others (that aren't already counted via a).
+    -- Since a ≠ b and c ∉ {a,b}, these edge sets are disjoint.
+    -- The injection argument is formalized via edge_injection_bound below.
+    rw [← hothers_card]
+    exact edge_injection_bound G a b hab hnadj others hedge_exists
+
 /-- Case k = 1: every 3 vertices must span at least one edge.
     This means the graph has no independent triple, requiring
     at least n - 2 edges (a path achieves this). -/
-axiom f_case_k_eq_1 :
+theorem f_case_k_eq_1 :
   ∀ n : ℕ, n ≥ 3 →
-    ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2
+    ∀ m, existsGraphWithPropertyP n 1 m → m ≥ n - 2 := by
+  intro n hn m ⟨V, hfin, hdec, hcard, G, hdr, hedge, hprop⟩
+  rw [← hedge, ← hcard]
+  -- Transport from V to Fin (Fintype.card V) via Fintype.equivFin.
+  -- Since edgeCount uses < on V, and existsGraphWithPropertyP quantifies
+  -- over arbitrary V, we need V to have a linear order for edgeCount to
+  -- be well-defined. The existential witness must provide this.
+  -- For the transport: use Fintype.equivFin to push G to Fin n,
+  -- preserving both hasPropertyP and edgeCount.
+  sorry  -- Type transport via Fintype.equivFin
 
 /-- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
     COUNTEREXAMPLE: The star graph K_{1,n-1} has n-1 edges and satisfies P(n-2),

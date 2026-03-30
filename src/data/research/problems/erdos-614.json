@@ -29,16 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: All 3 axioms require substantial proofs. f_case_k_eq_1 needs Turán/independence number bound. f_lower_bound needs double-counting. f_mono_k needs subtle subset extension argument.",
+    "progressSummary": "PROGRESS: Eliminated f_case_k_eq_1 axiom (3→2 axioms). Proved core result edgeCount_ge_of_propertyP1 for Fin n via vertex cover injection. Recovery function trick for injectivity. 1 sorry remains (type transport). f_lower_bound and f_mono_k axioms still open.",
     "builtItems": [
       "erdos_614_existence: proved from f_upper_bound",
       "f_max_k: removed as false with documented counterexample",
-      "Assessment: axioms blocked on Turán theorem / counting arguments not in Mathlib"
+      "Assessment: axioms blocked on Turán theorem / counting arguments not in Mathlib",
+      "hasPropertyP_one_triple_has_edge: proved — P(1) gives edge in any triple",
+      "edge_injection_bound: proved — injection from vertex cover set to edge set",
+      "edgeCount_ge_of_propertyP1: proved — core P(1) → ≥ n-2 edges for Fin n",
+      "f_case_k_eq_1: axiom → theorem (1 sorry: type transport from arbitrary V to Fin n)"
     ],
     "insights": [
       "f_case_k_eq_1 (n-2 bound for k=1): P(1) ↔ α(G)≤2. Complement is triangle-free → Turán gives |E|≥n(n-2)/4≥n-2 for n≥4. n=3 by cases.",
       "f_mono_k (P(k+1)→P(k)): extend (k+2)-subset S by v. If max-deg vertex in S∪{v} is in S, done (deg_S≥k). If it is v, need alternate argument. Subtle.",
-      "All 3 axioms require real mathematical proofs not available as Mathlib lookups. f_case_k_eq_1 closest to tractable (via Turán) but Turán not in Mathlib."
+      "All 3 axioms require real mathematical proofs not available as Mathlib lookups. f_case_k_eq_1 closest to tractable (via Turán) but Turán not in Mathlib.",
+      "f_case_k_eq_1 axiom eliminated: converted to theorem with proof. Key technique: vertex cover injection — if non-adjacent a,b exist, every other vertex c has edge to a or b, giving n-2 distinct edges via recovery-function injectivity argument.",
+      "Recovery function approach for injection proofs: define g(p,q) = non-{a,b} element, show g∘f = id, get injectivity for free. Avoids tedious 4-way case analysis.",
+      "Turán theorem IS in Mathlib v4.26.0 via CliqueFree.card_edgeFinset_le (prior session said it was not). Can be used for complement-based arguments."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

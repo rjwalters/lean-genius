@@ -2,9 +2,9 @@
   "id": "erdos-19-oq-01",
   "title": "Explicit Bounds on the EFL Threshold",
   "slug": "erdos-19-oq-01",
-  "description": "What is the explicit threshold N\u2080 such that the Kang-Kelly-K\u00fchn-Methuku-Osthus asymptotic proof of the Erd\u0151s-Faber-Lov\u00e1sz conjecture takes over? This formalization defines the threshold, proves the finite reduction theorem (EFL reduces to checking finitely many cases in [10, N\u2080)), and establishes structural bounds.",
+  "description": "What is the explicit threshold N₀ such that the Kang-Kelly-Kühn-Methuku-Osthus asymptotic proof of the Erdős-Faber-Lovász conjecture takes over? This formalization defines the threshold, proves the finite reduction theorem (EFL reduces to checking finitely many cases in [10, N₀)), and establishes structural bounds.",
   "meta": {
-    "author": "Kang, Kelly, K\u00fchn, Methuku, Osthus (2021); Hindman (1981)",
+    "author": "Kang, Kelly, Kühn, Methuku, Osthus (2021); Hindman (1981)",
     "sourceUrl": "https://erdosproblems.com/19",
     "date": "2021",
     "status": "axiomatized",
@@ -64,5 +64,8 @@
     "openQuestionOf": "erdos-19",
     "lineCount": 394
   },
-  "sections": []
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 3
+  }
 }
