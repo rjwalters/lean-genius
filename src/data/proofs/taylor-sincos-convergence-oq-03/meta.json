@@ -32,7 +32,8 @@
   "overview": {
     "problemStatement": "Can the Taylor remainder bounds for sin/cos be sharpened using the alternating series estimation theorem?",
     "text": "A 188-line formalization that answers YES: the alternating series structure of sin(x) = x - x^3/3! + x^5/5! - ... and cos(x) = 1 - x^2/2! + x^4/4! - ... gives error bounds |x|^{2n+1}/(2n+1)! for sin and |x|^{2n}/(2n)! for cos, which are (2n+1) and (2n) times tighter than the Lagrange bounds respectively.",
-    "proofStrategy": "1. Prove the alternating series estimation theorem: for a_0 >= a_1 >= ... >= 0, the alternating partial sums lie between 0 and a_0\n2. Show sin/cos series terms are decreasing for |x| <= 1 and tend to 0\n3. Apply ASE to get tighter remainder bounds\n4. Show these dominate the Lagrange bounds by factor (2n+1) or (2n)"
+    "proofStrategy": "1. Prove the alternating series estimation theorem: for a_0 >= a_1 >= ... >= 0, the alternating partial sums lie between 0 and a_0\n2. Show sin/cos series terms are decreasing for |x| <= 1 and tend to 0\n3. Apply ASE to get tighter remainder bounds\n4. Show these dominate the Lagrange bounds by factor (2n+1) or (2n)",
+    "keyInsights": []
   },
   "crossReferences": [
     {
@@ -50,5 +51,6 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2
-  }
+  },
+  "sections": []
 }

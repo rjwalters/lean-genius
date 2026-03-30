@@ -1,42 +1,43 @@
 {
-    "id": "central-limit-theorem-oq-01-oq-03",
-    "title": "Free Probability and Stable Distributions",
-    "slug": "central-limit-theorem-oq-01-oq-03",
-    "description": "Survey of stable distributions in free probability theory. Defines NCP spaces, free independence, stability indices. Assesses ~3900 lines needed for full formalization.",
-    "meta": {
-        "author": "Lean Genius",
-        "status": "verified",
-        "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
-        "tags": [
-            "probability",
-            "free probability",
-            "stable distributions",
-            "non-commutative"
-        ],
-        "badge": "verified",
-        "sorries": 0,
-        "axiomCount": 0,
-        "lineCount": 146,
-        "assumptions": "None.",
-        "theoremCount": 7,
-        "mathlib_version": "4.26.0"
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib.Probability.Variance",
-            "Mathlib.Tactic"
-        ],
-        "namespace": "CentralLimitTheoremOQ01OQ03",
-        "lineCount": 146,
-        "axiomCount": 0,
-        "theoremCount": 7,
-        "definitionCount": 4
-    },
-    "crossReferences": [
-        {
-            "targetId": "central-limit-theorem-oq-01",
-            "relationship": "extends",
-            "description": "Free probability analog of CLT"
-        }
-    ]
+  "id": "central-limit-theorem-oq-01-oq-03",
+  "title": "Free Probability and Stable Distributions",
+  "slug": "central-limit-theorem-oq-01-oq-03",
+  "description": "Survey of stable distributions in free probability theory. Defines NCP spaces, free independence, stability indices. Assesses ~3900 lines needed for full formalization.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+    "tags": [
+      "probability",
+      "free probability",
+      "stable distributions",
+      "non-commutative"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 146,
+    "assumptions": "None.",
+    "theoremCount": 7,
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.Variance",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "CentralLimitTheoremOQ01OQ03",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Free probability analog of CLT"
+    }
+  ],
+  "sections": []
 }

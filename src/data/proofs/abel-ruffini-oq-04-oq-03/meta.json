@@ -1,50 +1,51 @@
 {
-    "id": "abel-ruffini-oq-04-oq-03",
-    "title": "Galois's Solvability Criterion",
-    "slug": "abel-ruffini-oq-04-oq-03",
-    "description": "A root of an irreducible polynomial is solvable by radicals iff its Galois group is solvable. Forward direction proved (Mathlib), reverse axiomatized (needs Kummer theory).",
-    "meta": {
-        "author": "Galois",
-        "status": "axiomatized",
-        "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ03.lean",
-        "tags": [
-            "algebra",
-            "galois theory",
-            "solvability",
-            "radicals"
-        ],
-        "badge": "axiom",
-        "sorries": 0,
-        "axiomCount": 1,
-        "lineCount": 165,
-        "assumptions": "1 axiom: solvableGal_implies_solvableByRad (reverse direction, requires Kummer theory for cyclic extensions not yet in Mathlib).",
-        "mathlib_version": "4.26.0"
+  "id": "abel-ruffini-oq-04-oq-03",
+  "title": "Galois's Solvability Criterion",
+  "slug": "abel-ruffini-oq-04-oq-03",
+  "description": "A root of an irreducible polynomial is solvable by radicals iff its Galois group is solvable. Forward direction proved (Mathlib), reverse axiomatized (needs Kummer theory).",
+  "meta": {
+    "author": "Galois",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ03.lean",
+    "tags": [
+      "algebra",
+      "galois theory",
+      "solvability",
+      "radicals"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 165,
+    "assumptions": "1 axiom: solvableGal_implies_solvableByRad (reverse direction, requires Kummer theory for cyclic extensions not yet in Mathlib).",
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.FieldTheory.Galois.Basic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "GaloisCriterion",
+    "lineCount": 165,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "States the full iff version of the Galois-radical bridge"
     },
-    "leanFile": {
-        "imports": [
-            "Mathlib.FieldTheory.AbelRuffini",
-            "Mathlib.GroupTheory.Solvable",
-            "Mathlib.FieldTheory.Galois.Basic"
-        ],
-        "opens": [
-            "Polynomial"
-        ],
-        "namespace": "GaloisCriterion",
-        "lineCount": 165,
-        "axiomCount": 1,
-        "theoremCount": 7,
-        "definitionCount": 0
-    },
-    "crossReferences": [
-        {
-            "targetId": "abel-ruffini",
-            "relationship": "extends",
-            "description": "States the full iff version of the Galois-radical bridge"
-        },
-        {
-            "targetId": "abel-ruffini-oq-04",
-            "relationship": "extends",
-            "description": "Extends the A5 simplicity chain with the converse direction"
-        }
-    ]
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Extends the A5 simplicity chain with the converse direction"
+    }
+  ],
+  "sections": []
 }
