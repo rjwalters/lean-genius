@@ -1,0 +1,108 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 25,
+      "endLine": 36
+    },
+    "title": "Shattering and VC Dimension",
+    "type": "definition",
+    "content": "H shatters S if every subset T ⊆ S is realized as {x ∈ S : x ∈ h} for some h ∈ H. The VC dimension is the supremum of sizes of shattered sets.",
+    "mathContext": "The formal definition uses Finset (finite sets) throughout, which is computationally tractable in Lean 4. The Shatters predicate quantifies over all T ⊆ S and requires an explicit witness h ∈ H.",
+    "significance": "key",
+    "relatedConcepts": [
+      "shattering",
+      "VC dimension",
+      "hypothesis class"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "set membership"
+    ]
+  },
+  {
+    "id": "ann-powerset",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 49
+    },
+    "title": "Powerset Shatters Everything",
+    "type": "concept",
+    "content": "The powerset (Set.univ) shatters every finite set. For any T ⊆ S, use h = T itself.",
+    "mathContext": "This is the trivial upper bound: the most expressive hypothesis class shatters everything, giving infinite VC dimension for infinite domains. The proof is a one-liner: ⟨↑T, Set.mem_univ _, fun x _ => Iff.rfl⟩.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "powerset",
+      "Set.univ"
+    ],
+    "prerequisites": [
+      "Finset.coe"
+    ]
+  },
+  {
+    "id": "ann-threshold-shatter",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 75
+    },
+    "title": "Threshold Shatters Singletons",
+    "type": "concept",
+    "content": "Threshold classifiers {n < t} shatter any singleton {a}: ∅ via t=0, and {a} via t=a+1.",
+    "mathContext": "The proof splits on whether a ∈ T. If T = {a}, use threshold a+1 (which includes a since a < a+1). If T = ∅, use threshold 0 (which includes nothing).",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold classifier",
+      "shattering singleton"
+    ],
+    "prerequisites": [
+      "Finset.eq_singleton_iff_unique_mem"
+    ]
+  },
+  {
+    "id": "ann-threshold-no-pair",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 95
+    },
+    "title": "Threshold Cannot Shatter Pairs (Key Result)",
+    "type": "concept",
+    "content": "For a < b, threshold classifiers cannot shatter {a,b}. The subset {b} is unrealizable: any threshold including b (b < t) must also include a (a < b < t).",
+    "mathContext": "This is the key monotonicity argument. For h = {n < t}: if b ∈ h then b < t; if a ∉ h then t ≤ a. But a < b and b < t forces a < t, contradicting t ≤ a. The proof derives this contradiction via omega after rewriting with Set.mem_setOf_eq.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "non-shattering",
+      "VCDim upper bound"
+    ],
+    "prerequisites": [
+      "threshold_shatters_singleton",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-interval-pair",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 140
+    },
+    "title": "Interval Classifiers Shatter Pairs",
+    "type": "concept",
+    "content": "For a < b, interval classifiers shatter {a,b} by exhibiting four intervals: [0,0) → ∅, [a,a+1) → {a}, [b,b+1) → {b}, [a,b+1) → {a,b}.",
+    "mathContext": "This breaks the monotonicity that blocks threshold classifiers: the interval [b,b+1) contains b but excludes a when a < b. The proof is a 4-way case analysis, constructing an explicit interval for each T ⊆ {a,b}. All interval membership conditions are resolved by omega.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval classifier",
+      "shattering pair",
+      "VCDim lower bound"
+    ],
+    "prerequisites": [
+      "Finset.mem_insert",
+      "omega tactic"
+    ]
+  }
+]
