@@ -48,9 +48,9 @@
             "Proved even preservation under g using Mathlib's Nat.totient_even",
             "Formalized Cambie's structural conjecture on the form of r = 2 solutions"
         ],
-        "axiomCount": 3,
+        "axiomCount": 0,
         "lineCount": 223,
-        "assumptions": "3 axioms: cambie_ratio4_148646 (ratio-4 solution), cambie_ratio4_4325798 (ratio-4 solution), steinerberger_r2_equiv (r=2 reduction to finite equation). cambie_ratio3 PROVED via strong induction using g(3m)=3g(m) and 3-divisibility of iterates. The r=2 solutions n=10, n=94 are proved via native_decide."
+        "assumptions": "No axioms. All results (cambie_ratio3, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom."
     },
     "leanFile": {
         "path": "Proofs/Erdos411Problem.lean",
@@ -74,7 +74,7 @@
             "GeneralRatioRelation",
             "CambieConjecture"
         ],
-        "axiomCount": 3,
+        "axiomCount": 0,
         "theoremCount": 9,
         "sorryCount": 0
     },

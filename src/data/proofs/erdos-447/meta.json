@@ -63,9 +63,9 @@
       "IsKUnionFree and IsStrongUnionFree generalizations (Problem 1023)",
       "erdos_447_summary combining upper and lower bounds"
     ],
-    "axiomCount": 6,
+    "axiomCount": 2,
     "lineCount": 170,
-    "assumptions": "7 axioms: middleLayer_union_free, sperner_theorem, sarkozy_szemeredi_bound, and 4 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: kleitman_theorem (optimal union-free bound (1+o(1))C(n,n/2)), lower_bound (middle layer is union-free)."
   },
   "leanFile": {
     "path": "Proofs/Erdos447Problem.lean",
@@ -96,7 +96,7 @@
       "IsKUnionFree",
       "IsStrongUnionFree"
     ],
-    "axiomCount": 6,
+    "axiomCount": 2,
     "theoremCount": 1,
     "sorryCount": 0,
     "opens": [

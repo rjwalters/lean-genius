@@ -57,9 +57,9 @@
       "Stated exact values: L(1,n) = n!, L(2,n) = n! · D(n)",
       "Formalized GeneralAsymptotic and ExtendedConjecture (OPEN)"
     ],
-    "axiomCount": 9,
+    "axiomCount": 3,
     "lineCount": 169,
-    "assumptions": "9 axioms: erdos_kaplansky_1946, yamamoto_1951, L_as_permanent, and 6 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: godsil_mckay_bounds (permanent-based bounds on L(k,n)), L_1_n (L(1,n) = n!), derangements (subfactorial D(n) for L(2,n) formula)."
   },
   "leanFile": {
     "path": "Proofs/Erdos725Problem.lean",
@@ -100,7 +100,7 @@
       "GeneralAsymptotic",
       "ExtendedConjecture"
     ],
-    "axiomCount": 9
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "A $k \\times n$ Latin rectangle is a $k \\times n$ array filled with $n$ symbols such that each symbol appears exactly once per row and at most once per column. When $k = n$, this is a Latin square — objects studied since Euler's work on the 36 officers problem (1782).\n\nThe enumeration of Latin rectangles began with Euler and was pursued systematically in the 20th century. Erdős and Kaplansky (1946) proved the first asymptotic formula: $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ when $k = o((\\log n)^{3/2-\\varepsilon})$. Their proof used a careful inclusion-exclusion sieve over column collision events, counting the expected number of repeated entries in any column and showing the higher-order correction terms vanish in this regime.\n\nYamamoto (1951) dramatically extended the validity of this formula to $k \\leq n^{1/3-o(1)}$, improving the growth from logarithmic to polynomial. This extension required refined estimates on the permanent of certain 0-1 matrices.\n\nGodsil and McKay (1990) connected Latin rectangle counting to matrix permanents, establishing two-sided bounds $c_1 \\cdot e^{-\\binom{k}{2}}(n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}}(n!)^k$. Their work leveraged the resolution of van der Waerden's permanent conjecture by Egorychev (1981) and Falikman (1981). McKay and Wanless (2005) later extended the asymptotic to $k = o(n^{6/7})$, the current frontier. The full problem for $k = \\Theta(n)$ remains open.",
