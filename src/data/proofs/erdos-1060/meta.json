@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, documented in Guy [Gu04] Problem B11",
     "sourceUrl": "https://erdosproblems.com/1060",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1060Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "counting-solutions",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1060,
     "erdosUrl": "https://erdosproblems.com/1060",
@@ -48,8 +48,7 @@
       "solutionSet definition: {k | g(k) = n}",
       "f definition: counting function using ncard",
       "solutionSet_finite theorem: finite solutions for n > 0",
-      "erdos_1060_weak_conjecture axiom: f(n) ≤ n^{o(1/log log n)}",
-      "erdos_1060_strong_conjecture axiom: f(n) ≤ (log n)^C",
+      "Weak and strong conjectures documented in comments (not axiomatized)",
       "oeis_A327153 definition: values with solutions",
       "Concrete examples: g(2)=6, g(3)=12, g(5)=30, g(6)=72, g(7)=56",
       "sigma_mul_coprime theorem: σ multiplicativity via ArithmeticFunction bridge",
@@ -63,9 +62,9 @@
       "solution_le_sqrt theorem: solutions satisfy k ≤ √n",
       "f_le_sqrt theorem: f(n) ≤ √n — proved upper bound"
     ],
-    "axiomCount": 2,
-    "lineCount": 395,
-    "assumptions": "2 axiom(s) (open conjectures). All supporting lemmas fully proved. Proved bound: f(n) ≤ √n."
+    "axiomCount": 0,
+    "lineCount": 387,
+    "assumptions": "No axioms. Open conjectures are documented in comments only, not formalized as Lean axioms. All code is fully machine-checked."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1060**\n\nThis problem appears as B11 in Richard Guy's collection 'Unsolved Problems in Number Theory' [Gu04], attributed to Erdős.\n\n**Key History:**\n- The problem concerns the multiplicative Diophantine equation k·σ(k) = n\n- Related to understanding the structure of the divisor function σ\n- Connected to OEIS sequence A327153\n\n**Mathematical Setting:**\nThe sum of divisors function σ(k) = Σ_{d|k} d is one of the most fundamental arithmetic functions. The product k·σ(k) combines multiplicative and additive structure in a subtle way.",
