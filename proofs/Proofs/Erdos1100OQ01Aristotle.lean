@@ -69,7 +69,6 @@ theorem squarefree_omega_one_is_prime (n : ℕ) (hn : n > 1)
 
 /--
 Infinitude of primes: for any N, there exists a prime p > N.
-(Standard result, should be in Mathlib.)
 -/
 theorem exists_prime_gt (N : ℕ) : ∃ p : ℕ, p > N ∧ Nat.Prime p := by
   obtain ⟨p, hp_gt, hp_prime⟩ := Nat.exists_infinite_primes (N + 1)
