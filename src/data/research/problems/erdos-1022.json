@@ -29,19 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created Erdos1022Problem.lean from stub. Defined Property B, sparsity, conjecture. 1A (conjecture), 0S, 5T.",
+    "progressSummary": "COMPLETED: 633 lines, 31T, 1A (open conjecture), 0S. Includes Erdős first-moment bound, matching Property B, and pigeonhole lower bound for complete uniform families.",
     "builtItems": [
       "Erdos1022Problem.lean: HasPropertyB def, AllSizeAtLeast def, IsSparse def",
       "erdos_1022_conjecture axiom",
       "hasPropertyB_empty, hasPropertyB_subset, sparse_zero_forces_empty",
-      "Created Proofs/Erdos1022OQ01.lean: k-colorability with monotonicity and B↔B_2"
+      "Created Proofs/Erdos1022OQ01.lean: k-colorability with monotonicity and B↔B_2",
+      "completeUniform def, completeUniform_card_eq, completeUniform_allSizeAtLeast",
+      "not_hasPropertyB_completeUniform: pigeonhole lower bound (n ≥ 2t-1 → ¬Property B)",
+      "hasPropertyB_completeUniform: balanced split (n ≤ 2t-2 → Property B)",
+      "completeUniform_propertyB_iff: exact characterization of threshold"
     ],
     "insights": [
       "Property B = 2-colorability of hypergraphs: ∃ S such that every edge meets both S and S^c",
       "Sparsity condition: for every X, at most c·|X| edges are subsets of X",
       "Conjecture: c(t) → ∞ exists such that c(t)-sparse families of sets of size ≥ t have Property B",
       "Known: Lovász (1968) proved c(2) = 1 works",
-      "Follow-up OQ-01: Property B_k (k-colorability) generalization (10 theorems, 0 axioms)"
+      "Follow-up OQ-01: Property B_k (k-colorability) generalization (10 theorems, 0 axioms)",
+      "The complete t-uniform family on n vertices has Property B iff n ≤ 2t-2 (pigeonhole argument)",
+      "The Erdős first-moment bound (|F| < 2^{t-1}) is tight: complete families exceed this bound and fail Property B"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -80,10 +86,10 @@
     {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 523,
-      "theoremCount": 23,
+      "lineCount": 633,
+      "theoremCount": 31,
       "axiomCount": 1,
-      "defCount": 6,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
