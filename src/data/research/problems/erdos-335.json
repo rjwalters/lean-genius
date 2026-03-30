@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 31 theorems (6 new), 3 deep axioms, 0 sorries. Added Sumset identity ({0}), density chain composition, complement bound, double sumset.",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries (was 3 axioms). All 3 unused axioms removed (weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture) + unused FractionalPartSet def.",
     "builtItems": [
       "density_nonneg (PROVED) - ge_of_tendsto + div_nonneg",
       "density_le_one (PROVED) - le_of_tendsto + countingFn_le",
@@ -54,7 +54,8 @@
       "Sumset_zero_left: {0} is left identity for Sumset (Erdos335Problem.lean:295)",
       "density_additive_chain: d(A+B+C)=d(A)+d(B)+d(C) from chain (Erdos335Problem.lean:302)",
       "density_additive_complement_bound: d(B) ≤ 1-d(A) (Erdos335Problem.lean:308)",
-      "density_double_sumset: d(A+A) = 2d(A) when self-additive (Erdos335Problem.lean:313)"
+      "density_double_sumset: d(A+A) = 2d(A) when self-additive (Erdos335Problem.lean:313)",
+      "Removed 3 unused axioms + 1 unused def from Erdos335Problem.lean (3→0, fully verified)"
     ],
     "insights": [
       "limUnder requires Mathlib.Topology.Basic import (not in original file)",
