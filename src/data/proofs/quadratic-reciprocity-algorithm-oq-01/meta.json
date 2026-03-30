@@ -1,0 +1,39 @@
+{
+  "id": "quadratic-reciprocity-algorithm-oq-01",
+  "title": "Verified Jacobi Symbol Computation via Quadratic Reciprocity",
+  "slug": "quadratic-reciprocity-algorithm-oq-01",
+  "description": "Implementation of the Jacobi symbol algorithm as a recursive function in Lean 4, using quadratic reciprocity for reduction. Includes sign factor functions, strip2 decomposition, and concrete verifications.",
+  "meta": {
+    "author": "Gauss (algorithm, 1801)",
+    "date": "1801",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "algorithm",
+      "legendre-symbol",
+      "jacobi-symbol",
+      "verified-computation"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-30",
+    "lineCount": 193,
+    "originalContributions": [
+      "signFirst, signSecond, signRecip: supplementary law sign factor functions",
+      "strip2: factor out powers of 2 with termination proof",
+      "jacobiAux: recursive Jacobi symbol via QR reduction",
+      "jacobi: wrapper handling negative inputs",
+      "Concrete verifications for sign factors and strip2",
+      "Properties: all sign factors square to 1, signRecip symmetric",
+      "JacobiCorrectness: formal statement linking to Mathlib legendreSym"
+    ],
+    "assumptions": "1 sorry in jacobiAux termination proof (needs strip2_le: odd part of a%n is < n). No axioms."
+  },
+  "leanFile": {
+    "lineCount": 193,
+    "axiomCount": 0
+  }
+}
