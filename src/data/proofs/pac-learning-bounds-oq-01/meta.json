@@ -1,0 +1,164 @@
+{
+  "id": "pac-learning-bounds-oq-01",
+  "title": "VC Dimension of Specific Hypothesis Classes",
+  "slug": "pac-learning-bounds-oq-01",
+  "description": "Computes the VC dimension of three hypothesis classes: powerset (shatters all), threshold classifiers (VCDim = 1), and interval classifiers (VCDim = 2). The interval result uses a convexity argument: if a < b < c and both a,c lie in [lo,hi), then b must also lie in [lo,hi), making {a,c} unrealizable.",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VCDimension.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "cs-math-bridge",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mem_insert",
+        "description": "Finset insert membership for case analysis on finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.mem_univ",
+        "description": "Universal set membership for powerset shattering",
+        "module": "Mathlib.Order.SetPartition"
+      }
+    ],
+    "originalContributions": [
+      "Shatters: definition of shattering for finset-based hypothesis classes",
+      "powerset_shatters: powerset shatters every finite set (trivial: use h = T)",
+      "threshold_shatters_singleton: threshold classifiers shatter singletons",
+      "threshold_not_shatters_pair: monotonicity prevents shattering pairs (VCDim = 1)",
+      "interval_shatters_pair: interval classifiers shatter pairs via explicit intervals",
+      "interval_not_shatters_triple: convexity of intervals prevents shattering triples (VCDim = 2)",
+      "interval_convex: if a < b < c with a,c in [lo,hi), then b in [lo,hi)"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering definitions",
+      "Finset operations and membership",
+      "Natural number arithmetic (omega tactic)"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 219,
+    "assumptions": "0 axioms, 0 sorries. All 7 public theorems are fully proved. vcDim defined noncomputably via sSup but not directly computed (individual class results proved via shattering/non-shattering).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Vapnik-Chervonenkis (VC) dimension, introduced in 1971, is the central combinatorial parameter in statistical learning theory. It measures the expressive power of a hypothesis class by the size of the largest set it can shatter (label in all 2^n possible ways). Computing the VC dimension of specific hypothesis classes is fundamental: threshold classifiers have VCDim 1 (they are monotone), interval classifiers have VCDim 2 (they are convex but not monotone), and d-dimensional halfspaces have VCDim d+1.",
+    "problemStatement": "Compute the VC dimension of specific hypothesis classes:\n1. **Powerset** $\\mathcal{P}(\\Omega)$: VCDim = $|\\Omega|$ (shatters every finite set)\n2. **Threshold classifiers** $\\{\\{n : n < t\\} : t \\in \\mathbb{N}\\}$: VCDim = 1\n3. **Interval classifiers** $\\{\\{n : lo \\leq n < hi\\} : lo, hi \\in \\mathbb{N}\\}$: VCDim = 2",
+    "text": "Defines VC dimension for hypothesis classes and computes it for powerset (shatters all), thresholds (VCDim = 1), and intervals (VCDim = 2). The interval non-shattering uses convexity: if a < b < c with a,c in an interval, then b is too.",
+    "proofStrategy": "For each hypothesis class, the VC dimension is established by proving both directions:\n\n1. **Lower bound**: Exhibit a set of the claimed size that is shattered. For thresholds, any singleton {a} is shattered (empty set via t=0, full set via t=a+1). For intervals, any pair {a,b} is shattered (four intervals realize all four subsets).\n\n2. **Upper bound**: Show no larger set can be shattered. For thresholds, monotonicity of {n < t} prevents realizing {b} from {a,b} when a < b (if b < t then a < t). For intervals, convexity prevents realizing {a,c} from {a,b,c} when a < b < c (if a,c in [lo,hi) then b in [lo,hi)).\n\nThe convexity argument for intervals is the key insight: intervals are connected subsets of the naturals, so they cannot separate non-adjacent elements while excluding elements between them.",
+    "keyInsights": [
+      "Threshold classifiers have VCDim 1 because they are monotone: {n < t} is an initial segment, so including a larger element forces inclusion of all smaller ones",
+      "Interval classifiers have VCDim 2 because they are convex: [lo, hi) cannot contain endpoints a,c while excluding an intermediate point b",
+      "The powerset trivially shatters everything (VCDim = |domain|), establishing the maximum possible VC dimension",
+      "The non-shattering proofs are more interesting than the shattering proofs: they require identifying the specific unrealizable subset"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering definitions",
+      "Finset operations and membership",
+      "Natural number arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "Defines HypothesisClass (family of subsets), Shatters (every subset realizable), and vcDim (largest shattered set size).",
+      "mathContext": "$H$ shatters $S$ if $\\forall T \\subseteq S, \\exists h \\in H$ s.t. $h \\cap S = T$. VCDim$(H) = \\sup\\{|S| : H \\text{ shatters } S\\}$."
+    },
+    {
+      "id": "powerset",
+      "title": "Powerset Shattering",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "The powerset (all subsets) shatters every finite set trivially: for any T, use h = T.",
+      "mathContext": "$\\mathcal{P}(\\Omega)$ shatters $S$ for all $S$: just take $h = T$ for any $T \\subseteq S$."
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Classifiers: VCDim = 1",
+      "startLine": 53,
+      "endLine": 101,
+      "summary": "Threshold classifiers {n < t} shatter singletons but cannot shatter pairs. The non-shattering uses monotonicity: b < t forces a < t when a < b.",
+      "mathContext": "VCDim$\\{\\{n < t\\}\\} = 1$. Shatters $\\{a\\}$ (use $t=0$ and $t=a+1$). Cannot shatter $\\{a,b\\}$ with $a < b$: the subset $\\{b\\}$ requires $b < t$ and $a \\geq t$, but $a < b < t$ contradicts $a \\geq t$."
+    },
+    {
+      "id": "interval-shatters",
+      "title": "Interval Classifiers: Shattering Pairs",
+      "startLine": 103,
+      "endLine": 147,
+      "summary": "Interval classifiers [lo, hi) shatter any pair {a, b} with a < b. Each of the four subsets is realized by an appropriate interval.",
+      "mathContext": "For $a < b$: $\\emptyset$ via $[0,0)$, $\\{a\\}$ via $[a,a+1)$, $\\{b\\}$ via $[b,b+1)$, $\\{a,b\\}$ via $[a,b+1)$."
+    },
+    {
+      "id": "interval-non-shatters",
+      "title": "Interval Classifiers: Non-Shattering of Triples",
+      "startLine": 149,
+      "endLine": 188,
+      "summary": "Interval classifiers cannot shatter any triple {a, b, c} with a < b < c. The subset {a, c} is unrealizable: if a,c are in [lo,hi), convexity forces b in [lo,hi) too.",
+      "mathContext": "For $a < b < c$: $\\{a,c\\}$ requires $a \\in [lo,hi)$ and $c \\in [lo,hi)$ but $b \\notin [lo,hi)$. But $lo \\leq a < b < c < hi$ forces $b \\in [lo,hi)$. Contradiction."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "extends",
+      "description": "This proof computes VC dimensions for specific classes; the parent proves the Sauer-Shelah lemma bounding growth functions in terms of VC dimension"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete VC dimension computation for three fundamental hypothesis classes, establishing VCDim(powerset) = |domain|, VCDim(thresholds) = 1, and VCDim(intervals) = 2. The interval result uses a clean convexity argument that generalizes to any connected hypothesis class.",
+    "implications": "These concrete computations complement the abstract Sauer-Shelah bounds in the parent proof. They demonstrate that VC dimension captures geometric structure: monotone classes (thresholds) have lower VC dimension than convex classes (intervals), which have lower VC dimension than unrestricted classes (powerset).",
+    "openQuestions": [
+      "What is the connection to Rademacher complexity, and can the Rademacher-based generalization bound be formalized?",
+      "VCDim for halfspace classifiers in R^d (expected: d+1) — requires formalizing linear algebra over R",
+      "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "VCDimension",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 5
+  },
+  "references": [
+    {
+      "authors": "Vapnik, Vladimir; Chervonenkis, Alexey",
+      "title": "On the Uniform Convergence of Relative Frequencies of Events to Their Probabilities",
+      "year": "1971",
+      "venue": "Theory of Probability and Its Applications 16(2), 264-280",
+      "note": "Introduced VC dimension and the concept of shattering"
+    },
+    {
+      "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for VC dimension computations of specific hypothesis classes"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "interval_not_shatters_triple",
+      "type": "core",
+      "description": "Interval classifiers cannot shatter triples, proving VCDim = 2",
+      "leanType": "∀ a b c : ℕ, a < b → b < c → ¬Shatters intervalClassifiers {a, b, c}"
+    }
+  ]
+}

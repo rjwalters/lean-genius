@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-vc-01-shattering-def",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 27,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Shattering and VC Dimension Definitions",
+    "content": "A hypothesis class H shatters a finite set S if every subset T of S can be realized as {x in S : x in h} for some h in H. The VC dimension is the supremum of sizes of shattered sets. The Finset-based definition (rather than Set-based) is cleaner for computational reasoning about concrete hypothesis classes.",
+    "mathContext": "$H$ shatters $S$ if $\\forall T \\subseteq S, \\exists h \\in H, \\forall x \\in S, (x \\in h \\iff x \\in T)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset", "Set", "sSup"]
+  },
+  {
+    "id": "ann-vc-02-threshold-monotonicity",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 101
+    },
+    "type": "technique",
+    "title": "Monotonicity Obstruction for Threshold Classifiers",
+    "content": "Threshold classifiers {n < t} are monotone: if b is in the set, then every a < b is also in the set. This monotonicity makes it impossible to realize {b} from the pair {a,b} when a < b: b < t forces a < t. The proof extracts the threshold parameter t and derives a contradiction via omega.",
+    "mathContext": "If $b \\in \\{n < t\\}$ then $b < t$. If $a < b$ then $a < t$, so $a \\in \\{n < t\\}$. Cannot have $b \\in h, a \\notin h$.",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity", "initial segment", "omega tactic"]
+  },
+  {
+    "id": "ann-vc-03-interval-shattering",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 147
+    },
+    "type": "technique",
+    "title": "Explicit Interval Construction for Pair Shattering",
+    "content": "The four subsets of {a,b} are realized by four specific intervals: emptyset via [0,0), {a} via [a,a+1), {b} via [b,b+1), {a,b} via [a,b+1). The proof is a case split on membership of a and b in T, with each case providing the explicit interval witness.",
+    "mathContext": "$\\emptyset \\to [0,0)$, $\\{a\\} \\to [a,a+1)$, $\\{b\\} \\to [b,b+1)$, $\\{a,b\\} \\to [a,b+1)$",
+    "significance": "standard",
+    "relatedConcepts": ["explicit witness", "case analysis"]
+  },
+  {
+    "id": "ann-vc-04-interval-convexity",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 149,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Interval Convexity Prevents Triple Shattering",
+    "content": "The key insight: intervals are convex subsets of the naturals. If a < b < c and both a,c are in [lo,hi), then lo <= a < b < c < hi forces b in [lo,hi). So the subset {a,c} (containing endpoints but not the middle) is unrealizable by any interval. This single unrealizable subset suffices to prove non-shattering of {a,b,c}, completing VCDim(intervals) = 2.",
+    "mathContext": "$a < b < c$, $a \\in [lo,hi)$, $c \\in [lo,hi)$ $\\implies$ $lo \\leq a < b < c < hi$ $\\implies$ $b \\in [lo,hi)$. So $\\{a,c\\} \\setminus \\{b\\}$ is not realizable.",
+    "significance": "key",
+    "relatedConcepts": ["convexity", "connected sets", "interval property", "omega tactic"],
+    "prerequisites": ["interval_convex lemma", "Shatters definition"]
+  }
+]
