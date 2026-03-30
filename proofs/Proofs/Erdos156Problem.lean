@@ -254,12 +254,67 @@ theorem sumset_finite (A : Set ℕ) (hfin : A.Finite) : (sumset A).Finite := by
   obtain ⟨a, b, ha, hb, rfl⟩ := hs
   exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
 
-/-- For Sidon sets, |A + A| = |A| choose 2 + |A| -/
+/-- The sum map on ordered pairs is injective for Sidon sets:
+    if a + b = c + d with a ≤ b, c ≤ d, then (a,b) = (c,d). -/
+private lemma sidon_sum_injOn (A : Set ℕ) (hA : IsSidonSet A) :
+    Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2)
+      {p | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} := by
+  intro ⟨a, b⟩ hab ⟨c, d⟩ hcd heq
+  simp only [Set.mem_setOf_eq] at hab hcd
+  have hset := hA a b c d hab.1 hab.2.1 hcd.1 hcd.2.1 hab.2.2 hcd.2.2 heq
+  -- From {a,b} = {c,d}, extract a = c ∧ b = d (using a ≤ b and c ≤ d)
+  simp only [Set.ext_iff, Set.mem_insert_iff, Set.mem_singleton_iff] at hset
+  have hac := (hset a).mp (Or.inl rfl)
+  have hbd := (hset b).mp (Or.inr rfl)
+  rcases hac with rfl | rfl
+  · -- a = c: then from hbd, b = c or b = d
+    rcases hbd with hbc | rfl
+    · -- b = c = a, so from heq: a + a = a + d, hence d = a = b
+      subst hbc; ext <;> simp; linarith
+    · rfl  -- a = c, b = d
+  · -- a = d: from heq, d + b = c + d, so b = c
+    rcases hbd with rfl | hbd
+    · -- b = c and a = d, with a ≤ b and b ≤ a, so a = b
+      have hab' : a = b := le_antisymm hab.2.2 (by linarith [hcd.2.2])
+      ext <;> simp [hab']
+    · -- a = d and b = d, so a = b = d, and from heq c = d too
+      subst hbd
+      ext <;> simp; linarith
+
+/-- The sumset equals the image of the sum map on ordered pairs. -/
+private lemma sumset_eq_image (A : Set ℕ) :
+    sumset A = (fun p : ℕ × ℕ => p.1 + p.2) '' {p | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} := by
+  ext s
+  simp only [sumset, Set.mem_setOf_eq, Set.mem_image, Prod.exists]
+  constructor
+  · rintro ⟨a, b, ha, hb, rfl⟩
+    by_cases h : a ≤ b
+    · exact ⟨a, b, ⟨ha, hb, h⟩, rfl⟩
+    · exact ⟨b, a, ⟨hb, ha, le_of_not_le h⟩, by ring⟩
+  · rintro ⟨a, b, ⟨ha, hb, _⟩, rfl⟩
+    exact ⟨a, b, ha, hb, rfl⟩
+
+/-- For Sidon sets, |A + A| = |A| choose 2 + |A| = |A|*(|A|+1)/2.
+
+    Proof structure:
+    1. sumset A = image of (a,b) ↦ a+b on {(a,b) | a,b ∈ A, a ≤ b}
+    2. This map is injective (Sidon property, proved in sidon_sum_injOn)
+    3. Therefore |sumset A| = |{ordered pairs with a ≤ b}| = |A|*(|A|+1)/2
+
+    Steps 1 and 2 are proved above. Step 3 (counting ordered pairs)
+    remains as a sorry — it is a standard identity on triangular numbers
+    suitable for automated proof search. -/
 theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (sumset A).Finite ∧
     (sumset A).ncard = A.ncard * (A.ncard + 1) / 2 := by
   refine ⟨sumset_finite A hfin, ?_⟩
-  sorry -- Counting: Sidon property gives injection from ordered pairs to sums
+  -- Rewrite sumset as image of injective map
+  rw [sumset_eq_image]
+  have hpairs_fin : Set.Finite {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} :=
+    (hfin.prod hfin).subset (fun p hp => ⟨hp.1, hp.2.1⟩)
+  rw [Set.ncard_image_of_injOn (sidon_sum_injOn A hA) hpairs_fin]
+  -- Remaining: |{(a,b) ∈ A × A | a ≤ b}| = |A| * (|A| + 1) / 2
+  sorry
 
 /-- B₂ sets are precisely Sidon sets -/
 def IsB2Set (A : Set ℕ) : Prop := IsSidonSet A
