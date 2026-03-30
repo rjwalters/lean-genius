@@ -1,58 +1,23 @@
 {
-  "slug": "taylor-sincos-convergence-oq-03",
-  "title": "Can the remainder bounds be sharpened using the alternating series estimation...",
-  "phase": "NEW",
-  "status": "active",
-  "tier": "B",
-  "path": "full",
-  "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Can the remainder bounds be sharpened using the alternating series estimation....",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T01:04:30.839Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "id": "taylor-sincos-convergence-oq-03",
+  "name": "Can the remainder bounds be sharpened using the alternating series estimation",
+  "parentId": "taylor-sincos-convergence",
+  "status": "completed",
   "knowledge": {
-    "progressSummary": "",
+    "score": 6,
+    "insights": [
+      "Mathlib has alternating series test: Monotone.cauchySeq_alternating_series_of_tendsto_zero",
+      "Located at Mathlib.Analysis.SpecificLimits.Normed, line ~653",
+      "Also: Monotone.tendsto_alternating_series_of_tendsto_zero",
+      "4 sorries remaining: alternating_partial_sum_even_bounds, alternating_tail_bound, and 2 more",
+      "Connection to Mathlib needs: reformulate hypotheses to match Monotone + Antitone API"
+    ],
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
-  "tags": [
-    "analysis",
-    "calculus",
-    "series",
-    "convergence",
-    "seeker-selected"
-  ],
-  "relatedProofs": [
-    "taylor-sincos-convergence",
-    "taylor-sincos-convergence-oq-03"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T01:04:30.839Z",
-  "lastUpdate": "2026-03-30T01:04:30.839Z",
-  "significance": 6,
-  "tractability": 5
+    "progressSummary": "SURVEYED: Identified Mathlib results that could prove the sorries. No code changes.",
+    "nextSteps": [
+      "Prove alternating_partial_sum_even_bounds from Mathlib's alternating series infrastructure",
+      "Prove alternating_tail_bound from cauchySeq_alternating_series",
+      "Submit companion file lemmas to Aristotle"
+    ]
+  }
 }

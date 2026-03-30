@@ -1,1 +1,18 @@
-{"id":"amgm-inequality-oq-03-oq-03","title":"Power Mean Extreme Cases: M_r → max/min","slug":"amgm-inequality-oq-03-oq-03","description":"Formalizes lim_{r→+∞} M_r = max and lim_{r→-∞} M_r = min for two-variable power means. Sets up sandwich bounds and convergence framework.","meta":{"author":"Classical analysis","date":"2026","status":"formalized","proofRepoPath":"Proofs/AmgmInequalityOQ03OQ03.lean","tags":["inequalities","power-means","limits","research"],"badge":"axiom","sorries":5,"axiomCount":1,"lineCount":175,"assumptions":"1 axiom (power mean monotonicity from parent). 5 sorries (rpow composition, limit theory).","dateAdded":"2026-03-30","mathlib_version":"4.26.0","originalContributions":["Power mean definition for two variables","Sandwich bounds framework: min ≤ M_r ≤ max","Convergence approach via (min/max)^r → 0","Equality case: M_r(a,a) = a"]},"overview":{"historicalContext":"The power mean M_r converges to max and min as r → ±∞. This completes the chain from the parent file's monotonicity result.","problemStatement":"Prove lim_{r→+∞} M_r(a,b) = max(a,b) and lim_{r→-∞} M_r(a,b) = min(a,b).","text":"Sets up sandwich bounds and convergence framework. Technical rpow composition sorries remain.","proofStrategy":"Sandwich: min ≤ M_r ≤ max. As r → ∞, M_r = max·((1+(min/max)^r)/2)^(1/r) → max since (min/max)^r → 0.","keyInsights":["The key is (b/a)^r → 0 for b < a and r → ∞","rpow composition ((x^r)^(1/r) = x) requires careful Mathlib handling"]},"sections":[{"id":"definition","title":"Power Mean Definition","startLine":28,"endLine":37},{"id":"sandwich","title":"Sandwich Bounds","startLine":39,"endLine":79},{"id":"convergence","title":"Convergence","startLine":81,"endLine":99}],"conclusion":{"summary":"Framework for power mean extreme cases established. Technical rpow simplification sorries remain.","openQuestions":["Prove rpow composition: (a^r)^(1/r) = a for a > 0, r ≠ 0"]},"crossReferences":[{"targetId":"amgm-inequality-oq-03","relationship":"parent-problem"}],"leanFile":{"imports":["Mathlib"],"namespace":"PowerMeanExtremes","lineCount":175,"axiomCount":1,"theoremCount":6,"definitionCount":1}}
+{
+  "id": "amgm-inequality-oq-03-oq-03",
+  "title": "Power Mean Extreme Cases: Limits as r → ±∞",
+  "slug": "amgm-inequality-oq-03-oq-03",
+  "description": "Formalizes the extreme cases of power means: M_r → max as r → +∞ and M_r → min as r → -∞. Also axiomatizes monotonicity of power means in r.",
+  "meta": {
+    "author": "Hardy-Littlewood-Pólya (1934)",
+    "date": "1934",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ03.lean",
+    "tags": ["inequalities", "power-means", "analysis", "limits"],
+    "badge": "axiom",
+    "sorries": 2,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 3,
+    "lineCount": 90
+  }
+}
