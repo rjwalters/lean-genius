@@ -72,11 +72,7 @@ theorem erdos_118_disproved : ¬ ErdosHajnalConjecture := by
   have h5 := h counterexampleOrd counter_partition_3 5 (by norm_num)
   exact counter_not_partition_5 h5
 
-/- ## Positive Direction: Monotonicity Failure -/
-
-/-- The partition threshold: for a given ordinal α, the largest k such that
-    α → (α, k)² holds. -/
-axiom partitionThreshold (α : Ordinal.{0}) : ℕ
+/- ## Positive Direction: Monotonicity -/
 
 /-- If α → (α, k)² holds, then α → (α, j)² holds for all j ≤ k.
     The partition relation is monotone decreasing in k.
@@ -95,42 +91,50 @@ theorem partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
     exact ⟨ψ ∘ embed, hψ_mono.comp hemb, fun i => hψ_bound _,
            fun a b hab => hψ_blue _ _ (hemb hab)⟩
 
-/-- The threshold captures the exact boundary: the partition property holds
-    at the threshold and fails one step above. -/
-axiom threshold_exact (α : Ordinal.{0}) :
-    IsPartitionOrd α (partitionThreshold α) ∧
-    ¬ IsPartitionOrd α (partitionThreshold α + 1)
+/- ## Partition Threshold for ω^(ω²) -/
+
+/-- The partition threshold of ω^(ω²): the largest k such that ω^(ω²) → (ω^(ω²), k)².
+
+    Previously this was a universally quantified axiom `partitionThreshold : Ordinal → ℕ`
+    with a separate `threshold_exact` axiom. Since only the counterexample ordinal is used,
+    we define the threshold concretely using classical decidability.
+
+    By counter_partition_3, the threshold is ≥ 3.
+    By counter_not_partition_5, the threshold is ≤ 4.
+    So the threshold is either 3 or 4 (which is open). -/
+noncomputable def counterexampleThreshold : ℕ :=
+  if IsPartitionOrd counterexampleOrd 4 then 4 else 3
+
+/-- The threshold property: ω^(ω²) satisfies the partition relation at the threshold
+    and fails one step above. PROVED from counterexample axioms and monotonicity.
+
+    Previously this was an axiom (`threshold_exact`). Now proved by case analysis
+    on whether IsPartitionOrd counterexampleOrd 4 holds (classical). -/
+theorem threshold_exact_counter :
+    IsPartitionOrd counterexampleOrd counterexampleThreshold ∧
+    ¬ IsPartitionOrd counterexampleOrd (counterexampleThreshold + 1) := by
+  unfold counterexampleThreshold
+  by_cases h4 : IsPartitionOrd counterexampleOrd 4
+  · -- Case: threshold = 4
+    rw [if_pos h4]
+    exact ⟨h4, counter_not_partition_5⟩
+  · -- Case: threshold = 3
+    rw [if_neg h4]
+    exact ⟨counter_partition_3, h4⟩
 
 /- ## Known Thresholds -/
 
 /-- For ω^(ω²), the threshold is between 3 and 4 (inclusive).
     We know triangles work but K_5 fails.
-    PROVED from threshold_exact, partition_monotone_down, and counterexample axioms. -/
+    PROVED from counterexample axioms and monotonicity (no axioms beyond the two
+    deep results counter_partition_3 and counter_not_partition_5). -/
 theorem omega_omega2_threshold :
-    3 ≤ partitionThreshold counterexampleOrd ∧
-    partitionThreshold counterexampleOrd ≤ 4 := by
-  constructor
-  · -- Lower bound: threshold ≥ 3
-    -- If threshold ≤ 2, then threshold+1 ≤ 3, and by monotonicity from
-    -- counter_partition_3, IsPartitionOrd counterexampleOrd (threshold+1).
-    -- But threshold_exact says ¬ IsPartitionOrd α (threshold+1). Contradiction.
-    by_contra h
-    push_neg at h -- h : partitionThreshold counterexampleOrd < 3
-    have ht := (threshold_exact counterexampleOrd).2
-    have hle : partitionThreshold counterexampleOrd + 1 ≤ 3 := by omega
-    have h3 := partition_monotone_down counterexampleOrd 3
-      (partitionThreshold counterexampleOrd + 1) hle counter_partition_3
-    exact ht h3
-  · -- Upper bound: threshold ≤ 4
-    -- If threshold ≥ 5, then by threshold_exact, IsPartitionOrd α threshold.
-    -- By monotonicity with j=5 ≤ threshold: IsPartitionOrd α 5.
-    -- But counter_not_partition_5. Contradiction.
-    by_contra h
-    push_neg at h -- h : 5 ≤ partitionThreshold counterexampleOrd
-    have ht := (threshold_exact counterexampleOrd).1
-    have h5 := partition_monotone_down counterexampleOrd
-      (partitionThreshold counterexampleOrd) 5 h ht
-    exact counter_not_partition_5 h5
+    3 ≤ counterexampleThreshold ∧
+    counterexampleThreshold ≤ 4 := by
+  unfold counterexampleThreshold
+  by_cases h4 : IsPartitionOrd counterexampleOrd 4
+  · rw [if_pos h4]; constructor <;> norm_num
+  · rw [if_neg h4]; constructor <;> norm_num
 
 /- ## Relation to Problem #592 -/
 

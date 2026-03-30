@@ -23,9 +23,9 @@
     "relatedProblems": [
       592
     ],
-    "axiomCount": 4,
-    "lineCount": 143,
-    "assumptions": "4 axioms: counter_partition_3 (Schipperus), counter_not_partition_5 (Larson), partitionThreshold, threshold_exact. ordPartition now properly defined. partition_monotone_down proved from definition (blue clique restriction). omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
+    "axiomCount": 2,
+    "lineCount": 147,
+    "assumptions": "2 axioms: counter_partition_3 (Schipperus: ω^(ω²) → (ω^(ω²),3)²), counter_not_partition_5 (Larson: ω^(ω²) ↛ (ω^(ω²),5)²). Previously 4 axioms — partitionThreshold and threshold_exact eliminated by defining counterexampleThreshold as concrete noncomputable def with classical case analysis. All theorems (erdos_118_disproved, partition_monotone_down, threshold_exact_counter, omega_omega2_threshold, relation_to_592) are now proved from just the two deep counterexample axioms.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -52,10 +52,10 @@
     },
     {
       "id": "monotonicity",
-      "title": "Partition Threshold and Monotonicity",
-      "startLine": 63,
-      "endLine": 86,
-      "summary": "Introduces the partition threshold $\\text{thr}(\\alpha) = \\max\\{k : \\alpha \\to (\\alpha,k)^2\\}$, proves monotonicity ($j \\le k$ preserves the relation) from the ordPartition definition, and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$. The exact value remains open."
+      "title": "Monotonicity and Partition Threshold",
+      "startLine": 75,
+      "endLine": 138,
+      "summary": "Proves monotonicity ($j \\le k$ preserves the partition relation) from the ordPartition definition. Defines the partition threshold of $\\omega^{\\omega^2}$ as a concrete noncomputable def using classical case analysis (either 3 or 4). Proves threshold_exact_counter and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$ — all from just the two counterexample axioms."
     },
     {
       "id": "relation-592",
@@ -69,7 +69,7 @@
     "historicalContext": "**Erdős–Hajnal Partition Conjecture**\n\nThis problem was posed by Paul Erdős and András Hajnal as part of their extensive development of the **partition calculus** for ordinals, which they initiated in the 1960s building on the Erdős–Rado theorem (1956). The partition calculus generalizes finite Ramsey theory to transfinite settings, asking: for which ordinals $\\alpha$ and integers $k$ does $\\alpha \\to (\\alpha, k)^2$ hold?\n\nThe conjecture asked whether the partition property for triangles ($k = 3$) automatically implies it for all finite cliques — a natural monotonicity conjecture that would have dramatically simplified the classification landscape. In 1999, Rene Schipperus and Jean Darby **independently** disproved the conjecture. Schipperus's work, published in 2010 in the *Annals of Pure and Applied Logic*, provided a comprehensive analysis of partition ordinals using the Cantor Normal Form structure. Jean Larson contributed the explicit counterexample $\\omega^{\\omega^2}$, showing it satisfies $\\alpha \\to (\\alpha, 3)^2$ but fails $\\alpha \\to (\\alpha, 5)^2$.\n\nThe counterexample relies on the ordinal $\\omega^{\\omega^2} = \\omega^{\\omega \\cdot \\omega}$, which is large enough in the ordinal hierarchy for the CNF-based coloring argument to separate triangles from $K_5$. The positive direction (triangles work) uses Schipperus's tree-coloring technique; the negative direction (K_5 fails) uses an explicit coloring based on the least-differing-digit structure of Cantor Normal Forms.\n\nThe Hajnal–Larson (2010) survey in *\"Handbook of Set Theory\"*, Chapter 2.9, provides the definitive account of partition ordinals including this disproof. The result revealed that ordinal Ramsey theory has a much richer structure than the finite case would suggest — different ordinals have different partition thresholds that must be computed individually.",
     "problemStatement": "Does $\\alpha \\to (\\alpha, 3)^2$ imply $\\alpha \\to (\\alpha, n)^2$ for all finite $n \\ge 3$?\n\nThat is, if every 2-coloring of $K_\\alpha$ yields a red copy of order type $\\alpha$ or a blue triangle, must it also yield a red $\\alpha$ or blue $K_n$ for all $n$?\n\n**Answer**: NO (Schipperus 1999/2010, Darby 1999).\n**Counterexample**: $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ but $\\omega^{\\omega^2} \\not\\to (\\omega^{\\omega^2}, 5)^2$.",
     "text": "Does α → (α,3)² imply α → (α,n)² for all n ≥ 3? DISPROVED by Schipperus (1999/2010) and Darby (1999). Larson's counterexample: ω^(ω²) → (ω^(ω²),3)² but ω^(ω²) ↛ (ω^(ω²),5)².",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Axiomatized partition relation**: The relation $\\alpha \\to (\\alpha, k)^2$ is declared as an axiom, since fully formalizing it requires the theory of ordinal-indexed colorings not yet in Mathlib.\n\n2. **Concrete counterexample**: Defines $\\omega^{\\omega^2}$ using Mathlib's ordinal exponentiation, then axiomatizes the two key facts (triangle success, K_5 failure).\n\n3. **Proved disproof**: The formal negation $\\neg$ ErdosHajnalConjecture is **proved** (not axiomatized), using a clean proof by contradiction that instantiates the conjecture at the counterexample.\n\n4. **Threshold theory**: Introduces the partition threshold as an ordinal invariant and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Concrete partition relation**: The relation $\\alpha \\to (\\alpha, k)^2$ is defined as a concrete Prop (strict monotone red embedding or blue Fin-clique). Only two deep results are axiomatized: that $\\omega^{\\omega^2}$ satisfies the relation for triangles (Schipperus) and fails for $K_5$ (Larson).\n\n2. **All other results proved**: The formal disproof, monotonicity, threshold definition, threshold exactness, and bounds are all **proved** from just the two counterexample axioms.\n\n3. **Classical threshold definition**: The partition threshold is defined as a concrete noncomputable def using classical case analysis (`if IsPartitionOrd counterexampleOrd 4 then 4 else 3`), eliminating two former axioms.",
     "keyInsights": [
       "**The gap between 3 and ∞**: The conjecture predicted that partition ordinals for triangles are automatically partition ordinals for all finite cliques. The disproof shows a gap: $\\omega^{\\omega^2}$ handles triangles but fails at $K_5$, revealing that the partition landscape is stratified by clique size.",
       "**CNF structure controls partition properties**: The counterexample exploits the Cantor Normal Form of ordinals below $\\omega^{\\omega^2}$. Larson's coloring is defined by comparing the CNF representations of two ordinals — the 'least differing digit' determines the color. This structural coloring prevents blue $K_5$ while allowing blue triangles.",
@@ -102,10 +102,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 143,
-    "axiomCount": 4,
-    "theoremCount": 4,
-    "definitionCount": 4
+    "lineCount": 147,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 5
   },
   "references": [
     "Erdős–Hajnal: original conjecture",

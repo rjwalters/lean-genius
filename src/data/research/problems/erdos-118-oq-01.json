@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 3S→0S in Erdos1182. Fixed bigF_threshold connectivity bug, proved bigF_lower_bound_tree, f_val_2, bigF_val_2. Added Graph.Connected, connected_min_edges axiom.",
+    "progressSummary": "COMPLETED: 4A→2A. Eliminated partitionThreshold and threshold_exact axioms. counterexampleThreshold defined as noncomputable def (if IsPartitionOrd 4 then 4 else 3). threshold_exact_counter proved by classical case analysis. omega_omega2_threshold reproved. Only 2 deep counterexample axioms remain.",
     "builtItems": [
       "Proved relation_to_592 as theorem (trivially follows from counterexample axioms)",
       "Fixed build: Ordinal universe annotations (.{0}), Ordinal.omega->omega0, added Exponential import",
@@ -41,7 +41,9 @@
       "Proved bigF_lower_bound_tree: F(n)≥n-1 from chvatal_tree_ramsey + connected_min_edges",
       "Proved f_val_2: f(2)=1 via K₂ construction, graph2_edge_le_one, and chvatal_tree_ramsey",
       "Proved bigF_val_2: F(2)=1 via connected_min_edges reducing to trees",
-      "Added connected_min_edges axiom (standard: connected graph has ≥ n-1 edges)"
+      "Added connected_min_edges axiom (standard: connected graph has ≥ n-1 edges)",
+      "noncomputable def counterexampleThreshold: concrete definition replacing partitionThreshold axiom",
+      "theorem threshold_exact_counter: proved from counter axioms + classical case analysis (replaces threshold_exact axiom)"
     ],
     "insights": [
       "relation_to_592 was redundant: directly provable from counter_partition_3 and counter_not_partition_5",
@@ -59,13 +61,16 @@
       "CRITICAL BUG: bigF_threshold originally quantified over ALL graphs, but BEFRS definition requires connected graphs. Without connectivity, disconnected sparse graphs make F(n)=0 for n≥3",
       "For n=2 with connectivity: S becomes unbounded (all e work since only connected Graph 2 is K₂). Explicit bound e≤n*(n-1)/2 needed for sSup well-behavior on ℕ",
       "connected_min_edges (connected→≥n-1 edges) is key link: with ≤n-1 edges, connected forces exactly n-1 edges (tree), enabling chvatal_tree_ramsey",
-      "Fin 2 graphs have ≤1 edge: proved by Finset.card_le_one + fin2_lt_unique showing (0,1) is the only ordered pair"
+      "Fin 2 graphs have ≤1 edge: proved by Finset.card_le_one + fin2_lt_unique showing (0,1) is the only ordered pair",
+      "partitionThreshold universal axiom replaced by counterexampleThreshold concrete noncomputable def using classical case analysis (if IsPartitionOrd 4 then 4 else 3)",
+      "threshold_exact axiom replaced by proved theorem threshold_exact_counter via case split + if_pos/if_neg",
+      "All 5 theorems now proved from only 2 deep axioms (counter_partition_3, counter_not_partition_5)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Erdos1182Problem.lean builds (Docker was unavailable during session)",
-      "If build fails, fix Lean proof syntax issues (Finset.card_le_one API, Classical decidability interaction)",
-      "Consider proving connected_min_edges as theorem instead of axiom (by induction on n, needs graph vertex removal infrastructure)"
+      "Verify build with Docker (proofs/scripts/docker-build.sh Proofs.Erdos118Problem)",
+      "Remaining 2 axioms (counter_partition_3, counter_not_partition_5) are deep results unlikely to be proved from Mathlib",
+      "Consider eliminating connected_min_edges axiom in Erdos1182Problem.lean (standard graph theory result, provable by induction)"
     ]
   },
   "tags": [
@@ -129,10 +134,10 @@
     {
       "path": "Proofs/Erdos118Problem.lean",
       "filename": "Erdos118Problem.lean",
-      "lineCount": 144,
-      "theoremCount": 4,
-      "axiomCount": 4,
-      "defCount": 4,
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos118Problem.lean"
