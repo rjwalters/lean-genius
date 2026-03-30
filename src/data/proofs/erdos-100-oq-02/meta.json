@@ -33,7 +33,9 @@
     "lineCount": 54,
     "assumptions": "Inherits axioms from Erdos100Problem.lean (guthKatz_distinct_distances, piepmeyer_construction, kanold_bound, erdos_anning_theorem) via import."
   },
+  "sections": [],
   "overview": {
+    "historicalContext": "Erdős and Anning (1945) proved that infinitely many collinear points cannot all have integer pairwise distances unless they are collinear. The question of how the minimum diameter of n-point integer distance sets grows with n remains open, with the best known bound of cn/log n following from Guth-Katz (2015).",
     "problemStatement": "Is the minimum diameter of n-point integer distance sets Θ(n) (linear growth) or Θ(n/log n) (matching the current best bound from Guth-Katz)?",
     "text": "The gap between the conjectured linear bound and the proven n/log n bound is exactly a factor of log n.",
     "proofStrategy": "Two results are formalized: (1) the strong conjecture (diam ≥ n-1) implies a linear lower bound with c = 1/2, via simple arithmetic; (2) the Guth-Katz bound cn/log n is eventually strictly less than cn, quantifying the gap.",
