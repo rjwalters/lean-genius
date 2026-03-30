@@ -105,7 +105,8 @@
     "openQuestions": [
       "What about the number of DISTINCT submultisets (without multiplicity)? This is product(m_i + 1) for multiplicities m_i.",
       "How does this connect to generating functions?"
-    ]
+    ],
+    "implications": "The multiset powerset cardinality formula |P(s)| = 2^n is a clean generalization of the set case."
   },
   "references": [
     {
@@ -122,7 +123,9 @@
       "Mathlib.Data.Fintype.Card",
       "Mathlib.Tactic"
     ],
-    "opens": ["Multiset"],
+    "opens": [
+      "Multiset"
+    ],
     "namespace": "SubsetCountMultiset",
     "lineCount": 121,
     "axiomCount": 0,
