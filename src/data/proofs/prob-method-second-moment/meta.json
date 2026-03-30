@@ -7,7 +7,7 @@
     "author": "Chebyshev, Paley-Zygmund, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Second_moment_method",
     "date": "1867",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ProbMethodSecondMoment.lean",
     "tags": [
       "probabilistic-method",
@@ -16,8 +16,8 @@
       "probability",
       "intermediate"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Integral.Lebesgue",
@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 186,
+    "lineCount": 226,
     "prerequisites": [
       "Variance and second moments of random variables",
       "Chebyshev's inequality and concentration",
@@ -51,13 +51,13 @@
       "Random graphs G(n,p) and threshold functions",
       "Indicator random variables and covariance"
     ],
-    "assumptions": "1 sorry: paley_zygmund_quantitative. 0 axioms.",
+    "assumptions": "0 sorries, 0 axioms. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The second moment method extends the first moment method by incorporating variance to prove that random variables are concentrated near their expectation. While the first moment method can only guarantee that a maximum or minimum exists, the second moment method shows that typical outcomes are close to the mean — and in particular, that a positive-mean random variable is positive with substantial probability.\n\nChebyshev's inequality, published by Pafnuty Chebyshev in 1867, is the foundation: $\\Pr[|X - E[X]| \\geq t] \\leq \\operatorname{Var}[X]/t^2$. The inequality was proved using Chebyshev's elegant application of Markov's inequality to the squared deviation. Irénée-Jules Bienaymé had stated a version earlier (1853), so the result is sometimes called the Bienaymé-Chebyshev inequality.\n\nThe Paley-Zygmund inequality, due to Raymond Paley and Antoni Zygmund (1932), provides a complementary lower bound: for $X \\geq 0$, $\\Pr[X > 0] \\geq (E[X])^2/E[X^2]$. While Chebyshev bounds the probability of large deviations from above, Paley-Zygmund bounds the probability of positivity from below — exactly what combinatorial existence proofs require.\n\nThe second moment method became indispensable in the study of random graphs after Erdős and Rényi's foundational 1959 paper 'On Random Graphs I,' which introduced the $G(n,p)$ model. Their key insight was that many graph properties exhibit sharp thresholds: a property either holds with probability tending to 0 or to 1, with a sharp transition at a critical edge probability $p^*(n)$. The second moment method is the standard tool for establishing these thresholds. Bollobás, Friedgut, and others later developed the theory of sharp thresholds into a rich field connecting probability, combinatorics, and statistical physics.",
     "problemStatement": "Chebyshev's Inequality: For any random variable $X$ with finite variance, $\\Pr[|X - E[X]| \\geq t] \\leq \\operatorname{Var}[X] / t^2$.\n\nPaley-Zygmund Inequality: For a non-negative random variable $X$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$.\n\nApplication: If the expected number of copies of a subgraph $H$ in a random graph $G(n,p)$ tends to infinity and the variance is controlled, then $G(n,p)$ contains $H$ with high probability.",
-    "text": "A 161-line formalization of the second moment method with 0 sorries, providing the concentration toolkit for probabilistic combinatorics. The file builds three layers: (1) a discrete Chebyshev inequality bounding the number of elements deviating from the mean by at least $t$ as $|s| \\cdot \\operatorname{Var}[f]/t^2$; (2) a qualitative Paley-Zygmund inequality proving that non-negative functions with positive sum have a positive element; and (3) a quantitative existence theorem showing that if $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then at least half the sample space has $X > 0$. Supporting helper lemmas include a finite Cauchy-Schwarz inequality $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$ proved by induction, and support/monotonicity lemmas for non-negative functions. The framework uses $\\mathbb{Q}$-valued functions on `Finset` for exact arithmetic, avoiding measure-theoretic overhead while capturing the essential probabilistic arguments.",
+    "text": "A 226-line formalization of the second moment method with 0 sorries, providing the concentration toolkit for probabilistic combinatorics. The file builds four layers: (1) a discrete Chebyshev inequality bounding the number of elements deviating from the mean by at least $t$ as $|s| \\cdot \\operatorname{Var}[f]/t^2$; (2) a qualitative Paley-Zygmund inequality proving that non-negative functions with positive sum have a positive element; (3) a quantitative existence theorem showing that if $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then at least half the sample space has $X > 0$; and (4) a quantitative Paley-Zygmund inequality showing that $|\\{a : f(a) \\geq \\theta\\mu\\}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$ for threshold parameter $0 \\leq \\theta < 1$. Supporting helper lemmas include a finite Cauchy-Schwarz inequality $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$ proved by induction, and support/monotonicity lemmas for non-negative functions. The framework uses $\\mathbb{Q}$-valued functions on `Finset` for exact arithmetic, avoiding measure-theoretic overhead while capturing the essential probabilistic arguments.",
     "proofStrategy": "The formalization builds the second moment toolkit:\n\n1. **Variance definition**: $\\operatorname{Var}[X] = E[X^2] - (E[X])^2$ for finite probability spaces, with the Finset-based computation framework.\n\n2. **Chebyshev's inequality**: From Markov's inequality applied to $(X - E[X])^2$. This gives an upper bound on the probability of large deviations.\n\n3. **Paley-Zygmund inequality**: By Cauchy-Schwarz, $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. Rearranging gives the lower bound on $\\Pr[X > 0]$.\n\n4. **Application to indicator sums**: For $X = \\sum_i X_i$ with indicators $X_i$, compute $\\operatorname{Var}[X] = \\sum_i \\operatorname{Var}[X_i] + \\sum_{i \\neq j} \\operatorname{Cov}[X_i, X_j]$. When the covariance sum is small relative to $(E[X])^2$, the second moment method yields strong concentration.",
     "keyInsights": [
       "The second moment method converts variance bounds into existence guarantees: low variance relative to the mean squared ensures positive probability",
@@ -114,6 +114,14 @@
       "endLine": 161,
       "summary": "Quantitative existence: if the second moment is controlled ($E[X^2] \\cdot |s| \\leq 2(E[X])^2$), then at least half the elements have $X > 0$. This is the theorem that drives threshold proofs in random graph theory.",
       "mathContext": "If $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then $|\\{a \\in s : f(a) > 0\\}| \\geq |s|/2$. In $G(n,p)$ with $X$ counting copies of $H$: $E[X] = \\Theta(n^v p^e)$, and showing $\\operatorname{Var}[X] = o((E[X])^2)$ establishes the threshold at $p = n^{-v/e}$."
+    },
+    {
+      "id": "quantitative-paley-zygmund",
+      "title": "Quantitative Paley-Zygmund Inequality",
+      "startLine": 162,
+      "endLine": 226,
+      "summary": "Full quantitative Paley-Zygmund: for non-negative $f$ and $0 \\leq \\theta < 1$, the number of elements where $f \\geq \\theta\\mu$ is at least $(1-\\theta)^2(\\sum f)^2/\\sum f^2$. Proof decomposes the sum, bounds the complement via the threshold, then chains through Cauchy-Schwarz.",
+      "mathContext": "Paley-Zygmund quantitative: $|\\{a : f(a) \\geq \\theta\\mu\\}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$. Setting $\\theta = 0$ recovers the basic Paley-Zygmund. The proof: (1) partition $s$ into big/small sets, (2) bound the small sum by $\\theta \\sum f$, (3) apply Cauchy-Schwarz to the big set."
     }
   ],
   "crossReferences": [
@@ -152,7 +160,7 @@
     "summary": "The second moment method formalizes Chebyshev's inequality and the Paley-Zygmund inequality as tools for proving that random variables are concentrated near their mean. When applied to indicator sums counting combinatorial structures, it yields quantitative lower bounds on the probability of positive outcomes, enabling threshold phenomena proofs in random graph theory.",
     "implications": "This formalization provides:\n\n**1. Concentration Toolkit**\nChebyshev and Paley-Zygmund inequalities are the standard tools for proving that random variables do not deviate far from their expectations.\n\n**2. Threshold Phenomena**\nThe second moment method is the primary tool for establishing sharp thresholds in random graph theory, a central topic in probabilistic combinatorics.\n\n**3. Variance Computation Framework**\nThe indicator sum variance decomposition into individual variances and pairwise covariances is a reusable component for any counting argument.\n\n**4. Complement to LLL**\nWhere the Lovasz Local Lemma handles rare events with sparse dependencies, the second moment method handles common events with controlled variance.",
     "openQuestions": [
-      "Can the quantitative Paley-Zygmund inequality (with threshold parameter $\\theta$) be formalized and applied to prove sharper concentration bounds?",
+      "Can the quantitative Paley-Zygmund inequality be applied to derive specific threshold functions for subgraph containment in G(n,p)?",
       "Can the variance computation for indicator sums be formalized generically to handle subgraph counting in $G(n,p)$ and derive specific threshold functions?",
       "How does the second moment method extend to higher moments (e.g., the fourth moment method), and can Kim-Vu polynomial concentration be formalized in Lean 4?"
     ]
@@ -163,9 +171,9 @@
     ],
     "opens": [],
     "namespace": "ProbMethod.SecondMoment",
-    "lineCount": 186,
+    "lineCount": 226,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0
   },
   "references": [
