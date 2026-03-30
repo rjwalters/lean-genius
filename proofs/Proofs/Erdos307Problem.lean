@@ -280,12 +280,22 @@ theorem search_intractable : searchSpaceSize > 10^18 := by
 
 /-- In Cambie's examples, 1 always appears in one of the sets.
     This is because 1 + 1/n has reciprocal n/(n+1), which is
-    easier to match with a small set of primes. -/
+    easier to match with a small set of primes.
+    If 1 ∈ P and P has more than 1 positive element, then reciprocalSum P > 1,
+    since 1/1 = 1 and the other reciprocals are positive. -/
 theorem one_helps_balance {P Q : Finset ℕ} (h1P : 1 ∈ P)
+    (hcard : P.card > 1) (hpos : ∀ p ∈ P, 0 < p)
     (hcop_P : IsPairwiseCoprime P) (hcop_Q : IsPairwiseCoprime Q)
     (hprod : reciprocalProduct P Q = 1) :
     reciprocalSum P > 1 := by
-  sorry
+  unfold reciprocalSum
+  rw [← Finset.add_sum_erase _ _ h1P]
+  simp only [Nat.cast_one, inv_one]
+  have hne : (P.erase 1).Nonempty :=
+    Finset.card_pos.mp (by rw [Finset.card_erase_of_mem h1P]; omega)
+  have hpos' : ∀ x ∈ P.erase 1, (0 : ℚ) < (x : ℚ)⁻¹ := fun x hx =>
+    inv_pos.mpr (Nat.cast_pos.mpr (hpos x (Finset.mem_of_mem_erase hx)))
+  linarith [Finset.sum_pos hpos' hne]
 
 /-- If P = {1, n}, then reciprocalSum P = 1 + 1/n = (n+1)/n.
     For this to multiply to 1, we need reciprocalSum Q = n/(n+1). -/
