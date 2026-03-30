@@ -151,7 +151,7 @@
     "openQuestions": [
       "What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold.",
       "How fast does convergence occur? This leads to the Central Limit Theorem and Berry-Esseen bounds.",
-      "What about dependent random variables? Ergodic theorems extend the law to stationary sequences.",
+      "RESOLVED: Birkhoff's Ergodic Theorem formalized in LawsOfLargeNumbersOQ03.lean — extends SLLN to stationary sequences via measure-preserving dynamics",
       "Can we get uniform convergence over families of distributions? This leads to Glivenko-Cantelli and empirical process theory."
     ]
   },
