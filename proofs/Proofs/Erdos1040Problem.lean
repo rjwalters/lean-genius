@@ -101,8 +101,9 @@ def diameterOneConjecture : Prop :=
     transfiniteDiameter F ≥ 1 →
     mu F = 0
 
-/-- The problem is open. -/
-axiom problem_open : ¬(diameterOneConjecture ∨ ¬diameterOneConjecture)
+/-- The problem is open: we neither assert nor deny the conjecture.
+    (The former `axiom problem_open : ¬(P ∨ ¬P)` was removed because
+    it negates classical excluded middle, making the axiom system inconsistent.) -/
 
 /-
 ## Known Results: Line Segments and Discs
@@ -205,12 +206,16 @@ theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
 ## Properties of μ
 -/
 
-/-- μ is monotone in F. -/
+/-- μ is anti-monotone: larger root sets yield smaller infimal sublevel measures. -/
 theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
     mu G ≤ mu F := by
-  sorry
+  unfold mu
+  apply iInf_mono'
+  intro pF
+  exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, le_refl _⟩
 
-/-- For infinite F, μ(F) is achieved or approached. -/
+/-- For infinite F, μ(F) is achieved or approached.
+    Proof requires showing sublevel sets have finite measure (bounded subsets of ℂ). -/
 theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
     ∀ ε > 0, ∃ (p : PolynomialInF F), sublevelMeasure p < mu F + ε := by
   sorry
@@ -231,6 +236,67 @@ theorem erdos_1040_current_state :
   sorry
 
 /-
+## OQ-05: Extension of Erdős-Netanyahu Bound
+
+The Erdős-Netanyahu result (1973) gives quantitative disc bounds r(ρ) for bounded
+connected sets with 0 < ρ(F) < 1. Open question: can this be extended to
+(a) unbounded sets, or (b) disconnected sets?
+-/
+
+/-- OQ-05a: Extension to unbounded sets.
+    Does a quantitative disc bound exist for unbounded closed infinite sets? -/
+def erdos_netanyahu_unbounded : Prop :=
+  ∀ (F : Set ℂ), IsClosed F → F.Infinite → ¬Bornology.IsBounded F →
+    IsConnected F →
+    0 < transfiniteDiameter F → transfiniteDiameter F < 1 →
+    ∃ r : ℝ → ℝ, (∀ c ∈ Set.Ioo 0 1, r c > 0) ∧
+      ∀ (p : PolynomialInF F), p.degree > 0 →
+        ∃ z₀ : ℂ, Metric.ball z₀ (r (transfiniteDiameter F)) ⊆ sublevelSet p
+
+/-- OQ-05b: Extension to disconnected sets.
+    Does a quantitative disc bound exist for disconnected closed infinite sets? -/
+def erdos_netanyahu_disconnected : Prop :=
+  ∀ (F : Set ℂ), IsClosed F → F.Infinite → Bornology.IsBounded F →
+    ¬IsConnected F →
+    0 < transfiniteDiameter F → transfiniteDiameter F < 1 →
+    ∃ r : ℝ → ℝ, (∀ c ∈ Set.Ioo 0 1, r c > 0) ∧
+      ∀ (p : PolynomialInF F), p.degree > 0 →
+        ∃ z₀ : ℂ, Metric.ball z₀ (r (transfiniteDiameter F)) ⊆ sublevelSet p
+
+/-- OQ-05: Full extension — both bounded/unbounded and connected/disconnected. -/
+def erdos_netanyahu_general : Prop :=
+  ∀ (F : Set ℂ), IsClosed F → F.Infinite →
+    0 < transfiniteDiameter F → transfiniteDiameter F < 1 →
+    ∃ r : ℝ → ℝ, (∀ c ∈ Set.Ioo 0 1, r c > 0) ∧
+      ∀ (p : PolynomialInF F), p.degree > 0 →
+        ∃ z₀ : ℂ, Metric.ball z₀ (r (transfiniteDiameter F)) ⊆ sublevelSet p
+
+/-- The general extension implies both special cases. -/
+theorem erdos_netanyahu_general_implies_unbounded :
+    erdos_netanyahu_general → erdos_netanyahu_unbounded := by
+  intro h F hF hFi _ _ hρ₀ hρ₁
+  exact h F hF hFi hρ₀ hρ₁
+
+theorem erdos_netanyahu_general_implies_disconnected :
+    erdos_netanyahu_general → erdos_netanyahu_disconnected := by
+  intro h F hF hFi _ _ hρ₀ hρ₁
+  exact h F hF hFi hρ₀ hρ₁
+
+/-- Unbounded sets have transfinite diameter 0 or ∞ in many cases.
+    For unbounded connected sets with finite transfinite diameter,
+    the question reduces to whether boundedness is essential to the EN argument. -/
+theorem unbounded_connected_diameter_challenge :
+    ∀ F : Set ℂ, ¬Bornology.IsBounded F → IsConnected F →
+      transfiniteDiameter F < 1 →
+      -- The small_diameter_disc axiom already gives qualitative containment
+      -- without requiring boundedness:
+      (IsClosed F → F.Infinite →
+        ∃ c > 0, ∀ (p : PolynomialInF F), p.degree > 0 →
+          ∃ z₀ : ℂ, ∃ r > 0, r ≥ c ∧ Metric.ball z₀ r ⊆ sublevelSet p) := by
+  intro F _ _ hρ₁ hF hFi
+  exact small_diameter_disc F hF hFi hρ₁
+
+/-
 ## Summary
 
 Erdős Problem #1040 asks whether the infimum μ(F) of sublevel set
@@ -244,6 +310,12 @@ measures is determined by the transfinite diameter of F.
 **Conjecture**: μ(F) = 0 when transfinite diameter ≥ 1
 
 **Status**: OPEN - the general case remains unresolved.
+
+**OQ-05**: Does the Erdős-Netanyahu quantitative bound r(ρ) extend to
+unbounded or disconnected sets? The qualitative disc containment
+(small_diameter_disc) already holds without these hypotheses, but the
+quantitative bound r(ρ) depending only on the transfinite diameter is
+the open question.
 -/
 
 end Erdos1040
