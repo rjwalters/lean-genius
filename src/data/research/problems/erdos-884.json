@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added per-pair reciprocal bounds (reciprocal_gap_index_bound, reciprocal_gap_consecutive_bound). Total: 28 theorems, 1 axiom (open conjecture), 0 sorries.",
+    "progressSummary": "COMPLETED: 33 theorems, 1 axiom (open conjecture only), 0 sorries, 482 lines. Sum-level bound allPairsSum ≤ (τ-1)·consecutivePairsSum already proved. Meta.json accurate. No further axioms to eliminate.",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -83,7 +83,10 @@
       "Per-pair bounds: 1/(d_j-d_i) ≤ min(1/(j-i), 1/g_i) — two independent upper bounds for each pair contribution",
       "Index bound implies allPairsSum ≤ Σ_{s=1}^{τ-1} (τ-s)/s ≈ τ·H(τ) via rearrangement by offset s=j-i",
       "Consecutive bound implies allPairsSum ≤ (τ-1)·consecutivePairsSum via counting j > i for each fixed i",
-      "Tighter bound needs AM-HM/Cauchy-Schwarz: 1/(d_j-d_i) ≤ (1/(j-i)²)·Σ_{k∈[i,j)} 1/g_k — gives O(log τ) factor"
+      "Tighter bound needs AM-HM/Cauchy-Schwarz: 1/(d_j-d_i) ≤ (1/(j-i)²)·Σ_{k∈[i,j)} 1/g_k — gives O(log τ) factor",
+      "All 8 supporting axioms already eliminated in prior sessions",
+      "Sum-level bound (allPairsSum_le_tau_mul_consecutive) already proved — knowledge nextSteps was stale",
+      "Only remaining axiom is the open conjecture itself — correctly axiomatized"
     ],
     "mathlibGaps": [],
     "nextSteps": [
