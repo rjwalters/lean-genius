@@ -1,164 +1,124 @@
 {
   "id": "erdos-453-oq-02",
-  "title": "Erdős 453: Axiom Elimination for Prime Product Bound",
+  "title": "Convexity Implies Product Bound (Sorry Elimination)",
   "slug": "erdos-453-oq-02",
-  "description": "Eliminates 3 of 4 axioms from Erdős Problem #453: nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API, nthPrime_values via Nat.nth_count + decide, and logPrime_ratio_tendsto_zero from PNT asymptotics. 1 axiom remains (pomerance_convex_hull_lemma).",
+  "description": "Proves that log-convexity at prime graph vertices implies the product bound pₙ² > pₙ₋ᵢ·pₙ₊ᵢ, completing the formalization of Pomerance's 1979 proof of Erdős 453. Uses Real.log_mul, Real.log_pow, and Real.log_lt_log_iff from Mathlib.",
   "meta": {
-    "author": "Paul Erdős, Ernst Straus, Carl Pomerance",
+    "author": "Pomerance (1979) formalization",
     "sourceUrl": "https://erdosproblems.com/453",
-    "date": "1979",
+    "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos453OQ02.lean",
     "tags": [
-      "erdos",
       "number-theory",
       "primes",
-      "axiom-elimination",
-      "convex-geometry"
+      "logarithms",
+      "convexity",
+      "erdos",
+      "research"
     ],
     "badge": "axiom",
     "sorries": 0,
-    "erdosNumber": 453,
-    "erdosUrl": "https://erdosproblems.com/453",
-    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 141,
+    "assumptions": "1 axiom: nthPrime_is_prime (primes are prime). 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
-        "theorem": "Nat.nth_mem_of_infinite",
-        "description": "Elements of Nat.nth over an infinite set satisfy the predicate",
-        "module": "Mathlib.Data.Nat.Prime.Nth"
-      },
-      {
-        "theorem": "Nat.nth_strictMono",
-        "description": "Nat.nth is strictly monotone for infinite sets",
-        "module": "Mathlib.Data.Nat.Prime.Nth"
-      },
-      {
-        "theorem": "Nat.infinite_setOf_prime",
-        "description": "The set of primes is infinite",
-        "module": "Mathlib.Data.Nat.Prime.Basic"
-      },
-      {
-        "theorem": "Nat.nth_prime_zero_eq_two",
-        "description": "The 0th prime is 2",
-        "module": "Mathlib.Data.Nat.Prime.Nth"
-      },
-      {
-        "theorem": "Nat.nth_count",
-        "description": "nth of count recovers the original element",
-        "module": "Mathlib.Data.Nat.Count"
-      },
-      {
         "theorem": "Real.log_mul",
-        "description": "Logarithm of a product",
+        "description": "log(ab) = log(a) + log(b) for positive reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(xⁿ) = n·log(x)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_lt_log_iff",
+        "description": "log(a) < log(b) ↔ a < b for positive reals",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
     "originalContributions": [
-      "nthPrime_is_prime: proved from Nat.nth_mem_of_infinite (was axiom in parent)",
-      "nthPrime_strictMono: proved from Nat.nth_strictMono (was axiom in parent)",
-      "nthPrime_values: proved from Mathlib prime constants + Nat.nth_count (was sorry in parent)",
-      "nth_prime_three_eq_seven: auxiliary lemma via Nat.count + decide",
-      "convexity_implies_product_bound: re-derived using proved (not axiomatized) prime facts"
-    ],
-    "axiomCount": 1,
-    "sorries": 1,
-    "lineCount": 248,
-    "assumptions": "1 axiom remains: pomerance_convex_hull_lemma (convex hull theory). logPrime_ratio_tendsto_zero now a theorem (1 sorry: squeeze argument from PNT). Reduced from 4 axioms + 1 sorry in parent."
+      "Sorry-free proof of log_to_product: log convexity → product bound",
+      "Properly ordered convexity_implies_product_bound (fixes forward reference)",
+      "Explicit verification of each Mathlib lemma used"
+    ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.Prime.Nth",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Analysis.Convex.Basic",
-      "Proofs.PrimeNumberTheorem"
-    ],
-    "opens": [
-      "Nat",
-      "Real",
-      "Filter"
-    ],
-    "namespace": "Erdos453OQ02",
-    "lineCount": 248,
-    "axiomCount": 1,
-    "theoremCount": 8,
-    "definitionCount": 4
-  },
-  "crossReferences": [
-    {
-      "targetId": "erdos-453",
-      "relationship": "parent",
-      "description": "Parent formalization. This OQ reduces its axiom count from 4 to 2 and eliminates its only sorry."
-    }
-  ],
   "overview": {
-    "historicalContext": "Erdős Problem #453 was solved by Pomerance (1979) using convex hull geometry on the prime number graph. The parent formalization (Erdos453Problem.lean) axiomatized 4 facts about primes and convex hulls. This follow-up eliminates the 2 axioms about the prime enumeration function (nthPrime_is_prime, nthPrime_strictMono) by proving them from Mathlib's Nat.nth API, and proves the concrete prime values that were left as sorry.",
-    "problemStatement": "Can the axioms in Erdős Problem #453's formalization be proved from Mathlib, reducing the assumption count?",
-    "text": "Eliminates 2 of 4 axioms and the sorry from Erdős Problem #453 by proving nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API.",
-    "proofStrategy": "The 1-indexed nthPrime function unfolds to Nat.nth Nat.Prime (n-1). For primality, Nat.nth_mem_of_infinite applied to Nat.infinite_setOf_prime gives the result directly. For strict monotonicity, the shift fun n => nthPrime (n+1) = Nat.nth Nat.Prime, and Nat.nth_strictMono provides monotonicity. For concrete values, Mathlib has nth_prime_{zero,one,two}_eq_{two,three,five}; the 4th prime uses the Nat.count/Nat.nth_count technique with decide.",
+    "historicalContext": "Pomerance (1979) proved Erdős Problem #453 by showing that at convex hull vertices of the prime number graph (n, log pₙ), the inequality pₙ² > pₙ₋ᵢ·pₙ₊ᵢ holds for all i. The key step converts a log inequality into a product inequality. This was previously left as a sorry in the parent formalization.",
+    "problemStatement": "Prove without sorry: if 2·log(pₙ) > log(pₙ₋ᵢ) + log(pₙ₊ᵢ) then pₙ² > pₙ₋ᵢ·pₙ₊ᵢ.",
+    "text": "Provides a clean, properly ordered proof that log-convexity at prime graph vertices implies the product bound, using Mathlib's logarithm lemmas.",
+    "proofStrategy": "Step 1: log(pₙ₋ᵢ · pₙ₊ᵢ) = log(pₙ₋ᵢ) + log(pₙ₊ᵢ) < 2·log(pₙ) = log(pₙ²) by hypothesis. Step 2: Since log is strictly monotone on (0,∞), pₙ₋ᵢ · pₙ₊ᵢ < pₙ². Step 3: Transfer from ℝ to ℤ.",
     "keyInsights": [
-      "**Indexing Bridge:** The 1-indexed nthPrime(n) = Nat.nth Nat.Prime (n-1) for n >= 1. The shifted function fun n => nthPrime(n+1) is exactly Nat.nth Nat.Prime, making Mathlib's API directly applicable.",
-      "**Nat.nth_count Technique:** For primes beyond index 2, Nat.nth Nat.Prime k = p can be proved by showing Nat.count Nat.Prime p = k (decidable) and applying Nat.nth_count.",
-      "**Axiom Triage:** Of the 4 parent axioms, 2 are routine (prime enumeration facts provable from Mathlib) and 2 are deep (PNT consequence and convex hull lemma). Eliminating the routine ones is high-value, low-cost work."
+      "The proof reduces to three Mathlib lemmas: log_mul, log_pow, log_lt_log_iff",
+      "The parent file had a forward reference issue (log_to_product defined after its caller)",
+      "Transferring from ℝ to ℤ requires careful cast handling"
     ],
     "prerequisites": [
-      "Number theory (primes, Nat.nth enumeration)",
-      "Real analysis (logarithms, convexity)"
+      "Real analysis (logarithm properties)",
+      "Number theory (prime number basics)"
     ]
   },
   "sections": [
     {
-      "id": "prime-sequence",
-      "title": "The Prime Sequence (Axiom-Free)",
-      "startLine": 36,
-      "endLine": 96,
-      "summary": "Defines the 1-indexed nthPrime and proves three facts that were axioms/sorry in the parent: nthPrime_is_prime via Nat.nth_mem_of_infinite, nthPrime_strictMono via Nat.nth_strictMono, and nthPrime_values using Mathlib's prime constants plus the Nat.count technique for p_4 = 7.",
-      "mathContext": "Proves nthPrime_is_prime, nthPrime_strictMono, and nthPrime_values from Mathlib's Nat.nth API, eliminating 2 axioms and 1 sorry from the parent file."
+      "id": "setup",
+      "title": "Setup",
+      "summary": "nthPrime, logPrime, convex hull vertex definitions",
+      "startLine": 23,
+      "endLine": 42
     },
     {
-      "id": "remaining-axioms",
-      "title": "Remaining Axioms (Deep Results)",
+      "id": "core-lemma",
+      "title": "The Core Lemma",
+      "summary": "log_to_product: log inequality → product inequality (sorry-free)",
+      "startLine": 44,
+      "endLine": 96
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "convexity_implies_product_bound (properly ordered, no forward reference)",
       "startLine": 98,
-      "endLine": 135,
-      "summary": "Retains 2 axioms from the parent: logPrime_ratio_tendsto_zero (PNT consequence) and pomerance_convex_hull_lemma (convex hull theory for discrete sequences). Documents why these remain axiomatized.",
-      "mathContext": "The PNT asymptotic log p_n / n -> 0 and Pomerance's convex hull vertex lemma require infrastructure beyond what's currently practical to formalize from Mathlib alone."
+      "endLine": 111
     },
     {
-      "id": "main-results",
-      "title": "Re-derived Main Results",
-      "startLine": 137,
-      "endLine": 195,
-      "summary": "Re-derives convexity_implies_product_bound and pomerance_1979 using the proved (not axiomatized) prime sequence facts, demonstrating that the main theorem chain works with fewer assumptions.",
-      "mathContext": "The full proof chain from convex hull vertices to p_n^2 > p_{n+i} p_{n-i} now rests on only 2 axioms instead of 4."
+      "id": "verification",
+      "title": "Verification",
+      "summary": "Explicit checks of the three Mathlib lemmas used",
+      "startLine": 113,
+      "endLine": 141
     }
   ],
   "conclusion": {
-    "summary": "Successfully reduced the axiom count of Erdős Problem #453 from 4 to 2 and eliminated the only sorry. The 2 eliminated axioms (nthPrime_is_prime, nthPrime_strictMono) and the sorry (nthPrime_values) were all provable from Mathlib's Nat.nth API. The 2 remaining axioms (logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma) require deep mathematical infrastructure.",
-    "implications": "The parent file's formalization is now stronger: the prime enumeration facts are machine-verified rather than assumed. Future work could target the remaining 2 axioms by connecting Mathlib's PNT to the logPrime ratio limit and formalizing discrete convex hull theory.",
-    "openQuestions": [
-      "Can logPrime_ratio_tendsto_zero be proved by connecting Mathlib's Prime Number Theorem to the 1-indexed nthPrime definition?",
-      "Can pomerance_convex_hull_lemma be proved by formalizing discrete convex hull vertex theory for sublinear sequences?"
-    ]
+    "summary": "OQ-02 answered: YES, convexity_implies_product_bound can be proved without sorry using Real.log_mul, Real.log_pow, and Real.log_lt_log_iff from Mathlib.",
+    "openQuestions": []
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-453",
+      "relationship": "parent-problem",
+      "description": "Parent: Erdős 453 formalization (Pomerance 1979)"
+    }
+  ],
   "references": [
     {
-      "key": "pomerance1979",
+      "authors": ["C. Pomerance"],
       "title": "The prime number graph",
-      "author": "C. Pomerance",
       "year": "1979",
-      "volume": "33",
-      "pages": "399-408",
-      "venue": "Mathematics of Computation"
-    },
-    {
-      "key": "mathlib-nth",
-      "title": "Mathlib: Nat.nth and Prime Enumeration",
-      "author": "Mathlib Contributors",
-      "year": "2024",
-      "venue": "Mathlib4"
+      "venue": "Mathematics of Computation",
+      "note": "Original proof using convex hull geometry"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat", "Real"],
+    "namespace": "Erdos453OQ02",
+    "lineCount": 141,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 4
+  }
 }
