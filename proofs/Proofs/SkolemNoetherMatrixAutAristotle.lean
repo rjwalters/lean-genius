@@ -43,7 +43,31 @@ theorem linearIndependent_of_intertwine
     (hp_ne : ∀ j, p j ≠ 0)
     (hfp : ∀ i j k, (fun a => ∑ m, (if i = a ∧ j = m then (1 : K) else 0) *
       p k m) = if j = k then p i else 0) :
-    LinearIndependent K p := by sorry
+    LinearIndependent K p := by
+  rw [Fintype.linearIndependent_iff]
+  intro c hc k
+  -- Step 1: p j a = 0 when j ≠ a (E_{aa} · p_j = δ_{aj} · p_a)
+  have hp_offdiag : ∀ j a, j ≠ a → p j a = 0 := by
+    intro j a hja
+    have h := congr_fun (hfp a a j) a
+    simp only [eq_self_iff_true, true_and, ite_mul, one_mul, zero_mul,
+               Finset.sum_ite_eq, Finset.mem_univ, ite_true,
+               if_neg (Ne.symm hja), Pi.zero_apply] at h
+    exact h
+  -- Step 2: p k k ≠ 0 (since p k ≠ 0 and off-diagonal entries vanish)
+  have hpkk : p k k ≠ 0 := by
+    intro hpkk_eq
+    apply hp_ne k; funext a
+    by_cases hka : k = a
+    · subst hka; simpa using hpkk_eq
+    · exact hp_offdiag k a hka
+  -- Step 3: Evaluate ∑ c_j · p_j = 0 at index k; only the k-th term survives
+  have hk := congr_fun hc k
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hk
+  rw [Finset.sum_eq_single k] at hk
+  · exact (mul_eq_zero.mp hk).resolve_right hpkk
+  · intro j _ hjk; rw [hp_offdiag j k hjk, mul_zero]
+  · intro habs; exact absurd (Finset.mem_univ _) habs
 
 /-
   Lemma 2: Square matrix with linearly independent columns is invertible
