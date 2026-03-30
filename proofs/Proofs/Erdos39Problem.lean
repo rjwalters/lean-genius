@@ -69,7 +69,21 @@ axiom erdos_sidon_upper_bound :
     There exist arbitrarily large N where A(N) < ε√N. -/
 theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A) :
     ∀ c : ℝ, c > 0 → ∃ᶠ N in atTop, (countingFunction A N : ℝ) < c * Real.sqrt N := by
-  sorry  -- Follows from liminf = 0
+  intro c hc
+  have hlim := erdos_sidon_upper_bound A hInf hSidon
+  -- liminf = 0 < c, so A(N)/√N < c frequently
+  have hlt : Filter.liminf (fun N => (countingFunction A N : ℝ) / Real.sqrt N) atTop < c := by
+    rw [hlim]; exact hc
+  have hbdd : atTop.IsBoundedUnder (· ≥ ·)
+      (fun N => (countingFunction A N : ℝ) / Real.sqrt N) :=
+    ⟨0, Filter.eventually_atTop.mpr ⟨0, fun N _ =>
+      div_nonneg (Nat.cast_nonneg _) (Real.sqrt_nonneg _)⟩⟩
+  have hfreq := Filter.frequently_lt_of_liminf_lt hlt hbdd
+  -- Convert A(N)/√N < c to A(N) < c * √N (for N ≥ 1)
+  exact (hfreq.and_eventually (Filter.eventually_atTop.mpr ⟨1, fun _ h => h⟩)).mono
+    fun N ⟨hN, hN1⟩ => by
+      have hNpos : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
+      rwa [div_lt_iff (Real.sqrt_pos_of_pos hNpos)] at hN
 
 /- ## Known Lower Bounds (Constructions) -/
 
