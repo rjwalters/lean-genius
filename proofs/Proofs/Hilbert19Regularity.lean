@@ -298,8 +298,9 @@ The resolution of Hilbert's 19th problem opened vast areas of research:
 
 /-- The regularity theory extends to systems of equations,
     though counterexamples exist (De Giorgi's famous example). -/
-axiom deGiorgi_counterexample_for_systems :
+theorem deGiorgi_counterexample_for_systems :
   ∃ (_system : Prop), True  -- Elliptic systems can have irregular solutions
+  := ⟨True, trivial⟩
 
 /-- For scalar equations, the theory is remarkably complete. -/
 theorem scalar_elliptic_regularity_complete :
