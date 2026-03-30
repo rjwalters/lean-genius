@@ -15083,12 +15083,18 @@ theorem kkn_tension_pos (p : KKNParams) :
       (sq_pos_of_pos (Nat.cast_pos.mpr (by linarith [p.nc_ge])))
   · exact mul_pos (by norm_num) Real.pi_pos
 
-/-- The Casimir scaling ratio: sigma/m2 = N/(4 pi).
-    This connects string tension to mass gap. -/
+/-- The Casimir scaling ratio: σ/m² = π/2.
+    From σ = g⁴N²/(8π) and m = g²N/(2π), so m² = g⁴N²/(4π²),
+    giving σ/m² = 4π²/(8π) = π/2. -/
 theorem tension_gap_ratio (p : KKNParams) :
     kknStringTension p / kknMassGap p ^ 2 =
-    (p.nColors : ℝ) / (4 * Real.pi) := by
-  sorry -- MATHLIB-DRIFT: field_simp/ring proof broke
+    Real.pi / 2 := by
+  unfold kknStringTension kknMassGap
+  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
+  have hg : p.g_sq ≠ 0 := ne_of_gt p.g_sq_pos
+  have hN : (p.nColors : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by linarith [p.nc_ge])
+  field_simp
+  ring
 
 /-- The 0++ glueball mass from KKN: M_0++ = 2m (two-gluon threshold).
     This is the lightest glueball state. -/
@@ -22062,13 +22068,13 @@ theorem mass_gap_lambda_ratio : massGapLambdaRatio > 1 := by
 theorem classical_scale_invariance (S lambda : ℝ) (h : S = S) :
     S = S := h
 
-theorem quantum_breaks_scale (beta g : ℝ) (hbeta : beta ≠ 0) :
+theorem quantum_breaks_scale (beta g : ℝ) (hbeta : beta ≠ 0) (hg : g ≠ 0) :
     beta / (2 * g) ≠ 0 := by
   intro h
   have := div_eq_zero_iff.mp h
   rcases this with h1 | h1
   · exact hbeta h1
-  · sorry
+  · exact absurd h1 (mul_ne_zero (by norm_num) hg)
 
 /-- The RG invariant: Λ_QCD doesn't depend on the renormalization scale μ.
     dΛ/dμ = 0 (this follows from the definition). -/
@@ -22785,7 +22791,20 @@ theorem running_coupling_near_bare' (g0_sq beta0 : ℝ) :
 theorem coupling_controlled (g0_sq beta0 : ℝ) (k : ℕ)
     (hg : g0_sq > 0) (hg_small : g0_sq < 1) (hb : beta0 > 0) (hk : (k : ℝ) ≤ 1 / (beta0 * g0_sq)) :
     runningCoupling' g0_sq beta0 k < 2 * g0_sq := by
-  sorry -- MATHLIB-DRIFT: multi-line proof with broken Real.log + calc chain
+  unfold runningCoupling'
+  -- Need: g0_sq + beta0 * g0_sq^2 * k * log(2) < 2 * g0_sq
+  -- i.e.: beta0 * g0_sq^2 * k * log(2) < g0_sq
+  have hbg : beta0 * g0_sq > 0 := mul_pos hb hg
+  have hlog_pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog_lt : Real.log 2 < 1 := by
+    rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+    exact Real.log_lt_log (by norm_num) (by linarith [Real.exp_one_gt_d9])
+  -- From hk: k * (beta0 * g0_sq) ≤ 1
+  have hk_bound : (k : ℝ) * (beta0 * g0_sq) ≤ 1 := by rwa [← le_div_iff hbg]
+  -- Therefore beta0 * g0_sq^2 * k ≤ g0_sq (multiply hk_bound by g0_sq)
+  have h1 : beta0 * g0_sq ^ 2 * (k : ℝ) ≤ g0_sq := by nlinarith
+  -- And log(2) < 1, so beta0 * g0_sq^2 * k * log(2) < g0_sq
+  nlinarith
 
 /-- The effective action after k RG steps decomposes as:
     S_eff = S_classical + δS_small + δS_large
@@ -24952,7 +24971,7 @@ section BatalinVilkovisky
     - NL auxiliary: N²-1 components
     - Each field has one antifield
     Total: 2(d+3)(N²-1) field-antifield pairs -/
-theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
+theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 3) :
     -- Fields: d(N²-1) + 3(N²-1) = (d+3)(N²-1)
     -- Antifields: same count
     -- Total: 2(d+3)(N²-1)
@@ -24962,7 +24981,10 @@ theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
     -- A: 0, c: +1, c̄: -1, b: 0, A*: -1, c*: -2, c̄*: +1, b*: 0 (wait, not right)
     -- Actually: A*: -1, c*: -2, c̄*: 0, b*: -1
     -- The ghost number grades the BV complex
-    (d + 3) * (N ^ 2 - 1) ≥ 24 := by sorry -- Nat: d≥3, N≥2 → (d+3)*(N²-1) ≥ 6*3 = 18... actually 24 needs N≥3
+    (d + 3) * (N ^ 2 - 1) ≥ 24 := by
+  -- d ≥ 3 → d+3 ≥ 6; N ≥ 3 → N²-1 ≥ 8; 6*8 = 48 ≥ 24
+  have hN2 : N ^ 2 ≥ 9 := by nlinarith
+  omega
 
 /-- The antibracket is the fundamental operation of the BV formalism:
     (F, G) = (δF/δφ)(δG/δφ*) - (δF/δφ*)(δG/δφ)
