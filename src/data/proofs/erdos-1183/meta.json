@@ -83,7 +83,8 @@
       "content": "We define 2-colorings of the powerset, union-closed families, intersection-closed families, sublattices, monochromaticity, and chains.",
       "lineStart": 35,
       "lineEnd": 62,
-      "theorems": []
+      "theorems": [],
+      "summary": "Basic Definitions"
     },
     {
       "title": "Chains Are Sublattices",
@@ -94,7 +95,8 @@
         "chain_union_mem",
         "chain_inter_mem",
         "chain_isSublattice"
-      ]
+      ],
+      "summary": "Chains Are Sublattices"
     },
     {
       "title": "The Standard Chain",
@@ -106,7 +108,8 @@
         "stdChain_isChain",
         "initialSeg_injective",
         "stdChain_card"
-      ]
+      ],
+      "summary": "The Standard Chain"
     },
     {
       "title": "Pigeonhole",
@@ -115,7 +118,8 @@
       "lineEnd": 164,
       "theorems": [
         "exists_mono_color_class"
-      ]
+      ],
+      "summary": "Pigeonhole"
     },
     {
       "title": "Main Results",
@@ -125,7 +129,8 @@
       "theorems": [
         "erdos1183_chain_bound",
         "erdos1183_F_chain_bound"
-      ]
+      ],
+      "summary": "Main Results"
     },
     {
       "title": "Abstract Definitions and Bounds",
@@ -138,7 +143,8 @@
         "erdos1183_f_lower_bound",
         "achievableSublattice_subset_unionClosed",
         "erdos1183_F_ge_f"
-      ]
+      ],
+      "summary": "Abstract Definitions and Bounds"
     }
   ],
   "conclusion": {
