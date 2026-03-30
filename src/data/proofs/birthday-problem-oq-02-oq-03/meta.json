@@ -1,0 +1,117 @@
+{
+  "id": "birthday-problem-oq-02-oq-03",
+  "title": "r-Way Birthday Collision Threshold Scaling (OQ-02-OQ-03)",
+  "slug": "birthday-problem-oq-02-oq-03",
+  "description": "Extends birthday collision asymptotics to r-way collisions. Defines the r-tuple collision expectation C(n,r)/d^(r-1), proves upper and lower bounds via Mathlib's choose inequalities, and characterizes the threshold: collisions are expected when (r!)·d^(r-1) < (n+1-r)^r, giving the d^((r-1)/r) scaling.",
+  "meta": {
+    "author": "Classical (generalized birthday problem), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "birthday-problem",
+      "asymptotics",
+      "counting",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ03.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_le_pow",
+        "description": "Upper bound: C(n,r) ≤ n^r / r!",
+        "module": "Mathlib.Data.Nat.Choose.Bounds"
+      },
+      {
+        "theorem": "Nat.pow_le_choose",
+        "description": "Lower bound: (n+1-r)^r / r! ≤ C(n,r)",
+        "module": "Mathlib.Data.Nat.Choose.Bounds"
+      }
+    ],
+    "originalContributions": [
+      "r-way collision expectation definition: C(n,r)/d^(r-1)",
+      "Classical recovery: r=2 reduces to pairwise collision count",
+      "Upper and lower bounds on expectation via Mathlib choose inequalities",
+      "Threshold characterization: r!·d^(r-1) < (n+1-r)^r implies expectation > 1"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 6,
+    "trueStubs": 0,
+    "lineCount": 112,
+    "assumptions": "None (0 axioms). All results fully proved from Mathlib.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "OQ-02-OQ-03: Can the tight collision asymptotics (pairwise case) be extended to r-way collisions, where the threshold scales as d^((r-1)/r)?",
+    "text": "Extends birthday collision asymptotics to r-way collisions using combinatorial counting bounds.",
+    "proofStrategy": "Define C(n,r)/d^(r-1) as the expected number of birthday-sharing r-tuples. Use Mathlib's Nat.choose_le_pow and Nat.pow_le_choose to bound this quantity, then characterize when it exceeds 1.",
+    "keyInsights": [
+      "The r-tuple collision expectation C(n,r)/d^(r-1) generalizes the pairwise count n(n-1)/(2d)",
+      "Mathlib provides tight bounds: (n+1-r)^r/r! ≤ C(n,r) ≤ n^r/r!",
+      "Setting C(n,r)/d^(r-1) = 1 gives the threshold n ≈ (r!·d^(r-1))^(1/r) ≈ d^((r-1)/r)",
+      "The full exponential bound requires Poisson approximation (future work)"
+    ],
+    "prerequisites": [
+      "Combinatorics (binomial coefficients, counting)",
+      "Real analysis (division, ordering)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "r-Way Expectation",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Defines the r-tuple collision expectation C(n,r)/d^(r-1)."
+    },
+    {
+      "id": "classical-recovery",
+      "title": "Classical Recovery (r=2)",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "Shows r=2 reduces to the pairwise collision count from OQ-02."
+    },
+    {
+      "id": "bounds",
+      "title": "Upper and Lower Bounds",
+      "startLine": 56,
+      "endLine": 75,
+      "summary": "Bounds the expectation between (n+1-r)^r/(r!·d^(r-1)) and n^r/(r!·d^(r-1)) using Mathlib's choose inequalities."
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Characterization",
+      "startLine": 77,
+      "endLine": 102,
+      "summary": "Shows that when r!·d^(r-1) < (n+1-r)^r, the expectation exceeds 1, giving the d^((r-1)/r) scaling."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "extends",
+      "description": "Generalizes OQ-02's pairwise collision asymptotics to r-way collisions"
+    },
+    {
+      "targetId": "birthday-problem-oq-03",
+      "relationship": "extends",
+      "description": "Adds asymptotic bounds to OQ-03's k-way coincidence framework"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "BigOperators", "Real"],
+    "namespace": "BirthdayRWay",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 6,
+    "trueStubs": 0,
+    "definitionCount": 1
+  }
+}
