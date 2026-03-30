@@ -108,8 +108,9 @@
     ]
   },
   "conclusion": {
-    "text": "We formalize the extension question for Bryan et al.'s motivic class theorem to partial flag varieties. The key proved results are: q-factorials equal flag variety classes, GL_n decomposes via q-factorials, and Grassmannian classes satisfy the q-Pascal identity. The extension conjecture for partial flags with parabolic subgroups is stated formally. Three sorries remain for algebraic identities (duality, lines = projective space, Gaussian binomial) that require careful induction.",
-    "futureWork": [
+    "summary": "We formalize the extension question for Bryan et al.'s motivic class theorem to partial flag varieties. The key proved results are: q-factorials equal flag variety classes, GL_n decomposes via q-factorials, and Grassmannian classes satisfy the q-Pascal identity.",
+    "implications": "The extension conjecture for partial flags with parabolic subgroups is stated formally. Three sorries remain for algebraic identities that require careful induction.",
+    "openQuestions": [
       "Prove Grassmannian duality [Gr(d,n)] = [Gr(n-d,n)] by induction on the q-Pascal identity",
       "Prove the Gaussian binomial identity [Gr(d,n)] · [d]! · [n-d]! = [n]!",
       "Verify the extension conjecture for Grassmannians (d=1 case: maps to projective space)",
