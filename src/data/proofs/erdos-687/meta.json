@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/687",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 456,
-    "assumptions": "4 axioms: jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. 0 sorries.",
+    "lineCount": 539,
+    "assumptions": "4 axioms: jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. Y(3) = 3 proved by parity-residue case analysis. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -138,9 +138,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 456,
+    "lineCount": 539,
     "axiomCount": 4,
-    "theoremCount": 22,
+    "theoremCount": 26,
     "definitionCount": 5
   },
   "crossReferences": [
