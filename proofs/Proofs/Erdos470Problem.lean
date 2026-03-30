@@ -67,6 +67,16 @@ subset of its proper divisors.
 -/
 def IsWeird (n : ℕ) : Prop := IsAbundant n ∧ ¬IsPseudoperfect n
 
+/-- Decidability of IsPseudoperfect: check all subsets of properDivisors. -/
+instance decidableIsPseudoperfect (n : ℕ) : Decidable (IsPseudoperfect n) :=
+  decidable_of_iff (∃ S ∈ n.properDivisors.powerset, S.sum id = n) ⟨
+    fun ⟨S, hmem, hsum⟩ => ⟨S, Finset.mem_powerset.mp hmem, hsum⟩,
+    fun ⟨S, hsub, hsum⟩ => ⟨S, Finset.mem_powerset.mpr hsub, hsum⟩⟩
+
+/-- Decidability of IsWeird. -/
+instance decidableIsWeird (n : ℕ) : Decidable (IsWeird n) :=
+  inferInstanceAs (Decidable (IsAbundant n ∧ ¬IsPseudoperfect n))
+
 /-
 ## The Smallest Weird Number: 70
 
@@ -93,9 +103,11 @@ theorem seventy_not_pseudoperfect : ¬IsPseudoperfect 70 := by
   exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
 
 /--
-No number below 70 is weird (verified by exhaustive check).
+No number below 70 is weird (verified by exhaustive check over all n < 70).
 -/
-axiom no_weird_below_70 (n : ℕ) (hn : n < 70) : ¬IsWeird n
+theorem no_weird_below_70 (n : ℕ) (hn : n < 70) : ¬IsWeird n := by
+  have h : ∀ m ∈ Finset.range 70, ¬IsWeird m := by native_decide
+  exact h n (Finset.mem_range.mpr hn)
 
 /--
 70 is the smallest weird number.
@@ -112,19 +124,20 @@ The sequence of weird numbers begins:
 All known weird numbers are even!
 -/
 
-/--
-836 is the second weird number.
--/
-
-/--
-4030 is the third weird number.
--/
-
 /-
 ## Open Question 1: Odd Weird Numbers
 
 Erdős asked whether any odd weird numbers exist. This remains open
 despite extensive computational searches.
+
+Key facts:
+- 945 = 3³ × 5 × 7 is the smallest odd abundant number
+- 945 is semiperfect (hence not weird): remove {3, 27} from proper
+  divisors, the rest sums to 945
+- Any odd weird must exceed 945
+
+Fang (2022): no odd weird numbers below 10^21.
+Liddy-Riedl (2018): any odd weird has ≥ 6 distinct prime divisors.
 -/
 
 /--
@@ -137,6 +150,47 @@ def OddWeird : Set ℕ := { n | IsWeird n ∧ Odd n }
 -/
 def erdos_470_part1 : Prop := ∃ n : ℕ, IsWeird n ∧ Odd n
 
+/--
+945 = 3³ × 5 × 7 is odd and abundant: σ(945) = 1920 > 1890 = 2 × 945.
+-/
+theorem nine45_odd_abundant : Odd 945 ∧ IsAbundant 945 := by
+  constructor
+  · exact ⟨472, by omega⟩
+  · unfold IsAbundant sigma; native_decide
+
+/--
+945 is semiperfect: its proper divisors {1,5,7,9,15,21,35,45,63,105,135,189,315}
+contain a subset summing to 945. (Remove 3 and 27 from the full set.)
+-/
+theorem nine45_semiperfect : IsPseudoperfect 945 := by
+  have : ∃ S ∈ (945 : ℕ).properDivisors.powerset, S.sum id = 945 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+945 is not weird (it is semiperfect).
+-/
+theorem nine45_not_weird : ¬IsWeird 945 := fun ⟨_, hnp⟩ => hnp nine45_semiperfect
+
+/--
+No odd number below 945 is abundant. This establishes 945 as the smallest
+odd abundant number: any odd weird must be at least 945, and 945 itself
+is semiperfect.
+-/
+theorem no_odd_abundant_below_945 (n : ℕ) (hn : n < 945) (hodd : Odd n) :
+    ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.range 945, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_range.mpr hn) hodd
+
+/--
+Any odd weird number must exceed 945: numbers below 945 are not odd abundant,
+and 945 itself is semiperfect.
+-/
+theorem odd_weird_gt_945 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 945 < n := by
+  by_contra h
+  push_neg at h
+  rcases Nat.lt_or_eq_of_le h with hlt | heq
+  · exact absurd hw.1 (no_odd_abundant_below_945 n hlt hodd)
+  · exact absurd (heq ▸ nine45_semiperfect) hw.2
 
 /-
 ## Computational Bounds on Odd Weird Numbers
@@ -147,18 +201,17 @@ Liddy and Riedl (2018) showed that any odd weird must have at least
 -/
 
 /--
-Fang's result: No odd weird numbers below 10^21.
--/
-
-/--
 The number of distinct prime divisors of n.
 -/
 def numPrimeDivisors (n : ℕ) : ℕ :=
   (n.divisors.filter Nat.Prime).card
 
 /--
-Liddy-Riedl result: Any odd weird number has at least 6 prime divisors.
+Liddy-Riedl (2018): any odd weird number has at least 6 distinct prime divisors.
+This is axiomatized — the proof requires deep sieve-theoretic arguments.
 -/
+axiom liddy_riedl_6_primes (n : ℕ) (hw : IsWeird n) (hodd : Odd n) :
+    6 ≤ numPrimeDivisors n
 
 /-
 ## Primitive Weird Numbers
@@ -175,7 +228,8 @@ def IsPrimitiveWeird (n : ℕ) : Prop :=
 /--
 Proper divisors are less than the number itself.
 -/
-axiom properDivisors_lt (n d : ℕ) (hd : d ∈ n.properDivisors) : d < n
+theorem properDivisors_lt (n d : ℕ) (hd : d ∈ n.properDivisors) : d < n :=
+  (Nat.mem_properDivisors.1 hd).2
 
 /--
 70 is primitive weird (trivially, since no number below 70 is weird).
@@ -217,10 +271,6 @@ for all large n. This would follow from conjectures like Cramér's.
 The n-th prime (axiomatized; p_1 = 2, p_2 = 3, etc.)
 -/
 axiom nthPrime : ℕ → ℕ
-
-/--
-Basic property: nthPrime produces primes.
--/
 
 /--
 The prime gap after the n-th prime.
@@ -265,49 +315,6 @@ abundancy index < 4.
 The abundancy index of n.
 -/
 noncomputable def abundancyIndex (n : ℕ) : ℚ := sigma n / n
-
-/--
-If all weird numbers are even, then abundancy index < 4 for all weird numbers.
--/
-
-/-
-## Examples of Weird Numbers
-
-Let's record some explicit weird numbers from OEIS A006037:
-70, 836, 4030, 5830, 7192, 7912, 9272, 10430, 10570, ...
--/
-
-/--
-The first several weird numbers.
--/
-
-/--
-All known weird numbers are even.
--/
-
-/-
-## Why 70 is Weird: A Detailed Analysis
-
-Divisors of 70: 1, 2, 5, 7, 10, 14, 35, 70
-Proper divisors: 1, 2, 5, 7, 10, 14, 35 (sum = 74 > 70, so abundant)
-
-To show 70 is not pseudoperfect, we must check that no subset sums to 70.
-The largest subset sum not exceeding 70 is at most 1+2+5+7+10+14+35 = 74,
-but we can't get exactly 70.
-
-Key observation: 35 is essential (74 - 35 = 39 < 70 without it).
-With 35, remaining budget is 70 - 35 = 35.
-Subsets of {1, 2, 5, 7, 10, 14} summing to 35: 1+2+5+7+10+14 = 39 ≠ 35.
-Various checks show no exact match exists.
--/
-
-/--
-σ(70) = 144.
--/
-
-/--
-The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
--/
 
 /-
 ## Summary
