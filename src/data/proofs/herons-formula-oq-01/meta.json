@@ -131,6 +131,7 @@
   ],
   "conclusion": {
     "summary": "Brahmagupta's formula is formalized with full algebraic infrastructure. The reduction to Heron's formula and the rectangle/square special cases are proved cleanly. The main formula is axiomatized (needs cyclic geometry), and the isoperimetric inequality needs AM-GM for 4 variables.",
+    "implications": "Provides a verified algebraic framework for cyclic quadrilateral area computation, bridging Heron's formula to its natural four-sided generalization.",
     "openQuestions": [
       "Can the axiom be eliminated by formalizing cyclic quadrilateral geometry and the law of cosines for supplementary angles?",
       "Can the isoperimetric inequality be proved from a formalized AM-GM inequality for n variables?"
