@@ -1,0 +1,79 @@
+{
+  "slug": "euler-identity-oq-03",
+  "title": "Gelfond's constant $e^\\pi = (-1)^{-i}$ is transcendental by Gelfond–Schneider. Can Mathlib's `hermite_lindemann` machinery be extended to formally prove this, using the Lean formalization of Euler's i",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Gelfond's constant $e^\\pi = (-1)^{-i}$ is transcendental by Gelfond–Schneider. Can Mathlib's `hermite_lindemann` machinery be extended to formally prove this, using the Lean formalization of Euler's i.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "euler-identity",
+    "euler-identity-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.304Z",
+  "lastUpdate": "2026-03-29T18:32:39.304Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerIdentity.lean",
+      "filename": "EulerIdentity.lean",
+      "lineCount": 342,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentity.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentityOQ01.lean",
+      "filename": "EulerIdentityOQ01.lean",
+      "lineCount": 214,
+      "theoremCount": 7,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01.lean"
+    }
+  ]
+}

@@ -59,6 +59,7 @@
   "tags": [],
   "relatedProofs": [
     "platonic-solids",
+    "platonic-solids-oq-01",
     "platonic-solids-oq-02"
   ],
   "references": {
@@ -79,6 +80,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PlatonicSolids.lean"
+    },
+    {
+      "path": "Proofs/PlatonicSolidsOQ01.lean",
+      "filename": "PlatonicSolidsOQ01.lean",
+      "lineCount": 629,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 28,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PlatonicSolidsOQ01.lean"
     },
     {
       "path": "Proofs/PlatonicSolidsOQ02.lean",

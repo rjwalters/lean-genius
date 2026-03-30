@@ -1,0 +1,77 @@
+{
+  "slug": "pac-learning-bounds-oq-01",
+  "title": "Can the VC dimension of specific hypothesis classes (linear classifiers, neur...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Can the VC dimension of specific hypothesis classes (linear classifiers, neur....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.789Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: VCDimension.lean restored and extended to 8 theorems, 0 sorries, 0 axioms. New: interval_not_shatters_triple proving VCDim(intervals)=2 via convexity argument. Gallery entry created.",
+    "builtItems": [
+      "VCDimension.lean: Shatters, vcDim, HypothesisClass, powerset, thresholdClassifiers, intervalClassifiers definitions",
+      "powerset_shatters: powerset shatters every finite set",
+      "threshold_shatters_singleton: threshold classifiers shatter singletons",
+      "threshold_not_shatters_pair: threshold classifiers cannot shatter pairs (key monotonicity argument)",
+      "interval_shatters_pair: interval classifiers shatter pairs via 4 explicit intervals",
+      "Gallery entry: src/data/proofs/pac-learning-bounds-oq-01/",
+      "VCDimension.lean restored and extended: interval_convex + interval_not_shatters_triple (new)",
+      "Gallery entry: src/data/proofs/pac-learning-bounds-oq-01/ with meta.json, index.ts, annotations.json"
+    ],
+    "insights": [
+      "Threshold monotonicity: {n<t} with b in implies a in when a<b, preventing {b} realization",
+      "Intervals break monotonicity: [b,b+1) contains b but excludes a<b",
+      "Powerset shatters trivially: use h=T for any T",
+      "Finset-based shattering is cleaner than Set-based for computational reasoning",
+      "Interval convexity is the key obstruction: if a,c in [lo,hi) with a<b<c, then b in [lo,hi)",
+      "VCDimension.lean was lost from main (commit cb629eaf69 on orphan branch) - restored and extended"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove interval VCDim exactly 2 (triple non-shattering)",
+      "VCDim for halfspace classifiers in R^d (d+1)",
+      "Formalize Fundamental Theorem: finite VCDim iff PAC learnable"
+    ]
+  },
+  "tags": [
+    "learning-theory",
+    "combinatorics",
+    "probability",
+    "cs-math-bridge",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "pac-learning-bounds"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-29T20:30:00Z",
+  "significance": 8,
+  "tractability": 5
+}

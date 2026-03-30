@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1156",
-  "title": "Erd\u0151s #1156",
+  "title": "Erdős #1156",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,17 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved erdos_1156_q2_conjecture (4\u21923 axioms). Q2 body was a True placeholder (measure-theoretic statement not formalized).",
+    "progressSummary": "PROGRESS: Proved erdos_1156_q2_conjecture (4→3 axioms). Q2 body was a True placeholder (measure-theoretic statement not formalized).",
     "builtItems": [
       "Proved erdos_1156_q2_conjecture: trivially True placeholder"
     ],
     "insights": [
-      "Q2 axiom had True placeholder body \u2014 proper formalization needs MeasureTheory",
+      "Q2 axiom had True placeholder body — proper formalization needs MeasureTheory",
       "Remaining 3 axioms: erdosRenyi type (infra), chromaticNumberRV (infra), Q1 conjecture (open)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #1156 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1156 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -62,7 +62,7 @@
     {
       "path": "Proofs/Erdos1156Problem.lean",
       "filename": "Erdos1156Problem.lean",
-      "lineCount": 131,
+      "lineCount": 125,
       "theoremCount": 3,
       "axiomCount": 3,
       "defCount": 2,

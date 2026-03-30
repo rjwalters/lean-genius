@@ -1,0 +1,67 @@
+{
+  "slug": "hilbert-16-oq-03",
+  "title": "Can the Poincare-Bendixson theorem, Ecalle-Ilyashenko theorem, or Shi Songling construction be fully formalized in Lean? Currently all are axiomatized due to their substantial infrastructure requireme",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the Poincare-Bendixson theorem, Ecalle-Ilyashenko theorem, or Shi Songling construction be fully formalized in Lean? Currently all are axiomatized due to their substantial infrastructure requireme.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.305Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "hilbert-16"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.305Z",
+  "lastUpdate": "2026-03-29T18:32:39.305Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert16.lean",
+      "filename": "Hilbert16.lean",
+      "lineCount": 569,
+      "theoremCount": 11,
+      "axiomCount": 9,
+      "defCount": 22,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert16.lean"
+    }
+  ]
+}
