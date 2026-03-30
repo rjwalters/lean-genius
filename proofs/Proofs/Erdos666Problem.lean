@@ -227,8 +227,10 @@ theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
       True ∧
       -- H has no C₆
       ¬HasC6 H := by
-  -- Follows from conder_1993
-  sorry
+  -- Conder's 3-coloring improves Chung's 4-coloring, but the conclusion
+  -- only needs existence of a C₆-free subgraph, which Chung already gives.
+  obtain ⟨H, _, h⟩ := chung_counterexample n hn
+  exact ⟨H, h⟩
 
 /-
 ## Part VIII: Erdős's Generalization
