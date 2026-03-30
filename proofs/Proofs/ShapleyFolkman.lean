@@ -188,6 +188,22 @@ The reduction step (reduce_excess_by_one) works as follows:
   f. The result has one fewer excess index
 -/
 
+/-- **Linear dependence extraction**: d+1 vectors in d-dimensional space are
+    linearly dependent, and we can extract explicit coefficients.
+    This is the key algebraic input for the perturbation argument. -/
+theorem linearDependent_coefficients [FiniteDimensional ℝ E]
+    {n : ℕ} (hn : Module.finrank ℝ E < n) (f : Fin n → E) :
+    ∃ (c : Fin n → ℝ), (∃ i, c i ≠ 0) ∧ ∑ i, c i • f i = 0 := by
+  have hli : ¬LinearIndependent ℝ f := by
+    intro h
+    have := h.fintype_card_le_finrank
+    simp [Fintype.card_fin] at this
+    omega
+  rw [Fintype.linearIndependent_iff] at hli
+  push_neg at hli
+  obtain ⟨g, hg_sum, i, hi_ne⟩ := hli
+  exact ⟨g, ⟨i, hi_ne⟩, hg_sum⟩
+
 /-- A decomposition can always be constructed from the hypothesis. -/
 theorem exists_decomposition
     {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
