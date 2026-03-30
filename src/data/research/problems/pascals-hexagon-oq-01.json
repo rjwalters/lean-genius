@@ -1,0 +1,76 @@
+{
+  "slug": "pascals-hexagon-oq-01",
+  "title": "Can the Cayley-Bacharach axiom be proved from Mathlib's algebraic geometry, e...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-29T23:39:50-07:00",
+    "iteration": 1,
+    "focus": "Algebraic proof strategy established. Need CAS computation for ideal membership.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 1 axiom (conic_implies_pascal_constraint). Direct algebraic proof feasible using ring tactic, but requires CAS-computed ideal membership certificate. Multi-session project.",
+    "builtItems": [],
+    "insights": [
+      "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
+      "DesarguesTheorem.lean has all needed infrastructure: cross_triple_product (BAC-CAB), scalar_triple_product_eq_det, threeVectorMatrix_det_explicit, scalar_triple_of_cross_products — all verified by ring",
+      "Desargues identity proved by expanding cross products into coordinates and using ring on 18 variables. Pascal needs same approach but with conic constraint Q(X) = ∑ C_ij X_i X_j",
+      "det(P,Q,R) does NOT vanish universally — only when 6 points on a conic. Need ideal membership: det(P,Q,R) = Σ p_X · Q(X). Coefficients p_X are degree-10 polynomials in 24 variables",
+      "A computer algebra system (Sage/Macaulay2) needed to compute the ideal membership certificate, then transcribe to Lean for ring verification",
+      "P = [ABE]D - [ABD]E, Q = [BCF]E - [BCE]F, R = [CDA]F - [CDF]A (via BAC-CAB on cross products of cross products)"
+    ],
+    "mathlibGaps": [
+      "No Bezout theorem for projective curves in Mathlib",
+      "No Cayley-Bacharach theorem in Mathlib"
+    ],
+    "nextSteps": [
+      "Use Sage/Macaulay2 to compute ideal membership certificate for det(P,Q,R) mod (Q(A),...,Q(F))",
+      "Transcribe certificate to Lean and verify with ring tactic",
+      "Alternatively: prove for specific conic C = diag(1,1,-1) first, then prove projective equivalence"
+    ],
+    "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "pascals-hexagon"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/PascalsHexagon.lean",
+      "filename": "PascalsHexagon.lean",
+      "lineCount": 322,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 20,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagon.lean"
+    }
+  ]
+}
