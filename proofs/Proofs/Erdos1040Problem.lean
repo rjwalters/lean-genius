@@ -338,13 +338,44 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
 private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
     (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
     nthDiameter F n = 0 := by
-  -- By pigeonhole (n > |F|), every n-tuple from F repeats a value.
-  -- Repeated points give |pts i - pts j| = 0, making the product 0.
-  -- Then 0^(2/(n*(n-1))) = 0 (exponent > 0 since n ≥ 2).
-  -- So all elements of the sSup set are 0, and sSup {0} = sSup ∅ = 0.
-  -- Key lemmas: Fintype.card_le_of_injective (pigeonhole),
-  --   Finset.prod_eq_zero, Real.zero_rpow, Real.sSup_empty
-  sorry
+  apply le_antisymm _ (nthDiameter_nonneg F n)
+  unfold nthDiameter
+  by_cases hne : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · apply csSup_le hne
+    rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+    -- By pigeonhole (n > |F|), pts : Fin n → F is not injective
+    have hcoll : ∃ i j : Fin n, i ≠ j ∧ pts i = pts j := by
+      by_contra hall; push_neg at hall
+      have hinj : Function.Injective pts := fun a b hab =>
+        by_contra hne; exact absurd hab (hall a b hne)
+      have := Fintype.card_le_of_injective
+        (fun i => (⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩ : ↥hF.toFinset))
+        (fun a b hab => hinj (congrArg Subtype.val hab))
+      simp [Fintype.card_fin] at this; omega
+    obtain ⟨i, j, hne_ij, heq⟩ := hcoll
+    -- The product contains a zero factor (repeated points ⇒ distance = 0)
+    have hprod : ∏ i' : Fin n, ∏ j' in Finset.Iio i',
+        Complex.abs (pts i' - pts j') = 0 := by
+      rcases hne_ij.lt_or_lt with h_i_lt_j | h_j_lt_i
+      · -- i < j: factor Complex.abs (pts j - pts i) = 0
+        exact Finset.prod_eq_zero (Finset.mem_univ j)
+          (Finset.prod_eq_zero (Finset.mem_Iio.mpr h_i_lt_j)
+            (by simp [heq]))
+      · -- j < i: factor Complex.abs (pts i - pts j) = 0
+        exact Finset.prod_eq_zero (Finset.mem_univ i)
+          (Finset.prod_eq_zero (Finset.mem_Iio.mpr h_j_lt_i)
+            (by simp [heq]))
+    -- 0 ^ (2/(n*(n-1))) = 0 since exponent ≠ 0 (n ≥ 2)
+    have hexp : (2 : ℝ) / ((n : ℝ) * ((n : ℝ) - 1)) ≠ 0 := by
+      refine div_ne_zero two_ne_zero (mul_ne_zero ?_ ?_)
+      · exact Nat.cast_ne_zero.mpr (by omega)
+      · have : (n : ℝ) ≥ 2 := by exact_mod_cast hn; linarith
+    simp only [hprod, zero_rpow hexp, le_refl]
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    simp [hne, csSup_empty]
 
 /-- Finite sets have transfinite diameter 0.
     Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
