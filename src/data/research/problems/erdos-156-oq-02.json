@@ -1,0 +1,73 @@
+{
+  "slug": "erdos-156-oq-02",
+  "title": "Greedy Sidon construction size lower bound",
+  "phase": "OBSERVE",
+  "status": "blocked",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem greedySidon_size_lower_bound (N : ℕ) (hN : N ≥ 1) : size (greedySidon N) ≥ Nat.sqrt N",
+    "plain": "Prove that the greedy Sidon construction in {1,...,N} produces a set of size at least √N (or c√N for some explicit constant c > 0). This was previously stated as an axiom in Erdos156Problem.lean and subsequently removed. Formalizing the proof would close the gap.",
+    "whyMatters": [
+      "Establishes a concrete lower bound on the greedy construction, complementing the maximality proof",
+      "The key counting argument (at step k, at most k² sums can block) is a standard technique worth formalizing",
+      "Combined with the Erdős-Turán upper bound, pins down the greedy Sidon set size to Θ(√N)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "greedySidon_is_sidon: greedy construction is Sidon (proved)",
+      "greedySidon_maximal: greedy construction is maximal (proved)",
+      "greedySidon_subset_interval: elements are in {1,...,N} (proved)"
+    ],
+    "open": [],
+    "goal": "Prove the size lower bound |greedySidon(N)| ≥ c√N"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:00:00Z",
+    "iteration": 0,
+    "focus": "Initial creation as follow-up from erdos-156 completion",
+    "blockers": [],
+    "nextAction": "Formalize the counting argument: at each step, the number of blocked elements grows quadratically in |A|",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "BLOCKED: Problem statement incorrect. The greedy Sidon set in {1,...,N} has size Θ(N^{1/3}), not ≥√N. For large N, N^{1/3} < √N, so the claim is false. The correct lower bound is cN^{1/3} for some constant c.",
+    "builtItems": [],
+    "insights": [
+      "Greedy Sidon produces {1,2,3,5,8,13,21,...} — approximately Fibonacci/exponentially-spaced",
+      "At size k, the greedy set blocks ~k^2 new elements, so total blocked after k additions is ~k^3/3",
+      "Greedy terminates when k^3/3 ≥ N, giving size ≈ (3N)^{1/3}",
+      "For N=10000: greedy size ≈ 17, but √N = 100. The √N bound is FALSE"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Correct formal statement to: size (greedySidon N) ≥ c * Nat.iroot 3 N for some constant c",
+      "The Θ(N^{1/3}) bound is the correct result for the greedy Sidon construction"
+    ]
+  },
+  "tags": [
+    "sidon-sets",
+    "additive-combinatorics",
+    "greedy-algorithm",
+    "lower-bound"
+  ],
+  "relatedProofs": [
+    "erdos-156"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:00:00Z",
+  "lastUpdate": "2026-03-30T19:00:00Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": []
+}
