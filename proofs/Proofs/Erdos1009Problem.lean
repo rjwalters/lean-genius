@@ -108,10 +108,6 @@ def gyori_theorem_statement : Prop :=
       (k ≥ 0) → (k < c * n) →
         (maxEdgeDisjointTriangles G : ℤ) ≥ k - f
 
-/-- Györi's bound: f(c) ≪ c² -/
-axiom gyori_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ c : ℝ, c > 0 → (boundFunction c : ℝ) ≤ C * c^2
-
 /-
 ## Erdős's Partial Result
 
