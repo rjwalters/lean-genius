@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1019-oq-04",
-  "title": "Can the planarity definition `isPlanar` be formalized in Mathlib using Kurato...",
-  "phase": "NEW",
+  "title": "Formalizing isPlanar via Wagner forbidden minors",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "fast",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-03-30T01:04:30.838Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Defined isPlanar via Wagner characterization, proved K3_saturated_planar, proved bipartite_not_saturated",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "K4_saturated_planar could be proved similarly (4 < 5, 4 < 6), remaining axioms need Simonovits theorem",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved turan_triangle from Mathlib (8→7 axioms). Remaining axioms depend on isPlanar (sorry) or deep theorems. Kuratowski formalization in Mathlib NOT feasible: no graph minor/subdivision infrastructure.",
+    "progressSummary": "COMPLETED: Replaced isPlanar sorry with Wagner forbidden minor characterization. Proved K3_saturated_planar (7→6 axioms) and bipartite_not_saturated (2→0 sorries). Added GraphMinorWitness, HasMinor, K5, K33 definitions.",
     "builtItems": [
-      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)"
+      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)",
+      "GraphMinorWitness structure for graph minor witnesses",
+      "HasMinor definition (graph minor relation)",
+      "K5, K33 abbreviations for K₅ and K₃,₃",
+      "no_minor_of_card_lt: pigeonhole theorem for graph minors",
+      "isPlanar: Wagner forbidden minor characterization (replaces sorry)",
+      "K3_saturated_planar: proved by pigeonhole (replaces axiom)",
+      "completeBipartite_has_K33_minor: K_{m,n} contains K₃,₃ for m,n≥3",
+      "bipartite_not_saturated: proved vacuously via K₃,₃ minor (replaces sorry)"
     ],
     "insights": [
       "Mathlib has no graph minor definitions (SimpleGraph.Minor does not exist)",
@@ -44,13 +52,16 @@
       "turan_triangle axiom proved from Mathlib CliqueFree.card_edgeFinset_le (8→7 axioms)",
       "Remaining 7 axioms all depend on isPlanar or deep results (Simonovits, Erdős construction)",
       "bipartite_not_saturated sorry blocked on isPlanar sorry — K_{4,6} case requires knowing K_{4,6} is not planar",
-      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity"
+      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity",
+      "Wagner forbidden minor characterization is the cleanest isPlanar definition for Lean",
+      "Pigeonhole (|V| < |W| → no minor of W in V) eliminates many planarity goals automatically",
+      "K₃,₃ subgraph embedding makes bipartite_not_saturated vacuously true",
+      "K4_saturated_planar is also provable by pigeonhole (4 < 5, 4 < 6) but edge count proof needs work"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define graph minors in Mathlib (SimpleGraph.Minor)",
-      "Define isPlanar via Wagner forbidden minor characterization",
-      "Once isPlanar defined: K3_saturated_planar and K4_saturated_planar become provable by computation"
+      "Prove K4_saturated_planar by pigeonhole + edge count computation",
+      "Remaining 5 axioms (after K4) need deep results: Simonovits, Erdős construction, size bounds"
     ]
   },
   "tags": [
@@ -72,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.838Z",
-  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-03-30T05:10:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
