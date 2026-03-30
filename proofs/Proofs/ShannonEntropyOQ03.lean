@@ -73,12 +73,23 @@ theorem marginalXY_sum {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
 theorem marginalYZ_sum {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
     {pXYZ : α × β × γ → ℝ} (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
     ∑ yz : β × γ, marginalYZ pXYZ yz = 1 := by
-  sorry
+  unfold marginalYZ
+  -- ∑_{y,z} ∑_x p(x,y,z) = ∑_{x,y,z} p(x,y,z) = 1
+  simp only [Finset.sum_product']
+  rw [Finset.sum_comm]
+  convert hsum using 1
+  rw [Finset.sum_product']
+  congr 1; ext x; rw [Finset.sum_product']
 
 theorem marginalY_sum {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
     {pXYZ : α × β × γ → ℝ} (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
     ∑ y : β, marginalY pXYZ y = 1 := by
-  sorry
+  unfold marginalY
+  -- ∑_y ∑_x ∑_z p(x,y,z) = ∑_{x,y,z} p(x,y,z) = 1
+  rw [Finset.sum_comm]
+  convert hsum using 1
+  rw [Finset.sum_product']
+  congr 1; ext x; rw [Finset.sum_comm]; rw [Finset.sum_product']
 
 -- ============================================================
 -- Part 3: Strong Subadditivity
