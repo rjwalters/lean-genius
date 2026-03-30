@@ -1,0 +1,125 @@
+{
+  "id": "erdos-635-oq-01",
+  "title": "Erdős #635 OQ-01: Near-Uniqueness of Maximum 1-Admissible Sets",
+  "slug": "erdos-635-oq-01",
+  "description": "In any maximum 1-admissible set in {1,...,N}, every element strictly less than N must be odd. The odd set is 'almost unique' as an optimizer — the only possible non-odd element is N itself. For odd N, the odd set is the unique maximum. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://erdosproblems.com/635",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos635OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "extremal-problems",
+      "divisibility",
+      "uniqueness",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 635,
+    "erdosUrl": "https://erdosproblems.com/635",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals as finite sets",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.eq_of_subset_of_card_le",
+        "description": "Subset with equal cardinality implies equality",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "max_set_interior_odd: all interior elements of a maximum 1-admissible set are odd",
+      "even_blocks_next_odd: even element blocks next fiber's odd element",
+      "even_blocks_next_even: even element blocks next fiber's even element",
+      "unique_max_odd_N: for odd N, the odd set is the unique maximum",
+      "max_set_at_most_one_even: at most one even element in any maximum set"
+    ],
+    "axiomCount": 0,
+    "lineCount": 313,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "This result extends the Erdős #635 formalization by characterizing the extremal structure beyond just the cardinality bound. The parent file proved f(N,1) = (N+1)/2 (the odd set is optimal), but left open whether other maximum sets exist. This OQ answers that question: the odd set is essentially unique, with the only possible variation at the boundary element N.",
+    "problemStatement": "**Result:** In any maximum 1-admissible set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| = \\lfloor(N+1)/2\\rfloor$, every element $a \\in A$ with $a < N$ satisfies $a \\equiv 1 \\pmod{2}$.\n\n**Corollaries:**\n- For odd $N$: the odd set is the unique maximum\n- For any $N$: at most one even element (only $N$ itself)",
+    "text": "Characterizes the structure of maximum 1-admissible sets: all interior elements must be odd, with at most one even element possible at the boundary.",
+    "proofStrategy": "**Fiber partition argument.** The injection $\\varphi(a) = \\lfloor(a-1)/2\\rfloor$ partitions $\\{1,\\ldots,N\\}$ into fibers $\\{2v+1, 2v+2\\}$. A maximum set picks exactly one from each fiber. If any non-last fiber picks its even element $2v+2$, both elements of the next fiber are blocked: $(2v+3) - (2v+2) = 1$ divides everything, and $(2v+4) - (2v+2) = 2$ divides $2v+4$. Missing a fiber contradicts maximality.",
+    "keyInsights": [
+      "**Fiber blocking**: An even element blocks both elements of the next fiber — the odd neighbor by difference 1, the even neighbor by difference 2 dividing an even number",
+      "**Near-uniqueness**: The odd set is the unique maximum for all odd N and 'almost all' even N, with the only alternative at the boundary",
+      "**Structural rigidity**: The injection argument shows the odd numbers aren't just one optimizer among many — they're essentially the only one"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Erdős #635 base formalization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fiber-structure",
+      "title": "Part I: Fiber Structure",
+      "startLine": 59,
+      "endLine": 82,
+      "summary": "Defines fibers and proves the key blocking lemmas: even elements block both neighbors in the next fiber.",
+      "mathContext": "Verified: even_blocks_next_odd and even_blocks_next_even lemmas"
+    },
+    {
+      "id": "no-consecutive",
+      "title": "Part II: No Consecutive Elements",
+      "startLine": 84,
+      "endLine": 93,
+      "summary": "Restates the no-consecutive lemma for self-containment.",
+      "mathContext": "Verified: no_consecutive (from parent file)"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Part III: Upper Bound",
+      "startLine": 95,
+      "endLine": 123,
+      "summary": "Restates the (N+1)/2 upper bound via injection argument.",
+      "mathContext": "Verified: admissible_card_upper via injection a ↦ (a-1)/2"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main Structural Theorem",
+      "startLine": 125,
+      "endLine": 227,
+      "summary": "The main result: in a maximum 1-admissible set, every element < N is odd.",
+      "mathContext": "Verified: max_set_interior_odd — fiber gap argument shows even interior elements block the next fiber"
+    },
+    {
+      "id": "corollaries",
+      "title": "Part V-VI: Corollaries",
+      "startLine": 229,
+      "endLine": 313,
+      "summary": "oddSet cardinality, uniqueness for odd N, at-most-one-even bound.",
+      "mathContext": "Verified: unique_max_odd_N, max_set_at_most_one_even, oddSet_card"
+    }
+  ],
+  "conclusion": {
+    "summary": "The odd set {1, 3, 5, ...} is essentially the unique maximum 1-admissible set in {1,...,N}. Every element strictly below N must be odd in any maximum set, and the only possible deviation is at the boundary element N itself. For odd N, the odd set is the unique optimizer.",
+    "implications": "This structural characterization goes beyond the cardinality result f(N,1) = (N+1)/2 from the parent file. It reveals that the extremal problem has a rigid solution: the odd numbers aren't just one example, they're essentially the only example. This kind of uniqueness result is valuable in extremal combinatorics, as it shows the optimizer is robust.",
+    "openQuestions": [
+      "For even N that are powers of 2 (e.g., N=8), the alternative set {1,3,...,N-3,N} is also maximum. Can we fully characterize which even N admit this alternative?",
+      "For t = 2, are the extremal sets similarly structured? The additional freedom (consecutive elements allowed) may create more optima."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-635",
+      "relationship": "extends",
+      "description": "Extends the base Erdős #635 formalization with structural characterization of extremal sets"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "slug": "erdos-635-oq-01",
+  "title": "Erdős #635 OQ-01: Near-Uniqueness of Maximum 1-Admissible Sets",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "In any maximum 1-admissible set A in {1,...,N}, every element strictly less than N must be odd. The odd set is essentially the unique maximum — the only possible non-odd element is N itself. For odd N, the odd set is the unique optimizer.",
+    "whyMatters": [
+      "Structural characterization of extremal sets beyond cardinality"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "max_set_interior_odd: all interior elements are odd",
+      "unique_max_odd_N: odd set is unique for odd N",
+      "max_set_at_most_one_even: at most 1 even element"
+    ],
+    "open": [
+      "Full characterization for even N: which even N admit a non-odd maximum set?"
+    ],
+    "goal": "Characterize extremal structure of 1-admissible sets"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T22:00:00Z",
+    "iteration": 1,
+    "focus": "Completed: all theorems proved, 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "None — completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0A, 7T, 0S. Fiber partition argument proves near-uniqueness.",
+    "builtItems": [
+      "max_set_interior_odd: main structural theorem (fiber blocking argument)",
+      "even_blocks_next_odd: even element blocks next fiber's odd",
+      "even_blocks_next_even: even element blocks next fiber's even",
+      "unique_max_odd_N: odd set is unique for odd N",
+      "max_set_at_most_one_even: at most 1 even element",
+      "oddSet_card: cardinality of odd set (self-contained proof)",
+      "no_consecutive: no consecutive elements (restated)"
+    ],
+    "insights": [
+      "Fiber partition via φ(a)=(a-1)/2 is the key structural tool",
+      "Even elements in non-last fibers block BOTH next-fiber elements",
+      "The blocking mechanism uses two distinct phenomena: diff 1 divides everything, diff 2 divides even numbers",
+      "For odd N, uniqueness follows immediately since N is odd too"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "open-question"
+  ],
+  "relatedProofs": [
+    "erdos-635"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/635"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-29T21:00:00Z",
+  "lastUpdate": "2026-03-29T22:00:00Z",
+  "significance": 5,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos635OQ01.lean",
+      "filename": "Erdos635OQ01.lean",
+      "lineCount": 313,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos635OQ01.lean"
+    }
+  ]
+}

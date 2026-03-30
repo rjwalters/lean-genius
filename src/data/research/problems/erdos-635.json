@@ -41,7 +41,8 @@
       "admissible_card_upper: proved, |A| <= (N+1)/2 via (a-1)/2 injection",
       "f_t1: proved from oddSet lower bound + admissible_card_upper",
       "AXIOM ELIMINATED: f_t1_density proved via squeeze theorem (4A→3A)",
-      "Proof uses: f_t1 (exact formula), omega (lower bound), Nat.div_mul_le_self (upper bound), tendsto_inv (limit)"
+      "Proof uses: f_t1 (exact formula), omega (lower bound), Nat.div_mul_le_self (upper bound), tendsto_inv (limit)",
+      "Erdos635OQ01.lean: near-uniqueness theorem — all interior elements of max 1-admissible sets are odd"
     ],
     "insights": [
       "f_upper_trivial follows from A ⊆ {1,...,N} → |A| ≤ N and csSup_le",
@@ -51,7 +52,8 @@
       "f_t1_density is corollary of f_t1 but limit proof in Lean is nontrivial",
       "All 4 axioms assessed: f_t2_lower and erdos_construction_t2 are deep constructions, erdos_635 is open, f_t1_density is provable via squeeze theorem but needs ~20 lines Filter.Tendsto",
       "14 theorems proved, 0 sorries. Good file.",
-      "f_t2_lower and erdos_construction_t2 axioms were unused — removed (3→1A)"
+      "f_t2_lower and erdos_construction_t2 axioms were unused — removed (3→1A)",
+      "OQ-01: fiber partition argument shows even elements block both next-fiber neighbors"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
