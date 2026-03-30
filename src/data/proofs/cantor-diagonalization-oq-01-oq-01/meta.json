@@ -146,7 +146,7 @@
     "implications": "CH remains one of the deepest unsolved problems in set theory. While independent of ZFC, new axioms (PFA, Ultimate-L) may eventually settle it. The formalization makes precise what ZFC can and cannot prove about the continuum.",
     "openQuestions": [
       "Can Woodin's Ultimate-L conjecture be stated formally in Lean?",
-      "Can König's constraint be proved from Mathlib's cofinality API (eliminating the axiom)?",
+      "ANSWERED (OQ-02): König's constraint proved from Mathlib's cofinality API, eliminating 2 axioms in OQ-01.",
       "What happens at the generalized continuum level: which patterns of 2^{ℵ_α} are consistent?"
     ]
   },

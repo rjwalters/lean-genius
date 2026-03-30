@@ -41,13 +41,13 @@
     "originalContributions": [
       "Beth number hierarchy definition and strict monotonicity proof",
       "CH ↔ no intermediate cardinal equivalence",
-      "König's cofinality constraint axiomatized",
+      "König's cofinality constraint proved from Mathlib (was axiomatized)",
       "Formal connection between diagonalization and CH"
     ],
     "dateAdded": "2026-02-22",
-    "axiomCount": 2,
+    "axiomCount": 0,
     "lineCount": 442,
-    "assumptions": "2 axioms. No sorries.",
+    "assumptions": "None. Previously had 2 axioms (König cofinality bound and ℵ_ω cofinality), now proved from Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -226,7 +226,7 @@
     ],
     "namespace": "CantorDiagonalizationOQ01",
     "lineCount": 442,
-    "axiomCount": 2,
+    "axiomCount": 0,
     "theoremCount": 27,
     "definitionCount": 5
   }

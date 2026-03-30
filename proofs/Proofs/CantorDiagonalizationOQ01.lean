@@ -297,18 +297,22 @@ set theory gives real constraints on the continuum's structure.
 
     This rules out 2^ℵ₀ = ℵ_ω and more generally any aleph with cofinality ω.
 
-    Why an axiom? The formal proof uses König's lemma for cardinals, which
-    states: if κᵢ < λᵢ for all i in an index set I, then
-    Σᵢ κᵢ < Π λᵢ. Applied to 2^ℵ₀ = Πᵢ<ω 2, this gives cf(2^ℵ₀) > ω. -/
-axiom konig_cofinality_bound :
-    (ℵ₀ : Cardinal.{0}) < (continuum.ord.cof : Cardinal)
+    Proved from `Cardinal.lt_cof_power` (König's inequality for exponentiation):
+    since ℵ₀ ≤ cf(ℵ₀) and 1 < 2, we get ℵ₀ < cf(2^ℵ₀). -/
+theorem konig_cofinality_bound :
+    (ℵ₀ : Cardinal.{0}) < (continuum.ord.cof : Cardinal) := by
+  show (ℵ₀ : Cardinal.{0}) < ((2 ^ ℵ₀ : Cardinal.{0}).ord.cof : Cardinal)
+  exact Cardinal.lt_cof_power le_rfl (by norm_num)
 
-/-- Under König's constraint, the continuum is not ℵ_ω.
-    ℵ_ω is the first singular aleph (cofinality ω), but cf(2^ℵ₀) > ℵ₀ = ω.
+/-- The cofinality of ℵ_ω equals ℵ₀.
+    ℵ_ω = sup{ℵ₀, ℵ₁, ℵ₂, ...} is the countable supremum of alephs,
+    hence cf(ℵ_ω) = cf(ω) = ω, and ω.card = ℵ₀.
 
-    Why an axiom? Requires computing cf(ℵ_ω) = ω from Mathlib's cofinality API. -/
-axiom aleph_omega_cofinality_is_aleph_zero :
-    ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀
+    Proved from `Cardinal.cof_aleph ω` and `Ordinal.card_omega0`. -/
+theorem aleph_omega_cofinality_is_aleph_zero :
+    ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀ := by
+  rw [Cardinal.cof_aleph]
+  exact Ordinal.card_omega0
 
 /-- König's theorem implies 2^ℵ₀ ≠ ℵ_ω. -/
 theorem konig_rules_out_aleph_omega :
