@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built restricted greedy + sieve infrastructure (9 new theorems). Core sieve-and-greedy theorem proved. 1 deep axiom (erdos_graham_polynomial) remains — next step is proving the sum-preservation lemma for the sieving step.",
+    "progressSummary": "PROGRESS: Built 7 bridge theorems connecting sieve-and-greedy to hasPolynomialPrecision. Two proof paths formalized: (1) sieve when large sum > 1, (2) repeated values giving sum = 1. Remaining: prove the quantitative dichotomy for general multisets.",
     "builtItems": [
       "isFeasible def: subset with reciprocal sum ≤ 1",
       "maximal_feasible_exists theorem: proved via max-cardinality argument",
@@ -41,7 +41,14 @@
       "restricted_maximal_feasible_exists: greedy within restricted index set T",
       "restricted_gap_bound: gap bound for restricted maximal feasible subsets",
       "restricted_subset_near_one: finds S ⊆ T with sum in (1-1/m, 1]",
-      "sieve_and_greedy: composition of sieve + restricted greedy"
+      "sieve_and_greedy: composition of sieve + restricted greedy",
+      "sieve_gives_polynomial_precision: converts sieve_and_greedy gap to polynomial precision (line 730)",
+      "polynomial_precision_all_ge: simplest application when all elements ≥ m (line 746)",
+      "polynomial_precision_of_sum_one: sum = 1 implies polynomial precision (line 759)",
+      "repeated_value_sum_one: v copies of value v give sum 1 (line 770)",
+      "polynomial_precision_from_repeated_value: repeated values → precision (line 784)",
+      "small_sum_eq_total_minus_large: complement decomposition (line 796)",
+      "small_sum_exceeds: lower bound on small sum from total and large (line 803)"
     ],
     "insights": [
       "Maximal feasible subset technique: among subsets with sum ≤ 1, choose max cardinality. Adding any element exceeds 1.",
@@ -52,13 +59,17 @@
       "49 theorems already proved, 0 sorries. No actionable axiom elimination this session.",
       "Restricted greedy: maximal feasible subsets within a restricted index set T give gap bound 1/a(j) for any j in T \\ S",
       "Sieve-and-greedy: filter to elements >= m, apply restricted greedy => gap < 1/m. This is the core Erdős-Graham step.",
-      "To prove erdos_graham_polynomial: need to show that for large enough n, sieving to elements >= m still leaves sum > 1, then choose m = O(K²)"
+      "To prove erdos_graham_polynomial: need to show that for large enough n, sieving to elements >= m still leaves sum > 1, then choose m = O(K²)",
+      "Two independent paths to proving erdos_graham_polynomial: (1) sieve to large elements + gap bound, (2) repeated values giving sum = 1",
+      "The quantitative bottleneck is the mixed case: large sum ≤ 1 but no value v has ≥ v copies",
+      "For SETS (injective sequences), the sieve approach works directly since small sum ≤ H_{m-1}; the difficulty is multisets with repeated small values",
+      "Bridge theorem chain: sieve_and_greedy → sieve_gives_polynomial_precision → hasPolynomialPrecision, converting gap 1/m to c/K²"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sum-preservation: for large enough n with Σ1/a > K, sieving to elements >= m preserves Σ > 1 (key quantitative step)",
-      "Formalize the choice m = ceil(K²) to achieve c/K² gap from sieve_and_greedy",
-      "Full proof of erdos_graham_polynomial combining sieve + sum-preservation + gap bound"
+      "Prove that for n ≥ N₀ and sum > K, either the large-element sum > 1 OR some value v has ≥ v copies (the quantitative dichotomy)",
+      "For the set (injective) case: prove small sum ≤ H_{m-1} and combine with sieve_gives_polynomial_precision",
+      "Study the Erdős-Graham 1980 paper technique for handling the mixed multiset case where neither sieve nor repeated-value applies"
     ],
     "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },

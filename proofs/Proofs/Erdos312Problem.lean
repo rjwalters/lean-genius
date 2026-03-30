@@ -715,4 +715,95 @@ theorem sieve_and_greedy (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (hm : 0 < m)
   restricted_subset_near_one n a (largeElements n a m) m hm
     (fun i hi => largeElements_ge n a m i hi) hlarge_sum
 
+/- ## Part IX: Bridge Theorems for Proving the Polynomial Bound
+
+   These theorems connect the sieve-and-greedy infrastructure to
+   hasPolynomialPrecision, reducing the axiom erdos_graham_polynomial
+   to a single quantitative step: showing that under the hypotheses,
+   either the large-element sum exceeds 1, or the multiset has
+   structural properties (like repeated values) that yield sum = 1. -/
+
+/-- Bridge: sieve_and_greedy gives polynomial precision when the threshold
+    m is chosen so that 1/m ≤ c/K². Specifically, m ≥ K²/c suffices.
+    This converts the gap bound 1/m from sieve_and_greedy into the
+    polynomial precision gap c/K². -/
+theorem sieve_gives_polynomial_precision (n : ℕ) (a : Fin n → ℕ)
+    (m : ℕ) (hm : 0 < m) (c K : ℝ) (hc : 0 < c) (hK : 0 < K)
+    (hm_ge : (m : ℝ) ≥ K ^ 2 / c)
+    (hlarge : 1 < subsetReciprocalSum n a (largeElements n a m)) :
+    hasPolynomialPrecision n a c K := by
+  obtain ⟨S, _, hlo, hhi⟩ := sieve_and_greedy n a m hm hlarge
+  refine ⟨S, ?_, hhi⟩
+  have : (m : ℝ)⁻¹ ≤ c / K ^ 2 := by
+    calc (m : ℝ)⁻¹
+        ≤ (K ^ 2 / c)⁻¹ := inv_le_inv_of_le (by positivity) hm_ge
+      _ = c / K ^ 2 := inv_div (K ^ 2) c
+  linarith
+
+/-- When all elements are at least m > 0 and the total sum exceeds 1,
+    polynomial precision holds with any c ≥ K²/m.
+    This is the simplest application of the sieve approach (no sieving needed). -/
+theorem polynomial_precision_all_ge (n : ℕ) (a : Fin n → ℕ)
+    (m : ℕ) (hm : 0 < m)
+    (ha : ∀ i, m ≤ a i) (htotal : 1 < reciprocalSum n a)
+    (c K : ℝ) (hc : 0 < c) (hK : 0 < K) (hm_ge : (m : ℝ) ≥ K ^ 2 / c) :
+    hasPolynomialPrecision n a c K := by
+  have hlarge : largeElements n a m = Finset.univ := by
+    ext i; simp [largeElements, ha i]
+  have hlarge_sum : 1 < subsetReciprocalSum n a (largeElements n a m) := by
+    rw [hlarge, univ_subsetSum_eq_totalSum]; exact htotal
+  exact sieve_gives_polynomial_precision n a m hm c K hc hK hm_ge hlarge_sum
+
+/-- Finding a subset with sum exactly 1 trivially implies polynomial precision,
+    since 1 > 1 - c/K² for any c > 0 and K > 0. -/
+theorem polynomial_precision_of_sum_one (n : ℕ) (a : Fin n → ℕ)
+    (S : Finset (Fin n)) (hS : subsetReciprocalSum n a S = 1)
+    (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    hasPolynomialPrecision n a c K := by
+  refine ⟨S, ?_, ?_⟩
+  · rw [hS]; linarith [show (0 : ℝ) < c / K ^ 2 from by positivity]
+  · linarith [hS]
+
+/-- If a multiset has exactly v copies of some value v ≥ 1, those copies
+    form a subset with reciprocal sum exactly 1: v × (1/v) = 1.
+    This is the basis for the "repeated value" approach to polynomial precision. -/
+theorem repeated_value_sum_one (n : ℕ) (a : Fin n → ℕ) (v : ℕ) (hv : 0 < v)
+    (copies : Finset (Fin n))
+    (hval : ∀ i ∈ copies, a i = v)
+    (hcard : copies.card = v) :
+    subsetReciprocalSum n a copies = 1 := by
+  simp only [subsetReciprocalSum]
+  have h_eq : ∀ i ∈ copies, (a i : ℝ)⁻¹ = (v : ℝ)⁻¹ :=
+    fun i hi => by congr 1; exact_mod_cast hval i hi
+  rw [Finset.sum_congr rfl h_eq, Finset.sum_const, hcard, nsmul_eq_mul]
+  exact mul_inv_cancel₀ (Nat.cast_ne_zero.mpr (by omega))
+
+/-- Combining repeated_value_sum_one and polynomial_precision_of_sum_one:
+    if a multiset has ≥ v copies of value v ≥ 1, polynomial precision holds
+    for any c > 0 and K > 0. -/
+theorem polynomial_precision_from_repeated_value (n : ℕ) (a : Fin n → ℕ)
+    (v : ℕ) (hv : 0 < v)
+    (copies : Finset (Fin n))
+    (hval : ∀ i ∈ copies, a i = v)
+    (hcard : copies.card = v)
+    (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    hasPolynomialPrecision n a c K :=
+  polynomial_precision_of_sum_one n a copies
+    (repeated_value_sum_one n a v hv copies hval hcard) c K hc hK
+
+/-- The small element sum can be computed as the complement of the large sum.
+    This is a restatement of reciprocalSum_split in a more convenient form. -/
+theorem small_sum_eq_total_minus_large (n : ℕ) (a : Fin n → ℕ) (m : ℕ) :
+    subsetReciprocalSum n a (Finset.univ \ largeElements n a m) =
+      reciprocalSum n a - subsetReciprocalSum n a (largeElements n a m) := by
+  linarith [reciprocalSum_split n a m]
+
+/-- If the total sum exceeds K and the large element sum is at most L,
+    then the small element sum exceeds K - L. -/
+theorem small_sum_exceeds (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (K L : ℝ)
+    (htotal : reciprocalSum n a > K)
+    (hlarge_le : subsetReciprocalSum n a (largeElements n a m) ≤ L) :
+    subsetReciprocalSum n a (Finset.univ \ largeElements n a m) > K - L := by
+  linarith [reciprocalSum_split n a m]
+
 end Erdos312
