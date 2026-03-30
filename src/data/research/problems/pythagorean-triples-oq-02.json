@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Fully verified (0 sorries, 0 axioms). Gaussian integer framework for Pythagorean triples including norm multiplicativity, Brahmagupta-Fibonacci identity, and product rule.",
+    "builtItems": [
+      "gaussMul, gaussNorm, gaussConj, gaussSq definitions",
+      "norm_multiplicative, gaussSq_formula, mul_conj_eq_norm core theorems",
+      "pythagorean_from_gaussian, gaussian_gives_pythagorean_triple main results",
+      "brahmagupta_fibonacci identity and pythagorean_triple_product"
+    ],
+    "insights": [
+      "The parametric formula (m²-n², 2mn, m²+n²) is the squaring map in ℤ[i]",
+      "Norm multiplicativity N(z₁z₂) = N(z₁)N(z₂) proved by ring tactic",
+      "Brahmagupta-Fibonacci identity follows from Gaussian norm multiplicativity",
+      "Product rule for Pythagorean triples proved via nlinarith + Brahmagupta-Fibonacci"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: pythagorean-triples-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
