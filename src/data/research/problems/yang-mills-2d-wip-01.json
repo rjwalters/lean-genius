@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-28T20:57:10.259Z",
+    "since": "2026-03-30T19:30:00Z",
     "iteration": 1,
-    "focus": "Sorry elimination in Exploration.lean",
+    "focus": "14 sorries eliminated, 1 remains (coupling_controlled MATHLIB-DRIFT)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,22 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 12 sorries in 28K-line Yang-Mills 2D exploration file",
+    "progressSummary": "PROGRESS: Eliminated 14 sorries (15→1). Fixed tension_gap_ratio math error (N/(4π) → π/2). Added g≠0 to quantum_breaks_scale. Strengthened bv_field_count (N≥3). 1 sorry remains (coupling_controlled, MATHLIB-DRIFT with Real.log).",
     "builtItems": [
-      "proofs/Proofs/YangMills/Exploration.lean: 12 sorries eliminated (59\u219247)",
-      "src/data/proofs/yang-mills-2d/meta.json: updated sorry count and line count"
+      "proofs/Proofs/YangMills/Exploration.lean: 12 sorries eliminated (59→47)",
+      "src/data/proofs/yang-mills-2d/meta.json: updated sorry count and line count",
+      "Proved 14 sorries in Exploration.lean (15→1): wv_mass_sq_pos, hook_length_positive, semiclassical_pos, quantum_breaks_scale, dim4_decreases, csTopologicalMass_pos, csRenorm_gt_bare, bv_field_count, num_links_pos (2), tc_decreases_with_mu, sc_tension_monotone_in_N, tension_gap_ratio",
+      "Fixed tension_gap_ratio: corrected math from N/(4π) to π/2",
+      "Fixed quantum_breaks_scale: added missing g≠0 hypothesis",
+      "Fixed bv_field_count: strengthened N≥2 to N≥3 (bound 24 was unachievable for N=2)"
     ],
     "insights": [
       "28K-line Exploration.lean with 59 sorries, 0 axioms (assumptions in structures)",
       "Many sorries tagged MATHLIB-DRIFT (API breakage), some are simple Nat/Real arithmetic",
-      "Proved Nat division identities: translations (Poincar\u00e9 = Lorentz + d), conformal_larger, conformal_extra",
+      "Proved Nat division identities: translations (Poincaré = Lorentz + d), conformal_larger, conformal_extra",
       "Proved orbit_grows_with_N via Nat.pow_lt_pow_left + omega",
       "Proved softWallMassSq_pos and softWallMassSq_monotone via positivity",
       "Proved RGZ propagator non-negativity lemma",
       "Proved mpsCorrelationLength_pos via div_pos_of_neg_of_neg and Real.log_neg",
       "Proved horizon_condition_dof and ym_anomaly_free via nlinarith+omega",
       "Proved step scaling lattice correction via sq_pos_of_pos",
-      "Remaining 47 sorries mostly MATHLIB-DRIFT or deeper mathematical content"
+      "Remaining 47 sorries mostly MATHLIB-DRIFT or deeper mathematical content",
+      "tension_gap_ratio had wrong RHS: N/(4π) should be π/2 (σ/m² = g⁴N²/(8π) / (g²N/(2π))² = π/2, N-independent)",
+      "quantum_breaks_scale was unprovable: beta/(2·0)=0 when g=0. Added hg:g≠0 hypothesis.",
+      "bv_field_count was false for d=3,N=2: (6)(3)=18<24. Changed to N≥3.",
+      "Most sorries were simple positivity/arithmetic gaps: Nat.cast_pos, mul_pos, pow_lt_pow_left",
+      "coupling_controlled (1 remaining sorry) needs Real.log chain reconstruction — deferred"
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-156-oq-02",
+  "title": "Greedy Sidon construction size lower bound",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem greedySidon_size_lower_bound (N : ℕ) (hN : N ≥ 1) : size (greedySidon N) ≥ Nat.sqrt N",
+    "plain": "Prove that the greedy Sidon construction in {1,...,N} produces a set of size at least √N (or c√N for some explicit constant c > 0). This was previously stated as an axiom in Erdos156Problem.lean and subsequently removed. Formalizing the proof would close the gap.",
+    "whyMatters": [
+      "Establishes a concrete lower bound on the greedy construction, complementing the maximality proof",
+      "The key counting argument (at step k, at most k² sums can block) is a standard technique worth formalizing",
+      "Combined with the Erdős-Turán upper bound, pins down the greedy Sidon set size to Θ(√N)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "greedySidon_is_sidon: greedy construction is Sidon (proved)",
+      "greedySidon_maximal: greedy construction is maximal (proved)",
+      "greedySidon_subset_interval: elements are in {1,...,N} (proved)"
+    ],
+    "open": [],
+    "goal": "Prove the size lower bound |greedySidon(N)| ≥ c√N"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:00:00Z",
+    "iteration": 0,
+    "focus": "Initial creation as follow-up from erdos-156 completion",
+    "blockers": [],
+    "nextAction": "Formalize the counting argument: at each step, the number of blocked elements grows quadratically in |A|",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [
+      "Proof sketch: when |greedySidon k| = s, adding element k+1 is blocked iff ∃ a,b,c ∈ greedySidon(k) with a+k+1 = b+c. For each pair (b,c) there is at most one a, and for each a there are ≤ s choices of (b,c). So ≤ s² elements are blocked at size s.",
+      "Summing: total blocked ≤ Σ_{s=1}^{|A|} s² ≤ |A|³/3. Since we skip at most |A|³/3 of the N elements, |A|³ ≥ 3N so |A| ≥ (3N)^{1/3}. Wait, this gives N^{1/3} not √N.",
+      "Correction: the blocking count should be ≤ 2s-1 per step (each existing element a yields at most one blocking sum a+k=b+c). But actually: at step k with |A|=s, the number of values blocked is the number of x such that ∃ a∈A with x+a = b+c for some b,c∈A, i.e., x = b+c-a. There are at most s³ such triples but many repeat. More carefully: the number of sums in A+A is s(s+1)/2 (Sidon!), and for each sum σ and each a∈A, x=σ-a is blocked. So blocked count ≤ s·s(s+1)/2 ≈ s³/2. Over all steps, N ≤ s³/2, so s ≥ (2N)^{1/3}.",
+      "Actually the standard proof gives √N: at step N, if we haven't added k+1, then for A of size s, the sums a+(k+1) must hit an existing sum b+c. The number of existing sums is s(s+1)/2 ≤ N. Since each new element produces s new sums, and these must all be accounted for, the total sum space bounds s² ≤ 2N, giving s ≤ √(2N). But this is an UPPER bound on |A∩{1..N}|, not a lower bound.",
+      "The correct lower bound argument for greedy: element n+1 is rejected only if some pair in A gives a collision. The number of distinct sums in A+A is s(s+1)/2. The number of new sums created by adding n+1 is s (one for each a∈A: a+(n+1)). If any of these s new sums collides with the s(s+1)/2 existing ones, we reject. So we reject at most s(s+1)/2 elements before getting our (s+1)-th element. Total: N ≥ Σ_{s=0}^{|A|-1} 1 + ... ≈ |A|³/6, so |A| ≥ (6N)^{1/3}. This is N^{1/3}, not √N.",
+      "The √N bound for Sidon sets in {1,...,N} comes from the upper bound (Erdős-Turán), not the greedy construction. The greedy lower bound is Ω(N^{1/3}), which is the trivial bound for maximal Sidon sets."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Clarify the exact bound: greedy gives Ω(N^{1/3}), not Ω(√N)",
+      "Formalize the step-counting argument carefully",
+      "May need Finset-based version of greedySidon for computability"
+    ]
+  },
+  "tags": [
+    "sidon-sets",
+    "additive-combinatorics",
+    "greedy-algorithm",
+    "lower-bound"
+  ],
+  "relatedProofs": [
+    "erdos-156"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:00:00Z",
+  "lastUpdate": "2026-03-30T19:00:00Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": []
+}
