@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 17T (was 15), 1A, 0S. Added singleton counting theorems and linear lower bound.",
+    "progressSummary": "PROGRESS: 24T (was 22), 1A, 0S. Added reprCount_le_card_left/right bounds.",
     "builtItems": [
       "reprCount_comm: reprCount A B m = reprCount B A m (via Finset.card_bij)",
       "uniqueProductCount_comm: PROVED (was axiom) F(A,B) = F(B,A)",
@@ -44,7 +44,9 @@
       "uniqueProductCount_range_one: F(Icc 1 N, {1}) = N (all products a*1=a are unique)",
       "maxUniqueProducts_ge_range: maxUniqueProducts N >= N for N >= 1",
       "uniqueProductCount_singleton_left: F({a}, B) = |B| for a >= 1 (injective mul)",
-      "uniqueProductCount_singleton_right: F(A, {b}) = |A| for b >= 1 (by commutativity)"
+      "uniqueProductCount_singleton_right: F(A, {b}) = |A| for b >= 1 (by commutativity)",
+      "reprCount_le_card_left: reprCount A B m ≤ |A| for m > 0",
+      "reprCount_le_card_right: reprCount A B m ≤ |B| for m > 0 (by commutativity)"
     ],
     "insights": [
       "uniqueProductCount_comm proved by showing reprCount is symmetric (Finset.card_bij with swap) then image sets are equal (mul_comm)",
@@ -62,7 +64,9 @@
       "F(A, {1}) = |A| since a*1=a is injective and each product has reprCount=1",
       "Linear lower bound maxF >= N is tight: van Doorn says true order is ~N^2/log N",
       "Proof technique: show filter = {(m,1)} for each m, then filter_true_of_mem",
-      "Nat.eq_of_mul_eq_left is the key Mathlib lemma for cancellation in singleton proofs"
+      "Nat.eq_of_mul_eq_left is the key Mathlib lemma for cancellation in singleton proofs",
+      "reprCount_le_card_left: projection (a,b)↦a is injective on {(a,b)|a*b=m} when m>0",
+      "Proved via Finset.card_le_card_of_injOn + mul_left_cancel₀"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -94,8 +98,8 @@
     {
       "path": "Proofs/Erdos896Problem.lean",
       "filename": "Erdos896Problem.lean",
-      "lineCount": 381,
-      "theoremCount": 22,
+      "lineCount": 401,
+      "theoremCount": 24,
       "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,
