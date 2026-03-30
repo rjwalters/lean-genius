@@ -181,6 +181,40 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
     let μ := s.sum f / s.card
     (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
       ↑(s.filter (fun a => f a ≥ θ * μ)).card := by
-  sorry
+  intro μ
+  set big := s.filter (fun a => f a ≥ θ * μ)
+  have hn_pos : (0 : ℚ) < ↑s.card := Nat.cast_pos.mpr (Finset.Nonempty.card_pos hs)
+  -- Step 1: big.sum f ≥ (1-θ) · ∑f
+  have hbig_ge : (1 - θ) * s.sum f ≤ big.sum f := by
+    have hdecomp := Finset.sum_filter_add_sum_filter_not s (fun a => f a ≥ θ * μ)
+    suffices hsm : (s.filter (fun a => ¬ f a ≥ θ * μ)).sum f ≤ θ * s.sum f by linarith
+    have hμ_nn : 0 ≤ θ * μ :=
+      mul_nonneg hθ0 (div_nonneg (le_of_lt hpos) (le_of_lt hn_pos))
+    have hμn : θ * μ * ↑s.card = θ * s.sum f := by
+      rw [mul_assoc]; congr 1; exact div_mul_cancel₀ (ne_of_gt hn_pos)
+    calc (s.filter (fun a => ¬ f a ≥ θ * μ)).sum f
+      ≤ (s.filter (fun a => ¬ f a ≥ θ * μ)).sum (fun _ => θ * μ) :=
+          Finset.sum_le_sum (fun a ha =>
+            le_of_lt (not_le.mp (Finset.mem_filter.mp ha).2))
+    _ = θ * μ * ↑(s.filter (fun a => ¬ f a ≥ θ * μ)).card := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ θ * μ * ↑s.card :=
+          mul_le_mul_of_nonneg_left
+            (by exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _))
+            hμ_nn
+    _ = θ * s.sum f := hμn
+  -- Step 2: Chain (1-θ)²·(∑f)² ≤ |big|·∑f², then divide
+  rw [div_le_iff hf2_pos]
+  calc (1 - θ) ^ 2 * (s.sum f) ^ 2
+    = ((1 - θ) * s.sum f) ^ 2 := by ring
+  _ ≤ (big.sum f) ^ 2 := by
+      simp only [sq]
+      exact mul_self_le_mul_self (mul_nonneg (by linarith) (le_of_lt hpos)) hbig_ge
+  _ ≤ ↑big.card * big.sum (fun a => f a ^ 2) := sq_sum_le_card_mul_sum_sq big f
+  _ ≤ ↑big.card * s.sum (fun a => f a ^ 2) :=
+      mul_le_mul_of_nonneg_left
+        (Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+          (fun a _ _ => sq_nonneg _))
+        (Nat.cast_nonneg _)
 
 end ProbMethod.SecondMoment
