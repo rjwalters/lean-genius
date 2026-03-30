@@ -193,3 +193,42 @@ theorem prime_le_dvd_lcmInterval (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
     p ∣ lcmInterval n k := by
   obtain ⟨i, hi, hpi⟩ := exists_dvd_in_range n k p hp.pos hpk
   exact dvd_trans hpi (dvd_lcmInterval n k i hi)
+
+/- ## Resolved cases of the conjecture -/
+
+/-- **Erdős #677 for k=1**: For m ≥ n+1, M(m,1) ≠ M(n,1).
+    Since M(n,1) = n+1 is strictly increasing. -/
+theorem erdos677_k1 (m n : ℕ) (hmn : n + 1 ≤ m) :
+    lcmInterval m 1 ≠ lcmInterval n 1 := by
+  simp [lcmInterval_one]; omega
+
+/-- Consecutive integers are coprime: gcd(n+1, n+2) = 1. -/
+private lemma gcd_consecutive (n : ℕ) : Nat.gcd (n + 1) (n + 2) = 1 :=
+  Nat.coprime_succ_self (n + 1)
+
+/-- LCM of two consecutive integers equals their product.
+    Since gcd(n+1, n+2) = 1, lcm(n+1, n+2) = (n+1)*(n+2). -/
+theorem lcmInterval_two_eq_prod (n : ℕ) :
+    lcmInterval n 2 = (n + 1) * (n + 2) := by
+  rw [show (2 : ℕ) = 1 + 1 from rfl, lcmInterval_succ, lcmInterval_one]
+  show Nat.lcm (n + 1 + 1) (n + 1) = (n + 1) * (n + 2)
+  rw [show n + 1 + 1 = n + 2 from by omega, Nat.lcm_comm]
+  -- Goal: Nat.lcm (n + 1) (n + 2) = (n + 1) * (n + 2)
+  unfold Nat.lcm
+  rw [gcd_consecutive n, Nat.div_one]
+
+/-- **Erdős #677 for k=2**: For m ≥ n+2, M(m,2) ≠ M(n,2).
+    Since M(n,2) = (n+1)(n+2) (consecutive coprime), and
+    n ↦ (n+1)(n+2) is strictly increasing. -/
+theorem erdos677_k2 (m n : ℕ) (hmn : n + 2 ≤ m) :
+    lcmInterval m 2 ≠ lcmInterval n 2 := by
+  rw [lcmInterval_two_eq_prod, lcmInterval_two_eq_prod]
+  intro heq
+  -- (m+1)(m+2) = (n+1)(n+2), but m ≥ n+2 so (m+1)(m+2) > (n+1)(n+2)
+  have h1 : n + 1 < m + 1 := by omega
+  have h2 : n + 2 ≤ m + 2 := by omega
+  have : (n + 1) * (n + 2) < (m + 1) * (m + 2) :=
+    calc (n + 1) * (n + 2)
+        ≤ (m + 1) * (n + 2) := Nat.mul_le_mul_right _ (by omega)
+      _ < (m + 1) * (m + 2) := Nat.mul_lt_mul_of_pos_left (by omega) (by omega)
+  omega
