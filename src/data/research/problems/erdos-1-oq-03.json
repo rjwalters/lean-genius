@@ -1,42 +1,78 @@
 {
   "slug": "erdos-1-oq-03",
-  "title": "erdos-1-oq-03",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Conway-Guy Conjecture: Optimal DSS Sets",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "∀ n ≥ 1, ∀ A : Finset ℕ, |A| = n → (∀ a ∈ A, a > 0) → DSS(A) → ∃ a ∈ A, a ≥ cgSeq(n)",
+    "plain": "Is the Conway-Guy construction optimal? Does every n-element positive DSS set have max element ≥ the Conway-Guy sequence value (OEIS A005318)?",
+    "whyMatters": [
+      "Determines the exact growth rate of the minimum N for distinct subset sums",
+      "Links Erdős's $500 conjecture to a specific construction",
+      "Connects additive combinatorics to computational optimization"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "DSS for Conway-Guy optimal sets: {1,2}, {1,2,4}, {3,5,6,7}, {6,9,11,12,13}",
+      "Upper bounds: f(2)≤2, f(3)≤4, f(4)≤7, f(5)≤13 via constructions",
+      "Geometric series: ∑2^i + 1 = 2^n",
+      "Conjecture proved for n=1,2"
+    ],
+    "open": [
+      "Conway-Guy conjecture for n≥3 (optimality lower bounds)",
+      "Binary representation uniqueness (pow_two_sum_injective)"
+    ],
+    "goal": "Prove Conway-Guy optimality or reduce to known bounds"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-29T19:03:48-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Created Erdos1OQ03.lean with DSS computations, upper bounds, conjecture",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Eliminate pow_two_sum_injective sorry, extend to n=6,7",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Created Erdos1OQ03.lean (~193 lines, 0A, 1S). Proved DSS for Conway-Guy optimal sets n=2..5 via decidable powerset reformulation. Established upper bounds f(n) ≤ OEIS A005318 values. Proved conjecture for n=1,2. One sorry: binary representation uniqueness.",
+    "builtItems": [
+      "dss_iff_powerset: decidable reformulation of DSS",
+      "dss_12, dss_124, dss_3567, dss_69111213: DSS for Conway-Guy optimal sets",
+      "f2_upper, f3_upper, f4_upper, f5_upper: construction witnesses",
+      "geom_sum_two: geometric series identity",
+      "subset_pow_two_sum_le: subset sum bound",
+      "cgSeq: Conway-Guy sequence definition (OEIS A005318)",
+      "conwayGuyConjecture: formal conjecture statement",
+      "conway_guy_n1, conway_guy_n2: conjecture for n=1,2",
+      "Gallery data: meta.json, index.ts, annotations.json"
+    ],
+    "insights": [
+      "DSS can be made decidable by quantifying over A.powerset instead of all Finset ℕ",
+      "Conway-Guy sets beat powers of 2: {3,5,6,7} achieves max=7 vs {1,2,4,8} max=8",
+      "The geometric series bound 2^n - 1 is the key to binary representation uniqueness",
+      "decide works for n≤3 powerset checks; native_decide needed for n≥4"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Aristotle: prove pow_two_sum_injective (binary representation uniqueness)",
+      "Extend DSS verification to n=6,7,8 Conway-Guy sets",
+      "Prove conjecture for n=3 (every 3-element positive DSS set has max ≥ 4)"
+    ],
     "markdown": "# Knowledge Base: erdos-1-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "additive-combinatorics",
+    "distinct-subset-sums",
+    "conway-guy",
+    "open-problem"
+  ],
   "relatedProofs": [
     "erdos-1",
     "erdos-1-oq-03",
