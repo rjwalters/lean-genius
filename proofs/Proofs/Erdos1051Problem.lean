@@ -149,6 +149,22 @@ theorem term_le_reciprocal_sq {a : ℕ → ℤ} (h_mono : StrictMono a)
     · exact Int.cast_le.mpr (le_of_lt (h_mono (Nat.lt_succ_of_le le_rfl)))
     · exact le_of_lt (Int.cast_pos.mpr (h_pos n))
 
+/-- Doubling growth with positive start implies all terms positive. -/
+theorem doubling_implies_pos {a : ℕ → ℤ}
+    (h_double : ∀ n, a (n + 1) ≥ 2 * a n) (h_pos : a 0 > 0) :
+    ∀ n, a n > 0 := by
+  intro n; induction n with
+  | zero => exact h_pos
+  | succ k ih => linarith [h_double k]
+
+/-- Doubling growth implies strict monotonicity when starting positive. -/
+theorem doubling_implies_strict_mono {a : ℕ → ℤ}
+    (h_double : ∀ n, a (n + 1) ≥ 2 * a n) (h_pos : a 0 > 0) :
+    StrictMono a := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  linarith [h_double n, doubling_implies_pos h_double h_pos n]
+
 /-- **Rapid growth implies geometric decay**: If aₙ₊₁ ≥ 2·aₙ for all n
     (exponential growth), then aₙ ≥ a₀ · 2ⁿ. -/
 theorem exponential_growth_bound {a : ℕ → ℤ}
