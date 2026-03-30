@@ -50,8 +50,8 @@
       "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
       "BddAbove proofs bounding achievable sets by 2^n"
     ],
-    "axiomCount": 2,
-    "assumptions": "Two axioms encode the open conjectures: (1) an upper bound on f(n) (linear growth), (2) superpolynomial growth of F(n). Both are open questions from [Er78].",
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations. Two open conjectures (erdos1183_f_growth_conjecture, erdos1183_F_superpolynomial_conjecture) stated as Prop definitions, not assumed true.",
     "lineCount": 277,
     "prerequisites": [
       "Finite set theory (Finset, powerset, filter)",
@@ -180,7 +180,7 @@
     ],
     "namespace": "Erdos1183",
     "lineCount": 277,
-    "axiomCount": 2,
+    "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 12
   }
