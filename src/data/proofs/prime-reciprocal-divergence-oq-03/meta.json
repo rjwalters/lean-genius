@@ -43,5 +43,42 @@
     "summary": "Erdős's combinatorial proof of infinitely many primes is formalized. The proof depends on 2 sorry'd lemmas (smooth counting bound, multiples counting).",
     "openQuestions": ["Can smooth_count_bound be proved by constructing the explicit (m,S) injection?"]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Proof Overview",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports Mathlib basics and documents Erdős's elementary proof strategy: contradiction via smooth number counting, avoiding all analytic machinery."
+    },
+    {
+      "id": "definitions",
+      "title": "Smooth and Rough Number Definitions",
+      "startLine": 54,
+      "endLine": 72,
+      "summary": "Defines IsSmooth (all prime factors ≤ N), IsRough (has a prime factor > N), smoothSet (N-smooth numbers in [1,n]), and primesUpTo."
+    },
+    {
+      "id": "smooth-count",
+      "title": "Counting Smooth Numbers",
+      "startLine": 74,
+      "endLine": 91,
+      "summary": "Key bound: |smoothSet N n| ≤ √n · 2^{π(N)} via the (m,S) injection. Contains 1 sorry."
+    },
+    {
+      "id": "rough-count",
+      "title": "Counting Rough Numbers",
+      "startLine": 93,
+      "endLine": 119,
+      "summary": "Proves rough_count_bound and multiples_count (1 sorry). If no large prime divides any k ≤ n, all numbers are smooth."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Infinitely Many Primes (Erdős's Argument)",
+      "startLine": 121,
+      "endLine": 186,
+      "summary": "Proves infinitely_many_primes_erdos by contradiction: if all primes ≤ N, choosing n = (2^{π(N)+1})² + 1 gives n smooth numbers but the bound says ≤ √n · 2^{π(N)} < n. Derives prime_reciprocals_unbounded as corollary."
+    }
+  ],
   "crossReferences": [{"relationship": "Alternative proof to the analytic approach", "sharedConcepts": ["primes", "divergence"], "targetId": "prime-reciprocal-divergence"}]
 }
