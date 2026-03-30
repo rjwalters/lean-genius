@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4A in OQ01 (geometric results), 20T, 1S. Parent: 1A, 4T, 0S.",
+    "progressSummary": "SURVEY: 4 deep axioms, 0 sorries (metadata showed 1 but only in comment). All axioms are deep published results.",
     "builtItems": [
       "Created Erdos1084OQ01.lean: 533 lines, 0 sorry",
       "16 theorems proved: f1_upper, f1_achieve, unit_distance_1d_triangle, unit_distance_1d_degree_bound, pairs_le_kissing_bound, f2_upper_3n, f3_upper_6n, f1_upper_from_kissing, erdos_1084_oq01, iso_exponent_2d, iso_exponent_3d, iso_exponent_pos, iso_exponent_lt_one, iso_exponent_monotone, harborth_correction_order, sqrt_12n_factored",
@@ -59,7 +59,9 @@
       "For d=3: correction Θ(n^{2/3}), matching α(3) = 2/3 and surface-to-volume ratio",
       "The FCC lattice interior degree 12 = τ(3) is the maximum, with boundary deficit Θ(n^{2/3})",
       "kissingNumber can be made a concrete def: known values (1→2, 2→6, 3→12) + 3^d safe upper bound (Kabatyansky-Levenshtein bound ensures τ(d) < 3^d)",
-      "degree_le_kissing for d=1 is provable from unit_distance_1d_degree_bound but needs EuclideanSpace (Fin 1) ↔ ℝ bridge"
+      "degree_le_kissing for d=1 is provable from unit_distance_1d_degree_bound but needs EuclideanSpace (Fin 1) ↔ ℝ bridge",
+      "All 4 axioms are deep published results: degree_le_kissing (geometric), fcc_cluster_pairs (FCC lattice), bezdek_reid (2013), harborth_formula (1974)",
+      "0 actual sorries — sorryCount in metadata was stale"
     ],
     "mathlibGaps": [
       "No Mathlib FCC lattice construction",
