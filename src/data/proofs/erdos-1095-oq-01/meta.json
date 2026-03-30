@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1095",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
     "tags": [
       "erdos",
@@ -16,15 +16,15 @@
       "smooth-numbers",
       "asymptotics"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 332,
-    "theoremCount": 28,
-    "assumptions": "1 axiom: gFunc_exists (existence of g(k) for each k). gFunc defined constructively via Nat.find; gFunc_gt, gFunc_spec, gFunc_minimal proved as theorems. 0 sorries. Concrete values g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62 proved from axiom."
+    "axiomCount": 0,
+    "lineCount": 475,
+    "theoremCount": 32,
+    "assumptions": "0 axioms, 0 sorries. gFunc_exists proved constructively via Kummer's theorem (carry-free base-p arithmetic). gFunc defined via Nat.find; gFunc_gt, gFunc_spec, gFunc_minimal proved as theorems. Concrete values g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62 all verified."
   },
   "overview": {
     "historicalContext": "The function $g(k)$ — the smallest $n > k+1$ such that every prime factor of $\\binom{n}{k}$ exceeds $k$ — was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper on smooth binomial coefficients. They established the initial bounds $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$, showing that $g(k)$ grows faster than any polynomial but no faster than exponential.\n\nThe lower bound was substantially improved by Konyagin, who proved $g(k) \\gg \\exp(c(\\log k)^2)$ using estimates on smooth numbers (integers whose prime factors are all below a given bound). The key insight is that $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$, and avoiding all primes $\\leq k$ requires $n$ to be chosen so that the prime factorization of the numerator $n(n-1)\\cdots(n-k+1)$ has no small prime factors surviving the cancellation with $k!$.\n\nErdős, Lacampagne, and Selfridge conjectured that $\\log g(k) \\sim c \\cdot k / \\log k$ for some positive constant $c$, which would place $g(k)$ at a precise intermediate growth rate between polynomial and exponential. Computational evidence by Sorenson, Sorenson, and Webster supports this conjecture, but it remains open. The problem connects to smooth number theory, sieve methods, and the distribution of prime factors in products of consecutive integers.",
