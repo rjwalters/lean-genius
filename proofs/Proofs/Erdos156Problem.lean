@@ -402,6 +402,63 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
   rw [h_eq]
   exact card_upper_tri hfin.toFinset
 
+/-- **Converse**: If |A + A| = |A|*(|A|+1)/2, then A is a Sidon set.
+
+    Proof by contrapositive: if A is not Sidon, then the sum map on ordered pairs
+    is not injective (two distinct pairs collide), so |A+A| < |ordered pairs| = n(n+1)/2. -/
+theorem sidon_of_sumset_size (A : Set ℕ) (hfin : A.Finite)
+    (h : (sumset A).ncard = A.ncard * (A.ncard + 1) / 2) : IsSidonSet A := by
+  set S := {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2}
+  set f := (fun p : ℕ × ℕ => p.1 + p.2)
+  have hS_fin : S.Finite := (hfin.prod hfin).subset fun p hp => ⟨hp.1, hp.2.1⟩
+  -- |S| = n(n+1)/2
+  have h_S : S.ncard = A.ncard * (A.ncard + 1) / 2 := by
+    rw [hS_fin.ncard_eq_toFinset_card', hfin.ncard_eq_toFinset_card']
+    convert card_upper_tri hfin.toFinset using 1
+    congr 1; ext ⟨a, b⟩
+    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq,
+               Finset.mem_filter, Finset.mem_product]
+  -- sumset A = f '' S
+  have h_im : sumset A = f '' S := sumset_eq_image A
+  -- |f '' S| = |S| (from hypothesis and h_S)
+  have h_card_eq : (f '' S).ncard = S.ncard := by linarith [h_im ▸ h, h_S]
+  -- Prove injectivity: if ¬InjOn, we derive a contradiction
+  have h_inj : Set.InjOn f S := by
+    by_contra h_not_inj
+    -- ¬InjOn: there exist distinct p, q ∈ S with f(p) = f(q)
+    unfold Set.InjOn at h_not_inj
+    push_neg at h_not_inj
+    obtain ⟨p, hp, q, hq, hfpq, hne⟩ := h_not_inj
+    -- f '' S = f '' (S \ {q}) since f(q) = f(p) and p ∈ S \ {q}
+    have hp_diff : p ∈ S \ {q} := Set.mem_diff_singleton.mpr ⟨hp, Ne.symm hne⟩
+    have h_im_eq : f '' S = f '' (S \ {q}) := by
+      apply Set.Subset.antisymm
+      · intro z ⟨w, hw, rfl⟩
+        by_cases hwq : w = q
+        · exact ⟨p, hp_diff, by rw [hwq, hfpq]⟩
+        · exact ⟨w, Set.mem_diff_singleton.mpr ⟨hw, hwq⟩, rfl⟩
+      · exact Set.image_subset f Set.diff_subset
+    -- |S \ {q}| < |S| since q ∈ S and S is finite
+    have hS_fin_diff := hS_fin.diff ({q} : Set _)
+    have h_lt : (S \ {q}).ncard < S.ncard := by
+      apply Set.ncard_lt_ncard _ hS_fin
+      exact ⟨Set.diff_subset, fun h_sub =>
+        (Set.mem_diff_singleton.mp (h_sub hq)).2 rfl⟩
+    -- |f '' S| = |f '' (S \ {q})| ≤ |S \ {q}| < |S|
+    have h_im_le : (f '' S).ncard ≤ (S \ {q}).ncard := by
+      rw [h_im_eq]; exact Set.ncard_image_le hS_fin_diff
+    linarith
+  -- InjOn f S → IsSidonSet A
+  intro a b c d ha hb hc hd hab hcd heq
+  have := h_inj (show (a, b) ∈ S from ⟨ha, hb, hab⟩)
+                (show (c, d) ∈ S from ⟨hc, hd, hcd⟩) heq
+  simp only [Prod.mk.injEq] at this; obtain ⟨rfl, rfl⟩ := this; rfl
+
+/-- **Complete characterization**: A finite set is Sidon iff |A+A| = |A|*(|A|+1)/2. -/
+theorem sidon_iff_sumset_size (A : Set ℕ) (hfin : A.Finite) :
+    IsSidonSet A ↔ (sumset A).ncard = A.ncard * (A.ncard + 1) / 2 :=
+  ⟨fun hA => (sidon_sumset_size A hA hfin).2, sidon_of_sumset_size A hfin⟩
+
 /-- B₂ sets are precisely Sidon sets -/
 def IsB2Set (A : Set ℕ) : Prop := IsSidonSet A
 
