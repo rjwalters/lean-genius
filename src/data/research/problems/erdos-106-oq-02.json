@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (g_ap_bounded, f_rot_perfect_square → theorems). Proved side_le_sqrt_two, g_ap_le_f_rot, BddAbove. 8→6 axioms, 0→1 sorry (trivial: packing existence).",
+    "progressSummary": "PROGRESS: 5A remain (was 6). Removed unused rotated_square_area axiom (MeasureTheory, never referenced). Active axioms: f_rot_bounded, f_rot_mono, g_ap_perfect_square, bku_theorem_ap, f_rot_2.",
     "builtItems": [
       "Created proofs/Proofs/Erdos106OQ02.lean (219 lines, 11 theorems, 8 axioms, 0 sorries)",
       "RotatedSquare structure with center, side, angle; interior via inverse rotation",
@@ -106,7 +106,7 @@
       "filename": "Erdos1060Problem.lean",
       "lineCount": 396,
       "theoremCount": 19,
-      "axiomCount": 2,
+      "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

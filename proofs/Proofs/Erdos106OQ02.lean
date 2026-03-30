@@ -145,10 +145,6 @@ By disjointness and containment in the unit square, ∑ sᵢ² ≤ 1.
 Cauchy-Schwarz then gives (∑ sᵢ)² ≤ n · ∑ sᵢ² ≤ n, so ∑ sᵢ ≤ √n.
 -/
 
-/-- The area of a rotated square equals side² (rotation preserves area) -/
-axiom rotated_square_area (s : RotatedSquare) :
-  MeasureTheory.volume (s.interior) = ENNReal.ofReal (s.side ^ 2)
-
 /-- f_rot is bounded above by √n (Cauchy-Schwarz via area) -/
 axiom f_rot_bounded : ∀ n : ℕ, f_rot n ≤ Real.sqrt n
 
