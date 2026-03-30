@@ -23,7 +23,7 @@ The Jacobi symbol J(a, n) for odd n > 0 is computed by:
   5. If a,n both odd: J(a, n) = J(n mod a, a) · (-1)^((a-1)(n-1)/4) [reciprocity]
 
 Axioms: 0
-Sorries: 0
+Sorries: 0 (termination proof via strip2_snd_le)
 
 Reference: Gauss, "Disquisitiones Arithmeticae" (1801), §131
 -/
@@ -69,6 +69,24 @@ def strip2 : ℕ → ℕ × ℕ
       (0, n + 1)
   termination_by n => n
 
+/-- The odd part returned by strip2 is at most the input.
+    Proof: strip2 n = (k, m) means n = 2^k · m, so m = n / 2^k ≤ n. -/
+theorem strip2_snd_le (n : ℕ) : (strip2 n).2 ≤ n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp [strip2]
+    | n + 1 =>
+      simp only [strip2]
+      split_ifs with h
+      · -- even case: (strip2 (n+1)).2 = (strip2 ((n+1)/2)).2
+        -- By IH: (strip2 ((n+1)/2)).2 ≤ (n+1)/2 ≤ n+1
+        have hlt : (n + 1) / 2 < n + 1 := Nat.div_lt_self (Nat.succ_pos n) (by omega)
+        have hih := ih ((n + 1) / 2) hlt
+        exact le_trans hih (Nat.div_le_self _ _)
+      · -- odd case: (strip2 (n+1)).2 = n+1
+        exact le_refl _
+
 /-- The Jacobi symbol J(a, n) for odd positive n.
     Computes via quadratic reciprocity reduction.
 
@@ -99,12 +117,14 @@ def jacobiAux : ℕ → ℕ → ℤ
         sign2 * signRecip odd_part n * jacobiAux (n % odd_part) odd_part
   termination_by (n, a)
   decreasing_by
-    all_goals simp_wf
-    · -- Need: (odd_part, n % odd_part) < (n, a) in lex order
-      -- odd_part < a' < n, so odd_part < n
-      -- Need: odd_part < n (then Prod.Lex.left gives the result)
-      -- Proof sketch: odd_part ≤ a' (strip2 output ≤ input) and a' = a%n < n
-      sorry
+    simp_wf
+    -- Need: (odd_part, n % odd_part) < (n, a) in lexicographic order
+    -- It suffices to show odd_part < n (first component strictly smaller)
+    -- Proof: odd_part = (strip2 (a % n)).2 ≤ a % n < n
+    apply Prod.Lex.left
+    have ha_mod : a % n < n := Nat.mod_lt _ (by omega)
+    have hodd_le : (strip2 (a % n)).2 ≤ a % n := strip2_snd_le _
+    omega
 
 /-- The Jacobi symbol for integer a and odd positive n. -/
 def jacobi (a : ℤ) (n : ℕ) : ℤ :=
@@ -169,8 +189,8 @@ The full correctness theorem would state that jacobi a p = legendreSym p a
 for any odd prime p. This requires connecting our definitions to Mathlib's
 legendreSym, which involves ZMod machinery.
 
-The termination proof for jacobiAux also needs to be completed — the key
-argument is that odd_part < n (since odd_part divides a' which is < n).
+The termination proof uses strip2_snd_le to show odd_part < n at each
+reciprocity step, analogous to the Euclidean algorithm's descent.
 -/
 
 /-- **Correctness Conjecture**: The Jacobi symbol algorithm agrees with
