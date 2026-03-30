@@ -174,13 +174,48 @@ theorem prime_sets_disjoint {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
 /-- A lower bound: if P, Q are prime sets with product 1, then
     Σ_{p ∈ P ∪ Q} 1/p ≥ 2.
 
-    This follows from AM-GM: if (Σ 1/p)(Σ 1/q) = 1, then
-    (Σ 1/p) + (Σ 1/q) ≥ 2√((Σ 1/p)(Σ 1/q)) = 2. -/
+    This follows from AM-GM: if a · b = 1, then a + b ≥ 2.
+    Proof: (a - 1)² ≥ 0 ⟹ a² - 2a + 1 ≥ 0 ⟹ a + 1/a ≥ 2. -/
 theorem prime_reciprocal_sum_lower_bound {P Q : Finset ℕ}
     (hP : IsSetOfPrimes P) (hQ : IsSetOfPrimes Q)
     (hPQ : reciprocalProduct P Q = 1) (hdisj : Disjoint P Q) :
     reciprocalSum (P ∪ Q) ≥ 2 := by
-  sorry
+  -- reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q when P, Q disjoint
+  have hunion : reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q := by
+    unfold reciprocalSum
+    rw [Finset.sum_union (Finset.disjoint_iff_disjoint_coe.mp hdisj)]
+  rw [hunion]
+  -- Let a = reciprocalSum P, b = reciprocalSum Q
+  -- We know a * b = 1 and a, b > 0 (sums of positive terms, nonempty)
+  set a := reciprocalSum P
+  set b := reciprocalSum Q
+  -- a * b = 1
+  have hab : a * b = 1 := hPQ
+  -- a > 0: each 1/p > 0 for prime p, and P nonempty (since a*b=1, a≠0)
+  have ha_pos : 0 < a := by
+    by_contra h
+    push_neg at h
+    have ha_le : a ≤ 0 := h
+    -- If a ≤ 0, then a * b ≤ 0, contradicting a * b = 1
+    have hb_nn : 0 ≤ b := by
+      unfold reciprocalSum
+      apply Finset.sum_nonneg
+      intro n _; positivity
+    have : a * b ≤ 0 := mul_nonpos_of_nonpos_of_nonneg ha_le hb_nn
+    linarith
+  -- b = 1/a (from a * b = 1)
+  have hb_eq : b = a⁻¹ := by
+    field_simp at hab ⊢
+    linarith
+  -- AM-GM: a + 1/a ≥ 2 for a > 0
+  rw [hb_eq]
+  -- a + a⁻¹ ≥ 2 ⟺ a² + 1 ≥ 2a ⟺ (a-1)² ≥ 0
+  rw [ge_iff_le, ← sub_nonneg]
+  have key : a + a⁻¹ - 2 = (a - 1)^2 * a⁻¹ := by field_simp; ring
+  rw [key]
+  apply mul_nonneg
+  · exact sq_nonneg _
+  · exact le_of_lt (inv_pos.mpr ha_pos)
 
 /-- A consequence: |P ∪ Q| ≥ 60.
 
@@ -250,7 +285,8 @@ theorem partition_count : searchSpaceSize = 2^60 := rfl
 
 /-- There are ≈ 1.15 × 10¹⁸ ways to partition 60 primes.
     Even at 10⁹ checks/second, this takes over 36 years. -/
-axiom search_intractable : searchSpaceSize > 10^18
+theorem search_intractable : searchSpaceSize > 10^18 := by
+  native_decide
 
 /- ## Part IX: Why Does 1 Appear in Coprime Examples? -/
 

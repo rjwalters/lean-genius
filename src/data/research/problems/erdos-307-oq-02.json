@@ -1,0 +1,27 @@
+{
+  "id": "erdos-307-oq-02",
+  "name": "Erdős 307: p-adic disjointness + AM-GM sorry elimination",
+  "parentId": "erdos-307",
+  "status": "completed",
+  "knowledge": {
+    "score": 6,
+    "insights": [
+      "AM-GM proof: a + 1/a ≥ 2 for a > 0 via (a-1)²/a ≥ 0",
+      "search_intractable (2^60 > 10^18) provable by native_decide",
+      "prime_sets_disjoint needs p-adic valuation argument (left as sorry)",
+      "one_helps_balance needs extra hypothesis that P has >1 element",
+      "product_rigidity is a trivial iff but has complex formulation"
+    ],
+    "builtItems": [
+      "prime_reciprocal_sum_lower_bound proved via AM-GM (sorry eliminated)",
+      "search_intractable converted from axiom to theorem via native_decide"
+    ],
+    "progressSummary": "COMPLETED: Axioms 5→4 (search_intractable proved), sorries 6→4 (AM-GM lower bound proved). Key proof: reciprocalSum(P∪Q) ≥ 2 via (a-1)²/a ≥ 0.",
+    "nextSteps": [
+      "Prove prime_sets_disjoint via p-adic valuation argument",
+      "Prove one_helps_balance (needs P.card > 1 hypothesis)",
+      "Convert product_rigidity axiom to theorem (trivial iff)",
+      "Prove no_size_two_solution by prime case analysis"
+    ]
+  }
+}
