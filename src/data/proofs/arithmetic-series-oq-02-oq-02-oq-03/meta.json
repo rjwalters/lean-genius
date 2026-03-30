@@ -1,0 +1,179 @@
+{
+  "id": "arithmetic-series-oq-02-oq-02-oq-03",
+  "title": "Parallel Vandermonde via Generating Functions",
+  "slug": "arithmetic-series-oq-02-oq-02-oq-03",
+  "description": "Proves the parallel Vandermonde identity Σ C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) using formal power series. The algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} is just pow_add; extracting coefficients gives the Vandermonde convolution. Fully verified, 0 axioms.",
+  "meta": {
+    "author": "Vandermonde (1772), generating function proof",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1772",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "generating-functions",
+      "power-series",
+      "vandermonde",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "No axioms. All results proved from Mathlib. The generating function proof is an alternative to the inductive proof in the parent file.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PowerSeries.coeff_mul",
+        "description": "Cauchy product formula for formal power series",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "PowerSeries.coeff_mk",
+        "description": "Coefficient extraction from PowerSeries.mk",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Converts antidiagonal sum to range sum",
+        "module": "Mathlib.Data.Finset.NatAntidiagonal"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's identity for binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Generating function proof of the parallel Vandermonde identity via formal power series",
+      "negBin(k) = (Σ x^n)^{k+1} as the negative binomial generating function",
+      "coeff_negBin: coefficient extraction proof by induction + hockey stick",
+      "negBin_mul: the product formula reduces to pow_add (1 line!)",
+      "parallel_vandermonde_gf: coefficient extraction from negBin_mul gives Vandermonde"
+    ],
+    "prerequisites": [
+      "Formal power series (definition, multiplication as convolution)",
+      "Binomial coefficients (Pascal's identity, hockey stick)",
+      "Basic algebra (exponent laws in monoids)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Generating Functions as an Algebraic Machine**\n\nThe parallel Vandermonde identity can be proved by brute-force induction (as in the parent file), but generating functions reveal the deeper algebraic reason it holds: it is simply the law of exponents applied in the formal power series ring.\n\nThe formal power series (1-x)^{-(k+1)} = Σ C(n+k,k) x^n encodes simplicial numbers. The product of two such series corresponds to convolution of their coefficients. And the product (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} is just exponent addition.",
+    "problemStatement": "**Open Question**\n\nFormalize the generating function proof of the parallel Vandermonde identity.\n\n**Answer**: Done. The proof uses formal power series over ℕ with three key steps:\n1. Define negBin(k) = g^{k+1} where g = Σ x^n\n2. Show coeff_n(negBin(k)) = C(n+k,k) by induction using the hockey stick\n3. negBin(a) · negBin(b) = negBin(a+b+1) by pow_add\n\nExtracting coefficients from step 3 gives the Vandermonde identity.",
+    "text": "Proves the parallel Vandermonde identity using formal power series. The product formula (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} is trivial algebra; coefficient extraction does the rest.",
+    "proofStrategy": "**The Proof**\n\n1. Define the geometric series g = Σ x^n as PowerSeries.mk (fun _ => 1)\n2. Define negBin(k) = g^{k+1}\n3. Prove coeff_n(g) = 1\n4. Prove coeff_n(negBin(k)) = C(n+k,k) by induction on k, using the Cauchy product and hockey stick\n5. Prove negBin(a) · negBin(b) = negBin(a+b+1) by pow_add\n6. Extract the n-th coefficient from both sides to get the Vandermonde",
+    "keyInsights": [
+      "The generating function proof reduces a combinatorial identity to exponent addition (pow_add)",
+      "The coefficient formula coeff_n(g^{k+1}) = C(n+k,k) follows from the hockey stick",
+      "Working over PowerSeries ℕ avoids all integer/rational casting issues",
+      "The Cauchy product (PowerSeries.coeff_mul) automates the convolution structure",
+      "This demonstrates: generating functions turn deep combinatorics into trivial algebra"
+    ],
+    "prerequisites": [
+      "Formal power series (definition, multiplication)",
+      "Binomial coefficients and simplicial numbers",
+      "Hockey stick identity (from parent file)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "simplicial-numbers",
+      "title": "Simplicial Numbers",
+      "summary": "Restated definitions and the hockey stick identity from the parent file",
+      "startLine": 24,
+      "endLine": 55,
+      "mathContext": "Simplicial numbers $S_k(n) = \\binom{n+k}{k}$ with Pascal recurrence and the hockey stick: $\\sum_{i=0}^n S_k(i) = S_{k+1}(n)$."
+    },
+    {
+      "id": "power-series-framework",
+      "title": "Formal Power Series Framework",
+      "summary": "Defines the geometric series and negative binomial generating function",
+      "startLine": 60,
+      "endLine": 75,
+      "mathContext": "Define $g = \\sum x^n \\in \\mathbb{N}[[x]]$ and $\\text{negBin}(k) = g^{k+1} = (1-x)^{-(k+1)}$."
+    },
+    {
+      "id": "coefficient-extraction",
+      "title": "Coefficient Extraction",
+      "summary": "The n-th coefficient of negBin(k) is C(n+k, k)",
+      "startLine": 80,
+      "endLine": 108,
+      "mathContext": "Prove $[x^n] g^{k+1} = \\binom{n+k}{k}$ by induction on $k$. The inductive step uses the Cauchy product ($[x^n](fg) = \\sum_{i+j=n} [x^i]f \\cdot [x^j]g$) and the hockey stick identity."
+    },
+    {
+      "id": "product-formula",
+      "title": "The Algebraic Product Formula",
+      "summary": "negBin(a) · negBin(b) = negBin(a+b+1) by exponent addition",
+      "startLine": 113,
+      "endLine": 124,
+      "mathContext": "The core algebraic identity: $g^{a+1} \\cdot g^{b+1} = g^{(a+1)+(b+1)} = g^{a+b+2}$. This is just `pow_add` in the power series monoid — the entire combinatorial content of the Vandermonde identity reduced to one line of algebra."
+    },
+    {
+      "id": "vandermonde-derivation",
+      "title": "Deriving the Vandermonde Identity",
+      "summary": "Extract coefficients from both sides of negBin_mul",
+      "startLine": 129,
+      "endLine": 160,
+      "mathContext": "Extracting $[x^n]$ from both sides of `negBin_mul`: LHS gives $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b}$ (Cauchy product), RHS gives $\\binom{n+a+b+1}{a+b+1}$ (coeff_negBin). QED."
+    },
+    {
+      "id": "verification",
+      "title": "Concrete Verification",
+      "summary": "Numerical checks via native_decide",
+      "startLine": 167,
+      "endLine": 178,
+      "mathContext": "Verification: $a=b=1, n=3$ gives $(1 \\cdot 4) + (2 \\cdot 3) + (3 \\cdot 2) + (4 \\cdot 1) = 20 = \\binom{6}{3}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The generating function proof of the Vandermonde identity works by encoding simplicial numbers as coefficients of (1-x)^{-(k+1)}, then using the trivial algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} to derive the convolution. Fully verified with 0 axioms and 0 sorries.",
+    "implications": "1. **Algebra replaces combinatorics**: The deep Vandermonde identity becomes trivial pow_add\n\n2. **Generating functions in Lean**: Demonstrates that PowerSeries ℕ is a viable framework for generating function proofs\n\n3. **Alternative proof technique**: Complements the parent file's inductive proof with a fundamentally different approach",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "slug": "arithmetic-series-oq-02-oq-02",
+      "title": "2D Hockey Stick Identity",
+      "relation": "parent-problem",
+      "description": "Parent file proving the same identity by induction; this provides the alternative generating function proof",
+      "relationship": "extends"
+    },
+    {
+      "slug": "arithmetic-series-oq-02",
+      "title": "Simplicial Numbers and the Hockey Stick Identity",
+      "relation": "grandparent-problem",
+      "description": "Defines simplicial numbers and the 1D hockey stick used in the coefficient extraction proof",
+      "relationship": "related"
+    }
+  ],
+  "references": [
+    {
+      "key": "Wilf2006",
+      "citation": "Wilf, H. S. (2006). generatingfunctionology. 3rd edition, A K Peters.",
+      "type": "book",
+      "note": "Standard reference for generating function methods in combinatorics"
+    },
+    {
+      "key": "Vandermonde1772",
+      "citation": "Vandermonde, A.-T. (1772). Mémoire sur les irrationnelles de différens ordres avec une application au cercle.",
+      "type": "paper",
+      "note": "Original source of the Vandermonde identity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "PowerSeries"
+    ],
+    "namespace": "ArithmeticSeriesOQ02OQ02OQ03",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3
+  }
+}
