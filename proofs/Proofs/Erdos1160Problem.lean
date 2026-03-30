@@ -61,23 +61,36 @@ theorem numGroups_four : numGroups 4 = 2 := by
   have : (2 : ℕ) ^ 2 = 4 := by norm_num
   rw [← this]; exact numGroups_prime_sq 2 (by norm_num)
 
-/-- For distinct primes p > q with q ∣ (p - 1), there are exactly 2 groups
-    of order pq: the cyclic group ℤ/pqℤ and a semidirect product ℤ/pℤ ⋊ ℤ/qℤ. -/
-axiom numGroups_pq_dvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
-    (hdvd : q ∣ (p - 1)) : numGroups (p * q) = 2
+/-- For distinct primes p > q, the number of groups of order pq is:
+    - 2 if q ∣ (p - 1): ℤ/pqℤ and a semidirect product ℤ/pℤ ⋊ ℤ/qℤ
+    - 1 if q ∤ (p - 1): only ℤ/pqℤ (by Sylow theory) -/
+axiom numGroups_pq (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p) :
+    numGroups (p * q) = if q ∣ (p - 1) then 2 else 1
 
-/-- For distinct primes p > q with q ∤ (p - 1), there is exactly 1 group
-    of order pq: the cyclic group ℤ/pqℤ (by Sylow theory). -/
-axiom numGroups_pq_ndvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
-    (hndvd : ¬(q ∣ (p - 1))) : numGroups (p * q) = 1
+/-- Derived: g(pq) = 2 when q ∣ (p - 1). -/
+theorem numGroups_pq_dvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
+    (hdvd : q ∣ (p - 1)) : numGroups (p * q) = 2 := by
+  rw [numGroups_pq p q hp hq hlt, if_pos hdvd]
+
+/-- Derived: g(pq) = 1 when q ∤ (p - 1). -/
+theorem numGroups_pq_ndvd (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : q < p)
+    (hndvd : ¬(q ∣ (p - 1))) : numGroups (p * q) = 1 := by
+  rw [numGroups_pq p q hp hq hlt, if_neg hndvd]
 
 /-- numGroups 6 = 2: derived from numGroups_pq_dvd since 6 = 3 × 2 and 2 ∣ (3-1). -/
 theorem numGroups_six : numGroups 6 = 2 := by
   have : 6 = 3 * 2 := by norm_num
   rw [this]; exact numGroups_pq_dvd 3 2 (by norm_num) (by norm_num) (by omega) ⟨1, by omega⟩
 
-/-- Known value: g(8) = 5. The 5 groups are: ℤ/8ℤ, ℤ/4ℤ×ℤ/2ℤ, (ℤ/2ℤ)³, D₄, Q₈. -/
-axiom numGroups_eight : numGroups 8 = 5
+/-- For any prime p, there are exactly 5 groups of order p³:
+    ℤ/p³ℤ, ℤ/p²ℤ×ℤ/pℤ, (ℤ/pℤ)³, and two non-abelian groups
+    (e.g. for p=2: D₄ and Q₈; for odd p: Heisenberg group and ℤ/p²ℤ⋊ℤ/pℤ). -/
+axiom numGroups_prime_cube (p : ℕ) (hp : Nat.Prime p) : numGroups (p ^ 3) = 5
+
+/-- g(8) = 5: derived from numGroups_prime_cube since 8 = 2³. -/
+theorem numGroups_eight : numGroups 8 = 5 := by
+  have : (2 : ℕ) ^ 3 = 8 := by norm_num
+  rw [← this]; exact numGroups_prime_cube 2 (by norm_num)
 
 /-- Known value: g(12) = 5. The 5 groups are: ℤ/12ℤ, ℤ/2ℤ×ℤ/6ℤ, D₆, A₄, Dic₃. -/
 axiom numGroups_twelve : numGroups 12 = 5

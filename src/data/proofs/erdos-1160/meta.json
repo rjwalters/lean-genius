@@ -19,13 +19,13 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 11,
+    "axiomCount": 10,
     "erdosNumber": 1160,
     "erdosUrl": "https://erdosproblems.com/1160",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-24",
     "mathlib_version": "4.26.0",
-    "lineCount": 312,
+    "lineCount": 329,
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -61,10 +61,11 @@
       "erdos_1160_m_eq_two: proved conjecture for all n ≤ 4 (m=2 case)",
       "erdos_1160_m_eq_three: proved conjecture for all n ≤ 8 (m=3 case)",
       "numGroups_prime_sq: generalized g(p²)=2 for all primes (subsumes numGroups_four)",
-      "numGroups_pq_dvd/ndvd: structural axioms for g(pq) (subsumes numGroups_six)",
+      "numGroups_pq: combined axiom for g(pq) classification (2 if q|(p-1), 1 otherwise)",
+      "numGroups_prime_cube: generalized g(p³)=5 for all primes (subsumes numGroups_eight)",
       "erdos_1160_m_eq_four: proved conjecture for all n ≤ 16 (m=4 case)"
     ],
-    "assumptions": "11 axiom declarations: numGroups function + 8 specific values/structural results + numGroups_prime_power_mono. pantelidakis_odd and numGroups_two_power_growth converted to Prop defs (unused known results)."
+    "assumptions": "10 axiom declarations: numGroups function, numGroups_zero/one/prime/prime_sq/prime_cube (structural), numGroups_pq (combined pq classification), numGroups_twelve/sixteen (specific values), numGroups_prime_power_mono. pantelidakis_odd and numGroups_two_power_growth are Prop defs (unused known results)."
   },
   "overview": {
     "historicalContext": "The problem of which integer orders maximize the group counting function has been studied since at least the 1960s. The conjecture that powers of 2 are the maximizers is attributed variously to Erdős, Higman, and others. The super-exponential growth of $g(2^m) \\approx 2^{(2/27)m^3}$ arises from the rich structure of $p$-groups: as the exponent $m$ grows, the number of non-isomorphic 2-groups explodes due to the combinatorial explosion of possible commutator structures.\n\nThe group counting function $g(n)$ (OEIS A000001) was studied systematically from the late 19th century, starting with Hölder's classification of groups of small order. Higman (1960) and Sims (1965) independently established the fundamental asymptotic formula $\\log_2 g(2^m) \\sim \\frac{2}{27}m^3$, showing that the number of groups of order $2^m$ dwarfs those of any comparable non-prime-power order.\n\nPantelidakis (2003) made the first major progress by proving the conjecture for odd $n$ when $m$ is sufficiently large ($m \\geq 3619$). The key tool is the Feit–Thompson theorem (odd-order groups are solvable), which gives tight control over the enumeration of odd-order groups via Hall's theorem. The stronger conjecture of Blackburn, Neumann, and Venkataraman (2007, Question 22.18) asserts that $\\sum_{n < 2^m} g(n) \\leq g(2^m)$ for all sufficiently large $m$, reflecting how overwhelmingly 2-groups dominate the landscape of finite group theory.\n\nThe constant $\\frac{2}{27}$ arises from counting nilpotent Lie algebras over $\\mathbb{F}_2$: via the Lazard correspondence, most 2-groups of order $2^m$ are in bijection with such algebras of dimension $m$, and the enumeration reduces to counting certain antisymmetric bilinear forms modulo equivalence.",
@@ -136,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies the conjecture for m ≤ 4 (all n ≤ 16), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. Structural axioms for g(p²) and g(pq) enable deriving many group counts from general principles rather than individual value axioms. The 13 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
+    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies the conjecture for m ≤ 4 (all n ≤ 16), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. Structural axioms for g(p), g(p²), g(p³), and g(pq) enable deriving many group counts from general principles rather than individual value axioms. 10 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
     "implications": "A proof of the full conjecture would establish that 2-groups are the dominant source of finite group diversity at every scale — a fundamental structural fact about finite group theory. The BNV stronger form would imply that the diversity of 2-groups grows so fast that a single order $2^m$ harbors more non-isomorphic groups than all smaller orders combined. Progress on this conjecture is closely tied to advances in $p$-group enumeration and nilpotent Lie algebra classification.",
     "openQuestions": [
       "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",
@@ -168,7 +169,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 312,
+    "lineCount": 329,
     "axiomCount": 11
   }
 }
