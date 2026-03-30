@@ -6,11 +6,11 @@
   "meta": {
     "author": "Josef Stein (1967), formalized in Lean 4",
     "date": "1967",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": ["algorithms", "number-theory", "gcd", "bit-manipulation"],
     "proofRepoPath": "Proofs/GcdAlgorithmOQ02.lean",
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "originalContributions": [
       "binaryGcd: recursive implementation of Stein's algorithm in Lean 4",
       "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b ≤ a",
@@ -20,8 +20,8 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 130,
-    "assumptions": "1 sorry in binaryGcd_eq_gcd (correctness proof requires matching compiler-generated induction)"
+    "lineCount": 177,
+    "assumptions": ""
   },
   "overview": {
     "historicalContext": "Josef Stein published this algorithm in 1967. It replaces division with bit shifts, making it faster on binary hardware.",
@@ -43,19 +43,18 @@
     }
   ],
   "conclusion": {
-    "summary": "Defines binaryGcd with well-founded recursion and proves 6 supporting lemmas. The main correctness theorem has 1 sorry due to equation compiler induction complexity.",
+    "summary": "Defines binaryGcd with well-founded recursion and proves all supporting lemmas. The main correctness theorem binaryGcd_eq_gcd is fully proved using equation compiler induction.",
     "implications": "Binary GCD is the standard GCD algorithm in modern hardware-optimized libraries.",
     "openQuestions": [
-      "Can the correctness proof be completed by matching binaryGcd.induct's case structure?",
       "What is the formal step count comparison with the Euclidean algorithm?"
     ]
   },
   "leanFile": {
     "imports": ["Mathlib.Data.Nat.GCD.Basic", "Mathlib.Tactic"],
     "namespace": "BinaryGcd",
-    "lineCount": 130,
+    "lineCount": 177,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 1
   },
   "mainTheorems": [
@@ -67,7 +66,7 @@
     {
       "name": "binaryGcd_eq_gcd",
       "type": "core",
-      "description": "Correctness: binaryGcd a b = Nat.gcd a b (1 sorry)"
+      "description": "Correctness: binaryGcd a b = Nat.gcd a b"
     }
   ]
 }
