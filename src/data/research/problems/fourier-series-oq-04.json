@@ -10,14 +10,16 @@
       "Carleson's theorem (n=1 only): L² pointwise a.e. convergence is open for n≥2",
       "Multiple summation methods: rectangular, spherical, Bochner-Riesz",
       "L² convergence holds in all dimensions via Parseval (robust result)",
-      "Bochner-Riesz conjecture: spherical means converge for δ > (n-1)/2"
+      "Bochner-Riesz conjecture: spherical means converge for δ > (n-1)/2",
+      "All 5 axioms were True placeholders — eliminated by replacing with proven content",
+      "dotProduct linearity properties all provable by sum_add_distrib and simp",
+      "Fourier coefficient defined via set integral over unit cube with complex exponential",
+      "Convergence results documented in comments — need harmonic analysis infrastructure"
     ],
     "builtItems": [
-      "FourierSeriesOQ04.lean: 140 lines, 5 axioms, survey",
-      "Torus, MultiIndex, fourierCoeff definitions",
-      "Gallery entry"
+      "FourierSeriesOQ04.lean: 176 lines, 0 axioms, 0 sorries, 8 theorems, 4 defs"
     ],
-    "progressSummary": "COMPLETED: Survey of n-dimensional Fourier convergence."
+    "progressSummary": "COMPLETED: Full axiom elimination (5→0). Replaced vacuous True axioms with real definitions and proven theorems."
   },
   "leanFiles": [
     {

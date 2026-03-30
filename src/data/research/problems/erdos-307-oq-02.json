@@ -13,13 +13,16 @@
       "product_rigidity is a trivial iff but has complex formulation",
       "All 4 axioms (prime_reciprocal_divergence, product_rigidity, egyptian_count_growth, lcd_connection) were unused by any theorem",
       "egyptian_count_growth was also vacuously true (just take count=1)",
-      "Status changed from axiomatized to formalized after removing all axioms"
+      "Status changed from axiomatized to formalized after removing all axioms",
+      "one_helps_balance: fixed statement (added P.card > 1, hpos) and proved via Finset.sum_pos over P.erase 1",
+      "Three-prime reciprocal bound needs case analysis on which elements are 2, 3, ≥5"
     ],
     "builtItems": [
       "prime_reciprocal_sum_lower_bound proved via AM-GM (sorry eliminated)",
-      "search_intractable converted from axiom to theorem via native_decide"
+      "search_intractable converted from axiom to theorem via native_decide",
+      "Fixed and proved one_helps_balance (4→3 sorries)"
     ],
-    "progressSummary": "COMPLETED: Axioms 5→0 (all removed as unused). 4 sorries remain. Key proof: no_size_two_solution proved via AM-GM upper bound. Status: formalized (0 axioms, 4 sorries).",
+    "progressSummary": "PROGRESS: Proved one_helps_balance (fixed wrong statement, added hypotheses, proved). Sorries: 4→3.",
     "nextSteps": [
       "Prove prime_sets_disjoint via p-adic valuation argument",
       "Prove one_helps_balance (needs P.card > 1 hypothesis)",
