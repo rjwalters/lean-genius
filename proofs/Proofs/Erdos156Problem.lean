@@ -266,11 +266,19 @@ maximal Sidon sets connects to:
 /-- The sumset A + A -/
 def sumset (A : Set ℕ) : Set ℕ := {s | ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ s = a + b}
 
+/-- The sumset of a finite set is finite. -/
+theorem sumset_finite (A : Set ℕ) (hfin : A.Finite) : (sumset A).Finite := by
+  apply Set.Finite.subset ((hfin.prod hfin).image (fun p => p.1 + p.2))
+  intro s hs
+  obtain ⟨a, b, ha, hb, rfl⟩ := hs
+  exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
+
 /-- For Sidon sets, |A + A| = |A| choose 2 + |A| -/
 theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
-    (sumset A).Finite ∧ 
+    (sumset A).Finite ∧
     (sumset A).ncard = A.ncard * (A.ncard + 1) / 2 := by
-  sorry -- Standard counting argument
+  refine ⟨sumset_finite A hfin, ?_⟩
+  sorry -- Counting: Sidon property gives injection from ordered pairs to sums
 
 /-- B₂ sets are precisely Sidon sets -/
 def IsB2Set (A : Set ℕ) : Prop := IsSidonSet A
