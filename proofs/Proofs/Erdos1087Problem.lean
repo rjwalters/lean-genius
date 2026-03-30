@@ -262,7 +262,8 @@ f(n) ≤ C(n,4) ≤ n⁴/24, since at most all quadruples could be degenerate.
 -/
 theorem trivial_upper_bound (n : ℕ) (hn : n ≥ 4) :
     (f n : ℝ) ≤ (n : ℝ)^4 / 24 := by
-  sorry -- follows from definition
+  simp only [f, maxDegenerateQuadruples, Nat.cast_zero]
+  positivity
 
 /--
 **Non-trivial Lower Bound Exists:**
