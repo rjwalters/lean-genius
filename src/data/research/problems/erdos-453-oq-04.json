@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Applied proven results from Erdos453OQ02.lean to the parent Erdos453Problem.lean. Eliminated axioms nthPrime_is_prime and nthPrime_strictMono (now theorems via Nat.nth API). Proved nthPrime_values via Nat.nth_prime_{zero,one,two} and Nat.nth_count. Axioms 4\u21922, sorries 1\u21920.",
+    "progressSummary": "COMPLETED: Applied proven results from Erdos453OQ02.lean to the parent Erdos453Problem.lean. Eliminated axioms nthPrime_is_prime and nthPrime_strictMono (now theorems via Nat.nth API). Proved nthPrime_values via Nat.nth_prime_{zero,one,two} and Nat.nth_count. Axioms 4→2, sorries 1→0.",
     "builtItems": [
       "Proved nthPrime_values via Nat.nth_prime_zero_eq_two/one_eq_three/two_eq_five + nth_count for 7th prime",
       "Proved nthPrime_is_prime via Nat.nth_mem_of_infinite (was axiom)",
@@ -37,7 +37,7 @@
       "Added import Mathlib.Data.Nat.Prime.Nth for Nat.nth API"
     ],
     "insights": [
-      "Nat.nth_prime_{zero,one,two}_eq_{two,three,five} are pre-existing Mathlib lemmas \u2014 direct proofs for first 3 primes",
+      "Nat.nth_prime_{zero,one,two}_eq_{two,three,five} are pre-existing Mathlib lemmas — direct proofs for first 3 primes",
       "For the 4th prime (7), use Nat.count + decide: Nat.count Prime 7 = 3, then Nat.nth_count",
       "Nat.nth_mem_of_infinite + Nat.infinite_setOf_prime proves all nthPrime values are prime",
       "Nat.nth_strictMono + Nat.infinite_setOf_prime proves strict monotonicity",
@@ -64,20 +64,20 @@
     {
       "path": "Proofs/Erdos453OQ02.lean",
       "filename": "Erdos453OQ02.lean",
-      "lineCount": 227,
-      "theoremCount": 6,
-      "axiomCount": 2,
+      "lineCount": 253,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 4,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453OQ02.lean"
     },
     {
       "path": "Proofs/Erdos453Problem.lean",
       "filename": "Erdos453Problem.lean",
-      "lineCount": 340,
-      "theoremCount": 14,
-      "axiomCount": 4,
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 1,
       "isAristotle": false,

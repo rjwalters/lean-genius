@@ -55,7 +55,7 @@
     "mathlibGaps": [],
     "nextSteps": [
       "Prove greens_theorem_typeI_full from Mathlib FTC + Leibniz integral rule (would eliminate all axioms)",
-      "Fix sign error in greens_theorem_typeI in OQ03 (Q\u00b7g'-Q\u00b7f' should be negated)",
+      "Fix sign error in greens_theorem_typeI in OQ03 (Q·g'-Q·f' should be negated)",
       "Formalize residue theorem using period vector"
     ],
     "markdown": "# Knowledge Base: greens-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -123,7 +123,7 @@
     {
       "path": "Proofs/GreensTheoremOQ04.lean",
       "filename": "GreensTheoremOQ04.lean",
-      "lineCount": 585,
+      "lineCount": 588,
       "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 13,

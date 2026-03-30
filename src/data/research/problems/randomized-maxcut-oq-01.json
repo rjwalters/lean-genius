@@ -43,7 +43,8 @@
   ],
   "relatedProofs": [
     "randomized-maxcut",
-    "randomized-maxcut-oq-01"
+    "randomized-maxcut-oq-01",
+    "randomized-maxcut-oq-02"
   ],
   "references": {
     "papers": [],
@@ -54,5 +55,18 @@
   "lastUpdate": "2026-03-13T03:56:04.589Z",
   "completed": "2026-03-13T03:56:04.589Z",
   "significance": 8,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/RandomizedMaxcutOQ02.lean",
+      "filename": "RandomizedMaxcutOQ02.lean",
+      "lineCount": 129,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RandomizedMaxcutOQ02.lean"
+    }
+  ]
 }

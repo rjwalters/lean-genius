@@ -56,7 +56,10 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "erdos-453"
+    "erdos-4",
+    "erdos-45",
+    "erdos-453",
+    "erdos-453-oq-02"
   ],
   "references": {
     "papers": [],
@@ -71,13 +74,24 @@
     {
       "path": "Proofs/Erdos453OQ02.lean",
       "filename": "Erdos453OQ02.lean",
-      "lineCount": 248,
-      "theoremCount": 8,
+      "lineCount": 253,
+      "theoremCount": 7,
       "axiomCount": 1,
-      "defCount": 4,
-      "sorryCount": 1,
+      "defCount": 3,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos453Problem.lean",
+      "filename": "Erdos453Problem.lean",
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453Problem.lean"
     }
   ]
 }

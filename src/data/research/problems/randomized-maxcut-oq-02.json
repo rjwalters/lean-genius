@@ -42,7 +42,8 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "randomized-maxcut"
+    "randomized-maxcut",
+    "randomized-maxcut-oq-02"
   ],
   "references": {
     "papers": [],
@@ -50,5 +51,18 @@
     "mathlib": []
   },
   "started": "2026-03-30T06:03:08.389Z",
-  "lastUpdate": "2026-03-30T06:03:08.397Z"
+  "lastUpdate": "2026-03-30T06:03:08.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/RandomizedMaxcutOQ02.lean",
+      "filename": "RandomizedMaxcutOQ02.lean",
+      "lineCount": 129,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RandomizedMaxcutOQ02.lean"
+    }
+  ]
 }

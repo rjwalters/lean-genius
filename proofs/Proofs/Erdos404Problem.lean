@@ -13,7 +13,7 @@ Known results:
 - Lin (1976): f(2, 2) ≤ 254
 
 Axioms: 2 (lin_bound, lin_bound_meaning — Lin 1976 result)
-Sorries: 1 (Nat.log p n / n → 0 in padic_val_factorial_asymp)
+Sorries: 0
 
 Tags: number-theory, p-adic-valuation, factorials, divisibility, open-problem
 -/
@@ -184,7 +184,46 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
   have h_lower_lim : Tendsto (fun n : ℕ =>
       1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / n) atTop (nhds (1 / ((p : ℝ) - 1))) := by
     have : Tendsto (fun n : ℕ => ((Nat.log p n : ℝ) + 1) / n) atTop (nhds 0) := by
-      sorry -- Nat.log p n / n → 0 as n → ∞ (sublinear growth)
+      rw [Metric.tendsto_atTop]
+      intro ε hε
+      have hlogp : (0 : ℝ) < Real.log ↑p := Real.log_pos (by exact_mod_cast hp.one_lt)
+      -- From little-o: eventually |log x| ≤ (ε·log p / 2)·|x|
+      obtain ⟨R, hR⟩ := Filter.eventually_atTop.mp
+        ((isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)).bound
+          (show (0 : ℝ) < ε * Real.log ↑p / 2 by positivity))
+      refine ⟨max ⌈R⌉₊ (⌈2 / ε⌉₊ + 1), fun n hn => ?_⟩
+      have hn1 : 1 ≤ n := by have := le_trans (le_max_right _ _) hn; omega
+      have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+      rw [Real.dist_eq, sub_zero,
+          abs_of_nonneg (div_nonneg (by positivity) hn_pos.le)]
+      -- Step 1: Nat.log p n · log p ≤ log n (from p^(log_p n) ≤ n)
+      have h1 : (Nat.log p n : ℝ) * Real.log ↑p ≤ Real.log ↑n := by
+        rw [← Real.log_pow]
+        exact Real.log_le_log (by positivity)
+          (by exact_mod_cast Nat.pow_log_le_self p (show n ≠ 0 by omega))
+      -- Step 2: log n ≤ (ε·log p / 2)·n (from isLittleO bound)
+      have h2 : Real.log ↑n ≤ ε * Real.log ↑p / 2 * ↑n := by
+        have h := hR ↑n (le_trans (Nat.le_ceil R)
+          (by exact_mod_cast le_trans (le_max_left _ _) hn))
+        simp only [rpow_one, Real.norm_eq_abs] at h
+        rwa [abs_of_nonneg (Real.log_nonneg (by exact_mod_cast hn1)),
+             abs_of_nonneg hn_pos.le] at h
+      -- Step 3: Nat.log p n / n ≤ ε/2 (dividing combined bound by log p)
+      have h3 : (Nat.log p n : ℝ) / ↑n ≤ ε / 2 := by
+        rw [div_le_iff hn_pos]
+        exact (mul_le_mul_right hlogp).mp
+          ((le_trans h1 h2).trans_eq (by ring))
+      -- Step 4: 1/n < ε/2 (since n > 2/ε)
+      have h4 : 1 / (↑n : ℝ) < ε / 2 := by
+        rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2), one_mul]
+        have : (⌈2 / ε⌉₊ : ℝ) + 1 ≤ ↑n := by
+          exact_mod_cast le_trans (le_max_right _ _) hn
+        nlinarith [Nat.le_ceil (2 / ε)]
+      -- Combine
+      calc ((Nat.log p n : ℝ) + 1) / ↑n
+          = (Nat.log p n : ℝ) / ↑n + 1 / ↑n := add_div ..
+        _ < ε / 2 + ε / 2 := add_lt_add_of_le_of_lt h3 h4
+        _ = ε := by ring
     rw [show (1 : ℝ) / ((p : ℝ) - 1) = 1 / ((p : ℝ) - 1) - 0 from by ring]
     exact Tendsto.sub tendsto_const_nhds this
   -- Lower bound pointwise: ν/n ≥ 1/(p-1) - (L+1)/n
