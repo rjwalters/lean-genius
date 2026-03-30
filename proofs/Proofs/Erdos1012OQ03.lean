@@ -48,8 +48,14 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] Rédei's theorem (proved modulo 2 infrastructure lemmas)
 - [x] tournament_full_path_list (proved by induction)
 - [x] list_path_to_hamiltonian (proved via Equiv.ofBijective)
+- [x] Directed cycle definition (IsDirectedCycleList)
+- [x] Non-insertable vertex dichotomy (modulo successor closure)
+- [x] list_cycle_to_hamiltonian (cycle list → equivalence)
+- [x] grow_cycle_to_hamiltonian (induction on deficit)
+- [x] Moon-Moser proved modulo 2 infrastructure sorries
+- [ ] sc_tournament_has_cycle (cycle existence in SC tournament)
+- [ ] tournament_cycle_extendable (longest-cycle extension)
 - [ ] Ghouila-Houri proof
-- [ ] Moon-Moser proof
 - [ ] Directed threshold proof
 -/
 
@@ -297,17 +303,188 @@ theorem ghouila_houri (D : Digraph V) (hn : 3 ≤ Fintype.card V)
 PART IV: MOON-MOSER THEOREM FOR TOURNAMENTS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
+/-! ── IV.A: Directed Cycle Infrastructure ────────────────────────────────── -/
+
+/-- A directed cycle as a list: nodup vertices with consecutive arcs
+including wrap-around (last → first) via modular indexing. -/
+def IsDirectedCycleList (D : Digraph V) (l : List V) : Prop :=
+  l.Nodup ∧ 2 ≤ l.length ∧
+  ∀ (i : ℕ) (hi : i < l.length),
+    D.arc (l[i]'hi) (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega)))
+
+/-- Nodup lists of elements from a Fintype have length ≤ card. -/
+private lemma nodup_length_le_card (l : List V) (hnd : l.Nodup) :
+    l.length ≤ Fintype.card V :=
+  calc l.length = l.toFinset.card := (l.toFinset_card_of_nodup hnd).symm
+    _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card V := Finset.card_univ
+
+/-- A strongly connected tournament on ≥ 3 vertices has a directed cycle.
+Take any arc u→v; SC gives a path v→⋯→u; combined with u→v this is
+a closed walk, which in a finite graph contains a simple cycle. -/
+private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
+    (hT : D.IsTournament) (hsc : D.IsStronglyConnected) :
+    ∃ l : List V, IsDirectedCycleList D l := by
+  sorry
+
+/-! ── IV.B: Non-Insertable Vertex Dichotomy ─────────────────────────────── -/
+
+/-- In a tournament, if vertex u cannot be inserted into directed cycle l
+at any position (no i with arc(l[i],u) ∧ arc(u,l[(i+1)%k])), then either
+all cycle vertices beat u, or u beats all cycle vertices.
+
+**Proof sketch**: The set A = {i : arc(l[i], u)} is closed under cyclic
+successor: arc(l[i],u) → ¬arc(u,l[(i+1)%k]) (non-insertable) →
+arc(l[(i+1)%k],u) (tournament). A nonempty subset of ℤ/kℤ closed under
+successor is everything. So A = ∅ (u beats all) or A = {0,…,k−1}
+(all beat u). -/
+private lemma tournament_cycle_non_insertable (D : Digraph V)
+    (hT : D.IsTournament) (l : List V) (hc : IsDirectedCycleList D l)
+    (u : V) (hu : u ∉ l)
+    (h_ni : ∀ (i : ℕ) (hi : i < l.length),
+      ¬(D.arc (l[i]'hi) u ∧
+        D.arc u (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega))))) :
+    (∀ (i : ℕ) (hi : i < l.length), D.arc (l[i]'hi) u) ∨
+    (∀ (i : ℕ) (hi : i < l.length), D.arc u (l[i]'hi)) := by
+  obtain ⟨hnd, hlen, harcs⟩ := hc
+  -- Key property: arc(l[i], u) → arc(l[(i+1)%k], u) (successor closure)
+  have h_succ : ∀ i (hi : i < l.length), D.arc (l[i]'hi) u →
+      D.arc (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega))) u := by
+    intro i hi harc_iu
+    have hmem : l[(i + 1) % l.length] ∈ l := List.getElem_mem ..
+    have hne : l[(i + 1) % l.length] ≠ u := fun h => hu (h ▸ hmem)
+    exact D.arc_of_not_arc hT hne.symm (fun h => h_ni i hi ⟨harc_iu, h⟩)
+  -- Split on whether arc(l[0], u) holds
+  by_cases h0 : D.arc (l[0]'(by omega)) u
+  · -- Case: l[0] beats u. Iterate successor forward to show all beat u.
+    left; intro j hj
+    -- By induction: for all m ≤ j, arc(l[m], u)
+    suffices ∀ m, m ≤ j → D.arc (l[m]'(by omega)) u from this j le_rfl
+    intro m hm; induction m with
+    | zero => exact h0
+    | succ m ih =>
+      have := h_succ m (by omega) (ih (by omega))
+      rwa [Nat.mod_eq_of_lt (by omega : m + 1 < l.length)] at this
+  · -- Case: l[0] does NOT beat u. Show u beats all cycle vertices.
+    right; intro j hj
+    -- Contrapositive: if arc(l[j], u), iterate forward to reach index 0
+    have hnu : ¬D.arc (l[j]'hj) u := by
+      intro harc_j; apply h0
+      -- Forward iteration: arc(l[j+d], u) for all d with j+d < l.length
+      have h_fwd : ∀ d, j + d < l.length →
+          D.arc (l[j + d]'(by omega)) u := by
+        intro d; induction d with
+        | zero => intro _; simpa
+        | succ d ih =>
+          intro hd
+          have := h_succ (j + d) (by omega) (ih (by omega))
+          rwa [Nat.mod_eq_of_lt (show j + d + 1 < l.length from by omega)] at this
+      -- Get arc(l[k-1], u) from forward iteration
+      have h_last := h_fwd (l.length - 1 - j) (by omega)
+      have h_last' : D.arc (l[l.length - 1]'(by omega)) u := by
+        convert h_last using 2; omega
+      -- One more step: index k-1 → 0 (wraps around)
+      have := h_succ (l.length - 1) (by omega) h_last'
+      rwa [show (l.length - 1 + 1) % l.length = 0 from by
+        rw [show l.length - 1 + 1 = l.length from by omega, Nat.mod_self]] at this
+    -- ¬arc(l[j], u) → arc(u, l[j]) by tournament property
+    have hmem : l[j] ∈ l := List.getElem_mem ..
+    have hne : l[j] ≠ u := fun h => hu (h ▸ hmem)
+    exact D.arc_of_not_arc hT hne hnu
+
+/-! ── IV.C: Cycle Extension ─────────────────────────────────────────────── -/
+
+/-- In a strongly connected tournament, any directed cycle shorter than n
+can be extended. This is the key step for Moon-Moser.
+
+**Proof sketch** (longest cycle argument):
+Given cycle C of length k < n, pick any u ∉ C.
+• If ∃ i with arc(C[i],u) ∧ arc(u,C[(i+1)%k]): insert u → cycle of length k+1.
+• Otherwise, by `tournament_cycle_non_insertable`: either all of C beats u
+  or u beats all of C.
+  – Partition non-cycle vertices into S⁺ (beats all of C) and S⁻ (beaten by all).
+  – S = S⁺: no arc from C to S → C can't reach S → contradicts SC.
+  – S = S⁻: no arc from S to C → S can't reach C → contradicts SC.
+  – Both nonempty: if ∃ a∈S⁺, b∈S⁻ with arc(b,a): form cycle
+    a→w₁→⋯→wₖ→b→a of length k+2, contradicting maximality.
+    Otherwise all S⁺ beat all S⁻, trapping S⁻ → contradicts SC. -/
+private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
+    (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
+    (hl : l.length < Fintype.card V) :
+    ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
+  sorry
+
+/-! ── IV.D: List Cycle to Hamiltonian Cycle Equivalence ──────────────────── -/
+
+/-- Convert a length-n directed cycle list to `HasHamiltonianCycle`.
+Constructs the equivalence V ≃ Fin n via the list's getElem function,
+analogous to `list_path_to_hamiltonian`. -/
+private lemma list_cycle_to_hamiltonian (D : Digraph V) (l : List V)
+    (hc : IsDirectedCycleList D l) (hlen : l.length = Fintype.card V) :
+    D.HasHamiltonianCycle := by
+  obtain ⟨hnd, _, harcs⟩ := hc
+  -- Every vertex appears in l (nodup list of full length covers V)
+  have hmem : ∀ v : V, v ∈ l := by
+    intro v; rw [← List.mem_toFinset]
+    exact (Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen])) ▸
+      Finset.mem_univ v
+  -- Build bijection Fin n → V via list indexing
+  let f : Fin (Fintype.card V) → V := fun i => l[i.val]'(hlen ▸ i.isLt)
+  have hf_bij : Function.Bijective f := by
+    constructor
+    · intro ⟨i, hi⟩ ⟨j, hj⟩ heq
+      simp only [f] at heq
+      ext; exact List.Nodup.getElem_inj_iff hnd |>.mp heq
+    · intro v
+      rw [List.mem_iff_getElem] at (hmem v)
+      obtain ⟨i, hi, hvi⟩ := hmem v
+      exact ⟨⟨i, hlen ▸ hi⟩, hvi.symm⟩
+  -- σ.symm i = f i = l[i], so the cycle arc condition matches directly
+  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i => by
+    -- Goal: D.arc (σ.symm i) (σ.symm ⟨(i.val+1) % n, ...⟩)
+    -- σ.symm = (Equiv.ofBijective f _).symm.symm = Equiv.ofBijective f _
+    -- So σ.symm i = f i = l[i.val]
+    change D.arc (f i) (f ⟨(i.val + 1) % Fintype.card V, Nat.mod_lt _ Fintype.card_pos⟩)
+    show D.arc (l[i.val]'(hlen ▸ i.isLt))
+      (l[(i.val + 1) % Fintype.card V]'(hlen ▸ Nat.mod_lt _ Fintype.card_pos))
+    rw [show (i.val + 1) % Fintype.card V = (i.val + 1) % l.length from by rw [hlen]]
+    exact harcs i.val (hlen ▸ i.isLt)⟩
+
+/-! ── IV.E: Growing Cycles to Hamiltonian ────────────────────────────────── -/
+
+/-- Given any directed cycle in a SC tournament, repeatedly extend it
+until it reaches length n (Hamiltonian). Induction on (n − cycle length). -/
+private lemma grow_cycle_to_hamiltonian (D : Digraph V) (hT : D.IsTournament)
+    (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l) :
+    D.HasHamiltonianCycle := by
+  -- Induction on deficit (n - l.length)
+  have hle : l.length ≤ Fintype.card V := nodup_length_le_card l hc.1
+  obtain ⟨d, hd⟩ : ∃ d, l.length + d = Fintype.card V := ⟨_, by omega⟩
+  induction d generalizing l with
+  | zero =>
+    exact list_cycle_to_hamiltonian D l hc (by omega)
+  | succ d ih =>
+    obtain ⟨l', hc', hl'⟩ := tournament_cycle_extendable D hT hsc l hc (by omega)
+    exact ih l' hc' (nodup_length_le_card l' hc'.1) (by omega)
+
+/-! ── IV.F: Moon-Moser Theorem ───────────────────────────────────────────── -/
+
 /-- **Moon-Moser Theorem (1963)**
 
-Every strongly connected tournament has a directed Hamiltonian path.
+Every strongly connected tournament has a directed Hamiltonian cycle.
 
-In fact, every tournament (even non-strongly connected ones) has a
-Hamiltonian path (Rédei's theorem, 1934). The Moon-Moser result adds
-that strong connectivity gives a Hamiltonian CYCLE. -/
+Every tournament (even non-strongly connected ones) has a Hamiltonian
+path (Rédei's theorem, 1934). The Moon-Moser result adds that strong
+connectivity gives a Hamiltonian CYCLE.
+
+**Proof**: Get an initial cycle from strong connectivity, then repeatedly
+extend it using the tournament insertion argument until it covers all
+vertices. -/
 theorem moon_moser (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hT : D.IsTournament) (hsc : D.IsStronglyConnected) :
     D.HasHamiltonianCycle := by
-  sorry
+  obtain ⟨l, hc⟩ := sc_tournament_has_cycle D hn hT hsc
+  exact grow_cycle_to_hamiltonian D hT hsc l hc
 
 /-- **Rédei's Theorem (1934)**
 
@@ -340,20 +517,26 @@ theorem directed_hamiltonian_threshold (D : Digraph V) (hn : 3 ≤ Fintype.card 
 /-
 ## Proof Roadmap
 
+### Moon-Moser (ARCHITECTURE COMPLETE, 2 sorries remain)
+Proved via longest-cycle extension:
+1. Get initial cycle from strong connectivity (sorry: sc_tournament_has_cycle)
+2. Non-insertable vertex dichotomy: proved (successor closure on cycle)
+3. Cycle extension: stated with full proof sketch (sorry: S⁺/S⁻ argument)
+4. List cycle → HasHamiltonianCycle conversion: proved
+5. Inductive growth to Hamiltonian: proved
+
+Remaining sorries:
+- `sc_tournament_has_cycle`: Extract simple cycle from closed walk (standard)
+- `tournament_cycle_extendable`: The S⁺/S⁻ partition + SC contradiction (~80 lines)
+
 ### Ghouila-Houri (~200 lines)
 The proof follows the same structure as Dirac's theorem for undirected graphs:
 1. Start with a longest directed path P in D
 2. Show P must be Hamiltonian (otherwise, degree conditions force extension)
 3. Close P into a cycle using the pigeonhole principle on in/out neighborhoods
 
-### Moon-Moser (~150 lines)
-1. Start with a Hamiltonian path (exists by Rédei's theorem)
-2. Attempt to close into a cycle: try arc from last to first vertex
-3. If not, use tournament property to find a "rotation" that closes the cycle
-
-### Rédei (~100 lines)
-Induction on n: remove one vertex, get a Hamiltonian path on n-1 vertices,
-then insert the removed vertex into the path using tournament comparisons.
+### Rédei (DONE)
+Proved by induction via tournament insertion lemma.
 -/
 
 #check @ghouila_houri
