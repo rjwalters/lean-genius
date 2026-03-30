@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1100-oq-01",
   "title": "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-03-30T17:32:58.850Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Eliminated 2 sorries in g_exponential_growth; companion file created for Aristotle",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed incorrect g_exponential_growth statement and proved it (2 sorries eliminated, 6→4). Created Aristotle companion file with 6 lemmas supporting tau_perp_equality_infinitely_often proof.",
+    "builtItems": [
+      "Proved g_exponential_growth in Erdos1100ProblemProvable.lean (eliminated 2 sorries)",
+      "Created Erdos1100OQ01Aristotle.lean companion file with 6 supporting lemmas for Aristotle"
+    ],
+    "insights": [
+      "g_exponential_growth theorem was unprovable as stated: claimed ∃ α ≥ √2 with α^k ≤ g(k), but Erdős-Simonovits only gives (√2 - ε)^k asymptotic lower bound",
+      "Fixed g_exponential_growth by reformulating: now correctly states ∃ β < 2 with asymptotic lower bound approaching √2 and eventual upper bound β^k",
+      "tau_perp_equality_infinitely_often: proof strategy via primes (τ⊥(p) = 1 = ω(p)) is clear but requires proving divisorList p = [1, p] which needs sorted finset manipulation",
+      "The 4 remaining sorries in provable file are: tau_perp_lower_bound, tau_perp_equality_infinitely_often, erdos_hall_max_lower_bound, erdos_simonovits_bounds"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Aristotle: submit Erdos1100OQ01Aristotle.lean for automated proof of omega_prime, divisors_of_prime, etc.",
+      "After Aristotle integrates companion results, prove tau_perp_equality_infinitely_often using prime witnesses",
+      "tau_perp_lower_bound is combinatorially non-trivial: needs induction on factorization structure"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -50,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.850Z",
-  "lastUpdate": "2026-03-30T17:32:58.850Z",
+  "lastUpdate": "2026-03-30T18:50:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -61,9 +73,20 @@
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 6,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100ProblemProvable.lean"
+    },
+    {
+      "path": "Proofs/Erdos1100OQ01Aristotle.lean",
+      "filename": "Erdos1100OQ01Aristotle.lean",
+      "lineCount": 65,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100OQ01Aristotle.lean"
     }
   ]
 }
