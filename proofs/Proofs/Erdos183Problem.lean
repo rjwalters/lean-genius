@@ -326,8 +326,7 @@ theorem R3k_two : R3k 2 = 6 := by
       obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₅ hsym₅
       fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₅]
 
-/-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
-axiom R3k_three : R3k 3 = 17
+/- R(3;3) = 17 (Greenwood and Gleason, 1955). Not axiomatized (unused). -/
 
 /-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
     Proof: embed a k₁-coloring into a k₂-coloring via Fin.castLE; any monochromatic
@@ -460,23 +459,15 @@ The best known lower bound uses connections to Schur numbers.
 R(3;k) ≥ 380^{k/5} - O(1) (Ageron et al., 2021)
 -/
 
-/-- Schur number S(k) is the largest n such that {1,...,n} can be k-colored
-    without monochromatic x + y = z.
-    Axiomatized since computing Schur numbers is a hard combinatorial problem. -/
-axiom SchurNumber (k : ℕ) : ℕ
-
-/-- Connection: R(3;k) ≥ S(k) + 2 -/
-axiom R3k_schur_lower (k : ℕ) (hk : k ≥ 1) :
-  R3k k ≥ SchurNumber k + 2
+/- **Schur Number Connection** (not axiomatized — unused)
+   S(k) = largest n st {1,...,n} can be k-colored without monochromatic x+y=z.
+   R(3;k) ≥ S(k) + 2. -/
 
 /-- The Ageron et al. lower bound (2021) -/
 axiom R3k_exponential_lower :
   ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≥ c ^ k
 
-/-- Specifically: R(3;k) ≥ 380^{k/5} - O(1) -/
-axiom R3k_precise_lower :
-  ∃ C : ℝ, ∀ k : ℕ, k ≥ 1 →
-    (R3k k : ℝ) ≥ (380 : ℝ) ^ ((k : ℝ) / 5) - C
+/- R(3;k) ≥ 380^{k/5} - O(1) (Ageron et al., specific form). Not axiomatized (unused). -/
 
 /-
 # Part 6: The Main Question - Limit of k-th Root
