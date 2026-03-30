@@ -256,4 +256,46 @@ theorem ramsey_base (k r n : ℕ) (hr : r ≥ 1) (hn : n ≤ k) :
     exact ⟨S, ⟨0, hr⟩, Subset.rfl, hS.symm.le, fun e _ he_S =>
       absurd he_S (h_nonempty ▸ Finset.not_mem_empty e)⟩
 
+/-! ## Part VI: Pigeonhole Base Case (k = 1)
+
+For k = 1, coloring singletons is equivalent to coloring elements.
+By the pigeonhole principle, if |S| ≥ r*(n-1)+1, some color appears ≥ n times. -/
+
+/-- **Pigeonhole Ramsey**: the k = 1 base case of the Hypergraph Ramsey Theorem.
+    When we color elements (= singletons) with r colors, N = r*(n-1)+1 suffices
+    to find n elements of the same color. This is the pigeonhole principle. -/
+theorem pigeonhole_ramsey (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
+    HypergraphRamseyProperty 1 r n (r * (n - 1) + 1) := by
+  intro S hS c
+  -- Singleton membership: for a ∈ S, {a} is a 1-subset of S
+  have h_sing : ∀ a ∈ S, {a} ∈ kSubsets S 1 := fun a ha => by
+    simp only [kSubsets, Finset.mem_powersetCard]
+    exact ⟨Finset.singleton_subset_iff.mpr ha, Finset.card_singleton a⟩
+  -- Define element coloring: map each element to the color of its singleton
+  let f : ℕ → Fin r := fun a =>
+    if h : a ∈ S then c ⟨{a}, h_sing a h⟩ else ⟨0, by omega⟩
+  -- Pigeonhole: r • (n-1) < |S| = r*(n-1)+1, so some color fiber has > n-1 elements
+  have h_pig : (Finset.univ : Finset (Fin r)).card • (n - 1) < S.card := by
+    rw [Finset.card_univ, Fintype.card_fin, hS, smul_eq_mul]; omega
+  obtain ⟨i, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
+    (f := f) (fun _ _ => Finset.mem_univ _) h_pig
+  -- The monochromatic set: elements of S whose singleton has color i
+  refine ⟨S.filter (f · = i), i, Finset.filter_subset _ _, ?_, ?_⟩
+  · -- Size: fiber has > n-1 elements, so ≥ n
+    omega
+  · -- Monochromaticity: every 1-subset {a} of the filter has color i
+    intro e he_T he_S
+    -- e is a 1-element subset of our filter, so e = {a} for some a
+    simp only [kSubsets, Finset.mem_powersetCard] at he_T
+    obtain ⟨he_sub, he_card⟩ := he_T
+    obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp he_card
+    -- a is in the color-i filter, so f a = i, so c ⟨{a}, _⟩ = i
+    have ha_filt := Finset.singleton_subset_iff.mp he_sub
+    have ha_S : a ∈ S := Finset.filter_subset _ _ ha_filt
+    have ha_color : f a = i := (Finset.mem_filter.mp ha_filt).2
+    -- f a = c ⟨{a}, h_sing a ha_S⟩ when a ∈ S (by dif_pos)
+    simp only [f, dif_pos ha_S] at ha_color
+    -- Goal: c ⟨{a}, he_S⟩ = i. By proof irrelevance, he_S = h_sing a ha_S
+    exact ha_color
+
 end HypergraphRamsey
