@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (erdos_selfridge_exact trivially provable), proved lower bound of alpha_gt_3_open. Axiom count: 3→2.",
+    "progressSummary": "SURVEY: 2 axioms, 0 sorries. covering_upper_bound potentially provable via inclusion-exclusion averaging argument.",
     "builtItems": [
       "Proved single_prime_lower via ceiling-division injection: i ↦ (⌈a/p⌉+i)*p maps range(k/p) into filter(p∣·)(Ico a (a+k))",
       "Proved erdos_selfridge_exact from axiom (trivial: ∃ x, f = x)",
@@ -45,10 +45,14 @@
       "covering_complement_relation is a placeholder (proves True)",
       "erdos_selfridge_exact was trivially provable: ∃ x, f = x ⟹ ⟨f, rfl⟩ (axiom eliminated)",
       "alpha_gt_3_open lower bound proved: density < 1 makes k*(density-1) ≤ 0 ≤ F_k (axiom split, lower bound proved)",
-      "covering_upper_bound remains as axiom — needs inclusion-exclusion + periodicity averaging argument"
+      "covering_upper_bound remains as axiom — needs inclusion-exclusion + periodicity averaging argument",
+      "covering_upper_bound: F_k <= k*density + |primes| — provable via averaging (infimum <= average over one period), ~50 lines",
+      "covering_asymptotic: deep analytic result, not tractable"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove covering_upper_bound via periodicity averaging argument"
+    ],
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
