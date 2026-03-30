@@ -56,15 +56,15 @@
       "erdos891_conjecture: main statement formalized",
       "Concrete examples: Ω(8) = 3, Ω(12) = 3, Ω(24) = 4",
       "example_interval_8_14: verified instance of the conjecture",
+      "schinzel_theorem axiom: weaker result with modified primorial",
       "DicksonsConjecture definition: proper formalization of Dickson's conjecture on simultaneous primality of linear forms",
+      "weisenberg_conditional axiom: conditional counterexample",
       "isSmooth definition: k-smooth numbers",
-      "nthPrime concrete values: nthPrime_zero through nthPrime_four proved",
-      "primorial_eq_primorialComp: linking theorem validating computable primorial",
-      "hasManyFactors_iff_comp: equivalence of general and computable predicates"
+      "polya_theorem axiom: gaps in smooth numbers are unbounded"
     ],
-    "axiomCount": 0,
-    "lineCount": 442,
-    "assumptions": "No axioms. The open conjecture (ErdosProblem891) and Dickson's conjecture are stated as defs, not axioms. Schinzel's theorem and Weisenberg's conditional counterexample are documented in comments only."
+    "axiomCount": 2,
+    "lineCount": 400,
+    "assumptions": "2 axioms: schinzel_theorem_statement (Schinzel's weaker result), weisenberg_conditional (conditional counterexample using Dickson's conjecture). The main conjecture ErdosProblem891 and DicksonsConjecture are defs, not axioms."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #891**\n\nThis problem was posed by Erdős and Selfridge in 1967 [ErSe67, p.430] and connects the distribution of prime factors to the structure of short intervals.\n\n**Key History:**\n- Erdős-Selfridge (1967): Original problem formulation\n- Schinzel: Proved a weaker version using Pólya's theorem on smooth numbers\n- Weisenberg: Showed conditional counterexample with interval length p₁···pₖ - 1\n\n**Mathematical Setting:**\nThe primorial p₁···pₖ (product of first k primes) gives natural interval lengths: 2, 6, 30, 210, 2310, ...\nThe question asks whether these specific lengths guarantee finding integers with many prime factors.\n\nThe problem remains open even for k = 2, asking whether every interval of 6 consecutive integers (for large n) contains a number with at least 3 prime factors.",
@@ -174,8 +174,7 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Nat.Factorization.Basic",
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.NumberTheory.PrimeCounting"
+      "Mathlib.Data.Set.Finite.Basic"
     ],
     "opens": [
       "Nat",
@@ -183,9 +182,9 @@
       "Finset"
     ],
     "namespace": "Erdos891",
-    "lineCount": 409,
+    "lineCount": 400,
     "axiomCount": 2,
-    "theoremCount": 36,
+    "theoremCount": 26,
     "definitionCount": 6
   },
   "crossReferences": [

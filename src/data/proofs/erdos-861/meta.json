@@ -53,7 +53,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
     "assumptions": "7 axiom declarations: sidon_equiv (two Sidon definitions equivalent), erdos_turan_sidon (f(N) ~ sqrt(N)), cameron_erdos_q1_true (A(N)/2^f(N) diverges), cameron_erdos_q2_false (exponent not 1+o(1)), saxton_thomason_lower_bound (2^{1.16f(N)} lower), klrs_upper_bound (2^{6.442f(N)} upper), extend_sidon (Sidon set extension)",
-    "lineCount": 276
+    "lineCount": 265
   },
   "overview": {
     "historicalContext": "This problem, posed by Cameron and Erdős, asks about counting Sidon sets (sets where all pairwise sums are distinct). It connects to additive combinatorics and the hypergraph container method. The problem appears as C9 in Guy's 'Unsolved Problems in Number Theory'. Sidon sets — also called B₂ sequences — were introduced by Simon Sidon in the 1930s in the context of Fourier analysis; Erdős and Turán proved in 1941 that the maximum Sidon subset of {1, …, N} has size ~√N, and constructions achieving this via Singer difference sets in finite fields were known by the 1940s. Cameron and Erdős posed their counting question in the early 1990s, anticipating that the exponential structure of 2^{f(N)} subsets would need to be understood more precisely. The 2015 resolution using the hypergraph container method of Balogh-Morris-Samotij and independently Saxton-Thomason represented a major breakthrough in counting sparse combinatorial structures.",
@@ -169,7 +169,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos861",
-    "lineCount": 276,
+    "lineCount": 265,
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 7

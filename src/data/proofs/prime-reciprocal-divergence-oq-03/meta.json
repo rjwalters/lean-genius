@@ -9,14 +9,36 @@
     "date": "1938",
     "status": "verified",
     "proofRepoPath": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
-    "tags": ["number-theory", "primes", "combinatorics", "erdos", "elementary"],
+    "tags": [
+      "number-theory",
+      "primes",
+      "combinatorics",
+      "erdos",
+      "elementary"
+    ],
     "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.Prime", "description": "Prime number predicate", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "Finset", "description": "Finite sets for counting", "module": "Mathlib.Data.Finset.Basic"},
-      {"theorem": "Nat.sq_mul_squarefree_of_pos", "description": "Squarefree decomposition", "module": "Mathlib.Data.Nat.Squarefree"},
-      {"theorem": "Nat.factorization_prod_pow_eq_self", "description": "Reconstruction from factorization", "module": "Mathlib.Data.Nat.Factorization.Basic"}
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.sq_mul_squarefree_of_pos",
+        "description": "Squarefree decomposition",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Nat.factorization_prod_pow_eq_self",
+        "description": "Reconstruction from factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
     ],
     "originalContributions": [
       "Smooth number definition and counting framework",
@@ -24,9 +46,16 @@
       "Alternative proof path avoiding Mathlib's analytic machinery"
     ],
     "dateAdded": "2026-03-30",
-    "leanFile": {"lineCount": 389, "structures": 0, "axioms": 0, "theorems": 12, "definitions": 7, "instances": 0},
+    "leanFile": {
+      "lineCount": 389,
+      "structures": 0,
+      "axioms": 0,
+      "theorems": 12,
+      "definitions": 7,
+      "instances": 0
+    },
     "axiomCount": 0,
-    "lineCount": 389,
+    "lineCount": 388,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0"
   },
@@ -90,5 +119,14 @@
       "summary": "Proves infinitely_many_primes_erdos by contradiction and derives prime_reciprocals_unbounded."
     }
   ],
-  "crossReferences": [{"relationship": "Alternative proof to the analytic approach", "sharedConcepts": ["primes", "divergence"], "targetId": "prime-reciprocal-divergence"}]
+  "crossReferences": [
+    {
+      "relationship": "Alternative proof to the analytic approach",
+      "sharedConcepts": [
+        "primes",
+        "divergence"
+      ],
+      "targetId": "prime-reciprocal-divergence"
+    }
+  ]
 }

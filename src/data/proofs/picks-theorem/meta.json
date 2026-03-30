@@ -28,7 +28,7 @@
       },
       {
         "theorem": "Mathlib.Data.Rat.Cast.Lemmas",
-        "description": "Rational number cast lemmas for converting \u2115/\u2124 to \u211a in area computations",
+        "description": "Rational number cast lemmas for converting ℕ/ℤ to ℚ in area computations",
         "module": "Mathlib.Data.Rat.Cast.Lemmas"
       }
     ],
@@ -50,18 +50,18 @@
       "instances": 0
     },
     "axiomCount": 1,
-    "lineCount": 489,
-    "assumptions": "1 axiom: picks_theorem (the main theorem statement). Removed inconsistent area_bounded_by_box_axiom (claimed A(P) \u2264 w_x*w_y for all w_x,w_y without containment hypothesis).",
+    "lineCount": 484,
+    "assumptions": "1 axiom: picks_theorem (the main theorem statement). Removed inconsistent area_bounded_by_box_axiom (claimed A(P) ≤ w_x*w_y for all w_x,w_y without containment hypothesis).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Georg Alexander Pick (1859-1942) was an Austrian mathematician who studied under Leo Konigsberger and Felix Klein. He published this theorem in 1899 in the journal *Sitzungsberichte der kaiserlichen Akademie der Wissenschaften*. The result remained obscure for over 60 years until Hugo Steinhaus popularized it in his 1960 book *Mathematical Snapshots*. Pick was murdered in the Theresienstadt concentration camp in 1942.\n\nThe theorem connects two seemingly different mathematical worlds: discrete counting (lattice points) and continuous measurement (area). This connection foreshadowed the development of Ehrhart theory (1962), which generalizes Pick's formula to higher-dimensional lattice polytopes using Ehrhart polynomials.\n\nPick's theorem has a natural proof via triangulation and additivity: verify for the unit right triangle ($i=0, b=3, A=1/2$), then show the formula is preserved when combining polygons along shared edges. An alternative proof uses Euler's formula $V - E + F = 2$ for planar graphs, counting how vertices and edges contribute to interior, boundary, and face counts.\n\nPick's theorem appears as #92 in Freek Wiedijk's list of 100 greatest theorems. It is one of the most accessible results on the list, requiring only basic arithmetic, yet it reveals deep structure connecting discrete and continuous mathematics.",
     "problemStatement": "**Pick's Theorem**: For a simple polygon with vertices at integer lattice points:\n\n$$A = i + \\frac{b}{2} - 1$$\n\nwhere $A$ is the area, $i$ is the number of interior lattice points, and $b$ is the number of boundary lattice points.\n\nEquivalently: $2A = 2i + b - 2$, showing that twice the area is always a non-negative integer for lattice polygons.",
     "text": "The area of a simple lattice polygon equals I + B/2 - 1, where I is the number of interior lattice points and B is the number of boundary lattice points.",
-    "proofStrategy": "The formalization axiomatizes `SimpleLatticePolygon` with interior count, boundary count, and area, avoiding full polygon topology. Pick's theorem is stated as an axiom, with three algebraic rearrangements proved by `linarith`. The key **additivity theorem** (`picks_additive`) shows the formula is preserved under polygon combination with shared edges \u2014 this is the inductive step of the classical proof. Verifications are provided for unit right triangles (by `norm_num`) and $m \\times n$ rectangles (by `ring`). A 3D counterexample (Reeve tetrahedra) demonstrates the formula does not generalize beyond 2D.",
+    "proofStrategy": "The formalization axiomatizes `SimpleLatticePolygon` with interior count, boundary count, and area, avoiding full polygon topology. Pick's theorem is stated as an axiom, with three algebraic rearrangements proved by `linarith`. The key **additivity theorem** (`picks_additive`) shows the formula is preserved under polygon combination with shared edges — this is the inductive step of the classical proof. Verifications are provided for unit right triangles (by `norm_num`) and $m \\times n$ rectangles (by `ring`). A 3D counterexample (Reeve tetrahedra) demonstrates the formula does not generalize beyond 2D.",
     "keyInsights": [
       "**Discrete-continuous bridge**: Area $A \\in \\frac{1}{2}\\mathbb{Z}$ is determined purely by lattice point counts $i, b \\in \\mathbb{N}$, connecting discrete counting to continuous geometry",
-      "**Additivity is the key**: The formula is preserved under polygon combination because shared edge points transfer correctly between interior and boundary \u2014 this reduces the theorem to triangulation",
+      "**Additivity is the key**: The formula is preserved under polygon combination because shared edge points transfer correctly between interior and boundary — this reduces the theorem to triangulation",
       "**Minimal area $= 1/2$**: The unit right triangle ($i=0, b=3$) has the smallest possible area among non-degenerate lattice polygons, since $A \\geq 0 + 3/2 - 1 = 1/2$",
       "**Fails in 3D**: Reeve tetrahedra with same lattice counts but different volumes show no Pick-like formula exists in dimension $\\geq 3$; Ehrhart polynomials provide the correct generalization",
       "**Euler characteristic connection**: Pick's formula can be derived from Euler's formula $V - E + F = 2$ for planar graphs, linking lattice geometry to graph theory"
@@ -85,7 +85,7 @@
       "title": "Lattice Points",
       "startLine": 55,
       "endLine": 77,
-      "summary": "Defines `LatticePoint := \u2124 \u00d7 \u2124` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$.",
+      "summary": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$.",
       "mathContext": "A lattice point is a pair $(x, y) \\in \\mathbb{Z}^2$. The origin is $\\mathbf{0} = (0, 0)$. Coordinate projections $\\pi_x, \\pi_y : \\mathbb{Z}^2 \\to \\mathbb{Z}$ extract components."
     },
     {
@@ -93,7 +93,7 @@
       "title": "Simple Lattice Polygon",
       "startLine": 78,
       "endLine": 122,
-      "summary": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : \u211a`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`.",
+      "summary": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`.",
       "mathContext": "Structure fields: $i(P) \\in \\mathbb{N}$ (interior count), $b(P) \\in \\mathbb{N}$ (boundary count), $A(P) \\in \\mathbb{Q}$ (area). Constraints: $A(P) > 0$ and $b(P) \\geq 3$ (minimum for a non-degenerate polygon)."
     },
     {
@@ -166,9 +166,9 @@
     "implications": "**Theoretical Significance**: The formalization provides a clean framework for lattice geometry in Lean.\n\nThe additivity theorem could serve as the foundation for a full constructive proof via triangulation. The Reeve tetrahedra counterexample motivates formalizing Ehrhart theory for higher-dimensional lattice polytope enumeration.",
     "openQuestions": [
       "Can the picks_theorem axiom be proved constructively via triangulation into unit right triangles and the additivity lemma?",
-      "Can the GCD boundary formula (lattice points on a segment = gcd(\u0394x, \u0394y) + 1) be formalized and used to compute boundary counts?",
+      "Can the GCD boundary formula (lattice points on a segment = gcd(Δx, Δy) + 1) be formalized and used to compute boundary counts?",
       "Can Ehrhart polynomials for 3D lattice polytopes be formalized, generalizing Pick's formula to higher dimensions?",
-      "Can the shoelace formula be formalized and connected to Pick's formula via the identity 2i + b - 2 = |\u03a3(x\u1d62y\u1d62\u208a\u2081 - x\u1d62\u208a\u2081y\u1d62)|?"
+      "Can the shoelace formula be formalized and connected to Pick's formula via the identity 2i + b - 2 = |Σ(xᵢyᵢ₊₁ - xᵢ₊₁yᵢ)|?"
     ]
   },
   "crossReferences": [
@@ -217,7 +217,7 @@
     ],
     "opens": [],
     "namespace": "PicksTheorem",
-    "lineCount": 489,
+    "lineCount": 484,
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 14
@@ -227,7 +227,7 @@
       "authors": "Pick, Georg Alexander",
       "title": "Geometrisches zur Zahlenlehre",
       "year": "1899",
-      "venue": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines f\u00fcr B\u00f6hmen \"Lotos\" in Prag 19, 311\u2013319",
+      "venue": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines für Böhmen \"Lotos\" in Prag 19, 311–319",
       "note": "Original statement and proof: the area of a lattice polygon is I + B/2 - 1 where I = interior points and B = boundary points"
     }
   ],
