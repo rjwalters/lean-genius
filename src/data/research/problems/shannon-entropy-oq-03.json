@@ -1,0 +1,100 @@
+{
+  "slug": "shannon-entropy-oq-03",
+  "title": "Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequ...",
+  "phase": "SURVEYED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T01:04:30.790Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)\u2264H(X)+H(Y)). 1 sorry remains: strong_subadditivity. Built KL bound infrastructure and marginal positivity helpers for SSA.",
+    "builtItems": [
+      "def marginalXY, marginalYZ, marginalY_3: three-variable marginal distributions",
+      "theorem entropy_chain_rule (PROVED): H(X,Y) = H(Y) + H(X|Y) \u2014 per-term log splitting + telescoping",
+      "theorem subadditivity (PROVED): H(X,Y) \u2264 H(X) + H(Y) \u2014 chain rule + conditioning_reduces_entropy bridge",
+      "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) \u2264 H(X,Y)+H(Y,Z) \u2014 KL bound + marginal positivity infrastructure ready",
+      "have kl_bound: pointwise KL bound for SSA proof",
+      "have mxy_pos/myz_pos/my_pos: marginal positivity from joint positivity"
+    ],
+    "insights": [
+      "SSA is equivalent to I(X;Z|Y) \u2265 0 (conditional MI non-negativity)",
+      "SSA proof strategy: express SSA as conditional KL divergence via \u03a3_y p(y) D(p(x,z|y) || p(x|y)p(z|y)) \u2265 0",
+      "Subadditivity follows from entropy chain rule + conditioning reduces entropy: H(X,Y) = H(Y) + H(X|Y) \u2264 H(Y) + H(X)",
+      "entropy_chain_rule proven via per-term log splitting log(p) = log(p/py) + log(py) and telescoping",
+      "Bridge lemma approach: condEntropy \u2261 conditionalEntropy, shannonEntropy \u2261 shannonEntropy via simp unfold",
+      "SSA remaining sorry needs: telescoping marginal entropy sums to triple sums, then pointwise KL bound application"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove strong_subadditivity: need telescoping helper to convert \u03a3_{xy} mxy*log(mxy) = \u03a3_{xyz} p*log(mxy)",
+      "Then combine four entropy terms into single triple sum, apply kl_bound pointwise",
+      "Show reference measure sum = 1: \u03a3_{xyz} pXY*pYZ/pY = \u03a3_y pY = 1",
+      "Alternative: use mutual_info_nonneg from ShannonEntropy.lean on conditional distribution p(x,z|y)=p(x,y,z)/p(y)"
+    ]
+  },
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "advanced",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-entropy"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.790Z",
+  "lastUpdate": "2026-03-30T01:04:30.790Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 567,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    }
+  ]
+}
