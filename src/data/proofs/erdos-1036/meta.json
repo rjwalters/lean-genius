@@ -7,7 +7,7 @@
     "author": "Erdős-Rényi (question), Shelah (1998, solution)",
     "sourceUrl": "https://erdosproblems.com/1036",
     "date": "1998",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1036Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,17 +16,17 @@
       "induced-subgraphs",
       "isomorphism"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
     "erdosProblemStatus": "solved",
     "relatedProblems": [
       1031
     ],
-    "axiomCount": 0,
-    "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 3,
+    "lineCount": 141,
+    "assumptions": "3 axioms: ramsey_lower_bound (classical Ramsey theorem), shelah_1998 (exponential bound on induced subgraph classes), alon_hajnal_1991 (sub-exponential precursor). 2 sorries: optimalConstant_pos, optimalConstant_le_one.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
