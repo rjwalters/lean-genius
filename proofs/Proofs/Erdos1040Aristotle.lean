@@ -47,6 +47,11 @@ noncomputable def sublevelMeasure (p : PolynomialInF F) : ℝ≥0∞ :=
 noncomputable def mu (F : Set ℂ) : ℝ≥0∞ :=
   ⨅ (p : PolynomialInF F), sublevelMeasure p
 
+/-- Corrected μ: restricted to degree ≥ 1 (the original includes degree-0
+    which has empty sublevel set, making mu = 0 trivially). -/
+noncomputable def mu_pos_degree (F : Set ℂ) : ℝ≥0∞ :=
+  ⨅ (p : PolynomialInF F) (_ : p.degree > 0), sublevelMeasure p
+
 /-
 ## Aristotle targets: basic properties of transfinite diameter
 
@@ -55,23 +60,28 @@ These are standard results in potential theory (Fekete 1923, Ransford 1995).
 
 /-- Transfinite diameter is monotone: F ⊆ G → ρ(F) ≤ ρ(G).
     Proof idea: nthDiameter F n ≤ nthDiameter G n (sSup over subset),
-    then iInf preserves ≤. -/
+    then iInf preserves ≤.
+    BLOCKER: requires BddAbove for the value set, which needs G bounded
+    or a more careful treatment of the sSup. -/
 theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
 
 /-- Transfinite diameter is non-negative.
     Proof idea: nthDiameter is sSup of non-negative reals (x^(2/k) ≥ 0),
-    so sSup ≥ 0, and iInf over [0,∞) is ≥ 0. -/
+    so sSup ≥ 0 (returns 0 for empty/unbounded sets in ℝ),
+    and iInf over [0,∞) is ≥ 0 via le_ciInf.
+    BLOCKER: the not-BddAbove case of sSup requires accessing ℝ's
+    implementation detail (sSup returns 0 when ¬(Nonempty ∧ BddAbove)). -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry
 
-/-- μ(F) is achieved or approached for infinite F.
-    Proof idea: iInf approximation in ℝ≥0∞ (needs mu F < ⊤,
-    which holds because sublevel sets of polynomials are bounded). -/
-theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
-    ∀ ε > 0, ∃ (p : PolynomialInF F), sublevelMeasure p < mu F + ε := by
+/-- μ_pos(F) is achieved or approached for infinite F.
+    Uses the corrected definition (degree ≥ 1). -/
+theorem mu_pos_degree_infimum (F : Set ℂ) (hF : F.Infinite) :
+    ∀ ε > 0, ∃ (p : PolynomialInF F), p.degree > 0 ∧
+      sublevelMeasure p < mu_pos_degree F + ε := by
   sorry
 
 end Erdos1040

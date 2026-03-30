@@ -76,30 +76,58 @@ noncomputable def sublevelMeasure (p : PolynomialInF F) : ℝ≥0∞ :=
 ## The Function μ(F)
 -/
 
-/-- μ(F) = infimum of sublevel set measures. -/
+/-- μ(F) = infimum of sublevel set measures.
+    WARNING: This definition includes degree-0 polynomials, whose sublevel set
+    is empty (|1| < 1 is false), making mu F = 0 for all F. The standard
+    mathematical definition restricts to degree ≥ 1. Use mu_pos_degree below. -/
 noncomputable def mu (F : Set ℂ) : ℝ≥0∞ :=
   ⨅ (p : PolynomialInF F), sublevelMeasure p
 
+/-- The degree-0 polynomial (constant 1) has empty sublevel set. -/
+theorem degree_zero_sublevel_empty (F : Set ℂ) :
+    sublevelSet (⟨0, Fin.elim0, fun i => Fin.elim0 i⟩ : PolynomialInF F) = ∅ := by
+  ext z
+  simp only [sublevelSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  simp only [PolynomialInF.eval, Finset.prod_empty]
+  simp [map_one, not_lt.mpr (le_refl (1 : ℝ))]
+
+/-- Consequence: mu F = 0 for any F (degree-0 polynomial makes infimum 0). -/
+theorem mu_eq_zero_of_degree_zero (F : Set ℂ) : mu F = 0 := by
+  apply le_antisymm
+  · calc mu F ≤ sublevelMeasure (⟨0, Fin.elim0, fun i => Fin.elim0 i⟩ : PolynomialInF F) :=
+          iInf_le _ _
+      _ = MeasureTheory.volume ∅ := by
+          simp only [sublevelMeasure, degree_zero_sublevel_empty]
+      _ = 0 := MeasureTheory.measure_empty
+  · exact zero_le _
+
+/-- Corrected μ(F): infimum restricted to polynomials of degree ≥ 1.
+    This matches the standard mathematical definition (Erdős-Herzog-Piranian 1958). -/
+noncomputable def mu_pos_degree (F : Set ℂ) : ℝ≥0∞ :=
+  ⨅ (p : PolynomialInF F) (_ : p.degree > 0), sublevelMeasure p
+
 /-- μ(F) as a real number (when finite). -/
 noncomputable def muReal (F : Set ℂ) : ℝ :=
-  (mu F).toReal
+  (mu_pos_degree F).toReal
 
 /-
 ## The Main Conjecture
 -/
 
-/-- Is μ(F) determined by the transfinite diameter? -/
+/-- Is μ(F) determined by the transfinite diameter?
+    Uses the corrected definition (degree ≥ 1). -/
 def muDeterminedByDiameter : Prop :=
   ∀ F G : Set ℂ, IsClosed F → F.Infinite →
     IsClosed G → G.Infinite →
     transfiniteDiameter F = transfiniteDiameter G →
-    mu F = mu G
+    mu_pos_degree F = mu_pos_degree G
 
-/-- The specific conjecture: μ(F) = 0 when transfinite diameter ≥ 1. -/
+/-- The specific conjecture: μ(F) = 0 when transfinite diameter ≥ 1.
+    Uses the corrected definition (degree ≥ 1). -/
 def diameterOneConjecture : Prop :=
   ∀ F : Set ℂ, IsClosed F → F.Infinite →
     transfiniteDiameter F ≥ 1 →
-    mu F = 0
+    mu_pos_degree F = 0
 
 /-- The problem is open: we neither assert nor deny the conjecture.
     (The former `axiom problem_open : ¬(P ∨ ¬P)` was removed because
@@ -119,11 +147,11 @@ def isClosedDisc (F : Set ℂ) : Prop :=
 
 /-- For line segments, μ is determined by transfinite diameter. -/
 axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, mu_pos_degree F = f (transfiniteDiameter F)
 
 /-- For discs, μ is determined by transfinite diameter. -/
 axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, mu_pos_degree F = f (transfiniteDiameter F)
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -208,7 +236,8 @@ theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
 ## Properties of μ
 -/
 
-/-- μ is anti-monotone: larger root sets yield smaller infimal sublevel measures. -/
+/-- μ is anti-monotone: larger root sets yield smaller infimal sublevel measures.
+    (Uses the original mu which includes degree 0.) -/
 theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
     mu G ≤ mu F := by
   unfold mu
@@ -216,10 +245,19 @@ theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
   intro pF
   exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, le_refl _⟩
 
-/-- For infinite F, μ(F) is achieved or approached.
-    Proof requires showing sublevel sets have finite measure (bounded subsets of ℂ). -/
-theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
-    ∀ ε > 0, ∃ (p : PolynomialInF F), sublevelMeasure p < mu F + ε := by
+/-- μ_pos is anti-monotone: larger root sets yield smaller infimal sublevel measures. -/
+theorem mu_pos_degree_mono (F G : Set ℂ) (h : F ⊆ G) :
+    mu_pos_degree G ≤ mu_pos_degree F := by
+  simp only [mu_pos_degree]
+  apply iInf_mono'
+  intro pF
+  exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩,
+    iInf_le_iInf fun hdeg => le_refl _⟩
+
+/-- For infinite F, μ_pos(F) is achieved or approached. -/
+theorem mu_pos_degree_infimum (F : Set ℂ) (hF : F.Infinite) :
+    ∀ ε > 0, ∃ (p : PolynomialInF F), p.degree > 0 ∧
+      sublevelMeasure p < mu_pos_degree F + ε := by
   sorry
 
 /-
@@ -229,12 +267,13 @@ theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
 /-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? -/
 def erdos_1040_question : Prop := diameterOneConjecture
 
-/-- Current state: known for special cases, open in general. -/
+/-- Current state: known for special cases, open in general.
+    Uses mu_pos_degree (degree ≥ 1) to avoid the degree-0 triviality. -/
 theorem erdos_1040_current_state :
     (∀ F : Set ℂ, isLineSegment F ∨ isClosedDisc F →
-      transfiniteDiameter F ≥ 1 → mu F = 0) ∧
+      transfiniteDiameter F ≥ 1 → mu_pos_degree F = 0) ∧
     (∀ F : Set ℂ, IsClosed F → F.Infinite →
-      transfiniteDiameter F < 1 → mu F > 0) := by
+      transfiniteDiameter F < 1 → mu_pos_degree F > 0) := by
   sorry
 
 /-
@@ -312,6 +351,12 @@ measures is determined by the transfinite diameter of F.
 **Conjecture**: μ(F) = 0 when transfinite diameter ≥ 1
 
 **Status**: OPEN - the general case remains unresolved.
+
+**Bug fix (this session)**: The original `mu` definition included degree-0
+polynomials, making `mu F = 0` trivially for all F (the constant polynomial
+1 has empty sublevel set since |1| < 1 is false). The corrected
+`mu_pos_degree` restricts to degree ≥ 1, matching the standard mathematical
+definition. See `mu_eq_zero_of_degree_zero` for the formal proof.
 
 **OQ-05**: Does the Erdős-Netanyahu quantitative bound r(ρ) extend to
 unbounded or disconnected sets? The qualitative disc containment
