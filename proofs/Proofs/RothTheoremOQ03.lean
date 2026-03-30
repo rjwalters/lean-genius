@@ -127,9 +127,6 @@ Cauchy-Schwarz over the hypercube), which is beyond current scope.
 -/
 
 /-- Generalized von Neumann: the k-AP count is controlled by U^{k-1}. -/
-axiom generalized_von_neumann (N k : ℕ) [NeZero N] (hk : k ≥ 3)
-    (f : Fin k → ZMod N → ℂ) (hbound : ∀ i x, Complex.abs (f i x) ≤ 1) :
-    Complex.abs (kAPCount k f) ≤ gowersNorm N (k - 1) (f ⟨0, by omega⟩)
 
 -- ============================================================
 -- PART V: The Inverse Theorem

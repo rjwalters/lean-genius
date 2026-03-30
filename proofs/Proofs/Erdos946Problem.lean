@@ -108,7 +108,6 @@ theorem erdos_946 : consecutiveEqualDivisors.Infinite :=
 
     This was the first breakthrough, using properties of highly composite numbers.
     5040 = 7! has many divisors. -/
-axiom spiro_5040 : {n : ℕ | tau n = tau (n + 5040)}.Infinite
 
 /- ## Notes on Bounds
 

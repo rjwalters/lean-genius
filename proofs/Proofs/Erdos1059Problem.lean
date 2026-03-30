@@ -129,11 +129,6 @@ theorem factorial_count_bound (n : ℕ) (hn : n ≥ 2) :
 /-- Erdős suggested it may be easier to prove: there exist infinitely many n
     with l! < n ≤ (l+1)! such that all prime factors of n exceed l,
     and n - k! is composite for all 1 ≤ k ≤ l. -/
-axiom erdos_alternative_approach :
-  Set.Infinite {n : ℕ | ∃ l : ℕ,
-    Nat.factorial l < n ∧ n ≤ Nat.factorial (l + 1) ∧
-    (∀ p : ℕ, p.Prime → p ∣ n → p > l) ∧
-    (∀ k : ℕ, 1 ≤ k → k ≤ l → ¬(n - Nat.factorial k).Prime ∧ n - Nat.factorial k ≥ 2)}
 
 /-
 ## Verified Examples Summary

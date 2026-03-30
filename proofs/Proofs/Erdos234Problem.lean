@@ -323,8 +323,6 @@ theorem gallagher_implies_conjecture (hRH : RiemannHypothesis) :
 
 /-- Large gaps exist: g_n/log n can be made arbitrarily large.
 (Rankin, Pintz, Ford–Green–Konyagin–Tao, Maynard) -/
-axiom large_gaps_exist :
-    ∀ M > 0, ∃ n : ℕ, normalizedGap n > M
 
 /-- The average normalized gap tends to 1 by the Prime Number Theorem. -/
 axiom average_normalized_gap :

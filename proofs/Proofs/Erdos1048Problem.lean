@@ -190,7 +190,6 @@ Connection to logarithmic capacity.
 
 /-- The logarithmic capacity of a set.
     Axiomatized since it requires potential theory infrastructure. -/
-axiom logCapacity (S : Set ℂ) : ℝ
 
 /-
 ## Part X: Summary

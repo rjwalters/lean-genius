@@ -80,10 +80,6 @@ which translates to a walk in ℤ^4 avoiding three-term APs.
 axiom keranen_counterexample :
     ∃ w : UnitVectorWalk 4, ¬HasThreeTermAP 4 w
 
-/-- For any d ≥ 4, there exists a walk avoiding three-term APs. -/
-axiom counterexample_high_dim (d : ℕ) (hd : d ≥ 4) :
-    ∃ w : UnitVectorWalk d, ¬HasThreeTermAP d w
-
 /-
 ## Part IV: Complete Classification
 -/

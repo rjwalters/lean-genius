@@ -114,8 +114,6 @@ The main positive result: αₖ → ∞ as k → ∞.
 -/
 
 /-- Corollary: αₖ ≥ C√k for some constant C -/
-axiom alpha_k_lower_bound (k : ℕ) (hk : k ≥ 2) :
-    ∃ C > 0, alpha_k k ≥ C * Real.sqrt k
 
 /-- Main theorem: αₖ → ∞ as k → ∞ -/
 axiom alpha_k_unbounded :
