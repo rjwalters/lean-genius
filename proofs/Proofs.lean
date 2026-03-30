@@ -231,6 +231,7 @@ import Proofs.Erdos1005Problem
 import Proofs.Erdos1005ProblemProvable
 import Proofs.Erdos1006OQ01
 import Proofs.Erdos1006OQ02
+import Proofs.Erdos1006OQ02OQ01
 import Proofs.Erdos1006OQ03
 import Proofs.Erdos1006Problem
 import Proofs.Erdos1007OQ01
