@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T17:32:58.851Z",
-    "iteration": 2,
-    "focus": "Axiom elimination and odd weird number structural theorems",
+    "iteration": 4,
+    "focus": "Extended odd weird bound to >1575, proved weird_836",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Decidable instances, proved 945 smallest odd abundant + semiperfect, proved odd_weird_gt_945. Eliminated 2 axioms (properDivisors_lt, no_weird_below_70). 4A remain (all deep).",
+    "progressSummary": "PROGRESS: Extended odd weird bound to >1575 (was >945). Proved 836 weird, 1575 semiperfect, no odd abundant in (945,1575). 7 new theorems added. 3 deep axioms remain.",
     "builtItems": [
       "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
       "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
@@ -39,7 +39,11 @@
       "Proved nine45_not_weird in Erdos470Problem.lean:172",
       "Proved no_odd_abundant_below_945 in Erdos470Problem.lean:179-182",
       "Proved odd_weird_gt_945 in Erdos470Problem.lean:188-193",
-      "Added liddy_riedl_6_primes axiom in Erdos470Problem.lean:213-214"
+      "Added liddy_riedl_6_primes axiom in Erdos470Problem.lean:213-214",
+      "Proved weird_836: 836 is the second weird number (native_decide)",
+      "Proved fifteen75_odd_abundant + fifteen75_semiperfect: 1575 is odd abundant but semiperfect",
+      "Proved no_odd_abundant_945_to_1575: no odd abundant in (945,1575) via native_decide on Finset.Ico",
+      "Proved no_odd_weird_to_1575 + odd_weird_gt_1575: extended odd weird lower bound from 945 to 1575"
     ],
     "insights": [
       "IsPseudoperfect is decidable by enumerating subsets of properDivisors.powerset",
@@ -48,12 +52,15 @@
       "Any odd weird number must exceed 945 (no odd abundant below, 945 semiperfect)",
       "properDivisors_lt follows immediately from Nat.mem_properDivisors",
       "no_weird_below_70 provable by native_decide with Decidable IsWeird instance",
-      "Reduced axiom count from 5 to 4 in Erdos470Problem.lean"
+      "Reduced axiom count from 5 to 4 in Erdos470Problem.lean",
+      "The only odd abundant numbers \u2264 1575 are 945 and 1575; both are semiperfect, so neither is weird",
+      "native_decide on Finset.Ico for range abundance checking; Finset.mem_Ico for membership proof"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Strengthen odd_weird bound beyond 945 (check more odd abundant numbers for semiperfectness)",
-      "Fang bound (no odd weird below 10^21) cannot be proved computationally in Lean"
+      "Check next odd abundant numbers (e.g., 2205 = 3^2 * 5 * 7^2) for semiperfectness to extend bound further",
+      "Fang bound (10^21) is far beyond computational reach in Lean",
+      "3 remaining axioms (Liddy-Riedl, Melfi, Benkoski-Erd\u0151s) are all deep results, not provable from Mathlib"
     ]
   },
   "tags": [
@@ -70,16 +77,16 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.851Z",
-  "lastUpdate": "2026-03-30T17:32:58.851Z",
+  "lastUpdate": "2026-03-30T20:10:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos470Problem.lean",
       "filename": "Erdos470Problem.lean",
-      "lineCount": 344,
-      "theoremCount": 12,
-      "axiomCount": 4,
+      "lineCount": 419,
+      "theoremCount": 19,
+      "axiomCount": 3,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,

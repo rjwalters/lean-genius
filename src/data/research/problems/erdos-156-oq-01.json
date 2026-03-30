@@ -1,0 +1,73 @@
+{
+  "slug": "erdos-156-oq-01",
+  "title": "Sumset size characterizes Sidon sets (converse)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem sidon_of_sumset_size (A : Set ℕ) (hfin : A.Finite) (h : (sumset A).ncard = A.ncard * (A.ncard + 1) / 2) : IsSidonSet A",
+    "plain": "Prove the converse of sidon_sumset_size: if a finite set A of natural numbers has |A+A| = |A|(|A|+1)/2, then A is a Sidon set. Combined with the forward direction (already proved in Erdos156Problem.lean), this gives a complete characterization: A is Sidon iff |A+A| = |A|(|A|+1)/2.",
+    "whyMatters": [
+      "Completes a bijective characterization of Sidon sets via sumset cardinality",
+      "Demonstrates that maximal sumset growth is equivalent to all-distinct sums",
+      "Useful for checking the Sidon property via counting rather than pair enumeration"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Forward direction: IsSidonSet A → |A+A| = |A|(|A|+1)/2 (proved in Erdos156Problem.lean)"
+    ],
+    "open": [],
+    "goal": "Prove the converse direction"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:00:00Z",
+    "iteration": 0,
+    "focus": "Initial creation as follow-up from erdos-156 completion",
+    "blockers": [],
+    "nextAction": "Prove sidon_of_sumset_size by contrapositive: if A is not Sidon, show |A+A| < |A|(|A|+1)/2",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [
+      "Proof strategy: contrapositive. If A is not Sidon, there exist a≤b, c≤d with a+b=c+d but {a,b}≠{c,d}. Then the sum map (a,b)↦a+b on {(a,b)|a≤b} is not injective, so |A+A| < |{ordered pairs}| = |A|(|A|+1)/2.",
+      "The forward direction proof already established injectivity of the sum map on ordered pairs (sidon_sum_injOn). The converse needs: non-injectivity of this map implies not-Sidon.",
+      "Key infrastructure already exists: sumset_eq_image, card_upper_tri, sidon_sum_injOn"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove by contrapositive using Set.ncard_image_lt_of_not_injOn",
+      "May need to handle the edge case of the ordered-pair reduction carefully"
+    ]
+  },
+  "tags": [
+    "sidon-sets",
+    "additive-combinatorics",
+    "characterization",
+    "converse"
+  ],
+  "relatedProofs": [
+    "erdos-156"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Set.ncard_image_of_injOn",
+      "Set.ncard_image_lt"
+    ]
+  },
+  "started": "2026-03-30T19:00:00Z",
+  "lastUpdate": "2026-03-30T19:00:00Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": []
+}

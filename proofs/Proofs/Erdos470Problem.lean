@@ -26,6 +26,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.Nat.Prime.Nth
 
 open Nat Finset Set
 
@@ -124,6 +125,18 @@ The sequence of weird numbers begins:
 All known weird numbers are even!
 -/
 
+/--
+836 = 4 × 11 × 19 is the second weird number.
+Proper divisors: {1, 2, 4, 11, 19, 22, 38, 44, 76, 209, 418}; σ(836) = 1680 > 1672.
+No subset of proper divisors sums to 836.
+-/
+theorem weird_836 : IsWeird 836 := by
+  constructor
+  · unfold IsAbundant sigma; native_decide
+  · intro ⟨S, hS_sub, hS_sum⟩
+    have : ∀ T ∈ (836 : ℕ).properDivisors.powerset, T.sum id ≠ 836 := by native_decide
+    exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
+
 /-
 ## Open Question 1: Odd Weird Numbers
 
@@ -136,6 +149,7 @@ Key facts:
   divisors, the rest sums to 945
 - Any odd weird must exceed 945
 
+Computationally verified: any odd weird > 1575 (945 and 1575 are semiperfect).
 Fang (2022): no odd weird numbers below 10^21.
 Liddy-Riedl (2018): any odd weird has ≥ 6 distinct prime divisors.
 -/
@@ -191,6 +205,55 @@ theorem odd_weird_gt_945 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 945 < n := 
   rcases Nat.lt_or_eq_of_le h with hlt | heq
   · exact absurd hw.1 (no_odd_abundant_below_945 n hlt hodd)
   · exact absurd (heq ▸ nine45_semiperfect) hw.2
+
+/--
+1575 = 3² × 5² × 7 is the second smallest odd abundant number.
+σ(1575) = 3224 > 3150 = 2 × 1575.
+-/
+theorem fifteen75_odd_abundant : Odd 1575 ∧ IsAbundant 1575 := by
+  constructor
+  · exact ⟨787, by omega⟩
+  · unfold IsAbundant sigma; native_decide
+
+/--
+1575 is semiperfect: its proper divisors contain a subset summing to 1575.
+-/
+theorem fifteen75_semiperfect : IsPseudoperfect 1575 := by
+  have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+No odd number in the range (945, 1575) is abundant.
+Combined with no_odd_abundant_below_945, this means the only odd abundant
+numbers ≤ 1575 are 945 and 1575, both semiperfect.
+-/
+theorem no_odd_abundant_945_to_1575 (n : ℕ) (hlo : 945 < n) (hhi : n < 1575)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Ico 946 1575, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Ico.mpr ⟨by omega, by omega⟩) hodd
+
+/--
+No odd number ≤ 1575 is weird: odd numbers below 945 are not abundant,
+945 is semiperfect, odd numbers in (945, 1575) are not abundant,
+and 1575 is semiperfect.
+-/
+theorem no_odd_weird_to_1575 (n : ℕ) (hn : n ≤ 1575) (hw : IsWeird n) (hodd : Odd n) :
+    False := by
+  have h945 := odd_weird_gt_945 n hw hodd  -- 945 < n
+  rcases Nat.lt_or_eq_of_le hn with hlt | heq
+  · -- n < 1575 and 945 < n: not abundant
+    exact absurd hw.1 (no_odd_abundant_945_to_1575 n h945 hlt hodd)
+  · -- n = 1575: semiperfect
+    exact absurd (heq ▸ fifteen75_semiperfect) hw.2
+
+/--
+Any odd weird number must exceed 1575: the only odd abundant numbers ≤ 1575
+(namely 945 and 1575) are both semiperfect.
+-/
+theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
+  by_contra h
+  push_neg at h
+  exact no_odd_weird_to_1575 n h hw hodd
 
 /-
 ## Computational Bounds on Odd Weird Numbers
@@ -268,9 +331,21 @@ for all large n. This would follow from conjectures like Cramér's.
 -/
 
 /--
-The n-th prime (axiomatized; p_1 = 2, p_2 = 3, etc.)
+The n-th prime: nthPrime 0 = 2, nthPrime 1 = 3, nthPrime 2 = 5, etc.
+Uses Mathlib's `Nat.nth` with the `Nat.Prime` predicate.
 -/
-axiom nthPrime : ℕ → ℕ
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+/--
+The first prime is 2 (from Mathlib).
+-/
+theorem nthPrime_zero : nthPrime 0 = 2 := Nat.nth_prime_zero_eq_two
+
+/--
+Every nthPrime output is prime (from Mathlib).
+-/
+theorem nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
 /--
 The prime gap after the n-th prime.

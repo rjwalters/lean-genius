@@ -77,13 +77,88 @@ At minimum, consecutive prime powers contribute coprime pairs.
 theorem tau_perp_lower_bound (n : ℕ) (hn : n > 0) : tauPerp n ≥ omega n := by sorry
 
 /--
+**Helper: divisors of a prime p are exactly {1, p}.**
+-/
+private lemma divisors_of_prime (p : ℕ) (hp : Nat.Prime p) :
+    Finset.filter (· ∣ p) (Finset.range (p + 1)) = {1, p} := by
+  ext d
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨_, hd_dvd⟩
+    exact hp.eq_one_or_self_of_dvd d hd_dvd
+  · rintro (rfl | rfl)
+    · exact ⟨by omega, one_dvd p⟩
+    · exact ⟨by omega, dvd_refl p⟩
+
+/--
+**Helper: divisorList of a prime is [1, p].**
+-/
+private lemma divisorList_prime (p : ℕ) (hp : Nat.Prime p) :
+    divisorList p = [1, p] := by
+  unfold divisorList
+  rw [divisors_of_prime p hp]
+  -- Goal: ({1, p} : Finset ℕ).sort (· ≤ ·) = [1, p]
+  -- Characterize by length, membership, sorted, nodup
+  set L := ({1, p} : Finset ℕ).sort (· ≤ ·) with hL_def
+  have hlen : L.length = 2 := by
+    rw [hL_def, Finset.length_sort]
+    rw [Finset.card_insert_of_not_mem (show (1 : ℕ) ∉ ({p} : Finset ℕ) by simp [hp.one_lt.ne'])]
+    simp
+  obtain ⟨a, b, hab_eq⟩ := List.length_eq_two.mp hlen
+  have hmem : ∀ x, x ∈ L ↔ x ∈ ({1, p} : Finset ℕ) := fun x => Finset.mem_sort _
+  have hsorted := Finset.sort_sorted (· ≤ ·) ({1, p} : Finset ℕ)
+  rw [hab_eq] at hsorted
+  -- a ≤ b from sorted
+  have hle : a ≤ b := List.pairwise_cons.mp hsorted |>.1 b (List.mem_cons_self b [])
+  -- a, b ∈ {1, p}
+  have ha : a = 1 ∨ a = p := by
+    simpa using (hmem a).mp (hab_eq ▸ List.mem_cons_self a [b])
+  have hb : b = 1 ∨ b = p := by
+    simpa using (hmem b).mp (hab_eq ▸ List.mem_cons.mpr (Or.inr (List.mem_cons_self b [])))
+  -- a ≠ b (1 and p both in L, so if a = b then 1 = p, contradicting p > 1)
+  have hne : a ≠ b := by
+    intro heq; subst heq
+    have h1L : (1 : ℕ) ∈ L := (hmem 1).mpr (by simp)
+    have hpL : p ∈ L := (hmem p).mpr (by simp)
+    rw [hab_eq] at h1L hpL; simp at h1L hpL; omega
+  rw [hab_eq]
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+  · exact absurd rfl hne
+  · rfl
+  · omega
+  · exact absurd rfl hne
+
+/--
+**Helper: τ⊥(p) = 1 for any prime p.**
+For prime p, divisors are [1, p] and gcd(1, p) = 1.
+-/
+private lemma tauPerp_prime (p : ℕ) (hp : Nat.Prime p) :
+    tauPerp p = 1 := by
+  unfold tauPerp
+  rw [divisorList_prime p hp]
+  -- divs = [1, p], length = 2, range (2-1) = range 1 = [0]
+  -- filter: gcd(getD [1,p] 0 0)(getD [1,p] 1 0) = gcd 1 p = 1 ✓
+  simp [List.getD, List.get?, Nat.gcd_one_left]
+
+/--
+**Helper: ω(p) = 1 for any prime p.**
+-/
+private lemma omega_prime (p : ℕ) (hp : Nat.Prime p) :
+    omega p = 1 := by
+  unfold omega
+  rw [hp.primeFactors_eq]
+  simp
+
+/--
 **Equality achieved infinitely often:**
 There exist infinitely many n with τ⊥(n) = ω(n).
-Proof strategy: For any prime p, divisors are [1, p], so τ⊥(p) = 1 = ω(p).
-Since there are infinitely many primes, the statement follows.
+Proof: For any prime p, τ⊥(p) = 1 = ω(p), and there are infinitely many primes.
 -/
 theorem tau_perp_equality_infinitely_often :
-    ∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n := by sorry
+    ∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n := by
+  intro N
+  obtain ⟨p, hp_gt, hp_prime⟩ := Nat.exists_infinite_primes (N + 1)
+  exact ⟨p, by omega, by rw [tauPerp_prime p hp_prime, omega_prime p hp_prime]⟩
 
 /-
 ## Part III: Question 1 - Almost All Growth
