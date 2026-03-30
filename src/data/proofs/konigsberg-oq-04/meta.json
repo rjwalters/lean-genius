@@ -21,71 +21,7 @@
     "axiomCount": 1,
     "lineCount": 338
   },
-  "overview": {
-    "historicalContext": "The BEST theorem is named for its discoverers: de **B**ruijn, van Aardenne-**E**hrenfest, **S**mith, and **T**utte. The result was proved independently by Smith and Tutte (1941) and by van Aardenne-Ehrenfest and de Bruijn (1951), with the latter paper giving an explicit combinatorial formula. The theorem emerged from the study of de Bruijn sequences — cyclic sequences where every $k$-length substring over an alphabet of size $n$ appears exactly once. Counting such sequences reduces to counting Eulerian circuits in the de Bruijn digraph $B(n,k-1)$. The BEST theorem, combined with Kirchhoff's Matrix Tree Theorem (1847), shows that directed Eulerian circuit counting is polynomial-time, a striking contrast with the undirected case, which Brightwell and Winkler proved #P-complete in 2005. This decision-vs-counting complexity gap remains one of the cleanest known: the decision problem is $O(|V|)$ in both settings, but counting diverges from polynomial to intractable when direction is removed.",
-    "problemStatement": "For a connected, balanced digraph $D$ with out-degree function $d^+(v)$, the BEST theorem states that the number of Eulerian circuits starting from vertex $w$ (as distinct arc sequences) is: $$\\text{ec}(D, w) = d^+(w) \\cdot t_w(D) \\cdot \\prod_{v \\in V} (d^+(v) - 1)!$$ where $t_w(D)$ is the number of in-arborescences rooted at $w$. This file axiomatizes the BEST formula and verifies it on the directed 3-cycle $C_3$ (yielding 1 circuit) and the complete bidirectional graph $K_3$ (yielding 6 circuits).",
-    "proofStrategy": "The formalization proceeds in three stages. First, it defines the core combinatorial objects: Eulerian circuits as closed walks using every arc exactly once, and in-arborescences as directed spanning trees converging to a root. Second, it axiomatizes the BEST theorem as the central formula relating circuit counts to arborescence counts and local degree factorials. Third, it verifies the formula on two concrete examples: the directed triangle $C_3$ (where the unique circuit and unique arborescence give $1 \\cdot 1 \\cdot (0!)^3 = 1$) and the complete bidirectional $K_3$ (where 3 arborescences and out-degree 2 give $2 \\cdot 3 \\cdot (1!)^3 = 6$). The arborescence enumeration for $K_3$ is proved complete via case analysis, ruling out the fourth candidate (which creates a $B \\leftrightarrow C$ cycle).",
-    "keyInsights": [
-      "The BEST theorem factorizes the Eulerian circuit space into three independent components: a choice of first arc ($d^+(w)$ options), an arborescence structure ($t_w$ options), and local arc orderings at each vertex ($(d^+(v)-1)!$ choices each). This factorization has no known analogue in undirected graphs.",
-      "Arborescences serve as a skeleton for Eulerian circuits: each arborescence determines the 'last exit' arc from every non-root vertex, and the remaining arcs can be freely permuted at each vertex. This is the combinatorial core of why the formula multiplies independent local choices.",
-      "The completeness proof for $K_3$ arborescences demonstrates a key graph-theoretic technique: enumerate all candidate parent functions, then rule out invalid ones by showing they produce cycles that never reach the root. The excluded case ($B \\to C, C \\to B$) forms a 2-cycle, proved unreachable by induction on iteration count.",
-      "The complexity gap between directed and undirected Eulerian circuit counting is a rare instance where adding structure (arc directions) makes a problem computationally easier. The algebraic factorization through arborescences exists only because directed graphs have the Matrix Tree Theorem available for computing arborescence counts via determinants.",
-      "The verification examples provide ground truth for the axiomatized formula: if the BEST theorem produces counts consistent with exhaustive enumeration on small cases, it serves as a sanity check on the axiom's statement. The C3 case (1 circuit) and K3 case (6 circuits) are small enough to verify independently."
-    ]
-  },
-  "sections": [
-    {
-      "id": "counting-definitions",
-      "title": "Counting Definitions",
-      "startLine": 28,
-      "endLine": 38,
-      "summary": "Defines the type of Eulerian circuits from a vertex $w$ (closed walks using every arc exactly once) and a noncomputable counting function via `Nat.card`."
-    },
-    {
-      "id": "arborescences",
-      "title": "Arborescences",
-      "startLine": 40,
-      "endLine": 63,
-      "summary": "Defines in-arborescences as directed spanning trees converging to a root via a parent assignment function, with validity, root-fixedness, and reachability conditions. Provides a noncomputable counting function."
-    },
-    {
-      "id": "best-theorem",
-      "title": "The BEST Theorem",
-      "startLine": 65,
-      "endLine": 91,
-      "summary": "Axiomatizes the BEST formula: for a balanced digraph, the Eulerian circuit count from $w$ equals $d^+(w) \\cdot t_w \\cdot \\prod_v (d^+(v)-1)!$, where $t_w$ is the arborescence count."
-    },
-    {
-      "id": "directed-triangle-c3",
-      "title": "Directed Triangle C3",
-      "startLine": 93,
-      "endLine": 131,
-      "summary": "Constructs the unique Eulerian circuit $A \\to B \\to C \\to A$ in the directed 3-cycle, proves it is Eulerian, exhibits the unique arborescence rooted at $A$, and verifies the BEST formula yields 1."
-    },
-    {
-      "id": "complete-bidirectional-k3",
-      "title": "Complete Bidirectional K3",
-      "startLine": 133,
-      "endLine": 262,
-      "summary": "Defines the complete bidirectional digraph on 3 vertices (6 arcs), proves uniform out-degree 2 and balance, constructs an Eulerian circuit, enumerates all 3 arborescences, proves their distinctness and completeness (ruling out the B↔C cycle), and verifies the BEST formula yields 6."
-    },
-    {
-      "id": "complexity-gap",
-      "title": "Decision vs. Counting Complexity",
-      "startLine": 264,
-      "endLine": 297,
-      "summary": "Documents the complexity landscape (directed counting is polynomial via BEST + MTT, undirected counting is #P-complete) and proves that the Eulerian decision problem is decidable by checking balance at each vertex."
-    }
-  ],
-  "conclusion": {
-    "summary": "This formalization captures the BEST theorem — the central result enabling polynomial-time counting of directed Eulerian circuits — and validates it through complete arborescence enumeration on two concrete digraphs. The C3 and K3 examples demonstrate both the formula's correctness and the combinatorial reasoning (arborescence completeness by cycle exclusion) that underpins the theorem.",
-    "implications": "The BEST theorem, combined with Kirchhoff's Matrix Tree Theorem, establishes that directed Eulerian circuit counting is in FP (polynomial-time function problems), contrasting sharply with the #P-completeness of the undirected case. This has practical implications for de Bruijn sequence generation, DNA fragment assembly (where Eulerian circuits in overlap digraphs reconstruct sequences), and CMOS circuit testing. The formalization also provides a foundation for formalizing the Matrix Tree Theorem itself, which would allow removing the sole axiom.",
-    "openQuestions": [
-      "Can the BEST theorem axiom be replaced by a fully formal proof? This requires formalizing the Matrix Tree Theorem (computing arborescence counts via directed Laplacian cofactors) and the bijective decomposition of Eulerian circuits into arborescence-ordering pairs.",
-      "Is there a polynomial-time algorithm for counting Eulerian circuits in mixed graphs (some directed, some undirected arcs)? The complexity of this intermediate case between polynomial and #P-complete remains open.",
-      "Can the arborescence completeness technique used for K3 (case analysis + cycle exclusion) be automated for larger digraphs, perhaps via a certified decision procedure?"
-    ]
-  },
+  "sections": [],
   "leanFile": {
     "axiomCount": 1
   }
