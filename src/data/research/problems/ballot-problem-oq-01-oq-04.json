@@ -37,7 +37,10 @@
       "Proved: prepend_unique_good_rotation (uniqueness)",
       "Proved: balanced_path_total (C(2n,n) = Cn * (n+1))",
       "Proved: balanced_length, balanced_sum_zero (basic properties)",
-      "Created: gallery entry with meta.json, annotations, index.ts"
+      "Created: gallery entry with meta.json, annotations, index.ts",
+      "def upstepsAboveAxisC: computable version of upstepsAboveAxis",
+      "theorem upstepsAboveAxisC_eq: rfl proof of equivalence",
+      "Verification examples for n=2 via native_decide"
     ],
     "insights": [
       "cycle_lemma proved in BallotProblemOQ01.lean:764 (Dvoretzky-Motzkin)",
@@ -49,7 +52,9 @@
       "Prepending +1 converts sum=0 path to sum=1 sequence, entering cycle lemma domain",
       "With k=1, a=n+1, b=n: cycle lemma gives (n+1)-1*n = 1 good rotation",
       "Remaining axiom (chung_feller_uniform) needs bijection between rotation index and type number",
-      "The bijection requires tracking how cyclic shifts transform the height profile"
+      "The bijection requires tracking how cyclic shifts transform the height profile",
+      "Proof strategy for chung_feller_uniform: (1) map (orbit, 1-position) → balanced path is a bijection, (2) each orbit has n+1 rotations starting with 1, (3) these give n+1 distinct balanced paths, (4) HARD: these n+1 paths have all different types. Step (4) is the core — needs tracking how cyclic shifts change the height profile.",
+      "Added upstepsAboveAxisC computable mirror for native_decide verification"
     ],
     "mathlibGaps": [],
     "nextSteps": [
