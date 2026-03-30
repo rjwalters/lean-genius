@@ -35,13 +35,15 @@
     "originalContributions": [
       "Formalization of linear partial differential operators via multi-index coefficients",
       "Definition of principal symbol as a function on the cotangent bundle",
+      "Concrete structure for bicharacteristic curves with characteristic set and nonzero momentum fields",
+      "Proved elliptic operators satisfy condition (\u03a8) by vacuity (no bicharacteristic curves exist)",
       "Formalization of condition (\u03a8) on bicharacteristic curves",
       "Statement of the Nirenberg-Treves characterization theorem",
       "Proof that elliptic operators of principal type are locally solvable"
     ],
-    "axiomCount": 7,
-    "assumptions": "7 axioms: IsLocallySolvable, BicharacteristicCurve, imSymbolAlongCurve, imSymbolAlongCurve_eq (bridge: curve evaluation = principal symbol Im), hormander_necessity (H\u00f6rmander 1960), dencker_sufficiency (Dencker 2006), elliptic_satisfies_psi. These encode deep results from microlocal analysis.",
-    "lineCount": 189,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: IsLocallySolvable (distribution theory not in Mathlib), hormander_necessity (H\u00f6rmander 1960), dencker_sufficiency (Dencker 2006). BicharacteristicCurve is now a concrete structure; imSymbolAlongCurve_eq and elliptic_satisfies_psi are proved theorems.",
+    "lineCount": 215,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
@@ -87,18 +89,20 @@
     },
     {
       "title": "Condition (\u03a8)",
-      "content": "Define bicharacteristic curves, the imaginary part of the symbol along them, and condition (\u03a8).",
-      "lineStart": 100,
-      "lineEnd": 122,
-      "theorems": [],
+      "content": "Define bicharacteristic curves as a concrete structure (position, momentum, characteristic set, nonzero momentum), the imaginary part of the symbol along them, and condition (\u03a8).",
+      "lineStart": 97,
+      "lineEnd": 144,
+      "theorems": [
+        "imSymbolAlongCurve_eq"
+      ],
       "summary": "Condition (\u03a8)",
       "id": "condition-\u03c8"
     },
     {
       "title": "The Nirenberg-Treves Theorem",
-      "content": "State the H\u00f6rmander necessity and Dencker sufficiency, then derive the full characterization.",
-      "lineStart": 124,
-      "lineEnd": 152,
+      "content": "State the H\u00f6rmander necessity and Dencker sufficiency as axioms, then derive the full characterization.",
+      "lineStart": 146,
+      "lineEnd": 176,
       "theorems": [
         "nirenberg_treves_characterization"
       ],
@@ -107,10 +111,11 @@
     },
     {
       "title": "Special Cases",
-      "content": "Show that elliptic operators and operators with real principal symbols satisfy condition (\u03a8), hence are locally solvable.",
-      "lineStart": 154,
-      "lineEnd": 181,
+      "content": "Prove that elliptic operators and operators with real principal symbols satisfy condition (\u03a8). The elliptic case follows from the structure: bicharacteristic curves require vanishing symbol with nonzero momentum, contradicting ellipticity.",
+      "lineStart": 178,
+      "lineEnd": 213,
       "theorems": [
+        "elliptic_satisfies_psi",
         "elliptic_locally_solvable"
       ],
       "summary": "Special Cases",
@@ -165,9 +170,9 @@
       "NNReal"
     ],
     "namespace": "Hilbert20LocalSolvability",
-    "lineCount": 189,
-    "axiomCount": 7,
-    "theoremCount": 3,
-    "definitionCount": 7
+    "lineCount": 215,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

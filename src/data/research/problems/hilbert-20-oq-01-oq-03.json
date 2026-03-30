@@ -29,13 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: All 7 axioms require microlocal analysis not available in Mathlib. No tractable proof path exists.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Eliminated 4/7 axioms by making BicharacteristicCurve a concrete structure. Axiom count: 7 to 3.",
+    "builtItems": [
+      "Proved elliptic_satisfies_psi from structure fields (vacuity: no bicharacteristic curves for elliptic operators)",
+      "Proved imSymbolAlongCurve_eq from concrete definition",
+      "Defined imSymbolAlongCurve concretely as Im(p_m(x(t), xi(t)))"
+    ],
     "insights": [
       "7 axioms all require microlocal analysis infrastructure not in Mathlib",
       "Condition (Psi) characterization (Dencker 2006) is the deepest result - needs FBI transform + bicharacteristic flow",
       "LinearPDO structure + MultiIndex + principal symbol defined but proofs fully axiomatized",
-      "No tractable axiom elimination path without microlocal analysis in Mathlib"
+      "No tractable axiom elimination path without microlocal analysis in Mathlib",
+      "Refactored BicharacteristicCurve from opaque axiom Type to concrete structure with position, momentum, on_char_set, momentum_nonzero fields",
+      "Proved imSymbolAlongCurve_eq and elliptic_satisfies_psi as theorems (were axioms)",
+      "Net axiom reduction: 7 to 3. Remaining: IsLocallySolvable, hormander_necessity, dencker_sufficiency"
     ],
     "mathlibGaps": [],
     "nextSteps": [

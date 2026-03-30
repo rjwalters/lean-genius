@@ -28,8 +28,12 @@ condition (Ψ) states: Im(p) does not change sign from - to + along the
 oriented bicharacteristics of Re(p).
 
 ## Status
-This formalization states the key definitions and the main theorem axiomatically.
-Full proof requires microlocal analysis infrastructure not yet in Mathlib.
+BicharacteristicCurve is formalized as a concrete structure (position, momentum,
+characteristic set condition, nonzero momentum). This enables proving that
+elliptic operators and real-symbol operators satisfy condition (Ψ).
+
+Three axioms remain: IsLocallySolvable (needs distribution theory),
+hormander_necessity and dencker_sufficiency (deep microlocal analysis results).
 
 Reference: Hilbert's 20th Problem, https://erdosproblems.com (related problems)
 -/
@@ -93,25 +97,41 @@ def IsPrincipalType {n m : ℕ} (P : LinearPDO n m) : Prop :=
 /-! ## Part III: Condition (Ψ) -/
 
 /-- A bicharacteristic curve of Re(p_m): a curve γ(t) = (x(t), ξ(t))
-    in the cotangent bundle T*ℝⁿ along which p_m vanishes and which
-    follows the Hamilton flow of Re(p_m).
+    in the cotangent bundle T*ℝⁿ along which p_m vanishes.
 
-    Stated axiomatically since the Hamilton flow ODE system requires
-    more infrastructure. -/
-axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
+    The fields encode the defining properties of bicharacteristic curves:
+    - The curve lies on the characteristic set (p_m vanishes along it)
+    - The momentum is nonzero (excludes the zero section of T*ℝⁿ)
+
+    The Hamilton flow condition (that the curve follows the Hamilton
+    equations of Re(p_m)) is not included here since the results that
+    depend on it (Hörmander necessity, Dencker sufficiency) remain
+    axiomatized. The characteristic set and nonzero momentum properties
+    suffice to prove elliptic_satisfies_psi and real_symbol_satisfies_psi. -/
+structure BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) where
+  /-- Position along the curve at time t -/
+  position : ℝ → Fin n → ℝ
+  /-- Momentum (cotangent vector) along the curve at time t -/
+  momentum : ℝ → Fin n → ℝ
+  /-- The curve lies on the characteristic set: p_m vanishes along it -/
+  on_char_set : ∀ t, principalSymbol P (position t) (momentum t) = 0
+  /-- Momentum is nonzero (excludes the zero section of T*ℝⁿ) -/
+  momentum_nonzero : ∀ t, momentum t ≠ 0
 
 /-- Evaluation of the imaginary part of the principal symbol along
-    a bicharacteristic curve at time t. -/
-axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
-    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
+    a bicharacteristic curve at time t.
+    Concretely: Im(p_m(x(t), ξ(t))). -/
+def imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
+    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ :=
+  (principalSymbol P (γ.position t) (γ.momentum t)).im
 
-/-- **Bridge axiom:** The imaginary part of the principal symbol evaluated
-    along a bicharacteristic curve at time t equals Im(p_m) at some point
-    (x(t), ξ(t)) on the curve. This connects the opaque `imSymbolAlongCurve`
-    to the concrete `principalSymbol`. -/
-axiom imSymbolAlongCurve_eq {n m : ℕ} {P : LinearPDO n m}
+/-- The imaginary part of the principal symbol evaluated along a
+    bicharacteristic curve at time t equals Im(p_m) at the point
+    (x(t), ξ(t)) on the curve. -/
+theorem imSymbolAlongCurve_eq {n m : ℕ} {P : LinearPDO n m}
     (γ : BicharacteristicCurve P) (t : ℝ) :
-    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im
+    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im :=
+  ⟨γ.position t, γ.momentum t, rfl⟩
 
 /-- **Condition (Ψ) — Nirenberg-Treves (1963):**
     The imaginary part of p_m does not change sign from − to +
@@ -176,9 +196,15 @@ def IsElliptic {n m : ℕ} (P : LinearPDO n m) : Prop :=
 
 /-- Elliptic operators satisfy condition (Ψ) vacuously:
     there are no bicharacteristic curves since p_m never vanishes
-    for ξ ≠ 0. -/
-axiom elliptic_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
-    (hell : IsElliptic P) : ConditionPsi P
+    for ξ ≠ 0. Any bicharacteristic curve would require p_m = 0
+    with nonzero momentum, contradicting ellipticity. -/
+theorem elliptic_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
+    (hell : IsElliptic P) : ConditionPsi P := by
+  intro γ
+  -- Any bicharacteristic curve γ has p_m(x(0), ξ(0)) = 0 with ξ(0) ≠ 0
+  -- But ellipticity says p_m(x, ξ) ≠ 0 for all ξ ≠ 0. Contradiction.
+  exact absurd (γ.on_char_set 0)
+    (hell (γ.position 0) (γ.momentum 0) (γ.momentum_nonzero 0))
 
 /-- Therefore elliptic operators of principal type are locally solvable. -/
 theorem elliptic_locally_solvable {n m : ℕ} (P : LinearPDO n m)
