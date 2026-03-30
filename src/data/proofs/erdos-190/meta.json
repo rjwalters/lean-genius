@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/190",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 352,
+    "lineCount": 348,
     "assumptions": "6 axioms: exists_canonical_threshold (Szemerédi), vanDerWaerden_exists, H_root_to_infinity, erdos_190 (OPEN conjecture), H_3_bound, H_4_bound. Proved: W_le_H (correct direction, replacing incorrect H_le_W), H_spec (Fin.castLE restriction), H_lower_bound (AP needs N≥k), H_pos (k≥1), H_minimal (Nat.find_min).",
     "mathlib_version": "4.26.0"
   },
@@ -145,7 +145,7 @@
       "Finset"
     ],
     "namespace": "Erdos190",
-    "lineCount": 352,
+    "lineCount": 348,
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 10

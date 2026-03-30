@@ -52,7 +52,7 @@
       "Tightness construction via existential type quantification"
     ],
     "axiomCount": 4,
-    "lineCount": 106,
+    "lineCount": 93,
     "assumptions": "4 axioms: rademacher_triangle_count (base case: 1 extra edge forces floor(n/2) triangles), erdos_1010_supersaturation (main theorem: t extra edges force t*floor(n/2) triangles), turán_triangle_existence (exceeding Turán threshold implies a triangle exists), erdos_1010_tight (existential tightness construction).",
     "mathlib_version": "4.26.0"
   },
@@ -210,7 +210,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 106,
+    "lineCount": 93,
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 2

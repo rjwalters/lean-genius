@@ -39,7 +39,7 @@
       "Connection: Finset powerset equals multiset powerset for sets"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 121,
+    "lineCount": 120,
     "theoremCount": 7,
     "definitionCount": 0,
     "prerequisites": [
@@ -123,9 +123,11 @@
       "Mathlib.Data.Fintype.Card",
       "Mathlib.Tactic"
     ],
-    "opens": ["Multiset"],
+    "opens": [
+      "Multiset"
+    ],
     "namespace": "SubsetCountMultiset",
-    "lineCount": 121,
+    "lineCount": 120,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0

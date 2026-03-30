@@ -48,7 +48,7 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: weisenberg_lower_bound (f(n) >= 2sqrt(n) via B2), hegyvari_1986 (non-monotone variant bounds), infinite_set_lower_density_zero (infinite sets sparse), B2_max_size (Sidon set maximum size)",
-    "lineCount": 304
+    "lineCount": 303
   },
   "overview": {
     "historicalContext": "Erdős Problem #357 was posed by Erdős and Harzheim in the combinatorial number theory tradition of Erdős's 1977 paper 'Problems and results on combinatorial number theory III.' Given integers $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, we require all 'consecutive sums' $\\sum_{i=u}^{v} a_i$ (sums over contiguous index ranges) to be distinct.\n\nFor a sequence of length $k$, there are $\\binom{k+1}{2} = k(k+1)/2$ such sums. The function $f(n)$ measures the maximum $k$.\n\nWeisenberg connected this to **Sidon sets** (B₂ sequences), introduced by Simon Sidon in the 1930s and studied by Erdős and Turán (1941). Any B₂ set — where all pairwise sums $a_i + a_j$ are distinct — automatically has distinct consecutive sums. Since the largest B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$, this gives $f(n) \\geq (2+o(1))\\sqrt{n}$.\n\nHegyvári (1986) studied the non-monotone variant $g(n)$ in 'On consecutive sums in sequences,' proving $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$. The dramatic difference between $g(n) = \\Theta(n)$ and the conjectured $f(n) = o(n)$ shows that monotonicity is the crucial constraint.\n\nErdős also asked about infinite sets with this property, conjecturing they have density 0 and that $\\sum 1/a_k$ converges. The lower density 0 result is known.",
@@ -253,7 +253,7 @@
       "Finset"
     ],
     "namespace": "Erdos357",
-    "lineCount": 304,
+    "lineCount": 303,
     "axiomCount": 4,
     "theoremCount": 16,
     "definitionCount": 16

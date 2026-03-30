@@ -59,7 +59,7 @@
       "gEps_mono: monotonicity in ε"
     ],
     "axiomCount": 5,
-    "lineCount": 330,
+    "lineCount": 316,
     "assumptions": "5 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, gEps_mono. 0 sorries. Eliminated: main_asymptotic (now derived via squeeze theorem from trivial_lower_bound + erdos_hall_upper), logloglog_div_loglog_tendsto_zero (now proved).",
     "theoremCount": 10
   },
@@ -212,7 +212,7 @@
       "Real"
     ],
     "namespace": "Erdos1179",
-    "lineCount": 330,
+    "lineCount": 316,
     "axiomCount": 5,
     "theoremCount": 10,
     "definitionCount": 3

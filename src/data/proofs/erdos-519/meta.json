@@ -2,9 +2,9 @@
   "id": "erdos-519",
   "title": "Power Sums of Complex Numbers",
   "slug": "erdos-519",
-  "description": "Tur\u00e1n's power sum problem: For z\u2081,...,z\u2099 \u2208 \u2102 with z\u2081=1, is there an absolute c>0 such that max_k |\u2211z\u1d62\u1d4f| > c? YES (Atkinson 1961). Best known: c > 1/2 (Bir\u00f3 2000). Optimal \u2248 0.7.",
+  "description": "Turán's power sum problem: For z₁,...,zₙ ∈ ℂ with z₁=1, is there an absolute c>0 such that max_k |∑zᵢᵏ| > c? YES (Atkinson 1961). Best known: c > 1/2 (Biró 2000). Optimal ≈ 0.7.",
   "meta": {
-    "author": "Tur\u00e1n (problem), Atkinson (1961), Bir\u00f3 (1994, 2000)",
+    "author": "Turán (problem), Atkinson (1961), Biró (1994, 2000)",
     "sourceUrl": "https://erdosproblems.com/519",
     "date": "2000",
     "status": "axiomatized",
@@ -46,9 +46,9 @@
     "originalContributions": [
       "Lean formalization of power sums",
       "Maximum power sum definition",
-      "Tur\u00e1n's original question formalization",
+      "Turán's original question formalization",
       "Atkinson's theorem: c = 1/6",
-      "Bir\u00f3's improvements: c = 1/2, then c > 1/2",
+      "Biró's improvements: c = 1/2, then c > 1/2",
       "Roots of unity special case"
     ],
     "dateAdded": "2026-01-19",
@@ -61,19 +61,19 @@
       "Symmetric polynomials and Newton's identities",
       "Extremal problems in complex analysis"
     ],
-    "lineCount": 284
+    "lineCount": 271
   },
   "overview": {
-    "historicalContext": "Tur\u00e1n's power sum problem originates from P\u00e1l Tur\u00e1n's extensive work on extremal problems in analysis during the 1940s and 1950s. Tur\u00e1n initially studied power sums in connection with his 'power sum method' \u2014 a technique he developed as an alternative to Vinogradov's method of exponential sums, with applications to the Riemann zeta function and prime number theory. Tur\u00e1n proved the weaker result that $\\max_{1 \\le k \\le n} |\\sum z_i^k| \\ge c/n$, where $c > 0$ depends on the configuration. The crucial question was whether the dependence on $n$ could be eliminated entirely. F.V. Atkinson resolved this in 1961, proving $c = 1/6$ as an absolute lower bound \u2014 the first proof that the maximum power sum is bounded away from zero independently of $n$. Bir\u00f3 (1994) substantially improved this to $c = 1/2$ using refined analytic methods, and in 2000 pushed past the $1/2$ barrier. Computational experiments by several researchers suggest the optimal constant is approximately $0.7$, but no rigorous proof of this value exists. The problem is closely related to Tur\u00e1n's power sum method, which has deep connections to the distribution of zeros of the Riemann zeta function, Dirichlet $L$-functions, and the theory of almost periodic functions.",
-    "problemStatement": "Let z\u2081, ..., z\u2099 \u2208 \u2102 with z\u2081 = 1. Must there exist an absolute constant c > 0 such that max_{1 \u2264 k \u2264 n} |\u2211\u1d62 z\u1d62\u1d4f| > c?",
-    "text": "Tur\u00e1n's power sum problem: For z\u2081,...,z\u2099 \u2208 \u2102 with z\u2081=1, is there an absolute c>0 such that max_k |\u2211z\u1d62\u1d4f| > c? YES (Atkinson 1961). Best known: c > 1/2 (Bir\u00f3 2000). Optimal \u2248 0.7.",
-    "proofStrategy": "The formalization axiomatizes the deep analytic results (Tur\u00e1n's bound, Atkinson's theorem, Bir\u00f3's improvements) while fully defining the underlying combinatorial machinery: power sums $S_k(z) = \\sum_i z_i^k$, power sum magnitudes $|S_k|$, the maximum $\\max_{1 \\le k \\le n} |S_k|$, and the normalization constraint $z_1 = 1$. The logical structure proceeds from definitions through progressively stronger axiomatized bounds ($c/n \\to 1/6 \\to 1/2 \\to >1/2$), then analyzes special cases: the trivial $n=1$ case is proved directly, roots of unity illustrate periodic cancellation, and the summary theorem packages both Atkinson's and Bir\u00f3's results.",
+    "historicalContext": "Turán's power sum problem originates from Pál Turán's extensive work on extremal problems in analysis during the 1940s and 1950s. Turán initially studied power sums in connection with his 'power sum method' — a technique he developed as an alternative to Vinogradov's method of exponential sums, with applications to the Riemann zeta function and prime number theory. Turán proved the weaker result that $\\max_{1 \\le k \\le n} |\\sum z_i^k| \\ge c/n$, where $c > 0$ depends on the configuration. The crucial question was whether the dependence on $n$ could be eliminated entirely. F.V. Atkinson resolved this in 1961, proving $c = 1/6$ as an absolute lower bound — the first proof that the maximum power sum is bounded away from zero independently of $n$. Biró (1994) substantially improved this to $c = 1/2$ using refined analytic methods, and in 2000 pushed past the $1/2$ barrier. Computational experiments by several researchers suggest the optimal constant is approximately $0.7$, but no rigorous proof of this value exists. The problem is closely related to Turán's power sum method, which has deep connections to the distribution of zeros of the Riemann zeta function, Dirichlet $L$-functions, and the theory of almost periodic functions.",
+    "problemStatement": "Let z₁, ..., zₙ ∈ ℂ with z₁ = 1. Must there exist an absolute constant c > 0 such that max_{1 ≤ k ≤ n} |∑ᵢ zᵢᵏ| > c?",
+    "text": "Turán's power sum problem: For z₁,...,zₙ ∈ ℂ with z₁=1, is there an absolute c>0 such that max_k |∑zᵢᵏ| > c? YES (Atkinson 1961). Best known: c > 1/2 (Biró 2000). Optimal ≈ 0.7.",
+    "proofStrategy": "The formalization axiomatizes the deep analytic results (Turán's bound, Atkinson's theorem, Biró's improvements) while fully defining the underlying combinatorial machinery: power sums $S_k(z) = \\sum_i z_i^k$, power sum magnitudes $|S_k|$, the maximum $\\max_{1 \\le k \\le n} |S_k|$, and the normalization constraint $z_1 = 1$. The logical structure proceeds from definitions through progressively stronger axiomatized bounds ($c/n \\to 1/6 \\to 1/2 \\to >1/2$), then analyzes special cases: the trivial $n=1$ case is proved directly, roots of unity illustrate periodic cancellation, and the summary theorem packages both Atkinson's and Biró's results.",
     "keyInsights": [
-      "The transition from Tur\u00e1n's $c/n$ bound to Atkinson's absolute constant $c = 1/6$ is qualitatively profound: it says the 'worst-case' power sum behavior is fundamentally bounded regardless of how many complex numbers participate",
-      "The constraint $z_1 = 1$ is a normalization, not merely a technicality \u2014 it ensures the power sums include the fixed term $1^k = 1$, preventing the trivial all-zero configuration and anchoring the cancellation problem",
+      "The transition from Turán's $c/n$ bound to Atkinson's absolute constant $c = 1/6$ is qualitatively profound: it says the 'worst-case' power sum behavior is fundamentally bounded regardless of how many complex numbers participate",
+      "The constraint $z_1 = 1$ is a normalization, not merely a technicality — it ensures the power sums include the fixed term $1^k = 1$, preventing the trivial all-zero configuration and anchoring the cancellation problem",
       "Roots of unity provide the sharpest cancellation: $\\sum \\omega^k = 0$ for $n \\nmid k$, but spike to $n$ when $n | k$. This periodic behavior demonstrates that perfect cancellation is possible for most $k$, but cannot hold universally",
-      "The gap between the proved lower bound $c > 1/2$ (Bir\u00f3 2000) and the conjectured optimal $c \\approx 0.7$ is one of the main remaining challenges, requiring fundamentally new analytic techniques",
-      "Tur\u00e1n's power sum method connects this combinatorial problem to the theory of the Riemann zeta function: understanding which power sums can be simultaneously small has implications for zero-free regions of $L$-functions",
+      "The gap between the proved lower bound $c > 1/2$ (Biró 2000) and the conjectured optimal $c \\approx 0.7$ is one of the main remaining challenges, requiring fundamentally new analytic techniques",
+      "Turán's power sum method connects this combinatorial problem to the theory of the Riemann zeta function: understanding which power sums can be simultaneously small has implications for zero-free regions of $L$-functions",
       "The formalization axiomatizes the deep analytic results while proving structural facts (trivial case, summary composition) directly, illustrating how formal verification can capture both known results and their logical dependencies"
     ],
     "prerequisites": [
@@ -103,11 +103,11 @@
     },
     {
       "id": "turan-result",
-      "title": "Tur\u00e1n's Original Result",
+      "title": "Turán's Original Result",
       "startLine": 73,
       "endLine": 95,
-      "summary": "Axiomatizes Tur\u00e1n's bound $\\max_k |S_k| \\ge c/n$ and formally states the question of whether an absolute (n-independent) constant exists",
-      "mathContext": "Tur\u00e1n's power sum method: the bound $c/n$ degrades with $n$, leaving open whether the dependence is essential."
+      "summary": "Axiomatizes Turán's bound $\\max_k |S_k| \\ge c/n$ and formally states the question of whether an absolute (n-independent) constant exists",
+      "mathContext": "Turán's power sum method: the bound $c/n$ degrades with $n$, leaving open whether the dependence is essential."
     },
     {
       "id": "atkinson",
@@ -115,15 +115,15 @@
       "startLine": 96,
       "endLine": 118,
       "summary": "Axiomatizes Atkinson's breakthrough: $\\max_k |S_k| > 1/6$ for all $n$ and all $z$ with $z_1 = 1$. Derives `turan_question_yes` as a direct corollary",
-      "mathContext": "Atkinson's result settles Tur\u00e1n's question affirmatively: the constant $c = 1/6$ is absolute, independent of $n$."
+      "mathContext": "Atkinson's result settles Turán's question affirmatively: the constant $c = 1/6$ is absolute, independent of $n$."
     },
     {
       "id": "biro",
-      "title": "Bir\u00f3's Improvements",
+      "title": "Biró's Improvements",
       "startLine": 119,
       "endLine": 149,
-      "summary": "Axiomatizes Bir\u00f3's improved bounds: $c = 1/2$ (1994) and $c > 1/2$ (2000), plus the placeholder conjecture that the optimal constant is approximately $0.7$",
-      "mathContext": "Bir\u00f3's refinements doubled Atkinson's constant and broke the $1/2$ barrier, but the conjectured optimal $c \\approx 0.7$ remains unproved."
+      "summary": "Axiomatizes Biró's improved bounds: $c = 1/2$ (1994) and $c > 1/2$ (2000), plus the placeholder conjecture that the optimal constant is approximately $0.7$",
+      "mathContext": "Biró's refinements doubled Atkinson's constant and broke the $1/2$ barrier, but the conjectured optimal $c \\approx 0.7$ remains unproved."
     },
     {
       "id": "key-observations",
@@ -146,7 +146,7 @@
       "title": "The Optimal Constant",
       "startLine": 222,
       "endLine": 248,
-      "summary": "Packages Bir\u00f3's result as `optimal_lower_bound` and axiomatizes the computational evidence that $c \\approx 0.7$; notes the remaining gap between proved and conjectured values",
+      "summary": "Packages Biró's result as `optimal_lower_bound` and axiomatizes the computational evidence that $c \\approx 0.7$; notes the remaining gap between proved and conjectured values",
       "mathContext": "The gap $1/2 < c_{\\text{proved}} < c_{\\text{optimal}} \\approx 0.7$ represents the frontier of the problem."
     },
     {
@@ -154,18 +154,18 @@
       "title": "Summary Theorems",
       "startLine": 249,
       "endLine": 284,
-      "summary": "States the main results as `erdos_519 : turanQuestion` and `erdos_519_summary` bundling Atkinson's and Bir\u00f3's bounds into a single conjunction",
+      "summary": "States the main results as `erdos_519 : turanQuestion` and `erdos_519_summary` bundling Atkinson's and Biró's bounds into a single conjunction",
       "mathContext": "The summary theorem certifies: $\\forall n \\ge 1, \\forall z$ with $z_1 = 1$: $\\max_k |S_k| > 1/6$ and $\\exists c > 1/2$ with $\\max_k |S_k| > c$."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #519 is SOLVED: YES, there exists an absolute constant $c > 0$ such that $\\max_{1 \\le k \\le n} |\\sum_i z_i^k| > c$ whenever $z_1 = 1$, regardless of $n$ and the choice of complex numbers. The best proved bound is $c > 1/2$ (Bir\u00f3 2000), while computational evidence suggests the optimal constant is approximately $0.7$.",
-    "implications": "**Theoretical Significance**: This result establishes a fundamental rigidity property of power sums: no matter how cleverly one distributes complex numbers on the plane (with one fixed at 1), some power $k$ must produce a sum bounded away from zero.\n\nThis connects to Tur\u00e1n's power sum method, which has applications to the distribution of primes and the zero-free region of the Riemann zeta function. The formalization captures the logical structure of the problem's resolution \u2014 from Tur\u00e1n's initial $n$-dependent bound through three progressively stronger absolute bounds \u2014 illustrating how a sequence of refinements in analytic number theory can be organized as a chain of axiomatized results with a verified logical skeleton.",
+    "summary": "Erdős Problem #519 is SOLVED: YES, there exists an absolute constant $c > 0$ such that $\\max_{1 \\le k \\le n} |\\sum_i z_i^k| > c$ whenever $z_1 = 1$, regardless of $n$ and the choice of complex numbers. The best proved bound is $c > 1/2$ (Biró 2000), while computational evidence suggests the optimal constant is approximately $0.7$.",
+    "implications": "**Theoretical Significance**: This result establishes a fundamental rigidity property of power sums: no matter how cleverly one distributes complex numbers on the plane (with one fixed at 1), some power $k$ must produce a sum bounded away from zero.\n\nThis connects to Turán's power sum method, which has applications to the distribution of primes and the zero-free region of the Riemann zeta function. The formalization captures the logical structure of the problem's resolution — from Turán's initial $n$-dependent bound through three progressively stronger absolute bounds — illustrating how a sequence of refinements in analytic number theory can be organized as a chain of axiomatized results with a verified logical skeleton.",
     "openQuestions": [
       "What is the exact value of the optimal constant $c^*$? Computational evidence suggests $c^* \\approx 0.7$, but no rigorous proof pins down even one decimal place beyond $c^* > 0.5$",
       "Can the extremal configurations (minimizing $\\max_k |S_k|$) be characterized? The structure of near-optimal $z$-configurations is largely unknown",
       "Does the problem change qualitatively if the constraint $z_1 = 1$ is replaced by $|z_1| = 1$ or $|z_i| \\le 1$? Problem #973 explores related variants with $|z_i| \\ge 1$",
-      "Can Tur\u00e1n's power sum method yield new zero-density estimates for $L$-functions beyond what is currently known?"
+      "Can Turán's power sum method yield new zero-density estimates for $L$-functions beyond what is currently known?"
     ]
   },
   "leanFile": {
@@ -180,7 +180,7 @@
       "Finset"
     ],
     "namespace": "Erdos519",
-    "lineCount": 284,
+    "lineCount": 271,
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 7
@@ -189,12 +189,12 @@
     {
       "targetId": "erdos-973",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, power-sums"
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
     },
     {
       "targetId": "erdos-974",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, power-sums"
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
     }
   ]
 }

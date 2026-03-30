@@ -1,186 +1,186 @@
 {
-    "id": "erdos-411",
-    "title": "Erdős Problem #411: Iterated Totient Sums and Doubling",
-    "slug": "erdos-411",
-    "description": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
-    "meta": {
-        "author": "Erdős",
-        "sourceUrl": "https://erdosproblems.com/411",
-        "date": "1980",
-        "status": "axiomatized",
-        "proofRepoPath": "Proofs/Erdos411Problem.lean",
-        "tags": [
-            "erdos",
-            "number-theory",
-            "iterated-functions",
-            "totient",
-            "arithmetic-dynamics"
-        ],
-        "badge": "axiom",
-        "sorries": 0,
-        "erdosNumber": 411,
-        "erdosUrl": "https://erdosproblems.com/411",
-        "erdosProblemStatus": "open",
-        "dateAdded": "2026-01-26",
-        "mathlib_version": "4.26.0",
-        "mathlibDependencies": [
-            {
-                "theorem": "Nat.totient",
-                "description": "Euler's totient function φ(n)",
-                "module": "Mathlib.Data.Nat.Totient"
-            },
-            {
-                "theorem": "Nat.totient_even",
-                "description": "φ(n) is even for n > 2, used to prove even preservation under g",
-                "module": "Mathlib.Data.Nat.Totient"
-            },
-            {
-                "theorem": "Filter.Basic",
-                "description": "Basic filter theory for eventual properties",
-                "module": "Mathlib.Order.Filter.Basic"
-            }
-        ],
-        "originalContributions": [
-            "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
-            "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
-            "Proved known r = 2 solutions (n = 10, 94) via native_decide; axiomatized Cambie's ratio-3 and ratio-4 solutions",
-            "Formalized Steinerberger's (2025) reduction: DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n",
-            "Proved even preservation under g using Mathlib's Nat.totient_even",
-            "Formalized Cambie's structural conjecture on the form of r = 2 solutions"
-        ],
-        "axiomCount": 0,
-        "lineCount": 223,
-        "assumptions": "No axioms. All results (cambie_ratio3, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom."
-    },
-    "leanFile": {
-        "path": "Proofs/Erdos411Problem.lean",
-        "lineCount": 172,
-        "namespace": "root",
-        "imports": [
-            "Mathlib.Data.Nat.Totient",
-            "Mathlib.Data.Nat.Basic",
-            "Mathlib.Order.Filter.Basic",
-            "Mathlib.Tactic"
-        ],
-        "mainTheorems": [
-            "totientStep_even_of_even",
-            "totientStep_ge"
-        ],
-        "mainDefinitions": [
-            "totientStep",
-            "iteratedTotientStep",
-            "DoublingRelation",
-            "ErdosProblem411",
-            "GeneralRatioRelation",
-            "CambieConjecture"
-        ],
-        "axiomCount": 0,
-        "theoremCount": 9,
-        "sorryCount": 0
-    },
-    "overview": {
-        "historicalContext": "Erdős and Graham posed this question in their influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p. 81). They studied the iteration $g(n) = n + \\varphi(n)$, where $\\varphi$ is Euler's totient function, asking for which $n$ and $r$ the $r$-step iterate doubles the value: $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$. The function $g$ is a natural object: since $\\varphi(n)$ counts integers up to $n$ coprime to $n$, the map $n \\mapsto n + \\varphi(n)$ augments $n$ by its 'coprime complement.'\n\nThe simplest solutions are $n = 10$ (orbit: $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$, doubling every 2 steps) and $n = 94$. For decades, little progress was made on characterizing all solutions. Stefan Steinerberger achieved a breakthrough in 2025 by showing the $r = 2$ case reduces to a single finitely-checkable equation: $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. This transforms an asymptotic dynamical condition into elementary number theory.\n\nSjoerd Cambie extended the investigation to general multiplicative ratios $c \\neq 2$, discovering that $n = 738$ gives a ratio-3 solution ($g^{k+4}(738) = 3 \\cdot g^k(738)$) and $n = 148646, 4325798$ give ratio-4 solutions. These findings reveal the problem has far richer structure than Erdős originally anticipated. Cambie also conjectured that all $r = 2$ solutions have the form $n = 2^l \\cdot p$ for $p \\in \\{2, 3, 5, 7, 35, 47\\}$.\n\nThe problem belongs to a cluster of related Erdős questions (#410--#415) about iterating arithmetic functions: $\\sigma$ (sum of divisors), $\\tau$ (divisor count), $\\omega$ (distinct prime factors), and $\\varphi$ (totient). Together they form a rich chapter in arithmetic dynamics, connecting multiplicative number theory to discrete dynamical systems.",
-        "problemStatement": "Let $g(n) = n + \\varphi(n)$ and $g^k = g \\circ \\cdots \\circ g$ ($k$ times). For which $n$ and $r$ is $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all sufficiently large $k$?",
-        "text": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
-        "proofStrategy": "The formalization defines `totientStep` ($g$), `iteratedTotientStep` ($g^k$), and `DoublingRelation`. The main conjecture `ErdosProblem411` asks for a characterization of all solution pairs $(n, r)$. Known solutions ($n = 10, 94$ for $r = 2$) are axiomatized. `GeneralRatioRelation` extends to arbitrary multiplicative ratios. Steinerberger's equivalence and structural properties (even preservation, monotonicity) are formalized. Cambie's conjecture on the form $n = 2^l \\cdot p$ is stated.",
-        "keyInsights": [
-            "**Orbit structure**: $g(n) = n + \\varphi(n)$ produces strictly increasing orbits; for $n = 10$, the orbit $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$ doubles every two steps because $\\varphi(10) + \\varphi(14) = 4 + 6 = 10$",
-            "**Steinerberger's reduction**: The asymptotic condition $g^{k+2}(n) = 2 \\cdot g^k(n)$ for large $k$ is equivalent to the single equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$, transforming dynamics into elementary arithmetic",
-            "**Multi-ratio phenomenon**: Cambie found solutions with ratios 3 and 4 (not just doubling), revealing that the set $\\{c : \\exists n, r,\\, g^{k+r}(n) = c \\cdot g^k(n)\\}$ is larger than $\\{2\\}$",
-            "**Structural rigidity**: All known $r = 2$ solutions have the form $n = 2^l \\cdot p$ for small primes $p \\in \\{2, 3, 5, 7, 35, 47\\}$ (Cambie's conjecture), suggesting the solution set is highly constrained",
-            "**Parity constraint**: Even preservation under $g$ (for $n > 2$) via $\\varphi(n)$ being even restricts orbits to even numbers, a structural constraint from Mathlib's `Nat.totient_even`"
-        ],
-        "prerequisites": [
-            "Combinatorics and number theory",
-            "Number theory (primes, divisibility)"
-        ]
-    },
-    "sections": [
-        {
-            "id": "header",
-            "title": "Problem Statement and References",
-            "startLine": 1,
-            "endLine": 18,
-            "summary": "Module docstring stating the problem: characterize $(n, r)$ with $g^{k+r}(n) = 2 \\cdot g^k(n)$. References Erdős--Graham (1980) and Steinerberger (2025). Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Basic`, `Mathlib.Order.Filter.Basic`, `Mathlib.Tactic`."
-        },
-        {
-            "id": "iteration-function",
-            "title": "The Iteration Function",
-            "startLine": 19,
-            "endLine": 30,
-            "summary": "Defines `totientStep` $g(n) = n + \\varphi(n)$ and `iteratedTotientStep` $g^k(n)$ by recursion: $g^0(n) = n$, $g^{k+1}(n) = g(g^k(n))$."
-        },
-        {
-            "id": "doubling-relation",
-            "title": "The Doubling Relation",
-            "startLine": 31,
-            "endLine": 39,
-            "summary": "Defines `DoublingRelation n r`: $\\exists K,\\, \\forall k \\geq K,\\, g^{k+r}(n) = 2 \\cdot g^k(n)$. Uses existential quantification over the transient period $K$."
-        },
-        {
-            "id": "conjecture",
-            "title": "The Conjecture",
-            "startLine": 40,
-            "endLine": 51,
-            "summary": "`ErdosProblem411`: characterize all $(n, r)$ with the doubling property. Formalized as $\\exists S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ capturing all solutions with $S \\neq \\emptyset$."
-        },
-        {
-            "id": "known-solutions",
-            "title": "Known Solutions",
-            "startLine": 52,
-            "endLine": 74,
-            "summary": "Proved solutions: $n = 10, 94$ for $r = 2$ via native_decide; `GeneralRatioRelation` definition; axiomatized Cambie's ratio-3 ($n = 738$, $r = 4$) and ratio-4 ($n = 148646, 4325798$, $r = 4$) solutions."
-        },
-        {
-            "id": "steinerberger-reduction",
-            "title": "Steinerberger's Reduction",
-            "startLine": 75,
-            "endLine": 84,
-            "summary": "Axiomatized equivalence: $\\text{DoublingRelation}(n, 2) \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$. Reduces asymptotic dynamics to a single finite equation (Steinerberger 2025)."
-        },
-        {
-            "id": "structural-properties",
-            "title": "Structural Properties",
-            "startLine": 85,
-            "endLine": 108,
-            "summary": "Proved: even preservation $2 \\mid n \\wedge n > 2 \\implies 2 \\mid g(n)$ via `Nat.totient_even`. Cambie's conjecture: $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$. Monotonicity: $g(n) \\geq n$ by `omega`."
-        }
+  "id": "erdos-411",
+  "title": "Erdős Problem #411: Iterated Totient Sums and Doubling",
+  "slug": "erdos-411",
+  "description": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/411",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos411Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "iterated-functions",
+      "totient",
+      "arithmetic-dynamics"
     ],
-    "conclusion": {
-        "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. Solutions are known for $r = 2$ ($n = 10, 94$, both proved) and for general ratios 3 and 4 (Cambie, axiomatized). Steinerberger's 2025 reduction simplifies the $r = 2$ case to a single finitely-checkable equation. The formalization proves 9 theorems (including the n=10 and n=94 doubling relations), axiomatizes 4 results, and states the full open problem.",
-        "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\nThe connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
-        "openQuestions": [
-            "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",
-            "Does Cambie's conjecture ($n = 2^l \\cdot p$ for small $p$) hold for all $r = 2$ solutions?",
-            "What ratios $c$ besides 2, 3, 4 admit solutions to $g^{k+r}(n) = c \\cdot g^k(n)$? Is the set of admissible ratios finite?",
-            "Can Steinerberger's reduction technique (from asymptotic dynamics to finite equation) be extended to $r > 2$ or general ratios $c$?"
-        ]
-    },
-    "crossReferences": [
-        {
-            "targetId": "erdos-410",
-            "relationship": "sibling",
-            "description": "Both iterate arithmetic functions (φ vs σ) and study growth rates; #410 asks if $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$"
-        },
-        {
-            "targetId": "erdos-412",
-            "relationship": "sibling",
-            "description": "Both study orbit dynamics of arithmetic function iterations; #412 asks whether iterated σ-sequences eventually merge"
-        },
-        {
-            "targetId": "erdos-413",
-            "relationship": "sibling",
-            "description": "Both study iterations $n \\mapsto n + f(n)$; #413 uses $f = \\omega$ (distinct prime factors) instead of $f = \\varphi$"
-        },
-        {
-            "targetId": "erdos-414",
-            "relationship": "sibling",
-            "description": "Both study arithmetic function iteration dynamics; #414 uses $h(n) = n + \\tau(n)$ and asks about orbit merging"
-        },
-        {
-            "targetId": "euler-totient",
-            "relationship": "uses",
-            "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
-        }
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 411,
+    "erdosUrl": "https://erdosproblems.com/411",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "φ(n) is even for n > 2, used to prove even preservation under g",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Basic filter theory for eventual properties",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
+      "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
+      "Proved known r = 2 solutions (n = 10, 94) via native_decide; axiomatized Cambie's ratio-3 and ratio-4 solutions",
+      "Formalized Steinerberger's (2025) reduction: DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n",
+      "Proved even preservation under g using Mathlib's Nat.totient_even",
+      "Formalized Cambie's structural conjecture on the form of r = 2 solutions"
+    ],
+    "axiomCount": 0,
+    "lineCount": 216,
+    "assumptions": "No axioms. All results (cambie_ratio3, r=2 solutions n=10/94) are proved. Open conjecture stated as definition, not axiom."
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos411Problem.lean",
+    "lineCount": 216,
+    "namespace": "root",
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "mainTheorems": [
+      "totientStep_even_of_even",
+      "totientStep_ge"
+    ],
+    "mainDefinitions": [
+      "totientStep",
+      "iteratedTotientStep",
+      "DoublingRelation",
+      "ErdosProblem411",
+      "GeneralRatioRelation",
+      "CambieConjecture"
+    ],
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "sorryCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this question in their influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p. 81). They studied the iteration $g(n) = n + \\varphi(n)$, where $\\varphi$ is Euler's totient function, asking for which $n$ and $r$ the $r$-step iterate doubles the value: $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$. The function $g$ is a natural object: since $\\varphi(n)$ counts integers up to $n$ coprime to $n$, the map $n \\mapsto n + \\varphi(n)$ augments $n$ by its 'coprime complement.'\n\nThe simplest solutions are $n = 10$ (orbit: $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$, doubling every 2 steps) and $n = 94$. For decades, little progress was made on characterizing all solutions. Stefan Steinerberger achieved a breakthrough in 2025 by showing the $r = 2$ case reduces to a single finitely-checkable equation: $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. This transforms an asymptotic dynamical condition into elementary number theory.\n\nSjoerd Cambie extended the investigation to general multiplicative ratios $c \\neq 2$, discovering that $n = 738$ gives a ratio-3 solution ($g^{k+4}(738) = 3 \\cdot g^k(738)$) and $n = 148646, 4325798$ give ratio-4 solutions. These findings reveal the problem has far richer structure than Erdős originally anticipated. Cambie also conjectured that all $r = 2$ solutions have the form $n = 2^l \\cdot p$ for $p \\in \\{2, 3, 5, 7, 35, 47\\}$.\n\nThe problem belongs to a cluster of related Erdős questions (#410--#415) about iterating arithmetic functions: $\\sigma$ (sum of divisors), $\\tau$ (divisor count), $\\omega$ (distinct prime factors), and $\\varphi$ (totient). Together they form a rich chapter in arithmetic dynamics, connecting multiplicative number theory to discrete dynamical systems.",
+    "problemStatement": "Let $g(n) = n + \\varphi(n)$ and $g^k = g \\circ \\cdots \\circ g$ ($k$ times). For which $n$ and $r$ is $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all sufficiently large $k$?",
+    "text": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
+    "proofStrategy": "The formalization defines `totientStep` ($g$), `iteratedTotientStep` ($g^k$), and `DoublingRelation`. The main conjecture `ErdosProblem411` asks for a characterization of all solution pairs $(n, r)$. Known solutions ($n = 10, 94$ for $r = 2$) are axiomatized. `GeneralRatioRelation` extends to arbitrary multiplicative ratios. Steinerberger's equivalence and structural properties (even preservation, monotonicity) are formalized. Cambie's conjecture on the form $n = 2^l \\cdot p$ is stated.",
+    "keyInsights": [
+      "**Orbit structure**: $g(n) = n + \\varphi(n)$ produces strictly increasing orbits; for $n = 10$, the orbit $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$ doubles every two steps because $\\varphi(10) + \\varphi(14) = 4 + 6 = 10$",
+      "**Steinerberger's reduction**: The asymptotic condition $g^{k+2}(n) = 2 \\cdot g^k(n)$ for large $k$ is equivalent to the single equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$, transforming dynamics into elementary arithmetic",
+      "**Multi-ratio phenomenon**: Cambie found solutions with ratios 3 and 4 (not just doubling), revealing that the set $\\{c : \\exists n, r,\\, g^{k+r}(n) = c \\cdot g^k(n)\\}$ is larger than $\\{2\\}$",
+      "**Structural rigidity**: All known $r = 2$ solutions have the form $n = 2^l \\cdot p$ for small primes $p \\in \\{2, 3, 5, 7, 35, 47\\}$ (Cambie's conjecture), suggesting the solution set is highly constrained",
+      "**Parity constraint**: Even preservation under $g$ (for $n > 2$) via $\\varphi(n)$ being even restricts orbits to even numbers, a structural constraint from Mathlib's `Nat.totient_even`"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
     ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring stating the problem: characterize $(n, r)$ with $g^{k+r}(n) = 2 \\cdot g^k(n)$. References Erdős--Graham (1980) and Steinerberger (2025). Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Basic`, `Mathlib.Order.Filter.Basic`, `Mathlib.Tactic`."
+    },
+    {
+      "id": "iteration-function",
+      "title": "The Iteration Function",
+      "startLine": 19,
+      "endLine": 30,
+      "summary": "Defines `totientStep` $g(n) = n + \\varphi(n)$ and `iteratedTotientStep` $g^k(n)$ by recursion: $g^0(n) = n$, $g^{k+1}(n) = g(g^k(n))$."
+    },
+    {
+      "id": "doubling-relation",
+      "title": "The Doubling Relation",
+      "startLine": 31,
+      "endLine": 39,
+      "summary": "Defines `DoublingRelation n r`: $\\exists K,\\, \\forall k \\geq K,\\, g^{k+r}(n) = 2 \\cdot g^k(n)$. Uses existential quantification over the transient period $K$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 40,
+      "endLine": 51,
+      "summary": "`ErdosProblem411`: characterize all $(n, r)$ with the doubling property. Formalized as $\\exists S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ capturing all solutions with $S \\neq \\emptyset$."
+    },
+    {
+      "id": "known-solutions",
+      "title": "Known Solutions",
+      "startLine": 52,
+      "endLine": 74,
+      "summary": "Proved solutions: $n = 10, 94$ for $r = 2$ via native_decide; `GeneralRatioRelation` definition; axiomatized Cambie's ratio-3 ($n = 738$, $r = 4$) and ratio-4 ($n = 148646, 4325798$, $r = 4$) solutions."
+    },
+    {
+      "id": "steinerberger-reduction",
+      "title": "Steinerberger's Reduction",
+      "startLine": 75,
+      "endLine": 84,
+      "summary": "Axiomatized equivalence: $\\text{DoublingRelation}(n, 2) \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$. Reduces asymptotic dynamics to a single finite equation (Steinerberger 2025)."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 85,
+      "endLine": 108,
+      "summary": "Proved: even preservation $2 \\mid n \\wedge n > 2 \\implies 2 \\mid g(n)$ via `Nat.totient_even`. Cambie's conjecture: $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$. Monotonicity: $g(n) \\geq n$ by `omega`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. Solutions are known for $r = 2$ ($n = 10, 94$, both proved) and for general ratios 3 and 4 (Cambie, axiomatized). Steinerberger's 2025 reduction simplifies the $r = 2$ case to a single finitely-checkable equation. The formalization proves 9 theorems (including the n=10 and n=94 doubling relations), axiomatizes 4 results, and states the full open problem.",
+    "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\nThe connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
+    "openQuestions": [
+      "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",
+      "Does Cambie's conjecture ($n = 2^l \\cdot p$ for small $p$) hold for all $r = 2$ solutions?",
+      "What ratios $c$ besides 2, 3, 4 admit solutions to $g^{k+r}(n) = c \\cdot g^k(n)$? Is the set of admissible ratios finite?",
+      "Can Steinerberger's reduction technique (from asymptotic dynamics to finite equation) be extended to $r > 2$ or general ratios $c$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-410",
+      "relationship": "sibling",
+      "description": "Both iterate arithmetic functions (φ vs σ) and study growth rates; #410 asks if $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$"
+    },
+    {
+      "targetId": "erdos-412",
+      "relationship": "sibling",
+      "description": "Both study orbit dynamics of arithmetic function iterations; #412 asks whether iterated σ-sequences eventually merge"
+    },
+    {
+      "targetId": "erdos-413",
+      "relationship": "sibling",
+      "description": "Both study iterations $n \\mapsto n + f(n)$; #413 uses $f = \\omega$ (distinct prime factors) instead of $f = \\varphi$"
+    },
+    {
+      "targetId": "erdos-414",
+      "relationship": "sibling",
+      "description": "Both study arithmetic function iteration dynamics; #414 uses $h(n) = n + \\tau(n)$ and asks about orbit merging"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
+    }
+  ]
 }
