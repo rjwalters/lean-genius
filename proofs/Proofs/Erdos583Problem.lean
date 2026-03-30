@@ -110,9 +110,7 @@ structure PathCyclePartition (G : SimpleGraph V) where
 axiom lovasz_theorem (G : SimpleGraph V) :
   ∃ P : PathCyclePartition G, P.paths.length + P.cycles.length ≤ Fintype.card V / 2
 
-/-- Corollary: Every graph partitions into ≤ n-1 paths -/
-axiom lovasz_corollary (G : SimpleGraph V) (hG : G.edgeSet.Nonempty) :
-  ∃ P : PathPartition G, P.size ≤ Fintype.card V - 1
+-- lovasz_corollary: every graph with edges partitions into ≤ n-1 paths (unused)
 
 /-
 ## Part 4: Chung's Theorem (1978)
@@ -146,10 +144,7 @@ structure PathCover (G : SimpleGraph V) where
   paths : List (GraphPath G)
   covers : CoversAllEdges paths
 
-/-- Pyber's Theorem (1996): Connected graphs covered by n/2 + O(n^{3/4}) paths -/
-axiom pyber_theorem (G : SimpleGraph V) (hG : G.Connected) :
-  ∃ C : PathCover G, ∃ c : ℝ, c > 0 ∧
-    (C.paths.length : ℝ) ≤ Fintype.card V / 2 + c * (Fintype.card V : ℝ)^(3/4 : ℝ)
+-- pyber_theorem: connected graphs are covered by n/2 + O(n^{3/4}) paths (unused)
 
 
 /-
@@ -191,18 +186,9 @@ def HajosConjecture (n : ℕ) : Prop :=
 Cases where the Erdős-Gallai conjecture is known.
 -/
 
-/-- Trees satisfy the conjecture (trivially: a tree is one path when n > 1) -/
-axiom tree_satisfies (G : SimpleGraph V) (hG : G.IsTree) :
-  satisfiesConjecture G
-
-/-- Complete graphs satisfy the conjecture -/
-axiom complete_graph_satisfies (n : ℕ) (hn : n ≥ 1) :
-  ErdosGallaiConjecture n
-
-/-- Cycles satisfy the conjecture -/
-axiom cycle_satisfies (G : SimpleGraph V) (hG : G.Connected)
-    (hcycle : ∀ v, G.degree v = 2) :
-  satisfiesConjecture G
+-- tree_satisfies: trees satisfy the Erdős-Gallai conjecture (unused)
+-- complete_graph_satisfies: complete graphs satisfy ErdosGallaiConjecture n for n ≥ 1 (unused)
+-- cycle_satisfies: 2-regular connected graphs satisfy the Erdős-Gallai conjecture (unused)
 
 /-
 ## Part 9: Erdős Problem #583 Statement
@@ -225,18 +211,8 @@ theorem erdos_583_conjecture (n : ℕ) :
 Graphs showing the bound ⌈n/2⌉ is tight.
 -/
 
-/-- Stars require only 1 path (the bound is not tight for stars) -/
-axiom star_needs_few_paths (n : ℕ) (hn : n ≥ 2) :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = n ∧ G.Connected ∧
-    ∃ P : PathPartition G, P.size ≤ (n - 1 + 1) / 2
-
-/-- Complete bipartite graphs K_{n,n} need many paths.
-    K_{n,n} has 2n vertices and n² edges, needs Θ(n) paths. -/
-axiom bipartite_tight (n : ℕ) (hn : n ≥ 2) :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = 2 * n ∧ G.Connected ∧
-    ∀ P : PathPartition G, P.size ≥ n / 2
+-- star_needs_few_paths: stars on n vertices admit a path partition of size ≤ ⌈(n-1)/2⌉ (unused)
+-- bipartite_tight: K_{n,n} requires ≥ n/2 paths in any edge-disjoint partition, showing tightness (unused)
 
 /-
 ## Part 11: Summary

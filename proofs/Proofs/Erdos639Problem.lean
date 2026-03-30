@@ -120,19 +120,9 @@ def exactBound (n : ℕ) : ℕ :=
 The behavior differs for small n.
 -/
 
-/-- For n ≤ 5, all edges can avoid monochromatic triangles.
-    This is because K_5 has a 2-coloring with no mono triangle. -/
-axiom small_case_5 :
-    ∃ c : EdgeColoring 5, IsSymmetricColoring c ∧
-      ∀ t : Triangle 5, ¬IsMonochromatic c t
+-- (removed axiom small_case_5: K_5 has a symmetric 2-coloring with no monochromatic triangle)
 
-/-- For n = 6, exactly 10 edges can avoid mono triangles.
-    R(3,3) = 6 means K_6 must have a mono triangle. -/
-axiom case_6 :
-    (∀ c : EdgeColoring 6, IsSymmetricColoring c →
-      countEdgesNotInMono c ≤ 10) ∧
-    (∃ c : EdgeColoring 6, IsSymmetricColoring c ∧
-      countEdgesNotInMono c = 10)
+-- (removed axiom case_6: for n=6, every symmetric 2-coloring has ≤10 edges avoiding mono triangles, and exactly 10 is achievable)
 
 /-- Ramsey number R(3,3) = 6. -/
 axiom ramsey_3_3 : ∀ c : EdgeColoring 6, IsSymmetricColoring c →
@@ -149,19 +139,14 @@ axiom keevash_sudakov_main (n : ℕ) (hn : n ≥ 7)
     (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
     countEdgesNotInMono c ≤ n^2 / 4
 
-/-- The bound is tight: there exist colorings achieving it. -/
-axiom keevash_sudakov_tight (n : ℕ) (hn : n ≥ 7) :
-    ∃ c : EdgeColoring n, IsSymmetricColoring c ∧
-      countEdgesNotInMono c = n^2 / 4
+-- (removed axiom keevash_sudakov_tight: for n≥7 there exists a symmetric 2-coloring achieving exactly ⌊n²/4⌋ edges not in mono triangles)
 
 /-- The extremal construction: balanced complete bipartite coloring. -/
 def balancedBipartiteColoring (n : ℕ) : EdgeColoring n :=
   fun i j => if i.val < n / 2 ∧ j.val ≥ n / 2 then true else
              if i.val ≥ n / 2 ∧ j.val < n / 2 then true else false
 
-/-- The bipartite coloring achieves the bound. -/
-axiom bipartite_achieves_bound (n : ℕ) (hn : n ≥ 7) :
-    countEdgesNotInMono (balancedBipartiteColoring n) = n^2 / 4
+-- (removed axiom bipartite_achieves_bound: the balanced bipartite coloring achieves exactly ⌊n²/4⌋ edges not in mono triangles for n≥7)
 
 /- ## Part VII: Connection to Ramsey Theory
 
@@ -182,30 +167,16 @@ theorem edge_partition (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring 
     push_neg at h
     exact ⟨hij, h⟩
 
-/-- The edges not in mono triangles form a bipartite-like structure. -/
-axiom non_mono_edges_bipartite (n : ℕ) (hn : n ≥ 7)
-    (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
-    -- The edges not in mono triangles can be covered by a bipartite graph
-    True
+-- (removed axiom non_mono_edges_bipartite: for n≥7, edges not in mono triangles can be covered by a bipartite graph)
 
 /- ## Part VIII: Pyber's Covering Result
 
 A related result on covering edges with mono cliques.
 -/
 
-/-- **Pyber (1986)**: The edges of any 2-colored K_n can be covered
-    by at most ⌊n²/4⌋ + 2 monochromatic cliques. -/
-axiom pyber_covering (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
-    ∃ (k : ℕ) (cliques : Fin k → Finset (Fin n)),
-      k ≤ n^2 / 4 + 2 ∧
-      -- Each clique is monochromatic
-      -- Union covers all edges
-      True
+-- (removed axiom pyber_covering: edges of any 2-colored K_n can be covered by ≤⌊n²/4⌋+2 monochromatic cliques — Pyber 1986)
 
-/-- Erdős-Rousseau-Schelp: Asymptotic version for large n. -/
-axiom erdos_rousseau_schelp_large (ε : ℝ) (hε : ε > 0) :
-    ∃ N : ℕ, ∀ n ≥ N, ∀ c : EdgeColoring n, IsSymmetricColoring c →
-      countEdgesNotInMono c ≤ (1 + ε) * (n^2 / 4 : ℝ)
+-- (removed axiom erdos_rousseau_schelp_large: for large n, edges avoiding mono triangles are ≤(1+ε)·n²/4 — Erdős-Rousseau-Schelp asymptotic result)
 
 /-- Complete solution combining all cases. -/
 axiom keevash_sudakov_complete (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :

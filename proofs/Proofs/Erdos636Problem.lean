@@ -108,9 +108,7 @@ Graphs with bounded homogeneous sets.
 /-- The Ramsey number R(k,k) bounds when such graphs exist. -/
 def ramseyBound (k : ℕ) : ℕ := 2^(2*k)  -- Rough upper bound
 
-/-- For n ≥ R(k,k), there exist graphs with ω, α ≤ k. -/
-axiom ramsey_graphs_exist (k : ℕ) (n : ℕ) (hn : n ≥ ramseyBound k) :
-    ∃ G : SimpleGraph (Fin n), NoLargeHomogeneousSet G k
+-- (axiom removed) ramsey_graphs_exist: for n ≥ R(k,k), there exist graphs on n vertices with ω, α ≤ k.
 
 /-- The Ramsey graph condition: ω(G), α(G) ≤ C log n. -/
 def IsRamseyGraph (G : SimpleGraph (Fin n)) (C : ℝ) : Prop :=
@@ -123,11 +121,7 @@ def IsRamseyGraph (G : SimpleGraph (Fin n)) (C : ℝ) : Prop :=
 The weaker bound they proved.
 -/
 
-/-- **Erdős-Faudree-Sós Theorem**: Ramsey graphs have ≥ cn^(3/2) distinct signatures. -/
-axiom erdos_faudree_sos (C : ℝ) (hC : C > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 →
-      ∀ G : SimpleGraph (Fin n), IsRamseyGraph G C →
-        distinctSignatureCount G ≥ Nat.floor (c * n^(3/2 : ℝ))
+-- (axiom removed) erdos_faudree_sos: Ramsey graphs have ≥ cn^(3/2) distinct signatures (Erdős-Faudree-Sós theorem).
 
 /-- The EFS bound is n^(3/2). -/
 def efs_exponent : ℝ := 3/2
@@ -181,16 +175,8 @@ theorem theta_bound (C : ℝ) (hC : C > 0) :
 Key ideas in the Kwan-Sudakov proof.
 -/
 
-/-- The proof uses a careful probabilistic argument. -/
-axiom ks_probabilistic_method :
-    -- Random induced subgraphs have spread-out signatures
-    True
-
-/-- Key lemma: Signatures are well-distributed across the (v, e) plane. -/
-axiom signature_distribution :
-    ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
-      -- Signatures form a 2D grid-like structure
-      True
+-- (axiom removed) ks_probabilistic_method: random induced subgraphs have spread-out signatures in the Kwan-Sudakov proof.
+-- (axiom removed) signature_distribution: signatures of a graph form a 2D grid-like structure across the (v, e) plane.
 
 /-- The vertex count v ranges from 0 to n. -/
 theorem vertex_count_range (n : ℕ) (G : SimpleGraph (Fin n)) (S : Finset (Fin n)) :
@@ -208,11 +194,7 @@ theorem edge_count_range [DecidableEq V] [Fintype V]
 The role of the homogeneity condition.
 -/
 
-/-- Without the Ramsey condition, the bound can be smaller. -/
-axiom non_ramsey_smaller_bound :
-    ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
-      ¬IsRamseyGraph G 2 ∧
-      distinctSignatureCount G < Nat.floor ((n : ℝ)^(5/2 : ℝ) / 1000)
+-- (axiom removed) non_ramsey_smaller_bound: there exist graphs without the Ramsey condition having fewer than n^(5/2)/1000 distinct signatures.
 
 /-- Cliques have few distinct signatures. -/
 theorem clique_few_signatures (n : ℕ) :
@@ -224,12 +206,7 @@ theorem empty_few_signatures (n : ℕ) :
     distinctSignatureCount (⊥ : SimpleGraph (Fin n)) ≤ n + 1 := by
   sorry
 
-/-- The Ramsey condition forces "complexity" that yields many signatures. -/
-axiom ramsey_forces_complexity :
-    ∀ (C : ℝ) (hC : C > 0) (n : ℕ) (G : SimpleGraph (Fin n)),
-      IsRamseyGraph G C →
-        -- G must have complex local structure
-        True
+-- (axiom removed) ramsey_forces_complexity: the Ramsey condition forces complex local structure that yields many signatures.
 
 /-
 ## Part X: Related Problems
@@ -249,10 +226,7 @@ def ErdosHajnalConjecture : Prop :=
         -- If G excludes H as induced subgraph, G has large clique or independent set
         True
 
-/-- Counting induced paths, cycles, etc. -/
-axiom induced_path_count (n k : ℕ) (G : SimpleGraph (Fin n)) :
-    -- The number of induced paths of length k
-    True
+-- (axiom removed) induced_path_count: placeholder for counting induced paths of length k in a graph on n vertices.
 
 /-
 ## Part XI: Main Result

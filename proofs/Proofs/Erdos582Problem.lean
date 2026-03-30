@@ -182,13 +182,7 @@ This is the current best known upper bound.
 -/
 axiom folkman_upper_bound : folkmanNumber_2_3_4 ≤ 941
 
-/--
-**Spencer's Bound (1988):**
-f(2,3,4) ≤ 3 × 10⁹
-
-This resolved Erdős's challenge to find a Folkman graph with < 10¹⁰ vertices.
--/
-axiom spencer_bound : folkmanNumber_2_3_4 ≤ 3 * 10^9
+-- Spencer (1988): folkmanNumber_2_3_4 ≤ 3 × 10⁹ (resolved Erdős's $100 prize for < 10¹⁰ vertices)
 
 /--
 **Current Knowledge:**
@@ -201,17 +195,9 @@ theorem folkman_bounds : 19 ≤ folkmanNumber_2_3_4 ∧ folkmanNumber_2_3_4 ≤ 
 ## Part VI: Historical Bounds Timeline
 -/
 
-/--
-**Frankl-Rödl Bound (1986):**
-f(2,3,4) ≤ 7 × 10¹¹
--/
-axiom frankl_rodl_bound : folkmanNumber_2_3_4 ≤ 7 * 10^11
+-- Frankl-Rödl (1986): folkmanNumber_2_3_4 ≤ 7 × 10¹¹
 
-/--
-**Lu's Bound (2007):**
-f(2,3,4) ≤ 9697
--/
-axiom lu_bound : folkmanNumber_2_3_4 ≤ 9697
+-- Lu (2007): folkmanNumber_2_3_4 ≤ 9697
 
 /--
 **Bound Improvement Timeline:**
@@ -235,14 +221,7 @@ theorem bounds_improvement :
 ## Part VII: Ramsey Theory Context
 -/
 
-/--
-**Classical Ramsey Number R(3,3):**
-R(3,3) = 6, the minimum n such that any 2-coloring of K_n
-contains a monochromatic triangle.
--/
-axiom ramsey_3_3 : ∀ c : EdgeColoring (completeGraph (Fin 6)),
-    hasClique (monochromaticSubgraph (completeGraph (Fin 6)) c true) 3 ∨
-    hasClique (monochromaticSubgraph (completeGraph (Fin 6)) c false) 3
+-- R(3,3) = 6: every 2-coloring of K₆ contains a monochromatic triangle (classical Ramsey result)
 
 /--
 **Connection to Ramsey Theory:**
@@ -264,41 +243,15 @@ Minimum vertices in K_n-free graph where every r-coloring has monochromatic K_k.
 noncomputable def folkmanNumber (r k n : ℕ) : ℕ :=
   0  -- placeholder
 
-/--
-**f(2,3,3) = ∞:**
-There is no K₃-free graph where every 2-coloring has a monochromatic triangle.
-
-**Proof Sketch:**
-If G is K₃-free (triangle-free), then G contains no triangles.
-Any monochromatic subgraph is a subgraph of G, so it also contains no triangles.
-Therefore, no 2-coloring can produce a monochromatic triangle.
-
-This is stated as an axiom because proving subgraph inheritance of triangle-freeness
-requires additional machinery about graph substructures.
--/
-axiom folkman_2_3_3_infinite :
-    ¬ ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      isKFree G 3 ∧ hasRamseyProperty G
+-- f(2,3,3) = ∞: no K₃-free graph forces a monochromatic triangle in every 2-coloring
 
 /-
 ## Part IX: Computational Approaches
 -/
 
-/--
-**Explicit Construction:**
-Lu (2007) gave an explicit construction of a Folkman graph on 9697 vertices
-using algebraic methods (Cayley graphs over finite fields).
--/
-axiom lu_explicit_construction :
-    ∃ (G : SimpleGraph (Fin 9697)), isFolkmanGraph G
+-- Lu (2007): explicit Folkman graph on 9697 vertices via Cayley graphs over finite fields
 
-/--
-**Computer Search:**
-The Dudek-Rödl bound uses probabilistic and computer-assisted methods
-to verify existence of a 941-vertex Folkman graph.
--/
-axiom dudek_rodl_construction :
-    ∃ (G : SimpleGraph (Fin 941)), isFolkmanGraph G
+-- Dudek-Rödl (2008): probabilistic/computer-assisted existence of a 941-vertex Folkman graph
 
 /-
 ## Part X: Main Results Summary
