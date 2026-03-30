@@ -29,20 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved k=1 special case (2→1 sorries). Main asymptotic theorem remains sorry (needs filter limit composition with Faulhaber).",
+    "progressSummary": "PROGRESS: Main theorem powerSumRatio_tendsto structurally proved via Faulhaber+axiom. Remaining sorry is routine (nat pow tends to atTop in Q).",
     "builtItems": [
       "Proved powerSumRatio_k1 (eliminated 1 of 2 sorries)",
       "Added gauss_sum_rat helper lemma",
-      "Created gallery data src/data/proofs/sum-of-kth-powers-oq-04/meta.json"
+      "Created gallery data src/data/proofs/sum-of-kth-powers-oq-04/meta.json",
+      "Structural proof of powerSumRatio_tendsto using Faulhaber, monic_poly_ratio_tendsto axiom, and limit arithmetic"
     ],
     "insights": [
       "Gauss sum over Q proved by induction: 2*sum(i, range n) = n*(n-1)",
       "powerSumRatio_k1 proved exactly using Gauss sum + field_simp",
       "Main theorem requires combining Faulhaber (Bernoulli polynomials) with filter limits",
-      "Two axioms cover Bernoulli poly leading behavior - minimal for the asymptotic result"
+      "Two axioms cover Bernoulli poly leading behavior - minimal for the asymptotic result",
+      "Main sorry reduced from full theorem to routine const_div_pow_tendsto_zero helper"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove const_div_pow_tendsto_zero - needs Tendsto (nat pow d) atTop atTop in Q"
+    ],
     "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "score": 8
   },

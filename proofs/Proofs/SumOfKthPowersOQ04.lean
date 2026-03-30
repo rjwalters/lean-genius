@@ -82,19 +82,51 @@ axiom monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     Concretely: for large n, ∑ i^k ≈ n^{k+1}/(k+1). The next term is n^k/2
     (from the sub-leading coefficient of the Bernoulli polynomial), giving
     the first-order Euler-Maclaurin approximation. -/
+/-- Constant divided by n^d tends to 0 for d ≥ 1.
+    Routine limit fact; needs correct Mathlib API for ℚ. -/
+private lemma const_div_pow_tendsto_zero (c : ℚ) (d : ℕ) (hd : 0 < d) :
+    Tendsto (fun n : ℕ => c / (n : ℚ) ^ d) atTop (nhds 0) := by
+  rw [show (0 : ℚ) = c * 0 from by ring]
+  apply Filter.Tendsto.const_mul
+  rw [show (fun n : ℕ => (1 : ℚ) / (n : ℚ) ^ d) = (fun n : ℕ => ((n : ℚ) ^ d)⁻¹) from by
+    ext; simp [one_div]]
+  apply Filter.Tendsto.inv_tendsto_atTop
+  apply Filter.Tendsto.atTop_nonneg_mul_left (show (0 : ℚ) < 1 from one_pos)
+  sorry -- Tendsto (fun n : ℕ => (n : ℚ) ^ d) atTop atTop — routine
+
 theorem powerSumRatio_tendsto (k : ℕ) :
     Tendsto (powerSumRatio k) atTop (nhds (1 / (↑k + 1 : ℚ))) := by
-  -- The proof strategy:
-  -- 1. By Faulhaber: (k+1) * ∑ i^k = B_{k+1}(n) - B_{k+1}(0)
-  -- 2. So powerSumRatio k n = (B_{k+1}(n) - B_{k+1}(0)) / ((k+1) * n^{k+1})
-  -- 3. B_{k+1}(n)/n^{k+1} → 1 by monic_poly_ratio_tendsto (axiom)
-  -- 4. B_{k+1}(0)/n^{k+1} → 0 since B_{k+1}(0) is constant
-  -- 5. Combining: ratio → (1 - 0)/(k+1) = 1/(k+1)
-  --
-  -- The full proof requires combining Faulhaber's formula with filter limits.
-  -- The algebraic rewriting from sum to Bernoulli polynomials and the
-  -- limit composition are technically involved in Lean's filter framework.
-  sorry
+  -- Setup
+  set B := Polynomial.bernoulli (k + 1) with hB_def
+  set c := B.eval (0 : ℚ) with hc_def
+  have hk1_ne : (↑k + 1 : ℚ) ≠ 0 := by positivity
+  obtain ⟨hlc, hndeg⟩ := bernoulli_poly_leading k
+  -- Step 1: For n > 0, rewrite powerSumRatio using Faulhaber
+  have h_eq : ∀ᶠ n : ℕ in atTop,
+      powerSumRatio k n = (B.eval (↑n) - c) / ((↑k + 1) * (↑n) ^ (k + 1)) := by
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    simp only [powerSumRatio, show n ≠ 0 from by omega, ↓reduceIte]
+    have faulhaber := Finset.sum_range_pow_eq_bernoulli_sub n k
+    have hsum : ∑ i ∈ Finset.range n, (↑i : ℚ) ^ k =
+        (B.eval (↑n) - c) / (↑k + 1) := by
+      rw [eq_div_iff hk1_ne]; linarith
+    rw [hsum, div_div]
+  -- Step 2: The limit of the rewritten form
+  suffices h : Tendsto (fun n : ℕ => (B.eval (↑n) - c) / ((↑k + 1) * (↑n) ^ (k + 1)))
+      atTop (nhds (1 / (↑k + 1))) from h.congr' h_eq.symm
+  -- Step 3: Split into B(n)/((k+1)n^{k+1}) - c/((k+1)n^{k+1})
+  rw [show (1 : ℚ) / (↑k + 1) = 1 / (↑k + 1) - 0 from by ring]
+  apply Filter.Tendsto.sub
+  · -- B(n) / ((k+1) * n^(k+1)) → 1/(k+1)
+    have h_bern := monic_poly_ratio_tendsto B (k + 1) hndeg hlc (by omega)
+    have := h_bern.div_const (↑k + 1 : ℚ)
+    simp only [one_div] at this
+    refine this.congr (fun n => ?_)
+    simp only [div_div]
+  · -- c / ((k+1) * n^(k+1)) → 0
+    rw [show (0 : ℚ) = c / (↑k + 1) * 0 from by ring]
+    apply Filter.Tendsto.const_mul
+    exact const_div_pow_tendsto_zero 1 (k + 1) (by omega) |>.congr (fun n => by simp)
 
 /-- Special case k=0: ∑ 1 / n = n/n = 1 → 1/(0+1) = 1. -/
 theorem powerSumRatio_k0 (n : ℕ) (hn : n ≠ 0) :
