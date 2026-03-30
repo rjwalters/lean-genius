@@ -1,6 +1,6 @@
 {
   "slug": "erdos-319",
-  "title": "Erd\u0151s #319",
+  "title": "Erdős #319",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -29,19 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved small_example axiom (4\u21923 axioms). Constructed A={2,3,6} with \u03b4(2)=-1, verified irreducibility by exhaustive case analysis on all 6 proper non-empty subsets.",
+    "progressSummary": "PROGRESS: Proved small_example axiom (4→3 axioms). Constructed A={2,3,6} with δ(2)=-1, verified irreducibility by exhaustive case analysis on all 6 proper non-empty subsets.",
     "builtItems": [
-      "PROVED trivial_upper_bound (5A\u21924A)",
-      "PROVED small_example: irreducible zero sum {2,3,6} with \u03b4(2)=-1 (4A\u21923A)"
+      "PROVED trivial_upper_bound (5A→4A)",
+      "PROVED small_example: irreducible zero sum {2,3,6} with δ(2)=-1 (4A→3A)"
     ],
     "insights": [
-      "trivial_upper_bound proved: maxIrreducibleSize N \u2264 N follows from A \u2286 {1,...,N} \u2192 |A| \u2264 N. 5A\u21924A.",
+      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A.",
       "-1/2 + 1/3 + 1/6 = 0 is the simplest irreducible zero sum in unit fractions",
       "Irreducibility verified by 8-way case split on membership in {2,3,6}, each subset sum computed via Finset.sum_insert + push_cast + norm_num"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #319 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?\n\n\n\nAdenwalla has observed that a lower bound of\\[\\lvert A\\rvert\\geq (1-\\tfrac{1}{e}+o(1))N\\]follows from the main result of Croot \\cite{Cr01}, which states that there exists some set of integers $B\\subset [(\\frac{1}{e}-o(1))N,N]$ such that $\\sum_{b\\in B}\\frac{1}{b}=1$. Since the sum of $\\frac{1}{m}$ for $m\\in [c_1N,c_2N]$ is asymptotic to $\\log(c_2/c_1)$ we must have $\\lvert B\\rvert \\geq (1-\\tfrac{1}{e}+o(1))N$.\n\nWe may then let $A=B\\cup\\{1\\}$ and choose $\\delta(n)=-1$ for all $n\\in B$ and $\\delta(1)=1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #318\n- Problem #320\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Cr01\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #319 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?\n\n\n\nAdenwalla has observed that a lower bound of\\[\\lvert A\\rvert\\geq (1-\\tfrac{1}{e}+o(1))N\\]follows from the main result of Croot \\cite{Cr01}, which states that there exists some set of integers $B\\subset [(\\frac{1}{e}-o(1))N,N]$ such that $\\sum_{b\\in B}\\frac{1}{b}=1$. Since the sum of $\\frac{1}{m}$ for $m\\in [c_1N,c_2N]$ is asymptotic to $\\log(c_2/c_1)$ we must have $\\lvert B\\rvert \\geq (1-\\tfrac{1}{e}+o(1))N$.\n\nWe may then let $A=B\\cup\\{1\\}$ and choose $\\delta(n)=-1$ for all $n\\in B$ and $\\delta(1)=1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #318\n- Problem #320\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Cr01\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -64,9 +64,9 @@
     {
       "path": "Proofs/Erdos319Problem.lean",
       "filename": "Erdos319Problem.lean",
-      "lineCount": 189,
-      "theoremCount": 2,
-      "axiomCount": 3,
+      "lineCount": 192,
+      "theoremCount": 3,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

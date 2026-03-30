@@ -8,7 +8,10 @@
   "problemStatement": {
     "formal": "For k ≥ 3, define D_k(A) = { d : ∃ a, {a, a+d, ..., a+(k-1)d} ⊆ A }. How does max_{|A|=n} |D_k(A)| grow as a function of n and k? The k=3 case is Erdős #1097 with bounds Ω(n^{1.778}) to O(n^{11/6}). For k ≥ 4 the exponent should decrease.",
     "plain": "Generalize the 3-term AP common differences question to k-term APs: how many distinct common differences can k-APs in an n-element set have?",
-    "whyMatters": ["Connects to Szemerédi's theorem and quantitative arithmetic regularity", "Anti-monotonicity in k gives a hierarchy of counting problems"]
+    "whyMatters": [
+      "Connects to Szemerédi's theorem and quantitative arithmetic regularity",
+      "Anti-monotonicity in k gives a hierarchy of counting problems"
+    ]
   },
   "knownResults": {
     "proven": [
@@ -50,11 +53,24 @@
     "nextSteps": [],
     "markdown": ""
   },
-  "tags": ["erdos", "additive combinatorics", "arithmetic progressions", "k-AP"],
-  "relatedProofs": ["erdos-1097"],
+  "tags": [
+    "erdos",
+    "additive combinatorics",
+    "arithmetic progressions",
+    "k-AP"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1097",
+    "erdos-1097-oq-01"
+  ],
   "references": {
     "papers": [],
-    "urls": ["https://erdosproblems.com/1097"],
+    "urls": [
+      "https://erdosproblems.com/1097"
+    ],
     "mathlib": []
   },
   "started": "2026-03-29T18:00:00Z",
@@ -65,13 +81,24 @@
     {
       "path": "Proofs/Erdos1097OQ01.lean",
       "filename": "Erdos1097OQ01.lean",
-      "lineCount": 180,
-      "theoremCount": 17,
+      "lineCount": 208,
+      "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1097OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1097Problem.lean",
+      "filename": "Erdos1097Problem.lean",
+      "lineCount": 391,
+      "theoremCount": 23,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1097Problem.lean"
     }
   ]
 }

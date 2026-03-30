@@ -46,7 +46,8 @@
   ],
   "relatedProofs": [
     "collatz-structured",
-    "collatz-structured-oq-02"
+    "collatz-structured-oq-02",
+    "collatz-structured-oq-03"
   ],
   "references": {
     "papers": [],
@@ -68,6 +69,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ03.lean",
+      "filename": "CollatzStructuredOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03.lean"
     }
   ]
 }
