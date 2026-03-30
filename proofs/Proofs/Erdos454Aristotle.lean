@@ -101,7 +101,16 @@ theorem conjecture_iff_not_negation :
 theorem infinitely_many_deviation_ge_2
     (h : 2 ≤ limsup deviationENat atTop) :
     {n : ℕ | deviationENat n ≥ 2}.Infinite := by
-  sorry -- Needs limsup ≥ c → frequently ≥ c argument in ℕ∞
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  obtain ⟨N, hN⟩ := hfin.bddAbove
+  have hev : ∀ᶠ n in atTop, deviationENat n ≤ 1 := by
+    simp only [Filter.eventually_atTop]
+    refine ⟨N + 1, fun n hn => ?_⟩
+    by_contra h'
+    push_neg at h'
+    exact absurd (hN (Order.succ_le_of_lt h')) (by omega)
+  exact absurd (h.trans (Filter.limsup_le_of_le ⟨⊥, fun _ _ => bot_le⟩ hev)) (by norm_num)
 
 -- Prime gap existence (known result, not open)
 /-- There exist arbitrarily large prime gaps: for any G,

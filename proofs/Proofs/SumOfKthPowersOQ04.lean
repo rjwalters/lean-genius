@@ -15,7 +15,8 @@ This follows from Faulhaber's formula (in SumOfKthPowers.lean):
 Since B_{k+1} is a monic polynomial of degree k+1, the ratio
 B_{k+1}(n)/n^{k+1} → 1 as n → ∞, giving the asymptotic formula.
 
-## Status: AXIOMATIZED (2 axioms for Bernoulli polynomial asymptotics)
+## Status: AXIOMATIZED (1 axiom: monic polynomial ratio limit)
+Previously 2 axioms — bernoulli_poly_leading now proved from coeff_bernoulli.
 -/
 
 import Mathlib.NumberTheory.Bernoulli
@@ -26,9 +27,35 @@ import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
-open Finset Filter
+open Finset Filter Polynomial
 
 namespace SumOfKthPowersAsymptotic
+
+/-! ## Bernoulli Polynomial Degree and Leading Coefficient -/
+
+/-- The coefficient of X^(k+1) in the Bernoulli polynomial B_{k+1} is 1.
+    This follows from coeff_bernoulli: coeff (bernoulli n) i = bernoulli(n-i) * C(n,i)
+    for i ≤ n. At i = n, this gives bernoulli(0) * C(n,n) = 1 * 1 = 1. -/
+private theorem bernoulli_coeff_top (k : ℕ) :
+    (Polynomial.bernoulli (k + 1)).coeff (k + 1) = 1 := by
+  rw [coeff_bernoulli]
+  simp [le_refl, Nat.sub_self, _root_.bernoulli_zero, Nat.choose_self]
+
+/-- The Bernoulli polynomial B_{k+1} has degree exactly k+1 and leading coefficient 1.
+    PROVED from coeff_bernoulli (was previously an axiom). -/
+theorem bernoulli_poly_leading (k : ℕ) :
+    (Polynomial.bernoulli (k + 1)).leadingCoeff = 1 ∧
+    (Polynomial.bernoulli (k + 1)).natDegree = k + 1 := by
+  have coeff_top := bernoulli_coeff_top k
+  have coeff_above : ∀ N, k + 1 < N → (Polynomial.bernoulli (k + 1)).coeff N = 0 := by
+    intro N hN
+    rw [coeff_bernoulli]
+    simp [not_le.mpr hN]
+  have ndeg : (Polynomial.bernoulli (k + 1)).natDegree = k + 1 :=
+    le_antisymm
+      (natDegree_le_iff_coeff_eq_zero.mpr coeff_above)
+      (le_natDegree_of_ne_zero (by rw [coeff_top]; exact one_ne_zero))
+  exact ⟨by rw [leadingCoeff, ndeg, coeff_top], ndeg⟩
 
 /-! ## The Asymptotic Formula -/
 
@@ -37,14 +64,12 @@ noncomputable def powerSumRatio (k n : ℕ) : ℚ :=
   if n = 0 then 0
   else (∑ i ∈ range n, (i : ℚ) ^ k) / (n : ℚ) ^ (k + 1)
 
-/-- Bernoulli polynomial B_{k+1} is monic of degree k+1.
-    The leading term of B_{k+1}(n) is n^{k+1}. -/
-axiom bernoulli_poly_leading (k : ℕ) :
-    (Polynomial.bernoulli (k + 1)).leadingCoeff = 1 ∧
-    (Polynomial.bernoulli (k + 1)).natDegree = k + 1
-
 /-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
-    This is the fundamental asymptotic property of polynomials. -/
+    This is the fundamental asymptotic property of polynomials.
+
+    Proof strategy: decompose p = X^d + q where deg(q) < d, then
+    p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m
+    for m ≥ 1, which → 0 by inv_tendsto_atTop. -/
 axiom monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     (hd : p.natDegree = d) (hlc : p.leadingCoeff = 1) (hd_pos : 0 < d) :
     Tendsto (fun n : ℕ => p.eval (n : ℚ) / (n : ℚ) ^ d) atTop (nhds 1)
@@ -62,13 +87,10 @@ theorem powerSumRatio_tendsto (k : ℕ) :
   -- The proof strategy:
   -- 1. By Faulhaber: (k+1) * ∑ i^k = B_{k+1}(n) - B_{k+1}(0)
   -- 2. So powerSumRatio k n = (B_{k+1}(n) - B_{k+1}(0)) / ((k+1) * n^{k+1})
-  -- 3. B_{k+1}(n)/n^{k+1} → 1 by monic_poly_ratio_tendsto (axiom)
+  -- 3. B_{k+1}(n)/n^{k+1} → 1 by monic_poly_ratio_tendsto
+  --    (using bernoulli_poly_leading, now proved)
   -- 4. B_{k+1}(0)/n^{k+1} → 0 since B_{k+1}(0) is constant
   -- 5. Combining: ratio → (1 - 0)/(k+1) = 1/(k+1)
-  --
-  -- The full proof requires combining Faulhaber's formula with filter limits.
-  -- The algebraic rewriting from sum to Bernoulli polynomials and the
-  -- limit composition are technically involved in Lean's filter framework.
   sorry
 
 /-- Special case k=0: ∑ 1 / n = n/n = 1 → 1/(0+1) = 1. -/

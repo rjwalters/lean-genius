@@ -48,12 +48,13 @@
       "ConvexBody bundling convexity, symmetry, and nonemptiness",
       "Critical volume threshold definition and positivity",
       "Integer lattice specialization reducing threshold to 2^n",
-      "Fermat two-squares theorem as a Minkowski application"
+      "Fermat two-squares theorem as a Minkowski application",
+      "Proved Minkowski for ℤⁿ from Mathlib's GeometryOfNumbers (axiom-free integer lattice case)"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
-    "lineCount": 453,
-    "assumptions": "1 axiom: minkowski_fundamental (the main convex body theorem). The full proof requires measure-theoretic pigeonhole (Fubini's theorem, change of variables for lattice translates) beyond current scope. All other results (origin membership, covolume positivity, integer lattice specialization, Fermat two-squares) are fully proved.",
+    "lineCount": 544,
+    "assumptions": "1 axiom: minkowski_fundamental (the main convex body theorem for general lattices using custom HasVolume typeclass). The integer lattice case (ℤⁿ) is now PROVED from Mathlib's GeometryOfNumbers module (MinkowskiProved.minkowski_integer_lattice_proved). The general lattice axiom remains because the custom Lattice/HasVolume types need refactoring to use actual Lebesgue measure.",
     "mathlib_version": "4.26.0",
     "prerequisites": [
       "Convex sets and convexity in real vector spaces",

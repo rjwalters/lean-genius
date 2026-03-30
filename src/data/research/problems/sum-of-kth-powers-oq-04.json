@@ -29,21 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved k=1 special case (2→1 sorries). Main asymptotic theorem remains sorry (needs filter limit composition with Faulhaber).",
+    "progressSummary": "PROGRESS: Axioms 2→1 (proved bernoulli_poly_leading from coeff_bernoulli). Sorry 1→1 (main theorem needs filter arithmetic). Path to 0 axioms documented.",
     "builtItems": [
       "Proved powerSumRatio_k1 (eliminated 1 of 2 sorries)",
       "Added gauss_sum_rat helper lemma",
-      "Created gallery data src/data/proofs/sum-of-kth-powers-oq-04/meta.json"
+      "Created gallery data src/data/proofs/sum-of-kth-powers-oq-04/meta.json",
+      "Proved bernoulli_poly_leading (eliminated 1 of 2 axioms)"
     ],
     "insights": [
       "Gauss sum over Q proved by induction: 2*sum(i, range n) = n*(n-1)",
       "powerSumRatio_k1 proved exactly using Gauss sum + field_simp",
       "Main theorem requires combining Faulhaber (Bernoulli polynomials) with filter limits",
-      "Two axioms cover Bernoulli poly leading behavior - minimal for the asymptotic result"
+      "Two axioms cover Bernoulli poly leading behavior - minimal for the asymptotic result",
+      "bernoulli_poly_leading proved from coeff_bernoulli: (bernoulli (k+1)).coeff (k+1) = bernoulli 0 * C(k+1,k+1) = 1",
+      "natDegree_le_iff_coeff_eq_zero + le_natDegree_of_ne_zero give exact degree from coefficient info",
+      "Remaining axiom monic_poly_ratio_tendsto needs: tendsto_pow_atTop.comp tendsto_natCast_atTop_atTop + inv_tendsto_atTop",
+      "Main sorry needs filter limit arithmetic: Tendsto.sub, Tendsto.div_const, Tendsto.congr with sum_range_pow_eq_bernoulli_sub"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
+    "score": 8
   },
   "tags": [],
   "relatedProofs": [

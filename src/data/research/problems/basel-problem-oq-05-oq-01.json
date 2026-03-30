@@ -1,7 +1,7 @@
 {
   "slug": "basel-problem-oq-05-oq-01",
   "title": "basel-problem-oq-05-oq-01",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-03-29T21:03:28-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Survey: Aristotle file has 5 sorry-mentions but only 2 are real targets. pi_transcendental available from PiTranscendental.lean.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,11 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY: Aristotle companion has 2 real targets (zeta_two/four_transcendental) + 2 axiom-sorries. pi_transcendental already proved in Proofs/PiTranscendental.lean. The 2 targets need algebraic closure properties (a^n algebraic \u2192 a algebraic) to complete.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "pi_transcendental already proved in Proofs/PiTranscendental.lean as pi_transcendental_over_rationals",
+      "zeta_two_transcendental proof: \u03b6(2)=\u03c0\u00b2/6 algebraic \u2192 \u03c0\u00b2 algebraic \u2192 \u03c0 algebraic (contradiction)",
+      "Key missing: IsAlgebraic.of_pow or similar \u2014 need a^n algebraic implies a algebraic",
+      "apery_theorem (\u03b6(3) irrational) is a deep 1978 result, not in Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Import PiTranscendental and replace pi_transcendental sorry with pi_transcendental_over_rationals",
+      "Prove zeta_two_transcendental using algebraic closure under multiplication + IsAlgebraic.of_pow",
+      "Search Mathlib for IsAlgebraic closure under nth root / power extraction"
+    ],
     "markdown": "# Knowledge Base: basel-problem-oq-05-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -48,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T04:12:19.643Z",
-  "lastUpdate": "2026-03-30T04:12:19.667Z",
+  "lastUpdate": "2026-03-30T08:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BaselProblem.lean",
