@@ -265,8 +265,7 @@ theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
     (hsize : AllSizeAtLeast F 2) (hdeg : IsDegreeBounded F 1) : HasPropertyB F := by
   induction F using Finset.induction_on with
   | empty => exact hasPropertyB_empty
-  | insert hna ih =>
-    rename_i f₀ F'
+  | @insert f₀ F' hna ih =>
     -- Transfer hypotheses to F'
     have hF'_size : AllSizeAtLeast F' 2 :=
       fun f hf => hsize f (Finset.mem_insert_of_mem hf)
@@ -360,7 +359,7 @@ theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
 -- § 11: Union and Combination of Families
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Property B is inherited by subfamilies (already proved as hasPropertyB_subset). -/
+-- Property B is inherited by subfamilies (already proved as hasPropertyB_subset).
 
 /-- The union of a c-sparse and a d-sparse family is (c + d)-sparse. -/
 theorem isSparse_union [Fintype α] {F G : Finset (Finset α)} {c d : ℕ}
@@ -385,21 +384,126 @@ theorem allSizeAtLeast_union {F G : Finset (Finset α)} {t : ℕ}
 -- § 12: Erdős First-Moment Threshold
 -- ══════════════════════════════════════════════════════════════════
 
+/-- A coloring is monochromatic on A if all elements get the same color. -/
+private def IsMonochromaticOn (c : α → Bool) (A : Finset α) : Prop :=
+  (∀ x ∈ A, c x = true) ∨ (∀ x ∈ A, c x = false)
+
+private instance (c : α → Bool) (A : Finset α) :
+    Decidable (IsMonochromaticOn c A) :=
+  inferInstanceAs (Decidable (_ ∨ _))
+
+/-- Functions α → Bool constant b on A number at most 2^(|α| - |A|):
+    restriction to Aᶜ is injective on functions constant b on A. -/
+private lemma card_constOn_le [Fintype α] (A : Finset α) (b : Bool) :
+    (Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = b)).card
+    ≤ 2 ^ (Fintype.card α - A.card) := by
+  rw [← Fintype.card_coe]
+  calc Fintype.card ↥(Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = b))
+      ≤ Fintype.card (↥(Aᶜ : Finset α) → Bool) :=
+        Fintype.card_le_of_injective
+          (fun (p : ↥(Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = b)))
+               (q : ↥(Aᶜ : Finset α)) => p.val q.val) (by
+          intro ⟨f, hf⟩ ⟨g, hg⟩ heq
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hf hg
+          exact Subtype.ext <| funext fun x => by
+            by_cases hx : x ∈ A
+            · exact (hf x hx).trans (hg x hx).symm
+            · exact congr_fun heq ⟨x, Finset.mem_compl.mpr hx⟩)
+    _ = 2 ^ (Fintype.card α - A.card) := by
+        simp [Fintype.card_bool, Fintype.card_coe]
+
+/-- Monochromatic colorings on A number at most 2 · 2^(|α| - |A|). -/
+private lemma card_monochromatic_on_le [Fintype α] (A : Finset α) :
+    (Finset.univ.filter (fun c : α → Bool => IsMonochromaticOn c A)).card
+    ≤ 2 * 2 ^ (Fintype.card α - A.card) := by
+  calc (Finset.univ.filter (fun c => IsMonochromaticOn c A)).card
+      ≤ (Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = true) ∪
+         Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = false)).card := by
+        apply Finset.card_le_card; intro c
+        simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_univ, true_and,
+                    IsMonochromaticOn]; exact id
+    _ ≤ (Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = true)).card +
+        (Finset.univ.filter (fun c : α → Bool => ∀ x ∈ A, c x = false)).card :=
+      Finset.card_union_le _ _
+    _ ≤ 2 ^ (Fintype.card α - A.card) + 2 ^ (Fintype.card α - A.card) := by
+        linarith [card_constOn_le A true, card_constOn_le A false]
+    _ = 2 * 2 ^ (Fintype.card α - A.card) := by ring
+
 /-- **Erdős 2^{t-1} bound** (1963): any family of fewer than 2^{t-1} sets,
-    each of size ≥ t, has Property B. This follows from a probabilistic
-    first-moment argument: color randomly, Pr(set monochromatic) = 2^{1-t},
-    so E(mono sets) < 1 if |F| < 2^{t-1}.
+    each of size ≥ t, has Property B. Proof by the probabilistic first-moment
+    method: among all 2^|α| colorings, fewer than 2^|α| are bad, so a good
+    coloring exists.
 
     Reference: Erdős, P. "On a combinatorial problem. II."
     Acta Math. Acad. Sci. Hungar. 15 (1964), 445-447. -/
-axiom erdos_first_moment_bound [Fintype α] (F : Finset (Finset α)) (t : ℕ)
+theorem erdos_first_moment_bound [Fintype α] (F : Finset (Finset α)) (t : ℕ)
     (ht : 2 ≤ t) (hsize : AllSizeAtLeast F t)
-    (hcount : F.card < 2 ^ (t - 1)) : HasPropertyB F
+    (hcount : F.card < 2 ^ (t - 1)) : HasPropertyB F := by
+  -- Convert bound: F.card < 2^(t-1) → F.card * 2 < 2^t
+  have hbound : F.card * 2 < 2 ^ t := by
+    have h1 : F.card * 2 < 2 ^ (t - 1) * 2 := mul_lt_mul_of_pos_right hcount (by omega)
+    have h2 : 2 ^ (t - 1) * 2 = 2 ^ t := by
+      conv_rhs => rw [show t = t - 1 + 1 from by omega, pow_succ]
+    linarith
+  -- Trivial case: F empty
+  by_cases hFne : F = ∅
+  · exact ⟨∅, fun f hf => absurd hf (hFne ▸ Finset.not_mem_empty f)⟩
+  -- For nonempty F: t ≤ |α|
+  have ht_le : t ≤ Fintype.card α := by
+    obtain ⟨A, hA⟩ := Finset.nonempty_of_ne_empty hFne
+    exact le_trans (hsize A hA) (Finset.card_le_univ A)
+  -- Bad colorings: those making some A ∈ F monochromatic
+  set bad := F.biUnion (fun A => Finset.univ.filter
+    (fun c : α → Bool => IsMonochromaticOn c A)) with hbad_def
+  -- Union bound: |bad| ≤ |F| · (2 · 2^(n-t))
+  have hbad_bound : bad.card ≤ F.card * (2 * 2 ^ (Fintype.card α - t)) := by
+    calc bad.card
+        ≤ F.sum (fun A => (Finset.univ.filter
+            (fun c : α → Bool => IsMonochromaticOn c A)).card) :=
+          Finset.card_biUnion_le
+      _ ≤ F.sum (fun _ => 2 * 2 ^ (Fintype.card α - t)) := by
+          apply Finset.sum_le_sum; intro A hA
+          calc _ ≤ 2 * 2 ^ (Fintype.card α - A.card) := card_monochromatic_on_le A
+            _ ≤ 2 * 2 ^ (Fintype.card α - t) := by
+              have : Fintype.card α - A.card ≤ Fintype.card α - t := by
+                have h1 := hsize A hA; have h2 := Finset.card_le_univ A; omega
+              exact Nat.mul_le_mul_left 2 (Nat.pow_le_pow_right (by norm_num) this)
+      _ = F.card * (2 * 2 ^ (Fintype.card α - t)) := by
+          simp [Finset.sum_const, smul_eq_mul]
+  -- |bad| < 2^n = |total colorings|
+  have hbad_lt : bad.card < 2 ^ Fintype.card α := by
+    have hpos : 0 < 2 ^ (Fintype.card α - t) := pow_pos (by norm_num) _
+    calc bad.card
+        ≤ F.card * (2 * 2 ^ (Fintype.card α - t)) := hbad_bound
+      _ = F.card * 2 * 2 ^ (Fintype.card α - t) := by ring
+      _ < 2 ^ t * 2 ^ (Fintype.card α - t) :=
+          mul_lt_mul_of_pos_right hbound hpos
+      _ = 2 ^ Fintype.card α := by rw [← pow_add]; congr 1; omega
+  -- Since |bad| < |total|, there exists a non-bad coloring
+  have hgood : ∃ c : α → Bool, c ∉ bad := by
+    by_contra h; push_neg at h
+    have : bad = Finset.univ := Finset.eq_univ_iff_forall.mpr h
+    rw [this, Finset.card_univ, Fintype.card_fun, Fintype.card_bool] at hbad_lt
+    exact lt_irrefl _ hbad_lt
+  obtain ⟨c, hc⟩ := hgood
+  -- Convert the good coloring to HasPropertyB: S = {x | c x = true}
+  refine ⟨Finset.univ.filter (c · = true), fun f hf => ?_⟩
+  have hcf : ¬ IsMonochromaticOn c f := fun h =>
+    hc (Finset.mem_biUnion.mpr ⟨f, hf, Finset.mem_filter.mpr ⟨Finset.mem_univ c, h⟩⟩)
+  simp only [IsMonochromaticOn, not_or] at hcf
+  push_neg at hcf
+  obtain ⟨⟨y, hyf, hyc⟩, ⟨x, hxf, hxc⟩⟩ := hcf
+  constructor
+  · exact ⟨x, Finset.mem_inter.mpr ⟨hxf,
+      Finset.mem_filter.mpr ⟨Finset.mem_univ x, by cases h : c x <;> simp_all⟩⟩⟩
+  · exact ⟨y, Finset.mem_sdiff.mpr ⟨hyf, by
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      cases h : c y <;> simp_all⟩⟩
 
 /-- A family with at most one member of size ≥ 2 has Property B. -/
 theorem hasPropertyB_card_le_one [Fintype α] (F : Finset (Finset α))
     (hsize : AllSizeAtLeast F 2) (hF : F.card ≤ 1) : HasPropertyB F := by
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le F.card) with h | h
+  by_cases h : F.card = 0
   · -- F is empty
     rw [Finset.card_eq_zero.mp h]
     exact hasPropertyB_empty

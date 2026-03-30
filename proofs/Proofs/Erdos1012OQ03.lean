@@ -33,7 +33,7 @@ on a digraph guarantee the existence of a Hamiltonian cycle?
 
 This file defines a simple digraph (directed graph without self-loops or
 parallel arcs) and states the directed Hamiltonian cycle conditions.
-All proofs are sorry — this is a survey and infrastructure session.
+Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 
 ## Status
 - [x] Digraph definition
@@ -42,7 +42,15 @@ All proofs are sorry — this is a survey and infrastructure session.
 - [x] Hamiltonian cycle/path predicates
 - [x] Statement of Ghouila-Houri's theorem
 - [x] Statement of Moon-Moser's theorem
-- [ ] Proofs (sorry)
+- [x] Tournament basic lemmas (arc_or_arc, arc_of_not_arc)
+- [x] List-based directed path definition
+- [x] Tournament insertion lemma (key step for Rédei)
+- [x] Rédei's theorem (proved modulo 2 infrastructure lemmas)
+- [ ] tournament_full_path_list (sorry — iterated insertion)
+- [ ] list_path_to_hamiltonian (sorry — list-to-equiv conversion)
+- [ ] Ghouila-Houri proof
+- [ ] Moon-Moser proof
+- [ ] Directed threshold proof
 -/
 
 namespace Erdos1012OQ03
@@ -104,6 +112,146 @@ def Digraph.HasHamiltonianPath (D : Digraph V) : Prop :=
       D.arc (σ.symm i) (σ.symm ⟨i.val + 1, h⟩)
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART II.B: TOURNAMENT PROPERTIES
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- In a tournament, for any distinct vertices, at least one arc direction exists. -/
+lemma Digraph.arc_or_arc (D : Digraph V) (hT : D.IsTournament)
+    {u v : V} (huv : u ≠ v) : D.arc u v ∨ D.arc v u := by
+  rcases hT u v huv with ⟨h, _⟩ | ⟨h, _⟩ <;> [exact Or.inl h; exact Or.inr h]
+
+/-- In a tournament, absence of one arc implies the reverse arc exists. -/
+lemma Digraph.arc_of_not_arc (D : Digraph V) (hT : D.IsTournament)
+    {u v : V} (huv : u ≠ v) (h : ¬D.arc u v) : D.arc v u :=
+  (D.arc_or_arc hT huv).resolve_left h
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART II.C: LIST-BASED DIRECTED PATHS (FOR RÉDEI'S PROOF)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- A list of vertices forms a valid directed path: no repeated vertices
+and consecutive vertices are connected by arcs. -/
+def IsDirectedPathList (D : Digraph V) (l : List V) : Prop :=
+  l.Nodup ∧ ∀ (i : ℕ) (hi : i + 1 < l.length),
+    D.arc (l[i]'(by omega)) (l[i + 1]'hi)
+
+/-- **Tournament Insertion Lemma**: In a tournament, any vertex not on a
+directed path can be inserted to extend the path.
+
+Proof by induction on the path. If u beats the head, prepend. Otherwise
+the head beats u (tournament property), and we recurse on the tail.
+The inductive result inserts u somewhere in the tail, and since the head
+beats u, the head still connects properly to the new first element. -/
+lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
+    (l : List V) (hl : 0 < l.length) (hp : IsDirectedPathList D l)
+    (u : V) (hu : u ∉ l) :
+    ∃ k, k ≤ l.length ∧ IsDirectedPathList D (l.insertNth k u) := by
+  obtain ⟨hnd, harcs⟩ := hp
+  induction l with
+  | nil => omega
+  | cons a t ih =>
+    have ha_ne_u : a ≠ u := fun h => hu (h ▸ List.mem_cons_self a t)
+    have hu_t : u ∉ t := fun h => hu (List.mem_cons_of_mem a h)
+    by_cases harc_ua : D.arc u a
+    · -- Case 1: u beats head → prepend u (insert at position 0)
+      refine ⟨0, Nat.zero_le _, ?_, ?_⟩
+      · exact List.Nodup.cons hu hnd
+      · intro i hi
+        match i with
+        | 0 => exact harc_ua
+        | i + 1 =>
+          simp only [List.length_cons, List.insertNth_zero] at hi ⊢
+          exact harcs i (by omega)
+    · -- Case 2: u doesn't beat head → head beats u (tournament)
+      have harc_au : D.arc a u :=
+        D.arc_of_not_arc hT ha_ne_u.symm harc_ua
+      by_cases ht_empty : t = []
+      · -- Subcase 2a: tail empty → l = [a], insert u at end
+        subst ht_empty
+        refine ⟨1, le_refl _, ?_, ?_⟩
+        · exact List.Nodup.cons (by simp [ha_ne_u.symm]) (List.nodup_singleton u)
+        · intro i hi; simp at hi; interval_cases i; simpa using harc_au
+      · -- Subcase 2b: tail nonempty → recurse on tail, insert at k_t + 1
+        have ht_pos : 0 < t.length := by
+          cases t with | nil => exact absurd rfl ht_empty | cons _ _ => simp
+        have ht_path : IsDirectedPathList D t := by
+          refine ⟨hnd.of_cons, fun i hi => ?_⟩
+          have := harcs (i + 1) (by simp [List.length_cons]; omega)
+          simpa [List.getElem_cons_succ] using this
+        obtain ⟨k_t, hk_t_le, hk_t_nd, hk_t_arcs⟩ := ih ht_pos ht_path hu_t
+        refine ⟨k_t + 1, by omega, ?_, ?_⟩
+        · -- Nodup of a :: (t.insertNth k_t u)
+          apply List.Nodup.cons
+          · intro hmem
+            rw [List.mem_insertNth (by omega)] at hmem
+            rcases hmem with rfl | hmem
+            · exact ha_ne_u rfl
+            · exact (List.nodup_cons.mp hnd).1 hmem
+          · exact hk_t_nd
+        · -- Arcs in a :: (t.insertNth k_t u)
+          intro i hi
+          match i with
+          | 0 =>
+            -- Arc: a → first element of (t.insertNth k_t u)
+            by_cases hk0 : k_t = 0
+            · -- Inserted at start of tail: first element is u
+              subst hk0; simp [List.insertNth_zero]; exact harc_au
+            · -- k_t > 0: first element of tail unchanged (t[0])
+              have hlt : 0 < k_t := Nat.pos_of_ne_zero hk0
+              conv_lhs => simp only [List.getElem_cons_zero]
+              rw [show (a :: t.insertNth k_t u)[0 + 1]'(by omega) =
+                (t.insertNth k_t u)[0]'(by omega) from List.getElem_cons_succ ..]
+              rw [List.getElem_insertNth_of_lt (by omega)]
+              exact harcs 0 (by simp [List.length_cons]; omega)
+          | i + 1 =>
+            -- Arc within t.insertNth k_t u (from IH)
+            show D.arc ((a :: t.insertNth k_t u)[i + 1]'(by omega))
+              ((a :: t.insertNth k_t u)[i + 2]'(by omega))
+            simp only [List.getElem_cons_succ]
+            exact hk_t_arcs i (by simp [List.length_cons] at hi; omega)
+
+/-- Build a full Hamiltonian path by iterating tournament insertion.
+Induction on path length: start with one vertex, extend by 1 each step. -/
+lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
+    (hn : 0 < Fintype.card V) :
+    ∃ l : List V, l.length = Fintype.card V ∧ IsDirectedPathList D l := by
+  -- Sufficient: for every n ≤ card V with n > 0, a path of length n exists.
+  suffices ∀ n, n ≤ Fintype.card V → 0 < n →
+      ∃ l : List V, l.length = n ∧ IsDirectedPathList D l by
+    exact this (Fintype.card V) le_rfl hn
+  intro n
+  induction n with
+  | zero => intro _ h; omega
+  | succ m ih =>
+    intro hle _
+    by_cases hm : m = 0
+    · -- Base: path of length 1 = any single vertex
+      subst hm
+      obtain ⟨v⟩ := Fintype.card_pos_iff.mp hn
+      exact ⟨[v], rfl, List.nodup_singleton v, fun _ hi => by omega⟩
+    · -- Inductive step: extend a path of length m to length m + 1
+      obtain ⟨l, hlen, hp⟩ := ih (by omega) (Nat.pos_of_ne_zero hm)
+      -- A nodup list shorter than card V misses at least one vertex
+      have ⟨u, hu⟩ : ∃ u : V, u ∉ l := by
+        by_contra hall; push_neg at hall
+        have : Fintype.card V ≤ l.length := by
+          calc Fintype.card V = Finset.univ.card := Finset.card_univ.symm
+            _ ≤ l.toFinset.card := Finset.card_le_card
+                (fun v _ => List.mem_toFinset.mpr (hall v))
+            _ = l.length := l.toFinset_card_of_nodup hp.1
+        omega
+      obtain ⟨k, hk_le, hp'⟩ := tournament_path_insert D hT l (by omega) hp u hu
+      exact ⟨l.insertNth k u, by rw [List.length_insertNth (by omega)]; omega, hp'⟩
+
+/-- Convert a list-based Hamiltonian path to the equivalence-based definition. -/
+lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
+    (hlen : l.length = Fintype.card V) (hp : IsDirectedPathList D l) :
+    D.HasHamiltonianPath := by
+  -- A nodup list of length (Fintype.card V) bijects with Fin (card V),
+  -- giving the required equivalence. The arc condition transfers directly.
+  sorry
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: GHOUILA-HOURI'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -143,7 +291,8 @@ Every tournament has a directed Hamiltonian PATH.
 theorem redei (D : Digraph V) (hn : 2 ≤ Fintype.card V)
     (hT : D.IsTournament) :
     D.HasHamiltonianPath := by
-  sorry
+  obtain ⟨l, hlen, hp⟩ := tournament_full_path_list D hT (by omega)
+  exact list_path_to_hamiltonian D l hlen hp
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART V: EDGE THRESHOLD FOR DIRECTED HAMILTONICITY

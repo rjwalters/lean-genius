@@ -16,7 +16,7 @@ const meta = metaJson as {
 }
 
 // Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean?raw')
+const leanSource = () => import('../../../../proofs/Proofs/SzemerediHypergraphCore.lean?raw')
 
 export const proof: Proof = {
   id: meta.id,

@@ -1,34 +1,80 @@
 {
-  "id": "hilbert-15-oq-01",
-  "name": "Formalize Schubert calculus including Chow rings and intersection theory",
-  "status": "completed",
+  "slug": "hilbert-15-oq-01",
+  "title": "Can the full Schubert calculus be formalized in Lean/Mathlib, including Chow ...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T23:39:50-07:00",
+    "iteration": 1,
+    "focus": "Axiom elimination and formalizability assessment complete",
+    "blockers": [],
+    "nextAction": "PR review and integration",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
   "knowledge": {
-    "insights": [
-      "The Chow ring of Gr(2,4) has rank 6 with a fully explicit multiplication table",
-      "sigma2 * sigma11 = 0 is nontrivial: the LR lattice word condition fails",
-      "sigma2 and sigma11 are self-dual under Poincare duality (complement = self in 2x2 box)",
-      "Giambelli formula sigma11 = sigma1^2 - sigma2 is immediate from the table",
-      "native_decide gives machine-verified proofs of all intersection numbers",
-      "The four lines number sigma1^4 = 2 is provable with 0 axioms from explicit computation",
-      "Bilinear extension from 36 basis products gives the full ring multiplication"
-    ],
+    "progressSummary": "COMPLETED: Eliminated 2/8 axioms from Hilbert-15 Schubert calculus. Proved linesMeet_iff_linesMeet via dimension formula and transversal_count from four_lines_theorem. Detailed formalizability assessment: 2 proved, 3 medium-term (Young tableaux), 3 long-term (algebraic geometry).",
     "builtItems": [
-      "ChowGr24: Chow ring structure with 6 Schubert basis coefficients",
-      "basisMul: complete 6x6 LR multiplication table",
-      "sigma1_fourth: sigma1^4 = 2 * sigma22 (0 axioms!)",
-      "four_lines_number: extraction of intersection number 2",
-      "Poincare duality: verified for all 5 dual pairs",
-      "giambelli_11: sigma11 = sigma1^2 - sigma2",
-      "sigma2_sigma11: nontrivial LR vanishing",
-      "Classical enumerative results: lines through point meeting 2 lines, overdetermined case",
-      "mul_comm_basis: commutativity on basis verified by decide",
-      "Gallery entry: src/data/proofs/hilbert-15-oq-01/"
+      "proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean (240 lines, 5 theorems, 6 axioms)",
+      "src/data/proofs/hilbert-15-oq-01/ (gallery data)"
     ],
-    "progressSummary": "COMPLETED: Full Chow ring of Gr(2,4) with 0 axioms, 0 sorries, 22 theorems. The four lines theorem sigma1^4 = 2 is proved computationally.",
+    "insights": [
+      "linesMeet_iff_linesMeet is pure linear algebra: Grassmann dimension formula finrank(V+W)+finrank(V\u2229W)=finrank(V)+finrank(W)",
+      "transversal_count is a logical consequence of four_lines_theorem, not an independent axiom",
+      "Combinatorial Schubert calculus (LR coefficients) needs ~1000 lines of Young tableaux in Lean",
+      "Geometric Schubert calculus (Chow rings, intersection theory) needs Mathlib infrastructure that does not exist",
+      "sigma1_fourth_power would be provable once LR coefficients are computationally defined"
+    ],
+    "mathlibGaps": [
+      "Algebraic cycles and rational equivalence (Chow groups)",
+      "Intersection product on smooth varieties",
+      "CW decomposition of Grassmannians (Schubert cells)",
+      "Cellular cohomology for CW complexes"
+    ],
     "nextSteps": [
-      "Extend to Gr(2,5) and Gr(3,6)",
-      "Derive multiplication table from combinatorial LR rule",
-      "Connect to algebraic geometry: Schubert varieties"
-    ]
-  }
+      "Implement LR coefficients as computable def via Young tableaux",
+      "Prove Pieri rule from LR definition (would eliminate 1 more axiom)",
+      "Formalize Pl\u00fccker embedding Gr(2,4) -> P5 via exterior algebra"
+    ],
+    "markdown": "# Knowledge Base: hilbert-15-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "hilbert-15"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T23:39:50-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert15SchubertCalculus.lean",
+      "filename": "Hilbert15SchubertCalculus.lean",
+      "lineCount": 453,
+      "theoremCount": 3,
+      "axiomCount": 8,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculus.lean"
+    }
+  ]
 }

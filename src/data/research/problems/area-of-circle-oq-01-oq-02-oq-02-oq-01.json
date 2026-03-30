@@ -1,36 +1,194 @@
 {
-  "id": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
-  "name": "Isoperimetric inequality from IBP + Wirtinger + Parseval",
-  "status": "completed",
+  "slug": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+  "title": "Isoperimetric inequality from IBP + Wirtinger + Parseval",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Isoperimetric inequality from IBP + Wirtinger + Parseval.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T08:49:59.591Z",
+    "iteration": 1,
+    "focus": "Assembly proof complete, 1 sorry remaining",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
   "knowledge": {
-    "insights": [
-      "Hurwitz 1901 proof has clean three-layer structure: Analytical -> Algebraic -> Geometric",
-      "Wirtinger's inequality reduces to n^2 >= 1 for nonzero integers via Fourier",
-      "The arithmetic kernel is purely algebraic - no integrals or measures needed",
-      "5 axioms isolate: Fourier decomp, reparametrization, Wirtinger sum, area CS, integral CS",
-      "Of the 5 axioms, 3 are proved in existing files (OQ01OQ03 by Aristotle)",
-      "The reparametrization axiom is the hardest to eliminate (needs inverse function theorem)",
-      "Circle equality C^2 = 4piA is a ring identity; square strict inequality uses pi < 4"
-    ],
+    "progressSummary": "COMPLETED: Proved isoperimetric inequality for nice curves via explicit Hurwitz chain. 11 theorems, 0 axioms, 1 sorry (Parseval measure bridge).",
     "builtItems": [
-      "FourierDecomp structure (proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean)",
-      "wirtinger_inequality: Wirtinger from Fourier via n^2 >= 1",
-      "isoperimetric_arithmetic_kernel: algebraic deduction 4piA <= L^2",
-      "cross_product_sq_le: 2D algebraic Cauchy-Schwarz",
-      "SmoothClosedCurve structure with circumference and area",
-      "circleOfRadius: concrete circle definition",
-      "isoperimetricRatio: C^2/(4piA)",
-      "circle_isoperimetric_ratio: I(circle) = 1",
-      "circle_isoperimetric_equality: C^2 = 4piA for circles",
-      "square_isoperimetric_strict: C^2 > 4piA for squares",
-      "isoperimetric_inequality: full statement with reparametrization",
-      "Gallery entry: src/data/proofs/area-of-circle-oq-01-oq-02-oq-02-oq-01/"
+      "Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean: 423 lines, 11 theorems, 1 sorry, 0 axioms",
+      "Gallery data: meta.json, index.ts, annotations.json",
+      "ibp_fourier: IBP for Fourier coefficients (fully proved)",
+      "wirtinger_inequality: stated with 1 sorry (Parseval bridge)",
+      "isoperimetric_nice: 4piA <= L^2 for NiceCurve (fully proved from Wirtinger)",
+      "integral_cauchy_schwarz: discriminant method proof",
+      "arithmetic_kernel: pure algebra assembling bounds"
     ],
-    "progressSummary": "COMPLETED: Clean formalization of Hurwitz 1901 isoperimetric proof. 5 axioms, 0 sorries, 11 theorems. Wirtinger and arithmetic kernel fully proved.",
+    "insights": [
+      "The Hurwitz 1901 chain is: IBP + Parseval -> Wirtinger -> Isoperimetric",
+      "IBP formula proved from Mathlib fourierCoeffOn_of_hasDerivAt + periodicity kills boundary",
+      "Wirtinger inequality: mean zero + n^2 >= 1 for nonzero n gives integral bound",
+      "The Parseval bridge (AddCircle Haar to Lebesgue interval integrals) is the remaining sorry",
+      "NiceCurve (constant speed + zero mean) avoids arc-length reparametrization sorry",
+      "Integral Cauchy-Schwarz proved via discriminant method",
+      "The arithmetic kernel is pure algebra: S^2 <= 2pi*Sxy <= 4pi^2*c^2 -> 4piA <= L^2"
+    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Eliminate reparametrization axiom via inverse function theorem",
-      "Formalize Green's theorem for smooth closed curves",
-      "Prove equality condition: C^2 = 4piA iff circle"
+      "Prove the Parseval bridge to eliminate the remaining sorry",
+      "Connect NiceCurve to general SmoothClosedCurve via arc-length reparametrization"
     ]
-  }
+  },
+  "tags": [
+    "analysis",
+    "fourier-analysis",
+    "geometry",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01",
+    "area-of-circle-oq-01-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-02",
+    "area-of-circle-oq-01-oq-03",
+    "area-of-circle-oq-03-oq-02",
+    "area-of-circle-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.590Z",
+  "lastUpdate": "2026-03-30T08:49:59.590Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircle.lean",
+      "filename": "AreaOfCircle.lean",
+      "lineCount": 156,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01.lean",
+      "lineCount": 291,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ02.lean",
+      "lineCount": 83,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ03.lean",
+      "lineCount": 1478,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03Aristotle.lean",
+      "filename": "AreaOfCircleOQ01OQ03Aristotle.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02.lean",
+      "filename": "AreaOfCircleOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
+      "filename": "AreaOfCircleOQ03OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03.lean"
+    }
+  ]
 }

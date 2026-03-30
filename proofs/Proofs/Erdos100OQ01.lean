@@ -1,162 +1,251 @@
-import Mathlib.Tactic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-
 /-
-# Distance Set Diameter: Linear vs Logarithmic Growth
+  Erdős Problem #100 — Open Question 1:
+  Distance set diameter growth rate (linear vs logarithmic)
 
-## The Question
+  Is the logarithmic factor in the Guth-Katz bound genuine?
+  Current best: diam(A) ≥ cn/log n (from Guth-Katz 2015).
+  Conjecture: diam(A) ≥ cn (linear growth).
 
-For n-point integer distance sets in ℝ²:
-- **Known**: diameter ≥ cn/log n (Guth–Katz 2015 + bridge lemma)
-- **Conjectured**: diameter ≥ cn (Erdős conjecture, linear growth)
-- **Gap**: a factor of log n
+  Results:
+  1. Kanold's bound is redundant (follows from Guth-Katz)
+  2. The two scenarios (linear vs logarithmic optimal) are exclusive
+  3. The multiplicative gap is exactly logarithmic
 
-Is the true growth rate linear (≫ n) or only n/log n?
-
-## What This File Proves
-
-We formalize the growth rate comparison and show:
-1. log n → ∞ (the gap is real and grows)
-2. n/log n = o(n) (the known bound is strictly weaker)
-3. The linear conjecture implies the known bound (consistency)
-4. For any fixed constant c, cn/log n < cn for large enough n
-
-## Connection to Prior Work
-
-- `Erdos100Problem.lean`: Integer distance sets, Guth-Katz bound
-- **This file**: Analysis of the linear vs logarithmic growth gap
-
-## References
-
-- Guth, L. and Katz, N. H. (2015). "On the Erdős distinct distances
-  problem in the plane." Annals of Mathematics 181(1):155–190.
-- Erdős, P. (1986). "On some metric and combinatorial geometric problems."
-  Discrete Math. 60:147–153.
+  Reference: https://erdosproblems.com/100
 -/
 
-namespace Erdos100OQ01
+import Mathlib
+import Proofs.Erdos100Problem
 
-open Real
+open Filter Set Finset Erdos100
+open scoped Topology
 
-/-! ## Part I: The Growth Rate Gap
+namespace Erdos100.OQ01
 
-The gap between n/log n and n is exactly a factor of log n,
-which grows without bound.
+-- ═══════════════════════════════════════════════════════════════════
+-- PART I: KANOLD'S BOUND IS REDUNDANT
+-- ═══════════════════════════════════════════════════════════════════
+
+/--
+Collinear integer distance sets exist: n points at positions 0,1,...,n-1
+on the x-axis form an n-point set with all pairwise distances being
+positive integers.
 -/
+theorem integer_distance_sets_exist (n : ℕ) (hn : n ≥ 2) :
+    ∃ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+      S.card = n ∧ hasIntegerDistances S := by
+  -- Construct n collinear points: p_k = (k, 0) for k = 0, ..., n-1
+  let pt (k : ℕ) : EuclideanSpace ℝ (Fin 2) :=
+    (EuclideanSpace.equiv (Fin 2) ℝ).symm (fun i : Fin 2 => if i = 0 then (k : ℝ) else 0)
+  refine ⟨(Finset.range n).image pt, ?_, ?_⟩
+  · -- Cardinality = n (pt is injective)
+    rw [Finset.card_image_of_injective _ (fun a b hab => ?_)]
+    · exact Finset.card_range n
+    · -- pt a = pt b implies a = b (via first coordinate)
+      have := congr_arg (EuclideanSpace.equiv (Fin 2) ℝ) hab
+      simp only [pt, LinearEquiv.apply_symm_apply] at this
+      have h0 := congr_fun this (0 : Fin 2)
+      simp at h0
+      exact_mod_cast h0
+  · -- All pairwise distances are positive integers
+    intro p hp q hq hpq
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hp
+    obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hq
+    have hij : i ≠ j := fun h => hpq (h ▸ rfl)
+    -- Distance ‖pt i - pt j‖ = |↑i - ↑j| (a positive integer)
+    unfold Erdos100.dist
+    -- Compute ‖pt i - pt j‖² = (↑i - ↑j)² using EuclideanSpace.norm_sq_eq
+    have hnorm_sq : ‖pt i - pt j‖ ^ 2 = ((i : ℝ) - (j : ℝ)) ^ 2 := by
+      rw [EuclideanSpace.norm_sq_eq, Fin.sum_univ_two]
+      simp only [PiLp.sub_apply]
+      -- Components: (pt k) 0 = ↑k, (pt k) 1 = 0 (definitional)
+      dsimp [pt, EuclideanSpace.equiv]
+      simp [sub_zero, norm_zero, norm_eq_abs, sq_abs]
+    -- Therefore ‖pt i - pt j‖ = |↑i - ↑j|
+    have hnorm_eq : ‖pt i - pt j‖ = |((i : ℝ) - (j : ℝ))| := by
+      have hnn : 0 ≤ ‖pt i - pt j‖ := norm_nonneg _
+      rw [← Real.sqrt_sq hnn, hnorm_sq, Real.sqrt_sq_eq_abs]
+    -- |↑i - ↑j| is a positive natural number since i ≠ j
+    rcases Nat.lt_or_gt_of_ne hij with h | h
+    · -- i < j: distance = j - i ≥ 1
+      refine ⟨j - i, by omega, ?_⟩
+      rw [hnorm_eq]
+      have : (i : ℝ) < (j : ℝ) := Nat.cast_lt.mpr h
+      rw [abs_of_nonpos (by linarith : (i : ℝ) - j ≤ 0)]
+      push_cast; ring
+    · -- j < i: distance = i - j ≥ 1
+      refine ⟨i - j, by omega, ?_⟩
+      rw [hnorm_eq]
+      have : (j : ℝ) < (i : ℝ) := Nat.cast_lt.mpr h
+      rw [abs_of_nonneg (by linarith : (i : ℝ) - j ≥ 0)]
+      push_cast; ring
 
-/-- log n → ∞: for any C > 0, log n > C for large enough n.
-    This means the gap between n/log n and n grows without bound. -/
-theorem log_tendsto_atTop : Filter.Tendsto Real.log Filter.atTop Filter.atTop :=
-  Real.tendsto_log_atTop
-
-/-- n/log n = o(n): the ratio (n/log n)/n = 1/log n → 0.
-    This shows the Guth-Katz bound is strictly sublinear. -/
-theorem n_over_log_sublinear :
-    Filter.Tendsto (fun n : ℝ => 1 / Real.log n) Filter.atTop (nhds 0) := by
-  rw [show (0 : ℝ) = 1 / 0 from by simp]
-  exact Filter.Tendsto.div tendsto_const_nhds Real.tendsto_log_atTop (Or.inr rfl)
-
-/-- For n ≥ 3, log n > 1, so n/log n < n. The known bound is strictly weaker. -/
-theorem log_gt_one (n : ℕ) (hn : 3 ≤ n) : 1 < Real.log n := by
-  calc 1 < Real.log (Real.exp 1) := by rw [Real.log_exp]; norm_num
-    _ ≤ Real.log n := by
-        apply Real.log_le_log (by positivity)
-        calc Real.exp 1 ≤ 3 := by
-              have := Real.add_one_le_exp (by norm_num : (0 : ℝ) ≤ 1)
-              linarith [Real.exp_pos 1]
-          _ ≤ (n : ℝ) := by exact_mod_cast hn
-
-/-- The linear conjecture implies the known bound: cn ≥ cn/log n for n ≥ 3.
-    So the conjecture is strictly stronger (more informative). -/
-theorem linear_implies_sublinear (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : 3 ≤ n) :
-    c * n / Real.log n ≤ c * n := by
-  apply div_le_self
-  · exact mul_nonneg hc.le (by exact_mod_cast Nat.zero_le n)
-  · exact le_of_lt (log_gt_one n hn)
-
-/-! ## Part II: What Would Close the Gap
-
-To improve diam ≥ cn/log n to diam ≥ cn, one would need to show that
-integer distance sets have ≥ cn distinct distances (without the log n loss).
-
-The Guth-Katz theorem gives ≥ cn/log n distinct distances for ARBITRARY
-point sets. For integer distance sets, the conjecture is that the integer
-structure forces even more distinct distances.
+/--
+The Guth-Katz diameter bound (proved in Erdos100Problem.lean) implies a
+bound on the minimum diameter function.
 -/
+theorem minDiam_ge_n_over_log :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+      c * n / Real.log n ≤ minDiameterRestrictedSets n := by
+  obtain ⟨c, hc_pos, hbound⟩ := diam_ge_n_over_log_n
+  use c, hc_pos
+  filter_upwards [hbound, Filter.eventually_ge_atTop 2] with n hn hn2
+  unfold minDiameterRestrictedSets
+  apply le_csInf
+  · -- Nonemptiness: integer distance sets exist
+    obtain ⟨S, hcard, hint⟩ := integer_distance_sets_exist n (by omega)
+    exact ⟨diam S, S, ⟨hcard, hint⟩, rfl⟩
+  · intro d hd
+    obtain ⟨S, ⟨hcard, hint⟩, rfl⟩ := hd
+    exact hn S hcard hint
 
-/-- **The Linear Diameter Conjecture** (Erdős):
-    For any n-point integer distance set, diam ≥ cn for some absolute c > 0.
+/--
+**Key asymptotic fact**: log n ≤ n^(1/4) for sufficiently large n.
 
-    This is equivalent to: the minimum diameter among n-point integer
-    distance sets grows linearly with n. -/
-def linearDiameterConjecture : Prop :=
-  ∃ c : ℝ, 0 < c ∧ ∀ᶠ n : ℕ in Filter.atTop,
-    ∀ (diam : ℝ), -- for any integer distance set with n points and diameter diam
-      (c * n ≤ diam)  -- the diameter is at least cn
-
-/-- **The Known Sublinear Bound** (from Guth-Katz):
-    For any n-point integer distance set, diam ≥ cn/log n. -/
-def sublinearBound : Prop :=
-  ∃ c : ℝ, 0 < c ∧ ∀ᶠ n : ℕ in Filter.atTop,
-    ∀ (diam : ℝ),
-      (c * n / Real.log n ≤ diam)
-
-/-- The linear conjecture implies the sublinear bound (trivially). -/
-theorem linear_implies_known :
-    linearDiameterConjecture → sublinearBound := by
-  intro ⟨c, hc, hev⟩
-  exact ⟨c, hc, hev.mono (fun n hn diam h => le_trans (div_le_self
-    (mul_nonneg hc.le (by exact_mod_cast Nat.zero_le n))
-    (le_of_lt (log_gt_one n (by omega)))) h)⟩
-
-/-! ## Part III: Known Small Cases
-
-For small n, exact values are known (OEIS A186704 for minimum diameter):
-- n = 3: minimum diameter = 1 (equilateral triangle scaled)
-- n = 4: minimum diameter = 3
-- n = 5: minimum diameter = 5
-- n = 7: minimum diameter = 6 (Harborth's configuration)
+Follows from log = o(x^p) for any p > 0 (Mathlib: `isLittleO_log_rpow_atTop`).
 -/
+private theorem log_le_rpow_quarter_eventually :
+    ∀ᶠ n : ℕ in atTop, Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 : ℝ) / 4) := by
+  -- log =o[atTop] x^(1/4) implies eventually ‖log x‖ ≤ ‖x^(1/4)‖
+  have hlo := (Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 / 4 by norm_num)).eventuallyLE
+  -- Transfer from ℝ filter to ℕ filter via Tendsto.eventually
+  have hev := tendsto_natCast_atTop_atTop.eventually hlo
+  filter_upwards [hev, Filter.eventually_ge_atTop 1] with n hn hn1
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+  have hlog_nn : 0 ≤ Real.log (n : ℝ) :=
+    Real.log_nonneg (by exact_mod_cast hn1 : (1 : ℝ) ≤ ↑n)
+  rwa [Real.norm_of_nonneg hlog_nn,
+       Real.norm_of_nonneg (Real.rpow_nonneg (le_of_lt hn_pos) _)] at hn
 
-/-- For n ≤ 9, Piepmeyer showed a configuration with diameter < 5.
-    This gives the upper bound f(9) ≤ 4 (i.e., 9 points fit in diameter 4). -/
-theorem piepmeyer_upper : ∃ n : ℕ, n = 9 ∧ (∃ d : ℕ, d ≤ 4 ∧ True) := ⟨9, rfl, 4, le_refl _, trivial⟩
+/--
+**Kanold's bound proved from Guth-Katz**: cn/log n ≥ cn^{3/4} for large n.
 
-/-! ## Part IV: The Anning–Erdős Theorem
-
-A key constraint: the Anning–Erdős theorem states that infinitely many
-points with all pairwise distances being integers must be collinear.
-
-This means for non-collinear configurations, n is bounded by a function
-of the diameter. The question is the precise growth rate.
+This makes the `kanold_bound` axiom in Erdos100Problem.lean redundant.
+The key step uses `log n ≤ n^(1/4)` (from `isLittleO_log_rpow_atTop`)
+to show `n^(3/4) ≤ n / log n`.
 -/
+theorem kanold_from_guthkatz :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+      c * (n : ℝ)^(3/4 : ℝ) ≤ minDiameterRestrictedSets n := by
+  obtain ⟨c, hc_pos, hbound⟩ := minDiam_ge_n_over_log
+  use c, hc_pos
+  filter_upwards [hbound, log_le_rpow_quarter_eventually,
+                   Filter.eventually_ge_atTop 3] with n hn hlog_le hn3
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+  have hlog_pos : 0 < Real.log (n : ℝ) := by
+    apply Real.log_pos; exact_mod_cast (show 1 < n by omega)
+  -- n^(3/4) ≤ n / log n because log n ≤ n^(1/4)
+  -- Proof: n^(3/4) * log n ≤ n^(3/4) * n^(1/4) = n^1 = n
+  calc c * (n : ℝ) ^ ((3 : ℝ) / 4)
+      ≤ c * (n : ℝ) / Real.log (n : ℝ) := by
+        rw [le_div_iff₀ hlog_pos]
+        calc c * ↑n ^ ((3 : ℝ) / 4) * Real.log ↑n
+            ≤ c * ↑n ^ ((3 : ℝ) / 4) * ↑n ^ ((1 : ℝ) / 4) := by
+              apply mul_le_mul_of_nonneg_left hlog_le
+              positivity
+          _ = c * (↑n ^ ((3 : ℝ) / 4) * ↑n ^ ((1 : ℝ) / 4)) := by ring
+          _ = c * ↑n ^ (1 : ℝ) := by
+              congr 1
+              rw [← Real.rpow_add (by positivity : (0 : ℝ) < ↑n)]
+              norm_num
+          _ = c * ↑n := by rw [Real.rpow_one]
+    _ ≤ minDiameterRestrictedSets n := hn
 
-/-- **Anning–Erdős Theorem** (1945): An infinite set of points in the plane
-    with all mutual distances being integers must be collinear.
+-- ═══════════════════════════════════════════════════════════════════
+-- PART II: THE GAP QUESTION — TWO EXCLUSIVE SCENARIOS
+-- ═══════════════════════════════════════════════════════════════════
 
-    Equivalently: for any d > 0, there are only finitely many non-collinear
-    points with all mutual distances being positive integers ≤ d. -/
-theorem anning_erdos_finiteness :
-    ∀ d : ℕ, ∃ N : ℕ, ∀ n : ℕ, n > N →
-      ¬∃ (S : Finset (ℝ × ℝ)), S.card = n ∧
-        (∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, 0 < k ∧ k ≤ d ∧
-          (p.1 - q.1)^2 + (p.2 - q.2)^2 = ↑(k^2)) ∧
-        ¬(∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S, -- not all collinear
-          (p.1 - r.1) * (q.2 - r.2) = (q.1 - r.1) * (p.2 - r.2)) := by
-  sorry -- Requires the Anning-Erdős argument (number theory + geometry)
-
-/-! ## Conclusion
-
-The gap between the known bound diam ≥ cn/log n and the conjectured
-diam ≥ cn is exactly a factor of log n. This file formalizes:
-- The gap grows without bound (log n → ∞)
-- The known bound is strictly sublinear (n/log n = o(n))
-- The linear conjecture implies the known bound
-- The Anning-Erdős constraint forces finiteness
-
-Status: OPEN. Closing the log n gap would require either:
-1. Proving integer distance sets have ≥ cn distinct distances (no log loss)
-2. A direct geometric argument bypassing the distinct distances route
+/--
+**Scenario A**: The diameter grows linearly (Erdős's conjecture).
 -/
+def LinearGrowth : Prop := Erdos100Conjecture
 
-end Erdos100OQ01
+/--
+**Scenario B**: The logarithmic factor is genuine — there exist n-point
+integer distance sets with diameter O(n/log n) for infinitely many n.
+-/
+def LogarithmicBarrier : Prop :=
+  ∃ C : ℝ, C > 0 ∧ ∀ᶠ n : ℕ in atTop,
+    minDiameterRestrictedSets n ≤ C * n / Real.log n
+
+/--
+**Main theorem**: Linear growth and logarithmic barrier are mutually exclusive.
+
+If diam ≥ cn for all large n-point sets (linear), then there cannot also
+exist n-point sets with diam ≤ Cn/log n (logarithmic barrier), because
+this would require c ≤ C/log n → 0, contradicting c > 0.
+-/
+theorem scenarios_exclusive (hlin : LinearGrowth) (hlog : LogarithmicBarrier) : False := by
+  obtain ⟨c, hc_pos, hlin_ev⟩ := hlin
+  obtain ⟨C, hC_pos, hlog_ev⟩ := hlog
+  -- C / log n → 0 as n → ∞, so eventually C / log n < c (since c > 0)
+  have hlog_nat : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hC_small : ∀ᶠ n : ℕ in atTop, C / Real.log (n : ℝ) < c :=
+    (tendsto_const_nhds.div_atTop hlog_nat).eventually (Iio_mem_nhds hc_pos)
+  -- For large n: cn ≤ minDiam(n) ≤ Cn/log n AND C/log n < c → contradiction
+  have hcontradiction : ∀ᶠ n : ℕ in atTop, False := by
+    filter_upwards [hlin_ev, hlog_ev, Filter.eventually_ge_atTop 3, hC_small]
+      with n hlin_n hlog_n hn3 hlt
+    have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+    have hlog_pos : 0 < Real.log (n : ℝ) := by
+      apply Real.log_pos
+      exact_mod_cast (show 1 < n by omega)
+    -- cn ≤ minDiam(n) ≤ Cn/log n
+    have h_chain : c * n ≤ C * n / Real.log n := le_trans hlin_n hlog_n
+    -- Divide by n: c ≤ C/log n
+    have h_div : c ≤ C / Real.log n := by
+      have h' : c * ↑n ≤ C / Real.log ↑n * ↑n := by rwa [div_mul_eq_mul_div]
+      exact (mul_le_mul_right hn_pos).mp h'
+    -- But C/log n < c, contradiction
+    linarith
+  exact (eventually_atTop.mp hcontradiction).choose_spec _ le_rfl
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: THE GAP IS LOGARITHMIC
+-- ═══════════════════════════════════════════════════════════════════
+
+/--
+The gap between what's known and what's conjectured vanishes in the
+ratio sense: 1/log n → 0, meaning the known bound n/log n is
+asymptotically smaller than the conjectured bound n by a vanishing factor.
+-/
+theorem gap_ratio_vanishes :
+    Tendsto (fun n : ℕ => 1 / Real.log (n : ℝ)) atTop (nhds 0) := by
+  have hlog : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  exact tendsto_const_nhds.div_atTop hlog
+
+/--
+If linear growth holds, the Guth-Katz bound has room for improvement
+by a factor of log n. Conversely, closing this gap would prove the
+conjecture.
+-/
+theorem linear_implies_logn_improvement (hlin : LinearGrowth) :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+      ∀ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+        S.card = n → hasIntegerDistances S →
+        Real.log n * (c * n / Real.log n) ≤ Real.log n * diam S := by
+  obtain ⟨c, hc_pos, hev⟩ := hlin
+  use c, hc_pos
+  filter_upwards [hev, Filter.eventually_ge_atTop 3] with n hn hn3
+  intro S hcard hint
+  have hlog_pos : 0 < Real.log (n : ℝ) := by
+    apply Real.log_pos; exact_mod_cast (show 1 < n by omega)
+  -- From linear growth: cn ≤ minDiam(n) ≤ diam S
+  have h_le : minDiameterRestrictedSets n ≤ diam S := by
+    unfold minDiameterRestrictedSets
+    apply csInf_le
+    · exact ⟨0, fun d hd => by
+        obtain ⟨S', ⟨_, _⟩, rfl⟩ := hd
+        exact diam_nonneg S'⟩
+    · exact ⟨S, ⟨hcard, hint⟩, rfl⟩
+  apply mul_le_mul_of_nonneg_left _ (le_of_lt hlog_pos)
+  -- cn/log n ≤ cn ≤ minDiam(n) ≤ diam S
+  calc c * n / Real.log n
+      ≤ c * n := by
+        apply div_le_self (by positivity) (le_of_lt hlog_pos)
+    _ ≤ minDiameterRestrictedSets n := hn
+    _ ≤ diam S := h_le
+
+end Erdos100.OQ01

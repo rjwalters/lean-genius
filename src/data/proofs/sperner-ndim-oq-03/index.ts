@@ -1,9 +1,10 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/BuffonsNeedleOQ02OQ02.lean?raw'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/SpernerNDimOQ03.lean?raw'
 
-const meta = metaJson as unknown as {
+const meta = metaJson as {
   id: string
   title: string
   slug: string
@@ -15,7 +16,7 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-export const buffonsNeedleOQ02OQ02Proof: Proof = {
+export const spernerNdimOq03Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,11 +29,11 @@ export const buffonsNeedleOQ02OQ02Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const buffonsNeedleOQ02OQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const buffonsNeedleOQ02OQ02TacticStates: TacticState[] = [] as TacticState[]
+export const spernerNdimOq03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const spernerNdimOq03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
-export const buffonsNeedleOQ02OQ02Data: ProofData = {
-  proof: buffonsNeedleOQ02OQ02Proof,
-  annotations: buffonsNeedleOQ02OQ02Annotations,
-  tacticStates: buffonsNeedleOQ02OQ02TacticStates,
+export const spernerNdimOq03Data: ProofData = {
+  proof: spernerNdimOq03Proof,
+  annotations: spernerNdimOq03Annotations,
+  tacticStates: spernerNdimOq03TacticStates,
 }
