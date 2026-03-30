@@ -11,7 +11,10 @@
       "Inverse theorem for U^s is trivial for s=2 (Parseval) but deep for s≥3 (nilsequences)",
       "Density increment for k=3 gives explicit δ²/100; for k≥4 gives non-explicit c(δ,k)",
       "Existing SzemerediTheorem.lean already has k-AP definitions and k≥4 axiom",
-      "Roth density increment (k=3) is 1401 lines, fully proved — very mature infrastructure"
+      "Roth density increment (k=3) is 1401 lines, fully proved — very mature infrastructure",
+      "gowersNorm_nonneg and gowersNorm_mono were unused by any theorem — removed",
+      "inverse_theorem had placeholder True conclusion, added no mathematical content — removed",
+      "density_increment_kAP is missing AP-free condition in conclusion — cant iterate for Szemeredi proof"
     ],
     "builtItems": [
       "RothTheoremOQ03.lean: 195 lines, 7 axioms, 2 sorries",
@@ -20,7 +23,7 @@
       "Density increment for k-APs connecting to Szemerédi's theorem",
       "Gallery entry with meta.json"
     ],
-    "progressSummary": "COMPLETED: Survey of k-AP density increment generalization via Gowers norms.",
+    "progressSummary": "COMPLETED: Axioms 7→4 (removed 3 unused: nonneg, mono, placeholder inverse theorem). 2 sorries remain. Core framework: gowersNorm, kAPCount, gen. von Neumann, density increment.",
     "nextSteps": [
       "Define Gowers norms constructively using iterated expectations",
       "Prove Gowers-Cauchy-Schwarz inequality (monotonicity)",
