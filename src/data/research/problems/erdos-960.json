@@ -1,6 +1,6 @@
 {
   "slug": "erdos-960",
-  "title": "Erd\u0151s #960",
+  "title": "Erdős #960",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -21,7 +21,7 @@
     "iteration": 2,
     "focus": "Graduated: 0 sorries, 3 deep axioms",
     "blockers": [],
-    "nextAction": "None \u2014 formalization complete.",
+    "nextAction": "None — formalization complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,48 +29,48 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 6 theorems, 3 deep axioms, 0 sorries. Axioms: main conjecture (OPEN), Tur\u00e1n upper bound, Green-Tao ordinary lines. All structural results proved.",
+    "progressSummary": "COMPLETED: 6 theorems, 3 deep axioms, 0 sorries. Axioms: main conjecture (OPEN), Turán upper bound, Green-Tao ordinary lines. All structural results proved.",
     "builtItems": [
-      "Proved trivial_bound: ordinaryLineCount P \u2264 P.n * (P.n - 1) / 2",
+      "Proved trivial_bound: ordinaryLineCount P ≤ P.n * (P.n - 1) / 2",
       "Identified bug in threshold_r2 (claims 1, should be 0)",
-      "Identified bug in linear_implies_littleo N\u2080 (C+1 \u2192 \u2308C/\u03b5\u2309+1)",
-      "linear_implies_littleo: fixed N\u2080 from C+1 to \u2308C/\u03b5\u2309+1 (was wrong for \u03b5 < 1)",
+      "Identified bug in linear_implies_littleo N₀ (C+1 → ⌈C/ε⌉+1)",
+      "linear_implies_littleo: fixed N₀ from C+1 to ⌈C/ε⌉+1 (was wrong for ε < 1)",
       "green_tao_ordinary_lines: correctly reclassified as axiom (Green-Tao 2013 deep result)",
       "threshold_r2: documented semantic bug (sSup definition gives 0, not 1)",
       "Fixed threshold_r2 statement: = 0 (was incorrectly = 1)",
-      "trivial_bound: ordinaryLineCount P \u2264 P.n*(P.n-1)/2 proved via offDiag subset (Erdos960Problem.lean:107-124)",
+      "trivial_bound: ordinaryLineCount P ≤ P.n*(P.n-1)/2 proved via offDiag subset (Erdos960Problem.lean:107-124)",
       "linear_implies_littleo: arithmetic sorry eliminated via ceil/toNat chain + nlinarith (Erdos960Problem.lean:155-181)",
-      "ordinary_line_exists: helper lemma extracting ordinary pair from ordinaryLineCount \u2265 1",
+      "ordinary_line_exists: helper lemma extracting ordinary pair from ordinaryLineCount ≥ 1",
       "threshold_r2: full proof via le_antisymm, csSup_le, ordinary line extraction, isOrdinaryLine_symm",
       "Graduated to completed (iteration 2)",
-      "Removed 2 unused axioms (turan_upper_bound, green_tao_ordinary_lines) \u2014 3\u21921 axioms"
+      "Removed 2 unused axioms (turan_upper_bound, green_tao_ordinary_lines) — 3→1 axioms"
     ],
     "insights": [
       "trivial_bound provable: filter_le on offDiag + card_offDiag + omega",
       "threshold_r2 appears incorrect: for r=2, threshold should be 0 (not 1), since any ordinary line gives a 2-point all-ordinary subset",
-      "linear_implies_littleo has wrong N\u2080: uses C+1 but needs \u2308C/\u03b5\u2309+1 since C*n < \u03b5*n\u00b2 requires n > C/\u03b5",
+      "linear_implies_littleo has wrong N₀: uses C+1 but needs ⌈C/ε⌉+1 since C*n < ε*n² requires n > C/ε",
       "turan_upper_bound and green_tao_ordinary_lines are deep results, not provable from Mathlib",
       "File structure is clean: point configs, ordinary lines, all-ordinary subsets, threshold function",
-      "The threshold definition computes sSup of counterexample ordinary-line counts, NOT the minimum guaranteeing existence \u2014 off-by-one from mathematical convention",
+      "The threshold definition computes sSup of counterexample ordinary-line counts, NOT the minimum guaranteeing existence — off-by-one from mathematical convention",
       "green_tao_ordinary_lines (2013) cannot be proved from Mathlib; correctly axiomatized",
-      "turan_upper_bound requires encoding Tur\u00e1n theorem for the ordinary-line graph \u2014 non-trivial formalization",
-      "The linear_implies_littleo proof requires careful \u211a/\u2115 coercion handling for the \u03b5*n*n conversion",
-      "For small \u03b5, N\u2080 = C+1 fails: need n > C/\u03b5 to ensure C*n < \u03b5*n\u00b2",
+      "turan_upper_bound requires encoding Turán theorem for the ordinary-line graph — non-trivial formalization",
+      "The linear_implies_littleo proof requires careful ℚ/ℕ coercion handling for the ε*n*n conversion",
+      "For small ε, N₀ = C+1 fails: need n > C/ε to ensure C*n < ε*n²",
       "threshold_r2 statement was WRONG: should be =0 not =1 (sSup of empty counterexample set = 0)",
       "File has pre-existing Mathlib API breakages: Rat.toNat missing, Finset.card_offDiag renamed, projection issues",
-      "linear_implies_littleo N\u2080 has edge case bug for C=0 (needs \u03b5*n\u00b2\u22651 guarantee)",
-      "For r=2 with any k\u22652: Sylvester-Gallai implies ordinary lines exist, so 2-element all-ordinary subsets always exist",
-      "Int.ceil notation \u2308x\u2309 and dot notation x.ceil resolve to different instances in Lean 4 \u2014 must use consistent notation",
+      "linear_implies_littleo N₀ has edge case bug for C=0 (needs ε*n²≥1 guarantee)",
+      "For r=2 with any k≥2: Sylvester-Gallai implies ordinary lines exist, so 2-element all-ordinary subsets always exist",
+      "Int.ceil notation ⌈x⌉ and dot notation x.ceil resolve to different instances in Lean 4 — must use consistent notation",
       "trivial_bound follows from Finset.offDiag_card + Nat.mul_succ after case split on P.n",
       "threshold_r2 proof: for r=2, any ordinary line gives a 2-element all-ordinary subset, so the counterexample set in sSup is empty/singleton, hence sSup=0",
-      "turan_upper_bound axiomatized: Tur\u00e1n 1941 is in Mathlib (SimpleGraph.Extremal.Turan) but bridging to PointConfig needs ~200-400 lines of infrastructure",
+      "turan_upper_bound axiomatized: Turán 1941 is in Mathlib (SimpleGraph.Extremal.Turan) but bridging to PointConfig needs ~200-400 lines of infrastructure",
       "csSup_le + Finset.mem_filter extraction pattern effective for sSup-based threshold proofs",
-      "Graduation review: 3 axioms verified as deep (Tur\u00e1n, Green-Tao, main OPEN conjecture). Formalization complete.",
-      "turan_upper_bound and green_tao_ordinary_lines were unused by any theorem \u2014 removed as documentation artifacts"
+      "Graduation review: 3 axioms verified as deep (Turán, Green-Tao, main OPEN conjecture). Formalization complete.",
+      "turan_upper_bound and green_tao_ordinary_lines were unused by any theorem — removed as documentation artifacts"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #960 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r,k\\geq 2$ be fixed. Let $A\\subset \\mathbb{R}^2$ be a set of $n$ points with no $k$ points on a line. Determine the threshold $f_{r,k}(n)$ such that if there are at least $f_{r,k}(n)$ many ordinary lines (lines containing exactly two points) then there is a set $A'\\subseteq A$ of $r$ points such that all $\\binom{r}{2}$ many lines determined by $A'$ are ordinary.\n\nIs it true that $f_{r,k}(n)=o(n^2)$, or perhaps even $\\ll n$?\n\n\n\nTur\\'{a}n's theorem implies\\[f_{r,k}(n) \\leq \\left(1-\\frac{1}{r-1}\\right)\\frac{n^2}{2}+1.\\]See also [209].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #209\n- Problem #959\n- Problem #961\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #960 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r,k\\geq 2$ be fixed. Let $A\\subset \\mathbb{R}^2$ be a set of $n$ points with no $k$ points on a line. Determine the threshold $f_{r,k}(n)$ such that if there are at least $f_{r,k}(n)$ many ordinary lines (lines containing exactly two points) then there is a set $A'\\subseteq A$ of $r$ points such that all $\\binom{r}{2}$ many lines determined by $A'$ are ordinary.\n\nIs it true that $f_{r,k}(n)=o(n^2)$, or perhaps even $\\ll n$?\n\n\n\nTur\\'{a}n's theorem implies\\[f_{r,k}(n) \\leq \\left(1-\\frac{1}{r-1}\\right)\\frac{n^2}{2}+1.\\]See also [209].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #209\n- Problem #959\n- Problem #961\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -93,9 +93,9 @@
     {
       "path": "Proofs/Erdos960Problem.lean",
       "filename": "Erdos960Problem.lean",
-      "lineCount": 248,
+      "lineCount": 241,
       "theoremCount": 6,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

@@ -180,34 +180,11 @@
     ]
   },
   {
-    "id": "octonion-axiom",
-    "proofId": "hurwitz-theorem",
-    "range": {
-      "startLine": 244,
-      "endLine": 245
-    },
-    "type": "theorem",
-    "title": "8-Square Identity (Degen's Identity)",
-    "content": "Axiomatizes eight_square_identity_exists : NSquareIdentity 8. The full formula (Degen's identity, 1818) has 8 output components, each a sum of 8 products of the 16 input variables -- too complex to write explicitly. Corresponds to octonion multiplication.",
-    "mathContext": "Ferdinand Degen published the 8-square identity in 1818. John Graves discovered octonions independently in 1843, and Arthur Cayley rediscovered them in 1845. Octonions are the largest normed division algebra: they are non-associative but alternative (x(xy) = x^2 y). Their automorphism group is the exceptional Lie group G_2.",
-    "significance": "key",
-    "prerequisites": [
-      "NSquareIdentity"
-    ],
-    "relatedConcepts": [
-      "octonions",
-      "Degen's identity",
-      "Cayley numbers",
-      "G_2",
-      "alternative algebra"
-    ]
-  },
-  {
     "id": "no-three-setup",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 317,
-      "endLine": 319
+      "startLine": 369,
+      "endLine": 371
     },
     "type": "concept",
     "title": "Why n = 3 Fails: Setup and Orthonormality",
@@ -230,8 +207,8 @@
     "id": "parseval-identity",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 581,
-      "endLine": 589
+      "startLine": 633,
+      "endLine": 641
     },
     "type": "theorem",
     "title": "Parseval Identity in R^3",
@@ -254,8 +231,8 @@
     "id": "n3-contradiction",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 801,
-      "endLine": 806
+      "startLine": 853,
+      "endLine": 858
     },
     "type": "theorem",
     "title": "The n = 3 Contradiction (Core Proof)",
@@ -277,8 +254,8 @@
     "id": "no-three-theorem",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1169,
-      "endLine": 1179
+      "startLine": 1221,
+      "endLine": 1231
     },
     "type": "theorem",
     "title": "No 3-Square Identity Theorem",
@@ -298,8 +275,8 @@
     "id": "admissible-set",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1557,
-      "endLine": 1558
+      "startLine": 1609,
+      "endLine": 1610
     },
     "type": "definition",
     "title": "Admissible Dimensions",
@@ -317,8 +294,8 @@
     "id": "hurwitz-main",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1583,
-      "endLine": 1592
+      "startLine": 1635,
+      "endLine": 1644
     },
     "type": "theorem",
     "title": "Hurwitz's Main Theorem",
@@ -341,8 +318,8 @@
     "id": "division-algebras-enum",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1617,
-      "endLine": 1622
+      "startLine": 1669,
+      "endLine": 1674
     },
     "type": "definition",
     "title": "The Four Division Algebras",
@@ -364,8 +341,8 @@
     "id": "dimension-function",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1631,
-      "endLine": 1634
+      "startLine": 1683,
+      "endLine": 1686
     },
     "type": "definition",
     "title": "Dimension Function",
@@ -385,8 +362,8 @@
     "id": "physical-significance",
     "proofId": "hurwitz-theorem",
     "range": {
-      "startLine": 1640,
-      "endLine": 1667
+      "startLine": 1692,
+      "endLine": 1719
     },
     "type": "insight",
     "title": "Physical and Mathematical Significance",
