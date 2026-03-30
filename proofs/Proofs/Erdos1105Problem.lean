@@ -175,13 +175,8 @@ def PathConjecture : Prop :=
   ∀ n k : ℕ, n ≥ k → k ≥ 5 → arPath n k = pathFormula n k
 
 -- Simonovits-Sós (1984): holds for n ≥ ck²
-axiom simonovits_sos_path : ∃ c : ℕ, ∀ n k : ℕ, n ≥ c * k^2 → k ≥ 5 →
-  arPath n k = pathFormula n k
-
--- Yuan (2021): announced full proof
-axiom yuan_path_announced : PathConjecture
-
-/-
+-- simonovits_sos_path: unused axiom removed (never referenced by any theorem)
+-- yuan_path_announced: unused axiom removed (never referenced by any theorem)
 # Part 7: Lower and Upper Bounds
 
 General bounds on anti-Ramsey numbers.
@@ -318,10 +313,7 @@ theorem ar_upper_bound (n k : ℕ) (H : SimpleGraph k) :
     exact csSup_le h (fun c ⟨coloring, hc, _⟩ => hc ▸ numColors_le_edges n coloring)
 
 -- Monotonicity in n
-axiom ar_mono_n : ∀ (n₁ n₂ k : ℕ) (H : SimpleGraph k),
-  n₁ ≤ n₂ → antiRamsey n₁ k H ≤ antiRamsey n₂ k H
-
-/-
+-- ar_mono_n: unused axiom removed (never referenced by any theorem)
 # Part 8: Connection to Turán Numbers
 
 Anti-Ramsey numbers relate to extremal graph theory.
@@ -335,12 +327,7 @@ noncomputable def turan (n k : ℕ) (H : SimpleGraph k) : ℕ :=
       (fun p : Fin n × Fin n => p.1 < p.2 ∧ G p.1 p.2)).card}
 
 -- AR(n, H) ≥ ex(n, H) + 1 (give H-free graph rainbow, one color for complement)
-axiom ar_turan_lower : ∀ (n k : ℕ) (H : SimpleGraph k),
-  n ≥ k → antiRamsey n k H ≥ turan n k H + 1
-
--- Ramsey vs Anti-Ramsey: different extremal questions about colorings
-
-/-
+-- ar_turan_lower: unused axiom removed (never referenced by any theorem)
 # Part 9: Special Cases
 
 Known exact values and special cases.
@@ -350,12 +337,8 @@ Known exact values and special cases.
 -- Already stated above as ar_triangle
 
 -- AR(n, P_3) = 1 (trivial: any 2-coloring avoids rainbow path)
-axiom ar_path_3 : ∀ n ≥ 3, arPath n 3 = 1
-
--- AR(n, K_3) = n - 1 (same as cycle)
-axiom ar_k3 : ∀ n ≥ 3, antiRamsey n 3 (CompleteGraph 3) = n - 1
-
-/-
+-- ar_path_3: unused axiom removed (never referenced by any theorem)
+-- ar_k3: unused axiom removed (never referenced by any theorem)
 # Part 10: Problem Status
 
 The problem remains OPEN for general cycles and the full path range.

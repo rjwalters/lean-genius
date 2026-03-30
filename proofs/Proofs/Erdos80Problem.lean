@@ -49,124 +49,24 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 Definitions for triangles and books in graphs.
 -/
 
-/--
-**Triangle in a Graph:**
-A triangle is a set of three vertices {a, b, c} that are pairwise adjacent.
--/
-def isTriangle (G : SimpleGraph V) (a b c : V) : Prop :=
-  a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
-
-/--
-**Edge in a Triangle:**
-An edge (u, v) is in a triangle if there exists a third vertex w
-such that {u, v, w} forms a triangle.
--/
-def edgeInTriangle (G : SimpleGraph V) (u v : V) : Prop :=
-  G.Adj u v ∧ ∃ w : V, isTriangle G u v w
-
-/--
-**Triangle-Saturated Graph:**
-A graph where every edge is contained in at least one triangle.
--/
-def isTriangleSaturated (G : SimpleGraph V) : Prop :=
-  ∀ u v : V, G.Adj u v → edgeInTriangle G u v
-
-/--
-**Book of Size m:**
-A book of size m is an edge (u, v) that is shared by at least m triangles.
-The edge is the "spine" and the triangles are the "pages".
--/
-def bookSize (G : SimpleGraph V) (u v : V) : ℕ :=
-  (Finset.univ.filter fun w => isTriangle G u v w).card
-
-/--
-**Has Book of Size m:**
-A graph has a book of size m if some edge achieves book size at least m.
--/
-def hasBook (G : SimpleGraph V) (m : ℕ) : Prop :=
-  ∃ u v : V, G.Adj u v ∧ bookSize G u v ≥ m
-
-/--
-**Maximum Book Size:**
-The largest book in the graph.
--/
-noncomputable def maxBookSize (G : SimpleGraph V) : ℕ :=
-  Finset.sup' (Finset.univ ×ˢ Finset.univ).attach
-    (by simp [Finset.attach_nonempty_iff])
-    (fun ⟨⟨u, v⟩, _⟩ => if G.Adj u v then bookSize G u v else 0)
-
-/- ## Part II: The f_c(n) Function
-
-The central object of Erdős Problem #80.
--/
-
-/--
-**Dense Graph:**
-A graph on n vertices with at least cn² edges.
--/
-def isDense (G : SimpleGraph V) (c : ℝ) : Prop :=
-  (G.edgeFinset.card : ℝ) ≥ c * (Fintype.card V : ℝ)^2
-
-/--
-**f_c(n):** The Erdős-Rothschild Function
-
-The maximum m such that every n-vertex graph with:
-- At least cn² edges
-- Every edge in a triangle
-
-must contain a book of size at least m.
--/
-noncomputable def f (c : ℝ) (n : ℕ) : ℕ :=
-  sSup {m : ℕ | ∀ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
-    Fintype.card V = n →
-    ∀ G : SimpleGraph V, isDense G c → isTriangleSaturated G →
-    hasBook G m}
-
-/- ## Part III: Known Upper Bounds
-
-The phase transition at c = 1/4.
--/
-
-/--
-**Alon-Trotter Upper Bound:**
-For c < 1/4: f_c(n) ≪ n^{1/2}
-
-There exist triangle-saturated graphs with cn² edges
-where the maximum book size is O(√n).
--/
-axiom alon_trotter_bound (c : ℝ) (hc : c < 1/4) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (f c n : ℝ) ≤ C * Real.sqrt n
-
-/--
+-- alon_trotter_bound: unused axiom removed (never referenced by any theorem)
 **Fox-Loh Upper Bound (2012):**
 For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}
 
 This disproves Erdős's conjecture that f_c(n) > n^ε for some ε > 0.
 -/
-axiom fox_loh_bound (c : ℝ) (hc : c < 1/4) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    (f c n : ℝ) ≤ n ^ (C / Real.log (Real.log n))
-
-/--
+-- fox_loh_bound: unused axiom removed (never referenced by any theorem)
 **Erdős's Polynomial Conjecture: DISPROVED**
 f_c(n) > n^ε for some ε > 0 is FALSE for c < 1/4.
 Fox-Loh (2012) showed f_c(n) ≤ n^{O(1/log log n)}, which is o(n^ε).
 -/
-axiom erdos_polynomial_conjecture_false (c : ℝ) (hc : c < 1/4) :
-    ¬∃ ε : ℝ, ε > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f c n : ℝ) > n ^ ε
-
-/- ## Part IV: Known Lower Bounds -/
-
-/--
+-- erdos_polynomial_conjecture_false: unused axiom removed (never referenced by any theorem)
 **Edwards-Khadziivanov-Nikiforov Bound:**
 For c > 1/4: f_c(n) ≥ n/6
 
 Above the threshold 1/4, books of linear size are guaranteed.
 -/
-axiom linear_bound_above_threshold (c : ℝ) (hc : c > 1/4) :
-  ∀ n : ℕ, n ≥ 1 → f c n ≥ n / 6
-
-/--
+-- linear_bound_above_threshold: unused axiom removed (never referenced by any theorem)
 **Szemerédi Regularity Bound:**
 For all c > 0: f_c(n) → ∞ as n → ∞.
 
@@ -176,15 +76,7 @@ but with very weak (tower-type) bounds.
 axiom regularity_lower_bound (c : ℝ) (hc : c > 0) :
   Filter.Tendsto (fun n => (f c n : ℝ)) Filter.atTop Filter.atTop
 
-/--
-**Consequence of regularity:** For any M, eventually f_c(n) > M.
--/
-axiom f_tends_to_infinity (c : ℝ) (hc : c > 0) :
-    ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, f c n > M
-
-/- ## Part V: The Phase Transition -/
-
-/--
+-- f_tends_to_infinity: unused axiom removed (never referenced by any theorem)
 **Phase Transition at c = 1/4:**
 The threshold c = 1/4 separates two regimes:
 - c > 1/4: Linear books (f_c(n) ≥ n/6)

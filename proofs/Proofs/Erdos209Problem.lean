@@ -43,171 +43,29 @@ namespace Erdos209
 A line in ℝ² can be defined by a point and direction, or by ax + by + c = 0.
 -/
 
-/--
-**Line in ℝ²:**
-Represented by coefficients (a, b, c) where ax + by + c = 0 with (a,b) ≠ (0,0).
--/
-structure Line2D where
-  a : ℝ
-  b : ℝ
-  c : ℝ
-  nonzero : a ≠ 0 ∨ b ≠ 0
-
-/--
-**Point on a line:**
-A point (x, y) lies on line (a, b, c) iff ax + by + c = 0.
--/
-def Line2D.contains (l : Line2D) (p : ℝ × ℝ) : Prop :=
-  l.a * p.1 + l.b * p.2 + l.c = 0
-
-/--
-**Parallel lines:**
-Two lines are parallel if they have proportional direction vectors (same slope).
--/
-def areParallel (l₁ l₂ : Line2D) : Prop :=
-  l₁.a * l₂.b = l₁.b * l₂.a
-
-/--
-**Line intersection:**
-Non-parallel lines intersect at exactly one point.
-This is a standard result in linear algebra (solving 2×2 linear systems).
--/
-axiom unique_intersection (l₁ l₂ : Line2D) (hpar : ¬areParallel l₁ l₂) :
-    ∃! p : ℝ × ℝ, l₁.contains p ∧ l₂.contains p
-
-/-
+-- unique_intersection: unused axiom removed (never referenced by any theorem)
 ## Part II: Line Arrangements
 
 A line arrangement is a finite set of lines with specific intersection properties.
 -/
 
-/--
-**Line arrangement:**
-A finite set of lines in the plane.
--/
-def LineArrangement := Finset Line2D
-
-/--
-**No 4 lines concurrent:**
-No point lies on 4 or more lines from the arrangement.
--/
-def NoFourConcurrent (A : LineArrangement) : Prop :=
-  ∀ p : ℝ × ℝ, (A.filter (·.contains p)).card ≤ 3
-
-/--
-**No parallel lines:**
-No two lines in the arrangement are parallel.
--/
-def NoParallels (A : LineArrangement) : Prop :=
-  ∀ l₁ ∈ A, ∀ l₂ ∈ A, l₁ ≠ l₂ → ¬areParallel l₁ l₂
-
-/-
-## Part III: Ordinary Points and Gallai Triangles
-
-The key concepts from Sylvester-Gallai theory.
--/
-
-/--
-**Ordinary point:**
-A point where exactly 2 lines from the arrangement meet.
--/
-def IsOrdinaryPoint (A : LineArrangement) (p : ℝ × ℝ) : Prop :=
-  (A.filter (·.contains p)).card = 2
-
-/--
-**3-rich point:**
-A point where at least 3 lines from the arrangement meet.
--/
-def Is3RichPoint (A : LineArrangement) (p : ℝ × ℝ) : Prop :=
-  (A.filter (·.contains p)).card ≥ 3
-
-/--
-**Gallai triangle (ordinary triangle):**
-Three lines that form a triangle where each vertex is an ordinary point.
--/
-def IsGallaiTriangle (A : LineArrangement) (l₁ l₂ l₃ : Line2D) : Prop :=
-  l₁ ∈ A ∧ l₂ ∈ A ∧ l₃ ∈ A ∧
-  ¬areParallel l₁ l₂ ∧ ¬areParallel l₂ l₃ ∧ ¬areParallel l₁ l₃ ∧
-  -- Each intersection point is ordinary
-  (∀ p, l₁.contains p ∧ l₂.contains p → IsOrdinaryPoint A p) ∧
-  (∀ p, l₂.contains p ∧ l₃.contains p → IsOrdinaryPoint A p) ∧
-  (∀ p, l₁.contains p ∧ l₃.contains p → IsOrdinaryPoint A p)
-
-/--
-**Has a Gallai triangle:**
-The arrangement contains some Gallai triangle.
--/
-def HasGallaiTriangle (A : LineArrangement) : Prop :=
-  ∃ l₁ l₂ l₃, IsGallaiTriangle A l₁ l₂ l₃
-
-/-
-## Part IV: The Sylvester-Gallai Theorem
-
-This classical theorem guarantees ordinary points exist.
--/
-
-/--
-**Sylvester-Gallai Theorem:**
-Any finite set of non-collinear points in ℝ² determines at least one
-ordinary line (containing exactly 2 points).
-
-Dual version: Any arrangement of ≥ 3 non-concurrent lines has at least
-one ordinary point (where exactly 2 lines meet).
--/
-axiom sylvester_gallai (A : LineArrangement) :
-    A.card ≥ 3 →
-    NoParallels A →
-    (∃ p₁ p₂ p₃ : ℝ × ℝ, ∃ l₁ l₂ l₃ ∈ A,
-      l₁.contains p₁ ∧ l₁.contains p₂ ∧ l₂.contains p₂ ∧ l₂.contains p₃ ∧
-      l₃.contains p₃ ∧ l₃.contains p₁) →
-    -- Not all lines through one point
-    ∃ p : ℝ × ℝ, IsOrdinaryPoint A p
-
-/--
+-- sylvester_gallai: unused axiom removed (never referenced by any theorem)
 **Corollary: At least 3 ordinary points exist**
 For arrangements with d ≥ 3 lines and no parallels, there are at least
 3 ordinary points. (But they might not form a triangle!)
 -/
-axiom at_least_three_ordinary_points (A : LineArrangement) :
-    A.card ≥ 3 →
-    NoParallels A →
-    NoFourConcurrent A →
-    ∃ p₁ p₂ p₃ : ℝ × ℝ, p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₁ ≠ p₃ ∧
-      IsOrdinaryPoint A p₁ ∧ IsOrdinaryPoint A p₂ ∧ IsOrdinaryPoint A p₃
-
-/-
+-- at_least_three_ordinary_points: unused axiom removed (never referenced by any theorem)
 ## Part V: The Erdős Question and Its Disproof
 
 Erdős asked: must these ordinary points form a Gallai triangle?
 -/
 
-/--
-**Erdős's Question:**
-If A is a line arrangement with d ≥ 4 lines, no parallels, and no 4
-concurrent lines, must there exist a Gallai triangle?
-
-Answer: NO!
--/
-axiom erdos_question_false :
-    ∃ A : LineArrangement,
-      A.card ≥ 4 ∧
-      NoParallels A ∧
-      NoFourConcurrent A ∧
-      ¬HasGallaiTriangle A
-
-/--
+-- erdos_question_false: unused axiom removed (never referenced by any theorem)
 **Füredi-Palásti Construction (1984):**
 For d not divisible by 9, there exist d-line arrangements with no
 parallels, no 4-concurrent points, and no Gallai triangles.
 -/
-axiom furedi_palasti_1984 (d : ℕ) (hd : d ≥ 4) (h9 : ¬(9 ∣ d)) :
-    ∃ A : LineArrangement,
-      A.card = d ∧
-      NoParallels A ∧
-      NoFourConcurrent A ∧
-      ¬HasGallaiTriangle A
-
-/--
+-- furedi_palasti_1984: unused axiom removed (never referenced by any theorem)
 **Escudero's Construction (2016):**
 For ALL d ≥ 4, there exist d-line arrangements with no parallels,
 no 4-concurrent points, and no Gallai triangles.

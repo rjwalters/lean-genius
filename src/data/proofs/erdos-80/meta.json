@@ -57,21 +57,21 @@
       "bookSize definition: number of triangles sharing an edge",
       "hasBook definition: graph has book of given size",
       "isDense definition: at least cn^2 edges",
-      "f function: Erdős-Rothschild book function",
+      "f function: Erd\u0151s-Rothschild book function",
       "critical_threshold definition: the phase transition at 1/4",
-      "alon_trotter_bound axiom: f_c(n) ≪ n^{1/2}",
-      "fox_loh_bound axiom: f_c(n) ≤ n^{O(1/log log n)}",
+      "alon_trotter_bound axiom: f_c(n) \u226a n^{1/2}",
+      "fox_loh_bound axiom: f_c(n) \u2264 n^{O(1/log log n)}",
       "erdos_polynomial_conjecture_false axiom: disproved conjecture",
-      "linear_bound_above_threshold axiom: f_c(n) ≥ n/6 for c > 1/4",
-      "regularity_lower_bound axiom: f_c(n) → ∞",
+      "linear_bound_above_threshold axiom: f_c(n) \u2265 n/6 for c > 1/4",
+      "regularity_lower_bound axiom: f_c(n) \u2192 \u221e",
       "above_threshold_linear axiom: linear growth above 1/4",
       "below_threshold_subpolynomial axiom: subpolynomial below 1/4",
       "erdos_log_conjecture definition: open weaker conjecture",
       "erdos_80_summary theorem: comprehensive summary with proof"
     ],
-    "axiomCount": 8,
-    "lineCount": 246,
-    "assumptions": "8 axioms: alon_trotter_bound, fox_loh_bound, erdos_polynomial_conjecture_false, and 5 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 139,
+    "assumptions": "3 axiom(s): regularity_lower_bound, above_threshold_linear, below_threshold_subpolynomial. Unused axioms removed."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #80**\n\nThis problem concerns 'books' in graphs - edges that are shared by many triangles.\n\n**Key History:**\n- Erdos & Rothschild: Posed the original problem about book size in dense triangle-saturated graphs\n- Alon-Trotter: Proved f_c(n) << n^{1/2} for c < 1/4\n- Edwards, Khadziivanov-Nikiforov (1979): Proved f_c(n) >= n/6 for c > 1/4\n- Fox-Loh (2012): Disproved Erdos's polynomial growth conjecture\n\n**The Phase Transition:**\nA remarkable threshold occurs at c = 1/4:\n- Above 1/4: Linear books guaranteed\n- Below 1/4: Only subpolynomial growth known",
@@ -101,7 +101,7 @@
     {
       "id": "f-function",
       "title": "The f_c(n) Function",
-      "summary": "isDense, f function definition (Erdős-Rothschild function)",
+      "summary": "isDense, f function definition (Erd\u0151s-Rothschild function)",
       "startLine": 99,
       "endLine": 126
     },
@@ -166,8 +166,8 @@
       "Real"
     ],
     "namespace": "Erdos80",
-    "lineCount": 246,
-    "axiomCount": 8,
+    "lineCount": 139,
+    "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 10
   },
@@ -175,26 +175,26 @@
     {
       "targetId": "erdos-621",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory, triangles"
     },
     {
       "targetId": "erdos-813",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory, triangles"
     },
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, triangles"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, triangles"
     }
   ],
   "references": [
     {
       "key": "KST54",
       "authors": [
-        "T. Kővári",
-        "V.T. Sós",
-        "P. Turán"
+        "T. K\u0151v\u00e1ri",
+        "V.T. S\u00f3s",
+        "P. Tur\u00e1n"
       ],
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
@@ -206,7 +206,7 @@
     {
       "key": "ES66",
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "M. Simonovits"
       ],
       "title": "A limit theorem in graph theory",
@@ -214,7 +214,7 @@
       "year": "1966",
       "volume": "1",
       "pages": "51-57",
-      "note": "Erdős-Simonovits stability and supersaturation, context for book-size questions"
+      "note": "Erd\u0151s-Simonovits stability and supersaturation, context for book-size questions"
     }
   ]
 }
