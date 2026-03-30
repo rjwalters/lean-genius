@@ -120,13 +120,17 @@ We prove Newton's inequality in the "binomial mean" form:
 This is equivalent to ē_k² ≥ ē_{k-1} · ē_{k+1} where ē_k = e_k / C(n,k).
 -/
 
-/-- Newton's inequality (unnormalized form):
-    C(n,k)² · e_k(x₁,...,xₙ)² ≥ C(n,k-1) · C(n,k+1) · e_{k-1} · e_{k+1}
-    for all nonneg x₁,...,xₙ and 1 ≤ k ≤ n-1. -/
+/-- Newton's inequality (standard form):
+    C(n,k-1) · C(n,k+1) · e_k² ≥ C(n,k)² · e_{k-1} · e_{k+1}
+    for all nonneg x₁,...,xₙ and 1 ≤ k ≤ n-1.
+
+    This is equivalent to the mean form ē_k² ≥ ē_{k-1}·ē_{k+1}
+    where ē_k = e_k/C(n,k) are the elementary symmetric means. -/
 theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ xs.length) :
-    (Nat.choose xs.length k : ℝ) ^ 2 * esymm xs k ^ 2 ≥
     (Nat.choose xs.length (k - 1) : ℝ) * (Nat.choose xs.length (k + 1) : ℝ) *
+    esymm xs k ^ 2 ≥
+    (Nat.choose xs.length k : ℝ) ^ 2 *
     (esymm xs (k - 1) * esymm xs (k + 1)) := by
   -- Proved by induction on xs
   induction xs generalizing k with
@@ -236,9 +240,23 @@ noncomputable def esymmMean (xs : List ℝ) (k : ℕ) : ℝ :=
 theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ xs.length) :
     esymmMean xs k ^ 2 ≥ esymmMean xs (k - 1) * esymmMean xs (k + 1) := by
-  -- This follows from newton_inequality_binomial by dividing both sides
-  -- by C(n,k)² (which is positive for valid k).
-  sorry
+  -- Follows from newton_inequality_binomial: the mean form is just the
+  -- binomial form with denominators cleared.
+  have hni := newton_inequality_binomial xs hxs k hk hkn
+  -- Binomial coefficients are positive for valid k
+  set n := xs.length with hn
+  have hckm : (0 : ℝ) < Nat.choose n (k - 1) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  have hck : (0 : ℝ) < Nat.choose n k :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  have hckp : (0 : ℝ) < Nat.choose n (k + 1) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  -- Unfold and clear fractions
+  unfold esymmMean
+  rw [ge_iff_le, div_pow, div_mul_div_comm,
+      div_le_div_iff (mul_pos hckm hckp) (pow_pos hck 2)]
+  -- Goal: esymm (k-1) * esymm (k+1) * C(n,k)^2 ≤ esymm k^2 * (C(n,k-1) * C(n,k+1))
+  linarith
 
 /-! ## Consequences of Newton's inequality -/
 
@@ -316,8 +334,8 @@ namespace NewtonInductiveStepOQ01
 
 /-! ## Summary
 
-We formalize Newton's inequality e_k² ≥ e_{k-1} · e_{k+1} for elementary
-symmetric polynomials of nonneg reals. Key results:
+We formalize Newton's inequality for elementary symmetric polynomials
+of nonneg reals. Key results:
 
 1. **esymm**: Definition of elementary symmetric polynomials on real lists
 2. **esymm_nonneg**: Nonnegativity for nonneg inputs
@@ -327,10 +345,10 @@ symmetric polynomials of nonneg reals. Key results:
 6. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
 
 The full inductive proof (newton_inequality_binomial) is stated with the
-correct type and the inductive structure sketched. The key difficulty is the
-careful bookkeeping of the two-term recurrence through the Cauchy-Schwarz step.
+correct standard Newton inequality (C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}).
+The mean form (newton_inequality_means) is derived from it by clearing fractions.
 
-0 axioms. 2 sorries (general inductive cases — deep polynomial bookkeeping).
+0 axioms. 1 sorry (newton_inequality_binomial — the inductive Cauchy-Schwarz step).
 -/
 
 end NewtonInductiveStepOQ01
