@@ -8,7 +8,10 @@
       "Twenty-four-point sphere has radius R/3 (vs R/2 for nine-point circle in 2D)",
       "Monge point M = 4G - 3O is the 3D analogue of the orthocenter",
       "Only 2 of 3 orthogonality conditions needed for orthocentric tetrahedra - third follows algebraically",
-      "Incenter formula uses face-area-weighted average: I = (S_A*A + S_B*B + S_C*C + S_D*D) / S_total"
+      "Incenter formula uses face-area-weighted average: I = (S_A*A + S_B*B + S_C*C + S_D*D) / S_total",
+      "Circumcenter axioms (2) ARE eliminable: solve 3×3 linear system from |O-A|²=|O-B|²=|O-C|²=|O-D|², use Cramer rule in coordinates. Requires ~80 lines.",
+      "Tangency sorries (5) are deep: need to show dist(N₂₄_center, I) = |R/3 - r| for insphere, dist(N₂₄_center, E_i) = R/3 + r_i for exspheres. Heavy coordinate computation.",
+      "edge_midpoints_on_sphere and face_centroids_on_sphere axioms require showing 24-point sphere passes through specific points — pure coordinate algebra, tedious but tractable"
     ],
     "builtItems": [
       "FeuerbachsTheoremOQ02.lean: 350-line formalization with 35 definitions, 10 theorems",
@@ -26,7 +29,7 @@
       "Submit tangency sorries to Aristotle via companion file",
       "Prove edge midpoints on sphere for specific orthocentric examples"
     ],
-    "progressSummary": "COMPLETED: Initial formalization of 3D Feuerbach analogue. Built complete 3D coordinate infrastructure (Point3, dist3, dot3, cross3, Tetrahedron, OrthocentricTetrahedron). Defined twenty-four-point sphere, insphere, 4 exspheres. Proved 4 theorems including third perpendicularity and 3D Euler line. 5 axioms and 5 sorries remain for deep geometric content."
+    "progressSummary": "IN PROGRESS: 5 axioms (2 circumcenter — eliminable via Cramer rule, 1 failure general — deep, 2 geometric — coordinate algebra). 5 sorries (tangency proofs — heavy coordinate computation). Docker needed for build verification."
   },
   "leanFiles": [
     {
