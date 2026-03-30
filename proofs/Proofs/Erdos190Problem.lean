@@ -253,14 +253,6 @@ def erdos190Conjecture : Prop :=
 -- Note: erdos190Conjecture is OPEN — not asserted as an axiom.
 -- Previous unsound `axiom erdos_190` removed.
 
-/- ## Part VII: Small Cases -/
-
-/-- H(3) is small (exact value depends on careful analysis). -/
-axiom H_3_bound : H 3 ≤ 10
-
-/-- H(4) is larger. -/
-axiom H_4_bound : H 4 ≤ 100
-
 /- ## Part VIII: Connections -/
 
 /--
