@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 1040,
     "erdosUrl": "https://erdosproblems.com/1040",
     "erdosProblemStatus": "open",
@@ -32,7 +32,7 @@
       "Measure theory: Lebesgue measure in the complex plane",
       "Approximation theory: Chebyshev polynomials and extremal polynomials"
     ],
-    "lineCount": 558,
+    "lineCount": 589,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -145,7 +145,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1040 formalizes one of the fundamental open questions in the geometry of polynomial lemniscates: whether the infimum $\\mu(F)$ of sublevel set measures is determined by the transfinite diameter $\\rho(F)$. The Lean formalization builds a complete framework from the $n$-th diameter and Fekete point theory through to the two forms of the conjecture, axiomatizing the known results of EHP (1958) and the Erdős-Netanyahu (1973) quantitative bounds. 7 axiom declarations (capacity formulas, disc containment, EN bounds, EHP known cases). 3 sorries remain for structural properties of $\\rho$.",
+    "summary": "Erdős Problem #1040 formalizes one of the fundamental open questions in the geometry of polynomial lemniscates: whether the infimum $\\mu(F)$ of sublevel set measures is determined by the transfinite diameter $\\rho(F)$. The Lean formalization builds a complete framework from the $n$-th diameter and Fekete point theory through to the two forms of the conjecture, axiomatizing the known results of EHP (1958) and the Erdős-Netanyahu (1973) quantitative bounds. 7 axiom declarations (capacity formulas, disc containment, EN bounds, EHP known cases). 2 sorries remain for structural properties of $\\rho$ (transfiniteDiameter_mono_of_bounded BddAbove proof, transfiniteDiameter_scale).",
     "implications": "1. **Potential Theory and Polynomial Geometry**: A positive resolution would establish that logarithmic capacity completely controls the measure-theoretic behavior of polynomial lemniscates, unifying capacity theory with the geometry of sublevel sets\n\n2. **Extremal Polynomial Theory**: Understanding $\\mu(F)$ requires identifying near-optimal polynomials for general sets, extending the role of Chebyshev polynomials (for intervals) and power functions (for discs) to arbitrary compact sets\n\n**3. Conformal Invariance**: Since $\\rho(F)$ is related to the conformal mapping radius of $\\mathbb{C} \\setminus F$, a positive answer would connect sublevel set area to conformal geometry\n\n4. **Connection to Problem #1039**: Problems 1039 and 1040 together ask about the inner structure (inscribed disc) and total size (area) of lemniscates — two complementary aspects of the same geometric question\n\n5. **Approximation Theory**: The problem has implications for polynomial approximation on compact sets, as sublevel set size controls the rate of polynomial convergence.",
     "openQuestions": [
       "Is $\\mu(F) = 0$ when $\\rho(F) \\geq 1$ for general closed infinite sets? (The main conjecture, open since 1958)",
@@ -230,7 +230,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 558,
+    "lineCount": 589,
     "axiomCount": 7,
     "theoremCount": 24,
     "substantiveTheoremCount": 19,
