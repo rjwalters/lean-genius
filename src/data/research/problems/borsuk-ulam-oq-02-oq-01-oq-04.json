@@ -11,16 +11,21 @@
       "Only topological layer needs axiomatization (classifying spaces, equivariant cohomology)",
       "FH index subsumes monotonicity: restriction maps encode buDim_mono algebraically",
       "For Z/p: Index(S^{2n-1}) = (u^n) determines buDim(p,2n) = 2n-1",
-      "Key open question: does FH for Z/p^2 equal the Z/p bound?"
+      "Key open question: does FH for Z/p^2 equal the Z/p bound?",
+      "Axiom elimination: fh_point and fh_sphere_free_action were tautological (provable by rfl from definitions) — converted to theorems",
+      "Axiom elimination: fh_monotonicity and fh_restriction were logically unsound (asserted mY<=mX for all naturals) — removed",
+      "Axiom elimination: fh_product_formula was placeholder True — removed",
+      "All 8 theorems proved using only parent module axioms (buDim_prime, buDim_mono, z6_lower_bound_z3)"
     ],
     "builtItems": [
       "BorsukUlamOQ02OQ01OQ04.lean: 230 lines, 5 axioms, 4 proved theorems",
       "CohRing and FHIndex structures",
       "fh_implies_buDim_lower_bound theorem",
       "fh_z4_bound and fh_z6_bound theorems",
-      "Gallery entry with meta.json, index.ts, annotations.json"
+      "Gallery entry with meta.json, index.ts, annotations.json",
+      "Eliminated all 5 local axioms (5→0): 2 to theorems, 3 removed"
     ],
-    "progressSummary": "COMPLETED: Initial Fadell-Husseini index formalization. Axiomatized FH index as principal ideal, proved consistency with parent buDim framework (4 theorems). Created gallery entry.",
+    "progressSummary": "COMPLETED: Fadell-Husseini index formalization. 0 local axioms (reduced from 5: 2 converted to theorems by rfl, 3 removed as unused/unsound). 8 proved theorems. Consistent with parent buDim framework.",
     "nextSteps": [
       "Connect CohRing to Mathlib's GroupCohomology for Z/p",
       "Formalize H*(BZ/p; F_p) = F_p[u] using GradedAlgebra",

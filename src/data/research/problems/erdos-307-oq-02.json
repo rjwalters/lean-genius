@@ -10,13 +10,16 @@
       "search_intractable (2^60 > 10^18) provable by native_decide",
       "prime_sets_disjoint needs p-adic valuation argument (left as sorry)",
       "one_helps_balance needs extra hypothesis that P has >1 element",
-      "product_rigidity is a trivial iff but has complex formulation"
+      "product_rigidity is a trivial iff but has complex formulation",
+      "All 4 axioms (prime_reciprocal_divergence, product_rigidity, egyptian_count_growth, lcd_connection) were unused by any theorem",
+      "egyptian_count_growth was also vacuously true (just take count=1)",
+      "Status changed from axiomatized to formalized after removing all axioms"
     ],
     "builtItems": [
       "prime_reciprocal_sum_lower_bound proved via AM-GM (sorry eliminated)",
       "search_intractable converted from axiom to theorem via native_decide"
     ],
-    "progressSummary": "COMPLETED: Axioms 5→4 (search_intractable proved), sorries 6→4 (AM-GM lower bound proved). Key proof: reciprocalSum(P∪Q) ≥ 2 via (a-1)²/a ≥ 0.",
+    "progressSummary": "COMPLETED: Axioms 5→0 (all removed as unused). 4 sorries remain. Key proof: no_size_two_solution proved via AM-GM upper bound. Status: formalized (0 axioms, 4 sorries).",
     "nextSteps": [
       "Prove prime_sets_disjoint via p-adic valuation argument",
       "Prove one_helps_balance (needs P.card > 1 hypothesis)",

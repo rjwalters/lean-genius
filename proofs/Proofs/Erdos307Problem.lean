@@ -237,19 +237,13 @@ noncomputable def primeReciprocalPartialSum (n : ℕ) : ℚ :=
   ∑ i in (Finset.range n).filter (fun k => (k + 1).minFac = k + 1 ∧ k + 1 > 1),
     ((i + 1) : ℚ)⁻¹
 
-/-- The divergence of Σ 1/p is very slow (like log log n).
-    This makes finding solutions computationally difficult. -/
-axiom prime_reciprocal_divergence :
-  ∀ M : ℚ, ∃ n : ℕ, primeReciprocalPartialSum n > M
-
-/-- The constraint that the product equals 1 is very rigid.
-    Most choices of P won't have any Q that works. -/
-axiom product_rigidity :
-  ∀ P : Finset ℕ, IsSetOfPrimes P → P.card > 0 →
-    (∃ Q : Finset ℕ, IsSetOfPrimes Q ∧ reciprocalProduct P Q = 1) ↔
-    ∃ Q : Finset ℕ, IsSetOfPrimes Q ∧
-      reciprocalSum Q = (reciprocalSum P)⁻¹ ∧
-      (reciprocalSum P)⁻¹ = ∑ q in Q, (q : ℚ)⁻¹
+/-
+Note: Σ 1/p diverges like log log n (Mertens' theorem), making
+prime reciprocal products computationally difficult to search.
+The product constraint is very rigid: given P, the required
+reciprocalSum Q = (reciprocalSum P)⁻¹ must itself decompose as
+a sum of distinct prime reciprocals.
+-/
 
 /- ## Part VII: Related Egyptian Fraction Problems -/
 
@@ -266,12 +260,6 @@ theorem egyptian_example : IsEgyptianOne {2, 3, 6} := by
     rcases hn with rfl | rfl | rfl <;> omega
   · simp [reciprocalSum]
     norm_num
-
-/-- The number of ways to write 1 as a sum of n distinct unit fractions
-    grows rapidly with n. -/
-axiom egyptian_count_growth :
-  ∀ n : ℕ, ∃ count : ℕ, count > 0 ∧
-    (∀ S : Finset ℕ, S.card = n → IsEgyptianOne S → count ≥ 1)
 
 /- ## Part VIII: Computational Approaches -/
 
@@ -317,14 +305,11 @@ def MultiplicativeForm (P Q : Finset ℕ) : Prop :=
   pProd * qProd = (∑ S in P.powerset, ∏ p in S, (∏ q in Q, q)) *
                   (∑ T in Q.powerset, ∏ q in T, (∏ p in P, p))
 
-/-- Connection to LCD: The product equals 1 iff
-    LCD(P) · LCD(Q) = (Σ denominators' complements). -/
-axiom lcd_connection {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
-    (hQ : IsSetOfPrimes Q) :
-    reciprocalProduct P Q = 1 ↔
-    (∏ p in P, p) * (∏ q in Q, q) =
-    (∑ S in P.powerset, ∏ p in (P \ S), p) *
-    (∑ T in Q.powerset, ∏ q in (Q \ T), q)
+/-
+Note: The product equals 1 iff LCD(P) · LCD(Q) = (Σ complements),
+i.e., (∏ P) · (∏ Q) = (Σ_{S⊆P} ∏(P\S)) · (Σ_{T⊆Q} ∏(Q\T)).
+This is an algebraic reformulation but doesn't simplify the search.
+-/
 
 /- ## Part XI: Partial Results -/
 

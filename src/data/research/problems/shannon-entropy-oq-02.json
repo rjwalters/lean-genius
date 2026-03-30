@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full formalization of H(X)=E[K(X)]+O(1). 0 sorries, 6 axioms (Kolmogorov complexity properties requiring Turing machines). Both directions proved: lower bound from Kraft+source coding, upper bound from coding theorem+Shannon code.",
+    "progressSummary": "COMPLETED: Full formalization of H(X)=E[K(X)]+O(1). 0 sorries, 3 axioms (reduced from 6 — removed 3 unused: positivity, upper bound, incompressibility). Both directions proved: lower bound from Kraft+source coding, upper bound from coding theorem+Shannon code.",
     "builtItems": [
       "Created ShannonEntropyOQ02.lean (397 lines, 12 theorems, 4 defs, 0 sorries, 6 axioms)",
       "Created gallery data src/data/proofs/shannon-entropy-oq-02/meta.json",
       "Self-contained source coding theorem proof via KL divergence",
       "Shannon code Kraft validity proof",
       "Entropy-complexity equivalence theorem (both directions)",
-      "Uniform distribution incompressibility corollary"
+      "Uniform distribution incompressibility corollary",
+      "Eliminated 3 unused axioms: kolmogorov_pos, kolmogorov_upper_bound, complexity_lower_bound"
     ],
     "insights": [
       "Kolmogorov complexity can be axiomatized with 6 properties for entropy connection",
@@ -44,7 +45,9 @@
       "Upper bound E[K]*ln2 < H + O(1) follows from coding theorem + Shannon code bounds",
       "Both directions proved with 0 sorries using KL divergence pointwise bound technique",
       "For uniform distribution, E[K(X)] = log2(n) + O(1) - incompressibility theorem",
-      "6 axioms needed: K function, positivity, Kraft, upper bound, coding theorem (2 directions)"
+      "6 axioms needed: K function, positivity, Kraft, upper bound, coding theorem (2 directions)",
+      "Axiom elimination: positivity (K>=1), upper bound (K<=log|A|+c), and incompressibility bound were unused by any theorem — removed (6→3 axioms)",
+      "Only 3 axioms are needed for entropy-complexity equivalence: K function, Kraft inequality, and coding theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -93,9 +96,9 @@
     {
       "path": "Proofs/ShannonEntropyOQ02.lean",
       "filename": "ShannonEntropyOQ02.lean",
-      "lineCount": 398,
+      "lineCount": 383,
       "theoremCount": 9,
-      "axiomCount": 6,
+      "axiomCount": 3,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
