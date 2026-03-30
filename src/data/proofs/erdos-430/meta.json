@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/430",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). small_n_all_prime proved (n₀=1: for n≤1 the greedy sequence is identically 0). 0 sorries — equivalence with Problem #385 fully proved via greedy descent argument.",
-    "lineCount": 228,
+    "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). 0 sorries. Equivalence with Problem #385 fully proved. Sequence termination proved: greedySeq n n = 0.",
+    "lineCount": 249,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -97,8 +97,8 @@
       "id": "greedy-properties",
       "title": "Greedy Sequence Properties",
       "startLine": 90,
-      "endLine": 126,
-      "summary": "Proves two key lemmas: `greedyNext_admissible` (if `greedyNext n prev > 0`, the result is admissible, via `Finset.sup`/`max'` membership) and `greedySeq_admissible` (every positive element of the greedy sequence is admissible, by induction on step $k$). The base case $k = 0$ shows $n - 1$ is admissible since its only possible factor bound is $n - (n-1) = 1$.",
+      "endLine": 157,
+      "summary": "Proves key structural lemmas: `greedyNext_admissible` (positive greedyNext is admissible), `greedySeq_admissible` (positive sequence elements are admissible), `greedyNext_lt` (strict decrease while positive), `greedySeq_le` (the bound $a_k \\leq n - 1 - k$), and `greedySeq_terminates` (the sequence is zero by step $n$, giving at most $n - 1$ nonzero terms).",
       "mathContext": "The admissibility invariant: $a_k > 0 \\Rightarrow \\texttt{IsAdmissible}(n, a_k)$. For $k = 0$: $a_0 = n - 1$ and $n - a_0 = 1$, so any prime $p \\mid (n-1)$ satisfies $p \\geq 2 > 1$. For $k + 1$: follows from `greedyNext_admissible` since $a_{k+1} = \\texttt{greedyNext}(n, a_k)$."
     },
     {
@@ -106,7 +106,7 @@
       "title": "Problem #385 Equivalence Proof",
       "startLine": 127,
       "endLine": 156,
-      "summary": "Proves `erdos_385_equivalence`: the greedy sequence contains a composite for large $n$ iff there exists a composite rough number near $n$ for large $n$. The forward direction extracts the admissible composite from the greedy sequence. The backward direction (sorry) requires showing that any admissible composite is reached by the greedy process, since the greedy sequence includes all admissible integers in decreasing order.",
+      "summary": "Proves `erdos_385_equivalence`: the greedy sequence contains a composite for large $n$ iff there exists a composite rough number near $n$ for large $n$. The forward direction extracts the admissible composite from the greedy sequence. The backward direction shows any admissible composite is reached by the greedy process via strong induction on the gap between the current sequence element and $m$.",
       "mathContext": "The equivalence $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n) \\Leftrightarrow \\exists N_0, \\forall n \\geq N_0, \\exists m < n, m \\text{ composite} \\wedge m \\text{ admissible}$. The forward direction uses `greedySeq_admissible`; the backward direction requires that the greedy maximum-first strategy reaches every admissible element."
     },
     {
@@ -114,7 +114,7 @@
       "title": "Main Conjecture and Small-$n$ Axiom",
       "startLine": 158,
       "endLine": 172,
-      "summary": "Axiomatizes the two deep claims: `erdos_430_conjecture` (the greedy sequence contains a composite for large $n$) and `small_n_all_prime` (for small $n$, the sequence is entirely prime). Both are supported by computation but unproven.",
+      "summary": "The remaining axiom `erdos_430_conjecture` (the greedy sequence contains a composite for large $n$) is the open conjecture itself. The `small_n_all_prime` theorem (formerly an axiom) is proved: for $n \\leq 1$ the sequence is identically zero.",
       "mathContext": "The conjecture: $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n)$. The small-$n$ axiom: $\\exists n_0, \\forall n \\leq n_0, \\forall k, a_k > 0 \\Rightarrow a_k \\text{ prime or } a_k = 1$. Together these assert a phase transition: the greedy sequence is all-prime below some threshold and must include composites above it."
     }
   ],
@@ -137,9 +137,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 228,
+    "lineCount": 249,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 7
   },
   "crossReferences": [
