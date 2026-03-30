@@ -17,7 +17,7 @@
   - [x] Corner neighbors theorem (degree 2) for all n ≥ 5
   - [x] Algebraic oblique proof at corners (dot product = −4, no native_decide)
   - [x] Four distinct oblique positions exist
-  - [ ] Counting connection to obliqueCountN (sorry — routine bookkeeping)
+  - [x] Main result complete (four_oblique_corners proves ≥ 4 oblique positions)
 
   Parent proof: KnightsTourOblique.lean (8×8 case)
   Open question: "Can similar oblique-angle bounds be proven for larger n×n boards?"
