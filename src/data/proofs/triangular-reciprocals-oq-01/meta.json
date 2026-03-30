@@ -7,7 +7,13 @@
     "author": "Classical",
     "status": "verified",
     "proofRepoPath": "Proofs/TriangularReciprocalsFigurate.lean",
-    "tags": ["analysis", "series", "combinatorics", "figurate-numbers", "classic"],
+    "tags": [
+      "analysis",
+      "series",
+      "combinatorics",
+      "figurate-numbers",
+      "classic"
+    ],
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-03-29",
@@ -20,7 +26,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified.",
-    "lineCount": 110
+    "lineCount": 111
   },
   "overview": {
     "historicalContext": "Figurate (polygonal) numbers date to the Pythagoreans. The sum of reciprocals of triangular numbers telescopes to 2 via partial fractions. Higher figurate reciprocal sums converge by comparison with 1/n².",
@@ -29,7 +35,24 @@
   },
   "sections": [],
   "references": [],
-  "crossReferences": [{"targetId": "triangular-reciprocals", "relationship": "extends", "description": "Extends to general k-gonal numbers"}],
-  "conclusion": {"summary": "Figurate number reciprocal sums formalized with telescoping and convergence."},
-  "leanFile": {"imports": ["Mathlib"], "namespace": "FigurateReciprocals", "lineCount": 110, "axiomCount": 0, "theoremCount": 11, "definitionCount": 3}
+  "crossReferences": [
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "extends",
+      "description": "Extends to general k-gonal numbers"
+    }
+  ],
+  "conclusion": {
+    "summary": "Figurate number reciprocal sums formalized with telescoping and convergence."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "FigurateReciprocals",
+    "lineCount": 111,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3
+  }
 }
