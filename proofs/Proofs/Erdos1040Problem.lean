@@ -101,8 +101,9 @@ def diameterOneConjecture : Prop :=
     transfiniteDiameter F ≥ 1 →
     mu F = 0
 
-/-- The problem is open. -/
-axiom problem_open : ¬(diameterOneConjecture ∨ ¬diameterOneConjecture)
+-- Note: The conjecture above is an open problem. We do NOT assert
+-- ¬(diameterOneConjecture ∨ ¬diameterOneConjecture), which would
+-- negate classical excluded middle and be inconsistent.
 
 /-
 ## Known Results: Line Segments and Discs
@@ -205,10 +206,14 @@ theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
 ## Properties of μ
 -/
 
-/-- μ is monotone in F. -/
+/-- μ is anti-monotone: larger set has smaller μ (more polynomials to infimize over). -/
 theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
     mu G ≤ mu F := by
-  sorry
+  unfold mu
+  apply le_iInf
+  intro p
+  -- Lift p : PolynomialInF F to PolynomialInF G (same roots, which lie in F ⊆ G)
+  exact iInf_le _ ⟨p.degree, p.roots, fun i => h (p.roots_in_F i)⟩
 
 /-- For infinite F, μ(F) is achieved or approached. -/
 theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
