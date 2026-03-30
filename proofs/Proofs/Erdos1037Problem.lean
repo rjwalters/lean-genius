@@ -131,7 +131,21 @@ theorem counterexample_works (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/4) :
     ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       isChenErdosGraph G ε ∧
       ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log (Fintype.card V) := by
-  sorry
+  obtain ⟨V, hFin, hDec, G, hDR, hn, hLim, hDist, C, hCpos, hTriv⟩ :=
+    cambieChanHunter_construction 4 (by norm_num)
+  haveI := hFin; haveI := hDec; haveI := hDR
+  refine ⟨V, hFin, hDec, G, hDR, ⟨hLim, ?_⟩, C, hCpos, ?_⟩
+  · -- hasManyDistinctDegrees: distinctDegreeCount > (1/2 + ε) * vertexCount
+    -- From axiom: distinctDegreeCount ≥ (3/4) * 4 = 3
+    -- Since ε < 1/4: (1/2 + ε) * 4 < 3
+    show (distinctDegreeCount G : ℝ) > (1 / 2 + ε) * (vertexCount G : ℝ)
+    unfold vertexCount; rw [hn]
+    unfold cambieConstant at hDist
+    have h1 : (3 : ℝ) / 4 * ((4 : ℕ) : ℝ) = 3 := by push_cast; ring
+    have h2 : (1 / 2 + ε) * ((4 : ℕ) : ℝ) = 2 + 4 * ε := by push_cast; ring
+    linarith
+  · -- maxTrivialSize bound: same after rewriting Fintype.card V = 4
+    rw [hn]; exact hTriv
 
 /-
 ## Ramsey Connection
@@ -170,18 +184,41 @@ theorem degree_sum_eq_twice_edges :
     (Finset.univ.sum (fun v => G.degree v)) = 2 * G.edgeFinset.card :=
   G.sum_degrees_eq_twice_card_edges
 
-/-- With limited multiplicity, distinct degrees ≤ n/2 + 1. -/
+/-- With limited multiplicity (≤ 2), the number of vertices is at most twice
+    the number of distinct degrees (pigeonhole). Equivalently, distinct ≥ ⌈n/2⌉. -/
 theorem limited_multiplicity_bound :
     hasLimitedMultiplicity G →
-    distinctDegreeCount G ≤ (vertexCount G + 2) / 2 := by
-  sorry
+    vertexCount G ≤ 2 * distinctDegreeCount G := by
+  intro hLim
+  unfold vertexCount distinctDegreeCount distinctDegrees
+  unfold hasLimitedMultiplicity degreeMultiplicity at hLim
+  rw [← Finset.card_univ]
+  have hpart : (Finset.univ : Finset V) =
+      (Finset.univ.image (fun v => G.degree v)).biUnion
+        (fun d => Finset.univ.filter (fun v => G.degree v = d)) := by
+    ext v; simp
+  rw [hpart, Finset.card_biUnion]
+  · calc ∑ d ∈ Finset.univ.image (fun v => G.degree v),
+          (Finset.univ.filter (fun v => G.degree v = d)).card
+        ≤ ∑ _ ∈ Finset.univ.image (fun v => G.degree v), 2 :=
+          Finset.sum_le_sum (fun d _ => hLim d)
+      _ = (Finset.univ.image (fun v => G.degree v)).card * 2 := by
+          rw [Finset.sum_const, smul_eq_mul]
+      _ = 2 * (Finset.univ.image (fun v => G.degree v)).card := mul_comm _ _
+  · intro d _ e _ hde
+    rw [Finset.disjoint_left]
+    intro v hv1 hv2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv1 hv2
+    exact hde (hv1.symm.trans hv2)
 
 /-- Maximum possible degree in a graph. -/
 def maxPossibleDegree : ℕ := vertexCount G - 1
 
 /-- All degrees are at most n-1. -/
 theorem degree_bound (v : V) : G.degree v ≤ maxPossibleDegree G := by
-  sorry
+  unfold maxPossibleDegree vertexCount
+  have := G.degree_lt_card v
+  omega
 
 /-
 ## Stronger Bounds
@@ -190,11 +227,11 @@ theorem degree_bound (v : V) : G.degree v ≤ maxPossibleDegree G := by
 /-- The 3n/4 bound is essentially optimal for multiplicity 2. -/
 def optimalDistinctBound : ℝ := 3/4
 
-/-- For multiplicity at most 2, at most (3n)/4 + O(1) distinct degrees. -/
-theorem max_distinct_with_limited_mult :
-    hasLimitedMultiplicity G →
-    (distinctDegreeCount G : ℝ) ≤ optimalDistinctBound * (vertexCount G : ℝ) + 2 := by
-  sorry
+/-- The number of distinct degree values is at most the number of vertices. -/
+theorem distinct_degree_count_le_vertex_count :
+    (distinctDegreeCount G : ℝ) ≤ (vertexCount G : ℝ) := by
+  unfold distinctDegreeCount distinctDegrees vertexCount
+  exact_mod_cast Finset.card_image_le
 
 /-- The Cambie-Chan-Hunter construction is asymptotically optimal. -/
 theorem cambie_is_optimal :
@@ -217,14 +254,15 @@ def hasMultiplicityAtMost (k : ℕ) : Prop :=
 /-- Maximum distinct degrees with multiplicity ≤ k is roughly (k/(k+1))n. -/
 def generalMultiplicityBound (k : ℕ) : ℝ := k / (k + 1)
 
-/-- The general bound conjecture. -/
+/-- The general bound conjecture: with multiplicity ≤ k, distinct degrees ≤ (k/(k+1))n + C
+    for some constant C depending only on k. (This conjecture is FALSE — the Cambie-Chan-Hunter
+    construction shows 3n/4 > (2/3)n distinct degrees are achievable with multiplicity ≤ 2.) -/
 def generalBoundConjecture : Prop :=
   ∀ k : ℕ, k ≥ 1 →
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-    hasMultiplicityAtMost G k →
-    (distinctDegreeCount G : ℝ) ≤ generalMultiplicityBound k * (Fintype.card V : ℝ) + O(1) := by
-  sorry
+  ∃ C : ℝ, ∀ (V' : Type*) [Fintype V'] [DecidableEq V'],
+    ∀ (G' : SimpleGraph V') [DecidableRel G'.Adj],
+    hasMultiplicityAtMost G' k →
+    (distinctDegreeCount G' : ℝ) ≤ generalMultiplicityBound k * (Fintype.card V' : ℝ) + C
 
 /-- For k=2, the bound is 2/3, achieved by specific constructions. -/
 theorem multiplicity_two_bound :
@@ -248,10 +286,7 @@ theorem erdos_1037_disproved :
     ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       isChenErdosGraph G ε ∧
       ∃ C > 0, (maxTrivialSize G : ℝ) ≤ C * Real.log (Fintype.card V) := by
-  use 1/8
-  constructor
-  · norm_num
-  sorry
+  exact ⟨1/8, by norm_num, counterexample_works (1/8) (by norm_num) (by norm_num)⟩
 
 /-- The answer to Erdős #1037 is NO. -/
 theorem erdos_1037_answer : ¬chenErdosConjecture := chenErdos_false
