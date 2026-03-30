@@ -1,0 +1,212 @@
+{
+  "id": "descartes-rule-of-signs-oq-01-oq-02",
+  "title": "Minimal Infrastructure for Descartes Parity",
+  "slug": "descartes-rule-of-signs-oq-01-oq-02",
+  "description": "Analyzes the minimal infrastructure needed for Descartes' parity result (signVariations ≡ positive roots mod 2). Proves that complex conjugate pairing alone is NOT sufficient — the exact sign variation change under root extraction is also required. Formalizes parity arithmetic, root decomposition, the gap analysis, and the key axiomatized lemma.",
+  "meta": {
+    "author": "René Descartes (1637), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs",
+    "date": "1637",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "combinatorics",
+      "analysis"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.signVariations",
+        "description": "Mathlib's sign variation counting via List.destutter",
+        "module": "Mathlib.Algebra.Polynomial.RuleOfSigns"
+      },
+      {
+        "theorem": "Polynomial.roots",
+        "description": "Polynomial root multiset",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      },
+      {
+        "theorem": "IsAlgClosed.Basic",
+        "description": "Algebraic closure and FTA for complex root pairing",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proof that conjugate pairing alone is insufficient for Descartes parity",
+      "Parity chain theorem connecting all components: conjugate pairs + negative roots + sign variations",
+      "Root count decomposition with parity preservation",
+      "Linear and quadratic case parity proofs",
+      "Identification of sign_variation_parity_under_positive_root as the minimal hard lemma",
+      "Complete infrastructure assessment documenting the gap"
+    ],
+    "assumptions": [
+      "sign_variation_parity_under_positive_root: When p = (x-r)q with r > 0, signVariations(p) and signVariations(q) have different parity. This is the irreducible hard part requiring coefficient sign sequence analysis."
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 271,
+    "prerequisites": [
+      "Descartes' Rule of Signs (upper bound from Mathlib)",
+      "Complex conjugate root theorem",
+      "Polynomial sign variation counting",
+      "Parity arithmetic (mod 2)"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Descartes' Rule of Signs (1637) bounds the number of positive real roots by the number of sign variations in the coefficient sequence. The stronger parity result — that the difference is always even — has been known since Fourier and Budan in the early 19th century. The parity result is harder to formalize than the bound because it requires understanding how sign variations transform under root extraction.\n\nThe open question from OQ01 asked whether complex conjugate pairing (non-real roots come in pairs) is sufficient for the parity proof, or whether the exact sign variation change analysis is also needed. This file answers definitively: both are required.",
+    "problemStatement": "What is the minimal infrastructure needed to prove Descartes' parity result (signVariations ≡ positive_root_count mod 2)?\n\n**Option A**: Just the complex conjugate pairing (non-real roots come in pairs)\n**Option B**: Conjugate pairing + the exact sign variation change under each root type\n\n**Answer**: Option B. The conjugate pairing gives degree ≡ real_roots (mod 2), but the parity result needs signVariations ≡ positive_roots (mod 2). The bridge requires knowing how sign variations change modulo 2 when factoring out each root type.",
+    "text": "A 271-line analysis of the minimal proof infrastructure for Descartes' parity. The file identifies three required components in order of difficulty:\n\n1. **Complex conjugate pairing** (easy, proved in OQ01OQ01): non-real roots pair up\n2. **Negative root analysis** (medium, via negSubst in OQ01): negative roots handled via p(-x)\n3. **Sign variation parity under positive root extraction** (hard, axiomatized): when p = (x-r)q with r > 0, signVariations(p) and signVariations(q) have different parity\n\nThe parity chain theorem `parity_chain` proves that all three components together suffice: given conjugate pairing + negative root pairing + sign variation parity under positive root extraction, Descartes' parity follows. The file also proves complete parity results for linear and quadratic polynomials.",
+    "proofStrategy": "The analysis proceeds by gap identification:\n\n1. **What conjugate pairing gives**: degree ≡ real_roots (mod 2)\n2. **What's needed**: signVariations ≡ positive_roots (mod 2)\n3. **The gap**: Need signVariations ≡ degree (mod 2), plus negative roots handled\n4. **Parity chain**: Compose all three ingredients via modular arithmetic\n5. **Hard lemma identified**: sign variation change under (x-r) multiplication is the bottleneck",
+    "keyInsights": [
+      "**Conjugate pairing is necessary but not sufficient**: It gives degree parity = real root parity, but does not connect sign variations to root counts",
+      "**The gap is algebraic, not analytic**: The missing lemma about sign variation changes under root extraction is purely about coefficient sign sequences, not about complex numbers",
+      "**Three independent ingredients compose**: Conjugate pairing (complex analysis) + negative root handling (substitution) + sign variation parity (combinatorial algebra) together yield the full parity result",
+      "**The irreducible difficulty**: Analyzing how multiplication by (X - C r) transforms the coefficient sign sequence is the hard part — it requires understanding how sign changes propagate through polynomial multiplication"
+    ],
+    "prerequisites": [
+      "Descartes' Rule of Signs (upper bound from Mathlib)",
+      "Complex conjugate root theorem",
+      "Polynomial sign variation counting",
+      "Parity arithmetic (mod 2)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "parity-arithmetic",
+      "title": "Parity Arithmetic Framework",
+      "startLine": 50,
+      "endLine": 80,
+      "summary": "Lemmas about even/odd arithmetic: even + even, parity additivity, same parity from even difference.",
+      "mathContext": "$(a + b) \\text{ even} \\iff a,b \\text{ same parity}$"
+    },
+    {
+      "id": "root-decomposition",
+      "title": "Root Count Decomposition",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "Decomposes total root count into positive + negative + non-real, proving parity preservation from conjugate pairing.",
+      "mathContext": "$\\deg p = |\\text{pos}| + |\\text{neg}| + |\\text{nonreal}|$, $|\\text{nonreal}|$ even"
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Why Conjugate Pairing is Insufficient",
+      "startLine": 106,
+      "endLine": 148,
+      "summary": "Identifies the gap: conjugate pairing gives degree ≡ real_roots (mod 2), but parity needs signVariations ≡ positive_roots (mod 2). The parity_chain theorem shows what additional ingredients close the gap.",
+      "mathContext": "Need: $\\text{sv}(p) \\equiv |\\text{pos roots}| \\pmod{2}$"
+    },
+    {
+      "id": "key-axiom",
+      "title": "Sign Variation Under Root Extraction",
+      "startLine": 150,
+      "endLine": 175,
+      "summary": "The axiomatized hard lemma: when p = (x-r)q with r > 0, sign variations of p and q have different parity. This is the irreducible difficulty.",
+      "mathContext": "$p = (x-r)q,\\, r > 0 \\Rightarrow \\text{sv}(p) + \\text{sv}(q) \\text{ odd}$"
+    },
+    {
+      "id": "small-cases",
+      "title": "Linear and Quadratic Cases",
+      "startLine": 177,
+      "endLine": 218,
+      "summary": "Complete parity proofs for degree 1 and 2 polynomials by case analysis.",
+      "mathContext": "Parity holds trivially for $\\deg \\le 2$"
+    },
+    {
+      "id": "assessment",
+      "title": "Summary Assessment",
+      "startLine": 220,
+      "endLine": 271,
+      "summary": "Final assessment: minimal infrastructure = conjugate pairing + sign variation parity under root extraction. Neither alone suffices.",
+      "mathContext": "Minimal: conjugate pairs + sv parity under root factoring"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "extends",
+      "description": "Directly answers OQ-01's open question about minimal infrastructure for the parity result. Builds on the existing sign variation analysis and axiomatized parity."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01-oq-01",
+      "relationship": "complements",
+      "description": "OQ-01-OQ-01 proved the complex conjugate pairing approach. This entry shows that conjugate pairing alone is insufficient — the sign variation analysis is also needed."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "depends-on",
+      "description": "Depends on the Descartes upper bound and sign variation definitions from the main formalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "The minimal infrastructure for Descartes' parity consists of two independent components: (1) complex conjugate pairing (non-real roots are even) and (2) sign variation parity under positive root extraction (the hard part). Conjugate pairing alone is insufficient because it only connects degree to real root count, not sign variations to positive root count. The parity chain theorem shows how all components compose, and the axiomatized lemma identifies the irreducible difficulty.",
+    "implications": "**1. Architecture Clarification**: The parity proof decomposes cleanly into a complex-analytic component (conjugate pairing) and a combinatorial-algebraic component (sign variation analysis). These are mathematically independent.\n\n**2. Formalization Roadmap**: To prove the parity axiom, the primary challenge is formalizing how polynomial multiplication by (X - C r) transforms coefficient sign sequences. This is a finite combinatorial argument, not requiring analysis.\n\n**3. Mathlib Gap**: Mathlib has the upper bound but not the parity. Adding the sign variation parity lemma would complete Wiedijk's Theorem #100 in its strong form.",
+    "openQuestions": [
+      "Can the sign variation parity under positive root extraction be proved by direct coefficient analysis, tracking how sign changes in the coefficient list propagate through multiplication by (X - C r)?",
+      "Is there a proof via Sturm chains that avoids the coefficient-level analysis entirely?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Algebra.Polynomial.Roots",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "DescartesRuleOfSignsOQ01OQ02",
+    "lineCount": 271,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "parity_chain",
+        "type": "proved",
+        "description": "Composes all three ingredients to get Descartes parity"
+      },
+      {
+        "name": "root_count_decomposition",
+        "type": "proved",
+        "description": "Decomposes roots with conjugate pair parity"
+      },
+      {
+        "name": "sign_variation_parity_under_positive_root",
+        "type": "axiom",
+        "description": "The irreducible hard lemma (axiomatized)"
+      },
+      {
+        "name": "quadratic_parity",
+        "type": "proved",
+        "description": "Complete parity for degree 2"
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Descartes, René",
+      "title": "La Géométrie",
+      "year": "1637",
+      "venue": "Appendix to Discours de la méthode",
+      "note": "Original statement of the rule of signs, without the parity refinement"
+    },
+    {
+      "authors": "Budan de Boislaurent, François",
+      "title": "Nouvelle méthode pour la résolution des équations numériques",
+      "year": "1807",
+      "venue": "Paris",
+      "note": "Budan's theorem, which implies the parity result via sign variation analysis under root extraction"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "minimal_infrastructure_analysis",
+      "type": "core",
+      "description": "Analysis of minimal proof components for Descartes parity: conjugate pairing + sign variation parity"
+    }
+  ]
+}

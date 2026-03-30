@@ -40,7 +40,9 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Sort
 import Mathlib.Algebra.BigOperators.Finprod
+import Archive.Wiedijk100Theorems.AscendingDescendingSequences
 
 open Finset BigOperators
 
@@ -94,10 +96,37 @@ an increasing subsequence of length r or a decreasing subsequence of length s.
 Taking r = s = n+1 gives: every sequence of n² + 1 elements contains
 a monotonic subsequence of length n + 1.
 -/
-axiom erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
+theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     (∃ (sub : Subsequence n r), IsIncreasing seq sub) ∨
-    (∃ (sub : Subsequence n s), IsDecreasing seq sub)
+    (∃ (sub : Subsequence n s), IsDecreasing seq sub) := by
+  -- Apply Mathlib's Erdős-Szekeres with parameters (r-1) and (s-1)
+  have hn_card : (r - 1) * (s - 1) < Fintype.card (Fin n) := by
+    rw [Fintype.card_fin]; omega
+  rcases Theorems100.erdos_szekeres hn_card hDistinct with
+    ⟨t, ht_card, ht_mono⟩ | ⟨t, ht_card, ht_anti⟩
+  · -- Increasing case: t has > (r-1) elements, so ≥ r
+    left
+    have hr : r ≤ t.card := by omega
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t r hr
+    -- Build Subsequence from the Finset via orderEmbOfFin
+    let emb := u.orderEmbOfFin hu_card
+    refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
+    -- IsIncreasing: seq (emb i) < seq (emb j) for i < j
+    -- emb is order-preserving, and seq is strictly monotone on t ⊇ u
+    have hmono_u : StrictMonoOn seq ↑u := ht_mono.mono (Finset.coe_subset.mpr hu_sub)
+    exact hmono_u (Finset.orderEmbOfFin_mem u hu_card i)
+      (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)
+  · -- Decreasing case: t has > (s-1) elements, so ≥ s
+    right
+    have hs : s ≤ t.card := by omega
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t s hs
+    let emb := u.orderEmbOfFin hu_card
+    refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
+    -- IsDecreasing: seq (emb j) < seq (emb i) for i < j
+    have hanti_u : StrictAntiOn seq ↑u := ht_anti.mono (Finset.coe_subset.mpr hu_sub)
+    exact hanti_u (Finset.orderEmbOfFin_mem u hu_card i)
+      (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)
 
 /-- Corollary: Every sequence of k²+1 elements has a monotonic
     subsequence of length ≥ k+1.

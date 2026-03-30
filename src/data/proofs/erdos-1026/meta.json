@@ -59,9 +59,9 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 10,
-    "lineCount": 254,
-    "assumptions": "10 axioms: erdos_szekeres, hanani_decomposition, dilworth_bound, hanani_lower_bound, cambie_upper_bound, weighted_erdos_szekeres, optimal_constant_is_one, lis_lds_bound, longest_monotonic_bound, erdos_1026_tight. Three proved: erdos_szekeres_square (from erdos_szekeres), tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection (trivial).",
+    "axiomCount": 2,
+    "lineCount": 283,
+    "assumptions": "2 axioms: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016), lis_lds_bound (LIS*LDS >= n). erdos_szekeres now proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
     "mathlib_version": "4.26.0"
   },
   "overview": {

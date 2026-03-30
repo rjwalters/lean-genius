@@ -79,6 +79,8 @@ theorem tau_perp_lower_bound (n : ℕ) (hn : n > 0) : tauPerp n ≥ omega n := b
 /--
 **Equality achieved infinitely often:**
 There exist infinitely many n with τ⊥(n) = ω(n).
+Proof strategy: For any prime p, divisors are [1, p], so τ⊥(p) = 1 = ω(p).
+Since there are infinitely many primes, the statement follows.
 -/
 theorem tau_perp_equality_infinitely_often :
     ∀ N : ℕ, ∃ n : ℕ, n > N ∧ tauPerp n = omega n := by sorry
@@ -160,23 +162,23 @@ theorem erdos_simonovits_bounds :
 /--
 **The growth rate of g(k):**
 The base of exponential growth is between √2 ≈ 1.414 and 2-c < 2.
+The lower bound is asymptotic: for any ε > 0, g(k) ≥ (√2 - ε)^k eventually.
 -/
 theorem g_exponential_growth :
-    ∃ α β : ℝ, Real.sqrt 2 ≤ α ∧ β < 2 ∧
-      ∀ k : ℕ, k ≥ 10 →
-        α^k ≤ (g k : ℝ) ∧ (g k : ℝ) ≤ β^k := by
+    ∃ β : ℝ, β < 2 ∧
+      -- Asymptotic lower bound approaching √2
+      (∀ ε > 0, ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
+        (Real.sqrt 2 - ε)^k ≤ (g k : ℝ)) ∧
+      -- Eventual upper bound
+      (∃ K : ℕ, ∀ k : ℕ, k ≥ K →
+        (g k : ℝ) ≤ β^k) := by
   obtain ⟨c, hc, hlower, hupper⟩ := erdos_simonovits_bounds
-  use Real.sqrt 2, 2 - c
-  constructor
-  · linarith
-  constructor
-  · linarith
-  · intro k _
-    constructor
-    · -- Lower bound
-      sorry -- Requires the limit statement
-    · -- Upper bound
-      sorry -- From hupper
+  refine ⟨2 - c, by linarith, ?_, ?_⟩
+  · intro ε hε
+    obtain ⟨K, hK⟩ := hlower ε hε
+    exact ⟨K, fun k hk => le_of_lt (hK k hk)⟩
+  · obtain ⟨K, hK⟩ := hupper
+    exact ⟨K, fun k hk => le_of_lt (hK k hk)⟩
 
 /-
 ## Part VI: Examples

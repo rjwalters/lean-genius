@@ -1,13 +1,13 @@
 {
   "slug": "erdos-825-oq-03",
-  "title": "Do odd weird numbers exist (Erdős Problem #470)",
-  "phase": "NEW",
+  "title": "Do odd weird numbers exist (Erd\u0151s Problem #470)",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erdős Problem #470).",
+    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erd\u0151s Problem #470).",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T17:32:58.851Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination and odd weird number structural theorems",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added Decidable instances, proved 945 smallest odd abundant + semiperfect, proved odd_weird_gt_945. Eliminated 2 axioms (properDivisors_lt, no_weird_below_70). 4A remain (all deep).",
+    "builtItems": [
+      "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
+      "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
+      "Proved properDivisors_lt (was axiom) from Mathlib in Erdos470Problem.lean:231",
+      "Proved nine45_odd_abundant in Erdos470Problem.lean:156-159",
+      "Proved nine45_semiperfect in Erdos470Problem.lean:165-167",
+      "Proved nine45_not_weird in Erdos470Problem.lean:172",
+      "Proved no_odd_abundant_below_945 in Erdos470Problem.lean:179-182",
+      "Proved odd_weird_gt_945 in Erdos470Problem.lean:188-193",
+      "Added liddy_riedl_6_primes axiom in Erdos470Problem.lean:213-214"
+    ],
+    "insights": [
+      "IsPseudoperfect is decidable by enumerating subsets of properDivisors.powerset",
+      "945 = 3^3 * 5 * 7 is the smallest odd abundant number (sigma=1920 > 1890=2*945)",
+      "945 is semiperfect: remove {3,27} from proper divisors, rest sums to 945",
+      "Any odd weird number must exceed 945 (no odd abundant below, 945 semiperfect)",
+      "properDivisors_lt follows immediately from Nat.mem_properDivisors",
+      "no_weird_below_70 provable by native_decide with Decidable IsWeird instance",
+      "Reduced axiom count from 5 to 4 in Erdos470Problem.lean"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Strengthen odd_weird bound beyond 945 (check more odd abundant numbers for semiperfectness)",
+      "Fang bound (no odd weird below 10^21) cannot be proved computationally in Lean"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -54,15 +75,15 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos825Problem.lean",
-      "filename": "Erdos825Problem.lean",
-      "lineCount": 106,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 8,
+      "path": "Proofs/Erdos470Problem.lean",
+      "filename": "Erdos470Problem.lean",
+      "lineCount": 344,
+      "theoremCount": 12,
+      "axiomCount": 4,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos825Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos470Problem.lean"
     }
   ]
 }
