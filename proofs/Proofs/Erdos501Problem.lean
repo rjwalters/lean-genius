@@ -27,6 +27,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Measure.OuterMeasure.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Set.Finite
+import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
 namespace Erdos501
@@ -89,7 +90,11 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
     This is stated as a conditional: CH implies the negation of the
     infinite independence property for some family.
 -/
-axiom continuum_hypothesis : Prop  -- CH as an axiom
+
+/-- The Continuum Hypothesis: ℵ₁ = 𝔠 (the first uncountable cardinal
+    equals the cardinality of the continuum). This is independent of ZFC. -/
+def continuum_hypothesis : Prop :=
+  Cardinal.aleph 1 = Cardinal.continuum
 
 theorem hechler_under_CH (hCH : continuum_hypothesis) :
     ∃ A : SetFamily, BoundedOuterMeasureFamily A ∧ ¬HasInfiniteIndependent A := by
