@@ -367,8 +367,8 @@ theorem contact_number_3n (pts : Finset Point2D)
 
 -- ## Main Conjecture (OPEN)
 
-/-- Erdos-Lovasz-Vesztergombi Conjecture (OPEN). -/
-axiom erdos_662_lattice_optimal :
+/-- Erdos-Lovasz-Vesztergombi Conjecture (OPEN, not proved). -/
+def ErdosLovaszVesztergombiConjecture : Prop :=
   ∀ t : ℝ, t ≥ 1 →
     ∃ N : ℕ, ∀ (pts : Finset Point2D), IsSeparated pts →
       pts.card ≥ N →
