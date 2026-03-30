@@ -166,32 +166,27 @@ theorem earBaseAngle_A (t : TriangleAngles) :
   identity that makes the angle computation work.
 -/
 
-/-- The angle sum identity for Conway's construction:
-    At each vertex of the original triangle, the angle is the sum
-    of contributions from two adjacent ears and the equilateral base.
+/-- Conway's ear complement identity: the supplementary angle relation
+    between opposite ears recovers the ear apex angle of the remaining side.
 
-    Specifically, the angle at vertex A is:
-      α = 2·(base angle of ear on RP) + 2·(base angle of ear on PQ)
-        = 2·(π/3 - β₃/2) + 2·(π/3 - γ₃/2) ??? NO, this doesn't work.
+    π - earApex_B - earApex_C + π/3 = earApex_A = π/3 + α₃
 
-    Actually, Conway's proof uses a different decomposition. The key
-    identity is: the angle at A equals α because
-      π - earApex_B - earApex_C + π/3 = α₃
-    which simplifies using α₃ + β₃ + γ₃ = π/3. -/
+    This is equivalent to the ear apex sum (earApex_A + earApex_B + earApex_C = 4π/3)
+    rearranged to isolate each ear. -/
 theorem conway_angle_identity (t : TriangleAngles) :
-    π - earApexAngle_B t - earApexAngle_C t + π / 3 = t.α₃ := by
+    π - earApexAngle_B t - earApexAngle_C t + π / 3 = π / 3 + t.α₃ := by
   unfold earApexAngle_B earApexAngle_C
   linarith [trisected_sum t]
 
 /-- Symmetric version for vertex B. -/
 theorem conway_angle_identity_B (t : TriangleAngles) :
-    π - earApexAngle_A t - earApexAngle_C t + π / 3 = t.β₃ := by
+    π - earApexAngle_A t - earApexAngle_C t + π / 3 = π / 3 + t.β₃ := by
   unfold earApexAngle_A earApexAngle_C
   linarith [trisected_sum t]
 
 /-- Symmetric version for vertex C. -/
 theorem conway_angle_identity_C (t : TriangleAngles) :
-    π - earApexAngle_A t - earApexAngle_B t + π / 3 = t.γ₃ := by
+    π - earApexAngle_A t - earApexAngle_B t + π / 3 = π / 3 + t.γ₃ := by
   unfold earApexAngle_A earApexAngle_B
   linarith [trisected_sum t]
 

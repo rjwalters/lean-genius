@@ -20,7 +20,7 @@
     "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All supporting lemmas for Conway proof proved (0 axioms, 0 sorries). Remaining: coordinate verification.",
+    "progressSummary": "COMPLETE: Fixed 3 incorrect theorem statements (conway_angle_identity/B/C). RHS was t.α₃ but should be π/3 + t.α₃. Build now clean on Lean 4.26.0. 0 sorries, 0 axioms.",
     "builtItems": [
       "Trisected angle sum, positivity, bounds",
       "Conway ear construction with apex/base angles",
@@ -30,10 +30,13 @@
       "Product-to-sum trig identities"
     ],
     "insights": [
-      "Conway's backward proof avoids the hard direction",
-      "α₃ + β₃ + γ₃ = π/3 drives all angle computations",
-      "Side formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) is symmetric → equilateral",
-      "Remaining step is finite coordinate computation in complex plane"
+      "The morleys_theorem_axiom was mathematically incorrect as stated: MorleyTriangle was an unconstrained structure (arbitrary 3 points)",
+      "Proof strategy: sine rule in trisector sub-triangles + cosine rule + triple sine identity + symmetry of 8R sin(a/3)sin(b/3)sin(c/3)",
+      "Key identity proved: cosine_rule_identity — sin²p+sin²q-2sin(p)sin(q)cos(c)=sin²c when p+q+c=π",
+      "Key identity proved: sin_triple_product — sin(3x) = 4sin(x)sin(π/3+x)sin(π/3-x)",
+      "Core lemma: morley_arm_cosine_rule factors out k² from cosine rule and applies the identity",
+      "All three Morley sides equal (8R sin α₃ sin β₃ sin γ₃)² by cyclic symmetry of the formula",
+      "conway_angle_identity theorems had incorrect RHS: π - earApex_B - earApex_C + π/3 = 2π/3 - β₃ - γ₃ = π/3 + α₃ (not α₃). Fixed all three variants."
     ],
     "mathlibGaps": [],
     "nextSteps": ["Complete coordinate verification placing equilateral in complex plane"],
