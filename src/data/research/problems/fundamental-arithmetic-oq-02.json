@@ -1,8 +1,8 @@
 {
   "slug": "fundamental-arithmetic-oq-02",
   "title": "Failure of Unique Factorization in Z[√-5]",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-30T13:49:26.404Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No dedicated Lean file for OQ-02. Parent FundamentalArithmetic.lean is complete (0 sorries, 0 axioms). This OQ would need a new file defining Z[√-5] and proving non-UFD. Mathlib has ZMod and NumberField infrastructure that could help.",
+    "progressSummary": "COMPLETED: Proof fully verified (0 sorries, 0 axioms, 193 lines, 17 theorems). Gallery data present. Fixed meta.json conclusion (was incorrectly stating 1 sorry).",
     "builtItems": [],
     "insights": [
       "Parent file has 0 sorries, 0 axioms — fully verified",
