@@ -181,6 +181,46 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
     let μ := s.sum f / s.card
     (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
       ↑(s.filter (fun a => f a ≥ θ * μ)).card := by
-  sorry
+  intro μ
+  rw [div_le_iff hf2_pos]
+  set big := s.filter (fun a => f a ≥ θ * μ) with hbig_def
+  have hn_pos : (0 : ℚ) < ↑s.card := Nat.cast_pos.mpr (Finset.Nonempty.card_pos hs)
+  have hμ_nn : (0 : ℚ) ≤ μ := div_nonneg (le_of_lt hpos) (le_of_lt hn_pos)
+  -- Lower bound: big.sum f ≥ (1-θ) · s.sum f
+  have hbig_lb : (1 - θ) * s.sum f ≤ big.sum f := by
+    -- Partition: (s \ big).sum f + big.sum f = s.sum f
+    have hpart : (s \ big).sum f + big.sum f = s.sum f :=
+      Finset.sum_sdiff (Finset.filter_subset _ s)
+    -- Bound the complement: (s \ big).sum f ≤ θ · s.sum f
+    have hsdiff_le : (s \ big).sum f ≤ θ * s.sum f :=
+      calc (s \ big).sum f
+          ≤ (s \ big).card • (θ * μ) :=
+            Finset.sum_le_card_nsmul _ _ _ (fun a ha => by
+              have ⟨has, hnbig⟩ := Finset.mem_sdiff.mp ha
+              have : ¬(f a ≥ θ * μ) := fun hge =>
+                hnbig (Finset.mem_filter.mpr ⟨has, hge⟩)
+              exact le_of_lt (not_le.mp this))
+        _ = ↑(s \ big).card * (θ * μ) := nsmul_eq_mul _ _
+        _ ≤ ↑s.card * (θ * μ) :=
+            mul_le_mul_of_nonneg_right
+              (Nat.cast_le.mpr (Finset.card_le_card Finset.sdiff_subset))
+              (mul_nonneg hθ0 hμ_nn)
+        _ = θ * s.sum f := by
+            simp only [μ]
+            have : (↑s.card : ℚ) ≠ 0 := ne_of_gt hn_pos
+            field_simp
+            ring
+    linarith
+  -- Chain: (1-θ)²·(∑f)² ≤ |big|·∑f²
+  calc (1 - θ) ^ 2 * (s.sum f) ^ 2
+      = ((1 - θ) * s.sum f) ^ 2 := by ring
+    _ ≤ (big.sum f) ^ 2 :=
+        pow_le_pow_left (mul_nonneg (by linarith) (le_of_lt hpos)) hbig_lb 2
+    _ ≤ ↑big.card * big.sum (fun a => f a ^ 2) := sq_sum_le_card_mul_sum_sq big f
+    _ ≤ ↑big.card * s.sum (fun a => f a ^ 2) :=
+        mul_le_mul_of_nonneg_left
+          (Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+            (fun _ _ _ => sq_nonneg _))
+          (Nat.cast_nonneg _)
 
 end ProbMethod.SecondMoment
