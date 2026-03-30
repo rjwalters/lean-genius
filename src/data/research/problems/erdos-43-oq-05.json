@@ -29,13 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 of 5 sorries eliminated (sidon_pair_bound, disjoint_diff_combined_bound, tao_equal_size_bound). 2 remaining: sidon_diff_count, disjoint_diff_total (need Nonempty hypothesis).",
+    "progressSummary": "PROGRESS: Resolved 3 of 5 sorries. Proved example_2_3 (strong induction), example_3_5_frobenius (from Sylvester axiom), and fixed+proved larger_numbers_fewer_reps (bug: hypothesis was n≥2, should be n≥3). Remaining 2 sorries (nonrep_finite, topK_finite) require the Chicken McNugget theorem.",
     "builtItems": [
       "Proved sidon_diff_injective for Finset ℤ — if a₁-b₁=a₂-b₂ with a₁≠b₁, then a₁=a₂ and b₁=b₂",
       "Prior: sidon_diff_injective also proved in Erdos152 (for Finset ℕ) and Erdos14 (for Set ℕ)",
-      "Proved sidon_pair_bound (C(|A|,2) ≤ N for Sidon A ⊆ {1,...,N})",
-      "Proved disjoint_diff_combined_bound (C(|A|,2)+C(|B|,2) ≤ N for disjoint differences)",
-      "Proved tao_equal_size_bound (|A|² ≤ 2N+1 when |A|=|B| and disjoint diffs)"
+      "Proved example_2_3 via strong induction + multiset sum bounds",
+      "Proved example_3_5_frobenius from sylvester_frobenius axiom",
+      "Fixed and proved larger_numbers_fewer_reps (hypothesis n≥2→n≥3)"
     ],
     "insights": [
       "Sidon diff injectivity: a₁-b₁=a₂-b₂ → a₁+b₂=a₂+b₁ → by Sidon {a₁,b₂}={a₂,b₁} → a₁=a₂ (since a₁≠b₁)",
@@ -43,10 +43,10 @@
       "For sidon_pair_bound: need |A|*(|A|-1) ≤ 2*(N-1) from injection into {-(N-1),...,N-1}\\{0}",
       "Dependency chain: sidon_diff_injective → sidon_diff_count → disjoint_diff_total → bounds",
       "Nat.choose 2 manipulation needed: 2*C(n,2) = n*(n-1)",
-      "sidon_pair_bound proved: injection of offDiag differences into Icc(1-N,N-1), |offDiag|≤|Icc|≤2N, then C(n,2)≤N",
-      "disjoint_diff_combined_bound proved: images of A/B offDiag under difference map are disjoint (by DisjointDifferences), combined image ⊆ Icc gives sum ≤ N",
-      "tao_equal_size_bound proved: from combined bound 2C(m,2)≤N get m(m-1)≤N, m≤N+1, then m²≤2N+1 via nlinarith",
-      "sidon_diff_count and disjoint_diff_total still sorry: formulas are incorrect for empty sets (need A.Nonempty)"
+      "example_2_3 proved by strong induction: n≥4 decomposes as 2+(n-2), base cases 2 and 3 are elements",
+      "example_3_5_frobenius proved directly from sylvester_frobenius axiom: 3*5-3-5=7",
+      "larger_numbers_fewer_reps bug fixed (n≥2→n≥3) and proved from sylvester_count + consecutive_count",
+      "Remaining sorries (nonrep_finite, topK_finite) need Chicken McNugget theorem — non-trivial formalization"
     ],
     "mathlibGaps": [],
     "nextSteps": [
