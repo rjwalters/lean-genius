@@ -102,6 +102,7 @@
   ],
   "conclusion": {
     "summary": "The multiset powerset cardinality formula |P(s)| = 2^n is a clean generalization of the set case.",
+    "implications": "Extends the fundamental 2^n counting result from sets to multisets, providing a verified foundation for enumerative combinatorics with repeated elements.",
     "openQuestions": [
       "What about the number of DISTINCT submultisets (without multiplicity)? This is product(m_i + 1) for multiplicities m_i.",
       "How does this connect to generating functions?"
