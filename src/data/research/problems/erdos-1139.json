@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 2A appropriate (open conjecture + density asymptotic), 16T proved, 0S.",
+    "progressSummary": "COMPLETE: 2A (open conjecture + density asymptotic), 16T proved, 0S. Restored axioms after bulk-removal.",
     "builtItems": [
       "Created Erdos1139Problem.lean (157 lines, 11 theorems, 2 axioms, 3 sorries)",
       "Proved prime_isAlmostPrime, four_isAlmostPrime, eight_not_almostPrime",
@@ -52,7 +52,8 @@
       "Set.Infinite.mono applied to Nat.infinite_setOf_prime gives infinite_almostPrimes",
       "Nat.nth provides 0-indexed enumeration with strictMono, mem_of_infinite, nth_count API",
       "Classical.decPred needed since bigOmega is noncomputable (uses Finsupp.sum)",
-      "Confirmed complete: 2 axioms are open conjecture and deep density result"
+      "Confirmed complete: 2 axioms are open conjecture and deep density result",
+      "Axioms erdos_1139 and hardy_ramanujan_asymptotic restored after c34e89c6 bulk cleanup incorrectly removed them as unused (they formally state the open problem)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
