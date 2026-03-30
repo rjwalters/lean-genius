@@ -1,10 +1,10 @@
 {
   "id": "erdos-1183",
-  "title": "Erd\u0151s Problem #1183: Monochromatic Lattice Families",
+  "title": "Erdős Problem #1183: Monochromatic Lattice Families",
   "slug": "erdos-1183",
-  "description": "In any 2-coloring of the subsets of {1,...,n}, there exists a monochromatic family closed under unions and intersections. How large must it be? The trivial chain bound gives \u2308(n+1)/2\u2309. Erd\u0151s and Ulam had 'no plausible conjecture' for the true order of magnitude.",
+  "description": "In any 2-coloring of the subsets of {1,...,n}, there exists a monochromatic family closed under unions and intersections. How large must it be? The trivial chain bound gives ⌈(n+1)/2⌉. Erdős and Ulam had 'no plausible conjecture' for the true order of magnitude.",
   "meta": {
-    "author": "Erd\u0151s\u2013Ulam (1978)",
+    "author": "Erdős–Ulam (1978)",
     "sourceUrl": "https://erdosproblems.com/1183",
     "date": "1978",
     "status": "axiomatized",
@@ -42,17 +42,17 @@
     "originalContributions": [
       "Formalization of union-closed and intersection-closed families on powerset",
       "Proof that every chain is a sublattice (closed under union and intersection)",
-      "Construction of the standard chain \u2205 \u2282 {0} \u2282 ... \u2282 Fin n",
+      "Construction of the standard chain ∅ ⊂ {0} ⊂ ... ⊂ Fin n",
       "Proof of injectivity of initial segments",
-      "Pigeonhole argument yielding f(n) \u2265 \u2308(n+1)/2\u2309",
+      "Pigeonhole argument yielding f(n) ≥ ⌈(n+1)/2⌉",
       "Corrected abstract definitions of f(n) and F(n) using sSup (was sInf, evaluating to 0)",
-      "Formal proof erdos1183_f_lower_bound: f(n) \u2265 \u2308(n+1)/2\u2309 via le_csSup",
-      "Proof erdos1183_F_ge_f: F(n) \u2265 f(n) since sublattices are union-closed",
+      "Formal proof erdos1183_f_lower_bound: f(n) ≥ ⌈(n+1)/2⌉ via le_csSup",
+      "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
       "BddAbove proofs bounding achievable sets by 2^n"
     ],
     "axiomCount": 0,
     "assumptions": "0 axiom declarations. Two open conjectures (erdos1183_f_growth_conjecture, erdos1183_F_superpolynomial_conjecture) stated as Prop definitions, not assumed true.",
-    "lineCount": 277,
+    "lineCount": 280,
     "prerequisites": [
       "Finite set theory (Finset, powerset, filter)",
       "Lattice theory (union/intersection closure)",
@@ -61,15 +61,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Ulam posed this problem in 1978 [Er78, p.39] as a Ramsey-type question about the powerset lattice. Given a 2-coloring of all subsets of {1,...,n}, how large a monochromatic sublattice (closed under unions and intersections) must exist? They defined two variants: f(n) for full sublattices and F(n) for union-closed families only.",
+    "historicalContext": "Erdős and Ulam posed this problem in 1978 [Er78, p.39] as a Ramsey-type question about the powerset lattice. Given a 2-coloring of all subsets of {1,...,n}, how large a monochromatic sublattice (closed under unions and intersections) must exist? They defined two variants: f(n) for full sublattices and F(n) for union-closed families only.",
     "problemStatement": "Let f(n) be maximal such that in any 2-coloring of the subsets of {1,...,n} there is always a monochromatic family of at least f(n) sets which is closed under taking unions and intersections. Estimate f(n). Similarly define F(n) requiring only union-closure.",
-    "text": "We formalize the Erd\u0151s-Ulam problem on monochromatic sublattice families and prove the trivial lower bound f(n) \u2265 \u2308(n+1)/2\u2309 via the standard chain argument.",
-    "proofStrategy": "Construct the standard chain \u2205 \u2282 {0} \u2282 {0,1} \u2282 ... \u2282 {0,...,n-1} (n+1 elements). Show any chain is a sublattice. Apply pigeonhole to get a monochromatic subchain of size \u2265 \u2308(n+1)/2\u2309.",
+    "text": "We formalize the Erdős-Ulam problem on monochromatic sublattice families and prove the trivial lower bound f(n) ≥ ⌈(n+1)/2⌉ via the standard chain argument.",
+    "proofStrategy": "Construct the standard chain ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ {0,...,n-1} (n+1 elements). Show any chain is a sublattice. Apply pigeonhole to get a monochromatic subchain of size ≥ ⌈(n+1)/2⌉.",
     "keyInsights": [
       "In a chain, the union of two comparable sets equals the larger one, so chains are automatically union-closed",
       "Similarly, the intersection equals the smaller one, so chains are intersection-closed",
       "The standard chain has exactly n+1 elements (proved via injectivity of initial segments)",
-      "Pigeonhole on 2-colorings guarantees a color class of size \u2265 \u2308(n+1)/2\u2309"
+      "Pigeonhole on 2-colorings guarantees a color class of size ≥ ⌈(n+1)/2⌉"
     ],
     "prerequisites": [
       "Finite set theory",
@@ -89,7 +89,7 @@
     },
     {
       "title": "Chains Are Sublattices",
-      "content": "We prove that in any chain (totally ordered by \u2286), the union and intersection of any two elements remain in the chain. Hence every chain is a sublattice.",
+      "content": "We prove that in any chain (totally ordered by ⊆), the union and intersection of any two elements remain in the chain. Hence every chain is a sublattice.",
       "lineStart": 64,
       "lineEnd": 85,
       "theorems": [
@@ -102,7 +102,7 @@
     },
     {
       "title": "The Standard Chain",
-      "content": "We construct the standard chain \u2205 \u2282 {0} \u2282 {0,1} \u2282 ... \u2282 Fin n using initial segments, prove it is a chain, that initial segments are injective, and that the chain has exactly n+1 elements.",
+      "content": "We construct the standard chain ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ Fin n using initial segments, prove it is a chain, that initial segments are injective, and that the chain has exactly n+1 elements.",
       "lineStart": 87,
       "lineEnd": 132,
       "theorems": [
@@ -116,7 +116,7 @@
     },
     {
       "title": "Pigeonhole",
-      "content": "A pigeonhole lemma: in any 2-coloring of a finite set S, some color class has at least \u2308|S|/2\u2309 elements.",
+      "content": "A pigeonhole lemma: in any 2-coloring of a finite set S, some color class has at least ⌈|S|/2⌉ elements.",
       "lineStart": 134,
       "lineEnd": 164,
       "theorems": [
@@ -127,7 +127,7 @@
     },
     {
       "title": "Main Results",
-      "content": "The chain bound: for any 2-coloring of subsets of Fin n, there exists a monochromatic sublattice of size \u2265 \u2308(n+1)/2\u2309. The F(n) bound follows since every sublattice is union-closed.",
+      "content": "The chain bound: for any 2-coloring of subsets of Fin n, there exists a monochromatic sublattice of size ≥ ⌈(n+1)/2⌉. The F(n) bound follows since every sublattice is union-closed.",
       "lineStart": 166,
       "lineEnd": 200,
       "theorems": [
@@ -139,7 +139,7 @@
     },
     {
       "title": "Abstract Definitions and Bounds",
-      "content": "Corrected definitions of f(n) and F(n) using sSup (previously sInf, which gave 0). Proves the chain bound connects to the abstract definition: f(n) \u2265 \u2308(n+1)/2\u2309. Proves F(n) \u2265 f(n) since sublattices are union-closed.",
+      "content": "Corrected definitions of f(n) and F(n) using sSup (previously sInf, which gave 0). Proves the chain bound connects to the abstract definition: f(n) ≥ ⌈(n+1)/2⌉. Proves F(n) ≥ f(n) since sublattices are union-closed.",
       "lineStart": 201,
       "lineEnd": 276,
       "theorems": [
@@ -154,11 +154,11 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #1183 (Erd\u0151s-Ulam) and prove the trivial lower bound f(n) \u2265 \u2308(n+1)/2\u2309 using the standard chain in the powerset lattice. The true growth rate of both f(n) and F(n) remain open.",
+    "summary": "We formalize Erdős Problem #1183 (Erdős-Ulam) and prove the trivial lower bound f(n) ≥ ⌈(n+1)/2⌉ using the standard chain in the powerset lattice. The true growth rate of both f(n) and F(n) remain open.",
     "implications": [
       "Provides a baseline Lean formalization for powerset Ramsey problems",
       "The chain argument generalizes to any lattice with long chains",
-      "Improving the bound beyond \u2308(n+1)/2\u2309 likely requires non-chain families"
+      "Improving the bound beyond ⌈(n+1)/2⌉ likely requires non-chain families"
     ],
     "openQuestions": [
       "What is the true order of magnitude of f(n)?",
@@ -175,7 +175,7 @@
   "references": [
     {
       "key": "Er78",
-      "citation": "P. Erd\u0151s, Problems and results in combinatorial analysis and combinatorial number theory, Proc. Ninth Southeastern Conf. on Combinatorics, Graph Theory, and Computing, 1978, pp. 39.",
+      "citation": "P. Erdős, Problems and results in combinatorial analysis and combinatorial number theory, Proc. Ninth Southeastern Conf. on Combinatorics, Graph Theory, and Computing, 1978, pp. 39.",
       "url": "https://erdosproblems.com/1183"
     }
   ],
@@ -191,7 +191,7 @@
       "Finset"
     ],
     "namespace": "Erdos1183",
-    "lineCount": 277,
+    "lineCount": 280,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 12

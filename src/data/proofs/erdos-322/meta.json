@@ -56,7 +56,7 @@
       "erdos_positive_density_claim: unbounded representations from dense sets"
     ],
     "axiomCount": 5,
-    "lineCount": 191,
+    "lineCount": 182,
     "assumptions": "5 axioms: (1) representationCount — the function $r_k(n)$ counting representations as sums of $k$ $k$-th powers; (2) mahler_theorem — $\\exists c > 0$ with $r_3(n) \\geq c \\cdot n^{1/12}$ infinitely often; (3) hypothesisK_fails_for_3 — Hypothesis K is false for $k=3$; (4) erdos_chowla_bound — $r_k(n) \\geq n^{c/\\log\\log n}$ infinitely often for all $k \\geq 3$; (5) erdos_positive_density_claim — $k$-th powers of positive-density sets have unbounded representation counts."
   },
   "overview": {
@@ -165,7 +165,7 @@
       "Finset"
     ],
     "namespace": "Erdos322",
-    "lineCount": 191,
+    "lineCount": 182,
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 5
@@ -215,7 +215,9 @@
   "references": [
     {
       "key": "Ma36",
-      "authors": ["K. Mahler"],
+      "authors": [
+        "K. Mahler"
+      ],
       "title": "Note on Hypothesis K of Hardy and Littlewood",
       "venue": "Journal of the London Mathematical Society",
       "year": "1936",
@@ -225,7 +227,10 @@
     },
     {
       "key": "EC36",
-      "authors": ["P. Erdős", "S. Chowla"],
+      "authors": [
+        "P. Erdős",
+        "S. Chowla"
+      ],
       "title": "On the representation of an integer as the sum of k k-th powers",
       "venue": "Journal of the London Mathematical Society",
       "year": "1936",
@@ -235,7 +240,10 @@
     },
     {
       "key": "HL20",
-      "authors": ["G. H. Hardy", "J. E. Littlewood"],
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood"
+      ],
       "title": "Some problems of 'Partitio Numerorum' I: A new solution of Waring's problem",
       "venue": "Göttingen Nachrichten",
       "year": "1920",
@@ -244,7 +252,10 @@
     },
     {
       "key": "EG80",
-      "authors": ["P. Erdős", "R. L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "venue": "Monographies de L'Enseignement Mathématique",
       "year": "1980",
@@ -253,7 +264,9 @@
     },
     {
       "key": "ErdosProblems",
-      "authors": ["T. Bloom"],
+      "authors": [
+        "T. Bloom"
+      ],
       "title": "Erdős Problems",
       "venue": "https://erdosproblems.com/322",
       "year": "2024",

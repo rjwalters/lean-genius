@@ -23,7 +23,7 @@
     ],
     "axiomCount": 7,
     "assumptions": "7 axiom declarations: maxMonoAPLength (max monochromatic AP length function), maxMonoAPLength_pos (maxMonoAPLength >= 1 for positive d), optAPBound (optimal AP bound function f(d)), vanDerWaerden_implies_growth (f(d) tends to infinity), beck_upper_bound (f(d) <= C*log_2(d) for large d), erdos_sqrt2_construction (sqrt(2)-coloring limits AP length to O(d)), erdos_187_optimal_bound (f(d) = Theta(log d) conjecture)",
-    "lineCount": 78,
+    "lineCount": 58,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -107,7 +107,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 78,
+    "lineCount": 58,
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 2

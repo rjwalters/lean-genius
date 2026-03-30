@@ -64,12 +64,12 @@
       "erdos_447_summary combining upper and lower bounds"
     ],
     "axiomCount": 2,
-    "lineCount": 170,
+    "lineCount": 157,
     "assumptions": "2 axioms: kleitman_theorem (optimal union-free bound (1+o(1))C(n,n/2)), lower_bound (middle layer is union-free)."
   },
   "leanFile": {
     "path": "Proofs/Erdos447Problem.lean",
-    "lineCount": 170,
+    "lineCount": 157,
     "namespace": "Erdos447",
     "imports": [
       "Mathlib.Data.Finset.Basic",
