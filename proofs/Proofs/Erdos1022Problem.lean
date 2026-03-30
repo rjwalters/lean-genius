@@ -71,10 +71,10 @@ def IsSparse [Fintype α] (F : Finset (Finset α)) (c : ℕ) : Prop :=
 -- § 3: The Conjecture
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **Erdős Problem #1022** (OPEN): There exists a function c : ℕ → ℕ
+/-- **Erdős Problem #1022** (OPEN, not proved): There exists a function c : ℕ → ℕ
     tending to infinity such that every c(t)-sparse family of sets of
     size ≥ t has Property B. -/
-axiom erdos_1022_conjecture :
+def Erdos1022Conjecture : Prop :=
   ∃ c : ℕ → ℕ,
     (∀ M : ℕ, ∃ t₀ : ℕ, ∀ t : ℕ, t ≥ t₀ → c t ≥ M) ∧
     (∀ (α : Type) [DecidableEq α] [Fintype α] (F : Finset (Finset α)) (t : ℕ),
