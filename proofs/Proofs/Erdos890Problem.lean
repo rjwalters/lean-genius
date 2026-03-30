@@ -123,12 +123,6 @@ axiom erdos_selfridge_lower_bound :
   ∀ k : ℕ, k ≥ 1 →
     LiminfAtLeast (cumulativeOmega k) (k + pi k - 1)
 
-/--
-**Classical result (Hardy–Ramanujan):**
-lim sup ω(n) · log log n / log n = 1.
--/
-axiom classical_omega_limsup : LimsupRatioIsOne (fun n => ω n)
-
 -- ## Part VI: Structural Theorems
 
 /--
