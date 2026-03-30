@@ -97,9 +97,6 @@ theorem not_isThick_geometric {r : ℕ} (hr : r > 1) : ¬IsThick fun n : ℕ => 
 
 /-- A constant positive sequence is thick (harmonic series diverges).
     Proof: Σ(1/r) = ∞ for any fixed r > 0 over infinite index. -/
-axiom isThick_const {ι : Type*} [Infinite ι] (r : ℕ) (hr : r > 0) :
-    IsThick fun _ : ι => r
-
 /- ## The Davenport-Erdős Theorem -/
 
 /-- Davenport-Erdős (1951): Every Behrend sequence has divergent reciprocal sum.
@@ -132,9 +129,6 @@ def Erdos26Conjecture : Prop :=
     The construction uses: n_l ≡ -(k-1) (mod p_k) for all k ≤ l,
     where p_k is the k-th prime. This ensures for any k, the shift A + k
     is not a multiple of p_k often enough. -/
-axiom ruzsa_counterexample :
-  ∃ A : ℕ → ℕ, StrictMono A ∧ ¬IsThick A ∧ ∀ k : ℕ, ¬IsBehrend (A · + k)
-
 /-- Van Doorn's modification: A thick counterexample.
     Modified Ruzsa's construction to make Σ(1/A(n)) = ∞ while still
     ensuring no shift is Behrend. -/
@@ -172,19 +166,10 @@ theorem multiplesOf_eq_univ {ι : Type*} (A : ι → ℕ) (h : 1 ∈ range A) :
 
 /-- If A contains 1, then A is trivially Behrend.
     Proof: MultiplesOf A = ℕ when 1 ∈ A, so density is 1. -/
-axiom isBehrend_of_contains_one {ι : Type*} (A : ι → ℕ) (h : 1 ∈ range A) :
-    IsBehrend A
-
 /-- A sequence is weakly Behrend with ε ≥ 1 trivially.
     Proof: 1 - ε ≤ 0 ≤ lowerDensity(S) for any S. -/
-axiom isWeaklyBehrend_of_ge_one {ι : Type*} (A : ι → ℕ) {ε : ℝ} (hε : 1 ≤ ε) :
-    IsWeaklyBehrend A ε
-
 /-- A sequence is not weakly Behrend with ε < 0.
     Proof: 1 - ε > 1 ≥ lowerDensity(S) for any S. -/
-axiom not_isWeaklyBehrend_of_neg {ι : Type*} (A : ι → ℕ) {ε : ℝ} (hε : ε < 0) :
-    ¬IsWeaklyBehrend A ε
-
 /- ## Summary
 
 **Problem Status: DISPROVED**

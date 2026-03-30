@@ -61,35 +61,15 @@ noncomputable def h (n : ℕ) : ℕ :=
 /- ## Known Upper Bounds -/
 
 /-- Pach's bound: h(n) < n^{log₂ 3} -/
-axiom pach_upper_bound :
-  ∀ᶠ n in Filter.atTop,
-    (h n : ℝ) < (n : ℝ) ^ (Real.log 3 / Real.log 2)
-
 /-- Erdős–Füredi–Pach improved bound: h(n) < n · exp(c√(log n)) -/
-axiom efp_upper_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      (h n : ℝ) < (n : ℝ) * Real.exp (c * Real.sqrt (Real.log (n : ℝ)))
-
 /- ## The Erdős Conjecture -/
 
 /-- Erdős Problem 98: h(n)/n → ∞, i.e. points in general position
     (no 3 collinear, no 4 concyclic) determine superlinearly many
     distinct distances. Open — Erdős could not even prove h(n) ≥ n. -/
-axiom ErdosProblem98 :
-  Filter.Tendsto (fun n => (h n : ℝ) / (n : ℝ)) Filter.atTop Filter.atTop
-
 /-- Weaker open question: h(n) ≥ n for all large n? Even this is unknown. -/
-axiom erdos_98_weak :
-  ∀ᶠ n in Filter.atTop, n ≤ h n
-
 /- ## Connection to the General Distinct Distances Problem -/
 
 /-- Without the general-position assumption, the Guth–Katz theorem gives
     Ω(n/log n) distinct distances for any n points. General position
     should give more, but the quantitative improvement is unknown. -/
-axiom guth_katz_comparison :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (n : ℕ) (hn : 2 ≤ n) (P : PointConfig n),
-      Function.Injective P →
-        c * (n : ℝ) / Real.log (n : ℝ) ≤ (numDistinctDistances P : ℝ)

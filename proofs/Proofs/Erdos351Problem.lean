@@ -61,8 +61,6 @@ theorem erdos_351_open :
 This is the case p(x) = x. Graham proved that even after removing any finite
 set of elements, the remaining terms can sum to all sufficiently large integers.
 -/
-axiom graham_theorem_linear : HasStronglyCompleteImage X
-
 /--
 **Graham-Alekseyev Theorem**: The set {n² + 1/n : n ∈ ℕ} is strongly complete.
 
@@ -70,8 +68,6 @@ This is the case p(x) = x². Van Doorn noted this follows from combining
 Graham's 1963 result with Alekseyev's 2019 result on partitions into
 squares of distinct integers whose reciprocals sum to 1.
 -/
-axiom graham_alekseyev_quadratic : HasStronglyCompleteImage (X ^ 2)
-
 /- ## Basic Properties -/
 
 /-- The image set for p(x) = x contains n + 1/n for all n ≥ 1 -/

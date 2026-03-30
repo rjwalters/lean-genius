@@ -348,27 +348,13 @@ Upper and lower bounds on C(x).
 -/
 
 /-- Erdős's upper bound (1956) -/
-axiom erdos_upper_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ x : ℕ, x ≥ 2 →
-    (C x : ℝ) < x * Real.exp (-c * Real.log x * Real.log (Real.log (Real.log x)) /
-                               Real.log (Real.log x))
-
 /-- Lichtman's lower bound (2022): C(x) > x^{0.3389} -/
-axiom lichtman_lower_bound :
-  ∃ X : ℕ, ∀ x ≥ X, (C x : ℝ) > x^(0.3389 : ℝ)
-
 /-- Harman's earlier lower bound (2008): C(x) > x^{0.33336704} -/
-axiom harman_lower_bound :
-  ∃ X : ℕ, ∀ x ≥ X, (C x : ℝ) > x^(0.33336704 : ℝ)
-
 /-- AGP (1994): There are infinitely many Carmichael numbers -/
 axiom infinitely_many_carmichaels :
   ∀ N : ℕ, ∃ n > N, IsCarmichael n
 
 /-- AGP lower bound: C(x) > x^{2/7} for large x -/
-axiom agp_lower_bound :
-  ∃ X : ℕ, ∀ x ≥ X, (C x : ℝ) > x^(2/7 : ℝ)
-
 /-
 ## The Main Conjecture
 

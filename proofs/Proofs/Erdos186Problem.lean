@@ -109,11 +109,6 @@ There exist non-averaging sets of size ≥ N^(1/4).
 The construction uses a clever selection based on sums of two squares
 or similar number-theoretic techniques.
 -/
-axiom bosznay_lower_bound :
-    ∀ N : ℕ, N ≥ 1 →
-    ∃ A : Finset ℕ, IsNonAveraging A ∧ A ⊆ Finset.range (N + 1) ∧
-      (A.card : ℝ) ≥ (N : ℝ) ^ (1/4 : ℝ) / 2
-
 /--
 **Corollary:** F(N) ≥ c · N^(1/4) for some constant c > 0.
 
@@ -133,20 +128,10 @@ axiom lower_bound_quarter :
 **Erdős-Sárközy (1990):**
 Original upper bound: F(N) ≪ (N log N)^(1/2).
 -/
-axiom erdos_sarkozy_upper_bound_1990 :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≤ C * ((N : ℝ) * Real.log N) ^ (1/2 : ℝ)
-
 /--
 **Conlon-Fox-Pham (2023):**
 Improved upper bound: F(N) ≪ N^(1/4) · (log N)^c for some c.
 -/
-axiom conlon_fox_pham_upper_bound_2023 :
-    ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≤ C * (N : ℝ) ^ (1/4 : ℝ) * (Real.log N) ^ c
-
 /--
 **Pham-Zakharov (2024):**
 Sharp upper bound: F(N) ≪ N^(1/4 + o(1)).
@@ -197,12 +182,6 @@ converges to 1/4.
 Axiomatized because deriving the N^(1/4-ε) lower bound from the
 Bosznay construction requires careful asymptotic analysis.
 -/
-axiom erdos_186 :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (N : ℝ) ^ (1/4 - ε) ≤ (F N : ℝ) ∧
-      (F N : ℝ) ≤ (N : ℝ) ^ (1/4 + ε)
-
 /-
 ## Part VI: Properties of Non-Averaging Sets
 -/
@@ -234,11 +213,6 @@ Roth's theorem says any subset of {1,...,N} of size ≫ N/log N contains
 a 3-term AP. Non-averaging is a weaker condition (only avoids centered APs),
 which is why non-averaging sets can be much larger (N^(1/4) vs N/log N).
 -/
-axiom roth_bound_comparison :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≥ C * (N : ℝ) / Real.log N
-
 /-
 ## Part VIII: The Growth Rate
 -/
@@ -247,16 +221,9 @@ axiom roth_bound_comparison :
 The exponent 1/4 is the correct order: F(N) cannot grow slower than N^(1/4-ε)
 for any ε > 0, since Bosznay's construction achieves N^(1/4).
 -/
-axiom exponent_is_quarter :
-    ∀ ε : ℝ, ε > 0 →
-    (∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (N : ℝ) ^ (1/4 - ε)) → False
-
 /--
 The o(1) term in the exponent is necessary (upper bound not exactly N^(1/4)).
 -/
-axiom upper_exponent_not_exact :
-    ¬∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ C * (N : ℝ) ^ (1/4 : ℝ)
-
 /-
 ## Part IX: Open Questions
 -/

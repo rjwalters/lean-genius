@@ -110,9 +110,6 @@ def HasOptimalDensity (A : Set ℕ) : Prop :=
 **Folkman's Theorem:**
 If |A ∩ {1,...,N}| ≫ N^{1/2+ε} for some ε > 0, then A is subcomplete.
 -/
-axiom folkman_theorem (A : Set ℕ) :
-    HasFolkmanDensity A → IsSubcomplete A
-
 /-
 ## Part IV: The Szemerédi-Vu Theorem (Main Result)
 -/
@@ -185,9 +182,6 @@ theorem complete_implies_subcomplete (A : Set ℕ) :
 Folkman density implies square root density.
 Axiomatized: The technical bound N^{1/2+ε} ≥ C · N^{1/2} for large N is routine analysis.
 -/
-axiom folkman_implies_sqrt_density (A : Set ℕ) :
-    HasFolkmanDensity A → HasSquareRootDensity A
-
 /-
 ## Part VII: The Main Theorem
 -/

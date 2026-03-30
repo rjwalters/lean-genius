@@ -198,14 +198,7 @@ def IsConsecutiveSum (m n : ℕ) : Prop :=
     (List.range (j - i + 1)).foldl (fun acc k => acc + consSeq (i + k)) 0 = m
 
 /-- The defining property: consSeq(k) is a consecutive sum of previous terms. -/
-axiom consSeq_is_consecutive_sum (k : ℕ) (hk : k ≥ 2) :
-    IsConsecutiveSum (consSeq k) k
-
 /-- No smaller integer > consSeq(k-1) is a consecutive sum (minimality). -/
-axiom consSeq_minimal (k : ℕ) (hk : k ≥ 2) (m : ℕ)
-    (hm₁ : consSeq (k - 1) < m) (hm₂ : m < consSeq k) :
-    ¬IsConsecutiveSum m k
-
 /- ## Part VI: Growth Properties -/
 
 /-- The sequence grows at least linearly: consSeq(n) ≥ n + 1.

@@ -42,18 +42,9 @@ def binaryTwoVec (n : ℕ) (i j : Fin n) (h : i ≠ j) : Fin n → ℝ :=
   fun k => if k = i ∨ k = j then 1 else 0
 
 /-- The two distances in the binary construction are √2 and 2. -/
-axiom binary_two_distances (n : ℕ) (hn : 2 ≤ n)
-    (i₁ j₁ i₂ j₂ : Fin n) (h₁ : i₁ ≠ j₁) (h₂ : i₂ ≠ j₂)
-    (hne : (i₁, j₁) ≠ (i₂, j₂)) :
-    dist (binaryTwoVec n i₁ j₁ h₁) (binaryTwoVec n i₂ j₂ h₂) = Real.sqrt 2 ∨
-    dist (binaryTwoVec n i₁ j₁ h₁) (binaryTwoVec n i₂ j₂ h₂) = 2
-
 /- ## Lower Bound -/
 
 /-- Basic lower bound: f(n) ≥ C(n, 2) from binary vectors. -/
-axiom lower_bound_basic (n : ℕ) (hn : 2 ≤ n) :
-    n.choose 2 ≤ maxTwoDistSize n
-
 /-- Improved lower bound via projection: f(n) ≥ C(n+1, 2). -/
 axiom lower_bound_improved (n : ℕ) (hn : 2 ≤ n) :
     (n + 1).choose 2 ≤ maxTwoDistSize n
@@ -77,11 +68,7 @@ theorem erdos_502_bounds (n : ℕ) (hn : 2 ≤ n) :
 /- ## Small Cases -/
 
 /-- In ℝ², the maximum two-distance set has size 5 (regular pentagon). -/
-axiom two_dist_dim2 : maxTwoDistSize 2 = 5
-
 /-- In ℝ³, the maximum two-distance set has size 6. -/
-axiom two_dist_dim3 : maxTwoDistSize 3 = 6
-
 /- ## Coxeter's Original Question -/
 
 /-- Coxeter asked Erdős whether f(n) is polynomial in n.
@@ -93,5 +80,3 @@ theorem coxeter_polynomial_growth (n : ℕ) :
 /-- Erdős initially claimed f(n) ≤ n^O(1) but found an error,
     only obtaining f(n) ≤ exp(n^{1-o(1)}). The BBS result vindicated
     his original belief. -/
-axiom erdos_original_weaker_bound (n : ℕ) (hn : 1 ≤ n) :
-    maxTwoDistSize n ≤ Nat.factorial n

@@ -118,11 +118,6 @@ noncomputable def countSidonSets (N : ℕ) : ℕ :=
 f(N) ~ √N as N → ∞.
 More precisely, f(N) = (1 + o(1))√N.
 -/
-axiom erdos_turan_sidon :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      |(maxSidonSize N : ℝ) - Real.sqrt N| < ε * Real.sqrt N
-
 /--
 **Conjectured refinement:**
 f(N) = √N + O(N^ε) for any ε > 0.
@@ -237,12 +232,6 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
 /--
 Adding element preserves Sidon if no sum collision.
 -/
-axiom extend_sidon (S : Finset ℕ) (n : ℕ) :
-    IsSidon S → n ∉ S →
-    (∀ a b : ℕ, a ∈ S → b ∈ S → a + b ≠ 2 * n) →
-    (∀ a : ℕ, a ∈ S → ∀ c d : ℕ, c ∈ S → d ∈ S → c ≤ d → n + a ≠ c + d) →
-    IsSidon (insert n S)
-
 /-
 ## Part VIII: Summary
 -/

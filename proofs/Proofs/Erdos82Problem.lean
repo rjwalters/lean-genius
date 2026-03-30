@@ -126,20 +126,12 @@ Any graph with at least one vertex has a 0-regular induced subgraph
 (a single isolated vertex, or any single vertex forms a trivially
 regular subgraph of degree 0).
 -/
-axiom F_ge_one (n : ℕ) (hn : n ≥ 1) : F n ≥ 1
-
 /--
 **Cliques and Independent Sets are Regular**
 
 A clique on k vertices is (k-1)-regular, and an independent set
 on k vertices is 0-regular. Both are regular induced subgraphs.
 -/
-axiom clique_is_regular :
-    ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
-    (S : Finset V),
-    (∀ (u v : S), u ≠ v → G.Adj u.val v.val) →
-    ∃ k, ∀ (v : S), (inducedSubgraph G S).degree v = k
-
 /-
 # Part 5: Ramsey-Theoretic Lower Bound
 
@@ -157,9 +149,6 @@ contains a monochromatic K_s in color 1 or K_t in color 2.
 axiom ramseyNumber (s t : ℕ) : ℕ
 
 /-- Ramsey numbers exist and are finite. -/
-axiom ramsey_exists (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
-    ramseyNumber s t ≥ 1
-
 /--
 **Ramsey Upper Bound: R(k,k) ≤ 4^k**
 
@@ -167,9 +156,6 @@ The classical Erdős-Szekeres bound gives R(k,k) ≤ C(2k-2,k-1) ≤ 4^k.
 Inverting: any graph on n vertices has a clique or independent set
 of size ≥ (1/2) · log₂(n).
 -/
-axiom ramsey_upper_bound (k : ℕ) (hk : k ≥ 1) :
-    ramseyNumber k k ≤ 4 ^ k
-
 /--
 **F(n) ≥ (1/2) · log₂(n) for large n**
 
@@ -237,10 +223,6 @@ From computation and analysis:
 From OEIS A120414: F(n) for n = 1..15:
 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5
 -/
-axiom F_small_values :
-    F 1 = 1 ∧ F 2 = 2 ∧ F 3 = 2 ∧ F 4 = 3 ∧ F 5 = 3 ∧
-    F 7 = 4 ∧ F 10 = 4 ∧ F 12 = 5
-
 /-
 # Part 8: The Erdős Conjecture
 
@@ -299,10 +281,6 @@ then F(n) ≥ (1/log C) · log(n).
 Any improvement to the Ramsey diagonal bound gives a corresponding
 improvement to the lower bound for F(n).
 -/
-axiom ramsey_improvement_2023 :
-    ∃ (c : ℝ), c > 0 ∧ ∀ (k : ℕ), k ≥ 1 →
-    ramseyNumber k k ≤ Nat.ceil ((4 - c) ^ k)
-
 /--
 **Probabilistic Constructions**
 
@@ -313,10 +291,6 @@ Random graphs G(n, 1/2) have:
 
 The behavior of F(n) on random graphs is itself an open problem.
 -/
-axiom random_graph_regular :
-    ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    (F n : ℝ) ≥ (2 - ε) * Real.log n / Real.log 2
-
 /-
 # Part 10: Problem Status and Summary
 -/

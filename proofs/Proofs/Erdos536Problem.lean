@@ -60,21 +60,8 @@ theorem weisenberg_dense_case :
 /-- **Four Elements Fail**: there is no analogous result for quadruples.
     Erdős showed sets exist where no four distinct elements have all
     pairwise LCMs equal. -/
-axiom four_elements_fail :
-  ∀ N : ℕ, ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧
-    A.card ≥ N / 2 ∧
-    ¬∃ a b c d, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ d ∈ A ∧
-      ({a, b, c, d} : Finset ℕ).card = 4 ∧
-      a.lcm b = a.lcm c ∧ a.lcm c = a.lcm d ∧
-      a.lcm d = b.lcm c ∧ b.lcm c = b.lcm d ∧ b.lcm d = c.lcm d
-
 /-- **Weisenberg Construction**: there exist sets A ⊆ {1,...,N} avoiding
     the triple property with |A| ≫ (log log N)^{f(N)} · N / log N. -/
-axiom weisenberg_construction :
-  ∃ f : ℕ → ℕ, (∀ k, ∃ N₀, ∀ N ≥ N₀, f N > k) ∧
-    ∀ N : ℕ, N > 1 → ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧
-      ¬HasLCMTriple A ∧ A.card ≥ f N
-
 /- ## Observations -/
 
 /--

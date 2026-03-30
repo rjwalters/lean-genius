@@ -134,27 +134,17 @@ For c < 1/4: f_c(n) ≪ n^{1/2}
 There exist triangle-saturated graphs with cn² edges
 where the maximum book size is O(√n).
 -/
-axiom alon_trotter_bound (c : ℝ) (hc : c < 1/4) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (f c n : ℝ) ≤ C * Real.sqrt n
-
 /--
 **Fox-Loh Upper Bound (2012):**
 For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}
 
 This disproves Erdős's conjecture that f_c(n) > n^ε for some ε > 0.
 -/
-axiom fox_loh_bound (c : ℝ) (hc : c < 1/4) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    (f c n : ℝ) ≤ n ^ (C / Real.log (Real.log n))
-
 /--
 **Erdős's Polynomial Conjecture: DISPROVED**
 f_c(n) > n^ε for some ε > 0 is FALSE for c < 1/4.
 Fox-Loh (2012) showed f_c(n) ≤ n^{O(1/log log n)}, which is o(n^ε).
 -/
-axiom erdos_polynomial_conjecture_false (c : ℝ) (hc : c < 1/4) :
-    ¬∃ ε : ℝ, ε > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f c n : ℝ) > n ^ ε
-
 /- ## Part IV: Known Lower Bounds -/
 
 /--
@@ -163,9 +153,6 @@ For c > 1/4: f_c(n) ≥ n/6
 
 Above the threshold 1/4, books of linear size are guaranteed.
 -/
-axiom linear_bound_above_threshold (c : ℝ) (hc : c > 1/4) :
-  ∀ n : ℕ, n ≥ 1 → f c n ≥ n / 6
-
 /--
 **Szemerédi Regularity Bound:**
 For all c > 0: f_c(n) → ∞ as n → ∞.
@@ -179,9 +166,6 @@ axiom regularity_lower_bound (c : ℝ) (hc : c > 0) :
 /--
 **Consequence of regularity:** For any M, eventually f_c(n) > M.
 -/
-axiom f_tends_to_infinity (c : ℝ) (hc : c > 0) :
-    ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, f c n > M
-
 /- ## Part V: The Phase Transition -/
 
 /--

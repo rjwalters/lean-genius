@@ -93,24 +93,15 @@ def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k}
 **Erdős (1950):**
 The powers of two satisfy the conjecture.
 -/
-axiom erdos_1950_powers_of_two :
-    HasUnboundedLimsup (representationCount powersOfTwo)
-
 /--
 **Powers of Two Have Logarithmic Density:**
 |{2^k : k ≤ N}| = ⌊log₂(N)⌋ + 1 ~ log(N).
 -/
-axiom powers_of_two_log_density : HasLogDensity powersOfTwo
-
 /--
 **Arithmetic Progressions:**
 Sets containing long arithmetic progressions tend to have
 many prime representations due to Goldbach-like phenomena.
 -/
-axiom ap_representation_bound (A : Set ℕ) (d : ℕ) (hd : d > 0)
-    (hAP : ∃ a L : ℕ, L ≥ d ∧ ∀ k < L, a + k * d ∈ A) :
-    ∃ n : ℕ, representationCount A n ≥ d
-
 /-
 ## Part IV: Chen and Ding's Theorem
 -/
@@ -199,17 +190,11 @@ A = {n² : n ≥ 1} is infinite, so limsup f(n) = ∞.
 -/
 def squares : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k^2}
 
-axiom squares_unbounded_limsup :
-    HasUnboundedLimsup (representationCount squares)
-
 /--
 **Prime Powers:**
 A = {p^k : p prime, k ≥ 1} is infinite.
 -/
 def primePowers : Set ℕ := {n | ∃ (p k : ℕ), p.Prime ∧ k ≥ 1 ∧ n = p^k}
-
-axiom prime_powers_unbounded_limsup :
-    HasUnboundedLimsup (representationCount primePowers)
 
 /-
 **Highly Composite Numbers:**

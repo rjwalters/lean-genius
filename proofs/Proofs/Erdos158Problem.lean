@@ -69,11 +69,6 @@ This stronger bound with the log factor is the key technical result.
 Axiomatized because the proof requires careful probabilistic arguments
 and sieve methods not yet in Mathlib.
 -/
-axiom ess_1994_log_bound {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) :
-    liminf (fun N => ENNReal.ofReal
-      (countingFn A N * (N : ℝ) ^ (-1/2 : ℝ) * Real.log N ^ (1/2 : ℝ)))
-      atTop < ⊤
-
 /--
 **Erdős-Sárközy-Sós (1994)**: For any infinite Sidon set A,
   liminf |A ∩ {1,...,N}| / N^{1/2} = 0.
@@ -121,15 +116,10 @@ theorem sidon_case_true {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) 
 
     The √N bound is essentially tight - there exist Sidon sets
     achieving |A| ≥ √N - o(√N). -/
-axiom sidon_upper_bound {A : Set ℕ} (hSidon : IsSidonSet A) (N : ℕ) (hN : 0 < N) :
-    countingFn A N ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
-
 /- ## Examples -/
 
 /-- The set of perfect squares {1, 4, 9, 16, 25, ...} is a Sidon set.
 
     Proof: If a² + b² = c² + d² with a ≤ b and c ≤ d, then by unique
     factorization in ℤ[i], we get (a², b²) = (c², d²). -/
-axiom squares_sidon : IsSidonSet {n : ℕ | ∃ k, n = k^2}
-
 end Erdos158

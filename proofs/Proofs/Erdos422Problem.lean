@@ -78,22 +78,9 @@ def IsWellDefined (n : ℕ) : Prop :=
 
 /-- **Well-Definedness** (OPEN): Is the recursion well-defined for all n?
     It is not known whether the recursive indices always stay in bounds. -/
-axiom erdos_422_well_defined : ∀ n : ℕ, IsWellDefined n
-
 /-- **Missing Integers** (OPEN): Does f miss infinitely many positive integers? -/
-axiom erdos_422_misses_infinitely :
-  Set.Infinite {m : ℕ | m > 0 ∧ ∀ n, hofstadterF n ≠ m}
-
 /-- **Non-Surjectivity** (OPEN): Is f non-surjective on positive integers? -/
-axiom erdos_422_not_surjective :
-  ¬Function.Surjective (fun n : ℕ => hofstadterF (n + 1))
-
 /-- **Growth Rate** (OPEN): f(n) grows at most linearly. -/
-axiom erdos_422_growth :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      (hofstadterF n : ℝ) ≤ (1 + ε) * n
-
 /- ## Observations -/
 
 /- **Hofstadter Origin**: the sequence was proposed by Hofstadter and

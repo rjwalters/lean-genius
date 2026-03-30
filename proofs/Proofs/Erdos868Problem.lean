@@ -103,11 +103,6 @@ and f(n) → ∞ as n → ∞, must A contain a minimal basis of order 2?
 The condition f(n) → ∞ means representations become unbounded - each large n
 has more and more ways to be written as a sum of two elements from A.
 -/
-axiom erdos_868_part_i_open : Prop
--- unknown: ∀ A : Set ℕ, IsBasisOrder2 A →
---   Tendsto (reprCount2 A) atTop atTop →
---   ∃ B ⊆ A, IsMinimalBasis2 B
-
 /--
 **Erdős Problem #868 Part (ii) (OPEN)**: If A is an additive basis of order 2
 and f(n) > ε log n for all large n (for any fixed ε > 0), must A contain a
@@ -116,11 +111,6 @@ minimal basis of order 2?
 This is a weaker condition than part (i) - we don't require f(n) → ∞,
 just that f(n) grows at least logarithmically.
 -/
-axiom erdos_868_part_ii_open : Prop
--- unknown: ∀ A : Set ℕ, ∀ ε > 0, IsBasisOrder2 A →
---   (∀ᶠ n in atTop, ε * Real.log n < reprCount2 A n) →
---   ∃ B ⊆ A, IsMinimalBasis2 B
-
 /-
 ## Known Results
 
@@ -142,9 +132,6 @@ axiom erdos_nathanson_1979 (A : Set ℕ) :
 noncomputable def erdosNathansonConstant : ℝ := (Real.log (4/3))⁻¹
 
 /-- The Erdős-Nathanson constant is approximately 3.476. -/
-axiom erdos_nathanson_constant_approx :
-    3.4 < erdosNathansonConstant ∧ erdosNathansonConstant < 3.5
-
 /--
 **Härtter-Nathanson Theorem**: There exist additive bases (of any order h > 1)
 that do NOT contain any minimal subbasis.
@@ -152,10 +139,6 @@ that do NOT contain any minimal subbasis.
 This shows the answer to a naive version of the question is NO - not every
 basis contains a minimal basis.
 -/
-axiom hartter_nathanson (h : ℕ) (hh : 1 < h) :
-    ∃ A : Set ℕ, IsAdditiveBasis A h ∧
-      ∀ B ⊆ A, IsAdditiveBasis B h → ∃ b ∈ B, IsAdditiveBasis (B \ {b}) h
-
 /--
 **Erdős-Nathanson 1989**: For any constant t, there exists an additive basis A
 with f(n) ≥ t for all large n, yet A contains no minimal basis of order 2.
@@ -182,10 +165,6 @@ The mystery lies in the gap between:
 The hierarchy of growth conditions: if f(n) > c log n for c = (log 4/3)⁻¹,
 then f(n) > ε log n for any ε > 0 (since c ≈ 3.476 > ε).
 -/
-axiom growth_hierarchy (A : Set ℕ) (ε : ℝ) (hε : ε > 0) :
-    (∀ᶠ (n : ℕ) in atTop, erdosNathansonConstant * Real.log n < reprCount2 A n) →
-    (∀ᶠ (n : ℕ) in atTop, ε * Real.log n < reprCount2 A n)
-
 /-
 ## Examples
 

@@ -238,21 +238,10 @@ theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),
         native_decide +revert
 
 /-- **Haxell-Kohayakawa (1998)**: τ(G) ≤ (3 - 3/23) · ν(G). -/
-axiom haxell_kohayakawa :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    (triangleCoverNumber G : ℚ) ≤ (3 - 3/23) * maxEdgeDisjointTriangles G
-
 /-- Tuza's conjecture holds for K₄-free graphs (Haxell 1999). -/
-axiom tuza_for_k4_free (G : SimpleGraph V) (hK4 : ¬∃ a b c d : V,
-    IsTriangle G a b c ∧ IsTriangle G a b d ∧ IsTriangle G a c d ∧ IsTriangle G b c d) :
-  triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
-
 /-- Tuza's conjecture holds for planar graphs.
     Planarity is an abstract predicate (Mathlib does not have a general definition). -/
 axiom IsPlanar : SimpleGraph V → Prop
-axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : IsPlanar G) :
-  triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
-
 /- ## Fractional Version -/
 
 /-- **Fractional Tuza's Conjecture (proved):**
@@ -260,11 +249,6 @@ axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : IsPlanar G) :
     A fractional triangle cover assigns weights w(e) ∈ [0,1] to edges
     such that every triangle has total weight ≥ 1, and τ*(G) minimizes
     the total weight. Similarly ν*(G) is the fractional triangle packing. -/
-axiom fractional_tuza (G : SimpleGraph V) [DecidableRel G.Adj] :
-  (triangleCoverNumber G : ℚ) ≤ 2 * maxEdgeDisjointTriangles G
-
--- The fractional relaxation is known to hold
-
 /- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**

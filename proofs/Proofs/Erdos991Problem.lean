@@ -149,15 +149,6 @@ For optimal logarithmic energy points on S²:
   max_C ||A ∩ C| - αC · n| ≤ C · n^(3/4)
 for some constant C.
 -/
-axiom brauchart_bound :
-  ∀ (points : Finset (Fin 3 → ℝ)),
-  IsOptimalConfig points →
-  ∃ C : ℝ, C > 0 ∧
-  ∀ center : Fin 3 → ℝ, center ∈ UnitSphere →
-  ∀ cosAngle : ℝ, -1 ≤ cosAngle → cosAngle ≤ 1 →
-    |↑(capCount points (SphericalCap center cosAngle)) -
-     normalizedCapArea cosAngle * points.card| ≤ C * (points.card : ℝ)^(3/4 : ℝ)
-
 /-
 ## Part VI: Marzo-Mas Improvement (2021)
 
@@ -196,14 +187,6 @@ For optimal logarithmic energy points on S²:
 The discrepancy grows sublinearly in n, meaning optimal point configurations
 distribute "uniformly" with respect to spherical caps in the limit.
 -/
-axiom erdos_991_qualitative :
-  ∀ (points : Finset (Fin 3 → ℝ)),
-  IsOptimalConfig points →
-  ∀ center : Fin 3 → ℝ, center ∈ UnitSphere →
-  ∀ cosAngle : ℝ, -1 ≤ cosAngle → cosAngle ≤ 1 →
-    |↑(capCount points (SphericalCap center cosAngle)) -
-     normalizedCapArea cosAngle * points.card| / points.card < 1
-
 /--
 **Main Theorem:**
 Optimal logarithmic energy points have o(n) discrepancy.
@@ -250,14 +233,6 @@ noncomputable def rieszEnergy (s : ℝ) (points : Finset (Fin 3 → ℝ)) : ℝ 
 The qualitative result follows from classical potential theory.
 The key is the equidistribution of Fekete points.
 -/
-axiom potential_theory_equidistribution :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-  ∀ points ∈ FeketePoints n,
-  ∀ center : Fin 3 → ℝ, center ∈ UnitSphere →
-  ∀ cosAngle : ℝ, -1 ≤ cosAngle → cosAngle ≤ 1 →
-    |↑(capCount points (SphericalCap center cosAngle)) / n -
-     normalizedCapArea cosAngle| < ε
-
 /-
 ## Part IX: Special Cases
 -/
@@ -285,16 +260,6 @@ theorem hemisphere_approx (points : Finset (Fin 3 → ℝ)) (hopt : IsOptimalCon
 **Polar Cap Bound:**
 Small caps near the poles also satisfy the discrepancy bound.
 -/
-axiom polar_cap_bound :
-  ∀ (points : Finset (Fin 3 → ℝ)),
-  IsOptimalConfig points →
-  ∀ θ : ℝ, 0 < θ → θ < Real.pi / 2 →
-  ∃ C : ℝ, C > 0 ∧
-    -- Small polar cap of angular radius θ
-    ∀ center : Fin 3 → ℝ, center ∈ UnitSphere →
-    |↑(capCount points (SphericalCap center (Real.cos θ))) -
-     normalizedCapArea (Real.cos θ) * points.card| ≤ C * (points.card : ℝ)^(2/3 : ℝ)
-
 /-
 ## Part X: Comparison of Bounds
 -/

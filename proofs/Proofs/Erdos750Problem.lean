@@ -50,55 +50,21 @@ def AlmostBipartite {V : Type*} [DecidableEq V]
 
 /-- **Erdős Problem #750**: For any f : ℕ → ℕ with f(m) → ∞, there exists
     an infinite-chromatic f-almost-bipartite graph. -/
-axiom erdos_750_conjecture :
-  ∀ f : ℕ → ℕ,
-    (∀ k : ℕ, ∃ m₀ : ℕ, ∀ m ≥ m₀, f m > k) →
-    ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-      HasInfiniteChromatic G ∧ ∀ m₀ : ℕ, AlmostBipartite G f m₀
-
 /- ## Known Results -/
 
 /-- **Erdős–Hajnal (1967)**: for c > 1/4 there is an infinite-chromatic
     graph with independent sets ≥ (1/2 − c)m in every m-vertex subgraph. -/
-axiom erdos_hajnal_1967 (c : ℚ) (hc : c > 1/4) :
-  ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-    HasInfiniteChromatic G ∧
-    ∀ S : Finset V, (maxIndSetSize G S : ℚ) ≥ (1/2 - c) * S.card
-
 /-- **Erdős–Hajnal–Szemerédi (1982)**: extends the 1967 result to all ε > 0.
     Resolves Problem #750 for linear deviation functions f(m) = εm. -/
-axiom erdos_hajnal_szemeredi_1982 (ε : ℚ) (hε : ε > 0) :
-  ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-    HasInfiniteChromatic G ∧
-    ∀ S : Finset V, (maxIndSetSize G S : ℚ) ≥ (1/2 - ε) * S.card
-
 /- ## Open Cases -/
 
 /-- **Open: Square Root Case** — Is there an infinite-chromatic graph where
     every m-vertex subgraph has an independent set of size ≥ m/2 − √m? -/
-axiom sqrt_case :
-  ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-    HasInfiniteChromatic G ∧
-    ∀ S : Finset V, maxIndSetSize G S ≥ S.card / 2 - Nat.sqrt S.card
-
 /-- **Open: Logarithmic Case** — with deviation C · log₂ m. -/
-axiom log_case (C : ℕ) :
-  ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-    HasInfiniteChromatic G ∧
-    ∀ S : Finset V, S.card > 1 →
-      maxIndSetSize G S ≥ S.card / 2 - C * Nat.log2 S.card
-
 /- ## Connections and Observations -/
 
 /-- **Problem #75 Connection**: asks for χ(G) = ℵ₁ with independent sets
     > n^{1−ε}. Stronger than #750; shares the local-vs-global theme. -/
-axiom problem_75_connection :
-  ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
-    HasInfiniteChromatic G ∧
-    ∀ ε : ℚ, ε > 0 →
-      ∃ n₀ : ℕ, ∀ S : Finset V, S.card ≥ n₀ →
-        (maxIndSetSize G S : ℚ) > S.card ^ ((1 : ℚ) - ε)
-
 /-- In Fin 2, the only nonzero element is 1. -/
 private theorem fin2_ne_zero_eq_one : ∀ (i : Fin 2), i ≠ 0 → i = 1 := by decide
 

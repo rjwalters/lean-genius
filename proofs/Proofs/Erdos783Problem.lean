@@ -266,11 +266,6 @@ theorem primeSievingSet_valid (C : ℝ) (hC : C > 0) (n : ℕ)
 /-- Erdős Problem #783: The prime sieving set is optimal.
     For large n, the set of first k primes (k = maxPrimeCount C)
     minimizes the unsieved count among all valid sieving sets. -/
-axiom erdos_783_conjecture (C : ℝ) (hC : C > 0) :
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      ∀ A : Finset ℕ, IsValidSievingSet A n C →
-        unsievedCount (primeSievingSet (maxPrimeCount C)) n ≤ unsievedCount A n
-
 /- ## Supporting Analysis -/
 
 /-- By inclusion-exclusion, for a coprime set A, the unsieved fraction is
@@ -285,11 +280,6 @@ theorem coprime_sieve_estimate (A : Finset ℕ) (n : ℕ) (C : ℝ)
 /-- For a fixed reciprocal sum budget C, the product Π(1 - 1/a_i)
     is minimized when the a_i are primes. Replacing a composite
     with its prime factor yields a better sieve. -/
-axiom primes_minimize_product (A : Finset ℕ) (n : ℕ) (C : ℝ)
-    (hvalid : IsValidSievingSet A n C) :
-    A.prod (fun a => 1 - (1 : ℝ) / a) ≥
-      (primeSievingSet (maxPrimeCount C)).prod (fun a => 1 - (1 : ℝ) / a)
-
 /- ## Empty Sieve Baseline -/
 
 /-- The empty set is trivially a valid sieving set for any C > 0. -/

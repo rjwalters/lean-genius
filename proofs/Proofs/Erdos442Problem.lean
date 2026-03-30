@@ -108,8 +108,6 @@ def isDenseSubset (A : Set ℕ) : Prop :=
 
 /-- Example: The primes satisfy the density condition
     (by Mertens' theorem, Σ_{p≤x} 1/p ~ log log x). -/
-axiom primes_are_dense : isDenseSubset { p : ℕ | Nat.Prime p }
-
 /- ## Part V: The Main Conjecture and Its Refutation -/
 
 /-- Erdős asked: Does density imply LCM divergence?
@@ -165,10 +163,6 @@ def FasterThanThreshold (A : Set ℕ) : Prop :=
       Real.exp (C * Real.sqrt (log2Plus N) * log3Plus N)
 
 /-- If A grows faster than Tao's threshold, LCM divergence holds. -/
-axiom tao_optimality :
-  ∀ A : Set ℕ, FasterThanThreshold A →
-    Tendsto (fun N => normalizedLcmSum A N) atTop atTop
-
 /- ## Part VIII: Key Insight: Why the Counterexample Works -/
 
 /-- **Key insight: Structure vs Density.**
@@ -180,10 +174,6 @@ in a controlled way. This makes:
 The construction uses "smooth numbers" (numbers with only small
 prime factors) arranged in a specific pattern. The careful balance
 ensures the normalized LCM sum stays bounded. -/
-axiom structure_vs_density :
-  ∃ A : Set ℕ, isDenseSubset A ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, normalizedLcmSum A N ≤ C
-
 /- ## Part IX: LCM Properties -/
 
 /-- Basic LCM property: lcm(a,b) · gcd(a,b) = a · b. -/

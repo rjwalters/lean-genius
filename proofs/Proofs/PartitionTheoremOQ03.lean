@@ -43,14 +43,8 @@ structure Overpartition (n : ℕ) where
 axiom numOverpartitions : ℕ → ℕ
 
 /-- Small values: p̄(0) = 1 (empty partition, no parts to overline). -/
-axiom numOverpartitions_zero : numOverpartitions 0 = 1
-
 /-- p̄(1) = 2 (partitions: {1}; overlined choices: ∅ or {1}). -/
-axiom numOverpartitions_one : numOverpartitions 1 = 2
-
 /-- p̄(2) = 4 (partitions: {2}, {1,1}; overlined: 2 + 2 = 4). -/
-axiom numOverpartitions_two : numOverpartitions 2 = 4
-
 /-! ## Part III: Key Properties -/
 
 /-- Every distinct partition is an overpartition (with empty overline set). -/

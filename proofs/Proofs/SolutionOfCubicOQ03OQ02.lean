@@ -128,19 +128,9 @@ theorem trigRoots_are_real (p q : ℝ) (h : isCasusIrreducibilis p q) (k : Fin 3
     Axiomatized: the proof requires showing the cosine values at angles
     θ/3, (θ+2π)/3, (θ+4π)/3 are all different, which follows from
     θ ∈ (0, π) and the injectivity of cos on [0, π]. -/
-axiom trigRoots_distinct (p q : ℝ) (h : isCasusIrreducibilis p q)
-    (j k : Fin 3) (hjk : j ≠ k) : trigRoot p q j ≠ trigRoot p q k
-
 /-- Each trigonometric root satisfies the depressed cubic.
     Axiomatized: the verification requires expanding cos³ and using
     the identity 4cos³θ - 3cosθ = cos(3θ). -/
-axiom trigRoot_is_root (p q : ℝ) (h : isCasusIrreducibilis p q) (k : Fin 3) :
-    depressedCubic p q (trigRoot p q k) = 0
-
--- ============================================================
--- Section 5: The Impossibility Theorem
--- ============================================================
-
 /-- **Wantzel's Theorem (1843)**: In the casus irreducibilis, the three real
     roots of x³ + px + q = 0 CANNOT be expressed using only real-valued
     radicals (nth roots of positive reals) and field operations.
@@ -155,17 +145,6 @@ axiom trigRoot_is_root (p q : ℝ) (h : isCasusIrreducibilis p q) (k : Fin 3) :
 
     Reference: Wantzel, "Classification des nombres incommensurables
     d'origine algébrique", Nouvelles Annales de Mathématiques (1843). -/
-axiom wantzel_casus_irreducibilis (p q : ℝ) (h : isCasusIrreducibilis p q) :
-  -- The three roots exist as reals...
-  (∃ x₁ x₂ x₃ : ℝ, x₁ ≠ x₂ ∧ x₂ ≠ x₃ ∧ x₁ ≠ x₃ ∧
-    depressedCubic p q x₁ = 0 ∧ depressedCubic p q x₂ = 0 ∧
-    depressedCubic p q x₃ = 0)
-  -- ...but Cardano's formula requires non-real intermediate values
-
--- ============================================================
--- Section 6: A Concrete Example
--- ============================================================
-
 /-- The cubic x³ - 7x + 6 = 0 has roots 1, 2, -3 (all real).
     Here p = -7, q = 6, Δ = -4(-7)³ - 27(36) = 1372 - 972 = 400 > 0.
     This is a casus irreducibilis instance. -/

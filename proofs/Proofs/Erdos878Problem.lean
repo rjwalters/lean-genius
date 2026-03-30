@@ -57,8 +57,6 @@ theorem f_one : f 1 = 0 := by
   simp [f, Nat.primeFactors]
 
 /-- f(p) = p for any prime p -/
-axiom f_prime (p : ℕ) (hp : p.Prime) : f p = p
-
 /-
 ## Part 2: The Function F(n)
 
@@ -160,15 +158,6 @@ max_{n≤x} f(n) ~ x log x / log log x along a sequence of x.
 -/
 
 /-- Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
-axiom erdos_1984 :
-  ∃ (seq : ℕ → ℕ), StrictMono seq ∧ Filter.Tendsto seq Filter.atTop Filter.atTop ∧
-    ∃ (maxF : ℕ → ℕ), (∀ k, maxF k = Finset.sup' (Finset.range (seq k + 1))
-      ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ (seq k))⟩ f) ∧
-    Filter.Tendsto
-      (fun k => (maxF k : ℝ) /
-                ((seq k : ℝ) * Real.log (seq k) / Real.log (Real.log (seq k))))
-      Filter.atTop (nhds 1)
-
 /-
 ## Part 6: Conjecture on F(n) for Almost All n
 -/

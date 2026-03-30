@@ -56,8 +56,6 @@ axiom buDim (n d : ℕ) : ℕ
 -- ============================================================
 
 /-- Trivial group: any map is Z/1-equivariant, so no dimension constraint. -/
-axiom buDim_one (d : ℕ) : buDim 1 d = 0
-
 /-- Classical Borsuk-Ulam: Z/2-equivariant (odd) maps S^n → R^{n+1} vanish.
     Equivalently: buDim(2, n+1) = n. -/
 axiom buDim_two (n : ℕ) : buDim 2 (n + 1) = n
@@ -145,7 +143,4 @@ remains unclear.
 
 /-- The open conjecture: for cyclic groups, the BU dimension equals the
     maximum over prime subgroup bounds. -/
-axiom conjecture_composite_equals_max (n d : ℕ) (hn : 2 ≤ n) :
-    buDim n d = Finset.sup (Nat.primeFactors n) (fun p => buDim p d)
-
 end BorsukUlamOQ02OQ01

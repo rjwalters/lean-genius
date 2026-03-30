@@ -108,8 +108,6 @@ def FSet (n : ℕ) : Set ℕ :=
 
 /-- F(n) ≤ n + √n (trivial upper bound).
     Since any composite m < n has p(m) ≤ √m ≤ √n, we get m + p(m) < n + √n. -/
-axiom F_upper_bound (n : ℕ) (hn : n > 4) : F n ≤ n + Nat.sqrt n
-
 /- ## The Main Conjectures -/
 
 /-- Erdős Problem #385, Question 1 (OPEN):
@@ -126,11 +124,7 @@ def erdos385Question2 : Prop :=
   Tendsto (fun n => (F n : ℤ) - n) atTop atTop
 
 /-- Question 1: F(n) > n for all sufficiently large n. -/
-axiom erdos_385_q1 : erdos385Question1
-
 /-- Question 2: F(n) - n → ∞. -/
-axiom erdos_385_q2 : erdos385Question2
-
 /- ## Connection to Problem #430
 
 Sarosh Adenwalla observed that Question 1 is equivalent to Problem #430:

@@ -83,26 +83,12 @@ theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
     Equivalently, can bipartite arrangements achieve
     asymptotically fewer distinct distances than general
     point configurations? -/
-axiom erdos_661_bipartite_advantage :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    (minBipartiteDist n : ℝ) ≤ ε * (minDistinct2n n : ℝ)
-
 /- ## Known Bounds -/
 
 /-- **Guth–Katz (2015)**: f(2n) ≳ n/log n. The minimum number
     of distinct distances among 2n points is Ω(n/log n). -/
-axiom guth_katz_lower :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (minDistinct2n n : ℝ) ≥ C * n / Real.log n
-
 /-- **Lattice Upper Bound**: f(2n) ≲ n/√(log n) from the integer
     lattice. Thus the question asks if F(2n) = o(n/√(log n)). -/
-axiom lattice_upper :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (minDistinct2n n : ℝ) ≤ C * n / Real.sqrt (Real.log n)
-
 /- ## Basic Bounds -/
 
 theorem bipartiteDistSet_card_le (X Y : Finset Point2) :

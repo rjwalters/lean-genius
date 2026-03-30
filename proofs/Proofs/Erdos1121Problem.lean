@@ -171,12 +171,6 @@ axiom goodman_goodman_theorem : ErdosConjecture1121
 If two circles cannot be separated by a line, they overlap or touch.
 In this case, a circle of radius r₁ + r₂ centered appropriately covers both.
 -/
-axiom two_circles_case (C₁ C₂ : Circle) :
-    IsConnectedConfiguration {C₁, C₂} →
-    ∃ C : Circle,
-      C.radius = C₁.radius + C₂.radius ∧
-      C.covers C₁ ∧ C.covers C₂
-
 /--
 **Overlapping circles:**
 If circles overlap, they form a connected configuration.
@@ -188,10 +182,6 @@ def CirclesOverlap (C₁ C₂ : Circle) : Prop :=
 /--
 **Overlapping implies no separating line:**
 -/
-axiom overlap_implies_connected (circles : Finset Circle) :
-    (∀ C₁ ∈ circles, ∀ C₂ ∈ circles, C₁ ≠ C₂ → CirclesOverlap C₁ C₂) →
-    IsConnectedConfiguration circles
-
 /-
 ## Part VI: Higher Dimensional Generalization
 -/
@@ -210,12 +200,6 @@ structure Ball (n : ℕ) where
 The theorem extends to balls in ℝⁿ — replace lines with hyperplanes
 and circles with balls. The same covering result holds.
 -/
-axiom goodman_goodman_higher_dim (n : ℕ) (hn : n ≥ 2) :
-    ∀ balls : Finset (Ball n),
-    -- If no separating hyperplane exists (analogous condition)
-    -- then balls can be covered by a ball of radius = sum of radii
-    ∃ r_sum : ℝ, r_sum = balls.sum (fun b => b.radius)
-
 /-
 ## Part VII: Summary
 -/

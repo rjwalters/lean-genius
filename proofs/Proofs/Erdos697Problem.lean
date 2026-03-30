@@ -90,9 +90,6 @@ theorem hallThreshold_in_range : hallThreshold > 1 := by
 -/
 
 /-- For α < 1: δ(m, α) < (m^α + 1)/m → 0 as m → ∞ -/
-axiom trivial_upper_bound (α : ℝ) (hα : α < 1) :
-  Filter.Tendsto (fun m => delta m α) Filter.atTop (nhds 0)
-
 /-- The trivial bound comes from counting divisors d ≡ 1 (mod m) -/
 theorem trivial_bound_proof :
   -- Number of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m = m^{α-1}
@@ -104,9 +101,6 @@ theorem trivial_bound_proof :
 -/
 
 /-- Erdős (1979): δ(m, 1) → 0 as m → ∞ -/
-axiom erdos_alpha_one :
-  Filter.Tendsto (fun m => delta m 1) Filter.atTop (nhds 0)
-
 /- Erdős claimed this in [Er79e] but didn't publish a full proof -/
 
 /-
@@ -184,8 +178,6 @@ theorem at_threshold_open :
 /-- For m = 2: d ≡ 1 (mod 2) means d is odd.
     Every integer > 1 is divisible by an odd d > 1 (itself if odd, or odd part).
     So δ(2, α) = 1 for all α > 0. -/
-axiom example_m_2 : ∀ α : ℝ, α > 0 → delta 2 α = 1
-
 /- For m = p (large prime): d ≡ 1 (mod p) means d = 1 + kp.
     The smallest such d > 1 is 1 + p.
     The density depends on how many integers are divisible by such d. -/

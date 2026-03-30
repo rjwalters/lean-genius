@@ -112,16 +112,12 @@ Equivalently: is Erdos939Sums r nonempty for all r ≥ 4? -/
 def Erdos939Existence : Prop := ∀ r ≥ 4, (Erdos939Sums r).Nonempty
 
 /-- The existence question remains open -/
-axiom erdos939_existence : Erdos939Existence
-
 /-- **Infinitude Variant** (OPEN)
 
 Are there infinitely many valid sums for each r ≥ 4? -/
 def Erdos939Infinite : Prop := ∀ r ≥ 4, (Erdos939Sums r).Infinite
 
 /-- The infinitude question remains open -/
-axiom erdos939_infinite : Erdos939Infinite
-
 /-
 ## 3-Powerful Triples
 
@@ -137,8 +133,6 @@ def ThreePowerfulTriples := {abc : ℕ × ℕ × ℕ |
   a + b = c}
 
 /-- **Nitaj (1995)**: There are infinitely many coprime 3-powerful triples a+b=c -/
-axiom nitaj_threepowerful_infinite : ThreePowerfulTriples.Infinite
-
 /-
 ## Known Examples
 
@@ -160,11 +154,7 @@ theorem cambie_r5_example_exists : ∃ r ≥ 4, (Erdos939Sums r).Nonempty := by
   · exact cambie_r5_example
 
 /-- Cambie found solutions for r = 7 -/
-axiom cambie_r7_solution : (Erdos939Sums 7).Nonempty
-
 /-- Cambie found solutions for r = 8 -/
-axiom cambie_r8_solution : (Erdos939Sums 8).Nonempty
-
 /-
 ## Euler's Conjecture and Lander-Parkin Counterexample
 

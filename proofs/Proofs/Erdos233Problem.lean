@@ -71,9 +71,6 @@ average gap is approximately log p.
 
 Σₙ≤N dₙ² ≥ c · N · (log N)² for some constant c > 0.
 -/
-axiom lower_bound_pnt :
-    (fun N : ℕ => (N : ℝ) * (Real.log N) ^ 2) =O[atTop] fun N : ℕ => (sumSquaresGaps N : ℝ)
-
 /--
 **Upper Bound Conditional on RH** (Cramér 1936):
 
@@ -82,10 +79,6 @@ is bounded above by N(log N)⁴.
 
 This is weaker than the conjectured N(log N)² bound.
 -/
-axiom cramer_conditional_upper_bound :
-    RiemannHypothesis →
-    (fun N => (sumSquaresGaps N : ℝ)) =O[atTop] fun N => N * (Real.log N) ^ 4
-
 /--
 **Selberg's Improvement** (1943):
 
@@ -96,10 +89,6 @@ This is a weighted sum that gives a slightly stronger result than Cramér's.
 -/
 noncomputable def selbergSum (N : ℕ) : ℝ :=
   ∑ n ∈ Finset.range N, (primeGap n : ℝ) ^ 2 / (n + 1 : ℝ)
-
-axiom selberg_conditional_bound :
-    RiemannHypothesis →
-    selbergSum =O[atTop] fun N => (Real.log N) ^ 4
 
 /- ## Current Status -/
 
@@ -130,8 +119,6 @@ def CramerConjecture : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (primeGap n : ℝ) ≤ (1 + ε) * (Real.log (nthPrime n)) ^ 2
 
 /-- Cramér's conjecture implies the sum of squares bound. -/
-axiom cramer_implies_bound : CramerConjecture → Erdos233Conjecture
-
 /- ## Examples and Computations -/
 
 /-- The first few prime gaps: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...

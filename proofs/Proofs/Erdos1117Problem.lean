@@ -61,46 +61,23 @@ theorem nu_finite (f : ℂ → ℂ) (_hent : IsEntire f) (_hnm : ¬ IsMonomial f
 
 /-- For a non-monomial entire function, ν(r) ≥ 1 for all r > 0
     (the maximum is always achieved on a compact set). -/
-axiom nu_ge_one (f : ℂ → ℂ) (hent : IsEntire f) (r : ℝ) (hr : r > 0) :
-    nu f r ≥ 1
-
 /- ## Question 1: lim sup ν(r) = ∞ (SOLVED) -/
 
 /-- Herzog–Piranian (1968): There exists a non-monomial entire function f
     with lim sup_{r→∞} ν(r) = ∞.
     That is, for every N, there exist arbitrarily large r with ν(r) ≥ N. -/
-axiom herzog_piranian (N : ℕ) :
-    ∃ f : ℂ → ℂ, IsEntire f ∧ ¬ IsMonomial f ∧
-      ∀ R : ℝ, ∃ r : ℝ, r > R ∧ nu f r ≥ N
-
 /- ## Question 2: lim inf ν(r) = ∞ (OPEN) -/
 
 /-- Erdős Problem #1117 (open part): Does there exist a non-monomial
     entire function f with lim inf_{r→∞} ν(r) = ∞?
     That is, for every N, eventually ν(r) ≥ N for all sufficiently large r. -/
-axiom erdos_1117_open :
-    (∃ f : ℂ → ℂ, IsEntire f ∧ ¬ IsMonomial f ∧
-      ∀ N : ℕ, ∃ R : ℝ, ∀ r : ℝ, r > R → nu f r ≥ N) ∨
-    (∀ f : ℂ → ℂ, IsEntire f → ¬ IsMonomial f →
-      ∃ N : ℕ, ∀ R : ℝ, ∃ r : ℝ, r > R ∧ nu f r < N)
-
 /- ## Glücksam–Pardo-Simón Approximate Result (2024) -/
 
 /-- Glücksam–Pardo-Simón (2024): An "approximate" affirmative answer
     to Question 2. They construct entire functions where the maximum
     modulus is achieved at many points for most radii, in a suitable
     approximate sense. -/
-axiom glucksam_pardo_simon_approximate :
-    ∃ f : ℂ → ℂ, IsEntire f ∧ ¬ IsMonomial f ∧
-      ∀ ε : ℝ, ε > 0 → ∀ N : ℕ, ∃ R : ℝ, ∀ r : ℝ, r > R →
-        ∃ (S : Finset ℂ), S.card ≥ N ∧
-          ∀ z ∈ S, ‖z‖ = r ∧
-            ‖f z‖ ≥ (1 - ε) * maxModulus f r
-
 /- ## Hadamard Three-Circles Context -/
 
 /-- The maximum modulus M(r) is a nondecreasing function of r for
     nonconstant entire functions (by the maximum modulus principle). -/
-axiom maxModulus_nondecreasing (f : ℂ → ℂ) (hent : IsEntire f)
-    (r₁ r₂ : ℝ) (h : 0 < r₁) (h12 : r₁ ≤ r₂) :
-    maxModulus f r₁ ≤ maxModulus f r₂

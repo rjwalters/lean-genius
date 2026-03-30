@@ -85,19 +85,12 @@ theorem lcm_consecutive (n : ℕ) (hn : n > 0) :
 For A = ℕ, the pairs (n, n+1) with lcm ≤ x are those with n(n+1) ≤ x.
 This gives approximately √x many pairs, so A(x) ≈ √x.
 -/
-axiom naturals_counting :
-    ∀ x : ℕ, countingFunction naturalsSeq x = Nat.sqrt x
-
 /--
 **The liminf for naturals:**
 For A = ℕ, liminf A(x)/√x = 1. This is the maximum possible value,
 making the natural numbers the extremal sequence for this problem.
 Axiomatized because formalizing liminf requires Filter.liminf infrastructure.
 -/
-axiom naturals_liminf_eq_one :
-    ∀ ε : ℝ, ε > 0 → ∃ x₀ : ℕ, ∀ x ≥ x₀,
-      |normalizedRatio naturalsSeq x - 1| < ε
-
 /-
 ## Part III: Upper Bound
 -/
@@ -148,10 +141,6 @@ For any infinite increasing sequence A, the liminf of the normalized
 ratio A(x)/√x is at most 1. This means no sequence can "consistently"
 have more pairs with small LCM than the natural numbers.
 -/
-axiom erdos_szemeredi_liminf_bound :
-    ∀ A : IncreasingSeq, ∀ ε : ℝ, ε > 0 →
-    ∃ᶠ x in Filter.atTop, normalizedRatio A x < 1 + ε
-
 /--
 **Erdős-Szemerédi Theorem (1980):**
 For any infinite sequence A, there exist arbitrarily large x where

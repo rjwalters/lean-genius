@@ -212,8 +212,6 @@ theorem density_le_one (A : Set ℕ) : upperDensity A ≤ 1 :=
   density_univ ▸ density_mono (Set.subset_univ A)
 
 /-- Every finite set has zero upper density. -/
-axiom density_finite (A : Set ℕ) (hA : A.Finite) : upperDensity A = 0
-
 /-
 ## Basis Properties
 -/
@@ -271,8 +269,6 @@ theorem part2_gives_non_syndetic (h : ErdosProblem741_basis) :
     exact hpart A₁ A₂ heq hdisj ⟨habs.1, habs.2⟩⟩
 
 /-- Syndetic implies positive density. -/
-axiom syndetic_has_pos_density {S : Set ℕ} (h : IsSyndetic S) : HasPosDensity S
-
 /-- Part 2 (if true) would imply Part 1 fails for the specific basis A. -/
 theorem part2_contradicts_part1_for_basis (h2 : ErdosProblem741_basis) :
     ∃ A : Set ℕ, HasPosDensity (sumset A A) ∧

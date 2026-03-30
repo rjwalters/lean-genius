@@ -67,11 +67,6 @@ For a prime power q = p^k, the projective plane PG(2, q) can be constructed
 from the finite field GF(q). Points are 1-dimensional subspaces of GF(q)³,
 and lines are 2-dimensional subspaces.
 -/
-axiom prime_power_planes_exist :
-    ∀ n : ℕ, IsPrimePow n →
-    ∃ (P L : Type*) (_ : Membership P L) (_ : Fintype P) (_ : Fintype L)
-      (pp : ProjectivePlane P L), pp.order = n
-
 /- ## Verified for Small Orders -/
 
 /--
@@ -81,10 +76,6 @@ For n = 1, 2, 3, 4, 5, 7, 8, 9, 11 (prime powers): planes exist.
 For n = 6: ruled out by Bruck-Ryser (6 ≡ 2 mod 4 but 6 ≠ a² + b²).
 For n = 10: ruled out by Lam's computer search (1997).
 -/
-axiom verified_up_to_11 :
-    ∀ {P L : Type*} [Membership P L] [Fintype P] [Fintype L],
-    ∀ pp : ProjectivePlane P L, pp.order ≤ 11 → IsPrimePow pp.order
-
 /- ## The Bruck-Ryser Theorem -/
 
 /--
@@ -113,10 +104,6 @@ computation time. It's one of the largest computational proofs in mathematics.
 Combined with Bruck-Ryser (which doesn't rule out 10), this shows the
 conjecture holds for n = 10 despite 10 not being ruled out theoretically.
 -/
-axiom lam_order_10 :
-    ¬∃ (P L : Type*) (_ : Membership P L) (_ : Fintype P) (_ : Fintype L)
-      (pp : ProjectivePlane P L), pp.order = 10
-
 /- ## Order 12 Remains Open -/
 
 /-

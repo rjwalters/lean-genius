@@ -102,10 +102,6 @@ def erdos_bollobas_conjecture : Prop :=
     G(2^d, p) almost surely contains a copy of Q_d.
     This is STRONGER than the original conjecture (which only required p = 1/2).
     Published in Combinatorics, Probability and Computing. -/
-axiom riordan_theorem (p : ℝ) (hp : p > 1/4) (hp' : p ≤ 1) :
-    AlmostSurely (fun d =>
-      ContainsHypercube (riordanRandomGraph d p hp hp') d)
-
 /-- The original conjecture follows: since 1/2 > 1/4, Riordan's theorem applies. -/
 axiom erdos_bollobas_proved : erdos_bollobas_conjecture
 
@@ -121,9 +117,6 @@ axiom threshold_at_quarter :
 
 /-- Riordan also showed the number of Q_d copies in G(2^d, p) is asymptotically
     normally distributed (not just that at least one exists). -/
-axiom copies_normally_distributed (p : ℝ) (hp : p > 1/4) (hp' : p ≤ 1) :
-    ∃ μ σ : ℕ → ℝ, ∀ d : ℕ, μ d > 0 ∧ σ d > 0
-
 /- ## Part VII: Hypercube Properties -/
 
 /-- Every vertex in Q_d has degree exactly d. -/

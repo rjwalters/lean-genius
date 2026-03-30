@@ -147,23 +147,10 @@ It is consistent with ZFC that there exists a graph G with χ(G) = ℵ₁
 such that any graph H whose finite subgraphs are all subgraphs of G
 satisfies χ(H) ≤ ℵ₂.
 -/
-axiom komjath_shelah_consistency :
-    -- In some model of ZFC:
-    ∃ (V : Type*) (G : SimpleGraph V),
-      chromaticNumber V G = aleph 1 ∧
-      ∀ (W : Type*) (H : SimpleGraph W),
-        (∀ (n : ℕ) (F : SimpleGraph (Fin n)),
-          isSubgraphOf F H → isSubgraphOf F G) →
-        chromaticNumber W H ≤ aleph 2
-
 /--
 **The conjecture is independent:**
 Taylor's conjecture cannot be decided in ZFC alone.
 -/
-axiom taylor_conjecture_independent :
-    -- The statement is independent of ZFC
-    True
-
 /-
 ## Part V: Related Concepts
 -/
@@ -173,28 +160,15 @@ axiom taylor_conjecture_independent :
 If every finite subgraph of G is k-colorable, then G is k-colorable.
 (This requires the axiom of choice.)
 -/
-axiom de_bruijn_erdos (V : Type*) (G : SimpleGraph V) (k : ℕ) :
-    (∀ (S : Finset V), Nonempty ((G.induce S).coe.Coloring (Fin k))) →
-    Nonempty (G.Coloring (Fin k))
-
 /--
 **Compactness in graph coloring:**
 The chromatic number of a graph is determined by its finite subgraphs
 in a limiting sense.
 -/
-axiom chromatic_compactness (V : Type*) (G : SimpleGraph V) :
-    chromaticNumber V G =
-    sSup { chromaticNumber (↑S : Type _) (G.induce S).coe | (S : Finset V) }
-
 /--
 **Chromatic number and cardinal arithmetic:**
 For infinite graphs, chromatic number interacts with cardinal arithmetic.
 -/
-axiom chromatic_cardinal_interaction :
-    -- χ(G) can be any regular cardinal ≥ ℵ₀
-    ∀ κ : Cardinal, κ.IsRegular → κ ≥ aleph 0 →
-      ∃ (V : Type*) (G : SimpleGraph V), chromaticNumber V G = κ
-
 /-
 ## Part VI: Special Cases
 -/
@@ -203,15 +177,6 @@ axiom chromatic_cardinal_interaction :
 **Countable chromatic number:**
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
 -/
-axiom countable_case :
-    ∀ (V : Type*) (G : SimpleGraph V),
-      chromaticNumber V G = aleph 0 →
-      ∀ (n : ℕ),
-        ∃ (W : Type*) (H : SimpleGraph W),
-          chromaticNumber W H = n ∧
-          ∀ (m : ℕ) (F : SimpleGraph (Fin m)),
-            isSubgraphOf F H → isSubgraphOf F G
-
 /--
 **Finite case is trivial:**
 For finite chromatic number, inheritance is straightforward.

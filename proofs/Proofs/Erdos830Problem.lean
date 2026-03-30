@@ -85,9 +85,6 @@ Are there infinitely many amicable pairs?
 
 This ancient question remains unsolved. While many amicable pairs
 have been found computationally, no proof of infinitude exists. -/
-axiom erdos830_infinitely_many :
-    {p : ℕ × ℕ | IsAmicable p.1 p.2}.Infinite
-
 /-- **Erdős Problem #830, Part 2** (OPEN)
 
 Is A(x) > x^{1-o(1)}? That is, does the count of amicable pairs up to x
@@ -95,10 +92,6 @@ grow nearly as fast as x itself?
 
 This would follow from proving infinitely many amicable pairs with
 a positive density, but current bounds are far from this. -/
-axiom erdos830_lower_bound :
-    ∃ o : ℝ → ℝ, o =o[atTop] (1 : ℝ → ℝ) ∧
-    ∀ᶠ x in atTop, x ^ (1 - o x) < A x
-
 /-
 ## Proven Upper Bounds
 
@@ -110,23 +103,14 @@ been made on upper bounds for A(x).
 
 A(x) = o(x): the count of amicable pairs grows slower than linearly.
 This was the first non-trivial upper bound. -/
-axiom erdos_1955_upper_bound : A =o[atTop] id
-
 /-- **Pomerance Upper Bound** (1981)
 
 A(x) ≤ x · exp(-(log x)^{1/3}) for large x.
 A significant improvement over the Erdős bound. -/
-axiom pomerance_1981_upper_bound :
-    ∀ᶠ x in atTop, A x ≤ x * rexp (- (x.log) ^ (1/3 : ℝ))
-
 /-- **Pomerance Improved Upper Bound** (2015)
 
 A(x) ≤ x · exp(-(1/2 + o(1))√(log x · log log x)) for large x.
 The current best known upper bound. -/
-axiom pomerance_2015_upper_bound :
-    ∃ o : ℝ → ℝ, o =o[atTop] (1 : ℝ → ℝ) ∧
-    ∀ᶠ x in atTop, A x ≤ x * rexp (- (1/2 + o x) * √(x.log * x.log.log))
-
 /-
 ## Additional Amicable Pairs
 

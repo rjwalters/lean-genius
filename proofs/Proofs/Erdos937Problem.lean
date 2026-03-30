@@ -239,19 +239,10 @@ then multiplying each by (a+kd)² gives another AP of powerful numbers.
 This shows that without coprimality, arbitrarily long APs of powerful
 numbers exist.
 -/
-axiom extend_powerful_AP :
-    ∀ (terms : List ℕ), (∀ t ∈ terms, IsPowerful t) → IsArithmeticProgression terms →
-      ∃ (extended : List ℕ), extended.length = terms.length + 1 ∧
-        (∀ t ∈ extended, IsPowerful t) ∧ IsArithmeticProgression extended
-
 /--
 **Existence of Long APs (without coprimality):**
 For any k, there exist k powerful numbers in arithmetic progression.
 -/
-axiom arbitrarily_long_powerful_APs :
-    ∀ k : ℕ, k ≥ 2 → ∃ (terms : List ℕ), terms.length = k ∧
-      (∀ t ∈ terms, IsPowerful t) ∧ IsArithmeticProgression terms
-
 /-
 ## Part VIII: Bajpai-Bennett-Chan Theorem (2024)
 -/
@@ -301,12 +292,6 @@ def erdosConjectureRPowerful : Prop :=
 If the ABC conjecture is true, then for r ≥ 4, there are only finitely many
 three-term APs of coprime r-powerful numbers.
 -/
-axiom abc_implies_finite_rpowerful (r : ℕ) (hr : r ≥ 4) :
-    True → -- Placeholder for ABC conjecture
-    ∃ (S : Finset (ℕ × ℕ × ℕ)), ∀ t : ℕ × ℕ × ℕ,
-      (IsRPowerful r t.1 ∧ IsRPowerful r t.2.1 ∧ IsRPowerful r t.2.2 ∧
-       CoprimeThreeTermAP t.1 t.2.1 t.2.2) → t ∈ S
-
 /-
 ## Part X: Main Results
 -/

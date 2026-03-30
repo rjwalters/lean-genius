@@ -146,12 +146,6 @@ axiom discrepancyF : ℕ → ℚ → ℕ
 
 /-- Characterization: F(n, α) = k means there exists a (k, α)-balanced colouring
     but no (k+1, α)-balanced colouring exists. -/
-axiom discrepancyF_spec (n : ℕ) (α : ℚ) (hα : 0 < α) (hα2 : α ≤ 1 / 2) (hn : 1 ≤ n) :
-    (∃ c : EdgeColouring n, IsKBalanced c (discrepancyF n α) α) ∧
-    (∀ c : EdgeColouring n, ¬IsKBalanced c (discrepancyF n α + 1) α)
-
--- Part IV: Basic properties
-
 /-- F(n, α) is monotone decreasing in α: stricter balance requirement
     means smaller balanced substructures. -/
 axiom discrepancyF_mono_alpha (n : ℕ) (α β : ℚ) (h : α ≤ β) :
@@ -159,15 +153,7 @@ axiom discrepancyF_mono_alpha (n : ℕ) (α β : ℚ) (h : α ≤ β) :
 
 /-- F(n, 0) = n: every colouring is trivially 0-balanced, since
     0 · C(|S|, 2) = 0 < any positive edge count. -/
-axiom discrepancyF_zero (n : ℕ) (hn : 1 ≤ n) :
-    discrepancyF n 0 = n
-
 /-- F(n, α) ≤ n: the balanced substructure cannot exceed the total graph. -/
-axiom discrepancyF_le (n : ℕ) (α : ℚ) :
-    discrepancyF n α ≤ n
-
--- Part V: Logarithmic bounds (probabilistic method)
-
 /-- Lower bound: F(n, α) > c₁(α) · log n for some c₁ > 0.
     Proof sketch: A random 2-colouring of K_n is α-balanced on all sets
     of size ≤ c₁ log n with positive probability, by Chernoff + union bound. -/

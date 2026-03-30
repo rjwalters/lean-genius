@@ -91,14 +91,6 @@ theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
 
 /-- The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
     This follows from the primorial bound and PNT. -/
-axiom trivial_upper_bound :
-  ∀ ε : ℝ, ε > 0 → ∀ᶠ n in atTop,
-    (q n ⌊Real.log (n : ℝ)⌋₊ : ℝ) ≤ (1 + ε) * (Real.log n) ^ 2
-
--- ============================================================================
--- Part IV: The Main Conjecture (Erdős #1181, OPEN)
--- ============================================================================
-
 /- Erdős #1181 asks: can we improve the 1+o(1) to 1-c for fixed c > 0?
    That is, does q(n, log n) < (1-c)(log n)² hold eventually?
 
@@ -226,18 +218,8 @@ noncomputable def chebyshev_theta (x : ℝ) : ℝ :=
     Real.log (p : ℝ)
 
 /-- PNT for the Chebyshev function: θ(x) ~ x. -/
-axiom pnt_chebyshev : Tendsto (fun x : ℝ => chebyshev_theta x / x) atTop (nhds 1)
-
 /-- The primorial bound: if all primes below q divide m, then
     ∏_{p < q, p prime} p ≤ m. -/
-axiom primorial_divides_bound (m q_val : ℕ) (hm : m > 0)
-    (hdvd : ∀ p : ℕ, p.Prime → p < q_val → p ∣ m) :
-    chebyshev_theta q_val ≤ Real.log m
-
--- ============================================================================
--- Part VII: Connection to Problem #457
--- ============================================================================
-
 /- Erdős #457 concerns the LOWER bound for q(n, log n):
    is q(n, log n) ≥ (2+ε) log n infinitely often?
 

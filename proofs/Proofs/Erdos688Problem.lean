@@ -50,24 +50,12 @@ noncomputable def coveringExponent (n : ℕ) : ℝ :=
 
 /-- **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
     Even primes close to n suffice to cover [1, n] with one class each. -/
-axiom erdos_688_conjecture :
-  Filter.Tendsto (fun n => coveringExponent n) Filter.atTop (nhds 0)
-
 /- ## Known Bounds -/
 
 /-- **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
     The exponent cannot decrease faster than this iterated-log ratio. -/
-axiom erdos_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ᶠ n in Filter.atTop,
-      coveringExponent n ≥ c * Real.log (Real.log (Real.log n)) /
-        Real.log (Real.log n)
-
 /-- Trivial upper bound: εₙ < 1, since we need at least the prime n
     (if n is prime) or primes up to n. -/
-axiom covering_exponent_lt_one :
-  ∀ n : ℕ, n ≥ 2 → coveringExponent n < 1
-
 /- ## Structural Properties -/
 
 /-- Each prime p covers at most ⌊n/p⌋ + 1 integers in [1,n]
@@ -109,12 +97,6 @@ theorem single_class_coverage :
 
 /-- The total coverage capacity of primes in (n^ε, n] is
     ∑_{n^ε < p ≤ n} ⌊n/p⌋ ~ n · (log(1/ε) + O(1)) by Mertens' theorem. -/
-axiom mertens_coverage :
-  ∀ ε : ℝ, 0 < ε → ε < 1 →
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in Filter.atTop,
-      ∃ (primes : Finset ℕ),
-        (primes.sum (fun p => n / p) : ℝ) ≥ (n : ℝ) * (Real.log (1 / ε) - C)
-
 /-- Monotonicity: if ε₁ ≤ ε₂, the primes in (n^ε₁, n] include those
     in (n^ε₂, n], so more primes are available. -/
 theorem exponent_monotone_coverage :
@@ -136,11 +118,6 @@ theorem exponent_monotone_coverage :
 
 /-- Covering with all primes ≤ n (ε = 0): by CRT and the prime number
     theorem, one class per prime suffices to cover [1, n] for large n. -/
-axiom full_prime_covering :
-  ∀ᶠ n in Filter.atTop,
-    ∃ assignment : CoveringAssignment (primesInRange n 0),
-      CoverInterval n (primesInRange n 0) assignment
-
 /-- The sieve connection: covering [1,n] by one residue class per prime
     is dual to sieving — excluding one class per prime. -/
 theorem sieve_duality :

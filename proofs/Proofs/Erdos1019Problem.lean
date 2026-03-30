@@ -97,9 +97,6 @@ def isPlanar (G : SimpleGraph V) : Prop :=
   ¬HasMinor G K5 ∧ ¬HasMinor G K33
 
 /-- Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
-axiom planar_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] :
-  isPlanar G → Fintype.card V ≥ 3 → edgeCount G ≤ 3 * Fintype.card V - 6
-
 /-
 ## Saturated Planar Graphs
 
@@ -330,14 +327,6 @@ Erdős also proved a quantitative lower bound on the size of saturated planar su
 def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
 
 /-- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
-axiom erdos_size_bound (n k : ℕ) (hn : n ≥ 4) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V = n →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      edgeCount G ≥ turanEdges n + k →
-      ∃ S : Finset V, S.card ≥ saturatedPlanarSize n k ∧
-        ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
-
 /-
 ## Connection to Turán Theory
 

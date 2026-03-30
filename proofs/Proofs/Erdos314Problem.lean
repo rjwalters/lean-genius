@@ -76,9 +76,6 @@ m(n) is the minimal integer m ≥ n such that the partial harmonic sum reaches 1
 axiom m_of_n (n : ℕ) : ℕ
 
 /-- m(n) is well-defined: the sum eventually exceeds 1 -/
-axiom m_of_n_exists : ∀ n : ℕ, n ≥ 1 →
-  ∃ m : ℕ, m ≥ n ∧ partialHarmonicSum n m ≥ 1
-
 /-- m(n) is minimal: the sum from n to m(n)-1 is less than 1 -/
 axiom m_of_n_minimal : ∀ n : ℕ, n ≥ 1 →
   partialHarmonicSum n (m_of_n n - 1) < 1
@@ -152,13 +149,7 @@ For large n, m(n) ≈ e·n since the harmonic sum grows logarithmically.
 -/
 
 /-- Asymptotic: m(n)/n → e as n → ∞ -/
-axiom m_over_n_limit :
-  Filter.Tendsto (fun n => (m_of_n n : ℝ) / n) Filter.atTop (nhds Real.exp 1)
-
 /-- More precisely: m(n) = ⌊e·n + 1/2⌋ for most n -/
-axiom m_of_n_approximation : ∀ n : ℕ, n ≥ 1 →
-  |(m_of_n n : ℝ) - Real.exp 1 * n| ≤ 1
-
 /- ## The Main Question: lim inf n²ε(n) = 0?
 
 Erdős asked whether the lim inf of n²ε(n) equals 0.
@@ -192,13 +183,7 @@ Erdős-Graham and Lim-Steinerberger believe the exponent 2 is optimal.
 -/
 
 /-- Conjecture: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0 -/
-axiom optimal_exponent_conjecture : ∀ δ > 0,
-  Filter.Tendsto (fun n => (n : ℝ)^(2 + δ) * epsilon n) Filter.atTop Filter.atTop
-
 /-- Alternative form: ε(n) ≥ c/n² for some constant c > 0 infinitely often -/
-axiom epsilon_lower_bound : ∃ c > 0, ∀ᶠ n in Filter.atTop,
-  epsilon n ≥ c / (n : ℝ)^2
-
 /- ## Connection to Diophantine Approximation
 
 The problem is related to how well log(m/n) approximates 1 - γ
@@ -209,9 +194,6 @@ where γ is the Euler-Mascheroni constant.
 noncomputable def eulerMascheroni : ℝ := Real.eulerMascheroniConstant
 
 /-- Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
-axiom epsilon_asymptotic : ∀ n : ℕ, n ≥ 1 →
-  |epsilon n - 1 / ((m_of_n n : ℝ) * n)| ≤ C / n^2 where C := 1
-
 /- ## Summary
 
 Erdős Problem #314 asks about the lim inf of n²ε(n) where

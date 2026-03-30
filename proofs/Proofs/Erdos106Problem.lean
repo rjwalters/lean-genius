@@ -123,8 +123,6 @@ theorem f_4 : f 4 = 2 := by
   exact this
 
 /-- f(5) = 2 (Newman) -/
-axiom f_5 : f 5 = 2
-
 /-- f(9) = 3: nine squares of side 1/3 -/
 theorem f_9 : f 9 = 3 := by
   have := f_perfect_square 3 (by omega)
@@ -181,9 +179,6 @@ axiom halasz_odd : ∀ k c : ℕ, k ≥ 1 → c ≥ 1 →
   f (k^2 + 2*c + 1) ≥ k + (c : ℝ) / k
 
 /-- Halász bound for even increments -/
-axiom halasz_even : ∀ k c : ℕ, k ≥ 1 → c ≥ 1 →
-  f (k^2 + 2*c) ≥ k + (c : ℝ) / (k + 1)
-
 /-
 ## The Erdős-Soifer Conjecture
 
@@ -196,9 +191,6 @@ def erdosSoiferConjecture : Prop :=
     f (k^2 + (2*c + 1).toNat) = k + (c : ℝ) / k
 
 /-- Praton's equivalence: main conjecture ↔ Erdős-Soifer conjecture -/
-axiom praton_equivalence :
-  erdos106Conjecture ↔ erdosSoiferConjecture
-
 /-
 ## Axis-Parallel Case
 

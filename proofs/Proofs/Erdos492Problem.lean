@@ -129,9 +129,6 @@ def isUniformlyDistributed (x : ℕ → ℝ) : Prop :=
 **Weyl's Equidistribution Theorem:**
 For irrational α, the sequence ({αn})_{n≥1} is u.d. mod 1.
 -/
-axiom weyl_equidistribution :
-    ∀ α : ℝ, Irrational α → isUniformlyDistributed (fun n => Int.frac (α * n))
-
 /--
 **Erdős-Davenport Sequence:**
 For A and α, the sequence f(α·n) for n = 1, 2, 3, ...
@@ -279,9 +276,6 @@ theorem conjecture_iff_ae (A : UnityRatioSeq) :
 **Schmidt's Measure Result:**
 In the counterexample, the non-u.d. set has positive measure.
 -/
-axiom schmidt_positive_measure :
-    ∃ A : UnityRatioSeq, volume {α : ℝ | ¬isUniformlyDistributed (erdosDavenportSeq A α)} > 0
-
 /-
 ## Part VIII: Summary
 -/

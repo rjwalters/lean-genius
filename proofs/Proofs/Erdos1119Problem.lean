@@ -61,13 +61,6 @@ axiom erdos_1964_wetzel (family : ι → (ℂ → ℂ))
     #ι ≤ ℵ₀
 
 /-- Erdős (1964): If CH holds (𝔠 = ℵ₁), there exist uncountable Wetzel families -/
-axiom erdos_1964_wetzel_ch
-    (hch : continuum = aleph 1) :
-    ∃ (family : (aleph 1).ord.toType → (ℂ → ℂ)),
-      (∀ α, IsEntire (family α)) ∧
-      WetzelProblem family ∧
-      #(aleph 1).ord.toType = aleph 1
-
 /- ## Part III: The Easy Case (𝔪⁺ < 𝔠) -/
 
 /-- The successor cardinal -/
@@ -91,48 +84,20 @@ def SuccessorEqualsContinuum (m : Cardinal) : Prop := succCard m = continuum
 /-- Kumar-Shelah (2017): There exists a ZFC-consistent model where 𝔠 = ℵ₂
 and every family of entire functions with ≤ ℵ₁ values at each point
 has cardinality ≤ ℵ₁. -/
-axiom kumar_shelah_2017 :
-    ∃ (m : Cardinal), m = aleph 1 ∧ succCard m = continuum ∧
-      ∀ (family : ι → (ℂ → ℂ)),
-        (∀ α, IsEntire (family α)) →
-        IsWetzelFamily family m →
-        #ι ≤ m
-
 /-- Schilhan-Weinert (2024): There exists a ZFC-consistent model where 𝔠 = ℵ₂
 and there is a family of entire functions with ≤ ℵ₁ values at each point
 but cardinality > ℵ₁. -/
-axiom schilhan_weinert_2024 :
-    ∃ (m : Cardinal), m = aleph 1 ∧ succCard m = continuum ∧
-      ∃ (family : ι → (ℂ → ℂ)),
-        (∀ α, IsEntire (family α)) ∧
-        IsWetzelFamily family m ∧
-        #ι > m
-
 /- ## Part V: The Identity Theorem -/
 
 /-- Two entire functions agreeing on uncountably many points are equal.
 This is the key fact making the Wetzel condition nontrivial. -/
-axiom identity_theorem_entire (f g : ℂ → ℂ)
-    (hf : IsEntire f) (hg : IsEntire g)
-    (S : Set ℂ) (hS : #S > ℵ₀)
-    (hagree : ∀ z ∈ S, f z = g z) :
-    f = g
-
 /- ## Part VI: Cardinal Arithmetic Background -/
 
 /-- The continuum is 2^{ℵ₀} -/
 theorem continuum_eq_two_aleph_zero : continuum = 2 ^ ℵ₀ := rfl
 
 /-- If GCH holds at ℵ₀ (i.e., 𝔠 = ℵ₁), there is no cardinal between ℵ₀ and 𝔠 -/
-axiom gch_implies_no_intermediate :
-    continuum = aleph 1 →
-    ¬∃ m : Cardinal, ℵ₀ < m ∧ m < continuum
-
 /-- Under ¬CH, intermediate cardinals exist -/
-axiom not_ch_intermediate :
-    continuum > aleph 1 →
-    ∃ m : Cardinal, ℵ₀ < m ∧ m < continuum
-
 /- ## Part VII: Wetzel's Question and CH -/
 
 /-- Wetzel's original question (1963): is every Wetzel family countable? -/
@@ -143,9 +108,6 @@ def WetzelQuestion : Prop :=
     #ι ≤ ℵ₀
 
 /-- Wetzel's question is equivalent to ¬CH -/
-axiom wetzel_equivalent_to_ch :
-    WetzelQuestion ↔ continuum > aleph 1
-
 /- ## Part VIII: Summary -/
 
 /--

@@ -86,9 +86,6 @@ noncomputable def e (n r : ℕ) : ℕ :=
 
 /-- **e is well-defined:**
 The set is non-empty (bounded by n²/2). -/
-axiom e_well_defined (n r : ℕ) (hn : n ≥ 3) (hr : r ≥ 1) :
-  e n r ≤ n * (n - 1) / 2
-
 /- ## Part IV: Ruzsa-Szemerédi Result -/
 
 /-- **Ruzsa-Szemerédi (1978):**
@@ -138,21 +135,12 @@ theorem questions_together (h1 : Question1) (h2 : Question2) :
 /-- **Turán number bound:**
 e(n, r) ≤ ⌊n²/4⌋ since ex(n, K₃) = ⌊n²/4⌋ and e(n,r) only considers
 graphs where all edges are in triangles. -/
-axiom turan_number_bound (n r : ℕ) (hn : n ≥ 3) :
-  e n r ≤ n * n / 4
-
 /-- **Upper bound:**
 e(n, r) ≤ C_r · n² / (log n) for some constant C_r depending on r.
 This follows from improvements to the Ruzsa-Szemerédi result. -/
-axiom upper_bound (r : ℕ) (hr : r ≥ 2) :
-  ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in atTop, (e n r : ℝ) ≤ C * n^2 / Real.log n
-
 /-- **Lower bound:**
 e(n, r) ≥ c_r · n^{2-o(1)} for some function depending on r.
 The threshold is nearly quadratic from below. -/
-axiom lower_bound (r : ℕ) (hr : r ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (e n r : ℝ) ≥ c * n^(2 - 1 / Real.log (Real.log n))
-
 /- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #600:**

@@ -73,14 +73,6 @@ axiom independenceNumber (G : SimpleGraph V) : ℕ
 axiom R_3_3 (m : ℕ) : ℕ
 
 /-- The trivial lower bound: n^(1/3) independent set always exists. -/
-axiom trivial_independent_set_bound :
-  ∀ n : ℕ, n > 0 →
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-  (Fintype.card V = n) →
-  ∀ (G : SimpleGraph V),
-  isNotRamseyForTriangle G →
-  hasIndependentSetOfSize G (n ^ (1/3 : ℝ)).toNat
-
 /- ## Part III: The Conjecture -/
 
 /-- Erdős's conjecture (later disproved):
@@ -105,44 +97,19 @@ def erdos_925_ramsey_form : Prop :=
 
 /-- Alon-Rödl (2005) lower bound:
     R(3,3,m) ≥ m³ / (log m)^(4+o(1)) -/
-axiom alon_rodl_lower_bound :
-  ∃ (f : ℕ → ℝ), (∀ m, f m > 0) ∧
-  (∀ ε > 0, ∃ M : ℕ, ∀ m ≥ M, f m ≤ (Real.log m) ^ (4 + ε)) ∧
-  (∀ m : ℕ, m ≥ 2 → R_3_3 m ≥ ⌊(m : ℝ)^3 / f m⌋.toNat)
-
 /-- Alon-Rödl (2005) upper bound:
     R(3,3,m) ≤ m³ · (log log m) / (log m)² -/
-axiom alon_rodl_upper_bound :
-  ∃ (C : ℝ), C > 0 ∧
-  ∀ m : ℕ, m ≥ 3 →
-  R_3_3 m ≤ ⌈C * (m : ℝ)^3 * (Real.log (Real.log m)) / (Real.log m)^2⌉.toNat
-
 /-- Sudakov's improvement: the log log factor can be removed. -/
-axiom sudakov_improvement :
-  ∃ (C : ℝ), C > 0 ∧
-  ∀ m : ℕ, m ≥ 2 →
-  R_3_3 m ≤ ⌈C * (m : ℝ)^3 / (Real.log m)^2⌉.toNat
-
 /-- The conjecture is false - Alon and Rödl disproved it. -/
 axiom erdos_925_disproved : ¬erdos_925_conjecture
 
 /-- Equivalently, R(3,3,m) grows like m³/polylog(m), not m^(3-c).
     The Ramsey formulation of the conjecture is also false. -/
-axiom erdos_925_ramsey_disproof : ¬erdos_925_ramsey_form
-
 /- ## Part V: Why n^(1/3) is Optimal -/
 
 /-- The trivial bound n^(1/3) is essentially tight.
     Non-Ramsey graphs need not have independent sets larger than ~n^(1/3).
     For any ε > 0, there exist non-Ramsey graphs with α(G) ≤ n^(1/3+ε). -/
-axiom n_one_third_is_optimal :
-  ∀ ε > 0, ∃ (n₀ : ℕ),
-  ∀ n ≥ n₀, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
-  (Fintype.card V = n) ∧
-  ∃ (G : SimpleGraph V),
-  isNotRamseyForTriangle G ∧
-  independenceNumber G ≤ ⌈(n : ℝ) ^ (1/3 + ε)⌉.toNat
-
 /- ## Part VI: The Easy Lower Bound -/
 
 /-- The "easy" direction: every non-Ramsey graph has α ≥ cn^(1/3).

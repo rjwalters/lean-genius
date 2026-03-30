@@ -156,16 +156,7 @@ theorem counterexample_works (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/4) :
 axiom ramseyNumber (k : ℕ) : ℕ
 
 /-- Ramsey theorem: graphs on ≥ R(k,k) vertices have trivial set of size k. -/
-axiom ramsey_theorem (k : ℕ) (hk : k ≥ 2) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V ≥ ramseyNumber k →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      maxTrivialSize G ≥ k
-
 /-- Ramsey numbers grow exponentially: R(k,k) ≥ 2^(k/2). -/
-axiom ramsey_lower_bound (k : ℕ) (hk : k ≥ 2) :
-  (ramseyNumber k : ℝ) ≥ 2^((k : ℝ)/2)
-
 /-- The counterexample shows degree diversity doesn't help Ramsey:
     there exist graphs with limited multiplicity, ≥ (3/4)n distinct degrees,
     and trivial subgraphs of size O(log n). -/

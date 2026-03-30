@@ -219,11 +219,6 @@ Key steps:
 
 The Bessel function J₁ satisfies |J₁(x)| ~ 1/√x for large x, which
 is the source of the √r behavior. -/
-axiom fourier_analysis_lower_bound :
-    ∀ (A : PointSequence) (r : ℝ) (hr : r > 1),
-      ∃ C : Circle, C.radius = r ∧
-        ∃ n : ℕ, localDiscrepancy A C n ≥ r.sqrt / 10
-
 /-- **Beck's Upper Bound Technique (Probabilistic Construction)**
 
 The upper bound uses a randomized construction:
@@ -233,10 +228,6 @@ The upper bound uses a randomized construction:
 4. Use concentration bounds to show the construction works
 
 The logarithmic factor comes from a union bound over many circles. -/
-axiom probabilistic_upper_bound_construction :
-    ∃ (A : PointSequence), ∀ C : Circle, ∀ n : ℕ,
-      localDiscrepancy A C n ≤ 100 * (C.radius * (1 + C.radius.log)).sqrt + 100
-
 /- ## Part VIII: Open Questions -/
 
 /-- **Open Question 1: The Logarithmic Gap**
@@ -293,14 +284,6 @@ Circles behave differently due to their curved boundaries. -/
 /- Schmidt's theorem: For axis-aligned boxes in [0,1]^d, the discrepancy
    D(N) ≥ c · (log N)^{d/2}. The full statement involves sup over all
    axis-aligned boxes of |count - N·volume|. We state a simplified version. -/
-axiom schmidt_classical_discrepancy :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (A : ℕ → Fin 2 → ℝ) (N : ℕ), N ≥ 2 →
-        ∃ (a b : Fin 2 → ℝ),
-          |(↑((Finset.range N).filter (fun i =>
-            ∀ j, a j ≤ A i j ∧ A i j ≤ b j)).card : ℝ) -
-            ↑N * ((b 0 - a 0) * (b 1 - a 1))| ≥ c * (N : ℝ).log
-
 /-- **Alexander's Theorem (Half-Planes)**
 
 For half-plane discrepancy in ℝ²:
@@ -311,13 +294,6 @@ because circles can "trap" points more effectively. -/
 /- Alexander's theorem: Half-plane discrepancy grows at least like N^{1/4}.
    Circles have higher discrepancy (√r) than half-planes (r^{1/4})
    because circles can "trap" points more effectively. -/
-axiom alexander_halfplane_discrepancy :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (A : PointSequence) (N : ℕ), N ≥ 2 →
-        ∃ (a b : ℝ) (dir : Fin 2),
-          |(↑((Finset.range N).filter (fun i =>
-            (A i) dir ≤ a)).card : ℝ) - ↑N / 2| ≥ c * (N : ℝ) ^ ((1 : ℝ) / 4)
-
 /- ## Part X: Summary -/
 
 /--

@@ -166,9 +166,6 @@ theorem conj2_trivial_case (G : Hypergraph3) (_hfin : G.IsFinite)
 -/
 
 /-- Subgraph containment is transitive. -/
-axiom containsSubgraph_trans {H₁ H₂ H₃ : Hypergraph3} :
-  H₁.ContainsSubgraph H₂ → H₂.ContainsSubgraph H₃ → H₁.ContainsSubgraph H₃
-
 /-- The forbidden family is anti-monotone in G: if G is a subgraph of G'
     (i.e., any graph containing G' also contains G), then avoiding G is
     harder than avoiding G', so F_G(κ) ⊆ F_{G'}(κ). -/
@@ -195,8 +192,6 @@ theorem forbiddenFamilyNonempty_antimonotone {G G' : Hypergraph3} {kappa : Cardi
 def erdos_1177 : Prop := Conjecture1 ∧ Conjecture2 ∧ Conjecture3
 
 /-- Problem #1177 is OPEN. We state it without proof. -/
-axiom erdos_1177_open : erdos_1177
-
 /-
 ## Summary
 

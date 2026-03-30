@@ -241,10 +241,6 @@ def RamseyStyleProperty : Prop :=
 **Classical Ramsey gives monochromatic cliques of size ≈ 2 log n.**
 The 1/log x weighting converts this to weighted sum considerations.
 -/
-axiom classical_ramsey_connection :
-  ∀ n : ℕ, n ≥ 6 → ∀ c : SimpleEdgeColoring n,
-    ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧ X.card ≥ 2
-
 /-
 ## Part IX: Examples
 -/
@@ -276,11 +272,6 @@ theorem monochromatic_pair_exists (n : ℕ) (hn : n ≥ 3) (c : SimpleEdgeColori
 **Growth of ∑ 1/log x for {2, ..., k}**
 The sum ∑_{x=2}^{k} 1/log x grows like k/log k.
 -/
-axiom sum_one_over_log_asymptotic :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ k : ℕ, k ≥ 2 →
-    c₁ * k / Real.log k ≤ logInverseSum (IntegerSet k) ∧
-    logInverseSum (IntegerSet k) ≤ c₂ * k / Real.log k
-
 /-
 ## Part X: Generalizations
 -/
@@ -306,11 +297,6 @@ noncomputable def weightedSum (X : Finset ℕ) (w : ℕ → ℝ) : ℝ :=
 /--
 **With weight 1/x instead of 1/log x, the threshold would be different.**
 -/
-axiom inverse_weight_threshold :
-  ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N, ∀ c : SimpleEdgeColoring n,
-    ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧
-      weightedSum X (fun x => 1 / x) ≥ C
-
 /-
 ## Part XI: Asymptotic Analysis
 -/

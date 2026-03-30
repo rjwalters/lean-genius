@@ -65,9 +65,6 @@ Reference: Richter, "Über die Monotonie von Differenzenfolgen", Acta Arith. (19
 This is stated as an axiom because the proof requires detailed prime distribution
 estimates not yet in Mathlib.
 -/
-axiom richter_lower_bound (q : MonotoneGapPrimeSeq) :
-    liminf (fun n : ℕ => (q.seq n : ℝ) / (n : ℝ) ^ 2) atTop > (0.352 : ℝ)
-
 /--
 **Erdős's Conjecture (Open)**
 
@@ -83,10 +80,6 @@ axiom erdos_455_conjecture : Prop
 The conjecture is equivalent to: for all monotone-gap prime sequences,
 the ratio q_n / n² tends to infinity.
 -/
-axiom erdos_455_statement : erdos_455_conjecture ↔
-    ∀ q : MonotoneGapPrimeSeq,
-      Tendsto (fun n : ℕ => (q.seq n : ℝ) / (n : ℝ) ^ 2) atTop atTop
-
 /-
 ## Consequences of Richter's Bound
 
@@ -99,9 +92,6 @@ We derive some immediate consequences of Richter's lower bound.
 More precisely, for any ε > 0, we have q_n ≥ (0.352 - ε) · n² for sufficiently large n.
 This follows from the definition of liminf.
 -/
-axiom growth_at_least_quadratic (q : MonotoneGapPrimeSeq) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (q.seq n : ℝ) ≥ c * (n : ℝ) ^ 2
-
 /-
 ## Structure of Monotone-Gap Prime Sequences
 

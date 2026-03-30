@@ -79,9 +79,6 @@ def isBhSet (A : Set ℕ) (h : ℕ) : Prop :=
 **Sidon sets have bounded convolution:**
 If A is a Sidon set, then r_A(n) ≤ 2 for all n.
 -/
-axiom sidon_bounded_convolution :
-    ∀ A : Set ℕ, isSidonSet A → hasBoundedConvolution A 2
-
 /- ## Part III: The Partition Question -/
 
 /--
@@ -120,24 +117,10 @@ def erdos_newman_question : Prop :=
 There exist sets A with r_A ≤ 3 that cannot be partitioned
 into any number of pieces each with r_{Aᵢ} < 3.
 -/
-axiom erdos_C3_counterexample :
-    ∃ A : Set ℕ,
-      hasBoundedConvolution A 3 ∧
-      ∀ parts : List (Set ℕ),
-        isPartition A parts →
-        ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 3
-
 /--
 **Erdős (1980) - Case C = 4:**
 Similarly for C = 4.
 -/
-axiom erdos_C4_counterexample :
-    ∃ A : Set ℕ,
-      hasBoundedConvolution A 4 ∧
-      ∀ parts : List (Set ℕ),
-        isPartition A parts →
-        ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 4
-
 /- ## Part V: Nešetřil-Rödl's Complete Solution -/
 
 /--
@@ -164,15 +147,6 @@ axiom erdos_newman_disproved :
 **Stronger statement:**
 Even allowing t to depend on A (not just C), the answer is still NO.
 -/
-axiom nesetril_rodl_strong :
-    ∀ C : ℕ, C ≥ 1 →
-      ∃ A : Set ℕ,
-        hasBoundedConvolution A C ∧
-        ∀ t : ℕ, ∀ parts : List (Set ℕ),
-          parts.length ≤ t →
-          isPartition A parts →
-          ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ C
-
 /- ## Part VI: Special Cases -/
 
 /--
@@ -180,12 +154,6 @@ axiom nesetril_rodl_strong :
 Even Sidon sets (r_A ≤ 2) cannot always be partitioned
 into sets with r < 2 (i.e., sets with unique sums).
 -/
-axiom sidon_case :
-    ∃ A : Set ℕ, isSidonSet A ∧
-      ∀ parts : List (Set ℕ),
-        isPartition A parts →
-        ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 2
-
 /--
 **Unique sum sets:**
 A set has unique sums if r_A(n) ≤ 1 for all n.
@@ -198,9 +166,6 @@ def hasUniqueSums (A : Set ℕ) : Prop :=
 **Unique sum sets are closed under subsets:**
 If A has unique sums, so does every subset.
 -/
-axiom unique_sums_hereditary :
-    ∀ A B : Set ℕ, B ⊆ A → hasUniqueSums A → hasUniqueSums B
-
 /- ## Part VII: Density Considerations -/
 
 /--
@@ -208,11 +173,6 @@ axiom unique_sums_hereditary :
 Sets with bounded convolution have density at most O(n^{1/2}).
 The counterexamples achieve this density.
 -/
-axiom density_bound :
-    ∀ A : Finset ℕ, ∀ C : ℕ,
-      (∀ n, rA A n ≤ C) →
-      ∀ N : ℕ, (A.filter (· ≤ N)).card ≤ C * Nat.sqrt N + 1
-
 /- ## Part VIII: Summary -/
 
 /--

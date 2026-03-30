@@ -108,9 +108,6 @@ This means: for any 2-coloring of 3-element subsets of a set of continuum size,
 either there is a homogeneous set of order type ω + n for color 0,
 or there is a homogeneous set of size 4 for color 1.
 -/
-axiom erdos_rado_omega_plus_n (n : ℕ) (hn : 2 ≤ n) :
-    PartitionArrow continuum_card (Ordinal.omega0 + n) 4
-
 /- ## Main Conjecture (OPEN) -/
 
 /--
@@ -145,11 +142,6 @@ def conjecture_omega_tower (n : ℕ) : Prop :=
 For any r, k, n there exists N such that N → (r)ₖⁿ.
 (Any k-coloring of n-subsets of an N-set has a homogeneous r-set.)
 -/
-axiom finite_ramsey (r k n : ℕ) (hk : 1 ≤ k) (hn : 1 ≤ n) :
-    ∃ N : ℕ, ∀ (c : Coloring (Fin N) n k),
-      ∃ (H : Finset (Fin N)) (i : Fin k), H.card ≥ r ∧
-        FinsetIsHomogeneous H n k c i
-
 /--
 **Ramsey's Theorem** (specific case):
 For 3-subsets with 2 colors, any 2-coloring of 3-subsets of a 6-set

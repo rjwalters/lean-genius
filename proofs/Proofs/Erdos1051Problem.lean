@@ -57,11 +57,6 @@ def ErdosProblem1051 : Prop :=
 /-- Erdős (1988) proved: if aₙ₊₁ ≥ C · aₙ² for some C > 0,
 then the series is irrational. This is a stronger growth condition
 than lim inf aₙ^{1/2ⁿ} > 1. -/
-axiom rapid_growth_irrational (a : ℕ → ℤ) (h_mono : StrictMono a)
-    (h_rapid : ∃ C : ℝ, C > 0 ∧
-      ∀ n : ℕ, (a (n + 1) : ℝ) ≥ C * (a n : ℝ) ^ 2) :
-    Irrational (erdosSeries a)
-
 /-
 ## Section V: Convergence
 -/
@@ -108,10 +103,6 @@ def SimpleSeriesConjecture : Prop :=
 /-- The Sylvester–Fibonacci example: aₙ = Fib(2ⁿ) satisfies
 the growth condition and Σ 1/(aₙ · aₙ₊₁) is known to be irrational
 (it telescopes to a known irrational). -/
-axiom sylvester_fibonacci_example :
-    ∃ a : ℕ → ℤ, StrictMono a ∧ GrowthCondition a ∧
-      Irrational (erdosSeries a)
-
 /-
 ## Section VII: Telescoping and Partial Fraction Identity
 -/

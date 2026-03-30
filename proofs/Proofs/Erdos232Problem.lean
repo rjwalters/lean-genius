@@ -136,15 +136,9 @@ noncomputable def upperDensity (A : Set (EuclideanSpace ℝ (Fin 2))) : ℝ :=
 /--
 Upper density is always in [0, 1].
 -/
-axiom upperDensity_bounds (A : Set (EuclideanSpace ℝ (Fin 2))) :
-    0 ≤ upperDensity A ∧ upperDensity A ≤ 1
-
 /--
 Monotonicity: if A ⊆ B then δ̄(A) ≤ δ̄(B).
 -/
-axiom upperDensity_mono {A B : Set (EuclideanSpace ℝ (Fin 2))}
-    (h : A ⊆ B) : upperDensity A ≤ upperDensity B
-
 /-
 ## Part V: The Maximum Density
 -/
@@ -159,8 +153,6 @@ noncomputable def maxDensity : ℝ :=
 /--
 This supremum is well-defined and bounded.
 -/
-axiom maxDensity_bounded : 0 ≤ maxDensity ∧ maxDensity ≤ 1
-
 /-
 ## Part VI: Trivial Upper Bound
 -/
@@ -171,8 +163,6 @@ axiom maxDensity_bounded : 0 ≤ maxDensity ∧ maxDensity ≤ 1
 For any unit vector u, the sets A and A + u must be disjoint.
 This forces density at most 1/2.
 -/
-axiom trivial_upper_bound : maxDensity ≤ 1 / 2
-
 /--
 **Translation Disjointness:**
 If A is unit-distance free and u has |u| = 1, then A ∩ (A + u) = ∅.
@@ -200,9 +190,6 @@ theorem translation_disjoint (A : Set (EuclideanSpace ℝ (Fin 2)))
 The union of open discs of radius 1/2 at a suitably spaced hexagonal lattice
 gives density π/(8√3) ≈ 0.2267.
 -/
-axiom hexagonal_lower_bound :
-    maxDensity ≥ Real.pi / (8 * Real.sqrt 3)
-
 /--
 **Croft's Improvement (1967):**
 A refinement of the hexagonal construction gives density ≥ 0.22936.
@@ -330,9 +317,6 @@ If χ is the chromatic number of the plane (4 ≤ χ ≤ 7), then
 m₁ ≤ 1/χ would give an upper bound. Since m₁ ≤ 0.247 < 1/4, this is
 consistent with χ ≥ 5.
 -/
-axiom chromatic_density_connection :
-    ∃ χ : ℕ, 4 ≤ χ ∧ χ ≤ 7 ∧ maxDensity ≤ 1 / χ
-
 /-
 ## Part XII: Summary
 -/

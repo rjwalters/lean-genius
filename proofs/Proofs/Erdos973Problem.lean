@@ -64,9 +64,6 @@ def AllModulusLeOne (z : ComplexSeq n) : Prop :=
 axiom maxPowerSum (z : ComplexSeq n) : ℝ
 
 /-- maxPowerSum is the supremum of |∑ z_i^k| for k ∈ {2, ..., n+1}. -/
-axiom maxPowerSum_spec (z : ComplexSeq n) (hn : n ≥ 2) :
-    ∀ k, 2 ≤ k → k ≤ n + 1 → abs (powerSum z k) ≤ maxPowerSum z
-
 /- ## Part II: The Erdős Question -/
 
 /-- Erdős's Question: Does there exist C > 1 such that for all n,
@@ -119,8 +116,6 @@ axiom turan_lower_bound :
 noncomputable def turanConstant : ℝ := 2 * Real.exp 1
 
 /-- 2e is approximately 5.44. -/
-axiom turan_constant_approx : 5.43 < turanConstant ∧ turanConstant < 5.45
-
 /- ## Part VI: The Answer -/
 
 /-- The answer depends on the modulus constraint:
@@ -151,9 +146,6 @@ theorem roots_on_circle (n : ℕ) :
   simp
 
 /-- For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/
-axiom roots_power_sum (n k : ℕ) (hn : n > 0) :
-    powerSum (rootsOfUnitySequence n) k = if n ∣ k then n else 0
-
 /- ## Part VIII: Dirichlet Polynomial Connection -/
 
 /-- A Dirichlet polynomial: ∑ a_n n^{-s}. -/
@@ -163,11 +155,6 @@ structure DirichletPolynomial where
 
 /-- Power sums of z_i = n_i^{it} for integers n_i yield Dirichlet sums.
     This connects Turán's method to L-function zero-free regions. -/
-axiom dirichlet_power_sum_connection :
-    ∀ (N : ℕ) (ns : Fin N → ℕ) (t : ℝ),
-      powerSum (fun i => (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)) 1 =
-      ∑ i : Fin N, (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)
-
 /- ## Part IX: Summary -/
 
 /-- **Unit disk result (PROVED from axiom):** Erdős showed C ≈ 1.32 works

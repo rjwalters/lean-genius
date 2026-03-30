@@ -136,37 +136,21 @@ axiom mcgehee_pigno_smith_theorem : LittlewoodConjecture
 noncomputable def littlewoodConstant : ℝ := 1 / (4 * π)
 
 /-- Explicit version of the bound. -/
-axiom littlewood_explicit (A : Finset ℤ) (hA : A.card ≥ 2) :
-  L1norm A ≥ littlewoodConstant * Real.log A.card
-
 /-
 ## Part VI: Sharpness
 -/
 
 /-- The log N lower bound is essentially optimal. -/
-axiom littlewood_sharpness :
-  ∃ c' : ℝ, ∀ N : ℕ, N ≥ 2 → ∃ A : Finset ℤ, A.card = N ∧
-    L1norm A ≤ c' * Real.log N
-
 /-- Geometric progressions achieve the lower bound. -/
 def geometricProgression (N : ℕ) : Finset ℤ :=
   Finset.image (fun k => (k : ℤ)) (Finset.range N)
 
 /-- For arithmetic progressions, the bound is approximately log N. -/
-axiom arithmetic_progression_bound (N : ℕ) (hN : N ≥ 2) :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * Real.log N ≤ L1norm (geometricProgression N) ∧
-    L1norm (geometricProgression N) ≤ c₂ * Real.log N
-
 /-
 ## Part VII: Hardy's Inequality Connection
 -/
 
 /-- Hardy's inequality (discrete form). -/
-axiom hardy_inequality (f : ℕ → ℝ) (hf : ∀ n, f n ≥ 0) :
-  (∑' n : ℕ, (1 / (n + 1 : ℝ)) * (∑ k in Finset.range (n + 1), f k)^2) ≤
-    4 * (∑' n : ℕ, (f n)^2)
-
 /-- The MPS proof uses Hardy's inequality in a crucial way. -/
 def hardyConnection : Prop :=
   -- McGehee-Pigno-Smith showed that Hardy's inequality implies
@@ -203,11 +187,6 @@ noncomputable def weightedExpSum (A : Finset ℤ) (w : ℤ → ℂ) (θ : ℝ) :
   A.sum (fun n => w n * expTwoPiI (n * θ))
 
 /-- For unit weights, the L¹ norm is at least c log N. -/
-axiom weighted_littlewood (A : Finset ℤ) (w : ℤ → ℂ)
-    (hw : ∀ n ∈ A, Complex.abs (w n) = 1) (hA : A.card ≥ 2) :
-  ∫ θ in Set.Icc 0 1, Complex.abs (weightedExpSum A w θ) ≥
-    littlewoodConstant * Real.log A.card
-
 /-- Generalization to higher-dimensional character sums. -/
 def higherDimensionalGeneralization : Prop :=
   -- Similar bounds exist for sums over ℤᵈ

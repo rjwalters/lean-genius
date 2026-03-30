@@ -122,10 +122,6 @@ d, m ≥ 1 such that the complex discrepancy exceeds C.
 
 This is strictly stronger than the ±1 version, since {-1, +1} ⊂ S¹.
 -/
-axiom erdosDiscrepancyComplex :
-  ∀ (f : ℕ → ℂ), mapsToUnitCircle f →
-    ∀ C : ℝ, C > 0 → ∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ complexDiscrepancy f d m > C
-
 /-
 ## Erdős's Stronger Conjecture
 
@@ -167,10 +163,6 @@ def isCompletelyMultiplicative (f : ℕ → ℤ) : Prop :=
 For completely multiplicative ±1 functions, the discrepancy is known to be
 unbounded. This was proved before Tao's general result.
 -/
-axiom multiplicativeDiscrepancy :
-  ∀ (f : ℕ → ℤ), isPlusMinusOne f → isCompletelyMultiplicative f →
-    ∀ C : ℕ, ∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ discrepancy f d m > C
-
 /-
 ## Historical Notes
 

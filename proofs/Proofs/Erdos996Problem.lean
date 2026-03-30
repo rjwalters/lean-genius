@@ -118,10 +118,6 @@ noncomputable def fourierError (f : ℝ → ℂ) (N : ℕ) : ℝ :=
   Real.sqrt (∫ x in (0 : ℝ)..1, ‖f x - fourierPartialSum f N x‖^2)
 
 /-- Parseval's identity: the L² norm equals the sum of squared Fourier coefficients. -/
-axiom parseval_identity (f : ℝ → ℂ) (hf : Integrable (fun x => ‖f x‖^2) (volume.restrict (Set.Icc 0 1))) :
-    ∫ x in (0 : ℝ)..1, ‖f x‖^2 =
-    ∑' n : ℤ, ‖∫ t in (0 : ℝ)..1, f t * Complex.exp (-2 * Real.pi * Complex.I * n * t)‖^2
-
 /- ## Part III: The Ergodic Average -/
 
 /-- The fractional part {x} = x - ⌊x⌋. -/
@@ -156,27 +152,13 @@ def StrongLawHoldsAE (f : ℝ → ℂ) (n : ℕ → ℕ) : Prop :=
 
     This is the cleanest case: geometric sequences have enough
     "independence" for the strong law to hold unconditionally. -/
-axiom raikov_theorem (a : ℕ) (ha : a ≥ 2) (f : ℝ → ℂ)
-    (hf : Integrable (fun x => ‖f x‖^2) (volume.restrict (Set.Icc 0 1))) :
-    StrongLawHoldsAE f (fun k => a^k)
-
 /-- **Kac-Salem-Zygmund (1948)**: If the Fourier error decays like
     1/(log n)^c for c > 1, the strong law holds for any lacunary sequence.
 
     This was the first general result for lacunary sequences. -/
-axiom kac_salem_zygmund_1948 (c : ℝ) (hc : c > 1) (f : ℝ → ℂ) (n : ℕ → ℕ)
-    (hn : IsLacunary n)
-    (hdecay : ∀ k : ℕ, fourierError f k ≤ 1 / (Real.log k)^c) :
-    StrongLawHoldsAE f n
-
 /-- **Erdős (1949)**: Improved to 1/(log log n)^c for c > 1.
 
     This was a significant improvement, replacing log with log log. -/
-axiom erdos_1949 (c : ℝ) (hc : c > 1) (f : ℝ → ℂ) (n : ℕ → ℕ)
-    (hn : IsLacunary n)
-    (hdecay : ∀ k : ℕ, k ≥ 3 → fourierError f k ≤ 1 / (Real.log (Real.log k))^c) :
-    StrongLawHoldsAE f n
-
 /-- **Matsuyama (1966)**: Further improved to c > 1/2 for log log decay.
 
     This is currently the best known result for log log decay. -/
@@ -305,10 +287,6 @@ The problem connects to:
 
 /-- Weyl's equidistribution theorem: fractional parts of αn are equidistributed
     for irrational α. This is a precursor to the strong law. -/
-axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
-    Tendsto (fun N : ℕ => (1 / (N : ℝ)) * (Finset.range N).card)
-      atTop (𝓝 1)
-
 /- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #996:

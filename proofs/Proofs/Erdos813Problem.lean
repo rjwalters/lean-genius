@@ -65,9 +65,6 @@ Axiomatized since computing the minimum requires exhaustive search. -/
 axiom h (n : ℕ) : ℕ
 
 /-- h(n) is an achievable bound: every graph with the property has a clique. -/
-axiom h_spec (n : ℕ) (hn : n ≥ 7) :
-  ∀ G : GraphOnN n, Every7SetHasTriangle G → HasCliqueOfSize G (h n)
-
 /- ## Part IV: Known Bounds -/
 
 /-- Erdős-Hajnal lower bound: h(n) ≫ n^{1/3}. -/
@@ -90,10 +87,6 @@ theorem erdos_hajnal_bounds :
 /- ## Part V: Bucić-Sudakov Improvement (2023) -/
 
 /-- Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
-axiom bucic_sudakov_lower_bound :
-  ∀ ε > 0, ∃ c > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    (h n : ℝ) ≥ c * (n : ℝ)^(5/12 - ε : ℝ)
-
 /-- The exponent 5/12 improves on 1/3. -/
 theorem five_twelfths_better : (5 : ℝ) / 12 > 1 / 3 := by norm_num
 

@@ -77,12 +77,6 @@ noncomputable def discrepancy (x : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
 -/
 
 /-- Erdős-Koksma (1949) and Cassels (1950): D(N) ≪ N^{1/2}(log N)^{5/2+o(1)} -/
-axiom erdos_koksma_cassels (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
-      ∀ N : ℕ, N ≥ 2 →
-        discrepancy x α N ≤ C * Real.sqrt N * (Real.log N) ^ (5/2 : ℝ)
-
 /-- Baker (1981): D(N) ≪ N^{1/2}(log N)^{3/2+o(1)} — current best general bound -/
 axiom baker_1981 (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
     ∃ C : ℝ, C > 0 ∧
@@ -130,12 +124,6 @@ def conjecture_loglog_polynomial (x : ℕ → ℕ) : Prop :=
 -/
 
 /-- Lower bound: D(N) ≫ N^{1/2} infinitely often for some α -/
-axiom lower_bound_sqrt :
-    ∀ x : ℕ → ℕ, StrictlyIncreasingSeq x →
-    ∃ S : Set ℝ, S.Nonempty ∧
-    ∀ α ∈ S, ∀ C > 0, ∃ N : ℕ, N ≥ 2 ∧
-      discrepancy x α N ≥ C * Real.sqrt N
-
 /-
 ## Part VII: Examples
 -/
@@ -149,15 +137,7 @@ theorem natural_seq_strictly_increasing : StrictlyIncreasingSeq naturalSeq := by
 /-- Example: x_n = 2^n (powers of 2, lacunary with λ = 2) -/
 def powersOfTwo (n : ℕ) : ℕ := 2 ^ n
 
-axiom powers_of_two_lacunary : Lacunary powersOfTwo 2
-
 /-- Powers of 2 satisfy the stronger loglog bound -/
-axiom powers_of_two_bound :
-    ∃ C k : ℝ, C > 0 ∧ k > 0 ∧
-    ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
-      ∀ N : ℕ, N ≥ 3 →
-        discrepancy powersOfTwo α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
-
 /-
 ## Part VIII: Summary
 -/

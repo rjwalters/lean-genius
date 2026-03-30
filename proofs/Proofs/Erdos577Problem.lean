@@ -130,14 +130,6 @@ theorem four_cycle_base_case :
 /-- **Sharpness of the degree condition:**
     The minimum degree bound 2k is sharp. There exist graphs with
     minimum degree 2k - 1 that do not contain k disjoint 4-cycles. -/
-axiom degree_bound_sharp :
-    ∀ k : ℕ, k > 0 →
-    ∃ (V : Type*) [Fintype V] [DecidableEq V],
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
-      Fintype.card V = 4 * k ∧
-      (∀ v : V, G.degree v = 2 * k - 1) ∧
-      ¬∃ cycles : Finset (FourCycle G), cycles.card = k ∧ PairwiseDisjoint G cycles
-
 /-
 ## Part V: Related Results
 -/
@@ -166,14 +158,6 @@ axiom degree_bound_sharp :
 /-- **Wang's proof approach:**
     The proof proceeds by analyzing the structure of a
     minimal counterexample and showing no such graph exists. -/
-axiom wang_proof_technique :
-    -- Key steps in the proof:
-    -- 1. Assume minimal counterexample exists
-    -- 2. Analyze neighborhood structures
-    -- 3. Use greedy extraction with careful bookkeeping
-    -- 4. Derive contradiction
-    True
-
 /- **Algorithmic aspect:**
     Wang's proof is constructive in the sense that it provides
     a polynomial-time algorithm to find the k disjoint 4-cycles. -/

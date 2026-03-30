@@ -72,12 +72,6 @@ Axiomatized because it involves an infimum over all PBDs.
 axiom h (n : ℕ) : ℝ
 
 /-- h(n) correctly measures deficiency from √n -/
-axiom h_spec (n : ℕ) (hn : n ≥ 10) :
-  (∃ D : PairwiseBalancedDesign n,
-    ∀ A ∈ D.blocks, (A.card : ℝ) > Real.sqrt n - h n) ∧
-  (∀ ε > 0, ∃ D : PairwiseBalancedDesign n,
-    ∀ A ∈ D.blocks, (A.card : ℝ) > Real.sqrt n - h n - ε)
-
 /-
 ## Part III: Known Upper Bounds on h(n)
 -/
@@ -106,11 +100,6 @@ def projectivePlaneLineSize (q : ℕ) : ℕ := q + 1
 Every PBD on n points with blocks ≥ √n - c can be embedded
 in a projective plane of order n + i for some i ≤ c + 2.
 -/
-axiom shrikhande_singhi (c : ℕ) :
-  ∀ n : ℕ, n ≥ 10 →
-    ∀ D : PairwiseBalancedDesign n, HasLargeBlocks D (Nat.sqrt n - c) →
-      ∃ q i : ℕ, i ≤ c + 2 ∧ n ≤ projectivePlanePoints q
-
 /--
 **Conditional negative answer:**
 If projective planes exist only for prime power orders,
@@ -141,10 +130,6 @@ axiom h_correlates_with_prime_gap :
 **Cramér's conjecture:**
 H(n) = O((log n)²). If true, this gives h(n) = O((log n)²).
 -/
-axiom cramers_conjecture :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 10 → (largestPrimeGap n : ℝ) ≤ C * (Real.log n)^2
-
 /-
 ## Part VI: Special Cases
 -/
@@ -154,17 +139,7 @@ axiom cramers_conjecture :
 For n = q² with q prime, the affine plane AG(2,q) gives
 a PBD with all blocks of size exactly q = √n.
 -/
-axiom perfect_square_case :
-  ∀ q : ℕ, q.Prime →
-    ∃ D : PairwiseBalancedDesign (q^2),
-      ∀ A ∈ D.blocks, A.card = q
-
 /-- For n slightly above q², blocks of size ≥ q - 1 are achievable. -/
-axiom near_square_case :
-  ∀ q : ℕ, q.Prime → ∀ k : ℕ, k ≤ q →
-    ∃ D : PairwiseBalancedDesign (q^2 + k),
-      ∀ A ∈ D.blocks, A.card ≥ q - 1
-
 /-
 ## Part VII: Summary
 -/

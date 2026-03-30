@@ -75,9 +75,6 @@ in increasing order: 0 = x₁ < x₂ < x₃ < ⋯
 axiom qSequence (q : ℝ) (k : ℕ) : ℝ
 
 /-- For 1 < q < 2, the sequence begins 0, 1, q, ... -/
-axiom qSequence_initial (q : ℝ) (hq : 1 < q) (hq2 : q < 2) :
-    qSequence q 1 = 0 ∧ qSequence q 2 = 1 ∧ qSequence q 3 = q
-
 /-- The gap between consecutive terms: x_{k+1} - x_k -/
 noncomputable def gap (q : ℝ) (k : ℕ) : ℝ := qSequence q (k + 1) - qSequence q k
 
@@ -251,9 +248,6 @@ theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
       _ = 1 := Real.sqrt_one
 
 /-- Siegel's theorem: q₀ is the smallest Pisot-Vijayaraghavan number. -/
-axiom smallestPisot_minimal :
-    ∀ q : ℝ, IsPisot q → q ≥ smallestPisot
-
 /-- The golden ratio φ = (1 + √5)/2 ≈ 1.618 is also a Pisot number. -/
 noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 
@@ -391,19 +385,11 @@ axiom bugeaud_characterization (q : ℝ) (hq1 : 1 < q) (hq2 : q ≤ 2) :
 
 /-- Erdős-Joó-Schnitzer Refinement (1996):
     For 1 < q < φ, only need to check m = 2. -/
-axiom ejs_refinement (q : ℝ) (hq1 : 1 < q) (hq2 : q < goldenRatio) :
-    IsPisot q ↔ ∃ δ : ℝ, δ > 0 ∧ ∀ᶠ k in Filter.atTop, gapM q 2 k ≥ δ
-
 /- ## Part VII: Density Result
 -/
 
 /-- As q → 1⁺, QRepresentable(q) becomes arbitrarily dense in [0, N].
     This explains why the gap property should hold for q close to 1. -/
-axiom density_near_one :
-    ∀ ε > 0, ∀ N : ℝ, N > 0 →
-      ∃ q : ℝ, 1 < q ∧ q < 1 + ε ∧
-        ∀ x ∈ Set.Icc 0 N, ∃ y ∈ QRepresentable q, |x - y| < ε
-
 /- ## Part VIII: Summary
 -/
 

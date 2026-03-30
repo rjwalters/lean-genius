@@ -77,9 +77,6 @@ def IsForest : Prop :=
 theorem tree_is_forest (hT : IsTree G) : IsForest G := hT.2
 
 /-- A tree on n vertices has n-1 edges. -/
-axiom tree_edge_count (hT : IsTree G) :
-    G.edgeFinset.card = Fintype.card V - 1
-
 /- ## The Main Theorem -/
 
 /-- Erdős Problem #993: Trees have unimodal independent set sequences.
@@ -125,17 +122,11 @@ def matchingCount (k : ℕ) : ℕ :=
 
 /-- Schwenk (1981): The matching sequence is unimodal for ANY graph.
 This contrasts with independent sets, which are only unimodal for trees. -/
-axiom schwenk_matching_unimodal :
-    IsUnimodal (matchingCount G) (G.edgeFinset.card / 2 + 1)
-
 /- ## Proof Technique: Real-Rootedness -/
 
 /-- The independence polynomial of a tree has all real roots.
 This is the key algebraic fact used in the proof: real-rooted polynomials
 with non-negative coefficients have unimodal coefficient sequences. -/
-axiom tree_indep_poly_real_roots (hT : IsTree G) :
-    ∀ z : ℂ, (independencePolynomial G).eval₂ (algebraMap ℤ ℂ) z = 0 → z.im = 0
-
 /- ## Log-Concavity -/
 
 /-- A sequence is log-concave if a_k² ≥ a_{k-1} · a_{k+1}. This is
@@ -144,13 +135,7 @@ def IsLogConcave (f : ℕ → ℕ) (n : ℕ) : Prop :=
   ∀ k, 1 ≤ k → k < n → (f k)^2 ≥ f (k - 1) * f (k + 1)
 
 /-- Log-concavity implies unimodality for positive sequences. -/
-axiom log_concave_implies_unimodal (f : ℕ → ℕ) (n : ℕ) :
-    (∀ k ≤ n, f k > 0) → IsLogConcave f n → IsUnimodal f n
-
 /-- Conjecture: The independent set sequence of a tree is log-concave. -/
-axiom tree_log_concave_conjecture (hT : IsTree G) :
-    IsLogConcave (indepSequence G) (Fintype.card V)
-
 /- ## Independence Number -/
 
 /-- The independence number α(G): maximum size of an independent set. -/
@@ -158,15 +143,7 @@ noncomputable def independenceNumber : ℕ :=
   Finset.sup (Finset.univ.powerset.filter (IsIndependentSet G)) Finset.card
 
 /-- For k > α(G), there are no independent sets of size k. -/
-axiom no_large_indep_sets (k : ℕ) (hk : k > independenceNumber G) :
-    indepCount G k = 0
-
 /-- The peak of the unimodal sequence is at most α(G). -/
-axiom peak_at_most_alpha (hT : IsTree G) :
-    ∃ m ≤ independenceNumber G,
-      (∀ k ≤ m, indepCount G k ≤ indepCount G m) ∧
-      (∀ k ≥ m, k ≤ Fintype.card V → indepCount G k ≤ indepCount G m)
-
 /- ## Summary -/
 
 /-- **Erdős Problem #993 Summary.**

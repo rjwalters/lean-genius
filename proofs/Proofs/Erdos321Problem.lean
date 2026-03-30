@@ -137,23 +137,8 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
 
 /-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ N/log N asymptotically.
     More precisely, R(N) ≥ (N/log N) · Π_{i=3}^{k} log_i N. -/
-axiom bleicher_erdos_lower :
-  ∀ k : ℕ, k ≥ 4 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (maxDistinctReciprocal N : ℝ) ≥
-      (N : ℝ) / Real.log N
-
 /-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ C · (N/log N) · log log N. -/
-axiom bleicher_erdos_upper :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) ≤
-      C * (N : ℝ) / Real.log N * Real.log (Real.log N)
-
 /-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors. -/
-axiom main_term_n_over_log_n :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    c₁ * (N : ℝ) / Real.log N ≤ (maxDistinctReciprocal N : ℝ) ∧
-    (maxDistinctReciprocal N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N)
-
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #321** (OPEN): Determine the exact asymptotic

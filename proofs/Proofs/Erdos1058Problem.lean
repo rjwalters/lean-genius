@@ -44,22 +44,10 @@ axiom prime_seq : ℕ → ℕ
 **Basic properties of the prime sequence:**
 p₁ = 2, and pₙ₊₁ > pₙ for all n.
 -/
-axiom prime_seq_props :
-    prime_seq 1 = 2 ∧
-    ∀ n ≥ 1, prime_seq n < prime_seq (n + 1) ∧
-    ∀ n ≥ 1, Nat.Prime (prime_seq n)
-
 /--
 **First few primes:**
 p₁ = 2, p₂ = 3, p₃ = 5, p₄ = 7, p₅ = 11.
 -/
-axiom prime_seq_values :
-    prime_seq 1 = 2 ∧
-    prime_seq 2 = 3 ∧
-    prime_seq 3 = 5 ∧
-    prime_seq 4 = 7 ∧
-    prime_seq 5 = 11
-
 /-
 ## Part II: The Problem Statement
 -/

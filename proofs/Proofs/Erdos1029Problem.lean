@@ -78,13 +78,7 @@ axiom erdos_szekeres_upper :
   ∀ k ≥ 2, R k ≤ Nat.choose (2*k - 2) (k - 1)
 
 /-- Asymptotic form of upper bound: R(k) ≤ 4^k / √(πk) · (1 + o(1)) -/
-axiom upper_bound_asymptotic :
-  ∃ C : ℝ, C > 0 ∧ ∀ k ≥ 2, (R k : ℝ) ≤ C * 4^k / Real.sqrt k
-
 /-- Erdős-Szekeres lower bound from probabilistic method -/
-axiom erdos_szekeres_lower :
-  ∃ c : ℝ, c > 0 ∧ ∀ k ≥ 2, (R k : ℝ) ≥ c * k * 2^(k/2 : ℝ)
-
 /-- Spencer's improved lower bound constant: √2/e -/
 axiom spencer_lower_bound :
   ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
@@ -128,16 +122,11 @@ What we know: the ratio is bounded below, but possibly not above.
 -/
 
 /-- The ratio is bounded below by Spencer's constant -/
-axiom ratio_bounded_below :
-  ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K, ramseyRatio k ≥ Real.sqrt 2 / Real.exp 1 - ε
-
 /-- If conjecture is false, ratio is bounded -/
 def conjectureNegation : Prop :=
   ∃ M : ℝ, ∀ k : ℕ, ramseyRatio k ≤ M
 
 /-- Negation equivalence: the conjecture fails iff the ratio is bounded -/
-axiom negation_equiv : ¬erdos1029Conjecture ↔ conjectureNegation
-
 /-
 ## Small Values
 
@@ -145,11 +134,7 @@ Known exact values of Ramsey numbers.
 -/
 
 /-- R(1) = 1 (trivial) -/
-axiom R_1 : R 1 = 1
-
 /-- R(2) = 2 (need 2 vertices for an edge) -/
-axiom R_2 : R 2 = 2
-
 /-- R(3) = 6 (classical result) -/
 axiom R_3 : R 3 = 6
 
@@ -157,8 +142,6 @@ axiom R_3 : R 3 = 6
 axiom R_4 : R 4 = 18
 
 /-- R(5) is between 43 and 48 -/
-axiom R_5_bounds : 43 ≤ R 5 ∧ R 5 ≤ 48
-
 /-
 ## Ratio Values for Small k
 

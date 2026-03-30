@@ -75,11 +75,6 @@ Van der Waerden's theorem guarantees monochromatic APs exist in any finite color
 
 /-- Van der Waerden's theorem: any r-coloring of a sufficiently long initial
     segment of ℕ contains a monochromatic k-term AP -/
-axiom van_der_waerden_theorem (r k : ℕ) (hr : 2 ≤ r) (hk : 3 ≤ k) :
-    ∃ N : ℕ, ∀ χ : Fin N → Fin r,
-    ∃ a d : ℕ, 0 < d ∧ a + (k - 1) * d < N ∧
-      ∀ i < k, χ ⟨a + i * d, by omega⟩ = χ ⟨a, by omega⟩
-
 /-
 ## Part 4: Spencer's 3-Coloring Result
 
@@ -133,12 +128,6 @@ How many colors are needed for various bounds?
 -/
 
 /-- For f(a) = a^ε (any ε > 0), 2 colors suffice -/
-axiom two_colors_suffice_for_power_bound :
-    ∀ ε : ℝ, 0 < ε →
-    ∃ χ : Coloring, ∀ a d k : ℕ, 0 < a → 0 < d → 2 ≤ k →
-      MonochromaticAP χ a d k →
-      ∃ C : ℝ, C > 0 ∧ (k : ℝ) ≤ C * (a : ℝ) ^ ε
-
 /-- 1 color is never sufficient (van der Waerden) -/
 theorem one_color_insufficient :
     ¬∃ χ : ℕ → Fin 1, ∀ k : ℕ, 3 ≤ k →
@@ -163,10 +152,6 @@ Known bounds on the constants.
 -/
 
 /-- The optimal exponent in Erdős's construction -/
-axiom erdos_exponent_bound :
-    ∃ c : ℝ, c > 0 ∧ c < 1 ∧
-    ∃ χ : Coloring, ErdosWeakBound χ c 1
-
 /-
 ## Part 9: Summary
 -/

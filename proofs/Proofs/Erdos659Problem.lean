@@ -163,10 +163,6 @@ def isConfiguration (S : Finset (ℝ × ℝ)) (config : TwoDistanceConfig) : Pro
         dists = {a, a * φ}
 
 /-- The Moree-Osburn lattice avoids all six configurations -/
-axiom latticeAvoidsConfigs :
-  ∀ n : ℕ, ∀ T ⊆ moreeOsburnLattice n, T.card = 4 →
-    ∀ config : TwoDistanceConfig, ¬ isConfiguration T config
-
 /-
 ## Key Properties of the Moree-Osburn Lattice
 
@@ -179,31 +175,15 @@ irrationality of √2.
 
     This follows from the Euclidean distance formula:
     d² = (a₁-a₂)² + (b₁√2 - b₂√2)² = (a₁-a₂)² + 2(b₁-b₂)² -/
-axiom latticePoint_dist_sq (a₁ b₁ a₂ b₂ : ℤ) :
-    dist (latticePoint a₁ b₁) (latticePoint a₂ b₂) ^ 2 =
-    (a₁ - a₂)^2 + 2 * (b₁ - b₂)^2
-
 /-- The Moree-Osburn lattice contains no equilateral triangles.
     This follows from the fact that if three points form an equilateral triangle,
     they would require a distance ratio of 1:1:1, which would force
     (a₁-a₂)² + 2(b₁-b₂)² = (a₂-a₃)² + 2(b₂-b₃)² = (a₃-a₁)² + 2(b₃-b₁)²
     in a way that leads to irrational constraints. -/
-axiom lattice_no_equilateral :
-  ∀ n : ℕ, ∀ p₁ p₂ p₃ : ℝ × ℝ,
-    p₁ ∈ moreeOsburnLattice n → p₂ ∈ moreeOsburnLattice n → p₃ ∈ moreeOsburnLattice n →
-    p₁ ≠ p₂ → p₂ ≠ p₃ → p₃ ≠ p₁ →
-    ¬(dist p₁ p₂ = dist p₂ p₃ ∧ dist p₂ p₃ = dist p₃ p₁)
-
 /-- The Moree-Osburn lattice contains no squares.
     A square would require four points with equal sides and equal diagonals
     at ratio √2:1, but this would require solutions to
     x² + 2y² = 2(u² + 2v²) in integers that don't exist generically. -/
-axiom lattice_no_squares :
-  ∀ n : ℕ, ∀ p₁ p₂ p₃ p₄ : ℝ × ℝ,
-    p₁ ∈ moreeOsburnLattice n → p₂ ∈ moreeOsburnLattice n →
-    p₃ ∈ moreeOsburnLattice n → p₄ ∈ moreeOsburnLattice n →
-    ¬isConfiguration {p₁, p₂, p₃, p₄} .square
-
 /-- The set of positive integers representable as x² + 2y² -/
 def representable_x2_2y2 : Set ℕ :=
   { d | ∃ x y : ℤ, (d : ℤ) = x^2 + 2*y^2 }
@@ -222,10 +202,6 @@ noncomputable def B2 (N : ℕ) : ℕ :=
 
     The representable integers are exactly those whose prime factorization has
     all primes ≡ 5, 7 (mod 8) appearing to even powers. -/
-axiom landau_x2_plus_2y2 :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N > 1 →
-    (B2 N : ℝ) ≤ C * N / Real.sqrt (Real.log N)
-
 /-- The 4-point property follows from avoiding all six two-distance configurations -/
 theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
     (h : ∀ T ⊆ S, T.card = 4 → ∀ config : TwoDistanceConfig, ¬ isConfiguration T config) :

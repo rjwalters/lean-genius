@@ -62,11 +62,7 @@ Axiomatized since the Nat.find formulation requires proving existence. -/
 axiom t (n : ℕ) : ℕ
 
 /-- t_n = 0 when n is a perfect square -/
-axiom t_of_square (n : ℕ) (hn : IsPerfectSquare n) : t n = 0
-
 /-- t_n > 0 when n is not a perfect square -/
-axiom t_pos (n : ℕ) (hn : ¬IsPerfectSquare n) : t n > 0
-
 /-
 ## Part 2: The Example t_6 = 6
 -/
@@ -75,8 +71,6 @@ axiom t_pos (n : ℕ) (hn : ¬IsPerfectSquare n) : t n > 0
 theorem example_t6_product : 6 * 8 * 12 = 24 * 24 := by native_decide
 
 /-- t_6 = 6 -/
-axiom t6_equals_6 : t 6 = 6
-
 /-
 ## Part 3: The Largest Prime Divisor
 -/
@@ -111,34 +105,17 @@ axiom selfridge_upper_bound :
 -/
 
 /-- Strong lower bound for all non-squares -/
-axiom lower_bound_for_all :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 3 → ¬IsPerfectSquare n →
-    (t n : ℝ) ≥ C * (Real.log (Real.log n))^((6:ℝ)/5) /
-                   (Real.log (Real.log (Real.log n)))^((1:ℝ)/5)
-
 /-
 ## Part 6: Upper Bounds
 -/
 
 /-- Upper bound for many n -/
-axiom upper_bound_for_many :
-  ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ x ≥ N₀,
-    (Finset.filter (fun n =>
-      ¬IsPerfectSquare n ∧
-      (t n : ℝ) ≤ Real.exp (C * Real.sqrt (Real.log n * Real.log (Real.log n))))
-      (Finset.range x)).card ≥ x^(1 - ε)
-
 /-
 ## Part 7: Bui-Pratt-Zaharescu (2024)
 -/
 
 /-- The distribution of t_n follows P(n)'s distribution:
 for most n with P(n) in a given range, t_n = P(n). -/
-axiom bui_pratt_zaharescu_2024 :
-  ∀ c : ℝ, 0 < c → c ≤ 1 →
-    ∃ f : ℕ → ℝ, (∀ n, 0 ≤ f n ∧ f n ≤ 1) ∧
-      Filter.Tendsto f Filter.atTop (nhds 1)
-
 /-
 ## Part 8: Connection to Smooth Numbers
 -/
@@ -147,11 +124,6 @@ axiom bui_pratt_zaharescu_2024 :
 def IsSmooth (n y : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y
 
 /-- For smooth n, t_n is relatively small -/
-axiom smooth_numbers_small_t :
-  ∀ y : ℕ, y ≥ 2 →
-    ∀ n : ℕ, n > 1 → IsSmooth n y → ¬IsPerfectSquare n →
-    (t n : ℝ) ≤ y
-
 /-
 ## Part 9: Summary
 -/

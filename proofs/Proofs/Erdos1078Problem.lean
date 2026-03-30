@@ -170,10 +170,6 @@ The sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ ≈ (r - 3/2)n asymptotically.
 
 For large n: ⌈sn/(2s-1)⌉ ≈ n/2 + O(1), so threshold ≈ (r - 3/2)n.
 -/
-axiom asymptotic_agreement (r : ℕ) (hr : r ≥ 2) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |(sharpThreshold r n : ℝ) - (r - 3/2 : ℝ) * n| < ε * n
-
 /- ## Part VII: Connection to Transversals -/
 
 /--
@@ -190,11 +186,6 @@ def IsIndependentTransversal (G : RPartiteGraph r n)
 **Extremal Example:**
 The construction showing r - 3/2 is tight uses parity.
 -/
-axiom extremal_construction (r n : ℕ) :
-    ∃ G : RPartiteGraph r n,
-      (minDegree G.edges : ℝ) ≥ (r - 3/2 : ℝ) * n - n ∧
-      ¬ContainsKr G
-
 /- ## Part VIII: Summary -/
 
 /--

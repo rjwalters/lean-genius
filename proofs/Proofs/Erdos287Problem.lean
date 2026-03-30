@@ -45,9 +45,6 @@ def maxGap (ns : List ℕ) : ℕ :=
 -/
 
 /-- 1 = 1/2 + 1/3 + 1/6 is a valid decomposition with max gap 3. -/
-axiom example_2_3_6 :
-    IsUnitFractionDecomp [2, 3, 6] ∧ maxGap [2, 3, 6] = 3
-
 /-!
 ## Part III: Known Lower Bound
 -/
@@ -70,9 +67,6 @@ axiom no_consecutive_reciprocals :
 
 If true, the example [2, 3, 6] would be optimal (max gap = 3).
 -/
-axiom erdos_287_conjecture :
-    ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 3
-
 /-!
 ## Part V: Main Theorem
 -/

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Deshouillers, Erdős",
     "sourceUrl": "https://erdosproblems.com/875",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos875Problem.lean",
     "tags": [
       "erdos",
@@ -17,21 +17,21 @@
       "binary-representation",
       "popcount"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "erdosNumber": 875,
     "erdosUrl": "https://erdosproblems.com/875",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 142,
-    "assumptions": "3 axioms (erdos_875_gap_threshold, erdos_875_ratio_one, popcount_sum_distinct_pow2) and 1 sorry (powers_of_two_admissible). finite_version_connection proved as trivial bound.",
+    "axiomCount": 0,
+    "lineCount": 212,
+    "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Deshouillers and Erdős** posed this as an infinite variant of Problem #874. An **admissible sequence** $a_1 < a_2 < \\cdots$ has the property that the $r$-fold sumsets $S_r = \\{a_{i_1} + \\cdots + a_{i_r} : i_1 < \\cdots < i_r\\}$ are pairwise disjoint for distinct $r \\geq 1$. The simplest example is powers of 2 ($a_n = 2^n$), where binary representation ensures disjointness via popcount. The central question is **how slowly** an admissible sequence can grow. Erdős noted that the ratio-one property $a_{n+1}/a_n \\to 1$ (subexponential growth) is achievable but 'not completely trivial.' The problem connects to **Sidon sets** (where sumsets of different sizes are automatically separated by parity of the number of terms) and to the **subset sum problem** in computational complexity.",
     "problemStatement": "For an infinite admissible sequence A with pairwise disjoint r-fold sumsets: (1) How fast must A grow? (2) For which c can a_{n+1} − aₙ ≤ n^c? (3) Can a_{n+1}/aₙ → 1?",
     "text": "Let A = {a₁ < a₂ < ...} with r-fold sumsets Sᵣ pairwise disjoint for all r. How fast must A grow? For which c is a_{n+1} − aₙ ≤ n^c possible? Can a_{n+1}/aₙ → 1? Erdős noted the ratio-1 case is 'not completely trivial.'",
-    "proofStrategy": "The formalization defines the r-fold sumset via `Finset.powersetCard` and `Finset.image`, the admissibility condition combining strict increase with sumset disjointness, and the polynomial gap and ratio-one properties using `Filter.atTop`. It proves two results: `pow2_strictly_increasing` (powers of 2 are strictly increasing) and `admissible_growth_lower` (a(n) ≥ n+1 by induction). The powers-of-2 admissibility is partially proved (strict increase done, disjoint sumsets via sorry). The gap threshold and ratio-one existence are stated as axioms.",
+    "proofStrategy": "The formalization defines the r-fold sumset via Finset.powersetCard and Finset.image, the admissibility condition combining strict increase with sumset disjointness, and the polynomial gap and ratio-one properties using Filter.atTop. It fully proves powers-of-2 admissibility via binary uniqueness: subsets of {2^0,...,2^(N-1)} with equal sums must be equal (by induction on N, case-splitting on the maximal power), so r-fold and s-fold sumsets with r!=s are disjoint. Also proves admissible_growth_lower (a(n) >= n+1 by induction).",
     "keyInsights": [
       "**Powers of 2 are admissible**: binary encoding uniquely determines which elements are summed, and popcount (number of 1-bits) equals the number of terms, ensuring different $r$-fold sumsets are disjoint",
       "**Critical exponent for polynomial gaps**: there exists a threshold $c_0$ such that admissible sequences with gaps $\\leq n^c$ exist for $c > c_0$ but not for $c < c_0$—the value of $c_0$ is unknown",

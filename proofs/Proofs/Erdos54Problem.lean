@@ -54,22 +54,10 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 /-- Burr–Erdős (1985): No Ramsey 2-complete set can be too sparse.
 There exists `c > 0` such that no Ramsey 2-complete `A` has
 `|A ∩ [1,N]| ≤ c · (log N)²` for all large `N`. -/
-axiom burr_erdos_lower :
-    ∃ c : ℚ, 0 < c ∧
-      ∀ A : Set ℕ, IsRamsey2Complete A →
-        ∀ N₀ : ℕ, ∃ N : ℕ, N₀ ≤ N ∧
-          c * ((Nat.log 2 N : ℚ)) ^ 2 ≤ (countingFn A N : ℚ)
-
 /- ## Conlon–Fox–Pham upper bound -/
 
 /-- Conlon–Fox–Pham (2021): There exists a Ramsey 2-complete set
 with `|A ∩ [1,N]| ≪ (log N)²`. -/
-axiom conlon_fox_pham :
-    ∃ (A : Set ℕ), IsRamsey2Complete A ∧
-      ∃ C : ℚ, 0 < C ∧
-        ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-          (countingFn A N : ℚ) ≤ C * ((Nat.log 2 N : ℚ)) ^ 2
-
 /- ## Main problem (solved) -/
 
 /-- Erdős Problem 54 (solved): The minimum growth rate of a Ramsey
@@ -88,7 +76,3 @@ def ErdosProblem54 : Prop :=
 
 /-- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
 `|A ∩ [1,N]| < (2 log₂ N)³`. This was improved by Conlon–Fox–Pham. -/
-axiom burr_erdos_upper :
-    ∃ (A : Set ℕ), IsRamsey2Complete A ∧
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (countingFn A N : ℚ) < (2 * (Nat.log 2 N : ℚ)) ^ 3

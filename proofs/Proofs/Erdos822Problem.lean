@@ -73,9 +73,6 @@ theorem nPlusTotient_ge (n : ℕ) : nPlusTotient n ≥ n := by
 /-- For even n ≥ 2, n + φ(n) is always even (since φ(n) is even for n ≥ 3).
     For odd primes p, p + φ(p) = p + (p-1) = 2p - 1 is odd.
     So odd values in the range come from primes (and from n = 1, 2). -/
-axiom nPlusTotient_even_of_even (n : ℕ) (hn : n ≥ 2) (heven : Even n) :
-    Even (nPlusTotient n)
-
 /- ## Main Theorem
 
 The main result requires deep analytic number theory from
@@ -102,10 +99,6 @@ def nPlusSigmaValues (sigma : ℕ → ℕ) : Set ℕ :=
 
 /-- **Axiom:** The density result extends to n + σ(n) and similar functions
     (Gabdullin–Iudelevich–Luca 2024). -/
-axiom generalized_density (f : ℕ → ℕ) (hf : f = Nat.totient ∨ f = Nat.divisors ∘ Finset.card) :
-    ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ N₀ : ℕ, ∀ M ≥ N₀,
-    ((Set.range fun n => n + f n) ∩ Set.Iio M).ncard ≥ (c - ε) * M
-
 /- ## Summary -/
 
 /-- **Erdős Problem 822: Summary**

@@ -82,42 +82,17 @@ def HasClique (A : Set Point2) (k : ℕ) : Prop :=
 /-- **Question 1**: Can the chromatic number be infinite?
     That is, does there exist an infinite general-position set A
     such that χ(G(A)) > k for every k? -/
-axiom erdos_130_infinite_chromatic :
-  ∃ A : Set Point2, A.Infinite ∧ InGeneralPosition A ∧
-    ∀ k : ℕ, ¬ChromaticAtMost A k
-
 /-- **Question 2**: How large can the clique number be? -/
-axiom erdos_130_clique_bound :
-  ∀ A : Set Point2, A.Infinite → InGeneralPosition A →
-    ∃ M : ℕ, ∀ k : ℕ, HasClique A k → k ≤ M
-
 /- ## Known Results -/
 
 /-- **Anning–Erdős (1945)**: An infinite set with all pairwise
     integer distances must have all points collinear. Therefore
     no infinite clique exists in general position. -/
-axiom anning_erdos :
-  ∀ A : Set Point2, A.Infinite →
-    (∀ p q : Point2, p ∈ A → q ∈ A → p ≠ q → IsIntegerDist p q) →
-    ∃ p q : Point2, p ∈ A ∧ q ∈ A ∧ p ≠ q ∧
-      ∀ r ∈ A, AreCollinear p q r
-
 /-- **Finite clique consequence**: In general position, the clique
     number must be finite (follows from Anning–Erdős). -/
-axiom finite_clique_general_position :
-  ∀ A : Set Point2, A.Infinite → InGeneralPosition A →
-    ∃ M : ℕ, ∀ k : ℕ, HasClique A k → k ≤ M
-
 /-- **Erdős–Anning bound**: Any set of n points with no 3 collinear
     and all pairwise distances integers has n bounded by a function
     of the diameter. -/
-axiom erdos_anning_diameter_bound :
-  ∀ S : Finset Point2,
-    (∀ p q : Point2, p ∈ S → q ∈ S → p ≠ q → IsIntegerDist p q) →
-    (∀ p q r : Point2, p ∈ S → q ∈ S → r ∈ S →
-      p ≠ q → q ≠ r → p ≠ r → ¬AreCollinear p q r) →
-    ∃ D : ℕ, S.card ≤ D
-
 /- ## Observations -/
 
 /- **Chromatic vs Clique gap**: Even though the clique number is finite,

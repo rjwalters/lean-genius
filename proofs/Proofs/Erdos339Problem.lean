@@ -113,28 +113,12 @@ theorem distinct_subset_general (A : Set ℕ) (r : ℕ) :
 
 /-- The surprise: density is preserved! Distinct sums are dense when
     general sums are dense, even though there are "fewer" of them. -/
-axiom density_preservation :
-  ∀ A : Set ℕ, ∀ r ≥ 2,
-    ∀ δ > 0, lowerDensity (rSums A r) ≥ δ →
-    ∃ δ' > 0, lowerDensity (rDistinctSums A r) ≥ δ'
-
 /- ## Part VI: Key Lemmas (Proof Outline) -/
 
 /-- Key observation: In any long arithmetic progression of r-sums,
     most can be achieved with distinct elements. -/
-axiom arithmetic_progression_lemma (A : Set ℕ) (r : ℕ) (hr : r ≥ 2) :
-  ∀ d a N : ℕ, d > 0 → N > 0 →
-    (∀ k < N, a + k * d ∈ rSums A r) →
-    (Finset.filter (fun k => a + k * d ∈ rDistinctSums A r) (Finset.range N)).card
-      ≥ N * 2 / 3
-
 /-- The proof uses: if we have "many" representations with repetition,
     we can perturb to get distinct elements. -/
-axiom perturbation_argument :
-  ∀ A : Set ℕ, ∀ r ≥ 2, ∀ n : ℕ,
-    n ∈ rSums A r →
-    ∃ m : ℕ, |m - n| ≤ r^2 ∧ m ∈ rDistinctSums A r
-
 /- ## Part VII: Special Cases -/
 
 /-- For r = 2 (sumsets), this is about A + A vs A +̂ A. -/

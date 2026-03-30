@@ -44,33 +44,16 @@ noncomputable def abelianCoverNumber (n : ℕ) : ℕ :=
 /- ## Main Problem -/
 
 /-- **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
-axiom erdos_117_problem :
-  ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
-    ∀ n : ℕ, n > 0 →
-      c₁ ^ n < (abelianCoverNumber n : ℝ) ∧
-      (abelianCoverNumber n : ℝ) < c₂ ^ n
-
 /- ## Known Results -/
 
 /-- **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
     c₁^n < h(n) < c₂^n. The gap between c₁ and c₂ is open. -/
-axiom pyber_1987 :
-  ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
-    ∀ n : ℕ, n > 0 →
-      c₁ ^ n ≤ (abelianCoverNumber n : ℝ) ∧
-      (abelianCoverNumber n : ℝ) ≤ c₂ ^ n
-
 /-- **Isaacs Lower Bound**: the exponential lower bound c₁^n was known
     to Isaacs before Pyber's work. -/
-axiom isaacs_lower :
-  ∃ c : ℝ, c > 1 ∧ ∀ n : ℕ, n > 0 → c ^ n ≤ (abelianCoverNumber n : ℝ)
-
 /- ## Observations -/
 
 /-- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
     Then h(1) = 1. -/
-axiom trivial_case : abelianCoverNumber 1 = 1
-
 /- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
     condition on the group. The covering number h(n) measures how far the group
     is from being globally Abelian. -/

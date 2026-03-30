@@ -86,9 +86,6 @@ noncomputable def g (n : ℕ) : ℕ :=
   sInf { maxIndependent f | f ∈ validPairFunctions n }
 
 /-- g(n) is the guaranteed independent set size. -/
-axiom g_spec (f : PairFunction n) (hf : isValidPairFunction f) :
-    ∃ X : Finset (Fin n), isIndependent f X ∧ X.card ≥ g n
-
 /-
 ## Erdős-Hajnal Bounds (1958)
 
@@ -126,9 +123,6 @@ axiom spencer_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
   (g n : ℝ) ≥ c * (n : ℝ) ^ (1/2 : ℝ)
 
 /-- Spencer's bound improves Erdős-Hajnal: n^{1/3} ≤ n^{1/2} for n ≥ 2. -/
-axiom spencer_improves_eh (n : ℕ) (hn : n ≥ 2) :
-    (n : ℝ) ^ (1/3 : ℝ) ≤ (n : ℝ) ^ (1/2 : ℝ)
-
 /-
 ## Conlon-Fox-Sudakov Result (2016)
 
@@ -140,9 +134,6 @@ axiom cfs_upper : ∃ C > 0, ∃ N : ℕ, ∀ n ≥ N,
   (g n : ℝ) ≤ C * (n : ℝ) ^ (1/2 : ℝ)
 
 /-- CFS improves Erdős-Hajnal upper bound: n^{1/2} ≤ (n log n)^{1/2}. -/
-axiom cfs_improves_eh (n : ℕ) (hn : n ≥ 3) :
-    (n : ℝ) ^ (1/2 : ℝ) ≤ ((n : ℝ) * Real.log n) ^ (1/2 : ℝ)
-
 /-
 ## The Main Result: g(n) = Θ(n^(1/2))
 
@@ -206,10 +197,6 @@ noncomputable def expectedIndependent (f : PairFunction n) (p : ℝ) : ℝ :=
 
 /-- Probabilistic lower bound: every valid pair function has an independent
     set of size at least n^{1/2}/2. -/
-axiom probabilistic_lower_sketch (f : PairFunction n) (hf : isValidPairFunction f) :
-    ∃ X : Finset (Fin n), isIndependent f X ∧
-      (X.card : ℝ) ≥ (n : ℝ)^(1/2 : ℝ) / 2
-
 /-
 ## Upper Bound Construction
 
@@ -217,10 +204,6 @@ Constructions achieving the upper bound.
 -/
 
 /-- There exist pair functions with small independent sets. -/
-axiom construction_upper (n : ℕ) (hn : n ≥ 4) :
-  ∃ f : PairFunction n, isValidPairFunction f ∧
-    maxIndependent f ≤ 2 * Nat.ceil ((n : ℝ) ^ (1/2 : ℝ))
-
 /-
 ## Historical Development
 

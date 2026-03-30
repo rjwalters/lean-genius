@@ -138,11 +138,6 @@ axiom erdos_nathanson_k2 (A : AdditiveSet) :
 **Implication of logarithmic growth for k = 2:**
 The EN condition is implied by certain logarithmic growth conditions.
 -/
-axiom en_condition_from_log_growth (A : AdditiveSet) (c : ℝ) :
-    c > (Real.log (4/3))⁻¹ →
-    HasLogarithmicGrowth A 2 c →
-    SatisfiesENCondition A
-
 /-
 ## Part IV: The Main Conjecture
 -/
@@ -169,9 +164,6 @@ def FullConjecture : Prop :=
 **Status: OPEN**
 The conjecture remains unresolved for k ≥ 3.
 -/
-axiom conjecture_is_open : ¬∃ (b : Bool),
-  (b = true → FullConjecture) ∧ (b = false → ¬FullConjecture)
-
 /-
 ## Part V: Partial Results and Special Cases
 -/
@@ -212,9 +204,6 @@ Waring's theorem says k-th powers form a basis of some order g(k).
 -/
 def KthPowers (k : ℕ) : AdditiveSet := {n : ℕ | ∃ m : ℕ, n = m^k}
 
-axiom waring_theorem (k : ℕ) (hk : k ≥ 1) :
-    ∃ g : ℕ, IsAdditiveBasis (KthPowers k) g
-
 /-
 ## Part VI: Structural Properties
 -/
@@ -242,12 +231,6 @@ def FiniteRemoval (A : AdditiveSet) (S : Finset ℕ) : AdditiveSet :=
 **Threshold phenomenon:**
 Bases with logarithmic representation counts exhibit threshold behavior.
 -/
-axiom threshold_phenomenon (A : AdditiveSet) (k : ℕ) (hk : k ≥ 2) :
-    IsAdditiveBasis A k →
-    (∃ c : ℝ, HasLogarithmicGrowth A k c) →
-    (ContainsMinimalBasis A k ∨
-     ∃ B : AdditiveSet, B ⊆ A ∧ IsAdditiveBasis B k ∧ ¬∃ c, HasLogarithmicGrowth B k c)
-
 /-
 ## Part VII: Connections to Other Problems
 -/
@@ -274,9 +257,6 @@ def IsSidonSet (A : AdditiveSet) : Prop :=
 **Sidon sets have controlled representations:**
 A Sidon set has r₂(n) ≤ 1 for sums of two distinct elements.
 -/
-axiom sidon_controlled_reps (A : AdditiveSet) :
-    IsSidonSet A → ∀ n : ℕ, representationCount A 2 n ≤ n
-
 /-
 ## Part VIII: Summary
 

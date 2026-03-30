@@ -106,26 +106,10 @@ theorem erdos_189_is_false : ¬ Erdos189Statement := by
 For any finite coloring of ℝ², some color class contains the vertices
 of a right-angled triangle of every area.
 -/
-axiom graham_triangles :
-  ∀ n > 0, ∀ coloring : FiniteColoring n,
-    ∃ color : Fin n, ∀ A > 0, ∃ a b c : Plane,
-      coloring a = color ∧ coloring b = color ∧ coloring c = color ∧
-      inner (a - b) (c - b) = 0 ∧ -- right angle at b
-      (1/2) * ‖a - b‖ * ‖c - b‖ = A
-
 /--
 **Squares are also false**: The statement fails even more strongly for squares.
 This is "easy to see" according to Graham.
 -/
-axiom squares_also_false :
-  ∃ (n : ℕ) (coloring : FiniteColoring n),
-    ∀ color : Fin n, ∃ A > 0, ¬ ∃ a b c d : Plane,
-      coloring a = color ∧ coloring b = color ∧
-      coloring c = color ∧ coloring d = color ∧
-      IsRectangle a b c d ∧
-      ‖a - b‖ = ‖b - c‖ ∧ -- square condition
-      rectangleArea a b c d = A
-
 /--
 **Parallelograms remain open**: As of January 2025, the analogous question
 for parallelograms (instead of rectangles) is still unsolved.

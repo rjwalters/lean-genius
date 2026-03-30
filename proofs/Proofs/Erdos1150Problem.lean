@@ -245,14 +245,6 @@ axiom bbmst_flat :
 /-- **Kahane (1980)**: Ultraflat polynomials exist for unimodular
     coefficients (|aᵢ| = 1, not necessarily ±1).
     This shows the restriction to ±1 is essential for #1150. -/
-axiom kahane_unimodular_ultraflat :
-    ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ n in atTop, ∃ coeffs : Fin (n + 1) → ℂ,
-      (∀ i, ‖coeffs i‖ = 1) ∧
-      ∀ z : ℂ, ‖z‖ = 1 →
-        let P := ∑ i : Fin (n + 1), coeffs i * z ^ (i : ℕ)
-        (1 - ε) * Real.sqrt n ≤ ‖P‖ ∧ ‖P‖ ≤ (1 + ε) * Real.sqrt n
-
 /-- BBMST implies the sup norm of some Littlewood polynomial is at most c₂√n.
     In particular, it's NOT true that max|P| > C√n for arbitrarily large C.
     This follows from bbmst_flat (the sup norm is bounded by the pointwise bound). -/
@@ -305,12 +297,6 @@ theorem flat_does_not_imply_ultraflat :
 /-- **Rudin-Shapiro polynomials** give a concrete family with
     max_{|z|=1} |P(z)| ≤ √(2(n+1)) for degree n.
     These are Littlewood polynomials with bounded sup norm. -/
-axiom rudin_shapiro_bound :
-    ∀ k : ℕ, k ≥ 1 →
-    ∃ p : Polynomial ℂ, p.natDegree = 2^k - 1 ∧
-      IsLittlewoodPolynomial p ∧
-      supNorm p ≤ Real.sqrt (2 * 2^k)
-
 /-
 ## Summary
 -/

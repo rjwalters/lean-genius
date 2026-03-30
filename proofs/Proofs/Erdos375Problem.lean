@@ -132,22 +132,10 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
 **Grimm's Original Result (1969):**
 The conjecture holds when k << log n / log log n.
 -/
-axiom grimm_original :
-    ∃ c : ℝ, c > 0 ∧ ∀ n k : ℕ, k ≥ 1 → n ≥ 3 →
-      (k : ℝ) ≤ c * Real.log n / Real.log (Real.log n) →
-      isCompositeBlock n k →
-      ∃ f : PrimeDivisorAssignment n k, isValidAssignment n k f
-
 /--
 **Erdős-Selfridge Improvement:**
 The conjecture holds when k <= (1 + o(1)) log n.
 -/
-axiom erdos_selfridge :
-    ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n k : ℕ, n ≥ N → k ≥ 1 →
-      (k : ℝ) ≤ (1 + ε) * Real.log n →
-      isCompositeBlock n k →
-      ∃ f : PrimeDivisorAssignment n k, isValidAssignment n k f
-
 /--
 **Ramachandra-Shorey-Tijdeman (1975):**
 The conjecture holds when k << (log n / log log n)³.
@@ -177,13 +165,6 @@ If Grimm's conjecture is true, then prime gaps satisfy
 p_{n+1} - p_n < p_n^{1/2-c} for some c > 0.
 This would be much stronger than Legendre's conjecture!
 -/
-axiom grimm_implies_prime_gap :
-    grimmsConjecture →
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      -- If p is the n-th prime and q is the (n+1)-th prime
-      -- then q - p < p^(1/2 - c)
-      True  -- simplified statement
-
 /--
 **Legendre's Conjecture:**
 There is always a prime between n² and (n+1)² for n >= 1.
@@ -241,18 +222,11 @@ theorem example_90_to_95 :
 **Prime Counting in Composites:**
 A composite n has at least one prime factor, and at most log₂(n) distinct prime factors.
 -/
-axiom prime_factor_bound (n : ℕ) (hn : isComposite n) :
-    ∃ P : Finset ℕ, (∀ p ∈ P, p.Prime ∧ p ∣ n) ∧ P.card ≥ 1 ∧
-      (P.card : ℝ) ≤ Real.log n / Real.log 2
-
 /--
 **Small Prime Divisors:**
 Many composites have small prime factors.
 This is why the conjecture becomes hard for large k.
 -/
-axiom small_prime_divisor :
-    ∀ n : ℕ, isComposite n → ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ (p : ℝ) ≤ Real.sqrt n
-
 /-
 ## Part VIII: Hall's Marriage Theorem Connection
 -/
@@ -289,9 +263,6 @@ def hallsCondition (n k : ℕ) : Prop :=
 Grimm's conjecture is equivalent to Hall's condition holding
 for all composite blocks.
 -/
-axiom grimm_iff_hall :
-    grimmsConjecture ↔ ∀ n k : ℕ, k ≥ 1 → isCompositeBlock n k → hallsCondition n k
-
 /-
 ## Part IX: Main Results Summary
 -/

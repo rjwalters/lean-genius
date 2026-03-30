@@ -97,10 +97,6 @@ For all n, the maximum 1-avoiding family is achieved by:
 F = {A ⊆ [n] : |A| > (n+1)/2 or |A| < 1}
 The case |A| < 1 gives only ∅.
 -/
-axiom frankl_1977 :
-    ∀ n : ℕ, n ≥ 1 → T n 1 = ((Finset.range n).powerset.filter
-      (fun A => A.card > (n + 1) / 2 ∨ A.card < 1)).card
-
 /--
 **Construction for r = 1:**
 Large sets (size > (n+1)/2) cannot have intersection exactly 1 with each other.
@@ -144,12 +140,6 @@ def franklFurediEven (n r : ℕ) : Finset (Finset ℕ) :=
 For fixed r and n sufficiently large, T(n,r) equals the size of
 the optimal Frankl-Füredi family.
 -/
-axiom frankl_furedi_1984 :
-    ∀ r : ℕ, r ≥ 1 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      T n r = if (n + r) % 2 = 1
-              then (franklFurediOdd n r).card
-              else (franklFurediEven n r).card
-
 /-
 ## Part V: The Main Question - Exponential Bound
 -/
@@ -187,8 +177,6 @@ the forbidden intersection constraint becomes very powerful.
 **Unit Distance Graph:**
 The graph on ℝ^n where two points are adjacent if their distance is 1.
 -/
-axiom UnitDistanceGraph : ℕ → Type*
-
 /--
 **Chromatic Number:**
 χ(n) = chromatic number of the unit distance graph in ℝ^n.
@@ -200,17 +188,11 @@ axiom chromaticNumber (n : ℕ) : ℕ
 The affirmative answer to the main question implies that χ(n) grows
 exponentially in n. (This was also proved by Frankl-Wilson via different methods.)
 -/
-axiom implies_exponential_chromatic :
-    mainQuestion → ∃ c : ℚ, c > 1 ∧ ∀ n : ℕ, n ≥ 1 → (chromaticNumber n : ℚ) ≥ c ^ n
-
 /--
 **Frankl-Wilson (1981):**
 Proved the exponential growth of χ(n) using the "Frankl-Wilson theorem"
 on set systems avoiding fixed intersection sizes (mod p).
 -/
-axiom frankl_wilson_1981 :
-    ∃ c : ℚ, c > 1 ∧ ∀ n : ℕ, n ≥ 1 → (chromaticNumber n : ℚ) ≥ c ^ n
-
 /-
 ## Part VII: The Frankl-Wilson Theorem
 -/
@@ -228,11 +210,6 @@ def avoidsLIntersections (L : Finset ℕ) (F : Finset (Finset ℕ)) : Prop :=
 For prime p and |L| = s < p, if all sets in F have size ≡ k (mod p)
 and L ⊆ {0,1,...,p-1} \ {k}, then |F| ≤ C(n, s).
 -/
-axiom frankl_wilson_theorem :
-    ∀ p s k n : ℕ, Nat.Prime p → s < p →
-      ∀ F : Finset (Finset ℕ), (∀ A ∈ F, A.card % p = k) →
-        F.card ≤ Nat.choose n s
-
 /-
 ## Part VIII: Related Problem #702
 -/

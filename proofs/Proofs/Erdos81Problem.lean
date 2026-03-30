@@ -159,9 +159,6 @@ axiom erdos_ordman_zalcstein (G : SimpleGraph V) (hChordal : IsChordal G) :
 Every split graph on n vertices has a clique partition with
 at most 3n²/16 + O(n) cliques.
 -/
-axiom chen_erdos_ordman_split (G : SimpleGraph V) (hSplit : IsSplitGraph G) :
-    cliquePartitionNumber G ≤ 3 * (Fintype.card V)^2 / 16 + (Fintype.card V)
-
 /- ## Part V: The Main Conjecture
 -/
 
@@ -215,9 +212,6 @@ def HasPerfectEliminationOrdering (G : SimpleGraph V) : Prop :=
 **Chordal ↔ Perfect Elimination Ordering:**
 A graph is chordal if and only if it has a perfect elimination ordering.
 -/
-axiom chordal_iff_peo (G : SimpleGraph V) :
-    IsChordal G ↔ HasPerfectEliminationOrdering G
-
 /- ## Part VIII: Computational Aspects
 -/
 
@@ -237,11 +231,6 @@ Is there a polynomial-time algorithm to find the optimal clique partition
 for chordal graphs? The PEO-based greedy algorithm gives a 2-approximation,
 but optimality is unknown.
 -/
-axiom optimal_partition_open :
-    ∀ (V : Type) [hV : Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      @IsChordal V hV _ G →
-      ∃ P : @CliquePartition V hV _ G, P.cliques.card = @cliquePartitionNumber V hV _ G
-
 /- ## Part IX: Related Problems
 -/
 
@@ -262,9 +251,6 @@ def intersectionNumber (G : SimpleGraph V) : ℕ :=
 clique partition number ≥ intersection number
 (partition is more restrictive than cover)
 -/
-axiom partition_geq_intersection (G : SimpleGraph V) :
-    cliquePartitionNumber G ≥ intersectionNumber G
-
 /- ## Part X: Summary
 -/
 

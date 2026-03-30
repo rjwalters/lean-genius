@@ -71,30 +71,10 @@ axiom longestSimilarRun (n : ℕ) : ℕ
 -- ══════════════════════════════════════════════════════════════════
 
 /-- Lower bound: f(n) ≥ n/12 for large n. -/
-axiom longestSimilarRun_lower :
-  ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-    (longestSimilarRun n : ℝ) ≥ c * (n : ℝ)
-
 /-- Upper bound: f(n) ≤ n/4 + O(1). -/
-axiom longestSimilarRun_upper :
-  ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-    (longestSimilarRun n : ℝ) ≤ (n : ℝ) / 4 + C
-
--- ══════════════════════════════════════════════════════════════════
--- § 4: The Conjecture
--- ══════════════════════════════════════════════════════════════════
-
 /-- **Erdős Problem #1005** (OPEN): Is there a constant c > 0 such that
     f(n) = (c + o(1))·n? That is, does the longest similar run grow linearly
     with a definite leading constant? -/
-axiom erdos_1005_conjecture :
-  ∃ c : ℝ, c > 0 ∧ ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
-    |(longestSimilarRun n : ℝ) / (n : ℝ) - c| < ε
-
--- ══════════════════════════════════════════════════════════════════
--- § 5: Basic Mediant Properties
--- ══════════════════════════════════════════════════════════════════
-
 /-- If a/b < c/d are consecutive Farey fractions (bc - ad = 1),
     then c/d - a/b = 1/(bd). -/
 theorem consecutive_farey_gap {n : ℕ} (f g : FareyFraction n)

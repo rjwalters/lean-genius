@@ -98,12 +98,6 @@ theorem H_one_asymptotic :
   exact ⟨K₁, K₂, hK₁, hK₂, fun x hx => ⟨hlow x hx, hup x hx⟩⟩
 
 /-- Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
-axiom weingartner_asymptotic_constant :
-    ∃ c : ℝ, c > 0.87 ∧ c < 0.88 ∧
-      ∀ ε > 0, ∃ N : ℕ, ∀ x : ℕ, x ≥ N →
-        (c - ε) * x / Real.log x ≤ (H_C 1 x : ℝ) ∧
-        (H_C 1 x : ℝ) ≤ (c + ε) * x / Real.log x
-
 /-
 ## Part 4: The Case 0 < C < 1
 
@@ -113,11 +107,6 @@ Trivial lower bound by union bound.
 /-- For C < 1, the union bound gives (1-C)x survivors.
     The sum of x/a over a ∈ A is at most x · Σ 1/a ≤ Cx,
     so at least (1-C)x elements survive (minus rounding). -/
-axiom union_bound_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
-    ∀ x : ℕ, x ≥ 2 → ∀ A : Finset ℕ,
-      (∀ a ∈ A, 2 ≤ a) → reciprocalSum A ≤ C →
-      (sievedCount A x : ℝ) ≥ (1 - C) * x - 1
-
 /-- For 0 < C < 1, the answer is YES (trivially): any c works since the
     bound is actually linear, which dominates x/(log x)^c for any c > 0. -/
 axiom positive_answer_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
@@ -139,11 +128,6 @@ theorem alpha_lt_one (C : ℝ) (hC : C > 1) : alpha C < 1 := by
   linarith
 
 /-- Ruzsa: For C > 1, H_C(x) = x^{α+o(1)} where α = e^{1-C} -/
-axiom ruzsa_negative_answer (C : ℝ) (hC : C > 1) :
-    ∀ ε > 0, ∃ N : ℕ, ∀ x ≥ N,
-      (x : ℝ) ^ (alpha C - ε) ≤ (H_C C x : ℝ) ∧
-      (H_C C x : ℝ) ≤ (x : ℝ) ^ (alpha C + ε)
-
 /-- Weingartner (2025): Precise asymptotics for C > 1 -/
 axiom weingartner_2025 (C : ℝ) (hC : C > 1) :
     ∃ K₁ K₂ : ℝ, K₁ > 0 ∧ K₂ > 0 ∧ ∀ x : ℕ, x ≥ 2 →
@@ -165,12 +149,6 @@ Shows the polynomial bound is best possible.
     For any c > 0, there exist sets A with reciprocal sum ≤ 1
     achieving sievedCount ≤ 2x/(log x)^c. This shows x/(log x)^c
     is the correct scale for the C = 1 lower bound. -/
-axiom schinzel_szekeres_1959 :
-    ∀ c > 0, ∃ A : ℕ → Finset ℕ, ∀ x : ℕ, x ≥ 2 →
-      (∀ a ∈ A x, 2 ≤ a ∧ a ≤ x) ∧
-      reciprocalSum (A x) ≤ 1 ∧
-      (sievedCount (A x) x : ℝ) ≤ 2 * x / (Real.log x) ^ c
-
 /-
 ## Part 7: The Trivial Cases
 
@@ -199,16 +177,9 @@ Related to other sieving problems.
 /-- Connection to Problem #542: the problem of dense divisors.
     Both problems study how the structure of a set of divisors
     (measured by reciprocal sums) controls sieving outcomes. -/
-axiom connection_to_542 :
-    ∀ C : ℝ, C > 0 → C ≤ 1 → HasPolynomialLogBound C
-
 /-- The general principle: the reciprocal sum Σ 1/n of A controls
     how effectively A sieves [1,x]. The phase transition at C = 1
     separates linear-like behavior from sublinear behavior. -/
-axiom reciprocal_sum_phase_transition :
-    (∀ C : ℝ, 0 < C → C ≤ 1 → HasPolynomialLogBound C) ∧
-    (∀ C : ℝ, C > 1 → ¬HasPolynomialLogBound C)
-
 /-
 ## Part 9: Complete Answer
 -/

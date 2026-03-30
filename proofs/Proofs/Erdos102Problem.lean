@@ -47,12 +47,6 @@ noncomputable def maxCollinear (P : PointConfig) : ℕ :=
 
 /-- **Erdős Problem #102**: h_c(n) → ∞. If cn² lines contain ≥ 4 points,
     some line must contain many points (growing with n). -/
-axiom erdos_102_divergence (c : ℝ) (hc : c > 0) :
-  ∀ M : ℕ, ∃ N₀ : ℕ, ∀ P : PointConfig,
-    P.points.card ≥ N₀ →
-    (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
-      maxCollinear P ≥ M
-
 /- ## Collinearity Properties -/
 
 /-- Collinearity is symmetric: swapping the last two arguments. -/
@@ -83,21 +77,9 @@ theorem collinear₃_self_mid (p q : ℝ × ℝ) : collinear₃ p q q := by
 
 /-- **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
     rich lines is at most O(√n). -/
-axiom upper_bound (c : ℝ) (hc : c > 0) :
-  ∃ C : ℝ, C > 0 ∧ ∀ P : PointConfig,
-    (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
-      (maxCollinear P : ℝ) ≤ C * Real.sqrt P.points.card
-
 /-- **Hunter's Counterexample**: Erdős conjectured h_c(n) ≫_c √n, but
     Hunter disproved this using lattice point configurations.
     h_c(n) ≪ n^{1/log(1/c)} for suitable c. -/
-axiom hunter_counterexample :
-  ∃ f : ℝ → ℝ → ℝ, ∀ c : ℝ, 0 < c → c < 1 →
-    ∀ n : ℕ, n > 0 →
-      ∃ P : PointConfig, P.points.card = n ∧
-        (richLineCount P : ℝ) ≥ c * n ^ 2 ∧
-          (maxCollinear P : ℝ) ≤ f c n
-
 /-- **Connection to Problem #101**: if h_c(n) → ∞ is proved, the o(n²)
     bound for 4-point lines from Problem #101 would follow. Specifically,
     cn² four-point lines force some line with ≥ h_c(n) collinear points,
@@ -161,11 +143,6 @@ theorem connection_101_from_full_divergence
 
 /-- **Szemerédi–Trotter**: the incidence bound I(P,L) ≤ C(n^{2/3}m^{2/3}+n+m)
     constrains how many rich lines can pass through n points. -/
-axiom szemeredi_trotter_context :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ (n m incidences : ℕ),
-      (incidences : ℝ) ≤ C * ((n : ℝ) ^ (2/3 : ℝ) * (m : ℝ) ^ (2/3 : ℝ) + n + m)
-
 /-- **Erdős–Purdy connection (PROVED)**: if cn² rich lines exist,
     some line has ≥ 4 collinear points.
     Proof: cn² > 0 so richLineCount ≥ 1; extract a 4-element collinear

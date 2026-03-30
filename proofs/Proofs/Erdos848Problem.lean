@@ -283,20 +283,7 @@ theorem sq_dvd_succ_mod_congruence {p a b : ℕ} (hp : Nat.Prime p)
 
 /-- Van Doorn's upper bound: |A|/N ≤ 2 Σ_{p ≡ 1 (4)} 1/p² ≈ 0.108.
     So maxNonSqfreeSet(N) ≤ ⌊0.108 · N⌋ + O(1). -/
-axiom vanDoorn_upper_bound :
-  ∃ C : ℕ, ∀ N : ℕ, 1 ≤ N →
-    maxNonSqfreeSet N * 1000 ≤ 108 * N + C
-
 /-- Sawhney's theorem: for sufficiently large N, the maximum is exactly
     ⌊N/25⌋, achieved only by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
-axiom sawhney_solution :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    maxNonSqfreeSet N = N / 25
-
 /-- Structural result: any extremal set for large N is contained in
     {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
-axiom sawhney_structure :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    ∀ A : Finset ℕ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) →
-      HasNonSqfreeProductProp A → A.card = N / 25 →
-        (∀ a ∈ A, a % 25 = 7) ∨ (∀ a ∈ A, a % 25 = 18)

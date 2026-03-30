@@ -34,9 +34,6 @@ def IsMonoAP (χ : TwoColoring) (a d k : ℕ) : Prop :=
 axiom maxMonoAPLength (χ : TwoColoring) (d : ℕ) : ℕ
 
 /-- maxMonoAPLength is at least 1 for positive d. -/
-axiom maxMonoAPLength_pos (χ : TwoColoring) (d : ℕ) (hd : 0 < d) :
-  1 ≤ maxMonoAPLength χ d
-
 /-- The optimal function f(d) = inf over all 2-colorings of the
     supremum of monochromatic AP lengths with difference d,
     required to hold for infinitely many d. Axiomatized. -/
@@ -47,32 +44,15 @@ axiom optAPBound (d : ℕ) : ℕ
 /-- Van der Waerden's theorem implies f(d) → ∞: for any 2-coloring,
     monochromatic APs of arbitrary length exist. In particular,
     for every k there exists d such that f(d) ≥ k. -/
-axiom vanDerWaerden_implies_growth :
-  ∀ k : ℕ, ∃ d : ℕ, 0 < d ∧ k ≤ optAPBound d
-
 /-- Beck's upper bound (1980): f(d) ≤ (1 + o(1)) log₂ d.
     Formalized as: there exists C such that for all large d,
     optAPBound d ≤ C * Nat.log 2 d. -/
-axiom beck_upper_bound :
-  ∃ C : ℕ, 0 < C ∧
-    ∃ D₀ : ℕ, ∀ d : ℕ, D₀ ≤ d →
-      optAPBound d ≤ C * (Nat.log 2 d + 1)
-
 /-- Erdős's √2-coloring construction gives a lower bound f(d) ≫ d.
     There exists a 2-coloring such that the longest monochromatic AP
     with difference d has length O(d). -/
-axiom erdos_sqrt2_construction :
-  ∃ (χ : TwoColoring) (C : ℕ), 0 < C ∧
-    ∀ d : ℕ, 0 < d → maxMonoAPLength χ d ≤ C * d
-
 /- ## The Open Question -/
 
 /-- Erdős Problem #187: Determine the exact asymptotic behavior of f(d).
     Is f(d) = Θ(log d)? Formalized as asking whether there exist
     constants c, C such that c · log₂ d ≤ f(d) ≤ C · log₂ d
     for all large d. -/
-axiom erdos_187_optimal_bound :
-  ∃ (c C : ℕ), 0 < c ∧ 0 < C ∧
-    ∃ D₀ : ℕ, ∀ d : ℕ, D₀ ≤ d →
-      c * (Nat.log 2 d) ≤ optAPBound d ∧
-      optAPBound d ≤ C * (Nat.log 2 d + 1)

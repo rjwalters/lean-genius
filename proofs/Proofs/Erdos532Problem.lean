@@ -214,15 +214,6 @@ compactification βℕ satisfying p + p = p under the extended addition.
 Its existence follows from Ellis's lemma applied to the compact
 right-topological semigroup (βℕ, +).
 -/
-axiom idempotent_ultrafilter_exists :
-  ∃ p : Set (Set ℕ),
-    (∀ A B : Set ℕ, A ∈ p → A ⊆ B → B ∈ p) ∧  -- Upward closed
-    (∀ A B : Set ℕ, A ∈ p → B ∈ p → (A ∩ B) ∈ p) ∧  -- Closed under intersection
-    (∀ A : Set ℕ, A ∈ p ∨ Aᶜ ∈ p) ∧  -- Ultra property
-    (Set.univ ∈ p) ∧  -- Contains universe
-    (∅ ∉ p) ∧  -- Proper
-    (∀ A : Set ℕ, A ∈ p → IsIPSet A)  -- Every member is an IP set (idempotent property)
-
 /--
 **Ultrafilter Proof Strategy:**
 1. (βℕ, +) is a compact right-topological semigroup
@@ -234,18 +225,6 @@ axiom idempotent_ultrafilter_exists :
 The ultrafilter approach yields Hindman's theorem as a consequence:
 an idempotent ultrafilter witnesses the monochromatic IP set.
 -/
-axiom ultrafilter_implies_hindman :
-  -- If an idempotent ultrafilter exists in (βℕ, +), then Hindman's theorem holds.
-  -- Axiomatized because βℕ infrastructure is not yet in Mathlib.
-  (∃ p : Set (Set ℕ),
-    (∀ A B : Set ℕ, A ∈ p → A ⊆ B → B ∈ p) ∧  -- Upward closed
-    (∀ A B : Set ℕ, A ∈ p → B ∈ p → (A ∩ B) ∈ p) ∧  -- Closed under intersection
-    (∀ A : Set ℕ, A ∈ p ∨ Aᶜ ∈ p) ∧  -- Ultra property
-    (∅ ∉ p)) →  -- Proper
-  ∀ k : ℕ, k ≥ 1 →
-    ∀ c : Coloring k,
-      ∃ A : Set ℕ, A.Infinite ∧ IsMonochromatic c (FiniteSums A)
-
 /-
 ## Part VII: Hales-Jewett Connection
 -/
@@ -259,11 +238,6 @@ of finite sums, yielding Hindman's result.
 
 Axiomatized because the Hales-Jewett theorem is not yet in Mathlib.
 -/
-axiom hales_jewett_implies_hindman :
-  ∀ k : ℕ, k ≥ 1 →
-    ∀ c : Coloring k,
-      ∃ A : Set ℕ, A.Infinite ∧ IsMonochromatic c (FiniteSums A)
-
 /-
 ## Part VIII: Computational Aspects
 -/

@@ -87,10 +87,6 @@ noncomputable def iterLogProduct (N : ℝ) (k : ℕ) : ℝ :=
 /-- **Bleicher-Erdős Lower Bound (1975):**
     log S(N) ≥ (N/log N)(log 2 · ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ k. -/
-axiom bleicher_erdos_lower_bound (N : ℕ) (k : ℕ) (hk : k ≥ 4)
-    (h_valid : iterLog k N ≥ k) :
-    Real.log (S N : ℝ) ≥ (N : ℝ) / Real.log N * (Real.log 2 * iterLogProduct N k)
-
 /-- The lower bound shows S(N) grows very fast. -/
 theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
     (S N : ℝ) ≥ Real.exp ((N : ℝ) / Real.log N) := by
@@ -107,10 +103,6 @@ theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
 /-- **Bleicher-Erdős Upper Bound (1976):**
     log S(N) ≤ (N/log N)(log_r N · ∏_{i=3}^r log_i N)
     valid for r ≥ 1 and log_{2r} N ≥ 1. -/
-axiom bleicher_erdos_upper_bound (N : ℕ) (r : ℕ) (hr : r ≥ 1)
-    (h_valid : iterLog (2 * r) N ≥ 1) :
-    Real.log (S N : ℝ) ≤ (N : ℝ) / Real.log N * (iterLog r N * iterLogProduct N r)
-
 /-- The gap between upper and lower bounds. -/
 noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
   (iterLog r N * iterLogProduct N r) - (Real.log 2 * iterLogProduct N k)
@@ -121,11 +113,6 @@ noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
 /-- **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
     log S(N) ≥ (N/log N)(2 log 2 (1 - 3/(2 log_k N)) ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ 3/2. -/
-axiom bgms_improved_lower_bound (N : ℕ) (k : ℕ) (hk : k ≥ 4)
-    (h_valid : iterLog k N ≥ 3/2) :
-    Real.log (S N : ℝ) ≥ (N : ℝ) / Real.log N *
-      (2 * Real.log 2 * (1 - 3 / (2 * iterLog k N)) * iterLogProduct N k)
-
 /-- The BGMS bound improves upon Bleicher-Erdős. -/
 theorem bgms_improves_bleicher_erdos (N : ℕ) (k : ℕ) (hk : k ≥ 4)
     (h_valid : iterLog k N ≥ 4) :
@@ -167,9 +154,6 @@ noncomputable def egyptianCount (q : ℚ) (N : ℕ) : ℕ :=
 
 /-- **Problem #321 Connection:**
     Related to counting Egyptian fraction representations. -/
-axiom problem_321_connection (q : ℚ) (hq : q > 0) (N : ℕ) (hN : N ≥ 8) :
-    egyptianCount q N ≤ S N
-
 /- ## Part VIII: Specific Values and Bounds
 -/
 
@@ -183,11 +167,7 @@ theorem S_two : S 2 = 4 := oeis_A072207.2.1
 theorem S_three : S 3 = 8 := oeis_A072207.2.2.1
 
 /-- For small N, S(N) = 2^N (all sums distinct). -/
-axiom S_small (N : ℕ) (hN : N ≤ 6) : S N = 2^N
-
 /-- For large N, collisions occur: S(N) < 2^N. -/
-axiom S_collisions (N : ℕ) (hN : N ≥ 8) : S N < 2^N
-
 /- ## Part IX: OEIS Sequence A072207
 -/
 

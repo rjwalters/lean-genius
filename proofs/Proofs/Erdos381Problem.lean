@@ -235,10 +235,6 @@ theorem Q_bounds :
 **Q(x) has polynomial growth in log x:**
 Q(x) ~ (log x)^α for some 1 < α ≤ C.
 -/
-axiom Q_polynomial_in_log :
-    ∃ α : ℝ, α > 1 ∧ (∃ K : ℝ, K > 0 ∧
-    ∀ᶠ x in atTop, |Real.log (Q x) - α * Real.log (Real.log x)| ≤ K)
-
 /- ## Part VII: Structure of Highly Composite Numbers -/
 
 /--
@@ -247,20 +243,12 @@ Highly composite numbers have a specific form: they are products of
 primorials with decreasing exponents. If n = 2^{a₁} · 3^{a₂} · ... · p^{a_k},
 then a₁ ≥ a₂ ≥ ... ≥ a_k ≥ 1.
 -/
-axiom HC_exponent_decreasing (n : ℕ) (hn : IsHighlyComposite n) :
-    ∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p < q →
-    n.factorization q ≤ n.factorization p
-
 /--
 **Ramanujan's characterization:**
 Ramanujan (1915) gave a complete characterization of highly composite numbers
 based on their prime factorizations. The exponents are non-increasing and the
 largest prime factor divides n exactly once (with finitely many exceptions).
 -/
-axiom ramanujan_characterization (n : ℕ) (hn : IsHighlyComposite n) (hn_large : n > 720) :
-    ∃ p : ℕ, Nat.Prime p ∧ n.factorization p = 1 ∧
-    ∀ q : ℕ, Nat.Prime q → q > p → n.factorization q = 0
-
 /--
 **Superior highly composite numbers:**
 A subset of HC where n is superior highly composite if
@@ -278,9 +266,6 @@ The count Q(x) of highly composite numbers up to x grows much slower
 than π(x), the count of primes: π(x) ~ x/log x, while Q(x) ~ (log x)^α.
 Since (log x)^α / (x/log x) → 0 for any fixed α, Q(x)/π(x) → 0.
 -/
-axiom HC_sparser_than_primes :
-    Tendsto (fun x => (Q x : ℝ) / (x / Real.log x)) atTop (nhds 0)
-
 /--
 **Highly composite vs highly abundant:**
 n is highly abundant if σ(n) > σ(m) for all m < n where σ is sum of divisors.

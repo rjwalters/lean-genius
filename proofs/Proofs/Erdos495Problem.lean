@@ -108,14 +108,6 @@ Cassels–Swinnerton-Dyer (1955): the conjecture holds when
 α, β lie in the same cubic number field.
 E.g., α = ∛2 and β = (∛2)².
 -/
-axiom cassels_swinnerton_dyer_cubic :
-  ∀ α β : ℝ,
-    (∃ (a b c : ℤ), (a : ℝ) * α ^ 3 + (b : ℝ) * α + (c : ℝ) = 0 ∧ a ≠ 0) →
-    (∃ (r s : ℚ), β = (r : ℝ) * α ^ 2 + (s : ℝ) * α) →
-    ∀ ε : ℝ, ε > 0 →
-      ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ n ≥ 1 ∧
-        littlewoodProduct n α β < ε
-
 /- ## Part V: The EKL Theorem -/
 
 /--
@@ -160,14 +152,6 @@ def PAdicLittlewood (p : ℕ) (_ : p.Prime) : Prop :=
 Badziahin–Velani (2014) proved the p-adic Littlewood conjecture
 for a class of badly approximable numbers.
 -/
-axiom badziahin_velani_padic (p : ℕ) (_ : p.Prime) :
-  -- For every α, the p-adic Littlewood conjecture holds for "almost all" α
-  ∃ (S : Set ℝ), S.Countable ∧
-    ∀ α : ℝ, α ∉ S →
-      ∀ ε : ℝ, ε > 0 →
-        ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ n ≥ 1 ∧
-          (n : ℝ) * distInt ((n : ℝ) * α) < ε * (n : ℝ)
-
 /- ## Part VII: Summary -/
 
 /--

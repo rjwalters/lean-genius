@@ -121,9 +121,6 @@ theorem twentyone_all_prime : HasAllPrimeProperty 21 := by
     Verified up to 2^44 by Mientka-Weitzenkamp (1969).
 
     We state this as an axiom since it remains unproven in general. -/
-axiom erdos_guy_all_prime_conjecture :
-  {n : ℕ | HasAllPrimeProperty n ∧ n > 1} = {4, 7, 15, 21, 45, 75, 105}
-
 /- ## Part IV: Main Conjecture and Known Bounds -/
 
 /-- **Erdős Problem #236** (Main Conjecture): f(n) = o(log n)
@@ -137,9 +134,6 @@ def Erdos236_Conjecture : Prop :=
 
     This shows f can grow at least as fast as log log n for some n.
     It provides evidence that the conjecture is tight. -/
-axiom erdos_lower_bound :
-  ∀ C : ℝ, ∀ᶠ n in atTop, ∃ m ≥ n, (f m : ℝ) ≥ C * Real.log (Real.log m)
-
 /-- Vaughan's upper bound (1973): The set of "all-prime" numbers is sparse.
 
     The number of n ≤ N with HasAllPrimeProperty is at most
@@ -147,13 +141,6 @@ axiom erdos_lower_bound :
     for some constant c > 0.
 
     This is a strong decay estimate. -/
-axiom vaughan_all_prime_sparse :
-  ∃ c : ℝ, c > 0 ∧
-  ∀ᶠ N in atTop,
-    Set.ncard {n : ℕ | n ≤ N ∧ HasAllPrimeProperty n} ≤
-      N * Real.exp (-c * (Real.log (Real.log (Real.log N)) /
-                         Real.log (Real.log N)) * Real.log N)
-
 /- ## Part V: Relationship to Problem #10 -/
 
 /-- Connection: This problem is about counting representations n = p + 2^k,

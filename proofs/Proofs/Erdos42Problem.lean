@@ -156,34 +156,10 @@ theorem example_maximal_sidon : IsMaximalSidon ({1, 2, 4} : Finset ℕ) 4 := by
 
 /-- M = 2 case: Sedov proved that for large N, every maximal Sidon set
     has a 2-element Sidon set with disjoint differences -/
-axiom sedov_M2 :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    ∀ A : Finset ℕ, IsMaximalSidon A N →
-      ∃ B : Finset ℕ, IsSidonSet B ∧ InInterval B N ∧
-        B.card = 2 ∧ DisjointDiffs A B
-
 /-- M = 3 case: also proved by Sedov -/
-axiom sedov_M3 :
-  ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-    ∀ A : Finset ℕ, IsMaximalSidon A N →
-      ∃ B : Finset ℕ, IsSidonSet B ∧ InInterval B N ∧
-        B.card = 3 ∧ DisjointDiffs A B
-
 /- ## The Erdős Problem -/
 
 /-- Erdős Problem 42: For every M ≥ 1 and N sufficiently large,
     every maximal Sidon set A ⊆ {1,...,N} has a companion Sidon set
     B of size M with (A−A) ∩ (B−B) = {0} -/
-axiom ErdosProblem42 :
-  ∀ M : ℕ, 1 ≤ M →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-      ∀ A : Finset ℕ, IsMaximalSidon A N →
-        ∃ B : Finset ℕ, IsSidonSet B ∧ InInterval B N ∧
-          B.card = M ∧ DisjointDiffs A B
-
 /-- Constructive version: there exists a function f(M) bounding N₀ -/
-axiom ErdosProblem42_constructive :
-  ∃ f : ℕ → ℕ, ∀ M N : ℕ, 1 ≤ M → f M ≤ N →
-    ∀ A : Finset ℕ, IsMaximalSidon A N →
-      ∃ B : Finset ℕ, IsSidonSet B ∧ InInterval B N ∧
-        B.card = M ∧ DisjointDiffs A B

@@ -60,10 +60,6 @@ def numPairs (n : ℕ) : ℕ := n.choose 2
 
 /-- The trivial lower bound: diameter ≥ n(n-1)/2.
     With C(n,2) distinct distances all differing by ≥ 1, the largest must be ≥ C(n,2). -/
-axiom trivial_lower_bound {d : ℕ} (A : PointSet d) (n : ℕ) (hn : A.card = n)
-    (hne : A.Nonempty) (hDistinct : DistinctDistances A 1) :
-    diameter A hne ≥ numPairs n
-
 /- ## Part 3: The Main Conjecture -/
 
 /-- The main conjecture: diameter ≥ (1 + o(1))n².
@@ -109,11 +105,6 @@ axiom erdos_1997_d1 :
     realDiameter A hne ≥ (1 - ε) * n^2
 
 /-- Stronger form for d = 1: exact asymptotic diameter ≥ n(n-1)/2. -/
-axiom erdos_1997_d1_asymptotic :
-  ∀ (A : RealPointSet) (n : ℕ) (hne : A.Nonempty),
-    A.card = n → RealDistinctDistances A 1 →
-    realDiameter A hne ≥ n * (n - 1) / 2
-
 /- ## Part 5: Constructions -/
 
 /-- Arithmetic progression showing the conjecture is tight.
@@ -123,21 +114,9 @@ def arithmeticProgression (n : ℕ) : RealPointSet :=
 
 /-- AP has distinct distances differing by at least 1.
     Distances are multiples of n, all at least n apart. -/
-axiom ap_distinct_distances (n : ℕ) :
-    RealDistinctDistances (arithmeticProgression n) 1
-
 /-- AP has diameter ≈ n². -/
-axiom ap_diameter (n : ℕ) (hn : n ≥ 1) :
-    realDiameter (arithmeticProgression n) ⟨0, by simp [arithmeticProgression]⟩ = (n - 1 : ℝ) * n
-
 /-- The construction shows the conjecture is tight:
     there exist n-point sets with diameter ≤ n² and distance gaps ≥ 1. -/
-axiom conjecture_is_tight :
-    ∃ (seq : ℕ → RealPointSet),
-      (∀ n, (seq n).card = n) ∧
-      (∀ n, RealDistinctDistances (seq n) 1) ∧
-      (∀ n (hne : (seq n).Nonempty), realDiameter (seq n) hne ≤ n^2)
-
 /- ## Part 6: Higher Dimensions -/
 
 /-- SuperlinearConjecture: diameter ≥ n(n-1)/2 in any dimension. -/
@@ -154,15 +133,7 @@ def DistinctDistancesProblem (d : ℕ) (n : ℕ) (A : PointSet d) : Prop :=
 
 /-- If distances differ by ≥ 1, they are automatically distinct,
     giving exactly C(n,2) distinct distances. -/
-axiom differ_implies_distinct {d : ℕ} (A : PointSet d)
-    (hDistinct : DistinctDistances A 1) :
-    (pairwiseDistances A).card = numPairs A.card
-
 /-- Pigeonhole: C(n,2) distances differing by ≥ 1 forces large diameter. -/
-axiom pigeonhole_approach (d : ℕ) (A : PointSet d) (n : ℕ)
-    (hne : A.Nonempty) (hn : A.card = n) (hDistinct : DistinctDistances A 1) :
-    diameter A hne ≥ numPairs n - 1
-
 /- ## Part 8: Summary -/
 
 /-- Erdős Problem #670: OPEN.
