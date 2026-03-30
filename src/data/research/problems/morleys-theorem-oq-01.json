@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated the sole axiom (morleys_theorem_axiom). Proved Morley theorem via sine rule + cosine rule identity. File now has 0 axioms, 0 sorries, 11 theorems.",
+    "progressSummary": "COMPLETE: Fixed 3 incorrect theorem statements (conway_angle_identity/B/C). RHS was t.α₃ but should be π/3 + t.α₃. Build now clean on Lean 4.26.0. 0 sorries, 0 axioms.",
     "builtItems": [
       "Proved sin_triple_product (line 203)",
       "Proved cosine_rule_identity (line 260)",
@@ -44,7 +44,8 @@
       "Key identity proved: cosine_rule_identity — sin²p+sin²q-2sin(p)sin(q)cos(c)=sin²c when p+q+c=π",
       "Key identity proved: sin_triple_product — sin(3x) = 4sin(x)sin(π/3+x)sin(π/3-x)",
       "Core lemma: morley_arm_cosine_rule factors out k² from cosine rule and applies the identity",
-      "All three Morley sides equal (8R sin α₃ sin β₃ sin γ₃)² by cyclic symmetry of the formula"
+      "All three Morley sides equal (8R sin α₃ sin β₃ sin γ₃)² by cyclic symmetry of the formula",
+      "conway_angle_identity theorems had incorrect RHS: π - earApex_B - earApex_C + π/3 = 2π/3 - β₃ - γ₃ = π/3 + α₃ (not α₃). Fixed all three variants."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
