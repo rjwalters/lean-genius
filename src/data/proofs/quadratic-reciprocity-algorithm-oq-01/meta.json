@@ -1,39 +1,163 @@
 {
   "id": "quadratic-reciprocity-algorithm-oq-01",
-  "title": "Verified Jacobi Symbol Computation via Quadratic Reciprocity",
+  "title": "Verified Recursive Legendre Symbol Computation",
   "slug": "quadratic-reciprocity-algorithm-oq-01",
-  "description": "Implementation of the Jacobi symbol algorithm as a recursive function in Lean 4, using quadratic reciprocity for reduction. Includes sign factor functions, strip2 decomposition, and concrete verifications.",
+  "description": "Implements the Legendre/Jacobi symbol computation as an explicit recursive function with a termination proof and full correctness verification against Mathlib's jacobiSym",
   "meta": {
-    "author": "Gauss (algorithm, 1801)",
-    "date": "1801",
-    "status": "formalized",
-    "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-03-30",
+    "status": "verified",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
       "algorithm",
       "legendre-symbol",
       "jacobi-symbol",
-      "verified-computation"
+      "termination",
+      "computational"
     ],
-    "badge": "axiom",
-    "sorries": 1,
-    "axiomCount": 0,
-    "dateAdded": "2026-03-30",
-    "lineCount": 193,
+    "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym.div_four_left",
+        "description": "J(a/4 | b) = J(a | b) when 4 | a and b odd",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.even_odd",
+        "description": "Second supplementary law for factor of 2 in the Jacobi symbol",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.quadratic_reciprocity_if",
+        "description": "Quadratic reciprocity in if-then-else computational form",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mod_left",
+        "description": "The Jacobi symbol depends only on the residue class",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      }
+    ],
     "originalContributions": [
-      "signFirst, signSecond, signRecip: supplementary law sign factor functions",
-      "strip2: factor out powers of 2 with termination proof",
-      "jacobiAux: recursive Jacobi symbol via QR reduction",
-      "jacobi: wrapper handling negative inputs",
-      "Concrete verifications for sign factors and strip2",
-      "Properties: all sign factors square to 1, signRecip symmetric",
-      "JacobiCorrectness: formal statement linking to Mathlib legendreSym"
+      "Explicit recursive algorithm (jacobiAlgo) computing the Jacobi symbol via GCD-like descent",
+      "Termination proof via well-founded recursion on the first argument (analogous to Euclidean algorithm)",
+      "Full correctness proof (jacobiAlgo_eq_jacobiSym) against Mathlib's jacobiSym by strong induction",
+      "Connection to Legendre symbol (legendreCompute_eq) for odd primes"
     ],
-    "assumptions": "1 sorry in jacobiAux termination proof (needs strip2_le: odd part of a%n is < n). No axioms."
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 220,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Gauss recognized that quadratic reciprocity is not just a theoretical result but a practical algorithm. Combined with multiplicativity and supplementary laws, it gives a GCD-like procedure for computing Legendre symbols — at each step, the problem size decreases, just as in the Euclidean algorithm for greatest common divisors.",
+    "problemStatement": "Implement the full Legendre symbol computation as a verified recursive function in Lean 4 with an explicit termination proof and prove correctness against Mathlib's algebraic definition.",
+    "text": "A verified recursive algorithm computing the Jacobi/Legendre symbol via quadratic reciprocity descent, with termination and correctness proofs",
+    "proofStrategy": "The algorithm removes factors of 2 (using the second supplementary law), then uses quadratic reciprocity to swap numerator and denominator and takes the modular remainder, strictly decreasing the first argument at each step. Correctness is proved by strong induction on the first argument, with each case using the corresponding Mathlib lemma.",
+    "keyInsights": [
+      "The algorithm terminates because the first argument strictly decreases: a/4 < a, a/2 < a, b%a < a",
+      "The flip flag avoids intermediate multiplication by accumulating sign changes from reciprocity",
+      "Correctness follows from strong induction mirroring the recursive structure",
+      "The algorithm generalizes to the Jacobi symbol (composite moduli), with the Legendre symbol as a special case"
+    ],
+    "prerequisites": [
+      "Jacobi and Legendre symbols",
+      "Quadratic reciprocity",
+      "Well-founded recursion",
+      "Modular arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "algorithm",
+      "title": "The Recursive Algorithm",
+      "startLine": 55,
+      "endLine": 93,
+      "summary": "Definition of jacobiAlgo: a recursive function computing the Jacobi symbol via GCD-like descent, with an explicit termination proof.",
+      "mathContext": "The function mirrors the Euclidean algorithm. At each step: (1) remove factors of 4 (squares), (2) remove factors of 2 with sign adjustment, (3) use quadratic reciprocity to swap and reduce. The termination measure is the first argument, which strictly decreases at every recursive call."
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness Proof",
+      "startLine": 99,
+      "endLine": 142,
+      "summary": "Proof that the recursive algorithm equals Mathlib's jacobiSym, by strong induction on the first argument.",
+      "mathContext": "Each branch of the algorithm is validated against the corresponding Mathlib lemma: div_four_left for squares, even_odd for the supplementary law, quadratic_reciprocity_if for the swap step, and eq_zero_iff for the coprimality check."
+    },
+    {
+      "id": "legendre-connection",
+      "title": "Legendre Symbol Connection",
+      "startLine": 148,
+      "endLine": 172,
+      "summary": "A wrapper function and proof connecting the recursive algorithm to Mathlib's legendreSym for odd primes.",
+      "mathContext": "Since the Legendre symbol equals the Jacobi symbol for prime moduli, the general correctness theorem immediately gives us a verified Legendre symbol computation."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Example Computations",
+      "startLine": 178,
+      "endLine": 200,
+      "summary": "Seven verified examples computing Legendre symbols via the recursive algorithm, all proved by native_decide.",
+      "mathContext": "Each example demonstrates the algorithm in action, confirming it produces correct values for small primes."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-algorithm",
+      "relationship": "answers-question",
+      "description": "Answers the open question: 'Can the full Legendre symbol computation be implemented as a verified recursive function with a termination proof?'"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "uses",
+      "description": "Uses the quadratic reciprocity law as the core reduction step in the algorithm"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Legendre symbol CAN be computed by a verified recursive function with an explicit termination proof. The algorithm is a GCD-like descent using quadratic reciprocity, with termination on the first argument and full correctness proved by strong induction.",
+    "implications": "This demonstrates that formal verification and practical computation are compatible: the same function that computes Legendre symbols also carries a machine-checked proof of correctness. The algorithm naturally generalizes to Jacobi symbols for composite moduli.",
+    "openQuestions": [
+      "Can this approach be extended to compute Jacobi symbols for composite moduli with a similarly clean correctness proof?",
+      "What is the formal computational complexity of this algorithm compared to other Legendre symbol implementations?"
+    ]
   },
   "leanFile": {
-    "lineCount": 193,
-    "axiomCount": 0
-  }
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "NumberTheorySymbols"
+    ],
+    "namespace": "LegendreCompute",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 2
+  },
+  "mainTheorems": [
+    {
+      "name": "jacobiAlgo_eq_jacobiSym",
+      "type": "core",
+      "description": "The recursive algorithm correctly computes the Jacobi symbol",
+      "leanType": "{a b : ℕ} → {flip : Bool} → {ha : a > 0} → b % 2 = 1 → b > 1 → jacobiAlgo a b flip ha = if flip then -J(↑a | b) else J(↑a | b)"
+    },
+    {
+      "name": "legendreCompute_eq",
+      "type": "core",
+      "description": "The recursive computation equals the Legendre symbol for odd primes",
+      "leanType": "(a : ℤ) → (p : ℕ) → [Fact p.Prime] → (hp2 : p ≠ 2) → legendreCompute a p hp2 = legendreSym p a"
+    },
+    {
+      "name": "jacobiAlgo_mod_left",
+      "type": "supporting",
+      "description": "The algorithm respects residue classes",
+      "leanType": "{a b : ℕ} → {ha : a > 0} → b % 2 = 1 → b > 1 → (hab : a % b > 0) → jacobiAlgo (a % b) b false hab = jacobiAlgo a b false ha"
+    }
+  ]
 }
