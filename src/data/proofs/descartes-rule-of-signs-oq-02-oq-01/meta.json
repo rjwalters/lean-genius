@@ -8,7 +8,12 @@
     "date": "1807",
     "status": "verified",
     "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
-    "tags": ["algebra", "polynomials", "real-algebraic-geometry", "root-isolation"],
+    "tags": [
+      "algebra",
+      "polynomials",
+      "real-algebraic-geometry",
+      "root-isolation"
+    ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -16,13 +21,17 @@
     "dateAdded": "2026-03-28",
     "assumptions": "0 axioms, 0 sorries. All theorems fully proved including linear_at_most_one_root, rolle_polynomial, and root_of_sign_change.",
     "relatedProblems": [
-      {"id": "descartes-rule-of-signs-oq-02", "relationship": "Proves the budan_upper_bound_axiom from OQ-02"}
+      {
+        "id": "descartes-rule-of-signs-oq-02",
+        "relationship": "Proves the budan_upper_bound_axiom from OQ-02"
+      }
     ]
   },
   "overview": {
     "problemStatement": "Prove the Budan upper bound: #roots(p, (a,b]) <= V_p(a) - V_p(b).",
     "text": "Proof scaffold for Budan's upper bound via strong induction on polynomial degree. Building blocks: constant_no_roots, linear bound, Rolle for polynomials, IVT sign change. The full proof requires sign-change accounting across derivative levels.",
-    "proofStrategy": "Strong induction on deg(p). Base: deg 0/1 trivial. Step: Rolle gives derivative roots between polynomial roots, IH on p' for sub-intervals."
+    "proofStrategy": "Strong induction on deg(p). Base: deg 0/1 trivial. Step: Rolle gives derivative roots between polynomial roots, IH on p' for sub-intervals.",
+    "keyInsights": []
   },
   "leanFile": {
     "namespace": "BudanUpperBound",
@@ -32,10 +41,27 @@
     "defCount": 1,
     "sorries": 0,
     "mainTheorems": [
-      {"name": "constant_no_roots", "type": "proved", "description": "Constant nonzero polynomials have no roots"},
-      {"name": "rolle_polynomial", "type": "proved", "description": "Rolle's theorem for polynomials"},
-      {"name": "root_of_sign_change", "type": "proved", "description": "IVT: sign change implies root"},
-      {"name": "linear_at_most_one_root", "type": "sorry", "description": "Linear polynomial has at most one root in interval"}
+      {
+        "name": "constant_no_roots",
+        "type": "proved",
+        "description": "Constant nonzero polynomials have no roots"
+      },
+      {
+        "name": "rolle_polynomial",
+        "type": "proved",
+        "description": "Rolle's theorem for polynomials"
+      },
+      {
+        "name": "root_of_sign_change",
+        "type": "proved",
+        "description": "IVT: sign change implies root"
+      },
+      {
+        "name": "linear_at_most_one_root",
+        "type": "sorry",
+        "description": "Linear polynomial has at most one root in interval"
+      }
     ]
-  }
+  },
+  "sections": []
 }

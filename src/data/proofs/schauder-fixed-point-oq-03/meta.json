@@ -32,7 +32,9 @@
   "overview": {
     "historicalContext": "Kakutani (1941) generalized Brouwer's theorem to set-valued maps. Nash (1950) used it to prove existence of Nash equilibria.",
     "problemStatement": "Formalize the Kakutani fixed point theorem for set-valued maps.",
-    "text": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary."
+    "text": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
+    "proofStrategy": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
+    "keyInsights": []
   },
   "sections": [
     {
@@ -75,7 +77,8 @@
     "summary": "Kakutani framework formalized with 1 axiom (the main theorem). Brouwer recovered as corollary. Nash equilibrium connection sketched.",
     "openQuestions": [
       "Prove kakutani_finite_dim from Brouwer via simplicial approximation"
-    ]
+    ],
+    "implications": ""
   },
   "crossReferences": [
     {

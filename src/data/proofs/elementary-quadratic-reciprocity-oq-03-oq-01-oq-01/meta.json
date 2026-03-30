@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
   "title": "The Kronecker Symbol: Extending Jacobi to All Integer Moduli",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
-  "description": "Formalizes the Kronecker symbol χ(a,n) extending the Jacobi symbol to all integer moduli, including n=0, n=-1, n=2, and composite even n.",
+  "description": "Formalizes the Kronecker symbol \u03c7(a,n) extending the Jacobi symbol to all integer moduli, including n=0, n=-1, n=2, and composite even n.",
   "meta": {
     "author": "Kronecker (definition), formalized in Lean 4",
     "date": "2026",
@@ -32,12 +32,13 @@
       "Definition of Kronecker symbol for all integer moduli",
       "Two-adic factoring utility (factorTwos)",
       "Proof that Kronecker extends Jacobi for odd positive n",
-      "Proof that χ(1,n) = 1 for all n",
-      "Value characterizations at n = 0, ±1, 2"
+      "Proof that \u03c7(1,n) = 1 for all n",
+      "Value characterizations at n = 0, \u00b11, 2"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "leanFile": {
     "lineCount": 164
-  }
+  },
+  "sections": []
 }
