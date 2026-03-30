@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 4,
-    "lineCount": 301,
-    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 3 sorries: isEmbeddable definition, completeHypergraph_edgeCount, turanNumber definition.",
+    "lineCount": 308,
+    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 2 sorries: isEmbeddable definition, turanNumber definition.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -169,7 +169,7 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "Erdos1018OQ04",
-    "lineCount": 301,
+    "lineCount": 308,
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 12
