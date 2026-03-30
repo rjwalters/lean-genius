@@ -17,7 +17,7 @@
       "harmonic"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 308,
     "erdosUrl": "https://erdosproblems.com/308",
     "erdosProblemStatus": "solved",
@@ -51,8 +51,8 @@
     ],
     "dateAdded": "2026-01-22",
     "axiomCount": 3,
-    "lineCount": 261,
-    "assumptions": "19 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 277,
+    "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #308** belongs to the rich tradition of *Egyptian fraction theory*, which dates back to the Rhind Mathematical Papyrus (~1650 BCE), where ancient Egyptian scribes represented fractions as sums of distinct unit fractions $\\frac{1}{n}$.\n\n**Historical Development:**\n- **Fibonacci (1202):** Proved in *Liber Abaci* that every positive rational has an Egyptian fraction representation via the greedy algorithm (later called the Fibonacci-Sylvester algorithm).\n- **Erdős and Graham (1980):** Systematically posed problems about Egyptian fractions in *Old and New Problems and Results in Combinatorial Number Theory*. Problem #308 asks: which integers can be represented as sums of distinct unit fractions $\\frac{1}{k}$ with $k \\leq N$?\n- **Croot (1999):** In his paper *On some questions of Erdős and Graham about Egyptian fractions*, proved definitive bounds on $f(N)$, the smallest non-representable integer, showing $f(N) = \\lfloor H_N \\rfloor - \\Theta\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$ where the constant lies in $[\\frac{1}{2}, \\frac{9}{2}]$.\n- **Croot also proved** the contiguity conjecture: for sufficiently large $N$, the set of representable integers is $\\{0, 1, \\ldots, m\\}$ for some $m$ — there are no gaps.\n\n**Key Connection:** The harmonic number $H_N = \\sum_{k=1}^N \\frac{1}{k} \\sim \\ln N + \\gamma$ (where $\\gamma \\approx 0.5772$ is the Euler–Mascheroni constant) provides the natural upper bound, since $\\lfloor H_N \\rfloor$ is the largest integer that could possibly be represented.",
@@ -199,7 +199,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos308",
-    "lineCount": 261,
+    "lineCount": 277,
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 9
