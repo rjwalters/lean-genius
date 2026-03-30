@@ -20,9 +20,9 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 6,
-    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 0 sorries.",
+    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 1 sorry: covDimLE_of_embedding (dimension monotonicity under continuous injection).",
     "dateAdded": "2026-03-30",
     "hilbertNumber": 13,
     "mathlibDependencies": [
@@ -151,11 +151,18 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes covering dimension as the governing invariant for superposition representations of continuous functions. The Sternfeld characterization gives a complete answer to 'which spaces admit KA-type representations?' and shows the 2n+1 bound is sharp.",
-    "implications": "The classical KA theorem for [0,1]^n is recovered as a special case. The covering dimension framework unifies results across different compact metric spaces.",
+    "text": "This formalization establishes covering dimension as the governing invariant for superposition representations of continuous functions. The Sternfeld characterization gives a complete answer to 'which spaces admit KA-type representations?' and shows the 2n+1 bound is sharp. The classical KA theorem for [0,1]^n is recovered as a special case.",
     "openQuestions": [
-      "Can the smooth obstruction (Vitushkin's theorem) be extended to compact Riemannian manifolds with non-trivial topology?",
-      "What is the computational complexity of finding KA representations given a finite approximation of the space and function?"
+      {
+        "question": "Can the smooth obstruction (Vitushkin's theorem) be extended to compact Riemannian manifolds with non-trivial topology?",
+        "formalizable": true,
+        "difficulty": "hard"
+      },
+      {
+        "question": "What is the computational complexity of finding KA representations given a finite approximation of the space and function?",
+        "formalizable": true,
+        "difficulty": "hard"
+      }
     ]
   },
   "leanFile": {
