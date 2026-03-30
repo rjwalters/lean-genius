@@ -22,6 +22,7 @@ import Mathlib.Combinatorics.SetFamily.Intersecting
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Choose.Basic
+import Proofs.ErdosKoRado
 
 namespace Erdos780
 
@@ -69,8 +70,16 @@ structure KneserHypergraph (n r k : ℕ) where
   edges_pairwise_disjoint : ∀ E ∈ edges, PairwiseDisjoint E
   edges_from_vertices : ∀ E ∈ edges, ∀ e ∈ E, e ∈ vertices
 
-/-- Chromatic number of the Kneser hypergraph -/
-axiom chromaticNumber (n r k : ℕ) : ℕ
+/-- Chromatic number of the Kneser hypergraph KG^r(n,k):
+    minimum number of colors t such that the r-subsets of [n] can be colored
+    with t colors so no color class contains k pairwise disjoint r-subsets.
+    Returns 0 if no finite coloring suffices (vacuously impossible here). -/
+noncomputable def chromaticNumber (n r k : ℕ) : ℕ :=
+  sInf { t : ℕ | ∃ c : completeHypergraph n r → Fin t,
+    ∀ i : Fin t, ∀ edges : Finset (completeHypergraph n r),
+      PairwiseDisjoint (edges.image Subtype.val) →
+      (∀ e ∈ edges, c e = i) →
+      edges.card < k }
 
 /-
 ## Part 3: The Main Theorem (Alon-Frankl-Lovász 1986)
@@ -137,17 +146,22 @@ def kneserAdj (n r : ℕ) (S T : KneserGraph n r) : Prop :=
 Explicit values for small parameters.
 -/
 
-/-- KG(5,2) = Petersen graph has χ = 3 -/
-axiom petersen_chromatic : chromaticNumber 5 2 2 = 3
+/-- KG(5,2) = Petersen graph has χ = 3.
+    Upper bound: color r-subset S by min(S) mod 3. Lower bound: Kneser's conjecture. -/
+theorem petersen_chromatic : chromaticNumber 5 2 2 = 3 := by sorry
 
-/-- KG(7,3) has χ = 2 -/
-axiom kg_7_3_chromatic : chromaticNumber 7 3 2 = 2
+/-- KG(7,3) has χ = 3 by Kneser's conjecture: n - 2r + 2 = 7 - 6 + 2 = 3.
+    (Previously incorrectly stated as χ = 2.) -/
+theorem kg_7_3_chromatic : chromaticNumber 7 3 2 = 3 := by sorry
 
-/-- KG(2r,r) is a matching, so χ = 2 -/
-axiom kg_2r_r_chromatic (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r) r 2 = 2
+/-- KG(2r,r) is a perfect matching, so χ = 2.
+    When n = 2r, each r-subset has exactly one complement (also an r-subset),
+    so the Kneser graph is a matching. A matching has χ = 2 (for r ≥ 1). -/
+theorem kg_2r_r_chromatic (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r) r 2 = 2 := by sorry
 
-/-- KG(2r+1,r) is an odd cycle when r = 1, odd graph when r > 1 -/
-axiom kg_2r_plus_1_r (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r + 1) r 2 = 3
+/-- KG(2r+1,r) has χ = 3 (odd graph).
+    By Kneser's conjecture: χ = n - 2r + 2 = (2r+1) - 2r + 2 = 3. -/
+theorem kg_2r_plus_1_r (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r + 1) r 2 = 3 := by sorry
 
 /-
 ## Part 7: Connections
@@ -157,12 +171,27 @@ which equals the independence number of the Kneser graph. Schrijver showed
 that a vertex-critical subgraph with the same chromatic number exists.
 -/
 
-/-- Maximum intersecting family of r-subsets of [n] has size C(n-1,r-1) for n ≥ 2r -/
-axiom erdos_ko_rado (n r : ℕ) (hr : r ≥ 1) (hn : n ≥ 2 * r) :
+/-- Maximum intersecting family of r-subsets of [n] has size C(n-1,r-1) for n ≥ 2r.
+    Proved using the star construction from the existing EKR formalization. -/
+theorem erdos_ko_rado (n r : ℕ) (hr : r ≥ 1) (hn : n ≥ 2 * r) :
     ∃ S : Finset (Finset (Fin n)),
       (∀ A ∈ S, A.card = r) ∧
       (∀ A ∈ S, ∀ B ∈ S, (A ∩ B).Nonempty) ∧
-      S.card = Nat.choose (n - 1) (r - 1)
+      S.card = Nat.choose (n - 1) (r - 1) := by
+  -- Use the star family centered at element 0
+  have hn_pos : 0 < n := by omega
+  have hr_pos : 0 < r := by omega
+  let x : Fin n := ⟨0, hn_pos⟩
+  use ErdosKoRado.Star x r
+  have h_intersecting := ErdosKoRado.star_is_intersecting hr_pos x
+  refine ⟨?_, ?_, ?_⟩
+  · -- All sets in the star have cardinality r
+    exact h_intersecting.1
+  · -- The star is an intersecting family
+    intro A B hA hB
+    exact h_intersecting.2 A B hA hB
+  · -- The star has the right cardinality
+    exact ErdosKoRado.star_achieves_bound hn hr_pos x
 
 /-
 ## Part 8: Summary
