@@ -14,43 +14,44 @@
     "phase": "ACT",
     "since": "2026-03-30T07:30:00Z",
     "iteration": 2,
-    "focus": "Proved ℤⁿ case from Mathlib GeometryOfNumbers; general lattice axiom remains",
+    "focus": "Proved \u2124\u207f case from Mathlib GeometryOfNumbers; general lattice axiom remains",
     "blockers": [
-      "Docker not available for build verification",
-      "General lattice case requires HasVolume→Lebesgue measure refactor"
+      "HasVolume abstraction barrier: disconnected from actual Lebesgue measure",
+      "Custom Lattice n \u2192 Module.Basis bridge requires ~100 lines of unverifiable Lean",
+      "Docker unavailable for build verification"
     ],
     "nextAction": "Build-verify with Docker, then bridge custom Lattice n to ZSpan for general case"
   },
   "knowledge": {
-    "progressSummary": "Session 2-3: Proved BOTH ℤⁿ AND general lattice cases from Mathlib. General case uses Module.Basis directly. Remaining gap: bridge custom Lattice n type to Module.Basis (type-level, no math left).",
+    "progressSummary": "BLOCKED: Axiom requires type-bridge refactoring. HasVolume (abstract \u211d) must connect to MeasureTheory.volume (ENNReal). Custom Lattice n must map to Module.Basis. Mathematical content already proved in MinkowskiProved section. 3+ sessions on this gap \u2014 needs architectural refactoring, not incremental work.",
     "builtItems": [
-      "MinkowskiProved.stdBasis — standard basis for Fin n → ℝ",
-      "MinkowskiProved.stdLattice — ℤⁿ as ZSpan of standard basis",
-      "MinkowskiProved.stdFundDomain — fundamental domain [0,1)ⁿ",
-      "MinkowskiProved.stdLattice_covolume — proved covolume = 1",
-      "MinkowskiProved.minkowski_integer_lattice_proved — Minkowski for ℤⁿ from Mathlib (no axioms)",
-      "MinkowskiProved.minkowski_general_lattice_proved — general Minkowski for any basis (from Mathlib)"
+      "MinkowskiProved.stdBasis \u2014 standard basis for Fin n \u2192 \u211d",
+      "MinkowskiProved.stdLattice \u2014 \u2124\u207f as ZSpan of standard basis",
+      "MinkowskiProved.stdFundDomain \u2014 fundamental domain [0,1)\u207f",
+      "MinkowskiProved.stdLattice_covolume \u2014 proved covolume = 1",
+      "MinkowskiProved.minkowski_integer_lattice_proved \u2014 Minkowski for \u2124\u207f from Mathlib (no axioms)",
+      "MinkowskiProved.minkowski_general_lattice_proved \u2014 general Minkowski for any basis (from Mathlib)"
     ],
     "insights": [
-      "Mathlib has exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure — the core Minkowski theorem",
+      "Mathlib has exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure \u2014 the core Minkowski theorem",
       "The file uses custom Lattice n, ConvexBody n, HasVolume, criticalVolume, latticePoints structures that don't align with Mathlib's ZSpan API",
-      "ThreeSquares.lean already uses ZSpan.fundamentalDomain and ZSpan.isAddFundamentalDomain for Minkowski applications — can serve as reference",
-      "Bridge strategy: (1) map custom Lattice n → Mathlib ZSpan, (2) map ConvexBody → MeasurableSet with volume, (3) apply Mathlib Minkowski, (4) translate result back to custom types",
+      "ThreeSquares.lean already uses ZSpan.fundamentalDomain and ZSpan.isAddFundamentalDomain for Minkowski applications \u2014 can serve as reference",
+      "Bridge strategy: (1) map custom Lattice n \u2192 Mathlib ZSpan, (2) map ConvexBody \u2192 MeasurableSet with volume, (3) apply Mathlib Minkowski, (4) translate result back to custom types",
       "Estimated effort: 200+ lines of bridge code. Best done as a dedicated session.",
-      "The ℤⁿ case can bypass the custom Lattice/HasVolume types entirely — work directly with Fin n → ℝ and actual Lebesgue measure",
-      "Module.finrank_fin_fun gives finrank ℝ (Fin n → ℝ) = n, needed for volume threshold",
+      "The \u2124\u207f case can bypass the custom Lattice/HasVolume types entirely \u2014 work directly with Fin n \u2192 \u211d and actual Lebesgue measure",
+      "Module.finrank_fin_fun gives finrank \u211d (Fin n \u2192 \u211d) = n, needed for volume threshold",
       "ZSpan.volume_fundamentalDomain reduces covolume to |det(Matrix.of basis)|",
-      "General lattice elimination requires constructing Module.Basis from the custom Lattice.basis matrix — Mathlib has Matrix.toLin for this",
-      "The HasVolume typeclass is the fundamental barrier: it is an abstract ℝ not connected to actual Lebesgue measure",
-      "General Minkowski from Mathlib only needs Module.Basis + ZSpan.isAddFundamentalDomain + ZSpan.volume_fundamentalDomain — 3-line proof",
+      "General lattice elimination requires constructing Module.Basis from the custom Lattice.basis matrix \u2014 Mathlib has Matrix.toLin for this",
+      "The HasVolume typeclass is the fundamental barrier: it is an abstract \u211d not connected to actual Lebesgue measure",
+      "General Minkowski from Mathlib only needs Module.Basis + ZSpan.isAddFundamentalDomain + ZSpan.volume_fundamentalDomain \u2014 3-line proof",
       "The gap is now purely type-bridging: connecting custom Lattice.basis matrix to Module.Basis. Requires Matrix.toLin to build LinearEquiv from invertible matrix."
     ],
     "nextSteps": [
-      "Docker build verification of the new proof",
-      "For general case: construct Module.Basis from Lattice.basis via Matrix.toLin and basis_of_invertible",
-      "For general case: prove ZSpan.volume_fundamentalDomain yields ENNReal.ofReal L.covolume",
-      "Consider replacing HasVolume with actual MeasurableSet + volume hypotheses",
-      "Alternative: add MeasurableSet + volume connection theorem alongside existing HasVolume"
+      "REFACTORING needed: Replace HasVolume with measure-theoretic version (add carrier_measurable + volume_eq fields)",
+      "Bridge Lattice.basis matrix \u2192 Module.Basis via Basis.map + LinearEquiv from invertible matrix",
+      "Bridge latticePoints \u2192 Submodule.span \u2124 equivalence",
+      "Docker required for build verification of any changes",
+      "Alternative: replace entire custom type architecture with Mathlib types"
     ]
   },
   "tags": [
