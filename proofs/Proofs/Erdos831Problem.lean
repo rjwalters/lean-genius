@@ -320,11 +320,19 @@ theorem h_three : h 3 = 1 := by
       exact absurd hmem (Set.not_mem_empty _)
 
 /--
-**h(4) ≥ 2:**
-Four points in general position give at least 2 distinct radii.
-(If all 4 circumradii were equal, the points would be concyclic.)
+**h(4) = 1 (CORRECTED):**
+Previously axiomatized as h(4) ≥ 2, but this is FALSE.
+
+Counterexample: An equilateral triangle {A, B, C} with its circumcenter D.
+- A = (0,0), B = (1,0), C = (1/2, √3/2), D = (1/2, √3/6)
+- No 3 collinear (D is interior to ABC) ✓
+- Not concyclic (D is at the circumcenter, not on the circumcircle) ✓
+- ALL 4 circumradii = 1/√3 (circumcircles of each triple have equal radii
+  because D is equidistant from all 3 vertices at distance R = 1/√3)
+
+So countDistinctRadii({A,B,C,D}) = 1, giving h(4) ≤ 1.
+Combined with h(4) ≥ 1 (trivially, any triple has a circumcircle), h(4) = 1.
 -/
-axiom h_four_lower : h 4 ≥ 2
 
 /-
 ## Part VI: The Main Conjecture
@@ -677,20 +685,20 @@ of distinct circumradii achievable by n points in general position.
 
 Known:
 1. h(3) = 1 (trivial)
-2. h(4) ≥ 2 (four points give at least 2 radii)
+2. h(4) = 1 (equilateral triangle + circumcenter is a counterexample to h(4)≥2)
 3. h(n) ≤ C(n,3) (obvious upper bound)
 
+Note: h(4) ≥ 2 was previously axiomatized but is FALSE. The equilateral triangle
+{(0,0), (1,0), (1/2, √3/2)} with its circumcenter (1/2, √3/6) gives 4 points
+in general position where all 4 circumradii equal 1/√3.
+
 Unknown:
+- For which n does h(n) ≥ 2?
 - Exact growth rate of h(n)
-- Whether h(n) = Θ(n), Θ(n^α), or Θ(n²)
 -/
 theorem erdos_831_summary :
-    h 3 = 1 ∧ h 4 ≥ 2 ∧ ∀ n : ℕ, h n ≤ Nat.choose n 3 := by
-  constructor
-  · exact h_three
-  constructor
-  · exact h_four_lower
-  · exact h_upper_bound
+    h 3 = 1 ∧ ∀ n : ℕ, h n ≤ Nat.choose n 3 :=
+  ⟨h_three, h_upper_bound⟩
 
 /--
 **Main Question:**
