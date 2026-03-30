@@ -1,9 +1,9 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/PythagoreanTriplesOQ02.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
@@ -15,7 +15,7 @@ const meta = metaJson as {
   crossReferences?: CrossReference[]
 }
 
-export const pythagoreanTriplesOq02Proof: Proof = {
+export const borsukUlamOq02Oq01Oq04Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,10 +28,12 @@ export const pythagoreanTriplesOq02Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const pythagoreanTriplesOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const borsukUlamOq02Oq01Oq04Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const pythagoreanTriplesOq02Data: ProofData = {
-  proof: pythagoreanTriplesOq02Proof,
-  annotations: pythagoreanTriplesOq02Annotations,
+export const borsukUlamOq02Oq01Oq04Data: ProofData = {
+  proof: borsukUlamOq02Oq01Oq04Proof,
+  annotations: borsukUlamOq02Oq01Oq04Annotations,
   tacticStates: [],
 }
+
+export default borsukUlamOq02Oq01Oq04Data

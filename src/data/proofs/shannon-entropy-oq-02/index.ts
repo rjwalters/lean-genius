@@ -1,9 +1,9 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/PythagoreanTriplesOQ02.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/ShannonEntropyOQ02.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
@@ -15,7 +15,7 @@ const meta = metaJson as {
   crossReferences?: CrossReference[]
 }
 
-export const pythagoreanTriplesOq02Proof: Proof = {
+export const shannonEntropyOq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,10 +28,12 @@ export const pythagoreanTriplesOq02Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const pythagoreanTriplesOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const shannonEntropyOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const pythagoreanTriplesOq02Data: ProofData = {
-  proof: pythagoreanTriplesOq02Proof,
-  annotations: pythagoreanTriplesOq02Annotations,
+export const shannonEntropyOq02Data: ProofData = {
+  proof: shannonEntropyOq02Proof,
+  annotations: shannonEntropyOq02Annotations,
   tacticStates: [],
 }
+
+export default shannonEntropyOq02Data
