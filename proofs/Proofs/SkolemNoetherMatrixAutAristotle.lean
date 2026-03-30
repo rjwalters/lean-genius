@@ -78,7 +78,20 @@ theorem linearIndependent_of_intertwine
 theorem isUnit_of_linearIndependent_cols
     (P : Matrix n n K)
     (hli : LinearIndependent K (fun j : n => fun i : n => P i j)) :
-    IsUnit P := by sorry
+    IsUnit P := by
+  rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
+  intro hdet
+  -- det P = 0 gives a nonzero kernel element
+  obtain ⟨v, hv, hvP⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
+  -- But linear independence of columns forces v = 0
+  apply hv; ext j
+  apply Fintype.linearIndependent_iff.mp hli v _ j
+  ext i
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]
+  have := congr_fun hvP i
+  simp only [Matrix.mulVec, Matrix.dotProduct] at this
+  convert this using 1
+  exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /-
   Lemma 3: Matrix decomposition into standard basis
