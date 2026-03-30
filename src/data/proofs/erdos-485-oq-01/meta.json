@@ -20,7 +20,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.support",
@@ -48,7 +48,7 @@
     ],
     "dateAdded": "2026-03-28",
     "axiomCount": 3,
-    "lineCount": 400,
+    "lineCount": 451,
     "assumptions": "3 axioms: Schinzel-Zannier lower bound, Erdős upper bound, f(k)→∞. Lacunary lower bound was REMOVED (found to be false: counterexample p = 1-x²-(1/2)x⁴).",
     "mathlib_version": "4.26.0"
   },
@@ -143,7 +143,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos485OQ01",
-    "lineCount": 400,
+    "lineCount": 451,
     "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 2
