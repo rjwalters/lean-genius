@@ -476,8 +476,20 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
       (projTransform M D) (projTransform M E) (projTransform M F)
     ↔ pascalConstraint A B C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
-  simp only [← crossProduct_projTransform]
-  sorry -- Needs: adjugate composition identity, to be proved in next session
+  -- Apply cross product transformation law: cross(M·u, M·v) = adj(M)ᵀ · cross(u,v)
+  -- Simp applies bottom-up: first inner cross products (using M), then outer (using adj(M)ᵀ)
+  simp only [crossProduct_projTransform]
+  -- Now all three vectors are projTransform (adj(adj(M)ᵀ)ᵀ) applied to original intersections
+  rw [threeVectorMatrix_projTransform]
+  -- Goal: det(adj(adj(M)ᵀ)ᵀ) * det(P,Q,R) = 0 ↔ det(P,Q,R) = 0
+  constructor
+  · intro h
+    have hdet : (M.adjugate.transpose).adjugate.transpose.det ≠ 0 := by
+      simp only [Matrix.det_transpose, Matrix.det_adjugate, Fintype.card_fin]
+      -- det(M)^2^2 ≠ 0
+      exact pow_ne_zero _ (pow_ne_zero _ hM)
+    exact (mul_eq_zero.mp h).resolve_left hdet
+  · intro h; rw [h, mul_zero]
 
 /-
 ### Roadmap for Full Axiom Elimination
