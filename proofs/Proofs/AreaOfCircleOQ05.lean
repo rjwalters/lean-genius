@@ -17,8 +17,8 @@ We connect it to the area-of-circle context and derive standard corollaries.
 ## Status
 - [x] Gaussian integral stated and proved via Mathlib
 - [x] Connection to circle area via polar coordinates (documented)
-- [ ] Standard normal normalization (sorry — measure theory details)
-- [ ] Radial integral component (sorry — substitution details)
+- [x] Standard normal normalization (proved via scaled_gaussian)
+- [ ] Radial integral component (sorry — needs FTC for improper integrals)
 
 Parent: AreaOfCircle.lean
 -/
@@ -75,10 +75,18 @@ Gaussian integral with a = 1/2. -/
     ∫ (1/√(2π)) e^{-x²/2} dx = 1. -/
 theorem standard_normal_normalization :
     ∫ x : ℝ, (1 / √(2 * π)) * rexp (-(x ^ 2 / 2)) = 1 := by
-  -- From scaled_gaussian with a = 1/2:
-  -- ∫ e^{-x²/2} dx = √(2π)
-  -- Dividing by √(2π) gives 1
-  sorry
+  -- Pull constant out of integral
+  rw [integral_mul_left]
+  -- Evaluate ∫ e^{-x²/2} dx via scaled_gaussian with a = 1/2
+  have h := scaled_gaussian (1 / 2) (by positivity)
+  have h1 : ∫ x : ℝ, rexp (-(x ^ 2 / 2)) = √(2 * π) := by
+    convert h using 2
+    · ext x; congr 1; ring
+    · congr 1; ring
+  rw [h1]
+  -- (1/√(2π)) * √(2π) = 1
+  rw [one_div, inv_mul_cancel₀]
+  exact Real.sqrt_ne_zero'.mpr (by positivity)
 
 /-! ## Part 4: Connection to Circle Area
 
@@ -102,6 +110,9 @@ So the Gaussian integral is fundamentally a circle area computation. -/
     ∫₀∞ r·e^{-r²} dr = (1/2) ∫₀∞ e^{-u} du = 1/2. -/
 theorem radial_integral :
     ∫ r in Set.Ioi (0 : ℝ), r * rexp (-(r ^ 2)) = 1 / 2 := by
+  -- Antiderivative: d/dr (-e^{-r²}/2) = r·e^{-r²}
+  -- So ∫₀∞ r·e^{-r²} dr = [(-1/2)e^{-r²}]₀∞ = 0 - (-1/2) = 1/2
+  -- This requires FTC for improper integrals; left as sorry for now
   sorry
 
 end GaussianIntegralCircle

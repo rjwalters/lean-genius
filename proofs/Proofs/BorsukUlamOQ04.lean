@@ -33,8 +33,11 @@ Higher analogues would use:
 Formalizes the key ingredients:
 - Z/2 involution and quotient (real projective space)
 - Descent of odd maps to quotient maps (the crucial step)
-- Covering space and fundamental group axioms
+- Covering space obstruction (proved from BorsukUlam.lean)
 - Framework for higher categorical generalizations
+
+Axioms: 0 (covering_space_obstruction derived from BorsukUlam.lean)
+Sorries: 0
 
 Reference: https://erdosproblems.com (Borsuk-Ulam family)
 -/
@@ -45,6 +48,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
+import Proofs.BorsukUlam
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
@@ -255,10 +259,15 @@ theorem odd_gives_equivariant {n m : ℕ}
 
     Higher categorical analogue: replace π₁ with the full ∞-groupoid
     Π_∞, and covering spaces with ∞-local systems. The obstruction
-    then lives in higher cohomology groups rather than just π₁. -/
-axiom covering_space_obstruction (n : ℕ) (hn : n ≥ 1) :
-  ¬∃ (g : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin n)),
-    Continuous g ∧ IsOdd g ∧ (∀ x ∈ Sphere n, g x ≠ 0)
+    then lives in higher cohomology groups rather than just π₁.
+
+    Proved from `no_continuous_odd_nonzero_on_sphere` in BorsukUlam.lean
+    (both state the same result with reordered conjuncts). -/
+theorem covering_space_obstruction (n : ℕ) (hn : n ≥ 1) :
+    ¬∃ (g : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin n)),
+      Continuous g ∧ IsOdd g ∧ (∀ x ∈ Sphere n, g x ≠ 0) := by
+  intro ⟨g, hcont, hodd, hnonzero⟩
+  exact BorsukUlam.no_continuous_odd_nonzero_on_sphere n hn ⟨g, hcont, hnonzero, hodd⟩
 
 -- ============================================================
 -- PART 7: Open Questions for Higher Analogues
