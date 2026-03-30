@@ -271,19 +271,57 @@ theorem strong_implies_weak : erdos104Conjecture → erdos104WeakConjecture := b
       _ = ε * n ^ 2 := by ring
 
 /-
+## Algebraic Tools
+-/
+
+/-- A nonzero quadratic polynomial has at most 2 roots: if three values
+    all satisfy α·t² + β·t + γ = 0 with α ≠ 0, two must be equal.
+    PROVED: by difference-of-squares factoring and pigeonhole. -/
+theorem quadratic_at_most_two_roots {α β γ : ℝ} (hα : α ≠ 0)
+    {t₁ t₂ t₃ : ℝ}
+    (h₁ : α * t₁ ^ 2 + β * t₁ + γ = 0)
+    (h₂ : α * t₂ ^ 2 + β * t₂ + γ = 0)
+    (h₃ : α * t₃ ^ 2 + β * t₃ + γ = 0) :
+    t₁ = t₂ ∨ t₁ = t₃ ∨ t₂ = t₃ := by
+  by_contra hall
+  push_neg at hall
+  obtain ⟨h12, h13, h23⟩ := hall
+  -- From h₁ - h₂, factor: (t₁ - t₂)(α(t₁ + t₂) + β) = 0
+  have hsub12 : α * (t₁ ^ 2 - t₂ ^ 2) + β * (t₁ - t₂) = 0 := by linarith
+  have key12 : α * (t₁ + t₂) + β = 0 := by
+    have hfact : (t₁ - t₂) * (α * (t₁ + t₂) + β) = 0 := by
+      have : (t₁ - t₂) * (α * (t₁ + t₂) + β) =
+        α * (t₁ ^ 2 - t₂ ^ 2) + β * (t₁ - t₂) := by ring
+      linarith
+    exact (mul_eq_zero.mp hfact).resolve_left (sub_ne_zero.mpr h12)
+  -- From h₁ - h₃, factor: (t₁ - t₃)(α(t₁ + t₃) + β) = 0
+  have hsub13 : α * (t₁ ^ 2 - t₃ ^ 2) + β * (t₁ - t₃) = 0 := by linarith
+  have key13 : α * (t₁ + t₃) + β = 0 := by
+    have hfact : (t₁ - t₃) * (α * (t₁ + t₃) + β) = 0 := by
+      have : (t₁ - t₃) * (α * (t₁ + t₃) + β) =
+        α * (t₁ ^ 2 - t₃ ^ 2) + β * (t₁ - t₃) := by ring
+      linarith
+    exact (mul_eq_zero.mp hfact).resolve_left (sub_ne_zero.mpr h13)
+  -- Subtracting key12 and key13: α(t₂ - t₃) = 0, contradicting α ≠ 0 and t₂ ≠ t₃
+  have : α * (t₂ - t₃) = 0 := by linarith
+  exact h23 (eq_of_sub_eq_zero ((mul_eq_zero.mp this).resolve_left hα))
+
+/-
 ## Connections to Incidence Geometry
 
 Related to the Szemerédi-Trotter theorem.
 -/
 
+/-- The number of point-circle incidences for a point set and circle set -/
+noncomputable def incidenceCount (P : PointSet) (Circ : Finset UnitCircle) : ℕ :=
+  {pc : Point × UnitCircle | pc.1 ∈ P ∧ pc.2 ∈ Circ ∧ OnCircle pc.1 pc.2}.ncard
+
 /-- Szemerédi-Trotter type bound for point-circle incidences (Clarkson et al.)
-    The number of incidences is O(n^{2/3}m^{2/3} + n + m) where n = #points, m = #circles. -/
+    The number of incidences is O(n^{2/3}m^{2/3} + n + m). -/
 axiom circle_incidence_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ (n m : ℕ),
-    (n : ℝ) * (m : ℝ) > 0 →
-    ∀ P : PointSet, P.card = n → ∀ Circ : Finset UnitCircle, Circ.card = m →
-      ∀ I : ℕ, (∀ p ∈ P, ∀ c ∈ Circ, OnCircle p c → True) →
-        (I : ℝ) ≤ C * ((n : ℝ)^(2/3 : ℝ) * (m : ℝ)^(2/3 : ℝ) + n + m)
+  ∃ C : ℝ, C > 0 ∧ ∀ (P : PointSet) (Circ : Finset UnitCircle),
+    (incidenceCount P Circ : ℝ) ≤
+      C * ((P.card : ℝ)^(2/3 : ℝ) * (Circ.card : ℝ)^(2/3 : ℝ) + P.card + Circ.card)
 
 /-
 ## Known Values (OEIS A003829)

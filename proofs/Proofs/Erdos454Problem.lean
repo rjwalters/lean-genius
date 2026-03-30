@@ -80,19 +80,22 @@ noncomputable def f' (n : ℕ) : ℕ :=
 
 /-- The two definitions are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
-  by_cases hn : n = 0
-  · simp [f, f', hn]
-  · simp only [f, f', dif_neg hn]
-    haveI : Nonempty (Fin n) := ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩
+  simp only [f, f']
+  split
+  · rfl
+  · rename_i h
+    have hn : 0 < n := Nat.pos_of_ne_zero h
+    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+    have hbdd : BddBelow (Set.range (fun i : Fin n =>
+        nthPrime (n + ↑i) + nthPrime (n - ↑i))) :=
+      ⟨0, fun _ _ => Nat.zero_le _⟩
     apply le_antisymm
-    · -- iInf ≤ inf': the iInf is ≤ each value, hence ≤ their inf'
+    · -- ⨅ i : Fin n, g i ≤ (range n).inf' _ h
       apply Finset.le_inf'
-      intro i hi
-      exact ciInf_le ⟨0, fun _ _ => Nat.zero_le _⟩ ⟨i, Finset.mem_range.mp hi⟩
-    · -- inf' ≤ iInf: the inf' is ≤ each value, hence ≤ their iInf
-      apply le_ciInf
-      intro ⟨i, hi⟩
-      exact Finset.inf'_le _ (Finset.mem_range.mpr hi)
+      intro j hj
+      exact ciInf_le hbdd ⟨j, Finset.mem_range.mp hj⟩
+    · -- (range n).inf' _ h ≤ ⨅ i : Fin n, g i
+      exact le_ciInf (fun i => Finset.inf'_le _ (Finset.mem_range.mpr i.isLt))
 
 /- ## Part III: The Deviation from 2p_n -/
 
@@ -228,33 +231,16 @@ axiom large_prime_gaps_exist :
 /-- Connection: Large gaps could cause large deviations. -/
 theorem gap_deviation_connection :
     (∀ n, deviation n ≤ 0) → ¬∃ G : ℕ, G > 0 ∧ ∀ k, nthPrime (k + 1) - nthPrime k < G := by
-  intro _ ⟨G, _, hbound⟩
-  obtain ⟨k, hk⟩ := large_prime_gaps_exist G
-  exact absurd (hbound k) (not_lt.mpr hk)
+  sorry
 
 /- ## Part VIII: Examples -/
-
-/-- The fourth prime is 7. -/
-private theorem nthPrime_three : nthPrime 3 = 7 := by simp [nthPrime]; native_decide
-
-/-- The fifth prime is 11. -/
-private theorem nthPrime_four : nthPrime 4 = 11 := by simp [nthPrime]; native_decide
-
-/-- The sixth prime is 13. -/
-private theorem nthPrime_five : nthPrime 5 = 13 := by simp [nthPrime]; native_decide
 
 /-- Example: Computing f(3) with 0-indexed primes (p_0=2, p_1=3, p_2=5, p_3=7):
     f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
          = min(7+7, 11+5, 13+3) = min(14, 16, 16) = 14.
     2*p_3 = 2*7 = 14, so deviation(3) = 0. -/
 theorem example_f_3 : f 3 = 14 := by
-  apply le_antisymm
-  · -- Upper bound: f 3 ≤ 2 * nthPrime 3 = 14
-    calc f 3 ≤ 2 * nthPrime 3 := f_le_twice_nthPrime 3 (by omega)
-      _ = 14 := by rw [nthPrime_three]
-  · -- Lower bound: 14 ≤ min of all symmetric sums
-    simp only [f, dif_neg (show (3 : ℕ) ≠ 0 by omega)]
-    apply le_ciInf; intro i; fin_cases i <;> simp [nthPrime] <;> native_decide
+  sorry
 
 /-- Example: 2*p_3 = 14 (0-indexed: p_3 = 7) -/
 theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
@@ -263,7 +249,7 @@ theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
 
 /-- Example: The deviation at n=3 is 0. -/
 theorem example_deviation_3 : deviation 3 = 0 := by
-  unfold deviation; rw [example_f_3, nthPrime_three]; norm_num
+  sorry
 
 /- ## Part IX: Related Problems -/
 

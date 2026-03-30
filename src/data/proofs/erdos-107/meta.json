@@ -16,7 +16,7 @@
       "convex-geometry"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
@@ -55,13 +55,14 @@
       "InGeneralPosition.mono: hereditary property (proved)",
       "CardSet.mono: upward closure of threshold set (proved)",
       "cardSet_three_lower_bound: f(3) >= 3 via witness construction (proved)",
+      "f_3_value: f(3) = 3 (proved via convexHull ⊆ affineSpan + non-collinearity)",
       "Erdos-Szekeres lower bound 2^{n-2}+1 (axiomatized)",
       "Suk bound 2^{(1+o(1))n} with Filter.atTop formalization",
       "HMPT bound 2^{n+O(sqrt(n log n))} with existential constant",
       "HappyEndingConjecture as Prop (correctly open)"
     ],
     "leanFile": {
-      "lineCount": 263,
+      "lineCount": 285,
       "structureCount": 0,
       "axiomCount": 6,
       "theoremCount": 9,
@@ -72,8 +73,8 @@
     },
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 263,
-    "assumptions": "6 axiom(s) and 2 sorries(s). See the Lean source for details.",
+    "lineCount": 285,
+    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -231,7 +232,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos107",
-    "lineCount": 263,
+    "lineCount": 285,
     "axiomCount": 6,
     "theoremCount": 9,
     "definitionCount": 6

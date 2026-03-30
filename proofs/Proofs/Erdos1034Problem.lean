@@ -295,9 +295,33 @@ theorem erdos_faudree_false : ¬erdos_faudree_conjecture := by
   use True
 
 -/
-/-- The conjecture is false. -/
+/-- The conjecture is false: the Ma-Tang counterexample shows the best constant
+    is ≈ 0.419, not 1/2. We use ε = 1/25 and n ≥ 26 to get a contradiction. -/
 theorem erdos_faudree_false : ¬erdos_faudree_conjecture := by
-  sorry
+  intro hconj
+  -- Choose ε = 1/25 = 0.04 > 0
+  obtain ⟨N_conj, hN_conj⟩ := hconj (1/25 : ℝ) (by norm_num)
+  -- Get Ma-Tang counterexample for large n
+  obtain ⟨N_mt, hN_mt⟩ := maTang_counterexample
+  -- Choose n large enough for both
+  set n := max (max N_conj N_mt) 26 with hn_def
+  have hn_conj : n ≥ N_conj := le_trans (le_max_left _ _) (le_max_left _ _)
+  have hn_mt : n ≥ N_mt := le_trans (le_max_right _ _) (le_max_left _ _)
+  have hn_26 : (n : ℝ) ≥ 26 := by exact_mod_cast le_max_right _ _
+  -- Get counterexample graph
+  obtain ⟨V, hDE, hFT, hcard, G, hprops⟩ := hN_mt n hn_mt
+  haveI := hDE; haveI := hFT
+  haveI : DecidableRel G.Adj := Classical.decRel _
+  obtain ⟨hAT, hbound⟩ := hprops
+  -- Apply the conjecture
+  obtain ⟨T, hT⟩ := hN_conj n hn_conj V hcard G hAT
+  -- hT : goodNeighborCount G T > (1/2 - 1/25) * n = 23/50 * n
+  -- hbound T : goodNeighborCount G T ≤ maTangConstant * n + 1
+  have hT_le := hbound T
+  -- maTangConstant < 0.42 (from maTang_approx)
+  have h_mc := maTang_approx.2
+  -- Contradiction: 23/50 * n > maTangConstant * n + 1 for n ≥ 26
+  linarith
 
 /-
 ## Ma-Tang Counterexample
@@ -313,28 +337,15 @@ theorem maTang_approx : maTangConstant > 0.418 ∧ maTangConstant < 0.42 := by
   unfold maTangConstant;
   constructor <;> nlinarith [ Real.sqrt_nonneg ( 5 / 2 ), Real.sq_sqrt ( show 0 ≤ 5 / 2 by norm_num ) ]
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected end of input; expected ','-/
-/-- Ma-Tang: There exists a counterexample graph. -/
+/-- Ma-Tang: There exists a counterexample graph.
+    The bound `+ 1` replaces `+ o(1)` from the original statement. -/
 axiom maTang_counterexample : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*)
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected token '['; expected command
-Function expected at
-  h
-but this term has type
-  ?m.1
-
-Note: Expected a function because this term is being applied to the argument
-  n-/
-[DecidableEq V] [Fintype V],
-  Fintype.card V = n ∧
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-  isAboveTuran G ∧
-  (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ maTangConstant * n + o(1))
+  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
+    Fintype.card V = n ∧
+    ∃ G : SimpleGraph V,
+      ∀ [DecidableRel G.Adj],
+        isAboveTuran G ∧
+        (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ maTangConstant * n + 1)
 
 /-- The upper bound on h(n). -/
 theorem h_upper_bound : ∃ N : ℕ, ∀ n ≥ N,
@@ -466,7 +477,10 @@ There's a gap between 1/6 ≈ 0.167 and 2 - √(5/2) ≈ 0.419.
 /-- Current bounds on h(n). -/
 theorem h_bounds : ∃ N : ℕ, ∀ n ≥ N,
     (n : ℝ) / 6 - 1 ≤ h n ∧ (h n : ℝ) ≤ maTangConstant * n + 1 := by
-  sorry
+  obtain ⟨N₁, h₁⟩ := h_lower_bound
+  obtain ⟨N₂, h₂⟩ := h_upper_bound
+  exact ⟨max N₁ N₂, fun n hn =>
+    ⟨h₁ n (le_of_max_le_left hn), h₂ n (le_of_max_le_right hn)⟩⟩
 
 /-- The gap between bounds. -/
 noncomputable def boundGap : ℝ := maTangConstant - 1/6
@@ -499,21 +513,14 @@ theorem k4Free_approx : k4FreeConstant > 0.46 ∧ k4FreeConstant < 0.47 := by
     exact?;
   exact ⟨ by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ], by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ] ⟩
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected end of input; expected ','-/
-/-- Ma-Tang K₄-free result. -/
+/-- Ma-Tang K₄-free result. The bound `+ 1` replaces `+ o(1)`. -/
 axiom maTang_k4free : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*)
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected token '['; expected command-/
-[DecidableEq V] [Fintype V],
-  Fintype.card V = n ∧
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-  isAboveTuran G ∧ isK4Free G ∧
-  (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ k4FreeConstant * n + o(1))
+  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
+    Fintype.card V = n ∧
+    ∃ G : SimpleGraph V,
+      ∀ [DecidableRel G.Adj],
+        isAboveTuran G ∧ isK4Free G ∧
+        (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ k4FreeConstant * n + 1)
 
 /-- K₄-free bound is worse (higher) than general bound. -/
 theorem k4free_worse : k4FreeConstant > maTangConstant := by
@@ -637,7 +644,11 @@ Note: Expected a function because this term is being applied to the argument
 theorem erdos_1034_partial : ∃ c₁ c₂ : ℝ,
     c₁ = 1/6 ∧ c₂ = maTangConstant ∧
     (∃ N : ℕ, ∀ n ≥ N, c₁ * n - 1 ≤ h n ∧ (h n : ℝ) ≤ c₂ * n + 1) := by
-  sorry
+  refine ⟨1/6, maTangConstant, rfl, rfl, ?_⟩
+  obtain ⟨N, hN⟩ := h_bounds
+  exact ⟨N, fun n hn => by
+    have ⟨h₁, h₂⟩ := hN n hn
+    exact ⟨by linarith, h₂⟩⟩
 
 /-- The conjecture is definitively false. -/
 theorem erdos_1034_disproved : ¬erdos_faudree_conjecture := erdos_faudree_false

@@ -41,7 +41,8 @@
       "Equivalence proof between custom IsAPFree and Mathlib's ThreeAPFree (non-trivial case split)",
       "k=1,2 density versions proved from scratch",
       "k=3 derived from Mathlib's roth_3ap_theorem_nat via the ThreeAPFree bridge",
-      "Theorem reduction: full statement assembled from k=1,2,3 proofs + single k>=4 axiom"
+      "Theorem reduction: full statement assembled from k=1,2,3 proofs + single k>=4 axiom",
+      "AP monotonicity, superset transfer, k-monotonicity, and AP-free density bound"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 1,
@@ -202,9 +203,9 @@
     ],
     "opens": [],
     "namespace": "Szemeredi",
-    "lineCount": 335,
+    "lineCount": 374,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 16,
     "definitionCount": 5
   },
   "references": [

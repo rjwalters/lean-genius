@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T03:37:20.406Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Fixed build failure, added limitPointSet_isClosed outline",
     "blockers": [],
     "nextAction": "Prove limitPointSet_isClosed: implement diagonalization (cluster_implies_limitPoint) + triangle inequality for complement openness",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 axioms (8→4). Defined nthPrime via Nat.nth, proved properties, derived redundant axiom. Remaining: zero_is_limit_point, gaps_unbounded, merikoski_density, erdos_5_conjecture (all deep).",
+    "progressSummary": "PROGRESS: 28T/3A/0S (was 25T). Added set_eq_implies_erdos_5 (reverse direction), erdos_5_iff (full equivalence), known_properties_of_S (summary). 3 deep axioms remain.",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",

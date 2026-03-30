@@ -95,6 +95,23 @@ theorem h_two : h 2 = 4 := by native_decide
 /-- h(3) = 3 + τ(3) = 3 + 2 = 5. -/
 theorem h_three : h 3 = 5 := by native_decide
 
+/-- For n ≥ 2, τ(n) ≥ 2 (since 1 and n are distinct divisors), so h(n) ≥ n + 2. -/
+theorem h_lower_bound_ge2 (n : ℕ) (hn : n ≥ 2) : h n ≥ n + 2 := by
+  unfold h
+  have h1 : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_mem : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have hsub : {1, n} ⊆ n.divisors := by
+    intro x hx; simp at hx; rcases hx with rfl | rfl <;> assumption
+  have := Finset.card_le_card hsub
+  rw [Finset.card_pair (by omega : (1 : ℕ) ≠ n)] at this
+  omega
+
+/-- h(4) = 4 + τ(4) = 4 + 3 = 7. -/
+theorem h_four : h 4 = 7 := by native_decide
+
+/-- h(5) = 5 + τ(5) = 5 + 2 = 7. Both 4 and 5 map to 7 under h. -/
+theorem h_five : h 5 = 7 := by native_decide
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #414** (OPEN): For any m, n ≥ 1, the orbits
@@ -160,6 +177,20 @@ theorem orbit_linear_lower (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
     have hpos := hOrbit_pos n hn k
     have hgt := h_strictly_increasing (hOrbit n k) hpos
     omega
+
+/-- For n ≥ 2, h^k(n) ≥ n + 2k (each step adds ≥ 2). Stronger than orbit_linear_lower. -/
+theorem orbit_linear_lower_ge2 (n : ℕ) (hn : n ≥ 2) (k : ℕ) :
+    hOrbit n k ≥ n + 2 * k := by
+  induction k with
+  | zero => simp [hOrbit]
+  | succ k ih =>
+    simp [hOrbit]
+    have hge2 : hOrbit n k ≥ 2 := by omega
+    have := h_lower_bound_ge2 (hOrbit n k) hge2
+    omega
+
+/-- Orbit of 5 merges with orbit of 1 at value 7: h(5) = 7 = h³(1). -/
+theorem orbit_5_merges_with_1 : hOrbit 5 1 = hOrbit 1 3 := by native_decide
 
 /-- Two orbits starting at m and n eventually merge (from the conjecture),
     so their distance eventually becomes 0. This is strictly stronger than
