@@ -182,11 +182,30 @@ def sauer_counterexample_theorem : Prop :=
 Connections to other graph theory results.
 -/
 
-/-- The Turán graph is the extremal triangle-free graph -/
-axiom turan_extremal :
-  ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
-      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G)
+/-- The Turán graph is the extremal triangle-free graph.
+    PROVED from Mathlib's CliqueFree.card_edgeFinset_le (Turán bound).
+    Previously an axiom; now eliminated. -/
+theorem turan_extremal :
+    ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
+      ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
+        (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G) := by
+  intro V _ _ G _ hno
+  -- Convert "no Triangle G" to CliqueFree 3 (Mathlib)
+  have hcf : G.CliqueFree 3 := by
+    intro t ⟨hClique, hCard⟩
+    rw [Finset.card_eq_three] at hCard
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := hCard
+    exact hno ⟨a, b, c,
+      hClique (Finset.mem_coe.mpr (by simp)) (Finset.mem_coe.mpr (by simp)) hab,
+      hClique (Finset.mem_coe.mpr (by simp)) (Finset.mem_coe.mpr (by simp)) hbc,
+      hClique (Finset.mem_coe.mpr (by simp)) (Finset.mem_coe.mpr (by simp)) hac,
+      ⟨hab, hbc, hac⟩⟩
+  -- Apply Mathlib's Turán bound for triangle-free graphs
+  unfold numEdges turanThreshold numVertices
+  have hbound := hcf.card_edgeFinset_le
+  set n := Fintype.card V
+  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+  rcases hmod with hm | hm <;> simp only [hm] at hbound <;> omega
 
 /-- Edge-disjointness is symmetric. -/
 theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :

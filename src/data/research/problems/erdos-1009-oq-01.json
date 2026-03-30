@@ -29,21 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 5 unused axioms (8→3). Converted gyori_theorem, erdos_small_c, gyori_odd_n, gyori_even_n, sauer_counterexample to def Prop.",
+    "progressSummary": "PROGRESS: Eliminated turan_extremal axiom (3→2) using Mathlib CliqueFree.card_edgeFinset_le. Remaining axioms (boundFunction, gyori_bound) are deep/opaque.",
     "builtItems": [
       "Assessment: 8A all appropriate (opaque function + deep results)",
       "edgeDisjoint_comm: symmetry of edge-disjointness",
       "turanThreshold_zero, turanThreshold_one: small value computations",
       "turanThreshold_pos: positivity for n≥2",
-      "turanThreshold_mono: monotonicity of Turán threshold"
+      "turanThreshold_mono: monotonicity of Turán threshold",
+      "turan_extremal: proved from Mathlib (was axiom) — Turán theorem for triangle-free graphs"
     ],
     "insights": [
       "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",
       "turanThreshold is n²/4 rounded down — monotone, positive for n≥2, zero for n≤1",
-      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible"
+      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible",
+      "turan_extremal axiom eliminated using Mathlib CliqueFree.card_edgeFinset_le — axiom count 3→2",
+      "Pattern: Triangle G structure converts to CliqueFree 3 via Finset.card_eq_three decomposition",
+      "Remaining axioms boundFunction (opaque) and gyori_bound (Györi 1988) are genuinely deep — no further elimination possible"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "No further axiom elimination possible — remaining 2 axioms are appropriate (opaque function + deep theorem)",
+      "Potential: add lower bounds on optimal constant C from Sauer construction",
+      "Potential: formalize quantitative aspects of Györi 1988 bound"
+    ]
   },
   "tags": [
     "erdos",
