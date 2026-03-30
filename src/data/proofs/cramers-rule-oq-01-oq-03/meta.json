@@ -7,7 +7,7 @@
     "author": "Gabriel Cramer (1750); Carl Friedrich Gauss",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Complexity",
     "date": "1750/1800s",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CramersRuleOQ01OQ03.lean",
     "tags": [
       "linear-algebra",
@@ -18,10 +18,10 @@
       "research",
       "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations, 0 sorries remain. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding).",
+    "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding) and factorial_ge_cube (n! >= n³ for n >= 6).",
     "lineCount": 228
   },
   "overview": {
@@ -86,7 +86,7 @@
     "summary": "Formalizes the complexity gap between Cramer's Rule and Gaussian elimination. The key result is the fully proved factorial_ge_cube (n! ≥ n³ for n ≥ 6), along with exact operation counts for small n demonstrating the practical crossover.",
     "implications": "The formalization shows that while Cramer's Rule is theoretically beautiful (closed-form, connection to adjugate/Cayley-Hamilton), it is computationally impractical for systems larger than about 4×4.",
     "openQuestions": [
-      "Can the Gaussian elimination bound be proved without sorry?",
+      "Can the cramer_exceeds_gaussian comparison theorem be formalized directly?",
       "What is the exact crossover point where Gaussian beats Cramer?",
       "Can LU decomposition operation counts be formalized similarly?"
     ]
@@ -143,7 +143,7 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "substantiveTheoremCount": 10,
-    "sorryTheorems": 1,
+    "sorryTheorems": 0,
     "definitionCount": 11,
     "mainTheorems": [
       {
@@ -158,7 +158,7 @@
       },
       {
         "name": "gaussian_cubic_bound",
-        "type": "sorry",
+        "type": "proved",
         "description": "Gaussian elimination is O(n³)"
       }
     ]
