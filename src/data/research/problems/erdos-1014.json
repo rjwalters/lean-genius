@@ -58,7 +58,8 @@
       "R3_ratio_convergence proved directly: recurrence gives R(3,l+1)-R(3,l)≤l+1, combined with R(3,l)≥c·l²/log l gives ratio O(log l/l)→0",
       "R3_asymptotic_bounds combines R3_lower and R3_upper to give R(3,l) = Θ(l²/log l)",
       "ramsey_pos(k,l) for k ≥ 2 follows from R(2,l)=l ≥ 1 and R(2,l) ≤ R(k,l) by iterated ramsey_monotone_left. Only k=1 case would need an axiom but it is never used.",
-      "OQ02 conditional_rate_general_k had incorrect O(1/l) conclusion — only o(1) follows from the given hypothesis. The growth ratio g(l+1)/g(l) is 1+O(k/l), but the R/g error is o(1) at unspecified rate. Fixed by delegating to ratio_from_asymptotics."
+      "OQ02 conditional_rate_general_k had incorrect O(1/l) conclusion — only o(1) follows from the given hypothesis. The growth ratio g(l+1)/g(l) is 1+O(k/l), but the R/g error is o(1) at unspecified rate. Fixed by delegating to ratio_from_asymptotics.",
+      "12 axioms classified: 1 open conjecture, 2 deep bounds (R3_lower/upper), 1 deep result (Erdős-Szekeres), 1 recurrence, 3 concrete values (R33=6,R34=9,R35=14), 4 definitional properties (ramseyNumber def, symm, mono, k2=l). Eliminating the 4 definitional ones requires building computable Ramsey number infrastructure."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
