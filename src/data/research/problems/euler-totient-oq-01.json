@@ -1,0 +1,26 @@
+{
+  "id": "euler-totient-oq-01",
+  "name": "Carmichael's Function: a^lambda(n) equiv 1 (mod n)",
+  "parentId": "euler-totient",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "score": 6,
+    "insights": [
+      "Carmichael's function = Monoid.exponent of (ZMod n) units in Mathlib",
+      "carmichael_dvd_totient from Monoid.exponent_dvd_card (Lagrange)",
+      "carmichael_pow_eq_one from Monoid.pow_exponent_eq_one",
+      "carmichael_prime sorry: need exponent of cyclic group = order, requires IsCyclic + exponent_eq_card"
+    ],
+    "builtItems": [
+      "EulerTotientOQ01.lean: 0A/1S, 88 lines, 6 theorems",
+      "carmichael definition via Monoid.exponent",
+      "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal proved",
+      "carmichael_one, carmichael_two: special values proved"
+    ],
+    "progressSummary": "COMPLETED: 0A/1S. Defined Carmichael function via Monoid.exponent. 5 theorems proved, 1 sorry (prime case needs cyclic group exponent).",
+    "nextSteps": [
+      "Prove carmichael_prime via IsCyclic + Monoid.exponent_eq_card_of_isCyclic"
+    ]
+  }
+}
