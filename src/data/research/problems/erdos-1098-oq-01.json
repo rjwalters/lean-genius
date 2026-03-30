@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T06:54:30-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created OQ01 file with 8 theorems about small clique numbers in non-commuting graphs.",
+    "progressSummary": "COMPLETED: OQ01 file fully proved (0 sorries, 0 axioms). Also eliminated neumann_bound axiom from main file (6→5 axioms).",
     "builtItems": [
       "Proved finite_index_implies_finite_clique (line 161)",
       "Proved same_coset_commute (line 181)",
@@ -38,7 +38,8 @@
       "Created Erdos1098OQ01.lean: 8 theorems, 0 axioms, 0 sorries, 122 lines",
       "clique_zero_iff_abelian: ω=0 iff abelian",
       "center_not_in_clique: center elements excluded from large cliques",
-      "abelian_clique_bound: CommGroup implies clique size <= 1"
+      "abelian_clique_bound: CommGroup implies clique size <= 1",
+      "Proved neumann_bound in Erdos1098Problem.lean from clique_size_bound (axiom→theorem)"
     ],
     "insights": [
       "finite_index_implies_finite_clique follows trivially from neumann_bound axiom",
@@ -50,7 +51,8 @@
       "ω(Γ(G))=0 iff G abelian — proved as clique_zero_iff_abelian (biconditional)",
       "Center elements never appear in cliques of size >= 2",
       "Abelian groups have clique bound 1 (CommGroup instance)",
-      "nonCommuting is symmetric (key for clique definition)"
+      "nonCommuting is symmetric (key for clique definition)",
+      "neumann_bound axiom eliminated: proved from clique_size_bound via calc chain. Restructured file to place proof infrastructure before corollaries."
     ],
     "mathlibGaps": [],
     "nextSteps": [

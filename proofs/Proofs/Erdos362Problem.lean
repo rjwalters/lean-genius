@@ -227,6 +227,25 @@ theorem gf_disjoint_union (B C : Finset ℤ) (z : ℂ) (h : Disjoint B C) :
   unfold subsetSumGF
   exact prod_union h
 
+/-
+## Proof roadmap for fourier_extraction (below)
+
+Using gf_expansion (proved above), the proof reduces to:
+1. subsetSumGF A (e^{iθ}) = ∑ S ∈ A.powerset, e^{i·setSum(S)·θ} (by gf_expansion, since e^{iθ} ≠ 0)
+2. Multiply by e^{-itθ} and integrate: each term gives (1/2π)∫₀²π e^{i(setSum S-t)θ} dθ
+3. Orthogonality: this integral equals 1 if setSum S = t, 0 otherwise
+4. Sum collapses to #{S ⊆ A : setSum S = t} = countSubsetsWithSum A t
+
+Step 3 needs: for n : ℤ, (1/2π)∫₀²π e^{inθ} dθ = if n = 0 then 1 else 0
+- n = 0: ∫₀²π 1 dθ = 2π, so (1/2π)·2π = 1
+- n ≠ 0: FTC with antiderivative e^{inθ}/(in), giving (e^{2πin}-1)/(in) = 0
+
+Alternatively, use Mathlib's AddCircle/fourierCoeff infrastructure:
+- Express f(θ) = subsetSumGF A (e^{iθ}) as ∑_{S} fourier(setSum S)(θ) on AddCircle(2π)
+- Apply fourierCoeff linearity + orthonormal_fourier
+- Bridge set_integral on Icc to intervalIntegral / Haar measure
+-/
+
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
     the integral of the generating function against an exponential. -/
 axiom fourier_extraction (A : Finset ℤ) (t : ℤ) :

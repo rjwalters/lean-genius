@@ -56,14 +56,6 @@ of degree n ≥ 2 with all roots in the open unit disk, the sublevel set
 
 This was proved in "Metric properties of polynomials" (1958). The proof
 uses potential theory and properties of polynomial level curves. -/
-axiom erdos_herzog_piranian_component_lemma :
-    ∀ (f : ℂ[X]) (n : ℕ),
-      2 ≤ n →
-      f.natDegree = n →
-      f.Monic →
-      (∀ z ∈ f.roots.toFinset, ‖z‖ < 1) →
-        ∃ C : Set ℂ, C ⊆ sublevelSet f 1 ∧ IsConnected C ∧
-          2 ≤ (f.roots.toFinset.filter (· ∈ C)).card
 
 /-
 ## The Main Conjecture (OPEN)
@@ -78,18 +70,6 @@ than 2 within the sublevel set {z : |f(z)| < 1} connecting two roots.
 
 This strengthens the Erdős-Herzog-Piranian lemma by requiring not just
 connectivity but a quantitative bound on path length. -/
-axiom erdos_1041_conjecture :
-    ∀ (f : ℂ[X]) (n : ℕ),
-      2 ≤ n →
-      f.natDegree = n →
-      f.Monic →
-      (∀ z ∈ f.roots.toFinset, ‖z‖ < 1) →
-        ∃ (z₁ z₂ : ℂ) (γ : Path z₁ z₂),
-          z₁ ∈ f.roots.toFinset ∧
-          z₂ ∈ f.roots.toFinset ∧
-          z₁ ≠ z₂ ∧
-          Set.range γ ⊆ sublevelSet f 1 ∧
-          length (Set.range γ) < 2
 
 /-
 ## Special Cases and Variants
@@ -97,25 +77,11 @@ axiom erdos_1041_conjecture :
 
 /-- The diameter of the roots within the sublevel set is at most 2 when all
 roots are in the unit disk. This follows from the triangle inequality. -/
-axiom roots_diameter_bound :
-    ∀ (f : ℂ[X]) (n : ℕ),
-      2 ≤ n →
-      f.natDegree = n →
-      f.Monic →
-      (∀ z ∈ f.roots.toFinset, ‖z‖ < 1) →
-        Metric.diam (f.roots.toFinset : Set ℂ) < 2
 
 /-- **Quadratic Case**: For a quadratic f(z) = (z - z₁)(z - z₂) with |z₁|, |z₂| < 1,
 the segment [z₁, z₂] has length |z₁ - z₂| < 2 and lies in the sublevel set.
 
 This provides the base case n = 2 of the conjecture. -/
-axiom erdos_1041_quadratic :
-    ∀ (z₁ z₂ : ℂ),
-      ‖z₁‖ < 1 → ‖z₂‖ < 1 → z₁ ≠ z₂ →
-        let f := (X - C z₁) * (X - C z₂)
-        ∃ (γ : Path z₁ z₂),
-          Set.range γ ⊆ sublevelSet f 1 ∧
-          length (Set.range γ) < 2
 
 /-
 ## Properties of Sublevel Sets
@@ -147,8 +113,6 @@ theorem roots_subset_sublevelSet (f : ℂ[X]) :
 -/
 
 /-- The length of any path is at least the distance between endpoints. -/
-axiom length_path_lower_bound (z₁ z₂ : ℂ) (γ : Path z₁ z₂) :
-    length (Set.range γ) ≥ ENNReal.ofReal ‖z₁ - z₂‖
 
 /-- For points in the unit disk, the distance is less than 2. -/
 theorem dist_in_unit_disk (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z₂‖ < 1) :
@@ -158,8 +122,6 @@ theorem dist_in_unit_disk (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z
     _ = 2 := by ring
 
 /-- The straight-line path between two points in the unit disk has length < 2. -/
-axiom straight_path_length_bound (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z₂‖ < 1) :
-    ENNReal.ofReal ‖z₁ - z₂‖ < 2
 
 /-
 ## Connection to Lemniscates

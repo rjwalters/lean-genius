@@ -1,0 +1,41 @@
+{
+  "id": "bezout-identity-oq-04-oq-01",
+  "name": "Linear Diophantine systems via Smith Normal Form",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "bezout-identity-oq-04",
+    "question": "Can the parametric solution extend to systems of linear Diophantine equations (matrix form Ax = b over ℤ), characterizing the full solution lattice via the Smith Normal Form?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Built Smith Normal Form infrastructure in Lean 4. Defined SmithNormalForm structure with unimodular matrices, diagonal form, and invariant factor chain. Axiomatized SNF existence and solvability criterion. Proved bezout_from_snf (classical Bézout recovery), null space ℤ-submodule structure, and affine lattice characterization of solution sets. 2 axioms, 1 sorry, 11 proved theorems.",
+    "builtItems": [
+      "Created proofs/Proofs/BezoutIdentityOQ04OQ01.lean (335 lines)",
+      "IsUnimodular predicate with closure properties (identity, product)",
+      "SmithNormalForm m n structure with U, D, V, divisibility chain",
+      "bezout_from_snf: ∃x y, ax+by=c ↔ gcd(a,b)|c (fully proved)",
+      "intNullSpace with ℤ-submodule closure (zero, add, smul)",
+      "solution_iff_particular_plus_null: affine lattice structure (fully proved)",
+      "Concrete examples: 3-variable solvability and 2-variable unsolvability",
+      "Gallery entry with meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "Mathlib has no Smith Normal Form for PIDs/ℤ — transvection machinery targets fields only",
+      "mulVec_add, mulVec_sub, mulVec_smul are the key linearity lemmas for null space proofs",
+      "IsUnimodular closure under product follows from det_mul and natAbs_mul",
+      "Solution lattice structure proof is clean: forward uses mulVec_sub + sub_self, backward uses ← mulVec_sub + sub_eq_zero",
+      "Divisibility chain for SNF should use ℕ index (not Fin m × Fin n) for clean bounds"
+    ],
+    "mathlibGaps": [
+      "No Smith Normal Form in Mathlib — only transvection diagonalization for fields",
+      "No invariant factors or elementary divisor theory for PIDs",
+      "No integer matrix reduction algorithm"
+    ],
+    "nextSteps": [
+      "Prove snf_1x2_invariant_factor (sorry) — connect 1×2 SNF to gcd",
+      "Consider constructive SNF existence proof (~500 lines of Euclidean reduction)",
+      "Extend to PID generalization (bezout-identity-oq-02-oq-02 connection)"
+    ]
+  }
+}

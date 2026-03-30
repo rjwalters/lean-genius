@@ -7,14 +7,16 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_theorem#Erdős's_proof",
     "date": "1938",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
     "tags": ["number-theory", "primes", "combinatorics", "erdos", "elementary"],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {"theorem": "Nat.Prime", "description": "Prime number predicate", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "Finset", "description": "Finite sets for counting", "module": "Mathlib.Data.Finset.Basic"}
+      {"theorem": "Finset", "description": "Finite sets for counting", "module": "Mathlib.Data.Finset.Basic"},
+      {"theorem": "Nat.sq_mul_squarefree_of_pos", "description": "Squarefree decomposition", "module": "Mathlib.Data.Nat.Squarefree"},
+      {"theorem": "Nat.factorization_prod_pow_eq_self", "description": "Reconstruction from factorization", "module": "Mathlib.Data.Nat.Factorization.Basic"}
     ],
     "originalContributions": [
       "Smooth number definition and counting framework",
@@ -22,10 +24,10 @@
       "Alternative proof path avoiding Mathlib's analytic machinery"
     ],
     "dateAdded": "2026-03-30",
-    "leanFile": {"lineCount": 220, "structures": 0, "axioms": 0, "theorems": 5, "definitions": 4, "instances": 0},
+    "leanFile": {"lineCount": 389, "structures": 0, "axioms": 0, "theorems": 12, "definitions": 7, "instances": 0},
     "axiomCount": 0,
-    "lineCount": 220,
-    "assumptions": "0 axioms. 2 sorries (smooth_count_bound, multiples_count).",
+    "lineCount": 389,
+    "assumptions": "0 axioms. 0 sorries. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -40,8 +42,9 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős's combinatorial proof of infinitely many primes is formalized. The proof depends on 2 sorry'd lemmas (smooth counting bound, multiples counting).",
-    "openQuestions": ["Can smooth_count_bound be proved by constructing the explicit (m,S) injection?"]
+    "summary": "Erdős's combinatorial proof of infinitely many primes is fully formalized with 0 sorries. Uses squarefree decomposition injection for the smooth number counting bound.",
+    "implications": "Demonstrates that the combinatorial core of Erdős's Σ1/p divergence proof can be formalized without any analytic machinery, complementing the parent proof's Mathlib-based approach.",
+    "openQuestions": []
   },
   "sections": [
     {
@@ -49,35 +52,42 @@
       "title": "Imports and Proof Overview",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Imports Mathlib basics and documents Erdős's elementary proof strategy: contradiction via smooth number counting, avoiding all analytic machinery."
+      "summary": "Imports Mathlib basics (including Squarefree) and documents Erdős's elementary proof strategy."
     },
     {
       "id": "definitions",
       "title": "Smooth and Rough Number Definitions",
       "startLine": 54,
-      "endLine": 72,
-      "summary": "Defines IsSmooth (all prime factors ≤ N), IsRough (has a prime factor > N), smoothSet (N-smooth numbers in [1,n]), and primesUpTo."
+      "endLine": 76,
+      "summary": "Defines IsSmooth, IsRough, smoothSet, and primesUpTo."
+    },
+    {
+      "id": "smooth-infrastructure",
+      "title": "Squarefree Decomposition Infrastructure",
+      "startLine": 78,
+      "endLine": 177,
+      "summary": "Defines sqfPart/sqRtPart via Nat.sq_mul_squarefree_of_pos. Proves key lemma: squarefree positive naturals with same prime divisors are equal. Defines smoothInj injection."
     },
     {
       "id": "smooth-count",
-      "title": "Counting Smooth Numbers",
-      "startLine": 74,
-      "endLine": 91,
-      "summary": "Key bound: |smoothSet N n| ≤ √n · 2^{π(N)} via the (m,S) injection. Contains 1 sorry."
+      "title": "Smooth Count Bound",
+      "startLine": 179,
+      "endLine": 243,
+      "summary": "Proves |smoothSet N n| ≤ √n · 2^{π(N)} via injection into range(√n) × powerset(primesUpTo N). Fully proved, no sorries."
     },
     {
       "id": "rough-count",
-      "title": "Counting Rough Numbers",
-      "startLine": 93,
-      "endLine": 119,
-      "summary": "Proves rough_count_bound and multiples_count (1 sorry). If no large prime divides any k ≤ n, all numbers are smooth."
+      "title": "Counting Rough Numbers and Multiples",
+      "startLine": 245,
+      "endLine": 286,
+      "summary": "Proves multiples_count (bijection with scaled range) and rough_count_bound. Fully proved."
     },
     {
       "id": "main-theorem",
       "title": "Infinitely Many Primes (Erdős's Argument)",
-      "startLine": 121,
-      "endLine": 186,
-      "summary": "Proves infinitely_many_primes_erdos by contradiction: if all primes ≤ N, choosing n = (2^{π(N)+1})² + 1 gives n smooth numbers but the bound says ≤ √n · 2^{π(N)} < n. Derives prime_reciprocals_unbounded as corollary."
+      "startLine": 288,
+      "endLine": 353,
+      "summary": "Proves infinitely_many_primes_erdos by contradiction and derives prime_reciprocals_unbounded."
     }
   ],
   "crossReferences": [{"relationship": "Alternative proof to the analytic approach", "sharedConcepts": ["primes", "divergence"], "targetId": "prime-reciprocal-divergence"}]
