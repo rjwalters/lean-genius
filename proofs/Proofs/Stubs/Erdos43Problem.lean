@@ -116,6 +116,29 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
 
 /- ## Counting Arguments -/
 
+/-- For a Sidon set, nonzero differences are injective: if a₁ - b₁ = a₂ - b₂
+    and a₁ ≠ b₁, then a₁ = a₂ and b₁ = b₂. -/
+theorem sidon_diff_injective (A : Finset ℤ) (hS : IsSidonSet A)
+    {a₁ b₁ a₂ b₂ : ℤ} (ha₁ : a₁ ∈ A) (hb₁ : b₁ ∈ A) (ha₂ : a₂ ∈ A) (hb₂ : b₂ ∈ A)
+    (hne : a₁ ≠ b₁) (heq : a₁ - b₁ = a₂ - b₂) :
+    a₁ = a₂ ∧ b₁ = b₂ := by
+  have hsum : a₁ + b₂ = a₂ + b₁ := by omega
+  have hpair := hS a₁ b₂ a₂ b₁ ha₁ hb₂ ha₂ hb₁ hsum
+  -- a₁ ∈ {a₂, b₁}: a₁ = a₂ or a₁ = b₁
+  have ha₁_mem : a₁ ∈ ({a₂, b₁} : Finset ℤ) := by
+    rw [← hpair]; exact Finset.mem_insert_self a₁ {b₂}
+  rw [Finset.mem_insert, Finset.mem_singleton] at ha₁_mem
+  rcases ha₁_mem with rfl | rfl
+  · -- Case a₁ = a₂: then b₂ ∈ {a₂, b₁}
+    have hb₂_mem : b₂ ∈ ({a₂, b₁} : Finset ℤ) := by
+      rw [← hpair]; exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr rfl))
+    rw [Finset.mem_insert, Finset.mem_singleton] at hb₂_mem
+    rcases hb₂_mem with rfl | rfl
+    · exfalso; exact hne (by omega)  -- a₂ - b₁ = a₂ - a₂ = 0 → b₁ = a₂
+    · exact ⟨rfl, rfl⟩
+  · -- Case a₁ = b₁: contradicts hne
+    exact absurd rfl hne
+
 /-- The number of nonzero differences of a Sidon set A is |A|²-|A|,
     since all pairwise differences are distinct. -/
 theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) :
