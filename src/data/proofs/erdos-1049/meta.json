@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 9,
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
     "erdosProblemStatus": "open",
@@ -65,8 +65,8 @@
       "erdos-1048",
       "erdos-1050"
     ],
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607), chowla_conjecture_open (open status marker), lambert_arithmetic_property (Lambert series arithmetic property placeholder), partial_rational_results (partial progress placeholder), linear_independence_partial (linear independence placeholder). The first is Erdős's published result; the numerical bound is computationally verified; the rest encode the open status and known partial progress.",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erdős's published result; the second is computationally verified. 4 former placeholder axioms (chowla_conjecture_open, lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were eliminated by proving them as theorems.",
     "prerequisites": [
       "Analytic number theory: divisor function and Lambert series",
       "Irrationality and transcendence theory",
@@ -276,9 +276,9 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 282,
-    "axiomCount": 6,
-    "theoremCount": 22,
+    "lineCount": 327,
+    "axiomCount": 2,
+    "theoremCount": 26,
     "substantiveTheoremCount": 22,
     "trivialSpecializations": 0,
     "definitionCount": 12
