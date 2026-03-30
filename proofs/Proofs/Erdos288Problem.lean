@@ -93,6 +93,20 @@ theorem example_sum_one_v2 :
     show (6 : ℕ) > 0 from by omega, dif_pos, add_zero]
   norm_num
 
+/-- Third example: 1/1 + 1/2 + 1/3 + 1/6 = 2.
+    This uses intervals [1,3] and [6,6], showing the sum can be 2 (not just 1). -/
+theorem example_sum_two :
+    harmonicInterval ⟨1, by omega⟩ ⟨3, by omega⟩ +
+    harmonicInterval ⟨6, by omega⟩ ⟨6, by omega⟩ = 2 := by
+  unfold harmonicInterval
+  have h13 : Finset.Icc 1 3 = {1, 2, 3} := by decide
+  rw [h13, Finset.Icc_self]
+  simp only [Finset.sum_singleton, Finset.sum_cons, Finset.sum_empty,
+    show (1 : ℕ) > 0 from by omega, show (2 : ℕ) > 0 from by omega,
+    show (3 : ℕ) > 0 from by omega, show (6 : ℕ) > 0 from by omega,
+    dif_pos, add_zero]
+  norm_num
+
 /- ## Part IV: Variant — Single Element I₂ -/
 
 /-- The restricted version where I₂ has a single element. -/
@@ -185,6 +199,7 @@ STATUS: OPEN
 EXAMPLES:
 - [3,6] ∪ [20,20] gives 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
 - [2,3] ∪ [6,6] gives 1/2 + 1/3 + 1/6 = 1
+- [1,3] ∪ [6,6] gives 1 + 1/2 + 1/3 + 1/6 = 2
 
 VARIANTS:
 - Open even when |I₂| = 1
@@ -205,6 +220,7 @@ STATUS: OPEN
 KNOWN:
 - Example: [3,6] ∪ [20,20] gives 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
 - Example: [2,3] ∪ [6,6] gives 1/2 + 1/3 + 1/6 = 1
+- Example: [1,3] ∪ [6,6] gives 1 + 1/2 + 1/3 + 1/6 = 2
 - Open even when |I₂| = 1
 - Conjectured to hold for k intervals (any k)
 -/

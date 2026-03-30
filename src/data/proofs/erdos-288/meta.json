@@ -46,7 +46,8 @@
       "Proved harmonicInterval_from_one via Finset.sum_congr with dif_pos",
       "Proved harmonicInterval_ge_inv_first via Finset.single_le_sum (lower bound H(a,b) >= 1/a)",
       "Proved example_sum_one by reducing Finset.Icc and norm_num",
-      "Proved example_sum_one_v2: H(2,3) + H(6,6) = 1 (second verified example)"
+      "Proved example_sum_one_v2: H(2,3) + H(6,6) = 1 (second verified example)",
+      "Proved example_sum_two: H(1,3) + H(6,6) = 2 (third example; shows sum can be 2, not just 1)"
     ],
     "axiomCount": 1,
     "prerequisites": [
@@ -56,7 +57,7 @@
       "Set finiteness (Set.Finite in Lean 4)",
       "Finset.sum over intervals"
     ],
-    "lineCount": 215,
+    "lineCount": 229,
     "assumptions": "1 axiom (erdos_288: the main open conjecture, load-bearing), 0 sorries. Removed 2 unused variant conjectures.",
     "mathlib_version": "4.26.0"
   },
@@ -99,35 +100,35 @@
       "id": "example",
       "title": "Part III: The Known Examples",
       "startLine": 66,
-      "endLine": 94,
-      "summary": "Two verified examples: example_sum_one (H(3,6)+H(20,20)=1) and example_sum_one_v2 (H(2,3)+H(6,6)=1)."
+      "endLine": 108,
+      "summary": "Three verified examples: example_sum_one (H(3,6)+H(20,20)=1), example_sum_one_v2 (H(2,3)+H(6,6)=1), and example_sum_two (H(1,3)+H(6,6)=2, showing the sum can be 2)."
     },
     {
       "id": "singleton-variant",
       "title": "Part IV: Variant — Single Element I₂",
-      "startLine": 96,
-      "endLine": 107,
-      "summary": "Defines singletonPairs (restricted to |I₂|=1). Axiom erdos_288_singleton: the finiteness conjecture remains open even in this restricted case."
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "Defines singletonPairs (restricted to |I₂|=1). The singleton variant remains open (not axiomatized — only the main conjecture is axiomatized)."
     },
     {
       "id": "k-intervals",
       "title": "Part V: Variant — k Intervals",
-      "startLine": 109,
-      "endLine": 127,
-      "summary": "Defines kIntervalSum (Σ over Fin k → ℕ+ × ℕ+) and kIntervalPairs. Axiom erdos_288_k_intervals: generalization conjectured for all k."
+      "startLine": 123,
+      "endLine": 141,
+      "summary": "Defines kIntervalSum (Σ over Fin k → ℕ+ × ℕ+) and kIntervalPairs. The k-interval generalization is conjectured (not axiomatized)."
     },
     {
       "id": "properties",
       "title": "Part VI: Properties of Harmonic Sums",
-      "startLine": 129,
-      "endLine": 180,
+      "startLine": 143,
+      "endLine": 194,
       "summary": "Four proved properties: harmonicInterval_singleton (H(a,a)=1/a), harmonicInterval_pos (positivity), harmonicInterval_from_one (harmonic number form), harmonicInterval_ge_inv_first (lower bound H(a,b)>=1/a)."
     },
     {
       "id": "summary",
       "title": "Part VII: Summary",
-      "startLine": 182,
-      "endLine": 217,
+      "startLine": 196,
+      "endLine": 231,
       "summary": "erdos_288_statement proved by simp (unfolds to Set.Finite). erdos_288_summary packages the equivalence. Problem remains OPEN."
     }
   ],
@@ -138,7 +139,7 @@
       "Are there only finitely many interval pairs with integer harmonic sum?",
       "Is it true even when |I₂| = 1?",
       "Does the finiteness hold for k intervals for any k?",
-      "What are all solutions beyond the known example?"
+      "What are all solutions beyond the three known examples?"
     ]
   },
   "crossReferences": [
@@ -177,9 +178,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos288",
-    "lineCount": 215,
-    "axiomCount": 3,
-    "theoremCount": 8,
+    "lineCount": 229,
+    "axiomCount": 1,
+    "theoremCount": 9,
     "definitionCount": 9
   },
   "references": [

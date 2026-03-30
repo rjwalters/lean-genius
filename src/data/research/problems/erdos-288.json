@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (all open conjectures), 8T proved, 0S. Added second verified example H(2,3)+H(6,6)=1. Replaced trivial growth lemma with meaningful lower bound H(a,b)>=1/a.",
+    "progressSummary": "COMPLETE: 1A (main open conjecture), 9T proved, 0S. Three verified examples: H(3,6)+H(20,20)=1, H(2,3)+H(6,6)=1, H(1,3)+H(6,6)=2. Fixed stale meta.json (axiomCount 3→1).",
     "builtItems": [
       "Proved harmonicInterval_singleton, harmonicInterval_pos, harmonicInterval_from_one (axiom->theorem)",
       "Proved harmonicInterval_ge_inv_first: H(a,b) >= 1/a via Finset.single_le_sum",
       "Proved example_sum_one by computation (8->3 axioms total)",
       "Proved example_sum_one_v2: H(2,3)+H(6,6)=1 (second verified integer harmonic sum)",
-      "Removed 2 unused axioms (erdos_288_singleton, erdos_288_k_intervals) — 3→1 axioms"
+      "Removed 2 unused axioms (erdos_288_singleton, erdos_288_k_intervals) — 3→1 axioms",
+      "Proved example_sum_two: H(1,3)+H(6,6)=2 (third example, shows sum=2 is achievable)"
     ],
     "insights": [
       "harmonicInterval_singleton: unfold Icc_self + dif_pos for PNat.pos",
@@ -44,7 +45,8 @@
       "harmonicInterval_ge_inv_first: Finset.single_le_sum with non-negativity + dif_pos",
       "example_sum_one: reduce Icc 3 6 by decide, simp dif_pos for each element, norm_num",
       "example_sum_one_v2: same pattern as v1 with Icc 2 3 = {2,3} by decide",
-      "All 3 remaining axioms are genuinely open conjectures"
+      "All 3 remaining axioms are genuinely open conjectures",
+      "example_sum_two: same Icc+dif_pos+norm_num pattern; H(1,3)+H(6,6) = 1+1/2+1/3+1/6 = 2"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
