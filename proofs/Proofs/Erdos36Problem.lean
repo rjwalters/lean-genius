@@ -74,13 +74,6 @@ noncomputable def overlapValues (N : ℕ) : Finset ℕ :=
 noncomputable def M (N : ℕ) : ℕ :=
   if h : (overlapValues N).Nonempty then (overlapValues N).min' h else 0
 
-/-- **Erdős Problem #36**: Determine the asymptotic constant
-    c = lim M(N)/N. The problem is to find the exact value of c. -/
-axiom erdos_36_limit_exists :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      |((M N : ℝ) / N) - c| < ε
-
 -- ============================================================================
 -- Part V: Known Bounds
 -- ============================================================================
