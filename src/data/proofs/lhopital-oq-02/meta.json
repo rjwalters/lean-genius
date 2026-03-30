@@ -59,25 +59,22 @@
   },
   "sections": [
     {
-      "id": "right-approach",
       "title": "∞/∞ L'Hôpital — Right Approach",
       "startLine": 50,
       "endLine": 100,
-      "summary": "Main theorem: if g → ∞ as x → a⁺ and f'/g' → c, then f/g → c. Proof uses two-variable Cauchy MVT argument."
+      "description": "Main theorem: if g → ∞ as x → a⁺ and f'/g' → c, then f/g → c. Proof uses two-variable Cauchy MVT argument."
     },
     {
-      "id": "variants",
       "title": "Additional Variants",
       "startLine": 105,
       "endLine": 145,
-      "summary": "Left approach, at +∞, and at -∞ variants, reducible to the right approach case."
+      "description": "Left approach, at +∞, and at -∞ variants, reducible to the right approach case."
     },
     {
-      "id": "examples",
       "title": "Examples and Relationship to 0/0",
       "startLine": 150,
       "endLine": 195,
-      "summary": "Classic examples (x/eˣ, ln(x)/cot(x)) and explanation of why ∞/∞ needs a separate proof."
+      "description": "Classic examples (x/eˣ, ln(x)/cot(x)) and explanation of why ∞/∞ needs a separate proof."
     }
   ],
   "overview": {
